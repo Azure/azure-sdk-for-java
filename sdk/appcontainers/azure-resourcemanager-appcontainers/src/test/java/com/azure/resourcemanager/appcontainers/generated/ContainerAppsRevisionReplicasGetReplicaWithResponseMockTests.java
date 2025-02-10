@@ -6,74 +6,43 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.Replica;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ContainerAppsRevisionReplicasGetReplicaWithResponseMockTests {
     @Test
     public void testGetReplicaWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"createdTime\":\"2021-02-18T03:30:55Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"nbg\",\"containers\":[{\"name\":\"dorgmynltw\",\"containerId\":\"ftmfoeajogsy\",\"ready\":true,\"started\":false,\"restartCount\":1917204796,\"runningState\":\"Running\",\"runningStateDetails\":\"vlkpzwb\",\"logStreamEndpoint\":\"recchdidrmu\",\"execEndpoint\":\"ahmjedbiu\",\"debugEndpoint\":\"khhwmj\"}],\"initContainers\":[{\"name\":\"eunxcqrrihufoi\",\"containerId\":\"piybxvgnzuzpbg\",\"ready\":true,\"started\":false,\"restartCount\":1335795506,\"runningState\":\"Waiting\",\"runningStateDetails\":\"kunhdimjuk\",\"logStreamEndpoint\":\"r\",\"execEndpoint\":\"a\",\"debugEndpoint\":\"pucdocf\"},{\"name\":\"lwgofm\",\"containerId\":\"wrjlvzkl\",\"ready\":true,\"started\":true,\"restartCount\":104707977,\"runningState\":\"Running\",\"runningStateDetails\":\"akvlbishj\",\"logStreamEndpoint\":\"zaptuosk\",\"execEndpoint\":\"izjixwfgcd\",\"debugEndpoint\":\"kkcxwnujvqynvav\"}]},\"id\":\"mdmuqoh\",\"name\":\"ihraxqudd\",\"type\":\"wjc\"}";
 
-        String responseStr =
-            "{\"properties\":{\"createdTime\":\"2021-04-22T19:07:29Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"nsq\",\"containers\":[{\"name\":\"comlikytwvczc\",\"containerId\":\"k\",\"ready\":false,\"started\":false,\"restartCount\":789888473,\"runningState\":\"Terminated\",\"runningStateDetails\":\"vhb\",\"logStreamEndpoint\":\"nfxtgdd\",\"execEndpoint\":\"th\"}],\"initContainers\":[{\"name\":\"naoyank\",\"containerId\":\"eqswanklty\",\"ready\":false,\"started\":true,\"restartCount\":1174469585,\"runningState\":\"Terminated\",\"runningStateDetails\":\"drlktg\",\"logStreamEndpoint\":\"sggux\",\"execEndpoint\":\"mlwywaeeczg\"}]},\"id\":\"bukklels\",\"name\":\"xblycsxzuj\",\"type\":\"srlsmd\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Replica response = manager.containerAppsRevisionReplicas()
+            .getReplicaWithResponse("hudsmusuaa", "jakx", "jnfczmnniixy", "vqban", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ContainerAppsApiManager manager =
-            ContainerAppsApiManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Replica response =
-            manager
-                .containerAppsRevisionReplicas()
-                .getReplicaWithResponse("rhpw", "gddeimaw", "o", "gkkumuikjcj", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("comlikytwvczc", response.containers().get(0).name());
-        Assertions.assertEquals("k", response.containers().get(0).containerId());
-        Assertions.assertEquals(false, response.containers().get(0).ready());
+        Assertions.assertEquals("dorgmynltw", response.containers().get(0).name());
+        Assertions.assertEquals("ftmfoeajogsy", response.containers().get(0).containerId());
+        Assertions.assertEquals(true, response.containers().get(0).ready());
         Assertions.assertEquals(false, response.containers().get(0).started());
-        Assertions.assertEquals(789888473, response.containers().get(0).restartCount());
-        Assertions.assertEquals("naoyank", response.initContainers().get(0).name());
-        Assertions.assertEquals("eqswanklty", response.initContainers().get(0).containerId());
-        Assertions.assertEquals(false, response.initContainers().get(0).ready());
-        Assertions.assertEquals(true, response.initContainers().get(0).started());
-        Assertions.assertEquals(1174469585, response.initContainers().get(0).restartCount());
+        Assertions.assertEquals(1917204796, response.containers().get(0).restartCount());
+        Assertions.assertEquals("eunxcqrrihufoi", response.initContainers().get(0).name());
+        Assertions.assertEquals("piybxvgnzuzpbg", response.initContainers().get(0).containerId());
+        Assertions.assertEquals(true, response.initContainers().get(0).ready());
+        Assertions.assertEquals(false, response.initContainers().get(0).started());
+        Assertions.assertEquals(1335795506, response.initContainers().get(0).restartCount());
     }
 }

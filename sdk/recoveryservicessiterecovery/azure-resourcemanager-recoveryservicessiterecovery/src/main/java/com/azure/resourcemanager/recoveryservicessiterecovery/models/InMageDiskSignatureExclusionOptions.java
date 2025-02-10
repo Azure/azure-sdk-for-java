@@ -5,26 +5,32 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Guest disk signature based disk exclusion option when doing enable protection of virtual machine in InMage provider.
  */
 @Fluent
-public final class InMageDiskSignatureExclusionOptions {
+public final class InMageDiskSignatureExclusionOptions
+    implements JsonSerializable<InMageDiskSignatureExclusionOptions> {
     /*
      * The guest signature of disk to be excluded from replication.
      */
-    @JsonProperty(value = "diskSignature")
     private String diskSignature;
 
-    /** Creates an instance of InMageDiskSignatureExclusionOptions class. */
+    /**
+     * Creates an instance of InMageDiskSignatureExclusionOptions class.
+     */
     public InMageDiskSignatureExclusionOptions() {
     }
 
     /**
      * Get the diskSignature property: The guest signature of disk to be excluded from replication.
-     *
+     * 
      * @return the diskSignature value.
      */
     public String diskSignature() {
@@ -33,7 +39,7 @@ public final class InMageDiskSignatureExclusionOptions {
 
     /**
      * Set the diskSignature property: The guest signature of disk to be excluded from replication.
-     *
+     * 
      * @param diskSignature the diskSignature value to set.
      * @return the InMageDiskSignatureExclusionOptions object itself.
      */
@@ -44,9 +50,46 @@ public final class InMageDiskSignatureExclusionOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskSignature", this.diskSignature);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageDiskSignatureExclusionOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageDiskSignatureExclusionOptions if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageDiskSignatureExclusionOptions.
+     */
+    public static InMageDiskSignatureExclusionOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageDiskSignatureExclusionOptions deserializedInMageDiskSignatureExclusionOptions
+                = new InMageDiskSignatureExclusionOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskSignature".equals(fieldName)) {
+                    deserializedInMageDiskSignatureExclusionOptions.diskSignature = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageDiskSignatureExclusionOptions;
+        });
     }
 }

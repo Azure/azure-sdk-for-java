@@ -11,11 +11,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.keyvault.fluent.models.MhsmGeoReplicatedRegionInner;
 
-/** An instance of this class provides access to all the operations defined in MhsmRegionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MhsmRegionsClient.
+ */
 public interface MhsmRegionsClient {
     /**
      * The List operation gets information about the regions associated with the managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface MhsmRegionsClient {
 
     /**
      * The List operation gets information about the regions associated with the managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,7 +43,7 @@ public interface MhsmRegionsClient {
 
     /**
      * The List operation gets information about the regions associated with the managed HSM Pool.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the managed HSM pool.
      * @param name Name of the managed HSM Pool.
      * @param context The context to associate with this operation.

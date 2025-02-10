@@ -62,14 +62,14 @@ public final class NamespaceTopicsImpl implements NamespaceTopics {
     public PagedIterable<NamespaceTopic> listByNamespace(String resourceGroupName, String namespaceName) {
         PagedIterable<NamespaceTopicInner> inner
             = this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
-        return Utils.mapPage(inner, inner1 -> new NamespaceTopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceTopicImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NamespaceTopic> listByNamespace(String resourceGroupName, String namespaceName, String filter,
         Integer top, Context context) {
         PagedIterable<NamespaceTopicInner> inner
             = this.serviceClient().listByNamespace(resourceGroupName, namespaceName, filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new NamespaceTopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceTopicImpl(inner1, this.manager()));
     }
 
     public Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(String resourceGroupName,
@@ -108,8 +108,8 @@ public final class NamespaceTopicsImpl implements NamespaceTopics {
 
     public TopicSharedAccessKeys regenerateKey(String resourceGroupName, String namespaceName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        TopicSharedAccessKeysInner inner = this.serviceClient().regenerateKey(resourceGroupName, namespaceName,
-            topicName, regenerateKeyRequest, context);
+        TopicSharedAccessKeysInner inner = this.serviceClient()
+            .regenerateKey(resourceGroupName, namespaceName, topicName, regenerateKeyRequest, context);
         if (inner != null) {
             return new TopicSharedAccessKeysImpl(inner, this.manager());
         } else {
@@ -118,17 +118,17 @@ public final class NamespaceTopicsImpl implements NamespaceTopics {
     }
 
     public NamespaceTopic getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String topicName = Utils.getValueFromIdByName(id, "topics");
+        String topicName = ResourceManagerUtils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
@@ -137,17 +137,17 @@ public final class NamespaceTopicsImpl implements NamespaceTopics {
     }
 
     public Response<NamespaceTopic> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String topicName = Utils.getValueFromIdByName(id, "topics");
+        String topicName = ResourceManagerUtils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
@@ -156,17 +156,17 @@ public final class NamespaceTopicsImpl implements NamespaceTopics {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String topicName = Utils.getValueFromIdByName(id, "topics");
+        String topicName = ResourceManagerUtils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));
@@ -175,17 +175,17 @@ public final class NamespaceTopicsImpl implements NamespaceTopics {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
-        String topicName = Utils.getValueFromIdByName(id, "topics");
+        String topicName = ResourceManagerUtils.getValueFromIdByName(id, "topics");
         if (topicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'topics'.", id)));

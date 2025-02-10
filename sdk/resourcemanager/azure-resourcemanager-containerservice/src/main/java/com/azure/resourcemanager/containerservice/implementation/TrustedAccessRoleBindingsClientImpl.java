@@ -54,7 +54,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Initializes an instance of TrustedAccessRoleBindingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TrustedAccessRoleBindingsClientImpl(ContainerServiceManagementClientImpl client) {
@@ -121,7 +121,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +148,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -160,7 +160,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -188,7 +188,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -200,7 +200,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,7 +216,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -234,7 +234,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -249,7 +249,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -266,7 +266,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -297,7 +297,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(
                 new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -307,7 +307,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -339,7 +339,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(
                 new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -348,7 +348,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -366,7 +366,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -384,7 +384,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -401,7 +401,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -441,7 +441,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         } else {
             trustedAccessRoleBinding.validate();
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -452,7 +452,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -493,7 +493,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         } else {
             trustedAccessRoleBinding.validate();
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -502,7 +502,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -525,7 +525,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -550,7 +550,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -564,13 +564,15 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
     public SyncPoller<PollResult<TrustedAccessRoleBindingInner>, TrustedAccessRoleBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
         TrustedAccessRoleBindingInner trustedAccessRoleBinding) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
-            trustedAccessRoleBinding).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
+                trustedAccessRoleBinding)
+            .getSyncPoller();
     }
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -585,13 +587,15 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
     public SyncPoller<PollResult<TrustedAccessRoleBindingInner>, TrustedAccessRoleBindingInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
         TrustedAccessRoleBindingInner trustedAccessRoleBinding, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
-            trustedAccessRoleBinding, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, trustedAccessRoleBindingName,
+                trustedAccessRoleBinding, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -610,7 +614,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -630,7 +634,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -649,7 +653,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -669,7 +673,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -700,7 +704,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(
                 new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -711,7 +715,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -743,7 +747,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
             return Mono.error(
                 new IllegalArgumentException("Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -752,7 +756,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -772,7 +776,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -794,7 +798,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -811,7 +815,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -830,7 +834,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -847,7 +851,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -866,7 +870,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -881,7 +885,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -898,10 +902,8 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -926,10 +928,8 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

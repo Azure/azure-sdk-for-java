@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Type of the Azure resource the hostname is assigned to.
  */
@@ -36,7 +33,6 @@ public enum AzureResourceType {
      * @param value the serialized value to parse.
      * @return the parsed AzureResourceType object, or null if unable to parse.
      */
-    @JsonCreator
     public static AzureResourceType fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum AzureResourceType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

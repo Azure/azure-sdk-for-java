@@ -5,116 +5,106 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** site. */
+/**
+ * site.
+ */
 @Fluent
 public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
     /*
      * The full title for the site. Read-only.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * publicError
      */
-    @JsonProperty(value = "error")
     private MicrosoftGraphPublicError error;
 
     /*
      * root
      */
-    @JsonProperty(value = "root")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> root;
 
     /*
      * sharepointIds
      */
-    @JsonProperty(value = "sharepointIds")
     private MicrosoftGraphSharepointIds sharepointIds;
 
     /*
      * siteCollection
      */
-    @JsonProperty(value = "siteCollection")
     private MicrosoftGraphSiteCollection siteCollection;
 
     /*
      * itemAnalytics
      */
-    @JsonProperty(value = "analytics")
     private MicrosoftGraphItemAnalytics analytics;
 
     /*
      * The collection of column definitions reusable across lists under this site.
      */
-    @JsonProperty(value = "columns")
     private List<MicrosoftGraphColumnDefinition> columns;
 
     /*
      * The collection of content types defined for this site.
      */
-    @JsonProperty(value = "contentTypes")
     private List<MicrosoftGraphContentType> contentTypes;
 
     /*
      * drive
      */
-    @JsonProperty(value = "drive")
     private MicrosoftGraphDrive drive;
 
     /*
      * The collection of drives (document libraries) under this site.
      */
-    @JsonProperty(value = "drives")
     private List<MicrosoftGraphDrive> drives;
 
     /*
      * Used to address any item contained in this site. This collection cannot be enumerated.
      */
-    @JsonProperty(value = "items")
     private List<MicrosoftGraphBaseItemInner> items;
 
     /*
      * The collection of lists under this site.
      */
-    @JsonProperty(value = "lists")
     private List<MicrosoftGraphList> lists;
 
     /*
      * The collection of the sub-sites under this site.
      */
-    @JsonProperty(value = "sites")
     private List<MicrosoftGraphSite> sites;
 
     /*
      * onenote
      */
-    @JsonProperty(value = "onenote")
     private MicrosoftGraphOnenote onenote;
 
     /*
      * site
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSite class. */
+    /**
+     * Creates an instance of MicrosoftGraphSite class.
+     */
     public MicrosoftGraphSite() {
     }
 
     /**
      * Get the displayName property: The full title for the site. Read-only.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -123,7 +113,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the displayName property: The full title for the site. Read-only.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -134,7 +124,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the error property: publicError.
-     *
+     * 
      * @return the error value.
      */
     public MicrosoftGraphPublicError error() {
@@ -143,7 +133,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the error property: publicError.
-     *
+     * 
      * @param error the error value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -154,7 +144,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the root property: root.
-     *
+     * 
      * @return the root value.
      */
     public Map<String, Object> root() {
@@ -163,7 +153,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the root property: root.
-     *
+     * 
      * @param root the root value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -174,7 +164,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the sharepointIds property: sharepointIds.
-     *
+     * 
      * @return the sharepointIds value.
      */
     public MicrosoftGraphSharepointIds sharepointIds() {
@@ -183,7 +173,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the sharepointIds property: sharepointIds.
-     *
+     * 
      * @param sharepointIds the sharepointIds value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -194,7 +184,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the siteCollection property: siteCollection.
-     *
+     * 
      * @return the siteCollection value.
      */
     public MicrosoftGraphSiteCollection siteCollection() {
@@ -203,7 +193,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the siteCollection property: siteCollection.
-     *
+     * 
      * @param siteCollection the siteCollection value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -214,7 +204,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the analytics property: itemAnalytics.
-     *
+     * 
      * @return the analytics value.
      */
     public MicrosoftGraphItemAnalytics analytics() {
@@ -223,7 +213,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the analytics property: itemAnalytics.
-     *
+     * 
      * @param analytics the analytics value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -234,7 +224,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the columns property: The collection of column definitions reusable across lists under this site.
-     *
+     * 
      * @return the columns value.
      */
     public List<MicrosoftGraphColumnDefinition> columns() {
@@ -243,7 +233,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the columns property: The collection of column definitions reusable across lists under this site.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -254,7 +244,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the contentTypes property: The collection of content types defined for this site.
-     *
+     * 
      * @return the contentTypes value.
      */
     public List<MicrosoftGraphContentType> contentTypes() {
@@ -263,7 +253,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the contentTypes property: The collection of content types defined for this site.
-     *
+     * 
      * @param contentTypes the contentTypes value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -274,7 +264,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the drive property: drive.
-     *
+     * 
      * @return the drive value.
      */
     public MicrosoftGraphDrive drive() {
@@ -283,7 +273,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the drive property: drive.
-     *
+     * 
      * @param drive the drive value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -294,7 +284,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the drives property: The collection of drives (document libraries) under this site.
-     *
+     * 
      * @return the drives value.
      */
     public List<MicrosoftGraphDrive> drives() {
@@ -303,7 +293,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the drives property: The collection of drives (document libraries) under this site.
-     *
+     * 
      * @param drives the drives value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -314,7 +304,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the items property: Used to address any item contained in this site. This collection cannot be enumerated.
-     *
+     * 
      * @return the items value.
      */
     public List<MicrosoftGraphBaseItemInner> items() {
@@ -323,7 +313,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the items property: Used to address any item contained in this site. This collection cannot be enumerated.
-     *
+     * 
      * @param items the items value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -334,7 +324,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the lists property: The collection of lists under this site.
-     *
+     * 
      * @return the lists value.
      */
     public List<MicrosoftGraphList> lists() {
@@ -343,7 +333,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the lists property: The collection of lists under this site.
-     *
+     * 
      * @param lists the lists value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -354,7 +344,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the sites property: The collection of the sub-sites under this site.
-     *
+     * 
      * @return the sites value.
      */
     public List<MicrosoftGraphSite> sites() {
@@ -363,7 +353,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the sites property: The collection of the sub-sites under this site.
-     *
+     * 
      * @param sites the sites value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -374,7 +364,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the onenote property: onenote.
-     *
+     * 
      * @return the onenote value.
      */
     public MicrosoftGraphOnenote onenote() {
@@ -383,7 +373,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the onenote property: onenote.
-     *
+     * 
      * @param onenote the onenote value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -394,17 +384,16 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the additionalProperties property: site.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: site.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSite object itself.
      */
@@ -413,92 +402,108 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withCreatedBy(MicrosoftGraphIdentitySet createdBy) {
         super.withCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withEtag(String etag) {
         super.withEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withParentReference(MicrosoftGraphItemReference parentReference) {
         super.withParentReference(parentReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withWebUrl(String webUrl) {
         super.withWebUrl(webUrl);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withCreatedByUser(MicrosoftGraphUserInner createdByUser) {
         super.withCreatedByUser(createdByUser);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withLastModifiedByUser(MicrosoftGraphUserInner lastModifiedByUser) {
         super.withLastModifiedByUser(lastModifiedByUser);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphSite withId(String id) {
         super.withId(id);
@@ -507,7 +512,7 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -549,5 +554,144 @@ public final class MicrosoftGraphSite extends MicrosoftGraphBaseItemInner {
         if (onenote() != null) {
             onenote().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("createdBy", createdBy());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("eTag", etag());
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeJsonField("parentReference", parentReference());
+        jsonWriter.writeStringField("webUrl", webUrl());
+        jsonWriter.writeJsonField("createdByUser", createdByUser());
+        jsonWriter.writeJsonField("lastModifiedByUser", lastModifiedByUser());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeMapField("root", this.root, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("sharepointIds", this.sharepointIds);
+        jsonWriter.writeJsonField("siteCollection", this.siteCollection);
+        jsonWriter.writeJsonField("analytics", this.analytics);
+        jsonWriter.writeArrayField("columns", this.columns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("contentTypes", this.contentTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("drive", this.drive);
+        jsonWriter.writeArrayField("drives", this.drives, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("items", this.items, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("lists", this.lists, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sites", this.sites, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("onenote", this.onenote);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSite from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSite if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSite.
+     */
+    public static MicrosoftGraphSite fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSite deserializedMicrosoftGraphSite = new MicrosoftGraphSite();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withId(reader.getString());
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withCreatedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withDescription(reader.getString());
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withEtag(reader.getString());
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withName(reader.getString());
+                } else if ("parentReference".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withParentReference(MicrosoftGraphItemReference.fromJson(reader));
+                } else if ("webUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withWebUrl(reader.getString());
+                } else if ("createdByUser".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withCreatedByUser(MicrosoftGraphUserInner.fromJson(reader));
+                } else if ("lastModifiedByUser".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.withLastModifiedByUser(MicrosoftGraphUserInner.fromJson(reader));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.displayName = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.error = MicrosoftGraphPublicError.fromJson(reader);
+                } else if ("root".equals(fieldName)) {
+                    Map<String, Object> root = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphSite.root = root;
+                } else if ("sharepointIds".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.sharepointIds = MicrosoftGraphSharepointIds.fromJson(reader);
+                } else if ("siteCollection".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.siteCollection = MicrosoftGraphSiteCollection.fromJson(reader);
+                } else if ("analytics".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.analytics = MicrosoftGraphItemAnalytics.fromJson(reader);
+                } else if ("columns".equals(fieldName)) {
+                    List<MicrosoftGraphColumnDefinition> columns
+                        = reader.readArray(reader1 -> MicrosoftGraphColumnDefinition.fromJson(reader1));
+                    deserializedMicrosoftGraphSite.columns = columns;
+                } else if ("contentTypes".equals(fieldName)) {
+                    List<MicrosoftGraphContentType> contentTypes
+                        = reader.readArray(reader1 -> MicrosoftGraphContentType.fromJson(reader1));
+                    deserializedMicrosoftGraphSite.contentTypes = contentTypes;
+                } else if ("drive".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.drive = MicrosoftGraphDrive.fromJson(reader);
+                } else if ("drives".equals(fieldName)) {
+                    List<MicrosoftGraphDrive> drives
+                        = reader.readArray(reader1 -> MicrosoftGraphDrive.fromJson(reader1));
+                    deserializedMicrosoftGraphSite.drives = drives;
+                } else if ("items".equals(fieldName)) {
+                    List<MicrosoftGraphBaseItemInner> items
+                        = reader.readArray(reader1 -> MicrosoftGraphBaseItemInner.fromJson(reader1));
+                    deserializedMicrosoftGraphSite.items = items;
+                } else if ("lists".equals(fieldName)) {
+                    List<MicrosoftGraphList> lists = reader.readArray(reader1 -> MicrosoftGraphList.fromJson(reader1));
+                    deserializedMicrosoftGraphSite.lists = lists;
+                } else if ("sites".equals(fieldName)) {
+                    List<MicrosoftGraphSite> sites = reader.readArray(reader1 -> MicrosoftGraphSite.fromJson(reader1));
+                    deserializedMicrosoftGraphSite.sites = sites;
+                } else if ("onenote".equals(fieldName)) {
+                    deserializedMicrosoftGraphSite.onenote = MicrosoftGraphOnenote.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSite.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSite;
+        });
     }
 }

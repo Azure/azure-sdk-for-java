@@ -13,8 +13,7 @@ public final class MigrationRecoveryPointImpl implements MigrationRecoveryPoint 
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    MigrationRecoveryPointImpl(
-        MigrationRecoveryPointInner innerObject,
+    MigrationRecoveryPointImpl(MigrationRecoveryPointInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

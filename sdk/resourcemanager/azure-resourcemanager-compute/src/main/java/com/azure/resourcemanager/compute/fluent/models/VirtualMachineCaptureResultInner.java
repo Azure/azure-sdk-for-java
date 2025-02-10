@@ -6,7 +6,10 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,25 +20,21 @@ public final class VirtualMachineCaptureResultInner extends SubResource {
     /*
      * the schema of the captured virtual machine
      */
-    @JsonProperty(value = "$schema", access = JsonProperty.Access.WRITE_ONLY)
     private String schema;
 
     /*
      * the version of the content
      */
-    @JsonProperty(value = "contentVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String contentVersion;
 
     /*
      * parameters of the captured virtual machine
      */
-    @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private Object parameters;
 
     /*
      * a list of resource items of the captured virtual machine
      */
-    @JsonProperty(value = "resources", access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> resources;
 
     /**
@@ -95,5 +94,51 @@ public final class VirtualMachineCaptureResultInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineCaptureResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineCaptureResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineCaptureResultInner.
+     */
+    public static VirtualMachineCaptureResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineCaptureResultInner deserializedVirtualMachineCaptureResultInner
+                = new VirtualMachineCaptureResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineCaptureResultInner.withId(reader.getString());
+                } else if ("$schema".equals(fieldName)) {
+                    deserializedVirtualMachineCaptureResultInner.schema = reader.getString();
+                } else if ("contentVersion".equals(fieldName)) {
+                    deserializedVirtualMachineCaptureResultInner.contentVersion = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedVirtualMachineCaptureResultInner.parameters = reader.readUntyped();
+                } else if ("resources".equals(fieldName)) {
+                    List<Object> resources = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedVirtualMachineCaptureResultInner.resources = resources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineCaptureResultInner;
+        });
     }
 }

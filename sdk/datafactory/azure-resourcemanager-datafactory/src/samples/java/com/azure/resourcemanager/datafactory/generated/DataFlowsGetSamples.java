@@ -18,7 +18,8 @@ public final class DataFlowsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void dataFlowsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.dataFlows().getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow", null,
-            com.azure.core.util.Context.NONE);
+        manager.dataFlows()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow", null,
+                com.azure.core.util.Context.NONE);
     }
 }

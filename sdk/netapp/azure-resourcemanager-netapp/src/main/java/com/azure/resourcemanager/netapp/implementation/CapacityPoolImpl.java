@@ -78,6 +78,10 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
         return this.innerModel().utilizedThroughputMibps();
     }
 
+    public Float customThroughputMibps() {
+        return this.innerModel().customThroughputMibps();
+    }
+
     public QosType qosType() {
         return this.innerModel().qosType();
     }
@@ -125,14 +129,16 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
     }
 
     public CapacityPool create() {
-        this.innerObject = serviceManager.serviceClient().getPools().createOrUpdate(resourceGroupName, accountName,
-            poolName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .createOrUpdate(resourceGroupName, accountName, poolName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CapacityPool create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPools().createOrUpdate(resourceGroupName, accountName,
-            poolName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .createOrUpdate(resourceGroupName, accountName, poolName, this.innerModel(), context);
         return this;
     }
 
@@ -148,14 +154,16 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
     }
 
     public CapacityPool apply() {
-        this.innerObject = serviceManager.serviceClient().getPools().update(resourceGroupName, accountName, poolName,
-            updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .update(resourceGroupName, accountName, poolName, updateBody, Context.NONE);
         return this;
     }
 
     public CapacityPool apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPools().update(resourceGroupName, accountName, poolName,
-            updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .update(resourceGroupName, accountName, poolName, updateBody, context);
         return this;
     }
 
@@ -163,20 +171,24 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = Utils.getValueFromIdByName(innerObject.id(), "capacityPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
+        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
     }
 
     public CapacityPool refresh() {
-        this.innerObject = serviceManager.serviceClient().getPools()
-            .getWithResponse(resourceGroupName, accountName, poolName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .getWithResponse(resourceGroupName, accountName, poolName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CapacityPool refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPools()
-            .getWithResponse(resourceGroupName, accountName, poolName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .getWithResponse(resourceGroupName, accountName, poolName, context)
+            .getValue();
         return this;
     }
 
@@ -206,6 +218,16 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
             return this;
         } else {
             this.updateBody.withTags(tags);
+            return this;
+        }
+    }
+
+    public CapacityPoolImpl withCustomThroughputMibps(Float customThroughputMibps) {
+        if (isInCreateMode()) {
+            this.innerModel().withCustomThroughputMibps(customThroughputMibps);
+            return this;
+        } else {
+            this.updateBody.withCustomThroughputMibps(customThroughputMibps);
             return this;
         }
     }

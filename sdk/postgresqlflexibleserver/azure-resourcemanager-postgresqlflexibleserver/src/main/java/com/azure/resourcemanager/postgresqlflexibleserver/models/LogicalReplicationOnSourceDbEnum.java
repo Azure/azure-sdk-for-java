@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether to setup LogicalReplicationOnSourceDb, if needed. */
+/**
+ * Indicates whether to setup LogicalReplicationOnSourceDb, if needed.
+ */
 public final class LogicalReplicationOnSourceDbEnum extends ExpandableStringEnum<LogicalReplicationOnSourceDbEnum> {
-    /** Static value True for LogicalReplicationOnSourceDbEnum. */
+    /**
+     * Static value True for LogicalReplicationOnSourceDbEnum.
+     */
     public static final LogicalReplicationOnSourceDbEnum TRUE = fromString("True");
 
-    /** Static value False for LogicalReplicationOnSourceDbEnum. */
+    /**
+     * Static value False for LogicalReplicationOnSourceDbEnum.
+     */
     public static final LogicalReplicationOnSourceDbEnum FALSE = fromString("False");
 
     /**
      * Creates a new instance of LogicalReplicationOnSourceDbEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class LogicalReplicationOnSourceDbEnum extends ExpandableStringEnum
 
     /**
      * Creates or finds a LogicalReplicationOnSourceDbEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LogicalReplicationOnSourceDbEnum.
      */
-    @JsonCreator
     public static LogicalReplicationOnSourceDbEnum fromString(String name) {
         return fromString(name, LogicalReplicationOnSourceDbEnum.class);
     }
 
     /**
      * Gets known LogicalReplicationOnSourceDbEnum values.
-     *
+     * 
      * @return known LogicalReplicationOnSourceDbEnum values.
      */
     public static Collection<LogicalReplicationOnSourceDbEnum> values() {

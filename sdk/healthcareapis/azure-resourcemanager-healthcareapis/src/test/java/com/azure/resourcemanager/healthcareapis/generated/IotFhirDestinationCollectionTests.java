@@ -16,37 +16,41 @@ public final class IotFhirDestinationCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotFhirDestinationCollection model = BinaryData.fromString(
-            "{\"nextLink\":\"cnapkteoell\",\"value\":[{\"properties\":{\"resourceIdentityResolutionType\":\"Lookup\",\"fhirServiceResourceId\":\"d\",\"fhirMapping\":{\"content\":\"datapfqbuaceopzf\"},\"provisioningState\":\"Verifying\"},\"location\":\"ao\",\"etag\":\"pcqeqx\",\"id\":\"lzdahzxctobgbkdm\",\"name\":\"izpost\",\"type\":\"grcfb\"},{\"properties\":{\"resourceIdentityResolutionType\":\"Lookup\",\"fhirServiceResourceId\":\"rmfqjhhkxbpvj\",\"fhirMapping\":{\"content\":\"datajhxxjyn\"},\"provisioningState\":\"Canceled\"},\"location\":\"krtswbxqz\",\"etag\":\"zjf\",\"id\":\"uvjfdxxive\",\"name\":\"vtcqaqtdo\",\"type\":\"mcbxvwvxysl\"},{\"properties\":{\"resourceIdentityResolutionType\":\"Create\",\"fhirServiceResourceId\":\"hsfxoblytkb\",\"fhirMapping\":{\"content\":\"datape\"},\"provisioningState\":\"Moving\"},\"location\":\"krvrns\",\"etag\":\"hqjohxcrsbfova\",\"id\":\"rruvwbhsq\",\"name\":\"sub\",\"type\":\"gjb\"}]}")
+            "{\"nextLink\":\"hfxobbcswsrtj\",\"value\":[{\"properties\":{\"resourceIdentityResolutionType\":\"Lookup\",\"fhirServiceResourceId\":\"rbpbewtghfgblcg\",\"fhirMapping\":{\"content\":\"datazvlvqhjkbegib\"},\"provisioningState\":\"Deleting\"},\"location\":\"ebwwaloayqc\",\"etag\":\"rtzju\",\"id\":\"gwyzm\",\"name\":\"txon\",\"type\":\"mtsavjcbpwxqp\"},{\"properties\":{\"resourceIdentityResolutionType\":\"Lookup\",\"fhirServiceResourceId\":\"knftguvriuh\",\"fhirMapping\":{\"content\":\"datawmdyvxqtay\"},\"provisioningState\":\"Deprovisioned\"},\"location\":\"oyq\",\"etag\":\"xrmcqibycnojvk\",\"id\":\"mefqsgzvahapjyzh\",\"name\":\"vgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"},{\"properties\":{\"resourceIdentityResolutionType\":\"Lookup\",\"fhirServiceResourceId\":\"awjvzunluthnnp\",\"fhirMapping\":{\"content\":\"dataxipeilpjzuaejx\"},\"provisioningState\":\"Canceled\"},\"location\":\"kzbbtd\",\"etag\":\"mv\",\"id\":\"ekg\",\"name\":\"wozuhkf\",\"type\":\"bsjyofdx\"}]}")
             .toObject(IotFhirDestinationCollection.class);
-        Assertions.assertEquals("cnapkteoell", model.nextLink());
-        Assertions.assertEquals("pcqeqx", model.value().get(0).etag());
-        Assertions.assertEquals("ao", model.value().get(0).location());
+        Assertions.assertEquals("hfxobbcswsrtj", model.nextLink());
+        Assertions.assertEquals("rtzju", model.value().get(0).etag());
+        Assertions.assertEquals("ebwwaloayqc", model.value().get(0).location());
         Assertions.assertEquals(IotIdentityResolutionType.LOOKUP,
             model.value().get(0).resourceIdentityResolutionType());
-        Assertions.assertEquals("d", model.value().get(0).fhirServiceResourceId());
+        Assertions.assertEquals("rbpbewtghfgblcg", model.value().get(0).fhirServiceResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotFhirDestinationCollection model
-            = new IotFhirDestinationCollection().withNextLink("cnapkteoell")
-                .withValue(Arrays.asList(new IotFhirDestinationInner().withEtag("pcqeqx").withLocation("ao")
-                    .withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP).withFhirServiceResourceId("d")
-                    .withFhirMapping(new IotMappingProperties().withContent("datapfqbuaceopzf")),
-                    new IotFhirDestinationInner().withEtag("zjf").withLocation("krtswbxqz")
-                        .withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP)
-                        .withFhirServiceResourceId("rmfqjhhkxbpvj")
-                        .withFhirMapping(new IotMappingProperties().withContent("datajhxxjyn")),
-                    new IotFhirDestinationInner().withEtag("hqjohxcrsbfova").withLocation("krvrns")
-                        .withResourceIdentityResolutionType(IotIdentityResolutionType.CREATE)
-                        .withFhirServiceResourceId("hsfxoblytkb")
-                        .withFhirMapping(new IotMappingProperties().withContent("datape"))));
+        IotFhirDestinationCollection model = new IotFhirDestinationCollection().withNextLink("hfxobbcswsrtj")
+            .withValue(Arrays.asList(
+                new IotFhirDestinationInner().withEtag("rtzju")
+                    .withLocation("ebwwaloayqc")
+                    .withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP)
+                    .withFhirServiceResourceId("rbpbewtghfgblcg")
+                    .withFhirMapping(new IotMappingProperties().withContent("datazvlvqhjkbegib")),
+                new IotFhirDestinationInner().withEtag("xrmcqibycnojvk")
+                    .withLocation("oyq")
+                    .withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP)
+                    .withFhirServiceResourceId("knftguvriuh")
+                    .withFhirMapping(new IotMappingProperties().withContent("datawmdyvxqtay")),
+                new IotFhirDestinationInner().withEtag("mv")
+                    .withLocation("kzbbtd")
+                    .withResourceIdentityResolutionType(IotIdentityResolutionType.LOOKUP)
+                    .withFhirServiceResourceId("awjvzunluthnnp")
+                    .withFhirMapping(new IotMappingProperties().withContent("dataxipeilpjzuaejx"))));
         model = BinaryData.fromObject(model).toObject(IotFhirDestinationCollection.class);
-        Assertions.assertEquals("cnapkteoell", model.nextLink());
-        Assertions.assertEquals("pcqeqx", model.value().get(0).etag());
-        Assertions.assertEquals("ao", model.value().get(0).location());
+        Assertions.assertEquals("hfxobbcswsrtj", model.nextLink());
+        Assertions.assertEquals("rtzju", model.value().get(0).etag());
+        Assertions.assertEquals("ebwwaloayqc", model.value().get(0).location());
         Assertions.assertEquals(IotIdentityResolutionType.LOOKUP,
             model.value().get(0).resourceIdentityResolutionType());
-        Assertions.assertEquals("d", model.value().get(0).fhirServiceResourceId());
+        Assertions.assertEquals("rbpbewtghfgblcg", model.value().get(0).fhirServiceResourceId());
     }
 }

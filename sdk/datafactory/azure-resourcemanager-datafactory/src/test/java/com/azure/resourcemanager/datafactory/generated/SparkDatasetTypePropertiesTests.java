@@ -11,15 +11,15 @@ public final class SparkDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SparkDatasetTypeProperties model = BinaryData
-            .fromString(
-                "{\"tableName\":\"datau\",\"table\":\"dataodincfbaoboiahk\",\"schema\":\"datasvaxmksaxyeedvp\"}")
+            .fromString("{\"tableName\":\"datawvbqcaww\",\"table\":\"dataqtsrnyotgnmz\",\"schema\":\"datacreluedcmk\"}")
             .toObject(SparkDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkDatasetTypeProperties model = new SparkDatasetTypeProperties().withTableName("datau")
-            .withTable("dataodincfbaoboiahk").withSchema("datasvaxmksaxyeedvp");
+        SparkDatasetTypeProperties model = new SparkDatasetTypeProperties().withTableName("datawvbqcaww")
+            .withTable("dataqtsrnyotgnmz")
+            .withSchema("datacreluedcmk");
         model = BinaryData.fromObject(model).toObject(SparkDatasetTypeProperties.class);
     }
 }

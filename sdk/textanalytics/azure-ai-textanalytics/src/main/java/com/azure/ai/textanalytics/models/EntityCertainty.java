@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -44,7 +43,6 @@ public final class EntityCertainty extends ExpandableStringEnum<EntityCertainty>
      * @param name The string name to look for.
      * @return The corresponding {@code EntityCertainty}.
      */
-    @JsonCreator
     public static EntityCertainty fromString(String name) {
         return fromString(name, EntityCertainty.class);
     }

@@ -11,14 +11,15 @@ public final class AmazonRdsForSqlServerTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonRdsForSqlServerTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"schema\":\"dataasupcvqgxcvwio\",\"table\":\"datacmcgmlmpnvq\"}")
+            = BinaryData.fromString("{\"schema\":\"dataryomhkdwuwe\",\"table\":\"datapbkmzkwhjjs\"}")
                 .toObject(AmazonRdsForSqlServerTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonRdsForSqlServerTableDatasetTypeProperties model = new AmazonRdsForSqlServerTableDatasetTypeProperties()
-            .withSchema("dataasupcvqgxcvwio").withTable("datacmcgmlmpnvq");
+        AmazonRdsForSqlServerTableDatasetTypeProperties model
+            = new AmazonRdsForSqlServerTableDatasetTypeProperties().withSchema("dataryomhkdwuwe")
+                .withTable("datapbkmzkwhjjs");
         model = BinaryData.fromObject(model).toObject(AmazonRdsForSqlServerTableDatasetTypeProperties.class);
     }
 }

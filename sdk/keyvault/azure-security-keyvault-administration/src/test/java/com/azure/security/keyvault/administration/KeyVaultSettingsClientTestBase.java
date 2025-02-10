@@ -14,8 +14,7 @@ public abstract class KeyVaultSettingsClientTestBase extends KeyVaultAdministrat
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsClientTestBase.class);
 
     KeyVaultSettingsClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
-        return new KeyVaultSettingsClientBuilder()
-            .vaultUrl(getEndpoint())
+        return new KeyVaultSettingsClientBuilder().vaultUrl(getEndpoint())
             .pipeline(getPipeline(httpClient, forCleanup));
     }
 
@@ -28,8 +27,7 @@ public abstract class KeyVaultSettingsClientTestBase extends KeyVaultAdministrat
     @Test
     public abstract void updateSetting(HttpClient httpClient);
 
-    static void assertSettingEquals(KeyVaultSetting keyVaultSetting1,
-                                    KeyVaultSetting keyVaultSetting2) {
+    static void assertSettingEquals(KeyVaultSetting keyVaultSetting1, KeyVaultSetting keyVaultSetting2) {
         assertEquals(keyVaultSetting1.getName(), keyVaultSetting2.getName());
         assertEquals(keyVaultSetting1.getType(), keyVaultSetting2.getType());
 

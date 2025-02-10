@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.devspaces.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devspaces.fluent.models.ControllerUpdateParametersProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters for updating an Azure Dev Spaces Controller. */
+/**
+ * Parameters for updating an Azure Dev Spaces Controller.
+ */
 @Fluent
-public final class ControllerUpdateParameters {
+public final class ControllerUpdateParameters implements JsonSerializable<ControllerUpdateParameters> {
     /*
      * Tags for the Azure Dev Spaces Controller.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private ControllerUpdateParametersProperties innerProperties;
 
-    /** Creates an instance of ControllerUpdateParameters class. */
+    /**
+     * Creates an instance of ControllerUpdateParameters class.
+     */
     public ControllerUpdateParameters() {
     }
 
     /**
      * Get the tags property: Tags for the Azure Dev Spaces Controller.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class ControllerUpdateParameters {
 
     /**
      * Set the tags property: Tags for the Azure Dev Spaces Controller.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ControllerUpdateParameters object itself.
      */
@@ -52,7 +56,7 @@ public final class ControllerUpdateParameters {
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ControllerUpdateParametersProperties innerProperties() {
@@ -61,7 +65,7 @@ public final class ControllerUpdateParameters {
 
     /**
      * Get the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
-     *
+     * 
      * @return the targetContainerHostCredentialsBase64 value.
      */
     public String targetContainerHostCredentialsBase64() {
@@ -70,12 +74,12 @@ public final class ControllerUpdateParameters {
 
     /**
      * Set the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
-     *
+     * 
      * @param targetContainerHostCredentialsBase64 the targetContainerHostCredentialsBase64 value to set.
      * @return the ControllerUpdateParameters object itself.
      */
-    public ControllerUpdateParameters withTargetContainerHostCredentialsBase64(
-        String targetContainerHostCredentialsBase64) {
+    public ControllerUpdateParameters
+        withTargetContainerHostCredentialsBase64(String targetContainerHostCredentialsBase64) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ControllerUpdateParametersProperties();
         }
@@ -85,12 +89,53 @@ public final class ControllerUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControllerUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControllerUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ControllerUpdateParameters.
+     */
+    public static ControllerUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControllerUpdateParameters deserializedControllerUpdateParameters = new ControllerUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedControllerUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedControllerUpdateParameters.innerProperties
+                        = ControllerUpdateParametersProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControllerUpdateParameters;
+        });
     }
 }

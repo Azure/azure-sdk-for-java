@@ -11,11 +11,7 @@ module com.azure.resourcemanager.eventhubs {
     exports com.azure.resourcemanager.eventhubs.fluent.models;
     exports com.azure.resourcemanager.eventhubs.models;
 
-    // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.eventhubs.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.eventhubs.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    // open packages specifically for azure core
+    opens com.azure.resourcemanager.eventhubs.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.eventhubs.models to com.azure.core;
 }

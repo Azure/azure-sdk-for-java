@@ -23,9 +23,11 @@ public final class UserAccessPolicyTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserAccessPolicy model
-            = new UserAccessPolicy().withPermissions("eputtmrywnuzoqf").withAccessResourcePath("yqzrnkcqvyxlw")
-                .withProfileName("lsicohoqqnwv").withStartTime("yav").withExpireTime("heun");
+        UserAccessPolicy model = new UserAccessPolicy().withPermissions("eputtmrywnuzoqf")
+            .withAccessResourcePath("yqzrnkcqvyxlw")
+            .withProfileName("lsicohoqqnwv")
+            .withStartTime("yav")
+            .withExpireTime("heun");
         model = BinaryData.fromObject(model).toObject(UserAccessPolicy.class);
         Assertions.assertEquals("eputtmrywnuzoqf", model.permissions());
         Assertions.assertEquals("yqzrnkcqvyxlw", model.accessResourcePath());

@@ -5,50 +5,55 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Details for the validation for migration. */
+/**
+ * Details for the validation for migration.
+ */
 @Fluent
-public final class ValidationDetails {
+public final class ValidationDetails implements JsonSerializable<ValidationDetails> {
     /*
      * Validation status for migration
      */
-    @JsonProperty(value = "status")
     private ValidationState status;
 
     /*
      * Validation Start date-time in UTC
      */
-    @JsonProperty(value = "validationStartTimeInUtc")
     private OffsetDateTime validationStartTimeInUtc;
 
     /*
      * Validation End date-time in UTC
      */
-    @JsonProperty(value = "validationEndTimeInUtc")
     private OffsetDateTime validationEndTimeInUtc;
 
     /*
      * Details of server level validations
      */
-    @JsonProperty(value = "serverLevelValidationDetails")
     private List<ValidationSummaryItem> serverLevelValidationDetails;
 
     /*
      * Details of server level validations
      */
-    @JsonProperty(value = "dbLevelValidationDetails")
     private List<DbLevelValidationStatus> dbLevelValidationDetails;
 
-    /** Creates an instance of ValidationDetails class. */
+    /**
+     * Creates an instance of ValidationDetails class.
+     */
     public ValidationDetails() {
     }
 
     /**
      * Get the status property: Validation status for migration.
-     *
+     * 
      * @return the status value.
      */
     public ValidationState status() {
@@ -57,7 +62,7 @@ public final class ValidationDetails {
 
     /**
      * Set the status property: Validation status for migration.
-     *
+     * 
      * @param status the status value to set.
      * @return the ValidationDetails object itself.
      */
@@ -68,7 +73,7 @@ public final class ValidationDetails {
 
     /**
      * Get the validationStartTimeInUtc property: Validation Start date-time in UTC.
-     *
+     * 
      * @return the validationStartTimeInUtc value.
      */
     public OffsetDateTime validationStartTimeInUtc() {
@@ -77,7 +82,7 @@ public final class ValidationDetails {
 
     /**
      * Set the validationStartTimeInUtc property: Validation Start date-time in UTC.
-     *
+     * 
      * @param validationStartTimeInUtc the validationStartTimeInUtc value to set.
      * @return the ValidationDetails object itself.
      */
@@ -88,7 +93,7 @@ public final class ValidationDetails {
 
     /**
      * Get the validationEndTimeInUtc property: Validation End date-time in UTC.
-     *
+     * 
      * @return the validationEndTimeInUtc value.
      */
     public OffsetDateTime validationEndTimeInUtc() {
@@ -97,7 +102,7 @@ public final class ValidationDetails {
 
     /**
      * Set the validationEndTimeInUtc property: Validation End date-time in UTC.
-     *
+     * 
      * @param validationEndTimeInUtc the validationEndTimeInUtc value to set.
      * @return the ValidationDetails object itself.
      */
@@ -108,7 +113,7 @@ public final class ValidationDetails {
 
     /**
      * Get the serverLevelValidationDetails property: Details of server level validations.
-     *
+     * 
      * @return the serverLevelValidationDetails value.
      */
     public List<ValidationSummaryItem> serverLevelValidationDetails() {
@@ -117,19 +122,19 @@ public final class ValidationDetails {
 
     /**
      * Set the serverLevelValidationDetails property: Details of server level validations.
-     *
+     * 
      * @param serverLevelValidationDetails the serverLevelValidationDetails value to set.
      * @return the ValidationDetails object itself.
      */
-    public ValidationDetails withServerLevelValidationDetails(
-        List<ValidationSummaryItem> serverLevelValidationDetails) {
+    public ValidationDetails
+        withServerLevelValidationDetails(List<ValidationSummaryItem> serverLevelValidationDetails) {
         this.serverLevelValidationDetails = serverLevelValidationDetails;
         return this;
     }
 
     /**
      * Get the dbLevelValidationDetails property: Details of server level validations.
-     *
+     * 
      * @return the dbLevelValidationDetails value.
      */
     public List<DbLevelValidationStatus> dbLevelValidationDetails() {
@@ -138,7 +143,7 @@ public final class ValidationDetails {
 
     /**
      * Set the dbLevelValidationDetails property: Details of server level validations.
-     *
+     * 
      * @param dbLevelValidationDetails the dbLevelValidationDetails value to set.
      * @return the ValidationDetails object itself.
      */
@@ -149,7 +154,7 @@ public final class ValidationDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -159,5 +164,67 @@ public final class ValidationDetails {
         if (dbLevelValidationDetails() != null) {
             dbLevelValidationDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("validationStartTimeInUtc",
+            this.validationStartTimeInUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.validationStartTimeInUtc));
+        jsonWriter.writeStringField("validationEndTimeInUtc",
+            this.validationEndTimeInUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.validationEndTimeInUtc));
+        jsonWriter.writeArrayField("serverLevelValidationDetails", this.serverLevelValidationDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dbLevelValidationDetails", this.dbLevelValidationDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidationDetails.
+     */
+    public static ValidationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationDetails deserializedValidationDetails = new ValidationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedValidationDetails.status = ValidationState.fromString(reader.getString());
+                } else if ("validationStartTimeInUtc".equals(fieldName)) {
+                    deserializedValidationDetails.validationStartTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("validationEndTimeInUtc".equals(fieldName)) {
+                    deserializedValidationDetails.validationEndTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("serverLevelValidationDetails".equals(fieldName)) {
+                    List<ValidationSummaryItem> serverLevelValidationDetails
+                        = reader.readArray(reader1 -> ValidationSummaryItem.fromJson(reader1));
+                    deserializedValidationDetails.serverLevelValidationDetails = serverLevelValidationDetails;
+                } else if ("dbLevelValidationDetails".equals(fieldName)) {
+                    List<DbLevelValidationStatus> dbLevelValidationDetails
+                        = reader.readArray(reader1 -> DbLevelValidationStatus.fromJson(reader1));
+                    deserializedValidationDetails.dbLevelValidationDetails = dbLevelValidationDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidationDetails;
+        });
     }
 }

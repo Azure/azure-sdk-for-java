@@ -6,66 +6,66 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VMwareCbt NIC input. */
+/**
+ * VMwareCbt NIC input.
+ */
 @Fluent
-public final class VMwareCbtNicInput {
+public final class VMwareCbtNicInput implements JsonSerializable<VMwareCbtNicInput> {
     /*
      * The NIC Id.
      */
-    @JsonProperty(value = "nicId", required = true)
     private String nicId;
 
     /*
      * A value indicating whether this is the primary NIC.
      */
-    @JsonProperty(value = "isPrimaryNic", required = true)
     private String isPrimaryNic;
 
     /*
      * Target subnet name.
      */
-    @JsonProperty(value = "targetSubnetName")
     private String targetSubnetName;
 
     /*
      * The static IP address.
      */
-    @JsonProperty(value = "targetStaticIPAddress")
     private String targetStaticIpAddress;
 
     /*
      * A value indicating whether this NIC is selected for migration.
      */
-    @JsonProperty(value = "isSelectedForMigration")
     private String isSelectedForMigration;
 
     /*
      * Target NIC name.
      */
-    @JsonProperty(value = "targetNicName")
     private String targetNicName;
 
     /*
      * The test subnet name.
      */
-    @JsonProperty(value = "testSubnetName")
     private String testSubnetName;
 
     /*
      * The test static IP address.
      */
-    @JsonProperty(value = "testStaticIPAddress")
     private String testStaticIpAddress;
 
-    /** Creates an instance of VMwareCbtNicInput class. */
+    /**
+     * Creates an instance of VMwareCbtNicInput class.
+     */
     public VMwareCbtNicInput() {
     }
 
     /**
      * Get the nicId property: The NIC Id.
-     *
+     * 
      * @return the nicId value.
      */
     public String nicId() {
@@ -74,7 +74,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the nicId property: The NIC Id.
-     *
+     * 
      * @param nicId the nicId value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -85,7 +85,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @return the isPrimaryNic value.
      */
     public String isPrimaryNic() {
@@ -94,7 +94,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @param isPrimaryNic the isPrimaryNic value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -105,7 +105,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @return the targetSubnetName value.
      */
     public String targetSubnetName() {
@@ -114,7 +114,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @param targetSubnetName the targetSubnetName value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -125,7 +125,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the targetStaticIpAddress property: The static IP address.
-     *
+     * 
      * @return the targetStaticIpAddress value.
      */
     public String targetStaticIpAddress() {
@@ -134,7 +134,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the targetStaticIpAddress property: The static IP address.
-     *
+     * 
      * @param targetStaticIpAddress the targetStaticIpAddress value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -145,7 +145,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the isSelectedForMigration property: A value indicating whether this NIC is selected for migration.
-     *
+     * 
      * @return the isSelectedForMigration value.
      */
     public String isSelectedForMigration() {
@@ -154,7 +154,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the isSelectedForMigration property: A value indicating whether this NIC is selected for migration.
-     *
+     * 
      * @param isSelectedForMigration the isSelectedForMigration value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -165,7 +165,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the targetNicName property: Target NIC name.
-     *
+     * 
      * @return the targetNicName value.
      */
     public String targetNicName() {
@@ -174,7 +174,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the targetNicName property: Target NIC name.
-     *
+     * 
      * @param targetNicName the targetNicName value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -185,7 +185,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the testSubnetName property: The test subnet name.
-     *
+     * 
      * @return the testSubnetName value.
      */
     public String testSubnetName() {
@@ -194,7 +194,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the testSubnetName property: The test subnet name.
-     *
+     * 
      * @param testSubnetName the testSubnetName value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -205,7 +205,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the testStaticIpAddress property: The test static IP address.
-     *
+     * 
      * @return the testStaticIpAddress value.
      */
     public String testStaticIpAddress() {
@@ -214,7 +214,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the testStaticIpAddress property: The test static IP address.
-     *
+     * 
      * @param testStaticIpAddress the testStaticIpAddress value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -225,21 +225,77 @@ public final class VMwareCbtNicInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (nicId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nicId in model VMwareCbtNicInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nicId in model VMwareCbtNicInput"));
         }
         if (isPrimaryNic() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property isPrimaryNic in model VMwareCbtNicInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property isPrimaryNic in model VMwareCbtNicInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMwareCbtNicInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nicId", this.nicId);
+        jsonWriter.writeStringField("isPrimaryNic", this.isPrimaryNic);
+        jsonWriter.writeStringField("targetSubnetName", this.targetSubnetName);
+        jsonWriter.writeStringField("targetStaticIPAddress", this.targetStaticIpAddress);
+        jsonWriter.writeStringField("isSelectedForMigration", this.isSelectedForMigration);
+        jsonWriter.writeStringField("targetNicName", this.targetNicName);
+        jsonWriter.writeStringField("testSubnetName", this.testSubnetName);
+        jsonWriter.writeStringField("testStaticIPAddress", this.testStaticIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtNicInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtNicInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMwareCbtNicInput.
+     */
+    public static VMwareCbtNicInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtNicInput deserializedVMwareCbtNicInput = new VMwareCbtNicInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nicId".equals(fieldName)) {
+                    deserializedVMwareCbtNicInput.nicId = reader.getString();
+                } else if ("isPrimaryNic".equals(fieldName)) {
+                    deserializedVMwareCbtNicInput.isPrimaryNic = reader.getString();
+                } else if ("targetSubnetName".equals(fieldName)) {
+                    deserializedVMwareCbtNicInput.targetSubnetName = reader.getString();
+                } else if ("targetStaticIPAddress".equals(fieldName)) {
+                    deserializedVMwareCbtNicInput.targetStaticIpAddress = reader.getString();
+                } else if ("isSelectedForMigration".equals(fieldName)) {
+                    deserializedVMwareCbtNicInput.isSelectedForMigration = reader.getString();
+                } else if ("targetNicName".equals(fieldName)) {
+                    deserializedVMwareCbtNicInput.targetNicName = reader.getString();
+                } else if ("testSubnetName".equals(fieldName)) {
+                    deserializedVMwareCbtNicInput.testSubnetName = reader.getString();
+                } else if ("testStaticIPAddress".equals(fieldName)) {
+                    deserializedVMwareCbtNicInput.testStaticIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtNicInput;
+        });
+    }
 }

@@ -8,11 +8,28 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateEndpoints. */
+/**
+ * Resource collection API of PrivateEndpoints.
+ */
 public interface PrivateEndpoints {
     /**
      * Gets information about the specified Private Endpoint.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param privateEndpointName The name of the private endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Private Endpoint along with {@link Response}.
+     */
+    Response<PrivateEndpoint> getWithResponse(String resourceGroupName, String clusterName, String privateEndpointName,
+        Context context);
+
+    /**
+     * Gets information about the specified Private Endpoint.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param privateEndpointName The name of the private endpoint.
@@ -24,23 +41,8 @@ public interface PrivateEndpoints {
     PrivateEndpoint get(String resourceGroupName, String clusterName, String privateEndpointName);
 
     /**
-     * Gets information about the specified Private Endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param privateEndpointName The name of the private endpoint.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Private Endpoint.
-     */
-    Response<PrivateEndpoint> getWithResponse(
-        String resourceGroupName, String clusterName, String privateEndpointName, Context context);
-
-    /**
      * Delete the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param privateEndpointName The name of the private endpoint.
@@ -52,7 +54,7 @@ public interface PrivateEndpoints {
 
     /**
      * Delete the specified private endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param privateEndpointName The name of the private endpoint.
@@ -65,55 +67,55 @@ public interface PrivateEndpoints {
 
     /**
      * Lists the private endpoints in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoints.
+     * @return a list of private endpoints as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpoint> listByCluster(String resourceGroupName, String clusterName);
 
     /**
      * Lists the private endpoints in the cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoints.
+     * @return a list of private endpoints as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpoint> listByCluster(String resourceGroupName, String clusterName, Context context);
 
     /**
      * Gets information about the specified Private Endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Private Endpoint.
+     * @return information about the specified Private Endpoint along with {@link Response}.
      */
     PrivateEndpoint getById(String id);
 
     /**
      * Gets information about the specified Private Endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Private Endpoint.
+     * @return information about the specified Private Endpoint along with {@link Response}.
      */
     Response<PrivateEndpoint> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete the specified private endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,7 +125,7 @@ public interface PrivateEndpoints {
 
     /**
      * Delete the specified private endpoint.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +136,7 @@ public interface PrivateEndpoints {
 
     /**
      * Begins definition for a new PrivateEndpoint resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PrivateEndpoint definition.
      */

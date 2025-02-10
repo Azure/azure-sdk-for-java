@@ -15,8 +15,7 @@ public final class TagRuleUpdateImpl implements TagRuleUpdate {
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    TagRuleUpdateImpl(
-        TagRuleUpdateInner innerObject,
+    TagRuleUpdateImpl(TagRuleUpdateInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

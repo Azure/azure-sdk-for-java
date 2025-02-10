@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Remote debugging payload. */
+/**
+ * Remote debugging payload.
+ */
 @Fluent
-public final class RemoteDebuggingPayload {
+public final class RemoteDebuggingPayload implements JsonSerializable<RemoteDebuggingPayload> {
     /*
      * Application debugging port.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /**
+     * Creates an instance of RemoteDebuggingPayload class.
+     */
+    public RemoteDebuggingPayload() {
+    }
+
+    /**
      * Get the port property: Application debugging port.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -27,7 +38,7 @@ public final class RemoteDebuggingPayload {
 
     /**
      * Set the port property: Application debugging port.
-     *
+     * 
      * @param port the port value to set.
      * @return the RemoteDebuggingPayload object itself.
      */
@@ -38,9 +49,45 @@ public final class RemoteDebuggingPayload {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("port", this.port);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemoteDebuggingPayload from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemoteDebuggingPayload if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemoteDebuggingPayload.
+     */
+    public static RemoteDebuggingPayload fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemoteDebuggingPayload deserializedRemoteDebuggingPayload = new RemoteDebuggingPayload();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("port".equals(fieldName)) {
+                    deserializedRemoteDebuggingPayload.port = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemoteDebuggingPayload;
+        });
     }
 }

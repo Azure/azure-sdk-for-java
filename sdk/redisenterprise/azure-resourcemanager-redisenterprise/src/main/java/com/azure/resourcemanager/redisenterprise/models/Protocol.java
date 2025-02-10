@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * TLS-encrypted.
  */
 public final class Protocol extends ExpandableStringEnum<Protocol> {
-    /** Static value Encrypted for Protocol. */
+    /**
+     * Static value Encrypted for Protocol.
+     */
     public static final Protocol ENCRYPTED = fromString("Encrypted");
 
-    /** Static value Plaintext for Protocol. */
+    /**
+     * Static value Plaintext for Protocol.
+     */
     public static final Protocol PLAINTEXT = fromString("Plaintext");
 
     /**
      * Creates a new instance of Protocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
 
     /**
      * Creates or finds a Protocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Protocol.
      */
-    @JsonCreator
     public static Protocol fromString(String name) {
         return fromString(name, Protocol.class);
     }
 
     /**
      * Gets known Protocol values.
-     *
+     * 
      * @return known Protocol values.
      */
     public static Collection<Protocol> values() {

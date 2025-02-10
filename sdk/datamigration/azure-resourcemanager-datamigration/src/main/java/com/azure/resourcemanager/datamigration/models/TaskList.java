@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectTaskInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** OData page of tasks. */
+/**
+ * OData page of tasks.
+ */
 @Fluent
-public final class TaskList {
+public final class TaskList implements JsonSerializable<TaskList> {
     /*
      * List of tasks
      */
-    @JsonProperty(value = "value")
     private List<ProjectTaskInner> value;
 
     /*
      * URL to load the next page of tasks
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of TaskList class. */
+    /**
+     * Creates an instance of TaskList class.
+     */
     public TaskList() {
     }
 
     /**
      * Get the value property: List of tasks.
-     *
+     * 
      * @return the value value.
      */
     public List<ProjectTaskInner> value() {
@@ -39,7 +45,7 @@ public final class TaskList {
 
     /**
      * Set the value property: List of tasks.
-     *
+     * 
      * @param value the value value to set.
      * @return the TaskList object itself.
      */
@@ -50,7 +56,7 @@ public final class TaskList {
 
     /**
      * Get the nextLink property: URL to load the next page of tasks.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class TaskList {
 
     /**
      * Set the nextLink property: URL to load the next page of tasks.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the TaskList object itself.
      */
@@ -70,12 +76,52 @@ public final class TaskList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TaskList.
+     */
+    public static TaskList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskList deserializedTaskList = new TaskList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ProjectTaskInner> value = reader.readArray(reader1 -> ProjectTaskInner.fromJson(reader1));
+                    deserializedTaskList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedTaskList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskList;
+        });
     }
 }

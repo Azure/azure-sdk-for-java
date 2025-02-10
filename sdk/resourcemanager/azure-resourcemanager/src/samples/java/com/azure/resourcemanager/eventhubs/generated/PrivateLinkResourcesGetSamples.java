@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PrivateLinkResources Get. */
+/**
+ * Samples for PrivateLinkResources Get.
+ */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/NameSpaces/PrivateLinkResourcesGet.json
+     * x-ms-original-file:
+     * specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/
+     * PrivateLinkResourcesGet.json
      */
     /**
      * Sample code: NameSpacePrivateLinkResourcesGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void nameSpacePrivateLinkResourcesGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .eventHubs()
+        azure.eventHubs()
             .manager()
             .serviceClient()
             .getPrivateLinkResources()
-            .getWithResponse("ArunMonocle", "sdk-Namespace-2924", Context.NONE);
+            .getWithResponse("ArunMonocle", "sdk-Namespace-2924", com.azure.core.util.Context.NONE);
     }
 }

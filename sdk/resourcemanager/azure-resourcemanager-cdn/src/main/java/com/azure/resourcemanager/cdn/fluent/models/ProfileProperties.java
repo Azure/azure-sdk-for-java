@@ -5,54 +5,61 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cdn.models.ProfileLogScrubbing;
 import com.azure.resourcemanager.cdn.models.ProfileProvisioningState;
 import com.azure.resourcemanager.cdn.models.ProfileResourceState;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The JSON object that contains the properties required to create a profile. */
+/**
+ * The JSON object that contains the properties required to create a profile.
+ */
 @Fluent
-public final class ProfileProperties {
+public final class ProfileProperties implements JsonSerializable<ProfileProperties> {
     /*
      * Resource status of the profile.
      */
-    @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private ProfileResourceState resourceState;
 
     /*
      * Provisioning status of the profile.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProfileProvisioningState provisioningState;
 
     /*
      * Key-Value pair representing additional properties for profiles.
      */
-    @JsonProperty(value = "extendedProperties", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> extendedProperties;
 
     /*
      * The Id of the frontdoor.
      */
-    @JsonProperty(value = "frontDoorId", access = JsonProperty.Access.WRITE_ONLY)
     private String frontDoorId;
 
     /*
      * Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and
      * returns.
      */
-    @JsonProperty(value = "originResponseTimeoutSeconds")
     private Integer originResponseTimeoutSeconds;
 
-    /** Creates an instance of ProfileProperties class. */
+    /*
+     * Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
+     */
+    private ProfileLogScrubbing logScrubbing;
+
+    /**
+     * Creates an instance of ProfileProperties class.
+     */
     public ProfileProperties() {
     }
 
     /**
      * Get the resourceState property: Resource status of the profile.
-     *
+     * 
      * @return the resourceState value.
      */
     public ProfileResourceState resourceState() {
@@ -61,7 +68,7 @@ public final class ProfileProperties {
 
     /**
      * Get the provisioningState property: Provisioning status of the profile.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProfileProvisioningState provisioningState() {
@@ -70,7 +77,7 @@ public final class ProfileProperties {
 
     /**
      * Get the extendedProperties property: Key-Value pair representing additional properties for profiles.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -79,7 +86,7 @@ public final class ProfileProperties {
 
     /**
      * Get the frontDoorId property: The Id of the frontdoor.
-     *
+     * 
      * @return the frontDoorId value.
      */
     public String frontDoorId() {
@@ -89,7 +96,7 @@ public final class ProfileProperties {
     /**
      * Get the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
      * timeout is reached, the request fails and returns.
-     *
+     * 
      * @return the originResponseTimeoutSeconds value.
      */
     public Integer originResponseTimeoutSeconds() {
@@ -99,7 +106,7 @@ public final class ProfileProperties {
     /**
      * Set the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
      * timeout is reached, the request fails and returns.
-     *
+     * 
      * @param originResponseTimeoutSeconds the originResponseTimeoutSeconds value to set.
      * @return the ProfileProperties object itself.
      */
@@ -109,10 +116,82 @@ public final class ProfileProperties {
     }
 
     /**
+     * Get the logScrubbing property: Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
+     * 
+     * @return the logScrubbing value.
+     */
+    public ProfileLogScrubbing logScrubbing() {
+        return this.logScrubbing;
+    }
+
+    /**
+     * Set the logScrubbing property: Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
+     * 
+     * @param logScrubbing the logScrubbing value to set.
+     * @return the ProfileProperties object itself.
+     */
+    public ProfileProperties withLogScrubbing(ProfileLogScrubbing logScrubbing) {
+        this.logScrubbing = logScrubbing;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (logScrubbing() != null) {
+            logScrubbing().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("originResponseTimeoutSeconds", this.originResponseTimeoutSeconds);
+        jsonWriter.writeJsonField("logScrubbing", this.logScrubbing);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProfileProperties.
+     */
+    public static ProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileProperties deserializedProfileProperties = new ProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceState".equals(fieldName)) {
+                    deserializedProfileProperties.resourceState = ProfileResourceState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedProfileProperties.provisioningState
+                        = ProfileProvisioningState.fromString(reader.getString());
+                } else if ("extendedProperties".equals(fieldName)) {
+                    Map<String, String> extendedProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProfileProperties.extendedProperties = extendedProperties;
+                } else if ("frontDoorId".equals(fieldName)) {
+                    deserializedProfileProperties.frontDoorId = reader.getString();
+                } else if ("originResponseTimeoutSeconds".equals(fieldName)) {
+                    deserializedProfileProperties.originResponseTimeoutSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("logScrubbing".equals(fieldName)) {
+                    deserializedProfileProperties.logScrubbing = ProfileLogScrubbing.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileProperties;
+        });
     }
 }

@@ -13,23 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class CatalogUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CatalogUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"xpaojakhmsbz\":\"fdosyg\",\"hlxaolthqtr\":\"hcrzevd\",\"gvfcj\":\"qjbpfzfsin\"}}")
-                .toObject(CatalogUpdate.class);
-        Assertions.assertEquals("fdosyg", model.tags().get("xpaojakhmsbz"));
+        CatalogUpdate model = BinaryData
+            .fromString(
+                "{\"tags\":{\"ypininm\":\"jkjlxofpdvhpfx\",\"po\":\"yhuybbkpod\",\"ognarxzxtheotus\":\"ginuvamih\"}}")
+            .toObject(CatalogUpdate.class);
+        Assertions.assertEquals("jkjlxofpdvhpfx", model.tags().get("ypininm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CatalogUpdate model =
-            new CatalogUpdate()
-                .withTags(mapOf("xpaojakhmsbz", "fdosyg", "hlxaolthqtr", "hcrzevd", "gvfcj", "qjbpfzfsin"));
+        CatalogUpdate model = new CatalogUpdate()
+            .withTags(mapOf("ypininm", "jkjlxofpdvhpfx", "po", "yhuybbkpod", "ognarxzxtheotus", "ginuvamih"));
         model = BinaryData.fromObject(model).toObject(CatalogUpdate.class);
-        Assertions.assertEquals("fdosyg", model.tags().get("xpaojakhmsbz"));
+        Assertions.assertEquals("jkjlxofpdvhpfx", model.tags().get("ypininm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

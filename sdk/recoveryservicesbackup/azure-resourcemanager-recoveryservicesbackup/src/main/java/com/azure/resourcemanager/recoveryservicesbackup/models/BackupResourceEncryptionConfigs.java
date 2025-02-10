@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BackupResourceEncryptionConfigs. */
+/**
+ * Resource collection API of BackupResourceEncryptionConfigs.
+ */
 public interface BackupResourceEncryptionConfigs {
     /**
      * Fetches Vault Encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -20,12 +22,12 @@ public interface BackupResourceEncryptionConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<BackupResourceEncryptionConfigExtendedResource> getWithResponse(
-        String vaultName, String resourceGroupName, Context context);
+    Response<BackupResourceEncryptionConfigExtendedResource> getWithResponse(String vaultName, String resourceGroupName,
+        Context context);
 
     /**
      * Fetches Vault Encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface BackupResourceEncryptionConfigs {
 
     /**
      * Updates Vault encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault encryption input config request.
@@ -47,12 +49,12 @@ public interface BackupResourceEncryptionConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> updateWithResponse(
-        String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters, Context context);
+    Response<Void> updateWithResponse(String vaultName, String resourceGroupName,
+        BackupResourceEncryptionConfigResource parameters, Context context);
 
     /**
      * Updates Vault encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault encryption input config request.

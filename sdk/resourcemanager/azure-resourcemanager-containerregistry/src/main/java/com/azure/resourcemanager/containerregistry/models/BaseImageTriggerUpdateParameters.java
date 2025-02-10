@@ -6,48 +6,51 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties for updating base image dependency trigger. */
+/**
+ * The properties for updating base image dependency trigger.
+ */
 @Fluent
-public final class BaseImageTriggerUpdateParameters {
+public final class BaseImageTriggerUpdateParameters implements JsonSerializable<BaseImageTriggerUpdateParameters> {
     /*
      * The type of the auto trigger for base image dependency updates.
      */
-    @JsonProperty(value = "baseImageTriggerType")
     private BaseImageTriggerType baseImageTriggerType;
 
     /*
      * The endpoint URL for receiving update triggers.
      */
-    @JsonProperty(value = "updateTriggerEndpoint")
     private String updateTriggerEndpoint;
 
     /*
      * Type of Payload body for Base image update triggers.
      */
-    @JsonProperty(value = "updateTriggerPayloadType")
     private UpdateTriggerPayloadType updateTriggerPayloadType;
 
     /*
      * The current status of trigger.
      */
-    @JsonProperty(value = "status")
     private TriggerStatus status;
 
     /*
      * The name of the trigger.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of BaseImageTriggerUpdateParameters class. */
+    /**
+     * Creates an instance of BaseImageTriggerUpdateParameters class.
+     */
     public BaseImageTriggerUpdateParameters() {
     }
 
     /**
      * Get the baseImageTriggerType property: The type of the auto trigger for base image dependency updates.
-     *
+     * 
      * @return the baseImageTriggerType value.
      */
     public BaseImageTriggerType baseImageTriggerType() {
@@ -56,7 +59,7 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Set the baseImageTriggerType property: The type of the auto trigger for base image dependency updates.
-     *
+     * 
      * @param baseImageTriggerType the baseImageTriggerType value to set.
      * @return the BaseImageTriggerUpdateParameters object itself.
      */
@@ -67,7 +70,7 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Get the updateTriggerEndpoint property: The endpoint URL for receiving update triggers.
-     *
+     * 
      * @return the updateTriggerEndpoint value.
      */
     public String updateTriggerEndpoint() {
@@ -76,7 +79,7 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Set the updateTriggerEndpoint property: The endpoint URL for receiving update triggers.
-     *
+     * 
      * @param updateTriggerEndpoint the updateTriggerEndpoint value to set.
      * @return the BaseImageTriggerUpdateParameters object itself.
      */
@@ -87,7 +90,7 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Get the updateTriggerPayloadType property: Type of Payload body for Base image update triggers.
-     *
+     * 
      * @return the updateTriggerPayloadType value.
      */
     public UpdateTriggerPayloadType updateTriggerPayloadType() {
@@ -96,19 +99,19 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Set the updateTriggerPayloadType property: Type of Payload body for Base image update triggers.
-     *
+     * 
      * @param updateTriggerPayloadType the updateTriggerPayloadType value to set.
      * @return the BaseImageTriggerUpdateParameters object itself.
      */
-    public BaseImageTriggerUpdateParameters withUpdateTriggerPayloadType(
-        UpdateTriggerPayloadType updateTriggerPayloadType) {
+    public BaseImageTriggerUpdateParameters
+        withUpdateTriggerPayloadType(UpdateTriggerPayloadType updateTriggerPayloadType) {
         this.updateTriggerPayloadType = updateTriggerPayloadType;
         return this;
     }
 
     /**
      * Get the status property: The current status of trigger.
-     *
+     * 
      * @return the status value.
      */
     public TriggerStatus status() {
@@ -117,7 +120,7 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Set the status property: The current status of trigger.
-     *
+     * 
      * @param status the status value to set.
      * @return the BaseImageTriggerUpdateParameters object itself.
      */
@@ -128,7 +131,7 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Get the name property: The name of the trigger.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -137,7 +140,7 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Set the name property: The name of the trigger.
-     *
+     * 
      * @param name the name value to set.
      * @return the BaseImageTriggerUpdateParameters object itself.
      */
@@ -148,17 +151,70 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model BaseImageTriggerUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model BaseImageTriggerUpdateParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BaseImageTriggerUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("baseImageTriggerType",
+            this.baseImageTriggerType == null ? null : this.baseImageTriggerType.toString());
+        jsonWriter.writeStringField("updateTriggerEndpoint", this.updateTriggerEndpoint);
+        jsonWriter.writeStringField("updateTriggerPayloadType",
+            this.updateTriggerPayloadType == null ? null : this.updateTriggerPayloadType.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BaseImageTriggerUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BaseImageTriggerUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BaseImageTriggerUpdateParameters.
+     */
+    public static BaseImageTriggerUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BaseImageTriggerUpdateParameters deserializedBaseImageTriggerUpdateParameters
+                = new BaseImageTriggerUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedBaseImageTriggerUpdateParameters.name = reader.getString();
+                } else if ("baseImageTriggerType".equals(fieldName)) {
+                    deserializedBaseImageTriggerUpdateParameters.baseImageTriggerType
+                        = BaseImageTriggerType.fromString(reader.getString());
+                } else if ("updateTriggerEndpoint".equals(fieldName)) {
+                    deserializedBaseImageTriggerUpdateParameters.updateTriggerEndpoint = reader.getString();
+                } else if ("updateTriggerPayloadType".equals(fieldName)) {
+                    deserializedBaseImageTriggerUpdateParameters.updateTriggerPayloadType
+                        = UpdateTriggerPayloadType.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedBaseImageTriggerUpdateParameters.status = TriggerStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBaseImageTriggerUpdateParameters;
+        });
+    }
 }

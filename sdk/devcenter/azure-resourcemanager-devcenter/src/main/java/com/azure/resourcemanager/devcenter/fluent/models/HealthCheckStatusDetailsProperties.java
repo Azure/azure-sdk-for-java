@@ -5,39 +5,45 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.HealthCheck;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Health Check properties. */
+/**
+ * Health Check properties.
+ */
 @Immutable
-public final class HealthCheckStatusDetailsProperties {
+public final class HealthCheckStatusDetailsProperties implements JsonSerializable<HealthCheckStatusDetailsProperties> {
     /*
      * Start time of last execution of the health checks.
      */
-    @JsonProperty(value = "startDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startDateTime;
 
     /*
      * End time of last execution of the health checks.
      */
-    @JsonProperty(value = "endDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endDateTime;
 
     /*
      * Details for each health check item.
      */
-    @JsonProperty(value = "healthChecks", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthCheck> healthChecks;
 
-    /** Creates an instance of HealthCheckStatusDetailsProperties class. */
+    /**
+     * Creates an instance of HealthCheckStatusDetailsProperties class.
+     */
     public HealthCheckStatusDetailsProperties() {
     }
 
     /**
      * Get the startDateTime property: Start time of last execution of the health checks.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -46,7 +52,7 @@ public final class HealthCheckStatusDetailsProperties {
 
     /**
      * Get the endDateTime property: End time of last execution of the health checks.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -55,7 +61,7 @@ public final class HealthCheckStatusDetailsProperties {
 
     /**
      * Get the healthChecks property: Details for each health check item.
-     *
+     * 
      * @return the healthChecks value.
      */
     public List<HealthCheck> healthChecks() {
@@ -64,12 +70,55 @@ public final class HealthCheckStatusDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (healthChecks() != null) {
             healthChecks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthCheckStatusDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthCheckStatusDetailsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthCheckStatusDetailsProperties.
+     */
+    public static HealthCheckStatusDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthCheckStatusDetailsProperties deserializedHealthCheckStatusDetailsProperties
+                = new HealthCheckStatusDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startDateTime".equals(fieldName)) {
+                    deserializedHealthCheckStatusDetailsProperties.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endDateTime".equals(fieldName)) {
+                    deserializedHealthCheckStatusDetailsProperties.endDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("healthChecks".equals(fieldName)) {
+                    List<HealthCheck> healthChecks = reader.readArray(reader1 -> HealthCheck.fromJson(reader1));
+                    deserializedHealthCheckStatusDetailsProperties.healthChecks = healthChecks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthCheckStatusDetailsProperties;
+        });
     }
 }

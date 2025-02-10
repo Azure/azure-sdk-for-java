@@ -5,25 +5,30 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * The AzureDataExplorerDataConnection model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("azureDataExplorer")
 @Immutable
 public final class AzureDataExplorerDataConnection extends DataConnection {
+
+    /*
+     * Discriminator property for DataConnection.
+     */
+    @Generated
+    private String kind = "azureDataExplorer";
 
     /*
      * properties
      */
     @Generated
-    @JsonProperty(value = "properties")
-    private AzureDataExplorerDataConnectionProperties properties;
+    private final AzureDataExplorerDataConnectionProperties properties;
 
     /**
      * Creates an instance of AzureDataExplorerDataConnection class.
@@ -31,10 +36,19 @@ public final class AzureDataExplorerDataConnection extends DataConnection {
      * @param properties the properties value to set.
      */
     @Generated
-    @JsonCreator
-    private AzureDataExplorerDataConnection(
-        @JsonProperty(value = "properties") AzureDataExplorerDataConnectionProperties properties) {
+    private AzureDataExplorerDataConnection(AzureDataExplorerDataConnectionProperties properties) {
         this.properties = properties;
+    }
+
+    /**
+     * Get the kind property: Discriminator property for DataConnection.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public String getKind() {
+        return this.kind;
     }
 
     /**
@@ -45,5 +59,102 @@ public final class AzureDataExplorerDataConnection extends DataConnection {
     @Generated
     public AzureDataExplorerDataConnectionProperties getProperties() {
         return this.properties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeStringField("displayName", getDisplayName());
+        jsonWriter.writeStringField("content", getContent() == null ? null : getContent().toString());
+        jsonWriter.writeStringField("frequency", getFrequency() == null ? null : getFrequency().toString());
+        jsonWriter.writeNumberField("frequencyOffset", getFrequencyOffset());
+        jsonWriter.writeBooleanField("active", isActive());
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDataExplorerDataConnection from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDataExplorerDataConnection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureDataExplorerDataConnection.
+     */
+    @Generated
+    public static AzureDataExplorerDataConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String id = null;
+            String displayName = null;
+            DataConnectionContent content = null;
+            OffsetDateTime createdDate = null;
+            DataConnectionFrequency frequency = null;
+            Integer frequencyOffset = null;
+            OffsetDateTime updatedDate = null;
+            OffsetDateTime userUpdatedAt = null;
+            Boolean active = null;
+            String inactiveMessage = null;
+            AzureDataExplorerDataConnectionProperties properties = null;
+            String kind = "azureDataExplorer";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    content = DataConnectionContent.fromString(reader.getString());
+                } else if ("createdDate".equals(fieldName)) {
+                    createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("frequency".equals(fieldName)) {
+                    frequency = DataConnectionFrequency.fromString(reader.getString());
+                } else if ("frequencyOffset".equals(fieldName)) {
+                    frequencyOffset = reader.getNullable(JsonReader::getInt);
+                } else if ("updatedDate".equals(fieldName)) {
+                    updatedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("userUpdatedAt".equals(fieldName)) {
+                    userUpdatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("active".equals(fieldName)) {
+                    active = reader.getNullable(JsonReader::getBoolean);
+                } else if ("inactiveMessage".equals(fieldName)) {
+                    inactiveMessage = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    properties = AzureDataExplorerDataConnectionProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AzureDataExplorerDataConnection deserializedAzureDataExplorerDataConnection
+                = new AzureDataExplorerDataConnection(properties);
+            deserializedAzureDataExplorerDataConnection.setName(name);
+            deserializedAzureDataExplorerDataConnection.setId(id);
+            deserializedAzureDataExplorerDataConnection.setDisplayName(displayName);
+            deserializedAzureDataExplorerDataConnection.setContent(content);
+            deserializedAzureDataExplorerDataConnection.setCreatedDate(createdDate);
+            deserializedAzureDataExplorerDataConnection.setFrequency(frequency);
+            deserializedAzureDataExplorerDataConnection.setFrequencyOffset(frequencyOffset);
+            deserializedAzureDataExplorerDataConnection.setUpdatedDate(updatedDate);
+            deserializedAzureDataExplorerDataConnection.setUserUpdatedAt(userUpdatedAt);
+            deserializedAzureDataExplorerDataConnection.setActive(active);
+            deserializedAzureDataExplorerDataConnection.setInactiveMessage(inactiveMessage);
+            deserializedAzureDataExplorerDataConnection.kind = kind;
+            return deserializedAzureDataExplorerDataConnection;
+        });
     }
 }

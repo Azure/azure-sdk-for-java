@@ -35,8 +35,8 @@ public interface WaitStatistics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Wait Statistic along with {@link Response}.
      */
-    Response<WaitStatistic> getWithResponse(
-        String resourceGroupName, String serverName, String waitStatisticsId, Context context);
+    Response<WaitStatistic> getWithResponse(String resourceGroupName, String serverName, String waitStatisticsId,
+        Context context);
 
     /**
      * Retrieve wait statistics for specified aggregation window.
@@ -49,8 +49,8 @@ public interface WaitStatistics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of wait statistics.
      */
-    PagedIterable<WaitStatistic> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters);
+    PagedIterable<WaitStatistic> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters);
 
     /**
      * Retrieve wait statistics for specified aggregation window.
@@ -64,6 +64,6 @@ public interface WaitStatistics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of wait statistics.
      */
-    PagedIterable<WaitStatistic> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters, Context context);
+    PagedIterable<WaitStatistic> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters, Context context);
 }

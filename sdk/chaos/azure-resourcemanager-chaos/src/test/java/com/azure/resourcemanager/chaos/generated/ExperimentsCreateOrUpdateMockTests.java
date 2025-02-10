@@ -6,11 +6,9 @@ package com.azure.resourcemanager.chaos.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.chaos.ChaosManager;
 import com.azure.resourcemanager.chaos.models.ChaosExperimentBranch;
 import com.azure.resourcemanager.chaos.models.ChaosExperimentStep;
@@ -20,7 +18,6 @@ import com.azure.resourcemanager.chaos.models.Experiment;
 import com.azure.resourcemanager.chaos.models.ResourceIdentity;
 import com.azure.resourcemanager.chaos.models.ResourceIdentityType;
 import com.azure.resourcemanager.chaos.models.UserAssignedIdentity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -28,114 +25,52 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ExperimentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ev\":{\"principalId\":\"196a22c5-3ca0-4d98-9a32-4f14564ee6c2\",\"clientId\":\"7268a1de-b3af-4a98-8e4e-fbc5b33a81be\"},\"b\":{\"principalId\":\"f5872c29-9455-487c-b047-3307bb4b4df6\",\"clientId\":\"7cb69611-9b91-41ea-aa48-d2bdcfd9d2a0\"}},\"principalId\":\"rilbywdx\",\"tenantId\":\"icc\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"steps\":[{\"name\":\"scjfnyns\",\"branches\":[{\"name\":\"ujiz\",\"actions\":[]},{\"name\":\"voqyt\",\"actions\":[]}]},{\"name\":\"byowbblgyavutp\",\"branches\":[{\"name\":\"joxoism\",\"actions\":[]},{\"name\":\"ksbpimlqoljx\",\"actions\":[]}]},{\"name\":\"cgxxlxs\",\"branches\":[{\"name\":\"gcvizqzdwlvwlyou\",\"actions\":[]},{\"name\":\"fgfb\",\"actions\":[]}]},{\"name\":\"jub\",\"branches\":[{\"name\":\"hgkfmin\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"owzfttsttkt\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"gqqqxh\":\"dataqactxtgzukxitmmq\",\"rxcpjuisavo\":\"datan\",\"ajlkatnw\":\"dataqdzfvazivjlfrqtt\"}}]},\"location\":\"yiopi\",\"tags\":{\"ovibrxkp\":\"qfkuvscxkdmli\",\"bteoybf\":\"loazuruocbgoo\"},\"id\":\"jxakv\",\"name\":\"jgslordilmyww\",\"type\":\"kgkxn\"}";
 
-        String responseStr =
-            "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"thjoxoism\":{\"principalId\":\"e83eb8bb-c87a-4a10-8644-8e10e6424e65\",\"clientId\":\"a82cee1b-b08f-4952-bdb9-ca138978dcfb\"}},\"principalId\":\"sbpimlq\",\"tenantId\":\"jxkcgxxlxsff\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"steps\":[{\"name\":\"zqzdw\",\"branches\":[{\"name\":\"w\",\"actions\":[]},{\"name\":\"youpfgfbkj\",\"actions\":[]}]},{\"name\":\"bdyhgkfminsgowz\",\"branches\":[{\"name\":\"tsttktlahbq\",\"actions\":[]},{\"name\":\"ctxtgzukxi\",\"actions\":[]},{\"name\":\"mmqtgqqqxhr\",\"actions\":[]},{\"name\":\"xrxc\",\"actions\":[]}]},{\"name\":\"juisavokqdzf\",\"branches\":[{\"name\":\"zivj\",\"actions\":[]},{\"name\":\"frqttbajlkatnw\",\"actions\":[]},{\"name\":\"yiopi\",\"actions\":[]},{\"name\":\"kqqfk\",\"actions\":[]}]},{\"name\":\"vscx\",\"branches\":[{\"name\":\"mligov\",\"actions\":[]},{\"name\":\"brxk\",\"actions\":[]},{\"name\":\"mloazuru\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"bgo\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"ordilmywwtkgkxny\":\"dataeoybfhjxakvvjgs\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"dabg\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"uwhcjyxccybv\":\"datatjuewbcihx\"}}]},\"location\":\"ayakkudzpx\",\"tags\":{\"tcyohpfkyrk\":\"plmag\",\"nwqjnoba\":\"bdgiogsjk\",\"egfnmntfpmvmemfn\":\"yhddvia\"},\"id\":\"zdwvvbalxl\",\"name\":\"lchpodbzevwrdn\",\"type\":\"fukuvsjcswsmystu\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ChaosManager manager = ChaosManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        ChaosManager manager =
-            ChaosManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Experiment response =
-            manager
-                .experiments()
-                .define("mvvhmxtdrjfuta")
-                .withRegion("s")
-                .withExistingResourceGroup("gohbuffkmrq")
-                .withSteps(
-                    Arrays
-                        .asList(
-                            new ChaosExperimentStep()
-                                .withName("kwdlenrdsutujba")
-                                .withBranches(
-                                    Arrays
-                                        .asList(
-                                            new ChaosExperimentBranch()
-                                                .withName("juohminyflnorw")
-                                                .withActions(Arrays.asList()),
-                                            new ChaosExperimentBranch()
-                                                .withName("duvwpklvxwmygd")
-                                                .withActions(Arrays.asList()),
-                                            new ChaosExperimentBranch()
-                                                .withName("pgpqchiszepnnb")
-                                                .withActions(Arrays.asList()))),
-                            new ChaosExperimentStep()
-                                .withName("crxgibb")
-                                .withBranches(
-                                    Arrays
-                                        .asList(
-                                            new ChaosExperimentBranch()
-                                                .withName("xconfozauors")
-                                                .withActions(Arrays.asList()),
-                                            new ChaosExperimentBranch()
-                                                .withName("kokwbqplhlvnu")
-                                                .withActions(Arrays.asList()),
-                                            new ChaosExperimentBranch().withName("epzl").withActions(Arrays.asList()))),
-                            new ChaosExperimentStep()
-                                .withName("phwzsoldweyuqdu")
-                                .withBranches(
-                                    Arrays
-                                        .asList(
-                                            new ChaosExperimentBranch().withName("mnnrwr").withActions(Arrays.asList()),
-                                            new ChaosExperimentBranch().withName("i").withActions(Arrays.asList())))))
-                .withSelectors(
-                    Arrays
-                        .asList(
-                            new ChaosTargetSelector()
-                                .withId("ktalywjhhgdnhxms")
-                                .withFilter(new ChaosTargetFilter())
-                                .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"))))
-                .withTags(mapOf("p", "otcubi", "izsh", "ipwoqonmacjek", "gmblrri", "vcimpev"))
-                .withIdentity(
-                    new ResourceIdentity()
-                        .withType(ResourceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "zcjznmwcpmgua",
-                                new UserAssignedIdentity(),
-                                "aufactkahzovajjz",
-                                new UserAssignedIdentity())))
+        Experiment response
+            = manager.experiments()
+                .define("yjkqabqgzslesjcb")
+                .withRegion("axconfozauo")
+                .withExistingResourceGroup("aryeu")
+                .withSteps(Arrays.asList(new ChaosExperimentStep().withName("ebjvewzcjzn")
+                    .withBranches(Arrays.asList(
+                        new ChaosExperimentBranch().withName("cpmguaadraufact").withActions(Arrays.asList()),
+                        new ChaosExperimentBranch().withName("ahzovajjziuxxp").withActions(Arrays.asList()),
+                        new ChaosExperimentBranch().withName("hneekul").withActions(Arrays.asList()),
+                        new ChaosExperimentBranch().withName("gs").withActions(Arrays.asList())))))
+                .withSelectors(Arrays.asList(
+                    new ChaosTargetSelector().withId("ubkwdle")
+                        .withFilter(new ChaosTargetFilter())
+                        .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
+                    new ChaosTargetSelector().withId("ygdxpgpqchis")
+                        .withFilter(new ChaosTargetFilter())
+                        .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"))))
+                .withTags(mapOf("epzl", "kokwbqplhlvnu", "vmnnrw", "phwzsoldweyuqdu", "wjhhgdnhxmsivf", "biorktal",
+                    "zaofjchvcyy", "miloxggdufiqndie"))
+                .withIdentity(new ResourceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(
+                        mapOf("w", new UserAssignedIdentity(), "vbquwr", new UserAssignedIdentity())))
                 .create();
 
-        Assertions.assertEquals("ayakkudzpx", response.location());
-        Assertions.assertEquals("plmag", response.tags().get("tcyohpfkyrk"));
-        Assertions.assertEquals(ResourceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("zqzdw", response.steps().get(0).name());
-        Assertions.assertEquals("w", response.steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("bgo", response.selectors().get(0).id());
+        Assertions.assertEquals("yiopi", response.location());
+        Assertions.assertEquals("qfkuvscxkdmli", response.tags().get("ovibrxkp"));
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("scjfnyns", response.steps().get(0).name());
+        Assertions.assertEquals("ujiz", response.steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("owzfttsttkt", response.selectors().get(0).id());
     }
 
     // Use "Map.of" if available

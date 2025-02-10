@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.data.tables.implementation;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Constants for Tables service.
@@ -65,13 +65,13 @@ public final class TablesConstants {
     /**
      * Set of keys returned in OData metadata.
      */
-    public static final Set<String> METADATA_KEYS = Stream.of(
-        ODATA_EDIT_LINK_KEY,
-        ODATA_ETAG_KEY,
-        ODATA_ID_KEY,
-        ODATA_METADATA_KEY,
-        ODATA_TYPE_KEY
-    ).collect(Collectors.toCollection(HashSet::new));
+    public static final Set<String> METADATA_KEYS = Collections.unmodifiableSet(new HashSet<>(
+        Arrays.asList(ODATA_EDIT_LINK_KEY, ODATA_ETAG_KEY, ODATA_ID_KEY, ODATA_METADATA_KEY, ODATA_TYPE_KEY)));
+
+    /**
+     * Scope for Cosmos endpoints.
+     */
+    public static final String COSMOS_SCOPE = "https://cosmos.azure.com/.default";
 
     /**
      * Private constructor so this class cannot be instantiated.

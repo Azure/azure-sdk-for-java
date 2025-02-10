@@ -6,179 +6,167 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** VMwareCbt specific enable migration input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareCbt")
+/**
+ * VMwareCbt specific enable migration input.
+ */
 @Fluent
 public final class VMwareCbtEnableMigrationInput extends EnableMigrationProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "VMwareCbt";
+
+    /*
      * The ARM Id of the VM discovered in VMware.
      */
-    @JsonProperty(value = "vmwareMachineId", required = true)
     private String vmwareMachineId;
 
     /*
      * The disks to include list.
      */
-    @JsonProperty(value = "disksToInclude", required = true)
     private List<VMwareCbtDiskInput> disksToInclude;
 
     /*
      * License type.
      */
-    @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
 
     /*
      * The SQL Server license type.
      */
-    @JsonProperty(value = "sqlServerLicenseType")
     private SqlServerLicenseType sqlServerLicenseType;
 
     /*
      * A value indicating whether bulk SQL RP registration to be done.
      */
-    @JsonProperty(value = "performSqlBulkRegistration")
     private String performSqlBulkRegistration;
 
     /*
      * The data mover run as account Id.
      */
-    @JsonProperty(value = "dataMoverRunAsAccountId", required = true)
     private String dataMoverRunAsAccountId;
 
     /*
      * The snapshot run as account Id.
      */
-    @JsonProperty(value = "snapshotRunAsAccountId", required = true)
     private String snapshotRunAsAccountId;
 
     /*
      * The target VM name.
      */
-    @JsonProperty(value = "targetVmName")
     private String targetVmName;
 
     /*
      * The target VM size.
      */
-    @JsonProperty(value = "targetVmSize")
     private String targetVmSize;
 
     /*
      * The target resource group ARM Id.
      */
-    @JsonProperty(value = "targetResourceGroupId", required = true)
     private String targetResourceGroupId;
 
     /*
      * The target network ARM Id.
      */
-    @JsonProperty(value = "targetNetworkId", required = true)
     private String targetNetworkId;
 
     /*
      * The selected test network ARM Id.
      */
-    @JsonProperty(value = "testNetworkId")
     private String testNetworkId;
 
     /*
      * The target subnet name.
      */
-    @JsonProperty(value = "targetSubnetName")
     private String targetSubnetName;
 
     /*
      * The selected test subnet name.
      */
-    @JsonProperty(value = "testSubnetName")
     private String testSubnetName;
 
     /*
      * The target availability set ARM Id.
      */
-    @JsonProperty(value = "targetAvailabilitySetId")
     private String targetAvailabilitySetId;
 
     /*
      * The target availability zone.
      */
-    @JsonProperty(value = "targetAvailabilityZone")
     private String targetAvailabilityZone;
 
     /*
      * The target proximity placement group ARM Id.
      */
-    @JsonProperty(value = "targetProximityPlacementGroupId")
     private String targetProximityPlacementGroupId;
 
     /*
      * The confidential VM key vault Id for ADE installation.
      */
-    @JsonProperty(value = "confidentialVmKeyVaultId")
     private String confidentialVmKeyVaultId;
 
     /*
      * The target VM security profile.
      */
-    @JsonProperty(value = "targetVmSecurityProfile")
     private VMwareCbtSecurityProfileProperties targetVmSecurityProfile;
 
     /*
      * The target boot diagnostics storage account ARM Id.
      */
-    @JsonProperty(value = "targetBootDiagnosticsStorageAccountId")
     private String targetBootDiagnosticsStorageAccountId;
 
     /*
      * A value indicating whether auto resync is to be done.
      */
-    @JsonProperty(value = "performAutoResync")
     private String performAutoResync;
 
     /*
      * The target VM tags.
      */
-    @JsonProperty(value = "targetVmTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetVmTags;
 
     /*
      * The tags for the seed disks.
      */
-    @JsonProperty(value = "seedDiskTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> seedDiskTags;
 
     /*
      * The tags for the target disks.
      */
-    @JsonProperty(value = "targetDiskTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetDiskTags;
 
     /*
      * The tags for the target NICs.
      */
-    @JsonProperty(value = "targetNicTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetNicTags;
 
-    /** Creates an instance of VMwareCbtEnableMigrationInput class. */
+    /**
+     * Creates an instance of VMwareCbtEnableMigrationInput class.
+     */
     public VMwareCbtEnableMigrationInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the vmwareMachineId property: The ARM Id of the VM discovered in VMware.
-     *
+     * 
      * @return the vmwareMachineId value.
      */
     public String vmwareMachineId() {
@@ -187,7 +175,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the vmwareMachineId property: The ARM Id of the VM discovered in VMware.
-     *
+     * 
      * @param vmwareMachineId the vmwareMachineId value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -198,7 +186,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the disksToInclude property: The disks to include list.
-     *
+     * 
      * @return the disksToInclude value.
      */
     public List<VMwareCbtDiskInput> disksToInclude() {
@@ -207,7 +195,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the disksToInclude property: The disks to include list.
-     *
+     * 
      * @param disksToInclude the disksToInclude value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -218,7 +206,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the licenseType property: License type.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -227,7 +215,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the licenseType property: License type.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -238,7 +226,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @return the sqlServerLicenseType value.
      */
     public SqlServerLicenseType sqlServerLicenseType() {
@@ -247,7 +235,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @param sqlServerLicenseType the sqlServerLicenseType value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -258,7 +246,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the performSqlBulkRegistration property: A value indicating whether bulk SQL RP registration to be done.
-     *
+     * 
      * @return the performSqlBulkRegistration value.
      */
     public String performSqlBulkRegistration() {
@@ -267,7 +255,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the performSqlBulkRegistration property: A value indicating whether bulk SQL RP registration to be done.
-     *
+     * 
      * @param performSqlBulkRegistration the performSqlBulkRegistration value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -278,7 +266,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the dataMoverRunAsAccountId property: The data mover run as account Id.
-     *
+     * 
      * @return the dataMoverRunAsAccountId value.
      */
     public String dataMoverRunAsAccountId() {
@@ -287,7 +275,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the dataMoverRunAsAccountId property: The data mover run as account Id.
-     *
+     * 
      * @param dataMoverRunAsAccountId the dataMoverRunAsAccountId value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -298,7 +286,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the snapshotRunAsAccountId property: The snapshot run as account Id.
-     *
+     * 
      * @return the snapshotRunAsAccountId value.
      */
     public String snapshotRunAsAccountId() {
@@ -307,7 +295,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the snapshotRunAsAccountId property: The snapshot run as account Id.
-     *
+     * 
      * @param snapshotRunAsAccountId the snapshotRunAsAccountId value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -318,7 +306,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetVmName property: The target VM name.
-     *
+     * 
      * @return the targetVmName value.
      */
     public String targetVmName() {
@@ -327,7 +315,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetVmName property: The target VM name.
-     *
+     * 
      * @param targetVmName the targetVmName value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -338,7 +326,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetVmSize property: The target VM size.
-     *
+     * 
      * @return the targetVmSize value.
      */
     public String targetVmSize() {
@@ -347,7 +335,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetVmSize property: The target VM size.
-     *
+     * 
      * @param targetVmSize the targetVmSize value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -358,7 +346,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetResourceGroupId property: The target resource group ARM Id.
-     *
+     * 
      * @return the targetResourceGroupId value.
      */
     public String targetResourceGroupId() {
@@ -367,7 +355,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetResourceGroupId property: The target resource group ARM Id.
-     *
+     * 
      * @param targetResourceGroupId the targetResourceGroupId value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -378,7 +366,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetNetworkId property: The target network ARM Id.
-     *
+     * 
      * @return the targetNetworkId value.
      */
     public String targetNetworkId() {
@@ -387,7 +375,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetNetworkId property: The target network ARM Id.
-     *
+     * 
      * @param targetNetworkId the targetNetworkId value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -398,7 +386,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the testNetworkId property: The selected test network ARM Id.
-     *
+     * 
      * @return the testNetworkId value.
      */
     public String testNetworkId() {
@@ -407,7 +395,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the testNetworkId property: The selected test network ARM Id.
-     *
+     * 
      * @param testNetworkId the testNetworkId value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -418,7 +406,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetSubnetName property: The target subnet name.
-     *
+     * 
      * @return the targetSubnetName value.
      */
     public String targetSubnetName() {
@@ -427,7 +415,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetSubnetName property: The target subnet name.
-     *
+     * 
      * @param targetSubnetName the targetSubnetName value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -438,7 +426,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the testSubnetName property: The selected test subnet name.
-     *
+     * 
      * @return the testSubnetName value.
      */
     public String testSubnetName() {
@@ -447,7 +435,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the testSubnetName property: The selected test subnet name.
-     *
+     * 
      * @param testSubnetName the testSubnetName value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -458,7 +446,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetAvailabilitySetId property: The target availability set ARM Id.
-     *
+     * 
      * @return the targetAvailabilitySetId value.
      */
     public String targetAvailabilitySetId() {
@@ -467,7 +455,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetAvailabilitySetId property: The target availability set ARM Id.
-     *
+     * 
      * @param targetAvailabilitySetId the targetAvailabilitySetId value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -478,7 +466,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @return the targetAvailabilityZone value.
      */
     public String targetAvailabilityZone() {
@@ -487,7 +475,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @param targetAvailabilityZone the targetAvailabilityZone value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -498,7 +486,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetProximityPlacementGroupId property: The target proximity placement group ARM Id.
-     *
+     * 
      * @return the targetProximityPlacementGroupId value.
      */
     public String targetProximityPlacementGroupId() {
@@ -507,7 +495,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetProximityPlacementGroupId property: The target proximity placement group ARM Id.
-     *
+     * 
      * @param targetProximityPlacementGroupId the targetProximityPlacementGroupId value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -518,7 +506,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the confidentialVmKeyVaultId property: The confidential VM key vault Id for ADE installation.
-     *
+     * 
      * @return the confidentialVmKeyVaultId value.
      */
     public String confidentialVmKeyVaultId() {
@@ -527,7 +515,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the confidentialVmKeyVaultId property: The confidential VM key vault Id for ADE installation.
-     *
+     * 
      * @param confidentialVmKeyVaultId the confidentialVmKeyVaultId value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -538,7 +526,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetVmSecurityProfile property: The target VM security profile.
-     *
+     * 
      * @return the targetVmSecurityProfile value.
      */
     public VMwareCbtSecurityProfileProperties targetVmSecurityProfile() {
@@ -547,19 +535,19 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetVmSecurityProfile property: The target VM security profile.
-     *
+     * 
      * @param targetVmSecurityProfile the targetVmSecurityProfile value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
-    public VMwareCbtEnableMigrationInput withTargetVmSecurityProfile(
-        VMwareCbtSecurityProfileProperties targetVmSecurityProfile) {
+    public VMwareCbtEnableMigrationInput
+        withTargetVmSecurityProfile(VMwareCbtSecurityProfileProperties targetVmSecurityProfile) {
         this.targetVmSecurityProfile = targetVmSecurityProfile;
         return this;
     }
 
     /**
      * Get the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
-     *
+     * 
      * @return the targetBootDiagnosticsStorageAccountId value.
      */
     public String targetBootDiagnosticsStorageAccountId() {
@@ -568,19 +556,19 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
-     *
+     * 
      * @param targetBootDiagnosticsStorageAccountId the targetBootDiagnosticsStorageAccountId value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
-    public VMwareCbtEnableMigrationInput withTargetBootDiagnosticsStorageAccountId(
-        String targetBootDiagnosticsStorageAccountId) {
+    public VMwareCbtEnableMigrationInput
+        withTargetBootDiagnosticsStorageAccountId(String targetBootDiagnosticsStorageAccountId) {
         this.targetBootDiagnosticsStorageAccountId = targetBootDiagnosticsStorageAccountId;
         return this;
     }
 
     /**
      * Get the performAutoResync property: A value indicating whether auto resync is to be done.
-     *
+     * 
      * @return the performAutoResync value.
      */
     public String performAutoResync() {
@@ -589,7 +577,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the performAutoResync property: A value indicating whether auto resync is to be done.
-     *
+     * 
      * @param performAutoResync the performAutoResync value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -600,7 +588,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetVmTags property: The target VM tags.
-     *
+     * 
      * @return the targetVmTags value.
      */
     public Map<String, String> targetVmTags() {
@@ -609,7 +597,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetVmTags property: The target VM tags.
-     *
+     * 
      * @param targetVmTags the targetVmTags value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -620,7 +608,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the seedDiskTags property: The tags for the seed disks.
-     *
+     * 
      * @return the seedDiskTags value.
      */
     public Map<String, String> seedDiskTags() {
@@ -629,7 +617,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the seedDiskTags property: The tags for the seed disks.
-     *
+     * 
      * @param seedDiskTags the seedDiskTags value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -640,7 +628,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetDiskTags property: The tags for the target disks.
-     *
+     * 
      * @return the targetDiskTags value.
      */
     public Map<String, String> targetDiskTags() {
@@ -649,7 +637,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetDiskTags property: The tags for the target disks.
-     *
+     * 
      * @param targetDiskTags the targetDiskTags value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -660,7 +648,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Get the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @return the targetNicTags value.
      */
     public Map<String, String> targetNicTags() {
@@ -669,7 +657,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Set the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @param targetNicTags the targetNicTags value to set.
      * @return the VMwareCbtEnableMigrationInput object itself.
      */
@@ -680,49 +668,42 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmwareMachineId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmwareMachineId in model VMwareCbtEnableMigrationInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vmwareMachineId in model VMwareCbtEnableMigrationInput"));
         }
         if (disksToInclude() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property disksToInclude in model VMwareCbtEnableMigrationInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property disksToInclude in model VMwareCbtEnableMigrationInput"));
         } else {
             disksToInclude().forEach(e -> e.validate());
         }
         if (dataMoverRunAsAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataMoverRunAsAccountId in model VMwareCbtEnableMigrationInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataMoverRunAsAccountId in model VMwareCbtEnableMigrationInput"));
         }
         if (snapshotRunAsAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property snapshotRunAsAccountId in model VMwareCbtEnableMigrationInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property snapshotRunAsAccountId in model VMwareCbtEnableMigrationInput"));
         }
         if (targetResourceGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceGroupId in model VMwareCbtEnableMigrationInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceGroupId in model VMwareCbtEnableMigrationInput"));
         }
         if (targetNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetNetworkId in model VMwareCbtEnableMigrationInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetNetworkId in model VMwareCbtEnableMigrationInput"));
         }
         if (targetVmSecurityProfile() != null) {
             targetVmSecurityProfile().validate();
@@ -730,4 +711,130 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMwareCbtEnableMigrationInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmwareMachineId", this.vmwareMachineId);
+        jsonWriter.writeArrayField("disksToInclude", this.disksToInclude,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("dataMoverRunAsAccountId", this.dataMoverRunAsAccountId);
+        jsonWriter.writeStringField("snapshotRunAsAccountId", this.snapshotRunAsAccountId);
+        jsonWriter.writeStringField("targetResourceGroupId", this.targetResourceGroupId);
+        jsonWriter.writeStringField("targetNetworkId", this.targetNetworkId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("sqlServerLicenseType",
+            this.sqlServerLicenseType == null ? null : this.sqlServerLicenseType.toString());
+        jsonWriter.writeStringField("performSqlBulkRegistration", this.performSqlBulkRegistration);
+        jsonWriter.writeStringField("targetVmName", this.targetVmName);
+        jsonWriter.writeStringField("targetVmSize", this.targetVmSize);
+        jsonWriter.writeStringField("testNetworkId", this.testNetworkId);
+        jsonWriter.writeStringField("targetSubnetName", this.targetSubnetName);
+        jsonWriter.writeStringField("testSubnetName", this.testSubnetName);
+        jsonWriter.writeStringField("targetAvailabilitySetId", this.targetAvailabilitySetId);
+        jsonWriter.writeStringField("targetAvailabilityZone", this.targetAvailabilityZone);
+        jsonWriter.writeStringField("targetProximityPlacementGroupId", this.targetProximityPlacementGroupId);
+        jsonWriter.writeStringField("confidentialVmKeyVaultId", this.confidentialVmKeyVaultId);
+        jsonWriter.writeJsonField("targetVmSecurityProfile", this.targetVmSecurityProfile);
+        jsonWriter.writeStringField("targetBootDiagnosticsStorageAccountId",
+            this.targetBootDiagnosticsStorageAccountId);
+        jsonWriter.writeStringField("performAutoResync", this.performAutoResync);
+        jsonWriter.writeMapField("targetVmTags", this.targetVmTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("seedDiskTags", this.seedDiskTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetDiskTags", this.targetDiskTags,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetNicTags", this.targetNicTags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtEnableMigrationInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtEnableMigrationInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMwareCbtEnableMigrationInput.
+     */
+    public static VMwareCbtEnableMigrationInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtEnableMigrationInput deserializedVMwareCbtEnableMigrationInput
+                = new VMwareCbtEnableMigrationInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmwareMachineId".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.vmwareMachineId = reader.getString();
+                } else if ("disksToInclude".equals(fieldName)) {
+                    List<VMwareCbtDiskInput> disksToInclude
+                        = reader.readArray(reader1 -> VMwareCbtDiskInput.fromJson(reader1));
+                    deserializedVMwareCbtEnableMigrationInput.disksToInclude = disksToInclude;
+                } else if ("dataMoverRunAsAccountId".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.dataMoverRunAsAccountId = reader.getString();
+                } else if ("snapshotRunAsAccountId".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.snapshotRunAsAccountId = reader.getString();
+                } else if ("targetResourceGroupId".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.targetResourceGroupId = reader.getString();
+                } else if ("targetNetworkId".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.targetNetworkId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.instanceType = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.licenseType = LicenseType.fromString(reader.getString());
+                } else if ("sqlServerLicenseType".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.sqlServerLicenseType
+                        = SqlServerLicenseType.fromString(reader.getString());
+                } else if ("performSqlBulkRegistration".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.performSqlBulkRegistration = reader.getString();
+                } else if ("targetVmName".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.targetVmName = reader.getString();
+                } else if ("targetVmSize".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.targetVmSize = reader.getString();
+                } else if ("testNetworkId".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.testNetworkId = reader.getString();
+                } else if ("targetSubnetName".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.targetSubnetName = reader.getString();
+                } else if ("testSubnetName".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.testSubnetName = reader.getString();
+                } else if ("targetAvailabilitySetId".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.targetAvailabilitySetId = reader.getString();
+                } else if ("targetAvailabilityZone".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.targetAvailabilityZone = reader.getString();
+                } else if ("targetProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.targetProximityPlacementGroupId = reader.getString();
+                } else if ("confidentialVmKeyVaultId".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.confidentialVmKeyVaultId = reader.getString();
+                } else if ("targetVmSecurityProfile".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.targetVmSecurityProfile
+                        = VMwareCbtSecurityProfileProperties.fromJson(reader);
+                } else if ("targetBootDiagnosticsStorageAccountId".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.targetBootDiagnosticsStorageAccountId
+                        = reader.getString();
+                } else if ("performAutoResync".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.performAutoResync = reader.getString();
+                } else if ("targetVmTags".equals(fieldName)) {
+                    Map<String, String> targetVmTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVMwareCbtEnableMigrationInput.targetVmTags = targetVmTags;
+                } else if ("seedDiskTags".equals(fieldName)) {
+                    Map<String, String> seedDiskTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVMwareCbtEnableMigrationInput.seedDiskTags = seedDiskTags;
+                } else if ("targetDiskTags".equals(fieldName)) {
+                    Map<String, String> targetDiskTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVMwareCbtEnableMigrationInput.targetDiskTags = targetDiskTags;
+                } else if ("targetNicTags".equals(fieldName)) {
+                    Map<String, String> targetNicTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVMwareCbtEnableMigrationInput.targetNicTags = targetNicTags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtEnableMigrationInput;
+        });
+    }
 }

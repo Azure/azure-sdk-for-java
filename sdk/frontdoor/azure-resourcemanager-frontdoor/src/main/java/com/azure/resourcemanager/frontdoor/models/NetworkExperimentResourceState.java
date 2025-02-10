@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the server side resource status. */
+/**
+ * Defines the server side resource status.
+ */
 public final class NetworkExperimentResourceState extends ExpandableStringEnum<NetworkExperimentResourceState> {
-    /** Static value Creating for NetworkExperimentResourceState. */
+    /**
+     * Static value Creating for NetworkExperimentResourceState.
+     */
     public static final NetworkExperimentResourceState CREATING = fromString("Creating");
 
-    /** Static value Enabling for NetworkExperimentResourceState. */
+    /**
+     * Static value Enabling for NetworkExperimentResourceState.
+     */
     public static final NetworkExperimentResourceState ENABLING = fromString("Enabling");
 
-    /** Static value Enabled for NetworkExperimentResourceState. */
+    /**
+     * Static value Enabled for NetworkExperimentResourceState.
+     */
     public static final NetworkExperimentResourceState ENABLED = fromString("Enabled");
 
-    /** Static value Disabling for NetworkExperimentResourceState. */
+    /**
+     * Static value Disabling for NetworkExperimentResourceState.
+     */
     public static final NetworkExperimentResourceState DISABLING = fromString("Disabling");
 
-    /** Static value Disabled for NetworkExperimentResourceState. */
+    /**
+     * Static value Disabled for NetworkExperimentResourceState.
+     */
     public static final NetworkExperimentResourceState DISABLED = fromString("Disabled");
 
-    /** Static value Deleting for NetworkExperimentResourceState. */
+    /**
+     * Static value Deleting for NetworkExperimentResourceState.
+     */
     public static final NetworkExperimentResourceState DELETING = fromString("Deleting");
 
     /**
      * Creates a new instance of NetworkExperimentResourceState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class NetworkExperimentResourceState extends ExpandableStringEnum<N
 
     /**
      * Creates or finds a NetworkExperimentResourceState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkExperimentResourceState.
      */
-    @JsonCreator
     public static NetworkExperimentResourceState fromString(String name) {
         return fromString(name, NetworkExperimentResourceState.class);
     }
 
     /**
      * Gets known NetworkExperimentResourceState values.
-     *
+     * 
      * @return known NetworkExperimentResourceState values.
      */
     public static Collection<NetworkExperimentResourceState> values() {

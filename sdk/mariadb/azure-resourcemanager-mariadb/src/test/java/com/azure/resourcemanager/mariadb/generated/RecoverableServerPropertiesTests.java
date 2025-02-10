@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mariadb.fluent.models.RecoverableServerProperti
 public final class RecoverableServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoverableServerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"lastAvailableBackupDateTime\":\"cr\",\"serviceLevelObjective\":\"zsqpjhvmdajvny\",\"edition\":\"unqecanoae\",\"vCore\":1901274446,\"hardwareGeneration\":\"yhltrpmopjmcm\",\"version\":\"u\"}")
-                .toObject(RecoverableServerProperties.class);
+        RecoverableServerProperties model = BinaryData.fromString(
+            "{\"lastAvailableBackupDateTime\":\"c\",\"serviceLevelObjective\":\"efovgmk\",\"edition\":\"leyyvx\",\"vCore\":440516085,\"hardwareGeneration\":\"k\",\"version\":\"t\"}")
+            .toObject(RecoverableServerProperties.class);
     }
 
     @org.junit.jupiter.api.Test

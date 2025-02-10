@@ -3,15 +3,13 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
-import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.databind.cfg.PackageVersion;
-
-import java.lang.reflect.Array;
 
 /**
  * Constructs and configures {@link ObjectMapper} instances that handle XML.
@@ -25,9 +23,9 @@ public final class XmlMapperFactory {
     private static final String TO_XML_GENERATOR = "com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator$Feature";
     private final ReflectiveInvoker createXmlMapperBuilder;
     private final ReflectiveInvoker defaultUseWrapper;
-    private final ReflectiveInvoker enableWriteXmlDeclaration;
+    private final ReflectiveInvoker configureWriteXmlDeclaration;
     private final Object writeXmlDeclaration;
-    private final ReflectiveInvoker enableEmptyElementAsNull;
+    private final ReflectiveInvoker configureEmptyElementAsNull;
     private final Object emptyElementAsNull;
 
     private final boolean useJackson212;
@@ -38,9 +36,9 @@ public final class XmlMapperFactory {
     private XmlMapperFactory() {
         ReflectiveInvoker createXmlMapperBuilder;
         ReflectiveInvoker defaultUseWrapper;
-        ReflectiveInvoker enableWriteXmlDeclaration;
+        ReflectiveInvoker configureWriteXmlDeclaration;
         Object writeXmlDeclaration;
-        ReflectiveInvoker enableEmptyElementAsNull;
+        ReflectiveInvoker configureEmptyElementAsNull;
         Object emptyElementAsNull;
         try {
             Class<?> xmlMapper = Class.forName(XML_MAPPER);
@@ -48,16 +46,16 @@ public final class XmlMapperFactory {
             Class<?> fromXmlParser = Class.forName(FROM_XML_PARSER);
             Class<?> toXmlGenerator = Class.forName(TO_XML_GENERATOR);
 
-            createXmlMapperBuilder = ReflectionUtils.getMethodInvoker(xmlMapper,
-                xmlMapper.getDeclaredMethod("builder"), false);
+            createXmlMapperBuilder
+                = ReflectionUtils.getMethodInvoker(xmlMapper, xmlMapper.getDeclaredMethod("builder"), false);
             defaultUseWrapper = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
                 xmlMapperBuilder.getDeclaredMethod("defaultUseWrapper", boolean.class), false);
 
-            enableWriteXmlDeclaration = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
-                xmlMapperBuilder.getDeclaredMethod("enable", Array.newInstance(toXmlGenerator, 0).getClass()), false);
+            configureWriteXmlDeclaration = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
+                xmlMapperBuilder.getDeclaredMethod("configure", toXmlGenerator, boolean.class), false);
             writeXmlDeclaration = toXmlGenerator.getDeclaredField("WRITE_XML_DECLARATION").get(null);
-            enableEmptyElementAsNull = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
-                xmlMapperBuilder.getDeclaredMethod("enable", Array.newInstance(fromXmlParser, 0).getClass()), false);
+            configureEmptyElementAsNull = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
+                xmlMapperBuilder.getDeclaredMethod("configure", fromXmlParser, boolean.class), false);
             emptyElementAsNull = fromXmlParser.getDeclaredField("EMPTY_ELEMENT_AS_NULL").get(null);
         } catch (Throwable ex) {
             // Throw the Error only if it isn't a LinkageError.
@@ -74,9 +72,9 @@ public final class XmlMapperFactory {
 
         this.createXmlMapperBuilder = createXmlMapperBuilder;
         this.defaultUseWrapper = defaultUseWrapper;
-        this.enableWriteXmlDeclaration = enableWriteXmlDeclaration;
+        this.configureWriteXmlDeclaration = configureWriteXmlDeclaration;
         this.writeXmlDeclaration = writeXmlDeclaration;
-        this.enableEmptyElementAsNull = enableEmptyElementAsNull;
+        this.configureEmptyElementAsNull = configureEmptyElementAsNull;
         this.emptyElementAsNull = emptyElementAsNull;
 
         this.useJackson212 = PackageVersion.VERSION.getMinorVersion() >= 12;
@@ -95,16 +93,16 @@ public final class XmlMapperFactory {
                 .initializeMapperBuilder((MapperBuilder<?, ?>) createXmlMapperBuilder.invokeStatic());
 
             defaultUseWrapper.invokeWithArguments(xmlMapperBuilder, false);
-            enableWriteXmlDeclaration.invokeWithArguments(xmlMapperBuilder, writeXmlDeclaration);
+            configureWriteXmlDeclaration.invokeWithArguments(xmlMapperBuilder, writeXmlDeclaration, true);
 
             /*
              * In Jackson 2.12 the default value of this feature changed from true to false.
              * https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.12#xml-module
              */
-            enableEmptyElementAsNull.invokeWithArguments(xmlMapperBuilder, emptyElementAsNull);
+            configureEmptyElementAsNull.invokeWithArguments(xmlMapperBuilder, emptyElementAsNull, true);
 
             xmlMapper = xmlMapperBuilder.build();
-        }  catch (Exception ex) {
+        } catch (Exception ex) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.", ex));
         }
 

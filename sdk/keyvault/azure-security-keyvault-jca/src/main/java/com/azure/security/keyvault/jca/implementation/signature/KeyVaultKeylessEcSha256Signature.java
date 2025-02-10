@@ -19,5 +19,4 @@ public final class KeyVaultKeylessEcSha256Signature extends KeyVaultKeylessEcSig
         super("SHA-256", "ES256");
     }
 
-
 }

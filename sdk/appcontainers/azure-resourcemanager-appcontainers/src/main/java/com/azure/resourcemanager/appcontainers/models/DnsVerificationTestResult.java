@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** DNS verification test result. */
+/**
+ * DNS verification test result.
+ */
 public enum DnsVerificationTestResult {
-    /** Enum value Passed. */
+    /**
+     * Enum value Passed.
+     */
     PASSED("Passed"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Skipped. */
+    /**
+     * Enum value Skipped.
+     */
     SKIPPED("Skipped");
 
-    /** The actual serialized value for a DnsVerificationTestResult instance. */
+    /**
+     * The actual serialized value for a DnsVerificationTestResult instance.
+     */
     private final String value;
 
     DnsVerificationTestResult(String value) {
@@ -27,11 +34,10 @@ public enum DnsVerificationTestResult {
 
     /**
      * Parses a serialized value to a DnsVerificationTestResult instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DnsVerificationTestResult object, or null if unable to parse.
      */
-    @JsonCreator
     public static DnsVerificationTestResult fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum DnsVerificationTestResult {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

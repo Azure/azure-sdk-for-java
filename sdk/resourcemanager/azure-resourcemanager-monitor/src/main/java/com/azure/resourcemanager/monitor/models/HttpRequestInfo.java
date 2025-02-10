@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Http request info. */
+/**
+ * The Http request info.
+ */
 @Fluent
-public final class HttpRequestInfo {
+public final class HttpRequestInfo implements JsonSerializable<HttpRequestInfo> {
     /*
      * the client request id.
      */
-    @JsonProperty(value = "clientRequestId")
     private String clientRequestId;
 
     /*
      * the client Ip Address
      */
-    @JsonProperty(value = "clientIpAddress")
     private String clientIpAddress;
 
     /*
      * the Http request method.
      */
-    @JsonProperty(value = "method")
     private String method;
 
     /*
      * the Uri.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
-    /** Creates an instance of HttpRequestInfo class. */
+    /**
+     * Creates an instance of HttpRequestInfo class.
+     */
     public HttpRequestInfo() {
     }
 
     /**
      * Get the clientRequestId property: the client request id.
-     *
+     * 
      * @return the clientRequestId value.
      */
     public String clientRequestId() {
@@ -49,7 +53,7 @@ public final class HttpRequestInfo {
 
     /**
      * Set the clientRequestId property: the client request id.
-     *
+     * 
      * @param clientRequestId the clientRequestId value to set.
      * @return the HttpRequestInfo object itself.
      */
@@ -60,7 +64,7 @@ public final class HttpRequestInfo {
 
     /**
      * Get the clientIpAddress property: the client Ip Address.
-     *
+     * 
      * @return the clientIpAddress value.
      */
     public String clientIpAddress() {
@@ -69,7 +73,7 @@ public final class HttpRequestInfo {
 
     /**
      * Set the clientIpAddress property: the client Ip Address.
-     *
+     * 
      * @param clientIpAddress the clientIpAddress value to set.
      * @return the HttpRequestInfo object itself.
      */
@@ -80,7 +84,7 @@ public final class HttpRequestInfo {
 
     /**
      * Get the method property: the Http request method.
-     *
+     * 
      * @return the method value.
      */
     public String method() {
@@ -89,7 +93,7 @@ public final class HttpRequestInfo {
 
     /**
      * Set the method property: the Http request method.
-     *
+     * 
      * @param method the method value to set.
      * @return the HttpRequestInfo object itself.
      */
@@ -100,7 +104,7 @@ public final class HttpRequestInfo {
 
     /**
      * Get the uri property: the Uri.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -109,7 +113,7 @@ public final class HttpRequestInfo {
 
     /**
      * Set the uri property: the Uri.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the HttpRequestInfo object itself.
      */
@@ -120,9 +124,54 @@ public final class HttpRequestInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
+        jsonWriter.writeStringField("clientIpAddress", this.clientIpAddress);
+        jsonWriter.writeStringField("method", this.method);
+        jsonWriter.writeStringField("uri", this.uri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpRequestInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpRequestInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpRequestInfo.
+     */
+    public static HttpRequestInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpRequestInfo deserializedHttpRequestInfo = new HttpRequestInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientRequestId".equals(fieldName)) {
+                    deserializedHttpRequestInfo.clientRequestId = reader.getString();
+                } else if ("clientIpAddress".equals(fieldName)) {
+                    deserializedHttpRequestInfo.clientIpAddress = reader.getString();
+                } else if ("method".equals(fieldName)) {
+                    deserializedHttpRequestInfo.method = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedHttpRequestInfo.uri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpRequestInfo;
+        });
     }
 }

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of security ML analytics settings. */
+/**
+ * The kind of security ML analytics settings.
+ */
 public final class SecurityMLAnalyticsSettingsKind extends ExpandableStringEnum<SecurityMLAnalyticsSettingsKind> {
-    /** Static value Anomaly for SecurityMLAnalyticsSettingsKind. */
+    /**
+     * Static value Anomaly for SecurityMLAnalyticsSettingsKind.
+     */
     public static final SecurityMLAnalyticsSettingsKind ANOMALY = fromString("Anomaly");
 
     /**
+     * Creates a new instance of SecurityMLAnalyticsSettingsKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityMLAnalyticsSettingsKind() {
+    }
+
+    /**
      * Creates or finds a SecurityMLAnalyticsSettingsKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecurityMLAnalyticsSettingsKind.
      */
-    @JsonCreator
     public static SecurityMLAnalyticsSettingsKind fromString(String name) {
         return fromString(name, SecurityMLAnalyticsSettingsKind.class);
     }
 
     /**
      * Gets known SecurityMLAnalyticsSettingsKind values.
-     *
+     * 
      * @return known SecurityMLAnalyticsSettingsKind values.
      */
     public static Collection<SecurityMLAnalyticsSettingsKind> values() {

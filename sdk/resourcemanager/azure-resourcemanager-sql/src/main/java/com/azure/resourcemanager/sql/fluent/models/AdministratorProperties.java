@@ -6,50 +6,54 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.AdministratorType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Properties of a active directory administrator. */
+/**
+ * Properties of a active directory administrator.
+ */
 @Fluent
-public final class AdministratorProperties {
+public final class AdministratorProperties implements JsonSerializable<AdministratorProperties> {
     /*
      * Type of the sever administrator.
      */
-    @JsonProperty(value = "administratorType", required = true)
     private AdministratorType administratorType;
 
     /*
      * Login name of the server administrator.
      */
-    @JsonProperty(value = "login", required = true)
     private String login;
 
     /*
      * SID (object ID) of the server administrator.
      */
-    @JsonProperty(value = "sid", required = true)
     private UUID sid;
 
     /*
      * Tenant ID of the administrator.
      */
-    @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
     /*
      * Azure Active Directory only Authentication enabled.
      */
-    @JsonProperty(value = "azureADOnlyAuthentication", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean azureADOnlyAuthentication;
 
-    /** Creates an instance of AdministratorProperties class. */
+    /**
+     * Creates an instance of AdministratorProperties class.
+     */
     public AdministratorProperties() {
     }
 
     /**
      * Get the administratorType property: Type of the sever administrator.
-     *
+     * 
      * @return the administratorType value.
      */
     public AdministratorType administratorType() {
@@ -58,7 +62,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the administratorType property: Type of the sever administrator.
-     *
+     * 
      * @param administratorType the administratorType value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class AdministratorProperties {
 
     /**
      * Get the login property: Login name of the server administrator.
-     *
+     * 
      * @return the login value.
      */
     public String login() {
@@ -78,7 +82,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the login property: Login name of the server administrator.
-     *
+     * 
      * @param login the login value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class AdministratorProperties {
 
     /**
      * Get the sid property: SID (object ID) of the server administrator.
-     *
+     * 
      * @return the sid value.
      */
     public UUID sid() {
@@ -98,7 +102,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the sid property: SID (object ID) of the server administrator.
-     *
+     * 
      * @param sid the sid value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -109,7 +113,7 @@ public final class AdministratorProperties {
 
     /**
      * Get the tenantId property: Tenant ID of the administrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -118,7 +122,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the tenantId property: Tenant ID of the administrator.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -129,7 +133,7 @@ public final class AdministratorProperties {
 
     /**
      * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @return the azureADOnlyAuthentication value.
      */
     public Boolean azureADOnlyAuthentication() {
@@ -138,27 +142,77 @@ public final class AdministratorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (administratorType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorType in model AdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorType in model AdministratorProperties"));
         }
         if (login() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property login in model AdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property login in model AdministratorProperties"));
         }
         if (sid() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sid in model AdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sid in model AdministratorProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AdministratorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("administratorType",
+            this.administratorType == null ? null : this.administratorType.toString());
+        jsonWriter.writeStringField("login", this.login);
+        jsonWriter.writeStringField("sid", Objects.toString(this.sid, null));
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdministratorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdministratorProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdministratorProperties.
+     */
+    public static AdministratorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdministratorProperties deserializedAdministratorProperties = new AdministratorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administratorType".equals(fieldName)) {
+                    deserializedAdministratorProperties.administratorType
+                        = AdministratorType.fromString(reader.getString());
+                } else if ("login".equals(fieldName)) {
+                    deserializedAdministratorProperties.login = reader.getString();
+                } else if ("sid".equals(fieldName)) {
+                    deserializedAdministratorProperties.sid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedAdministratorProperties.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("azureADOnlyAuthentication".equals(fieldName)) {
+                    deserializedAdministratorProperties.azureADOnlyAuthentication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdministratorProperties;
+        });
+    }
 }

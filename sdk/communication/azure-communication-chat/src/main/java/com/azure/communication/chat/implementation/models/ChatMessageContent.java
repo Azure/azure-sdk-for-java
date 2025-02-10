@@ -5,49 +5,54 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Content of a chat message. */
+/**
+ * Content of a chat message.
+ */
 @Fluent
-public final class ChatMessageContent {
+public final class ChatMessageContent implements JsonSerializable<ChatMessageContent> {
     /*
      * Chat message content for messages of types text or html.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Chat message content for messages of type topicUpdated.
      */
-    @JsonProperty(value = "topic")
     private String topic;
 
     /*
-     * Chat message content for messages of types participantAdded or
-     * participantRemoved.
+     * Chat message content for messages of types participantAdded or participantRemoved.
      */
-    @JsonProperty(value = "participants")
     private List<ChatParticipant> participants;
 
     /*
      * List of attachments for this message
      */
-    @JsonProperty(value = "attachments")
     private List<ChatAttachment> attachments;
 
     /*
-     * Identifies a participant in Azure Communication services. A participant
-     * is, for example, a phone number or an Azure communication user. This
-     * model is polymorphic: Apart from kind and rawId, at most one further
-     * property may be set which must match the kind enum value.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
-    @JsonProperty(value = "initiatorCommunicationIdentifier")
     private CommunicationIdentifierModel initiatorCommunicationIdentifier;
 
     /**
+     * Creates an instance of ChatMessageContent class.
+     */
+    public ChatMessageContent() {
+    }
+
+    /**
      * Get the message property: Chat message content for messages of types text or html.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -56,7 +61,7 @@ public final class ChatMessageContent {
 
     /**
      * Set the message property: Chat message content for messages of types text or html.
-     *
+     * 
      * @param message the message value to set.
      * @return the ChatMessageContent object itself.
      */
@@ -67,7 +72,7 @@ public final class ChatMessageContent {
 
     /**
      * Get the topic property: Chat message content for messages of type topicUpdated.
-     *
+     * 
      * @return the topic value.
      */
     public String getTopic() {
@@ -76,7 +81,7 @@ public final class ChatMessageContent {
 
     /**
      * Set the topic property: Chat message content for messages of type topicUpdated.
-     *
+     * 
      * @param topic the topic value to set.
      * @return the ChatMessageContent object itself.
      */
@@ -87,7 +92,7 @@ public final class ChatMessageContent {
 
     /**
      * Get the participants property: Chat message content for messages of types participantAdded or participantRemoved.
-     *
+     * 
      * @return the participants value.
      */
     public List<ChatParticipant> getParticipants() {
@@ -96,7 +101,7 @@ public final class ChatMessageContent {
 
     /**
      * Set the participants property: Chat message content for messages of types participantAdded or participantRemoved.
-     *
+     * 
      * @param participants the participants value to set.
      * @return the ChatMessageContent object itself.
      */
@@ -107,7 +112,7 @@ public final class ChatMessageContent {
 
     /**
      * Get the attachments property: List of attachments for this message.
-     *
+     * 
      * @return the attachments value.
      */
     public List<ChatAttachment> getAttachments() {
@@ -116,7 +121,7 @@ public final class ChatMessageContent {
 
     /**
      * Set the attachments property: List of attachments for this message.
-     *
+     * 
      * @param attachments the attachments value to set.
      * @return the ChatMessageContent object itself.
      */
@@ -129,7 +134,7 @@ public final class ChatMessageContent {
      * Get the initiatorCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
      * kind and rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * 
      * @return the initiatorCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getInitiatorCommunicationIdentifier() {
@@ -140,13 +145,64 @@ public final class ChatMessageContent {
      * Set the initiatorCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
      * kind and rawId, at most one further property may be set which must match the kind enum value.
-     *
+     * 
      * @param initiatorCommunicationIdentifier the initiatorCommunicationIdentifier value to set.
      * @return the ChatMessageContent object itself.
      */
-    public ChatMessageContent setInitiatorCommunicationIdentifier(
-            CommunicationIdentifierModel initiatorCommunicationIdentifier) {
+    public ChatMessageContent
+        setInitiatorCommunicationIdentifier(CommunicationIdentifierModel initiatorCommunicationIdentifier) {
         this.initiatorCommunicationIdentifier = initiatorCommunicationIdentifier;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("topic", this.topic);
+        jsonWriter.writeArrayField("participants", this.participants, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("attachments", this.attachments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("initiatorCommunicationIdentifier", this.initiatorCommunicationIdentifier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatMessageContent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatMessageContent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChatMessageContent.
+     */
+    public static ChatMessageContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatMessageContent deserializedChatMessageContent = new ChatMessageContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedChatMessageContent.message = reader.getString();
+                } else if ("topic".equals(fieldName)) {
+                    deserializedChatMessageContent.topic = reader.getString();
+                } else if ("participants".equals(fieldName)) {
+                    List<ChatParticipant> participants = reader.readArray(reader1 -> ChatParticipant.fromJson(reader1));
+                    deserializedChatMessageContent.participants = participants;
+                } else if ("attachments".equals(fieldName)) {
+                    List<ChatAttachment> attachments = reader.readArray(reader1 -> ChatAttachment.fromJson(reader1));
+                    deserializedChatMessageContent.attachments = attachments;
+                } else if ("initiatorCommunicationIdentifier".equals(fieldName)) {
+                    deserializedChatMessageContent.initiatorCommunicationIdentifier
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChatMessageContent;
+        });
     }
 }

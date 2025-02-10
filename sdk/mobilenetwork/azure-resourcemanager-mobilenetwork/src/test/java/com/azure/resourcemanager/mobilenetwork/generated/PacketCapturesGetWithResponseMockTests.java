@@ -6,68 +6,37 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCapture;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PacketCapturesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Error\",\"reason\":\"splzga\",\"captureStartTime\":\"2021-02-13T02:42:05Z\",\"networkInterfaces\":[\"hvn\",\"wgnxkympqanxrj\",\"ixt\",\"bta\"],\"bytesToCapturePerPacket\":6619905523291650511,\"totalBytesPerSession\":7368472418543037436,\"timeLimitInSeconds\":258038156,\"outputFiles\":[\"ylhk\"]},\"id\":\"nsghp\",\"name\":\"ycphdrwjjkhvyo\",\"type\":\"ac\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"NotStarted\",\"reason\":\"wiwtglxxhl\",\"captureStartTime\":\"2021-02-24T17:36:23Z\",\"networkInterfaces\":[\"icrmnzh\",\"gmqgjs\",\"vpqcb\",\"rmbodt\"],\"bytesToCapturePerPacket\":4761446188291703076,\"totalBytesPerSession\":6402554888202206387,\"timeLimitInSeconds\":26841896,\"outputFiles\":[\"kclacjfrn\"]},\"id\":\"usx\",\"name\":\"uzlwvsgmw\",\"type\":\"hqf\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PacketCapture response = manager.packetCaptures()
+            .getWithResponse("cgyee", "xeiqbpsmg", "mguaml", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PacketCapture response =
-            manager
-                .packetCaptures()
-                .getWithResponse("kfvxcnq", "xqpswok", "vkhlggdhbemz", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("icrmnzh", response.networkInterfaces().get(0));
-        Assertions.assertEquals(4761446188291703076L, response.bytesToCapturePerPacket());
-        Assertions.assertEquals(6402554888202206387L, response.totalBytesPerSession());
-        Assertions.assertEquals(26841896, response.timeLimitInSeconds());
+        Assertions.assertEquals("hvn", response.networkInterfaces().get(0));
+        Assertions.assertEquals(6619905523291650511L, response.bytesToCapturePerPacket());
+        Assertions.assertEquals(7368472418543037436L, response.totalBytesPerSession());
+        Assertions.assertEquals(258038156, response.timeLimitInSeconds());
     }
 }

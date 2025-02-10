@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Last backup operation status. Possible values: Healthy, Unhealthy. */
+/**
+ * Last backup operation status. Possible values: Healthy, Unhealthy.
+ */
 public final class LastBackupStatus extends ExpandableStringEnum<LastBackupStatus> {
-    /** Static value Invalid for LastBackupStatus. */
+    /**
+     * Static value Invalid for LastBackupStatus.
+     */
     public static final LastBackupStatus INVALID = fromString("Invalid");
 
-    /** Static value Healthy for LastBackupStatus. */
+    /**
+     * Static value Healthy for LastBackupStatus.
+     */
     public static final LastBackupStatus HEALTHY = fromString("Healthy");
 
-    /** Static value Unhealthy for LastBackupStatus. */
+    /**
+     * Static value Unhealthy for LastBackupStatus.
+     */
     public static final LastBackupStatus UNHEALTHY = fromString("Unhealthy");
 
-    /** Static value IRPending for LastBackupStatus. */
+    /**
+     * Static value IRPending for LastBackupStatus.
+     */
     public static final LastBackupStatus IRPENDING = fromString("IRPending");
 
     /**
      * Creates a new instance of LastBackupStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class LastBackupStatus extends ExpandableStringEnum<LastBackupStatu
 
     /**
      * Creates or finds a LastBackupStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LastBackupStatus.
      */
-    @JsonCreator
     public static LastBackupStatus fromString(String name) {
         return fromString(name, LastBackupStatus.class);
     }
 
     /**
      * Gets known LastBackupStatus values.
-     *
+     * 
      * @return known LastBackupStatus values.
      */
     public static Collection<LastBackupStatus> values() {

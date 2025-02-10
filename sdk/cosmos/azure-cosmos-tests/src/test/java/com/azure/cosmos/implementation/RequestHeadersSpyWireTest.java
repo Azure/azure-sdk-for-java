@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -25,6 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class RequestHeadersSpyWireTest extends TestSuiteBase {
+    private static final ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor
+        itemOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
 
     private static final String DOCUMENT_ID = UUID.randomUUID().toString();
 
@@ -97,23 +100,27 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         dedicatedOptions1.setIntegratedCacheBypassed(true);
         CosmosItemRequestOptions options1 = new CosmosItemRequestOptions();
         options1.setDedicatedGatewayRequestOptions(dedicatedOptions1);
+        options1.setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         DedicatedGatewayRequestOptions dedicatedOptions2 = new DedicatedGatewayRequestOptions();
         dedicatedOptions2.setMaxIntegratedCacheStaleness(Duration.ofHours(5));
         dedicatedOptions2.setIntegratedCacheBypassed(false);
         CosmosItemRequestOptions options2 = new CosmosItemRequestOptions();
         options2.setDedicatedGatewayRequestOptions(dedicatedOptions2);
+        options2.setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         DedicatedGatewayRequestOptions dedicatedOptions3 = new DedicatedGatewayRequestOptions();
         dedicatedOptions3.setMaxIntegratedCacheStaleness(Duration.ofSeconds(10));
         CosmosItemRequestOptions options3 = new CosmosItemRequestOptions();
         options3.setDedicatedGatewayRequestOptions(dedicatedOptions3);
+        options3.setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         DedicatedGatewayRequestOptions dedicatedOptions4 = new DedicatedGatewayRequestOptions();
         dedicatedOptions4.setMaxIntegratedCacheStaleness(Duration.ofMillis(500));
         dedicatedOptions4.setIntegratedCacheBypassed(true);
         CosmosItemRequestOptions options4 = new CosmosItemRequestOptions();
         options4.setDedicatedGatewayRequestOptions(dedicatedOptions4);
+        options4.setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         return new Object[][] {
             { options1 },
@@ -201,7 +208,8 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
+        RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(cosmosItemRequestOptions);
+
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
         client.readDocument(documentLink, requestOptions).block();
 
@@ -222,7 +230,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         String documentLink = getDocumentLink();
 
         client.clearCapturedRequests();
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
+        RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(cosmosItemRequestOptions);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
 
         assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions).block())
@@ -240,7 +248,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         String documentLink = getDocumentLink();
 
         client.clearCapturedRequests();
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
+        RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(cosmosItemRequestOptions);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
 
         assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions).block())
@@ -261,7 +269,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
+        RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(cosmosItemRequestOptions);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
         ResourceResponse<Document> response = client.readDocument(documentLink, requestOptions).block();
         if (cacheBypass) {

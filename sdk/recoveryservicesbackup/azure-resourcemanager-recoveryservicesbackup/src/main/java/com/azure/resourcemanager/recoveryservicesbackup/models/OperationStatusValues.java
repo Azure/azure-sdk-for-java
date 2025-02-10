@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Operation status. */
+/**
+ * Operation status.
+ */
 public final class OperationStatusValues extends ExpandableStringEnum<OperationStatusValues> {
-    /** Static value Invalid for OperationStatusValues. */
+    /**
+     * Static value Invalid for OperationStatusValues.
+     */
     public static final OperationStatusValues INVALID = fromString("Invalid");
 
-    /** Static value InProgress for OperationStatusValues. */
+    /**
+     * Static value InProgress for OperationStatusValues.
+     */
     public static final OperationStatusValues IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Succeeded for OperationStatusValues. */
+    /**
+     * Static value Succeeded for OperationStatusValues.
+     */
     public static final OperationStatusValues SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for OperationStatusValues. */
+    /**
+     * Static value Failed for OperationStatusValues.
+     */
     public static final OperationStatusValues FAILED = fromString("Failed");
 
-    /** Static value Canceled for OperationStatusValues. */
+    /**
+     * Static value Canceled for OperationStatusValues.
+     */
     public static final OperationStatusValues CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of OperationStatusValues value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class OperationStatusValues extends ExpandableStringEnum<OperationS
 
     /**
      * Creates or finds a OperationStatusValues from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperationStatusValues.
      */
-    @JsonCreator
     public static OperationStatusValues fromString(String name) {
         return fromString(name, OperationStatusValues.class);
     }
 
     /**
      * Gets known OperationStatusValues values.
-     *
+     * 
      * @return known OperationStatusValues values.
      */
     public static Collection<OperationStatusValues> values() {

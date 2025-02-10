@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Pairs of Managed Instances in the failover group. */
+/**
+ * Pairs of Managed Instances in the failover group.
+ */
 @Fluent
-public final class ManagedInstancePairInfo {
+public final class ManagedInstancePairInfo implements JsonSerializable<ManagedInstancePairInfo> {
     /*
      * Id of Primary Managed Instance in pair.
      */
-    @JsonProperty(value = "primaryManagedInstanceId")
     private String primaryManagedInstanceId;
 
     /*
      * Id of Partner Managed Instance in pair.
      */
-    @JsonProperty(value = "partnerManagedInstanceId")
     private String partnerManagedInstanceId;
 
-    /** Creates an instance of ManagedInstancePairInfo class. */
+    /**
+     * Creates an instance of ManagedInstancePairInfo class.
+     */
     public ManagedInstancePairInfo() {
     }
 
     /**
      * Get the primaryManagedInstanceId property: Id of Primary Managed Instance in pair.
-     *
+     * 
      * @return the primaryManagedInstanceId value.
      */
     public String primaryManagedInstanceId() {
@@ -37,7 +43,7 @@ public final class ManagedInstancePairInfo {
 
     /**
      * Set the primaryManagedInstanceId property: Id of Primary Managed Instance in pair.
-     *
+     * 
      * @param primaryManagedInstanceId the primaryManagedInstanceId value to set.
      * @return the ManagedInstancePairInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class ManagedInstancePairInfo {
 
     /**
      * Get the partnerManagedInstanceId property: Id of Partner Managed Instance in pair.
-     *
+     * 
      * @return the partnerManagedInstanceId value.
      */
     public String partnerManagedInstanceId() {
@@ -57,7 +63,7 @@ public final class ManagedInstancePairInfo {
 
     /**
      * Set the partnerManagedInstanceId property: Id of Partner Managed Instance in pair.
-     *
+     * 
      * @param partnerManagedInstanceId the partnerManagedInstanceId value to set.
      * @return the ManagedInstancePairInfo object itself.
      */
@@ -68,9 +74,48 @@ public final class ManagedInstancePairInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryManagedInstanceId", this.primaryManagedInstanceId);
+        jsonWriter.writeStringField("partnerManagedInstanceId", this.partnerManagedInstanceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstancePairInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstancePairInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedInstancePairInfo.
+     */
+    public static ManagedInstancePairInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstancePairInfo deserializedManagedInstancePairInfo = new ManagedInstancePairInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryManagedInstanceId".equals(fieldName)) {
+                    deserializedManagedInstancePairInfo.primaryManagedInstanceId = reader.getString();
+                } else if ("partnerManagedInstanceId".equals(fieldName)) {
+                    deserializedManagedInstancePairInfo.partnerManagedInstanceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstancePairInfo;
+        });
     }
 }

@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class MongoDBResourcesCreateUpdateMongoDBDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBMongoDBDatabaseCreateUpdate.json
      */
     /**
@@ -24,12 +24,16 @@ public final class MongoDBResourcesCreateUpdateMongoDBDatabaseSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBDatabaseCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getMongoDBResources().createUpdateMongoDBDatabase("rg1",
-            "ddb1", "databaseName",
-            new MongoDBDatabaseCreateUpdateParameters().withLocation("West US").withTags(mapOf())
-                .withResource(new MongoDBDatabaseResource().withId("databaseName"))
-                .withOptions(new CreateUpdateOptions()),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getMongoDBResources()
+            .createUpdateMongoDBDatabase("rg1", "ddb1", "databaseName",
+                new MongoDBDatabaseCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new MongoDBDatabaseResource().withId("databaseName"))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

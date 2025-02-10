@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The AnomalyFeedbackValue model.
@@ -49,10 +48,13 @@ public final class AnomalyFeedbackValue implements JsonSerializable<AnomalyFeedb
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("anomalyValue", Objects.toString(this.anomalyValue, null));
+        jsonWriter.writeStringField("anomalyValue", this.anomalyValue == null ? null : this.anomalyValue.toString());
         return jsonWriter.writeEndObject();
     }
 

@@ -6,67 +6,69 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.resourcemanager.security.fluent.models.DiscoveredSecuritySolutionInner;
 
-/** An immutable client-side representation of DiscoveredSecuritySolution. */
+/**
+ * An immutable client-side representation of DiscoveredSecuritySolution.
+ */
 public interface DiscoveredSecuritySolution {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the securityFamily property: The security family of the discovered solution.
-     *
+     * 
      * @return the securityFamily value.
      */
     SecurityFamily securityFamily();
 
     /**
      * Gets the offer property: The security solutions' image offer.
-     *
+     * 
      * @return the offer value.
      */
     String offer();
 
     /**
      * Gets the publisher property: The security solutions' image publisher.
-     *
+     * 
      * @return the publisher value.
      */
     String publisher();
 
     /**
      * Gets the sku property: The security solutions' image sku.
-     *
+     * 
      * @return the sku value.
      */
     String sku();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.DiscoveredSecuritySolutionInner object.
-     *
+     * 
      * @return the inner object.
      */
     DiscoveredSecuritySolutionInner innerModel();

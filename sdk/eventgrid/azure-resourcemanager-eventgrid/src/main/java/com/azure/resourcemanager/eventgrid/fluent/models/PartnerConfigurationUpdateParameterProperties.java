@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information of partner configuration update parameter properties.
  */
 @Fluent
-public final class PartnerConfigurationUpdateParameterProperties {
+public final class PartnerConfigurationUpdateParameterProperties
+    implements JsonSerializable<PartnerConfigurationUpdateParameterProperties> {
     /*
      * The default time used to validate the maximum expiration time for each authorized partners in days. Allowed
      * values ar between 1 and 365 days.
      */
-    @JsonProperty(value = "defaultMaximumExpirationTimeInDays")
     private Integer defaultMaximumExpirationTimeInDays;
 
     /**
@@ -54,5 +58,43 @@ public final class PartnerConfigurationUpdateParameterProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("defaultMaximumExpirationTimeInDays", this.defaultMaximumExpirationTimeInDays);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerConfigurationUpdateParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerConfigurationUpdateParameterProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerConfigurationUpdateParameterProperties.
+     */
+    public static PartnerConfigurationUpdateParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerConfigurationUpdateParameterProperties deserializedPartnerConfigurationUpdateParameterProperties
+                = new PartnerConfigurationUpdateParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultMaximumExpirationTimeInDays".equals(fieldName)) {
+                    deserializedPartnerConfigurationUpdateParameterProperties.defaultMaximumExpirationTimeInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerConfigurationUpdateParameterProperties;
+        });
     }
 }

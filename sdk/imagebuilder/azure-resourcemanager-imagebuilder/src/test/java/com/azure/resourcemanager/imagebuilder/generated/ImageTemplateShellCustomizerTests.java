@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateShellCustomizerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateShellCustomizer model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Shell\",\"scriptUri\":\"mdectehfiqscjey\",\"sha256Checksum\":\"hezrkgq\",\"inline\":[\"refovgmkqsleyyvx\",\"qjpkcattpngjcrc\",\"zsqpjhvmdajvny\",\"ounqecano\"],\"name\":\"upfh\"}")
-                .toObject(ImageTemplateShellCustomizer.class);
-        Assertions.assertEquals("upfh", model.name());
-        Assertions.assertEquals("mdectehfiqscjey", model.scriptUri());
-        Assertions.assertEquals("hezrkgq", model.sha256Checksum());
-        Assertions.assertEquals("refovgmkqsleyyvx", model.inline().get(0));
+        ImageTemplateShellCustomizer model = BinaryData.fromString(
+            "{\"type\":\"Shell\",\"scriptUri\":\"j\",\"sha256Checksum\":\"ovm\",\"inline\":[\"acspkwl\",\"zdobpxjmflbvvnch\"],\"name\":\"cciw\"}")
+            .toObject(ImageTemplateShellCustomizer.class);
+        Assertions.assertEquals("cciw", model.name());
+        Assertions.assertEquals("j", model.scriptUri());
+        Assertions.assertEquals("ovm", model.sha256Checksum());
+        Assertions.assertEquals("acspkwl", model.inline().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateShellCustomizer model =
-            new ImageTemplateShellCustomizer()
-                .withName("upfh")
-                .withScriptUri("mdectehfiqscjey")
-                .withSha256Checksum("hezrkgq")
-                .withInline(Arrays.asList("refovgmkqsleyyvx", "qjpkcattpngjcrc", "zsqpjhvmdajvny", "ounqecano"));
+        ImageTemplateShellCustomizer model = new ImageTemplateShellCustomizer().withName("cciw")
+            .withScriptUri("j")
+            .withSha256Checksum("ovm")
+            .withInline(Arrays.asList("acspkwl", "zdobpxjmflbvvnch"));
         model = BinaryData.fromObject(model).toObject(ImageTemplateShellCustomizer.class);
-        Assertions.assertEquals("upfh", model.name());
-        Assertions.assertEquals("mdectehfiqscjey", model.scriptUri());
-        Assertions.assertEquals("hezrkgq", model.sha256Checksum());
-        Assertions.assertEquals("refovgmkqsleyyvx", model.inline().get(0));
+        Assertions.assertEquals("cciw", model.name());
+        Assertions.assertEquals("j", model.scriptUri());
+        Assertions.assertEquals("ovm", model.sha256Checksum());
+        Assertions.assertEquals("acspkwl", model.inline().get(0));
     }
 }

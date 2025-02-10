@@ -93,9 +93,10 @@ public class ManagementChannelTest {
 
         autoCloseable = MockitoAnnotations.openMocks(this);
 
-        final AmqpChannelProcessor<RequestResponseChannel> requestResponseMono =
-            Mono.defer(() -> Mono.just(requestResponseChannel)).subscribeWith(new AmqpChannelProcessor<>(
-                "foo", RequestResponseChannel::getEndpointStates, retryPolicy, new HashMap<>()));
+        final AmqpChannelProcessor<RequestResponseChannel> requestResponseMono
+            = Mono.defer(() -> Mono.just(requestResponseChannel))
+                .subscribeWith(new AmqpChannelProcessor<>("foo", RequestResponseChannel::getEndpointStates, retryPolicy,
+                    new HashMap<>()));
 
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults()).thenReturn(tokenProviderResults.flux());
@@ -103,7 +104,8 @@ public class ManagementChannelTest {
         when(requestResponseChannel.getErrorContext()).thenReturn(errorContext);
         when(requestResponseChannel.getEndpointStates()).thenReturn(Flux.never());
 
-        managementChannel = new ManagementChannel(requestResponseMono, NAMESPACE, ENTITY_PATH, tokenManager);
+        ChannelCacheWrapper channelCache = new ChannelCacheWrapper(requestResponseMono);
+        managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH, tokenManager);
     }
 
     @AfterEach

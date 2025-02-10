@@ -109,6 +109,10 @@ public final class NotificationHubResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NotificationHubResourceInner innerModel() {
         return this.innerObject;
     }
@@ -134,29 +138,25 @@ public final class NotificationHubResourceImpl
     }
 
     public NotificationHubResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, namespaceName, notificationHubName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .createOrUpdateWithResponse(resourceGroupName, namespaceName, notificationHubName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationHubResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, namespaceName, notificationHubName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .createOrUpdateWithResponse(resourceGroupName, namespaceName, notificationHubName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
-    NotificationHubResourceImpl(
-        String name, com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
+    NotificationHubResourceImpl(String name,
+        com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = new NotificationHubResourceInner();
         this.serviceManager = serviceManager;
         this.notificationHubName = name;
@@ -169,76 +169,63 @@ public final class NotificationHubResourceImpl
     }
 
     public NotificationHubResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .patchWithResponse(
-                    resourceGroupName, namespaceName, notificationHubName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .patchWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationHubResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .patchWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .patchWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    NotificationHubResourceImpl(
-        NotificationHubResourceInner innerObject,
+    NotificationHubResourceImpl(NotificationHubResourceInner innerObject,
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.namespaceName = Utils.getValueFromIdByName(innerObject.id(), "namespaces");
-        this.notificationHubName = Utils.getValueFromIdByName(innerObject.id(), "notificationHubs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.namespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "namespaces");
+        this.notificationHubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "notificationHubs");
     }
 
     public NotificationHubResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .getWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationHubResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .getWithResponse(resourceGroupName, namespaceName, notificationHubName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, context)
+            .getValue();
         return this;
+    }
+
+    public Response<DebugSendResponse> debugSendWithResponse(Object parameters, Context context) {
+        return serviceManager.notificationHubs()
+            .debugSendWithResponse(resourceGroupName, namespaceName, notificationHubName, parameters, context);
     }
 
     public DebugSendResponse debugSend() {
         return serviceManager.notificationHubs().debugSend(resourceGroupName, namespaceName, notificationHubName);
     }
 
-    public Response<DebugSendResponse> debugSendWithResponse(Object parameters, Context context) {
-        return serviceManager
-            .notificationHubs()
-            .debugSendWithResponse(resourceGroupName, namespaceName, notificationHubName, parameters, context);
+    public Response<PnsCredentialsResource> getPnsCredentialsWithResponse(Context context) {
+        return serviceManager.notificationHubs()
+            .getPnsCredentialsWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
     }
 
     public PnsCredentialsResource getPnsCredentials() {
-        return serviceManager
-            .notificationHubs()
+        return serviceManager.notificationHubs()
             .getPnsCredentials(resourceGroupName, namespaceName, notificationHubName);
-    }
-
-    public Response<PnsCredentialsResource> getPnsCredentialsWithResponse(Context context) {
-        return serviceManager
-            .notificationHubs()
-            .getPnsCredentialsWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
     }
 
     public NotificationHubResourceImpl withRegion(Region location) {
@@ -291,8 +278,8 @@ public final class NotificationHubResourceImpl
         }
     }
 
-    public NotificationHubResourceImpl withAuthorizationRules(
-        List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
+    public NotificationHubResourceImpl
+        withAuthorizationRules(List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
         if (isInCreateMode()) {
             this.createParameters.withAuthorizationRules(authorizationRules);
             return this;

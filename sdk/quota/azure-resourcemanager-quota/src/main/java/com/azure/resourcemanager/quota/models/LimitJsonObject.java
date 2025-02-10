@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * LimitJson abstract class.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "limitObjectType",
-    defaultImpl = LimitJsonObject.class)
-@JsonTypeName("LimitJsonObject")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "LimitValue", value = LimitObject.class) })
 @Immutable
-public class LimitJsonObject {
+public class LimitJsonObject implements JsonSerializable<LimitJsonObject> {
+    /*
+     * The limit object type.
+     */
+    private LimitType limitObjectType = LimitType.fromString("LimitJsonObject");
+
     /**
      * Creates an instance of LimitJsonObject class.
      */
     public LimitJsonObject() {
+    }
+
+    /**
+     * Get the limitObjectType property: The limit object type.
+     * 
+     * @return the limitObjectType value.
+     */
+    public LimitType limitObjectType() {
+        return this.limitObjectType;
     }
 
     /**
@@ -33,5 +42,67 @@ public class LimitJsonObject {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("limitObjectType",
+            this.limitObjectType == null ? null : this.limitObjectType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LimitJsonObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LimitJsonObject if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LimitJsonObject.
+     */
+    public static LimitJsonObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("limitObjectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("LimitValue".equals(discriminatorValue)) {
+                    return LimitObject.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static LimitJsonObject fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LimitJsonObject deserializedLimitJsonObject = new LimitJsonObject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limitObjectType".equals(fieldName)) {
+                    deserializedLimitJsonObject.limitObjectType = LimitType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLimitJsonObject;
+        });
     }
 }

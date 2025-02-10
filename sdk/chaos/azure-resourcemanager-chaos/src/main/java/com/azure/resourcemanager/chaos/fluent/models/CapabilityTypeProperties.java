@@ -5,80 +5,78 @@
 package com.azure.resourcemanager.chaos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.chaos.models.CapabilityTypePropertiesRuntimeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Model that represents the Capability Type properties model. */
+/**
+ * Model that represents the Capability Type properties model.
+ */
 @Fluent
-public final class CapabilityTypeProperties {
+public final class CapabilityTypeProperties implements JsonSerializable<CapabilityTypeProperties> {
     /*
      * String of the Publisher that this Capability Type extends.
      */
-    @JsonProperty(value = "publisher", access = JsonProperty.Access.WRITE_ONLY)
     private String publisher;
 
     /*
      * String of the Target Type that this Capability Type extends.
      */
-    @JsonProperty(value = "targetType", access = JsonProperty.Access.WRITE_ONLY)
     private String targetType;
 
     /*
      * Localized string of the display name.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Localized string of the description.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * URL to retrieve JSON schema of the Capability Type parameters.
      */
-    @JsonProperty(value = "parametersSchema", access = JsonProperty.Access.WRITE_ONLY)
     private String parametersSchema;
 
     /*
      * String of the URN for this Capability Type.
      */
-    @JsonProperty(value = "urn", access = JsonProperty.Access.WRITE_ONLY)
     private String urn;
 
     /*
      * String of the kind of this Capability Type.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * Control plane actions necessary to execute capability type.
      */
-    @JsonProperty(value = "azureRbacActions")
     private List<String> azureRbacActions;
 
     /*
      * Data plane actions necessary to execute capability type.
      */
-    @JsonProperty(value = "azureRbacDataActions")
     private List<String> azureRbacDataActions;
 
     /*
      * Runtime properties of this Capability Type.
      */
-    @JsonProperty(value = "runtimeProperties")
     private CapabilityTypePropertiesRuntimeProperties runtimeProperties;
 
-    /** Creates an instance of CapabilityTypeProperties class. */
+    /**
+     * Creates an instance of CapabilityTypeProperties class.
+     */
     public CapabilityTypeProperties() {
     }
 
     /**
      * Get the publisher property: String of the Publisher that this Capability Type extends.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -87,7 +85,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the targetType property: String of the Target Type that this Capability Type extends.
-     *
+     * 
      * @return the targetType value.
      */
     public String targetType() {
@@ -96,7 +94,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the displayName property: Localized string of the display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -105,7 +103,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the description property: Localized string of the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -114,7 +112,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the parametersSchema property: URL to retrieve JSON schema of the Capability Type parameters.
-     *
+     * 
      * @return the parametersSchema value.
      */
     public String parametersSchema() {
@@ -123,7 +121,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the urn property: String of the URN for this Capability Type.
-     *
+     * 
      * @return the urn value.
      */
     public String urn() {
@@ -132,7 +130,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the kind property: String of the kind of this Capability Type.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -141,7 +139,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the azureRbacActions property: Control plane actions necessary to execute capability type.
-     *
+     * 
      * @return the azureRbacActions value.
      */
     public List<String> azureRbacActions() {
@@ -150,7 +148,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Set the azureRbacActions property: Control plane actions necessary to execute capability type.
-     *
+     * 
      * @param azureRbacActions the azureRbacActions value to set.
      * @return the CapabilityTypeProperties object itself.
      */
@@ -161,7 +159,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the azureRbacDataActions property: Data plane actions necessary to execute capability type.
-     *
+     * 
      * @return the azureRbacDataActions value.
      */
     public List<String> azureRbacDataActions() {
@@ -170,7 +168,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Set the azureRbacDataActions property: Data plane actions necessary to execute capability type.
-     *
+     * 
      * @param azureRbacDataActions the azureRbacDataActions value to set.
      * @return the CapabilityTypeProperties object itself.
      */
@@ -181,7 +179,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the runtimeProperties property: Runtime properties of this Capability Type.
-     *
+     * 
      * @return the runtimeProperties value.
      */
     public CapabilityTypePropertiesRuntimeProperties runtimeProperties() {
@@ -190,7 +188,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Set the runtimeProperties property: Runtime properties of this Capability Type.
-     *
+     * 
      * @param runtimeProperties the runtimeProperties value to set.
      * @return the CapabilityTypeProperties object itself.
      */
@@ -201,12 +199,73 @@ public final class CapabilityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (runtimeProperties() != null) {
             runtimeProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("azureRbacActions", this.azureRbacActions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("azureRbacDataActions", this.azureRbacDataActions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("runtimeProperties", this.runtimeProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilityTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapabilityTypeProperties.
+     */
+    public static CapabilityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilityTypeProperties deserializedCapabilityTypeProperties = new CapabilityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publisher".equals(fieldName)) {
+                    deserializedCapabilityTypeProperties.publisher = reader.getString();
+                } else if ("targetType".equals(fieldName)) {
+                    deserializedCapabilityTypeProperties.targetType = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedCapabilityTypeProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedCapabilityTypeProperties.description = reader.getString();
+                } else if ("parametersSchema".equals(fieldName)) {
+                    deserializedCapabilityTypeProperties.parametersSchema = reader.getString();
+                } else if ("urn".equals(fieldName)) {
+                    deserializedCapabilityTypeProperties.urn = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedCapabilityTypeProperties.kind = reader.getString();
+                } else if ("azureRbacActions".equals(fieldName)) {
+                    List<String> azureRbacActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCapabilityTypeProperties.azureRbacActions = azureRbacActions;
+                } else if ("azureRbacDataActions".equals(fieldName)) {
+                    List<String> azureRbacDataActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCapabilityTypeProperties.azureRbacDataActions = azureRbacDataActions;
+                } else if ("runtimeProperties".equals(fieldName)) {
+                    deserializedCapabilityTypeProperties.runtimeProperties
+                        = CapabilityTypePropertiesRuntimeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilityTypeProperties;
+        });
     }
 }

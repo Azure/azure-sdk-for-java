@@ -15,27 +15,24 @@ import org.junit.jupiter.api.Assertions;
 public final class LatencyScorecardInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LatencyScorecardInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"id\":\"rlazszrnw\",\"name\":\"indfpwpjyl\",\"description\":\"tlhflsjcdhszf\",\"endpointA\":\"fbgofeljagrqmqh\",\"endpointB\":\"vriiio\",\"startDateTimeUTC\":\"2021-04-25T18:11:53Z\",\"endDateTimeUTC\":\"2021-08-27T10:03:09Z\",\"country\":\"fk\",\"latencyMetrics\":[{\"name\":\"ex\",\"endDateTimeUTC\":\"wueluqhhahhxv\",\"aValue\":41.38071,\"bValue\":99.721016,\"delta\":54.870827,\"deltaPercent\":0.074237585,\"aCLower95CI\":85.248795,\"aHUpper95CI\":61.13008,\"bCLower95CI\":89.108795,\"bUpper95CI\":78.10289},{\"name\":\"qs\",\"endDateTimeUTC\":\"qxujxukndxd\",\"aValue\":84.70417,\"bValue\":35.546135,\"delta\":47.985943,\"deltaPercent\":54.662663,\"aCLower95CI\":41.437172,\"aHUpper95CI\":46.247612,\"bCLower95CI\":21.394676,\"bUpper95CI\":94.70884},{\"name\":\"whbotzingamv\",\"endDateTimeUTC\":\"ho\",\"aValue\":41.892742,\"bValue\":85.72325,\"delta\":94.45262,\"deltaPercent\":97.52175,\"aCLower95CI\":24.885792,\"aHUpper95CI\":24.78965,\"bCLower95CI\":77.53663,\"bUpper95CI\":46.93581}]},\"location\":\"nwcvtbvkayhmtnv\",\"tags\":{\"cjaesgvvs\":\"atkzwpcnpw\",\"wygzlvdnkfxusem\":\"cyajguqf\",\"pfcqdp\":\"wzrmuh\"},\"id\":\"qxqvpsvuoymgc\",\"name\":\"elvezrypq\",\"type\":\"mfe\"}")
-                .toObject(LatencyScorecardInner.class);
-        Assertions.assertEquals("nwcvtbvkayhmtnv", model.location());
-        Assertions.assertEquals("atkzwpcnpw", model.tags().get("cjaesgvvs"));
+        LatencyScorecardInner model = BinaryData.fromString(
+            "{\"properties\":{\"id\":\"tngfdgugeyzihgr\",\"name\":\"ui\",\"description\":\"bsnmfpph\",\"endpointA\":\"eevy\",\"endpointB\":\"hsgz\",\"startDateTimeUTC\":\"2021-09-04T20:31:38Z\",\"endDateTimeUTC\":\"2021-04-26T23:03:25Z\",\"country\":\"mfg\",\"latencyMetrics\":[{\"name\":\"qgleohibetnluank\",\"endDateTimeUTC\":\"fxeeebtijvacvbm\",\"aValue\":39.060837,\"bValue\":0.7475734,\"delta\":82.000725,\"deltaPercent\":54.551792,\"aCLower95CI\":9.691727,\"aHUpper95CI\":32.127506,\"bCLower95CI\":83.196625,\"bUpper95CI\":15.094423},{\"name\":\"h\",\"endDateTimeUTC\":\"uyxoaf\",\"aValue\":43.28481,\"bValue\":12.039203,\"delta\":22.252481,\"deltaPercent\":12.664461,\"aCLower95CI\":42.13147,\"aHUpper95CI\":6.4531984,\"bCLower95CI\":98.56035,\"bUpper95CI\":70.414665}]},\"location\":\"xirpghriy\",\"tags\":{\"yznuciqd\":\"eyhlqhykprl\"},\"id\":\"mexiitdfuxt\",\"name\":\"asiibmiybnnust\",\"type\":\"nlj\"}")
+            .toObject(LatencyScorecardInner.class);
+        Assertions.assertEquals("xirpghriy", model.location());
+        Assertions.assertEquals("eyhlqhykprl", model.tags().get("yznuciqd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LatencyScorecardInner model =
-            new LatencyScorecardInner()
-                .withLocation("nwcvtbvkayhmtnv")
-                .withTags(mapOf("cjaesgvvs", "atkzwpcnpw", "wygzlvdnkfxusem", "cyajguqf", "pfcqdp", "wzrmuh"))
-                .withLatencyMetrics(Arrays.asList(new LatencyMetric(), new LatencyMetric(), new LatencyMetric()));
+        LatencyScorecardInner model = new LatencyScorecardInner().withLocation("xirpghriy")
+            .withTags(mapOf("yznuciqd", "eyhlqhykprl"))
+            .withLatencyMetrics(Arrays.asList(new LatencyMetric(), new LatencyMetric()));
         model = BinaryData.fromObject(model).toObject(LatencyScorecardInner.class);
-        Assertions.assertEquals("nwcvtbvkayhmtnv", model.location());
-        Assertions.assertEquals("atkzwpcnpw", model.tags().get("cjaesgvvs"));
+        Assertions.assertEquals("xirpghriy", model.location());
+        Assertions.assertEquals("eyhlqhykprl", model.tags().get("yznuciqd"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

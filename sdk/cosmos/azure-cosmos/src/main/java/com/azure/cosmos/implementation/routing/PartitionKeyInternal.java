@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.as;
 
@@ -260,6 +261,14 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
             && collection.getPartitionKey().getPaths().size() > partitionKeyInternal.getComponents().size();
     }
 
+    public Object[] toObjectArray() {
+        if (this.components == null) {
+            return null;
+        }
+
+        return this.components.stream().map(component -> component.toObject()).toArray();
+    }
+
     @SuppressWarnings("serial")
     static final class PartitionKeyInternalJsonSerializer extends StdSerializer<PartitionKeyInternal> {
 
@@ -371,7 +380,7 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
             throw new IllegalStateException(String.format(
                     "Unable to deserialize PartitionKeyInternal '%s'",
-                    root.toString()));
+                    root));
         }
     }
 }

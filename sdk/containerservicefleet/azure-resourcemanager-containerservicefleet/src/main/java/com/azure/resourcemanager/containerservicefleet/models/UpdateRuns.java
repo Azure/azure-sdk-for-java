@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of UpdateRuns. */
+/**
+ * Resource collection API of UpdateRuns.
+ */
 public interface UpdateRuns {
     /**
      * List UpdateRun resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface UpdateRuns {
 
     /**
      * List UpdateRun resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface UpdateRuns {
 
     /**
      * Get a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -47,12 +49,12 @@ public interface UpdateRuns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a UpdateRun along with {@link Response}.
      */
-    Response<UpdateRun> getWithResponse(
-        String resourceGroupName, String fleetName, String updateRunName, Context context);
+    Response<UpdateRun> getWithResponse(String resourceGroupName, String fleetName, String updateRunName,
+        Context context);
 
     /**
      * Get a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -65,7 +67,7 @@ public interface UpdateRuns {
 
     /**
      * Delete a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -77,7 +79,7 @@ public interface UpdateRuns {
 
     /**
      * Delete a UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -90,8 +92,39 @@ public interface UpdateRuns {
     void delete(String resourceGroupName, String fleetName, String updateRunName, String ifMatch, Context context);
 
     /**
+     * Skips one or a combination of member/group/stage/afterStageWait(s) of an update run.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param updateRunName The name of the UpdateRun resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
+     */
+    UpdateRun skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body);
+
+    /**
+     * Skips one or a combination of member/group/stage/afterStageWait(s) of an update run.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param updateRunName The name of the UpdateRun resource.
+     * @param body The content of the action request.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
+     */
+    UpdateRun skip(String resourceGroupName, String fleetName, String updateRunName, SkipProperties body,
+        String ifMatch, Context context);
+
+    /**
      * Starts an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -104,7 +137,7 @@ public interface UpdateRuns {
 
     /**
      * Starts an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -119,7 +152,7 @@ public interface UpdateRuns {
 
     /**
      * Stops an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -132,7 +165,7 @@ public interface UpdateRuns {
 
     /**
      * Stops an UpdateRun.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateRunName The name of the UpdateRun resource.
@@ -147,7 +180,7 @@ public interface UpdateRuns {
 
     /**
      * Get a UpdateRun.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,7 +191,7 @@ public interface UpdateRuns {
 
     /**
      * Get a UpdateRun.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +203,7 @@ public interface UpdateRuns {
 
     /**
      * Delete a UpdateRun.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -180,7 +213,7 @@ public interface UpdateRuns {
 
     /**
      * Delete a UpdateRun.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
@@ -192,7 +225,7 @@ public interface UpdateRuns {
 
     /**
      * Begins definition for a new UpdateRun resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new UpdateRun definition.
      */

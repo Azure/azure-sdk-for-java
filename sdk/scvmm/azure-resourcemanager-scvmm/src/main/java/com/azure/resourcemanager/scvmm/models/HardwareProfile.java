@@ -5,57 +5,61 @@
 package com.azure.resourcemanager.scvmm.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the resource properties. */
+/**
+ * Defines the resource properties.
+ */
 @Fluent
-public final class HardwareProfile {
+public final class HardwareProfile implements JsonSerializable<HardwareProfile> {
     /*
      * MemoryMB is the size of a virtual machine's memory, in MB.
      */
-    @JsonProperty(value = "memoryMB")
     private Integer memoryMB;
 
     /*
      * Gets or sets the number of vCPUs for the vm.
      */
-    @JsonProperty(value = "cpuCount")
     private Integer cpuCount;
 
     /*
-     * Gets or sets a value indicating whether to enable processor
-     * compatibility mode for live migration of VMs.
+     * Gets or sets a value indicating whether to enable processor compatibility mode for live migration of VMs.
      */
-    @JsonProperty(value = "limitCpuForMigration")
     private LimitCpuForMigration limitCpuForMigration;
 
     /*
      * Gets or sets a value indicating whether to enable dynamic memory or not.
      */
-    @JsonProperty(value = "dynamicMemoryEnabled")
     private DynamicMemoryEnabled dynamicMemoryEnabled;
 
     /*
      * Gets or sets the max dynamic memory for the vm.
      */
-    @JsonProperty(value = "dynamicMemoryMaxMB")
     private Integer dynamicMemoryMaxMB;
 
     /*
      * Gets or sets the min dynamic memory for the vm.
      */
-    @JsonProperty(value = "dynamicMemoryMinMB")
     private Integer dynamicMemoryMinMB;
 
     /*
      * Gets highly available property.
      */
-    @JsonProperty(value = "isHighlyAvailable")
-    private String isHighlyAvailable;
+    private IsHighlyAvailable isHighlyAvailable;
+
+    /**
+     * Creates an instance of HardwareProfile class.
+     */
+    public HardwareProfile() {
+    }
 
     /**
      * Get the memoryMB property: MemoryMB is the size of a virtual machine's memory, in MB.
-     *
+     * 
      * @return the memoryMB value.
      */
     public Integer memoryMB() {
@@ -64,7 +68,7 @@ public final class HardwareProfile {
 
     /**
      * Set the memoryMB property: MemoryMB is the size of a virtual machine's memory, in MB.
-     *
+     * 
      * @param memoryMB the memoryMB value to set.
      * @return the HardwareProfile object itself.
      */
@@ -75,7 +79,7 @@ public final class HardwareProfile {
 
     /**
      * Get the cpuCount property: Gets or sets the number of vCPUs for the vm.
-     *
+     * 
      * @return the cpuCount value.
      */
     public Integer cpuCount() {
@@ -84,7 +88,7 @@ public final class HardwareProfile {
 
     /**
      * Set the cpuCount property: Gets or sets the number of vCPUs for the vm.
-     *
+     * 
      * @param cpuCount the cpuCount value to set.
      * @return the HardwareProfile object itself.
      */
@@ -96,7 +100,7 @@ public final class HardwareProfile {
     /**
      * Get the limitCpuForMigration property: Gets or sets a value indicating whether to enable processor compatibility
      * mode for live migration of VMs.
-     *
+     * 
      * @return the limitCpuForMigration value.
      */
     public LimitCpuForMigration limitCpuForMigration() {
@@ -106,7 +110,7 @@ public final class HardwareProfile {
     /**
      * Set the limitCpuForMigration property: Gets or sets a value indicating whether to enable processor compatibility
      * mode for live migration of VMs.
-     *
+     * 
      * @param limitCpuForMigration the limitCpuForMigration value to set.
      * @return the HardwareProfile object itself.
      */
@@ -117,7 +121,7 @@ public final class HardwareProfile {
 
     /**
      * Get the dynamicMemoryEnabled property: Gets or sets a value indicating whether to enable dynamic memory or not.
-     *
+     * 
      * @return the dynamicMemoryEnabled value.
      */
     public DynamicMemoryEnabled dynamicMemoryEnabled() {
@@ -126,7 +130,7 @@ public final class HardwareProfile {
 
     /**
      * Set the dynamicMemoryEnabled property: Gets or sets a value indicating whether to enable dynamic memory or not.
-     *
+     * 
      * @param dynamicMemoryEnabled the dynamicMemoryEnabled value to set.
      * @return the HardwareProfile object itself.
      */
@@ -137,7 +141,7 @@ public final class HardwareProfile {
 
     /**
      * Get the dynamicMemoryMaxMB property: Gets or sets the max dynamic memory for the vm.
-     *
+     * 
      * @return the dynamicMemoryMaxMB value.
      */
     public Integer dynamicMemoryMaxMB() {
@@ -146,7 +150,7 @@ public final class HardwareProfile {
 
     /**
      * Set the dynamicMemoryMaxMB property: Gets or sets the max dynamic memory for the vm.
-     *
+     * 
      * @param dynamicMemoryMaxMB the dynamicMemoryMaxMB value to set.
      * @return the HardwareProfile object itself.
      */
@@ -157,7 +161,7 @@ public final class HardwareProfile {
 
     /**
      * Get the dynamicMemoryMinMB property: Gets or sets the min dynamic memory for the vm.
-     *
+     * 
      * @return the dynamicMemoryMinMB value.
      */
     public Integer dynamicMemoryMinMB() {
@@ -166,7 +170,7 @@ public final class HardwareProfile {
 
     /**
      * Set the dynamicMemoryMinMB property: Gets or sets the min dynamic memory for the vm.
-     *
+     * 
      * @param dynamicMemoryMinMB the dynamicMemoryMinMB value to set.
      * @return the HardwareProfile object itself.
      */
@@ -177,29 +181,75 @@ public final class HardwareProfile {
 
     /**
      * Get the isHighlyAvailable property: Gets highly available property.
-     *
+     * 
      * @return the isHighlyAvailable value.
      */
-    public String isHighlyAvailable() {
+    public IsHighlyAvailable isHighlyAvailable() {
         return this.isHighlyAvailable;
     }
 
     /**
-     * Set the isHighlyAvailable property: Gets highly available property.
-     *
-     * @param isHighlyAvailable the isHighlyAvailable value to set.
-     * @return the HardwareProfile object itself.
-     */
-    public HardwareProfile withIsHighlyAvailable(String isHighlyAvailable) {
-        this.isHighlyAvailable = isHighlyAvailable;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("memoryMB", this.memoryMB);
+        jsonWriter.writeNumberField("cpuCount", this.cpuCount);
+        jsonWriter.writeStringField("limitCpuForMigration",
+            this.limitCpuForMigration == null ? null : this.limitCpuForMigration.toString());
+        jsonWriter.writeStringField("dynamicMemoryEnabled",
+            this.dynamicMemoryEnabled == null ? null : this.dynamicMemoryEnabled.toString());
+        jsonWriter.writeNumberField("dynamicMemoryMaxMB", this.dynamicMemoryMaxMB);
+        jsonWriter.writeNumberField("dynamicMemoryMinMB", this.dynamicMemoryMinMB);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HardwareProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HardwareProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HardwareProfile.
+     */
+    public static HardwareProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HardwareProfile deserializedHardwareProfile = new HardwareProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("memoryMB".equals(fieldName)) {
+                    deserializedHardwareProfile.memoryMB = reader.getNullable(JsonReader::getInt);
+                } else if ("cpuCount".equals(fieldName)) {
+                    deserializedHardwareProfile.cpuCount = reader.getNullable(JsonReader::getInt);
+                } else if ("limitCpuForMigration".equals(fieldName)) {
+                    deserializedHardwareProfile.limitCpuForMigration
+                        = LimitCpuForMigration.fromString(reader.getString());
+                } else if ("dynamicMemoryEnabled".equals(fieldName)) {
+                    deserializedHardwareProfile.dynamicMemoryEnabled
+                        = DynamicMemoryEnabled.fromString(reader.getString());
+                } else if ("dynamicMemoryMaxMB".equals(fieldName)) {
+                    deserializedHardwareProfile.dynamicMemoryMaxMB = reader.getNullable(JsonReader::getInt);
+                } else if ("dynamicMemoryMinMB".equals(fieldName)) {
+                    deserializedHardwareProfile.dynamicMemoryMinMB = reader.getNullable(JsonReader::getInt);
+                } else if ("isHighlyAvailable".equals(fieldName)) {
+                    deserializedHardwareProfile.isHighlyAvailable = IsHighlyAvailable.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHardwareProfile;
+        });
     }
 }

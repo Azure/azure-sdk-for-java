@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DataCollectionRules ListByResourceGroup. */
+/**
+ * Samples for DataCollectionRules ListByResourceGroup.
+ */
 public final class DataCollectionRulesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionRulesListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
+     * DataCollectionRulesListByResourceGroup.json
      */
     /**
      * Sample code: List data collection rules by resource group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listDataCollectionRulesByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getDataCollectionRules()
-            .listByResourceGroup("myResourceGroup", Context.NONE);
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

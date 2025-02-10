@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.ServiceBusDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The properties that are associated with a Service Bus Topic output. */
+/**
+ * The properties that are associated with a Service Bus Topic output.
+ */
 @Fluent
 public final class ServiceBusTopicOutputDataSourceProperties extends ServiceBusDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceBusTopicOutputDataSourceProperties.class);
-
     /*
-     * The name of the Service Bus Topic. Required on PUT (CreateOrReplace)
-     * requests.
+     * The name of the Service Bus Topic. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "topicName")
     private String topicName;
 
     /*
-     * A string array of the names of output columns to be attached to Service
-     * Bus messages as custom properties.
+     * A string array of the names of output columns to be attached to Service Bus messages as custom properties.
      */
-    @JsonProperty(value = "propertyColumns")
     private List<String> propertyColumns;
 
     /*
-     * The system properties associated with the Service Bus Topic Output. The
-     * following system properties are supported: ReplyToSessionId,
-     * ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey,
-     * SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label,
-     * ScheduledEnqueueTimeUtc.
+     * The system properties associated with the Service Bus Topic Output. The following system properties are
+     * supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey, SessionId,
+     * ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
      */
-    @JsonProperty(value = "systemPropertyColumns")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> systemPropertyColumns;
 
     /**
+     * Creates an instance of ServiceBusTopicOutputDataSourceProperties class.
+     */
+    public ServiceBusTopicOutputDataSourceProperties() {
+    }
+
+    /**
      * Get the topicName property: The name of the Service Bus Topic. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the topicName value.
      */
     public String topicName() {
@@ -55,7 +53,7 @@ public final class ServiceBusTopicOutputDataSourceProperties extends ServiceBusD
 
     /**
      * Set the topicName property: The name of the Service Bus Topic. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param topicName the topicName value to set.
      * @return the ServiceBusTopicOutputDataSourceProperties object itself.
      */
@@ -67,7 +65,7 @@ public final class ServiceBusTopicOutputDataSourceProperties extends ServiceBusD
     /**
      * Get the propertyColumns property: A string array of the names of output columns to be attached to Service Bus
      * messages as custom properties.
-     *
+     * 
      * @return the propertyColumns value.
      */
     public List<String> propertyColumns() {
@@ -77,7 +75,7 @@ public final class ServiceBusTopicOutputDataSourceProperties extends ServiceBusD
     /**
      * Set the propertyColumns property: A string array of the names of output columns to be attached to Service Bus
      * messages as custom properties.
-     *
+     * 
      * @param propertyColumns the propertyColumns value to set.
      * @return the ServiceBusTopicOutputDataSourceProperties object itself.
      */
@@ -90,7 +88,7 @@ public final class ServiceBusTopicOutputDataSourceProperties extends ServiceBusD
      * Get the systemPropertyColumns property: The system properties associated with the Service Bus Topic Output. The
      * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
      * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
-     *
+     * 
      * @return the systemPropertyColumns value.
      */
     public Map<String, String> systemPropertyColumns() {
@@ -101,38 +99,46 @@ public final class ServiceBusTopicOutputDataSourceProperties extends ServiceBusD
      * Set the systemPropertyColumns property: The system properties associated with the Service Bus Topic Output. The
      * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
      * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
-     *
+     * 
      * @param systemPropertyColumns the systemPropertyColumns value to set.
      * @return the ServiceBusTopicOutputDataSourceProperties object itself.
      */
-    public ServiceBusTopicOutputDataSourceProperties withSystemPropertyColumns(
-        Map<String, String> systemPropertyColumns) {
+    public ServiceBusTopicOutputDataSourceProperties
+        withSystemPropertyColumns(Map<String, String> systemPropertyColumns) {
         this.systemPropertyColumns = systemPropertyColumns;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBusTopicOutputDataSourceProperties withServiceBusNamespace(String serviceBusNamespace) {
         super.withServiceBusNamespace(serviceBusNamespace);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBusTopicOutputDataSourceProperties withSharedAccessPolicyName(String sharedAccessPolicyName) {
         super.withSharedAccessPolicyName(sharedAccessPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBusTopicOutputDataSourceProperties withSharedAccessPolicyKey(String sharedAccessPolicyKey) {
         super.withSharedAccessPolicyKey(sharedAccessPolicyKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBusTopicOutputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
         super.withAuthenticationMode(authenticationMode);
@@ -141,11 +147,72 @@ public final class ServiceBusTopicOutputDataSourceProperties extends ServiceBusD
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceBusNamespace", serviceBusNamespace());
+        jsonWriter.writeStringField("sharedAccessPolicyName", sharedAccessPolicyName());
+        jsonWriter.writeStringField("sharedAccessPolicyKey", sharedAccessPolicyKey());
+        jsonWriter.writeStringField("authenticationMode",
+            authenticationMode() == null ? null : authenticationMode().toString());
+        jsonWriter.writeStringField("topicName", this.topicName);
+        jsonWriter.writeArrayField("propertyColumns", this.propertyColumns,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("systemPropertyColumns", this.systemPropertyColumns,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceBusTopicOutputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceBusTopicOutputDataSourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceBusTopicOutputDataSourceProperties.
+     */
+    public static ServiceBusTopicOutputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceBusTopicOutputDataSourceProperties deserializedServiceBusTopicOutputDataSourceProperties
+                = new ServiceBusTopicOutputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceBusNamespace".equals(fieldName)) {
+                    deserializedServiceBusTopicOutputDataSourceProperties.withServiceBusNamespace(reader.getString());
+                } else if ("sharedAccessPolicyName".equals(fieldName)) {
+                    deserializedServiceBusTopicOutputDataSourceProperties
+                        .withSharedAccessPolicyName(reader.getString());
+                } else if ("sharedAccessPolicyKey".equals(fieldName)) {
+                    deserializedServiceBusTopicOutputDataSourceProperties.withSharedAccessPolicyKey(reader.getString());
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedServiceBusTopicOutputDataSourceProperties
+                        .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
+                } else if ("topicName".equals(fieldName)) {
+                    deserializedServiceBusTopicOutputDataSourceProperties.topicName = reader.getString();
+                } else if ("propertyColumns".equals(fieldName)) {
+                    List<String> propertyColumns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedServiceBusTopicOutputDataSourceProperties.propertyColumns = propertyColumns;
+                } else if ("systemPropertyColumns".equals(fieldName)) {
+                    Map<String, String> systemPropertyColumns = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceBusTopicOutputDataSourceProperties.systemPropertyColumns = systemPropertyColumns;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceBusTopicOutputDataSourceProperties;
+        });
     }
 }

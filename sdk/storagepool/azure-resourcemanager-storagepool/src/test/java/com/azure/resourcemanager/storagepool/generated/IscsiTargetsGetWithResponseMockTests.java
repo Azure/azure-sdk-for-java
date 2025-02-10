@@ -6,71 +6,44 @@ package com.azure.resourcemanager.storagepool.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagepool.StoragePoolManager;
 import com.azure.resourcemanager.storagepool.models.IscsiTarget;
 import com.azure.resourcemanager.storagepool.models.IscsiTargetAclMode;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IscsiTargetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"aclMode\":\"Dynamic\",\"staticAcls\":[{\"initiatorIqn\":\"kgthrrghxjbd\",\"mappedLuns\":[\"xvcxgfrpdsofbshr\",\"svbuswdvzyy\",\"ycnunvjsrtk\",\"awnopqgikyzirtxd\"]},{\"initiatorIqn\":\"uxzejntpsew\",\"mappedLuns\":[\"oi\",\"qukrydxt\",\"mieoxorgguf\",\"yaomtb\"]}],\"luns\":[{\"name\":\"avgrvkffovjz\",\"managedDiskAzureResourceId\":\"pjbi\",\"lun\":1956695064},{\"name\":\"mfxumvfcluyovw\",\"managedDiskAzureResourceId\":\"nbkfezzxscy\",\"lun\":1673017156}],\"targetIqn\":\"dgirujbzbom\",\"provisioningState\":\"Deleting\",\"status\":\"Unknown\",\"endpoints\":[\"dcqvpn\",\"yujviylwdshfssn\",\"bgye\"],\"port\":934099618,\"sessions\":[\"gaojf\",\"wncot\",\"rfh\"]},\"systemData\":{\"createdBy\":\"tymoxoftp\",\"createdByType\":\"Application\",\"createdAt\":\"2021-09-10T19:58:30Z\",\"lastModifiedBy\":\"zuhx\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-11-07T03:07:36Z\"},\"managedBy\":\"ihhyuspskasd\",\"managedByExtended\":[\"fwdgzxulucvp\",\"mrsreuzvxurisjnh\"],\"id\":\"ytxifqjzgxmrh\",\"name\":\"blwpcesutrgj\",\"type\":\"pauutpw\"}";
 
-        String responseStr =
-            "{\"properties\":{\"aclMode\":\"Static\",\"staticAcls\":[],\"luns\":[],\"targetIqn\":\"xbvtvudu\",\"provisioningState\":\"Updating\",\"status\":\"Healthy\",\"endpoints\":[\"mr\",\"xqtvcofu\",\"f\"],\"port\":2052668715,\"sessions\":[\"u\"]},\"systemData\":{\"createdBy\":\"knnqvsaznq\",\"createdByType\":\"Application\",\"createdAt\":\"2021-06-22T06:44:39Z\",\"lastModifiedBy\":\"sgsahmkycgr\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-11-09T05:24:27Z\"},\"managedBy\":\"taeburuvdm\",\"managedByExtended\":[\"mz\"],\"id\":\"xwabmqoe\",\"name\":\"kif\",\"type\":\"vtpuqujmqlgk\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StoragePoolManager manager = StoragePoolManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        IscsiTarget response = manager.iscsiTargets()
+            .getWithResponse("tw", "sgogczhonnxk", "lgnyhmo", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        StoragePoolManager manager =
-            StoragePoolManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IscsiTarget response =
-            manager
-                .iscsiTargets()
-                .getWithResponse("lxorjaltolmncws", "bqwcsdbnwdcf", "ucqdpfuvglsb", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(IscsiTargetAclMode.STATIC, response.aclMode());
-        Assertions.assertEquals("xbvtvudu", response.targetIqn());
-        Assertions.assertEquals(OperationalStatus.HEALTHY, response.status());
-        Assertions.assertEquals("mr", response.endpoints().get(0));
-        Assertions.assertEquals(2052668715, response.port());
+        Assertions.assertEquals(IscsiTargetAclMode.DYNAMIC, response.aclMode());
+        Assertions.assertEquals("kgthrrghxjbd", response.staticAcls().get(0).initiatorIqn());
+        Assertions.assertEquals("xvcxgfrpdsofbshr", response.staticAcls().get(0).mappedLuns().get(0));
+        Assertions.assertEquals("avgrvkffovjz", response.luns().get(0).name());
+        Assertions.assertEquals("pjbi", response.luns().get(0).managedDiskAzureResourceId());
+        Assertions.assertEquals("dgirujbzbom", response.targetIqn());
+        Assertions.assertEquals(OperationalStatus.UNKNOWN, response.status());
+        Assertions.assertEquals("dcqvpn", response.endpoints().get(0));
+        Assertions.assertEquals(934099618, response.port());
     }
 }

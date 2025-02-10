@@ -11,16 +11,20 @@ public final class AzureDataLakeStoreSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataLakeStoreSink model = BinaryData.fromString(
-            "{\"type\":\"AzureDataLakeStoreSink\",\"copyBehavior\":\"datasyvryo\",\"enableAdlsSingleFileParallel\":\"dataqikcork\",\"writeBatchSize\":\"dataobobxfhtb\",\"writeBatchTimeout\":\"datavwzjycgcie\",\"sinkRetryCount\":\"datax\",\"sinkRetryWait\":\"datazvnghtknr\",\"maxConcurrentConnections\":\"datahysnmyuvf\",\"disableMetricsCollection\":\"datacnrapxw\",\"\":{\"lojjcz\":\"dataxoelfobehrcf\",\"gnqa\":\"dataytfwkvirmbrd\",\"ybh\":\"datankms\"}}")
+            "{\"type\":\"AzureDataLakeStoreSink\",\"copyBehavior\":\"datandfrfhgowhnvc\",\"enableAdlsSingleFileParallel\":\"datamuvgysto\",\"writeBatchSize\":\"datarktodeertyijlvcm\",\"writeBatchTimeout\":\"datanxxw\",\"sinkRetryCount\":\"dataedbdkwzbkhvlsahj\",\"sinkRetryWait\":\"databwyqnlus\",\"maxConcurrentConnections\":\"datalkrcpxlk\",\"disableMetricsCollection\":\"datafxtbvhmsvcmce\",\"\":{\"gkrpjonminsqjnu\":\"datahwriihwxchyy\",\"gkkg\":\"dataiytyarpeyigfdp\",\"bgrtse\":\"dataygjldljgd\",\"kofmtfwculsbnapz\":\"datanowzf\"}}")
             .toObject(AzureDataLakeStoreSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataLakeStoreSink model = new AzureDataLakeStoreSink().withWriteBatchSize("dataobobxfhtb")
-            .withWriteBatchTimeout("datavwzjycgcie").withSinkRetryCount("datax").withSinkRetryWait("datazvnghtknr")
-            .withMaxConcurrentConnections("datahysnmyuvf").withDisableMetricsCollection("datacnrapxw")
-            .withCopyBehavior("datasyvryo").withEnableAdlsSingleFileParallel("dataqikcork");
+        AzureDataLakeStoreSink model = new AzureDataLakeStoreSink().withWriteBatchSize("datarktodeertyijlvcm")
+            .withWriteBatchTimeout("datanxxw")
+            .withSinkRetryCount("dataedbdkwzbkhvlsahj")
+            .withSinkRetryWait("databwyqnlus")
+            .withMaxConcurrentConnections("datalkrcpxlk")
+            .withDisableMetricsCollection("datafxtbvhmsvcmce")
+            .withCopyBehavior("datandfrfhgowhnvc")
+            .withEnableAdlsSingleFileParallel("datamuvgysto");
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreSink.class);
     }
 }

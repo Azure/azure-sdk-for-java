@@ -15,6 +15,8 @@ import com.azure.core.util.Context;
 import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -32,51 +34,49 @@ import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_1;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
+import static com.azure.containers.containerregistry.TestUtils.REGISTRY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V4_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.getAuthority;
+import static com.azure.containers.containerregistry.TestUtils.importImage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryClientIntegrationTests extends ContainerRegistryClientsTestBase {
 
     private ContainerRegistryAsyncClient registryAsyncClient;
     private ContainerRegistryClient registryClient;
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertAsync().build();
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertSync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertSync().build();
     }
+
     private ContainerRegistryAsyncClient getContainerRegistryAsyncClient(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildAsyncClient();
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
+                .buildAsyncClient();
     }
 
     private ContainerRegistryClient getContainerRegistryClient(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
+        return getContainerRegistryBuilder(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
     }
 
     @BeforeEach
-    void beforeEach() {
-        TestUtils.importImage(getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
-        TestUtils.importImage(
-            getTestMode(),
-            ALPINE_REPOSITORY_NAME,
-            Arrays.asList(
-                LATEST_TAG_NAME,
-                V1_TAG_NAME,
-                V2_TAG_NAME,
-                V3_TAG_NAME,
-                V4_TAG_NAME));
+    void beforeEach() throws InterruptedException {
+        importImage(getTestMode(), REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME,
+            Arrays.asList("latest", "v1", "v2", "v3", "v4"), REGISTRY_ENDPOINT);
+
+        importImage(getTestMode(), REGISTRY_NAME, ALPINE_REPOSITORY_NAME,
+            Arrays.asList(LATEST_TAG_NAME, V1_TAG_NAME, V2_TAG_NAME, V3_TAG_NAME, V4_TAG_NAME), REGISTRY_ENDPOINT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -108,7 +108,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
             .verifyComplete();
 
         ArrayList<String> repositories = new ArrayList<>();
-        registryClient.listRepositoryNames().iterableByPage(PAGESIZE_1)
+        registryClient.listRepositoryNames()
+            .iterableByPage(PAGESIZE_1)
             .forEach(res -> repositories.addAll(res.getValue()));
         validateRepositories(repositories);
     }
@@ -120,8 +121,10 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         registryClient = getContainerRegistryClient(httpClient);
 
         ArrayList<String> repositories = new ArrayList<>();
-        assertThrows(IllegalArgumentException.class, () -> registryClient.listRepositoryNames().iterableByPage(-1)
-            .forEach(res -> repositories.addAll(res.getValue())));
+        assertThrows(IllegalArgumentException.class,
+            () -> registryClient.listRepositoryNames()
+                .iterableByPage(-1)
+                .forEach(res -> repositories.addAll(res.getValue())));
 
         StepVerifier.create(registryAsyncClient.listRepositoryNames().byPage(-1))
             .verifyError(IllegalArgumentException.class);
@@ -149,9 +152,7 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
 
         ContainerRepositoryAsync repositoryAsync = registryAsyncClient.getRepository(HELLO_WORLD_REPOSITORY_NAME);
         assertNotNull(repositoryAsync);
-        StepVerifier.create(repositoryAsync.getProperties())
-            .assertNext(this::validateProperties)
-            .verifyComplete();
+        StepVerifier.create(repositoryAsync.getProperties()).assertNext(this::validateProperties).verifyComplete();
 
         ContainerRepository repository = registryClient.getRepository(HELLO_WORLD_REPOSITORY_NAME);
         assertNotNull(repository);
@@ -164,7 +165,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
         registryClient = getContainerRegistryClient(httpClient);
 
-        RegistryArtifactAsync registryArtifactAsync = registryAsyncClient.getArtifact(HELLO_WORLD_REPOSITORY_NAME, LATEST_TAG_NAME);
+        RegistryArtifactAsync registryArtifactAsync
+            = registryAsyncClient.getArtifact(HELLO_WORLD_REPOSITORY_NAME, LATEST_TAG_NAME);
         assertNotNull(registryArtifactAsync);
         StepVerifier.create(registryArtifactAsync.getManifestProperties())
             .assertNext(res -> validateManifestProperties(res, true, false))
@@ -207,8 +209,7 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
             .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_GOVERNMENT)
             .retryOptions(new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(1))))
             .buildClient();
-        assertThrows(ClientAuthenticationException.class, () -> throwableRegistryClient.listRepositoryNames().stream()
-            .collect(Collectors.toList()));
+        assertThrows(ClientAuthenticationException.class,
+            () -> throwableRegistryClient.listRepositoryNames().stream().collect(Collectors.toList()));
     }
 }
-

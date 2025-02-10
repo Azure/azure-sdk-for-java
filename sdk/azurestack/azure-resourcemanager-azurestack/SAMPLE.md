@@ -44,14 +44,18 @@
 ### CloudManifestFile_Get
 
 ```java
-/** Samples for CloudManifestFile Get. */
+/**
+ * Samples for CloudManifestFile Get.
+ */
 public final class CloudManifestFileGetSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CloudManifestFile/Get.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CloudManifestFile/Get.
+     * json
      */
     /**
      * Sample code: Returns the properties of a cloud specific manifest file.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsThePropertiesOfACloudSpecificManifestFile(
@@ -64,14 +68,18 @@ public final class CloudManifestFileGetSamples {
 ### CloudManifestFile_List
 
 ```java
-/** Samples for CloudManifestFile List. */
+/**
+ * Samples for CloudManifestFile List.
+ */
 public final class CloudManifestFileListSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CloudManifestFile/List.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CloudManifestFile/List.
+     * json
      */
     /**
      * Sample code: Returns the properties of a cloud specific manifest file with latest version.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsThePropertiesOfACloudSpecificManifestFileWithLatestVersion(
@@ -84,20 +92,23 @@ public final class CloudManifestFileListSamples {
 ### CustomerSubscriptions_Create
 
 ```java
-/** Samples for CustomerSubscriptions Create. */
+/**
+ * Samples for CustomerSubscriptions Create.
+ */
 public final class CustomerSubscriptionsCreateSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CustomerSubscription/Put.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CustomerSubscription/
+     * Put.json
      */
     /**
      * Sample code: Creates a new customer subscription under a registration.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void createsANewCustomerSubscriptionUnderARegistration(
         com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .customerSubscriptions()
+        manager.customerSubscriptions()
             .define("E09A4E93-29A7-4EBA-A6D4-76202383F07F")
             .withExistingRegistration("azurestack", "testregistration")
             .withTenantId("dbab3982-796f-4d03-9908-044c08aef8a2")
@@ -109,24 +120,24 @@ public final class CustomerSubscriptionsCreateSamples {
 ### CustomerSubscriptions_Delete
 
 ```java
-/** Samples for CustomerSubscriptions Delete. */
+/**
+ * Samples for CustomerSubscriptions Delete.
+ */
 public final class CustomerSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CustomerSubscription/Delete.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CustomerSubscription/
+     * Delete.json
      */
     /**
      * Sample code: Deletes a customer subscription under a registration.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
-    public static void deletesACustomerSubscriptionUnderARegistration(
-        com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .customerSubscriptions()
-            .deleteWithResponse(
-                "azurestack",
-                "testregistration",
-                "E09A4E93-29A7-4EBA-A6D4-76202383F07F",
+    public static void
+        deletesACustomerSubscriptionUnderARegistration(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
+        manager.customerSubscriptions()
+            .deleteWithResponse("azurestack", "testregistration", "E09A4E93-29A7-4EBA-A6D4-76202383F07F",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -135,23 +146,23 @@ public final class CustomerSubscriptionsDeleteSamples {
 ### CustomerSubscriptions_Get
 
 ```java
-/** Samples for CustomerSubscriptions Get. */
+/**
+ * Samples for CustomerSubscriptions Get.
+ */
 public final class CustomerSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CustomerSubscription/Get.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CustomerSubscription/
+     * Get.json
      */
     /**
      * Sample code: Returns the specified product.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsTheSpecifiedProduct(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .customerSubscriptions()
-            .getWithResponse(
-                "azurestack",
-                "testregistration",
-                "E09A4E93-29A7-4EBA-A6D4-76202383F07F",
+        manager.customerSubscriptions()
+            .getWithResponse("azurestack", "testregistration", "E09A4E93-29A7-4EBA-A6D4-76202383F07F",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -160,14 +171,18 @@ public final class CustomerSubscriptionsGetSamples {
 ### CustomerSubscriptions_List
 
 ```java
-/** Samples for CustomerSubscriptions List. */
+/**
+ * Samples for CustomerSubscriptions List.
+ */
 public final class CustomerSubscriptionsListSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CustomerSubscription/List.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CustomerSubscription/
+     * List.json
      */
     /**
      * Sample code: Returns a list of products.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsAListOfProducts(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
@@ -181,22 +196,25 @@ public final class CustomerSubscriptionsListSamples {
 ```java
 import com.azure.resourcemanager.azurestack.models.DeploymentLicenseRequest;
 
-/** Samples for DeploymentLicense Create. */
+/**
+ * Samples for DeploymentLicense Create.
+ */
 public final class DeploymentLicenseCreateSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/DeploymentLicense/Post.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/DeploymentLicense/Post.
+     * json
      */
     /**
      * Sample code: Creates a license that can be used to deploy an Azure Stack device.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void createsALicenseThatCanBeUsedToDeployAnAzureStackDevice(
         com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .deploymentLicenses()
-            .createWithResponse(
-                new DeploymentLicenseRequest().withVerificationVersion("1"), com.azure.core.util.Context.NONE);
+        manager.deploymentLicenses()
+            .createWithResponse(new DeploymentLicenseRequest().withVerificationVersion("1"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -204,18 +222,21 @@ public final class DeploymentLicenseCreateSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Operation/List.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Operation/List.json
      */
     /**
      * Sample code: Returns the list of supported REST operations.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
-    public static void returnsTheListOfSupportedRESTOperations(
-        com.azure.resourcemanager.azurestack.AzureStackManager manager) {
+    public static void
+        returnsTheListOfSupportedRESTOperations(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -224,23 +245,22 @@ public final class OperationsListSamples {
 ### Products_Get
 
 ```java
-/** Samples for Products Get. */
+/**
+ * Samples for Products Get.
+ */
 public final class ProductsGetSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/Get.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/Get.json
      */
     /**
      * Sample code: Returns the specified product.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsTheSpecifiedProduct(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .products()
-            .getWithResponse(
-                "azurestack",
-                "testregistration",
-                "Microsoft.OSTCExtensions.VMAccessForLinux.1.4.7.1",
+        manager.products()
+            .getWithResponse("azurestack", "testregistration", "Microsoft.OSTCExtensions.VMAccessForLinux.1.4.7.1",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -249,25 +269,24 @@ public final class ProductsGetSamples {
 ### Products_GetProduct
 
 ```java
-/** Samples for Products GetProduct. */
+
+/**
+ * Samples for Products GetProduct.
+ */
 public final class ProductsGetProductSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/GetPost.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/GetPost.json
      */
     /**
      * Sample code: Returns the specified product.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsTheSpecifiedProduct(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .products()
-            .getProductWithResponse(
-                "azurestack",
-                "testregistration",
-                "Microsoft.OSTCExtensions.VMAccessForLinux.1.4.7.1",
-                null,
-                com.azure.core.util.Context.NONE);
+        manager.products()
+            .getProductWithResponse("azurestack", "testregistration",
+                "Microsoft.OSTCExtensions.VMAccessForLinux.1.4.7.1", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -275,19 +294,22 @@ public final class ProductsGetProductSamples {
 ### Products_GetProducts
 
 ```java
-/** Samples for Products GetProducts. */
+
+/**
+ * Samples for Products GetProducts.
+ */
 public final class ProductsGetProductsSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/ListPost.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/ListPost.json
      */
     /**
      * Sample code: Returns a list of products.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsAListOfProducts(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .products()
+        manager.products()
             .getProductsWithResponse("azurestack", "testregistration", "_all", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -296,14 +318,17 @@ public final class ProductsGetProductsSamples {
 ### Products_List
 
 ```java
-/** Samples for Products List. */
+/**
+ * Samples for Products List.
+ */
 public final class ProductsListSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/List.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/List.json
      */
     /**
      * Sample code: Returns a list of products.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsAListOfProducts(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
@@ -315,25 +340,24 @@ public final class ProductsListSamples {
 ### Products_ListDetails
 
 ```java
-/** Samples for Products ListDetails. */
+/**
+ * Samples for Products ListDetails.
+ */
 public final class ProductsListDetailsSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/Post.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/Post.json
      */
     /**
      * Sample code: Returns the extended properties of a product.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
-    public static void returnsTheExtendedPropertiesOfAProduct(
-        com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .products()
-            .listDetailsWithResponse(
-                "azurestack",
-                "testregistration",
-                "Microsoft.OSTCExtensions.VMAccessForLinux.1.4.7.1",
-                com.azure.core.util.Context.NONE);
+    public static void
+        returnsTheExtendedPropertiesOfAProduct(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
+        manager.products()
+            .listDetailsWithResponse("azurestack", "testregistration",
+                "Microsoft.OSTCExtensions.VMAccessForLinux.1.4.7.1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -341,19 +365,22 @@ public final class ProductsListDetailsSamples {
 ### Products_ListProducts
 
 ```java
-/** Samples for Products ListProducts. */
+
+/**
+ * Samples for Products ListProducts.
+ */
 public final class ProductsListProductsSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/ListPost.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/ListPost.json
      */
     /**
      * Sample code: Returns a list of products.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsAListOfProducts(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .products()
+        manager.products()
             .listProductsWithResponse("azurestack", "testregistration", "_all", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -362,25 +389,24 @@ public final class ProductsListProductsSamples {
 ### Products_UploadLog
 
 ```java
-/** Samples for Products UploadLog. */
+
+/**
+ * Samples for Products UploadLog.
+ */
 public final class ProductsUploadLogSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/UploadLog.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Product/UploadLog.json
      */
     /**
      * Sample code: Returns the specified product.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsTheSpecifiedProduct(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .products()
-            .uploadLogWithResponse(
-                "azurestack",
-                "testregistration",
-                "Microsoft.OSTCExtensions.VMAccessForLinux.1.4.7.1",
-                null,
-                com.azure.core.util.Context.NONE);
+        manager.products()
+            .uploadLogWithResponse("azurestack", "testregistration",
+                "Microsoft.OSTCExtensions.VMAccessForLinux.1.4.7.1", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -390,20 +416,22 @@ public final class ProductsUploadLogSamples {
 ```java
 import com.azure.resourcemanager.azurestack.models.Location;
 
-/** Samples for Registrations CreateOrUpdate. */
+/**
+ * Samples for Registrations CreateOrUpdate.
+ */
 public final class RegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Put.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Put.json
      */
     /**
      * Sample code: Create or update an Azure Stack registration.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
-    public static void createOrUpdateAnAzureStackRegistration(
-        com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .registrations()
+    public static void
+        createOrUpdateAnAzureStackRegistration(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
+        manager.registrations()
             .define("testregistration")
             .withLocation(Location.GLOBAL)
             .withExistingResourceGroup("azurestack")
@@ -417,20 +445,23 @@ public final class RegistrationsCreateOrUpdateSamples {
 ### Registrations_Delete
 
 ```java
-/** Samples for Registrations Delete. */
+/**
+ * Samples for Registrations Delete.
+ */
 public final class RegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Delete.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Delete.
+     * json
      */
     /**
      * Sample code: Delete the requested Azure Stack registration.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
-    public static void deleteTheRequestedAzureStackRegistration(
-        com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .registrations()
+    public static void
+        deleteTheRequestedAzureStackRegistration(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
+        manager.registrations()
             .deleteByResourceGroupWithResponse("azurestack", "testregistration", com.azure.core.util.Context.NONE);
     }
 }
@@ -439,20 +470,23 @@ public final class RegistrationsDeleteSamples {
 ### Registrations_EnableRemoteManagement
 
 ```java
-/** Samples for Registrations EnableRemoteManagement. */
+/**
+ * Samples for Registrations EnableRemoteManagement.
+ */
 public final class RegistrationsEnableRemoteManagementSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/RemoteManagement/Post.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/RemoteManagement/Post.
+     * json
      */
     /**
      * Sample code: Returns empty response for successful action..
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
-    public static void returnsEmptyResponseForSuccessfulAction(
-        com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .registrations()
+    public static void
+        returnsEmptyResponseForSuccessfulAction(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
+        manager.registrations()
             .enableRemoteManagementWithResponse("azurestack", "testregistration", com.azure.core.util.Context.NONE);
     }
 }
@@ -461,19 +495,21 @@ public final class RegistrationsEnableRemoteManagementSamples {
 ### Registrations_GetActivationKey
 
 ```java
-/** Samples for Registrations GetActivationKey. */
+/**
+ * Samples for Registrations GetActivationKey.
+ */
 public final class RegistrationsGetActivationKeySamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Post.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Post.json
      */
     /**
      * Sample code: Returns Azure Stack Activation Key.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsAzureStackActivationKey(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .registrations()
+        manager.registrations()
             .getActivationKeyWithResponse("azurestack", "testregistration", com.azure.core.util.Context.NONE);
     }
 }
@@ -482,20 +518,22 @@ public final class RegistrationsGetActivationKeySamples {
 ### Registrations_GetByResourceGroup
 
 ```java
-/** Samples for Registrations GetByResourceGroup. */
+/**
+ * Samples for Registrations GetByResourceGroup.
+ */
 public final class RegistrationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Get.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Get.json
      */
     /**
      * Sample code: Returns the properties of an Azure Stack registration.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
-    public static void returnsThePropertiesOfAnAzureStackRegistration(
-        com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .registrations()
+    public static void
+        returnsThePropertiesOfAnAzureStackRegistration(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
+        manager.registrations()
             .getByResourceGroupWithResponse("azurestack", "testregistration", com.azure.core.util.Context.NONE);
     }
 }
@@ -504,14 +542,18 @@ public final class RegistrationsGetByResourceGroupSamples {
 ### Registrations_List
 
 ```java
-/** Samples for Registrations List. */
+/**
+ * Samples for Registrations List.
+ */
 public final class RegistrationsListSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/ListBySubscription.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/
+     * ListBySubscription.json
      */
     /**
      * Sample code: Returns a list of all registrations under current subscription.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsAListOfAllRegistrationsUnderCurrentSubscription(
@@ -524,14 +566,17 @@ public final class RegistrationsListSamples {
 ### Registrations_ListByResourceGroup
 
 ```java
-/** Samples for Registrations ListByResourceGroup. */
+/**
+ * Samples for Registrations ListByResourceGroup.
+ */
 public final class RegistrationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/List.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/List.json
      */
     /**
      * Sample code: Returns a list of all registrations.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsAListOfAllRegistrations(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
@@ -545,24 +590,24 @@ public final class RegistrationsListByResourceGroupSamples {
 ```java
 import com.azure.resourcemanager.azurestack.models.Registration;
 
-/** Samples for Registrations Update. */
+/**
+ * Samples for Registrations Update.
+ */
 public final class RegistrationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Patch.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Patch.json
      */
     /**
      * Sample code: Patch an Azure Stack registration.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void patchAnAzureStackRegistration(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        Registration resource =
-            manager
-                .registrations()
-                .getByResourceGroupWithResponse("azurestack", "testregistration", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Registration resource = manager.registrations()
+            .getByResourceGroupWithResponse("azurestack", "testregistration", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withRegistrationToken(
                 "EyjIAWXSAw5nTw9KZWWiOiJeZxZlbg9wBwvUdCiSIM9iaMVjdeLkijoinwIzyJa2Ytgtowm2yy00OdG4lTlLyJmtztHjZGfJZTC0NZK1iIWiY2XvdWRJzCi6iJy5nDy0oDk1LTNHmWeTnDUwyS05oDI0LTrINzYwoGq5mjAzziIsim1HCmtldHBsYwnLu3LuZGljYXrpB25FBmfIbgVkIJp0CNvLLCJOYXJkd2FYzuLUZM8iOlt7IM51bunvcMVZiJoYlCjcaw9ZiJPBIjNkzDJHmda3yte5ndqZMdq4YmZkZmi5oDM3OTY3ZwNMIL0SIM5PyYI6WyJLZTy0ztJJMwZKy2m0OWNLODDLMwm2zTm0ymzKyjmWySisiJA3njlHmtdlY2q4NjRjnwFIZtC1YZi5ZGyZodM3Y2vjIl0siMnwDsi6wyi2oDUZoTbiY2RhNDa0ymrKoWe4YtK5otblzWrJzGyzNCISIjmYnzC4M2vmnZdIoDRKM2i5ytfkmJlhnDc1zdhLzWm1il0sim5HBwuiOijIqzF1MTvhmDIXmIIsimrpc2SiolsioWNlZjVhnZM1otQ0nDu3NmjlN2M3zmfjzmyZMTJhZtiiLcjLZjLmmZJhmWVhytG0NTu0OTqZNWu1Mda0MZbIYtfjyijdLCj1DWlKijoinwM5Mwu3NjytMju5Os00oTIwlWi0OdmTnGzHotiWm2RjyTCxIIwiBWvTb3J5ijPbijAYZDA3M2fjNzu0YTRMZTfhodkxzDnkogY5ZtAWzdyXIiwINZcWzThLnDQ4otrJndAzZGI5MGzlYtY1ZJA5ZdfiNMQIXX1DlcJpC3n1zxiiOijZb21lB25LIIWIdmVyC2LVbiI6IJeuMcJ9")
             .apply();

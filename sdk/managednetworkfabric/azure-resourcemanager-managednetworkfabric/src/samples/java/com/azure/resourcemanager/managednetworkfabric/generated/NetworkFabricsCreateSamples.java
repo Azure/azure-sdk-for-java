@@ -16,20 +16,23 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for NetworkFabrics Create. */
+/**
+ * Samples for NetworkFabrics Create.
+ */
 public final class NetworkFabricsCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkFabrics_Create_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkFabrics_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkFabrics_Create_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkFabricsCreateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .networkFabrics()
+        manager.networkFabrics()
             .define("example-fabric")
             .withRegion("eastuseuap")
             .withExistingResourceGroup("example-rg")
@@ -39,76 +42,59 @@ public final class NetworkFabricsCreateSamples {
             .withServerCountPerRack(8)
             .withIpv4Prefix("10.18.0.0/19")
             .withFabricAsn(29249L)
-            .withTerminalServerConfiguration(
-                new TerminalServerConfiguration()
-                    .withUsername("username")
-                    .withPassword("fakeTokenPlaceholder")
-                    .withSerialNumber("123456")
-                    .withPrimaryIpv4Prefix("10.0.0.12/30")
-                    .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
-                    .withSecondaryIpv4Prefix("20.0.0.13/30")
-                    .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127"))
-            .withManagementNetworkConfiguration(
-                new ManagementNetworkConfigurationProperties()
-                    .withInfrastructureVpnConfiguration(
-                        new VpnConfigurationProperties()
-                            .withNetworkToNetworkInterconnectId(
-                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
-                            .withPeeringOption(PeeringOption.OPTIONA)
-                            .withOptionBProperties(
-                                new OptionBProperties()
-                                    .withImportRouteTargets(Arrays.asList("65046:10050"))
-                                    .withExportRouteTargets(Arrays.asList("65046:10050"))
-                                    .withRouteTargets(
-                                        new RouteTargetInformation()
-                                            .withImportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                                            .withImportIpv6RouteTargets(Arrays.asList("65046:10039"))
-                                            .withExportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                                            .withExportIpv6RouteTargets(Arrays.asList("65046:10039"))))
-                            .withOptionAProperties(
-                                new VpnConfigurationPropertiesOptionAProperties()
-                                    .withMtu(1501)
-                                    .withVlanId(3001)
-                                    .withPeerAsn(1235L)
-                                    .withBfdConfiguration(
-                                        new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
-                                    .withPrimaryIpv4Prefix("10.0.0.12/30")
-                                    .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
-                                    .withSecondaryIpv4Prefix("20.0.0.13/30")
-                                    .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127")))
-                    .withWorkloadVpnConfiguration(
-                        new VpnConfigurationProperties()
-                            .withNetworkToNetworkInterconnectId(
-                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
-                            .withPeeringOption(PeeringOption.OPTIONA)
-                            .withOptionBProperties(
-                                new OptionBProperties()
-                                    .withImportRouteTargets(Arrays.asList("65046:10050"))
-                                    .withExportRouteTargets(Arrays.asList("65046:10050"))
-                                    .withRouteTargets(
-                                        new RouteTargetInformation()
-                                            .withImportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                                            .withImportIpv6RouteTargets(Arrays.asList("65046:10039"))
-                                            .withExportIpv4RouteTargets(Arrays.asList("65046:10039"))
-                                            .withExportIpv6RouteTargets(Arrays.asList("65046:10039"))))
-                            .withOptionAProperties(
-                                new VpnConfigurationPropertiesOptionAProperties()
-                                    .withMtu(1500)
-                                    .withVlanId(3000)
-                                    .withPeerAsn(61234L)
-                                    .withBfdConfiguration(
-                                        new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(5))
-                                    .withPrimaryIpv4Prefix("10.0.0.14/30")
-                                    .withPrimaryIpv6Prefix("2FFE:FFFF:0:CD30::a7/126")
-                                    .withSecondaryIpv4Prefix("10.0.0.15/30")
-                                    .withSecondaryIpv6Prefix("2FFE:FFFF:0:CD30::ac/126"))))
+            .withTerminalServerConfiguration(new TerminalServerConfiguration().withUsername("username")
+                .withPassword("fakeTokenPlaceholder")
+                .withSerialNumber("123456")
+                .withPrimaryIpv4Prefix("10.0.0.12/30")
+                .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
+                .withSecondaryIpv4Prefix("20.0.0.13/30")
+                .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127"))
+            .withManagementNetworkConfiguration(new ManagementNetworkConfigurationProperties()
+                .withInfrastructureVpnConfiguration(new VpnConfigurationProperties().withNetworkToNetworkInterconnectId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
+                    .withPeeringOption(PeeringOption.OPTIONA)
+                    .withOptionBProperties(new OptionBProperties().withImportRouteTargets(Arrays.asList("65046:10050"))
+                        .withExportRouteTargets(Arrays.asList("65046:10050"))
+                        .withRouteTargets(
+                            new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10039"))
+                                .withImportIpv6RouteTargets(Arrays.asList("65046:10039"))
+                                .withExportIpv4RouteTargets(Arrays.asList("65046:10039"))
+                                .withExportIpv6RouteTargets(Arrays.asList("65046:10039"))))
+                    .withOptionAProperties(new VpnConfigurationPropertiesOptionAProperties().withMtu(1501)
+                        .withVlanId(3001)
+                        .withPeerAsn(1235L)
+                        .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                        .withPrimaryIpv4Prefix("10.0.0.12/30")
+                        .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
+                        .withSecondaryIpv4Prefix("20.0.0.13/30")
+                        .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127")))
+                .withWorkloadVpnConfiguration(new VpnConfigurationProperties().withNetworkToNetworkInterconnectId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
+                    .withPeeringOption(PeeringOption.OPTIONA)
+                    .withOptionBProperties(new OptionBProperties().withImportRouteTargets(Arrays.asList("65046:10050"))
+                        .withExportRouteTargets(Arrays.asList("65046:10050"))
+                        .withRouteTargets(
+                            new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("65046:10039"))
+                                .withImportIpv6RouteTargets(Arrays.asList("65046:10039"))
+                                .withExportIpv4RouteTargets(Arrays.asList("65046:10039"))
+                                .withExportIpv6RouteTargets(Arrays.asList("65046:10039"))))
+                    .withOptionAProperties(new VpnConfigurationPropertiesOptionAProperties().withMtu(1500)
+                        .withVlanId(3000)
+                        .withPeerAsn(61234L)
+                        .withBfdConfiguration(new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(5))
+                        .withPrimaryIpv4Prefix("10.0.0.14/30")
+                        .withPrimaryIpv6Prefix("2FFE:FFFF:0:CD30::a7/126")
+                        .withSecondaryIpv4Prefix("10.0.0.15/30")
+                        .withSecondaryIpv6Prefix("2FFE:FFFF:0:CD30::ac/126"))))
             .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withFabricVersion("1.x.x")
             .withRackCount(4)
             .withIpv6Prefix("3FFE:FFFF:0:CD40::/59")
             .withAnnotation("annotation")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

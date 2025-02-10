@@ -5,42 +5,47 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Hyper-V Managed disk details. */
+/**
+ * Hyper-V Managed disk details.
+ */
 @Fluent
-public final class HyperVReplicaAzureManagedDiskDetails {
+public final class HyperVReplicaAzureManagedDiskDetails
+    implements JsonSerializable<HyperVReplicaAzureManagedDiskDetails> {
     /*
      * The disk Id.
      */
-    @JsonProperty(value = "diskId")
     private String diskId;
 
     /*
      * Seed managed disk Id.
      */
-    @JsonProperty(value = "seedManagedDiskId")
     private String seedManagedDiskId;
 
     /*
      * The replica disk type.
      */
-    @JsonProperty(value = "replicaDiskType")
     private String replicaDiskType;
 
     /*
      * The disk encryption set ARM Id.
      */
-    @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
-    /** Creates an instance of HyperVReplicaAzureManagedDiskDetails class. */
+    /**
+     * Creates an instance of HyperVReplicaAzureManagedDiskDetails class.
+     */
     public HyperVReplicaAzureManagedDiskDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -49,7 +54,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the HyperVReplicaAzureManagedDiskDetails object itself.
      */
@@ -60,7 +65,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Get the seedManagedDiskId property: Seed managed disk Id.
-     *
+     * 
      * @return the seedManagedDiskId value.
      */
     public String seedManagedDiskId() {
@@ -69,7 +74,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Set the seedManagedDiskId property: Seed managed disk Id.
-     *
+     * 
      * @param seedManagedDiskId the seedManagedDiskId value to set.
      * @return the HyperVReplicaAzureManagedDiskDetails object itself.
      */
@@ -80,7 +85,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Get the replicaDiskType property: The replica disk type.
-     *
+     * 
      * @return the replicaDiskType value.
      */
     public String replicaDiskType() {
@@ -89,7 +94,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Set the replicaDiskType property: The replica disk type.
-     *
+     * 
      * @param replicaDiskType the replicaDiskType value to set.
      * @return the HyperVReplicaAzureManagedDiskDetails object itself.
      */
@@ -100,7 +105,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Get the diskEncryptionSetId property: The disk encryption set ARM Id.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -109,7 +114,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Set the diskEncryptionSetId property: The disk encryption set ARM Id.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the HyperVReplicaAzureManagedDiskDetails object itself.
      */
@@ -120,9 +125,55 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("seedManagedDiskId", this.seedManagedDiskId);
+        jsonWriter.writeStringField("replicaDiskType", this.replicaDiskType);
+        jsonWriter.writeStringField("diskEncryptionSetId", this.diskEncryptionSetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVReplicaAzureManagedDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVReplicaAzureManagedDiskDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVReplicaAzureManagedDiskDetails.
+     */
+    public static HyperVReplicaAzureManagedDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVReplicaAzureManagedDiskDetails deserializedHyperVReplicaAzureManagedDiskDetails
+                = new HyperVReplicaAzureManagedDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureManagedDiskDetails.diskId = reader.getString();
+                } else if ("seedManagedDiskId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureManagedDiskDetails.seedManagedDiskId = reader.getString();
+                } else if ("replicaDiskType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureManagedDiskDetails.replicaDiskType = reader.getString();
+                } else if ("diskEncryptionSetId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureManagedDiskDetails.diskEncryptionSetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVReplicaAzureManagedDiskDetails;
+        });
     }
 }

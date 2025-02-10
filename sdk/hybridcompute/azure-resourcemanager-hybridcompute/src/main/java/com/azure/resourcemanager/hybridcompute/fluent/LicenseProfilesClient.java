@@ -14,29 +14,31 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileInner;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileUpdate;
 
-/** An instance of this class provides access to all the operations defined in LicenseProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LicenseProfilesClient.
+ */
 public interface LicenseProfilesClient {
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginCreateOrUpdate(
-        String resourceGroupName, String machineName, LicenseProfileInner parameters);
+    SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginCreateOrUpdate(String resourceGroupName,
+        String machineName, LicenseProfileInner parameters);
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,15 +46,15 @@ public interface LicenseProfilesClient {
      * @return the {@link SyncPoller} for polling of describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginCreateOrUpdate(
-        String resourceGroupName, String machineName, LicenseProfileInner parameters, Context context);
+    SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginCreateOrUpdate(String resourceGroupName,
+        String machineName, LicenseProfileInner parameters, Context context);
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -63,10 +65,10 @@ public interface LicenseProfilesClient {
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -74,12 +76,12 @@ public interface LicenseProfilesClient {
      * @return describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LicenseProfileInner createOrUpdate(
-        String resourceGroupName, String machineName, LicenseProfileInner parameters, Context context);
+    LicenseProfileInner createOrUpdate(String resourceGroupName, String machineName, LicenseProfileInner parameters,
+        Context context);
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -89,12 +91,12 @@ public interface LicenseProfilesClient {
      * @return the {@link SyncPoller} for polling of describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdate(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters);
+    SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdate(String resourceGroupName,
+        String machineName, LicenseProfileUpdate parameters);
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -105,12 +107,12 @@ public interface LicenseProfilesClient {
      * @return the {@link SyncPoller} for polling of describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdate(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters, Context context);
+    SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdate(String resourceGroupName,
+        String machineName, LicenseProfileUpdate parameters, Context context);
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -124,7 +126,7 @@ public interface LicenseProfilesClient {
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -135,12 +137,12 @@ public interface LicenseProfilesClient {
      * @return describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LicenseProfileInner update(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters, Context context);
+    LicenseProfileInner update(String resourceGroupName, String machineName, LicenseProfileUpdate parameters,
+        Context context);
 
     /**
      * Retrieves information about the view of a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -154,7 +156,7 @@ public interface LicenseProfilesClient {
 
     /**
      * Retrieves information about the view of a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,7 +169,7 @@ public interface LicenseProfilesClient {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +182,7 @@ public interface LicenseProfilesClient {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -194,7 +196,7 @@ public interface LicenseProfilesClient {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +208,7 @@ public interface LicenseProfilesClient {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -219,29 +221,29 @@ public interface LicenseProfilesClient {
 
     /**
      * The operation to get all license profiles of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List hybrid machine license profile operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List hybrid machine license profile operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LicenseProfileInner> list(String resourceGroupName, String machineName);
 
     /**
      * The operation to get all license profiles of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List hybrid machine license profile operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List hybrid machine license profile operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LicenseProfileInner> list(String resourceGroupName, String machineName, Context context);

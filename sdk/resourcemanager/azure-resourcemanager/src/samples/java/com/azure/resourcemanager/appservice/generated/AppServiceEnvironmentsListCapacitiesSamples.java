@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class AppServiceEnvironmentsListCapacitiesSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/AppServiceEnvironments_ListCapacities
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/AppServiceEnvironments_ListCapacities
      * .json
      */
     /**
@@ -20,7 +20,10 @@ public final class AppServiceEnvironmentsListCapacitiesSamples {
      */
     public static void getTheUsedAvailableAndTotalWorkerCapacityAnAppServiceEnvironment(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().listCapacities("test-rg", "test-ase",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .listCapacities("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

@@ -1,39 +1,49 @@
-# Azure Geolocation
+# Azure Maps Geolocation for Java
 
 > see https://aka.ms/autorest
 
+This is the AutoRest configuration file for Maps Geolocation.
+---
+## Getting Started
+
+To build the SDK for Maps Geolocation, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
 ### Setup
-> see https://github.com/Azure/autorest.java
+```ps
+npm install -g autorest
+```
 
 ### Generation
-> see https://github.com/Azure/autorest.java/releases for the latest version of autorest
+
 ```ps
 cd <swagger-folder>
-mvn install
-autorest --java --use:@autorest/java@4.0.x
+autorest
 ```
 
 ### Code generation settings
 
 ## Java
 
-``` yaml $(java)
+``` yaml
 directive:
-
   - from: swagger-document
     where: "$"
     transform: >
-        $["securityDefinitions"] = {};
-  - from: swagger-document
-    where: "$"
-    transform: >
-        $["security"] = [];
-
+      $["securityDefinitions"] = {};
+      $["security"] = [];
+        
 title: GeolocationClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Geolocation/preview/1.0/geolocation.json
 namespace: com.azure.maps.geolocation
 license-header: MICROSOFT_MIT_SMALL
 java: true
+use: '@autorest/java@4.1.29'
 output-folder: ../
 payload-flattening-threshold: 0
 add-context-parameter: true
@@ -46,6 +56,5 @@ polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: CountryRegion,IpAddressToLocationResult
-customization-jar-path: target/azure-maps-geolocation-customization-1.0.0-beta.1.jar
-customization-class: GeoLocationCustomization
+customization-class: src/main/java/GeoLocationCustomization.java
 ```

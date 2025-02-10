@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.models.FormulaInner;
 import com.azure.resourcemanager.devtestlabs.models.FormulaFragment;
 
-/** An instance of this class provides access to all the operations defined in FormulasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FormulasClient.
+ */
 public interface FormulasClient {
     /**
      * List formulas in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface FormulasClient {
 
     /**
      * List formulas in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=description)'.
@@ -45,18 +47,12 @@ public interface FormulasClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FormulaInner> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<FormulaInner> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -68,12 +64,12 @@ public interface FormulasClient {
      * @return formula along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FormulaInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<FormulaInner> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -87,7 +83,7 @@ public interface FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -96,15 +92,15 @@ public interface FormulasClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a formula for creating a VM, specifying an image base and other
-     *     parameters.
+     * parameters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, FormulaInner formula);
+    SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String name, FormulaInner formula);
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -114,15 +110,15 @@ public interface FormulasClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a formula for creating a VM, specifying an image base and other
-     *     parameters.
+     * parameters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, FormulaInner formula, Context context);
+    SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String name, FormulaInner formula, Context context);
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -137,7 +133,7 @@ public interface FormulasClient {
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -149,12 +145,12 @@ public interface FormulasClient {
      * @return a formula for creating a VM, specifying an image base and other parameters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FormulaInner createOrUpdate(
-        String resourceGroupName, String labName, String name, FormulaInner formula, Context context);
+    FormulaInner createOrUpdate(String resourceGroupName, String labName, String name, FormulaInner formula,
+        Context context);
 
     /**
      * Delete formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -169,7 +165,7 @@ public interface FormulasClient {
 
     /**
      * Delete formula.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -182,7 +178,7 @@ public interface FormulasClient {
 
     /**
      * Allows modifying tags of formulas. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.
@@ -194,12 +190,12 @@ public interface FormulasClient {
      * @return a formula for creating a VM, specifying an image base and other parameters along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FormulaInner> updateWithResponse(
-        String resourceGroupName, String labName, String name, FormulaFragment formula, Context context);
+    Response<FormulaInner> updateWithResponse(String resourceGroupName, String labName, String name,
+        FormulaFragment formula, Context context);
 
     /**
      * Allows modifying tags of formulas. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the formula.

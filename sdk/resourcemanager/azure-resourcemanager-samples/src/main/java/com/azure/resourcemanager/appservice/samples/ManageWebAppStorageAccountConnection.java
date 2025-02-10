@@ -8,7 +8,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesEntityProperties;
 import com.azure.resourcemanager.appservice.models.ConnectionStringType;
+import com.azure.resourcemanager.appservice.models.FtpsState;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -35,7 +37,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 
-
 /**
  * Azure App Service basic sample for managing web apps.
  *  - Create a storage account and upload a couple blobs
@@ -52,12 +53,12 @@ public final class ManageWebAppStorageAccountConnection {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String suffix         = ".azurewebsites.net";
-        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
-        final String app1Url        = app1Name + suffix;
-        final String storageName    = Utils.randomResourceName(azureResourceManager, "jsdkstore", 20);
-        final String containerName  = Utils.randomResourceName(azureResourceManager, "jcontainer", 20);
-        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String suffix = ".azurewebsites.net";
+        final String app1Name = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app1Url = app1Name + suffix;
+        final String storageName = Utils.randomResourceName(azureResourceManager, "jsdkstore", 20);
+        final String containerName = Utils.randomResourceName(azureResourceManager, "jcontainer", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 
@@ -66,15 +67,16 @@ public final class ManageWebAppStorageAccountConnection {
 
             System.out.println("Creating storage account " + storageName + "...");
 
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(storageName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .create();
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define(storageName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .create();
 
             String accountKey = storageAccount.getKeys().get(0).value();
 
             String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
-                    storageAccount.name(), accountKey);
+                storageAccount.name(), accountKey);
 
             System.out.println("Created storage account " + storageAccount.name());
 
@@ -83,9 +85,12 @@ public final class ManageWebAppStorageAccountConnection {
 
             System.out.println("Uploading 2 blobs to container " + containerName + "...");
 
-            BlobContainerClient container = setUpStorageAccount(connectionString, containerName, storageAccount.manager().httpPipeline().getHttpClient());
-            uploadFileToContainer(container, "helloworld.war", ManageWebAppStorageAccountConnection.class.getResource("/helloworld.war").getPath());
-            uploadFileToContainer(container, "install_apache.sh", ManageWebAppStorageAccountConnection.class.getResource("/install_apache.sh").getPath());
+            BlobContainerClient container = setUpStorageAccount(connectionString, containerName,
+                storageAccount.manager().httpPipeline().getHttpClient());
+            uploadFileToContainer(container, "helloworld.war",
+                ManageWebAppStorageAccountConnection.class.getResource("/helloworld.war").getPath());
+            uploadFileToContainer(container, "install_apache.sh",
+                ManageWebAppStorageAccountConnection.class.getResource("/install_apache.sh").getPath());
 
             System.out.println("Uploaded 2 blobs to container " + container.getBlobContainerName());
 
@@ -94,18 +99,34 @@ public final class ManageWebAppStorageAccountConnection {
 
             System.out.println("Creating web app " + app1Name + "...");
 
-            WebApp app1 = azureResourceManager.webApps().define(app1Name)
-                    .withRegion(Region.US_WEST)
-                    .withExistingResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
-                    .withConnectionString("storage.connectionString", connectionString, ConnectionStringType.CUSTOM)
-                    .withAppSetting("storage.containerName", containerName)
-                    .create();
+            WebApp app1 = azureResourceManager.webApps()
+                .define(app1Name)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(rgName)
+                .withNewWindowsPlan(PricingTier.STANDARD_S1)
+                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+                .withConnectionString("storage.connectionString", connectionString, ConnectionStringType.CUSTOM)
+                .withAppSetting("storage.containerName", containerName)
+                .withFtpsState(FtpsState.ALL_ALLOWED)
+                .create();
 
             System.out.println("Created web app " + app1.name());
             Utils.print(app1);
+
+            app1.manager()
+                .resourceManager()
+                .genericResources()
+                .define("ftp")
+                .withRegion(app1.regionName())
+                .withExistingResourceGroup(app1.resourceGroupName())
+                .withResourceType("basicPublishingCredentialsPolicies")
+                .withProviderNamespace("Microsoft.Web")
+                .withoutPlan()
+                .withParentResourcePath("sites/" + app1.name())
+                .withApiVersion("2023-01-01")
+                .withProperties(new CsmPublishingCredentialsPoliciesEntityProperties().withAllow(true))
+                .create();
 
             //============================================================
             // Deploy a web app that connects to the storage account
@@ -113,7 +134,8 @@ public final class ManageWebAppStorageAccountConnection {
 
             System.out.println("Deploying azure-samples-blob-traverser.war to " + app1Name + " through FTP...");
 
-            Utils.uploadFileViaFtp(app1.getPublishingProfile(), "azure-samples-blob-traverser.war", ManageWebAppStorageAccountConnection.class.getResourceAsStream("/azure-samples-blob-traverser.war"));
+            Utils.uploadFileViaFtp(app1.getPublishingProfile(), "azure-samples-blob-traverser.war",
+                ManageWebAppStorageAccountConnection.class.getResourceAsStream("/azure-samples-blob-traverser.war"));
 
             System.out.println("Deployment azure-samples-blob-traverser.war to web app " + app1.name() + " completed");
             Utils.print(app1);
@@ -138,6 +160,7 @@ public final class ManageWebAppStorageAccountConnection {
             }
         }
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -154,8 +177,7 @@ public final class ManageWebAppStorageAccountConnection {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -170,28 +192,27 @@ public final class ManageWebAppStorageAccountConnection {
         }
     }
 
-    private static BlobContainerClient setUpStorageAccount(String connectionString, String containerName, HttpClient httpClient) {
-        BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
-                .connectionString(connectionString)
-                .containerName(containerName)
-                .httpClient(httpClient)
-                .buildClient();
+    private static BlobContainerClient setUpStorageAccount(String connectionString, String containerName,
+        HttpClient httpClient) {
+        BlobContainerClient blobContainerClient = new BlobContainerClientBuilder().connectionString(connectionString)
+            .containerName(containerName)
+            .httpClient(httpClient)
+            .buildClient();
 
         blobContainerClient.create();
 
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-                .setId("webapp")
-                .setAccessPolicy(new BlobAccessPolicy()
-                        .setStartsOn(OffsetDateTime.now())
-                        .setExpiresOn(OffsetDateTime.now().plusDays(7))
-                        .setPermissions("rl"));
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier().setId("webapp")
+            .setAccessPolicy(new BlobAccessPolicy().setStartsOn(OffsetDateTime.now())
+                .setExpiresOn(OffsetDateTime.now().plusDays(7))
+                .setPermissions("rl"));
 
         blobContainerClient.setAccessPolicy(PublicAccessType.CONTAINER, Collections.singletonList(identifier));
 
         return blobContainerClient;
     }
 
-    private static void uploadFileToContainer(BlobContainerClient blobContainerClient, String fileName, String filePath) {
+    private static void uploadFileToContainer(BlobContainerClient blobContainerClient, String fileName,
+        String filePath) {
         BlobClient blobClient = blobContainerClient.getBlobClient(fileName);
         File file = new File(filePath);
         try (InputStream is = new BufferedInputStream(new FileInputStream(file))) {

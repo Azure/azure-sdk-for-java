@@ -5,60 +5,62 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
 import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
 import com.azure.resourcemanager.notificationhubs.models.GcmCredential;
 import com.azure.resourcemanager.notificationhubs.models.MpnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Description of a NotificationHub PNS Credentials. */
+/**
+ * Description of a NotificationHub PNS Credentials.
+ */
 @Fluent
-public final class PnsCredentialsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PnsCredentialsProperties.class);
-
+public final class PnsCredentialsProperties implements JsonSerializable<PnsCredentialsProperties> {
     /*
      * The ApnsCredential of the created NotificationHub
      */
-    @JsonProperty(value = "apnsCredential")
     private ApnsCredential apnsCredential;
 
     /*
      * The WnsCredential of the created NotificationHub
      */
-    @JsonProperty(value = "wnsCredential")
     private WnsCredential wnsCredential;
 
     /*
      * The GcmCredential of the created NotificationHub
      */
-    @JsonProperty(value = "gcmCredential")
     private GcmCredential gcmCredential;
 
     /*
      * The MpnsCredential of the created NotificationHub
      */
-    @JsonProperty(value = "mpnsCredential")
     private MpnsCredential mpnsCredential;
 
     /*
      * The AdmCredential of the created NotificationHub
      */
-    @JsonProperty(value = "admCredential")
     private AdmCredential admCredential;
 
     /*
      * The BaiduCredential of the created NotificationHub
      */
-    @JsonProperty(value = "baiduCredential")
     private BaiduCredential baiduCredential;
 
     /**
+     * Creates an instance of PnsCredentialsProperties class.
+     */
+    public PnsCredentialsProperties() {
+    }
+
+    /**
      * Get the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the apnsCredential value.
      */
     public ApnsCredential apnsCredential() {
@@ -67,7 +69,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Set the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
+     * 
      * @param apnsCredential the apnsCredential value to set.
      * @return the PnsCredentialsProperties object itself.
      */
@@ -78,7 +80,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Get the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the wnsCredential value.
      */
     public WnsCredential wnsCredential() {
@@ -87,7 +89,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Set the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
+     * 
      * @param wnsCredential the wnsCredential value to set.
      * @return the PnsCredentialsProperties object itself.
      */
@@ -98,7 +100,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Get the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
+     * 
      * @return the gcmCredential value.
      */
     public GcmCredential gcmCredential() {
@@ -107,7 +109,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Set the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
+     * 
      * @param gcmCredential the gcmCredential value to set.
      * @return the PnsCredentialsProperties object itself.
      */
@@ -118,7 +120,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Get the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the mpnsCredential value.
      */
     public MpnsCredential mpnsCredential() {
@@ -127,7 +129,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Set the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
+     * 
      * @param mpnsCredential the mpnsCredential value to set.
      * @return the PnsCredentialsProperties object itself.
      */
@@ -138,7 +140,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Get the admCredential property: The AdmCredential of the created NotificationHub.
-     *
+     * 
      * @return the admCredential value.
      */
     public AdmCredential admCredential() {
@@ -147,7 +149,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Set the admCredential property: The AdmCredential of the created NotificationHub.
-     *
+     * 
      * @param admCredential the admCredential value to set.
      * @return the PnsCredentialsProperties object itself.
      */
@@ -158,7 +160,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Get the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
+     * 
      * @return the baiduCredential value.
      */
     public BaiduCredential baiduCredential() {
@@ -167,7 +169,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Set the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
+     * 
      * @param baiduCredential the baiduCredential value to set.
      * @return the PnsCredentialsProperties object itself.
      */
@@ -178,7 +180,7 @@ public final class PnsCredentialsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -200,5 +202,56 @@ public final class PnsCredentialsProperties {
         if (baiduCredential() != null) {
             baiduCredential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("apnsCredential", this.apnsCredential);
+        jsonWriter.writeJsonField("wnsCredential", this.wnsCredential);
+        jsonWriter.writeJsonField("gcmCredential", this.gcmCredential);
+        jsonWriter.writeJsonField("mpnsCredential", this.mpnsCredential);
+        jsonWriter.writeJsonField("admCredential", this.admCredential);
+        jsonWriter.writeJsonField("baiduCredential", this.baiduCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PnsCredentialsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PnsCredentialsProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PnsCredentialsProperties.
+     */
+    public static PnsCredentialsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PnsCredentialsProperties deserializedPnsCredentialsProperties = new PnsCredentialsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apnsCredential".equals(fieldName)) {
+                    deserializedPnsCredentialsProperties.apnsCredential = ApnsCredential.fromJson(reader);
+                } else if ("wnsCredential".equals(fieldName)) {
+                    deserializedPnsCredentialsProperties.wnsCredential = WnsCredential.fromJson(reader);
+                } else if ("gcmCredential".equals(fieldName)) {
+                    deserializedPnsCredentialsProperties.gcmCredential = GcmCredential.fromJson(reader);
+                } else if ("mpnsCredential".equals(fieldName)) {
+                    deserializedPnsCredentialsProperties.mpnsCredential = MpnsCredential.fromJson(reader);
+                } else if ("admCredential".equals(fieldName)) {
+                    deserializedPnsCredentialsProperties.admCredential = AdmCredential.fromJson(reader);
+                } else if ("baiduCredential".equals(fieldName)) {
+                    deserializedPnsCredentialsProperties.baiduCredential = BaiduCredential.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPnsCredentialsProperties;
+        });
     }
 }

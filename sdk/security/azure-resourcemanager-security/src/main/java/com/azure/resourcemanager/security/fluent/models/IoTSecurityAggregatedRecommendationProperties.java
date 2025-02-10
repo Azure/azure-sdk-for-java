@@ -5,79 +5,78 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.ReportedSeverity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** IoT Security solution aggregated recommendation information. */
+/**
+ * IoT Security solution aggregated recommendation information.
+ */
 @Fluent
-public final class IoTSecurityAggregatedRecommendationProperties {
+public final class IoTSecurityAggregatedRecommendationProperties
+    implements JsonSerializable<IoTSecurityAggregatedRecommendationProperties> {
     /*
      * Name of the recommendation.
      */
-    @JsonProperty(value = "recommendationName")
     private String recommendationName;
 
     /*
      * Display name of the recommendation type.
      */
-    @JsonProperty(value = "recommendationDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendationDisplayName;
 
     /*
      * Description of the suspected vulnerability and meaning.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Recommendation-type GUID.
      */
-    @JsonProperty(value = "recommendationTypeId", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendationTypeId;
 
     /*
      * Name of the organization that made the recommendation.
      */
-    @JsonProperty(value = "detectedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String detectedBy;
 
     /*
      * Recommended steps for remediation
      */
-    @JsonProperty(value = "remediationSteps", access = JsonProperty.Access.WRITE_ONLY)
     private String remediationSteps;
 
     /*
      * Assessed recommendation severity.
      */
-    @JsonProperty(value = "reportedSeverity", access = JsonProperty.Access.WRITE_ONLY)
     private ReportedSeverity reportedSeverity;
 
     /*
      * Number of healthy devices within the IoT Security solution.
      */
-    @JsonProperty(value = "healthyDevices", access = JsonProperty.Access.WRITE_ONLY)
     private Long healthyDevices;
 
     /*
      * Number of unhealthy devices within the IoT Security solution.
      */
-    @JsonProperty(value = "unhealthyDeviceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long unhealthyDeviceCount;
 
     /*
      * Log analytics query for getting the list of affected devices/alerts.
      */
-    @JsonProperty(value = "logAnalyticsQuery", access = JsonProperty.Access.WRITE_ONLY)
     private String logAnalyticsQuery;
 
-    /** Creates an instance of IoTSecurityAggregatedRecommendationProperties class. */
+    /**
+     * Creates an instance of IoTSecurityAggregatedRecommendationProperties class.
+     */
     public IoTSecurityAggregatedRecommendationProperties() {
     }
 
     /**
      * Get the recommendationName property: Name of the recommendation.
-     *
+     * 
      * @return the recommendationName value.
      */
     public String recommendationName() {
@@ -86,7 +85,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Set the recommendationName property: Name of the recommendation.
-     *
+     * 
      * @param recommendationName the recommendationName value to set.
      * @return the IoTSecurityAggregatedRecommendationProperties object itself.
      */
@@ -97,7 +96,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the recommendationDisplayName property: Display name of the recommendation type.
-     *
+     * 
      * @return the recommendationDisplayName value.
      */
     public String recommendationDisplayName() {
@@ -106,7 +105,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the description property: Description of the suspected vulnerability and meaning.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -115,7 +114,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the recommendationTypeId property: Recommendation-type GUID.
-     *
+     * 
      * @return the recommendationTypeId value.
      */
     public String recommendationTypeId() {
@@ -124,7 +123,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the detectedBy property: Name of the organization that made the recommendation.
-     *
+     * 
      * @return the detectedBy value.
      */
     public String detectedBy() {
@@ -133,7 +132,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the remediationSteps property: Recommended steps for remediation.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public String remediationSteps() {
@@ -142,7 +141,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the reportedSeverity property: Assessed recommendation severity.
-     *
+     * 
      * @return the reportedSeverity value.
      */
     public ReportedSeverity reportedSeverity() {
@@ -151,7 +150,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the healthyDevices property: Number of healthy devices within the IoT Security solution.
-     *
+     * 
      * @return the healthyDevices value.
      */
     public Long healthyDevices() {
@@ -160,7 +159,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the unhealthyDeviceCount property: Number of unhealthy devices within the IoT Security solution.
-     *
+     * 
      * @return the unhealthyDeviceCount value.
      */
     public Long unhealthyDeviceCount() {
@@ -169,7 +168,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the logAnalyticsQuery property: Log analytics query for getting the list of affected devices/alerts.
-     *
+     * 
      * @return the logAnalyticsQuery value.
      */
     public String logAnalyticsQuery() {
@@ -178,9 +177,68 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recommendationName", this.recommendationName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTSecurityAggregatedRecommendationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTSecurityAggregatedRecommendationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IoTSecurityAggregatedRecommendationProperties.
+     */
+    public static IoTSecurityAggregatedRecommendationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTSecurityAggregatedRecommendationProperties deserializedIoTSecurityAggregatedRecommendationProperties
+                = new IoTSecurityAggregatedRecommendationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recommendationName".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationProperties.recommendationName = reader.getString();
+                } else if ("recommendationDisplayName".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationProperties.recommendationDisplayName
+                        = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationProperties.description = reader.getString();
+                } else if ("recommendationTypeId".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationProperties.recommendationTypeId = reader.getString();
+                } else if ("detectedBy".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationProperties.detectedBy = reader.getString();
+                } else if ("remediationSteps".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationProperties.remediationSteps = reader.getString();
+                } else if ("reportedSeverity".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationProperties.reportedSeverity
+                        = ReportedSeverity.fromString(reader.getString());
+                } else if ("healthyDevices".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationProperties.healthyDevices
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("unhealthyDeviceCount".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationProperties.unhealthyDeviceCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("logAnalyticsQuery".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationProperties.logAnalyticsQuery = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTSecurityAggregatedRecommendationProperties;
+        });
     }
 }

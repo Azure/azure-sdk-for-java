@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Localized display information of an operation. */
+/**
+ * Localized display information of an operation.
+ */
 @Fluent
-public final class ClientDiscoveryDisplay {
+public final class ClientDiscoveryDisplay implements JsonSerializable<ClientDiscoveryDisplay> {
     /*
      * Name of the provider for display purposes
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
      * ResourceType for which this Operation can be performed.
      */
-    @JsonProperty(value = "resource")
     private String resource;
 
     /*
      * Operations Name itself.
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
     /*
      * Description of the operation having details of what operation is about.
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ClientDiscoveryDisplay class. */
+    /**
+     * Creates an instance of ClientDiscoveryDisplay class.
+     */
     public ClientDiscoveryDisplay() {
     }
 
     /**
      * Get the provider property: Name of the provider for display purposes.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -49,7 +53,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Set the provider property: Name of the provider for display purposes.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the ClientDiscoveryDisplay object itself.
      */
@@ -60,7 +64,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Get the resource property: ResourceType for which this Operation can be performed.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -69,7 +73,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Set the resource property: ResourceType for which this Operation can be performed.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ClientDiscoveryDisplay object itself.
      */
@@ -80,7 +84,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Get the operation property: Operations Name itself.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -89,7 +93,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Set the operation property: Operations Name itself.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the ClientDiscoveryDisplay object itself.
      */
@@ -100,7 +104,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Get the description property: Description of the operation having details of what operation is about.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Set the description property: Description of the operation having details of what operation is about.
-     *
+     * 
      * @param description the description value to set.
      * @return the ClientDiscoveryDisplay object itself.
      */
@@ -120,9 +124,54 @@ public final class ClientDiscoveryDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("resource", this.resource);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientDiscoveryDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientDiscoveryDisplay if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClientDiscoveryDisplay.
+     */
+    public static ClientDiscoveryDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientDiscoveryDisplay deserializedClientDiscoveryDisplay = new ClientDiscoveryDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedClientDiscoveryDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedClientDiscoveryDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedClientDiscoveryDisplay.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedClientDiscoveryDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientDiscoveryDisplay;
+        });
     }
 }

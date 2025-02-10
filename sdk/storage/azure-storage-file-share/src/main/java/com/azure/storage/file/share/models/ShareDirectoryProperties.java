@@ -5,6 +5,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryPropertiesHelper;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -19,6 +20,7 @@ public final class ShareDirectoryProperties {
     private final OffsetDateTime lastModified;
     private final boolean isServerEncrypted;
     private final FileSmbProperties smbProperties;
+    private final FilePosixProperties posixProperties;
 
     /**
      * Creates an instance of properties information about a specific Directory.
@@ -30,16 +32,34 @@ public final class ShareDirectoryProperties {
      * encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the directory.
      */
-    public ShareDirectoryProperties(final Map<String, String> metadata, final String eTag,
-        final OffsetDateTime lastModified, final boolean isServerEncrypted, final FileSmbProperties smbProperties) {
+    public ShareDirectoryProperties(Map<String, String> metadata, String eTag, OffsetDateTime lastModified,
+        boolean isServerEncrypted, FileSmbProperties smbProperties) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
+        this.posixProperties = null;
+    }
+
+    //Internal constructor to support FilePosixProperties class.
+    private ShareDirectoryProperties(Map<String, String> metadata, String eTag, OffsetDateTime lastModified,
+        boolean isServerEncrypted, FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
+        this.metadata = metadata;
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.isServerEncrypted = isServerEncrypted;
+        this.smbProperties = smbProperties;
+        this.posixProperties = posixProperties;
+    }
+
+    static {
+        ShareDirectoryPropertiesHelper.setAccessor(ShareDirectoryProperties::new);
     }
 
     /**
+     * Gets the metadata associated with the directory.
+     *
      * @return A set of name-value pairs that contain metadata for the directory.
      */
     public Map<String, String> getMetadata() {
@@ -47,6 +67,8 @@ public final class ShareDirectoryProperties {
     }
 
     /**
+     * Gets the entity tag that corresponds to the directory.
+     *
      * @return Entity tag that corresponds to the directory.
      */
     public String getETag() {
@@ -54,13 +76,18 @@ public final class ShareDirectoryProperties {
     }
 
     /**
-     * @return Entity tag that corresponds to the directory.
+     * Gets the last time the directory was modified.
+     *
+     * @return Last time the directory was modified.
      */
     public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
     /**
+     * Gets the value of this header is true if the directory metadata is completely encrypted using the specified
+     * algorithm. Otherwise, the value is false.
+     *
      * @return The value of this header is true if the directory metadata is completely encrypted using the specified
      * algorithm. Otherwise, the value is false.
      */
@@ -69,9 +96,21 @@ public final class ShareDirectoryProperties {
     }
 
     /**
+     * Gets the SMB properties of the directory.
+     *
      * @return The SMB Properties of the directory.
      */
     public FileSmbProperties getSmbProperties() {
         return smbProperties;
+    }
+
+    /**
+     * Gets the directory's NFS properties.
+     * Only applicable to directories in a NFS share.
+     *
+     * @return The NFS Properties of the directory.
+     */
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
     }
 }

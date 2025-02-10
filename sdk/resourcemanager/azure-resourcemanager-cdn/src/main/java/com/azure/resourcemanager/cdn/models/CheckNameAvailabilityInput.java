@@ -6,30 +6,36 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input of CheckNameAvailability API. */
+/**
+ * Input of CheckNameAvailability API.
+ */
 @Fluent
-public final class CheckNameAvailabilityInput {
+public final class CheckNameAvailabilityInput implements JsonSerializable<CheckNameAvailabilityInput> {
     /*
      * The resource name to validate.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The type of the resource whose name is to be validated.
      */
-    @JsonProperty(value = "type", required = true)
     private ResourceType type;
 
-    /** Creates an instance of CheckNameAvailabilityInput class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityInput class.
+     */
     public CheckNameAvailabilityInput() {
     }
 
     /**
      * Get the name property: The resource name to validate.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Set the name property: The resource name to validate.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckNameAvailabilityInput object itself.
      */
@@ -49,7 +55,7 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Get the type property: The type of the resource whose name is to be validated.
-     *
+     * 
      * @return the type value.
      */
     public ResourceType type() {
@@ -58,7 +64,7 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Set the type property: The type of the resource whose name is to be validated.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckNameAvailabilityInput object itself.
      */
@@ -69,21 +75,61 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property name in model CheckNameAvailabilityInput"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property type in model CheckNameAvailabilityInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilityInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameAvailabilityInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameAvailabilityInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CheckNameAvailabilityInput.
+     */
+    public static CheckNameAvailabilityInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameAvailabilityInput deserializedCheckNameAvailabilityInput = new CheckNameAvailabilityInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityInput.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityInput.type = ResourceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameAvailabilityInput;
+        });
+    }
 }

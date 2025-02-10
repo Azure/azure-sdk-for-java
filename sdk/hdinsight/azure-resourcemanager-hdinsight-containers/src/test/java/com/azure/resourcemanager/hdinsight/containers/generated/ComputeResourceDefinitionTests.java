@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputeResourceDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeResourceDefinition model =
-            BinaryData
-                .fromString("{\"cpu\":48.283417,\"memory\":5016929626022013570}")
-                .toObject(ComputeResourceDefinition.class);
-        Assertions.assertEquals(48.283417f, model.cpu());
-        Assertions.assertEquals(5016929626022013570L, model.memory());
+        ComputeResourceDefinition model = BinaryData.fromString("{\"cpu\":97.30686,\"memory\":2120097512911222232}")
+            .toObject(ComputeResourceDefinition.class);
+        Assertions.assertEquals(97.30686f, model.cpu());
+        Assertions.assertEquals(2120097512911222232L, model.memory());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputeResourceDefinition model =
-            new ComputeResourceDefinition().withCpu(48.283417f).withMemory(5016929626022013570L);
+        ComputeResourceDefinition model
+            = new ComputeResourceDefinition().withCpu(97.30686f).withMemory(2120097512911222232L);
         model = BinaryData.fromObject(model).toObject(ComputeResourceDefinition.class);
-        Assertions.assertEquals(48.283417f, model.cpu());
-        Assertions.assertEquals(5016929626022013570L, model.memory());
+        Assertions.assertEquals(97.30686f, model.cpu());
+        Assertions.assertEquals(2120097512911222232L, model.memory());
     }
 }

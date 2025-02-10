@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The spark cluster profile. */
+/**
+ * The spark cluster profile.
+ */
 @Fluent
-public final class SparkProfile {
+public final class SparkProfile implements JsonSerializable<SparkProfile> {
     /*
      * The default storage URL.
      */
-    @JsonProperty(value = "defaultStorageUrl")
     private String defaultStorageUrl;
 
     /*
      * The metastore specification for Spark cluster.
      */
-    @JsonProperty(value = "metastoreSpec")
     private SparkMetastoreSpec metastoreSpec;
 
     /*
      * Spark user plugins spec
      */
-    @JsonProperty(value = "userPluginsSpec")
     private SparkUserPlugins userPluginsSpec;
 
-    /** Creates an instance of SparkProfile class. */
+    /**
+     * Creates an instance of SparkProfile class.
+     */
     public SparkProfile() {
     }
 
     /**
      * Get the defaultStorageUrl property: The default storage URL.
-     *
+     * 
      * @return the defaultStorageUrl value.
      */
     public String defaultStorageUrl() {
@@ -43,7 +48,7 @@ public final class SparkProfile {
 
     /**
      * Set the defaultStorageUrl property: The default storage URL.
-     *
+     * 
      * @param defaultStorageUrl the defaultStorageUrl value to set.
      * @return the SparkProfile object itself.
      */
@@ -54,7 +59,7 @@ public final class SparkProfile {
 
     /**
      * Get the metastoreSpec property: The metastore specification for Spark cluster.
-     *
+     * 
      * @return the metastoreSpec value.
      */
     public SparkMetastoreSpec metastoreSpec() {
@@ -63,7 +68,7 @@ public final class SparkProfile {
 
     /**
      * Set the metastoreSpec property: The metastore specification for Spark cluster.
-     *
+     * 
      * @param metastoreSpec the metastoreSpec value to set.
      * @return the SparkProfile object itself.
      */
@@ -74,7 +79,7 @@ public final class SparkProfile {
 
     /**
      * Get the userPluginsSpec property: Spark user plugins spec.
-     *
+     * 
      * @return the userPluginsSpec value.
      */
     public SparkUserPlugins userPluginsSpec() {
@@ -83,7 +88,7 @@ public final class SparkProfile {
 
     /**
      * Set the userPluginsSpec property: Spark user plugins spec.
-     *
+     * 
      * @param userPluginsSpec the userPluginsSpec value to set.
      * @return the SparkProfile object itself.
      */
@@ -94,7 +99,7 @@ public final class SparkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -104,5 +109,47 @@ public final class SparkProfile {
         if (userPluginsSpec() != null) {
             userPluginsSpec().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("defaultStorageUrl", this.defaultStorageUrl);
+        jsonWriter.writeJsonField("metastoreSpec", this.metastoreSpec);
+        jsonWriter.writeJsonField("userPluginsSpec", this.userPluginsSpec);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SparkProfile.
+     */
+    public static SparkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkProfile deserializedSparkProfile = new SparkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultStorageUrl".equals(fieldName)) {
+                    deserializedSparkProfile.defaultStorageUrl = reader.getString();
+                } else if ("metastoreSpec".equals(fieldName)) {
+                    deserializedSparkProfile.metastoreSpec = SparkMetastoreSpec.fromJson(reader);
+                } else if ("userPluginsSpec".equals(fieldName)) {
+                    deserializedSparkProfile.userPluginsSpec = SparkUserPlugins.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkProfile;
+        });
     }
 }

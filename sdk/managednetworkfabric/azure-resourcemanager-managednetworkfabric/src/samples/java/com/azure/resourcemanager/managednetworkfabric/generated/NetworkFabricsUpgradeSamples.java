@@ -4,26 +4,28 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricUpgradeAction;
+import com.azure.resourcemanager.managednetworkfabric.models.UpgradeNetworkFabricProperties;
 
-/** Samples for NetworkFabrics Upgrade. */
+/**
+ * Samples for NetworkFabrics Upgrade.
+ */
 public final class NetworkFabricsUpgradeSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkFabrics_upgrade_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkFabrics_upgrade_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkFabrics_upgrade_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkFabricsUpgradeMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .networkFabrics()
-            .upgrade(
-                "example-rg",
-                "example-fabric",
-                new UpdateVersion().withVersion("version1"),
+        manager.networkFabrics()
+            .upgrade("example-rg", "example-fabric",
+                new UpgradeNetworkFabricProperties().withVersion("3.x.x").withAction(NetworkFabricUpgradeAction.START),
                 com.azure.core.util.Context.NONE);
     }
 }

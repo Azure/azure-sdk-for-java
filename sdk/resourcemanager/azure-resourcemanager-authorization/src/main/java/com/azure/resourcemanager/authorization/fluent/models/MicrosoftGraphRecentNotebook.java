@@ -5,21 +5,25 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** recentNotebook. */
+/**
+ * recentNotebook.
+ */
 @Fluent
-public final class MicrosoftGraphRecentNotebook {
+public final class MicrosoftGraphRecentNotebook implements JsonSerializable<MicrosoftGraphRecentNotebook> {
     /*
      * The name of the notebook.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
@@ -27,33 +31,32 @@ public final class MicrosoftGraphRecentNotebook {
      * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'. Read-only.
      */
-    @JsonProperty(value = "lastAccessedTime")
     private OffsetDateTime lastAccessedTime;
 
     /*
      * recentNotebookLinks
      */
-    @JsonProperty(value = "links")
     private MicrosoftGraphRecentNotebookLinks links;
 
     /*
      * onenoteSourceService
      */
-    @JsonProperty(value = "sourceService")
     private MicrosoftGraphOnenoteSourceService sourceService;
 
     /*
      * recentNotebook
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphRecentNotebook class. */
+    /**
+     * Creates an instance of MicrosoftGraphRecentNotebook class.
+     */
     public MicrosoftGraphRecentNotebook() {
     }
 
     /**
      * Get the displayName property: The name of the notebook.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -62,7 +65,7 @@ public final class MicrosoftGraphRecentNotebook {
 
     /**
      * Set the displayName property: The name of the notebook.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphRecentNotebook object itself.
      */
@@ -75,7 +78,7 @@ public final class MicrosoftGraphRecentNotebook {
      * Get the lastAccessedTime property: The date and time when the notebook was last modified. The timestamp
      * represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC
      * on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
-     *
+     * 
      * @return the lastAccessedTime value.
      */
     public OffsetDateTime lastAccessedTime() {
@@ -86,7 +89,7 @@ public final class MicrosoftGraphRecentNotebook {
      * Set the lastAccessedTime property: The date and time when the notebook was last modified. The timestamp
      * represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC
      * on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
-     *
+     * 
      * @param lastAccessedTime the lastAccessedTime value to set.
      * @return the MicrosoftGraphRecentNotebook object itself.
      */
@@ -97,7 +100,7 @@ public final class MicrosoftGraphRecentNotebook {
 
     /**
      * Get the links property: recentNotebookLinks.
-     *
+     * 
      * @return the links value.
      */
     public MicrosoftGraphRecentNotebookLinks links() {
@@ -106,7 +109,7 @@ public final class MicrosoftGraphRecentNotebook {
 
     /**
      * Set the links property: recentNotebookLinks.
-     *
+     * 
      * @param links the links value to set.
      * @return the MicrosoftGraphRecentNotebook object itself.
      */
@@ -117,7 +120,7 @@ public final class MicrosoftGraphRecentNotebook {
 
     /**
      * Get the sourceService property: onenoteSourceService.
-     *
+     * 
      * @return the sourceService value.
      */
     public MicrosoftGraphOnenoteSourceService sourceService() {
@@ -126,7 +129,7 @@ public final class MicrosoftGraphRecentNotebook {
 
     /**
      * Set the sourceService property: onenoteSourceService.
-     *
+     * 
      * @param sourceService the sourceService value to set.
      * @return the MicrosoftGraphRecentNotebook object itself.
      */
@@ -137,17 +140,16 @@ public final class MicrosoftGraphRecentNotebook {
 
     /**
      * Get the additionalProperties property: recentNotebook.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: recentNotebook.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphRecentNotebook object itself.
      */
@@ -156,22 +158,75 @@ public final class MicrosoftGraphRecentNotebook {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (links() != null) {
             links().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("lastAccessedTime",
+            this.lastAccessedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastAccessedTime));
+        jsonWriter.writeJsonField("links", this.links);
+        jsonWriter.writeStringField("sourceService", this.sourceService == null ? null : this.sourceService.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphRecentNotebook from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphRecentNotebook if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphRecentNotebook.
+     */
+    public static MicrosoftGraphRecentNotebook fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphRecentNotebook deserializedMicrosoftGraphRecentNotebook = new MicrosoftGraphRecentNotebook();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecentNotebook.displayName = reader.getString();
+                } else if ("lastAccessedTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecentNotebook.lastAccessedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("links".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecentNotebook.links = MicrosoftGraphRecentNotebookLinks.fromJson(reader);
+                } else if ("sourceService".equals(fieldName)) {
+                    deserializedMicrosoftGraphRecentNotebook.sourceService
+                        = MicrosoftGraphOnenoteSourceService.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphRecentNotebook.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphRecentNotebook;
+        });
     }
 }

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** DPM workload-specific error information. */
+/**
+ * DPM workload-specific error information.
+ */
 @Fluent
-public final class DpmErrorInfo {
+public final class DpmErrorInfo implements JsonSerializable<DpmErrorInfo> {
     /*
      * Localized error string.
      */
-    @JsonProperty(value = "errorString")
     private String errorString;
 
     /*
      * List of localized recommendations for above error code.
      */
-    @JsonProperty(value = "recommendations")
     private List<String> recommendations;
 
-    /** Creates an instance of DpmErrorInfo class. */
+    /**
+     * Creates an instance of DpmErrorInfo class.
+     */
     public DpmErrorInfo() {
     }
 
     /**
      * Get the errorString property: Localized error string.
-     *
+     * 
      * @return the errorString value.
      */
     public String errorString() {
@@ -38,7 +44,7 @@ public final class DpmErrorInfo {
 
     /**
      * Set the errorString property: Localized error string.
-     *
+     * 
      * @param errorString the errorString value to set.
      * @return the DpmErrorInfo object itself.
      */
@@ -49,7 +55,7 @@ public final class DpmErrorInfo {
 
     /**
      * Get the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @return the recommendations value.
      */
     public List<String> recommendations() {
@@ -58,7 +64,7 @@ public final class DpmErrorInfo {
 
     /**
      * Set the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @param recommendations the recommendations value to set.
      * @return the DpmErrorInfo object itself.
      */
@@ -69,9 +75,50 @@ public final class DpmErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("errorString", this.errorString);
+        jsonWriter.writeArrayField("recommendations", this.recommendations,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DpmErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DpmErrorInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DpmErrorInfo.
+     */
+    public static DpmErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DpmErrorInfo deserializedDpmErrorInfo = new DpmErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorString".equals(fieldName)) {
+                    deserializedDpmErrorInfo.errorString = reader.getString();
+                } else if ("recommendations".equals(fieldName)) {
+                    List<String> recommendations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDpmErrorInfo.recommendations = recommendations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDpmErrorInfo;
+        });
     }
 }

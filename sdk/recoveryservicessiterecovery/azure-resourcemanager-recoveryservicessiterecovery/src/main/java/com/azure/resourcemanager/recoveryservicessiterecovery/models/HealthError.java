@@ -5,107 +5,102 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Health Error. */
+/**
+ * Health Error.
+ */
 @Fluent
-public final class HealthError {
+public final class HealthError implements JsonSerializable<HealthError> {
     /*
      * The inner health errors. HealthError having a list of HealthError as child errors is problematic.
      * InnerHealthError is used because this will prevent an infinite loop of structures when Hydra tries to
      * auto-generate the contract. We are exposing the related health errors as inner health errors and all API
      * consumers can utilize this in the same fashion as Exception -&gt; InnerException.
      */
-    @JsonProperty(value = "innerHealthErrors")
     private List<InnerHealthError> innerHealthErrors;
 
     /*
      * Source of error.
      */
-    @JsonProperty(value = "errorSource")
     private String errorSource;
 
     /*
      * Type of error.
      */
-    @JsonProperty(value = "errorType")
     private String errorType;
 
     /*
      * Level of error.
      */
-    @JsonProperty(value = "errorLevel")
     private String errorLevel;
 
     /*
      * Category of error.
      */
-    @JsonProperty(value = "errorCategory")
     private String errorCategory;
 
     /*
      * Error code.
      */
-    @JsonProperty(value = "errorCode")
     private String errorCode;
 
     /*
      * Summary message of the entity.
      */
-    @JsonProperty(value = "summaryMessage")
     private String summaryMessage;
 
     /*
      * Error message.
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /*
      * Possible causes of error.
      */
-    @JsonProperty(value = "possibleCauses")
     private String possibleCauses;
 
     /*
      * Recommended action to resolve error.
      */
-    @JsonProperty(value = "recommendedAction")
     private String recommendedAction;
 
     /*
      * Error creation time (UTC).
      */
-    @JsonProperty(value = "creationTimeUtc")
     private OffsetDateTime creationTimeUtc;
 
     /*
      * DRA error message.
      */
-    @JsonProperty(value = "recoveryProviderErrorMessage")
     private String recoveryProviderErrorMessage;
 
     /*
      * ID of the entity.
      */
-    @JsonProperty(value = "entityId")
     private String entityId;
 
     /*
      * The health error unique id.
      */
-    @JsonProperty(value = "errorId")
     private String errorId;
 
     /*
      * Value indicating whether the health error is customer resolvable.
      */
-    @JsonProperty(value = "customerResolvability")
     private HealthErrorCustomerResolvability customerResolvability;
 
-    /** Creates an instance of HealthError class. */
+    /**
+     * Creates an instance of HealthError class.
+     */
     public HealthError() {
     }
 
@@ -114,7 +109,7 @@ public final class HealthError {
      * errors is problematic. InnerHealthError is used because this will prevent an infinite loop of structures when
      * Hydra tries to auto-generate the contract. We are exposing the related health errors as inner health errors and
      * all API consumers can utilize this in the same fashion as Exception -&amp;gt; InnerException.
-     *
+     * 
      * @return the innerHealthErrors value.
      */
     public List<InnerHealthError> innerHealthErrors() {
@@ -126,7 +121,7 @@ public final class HealthError {
      * errors is problematic. InnerHealthError is used because this will prevent an infinite loop of structures when
      * Hydra tries to auto-generate the contract. We are exposing the related health errors as inner health errors and
      * all API consumers can utilize this in the same fashion as Exception -&amp;gt; InnerException.
-     *
+     * 
      * @param innerHealthErrors the innerHealthErrors value to set.
      * @return the HealthError object itself.
      */
@@ -137,7 +132,7 @@ public final class HealthError {
 
     /**
      * Get the errorSource property: Source of error.
-     *
+     * 
      * @return the errorSource value.
      */
     public String errorSource() {
@@ -146,7 +141,7 @@ public final class HealthError {
 
     /**
      * Set the errorSource property: Source of error.
-     *
+     * 
      * @param errorSource the errorSource value to set.
      * @return the HealthError object itself.
      */
@@ -157,7 +152,7 @@ public final class HealthError {
 
     /**
      * Get the errorType property: Type of error.
-     *
+     * 
      * @return the errorType value.
      */
     public String errorType() {
@@ -166,7 +161,7 @@ public final class HealthError {
 
     /**
      * Set the errorType property: Type of error.
-     *
+     * 
      * @param errorType the errorType value to set.
      * @return the HealthError object itself.
      */
@@ -177,7 +172,7 @@ public final class HealthError {
 
     /**
      * Get the errorLevel property: Level of error.
-     *
+     * 
      * @return the errorLevel value.
      */
     public String errorLevel() {
@@ -186,7 +181,7 @@ public final class HealthError {
 
     /**
      * Set the errorLevel property: Level of error.
-     *
+     * 
      * @param errorLevel the errorLevel value to set.
      * @return the HealthError object itself.
      */
@@ -197,7 +192,7 @@ public final class HealthError {
 
     /**
      * Get the errorCategory property: Category of error.
-     *
+     * 
      * @return the errorCategory value.
      */
     public String errorCategory() {
@@ -206,7 +201,7 @@ public final class HealthError {
 
     /**
      * Set the errorCategory property: Category of error.
-     *
+     * 
      * @param errorCategory the errorCategory value to set.
      * @return the HealthError object itself.
      */
@@ -217,7 +212,7 @@ public final class HealthError {
 
     /**
      * Get the errorCode property: Error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -226,7 +221,7 @@ public final class HealthError {
 
     /**
      * Set the errorCode property: Error code.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the HealthError object itself.
      */
@@ -237,7 +232,7 @@ public final class HealthError {
 
     /**
      * Get the summaryMessage property: Summary message of the entity.
-     *
+     * 
      * @return the summaryMessage value.
      */
     public String summaryMessage() {
@@ -246,7 +241,7 @@ public final class HealthError {
 
     /**
      * Set the summaryMessage property: Summary message of the entity.
-     *
+     * 
      * @param summaryMessage the summaryMessage value to set.
      * @return the HealthError object itself.
      */
@@ -257,7 +252,7 @@ public final class HealthError {
 
     /**
      * Get the errorMessage property: Error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -266,7 +261,7 @@ public final class HealthError {
 
     /**
      * Set the errorMessage property: Error message.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the HealthError object itself.
      */
@@ -277,7 +272,7 @@ public final class HealthError {
 
     /**
      * Get the possibleCauses property: Possible causes of error.
-     *
+     * 
      * @return the possibleCauses value.
      */
     public String possibleCauses() {
@@ -286,7 +281,7 @@ public final class HealthError {
 
     /**
      * Set the possibleCauses property: Possible causes of error.
-     *
+     * 
      * @param possibleCauses the possibleCauses value to set.
      * @return the HealthError object itself.
      */
@@ -297,7 +292,7 @@ public final class HealthError {
 
     /**
      * Get the recommendedAction property: Recommended action to resolve error.
-     *
+     * 
      * @return the recommendedAction value.
      */
     public String recommendedAction() {
@@ -306,7 +301,7 @@ public final class HealthError {
 
     /**
      * Set the recommendedAction property: Recommended action to resolve error.
-     *
+     * 
      * @param recommendedAction the recommendedAction value to set.
      * @return the HealthError object itself.
      */
@@ -317,7 +312,7 @@ public final class HealthError {
 
     /**
      * Get the creationTimeUtc property: Error creation time (UTC).
-     *
+     * 
      * @return the creationTimeUtc value.
      */
     public OffsetDateTime creationTimeUtc() {
@@ -326,7 +321,7 @@ public final class HealthError {
 
     /**
      * Set the creationTimeUtc property: Error creation time (UTC).
-     *
+     * 
      * @param creationTimeUtc the creationTimeUtc value to set.
      * @return the HealthError object itself.
      */
@@ -337,7 +332,7 @@ public final class HealthError {
 
     /**
      * Get the recoveryProviderErrorMessage property: DRA error message.
-     *
+     * 
      * @return the recoveryProviderErrorMessage value.
      */
     public String recoveryProviderErrorMessage() {
@@ -346,7 +341,7 @@ public final class HealthError {
 
     /**
      * Set the recoveryProviderErrorMessage property: DRA error message.
-     *
+     * 
      * @param recoveryProviderErrorMessage the recoveryProviderErrorMessage value to set.
      * @return the HealthError object itself.
      */
@@ -357,7 +352,7 @@ public final class HealthError {
 
     /**
      * Get the entityId property: ID of the entity.
-     *
+     * 
      * @return the entityId value.
      */
     public String entityId() {
@@ -366,7 +361,7 @@ public final class HealthError {
 
     /**
      * Set the entityId property: ID of the entity.
-     *
+     * 
      * @param entityId the entityId value to set.
      * @return the HealthError object itself.
      */
@@ -377,7 +372,7 @@ public final class HealthError {
 
     /**
      * Get the errorId property: The health error unique id.
-     *
+     * 
      * @return the errorId value.
      */
     public String errorId() {
@@ -386,7 +381,7 @@ public final class HealthError {
 
     /**
      * Set the errorId property: The health error unique id.
-     *
+     * 
      * @param errorId the errorId value to set.
      * @return the HealthError object itself.
      */
@@ -397,7 +392,7 @@ public final class HealthError {
 
     /**
      * Get the customerResolvability property: Value indicating whether the health error is customer resolvable.
-     *
+     * 
      * @return the customerResolvability value.
      */
     public HealthErrorCustomerResolvability customerResolvability() {
@@ -406,7 +401,7 @@ public final class HealthError {
 
     /**
      * Set the customerResolvability property: Value indicating whether the health error is customer resolvable.
-     *
+     * 
      * @param customerResolvability the customerResolvability value to set.
      * @return the HealthError object itself.
      */
@@ -417,12 +412,97 @@ public final class HealthError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerHealthErrors() != null) {
             innerHealthErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("innerHealthErrors", this.innerHealthErrors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("errorSource", this.errorSource);
+        jsonWriter.writeStringField("errorType", this.errorType);
+        jsonWriter.writeStringField("errorLevel", this.errorLevel);
+        jsonWriter.writeStringField("errorCategory", this.errorCategory);
+        jsonWriter.writeStringField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("summaryMessage", this.summaryMessage);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeStringField("possibleCauses", this.possibleCauses);
+        jsonWriter.writeStringField("recommendedAction", this.recommendedAction);
+        jsonWriter.writeStringField("creationTimeUtc",
+            this.creationTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTimeUtc));
+        jsonWriter.writeStringField("recoveryProviderErrorMessage", this.recoveryProviderErrorMessage);
+        jsonWriter.writeStringField("entityId", this.entityId);
+        jsonWriter.writeStringField("errorId", this.errorId);
+        jsonWriter.writeStringField("customerResolvability",
+            this.customerResolvability == null ? null : this.customerResolvability.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthError.
+     */
+    public static HealthError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthError deserializedHealthError = new HealthError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("innerHealthErrors".equals(fieldName)) {
+                    List<InnerHealthError> innerHealthErrors
+                        = reader.readArray(reader1 -> InnerHealthError.fromJson(reader1));
+                    deserializedHealthError.innerHealthErrors = innerHealthErrors;
+                } else if ("errorSource".equals(fieldName)) {
+                    deserializedHealthError.errorSource = reader.getString();
+                } else if ("errorType".equals(fieldName)) {
+                    deserializedHealthError.errorType = reader.getString();
+                } else if ("errorLevel".equals(fieldName)) {
+                    deserializedHealthError.errorLevel = reader.getString();
+                } else if ("errorCategory".equals(fieldName)) {
+                    deserializedHealthError.errorCategory = reader.getString();
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedHealthError.errorCode = reader.getString();
+                } else if ("summaryMessage".equals(fieldName)) {
+                    deserializedHealthError.summaryMessage = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedHealthError.errorMessage = reader.getString();
+                } else if ("possibleCauses".equals(fieldName)) {
+                    deserializedHealthError.possibleCauses = reader.getString();
+                } else if ("recommendedAction".equals(fieldName)) {
+                    deserializedHealthError.recommendedAction = reader.getString();
+                } else if ("creationTimeUtc".equals(fieldName)) {
+                    deserializedHealthError.creationTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveryProviderErrorMessage".equals(fieldName)) {
+                    deserializedHealthError.recoveryProviderErrorMessage = reader.getString();
+                } else if ("entityId".equals(fieldName)) {
+                    deserializedHealthError.entityId = reader.getString();
+                } else if ("errorId".equals(fieldName)) {
+                    deserializedHealthError.errorId = reader.getString();
+                } else if ("customerResolvability".equals(fieldName)) {
+                    deserializedHealthError.customerResolvability
+                        = HealthErrorCustomerResolvability.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthError;
+        });
     }
 }

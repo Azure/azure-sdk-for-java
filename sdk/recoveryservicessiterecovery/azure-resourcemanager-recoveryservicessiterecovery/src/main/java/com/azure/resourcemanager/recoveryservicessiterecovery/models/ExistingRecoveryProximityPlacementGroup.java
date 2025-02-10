@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Existing recovery proximity placement group input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Existing")
+/**
+ * Existing recovery proximity placement group input.
+ */
 @Fluent
 public final class ExistingRecoveryProximityPlacementGroup extends RecoveryProximityPlacementGroupCustomDetails {
     /*
+     * The class type.
+     */
+    private String resourceType = "Existing";
+
+    /*
      * The recovery proximity placement group Id. Will throw error, if resource does not exist.
      */
-    @JsonProperty(value = "recoveryProximityPlacementGroupId")
     private String recoveryProximityPlacementGroupId;
 
-    /** Creates an instance of ExistingRecoveryProximityPlacementGroup class. */
+    /**
+     * Creates an instance of ExistingRecoveryProximityPlacementGroup class.
+     */
     public ExistingRecoveryProximityPlacementGroup() {
+    }
+
+    /**
+     * Get the resourceType property: The class type.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
     }
 
     /**
      * Get the recoveryProximityPlacementGroupId property: The recovery proximity placement group Id. Will throw error,
      * if resource does not exist.
-     *
+     * 
      * @return the recoveryProximityPlacementGroupId value.
      */
     public String recoveryProximityPlacementGroupId() {
@@ -37,23 +54,63 @@ public final class ExistingRecoveryProximityPlacementGroup extends RecoveryProxi
     /**
      * Set the recoveryProximityPlacementGroupId property: The recovery proximity placement group Id. Will throw error,
      * if resource does not exist.
-     *
+     * 
      * @param recoveryProximityPlacementGroupId the recoveryProximityPlacementGroupId value to set.
      * @return the ExistingRecoveryProximityPlacementGroup object itself.
      */
-    public ExistingRecoveryProximityPlacementGroup withRecoveryProximityPlacementGroupId(
-        String recoveryProximityPlacementGroupId) {
+    public ExistingRecoveryProximityPlacementGroup
+        withRecoveryProximityPlacementGroupId(String recoveryProximityPlacementGroupId) {
         this.recoveryProximityPlacementGroupId = recoveryProximityPlacementGroupId;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("recoveryProximityPlacementGroupId", this.recoveryProximityPlacementGroupId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExistingRecoveryProximityPlacementGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExistingRecoveryProximityPlacementGroup if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExistingRecoveryProximityPlacementGroup.
+     */
+    public static ExistingRecoveryProximityPlacementGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExistingRecoveryProximityPlacementGroup deserializedExistingRecoveryProximityPlacementGroup
+                = new ExistingRecoveryProximityPlacementGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedExistingRecoveryProximityPlacementGroup.resourceType = reader.getString();
+                } else if ("recoveryProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedExistingRecoveryProximityPlacementGroup.recoveryProximityPlacementGroupId
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExistingRecoveryProximityPlacementGroup;
+        });
     }
 }

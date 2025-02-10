@@ -6,43 +6,42 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * fqdn object.
  */
 @Fluent
-public final class FqdnObject {
+public final class FqdnObject implements JsonSerializable<FqdnObject> {
     /*
      * fqdn object description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * fqdn list
      */
-    @JsonProperty(value = "fqdnList", required = true)
     private List<String> fqdnList;
 
     /*
      * etag info
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * comment for this object
      */
-    @JsonProperty(value = "auditComment")
     private String auditComment;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -147,10 +146,59 @@ public final class FqdnObject {
      */
     public void validate() {
         if (fqdnList() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property fqdnList in model FqdnObject"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property fqdnList in model FqdnObject"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FqdnObject.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("fqdnList", this.fqdnList, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeStringField("auditComment", this.auditComment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FqdnObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FqdnObject if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FqdnObject.
+     */
+    public static FqdnObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FqdnObject deserializedFqdnObject = new FqdnObject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fqdnList".equals(fieldName)) {
+                    List<String> fqdnList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFqdnObject.fqdnList = fqdnList;
+                } else if ("description".equals(fieldName)) {
+                    deserializedFqdnObject.description = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedFqdnObject.etag = reader.getString();
+                } else if ("auditComment".equals(fieldName)) {
+                    deserializedFqdnObject.auditComment = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFqdnObject.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFqdnObject;
+        });
+    }
 }

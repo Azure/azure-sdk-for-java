@@ -13,35 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class IoTSecurityAggregatedRecommendationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IoTSecurityAggregatedRecommendationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"recommendationName\":\"hhkxbp\",\"recommendationDisplayName\":\"ymjhxxjyngudivkr\",\"description\":\"wbxqzvszjfau\",\"recommendationTypeId\":\"fdxxivetvtcqaqtd\",\"detectedBy\":\"mcbxvwvxysl\",\"remediationSteps\":\"hsfxoblytkb\",\"reportedSeverity\":\"Informational\",\"healthyDevices\":7965235858819395640,\"unhealthyDeviceCount\":2233870853702293034,\"logAnalyticsQuery\":\"rvrnsvshqjohxc\"},\"tags\":{\"uvwbhsqfs\":\"fovasr\",\"bsrfbj\":\"bcgjbirxbp\",\"otftpvjzbexilz\":\"dtws\",\"qtaruoujmkcjhwq\":\"nfqqnvwp\"},\"id\":\"tjrybnwjewgdr\",\"name\":\"ervnaenqpehi\",\"type\":\"doy\"}")
-                .toObject(IoTSecurityAggregatedRecommendationInner.class);
-        Assertions.assertEquals("fovasr", model.tags().get("uvwbhsqfs"));
-        Assertions.assertEquals("hhkxbp", model.recommendationName());
+        IoTSecurityAggregatedRecommendationInner model = BinaryData.fromString(
+            "{\"properties\":{\"recommendationName\":\"xrmcqibycnojvk\",\"recommendationDisplayName\":\"e\",\"description\":\"sgzvahapjyzhpv\",\"recommendationTypeId\":\"zcjrvxdjzlmwlx\",\"detectedBy\":\"ug\",\"remediationSteps\":\"zovawjvz\",\"reportedSeverity\":\"Low\",\"healthyDevices\":6384208989627743230,\"unhealthyDeviceCount\":193130563963832642,\"logAnalyticsQuery\":\"nxipeil\"},\"tags\":{\"bbtdzumvee\":\"uaejxdultsk\",\"zuhkfpbsjyof\":\"gpw\"},\"id\":\"xl\",\"name\":\"us\",\"type\":\"ttouwaboekqvkel\"}")
+            .toObject(IoTSecurityAggregatedRecommendationInner.class);
+        Assertions.assertEquals("uaejxdultsk", model.tags().get("bbtdzumvee"));
+        Assertions.assertEquals("xrmcqibycnojvk", model.recommendationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSecurityAggregatedRecommendationInner model =
-            new IoTSecurityAggregatedRecommendationInner()
-                .withTags(
-                    mapOf(
-                        "uvwbhsqfs",
-                        "fovasr",
-                        "bsrfbj",
-                        "bcgjbirxbp",
-                        "otftpvjzbexilz",
-                        "dtws",
-                        "qtaruoujmkcjhwq",
-                        "nfqqnvwp"))
-                .withRecommendationName("hhkxbp");
+        IoTSecurityAggregatedRecommendationInner model = new IoTSecurityAggregatedRecommendationInner()
+            .withTags(mapOf("bbtdzumvee", "uaejxdultsk", "zuhkfpbsjyof", "gpw"))
+            .withRecommendationName("xrmcqibycnojvk");
         model = BinaryData.fromObject(model).toObject(IoTSecurityAggregatedRecommendationInner.class);
-        Assertions.assertEquals("fovasr", model.tags().get("uvwbhsqfs"));
-        Assertions.assertEquals("hhkxbp", model.recommendationName());
+        Assertions.assertEquals("uaejxdultsk", model.tags().get("bbtdzumvee"));
+        Assertions.assertEquals("xrmcqibycnojvk", model.recommendationName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -7,19 +7,22 @@ package com.azure.resourcemanager.mediaservices.generated;
 import com.azure.resourcemanager.mediaservices.models.Hls;
 import java.time.Duration;
 
-/** Samples for LiveOutputs Create. */
+/**
+ * Samples for LiveOutputs Create.
+ */
 public final class LiveOutputsCreateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-11-01/examples/liveoutput-create.json
+     * x-ms-original-file:
+     * specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-11-01/examples/liveoutput-
+     * create.json
      */
     /**
      * Sample code: Create a LiveOutput.
-     *
+     * 
      * @param manager Entry point to MediaServicesManager.
      */
     public static void createALiveOutput(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager
-            .liveOutputs()
+        manager.liveOutputs()
             .define("myLiveOutput1")
             .withExistingLiveEvent("mediaresources", "slitestmedia10", "myLiveEvent1")
             .withDescription("test live output 1")

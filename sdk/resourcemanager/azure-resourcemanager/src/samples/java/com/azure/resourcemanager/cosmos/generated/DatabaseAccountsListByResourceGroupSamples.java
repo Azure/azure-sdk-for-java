@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBDatabaseAccountListByResourceGroup.json
      */
     /**
@@ -19,7 +19,10 @@ public final class DatabaseAccountsListByResourceGroupSamples {
      */
     public static void
         cosmosDBDatabaseAccountListByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts().listByResourceGroup("rg1",
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getDatabaseAccounts()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

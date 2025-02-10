@@ -7,48 +7,64 @@ package com.azure.resourcemanager.maintenance.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.maintenance.models.InputPatchConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
 import com.azure.resourcemanager.maintenance.models.Visibility;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Maintenance configuration record type. */
+/**
+ * Maintenance configuration record type.
+ */
 @Fluent
 public final class MaintenanceConfigurationInner extends ProxyResource {
     /*
      * Gets or sets location of the resource
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Gets or sets tags of the resource
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Gets or sets properties of the resource
      */
-    @JsonProperty(value = "properties")
     private MaintenanceConfigurationProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of MaintenanceConfigurationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MaintenanceConfigurationInner class.
+     */
     public MaintenanceConfigurationInner() {
     }
 
     /**
      * Get the location property: Gets or sets location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -57,7 +73,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Set the location property: Gets or sets location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -68,7 +84,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Get the tags property: Gets or sets tags of the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -77,7 +93,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Set the tags property: Gets or sets tags of the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -88,7 +104,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Gets or sets properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MaintenanceConfigurationProperties innerProperties() {
@@ -97,7 +113,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -105,8 +121,38 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the namespace property: Gets or sets namespace of the resource.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -115,7 +161,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Set the namespace property: Gets or sets namespace of the resource.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -129,7 +175,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Get the extensionProperties property: Gets or sets extensionProperties of the maintenanceConfiguration.
-     *
+     * 
      * @return the extensionProperties value.
      */
     public Map<String, String> extensionProperties() {
@@ -138,7 +184,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Set the extensionProperties property: Gets or sets extensionProperties of the maintenanceConfiguration.
-     *
+     * 
      * @param extensionProperties the extensionProperties value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -152,7 +198,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Get the maintenanceScope property: Gets or sets maintenanceScope of the configuration.
-     *
+     * 
      * @return the maintenanceScope value.
      */
     public MaintenanceScope maintenanceScope() {
@@ -161,7 +207,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Set the maintenanceScope property: Gets or sets maintenanceScope of the configuration.
-     *
+     * 
      * @param maintenanceScope the maintenanceScope value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -175,7 +221,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Get the visibility property: Gets or sets the visibility of the configuration. The default value is 'Custom'.
-     *
+     * 
      * @return the visibility value.
      */
     public Visibility visibility() {
@@ -184,7 +230,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Set the visibility property: Gets or sets the visibility of the configuration. The default value is 'Custom'.
-     *
+     * 
      * @param visibility the visibility value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -198,7 +244,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Get the installPatches property: The input parameters to be passed to the patch run operation.
-     *
+     * 
      * @return the installPatches value.
      */
     public InputPatchConfiguration installPatches() {
@@ -207,7 +253,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Set the installPatches property: The input parameters to be passed to the patch run operation.
-     *
+     * 
      * @param installPatches the installPatches value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -223,7 +269,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
      * Get the startDateTime property: Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The
      * start date can be set to either the current date or future date. The window will be created in the time zone
      * provided and adjusted to daylight savings according to that time zone.
-     *
+     * 
      * @return the startDateTime value.
      */
     public String startDateTime() {
@@ -234,7 +280,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
      * Set the startDateTime property: Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The
      * start date can be set to either the current date or future date. The window will be created in the time zone
      * provided and adjusted to daylight savings according to that time zone.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -251,7 +297,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
      * format. The window will be created in the time zone provided and adjusted to daylight savings according to that
      * time zone. Expiration date must be set to a future date. If not provided, it will be set to the maximum datetime
      * 9999-12-31 23:59:59.
-     *
+     * 
      * @return the expirationDateTime value.
      */
     public String expirationDateTime() {
@@ -263,7 +309,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
      * format. The window will be created in the time zone provided and adjusted to daylight savings according to that
      * time zone. Expiration date must be set to a future date. If not provided, it will be set to the maximum datetime
      * 9999-12-31 23:59:59.
-     *
+     * 
      * @param expirationDateTime the expirationDateTime value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -278,7 +324,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
     /**
      * Get the duration property: Duration of the maintenance window in HH:mm format. If not provided, default value
      * will be used based on maintenance scope provided. Example: 05:00.
-     *
+     * 
      * @return the duration value.
      */
     public String duration() {
@@ -288,7 +334,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
     /**
      * Set the duration property: Duration of the maintenance window in HH:mm format. If not provided, default value
      * will be used based on maintenance scope provided. Example: 05:00.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -304,7 +350,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
      * Get the timeZone property: Name of the timezone. List of timezones can be obtained by executing
      * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard Time, UTC, W. Europe
      * Standard Time, Korea Standard Time, Cen. Australia Standard Time.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -315,7 +361,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
      * Set the timeZone property: Name of the timezone. List of timezones can be obtained by executing
      * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard Time, UTC, W. Europe
      * Standard Time, Korea Standard Time, Cen. Australia Standard Time.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -339,7 +385,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
      * be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery:
      * Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday
      * Offset-3, recurEvery: Month Third Sunday Offset6.
-     *
+     * 
      * @return the recurEvery value.
      */
     public String recurEvery() {
@@ -358,7 +404,7 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
      * be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery:
      * Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday
      * Offset-3, recurEvery: Month Third Sunday Offset6.
-     *
+     * 
      * @param recurEvery the recurEvery value to set.
      * @return the MaintenanceConfigurationInner object itself.
      */
@@ -372,12 +418,66 @@ public final class MaintenanceConfigurationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceConfigurationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MaintenanceConfigurationInner.
+     */
+    public static MaintenanceConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceConfigurationInner deserializedMaintenanceConfigurationInner
+                = new MaintenanceConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMaintenanceConfigurationInner.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.innerProperties
+                        = MaintenanceConfigurationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceConfigurationInner;
+        });
     }
 }

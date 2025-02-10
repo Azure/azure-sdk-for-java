@@ -5,60 +5,62 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of a security event sql injection additional properties. */
+/**
+ * The properties of a security event sql injection additional properties.
+ */
 @Immutable
-public final class SecurityEventSqlInjectionAdditionalProperties {
+public final class SecurityEventSqlInjectionAdditionalProperties
+    implements JsonSerializable<SecurityEventSqlInjectionAdditionalProperties> {
     /*
      * The threat ID.
      */
-    @JsonProperty(value = "threatId", access = JsonProperty.Access.WRITE_ONLY)
     private String threatId;
 
     /*
      * The statement
      */
-    @JsonProperty(value = "statement", access = JsonProperty.Access.WRITE_ONLY)
     private String statement;
 
     /*
      * The statement highlight offset
      */
-    @JsonProperty(value = "statementHighlightOffset", access = JsonProperty.Access.WRITE_ONLY)
     private Integer statementHighlightOffset;
 
     /*
      * The statement highlight length
      */
-    @JsonProperty(value = "statementHighlightLength", access = JsonProperty.Access.WRITE_ONLY)
     private Integer statementHighlightLength;
 
     /*
      * The sql error code
      */
-    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer errorCode;
 
     /*
      * The sql error severity
      */
-    @JsonProperty(value = "errorSeverity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer errorSeverity;
 
     /*
      * The sql error message
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /** Creates an instance of SecurityEventSqlInjectionAdditionalProperties class. */
+    /**
+     * Creates an instance of SecurityEventSqlInjectionAdditionalProperties class.
+     */
     public SecurityEventSqlInjectionAdditionalProperties() {
     }
 
     /**
      * Get the threatId property: The threat ID.
-     *
+     * 
      * @return the threatId value.
      */
     public String threatId() {
@@ -67,7 +69,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the statement property: The statement.
-     *
+     * 
      * @return the statement value.
      */
     public String statement() {
@@ -76,7 +78,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the statementHighlightOffset property: The statement highlight offset.
-     *
+     * 
      * @return the statementHighlightOffset value.
      */
     public Integer statementHighlightOffset() {
@@ -85,7 +87,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the statementHighlightLength property: The statement highlight length.
-     *
+     * 
      * @return the statementHighlightLength value.
      */
     public Integer statementHighlightLength() {
@@ -94,7 +96,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the errorCode property: The sql error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -103,7 +105,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the errorSeverity property: The sql error severity.
-     *
+     * 
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
@@ -112,7 +114,7 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Get the errorMessage property: The sql error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -121,9 +123,61 @@ public final class SecurityEventSqlInjectionAdditionalProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityEventSqlInjectionAdditionalProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityEventSqlInjectionAdditionalProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityEventSqlInjectionAdditionalProperties.
+     */
+    public static SecurityEventSqlInjectionAdditionalProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityEventSqlInjectionAdditionalProperties deserializedSecurityEventSqlInjectionAdditionalProperties
+                = new SecurityEventSqlInjectionAdditionalProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("threatId".equals(fieldName)) {
+                    deserializedSecurityEventSqlInjectionAdditionalProperties.threatId = reader.getString();
+                } else if ("statement".equals(fieldName)) {
+                    deserializedSecurityEventSqlInjectionAdditionalProperties.statement = reader.getString();
+                } else if ("statementHighlightOffset".equals(fieldName)) {
+                    deserializedSecurityEventSqlInjectionAdditionalProperties.statementHighlightOffset
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("statementHighlightLength".equals(fieldName)) {
+                    deserializedSecurityEventSqlInjectionAdditionalProperties.statementHighlightLength
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedSecurityEventSqlInjectionAdditionalProperties.errorCode
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("errorSeverity".equals(fieldName)) {
+                    deserializedSecurityEventSqlInjectionAdditionalProperties.errorSeverity
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedSecurityEventSqlInjectionAdditionalProperties.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityEventSqlInjectionAdditionalProperties;
+        });
     }
 }

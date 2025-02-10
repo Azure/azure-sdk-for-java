@@ -12,18 +12,16 @@ import java.util.Arrays;
 public final class ExternalSecuritySolutionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalSecuritySolutionList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"ozxwopd\",\"id\":\"yd\",\"name\":\"izqaclnapxbiyg\",\"type\":\"ugjknf\"},{\"kind\":\"ExternalSecuritySolution\",\"location\":\"fcttuxuuyilfl\",\"id\":\"oiquvrehmrnjhvs\",\"name\":\"jztczytqj\",\"type\":\"w\"}],\"nextLink\":\"uunfprnjletlxsm\"}")
-                .toObject(ExternalSecuritySolutionList.class);
+        ExternalSecuritySolutionList model = BinaryData.fromString(
+            "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"lusiy\",\"id\":\"bsfgytguslfea\",\"name\":\"cy\",\"type\":\"qukyhejhzi\"},{\"kind\":\"ExternalSecuritySolution\",\"location\":\"gfpelolppvksrpqv\",\"id\":\"jzraehtwdwrf\",\"name\":\"swibyr\",\"type\":\"dl\"},{\"kind\":\"ExternalSecuritySolution\",\"location\":\"shfwpracstwity\",\"id\":\"hevxcced\",\"name\":\"pnmdyodnwzxltjcv\",\"type\":\"hlt\"},{\"kind\":\"ExternalSecuritySolution\",\"location\":\"gcxn\",\"id\":\"vvwxqi\",\"name\":\"y\",\"type\":\"unyowxwl\"}],\"nextLink\":\"jrkvfgbvfvpdbo\"}")
+            .toObject(ExternalSecuritySolutionList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExternalSecuritySolutionList model =
-            new ExternalSecuritySolutionList()
-                .withValue(Arrays.asList(new ExternalSecuritySolutionInner(), new ExternalSecuritySolutionInner()));
+        ExternalSecuritySolutionList model = new ExternalSecuritySolutionList()
+            .withValue(Arrays.asList(new ExternalSecuritySolutionInner(), new ExternalSecuritySolutionInner(),
+                new ExternalSecuritySolutionInner(), new ExternalSecuritySolutionInner()));
         model = BinaryData.fromObject(model).toObject(ExternalSecuritySolutionList.class);
     }
 }

@@ -6,68 +6,37 @@ package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.sphere.AzureSphereManager;
 import com.azure.resourcemanager.sphere.models.Image;
 import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ImagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"image\":\"lkfg\",\"imageId\":\"dneu\",\"imageName\":\"fphsdyhtozfikdow\",\"regionalDataBoundary\":\"None\",\"uri\":\"v\",\"description\":\"xclvit\",\"componentId\":\"qzonosggbhcohf\",\"imageType\":\"OneBl\",\"provisioningState\":\"Accepted\"},\"id\":\"aljutiiswac\",\"name\":\"fgdkzzew\",\"type\":\"fvhqc\"}";
 
-        String responseStr =
-            "{\"properties\":{\"image\":\"clvit\",\"imageId\":\"qzonosggbhcohf\",\"imageName\":\"sjnkal\",\"regionalDataBoundary\":\"EU\",\"uri\":\"iswac\",\"description\":\"gdkz\",\"componentId\":\"wkfvhqcrailvp\",\"imageType\":\"UpdateCertStore\",\"provisioningState\":\"Succeeded\"},\"id\":\"flrwd\",\"name\":\"hdlxyjrxsagafcn\",\"type\":\"hgw\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Image response = manager.images()
+            .getWithResponse("mpgcjefuzmuvpbt", "d", "morppxebmnzbtbh", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        AzureSphereManager manager =
-            AzureSphereManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Image response =
-            manager
-                .images()
-                .getWithResponse("fgohdneuelfphs", "yhtozfikdowwqu", "v", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("clvit", response.image());
-        Assertions.assertEquals("qzonosggbhcohf", response.imageId());
-        Assertions.assertEquals(RegionalDataBoundary.EU, response.regionalDataBoundary());
+        Assertions.assertEquals("lkfg", response.properties().image());
+        Assertions.assertEquals("dneu", response.properties().imageId());
+        Assertions.assertEquals(RegionalDataBoundary.NONE, response.properties().regionalDataBoundary());
     }
 }

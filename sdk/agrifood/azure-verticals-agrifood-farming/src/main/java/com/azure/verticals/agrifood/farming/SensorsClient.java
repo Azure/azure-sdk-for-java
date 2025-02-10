@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = SensorsClientBuilder.class)
 public final class SensorsClient {
-    @Generated private final SensorsAsyncClient client;
+    @Generated
+    private final SensorsAsyncClient client;
 
     /**
      * Initializes an instance of SensorsClient class.
@@ -197,8 +198,8 @@ public final class SensorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String sensorPartnerId, String sensorId, BinaryData sensorDetails, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String sensorPartnerId, String sensorId,
+        BinaryData sensorDetails, RequestOptions requestOptions) {
         return this.client.createOrUpdateWithResponse(sensorPartnerId, sensorId, sensorDetails, requestOptions).block();
     }
 
@@ -252,8 +253,8 @@ public final class SensorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String sensorPartnerId, String sensorId, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String sensorPartnerId, String sensorId,
+        RequestOptions requestOptions) {
         return this.client.getWithResponse(sensorPartnerId, sensorId, requestOptions).block();
     }
 
@@ -298,8 +299,8 @@ public final class SensorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getConnectionStringWithResponse(
-            String sensorPartnerId, String sensorId, RequestOptions requestOptions) {
+    public Response<BinaryData> getConnectionStringWithResponse(String sensorPartnerId, String sensorId,
+        RequestOptions requestOptions) {
         return this.client.getConnectionStringWithResponse(sensorPartnerId, sensorId, requestOptions).block();
     }
 
@@ -335,14 +336,10 @@ public final class SensorsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> renewConnectionStringWithResponse(
-            String sensorPartnerId,
-            String sensorId,
-            BinaryData renewConnectionStringModel,
-            RequestOptions requestOptions) {
+    public Response<BinaryData> renewConnectionStringWithResponse(String sensorPartnerId, String sensorId,
+        BinaryData renewConnectionStringModel, RequestOptions requestOptions) {
         return this.client
-                .renewConnectionStringWithResponse(
-                        sensorPartnerId, sensorId, renewConnectionStringModel, requestOptions)
-                .block();
+            .renewConnectionStringWithResponse(sensorPartnerId, sensorId, renewConnectionStringModel, requestOptions)
+            .block();
     }
 }

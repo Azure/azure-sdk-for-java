@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** The external security solution properties for AAD solutions. */
+/**
+ * The external security solution properties for AAD solutions.
+ */
 @Fluent
 public final class AadSolutionProperties extends ExternalSecuritySolutionProperties {
     /*
      * The connectivity state of the external AAD solution
      */
-    @JsonProperty(value = "connectivityState")
     private AadConnectivityState connectivityState;
 
-    /** Creates an instance of AadSolutionProperties class. */
+    /**
+     * Creates an instance of AadSolutionProperties class.
+     */
     public AadSolutionProperties() {
     }
 
     /**
      * Get the connectivityState property: The connectivity state of the external AAD solution.
-     *
+     * 
      * @return the connectivityState value.
      */
     public AadConnectivityState connectivityState() {
@@ -31,7 +39,7 @@ public final class AadSolutionProperties extends ExternalSecuritySolutionPropert
 
     /**
      * Set the connectivityState property: The connectivity state of the external AAD solution.
-     *
+     * 
      * @param connectivityState the connectivityState value to set.
      * @return the AadSolutionProperties object itself.
      */
@@ -40,21 +48,27 @@ public final class AadSolutionProperties extends ExternalSecuritySolutionPropert
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AadSolutionProperties withDeviceVendor(String deviceVendor) {
         super.withDeviceVendor(deviceVendor);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AadSolutionProperties withDeviceType(String deviceType) {
         super.withDeviceType(deviceType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AadSolutionProperties withWorkspace(ConnectedWorkspace workspace) {
         super.withWorkspace(workspace);
@@ -63,11 +77,71 @@ public final class AadSolutionProperties extends ExternalSecuritySolutionPropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (workspace() != null) {
+            workspace().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceVendor", deviceVendor());
+        jsonWriter.writeStringField("deviceType", deviceType());
+        jsonWriter.writeJsonField("workspace", workspace());
+        jsonWriter.writeStringField("connectivityState",
+            this.connectivityState == null ? null : this.connectivityState.toString());
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AadSolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AadSolutionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AadSolutionProperties.
+     */
+    public static AadSolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AadSolutionProperties deserializedAadSolutionProperties = new AadSolutionProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceVendor".equals(fieldName)) {
+                    deserializedAadSolutionProperties.withDeviceVendor(reader.getString());
+                } else if ("deviceType".equals(fieldName)) {
+                    deserializedAadSolutionProperties.withDeviceType(reader.getString());
+                } else if ("workspace".equals(fieldName)) {
+                    deserializedAadSolutionProperties.withWorkspace(ConnectedWorkspace.fromJson(reader));
+                } else if ("connectivityState".equals(fieldName)) {
+                    deserializedAadSolutionProperties.connectivityState
+                        = AadConnectivityState.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAadSolutionProperties.withAdditionalProperties(additionalProperties);
+
+            return deserializedAadSolutionProperties;
+        });
     }
 }

@@ -1,15 +1,162 @@
 ## Release History
 
-### 3.42.0-beta.1 (Unreleased)
+### 5.20.0-beta.1 (Unreleased)
 
 #### Features Added
+* Improved the Exception Handling of 'azure-spring-data-cosmos' to throw more detailed exceptions and not always the same exception - See [PR 42902](https://github.com/Azure/azure-sdk-for-java/pull/42902).
+* Implemented sum() support for annotated queries - See [PR 43239](https://github.com/Azure/azure-sdk-for-java/pull/43239).
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 5.19.0 (2024-12-17)
+
+#### Bugs Fixed
+* Fixing bug that `java.math.BigInteger` and `java.math.BigDecimal` in models can cause reflection errors on Java 17 - See [PR 40239](https://github.com/Azure/azure-sdk-for-java/pull/40239)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.65.0`.
+
+### 5.18.0 (2024-11-05)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 5.18.0 and above.
+#### Other Changes
+* Updated `azure-cosmos` to version `4.64.0`.
+
+### 5.17.1 (2024-10-11)
+
+#### Bugs Fixed
+* Fixed issue that some classes do not support Java 17.
+
+### 5.17.0 (2024-10-09)
+
+#### Other Changes
+* regular release
+
+### 5.16.0 (2024-09-09)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.63.2`.
+
+### 5.15.0 (2024-08-07)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.63.0`.
+
+### 5.14.0 (2024-07-05)
+
+#### Features Added
+* Added hierarchical or sub-partitioning support to 'azure-spring-data-cosmos' - See [PR 40928](https://github.com/Azure/azure-sdk-for-java/pull/40928).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.62.0`.
+
+### 5.13.0 (2024-06-06)
+
+#### Features Added
+* Added support for `@Transient` annotation - see [PR 40401](https://github.com/Azure/azure-sdk-for-java/pull/40401).
+
+#### Bugs Fixed
+* Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40165](https://github.com/Azure/azure-sdk-for-java/pull/40165).
+* Fixing bug with Spring JPA keywords that don't lead to criteria creation - See [PR 40204](https://github.com/Azure/azure-sdk-for-java/pull/40204).
+
+### 3.46.0 (2024-06-03)
+
+#### Features Added
+* Added support for `@Transient` annotation - see [PR 39760](https://github.com/Azure/azure-sdk-for-java/pull/39760).
+
+#### Bugs Fixed
+* Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40083](https://github.com/Azure/azure-sdk-for-java/pull/40083).
+* Fixing bug with Spring JPA keywords that don't lead to criteria creation - See [PR 40167](https://github.com/Azure/azure-sdk-for-java/pull/40167).
+
+### 5.12.0 (2024-05-09)
+
+#### Features Added
+* Exposing the `indexQueryMetrics` to the `CosmosConfig` via the `application.properties` configuration file - See [PR 39623](https://github.com/Azure/azure-sdk-for-java/pull/39623).
+
+#### Bugs Fixed
+* Fixed all saveAll/insertAll bulk functionality to populated audit data - See [PR 39811](https://github.com/Azure/azure-sdk-for-java/pull/39811).
+* Fixed `existsById` API in `ReactiveCosmosTemplate` to return `Mono<Boolean>` containing `False` in case the item does not exist - See [PR 40050](https://github.com/Azure/azure-sdk-for-java/pull/40050).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.58.0`.
+
+### 3.45.0 (2024-05-07)
+
+#### Features Added
+* Exposing the `indexQueryMetrics` to the `CosmosConfig` via the `application.properties` configuration file - See [PR 39433](https://github.com/Azure/azure-sdk-for-java/pull/39433).
+
+#### Bugs Fixed
+* Fixed all saveAll/insertAll bulk functionality to populated audit data - See [PR 39620](https://github.com/Azure/azure-sdk-for-java/pull/39620).
+* Fixed `existsById` API in `ReactiveCosmosTemplate` to return `Mono<Boolean>` containing `False` in case the item does not exist - See [PR 40022](https://github.com/Azure/azure-sdk-for-java/pull/40022)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.58.0`.
+
+### 5.11.0 (2024-03-29)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.57.0`.
+
+### 3.44.0 (2024-03-28)
+
+#### Bugs Fixed
+* Fixed `IllegalStateException` for `delete` - See [PR 38996](https://github.com/Azure/azure-sdk-for-java/pull/38996). 
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.57.0`.
+
+### 5.10.0 (2024-03-01)
+
+#### Bugs Fixed
+* Fixed `IllegalStateException` for `delete` - See [PR 39010](https://github.com/Azure/azure-sdk-for-java/pull/39010).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.56.0`.
+
+### 3.43.0 (2024-02-28)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.56.0`.
+
+### 5.9.1 (2024-02-08)
+
+#### Bugs Fixed
+* Fixed issue where running on versions older than Java 21 would throw a `UnsupportedClassVersionError` - See [PR 38690](https://github.com/Azure/azure-sdk-for-java/pull/38690).
+
+### 5.9.0 (2024-02-04)
+
+#### Bugs Fixed
+* Fixed a bug with auto generated id's when using bulk `saveAll` - See [PR 38356](https://github.com/Azure/azure-sdk-for-java/pull/38356).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.54.0`.
+* Implemented a custom scheduler for `azure-spring-data-cosmos` - See [PR 38029](https://github.com/Azure/azure-sdk-for-java/pull/38029).
+* Optimized querying entities with nested partition keys by passing the nested partition key in `CosmosQueryRequestOptions` - See [PR 38356](https://github.com/Azure/azure-sdk-for-java/pull/38356).
+
+### 3.42.0 (2024-02-02)
+
+#### Bugs Fixed
+* Fixed a bug with auto generated id's when using bulk `saveAll` - See [PR 38274](https://github.com/Azure/azure-sdk-for-java/pull/38274).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.54.0`.
 * Implemented a custom scheduler for `azure-spring-data-cosmos` - See [PR 37840](https://github.com/Azure/azure-sdk-for-java/pull/37840).
+* Optimized querying entities with nested partition keys by passing the nested partition key in `CosmosQueryRequestOptions` - See [PR 38274](https://github.com/Azure/azure-sdk-for-java/pull/38274).
+
+### 5.8.0 (2023-12-14)
+
+#### Bugs Fixed
+* Fixed an issue with optional query parameters being used for annotated queries - See [PR 37558](https://github.com/Azure/azure-sdk-for-java/pull/37558).
+* Fixed an issue with populating the `azure-spring-data-cosmos` version number in the UserAgent - See [PR 37642](https://github.com/Azure/azure-sdk-for-java/pull/37642).
+* Fixed a bug with annotated queries that contain new lines in the query definition - See [PR 38098](https://github.com/Azure/azure-sdk-for-java/pull/38098).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.53.1`.
+* Updated `Spring Data Commons` to version `3.2.0`.
 
 ### 3.41.0 (2023-12-14)
 
@@ -153,8 +300,6 @@
 * Updated `azure-cosmos` to version `4.38.0`.
 
 ### 3.28.1 (2022-10-07)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 3.28.1 and above.
 #### Other Changes
 * Updated `azure-cosmos` to version `4.37.1`.
 

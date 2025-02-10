@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Azure storage specific error information. */
+/**
+ * Azure storage specific error information.
+ */
 @Fluent
-public final class AzureWorkloadErrorInfo {
+public final class AzureWorkloadErrorInfo implements JsonSerializable<AzureWorkloadErrorInfo> {
     /*
      * Error code.
      */
-    @JsonProperty(value = "errorCode")
     private Integer errorCode;
 
     /*
      * Localized error string.
      */
-    @JsonProperty(value = "errorString")
     private String errorString;
 
     /*
      * Title: Typically, the entity that the error pertains to.
      */
-    @JsonProperty(value = "errorTitle")
     private String errorTitle;
 
     /*
      * List of localized recommendations for above error code.
      */
-    @JsonProperty(value = "recommendations")
     private List<String> recommendations;
 
     /*
      * Additional details for above error code.
      */
-    @JsonProperty(value = "additionalDetails")
     private String additionalDetails;
 
-    /** Creates an instance of AzureWorkloadErrorInfo class. */
+    /**
+     * Creates an instance of AzureWorkloadErrorInfo class.
+     */
     public AzureWorkloadErrorInfo() {
     }
 
     /**
      * Get the errorCode property: Error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -56,7 +59,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Set the errorCode property: Error code.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the AzureWorkloadErrorInfo object itself.
      */
@@ -67,7 +70,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Get the errorString property: Localized error string.
-     *
+     * 
      * @return the errorString value.
      */
     public String errorString() {
@@ -76,7 +79,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Set the errorString property: Localized error string.
-     *
+     * 
      * @param errorString the errorString value to set.
      * @return the AzureWorkloadErrorInfo object itself.
      */
@@ -87,7 +90,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Get the errorTitle property: Title: Typically, the entity that the error pertains to.
-     *
+     * 
      * @return the errorTitle value.
      */
     public String errorTitle() {
@@ -96,7 +99,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Set the errorTitle property: Title: Typically, the entity that the error pertains to.
-     *
+     * 
      * @param errorTitle the errorTitle value to set.
      * @return the AzureWorkloadErrorInfo object itself.
      */
@@ -107,7 +110,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Get the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @return the recommendations value.
      */
     public List<String> recommendations() {
@@ -116,7 +119,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Set the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @param recommendations the recommendations value to set.
      * @return the AzureWorkloadErrorInfo object itself.
      */
@@ -127,7 +130,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Get the additionalDetails property: Additional details for above error code.
-     *
+     * 
      * @return the additionalDetails value.
      */
     public String additionalDetails() {
@@ -136,7 +139,7 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Set the additionalDetails property: Additional details for above error code.
-     *
+     * 
      * @param additionalDetails the additionalDetails value to set.
      * @return the AzureWorkloadErrorInfo object itself.
      */
@@ -147,9 +150,59 @@ public final class AzureWorkloadErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("errorString", this.errorString);
+        jsonWriter.writeStringField("errorTitle", this.errorTitle);
+        jsonWriter.writeArrayField("recommendations", this.recommendations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("additionalDetails", this.additionalDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWorkloadErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWorkloadErrorInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWorkloadErrorInfo.
+     */
+    public static AzureWorkloadErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWorkloadErrorInfo deserializedAzureWorkloadErrorInfo = new AzureWorkloadErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorCode".equals(fieldName)) {
+                    deserializedAzureWorkloadErrorInfo.errorCode = reader.getNullable(JsonReader::getInt);
+                } else if ("errorString".equals(fieldName)) {
+                    deserializedAzureWorkloadErrorInfo.errorString = reader.getString();
+                } else if ("errorTitle".equals(fieldName)) {
+                    deserializedAzureWorkloadErrorInfo.errorTitle = reader.getString();
+                } else if ("recommendations".equals(fieldName)) {
+                    List<String> recommendations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureWorkloadErrorInfo.recommendations = recommendations;
+                } else if ("additionalDetails".equals(fieldName)) {
+                    deserializedAzureWorkloadErrorInfo.additionalDetails = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWorkloadErrorInfo;
+        });
     }
 }

@@ -5,26 +5,32 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains the ARM resources for which to create private endpoint connection. */
+/**
+ * Contains the ARM resources for which to create private endpoint connection.
+ */
 @Fluent
-public final class NetworkIsolationSettings {
+public final class NetworkIsolationSettings implements JsonSerializable<NetworkIsolationSettings> {
     /*
      * The resource id for the storage account used to store BACPAC file. If set, private endpoint connection will be
      * created for the storage account. Must match storage account used for StorageUri parameter.
      */
-    @JsonProperty(value = "storageAccountResourceId")
     private String storageAccountResourceId;
 
     /*
      * The resource id for the SQL server which is the target of this request. If set, private endpoint connection will
      * be created for the SQL server. Must match server which is target of the operation.
      */
-    @JsonProperty(value = "sqlServerResourceId")
     private String sqlServerResourceId;
 
-    /** Creates an instance of NetworkIsolationSettings class. */
+    /**
+     * Creates an instance of NetworkIsolationSettings class.
+     */
     public NetworkIsolationSettings() {
     }
 
@@ -32,7 +38,7 @@ public final class NetworkIsolationSettings {
      * Get the storageAccountResourceId property: The resource id for the storage account used to store BACPAC file. If
      * set, private endpoint connection will be created for the storage account. Must match storage account used for
      * StorageUri parameter.
-     *
+     * 
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -43,7 +49,7 @@ public final class NetworkIsolationSettings {
      * Set the storageAccountResourceId property: The resource id for the storage account used to store BACPAC file. If
      * set, private endpoint connection will be created for the storage account. Must match storage account used for
      * StorageUri parameter.
-     *
+     * 
      * @param storageAccountResourceId the storageAccountResourceId value to set.
      * @return the NetworkIsolationSettings object itself.
      */
@@ -56,7 +62,7 @@ public final class NetworkIsolationSettings {
      * Get the sqlServerResourceId property: The resource id for the SQL server which is the target of this request. If
      * set, private endpoint connection will be created for the SQL server. Must match server which is target of the
      * operation.
-     *
+     * 
      * @return the sqlServerResourceId value.
      */
     public String sqlServerResourceId() {
@@ -67,7 +73,7 @@ public final class NetworkIsolationSettings {
      * Set the sqlServerResourceId property: The resource id for the SQL server which is the target of this request. If
      * set, private endpoint connection will be created for the SQL server. Must match server which is target of the
      * operation.
-     *
+     * 
      * @param sqlServerResourceId the sqlServerResourceId value to set.
      * @return the NetworkIsolationSettings object itself.
      */
@@ -78,9 +84,48 @@ public final class NetworkIsolationSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccountResourceId", this.storageAccountResourceId);
+        jsonWriter.writeStringField("sqlServerResourceId", this.sqlServerResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkIsolationSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkIsolationSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkIsolationSettings.
+     */
+    public static NetworkIsolationSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkIsolationSettings deserializedNetworkIsolationSettings = new NetworkIsolationSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountResourceId".equals(fieldName)) {
+                    deserializedNetworkIsolationSettings.storageAccountResourceId = reader.getString();
+                } else if ("sqlServerResourceId".equals(fieldName)) {
+                    deserializedNetworkIsolationSettings.sqlServerResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkIsolationSettings;
+        });
     }
 }

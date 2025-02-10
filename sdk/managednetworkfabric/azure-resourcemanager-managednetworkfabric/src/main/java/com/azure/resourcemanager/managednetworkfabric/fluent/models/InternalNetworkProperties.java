@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
@@ -16,121 +19,108 @@ import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkProp
 import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPropertiesStaticRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.IsMonitoringEnabled;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Internal Network Properties defines the properties of the resource. */
+/**
+ * Internal Network Properties defines the properties of the resource.
+ */
 @Fluent
 public final class InternalNetworkProperties extends AnnotationResource {
     /*
      * Vlan identifier. Example: 1001.
      */
-    @JsonProperty(value = "vlanId", required = true)
     private int vlanId;
 
     /*
      * BGP configuration properties.
      */
-    @JsonProperty(value = "bgpConfiguration")
     private InternalNetworkPropertiesBgpConfiguration bgpConfiguration;
 
     /*
      * Static Route Configuration properties.
      */
-    @JsonProperty(value = "staticRouteConfiguration")
     private InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration;
 
     /*
      * Configuration state of the resource.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Administrative state of the resource.
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private AdministrativeState administrativeState;
 
     /*
      * Maximum transmission unit. Default value is 1500.
      */
-    @JsonProperty(value = "mtu")
     private Integer mtu;
 
     /*
      * List of Connected IPv4 Subnets.
      */
-    @JsonProperty(value = "connectedIPv4Subnets")
     private List<ConnectedSubnet> connectedIPv4Subnets;
 
     /*
      * List of connected IPv6 Subnets.
      */
-    @JsonProperty(value = "connectedIPv6Subnets")
     private List<ConnectedSubnet> connectedIPv6Subnets;
 
     /*
      * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
-    @JsonProperty(value = "importRoutePolicyId")
     private String importRoutePolicyId;
 
     /*
      * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
-    @JsonProperty(value = "exportRoutePolicyId")
     private String exportRoutePolicyId;
 
     /*
      * Import Route Policy either IPv4 or IPv6.
      */
-    @JsonProperty(value = "importRoutePolicy")
     private ImportRoutePolicy importRoutePolicy;
 
     /*
      * Export Route Policy either IPv4 or IPv6.
      */
-    @JsonProperty(value = "exportRoutePolicy")
     private ExportRoutePolicy exportRoutePolicy;
 
     /*
      * Ingress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "ingressAclId")
     private String ingressAclId;
 
     /*
      * Egress Acl. ARM resource ID of Access Control Lists.
      */
-    @JsonProperty(value = "egressAclId")
     private String egressAclId;
 
     /*
      * To check whether monitoring of internal network is enabled or not.
      */
-    @JsonProperty(value = "isMonitoringEnabled")
     private IsMonitoringEnabled isMonitoringEnabled;
 
     /*
      * Extension. Example: NoExtension | NPB.
      */
-    @JsonProperty(value = "extension")
     private Extension extension;
 
-    /** Creates an instance of InternalNetworkProperties class. */
+    /**
+     * Creates an instance of InternalNetworkProperties class.
+     */
     public InternalNetworkProperties() {
     }
 
     /**
      * Get the vlanId property: Vlan identifier. Example: 1001.
-     *
+     * 
      * @return the vlanId value.
      */
     public int vlanId() {
@@ -139,7 +129,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the vlanId property: Vlan identifier. Example: 1001.
-     *
+     * 
      * @param vlanId the vlanId value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -150,7 +140,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the bgpConfiguration property: BGP configuration properties.
-     *
+     * 
      * @return the bgpConfiguration value.
      */
     public InternalNetworkPropertiesBgpConfiguration bgpConfiguration() {
@@ -159,7 +149,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the bgpConfiguration property: BGP configuration properties.
-     *
+     * 
      * @param bgpConfiguration the bgpConfiguration value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -170,7 +160,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the staticRouteConfiguration property: Static Route Configuration properties.
-     *
+     * 
      * @return the staticRouteConfiguration value.
      */
     public InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration() {
@@ -179,19 +169,19 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the staticRouteConfiguration property: Static Route Configuration properties.
-     *
+     * 
      * @param staticRouteConfiguration the staticRouteConfiguration value to set.
      * @return the InternalNetworkProperties object itself.
      */
-    public InternalNetworkProperties withStaticRouteConfiguration(
-        InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration) {
+    public InternalNetworkProperties
+        withStaticRouteConfiguration(InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration) {
         this.staticRouteConfiguration = staticRouteConfiguration;
         return this;
     }
 
     /**
      * Get the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -200,7 +190,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -209,7 +199,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -218,7 +208,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the mtu property: Maximum transmission unit. Default value is 1500.
-     *
+     * 
      * @return the mtu value.
      */
     public Integer mtu() {
@@ -227,7 +217,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the mtu property: Maximum transmission unit. Default value is 1500.
-     *
+     * 
      * @param mtu the mtu value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -238,7 +228,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
-     *
+     * 
      * @return the connectedIPv4Subnets value.
      */
     public List<ConnectedSubnet> connectedIPv4Subnets() {
@@ -247,7 +237,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
-     *
+     * 
      * @param connectedIPv4Subnets the connectedIPv4Subnets value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -258,7 +248,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the connectedIPv6Subnets property: List of connected IPv6 Subnets.
-     *
+     * 
      * @return the connectedIPv6Subnets value.
      */
     public List<ConnectedSubnet> connectedIPv6Subnets() {
@@ -267,7 +257,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the connectedIPv6Subnets property: List of connected IPv6 Subnets.
-     *
+     * 
      * @param connectedIPv6Subnets the connectedIPv6Subnets value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -279,7 +269,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
     /**
      * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @return the importRoutePolicyId value.
      */
     public String importRoutePolicyId() {
@@ -289,7 +279,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
     /**
      * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -301,7 +291,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
     /**
      * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @return the exportRoutePolicyId value.
      */
     public String exportRoutePolicyId() {
@@ -311,7 +301,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
     /**
      * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
      * compatibility.
-     *
+     * 
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -322,7 +312,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @return the importRoutePolicy value.
      */
     public ImportRoutePolicy importRoutePolicy() {
@@ -331,7 +321,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @param importRoutePolicy the importRoutePolicy value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -342,7 +332,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @return the exportRoutePolicy value.
      */
     public ExportRoutePolicy exportRoutePolicy() {
@@ -351,7 +341,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
-     *
+     * 
      * @param exportRoutePolicy the exportRoutePolicy value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -362,7 +352,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the ingressAclId value.
      */
     public String ingressAclId() {
@@ -371,7 +361,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param ingressAclId the ingressAclId value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -382,7 +372,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @return the egressAclId value.
      */
     public String egressAclId() {
@@ -391,7 +381,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
-     *
+     * 
      * @param egressAclId the egressAclId value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -402,7 +392,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
-     *
+     * 
      * @return the isMonitoringEnabled value.
      */
     public IsMonitoringEnabled isMonitoringEnabled() {
@@ -411,7 +401,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
-     *
+     * 
      * @param isMonitoringEnabled the isMonitoringEnabled value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -422,7 +412,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Get the extension property: Extension. Example: NoExtension | NPB.
-     *
+     * 
      * @return the extension value.
      */
     public Extension extension() {
@@ -431,7 +421,7 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Set the extension property: Extension. Example: NoExtension | NPB.
-     *
+     * 
      * @param extension the extension value to set.
      * @return the InternalNetworkProperties object itself.
      */
@@ -440,7 +430,9 @@ public final class InternalNetworkProperties extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InternalNetworkProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -449,12 +441,11 @@ public final class InternalNetworkProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (bgpConfiguration() != null) {
             bgpConfiguration().validate();
         }
@@ -473,5 +464,103 @@ public final class InternalNetworkProperties extends AnnotationResource {
         if (exportRoutePolicy() != null) {
             exportRoutePolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeIntField("vlanId", this.vlanId);
+        jsonWriter.writeJsonField("bgpConfiguration", this.bgpConfiguration);
+        jsonWriter.writeJsonField("staticRouteConfiguration", this.staticRouteConfiguration);
+        jsonWriter.writeNumberField("mtu", this.mtu);
+        jsonWriter.writeArrayField("connectedIPv4Subnets", this.connectedIPv4Subnets,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("connectedIPv6Subnets", this.connectedIPv6Subnets,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("importRoutePolicyId", this.importRoutePolicyId);
+        jsonWriter.writeStringField("exportRoutePolicyId", this.exportRoutePolicyId);
+        jsonWriter.writeJsonField("importRoutePolicy", this.importRoutePolicy);
+        jsonWriter.writeJsonField("exportRoutePolicy", this.exportRoutePolicy);
+        jsonWriter.writeStringField("ingressAclId", this.ingressAclId);
+        jsonWriter.writeStringField("egressAclId", this.egressAclId);
+        jsonWriter.writeStringField("isMonitoringEnabled",
+            this.isMonitoringEnabled == null ? null : this.isMonitoringEnabled.toString());
+        jsonWriter.writeStringField("extension", this.extension == null ? null : this.extension.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InternalNetworkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InternalNetworkProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InternalNetworkProperties.
+     */
+    public static InternalNetworkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InternalNetworkProperties deserializedInternalNetworkProperties = new InternalNetworkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.withAnnotation(reader.getString());
+                } else if ("vlanId".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.vlanId = reader.getInt();
+                } else if ("bgpConfiguration".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.bgpConfiguration
+                        = InternalNetworkPropertiesBgpConfiguration.fromJson(reader);
+                } else if ("staticRouteConfiguration".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.staticRouteConfiguration
+                        = InternalNetworkPropertiesStaticRouteConfiguration.fromJson(reader);
+                } else if ("configurationState".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
+                } else if ("mtu".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.mtu = reader.getNullable(JsonReader::getInt);
+                } else if ("connectedIPv4Subnets".equals(fieldName)) {
+                    List<ConnectedSubnet> connectedIPv4Subnets
+                        = reader.readArray(reader1 -> ConnectedSubnet.fromJson(reader1));
+                    deserializedInternalNetworkProperties.connectedIPv4Subnets = connectedIPv4Subnets;
+                } else if ("connectedIPv6Subnets".equals(fieldName)) {
+                    List<ConnectedSubnet> connectedIPv6Subnets
+                        = reader.readArray(reader1 -> ConnectedSubnet.fromJson(reader1));
+                    deserializedInternalNetworkProperties.connectedIPv6Subnets = connectedIPv6Subnets;
+                } else if ("importRoutePolicyId".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.importRoutePolicyId = reader.getString();
+                } else if ("exportRoutePolicyId".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.exportRoutePolicyId = reader.getString();
+                } else if ("importRoutePolicy".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.importRoutePolicy = ImportRoutePolicy.fromJson(reader);
+                } else if ("exportRoutePolicy".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.exportRoutePolicy = ExportRoutePolicy.fromJson(reader);
+                } else if ("ingressAclId".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.ingressAclId = reader.getString();
+                } else if ("egressAclId".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.egressAclId = reader.getString();
+                } else if ("isMonitoringEnabled".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.isMonitoringEnabled
+                        = IsMonitoringEnabled.fromString(reader.getString());
+                } else if ("extension".equals(fieldName)) {
+                    deserializedInternalNetworkProperties.extension = Extension.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInternalNetworkProperties;
+        });
     }
 }

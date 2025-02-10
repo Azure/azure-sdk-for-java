@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Sku model = BinaryData.fromString("{\"name\":\"Enterprise_E20\",\"capacity\":1041872032}").toObject(Sku.class);
-        Assertions.assertEquals(SkuName.ENTERPRISE_E20, model.name());
-        Assertions.assertEquals(1041872032, model.capacity());
+        Sku model
+            = BinaryData.fromString("{\"name\":\"MemoryOptimized_M50\",\"capacity\":1373520670}").toObject(Sku.class);
+        Assertions.assertEquals(SkuName.MEMORY_OPTIMIZED_M50, model.name());
+        Assertions.assertEquals(1373520670, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Sku model = new Sku().withName(SkuName.ENTERPRISE_E20).withCapacity(1041872032);
+        Sku model = new Sku().withName(SkuName.MEMORY_OPTIMIZED_M50).withCapacity(1373520670);
         model = BinaryData.fromObject(model).toObject(Sku.class);
-        Assertions.assertEquals(SkuName.ENTERPRISE_E20, model.name());
-        Assertions.assertEquals(1041872032, model.capacity());
+        Assertions.assertEquals(SkuName.MEMORY_OPTIMIZED_M50, model.name());
+        Assertions.assertEquals(1373520670, model.capacity());
     }
 }

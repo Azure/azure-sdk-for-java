@@ -5,49 +5,74 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TravelMode. */
+/**
+ * Defines values for TravelMode.
+ */
 public final class TravelMode extends ExpandableStringEnum<TravelMode> {
-    /** Static value car for TravelMode. */
+    /**
+     * The returned routes are optimized for cars.
+     */
     public static final TravelMode CAR = fromString("car");
 
-    /** Static value truck for TravelMode. */
+    /**
+     * The returned routes are optimized for commercial vehicles, like for trucks.
+     */
     public static final TravelMode TRUCK = fromString("truck");
 
-    /** Static value taxi for TravelMode. */
+    /**
+     * The returned routes are optimized for taxis. BETA functionality.
+     */
     public static final TravelMode TAXI = fromString("taxi");
 
-    /** Static value bus for TravelMode. */
+    /**
+     * The returned routes are optimized for buses, including the use of bus only lanes. BETA functionality.
+     */
     public static final TravelMode BUS = fromString("bus");
 
-    /** Static value van for TravelMode. */
+    /**
+     * The returned routes are optimized for vans. BETA functionality.
+     */
     public static final TravelMode VAN = fromString("van");
 
-    /** Static value motorcycle for TravelMode. */
+    /**
+     * The returned routes are optimized for motorcycles. BETA functionality.
+     */
     public static final TravelMode MOTORCYCLE = fromString("motorcycle");
 
-    /** Static value bicycle for TravelMode. */
+    /**
+     * The returned routes are optimized for bicycles, including use of bicycle lanes.
+     */
     public static final TravelMode BICYCLE = fromString("bicycle");
 
-    /** Static value pedestrian for TravelMode. */
+    /**
+     * The returned routes are optimized for pedestrians, including the use of sidewalks.
+     */
     public static final TravelMode PEDESTRIAN = fromString("pedestrian");
 
     /**
+     * Creates a new instance of TravelMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TravelMode() {
+    }
+
+    /**
      * Creates or finds a TravelMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TravelMode.
      */
-    @JsonCreator
     public static TravelMode fromString(String name) {
         return fromString(name, TravelMode.class);
     }
 
     /**
      * Gets known TravelMode values.
-     *
+     * 
      * @return known TravelMode values.
      */
     public static Collection<TravelMode> values() {

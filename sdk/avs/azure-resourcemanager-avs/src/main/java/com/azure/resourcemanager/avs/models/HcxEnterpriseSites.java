@@ -8,82 +8,84 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of HcxEnterpriseSites. */
+/**
+ * Resource collection API of HcxEnterpriseSites.
+ */
 public interface HcxEnterpriseSites {
     /**
-     * List HCX on-premises key in a private cloud.
-     *
+     * List HcxEnterpriseSite resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of HCX Enterprise Sites as paginated response with {@link PagedIterable}.
+     * @return the response of a HcxEnterpriseSite list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HcxEnterpriseSite> list(String resourceGroupName, String privateCloudName);
 
     /**
-     * List HCX on-premises key in a private cloud.
-     *
+     * List HcxEnterpriseSite resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of HCX Enterprise Sites as paginated response with {@link PagedIterable}.
+     * @return the response of a HcxEnterpriseSite list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HcxEnterpriseSite> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
-     * Get an HCX on-premises key by name in a private cloud.
-     *
+     * Get a HcxEnterpriseSite.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site in the private cloud.
+     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX on-premises key by name in a private cloud along with {@link Response}.
+     * @return a HcxEnterpriseSite along with {@link Response}.
      */
-    Response<HcxEnterpriseSite> getWithResponse(
-        String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName, Context context);
+    Response<HcxEnterpriseSite> getWithResponse(String resourceGroupName, String privateCloudName,
+        String hcxEnterpriseSiteName, Context context);
 
     /**
-     * Get an HCX on-premises key by name in a private cloud.
-     *
+     * Get a HcxEnterpriseSite.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site in the private cloud.
+     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX on-premises key by name in a private cloud.
+     * @return a HcxEnterpriseSite.
      */
     HcxEnterpriseSite get(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName);
 
     /**
-     * Delete HCX on-premises key in a private cloud.
-     *
+     * Delete a HcxEnterpriseSite.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site in the private cloud.
+     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName,
+        Context context);
 
     /**
-     * Delete HCX on-premises key in a private cloud.
-     *
+     * Delete a HcxEnterpriseSite.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site in the private cloud.
+     * @param hcxEnterpriseSiteName Name of the HCX Enterprise Site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -91,31 +93,31 @@ public interface HcxEnterpriseSites {
     void delete(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName);
 
     /**
-     * Get an HCX on-premises key by name in a private cloud.
-     *
+     * Get a HcxEnterpriseSite.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX on-premises key by name in a private cloud along with {@link Response}.
+     * @return a HcxEnterpriseSite along with {@link Response}.
      */
     HcxEnterpriseSite getById(String id);
 
     /**
-     * Get an HCX on-premises key by name in a private cloud.
-     *
+     * Get a HcxEnterpriseSite.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an HCX on-premises key by name in a private cloud along with {@link Response}.
+     * @return a HcxEnterpriseSite along with {@link Response}.
      */
     Response<HcxEnterpriseSite> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete HCX on-premises key in a private cloud.
-     *
+     * Delete a HcxEnterpriseSite.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,8 +126,8 @@ public interface HcxEnterpriseSites {
     void deleteById(String id);
 
     /**
-     * Delete HCX on-premises key in a private cloud.
-     *
+     * Delete a HcxEnterpriseSite.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface HcxEnterpriseSites {
 
     /**
      * Begins definition for a new HcxEnterpriseSite resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new HcxEnterpriseSite definition.
      */

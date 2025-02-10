@@ -46,22 +46,32 @@ public final class DomainUpdateParameterPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DomainUpdateParameterProperties model = new DomainUpdateParameterProperties()
-            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-            .withInboundIpRules(
-                Arrays.asList(new InboundIpRule().withIpMask("ytkblmpew").withAction(IpActionType.ALLOW),
-                    new InboundIpRule().withIpMask("krvrns").withAction(IpActionType.ALLOW)))
-            .withMinimumTlsVersionAllowed(TlsVersion.ONE_ONE).withDisableLocalAuth(false)
-            .withAutoCreateTopicWithFirstSubscription(true).withAutoDeleteTopicWithLastSubscription(false)
-            .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_GEOPAIR)
-            .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                .withInlineEventTypes(mapOf("znfqqnvwpmqtar", new InlineEventProperties().withDescription("uvwbhsqfs")
-                    .withDisplayName("cgjbirxbp").withDocumentationUrl("srfbjfdtwss").withDataSchemaUrl("ftpvjzbexil"),
-                    "enq",
-                    new InlineEventProperties().withDescription("ujmkcjhwqy").withDisplayName("r")
-                        .withDocumentationUrl("n").withDataSchemaUrl("ewgdrjervn"),
-                    "qolbgyc", new InlineEventProperties().withDescription("hin").withDisplayName("ygmi")
-                        .withDocumentationUrl("hnzdndslgnayqi").withDataSchemaUrl("nduhavhqlkthum"))));
+        DomainUpdateParameterProperties model
+            = new DomainUpdateParameterProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withInboundIpRules(
+                    Arrays.asList(new InboundIpRule().withIpMask("ytkblmpew").withAction(IpActionType.ALLOW),
+                        new InboundIpRule().withIpMask("krvrns").withAction(IpActionType.ALLOW)))
+                .withMinimumTlsVersionAllowed(TlsVersion.ONE_ONE)
+                .withDisableLocalAuth(false)
+                .withAutoCreateTopicWithFirstSubscription(true)
+                .withAutoDeleteTopicWithLastSubscription(false)
+                .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_GEOPAIR)
+                .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                    .withInlineEventTypes(mapOf("znfqqnvwpmqtar",
+                        new InlineEventProperties().withDescription("uvwbhsqfs")
+                            .withDisplayName("cgjbirxbp")
+                            .withDocumentationUrl("srfbjfdtwss")
+                            .withDataSchemaUrl("ftpvjzbexil"),
+                        "enq",
+                        new InlineEventProperties().withDescription("ujmkcjhwqy")
+                            .withDisplayName("r")
+                            .withDocumentationUrl("n")
+                            .withDataSchemaUrl("ewgdrjervn"),
+                        "qolbgyc",
+                        new InlineEventProperties().withDescription("hin")
+                            .withDisplayName("ygmi")
+                            .withDocumentationUrl("hnzdndslgnayqi")
+                            .withDataSchemaUrl("nduhavhqlkthum"))));
         model = BinaryData.fromObject(model).toObject(DomainUpdateParameterProperties.class);
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
         Assertions.assertEquals("ytkblmpew", model.inboundIpRules().get(0).ipMask());

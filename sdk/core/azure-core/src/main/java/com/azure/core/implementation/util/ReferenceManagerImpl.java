@@ -73,7 +73,7 @@ public final class ReferenceManagerImpl implements ReferenceManager {
             // If multiple instances of ReferenceManager needs to be supported each Thread should have a unique name
             // with a consistent base name.
             // Thread thread = new Thread(Thread.currentThread().getThreadGroup(), this,
-            //     BASE_THREAD_NAME + "-" + RESOURCE_MANAGER_THREAD_NUMBER.getAndIncrement());
+            // BASE_THREAD_NAME + "-" + RESOURCE_MANAGER_THREAD_NUMBER.getAndIncrement());
 
             // Make the ReferenceManager Thread a daemon, this will prevent it from halting a JVM shutdown.
             thread.setDaemon(true);

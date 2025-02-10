@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The streaming endpoint sku capacity. */
+/**
+ * The streaming endpoint sku capacity.
+ */
 @Fluent
-public final class ArmStreamingEndpointCapacity {
+public final class ArmStreamingEndpointCapacity implements JsonSerializable<ArmStreamingEndpointCapacity> {
     /*
      * The scaleType property.
      */
-    @JsonProperty(value = "scaleType", access = JsonProperty.Access.WRITE_ONLY)
     private String scaleType;
 
     /*
      * The streaming endpoint default capacity.
      */
-    @JsonProperty(value = "default")
     private Integer defaultProperty;
 
     /*
      * The streaming endpoint minimum capacity.
      */
-    @JsonProperty(value = "minimum")
     private Integer minimum;
 
     /*
      * The streaming endpoint maximum capacity.
      */
-    @JsonProperty(value = "maximum")
     private Integer maximum;
 
-    /** Creates an instance of ArmStreamingEndpointCapacity class. */
+    /**
+     * Creates an instance of ArmStreamingEndpointCapacity class.
+     */
     public ArmStreamingEndpointCapacity() {
     }
 
     /**
      * Get the scaleType property: The scaleType property.
-     *
+     * 
      * @return the scaleType value.
      */
     public String scaleType() {
@@ -49,7 +53,7 @@ public final class ArmStreamingEndpointCapacity {
 
     /**
      * Get the defaultProperty property: The streaming endpoint default capacity.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Integer defaultProperty() {
@@ -58,7 +62,7 @@ public final class ArmStreamingEndpointCapacity {
 
     /**
      * Set the defaultProperty property: The streaming endpoint default capacity.
-     *
+     * 
      * @param defaultProperty the defaultProperty value to set.
      * @return the ArmStreamingEndpointCapacity object itself.
      */
@@ -69,7 +73,7 @@ public final class ArmStreamingEndpointCapacity {
 
     /**
      * Get the minimum property: The streaming endpoint minimum capacity.
-     *
+     * 
      * @return the minimum value.
      */
     public Integer minimum() {
@@ -78,7 +82,7 @@ public final class ArmStreamingEndpointCapacity {
 
     /**
      * Set the minimum property: The streaming endpoint minimum capacity.
-     *
+     * 
      * @param minimum the minimum value to set.
      * @return the ArmStreamingEndpointCapacity object itself.
      */
@@ -89,7 +93,7 @@ public final class ArmStreamingEndpointCapacity {
 
     /**
      * Get the maximum property: The streaming endpoint maximum capacity.
-     *
+     * 
      * @return the maximum value.
      */
     public Integer maximum() {
@@ -98,7 +102,7 @@ public final class ArmStreamingEndpointCapacity {
 
     /**
      * Set the maximum property: The streaming endpoint maximum capacity.
-     *
+     * 
      * @param maximum the maximum value to set.
      * @return the ArmStreamingEndpointCapacity object itself.
      */
@@ -109,9 +113,53 @@ public final class ArmStreamingEndpointCapacity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("default", this.defaultProperty);
+        jsonWriter.writeNumberField("minimum", this.minimum);
+        jsonWriter.writeNumberField("maximum", this.maximum);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArmStreamingEndpointCapacity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArmStreamingEndpointCapacity if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmStreamingEndpointCapacity.
+     */
+    public static ArmStreamingEndpointCapacity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArmStreamingEndpointCapacity deserializedArmStreamingEndpointCapacity = new ArmStreamingEndpointCapacity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scaleType".equals(fieldName)) {
+                    deserializedArmStreamingEndpointCapacity.scaleType = reader.getString();
+                } else if ("default".equals(fieldName)) {
+                    deserializedArmStreamingEndpointCapacity.defaultProperty = reader.getNullable(JsonReader::getInt);
+                } else if ("minimum".equals(fieldName)) {
+                    deserializedArmStreamingEndpointCapacity.minimum = reader.getNullable(JsonReader::getInt);
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedArmStreamingEndpointCapacity.maximum = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArmStreamingEndpointCapacity;
+        });
     }
 }

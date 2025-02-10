@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.databoxedge.generated;
 
-/** Samples for Orders Get. */
+/**
+ * Samples for Orders Get.
+ */
 public final class OrdersGetSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/OrderGet.json
+     * x-ms-original-file:
+     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/OrderGet.json
      */
     /**
      * Sample code: OrderGet.
-     *
+     * 
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void orderGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {

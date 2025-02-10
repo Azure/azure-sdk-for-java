@@ -44,8 +44,7 @@ public final class AvailabilityTelemetryBuilder extends AbstractTelemetryBuilder
     }
 
     public void setRunLocation(String runLocation) {
-        data.setRunLocation(
-            truncateTelemetry(runLocation, MAX_RUN_LOCATION_LENGTH, "Availability.runLocation"));
+        data.setRunLocation(truncateTelemetry(runLocation, MAX_RUN_LOCATION_LENGTH, "Availability.runLocation"));
     }
 
     public void setMessage(String message) {

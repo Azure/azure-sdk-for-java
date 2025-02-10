@@ -6,11 +6,9 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseInner;
 import com.azure.resourcemanager.hybridcompute.models.License;
@@ -20,83 +18,60 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseEdition;
 import com.azure.resourcemanager.hybridcompute.models.LicenseState;
 import com.azure.resourcemanager.hybridcompute.models.LicenseTarget;
 import com.azure.resourcemanager.hybridcompute.models.LicenseType;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.hybridcompute.models.ProgramYear;
+import com.azure.resourcemanager.hybridcompute.models.VolumeLicenseDetails;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LicensesValidateLicenseMockTests {
     @Test
     public void testValidateLicense() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"tenantId\":\"wyxebeybpmzz\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Deactivated\",\"target\":\"Windows Server 2012 R2\",\"edition\":\"Datacenter\",\"type\":\"vCore\",\"processors\":528448638,\"assignedLicenses\":915873133,\"immutableId\":\"aqh\",\"volumeLicenseDetails\":[{\"programYear\":\"Year 3\",\"invoiceId\":\"qyrxp\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"qlsismjqfrddg\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"hiosrsjuiv\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"syirnx\"}]}},\"location\":\"czexrxzbujrtrhqv\",\"tags\":{\"gnl\":\"vk\"},\"id\":\"zonzlrpiqywnc\",\"name\":\"jtszcof\",\"type\":\"zehtdhgb\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"tenantId\":\"jlwuenvrkp\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Activated\",\"target\":\"Windows"
-                + " Server 2012"
-                + " R2\",\"edition\":\"Datacenter\",\"type\":\"vCore\",\"processors\":360748020,\"assignedLicenses\":206948970,\"immutableId\":\"xqtnq\"}},\"location\":\"ezl\",\"tags\":{\"edltmmjihyeozp\":\"fiakpjpqqm\",\"qncygupkvi\":\"vwau\"},\"id\":\"mdscwxqupev\",\"name\":\"hfstotxhojujbyp\",\"type\":\"lmcuvhixb\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HybridComputeManager manager = HybridComputeManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        License response = manager.licenses()
+            .validateLicense(
+                new LicenseInner().withLocation("oohgu")
+                    .withTags(mapOf("olbaemwmdx", "zboyjathwt", "f", "ebwjscjpahlxvea", "qcttadijaeukmrsi",
+                        "xnmwmqtibxyijddt"))
+                    .withTenantId("jpdn")
+                    .withLicenseType(LicenseType.ESU)
+                    .withLicenseDetails(new LicenseDetails().withState(LicenseState.DEACTIVATED)
+                        .withTarget(LicenseTarget.WINDOWS_SERVER_2012_R2)
+                        .withEdition(LicenseEdition.DATACENTER)
+                        .withType(LicenseCoreType.V_CORE)
+                        .withProcessors(2002582337)
+                        .withVolumeLicenseDetails(Arrays.asList(
+                            new VolumeLicenseDetails().withProgramYear(ProgramYear.YEAR_2).withInvoiceId("jme"),
+                            new VolumeLicenseDetails().withProgramYear(ProgramYear.YEAR_2).withInvoiceId("tvasy"),
+                            new VolumeLicenseDetails().withProgramYear(ProgramYear.YEAR_3).withInvoiceId("zaum")))),
+                com.azure.core.util.Context.NONE);
 
-        HybridComputeManager manager =
-            HybridComputeManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        License response =
-            manager
-                .licenses()
-                .validateLicense(
-                    new LicenseInner()
-                        .withLocation("gumhjglikkxws")
-                        .withTags(mapOf("vuzlm", "bq", "lcrpw", "felfktg", "brnjwmw", "xeznoi", "saz", "pn"))
-                        .withTenantId("y")
-                        .withLicenseType(LicenseType.ESU)
-                        .withLicenseDetails(
-                            new LicenseDetails()
-                                .withState(LicenseState.ACTIVATED)
-                                .withTarget(LicenseTarget.WINDOWS_SERVER_2012_R2)
-                                .withEdition(LicenseEdition.DATACENTER)
-                                .withType(LicenseCoreType.P_CORE)
-                                .withProcessors(779429709)),
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("ezl", response.location());
-        Assertions.assertEquals("fiakpjpqqm", response.tags().get("edltmmjihyeozp"));
-        Assertions.assertEquals("jlwuenvrkp", response.tenantId());
+        Assertions.assertEquals("czexrxzbujrtrhqv", response.location());
+        Assertions.assertEquals("vk", response.tags().get("gnl"));
+        Assertions.assertEquals("wyxebeybpmzz", response.tenantId());
         Assertions.assertEquals(LicenseType.ESU, response.licenseType());
-        Assertions.assertEquals(LicenseState.ACTIVATED, response.licenseDetails().state());
+        Assertions.assertEquals(LicenseState.DEACTIVATED, response.licenseDetails().state());
         Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, response.licenseDetails().target());
         Assertions.assertEquals(LicenseEdition.DATACENTER, response.licenseDetails().edition());
         Assertions.assertEquals(LicenseCoreType.V_CORE, response.licenseDetails().type());
-        Assertions.assertEquals(360748020, response.licenseDetails().processors());
+        Assertions.assertEquals(528448638, response.licenseDetails().processors());
+        Assertions.assertEquals(ProgramYear.YEAR_3,
+            response.licenseDetails().volumeLicenseDetails().get(0).programYear());
+        Assertions.assertEquals("qyrxp", response.licenseDetails().volumeLicenseDetails().get(0).invoiceId());
     }
 
     // Use "Map.of" if available

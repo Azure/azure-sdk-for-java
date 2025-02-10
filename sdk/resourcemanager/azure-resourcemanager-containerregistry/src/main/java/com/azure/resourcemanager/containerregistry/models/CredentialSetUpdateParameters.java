@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.CredentialSetUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The parameters for updating a credential set. */
+/**
+ * The parameters for updating a credential set.
+ */
 @Fluent
-public final class CredentialSetUpdateParameters {
+public final class CredentialSetUpdateParameters implements JsonSerializable<CredentialSetUpdateParameters> {
     /*
      * The properties of the credential set update parameters
      */
-    @JsonProperty(value = "properties")
     private CredentialSetUpdateProperties innerProperties;
 
     /*
      * Identities associated with the resource. This is used to access the KeyVault secrets.
      */
-    @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
-    /** Creates an instance of CredentialSetUpdateParameters class. */
+    /**
+     * Creates an instance of CredentialSetUpdateParameters class.
+     */
     public CredentialSetUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The properties of the credential set update parameters.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CredentialSetUpdateProperties innerProperties() {
@@ -39,7 +45,7 @@ public final class CredentialSetUpdateParameters {
 
     /**
      * Get the identity property: Identities associated with the resource. This is used to access the KeyVault secrets.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -48,7 +54,7 @@ public final class CredentialSetUpdateParameters {
 
     /**
      * Set the identity property: Identities associated with the resource. This is used to access the KeyVault secrets.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the CredentialSetUpdateParameters object itself.
      */
@@ -58,9 +64,9 @@ public final class CredentialSetUpdateParameters {
     }
 
     /**
-     * Get the authCredentials property: List of authentication credentials stored for an upstream. Usually consists of
-     * a primary and an optional secondary credential.
-     *
+     * Get the authCredentials property: List of authentication credentials stored for an upstream.
+     * Usually consists of a primary and an optional secondary credential.
+     * 
      * @return the authCredentials value.
      */
     public List<AuthCredential> authCredentials() {
@@ -68,9 +74,9 @@ public final class CredentialSetUpdateParameters {
     }
 
     /**
-     * Set the authCredentials property: List of authentication credentials stored for an upstream. Usually consists of
-     * a primary and an optional secondary credential.
-     *
+     * Set the authCredentials property: List of authentication credentials stored for an upstream.
+     * Usually consists of a primary and an optional secondary credential.
+     * 
      * @param authCredentials the authCredentials value to set.
      * @return the CredentialSetUpdateParameters object itself.
      */
@@ -84,7 +90,7 @@ public final class CredentialSetUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -94,5 +100,46 @@ public final class CredentialSetUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CredentialSetUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CredentialSetUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CredentialSetUpdateParameters.
+     */
+    public static CredentialSetUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CredentialSetUpdateParameters deserializedCredentialSetUpdateParameters
+                = new CredentialSetUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedCredentialSetUpdateParameters.innerProperties
+                        = CredentialSetUpdateProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCredentialSetUpdateParameters.identity = IdentityProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentialSetUpdateParameters;
+        });
     }
 }

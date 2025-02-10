@@ -6,29 +6,30 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The full path to a volume that is to be migrated into ANF. Required for Migration volumes.
  */
 @Fluent
-public final class RemotePath {
+public final class RemotePath implements JsonSerializable<RemotePath> {
     /*
-     * The Path to a Ontap Host
+     * The Path to a ONTAP Host
      */
-    @JsonProperty(value = "externalHostName", required = true)
     private String externalHostname;
 
     /*
-     * The name of a server on the Ontap Host
+     * The name of a server on the ONTAP Host
      */
-    @JsonProperty(value = "serverName", required = true)
     private String serverName;
 
     /*
      * The name of a volume on the server
      */
-    @JsonProperty(value = "volumeName", required = true)
     private String volumeName;
 
     /**
@@ -38,7 +39,7 @@ public final class RemotePath {
     }
 
     /**
-     * Get the externalHostname property: The Path to a Ontap Host.
+     * Get the externalHostname property: The Path to a ONTAP Host.
      * 
      * @return the externalHostname value.
      */
@@ -47,7 +48,7 @@ public final class RemotePath {
     }
 
     /**
-     * Set the externalHostname property: The Path to a Ontap Host.
+     * Set the externalHostname property: The Path to a ONTAP Host.
      * 
      * @param externalHostname the externalHostname value to set.
      * @return the RemotePath object itself.
@@ -58,7 +59,7 @@ public final class RemotePath {
     }
 
     /**
-     * Get the serverName property: The name of a server on the Ontap Host.
+     * Get the serverName property: The name of a server on the ONTAP Host.
      * 
      * @return the serverName value.
      */
@@ -67,7 +68,7 @@ public final class RemotePath {
     }
 
     /**
-     * Set the serverName property: The name of a server on the Ontap Host.
+     * Set the serverName property: The name of a server on the ONTAP Host.
      * 
      * @param serverName the serverName value to set.
      * @return the RemotePath object itself.
@@ -104,18 +105,61 @@ public final class RemotePath {
      */
     public void validate() {
         if (externalHostname() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property externalHostname in model RemotePath"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property externalHostname in model RemotePath"));
         }
         if (serverName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property serverName in model RemotePath"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property serverName in model RemotePath"));
         }
         if (volumeName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property volumeName in model RemotePath"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property volumeName in model RemotePath"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RemotePath.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("externalHostName", this.externalHostname);
+        jsonWriter.writeStringField("serverName", this.serverName);
+        jsonWriter.writeStringField("volumeName", this.volumeName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemotePath from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemotePath if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RemotePath.
+     */
+    public static RemotePath fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemotePath deserializedRemotePath = new RemotePath();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("externalHostName".equals(fieldName)) {
+                    deserializedRemotePath.externalHostname = reader.getString();
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedRemotePath.serverName = reader.getString();
+                } else if ("volumeName".equals(fieldName)) {
+                    deserializedRemotePath.volumeName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemotePath;
+        });
+    }
 }

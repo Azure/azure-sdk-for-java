@@ -17,7 +17,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 import reactor.core.publisher.BaseSubscriber;
 
 import java.io.ByteArrayOutputStream;
@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
-
 
 /**
  * Azure App Service basic sample for managing web app logs.
@@ -56,22 +55,23 @@ public final class ManageWebAppLogs {
 
             System.out.println("Creating web app " + appName + " in resource group " + rgName + "...");
 
-            final WebApp app = azureResourceManager.webApps().define(appName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.BASIC_B1)
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
-                    .defineDiagnosticLogsConfiguration()
-                    .withWebServerLogging()
-                    .withWebServerLogsStoredOnFileSystem()
-                    .attach()
-                    .defineDiagnosticLogsConfiguration()
-                    .withApplicationLogging()
-                    .withLogLevel(LogLevel.VERBOSE)
-                    .withApplicationLogsStoredOnFileSystem()
-                    .attach()
-                    .create();
+            final WebApp app = azureResourceManager.webApps()
+                .define(appName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withNewWindowsPlan(PricingTier.BASIC_B1)
+                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+                .defineDiagnosticLogsConfiguration()
+                .withWebServerLogging()
+                .withWebServerLogsStoredOnFileSystem()
+                .attach()
+                .defineDiagnosticLogsConfiguration()
+                .withApplicationLogging()
+                .withLogLevel(LogLevel.VERBOSE)
+                .withApplicationLogsStoredOnFileSystem()
+                .attach()
+                .create();
 
             System.out.println("Created web app " + app.name());
             Utils.print(app);
@@ -94,9 +94,10 @@ public final class ManageWebAppLogs {
                     System.out.println("Deploying coffeeshop.war to " + appName + " through web deploy...");
 
                     app.deploy()
-                            .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/coffeeshop.zip")
-                            .withExistingDeploymentsDeleted(false)
-                            .execute();
+                        .withPackageUri(
+                            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/coffeeshop.zip")
+                        .withExistingDeploymentsDeleted(false)
+                        .execute();
 
                     System.out.println("Deployments to web app " + app.name() + " completed");
                     Utils.print(app);
@@ -182,8 +183,7 @@ public final class ManageWebAppLogs {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

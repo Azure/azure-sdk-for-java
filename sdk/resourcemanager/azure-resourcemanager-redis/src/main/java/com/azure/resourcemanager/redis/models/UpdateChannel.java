@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,15 +13,19 @@ import java.util.Collection;
  * 'Stable'.
  */
 public final class UpdateChannel extends ExpandableStringEnum<UpdateChannel> {
-    /** Static value Stable for UpdateChannel. */
+    /**
+     * Static value Stable for UpdateChannel.
+     */
     public static final UpdateChannel STABLE = fromString("Stable");
 
-    /** Static value Preview for UpdateChannel. */
+    /**
+     * Static value Preview for UpdateChannel.
+     */
     public static final UpdateChannel PREVIEW = fromString("Preview");
 
     /**
      * Creates a new instance of UpdateChannel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +34,17 @@ public final class UpdateChannel extends ExpandableStringEnum<UpdateChannel> {
 
     /**
      * Creates or finds a UpdateChannel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UpdateChannel.
      */
-    @JsonCreator
     public static UpdateChannel fromString(String name) {
         return fromString(name, UpdateChannel.class);
     }
 
     /**
      * Gets known UpdateChannel values.
-     *
+     * 
      * @return known UpdateChannel values.
      */
     public static Collection<UpdateChannel> values() {

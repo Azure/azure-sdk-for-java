@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** InMageRcmFailback NIC details. */
+/**
+ * InMageRcmFailback NIC details.
+ */
 @Immutable
-public final class InMageRcmFailbackNicDetails {
+public final class InMageRcmFailbackNicDetails implements JsonSerializable<InMageRcmFailbackNicDetails> {
     /*
      * The mac address.
      */
-    @JsonProperty(value = "macAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String macAddress;
 
     /*
      * The network name.
      */
-    @JsonProperty(value = "networkName", access = JsonProperty.Access.WRITE_ONLY)
     private String networkName;
 
     /*
      * The adapter type.
      */
-    @JsonProperty(value = "adapterType", access = JsonProperty.Access.WRITE_ONLY)
     private String adapterType;
 
     /*
      * The IP address.
      */
-    @JsonProperty(value = "sourceIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceIpAddress;
 
-    /** Creates an instance of InMageRcmFailbackNicDetails class. */
+    /**
+     * Creates an instance of InMageRcmFailbackNicDetails class.
+     */
     public InMageRcmFailbackNicDetails() {
     }
 
     /**
      * Get the macAddress property: The mac address.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -49,7 +53,7 @@ public final class InMageRcmFailbackNicDetails {
 
     /**
      * Get the networkName property: The network name.
-     *
+     * 
      * @return the networkName value.
      */
     public String networkName() {
@@ -58,7 +62,7 @@ public final class InMageRcmFailbackNicDetails {
 
     /**
      * Get the adapterType property: The adapter type.
-     *
+     * 
      * @return the adapterType value.
      */
     public String adapterType() {
@@ -67,7 +71,7 @@ public final class InMageRcmFailbackNicDetails {
 
     /**
      * Get the sourceIpAddress property: The IP address.
-     *
+     * 
      * @return the sourceIpAddress value.
      */
     public String sourceIpAddress() {
@@ -76,9 +80,50 @@ public final class InMageRcmFailbackNicDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmFailbackNicDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmFailbackNicDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmFailbackNicDetails.
+     */
+    public static InMageRcmFailbackNicDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmFailbackNicDetails deserializedInMageRcmFailbackNicDetails = new InMageRcmFailbackNicDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("macAddress".equals(fieldName)) {
+                    deserializedInMageRcmFailbackNicDetails.macAddress = reader.getString();
+                } else if ("networkName".equals(fieldName)) {
+                    deserializedInMageRcmFailbackNicDetails.networkName = reader.getString();
+                } else if ("adapterType".equals(fieldName)) {
+                    deserializedInMageRcmFailbackNicDetails.adapterType = reader.getString();
+                } else if ("sourceIpAddress".equals(fieldName)) {
+                    deserializedInMageRcmFailbackNicDetails.sourceIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmFailbackNicDetails;
+        });
     }
 }

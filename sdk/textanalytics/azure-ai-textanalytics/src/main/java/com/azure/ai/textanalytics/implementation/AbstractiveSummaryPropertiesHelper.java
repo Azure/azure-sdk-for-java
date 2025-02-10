@@ -13,7 +13,8 @@ import com.azure.core.util.IterableStream;
 public final class AbstractiveSummaryPropertiesHelper {
     private static AbstractiveSummaryAccessor accessor;
 
-    private AbstractiveSummaryPropertiesHelper() { }
+    private AbstractiveSummaryPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AbstractiveSummary}
@@ -21,7 +22,9 @@ public final class AbstractiveSummaryPropertiesHelper {
      */
     public interface AbstractiveSummaryAccessor {
         void setText(AbstractiveSummary abstractiveSummary, String text);
-        void setSummaryContexts(AbstractiveSummary abstractiveSummary, IterableStream<AbstractiveSummaryContext> summaryContexts);
+
+        void setSummaryContexts(AbstractiveSummary abstractiveSummary,
+            IterableStream<AbstractiveSummaryContext> summaryContexts);
     }
 
     /**

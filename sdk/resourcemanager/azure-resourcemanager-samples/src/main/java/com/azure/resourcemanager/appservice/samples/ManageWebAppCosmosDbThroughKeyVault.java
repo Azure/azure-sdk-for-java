@@ -8,6 +8,8 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesEntityProperties;
+import com.azure.resourcemanager.appservice.models.FtpsState;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -42,26 +44,27 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) {
         // New resources
-        final Region region         = Region.US_WEST;
-        final String appName        = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
-        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
-        final String vaultName      = Utils.randomResourceName(azureResourceManager, "vault", 20);
-        final String cosmosName     = Utils.randomResourceName(azureResourceManager, "cosmosdb", 20);
-        final String appUrl         = appName + ".azurewebsites.net";
+        final Region region = Region.US_WEST;
+        final String appName = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String vaultName = Utils.randomResourceName(azureResourceManager, "vault", 20);
+        final String cosmosName = Utils.randomResourceName(azureResourceManager, "cosmosdb", 20);
+        final String appUrl = appName + ".azurewebsites.net";
 
         try {
             //============================================================
             // Create a CosmosDB
 
             System.out.println("Creating a CosmosDB...");
-            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(cosmosName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
-                    .withEventualConsistency()
-                    .withWriteReplication(Region.US_EAST)
-                    .withReadReplication(Region.US_CENTRAL)
-                    .create();
+            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts()
+                .define(cosmosName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_CENTRAL)
+                .create();
 
             System.out.println("Created CosmosDB");
             Utils.print(cosmosDBAccount);
@@ -70,32 +73,26 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
             // Create a key vault
 
             Vault vault = azureResourceManager.vaults()
-                    .define(vaultName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .defineAccessPolicy()
-                        .forServicePrincipal(clientId)
-                        .allowSecretAllPermissions()
-                        .attach()
-                    .create();
+                .define(vaultName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .defineAccessPolicy()
+                .forServicePrincipal(clientId)
+                .allowSecretAllPermissions()
+                .attach()
+                .create();
 
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
 
             //============================================================
             // Store Cosmos DB credentials in Key Vault
 
+            vault.secrets().define("azure-documentdb-uri").withValue(cosmosDBAccount.documentEndpoint()).create();
             vault.secrets()
-                    .define("azure-documentdb-uri")
-                    .withValue(cosmosDBAccount.documentEndpoint())
-                    .create();
-            vault.secrets()
-                    .define("azure-documentdb-key")
-                    .withValue(cosmosDBAccount.listKeys().primaryMasterKey())
-                    .create();
-            vault.secrets()
-                    .define("azure-documentdb-database")
-                    .withValue("tododb")
-                    .create();
+                .define("azure-documentdb-key")
+                .withValue(cosmosDBAccount.listKeys().primaryMasterKey())
+                .create();
+            vault.secrets().define("azure-documentdb-database").withValue("tododb").create();
 
             //============================================================
             // Create a web app with a new app service plan
@@ -103,36 +100,53 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
             System.out.println("Creating web app " + appName + " in resource group " + rgName + "...");
 
             WebApp app = azureResourceManager.webApps()
-                    .define(appName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_5_NEWEST)
-                    .withAppSetting("AZURE_KEYVAULT_URI", vault.vaultUri())
-                    .withSystemAssignedManagedServiceIdentity()
-                    .create();
+                .define(appName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withNewWindowsPlan(PricingTier.STANDARD_S1)
+                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                .withWebContainer(WebContainer.TOMCAT_8_5_NEWEST)
+                .withAppSetting("AZURE_KEYVAULT_URI", vault.vaultUri())
+                .withSystemAssignedManagedServiceIdentity()
+                .withFtpsState(FtpsState.ALL_ALLOWED)
+                .create();
 
             System.out.println("Created web app " + app.name());
             Utils.print(app);
+
+            app.manager()
+                .resourceManager()
+                .genericResources()
+                .define("ftp")
+                .withRegion(app.regionName())
+                .withExistingResourceGroup(app.resourceGroupName())
+                .withResourceType("basicPublishingCredentialsPolicies")
+                .withProviderNamespace("Microsoft.Web")
+                .withoutPlan()
+                .withParentResourcePath("sites/" + app.name())
+                .withApiVersion("2023-01-01")
+                .withProperties(new CsmPublishingCredentialsPoliciesEntityProperties().withAllow(true))
+                .create();
 
             //============================================================
             // Update vault to allow the web app to access
 
             vault.update()
-                    .defineAccessPolicy()
-                        .forObjectId(app.systemAssignedManagedServiceIdentityPrincipalId())
-                        .allowSecretAllPermissions()
-                        .attach()
-                    .apply();
+                .defineAccessPolicy()
+                .forObjectId(app.systemAssignedManagedServiceIdentityPrincipalId())
+                .allowSecretAllPermissions()
+                .attach()
+                .apply();
 
             //============================================================
             // Deploy to app through FTP
 
             System.out.println("Deploying a spring boot app to " + appName + " through FTP...");
 
-            Utils.uploadFileViaFtp(app.getPublishingProfile(), "ROOT.jar", ManageWebAppCosmosDbThroughKeyVault.class.getResourceAsStream("/todo-app-java-on-azure-1.0-SNAPSHOT.jar"));
-            Utils.uploadFileViaFtp(app.getPublishingProfile(), "web.config", ManageWebAppCosmosDbThroughKeyVault.class.getResourceAsStream("/web.config"));
+            Utils.uploadFileViaFtp(app.getPublishingProfile(), "ROOT.jar", ManageWebAppCosmosDbThroughKeyVault.class
+                .getResourceAsStream("/todo-app-java-on-azure-1.0-SNAPSHOT.jar"));
+            Utils.uploadFileViaFtp(app.getPublishingProfile(), "web.config",
+                ManageWebAppCosmosDbThroughKeyVault.class.getResourceAsStream("/web.config"));
 
             System.out.println("Deployment to web app " + app.name() + " completed");
             Utils.print(app);
@@ -143,7 +157,6 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             System.out.println("CURLing " + appUrl);
             System.out.println(Utils.sendGetRequest("http://" + appUrl));
-
 
             return true;
         } finally {
@@ -175,8 +188,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
                 .build();
             final Configuration configuration = Configuration.getGlobalConfiguration();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

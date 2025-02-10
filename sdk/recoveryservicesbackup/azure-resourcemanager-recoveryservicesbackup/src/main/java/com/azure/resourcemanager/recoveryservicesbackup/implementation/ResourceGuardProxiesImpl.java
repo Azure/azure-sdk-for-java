@@ -19,24 +19,25 @@ public final class ResourceGuardProxiesImpl implements ResourceGuardProxies {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ResourceGuardProxiesImpl(
-        ResourceGuardProxiesClient innerClient,
+    public ResourceGuardProxiesImpl(ResourceGuardProxiesClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ResourceGuardProxyBaseResource> get(String vaultName, String resourceGroupName) {
-        PagedIterable<ResourceGuardProxyBaseResourceInner> inner =
-            this.serviceClient().get(vaultName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ResourceGuardProxyBaseResourceImpl(inner1, this.manager()));
+        PagedIterable<ResourceGuardProxyBaseResourceInner> inner
+            = this.serviceClient().get(vaultName, resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ResourceGuardProxyBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ResourceGuardProxyBaseResource> get(
-        String vaultName, String resourceGroupName, Context context) {
-        PagedIterable<ResourceGuardProxyBaseResourceInner> inner =
-            this.serviceClient().get(vaultName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ResourceGuardProxyBaseResourceImpl(inner1, this.manager()));
+    public PagedIterable<ResourceGuardProxyBaseResource> get(String vaultName, String resourceGroupName,
+        Context context) {
+        PagedIterable<ResourceGuardProxyBaseResourceInner> inner
+            = this.serviceClient().get(vaultName, resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ResourceGuardProxyBaseResourceImpl(inner1, this.manager()));
     }
 
     private ResourceGuardProxiesClient serviceClient() {

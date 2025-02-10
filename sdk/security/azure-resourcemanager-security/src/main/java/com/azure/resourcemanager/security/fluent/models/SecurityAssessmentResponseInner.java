@@ -6,29 +6,50 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AssessmentLinks;
 import com.azure.resourcemanager.security.models.AssessmentStatusResponse;
 import com.azure.resourcemanager.security.models.ResourceDetails;
 import com.azure.resourcemanager.security.models.SecurityAssessmentPartnerData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Security assessment on a resource - response format. */
+/**
+ * Security assessment on a resource - response format.
+ */
 @Fluent
 public final class SecurityAssessmentResponseInner extends ProxyResource {
     /*
      * Describes properties of an assessment.
      */
-    @JsonProperty(value = "properties")
     private SecurityAssessmentPropertiesResponse innerProperties;
 
-    /** Creates an instance of SecurityAssessmentResponseInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SecurityAssessmentResponseInner class.
+     */
     public SecurityAssessmentResponseInner() {
     }
 
     /**
      * Get the innerProperties property: Describes properties of an assessment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityAssessmentPropertiesResponse innerProperties() {
@@ -36,8 +57,38 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the status property: The result of the assessment.
-     *
+     * 
      * @return the status value.
      */
     public AssessmentStatusResponse status() {
@@ -46,7 +97,7 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Set the status property: The result of the assessment.
-     *
+     * 
      * @param status the status value to set.
      * @return the SecurityAssessmentResponseInner object itself.
      */
@@ -60,7 +111,7 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Get the resourceDetails property: Details of the resource that was assessed.
-     *
+     * 
      * @return the resourceDetails value.
      */
     public ResourceDetails resourceDetails() {
@@ -69,7 +120,7 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Set the resourceDetails property: Details of the resource that was assessed.
-     *
+     * 
      * @param resourceDetails the resourceDetails value to set.
      * @return the SecurityAssessmentResponseInner object itself.
      */
@@ -83,7 +134,7 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Get the displayName property: User friendly display name of the assessment.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -92,7 +143,7 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Get the additionalData property: Additional data regarding the assessment.
-     *
+     * 
      * @return the additionalData value.
      */
     public Map<String, String> additionalData() {
@@ -101,7 +152,7 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Set the additionalData property: Additional data regarding the assessment.
-     *
+     * 
      * @param additionalData the additionalData value to set.
      * @return the SecurityAssessmentResponseInner object itself.
      */
@@ -115,7 +166,7 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Get the links property: Links relevant to the assessment.
-     *
+     * 
      * @return the links value.
      */
     public AssessmentLinks links() {
@@ -124,7 +175,7 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Get the metadata property: Describes properties of an assessment metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public SecurityAssessmentMetadataProperties metadata() {
@@ -133,7 +184,7 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Set the metadata property: Describes properties of an assessment metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the SecurityAssessmentResponseInner object itself.
      */
@@ -147,7 +198,7 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Get the partnersData property: Data regarding 3rd party partner integration.
-     *
+     * 
      * @return the partnersData value.
      */
     public SecurityAssessmentPartnerData partnersData() {
@@ -156,7 +207,7 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Set the partnersData property: Data regarding 3rd party partner integration.
-     *
+     * 
      * @param partnersData the partnersData value to set.
      * @return the SecurityAssessmentResponseInner object itself.
      */
@@ -170,12 +221,57 @@ public final class SecurityAssessmentResponseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAssessmentResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAssessmentResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityAssessmentResponseInner.
+     */
+    public static SecurityAssessmentResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAssessmentResponseInner deserializedSecurityAssessmentResponseInner
+                = new SecurityAssessmentResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecurityAssessmentResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSecurityAssessmentResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSecurityAssessmentResponseInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSecurityAssessmentResponseInner.innerProperties
+                        = SecurityAssessmentPropertiesResponse.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAssessmentResponseInner;
+        });
     }
 }

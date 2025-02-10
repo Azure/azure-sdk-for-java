@@ -19,7 +19,8 @@ public final class ChangeDataCaptureGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void changeDataCaptureGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleChangeDataCapture", null, com.azure.core.util.Context.NONE);
+        manager.changeDataCaptures()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleChangeDataCapture", null,
+                com.azure.core.util.Context.NONE);
     }
 }

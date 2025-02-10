@@ -5,78 +5,78 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** vCenter Single Sign On Identity Source. */
+/**
+ * vCenter Single Sign On Identity Source.
+ */
 @Fluent
-public final class IdentitySource {
+public final class IdentitySource implements JsonSerializable<IdentitySource> {
     /*
      * The name of the identity source
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The domain's NetBIOS name
      */
-    @JsonProperty(value = "alias")
     private String alias;
 
     /*
      * The domain's dns name
      */
-    @JsonProperty(value = "domain")
     private String domain;
 
     /*
      * The base distinguished name for users
      */
-    @JsonProperty(value = "baseUserDN")
     private String baseUserDN;
 
     /*
      * The base distinguished name for groups
      */
-    @JsonProperty(value = "baseGroupDN")
     private String baseGroupDN;
 
     /*
      * Primary server URL
      */
-    @JsonProperty(value = "primaryServer")
     private String primaryServer;
 
     /*
      * Secondary server URL
      */
-    @JsonProperty(value = "secondaryServer")
     private String secondaryServer;
 
     /*
      * Protect LDAP communication using SSL certificate (LDAPS)
      */
-    @JsonProperty(value = "ssl")
     private SslEnum ssl;
 
     /*
-     * The ID of an Active Directory user with a minimum of read-only access to Base DN for users and group
+     * The ID of an Active Directory user with a minimum of read-only access to Base
+     * DN for users and group
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
-     * The password of the Active Directory user with a minimum of read-only access to Base DN for users and groups.
+     * The password of the Active Directory user with a minimum of read-only access to
+     * Base DN for users and groups.
      */
-    @JsonProperty(value = "password")
     private String password;
 
-    /** Creates an instance of IdentitySource class. */
+    /**
+     * Creates an instance of IdentitySource class.
+     */
     public IdentitySource() {
     }
 
     /**
      * Get the name property: The name of the identity source.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -85,7 +85,7 @@ public final class IdentitySource {
 
     /**
      * Set the name property: The name of the identity source.
-     *
+     * 
      * @param name the name value to set.
      * @return the IdentitySource object itself.
      */
@@ -96,7 +96,7 @@ public final class IdentitySource {
 
     /**
      * Get the alias property: The domain's NetBIOS name.
-     *
+     * 
      * @return the alias value.
      */
     public String alias() {
@@ -105,7 +105,7 @@ public final class IdentitySource {
 
     /**
      * Set the alias property: The domain's NetBIOS name.
-     *
+     * 
      * @param alias the alias value to set.
      * @return the IdentitySource object itself.
      */
@@ -116,7 +116,7 @@ public final class IdentitySource {
 
     /**
      * Get the domain property: The domain's dns name.
-     *
+     * 
      * @return the domain value.
      */
     public String domain() {
@@ -125,7 +125,7 @@ public final class IdentitySource {
 
     /**
      * Set the domain property: The domain's dns name.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the IdentitySource object itself.
      */
@@ -136,7 +136,7 @@ public final class IdentitySource {
 
     /**
      * Get the baseUserDN property: The base distinguished name for users.
-     *
+     * 
      * @return the baseUserDN value.
      */
     public String baseUserDN() {
@@ -145,7 +145,7 @@ public final class IdentitySource {
 
     /**
      * Set the baseUserDN property: The base distinguished name for users.
-     *
+     * 
      * @param baseUserDN the baseUserDN value to set.
      * @return the IdentitySource object itself.
      */
@@ -156,7 +156,7 @@ public final class IdentitySource {
 
     /**
      * Get the baseGroupDN property: The base distinguished name for groups.
-     *
+     * 
      * @return the baseGroupDN value.
      */
     public String baseGroupDN() {
@@ -165,7 +165,7 @@ public final class IdentitySource {
 
     /**
      * Set the baseGroupDN property: The base distinguished name for groups.
-     *
+     * 
      * @param baseGroupDN the baseGroupDN value to set.
      * @return the IdentitySource object itself.
      */
@@ -176,7 +176,7 @@ public final class IdentitySource {
 
     /**
      * Get the primaryServer property: Primary server URL.
-     *
+     * 
      * @return the primaryServer value.
      */
     public String primaryServer() {
@@ -185,7 +185,7 @@ public final class IdentitySource {
 
     /**
      * Set the primaryServer property: Primary server URL.
-     *
+     * 
      * @param primaryServer the primaryServer value to set.
      * @return the IdentitySource object itself.
      */
@@ -196,7 +196,7 @@ public final class IdentitySource {
 
     /**
      * Get the secondaryServer property: Secondary server URL.
-     *
+     * 
      * @return the secondaryServer value.
      */
     public String secondaryServer() {
@@ -205,7 +205,7 @@ public final class IdentitySource {
 
     /**
      * Set the secondaryServer property: Secondary server URL.
-     *
+     * 
      * @param secondaryServer the secondaryServer value to set.
      * @return the IdentitySource object itself.
      */
@@ -216,7 +216,7 @@ public final class IdentitySource {
 
     /**
      * Get the ssl property: Protect LDAP communication using SSL certificate (LDAPS).
-     *
+     * 
      * @return the ssl value.
      */
     public SslEnum ssl() {
@@ -225,7 +225,7 @@ public final class IdentitySource {
 
     /**
      * Set the ssl property: Protect LDAP communication using SSL certificate (LDAPS).
-     *
+     * 
      * @param ssl the ssl value to set.
      * @return the IdentitySource object itself.
      */
@@ -235,9 +235,9 @@ public final class IdentitySource {
     }
 
     /**
-     * Get the username property: The ID of an Active Directory user with a minimum of read-only access to Base DN for
-     * users and group.
-     *
+     * Get the username property: The ID of an Active Directory user with a minimum of read-only access to Base
+     * DN for users and group.
+     * 
      * @return the username value.
      */
     public String username() {
@@ -245,9 +245,9 @@ public final class IdentitySource {
     }
 
     /**
-     * Set the username property: The ID of an Active Directory user with a minimum of read-only access to Base DN for
-     * users and group.
-     *
+     * Set the username property: The ID of an Active Directory user with a minimum of read-only access to Base
+     * DN for users and group.
+     * 
      * @param username the username value to set.
      * @return the IdentitySource object itself.
      */
@@ -257,9 +257,9 @@ public final class IdentitySource {
     }
 
     /**
-     * Get the password property: The password of the Active Directory user with a minimum of read-only access to Base
-     * DN for users and groups.
-     *
+     * Get the password property: The password of the Active Directory user with a minimum of read-only access to
+     * Base DN for users and groups.
+     * 
      * @return the password value.
      */
     public String password() {
@@ -267,9 +267,9 @@ public final class IdentitySource {
     }
 
     /**
-     * Set the password property: The password of the Active Directory user with a minimum of read-only access to Base
-     * DN for users and groups.
-     *
+     * Set the password property: The password of the Active Directory user with a minimum of read-only access to
+     * Base DN for users and groups.
+     * 
      * @param password the password value to set.
      * @return the IdentitySource object itself.
      */
@@ -280,9 +280,72 @@ public final class IdentitySource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("alias", this.alias);
+        jsonWriter.writeStringField("domain", this.domain);
+        jsonWriter.writeStringField("baseUserDN", this.baseUserDN);
+        jsonWriter.writeStringField("baseGroupDN", this.baseGroupDN);
+        jsonWriter.writeStringField("primaryServer", this.primaryServer);
+        jsonWriter.writeStringField("secondaryServer", this.secondaryServer);
+        jsonWriter.writeStringField("ssl", this.ssl == null ? null : this.ssl.toString());
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentitySource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentitySource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentitySource.
+     */
+    public static IdentitySource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentitySource deserializedIdentitySource = new IdentitySource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIdentitySource.name = reader.getString();
+                } else if ("alias".equals(fieldName)) {
+                    deserializedIdentitySource.alias = reader.getString();
+                } else if ("domain".equals(fieldName)) {
+                    deserializedIdentitySource.domain = reader.getString();
+                } else if ("baseUserDN".equals(fieldName)) {
+                    deserializedIdentitySource.baseUserDN = reader.getString();
+                } else if ("baseGroupDN".equals(fieldName)) {
+                    deserializedIdentitySource.baseGroupDN = reader.getString();
+                } else if ("primaryServer".equals(fieldName)) {
+                    deserializedIdentitySource.primaryServer = reader.getString();
+                } else if ("secondaryServer".equals(fieldName)) {
+                    deserializedIdentitySource.secondaryServer = reader.getString();
+                } else if ("ssl".equals(fieldName)) {
+                    deserializedIdentitySource.ssl = SslEnum.fromString(reader.getString());
+                } else if ("username".equals(fieldName)) {
+                    deserializedIdentitySource.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedIdentitySource.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentitySource;
+        });
     }
 }

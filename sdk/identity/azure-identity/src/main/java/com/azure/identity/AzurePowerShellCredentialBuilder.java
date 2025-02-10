@@ -17,7 +17,7 @@ import java.util.List;
  * or terminal. It allows users to
  * <a href="https://learn.microsoft.com/powershell/azure/authenticate-azureps">authenticate interactively</a>
  * as a user and/or a service principal against
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>.
  * The {@link AzurePowerShellCredential} authenticates in a development environment and acquires a token on
  * behalf of the logged-in user or service principal in Azure Powershell. It acts as the Azure Powershell logged in
  * user or service principal and executes an Azure Powershell command underneath to authenticate the application
@@ -32,8 +32,7 @@ import java.util.List;
  *
  * <!-- src_embed com.azure.identity.credential.azurepowershellcredential.construct -->
  * <pre>
- * TokenCredential powerShellCredential = new AzurePowerShellCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential powerShellCredential = new AzurePowerShellCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.azurepowershellcredential.construct -->
  *
@@ -43,6 +42,13 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
     private static final ClientLogger LOGGER = new ClientLogger(AzurePowerShellCredentialBuilder.class);
 
     private String tenantId;
+
+    /**
+     * Constructs an instance of AzurePowerShellCredentialBuilder.
+     */
+    public AzurePowerShellCredentialBuilder() {
+        super();
+    }
 
     /**
      * Sets the tenant ID of the application.
@@ -67,8 +73,8 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
      */
     @SuppressWarnings("unchecked")
     public AzurePowerShellCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -83,15 +89,16 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
      */
     @SuppressWarnings("unchecked")
     public AzurePowerShellCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 
-     /**
-     * Creates a new {@link AzurePowerShellCredential} with the current configurations.
-     *
-     * @return a {@link AzurePowerShellCredential} with the current configurations.
-     */
+    /**
+    * Creates a new {@link AzurePowerShellCredential} with the current configurations.
+    *
+    * @return a {@link AzurePowerShellCredential} with the current configurations.
+    */
     public AzurePowerShellCredential build() {
         return new AzurePowerShellCredential(tenantId, identityClientOptions);
     }

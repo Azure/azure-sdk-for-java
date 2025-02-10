@@ -13,7 +13,7 @@ import com.azure.resourcemanager.communication.models.VerificationType;
 public final class DomainsInitiateVerificationSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/domains/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/domains/
      * initiateVerification.json
      */
     /**
@@ -22,7 +22,9 @@ public final class DomainsInitiateVerificationSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void initiateVerification(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().initiateVerification("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
-            new VerificationParameter().withVerificationType(VerificationType.SPF), com.azure.core.util.Context.NONE);
+        manager.domains()
+            .initiateVerification("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
+                new VerificationParameter().withVerificationType(VerificationType.SPF),
+                com.azure.core.util.Context.NONE);
     }
 }

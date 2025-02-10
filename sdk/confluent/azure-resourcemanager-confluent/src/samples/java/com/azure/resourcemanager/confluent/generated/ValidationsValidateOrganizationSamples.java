@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class ValidationsValidateOrganizationSamples {
     /*
-     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/
+     * x-ms-original-file: specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/
      * Validations_ValidateOrganizations.json
      */
     /**
@@ -25,15 +25,23 @@ public final class ValidationsValidateOrganizationSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void validationsValidateOrganizations(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.validations().validateOrganizationWithResponse("myResourceGroup", "myOrganization",
-            new OrganizationResourceInner().withLocation("West US").withTags(mapOf("Environment", "Dev"))
-                .withOfferDetail(new OfferDetail().withPublisherId("string").withId("string").withPlanId("string")
-                    .withPlanName("string").withTermUnit("string").withPrivateOfferId("string")
-                    .withPrivateOfferIds(Arrays.asList("string")))
-                .withUserDetail(new UserDetail().withFirstName("string").withLastName("string")
-                    .withEmailAddress("abc@microsoft.com").withUserPrincipalName("abc@microsoft.com")
-                    .withAadEmail("abc@microsoft.com")),
-            com.azure.core.util.Context.NONE);
+        manager.validations()
+            .validateOrganizationWithResponse("myResourceGroup", "myOrganization",
+                new OrganizationResourceInner().withLocation("West US")
+                    .withTags(mapOf("Environment", "Dev"))
+                    .withOfferDetail(new OfferDetail().withPublisherId("string")
+                        .withId("string")
+                        .withPlanId("string")
+                        .withPlanName("string")
+                        .withTermUnit("string")
+                        .withPrivateOfferId("string")
+                        .withPrivateOfferIds(Arrays.asList("string")))
+                    .withUserDetail(new UserDetail().withFirstName("string")
+                        .withLastName("string")
+                        .withEmailAddress("abc@microsoft.com")
+                        .withUserPrincipalName("abc@microsoft.com")
+                        .withAadEmail("abc@microsoft.com")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

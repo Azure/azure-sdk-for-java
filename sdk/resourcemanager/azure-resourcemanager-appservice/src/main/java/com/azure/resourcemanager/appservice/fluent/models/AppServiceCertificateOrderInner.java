@@ -6,13 +6,16 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.CertificateDetails;
 import com.azure.resourcemanager.appservice.models.CertificateOrderContact;
 import com.azure.resourcemanager.appservice.models.CertificateOrderStatus;
 import com.azure.resourcemanager.appservice.models.CertificateProductType;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.ResourceNotRenewableReason;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +28,29 @@ public final class AppServiceCertificateOrderInner extends Resource {
     /*
      * AppServiceCertificateOrder resource specific properties
      */
-    @JsonProperty(value = "properties")
     private AppServiceCertificateOrderProperties innerProperties;
 
     /*
-     * Kind of resource.
+     * Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-
+     * resource-kind-reference for details supported values for kind.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of AppServiceCertificateOrderInner class.
@@ -50,7 +68,9 @@ public final class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of resource.
+     * Get the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
      * 
      * @return the kind value.
      */
@@ -59,7 +79,9 @@ public final class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the kind property: Kind of resource.
+     * Set the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
      * 
      * @param kind the kind value to set.
      * @return the AppServiceCertificateOrderInner object itself.
@@ -67,6 +89,36 @@ public final class AppServiceCertificateOrderInner extends Resource {
     public AppServiceCertificateOrderInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -212,8 +264,8 @@ public final class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed
-     * when it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when
+     * it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the autoRenew value.
      */
@@ -222,8 +274,8 @@ public final class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed
-     * when it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when
+     * it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param autoRenew the autoRenew value to set.
      * @return the AppServiceCertificateOrderInner object itself.
@@ -348,7 +400,8 @@ public final class AppServiceCertificateOrderInner extends Resource {
      * @return the appServiceCertificateNotRenewableReasons value.
      */
     public List<ResourceNotRenewableReason> appServiceCertificateNotRenewableReasons() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().appServiceCertificateNotRenewableReasons();
     }
 
@@ -379,5 +432,60 @@ public final class AppServiceCertificateOrderInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServiceCertificateOrderInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServiceCertificateOrderInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppServiceCertificateOrderInner.
+     */
+    public static AppServiceCertificateOrderInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServiceCertificateOrderInner deserializedAppServiceCertificateOrderInner
+                = new AppServiceCertificateOrderInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAppServiceCertificateOrderInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderInner.innerProperties
+                        = AppServiceCertificateOrderProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderInner.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServiceCertificateOrderInner;
+        });
     }
 }

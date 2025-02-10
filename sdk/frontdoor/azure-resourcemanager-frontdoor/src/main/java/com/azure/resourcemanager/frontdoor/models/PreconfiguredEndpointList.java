@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.fluent.models.PreconfiguredEndpointInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines a list of preconfigured endpoints. */
+/**
+ * Defines a list of preconfigured endpoints.
+ */
 @Fluent
-public final class PreconfiguredEndpointList {
+public final class PreconfiguredEndpointList implements JsonSerializable<PreconfiguredEndpointList> {
     /*
      * List of PreconfiguredEndpoints supported by NetworkExperiment.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PreconfiguredEndpointInner> value;
 
     /*
      * URL to get the next set of PreconfiguredEndpoints if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PreconfiguredEndpointList class. */
+    /**
+     * Creates an instance of PreconfiguredEndpointList class.
+     */
     public PreconfiguredEndpointList() {
     }
 
     /**
      * Get the value property: List of PreconfiguredEndpoints supported by NetworkExperiment.
-     *
+     * 
      * @return the value value.
      */
     public List<PreconfiguredEndpointInner> value() {
@@ -39,7 +45,7 @@ public final class PreconfiguredEndpointList {
 
     /**
      * Get the nextLink property: URL to get the next set of PreconfiguredEndpoints if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +54,7 @@ public final class PreconfiguredEndpointList {
 
     /**
      * Set the nextLink property: URL to get the next set of PreconfiguredEndpoints if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PreconfiguredEndpointList object itself.
      */
@@ -59,12 +65,52 @@ public final class PreconfiguredEndpointList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PreconfiguredEndpointList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PreconfiguredEndpointList if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PreconfiguredEndpointList.
+     */
+    public static PreconfiguredEndpointList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PreconfiguredEndpointList deserializedPreconfiguredEndpointList = new PreconfiguredEndpointList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PreconfiguredEndpointInner> value
+                        = reader.readArray(reader1 -> PreconfiguredEndpointInner.fromJson(reader1));
+                    deserializedPreconfiguredEndpointList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPreconfiguredEndpointList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPreconfiguredEndpointList;
+        });
     }
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hanaonazure.fluent.models.HanaInstanceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response from the List HANA Instances operation. */
+/**
+ * The response from the List HANA Instances operation.
+ */
 @Fluent
-public final class HanaInstancesListResult {
+public final class HanaInstancesListResult implements JsonSerializable<HanaInstancesListResult> {
     /*
      * The list of SAP HANA on Azure instances.
      */
-    @JsonProperty(value = "value")
     private List<HanaInstanceInner> value;
 
     /*
      * The URL to get the next set of HANA instances.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of HanaInstancesListResult class. */
+    /**
+     * Creates an instance of HanaInstancesListResult class.
+     */
     public HanaInstancesListResult() {
     }
 
     /**
      * Get the value property: The list of SAP HANA on Azure instances.
-     *
+     * 
      * @return the value value.
      */
     public List<HanaInstanceInner> value() {
@@ -39,7 +45,7 @@ public final class HanaInstancesListResult {
 
     /**
      * Set the value property: The list of SAP HANA on Azure instances.
-     *
+     * 
      * @param value the value value to set.
      * @return the HanaInstancesListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class HanaInstancesListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of HANA instances.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class HanaInstancesListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of HANA instances.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the HanaInstancesListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class HanaInstancesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HanaInstancesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HanaInstancesListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HanaInstancesListResult.
+     */
+    public static HanaInstancesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HanaInstancesListResult deserializedHanaInstancesListResult = new HanaInstancesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<HanaInstanceInner> value = reader.readArray(reader1 -> HanaInstanceInner.fromJson(reader1));
+                    deserializedHanaInstancesListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedHanaInstancesListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHanaInstancesListResult;
+        });
     }
 }

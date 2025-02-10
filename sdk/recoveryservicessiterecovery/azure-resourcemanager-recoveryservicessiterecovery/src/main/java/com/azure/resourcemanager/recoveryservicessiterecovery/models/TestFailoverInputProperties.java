@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input definition for test failover input properties. */
+/**
+ * Input definition for test failover input properties.
+ */
 @Fluent
-public final class TestFailoverInputProperties {
+public final class TestFailoverInputProperties implements JsonSerializable<TestFailoverInputProperties> {
     /*
      * Test failover direction.
      */
-    @JsonProperty(value = "failoverDirection")
     private String failoverDirection;
 
     /*
      * Network type to be used for test failover.
      */
-    @JsonProperty(value = "networkType")
     private String networkType;
 
     /*
      * The id of the network to be used for test failover.
      */
-    @JsonProperty(value = "networkId")
     private String networkId;
 
     /*
      * Provider specific settings.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private TestFailoverProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of TestFailoverInputProperties class. */
+    /**
+     * Creates an instance of TestFailoverInputProperties class.
+     */
     public TestFailoverInputProperties() {
     }
 
     /**
      * Get the failoverDirection property: Test failover direction.
-     *
+     * 
      * @return the failoverDirection value.
      */
     public String failoverDirection() {
@@ -49,7 +53,7 @@ public final class TestFailoverInputProperties {
 
     /**
      * Set the failoverDirection property: Test failover direction.
-     *
+     * 
      * @param failoverDirection the failoverDirection value to set.
      * @return the TestFailoverInputProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class TestFailoverInputProperties {
 
     /**
      * Get the networkType property: Network type to be used for test failover.
-     *
+     * 
      * @return the networkType value.
      */
     public String networkType() {
@@ -69,7 +73,7 @@ public final class TestFailoverInputProperties {
 
     /**
      * Set the networkType property: Network type to be used for test failover.
-     *
+     * 
      * @param networkType the networkType value to set.
      * @return the TestFailoverInputProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class TestFailoverInputProperties {
 
     /**
      * Get the networkId property: The id of the network to be used for test failover.
-     *
+     * 
      * @return the networkId value.
      */
     public String networkId() {
@@ -89,7 +93,7 @@ public final class TestFailoverInputProperties {
 
     /**
      * Set the networkId property: The id of the network to be used for test failover.
-     *
+     * 
      * @param networkId the networkId value to set.
      * @return the TestFailoverInputProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class TestFailoverInputProperties {
 
     /**
      * Get the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public TestFailoverProviderSpecificInput providerSpecificDetails() {
@@ -109,24 +113,70 @@ public final class TestFailoverInputProperties {
 
     /**
      * Set the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the TestFailoverInputProperties object itself.
      */
-    public TestFailoverInputProperties withProviderSpecificDetails(
-        TestFailoverProviderSpecificInput providerSpecificDetails) {
+    public TestFailoverInputProperties
+        withProviderSpecificDetails(TestFailoverProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("failoverDirection", this.failoverDirection);
+        jsonWriter.writeStringField("networkType", this.networkType);
+        jsonWriter.writeStringField("networkId", this.networkId);
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestFailoverInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestFailoverInputProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TestFailoverInputProperties.
+     */
+    public static TestFailoverInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestFailoverInputProperties deserializedTestFailoverInputProperties = new TestFailoverInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("failoverDirection".equals(fieldName)) {
+                    deserializedTestFailoverInputProperties.failoverDirection = reader.getString();
+                } else if ("networkType".equals(fieldName)) {
+                    deserializedTestFailoverInputProperties.networkType = reader.getString();
+                } else if ("networkId".equals(fieldName)) {
+                    deserializedTestFailoverInputProperties.networkId = reader.getString();
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedTestFailoverInputProperties.providerSpecificDetails
+                        = TestFailoverProviderSpecificInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestFailoverInputProperties;
+        });
     }
 }

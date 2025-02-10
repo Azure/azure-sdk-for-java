@@ -5,29 +5,39 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.fluent.models.BuildpackBindingResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Object that includes an array of BuildpackBinding resources and a possible link for next set. */
+/**
+ * Object that includes an array of BuildpackBinding resources and a possible link for next set.
+ */
 @Fluent
-public final class BuildpackBindingResourceCollection {
+public final class BuildpackBindingResourceCollection implements JsonSerializable<BuildpackBindingResourceCollection> {
     /*
      * Collection of BuildpackBinding resources
      */
-    @JsonProperty(value = "value")
     private List<BuildpackBindingResourceInner> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of BuildpackBindingResourceCollection class.
+     */
+    public BuildpackBindingResourceCollection() {
+    }
+
+    /**
      * Get the value property: Collection of BuildpackBinding resources.
-     *
+     * 
      * @return the value value.
      */
     public List<BuildpackBindingResourceInner> value() {
@@ -36,7 +46,7 @@ public final class BuildpackBindingResourceCollection {
 
     /**
      * Set the value property: Collection of BuildpackBinding resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the BuildpackBindingResourceCollection object itself.
      */
@@ -46,9 +56,9 @@ public final class BuildpackBindingResourceCollection {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +66,9 @@ public final class BuildpackBindingResourceCollection {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BuildpackBindingResourceCollection object itself.
      */
@@ -69,12 +79,54 @@ public final class BuildpackBindingResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildpackBindingResourceCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildpackBindingResourceCollection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildpackBindingResourceCollection.
+     */
+    public static BuildpackBindingResourceCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildpackBindingResourceCollection deserializedBuildpackBindingResourceCollection
+                = new BuildpackBindingResourceCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<BuildpackBindingResourceInner> value
+                        = reader.readArray(reader1 -> BuildpackBindingResourceInner.fromJson(reader1));
+                    deserializedBuildpackBindingResourceCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedBuildpackBindingResourceCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildpackBindingResourceCollection;
+        });
     }
 }

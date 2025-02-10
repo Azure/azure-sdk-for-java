@@ -6,87 +6,50 @@ package com.azure.resourcemanager.apicenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apicenter.ApiCenterManager;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.apicenter.models.Service;
+import com.azure.resourcemanager.apicenter.models.ServiceProperties;
 import com.azure.resourcemanager.apicenter.models.UserAssignedIdentity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServicesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"8b369e7c-f2df-4b0a-b3e6-54af5b086ed0\",\"tenantId\":\"28bf0f77-43f0-41ab-a318-278e969c0479\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"mubyynt\":{\"principalId\":\"b83e0951-434b-4b45-9c09-b1535a375fd8\",\"clientId\":\"b6b414d8-cbf3-417a-8ce5-5787ac2d40db\"},\"bqtkoievseotgqr\":{\"principalId\":\"3a2bda92-0819-4564-a2ee-d5bf37ef9c17\",\"clientId\":\"8f340e50-450b-4bba-bd85-ff1a015d908f\"},\"muwlauwzizxbm\":{\"principalId\":\"8efa50ee-a589-4198-895e-0ffa46c82a62\",\"clientId\":\"880c22a1-6609-4bdd-adb1-4c042d97f583\"}}},\"location\":\"cjefuzmu\",\"tags\":{\"bhjpglkfgohdne\":\"ttdumorppxebmnzb\",\"phsdyhto\":\"el\",\"v\":\"fikdowwqu\"},\"id\":\"zx\",\"name\":\"lvithhqzonosgg\",\"type\":\"hcohfwdsjnk\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"09d969e0-8912-41e0-83f3-4d59c3b38494\",\"tenantId\":\"8a8757af-25fc-4b22-8cba-6a7e879fef62\",\"type\":\"None\",\"userAssignedIdentities\":{\"nohjt\":{\"principalId\":\"faba7cbf-d116-4d99-bedc-38cc45aac6c7\",\"clientId\":\"3b143447-ee65-45e6-800a-709faf27b2f3\"},\"h\":{\"principalId\":\"250d95d1-1c2c-499a-85a2-8da1bf352c5f\",\"clientId\":\"194bab30-7616-4423-9bc5-8460f35a1d1f\"},\"ifiyipjxsqwpgrj\":{\"principalId\":\"e1176e05-a394-430d-b649-9352937f0b39\",\"clientId\":\"5805bba2-c4f5-49f4-b290-70d3ca8d9a48\"},\"orcjxvsnby\":{\"principalId\":\"0532ff43-0cbc-428d-9d18-2fab3317f8db\",\"clientId\":\"85e33bf6-eece-4e65-86a3-e09d2f837654\"}}},\"location\":\"abnmocpcyshu\",\"tags\":{\"gpbtoqcjmklj\":\"fblj\",\"qajzyulpkudjkr\":\"vbqid\",\"e\":\"khbzhfepgzg\",\"scpai\":\"zloc\"},\"id\":\"rhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Service response = manager.services()
+            .define("vwiwubmwmbesld")
+            .withRegion("ikvmkqzeqqk")
+            .withExistingResourceGroup("tshhszhedp")
+            .withTags(mapOf("bdagxt", "fzxmhhvhgureodkw"))
+            .withProperties(new ServiceProperties())
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("ogaok", new UserAssignedIdentity(), "m", new UserAssignedIdentity())))
+            .create();
 
-        ApiCenterManager manager =
-            ApiCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Service response =
-            manager
-                .services()
-                .define("gazxuf")
-                .withRegion("mijcmmxdcufufs")
-                .withExistingResourceGroup("prwzwbnguitnwui")
-                .withTags(mapOf("sgfyccsnew", "mzidnsezcxtb", "oosflnr", "dwzjeiach"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.NONE)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "dfvzwdzuhty",
-                                new UserAssignedIdentity(),
-                                "sdkf",
-                                new UserAssignedIdentity(),
-                                "xmnteiwaop",
-                                new UserAssignedIdentity())))
-                .create();
-
-        Assertions.assertEquals("abnmocpcyshu", response.location());
-        Assertions.assertEquals("fblj", response.tags().get("gpbtoqcjmklj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("cjefuzmu", response.location());
+        Assertions.assertEquals("ttdumorppxebmnzb", response.tags().get("bhjpglkfgohdne"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

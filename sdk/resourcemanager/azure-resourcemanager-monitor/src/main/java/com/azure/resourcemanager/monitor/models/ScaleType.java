@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** the type of action that should occur when the scale rule fires. */
+/**
+ * the type of action that should occur when the scale rule fires.
+ */
 public enum ScaleType {
-    /** Enum value ChangeCount. */
+    /**
+     * Enum value ChangeCount.
+     */
     CHANGE_COUNT("ChangeCount"),
 
-    /** Enum value PercentChangeCount. */
+    /**
+     * Enum value PercentChangeCount.
+     */
     PERCENT_CHANGE_COUNT("PercentChangeCount"),
 
-    /** Enum value ExactCount. */
+    /**
+     * Enum value ExactCount.
+     */
     EXACT_COUNT("ExactCount"),
 
-    /** Enum value ServiceAllowedNextValue. */
+    /**
+     * Enum value ServiceAllowedNextValue.
+     */
     SERVICE_ALLOWED_NEXT_VALUE("ServiceAllowedNextValue");
 
-    /** The actual serialized value for a ScaleType instance. */
+    /**
+     * The actual serialized value for a ScaleType instance.
+     */
     private final String value;
 
     ScaleType(String value) {
@@ -30,11 +39,10 @@ public enum ScaleType {
 
     /**
      * Parses a serialized value to a ScaleType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ScaleType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ScaleType fromString(String value) {
         if (value == null) {
             return null;
@@ -48,8 +56,9 @@ public enum ScaleType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

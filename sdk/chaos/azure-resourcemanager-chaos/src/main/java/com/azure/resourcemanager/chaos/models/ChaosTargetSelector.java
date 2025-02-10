@@ -6,53 +6,57 @@ package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Model that represents a selector in the Experiment resource. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ChaosTargetSelector.class)
-@JsonTypeName("ChaosTargetSelector")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "List", value = ChaosTargetListSelector.class),
-    @JsonSubTypes.Type(name = "Query", value = ChaosTargetQuerySelector.class)
-})
+/**
+ * Model that represents a selector in the Experiment resource.
+ */
 @Fluent
-public class ChaosTargetSelector {
+public class ChaosTargetSelector implements JsonSerializable<ChaosTargetSelector> {
+    /*
+     * Enum of the selector type.
+     */
+    private SelectorType type = SelectorType.fromString("ChaosTargetSelector");
+
     /*
      * String of the selector ID.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Model that represents available filter types that can be applied to a targets list.
      */
-    @JsonProperty(value = "filter")
     private ChaosTargetFilter filter;
 
     /*
      * Model that represents a selector in the Experiment resource.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ChaosTargetSelector class. */
+    /**
+     * Creates an instance of ChaosTargetSelector class.
+     */
     public ChaosTargetSelector() {
     }
 
     /**
+     * Get the type property: Enum of the selector type.
+     * 
+     * @return the type value.
+     */
+    public SelectorType type() {
+        return this.type;
+    }
+
+    /**
      * Get the id property: String of the selector ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -61,7 +65,7 @@ public class ChaosTargetSelector {
 
     /**
      * Set the id property: String of the selector ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ChaosTargetSelector object itself.
      */
@@ -72,7 +76,7 @@ public class ChaosTargetSelector {
 
     /**
      * Get the filter property: Model that represents available filter types that can be applied to a targets list.
-     *
+     * 
      * @return the filter value.
      */
     public ChaosTargetFilter filter() {
@@ -81,7 +85,7 @@ public class ChaosTargetSelector {
 
     /**
      * Set the filter property: Model that represents available filter types that can be applied to a targets list.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the ChaosTargetSelector object itself.
      */
@@ -92,17 +96,16 @@ public class ChaosTargetSelector {
 
     /**
      * Get the additionalProperties property: Model that represents a selector in the Experiment resource.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Model that represents a selector in the Experiment resource.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ChaosTargetSelector object itself.
      */
@@ -111,24 +114,15 @@ public class ChaosTargetSelector {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ChaosTargetSelector"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model ChaosTargetSelector"));
         }
         if (filter() != null) {
             filter().validate();
@@ -136,4 +130,85 @@ public class ChaosTargetSelector {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ChaosTargetSelector.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("filter", this.filter);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChaosTargetSelector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChaosTargetSelector if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChaosTargetSelector.
+     */
+    public static ChaosTargetSelector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("List".equals(discriminatorValue)) {
+                    return ChaosTargetListSelector.fromJson(readerToUse.reset());
+                } else if ("Query".equals(discriminatorValue)) {
+                    return ChaosTargetQuerySelector.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ChaosTargetSelector fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChaosTargetSelector deserializedChaosTargetSelector = new ChaosTargetSelector();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedChaosTargetSelector.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedChaosTargetSelector.type = SelectorType.fromString(reader.getString());
+                } else if ("filter".equals(fieldName)) {
+                    deserializedChaosTargetSelector.filter = ChaosTargetFilter.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedChaosTargetSelector.additionalProperties = additionalProperties;
+
+            return deserializedChaosTargetSelector;
+        });
+    }
 }

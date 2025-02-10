@@ -7,61 +7,62 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
-/** thumbnail. */
+/**
+ * thumbnail.
+ */
 @Fluent
-public final class MicrosoftGraphThumbnail {
+public final class MicrosoftGraphThumbnail implements JsonSerializable<MicrosoftGraphThumbnail> {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * The content stream for the thumbnail.
      */
-    @JsonProperty(value = "content")
     private Base64Url content;
 
     /*
      * The height of the thumbnail, in pixels.
      */
-    @JsonProperty(value = "height")
     private Integer height;
 
     /*
      * The unique identifier of the item that provided the thumbnail. This is only available when a folder thumbnail is
      * requested.
      */
-    @JsonProperty(value = "sourceItemId")
     private String sourceItemId;
 
     /*
      * The URL used to fetch the thumbnail content.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The width of the thumbnail, in pixels.
      */
-    @JsonProperty(value = "width")
     private Integer width;
 
     /*
      * thumbnail
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphThumbnail class. */
+    /**
+     * Creates an instance of MicrosoftGraphThumbnail class.
+     */
     public MicrosoftGraphThumbnail() {
     }
 
     /**
      * Get the content property: The content stream for the thumbnail.
-     *
+     * 
      * @return the content value.
      */
     public byte[] content() {
@@ -73,7 +74,7 @@ public final class MicrosoftGraphThumbnail {
 
     /**
      * Set the content property: The content stream for the thumbnail.
-     *
+     * 
      * @param content the content value to set.
      * @return the MicrosoftGraphThumbnail object itself.
      */
@@ -88,7 +89,7 @@ public final class MicrosoftGraphThumbnail {
 
     /**
      * Get the height property: The height of the thumbnail, in pixels.
-     *
+     * 
      * @return the height value.
      */
     public Integer height() {
@@ -97,7 +98,7 @@ public final class MicrosoftGraphThumbnail {
 
     /**
      * Set the height property: The height of the thumbnail, in pixels.
-     *
+     * 
      * @param height the height value to set.
      * @return the MicrosoftGraphThumbnail object itself.
      */
@@ -109,7 +110,7 @@ public final class MicrosoftGraphThumbnail {
     /**
      * Get the sourceItemId property: The unique identifier of the item that provided the thumbnail. This is only
      * available when a folder thumbnail is requested.
-     *
+     * 
      * @return the sourceItemId value.
      */
     public String sourceItemId() {
@@ -119,7 +120,7 @@ public final class MicrosoftGraphThumbnail {
     /**
      * Set the sourceItemId property: The unique identifier of the item that provided the thumbnail. This is only
      * available when a folder thumbnail is requested.
-     *
+     * 
      * @param sourceItemId the sourceItemId value to set.
      * @return the MicrosoftGraphThumbnail object itself.
      */
@@ -130,7 +131,7 @@ public final class MicrosoftGraphThumbnail {
 
     /**
      * Get the url property: The URL used to fetch the thumbnail content.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -139,7 +140,7 @@ public final class MicrosoftGraphThumbnail {
 
     /**
      * Set the url property: The URL used to fetch the thumbnail content.
-     *
+     * 
      * @param url the url value to set.
      * @return the MicrosoftGraphThumbnail object itself.
      */
@@ -150,7 +151,7 @@ public final class MicrosoftGraphThumbnail {
 
     /**
      * Get the width property: The width of the thumbnail, in pixels.
-     *
+     * 
      * @return the width value.
      */
     public Integer width() {
@@ -159,7 +160,7 @@ public final class MicrosoftGraphThumbnail {
 
     /**
      * Set the width property: The width of the thumbnail, in pixels.
-     *
+     * 
      * @param width the width value to set.
      * @return the MicrosoftGraphThumbnail object itself.
      */
@@ -170,17 +171,16 @@ public final class MicrosoftGraphThumbnail {
 
     /**
      * Get the additionalProperties property: thumbnail.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: thumbnail.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphThumbnail object itself.
      */
@@ -189,19 +189,71 @@ public final class MicrosoftGraphThumbnail {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("content", Objects.toString(this.content, null));
+        jsonWriter.writeNumberField("height", this.height);
+        jsonWriter.writeStringField("sourceItemId", this.sourceItemId);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeNumberField("width", this.width);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphThumbnail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphThumbnail if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphThumbnail.
+     */
+    public static MicrosoftGraphThumbnail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphThumbnail deserializedMicrosoftGraphThumbnail = new MicrosoftGraphThumbnail();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("content".equals(fieldName)) {
+                    deserializedMicrosoftGraphThumbnail.content
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("height".equals(fieldName)) {
+                    deserializedMicrosoftGraphThumbnail.height = reader.getNullable(JsonReader::getInt);
+                } else if ("sourceItemId".equals(fieldName)) {
+                    deserializedMicrosoftGraphThumbnail.sourceItemId = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedMicrosoftGraphThumbnail.url = reader.getString();
+                } else if ("width".equals(fieldName)) {
+                    deserializedMicrosoftGraphThumbnail.width = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphThumbnail.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphThumbnail;
+        });
     }
 }

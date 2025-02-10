@@ -1,0 +1,19 @@
+{
+	"namespace": "com.azure.cosmos.kafka.connect",
+	"type": "record",
+	"name": "TestItemAvro",
+	"fields": [
+		{
+			"name": "id",
+			"type": "string"
+		},
+		{
+			"name": "mypk",
+			"type": "string"
+		},
+		{
+			"name": "prop",
+			"type": "string"
+		}
+	]
+}

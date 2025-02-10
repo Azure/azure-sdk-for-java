@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Iscsi target information. */
+/**
+ * Iscsi target information.
+ */
 @Fluent
-public final class IscsiTargetInfo {
+public final class IscsiTargetInfo implements JsonSerializable<IscsiTargetInfo> {
     /*
      * iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
      */
-    @JsonProperty(value = "targetIqn", access = JsonProperty.Access.WRITE_ONLY)
     private String targetIqn;
 
     /*
      * iSCSI Target Portal Host Name
      */
-    @JsonProperty(value = "targetPortalHostname", access = JsonProperty.Access.WRITE_ONLY)
     private String targetPortalHostname;
 
     /*
      * iSCSI Target Portal Port
      */
-    @JsonProperty(value = "targetPortalPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer targetPortalPort;
 
     /*
      * State of the operation on the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /*
      * Operational status of the iSCSI Target.
      */
-    @JsonProperty(value = "status")
     private OperationalStatus status;
 
-    /** Creates an instance of IscsiTargetInfo class. */
+    /**
+     * Creates an instance of IscsiTargetInfo class.
+     */
     public IscsiTargetInfo() {
     }
 
     /**
      * Get the targetIqn property: iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-     *
+     * 
      * @return the targetIqn value.
      */
     public String targetIqn() {
@@ -55,7 +58,7 @@ public final class IscsiTargetInfo {
 
     /**
      * Get the targetPortalHostname property: iSCSI Target Portal Host Name.
-     *
+     * 
      * @return the targetPortalHostname value.
      */
     public String targetPortalHostname() {
@@ -64,7 +67,7 @@ public final class IscsiTargetInfo {
 
     /**
      * Get the targetPortalPort property: iSCSI Target Portal Port.
-     *
+     * 
      * @return the targetPortalPort value.
      */
     public Integer targetPortalPort() {
@@ -73,7 +76,7 @@ public final class IscsiTargetInfo {
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -82,7 +85,7 @@ public final class IscsiTargetInfo {
 
     /**
      * Get the status property: Operational status of the iSCSI Target.
-     *
+     * 
      * @return the status value.
      */
     public OperationalStatus status() {
@@ -91,7 +94,7 @@ public final class IscsiTargetInfo {
 
     /**
      * Set the status property: Operational status of the iSCSI Target.
-     *
+     * 
      * @param status the status value to set.
      * @return the IscsiTargetInfo object itself.
      */
@@ -102,9 +105,53 @@ public final class IscsiTargetInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IscsiTargetInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IscsiTargetInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IscsiTargetInfo.
+     */
+    public static IscsiTargetInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IscsiTargetInfo deserializedIscsiTargetInfo = new IscsiTargetInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetIqn".equals(fieldName)) {
+                    deserializedIscsiTargetInfo.targetIqn = reader.getString();
+                } else if ("targetPortalHostname".equals(fieldName)) {
+                    deserializedIscsiTargetInfo.targetPortalHostname = reader.getString();
+                } else if ("targetPortalPort".equals(fieldName)) {
+                    deserializedIscsiTargetInfo.targetPortalPort = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedIscsiTargetInfo.provisioningState = ProvisioningStates.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedIscsiTargetInfo.status = OperationalStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIscsiTargetInfo;
+        });
     }
 }

@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,62 +17,50 @@ import java.util.Map;
  * Error object used by layers that have access to localized content, and propagate that to user.
  */
 @Fluent
-public final class UserFacingError {
+public final class UserFacingError implements JsonSerializable<UserFacingError> {
     /*
      * Unique code for this error
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Additional related Errors
      */
-    @JsonProperty(value = "details")
     private List<UserFacingError> details;
 
     /*
-     * InnerError
-     * 
      * Inner Error
      */
-    @JsonProperty(value = "innerError")
     private InnerError innerError;
 
     /*
      * Whether the operation will be retryable or not
      */
-    @JsonProperty(value = "isRetryable")
     private Boolean isRetryable;
 
     /*
      * Whether the operation is due to a user error or service error
      */
-    @JsonProperty(value = "isUserError")
     private Boolean isUserError;
 
     /*
      * Any key value pairs that can be injected inside error object
      */
-    @JsonProperty(value = "properties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
     /*
      * The message property.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * RecommendedAction � localized.
      */
-    @JsonProperty(value = "recommendedAction")
     private List<String> recommendedAction;
 
     /*
      * Target of the error.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /**
@@ -119,9 +110,7 @@ public final class UserFacingError {
     }
 
     /**
-     * Get the innerError property: InnerError
-     * 
-     * Inner Error.
+     * Get the innerError property: Inner Error.
      * 
      * @return the innerError value.
      */
@@ -130,9 +119,7 @@ public final class UserFacingError {
     }
 
     /**
-     * Set the innerError property: InnerError
-     * 
-     * Inner Error.
+     * Set the innerError property: Inner Error.
      * 
      * @param innerError the innerError value to set.
      * @return the UserFacingError object itself.
@@ -274,5 +261,69 @@ public final class UserFacingError {
         if (innerError() != null) {
             innerError().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("innerError", this.innerError);
+        jsonWriter.writeBooleanField("isRetryable", this.isRetryable);
+        jsonWriter.writeBooleanField("isUserError", this.isUserError);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeArrayField("recommendedAction", this.recommendedAction,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("target", this.target);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserFacingError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserFacingError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserFacingError.
+     */
+    public static UserFacingError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserFacingError deserializedUserFacingError = new UserFacingError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedUserFacingError.code = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<UserFacingError> details = reader.readArray(reader1 -> UserFacingError.fromJson(reader1));
+                    deserializedUserFacingError.details = details;
+                } else if ("innerError".equals(fieldName)) {
+                    deserializedUserFacingError.innerError = InnerError.fromJson(reader);
+                } else if ("isRetryable".equals(fieldName)) {
+                    deserializedUserFacingError.isRetryable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isUserError".equals(fieldName)) {
+                    deserializedUserFacingError.isUserError = reader.getNullable(JsonReader::getBoolean);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedUserFacingError.properties = properties;
+                } else if ("message".equals(fieldName)) {
+                    deserializedUserFacingError.message = reader.getString();
+                } else if ("recommendedAction".equals(fieldName)) {
+                    List<String> recommendedAction = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUserFacingError.recommendedAction = recommendedAction;
+                } else if ("target".equals(fieldName)) {
+                    deserializedUserFacingError.target = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserFacingError;
+        });
     }
 }

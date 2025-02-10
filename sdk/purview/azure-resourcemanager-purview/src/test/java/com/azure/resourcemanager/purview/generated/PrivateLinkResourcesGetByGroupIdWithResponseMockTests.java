@@ -6,62 +6,32 @@ package com.azure.resourcemanager.purview.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.purview.PurviewManager;
 import com.azure.resourcemanager.purview.models.PrivateLinkResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateLinkResourcesGetByGroupIdWithResponseMockTests {
     @Test
     public void testGetByGroupIdWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"id\":\"wdgzxulucv\",\"name\":\"mrsreuzvxurisjnh\",\"properties\":{\"groupId\":\"xifqjzgxm\",\"requiredMembers\":[\"blwpcesutrgj\",\"pauutpw\",\"qhih\"],\"requiredZoneNames\":[\"g\"]},\"type\":\"pnfqntcyp\"}";
 
-        String responseStr =
-            "{\"id\":\"fjhdg\",\"name\":\"gebdunygaeq\",\"properties\":{\"groupId\":\"qfatpxllrxcyjm\",\"requiredMembers\":[\"su\",\"arm\",\"wdmjsjqbjhhyx\",\"rw\"],\"requiredZoneNames\":[\"oduhp\"]},\"type\":\"kgymareqnajxqug\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PurviewManager manager = PurviewManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PrivateLinkResource response = manager.privateLinkResources()
+            .getByGroupIdWithResponse("czuhxacpqjlihh", "usps", "asdvl", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        PurviewManager manager =
-            PurviewManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PrivateLinkResource response =
-            manager
-                .privateLinkResources()
-                .getByGroupIdWithResponse("qumiek", "ez", "ikh", com.azure.core.util.Context.NONE)
-                .getValue();
     }
 }

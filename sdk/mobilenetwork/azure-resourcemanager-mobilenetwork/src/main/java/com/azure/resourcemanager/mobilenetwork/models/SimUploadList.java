@@ -6,25 +6,32 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SIMs to upload. */
+/**
+ * The SIMs to upload.
+ */
 @Fluent
-public final class SimUploadList {
+public final class SimUploadList implements JsonSerializable<SimUploadList> {
     /*
      * A list of SIMs to upload.
      */
-    @JsonProperty(value = "sims", required = true)
     private List<SimNameAndProperties> sims;
 
-    /** Creates an instance of SimUploadList class. */
+    /**
+     * Creates an instance of SimUploadList class.
+     */
     public SimUploadList() {
     }
 
     /**
      * Get the sims property: A list of SIMs to upload.
-     *
+     * 
      * @return the sims value.
      */
     public List<SimNameAndProperties> sims() {
@@ -33,7 +40,7 @@ public final class SimUploadList {
 
     /**
      * Set the sims property: A list of SIMs to upload.
-     *
+     * 
      * @param sims the sims value to set.
      * @return the SimUploadList object itself.
      */
@@ -44,18 +51,56 @@ public final class SimUploadList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sims() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sims in model SimUploadList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sims in model SimUploadList"));
         } else {
             sims().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SimUploadList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("sims", this.sims, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimUploadList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimUploadList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SimUploadList.
+     */
+    public static SimUploadList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimUploadList deserializedSimUploadList = new SimUploadList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sims".equals(fieldName)) {
+                    List<SimNameAndProperties> sims
+                        = reader.readArray(reader1 -> SimNameAndProperties.fromJson(reader1));
+                    deserializedSimUploadList.sims = sims;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimUploadList;
+        });
+    }
 }

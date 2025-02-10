@@ -13,7 +13,8 @@ import com.azure.core.util.IterableStream;
 public final class TextAnalyticsExceptionPropertiesHelper {
     private static TextAnalyticsExceptionAccessor accessor;
 
-    private TextAnalyticsExceptionPropertiesHelper() { }
+    private TextAnalyticsExceptionPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link TextAnalyticsException} instance.

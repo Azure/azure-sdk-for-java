@@ -10,11 +10,7 @@ module com.azure.resourcemanager.containerservice {
     exports com.azure.resourcemanager.containerservice.fluent.models;
     exports com.azure.resourcemanager.containerservice.models;
 
-    // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.containerservice.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.containerservice.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    // open packages specifically for azure core
+    opens com.azure.resourcemanager.containerservice.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.containerservice.models to com.azure.core;
 }

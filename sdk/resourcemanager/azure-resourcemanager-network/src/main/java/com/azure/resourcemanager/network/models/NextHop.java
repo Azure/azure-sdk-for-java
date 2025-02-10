@@ -16,19 +16,39 @@ public interface NextHop extends Executable<NextHop>, HasParent<NetworkWatcher> 
      */
     String targetResourceId();
 
-    /** @return the source IP address */
+    /**
+     * Gets the source IP address.
+     *
+     * @return the source IP address
+     */
     String sourceIpAddress();
 
-    /** @return the destination IP address */
+    /**
+     * Gets the destination IP address.
+     *
+     * @return the destination IP address
+     */
     String destinationIpAddress();
 
-    /** @return the network interface id */
+    /**
+     * Gets the network interface id.
+     *
+     * @return the network interface id
+     */
     String targetNetworkInterfaceId();
 
-    /** @return the next hop type */
+    /**
+     * Gets the next hop type.
+     *
+     * @return the next hop type
+     */
     NextHopType nextHopType();
 
-    /** @return the next hop IP Address */
+    /**
+     * Gets the next hop IP Address.
+     *
+     * @return the next hop IP Address
+     */
     String nextHopIpAddress();
 
     /**
@@ -40,11 +60,8 @@ public interface NextHop extends Executable<NextHop>, HasParent<NetworkWatcher> 
     String routeTableId();
 
     /** The entirety of next hop parameters definition. */
-    interface Definition
-        extends DefinitionStages.WithTargetResource,
-            DefinitionStages.WithSourceIP,
-            DefinitionStages.WithDestinationIP,
-            DefinitionStages.WithExecute {
+    interface Definition extends DefinitionStages.WithTargetResource, DefinitionStages.WithSourceIP,
+        DefinitionStages.WithDestinationIP, DefinitionStages.WithExecute {
     }
 
     /** Grouping of next hop definition stages. */

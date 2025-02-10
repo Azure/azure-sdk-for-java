@@ -4,30 +4,47 @@
 
 package com.azure.resourcemanager.scvmm.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.scvmm.models.VirtualNetwork;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworks Update. */
+/**
+ * Samples for VirtualNetworks Update.
+ */
 public final class VirtualNetworksUpdateSamples {
     /*
-     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/preview/2020-06-05-preview/examples/UpdateVirtualNetwork.json
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * VirtualNetworks_Update_MinimumSet_Gen.json
      */
     /**
-     * Sample code: UpdateVirtualNetwork.
-     *
+     * Sample code: VirtualNetworks_Update_MinimumSet.
+     * 
      * @param manager Entry point to ScvmmManager.
      */
-    public static void updateVirtualNetwork(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
-        VirtualNetwork resource =
-            manager
-                .virtualNetworks()
-                .getByResourceGroupWithResponse("testrg", "HRVirtualNetwork", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
+    public static void virtualNetworksUpdateMinimumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        VirtualNetwork resource = manager.virtualNetworks()
+            .getByResourceGroupWithResponse("rgscvmm", "-", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
     }
 
+    /*
+     * x-ms-original-file: specification/scvmm/resource-manager/Microsoft.ScVmm/stable/2023-10-07/examples/
+     * VirtualNetworks_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VirtualNetworks_Update_MaximumSet.
+     * 
+     * @param manager Entry point to ScvmmManager.
+     */
+    public static void virtualNetworksUpdateMaximumSet(com.azure.resourcemanager.scvmm.ScvmmManager manager) {
+        VirtualNetwork resource = manager.virtualNetworks()
+            .getByResourceGroupWithResponse("rgscvmm", "S", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key9516", "fakeTokenPlaceholder")).apply();
+    }
+
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

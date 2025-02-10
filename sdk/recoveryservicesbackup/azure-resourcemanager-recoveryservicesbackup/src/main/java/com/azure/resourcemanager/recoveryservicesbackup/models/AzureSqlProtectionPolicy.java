@@ -5,29 +5,48 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Azure SQL workload-specific backup policy. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
-@JsonTypeName("AzureSql")
+/**
+ * Azure SQL workload-specific backup policy.
+ */
 @Fluent
 public final class AzureSqlProtectionPolicy extends ProtectionPolicy {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String backupManagementType = "AzureSql";
+
+    /*
      * Retention policy details.
      */
-    @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
-    /** Creates an instance of AzureSqlProtectionPolicy class. */
+    /**
+     * Creates an instance of AzureSqlProtectionPolicy class.
+     */
     public AzureSqlProtectionPolicy() {
     }
 
     /**
+     * Get the backupManagementType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the backupManagementType value.
+     */
+    @Override
+    public String backupManagementType() {
+        return this.backupManagementType;
+    }
+
+    /**
      * Get the retentionPolicy property: Retention policy details.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -36,7 +55,7 @@ public final class AzureSqlProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the retentionPolicy property: Retention policy details.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the AzureSqlProtectionPolicy object itself.
      */
@@ -45,14 +64,18 @@ public final class AzureSqlProtectionPolicy extends ProtectionPolicy {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         super.withProtectedItemsCount(protectedItemsCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlProtectionPolicy withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
@@ -61,14 +84,62 @@ public final class AzureSqlProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (retentionPolicy() != null) {
             retentionPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("protectedItemsCount", protectedItemsCount());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("backupManagementType", this.backupManagementType);
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlProtectionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlProtectionPolicy if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlProtectionPolicy.
+     */
+    public static AzureSqlProtectionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlProtectionPolicy deserializedAzureSqlProtectionPolicy = new AzureSqlProtectionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectedItemsCount".equals(fieldName)) {
+                    deserializedAzureSqlProtectionPolicy
+                        .withProtectedItemsCount(reader.getNullable(JsonReader::getInt));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureSqlProtectionPolicy
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureSqlProtectionPolicy.backupManagementType = reader.getString();
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedAzureSqlProtectionPolicy.retentionPolicy = RetentionPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlProtectionPolicy;
+        });
     }
 }

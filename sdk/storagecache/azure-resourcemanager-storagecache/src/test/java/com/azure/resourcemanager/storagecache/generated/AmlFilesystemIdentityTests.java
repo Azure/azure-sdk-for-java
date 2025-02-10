@@ -15,24 +15,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AmlFilesystemIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmlFilesystemIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"bvmgxsabkyqduuji\",\"tenantId\":\"jczdzevndh\",\"type\":\"None\",\"userAssignedIdentities\":{\"tmrldhugjzzdatq\":{\"principalId\":\"ppdsbdkvwrwj\",\"clientId\":\"usnhutje\"}}}")
-                .toObject(AmlFilesystemIdentity.class);
+        AmlFilesystemIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"rcryuanzwuxzdxta\",\"tenantId\":\"lhmwhfpmrqobm\",\"type\":\"None\",\"userAssignedIdentities\":{\"uf\":{\"principalId\":\"yrtih\",\"clientId\":\"tijbpzvgnwzsymgl\"},\"s\":{\"principalId\":\"zk\",\"clientId\":\"dbihanufhfcbj\"}}}")
+            .toObject(AmlFilesystemIdentity.class);
         Assertions.assertEquals(AmlFilesystemIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlFilesystemIdentity model =
-            new AmlFilesystemIdentity()
-                .withType(AmlFilesystemIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("tmrldhugjzzdatq", new UserAssignedIdentitiesValue()));
+        AmlFilesystemIdentity model = new AmlFilesystemIdentity().withType(AmlFilesystemIdentityType.NONE)
+            .withUserAssignedIdentities(
+                mapOf("uf", new UserAssignedIdentitiesValue(), "s", new UserAssignedIdentitiesValue()));
         model = BinaryData.fromObject(model).toObject(AmlFilesystemIdentity.class);
         Assertions.assertEquals(AmlFilesystemIdentityType.NONE, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

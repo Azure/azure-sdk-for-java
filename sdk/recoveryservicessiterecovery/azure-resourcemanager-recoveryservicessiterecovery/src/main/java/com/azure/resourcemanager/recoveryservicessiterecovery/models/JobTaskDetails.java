@@ -5,37 +5,45 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This class represents a task which is actually a workflow so that one can navigate to its individual drill down. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = JobTaskDetails.class)
-@JsonTypeName("JobTaskDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "FabricReplicationGroupTaskDetails", value = FabricReplicationGroupTaskDetails.class),
-    @JsonSubTypes.Type(name = "VirtualMachineTaskDetails", value = VirtualMachineTaskDetails.class)
-})
+/**
+ * This class represents a task which is actually a workflow so that one can navigate to its individual drill down.
+ */
 @Fluent
 public class JobTaskDetails extends TaskTypeDetails {
     /*
+     * The type of task details.
+     */
+    private String instanceType = "JobTaskDetails";
+
+    /*
      * The job entity.
      */
-    @JsonProperty(value = "jobTask")
     private JobEntity jobTask;
 
-    /** Creates an instance of JobTaskDetails class. */
+    /**
+     * Creates an instance of JobTaskDetails class.
+     */
     public JobTaskDetails() {
     }
 
     /**
+     * Get the instanceType property: The type of task details.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the jobTask property: The job entity.
-     *
+     * 
      * @return the jobTask value.
      */
     public JobEntity jobTask() {
@@ -44,7 +52,7 @@ public class JobTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the jobTask property: The job entity.
-     *
+     * 
      * @param jobTask the jobTask value to set.
      * @return the JobTaskDetails object itself.
      */
@@ -55,14 +63,79 @@ public class JobTaskDetails extends TaskTypeDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (jobTask() != null) {
             jobTask().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeJsonField("jobTask", this.jobTask);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobTaskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobTaskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobTaskDetails.
+     */
+    public static JobTaskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("FabricReplicationGroupTaskDetails".equals(discriminatorValue)) {
+                    return FabricReplicationGroupTaskDetails.fromJson(readerToUse.reset());
+                } else if ("VirtualMachineTaskDetails".equals(discriminatorValue)) {
+                    return VirtualMachineTaskDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static JobTaskDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobTaskDetails deserializedJobTaskDetails = new JobTaskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedJobTaskDetails.instanceType = reader.getString();
+                } else if ("jobTask".equals(fieldName)) {
+                    deserializedJobTaskDetails.jobTask = JobEntity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobTaskDetails;
+        });
     }
 }

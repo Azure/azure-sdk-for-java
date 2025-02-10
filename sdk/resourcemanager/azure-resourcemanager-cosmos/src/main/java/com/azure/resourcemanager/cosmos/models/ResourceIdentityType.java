@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly
  * created identity and a set of user assigned identities. The type 'None' will remove any identities from the service.
@@ -47,7 +44,6 @@ public enum ResourceIdentityType {
      * @param value the serialized value to parse.
      * @return the parsed ResourceIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourceIdentityType fromString(String value) {
         if (value == null) {
             return null;
@@ -64,7 +60,6 @@ public enum ResourceIdentityType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

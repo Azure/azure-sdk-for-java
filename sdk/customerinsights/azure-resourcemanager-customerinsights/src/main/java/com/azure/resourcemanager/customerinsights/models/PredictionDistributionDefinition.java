@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The definition of the prediction distribution. */
+/**
+ * The definition of the prediction distribution.
+ */
 @Fluent
-public final class PredictionDistributionDefinition {
+public final class PredictionDistributionDefinition implements JsonSerializable<PredictionDistributionDefinition> {
     /*
      * Total positive in the distribution.
      */
-    @JsonProperty(value = "totalPositives")
     private Long totalPositives;
 
     /*
      * Total negatives in the distribution.
      */
-    @JsonProperty(value = "totalNegatives")
     private Long totalNegatives;
 
     /*
      * Distributions of the prediction.
      */
-    @JsonProperty(value = "distributions")
     private List<PredictionDistributionDefinitionDistributionsItem> distributions;
 
-    /** Creates an instance of PredictionDistributionDefinition class. */
+    /**
+     * Creates an instance of PredictionDistributionDefinition class.
+     */
     public PredictionDistributionDefinition() {
     }
 
     /**
      * Get the totalPositives property: Total positive in the distribution.
-     *
+     * 
      * @return the totalPositives value.
      */
     public Long totalPositives() {
@@ -44,7 +49,7 @@ public final class PredictionDistributionDefinition {
 
     /**
      * Set the totalPositives property: Total positive in the distribution.
-     *
+     * 
      * @param totalPositives the totalPositives value to set.
      * @return the PredictionDistributionDefinition object itself.
      */
@@ -55,7 +60,7 @@ public final class PredictionDistributionDefinition {
 
     /**
      * Get the totalNegatives property: Total negatives in the distribution.
-     *
+     * 
      * @return the totalNegatives value.
      */
     public Long totalNegatives() {
@@ -64,7 +69,7 @@ public final class PredictionDistributionDefinition {
 
     /**
      * Set the totalNegatives property: Total negatives in the distribution.
-     *
+     * 
      * @param totalNegatives the totalNegatives value to set.
      * @return the PredictionDistributionDefinition object itself.
      */
@@ -75,7 +80,7 @@ public final class PredictionDistributionDefinition {
 
     /**
      * Get the distributions property: Distributions of the prediction.
-     *
+     * 
      * @return the distributions value.
      */
     public List<PredictionDistributionDefinitionDistributionsItem> distributions() {
@@ -84,24 +89,71 @@ public final class PredictionDistributionDefinition {
 
     /**
      * Set the distributions property: Distributions of the prediction.
-     *
+     * 
      * @param distributions the distributions value to set.
      * @return the PredictionDistributionDefinition object itself.
      */
-    public PredictionDistributionDefinition withDistributions(
-        List<PredictionDistributionDefinitionDistributionsItem> distributions) {
+    public PredictionDistributionDefinition
+        withDistributions(List<PredictionDistributionDefinitionDistributionsItem> distributions) {
         this.distributions = distributions;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (distributions() != null) {
             distributions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("totalPositives", this.totalPositives);
+        jsonWriter.writeNumberField("totalNegatives", this.totalNegatives);
+        jsonWriter.writeArrayField("distributions", this.distributions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredictionDistributionDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredictionDistributionDefinition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PredictionDistributionDefinition.
+     */
+    public static PredictionDistributionDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredictionDistributionDefinition deserializedPredictionDistributionDefinition
+                = new PredictionDistributionDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("totalPositives".equals(fieldName)) {
+                    deserializedPredictionDistributionDefinition.totalPositives
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("totalNegatives".equals(fieldName)) {
+                    deserializedPredictionDistributionDefinition.totalNegatives
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("distributions".equals(fieldName)) {
+                    List<PredictionDistributionDefinitionDistributionsItem> distributions = reader
+                        .readArray(reader1 -> PredictionDistributionDefinitionDistributionsItem.fromJson(reader1));
+                    deserializedPredictionDistributionDefinition.distributions = distributions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredictionDistributionDefinition;
+        });
     }
 }

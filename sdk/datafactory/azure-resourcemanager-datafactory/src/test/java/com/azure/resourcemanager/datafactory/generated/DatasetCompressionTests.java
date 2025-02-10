@@ -13,14 +13,14 @@ public final class DatasetCompressionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatasetCompression model = BinaryData.fromString(
-            "{\"type\":\"datagzancoinmphy\",\"level\":\"dataqidkltvdh\",\"\":{\"bydhuih\":\"datafbxweiibntojovfn\",\"kehwvumosqirca\":\"dataouwudhuaorh\",\"cv\":\"dataqprlobruge\"}}")
+            "{\"type\":\"dataqrslaate\",\"level\":\"datawuj\",\"\":{\"qqy\":\"dataxqgqwlxrhgtvhv\",\"ejogmkor\":\"databkkteo\",\"ofnqhlbs\":\"datavmvm\",\"yalhtgm\":\"dataosnqliwkmzojfe\"}}")
             .toObject(DatasetCompression.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetCompression model = new DatasetCompression().withType("datagzancoinmphy").withLevel("dataqidkltvdh")
-            .withAdditionalProperties(mapOf());
+        DatasetCompression model
+            = new DatasetCompression().withType("dataqrslaate").withLevel("datawuj").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DatasetCompression.class);
     }
 

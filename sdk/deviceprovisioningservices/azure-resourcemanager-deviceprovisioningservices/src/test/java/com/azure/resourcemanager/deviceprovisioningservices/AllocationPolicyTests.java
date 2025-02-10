@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.AllocationPolicy;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
@@ -15,20 +15,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AllocationPolicyTests extends DeviceProvisioningTestBase {
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void get() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {
-            ProvisioningServiceDescriptionInner provisioningServiceDescription =
-                createProvisioningService(iotDpsManager, resourceGroup);
+            ProvisioningServiceDescriptionInner provisioningServiceDescription
+                = createProvisioningService(iotDpsManager, resourceGroup);
 
-            AllocationPolicy allocationPolicy =
-                provisioningServiceDescription
-                    .properties()
-                    .allocationPolicy();
+            AllocationPolicy allocationPolicy = provisioningServiceDescription.properties().allocationPolicy();
 
             assertTrue(Constants.ALLOCATION_POLICIES.contains(allocationPolicy));
         } finally {
@@ -38,15 +35,15 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void update() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {
-            ProvisioningServiceDescriptionInner provisioningServiceDescription =
-                createProvisioningService(iotDpsManager, resourceGroup);
+            ProvisioningServiceDescriptionInner provisioningServiceDescription
+                = createProvisioningService(iotDpsManager, resourceGroup);
 
             // pick a new allocation policy that is different from the current allocation policy
             AllocationPolicy newAllocationPolicy = AllocationPolicy.GEO_LATENCY;
@@ -55,19 +52,14 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase {
             }
 
             // update the service's allocation policy to the new policy
-            IotDpsPropertiesDescription propertiesDescription =
-                provisioningServiceDescription
-                    .properties()
-                    .withAllocationPolicy(newAllocationPolicy);
+            IotDpsPropertiesDescription propertiesDescription
+                = provisioningServiceDescription.properties().withAllocationPolicy(newAllocationPolicy);
 
             provisioningServiceDescription.withProperties(propertiesDescription);
 
-            iotDpsManager
-                .serviceClient()
+            iotDpsManager.serviceClient()
                 .getIotDpsResources()
-                .createOrUpdate(
-                    resourceGroup.name(),
-                    provisioningServiceDescription.name(),
+                .createOrUpdate(resourceGroup.name(), provisioningServiceDescription.name(),
                     provisioningServiceDescription);
 
         } finally {

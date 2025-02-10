@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageMoverPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageMoverProperties model =
-            BinaryData
-                .fromString("{\"description\":\"fziton\",\"provisioningState\":\"Succeeded\"}")
+        StorageMoverProperties model
+            = BinaryData.fromString("{\"description\":\"fziton\",\"provisioningState\":\"Canceled\"}")
                 .toObject(StorageMoverProperties.class);
         Assertions.assertEquals("fziton", model.description());
     }

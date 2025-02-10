@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SoftDeleteState. */
+/**
+ * Defines values for SoftDeleteState.
+ */
 public final class SoftDeleteState extends ExpandableStringEnum<SoftDeleteState> {
-    /** Static value Invalid for SoftDeleteState. */
+    /**
+     * Static value Invalid for SoftDeleteState.
+     */
     public static final SoftDeleteState INVALID = fromString("Invalid");
 
-    /** Static value Enabled for SoftDeleteState. */
+    /**
+     * Static value Enabled for SoftDeleteState.
+     */
     public static final SoftDeleteState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for SoftDeleteState. */
+    /**
+     * Static value Disabled for SoftDeleteState.
+     */
     public static final SoftDeleteState DISABLED = fromString("Disabled");
 
-    /** Static value AlwaysON for SoftDeleteState. */
+    /**
+     * Static value AlwaysON for SoftDeleteState.
+     */
     public static final SoftDeleteState ALWAYS_ON = fromString("AlwaysON");
 
     /**
      * Creates a new instance of SoftDeleteState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class SoftDeleteState extends ExpandableStringEnum<SoftDeleteState>
 
     /**
      * Creates or finds a SoftDeleteState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SoftDeleteState.
      */
-    @JsonCreator
     public static SoftDeleteState fromString(String name) {
         return fromString(name, SoftDeleteState.class);
     }
 
     /**
      * Gets known SoftDeleteState values.
-     *
+     * 
      * @return known SoftDeleteState values.
      */
     public static Collection<SoftDeleteState> values() {

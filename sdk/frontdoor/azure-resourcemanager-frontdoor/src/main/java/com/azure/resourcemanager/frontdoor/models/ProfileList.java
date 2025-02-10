@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.fluent.models.ProfileInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines a list of Profiles. It contains a list of Profile objects and a URL link to get the next set of results. */
+/**
+ * Defines a list of Profiles. It contains a list of Profile objects and a URL link to get the next set of results.
+ */
 @Fluent
-public final class ProfileList {
+public final class ProfileList implements JsonSerializable<ProfileList> {
     /*
      * List of Profiles within a resource group.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ProfileInner> value;
 
     /*
      * URL to get the next set of Profile objects if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ProfileList class. */
+    /**
+     * Creates an instance of ProfileList class.
+     */
     public ProfileList() {
     }
 
     /**
      * Get the value property: List of Profiles within a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<ProfileInner> value() {
@@ -39,7 +45,7 @@ public final class ProfileList {
 
     /**
      * Get the nextLink property: URL to get the next set of Profile objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +54,7 @@ public final class ProfileList {
 
     /**
      * Set the nextLink property: URL to get the next set of Profile objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProfileList object itself.
      */
@@ -59,12 +65,51 @@ public final class ProfileList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProfileList.
+     */
+    public static ProfileList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileList deserializedProfileList = new ProfileList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ProfileInner> value = reader.readArray(reader1 -> ProfileInner.fromJson(reader1));
+                    deserializedProfileList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedProfileList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileList;
+        });
     }
 }

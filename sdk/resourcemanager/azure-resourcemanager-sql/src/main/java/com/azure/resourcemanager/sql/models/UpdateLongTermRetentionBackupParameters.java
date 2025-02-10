@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.UpdateLongTermRetentionBackupParametersProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Contains the information necessary to perform long term retention backup update operation. */
+/**
+ * Contains the information necessary to perform long term retention backup update operation.
+ */
 @Fluent
-public final class UpdateLongTermRetentionBackupParameters {
+public final class UpdateLongTermRetentionBackupParameters
+    implements JsonSerializable<UpdateLongTermRetentionBackupParameters> {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private UpdateLongTermRetentionBackupParametersProperties innerProperties;
 
-    /** Creates an instance of UpdateLongTermRetentionBackupParameters class. */
+    /**
+     * Creates an instance of UpdateLongTermRetentionBackupParameters class.
+     */
     public UpdateLongTermRetentionBackupParameters() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateLongTermRetentionBackupParametersProperties innerProperties() {
@@ -32,7 +40,7 @@ public final class UpdateLongTermRetentionBackupParameters {
 
     /**
      * Get the requestedBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @return the requestedBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy requestedBackupStorageRedundancy() {
@@ -41,12 +49,12 @@ public final class UpdateLongTermRetentionBackupParameters {
 
     /**
      * Set the requestedBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
      * @return the UpdateLongTermRetentionBackupParameters object itself.
      */
-    public UpdateLongTermRetentionBackupParameters withRequestedBackupStorageRedundancy(
-        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+    public UpdateLongTermRetentionBackupParameters
+        withRequestedBackupStorageRedundancy(BackupStorageRedundancy requestedBackupStorageRedundancy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new UpdateLongTermRetentionBackupParametersProperties();
         }
@@ -56,12 +64,50 @@ public final class UpdateLongTermRetentionBackupParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateLongTermRetentionBackupParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateLongTermRetentionBackupParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateLongTermRetentionBackupParameters.
+     */
+    public static UpdateLongTermRetentionBackupParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateLongTermRetentionBackupParameters deserializedUpdateLongTermRetentionBackupParameters
+                = new UpdateLongTermRetentionBackupParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUpdateLongTermRetentionBackupParameters.innerProperties
+                        = UpdateLongTermRetentionBackupParametersProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateLongTermRetentionBackupParameters;
+        });
     }
 }

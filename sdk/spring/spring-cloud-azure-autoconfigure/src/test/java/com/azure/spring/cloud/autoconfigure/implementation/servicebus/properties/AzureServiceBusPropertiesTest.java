@@ -81,6 +81,8 @@ class AzureServiceBusPropertiesTest {
 
         serviceBusProperties.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
         serviceBusProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        String customEndpoint = "https://custom.endpoint.test";
+        serviceBusProperties.setCustomEndpointAddress(customEndpoint);
 
         AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
         AzureServiceBusProperties.Consumer consumer = serviceBusProperties.buildConsumerProperties();
@@ -90,16 +92,19 @@ class AzureServiceBusPropertiesTest {
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             producer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, producer.getClient().getTransportType());
+        assertEquals(customEndpoint, producer.getCustomEndpointAddress());
 
         assertEquals(AZURE_US_GOVERNMENT, consumer.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             consumer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, consumer.getClient().getTransportType());
+        assertEquals(customEndpoint, consumer.getCustomEndpointAddress());
 
         assertEquals(AZURE_US_GOVERNMENT, processor.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             processor.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, processor.getClient().getTransportType());
+        assertEquals(customEndpoint, processor.getCustomEndpointAddress());
     }
 
     @Test

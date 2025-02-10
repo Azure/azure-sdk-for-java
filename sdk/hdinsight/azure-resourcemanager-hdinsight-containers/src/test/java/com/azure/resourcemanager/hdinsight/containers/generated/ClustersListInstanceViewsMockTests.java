@@ -6,69 +6,41 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewResult;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ClustersListInstanceViewsMockTests {
     @Test
     public void testListInstanceViews() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"name\":\"ons\",\"properties\":{\"status\":{\"ready\":\"onwpnga\",\"reason\":\"n\",\"message\":\"xjawrt\"},\"serviceStatuses\":[{\"kind\":\"fjmyccxlzhco\",\"ready\":\"ovne\",\"message\":\"enlusfn\"},{\"kind\":\"dtjxtxrdcqt\",\"ready\":\"vidttgepuslvyjt\",\"message\":\"uwkasiz\"},{\"kind\":\"esfuught\",\"ready\":\"qfecjxeygtuhx\",\"message\":\"cbuewmrswnjlxuz\"}]}}]}";
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"vsjcswsmystuluqy\",\"properties\":{\"status\":{\"ready\":\"fcvlerch\",\"reason\":\"bm\",\"message\":\"jbabwidf\"},\"serviceStatuses\":[{\"kind\":\"sspuunnoxyhkx\",\"ready\":\"qddrihpfhoqcaae\",\"message\":\"aomdjvlpjxx\"},{\"kind\":\"zb\",\"ready\":\"msgeivsiykzk\",\"message\":\"cjdx\"},{\"kind\":\"nbzoggcu\",\"ready\":\"apzwyrpgog\",\"message\":\"xepnyl\"},{\"kind\":\"fuajly\",\"ready\":\"tlvofq\",\"message\":\"vfcibyfmowux\"}]}}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HDInsightContainersManager manager = HDInsightContainersManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ClusterInstanceViewResult> response = manager.clusters()
+            .listInstanceViews("fjgtixrjvzuy", "urmlmuo", "olbauirop", com.azure.core.util.Context.NONE);
 
-        HDInsightContainersManager manager =
-            HDInsightContainersManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ClusterInstanceViewResult> response =
-            manager.clusters().listInstanceViews("xlllchp", "db", "evwrdnhfuk", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("vsjcswsmystuluqy", response.iterator().next().name());
-        Assertions.assertEquals("fcvlerch", response.iterator().next().status().ready());
-        Assertions.assertEquals("bm", response.iterator().next().status().reason());
-        Assertions.assertEquals("jbabwidf", response.iterator().next().status().message());
-        Assertions.assertEquals("sspuunnoxyhkx", response.iterator().next().serviceStatuses().get(0).kind());
-        Assertions.assertEquals("qddrihpfhoqcaae", response.iterator().next().serviceStatuses().get(0).ready());
-        Assertions.assertEquals("aomdjvlpjxx", response.iterator().next().serviceStatuses().get(0).message());
+        Assertions.assertEquals("ons", response.iterator().next().name());
+        Assertions.assertEquals("onwpnga", response.iterator().next().properties().status().ready());
+        Assertions.assertEquals("n", response.iterator().next().properties().status().reason());
+        Assertions.assertEquals("xjawrt", response.iterator().next().properties().status().message());
+        Assertions.assertEquals("fjmyccxlzhco",
+            response.iterator().next().properties().serviceStatuses().get(0).kind());
+        Assertions.assertEquals("ovne", response.iterator().next().properties().serviceStatuses().get(0).ready());
+        Assertions.assertEquals("enlusfn", response.iterator().next().properties().serviceStatuses().get(0).message());
     }
 }

@@ -5,43 +5,64 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of pollutant. Please note that more may be added at any time. */
+/**
+ * Type of pollutant. Please note that more may be added at any time.
+ */
 public final class PollutantType extends ExpandableStringEnum<PollutantType> {
-    /** Static value CO for PollutantType. */
+    /**
+     * Carbon monoxide ("CO").
+     */
     public static final PollutantType CO = fromString("CO");
 
-    /** Static value NO2 for PollutantType. */
+    /**
+     * Nitrogen dioxide ("NO2").
+     */
     public static final PollutantType NO2 = fromString("NO2");
 
-    /** Static value O3 for PollutantType. */
+    /**
+     * Ozone ("O3").
+     */
     public static final PollutantType O3 = fromString("O3");
 
-    /** Static value PM2.5 for PollutantType. */
+    /**
+     * Particulate matter 2.5 ("PM2.5").
+     */
     public static final PollutantType PM25 = fromString("PM2.5");
 
-    /** Static value PM10 for PollutantType. */
+    /**
+     * Particulate matter 10 ("PM10").
+     */
     public static final PollutantType PM10 = fromString("PM10");
 
-    /** Static value SO2 for PollutantType. */
+    /**
+     * Sulfur dioxide ("SO2").
+     */
     public static final PollutantType SO2 = fromString("SO2");
 
     /**
+     * Creates a new instance of PollutantType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PollutantType() {
+    }
+
+    /**
      * Creates or finds a PollutantType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PollutantType.
      */
-    @JsonCreator
     public static PollutantType fromString(String name) {
         return fromString(name, PollutantType.class);
     }
 
     /**
      * Gets known PollutantType values.
-     *
+     * 
      * @return known PollutantType values.
      */
     public static Collection<PollutantType> values() {

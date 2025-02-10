@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerThreatProtectionSettingsModelInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of the server's Advanced Threat Protection settings. */
+/**
+ * A list of the server's Advanced Threat Protection settings.
+ */
 @Immutable
-public final class ServerThreatProtectionListResult {
+public final class ServerThreatProtectionListResult implements JsonSerializable<ServerThreatProtectionListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerThreatProtectionSettingsModelInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ServerThreatProtectionListResult class. */
+    /**
+     * Creates an instance of ServerThreatProtectionListResult class.
+     */
     public ServerThreatProtectionListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ServerThreatProtectionSettingsModelInner> value() {
@@ -39,7 +45,7 @@ public final class ServerThreatProtectionListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,52 @@ public final class ServerThreatProtectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerThreatProtectionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerThreatProtectionListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerThreatProtectionListResult.
+     */
+    public static ServerThreatProtectionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerThreatProtectionListResult deserializedServerThreatProtectionListResult
+                = new ServerThreatProtectionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ServerThreatProtectionSettingsModelInner> value
+                        = reader.readArray(reader1 -> ServerThreatProtectionSettingsModelInner.fromJson(reader1));
+                    deserializedServerThreatProtectionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedServerThreatProtectionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerThreatProtectionListResult;
+        });
     }
 }

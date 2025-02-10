@@ -7,13 +7,15 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationVaultHealths. */
+/**
+ * Resource collection API of ReplicationVaultHealths.
+ */
 public interface ReplicationVaultHealths {
     /**
      * Gets the health summary for the vault.
-     *
-     * <p>Gets the health details of the vault.
-     *
+     * 
+     * Gets the health details of the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -26,9 +28,9 @@ public interface ReplicationVaultHealths {
 
     /**
      * Gets the health summary for the vault.
-     *
-     * <p>Gets the health details of the vault.
-     *
+     * 
+     * Gets the health details of the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,7 +42,7 @@ public interface ReplicationVaultHealths {
 
     /**
      * Refreshes health summary of the vault.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,7 +54,7 @@ public interface ReplicationVaultHealths {
 
     /**
      * Refreshes health summary of the vault.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.

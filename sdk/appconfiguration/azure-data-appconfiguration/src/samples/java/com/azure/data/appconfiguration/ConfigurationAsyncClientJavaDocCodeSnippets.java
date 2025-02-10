@@ -8,6 +8,7 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
@@ -31,6 +32,8 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
+
+    private ConfigurationAsyncClient client = getAsyncClient();
 
     /**
      * Code snippets for {@link ConfigurationAsyncClient#addConfigurationSetting(String, String, String)}
@@ -470,7 +473,6 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         // END: com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotMaxOverload
     }
 
-
     /**
      * Code snippets for {@link ConfigurationAsyncClient#listSnapshots(SnapshotSelector)}
      */
@@ -484,6 +486,31 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
                     recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
             });
         // END: com.azure.data.appconfiguration.configurationasyncclient.listSnapshots
+    }
+
+    /**
+     * Code snippets for {@link ConfigurationAsyncClient#listLabels()}
+     */
+    public void listAllLabels() {
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listAllLabels
+        client.listLabels()
+            .subscribe(label -> {
+                System.out.println("label name = " + label);
+            });
+        // END: com.azure.data.appconfiguration.configurationasyncclient.listAllLabels
+    }
+
+    /**
+     * Code snippets for {@link ConfigurationAsyncClient#listLabels(SettingLabelSelector)}
+     */
+    public void listLabels() {
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listLabels
+        String labelNameFilter = "{labelNamePrefix}*";
+        client.listLabels(new SettingLabelSelector().setNameFilter(labelNameFilter))
+                .subscribe(label -> {
+                    System.out.println("label name = " + label);
+                });
+        // END: com.azure.data.appconfiguration.configurationasyncclient.listLabels
     }
 
     /**

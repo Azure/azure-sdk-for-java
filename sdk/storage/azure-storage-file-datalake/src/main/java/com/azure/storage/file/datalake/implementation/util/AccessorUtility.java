@@ -26,7 +26,7 @@ public final class AccessorUtility {
      */
     public interface PathPropertiesAccessor {
         PathProperties setPathProperties(PathProperties properties, String encryptionScope, String encryptionContext,
-            String owner, String group, String permissions);
+            String owner, String group, String permissions, String acl);
     }
 
     /**
@@ -51,7 +51,8 @@ public final class AccessorUtility {
      * Accessor interface for {@link FileSystemProperties}
      */
     public interface FileSystemPropertiesAccessor {
-        FileSystemProperties setFileSystemProperties(FileSystemProperties properties, String encryptionScope, Boolean isOverride);
+        FileSystemProperties setFileSystemProperties(FileSystemProperties properties, String encryptionScope,
+            Boolean isOverride);
     }
 
     /**
@@ -96,6 +97,5 @@ public final class AccessorUtility {
     public static PathItemAccessor getPathItemAccessor() {
         return pathItemAccessor;
     }
-
 
 }

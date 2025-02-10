@@ -16,7 +16,7 @@ import com.azure.core.util.Context;
 public interface ProtectionContainerRefreshOperationResultsClient {
     /**
      * Provides the result of the refresh operation triggered by the BeginRefresh operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -28,12 +28,12 @@ public interface ProtectionContainerRefreshOperationResultsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String operationId, Context context);
+    Response<Void> getWithResponse(String vaultName, String resourceGroupName, String fabricName, String operationId,
+        Context context);
 
     /**
      * Provides the result of the refresh operation triggered by the BeginRefresh operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.

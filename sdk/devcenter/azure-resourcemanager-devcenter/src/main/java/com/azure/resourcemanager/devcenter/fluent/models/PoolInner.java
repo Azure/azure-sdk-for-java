@@ -7,6 +7,9 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.HealthStatus;
 import com.azure.resourcemanager.devcenter.models.HealthStatusDetail;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
@@ -15,32 +18,49 @@ import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.SingleSignOnStatus;
 import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
 import com.azure.resourcemanager.devcenter.models.VirtualNetworkType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** A pool of Virtual Machines. */
+/**
+ * A pool of Virtual Machines.
+ */
 @Fluent
 public final class PoolInner extends Resource {
     /*
      * Pool properties
      */
-    @JsonProperty(value = "properties")
     private PoolProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PoolInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PoolInner class.
+     */
     public PoolInner() {
     }
 
     /**
      * Get the innerProperties property: Pool properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PoolProperties innerProperties() {
@@ -49,21 +69,55 @@ public final class PoolInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -73,7 +127,7 @@ public final class PoolInner extends Resource {
     /**
      * Get the healthStatus property: Overall health status of the Pool. Indicates whether or not the Pool is available
      * to create Dev Boxes.
-     *
+     * 
      * @return the healthStatus value.
      */
     public HealthStatus healthStatus() {
@@ -83,7 +137,7 @@ public final class PoolInner extends Resource {
     /**
      * Get the healthStatusDetails property: Details on the Pool health status to help diagnose issues. This is only
      * populated when the pool status indicates the pool is in a non-healthy state.
-     *
+     * 
      * @return the healthStatusDetails value.
      */
     public List<HealthStatusDetail> healthStatusDetails() {
@@ -92,7 +146,7 @@ public final class PoolInner extends Resource {
 
     /**
      * Get the devBoxCount property: Indicates the number of provisioned Dev Boxes in this pool.
-     *
+     * 
      * @return the devBoxCount value.
      */
     public Integer devBoxCount() {
@@ -101,7 +155,7 @@ public final class PoolInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -110,7 +164,7 @@ public final class PoolInner extends Resource {
 
     /**
      * Get the devBoxDefinitionName property: Name of a Dev Box definition in parent Project of this Pool.
-     *
+     * 
      * @return the devBoxDefinitionName value.
      */
     public String devBoxDefinitionName() {
@@ -119,7 +173,7 @@ public final class PoolInner extends Resource {
 
     /**
      * Set the devBoxDefinitionName property: Name of a Dev Box definition in parent Project of this Pool.
-     *
+     * 
      * @param devBoxDefinitionName the devBoxDefinitionName value to set.
      * @return the PoolInner object itself.
      */
@@ -133,7 +187,7 @@ public final class PoolInner extends Resource {
 
     /**
      * Get the networkConnectionName property: Name of a Network Connection in parent Project of this Pool.
-     *
+     * 
      * @return the networkConnectionName value.
      */
     public String networkConnectionName() {
@@ -142,7 +196,7 @@ public final class PoolInner extends Resource {
 
     /**
      * Set the networkConnectionName property: Name of a Network Connection in parent Project of this Pool.
-     *
+     * 
      * @param networkConnectionName the networkConnectionName value to set.
      * @return the PoolInner object itself.
      */
@@ -157,7 +211,7 @@ public final class PoolInner extends Resource {
     /**
      * Get the licenseType property: Specifies the license type indicating the caller has already acquired licenses for
      * the Dev Boxes that will be created.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -167,7 +221,7 @@ public final class PoolInner extends Resource {
     /**
      * Set the licenseType property: Specifies the license type indicating the caller has already acquired licenses for
      * the Dev Boxes that will be created.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the PoolInner object itself.
      */
@@ -182,7 +236,7 @@ public final class PoolInner extends Resource {
     /**
      * Get the localAdministrator property: Indicates whether owners of Dev Boxes in this pool are added as local
      * administrators on the Dev Box.
-     *
+     * 
      * @return the localAdministrator value.
      */
     public LocalAdminStatus localAdministrator() {
@@ -192,7 +246,7 @@ public final class PoolInner extends Resource {
     /**
      * Set the localAdministrator property: Indicates whether owners of Dev Boxes in this pool are added as local
      * administrators on the Dev Box.
-     *
+     * 
      * @param localAdministrator the localAdministrator value to set.
      * @return the PoolInner object itself.
      */
@@ -206,7 +260,7 @@ public final class PoolInner extends Resource {
 
     /**
      * Get the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
-     *
+     * 
      * @return the stopOnDisconnect value.
      */
     public StopOnDisconnectConfiguration stopOnDisconnect() {
@@ -215,7 +269,7 @@ public final class PoolInner extends Resource {
 
     /**
      * Set the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
-     *
+     * 
      * @param stopOnDisconnect the stopOnDisconnect value to set.
      * @return the PoolInner object itself.
      */
@@ -230,7 +284,7 @@ public final class PoolInner extends Resource {
     /**
      * Get the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with single sign on
      * enabled. The also requires that single sign on be enabled on the tenant.
-     *
+     * 
      * @return the singleSignOnStatus value.
      */
     public SingleSignOnStatus singleSignOnStatus() {
@@ -240,7 +294,7 @@ public final class PoolInner extends Resource {
     /**
      * Set the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with single sign on
      * enabled. The also requires that single sign on be enabled on the tenant.
-     *
+     * 
      * @param singleSignOnStatus the singleSignOnStatus value to set.
      * @return the PoolInner object itself.
      */
@@ -254,7 +308,7 @@ public final class PoolInner extends Resource {
 
     /**
      * Get the displayName property: The display name of the pool.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -263,7 +317,7 @@ public final class PoolInner extends Resource {
 
     /**
      * Set the displayName property: The display name of the pool.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PoolInner object itself.
      */
@@ -278,7 +332,7 @@ public final class PoolInner extends Resource {
     /**
      * Get the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by Microsoft or a
      * customer provided network.
-     *
+     * 
      * @return the virtualNetworkType value.
      */
     public VirtualNetworkType virtualNetworkType() {
@@ -288,7 +342,7 @@ public final class PoolInner extends Resource {
     /**
      * Set the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by Microsoft or a
      * customer provided network.
-     *
+     * 
      * @param virtualNetworkType the virtualNetworkType value to set.
      * @return the PoolInner object itself.
      */
@@ -303,7 +357,7 @@ public final class PoolInner extends Resource {
     /**
      * Get the managedVirtualNetworkRegions property: The regions of the managed virtual network (required when
      * managedNetworkType is Managed).
-     *
+     * 
      * @return the managedVirtualNetworkRegions value.
      */
     public List<String> managedVirtualNetworkRegions() {
@@ -313,7 +367,7 @@ public final class PoolInner extends Resource {
     /**
      * Set the managedVirtualNetworkRegions property: The regions of the managed virtual network (required when
      * managedNetworkType is Managed).
-     *
+     * 
      * @param managedVirtualNetworkRegions the managedVirtualNetworkRegions value to set.
      * @return the PoolInner object itself.
      */
@@ -327,12 +381,64 @@ public final class PoolInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PoolInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PoolInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PoolInner.
+     */
+    public static PoolInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PoolInner deserializedPoolInner = new PoolInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPoolInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPoolInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPoolInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPoolInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPoolInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPoolInner.innerProperties = PoolProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPoolInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPoolInner;
+        });
     }
 }

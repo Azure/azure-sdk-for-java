@@ -6,21 +6,19 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.fluent.models.SnapshotResourceInner;
-import org.junit.jupiter.api.Test;
+import com.azure.resourcemanager.appcomplianceautomation.models.SnapshotProperties;
 
 public final class SnapshotResourceInnerTests {
-    @Test
-    public void testDeserialize() {
-        SnapshotResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"id\":\"z\",\"snapshotName\":\"epgzgqexz\",\"createdAt\":\"2021-05-08T18:49:34Z\",\"provisioningState\":\"Updating\",\"reportProperties\":{\"id\":\"aierhhb\",\"status\":\"Failed\",\"tenantId\":\"ummajtjaod\",\"reportName\":\"bnbdxkqpxokajion\",\"offerGuid\":\"mexgstxgcp\",\"timeZone\":\"dg\",\"triggerTime\":\"2020-12-20T13:07:36Z\",\"nextTriggerTime\":\"2021-08-14T01:03:38Z\",\"lastTriggerTime\":\"2021-03-19T19:19:25Z\",\"subscriptions\":[\"jwzrl\",\"vmclw\"],\"resources\":[],\"provisioningState\":\"Canceled\"},\"complianceResults\":[{\"complianceName\":\"bzaqsqsycbkbfk\",\"categories\":[]},{\"complianceName\":\"dkexxppofm\",\"categories\":[]}]},\"id\":\"c\",\"name\":\"jpgd\",\"type\":\"toc\"}")
-                .toObject(SnapshotResourceInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SnapshotResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"snapshotName\":\"ycduier\",\"createdAt\":\"2021-07-05T23:49:12Z\",\"provisioningState\":\"Succeeded\",\"reportProperties\":{\"triggerTime\":\"2021-07-18T12:27:40Z\",\"timeZone\":\"aolps\",\"resources\":[{\"resourceId\":\"qlfmmdnbb\",\"resourceType\":\"zpswiydmc\",\"resourceKind\":\"hzdxssadbzm\",\"resourceOrigin\":\"AWS\",\"accountId\":\"znud\"},{\"resourceId\":\"od\",\"resourceType\":\"zbn\",\"resourceKind\":\"lylpstdb\",\"resourceOrigin\":\"GCP\",\"accountId\":\"rzdzucerscdnt\"}],\"status\":\"Reviewing\",\"errors\":[\"wjmy\",\"tdss\",\"s\"],\"tenantId\":\"mweriofzpy\",\"offerGuid\":\"emwabnet\",\"nextTriggerTime\":\"2021-07-19T10:32:31Z\",\"lastTriggerTime\":\"2021-08-31T12:26:12Z\",\"subscriptions\":[\"d\",\"lvwiwubmwmbesl\",\"nkww\"],\"complianceStatus\":{\"m365\":{\"passedCount\":1624421051,\"failedCount\":799059143,\"manualCount\":1248501015,\"notApplicableCount\":712173581,\"pendingCount\":97204853}},\"storageInfo\":{\"subscriptionId\":\"z\",\"resourceGroup\":\"sikvmkqzeqqkdlt\",\"accountName\":\"xmhhvhgureo\",\"location\":\"wobdagxtibqdx\"},\"certRecords\":[{\"offerGuid\":\"kbogqxndlkzgx\",\"certificationStatus\":\"ripl\",\"ingestionStatus\":\"odxun\",\"controls\":[{},{},{}]},{\"offerGuid\":\"xmubyyntwlrbq\",\"certificationStatus\":\"oievseotgqrlltm\",\"ingestionStatus\":\"lauwzizxbmpgcjef\",\"controls\":[{}]},{\"offerGuid\":\"vpbttd\",\"certificationStatus\":\"orppxebmnzbtb\",\"ingestionStatus\":\"pglkf\",\"controls\":[{},{},{}]}],\"provisioningState\":\"Updating\"},\"complianceResults\":[{\"complianceName\":\"fphsdyhtozfikdow\",\"categories\":[{\"categoryName\":\"v\",\"categoryStatus\":\"Failed\",\"controlFamilies\":[{},{},{},{}]},{\"categoryName\":\"ithhqzon\",\"categoryStatus\":\"NotApplicable\",\"controlFamilies\":[{}]}]}]},\"id\":\"c\",\"name\":\"hfwdsjnkaljutiis\",\"type\":\"acffgdkzzewkfvhq\"}")
+            .toObject(SnapshotResourceInner.class);
     }
 
-    @Test
-    public void testSerialize() {
-        SnapshotResourceInner model = new SnapshotResourceInner();
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SnapshotResourceInner model = new SnapshotResourceInner().withProperties(new SnapshotProperties());
         model = BinaryData.fromObject(model).toObject(SnapshotResourceInner.class);
     }
 }

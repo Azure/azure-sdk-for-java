@@ -21,33 +21,30 @@ public final class CapabilityTypesImpl implements CapabilityTypes {
 
     private final com.azure.resourcemanager.chaos.ChaosManager serviceManager;
 
-    public CapabilityTypesImpl(
-        CapabilityTypesClient innerClient, com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
+    public CapabilityTypesImpl(CapabilityTypesClient innerClient,
+        com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<CapabilityType> list(String locationName, String targetTypeName) {
         PagedIterable<CapabilityTypeInner> inner = this.serviceClient().list(locationName, targetTypeName);
-        return Utils.mapPage(inner, inner1 -> new CapabilityTypeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CapabilityTypeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CapabilityType> list(
-        String locationName, String targetTypeName, String continuationToken, Context context) {
-        PagedIterable<CapabilityTypeInner> inner =
-            this.serviceClient().list(locationName, targetTypeName, continuationToken, context);
-        return Utils.mapPage(inner, inner1 -> new CapabilityTypeImpl(inner1, this.manager()));
+    public PagedIterable<CapabilityType> list(String locationName, String targetTypeName, String continuationToken,
+        Context context) {
+        PagedIterable<CapabilityTypeInner> inner
+            = this.serviceClient().list(locationName, targetTypeName, continuationToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CapabilityTypeImpl(inner1, this.manager()));
     }
 
-    public Response<CapabilityType> getWithResponse(
-        String locationName, String targetTypeName, String capabilityTypeName, Context context) {
-        Response<CapabilityTypeInner> inner =
-            this.serviceClient().getWithResponse(locationName, targetTypeName, capabilityTypeName, context);
+    public Response<CapabilityType> getWithResponse(String locationName, String targetTypeName,
+        String capabilityTypeName, Context context) {
+        Response<CapabilityTypeInner> inner
+            = this.serviceClient().getWithResponse(locationName, targetTypeName, capabilityTypeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CapabilityTypeImpl(inner.getValue(), this.manager()));
         } else {
             return null;

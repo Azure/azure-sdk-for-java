@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-/** Samples for DiskPools Start. */
+/**
+ * Samples for DiskPools Start.
+ */
 public final class DiskPoolsStartSamples {
     /*
-     * x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/DiskPools_Start.json
+     * x-ms-original-file:
+     * specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/DiskPools_Start.json
      */
     /**
      * Sample code: Start Disk Pool.
-     *
+     * 
      * @param manager Entry point to StoragePoolManager.
      */
     public static void startDiskPool(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {

@@ -38,4 +38,3 @@ public class SampleResource {
         return registrationTtl;
     }
 }
-

@@ -20,21 +20,18 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient, com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager) {
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
+        com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PrivateLinkResourceListResult> listByElasticSanWithResponse(
-        String resourceGroupName, String elasticSanName, Context context) {
-        Response<PrivateLinkResourceListResultInner> inner =
-            this.serviceClient().listByElasticSanWithResponse(resourceGroupName, elasticSanName, context);
+    public Response<PrivateLinkResourceListResult> listByElasticSanWithResponse(String resourceGroupName,
+        String elasticSanName, Context context) {
+        Response<PrivateLinkResourceListResultInner> inner
+            = this.serviceClient().listByElasticSanWithResponse(resourceGroupName, elasticSanName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkResourceListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -42,8 +39,8 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
     }
 
     public PrivateLinkResourceListResult listByElasticSan(String resourceGroupName, String elasticSanName) {
-        PrivateLinkResourceListResultInner inner =
-            this.serviceClient().listByElasticSan(resourceGroupName, elasticSanName);
+        PrivateLinkResourceListResultInner inner
+            = this.serviceClient().listByElasticSan(resourceGroupName, elasticSanName);
         if (inner != null) {
             return new PrivateLinkResourceListResultImpl(inner, this.manager());
         } else {

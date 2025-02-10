@@ -13,23 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"tqgtzxdpnqbqq\":\"x\",\"snjampmng\":\"xrjfeallnwsub\",\"chcbonqvpkvlrxnj\":\"zscxaqwo\"}}")
-                .toObject(ResourceUpdateParameters.class);
-        Assertions.assertEquals("x", model.tags().get("tqgtzxdpnqbqq"));
+        ResourceUpdateParameters model = BinaryData.fromString(
+            "{\"tags\":{\"vmmcoofs\":\"pec\",\"y\":\"lzevgbmqjqab\",\"wnfnbacf\":\"mivkwlzuvcc\",\"bqqwxrj\":\"onlebxetqgtzxdpn\"}}")
+            .toObject(ResourceUpdateParameters.class);
+        Assertions.assertEquals("pec", model.tags().get("vmmcoofs"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceUpdateParameters model =
-            new ResourceUpdateParameters()
-                .withTags(mapOf("tqgtzxdpnqbqq", "x", "snjampmng", "xrjfeallnwsub", "chcbonqvpkvlrxnj", "zscxaqwo"));
+        ResourceUpdateParameters model = new ResourceUpdateParameters().withTags(
+            mapOf("vmmcoofs", "pec", "y", "lzevgbmqjqab", "wnfnbacf", "mivkwlzuvcc", "bqqwxrj", "onlebxetqgtzxdpn"));
         model = BinaryData.fromObject(model).toObject(ResourceUpdateParameters.class);
-        Assertions.assertEquals("x", model.tags().get("tqgtzxdpnqbqq"));
+        Assertions.assertEquals("pec", model.tags().get("vmmcoofs"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

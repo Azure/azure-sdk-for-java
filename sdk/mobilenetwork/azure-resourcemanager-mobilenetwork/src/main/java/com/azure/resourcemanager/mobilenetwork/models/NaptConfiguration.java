@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The network address and port translation settings to use for the attached data network. */
+/**
+ * The network address and port translation settings to use for the attached data network.
+ */
 @Fluent
-public final class NaptConfiguration {
+public final class NaptConfiguration implements JsonSerializable<NaptConfiguration> {
     /*
      * Whether NAPT is enabled for connections to this attached data network.
      */
-    @JsonProperty(value = "enabled")
     private NaptEnabled enabled;
 
     /*
@@ -22,36 +27,34 @@ public final class NaptConfiguration {
      * (Ports under 1,024 should not be used because these are special purpose ports reserved by IANA. Ports 50,000 and
      * above are reserved for non-NAPT use.)
      */
-    @JsonProperty(value = "portRange")
     private PortRange portRange;
 
     /*
      * The minimum time (in seconds) that will pass before a port that was used by a closed pinhole can be recycled for
      * use by another pinhole. All hold times must be at least 1 second.
      */
-    @JsonProperty(value = "portReuseHoldTime")
     private PortReuseHoldTimes portReuseHoldTime;
 
     /*
      * Maximum number of UDP and TCP pinholes that can be open simultaneously on the core interface. For 5G networks,
      * this is the N6 interface. For 4G networks, this is the SGi interface.
      */
-    @JsonProperty(value = "pinholeLimits")
     private Integer pinholeLimits;
 
     /*
      * Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least 1 second.
      */
-    @JsonProperty(value = "pinholeTimeouts")
     private PinholeTimeouts pinholeTimeouts;
 
-    /** Creates an instance of NaptConfiguration class. */
+    /**
+     * Creates an instance of NaptConfiguration class.
+     */
     public NaptConfiguration() {
     }
 
     /**
      * Get the enabled property: Whether NAPT is enabled for connections to this attached data network.
-     *
+     * 
      * @return the enabled value.
      */
     public NaptEnabled enabled() {
@@ -60,7 +63,7 @@ public final class NaptConfiguration {
 
     /**
      * Set the enabled property: Whether NAPT is enabled for connections to this attached data network.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the NaptConfiguration object itself.
      */
@@ -70,10 +73,11 @@ public final class NaptConfiguration {
     }
 
     /**
-     * Get the portRange property: Range of port numbers to use as translated ports on each translated address. If not
-     * specified and NAPT is enabled, this range defaults to 1,024 - 49,999. (Ports under 1,024 should not be used
-     * because these are special purpose ports reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.).
-     *
+     * Get the portRange property: Range of port numbers to use as translated ports on each translated address.
+     * If not specified and NAPT is enabled, this range defaults to 1,024 - 49,999.
+     * (Ports under 1,024 should not be used because these are special purpose ports reserved by IANA. Ports 50,000 and
+     * above are reserved for non-NAPT use.).
+     * 
      * @return the portRange value.
      */
     public PortRange portRange() {
@@ -81,10 +85,11 @@ public final class NaptConfiguration {
     }
 
     /**
-     * Set the portRange property: Range of port numbers to use as translated ports on each translated address. If not
-     * specified and NAPT is enabled, this range defaults to 1,024 - 49,999. (Ports under 1,024 should not be used
-     * because these are special purpose ports reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.).
-     *
+     * Set the portRange property: Range of port numbers to use as translated ports on each translated address.
+     * If not specified and NAPT is enabled, this range defaults to 1,024 - 49,999.
+     * (Ports under 1,024 should not be used because these are special purpose ports reserved by IANA. Ports 50,000 and
+     * above are reserved for non-NAPT use.).
+     * 
      * @param portRange the portRange value to set.
      * @return the NaptConfiguration object itself.
      */
@@ -96,7 +101,7 @@ public final class NaptConfiguration {
     /**
      * Get the portReuseHoldTime property: The minimum time (in seconds) that will pass before a port that was used by a
      * closed pinhole can be recycled for use by another pinhole. All hold times must be at least 1 second.
-     *
+     * 
      * @return the portReuseHoldTime value.
      */
     public PortReuseHoldTimes portReuseHoldTime() {
@@ -106,7 +111,7 @@ public final class NaptConfiguration {
     /**
      * Set the portReuseHoldTime property: The minimum time (in seconds) that will pass before a port that was used by a
      * closed pinhole can be recycled for use by another pinhole. All hold times must be at least 1 second.
-     *
+     * 
      * @param portReuseHoldTime the portReuseHoldTime value to set.
      * @return the NaptConfiguration object itself.
      */
@@ -118,7 +123,7 @@ public final class NaptConfiguration {
     /**
      * Get the pinholeLimits property: Maximum number of UDP and TCP pinholes that can be open simultaneously on the
      * core interface. For 5G networks, this is the N6 interface. For 4G networks, this is the SGi interface.
-     *
+     * 
      * @return the pinholeLimits value.
      */
     public Integer pinholeLimits() {
@@ -128,7 +133,7 @@ public final class NaptConfiguration {
     /**
      * Set the pinholeLimits property: Maximum number of UDP and TCP pinholes that can be open simultaneously on the
      * core interface. For 5G networks, this is the N6 interface. For 4G networks, this is the SGi interface.
-     *
+     * 
      * @param pinholeLimits the pinholeLimits value to set.
      * @return the NaptConfiguration object itself.
      */
@@ -140,7 +145,7 @@ public final class NaptConfiguration {
     /**
      * Get the pinholeTimeouts property: Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least
      * 1 second.
-     *
+     * 
      * @return the pinholeTimeouts value.
      */
     public PinholeTimeouts pinholeTimeouts() {
@@ -150,7 +155,7 @@ public final class NaptConfiguration {
     /**
      * Set the pinholeTimeouts property: Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least
      * 1 second.
-     *
+     * 
      * @param pinholeTimeouts the pinholeTimeouts value to set.
      * @return the NaptConfiguration object itself.
      */
@@ -161,7 +166,7 @@ public final class NaptConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -174,5 +179,53 @@ public final class NaptConfiguration {
         if (pinholeTimeouts() != null) {
             pinholeTimeouts().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("enabled", this.enabled == null ? null : this.enabled.toString());
+        jsonWriter.writeJsonField("portRange", this.portRange);
+        jsonWriter.writeJsonField("portReuseHoldTime", this.portReuseHoldTime);
+        jsonWriter.writeNumberField("pinholeLimits", this.pinholeLimits);
+        jsonWriter.writeJsonField("pinholeTimeouts", this.pinholeTimeouts);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NaptConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NaptConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NaptConfiguration.
+     */
+    public static NaptConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NaptConfiguration deserializedNaptConfiguration = new NaptConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedNaptConfiguration.enabled = NaptEnabled.fromString(reader.getString());
+                } else if ("portRange".equals(fieldName)) {
+                    deserializedNaptConfiguration.portRange = PortRange.fromJson(reader);
+                } else if ("portReuseHoldTime".equals(fieldName)) {
+                    deserializedNaptConfiguration.portReuseHoldTime = PortReuseHoldTimes.fromJson(reader);
+                } else if ("pinholeLimits".equals(fieldName)) {
+                    deserializedNaptConfiguration.pinholeLimits = reader.getNullable(JsonReader::getInt);
+                } else if ("pinholeTimeouts".equals(fieldName)) {
+                    deserializedNaptConfiguration.pinholeTimeouts = PinholeTimeouts.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNaptConfiguration;
+        });
     }
 }

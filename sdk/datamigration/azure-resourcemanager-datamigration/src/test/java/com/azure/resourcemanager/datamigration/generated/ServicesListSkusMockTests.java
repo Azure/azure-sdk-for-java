@@ -6,72 +6,43 @@ package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datamigration.DataMigrationManager;
 import com.azure.resourcemanager.datamigration.models.AvailableServiceSku;
 import com.azure.resourcemanager.datamigration.models.ServiceScalability;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServicesListSkusMockTests {
     @Test
     public void testListSkus() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"resourceType\":\"bmzgwes\",\"sku\":{\"name\":\"xwefohecbvopwndy\",\"family\":\"eallklmtkhlo\",\"size\":\"x\",\"tier\":\"vbrdfjmzsyzfho\"},\"capacity\":{\"minimum\":1472660607,\"maximum\":704144060,\"default\":2107805309,\"scaleType\":\"automatic\"}}]}";
 
-        String responseStr =
-            "{\"value\":[{\"resourceType\":\"czkcnyxrxmunjd\",\"sku\":{\"name\":\"lnkvxlx\",\"family\":\"glqivbgkcv\",\"size\":\"pzvuqdflvo\",\"tier\":\"yp\"},\"capacity\":{\"minimum\":674431488,\"maximum\":319794832,\"default\":61489687,\"scaleType\":\"none\"}}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataMigrationManager manager = DataMigrationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<AvailableServiceSku> response
+            = manager.services().listSkus("v", "xmycjimryvwgcw", com.azure.core.util.Context.NONE);
 
-        DataMigrationManager manager =
-            DataMigrationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<AvailableServiceSku> response =
-            manager.services().listSkus("df", "pyogtieyuj", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("czkcnyxrxmunjd", response.iterator().next().resourceType());
-        Assertions.assertEquals("lnkvxlx", response.iterator().next().sku().name());
-        Assertions.assertEquals("glqivbgkcv", response.iterator().next().sku().family());
-        Assertions.assertEquals("pzvuqdflvo", response.iterator().next().sku().size());
-        Assertions.assertEquals("yp", response.iterator().next().sku().tier());
-        Assertions.assertEquals(674431488, response.iterator().next().capacity().minimum());
-        Assertions.assertEquals(319794832, response.iterator().next().capacity().maximum());
-        Assertions.assertEquals(61489687, response.iterator().next().capacity().defaultProperty());
-        Assertions.assertEquals(ServiceScalability.NONE, response.iterator().next().capacity().scaleType());
+        Assertions.assertEquals("bmzgwes", response.iterator().next().resourceType());
+        Assertions.assertEquals("xwefohecbvopwndy", response.iterator().next().sku().name());
+        Assertions.assertEquals("eallklmtkhlo", response.iterator().next().sku().family());
+        Assertions.assertEquals("x", response.iterator().next().sku().size());
+        Assertions.assertEquals("vbrdfjmzsyzfho", response.iterator().next().sku().tier());
+        Assertions.assertEquals(1472660607, response.iterator().next().capacity().minimum());
+        Assertions.assertEquals(704144060, response.iterator().next().capacity().maximum());
+        Assertions.assertEquals(2107805309, response.iterator().next().capacity().defaultProperty());
+        Assertions.assertEquals(ServiceScalability.AUTOMATIC, response.iterator().next().capacity().scaleType());
     }
 }

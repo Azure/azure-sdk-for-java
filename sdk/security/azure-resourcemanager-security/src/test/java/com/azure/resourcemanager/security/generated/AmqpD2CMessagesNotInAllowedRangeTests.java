@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AmqpD2CMessagesNotInAllowedRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmqpD2CMessagesNotInAllowedRange model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"AmqpD2CMessagesNotInAllowedRange\",\"timeWindowSize\":\"PT179H38M47S\",\"minThreshold\":1851609223,\"maxThreshold\":1126673643,\"displayName\":\"gfxonjtpusllyw\",\"description\":\"tiotzb\",\"isEnabled\":false}")
-                .toObject(AmqpD2CMessagesNotInAllowedRange.class);
-        Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(1851609223, model.minThreshold());
-        Assertions.assertEquals(1126673643, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT179H38M47S"), model.timeWindowSize());
+        AmqpD2CMessagesNotInAllowedRange model = BinaryData.fromString(
+            "{\"ruleType\":\"AmqpD2CMessagesNotInAllowedRange\",\"timeWindowSize\":\"PT47H16M3S\",\"minThreshold\":2050200732,\"maxThreshold\":1289577442,\"displayName\":\"hqo\",\"description\":\"ihiqakydiw\",\"isEnabled\":true}")
+            .toObject(AmqpD2CMessagesNotInAllowedRange.class);
+        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals(2050200732, model.minThreshold());
+        Assertions.assertEquals(1289577442, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT47H16M3S"), model.timeWindowSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmqpD2CMessagesNotInAllowedRange model =
-            new AmqpD2CMessagesNotInAllowedRange()
-                .withIsEnabled(false)
-                .withMinThreshold(1851609223)
-                .withMaxThreshold(1126673643)
-                .withTimeWindowSize(Duration.parse("PT179H38M47S"));
+        AmqpD2CMessagesNotInAllowedRange model = new AmqpD2CMessagesNotInAllowedRange().withIsEnabled(true)
+            .withMinThreshold(2050200732)
+            .withMaxThreshold(1289577442)
+            .withTimeWindowSize(Duration.parse("PT47H16M3S"));
         model = BinaryData.fromObject(model).toObject(AmqpD2CMessagesNotInAllowedRange.class);
-        Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(1851609223, model.minThreshold());
-        Assertions.assertEquals(1126673643, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT179H38M47S"), model.timeWindowSize());
+        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals(2050200732, model.minThreshold());
+        Assertions.assertEquals(1289577442, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT47H16M3S"), model.timeWindowSize());
     }
 }

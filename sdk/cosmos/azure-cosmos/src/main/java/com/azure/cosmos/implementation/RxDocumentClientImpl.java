@@ -9,11 +9,14 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.CosmosOperationPolicy;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
@@ -26,6 +29,8 @@ import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchReques
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -37,6 +42,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.http.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -55,6 +61,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
@@ -66,7 +73,9 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -84,7 +93,9 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.util.concurrent.Queues;
+import reactor.util.function.Tuple2;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -100,6 +111,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -114,18 +126,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.BridgeInternal.documentFromObject;
 import static com.azure.cosmos.BridgeInternal.getAltLink;
-import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuffer;
 
 /**
  * While this class is public, it is not part of our published public APIs.
@@ -143,6 +153,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private final static
+    ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+
+    private final static
     ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor telemetryCfgAccessor =
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
 
@@ -153,6 +167,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final static
     ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
+    private final static
+    ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor =
+        ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
+        ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
 
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
@@ -165,7 +189,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
-    private final ItemDeserializer itemDeserializer = new ItemDeserializer.JsonDeserializer();
+    private final CosmosItemSerializer defaultCustomSerializer;
     private final static Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;
     private final URI serviceEndpoint;
@@ -182,7 +206,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private SimpleTokenCache tokenCredentialCache;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     AuthorizationTokenType authorizationTokenType;
-    private SessionContainer sessionContainer;
+    private ISessionContainer sessionContainer;
     private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
     private RxClientCollectionCache collectionCache;
     private RxGatewayStoreModel gatewayProxy;
@@ -215,6 +239,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      */
     private final QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
     private final GlobalEndpointManager globalEndpointManager;
+    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
     private final RetryPolicy retryPolicy;
     private HttpClient reactorHttpClient;
     private Function<HttpClient, HttpClient> httpClientInterceptor;
@@ -231,6 +256,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final String clientCorrelationId;
     private final SessionRetryOptions sessionRetryOptions;
     private final boolean sessionCapturingOverrideEnabled;
+    private final boolean sessionCapturingDisabled;
+    private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
+    private List<CosmosOperationPolicy> operationPolicies;
+    private AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -249,7 +278,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                CosmosItemSerializer defaultCustomSerializer,
+                                boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -268,7 +299,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                defaultCustomSerializer,
+                isRegionScopedSessionCapturingEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -290,7 +323,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                CosmosItemSerializer defaultCustomSerializer,
+                                boolean isRegionScopedSessionCapturingEnabled,
+                                List<CosmosOperationPolicy> operationPolicies) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -309,8 +345,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                defaultCustomSerializer,
+                isRegionScopedSessionCapturingEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
+        this.operationPolicies = operationPolicies;
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
@@ -330,7 +369,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                CosmosItemSerializer defaultCustomSerializer,
+                                boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -348,7 +389,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                defaultCustomSerializer,
+                isRegionScopedSessionCapturingEnabled);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -408,7 +451,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          String clientCorrelationId,
                          CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                          SessionRetryOptions sessionRetryOptions,
-                         CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                         CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                         CosmosItemSerializer defaultCustomSerializer,
+                         boolean isRegionScopedSessionCapturingEnabled) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
@@ -432,11 +477,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         this.diagnosticsClientConfig.withEndToEndOperationLatencyPolicy(cosmosEndToEndOperationLatencyPolicyConfig);
         this.sessionRetryOptions = sessionRetryOptions;
+        this.defaultCustomSerializer = defaultCustomSerializer;
 
         logger.info(
             "Initializing DocumentClient [{}] with"
-                + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], directModeProtocol [{}]",
-            this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
+                + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}]",
+            this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel);
 
         try {
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
@@ -492,8 +538,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
+            this.sessionCapturingDisabled = disableSessionCapturing;
 
-            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
             this.consistencyLevel = consistencyLevel;
 
             this.userAgentContainer = new UserAgentContainer();
@@ -506,8 +552,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.httpClientInterceptor = null;
             this.reactorHttpClient = httpClient();
 
-            this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
-            this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
+            this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, configs);
+            this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig = isRegionScopedSessionCapturingEnabled;
+
+            this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
+
+            this.globalPartitionEndpointManagerForCircuitBreaker = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManager);
+
+            this.globalPartitionEndpointManagerForCircuitBreaker.init();
+            this.cachedCosmosAsyncClientSnapshot = new AtomicReference<>();
+
+            this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForCircuitBreaker.getCircuitBreakerConfig());
+
+            this.retryPolicy = new RetryPolicy(
+                this,
+                this.globalEndpointManager,
+                this.connectionPolicy,
+                this.globalPartitionEndpointManagerForCircuitBreaker);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
             this.queryPlanCache = new ConcurrentHashMap<>();
@@ -534,7 +595,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
        return diagnostics;
     }
-    private void initializeGatewayConfigurationReader() {
+    private DatabaseAccount initializeGatewayConfigurationReader() {
         this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.globalEndpointManager);
         DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
         //Database account should not be null here,
@@ -561,9 +622,42 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
+        return databaseAccount;
+    }
 
-        // TODO: add support for openAsync
-        // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
+    private void resetSessionContainerIfNeeded(DatabaseAccount databaseAccount) {
+        boolean isRegionScopingOfSessionTokensPossible = this.isRegionScopingOfSessionTokensPossible(databaseAccount, this.useMultipleWriteLocations, this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig);
+
+        if (isRegionScopingOfSessionTokensPossible) {
+            this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), this.sessionCapturingDisabled, this.globalEndpointManager);
+            this.diagnosticsClientConfig.withRegionScopedSessionContainerOptions((RegionScopedSessionContainer) this.sessionContainer);
+        }
+    }
+
+    private boolean isRegionScopingOfSessionTokensPossible(DatabaseAccount databaseAccount, boolean useMultipleWriteLocations, boolean isRegionScopedSessionCapturingEnabled) {
+
+        if (!isRegionScopedSessionCapturingEnabled) {
+            return false;
+        }
+
+        if (!useMultipleWriteLocations) {
+            return false;
+        }
+
+        Iterable<DatabaseAccountLocation> readableLocationsIterable = databaseAccount.getReadableLocations();
+        Iterator<DatabaseAccountLocation> readableLocationsIterator = readableLocationsIterable.iterator();
+
+        while (readableLocationsIterator.hasNext()) {
+            DatabaseAccountLocation readableLocation = readableLocationsIterator.next();
+
+            String normalizedReadableRegion = readableLocation.getName().toLowerCase(Locale.ROOT).trim().replace(" ", "");
+
+            if (RegionNameToRegionIdMap.getRegionId(normalizedReadableRegion) == -1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void updateGatewayProxy() {
@@ -571,12 +665,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         (this.gatewayProxy).setCollectionCache(this.collectionCache);
         (this.gatewayProxy).setPartitionKeyRangeCache(this.partitionKeyRangeCache);
         (this.gatewayProxy).setUseMultipleWriteLocations(this.useMultipleWriteLocations);
+        (this.gatewayProxy).setSessionContainer(this.sessionContainer);
     }
 
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
         try {
-            // TODO: add support for openAsync
-            // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
 
             this.httpClientInterceptor = httpClientInterceptor;
             if (httpClientInterceptor != null) {
@@ -590,8 +683,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.globalEndpointManager,
                 this.reactorHttpClient,
                 this.apiType);
+
             this.globalEndpointManager.init();
-            this.initializeGatewayConfigurationReader();
+
+            DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
+            this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
 
             if (metadataCachesSnapshot != null) {
                 this.collectionCache = new RxClientCollectionCache(this,
@@ -628,7 +724,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     this.clientTelemetryConfig,
                     this,
                     this.connectionPolicy.getPreferredRegions());
-            clientTelemetry.init();
+            clientTelemetry.init().thenEmpty((publisher) -> {
+                logger.warn(
+                    "Initialized DocumentClient [{}] with machineId[{}]"
+                        + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}]",
+                    clientId,
+                    ClientTelemetry.getMachineId(diagnosticsClientConfig),
+                    serviceEndpoint,
+                    connectionPolicy,
+                    consistencyLevel);
+            }).subscribe();
             if (this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
                 this.storeModel = this.gatewayProxy;
             } else {
@@ -678,6 +783,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.clientTelemetry,
             this.globalEndpointManager);
 
+        this.globalPartitionEndpointManagerForCircuitBreaker.setGlobalAddressResolver(this.addressResolver);
         this.createStoreModel(true);
     }
 
@@ -725,7 +831,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleHttpConnectionTimeout())
             .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
             .withProxy(this.connectionPolicy.getProxy())
-            .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout());
+            .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout())
+            .withServerCertValidationDisabled(this.connectionPolicy.isServerCertValidationDisabled())
+            .withHttp2Config(new Http2ConnectionConfig());
 
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);
@@ -788,7 +896,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return null;
         }
 
-        return this.diagnosticsClientConfig.getMachineId();
+        return ClientTelemetry.getMachineId(diagnosticsClientConfig);
     }
 
     @Override
@@ -819,7 +927,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Database, OperationType.Create);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(database);
+            ByteBuffer byteBuffer = database.serializeJsonToByteBuffer(
+                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                null,
+                false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -955,7 +1066,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options == null) {
             return null;
         }
-        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getOperationContext(options);
+        return qryOptAccessor.getImpl(options).getOperationContextAndListenerTuple();
     }
 
     private OperationContextAndListenerTuple getOperationContextAndListenerTuple(RequestOptions options) {
@@ -988,7 +1099,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosQueryRequestOptions nonNullQueryOptions = state.getQueryOptions();
 
         UUID correlationActivityIdOfRequestOptions = qryOptAccessor
-            .getCorrelationActivityId(nonNullQueryOptions);
+            .getImpl(nonNullQueryOptions)
+            .getCorrelationActivityId();
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
             correlationActivityIdOfRequestOptions : randomUuid();
 
@@ -1074,7 +1186,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .toRequestOptions(options);
 
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
-                getEndToEndOperationLatencyPolicyConfig(requestOptions);
+                getEndToEndOperationLatencyPolicyConfig(requestOptions, resourceTypeEnum, OperationType.Query);
 
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
                 return getFeedResponseFluxWithTimeout(
@@ -1225,7 +1337,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Create);
 
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(
+                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                null,
+                false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1246,7 +1361,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, DocumentCollection.class))
                        .doOnNext(resourceResponse -> {
                     // set the session token
-                    this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
+                    this.sessionContainer.setSessionToken(
+                        request,
+                        resourceResponse.getResource().getResourceId(),
                         getAltLink(resourceResponse.getResource()),
                         resourceResponse.getResponseHeaders());
                 });
@@ -1276,7 +1393,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String path = Utils.joinPath(collection.getSelfLink(), null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Replace);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(
+                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                null,
+                false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1300,7 +1420,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .doOnNext(resourceResponse -> {
                     if (resourceResponse.getResource() != null) {
                         // set the session token
-                        this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
+                        this.sessionContainer.setSessionToken(
+                            request,
+                            resourceResponse.getResource().getResourceId(),
                             getAltLink(resourceResponse.getResource()),
                             resourceResponse.getResponseHeaders());
                     }
@@ -1463,7 +1585,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         for (int i = 0; i < objectArray.size(); ++i) {
             Object object = objectArray.get(i);
             if (object instanceof JsonSerializable) {
-                stringArray[i] = ModelBridgeInternal.toJsonFromJsonSerializable((JsonSerializable) object);
+                stringArray[i] = ((JsonSerializable) object).toJson();
             } else {
 
                 // POJO, ObjectNode, number, STRING or Boolean
@@ -1593,7 +1715,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, String.valueOf(offer.getThroughput()));
                 } else if (offer.getOfferAutoScaleSettings() != null) {
                     headers.put(HttpConstants.HttpHeaders.OFFER_AUTOPILOT_SETTINGS,
-                        ModelBridgeInternal.toJsonFromJsonSerializable(offer.getOfferAutoScaleSettings()));
+                        offer.getOfferAutoScaleSettings().toJson());
                 }
             }
         }
@@ -1632,7 +1754,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
         return collectionObs
                 .map(collectionValueHolder -> {
-                    addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v);
+                    addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v, null);
                     return request;
                 });
     }
@@ -1641,10 +1763,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                       ByteBuffer contentAsByteBuffer,
                                                                       Object document,
                                                                       RequestOptions options,
-                                                                      Mono<Utils.ValueHolder<DocumentCollection>> collectionObs) {
+                                                                      Mono<Utils.ValueHolder<DocumentCollection>> collectionObs,
+                                                                      PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         return collectionObs.map(collectionValueHolder -> {
-            addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v);
+            addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v, pointOperationContextForCircuitBreaker);
             return request;
         });
     }
@@ -1652,7 +1775,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private void addPartitionKeyInformation(RxDocumentServiceRequest request,
                                             ByteBuffer contentAsByteBuffer,
                                             Object objectDoc, RequestOptions options,
-                                            DocumentCollection collection) {
+                                            DocumentCollection collection,
+                                            PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+
         PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
 
         PartitionKeyInternal partitionKeyInternal = null;
@@ -1687,9 +1812,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 serializationEndTime,
                 SerializationDiagnosticsContext.SerializationType.PARTITION_KEY_FETCH_SERIALIZATION
             );
+
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
             if (serializationDiagnosticsContext != null) {
                 serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            } else if (pointOperationContextForCircuitBreaker != null) {
+                serializationDiagnosticsContext = pointOperationContextForCircuitBreaker.getSerializationDiagnosticsContext();
+
+                if (serializationDiagnosticsContext != null) {
+                    serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+                }
             }
 
         } else {
@@ -1697,16 +1829,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         request.setPartitionKeyInternal(partitionKeyInternal);
+        request.setPartitionKeyDefinition(partitionKeyDefinition);
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
     }
 
-    private Mono<RxDocumentServiceRequest> getCreateDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
-                                                                    String documentCollectionLink,
-                                                                    Object document,
-                                                                    RequestOptions options,
-                                                                    boolean disableAutomaticIdGeneration,
-                                                                    OperationType operationType,
-                                                                    DiagnosticsClientContext clientContextOverride) {
+    private Mono<Tuple2<RxDocumentServiceRequest, Utils.ValueHolder<DocumentCollection>>> getCreateDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
+                                                                           String documentCollectionLink,
+                                                                           Object document,
+                                                                           RequestOptions options,
+                                                                           boolean disableAutomaticIdGeneration,
+                                                                           OperationType operationType,
+                                                                           DiagnosticsClientContext clientContextOverride,
+                                                                           PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         if (StringUtils.isEmpty(documentCollectionLink)) {
             throw new IllegalArgumentException("documentCollectionLink");
@@ -1720,7 +1854,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             trackingId = options.getTrackingId();
         }
-        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, mapper, trackingId);
+        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, options.getEffectiveItemSerializer(), trackingId, true);
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -1735,18 +1869,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
-        if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
         if( options != null) {
-            options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
-        }
 
-        if (requestRetryPolicy != null) {
-            requestRetryPolicy.onBeforeSendRequest(request);
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
+            options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
@@ -1754,8 +1888,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
+        if (requestRetryPolicy != null) {
+            requestRetryPolicy.onBeforeSendRequest(request);
+        }
+
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
-        return addPartitionKeyInformation(request, content, document, options, collectionObs);
+        return addPartitionKeyInformation(request, content, document, options, collectionObs, pointOperationContextForCircuitBreaker)
+            .zipWith(collectionObs);
     }
 
     private Mono<RxDocumentServiceRequest> getBatchDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
@@ -1789,31 +1928,66 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             content);
 
         if (options != null) {
-            options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
-        }
 
-        if (requestRetryPolicy != null) {
-            requestRetryPolicy.onBeforeSendRequest(request);
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
+            options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
         if (options != null) {
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
-            this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+        // note: calling onBeforeSendRequest is a cheap operation which injects a CosmosDiagnostics
+        // instance into 'request' amongst other things - this way metadataDiagnosticsContext is not
+        // null and can be used for metadata-related telemetry (partition key range, container and server address lookups)
+        if (requestRetryPolicy != null) {
+            requestRetryPolicy.onBeforeSendRequest(request);
+        }
 
-        return collectionObs.map((Utils.ValueHolder<DocumentCollection> collectionValueHolder) -> {
-            addBatchHeaders(request, serverBatchRequest, collectionValueHolder.v);
-            return request;
-        });
+        MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
+        request.requestContext.setPointOperationContext(
+            new PointOperationContextForCircuitBreaker(
+                new AtomicBoolean(false),
+                false,
+                documentCollectionLink,
+                serializationDiagnosticsContext));
+
+        return this.collectionCache.resolveCollectionAsync(metadataDiagnosticsContext, request)
+            .flatMap(documentCollectionValueHolder -> {
+
+                if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                    return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                }
+
+                return this.partitionKeyRangeCache.tryLookupAsync(metadataDiagnosticsContext, documentCollectionValueHolder.v.getResourceId(), null, null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
+
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                        }
+
+                        addBatchHeaders(request, serverBatchRequest, documentCollectionValueHolder.v);
+
+                        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request) && options != null) {
+                            options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                            addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
+                        }
+
+                        return Mono.just(request);
+                    });
+            });
     }
 
     private RxDocumentServiceRequest addBatchHeaders(RxDocumentServiceRequest request,
@@ -1845,6 +2019,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         request.getHeaders().put(HttpConstants.HttpHeaders.IS_BATCH_ATOMIC, String.valueOf(serverBatchRequest.isAtomicBatch()));
         request.getHeaders().put(HttpConstants.HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR, String.valueOf(serverBatchRequest.isShouldContinueOnError()));
 
+        request.setPartitionKeyDefinition(collection.getPartitionKey());
         request.setNumberOfItemsInBatchRequest(serverBatchRequest.getOperations().size());
 
         return request;
@@ -1856,7 +2031,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @param httpMethod http method
      * @return Mono, which on subscription will populate the headers in the request passed in the argument.
      */
-    private Mono<RxDocumentServiceRequest> populateHeadersAsync(RxDocumentServiceRequest request, RequestVerb httpMethod) {
+    public Mono<RxDocumentServiceRequest> populateHeadersAsync(RxDocumentServiceRequest request, RequestVerb httpMethod) {
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
@@ -1901,7 +2076,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                           .populateFeedRangeFilteringHeaders(
                               this.getPartitionKeyRangeCache(),
                               request,
-                              this.collectionCache.resolveCollectionAsync(metadataDiagnosticsCtx, request))
+                              this.collectionCache
+                                  .resolveCollectionAsync(metadataDiagnosticsCtx, request)
+                                  .flatMap(documentCollectionValueHolder -> {
+
+                                      if (documentCollectionValueHolder.v != null) {
+                                          request.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                                      }
+
+                                      return Mono.just(documentCollectionValueHolder);
+                                  })
+                          )
                           .flatMap(this::populateAuthorizationHeader);
         }
 
@@ -1919,6 +2104,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private boolean requiresFeedRangeFiltering(RxDocumentServiceRequest request) {
         if (request.getResourceType() != ResourceType.Document &&
                 request.getResourceType() != ResourceType.Conflict) {
+            return false;
+        }
+
+        if (request.hasFeedRangeFilteringBeenApplied()) {
             return false;
         }
 
@@ -2081,15 +2270,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Create,
-            (opt, e2ecfg, clientCtxOverride) -> createDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> createDocumentCore(
                 collectionLink,
                 document,
                 opt,
                 disableAutomaticIdGeneration,
                 e2ecfg,
-                clientCtxOverride),
+                clientCtxOverride,
+                pointOperationContextForCircuitBreaker
+            ),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
         );
     }
 
@@ -2099,7 +2291,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         boolean disableAutomaticIdGeneration,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
@@ -2110,8 +2303,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
+        AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
-        return getPointOperationResponseMonoWithE2ETimeout(
+        return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
             nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(() ->
@@ -2121,10 +2315,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         nonNullRequestOptions,
                         disableAutomaticIdGeneration,
                         finalRetryPolicyInstance,
-                        scopedDiagnosticsFactory),
+                        scopedDiagnosticsFactory,
+                        requestReference,
+                        pointOperationContextForCircuitBreaker),
                 requestRetryPolicy),
             scopedDiagnosticsFactory
-        );
+        ), requestReference);
     }
 
     private Mono<ResourceResponse<Document>> createDocumentInternal(
@@ -2133,17 +2329,53 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         boolean disableAutomaticIdGeneration,
         DocumentClientRetryPolicy requestRetryPolicy,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        AtomicReference<RxDocumentServiceRequest> documentServiceRequestReference,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
         try {
             logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
 
-            Mono<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(requestRetryPolicy, collectionLink, document,
-                options, disableAutomaticIdGeneration, OperationType.Create, clientContextOverride);
+            Mono<Tuple2<RxDocumentServiceRequest, Utils.ValueHolder<DocumentCollection>>> requestToDocumentCollectionObs = getCreateDocumentRequest(
+                requestRetryPolicy,
+                collectionLink,
+                document,
+                options,
+                disableAutomaticIdGeneration,
+                OperationType.Create,
+                clientContextOverride,
+                pointOperationContextForCircuitBreaker);
 
-            return requestObs
-                    .flatMap(request -> create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options)))
-                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+            return requestToDocumentCollectionObs
+                .flatMap(requestToDocumentCollection -> {
 
+                    RxDocumentServiceRequest request = requestToDocumentCollection.getT1();
+                    Utils.ValueHolder<DocumentCollection> documentCollectionValueHolder = requestToDocumentCollection.getT2();
+
+                    if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                        return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                    }
+
+                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                        .flatMap(collectionRoutingMapValueHolder -> {
+
+                            if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                                return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                            }
+
+                            options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                            addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
+                            documentServiceRequestReference.set(request);
+                            request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+
+                            // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                            // to the RxDocumentServiceRequest instance
+                            mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                            return create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
+
+                        })
+                        .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                });
         } catch (Exception e) {
             logger.debug("Failure in creating a document due to [{}]", e.getMessage(), e);
             return Mono.error(e);
@@ -2177,6 +2409,111 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     requestOptions.getMarkE2ETimeoutInRequestContextCallbackHook()));
         }
         return rxDocumentServiceResponseMono;
+    }
+
+    private <T> Mono<T> handleCircuitBreakingFeedbackForPointOperation(
+        Mono<T> response,
+        AtomicReference<RxDocumentServiceRequest> requestReference) {
+
+        return response
+            .doOnSuccess(ignore -> {
+
+                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
+                    RxDocumentServiceRequest succeededRequest = requestReference.get();
+                    checkNotNull(succeededRequest.requestContext, "Argument 'succeededRequest.requestContext' must not be null!");
+
+                    PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker = succeededRequest.requestContext.getPointOperationContextForCircuitBreaker();
+                    checkNotNull(pointOperationContextForCircuitBreaker, "Argument 'pointOperationContextForCircuitBreaker' must not be null!");
+                    pointOperationContextForCircuitBreaker.setHasOperationSeenSuccess();
+
+                    this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(succeededRequest);
+                }
+            })
+            .doOnError(throwable -> {
+                if (throwable instanceof OperationCancelledException) {
+                    if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
+                        RxDocumentServiceRequest failedRequest = requestReference.get();
+                        checkNotNull(failedRequest.requestContext, "Argument 'failedRequest.requestContext' must not be null!");
+
+                        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker = failedRequest.requestContext.getPointOperationContextForCircuitBreaker();
+                        checkNotNull(pointOperationContextForCircuitBreaker, "Argument 'pointOperationContextForCircuitBreaker' must not be null!");
+
+                        if (pointOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
+
+                            if (!pointOperationContextForCircuitBreaker.isRequestHedged() && pointOperationContextForCircuitBreaker.getHasOperationSeenSuccess()) {
+                                this.handleLocationCancellationExceptionForPartitionKeyRange(failedRequest);
+                            }
+                        } else {
+                            this.handleLocationCancellationExceptionForPartitionKeyRange(failedRequest);
+                        }
+                    }
+                }
+            })
+            .doFinally(signalType -> {
+                if (signalType != SignalType.CANCEL) {
+                    return;
+                }
+
+                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(requestReference.get())) {
+                    RxDocumentServiceRequest failedRequest = requestReference.get();
+                    checkNotNull(failedRequest.requestContext, "Argument 'failedRequest.requestContext' must not be null!");
+
+                    PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker = failedRequest.requestContext.getPointOperationContextForCircuitBreaker();
+                    checkNotNull(pointOperationContextForCircuitBreaker, "Argument 'pointOperationContextForCircuitBreaker' must not be null!");
+
+                    // scoping the handling of CANCEL signal handling for reasons outside of end-to-end operation timeout
+                    // to purely operations which have end-to-end operation timeout enabled
+                    if (pointOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
+
+                        if (!pointOperationContextForCircuitBreaker.isRequestHedged() && pointOperationContextForCircuitBreaker.getHasOperationSeenSuccess()) {
+                            this.handleLocationCancellationExceptionForPartitionKeyRange(failedRequest);
+                        }
+                    }
+                }
+            });
+    }
+
+    private <T> Mono<NonTransientFeedOperationResult<T>> handleCircuitBreakingFeedbackForFeedOperationWithAvailabilityStrategy(Mono<NonTransientFeedOperationResult<T>> response, RxDocumentServiceRequest request) {
+
+        return response
+            .doOnSuccess(nonTransientFeedOperationResult -> {
+
+                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+                    if (!nonTransientFeedOperationResult.isError()) {
+                        checkNotNull(request, "Argument 'request' cannot be null!");
+                        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+
+                        FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker
+                            = request.requestContext.getFeedOperationContextForCircuitBreaker();
+
+                        checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' cannot be null!");
+
+                        feedOperationContextForCircuitBreaker.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, request.getResourceId());
+                        this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
+                    }
+                }
+            })
+            .doFinally(signalType -> {
+                if (signalType != SignalType.CANCEL) {
+                    return;
+                }
+
+                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+                    checkNotNull(request, "Argument 'request' cannot be null!");
+                    checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+
+                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker
+                        = request.requestContext.getFeedOperationContextForCircuitBreaker();
+
+                    checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' cannot be null!");
+
+                    if (!feedOperationContextForCircuitBreaker.getIsRequestHedged()
+                        && feedOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()
+                        && feedOperationContextForCircuitBreaker.hasPartitionKeyRangeSeenSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId())) {
+                        this.handleLocationCancellationExceptionForPartitionKeyRange(request);
+                    }
+                }
+            });
     }
 
     private static Throwable getCancellationExceptionForPointOperations(
@@ -2234,10 +2571,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Upsert,
-            (opt, e2ecfg, clientCtxOverride) -> upsertDocumentCore(
-                collectionLink, document, opt, disableAutomaticIdGeneration, e2ecfg, clientCtxOverride),
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> upsertDocumentCore(
+                collectionLink, document, opt, disableAutomaticIdGeneration, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
         );
     }
 
@@ -2247,7 +2585,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         boolean disableAutomaticIdGeneration,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -2257,21 +2596,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
+        AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
-        return getPointOperationResponseMonoWithE2ETimeout(
-            nonNullRequestOptions,
-            endToEndPolicyConfig,
-            ObservableHelper.inlineIfPossibleAsObs(
-                () -> upsertDocumentInternal(
-                    collectionLink,
-                    document,
-                    nonNullRequestOptions,
-                    disableAutomaticIdGeneration,
-                    finalRetryPolicyInstance,
-                    scopedDiagnosticsFactory),
-                finalRetryPolicyInstance),
-            scopedDiagnosticsFactory
-        );
+        return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
+                nonNullRequestOptions,
+                endToEndPolicyConfig,
+                ObservableHelper.inlineIfPossibleAsObs(
+                    () -> upsertDocumentInternal(
+                        collectionLink,
+                        document,
+                        nonNullRequestOptions,
+                        disableAutomaticIdGeneration,
+                        finalRetryPolicyInstance,
+                        scopedDiagnosticsFactory,
+                        requestReference,
+                        pointOperationContextForCircuitBreaker),
+                    finalRetryPolicyInstance),
+                scopedDiagnosticsFactory), requestReference);
     }
 
     private Mono<ResourceResponse<Document>> upsertDocumentInternal(
@@ -2280,12 +2621,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         boolean disableAutomaticIdGeneration,
         DocumentClientRetryPolicy retryPolicyInstance,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        AtomicReference<RxDocumentServiceRequest> requestReference,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         try {
             logger.debug("Upserting a Document. collectionLink: [{}]", collectionLink);
 
-            Mono<RxDocumentServiceRequest> reqObs =
+            Mono<Tuple2<RxDocumentServiceRequest, Utils.ValueHolder<DocumentCollection>>> requestToDocumentCollectionObs =
                 getCreateDocumentRequest(
                     retryPolicyInstance,
                     collectionLink,
@@ -2293,11 +2636,40 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     options,
                     disableAutomaticIdGeneration,
                     OperationType.Upsert,
-                    clientContextOverride);
+                    clientContextOverride,
+                    pointOperationContextForCircuitBreaker);
 
-            return reqObs
-                .flatMap(request -> upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)))
-                .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+            return requestToDocumentCollectionObs
+                .flatMap(requestToDocumentCollection -> {
+                    RxDocumentServiceRequest request = requestToDocumentCollection.getT1();
+                    Utils.ValueHolder<DocumentCollection> documentCollectionValueHolder = requestToDocumentCollection.getT2();
+
+                    if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                        return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                    }
+
+                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                        .flatMap(collectionRoutingMapValueHolder -> {
+
+                            if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                                return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                            }
+
+                            options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                            addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                            request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                            requestReference.set(request);
+
+                            // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                            // to the RxDocumentServiceRequest instance
+                            mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                            return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options));
+                        })
+                        .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+
+                });
 
         } catch (Exception e) {
             logger.debug("Failure in upserting a document due to [{}]", e.getMessage(), e);
@@ -2309,17 +2681,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document,
                                                             RequestOptions options) {
 
+        String collectionLink = Utils.getCollectionName(documentLink);
+
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Replace,
-            (opt, e2ecfg, clientCtxOverride) -> replaceDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> replaceDocumentCore(
                 documentLink,
                 document,
                 opt,
                 e2ecfg,
-                clientCtxOverride),
+                clientCtxOverride,
+                pointOperationContextForCircuitBreaker),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
         );
     }
 
@@ -2328,7 +2704,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Object document,
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -2340,21 +2717,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 collectionCache, requestRetryPolicy, collectionLink, nonNullRequestOptions);
         }
         DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
+        AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
 
-        return getPointOperationResponseMonoWithE2ETimeout(
-            nonNullRequestOptions,
-            endToEndPolicyConfig,
-            ObservableHelper.inlineIfPossibleAsObs(
-                () -> replaceDocumentInternal(
-                    documentLink,
-                    document,
-                    nonNullRequestOptions,
-                    finalRequestRetryPolicy,
-                    endToEndPolicyConfig,
-                    scopedDiagnosticsFactory),
-                requestRetryPolicy),
-            scopedDiagnosticsFactory
-        );
+        return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
+                nonNullRequestOptions,
+                endToEndPolicyConfig,
+                ObservableHelper.inlineIfPossibleAsObs(
+                    () -> replaceDocumentInternal(
+                        documentLink,
+                        document,
+                        nonNullRequestOptions,
+                        finalRequestRetryPolicy,
+                        endToEndPolicyConfig,
+                        scopedDiagnosticsFactory,
+                        requestReference,
+                        pointOperationContextForCircuitBreaker),
+                    requestRetryPolicy),
+                scopedDiagnosticsFactory), requestReference);
     }
 
     private Mono<ResourceResponse<Document>> replaceDocumentInternal(
@@ -2363,7 +2742,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         DocumentClientRetryPolicy retryPolicyInstance,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        AtomicReference<RxDocumentServiceRequest> requestReference,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -2374,14 +2755,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 throw new IllegalArgumentException("document");
             }
 
-            Document typedDocument = documentFromObject(document, mapper);
+            Document typedDocument = Document.fromObject(document, options.getEffectiveItemSerializer());
 
             return this.replaceDocumentInternal(
                 documentLink,
                 typedDocument,
                 options,
                 retryPolicyInstance,
-                clientContextOverride);
+                clientContextOverride,
+                requestReference,
+                pointOperationContextForCircuitBreaker);
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a document due to [{}]", e.getMessage());
@@ -2391,16 +2774,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options) {
+
+        String collectionLink = Utils.getCollectionName(document.getSelfLink());
+
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Replace,
-            (opt, e2ecfg, clientCtxOverride) -> replaceDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> replaceDocumentCore(
                 document,
                 opt,
                 e2ecfg,
-                clientCtxOverride),
+                clientCtxOverride,
+                pointOperationContextForCircuitBreaker
+            ),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
         );
     }
 
@@ -2408,7 +2797,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Document document,
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         DocumentClientRetryPolicy requestRetryPolicy =
             this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
@@ -2418,14 +2808,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 collectionCache, requestRetryPolicy, collectionLink, options);
         }
         DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
-        return ObservableHelper.inlineIfPossibleAsObs(
+        AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
+
+        return handleCircuitBreakingFeedbackForPointOperation(ObservableHelper.inlineIfPossibleAsObs(
             () -> replaceDocumentInternal(
                 document,
                 options,
                 finalRequestRetryPolicy,
                 endToEndPolicyConfig,
-                clientContextOverride),
-            requestRetryPolicy);
+                clientContextOverride,
+                requestReference,
+                pointOperationContextForCircuitBreaker),
+            requestRetryPolicy), requestReference);
     }
 
     private Mono<ResourceResponse<Document>> replaceDocumentInternal(
@@ -2433,7 +2827,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         DocumentClientRetryPolicy retryPolicyInstance,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        AtomicReference<RxDocumentServiceRequest> requestReference,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         try {
             if (document == null) {
@@ -2445,7 +2841,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 document,
                 options,
                 retryPolicyInstance,
-                clientContextOverride);
+                clientContextOverride,
+                requestReference,
+                pointOperationContextForCircuitBreaker);
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a database due to [{}]", e.getMessage());
@@ -2458,7 +2856,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Document document,
         RequestOptions options,
         DocumentClientRetryPolicy retryPolicyInstance,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        AtomicReference<RxDocumentServiceRequest> requestReference,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         if (document == null) {
             throw new IllegalArgumentException("document");
@@ -2469,15 +2869,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final Map<String, String> requestHeaders =
             getRequestHeaders(options, ResourceType.Document, OperationType.Replace);
         Instant serializationStartTimeUTC = Instant.now();
+        Consumer<Map<String, Object>> onAfterSerialization = null;
         if (options != null) {
             String trackingId = options.getTrackingId();
 
             if (trackingId != null && !trackingId.isEmpty()) {
-                document.set(Constants.Properties.TRACKING_ID, trackingId);
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
         }
 
-        ByteBuffer content = serializeJsonToByteBuffer(document);
+        ByteBuffer content = document.serializeJsonToByteBuffer(options.getEffectiveItemSerializer(), onAfterSerialization, false);
         Instant serializationEndTime = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics =
             new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -2489,24 +2890,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             OperationType.Replace, ResourceType.Document, path, requestHeaders, options, content);
 
-        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
         if (options != null) {
-            options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
-        }
 
-        if (retryPolicyInstance != null) {
-            retryPolicyInstance.onBeforeSendRequest(request);
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
+            options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext =
             BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+
+        if (retryPolicyInstance != null) {
+            retryPolicyInstance.onBeforeSendRequest(request);
         }
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
@@ -2514,38 +2920,90 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                 request);
         Mono<RxDocumentServiceRequest> requestObs =
-            addPartitionKeyInformation(request, content, document, options, collectionObs);
+            addPartitionKeyInformation(request, content, document, options, collectionObs, pointOperationContextForCircuitBreaker);
 
-        return requestObs
-            .flatMap(req -> replace(request, retryPolicyInstance)
-                .map(resp -> toResourceResponse(resp, Document.class)));
+        return collectionObs
+            .flatMap(documentCollectionValueHolder -> {
+
+                if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                    return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                }
+
+                return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
+
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                        }
+
+                        return requestObs.flatMap(req -> {
+
+                                options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                requestReference.set(req);
+
+                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                                // to the RxDocumentServiceRequest instance
+                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                                return replace(request, retryPolicyInstance);
+                            })
+                            .map(resp -> toResourceResponse(resp, Document.class));
+                    });
+            });
     }
 
-    private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(RequestOptions options) {
+    private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
+        RequestOptions options,
+        ResourceType resourceType,
+        OperationType operationType) {
         return this.getEffectiveEndToEndOperationLatencyPolicyConfig(
-            options != null ? options.getCosmosEndToEndLatencyPolicyConfig() : null);
+            options != null ? options.getCosmosEndToEndLatencyPolicyConfig() : null,
+            resourceType,
+            operationType);
     }
 
     private CosmosEndToEndOperationLatencyPolicyConfig getEffectiveEndToEndOperationLatencyPolicyConfig(
-        CosmosEndToEndOperationLatencyPolicyConfig policyConfig) {
-        return policyConfig != null ? policyConfig : this.cosmosEndToEndOperationLatencyPolicyConfig;
+        CosmosEndToEndOperationLatencyPolicyConfig policyConfig,
+        ResourceType resourceType,
+        OperationType operationType) {
+        if (policyConfig != null) {
+            return policyConfig;
+        }
+
+        if (resourceType != ResourceType.Document) {
+            return null;
+        }
+
+        if (!operationType.isPointOperation() && Configs.isDefaultE2ETimeoutDisabledForNonPointOperations()) {
+            return null;
+        }
+
+        return this.cosmosEndToEndOperationLatencyPolicyConfig;
     }
 
     @Override
     public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
                                                           CosmosPatchOperations cosmosPatchOperations,
                                                           RequestOptions options) {
+
+        String collectionLink = Utils.getCollectionName(documentLink);
+
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Patch,
-            (opt, e2ecfg, clientCtxOverride) -> patchDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> patchDocumentCore(
                 documentLink,
                 cosmosPatchOperations,
                 opt,
                 e2ecfg,
-                clientCtxOverride),
+                clientCtxOverride,
+                pointOperationContextForCircuitBreaker),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
         );
     }
 
@@ -2554,25 +3012,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosPatchOperations cosmosPatchOperations,
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
 
-        return getPointOperationResponseMonoWithE2ETimeout(
-            nonNullRequestOptions,
-            endToEndPolicyConfig,
-            ObservableHelper.inlineIfPossibleAsObs(
-                () -> patchDocumentInternal(
-                    documentLink,
-                    cosmosPatchOperations,
-                    nonNullRequestOptions,
-                    documentClientRetryPolicy,
-                    scopedDiagnosticsFactory),
-                documentClientRetryPolicy),
-            scopedDiagnosticsFactory
-        );
+        AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
+
+        return handleCircuitBreakingFeedbackForPointOperation(
+            getPointOperationResponseMonoWithE2ETimeout(
+                nonNullRequestOptions,
+                endToEndPolicyConfig,
+                ObservableHelper.inlineIfPossibleAsObs(
+                    () -> patchDocumentInternal(
+                        documentLink,
+                        cosmosPatchOperations,
+                        nonNullRequestOptions,
+                        documentClientRetryPolicy,
+                        scopedDiagnosticsFactory,
+                        requestReference,
+                        pointOperationContextForCircuitBreaker),
+                    documentClientRetryPolicy),
+                scopedDiagnosticsFactory), requestReference);
     }
 
     private Mono<ResourceResponse<Document>> patchDocumentInternal(
@@ -2580,7 +3043,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosPatchOperations cosmosPatchOperations,
         RequestOptions options,
         DocumentClientRetryPolicy retryPolicyInstance,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        AtomicReference<RxDocumentServiceRequest> requestReference,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         checkArgument(StringUtils.isNotEmpty(documentLink), "expected non empty documentLink");
         checkNotNull(cosmosPatchOperations, "expected non null cosmosPatchOperations");
@@ -2612,13 +3077,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             content);
 
-        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
         if (options != null) {
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         if (retryPolicyInstance != null) {
@@ -2627,6 +3096,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         SerializationDiagnosticsContext serializationDiagnosticsContext =
             BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
@@ -2640,42 +3110,83 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             null,
             null,
             options,
-            collectionObs);
+            collectionObs,
+            pointOperationContextForCircuitBreaker);
 
-        return requestObs
-            .flatMap(req -> patch(request, retryPolicyInstance))
-            .map(resp -> toResourceResponse(resp, Document.class));
+        return collectionObs
+            .flatMap(documentCollectionValueHolder -> {
+
+                if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                    return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                }
+
+                return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
+
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                        }
+
+                        return requestObs
+                            .flatMap(req -> {
+
+                                options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                requestReference.set(req);
+
+                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                                // to the RxDocumentServiceRequest instance
+                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                                return patch(request, retryPolicyInstance);
+                            })
+                            .map(resp -> toResourceResponse(resp, Document.class));
+                    });
+            });
     }
 
     @Override
     public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options) {
+
+        String collectionLink = Utils.getCollectionName(documentLink);
+
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Delete,
-            (opt, e2ecfg, clientCtxOverride) -> deleteDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> deleteDocumentCore(
                 documentLink,
                 null,
                 opt,
                 e2ecfg,
-                clientCtxOverride),
+                clientCtxOverride,
+                pointOperationContextForCircuitBreaker
+            ),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
         );
     }
 
     @Override
     public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options) {
+
+        String collectionLink = Utils.getCollectionName(documentLink);
+
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Delete,
-            (opt, e2ecfg, clientCtxOverride) -> deleteDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> deleteDocumentCore(
                 documentLink,
                 internalObjectNode,
                 opt,
                 e2ecfg,
-                clientCtxOverride),
+                clientCtxOverride,
+                pointOperationContextForCircuitBreaker),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
+            collectionLink
         );
     }
 
@@ -2684,26 +3195,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         InternalObjectNode internalObjectNode,
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
             this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
 
-        return getPointOperationResponseMonoWithE2ETimeout(
-            nonNullRequestOptions,
-            endToEndPolicyConfig,
-            ObservableHelper.inlineIfPossibleAsObs(
-                () -> deleteDocumentInternal(
-                    documentLink,
-                    internalObjectNode,
-                    nonNullRequestOptions,
-                    requestRetryPolicy,
-                    scopedDiagnosticsFactory),
-                requestRetryPolicy),
-            scopedDiagnosticsFactory
-        );
+        AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
+
+        return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
+                nonNullRequestOptions,
+                endToEndPolicyConfig,
+                ObservableHelper.inlineIfPossibleAsObs(
+                    () -> deleteDocumentInternal(
+                        documentLink,
+                        internalObjectNode,
+                        nonNullRequestOptions,
+                        requestRetryPolicy,
+                        scopedDiagnosticsFactory,
+                        requestReference,
+                        pointOperationContextForCircuitBreaker),
+                    requestRetryPolicy),
+                scopedDiagnosticsFactory), requestReference);
     }
 
     private Mono<ResourceResponse<Document>> deleteDocumentInternal(
@@ -2711,7 +3226,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         InternalObjectNode internalObjectNode,
         RequestOptions options,
         DocumentClientRetryPolicy retryPolicyInstance,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        AtomicReference<RxDocumentServiceRequest> requestReference,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -2725,14 +3242,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEffectiveClientContext(clientContextOverride),
                 OperationType.Delete, ResourceType.Document, path, requestHeaders, options);
 
-            if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+            if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
                 request.setNonIdempotentWriteRetriesEnabled(true);
             }
 
             if (options != null) {
+
+                DocumentServiceRequestContext requestContext = request.requestContext;
+
                 options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                    () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-                request.requestContext.setExcludeRegions(options.getExcludeRegions());
+                    () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+                requestContext.setExcludeRegions(options.getExcludedRegions());
+                requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             }
 
             if (retryPolicyInstance != null) {
@@ -2744,13 +3265,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(
-                request, null, internalObjectNode, options, collectionObs);
+                request, null, internalObjectNode, options, collectionObs, pointOperationContextForCircuitBreaker);
 
+            return collectionObs
+                .flatMap(documentCollectionValueHolder -> this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
+                        return requestObs
+                            .flatMap(req -> {
 
-            return requestObs
-                    .flatMap(req -> this.delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options)))
-                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                                options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                                addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
+                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                requestReference.set(req);
+
+                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                                // to the RxDocumentServiceRequest instance
+                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                                return this.delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options));
+                            })
+                            .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+
+                    }));
         } catch (Exception e) {
             logger.debug("Failure in deleting a document due to [{}]", e.getMessage());
             return Mono.error(e);
@@ -2783,7 +3320,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
-            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
+            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs, null);
 
             return requestObs.flatMap(req -> this
                 .deleteAllItemsByPartitionKey(req, retryPolicyInstance, getOperationContextAndListenerTuple(options))
@@ -2804,13 +3341,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         DiagnosticsClientContext innerDiagnosticsFactory) {
 
+        String collectionLink = Utils.getCollectionName(documentLink);
+
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Read,
-            (opt, e2ecfg, clientCtxOverride) -> readDocumentCore(documentLink, opt, e2ecfg, clientCtxOverride),
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> readDocumentCore(documentLink, opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker),
             options,
             false,
-            innerDiagnosticsFactory
+            innerDiagnosticsFactory,
+            collectionLink
         );
     }
 
@@ -2818,13 +3358,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String documentLink,
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
 
-        return getPointOperationResponseMonoWithE2ETimeout(
+        AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
+
+        return handleCircuitBreakingFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
             nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(
@@ -2832,17 +3375,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     documentLink,
                     nonNullRequestOptions,
                     retryPolicyInstance,
-                    scopedDiagnosticsFactory),
+                    scopedDiagnosticsFactory,
+                    requestReference,
+                    pointOperationContextForCircuitBreaker),
                 retryPolicyInstance),
             scopedDiagnosticsFactory
-        );
+        ), requestReference);
     }
 
     private Mono<ResourceResponse<Document>> readDocumentInternal(
         String documentLink,
         RequestOptions options,
         DocumentClientRetryPolicy retryPolicyInstance,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        AtomicReference<RxDocumentServiceRequest> requestReference,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -2856,22 +3403,55 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                 getEffectiveClientContext(clientContextOverride),
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
 
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+            return collectionObs.flatMap(documentCollectionValueHolder -> {
 
-            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
+                    if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                        return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                    }
 
-            return requestObs.flatMap(req ->
-                this.read(request, retryPolicyInstance)
-                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class)));
+                    DocumentCollection documentCollection = documentCollectionValueHolder.v;
+                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollection.getResourceId(), null, null)
+                        .flatMap(collectionRoutingMapValueHolder -> {
 
+                            if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                                return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                            }
+
+                            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs, pointOperationContextForCircuitBreaker);
+
+                            return requestObs.flatMap(req -> {
+
+                                options.setPartitionKeyDefinition(documentCollection.getPartitionKey());
+                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                requestReference.set(req);
+
+                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                                // to the RxDocumentServiceRequest instance
+                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                                return this.read(req, retryPolicyInstance)
+                                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                            });
+
+                        });
+
+                }
+            );
         } catch (Exception e) {
             logger.debug("Failure in reading a document due to [{}]", e.getMessage());
             return Mono.error(e);
@@ -2909,7 +3489,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             collectionLink, null
         );
 
-        // This should not got to backend
+        // This should not get to backend
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
             collectionCache.resolveCollectionAsync(null, request);
 
@@ -2973,7 +3553,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap, collection.getPartitionKey());
 
                             // create point reads
-                            Flux<FeedResponse<Document>> pointReads = pointReadsForReadMany(
+                            Flux<FeedResponse<T>> pointReads = pointReadsForReadMany(
                                 diagnosticsFactory,
                                 partitionRangeItemKeyMap,
                                 resourceLink,
@@ -2981,12 +3561,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 klass);
 
                             // create the executable query
-                            Flux<FeedResponse<Document>> queries = queryForReadMany(
+                            Flux<FeedResponse<T>> queries = queryForReadMany(
                                 diagnosticsFactory,
                                 resourceLink,
                                 new SqlQuerySpec(DUMMY_SQL_QUERY),
                                 state.getQueryOptions(),
-                                Document.class,
+                                klass,
                                 ResourceType.Document,
                                 collection,
                                 Collections.unmodifiableMap(rangeQueryMap));
@@ -3001,7 +3581,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                            ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
                                            Collection<ClientSideRequestStatistics> aggregateRequestStatistics = new DistinctClientSideRequestStatisticsCollection();
                                            double requestCharge = 0;
-                                           for (FeedResponse<Document> page : feedList) {
+                                           for (FeedResponse<T> page : feedList) {
                                                ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
                                                    ModelBridgeInternal.queryMetrics(page);
                                                if (pageQueryMetrics != null) {
@@ -3010,9 +3590,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                }
 
                                                requestCharge += page.getRequestCharge();
-                                               // TODO: this does double serialization: FIXME
-                                               finalList.addAll(page.getResults().stream().map(document ->
-                                                   ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
+                                               finalList.addAll(page.getResults());
                                                aggregateRequestStatistics.addAll(diagnosticsAccessor.getClientSideRequestStatistics(page.getCosmosDiagnostics()));
                                            }
 
@@ -3098,19 +3676,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         //TODO: Optimise this to include all types of partitionkeydefinitions. ex: c["prop1./ab"]["key1"]
 
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = new HashMap<>();
-        String partitionKeySelector = createPkSelector(partitionKeyDefinition);
+        List<String> partitionKeySelectors = createPkSelectors(partitionKeyDefinition);
 
         for(Map.Entry<PartitionKeyRange, List<CosmosItemIdentity>> entry: partitionRangeItemKeyMap.entrySet()) {
-
             SqlQuerySpec sqlQuerySpec;
             List<CosmosItemIdentity> cosmosItemIdentityList = entry.getValue();
             if (cosmosItemIdentityList.size() > 1) {
-                if (partitionKeySelector.equals("[\"id\"]")) {
-                    sqlQuerySpec = createReadManyQuerySpecPartitionKeyIdSame(cosmosItemIdentityList, partitionKeySelector);
-                } else if (partitionKeyDefinition.getKind().equals(PartitionKind.MULTI_HASH)) {
-                    sqlQuerySpec = createReadManyQuerySpecMultiHash(entry.getValue(), partitionKeyDefinition);
+                if (partitionKeySelectors.size() == 1 && partitionKeySelectors.get(0).equals("[\"id\"]")) {
+                    sqlQuerySpec = createReadManyQuerySpecPartitionKeyIdSame(cosmosItemIdentityList);
                 } else {
-                    sqlQuerySpec = createReadManyQuerySpec(cosmosItemIdentityList, partitionKeySelector);
+                    sqlQuerySpec = createReadManyQuerySpec(entry.getValue(), partitionKeySelectors);
                 }
                 // Add query for this partition to rangeQueryMap
                 rangeQueryMap.put(entry.getKey(), sqlQuerySpec);
@@ -3120,9 +3695,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return rangeQueryMap;
     }
 
-    private SqlQuerySpec createReadManyQuerySpecPartitionKeyIdSame(
-        List<CosmosItemIdentity> idPartitionKeyPairList,
-        String partitionKeySelector) {
+    private SqlQuerySpec createReadManyQuerySpecPartitionKeyIdSame(List<CosmosItemIdentity> idPartitionKeyPairList) {
 
         StringBuilder queryStringBuilder = new StringBuilder();
         List<SqlParameter> parameters = new ArrayList<>();
@@ -3146,46 +3719,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
     }
 
-    private SqlQuerySpec createReadManyQuerySpec(List<CosmosItemIdentity> itemIdentities, String partitionKeySelector) {
-        StringBuilder queryStringBuilder = new StringBuilder();
-        List<SqlParameter> parameters = new ArrayList<>();
-
-        queryStringBuilder.append("SELECT * FROM c WHERE ( ");
-        for (int i = 0; i < itemIdentities.size(); i++) {
-            CosmosItemIdentity itemIdentity = itemIdentities.get(i);
-
-            PartitionKey pkValueAsPartitionKey = itemIdentity.getPartitionKey();
-            Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
-            String pkParamName = "@param" + (2 * i);
-            parameters.add(new SqlParameter(pkParamName, pkValue));
-
-            String idValue = itemIdentity.getId();
-            String idParamName = "@param" + (2 * i + 1);
-            parameters.add(new SqlParameter(idParamName, idValue));
-
-            queryStringBuilder.append("(");
-            queryStringBuilder.append("c.id = ");
-            queryStringBuilder.append(idParamName);
-            queryStringBuilder.append(" AND ");
-            queryStringBuilder.append(" c");
-            // partition key def
-            queryStringBuilder.append(partitionKeySelector);
-            queryStringBuilder.append((" = "));
-            queryStringBuilder.append(pkParamName);
-            queryStringBuilder.append(" )");
-
-            if (i < itemIdentities.size() - 1) {
-                queryStringBuilder.append(" OR ");
-            }
-        }
-        queryStringBuilder.append(" )");
-
-        return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
-    }
-
-    private SqlQuerySpec createReadManyQuerySpecMultiHash(
+    private SqlQuerySpec createReadManyQuerySpec(
         List<CosmosItemIdentity> itemIdentities,
-        PartitionKeyDefinition partitionKeyDefinition) {
+        List<String> partitionKeySelectors) {
         StringBuilder queryStringBuilder = new StringBuilder();
         List<SqlParameter> parameters = new ArrayList<>();
 
@@ -3195,15 +3731,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             CosmosItemIdentity itemIdentity = itemIdentities.get(i);
 
             PartitionKey pkValueAsPartitionKey = itemIdentity.getPartitionKey();
-            Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
-            String pkValueString = (String) pkValue;
+            Object[] pkValues = ModelBridgeInternal.getPartitionKeyInternal(pkValueAsPartitionKey).toObjectArray();
             List<List<String>> partitionKeyParams = new ArrayList<>();
-            List<String> paths = partitionKeyDefinition.getPaths();
             int pathCount = 0;
-            for (String subPartitionKey: pkValueString.split("=")) {
+            for (Object pkComponentValue : pkValues) {
                 String pkParamName = "@param" + paramCount;
-                partitionKeyParams.add(Arrays.asList(paths.get(pathCount), pkParamName));
-                parameters.add(new SqlParameter(pkParamName, subPartitionKey));
+                partitionKeyParams.add(Arrays.asList(partitionKeySelectors.get(pathCount), pkParamName));
+                parameters.add(new SqlParameter(pkParamName, pkComponentValue));
                 paramCount++;
                 pathCount++;
             }
@@ -3220,8 +3754,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // partition key def
             for (List<String> pkParam: partitionKeyParams) {
                 queryStringBuilder.append(" AND ");
-                queryStringBuilder.append(" c.");
-                queryStringBuilder.append(pkParam.get(0).substring(1));
+                queryStringBuilder.append(" c");
+                queryStringBuilder.append(pkParam.get(0));
                 queryStringBuilder.append((" = "));
                 queryStringBuilder.append(pkParam.get(1));
             }
@@ -3236,16 +3770,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
     }
 
-    private String createPkSelector(PartitionKeyDefinition partitionKeyDefinition) {
+    private List<String> createPkSelectors(PartitionKeyDefinition partitionKeyDefinition) {
         return partitionKeyDefinition.getPaths()
             .stream()
             .map(pathPart -> StringUtils.substring(pathPart, 1)) // skip starting /
             .map(pathPart -> StringUtils.replace(pathPart, "\"", "\\")) // escape quote
             .map(part -> "[\"" + part + "\"]")
-            .collect(Collectors.joining());
+            .collect(Collectors.toList());
     }
 
-    private <T extends Resource> Flux<FeedResponse<T>> queryForReadMany(
+    private <T> Flux<FeedResponse<T>> queryForReadMany(
         ScopedDiagnosticsFactory diagnosticsFactory,
         String parentResourceLink,
         SqlQuerySpec sqlQuery,
@@ -3272,7 +3806,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 sqlQuery,
                 rangeQueryMap,
                 options,
-                collection.getResourceId(),
+                collection,
                 parentResourceLink,
                 activityId,
                 klass,
@@ -3287,7 +3821,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .toRequestOptions(options);
 
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
-            getEndToEndOperationLatencyPolicyConfig(requestOptions);
+            getEndToEndOperationLatencyPolicyConfig(requestOptions, ResourceType.Document, OperationType.Query);
 
         if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
             return getFeedResponseFluxWithTimeout(
@@ -3301,12 +3835,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return feedResponseFlux;
     }
 
-    private <T> Flux<FeedResponse<Document>> pointReadsForReadMany(
+    private <T> Flux<FeedResponse<T>> pointReadsForReadMany(
         ScopedDiagnosticsFactory diagnosticsFactory,
-        Map<PartitionKeyRange, List<CosmosItemIdentity>> singleItemPartitionRequestMap,
+        Map<PartitionKeyRange,
+        List<CosmosItemIdentity>> singleItemPartitionRequestMap,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions,
         Class<T> klass) {
+
+        // if there is any factory method being passed in, use the factory method to deserializ the object
+        // else fallback to use the original way
+        // typically used by spark trying to convert into SparkRowItem
+        CosmosItemSerializer effectiveItemSerializer = getEffectiveItemSerializer(queryRequestOptions);
 
         return Flux.fromIterable(singleItemPartitionRequestMap.values())
             .flatMap(cosmosItemIdentityList -> {
@@ -3345,7 +3885,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 ResourceResponse<Document> resourceResponse = resourceResponseToExceptionPair.getLeft();
                 CosmosException cosmosException = resourceResponseToExceptionPair.getRight();
-                FeedResponse<Document> feedResponse;
+                FeedResponse<T> feedResponse;
 
                 if (cosmosException != null) {
                     feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), cosmosException.getResponseHeaders());
@@ -3355,10 +3895,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             BridgeInternal.getClientSideRequestStatics(cosmosException.getDiagnostics())));
                 } else {
                     CosmosItemResponse<T> cosmosItemResponse =
-                        ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
+                        itemResponseAccessor.createCosmosItemResponse(resourceResponse, klass, effectiveItemSerializer);
+
                     feedResponse = ModelBridgeInternal.createFeedResponse(
-                        Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())),
-                        cosmosItemResponse.getResponseHeaders());
+                            Arrays.asList(cosmosItemResponse.getItem()),
+                            cosmosItemResponse.getResponseHeaders());
 
                     diagnosticsAccessor.addClientSideDiagnosticsToFeed(
                         feedResponse.getCosmosDiagnostics(),
@@ -3375,6 +3916,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String collectionLink, String query, QueryFeedOperationState state, Class<T> classOfT) {
 
         return queryDocuments(collectionLink, new SqlQuerySpec(query), state, classOfT);
+    }
+
+    @Override
+    public CosmosItemSerializer getEffectiveItemSerializer(CosmosItemSerializer requestOptionsItemSerializer) {
+        if (requestOptionsItemSerializer != null) {
+            return requestOptionsItemSerializer;
+        }
+
+        if (this.defaultCustomSerializer != null) {
+            return this.defaultCustomSerializer;
+        }
+
+        return CosmosItemSerializer.DEFAULT_SERIALIZER;
+    }
+
+    private <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions) {
+
+        CosmosItemSerializer requestOptionsItemSerializer =
+            queryRequestOptions != null ? queryRequestOptions.getCustomItemSerializer() :  null;
+
+        return this.getEffectiveItemSerializer(requestOptionsItemSerializer);
+    }
+
+    private <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosItemRequestOptions itemRequestOptions) {
+
+        CosmosItemSerializer requestOptionsItemSerializer =
+            itemRequestOptions != null ? itemRequestOptions.getCustomItemSerializer() :  null;
+
+        return this.getEffectiveItemSerializer(requestOptionsItemSerializer);
     }
 
     private IDocumentQueryClient documentQueryClientImpl(RxDocumentClientImpl rxDocumentClientImpl, OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -3438,21 +4008,81 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 OperationType operationType,
                 Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
                 RxDocumentServiceRequest req,
-                BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<T>> feedOperation) {
+                BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<T>> feedOperation,
+                String collectionLink) {
 
                 return RxDocumentClientImpl.this.executeFeedOperationWithAvailabilityStrategy(
                     resourceType,
                     operationType,
                     retryPolicyFactory,
                     req,
-                    feedOperation
-                );
+                    feedOperation,
+                    collectionLink);
+            }
+
+            @Override
+            public <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions) {
+                return RxDocumentClientImpl.this.getEffectiveItemSerializer(queryRequestOptions);
             }
 
             @Override
             public Mono<RxDocumentServiceResponse> readFeedAsync(RxDocumentServiceRequest request) {
                 // TODO Auto-generated method stub
                 return null;
+            }
+
+            @Override
+            public Mono<RxDocumentServiceRequest> populateFeedRangeHeader(RxDocumentServiceRequest request) {
+
+                if (RxDocumentClientImpl.this.requiresFeedRangeFiltering(request)) {
+                    return request
+                        .getFeedRange()
+                        .populateFeedRangeFilteringHeaders(RxDocumentClientImpl.this.partitionKeyRangeCache, request, RxDocumentClientImpl.this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request))
+                        .flatMap(ignore -> Mono.just(request));
+                } else {
+                    return Mono.just(request);
+                }
+            }
+
+            @Override
+            public Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions, DocumentClientRetryPolicy documentClientRetryPolicy) {
+
+                if (RxDocumentClientImpl.this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+
+                    String collectionRid = RxDocumentClientImpl.qryOptAccessor.getCollectionRid(queryRequestOptions);
+
+                    checkNotNull(collectionRid, "Argument 'collectionRid' cannot be null!");
+
+                    return RxDocumentClientImpl.this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), collectionRid, null, null)
+                        .flatMap(collectionRoutingMapValueHolder -> {
+
+                            if (collectionRoutingMapValueHolder.v == null) {
+                                return Mono.error(new CollectionRoutingMapNotFoundException("Argument 'collectionRoutingMapValueHolder.v' cannot be null!"));
+                            }
+
+                            RxDocumentClientImpl.this.addPartitionLevelUnavailableRegionsForFeedRequest(request, queryRequestOptions, collectionRoutingMapValueHolder.v);
+
+                            // onBeforeSendRequest uses excluded regions to know the next location endpoint
+                            // to route the request to unavailable regions are effectively excluded regions for this request
+                            if (documentClientRetryPolicy != null) {
+                                documentClientRetryPolicy.onBeforeSendRequest(request);
+                            }
+
+                            return Mono.just(request);
+                        });
+                } else {
+                    return Mono.just(request);
+                }
+            }
+
+            @Override
+            public GlobalEndpointManager getGlobalEndpointManager() {
+                return RxDocumentClientImpl.this.getGlobalEndpointManager();
+            }
+
+            @Override
+            public GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
+                return RxDocumentClientImpl.this.globalPartitionEndpointManagerForCircuitBreaker;
             }
         };
     }
@@ -3470,10 +4100,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         final DocumentCollection collection,
-        final CosmosChangeFeedRequestOptions changeFeedOptions,
+        final CosmosChangeFeedRequestOptions requestOptions,
         Class<T> classOfT) {
 
         checkNotNull(collection, "Argument 'collection' must not be null.");
+
 
         ChangeFeedQueryImpl<T> changeFeedQueryImpl = new ChangeFeedQueryImpl<>(
             this,
@@ -3481,14 +4112,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             classOfT,
             collection.getAltLink(),
             collection.getResourceId(),
-            changeFeedOptions);
+            requestOptions);
 
         return changeFeedQueryImpl.executeAsync();
     }
 
     @Override
     public <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFlux(DocumentCollection collection, ChangeFeedOperationState state, Class<T> classOfT) {
-        return queryDocumentChangeFeed(collection, state.getChangeFeedOptions(), classOfT);
+
+        CosmosChangeFeedRequestOptions clonedOptions = changeFeedOptionsAccessor.clone(state.getChangeFeedOptions());
+
+        CosmosChangeFeedRequestOptionsImpl optionsImpl = changeFeedOptionsAccessor.getImpl(clonedOptions);
+
+        CosmosOperationDetails operationDetails = operationDetailsAccessor.create(optionsImpl, state.getDiagnosticsContextSnapshot());
+        this.operationPolicies.forEach(policy -> {
+            try {
+                policy.process(operationDetails);
+            } catch (RuntimeException exception) {
+                logger.info("The following exception was thrown by a custom policy on changeFeed operation" + exception.getMessage());
+                throw(exception);
+            }
+        });
+        ctxAccessor.setRequestOptions(state.getDiagnosticsContextSnapshot(), optionsImpl);
+        return queryDocumentChangeFeed(collection, clonedOptions, classOfT);
     }
 
     @Override
@@ -3541,7 +4187,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             null
         );
 
-        // This should not got to backend
+        // This should not get to backend
         Flux<Utils.ValueHolder<DocumentCollection>> collectionObs =
             collectionCache.resolveCollectionAsync(null, request).flux();
 
@@ -3553,8 +4199,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
-            String pkSelector = createPkSelector(pkDefinition);
-            SqlQuerySpec querySpec = createLogicalPartitionScanQuerySpec(partitionKey, pkSelector);
+            List<String> partitionKeySelectors = createPkSelectors(pkDefinition);
+            SqlQuerySpec querySpec = createLogicalPartitionScanQuerySpec(partitionKey, partitionKeySelectors);
 
             String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
             UUID activityId = randomUuid();
@@ -3870,8 +4516,27 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                          ServerBatchRequest serverBatchRequest,
                                                          RequestOptions options,
                                                          boolean disableAutomaticIdGeneration) {
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
-        return ObservableHelper.inlineIfPossibleAsObs(() -> executeBatchRequestInternal(collectionLink, serverBatchRequest, options, documentClientRetryPolicy, disableAutomaticIdGeneration), documentClientRetryPolicy);
+        AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, ResourceType.Document, OperationType.Batch);
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
+        return handleCircuitBreakingFeedbackForPointOperation(
+            getPointOperationResponseMonoWithE2ETimeout(
+                nonNullRequestOptions,
+                endToEndPolicyConfig,
+                ObservableHelper
+                    .inlineIfPossibleAsObs(() -> executeBatchRequestInternal(
+                        collectionLink,
+                        serverBatchRequest,
+                        options,
+                        documentClientRetryPolicy,
+                        disableAutomaticIdGeneration,
+                        requestReference), documentClientRetryPolicy),
+                scopedDiagnosticsFactory
+            ),
+            requestReference);
     }
 
     private Mono<StoredProcedureResponse> executeStoredProcedureInternal(String storedProcedureLink,
@@ -3891,7 +4556,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     requestHeaders, options);
 
             if (options != null) {
-                request.requestContext.setExcludeRegions(options.getExcludeRegions());
+                request.requestContext.setExcludeRegions(options.getExcludedRegions());
+                request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             }
 
             if (retryPolicy != null) {
@@ -3915,14 +4581,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                          ServerBatchRequest serverBatchRequest,
                                                                          RequestOptions options,
                                                                          DocumentClientRetryPolicy requestRetryPolicy,
-                                                                         boolean disableAutomaticIdGeneration) {
+                                                                         boolean disableAutomaticIdGeneration,
+                                                                         AtomicReference<RxDocumentServiceRequest> requestReference) {
 
         try {
             logger.debug("Executing a Batch request with number of operations {}", serverBatchRequest.getOperations().size());
 
             Mono<RxDocumentServiceRequest> requestObs = getBatchDocumentRequest(requestRetryPolicy, collectionLink, serverBatchRequest, options, disableAutomaticIdGeneration);
+
             Mono<RxDocumentServiceResponse> responseObservable =
-                requestObs.flatMap(request -> create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options)));
+                requestObs.flatMap(request -> {
+                    requestReference.set(request);
+                    return create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
+                });
 
             return responseObservable
                 .map(serviceResponse -> BatchResponseParser.fromDocumentServiceResponse(serviceResponse, serverBatchRequest, true));
@@ -4935,12 +5606,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc =
             request -> readFeed(request)
-                .map(response -> toFeedResponsePage(
+                .map(response -> feedResponseAccessor.createFeedResponse(
                                     response,
-                                    ImplementationBridgeHelpers
-                                        .CosmosQueryRequestOptionsHelper
-                                        .getCosmosQueryRequestOptionsAccessor()
-                                        .getItemFactoryMethod(nonNullOptions, klass),
+                                    DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
                                     klass));
 
         return Paginator
@@ -4948,7 +5616,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 nonNullOptions,
                 createRequestFunc,
                 executeFunc,
-                maxPageSize);
+                maxPageSize,
+                this.globalEndpointManager,
+                this.globalPartitionEndpointManagerForCircuitBreaker);
     }
 
     @Override
@@ -4984,12 +5654,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public Object getSession() {
+    public ISessionContainer getSession() {
         return this.sessionContainer;
     }
 
-    public void setSession(Object sessionContainer) {
-        this.sessionContainer = (SessionContainer) sessionContainer;
+    public void setSession(ISessionContainer sessionContainer) {
+        this.sessionContainer = sessionContainer;
+    }
+
+    public CosmosAsyncClient getCachedCosmosAsyncClientSnapshot() {
+        return cachedCosmosAsyncClientSnapshot.get();
     }
 
     @Override
@@ -5005,6 +5679,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public GlobalEndpointManager getGlobalEndpointManager() {
         return this.globalEndpointManager;
+    }
+
+    @Override
+    public GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
+        return this.globalPartitionEndpointManagerForCircuitBreaker;
     }
 
     @Override
@@ -5110,6 +5789,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (!closed.getAndSet(true)) {
             activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
+
+            if (this.globalPartitionEndpointManagerForCircuitBreaker != null) {
+                logger.info("Closing globalPartitionEndpointManagerForCircuitBreaker...");
+                LifeCycleUtils.closeQuietly(this.globalPartitionEndpointManagerForCircuitBreaker);
+            }
+
             logger.info("Closing Global Endpoint Manager ...");
             LifeCycleUtils.closeQuietly(this.globalEndpointManager);
             logger.info("Closing StoreClientFactory ...");
@@ -5129,12 +5814,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.warn("Already shutdown!");
         }
     }
-
-    @Override
-    public ItemDeserializer getItemDeserializer() {
-        return this.itemDeserializer;
-    }
-
     @Override
     public synchronized void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group can not be null");
@@ -5200,21 +5879,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(
         PartitionKey partitionKey,
-        String partitionKeySelector) {
+        List<String> partitionKeySelectors) {
 
         StringBuilder queryStringBuilder = new StringBuilder();
         List<SqlParameter> parameters = new ArrayList<>();
 
         queryStringBuilder.append("SELECT * FROM c WHERE");
-        Object pkValue = ModelBridgeInternal.getPartitionKeyObject(partitionKey);
-        String pkParamName = "@pkValue";
-        parameters.add(new SqlParameter(pkParamName, pkValue));
+        Object[] pkValues = ModelBridgeInternal.getPartitionKeyInternal(partitionKey).toObjectArray();
+        String pkParamNamePrefix = "@pkValue";
+        for (int i = 0; i < pkValues.length; i++) {
+            StringBuilder subQueryStringBuilder = new StringBuilder();
+            String sqlParameterName = pkParamNamePrefix + i;
 
-        queryStringBuilder.append(" c");
-        // partition key def
-        queryStringBuilder.append(partitionKeySelector);
-        queryStringBuilder.append((" = "));
-        queryStringBuilder.append(pkParamName);
+            if (i > 0) {
+                subQueryStringBuilder.append(" AND ");
+            }
+            subQueryStringBuilder.append(" c");
+            subQueryStringBuilder.append(partitionKeySelectors.get(i));
+            subQueryStringBuilder.append((" = "));
+            subQueryStringBuilder.append(sqlParameterName);
+
+            parameters.add(new SqlParameter(sqlParameterName, pkValues[i]));
+            queryStringBuilder.append(subQueryStringBuilder);
+        }
 
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
     }
@@ -5314,12 +6001,177 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new UUID(msb, lsb);
     }
 
+    public void addPartitionLevelUnavailableRegionsForRequest(
+        RxDocumentServiceRequest request,
+        RequestOptions options,
+        CollectionRoutingMap collectionRoutingMap,
+        DocumentClientRetryPolicy documentClientRetryPolicy) {
+
+        checkNotNull(request, "Argument 'request' cannot be null!");
+
+        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+
+            checkNotNull(options, "Argument 'options' cannot be null!");
+            checkNotNull(options.getPartitionKeyDefinition(), "Argument 'partitionKeyDefinition' within options cannot be null!");
+            checkNotNull(collectionRoutingMap, "Argument 'collectionRoutingMap' cannot be null!");
+
+            PartitionKeyRange resolvedPartitionKeyRange = null;
+
+            PartitionKeyDefinition partitionKeyDefinition = options.getPartitionKeyDefinition();
+            PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+
+            if (partitionKeyInternal != null) {
+                String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
+                resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+
+                // cache the effective partition key if possible - can be a bottleneck,
+                // since it is also recomputed in AddressResolver
+                request.setEffectivePartitionKey(effectivePartitionKeyString);
+            } else if (request.getPartitionKeyRangeIdentity() != null) {
+                resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+            }
+
+            checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+            checkNotNull(this.globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+            // setting it here in case request.requestContext.resolvedPartitionKeyRange
+            // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+            // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+            // help failover as well)
+            // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+            // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+            request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+            // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+            // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
+            // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+            // such scenarios and circuit breaking in general
+            request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
+
+            List<String> unavailableRegionsForPartition
+                = this.globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                request.getResourceId(),
+                resolvedPartitionKeyRange,
+                request.getOperationType());
+
+            request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+
+            // onBeforeSendRequest uses excluded regions to know the next location endpoint
+            // to route the request to unavailable regions are effectively excluded regions for this request
+            if (documentClientRetryPolicy != null) {
+                documentClientRetryPolicy.onBeforeSendRequest(request);
+            }
+        }
+    }
+
+    public void mergeContextInformationIntoDiagnosticsForPointRequest(
+        RxDocumentServiceRequest request,
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+
+        if (pointOperationContextForCircuitBreaker != null) {
+            SerializationDiagnosticsContext serializationDiagnosticsContext
+                = pointOperationContextForCircuitBreaker.getSerializationDiagnosticsContext();
+
+            diagnosticsAccessor.mergeSerializationDiagnosticContext(request.requestContext.cosmosDiagnostics, serializationDiagnosticsContext);
+        }
+    }
+
+    public void addPartitionLevelUnavailableRegionsForFeedRequest(
+        RxDocumentServiceRequest request,
+        CosmosQueryRequestOptions options,
+        CollectionRoutingMap collectionRoutingMap) {
+
+        checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+
+        PartitionKeyRange resolvedPartitionKeyRange = null;
+
+        if (request.getPartitionKeyRangeIdentity() != null) {
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+        } else if (request.getPartitionKeyInternal() != null) {
+            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getPartitionKeyDefinition(options));
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+        }
+
+        checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+        // setting it here in case request.requestContext.resolvedPartitionKeyRange
+        // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+        // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+        // help failover as well)
+        // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+        // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+        request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+        // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+        // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+        // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+        // such scenarios and circuit breaking in general
+        request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
+
+        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+            checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+            List<String> unavailableRegionsForPartition
+                = this.globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                request.getResourceId(),
+                resolvedPartitionKeyRange,
+                request.getOperationType());
+
+            request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+        }
+    }
+
+    public void addPartitionLevelUnavailableRegionsForChangeFeedRequest(
+        RxDocumentServiceRequest request,
+        CosmosChangeFeedRequestOptions options,
+        CollectionRoutingMap collectionRoutingMap) {
+        checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+
+        PartitionKeyRange resolvedPartitionKeyRange = null;
+
+        if (request.getPartitionKeyRangeIdentity() != null) {
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+        } else if (request.getPartitionKeyInternal() != null) {
+            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor().getPartitionKeyDefinition(options));
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+        }
+
+        checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+        // setting it here in case request.requestContext.resolvedPartitionKeyRange
+        // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+        // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+        // help failover as well)
+        // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+        // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+        request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+        // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+        // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+        // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+        // such scenarios and circuit breaking in general
+        request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
+
+        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+            checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+            List<String> unavailableRegionsForPartition
+                = this.globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                request.getResourceId(),
+                resolvedPartitionKeyRange,
+                request.getOperationType());
+
+            request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+        }
+    }
+
     private Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(
         ResourceType resourceType,
         OperationType operationType,
         DocumentPointOperation callback,
         RequestOptions initialRequestOptions,
-        boolean idempotentWriteRetriesEnabled) {
+        boolean idempotentWriteRetriesEnabled,
+        String collectionLink) {
 
         return wrapPointOperationWithAvailabilityStrategy(
             resourceType,
@@ -5327,7 +6179,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             callback,
             initialRequestOptions,
             idempotentWriteRetriesEnabled,
-            this
+            this,
+            collectionLink
         );
     }
 
@@ -5337,7 +6190,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentPointOperation callback,
         RequestOptions initialRequestOptions,
         boolean idempotentWriteRetriesEnabled,
-        DiagnosticsClientContext innerDiagnosticsFactory) {
+        DiagnosticsClientContext innerDiagnosticsFactory,
+        String collectionLink) {
 
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
         checkNotNull(operationType, "Argument 'operationType' must not be null.");
@@ -5351,7 +6205,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             "This method can only be used for document point operations.");
 
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
-            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions);
+            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, resourceType, operationType);
 
         List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
             endToEndPolicyConfig,
@@ -5360,13 +6214,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             idempotentWriteRetriesEnabled,
             nonNullRequestOptions);
 
+        AtomicBoolean isOperationSuccessful = new AtomicBoolean(false);
+
         if (orderedApplicableRegionsForSpeculation.size() < 2) {
             // There is at most one applicable region - no hedging possible
-            return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory);
+            PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreakerForMainRequest = new PointOperationContextForCircuitBreaker(
+                isOperationSuccessful,
+                false,
+                collectionLink,
+                new SerializationDiagnosticsContext());
+
+            pointOperationContextForCircuitBreakerForMainRequest.setIsRequestHedged(false);
+            return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, pointOperationContextForCircuitBreakerForMainRequest);
         }
 
         ThresholdBasedAvailabilityStrategy availabilityStrategy =
-            (ThresholdBasedAvailabilityStrategy)endToEndPolicyConfig.getAvailabilityStrategy();
+            (ThresholdBasedAvailabilityStrategy) endToEndPolicyConfig.getAvailabilityStrategy();
         List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
@@ -5381,27 +6244,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     // by the ClientRetryPolicy for the initial request - so, any outcome of the
                     // initial Mono should be treated as non-transient error - even when
                     // the error would otherwise be treated as transient
-                    Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
-                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
-                                .map(NonTransientPointOperationResult::new)
-                                .onErrorResume(
-                                    RxDocumentClientImpl::isCosmosException,
-                                    t -> Mono.just(
-                                        new NonTransientPointOperationResult(
-                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+                    PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreakerForMainRequest
+                        = new PointOperationContextForCircuitBreaker(
+                        isOperationSuccessful,
+                        true,
+                        collectionLink,
+                        new SerializationDiagnosticsContext());
 
-                        if (logger.isDebugEnabled()) {
-                            monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
-                                "STARTING to process {} operation in region '{}'",
-                                operationType,
-                                region)));
-                        } else {
-                            monoList.add(initialMonoAcrossAllRegions);
-                        }
+                    pointOperationContextForCircuitBreakerForMainRequest.setIsRequestHedged(false);
+                    Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
+                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForMainRequest)
+                            .map(NonTransientPointOperationResult::new)
+                            .onErrorResume(
+                                RxDocumentClientImpl::isCosmosException,
+                                t -> Mono.just(
+                                    new NonTransientPointOperationResult(
+                                        Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+
+                    if (logger.isDebugEnabled()) {
+                        monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
+                            "STARTING to process {} operation in region '{}'",
+                            operationType,
+                            region)));
+                    } else {
+                        monoList.add(initialMonoAcrossAllRegions);
+                    }
                 } else {
-                    clonedOptions.setExcludeRegions(
+                    clonedOptions.setExcludedRegions(
                         getEffectiveExcludedRegionsForHedging(
-                            nonNullRequestOptions.getExcludeRegions(),
+                            nonNullRequestOptions.getExcludedRegions(),
                             orderedApplicableRegionsForSpeculation,
                             region)
                     );
@@ -5409,14 +6280,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     // Non-Transient errors are mapped to a value - this ensures the firstWithValue
                     // operator below will complete the composite Mono for both successful values
                     // and non-transient errors
+                    PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreakerForHedgedRequest
+                        = new PointOperationContextForCircuitBreaker(
+                        isOperationSuccessful,
+                        true,
+                        collectionLink,
+                        new SerializationDiagnosticsContext());
+
+                    pointOperationContextForCircuitBreakerForHedgedRequest.setIsRequestHedged(true);
                     Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
-                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
-                                .map(NonTransientPointOperationResult::new)
-                                .onErrorResume(
-                                    RxDocumentClientImpl::isNonTransientCosmosException,
-                                    t -> Mono.just(
-                                        new NonTransientPointOperationResult(
-                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForHedgedRequest)
+                            .map(NonTransientPointOperationResult::new)
+                            .onErrorResume(
+                                RxDocumentClientImpl::isNonTransientCosmosException,
+                                t -> Mono.just(
+                                    new NonTransientPointOperationResult(
+                                        Utils.as(Exceptions.unwrap(t), CosmosException.class))));
 
                     Duration delayForCrossRegionalRetry = (availabilityStrategy)
                         .getThreshold()
@@ -5620,7 +6499,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             resourceType,
             operationType,
             isIdempotentWriteRetriesEnabled,
-            options.getExcludeRegions());
+            options.getExcludedRegions());
     }
 
     private List<String> getApplicableRegionsForSpeculation(
@@ -5673,15 +6552,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final OperationType operationType,
         final Supplier<DocumentClientRetryPolicy> retryPolicyFactory,
         final RxDocumentServiceRequest req,
-        final BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<T>> feedOperation
-    ) {
+        final BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<T>> feedOperation,
+        final String collectionLink) {
+
         checkNotNull(retryPolicyFactory, "Argument 'retryPolicyFactory' must not be null.");
         checkNotNull(req, "Argument 'req' must not be null.");
         assert(resourceType == ResourceType.Document);
 
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
             this.getEffectiveEndToEndOperationLatencyPolicyConfig(
-                req.requestContext.getEndToEndOperationLatencyPolicyConfig());
+                req.requestContext.getEndToEndOperationLatencyPolicyConfig(), resourceType, operationType);
 
         List<String> initialExcludedRegions = req.requestContext.getExcludeRegions();
         List<String> orderedApplicableRegionsForSpeculation = this.getApplicableRegionsForSpeculation(
@@ -5689,13 +6569,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             resourceType,
             operationType,
             false,
-            initialExcludedRegions
-        );
+            initialExcludedRegions);
+
+        Map<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess = new ConcurrentHashMap<>();
+
 
         if (orderedApplicableRegionsForSpeculation.size() < 2) {
+            FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow
+                = new FeedOperationContextForCircuitBreaker(
+                partitionKeyRangesWithSuccess,
+                false,
+                collectionLink);
+
+            feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow.setIsRequestHedged(false);
+            req.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow);
+
             // There is at most one applicable region - no hedging possible
             return feedOperation.apply(retryPolicyFactory, req);
         }
+
+        FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreakerForParentRequestInAvailabilityStrategyFlow
+            = new FeedOperationContextForCircuitBreaker(
+            partitionKeyRangesWithSuccess,
+            true,
+            collectionLink);
+
+        feedOperationContextForCircuitBreakerForParentRequestInAvailabilityStrategyFlow.setIsRequestHedged(false);
+        req.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForParentRequestInAvailabilityStrategyFlow);
 
         ThresholdBasedAvailabilityStrategy availabilityStrategy =
             (ThresholdBasedAvailabilityStrategy)endToEndPolicyConfig.getAvailabilityStrategy();
@@ -5711,14 +6611,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     // by the ClientRetryPolicy for the initial request - so, any outcome of the
                     // initial Mono should be treated as non-transient error - even when
                     // the error would otherwise be treated as transient
+                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreakerForNonHedgedRequest
+                        = new FeedOperationContextForCircuitBreaker(
+                        partitionKeyRangesWithSuccess,
+                        true,
+                        collectionLink);
+
+                    feedOperationContextForCircuitBreakerForNonHedgedRequest.setIsRequestHedged(false);
+                    clonedRequest.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForNonHedgedRequest);
+
                     Mono<NonTransientFeedOperationResult<T>> initialMonoAcrossAllRegions =
-                        feedOperation.apply(retryPolicyFactory, clonedRequest)
-                                .map(NonTransientFeedOperationResult::new)
-                                .onErrorResume(
-                                    RxDocumentClientImpl::isCosmosException,
-                                    t -> Mono.just(
-                                        new NonTransientFeedOperationResult<>(
-                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+                        handleCircuitBreakingFeedbackForFeedOperationWithAvailabilityStrategy(feedOperation.apply(retryPolicyFactory, clonedRequest)
+                            .map(NonTransientFeedOperationResult::new)
+                            .onErrorResume(
+                                RxDocumentClientImpl::isCosmosException,
+                                t -> Mono.just(
+                                    new NonTransientFeedOperationResult<>(
+                                        Utils.as(Exceptions.unwrap(t), CosmosException.class)))), clonedRequest);
 
                     if (logger.isDebugEnabled()) {
                         monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
@@ -5736,17 +6645,28 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             region)
                     );
 
+                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreakerForHedgedRequest
+                        = new FeedOperationContextForCircuitBreaker(
+                        partitionKeyRangesWithSuccess,
+                        true,
+                        collectionLink);
+
+                    feedOperationContextForCircuitBreakerForHedgedRequest.setIsRequestHedged(true);
+                    clonedRequest.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForHedgedRequest);
+
+                    clonedRequest.requestContext.setKeywordIdentifiers(req.requestContext.getKeywordIdentifiers());
+
                     // Non-Transient errors are mapped to a value - this ensures the firstWithValue
                     // operator below will complete the composite Mono for both successful values
                     // and non-transient errors
                     Mono<NonTransientFeedOperationResult<T>> regionalCrossRegionRetryMono =
-                        feedOperation.apply(retryPolicyFactory, clonedRequest)
-                                .map(NonTransientFeedOperationResult::new)
-                                .onErrorResume(
-                                    RxDocumentClientImpl::isNonTransientCosmosException,
-                                    t -> Mono.just(
-                                        new NonTransientFeedOperationResult<>(
-                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+                        handleCircuitBreakingFeedbackForFeedOperationWithAvailabilityStrategy(feedOperation.apply(retryPolicyFactory, clonedRequest)
+                            .map(NonTransientFeedOperationResult::new)
+                            .onErrorResume(
+                                RxDocumentClientImpl::isNonTransientCosmosException,
+                                t -> Mono.just(
+                                    new NonTransientFeedOperationResult<>(
+                                        Utils.as(Exceptions.unwrap(t), CosmosException.class)))), clonedRequest);
 
                     Duration delayForCrossRegionalRetry = (availabilityStrategy)
                         .getThreshold()
@@ -5820,9 +6740,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             });
     }
 
+    private void handleLocationCancellationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
+
+        URI firstContactedLocationEndpoint = diagnosticsAccessor
+            .getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
+
+        if (firstContactedLocationEndpoint != null) {
+            this.globalPartitionEndpointManagerForCircuitBreaker
+                .handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+        }
+    }
+
     @FunctionalInterface
     private interface DocumentPointOperation {
-        Mono<ResourceResponse<Document>> apply(RequestOptions requestOptions, CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig, DiagnosticsClientContext clientContextOverride);
+        Mono<ResourceResponse<Document>> apply(
+            RequestOptions requestOptions,
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig,
+            DiagnosticsClientContext clientContextOverride,
+            PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker);
     }
 
     private static class NonTransientPointOperationResult {

@@ -5,56 +5,66 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The request payload for answering the call. */
+/**
+ * The request payload for answering the call.
+ */
 @Fluent
-public final class AnswerCallRequestInternal {
+public final class AnswerCallRequestInternal implements JsonSerializable<AnswerCallRequestInternal> {
     /*
      * The context associated with the call.
      */
-    @JsonProperty(value = "incomingCallContext", required = true)
     private String incomingCallContext;
 
     /*
      * The callback uri.
      */
-    @JsonProperty(value = "callbackUri", required = true)
     private String callbackUri;
+
+    /*
+     * Used by customer to send custom calling context to targets when answering On-Behalf-Of call
+     */
+    private CustomCallingContext customCallingContext;
 
     /*
      * A customer set value used to track the answering of a call.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
-
-    /*
-     * Media Streaming Configuration.
-     */
-    @JsonProperty(value = "mediaStreamingConfiguration")
-    private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
-
-    /*
-     * Live Transcription Configuration.
-     */
-    @JsonProperty(value = "transcriptionConfiguration")
-    private TranscriptionConfigurationInternal transcriptionConfiguration;
 
     /*
      * AI options for the call.
      */
-    @JsonProperty(value = "callIntelligenceOptions")
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /*
      * The identifier of the call automation entity which answers the call
      */
-    @JsonProperty(value = "answeredBy")
     private CommunicationUserIdentifierModel answeredBy;
+
+    /*
+     * Media Streaming Options.
+     */
+    private MediaStreamingOptionsInternal mediaStreamingOptions;
+
+    /*
+     * Transcription Options.
+     */
+    private TranscriptionOptionsInternal transcriptionOptions;
+
+    /**
+     * Creates an instance of AnswerCallRequestInternal class.
+     */
+    public AnswerCallRequestInternal() {
+    }
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
-     *
+     * 
      * @return the incomingCallContext value.
      */
     public String getIncomingCallContext() {
@@ -63,7 +73,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the incomingCallContext property: The context associated with the call.
-     *
+     * 
      * @param incomingCallContext the incomingCallContext value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -74,7 +84,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Get the callbackUri property: The callback uri.
-     *
+     * 
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
@@ -83,7 +93,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the callbackUri property: The callback uri.
-     *
+     * 
      * @param callbackUri the callbackUri value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -93,8 +103,30 @@ public final class AnswerCallRequestInternal {
     }
 
     /**
+     * Get the customCallingContext property: Used by customer to send custom calling context to targets when answering
+     * On-Behalf-Of call.
+     * 
+     * @return the customCallingContext value.
+     */
+    public CustomCallingContext getCustomCallingContext() {
+        return this.customCallingContext;
+    }
+
+    /**
+     * Set the customCallingContext property: Used by customer to send custom calling context to targets when answering
+     * On-Behalf-Of call.
+     * 
+     * @param customCallingContext the customCallingContext value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
+        this.customCallingContext = customCallingContext;
+        return this;
+    }
+
+    /**
      * Get the operationContext property: A customer set value used to track the answering of a call.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -103,7 +135,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the operationContext property: A customer set value used to track the answering of a call.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -113,50 +145,8 @@ public final class AnswerCallRequestInternal {
     }
 
     /**
-     * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
-     * @return the mediaStreamingConfiguration value.
-     */
-    public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
-        return this.mediaStreamingConfiguration;
-    }
-
-    /**
-     * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
-     * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
-        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionConfiguration property: Live Transcription Configuration.
-     *
-     * @return the transcriptionConfiguration value.
-     */
-    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
-        return this.transcriptionConfiguration;
-    }
-
-    /**
-     * Set the transcriptionConfiguration property: Live Transcription Configuration.
-     *
-     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setTranscriptionConfiguration(
-            TranscriptionConfigurationInternal transcriptionConfiguration) {
-        this.transcriptionConfiguration = transcriptionConfiguration;
-        return this;
-    }
-
-    /**
      * Get the callIntelligenceOptions property: AI options for the call.
-     *
+     * 
      * @return the callIntelligenceOptions value.
      */
     public CallIntelligenceOptionsInternal getCallIntelligenceOptions() {
@@ -165,19 +155,19 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the callIntelligenceOptions property: AI options for the call.
-     *
+     * 
      * @param callIntelligenceOptions the callIntelligenceOptions value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setCallIntelligenceOptions(
-            CallIntelligenceOptionsInternal callIntelligenceOptions) {
+    public AnswerCallRequestInternal
+        setCallIntelligenceOptions(CallIntelligenceOptionsInternal callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
     }
 
     /**
      * Get the answeredBy property: The identifier of the call automation entity which answers the call.
-     *
+     * 
      * @return the answeredBy value.
      */
     public CommunicationUserIdentifierModel getAnsweredBy() {
@@ -186,12 +176,114 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the answeredBy property: The identifier of the call automation entity which answers the call.
-     *
+     * 
      * @param answeredBy the answeredBy value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
     public AnswerCallRequestInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
         this.answeredBy = answeredBy;
         return this;
+    }
+
+    /**
+     * Get the mediaStreamingOptions property: Media Streaming Options.
+     * 
+     * @return the mediaStreamingOptions value.
+     */
+    public MediaStreamingOptionsInternal getMediaStreamingOptions() {
+        return this.mediaStreamingOptions;
+    }
+
+    /**
+     * Set the mediaStreamingOptions property: Media Streaming Options.
+     * 
+     * @param mediaStreamingOptions the mediaStreamingOptions value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setMediaStreamingOptions(MediaStreamingOptionsInternal mediaStreamingOptions) {
+        this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Get the transcriptionOptions property: Transcription Options.
+     * 
+     * @return the transcriptionOptions value.
+     */
+    public TranscriptionOptionsInternal getTranscriptionOptions() {
+        return this.transcriptionOptions;
+    }
+
+    /**
+     * Set the transcriptionOptions property: Transcription Options.
+     * 
+     * @param transcriptionOptions the transcriptionOptions value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setTranscriptionOptions(TranscriptionOptionsInternal transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("incomingCallContext", this.incomingCallContext);
+        jsonWriter.writeStringField("callbackUri", this.callbackUri);
+        jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
+        jsonWriter.writeJsonField("answeredBy", this.answeredBy);
+        jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
+        jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnswerCallRequestInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnswerCallRequestInternal if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnswerCallRequestInternal.
+     */
+    public static AnswerCallRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnswerCallRequestInternal deserializedAnswerCallRequestInternal = new AnswerCallRequestInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("incomingCallContext".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.incomingCallContext = reader.getString();
+                } else if ("callbackUri".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.callbackUri = reader.getString();
+                } else if ("customCallingContext".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.customCallingContext = CustomCallingContext.fromJson(reader);
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.operationContext = reader.getString();
+                } else if ("callIntelligenceOptions".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.callIntelligenceOptions
+                        = CallIntelligenceOptionsInternal.fromJson(reader);
+                } else if ("answeredBy".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.answeredBy
+                        = CommunicationUserIdentifierModel.fromJson(reader);
+                } else if ("mediaStreamingOptions".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.mediaStreamingOptions
+                        = MediaStreamingOptionsInternal.fromJson(reader);
+                } else if ("transcriptionOptions".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.transcriptionOptions
+                        = TranscriptionOptionsInternal.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnswerCallRequestInternal;
+        });
     }
 }

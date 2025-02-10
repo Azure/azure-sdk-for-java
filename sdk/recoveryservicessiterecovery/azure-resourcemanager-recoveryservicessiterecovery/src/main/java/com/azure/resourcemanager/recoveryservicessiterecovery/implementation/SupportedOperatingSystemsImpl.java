@@ -13,8 +13,7 @@ public final class SupportedOperatingSystemsImpl implements SupportedOperatingSy
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    SupportedOperatingSystemsImpl(
-        SupportedOperatingSystemsInner innerObject,
+    SupportedOperatingSystemsImpl(SupportedOperatingSystemsInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

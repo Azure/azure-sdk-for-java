@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.client;
 
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
 import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 
 /**

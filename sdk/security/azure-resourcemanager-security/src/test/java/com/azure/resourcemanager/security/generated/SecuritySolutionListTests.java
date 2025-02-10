@@ -15,48 +15,30 @@ import org.junit.jupiter.api.Assertions;
 public final class SecuritySolutionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecuritySolutionList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"securityFamily\":\"Ngfw\",\"provisioningState\":\"Updating\",\"template\":\"ilguooqjagmditg\",\"protectionStatus\":\"eiookjbsah\"},\"location\":\"dt\",\"id\":\"delqacslmoto\",\"name\":\"bnfxofvc\",\"type\":\"k\"},{\"properties\":{\"securityFamily\":\"Va\",\"provisioningState\":\"Failed\",\"template\":\"azftxejwabmdujtm\",\"protectionStatus\":\"cope\"},\"location\":\"m\",\"id\":\"urbuhhlkyqltq\",\"name\":\"rogtuwkf\",\"type\":\"djk\"},{\"properties\":{\"securityFamily\":\"SaasWaf\",\"provisioningState\":\"Failed\",\"template\":\"idfv\",\"protectionStatus\":\"lglxnfui\"},\"location\":\"kbusqo\",\"id\":\"sfikayiansharuj\",\"name\":\"ji\",\"type\":\"xfz\"},{\"properties\":{\"securityFamily\":\"Waf\",\"provisioningState\":\"Failed\",\"template\":\"tvwkpqhjpenu\",\"protectionStatus\":\"gbqe\"},\"location\":\"ekewvnqvcdlguauc\",\"id\":\"f\",\"name\":\"jwnlax\",\"type\":\"un\"}],\"nextLink\":\"ikczvvitacgxmf\"}")
-                .toObject(SecuritySolutionList.class);
-        Assertions.assertEquals(SecurityFamily.NGFW, model.value().get(0).securityFamily());
-        Assertions.assertEquals(ProvisioningState.UPDATING, model.value().get(0).provisioningState());
-        Assertions.assertEquals("ilguooqjagmditg", model.value().get(0).template());
-        Assertions.assertEquals("eiookjbsah", model.value().get(0).protectionStatus());
+        SecuritySolutionList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"provisioningState\":\"Succeeded\",\"template\":\"lnwiaaomylwe\",\"protectionStatus\":\"z\"},\"location\":\"cse\",\"id\":\"hwwn\",\"name\":\"jhlfzswpchwahf\",\"type\":\"ousnfepgfewe\"},{\"properties\":{\"securityFamily\":\"Waf\",\"provisioningState\":\"Succeeded\",\"template\":\"xgncxyk\",\"protectionStatus\":\"hdjhlimmbcx\"},\"location\":\"bcporxvxcjzhqizx\",\"id\":\"pxtgqscjav\",\"name\":\"t\",\"type\":\"uhdqazk\"}],\"nextLink\":\"gg\"}")
+            .toObject(SecuritySolutionList.class);
+        Assertions.assertEquals(SecurityFamily.VA, model.value().get(0).securityFamily());
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("lnwiaaomylwe", model.value().get(0).template());
+        Assertions.assertEquals("z", model.value().get(0).protectionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecuritySolutionList model =
-            new SecuritySolutionList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SecuritySolutionInner()
-                                .withSecurityFamily(SecurityFamily.NGFW)
-                                .withProvisioningState(ProvisioningState.UPDATING)
-                                .withTemplate("ilguooqjagmditg")
-                                .withProtectionStatus("eiookjbsah"),
-                            new SecuritySolutionInner()
-                                .withSecurityFamily(SecurityFamily.VA)
-                                .withProvisioningState(ProvisioningState.FAILED)
-                                .withTemplate("azftxejwabmdujtm")
-                                .withProtectionStatus("cope"),
-                            new SecuritySolutionInner()
-                                .withSecurityFamily(SecurityFamily.SAAS_WAF)
-                                .withProvisioningState(ProvisioningState.FAILED)
-                                .withTemplate("idfv")
-                                .withProtectionStatus("lglxnfui"),
-                            new SecuritySolutionInner()
-                                .withSecurityFamily(SecurityFamily.WAF)
-                                .withProvisioningState(ProvisioningState.FAILED)
-                                .withTemplate("tvwkpqhjpenu")
-                                .withProtectionStatus("gbqe")));
+        SecuritySolutionList model = new SecuritySolutionList().withValue(Arrays.asList(
+            new SecuritySolutionInner().withSecurityFamily(SecurityFamily.VA)
+                .withProvisioningState(ProvisioningState.SUCCEEDED)
+                .withTemplate("lnwiaaomylwe")
+                .withProtectionStatus("z"),
+            new SecuritySolutionInner().withSecurityFamily(SecurityFamily.WAF)
+                .withProvisioningState(ProvisioningState.SUCCEEDED)
+                .withTemplate("xgncxyk")
+                .withProtectionStatus("hdjhlimmbcx")));
         model = BinaryData.fromObject(model).toObject(SecuritySolutionList.class);
-        Assertions.assertEquals(SecurityFamily.NGFW, model.value().get(0).securityFamily());
-        Assertions.assertEquals(ProvisioningState.UPDATING, model.value().get(0).provisioningState());
-        Assertions.assertEquals("ilguooqjagmditg", model.value().get(0).template());
-        Assertions.assertEquals("eiookjbsah", model.value().get(0).protectionStatus());
+        Assertions.assertEquals(SecurityFamily.VA, model.value().get(0).securityFamily());
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.value().get(0).provisioningState());
+        Assertions.assertEquals("lnwiaaomylwe", model.value().get(0).template());
+        Assertions.assertEquals("z", model.value().get(0).protectionStatus());
     }
 }

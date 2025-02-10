@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,95 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.21 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-data-schemaregistry` from `1.4.9` to version `1.5.0`.
+
+## 1.1.20 (2024-08-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-data-schemaregistry` from `1.4.8` to version `1.4.9`.
+
+
+## 1.1.19 (2024-07-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-data-schemaregistry` from `1.4.7` to version `1.4.8`.
+
+
+## 1.1.18 (2024-06-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-data-schemaregistry` from `1.4.6` to version `1.4.7`.
+
+
+## 1.1.17 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-data-schemaregistry` from `1.4.5` to version `1.4.6`.
+
+
+## 1.1.16 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-data-schemaregistry` from `1.4.4` to version `1.4.5`.
+
+
+## 1.1.15 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-data-schemaregistry` from `1.4.3` to version `1.4.4`.
+
+
+## 1.1.14 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-data-schemaregistry` from `1.4.2` to version `1.4.3`.
+
+
+## 1.1.13 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-data-schemaregistry` from `1.4.1` to version `1.4.2`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
 
 ## 1.1.12 (2023-11-20)
 

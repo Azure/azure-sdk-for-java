@@ -6,43 +6,47 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An SMS receiver. */
+/**
+ * An SMS receiver.
+ */
 @Fluent
-public final class SmsReceiver {
+public final class SmsReceiver implements JsonSerializable<SmsReceiver> {
     /*
      * The name of the SMS receiver. Names must be unique across all receivers within an action group.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The country code of the SMS receiver.
      */
-    @JsonProperty(value = "countryCode", required = true)
     private String countryCode;
 
     /*
      * The phone number of the SMS receiver.
      */
-    @JsonProperty(value = "phoneNumber", required = true)
     private String phoneNumber;
 
     /*
      * The status of the receiver.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ReceiverStatus status;
 
-    /** Creates an instance of SmsReceiver class. */
+    /**
+     * Creates an instance of SmsReceiver class.
+     */
     public SmsReceiver() {
     }
 
     /**
      * Get the name property: The name of the SMS receiver. Names must be unique across all receivers within an action
      * group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +56,7 @@ public final class SmsReceiver {
     /**
      * Set the name property: The name of the SMS receiver. Names must be unique across all receivers within an action
      * group.
-     *
+     * 
      * @param name the name value to set.
      * @return the SmsReceiver object itself.
      */
@@ -63,7 +67,7 @@ public final class SmsReceiver {
 
     /**
      * Get the countryCode property: The country code of the SMS receiver.
-     *
+     * 
      * @return the countryCode value.
      */
     public String countryCode() {
@@ -72,7 +76,7 @@ public final class SmsReceiver {
 
     /**
      * Set the countryCode property: The country code of the SMS receiver.
-     *
+     * 
      * @param countryCode the countryCode value to set.
      * @return the SmsReceiver object itself.
      */
@@ -83,7 +87,7 @@ public final class SmsReceiver {
 
     /**
      * Get the phoneNumber property: The phone number of the SMS receiver.
-     *
+     * 
      * @return the phoneNumber value.
      */
     public String phoneNumber() {
@@ -92,7 +96,7 @@ public final class SmsReceiver {
 
     /**
      * Set the phoneNumber property: The phone number of the SMS receiver.
-     *
+     * 
      * @param phoneNumber the phoneNumber value to set.
      * @return the SmsReceiver object itself.
      */
@@ -103,7 +107,7 @@ public final class SmsReceiver {
 
     /**
      * Get the status property: The status of the receiver.
-     *
+     * 
      * @return the status value.
      */
     public ReceiverStatus status() {
@@ -112,26 +116,68 @@ public final class SmsReceiver {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SmsReceiver"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SmsReceiver"));
         }
         if (countryCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property countryCode in model SmsReceiver"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property countryCode in model SmsReceiver"));
         }
         if (phoneNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property phoneNumber in model SmsReceiver"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property phoneNumber in model SmsReceiver"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SmsReceiver.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("countryCode", this.countryCode);
+        jsonWriter.writeStringField("phoneNumber", this.phoneNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmsReceiver from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmsReceiver if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SmsReceiver.
+     */
+    public static SmsReceiver fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmsReceiver deserializedSmsReceiver = new SmsReceiver();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSmsReceiver.name = reader.getString();
+                } else if ("countryCode".equals(fieldName)) {
+                    deserializedSmsReceiver.countryCode = reader.getString();
+                } else if ("phoneNumber".equals(fieldName)) {
+                    deserializedSmsReceiver.phoneNumber = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedSmsReceiver.status = ReceiverStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmsReceiver;
+        });
+    }
 }

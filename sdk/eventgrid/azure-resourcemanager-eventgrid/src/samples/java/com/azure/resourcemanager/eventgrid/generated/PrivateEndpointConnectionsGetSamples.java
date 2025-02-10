@@ -12,7 +12,7 @@ import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsPare
 public final class PrivateEndpointConnectionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * PrivateEndpointConnections_Get.json
      */
     /**
@@ -21,7 +21,8 @@ public final class PrivateEndpointConnectionsGetSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void privateEndpointConnectionsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.privateEndpointConnections().getWithResponse("examplerg", PrivateEndpointConnectionsParentType.TOPICS,
-            "exampletopic1", "BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("examplerg", PrivateEndpointConnectionsParentType.TOPICS, "exampletopic1",
+                "BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B", com.azure.core.util.Context.NONE);
     }
 }

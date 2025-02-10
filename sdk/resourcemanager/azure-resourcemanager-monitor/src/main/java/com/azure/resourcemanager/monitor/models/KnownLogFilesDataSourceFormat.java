@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The data format of the log files. */
+/**
+ * The data format of the log files.
+ */
 public final class KnownLogFilesDataSourceFormat extends ExpandableStringEnum<KnownLogFilesDataSourceFormat> {
-    /** Static value text for KnownLogFilesDataSourceFormat. */
+    /**
+     * Static value text for KnownLogFilesDataSourceFormat.
+     */
     public static final KnownLogFilesDataSourceFormat TEXT = fromString("text");
 
     /**
+     * Creates a new instance of KnownLogFilesDataSourceFormat value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KnownLogFilesDataSourceFormat() {
+    }
+
+    /**
      * Creates or finds a KnownLogFilesDataSourceFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KnownLogFilesDataSourceFormat.
      */
-    @JsonCreator
     public static KnownLogFilesDataSourceFormat fromString(String name) {
         return fromString(name, KnownLogFilesDataSourceFormat.class);
     }
 
     /**
      * Gets known KnownLogFilesDataSourceFormat values.
-     *
+     * 
      * @return known KnownLogFilesDataSourceFormat values.
      */
     public static Collection<KnownLogFilesDataSourceFormat> values() {

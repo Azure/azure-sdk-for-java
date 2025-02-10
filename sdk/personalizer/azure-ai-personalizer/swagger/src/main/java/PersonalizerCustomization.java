@@ -2,14 +2,12 @@
 // Licensed under the MIT License.
 
 import com.azure.autorest.customization.Customization;
-import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
+import com.azure.autorest.customization.PackageCustomization;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.nodeTypes.NodeWithModifiers;
 import org.slf4j.Logger;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Contains customizations for Azure Personalizer swagger code generation.
@@ -18,147 +16,87 @@ public class PersonalizerCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        // Following classes are not intended for consumption by external callers. But we cannot do that since the
-        // current autorest configuration only allows for two packages (and not three). Since these are with the
-        // models package but still need to be accessible from the administration.models package, we have to make them
-        // public. Once issue https://github.com/Azure/autorest.java/issues/1647 is fixed, we can have these in the
-        // implementation package and hidden from the customer.
-//        Arrays.asList("ErrorResponse", "ErrorResponseException",
-//                "InternalError", "PersonalizerError", "PersonalizerErrorCode",
-//                "ServiceStatus")
-        Arrays.asList("ServiceStatus")
-            .forEach(className -> {
-                libraryCustomization
-                    .getClass("com.azure.ai.personalizer.models", className)
-                    .setModifier(0); // 0 -> package-private
+        PackageCustomization adminModels = libraryCustomization.getPackage("com.azure.ai.personalizer.administration.models");
+        PackageCustomization models = libraryCustomization.getPackage("com.azure.ai.personalizer.models");
+        useBinaryDataForRankApis(models);
+        hideMethods(adminModels, models);
+        returnBaseClassTypesForMethodReturnValues(adminModels);
+        hideClasses(adminModels, models);
+    }
+
+    private void useBinaryDataForRankApis(PackageCustomization models) {
+        customizeToUseBinaryData(models, "PersonalizerRankableAction", "features");
+        customizeToUseBinaryData(models, "PersonalizerSlotOptions", "features");
+
+        customizeToUseBinaryData(models, "PersonalizerRankMultiSlotOptions", "contextFeatures");
+        customizeToUseBinaryData(models, "PersonalizerRankOptions", "contextFeatures");
+    }
+
+    private static void customizeToUseBinaryData(PackageCustomization models, String className, String fieldName) {
+        models.getClass(className).customizeAst(ast -> {
+            ast.addImport("com.azure.core.util.BinaryData");
+            ast.getClassByName(className).ifPresent(clazz -> {
+                clazz.getFieldByName(fieldName).get().getVariable(0).setType("List<BinaryData>");
+                clazz.getMethodsByName("get" + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1))
+                    .forEach(method -> method.setType("List<BinaryData>"));
+                clazz.getMethodsByName("set" + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1))
+                    .forEach(method -> method.getParameter(0).setType("List<BinaryData>"));
+
+                MethodDeclaration toJson = clazz.getMethodsByName("toJson").get(0);
+                toJson.setBody(StaticJavaParser.parseBlock(toJson.getBody().get().toString()
+                    .replace("(writer, element) -> writer.writeUntyped(element)",
+                        "(writer, element) -> element.writeTo(writer)")));
+
+                MethodDeclaration fromJson = clazz.getMethodsByName("fromJson").get(0);
+                String fromJsonToReplace = "List<Object> " + fieldName + " = reader.readArray(reader1 -> reader1.readUntyped());";
+                String fromJsonReplacement = "List<BinaryData> " + fieldName + " = reader.readArray(reader1 -> "
+                    + "(reader1.currentToken() == JsonToken.NULL) ? null : BinaryData.fromObject(reader1.readUntyped()));";
+                fromJson.setBody(StaticJavaParser.parseBlock(fromJson.getBody().get().toString()
+                    .replace(fromJsonToReplace, fromJsonReplacement)));
             });
-
-
-        // Same comment as line 21 above applies here as well.
-//        Arrays.asList("EvaluationsCreateHeaders", "PersonalizerPolicyReferenceOptions")
-//            .forEach(className -> {
-//                libraryCustomization
-//                    .getClass("com.azure.ai.personalizer.administration.models", className)
-//                    .setModifier(0); // 0 -> package-private
-//            });
-
-        useBinaryDataForRankApis(libraryCustomization, logger);
-        renameLogMirrorSasUriProperty(libraryCustomization, logger);
-        hideMethods(libraryCustomization, logger);
-        renameOfflineExperimentationProperties(libraryCustomization, logger);
-        returnBaseClassTypesForMethodReturnValues(libraryCustomization, logger);
-        hideClasses(libraryCustomization, logger);
-    }
-
-    private void useBinaryDataForRankApis(LibraryCustomization libraryCustomization, Logger logger) {
-        Arrays.asList("PersonalizerRankableAction", "PersonalizerRankMultiSlotOptions", "PersonalizerRankOptions", "PersonalizerSlotOptions")
-            .forEach(className -> {
-                String fileName = "src/main/java/com/azure/ai/personalizer/models/" + className + ".java";
-                libraryCustomization
-                    .getClass("com.azure.ai.personalizer.models", className)
-                    .addImports("com.azure.core.util.BinaryData");
-                libraryCustomization.getRawEditor()
-                    .searchText(fileName, "List<Object>")
-                    .forEach(range -> {
-                        libraryCustomization
-                            .getRawEditor()
-                            .replace(fileName, range.getStart(), range.getEnd(), "List<BinaryData>");
-                    });
-            });
-    }
-
-    private void renameLogMirrorSasUriProperty(LibraryCustomization libraryCustomization, Logger logger) {
-        logger.info("Renaming logMirrorSasUri property");
-        // renaming the model property
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerServiceProperties")
-            .getProperty("logMirrorSasUri")
-            .rename("logMirrorSasUrl");
-
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerServiceProperties")
-            .getMethod("setLogMirrorSasUrl")
-            .replaceParameters("String logMirrorSasUrl")
-            .replaceBody("this.logMirrorSasUrl = logMirrorSasUrl;return this;");
-
-        JavadocCustomization getMethodJavaDoc = libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerServiceProperties")
-            .getMethod("getLogMirrorSasUrl")
-            .getJavadoc();
-        getMethodJavaDoc.setDescription(getMethodJavaDoc.getDescription().replace("Uri", "Url"));
-        getMethodJavaDoc.setReturn(getMethodJavaDoc.getReturn().replace("Uri", "Url"));
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerServiceProperties")
-            .getMethod("getLogMirrorSasUrl")
-            .getJavadoc()
-            .replace(getMethodJavaDoc);
-
-        JavadocCustomization setMethodJavaDoc = libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerServiceProperties")
-            .getMethod("setLogMirrorSasUrl")
-            .getJavadoc();
-        setMethodJavaDoc.setDescription(getMethodJavaDoc.getDescription().replace("Uri", "Url"));
-        setMethodJavaDoc.setParam("logMirrorSasUrl", setMethodJavaDoc.getParams().get("logMirrorSasUri").replace("Uri", "Url"));
-        setMethodJavaDoc.removeParam("logMirrorSasUri");
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerServiceProperties")
-            .getMethod("getLogMirrorSasUrl")
-            .getJavadoc()
-            .replace(getMethodJavaDoc);
-    }
-
-    private void hideMethods(LibraryCustomization libraryCustomization, Logger logger) {
-        Map<String, List<String>> adminModelsMap = new HashMap<String, List<String>>();
-        adminModelsMap.put("PersonalizerPolicyResultSummary", Arrays.asList("setNonZeroProbability"));
-        adminModelsMap.put("PersonalizerEvaluation", Arrays.asList("setEvaluationType", "getJobId", "setPolicyResults", "setFeatureImportance", "setOptimalPolicy", "setCreationTime"));
-        adminModelsMap.forEach((className, methodNames) -> makeMethodPrivate(libraryCustomization, "com.azure.ai.personalizer.administration.models", className, methodNames, logger));
-
-        Map<String, List<String>> modelsMap = new HashMap<String, List<String>>();
-        modelsMap.put("PersonalizerSlotResult", Arrays.asList("setId"));
-        modelsMap.put("PersonalizerError", Arrays.asList("setCode", "setMessage", "setTarget", "setDetails"));
-        modelsMap.forEach((className, methodNames) -> makeMethodPrivate(libraryCustomization, "com.azure.ai.personalizer.models", className, methodNames, logger));
-    }
-
-    private void makeMethodPrivate(LibraryCustomization libraryCustomization, String packageName, String className, List<String> methodNames, Logger logger) {
-        methodNames.forEach(methodName -> {
-            libraryCustomization
-                .getClass(packageName, className)
-                .getMethod(methodName)
-                .setModifier(0);
         });
     }
 
-    private void renameOfflineExperimentationProperties(LibraryCustomization libraryCustomization, Logger logger) {
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerEvaluationOptions")
-            .getMethod("isEnableOfflineExperimentation")
-            .rename("isOfflineExperimentationEnabled");
+    private void hideMethods(PackageCustomization adminModels, PackageCustomization models) {
+        makeMethodPrivate(adminModels, "PersonalizerPolicyResultSummary", "setNonZeroProbability");
+        makeMethodPrivate(adminModels, "PersonalizerEvaluation", "setEvaluationType", "getJobId", "setPolicyResults",
+            "setFeatureImportance", "setOptimalPolicy", "setCreationTime");
 
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerEvaluationOptions")
-            .getMethod("setEnableOfflineExperimentation")
-            .rename("setOfflineExperimentationEnabled");
+        makeMethodPrivate(models, "PersonalizerSlotResult", "setId");
+        makeMethodPrivate(models, "PersonalizerError", "setCode", "setMessage", "setTarget", "setDetails");
     }
 
-    private void returnBaseClassTypesForMethodReturnValues(LibraryCustomization libraryCustomization, Logger logger) {
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerPolicyResult")
-            .getMethod("getTotalSummary")
-            .setReturnType("PersonalizerPolicyResultSummary", "returnValue");
-
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerLogProperties")
-            .getMethod("getDateRange")
-            .setReturnType("PersonalizerDateRange", "returnValue");
+    private void makeMethodPrivate(PackageCustomization customization, String className, String... methodNames) {
+        customization.getClass(className).customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
+            for (String methodName : methodNames) {
+                clazz.getMethodsByName(methodName).forEach(NodeWithModifiers::setModifiers);
+            }
+        }));
     }
 
-    private void hideClasses(LibraryCustomization libraryCustomization, Logger logger) {
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerPolicyResultTotalSummary")
-            .setModifier(0);
+    private void returnBaseClassTypesForMethodReturnValues(PackageCustomization adminModels) {
+        adminModels.getClass("PersonalizerPolicyResult")
+            .customizeAst(ast -> ast.getClassByName("PersonalizerPolicyResult")
+                .ifPresent(clazz -> clazz.getMethodsByName("getTotalSummary")
+                    .forEach(method -> method.setType("PersonalizerPolicyResultSummary"))));
 
-        libraryCustomization
-            .getClass("com.azure.ai.personalizer.administration.models", "PersonalizerLogPropertiesDateRange")
-            .setModifier(0);
+        adminModels.getClass("PersonalizerLogProperties")
+            .customizeAst(ast -> ast.getClassByName("PersonalizerLogProperties")
+                .ifPresent(clazz -> clazz.getMethodsByName("getDateRange")
+                    .forEach(method -> method.setType("PersonalizerDateRange"))));
+    }
+
+    private void hideClasses(PackageCustomization adminModels, PackageCustomization models) {
+        makeClassAndConstructorPackagePrivate(adminModels, "PersonalizerPolicyResultTotalSummary");
+        makeClassAndConstructorPackagePrivate(adminModels, "PersonalizerLogPropertiesDateRange");
+
+        makeClassAndConstructorPackagePrivate(models, "ServiceStatus");
+    }
+
+    private static void makeClassAndConstructorPackagePrivate(PackageCustomization customization, String className) {
+        customization.getClass(className).customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
+            clazz.setModifiers();
+            clazz.getDefaultConstructor().get().setModifiers();
+        }));
     }
 }

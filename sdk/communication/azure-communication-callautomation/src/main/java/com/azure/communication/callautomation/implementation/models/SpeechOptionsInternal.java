@@ -5,22 +5,32 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Options for continuous speech recognition. */
+/**
+ * Options for continuous speech recognition.
+ */
 @Fluent
-public final class SpeechOptionsInternal {
+public final class SpeechOptionsInternal implements JsonSerializable<SpeechOptionsInternal> {
     /*
-     * The length of end silence when user stops speaking and cogservice send
-     * response.
+     * The length of end silence when user stops speaking and cogservice send response.
      */
-    @JsonProperty(value = "endSilenceTimeoutInMs")
     private Long endSilenceTimeoutInMs;
+
+    /**
+     * Creates an instance of SpeechOptionsInternal class.
+     */
+    public SpeechOptionsInternal() {
+    }
 
     /**
      * Get the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
      * response.
-     *
+     * 
      * @return the endSilenceTimeoutInMs value.
      */
     public Long getEndSilenceTimeoutInMs() {
@@ -30,12 +40,48 @@ public final class SpeechOptionsInternal {
     /**
      * Set the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
      * response.
-     *
+     * 
      * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
      * @return the SpeechOptionsInternal object itself.
      */
     public SpeechOptionsInternal setEndSilenceTimeoutInMs(Long endSilenceTimeoutInMs) {
         this.endSilenceTimeoutInMs = endSilenceTimeoutInMs;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("endSilenceTimeoutInMs", this.endSilenceTimeoutInMs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpeechOptionsInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpeechOptionsInternal if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SpeechOptionsInternal.
+     */
+    public static SpeechOptionsInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpeechOptionsInternal deserializedSpeechOptionsInternal = new SpeechOptionsInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endSilenceTimeoutInMs".equals(fieldName)) {
+                    deserializedSpeechOptionsInternal.endSilenceTimeoutInMs = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpeechOptionsInternal;
+        });
     }
 }

@@ -5,96 +5,86 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Description of metrics specification.
  */
 @Fluent
-public final class MetricSpecification {
+public final class MetricSpecification implements JsonSerializable<MetricSpecification> {
     /*
      * The name of the metric.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The display name of the metric.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description of the metric.
      */
-    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * Units the metric to be displayed in.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * The aggregation type.
      */
-    @JsonProperty(value = "aggregationType")
     private String aggregationType;
 
     /*
      * List of availability.
      */
-    @JsonProperty(value = "availabilities")
     private List<Availability> availabilities;
 
     /*
      * Whether regional MDM account enabled.
      */
-    @JsonProperty(value = "enableRegionalMdmAccount")
     private Boolean enableRegionalMdmAccount;
 
     /*
      * Whether gaps would be filled with zeros.
      */
-    @JsonProperty(value = "fillGapWithZero")
     private Boolean fillGapWithZero;
 
     /*
      * Pattern for the filter of the metric.
      */
-    @JsonProperty(value = "metricFilterPattern")
     private String metricFilterPattern;
 
     /*
      * List of dimensions.
      */
-    @JsonProperty(value = "dimensions")
     private List<Dimension> dimensions;
 
     /*
      * Whether the metric is internal.
      */
-    @JsonProperty(value = "isInternal")
     private Boolean isInternal;
 
     /*
      * The source MDM account.
      */
-    @JsonProperty(value = "sourceMdmAccount")
     private String sourceMdmAccount;
 
     /*
      * The source MDM namespace.
      */
-    @JsonProperty(value = "sourceMdmNamespace")
     private String sourceMdmNamespace;
 
     /*
      * The resource Id dimension name override.
      */
-    @JsonProperty(value = "resourceIdDimensionNameOverride")
     private String resourceIdDimensionNameOverride;
 
     /**
@@ -395,5 +385,84 @@ public final class MetricSpecification {
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("aggregationType", this.aggregationType);
+        jsonWriter.writeArrayField("availabilities", this.availabilities,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enableRegionalMdmAccount", this.enableRegionalMdmAccount);
+        jsonWriter.writeBooleanField("fillGapWithZero", this.fillGapWithZero);
+        jsonWriter.writeStringField("metricFilterPattern", this.metricFilterPattern);
+        jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isInternal", this.isInternal);
+        jsonWriter.writeStringField("sourceMdmAccount", this.sourceMdmAccount);
+        jsonWriter.writeStringField("sourceMdmNamespace", this.sourceMdmNamespace);
+        jsonWriter.writeStringField("resourceIdDimensionNameOverride", this.resourceIdDimensionNameOverride);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricSpecification if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricSpecification.
+     */
+    public static MetricSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricSpecification deserializedMetricSpecification = new MetricSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMetricSpecification.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMetricSpecification.displayName = reader.getString();
+                } else if ("displayDescription".equals(fieldName)) {
+                    deserializedMetricSpecification.displayDescription = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedMetricSpecification.unit = reader.getString();
+                } else if ("aggregationType".equals(fieldName)) {
+                    deserializedMetricSpecification.aggregationType = reader.getString();
+                } else if ("availabilities".equals(fieldName)) {
+                    List<Availability> availabilities = reader.readArray(reader1 -> Availability.fromJson(reader1));
+                    deserializedMetricSpecification.availabilities = availabilities;
+                } else if ("enableRegionalMdmAccount".equals(fieldName)) {
+                    deserializedMetricSpecification.enableRegionalMdmAccount
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("fillGapWithZero".equals(fieldName)) {
+                    deserializedMetricSpecification.fillGapWithZero = reader.getNullable(JsonReader::getBoolean);
+                } else if ("metricFilterPattern".equals(fieldName)) {
+                    deserializedMetricSpecification.metricFilterPattern = reader.getString();
+                } else if ("dimensions".equals(fieldName)) {
+                    List<Dimension> dimensions = reader.readArray(reader1 -> Dimension.fromJson(reader1));
+                    deserializedMetricSpecification.dimensions = dimensions;
+                } else if ("isInternal".equals(fieldName)) {
+                    deserializedMetricSpecification.isInternal = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourceMdmAccount".equals(fieldName)) {
+                    deserializedMetricSpecification.sourceMdmAccount = reader.getString();
+                } else if ("sourceMdmNamespace".equals(fieldName)) {
+                    deserializedMetricSpecification.sourceMdmNamespace = reader.getString();
+                } else if ("resourceIdDimensionNameOverride".equals(fieldName)) {
+                    deserializedMetricSpecification.resourceIdDimensionNameOverride = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricSpecification;
+        });
     }
 }

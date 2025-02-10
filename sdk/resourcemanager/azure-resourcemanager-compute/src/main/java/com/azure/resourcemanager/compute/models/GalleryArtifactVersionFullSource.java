@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The source of the gallery artifact version.
@@ -16,8 +19,13 @@ public final class GalleryArtifactVersionFullSource extends GalleryArtifactVersi
      * The resource Id of the source Community Gallery Image. Only required when using Community Gallery Image as a
      * source.
      */
-    @JsonProperty(value = "communityGalleryImageId")
     private String communityGalleryImageId;
+
+    /*
+     * The resource Id of the source virtual machine. Only required when capturing a virtual machine to source this
+     * Gallery Image Version.
+     */
+    private String virtualMachineId;
 
     /**
      * Creates an instance of GalleryArtifactVersionFullSource class.
@@ -48,6 +56,28 @@ public final class GalleryArtifactVersionFullSource extends GalleryArtifactVersi
     }
 
     /**
+     * Get the virtualMachineId property: The resource Id of the source virtual machine. Only required when capturing a
+     * virtual machine to source this Gallery Image Version.
+     * 
+     * @return the virtualMachineId value.
+     */
+    public String virtualMachineId() {
+        return this.virtualMachineId;
+    }
+
+    /**
+     * Set the virtualMachineId property: The resource Id of the source virtual machine. Only required when capturing a
+     * virtual machine to source this Gallery Image Version.
+     * 
+     * @param virtualMachineId the virtualMachineId value to set.
+     * @return the GalleryArtifactVersionFullSource object itself.
+     */
+    public GalleryArtifactVersionFullSource withVirtualMachineId(String virtualMachineId) {
+        this.virtualMachineId = virtualMachineId;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -63,6 +93,48 @@ public final class GalleryArtifactVersionFullSource extends GalleryArtifactVersi
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("communityGalleryImageId", this.communityGalleryImageId);
+        jsonWriter.writeStringField("virtualMachineId", this.virtualMachineId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryArtifactVersionFullSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryArtifactVersionFullSource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryArtifactVersionFullSource.
+     */
+    public static GalleryArtifactVersionFullSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryArtifactVersionFullSource deserializedGalleryArtifactVersionFullSource
+                = new GalleryArtifactVersionFullSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGalleryArtifactVersionFullSource.withId(reader.getString());
+                } else if ("communityGalleryImageId".equals(fieldName)) {
+                    deserializedGalleryArtifactVersionFullSource.communityGalleryImageId = reader.getString();
+                } else if ("virtualMachineId".equals(fieldName)) {
+                    deserializedGalleryArtifactVersionFullSource.virtualMachineId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryArtifactVersionFullSource;
+        });
     }
 }

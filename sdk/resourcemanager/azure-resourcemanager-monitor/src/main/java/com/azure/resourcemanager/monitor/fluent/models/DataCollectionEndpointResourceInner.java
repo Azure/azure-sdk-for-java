@@ -7,48 +7,66 @@ package com.azure.resourcemanager.monitor.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointConfigurationAccess;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointLogsIngestion;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointNetworkAcls;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionEndpointProvisioningState;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionEndpointResourceKind;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Definition of ARM tracked top level resource. */
+/**
+ * Definition of ARM tracked top level resource.
+ */
 @Fluent
 public final class DataCollectionEndpointResourceInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private DataCollectionEndpointResourceProperties innerProperties;
 
     /*
      * The kind of the resource.
      */
-    @JsonProperty(value = "kind")
     private KnownDataCollectionEndpointResourceKind kind;
 
     /*
      * Resource entity tag (ETag).
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DataCollectionEndpointResourceInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of DataCollectionEndpointResourceInner class.
+     */
     public DataCollectionEndpointResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DataCollectionEndpointResourceProperties innerProperties() {
@@ -57,7 +75,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the kind property: The kind of the resource.
-     *
+     * 
      * @return the kind value.
      */
     public KnownDataCollectionEndpointResourceKind kind() {
@@ -66,7 +84,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Set the kind property: The kind of the resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
@@ -77,7 +95,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the etag property: Resource entity tag (ETag).
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -86,21 +104,55 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionEndpointResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionEndpointResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -109,7 +161,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the description property: Description of the data collection endpoint.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -118,7 +170,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Set the description property: Description of the data collection endpoint.
-     *
+     * 
      * @param description the description value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
@@ -133,7 +185,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     /**
      * Get the immutableId property: The immutable ID of this data collection endpoint resource. This property is
      * READ-ONLY.
-     *
+     * 
      * @return the immutableId value.
      */
     public String immutableId() {
@@ -143,7 +195,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     /**
      * Set the immutableId property: The immutable ID of this data collection endpoint resource. This property is
      * READ-ONLY.
-     *
+     * 
      * @param immutableId the immutableId value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
@@ -157,7 +209,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the configurationAccess property: The endpoint used by clients to access their configuration.
-     *
+     * 
      * @return the configurationAccess value.
      */
     public DataCollectionEndpointConfigurationAccess configurationAccess() {
@@ -166,12 +218,12 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Set the configurationAccess property: The endpoint used by clients to access their configuration.
-     *
+     * 
      * @param configurationAccess the configurationAccess value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
-    public DataCollectionEndpointResourceInner withConfigurationAccess(
-        DataCollectionEndpointConfigurationAccess configurationAccess) {
+    public DataCollectionEndpointResourceInner
+        withConfigurationAccess(DataCollectionEndpointConfigurationAccess configurationAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DataCollectionEndpointResourceProperties();
         }
@@ -181,7 +233,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the logsIngestion property: The endpoint used by clients to ingest logs.
-     *
+     * 
      * @return the logsIngestion value.
      */
     public DataCollectionEndpointLogsIngestion logsIngestion() {
@@ -190,7 +242,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Set the logsIngestion property: The endpoint used by clients to ingest logs.
-     *
+     * 
      * @param logsIngestion the logsIngestion value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
@@ -204,7 +256,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the networkAcls property: Network access control rules for the endpoints.
-     *
+     * 
      * @return the networkAcls value.
      */
     public DataCollectionEndpointNetworkAcls networkAcls() {
@@ -213,7 +265,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Set the networkAcls property: Network access control rules for the endpoints.
-     *
+     * 
      * @param networkAcls the networkAcls value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
@@ -227,7 +279,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: The resource provisioning state. This property is READ-ONLY.
-     *
+     * 
      * @return the provisioningState value.
      */
     public KnownDataCollectionEndpointProvisioningState provisioningState() {
@@ -236,12 +288,72 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataCollectionEndpointResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataCollectionEndpointResourceInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataCollectionEndpointResourceInner.
+     */
+    public static DataCollectionEndpointResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataCollectionEndpointResourceInner deserializedDataCollectionEndpointResourceInner
+                = new DataCollectionEndpointResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDataCollectionEndpointResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceInner.innerProperties
+                        = DataCollectionEndpointResourceProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceInner.kind
+                        = KnownDataCollectionEndpointResourceKind.fromString(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataCollectionEndpointResourceInner;
+        });
     }
 }

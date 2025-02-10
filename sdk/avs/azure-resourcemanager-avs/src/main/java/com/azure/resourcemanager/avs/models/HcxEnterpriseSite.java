@@ -4,78 +4,103 @@
 
 package com.azure.resourcemanager.avs.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.HcxEnterpriseSiteInner;
 
-/** An immutable client-side representation of HcxEnterpriseSite. */
+/**
+ * An immutable client-side representation of HcxEnterpriseSite.
+ */
 public interface HcxEnterpriseSite {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    HcxEnterpriseSiteProvisioningState provisioningState();
+
+    /**
      * Gets the activationKey property: The activation key.
-     *
+     * 
      * @return the activationKey value.
      */
     String activationKey();
 
     /**
      * Gets the status property: The status of the HCX Enterprise Site.
-     *
+     * 
      * @return the status value.
      */
     HcxEnterpriseSiteStatus status();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.HcxEnterpriseSiteInner object.
-     *
+     * 
      * @return the inner object.
      */
     HcxEnterpriseSiteInner innerModel();
 
-    /** The entirety of the HcxEnterpriseSite definition. */
+    /**
+     * The entirety of the HcxEnterpriseSite definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The HcxEnterpriseSite definition stages. */
+    /**
+     * The HcxEnterpriseSite definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the HcxEnterpriseSite definition. */
+        /**
+         * The first stage of the HcxEnterpriseSite definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the HcxEnterpriseSite definition allowing to specify parent resource. */
+        /**
+         * The stage of the HcxEnterpriseSite definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, privateCloudName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param privateCloudName The name of the private cloud.
+             * @param privateCloudName Name of the private cloud.
              * @return the next definition stage.
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
@@ -88,14 +113,14 @@ public interface HcxEnterpriseSite {
         interface WithCreate {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             HcxEnterpriseSite create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
@@ -105,43 +130,47 @@ public interface HcxEnterpriseSite {
 
     /**
      * Begins update for the HcxEnterpriseSite resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     HcxEnterpriseSite.Update update();
 
-    /** The template for HcxEnterpriseSite update. */
+    /**
+     * The template for HcxEnterpriseSite update.
+     */
     interface Update {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         HcxEnterpriseSite apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         HcxEnterpriseSite apply(Context context);
     }
 
-    /** The HcxEnterpriseSite update stages. */
+    /**
+     * The HcxEnterpriseSite update stages.
+     */
     interface UpdateStages {
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     HcxEnterpriseSite refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

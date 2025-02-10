@@ -5,28 +5,35 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.AuthCredential;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The parameters for updating credential set properties. */
+/**
+ * The parameters for updating credential set properties.
+ */
 @Fluent
-public final class CredentialSetUpdateProperties {
+public final class CredentialSetUpdateProperties implements JsonSerializable<CredentialSetUpdateProperties> {
     /*
      * List of authentication credentials stored for an upstream.
      * Usually consists of a primary and an optional secondary credential.
      */
-    @JsonProperty(value = "authCredentials")
     private List<AuthCredential> authCredentials;
 
-    /** Creates an instance of CredentialSetUpdateProperties class. */
+    /**
+     * Creates an instance of CredentialSetUpdateProperties class.
+     */
     public CredentialSetUpdateProperties() {
     }
 
     /**
-     * Get the authCredentials property: List of authentication credentials stored for an upstream. Usually consists of
-     * a primary and an optional secondary credential.
-     *
+     * Get the authCredentials property: List of authentication credentials stored for an upstream.
+     * Usually consists of a primary and an optional secondary credential.
+     * 
      * @return the authCredentials value.
      */
     public List<AuthCredential> authCredentials() {
@@ -34,9 +41,9 @@ public final class CredentialSetUpdateProperties {
     }
 
     /**
-     * Set the authCredentials property: List of authentication credentials stored for an upstream. Usually consists of
-     * a primary and an optional secondary credential.
-     *
+     * Set the authCredentials property: List of authentication credentials stored for an upstream.
+     * Usually consists of a primary and an optional secondary credential.
+     * 
      * @param authCredentials the authCredentials value to set.
      * @return the CredentialSetUpdateProperties object itself.
      */
@@ -47,12 +54,52 @@ public final class CredentialSetUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (authCredentials() != null) {
             authCredentials().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("authCredentials", this.authCredentials,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CredentialSetUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CredentialSetUpdateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CredentialSetUpdateProperties.
+     */
+    public static CredentialSetUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CredentialSetUpdateProperties deserializedCredentialSetUpdateProperties
+                = new CredentialSetUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authCredentials".equals(fieldName)) {
+                    List<AuthCredential> authCredentials
+                        = reader.readArray(reader1 -> AuthCredential.fromJson(reader1));
+                    deserializedCredentialSetUpdateProperties.authCredentials = authCredentials;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentialSetUpdateProperties;
+        });
     }
 }

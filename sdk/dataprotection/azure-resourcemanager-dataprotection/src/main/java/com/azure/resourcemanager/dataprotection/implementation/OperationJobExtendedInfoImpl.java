@@ -18,6 +18,10 @@ public final class OperationJobExtendedInfoImpl implements OperationJobExtendedI
         this.serviceManager = serviceManager;
     }
 
+    public String objectType() {
+        return this.innerModel().objectType();
+    }
+
     public String jobId() {
         return this.innerModel().jobId();
     }

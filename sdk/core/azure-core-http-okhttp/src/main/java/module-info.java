@@ -10,8 +10,7 @@ module com.azure.core.http.okhttp {
 
     exports com.azure.core.http.okhttp;
 
-    provides com.azure.core.http.HttpClientProvider
-        with com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
+    provides com.azure.core.http.HttpClientProvider with com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 
     uses com.azure.core.http.HttpClientProvider;
 }

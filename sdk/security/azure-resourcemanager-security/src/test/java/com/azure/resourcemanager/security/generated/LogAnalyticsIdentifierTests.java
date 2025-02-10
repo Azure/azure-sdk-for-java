@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.LogAnalyticsIdentifier;
 public final class LogAnalyticsIdentifierTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogAnalyticsIdentifier model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"LogAnalytics\",\"workspaceId\":\"o\",\"workspaceSubscriptionId\":\"qocarkuzlbc\",\"workspaceResourceGroup\":\"dtsnxawqytllhdyz\",\"agentId\":\"ckze\"}")
-                .toObject(LogAnalyticsIdentifier.class);
+        LogAnalyticsIdentifier model = BinaryData.fromString(
+            "{\"type\":\"LogAnalytics\",\"workspaceId\":\"qd\",\"workspaceSubscriptionId\":\"jgwdtgukranbl\",\"workspaceResourceGroup\":\"hqlkccuzgygqwaho\",\"agentId\":\"lwgniiprglvawu\"}")
+            .toObject(LogAnalyticsIdentifier.class);
     }
 
     @org.junit.jupiter.api.Test

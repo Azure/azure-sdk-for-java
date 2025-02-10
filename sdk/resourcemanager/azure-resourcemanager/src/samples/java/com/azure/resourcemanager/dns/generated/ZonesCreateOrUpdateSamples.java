@@ -8,31 +8,30 @@ import com.azure.resourcemanager.dns.fluent.models.ZoneInner;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Zones CreateOrUpdate. */
+/**
+ * Samples for Zones CreateOrUpdate.
+ */
 public final class ZonesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateZone.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateZone.json
      */
     /**
      * Sample code: Create zone.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createZone(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getZones()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "zone1",
-                new ZoneInner().withLocation("Global").withTags(mapOf("key1", "fakeTokenPlaceholder")),
-                null,
-                null,
+            .createOrUpdateWithResponse("rg1", "zone1",
+                new ZoneInner().withLocation("Global").withTags(mapOf("key1", "fakeTokenPlaceholder")), null, null,
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

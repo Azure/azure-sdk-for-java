@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cosmos.models.PrivateLinkServiceConnectionState
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBPrivateEndpointConnectionUpdate.json
      */
     /**
@@ -22,11 +22,14 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
      */
     public static void
         approveOrRejectAPrivateEndpointConnectionWithAGivenName(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getPrivateEndpointConnections().createOrUpdate("rg1", "ddb1",
-            "privateEndpointConnectionName",
-            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionStateProperty().withStatus("Approved")
-                    .withDescription("Approved by johndoe@contoso.com")),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpointConnections()
+            .createOrUpdate("rg1", "ddb1", "privateEndpointConnectionName",
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionStateProperty().withStatus("Approved")
+                        .withDescription("Approved by johndoe@contoso.com")),
+                com.azure.core.util.Context.NONE);
     }
 }

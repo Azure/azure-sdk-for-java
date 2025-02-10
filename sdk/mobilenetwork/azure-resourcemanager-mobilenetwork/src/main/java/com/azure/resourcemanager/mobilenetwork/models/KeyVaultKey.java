@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An Azure key vault key. */
+/**
+ * An Azure key vault key.
+ */
 @Fluent
-public final class KeyVaultKey {
+public final class KeyVaultKey implements JsonSerializable<KeyVaultKey> {
     /*
      * The key URL, unversioned. For example: https://contosovault.vault.azure.net/keys/azureKey.
      */
-    @JsonProperty(value = "keyUrl")
     private String keyUrl;
 
-    /** Creates an instance of KeyVaultKey class. */
+    /**
+     * Creates an instance of KeyVaultKey class.
+     */
     public KeyVaultKey() {
     }
 
     /**
      * Get the keyUrl property: The key URL, unversioned. For example:
      * https://contosovault.vault.azure.net/keys/azureKey.
-     *
+     * 
      * @return the keyUrl value.
      */
     public String keyUrl() {
@@ -33,7 +40,7 @@ public final class KeyVaultKey {
     /**
      * Set the keyUrl property: The key URL, unversioned. For example:
      * https://contosovault.vault.azure.net/keys/azureKey.
-     *
+     * 
      * @param keyUrl the keyUrl value to set.
      * @return the KeyVaultKey object itself.
      */
@@ -44,9 +51,45 @@ public final class KeyVaultKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyUrl", this.keyUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultKey if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultKey.
+     */
+    public static KeyVaultKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultKey deserializedKeyVaultKey = new KeyVaultKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyUrl".equals(fieldName)) {
+                    deserializedKeyVaultKey.keyUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultKey;
+        });
     }
 }

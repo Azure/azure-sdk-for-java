@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -17,16 +16,26 @@ public class VirtualMachineScaleSetVMExpandType extends ExpandableStringEnum<Vir
     public static final VirtualMachineScaleSetVMExpandType INSTANCE_VIEW = fromString("instanceView");
 
     /**
+     * Creates a new instance of VirtualMachineScaleSetVMExpandType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualMachineScaleSetVMExpandType() {
+    }
+
+    /**
      * Creates or finds a VirtualMachineScaleSetVMExpandType from its string representation.
      * @param name a name to look for
      * @return the corresponding VirtualMachineScaleSetVMExpandType
      */
-    @JsonCreator
     public static VirtualMachineScaleSetVMExpandType fromString(String name) {
         return fromString(name, VirtualMachineScaleSetVMExpandType.class);
     }
 
     /**
+     * Gets known VirtualMachineScaleSetVMExpandType values.
+     *
      * @return known VirtualMachineScaleSetVMExpandType values
      */
     public static Collection<VirtualMachineScaleSetVMExpandType> values() {

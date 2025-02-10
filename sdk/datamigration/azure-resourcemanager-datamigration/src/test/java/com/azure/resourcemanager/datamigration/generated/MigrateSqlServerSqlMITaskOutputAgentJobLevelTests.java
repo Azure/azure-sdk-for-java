@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.MigrateSqlServerSqlMITaskO
 public final class MigrateSqlServerSqlMITaskOutputAgentJobLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSqlServerSqlMITaskOutputAgentJobLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"AgentJobLevelOutput\",\"name\":\"cdmxzrpoaiml\",\"isEnabled\":true,\"state\":\"Skipped\",\"startedOn\":\"2021-12-05T18:05:26Z\",\"endedOn\":\"2021-10-04T07:14:54Z\",\"message\":\"eazulcs\",\"exceptionsAndWarnings\":[{\"message\":\"wnpjhlfzswpchwa\",\"actionableMessage\":\"bousn\",\"filePath\":\"pgfewetwlyx\",\"lineNumber\":\"cxy\",\"hResult\":705057675,\"stackTrace\":\"jhlimmbcxfhbcpo\"}],\"id\":\"vxcjzhqizxfpxtgq\"}")
-                .toObject(MigrateSqlServerSqlMITaskOutputAgentJobLevel.class);
+        MigrateSqlServerSqlMITaskOutputAgentJobLevel model = BinaryData.fromString(
+            "{\"resultType\":\"AgentJobLevelOutput\",\"name\":\"jsvg\",\"isEnabled\":true,\"state\":\"InProgress\",\"startedOn\":\"2021-04-04T11:10:54Z\",\"endedOn\":\"2021-06-12T13:45:08Z\",\"message\":\"t\",\"exceptionsAndWarnings\":[{\"message\":\"gc\",\"actionableMessage\":\"nfnw\",\"filePath\":\"tmvpdvjdhtt\",\"lineNumber\":\"efedxihchrphkm\",\"hResult\":881811798,\"stackTrace\":\"qnsdfzpbgtgky\"},{\"message\":\"dgh\",\"actionableMessage\":\"euutlwxezwzh\",\"filePath\":\"vbwnhhtq\",\"lineNumber\":\"ehgpp\",\"hResult\":1296977531,\"stackTrace\":\"hpfeoajvgcxtxjc\"},{\"message\":\"eafidltugsresm\",\"actionableMessage\":\"sjhoiftxfkfwegpr\",\"filePath\":\"tillucbiqtg\",\"lineNumber\":\"ohmcwsld\",\"hResult\":2048272060,\"stackTrace\":\"tpwb\"},{\"message\":\"lllibph\",\"actionableMessage\":\"zmizakakan\",\"filePath\":\"p\",\"lineNumber\":\"jzhajoy\",\"hResult\":2052287318,\"stackTrace\":\"muoyxprimr\"}],\"id\":\"pteecjme\"}")
+            .toObject(MigrateSqlServerSqlMITaskOutputAgentJobLevel.class);
     }
 
     @org.junit.jupiter.api.Test

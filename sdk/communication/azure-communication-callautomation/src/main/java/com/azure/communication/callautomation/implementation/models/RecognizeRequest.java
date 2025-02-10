@@ -5,54 +5,63 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** The RecognizeRequest model. */
+/**
+ * The RecognizeRequest model.
+ */
 @Fluent
-public final class RecognizeRequest {
+public final class RecognizeRequest implements JsonSerializable<RecognizeRequest> {
     /*
      * Determines the type of the recognition.
      */
-    @JsonProperty(value = "recognizeInputType", required = true)
     private RecognizeInputTypeInternal recognizeInputType;
 
     /*
      * The source of the audio to be played for recognition.
      */
-    @JsonProperty(value = "playPrompt")
     private PlaySourceInternal playPrompt;
 
     /*
-     * If set recognize can barge into other existing
-     * queued-up/currently-processing requests.
+     * The source of the audio to be played for recognition.
      */
-    @JsonProperty(value = "interruptCallMediaOperation")
+    private List<PlaySourceInternal> playPrompts;
+
+    /*
+     * If set recognize can barge into other existing queued-up/currently-processing requests.
+     */
     private Boolean interruptCallMediaOperation;
 
     /*
      * Defines options for recognition.
      */
-    @JsonProperty(value = "recognizeOptions", required = true)
     private RecognizeOptionsInternal recognizeOptions;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
-    @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /**
+     * Creates an instance of RecognizeRequest class.
+     */
+    public RecognizeRequest() {
+    }
+
+    /**
      * Get the recognizeInputType property: Determines the type of the recognition.
-     *
+     * 
      * @return the recognizeInputType value.
      */
     public RecognizeInputTypeInternal getRecognizeInputType() {
@@ -61,7 +70,7 @@ public final class RecognizeRequest {
 
     /**
      * Set the recognizeInputType property: Determines the type of the recognition.
-     *
+     * 
      * @param recognizeInputType the recognizeInputType value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -72,7 +81,7 @@ public final class RecognizeRequest {
 
     /**
      * Get the playPrompt property: The source of the audio to be played for recognition.
-     *
+     * 
      * @return the playPrompt value.
      */
     public PlaySourceInternal getPlayPrompt() {
@@ -81,7 +90,7 @@ public final class RecognizeRequest {
 
     /**
      * Set the playPrompt property: The source of the audio to be played for recognition.
-     *
+     * 
      * @param playPrompt the playPrompt value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -91,9 +100,29 @@ public final class RecognizeRequest {
     }
 
     /**
+     * Get the playPrompts property: The source of the audio to be played for recognition.
+     * 
+     * @return the playPrompts value.
+     */
+    public List<PlaySourceInternal> getPlayPrompts() {
+        return this.playPrompts;
+    }
+
+    /**
+     * Set the playPrompts property: The source of the audio to be played for recognition.
+     * 
+     * @param playPrompts the playPrompts value to set.
+     * @return the RecognizeRequest object itself.
+     */
+    public RecognizeRequest setPlayPrompts(List<PlaySourceInternal> playPrompts) {
+        this.playPrompts = playPrompts;
+        return this;
+    }
+
+    /**
      * Get the interruptCallMediaOperation property: If set recognize can barge into other existing
      * queued-up/currently-processing requests.
-     *
+     * 
      * @return the interruptCallMediaOperation value.
      */
     public Boolean isInterruptCallMediaOperation() {
@@ -103,7 +132,7 @@ public final class RecognizeRequest {
     /**
      * Set the interruptCallMediaOperation property: If set recognize can barge into other existing
      * queued-up/currently-processing requests.
-     *
+     * 
      * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -114,7 +143,7 @@ public final class RecognizeRequest {
 
     /**
      * Get the recognizeOptions property: Defines options for recognition.
-     *
+     * 
      * @return the recognizeOptions value.
      */
     public RecognizeOptionsInternal getRecognizeOptions() {
@@ -123,7 +152,7 @@ public final class RecognizeRequest {
 
     /**
      * Set the recognizeOptions property: Defines options for recognition.
-     *
+     * 
      * @param recognizeOptions the recognizeOptions value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -134,7 +163,7 @@ public final class RecognizeRequest {
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -143,7 +172,7 @@ public final class RecognizeRequest {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -154,9 +183,9 @@ public final class RecognizeRequest {
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -165,14 +194,74 @@ public final class RecognizeRequest {
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the RecognizeRequest object itself.
      */
     public RecognizeRequest setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recognizeInputType",
+            this.recognizeInputType == null ? null : this.recognizeInputType.toString());
+        jsonWriter.writeJsonField("recognizeOptions", this.recognizeOptions);
+        jsonWriter.writeJsonField("playPrompt", this.playPrompt);
+        jsonWriter.writeArrayField("playPrompts", this.playPrompts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("interruptCallMediaOperation", this.interruptCallMediaOperation);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecognizeRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecognizeRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecognizeRequest.
+     */
+    public static RecognizeRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecognizeRequest deserializedRecognizeRequest = new RecognizeRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recognizeInputType".equals(fieldName)) {
+                    deserializedRecognizeRequest.recognizeInputType
+                        = RecognizeInputTypeInternal.fromString(reader.getString());
+                } else if ("recognizeOptions".equals(fieldName)) {
+                    deserializedRecognizeRequest.recognizeOptions = RecognizeOptionsInternal.fromJson(reader);
+                } else if ("playPrompt".equals(fieldName)) {
+                    deserializedRecognizeRequest.playPrompt = PlaySourceInternal.fromJson(reader);
+                } else if ("playPrompts".equals(fieldName)) {
+                    List<PlaySourceInternal> playPrompts
+                        = reader.readArray(reader1 -> PlaySourceInternal.fromJson(reader1));
+                    deserializedRecognizeRequest.playPrompts = playPrompts;
+                } else if ("interruptCallMediaOperation".equals(fieldName)) {
+                    deserializedRecognizeRequest.interruptCallMediaOperation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedRecognizeRequest.operationContext = reader.getString();
+                } else if ("operationCallbackUri".equals(fieldName)) {
+                    deserializedRecognizeRequest.operationCallbackUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecognizeRequest;
+        });
     }
 }

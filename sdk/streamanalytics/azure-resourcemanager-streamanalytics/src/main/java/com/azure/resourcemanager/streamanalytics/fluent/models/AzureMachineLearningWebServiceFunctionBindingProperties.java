@@ -5,58 +5,60 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningWebServiceInputs;
 import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningWebServiceOutputColumn;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The binding properties associated with an Azure Machine learning web service. */
+/**
+ * The binding properties associated with an Azure Machine learning web service.
+ */
 @Fluent
-public final class AzureMachineLearningWebServiceFunctionBindingProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureMachineLearningWebServiceFunctionBindingProperties.class);
-
+public final class AzureMachineLearningWebServiceFunctionBindingProperties
+    implements JsonSerializable<AzureMachineLearningWebServiceFunctionBindingProperties> {
     /*
-     * The Request-Response execute endpoint of the Azure Machine Learning web
-     * service. Find out more here:
-     * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs
+     * The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here:
+     * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-
+     * service-rrs
      */
-    @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /*
      * The API key used to authenticate with Request-Response endpoint.
      */
-    @JsonProperty(value = "apiKey")
     private String apiKey;
 
     /*
      * The inputs for the Azure Machine Learning web service endpoint.
      */
-    @JsonProperty(value = "inputs")
     private AzureMachineLearningWebServiceInputs inputs;
 
     /*
-     * A list of outputs from the Azure Machine Learning web service endpoint
-     * execution.
+     * A list of outputs from the Azure Machine Learning web service endpoint execution.
      */
-    @JsonProperty(value = "outputs")
     private List<AzureMachineLearningWebServiceOutputColumn> outputs;
 
     /*
-     * Number between 1 and 10000 describing maximum number of rows for every
-     * Azure ML RRS execute request. Default is 1000.
+     * Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS execute request. Default is
+     * 1000.
      */
-    @JsonProperty(value = "batchSize")
     private Integer batchSize;
+
+    /**
+     * Creates an instance of AzureMachineLearningWebServiceFunctionBindingProperties class.
+     */
+    public AzureMachineLearningWebServiceFunctionBindingProperties() {
+    }
 
     /**
      * Get the endpoint property: The Request-Response execute endpoint of the Azure Machine Learning web service. Find
      * out more here:
      * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -67,7 +69,7 @@ public final class AzureMachineLearningWebServiceFunctionBindingProperties {
      * Set the endpoint property: The Request-Response execute endpoint of the Azure Machine Learning web service. Find
      * out more here:
      * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the AzureMachineLearningWebServiceFunctionBindingProperties object itself.
      */
@@ -78,7 +80,7 @@ public final class AzureMachineLearningWebServiceFunctionBindingProperties {
 
     /**
      * Get the apiKey property: The API key used to authenticate with Request-Response endpoint.
-     *
+     * 
      * @return the apiKey value.
      */
     public String apiKey() {
@@ -87,7 +89,7 @@ public final class AzureMachineLearningWebServiceFunctionBindingProperties {
 
     /**
      * Set the apiKey property: The API key used to authenticate with Request-Response endpoint.
-     *
+     * 
      * @param apiKey the apiKey value to set.
      * @return the AzureMachineLearningWebServiceFunctionBindingProperties object itself.
      */
@@ -98,7 +100,7 @@ public final class AzureMachineLearningWebServiceFunctionBindingProperties {
 
     /**
      * Get the inputs property: The inputs for the Azure Machine Learning web service endpoint.
-     *
+     * 
      * @return the inputs value.
      */
     public AzureMachineLearningWebServiceInputs inputs() {
@@ -107,19 +109,19 @@ public final class AzureMachineLearningWebServiceFunctionBindingProperties {
 
     /**
      * Set the inputs property: The inputs for the Azure Machine Learning web service endpoint.
-     *
+     * 
      * @param inputs the inputs value to set.
      * @return the AzureMachineLearningWebServiceFunctionBindingProperties object itself.
      */
-    public AzureMachineLearningWebServiceFunctionBindingProperties withInputs(
-        AzureMachineLearningWebServiceInputs inputs) {
+    public AzureMachineLearningWebServiceFunctionBindingProperties
+        withInputs(AzureMachineLearningWebServiceInputs inputs) {
         this.inputs = inputs;
         return this;
     }
 
     /**
      * Get the outputs property: A list of outputs from the Azure Machine Learning web service endpoint execution.
-     *
+     * 
      * @return the outputs value.
      */
     public List<AzureMachineLearningWebServiceOutputColumn> outputs() {
@@ -128,12 +130,12 @@ public final class AzureMachineLearningWebServiceFunctionBindingProperties {
 
     /**
      * Set the outputs property: A list of outputs from the Azure Machine Learning web service endpoint execution.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the AzureMachineLearningWebServiceFunctionBindingProperties object itself.
      */
-    public AzureMachineLearningWebServiceFunctionBindingProperties withOutputs(
-        List<AzureMachineLearningWebServiceOutputColumn> outputs) {
+    public AzureMachineLearningWebServiceFunctionBindingProperties
+        withOutputs(List<AzureMachineLearningWebServiceOutputColumn> outputs) {
         this.outputs = outputs;
         return this;
     }
@@ -141,7 +143,7 @@ public final class AzureMachineLearningWebServiceFunctionBindingProperties {
     /**
      * Get the batchSize property: Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS
      * execute request. Default is 1000.
-     *
+     * 
      * @return the batchSize value.
      */
     public Integer batchSize() {
@@ -151,7 +153,7 @@ public final class AzureMachineLearningWebServiceFunctionBindingProperties {
     /**
      * Set the batchSize property: Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS
      * execute request. Default is 1000.
-     *
+     * 
      * @param batchSize the batchSize value to set.
      * @return the AzureMachineLearningWebServiceFunctionBindingProperties object itself.
      */
@@ -162,7 +164,7 @@ public final class AzureMachineLearningWebServiceFunctionBindingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -172,5 +174,59 @@ public final class AzureMachineLearningWebServiceFunctionBindingProperties {
         if (outputs() != null) {
             outputs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeStringField("apiKey", this.apiKey);
+        jsonWriter.writeJsonField("inputs", this.inputs);
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("batchSize", this.batchSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMachineLearningWebServiceFunctionBindingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMachineLearningWebServiceFunctionBindingProperties if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureMachineLearningWebServiceFunctionBindingProperties.
+     */
+    public static AzureMachineLearningWebServiceFunctionBindingProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMachineLearningWebServiceFunctionBindingProperties deserializedAzureMachineLearningWebServiceFunctionBindingProperties
+                = new AzureMachineLearningWebServiceFunctionBindingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpoint".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceFunctionBindingProperties.endpoint = reader.getString();
+                } else if ("apiKey".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceFunctionBindingProperties.apiKey = reader.getString();
+                } else if ("inputs".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceFunctionBindingProperties.inputs
+                        = AzureMachineLearningWebServiceInputs.fromJson(reader);
+                } else if ("outputs".equals(fieldName)) {
+                    List<AzureMachineLearningWebServiceOutputColumn> outputs
+                        = reader.readArray(reader1 -> AzureMachineLearningWebServiceOutputColumn.fromJson(reader1));
+                    deserializedAzureMachineLearningWebServiceFunctionBindingProperties.outputs = outputs;
+                } else if ("batchSize".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceFunctionBindingProperties.batchSize
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMachineLearningWebServiceFunctionBindingProperties;
+        });
     }
 }

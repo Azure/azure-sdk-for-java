@@ -10,13 +10,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.AvailableWorkloadProfileInner;
 
-/** An instance of this class provides access to all the operations defined in AvailableWorkloadProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AvailableWorkloadProfilesClient.
+ */
 public interface AvailableWorkloadProfilesClient {
     /**
      * Get available workload profiles by location.
-     *
-     * <p>Get all available workload profiles for a location.
-     *
+     * 
+     * Get all available workload profiles for a location.
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -28,9 +30,9 @@ public interface AvailableWorkloadProfilesClient {
 
     /**
      * Get available workload profiles by location.
-     *
-     * <p>Get all available workload profiles for a location.
-     *
+     * 
+     * Get all available workload profiles for a location.
+     * 
      * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

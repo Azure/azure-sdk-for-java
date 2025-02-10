@@ -5,38 +5,45 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Weekly retention schedule. */
+/**
+ * Weekly retention schedule.
+ */
 @Fluent
-public final class WeeklyRetentionSchedule {
+public final class WeeklyRetentionSchedule implements JsonSerializable<WeeklyRetentionSchedule> {
     /*
      * List of days of week for weekly retention policy.
      */
-    @JsonProperty(value = "daysOfTheWeek")
     private List<DayOfWeek> daysOfTheWeek;
 
     /*
      * Retention times of retention policy.
      */
-    @JsonProperty(value = "retentionTimes")
     private List<OffsetDateTime> retentionTimes;
 
     /*
      * Retention duration of retention Policy.
      */
-    @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
-    /** Creates an instance of WeeklyRetentionSchedule class. */
+    /**
+     * Creates an instance of WeeklyRetentionSchedule class.
+     */
     public WeeklyRetentionSchedule() {
     }
 
     /**
      * Get the daysOfTheWeek property: List of days of week for weekly retention policy.
-     *
+     * 
      * @return the daysOfTheWeek value.
      */
     public List<DayOfWeek> daysOfTheWeek() {
@@ -45,7 +52,7 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Set the daysOfTheWeek property: List of days of week for weekly retention policy.
-     *
+     * 
      * @param daysOfTheWeek the daysOfTheWeek value to set.
      * @return the WeeklyRetentionSchedule object itself.
      */
@@ -56,7 +63,7 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Get the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @return the retentionTimes value.
      */
     public List<OffsetDateTime> retentionTimes() {
@@ -65,7 +72,7 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Set the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @param retentionTimes the retentionTimes value to set.
      * @return the WeeklyRetentionSchedule object itself.
      */
@@ -76,7 +83,7 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Get the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @return the retentionDuration value.
      */
     public RetentionDuration retentionDuration() {
@@ -85,7 +92,7 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Set the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @param retentionDuration the retentionDuration value to set.
      * @return the WeeklyRetentionSchedule object itself.
      */
@@ -96,12 +103,60 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (retentionDuration() != null) {
             retentionDuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("daysOfTheWeek", this.daysOfTheWeek,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("retentionTimes", this.retentionTimes, (writer, element) -> writer
+            .writeString(element == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(element)));
+        jsonWriter.writeJsonField("retentionDuration", this.retentionDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WeeklyRetentionSchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WeeklyRetentionSchedule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WeeklyRetentionSchedule.
+     */
+    public static WeeklyRetentionSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WeeklyRetentionSchedule deserializedWeeklyRetentionSchedule = new WeeklyRetentionSchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("daysOfTheWeek".equals(fieldName)) {
+                    List<DayOfWeek> daysOfTheWeek
+                        = reader.readArray(reader1 -> DayOfWeek.fromString(reader1.getString()));
+                    deserializedWeeklyRetentionSchedule.daysOfTheWeek = daysOfTheWeek;
+                } else if ("retentionTimes".equals(fieldName)) {
+                    List<OffsetDateTime> retentionTimes = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedWeeklyRetentionSchedule.retentionTimes = retentionTimes;
+                } else if ("retentionDuration".equals(fieldName)) {
+                    deserializedWeeklyRetentionSchedule.retentionDuration = RetentionDuration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWeeklyRetentionSchedule;
+        });
     }
 }

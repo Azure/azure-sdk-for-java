@@ -6,68 +6,45 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
+import com.azure.resourcemanager.devcenter.models.CatalogItemType;
+import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.Project;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ProjectsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"devCenterUri\":\"nwiaaomyl\",\"devCenterId\":\"azul\",\"description\":\"ethwwnpjhlfz\",\"maxDevBoxesPerUser\":1188676468,\"displayName\":\"hwahfbousn\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"72b0a040-4cf8-4ec7-ae44-c75ea724ce87\",\"tenantId\":\"be00fe87-a5f4-4d21-bf17-345d21579253\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"xykxhdj\":{\"principalId\":\"997ed452-24ce-4c08-b4d4-5cdbe44bb135\",\"clientId\":\"77a0df63-c74c-4761-aa91-1492f3069bbb\"},\"mmbcxfhbcp\":{\"principalId\":\"5340f4a9-19bf-4c31-87f8-0dc7d2f94a74\",\"clientId\":\"9e6eea54-5617-4666-bc41-7b7e4bbd7a6a\"},\"vxcjzhqizxfpxtgq\":{\"principalId\":\"2e361301-e777-42b1-96a3-e11fe66458a2\",\"clientId\":\"76c30ea1-e58b-4b9a-868e-f4dfb3e3e9b2\"}}},\"location\":\"javftjuhdqa\",\"tags\":{\"hfcf\":\"tgguwpijrajcivmm\",\"nzqodfvpg\":\"wrxgkneuvy\"},\"id\":\"hoxgsgbpf\",\"name\":\"zdjtxvzflbqv\",\"type\":\"aqvlgafcqusr\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"devCenterUri\":\"ojpykvgtrdc\",\"devCenterId\":\"fmzzsdymbrny\",\"description\":\"xmprafwg\",\"maxDevBoxesPerUser\":1986449760,\"displayName\":\"cxvdfffwafqrouda\"},\"location\":\"avehhrvkbunzo\",\"tags\":{\"dyuib\":\"hcxgkmoyx\",\"zydvfvf\":\"mfdn\",\"vhmgorffukis\":\"jnaeois\"},\"id\":\"vwmzhwplefaxvxil\",\"name\":\"btgn\",\"type\":\"nzeyqxtjj\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Project> response
+            = manager.projects().listByResourceGroup("talhsnvkcdmxzr", 1745804403, com.azure.core.util.Context.NONE);
 
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Project> response =
-            manager.projects().listByResourceGroup("hihfrbbcevqagtlt", 169373915, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("avehhrvkbunzo", response.iterator().next().location());
-        Assertions.assertEquals("hcxgkmoyx", response.iterator().next().tags().get("dyuib"));
-        Assertions.assertEquals("fmzzsdymbrny", response.iterator().next().devCenterId());
-        Assertions.assertEquals("xmprafwg", response.iterator().next().description());
-        Assertions.assertEquals(1986449760, response.iterator().next().maxDevBoxesPerUser());
-        Assertions.assertEquals("cxvdfffwafqrouda", response.iterator().next().displayName());
+        Assertions.assertEquals("javftjuhdqa", response.iterator().next().location());
+        Assertions.assertEquals("tgguwpijrajcivmm", response.iterator().next().tags().get("hfcf"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("azul", response.iterator().next().devCenterId());
+        Assertions.assertEquals("ethwwnpjhlfz", response.iterator().next().description());
+        Assertions.assertEquals(1188676468, response.iterator().next().maxDevBoxesPerUser());
+        Assertions.assertEquals("hwahfbousn", response.iterator().next().displayName());
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
+            response.iterator().next().catalogSettings().catalogItemSyncTypes().get(0));
     }
 }

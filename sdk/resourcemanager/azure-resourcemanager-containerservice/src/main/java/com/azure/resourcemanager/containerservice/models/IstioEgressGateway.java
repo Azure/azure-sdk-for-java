@@ -5,27 +5,21 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Istio egress gateway configuration.
  */
 @Fluent
-public final class IstioEgressGateway {
+public final class IstioEgressGateway implements JsonSerializable<IstioEgressGateway> {
     /*
      * Whether to enable the egress gateway.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
-
-    /*
-     * NodeSelector for scheduling the egress gateway.
-     */
-    @JsonProperty(value = "nodeSelector")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> nodeSelector;
 
     /**
      * Creates an instance of IstioEgressGateway class.
@@ -35,7 +29,7 @@ public final class IstioEgressGateway {
 
     /**
      * Get the enabled property: Whether to enable the egress gateway.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -44,7 +38,7 @@ public final class IstioEgressGateway {
 
     /**
      * Set the enabled property: Whether to enable the egress gateway.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the IstioEgressGateway object itself.
      */
@@ -54,30 +48,47 @@ public final class IstioEgressGateway {
     }
 
     /**
-     * Get the nodeSelector property: NodeSelector for scheduling the egress gateway.
-     *
-     * @return the nodeSelector value.
-     */
-    public Map<String, String> nodeSelector() {
-        return this.nodeSelector;
-    }
-
-    /**
-     * Set the nodeSelector property: NodeSelector for scheduling the egress gateway.
-     *
-     * @param nodeSelector the nodeSelector value to set.
-     * @return the IstioEgressGateway object itself.
-     */
-    public IstioEgressGateway withNodeSelector(Map<String, String> nodeSelector) {
-        this.nodeSelector = nodeSelector;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IstioEgressGateway from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IstioEgressGateway if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IstioEgressGateway.
+     */
+    public static IstioEgressGateway fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IstioEgressGateway deserializedIstioEgressGateway = new IstioEgressGateway();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedIstioEgressGateway.enabled = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIstioEgressGateway;
+        });
     }
 }

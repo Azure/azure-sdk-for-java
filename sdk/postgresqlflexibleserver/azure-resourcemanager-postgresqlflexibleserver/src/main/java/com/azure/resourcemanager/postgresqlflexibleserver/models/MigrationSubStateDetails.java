@@ -5,39 +5,42 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Migration sub state details. */
+/**
+ * Migration sub state details.
+ */
 @Fluent
-public final class MigrationSubStateDetails {
+public final class MigrationSubStateDetails implements JsonSerializable<MigrationSubStateDetails> {
     /*
      * Migration sub state.
      */
-    @JsonProperty(value = "currentSubState", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationSubState currentSubState;
 
     /*
      * Dictionary of <DbMigrationStatus>
      */
-    @JsonProperty(value = "dbDetails")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, DbMigrationStatus> dbDetails;
 
     /*
      * Details for the validation for migration
      */
-    @JsonProperty(value = "validationDetails")
     private ValidationDetails validationDetails;
 
-    /** Creates an instance of MigrationSubStateDetails class. */
+    /**
+     * Creates an instance of MigrationSubStateDetails class.
+     */
     public MigrationSubStateDetails() {
     }
 
     /**
      * Get the currentSubState property: Migration sub state.
-     *
+     * 
      * @return the currentSubState value.
      */
     public MigrationSubState currentSubState() {
@@ -46,7 +49,7 @@ public final class MigrationSubStateDetails {
 
     /**
      * Get the dbDetails property: Dictionary of &lt;DbMigrationStatus&gt;.
-     *
+     * 
      * @return the dbDetails value.
      */
     public Map<String, DbMigrationStatus> dbDetails() {
@@ -55,7 +58,7 @@ public final class MigrationSubStateDetails {
 
     /**
      * Set the dbDetails property: Dictionary of &lt;DbMigrationStatus&gt;.
-     *
+     * 
      * @param dbDetails the dbDetails value to set.
      * @return the MigrationSubStateDetails object itself.
      */
@@ -66,7 +69,7 @@ public final class MigrationSubStateDetails {
 
     /**
      * Get the validationDetails property: Details for the validation for migration.
-     *
+     * 
      * @return the validationDetails value.
      */
     public ValidationDetails validationDetails() {
@@ -75,7 +78,7 @@ public final class MigrationSubStateDetails {
 
     /**
      * Set the validationDetails property: Details for the validation for migration.
-     *
+     * 
      * @param validationDetails the validationDetails value to set.
      * @return the MigrationSubStateDetails object itself.
      */
@@ -86,22 +89,63 @@ public final class MigrationSubStateDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dbDetails() != null) {
-            dbDetails()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            dbDetails().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (validationDetails() != null) {
             validationDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("dbDetails", this.dbDetails, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("validationDetails", this.validationDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationSubStateDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationSubStateDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrationSubStateDetails.
+     */
+    public static MigrationSubStateDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationSubStateDetails deserializedMigrationSubStateDetails = new MigrationSubStateDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentSubState".equals(fieldName)) {
+                    deserializedMigrationSubStateDetails.currentSubState
+                        = MigrationSubState.fromString(reader.getString());
+                } else if ("dbDetails".equals(fieldName)) {
+                    Map<String, DbMigrationStatus> dbDetails
+                        = reader.readMap(reader1 -> DbMigrationStatus.fromJson(reader1));
+                    deserializedMigrationSubStateDetails.dbDetails = dbDetails;
+                } else if ("validationDetails".equals(fieldName)) {
+                    deserializedMigrationSubStateDetails.validationDetails = ValidationDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationSubStateDetails;
+        });
     }
 }

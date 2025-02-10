@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
      * Accounts_CreateOrUpdate.json
      */
     /**
@@ -25,7 +25,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
      * Accounts_CreateOrUpdateAD.json
      */
     /**
@@ -35,11 +35,20 @@ public final class AccountsCreateOrUpdateSamples {
      */
     public static void
         accountsCreateOrUpdateWithActiveDirectory(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.accounts().define("account1").withRegion("eastus").withExistingResourceGroup("myRG")
+        manager.accounts()
+            .define("account1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("myRG")
             .withActiveDirectories(Arrays.asList(new ActiveDirectory().withUsername("ad_user_name")
-                .withPassword("fakeTokenPlaceholder").withDomain("10.10.10.3").withDns("10.10.10.3")
-                .withSmbServerName("SMBServer").withOrganizationalUnit("OU=Engineering").withSite("SiteName")
-                .withAesEncryption(true).withLdapSigning(false).withLdapOverTls(false)))
+                .withPassword("fakeTokenPlaceholder")
+                .withDomain("10.10.10.3")
+                .withDns("10.10.10.3")
+                .withSmbServerName("SMBServer")
+                .withOrganizationalUnit("OU=Engineering")
+                .withSite("SiteName")
+                .withAesEncryption(true)
+                .withLdapSigning(false)
+                .withLdapOverTls(false)))
             .create();
     }
 }

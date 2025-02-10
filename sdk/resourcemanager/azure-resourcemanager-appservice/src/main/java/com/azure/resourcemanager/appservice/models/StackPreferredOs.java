@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Function App stack preferred OS.
  */
@@ -36,7 +33,6 @@ public enum StackPreferredOs {
      * @param value the serialized value to parse.
      * @return the parsed StackPreferredOs object, or null if unable to parse.
      */
-    @JsonCreator
     public static StackPreferredOs fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum StackPreferredOs {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -27,7 +27,8 @@ public final class TriggerQueryResponseImpl implements TriggerQueryResponse {
         List<TriggerResourceInner> inner = this.innerModel().value();
         if (inner != null) {
             return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new TriggerResourceImpl(inner1, this.manager())).collect(Collectors.toList()));
+                .map(inner1 -> new TriggerResourceImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

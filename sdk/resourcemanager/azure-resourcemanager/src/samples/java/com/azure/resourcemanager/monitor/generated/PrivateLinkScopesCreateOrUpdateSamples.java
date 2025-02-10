@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.AzureMonitorPrivateLinkScopeInner;
 import com.azure.resourcemanager.monitor.models.AccessMode;
 import com.azure.resourcemanager.monitor.models.AccessModeSettings;
@@ -12,63 +11,58 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PrivateLinkScopes CreateOrUpdate. */
+/**
+ * Samples for PrivateLinkScopes CreateOrUpdate.
+ */
 public final class PrivateLinkScopesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesCreate.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/
+     * PrivateLinkScopesCreate.json
      */
     /**
      * Sample code: PrivateLinkScopeCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void privateLinkScopeCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getPrivateLinkScopes()
-            .createOrUpdateWithResponse(
-                "my-resource-group",
-                "my-privatelinkscope",
-                new AzureMonitorPrivateLinkScopeInner()
-                    .withLocation("Global")
-                    .withAccessModeSettings(
-                        new AccessModeSettings()
-                            .withQueryAccessMode(AccessMode.OPEN)
-                            .withIngestionAccessMode(AccessMode.OPEN)
-                            .withExclusions(Arrays.asList())),
-                Context.NONE);
+            .createOrUpdateWithResponse("my-resource-group", "my-privatelinkscope",
+                new AzureMonitorPrivateLinkScopeInner().withLocation("Global")
+                    .withAccessModeSettings(new AccessModeSettings().withQueryAccessMode(AccessMode.OPEN)
+                        .withIngestionAccessMode(AccessMode.OPEN)
+                        .withExclusions(Arrays.asList())),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesUpdate.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/
+     * PrivateLinkScopesUpdate.json
      */
     /**
      * Sample code: PrivateLinkScopeUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void privateLinkScopeUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getPrivateLinkScopes()
-            .createOrUpdateWithResponse(
-                "my-resource-group",
-                "my-privatelinkscope",
-                new AzureMonitorPrivateLinkScopeInner()
-                    .withLocation("Global")
+            .createOrUpdateWithResponse("my-resource-group", "my-privatelinkscope",
+                new AzureMonitorPrivateLinkScopeInner().withLocation("Global")
                     .withTags(mapOf("Tag1", "Value1"))
-                    .withAccessModeSettings(
-                        new AccessModeSettings()
-                            .withQueryAccessMode(AccessMode.OPEN)
-                            .withIngestionAccessMode(AccessMode.OPEN)
-                            .withExclusions(Arrays.asList())),
-                Context.NONE);
+                    .withAccessModeSettings(new AccessModeSettings().withQueryAccessMode(AccessMode.OPEN)
+                        .withIngestionAccessMode(AccessMode.OPEN)
+                        .withExclusions(Arrays.asList())),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

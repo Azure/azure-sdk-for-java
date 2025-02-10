@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether or not the encryption is enabled for container registry. */
+/**
+ * Indicates whether or not the encryption is enabled for container registry.
+ */
 public final class EncryptionStatus extends ExpandableStringEnum<EncryptionStatus> {
-    /** Static value enabled for EncryptionStatus. */
+    /**
+     * Static value enabled for EncryptionStatus.
+     */
     public static final EncryptionStatus ENABLED = fromString("enabled");
 
-    /** Static value disabled for EncryptionStatus. */
+    /**
+     * Static value disabled for EncryptionStatus.
+     */
     public static final EncryptionStatus DISABLED = fromString("disabled");
 
     /**
      * Creates a new instance of EncryptionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class EncryptionStatus extends ExpandableStringEnum<EncryptionStatu
 
     /**
      * Creates or finds a EncryptionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionStatus.
      */
-    @JsonCreator
     public static EncryptionStatus fromString(String name) {
         return fromString(name, EncryptionStatus.class);
     }
 
     /**
      * Gets known EncryptionStatus values.
-     *
+     * 
      * @return known EncryptionStatus values.
      */
     public static Collection<EncryptionStatus> values() {

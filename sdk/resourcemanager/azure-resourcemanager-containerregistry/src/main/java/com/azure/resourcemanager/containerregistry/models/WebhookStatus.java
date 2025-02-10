@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the webhook at the time the operation was called. */
+/**
+ * The status of the webhook at the time the operation was called.
+ */
 public final class WebhookStatus extends ExpandableStringEnum<WebhookStatus> {
-    /** Static value enabled for WebhookStatus. */
+    /**
+     * Static value enabled for WebhookStatus.
+     */
     public static final WebhookStatus ENABLED = fromString("enabled");
 
-    /** Static value disabled for WebhookStatus. */
+    /**
+     * Static value disabled for WebhookStatus.
+     */
     public static final WebhookStatus DISABLED = fromString("disabled");
 
     /**
      * Creates a new instance of WebhookStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class WebhookStatus extends ExpandableStringEnum<WebhookStatus> {
 
     /**
      * Creates or finds a WebhookStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WebhookStatus.
      */
-    @JsonCreator
     public static WebhookStatus fromString(String name) {
         return fromString(name, WebhookStatus.class);
     }
 
     /**
      * Gets known WebhookStatus values.
-     *
+     * 
      * @return known WebhookStatus values.
      */
     public static Collection<WebhookStatus> values() {

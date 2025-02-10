@@ -5,77 +5,86 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** InMage Azure V2 input to update replication protected item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
+/**
+ * InMage Azure V2 input to update replication protected item.
+ */
 @Fluent
 public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicationProtectedItemProviderInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * The target cloud service ARM Id (for V1).
      */
-    @JsonProperty(value = "recoveryCloudServiceId")
     private String recoveryCloudServiceId;
 
     /*
      * The target resource group ARM Id (for V2).
      */
-    @JsonProperty(value = "recoveryResourceGroupId")
     private String recoveryResourceGroupId;
 
     /*
      * Managed disk update details.
      */
-    @JsonProperty(value = "managedDiskUpdateDetails")
     private List<A2AVmManagedDiskUpdateDetails> managedDiskUpdateDetails;
 
     /*
      * The boot diagnostic storage account.
      */
-    @JsonProperty(value = "recoveryBootDiagStorageAccountId")
     private String recoveryBootDiagStorageAccountId;
 
     /*
      * The recovery os disk encryption information.
      */
-    @JsonProperty(value = "diskEncryptionInfo")
     private DiskEncryptionInfo diskEncryptionInfo;
 
     /*
      * The user given name for Test Failover VM.
      */
-    @JsonProperty(value = "tfoAzureVMName")
     private String tfoAzureVMName;
 
     /*
      * The recovery proximity placement group Id.
      */
-    @JsonProperty(value = "recoveryProximityPlacementGroupId")
     private String recoveryProximityPlacementGroupId;
 
     /*
      * The recovery virtual machine scale set Id.
      */
-    @JsonProperty(value = "recoveryVirtualMachineScaleSetId")
     private String recoveryVirtualMachineScaleSetId;
 
     /*
      * The recovery capacity reservation group Id.
      */
-    @JsonProperty(value = "recoveryCapacityReservationGroupId")
     private String recoveryCapacityReservationGroupId;
 
-    /** Creates an instance of A2AUpdateReplicationProtectedItemInput class. */
+    /**
+     * Creates an instance of A2AUpdateReplicationProtectedItemInput class.
+     */
     public A2AUpdateReplicationProtectedItemInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the recoveryCloudServiceId property: The target cloud service ARM Id (for V1).
-     *
+     * 
      * @return the recoveryCloudServiceId value.
      */
     public String recoveryCloudServiceId() {
@@ -84,7 +93,7 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Set the recoveryCloudServiceId property: The target cloud service ARM Id (for V1).
-     *
+     * 
      * @param recoveryCloudServiceId the recoveryCloudServiceId value to set.
      * @return the A2AUpdateReplicationProtectedItemInput object itself.
      */
@@ -95,7 +104,7 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Get the recoveryResourceGroupId property: The target resource group ARM Id (for V2).
-     *
+     * 
      * @return the recoveryResourceGroupId value.
      */
     public String recoveryResourceGroupId() {
@@ -104,7 +113,7 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Set the recoveryResourceGroupId property: The target resource group ARM Id (for V2).
-     *
+     * 
      * @param recoveryResourceGroupId the recoveryResourceGroupId value to set.
      * @return the A2AUpdateReplicationProtectedItemInput object itself.
      */
@@ -115,7 +124,7 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Get the managedDiskUpdateDetails property: Managed disk update details.
-     *
+     * 
      * @return the managedDiskUpdateDetails value.
      */
     public List<A2AVmManagedDiskUpdateDetails> managedDiskUpdateDetails() {
@@ -124,19 +133,19 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Set the managedDiskUpdateDetails property: Managed disk update details.
-     *
+     * 
      * @param managedDiskUpdateDetails the managedDiskUpdateDetails value to set.
      * @return the A2AUpdateReplicationProtectedItemInput object itself.
      */
-    public A2AUpdateReplicationProtectedItemInput withManagedDiskUpdateDetails(
-        List<A2AVmManagedDiskUpdateDetails> managedDiskUpdateDetails) {
+    public A2AUpdateReplicationProtectedItemInput
+        withManagedDiskUpdateDetails(List<A2AVmManagedDiskUpdateDetails> managedDiskUpdateDetails) {
         this.managedDiskUpdateDetails = managedDiskUpdateDetails;
         return this;
     }
 
     /**
      * Get the recoveryBootDiagStorageAccountId property: The boot diagnostic storage account.
-     *
+     * 
      * @return the recoveryBootDiagStorageAccountId value.
      */
     public String recoveryBootDiagStorageAccountId() {
@@ -145,19 +154,19 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Set the recoveryBootDiagStorageAccountId property: The boot diagnostic storage account.
-     *
+     * 
      * @param recoveryBootDiagStorageAccountId the recoveryBootDiagStorageAccountId value to set.
      * @return the A2AUpdateReplicationProtectedItemInput object itself.
      */
-    public A2AUpdateReplicationProtectedItemInput withRecoveryBootDiagStorageAccountId(
-        String recoveryBootDiagStorageAccountId) {
+    public A2AUpdateReplicationProtectedItemInput
+        withRecoveryBootDiagStorageAccountId(String recoveryBootDiagStorageAccountId) {
         this.recoveryBootDiagStorageAccountId = recoveryBootDiagStorageAccountId;
         return this;
     }
 
     /**
      * Get the diskEncryptionInfo property: The recovery os disk encryption information.
-     *
+     * 
      * @return the diskEncryptionInfo value.
      */
     public DiskEncryptionInfo diskEncryptionInfo() {
@@ -166,7 +175,7 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Set the diskEncryptionInfo property: The recovery os disk encryption information.
-     *
+     * 
      * @param diskEncryptionInfo the diskEncryptionInfo value to set.
      * @return the A2AUpdateReplicationProtectedItemInput object itself.
      */
@@ -177,7 +186,7 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Get the tfoAzureVMName property: The user given name for Test Failover VM.
-     *
+     * 
      * @return the tfoAzureVMName value.
      */
     public String tfoAzureVMName() {
@@ -186,7 +195,7 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Set the tfoAzureVMName property: The user given name for Test Failover VM.
-     *
+     * 
      * @param tfoAzureVMName the tfoAzureVMName value to set.
      * @return the A2AUpdateReplicationProtectedItemInput object itself.
      */
@@ -197,7 +206,7 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Get the recoveryProximityPlacementGroupId property: The recovery proximity placement group Id.
-     *
+     * 
      * @return the recoveryProximityPlacementGroupId value.
      */
     public String recoveryProximityPlacementGroupId() {
@@ -206,19 +215,19 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Set the recoveryProximityPlacementGroupId property: The recovery proximity placement group Id.
-     *
+     * 
      * @param recoveryProximityPlacementGroupId the recoveryProximityPlacementGroupId value to set.
      * @return the A2AUpdateReplicationProtectedItemInput object itself.
      */
-    public A2AUpdateReplicationProtectedItemInput withRecoveryProximityPlacementGroupId(
-        String recoveryProximityPlacementGroupId) {
+    public A2AUpdateReplicationProtectedItemInput
+        withRecoveryProximityPlacementGroupId(String recoveryProximityPlacementGroupId) {
         this.recoveryProximityPlacementGroupId = recoveryProximityPlacementGroupId;
         return this;
     }
 
     /**
      * Get the recoveryVirtualMachineScaleSetId property: The recovery virtual machine scale set Id.
-     *
+     * 
      * @return the recoveryVirtualMachineScaleSetId value.
      */
     public String recoveryVirtualMachineScaleSetId() {
@@ -227,19 +236,19 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Set the recoveryVirtualMachineScaleSetId property: The recovery virtual machine scale set Id.
-     *
+     * 
      * @param recoveryVirtualMachineScaleSetId the recoveryVirtualMachineScaleSetId value to set.
      * @return the A2AUpdateReplicationProtectedItemInput object itself.
      */
-    public A2AUpdateReplicationProtectedItemInput withRecoveryVirtualMachineScaleSetId(
-        String recoveryVirtualMachineScaleSetId) {
+    public A2AUpdateReplicationProtectedItemInput
+        withRecoveryVirtualMachineScaleSetId(String recoveryVirtualMachineScaleSetId) {
         this.recoveryVirtualMachineScaleSetId = recoveryVirtualMachineScaleSetId;
         return this;
     }
 
     /**
      * Get the recoveryCapacityReservationGroupId property: The recovery capacity reservation group Id.
-     *
+     * 
      * @return the recoveryCapacityReservationGroupId value.
      */
     public String recoveryCapacityReservationGroupId() {
@@ -248,29 +257,101 @@ public final class A2AUpdateReplicationProtectedItemInput extends UpdateReplicat
 
     /**
      * Set the recoveryCapacityReservationGroupId property: The recovery capacity reservation group Id.
-     *
+     * 
      * @param recoveryCapacityReservationGroupId the recoveryCapacityReservationGroupId value to set.
      * @return the A2AUpdateReplicationProtectedItemInput object itself.
      */
-    public A2AUpdateReplicationProtectedItemInput withRecoveryCapacityReservationGroupId(
-        String recoveryCapacityReservationGroupId) {
+    public A2AUpdateReplicationProtectedItemInput
+        withRecoveryCapacityReservationGroupId(String recoveryCapacityReservationGroupId) {
         this.recoveryCapacityReservationGroupId = recoveryCapacityReservationGroupId;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (managedDiskUpdateDetails() != null) {
             managedDiskUpdateDetails().forEach(e -> e.validate());
         }
         if (diskEncryptionInfo() != null) {
             diskEncryptionInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("recoveryCloudServiceId", this.recoveryCloudServiceId);
+        jsonWriter.writeStringField("recoveryResourceGroupId", this.recoveryResourceGroupId);
+        jsonWriter.writeArrayField("managedDiskUpdateDetails", this.managedDiskUpdateDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("recoveryBootDiagStorageAccountId", this.recoveryBootDiagStorageAccountId);
+        jsonWriter.writeJsonField("diskEncryptionInfo", this.diskEncryptionInfo);
+        jsonWriter.writeStringField("tfoAzureVMName", this.tfoAzureVMName);
+        jsonWriter.writeStringField("recoveryProximityPlacementGroupId", this.recoveryProximityPlacementGroupId);
+        jsonWriter.writeStringField("recoveryVirtualMachineScaleSetId", this.recoveryVirtualMachineScaleSetId);
+        jsonWriter.writeStringField("recoveryCapacityReservationGroupId", this.recoveryCapacityReservationGroupId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AUpdateReplicationProtectedItemInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AUpdateReplicationProtectedItemInput if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AUpdateReplicationProtectedItemInput.
+     */
+    public static A2AUpdateReplicationProtectedItemInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AUpdateReplicationProtectedItemInput deserializedA2AUpdateReplicationProtectedItemInput
+                = new A2AUpdateReplicationProtectedItemInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedA2AUpdateReplicationProtectedItemInput.instanceType = reader.getString();
+                } else if ("recoveryCloudServiceId".equals(fieldName)) {
+                    deserializedA2AUpdateReplicationProtectedItemInput.recoveryCloudServiceId = reader.getString();
+                } else if ("recoveryResourceGroupId".equals(fieldName)) {
+                    deserializedA2AUpdateReplicationProtectedItemInput.recoveryResourceGroupId = reader.getString();
+                } else if ("managedDiskUpdateDetails".equals(fieldName)) {
+                    List<A2AVmManagedDiskUpdateDetails> managedDiskUpdateDetails
+                        = reader.readArray(reader1 -> A2AVmManagedDiskUpdateDetails.fromJson(reader1));
+                    deserializedA2AUpdateReplicationProtectedItemInput.managedDiskUpdateDetails
+                        = managedDiskUpdateDetails;
+                } else if ("recoveryBootDiagStorageAccountId".equals(fieldName)) {
+                    deserializedA2AUpdateReplicationProtectedItemInput.recoveryBootDiagStorageAccountId
+                        = reader.getString();
+                } else if ("diskEncryptionInfo".equals(fieldName)) {
+                    deserializedA2AUpdateReplicationProtectedItemInput.diskEncryptionInfo
+                        = DiskEncryptionInfo.fromJson(reader);
+                } else if ("tfoAzureVMName".equals(fieldName)) {
+                    deserializedA2AUpdateReplicationProtectedItemInput.tfoAzureVMName = reader.getString();
+                } else if ("recoveryProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedA2AUpdateReplicationProtectedItemInput.recoveryProximityPlacementGroupId
+                        = reader.getString();
+                } else if ("recoveryVirtualMachineScaleSetId".equals(fieldName)) {
+                    deserializedA2AUpdateReplicationProtectedItemInput.recoveryVirtualMachineScaleSetId
+                        = reader.getString();
+                } else if ("recoveryCapacityReservationGroupId".equals(fieldName)) {
+                    deserializedA2AUpdateReplicationProtectedItemInput.recoveryCapacityReservationGroupId
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AUpdateReplicationProtectedItemInput;
+        });
     }
 }

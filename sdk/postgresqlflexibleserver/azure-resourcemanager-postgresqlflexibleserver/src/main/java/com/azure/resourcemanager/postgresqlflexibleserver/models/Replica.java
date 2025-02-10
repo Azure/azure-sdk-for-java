@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Replica properties of a server. */
+/**
+ * Replica properties of a server.
+ */
 @Fluent
-public final class Replica {
+public final class Replica implements JsonSerializable<Replica> {
     /*
      * Used to indicate role of the server in replication set.
      */
-    @JsonProperty(value = "role")
     private ReplicationRole role;
 
     /*
      * Replicas allowed for a server.
      */
-    @JsonProperty(value = "capacity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer capacity;
 
     /*
      * Gets the replication state of a replica server. This property is returned only for replicas api call. Supported
      * values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring
      */
-    @JsonProperty(value = "replicationState", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationState replicationState;
 
     /*
      * Sets the promote mode for a replica server. This is a write only property.
      */
-    @JsonProperty(value = "promoteMode")
     private ReadReplicaPromoteMode promoteMode;
 
     /*
      * Sets the promote options for a replica server. This is a write only property.
      */
-    @JsonProperty(value = "promoteOption")
     private ReplicationPromoteOption promoteOption;
 
-    /** Creates an instance of Replica class. */
+    /**
+     * Creates an instance of Replica class.
+     */
     public Replica() {
     }
 
     /**
      * Get the role property: Used to indicate role of the server in replication set.
-     *
+     * 
      * @return the role value.
      */
     public ReplicationRole role() {
@@ -56,7 +59,7 @@ public final class Replica {
 
     /**
      * Set the role property: Used to indicate role of the server in replication set.
-     *
+     * 
      * @param role the role value to set.
      * @return the Replica object itself.
      */
@@ -67,7 +70,7 @@ public final class Replica {
 
     /**
      * Get the capacity property: Replicas allowed for a server.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -77,7 +80,7 @@ public final class Replica {
     /**
      * Get the replicationState property: Gets the replication state of a replica server. This property is returned only
      * for replicas api call. Supported values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring.
-     *
+     * 
      * @return the replicationState value.
      */
     public ReplicationState replicationState() {
@@ -86,7 +89,7 @@ public final class Replica {
 
     /**
      * Get the promoteMode property: Sets the promote mode for a replica server. This is a write only property.
-     *
+     * 
      * @return the promoteMode value.
      */
     public ReadReplicaPromoteMode promoteMode() {
@@ -95,7 +98,7 @@ public final class Replica {
 
     /**
      * Set the promoteMode property: Sets the promote mode for a replica server. This is a write only property.
-     *
+     * 
      * @param promoteMode the promoteMode value to set.
      * @return the Replica object itself.
      */
@@ -106,7 +109,7 @@ public final class Replica {
 
     /**
      * Get the promoteOption property: Sets the promote options for a replica server. This is a write only property.
-     *
+     * 
      * @return the promoteOption value.
      */
     public ReplicationPromoteOption promoteOption() {
@@ -115,7 +118,7 @@ public final class Replica {
 
     /**
      * Set the promoteOption property: Sets the promote options for a replica server. This is a write only property.
-     *
+     * 
      * @param promoteOption the promoteOption value to set.
      * @return the Replica object itself.
      */
@@ -126,9 +129,55 @@ public final class Replica {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("promoteMode", this.promoteMode == null ? null : this.promoteMode.toString());
+        jsonWriter.writeStringField("promoteOption", this.promoteOption == null ? null : this.promoteOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Replica from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Replica if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Replica.
+     */
+    public static Replica fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Replica deserializedReplica = new Replica();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("role".equals(fieldName)) {
+                    deserializedReplica.role = ReplicationRole.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedReplica.capacity = reader.getNullable(JsonReader::getInt);
+                } else if ("replicationState".equals(fieldName)) {
+                    deserializedReplica.replicationState = ReplicationState.fromString(reader.getString());
+                } else if ("promoteMode".equals(fieldName)) {
+                    deserializedReplica.promoteMode = ReadReplicaPromoteMode.fromString(reader.getString());
+                } else if ("promoteOption".equals(fieldName)) {
+                    deserializedReplica.promoteOption = ReplicationPromoteOption.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplica;
+        });
     }
 }

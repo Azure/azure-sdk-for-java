@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.newrelicobservability.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of VM Resource having NewRelic OneAgent installed. */
+/**
+ * Details of VM Resource having NewRelic OneAgent installed.
+ */
 @Fluent
-public final class VMInfoInner {
+public final class VMInfoInner implements JsonSerializable<VMInfoInner> {
     /*
      * Azure VM resource ID
      */
-    @JsonProperty(value = "vmId")
     private String vmId;
 
     /*
      * Version of the NewRelic agent installed on the VM.
      */
-    @JsonProperty(value = "agentVersion")
     private String agentVersion;
 
     /*
      * Status of the NewRelic agent installed on the VM.
      */
-    @JsonProperty(value = "agentStatus")
     private String agentStatus;
 
-    /** Creates an instance of VMInfoInner class. */
+    /**
+     * Creates an instance of VMInfoInner class.
+     */
     public VMInfoInner() {
     }
 
     /**
      * Get the vmId property: Azure VM resource ID.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -43,7 +48,7 @@ public final class VMInfoInner {
 
     /**
      * Set the vmId property: Azure VM resource ID.
-     *
+     * 
      * @param vmId the vmId value to set.
      * @return the VMInfoInner object itself.
      */
@@ -54,7 +59,7 @@ public final class VMInfoInner {
 
     /**
      * Get the agentVersion property: Version of the NewRelic agent installed on the VM.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -63,7 +68,7 @@ public final class VMInfoInner {
 
     /**
      * Set the agentVersion property: Version of the NewRelic agent installed on the VM.
-     *
+     * 
      * @param agentVersion the agentVersion value to set.
      * @return the VMInfoInner object itself.
      */
@@ -74,7 +79,7 @@ public final class VMInfoInner {
 
     /**
      * Get the agentStatus property: Status of the NewRelic agent installed on the VM.
-     *
+     * 
      * @return the agentStatus value.
      */
     public String agentStatus() {
@@ -83,7 +88,7 @@ public final class VMInfoInner {
 
     /**
      * Set the agentStatus property: Status of the NewRelic agent installed on the VM.
-     *
+     * 
      * @param agentStatus the agentStatus value to set.
      * @return the VMInfoInner object itself.
      */
@@ -94,9 +99,51 @@ public final class VMInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmId", this.vmId);
+        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeStringField("agentStatus", this.agentStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMInfoInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMInfoInner.
+     */
+    public static VMInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMInfoInner deserializedVMInfoInner = new VMInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmId".equals(fieldName)) {
+                    deserializedVMInfoInner.vmId = reader.getString();
+                } else if ("agentVersion".equals(fieldName)) {
+                    deserializedVMInfoInner.agentVersion = reader.getString();
+                } else if ("agentStatus".equals(fieldName)) {
+                    deserializedVMInfoInner.agentStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMInfoInner;
+        });
     }
 }

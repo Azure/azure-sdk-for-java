@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for NamespaceType. */
+/**
+ * The namespace type.
+ */
 public enum NamespaceType {
-    /** Enum value Messaging. */
+    /**
+     * Enum value Messaging.
+     */
     MESSAGING("Messaging"),
 
-    /** Enum value NotificationHub. */
+    /**
+     * Enum value NotificationHub.
+     */
     NOTIFICATION_HUB("NotificationHub");
 
-    /** The actual serialized value for a NamespaceType instance. */
+    /**
+     * The actual serialized value for a NamespaceType instance.
+     */
     private final String value;
 
     NamespaceType(String value) {
@@ -24,12 +29,14 @@ public enum NamespaceType {
 
     /**
      * Parses a serialized value to a NamespaceType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed NamespaceType object, or null if unable to parse.
      */
-    @JsonCreator
     public static NamespaceType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         NamespaceType[] items = NamespaceType.values();
         for (NamespaceType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum NamespaceType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

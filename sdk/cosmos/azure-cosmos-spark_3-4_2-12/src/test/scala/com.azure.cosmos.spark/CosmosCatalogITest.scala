@@ -70,6 +70,23 @@ class CosmosCatalogITest
         }
     }
 
+    it can "list all databases" in {
+        val databaseName1 = getAutoCleanableDatabaseName
+        val databaseName2 = getAutoCleanableDatabaseName
+
+        // creating those databases ahead of time
+        cosmosClient.createDatabase(databaseName1).block()
+        cosmosClient.createDatabase(databaseName2).block()
+
+        val databases  = spark.sql("SHOW DATABASES IN testCatalog").collect()
+        databases.size should be >= 2
+        //validate databases has the above database name1
+        databases
+         .filter(
+             row => row.getAs[String]("namespace").equals(databaseName1)
+              || row.getAs[String]("namespace").equals(databaseName2)) should have size 2
+    }
+
     private def dropDatabase(spark: SparkSession, databaseName: String, cascade: Boolean) = {
         if (cascade) {
             spark.sql(s"DROP DATABASE testCatalog.$databaseName CASCADE;")

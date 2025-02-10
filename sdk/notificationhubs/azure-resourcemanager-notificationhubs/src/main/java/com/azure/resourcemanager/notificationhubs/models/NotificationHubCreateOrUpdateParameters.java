@@ -7,33 +7,54 @@ package com.azure.resourcemanager.notificationhubs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubProperties;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Parameters supplied to the CreateOrUpdate NotificationHub operation. */
+/**
+ * Parameters supplied to the CreateOrUpdate NotificationHub operation.
+ */
 @Fluent
 public final class NotificationHubCreateOrUpdateParameters extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationHubCreateOrUpdateParameters.class);
-
     /*
      * Properties of the NotificationHub.
      */
-    @JsonProperty(value = "properties", required = true)
     private NotificationHubProperties innerProperties = new NotificationHubProperties();
 
     /*
      * The sku of the created namespace
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NotificationHubCreateOrUpdateParameters class.
+     */
+    public NotificationHubCreateOrUpdateParameters() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the NotificationHub.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NotificationHubProperties innerProperties() {
@@ -42,7 +63,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the sku property: The sku of the created namespace.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -51,7 +72,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the sku property: The sku of the created namespace.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the NotificationHubCreateOrUpdateParameters object itself.
      */
@@ -60,14 +81,48 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationHubCreateOrUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationHubCreateOrUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -76,7 +131,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the name property: The NotificationHub name.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -85,7 +140,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the name property: The NotificationHub name.
-     *
+     * 
      * @param name the name value to set.
      * @return the NotificationHubCreateOrUpdateParameters object itself.
      */
@@ -99,7 +154,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the registrationTtl property: The RegistrationTtl of the created NotificationHub.
-     *
+     * 
      * @return the registrationTtl value.
      */
     public String registrationTtl() {
@@ -108,7 +163,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the registrationTtl property: The RegistrationTtl of the created NotificationHub.
-     *
+     * 
      * @param registrationTtl the registrationTtl value to set.
      * @return the NotificationHubCreateOrUpdateParameters object itself.
      */
@@ -122,7 +177,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the authorizationRules property: The AuthorizationRules of the created NotificationHub.
-     *
+     * 
      * @return the authorizationRules value.
      */
     public List<SharedAccessAuthorizationRuleProperties> authorizationRules() {
@@ -131,12 +186,12 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the authorizationRules property: The AuthorizationRules of the created NotificationHub.
-     *
+     * 
      * @param authorizationRules the authorizationRules value to set.
      * @return the NotificationHubCreateOrUpdateParameters object itself.
      */
-    public NotificationHubCreateOrUpdateParameters withAuthorizationRules(
-        List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
+    public NotificationHubCreateOrUpdateParameters
+        withAuthorizationRules(List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NotificationHubProperties();
         }
@@ -146,7 +201,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the apnsCredential value.
      */
     public ApnsCredential apnsCredential() {
@@ -155,7 +210,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
+     * 
      * @param apnsCredential the apnsCredential value to set.
      * @return the NotificationHubCreateOrUpdateParameters object itself.
      */
@@ -169,7 +224,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the wnsCredential value.
      */
     public WnsCredential wnsCredential() {
@@ -178,7 +233,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
+     * 
      * @param wnsCredential the wnsCredential value to set.
      * @return the NotificationHubCreateOrUpdateParameters object itself.
      */
@@ -192,7 +247,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
+     * 
      * @return the gcmCredential value.
      */
     public GcmCredential gcmCredential() {
@@ -201,7 +256,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
+     * 
      * @param gcmCredential the gcmCredential value to set.
      * @return the NotificationHubCreateOrUpdateParameters object itself.
      */
@@ -215,7 +270,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the mpnsCredential value.
      */
     public MpnsCredential mpnsCredential() {
@@ -224,7 +279,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
+     * 
      * @param mpnsCredential the mpnsCredential value to set.
      * @return the NotificationHubCreateOrUpdateParameters object itself.
      */
@@ -238,7 +293,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the admCredential property: The AdmCredential of the created NotificationHub.
-     *
+     * 
      * @return the admCredential value.
      */
     public AdmCredential admCredential() {
@@ -247,7 +302,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the admCredential property: The AdmCredential of the created NotificationHub.
-     *
+     * 
      * @param admCredential the admCredential value to set.
      * @return the NotificationHubCreateOrUpdateParameters object itself.
      */
@@ -261,7 +316,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
+     * 
      * @return the baiduCredential value.
      */
     public BaiduCredential baiduCredential() {
@@ -270,7 +325,7 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
+     * 
      * @param baiduCredential the baiduCredential value to set.
      * @return the NotificationHubCreateOrUpdateParameters object itself.
      */
@@ -284,20 +339,76 @@ public final class NotificationHubCreateOrUpdateParameters extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NotificationHubCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model NotificationHubCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationHubCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationHubCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationHubCreateOrUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NotificationHubCreateOrUpdateParameters.
+     */
+    public static NotificationHubCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationHubCreateOrUpdateParameters deserializedNotificationHubCreateOrUpdateParameters
+                = new NotificationHubCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNotificationHubCreateOrUpdateParameters.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNotificationHubCreateOrUpdateParameters.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNotificationHubCreateOrUpdateParameters.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNotificationHubCreateOrUpdateParameters.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNotificationHubCreateOrUpdateParameters.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNotificationHubCreateOrUpdateParameters.innerProperties
+                        = NotificationHubProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedNotificationHubCreateOrUpdateParameters.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationHubCreateOrUpdateParameters;
+        });
     }
 }

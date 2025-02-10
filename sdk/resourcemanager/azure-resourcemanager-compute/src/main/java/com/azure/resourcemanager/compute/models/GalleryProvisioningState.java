@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -59,7 +58,6 @@ public final class GalleryProvisioningState extends ExpandableStringEnum<Gallery
      * @param name a name to look for.
      * @return the corresponding GalleryProvisioningState.
      */
-    @JsonCreator
     public static GalleryProvisioningState fromString(String name) {
         return fromString(name, GalleryProvisioningState.class);
     }

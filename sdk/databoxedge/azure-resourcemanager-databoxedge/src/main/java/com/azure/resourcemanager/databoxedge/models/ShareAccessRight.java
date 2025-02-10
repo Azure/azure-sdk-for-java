@@ -6,30 +6,36 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the mapping between this particular user and the type of access he has on shares on this device. */
+/**
+ * Specifies the mapping between this particular user and the type of access he has on shares on this device.
+ */
 @Fluent
-public final class ShareAccessRight {
+public final class ShareAccessRight implements JsonSerializable<ShareAccessRight> {
     /*
      * The share ID.
      */
-    @JsonProperty(value = "shareId", required = true)
     private String shareId;
 
     /*
      * Type of access to be allowed on the share for this user.
      */
-    @JsonProperty(value = "accessType", required = true)
     private ShareAccessType accessType;
 
-    /** Creates an instance of ShareAccessRight class. */
+    /**
+     * Creates an instance of ShareAccessRight class.
+     */
     public ShareAccessRight() {
     }
 
     /**
      * Get the shareId property: The share ID.
-     *
+     * 
      * @return the shareId value.
      */
     public String shareId() {
@@ -38,7 +44,7 @@ public final class ShareAccessRight {
 
     /**
      * Set the shareId property: The share ID.
-     *
+     * 
      * @param shareId the shareId value to set.
      * @return the ShareAccessRight object itself.
      */
@@ -49,7 +55,7 @@ public final class ShareAccessRight {
 
     /**
      * Get the accessType property: Type of access to be allowed on the share for this user.
-     *
+     * 
      * @return the accessType value.
      */
     public ShareAccessType accessType() {
@@ -58,7 +64,7 @@ public final class ShareAccessRight {
 
     /**
      * Set the accessType property: Type of access to be allowed on the share for this user.
-     *
+     * 
      * @param accessType the accessType value to set.
      * @return the ShareAccessRight object itself.
      */
@@ -69,21 +75,59 @@ public final class ShareAccessRight {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (shareId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property shareId in model ShareAccessRight"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property shareId in model ShareAccessRight"));
         }
         if (accessType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property accessType in model ShareAccessRight"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property accessType in model ShareAccessRight"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ShareAccessRight.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("shareId", this.shareId);
+        jsonWriter.writeStringField("accessType", this.accessType == null ? null : this.accessType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ShareAccessRight from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ShareAccessRight if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ShareAccessRight.
+     */
+    public static ShareAccessRight fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ShareAccessRight deserializedShareAccessRight = new ShareAccessRight();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("shareId".equals(fieldName)) {
+                    deserializedShareAccessRight.shareId = reader.getString();
+                } else if ("accessType".equals(fieldName)) {
+                    deserializedShareAccessRight.accessType = ShareAccessType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedShareAccessRight;
+        });
+    }
 }

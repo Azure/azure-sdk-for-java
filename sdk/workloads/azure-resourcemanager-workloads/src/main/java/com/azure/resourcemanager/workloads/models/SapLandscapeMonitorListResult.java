@@ -7,25 +7,27 @@ package com.azure.resourcemanager.workloads.models;
 import com.azure.resourcemanager.workloads.fluent.models.SapLandscapeMonitorListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of SapLandscapeMonitorListResult. */
+/**
+ * An immutable client-side representation of SapLandscapeMonitorListResult.
+ */
 public interface SapLandscapeMonitorListResult {
     /**
      * Gets the value property: The list of Sap Landscape Monitor configuration.
-     *
+     * 
      * @return the value value.
      */
     List<SapLandscapeMonitor> value();
 
     /**
      * Gets the nextLink property: The URL to get the next set of SAP Landscape Monitor Dashboard.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.workloads.fluent.models.SapLandscapeMonitorListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     SapLandscapeMonitorListResultInner innerModel();

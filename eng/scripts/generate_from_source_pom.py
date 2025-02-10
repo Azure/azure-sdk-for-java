@@ -36,10 +36,10 @@ default_project = Project(None, None, None, None)
 
 # azure-client-sdk-parent, azure-perf-test-parent, spring-boot-starter-parent, and azure-spring-boot-test-parent are
 # valid parent POMs for Track 2 libraries.
-valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12']
+valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-client-sdk-parent-v2', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12', 'io.clientcore:clientcore-parent']
 
 # List of parent POMs that should be retained as projects to create a full from source POM.
-parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12']
+parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-client-sdk-parent-v2', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'io.clientcore:clientcore-parent']
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -53,24 +53,33 @@ client_from_source_pom_path = os.path.join(root_path, 'ClientFromSourcePom.xml')
 sdk_string = "/sdk/"
 
 # Function that creates the aggregate POM.
-def create_from_source_pom(project_list: str, set_skip_linting_projects: str, match_any_version: bool):
-    project_list_identifiers = project_list.split(',')
+def create_from_source_pom(artifacts_list: str, additional_modules_list: str, set_skip_linting_projects: str, match_any_version: bool):
+    artifacts_list_identifiers = artifacts_list.split(',')
+
+    additional_modules_identifiers = []
+    if additional_modules_list is not None:
+        additional_modules_identifiers = additional_modules_list.split(',')
+        # Combine the lists so dependencies are calculated correctly. While there
+        # should be no duplicates between the artifacts list and additional modules,
+        # it's better to be safe. This will remove the duplicates
+        combined_list = artifacts_list_identifiers + additional_modules_identifiers
+        artifacts_list_identifiers = list(set(combined_list))
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_version = load_client_artifact_identifiers()
 
-    projects = create_projects(project_list_identifiers, artifact_identifier_to_version, match_any_version)
+    projects = create_projects(artifacts_list_identifiers, artifact_identifier_to_version, match_any_version)
 
     dependent_modules: Set[str] = set()
 
     # Resolve all projects, including transitively, that are dependent on the projects in the project list.
-    for project_identifier in project_list_identifiers:
+    for project_identifier in artifacts_list_identifiers:
         dependent_modules = resolve_dependent_project(project_identifier, dependent_modules, projects)
 
     dependency_modules: Set[str] = set()
 
     # Resolve all dependencies of the projects in the project list and of the dependent modules.
-    for project_identifier in project_list_identifiers:
+    for project_identifier in artifacts_list_identifiers:
         dependency_modules = resolve_project_dependencies(project_identifier, dependency_modules, projects)
     for project_identifier in dependent_modules:
         dependency_modules = resolve_project_dependencies(project_identifier, dependency_modules, projects)
@@ -78,7 +87,7 @@ def create_from_source_pom(project_list: str, set_skip_linting_projects: str, ma
     source_projects: Set[Project] = set()
 
     # Finally map the project identifiers to projects.
-    add_source_projects(source_projects, project_list_identifiers, projects)
+    add_source_projects(source_projects, artifacts_list_identifiers, projects)
     add_source_projects(source_projects, dependent_modules, projects)
     add_source_projects(source_projects, dependency_modules, projects)
 
@@ -100,12 +109,23 @@ def create_from_source_pom(project_list: str, set_skip_linting_projects: str, ma
     sparse_checkout_directories: Set[str] = set()
     service_directories: Set[str] = set()
     for p in source_projects:
-        # get the service directory, which is one level up from the library's directory
+        # Get the service directory. If there's a ci.yml file in the directory path then
+        # the directory path needs to be added to the sparse checkout, otherwise it's one
+        # directory up.
+        proj_path = os.path.normpath(root_path + p.directory_path )
+#         proj_path_with_yml = os.path.normpath(proj_path + "/ci.yml")
+#         if os.path.exists(proj_path_with_yml):
+#             sparse_checkout_directory = p.directory_path
+#         else:
+        # Temporarily commenting out if / else above to resolve sparse checkout issue when running Communication
+        # library From Source live tests (plus possibly more). Will be reverted once all library checkouts are resolved.
         sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
+
         sparse_checkout_directories.add(sparse_checkout_directory)
+
         # The ServiceDirectories list should only ever contain the list of service
         # directories for the project list and nothing else.
-        if p.identifier in project_list_identifiers:
+        if p.identifier in artifacts_list_identifiers:
             # Sparse checkout directories can contain directories that aren't service directories.
             # (aka. /common). Any service directory will start with "/sdk/", everything else is
             # would be attributed to supporting libraries (ex. perf-test-core).
@@ -181,7 +201,7 @@ def load_client_artifact_identifiers() -> Dict[str, ArtifactVersion]:
 
 # Function that creates the Projects within the repository.
 # Projects contain a Maven identifier, module path, parent POM, its dependency Maven identifiers, and Maven identifiers for projects dependent on it.
-def create_projects(project_list_identifiers: list, artifact_identifier_to_version: Dict[str, ArtifactVersion], match_any_version: bool) -> Dict[str, Project]:
+def create_projects(artifacts_list_identifiers: list, artifact_identifier_to_version: Dict[str, ArtifactVersion], match_any_version: bool) -> Dict[str, Project]:
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
@@ -198,7 +218,7 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
 
             # Only parse files that are pom.xml files.
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
-                project = create_project_for_pom(file_path, project_list_identifiers, artifact_identifier_to_version, match_any_version)
+                project = create_project_for_pom(file_path, artifacts_list_identifiers, artifact_identifier_to_version, match_any_version)
                 if project is not None:
                     projects[project.identifier] = project
 
@@ -210,7 +230,7 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
 
     return projects
 
-def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifact_identifier_to_version: Dict[str, ArtifactVersion], match_any_version: bool):
+def create_project_for_pom(pom_path: str, artifacts_list_identifiers: list, artifact_identifier_to_version: Dict[str, ArtifactVersion], match_any_version: bool):
     if 'eng' in pom_path.split(os.sep):
         return
 
@@ -227,7 +247,7 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifa
         return Project(project_identifier, directory_path, module_path, parent_pom)
 
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
-    if not project_identifier in project_list_identifiers and not is_spring_child_pom(tree_root) and not parent_pom in valid_parents: # Spring pom's parent can be empty.
+    if not project_identifier in artifacts_list_identifiers and not is_spring_child_pom(tree_root) and not parent_pom in valid_parents: # Spring pom's parent can be empty.
         return
 
     project = Project(project_identifier, directory_path, module_path, parent_pom)
@@ -297,20 +317,23 @@ def project_uses_client_parent(project: Project, projects: Dict[str, Project]) -
     while project.parent_pom is not None:
         if project.parent_pom == 'com.azure:azure-client-sdk-parent':
             return True
+        if project.parent_pom == 'io.clientcore:clientcore-parent':
+            return True
         project = projects.get(project.parent_pom, default_project)
 
     return False
 
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
-    parser.add_argument('--project-list', '--pl', type=str)
+    parser.add_argument('--artifacts-list', '--al', type=str)
+    parser.add_argument('--additional-modules-list', '--aml', type=str, required=False, default=None, nargs='?')
     parser.add_argument('--set-skip-linting-projects', type=str)
     parser.add_argument('--match-any-version', action='store_true')
     args = parser.parse_args()
-    if args.project_list == None:
-        raise ValueError('Missing project list.')
+    if args.artifacts_list == None:
+        raise ValueError('Missing artifacts list.')
     start_time = time.time()
-    create_from_source_pom(args.project_list, args.set_skip_linting_projects, args.match_any_version)
+    create_from_source_pom(args.artifacts_list, args.additional_modules_list, args.set_skip_linting_projects, args.match_any_version)
     elapsed_time = time.time() - start_time
 
     print('Effective From Source POM File')

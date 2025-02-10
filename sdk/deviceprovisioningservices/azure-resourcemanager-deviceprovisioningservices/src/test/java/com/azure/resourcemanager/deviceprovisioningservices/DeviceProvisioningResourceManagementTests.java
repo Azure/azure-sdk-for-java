@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DeviceProvisioningResourceManagementTests extends DeviceProvisioningTestBase {
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void serviceCRUD() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
@@ -42,14 +42,12 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
                     NameAvailabilityInfo availabilityInfo = iotDpsManager.iotDpsResources()
                         .checkProvisioningServiceNameAvailability(new OperationInputs().withName(serviceName));
 
-                    assertTrue(
-                        availabilityInfo.nameAvailable(),
+                    assertTrue(availabilityInfo.nameAvailable(),
                         "Service name was unavailable even after deleting the existing service with the name");
                 }
             }
 
-            ProvisioningServiceDescription createServiceDescription = iotDpsManager
-                .iotDpsResources()
+            ProvisioningServiceDescription createServiceDescription = iotDpsManager.iotDpsResources()
                 .define(serviceName)
                 .withRegion(DEFAULT_REGION)
                 .withExistingResourceGroup(resourceGroup.name())
@@ -57,9 +55,8 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
                 .withSku(Constants.DefaultSku.INSTANCE)
                 .create();
 
-            ProvisioningServiceDescriptionInner updatedProvisioningServiceDescriptionInner =
-                iotDpsManager
-                    .serviceClient()
+            ProvisioningServiceDescriptionInner updatedProvisioningServiceDescriptionInner
+                = iotDpsManager.serviceClient()
                     .getIotDpsResources()
                     .createOrUpdate(resourceGroup.name(), serviceName, createServiceDescription.innerModel());
 
@@ -68,14 +65,14 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
             assertEquals(serviceName, updatedProvisioningServiceDescriptionInner.name());
 
             // Try getting the newly created resource
-            ProvisioningServiceDescription getResponse = iotDpsManager
-                .iotDpsResources()
-                .getByResourceGroup(resourceGroup.name(), serviceName);
+            ProvisioningServiceDescription getResponse
+                = iotDpsManager.iotDpsResources().getByResourceGroup(resourceGroup.name(), serviceName);
 
             assertNotNull(getResponse);
             assertNotNull(getResponse.etag());
             assertEquals(Constants.DefaultSku.INSTANCE.name().toString(), getResponse.sku().name().toString());
-            assertEquals(Constants.DefaultSku.INSTANCE.capacity().longValue(), getResponse.sku().capacity().longValue());
+            assertEquals(Constants.DefaultSku.INSTANCE.capacity().longValue(),
+                getResponse.sku().capacity().longValue());
             assertEquals(DEFAULT_REGION.toString(), getResponse.location());
 
             // Delete the service
@@ -87,7 +84,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void updateSKU() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
@@ -95,23 +92,17 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
 
         try {
             // create the provisioning service
-            ProvisioningServiceDescriptionInner provisioningServiceDescription =
-                createProvisioningService(iotDpsManager, resourceGroup);
+            ProvisioningServiceDescriptionInner provisioningServiceDescription
+                = createProvisioningService(iotDpsManager, resourceGroup);
 
             // locally increase the SKU capacity by 1
             long expectedSkuCapacity = provisioningServiceDescription.sku().capacity() + 1;
-            IotDpsSkuInfo newSku =
-                provisioningServiceDescription
-                    .sku()
-                    .withCapacity(expectedSkuCapacity);
+            IotDpsSkuInfo newSku = provisioningServiceDescription.sku().withCapacity(expectedSkuCapacity);
 
             // update the service representation to use the new SKU
-            provisioningServiceDescription = iotDpsManager
-                .serviceClient()
+            provisioningServiceDescription = iotDpsManager.serviceClient()
                 .getIotDpsResources()
-                .createOrUpdate(
-                    resourceGroup.name(),
-                    provisioningServiceDescription.name(),
+                .createOrUpdate(resourceGroup.name(), provisioningServiceDescription.name(),
                     provisioningServiceDescription.withSku(newSku));
 
             assertEquals(expectedSkuCapacity, provisioningServiceDescription.sku().capacity());
@@ -122,16 +113,15 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void createFailure() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {
-            iotDpsManager
-                .iotDpsResources()
-                .define("some invalid service name *&^-#2?")
+            iotDpsManager.iotDpsResources()
+                .define("some invalid service name *%26%5E-%232%3F")
                 .withRegion(DEFAULT_REGION)
                 .withExistingResourceGroup(resourceGroup.name())
                 .withProperties(new IotDpsPropertiesDescription())

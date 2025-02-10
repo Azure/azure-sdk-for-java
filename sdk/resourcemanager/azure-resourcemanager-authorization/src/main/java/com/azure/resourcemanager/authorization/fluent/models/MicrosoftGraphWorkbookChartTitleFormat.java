@@ -5,40 +5,42 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookChartTitleFormat. */
+/**
+ * workbookChartTitleFormat.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraphEntity {
     /*
      * workbookChartFill
      */
-    @JsonProperty(value = "fill")
     private MicrosoftGraphWorkbookChartFill fill;
 
     /*
      * workbookChartFont
      */
-    @JsonProperty(value = "font")
     private MicrosoftGraphWorkbookChartFont font;
 
     /*
      * workbookChartTitleFormat
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookChartTitleFormat class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookChartTitleFormat class.
+     */
     public MicrosoftGraphWorkbookChartTitleFormat() {
     }
 
     /**
      * Get the fill property: workbookChartFill.
-     *
+     * 
      * @return the fill value.
      */
     public MicrosoftGraphWorkbookChartFill fill() {
@@ -47,7 +49,7 @@ public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraph
 
     /**
      * Set the fill property: workbookChartFill.
-     *
+     * 
      * @param fill the fill value to set.
      * @return the MicrosoftGraphWorkbookChartTitleFormat object itself.
      */
@@ -58,7 +60,7 @@ public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraph
 
     /**
      * Get the font property: workbookChartFont.
-     *
+     * 
      * @return the font value.
      */
     public MicrosoftGraphWorkbookChartFont font() {
@@ -67,7 +69,7 @@ public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraph
 
     /**
      * Set the font property: workbookChartFont.
-     *
+     * 
      * @param font the font value to set.
      * @return the MicrosoftGraphWorkbookChartTitleFormat object itself.
      */
@@ -78,17 +80,16 @@ public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraph
 
     /**
      * Get the additionalProperties property: workbookChartTitleFormat.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookChartTitleFormat.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookChartTitleFormat object itself.
      */
@@ -97,15 +98,9 @@ public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraph
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookChartTitleFormat withId(String id) {
         super.withId(id);
@@ -114,7 +109,7 @@ public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraph
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -126,5 +121,61 @@ public final class MicrosoftGraphWorkbookChartTitleFormat extends MicrosoftGraph
         if (font() != null) {
             font().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("fill", this.fill);
+        jsonWriter.writeJsonField("font", this.font);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookChartTitleFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookChartTitleFormat if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookChartTitleFormat.
+     */
+    public static MicrosoftGraphWorkbookChartTitleFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookChartTitleFormat deserializedMicrosoftGraphWorkbookChartTitleFormat
+                = new MicrosoftGraphWorkbookChartTitleFormat();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartTitleFormat.withId(reader.getString());
+                } else if ("fill".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartTitleFormat.fill
+                        = MicrosoftGraphWorkbookChartFill.fromJson(reader);
+                } else if ("font".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartTitleFormat.font
+                        = MicrosoftGraphWorkbookChartFont.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookChartTitleFormat.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookChartTitleFormat;
+        });
     }
 }

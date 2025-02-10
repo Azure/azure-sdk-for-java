@@ -6,17 +6,20 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Installation of Azure PowerShell type properties.
  */
 @Fluent
-public final class AzPowerShellSetupTypeProperties {
+public final class AzPowerShellSetupTypeProperties implements JsonSerializable<AzPowerShellSetupTypeProperties> {
     /*
      * The required version of Azure PowerShell to install.
      */
-    @JsonProperty(value = "version", required = true)
     private String version;
 
     /**
@@ -52,10 +55,49 @@ public final class AzPowerShellSetupTypeProperties {
      */
     public void validate() {
         if (version() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property version in model AzPowerShellSetupTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property version in model AzPowerShellSetupTypeProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzPowerShellSetupTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzPowerShellSetupTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzPowerShellSetupTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzPowerShellSetupTypeProperties.
+     */
+    public static AzPowerShellSetupTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzPowerShellSetupTypeProperties deserializedAzPowerShellSetupTypeProperties
+                = new AzPowerShellSetupTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedAzPowerShellSetupTypeProperties.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzPowerShellSetupTypeProperties;
+        });
+    }
 }

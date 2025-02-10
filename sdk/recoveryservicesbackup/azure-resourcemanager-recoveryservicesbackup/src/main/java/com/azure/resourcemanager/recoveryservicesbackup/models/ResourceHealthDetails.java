@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Health Details for backup items. */
+/**
+ * Health Details for backup items.
+ */
 @Immutable
-public class ResourceHealthDetails {
+public class ResourceHealthDetails implements JsonSerializable<ResourceHealthDetails> {
     /*
      * Health Code
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private Integer code;
 
     /*
      * Health Title
      */
-    @JsonProperty(value = "title", access = JsonProperty.Access.WRITE_ONLY)
     private String title;
 
     /*
      * Health Message
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Health Recommended Actions
      */
-    @JsonProperty(value = "recommendations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> recommendations;
 
-    /** Creates an instance of ResourceHealthDetails class. */
+    /**
+     * Creates an instance of ResourceHealthDetails class.
+     */
     public ResourceHealthDetails() {
     }
 
     /**
      * Get the code property: Health Code.
-     *
+     * 
      * @return the code value.
      */
     public Integer code() {
@@ -49,8 +53,19 @@ public class ResourceHealthDetails {
     }
 
     /**
+     * Set the code property: Health Code.
+     * 
+     * @param code the code value to set.
+     * @return the ResourceHealthDetails object itself.
+     */
+    ResourceHealthDetails withCode(Integer code) {
+        this.code = code;
+        return this;
+    }
+
+    /**
      * Get the title property: Health Title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -58,8 +73,19 @@ public class ResourceHealthDetails {
     }
 
     /**
+     * Set the title property: Health Title.
+     * 
+     * @param title the title value to set.
+     * @return the ResourceHealthDetails object itself.
+     */
+    ResourceHealthDetails withTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    /**
      * Get the message property: Health Message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -67,8 +93,19 @@ public class ResourceHealthDetails {
     }
 
     /**
+     * Set the message property: Health Message.
+     * 
+     * @param message the message value to set.
+     * @return the ResourceHealthDetails object itself.
+     */
+    ResourceHealthDetails withMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    /**
      * Get the recommendations property: Health Recommended Actions.
-     *
+     * 
      * @return the recommendations value.
      */
     public List<String> recommendations() {
@@ -76,10 +113,63 @@ public class ResourceHealthDetails {
     }
 
     /**
+     * Set the recommendations property: Health Recommended Actions.
+     * 
+     * @param recommendations the recommendations value to set.
+     * @return the ResourceHealthDetails object itself.
+     */
+    ResourceHealthDetails withRecommendations(List<String> recommendations) {
+        this.recommendations = recommendations;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceHealthDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceHealthDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceHealthDetails.
+     */
+    public static ResourceHealthDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceHealthDetails deserializedResourceHealthDetails = new ResourceHealthDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedResourceHealthDetails.code = reader.getNullable(JsonReader::getInt);
+                } else if ("title".equals(fieldName)) {
+                    deserializedResourceHealthDetails.title = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedResourceHealthDetails.message = reader.getString();
+                } else if ("recommendations".equals(fieldName)) {
+                    List<String> recommendations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceHealthDetails.recommendations = recommendations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceHealthDetails;
+        });
     }
 }

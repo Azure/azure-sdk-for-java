@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request of the action to list device groups for a catalog. */
+/**
+ * Request of the action to list device groups for a catalog.
+ */
 @Fluent
-public final class ListDeviceGroupsRequest {
+public final class ListDeviceGroupsRequest implements JsonSerializable<ListDeviceGroupsRequest> {
     /*
      * Device Group name.
      */
-    @JsonProperty(value = "deviceGroupName")
     private String deviceGroupName;
 
-    /** Creates an instance of ListDeviceGroupsRequest class. */
+    /**
+     * Creates an instance of ListDeviceGroupsRequest class.
+     */
     public ListDeviceGroupsRequest() {
     }
 
     /**
      * Get the deviceGroupName property: Device Group name.
-     *
+     * 
      * @return the deviceGroupName value.
      */
     public String deviceGroupName() {
@@ -31,7 +38,7 @@ public final class ListDeviceGroupsRequest {
 
     /**
      * Set the deviceGroupName property: Device Group name.
-     *
+     * 
      * @param deviceGroupName the deviceGroupName value to set.
      * @return the ListDeviceGroupsRequest object itself.
      */
@@ -42,9 +49,45 @@ public final class ListDeviceGroupsRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceGroupName", this.deviceGroupName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListDeviceGroupsRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListDeviceGroupsRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListDeviceGroupsRequest.
+     */
+    public static ListDeviceGroupsRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListDeviceGroupsRequest deserializedListDeviceGroupsRequest = new ListDeviceGroupsRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceGroupName".equals(fieldName)) {
+                    deserializedListDeviceGroupsRequest.deviceGroupName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListDeviceGroupsRequest;
+        });
     }
 }

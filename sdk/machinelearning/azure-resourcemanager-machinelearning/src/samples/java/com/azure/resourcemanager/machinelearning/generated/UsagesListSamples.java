@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for Usages List. */
+/**
+ * Samples for Usages List.
+ */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Usage/list.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Usage/list.json
      */
     /**
      * Sample code: List Usages.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listUsages(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {

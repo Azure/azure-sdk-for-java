@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ConfigurationForBatchUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents a Configuration. */
+/**
+ * Represents a Configuration.
+ */
 @Fluent
-public final class ConfigurationForBatchUpdate {
+public final class ConfigurationForBatchUpdate implements JsonSerializable<ConfigurationForBatchUpdate> {
     /*
      * Name of the configuration.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The properties can be updated for a configuration.
      */
-    @JsonProperty(value = "properties")
     private ConfigurationForBatchUpdateProperties innerProperties;
 
-    /** Creates an instance of ConfigurationForBatchUpdate class. */
+    /**
+     * Creates an instance of ConfigurationForBatchUpdate class.
+     */
     public ConfigurationForBatchUpdate() {
     }
 
     /**
      * Get the name property: Name of the configuration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class ConfigurationForBatchUpdate {
 
     /**
      * Set the name property: Name of the configuration.
-     *
+     * 
      * @param name the name value to set.
      * @return the ConfigurationForBatchUpdate object itself.
      */
@@ -49,7 +55,7 @@ public final class ConfigurationForBatchUpdate {
 
     /**
      * Get the innerProperties property: The properties can be updated for a configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConfigurationForBatchUpdateProperties innerProperties() {
@@ -58,7 +64,7 @@ public final class ConfigurationForBatchUpdate {
 
     /**
      * Get the value property: Value of the configuration.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -67,7 +73,7 @@ public final class ConfigurationForBatchUpdate {
 
     /**
      * Set the value property: Value of the configuration.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationForBatchUpdate object itself.
      */
@@ -81,7 +87,7 @@ public final class ConfigurationForBatchUpdate {
 
     /**
      * Get the source property: Source of the configuration.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -90,7 +96,7 @@ public final class ConfigurationForBatchUpdate {
 
     /**
      * Set the source property: Source of the configuration.
-     *
+     * 
      * @param source the source value to set.
      * @return the ConfigurationForBatchUpdate object itself.
      */
@@ -104,12 +110,52 @@ public final class ConfigurationForBatchUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationForBatchUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationForBatchUpdate if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationForBatchUpdate.
+     */
+    public static ConfigurationForBatchUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationForBatchUpdate deserializedConfigurationForBatchUpdate = new ConfigurationForBatchUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedConfigurationForBatchUpdate.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConfigurationForBatchUpdate.innerProperties
+                        = ConfigurationForBatchUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationForBatchUpdate;
+        });
     }
 }

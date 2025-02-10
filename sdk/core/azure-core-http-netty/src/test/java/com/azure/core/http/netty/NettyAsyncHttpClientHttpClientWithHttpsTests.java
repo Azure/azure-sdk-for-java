@@ -4,9 +4,9 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.HttpClientTestsServer;
-import com.azure.core.test.http.HttpClientTests;
-import com.azure.core.test.http.LocalTestServer;
+import com.azure.core.validation.http.HttpClientTests;
+import com.azure.core.validation.http.HttpClientTestsServer;
+import com.azure.core.validation.http.LocalTestServer;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -29,13 +29,11 @@ public class NettyAsyncHttpClientHttpClientWithHttpsTests extends HttpClientTest
 
     static {
         try {
-            SslContext sslContext = SslContextBuilder.forClient()
-                .trustManager(InsecureTrustManagerFactory.INSTANCE)
-                .build();
+            SslContext sslContext
+                = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
 
-            reactor.netty.http.client.HttpClient nettyHttpClient =
-                reactor.netty.http.client.HttpClient.create()
-                    .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+            reactor.netty.http.client.HttpClient nettyHttpClient = reactor.netty.http.client.HttpClient.create()
+                .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
 
             HTTP_CLIENT_INSTANCE = new NettyAsyncHttpClientBuilder(nettyHttpClient).build();
         } catch (SSLException e) {

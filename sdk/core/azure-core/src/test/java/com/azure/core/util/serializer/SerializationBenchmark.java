@@ -52,9 +52,7 @@ public class SerializationBenchmark {
     }
 
     enum Test {
-        PLAIN,
-        ADDITIONAL_PROPERTIES,
-        JSON_ANY
+        PLAIN, ADDITIONAL_PROPERTIES, JSON_ANY
     }
 
     class InnerModel {
@@ -102,7 +100,6 @@ public class SerializationBenchmark {
         @JsonAnySetter
         private Map<String, String> any;
     }
-
 
     class MiddleModel {
         MiddleModel(String foo, String bar, String baz, Test test) {

@@ -4,30 +4,43 @@
 
 package com.azure.resourcemanager.imagebuilder.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** State of the last run. */
+/**
+ * State of the last run.
+ */
 public enum RunState {
-    /** Enum value Running. */
+    /**
+     * Enum value Running.
+     */
     RUNNING("Running"),
 
-    /** Enum value Canceling. */
+    /**
+     * Enum value Canceling.
+     */
     CANCELING("Canceling"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value PartiallySucceeded. */
+    /**
+     * Enum value PartiallySucceeded.
+     */
     PARTIALLY_SUCCEEDED("PartiallySucceeded"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Canceled. */
+    /**
+     * Enum value Canceled.
+     */
     CANCELED("Canceled");
 
-    /** The actual serialized value for a RunState instance. */
+    /**
+     * The actual serialized value for a RunState instance.
+     */
     private final String value;
 
     RunState(String value) {
@@ -36,11 +49,10 @@ public enum RunState {
 
     /**
      * Parses a serialized value to a RunState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RunState object, or null if unable to parse.
      */
-    @JsonCreator
     public static RunState fromString(String value) {
         if (value == null) {
             return null;
@@ -54,8 +66,9 @@ public enum RunState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

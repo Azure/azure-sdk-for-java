@@ -22,6 +22,8 @@ public class CosmosProperties {
 
     private boolean queryMetricsEnabled;
 
+    private boolean indexMetricsEnabled;
+
     private int maxDegreeOfParallelism;
 
     private int maxBufferedItemCount;
@@ -72,8 +74,16 @@ public class CosmosProperties {
         return queryMetricsEnabled;
     }
 
+    public boolean isIndexMetricsEnabled() {
+        return indexMetricsEnabled;
+    }
+
     public void setQueryMetricsEnabled(boolean enableQueryMetrics) {
         this.queryMetricsEnabled = enableQueryMetrics;
+    }
+
+    public void setIndexMetricsEnabled(boolean indexMetricsEnabled) {
+        this.indexMetricsEnabled = indexMetricsEnabled;
     }
 
     public int getMaxDegreeOfParallelism() {

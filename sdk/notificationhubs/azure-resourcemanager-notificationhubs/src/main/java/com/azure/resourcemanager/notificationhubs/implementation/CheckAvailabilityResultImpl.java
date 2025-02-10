@@ -15,8 +15,7 @@ public final class CheckAvailabilityResultImpl implements CheckAvailabilityResul
 
     private final com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager;
 
-    CheckAvailabilityResultImpl(
-        CheckAvailabilityResultInner innerObject,
+    CheckAvailabilityResultImpl(CheckAvailabilityResultInner innerObject,
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

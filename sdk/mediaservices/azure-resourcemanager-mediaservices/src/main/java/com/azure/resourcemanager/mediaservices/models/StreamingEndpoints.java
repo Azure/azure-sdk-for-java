@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of StreamingEndpoints. */
+/**
+ * Resource collection API of StreamingEndpoints.
+ */
 public interface StreamingEndpoints {
     /**
      * List StreamingEndpoints
-     *
-     * <p>Lists the streaming endpoints in the account.
-     *
+     * 
+     * Lists the streaming endpoints in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface StreamingEndpoints {
 
     /**
      * List StreamingEndpoints
-     *
-     * <p>Lists the streaming endpoints in the account.
-     *
+     * 
+     * Lists the streaming endpoints in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -41,9 +43,9 @@ public interface StreamingEndpoints {
 
     /**
      * Get StreamingEndpoint
-     *
-     * <p>Gets a streaming endpoint.
-     *
+     * 
+     * Gets a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -53,14 +55,14 @@ public interface StreamingEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming endpoint along with {@link Response}.
      */
-    Response<StreamingEndpoint> getWithResponse(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context);
+    Response<StreamingEndpoint> getWithResponse(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context);
 
     /**
      * Get StreamingEndpoint
-     *
-     * <p>Gets a streaming endpoint.
-     *
+     * 
+     * Gets a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -73,9 +75,9 @@ public interface StreamingEndpoints {
 
     /**
      * Delete StreamingEndpoint
-     *
-     * <p>Deletes a streaming endpoint.
-     *
+     * 
+     * Deletes a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -87,9 +89,9 @@ public interface StreamingEndpoints {
 
     /**
      * Delete StreamingEndpoint
-     *
-     * <p>Deletes a streaming endpoint.
-     *
+     * 
+     * Deletes a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -102,9 +104,9 @@ public interface StreamingEndpoints {
 
     /**
      * List StreamingEndpoint skus
-     *
-     * <p>List streaming endpoint supported skus.
-     *
+     * 
+     * List streaming endpoint supported skus.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -114,14 +116,14 @@ public interface StreamingEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<StreamingEndpointSkuInfoListResult> skusWithResponse(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context);
+    Response<StreamingEndpointSkuInfoListResult> skusWithResponse(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context);
 
     /**
      * List StreamingEndpoint skus
-     *
-     * <p>List streaming endpoint supported skus.
-     *
+     * 
+     * List streaming endpoint supported skus.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -134,9 +136,9 @@ public interface StreamingEndpoints {
 
     /**
      * Start StreamingEndpoint
-     *
-     * <p>Starts an existing streaming endpoint.
-     *
+     * 
+     * Starts an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -148,9 +150,9 @@ public interface StreamingEndpoints {
 
     /**
      * Start StreamingEndpoint
-     *
-     * <p>Starts an existing streaming endpoint.
-     *
+     * 
+     * Starts an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -163,9 +165,9 @@ public interface StreamingEndpoints {
 
     /**
      * Stop StreamingEndpoint
-     *
-     * <p>Stops an existing streaming endpoint.
-     *
+     * 
+     * Stops an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -177,9 +179,9 @@ public interface StreamingEndpoints {
 
     /**
      * Stop StreamingEndpoint
-     *
-     * <p>Stops an existing streaming endpoint.
-     *
+     * 
+     * Stops an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -192,9 +194,9 @@ public interface StreamingEndpoints {
 
     /**
      * Scale StreamingEndpoint
-     *
-     * <p>Scales an existing streaming endpoint.
-     *
+     * 
+     * Scales an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -203,17 +205,14 @@ public interface StreamingEndpoints {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void scale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
+    void scale(String resourceGroupName, String accountName, String streamingEndpointName,
         StreamingEntityScaleUnit parameters);
 
     /**
      * Scale StreamingEndpoint
-     *
-     * <p>Scales an existing streaming endpoint.
-     *
+     * 
+     * Scales an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -223,18 +222,14 @@ public interface StreamingEndpoints {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void scale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters,
-        Context context);
+    void scale(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEntityScaleUnit parameters, Context context);
 
     /**
      * Get operation status.
-     *
-     * <p>Get a streaming endpoint operation status.
-     *
+     * 
+     * Get a streaming endpoint operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -244,14 +239,14 @@ public interface StreamingEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming endpoint operation status along with {@link Response}.
      */
-    Response<AsyncOperationResult> asyncOperationWithResponse(
-        String resourceGroupName, String accountName, String operationId, Context context);
+    Response<AsyncOperationResult> asyncOperationWithResponse(String resourceGroupName, String accountName,
+        String operationId, Context context);
 
     /**
      * Get operation status.
-     *
-     * <p>Get a streaming endpoint operation status.
-     *
+     * 
+     * Get a streaming endpoint operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -264,9 +259,9 @@ public interface StreamingEndpoints {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a streaming endpoint operation status.
-     *
+     * 
+     * Get a streaming endpoint operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -277,18 +272,14 @@ public interface StreamingEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming endpoint operation status along with {@link Response}.
      */
-    Response<StreamingEndpoint> operationLocationWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        String operationId,
-        Context context);
+    Response<StreamingEndpoint> operationLocationWithResponse(String resourceGroupName, String accountName,
+        String streamingEndpointName, String operationId, Context context);
 
     /**
      * Get operation status.
-     *
-     * <p>Get a streaming endpoint operation status.
-     *
+     * 
+     * Get a streaming endpoint operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -298,14 +289,14 @@ public interface StreamingEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming endpoint operation status.
      */
-    StreamingEndpoint operationLocation(
-        String resourceGroupName, String accountName, String streamingEndpointName, String operationId);
+    StreamingEndpoint operationLocation(String resourceGroupName, String accountName, String streamingEndpointName,
+        String operationId);
 
     /**
      * Get StreamingEndpoint
-     *
-     * <p>Gets a streaming endpoint.
-     *
+     * 
+     * Gets a streaming endpoint.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -316,9 +307,9 @@ public interface StreamingEndpoints {
 
     /**
      * Get StreamingEndpoint
-     *
-     * <p>Gets a streaming endpoint.
-     *
+     * 
+     * Gets a streaming endpoint.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,9 +321,9 @@ public interface StreamingEndpoints {
 
     /**
      * Delete StreamingEndpoint
-     *
-     * <p>Deletes a streaming endpoint.
-     *
+     * 
+     * Deletes a streaming endpoint.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -342,9 +333,9 @@ public interface StreamingEndpoints {
 
     /**
      * Delete StreamingEndpoint
-     *
-     * <p>Deletes a streaming endpoint.
-     *
+     * 
+     * Deletes a streaming endpoint.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -355,7 +346,7 @@ public interface StreamingEndpoints {
 
     /**
      * Begins definition for a new StreamingEndpoint resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new StreamingEndpoint definition.
      */

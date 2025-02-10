@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.avs.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.AddonInner;
 import com.azure.resourcemanager.avs.models.Addon;
@@ -28,6 +29,10 @@ public final class AddonImpl implements Addon, Addon.Definition, Addon.Update {
 
     public AddonProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {
@@ -55,20 +60,16 @@ public final class AddonImpl implements Addon, Addon.Definition, Addon.Update {
     }
 
     public Addon create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAddons()
-                .createOrUpdate(resourceGroupName, privateCloudName, addonName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAddons()
+            .createOrUpdate(resourceGroupName, privateCloudName, addonName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Addon create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAddons()
-                .createOrUpdate(resourceGroupName, privateCloudName, addonName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAddons()
+            .createOrUpdate(resourceGroupName, privateCloudName, addonName, this.innerModel(), context);
         return this;
     }
 
@@ -83,48 +84,40 @@ public final class AddonImpl implements Addon, Addon.Definition, Addon.Update {
     }
 
     public Addon apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAddons()
-                .createOrUpdate(resourceGroupName, privateCloudName, addonName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAddons()
+            .createOrUpdate(resourceGroupName, privateCloudName, addonName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Addon apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAddons()
-                .createOrUpdate(resourceGroupName, privateCloudName, addonName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAddons()
+            .createOrUpdate(resourceGroupName, privateCloudName, addonName, this.innerModel(), context);
         return this;
     }
 
     AddonImpl(AddonInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = Utils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.addonName = Utils.getValueFromIdByName(innerObject.id(), "addons");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
+        this.addonName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "addons");
     }
 
     public Addon refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAddons()
-                .getWithResponse(resourceGroupName, privateCloudName, addonName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAddons()
+            .getWithResponse(resourceGroupName, privateCloudName, addonName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Addon refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAddons()
-                .getWithResponse(resourceGroupName, privateCloudName, addonName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAddons()
+            .getWithResponse(resourceGroupName, privateCloudName, addonName, context)
+            .getValue();
         return this;
     }
 

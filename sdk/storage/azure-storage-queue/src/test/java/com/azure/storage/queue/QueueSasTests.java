@@ -56,23 +56,16 @@ public class QueueSasTests extends QueueTestBase {
     }
 
     private static Stream<Arguments> queueSasPermissionParseSupplier() {
-        return Stream.of(
-            Arguments.of("r", true, false, false, false),
-            Arguments.of("a", false, true, false, false),
-            Arguments.of("u", false, false, true, false),
-            Arguments.of("p", false, false, false, true),
-            Arguments.of("raup", true, true, true, true),
-            Arguments.of("apru", true, true, true, true),
-            Arguments.of("rap", true, true, false, true),
-            Arguments.of("ur", true, false, true, false)
-        );
+        return Stream.of(Arguments.of("r", true, false, false, false), Arguments.of("a", false, true, false, false),
+            Arguments.of("u", false, false, true, false), Arguments.of("p", false, false, false, true),
+            Arguments.of("raup", true, true, true, true), Arguments.of("apru", true, true, true, true),
+            Arguments.of("rap", true, true, false, true), Arguments.of("ur", true, false, true, false));
     }
 
     @ParameterizedTest
     @MethodSource("queueSasPermissionStringSupplier")
     public void queueSasPermissionString(boolean read, boolean add, boolean update, boolean process, String expected) {
-        QueueSasPermission perms = new QueueSasPermission()
-            .setReadPermission(read)
+        QueueSasPermission perms = new QueueSasPermission().setReadPermission(read)
             .setAddPermission(add)
             .setUpdatePermission(update)
             .setProcessPermission(process);
@@ -81,14 +74,9 @@ public class QueueSasTests extends QueueTestBase {
     }
 
     private static Stream<Arguments> queueSasPermissionStringSupplier() {
-        return Stream.of(
-            Arguments.of(true, false, false, false, "r"),
-            Arguments.of(false, true, false, false, "a"),
-            Arguments.of(false, false, true, false, "u"),
-            Arguments.of(false, false, false, true, "p"),
-            Arguments.of(true, false, true, false, "ru"),
-            Arguments.of(true, true, true, true, "raup")
-        );
+        return Stream.of(Arguments.of(true, false, false, false, "r"), Arguments.of(false, true, false, false, "a"),
+            Arguments.of(false, false, true, false, "u"), Arguments.of(false, false, false, true, "p"),
+            Arguments.of(true, false, true, false, "ru"), Arguments.of(true, true, true, true, "raup"));
     }
 
     @Test
@@ -108,14 +96,11 @@ public class QueueSasTests extends QueueTestBase {
         queueClient.create();
         SendMessageResult resp = queueClient.sendMessage("test");
 
-        QueueSasPermission permissions = new QueueSasPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setProcessPermission(true);
-        StorageSharedKeyCredential credential =
-            StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
-        String sasPermissions = new QueueServiceSasSignatureValues()
-            .setPermissions(permissions)
+        QueueSasPermission permissions
+            = new QueueSasPermission().setReadPermission(true).setAddPermission(true).setProcessPermission(true);
+        StorageSharedKeyCredential credential
+            = StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
+        String sasPermissions = new QueueServiceSasSignatureValues().setPermissions(permissions)
             .setStartTime(testResourceNamer.now().minusDays(1))
             .setExpiryTime(testResourceNamer.now().plusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
@@ -123,8 +108,7 @@ public class QueueSasTests extends QueueTestBase {
             .generateSasQueryParameters(credential)
             .encode();
 
-        QueueClient clientPermissions = queueBuilderHelper()
-            .endpoint(queueClient.getQueueUrl())
+        QueueClient clientPermissions = queueBuilderHelper().endpoint(queueClient.getQueueUrl())
             .queueName(queueClient.getQueueName())
             .sasToken(sasPermissions)
             .buildClient();
@@ -143,16 +127,14 @@ public class QueueSasTests extends QueueTestBase {
         queueClient.create();
         SendMessageResult resp = queueClient.sendMessage("test");
 
-        QueueSasPermission permissions = new QueueSasPermission()
-            .setReadPermission(true)
+        QueueSasPermission permissions = new QueueSasPermission().setReadPermission(true)
             .setAddPermission(true)
             .setProcessPermission(true)
             .setUpdatePermission(true);
 
-        StorageSharedKeyCredential credential =
-            StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
-        String sasPermissions = new QueueServiceSasSignatureValues()
-            .setPermissions(permissions)
+        StorageSharedKeyCredential credential
+            = StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
+        String sasPermissions = new QueueServiceSasSignatureValues().setPermissions(permissions)
             .setStartTime(testResourceNamer.now().minusDays(1))
             .setExpiryTime(testResourceNamer.now().plusDays(1))
             .setProtocol(SasProtocol.HTTPS_HTTP)
@@ -160,8 +142,7 @@ public class QueueSasTests extends QueueTestBase {
             .generateSasQueryParameters(credential)
             .encode();
 
-        QueueClient clientPermissions = queueBuilderHelper()
-            .endpoint(queueClient.getQueueUrl())
+        QueueClient clientPermissions = queueBuilderHelper().endpoint(queueClient.getQueueUrl())
             .queueName(queueClient.getQueueName())
             .sasToken(sasPermissions)
             .buildClient();
@@ -179,33 +160,30 @@ public class QueueSasTests extends QueueTestBase {
         queueClient.create();
         queueClient.sendMessage("test");
 
-        QueueSasPermission permissions = new QueueSasPermission()
-            .setReadPermission(true)
+        QueueSasPermission permissions = new QueueSasPermission().setReadPermission(true)
             .setAddPermission(true)
             .setUpdatePermission(true)
             .setProcessPermission(true);
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1).truncatedTo(ChronoUnit.SECONDS);
         OffsetDateTime startTime = testResourceNamer.now().minusDays(1).truncatedTo(ChronoUnit.SECONDS);
 
-        QueueSignedIdentifier identifier = new QueueSignedIdentifier()
-            .setId(testResourceNamer.randomUuid())
+        QueueSignedIdentifier identifier = new QueueSignedIdentifier().setId(testResourceNamer.randomUuid())
             .setAccessPolicy(new QueueAccessPolicy().setPermissions(permissions.toString())
-                .setExpiresOn(expiryTime).setStartsOn(startTime));
+                .setExpiresOn(expiryTime)
+                .setStartsOn(startTime));
         queueClient.setAccessPolicy(Arrays.asList(identifier));
 
         // Wait 30 seconds as it may take time for the access policy to take effect.
         sleepIfRunningAgainstService(30000);
 
-        StorageSharedKeyCredential credential =
-            StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
-        String sasIdentifier = new QueueServiceSasSignatureValues()
-            .setIdentifier(identifier.getId())
+        StorageSharedKeyCredential credential
+            = StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
+        String sasIdentifier = new QueueServiceSasSignatureValues().setIdentifier(identifier.getId())
             .setQueueName(queueClient.getQueueName())
             .generateSasQueryParameters(credential)
             .encode();
 
-        QueueClient clientIdentifier = queueBuilderHelper()
-            .endpoint(queueClient.getQueueUrl())
+        QueueClient clientIdentifier = queueBuilderHelper().endpoint(queueClient.getQueueUrl())
             .queueName(queueClient.getQueueName())
             .sasToken(sasIdentifier)
             .buildClient();
@@ -219,27 +197,21 @@ public class QueueSasTests extends QueueTestBase {
     @Test
     public void accountSasCreateDeleteQueue() {
         AccountSasService service = new AccountSasService().setQueueAccess(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setService(true)
-            .setObject(true);
-        AccountSasPermission permissions = new AccountSasPermission()
-            .setReadPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true);
+        AccountSasResourceType resourceType
+            = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
+        AccountSasPermission permissions
+            = new AccountSasPermission().setReadPermission(true).setCreatePermission(true).setDeletePermission(true);
 
-        StorageSharedKeyCredential credential =
-            StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
-        AccountSasSignatureValues sasValues = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1),
-            permissions, service, resourceType);
-        String sas = queueServiceBuilderHelper()
-            .endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+        StorageSharedKeyCredential credential
+            = StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
+        AccountSasSignatureValues sasValues
+            = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions, service, resourceType);
+        String sas = queueServiceBuilderHelper().endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .credential(credential)
             .buildClient()
             .generateAccountSas(sasValues);
 
-        QueueServiceClient sc = queueServiceBuilderHelper()
-            .endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient sc = queueServiceBuilderHelper().endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
             .buildClient();
         String queueName = getRandomName(60);
@@ -251,24 +223,20 @@ public class QueueSasTests extends QueueTestBase {
     @Test
     public void accountSasListQueues() {
         AccountSasService service = new AccountSasService().setQueueAccess(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setService(true)
-            .setObject(true);
+        AccountSasResourceType resourceType
+            = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
         AccountSasPermission permissions = new AccountSasPermission().setListPermission(true);
 
-        StorageSharedKeyCredential credential =
-            StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
-        AccountSasSignatureValues sasValues = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1),
-            permissions, service, resourceType);
-        String sas = queueServiceBuilderHelper()
-            .endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+        StorageSharedKeyCredential credential
+            = StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
+        AccountSasSignatureValues sasValues
+            = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions, service, resourceType);
+        String sas = queueServiceBuilderHelper().endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .credential(credential)
             .buildClient()
             .generateAccountSas(sasValues);
 
-        QueueServiceClient sc = queueServiceBuilderHelper()
-            .endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient sc = queueServiceBuilderHelper().endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
             .buildClient();
 
@@ -278,36 +246,32 @@ public class QueueSasTests extends QueueTestBase {
     @Test
     public void accountSasNetworkOnEndpoint() {
         AccountSasService service = new AccountSasService().setQueueAccess(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setService(true)
-            .setObject(true);
-        AccountSasPermission permissions = new AccountSasPermission()
-            .setReadPermission(true)
+        AccountSasResourceType resourceType
+            = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
+        AccountSasPermission permissions = new AccountSasPermission().setReadPermission(true)
             .setCreatePermission(true)
             .setWritePermission(true)
             .setListPermission(true)
             .setDeletePermission(true);
 
-        StorageSharedKeyCredential credential =
-            StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
-        AccountSasSignatureValues sasValues = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1),
-            permissions, service, resourceType);
-        String sas = queueServiceBuilderHelper()
-            .endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+        StorageSharedKeyCredential credential
+            = StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
+        AccountSasSignatureValues sasValues
+            = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions, service, resourceType);
+        String sas = queueServiceBuilderHelper().endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .credential(credential)
             .buildClient()
             .generateAccountSas(sasValues);
 
         String queueName = getRandomName(60);
 
-        assertDoesNotThrow(() ->
-            getServiceClientBuilder(null, primaryQueueServiceClient.getQueueServiceUrl() + "?" + sas)
+        assertDoesNotThrow(
+            () -> getServiceClientBuilder(null, primaryQueueServiceClient.getQueueServiceUrl() + "?" + sas)
                 .buildClient()
                 .createQueue(queueName));
 
-        assertDoesNotThrow(() ->
-            getQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl() + "/" + queueName + "?" + sas)
+        assertDoesNotThrow(
+            () -> getQueueClientBuilder(primaryQueueServiceClient.getQueueServiceUrl() + "/" + queueName + "?" + sas)
                 .buildClient()
                 .delete());
     }
@@ -323,27 +287,21 @@ public class QueueSasTests extends QueueTestBase {
         }
 
         AccountSasService service = new AccountSasService().setQueueAccess(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setService(true)
-            .setObject(true);
-        AccountSasPermission permissions = new AccountSasPermission()
-            .setReadPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true);
+        AccountSasResourceType resourceType
+            = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
+        AccountSasPermission permissions
+            = new AccountSasPermission().setReadPermission(true).setCreatePermission(true).setDeletePermission(true);
 
-        StorageSharedKeyCredential credential =
-            StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
-        String sas = new AccountSasSignatureValues()
-            .setServices(service.toString())
+        StorageSharedKeyCredential credential
+            = StorageSharedKeyCredential.fromConnectionString(getPrimaryConnectionString());
+        String sas = new AccountSasSignatureValues().setServices(service.toString())
             .setResourceTypes(resourceType.toString())
             .setPermissions(permissions)
             .setExpiryTime(testResourceNamer.now().plusDays(1))
             .generateSasQueryParameters(credential)
             .encode();
 
-        QueueServiceClient sc = queueServiceBuilderHelper()
-            .endpoint(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient sc = queueServiceBuilderHelper().endpoint(primaryQueueServiceClient.getQueueServiceUrl())
             .sasToken(sas)
             .buildClient();
         String queueName = getRandomName(60);
@@ -355,49 +313,41 @@ public class QueueSasTests extends QueueTestBase {
     @Test
     public void canUseSasToAuthenticate() {
         AccountSasService service = new AccountSasService().setQueueAccess(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setService(true)
-            .setObject(true);
+        AccountSasResourceType resourceType
+            = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
         AccountSasPermission permissions = new AccountSasPermission().setReadPermission(true);
-        AccountSasSignatureValues sasValues = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1),
-            permissions, service, resourceType);
+        AccountSasSignatureValues sasValues
+            = new AccountSasSignatureValues(testResourceNamer.now().plusDays(1), permissions, service, resourceType);
         String sas = primaryQueueServiceClient.generateAccountSas(sasValues);
 
         queueClient.create();
 
-        assertDoesNotThrow(() -> instrument(new QueueClientBuilder()
-            .endpoint(queueClient.getQueueUrl())
-            .sasToken(sas))
-            .buildClient()
-            .getProperties());
+        assertDoesNotThrow(
+            () -> instrument(new QueueClientBuilder().endpoint(queueClient.getQueueUrl()).sasToken(sas)).buildClient()
+                .getProperties());
 
-        assertDoesNotThrow(() -> instrument(new QueueClientBuilder()
-            .endpoint(queueClient.getQueueUrl())
-            .credential(new AzureSasCredential(sas)))
-            .buildClient()
-            .getProperties());
+        assertDoesNotThrow(() -> instrument(
+            new QueueClientBuilder().endpoint(queueClient.getQueueUrl()).credential(new AzureSasCredential(sas)))
+                .buildClient()
+                .getProperties());
 
-        assertDoesNotThrow(() -> instrument(new QueueClientBuilder()
-            .endpoint(queueClient.getQueueUrl() + "?" + sas))
-            .buildClient()
-            .getProperties());
+        assertDoesNotThrow(
+            () -> instrument(new QueueClientBuilder().endpoint(queueClient.getQueueUrl() + "?" + sas)).buildClient()
+                .getProperties());
 
-        assertDoesNotThrow(() -> instrument(new QueueServiceClientBuilder()
-            .endpoint(queueClient.getQueueUrl())
-            .sasToken(sas))
-            .buildClient()
-            .getProperties());
+        assertDoesNotThrow(
+            () -> instrument(new QueueServiceClientBuilder().endpoint(queueClient.getQueueUrl()).sasToken(sas))
+                .buildClient()
+                .getProperties());
 
-        assertDoesNotThrow(() -> instrument(new QueueServiceClientBuilder()
-            .endpoint(queueClient.getQueueUrl())
-            .credential(new AzureSasCredential(sas)))
-            .buildClient()
-            .getProperties());
+        assertDoesNotThrow(() -> instrument(
+            new QueueServiceClientBuilder().endpoint(queueClient.getQueueUrl()).credential(new AzureSasCredential(sas)))
+                .buildClient()
+                .getProperties());
 
-        assertDoesNotThrow(() -> instrument(new QueueServiceClientBuilder()
-            .endpoint(queueClient.getQueueUrl() + "?" + sas))
-            .buildClient()
-            .getProperties());
+        assertDoesNotThrow(
+            () -> instrument(new QueueServiceClientBuilder().endpoint(queueClient.getQueueUrl() + "?" + sas))
+                .buildClient()
+                .getProperties());
     }
 }

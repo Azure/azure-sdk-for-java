@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for ScriptExecutions Delete. */
+/**
+ * Samples for ScriptExecutions Delete.
+ */
 public final class ScriptExecutionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_Delete.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/ScriptExecutions_Delete.json
      */
     /**
      * Sample code: ScriptExecutions_Delete.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void scriptExecutionsDelete(com.azure.resourcemanager.avs.AvsManager manager) {

@@ -4,6 +4,7 @@
 package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 
@@ -12,7 +13,8 @@ import java.util.Objects;
 /**
  * Resolves and provides {@link Meter} implementation.
  * <p>
- * This class is intended to be used by Azure client libraries and provides abstraction over different metrics implementations.
+ * This class is intended to be used by Azure client libraries and provides abstraction over different metrics
+ * implementations.
  * Application developers should use metrics implementations such as OpenTelemetry or Micrometer directly.
  */
 public final class OpenTelemetryMeterProvider implements MeterProvider {
@@ -25,10 +27,25 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
     /**
      * Creates named and versioned OpenTelemetry-based implementation of {@link Meter}
      *
+     * @param libraryName Azure client library package name
+     * @param libraryVersion Azure client library version
+     * @param applicationOptions instance of {@link MetricsOptions} provided by the application.
+     * @return a meter instance.
+     */
+    @Override
+    public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions applicationOptions) {
+        Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
+        final LibraryTelemetryOptions libraryOptions
+            = new LibraryTelemetryOptions(libraryName).setLibraryVersion(libraryVersion);
+        return new OpenTelemetryMeter(libraryOptions, applicationOptions);
+    }
+
+    /**
+     * Creates named and versioned OpenTelemetry-based implementation of {@link Meter}
+     *
      * Use global OpenTelemetry SDK configuration:
      * <!-- src_embed com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#default -->
      * <pre>
-     *
      * &#47;&#47; configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure
      * &#47;&#47; AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;;
      *
@@ -51,14 +68,12 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      * &#125;
      *
      * span.end&#40;&#41;;
-     *
      * </pre>
      * <!-- end com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#default -->
      *
      * It's also possible to pass custom OpenTelemetry SDK configuration
      * <!-- src_embed com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#custom -->
      * <pre>
-     *
      * &#47;&#47; configure OpenTelemetry SDK
      * SdkTracerProvider tracerProvider = SdkTracerProvider.builder&#40;&#41;
      *     .addSpanProcessor&#40;BatchSpanProcessor.builder&#40;OtlpGrpcSpanExporter.builder&#40;&#41;.build&#40;&#41;&#41;.build&#40;&#41;&#41;
@@ -98,18 +113,17 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      *
      * &#47;&#47; do more work
      * span.end&#40;&#41;;
-     *
      * </pre>
      * <!-- end com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#custom -->
      *
-     * @param libraryName Azure client library package name
-     * @param libraryVersion Azure client library version
-     * @param options instance of {@link MetricsOptions}
+     * @param libraryOptions Library-specific telemetry options.
+     * @param applicationOptions instance of {@link MetricsOptions} provided by the application.
      * @return a meter instance.
      */
     @Override
-    public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
-        Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
-        return new OpenTelemetryMeter(libraryName, libraryVersion, options);
+    public Meter createMeter(LibraryTelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
+        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
+
+        return new OpenTelemetryMeter(libraryOptions, applicationOptions);
     }
 }

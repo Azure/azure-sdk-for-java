@@ -5,103 +5,148 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure VM workload-specific protectable item representing SAP HANA Dbinstance. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
-@JsonTypeName("SAPHanaDBInstance")
+/**
+ * Azure VM workload-specific protectable item representing SAP HANA Dbinstance.
+ */
 @Fluent
 public final class AzureVmWorkloadSapHanaDBInstance extends AzureVmWorkloadProtectableItem {
-    /** Creates an instance of AzureVmWorkloadSapHanaDBInstance class. */
+    /*
+     * Type of the backup item.
+     */
+    private String protectableItemType = "SAPHanaDBInstance";
+
+    /**
+     * Creates an instance of AzureVmWorkloadSapHanaDBInstance class.
+     */
     public AzureVmWorkloadSapHanaDBInstance() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the protectableItemType property: Type of the backup item.
+     * 
+     * @return the protectableItemType value.
+     */
+    @Override
+    public String protectableItemType() {
+        return this.protectableItemType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withParentName(String parentName) {
         super.withParentName(parentName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withParentUniqueName(String parentUniqueName) {
         super.withParentUniqueName(parentUniqueName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withServerName(String serverName) {
         super.withServerName(serverName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withIsAutoProtectable(Boolean isAutoProtectable) {
         super.withIsAutoProtectable(isAutoProtectable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withIsAutoProtected(Boolean isAutoProtected) {
         super.withIsAutoProtected(isAutoProtected);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withSubinquireditemcount(Integer subinquireditemcount) {
         super.withSubinquireditemcount(subinquireditemcount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withSubprotectableitemcount(Integer subprotectableitemcount) {
         super.withSubprotectableitemcount(subprotectableitemcount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withPrebackupvalidation(PreBackupValidation prebackupvalidation) {
         super.withPrebackupvalidation(prebackupvalidation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withIsProtectable(Boolean isProtectable) {
         super.withIsProtectable(isProtectable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withWorkloadType(String workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstance withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -110,11 +155,96 @@ public final class AzureVmWorkloadSapHanaDBInstance extends AzureVmWorkloadProte
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (prebackupvalidation() != null) {
+            prebackupvalidation().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupManagementType", backupManagementType());
+        jsonWriter.writeStringField("workloadType", workloadType());
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("parentName", parentName());
+        jsonWriter.writeStringField("parentUniqueName", parentUniqueName());
+        jsonWriter.writeStringField("serverName", serverName());
+        jsonWriter.writeBooleanField("isAutoProtectable", isAutoProtectable());
+        jsonWriter.writeBooleanField("isAutoProtected", isAutoProtected());
+        jsonWriter.writeNumberField("subinquireditemcount", subinquireditemcount());
+        jsonWriter.writeNumberField("subprotectableitemcount", subprotectableitemcount());
+        jsonWriter.writeJsonField("prebackupvalidation", prebackupvalidation());
+        jsonWriter.writeBooleanField("isProtectable", isProtectable());
+        jsonWriter.writeStringField("protectableItemType", this.protectableItemType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVmWorkloadSapHanaDBInstance from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVmWorkloadSapHanaDBInstance if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVmWorkloadSapHanaDBInstance.
+     */
+    public static AzureVmWorkloadSapHanaDBInstance fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVmWorkloadSapHanaDBInstance deserializedAzureVmWorkloadSapHanaDBInstance
+                = new AzureVmWorkloadSapHanaDBInstance();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance.withBackupManagementType(reader.getString());
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance.withWorkloadType(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance.withFriendlyName(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance
+                        .withProtectionState(ProtectionStatus.fromString(reader.getString()));
+                } else if ("parentName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance.withParentName(reader.getString());
+                } else if ("parentUniqueName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance.withParentUniqueName(reader.getString());
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance.withServerName(reader.getString());
+                } else if ("isAutoProtectable".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance
+                        .withIsAutoProtectable(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isAutoProtected".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance
+                        .withIsAutoProtected(reader.getNullable(JsonReader::getBoolean));
+                } else if ("subinquireditemcount".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance
+                        .withSubinquireditemcount(reader.getNullable(JsonReader::getInt));
+                } else if ("subprotectableitemcount".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance
+                        .withSubprotectableitemcount(reader.getNullable(JsonReader::getInt));
+                } else if ("prebackupvalidation".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance
+                        .withPrebackupvalidation(PreBackupValidation.fromJson(reader));
+                } else if ("isProtectable".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance
+                        .withIsProtectable(reader.getNullable(JsonReader::getBoolean));
+                } else if ("protectableItemType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstance.protectableItemType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVmWorkloadSapHanaDBInstance;
+        });
     }
 }

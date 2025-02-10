@@ -7,31 +7,51 @@ package com.azure.resourcemanager.support.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Object that represents FileWorkspaceDetails resource. */
+/**
+ * Object that represents FileWorkspaceDetails resource.
+ */
 @Immutable
 public final class FileWorkspaceDetailsInner extends ProxyResource {
     /*
      * Properties of the resource
      */
-    @JsonProperty(value = "properties")
     private FileWorkspaceDetailsProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of FileWorkspaceDetailsInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FileWorkspaceDetailsInner class.
+     */
     public FileWorkspaceDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FileWorkspaceDetailsProperties innerProperties() {
@@ -40,7 +60,7 @@ public final class FileWorkspaceDetailsInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,8 +68,38 @@ public final class FileWorkspaceDetailsInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the createdOn property: Time in UTC (ISO 8601 format) when file workspace was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -58,7 +108,7 @@ public final class FileWorkspaceDetailsInner extends ProxyResource {
 
     /**
      * Get the expirationTime property: Time in UTC (ISO 8601 format) when file workspace is going to expire.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -67,12 +117,58 @@ public final class FileWorkspaceDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileWorkspaceDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileWorkspaceDetailsInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileWorkspaceDetailsInner.
+     */
+    public static FileWorkspaceDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileWorkspaceDetailsInner deserializedFileWorkspaceDetailsInner = new FileWorkspaceDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFileWorkspaceDetailsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFileWorkspaceDetailsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFileWorkspaceDetailsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFileWorkspaceDetailsInner.innerProperties
+                        = FileWorkspaceDetailsProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFileWorkspaceDetailsInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileWorkspaceDetailsInner;
+        });
     }
 }

@@ -5,30 +5,69 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.AdminPropertiesFormat;
 import com.azure.resourcemanager.network.fluent.models.BaseAdminRuleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network admin rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Custom")
 @Fluent
 public final class AdminRule extends BaseAdminRuleInner {
     /*
+     * Whether the rule is custom or default.
+     */
+    private AdminRuleKind kind = AdminRuleKind.CUSTOM;
+
+    /*
      * Indicates the properties of the security admin rule
      */
-    @JsonProperty(value = "properties")
     private AdminPropertiesFormat innerProperties;
+
+    /*
+     * The system metadata related to this resource.
+     */
+    private SystemData systemData;
+
+    /*
+     * A unique read-only string that changes whenever the resource is updated.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of AdminRule class.
      */
     public AdminRule() {
+    }
+
+    /**
+     * Get the kind property: Whether the rule is custom or default.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AdminRuleKind kind() {
+        return this.kind;
     }
 
     /**
@@ -38,6 +77,56 @@ public final class AdminRule extends BaseAdminRuleInner {
      */
     private AdminPropertiesFormat innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: The system metadata related to this resource.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -276,9 +365,58 @@ public final class AdminRule extends BaseAdminRuleInner {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdminRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdminRule if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdminRule.
+     */
+    public static AdminRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdminRule deserializedAdminRule = new AdminRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAdminRule.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAdminRule.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAdminRule.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAdminRule.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAdminRule.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAdminRule.kind = AdminRuleKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAdminRule.innerProperties = AdminPropertiesFormat.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdminRule;
+        });
     }
 }

@@ -5,52 +5,53 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** followupFlag. */
+/**
+ * followupFlag.
+ */
 @Fluent
-public final class MicrosoftGraphFollowupFlag {
+public final class MicrosoftGraphFollowupFlag implements JsonSerializable<MicrosoftGraphFollowupFlag> {
     /*
      * dateTimeTimeZone
      */
-    @JsonProperty(value = "completedDateTime")
     private MicrosoftGraphDateTimeZone completedDateTime;
 
     /*
      * dateTimeTimeZone
      */
-    @JsonProperty(value = "dueDateTime")
     private MicrosoftGraphDateTimeZone dueDateTime;
 
     /*
      * followupFlagStatus
      */
-    @JsonProperty(value = "flagStatus")
     private MicrosoftGraphFollowupFlagStatus flagStatus;
 
     /*
      * dateTimeTimeZone
      */
-    @JsonProperty(value = "startDateTime")
     private MicrosoftGraphDateTimeZone startDateTime;
 
     /*
      * followupFlag
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphFollowupFlag class. */
+    /**
+     * Creates an instance of MicrosoftGraphFollowupFlag class.
+     */
     public MicrosoftGraphFollowupFlag() {
     }
 
     /**
      * Get the completedDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @return the completedDateTime value.
      */
     public MicrosoftGraphDateTimeZone completedDateTime() {
@@ -59,7 +60,7 @@ public final class MicrosoftGraphFollowupFlag {
 
     /**
      * Set the completedDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @param completedDateTime the completedDateTime value to set.
      * @return the MicrosoftGraphFollowupFlag object itself.
      */
@@ -70,7 +71,7 @@ public final class MicrosoftGraphFollowupFlag {
 
     /**
      * Get the dueDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @return the dueDateTime value.
      */
     public MicrosoftGraphDateTimeZone dueDateTime() {
@@ -79,7 +80,7 @@ public final class MicrosoftGraphFollowupFlag {
 
     /**
      * Set the dueDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @param dueDateTime the dueDateTime value to set.
      * @return the MicrosoftGraphFollowupFlag object itself.
      */
@@ -90,7 +91,7 @@ public final class MicrosoftGraphFollowupFlag {
 
     /**
      * Get the flagStatus property: followupFlagStatus.
-     *
+     * 
      * @return the flagStatus value.
      */
     public MicrosoftGraphFollowupFlagStatus flagStatus() {
@@ -99,7 +100,7 @@ public final class MicrosoftGraphFollowupFlag {
 
     /**
      * Set the flagStatus property: followupFlagStatus.
-     *
+     * 
      * @param flagStatus the flagStatus value to set.
      * @return the MicrosoftGraphFollowupFlag object itself.
      */
@@ -110,7 +111,7 @@ public final class MicrosoftGraphFollowupFlag {
 
     /**
      * Get the startDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @return the startDateTime value.
      */
     public MicrosoftGraphDateTimeZone startDateTime() {
@@ -119,7 +120,7 @@ public final class MicrosoftGraphFollowupFlag {
 
     /**
      * Set the startDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the MicrosoftGraphFollowupFlag object itself.
      */
@@ -130,17 +131,16 @@ public final class MicrosoftGraphFollowupFlag {
 
     /**
      * Get the additionalProperties property: followupFlag.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: followupFlag.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphFollowupFlag object itself.
      */
@@ -149,17 +149,9 @@ public final class MicrosoftGraphFollowupFlag {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -172,5 +164,63 @@ public final class MicrosoftGraphFollowupFlag {
         if (startDateTime() != null) {
             startDateTime().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("completedDateTime", this.completedDateTime);
+        jsonWriter.writeJsonField("dueDateTime", this.dueDateTime);
+        jsonWriter.writeStringField("flagStatus", this.flagStatus == null ? null : this.flagStatus.toString());
+        jsonWriter.writeJsonField("startDateTime", this.startDateTime);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphFollowupFlag from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphFollowupFlag if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphFollowupFlag.
+     */
+    public static MicrosoftGraphFollowupFlag fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphFollowupFlag deserializedMicrosoftGraphFollowupFlag = new MicrosoftGraphFollowupFlag();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("completedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphFollowupFlag.completedDateTime
+                        = MicrosoftGraphDateTimeZone.fromJson(reader);
+                } else if ("dueDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphFollowupFlag.dueDateTime = MicrosoftGraphDateTimeZone.fromJson(reader);
+                } else if ("flagStatus".equals(fieldName)) {
+                    deserializedMicrosoftGraphFollowupFlag.flagStatus
+                        = MicrosoftGraphFollowupFlagStatus.fromString(reader.getString());
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphFollowupFlag.startDateTime = MicrosoftGraphDateTimeZone.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphFollowupFlag.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphFollowupFlag;
+        });
     }
 }

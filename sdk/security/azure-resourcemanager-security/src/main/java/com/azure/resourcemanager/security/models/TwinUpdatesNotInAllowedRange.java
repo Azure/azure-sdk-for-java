@@ -5,41 +5,70 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Number of twin updates is not in allowed range. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
-@JsonTypeName("TwinUpdatesNotInAllowedRange")
+/**
+ * Number of twin updates is not in allowed range.
+ */
 @Fluent
 public final class TwinUpdatesNotInAllowedRange extends TimeWindowCustomAlertRule {
-    /** Creates an instance of TwinUpdatesNotInAllowedRange class. */
+    /*
+     * The type of the custom alert rule.
+     */
+    private String ruleType = "TwinUpdatesNotInAllowedRange";
+
+    /**
+     * Creates an instance of TwinUpdatesNotInAllowedRange class.
+     */
     public TwinUpdatesNotInAllowedRange() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwinUpdatesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {
         super.withTimeWindowSize(timeWindowSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwinUpdatesNotInAllowedRange withMinThreshold(int minThreshold) {
         super.withMinThreshold(minThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwinUpdatesNotInAllowedRange withMaxThreshold(int maxThreshold) {
         super.withMaxThreshold(maxThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwinUpdatesNotInAllowedRange withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -48,11 +77,71 @@ public final class TwinUpdatesNotInAllowedRange extends TimeWindowCustomAlertRul
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (timeWindowSize() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeWindowSize in model TwinUpdatesNotInAllowedRange"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TwinUpdatesNotInAllowedRange.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeIntField("minThreshold", minThreshold());
+        jsonWriter.writeIntField("maxThreshold", maxThreshold());
+        jsonWriter.writeStringField("timeWindowSize", CoreUtils.durationToStringWithDays(timeWindowSize()));
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TwinUpdatesNotInAllowedRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TwinUpdatesNotInAllowedRange if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TwinUpdatesNotInAllowedRange.
+     */
+    public static TwinUpdatesNotInAllowedRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TwinUpdatesNotInAllowedRange deserializedTwinUpdatesNotInAllowedRange = new TwinUpdatesNotInAllowedRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedTwinUpdatesNotInAllowedRange.withIsEnabled(reader.getBoolean());
+                } else if ("minThreshold".equals(fieldName)) {
+                    deserializedTwinUpdatesNotInAllowedRange.withMinThreshold(reader.getInt());
+                } else if ("maxThreshold".equals(fieldName)) {
+                    deserializedTwinUpdatesNotInAllowedRange.withMaxThreshold(reader.getInt());
+                } else if ("timeWindowSize".equals(fieldName)) {
+                    deserializedTwinUpdatesNotInAllowedRange.withTimeWindowSize(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedTwinUpdatesNotInAllowedRange.withDisplayName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedTwinUpdatesNotInAllowedRange.withDescription(reader.getString());
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedTwinUpdatesNotInAllowedRange.ruleType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTwinUpdatesNotInAllowedRange;
+        });
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.appcontainers.implementation;
 
 import com.azure.resourcemanager.appcontainers.fluent.models.JobExecutionInner;
+import com.azure.resourcemanager.appcontainers.models.ExecutionStatus;
 import com.azure.resourcemanager.appcontainers.models.JobExecution;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionRunningState;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
@@ -15,8 +16,8 @@ public final class JobExecutionImpl implements JobExecution {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    JobExecutionImpl(
-        JobExecutionInner innerObject, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
+    JobExecutionImpl(JobExecutionInner innerObject,
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -47,6 +48,10 @@ public final class JobExecutionImpl implements JobExecution {
 
     public JobExecutionTemplate template() {
         return this.innerModel().template();
+    }
+
+    public ExecutionStatus detailedStatus() {
+        return this.innerModel().detailedStatus();
     }
 
     public JobExecutionInner innerModel() {

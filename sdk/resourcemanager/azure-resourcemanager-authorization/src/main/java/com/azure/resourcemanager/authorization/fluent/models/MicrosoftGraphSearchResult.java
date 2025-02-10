@@ -5,29 +5,33 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** searchResult. */
+/**
+ * searchResult.
+ */
 @Fluent
-public final class MicrosoftGraphSearchResult {
+public final class MicrosoftGraphSearchResult implements JsonSerializable<MicrosoftGraphSearchResult> {
     /*
      * A callback URL that can be used to record telemetry information. The application should issue a GET on this URL
      * if the user interacts with this item to improve the quality of results.
      */
-    @JsonProperty(value = "onClickTelemetryUrl")
     private String onClickTelemetryUrl;
 
     /*
      * searchResult
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSearchResult class. */
+    /**
+     * Creates an instance of MicrosoftGraphSearchResult class.
+     */
     public MicrosoftGraphSearchResult() {
     }
 
@@ -35,7 +39,7 @@ public final class MicrosoftGraphSearchResult {
      * Get the onClickTelemetryUrl property: A callback URL that can be used to record telemetry information. The
      * application should issue a GET on this URL if the user interacts with this item to improve the quality of
      * results.
-     *
+     * 
      * @return the onClickTelemetryUrl value.
      */
     public String onClickTelemetryUrl() {
@@ -46,7 +50,7 @@ public final class MicrosoftGraphSearchResult {
      * Set the onClickTelemetryUrl property: A callback URL that can be used to record telemetry information. The
      * application should issue a GET on this URL if the user interacts with this item to improve the quality of
      * results.
-     *
+     * 
      * @param onClickTelemetryUrl the onClickTelemetryUrl value to set.
      * @return the MicrosoftGraphSearchResult object itself.
      */
@@ -57,17 +61,16 @@ public final class MicrosoftGraphSearchResult {
 
     /**
      * Get the additionalProperties property: searchResult.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: searchResult.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSearchResult object itself.
      */
@@ -76,19 +79,58 @@ public final class MicrosoftGraphSearchResult {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("onClickTelemetryUrl", this.onClickTelemetryUrl);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSearchResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSearchResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSearchResult.
+     */
+    public static MicrosoftGraphSearchResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSearchResult deserializedMicrosoftGraphSearchResult = new MicrosoftGraphSearchResult();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("onClickTelemetryUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphSearchResult.onClickTelemetryUrl = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSearchResult.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSearchResult;
+        });
     }
 }

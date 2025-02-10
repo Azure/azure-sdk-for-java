@@ -5,56 +5,59 @@
 package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Model that represents the an action and its status. */
+/**
+ * Model that represents the an action and its status.
+ */
 @Immutable
-public final class ActionStatus {
+public final class ActionStatus implements JsonSerializable<ActionStatus> {
     /*
      * The name of the action status.
      */
-    @JsonProperty(value = "actionName", access = JsonProperty.Access.WRITE_ONLY)
     private String actionName;
 
     /*
      * The id of the action status.
      */
-    @JsonProperty(value = "actionId", access = JsonProperty.Access.WRITE_ONLY)
     private String actionId;
 
     /*
      * The status of the action.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * String that represents the start time of the action.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * String that represents the end time of the action.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * The array of targets.
      */
-    @JsonProperty(value = "targets", access = JsonProperty.Access.WRITE_ONLY)
     private List<ExperimentExecutionActionTargetDetailsProperties> targets;
 
-    /** Creates an instance of ActionStatus class. */
+    /**
+     * Creates an instance of ActionStatus class.
+     */
     public ActionStatus() {
     }
 
     /**
      * Get the actionName property: The name of the action status.
-     *
+     * 
      * @return the actionName value.
      */
     public String actionName() {
@@ -63,7 +66,7 @@ public final class ActionStatus {
 
     /**
      * Get the actionId property: The id of the action status.
-     *
+     * 
      * @return the actionId value.
      */
     public String actionId() {
@@ -72,7 +75,7 @@ public final class ActionStatus {
 
     /**
      * Get the status property: The status of the action.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -81,7 +84,7 @@ public final class ActionStatus {
 
     /**
      * Get the startTime property: String that represents the start time of the action.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -90,7 +93,7 @@ public final class ActionStatus {
 
     /**
      * Get the endTime property: String that represents the end time of the action.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -99,7 +102,7 @@ public final class ActionStatus {
 
     /**
      * Get the targets property: The array of targets.
-     *
+     * 
      * @return the targets value.
      */
     public List<ExperimentExecutionActionTargetDetailsProperties> targets() {
@@ -108,12 +111,61 @@ public final class ActionStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targets() != null) {
             targets().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActionStatus.
+     */
+    public static ActionStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionStatus deserializedActionStatus = new ActionStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionName".equals(fieldName)) {
+                    deserializedActionStatus.actionName = reader.getString();
+                } else if ("actionId".equals(fieldName)) {
+                    deserializedActionStatus.actionId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedActionStatus.status = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedActionStatus.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedActionStatus.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("targets".equals(fieldName)) {
+                    List<ExperimentExecutionActionTargetDetailsProperties> targets = reader
+                        .readArray(reader1 -> ExperimentExecutionActionTargetDetailsProperties.fromJson(reader1));
+                    deserializedActionStatus.targets = targets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionStatus;
+        });
     }
 }

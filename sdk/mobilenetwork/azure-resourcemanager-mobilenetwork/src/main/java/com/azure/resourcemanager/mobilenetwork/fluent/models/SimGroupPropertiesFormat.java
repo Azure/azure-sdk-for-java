@@ -5,39 +5,44 @@
 package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.KeyVaultKey;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** SIM group properties. */
+/**
+ * SIM group properties.
+ */
 @Fluent
-public final class SimGroupPropertiesFormat {
+public final class SimGroupPropertiesFormat implements JsonSerializable<SimGroupPropertiesFormat> {
     /*
      * The provisioning state of the SIM group resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * A key to encrypt the SIM data that belongs to this SIM group.
      */
-    @JsonProperty(value = "encryptionKey")
     private KeyVaultKey encryptionKey;
 
     /*
      * Mobile network that this SIM group belongs to. The mobile network must be in the same location as the SIM group.
      */
-    @JsonProperty(value = "mobileNetwork")
     private MobileNetworkResourceId mobileNetwork;
 
-    /** Creates an instance of SimGroupPropertiesFormat class. */
+    /**
+     * Creates an instance of SimGroupPropertiesFormat class.
+     */
     public SimGroupPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the SIM group resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -46,7 +51,7 @@ public final class SimGroupPropertiesFormat {
 
     /**
      * Get the encryptionKey property: A key to encrypt the SIM data that belongs to this SIM group.
-     *
+     * 
      * @return the encryptionKey value.
      */
     public KeyVaultKey encryptionKey() {
@@ -55,7 +60,7 @@ public final class SimGroupPropertiesFormat {
 
     /**
      * Set the encryptionKey property: A key to encrypt the SIM data that belongs to this SIM group.
-     *
+     * 
      * @param encryptionKey the encryptionKey value to set.
      * @return the SimGroupPropertiesFormat object itself.
      */
@@ -67,7 +72,7 @@ public final class SimGroupPropertiesFormat {
     /**
      * Get the mobileNetwork property: Mobile network that this SIM group belongs to. The mobile network must be in the
      * same location as the SIM group.
-     *
+     * 
      * @return the mobileNetwork value.
      */
     public MobileNetworkResourceId mobileNetwork() {
@@ -77,7 +82,7 @@ public final class SimGroupPropertiesFormat {
     /**
      * Set the mobileNetwork property: Mobile network that this SIM group belongs to. The mobile network must be in the
      * same location as the SIM group.
-     *
+     * 
      * @param mobileNetwork the mobileNetwork value to set.
      * @return the SimGroupPropertiesFormat object itself.
      */
@@ -88,7 +93,7 @@ public final class SimGroupPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -98,5 +103,47 @@ public final class SimGroupPropertiesFormat {
         if (mobileNetwork() != null) {
             mobileNetwork().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("encryptionKey", this.encryptionKey);
+        jsonWriter.writeJsonField("mobileNetwork", this.mobileNetwork);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimGroupPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimGroupPropertiesFormat if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SimGroupPropertiesFormat.
+     */
+    public static SimGroupPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimGroupPropertiesFormat deserializedSimGroupPropertiesFormat = new SimGroupPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedSimGroupPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("encryptionKey".equals(fieldName)) {
+                    deserializedSimGroupPropertiesFormat.encryptionKey = KeyVaultKey.fromJson(reader);
+                } else if ("mobileNetwork".equals(fieldName)) {
+                    deserializedSimGroupPropertiesFormat.mobileNetwork = MobileNetworkResourceId.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimGroupPropertiesFormat;
+        });
     }
 }

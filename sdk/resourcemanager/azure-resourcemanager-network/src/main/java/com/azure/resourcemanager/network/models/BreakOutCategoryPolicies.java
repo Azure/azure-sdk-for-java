@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Network Virtual Appliance Sku Properties.
  */
 @Fluent
-public final class BreakOutCategoryPolicies {
+public final class BreakOutCategoryPolicies implements JsonSerializable<BreakOutCategoryPolicies> {
     /*
      * Flag to control breakout of o365 allow category.
      */
-    @JsonProperty(value = "allow")
     private Boolean allow;
 
     /*
      * Flag to control breakout of o365 optimize category.
      */
-    @JsonProperty(value = "optimize")
     private Boolean optimize;
 
     /*
      * Flag to control breakout of o365 default category.
      */
-    @JsonProperty(value = "default")
     private Boolean defaultProperty;
 
     /**
@@ -102,5 +103,47 @@ public final class BreakOutCategoryPolicies {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allow", this.allow);
+        jsonWriter.writeBooleanField("optimize", this.optimize);
+        jsonWriter.writeBooleanField("default", this.defaultProperty);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BreakOutCategoryPolicies from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BreakOutCategoryPolicies if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BreakOutCategoryPolicies.
+     */
+    public static BreakOutCategoryPolicies fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BreakOutCategoryPolicies deserializedBreakOutCategoryPolicies = new BreakOutCategoryPolicies();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allow".equals(fieldName)) {
+                    deserializedBreakOutCategoryPolicies.allow = reader.getNullable(JsonReader::getBoolean);
+                } else if ("optimize".equals(fieldName)) {
+                    deserializedBreakOutCategoryPolicies.optimize = reader.getNullable(JsonReader::getBoolean);
+                } else if ("default".equals(fieldName)) {
+                    deserializedBreakOutCategoryPolicies.defaultProperty = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBreakOutCategoryPolicies;
+        });
     }
 }

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies target network access settings for disks of VM to be restored. */
+/**
+ * Specifies target network access settings for disks of VM to be restored.
+ */
 @Fluent
-public final class TargetDiskNetworkAccessSettings {
+public final class TargetDiskNetworkAccessSettings implements JsonSerializable<TargetDiskNetworkAccessSettings> {
     /*
      * Network access settings to be used for restored disks
      */
-    @JsonProperty(value = "targetDiskNetworkAccessOption")
     private TargetDiskNetworkAccessOption targetDiskNetworkAccessOption;
 
     /*
      * Gets or sets the ARM resource ID of the target disk access to be used when TargetDiskNetworkAccessOption is set
      * to TargetDiskNetworkAccessOption.UseNew
      */
-    @JsonProperty(value = "targetDiskAccessId")
     private String targetDiskAccessId;
 
-    /** Creates an instance of TargetDiskNetworkAccessSettings class. */
+    /**
+     * Creates an instance of TargetDiskNetworkAccessSettings class.
+     */
     public TargetDiskNetworkAccessSettings() {
     }
 
     /**
      * Get the targetDiskNetworkAccessOption property: Network access settings to be used for restored disks.
-     *
+     * 
      * @return the targetDiskNetworkAccessOption value.
      */
     public TargetDiskNetworkAccessOption targetDiskNetworkAccessOption() {
@@ -38,12 +44,12 @@ public final class TargetDiskNetworkAccessSettings {
 
     /**
      * Set the targetDiskNetworkAccessOption property: Network access settings to be used for restored disks.
-     *
+     * 
      * @param targetDiskNetworkAccessOption the targetDiskNetworkAccessOption value to set.
      * @return the TargetDiskNetworkAccessSettings object itself.
      */
-    public TargetDiskNetworkAccessSettings withTargetDiskNetworkAccessOption(
-        TargetDiskNetworkAccessOption targetDiskNetworkAccessOption) {
+    public TargetDiskNetworkAccessSettings
+        withTargetDiskNetworkAccessOption(TargetDiskNetworkAccessOption targetDiskNetworkAccessOption) {
         this.targetDiskNetworkAccessOption = targetDiskNetworkAccessOption;
         return this;
     }
@@ -51,7 +57,7 @@ public final class TargetDiskNetworkAccessSettings {
     /**
      * Get the targetDiskAccessId property: Gets or sets the ARM resource ID of the target disk access to be used when
      * TargetDiskNetworkAccessOption is set to TargetDiskNetworkAccessOption.UseNew.
-     *
+     * 
      * @return the targetDiskAccessId value.
      */
     public String targetDiskAccessId() {
@@ -61,7 +67,7 @@ public final class TargetDiskNetworkAccessSettings {
     /**
      * Set the targetDiskAccessId property: Gets or sets the ARM resource ID of the target disk access to be used when
      * TargetDiskNetworkAccessOption is set to TargetDiskNetworkAccessOption.UseNew.
-     *
+     * 
      * @param targetDiskAccessId the targetDiskAccessId value to set.
      * @return the TargetDiskNetworkAccessSettings object itself.
      */
@@ -72,9 +78,51 @@ public final class TargetDiskNetworkAccessSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetDiskNetworkAccessOption",
+            this.targetDiskNetworkAccessOption == null ? null : this.targetDiskNetworkAccessOption.toString());
+        jsonWriter.writeStringField("targetDiskAccessId", this.targetDiskAccessId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetDiskNetworkAccessSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetDiskNetworkAccessSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TargetDiskNetworkAccessSettings.
+     */
+    public static TargetDiskNetworkAccessSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetDiskNetworkAccessSettings deserializedTargetDiskNetworkAccessSettings
+                = new TargetDiskNetworkAccessSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetDiskNetworkAccessOption".equals(fieldName)) {
+                    deserializedTargetDiskNetworkAccessSettings.targetDiskNetworkAccessOption
+                        = TargetDiskNetworkAccessOption.fromString(reader.getString());
+                } else if ("targetDiskAccessId".equals(fieldName)) {
+                    deserializedTargetDiskNetworkAccessSettings.targetDiskAccessId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetDiskNetworkAccessSettings;
+        });
     }
 }

@@ -6,37 +6,43 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Recovery plan unplanned failover input properties. */
+/**
+ * Recovery plan unplanned failover input properties.
+ */
 @Fluent
-public final class RecoveryPlanUnplannedFailoverInputProperties {
+public final class RecoveryPlanUnplannedFailoverInputProperties
+    implements JsonSerializable<RecoveryPlanUnplannedFailoverInputProperties> {
     /*
      * The failover direction.
      */
-    @JsonProperty(value = "failoverDirection", required = true)
     private PossibleOperationsDirections failoverDirection;
 
     /*
      * A value indicating whether source site operations are required.
      */
-    @JsonProperty(value = "sourceSiteOperations", required = true)
     private SourceSiteOperations sourceSiteOperations;
 
     /*
      * The provider specific properties.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails;
 
-    /** Creates an instance of RecoveryPlanUnplannedFailoverInputProperties class. */
+    /**
+     * Creates an instance of RecoveryPlanUnplannedFailoverInputProperties class.
+     */
     public RecoveryPlanUnplannedFailoverInputProperties() {
     }
 
     /**
      * Get the failoverDirection property: The failover direction.
-     *
+     * 
      * @return the failoverDirection value.
      */
     public PossibleOperationsDirections failoverDirection() {
@@ -45,19 +51,19 @@ public final class RecoveryPlanUnplannedFailoverInputProperties {
 
     /**
      * Set the failoverDirection property: The failover direction.
-     *
+     * 
      * @param failoverDirection the failoverDirection value to set.
      * @return the RecoveryPlanUnplannedFailoverInputProperties object itself.
      */
-    public RecoveryPlanUnplannedFailoverInputProperties withFailoverDirection(
-        PossibleOperationsDirections failoverDirection) {
+    public RecoveryPlanUnplannedFailoverInputProperties
+        withFailoverDirection(PossibleOperationsDirections failoverDirection) {
         this.failoverDirection = failoverDirection;
         return this;
     }
 
     /**
      * Get the sourceSiteOperations property: A value indicating whether source site operations are required.
-     *
+     * 
      * @return the sourceSiteOperations value.
      */
     public SourceSiteOperations sourceSiteOperations() {
@@ -66,19 +72,19 @@ public final class RecoveryPlanUnplannedFailoverInputProperties {
 
     /**
      * Set the sourceSiteOperations property: A value indicating whether source site operations are required.
-     *
+     * 
      * @param sourceSiteOperations the sourceSiteOperations value to set.
      * @return the RecoveryPlanUnplannedFailoverInputProperties object itself.
      */
-    public RecoveryPlanUnplannedFailoverInputProperties withSourceSiteOperations(
-        SourceSiteOperations sourceSiteOperations) {
+    public RecoveryPlanUnplannedFailoverInputProperties
+        withSourceSiteOperations(SourceSiteOperations sourceSiteOperations) {
         this.sourceSiteOperations = sourceSiteOperations;
         return this;
     }
 
     /**
      * Get the providerSpecificDetails property: The provider specific properties.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails() {
@@ -87,35 +93,31 @@ public final class RecoveryPlanUnplannedFailoverInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific properties.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the RecoveryPlanUnplannedFailoverInputProperties object itself.
      */
-    public RecoveryPlanUnplannedFailoverInputProperties withProviderSpecificDetails(
-        List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails) {
+    public RecoveryPlanUnplannedFailoverInputProperties
+        withProviderSpecificDetails(List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (failoverDirection() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property failoverDirection in model"
-                            + " RecoveryPlanUnplannedFailoverInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property failoverDirection in model RecoveryPlanUnplannedFailoverInputProperties"));
         }
         if (sourceSiteOperations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceSiteOperations in model"
-                            + " RecoveryPlanUnplannedFailoverInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceSiteOperations in model RecoveryPlanUnplannedFailoverInputProperties"));
         }
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().forEach(e -> e.validate());
@@ -123,4 +125,56 @@ public final class RecoveryPlanUnplannedFailoverInputProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPlanUnplannedFailoverInputProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("failoverDirection",
+            this.failoverDirection == null ? null : this.failoverDirection.toString());
+        jsonWriter.writeStringField("sourceSiteOperations",
+            this.sourceSiteOperations == null ? null : this.sourceSiteOperations.toString());
+        jsonWriter.writeArrayField("providerSpecificDetails", this.providerSpecificDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanUnplannedFailoverInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanUnplannedFailoverInputProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryPlanUnplannedFailoverInputProperties.
+     */
+    public static RecoveryPlanUnplannedFailoverInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanUnplannedFailoverInputProperties deserializedRecoveryPlanUnplannedFailoverInputProperties
+                = new RecoveryPlanUnplannedFailoverInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("failoverDirection".equals(fieldName)) {
+                    deserializedRecoveryPlanUnplannedFailoverInputProperties.failoverDirection
+                        = PossibleOperationsDirections.fromString(reader.getString());
+                } else if ("sourceSiteOperations".equals(fieldName)) {
+                    deserializedRecoveryPlanUnplannedFailoverInputProperties.sourceSiteOperations
+                        = SourceSiteOperations.fromString(reader.getString());
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails
+                        = reader.readArray(reader1 -> RecoveryPlanProviderSpecificFailoverInput.fromJson(reader1));
+                    deserializedRecoveryPlanUnplannedFailoverInputProperties.providerSpecificDetails
+                        = providerSpecificDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanUnplannedFailoverInputProperties;
+        });
+    }
 }

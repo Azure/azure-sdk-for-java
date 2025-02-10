@@ -10,10 +10,11 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-/** Enables filtering of key-values. */
+/**
+ * Enables filtering of key-values. Syntax reference: https://aka.ms/azconfig/docs/restapisnapshots.
+ */
 @Fluent
 public final class ConfigurationSettingsFilter implements JsonSerializable<ConfigurationSettingsFilter> {
     /*
@@ -26,9 +27,14 @@ public final class ConfigurationSettingsFilter implements JsonSerializable<Confi
      */
     private String label;
 
+    /*
+     * Filters key-values by their tags field.
+     */
+    private List<String> tags;
+
     /**
      * Creates an instance of ConfigurationSettingsFilter class.
-     *
+     * 
      * @param key the key value to set.
      */
     public ConfigurationSettingsFilter(String key) {
@@ -37,7 +43,7 @@ public final class ConfigurationSettingsFilter implements JsonSerializable<Confi
 
     /**
      * Get the key property: Filters {@link ConfigurationSetting} by their key field.
-     *
+     * 
      * @return the key value.
      */
     public String getKey() {
@@ -46,7 +52,7 @@ public final class ConfigurationSettingsFilter implements JsonSerializable<Confi
 
     /**
      * Get the label property: Filters {@link ConfigurationSetting} by their label field.
-     *
+     * 
      * @return the label value.
      */
     public String getLabel() {
@@ -55,7 +61,7 @@ public final class ConfigurationSettingsFilter implements JsonSerializable<Confi
 
     /**
      * Set the label property: Filters {@link ConfigurationSetting} by their label field.
-     *
+     * 
      * @param label the label value to set.
      * @return the ConfigurationSettingsFilter object itself.
      */
@@ -64,56 +70,77 @@ public final class ConfigurationSettingsFilter implements JsonSerializable<Confi
         return this;
     }
 
+    /**
+     * Get the tags property: Filters key-values by their tags field.
+     * 
+     * @return the tags value.
+     */
+    public List<String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Filters key-values by their tags field.
+     * 
+     * @param tags the tags value to set.
+     * @return the ConfigurationSettingsFilter object itself.
+     */
+    public ConfigurationSettingsFilter setTags(List<String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("key", this.key);
         jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeArrayField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ConfigurationSettingsFilter from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ConfigurationSettingsFilter if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ConfigurationSettingsFilter.
      */
     public static ConfigurationSettingsFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean keyFound = false;
-                    String key = null;
-                    String label = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean keyFound = false;
+            String key = null;
+            String label = null;
+            List<String> tags = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("key".equals(fieldName)) {
-                            key = reader.getString();
-                            keyFound = true;
-                        } else if ("label".equals(fieldName)) {
-                            label = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (keyFound) {
-                        ConfigurationSettingsFilter deserializedConfigurationSettingsFilter =
-                                new ConfigurationSettingsFilter(key);
-                        deserializedConfigurationSettingsFilter.label = label;
+                if ("key".equals(fieldName)) {
+                    key = reader.getString();
+                    keyFound = true;
+                } else if ("label".equals(fieldName)) {
+                    label = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readArray(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (keyFound) {
+                ConfigurationSettingsFilter deserializedConfigurationSettingsFilter
+                    = new ConfigurationSettingsFilter(key);
+                deserializedConfigurationSettingsFilter.label = label;
+                deserializedConfigurationSettingsFilter.tags = tags;
 
-                        return deserializedConfigurationSettingsFilter;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!keyFound) {
-                        missingProperties.add("key");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+                return deserializedConfigurationSettingsFilter;
+            }
+            throw new IllegalStateException("Missing required property: key");
+        });
     }
 }

@@ -5,45 +5,46 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AbnormalTimePeriod;
 import com.azure.resourcemanager.appservice.models.AnalysisData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * DiagnosticAnalysis resource specific properties.
  */
 @Fluent
-public final class DiagnosticAnalysisProperties {
+public final class DiagnosticAnalysisProperties implements JsonSerializable<DiagnosticAnalysisProperties> {
     /*
      * Start time of the period
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * End time of the period
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * List of time periods.
      */
-    @JsonProperty(value = "abnormalTimePeriods")
     private List<AbnormalTimePeriod> abnormalTimePeriods;
 
     /*
      * Data by each detector
      */
-    @JsonProperty(value = "payload")
     private List<AnalysisData> payload;
 
     /*
      * Data by each detector for detectors that did not corelate
      */
-    @JsonProperty(value = "nonCorrelatedDetectors")
     private List<DetectorDefinition> nonCorrelatedDetectors;
 
     /**
@@ -167,5 +168,64 @@ public final class DiagnosticAnalysisProperties {
         if (nonCorrelatedDetectors() != null) {
             nonCorrelatedDetectors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeArrayField("abnormalTimePeriods", this.abnormalTimePeriods,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("payload", this.payload, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("nonCorrelatedDetectors", this.nonCorrelatedDetectors,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticAnalysisProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticAnalysisProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticAnalysisProperties.
+     */
+    public static DiagnosticAnalysisProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticAnalysisProperties deserializedDiagnosticAnalysisProperties = new DiagnosticAnalysisProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedDiagnosticAnalysisProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedDiagnosticAnalysisProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("abnormalTimePeriods".equals(fieldName)) {
+                    List<AbnormalTimePeriod> abnormalTimePeriods
+                        = reader.readArray(reader1 -> AbnormalTimePeriod.fromJson(reader1));
+                    deserializedDiagnosticAnalysisProperties.abnormalTimePeriods = abnormalTimePeriods;
+                } else if ("payload".equals(fieldName)) {
+                    List<AnalysisData> payload = reader.readArray(reader1 -> AnalysisData.fromJson(reader1));
+                    deserializedDiagnosticAnalysisProperties.payload = payload;
+                } else if ("nonCorrelatedDetectors".equals(fieldName)) {
+                    List<DetectorDefinition> nonCorrelatedDetectors
+                        = reader.readArray(reader1 -> DetectorDefinition.fromJson(reader1));
+                    deserializedDiagnosticAnalysisProperties.nonCorrelatedDetectors = nonCorrelatedDetectors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticAnalysisProperties;
+        });
     }
 }

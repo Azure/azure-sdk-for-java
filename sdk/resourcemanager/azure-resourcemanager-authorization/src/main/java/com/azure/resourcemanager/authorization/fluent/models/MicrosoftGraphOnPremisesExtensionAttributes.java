@@ -5,118 +5,109 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** onPremisesExtensionAttributes. */
+/**
+ * onPremisesExtensionAttributes.
+ */
 @Fluent
-public final class MicrosoftGraphOnPremisesExtensionAttributes {
+public final class MicrosoftGraphOnPremisesExtensionAttributes
+    implements JsonSerializable<MicrosoftGraphOnPremisesExtensionAttributes> {
     /*
      * First customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute1")
     private String extensionAttribute1;
 
     /*
      * Tenth customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute10")
     private String extensionAttribute10;
 
     /*
      * Eleventh customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute11")
     private String extensionAttribute11;
 
     /*
      * Twelfth customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute12")
     private String extensionAttribute12;
 
     /*
      * Thirteenth customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute13")
     private String extensionAttribute13;
 
     /*
      * Fourteenth customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute14")
     private String extensionAttribute14;
 
     /*
      * Fifteenth customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute15")
     private String extensionAttribute15;
 
     /*
      * Second customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute2")
     private String extensionAttribute2;
 
     /*
      * Third customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute3")
     private String extensionAttribute3;
 
     /*
      * Fourth customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute4")
     private String extensionAttribute4;
 
     /*
      * Fifth customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute5")
     private String extensionAttribute5;
 
     /*
      * Sixth customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute6")
     private String extensionAttribute6;
 
     /*
      * Seventh customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute7")
     private String extensionAttribute7;
 
     /*
      * Eighth customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute8")
     private String extensionAttribute8;
 
     /*
      * Ninth customizable extension attribute.
      */
-    @JsonProperty(value = "extensionAttribute9")
     private String extensionAttribute9;
 
     /*
      * onPremisesExtensionAttributes
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOnPremisesExtensionAttributes class. */
+    /**
+     * Creates an instance of MicrosoftGraphOnPremisesExtensionAttributes class.
+     */
     public MicrosoftGraphOnPremisesExtensionAttributes() {
     }
 
     /**
      * Get the extensionAttribute1 property: First customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute1 value.
      */
     public String extensionAttribute1() {
@@ -125,7 +116,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute1 property: First customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute1 the extensionAttribute1 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -136,7 +127,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute10 property: Tenth customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute10 value.
      */
     public String extensionAttribute10() {
@@ -145,7 +136,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute10 property: Tenth customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute10 the extensionAttribute10 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -156,7 +147,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute11 property: Eleventh customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute11 value.
      */
     public String extensionAttribute11() {
@@ -165,7 +156,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute11 property: Eleventh customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute11 the extensionAttribute11 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -176,7 +167,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute12 property: Twelfth customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute12 value.
      */
     public String extensionAttribute12() {
@@ -185,7 +176,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute12 property: Twelfth customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute12 the extensionAttribute12 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -196,7 +187,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute13 property: Thirteenth customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute13 value.
      */
     public String extensionAttribute13() {
@@ -205,7 +196,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute13 property: Thirteenth customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute13 the extensionAttribute13 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -216,7 +207,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute14 property: Fourteenth customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute14 value.
      */
     public String extensionAttribute14() {
@@ -225,7 +216,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute14 property: Fourteenth customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute14 the extensionAttribute14 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -236,7 +227,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute15 property: Fifteenth customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute15 value.
      */
     public String extensionAttribute15() {
@@ -245,7 +236,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute15 property: Fifteenth customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute15 the extensionAttribute15 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -256,7 +247,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute2 property: Second customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute2 value.
      */
     public String extensionAttribute2() {
@@ -265,7 +256,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute2 property: Second customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute2 the extensionAttribute2 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -276,7 +267,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute3 property: Third customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute3 value.
      */
     public String extensionAttribute3() {
@@ -285,7 +276,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute3 property: Third customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute3 the extensionAttribute3 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -296,7 +287,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute4 property: Fourth customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute4 value.
      */
     public String extensionAttribute4() {
@@ -305,7 +296,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute4 property: Fourth customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute4 the extensionAttribute4 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -316,7 +307,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute5 property: Fifth customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute5 value.
      */
     public String extensionAttribute5() {
@@ -325,7 +316,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute5 property: Fifth customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute5 the extensionAttribute5 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -336,7 +327,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute6 property: Sixth customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute6 value.
      */
     public String extensionAttribute6() {
@@ -345,7 +336,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute6 property: Sixth customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute6 the extensionAttribute6 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -356,7 +347,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute7 property: Seventh customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute7 value.
      */
     public String extensionAttribute7() {
@@ -365,7 +356,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute7 property: Seventh customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute7 the extensionAttribute7 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -376,7 +367,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute8 property: Eighth customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute8 value.
      */
     public String extensionAttribute8() {
@@ -385,7 +376,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute8 property: Eighth customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute8 the extensionAttribute8 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -396,7 +387,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the extensionAttribute9 property: Ninth customizable extension attribute.
-     *
+     * 
      * @return the extensionAttribute9 value.
      */
     public String extensionAttribute9() {
@@ -405,7 +396,7 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Set the extensionAttribute9 property: Ninth customizable extension attribute.
-     *
+     * 
      * @param extensionAttribute9 the extensionAttribute9 value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
@@ -416,39 +407,120 @@ public final class MicrosoftGraphOnPremisesExtensionAttributes {
 
     /**
      * Get the additionalProperties property: onPremisesExtensionAttributes.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: onPremisesExtensionAttributes.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOnPremisesExtensionAttributes object itself.
      */
-    public MicrosoftGraphOnPremisesExtensionAttributes withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphOnPremisesExtensionAttributes
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("extensionAttribute1", this.extensionAttribute1);
+        jsonWriter.writeStringField("extensionAttribute10", this.extensionAttribute10);
+        jsonWriter.writeStringField("extensionAttribute11", this.extensionAttribute11);
+        jsonWriter.writeStringField("extensionAttribute12", this.extensionAttribute12);
+        jsonWriter.writeStringField("extensionAttribute13", this.extensionAttribute13);
+        jsonWriter.writeStringField("extensionAttribute14", this.extensionAttribute14);
+        jsonWriter.writeStringField("extensionAttribute15", this.extensionAttribute15);
+        jsonWriter.writeStringField("extensionAttribute2", this.extensionAttribute2);
+        jsonWriter.writeStringField("extensionAttribute3", this.extensionAttribute3);
+        jsonWriter.writeStringField("extensionAttribute4", this.extensionAttribute4);
+        jsonWriter.writeStringField("extensionAttribute5", this.extensionAttribute5);
+        jsonWriter.writeStringField("extensionAttribute6", this.extensionAttribute6);
+        jsonWriter.writeStringField("extensionAttribute7", this.extensionAttribute7);
+        jsonWriter.writeStringField("extensionAttribute8", this.extensionAttribute8);
+        jsonWriter.writeStringField("extensionAttribute9", this.extensionAttribute9);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOnPremisesExtensionAttributes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOnPremisesExtensionAttributes if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOnPremisesExtensionAttributes.
+     */
+    public static MicrosoftGraphOnPremisesExtensionAttributes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOnPremisesExtensionAttributes deserializedMicrosoftGraphOnPremisesExtensionAttributes
+                = new MicrosoftGraphOnPremisesExtensionAttributes();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extensionAttribute1".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute1 = reader.getString();
+                } else if ("extensionAttribute10".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute10 = reader.getString();
+                } else if ("extensionAttribute11".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute11 = reader.getString();
+                } else if ("extensionAttribute12".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute12 = reader.getString();
+                } else if ("extensionAttribute13".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute13 = reader.getString();
+                } else if ("extensionAttribute14".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute14 = reader.getString();
+                } else if ("extensionAttribute15".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute15 = reader.getString();
+                } else if ("extensionAttribute2".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute2 = reader.getString();
+                } else if ("extensionAttribute3".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute3 = reader.getString();
+                } else if ("extensionAttribute4".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute4 = reader.getString();
+                } else if ("extensionAttribute5".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute5 = reader.getString();
+                } else if ("extensionAttribute6".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute6 = reader.getString();
+                } else if ("extensionAttribute7".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute7 = reader.getString();
+                } else if ("extensionAttribute8".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute8 = reader.getString();
+                } else if ("extensionAttribute9".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnPremisesExtensionAttributes.extensionAttribute9 = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOnPremisesExtensionAttributes.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOnPremisesExtensionAttributes;
+        });
     }
 }

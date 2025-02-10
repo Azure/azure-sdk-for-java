@@ -5,103 +5,148 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure VM workload-specific protectable item representing SAP ASE System. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
-@JsonTypeName("SAPAseSystem")
+/**
+ * Azure VM workload-specific protectable item representing SAP ASE System.
+ */
 @Fluent
 public final class AzureVmWorkloadSapAseSystemProtectableItem extends AzureVmWorkloadProtectableItem {
-    /** Creates an instance of AzureVmWorkloadSapAseSystemProtectableItem class. */
+    /*
+     * Type of the backup item.
+     */
+    private String protectableItemType = "SAPAseSystem";
+
+    /**
+     * Creates an instance of AzureVmWorkloadSapAseSystemProtectableItem class.
+     */
     public AzureVmWorkloadSapAseSystemProtectableItem() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the protectableItemType property: Type of the backup item.
+     * 
+     * @return the protectableItemType value.
+     */
+    @Override
+    public String protectableItemType() {
+        return this.protectableItemType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withParentName(String parentName) {
         super.withParentName(parentName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withParentUniqueName(String parentUniqueName) {
         super.withParentUniqueName(parentUniqueName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withServerName(String serverName) {
         super.withServerName(serverName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withIsAutoProtectable(Boolean isAutoProtectable) {
         super.withIsAutoProtectable(isAutoProtectable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withIsAutoProtected(Boolean isAutoProtected) {
         super.withIsAutoProtected(isAutoProtected);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withSubinquireditemcount(Integer subinquireditemcount) {
         super.withSubinquireditemcount(subinquireditemcount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withSubprotectableitemcount(Integer subprotectableitemcount) {
         super.withSubprotectableitemcount(subprotectableitemcount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withPrebackupvalidation(PreBackupValidation prebackupvalidation) {
         super.withPrebackupvalidation(prebackupvalidation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withIsProtectable(Boolean isProtectable) {
         super.withIsProtectable(isProtectable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withWorkloadType(String workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -110,11 +155,96 @@ public final class AzureVmWorkloadSapAseSystemProtectableItem extends AzureVmWor
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (prebackupvalidation() != null) {
+            prebackupvalidation().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupManagementType", backupManagementType());
+        jsonWriter.writeStringField("workloadType", workloadType());
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("parentName", parentName());
+        jsonWriter.writeStringField("parentUniqueName", parentUniqueName());
+        jsonWriter.writeStringField("serverName", serverName());
+        jsonWriter.writeBooleanField("isAutoProtectable", isAutoProtectable());
+        jsonWriter.writeBooleanField("isAutoProtected", isAutoProtected());
+        jsonWriter.writeNumberField("subinquireditemcount", subinquireditemcount());
+        jsonWriter.writeNumberField("subprotectableitemcount", subprotectableitemcount());
+        jsonWriter.writeJsonField("prebackupvalidation", prebackupvalidation());
+        jsonWriter.writeBooleanField("isProtectable", isProtectable());
+        jsonWriter.writeStringField("protectableItemType", this.protectableItemType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVmWorkloadSapAseSystemProtectableItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVmWorkloadSapAseSystemProtectableItem if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVmWorkloadSapAseSystemProtectableItem.
+     */
+    public static AzureVmWorkloadSapAseSystemProtectableItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVmWorkloadSapAseSystemProtectableItem deserializedAzureVmWorkloadSapAseSystemProtectableItem
+                = new AzureVmWorkloadSapAseSystemProtectableItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem.withBackupManagementType(reader.getString());
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem.withWorkloadType(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem.withFriendlyName(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem
+                        .withProtectionState(ProtectionStatus.fromString(reader.getString()));
+                } else if ("parentName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem.withParentName(reader.getString());
+                } else if ("parentUniqueName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem.withParentUniqueName(reader.getString());
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem.withServerName(reader.getString());
+                } else if ("isAutoProtectable".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem
+                        .withIsAutoProtectable(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isAutoProtected".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem
+                        .withIsAutoProtected(reader.getNullable(JsonReader::getBoolean));
+                } else if ("subinquireditemcount".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem
+                        .withSubinquireditemcount(reader.getNullable(JsonReader::getInt));
+                } else if ("subprotectableitemcount".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem
+                        .withSubprotectableitemcount(reader.getNullable(JsonReader::getInt));
+                } else if ("prebackupvalidation".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem
+                        .withPrebackupvalidation(PreBackupValidation.fromJson(reader));
+                } else if ("isProtectable".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem
+                        .withIsProtectable(reader.getNullable(JsonReader::getBoolean));
+                } else if ("protectableItemType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseSystemProtectableItem.protectableItemType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVmWorkloadSapAseSystemProtectableItem;
+        });
     }
 }

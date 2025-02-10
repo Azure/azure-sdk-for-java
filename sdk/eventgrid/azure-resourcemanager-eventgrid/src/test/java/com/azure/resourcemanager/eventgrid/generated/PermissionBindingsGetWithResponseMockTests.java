@@ -6,56 +6,38 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PermissionBinding;
 import com.azure.resourcemanager.eventgrid.models.PermissionType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PermissionBindingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"description\":\"ekd\",\"topicSpaceName\":\"vuftrsvjmnsvu\",\"permission\":\"Publisher\",\"clientGroupName\":\"tvolefcj\",\"provisioningState\":\"Deleting\"},\"id\":\"kdb\",\"name\":\"otfbjampqoclann\",\"type\":\"xynlsuqb\"}";
+            = "{\"properties\":{\"description\":\"yqvpbfjpo\",\"topicSpaceName\":\"ucfzluczdquu\",\"permission\":\"Publisher\",\"clientGroupName\":\"mvhvz\",\"provisioningState\":\"Creating\"},\"id\":\"prnquj\",\"name\":\"wzcqygg\",\"type\":\"nwsvhbngqiwye\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PermissionBinding response = manager.permissionBindings()
-            .getWithResponse("igfoujjcxgdqmr", "hnzkwopswnyinxu", "rrxyxwjezbfqpl", com.azure.core.util.Context.NONE)
+            .getWithResponse("ss", "hmgw", "nivrxpfduio", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ekd", response.description());
-        Assertions.assertEquals("vuftrsvjmnsvu", response.topicSpaceName());
+        Assertions.assertEquals("yqvpbfjpo", response.description());
+        Assertions.assertEquals("ucfzluczdquu", response.topicSpaceName());
         Assertions.assertEquals(PermissionType.PUBLISHER, response.permission());
-        Assertions.assertEquals("tvolefcj", response.clientGroupName());
+        Assertions.assertEquals("mvhvz", response.clientGroupName());
     }
 }

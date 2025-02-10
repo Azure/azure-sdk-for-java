@@ -5,15 +5,16 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * The MetricSeriesQueryOptions model.
@@ -76,10 +77,14 @@ public final class MetricSeriesQueryOptions implements JsonSerializable<MetricSe
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("activeSince", Objects.toString(this.activeSince, null));
+        jsonWriter.writeStringField("activeSince",
+            this.activeSince == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.activeSince));
         jsonWriter.writeMapField("dimensionFilter", this.dimensionFilter,
             (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
         return jsonWriter.writeEndObject();
@@ -102,8 +107,8 @@ public final class MetricSeriesQueryOptions implements JsonSerializable<MetricSe
                 reader.nextToken();
 
                 if ("activeSince".equals(fieldName)) {
-                    deserializedMetricSeriesQueryOptions.activeSince
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedMetricSeriesQueryOptions.activeSince = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("dimensionFilter".equals(fieldName)) {
                     Map<String, List<String>> dimensionFilter
                         = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));

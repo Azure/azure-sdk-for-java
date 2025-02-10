@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBManagedCassandraClusterListByResourceGroup.json
      */
     /**
@@ -19,7 +19,10 @@ public final class CassandraClustersListByResourceGroupSamples {
      */
     public static void
         cosmosDBManagedCassandraClusterListByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getCassandraClusters()
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraClusters()
             .listByResourceGroup("cassandra-prod-rg", com.azure.core.util.Context.NONE);
     }
 }

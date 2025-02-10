@@ -26,8 +26,6 @@ public interface PagedResponse<T> extends Page<T>, Response<List<T>>, Closeable 
      */
     default List<T> getValue() {
         IterableStream<T> iterableStream = this.getElements();
-        return iterableStream == null
-            ? new ArrayList<>()
-            : iterableStream.stream().collect(Collectors.toList());
+        return iterableStream == null ? new ArrayList<>() : iterableStream.stream().collect(Collectors.toList());
     }
 }

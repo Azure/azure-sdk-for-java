@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class EnvironmentTypeUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentTypeUpdateProperties model =
-            BinaryData.fromString("{\"displayName\":\"yp\"}").toObject(EnvironmentTypeUpdateProperties.class);
-        Assertions.assertEquals("yp", model.displayName());
+        EnvironmentTypeUpdateProperties model = BinaryData.fromString("{\"displayName\":\"jzuaejxdultskzbb\"}")
+            .toObject(EnvironmentTypeUpdateProperties.class);
+        Assertions.assertEquals("jzuaejxdultskzbb", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentTypeUpdateProperties model = new EnvironmentTypeUpdateProperties().withDisplayName("yp");
+        EnvironmentTypeUpdateProperties model
+            = new EnvironmentTypeUpdateProperties().withDisplayName("jzuaejxdultskzbb");
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeUpdateProperties.class);
-        Assertions.assertEquals("yp", model.displayName());
+        Assertions.assertEquals("jzuaejxdultskzbb", model.displayName());
     }
 }

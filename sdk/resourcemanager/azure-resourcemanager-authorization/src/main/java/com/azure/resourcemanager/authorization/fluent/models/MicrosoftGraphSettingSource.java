@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** settingSource. */
+/**
+ * settingSource.
+ */
 @Fluent
-public final class MicrosoftGraphSettingSource {
+public final class MicrosoftGraphSettingSource implements JsonSerializable<MicrosoftGraphSettingSource> {
     /*
      * Not yet documented
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Not yet documented
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * settingSource
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSettingSource class. */
+    /**
+     * Creates an instance of MicrosoftGraphSettingSource class.
+     */
     public MicrosoftGraphSettingSource() {
     }
 
     /**
      * Get the displayName property: Not yet documented.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphSettingSource {
 
     /**
      * Set the displayName property: Not yet documented.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphSettingSource object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphSettingSource {
 
     /**
      * Get the id property: Not yet documented.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphSettingSource {
 
     /**
      * Set the id property: Not yet documented.
-     *
+     * 
      * @param id the id value to set.
      * @return the MicrosoftGraphSettingSource object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphSettingSource {
 
     /**
      * Get the additionalProperties property: settingSource.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: settingSource.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSettingSource object itself.
      */
@@ -97,19 +99,61 @@ public final class MicrosoftGraphSettingSource {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("id", this.id);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSettingSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSettingSource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSettingSource.
+     */
+    public static MicrosoftGraphSettingSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSettingSource deserializedMicrosoftGraphSettingSource = new MicrosoftGraphSettingSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphSettingSource.displayName = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphSettingSource.id = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSettingSource.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSettingSource;
+        });
     }
 }

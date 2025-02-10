@@ -4,34 +4,35 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.ResourceForUpdate;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DataCollectionEndpoints Update. */
+/**
+ * Samples for DataCollectionEndpoints Update.
+ */
 public final class DataCollectionEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionEndpointsUpdate.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
+     * DataCollectionEndpointsUpdate.json
      */
     /**
      * Sample code: Update data collection endpoint.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateDataCollectionEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getDataCollectionEndpoints()
-            .updateWithResponse(
-                "myResourceGroup",
-                "myCollectionEndpoint",
+            .updateWithResponse("myResourceGroup", "myCollectionEndpoint",
                 new ResourceForUpdate().withTags(mapOf("tag1", "A", "tag2", "B", "tag3", "C")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

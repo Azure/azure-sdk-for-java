@@ -1,0 +1,303 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "## EventHubs for Java stress testing\n\nSelect the run from the following list."
+      },
+      "name": "text - 2"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "ab5bb927-f8a4-4491-8621-d300820d2ff3",
+            "version": "KqlParameterItem/1.0",
+            "name": "timeRange",
+            "label": "Time Range",
+            "type": 4,
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                }
+              ],
+              "allowCustom": true
+            },
+            "value": {
+              "durationMs": 86400000
+            }
+          },
+          {
+            "id": "1b563bbe-70e0-48e6-ae33-d71d97ab8332",
+            "version": "KqlParameterItem/1.0",
+            "name": "runId",
+            "label": "Pod name",
+            "type": 2,
+            "isRequired": true,
+            "query": "dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-eventhubs\" and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp) by runId, pod = tostring(customDimensions[\"hostname\"])\r\n| order by start desc\r\n| project runId, pod",
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "showDefault": false
+            },
+            "queryType": 0,
+            "resourceType": "microsoft.insights/components",
+            "value": null
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "40",
+      "name": "parameters - 2",
+      "styleSettings": {
+        "maxWidth": "04"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runs = customMetrics \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-eventhubs\" \r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp), duration=(max(timestamp) - min(timestamp)) by runId;\r\nlet runSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| where cloud_RoleName startswith \"java-eventhubs\"  and name == \"before run\"\r\n| extend packageVersion = coalesce(customDimensions[\"packageVersion\"], \"\")\r\n| distinct runId, pod=tostring(customDimensions[\"hostname\"]), packageVersion;\r\nruns \r\n| join kind = innerunique runSpans on runId\r\n| order by start desc\r\n| project-away runId1\r\n",
+        "size": 0,
+        "title": "Runs in {timeRange:label}",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "start",
+              "sortOrder": 2
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "start",
+            "sortOrder": 2
+          }
+        ]
+      },
+      "customWidth": "60",
+      "name": "query - 8",
+      "styleSettings": {
+        "maxWidth": "60"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runId = \"{runId}\";\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet testSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet errors = metrics\r\n| where name == \"test.run.errors\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| summarize error_by_type=toint(sum(valueSum)) by errorType\r\n| summarize test_errors=make_bag(bag_pack(errorType, error_by_type))\r\n| evaluate narrow();\r\nlet sentCounter = metrics | where name == \"messaging.client.published.messages\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| extend evenHubName = tostring(customDimensions[\"messaging.destination.name\"])\r\n| summarize sent = sum(valueSum) by evenHubName\r\n| summarize sent_mesages=make_bag(bag_pack(evenHubName, toint(sent)))\r\n| evaluate narrow();\r\nlet receivedCounter = metrics | where name == \"messaging.client.consumed.messages\"\r\n| summarize received_messages = sum(valueSum)\r\n| evaluate narrow();\r\nlet checkpoints = metrics \r\n| where name == \"messaging.client.operation.duration\" and customDimensions[\"error.type\"] == \"\"  and  customDimensions[\"messaging.operation.name\"] == \"checkpoint\"\r\n| summarize checkpoints = sum(valueCount)\r\n| evaluate narrow(); \r\nlet actualDuration = testSpans \r\n| where name == \"after run\"\r\n| summarize duration = max(toreal(customDimensions[\"durationMs\"])/1000) by cloud_RoleInstance\r\n| summarize actual_test_duration_in_sec = make_bag(bag_pack(cloud_RoleInstance, duration))\r\n| evaluate narrow();\r\nlet parameters = testSpans \r\n| where name == \"before run\" and cloud_RoleInstance endswith \"receiver\"\r\n| project parameters_common=bag_pack(\"pod\", customDimensions[\"hostname\"], \"packageVersion\", customDimensions[\"packageVersion\"]), parameters_receiver = bag_remove_keys(customDimensions, dynamic(['eventHubName', 'duration', 'sample.in', 'consumerGroupName', 'annotation', 'hostname', 'packageVersion', 'jreVendor', 'jreVersion']))\r\n| evaluate narrow();\r\nlet sender_parameters = testSpans \r\n| where name == \"before run\" and cloud_RoleInstance endswith \"sender\"\r\n| project parameters_sender = bag_remove_keys(customDimensions, dynamic(['eventHubName', 'duration', 'sample.in', 'annotation', 'hostname', 'packageVersion', 'consumerGroupName', 'jreVendor', 'jreVersion']))\r\n| evaluate narrow();\r\nparameters \r\n| union sender_parameters, sentCounter, receivedCounter, checkpoints, actualDuration, errors\r\n| project Property = Column, Value\r\n",
+        "size": 0,
+        "showAnalytics": true,
+        "title": "Test results",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "sortBy": []
+      },
+      "customWidth": "100",
+      "name": "query - 9"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "// rate\r\nlet runId = \"{runId}\";\r\nlet role_name=strcat(\"java-eventhubs-\", runId);\r\nlet send = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.client.published.messages\" and cloud_RoleName == role_name and cloud_RoleInstance==\"sender\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize message_send=sum(valueSum) by bin(timestamp, 1m);\r\nlet process = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.client.consumed.messages\"\r\n| where cloud_RoleName == role_name and cloud_RoleInstance==\"receiver\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize process = sum(valueSum) by bin(timestamp, 1m);\r\nlet checkpoint = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.client.operation.duration\"\r\n| where cloud_RoleName == role_name and cloud_RoleInstance==\"receiver\"\r\n| where customDimensions[\"error.type\"] == \"\" and customDimensions[\"messaging.operation.name\"] == \"checkpoint\"\r\n| summarize checkpoint = sum(valueCount) by bin(timestamp, 1m);\r\nsend \r\n| join kind = fullouter (process) on timestamp\r\n| join kind = fullouter (checkpoint) on timestamp\r\n| project-away timestamp1, timestamp2\r\n| render timechart",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Send/process/checkpointsuccess rate (per minute)",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 3",
+      "styleSettings": {
+        "maxWidth": "30",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "// duration\r\nlet runId = \"{runId}\";\r\nlet role_name=strcat(\"java-eventhubs-\", runId);\r\ncustomMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| where name == \"messaging.client.operation.duration\" or name == \"messaging.process.duration\"\r\n| summarize durationMs = 1000 * avg(valueSum/valueCount) by tostring(customDimensions[\"messaging.operation.name\"]), bin(timestamp, 1m) \r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Duration (ms), average per minute",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 5",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"java-eventhubs-\", runId);\r\ncustomMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name\r\n| where name == \"messaging.client.operation.duration\" or name == \"messaging.process.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| where errorType != \"\"\r\n| summarize errors = sum(valueCount) by errorType, bin(timestamp, 1m)\r\n| render timechart",
+        "size": 0,
+        "title": "Send/process/checkpoint error rate (per minute)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 3 - Copy",
+      "styleSettings": {
+        "maxWidth": "30",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runId = \"{runId}\";\r\ncustomMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-eventhubs\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.memory.used\" and customDimensions[\"jvm.memory.type\"]==\"heap\"\r\n| summarize heap_memory_used=sum(valueSum/valueCount) by bin(timestamp, 1m), cloud_RoleInstance\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Heap memory used (MB)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 8",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runId = \"{runId}\";\r\ncustomMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-eventhubs\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.cpu.recent_utilization\"\r\n| summarize cpu_time_percent=avg(value) * 100 by bin(timestamp, 1m), cloud_RoleInstance\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "CPU %",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 9",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-eventhubs\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.thread.count\"\r\n| summarize max_thread_count=max(valueMax) by bin(timestamp, 1m), cloud_RoleInstance\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 2,
+        "title": "Thread count",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "15",
+      "name": "query - 11",
+      "styleSettings": {
+        "maxWidth": "15"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-eventhubs\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.gc.duration\" \r\n| extend type = strcat(cloud_RoleInstance, \"_\", tostring(customDimensions[\"jvm.gc.name\"]))\r\n| summarize gc_percentage=sum(valueSum) / 60 * 100 by type, bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "% of time spent in GC",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "15",
+      "name": "query - 12",
+      "styleSettings": {
+        "maxWidth": "15"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runId = \"{runId}\";\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith runId;\r\nlet send = metrics\r\n| where name == \"messaging.eventhubs.events.sent\"\r\n| extend status = tostring(customDimensions[\"otel.status_code\"])\r\n| where status != \"\" and status != \"ok\"\r\n| summarize send_errors = sum(valueSum) by bin(timestamp, 1m);\r\nlet settle = metrics\r\n| where name == \"messaging.settle.duration\"\r\n| extend status = tostring(customDimensions[\"error.type\"])\r\n| where status != \"\"\r\n| summarize settle_errors = sum(valueCount) by bin(timestamp, 1m);\r\nlet management = metrics\r\n| where name == \"messaging.az.amqp.management.request.duration\"\r\n| extend status = tostring(customDimensions[\"amqp.status_code\"])\r\n| where status != \"ok\" and  status != \"accepted\" and status != \"\"\r\n| summarize management_errors = sum(valueCount) by bin(timestamp, 1m);\r\nlet connection = metrics\r\n| where name == \"connection.client.connection_duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| where errorType != \"\"\r\n| summarize connection_errors = sum(valueCount) by bin(timestamp, 1m);\r\nlet session = metrics \r\n| where name == \"amqp.client.session.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| where errorType != \"\"\r\n| summarize session_errors = sum(valueCount) by bin(timestamp, 1m);\r\nlet link = metrics \r\n| where name == \"amqp.client.link.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| where errorType != \"\"\r\n| summarize link_errors = sum(valueCount) by bin(timestamp, 1m);\r\nlet testErrors = metrics\r\n| where name == \"test.run.errors\"\r\n| where tostring(customDimensions[\"error.type\"]) != \"\"\r\n| summarize test_errors=sum(valueSum) by bin(timestamp, 1m);\r\nsend \r\n| join kind = fullouter (testErrors) on timestamp\r\n| join kind = fullouter (settle) on timestamp\r\n| join kind = fullouter (management) on timestamp\r\n| join kind = fullouter (connection) on timestamp\r\n| join kind = fullouter (link) on timestamp\r\n| join kind = fullouter (session) on timestamp\r\n| project timestamp = coalesce(timestamp, timestamp1, timestamp2, timestamp3, timestamp4, timestamp5), test_errors, send_errors, settle_errors, management_errors, connection_errors, link_errors, session_errors\r\n| render timechart\r\n",
+        "size": 0,
+        "title": "Errors by time",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "40",
+      "name": "query - 10",
+      "styleSettings": {
+        "maxWidth": "40"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "traces \r\n| union exceptions\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName endswith \"-{runId}\" and severityLevel > 1\r\n| extend category = tostring(customDimensions[\"LoggerName\"]), message=substring(coalesce(message, outerMessage), 0, 48)\r\n| project timestamp, category, message, severity = case(severityLevel == 2, \"Warning\", severityLevel == 3, \"Error\", severityLevel == 1, \"Info\", \"\"), cloud_RoleInstance\r\n| summarize occurences = count() by severity, category, message, cloud_RoleInstance\r\n| order by occurences desc\r\n",
+        "size": 0,
+        "title": "Warnings and errors in logs (sampled, 1%)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "occurences",
+              "sortOrder": 2
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "occurences",
+            "sortOrder": 2
+          }
+        ]
+      },
+      "customWidth": "60",
+      "name": "query - 6",
+      "styleSettings": {
+        "maxWidth": "60",
+        "showBorder": true
+      }
+    }
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

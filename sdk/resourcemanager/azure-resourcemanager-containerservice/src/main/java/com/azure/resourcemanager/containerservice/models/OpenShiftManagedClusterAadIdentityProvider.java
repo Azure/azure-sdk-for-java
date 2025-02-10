@@ -5,39 +5,39 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the Identity provider for MS AAD.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("AADIdentityProvider")
 @Fluent
 public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftManagedClusterBaseIdentityProvider {
     /*
+     * The kind of the provider.
+     */
+    private String kind = "AADIdentityProvider";
+
+    /*
      * The clientId password associated with the provider.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * The secret password associated with the provider.
      */
-    @JsonProperty(value = "secret")
     private String secret;
 
     /*
      * The tenantId associated with the provider.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * The groupId to be granted cluster admin role.
      */
-    @JsonProperty(value = "customerAdminGroupId")
     private String customerAdminGroupId;
 
     /**
@@ -47,8 +47,18 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
     }
 
     /**
+     * Get the kind property: The kind of the provider.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the clientId property: The clientId password associated with the provider.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -57,7 +67,7 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
 
     /**
      * Set the clientId property: The clientId password associated with the provider.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the OpenShiftManagedClusterAadIdentityProvider object itself.
      */
@@ -68,7 +78,7 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
 
     /**
      * Get the secret property: The secret password associated with the provider.
-     *
+     * 
      * @return the secret value.
      */
     public String secret() {
@@ -77,7 +87,7 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
 
     /**
      * Set the secret property: The secret password associated with the provider.
-     *
+     * 
      * @param secret the secret value to set.
      * @return the OpenShiftManagedClusterAadIdentityProvider object itself.
      */
@@ -88,7 +98,7 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
 
     /**
      * Get the tenantId property: The tenantId associated with the provider.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -97,7 +107,7 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
 
     /**
      * Set the tenantId property: The tenantId associated with the provider.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the OpenShiftManagedClusterAadIdentityProvider object itself.
      */
@@ -108,7 +118,7 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
 
     /**
      * Get the customerAdminGroupId property: The groupId to be granted cluster admin role.
-     *
+     * 
      * @return the customerAdminGroupId value.
      */
     public String customerAdminGroupId() {
@@ -117,7 +127,7 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
 
     /**
      * Set the customerAdminGroupId property: The groupId to be granted cluster admin role.
-     *
+     * 
      * @param customerAdminGroupId the customerAdminGroupId value to set.
      * @return the OpenShiftManagedClusterAadIdentityProvider object itself.
      */
@@ -128,11 +138,59 @@ public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftM
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("secret", this.secret);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("customerAdminGroupId", this.customerAdminGroupId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OpenShiftManagedClusterAadIdentityProvider from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OpenShiftManagedClusterAadIdentityProvider if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OpenShiftManagedClusterAadIdentityProvider.
+     */
+    public static OpenShiftManagedClusterAadIdentityProvider fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OpenShiftManagedClusterAadIdentityProvider deserializedOpenShiftManagedClusterAadIdentityProvider
+                = new OpenShiftManagedClusterAadIdentityProvider();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterAadIdentityProvider.kind = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterAadIdentityProvider.clientId = reader.getString();
+                } else if ("secret".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterAadIdentityProvider.secret = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterAadIdentityProvider.tenantId = reader.getString();
+                } else if ("customerAdminGroupId".equals(fieldName)) {
+                    deserializedOpenShiftManagedClusterAadIdentityProvider.customerAdminGroupId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOpenShiftManagedClusterAadIdentityProvider;
+        });
     }
 }

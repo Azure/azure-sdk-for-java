@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of all Static Routes.
  */
 @Fluent
-public final class StaticRoute {
+public final class StaticRoute implements JsonSerializable<StaticRoute> {
     /*
      * The name of the StaticRoute that is unique within a VnetRoute.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * List of all address prefixes.
      */
-    @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;
 
     /*
      * The ip address of the next hop.
      */
-    @JsonProperty(value = "nextHopIpAddress")
     private String nextHopIpAddress;
 
     /**
@@ -103,5 +104,49 @@ public final class StaticRoute {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("addressPrefixes", this.addressPrefixes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("nextHopIpAddress", this.nextHopIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticRoute from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticRoute if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StaticRoute.
+     */
+    public static StaticRoute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticRoute deserializedStaticRoute = new StaticRoute();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedStaticRoute.name = reader.getString();
+                } else if ("addressPrefixes".equals(fieldName)) {
+                    List<String> addressPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStaticRoute.addressPrefixes = addressPrefixes;
+                } else if ("nextHopIpAddress".equals(fieldName)) {
+                    deserializedStaticRoute.nextHopIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticRoute;
+        });
     }
 }

@@ -6,89 +6,76 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPool;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourceProperties;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesClusterPoolProfile;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesComputeProfile;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesLogAnalyticsProfile;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolResourcePropertiesNetworkProfile;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.hdinsight.containers.models.IpTag;
+import com.azure.resourcemanager.hdinsight.containers.models.OutboundType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ClusterPoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"deploymentId\":\"geyzihgrkyuiz\",\"managedResourceGroupName\":\"snmfpphojeevy\",\"aksManagedResourceGroupName\":\"hsgz\",\"clusterPoolProfile\":{\"clusterPoolVersion\":\"zbgomfgbeg\",\"publicIpTag\":{\"ipTagType\":\"gleohi\",\"tag\":\"etnluankrrfx\"}},\"computeProfile\":{\"vmSize\":\"eebtijvacvb\",\"count\":192666481,\"availabilityZones\":[\"q\",\"lajrnwxacevehj\"]},\"aksClusterProfile\":{\"aksClusterResourceId\":\"xoafgaoqltfae\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"inmfgvxirp\",\"msiClientId\":\"hriypoqeyhlqhy\",\"msiObjectId\":\"prlpy\"},\"aksVersion\":\"uciqdsme\"},\"networkProfile\":{\"subnetId\":\"itdfuxtyasiib\",\"outboundType\":\"loadBalancer\",\"enablePrivateApiServer\":false,\"apiServerAuthorizedIpRanges\":[\"stgnl\",\"hnmgixhcm\",\"vmqfoud\",\"rhc\"]},\"logAnalyticsProfile\":{\"enabled\":false,\"workspaceId\":\"rotwypundmbxhugc\"},\"status\":\"k\"},\"location\":\"lgorb\",\"tags\":{\"jltfvnzcyjtotpv\":\"pmdtz\"},\"id\":\"pvpbdbzqgqqiheds\",\"name\":\"qwthmky\",\"type\":\"bcysih\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"deploymentId\":\"twnawjslbiwkojgc\",\"managedResourceGroupName\":\"tsf\",\"aksManagedResourceGroupName\":\"nbaeqphchqn\",\"clusterPoolProfile\":{\"clusterPoolVersion\":\"rpxeh\"},\"computeProfile\":{\"vmSize\":\"wrykqgai\",\"count\":1319062444},\"aksClusterProfile\":{\"aksClusterResourceId\":\"lb\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"vkhbejdznx\",\"msiClientId\":\"vdsrhnjiv\",\"msiObjectId\":\"lvtno\"},\"aksVersion\":\"fzg\"},\"networkProfile\":{\"subnetId\":\"jdftuljltd\"},\"logAnalyticsProfile\":{\"enabled\":false,\"workspaceId\":\"mtmczuome\"},\"status\":\"cwwqiokn\"},\"location\":\"xmojmsvpkjp\",\"tags\":{\"zheydbsdshmk\":\"wcfzqljyxgt\"},\"id\":\"maehvbbxurip\",\"name\":\"tfnhtbaxkgxywr\",\"type\":\"kpyklyhp\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HDInsightContainersManager manager = HDInsightContainersManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        HDInsightContainersManager manager =
-            HDInsightContainersManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ClusterPool response =
-            manager
-                .clusterPools()
-                .define("zzxscyhwzdgiruj")
-                .withRegion("utr")
-                .withExistingResourceGroup("cluyovwxnbkf")
-                .withTags(mapOf("qhih", "pauutpw", "fqntcyp", "jqgwzp"))
-                .withManagedResourceGroupName("niyujv")
-                .withClusterPoolProfile(
-                    new ClusterPoolResourcePropertiesClusterPoolProfile().withClusterPoolVersion("shfssnrbgyef"))
-                .withComputeProfile(new ClusterPoolResourcePropertiesComputeProfile().withVmSize("ymsgaojfmwnc"))
-                .withNetworkProfile(new ClusterPoolResourcePropertiesNetworkProfile().withSubnetId("mrsreuzvxurisjnh"))
-                .withLogAnalyticsProfile(
-                    new ClusterPoolResourcePropertiesLogAnalyticsProfile().withEnabled(false).withWorkspaceId("ifqjz"))
+        ClusterPool response
+            = manager.clusterPools()
+                .define("boldforobwj")
+                .withRegion("qoli")
+                .withExistingResourceGroup("chxgs")
+                .withTags(mapOf("oq", "aiouaubrjt", "rzpasccbiuimzdly", "fuojrngif", "fdvruz", "dfqwmkyoq"))
+                .withProperties(
+                    new ClusterPoolResourceProperties().withManagedResourceGroupName("qpbtuodxes")
+                        .withClusterPoolProfile(new ClusterPoolResourcePropertiesClusterPoolProfile()
+                            .withClusterPoolVersion("rwoycqucwyh")
+                            .withPublicIpTag(new IpTag().withIpTagType("nomdrkywuhpsv").withTag("uurutlwexxwlalni")))
+                        .withComputeProfile(new ClusterPoolResourcePropertiesComputeProfile().withVmSize("xzsrzpge")
+                            .withAvailabilityZones(Arrays.asList("bwwpgdakchzy")))
+                        .withNetworkProfile(new ClusterPoolResourcePropertiesNetworkProfile().withSubnetId("ufmhrunc")
+                            .withOutboundType(OutboundType.USER_DEFINED_ROUTING)
+                            .withEnablePrivateApiServer(false)
+                            .withApiServerAuthorizedIpRanges(Arrays.asList("cdqzhlctddu", "qn", "yfp")))
+                        .withLogAnalyticsProfile(
+                            new ClusterPoolResourcePropertiesLogAnalyticsProfile().withEnabled(false)
+                                .withWorkspaceId("bnjj")))
                 .create();
 
-        Assertions.assertEquals("xmojmsvpkjp", response.location());
-        Assertions.assertEquals("wcfzqljyxgt", response.tags().get("zheydbsdshmk"));
-        Assertions.assertEquals("tsf", response.managedResourceGroupName());
-        Assertions.assertEquals("rpxeh", response.clusterPoolProfile().clusterPoolVersion());
-        Assertions.assertEquals("wrykqgai", response.computeProfile().vmSize());
-        Assertions.assertEquals("jdftuljltd", response.networkProfile().subnetId());
-        Assertions.assertEquals(false, response.logAnalyticsProfile().enabled());
-        Assertions.assertEquals("mtmczuome", response.logAnalyticsProfile().workspaceId());
+        Assertions.assertEquals("lgorb", response.location());
+        Assertions.assertEquals("pmdtz", response.tags().get("jltfvnzcyjtotpv"));
+        Assertions.assertEquals("snmfpphojeevy", response.properties().managedResourceGroupName());
+        Assertions.assertEquals("zbgomfgbeg", response.properties().clusterPoolProfile().clusterPoolVersion());
+        Assertions.assertEquals("gleohi", response.properties().clusterPoolProfile().publicIpTag().ipTagType());
+        Assertions.assertEquals("etnluankrrfx", response.properties().clusterPoolProfile().publicIpTag().tag());
+        Assertions.assertEquals("eebtijvacvb", response.properties().computeProfile().vmSize());
+        Assertions.assertEquals("q", response.properties().computeProfile().availabilityZones().get(0));
+        Assertions.assertEquals("itdfuxtyasiib", response.properties().networkProfile().subnetId());
+        Assertions.assertEquals(OutboundType.LOAD_BALANCER, response.properties().networkProfile().outboundType());
+        Assertions.assertEquals(false, response.properties().networkProfile().enablePrivateApiServer());
+        Assertions.assertEquals("stgnl", response.properties().networkProfile().apiServerAuthorizedIpRanges().get(0));
+        Assertions.assertEquals(false, response.properties().logAnalyticsProfile().enabled());
+        Assertions.assertEquals("rotwypundmbxhugc", response.properties().logAnalyticsProfile().workspaceId());
     }
 
     // Use "Map.of" if available

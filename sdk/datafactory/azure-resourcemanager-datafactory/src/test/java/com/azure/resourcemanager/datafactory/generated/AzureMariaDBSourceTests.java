@@ -11,16 +11,19 @@ public final class AzureMariaDBSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMariaDBSource model = BinaryData.fromString(
-            "{\"type\":\"AzureMariaDBSource\",\"query\":\"dataxoavlwwpvjrnjwvc\",\"queryTimeout\":\"datarqlceflgsndur\",\"additionalColumns\":\"dataozjwm\",\"sourceRetryCount\":\"datadehjloz\",\"sourceRetryWait\":\"datawokuxedpqwzzzi\",\"maxConcurrentConnections\":\"databxjgxrhajr\",\"disableMetricsCollection\":\"datacv\",\"\":{\"uclkbw\":\"dataebdfmdjnfeealp\"}}")
+            "{\"type\":\"AzureMariaDBSource\",\"query\":\"dataqngpvvnbu\",\"queryTimeout\":\"datavkutl\",\"additionalColumns\":\"dataxuuqb\",\"sourceRetryCount\":\"datapbeswgkreozpufk\",\"sourceRetryWait\":\"datamzcbzgi\",\"maxConcurrentConnections\":\"dataqpegcgdndpb\",\"disableMetricsCollection\":\"dataeymmcbiktetzvqt\",\"\":{\"pdnbzqweohmlkzhx\":\"datavcsbyimygswdu\",\"haerhxd\":\"datadmauanxzrqt\",\"bqmoguy\":\"datahkbrkhjjbwelicrx\",\"dxljjzdbzk\":\"datamselwszqveak\"}}")
             .toObject(AzureMariaDBSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMariaDBSource model = new AzureMariaDBSource().withSourceRetryCount("datadehjloz")
-            .withSourceRetryWait("datawokuxedpqwzzzi").withMaxConcurrentConnections("databxjgxrhajr")
-            .withDisableMetricsCollection("datacv").withQueryTimeout("datarqlceflgsndur")
-            .withAdditionalColumns("dataozjwm").withQuery("dataxoavlwwpvjrnjwvc");
+        AzureMariaDBSource model = new AzureMariaDBSource().withSourceRetryCount("datapbeswgkreozpufk")
+            .withSourceRetryWait("datamzcbzgi")
+            .withMaxConcurrentConnections("dataqpegcgdndpb")
+            .withDisableMetricsCollection("dataeymmcbiktetzvqt")
+            .withQueryTimeout("datavkutl")
+            .withAdditionalColumns("dataxuuqb")
+            .withQuery("dataqngpvvnbu");
         model = BinaryData.fromObject(model).toObject(AzureMariaDBSource.class);
     }
 }

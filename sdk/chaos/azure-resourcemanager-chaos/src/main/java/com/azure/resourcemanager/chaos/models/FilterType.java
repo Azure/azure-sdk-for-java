@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum that discriminates between filter types. Currently only `Simple` type is supported. */
+/**
+ * Enum that discriminates between filter types. Currently only `Simple` type is supported.
+ */
 public final class FilterType extends ExpandableStringEnum<FilterType> {
-    /** Static value Simple for FilterType. */
+    /**
+     * Static value Simple for FilterType.
+     */
     public static final FilterType SIMPLE = fromString("Simple");
 
     /**
      * Creates a new instance of FilterType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class FilterType extends ExpandableStringEnum<FilterType> {
 
     /**
      * Creates or finds a FilterType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FilterType.
      */
-    @JsonCreator
     public static FilterType fromString(String name) {
         return fromString(name, FilterType.class);
     }
 
     /**
      * Gets known FilterType values.
-     *
+     * 
      * @return known FilterType values.
      */
     public static Collection<FilterType> values() {

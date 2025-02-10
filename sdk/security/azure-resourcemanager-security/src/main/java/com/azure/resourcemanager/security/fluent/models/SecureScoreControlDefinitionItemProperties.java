@@ -5,51 +5,55 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AzureResourceLink;
 import com.azure.resourcemanager.security.models.SecureScoreControlDefinitionSource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Security Control Definition Properties. */
+/**
+ * Security Control Definition Properties.
+ */
 @Immutable
-public final class SecureScoreControlDefinitionItemProperties {
+public final class SecureScoreControlDefinitionItemProperties
+    implements JsonSerializable<SecureScoreControlDefinitionItemProperties> {
     /*
      * User friendly display name of the control
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * User friendly description of the control
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Maximum control score (0..10)
      */
-    @JsonProperty(value = "maxScore", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxScore;
 
     /*
      * Source object from which the control was created
      */
-    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY)
     private SecureScoreControlDefinitionSource source;
 
     /*
      * Array of assessments metadata IDs that are included in this security control
      */
-    @JsonProperty(value = "assessmentDefinitions", access = JsonProperty.Access.WRITE_ONLY)
     private List<AzureResourceLink> assessmentDefinitions;
 
-    /** Creates an instance of SecureScoreControlDefinitionItemProperties class. */
+    /**
+     * Creates an instance of SecureScoreControlDefinitionItemProperties class.
+     */
     public SecureScoreControlDefinitionItemProperties() {
     }
 
     /**
      * Get the displayName property: User friendly display name of the control.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -58,7 +62,7 @@ public final class SecureScoreControlDefinitionItemProperties {
 
     /**
      * Get the description property: User friendly description of the control.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -67,7 +71,7 @@ public final class SecureScoreControlDefinitionItemProperties {
 
     /**
      * Get the maxScore property: Maximum control score (0..10).
-     *
+     * 
      * @return the maxScore value.
      */
     public Integer maxScore() {
@@ -76,7 +80,7 @@ public final class SecureScoreControlDefinitionItemProperties {
 
     /**
      * Get the source property: Source object from which the control was created.
-     *
+     * 
      * @return the source value.
      */
     public SecureScoreControlDefinitionSource source() {
@@ -86,7 +90,7 @@ public final class SecureScoreControlDefinitionItemProperties {
     /**
      * Get the assessmentDefinitions property: Array of assessments metadata IDs that are included in this security
      * control.
-     *
+     * 
      * @return the assessmentDefinitions value.
      */
     public List<AzureResourceLink> assessmentDefinitions() {
@@ -95,7 +99,7 @@ public final class SecureScoreControlDefinitionItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -105,5 +109,54 @@ public final class SecureScoreControlDefinitionItemProperties {
         if (assessmentDefinitions() != null) {
             assessmentDefinitions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecureScoreControlDefinitionItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecureScoreControlDefinitionItemProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecureScoreControlDefinitionItemProperties.
+     */
+    public static SecureScoreControlDefinitionItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecureScoreControlDefinitionItemProperties deserializedSecureScoreControlDefinitionItemProperties
+                = new SecureScoreControlDefinitionItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedSecureScoreControlDefinitionItemProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSecureScoreControlDefinitionItemProperties.description = reader.getString();
+                } else if ("maxScore".equals(fieldName)) {
+                    deserializedSecureScoreControlDefinitionItemProperties.maxScore
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("source".equals(fieldName)) {
+                    deserializedSecureScoreControlDefinitionItemProperties.source
+                        = SecureScoreControlDefinitionSource.fromJson(reader);
+                } else if ("assessmentDefinitions".equals(fieldName)) {
+                    List<AzureResourceLink> assessmentDefinitions
+                        = reader.readArray(reader1 -> AzureResourceLink.fromJson(reader1));
+                    deserializedSecureScoreControlDefinitionItemProperties.assessmentDefinitions
+                        = assessmentDefinitions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecureScoreControlDefinitionItemProperties;
+        });
     }
 }

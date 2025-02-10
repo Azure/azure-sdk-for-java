@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Response that identifies a Job Run. */
+/**
+ * Response that identifies a Job Run.
+ */
 @Immutable
-public final class JobRunResourceIdInner {
+public final class JobRunResourceIdInner implements JsonSerializable<JobRunResourceIdInner> {
     /*
      * Fully qualified resource id of the Job Run.
      */
-    @JsonProperty(value = "jobRunResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String jobRunResourceId;
 
-    /** Creates an instance of JobRunResourceIdInner class. */
+    /**
+     * Creates an instance of JobRunResourceIdInner class.
+     */
     public JobRunResourceIdInner() {
     }
 
     /**
      * Get the jobRunResourceId property: Fully qualified resource id of the Job Run.
-     *
+     * 
      * @return the jobRunResourceId value.
      */
     public String jobRunResourceId() {
@@ -31,9 +38,44 @@ public final class JobRunResourceIdInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobRunResourceIdInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobRunResourceIdInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobRunResourceIdInner.
+     */
+    public static JobRunResourceIdInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobRunResourceIdInner deserializedJobRunResourceIdInner = new JobRunResourceIdInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobRunResourceId".equals(fieldName)) {
+                    deserializedJobRunResourceIdInner.jobRunResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobRunResourceIdInner;
+        });
     }
 }

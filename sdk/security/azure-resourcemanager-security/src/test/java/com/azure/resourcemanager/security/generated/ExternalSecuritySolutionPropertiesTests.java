@@ -14,30 +14,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ExternalSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalSecuritySolutionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"deviceVendor\":\"rbzg\",\"deviceType\":\"oxqmjeajc\",\"workspace\":{\"id\":\"qg\"},\"\":{\"simjceagbjqvlsu\":\"datausrvx\",\"gon\":\"dataywzash\"}}")
-                .toObject(ExternalSecuritySolutionProperties.class);
-        Assertions.assertEquals("rbzg", model.deviceVendor());
-        Assertions.assertEquals("oxqmjeajc", model.deviceType());
-        Assertions.assertEquals("qg", model.workspace().id());
+        ExternalSecuritySolutionProperties model = BinaryData.fromString(
+            "{\"deviceVendor\":\"fpfmdgycxnmskwh\",\"deviceType\":\"jyslurl\",\"workspace\":{\"id\":\"hkvpedwqsls\"},\"\":{\"wwsko\":\"datapq\",\"josovyrrl\":\"datadcbrwimuvq\"}}")
+            .toObject(ExternalSecuritySolutionProperties.class);
+        Assertions.assertEquals("fpfmdgycxnmskwh", model.deviceVendor());
+        Assertions.assertEquals("jyslurl", model.deviceType());
+        Assertions.assertEquals("hkvpedwqsls", model.workspace().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExternalSecuritySolutionProperties model =
-            new ExternalSecuritySolutionProperties()
-                .withDeviceVendor("rbzg")
-                .withDeviceType("oxqmjeajc")
-                .withWorkspace(new ConnectedWorkspace().withId("qg"))
+        ExternalSecuritySolutionProperties model
+            = new ExternalSecuritySolutionProperties().withDeviceVendor("fpfmdgycxnmskwh")
+                .withDeviceType("jyslurl")
+                .withWorkspace(new ConnectedWorkspace().withId("hkvpedwqsls"))
                 .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ExternalSecuritySolutionProperties.class);
-        Assertions.assertEquals("rbzg", model.deviceVendor());
-        Assertions.assertEquals("oxqmjeajc", model.deviceType());
-        Assertions.assertEquals("qg", model.workspace().id());
+        Assertions.assertEquals("fpfmdgycxnmskwh", model.deviceVendor());
+        Assertions.assertEquals("jyslurl", model.deviceType());
+        Assertions.assertEquals("hkvpedwqsls", model.workspace().id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

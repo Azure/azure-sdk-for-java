@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The value type of the items in the list. */
+/**
+ * The value type of the items in the list.
+ */
 public final class ValueType extends ExpandableStringEnum<ValueType> {
-    /** Static value IpCidr for ValueType. */
+    /**
+     * Static value IpCidr for ValueType.
+     */
     public static final ValueType IP_CIDR = fromString("IpCidr");
 
-    /** Static value String for ValueType. */
+    /**
+     * Static value String for ValueType.
+     */
     public static final ValueType STRING = fromString("String");
 
     /**
      * Creates a new instance of ValueType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ValueType extends ExpandableStringEnum<ValueType> {
 
     /**
      * Creates or finds a ValueType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ValueType.
      */
-    @JsonCreator
     public static ValueType fromString(String name) {
         return fromString(name, ValueType.class);
     }
 
     /**
      * Gets known ValueType values.
-     *
+     * 
      * @return known ValueType values.
      */
     public static Collection<ValueType> values() {

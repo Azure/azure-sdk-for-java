@@ -4,33 +4,40 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.fluent.models.ScriptExecutionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Pageable list of script executions. */
-@Immutable
-public final class ScriptExecutionsList {
+/**
+ * The response of a ScriptExecution list operation.
+ */
+@Fluent
+public final class ScriptExecutionsList implements JsonSerializable<ScriptExecutionsList> {
     /*
-     * List of scripts
+     * The ScriptExecution items on this page
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ScriptExecutionInner> value;
 
     /*
-     * URL to get the next page if any
+     * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ScriptExecutionsList class. */
+    /**
+     * Creates an instance of ScriptExecutionsList class.
+     */
     public ScriptExecutionsList() {
     }
 
     /**
-     * Get the value property: List of scripts.
-     *
+     * Get the value property: The ScriptExecution items on this page.
+     * 
      * @return the value value.
      */
     public List<ScriptExecutionInner> value() {
@@ -38,8 +45,19 @@ public final class ScriptExecutionsList {
     }
 
     /**
-     * Get the nextLink property: URL to get the next page if any.
-     *
+     * Set the value property: The ScriptExecution items on this page.
+     * 
+     * @param value the value value to set.
+     * @return the ScriptExecutionsList object itself.
+     */
+    public ScriptExecutionsList withValue(List<ScriptExecutionInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The link to the next page of items.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,13 +65,71 @@ public final class ScriptExecutionsList {
     }
 
     /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the ScriptExecutionsList object itself.
+     */
+    public ScriptExecutionsList withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ScriptExecutionsList"));
+        } else {
             value().forEach(e -> e.validate());
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptExecutionsList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptExecutionsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptExecutionsList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScriptExecutionsList.
+     */
+    public static ScriptExecutionsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptExecutionsList deserializedScriptExecutionsList = new ScriptExecutionsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ScriptExecutionInner> value
+                        = reader.readArray(reader1 -> ScriptExecutionInner.fromJson(reader1));
+                    deserializedScriptExecutionsList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedScriptExecutionsList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptExecutionsList;
+        });
     }
 }

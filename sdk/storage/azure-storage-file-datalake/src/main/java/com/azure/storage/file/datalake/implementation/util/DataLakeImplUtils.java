@@ -43,8 +43,7 @@ public class DataLakeImplUtils {
     }
 
     private static DataLakeStorageException transformSingleBlobStorageException(BlobStorageException ex) {
-        return new DataLakeStorageException(ex.getServiceMessage(), ex.getResponse(),
-            ex.getValue());
+        return new DataLakeStorageException(ex.getServiceMessage(), ex.getResponse(), ex.getValue());
     }
 
     public static <T> T returnOrConvertException(Supplier<T> supplier, ClientLogger logger) {
@@ -54,4 +53,5 @@ public class DataLakeImplUtils {
             throw logger.logExceptionAsError((RuntimeException) transformBlobStorageException(ex));
         }
     }
+
 }

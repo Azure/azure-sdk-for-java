@@ -9,8 +9,8 @@ package com.azure.resourcemanager.selfhelp.generated;
  */
 public final class DiscoverySolutionListSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/
-     * ListDiscoverySolutionsAtResourceScope.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/
+     * ListDiscoverySolutionsAtTenantScope.json
      */
     /**
      * Sample code: List DiscoverySolutions at resource scope.
@@ -19,23 +19,8 @@ public final class DiscoverySolutionListSamples {
      */
     public static void
         listDiscoverySolutionsAtResourceScope(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.discoverySolutions().list(
-            "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read",
-            "ProblemClassificationId eq 'SampleProblemClassificationId1'", null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/
-     * ListDiscoverySolutionsAtSubscriptionScope.json
-     */
-    /**
-     * Sample code: List DiscoverySolutions at subscription scope.
-     * 
-     * @param manager Entry point to SelfHelpManager.
-     */
-    public static void
-        listDiscoverySolutionsAtSubscriptionScope(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.discoverySolutions().list("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6",
-            "ProblemClassificationId eq 'SampleProblemClassificationId1'", null, com.azure.core.util.Context.NONE);
+        manager.discoverySolutions()
+            .list("ProblemClassificationId eq 'SampleProblemClassificationId1'", null,
+                com.azure.core.util.Context.NONE);
     }
 }

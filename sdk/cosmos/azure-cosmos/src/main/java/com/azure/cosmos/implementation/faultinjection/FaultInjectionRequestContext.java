@@ -80,9 +80,17 @@ public class FaultInjectionRequestContext {
     }
 
     public int getFaultInjectionRuleApplyCount(String ruleId) {
+        if (this.hitCountByRuleMap.isEmpty()) {
+            return 0;
+        }
+
         return this.hitCountByRuleMap.getOrDefault(ruleId, 0);
     }
     public String getFaultInjectionRuleId(long transportRequestId) {
+        if (this.transportRequestIdRuleIdMap.isEmpty()) {
+            return null;
+        }
+
         return this.transportRequestIdRuleIdMap.getOrDefault(transportRequestId, null);
     }
 
@@ -95,6 +103,10 @@ public class FaultInjectionRequestContext {
     }
 
     public List<String> getFaultInjectionRuleEvaluationResults(long transportRequestId) {
+        if (this.transportRequestIdRuleEvaluationMap.isEmpty()) {
+            return null;
+        }
+
         return this.transportRequestIdRuleEvaluationMap.getOrDefault(transportRequestId, null);
     }
 }

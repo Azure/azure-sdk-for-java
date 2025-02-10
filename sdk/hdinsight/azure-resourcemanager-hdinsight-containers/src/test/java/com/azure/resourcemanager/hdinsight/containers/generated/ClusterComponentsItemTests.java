@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterComponentsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterComponentsItem model =
-            BinaryData
-                .fromString("{\"name\":\"lexxbczwtru\",\"version\":\"qzbqjvsov\"}")
-                .toObject(ClusterComponentsItem.class);
-        Assertions.assertEquals("lexxbczwtru", model.name());
-        Assertions.assertEquals("qzbqjvsov", model.version());
+        ClusterComponentsItem model = BinaryData.fromString("{\"name\":\"ispnqzahmgkbrp\",\"version\":\"dhibnuq\"}")
+            .toObject(ClusterComponentsItem.class);
+        Assertions.assertEquals("ispnqzahmgkbrp", model.name());
+        Assertions.assertEquals("dhibnuq", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterComponentsItem model = new ClusterComponentsItem().withName("lexxbczwtru").withVersion("qzbqjvsov");
+        ClusterComponentsItem model = new ClusterComponentsItem().withName("ispnqzahmgkbrp").withVersion("dhibnuq");
         model = BinaryData.fromObject(model).toObject(ClusterComponentsItem.class);
-        Assertions.assertEquals("lexxbczwtru", model.name());
-        Assertions.assertEquals("qzbqjvsov", model.version());
+        Assertions.assertEquals("ispnqzahmgkbrp", model.name());
+        Assertions.assertEquals("dhibnuq", model.version());
     }
 }

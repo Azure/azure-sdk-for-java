@@ -6,33 +6,53 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Parameters supplied to the CreateOrUpdate Namespace operation. */
+/**
+ * Parameters supplied to the CreateOrUpdate Namespace operation.
+ */
 @Fluent
 public final class NamespaceCreateOrUpdateParameters extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamespaceCreateOrUpdateParameters.class);
-
     /*
      * Properties of the Namespace.
      */
-    @JsonProperty(value = "properties")
     private NamespaceProperties innerProperties;
 
     /*
      * The sku of the created namespace
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NamespaceCreateOrUpdateParameters class.
+     */
+    public NamespaceCreateOrUpdateParameters() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the Namespace.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NamespaceProperties innerProperties() {
@@ -41,7 +61,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the sku property: The sku of the created namespace.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -50,7 +70,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the sku property: The sku of the created namespace.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -59,14 +79,48 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NamespaceCreateOrUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NamespaceCreateOrUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,7 +129,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the name property: The name of the namespace.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -84,7 +138,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the name property: The name of the namespace.
-     *
+     * 
      * @param name the name value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -98,7 +152,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Namespace.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -107,7 +161,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the provisioningState property: Provisioning state of the Namespace.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -123,7 +177,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
      * Get the region property: Specifies the targeted region in which the namespace should be created. It can be any of
      * the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central
      * US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -134,7 +188,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
      * Set the region property: Specifies the targeted region in which the namespace should be created. It can be any of
      * the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central
      * US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe.
-     *
+     * 
      * @param region the region value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -148,7 +202,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the metricId property: Identifier for Azure Insights metrics.
-     *
+     * 
      * @return the metricId value.
      */
     public String metricId() {
@@ -158,7 +212,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
     /**
      * Get the status property: Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 =
      * Suspended4 = Deleting.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -168,7 +222,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
     /**
      * Set the status property: Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 =
      * Suspended4 = Deleting.
-     *
+     * 
      * @param status the status value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -182,7 +236,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the createdAt property: The time the namespace was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -191,7 +245,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the createdAt property: The time the namespace was created.
-     *
+     * 
      * @param createdAt the createdAt value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -205,7 +259,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the updatedAt property: The time the namespace was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -214,7 +268,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the updatedAt property: The time the namespace was updated.
-     *
+     * 
      * @param updatedAt the updatedAt value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -228,7 +282,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the serviceBusEndpoint property: Endpoint you can use to perform NotificationHub operations.
-     *
+     * 
      * @return the serviceBusEndpoint value.
      */
     public String serviceBusEndpoint() {
@@ -237,7 +291,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the serviceBusEndpoint property: Endpoint you can use to perform NotificationHub operations.
-     *
+     * 
      * @param serviceBusEndpoint the serviceBusEndpoint value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -251,7 +305,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the subscriptionId property: The Id of the Azure subscription associated with the namespace.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -260,7 +314,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the subscriptionId property: The Id of the Azure subscription associated with the namespace.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -274,7 +328,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the scaleUnit property: ScaleUnit where the namespace gets created.
-     *
+     * 
      * @return the scaleUnit value.
      */
     public String scaleUnit() {
@@ -283,7 +337,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the scaleUnit property: ScaleUnit where the namespace gets created.
-     *
+     * 
      * @param scaleUnit the scaleUnit value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -297,7 +351,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the enabled property: Whether or not the namespace is currently enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -306,7 +360,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the enabled property: Whether or not the namespace is currently enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -320,7 +374,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the critical property: Whether or not the namespace is set as Critical.
-     *
+     * 
      * @return the critical value.
      */
     public Boolean critical() {
@@ -329,7 +383,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the critical property: Whether or not the namespace is set as Critical.
-     *
+     * 
      * @param critical the critical value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -343,7 +397,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the dataCenter property: Data center for the namespace.
-     *
+     * 
      * @return the dataCenter value.
      */
     public String dataCenter() {
@@ -352,7 +406,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the dataCenter property: Data center for the namespace.
-     *
+     * 
      * @param dataCenter the dataCenter value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -366,7 +420,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Get the namespaceType property: The namespace type.
-     *
+     * 
      * @return the namespaceType value.
      */
     public NamespaceType namespaceType() {
@@ -375,7 +429,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Set the namespaceType property: The namespace type.
-     *
+     * 
      * @param namespaceType the namespaceType value to set.
      * @return the NamespaceCreateOrUpdateParameters object itself.
      */
@@ -389,7 +443,7 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -399,5 +453,60 @@ public final class NamespaceCreateOrUpdateParameters extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamespaceCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamespaceCreateOrUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NamespaceCreateOrUpdateParameters.
+     */
+    public static NamespaceCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamespaceCreateOrUpdateParameters deserializedNamespaceCreateOrUpdateParameters
+                = new NamespaceCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNamespaceCreateOrUpdateParameters.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNamespaceCreateOrUpdateParameters.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNamespaceCreateOrUpdateParameters.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNamespaceCreateOrUpdateParameters.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNamespaceCreateOrUpdateParameters.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNamespaceCreateOrUpdateParameters.innerProperties
+                        = NamespaceProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedNamespaceCreateOrUpdateParameters.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamespaceCreateOrUpdateParameters;
+        });
     }
 }

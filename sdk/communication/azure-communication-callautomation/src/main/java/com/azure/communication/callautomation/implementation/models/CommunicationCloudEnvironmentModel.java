@@ -5,32 +5,51 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CommunicationCloudEnvironmentModel. */
+/**
+ * The cloud that the identifier belongs to.
+ */
 public final class CommunicationCloudEnvironmentModel extends ExpandableStringEnum<CommunicationCloudEnvironmentModel> {
-    /** Static value public for CommunicationCloudEnvironmentModel. */
+    /**
+     * Static value public for CommunicationCloudEnvironmentModel.
+     */
     public static final CommunicationCloudEnvironmentModel PUBLIC = fromString("public");
 
-    /** Static value dod for CommunicationCloudEnvironmentModel. */
+    /**
+     * Static value dod for CommunicationCloudEnvironmentModel.
+     */
     public static final CommunicationCloudEnvironmentModel DOD = fromString("dod");
 
-    /** Static value gcch for CommunicationCloudEnvironmentModel. */
+    /**
+     * Static value gcch for CommunicationCloudEnvironmentModel.
+     */
     public static final CommunicationCloudEnvironmentModel GCCH = fromString("gcch");
 
     /**
+     * Creates a new instance of CommunicationCloudEnvironmentModel value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CommunicationCloudEnvironmentModel() {
+    }
+
+    /**
      * Creates or finds a CommunicationCloudEnvironmentModel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CommunicationCloudEnvironmentModel.
      */
-    @JsonCreator
     public static CommunicationCloudEnvironmentModel fromString(String name) {
         return fromString(name, CommunicationCloudEnvironmentModel.class);
     }
 
-    /** @return known CommunicationCloudEnvironmentModel values. */
+    /**
+     * Gets known CommunicationCloudEnvironmentModel values.
+     * 
+     * @return known CommunicationCloudEnvironmentModel values.
+     */
     public static Collection<CommunicationCloudEnvironmentModel> values() {
         return values(CommunicationCloudEnvironmentModel.class);
     }

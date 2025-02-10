@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.UdfType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The binding retrieval properties associated with an Azure Machine learning web service. */
+/**
+ * The binding retrieval properties associated with an Azure Machine learning web service.
+ */
 @Fluent
-public final class AzureMachineLearningWebServiceFunctionBindingRetrievalProperties {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(AzureMachineLearningWebServiceFunctionBindingRetrievalProperties.class);
-
+public final class AzureMachineLearningWebServiceFunctionBindingRetrievalProperties
+    implements JsonSerializable<AzureMachineLearningWebServiceFunctionBindingRetrievalProperties> {
     /*
-     * The Request-Response execute endpoint of the Azure Machine Learning web
-     * service. Find out more here:
-     * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs
+     * The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here:
+     * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-
+     * service-rrs
      */
-    @JsonProperty(value = "executeEndpoint")
     private String executeEndpoint;
 
     /*
      * The function type.
      */
-    @JsonProperty(value = "udfType")
     private UdfType udfType;
+
+    /**
+     * Creates an instance of AzureMachineLearningWebServiceFunctionBindingRetrievalProperties class.
+     */
+    public AzureMachineLearningWebServiceFunctionBindingRetrievalProperties() {
+    }
 
     /**
      * Get the executeEndpoint property: The Request-Response execute endpoint of the Azure Machine Learning web
      * service. Find out more here:
      * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs.
-     *
+     * 
      * @return the executeEndpoint value.
      */
     public String executeEndpoint() {
@@ -46,19 +51,19 @@ public final class AzureMachineLearningWebServiceFunctionBindingRetrievalPropert
      * Set the executeEndpoint property: The Request-Response execute endpoint of the Azure Machine Learning web
      * service. Find out more here:
      * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs.
-     *
+     * 
      * @param executeEndpoint the executeEndpoint value to set.
      * @return the AzureMachineLearningWebServiceFunctionBindingRetrievalProperties object itself.
      */
-    public AzureMachineLearningWebServiceFunctionBindingRetrievalProperties withExecuteEndpoint(
-        String executeEndpoint) {
+    public AzureMachineLearningWebServiceFunctionBindingRetrievalProperties
+        withExecuteEndpoint(String executeEndpoint) {
         this.executeEndpoint = executeEndpoint;
         return this;
     }
 
     /**
      * Get the udfType property: The function type.
-     *
+     * 
      * @return the udfType value.
      */
     public UdfType udfType() {
@@ -67,7 +72,7 @@ public final class AzureMachineLearningWebServiceFunctionBindingRetrievalPropert
 
     /**
      * Set the udfType property: The function type.
-     *
+     * 
      * @param udfType the udfType value to set.
      * @return the AzureMachineLearningWebServiceFunctionBindingRetrievalProperties object itself.
      */
@@ -78,9 +83,53 @@ public final class AzureMachineLearningWebServiceFunctionBindingRetrievalPropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("executeEndpoint", this.executeEndpoint);
+        jsonWriter.writeStringField("udfType", this.udfType == null ? null : this.udfType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMachineLearningWebServiceFunctionBindingRetrievalProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMachineLearningWebServiceFunctionBindingRetrievalProperties if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * AzureMachineLearningWebServiceFunctionBindingRetrievalProperties.
+     */
+    public static AzureMachineLearningWebServiceFunctionBindingRetrievalProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMachineLearningWebServiceFunctionBindingRetrievalProperties deserializedAzureMachineLearningWebServiceFunctionBindingRetrievalProperties
+                = new AzureMachineLearningWebServiceFunctionBindingRetrievalProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("executeEndpoint".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceFunctionBindingRetrievalProperties.executeEndpoint
+                        = reader.getString();
+                } else if ("udfType".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceFunctionBindingRetrievalProperties.udfType
+                        = UdfType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMachineLearningWebServiceFunctionBindingRetrievalProperties;
+        });
     }
 }

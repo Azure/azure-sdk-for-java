@@ -6,29 +6,46 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.security.models.AssessmentLinks;
 import com.azure.resourcemanager.security.models.AssessmentStatusResponse;
 import com.azure.resourcemanager.security.models.ResourceDetails;
 import com.azure.resourcemanager.security.models.SecurityAssessmentPartnerData;
 import com.azure.resourcemanager.security.models.SecurityAssessmentPropertiesBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Describes properties of an assessment. */
+/**
+ * Describes properties of an assessment.
+ */
 @Fluent
 public final class SecurityAssessmentPropertiesResponse extends SecurityAssessmentPropertiesBase {
     /*
      * The result of the assessment
      */
-    @JsonProperty(value = "status", required = true)
     private AssessmentStatusResponse status;
 
-    /** Creates an instance of SecurityAssessmentPropertiesResponse class. */
+    /*
+     * Links relevant to the assessment
+     */
+    private AssessmentLinks links;
+
+    /*
+     * User friendly display name of the assessment
+     */
+    private String displayName;
+
+    /**
+     * Creates an instance of SecurityAssessmentPropertiesResponse class.
+     */
     public SecurityAssessmentPropertiesResponse() {
     }
 
     /**
      * Get the status property: The result of the assessment.
-     *
+     * 
      * @return the status value.
      */
     public AssessmentStatusResponse status() {
@@ -37,7 +54,7 @@ public final class SecurityAssessmentPropertiesResponse extends SecurityAssessme
 
     /**
      * Set the status property: The result of the assessment.
-     *
+     * 
      * @param status the status value to set.
      * @return the SecurityAssessmentPropertiesResponse object itself.
      */
@@ -46,28 +63,56 @@ public final class SecurityAssessmentPropertiesResponse extends SecurityAssessme
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the links property: Links relevant to the assessment.
+     * 
+     * @return the links value.
+     */
+    @Override
+    public AssessmentLinks links() {
+        return this.links;
+    }
+
+    /**
+     * Get the displayName property: User friendly display name of the assessment.
+     * 
+     * @return the displayName value.
+     */
+    @Override
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityAssessmentPropertiesResponse withResourceDetails(ResourceDetails resourceDetails) {
         super.withResourceDetails(resourceDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityAssessmentPropertiesResponse withAdditionalData(Map<String, String> additionalData) {
         super.withAdditionalData(additionalData);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityAssessmentPropertiesResponse withMetadata(SecurityAssessmentMetadataProperties metadata) {
         super.withMetadata(metadata);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityAssessmentPropertiesResponse withPartnersData(SecurityAssessmentPartnerData partnersData) {
         super.withPartnersData(partnersData);
@@ -76,21 +121,93 @@ public final class SecurityAssessmentPropertiesResponse extends SecurityAssessme
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model SecurityAssessmentPropertiesResponse"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model SecurityAssessmentPropertiesResponse"));
         } else {
             status().validate();
+        }
+        if (resourceDetails() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceDetails in model SecurityAssessmentPropertiesResponse"));
+        } else {
+            resourceDetails().validate();
+        }
+        if (links() != null) {
+            links().validate();
+        }
+        if (metadata() != null) {
+            metadata().validate();
+        }
+        if (partnersData() != null) {
+            partnersData().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecurityAssessmentPropertiesResponse.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resourceDetails", resourceDetails());
+        jsonWriter.writeMapField("additionalData", additionalData(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("metadata", metadata());
+        jsonWriter.writeJsonField("partnersData", partnersData());
+        jsonWriter.writeJsonField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAssessmentPropertiesResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAssessmentPropertiesResponse if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityAssessmentPropertiesResponse.
+     */
+    public static SecurityAssessmentPropertiesResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAssessmentPropertiesResponse deserializedSecurityAssessmentPropertiesResponse
+                = new SecurityAssessmentPropertiesResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceDetails".equals(fieldName)) {
+                    deserializedSecurityAssessmentPropertiesResponse
+                        .withResourceDetails(ResourceDetails.fromJson(reader));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSecurityAssessmentPropertiesResponse.displayName = reader.getString();
+                } else if ("additionalData".equals(fieldName)) {
+                    Map<String, String> additionalData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSecurityAssessmentPropertiesResponse.withAdditionalData(additionalData);
+                } else if ("links".equals(fieldName)) {
+                    deserializedSecurityAssessmentPropertiesResponse.links = AssessmentLinks.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedSecurityAssessmentPropertiesResponse
+                        .withMetadata(SecurityAssessmentMetadataProperties.fromJson(reader));
+                } else if ("partnersData".equals(fieldName)) {
+                    deserializedSecurityAssessmentPropertiesResponse
+                        .withPartnersData(SecurityAssessmentPartnerData.fromJson(reader));
+                } else if ("status".equals(fieldName)) {
+                    deserializedSecurityAssessmentPropertiesResponse.status = AssessmentStatusResponse.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAssessmentPropertiesResponse;
+        });
+    }
 }

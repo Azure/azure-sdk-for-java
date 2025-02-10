@@ -41,7 +41,7 @@ final class ContinuablePagedByPageIterable<C, T, P extends ContinuablePage<C, T>
     }
 
     ContinuablePagedByPageIterable(PageRetrieverSync<C, P> pageRetrieverSync, C continuationToken,
-                                   Predicate<C> continuationPredicate, Integer preferredPageSize) {
+        Predicate<C> continuationPredicate, Integer preferredPageSize) {
         this.pageRetrieverSync = pageRetrieverSync;
         this.continuationToken = continuationToken;
         this.continuationPredicate = continuationPredicate;
@@ -75,7 +75,7 @@ final class ContinuablePagedByPageIterable<C, T, P extends ContinuablePage<C, T>
         }
 
         ContinuablePagedByPageIterator(PageRetrieverSync<C, P> pageRetrieverSync, C continuationToken,
-                                       Predicate<C> continuationPredicate, Integer preferredPageSize) {
+            Predicate<C> continuationPredicate, Integer preferredPageSize) {
             super(pageRetrieverSync, new ContinuationState<>(continuationToken, continuationPredicate),
                 preferredPageSize, LOGGER);
 

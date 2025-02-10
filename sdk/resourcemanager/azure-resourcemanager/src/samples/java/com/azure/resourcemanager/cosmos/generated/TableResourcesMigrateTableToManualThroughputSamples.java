@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class TableResourcesMigrateTableToManualThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBTableMigrateToManualThroughput.json
      */
     /**
@@ -18,7 +18,10 @@ public final class TableResourcesMigrateTableToManualThroughputSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBTableMigrateToManualThroughput(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getTableResources().migrateTableToManualThroughput("rg1",
-            "ddb1", "tableName", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getTableResources()
+            .migrateTableToManualThroughput("rg1", "ddb1", "tableName", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,66 +5,97 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServicePrincipalsServicePrincipalExpand. */
+/**
+ * Defines values for ServicePrincipalsServicePrincipalExpand.
+ */
 public final class ServicePrincipalsServicePrincipalExpand
     extends ExpandableStringEnum<ServicePrincipalsServicePrincipalExpand> {
-    /** Static value * for ServicePrincipalsServicePrincipalExpand. */
+    /**
+     * Static value * for ServicePrincipalsServicePrincipalExpand.
+     */
     public static final ServicePrincipalsServicePrincipalExpand ASTERISK = fromString("*");
 
-    /** Static value appRoleAssignedTo for ServicePrincipalsServicePrincipalExpand. */
+    /**
+     * Static value appRoleAssignedTo for ServicePrincipalsServicePrincipalExpand.
+     */
     public static final ServicePrincipalsServicePrincipalExpand APP_ROLE_ASSIGNED_TO = fromString("appRoleAssignedTo");
 
-    /** Static value appRoleAssignments for ServicePrincipalsServicePrincipalExpand. */
+    /**
+     * Static value appRoleAssignments for ServicePrincipalsServicePrincipalExpand.
+     */
     public static final ServicePrincipalsServicePrincipalExpand APP_ROLE_ASSIGNMENTS = fromString("appRoleAssignments");
 
-    /** Static value claimsMappingPolicies for ServicePrincipalsServicePrincipalExpand. */
-    public static final ServicePrincipalsServicePrincipalExpand CLAIMS_MAPPING_POLICIES =
-        fromString("claimsMappingPolicies");
+    /**
+     * Static value claimsMappingPolicies for ServicePrincipalsServicePrincipalExpand.
+     */
+    public static final ServicePrincipalsServicePrincipalExpand CLAIMS_MAPPING_POLICIES
+        = fromString("claimsMappingPolicies");
 
-    /** Static value createdObjects for ServicePrincipalsServicePrincipalExpand. */
+    /**
+     * Static value createdObjects for ServicePrincipalsServicePrincipalExpand.
+     */
     public static final ServicePrincipalsServicePrincipalExpand CREATED_OBJECTS = fromString("createdObjects");
 
-    /** Static value delegatedPermissionClassifications for ServicePrincipalsServicePrincipalExpand. */
-    public static final ServicePrincipalsServicePrincipalExpand DELEGATED_PERMISSION_CLASSIFICATIONS =
-        fromString("delegatedPermissionClassifications");
+    /**
+     * Static value delegatedPermissionClassifications for ServicePrincipalsServicePrincipalExpand.
+     */
+    public static final ServicePrincipalsServicePrincipalExpand DELEGATED_PERMISSION_CLASSIFICATIONS
+        = fromString("delegatedPermissionClassifications");
 
-    /** Static value endpoints for ServicePrincipalsServicePrincipalExpand. */
+    /**
+     * Static value endpoints for ServicePrincipalsServicePrincipalExpand.
+     */
     public static final ServicePrincipalsServicePrincipalExpand ENDPOINTS = fromString("endpoints");
 
-    /** Static value homeRealmDiscoveryPolicies for ServicePrincipalsServicePrincipalExpand. */
-    public static final ServicePrincipalsServicePrincipalExpand HOME_REALM_DISCOVERY_POLICIES =
-        fromString("homeRealmDiscoveryPolicies");
+    /**
+     * Static value homeRealmDiscoveryPolicies for ServicePrincipalsServicePrincipalExpand.
+     */
+    public static final ServicePrincipalsServicePrincipalExpand HOME_REALM_DISCOVERY_POLICIES
+        = fromString("homeRealmDiscoveryPolicies");
 
-    /** Static value memberOf for ServicePrincipalsServicePrincipalExpand. */
+    /**
+     * Static value memberOf for ServicePrincipalsServicePrincipalExpand.
+     */
     public static final ServicePrincipalsServicePrincipalExpand MEMBER_OF = fromString("memberOf");
 
-    /** Static value oauth2PermissionGrants for ServicePrincipalsServicePrincipalExpand. */
-    public static final ServicePrincipalsServicePrincipalExpand OAUTH2PERMISSION_GRANTS =
-        fromString("oauth2PermissionGrants");
+    /**
+     * Static value oauth2PermissionGrants for ServicePrincipalsServicePrincipalExpand.
+     */
+    public static final ServicePrincipalsServicePrincipalExpand OAUTH2PERMISSION_GRANTS
+        = fromString("oauth2PermissionGrants");
 
-    /** Static value ownedObjects for ServicePrincipalsServicePrincipalExpand. */
+    /**
+     * Static value ownedObjects for ServicePrincipalsServicePrincipalExpand.
+     */
     public static final ServicePrincipalsServicePrincipalExpand OWNED_OBJECTS = fromString("ownedObjects");
 
-    /** Static value owners for ServicePrincipalsServicePrincipalExpand. */
+    /**
+     * Static value owners for ServicePrincipalsServicePrincipalExpand.
+     */
     public static final ServicePrincipalsServicePrincipalExpand OWNERS = fromString("owners");
 
-    /** Static value tokenIssuancePolicies for ServicePrincipalsServicePrincipalExpand. */
-    public static final ServicePrincipalsServicePrincipalExpand TOKEN_ISSUANCE_POLICIES =
-        fromString("tokenIssuancePolicies");
+    /**
+     * Static value tokenIssuancePolicies for ServicePrincipalsServicePrincipalExpand.
+     */
+    public static final ServicePrincipalsServicePrincipalExpand TOKEN_ISSUANCE_POLICIES
+        = fromString("tokenIssuancePolicies");
 
-    /** Static value tokenLifetimePolicies for ServicePrincipalsServicePrincipalExpand. */
-    public static final ServicePrincipalsServicePrincipalExpand TOKEN_LIFETIME_POLICIES =
-        fromString("tokenLifetimePolicies");
+    /**
+     * Static value tokenLifetimePolicies for ServicePrincipalsServicePrincipalExpand.
+     */
+    public static final ServicePrincipalsServicePrincipalExpand TOKEN_LIFETIME_POLICIES
+        = fromString("tokenLifetimePolicies");
 
-    /** Static value transitiveMemberOf for ServicePrincipalsServicePrincipalExpand. */
+    /**
+     * Static value transitiveMemberOf for ServicePrincipalsServicePrincipalExpand.
+     */
     public static final ServicePrincipalsServicePrincipalExpand TRANSITIVE_MEMBER_OF = fromString("transitiveMemberOf");
 
     /**
      * Creates a new instance of ServicePrincipalsServicePrincipalExpand value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -73,18 +104,17 @@ public final class ServicePrincipalsServicePrincipalExpand
 
     /**
      * Creates or finds a ServicePrincipalsServicePrincipalExpand from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServicePrincipalsServicePrincipalExpand.
      */
-    @JsonCreator
     public static ServicePrincipalsServicePrincipalExpand fromString(String name) {
         return fromString(name, ServicePrincipalsServicePrincipalExpand.class);
     }
 
     /**
      * Gets known ServicePrincipalsServicePrincipalExpand values.
-     *
+     * 
      * @return known ServicePrincipalsServicePrincipalExpand values.
      */
     public static Collection<ServicePrincipalsServicePrincipalExpand> values() {

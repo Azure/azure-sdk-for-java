@@ -110,24 +110,22 @@ public class EventHubReactorConnectionTest {
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
 
-        final ClientOptions clientOptions = new ClientOptions().setHeaders(
-            Arrays.asList(new Header(NAME_KEY, product), new Header(VERSION_KEY, clientVersion)));
+        final ClientOptions clientOptions = new ClientOptions()
+            .setHeaders(Arrays.asList(new Header(NAME_KEY, product), new Header(VERSION_KEY, clientVersion)));
 
         final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
-        this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
-            AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy, scheduler, clientOptions,
-            SslDomain.VerifyMode.VERIFY_PEER_NAME, "product-test",
-            "client-test-version");
+        this.connectionOptions
+            = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
+                ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy,
+                scheduler, clientOptions, SslDomain.VerifyMode.VERIFY_PEER_NAME, "product-test", "client-test-version");
         final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, ConnectionHandler.AMQPS_PORT);
 
-        connectionHandler = new ConnectionHandler(CONNECTION_ID, connectionOptions,
-            peerDetails, AmqpMetricsProvider.noop());
+        connectionHandler
+            = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
 
         when(reactor.selectable()).thenReturn(selectable);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
-            connectionHandler))
-            .thenReturn(reactorConnection);
+            connectionHandler)).thenReturn(reactorConnection);
         when(reactor.process()).thenReturn(true);
         when(reactor.attachments()).thenReturn(record);
 
@@ -138,13 +136,12 @@ public class EventHubReactorConnectionTest {
             .thenReturn(reactor);
         when(reactorProvider.createExecutor(any(Reactor.class), anyString(), anyString(),
             any(ReactorConnection.ReactorExceptionHandler.class), any(AmqpRetryOptions.class)))
-            .then(answerByCreatingExecutor());
+                .then(answerByCreatingExecutor());
 
         final SessionHandler sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, "EVENT_HUB",
             reactorDispatcher, Duration.ofSeconds(20), AmqpMetricsProvider.noop());
 
-        when(handlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
-            .thenReturn(connectionHandler);
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions)).thenReturn(connectionHandler);
         when(handlerProvider.createSessionHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), any(Duration.class)))
             .thenReturn(sessionHandler);
 
@@ -179,14 +176,16 @@ public class EventHubReactorConnectionTest {
         when(receiver.attachments()).thenReturn(linkRecord);
 
         when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
-            .thenReturn(new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, "receiver-name", "test-entity-path", AmqpMetricsProvider.noop()));
+            .thenReturn(new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, "receiver-name", "test-entity-path",
+                AmqpMetricsProvider.noop()));
 
         when(handlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
-            .thenReturn(new SendLinkHandler(CONNECTION_ID, HOSTNAME, "sender-name", "test-entity-path", AmqpMetricsProvider.noop()));
+            .thenReturn(new SendLinkHandler(CONNECTION_ID, HOSTNAME, "sender-name", "test-entity-path",
+                AmqpMetricsProvider.noop()));
 
-        final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID,
-            connectionOptions, "event-hub-name", reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
-            messageSerializer);
+        final EventHubReactorAmqpConnection connection
+            = new EventHubReactorAmqpConnection(CONNECTION_ID, connectionOptions, "event-hub-name", reactorProvider,
+                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, false, false);
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum of the selector type. */
+/**
+ * Enum of the selector type.
+ */
 public final class SelectorType extends ExpandableStringEnum<SelectorType> {
-    /** Static value List for SelectorType. */
+    /**
+     * Static value List for SelectorType.
+     */
     public static final SelectorType LIST = fromString("List");
 
-    /** Static value Query for SelectorType. */
+    /**
+     * Static value Query for SelectorType.
+     */
     public static final SelectorType QUERY = fromString("Query");
 
     /**
      * Creates a new instance of SelectorType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class SelectorType extends ExpandableStringEnum<SelectorType> {
 
     /**
      * Creates or finds a SelectorType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SelectorType.
      */
-    @JsonCreator
     public static SelectorType fromString(String name) {
         return fromString(name, SelectorType.class);
     }
 
     /**
      * Gets known SelectorType values.
-     *
+     * 
      * @return known SelectorType values.
      */
     public static Collection<SelectorType> values() {

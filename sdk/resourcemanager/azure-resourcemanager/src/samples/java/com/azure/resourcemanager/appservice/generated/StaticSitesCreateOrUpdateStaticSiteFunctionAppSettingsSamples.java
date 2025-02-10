@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
      * CreateOrUpdateStaticSiteFunctionAppSettings.json
      */
     /**
@@ -23,7 +23,10 @@ public final class StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsSamples
      */
     public static void
         createsOrUpdatesTheFunctionAppSettingsOfAStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
             .createOrUpdateStaticSiteFunctionAppSettingsWithResponse("rg", "testStaticSite0",
                 new StringDictionaryInner().withProperties(mapOf("setting1", "someval", "setting2", "someval2")),
                 com.azure.core.util.Context.NONE);

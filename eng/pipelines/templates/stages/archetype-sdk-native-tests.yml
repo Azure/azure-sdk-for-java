@@ -38,9 +38,6 @@ parameters:
   - name: MaxParallel
     type: number
     default: 0
-  - name: BuildInParallel
-    type: boolean
-    default: true
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -66,16 +63,10 @@ parameters:
     type: object
     default:
       Public:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       Preview:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-      Canary:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-        Location: 'centraluseuap'
-      UsGov:
-        SubscriptionConfiguration: $(sub-config-gov-test-resources)
-      China:
-        SubscriptionConfiguration: $(sub-config-cn-test-resources)
+      # Canary regions are currently not supported in TME so disabling for now
+      # Canary:
+      #   Location: 'centraluseuap'
   - name: MatrixConfigs
     type: object
     default:
@@ -104,15 +95,31 @@ parameters:
   - name: TestOptions
     type: string
     default: $(TestOptions)
+  - name: UseFederatedAuth
+    type: boolean
+    default: true
 
-stages:
-  - ${{ each cloud in parameters.CloudConfig }}:
-      - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
-          - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - ${{ each cloud in parameters.CloudConfig }}:
+        - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+            - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
               - stage: ${{ cloud.key }}_${{ parameters.TestName }}
                 dependsOn: []
+                variables:
+                  - template: /eng/pipelines/templates/variables/globals.yml
+                  - template: /eng/pipelines/templates/variables/image.yml
+                  # Convert artifact parameter objects to json and set them as variables to be used in
+                  # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
+                  # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
+                  - name: ArtifactsJson
+                    value: '${{ convertToJson(parameters.Artifacts) }}'
+                  - name: AdditionalModulesJson
+                    value: '${{ convertToJson(parameters.AdditionalModules) }}'
                 jobs:
-                  - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+                  - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
                     parameters:
                       SparseCheckoutPaths:
                         - "sdk/${{ parameters.ServiceDirectory }}/**/*.json"
@@ -128,20 +135,17 @@ stages:
                           - ${{ parameters.PostSteps }}
                         EnvVars: ${{ parameters.EnvVars }}
                         MaxParallel: ${{ parameters.MaxParallel }}
-                        BuildInParallel: ${{ parameters.BuildInParallel }}
                         TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
                         Location: ${{ parameters.Location }}
                         ServiceDirectory: ${{ parameters.ServiceDirectory }}
                         TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
-                        TestSetupSteps: ${{ parameters.TestSetupSteps }}
                         TestMode: ${{ parameters.TestMode }}
                         TestVersionSupport: ${{ parameters.TestVersionSupport }}
-                        Artifacts: ${{ parameters.Artifacts }}
-                        AdditionalModules: ${{ parameters.AdditionalModules }}
                         TestResultsFiles: ${{ parameters.TestResultsFiles }}
                         DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
                         TestGoals: ${{ parameters.TestGoals }}
                         TestOptions: ${{ parameters.TestOptions }}
+                        UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
 
                       MatrixConfigs:
                         # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
@@ -158,7 +162,9 @@ stages:
                             - ${{ cloudReplace }}
                         - ${{ parameters.MatrixReplace }}
                       CloudConfig:
+                        Cloud: ${{ cloud.key }}
+                        Location: ${{ coalesce(cloud.value.Location, parameters.Location) }}
+                        ServiceConnection: ${{ coalesce(cloud.value.ServiceConnection, lower(format('azure-sdk-tests-{0}', cloud.key))) }}
                         SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
                         SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
-                        Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
-                        Cloud: ${{ cloud.key }}
+                        SubscriptionConfigurationFilePaths: ${{ cloud.value.SubscriptionConfigurationFilePaths }}

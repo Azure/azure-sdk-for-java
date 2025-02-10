@@ -34,6 +34,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -135,6 +136,12 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
     }
 
     @Override
+    public Flux<Lease> getTopLeases(int topCount) {
+        return this.listDocuments(this.getPartitionLeasePrefix(), topCount)
+            .map(documentServiceLease -> documentServiceLease);
+    }
+
+    @Override
     public Flux<Lease> getOwnedLeases() {
         return this.getAllLeases()
             .filter(lease -> lease.getOwner() != null && lease.getOwner().equalsIgnoreCase(this.settings.getHostName()));
@@ -196,8 +203,7 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
                 return documentServiceLease
                     .withId(document.getId())
                     .withETag(document.getETag())
-                    .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document,
-                        Constants.Properties.LAST_MODIFIED));
+                    .withTs(document.getString(Constants.Properties.LAST_MODIFIED));
             });
     }
 
@@ -479,16 +485,35 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
     }
 
     private Flux<ServiceItemLeaseV1> listDocuments(String prefix) {
-        if (prefix == null || prefix.isEmpty())  {
-            throw new IllegalArgumentException("prefix");
+        return listDocuments(prefix, null);
+    }
+
+    private Flux<ServiceItemLeaseV1> listDocuments(String prefix, Integer top) {
+        if (prefix == null || prefix.isEmpty()) {
+            throw new IllegalArgumentException("prefix cannot be null or empty!");
         }
 
-        SqlParameter param = new SqlParameter();
-        param.setName("@PartitionLeasePrefix");
-        param.setValue(prefix);
-        SqlQuerySpec querySpec = new SqlQuerySpec(
-            "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
-            Collections.singletonList(param));
+        SqlQuerySpec querySpec;
+
+        if (top == null) {
+            SqlParameter param = new SqlParameter();
+            param.setName("@PartitionLeasePrefix");
+            param.setValue(prefix);
+            querySpec = new SqlQuerySpec(
+                "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
+                Collections.singletonList(param));
+        } else {
+            SqlParameter topParam = new SqlParameter();
+            topParam.setName("@Top");
+            topParam.setValue(top);
+
+            SqlParameter param = new SqlParameter();
+            param.setName("@PartitionLeasePrefix");
+            param.setValue(prefix);
+            querySpec = new SqlQuerySpec(
+                "SELECT TOP @Top * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix) AND c.ContinuationToken <> null",
+                Arrays.asList(topParam, param));
+        }
 
         Flux<FeedResponse<InternalObjectNode>> query = this.leaseDocumentClient.queryItems(
             this.settings.getLeaseCollectionLink(),

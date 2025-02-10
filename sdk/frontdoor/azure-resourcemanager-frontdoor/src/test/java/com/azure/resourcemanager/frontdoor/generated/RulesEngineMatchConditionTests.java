@@ -15,35 +15,32 @@ import org.junit.jupiter.api.Assertions;
 public final class RulesEngineMatchConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RulesEngineMatchCondition model =
-            BinaryData
-                .fromString(
-                    "{\"rulesEngineMatchVariable\":\"IsMobile\",\"selector\":\"wndnhj\",\"rulesEngineOperator\":\"Any\",\"negateCondition\":false,\"rulesEngineMatchValue\":[\"vylwzbtdhxuj\",\"nbmpowuwprzq\"],\"transforms\":[\"Lowercase\",\"Trim\",\"Trim\"]}")
-                .toObject(RulesEngineMatchCondition.class);
-        Assertions.assertEquals(RulesEngineMatchVariable.IS_MOBILE, model.rulesEngineMatchVariable());
-        Assertions.assertEquals("wndnhj", model.selector());
-        Assertions.assertEquals(RulesEngineOperator.ANY, model.rulesEngineOperator());
-        Assertions.assertEquals(false, model.negateCondition());
-        Assertions.assertEquals("vylwzbtdhxuj", model.rulesEngineMatchValue().get(0));
-        Assertions.assertEquals(Transform.LOWERCASE, model.transforms().get(0));
+        RulesEngineMatchCondition model = BinaryData.fromString(
+            "{\"rulesEngineMatchVariable\":\"PostArgs\",\"selector\":\"jpqqmted\",\"rulesEngineOperator\":\"GreaterThanOrEqual\",\"negateCondition\":true,\"rulesEngineMatchValue\":[\"ihyeozphvw\"],\"transforms\":[\"Trim\"]}")
+            .toObject(RulesEngineMatchCondition.class);
+        Assertions.assertEquals(RulesEngineMatchVariable.POST_ARGS, model.rulesEngineMatchVariable());
+        Assertions.assertEquals("jpqqmted", model.selector());
+        Assertions.assertEquals(RulesEngineOperator.GREATER_THAN_OR_EQUAL, model.rulesEngineOperator());
+        Assertions.assertEquals(true, model.negateCondition());
+        Assertions.assertEquals("ihyeozphvw", model.rulesEngineMatchValue().get(0));
+        Assertions.assertEquals(Transform.TRIM, model.transforms().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulesEngineMatchCondition model =
-            new RulesEngineMatchCondition()
-                .withRulesEngineMatchVariable(RulesEngineMatchVariable.IS_MOBILE)
-                .withSelector("wndnhj")
-                .withRulesEngineOperator(RulesEngineOperator.ANY)
-                .withNegateCondition(false)
-                .withRulesEngineMatchValue(Arrays.asList("vylwzbtdhxuj", "nbmpowuwprzq"))
-                .withTransforms(Arrays.asList(Transform.LOWERCASE, Transform.TRIM, Transform.TRIM));
+        RulesEngineMatchCondition model
+            = new RulesEngineMatchCondition().withRulesEngineMatchVariable(RulesEngineMatchVariable.POST_ARGS)
+                .withSelector("jpqqmted")
+                .withRulesEngineOperator(RulesEngineOperator.GREATER_THAN_OR_EQUAL)
+                .withNegateCondition(true)
+                .withRulesEngineMatchValue(Arrays.asList("ihyeozphvw"))
+                .withTransforms(Arrays.asList(Transform.TRIM));
         model = BinaryData.fromObject(model).toObject(RulesEngineMatchCondition.class);
-        Assertions.assertEquals(RulesEngineMatchVariable.IS_MOBILE, model.rulesEngineMatchVariable());
-        Assertions.assertEquals("wndnhj", model.selector());
-        Assertions.assertEquals(RulesEngineOperator.ANY, model.rulesEngineOperator());
-        Assertions.assertEquals(false, model.negateCondition());
-        Assertions.assertEquals("vylwzbtdhxuj", model.rulesEngineMatchValue().get(0));
-        Assertions.assertEquals(Transform.LOWERCASE, model.transforms().get(0));
+        Assertions.assertEquals(RulesEngineMatchVariable.POST_ARGS, model.rulesEngineMatchVariable());
+        Assertions.assertEquals("jpqqmted", model.selector());
+        Assertions.assertEquals(RulesEngineOperator.GREATER_THAN_OR_EQUAL, model.rulesEngineOperator());
+        Assertions.assertEquals(true, model.negateCondition());
+        Assertions.assertEquals("ihyeozphvw", model.rulesEngineMatchValue().get(0));
+        Assertions.assertEquals(Transform.TRIM, model.transforms().get(0));
     }
 }

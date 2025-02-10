@@ -10,10 +10,6 @@ module com.azure.resourcemanager.streamanalytics {
     exports com.azure.resourcemanager.streamanalytics.fluent.models;
     exports com.azure.resourcemanager.streamanalytics.models;
 
-    opens com.azure.resourcemanager.streamanalytics.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.streamanalytics.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.streamanalytics.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.streamanalytics.models to com.azure.core;
 }

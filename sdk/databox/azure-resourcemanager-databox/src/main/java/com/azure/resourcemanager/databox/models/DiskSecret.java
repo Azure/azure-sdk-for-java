@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains all the secrets of a Disk. */
+/**
+ * Contains all the secrets of a Disk.
+ */
 @Immutable
-public final class DiskSecret {
+public final class DiskSecret implements JsonSerializable<DiskSecret> {
     /*
      * Serial number of the assigned disk.
      */
-    @JsonProperty(value = "diskSerialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String diskSerialNumber;
 
     /*
      * Bit Locker key of the disk which can be used to unlock the disk to copy data.
      */
-    @JsonProperty(value = "bitLockerKey", access = JsonProperty.Access.WRITE_ONLY)
     private String bitLockerKey;
 
-    /** Creates an instance of DiskSecret class. */
+    /**
+     * Creates an instance of DiskSecret class.
+     */
     public DiskSecret() {
     }
 
     /**
      * Get the diskSerialNumber property: Serial number of the assigned disk.
-     *
+     * 
      * @return the diskSerialNumber value.
      */
     public String diskSerialNumber() {
@@ -37,7 +43,7 @@ public final class DiskSecret {
 
     /**
      * Get the bitLockerKey property: Bit Locker key of the disk which can be used to unlock the disk to copy data.
-     *
+     * 
      * @return the bitLockerKey value.
      */
     public String bitLockerKey() {
@@ -46,9 +52,46 @@ public final class DiskSecret {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskSecret from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskSecret if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the DiskSecret.
+     */
+    public static DiskSecret fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskSecret deserializedDiskSecret = new DiskSecret();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskSerialNumber".equals(fieldName)) {
+                    deserializedDiskSecret.diskSerialNumber = reader.getString();
+                } else if ("bitLockerKey".equals(fieldName)) {
+                    deserializedDiskSecret.bitLockerKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskSecret;
+        });
     }
 }

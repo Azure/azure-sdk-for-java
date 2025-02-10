@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Frequency of the schedule operation of this policy. */
+/**
+ * Frequency of the schedule operation of this policy.
+ */
 public final class ScheduleRunType extends ExpandableStringEnum<ScheduleRunType> {
-    /** Static value Invalid for ScheduleRunType. */
+    /**
+     * Static value Invalid for ScheduleRunType.
+     */
     public static final ScheduleRunType INVALID = fromString("Invalid");
 
-    /** Static value Daily for ScheduleRunType. */
+    /**
+     * Static value Daily for ScheduleRunType.
+     */
     public static final ScheduleRunType DAILY = fromString("Daily");
 
-    /** Static value Weekly for ScheduleRunType. */
+    /**
+     * Static value Weekly for ScheduleRunType.
+     */
     public static final ScheduleRunType WEEKLY = fromString("Weekly");
 
-    /** Static value Hourly for ScheduleRunType. */
+    /**
+     * Static value Hourly for ScheduleRunType.
+     */
     public static final ScheduleRunType HOURLY = fromString("Hourly");
 
     /**
      * Creates a new instance of ScheduleRunType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ScheduleRunType extends ExpandableStringEnum<ScheduleRunType>
 
     /**
      * Creates or finds a ScheduleRunType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScheduleRunType.
      */
-    @JsonCreator
     public static ScheduleRunType fromString(String name) {
         return fromString(name, ScheduleRunType.class);
     }
 
     /**
      * Gets known ScheduleRunType values.
-     *
+     * 
      * @return known ScheduleRunType values.
      */
     public static Collection<ScheduleRunType> values() {

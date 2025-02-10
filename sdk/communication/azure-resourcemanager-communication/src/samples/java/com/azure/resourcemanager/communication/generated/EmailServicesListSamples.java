@@ -10,8 +10,8 @@ package com.azure.resourcemanager.communication.generated;
 public final class EmailServicesListSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/
-     * emailServices/listBySubscription.json
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/emailServices/
+     * listBySubscription.json
      */
     /**
      * Sample code: List EmailService resources by subscription.

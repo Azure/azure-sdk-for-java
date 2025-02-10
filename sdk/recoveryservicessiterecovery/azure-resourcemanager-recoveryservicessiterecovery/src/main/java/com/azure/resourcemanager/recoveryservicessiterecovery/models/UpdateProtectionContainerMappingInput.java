@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Container pairing update input. */
+/**
+ * Container pairing update input.
+ */
 @Fluent
-public final class UpdateProtectionContainerMappingInput {
+public final class UpdateProtectionContainerMappingInput
+    implements JsonSerializable<UpdateProtectionContainerMappingInput> {
     /*
      * Update protection container mapping input properties.
      */
-    @JsonProperty(value = "properties")
     private UpdateProtectionContainerMappingInputProperties properties;
 
-    /** Creates an instance of UpdateProtectionContainerMappingInput class. */
+    /**
+     * Creates an instance of UpdateProtectionContainerMappingInput class.
+     */
     public UpdateProtectionContainerMappingInput() {
     }
 
     /**
      * Get the properties property: Update protection container mapping input properties.
-     *
+     * 
      * @return the properties value.
      */
     public UpdateProtectionContainerMappingInputProperties properties() {
@@ -31,24 +39,62 @@ public final class UpdateProtectionContainerMappingInput {
 
     /**
      * Set the properties property: Update protection container mapping input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdateProtectionContainerMappingInput object itself.
      */
-    public UpdateProtectionContainerMappingInput withProperties(
-        UpdateProtectionContainerMappingInputProperties properties) {
+    public UpdateProtectionContainerMappingInput
+        withProperties(UpdateProtectionContainerMappingInputProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateProtectionContainerMappingInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateProtectionContainerMappingInput if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateProtectionContainerMappingInput.
+     */
+    public static UpdateProtectionContainerMappingInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateProtectionContainerMappingInput deserializedUpdateProtectionContainerMappingInput
+                = new UpdateProtectionContainerMappingInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUpdateProtectionContainerMappingInput.properties
+                        = UpdateProtectionContainerMappingInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateProtectionContainerMappingInput;
+        });
     }
 }

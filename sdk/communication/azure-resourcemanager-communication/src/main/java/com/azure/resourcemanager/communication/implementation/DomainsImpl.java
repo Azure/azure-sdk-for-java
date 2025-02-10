@@ -60,14 +60,14 @@ public final class DomainsImpl implements Domains {
     public PagedIterable<DomainResource> listByEmailServiceResource(String resourceGroupName, String emailServiceName) {
         PagedIterable<DomainResourceInner> inner
             = this.serviceClient().listByEmailServiceResource(resourceGroupName, emailServiceName);
-        return Utils.mapPage(inner, inner1 -> new DomainResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DomainResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DomainResource> listByEmailServiceResource(String resourceGroupName, String emailServiceName,
         Context context) {
         PagedIterable<DomainResourceInner> inner
             = this.serviceClient().listByEmailServiceResource(resourceGroupName, emailServiceName, context);
-        return Utils.mapPage(inner, inner1 -> new DomainResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DomainResourceImpl(inner1, this.manager()));
     }
 
     public void initiateVerification(String resourceGroupName, String emailServiceName, String domainName,
@@ -91,17 +91,17 @@ public final class DomainsImpl implements Domains {
     }
 
     public DomainResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
-        String domainName = Utils.getValueFromIdByName(id, "domains");
+        String domainName = ResourceManagerUtils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));
@@ -110,17 +110,17 @@ public final class DomainsImpl implements Domains {
     }
 
     public Response<DomainResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
-        String domainName = Utils.getValueFromIdByName(id, "domains");
+        String domainName = ResourceManagerUtils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));
@@ -129,17 +129,17 @@ public final class DomainsImpl implements Domains {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
-        String domainName = Utils.getValueFromIdByName(id, "domains");
+        String domainName = ResourceManagerUtils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));
@@ -148,17 +148,17 @@ public final class DomainsImpl implements Domains {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
-        String domainName = Utils.getValueFromIdByName(id, "domains");
+        String domainName = ResourceManagerUtils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));

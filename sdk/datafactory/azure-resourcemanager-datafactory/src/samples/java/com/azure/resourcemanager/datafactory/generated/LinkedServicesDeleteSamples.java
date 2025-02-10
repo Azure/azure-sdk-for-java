@@ -19,7 +19,8 @@ public final class LinkedServicesDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void linkedServicesDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.linkedServices().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleLinkedService", com.azure.core.util.Context.NONE);
+        manager.linkedServices()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleLinkedService",
+                com.azure.core.util.Context.NONE);
     }
 }

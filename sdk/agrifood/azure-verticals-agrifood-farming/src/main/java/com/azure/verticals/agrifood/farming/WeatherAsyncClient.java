@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = WeatherClientBuilder.class, isAsync = true)
 public final class WeatherAsyncClient {
-    @Generated private final WeathersImpl serviceClient;
+    @Generated
+    private final WeathersImpl serviceClient;
 
     /**
      * Initializes an instance of WeatherAsyncClient class.
@@ -111,15 +112,10 @@ public final class WeatherAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(
-            String partyId,
-            String boundaryId,
-            String extensionId,
-            String weatherDataType,
-            String granularity,
-            RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(
-                partyId, boundaryId, extensionId, weatherDataType, granularity, requestOptions);
+    public PagedFlux<BinaryData> list(String partyId, String boundaryId, String extensionId, String weatherDataType,
+        String granularity, RequestOptions requestOptions) {
+        return this.serviceClient.listAsync(partyId, boundaryId, extensionId, weatherDataType, granularity,
+            requestOptions);
     }
 
     /**
@@ -243,8 +239,8 @@ public final class WeatherAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateDataDeleteJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateDataDeleteJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCreateDataDeleteJobAsync(jobId, job, requestOptions);
     }
 
@@ -293,8 +289,8 @@ public final class WeatherAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDataIngestionJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDataIngestionJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getDataIngestionJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -376,8 +372,8 @@ public final class WeatherAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateDataIngestionJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateDataIngestionJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCreateDataIngestionJobAsync(jobId, job, requestOptions);
     }
 }

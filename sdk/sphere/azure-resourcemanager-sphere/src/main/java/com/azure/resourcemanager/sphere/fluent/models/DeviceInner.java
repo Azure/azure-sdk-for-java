@@ -6,117 +6,161 @@ package com.azure.resourcemanager.sphere.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.sphere.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sphere.models.DeviceProperties;
+import java.io.IOException;
 
-/** An device resource belonging to a device group resource. */
+/**
+ * An device resource belonging to a device group resource.
+ */
 @Fluent
 public final class DeviceInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties")
-    private DeviceProperties innerProperties;
+    private DeviceProperties properties;
 
-    /** Creates an instance of DeviceInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DeviceInner class.
+     */
     public DeviceInner() {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    private DeviceProperties innerProperties() {
-        return this.innerProperties;
+    public DeviceProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the deviceId property: Device ID.
-     *
-     * @return the deviceId value.
-     */
-    public String deviceId() {
-        return this.innerProperties() == null ? null : this.innerProperties().deviceId();
-    }
-
-    /**
-     * Set the deviceId property: Device ID.
-     *
-     * @param deviceId the deviceId value to set.
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
      * @return the DeviceInner object itself.
      */
-    public DeviceInner withDeviceId(String deviceId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeviceProperties();
-        }
-        this.innerProperties().withDeviceId(deviceId);
+    public DeviceInner withProperties(DeviceProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the chipSku property: SKU of the chip.
-     *
-     * @return the chipSku value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String chipSku() {
-        return this.innerProperties() == null ? null : this.innerProperties().chipSku();
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Get the lastAvailableOsVersion property: OS version available for installation when update requested.
-     *
-     * @return the lastAvailableOsVersion value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String lastAvailableOsVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastAvailableOsVersion();
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the lastInstalledOsVersion property: OS version running on device when update requested.
-     *
-     * @return the lastInstalledOsVersion value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public String lastInstalledOsVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastInstalledOsVersion();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the lastOsUpdateUtc property: Time when update requested and new OS version available.
-     *
-     * @return the lastOsUpdateUtc value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public OffsetDateTime lastOsUpdateUtc() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastOsUpdateUtc();
-    }
-
-    /**
-     * Get the lastUpdateRequestUtc property: Time when update was last requested.
-     *
-     * @return the lastUpdateRequestUtc value.
-     */
-    public OffsetDateTime lastUpdateRequestUtc() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastUpdateRequestUtc();
-    }
-
-    /**
-     * Get the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeviceInner.
+     */
+    public static DeviceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceInner deserializedDeviceInner = new DeviceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDeviceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeviceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDeviceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDeviceInner.properties = DeviceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDeviceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceInner;
+        });
     }
 }

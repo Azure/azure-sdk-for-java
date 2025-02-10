@@ -5,29 +5,46 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DialogInputType. */
+/**
+ * Determines the type of the dialog.
+ */
 public final class DialogInputType extends ExpandableStringEnum<DialogInputType> {
-    /** Static value powerVirtualAgents for DialogInputType. */
+    /**
+     * Static value powerVirtualAgents for DialogInputType.
+     */
     public static final DialogInputType POWER_VIRTUAL_AGENTS = fromString("powerVirtualAgents");
 
-    /** Static value azureOpenAI for DialogInputType. */
+    /**
+     * Static value azureOpenAI for DialogInputType.
+     */
     public static final DialogInputType AZURE_OPEN_AI = fromString("azureOpenAI");
 
     /**
+     * Creates a new instance of DialogInputType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DialogInputType() {
+    }
+
+    /**
      * Creates or finds a DialogInputType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DialogInputType.
      */
-    @JsonCreator
     public static DialogInputType fromString(String name) {
         return fromString(name, DialogInputType.class);
     }
 
-    /** @return known DialogInputType values. */
+    /**
+     * Gets known DialogInputType values.
+     * 
+     * @return known DialogInputType values.
+     */
     public static Collection<DialogInputType> values() {
         return values(DialogInputType.class);
     }

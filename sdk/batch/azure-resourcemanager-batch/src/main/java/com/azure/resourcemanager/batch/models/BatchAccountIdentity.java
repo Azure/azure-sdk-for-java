@@ -6,41 +6,38 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The identity of the Batch account, if configured. This is used when the user specifies 'Microsoft.KeyVault' as their
- * Batch account encryption configuration or when `ManagedIdentity` is selected as the auto-storage authentication
- * mode.
+ * Batch account encryption configuration or when `ManagedIdentity` is selected as the auto-storage authentication mode.
  */
 @Fluent
-public final class BatchAccountIdentity {
+public final class BatchAccountIdentity implements JsonSerializable<BatchAccountIdentity> {
     /*
      * The principal id of the Batch account. This property will only be provided for a system assigned identity.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The tenant id associated with the Batch account. This property will only be provided for a system assigned
      * identity.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * The type of identity used for the Batch account.
      */
-    @JsonProperty(value = "type", required = true)
     private ResourceIdentityType type;
 
     /*
      * The list of user identities associated with the Batch account.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentities> userAssignedIdentities;
 
     /**
@@ -116,8 +113,8 @@ public final class BatchAccountIdentity {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model BatchAccountIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model BatchAccountIdentity"));
         }
         if (userAssignedIdentities() != null) {
             userAssignedIdentities().values().forEach(e -> {
@@ -129,4 +126,51 @@ public final class BatchAccountIdentity {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BatchAccountIdentity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchAccountIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchAccountIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchAccountIdentity.
+     */
+    public static BatchAccountIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchAccountIdentity deserializedBatchAccountIdentity = new BatchAccountIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedBatchAccountIdentity.type = ResourceIdentityType.fromString(reader.getString());
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedBatchAccountIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedBatchAccountIdentity.tenantId = reader.getString();
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedIdentities> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedIdentities.fromJson(reader1));
+                    deserializedBatchAccountIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchAccountIdentity;
+        });
+    }
 }

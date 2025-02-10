@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The integration account partner content. */
+/**
+ * The integration account partner content.
+ */
 @Fluent
-public final class PartnerContent {
+public final class PartnerContent implements JsonSerializable<PartnerContent> {
     /*
      * The B2B partner content.
      */
-    @JsonProperty(value = "b2b")
     private B2BPartnerContent b2B;
 
-    /** Creates an instance of PartnerContent class. */
+    /**
+     * Creates an instance of PartnerContent class.
+     */
     public PartnerContent() {
     }
 
     /**
      * Get the b2B property: The B2B partner content.
-     *
+     * 
      * @return the b2B value.
      */
     public B2BPartnerContent b2B() {
@@ -31,7 +38,7 @@ public final class PartnerContent {
 
     /**
      * Set the b2B property: The B2B partner content.
-     *
+     * 
      * @param b2B the b2B value to set.
      * @return the PartnerContent object itself.
      */
@@ -42,12 +49,48 @@ public final class PartnerContent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (b2B() != null) {
             b2B().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("b2b", this.b2B);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerContent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerContent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerContent.
+     */
+    public static PartnerContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerContent deserializedPartnerContent = new PartnerContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("b2b".equals(fieldName)) {
+                    deserializedPartnerContent.b2B = B2BPartnerContent.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerContent;
+        });
     }
 }

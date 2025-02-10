@@ -14,11 +14,13 @@ import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlI
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerInner;
 import com.azure.resourcemanager.logic.models.SetTriggerStateActionDefinition;
 
-/** An instance of this class provides access to all the operations defined in WorkflowTriggersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowTriggersClient.
+ */
 public interface WorkflowTriggersClient {
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Gets a list of workflow triggers.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param top The number of items to be included in the result.
@@ -43,12 +45,12 @@ public interface WorkflowTriggersClient {
      * @return a list of workflow triggers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkflowTriggerInner> list(
-        String resourceGroupName, String workflowName, Integer top, String filter, Context context);
+    PagedIterable<WorkflowTriggerInner> list(String resourceGroupName, String workflowName, Integer top, String filter,
+        Context context);
 
     /**
      * Gets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -59,12 +61,12 @@ public interface WorkflowTriggersClient {
      * @return a workflow trigger along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowTriggerInner> getWithResponse(
-        String resourceGroupName, String workflowName, String triggerName, Context context);
+    Response<WorkflowTriggerInner> getWithResponse(String resourceGroupName, String workflowName, String triggerName,
+        Context context);
 
     /**
      * Gets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -78,7 +80,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Resets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -89,12 +91,12 @@ public interface WorkflowTriggersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> resetWithResponse(
-        String resourceGroupName, String workflowName, String triggerName, Context context);
+    Response<Void> resetWithResponse(String resourceGroupName, String workflowName, String triggerName,
+        Context context);
 
     /**
      * Resets a workflow trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -107,7 +109,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -122,7 +124,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Runs a workflow trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -135,7 +137,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Get the trigger schema as JSON.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -146,12 +148,12 @@ public interface WorkflowTriggersClient {
      * @return the trigger schema as JSON along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JsonSchemaInner> getSchemaJsonWithResponse(
-        String resourceGroupName, String workflowName, String triggerName, Context context);
+    Response<JsonSchemaInner> getSchemaJsonWithResponse(String resourceGroupName, String workflowName,
+        String triggerName, Context context);
 
     /**
      * Get the trigger schema as JSON.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -165,7 +167,7 @@ public interface WorkflowTriggersClient {
 
     /**
      * Sets the state of a workflow trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -177,16 +179,12 @@ public interface WorkflowTriggersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> setStateWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String triggerName,
-        SetTriggerStateActionDefinition setState,
-        Context context);
+    Response<Void> setStateWithResponse(String resourceGroupName, String workflowName, String triggerName,
+        SetTriggerStateActionDefinition setState, Context context);
 
     /**
      * Sets the state of a workflow trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -196,12 +194,12 @@ public interface WorkflowTriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void setState(
-        String resourceGroupName, String workflowName, String triggerName, SetTriggerStateActionDefinition setState);
+    void setState(String resourceGroupName, String workflowName, String triggerName,
+        SetTriggerStateActionDefinition setState);
 
     /**
      * Get the callback URL for a workflow trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
@@ -212,12 +210,12 @@ public interface WorkflowTriggersClient {
      * @return the callback URL for a workflow trigger along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(
-        String resourceGroupName, String workflowName, String triggerName, Context context);
+    Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(String resourceGroupName, String workflowName,
+        String triggerName, Context context);
 
     /**
      * Get the callback URL for a workflow trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.

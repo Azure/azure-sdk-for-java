@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.EnvironmentDefinitionIn
 public final class EnvironmentDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentDefinitionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"qrvqq\",\"parameters\":[{\"id\":\"inrvgoupmfi\",\"name\":\"fggjioolvr\",\"description\":\"kvtkkg\",\"type\":\"string\",\"readOnly\":true,\"required\":true}],\"templatePath\":\"jayvblmhv\",\"validationStatus\":\"Pending\"},\"id\":\"bxvvyhg\",\"name\":\"opbyrqufegxu\",\"type\":\"wz\"}")
-                .toObject(EnvironmentDefinitionInner.class);
+        EnvironmentDefinitionInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"sfcpkvxodpuozm\",\"parameters\":[{\"id\":\"agfuaxbezyiu\",\"name\":\"ktwh\",\"description\":\"xw\",\"type\":\"object\",\"readOnly\":false,\"required\":true},{\"id\":\"ureximoryocfs\",\"name\":\"s\",\"description\":\"ddystkiiuxhqy\",\"type\":\"number\",\"readOnly\":true,\"required\":false},{\"id\":\"b\",\"name\":\"czvyifq\",\"description\":\"kdvjsll\",\"type\":\"array\",\"readOnly\":false,\"required\":true}],\"templatePath\":\"t\",\"validationStatus\":\"Unknown\"},\"id\":\"ulexxbczwtr\",\"name\":\"wiqzbqjvsovmyo\",\"type\":\"acspkwl\"}")
+            .toObject(EnvironmentDefinitionInner.class);
     }
 
     @org.junit.jupiter.api.Test

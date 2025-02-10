@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Recovery disk encryption info (BEK and KEK). */
+/**
+ * Recovery disk encryption info (BEK and KEK).
+ */
 @Fluent
-public final class DiskEncryptionInfo {
+public final class DiskEncryptionInfo implements JsonSerializable<DiskEncryptionInfo> {
     /*
      * The recovery KeyVault reference for secret.
      */
-    @JsonProperty(value = "diskEncryptionKeyInfo")
     private DiskEncryptionKeyInfo diskEncryptionKeyInfo;
 
     /*
      * The recovery KeyVault reference for key.
      */
-    @JsonProperty(value = "keyEncryptionKeyInfo")
     private KeyEncryptionKeyInfo keyEncryptionKeyInfo;
 
-    /** Creates an instance of DiskEncryptionInfo class. */
+    /**
+     * Creates an instance of DiskEncryptionInfo class.
+     */
     public DiskEncryptionInfo() {
     }
 
     /**
      * Get the diskEncryptionKeyInfo property: The recovery KeyVault reference for secret.
-     *
+     * 
      * @return the diskEncryptionKeyInfo value.
      */
     public DiskEncryptionKeyInfo diskEncryptionKeyInfo() {
@@ -37,7 +43,7 @@ public final class DiskEncryptionInfo {
 
     /**
      * Set the diskEncryptionKeyInfo property: The recovery KeyVault reference for secret.
-     *
+     * 
      * @param diskEncryptionKeyInfo the diskEncryptionKeyInfo value to set.
      * @return the DiskEncryptionInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class DiskEncryptionInfo {
 
     /**
      * Get the keyEncryptionKeyInfo property: The recovery KeyVault reference for key.
-     *
+     * 
      * @return the keyEncryptionKeyInfo value.
      */
     public KeyEncryptionKeyInfo keyEncryptionKeyInfo() {
@@ -57,7 +63,7 @@ public final class DiskEncryptionInfo {
 
     /**
      * Set the keyEncryptionKeyInfo property: The recovery KeyVault reference for key.
-     *
+     * 
      * @param keyEncryptionKeyInfo the keyEncryptionKeyInfo value to set.
      * @return the DiskEncryptionInfo object itself.
      */
@@ -68,7 +74,7 @@ public final class DiskEncryptionInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,5 +84,44 @@ public final class DiskEncryptionInfo {
         if (keyEncryptionKeyInfo() != null) {
             keyEncryptionKeyInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("diskEncryptionKeyInfo", this.diskEncryptionKeyInfo);
+        jsonWriter.writeJsonField("keyEncryptionKeyInfo", this.keyEncryptionKeyInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskEncryptionInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskEncryptionInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskEncryptionInfo.
+     */
+    public static DiskEncryptionInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskEncryptionInfo deserializedDiskEncryptionInfo = new DiskEncryptionInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskEncryptionKeyInfo".equals(fieldName)) {
+                    deserializedDiskEncryptionInfo.diskEncryptionKeyInfo = DiskEncryptionKeyInfo.fromJson(reader);
+                } else if ("keyEncryptionKeyInfo".equals(fieldName)) {
+                    deserializedDiskEncryptionInfo.keyEncryptionKeyInfo = KeyEncryptionKeyInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskEncryptionInfo;
+        });
     }
 }

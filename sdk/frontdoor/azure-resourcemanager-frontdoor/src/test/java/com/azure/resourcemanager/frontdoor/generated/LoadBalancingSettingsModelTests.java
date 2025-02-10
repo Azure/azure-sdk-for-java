@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class LoadBalancingSettingsModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoadBalancingSettingsModel model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"resourceState\":\"Migrating\",\"sampleSize\":1656357002,\"successfulSamplesRequired\":734102755,\"additionalLatencyMilliseconds\":151199466},\"name\":\"jewgdrjerv\",\"type\":\"enq\",\"id\":\"hin\"}")
-                .toObject(LoadBalancingSettingsModel.class);
-        Assertions.assertEquals("hin", model.id());
-        Assertions.assertEquals("jewgdrjerv", model.name());
-        Assertions.assertEquals(1656357002, model.sampleSize());
-        Assertions.assertEquals(734102755, model.successfulSamplesRequired());
-        Assertions.assertEquals(151199466, model.additionalLatencyMilliseconds());
+        LoadBalancingSettingsModel model = BinaryData.fromString(
+            "{\"properties\":{\"resourceState\":\"Enabled\",\"sampleSize\":1038876843,\"successfulSamplesRequired\":1193867265,\"additionalLatencyMilliseconds\":1115124750},\"name\":\"iivwzjbhyzsxjrka\",\"type\":\"trnegvmnvuqeqvld\",\"id\":\"astjbkkdmflvestm\"}")
+            .toObject(LoadBalancingSettingsModel.class);
+        Assertions.assertEquals("astjbkkdmflvestm", model.id());
+        Assertions.assertEquals("iivwzjbhyzsxjrka", model.name());
+        Assertions.assertEquals(1038876843, model.sampleSize());
+        Assertions.assertEquals(1193867265, model.successfulSamplesRequired());
+        Assertions.assertEquals(1115124750, model.additionalLatencyMilliseconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoadBalancingSettingsModel model =
-            new LoadBalancingSettingsModel()
-                .withId("hin")
-                .withName("jewgdrjerv")
-                .withSampleSize(1656357002)
-                .withSuccessfulSamplesRequired(734102755)
-                .withAdditionalLatencyMilliseconds(151199466);
+        LoadBalancingSettingsModel model = new LoadBalancingSettingsModel().withId("astjbkkdmflvestm")
+            .withName("iivwzjbhyzsxjrka")
+            .withSampleSize(1038876843)
+            .withSuccessfulSamplesRequired(1193867265)
+            .withAdditionalLatencyMilliseconds(1115124750);
         model = BinaryData.fromObject(model).toObject(LoadBalancingSettingsModel.class);
-        Assertions.assertEquals("hin", model.id());
-        Assertions.assertEquals("jewgdrjerv", model.name());
-        Assertions.assertEquals(1656357002, model.sampleSize());
-        Assertions.assertEquals(734102755, model.successfulSamplesRequired());
-        Assertions.assertEquals(151199466, model.additionalLatencyMilliseconds());
+        Assertions.assertEquals("astjbkkdmflvestm", model.id());
+        Assertions.assertEquals("iivwzjbhyzsxjrka", model.name());
+        Assertions.assertEquals(1038876843, model.sampleSize());
+        Assertions.assertEquals(1193867265, model.successfulSamplesRequired());
+        Assertions.assertEquals(1115124750, model.additionalLatencyMilliseconds());
     }
 }

@@ -17,7 +17,7 @@ import java.util.Map;
 public final class OrganizationCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Create.json
+     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Create.json
      */
     /**
      * Sample code: Organization_Create.
@@ -25,16 +25,25 @@ public final class OrganizationCreateSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationCreate(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().define("myOrganization").withRegion("West US")
+        manager.organizations()
+            .define("myOrganization")
+            .withRegion("West US")
             .withExistingResourceGroup("myResourceGroup")
-            .withOfferDetail(
-                new OfferDetail().withPublisherId("string").withId("string").withPlanId("string").withPlanName("string")
-                    .withTermUnit("string").withPrivateOfferId("string").withPrivateOfferIds(Arrays.asList("string")))
-            .withUserDetail(new UserDetail().withFirstName("string").withLastName("string")
-                .withEmailAddress("contoso@microsoft.com").withUserPrincipalName("contoso@microsoft.com")
+            .withOfferDetail(new OfferDetail().withPublisherId("string")
+                .withId("string")
+                .withPlanId("string")
+                .withPlanName("string")
+                .withTermUnit("string")
+                .withPrivateOfferId("string")
+                .withPrivateOfferIds(Arrays.asList("string")))
+            .withUserDetail(new UserDetail().withFirstName("string")
+                .withLastName("string")
+                .withEmailAddress("contoso@microsoft.com")
+                .withUserPrincipalName("contoso@microsoft.com")
                 .withAadEmail("contoso@microsoft.com"))
             .withTags(mapOf("Environment", "Dev"))
-            .withLinkOrganization(new LinkOrganization().withToken("fakeTokenPlaceholder")).create();
+            .withLinkOrganization(new LinkOrganization().withToken("fakeTokenPlaceholder"))
+            .create();
     }
 
     // Use "Map.of" if available

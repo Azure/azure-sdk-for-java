@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Zone details data. */
+/**
+ * Zone details data.
+ */
 @Fluent
-public final class A2AZoneDetails {
+public final class A2AZoneDetails implements JsonSerializable<A2AZoneDetails> {
     /*
      * Source zone info.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * The target zone info.
      */
-    @JsonProperty(value = "target")
     private String target;
 
-    /** Creates an instance of A2AZoneDetails class. */
+    /**
+     * Creates an instance of A2AZoneDetails class.
+     */
     public A2AZoneDetails() {
     }
 
     /**
      * Get the source property: Source zone info.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -37,7 +43,7 @@ public final class A2AZoneDetails {
 
     /**
      * Set the source property: Source zone info.
-     *
+     * 
      * @param source the source value to set.
      * @return the A2AZoneDetails object itself.
      */
@@ -48,7 +54,7 @@ public final class A2AZoneDetails {
 
     /**
      * Get the target property: The target zone info.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -57,7 +63,7 @@ public final class A2AZoneDetails {
 
     /**
      * Set the target property: The target zone info.
-     *
+     * 
      * @param target the target value to set.
      * @return the A2AZoneDetails object itself.
      */
@@ -68,9 +74,48 @@ public final class A2AZoneDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeStringField("target", this.target);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AZoneDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AZoneDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AZoneDetails.
+     */
+    public static A2AZoneDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AZoneDetails deserializedA2AZoneDetails = new A2AZoneDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedA2AZoneDetails.source = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedA2AZoneDetails.target = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AZoneDetails;
+        });
     }
 }

@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes a managed rule group. */
+/**
+ * Describes a managed rule group.
+ */
 @Immutable
-public final class ManagedRuleGroupDefinition {
+public final class ManagedRuleGroupDefinition implements JsonSerializable<ManagedRuleGroupDefinition> {
     /*
      * Name of the managed rule group.
      */
-    @JsonProperty(value = "ruleGroupName", access = JsonProperty.Access.WRITE_ONLY)
     private String ruleGroupName;
 
     /*
      * Description of the managed rule group.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * List of rules within the managed rule group.
      */
-    @JsonProperty(value = "rules", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedRuleDefinition> rules;
 
-    /** Creates an instance of ManagedRuleGroupDefinition class. */
+    /**
+     * Creates an instance of ManagedRuleGroupDefinition class.
+     */
     public ManagedRuleGroupDefinition() {
     }
 
     /**
      * Get the ruleGroupName property: Name of the managed rule group.
-     *
+     * 
      * @return the ruleGroupName value.
      */
     public String ruleGroupName() {
@@ -44,7 +49,7 @@ public final class ManagedRuleGroupDefinition {
 
     /**
      * Get the description property: Description of the managed rule group.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -53,7 +58,7 @@ public final class ManagedRuleGroupDefinition {
 
     /**
      * Get the rules property: List of rules within the managed rule group.
-     *
+     * 
      * @return the rules value.
      */
     public List<ManagedRuleDefinition> rules() {
@@ -62,12 +67,53 @@ public final class ManagedRuleGroupDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedRuleGroupDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedRuleGroupDefinition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedRuleGroupDefinition.
+     */
+    public static ManagedRuleGroupDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedRuleGroupDefinition deserializedManagedRuleGroupDefinition = new ManagedRuleGroupDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleGroupName".equals(fieldName)) {
+                    deserializedManagedRuleGroupDefinition.ruleGroupName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedManagedRuleGroupDefinition.description = reader.getString();
+                } else if ("rules".equals(fieldName)) {
+                    List<ManagedRuleDefinition> rules
+                        = reader.readArray(reader1 -> ManagedRuleDefinition.fromJson(reader1));
+                    deserializedManagedRuleGroupDefinition.rules = rules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedRuleGroupDefinition;
+        });
     }
 }

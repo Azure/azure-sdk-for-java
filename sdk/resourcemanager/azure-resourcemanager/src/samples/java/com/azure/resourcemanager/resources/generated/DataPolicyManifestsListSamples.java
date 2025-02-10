@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-/** Samples for DataPolicyManifests List. */
+/**
+ * Samples for DataPolicyManifests List.
+ */
 public final class DataPolicyManifestsListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/listDataPolicyManifests.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/
+     * listDataPolicyManifests.json
      */
     /**
      * Sample code: List data policy manifests.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listDataPolicyManifests(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getDataPolicyManifests()
@@ -24,17 +26,17 @@ public final class DataPolicyManifestsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/listDataPolicyManifestsNamespaceFilter.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/
+     * listDataPolicyManifestsNamespaceFilter.json
      */
     /**
      * Sample code: List data policy manifests with namespace filter.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listDataPolicyManifestsWithNamespaceFilter(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+    public static void
+        listDataPolicyManifestsWithNamespaceFilter(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.genericResources()
             .manager()
             .policyClient()
             .getDataPolicyManifests()

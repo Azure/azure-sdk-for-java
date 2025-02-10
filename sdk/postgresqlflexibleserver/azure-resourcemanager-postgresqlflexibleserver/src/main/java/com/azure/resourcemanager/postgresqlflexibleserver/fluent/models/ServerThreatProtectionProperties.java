@@ -5,35 +5,42 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of server Threat Protection state. */
+/**
+ * Properties of server Threat Protection state.
+ */
 @Fluent
-public final class ServerThreatProtectionProperties {
+public final class ServerThreatProtectionProperties implements JsonSerializable<ServerThreatProtectionProperties> {
     /*
      * Specifies the state of the Threat Protection, whether it is enabled or disabled or a state has not been applied
      * yet on the specific server.
      */
-    @JsonProperty(value = "state", required = true)
     private ThreatProtectionState state;
 
     /*
      * Specifies the UTC creation time of the policy.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
-    /** Creates an instance of ServerThreatProtectionProperties class. */
+    /**
+     * Creates an instance of ServerThreatProtectionProperties class.
+     */
     public ServerThreatProtectionProperties() {
     }
 
     /**
      * Get the state property: Specifies the state of the Threat Protection, whether it is enabled or disabled or a
      * state has not been applied yet on the specific server.
-     *
+     * 
      * @return the state value.
      */
     public ThreatProtectionState state() {
@@ -43,7 +50,7 @@ public final class ServerThreatProtectionProperties {
     /**
      * Set the state property: Specifies the state of the Threat Protection, whether it is enabled or disabled or a
      * state has not been applied yet on the specific server.
-     *
+     * 
      * @param state the state value to set.
      * @return the ServerThreatProtectionProperties object itself.
      */
@@ -54,7 +61,7 @@ public final class ServerThreatProtectionProperties {
 
     /**
      * Get the creationTime property: Specifies the UTC creation time of the policy.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -63,17 +70,58 @@ public final class ServerThreatProtectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model ServerThreatProtectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model ServerThreatProtectionProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServerThreatProtectionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerThreatProtectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerThreatProtectionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerThreatProtectionProperties.
+     */
+    public static ServerThreatProtectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerThreatProtectionProperties deserializedServerThreatProtectionProperties
+                = new ServerThreatProtectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedServerThreatProtectionProperties.state
+                        = ThreatProtectionState.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedServerThreatProtectionProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerThreatProtectionProperties;
+        });
+    }
 }

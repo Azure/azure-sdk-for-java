@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing
  * this domain will simply restore it and this operation will not cost anything.
@@ -37,7 +34,6 @@ public enum DomainType {
      * @param value the serialized value to parse.
      * @return the parsed DomainType object, or null if unable to parse.
      */
-    @JsonCreator
     public static DomainType fromString(String value) {
         if (value == null) {
             return null;
@@ -54,7 +50,6 @@ public enum DomainType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

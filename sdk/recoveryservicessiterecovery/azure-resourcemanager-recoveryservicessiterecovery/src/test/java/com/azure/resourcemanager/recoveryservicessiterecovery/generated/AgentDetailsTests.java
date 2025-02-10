@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.AgentDetail
 public final class AgentDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentDetails model =
-            BinaryData
-                .fromString(
-                    "{\"agentId\":\"qfhefkwabsol\",\"machineId\":\"nqqlmgnl\",\"biosId\":\"sjxtel\",\"fqdn\":\"hvuqbo\",\"disks\":[{\"diskId\":\"zqocarku\",\"diskName\":\"bc\",\"isOSDisk\":\"dtsnxawqytllhdyz\",\"capacityInBytes\":4408018623458565457,\"lunId\":790899458}]}")
-                .toObject(AgentDetails.class);
+        AgentDetails model = BinaryData.fromString(
+            "{\"agentId\":\"qfhefkwabsol\",\"machineId\":\"nqqlmgnl\",\"biosId\":\"sjxtel\",\"fqdn\":\"hvuqbo\",\"disks\":[{\"diskId\":\"zqocarku\",\"diskName\":\"bc\",\"isOSDisk\":\"dtsnxawqytllhdyz\",\"capacityInBytes\":4408018623458565457,\"lunId\":790899458}]}")
+            .toObject(AgentDetails.class);
     }
 
     @org.junit.jupiter.api.Test

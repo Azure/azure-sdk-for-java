@@ -5,51 +5,56 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** This class represents the recovery plan group task. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = RecoveryPlanGroupTaskDetails.class)
-@JsonTypeName("RecoveryPlanGroupTaskDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "RecoveryPlanShutdownGroupTaskDetails",
-        value = RecoveryPlanShutdownGroupTaskDetails.class)
-})
+/**
+ * This class represents the recovery plan group task.
+ */
 @Fluent
 public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
     /*
+     * The type of task details.
+     */
+    private String instanceType = "RecoveryPlanGroupTaskDetails";
+
+    /*
      * The name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The group identifier.
      */
-    @JsonProperty(value = "groupId")
     private String groupId;
 
     /*
      * The group type.
      */
-    @JsonProperty(value = "rpGroupType")
     private String rpGroupType;
 
-    /** Creates an instance of RecoveryPlanGroupTaskDetails class. */
+    /**
+     * Creates an instance of RecoveryPlanGroupTaskDetails class.
+     */
     public RecoveryPlanGroupTaskDetails() {
     }
 
     /**
+     * Get the instanceType property: The type of task details.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the name property: The name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +63,7 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Set the name property: The name.
-     *
+     * 
      * @param name the name value to set.
      * @return the RecoveryPlanGroupTaskDetails object itself.
      */
@@ -69,7 +74,7 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Get the groupId property: The group identifier.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -78,7 +83,7 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Set the groupId property: The group identifier.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the RecoveryPlanGroupTaskDetails object itself.
      */
@@ -89,7 +94,7 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Get the rpGroupType property: The group type.
-     *
+     * 
      * @return the rpGroupType value.
      */
     public String rpGroupType() {
@@ -98,7 +103,7 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Set the rpGroupType property: The group type.
-     *
+     * 
      * @param rpGroupType the rpGroupType value to set.
      * @return the RecoveryPlanGroupTaskDetails object itself.
      */
@@ -107,7 +112,9 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPlanGroupTaskDetails withChildTasks(List<AsrTask> childTasks) {
         super.withChildTasks(childTasks);
@@ -116,11 +123,87 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (childTasks() != null) {
+            childTasks().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("childTasks", childTasks(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("groupId", this.groupId);
+        jsonWriter.writeStringField("rpGroupType", this.rpGroupType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanGroupTaskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanGroupTaskDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPlanGroupTaskDetails.
+     */
+    public static RecoveryPlanGroupTaskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("RecoveryPlanShutdownGroupTaskDetails".equals(discriminatorValue)) {
+                    return RecoveryPlanShutdownGroupTaskDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RecoveryPlanGroupTaskDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanGroupTaskDetails deserializedRecoveryPlanGroupTaskDetails = new RecoveryPlanGroupTaskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("childTasks".equals(fieldName)) {
+                    List<AsrTask> childTasks = reader.readArray(reader1 -> AsrTask.fromJson(reader1));
+                    deserializedRecoveryPlanGroupTaskDetails.withChildTasks(childTasks);
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedRecoveryPlanGroupTaskDetails.instanceType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRecoveryPlanGroupTaskDetails.name = reader.getString();
+                } else if ("groupId".equals(fieldName)) {
+                    deserializedRecoveryPlanGroupTaskDetails.groupId = reader.getString();
+                } else if ("rpGroupType".equals(fieldName)) {
+                    deserializedRecoveryPlanGroupTaskDetails.rpGroupType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanGroupTaskDetails;
+        });
     }
 }

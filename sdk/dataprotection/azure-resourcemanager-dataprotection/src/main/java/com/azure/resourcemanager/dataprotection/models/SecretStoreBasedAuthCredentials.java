@@ -5,27 +5,40 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Secret store based authentication credentials.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("SecretStoreBasedAuthCredentials")
 @Fluent
 public final class SecretStoreBasedAuthCredentials extends AuthCredentials {
     /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "SecretStoreBasedAuthCredentials";
+
+    /*
      * Secret store resource
      */
-    @JsonProperty(value = "secretStoreResource")
     private SecretStoreResource secretStoreResource;
 
     /**
      * Creates an instance of SecretStoreBasedAuthCredentials class.
      */
     public SecretStoreBasedAuthCredentials() {
+    }
+
+    /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -59,5 +72,46 @@ public final class SecretStoreBasedAuthCredentials extends AuthCredentials {
         if (secretStoreResource() != null) {
             secretStoreResource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeJsonField("secretStoreResource", this.secretStoreResource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecretStoreBasedAuthCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecretStoreBasedAuthCredentials if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecretStoreBasedAuthCredentials.
+     */
+    public static SecretStoreBasedAuthCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretStoreBasedAuthCredentials deserializedSecretStoreBasedAuthCredentials
+                = new SecretStoreBasedAuthCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedSecretStoreBasedAuthCredentials.objectType = reader.getString();
+                } else if ("secretStoreResource".equals(fieldName)) {
+                    deserializedSecretStoreBasedAuthCredentials.secretStoreResource
+                        = SecretStoreResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecretStoreBasedAuthCredentials;
+        });
     }
 }

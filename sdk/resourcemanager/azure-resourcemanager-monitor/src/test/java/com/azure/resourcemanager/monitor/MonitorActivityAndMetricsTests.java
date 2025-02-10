@@ -9,6 +9,8 @@ import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.monitor.models.EventData;
 import com.azure.resourcemanager.monitor.models.EventDataPropertyName;
@@ -24,7 +26,10 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 
 public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
+    private static final ClientLogger LOGGER = new ClientLogger(MonitorActivityAndMetricsTests.class);
+
     private String rgName = "";
+
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("jMonitor_", 18);
@@ -44,12 +49,10 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
         Region region = Region.US_WEST;
         String vmName = generateRandomResourceName("jMonitorVm_", 18);
         VirtualMachine vm = ensureVM(region,
-            resourceManager.resourceGroups().define(rgName).withRegion(region).create(),
-            vmName,
-            "10.0.0.0/28");
+            resourceManager.resourceGroups().define(rgName).withRegion(region).create(), vmName, "10.0.0.0/28");
 
         OffsetDateTime now = OffsetDateTime.now();
-        System.out.println("record timestamp: " + now);
+        LOGGER.log(LogLevel.VERBOSE, () -> "record timestamp: " + now);
 
         OffsetDateTime recordDateTime = now.minusDays(40);
 
@@ -63,13 +66,11 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
         Assertions.assertNotNull(mDef.supportedAggregationTypes());
 
         // Metric
-        MetricCollection metrics =
-            mDef
-                .defineQuery()
-                .startingFrom(recordDateTime.minusDays(30))
-                .endsBefore(recordDateTime)
-                .withResultType(ResultType.DATA)
-                .execute();
+        MetricCollection metrics = mDef.defineQuery()
+            .startingFrom(recordDateTime.minusDays(30))
+            .endsBefore(recordDateTime)
+            .withResultType(ResultType.DATA)
+            .execute();
 
         Assertions.assertNotNull(metrics);
         Assertions.assertNotNull(metrics.namespace());
@@ -77,19 +78,14 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
         Assertions.assertEquals("Microsoft.Compute/virtualMachines", metrics.namespace());
 
         // Activity Logs
-        PagedIterable<EventData> retVal =
-            monitorManager
-                .activityLogs()
-                .defineQuery()
-                .startingFrom(recordDateTime.minusDays(30))
-                .endsBefore(recordDateTime)
-                .withResponseProperties(
-                    EventDataPropertyName.RESOURCEID,
-                    EventDataPropertyName.EVENTTIMESTAMP,
-                    EventDataPropertyName.OPERATIONNAME,
-                    EventDataPropertyName.EVENTNAME)
-                .filterByResource(vm.id())
-                .execute();
+        PagedIterable<EventData> retVal = monitorManager.activityLogs()
+            .defineQuery()
+            .startingFrom(recordDateTime.minusDays(30))
+            .endsBefore(recordDateTime)
+            .withResponseProperties(EventDataPropertyName.RESOURCEID, EventDataPropertyName.EVENTTIMESTAMP,
+                EventDataPropertyName.OPERATIONNAME, EventDataPropertyName.EVENTNAME)
+            .filterByResource(vm.id())
+            .execute();
 
         Assertions.assertNotNull(retVal);
         for (EventData event : retVal) {
@@ -115,16 +111,12 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
 
         // List Activity logs at tenant level is not allowed for the current tenant
         try {
-            monitorManager
-                .activityLogs()
+            monitorManager.activityLogs()
                 .defineQuery()
                 .startingFrom(recordDateTime.minusDays(30))
                 .endsBefore(recordDateTime)
-                .withResponseProperties(
-                    EventDataPropertyName.RESOURCEID,
-                    EventDataPropertyName.EVENTTIMESTAMP,
-                    EventDataPropertyName.OPERATIONNAME,
-                    EventDataPropertyName.EVENTNAME)
+                .withResponseProperties(EventDataPropertyName.RESOURCEID, EventDataPropertyName.EVENTTIMESTAMP,
+                    EventDataPropertyName.OPERATIONNAME, EventDataPropertyName.EVENTNAME)
                 .filterByResource(vm.id())
                 .filterAtTenantLevel()
                 .execute();
@@ -143,7 +135,7 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
         SqlElasticPool pool = ensureElasticPoolWithWhiteSpace(region, rgName);
 
         OffsetDateTime now = OffsetDateTime.now();
-        System.out.println("record timestamp: " + now);
+        LOGGER.log(LogLevel.VERBOSE, () -> "record timestamp: " + now);
 
         OffsetDateTime recordDateTime = now.minusDays(40);
 
@@ -157,13 +149,11 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
         Assertions.assertNotNull(mDef.supportedAggregationTypes());
 
         // Metric
-        MetricCollection metrics =
-            mDef
-                .defineQuery()
-                .startingFrom(recordDateTime.minusDays(30))
-                .endsBefore(recordDateTime)
-                .withResultType(ResultType.DATA)
-                .execute();
+        MetricCollection metrics = mDef.defineQuery()
+            .startingFrom(recordDateTime.minusDays(30))
+            .endsBefore(recordDateTime)
+            .withResultType(ResultType.DATA)
+            .execute();
 
         Assertions.assertNotNull(metrics);
         Assertions.assertNotNull(metrics.namespace());
@@ -171,19 +161,14 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
         Assertions.assertEquals("Microsoft.Sql/servers/elasticPools", metrics.namespace());
 
         // Activity Logs
-        PagedIterable<EventData> retVal =
-            monitorManager
-                .activityLogs()
-                .defineQuery()
-                .startingFrom(recordDateTime.minusDays(30))
-                .endsBefore(recordDateTime)
-                .withResponseProperties(
-                    EventDataPropertyName.RESOURCEID,
-                    EventDataPropertyName.EVENTTIMESTAMP,
-                    EventDataPropertyName.OPERATIONNAME,
-                    EventDataPropertyName.EVENTNAME)
-                .filterByResource(pool.id())
-                .execute();
+        PagedIterable<EventData> retVal = monitorManager.activityLogs()
+            .defineQuery()
+            .startingFrom(recordDateTime.minusDays(30))
+            .endsBefore(recordDateTime)
+            .withResponseProperties(EventDataPropertyName.RESOURCEID, EventDataPropertyName.EVENTTIMESTAMP,
+                EventDataPropertyName.OPERATIONNAME, EventDataPropertyName.EVENTNAME)
+            .filterByResource(pool.id())
+            .execute();
 
         Assertions.assertNotNull(retVal);
         for (EventData event : retVal) {
@@ -209,16 +194,12 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
 
         // List Activity logs at tenant level is not allowed for the current tenant
         try {
-            monitorManager
-                .activityLogs()
+            monitorManager.activityLogs()
                 .defineQuery()
                 .startingFrom(recordDateTime.minusDays(30))
                 .endsBefore(recordDateTime)
-                .withResponseProperties(
-                    EventDataPropertyName.RESOURCEID,
-                    EventDataPropertyName.EVENTTIMESTAMP,
-                    EventDataPropertyName.OPERATIONNAME,
-                    EventDataPropertyName.EVENTNAME)
+                .withResponseProperties(EventDataPropertyName.RESOURCEID, EventDataPropertyName.EVENTTIMESTAMP,
+                    EventDataPropertyName.OPERATIONNAME, EventDataPropertyName.EVENTNAME)
                 .filterByResource(pool.id())
                 .filterAtTenantLevel()
                 .execute();

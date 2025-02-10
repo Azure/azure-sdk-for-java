@@ -42,7 +42,7 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
     /**
      * Get the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
+     * % _ &amp;#35; * ? ! ( ) , = &#064; ; $ '.
      * 
      * @return the deviceId value.
      */
@@ -53,7 +53,7 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
     /**
      * Set the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
-     * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
+     * % _ &amp;#35; * ? ! ( ) , = &#064; ; $ '.
      * 
      * @param deviceId the deviceId value to set.
      * @return the DeviceLifeCycleEventProperties object itself.
@@ -84,8 +84,8 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
     }
 
     /**
-     * Get the twin property: Information about the device twin, which is the cloud representation of application
-     * device metadata.
+     * Get the twin property: Information about the device twin, which is the cloud representation of application device
+     * metadata.
      * 
      * @return the twin value.
      */
@@ -94,8 +94,8 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
     }
 
     /**
-     * Set the twin property: Information about the device twin, which is the cloud representation of application
-     * device metadata.
+     * Set the twin property: Information about the device twin, which is the cloud representation of application device
+     * metadata.
      * 
      * @param twin the twin value to set.
      * @return the DeviceLifeCycleEventProperties object itself.
@@ -105,6 +105,9 @@ public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLi
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

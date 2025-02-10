@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VMwareCbt security profile input. */
+/**
+ * VMwareCbt security profile input.
+ */
 @Fluent
-public final class VMwareCbtSecurityProfileProperties {
+public final class VMwareCbtSecurityProfileProperties implements JsonSerializable<VMwareCbtSecurityProfileProperties> {
     /*
      * The target VM security type.
      */
-    @JsonProperty(value = "targetVmSecurityType")
     private SecurityType targetVmSecurityType;
 
     /*
      * A value indicating whether secure boot to be enabled.
      */
-    @JsonProperty(value = "isTargetVmSecureBootEnabled")
     private String isTargetVmSecureBootEnabled;
 
     /*
      * A value indicating whether trusted platform module to be enabled.
      */
-    @JsonProperty(value = "isTargetVmTpmEnabled")
     private String isTargetVmTpmEnabled;
 
     /*
      * A value indicating whether integrity monitoring to be enabled.
      */
-    @JsonProperty(value = "isTargetVmIntegrityMonitoringEnabled")
     private String isTargetVmIntegrityMonitoringEnabled;
 
     /*
      * A value indicating whether confidential compute encryption to be enabled.
      */
-    @JsonProperty(value = "isTargetVmConfidentialEncryptionEnabled")
     private String isTargetVmConfidentialEncryptionEnabled;
 
-    /** Creates an instance of VMwareCbtSecurityProfileProperties class. */
+    /**
+     * Creates an instance of VMwareCbtSecurityProfileProperties class.
+     */
     public VMwareCbtSecurityProfileProperties() {
     }
 
     /**
      * Get the targetVmSecurityType property: The target VM security type.
-     *
+     * 
      * @return the targetVmSecurityType value.
      */
     public SecurityType targetVmSecurityType() {
@@ -55,7 +58,7 @@ public final class VMwareCbtSecurityProfileProperties {
 
     /**
      * Set the targetVmSecurityType property: The target VM security type.
-     *
+     * 
      * @param targetVmSecurityType the targetVmSecurityType value to set.
      * @return the VMwareCbtSecurityProfileProperties object itself.
      */
@@ -66,7 +69,7 @@ public final class VMwareCbtSecurityProfileProperties {
 
     /**
      * Get the isTargetVmSecureBootEnabled property: A value indicating whether secure boot to be enabled.
-     *
+     * 
      * @return the isTargetVmSecureBootEnabled value.
      */
     public String isTargetVmSecureBootEnabled() {
@@ -75,7 +78,7 @@ public final class VMwareCbtSecurityProfileProperties {
 
     /**
      * Set the isTargetVmSecureBootEnabled property: A value indicating whether secure boot to be enabled.
-     *
+     * 
      * @param isTargetVmSecureBootEnabled the isTargetVmSecureBootEnabled value to set.
      * @return the VMwareCbtSecurityProfileProperties object itself.
      */
@@ -86,7 +89,7 @@ public final class VMwareCbtSecurityProfileProperties {
 
     /**
      * Get the isTargetVmTpmEnabled property: A value indicating whether trusted platform module to be enabled.
-     *
+     * 
      * @return the isTargetVmTpmEnabled value.
      */
     public String isTargetVmTpmEnabled() {
@@ -95,7 +98,7 @@ public final class VMwareCbtSecurityProfileProperties {
 
     /**
      * Set the isTargetVmTpmEnabled property: A value indicating whether trusted platform module to be enabled.
-     *
+     * 
      * @param isTargetVmTpmEnabled the isTargetVmTpmEnabled value to set.
      * @return the VMwareCbtSecurityProfileProperties object itself.
      */
@@ -107,7 +110,7 @@ public final class VMwareCbtSecurityProfileProperties {
     /**
      * Get the isTargetVmIntegrityMonitoringEnabled property: A value indicating whether integrity monitoring to be
      * enabled.
-     *
+     * 
      * @return the isTargetVmIntegrityMonitoringEnabled value.
      */
     public String isTargetVmIntegrityMonitoringEnabled() {
@@ -117,12 +120,12 @@ public final class VMwareCbtSecurityProfileProperties {
     /**
      * Set the isTargetVmIntegrityMonitoringEnabled property: A value indicating whether integrity monitoring to be
      * enabled.
-     *
+     * 
      * @param isTargetVmIntegrityMonitoringEnabled the isTargetVmIntegrityMonitoringEnabled value to set.
      * @return the VMwareCbtSecurityProfileProperties object itself.
      */
-    public VMwareCbtSecurityProfileProperties withIsTargetVmIntegrityMonitoringEnabled(
-        String isTargetVmIntegrityMonitoringEnabled) {
+    public VMwareCbtSecurityProfileProperties
+        withIsTargetVmIntegrityMonitoringEnabled(String isTargetVmIntegrityMonitoringEnabled) {
         this.isTargetVmIntegrityMonitoringEnabled = isTargetVmIntegrityMonitoringEnabled;
         return this;
     }
@@ -130,7 +133,7 @@ public final class VMwareCbtSecurityProfileProperties {
     /**
      * Get the isTargetVmConfidentialEncryptionEnabled property: A value indicating whether confidential compute
      * encryption to be enabled.
-     *
+     * 
      * @return the isTargetVmConfidentialEncryptionEnabled value.
      */
     public String isTargetVmConfidentialEncryptionEnabled() {
@@ -140,21 +143,75 @@ public final class VMwareCbtSecurityProfileProperties {
     /**
      * Set the isTargetVmConfidentialEncryptionEnabled property: A value indicating whether confidential compute
      * encryption to be enabled.
-     *
+     * 
      * @param isTargetVmConfidentialEncryptionEnabled the isTargetVmConfidentialEncryptionEnabled value to set.
      * @return the VMwareCbtSecurityProfileProperties object itself.
      */
-    public VMwareCbtSecurityProfileProperties withIsTargetVmConfidentialEncryptionEnabled(
-        String isTargetVmConfidentialEncryptionEnabled) {
+    public VMwareCbtSecurityProfileProperties
+        withIsTargetVmConfidentialEncryptionEnabled(String isTargetVmConfidentialEncryptionEnabled) {
         this.isTargetVmConfidentialEncryptionEnabled = isTargetVmConfidentialEncryptionEnabled;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetVmSecurityType",
+            this.targetVmSecurityType == null ? null : this.targetVmSecurityType.toString());
+        jsonWriter.writeStringField("isTargetVmSecureBootEnabled", this.isTargetVmSecureBootEnabled);
+        jsonWriter.writeStringField("isTargetVmTpmEnabled", this.isTargetVmTpmEnabled);
+        jsonWriter.writeStringField("isTargetVmIntegrityMonitoringEnabled", this.isTargetVmIntegrityMonitoringEnabled);
+        jsonWriter.writeStringField("isTargetVmConfidentialEncryptionEnabled",
+            this.isTargetVmConfidentialEncryptionEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtSecurityProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtSecurityProfileProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMwareCbtSecurityProfileProperties.
+     */
+    public static VMwareCbtSecurityProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtSecurityProfileProperties deserializedVMwareCbtSecurityProfileProperties
+                = new VMwareCbtSecurityProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetVmSecurityType".equals(fieldName)) {
+                    deserializedVMwareCbtSecurityProfileProperties.targetVmSecurityType
+                        = SecurityType.fromString(reader.getString());
+                } else if ("isTargetVmSecureBootEnabled".equals(fieldName)) {
+                    deserializedVMwareCbtSecurityProfileProperties.isTargetVmSecureBootEnabled = reader.getString();
+                } else if ("isTargetVmTpmEnabled".equals(fieldName)) {
+                    deserializedVMwareCbtSecurityProfileProperties.isTargetVmTpmEnabled = reader.getString();
+                } else if ("isTargetVmIntegrityMonitoringEnabled".equals(fieldName)) {
+                    deserializedVMwareCbtSecurityProfileProperties.isTargetVmIntegrityMonitoringEnabled
+                        = reader.getString();
+                } else if ("isTargetVmConfidentialEncryptionEnabled".equals(fieldName)) {
+                    deserializedVMwareCbtSecurityProfileProperties.isTargetVmConfidentialEncryptionEnabled
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtSecurityProfileProperties;
+        });
     }
 }

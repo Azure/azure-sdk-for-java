@@ -6,32 +6,38 @@ package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.UpdateRunInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of a UpdateRun list operation. */
+/**
+ * The response of a UpdateRun list operation.
+ */
 @Fluent
-public final class UpdateRunListResult {
+public final class UpdateRunListResult implements JsonSerializable<UpdateRunListResult> {
     /*
      * The UpdateRun items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<UpdateRunInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of UpdateRunListResult class. */
+    /**
+     * Creates an instance of UpdateRunListResult class.
+     */
     public UpdateRunListResult() {
     }
 
     /**
      * Get the value property: The UpdateRun items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<UpdateRunInner> value() {
@@ -40,7 +46,7 @@ public final class UpdateRunListResult {
 
     /**
      * Set the value property: The UpdateRun items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the UpdateRunListResult object itself.
      */
@@ -51,7 +57,7 @@ public final class UpdateRunListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +66,7 @@ public final class UpdateRunListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the UpdateRunListResult object itself.
      */
@@ -71,18 +77,58 @@ public final class UpdateRunListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model UpdateRunListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model UpdateRunListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpdateRunListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateRunListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateRunListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateRunListResult.
+     */
+    public static UpdateRunListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateRunListResult deserializedUpdateRunListResult = new UpdateRunListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<UpdateRunInner> value = reader.readArray(reader1 -> UpdateRunInner.fromJson(reader1));
+                    deserializedUpdateRunListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedUpdateRunListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateRunListResult;
+        });
+    }
 }

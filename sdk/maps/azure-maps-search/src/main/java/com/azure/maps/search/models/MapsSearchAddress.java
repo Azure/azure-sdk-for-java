@@ -4,259 +4,153 @@
 
 package com.azure.maps.search.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.models.GeoBoundingBox;
-import com.azure.maps.search.implementation.models.BoundingBoxCompassNotation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.maps.search.implementation.models.MapsSearchAddressAdminDistrictsItem;
+import java.io.IOException;
 import java.util.List;
 
-/** The address of the result. */
-@Immutable
-public final class MapsSearchAddress {
+/**
+ * The address of the result.
+ */
+@Fluent
+public final class MapsSearchAddress implements JsonSerializable<MapsSearchAddress> {
     /*
-     * The building number on the street. DEPRECATED, use streetNumber instead.
+     * AddressLine that includes Street Name and Number
      */
-    @JsonProperty(value = "buildingNumber", access = JsonProperty.Access.WRITE_ONLY)
-    private String buildingNumber;
+    private String addressLine;
 
     /*
-     * The street name. DEPRECATED, use streetName instead.
+     * locality property
      */
-    @JsonProperty(value = "street", access = JsonProperty.Access.WRITE_ONLY)
-    private String street;
+    private String locality;
 
     /*
-     * The name of the street being crossed.
+     * neighborhood property
      */
-    @JsonProperty(value = "crossStreet", access = JsonProperty.Access.WRITE_ONLY)
-    private String crossStreet;
+    private String neighborhood;
 
     /*
-     * The building number on the street.
+     * The subdivision name in the country or region for an address. This element is typically treated as the first order administrative subdivision, but in some cases it also contains the second, third, or fourth order subdivision in a country, dependency, or region.
      */
-    @JsonProperty(value = "streetNumber", access = JsonProperty.Access.WRITE_ONLY)
-    private String streetNumber;
+    private List<MapsSearchAddressAdminDistrictsItem> adminDistricts;
 
     /*
-     * The codes used to unambiguously identify the street
+     * Postal Code property
      */
-    @JsonProperty(value = "routeNumbers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> routeNumbers;
-
-    /*
-     * The street name.
-     */
-    @JsonProperty(value = "streetName", access = JsonProperty.Access.WRITE_ONLY)
-    private String streetName;
-
-    /*
-     * The street name and number.
-     */
-    @JsonProperty(value = "streetNameAndNumber", access = JsonProperty.Access.WRITE_ONLY)
-    private String streetNameAndNumber;
-
-    /*
-     * City / Town
-     */
-    @JsonProperty(value = "municipality", access = JsonProperty.Access.WRITE_ONLY)
-    private String municipality;
-
-    /*
-     * Sub / Super City
-     */
-    @JsonProperty(value = "municipalitySubdivision", access = JsonProperty.Access.WRITE_ONLY)
-    private String municipalitySubdivision;
-
-    /*
-     * Named Area
-     */
-    @JsonProperty(value = "countryTertiarySubdivision", access = JsonProperty.Access.WRITE_ONLY)
-    private String countryTertiarySubdivision;
-
-    /*
-     * County
-     */
-    @JsonProperty(value = "countrySecondarySubdivision", access = JsonProperty.Access.WRITE_ONLY)
-    private String countrySecondarySubdivision;
-
-    /*
-     * State or Province
-     */
-    @JsonProperty(value = "countrySubdivision", access = JsonProperty.Access.WRITE_ONLY)
-    private String countrySubdivision;
-
-    /*
-     * Postal Code / Zip Code
-     */
-    @JsonProperty(value = "postalCode", access = JsonProperty.Access.WRITE_ONLY)
     private String postalCode;
 
     /*
-     * Extended postal code (availability is dependent on the region).
+     * The countryRegion property.
      */
-    @JsonProperty(value = "extendedPostalCode", access = JsonProperty.Access.WRITE_ONLY)
-    private String extendedPostalCode;
+    private MapsSearchAddressCountryRegion countryRegion;
 
     /*
-     * Country (Note: This is a two-letter code, not a country name.)
+     * Formatted Address property
      */
-    @JsonProperty(value = "countryCode", access = JsonProperty.Access.WRITE_ONLY)
-    private String countryCode;
+    private String formattedAddress;
 
     /*
-     * Country name
+     * The address of the result.
      */
-    @JsonProperty(value = "country", access = JsonProperty.Access.WRITE_ONLY)
-    private String country;
-
-    /*
-     * ISO alpha-3 country code
-     */
-    @JsonProperty(value = "countryCodeISO3", access = JsonProperty.Access.WRITE_ONLY)
-    private String countryCodeISO3;
-
-    /*
-     * An address line formatted according to the formatting rules of a Result's country of origin, or in the case of a
-     * country, its full country name.
-     */
-    @JsonProperty(value = "freeformAddress", access = JsonProperty.Access.WRITE_ONLY)
-    private String freeformAddress;
-
-    /*
-     * The full name of a first level of country administrative hierarchy. This field appears only in case
-     * countrySubdivision is presented in an abbreviated form. Only supported for USA, Canada, and United Kingdom.
-     */
-    @JsonProperty(value = "countrySubdivisionName", access = JsonProperty.Access.WRITE_ONLY)
-    private String countrySubdivisionName;
-
-    /*
-     * An address component which represents the name of a geographic area or locality that groups a number of
-     * addressable objects for addressing purposes, without being an administrative unit. This field is used to build
-     * the `freeformAddress` property.
-     */
-    @JsonProperty(value = "localName", access = JsonProperty.Access.WRITE_ONLY)
-    private String localName;
-
-    /*
-     * The bounding box of the location.
-     */
-    @JsonProperty(value = "boundingBox", access = JsonProperty.Access.WRITE_ONLY)
-    private BoundingBoxCompassNotation boundingBox;
-
-    /** Creates an instance of Address class. */
-    public MapsSearchAddress() {}
+    private Intersection intersection;
 
     /**
-     * Get the buildingNumber property: The building number on the street. DEPRECATED, use streetNumber instead.
-     *
-     * @return the buildingNumber value.
+     * Creates an instance of MapsSearchAddress class.
      */
-    public String getBuildingNumber() {
-        return this.buildingNumber;
+    public MapsSearchAddress() {
     }
 
     /**
-     * Get the street property: The street name. DEPRECATED, use streetName instead.
-     *
-     * @return the street value.
+     * Get the addressLine property: AddressLine that includes Street Name and Number.
+     * 
+     * @return the addressLine value.
      */
-    public String getStreet() {
-        return this.street;
+    public String getAddressLine() {
+        return this.addressLine;
     }
 
     /**
-     * Get the crossStreet property: The name of the street being crossed.
-     *
-     * @return the crossStreet value.
+     * Set the addressLine property: AddressLine that includes Street Name and Number.
+     * 
+     * @param addressLine the addressLine value to set.
+     * @return the MapsSearchAddress object itself.
      */
-    public String getCrossStreet() {
-        return this.crossStreet;
+    public MapsSearchAddress setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
+        return this;
     }
 
     /**
-     * Get the streetNumber property: The building number on the street.
-     *
-     * @return the streetNumber value.
+     * Get the locality property: locality property.
+     * 
+     * @return the locality value.
      */
-    public String getStreetNumber() {
-        return this.streetNumber;
+    public String getLocality() {
+        return this.locality;
     }
 
     /**
-     * Get the routeNumbers property: The codes used to unambiguously identify the street.
-     *
-     * @return the routeNumbers value.
+     * Set the locality property: locality property.
+     * 
+     * @param locality the locality value to set.
+     * @return the MapsSearchAddress object itself.
      */
-    public List<String> getRouteNumbers() {
-        return this.routeNumbers;
+    public MapsSearchAddress setLocality(String locality) {
+        this.locality = locality;
+        return this;
     }
 
     /**
-     * Get the streetName property: The street name.
-     *
-     * @return the streetName value.
+     * Get the neighborhood property: neighborhood property.
+     * 
+     * @return the neighborhood value.
      */
-    public String getStreetName() {
-        return this.streetName;
+    public String getNeighborhood() {
+        return this.neighborhood;
     }
 
     /**
-     * Get the streetNameAndNumber property: The street name and number.
-     *
-     * @return the streetNameAndNumber value.
+     * Set the neighborhood property: neighborhood property.
+     * 
+     * @param neighborhood the neighborhood value to set.
+     * @return the MapsSearchAddress object itself.
      */
-    public String getStreetNameAndNumber() {
-        return this.streetNameAndNumber;
+    public MapsSearchAddress setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+        return this;
     }
 
     /**
-     * Get the municipality property: City / Town.
-     *
-     * @return the municipality value.
+     * Get the adminDistricts property: The subdivision name in the country or region for an address. This element is
+     * typically treated as the first order administrative subdivision, but in some cases it also contains the second,
+     * third, or fourth order subdivision in a country, dependency, or region.
+     * 
+     * @return the adminDistricts value.
      */
-    public String getMunicipality() {
-        return this.municipality;
+    public List<MapsSearchAddressAdminDistrictsItem> getAdminDistricts() {
+        return this.adminDistricts;
     }
 
     /**
-     * Get the municipalitySubdivision property: Sub / Super City.
-     *
-     * @return the municipalitySubdivision value.
+     * Set the adminDistricts property: The subdivision name in the country or region for an address. This element is
+     * typically treated as the first order administrative subdivision, but in some cases it also contains the second,
+     * third, or fourth order subdivision in a country, dependency, or region.
+     * 
+     * @param adminDistricts the adminDistricts value to set.
+     * @return the MapsSearchAddress object itself.
      */
-    public String getMunicipalitySubdivision() {
-        return this.municipalitySubdivision;
+    public MapsSearchAddress setAdminDistricts(List<MapsSearchAddressAdminDistrictsItem> adminDistricts) {
+        this.adminDistricts = adminDistricts;
+        return this;
     }
 
     /**
-     * Get the countryTertiarySubdivision property: Named Area.
-     *
-     * @return the countryTertiarySubdivision value.
-     */
-    public String getCountryTertiarySubdivision() {
-        return this.countryTertiarySubdivision;
-    }
-
-    /**
-     * Get the countrySecondarySubdivision property: County.
-     *
-     * @return the countrySecondarySubdivision value.
-     */
-    public String getCountrySecondarySubdivision() {
-        return this.countrySecondarySubdivision;
-    }
-
-    /**
-     * Get the countrySubdivision property: State or Province.
-     *
-     * @return the countrySubdivision value.
-     */
-    public String getCountrySubdivision() {
-        return this.countrySubdivision;
-    }
-
-    /**
-     * Get the postalCode property: Postal Code / Zip Code.
-     *
+     * Get the postalCode property: Postal Code property.
+     * 
      * @return the postalCode value.
      */
     public String getPostalCode() {
@@ -264,80 +158,133 @@ public final class MapsSearchAddress {
     }
 
     /**
-     * Get the extendedPostalCode property: Extended postal code (availability is dependent on the region).
-     *
-     * @return the extendedPostalCode value.
+     * Set the postalCode property: Postal Code property.
+     * 
+     * @param postalCode the postalCode value to set.
+     * @return the MapsSearchAddress object itself.
      */
-    public String getExtendedPostalCode() {
-        return this.extendedPostalCode;
+    public MapsSearchAddress setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+        return this;
     }
 
     /**
-     * Get the countryCode property: Country (Note: This is a two-letter code, not a country name.).
-     *
-     * @return the countryCode value.
+     * Get the countryRegion property: The countryRegion property.
+     * 
+     * @return the countryRegion value.
      */
-    public String getCountryCode() {
-        return this.countryCode;
+    public MapsSearchAddressCountryRegion getCountryRegion() {
+        return this.countryRegion;
     }
 
     /**
-     * Get the country property: Country name.
-     *
-     * @return the country value.
+     * Set the countryRegion property: The countryRegion property.
+     * 
+     * @param countryRegion the countryRegion value to set.
+     * @return the MapsSearchAddress object itself.
      */
-    public String getCountry() {
-        return this.country;
+    public MapsSearchAddress setCountryRegion(MapsSearchAddressCountryRegion countryRegion) {
+        this.countryRegion = countryRegion;
+        return this;
     }
 
     /**
-     * Get the countryCodeISO3 property: ISO alpha-3 country code.
-     *
-     * @return the countryCodeISO3 value.
+     * Get the formattedAddress property: Formatted Address property.
+     * 
+     * @return the formattedAddress value.
      */
-    public String getCountryCodeIso3() {
-        return this.countryCodeISO3;
+    public String getFormattedAddress() {
+        return this.formattedAddress;
     }
 
     /**
-     * Get the freeformAddress property: An address line formatted according to the formatting rules of a Result's
-     * country of origin, or in the case of a country, its full country name.
-     *
-     * @return the freeformAddress value.
+     * Set the formattedAddress property: Formatted Address property.
+     * 
+     * @param formattedAddress the formattedAddress value to set.
+     * @return the MapsSearchAddress object itself.
      */
-    public String getFreeformAddress() {
-        return this.freeformAddress;
+    public MapsSearchAddress setFormattedAddress(String formattedAddress) {
+        this.formattedAddress = formattedAddress;
+        return this;
     }
 
     /**
-     * Get the countrySubdivisionName property: The full name of a first level of country administrative hierarchy. This
-     * field appears only in case countrySubdivision is presented in an abbreviated form. Only supported for USA,
-     * Canada, and United Kingdom.
-     *
-     * @return the countrySubdivisionName value.
+     * Get the intersection property: The address of the result.
+     * 
+     * @return the intersection value.
      */
-    public String getCountrySubdivisionName() {
-        return this.countrySubdivisionName;
+    public Intersection getIntersection() {
+        return this.intersection;
     }
 
     /**
-     * Get the localName property: An address component which represents the name of a geographic area or locality that
-     * groups a number of addressable objects for addressing purposes, without being an administrative unit. This field
-     * is used to build the `freeformAddress` property.
-     *
-     * @return the localName value.
+     * Set the intersection property: The address of the result.
+     * 
+     * @param intersection the intersection value to set.
+     * @return the MapsSearchAddress object itself.
      */
-    public String getLocalName() {
-        return this.localName;
+    public MapsSearchAddress setIntersection(Intersection intersection) {
+        this.intersection = intersection;
+        return this;
     }
 
     /**
-     * Get the boundingBox property: The bounding box of the location.
-     *
-     * @return the boundingBox value.
+     * {@inheritDoc}
      */
-    public GeoBoundingBox getBoundingBox() {
-        BoundingBoxCompassNotation returnValue = this.boundingBox;
-        return com.azure.maps.search.implementation.helpers.Utility.toGeoBoundingBox(returnValue);
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("addressLine", this.addressLine);
+        jsonWriter.writeStringField("locality", this.locality);
+        jsonWriter.writeStringField("neighborhood", this.neighborhood);
+        jsonWriter.writeArrayField("adminDistricts", this.adminDistricts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("postalCode", this.postalCode);
+        jsonWriter.writeJsonField("countryRegion", this.countryRegion);
+        jsonWriter.writeStringField("formattedAddress", this.formattedAddress);
+        jsonWriter.writeJsonField("intersection", this.intersection);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapsSearchAddress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapsSearchAddress if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapsSearchAddress.
+     */
+    public static MapsSearchAddress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapsSearchAddress deserializedMapsSearchAddress = new MapsSearchAddress();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("addressLine".equals(fieldName)) {
+                    deserializedMapsSearchAddress.addressLine = reader.getString();
+                } else if ("locality".equals(fieldName)) {
+                    deserializedMapsSearchAddress.locality = reader.getString();
+                } else if ("neighborhood".equals(fieldName)) {
+                    deserializedMapsSearchAddress.neighborhood = reader.getString();
+                } else if ("adminDistricts".equals(fieldName)) {
+                    List<MapsSearchAddressAdminDistrictsItem> adminDistricts
+                        = reader.readArray(reader1 -> MapsSearchAddressAdminDistrictsItem.fromJson(reader1));
+                    deserializedMapsSearchAddress.adminDistricts = adminDistricts;
+                } else if ("postalCode".equals(fieldName)) {
+                    deserializedMapsSearchAddress.postalCode = reader.getString();
+                } else if ("countryRegion".equals(fieldName)) {
+                    deserializedMapsSearchAddress.countryRegion = MapsSearchAddressCountryRegion.fromJson(reader);
+                } else if ("formattedAddress".equals(fieldName)) {
+                    deserializedMapsSearchAddress.formattedAddress = reader.getString();
+                } else if ("intersection".equals(fieldName)) {
+                    deserializedMapsSearchAddress.intersection = Intersection.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapsSearchAddress;
+        });
     }
 }

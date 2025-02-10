@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for ElasticPoolEdition. */
@@ -25,12 +24,20 @@ public final class ElasticPoolEdition extends ExpandableStringEnum<ElasticPoolEd
     public static final ElasticPoolEdition BUSINESS_CRITICAL = fromString("BusinessCritical");
 
     /**
+     * Creates a new instance of ElasticPoolEdition value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ElasticPoolEdition() {
+    }
+
+    /**
      * Creates or finds a ElasticPoolEdition from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding ElasticPoolEdition.
      */
-    @JsonCreator
     public static ElasticPoolEdition fromString(String name) {
         return fromString(name, ElasticPoolEdition.class);
     }

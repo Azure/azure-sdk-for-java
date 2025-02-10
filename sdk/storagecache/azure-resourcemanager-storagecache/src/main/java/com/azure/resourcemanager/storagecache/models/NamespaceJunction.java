@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A namespace junction. */
+/**
+ * A namespace junction.
+ */
 @Fluent
-public final class NamespaceJunction {
+public final class NamespaceJunction implements JsonSerializable<NamespaceJunction> {
     /*
      * Namespace path on a cache for a Storage Target.
      */
-    @JsonProperty(value = "namespacePath")
     private String namespacePath;
 
     /*
      * Path in Storage Target to which namespacePath points.
      */
-    @JsonProperty(value = "targetPath")
     private String targetPath;
 
     /*
      * NFS export where targetPath exists.
      */
-    @JsonProperty(value = "nfsExport")
     private String nfsExport;
 
     /*
      * Name of the access policy applied to this junction.
      */
-    @JsonProperty(value = "nfsAccessPolicy")
     private String nfsAccessPolicy;
 
-    /** Creates an instance of NamespaceJunction class. */
+    /**
+     * Creates an instance of NamespaceJunction class.
+     */
     public NamespaceJunction() {
     }
 
     /**
      * Get the namespacePath property: Namespace path on a cache for a Storage Target.
-     *
+     * 
      * @return the namespacePath value.
      */
     public String namespacePath() {
@@ -49,7 +53,7 @@ public final class NamespaceJunction {
 
     /**
      * Set the namespacePath property: Namespace path on a cache for a Storage Target.
-     *
+     * 
      * @param namespacePath the namespacePath value to set.
      * @return the NamespaceJunction object itself.
      */
@@ -60,7 +64,7 @@ public final class NamespaceJunction {
 
     /**
      * Get the targetPath property: Path in Storage Target to which namespacePath points.
-     *
+     * 
      * @return the targetPath value.
      */
     public String targetPath() {
@@ -69,7 +73,7 @@ public final class NamespaceJunction {
 
     /**
      * Set the targetPath property: Path in Storage Target to which namespacePath points.
-     *
+     * 
      * @param targetPath the targetPath value to set.
      * @return the NamespaceJunction object itself.
      */
@@ -80,7 +84,7 @@ public final class NamespaceJunction {
 
     /**
      * Get the nfsExport property: NFS export where targetPath exists.
-     *
+     * 
      * @return the nfsExport value.
      */
     public String nfsExport() {
@@ -89,7 +93,7 @@ public final class NamespaceJunction {
 
     /**
      * Set the nfsExport property: NFS export where targetPath exists.
-     *
+     * 
      * @param nfsExport the nfsExport value to set.
      * @return the NamespaceJunction object itself.
      */
@@ -100,7 +104,7 @@ public final class NamespaceJunction {
 
     /**
      * Get the nfsAccessPolicy property: Name of the access policy applied to this junction.
-     *
+     * 
      * @return the nfsAccessPolicy value.
      */
     public String nfsAccessPolicy() {
@@ -109,7 +113,7 @@ public final class NamespaceJunction {
 
     /**
      * Set the nfsAccessPolicy property: Name of the access policy applied to this junction.
-     *
+     * 
      * @param nfsAccessPolicy the nfsAccessPolicy value to set.
      * @return the NamespaceJunction object itself.
      */
@@ -120,9 +124,54 @@ public final class NamespaceJunction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("namespacePath", this.namespacePath);
+        jsonWriter.writeStringField("targetPath", this.targetPath);
+        jsonWriter.writeStringField("nfsExport", this.nfsExport);
+        jsonWriter.writeStringField("nfsAccessPolicy", this.nfsAccessPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamespaceJunction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamespaceJunction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NamespaceJunction.
+     */
+    public static NamespaceJunction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamespaceJunction deserializedNamespaceJunction = new NamespaceJunction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("namespacePath".equals(fieldName)) {
+                    deserializedNamespaceJunction.namespacePath = reader.getString();
+                } else if ("targetPath".equals(fieldName)) {
+                    deserializedNamespaceJunction.targetPath = reader.getString();
+                } else if ("nfsExport".equals(fieldName)) {
+                    deserializedNamespaceJunction.nfsExport = reader.getString();
+                } else if ("nfsAccessPolicy".equals(fieldName)) {
+                    deserializedNamespaceJunction.nfsAccessPolicy = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamespaceJunction;
+        });
     }
 }

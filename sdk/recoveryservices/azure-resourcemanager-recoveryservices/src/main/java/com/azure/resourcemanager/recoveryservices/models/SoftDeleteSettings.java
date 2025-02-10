@@ -5,30 +5,41 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Soft delete Settings of vault. */
+/**
+ * Soft delete Settings of vault.
+ */
 @Fluent
-public final class SoftDeleteSettings {
+public final class SoftDeleteSettings implements JsonSerializable<SoftDeleteSettings> {
     /*
      * The softDeleteState property.
      */
-    @JsonProperty(value = "softDeleteState")
     private SoftDeleteState softDeleteState;
 
     /*
      * Soft delete retention period in days
      */
-    @JsonProperty(value = "softDeleteRetentionPeriodInDays")
     private Integer softDeleteRetentionPeriodInDays;
 
-    /** Creates an instance of SoftDeleteSettings class. */
+    /*
+     * The enhancedSecurityState property.
+     */
+    private EnhancedSecurityState enhancedSecurityState;
+
+    /**
+     * Creates an instance of SoftDeleteSettings class.
+     */
     public SoftDeleteSettings() {
     }
 
     /**
      * Get the softDeleteState property: The softDeleteState property.
-     *
+     * 
      * @return the softDeleteState value.
      */
     public SoftDeleteState softDeleteState() {
@@ -37,7 +48,7 @@ public final class SoftDeleteSettings {
 
     /**
      * Set the softDeleteState property: The softDeleteState property.
-     *
+     * 
      * @param softDeleteState the softDeleteState value to set.
      * @return the SoftDeleteSettings object itself.
      */
@@ -48,7 +59,7 @@ public final class SoftDeleteSettings {
 
     /**
      * Get the softDeleteRetentionPeriodInDays property: Soft delete retention period in days.
-     *
+     * 
      * @return the softDeleteRetentionPeriodInDays value.
      */
     public Integer softDeleteRetentionPeriodInDays() {
@@ -57,7 +68,7 @@ public final class SoftDeleteSettings {
 
     /**
      * Set the softDeleteRetentionPeriodInDays property: Soft delete retention period in days.
-     *
+     * 
      * @param softDeleteRetentionPeriodInDays the softDeleteRetentionPeriodInDays value to set.
      * @return the SoftDeleteSettings object itself.
      */
@@ -67,10 +78,76 @@ public final class SoftDeleteSettings {
     }
 
     /**
+     * Get the enhancedSecurityState property: The enhancedSecurityState property.
+     * 
+     * @return the enhancedSecurityState value.
+     */
+    public EnhancedSecurityState enhancedSecurityState() {
+        return this.enhancedSecurityState;
+    }
+
+    /**
+     * Set the enhancedSecurityState property: The enhancedSecurityState property.
+     * 
+     * @param enhancedSecurityState the enhancedSecurityState value to set.
+     * @return the SoftDeleteSettings object itself.
+     */
+    public SoftDeleteSettings withEnhancedSecurityState(EnhancedSecurityState enhancedSecurityState) {
+        this.enhancedSecurityState = enhancedSecurityState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("softDeleteState",
+            this.softDeleteState == null ? null : this.softDeleteState.toString());
+        jsonWriter.writeNumberField("softDeleteRetentionPeriodInDays", this.softDeleteRetentionPeriodInDays);
+        jsonWriter.writeStringField("enhancedSecurityState",
+            this.enhancedSecurityState == null ? null : this.enhancedSecurityState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftDeleteSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftDeleteSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SoftDeleteSettings.
+     */
+    public static SoftDeleteSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftDeleteSettings deserializedSoftDeleteSettings = new SoftDeleteSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("softDeleteState".equals(fieldName)) {
+                    deserializedSoftDeleteSettings.softDeleteState = SoftDeleteState.fromString(reader.getString());
+                } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedSoftDeleteSettings.softDeleteRetentionPeriodInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("enhancedSecurityState".equals(fieldName)) {
+                    deserializedSoftDeleteSettings.enhancedSecurityState
+                        = EnhancedSecurityState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftDeleteSettings;
+        });
     }
 }

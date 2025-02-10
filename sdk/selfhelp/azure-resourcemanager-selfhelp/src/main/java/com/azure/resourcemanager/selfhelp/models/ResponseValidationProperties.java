@@ -5,35 +5,40 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Troubleshooter step input response validation properties.
  */
 @Fluent
-public final class ResponseValidationProperties {
+public final class ResponseValidationProperties implements JsonSerializable<ResponseValidationProperties> {
     /*
      * Regex used for the input validation.
      */
-    @JsonProperty(value = "regex")
     private String regex;
+
+    /*
+     * Validation scope
+     */
+    private ValidationScope validationScope;
 
     /*
      * Default True
      */
-    @JsonProperty(value = "isRequired")
     private Boolean isRequired;
 
     /*
      * Validation Error Message.
      */
-    @JsonProperty(value = "validationErrorMessage")
     private String validationErrorMessage;
 
     /*
      * Max text input (open Ended Text).
      */
-    @JsonProperty(value = "maxLength")
     private Long maxLength;
 
     /**
@@ -59,6 +64,26 @@ public final class ResponseValidationProperties {
      */
     public ResponseValidationProperties withRegex(String regex) {
         this.regex = regex;
+        return this;
+    }
+
+    /**
+     * Get the validationScope property: Validation scope.
+     * 
+     * @return the validationScope value.
+     */
+    public ValidationScope validationScope() {
+        return this.validationScope;
+    }
+
+    /**
+     * Set the validationScope property: Validation scope.
+     * 
+     * @param validationScope the validationScope value to set.
+     * @return the ResponseValidationProperties object itself.
+     */
+    public ResponseValidationProperties withValidationScope(ValidationScope validationScope) {
+        this.validationScope = validationScope;
         return this;
     }
 
@@ -128,5 +153,55 @@ public final class ResponseValidationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("regex", this.regex);
+        jsonWriter.writeStringField("validationScope",
+            this.validationScope == null ? null : this.validationScope.toString());
+        jsonWriter.writeBooleanField("isRequired", this.isRequired);
+        jsonWriter.writeStringField("validationErrorMessage", this.validationErrorMessage);
+        jsonWriter.writeNumberField("maxLength", this.maxLength);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResponseValidationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResponseValidationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResponseValidationProperties.
+     */
+    public static ResponseValidationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResponseValidationProperties deserializedResponseValidationProperties = new ResponseValidationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("regex".equals(fieldName)) {
+                    deserializedResponseValidationProperties.regex = reader.getString();
+                } else if ("validationScope".equals(fieldName)) {
+                    deserializedResponseValidationProperties.validationScope
+                        = ValidationScope.fromString(reader.getString());
+                } else if ("isRequired".equals(fieldName)) {
+                    deserializedResponseValidationProperties.isRequired = reader.getNullable(JsonReader::getBoolean);
+                } else if ("validationErrorMessage".equals(fieldName)) {
+                    deserializedResponseValidationProperties.validationErrorMessage = reader.getString();
+                } else if ("maxLength".equals(fieldName)) {
+                    deserializedResponseValidationProperties.maxLength = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResponseValidationProperties;
+        });
     }
 }

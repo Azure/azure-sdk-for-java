@@ -3,7 +3,6 @@
 
 package com.azure.data.tables;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -11,9 +10,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestResourceNamer;
-import com.azure.core.util.Configuration;
+import com.azure.core.util.BinaryData;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
@@ -29,10 +27,11 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasPermission;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -41,6 +40,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -53,22 +53,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests {@link TableAsyncClient}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class TableAsyncClientTest extends TableClientTestBase {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(100);
 
     private TableAsyncClient tableClient;
 
     protected HttpClient buildAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
+        return new AssertingHttpClientBuilder(httpClient).skipRequest((ignored1, ignored2) -> false)
             .assertAsync()
             .build();
     }
 
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        tableClient = getClientBuilder(tableName, connectionString).buildAsyncClient();
+        tableClient = getClientBuilder(tableName, false).buildAsyncClient();
 
         tableClient.createTable().block(DEFAULT_TIMEOUT);
     }
@@ -77,8 +76,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
     public void createTable() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, connectionString).buildAsyncClient();
+        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, false).buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(tableClient2.createTable())
@@ -99,24 +97,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
-
-        TokenCredential credential = null;
-        if (interceptorManager.isPlaybackMode()) {
-            credential = new MockTokenCredential();
-        } else {
-        // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
-        // contained in the response the server provides to a first "naive" unauthenticated request.
-            credential = new ClientSecretCredentialBuilder()
-                .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
-                .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
-                .tenantId(testResourceNamer.randomUuid())
-                .additionallyAllowedTenants("*")
-                .build();
-        }
-
-        final TableAsyncClient tableClient2 =
-            getClientBuilder(tableName2, Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
-                "https://tablestests.table.core.windows.com"), credential, true).buildAsyncClient();
+        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, true).buildAsyncClient();
 
         // Act & Assert
         // This request will use the tenant ID extracted from the previous request.
@@ -130,24 +111,19 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
 
         // All other requests will also use the tenant ID obtained from the auth challenge.
-        StepVerifier.create(tableClient2.createEntity(tableEntity))
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(tableClient2.createEntity(tableEntity)).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void createTableWithResponse() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, connectionString).buildAsyncClient();
+        final TableAsyncClient tableClient2 = getClientBuilder(tableName2, false).buildAsyncClient();
         final int expectedStatusCode = 204;
 
         // Act & Assert
         StepVerifier.create(tableClient2.createTableWithResponse())
-            .assertNext(response -> {
-                assertEquals(expectedStatusCode, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -174,9 +150,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
 
         // Act & Assert
-        StepVerifier.create(tableClient.createEntity(tableEntity))
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(tableClient.createEntity(tableEntity)).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -258,7 +232,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         long l = 123L;
         String s = "Test";
         SampleEntity.Color color = SampleEntity.Color.GREEN;
-
+    
         SampleEntity tableEntity = new SampleEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setByteField(bytes);
         tableEntity.setBooleanField(b);
@@ -269,9 +243,9 @@ public class TableAsyncClientTest extends TableClientTestBase {
         tableEntity.setLongField(l);
         tableEntity.setStringField(s);
         tableEntity.setEnumField(color);
-
+    
         tableClient.createEntity(tableEntity).block(TIMEOUT);
-
+    
         // Act & Assert
         StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null))
             .assertNext(response -> {
@@ -293,19 +267,15 @@ public class TableAsyncClientTest extends TableClientTestBase {
     @Test
     public void deleteTable() {
         // Act & Assert
-        StepVerifier.create(tableClient.deleteTable())
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(tableClient.deleteTable()).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void deleteNonExistingTable() {
         // Act & Assert
-        tableClient.deleteTable().block();
+        tableClient.deleteTable().block(DEFAULT_TIMEOUT);
 
-        StepVerifier.create(tableClient.deleteTable())
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(tableClient.deleteTable()).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -315,9 +285,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
         // Act & Assert
         StepVerifier.create(tableClient.deleteTableWithResponse())
-            .assertNext(response -> {
-                assertEquals(expectedStatusCode, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -328,7 +296,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final int expectedStatusCode = 404;
 
         // Act & Assert
-        tableClient.deleteTableWithResponse().block();
+        tableClient.deleteTableWithResponse().block(DEFAULT_TIMEOUT);
 
         StepVerifier.create(tableClient.deleteTableWithResponse())
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
@@ -358,7 +326,9 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
 
         tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
+
         final TableEntity createdEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(DEFAULT_TIMEOUT);
+
         assertNotNull(createdEntity, "'createdEntity' should not be null.");
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
 
@@ -389,7 +359,9 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final int expectedStatusCode = 204;
 
         tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
+
         final TableEntity createdEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(DEFAULT_TIMEOUT);
+
         assertNotNull(createdEntity, "'createdEntity' should not be null.");
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
 
@@ -424,7 +396,9 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final int expectedStatusCode = 204;
 
         tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
+
         final TableEntity createdEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(DEFAULT_TIMEOUT);
+
         assertNotNull(createdEntity, "'createdEntity' should not be null.");
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
 
@@ -451,24 +425,25 @@ public class TableAsyncClientTest extends TableClientTestBase {
     }
 
     static void getEntityWithResponseAsyncImpl(TableAsyncClient tableClient, TestResourceNamer testResourceNamer,
-                                               String partitionKeyPrefix, String rowKeyPrefix) {
+        String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
         final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         final int expectedStatusCode = 200;
+
         tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
 
         // Act & Assert
         StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null))
             .assertNext(response -> {
-                final TableEntity entity = response.getValue();
                 assertEquals(expectedStatusCode, response.getStatusCode());
+
+                final TableEntity entity = response.getValue();
 
                 assertNotNull(entity);
                 assertEquals(tableEntity.getPartitionKey(), entity.getPartitionKey());
                 assertEquals(tableEntity.getRowKey(), entity.getRowKey());
-
                 assertNotNull(entity.getTimestamp());
                 assertNotNull(entity.getETag());
                 assertNotNull(entity.getProperties());
@@ -485,15 +460,18 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         tableEntity.addProperty("Test", "Value");
         final int expectedStatusCode = 200;
+
         tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
+
         List<String> propertyList = new ArrayList<>();
         propertyList.add("Test");
 
         // Act & Assert
         StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, propertyList))
             .assertNext(response -> {
-                final TableEntity entity = response.getValue();
                 assertEquals(expectedStatusCode, response.getStatusCode());
+
+                final TableEntity entity = response.getValue();
 
                 assertNotNull(entity);
                 assertNull(entity.getPartitionKey());
@@ -532,7 +510,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         long l = 123L;
         String s = "Test";
         SampleEntity.Color color = SampleEntity.Color.GREEN;
-
+    
         final Map<String, Object> props = new HashMap<>();
         props.put("ByteField", bytes);
         props.put("BooleanField", b);
@@ -543,26 +521,26 @@ public class TableAsyncClientTest extends TableClientTestBase {
         props.put("LongField", l);
         props.put("StringField", s);
         props.put("EnumField", color);
-
+    
         TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setProperties(props);
-
+    
         int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity).block(TIMEOUT);
-
+    
         // Act & Assert
         StepVerifier.create(tableClient.getEntityWithResponse(partitionKeyValue, rowKeyValue, null, SampleEntity.class))
             .assertNext(response -> {
                 SampleEntity entity = response.getValue();
                 assertEquals(expectedStatusCode, response.getStatusCode());
-
+    
                 assertNotNull(entity);
                 assertEquals(tableEntity.getPartitionKey(), entity.getPartitionKey());
                 assertEquals(tableEntity.getRowKey(), entity.getRowKey());
-
+    
                 assertNotNull(entity.getTimestamp());
                 assertNotNull(entity.getETag());
-
+    
                 assertArrayEquals(bytes, entity.getByteField());
                 assertEquals(b, entity.getBooleanField());
                 assertTrue(dateTime.isEqual(entity.getDateTimeField()));
@@ -599,11 +577,13 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final int expectedStatusCode = 204;
         final String oldPropertyKey = "propertyA";
         final String newPropertyKey = "propertyB";
-        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue)
-            .addProperty(oldPropertyKey, "valueA");
+        final TableEntity tableEntity
+            = new TableEntity(partitionKeyValue, rowKeyValue).addProperty(oldPropertyKey, "valueA");
 
         tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
+
         final TableEntity createdEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(DEFAULT_TIMEOUT);
+
         assertNotNull(createdEntity, "'createdEntity' should not be null.");
         assertNotNull(createdEntity.getETag(), "'eTag' should not be null.");
 
@@ -617,14 +597,11 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .verify(DEFAULT_TIMEOUT);
 
         // Assert and verify that the new properties are in there.
-        StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
-            .assertNext(entity -> {
-                final Map<String, Object> properties = entity.getProperties();
-                assertTrue(properties.containsKey(newPropertyKey));
-                assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue)).assertNext(entity -> {
+            final Map<String, Object> properties = entity.getProperties();
+            assertTrue(properties.containsKey(newPropertyKey));
+            assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
@@ -635,18 +612,18 @@ public class TableAsyncClientTest extends TableClientTestBase {
         String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("ARowKey", 20);
         int expectedStatusCode = 204;
-
+    
         SingleFieldEntity tableEntity = new SingleFieldEntity(partitionKeyValue, rowKeyValue);
         tableEntity.setSubclassProperty("InitialValue");
         tableClient.createEntity(tableEntity).block(TIMEOUT);
-
+    
         // Act & Assert
         tableEntity.setSubclassProperty("UpdatedValue");
         StepVerifier.create(tableClient.updateEntityWithResponse(tableEntity, TableEntityUpdateMode.REPLACE, true))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
-
+    
         StepVerifier.create(tableClient.getEntity(partitionKeyValue, rowKeyValue))
             .assertNext(entity -> {
                 final Map<String, Object> properties = entity.getProperties();
@@ -677,6 +654,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
         final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
         final String rowKeyValue2 = testResourceNamer.randomName(rowKeyPrefix, 20);
+
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)).block(DEFAULT_TIMEOUT);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)).block(DEFAULT_TIMEOUT);
 
@@ -695,19 +673,15 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
         ListEntitiesOptions options = new ListEntitiesOptions().setFilter("RowKey eq '" + rowKeyValue + "'");
+
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)).block(DEFAULT_TIMEOUT);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)).block(DEFAULT_TIMEOUT);
 
         // Act & Assert
-        StepVerifier.create(tableClient.listEntities(options))
-            .assertNext(returnEntity -> {
-                assertEquals(partitionKeyValue, returnEntity.getPartitionKey());
-                assertEquals(rowKeyValue, returnEntity.getRowKey());
-            })
-            .expectNextCount(0)
-            .thenConsumeWhile(x -> true)
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(tableClient.listEntities(options)).assertNext(returnEntity -> {
+            assertEquals(partitionKeyValue, returnEntity.getPartitionKey());
+            assertEquals(rowKeyValue, returnEntity.getRowKey());
+        }).expectNextCount(0).thenConsumeWhile(x -> true).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -715,25 +689,21 @@ public class TableAsyncClientTest extends TableClientTestBase {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue)
-            .addProperty("propertyC", "valueC")
+        final TableEntity entity = new TableEntity(partitionKeyValue, rowKeyValue).addProperty("propertyC", "valueC")
             .addProperty("propertyD", "valueD");
         List<String> propertyList = new ArrayList<>();
         propertyList.add("propertyC");
-        ListEntitiesOptions options = new ListEntitiesOptions()
-            .setSelect(propertyList);
+        ListEntitiesOptions options = new ListEntitiesOptions().setSelect(propertyList);
+
         tableClient.createEntity(entity).block(DEFAULT_TIMEOUT);
 
         // Act & Assert
-        StepVerifier.create(tableClient.listEntities(options))
-            .assertNext(returnEntity -> {
-                assertNull(returnEntity.getRowKey());
-                assertNull(returnEntity.getPartitionKey());
-                assertEquals("valueC", returnEntity.getProperties().get("propertyC"));
-                assertNull(returnEntity.getProperties().get("propertyD"));
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(tableClient.listEntities(options)).assertNext(returnEntity -> {
+            assertNull(returnEntity.getRowKey());
+            assertNull(returnEntity.getPartitionKey());
+            assertEquals("valueC", returnEntity.getProperties().get("propertyC"));
+            assertNull(returnEntity.getProperties().get("propertyD"));
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -744,6 +714,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
         final String rowKeyValue3 = testResourceNamer.randomName("rowKey", 20);
         ListEntitiesOptions options = new ListEntitiesOptions().setTop(2);
+
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)).block(DEFAULT_TIMEOUT);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)).block(DEFAULT_TIMEOUT);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue3)).block(DEFAULT_TIMEOUT);
@@ -766,7 +737,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)).block(TIMEOUT);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)).block(TIMEOUT);
-
+    
         // Act & Assert
         StepVerifier.create(tableClient.listEntities(SampleEntity.class))
             .expectNextCount(2)
@@ -784,14 +755,14 @@ public class TableAsyncClientTest extends TableClientTestBase {
         int expectedOperationStatusCode = 204;
 
         List<TableTransactionAction> transactionalBatch = new ArrayList<>();
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue2)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValue2)));
 
         // Act & Assert
-        final Response<TableTransactionResult> result =
-            tableClient.submitTransactionWithResponse(transactionalBatch).block(DEFAULT_TIMEOUT);
+        final Response<TableTransactionResult> result
+            = tableClient.submitTransactionWithResponse(transactionalBatch).block(DEFAULT_TIMEOUT);
 
         assertNotNull(result);
         assertEquals(expectedBatchStatusCode, result.getStatusCode());
@@ -807,7 +778,6 @@ public class TableAsyncClientTest extends TableClientTestBase {
                 assertNotNull(entity);
                 assertEquals(partitionKeyValue, entity.getPartitionKey());
                 assertEquals(rowKeyValue, entity.getRowKey());
-
                 assertNotNull(entity.getTimestamp());
                 assertNotNull(entity.getETag());
                 assertNotNull(entity.getProperties());
@@ -875,18 +845,15 @@ public class TableAsyncClientTest extends TableClientTestBase {
             new TableEntity(partitionKeyValue, rowKeyValueDelete)));
 
         // Act & Assert
-        StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch))
-            .assertNext(response -> {
-                assertNotNull(response);
-                assertEquals(expectedBatchStatusCode, response.getStatusCode());
-                TableTransactionResult result = response.getValue();
-                assertEquals(transactionalBatch.size(), result.getTransactionActionResponses().size());
-                for (TableTransactionActionResponse subResponse : result.getTransactionActionResponses()) {
-                    assertEquals(expectedOperationStatusCode, subResponse.getStatusCode());
-                }
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(tableClient.submitTransactionWithResponse(transactionalBatch)).assertNext(response -> {
+            assertNotNull(response);
+            assertEquals(expectedBatchStatusCode, response.getStatusCode());
+            TableTransactionResult result = response.getValue();
+            assertEquals(transactionalBatch.size(), result.getTransactionActionResponses().size());
+            for (TableTransactionActionResponse subResponse : result.getTransactionActionResponses()) {
+                assertEquals(expectedOperationStatusCode, subResponse.getStatusCode());
+            }
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -918,10 +885,10 @@ public class TableAsyncClientTest extends TableClientTestBase {
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
 
         List<TableTransactionAction> transactionalBatch = new ArrayList<>();
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValue)));
 
         // Act & Assert
         if (IS_COSMOS_TEST) {
@@ -952,10 +919,10 @@ public class TableAsyncClientTest extends TableClientTestBase {
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
 
         List<TableTransactionAction> transactionalBatch = new ArrayList<>();
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue, rowKeyValue)));
-        transactionalBatch.add(new TableTransactionAction(
-            TableTransactionActionType.CREATE, new TableEntity(partitionKeyValue2, rowKeyValue2)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue, rowKeyValue)));
+        transactionalBatch.add(new TableTransactionAction(TableTransactionActionType.CREATE,
+            new TableEntity(partitionKeyValue2, rowKeyValue2)));
 
         // Act & Assert
         if (IS_COSMOS_TEST) {
@@ -988,23 +955,16 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final TableSasPermission permissions = TableSasPermission.parse("r");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_ONLY;
 
-        final TableSasSignatureValues sasSignatureValues =
-            new TableSasSignatureValues(expiryTime, permissions)
-                .setProtocol(protocol)
+        final TableSasSignatureValues sasSignatureValues
+            = new TableSasSignatureValues(expiryTime, permissions).setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        final String sas = tableClient.generateSas(sasSignatureValues);
+        TableAsyncClient tableClient2
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildAsyncClient();
+        final String sas = tableClient2.generateSas(sasSignatureValues);
 
-        assertTrue(
-            sas.startsWith(
-                "sv=2019-02-02"
-                    + "&se=2021-12-12T00%3A00%3A00Z"
-                    + "&tn=" + tableClient.getTableName()
-                    + "&sp=r"
-                    + "&spr=https"
-                    + "&sig="
-            )
-        );
+        assertTrue(sas.startsWith("sv=2019-02-02" + "&se=2021-12-12T00%3A00%3A00Z" + "&tn=" + tableClient.getTableName()
+            + "&sp=r" + "&spr=https" + "&sig="));
     }
 
     @Test
@@ -1020,9 +980,8 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final String endPartitionKey = "endPartitionKey";
         final String endRowKey = "endRowKey";
 
-        final TableSasSignatureValues sasSignatureValues =
-            new TableSasSignatureValues(expiryTime, permissions)
-                .setProtocol(protocol)
+        final TableSasSignatureValues sasSignatureValues
+            = new TableSasSignatureValues(expiryTime, permissions).setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion())
                 .setStartTime(startTime)
                 .setSasIpRange(ipRange)
@@ -1031,44 +990,32 @@ public class TableAsyncClientTest extends TableClientTestBase {
                 .setEndPartitionKey(endPartitionKey)
                 .setEndRowKey(endRowKey);
 
-        final String sas = tableClient.generateSas(sasSignatureValues);
+        TableAsyncClient tableClient2
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildAsyncClient();
+        final String sas = tableClient2.generateSas(sasSignatureValues);
 
-        assertTrue(
-            sas.startsWith(
-                "sv=2019-02-02"
-                    + "&st=2015-01-01T00%3A00%3A00Z"
-                    + "&se=2021-12-12T00%3A00%3A00Z"
-                    + "&tn=" + tableClient.getTableName()
-                    + "&sp=raud"
-                    + "&spk=startPartitionKey"
-                    + "&srk=startRowKey"
-                    + "&epk=endPartitionKey"
-                    + "&erk=endRowKey"
-                    + "&sip=a-b"
-                    + "&spr=https%2Chttp"
-                    + "&sig="
-            )
-        );
+        assertTrue(sas.startsWith("sv=2019-02-02" + "&st=2015-01-01T00%3A00%3A00Z" + "&se=2021-12-12T00%3A00%3A00Z"
+            + "&tn=" + tableClient.getTableName() + "&sp=raud" + "&spk=startPartitionKey" + "&srk=startRowKey"
+            + "&epk=endPartitionKey" + "&erk=endRowKey" + "&sip=a-b" + "&spr=https%2Chttp" + "&sig="));
     }
 
     @Test
-    // Disabling as this currently fails and prevents merging https://github.com/Azure/azure-sdk-for-java/pull/28522.
-    // TODO: Will fix in a separate PR. -vicolina
     public void canUseSasTokenToCreateValidTableClient() {
         // SAS tokens at the table level have not been working with Cosmos endpoints.
         // TODO: Will re-enable once the above is fixed. -vicolina
         Assumptions.assumeFalse(IS_COSMOS_TEST, "Skipping Cosmos test.");
 
-        final OffsetDateTime expiryTime = OffsetDateTime.of(2023, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        final OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         final TableSasPermission permissions = TableSasPermission.parse("a");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
 
-        final TableSasSignatureValues sasSignatureValues =
-            new TableSasSignatureValues(expiryTime, permissions)
-                .setProtocol(protocol)
+        final TableSasSignatureValues sasSignatureValues
+            = new TableSasSignatureValues(expiryTime, permissions).setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        final String sas = tableClient.generateSas(sasSignatureValues);
+        TableAsyncClient tableClient2
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildAsyncClient();
+        final String sas = tableClient2.generateSas(sasSignatureValues);
 
         final TableClientBuilder tableClientBuilder = new TableClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -1085,8 +1032,8 @@ public class TableAsyncClientTest extends TableClientTestBase {
                 tableClientBuilder.addPolicy(recordPolicy);
             }
 
-            tableClientBuilder.addPolicy(new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500),
-                Duration.ofSeconds(100))));
+            tableClientBuilder.addPolicy(
+                new RetryPolicy(new ExponentialBackoff(6, Duration.ofMillis(1500), Duration.ofSeconds(100))));
         }
 
         // Create a new client authenticated with the SAS token.
@@ -1102,6 +1049,8 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .verify(DEFAULT_TIMEOUT);
     }
 
+    // TODO: Figure out why TokenCredential does not work for this test. Maybe the SP does not have the correct role
+    //  assignment? -vcolin7
     @Test
     public void setAndListAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
@@ -1110,39 +1059,39 @@ public class TableAsyncClientTest extends TableClientTestBase {
         OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         String permissions = "r";
-        TableAccessPolicy tableAccessPolicy = new TableAccessPolicy()
-            .setStartsOn(startTime)
-            .setExpiresOn(expiryTime)
-            .setPermissions(permissions);
+        TableAccessPolicy tableAccessPolicy
+            = new TableAccessPolicy().setStartsOn(startTime).setExpiresOn(expiryTime).setPermissions(permissions);
         String id = "testPolicy";
         TableSignedIdentifier tableSignedIdentifier = new TableSignedIdentifier(id).setAccessPolicy(tableAccessPolicy);
 
-        StepVerifier.create(tableClient.setAccessPoliciesWithResponse(Collections.singletonList(tableSignedIdentifier)))
+        final TableAsyncClient tableClient2
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildAsyncClient();
+        StepVerifier
+            .create(tableClient2.setAccessPoliciesWithResponse(Collections.singletonList(tableSignedIdentifier)))
             .assertNext(response -> assertEquals(204, response.getStatusCode()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        StepVerifier.create(tableClient.getAccessPolicies())
-            .assertNext(tableAccessPolicies -> {
-                assertNotNull(tableAccessPolicies);
-                assertNotNull(tableAccessPolicies.getIdentifiers());
+        StepVerifier.create(tableClient2.getAccessPolicies()).assertNext(tableAccessPolicies -> {
+            assertNotNull(tableAccessPolicies);
+            assertNotNull(tableAccessPolicies.getIdentifiers());
 
-                TableSignedIdentifier signedIdentifier = tableAccessPolicies.getIdentifiers().get(0);
+            TableSignedIdentifier signedIdentifier = tableAccessPolicies.getIdentifiers().get(0);
 
-                assertNotNull(signedIdentifier);
+            assertNotNull(signedIdentifier);
 
-                TableAccessPolicy accessPolicy = signedIdentifier.getAccessPolicy();
+            TableAccessPolicy accessPolicy = signedIdentifier.getAccessPolicy();
 
-                assertNotNull(accessPolicy);
-                assertEquals(startTime, accessPolicy.getStartsOn());
-                assertEquals(expiryTime, accessPolicy.getExpiresOn());
-                assertEquals(permissions, accessPolicy.getPermissions());
-                assertEquals(id, signedIdentifier.getId());
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+            assertNotNull(accessPolicy);
+            assertEquals(startTime, accessPolicy.getStartsOn());
+            assertEquals(expiryTime, accessPolicy.getExpiresOn());
+            assertEquals(permissions, accessPolicy.getPermissions());
+            assertEquals(id, signedIdentifier.getId());
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
+    // TODO: Figure out why TokenCredential does not work for this test. Maybe the SP does not have the correct role
+    //  assignment? -vcolin7
     @Test
     public void setAndListMultipleAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
@@ -1151,52 +1100,51 @@ public class TableAsyncClientTest extends TableClientTestBase {
         OffsetDateTime startTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime expiryTime = OffsetDateTime.of(2022, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         String permissions = "r";
-        TableAccessPolicy tableAccessPolicy = new TableAccessPolicy()
-            .setStartsOn(startTime)
-            .setExpiresOn(expiryTime)
-            .setPermissions(permissions);
+        TableAccessPolicy tableAccessPolicy
+            = new TableAccessPolicy().setStartsOn(startTime).setExpiresOn(expiryTime).setPermissions(permissions);
         String id1 = "testPolicy1";
         String id2 = "testPolicy2";
         List<TableSignedIdentifier> tableSignedIdentifiers = new ArrayList<>();
         tableSignedIdentifiers.add(new TableSignedIdentifier(id1).setAccessPolicy(tableAccessPolicy));
         tableSignedIdentifiers.add(new TableSignedIdentifier(id2).setAccessPolicy(tableAccessPolicy));
 
-        StepVerifier.create(tableClient.setAccessPoliciesWithResponse(tableSignedIdentifiers))
+        final TableAsyncClient tableClient2
+            = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildAsyncClient();
+
+        StepVerifier.create(tableClient2.setAccessPoliciesWithResponse(tableSignedIdentifiers))
             .assertNext(response -> assertEquals(204, response.getStatusCode()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        StepVerifier.create(tableClient.getAccessPolicies())
-            .assertNext(tableAccessPolicies -> {
-                assertNotNull(tableAccessPolicies);
-                assertNotNull(tableAccessPolicies.getIdentifiers());
+        StepVerifier.create(tableClient2.getAccessPolicies()).assertNext(tableAccessPolicies -> {
+            assertNotNull(tableAccessPolicies);
+            assertNotNull(tableAccessPolicies.getIdentifiers());
 
-                assertEquals(2, tableAccessPolicies.getIdentifiers().size());
-                assertEquals(id1, tableAccessPolicies.getIdentifiers().get(0).getId());
-                assertEquals(id2, tableAccessPolicies.getIdentifiers().get(1).getId());
+            assertEquals(2, tableAccessPolicies.getIdentifiers().size());
+            assertEquals(id1, tableAccessPolicies.getIdentifiers().get(0).getId());
+            assertEquals(id2, tableAccessPolicies.getIdentifiers().get(1).getId());
 
-                for (TableSignedIdentifier signedIdentifier : tableAccessPolicies.getIdentifiers()) {
-                    assertNotNull(signedIdentifier);
+            for (TableSignedIdentifier signedIdentifier : tableAccessPolicies.getIdentifiers()) {
+                assertNotNull(signedIdentifier);
 
-                    TableAccessPolicy accessPolicy = signedIdentifier.getAccessPolicy();
+                TableAccessPolicy accessPolicy = signedIdentifier.getAccessPolicy();
 
-                    assertNotNull(accessPolicy);
-                    assertEquals(startTime, accessPolicy.getStartsOn());
-                    assertEquals(expiryTime, accessPolicy.getExpiresOn());
-                    assertEquals(permissions, accessPolicy.getPermissions());
-                }
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+                assertNotNull(accessPolicy);
+                assertEquals(startTime, accessPolicy.getStartsOn());
+                assertEquals(expiryTime, accessPolicy.getExpiresOn());
+                assertEquals(permissions, accessPolicy.getPermissions());
+            }
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void allowsCreationOfEntityWithEmptyStringPrimaryKey() {
-        Assumptions.assumeFalse(IS_COSMOS_TEST,
-            "Empty row or partition keys are not supported on Cosmos endpoints.");
+        Assumptions.assumeFalse(IS_COSMOS_TEST, "Empty row or partition keys are not supported on Cosmos endpoints.");
+
         String entityName = testResourceNamer.randomName("name", 10);
         TableEntity entity = new TableEntity("", "");
         entity.addProperty("Name", entityName);
+
         StepVerifier.create(tableClient.createEntityWithResponse(entity))
             .assertNext(response -> assertEquals(204, response.getStatusCode()))
             .expectComplete()
@@ -1205,14 +1153,17 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
     @Test
     public void allowListEntitiesWithEmptyPrimaryKey() {
-        Assumptions.assumeFalse(IS_COSMOS_TEST,
-            "Empty row or partition keys are not supported on Cosmos endpoints.");
+        Assumptions.assumeFalse(IS_COSMOS_TEST, "Empty row or partition keys are not supported on Cosmos endpoints.");
+
         TableEntity entity = new TableEntity("", "");
         String entityName = testResourceNamer.randomName("name", 10);
         entity.addProperty("Name", entityName);
-        tableClient.createEntity(entity).block();
+
+        tableClient.createEntity(entity).block(DEFAULT_TIMEOUT);
+
         ListEntitiesOptions options = new ListEntitiesOptions();
         options.setFilter("PartitionKey eq '' and RowKey eq ''");
+
         StepVerifier.create(tableClient.listEntities(options))
             .assertNext(en -> assertEquals(entityName, en.getProperties().get("Name")))
             .expectNextCount(0)
@@ -1223,16 +1174,179 @@ public class TableAsyncClientTest extends TableClientTestBase {
     // tests that you can delete a table entity with an empty string partition key and empty string row key
     @Test
     public void allowDeleteEntityWithEmptyPrimaryKey() {
-        Assumptions.assumeFalse(IS_COSMOS_TEST,
-            "Empty row or partition keys are not supported on Cosmos endpoints.");
+        Assumptions.assumeFalse(IS_COSMOS_TEST, "Empty row or partition keys are not supported on Cosmos endpoints.");
+
         TableEntity entity = new TableEntity("", "");
         String entityName = testResourceNamer.randomName("name", 10);
         entity.addProperty("Name", entityName);
-        tableClient.createEntity(entity).block();
+
+        tableClient.createEntity(entity).block(DEFAULT_TIMEOUT);
+
         StepVerifier.create(tableClient.deleteEntityWithResponse("", "", "*", false, null))
             .assertNext(response -> assertEquals(204, response.getStatusCode()))
             .expectComplete()
             .verify();
+    }
+
+    /**
+     * Create an entity with a property for each supported type and verify that getProperty returns the correct type for each.
+     */
+    @Test
+    public void createEntityWithAllSupportedTypes() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final byte[] bytes = new byte[] { 4, 5, 6 };
+        final boolean b = true;
+        final OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        final double d = 1.23D;
+        final UUID uuid = UUID.fromString("11111111-2222-3333-4444-555555555555");
+        final int i = 123;
+        final long l = 123L;
+        final String s = "Test";
+
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue).addProperty("byteField", bytes)
+            .addProperty("booleanField", b)
+            .addProperty("dateTimeField", dateTime)
+            .addProperty("doubleField", d)
+            .addProperty("uuidField", uuid)
+            .addProperty("intField", i)
+            .addProperty("longField", l)
+            .addProperty("stringField", s);
+
+        // Act
+        tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
+
+        // Assert
+        final TableEntity retrievedEntity
+            = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(DEFAULT_TIMEOUT);
+
+        Assertions.assertArrayEquals(bytes, (byte[]) retrievedEntity.getProperties().get("byteField"));
+        assertEquals(b, (boolean) retrievedEntity.getProperties().get("booleanField"));
+        assertTrue(dateTime.isEqual((OffsetDateTime) retrievedEntity.getProperties().get("dateTimeField")));
+        assertEquals(d, (double) retrievedEntity.getProperties().get("doubleField"));
+        assertEquals(0, uuid.compareTo((UUID) retrievedEntity.getProperties().get("uuidField")));
+        assertEquals(i, (int) retrievedEntity.getProperties().get("intField"));
+        assertEquals(l, (long) retrievedEntity.getProperties().get("longField"));
+        assertEquals(s, (String) retrievedEntity.getProperties().get("stringField"));
+    }
+
+    /**
+     * Create an entity with a property for each supported type, retrieve the entity using listEntities, and verify that getProperty returns the correct type for each.
+     */
+    @Test
+    public void listEntitiesWithAllSupportedTypes() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final BinaryData binaryData = BinaryData.fromString("This is string bytes.");
+        final byte[] bytes = new byte[] { 4, 5, 6, 7 };
+        final boolean b = true;
+        final OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        final double d = 1.23D;
+        final UUID uuid = UUID.fromString("11111111-2222-3333-4444-555555555555");
+        final int i = 123;
+        final long l = 123L;
+        final String s = "Test";
+
+        final TableEntity tableEntity
+            = new TableEntity(partitionKeyValue, rowKeyValue).addProperty("binaryField", binaryData.toBytes())
+                .addProperty("byteField", bytes)
+                .addProperty("booleanField", b)
+                .addProperty("dateTimeField", dateTime)
+                .addProperty("doubleField", d)
+                .addProperty("uuidField", uuid)
+                .addProperty("intField", i)
+                .addProperty("longField", l)
+                .addProperty("stringField", s);
+
+        tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
+
+        // Act
+        StepVerifier.create(tableClient.listEntities())
+            //.expectNextCount(1)
+            .assertNext(returnEntity -> {
+                //assertEquals(binaryData, (BinaryData) returnEntity.getProperties().get("binaryField"));
+                Assertions.assertArrayEquals(bytes, (byte[]) returnEntity.getProperties().get("byteField"));
+                assertEquals(b, (boolean) returnEntity.getProperties().get("booleanField"));
+                assertTrue(dateTime.isEqual((OffsetDateTime) returnEntity.getProperties().get("dateTimeField")));
+                assertEquals(d, (double) returnEntity.getProperties().get("doubleField"));
+                assertEquals(0, uuid.compareTo((UUID) returnEntity.getProperties().get("uuidField")));
+                assertEquals(i, (int) returnEntity.getProperties().get("intField"));
+                assertEquals(l, (long) returnEntity.getProperties().get("longField"));
+                assertEquals(s, (String) returnEntity.getProperties().get("stringField"));
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    /**
+     * Create an entity with all supported types, and verify that both listEntities and getEntity return the correct and same type for each.
+     */
+    @Test
+    public void listAndGetEntitiesWithAllSupportedTypes() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        // final BinaryData binaryData = BinaryData.fromString("This is string bytes.");
+        final byte[] bytes = new byte[] { 4, 5, 6, 7 };
+        final boolean b = true;
+        final OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        final double d = 1.23D;
+        final UUID uuid = UUID.fromString("11111111-2222-3333-4444-555555555555");
+        final int i = 123;
+        final long l = 123L;
+        final String s = "Test";
+
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue)
+            //.addProperty("binaryField", binaryData.toBytes())
+            .addProperty("byteField", bytes)
+            .addProperty("booleanField", b)
+            .addProperty("dateTimeField", dateTime)
+            .addProperty("doubleField", d)
+            .addProperty("uuidField", uuid)
+            .addProperty("intField", i)
+            .addProperty("longField", l)
+            .addProperty("stringField", s);
+
+        tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
+
+        // Act
+        final TableEntity retrievedEntity
+            = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(DEFAULT_TIMEOUT);
+        final Iterator<TableEntity> iterator = tableClient.listEntities().toIterable().iterator();
+        assertTrue(iterator.hasNext());
+
+        final TableEntity listedEntity = iterator.next();
+
+        // Assert
+        //assertEquals(binaryData, (BinaryData) retrievedEntity.getProperties().get("binaryField"));
+        //assertEquals(binaryData, (BinaryData) listedEntity.getProperties().get("binaryField"));
+
+        Assertions.assertArrayEquals(bytes, (byte[]) retrievedEntity.getProperties().get("byteField"));
+        Assertions.assertArrayEquals(bytes, (byte[]) listedEntity.getProperties().get("byteField"));
+
+        assertEquals(b, (boolean) retrievedEntity.getProperties().get("booleanField"));
+        assertEquals(b, (boolean) listedEntity.getProperties().get("booleanField"));
+
+        assertTrue(dateTime.isEqual((OffsetDateTime) retrievedEntity.getProperties().get("dateTimeField")));
+        assertTrue(dateTime.isEqual((OffsetDateTime) listedEntity.getProperties().get("dateTimeField")));
+
+        assertEquals(d, (double) retrievedEntity.getProperties().get("doubleField"));
+        assertEquals(d, (double) listedEntity.getProperties().get("doubleField"));
+
+        assertEquals(0, uuid.compareTo((UUID) retrievedEntity.getProperties().get("uuidField")));
+        assertEquals(0, uuid.compareTo((UUID) listedEntity.getProperties().get("uuidField")));
+
+        assertEquals(i, (int) retrievedEntity.getProperties().get("intField"));
+        assertEquals(i, (int) listedEntity.getProperties().get("intField"));
+
+        assertEquals(l, (long) retrievedEntity.getProperties().get("longField"));
+        assertEquals(l, (long) listedEntity.getProperties().get("longField"));
+
+        assertEquals(s, (String) retrievedEntity.getProperties().get("stringField"));
+        assertEquals(s, (String) listedEntity.getProperties().get("stringField"));
+
     }
 
 }

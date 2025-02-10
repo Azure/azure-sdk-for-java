@@ -5,46 +5,46 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.TlsVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Information of domain update parameter properties.
  */
 @Fluent
-public final class DomainUpdateParameterProperties {
+public final class DomainUpdateParameterProperties implements JsonSerializable<DomainUpdateParameterProperties> {
     /*
      * This determines if traffic is allowed over public network. By default it is enabled.
      * You can further restrict to specific IPs by configuring <seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainUpdateParameterProperties.InboundIpRules"
      * />
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if
      * PublicNetworkAccess is enabled.
      */
-    @JsonProperty(value = "inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
     /*
      * Minimum TLS version of the publisher allowed to publish to this domain
      */
-    @JsonProperty(value = "minimumTlsVersionAllowed")
     private TlsVersion minimumTlsVersionAllowed;
 
     /*
      * This boolean is used to enable or disable local auth. Default value is false. When the property is set to true,
      * only AAD token will be used to authenticate if user is allowed to publish to the domain.
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
@@ -62,7 +62,6 @@ public final class DomainUpdateParameterProperties {
      * creation mode, user is allowed to create the
      * domain topic on demand if needed.
      */
-    @JsonProperty(value = "autoCreateTopicWithFirstSubscription")
     private Boolean autoCreateTopicWithFirstSubscription;
 
     /*
@@ -74,25 +73,22 @@ public final class DomainUpdateParameterProperties {
      * last event subscription at the scope
      * of the domain topic is deleted. If this property is set to false, then the user needs to manually delete the
      * domain topic when it is no longer needed
-     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management
-     * mode can be used if the user wants full
-     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to
-     * perform less operations and manage fewer
+     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode
+     * can be used if the user wants full
+     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to perform
+     * less operations and manage fewer
      * resources by the user.
      */
-    @JsonProperty(value = "autoDeleteTopicWithLastSubscription")
     private Boolean autoDeleteTopicWithLastSubscription;
 
     /*
      * The data residency boundary for the domain.
      */
-    @JsonProperty(value = "dataResidencyBoundary")
     private DataResidencyBoundary dataResidencyBoundary;
 
     /*
      * The eventTypeInfo for the domain.
      */
-    @JsonProperty(value = "eventTypeInfo")
     private EventTypeInfo eventTypeInfo;
 
     /**
@@ -102,8 +98,8 @@ public final class DomainUpdateParameterProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainUpdateParameterProperties.InboundIpRules"
      * /&gt;.
@@ -115,8 +111,8 @@ public final class DomainUpdateParameterProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainUpdateParameterProperties.InboundIpRules"
      * /&gt;.
@@ -130,8 +126,8 @@ public final class DomainUpdateParameterProperties {
     }
 
     /**
-     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @return the inboundIpRules value.
      */
@@ -140,8 +136,8 @@ public final class DomainUpdateParameterProperties {
     }
 
     /**
-     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the DomainUpdateParameterProperties object itself.
@@ -198,8 +194,8 @@ public final class DomainUpdateParameterProperties {
     }
 
     /**
-     * Get the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism
-     * for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+     * Get the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
      * In this context, creation of domain topic can be auto-managed (when true) or self-managed (when false). The
      * default value for this property is true.
      * When this property is null or set to true, Event Grid is responsible of automatically creating the domain topic
@@ -219,8 +215,8 @@ public final class DomainUpdateParameterProperties {
     }
 
     /**
-     * Set the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism
-     * for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+     * Set the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
      * In this context, creation of domain topic can be auto-managed (when true) or self-managed (when false). The
      * default value for this property is true.
      * When this property is null or set to true, Event Grid is responsible of automatically creating the domain topic
@@ -251,10 +247,10 @@ public final class DomainUpdateParameterProperties {
      * last event subscription at the scope
      * of the domain topic is deleted. If this property is set to false, then the user needs to manually delete the
      * domain topic when it is no longer needed
-     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management
-     * mode can be used if the user wants full
-     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to
-     * perform less operations and manage fewer
+     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode
+     * can be used if the user wants full
+     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to perform
+     * less operations and manage fewer
      * resources by the user.
      * 
      * @return the autoDeleteTopicWithLastSubscription value.
@@ -272,10 +268,10 @@ public final class DomainUpdateParameterProperties {
      * last event subscription at the scope
      * of the domain topic is deleted. If this property is set to false, then the user needs to manually delete the
      * domain topic when it is no longer needed
-     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management
-     * mode can be used if the user wants full
-     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to
-     * perform less operations and manage fewer
+     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode
+     * can be used if the user wants full
+     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to perform
+     * less operations and manage fewer
      * resources by the user.
      * 
      * @param autoDeleteTopicWithLastSubscription the autoDeleteTopicWithLastSubscription value to set.
@@ -339,5 +335,74 @@ public final class DomainUpdateParameterProperties {
         if (eventTypeInfo() != null) {
             eventTypeInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeArrayField("inboundIpRules", this.inboundIpRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("minimumTlsVersionAllowed",
+            this.minimumTlsVersionAllowed == null ? null : this.minimumTlsVersionAllowed.toString());
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeBooleanField("autoCreateTopicWithFirstSubscription", this.autoCreateTopicWithFirstSubscription);
+        jsonWriter.writeBooleanField("autoDeleteTopicWithLastSubscription", this.autoDeleteTopicWithLastSubscription);
+        jsonWriter.writeStringField("dataResidencyBoundary",
+            this.dataResidencyBoundary == null ? null : this.dataResidencyBoundary.toString());
+        jsonWriter.writeJsonField("eventTypeInfo", this.eventTypeInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainUpdateParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainUpdateParameterProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DomainUpdateParameterProperties.
+     */
+    public static DomainUpdateParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainUpdateParameterProperties deserializedDomainUpdateParameterProperties
+                = new DomainUpdateParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedDomainUpdateParameterProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("inboundIpRules".equals(fieldName)) {
+                    List<InboundIpRule> inboundIpRules = reader.readArray(reader1 -> InboundIpRule.fromJson(reader1));
+                    deserializedDomainUpdateParameterProperties.inboundIpRules = inboundIpRules;
+                } else if ("minimumTlsVersionAllowed".equals(fieldName)) {
+                    deserializedDomainUpdateParameterProperties.minimumTlsVersionAllowed
+                        = TlsVersion.fromString(reader.getString());
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedDomainUpdateParameterProperties.disableLocalAuth
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoCreateTopicWithFirstSubscription".equals(fieldName)) {
+                    deserializedDomainUpdateParameterProperties.autoCreateTopicWithFirstSubscription
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoDeleteTopicWithLastSubscription".equals(fieldName)) {
+                    deserializedDomainUpdateParameterProperties.autoDeleteTopicWithLastSubscription
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dataResidencyBoundary".equals(fieldName)) {
+                    deserializedDomainUpdateParameterProperties.dataResidencyBoundary
+                        = DataResidencyBoundary.fromString(reader.getString());
+                } else if ("eventTypeInfo".equals(fieldName)) {
+                    deserializedDomainUpdateParameterProperties.eventTypeInfo = EventTypeInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainUpdateParameterProperties;
+        });
     }
 }

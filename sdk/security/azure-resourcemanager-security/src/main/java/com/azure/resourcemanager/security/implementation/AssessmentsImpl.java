@@ -22,31 +22,30 @@ public final class AssessmentsImpl implements Assessments {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public AssessmentsImpl(
-        AssessmentsClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public AssessmentsImpl(AssessmentsClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<SecurityAssessmentResponse> list(String scope) {
         PagedIterable<SecurityAssessmentResponseInner> inner = this.serviceClient().list(scope);
-        return Utils.mapPage(inner, inner1 -> new SecurityAssessmentResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SecurityAssessmentResponseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SecurityAssessmentResponse> list(String scope, Context context) {
         PagedIterable<SecurityAssessmentResponseInner> inner = this.serviceClient().list(scope, context);
-        return Utils.mapPage(inner, inner1 -> new SecurityAssessmentResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SecurityAssessmentResponseImpl(inner1, this.manager()));
     }
 
-    public Response<SecurityAssessmentResponse> getWithResponse(
-        String resourceId, String assessmentName, ExpandEnum expand, Context context) {
-        Response<SecurityAssessmentResponseInner> inner =
-            this.serviceClient().getWithResponse(resourceId, assessmentName, expand, context);
+    public Response<SecurityAssessmentResponse> getWithResponse(String resourceId, String assessmentName,
+        ExpandEnum expand, Context context) {
+        Response<SecurityAssessmentResponseInner> inner
+            = this.serviceClient().getWithResponse(resourceId, assessmentName, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SecurityAssessmentResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -71,98 +70,66 @@ public final class AssessmentsImpl implements Assessments {
     }
 
     public SecurityAssessmentResponse getById(String id) {
-        String resourceId =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
+        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
         if (resourceId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
         }
-        String assessmentName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
+        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
         if (assessmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
         }
         ExpandEnum localExpand = null;
         return this.getWithResponse(resourceId, assessmentName, localExpand, Context.NONE).getValue();
     }
 
     public Response<SecurityAssessmentResponse> getByIdWithResponse(String id, ExpandEnum expand, Context context) {
-        String resourceId =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
+        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
         if (resourceId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
         }
-        String assessmentName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
+        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
         if (assessmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
         }
         return this.getWithResponse(resourceId, assessmentName, expand, context);
     }
 
     public void deleteById(String id) {
-        String resourceId =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
+        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
         if (resourceId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
         }
-        String assessmentName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
+        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
         if (assessmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceId, assessmentName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceId =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
+        String resourceId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "resourceId");
         if (resourceId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceId'.", id)));
         }
-        String assessmentName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
+        String assessmentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", "assessmentName");
         if (assessmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assessments'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceId, assessmentName, context);
     }

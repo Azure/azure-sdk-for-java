@@ -6,60 +6,47 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.DeviceSecurityGroup;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DeviceSecurityGroupsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"thresholdRules\":[{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":2052489280,\"maxThreshold\":707220178,\"displayName\":\"qqqagwwrxaomzi\",\"description\":\"lrrcz\",\"isEnabled\":true}],\"timeWindowRules\":[{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT29H26M55S\",\"minThreshold\":701737154,\"maxThreshold\":1634353731,\"displayName\":\"jadhqoawj\",\"description\":\"yueayfbpcmsp\",\"isEnabled\":true},{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT101H21M51S\",\"minThreshold\":462138012,\"maxThreshold\":2116150799,\"displayName\":\"eqthwmg\",\"description\":\"b\",\"isEnabled\":true},{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT50H30M52S\",\"minThreshold\":806995622,\"maxThreshold\":1214736566,\"displayName\":\"gdhxi\",\"description\":\"lopedbwdpyqyyb\",\"isEnabled\":true}],\"allowlistRules\":[{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"nafcbq\",\"remj\",\"laqacigele\"],\"valueType\":\"IpCidr\",\"displayName\":\"vqvwzkjopwbe\",\"description\":\"r\",\"isEnabled\":true}],\"denylistRules\":[{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"qybxceakxcp\",\"soqfyiaseqchkrt\"],\"valueType\":\"IpCidr\",\"displayName\":\"zisgykiuemvanb\",\"description\":\"ohmn\",\"isEnabled\":true},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"bsojk\",\"inhmdptys\"],\"valueType\":\"String\",\"displayName\":\"gnzxojpslsvj\",\"description\":\"liufiqwoyxq\",\"isEnabled\":true}]},\"id\":\"pcohhoucqpqojx\",\"name\":\"x\",\"type\":\"rzdcgdzbenribcaw\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"xqceazfpxgn\",\"name\":\"qvzvlu\",\"type\":\"q\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<DeviceSecurityGroup> response
+            = manager.deviceSecurityGroups().list("xwqagnepzw", com.azure.core.util.Context.NONE);
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<DeviceSecurityGroup> response =
-            manager.deviceSecurityGroups().list("gfii", com.azure.core.util.Context.NONE);
+        Assertions.assertEquals(true, response.iterator().next().thresholdRules().get(0).isEnabled());
+        Assertions.assertEquals(2052489280, response.iterator().next().thresholdRules().get(0).minThreshold());
+        Assertions.assertEquals(707220178, response.iterator().next().thresholdRules().get(0).maxThreshold());
+        Assertions.assertEquals(true, response.iterator().next().timeWindowRules().get(0).isEnabled());
+        Assertions.assertEquals(701737154, response.iterator().next().timeWindowRules().get(0).minThreshold());
+        Assertions.assertEquals(1634353731, response.iterator().next().timeWindowRules().get(0).maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT29H26M55S"),
+            response.iterator().next().timeWindowRules().get(0).timeWindowSize());
+        Assertions.assertEquals(true, response.iterator().next().allowlistRules().get(0).isEnabled());
+        Assertions.assertEquals("nafcbq", response.iterator().next().allowlistRules().get(0).allowlistValues().get(0));
+        Assertions.assertEquals(true, response.iterator().next().denylistRules().get(0).isEnabled());
+        Assertions.assertEquals("qybxceakxcp",
+            response.iterator().next().denylistRules().get(0).denylistValues().get(0));
     }
 }

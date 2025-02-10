@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The SelectiveKeyRestoreOperationHeaders model. */
+/**
+ * The SelectiveKeyRestoreOperationHeaders model.
+ */
 @Fluent
 public final class SelectiveKeyRestoreOperationHeaders {
     /*
@@ -21,12 +23,10 @@ public final class SelectiveKeyRestoreOperationHeaders {
      */
     private String azureAsyncOperation;
 
-    private static final HttpHeaderName AZURE_ASYNC_OPERATION = HttpHeaderName.fromString("Azure-AsyncOperation");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of SelectiveKeyRestoreOperationHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SelectiveKeyRestoreOperationHeaders(HttpHeaders rawHeaders) {
@@ -34,12 +34,12 @@ public final class SelectiveKeyRestoreOperationHeaders {
         if (retryAfter != null) {
             this.retryAfter = Integer.parseInt(retryAfter);
         }
-        this.azureAsyncOperation = rawHeaders.getValue(AZURE_ASYNC_OPERATION);
+        this.azureAsyncOperation = rawHeaders.getValue(HttpHeaderName.AZURE_ASYNCOPERATION);
     }
 
     /**
      * Get the retryAfter property: The Retry-After property.
-     *
+     * 
      * @return the retryAfter value.
      */
     public Integer getRetryAfter() {
@@ -48,7 +48,7 @@ public final class SelectiveKeyRestoreOperationHeaders {
 
     /**
      * Set the retryAfter property: The Retry-After property.
-     *
+     * 
      * @param retryAfter the retryAfter value to set.
      * @return the SelectiveKeyRestoreOperationHeaders object itself.
      */
@@ -59,7 +59,7 @@ public final class SelectiveKeyRestoreOperationHeaders {
 
     /**
      * Get the azureAsyncOperation property: The Azure-AsyncOperation property.
-     *
+     * 
      * @return the azureAsyncOperation value.
      */
     public String getAzureAsyncOperation() {
@@ -68,7 +68,7 @@ public final class SelectiveKeyRestoreOperationHeaders {
 
     /**
      * Set the azureAsyncOperation property: The Azure-AsyncOperation property.
-     *
+     * 
      * @param azureAsyncOperation the azureAsyncOperation value to set.
      * @return the SelectiveKeyRestoreOperationHeaders object itself.
      */

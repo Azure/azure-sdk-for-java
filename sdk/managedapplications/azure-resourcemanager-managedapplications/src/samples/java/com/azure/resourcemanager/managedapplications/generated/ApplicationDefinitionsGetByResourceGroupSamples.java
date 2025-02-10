@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.managedapplications.generated;
 
-/** Samples for ApplicationDefinitions GetByResourceGroup. */
+/**
+ * Samples for ApplicationDefinitions GetByResourceGroup.
+ */
 public final class ApplicationDefinitionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/getApplicationDefinition.json
+     * x-ms-original-file:
+     * specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/getApplicationDefinition.
+     * json
      */
     /**
      * Sample code: Get managed application definition.
-     *
+     * 
      * @param manager Entry point to ApplicationManager.
      */
-    public static void getManagedApplicationDefinition(
-        com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
-        manager
-            .applicationDefinitions()
+    public static void
+        getManagedApplicationDefinition(com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
+        manager.applicationDefinitions()
             .getByResourceGroupWithResponse("rg", "myManagedApplicationDef", com.azure.core.util.Context.NONE);
     }
 }

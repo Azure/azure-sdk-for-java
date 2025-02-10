@@ -22,13 +22,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedDatabasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedDatabasesClient.
+ */
 public interface ManagedDatabasesClient {
     /**
      * Gets a list of managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,9 +42,9 @@ public interface ManagedDatabasesClient {
 
     /**
      * Gets a list of managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,9 +56,9 @@ public interface ManagedDatabasesClient {
 
     /**
      * Gets a list of managed databases.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,14 +67,14 @@ public interface ManagedDatabasesClient {
      * @return a list of managed databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedDatabaseInner> listByInstance(
-        String resourceGroupName, String managedInstanceName, Context context);
+    PagedIterable<ManagedDatabaseInner> listByInstance(String resourceGroupName, String managedInstanceName,
+        Context context);
 
     /**
      * Gets a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,14 +83,14 @@ public interface ManagedDatabasesClient {
      * @return a managed database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ManagedDatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName);
+    Mono<Response<ManagedDatabaseInner>> getWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName);
 
     /**
      * Gets a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,9 +103,9 @@ public interface ManagedDatabasesClient {
 
     /**
      * Gets a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -113,14 +115,14 @@ public interface ManagedDatabasesClient {
      * @return a managed database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedDatabaseInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, String databaseName, Context context);
+    Response<ManagedDatabaseInner> getWithResponse(String resourceGroupName, String managedInstanceName,
+        String databaseName, Context context);
 
     /**
      * Gets a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,9 +135,9 @@ public interface ManagedDatabasesClient {
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -145,14 +147,14 @@ public interface ManagedDatabasesClient {
      * @return a managed database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedDatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -167,9 +169,9 @@ public interface ManagedDatabasesClient {
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -179,14 +181,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters);
+    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedDatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -197,18 +199,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseInner parameters,
-        Context context);
+    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedDatabaseInner parameters, Context context);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -218,14 +216,14 @@ public interface ManagedDatabasesClient {
      * @return a managed database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedDatabaseInner> createOrUpdateAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters);
+    Mono<ManagedDatabaseInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -235,14 +233,14 @@ public interface ManagedDatabasesClient {
      * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner createOrUpdate(
-        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseInner parameters);
+    ManagedDatabaseInner createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -253,18 +251,14 @@ public interface ManagedDatabasesClient {
      * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseInner parameters,
-        Context context);
+    ManagedDatabaseInner createOrUpdate(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseInner parameters, Context context);
 
     /**
      * Deletes a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -273,14 +267,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName);
 
     /**
      * Deletes a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,14 +283,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName);
 
     /**
      * Deletes a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,14 +299,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String managedInstanceName, String databaseName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
+        String databaseName);
 
     /**
      * Deletes a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -322,14 +316,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String managedInstanceName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName,
+        String databaseName, Context context);
 
     /**
      * Deletes a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -342,9 +336,9 @@ public interface ManagedDatabasesClient {
 
     /**
      * Deletes a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -356,9 +350,9 @@ public interface ManagedDatabasesClient {
 
     /**
      * Deletes a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -371,9 +365,9 @@ public interface ManagedDatabasesClient {
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -383,14 +377,14 @@ public interface ManagedDatabasesClient {
      * @return a managed database resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseUpdate parameters);
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -400,14 +394,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link PollerFlux} for polling of a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdateAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters);
+    PollerFlux<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdateAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters);
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -417,14 +411,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdate(
-        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters);
+    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdate(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters);
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -435,18 +429,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseUpdate parameters,
-        Context context);
+    SyncPoller<PollResult<ManagedDatabaseInner>, ManagedDatabaseInner> beginUpdate(String resourceGroupName,
+        String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters, Context context);
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -456,14 +446,14 @@ public interface ManagedDatabasesClient {
      * @return a managed database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedDatabaseInner> updateAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters);
+    Mono<ManagedDatabaseInner> updateAsync(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseUpdate parameters);
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -473,14 +463,14 @@ public interface ManagedDatabasesClient {
      * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner update(
-        String resourceGroupName, String managedInstanceName, String databaseName, ManagedDatabaseUpdate parameters);
+    ManagedDatabaseInner update(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseUpdate parameters);
 
     /**
      * Updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The requested database resource state.
@@ -491,18 +481,14 @@ public interface ManagedDatabasesClient {
      * @return a managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedDatabaseInner update(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseUpdate parameters,
-        Context context);
+    ManagedDatabaseInner update(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseUpdate parameters, Context context);
 
     /**
      * Cancels a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the cancel managed database move operation.
@@ -512,17 +498,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> cancelMoveWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseMoveDefinition parameters);
+    Mono<Response<Flux<ByteBuffer>>> cancelMoveWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Cancels a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the cancel managed database move operation.
@@ -532,17 +515,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCancelMoveAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseMoveDefinition parameters);
+    PollerFlux<PollResult<Void>, Void> beginCancelMoveAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Cancels a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the cancel managed database move operation.
@@ -552,17 +532,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancelMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseMoveDefinition parameters);
+    SyncPoller<PollResult<Void>, Void> beginCancelMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Cancels a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the cancel managed database move operation.
@@ -573,18 +550,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancelMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseMoveDefinition parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginCancelMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters, Context context);
 
     /**
      * Cancels a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the cancel managed database move operation.
@@ -594,17 +567,14 @@ public interface ManagedDatabasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> cancelMoveAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
+    Mono<Void> cancelMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Cancels a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the cancel managed database move operation.
@@ -613,17 +583,14 @@ public interface ManagedDatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancelMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
+    void cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Cancels a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the cancel managed database move operation.
@@ -633,18 +600,14 @@ public interface ManagedDatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancelMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseMoveDefinition parameters,
-        Context context);
+    void cancelMove(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseMoveDefinition parameters, Context context);
 
     /**
      * Completes a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the complete managed database move operation.
@@ -654,17 +617,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> completeMoveWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseMoveDefinition parameters);
+    Mono<Response<Flux<ByteBuffer>>> completeMoveWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Completes a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the complete managed database move operation.
@@ -674,17 +634,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCompleteMoveAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseMoveDefinition parameters);
+    PollerFlux<PollResult<Void>, Void> beginCompleteMoveAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Completes a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the complete managed database move operation.
@@ -694,17 +651,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCompleteMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseMoveDefinition parameters);
+    SyncPoller<PollResult<Void>, Void> beginCompleteMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Completes a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the complete managed database move operation.
@@ -715,18 +669,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCompleteMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseMoveDefinition parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginCompleteMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseMoveDefinition parameters, Context context);
 
     /**
      * Completes a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the complete managed database move operation.
@@ -736,17 +686,14 @@ public interface ManagedDatabasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> completeMoveAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
+    Mono<Void> completeMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Completes a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the complete managed database move operation.
@@ -755,17 +702,14 @@ public interface ManagedDatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void completeMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
+    void completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseMoveDefinition parameters);
 
     /**
      * Completes a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the complete managed database move operation.
@@ -775,18 +719,14 @@ public interface ManagedDatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void completeMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseMoveDefinition parameters,
-        Context context);
+    void completeMove(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseMoveDefinition parameters, Context context);
 
     /**
      * Completes the restore operation on a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The definition for completing the restore of this managed database.
@@ -796,17 +736,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> completeRestoreWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        CompleteDatabaseRestoreDefinition parameters);
+    Mono<Response<Flux<ByteBuffer>>> completeRestoreWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String databaseName, CompleteDatabaseRestoreDefinition parameters);
 
     /**
      * Completes the restore operation on a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The definition for completing the restore of this managed database.
@@ -816,17 +753,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginCompleteRestoreAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        CompleteDatabaseRestoreDefinition parameters);
+    PollerFlux<PollResult<Void>, Void> beginCompleteRestoreAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, CompleteDatabaseRestoreDefinition parameters);
 
     /**
      * Completes the restore operation on a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The definition for completing the restore of this managed database.
@@ -836,17 +770,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCompleteRestore(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        CompleteDatabaseRestoreDefinition parameters);
+    SyncPoller<PollResult<Void>, Void> beginCompleteRestore(String resourceGroupName, String managedInstanceName,
+        String databaseName, CompleteDatabaseRestoreDefinition parameters);
 
     /**
      * Completes the restore operation on a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The definition for completing the restore of this managed database.
@@ -857,18 +788,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCompleteRestore(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        CompleteDatabaseRestoreDefinition parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginCompleteRestore(String resourceGroupName, String managedInstanceName,
+        String databaseName, CompleteDatabaseRestoreDefinition parameters, Context context);
 
     /**
      * Completes the restore operation on a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The definition for completing the restore of this managed database.
@@ -878,17 +805,14 @@ public interface ManagedDatabasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> completeRestoreAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
+    Mono<Void> completeRestoreAsync(String resourceGroupName, String managedInstanceName, String databaseName,
         CompleteDatabaseRestoreDefinition parameters);
 
     /**
      * Completes the restore operation on a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The definition for completing the restore of this managed database.
@@ -897,17 +821,14 @@ public interface ManagedDatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void completeRestore(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
+    void completeRestore(String resourceGroupName, String managedInstanceName, String databaseName,
         CompleteDatabaseRestoreDefinition parameters);
 
     /**
      * Completes the restore operation on a managed database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters The definition for completing the restore of this managed database.
@@ -917,18 +838,14 @@ public interface ManagedDatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void completeRestore(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        CompleteDatabaseRestoreDefinition parameters,
-        Context context);
+    void completeRestore(String resourceGroupName, String managedInstanceName, String databaseName,
+        CompleteDatabaseRestoreDefinition parameters, Context context);
 
     /**
      * Starts a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the start managed database move operation.
@@ -938,17 +855,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> startMoveWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseStartMoveDefinition parameters);
+    Mono<Response<Flux<ByteBuffer>>> startMoveWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseStartMoveDefinition parameters);
 
     /**
      * Starts a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the start managed database move operation.
@@ -958,17 +872,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginStartMoveAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseStartMoveDefinition parameters);
+    PollerFlux<PollResult<Void>, Void> beginStartMoveAsync(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseStartMoveDefinition parameters);
 
     /**
      * Starts a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the start managed database move operation.
@@ -978,17 +889,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseStartMoveDefinition parameters);
+    SyncPoller<PollResult<Void>, Void> beginStartMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseStartMoveDefinition parameters);
 
     /**
      * Starts a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the start managed database move operation.
@@ -999,18 +907,14 @@ public interface ManagedDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseStartMoveDefinition parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginStartMove(String resourceGroupName, String managedInstanceName,
+        String databaseName, ManagedDatabaseStartMoveDefinition parameters, Context context);
 
     /**
      * Starts a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the start managed database move operation.
@@ -1020,17 +924,14 @@ public interface ManagedDatabasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> startMoveAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
+    Mono<Void> startMoveAsync(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseStartMoveDefinition parameters);
 
     /**
      * Starts a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the start managed database move operation.
@@ -1039,17 +940,14 @@ public interface ManagedDatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void startMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
+    void startMove(String resourceGroupName, String managedInstanceName, String databaseName,
         ManagedDatabaseStartMoveDefinition parameters);
 
     /**
      * Starts a managed database move operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param parameters Parameters of the start managed database move operation.
@@ -1059,59 +957,55 @@ public interface ManagedDatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void startMove(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedDatabaseStartMoveDefinition parameters,
-        Context context);
+    void startMove(String resourceGroupName, String managedInstanceName, String databaseName,
+        ManagedDatabaseStartMoveDefinition parameters, Context context);
 
     /**
      * Gets a list of inaccessible managed databases in a managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of inaccessible managed databases in a managed instance as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ManagedDatabaseInner> listInaccessibleByInstanceAsync(
-        String resourceGroupName, String managedInstanceName);
+    PagedFlux<ManagedDatabaseInner> listInaccessibleByInstanceAsync(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Gets a list of inaccessible managed databases in a managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of inaccessible managed databases in a managed instance as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(
-        String resourceGroupName, String managedInstanceName);
+    PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Gets a list of inaccessible managed databases in a managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of inaccessible managed databases in a managed instance as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of inaccessible managed databases in a managed instance as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(
-        String resourceGroupName, String managedInstanceName, Context context);
+    PagedIterable<ManagedDatabaseInner> listInaccessibleByInstance(String resourceGroupName, String managedInstanceName,
+        Context context);
 }

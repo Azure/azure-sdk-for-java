@@ -6,7 +6,7 @@ package com.azure.resourcemanager.storagecache.implementation;
 
 import com.azure.resourcemanager.storagecache.fluent.models.AscOperationInner;
 import com.azure.resourcemanager.storagecache.models.AscOperation;
-import com.azure.resourcemanager.storagecache.models.ErrorResponse;
+import com.azure.resourcemanager.storagecache.models.AscOperationErrorResponse;
 import java.util.Collections;
 import java.util.Map;
 
@@ -15,8 +15,8 @@ public final class AscOperationImpl implements AscOperation {
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    AscOperationImpl(
-        AscOperationInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
+    AscOperationImpl(AscOperationInner innerObject,
+        com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -41,7 +41,7 @@ public final class AscOperationImpl implements AscOperation {
         return this.innerModel().status();
     }
 
-    public ErrorResponse error() {
+    public AscOperationErrorResponse error() {
         return this.innerModel().error();
     }
 

@@ -5,67 +5,66 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The policy definition properties. */
+/**
+ * The policy definition properties.
+ */
 @Fluent
-public final class PolicyDefinitionProperties {
+public final class PolicyDefinitionProperties implements JsonSerializable<PolicyDefinitionProperties> {
     /*
      * The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
      */
-    @JsonProperty(value = "policyType")
     private PolicyType policyType;
 
     /*
      * The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
      */
-    @JsonProperty(value = "mode")
     private String mode;
 
     /*
      * The display name of the policy definition.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The policy definition description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The policy rule.
      */
-    @JsonProperty(value = "policyRule")
     private Object policyRule;
 
     /*
-     * The policy definition metadata.  Metadata is an open ended object and is typically a collection of key value
+     * The policy definition metadata. Metadata is an open ended object and is typically a collection of key value
      * pairs.
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The parameter definitions for parameters used in the policy rule. The keys are the parameter names.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterDefinitionsValue> parameters;
 
-    /** Creates an instance of PolicyDefinitionProperties class. */
+    /**
+     * Creates an instance of PolicyDefinitionProperties class.
+     */
     public PolicyDefinitionProperties() {
     }
 
     /**
      * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
      * and Static.
-     *
+     * 
      * @return the policyType value.
      */
     public PolicyType policyType() {
@@ -75,7 +74,7 @@ public final class PolicyDefinitionProperties {
     /**
      * Set the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
      * and Static.
-     *
+     * 
      * @param policyType the policyType value to set.
      * @return the PolicyDefinitionProperties object itself.
      */
@@ -86,7 +85,7 @@ public final class PolicyDefinitionProperties {
 
     /**
      * Get the mode property: The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
-     *
+     * 
      * @return the mode value.
      */
     public String mode() {
@@ -95,7 +94,7 @@ public final class PolicyDefinitionProperties {
 
     /**
      * Set the mode property: The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the PolicyDefinitionProperties object itself.
      */
@@ -106,7 +105,7 @@ public final class PolicyDefinitionProperties {
 
     /**
      * Get the displayName property: The display name of the policy definition.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -115,7 +114,7 @@ public final class PolicyDefinitionProperties {
 
     /**
      * Set the displayName property: The display name of the policy definition.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PolicyDefinitionProperties object itself.
      */
@@ -126,7 +125,7 @@ public final class PolicyDefinitionProperties {
 
     /**
      * Get the description property: The policy definition description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -135,7 +134,7 @@ public final class PolicyDefinitionProperties {
 
     /**
      * Set the description property: The policy definition description.
-     *
+     * 
      * @param description the description value to set.
      * @return the PolicyDefinitionProperties object itself.
      */
@@ -146,7 +145,7 @@ public final class PolicyDefinitionProperties {
 
     /**
      * Get the policyRule property: The policy rule.
-     *
+     * 
      * @return the policyRule value.
      */
     public Object policyRule() {
@@ -155,7 +154,7 @@ public final class PolicyDefinitionProperties {
 
     /**
      * Set the policyRule property: The policy rule.
-     *
+     * 
      * @param policyRule the policyRule value to set.
      * @return the PolicyDefinitionProperties object itself.
      */
@@ -167,7 +166,7 @@ public final class PolicyDefinitionProperties {
     /**
      * Get the metadata property: The policy definition metadata. Metadata is an open ended object and is typically a
      * collection of key value pairs.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -177,7 +176,7 @@ public final class PolicyDefinitionProperties {
     /**
      * Set the metadata property: The policy definition metadata. Metadata is an open ended object and is typically a
      * collection of key value pairs.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the PolicyDefinitionProperties object itself.
      */
@@ -189,7 +188,7 @@ public final class PolicyDefinitionProperties {
     /**
      * Get the parameters property: The parameter definitions for parameters used in the policy rule. The keys are the
      * parameter names.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, ParameterDefinitionsValue> parameters() {
@@ -199,7 +198,7 @@ public final class PolicyDefinitionProperties {
     /**
      * Set the parameters property: The parameter definitions for parameters used in the policy rule. The keys are the
      * parameter names.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the PolicyDefinitionProperties object itself.
      */
@@ -210,19 +209,72 @@ public final class PolicyDefinitionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyType", this.policyType == null ? null : this.policyType.toString());
+        jsonWriter.writeStringField("mode", this.mode);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeUntypedField("policyRule", this.policyRule);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyDefinitionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyDefinitionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyDefinitionProperties.
+     */
+    public static PolicyDefinitionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyDefinitionProperties deserializedPolicyDefinitionProperties = new PolicyDefinitionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyType".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.policyType = PolicyType.fromString(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.mode = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.description = reader.getString();
+                } else if ("policyRule".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.policyRule = reader.readUntyped();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.metadata = reader.readUntyped();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterDefinitionsValue> parameters
+                        = reader.readMap(reader1 -> ParameterDefinitionsValue.fromJson(reader1));
+                    deserializedPolicyDefinitionProperties.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyDefinitionProperties;
+        });
     }
 }

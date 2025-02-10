@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = PrescriptionMapsClientBuilder.class)
 public final class PrescriptionMapsClient {
-    @Generated private final PrescriptionMapsAsyncClient client;
+    @Generated
+    private final PrescriptionMapsAsyncClient client;
 
     /**
      * Initializes an instance of PrescriptionMapsClient class.
@@ -141,8 +142,8 @@ public final class PrescriptionMapsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String partyId, String prescriptionMapId, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String partyId, String prescriptionMapId,
+        RequestOptions requestOptions) {
         return this.client.getWithResponse(partyId, prescriptionMapId, requestOptions).block();
     }
 
@@ -211,11 +212,10 @@ public final class PrescriptionMapsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId, String prescriptionMapId, BinaryData prescriptionMap, RequestOptions requestOptions) {
-        return this.client
-                .createOrUpdateWithResponse(partyId, prescriptionMapId, prescriptionMap, requestOptions)
-                .block();
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String prescriptionMapId,
+        BinaryData prescriptionMap, RequestOptions requestOptions) {
+        return this.client.createOrUpdateWithResponse(partyId, prescriptionMapId, prescriptionMap, requestOptions)
+            .block();
     }
 
     /**
@@ -374,10 +374,9 @@ public final class PrescriptionMapsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String prescriptionMapId, RequestOptions requestOptions) {
-        return this.client
-                .beginCreateCascadeDeleteJob(jobId, partyId, prescriptionMapId, requestOptions)
-                .getSyncPoller();
+    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String prescriptionMapId, RequestOptions requestOptions) {
+        return this.client.beginCreateCascadeDeleteJob(jobId, partyId, prescriptionMapId, requestOptions)
+            .getSyncPoller();
     }
 }

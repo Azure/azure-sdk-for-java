@@ -5,61 +5,77 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Azure IaaS VM workload-specific job object. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
-@JsonTypeName("AzureIaaSVMJobV2")
+/**
+ * Azure IaaS VM workload-specific job object.
+ */
 @Fluent
 public final class AzureIaaSvmJobV2 extends Job {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String jobType = "AzureIaaSVMJobV2";
+
+    /*
      * Gets or sets the state/actions applicable on this job like cancel/retry.
      */
-    @JsonProperty(value = "actionsInfo")
     private List<JobSupportedAction> actionsInfo;
 
     /*
      * Container name of the entity on which the current job is executing.
      */
-    @JsonProperty(value = "containerName")
     private String containerName;
 
     /*
      * Time elapsed during the execution of this job.
      */
-    @JsonProperty(value = "duration")
     private Duration duration;
 
     /*
      * Error details on execution of this job.
      */
-    @JsonProperty(value = "errorDetails")
     private List<AzureIaaSvmErrorInfo> errorDetails;
 
     /*
      * Specifies whether the backup item is a Classic or an Azure Resource Manager VM.
      */
-    @JsonProperty(value = "virtualMachineVersion")
     private String virtualMachineVersion;
 
     /*
      * Additional information for this job.
      */
-    @JsonProperty(value = "extendedInfo")
     private AzureIaaSvmJobExtendedInfo extendedInfo;
 
-    /** Creates an instance of AzureIaaSvmJobV2 class. */
+    /**
+     * Creates an instance of AzureIaaSvmJobV2 class.
+     */
     public AzureIaaSvmJobV2() {
     }
 
     /**
+     * Get the jobType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the jobType value.
+     */
+    @Override
+    public String jobType() {
+        return this.jobType;
+    }
+
+    /**
      * Get the actionsInfo property: Gets or sets the state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @return the actionsInfo value.
      */
     public List<JobSupportedAction> actionsInfo() {
@@ -68,7 +84,7 @@ public final class AzureIaaSvmJobV2 extends Job {
 
     /**
      * Set the actionsInfo property: Gets or sets the state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @param actionsInfo the actionsInfo value to set.
      * @return the AzureIaaSvmJobV2 object itself.
      */
@@ -79,7 +95,7 @@ public final class AzureIaaSvmJobV2 extends Job {
 
     /**
      * Get the containerName property: Container name of the entity on which the current job is executing.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -88,7 +104,7 @@ public final class AzureIaaSvmJobV2 extends Job {
 
     /**
      * Set the containerName property: Container name of the entity on which the current job is executing.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the AzureIaaSvmJobV2 object itself.
      */
@@ -99,7 +115,7 @@ public final class AzureIaaSvmJobV2 extends Job {
 
     /**
      * Get the duration property: Time elapsed during the execution of this job.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -108,7 +124,7 @@ public final class AzureIaaSvmJobV2 extends Job {
 
     /**
      * Set the duration property: Time elapsed during the execution of this job.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the AzureIaaSvmJobV2 object itself.
      */
@@ -119,7 +135,7 @@ public final class AzureIaaSvmJobV2 extends Job {
 
     /**
      * Get the errorDetails property: Error details on execution of this job.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<AzureIaaSvmErrorInfo> errorDetails() {
@@ -128,7 +144,7 @@ public final class AzureIaaSvmJobV2 extends Job {
 
     /**
      * Set the errorDetails property: Error details on execution of this job.
-     *
+     * 
      * @param errorDetails the errorDetails value to set.
      * @return the AzureIaaSvmJobV2 object itself.
      */
@@ -140,7 +156,7 @@ public final class AzureIaaSvmJobV2 extends Job {
     /**
      * Get the virtualMachineVersion property: Specifies whether the backup item is a Classic or an Azure Resource
      * Manager VM.
-     *
+     * 
      * @return the virtualMachineVersion value.
      */
     public String virtualMachineVersion() {
@@ -150,7 +166,7 @@ public final class AzureIaaSvmJobV2 extends Job {
     /**
      * Set the virtualMachineVersion property: Specifies whether the backup item is a Classic or an Azure Resource
      * Manager VM.
-     *
+     * 
      * @param virtualMachineVersion the virtualMachineVersion value to set.
      * @return the AzureIaaSvmJobV2 object itself.
      */
@@ -161,7 +177,7 @@ public final class AzureIaaSvmJobV2 extends Job {
 
     /**
      * Get the extendedInfo property: Additional information for this job.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public AzureIaaSvmJobExtendedInfo extendedInfo() {
@@ -170,7 +186,7 @@ public final class AzureIaaSvmJobV2 extends Job {
 
     /**
      * Set the extendedInfo property: Additional information for this job.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the AzureIaaSvmJobV2 object itself.
      */
@@ -179,49 +195,63 @@ public final class AzureIaaSvmJobV2 extends Job {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJobV2 withEntityFriendlyName(String entityFriendlyName) {
         super.withEntityFriendlyName(entityFriendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJobV2 withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJobV2 withOperation(String operation) {
         super.withOperation(operation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJobV2 withStatus(String status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJobV2 withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJobV2 withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmJobV2 withActivityId(String activityId) {
         super.withActivityId(activityId);
@@ -230,17 +260,103 @@ public final class AzureIaaSvmJobV2 extends Job {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (errorDetails() != null) {
             errorDetails().forEach(e -> e.validate());
         }
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entityFriendlyName", entityFriendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("operation", operation());
+        jsonWriter.writeStringField("status", status());
+        jsonWriter.writeStringField("startTime",
+            startTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startTime()));
+        jsonWriter.writeStringField("endTime",
+            endTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(endTime()));
+        jsonWriter.writeStringField("activityId", activityId());
+        jsonWriter.writeStringField("jobType", this.jobType);
+        jsonWriter.writeArrayField("actionsInfo", this.actionsInfo,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("duration", CoreUtils.durationToStringWithDays(this.duration));
+        jsonWriter.writeArrayField("errorDetails", this.errorDetails, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("virtualMachineVersion", this.virtualMachineVersion);
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureIaaSvmJobV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureIaaSvmJobV2 if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureIaaSvmJobV2.
+     */
+    public static AzureIaaSvmJobV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureIaaSvmJobV2 deserializedAzureIaaSvmJobV2 = new AzureIaaSvmJobV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityFriendlyName".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2.withEntityFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("operation".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2.withOperation(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2.withStatus(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2.withStartTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2.withEndTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("activityId".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2.withActivityId(reader.getString());
+                } else if ("jobType".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2.jobType = reader.getString();
+                } else if ("actionsInfo".equals(fieldName)) {
+                    List<JobSupportedAction> actionsInfo
+                        = reader.readArray(reader1 -> JobSupportedAction.fromString(reader1.getString()));
+                    deserializedAzureIaaSvmJobV2.actionsInfo = actionsInfo;
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2.containerName = reader.getString();
+                } else if ("duration".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2.duration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("errorDetails".equals(fieldName)) {
+                    List<AzureIaaSvmErrorInfo> errorDetails
+                        = reader.readArray(reader1 -> AzureIaaSvmErrorInfo.fromJson(reader1));
+                    deserializedAzureIaaSvmJobV2.errorDetails = errorDetails;
+                } else if ("virtualMachineVersion".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2.virtualMachineVersion = reader.getString();
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobV2.extendedInfo = AzureIaaSvmJobExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureIaaSvmJobV2;
+        });
     }
 }

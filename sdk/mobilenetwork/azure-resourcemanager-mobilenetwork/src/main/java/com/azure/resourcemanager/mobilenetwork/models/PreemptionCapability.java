@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Preemption capability. */
+/**
+ * Preemption capability.
+ */
 public final class PreemptionCapability extends ExpandableStringEnum<PreemptionCapability> {
-    /** Static value NotPreempt for PreemptionCapability. */
+    /**
+     * Static value NotPreempt for PreemptionCapability.
+     */
     public static final PreemptionCapability NOT_PREEMPT = fromString("NotPreempt");
 
-    /** Static value MayPreempt for PreemptionCapability. */
+    /**
+     * Static value MayPreempt for PreemptionCapability.
+     */
     public static final PreemptionCapability MAY_PREEMPT = fromString("MayPreempt");
 
     /**
      * Creates a new instance of PreemptionCapability value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class PreemptionCapability extends ExpandableStringEnum<PreemptionC
 
     /**
      * Creates or finds a PreemptionCapability from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PreemptionCapability.
      */
-    @JsonCreator
     public static PreemptionCapability fromString(String name) {
         return fromString(name, PreemptionCapability.class);
     }
 
     /**
      * Gets known PreemptionCapability values.
-     *
+     * 
      * @return known PreemptionCapability values.
      */
     public static Collection<PreemptionCapability> values() {

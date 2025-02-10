@@ -5,19 +5,27 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ReplicationUpdateParametersProperties model. */
+/**
+ * The ReplicationUpdateParametersProperties model.
+ */
 @Fluent
-public final class ReplicationUpdateParametersProperties {
+public final class ReplicationUpdateParametersProperties
+    implements JsonSerializable<ReplicationUpdateParametersProperties> {
     /*
      * Specifies whether the replication's regional endpoint is enabled. Requests will not be routed to a replication
      * whose regional endpoint is disabled, however its data will continue to be synced with other replications.
      */
-    @JsonProperty(value = "regionEndpointEnabled")
     private Boolean regionEndpointEnabled;
 
-    /** Creates an instance of ReplicationUpdateParametersProperties class. */
+    /**
+     * Creates an instance of ReplicationUpdateParametersProperties class.
+     */
     public ReplicationUpdateParametersProperties() {
     }
 
@@ -25,7 +33,7 @@ public final class ReplicationUpdateParametersProperties {
      * Get the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @return the regionEndpointEnabled value.
      */
     public Boolean regionEndpointEnabled() {
@@ -36,7 +44,7 @@ public final class ReplicationUpdateParametersProperties {
      * Set the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @param regionEndpointEnabled the regionEndpointEnabled value to set.
      * @return the ReplicationUpdateParametersProperties object itself.
      */
@@ -47,9 +55,47 @@ public final class ReplicationUpdateParametersProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("regionEndpointEnabled", this.regionEndpointEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationUpdateParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationUpdateParametersProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationUpdateParametersProperties.
+     */
+    public static ReplicationUpdateParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationUpdateParametersProperties deserializedReplicationUpdateParametersProperties
+                = new ReplicationUpdateParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("regionEndpointEnabled".equals(fieldName)) {
+                    deserializedReplicationUpdateParametersProperties.regionEndpointEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationUpdateParametersProperties;
+        });
     }
 }

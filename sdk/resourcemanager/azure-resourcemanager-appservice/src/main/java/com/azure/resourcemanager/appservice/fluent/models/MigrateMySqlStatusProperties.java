@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.OperationStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * MigrateMySqlStatus resource specific properties.
  */
 @Immutable
-public final class MigrateMySqlStatusProperties {
+public final class MigrateMySqlStatusProperties implements JsonSerializable<MigrateMySqlStatusProperties> {
     /*
      * Status of the migration task.
      */
-    @JsonProperty(value = "migrationOperationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private OperationStatus migrationOperationStatus;
 
     /*
      * Operation ID for the migration task.
      */
-    @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /*
      * True if the web app has in app MySql enabled
      */
-    @JsonProperty(value = "localMySqlEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean localMySqlEnabled;
 
     /**
@@ -70,5 +71,46 @@ public final class MigrateMySqlStatusProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateMySqlStatusProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateMySqlStatusProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateMySqlStatusProperties.
+     */
+    public static MigrateMySqlStatusProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateMySqlStatusProperties deserializedMigrateMySqlStatusProperties = new MigrateMySqlStatusProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("migrationOperationStatus".equals(fieldName)) {
+                    deserializedMigrateMySqlStatusProperties.migrationOperationStatus
+                        = OperationStatus.fromString(reader.getString());
+                } else if ("operationId".equals(fieldName)) {
+                    deserializedMigrateMySqlStatusProperties.operationId = reader.getString();
+                } else if ("localMySqlEnabled".equals(fieldName)) {
+                    deserializedMigrateMySqlStatusProperties.localMySqlEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateMySqlStatusProperties;
+        });
     }
 }

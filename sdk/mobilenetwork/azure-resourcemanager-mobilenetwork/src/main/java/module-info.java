@@ -10,10 +10,6 @@ module com.azure.resourcemanager.mobilenetwork {
     exports com.azure.resourcemanager.mobilenetwork.fluent.models;
     exports com.azure.resourcemanager.mobilenetwork.models;
 
-    opens com.azure.resourcemanager.mobilenetwork.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.mobilenetwork.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.mobilenetwork.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.mobilenetwork.models to com.azure.core;
 }

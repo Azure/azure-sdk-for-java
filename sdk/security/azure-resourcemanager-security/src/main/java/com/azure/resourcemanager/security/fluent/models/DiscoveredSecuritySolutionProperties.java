@@ -6,43 +6,48 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.SecurityFamily;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The DiscoveredSecuritySolutionProperties model. */
+/**
+ * The DiscoveredSecuritySolutionProperties model.
+ */
 @Fluent
-public final class DiscoveredSecuritySolutionProperties {
+public final class DiscoveredSecuritySolutionProperties
+    implements JsonSerializable<DiscoveredSecuritySolutionProperties> {
     /*
      * The security family of the discovered solution
      */
-    @JsonProperty(value = "securityFamily", required = true)
     private SecurityFamily securityFamily;
 
     /*
      * The security solutions' image offer
      */
-    @JsonProperty(value = "offer", required = true)
     private String offer;
 
     /*
      * The security solutions' image publisher
      */
-    @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /*
      * The security solutions' image sku
      */
-    @JsonProperty(value = "sku", required = true)
     private String sku;
 
-    /** Creates an instance of DiscoveredSecuritySolutionProperties class. */
+    /**
+     * Creates an instance of DiscoveredSecuritySolutionProperties class.
+     */
     public DiscoveredSecuritySolutionProperties() {
     }
 
     /**
      * Get the securityFamily property: The security family of the discovered solution.
-     *
+     * 
      * @return the securityFamily value.
      */
     public SecurityFamily securityFamily() {
@@ -51,7 +56,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Set the securityFamily property: The security family of the discovered solution.
-     *
+     * 
      * @param securityFamily the securityFamily value to set.
      * @return the DiscoveredSecuritySolutionProperties object itself.
      */
@@ -62,7 +67,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Get the offer property: The security solutions' image offer.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -71,7 +76,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Set the offer property: The security solutions' image offer.
-     *
+     * 
      * @param offer the offer value to set.
      * @return the DiscoveredSecuritySolutionProperties object itself.
      */
@@ -82,7 +87,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Get the publisher property: The security solutions' image publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -91,7 +96,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Set the publisher property: The security solutions' image publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the DiscoveredSecuritySolutionProperties object itself.
      */
@@ -102,7 +107,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Get the sku property: The security solutions' image sku.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -111,7 +116,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Set the sku property: The security solutions' image sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DiscoveredSecuritySolutionProperties object itself.
      */
@@ -122,35 +127,80 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (securityFamily() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property securityFamily in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property securityFamily in model DiscoveredSecuritySolutionProperties"));
         }
         if (offer() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property offer in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property offer in model DiscoveredSecuritySolutionProperties"));
         }
         if (publisher() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publisher in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publisher in model DiscoveredSecuritySolutionProperties"));
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sku in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sku in model DiscoveredSecuritySolutionProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DiscoveredSecuritySolutionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("securityFamily",
+            this.securityFamily == null ? null : this.securityFamily.toString());
+        jsonWriter.writeStringField("offer", this.offer);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiscoveredSecuritySolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiscoveredSecuritySolutionProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiscoveredSecuritySolutionProperties.
+     */
+    public static DiscoveredSecuritySolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiscoveredSecuritySolutionProperties deserializedDiscoveredSecuritySolutionProperties
+                = new DiscoveredSecuritySolutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("securityFamily".equals(fieldName)) {
+                    deserializedDiscoveredSecuritySolutionProperties.securityFamily
+                        = SecurityFamily.fromString(reader.getString());
+                } else if ("offer".equals(fieldName)) {
+                    deserializedDiscoveredSecuritySolutionProperties.offer = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedDiscoveredSecuritySolutionProperties.publisher = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDiscoveredSecuritySolutionProperties.sku = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiscoveredSecuritySolutionProperties;
+        });
+    }
 }

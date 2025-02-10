@@ -6,40 +6,52 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.PlmnId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.mobilenetwork.models.PublicLandMobileNetwork;
+import java.io.IOException;
+import java.util.List;
 
-/** Mobile network properties. */
+/**
+ * Mobile network properties.
+ */
 @Fluent
-public final class MobileNetworkPropertiesFormat {
+public final class MobileNetworkPropertiesFormat implements JsonSerializable<MobileNetworkPropertiesFormat> {
     /*
      * The provisioning state of the mobile network resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * The unique public land mobile network identifier for the network. This is made up of the mobile country code and
-     * mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be
-     * used for testing and the values 999-99 and 999-999 can be used on internal private networks.
+     * The unique public land mobile network identifier for the network. If both 'publicLandMobileNetworks' and
+     * 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
      */
-    @JsonProperty(value = "publicLandMobileNetworkIdentifier", required = true)
     private PlmnId publicLandMobileNetworkIdentifier;
+
+    /*
+     * A list of public land mobile networks including their identifiers. If both 'publicLandMobileNetworks' and
+     * 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
+     */
+    private List<PublicLandMobileNetwork> publicLandMobileNetworks;
 
     /*
      * The mobile network resource identifier
      */
-    @JsonProperty(value = "serviceKey", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceKey;
 
-    /** Creates an instance of MobileNetworkPropertiesFormat class. */
+    /**
+     * Creates an instance of MobileNetworkPropertiesFormat class.
+     */
     public MobileNetworkPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the mobile network resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -48,10 +60,9 @@ public final class MobileNetworkPropertiesFormat {
 
     /**
      * Get the publicLandMobileNetworkIdentifier property: The unique public land mobile network identifier for the
-     * network. This is made up of the mobile country code and mobile network code, as defined in
-     * https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99
-     * and 999-999 can be used on internal private networks.
-     *
+     * network. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
      * @return the publicLandMobileNetworkIdentifier value.
      */
     public PlmnId publicLandMobileNetworkIdentifier() {
@@ -60,22 +71,46 @@ public final class MobileNetworkPropertiesFormat {
 
     /**
      * Set the publicLandMobileNetworkIdentifier property: The unique public land mobile network identifier for the
-     * network. This is made up of the mobile country code and mobile network code, as defined in
-     * https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99
-     * and 999-999 can be used on internal private networks.
-     *
+     * network. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
      * @param publicLandMobileNetworkIdentifier the publicLandMobileNetworkIdentifier value to set.
      * @return the MobileNetworkPropertiesFormat object itself.
      */
-    public MobileNetworkPropertiesFormat withPublicLandMobileNetworkIdentifier(
-        PlmnId publicLandMobileNetworkIdentifier) {
+    public MobileNetworkPropertiesFormat
+        withPublicLandMobileNetworkIdentifier(PlmnId publicLandMobileNetworkIdentifier) {
         this.publicLandMobileNetworkIdentifier = publicLandMobileNetworkIdentifier;
         return this;
     }
 
     /**
+     * Get the publicLandMobileNetworks property: A list of public land mobile networks including their identifiers. If
+     * both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
+     * @return the publicLandMobileNetworks value.
+     */
+    public List<PublicLandMobileNetwork> publicLandMobileNetworks() {
+        return this.publicLandMobileNetworks;
+    }
+
+    /**
+     * Set the publicLandMobileNetworks property: A list of public land mobile networks including their identifiers. If
+     * both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the
+     * 'publicLandMobileNetworks' will take precedence.
+     * 
+     * @param publicLandMobileNetworks the publicLandMobileNetworks value to set.
+     * @return the MobileNetworkPropertiesFormat object itself.
+     */
+    public MobileNetworkPropertiesFormat
+        withPublicLandMobileNetworks(List<PublicLandMobileNetwork> publicLandMobileNetworks) {
+        this.publicLandMobileNetworks = publicLandMobileNetworks;
+        return this;
+    }
+
+    /**
      * Get the serviceKey property: The mobile network resource identifier.
-     *
+     * 
      * @return the serviceKey value.
      */
     public String serviceKey() {
@@ -84,20 +119,71 @@ public final class MobileNetworkPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publicLandMobileNetworkIdentifier() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publicLandMobileNetworkIdentifier in model"
-                            + " MobileNetworkPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publicLandMobileNetworkIdentifier in model MobileNetworkPropertiesFormat"));
         } else {
             publicLandMobileNetworkIdentifier().validate();
+        }
+        if (publicLandMobileNetworks() != null) {
+            publicLandMobileNetworks().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MobileNetworkPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("publicLandMobileNetworkIdentifier", this.publicLandMobileNetworkIdentifier);
+        jsonWriter.writeArrayField("publicLandMobileNetworks", this.publicLandMobileNetworks,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MobileNetworkPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MobileNetworkPropertiesFormat if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MobileNetworkPropertiesFormat.
+     */
+    public static MobileNetworkPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MobileNetworkPropertiesFormat deserializedMobileNetworkPropertiesFormat
+                = new MobileNetworkPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicLandMobileNetworkIdentifier".equals(fieldName)) {
+                    deserializedMobileNetworkPropertiesFormat.publicLandMobileNetworkIdentifier
+                        = PlmnId.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMobileNetworkPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("publicLandMobileNetworks".equals(fieldName)) {
+                    List<PublicLandMobileNetwork> publicLandMobileNetworks
+                        = reader.readArray(reader1 -> PublicLandMobileNetwork.fromJson(reader1));
+                    deserializedMobileNetworkPropertiesFormat.publicLandMobileNetworks = publicLandMobileNetworks;
+                } else if ("serviceKey".equals(fieldName)) {
+                    deserializedMobileNetworkPropertiesFormat.serviceKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMobileNetworkPropertiesFormat;
+        });
+    }
 }

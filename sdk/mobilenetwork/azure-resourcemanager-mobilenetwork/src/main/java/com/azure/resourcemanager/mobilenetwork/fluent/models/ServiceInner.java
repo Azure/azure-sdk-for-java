@@ -8,35 +8,55 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.PccRuleConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.QosPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Service resource. Must be created in the same location as its parent mobile network. */
+/**
+ * Service resource. Must be created in the same location as its parent mobile network.
+ */
 @Fluent
 public final class ServiceInner extends Resource {
     /*
      * Service Properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private ServicePropertiesFormat innerProperties = new ServicePropertiesFormat();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ServiceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ServiceInner class.
+     */
     public ServiceInner() {
     }
 
     /**
      * Get the innerProperties property: Service Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServicePropertiesFormat innerProperties() {
@@ -45,21 +65,55 @@ public final class ServiceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -68,7 +122,7 @@ public final class ServiceInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the service resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -79,7 +133,7 @@ public final class ServiceInner extends Resource {
      * Get the servicePrecedence property: A precedence value that is used to decide between services when identifying
      * the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique
      * among all services configured in the mobile network.
-     *
+     * 
      * @return the servicePrecedence value.
      */
     public int servicePrecedence() {
@@ -90,7 +144,7 @@ public final class ServiceInner extends Resource {
      * Set the servicePrecedence property: A precedence value that is used to decide between services when identifying
      * the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique
      * among all services configured in the mobile network.
-     *
+     * 
      * @param servicePrecedence the servicePrecedence value to set.
      * @return the ServiceInner object itself.
      */
@@ -106,7 +160,7 @@ public final class ServiceInner extends Resource {
      * Get the serviceQosPolicy property: The QoS policy to use for packets matching this service. This can be
      * overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null
      * then the UE's SIM policy will define the QoS settings.
-     *
+     * 
      * @return the serviceQosPolicy value.
      */
     public QosPolicy serviceQosPolicy() {
@@ -117,7 +171,7 @@ public final class ServiceInner extends Resource {
      * Set the serviceQosPolicy property: The QoS policy to use for packets matching this service. This can be
      * overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null
      * then the UE's SIM policy will define the QoS settings.
-     *
+     * 
      * @param serviceQosPolicy the serviceQosPolicy value to set.
      * @return the ServiceInner object itself.
      */
@@ -131,7 +185,7 @@ public final class ServiceInner extends Resource {
 
     /**
      * Get the pccRules property: The set of data flow policy rules that make up this service.
-     *
+     * 
      * @return the pccRules value.
      */
     public List<PccRuleConfiguration> pccRules() {
@@ -140,7 +194,7 @@ public final class ServiceInner extends Resource {
 
     /**
      * Set the pccRules property: The set of data flow policy rules that make up this service.
-     *
+     * 
      * @param pccRules the pccRules value to set.
      * @return the ServiceInner object itself.
      */
@@ -154,18 +208,69 @@ public final class ServiceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model ServiceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model ServiceInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceInner.
+     */
+    public static ServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceInner deserializedServiceInner = new ServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedServiceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceInner.innerProperties = ServicePropertiesFormat.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedServiceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceInner;
+        });
+    }
 }

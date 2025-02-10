@@ -5,8 +5,11 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The representation of a single prompt completion as part of an overall completions request.
@@ -14,35 +17,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Token limits and other settings may limit the number of choices generated.
  */
 @Immutable
-public final class Choice {
+public final class Choice implements JsonSerializable<Choice> {
 
     /*
      * The generated text for a given completions prompt.
      */
     @Generated
-    @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * The ordered index associated with this completions choice.
      */
     @Generated
-    @JsonProperty(value = "index")
-    private int index;
+    private final int index;
 
     /*
      * The log probabilities model for tokens associated with this completions choice.
      */
     @Generated
-    @JsonProperty(value = "logprobs")
-    private CompletionsLogProbabilityModel logprobs;
+    private final CompletionsLogProbabilityModel logprobs;
 
     /*
      * Reason for finishing
      */
     @Generated
-    @JsonProperty(value = "finish_reason")
-    private CompletionsFinishReason finishReason;
+    private final CompletionsFinishReason finishReason;
 
     /**
      * Creates an instance of Choice class.
@@ -53,10 +52,8 @@ public final class Choice {
      * @param finishReason the finishReason value to set.
      */
     @Generated
-    @JsonCreator
-    private Choice(@JsonProperty(value = "text") String text, @JsonProperty(value = "index") int index,
-        @JsonProperty(value = "logprobs") CompletionsLogProbabilityModel logprobs,
-        @JsonProperty(value = "finish_reason") CompletionsFinishReason finishReason) {
+    private Choice(String text, int index, CompletionsLogProbabilityModel logprobs,
+        CompletionsFinishReason finishReason) {
         this.text = text;
         this.index = index;
         this.logprobs = logprobs;
@@ -109,7 +106,6 @@ public final class Choice {
      * determines the intensity and risk level of harmful content) and if it has been filtered or not.
      */
     @Generated
-    @JsonProperty(value = "content_filter_results")
     private ContentFilterResultsForChoice contentFilterResults;
 
     /**
@@ -123,5 +119,60 @@ public final class Choice {
     @Generated
     public ContentFilterResultsForChoice getContentFilterResults() {
         return this.contentFilterResults;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeIntField("index", this.index);
+        jsonWriter.writeJsonField("logprobs", this.logprobs);
+        jsonWriter.writeStringField("finish_reason", this.finishReason == null ? null : this.finishReason.toString());
+        jsonWriter.writeJsonField("content_filter_results", this.contentFilterResults);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Choice from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Choice if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Choice.
+     */
+    @Generated
+    public static Choice fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String text = null;
+            int index = 0;
+            CompletionsLogProbabilityModel logprobs = null;
+            CompletionsFinishReason finishReason = null;
+            ContentFilterResultsForChoice contentFilterResults = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else if ("index".equals(fieldName)) {
+                    index = reader.getInt();
+                } else if ("logprobs".equals(fieldName)) {
+                    logprobs = CompletionsLogProbabilityModel.fromJson(reader);
+                } else if ("finish_reason".equals(fieldName)) {
+                    finishReason = CompletionsFinishReason.fromString(reader.getString());
+                } else if ("content_filter_results".equals(fieldName)) {
+                    contentFilterResults = ContentFilterResultsForChoice.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            Choice deserializedChoice = new Choice(text, index, logprobs, finishReason);
+            deserializedChoice.contentFilterResults = contentFilterResults;
+            return deserializedChoice;
+        });
     }
 }

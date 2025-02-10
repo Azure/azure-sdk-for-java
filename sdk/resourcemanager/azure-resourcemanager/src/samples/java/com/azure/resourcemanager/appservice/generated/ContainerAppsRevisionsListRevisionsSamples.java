@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class ContainerAppsRevisionsListRevisionsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListRevisions.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ListRevisions.json
      */
     /**
      * Sample code: List Container App's revisions.
@@ -18,7 +18,10 @@ public final class ContainerAppsRevisionsListRevisionsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listContainerAppSRevisions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getContainerAppsRevisions().listRevisions("rg", "testcontainerApp0",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getContainerAppsRevisions()
+            .listRevisions("rg", "testcontainerApp0", com.azure.core.util.Context.NONE);
     }
 }

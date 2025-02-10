@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.repository;
 
-import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.Role;
 import com.azure.spring.data.cosmos.repository.Query;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
@@ -34,4 +33,7 @@ public interface ReactiveRoleRepository extends ReactiveCosmosRepository<Role, S
 
     @Query(value = "select * \n from c \n where c.name = @name \n")
     Flux<Role> annotatedFindRoleByNameWithSort2(@Param("name") String name, Sort sort);
+
+    @Query(value = "select * from c")
+    Flux<Role> annotatedFindAllWithSort(Sort sort);
 }

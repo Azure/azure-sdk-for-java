@@ -3,10 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -15,7 +14,6 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,15 +38,9 @@ public class AnalyzeAddOnQueryFieldsAsync {
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
                 + "sample-forms/invoices/Invoice_1.pdf");
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutPoller =
                 client.beginAnalyzeDocument("prebuilt-layout",
-                        null,
-                        null,
-                        null,
-                        Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS),
-                        Arrays.asList("Address", "InvoiceNumber"),
-                        null,
-                        new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
+                        new AnalyzeDocumentOptions(Files.readAllBytes(invoiceDocument.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
                 analyzeLayoutPoller
@@ -62,7 +54,7 @@ public class AnalyzeAddOnQueryFieldsAsync {
                                         new RuntimeException(
                                                 "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                             }
-                        }).map(AnalyzeResultOperation::getAnalyzeResult);
+                        });
 
         analyzeLayoutResultMono.subscribe(analyzeLayoutResult -> {
             analyzeLayoutResult.getDocuments().forEach(

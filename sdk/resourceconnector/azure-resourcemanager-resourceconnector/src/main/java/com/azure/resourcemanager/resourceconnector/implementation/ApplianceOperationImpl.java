@@ -12,8 +12,7 @@ public final class ApplianceOperationImpl implements ApplianceOperation {
 
     private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
-    ApplianceOperationImpl(
-        ApplianceOperationInner innerObject,
+    ApplianceOperationImpl(ApplianceOperationInner innerObject,
         com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

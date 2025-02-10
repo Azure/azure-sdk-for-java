@@ -11,26 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class LoadBalancingSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoadBalancingSettingsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"resourceState\":\"Enabling\",\"sampleSize\":412409909,\"successfulSamplesRequired\":1627840881,\"additionalLatencyMilliseconds\":1448466618}")
-                .toObject(LoadBalancingSettingsProperties.class);
-        Assertions.assertEquals(412409909, model.sampleSize());
-        Assertions.assertEquals(1627840881, model.successfulSamplesRequired());
-        Assertions.assertEquals(1448466618, model.additionalLatencyMilliseconds());
+        LoadBalancingSettingsProperties model = BinaryData.fromString(
+            "{\"resourceState\":\"Deleting\",\"sampleSize\":598557579,\"successfulSamplesRequired\":1514832740,\"additionalLatencyMilliseconds\":444057541}")
+            .toObject(LoadBalancingSettingsProperties.class);
+        Assertions.assertEquals(598557579, model.sampleSize());
+        Assertions.assertEquals(1514832740, model.successfulSamplesRequired());
+        Assertions.assertEquals(444057541, model.additionalLatencyMilliseconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoadBalancingSettingsProperties model =
-            new LoadBalancingSettingsProperties()
-                .withSampleSize(412409909)
-                .withSuccessfulSamplesRequired(1627840881)
-                .withAdditionalLatencyMilliseconds(1448466618);
+        LoadBalancingSettingsProperties model = new LoadBalancingSettingsProperties().withSampleSize(598557579)
+            .withSuccessfulSamplesRequired(1514832740)
+            .withAdditionalLatencyMilliseconds(444057541);
         model = BinaryData.fromObject(model).toObject(LoadBalancingSettingsProperties.class);
-        Assertions.assertEquals(412409909, model.sampleSize());
-        Assertions.assertEquals(1627840881, model.successfulSamplesRequired());
-        Assertions.assertEquals(1448466618, model.additionalLatencyMilliseconds());
+        Assertions.assertEquals(598557579, model.sampleSize());
+        Assertions.assertEquals(1514832740, model.successfulSamplesRequired());
+        Assertions.assertEquals(444057541, model.additionalLatencyMilliseconds());
     }
 }

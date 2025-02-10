@@ -5,34 +5,43 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ClusterPropertiesForUpdate;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents a cluster for update. */
+/**
+ * Represents a cluster for update.
+ */
 @Fluent
-public final class ClusterForUpdate {
+public final class ClusterForUpdate implements JsonSerializable<ClusterForUpdate> {
     /*
      * Properties of the cluster.
      */
-    @JsonProperty(value = "properties")
     private ClusterPropertiesForUpdate innerProperties;
+
+    /*
+     * Describes the identity of the cluster.
+     */
+    private IdentityProperties identity;
 
     /*
      * Application-specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ClusterForUpdate class. */
+    /**
+     * Creates an instance of ClusterForUpdate class.
+     */
     public ClusterForUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties of the cluster.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClusterPropertiesForUpdate innerProperties() {
@@ -40,8 +49,28 @@ public final class ClusterForUpdate {
     }
 
     /**
+     * Get the identity property: Describes the identity of the cluster.
+     * 
+     * @return the identity value.
+     */
+    public IdentityProperties identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Describes the identity of the cluster.
+     * 
+     * @param identity the identity value to set.
+     * @return the ClusterForUpdate object itself.
+     */
+    public ClusterForUpdate withIdentity(IdentityProperties identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -50,7 +79,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -62,7 +91,7 @@ public final class ClusterForUpdate {
     /**
      * Get the administratorLoginPassword property: The password of the administrator login. Each cluster is created
      * with pre-defined administrative role called ‘citus’. .
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -72,7 +101,7 @@ public final class ClusterForUpdate {
     /**
      * Set the administratorLoginPassword property: The password of the administrator login. Each cluster is created
      * with pre-defined administrative role called ‘citus’. .
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -86,7 +115,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the postgresqlVersion property: The major PostgreSQL version on all cluster servers.
-     *
+     * 
      * @return the postgresqlVersion value.
      */
     public String postgresqlVersion() {
@@ -95,7 +124,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the postgresqlVersion property: The major PostgreSQL version on all cluster servers.
-     *
+     * 
      * @param postgresqlVersion the postgresqlVersion value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -109,7 +138,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the citusVersion property: The Citus extension version on all cluster servers.
-     *
+     * 
      * @return the citusVersion value.
      */
     public String citusVersion() {
@@ -118,7 +147,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the citusVersion property: The Citus extension version on all cluster servers.
-     *
+     * 
      * @param citusVersion the citusVersion value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -133,7 +162,7 @@ public final class ClusterForUpdate {
     /**
      * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
      * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
-     *
+     * 
      * @return the enableShardsOnCoordinator value.
      */
     public Boolean enableShardsOnCoordinator() {
@@ -143,7 +172,7 @@ public final class ClusterForUpdate {
     /**
      * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
      * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
-     *
+     * 
      * @param enableShardsOnCoordinator the enableShardsOnCoordinator value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -157,7 +186,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the enableHa property: If high availability (HA) is enabled or not for the cluster.
-     *
+     * 
      * @return the enableHa value.
      */
     public Boolean enableHa() {
@@ -166,7 +195,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the enableHa property: If high availability (HA) is enabled or not for the cluster.
-     *
+     * 
      * @param enableHa the enableHa value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -180,7 +209,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the preferredPrimaryZone property: Preferred primary availability zone (AZ) for all cluster servers.
-     *
+     * 
      * @return the preferredPrimaryZone value.
      */
     public String preferredPrimaryZone() {
@@ -189,7 +218,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the preferredPrimaryZone property: Preferred primary availability zone (AZ) for all cluster servers.
-     *
+     * 
      * @param preferredPrimaryZone the preferredPrimaryZone value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -203,7 +232,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the coordinatorServerEdition property: The edition of the coordinator (default: GeneralPurpose).
-     *
+     * 
      * @return the coordinatorServerEdition value.
      */
     public String coordinatorServerEdition() {
@@ -212,7 +241,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the coordinatorServerEdition property: The edition of the coordinator (default: GeneralPurpose).
-     *
+     * 
      * @param coordinatorServerEdition the coordinatorServerEdition value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -226,7 +255,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the coordinatorStorageQuotaInMb property: The storage of the coordinator in MB.
-     *
+     * 
      * @return the coordinatorStorageQuotaInMb value.
      */
     public Integer coordinatorStorageQuotaInMb() {
@@ -235,7 +264,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the coordinatorStorageQuotaInMb property: The storage of the coordinator in MB.
-     *
+     * 
      * @param coordinatorStorageQuotaInMb the coordinatorStorageQuotaInMb value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -249,7 +278,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the coordinatorVCores property: The vCores count of the coordinator (max: 96).
-     *
+     * 
      * @return the coordinatorVCores value.
      */
     public Integer coordinatorVCores() {
@@ -258,7 +287,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the coordinatorVCores property: The vCores count of the coordinator (max: 96).
-     *
+     * 
      * @param coordinatorVCores the coordinatorVCores value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -272,7 +301,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the coordinatorEnablePublicIpAccess property: If public access is enabled on coordinator.
-     *
+     * 
      * @return the coordinatorEnablePublicIpAccess value.
      */
     public Boolean coordinatorEnablePublicIpAccess() {
@@ -281,7 +310,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the coordinatorEnablePublicIpAccess property: If public access is enabled on coordinator.
-     *
+     * 
      * @param coordinatorEnablePublicIpAccess the coordinatorEnablePublicIpAccess value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -295,7 +324,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the nodeServerEdition property: The edition of a node (default: MemoryOptimized).
-     *
+     * 
      * @return the nodeServerEdition value.
      */
     public String nodeServerEdition() {
@@ -304,7 +333,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the nodeServerEdition property: The edition of a node (default: MemoryOptimized).
-     *
+     * 
      * @param nodeServerEdition the nodeServerEdition value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -320,7 +349,7 @@ public final class ClusterForUpdate {
      * Get the nodeCount property: Worker node count of the cluster. When node count is 0, it represents a single node
      * configuration with the ability to create distributed tables on that node. 2 or more worker nodes represent
      * multi-node configuration. Node count value cannot be 1.
-     *
+     * 
      * @return the nodeCount value.
      */
     public Integer nodeCount() {
@@ -331,7 +360,7 @@ public final class ClusterForUpdate {
      * Set the nodeCount property: Worker node count of the cluster. When node count is 0, it represents a single node
      * configuration with the ability to create distributed tables on that node. 2 or more worker nodes represent
      * multi-node configuration. Node count value cannot be 1.
-     *
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -345,7 +374,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the nodeStorageQuotaInMb property: The storage in MB on each worker node.
-     *
+     * 
      * @return the nodeStorageQuotaInMb value.
      */
     public Integer nodeStorageQuotaInMb() {
@@ -354,7 +383,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the nodeStorageQuotaInMb property: The storage in MB on each worker node.
-     *
+     * 
      * @param nodeStorageQuotaInMb the nodeStorageQuotaInMb value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -368,7 +397,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the nodeVCores property: The compute in vCores on each worker node (max: 104).
-     *
+     * 
      * @return the nodeVCores value.
      */
     public Integer nodeVCores() {
@@ -377,7 +406,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the nodeVCores property: The compute in vCores on each worker node (max: 104).
-     *
+     * 
      * @param nodeVCores the nodeVCores value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -391,7 +420,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the nodeEnablePublicIpAccess property: If public access is enabled on worker nodes.
-     *
+     * 
      * @return the nodeEnablePublicIpAccess value.
      */
     public Boolean nodeEnablePublicIpAccess() {
@@ -400,7 +429,7 @@ public final class ClusterForUpdate {
 
     /**
      * Get the maintenanceWindow property: Maintenance window of a cluster.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public MaintenanceWindow maintenanceWindow() {
@@ -409,7 +438,7 @@ public final class ClusterForUpdate {
 
     /**
      * Set the maintenanceWindow property: Maintenance window of a cluster.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the ClusterForUpdate object itself.
      */
@@ -423,12 +452,58 @@ public final class ClusterForUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterForUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterForUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterForUpdate.
+     */
+    public static ClusterForUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterForUpdate deserializedClusterForUpdate = new ClusterForUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedClusterForUpdate.innerProperties = ClusterPropertiesForUpdate.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedClusterForUpdate.identity = IdentityProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterForUpdate.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterForUpdate;
+        });
     }
 }

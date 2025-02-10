@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.core.management.AzureEnvironment
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
@@ -15,6 +15,10 @@ private[spark] case class CosmosClientConfiguration (
                                                       customApplicationNameSuffix: Option[String],
                                                       applicationName: String,
                                                       useGatewayMode: Boolean,
+                                                      enforceNativeTransport: Boolean,
+                                                      proactiveConnectionInitialization: Option[String],
+                                                      proactiveConnectionInitializationDurationInSeconds: Int,
+                                                      httpConnectionPoolSize: Int,
                                                       useEventualConsistency: Boolean,
                                                       enableClientTelemetry: Boolean,
                                                       disableTcpConnectionEndpointRediscovery: Boolean,
@@ -23,8 +27,10 @@ private[spark] case class CosmosClientConfiguration (
                                                       subscriptionId: Option[String],
                                                       tenantId: Option[String],
                                                       resourceGroupName: Option[String],
-                                                      azureEnvironment: AzureEnvironment,
-                                                      sparkEnvironmentInfo: String)
+                                                      azureEnvironmentEndpoints: java.util.Map[String, String],
+                                                      sparkEnvironmentInfo: String,
+                                                      clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
+                                                      clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]])
 
 private[spark] object CosmosClientConfiguration {
   def apply(
@@ -46,7 +52,7 @@ private[spark] object CosmosClientConfiguration {
 
     var applicationName = CosmosConstants.userAgentSuffix
 
-    if (!sparkEnvironmentInfo.isEmpty) {
+    if (sparkEnvironmentInfo.nonEmpty) {
       applicationName = s"$applicationName|$sparkEnvironmentInfo"
     }
 
@@ -67,6 +73,10 @@ private[spark] object CosmosClientConfiguration {
       customApplicationNameSuffix,
       applicationName,
       cosmosAccountConfig.useGatewayMode,
+      cosmosAccountConfig.enforceNativeTransport,
+      cosmosAccountConfig.proactiveConnectionInitialization,
+      cosmosAccountConfig.proactiveConnectionInitializationDurationInSeconds,
+      cosmosAccountConfig.httpConnectionPoolSize,
       useEventualConsistency,
       enableClientTelemetry = diagnosticsConfig.isClientTelemetryEnabled,
       cosmosAccountConfig.disableTcpConnectionEndpointRediscovery,
@@ -75,8 +85,10 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.subscriptionId,
       cosmosAccountConfig.tenantId,
       cosmosAccountConfig.resourceGroupName,
-      cosmosAccountConfig.azureEnvironment,
-      sparkEnvironmentInfo)
+      cosmosAccountConfig.azureEnvironmentEndpoints,
+      sparkEnvironmentInfo,
+      cosmosAccountConfig.clientBuilderInterceptors,
+      cosmosAccountConfig.clientInterceptors)
   }
 
   private[spark] def getSparkEnvironmentInfo(sessionOption: Option[SparkSession]): String = {

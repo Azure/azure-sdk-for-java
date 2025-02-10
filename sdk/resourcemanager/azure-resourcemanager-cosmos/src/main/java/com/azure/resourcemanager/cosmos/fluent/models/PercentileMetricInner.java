@@ -5,10 +5,15 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.MetricName;
 import com.azure.resourcemanager.cosmos.models.PercentileMetricValue;
 import com.azure.resourcemanager.cosmos.models.UnitType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -16,41 +21,35 @@ import java.util.List;
  * Percentile Metric data.
  */
 @Immutable
-public final class PercentileMetricInner {
+public final class PercentileMetricInner implements JsonSerializable<PercentileMetricInner> {
     /*
      * The start time for the metric (ISO-8601 format).
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The end time for the metric (ISO-8601 format).
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * The time grain to be used to summarize the metric values.
      */
-    @JsonProperty(value = "timeGrain", access = JsonProperty.Access.WRITE_ONLY)
     private String timeGrain;
 
     /*
      * The unit of the metric.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private UnitType unit;
 
     /*
      * The name information for the metric.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private MetricName name;
 
     /*
      * The percentile metric values for the specified time window and timestep.
      */
-    @JsonProperty(value = "metricValues", access = JsonProperty.Access.WRITE_ONLY)
     private List<PercentileMetricValue> metricValues;
 
     /**
@@ -125,5 +124,54 @@ public final class PercentileMetricInner {
         if (metricValues() != null) {
             metricValues().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PercentileMetricInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PercentileMetricInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PercentileMetricInner.
+     */
+    public static PercentileMetricInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PercentileMetricInner deserializedPercentileMetricInner = new PercentileMetricInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedPercentileMetricInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedPercentileMetricInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeGrain".equals(fieldName)) {
+                    deserializedPercentileMetricInner.timeGrain = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedPercentileMetricInner.unit = UnitType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedPercentileMetricInner.name = MetricName.fromJson(reader);
+                } else if ("metricValues".equals(fieldName)) {
+                    List<PercentileMetricValue> metricValues
+                        = reader.readArray(reader1 -> PercentileMetricValue.fromJson(reader1));
+                    deserializedPercentileMetricInner.metricValues = metricValues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPercentileMetricInner;
+        });
     }
 }

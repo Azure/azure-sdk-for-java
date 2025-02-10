@@ -16,25 +16,36 @@ import reactor.core.publisher.Mono;
 /** An immutable client-side representation of an Azure SQL Server Virtual Network Rule. */
 @Fluent
 public interface SqlVirtualNetworkRule
-    extends ExternalChildResource<SqlVirtualNetworkRule, SqlServer>,
-        HasInnerModel<VirtualNetworkRuleInner>,
-        HasResourceGroup,
-        Refreshable<SqlVirtualNetworkRule>,
-        Updatable<SqlVirtualNetworkRule.Update> {
+    extends ExternalChildResource<SqlVirtualNetworkRule, SqlServer>, HasInnerModel<VirtualNetworkRuleInner>,
+    HasResourceGroup, Refreshable<SqlVirtualNetworkRule>, Updatable<SqlVirtualNetworkRule.Update> {
 
-    /** @return name of the SQL Server to which this Virtual Network Rule belongs */
+    /**
+     * Gets name of the SQL Server to which this Virtual Network Rule belongs.
+     *
+     * @return name of the SQL Server to which this Virtual Network Rule belongs
+     */
     String sqlServerName();
 
-    /** @return the subnet ID of the Azure SQL Server Virtual Network Rule. */
+    /**
+     * Gets the subnet ID of the Azure SQL Server Virtual Network Rule.
+     *
+     * @return the subnet ID of the Azure SQL Server Virtual Network Rule.
+     */
     String subnetId();
 
     /**
+     * Gets the Azure SQL Server Virtual Network Rule state.
+     *
      * @return the Azure SQL Server Virtual Network Rule state; possible values include: 'Initializing', 'InProgress',
      *     'Ready', 'Deleting', 'Unknown'
      */
     String state();
 
-    /** @return the parent SQL server ID */
+    /**
+     * Gets the parent SQL server ID.
+     *
+     * @return the parent SQL server ID
+     */
     String parentId();
 
     /** Deletes the virtual network rule. */
@@ -56,11 +67,10 @@ public interface SqlVirtualNetworkRule
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface SqlVirtualNetworkRuleDefinition<ParentT>
-        extends SqlVirtualNetworkRule.DefinitionStages.Blank<ParentT>,
-            SqlVirtualNetworkRule.DefinitionStages.WithSubnet<ParentT>,
-            SqlVirtualNetworkRule.DefinitionStages.WithServiceEndpoint<ParentT>,
-            SqlVirtualNetworkRule.DefinitionStages.WithAttach<ParentT> {
+    interface SqlVirtualNetworkRuleDefinition<ParentT> extends SqlVirtualNetworkRule.DefinitionStages.Blank<ParentT>,
+        SqlVirtualNetworkRule.DefinitionStages.WithSubnet<ParentT>,
+        SqlVirtualNetworkRule.DefinitionStages.WithServiceEndpoint<ParentT>,
+        SqlVirtualNetworkRule.DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of all the SQL Virtual Network Rule definition stages. */
@@ -73,7 +83,11 @@ public interface SqlVirtualNetworkRule
         interface Blank<ParentT> extends SqlVirtualNetworkRule.DefinitionStages.WithSubnet<ParentT> {
         }
 
-        /** The SQL Virtual Network Rule definition to set the virtual network ID and the subnet name. */
+        /**
+         * The SQL Virtual Network Rule definition to set the virtual network ID and the subnet name.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
         interface WithSubnet<ParentT> {
             /**
              * Sets the virtual network ID and the subnet name for the SQL server Virtual Network Rule.
@@ -82,13 +96,15 @@ public interface SqlVirtualNetworkRule
              * @param subnetName the name of the subnet within the virtual network to be used
              * @return The next stage of the definition.
              */
-            SqlVirtualNetworkRule.DefinitionStages.WithServiceEndpoint<ParentT> withSubnet(
-                String networkId, String subnetName);
+            SqlVirtualNetworkRule.DefinitionStages.WithServiceEndpoint<ParentT> withSubnet(String networkId,
+                String subnetName);
         }
 
         /**
          * The SQL Virtual Network Rule definition to set ignore flag for the missing subnet's SQL service endpoint
          * entry.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithServiceEndpoint<ParentT> extends SqlVirtualNetworkRule.DefinitionStages.WithAttach<ParentT> {
             /**
@@ -117,10 +133,8 @@ public interface SqlVirtualNetworkRule
     /**
      * The template for a SQL Virtual Network Rule update operation, containing all the settings that can be modified.
      */
-    interface Update
-        extends SqlVirtualNetworkRule.UpdateStages.WithSubnet,
-            SqlVirtualNetworkRule.UpdateStages.WithServiceEndpoint,
-            Appliable<SqlVirtualNetworkRule> {
+    interface Update extends SqlVirtualNetworkRule.UpdateStages.WithSubnet,
+        SqlVirtualNetworkRule.UpdateStages.WithServiceEndpoint, Appliable<SqlVirtualNetworkRule> {
     }
 
     /** Grouping of all the SQL Virtual Network Rule update stages. */

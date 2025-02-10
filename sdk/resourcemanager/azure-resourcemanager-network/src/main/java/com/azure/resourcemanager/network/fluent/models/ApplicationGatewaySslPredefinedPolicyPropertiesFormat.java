@@ -5,26 +5,29 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslCipherSuite;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of ApplicationGatewaySslPredefinedPolicy.
  */
 @Fluent
-public final class ApplicationGatewaySslPredefinedPolicyPropertiesFormat {
+public final class ApplicationGatewaySslPredefinedPolicyPropertiesFormat
+    implements JsonSerializable<ApplicationGatewaySslPredefinedPolicyPropertiesFormat> {
     /*
      * Ssl cipher suites to be enabled in the specified order for application gateway.
      */
-    @JsonProperty(value = "cipherSuites")
     private List<ApplicationGatewaySslCipherSuite> cipherSuites;
 
     /*
      * Minimum version of Ssl protocol to be supported on application gateway.
      */
-    @JsonProperty(value = "minProtocolVersion")
     private ApplicationGatewaySslProtocol minProtocolVersion;
 
     /**
@@ -81,5 +84,51 @@ public final class ApplicationGatewaySslPredefinedPolicyPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("cipherSuites", this.cipherSuites,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("minProtocolVersion",
+            this.minProtocolVersion == null ? null : this.minProtocolVersion.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewaySslPredefinedPolicyPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewaySslPredefinedPolicyPropertiesFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewaySslPredefinedPolicyPropertiesFormat.
+     */
+    public static ApplicationGatewaySslPredefinedPolicyPropertiesFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewaySslPredefinedPolicyPropertiesFormat deserializedApplicationGatewaySslPredefinedPolicyPropertiesFormat
+                = new ApplicationGatewaySslPredefinedPolicyPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cipherSuites".equals(fieldName)) {
+                    List<ApplicationGatewaySslCipherSuite> cipherSuites
+                        = reader.readArray(reader1 -> ApplicationGatewaySslCipherSuite.fromString(reader1.getString()));
+                    deserializedApplicationGatewaySslPredefinedPolicyPropertiesFormat.cipherSuites = cipherSuites;
+                } else if ("minProtocolVersion".equals(fieldName)) {
+                    deserializedApplicationGatewaySslPredefinedPolicyPropertiesFormat.minProtocolVersion
+                        = ApplicationGatewaySslProtocol.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewaySslPredefinedPolicyPropertiesFormat;
+        });
     }
 }

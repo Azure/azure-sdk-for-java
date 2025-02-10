@@ -5,46 +5,42 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Data flow reference type.
  */
 @Fluent
-public final class DataFlowReference {
+public final class DataFlowReference implements JsonSerializable<DataFlowReference> {
     /*
      * Data flow reference type.
      */
-    @JsonProperty(value = "type", required = true)
     private DataFlowReferenceType type;
 
     /*
      * Reference data flow name.
      */
-    @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
     /*
      * Reference data flow parameters from dataset.
      */
-    @JsonProperty(value = "datasetParameters")
     private Object datasetParameters;
 
     /*
      * Data flow parameters
      */
-    @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
     /*
      * Data flow reference type.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -138,7 +134,6 @@ public final class DataFlowReference {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -154,11 +149,61 @@ public final class DataFlowReference {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        jsonWriter.writeUntypedField("datasetParameters", this.datasetParameters);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataFlowReference.
+     */
+    public static DataFlowReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowReference deserializedDataFlowReference = new DataFlowReference();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDataFlowReference.type = DataFlowReferenceType.fromString(reader.getString());
+                } else if ("referenceName".equals(fieldName)) {
+                    deserializedDataFlowReference.referenceName = reader.getString();
+                } else if ("datasetParameters".equals(fieldName)) {
+                    deserializedDataFlowReference.datasetParameters = reader.readUntyped();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, Object> parameters = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedDataFlowReference.parameters = parameters;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDataFlowReference.additionalProperties = additionalProperties;
+
+            return deserializedDataFlowReference;
+        });
     }
 }

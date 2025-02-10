@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.GroupMemberType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of network group.
  */
 @Fluent
-public final class NetworkGroupProperties {
+public final class NetworkGroupProperties implements JsonSerializable<NetworkGroupProperties> {
     /*
      * A description of the network group.
      */
-    @JsonProperty(value = "description")
     private String description;
+
+    /*
+     * The type of the group member.
+     */
+    private GroupMemberType memberType;
 
     /*
      * The provisioning state of the scope assignment resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /**
@@ -58,6 +65,26 @@ public final class NetworkGroupProperties {
     }
 
     /**
+     * Get the memberType property: The type of the group member.
+     * 
+     * @return the memberType value.
+     */
+    public GroupMemberType memberType() {
+        return this.memberType;
+    }
+
+    /**
+     * Set the memberType property: The type of the group member.
+     * 
+     * @param memberType the memberType value to set.
+     * @return the NetworkGroupProperties object itself.
+     */
+    public NetworkGroupProperties withMemberType(GroupMemberType memberType) {
+        this.memberType = memberType;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
      * 
      * @return the provisioningState value.
@@ -81,5 +108,49 @@ public final class NetworkGroupProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("memberType", this.memberType == null ? null : this.memberType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkGroupProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkGroupProperties.
+     */
+    public static NetworkGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkGroupProperties deserializedNetworkGroupProperties = new NetworkGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedNetworkGroupProperties.description = reader.getString();
+                } else if ("memberType".equals(fieldName)) {
+                    deserializedNetworkGroupProperties.memberType = GroupMemberType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkGroupProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedNetworkGroupProperties.resourceGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkGroupProperties;
+        });
     }
 }

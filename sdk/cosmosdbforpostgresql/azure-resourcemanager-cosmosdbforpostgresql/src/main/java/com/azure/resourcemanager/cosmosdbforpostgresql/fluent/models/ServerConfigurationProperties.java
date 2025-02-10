@@ -6,68 +6,68 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ConfigurationDataType;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a configuration. */
+/**
+ * The properties of a configuration.
+ */
 @Fluent
-public final class ServerConfigurationProperties {
+public final class ServerConfigurationProperties implements JsonSerializable<ServerConfigurationProperties> {
     /*
      * Value of the configuration.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
      * Source of the configuration.
      */
-    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY)
     private String source;
 
     /*
      * Description of the configuration.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Default value of the configuration.
      */
-    @JsonProperty(value = "defaultValue", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultValue;
 
     /*
      * Data type of the configuration.
      */
-    @JsonProperty(value = "dataType", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationDataType dataType;
 
     /*
      * Allowed values of the configuration.
      */
-    @JsonProperty(value = "allowedValues", access = JsonProperty.Access.WRITE_ONLY)
     private String allowedValues;
 
     /*
      * If configuration change requires restart.
      */
-    @JsonProperty(value = "requiresRestart", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean requiresRestart;
 
     /*
      * Provisioning state of the configuration.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ServerConfigurationProperties class. */
+    /**
+     * Creates an instance of ServerConfigurationProperties class.
+     */
     public ServerConfigurationProperties() {
     }
 
     /**
      * Get the value property: Value of the configuration.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -76,7 +76,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Set the value property: Value of the configuration.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServerConfigurationProperties object itself.
      */
@@ -87,7 +87,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the source property: Source of the configuration.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -96,7 +96,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the description property: Description of the configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -105,7 +105,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the defaultValue property: Default value of the configuration.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
@@ -114,7 +114,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the dataType property: Data type of the configuration.
-     *
+     * 
      * @return the dataType value.
      */
     public ConfigurationDataType dataType() {
@@ -123,7 +123,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the allowedValues property: Allowed values of the configuration.
-     *
+     * 
      * @return the allowedValues value.
      */
     public String allowedValues() {
@@ -132,7 +132,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the requiresRestart property: If configuration change requires restart.
-     *
+     * 
      * @return the requiresRestart value.
      */
     public Boolean requiresRestart() {
@@ -141,7 +141,7 @@ public final class ServerConfigurationProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -150,17 +150,71 @@ public final class ServerConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ServerConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model ServerConfigurationProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServerConfigurationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerConfigurationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerConfigurationProperties.
+     */
+    public static ServerConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerConfigurationProperties deserializedServerConfigurationProperties
+                = new ServerConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedServerConfigurationProperties.value = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedServerConfigurationProperties.source = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedServerConfigurationProperties.description = reader.getString();
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedServerConfigurationProperties.defaultValue = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedServerConfigurationProperties.dataType
+                        = ConfigurationDataType.fromString(reader.getString());
+                } else if ("allowedValues".equals(fieldName)) {
+                    deserializedServerConfigurationProperties.allowedValues = reader.getString();
+                } else if ("requiresRestart".equals(fieldName)) {
+                    deserializedServerConfigurationProperties.requiresRestart
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedServerConfigurationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerConfigurationProperties;
+        });
+    }
 }

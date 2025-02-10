@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Mobility Service update details. */
+/**
+ * The Mobility Service update details.
+ */
 @Fluent
-public final class MobilityServiceUpdate {
+public final class MobilityServiceUpdate implements JsonSerializable<MobilityServiceUpdate> {
     /*
      * The version of the latest update.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * The reboot status of the update - whether it is required or not.
      */
-    @JsonProperty(value = "rebootStatus")
     private String rebootStatus;
 
     /*
      * The OS type.
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
-    /** Creates an instance of MobilityServiceUpdate class. */
+    /**
+     * Creates an instance of MobilityServiceUpdate class.
+     */
     public MobilityServiceUpdate() {
     }
 
     /**
      * Get the version property: The version of the latest update.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -43,7 +48,7 @@ public final class MobilityServiceUpdate {
 
     /**
      * Set the version property: The version of the latest update.
-     *
+     * 
      * @param version the version value to set.
      * @return the MobilityServiceUpdate object itself.
      */
@@ -54,7 +59,7 @@ public final class MobilityServiceUpdate {
 
     /**
      * Get the rebootStatus property: The reboot status of the update - whether it is required or not.
-     *
+     * 
      * @return the rebootStatus value.
      */
     public String rebootStatus() {
@@ -63,7 +68,7 @@ public final class MobilityServiceUpdate {
 
     /**
      * Set the rebootStatus property: The reboot status of the update - whether it is required or not.
-     *
+     * 
      * @param rebootStatus the rebootStatus value to set.
      * @return the MobilityServiceUpdate object itself.
      */
@@ -74,7 +79,7 @@ public final class MobilityServiceUpdate {
 
     /**
      * Get the osType property: The OS type.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -83,7 +88,7 @@ public final class MobilityServiceUpdate {
 
     /**
      * Set the osType property: The OS type.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the MobilityServiceUpdate object itself.
      */
@@ -94,9 +99,51 @@ public final class MobilityServiceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("rebootStatus", this.rebootStatus);
+        jsonWriter.writeStringField("osType", this.osType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MobilityServiceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MobilityServiceUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MobilityServiceUpdate.
+     */
+    public static MobilityServiceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MobilityServiceUpdate deserializedMobilityServiceUpdate = new MobilityServiceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedMobilityServiceUpdate.version = reader.getString();
+                } else if ("rebootStatus".equals(fieldName)) {
+                    deserializedMobilityServiceUpdate.rebootStatus = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedMobilityServiceUpdate.osType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMobilityServiceUpdate;
+        });
     }
 }

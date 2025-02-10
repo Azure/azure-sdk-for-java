@@ -5,24 +5,54 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileProductType;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatusUpdate;
+import com.azure.resourcemanager.hybridcompute.models.ProductFeatureUpdate;
+import java.io.IOException;
+import java.util.List;
 
-/** Describe the Update properties of a license profile. */
+/**
+ * Describe the Update properties of a license profile.
+ */
 @Fluent
-public final class LicenseProfileUpdateProperties {
+public final class LicenseProfileUpdateProperties implements JsonSerializable<LicenseProfileUpdateProperties> {
+    /*
+     * The softwareAssurance property.
+     */
+    private LicenseProfileUpdatePropertiesSoftwareAssurance innerSoftwareAssurance;
+
     /*
      * Hybrid Compute ESU Profile Update properties
      */
-    @JsonProperty(value = "esuProfile")
     private EsuProfileUpdateProperties innerEsuProfile;
 
-    /** Creates an instance of LicenseProfileUpdateProperties class. */
+    /*
+     * Hybrid Compute Product Profile Update properties
+     */
+    private ProductProfileUpdateProperties innerProductProfile;
+
+    /**
+     * Creates an instance of LicenseProfileUpdateProperties class.
+     */
     public LicenseProfileUpdateProperties() {
     }
 
     /**
+     * Get the innerSoftwareAssurance property: The softwareAssurance property.
+     * 
+     * @return the innerSoftwareAssurance value.
+     */
+    private LicenseProfileUpdatePropertiesSoftwareAssurance innerSoftwareAssurance() {
+        return this.innerSoftwareAssurance;
+    }
+
+    /**
      * Get the innerEsuProfile property: Hybrid Compute ESU Profile Update properties.
-     *
+     * 
      * @return the innerEsuProfile value.
      */
     private EsuProfileUpdateProperties innerEsuProfile() {
@@ -30,8 +60,42 @@ public final class LicenseProfileUpdateProperties {
     }
 
     /**
+     * Get the innerProductProfile property: Hybrid Compute Product Profile Update properties.
+     * 
+     * @return the innerProductProfile value.
+     */
+    private ProductProfileUpdateProperties innerProductProfile() {
+        return this.innerProductProfile;
+    }
+
+    /**
+     * Get the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
+     * agreement.
+     * 
+     * @return the softwareAssuranceCustomer value.
+     */
+    public Boolean softwareAssuranceCustomer() {
+        return this.innerSoftwareAssurance() == null ? null : this.innerSoftwareAssurance().softwareAssuranceCustomer();
+    }
+
+    /**
+     * Set the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
+     * agreement.
+     * 
+     * @param softwareAssuranceCustomer the softwareAssuranceCustomer value to set.
+     * @return the LicenseProfileUpdateProperties object itself.
+     */
+    public LicenseProfileUpdateProperties withSoftwareAssuranceCustomer(Boolean softwareAssuranceCustomer) {
+        if (this.innerSoftwareAssurance() == null) {
+            this.innerSoftwareAssurance = new LicenseProfileUpdatePropertiesSoftwareAssurance();
+        }
+        this.innerSoftwareAssurance().withSoftwareAssuranceCustomer(softwareAssuranceCustomer);
+        return this;
+    }
+
+    /**
      * Get the assignedLicense property: The resource id of the license.
-     *
+     * 
      * @return the assignedLicense value.
      */
     public String assignedLicense() {
@@ -40,7 +104,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Set the assignedLicense property: The resource id of the license.
-     *
+     * 
      * @param assignedLicense the assignedLicense value to set.
      * @return the LicenseProfileUpdateProperties object itself.
      */
@@ -53,13 +117,135 @@ public final class LicenseProfileUpdateProperties {
     }
 
     /**
+     * Get the subscriptionStatus property: Indicates the subscription status of the product.
+     * 
+     * @return the subscriptionStatus value.
+     */
+    public LicenseProfileSubscriptionStatusUpdate subscriptionStatus() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().subscriptionStatus();
+    }
+
+    /**
+     * Set the subscriptionStatus property: Indicates the subscription status of the product.
+     * 
+     * @param subscriptionStatus the subscriptionStatus value to set.
+     * @return the LicenseProfileUpdateProperties object itself.
+     */
+    public LicenseProfileUpdateProperties
+        withSubscriptionStatus(LicenseProfileSubscriptionStatusUpdate subscriptionStatus) {
+        if (this.innerProductProfile() == null) {
+            this.innerProductProfile = new ProductProfileUpdateProperties();
+        }
+        this.innerProductProfile().withSubscriptionStatus(subscriptionStatus);
+        return this;
+    }
+
+    /**
+     * Get the productType property: Indicates the product type of the license.
+     * 
+     * @return the productType value.
+     */
+    public LicenseProfileProductType productType() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().productType();
+    }
+
+    /**
+     * Set the productType property: Indicates the product type of the license.
+     * 
+     * @param productType the productType value to set.
+     * @return the LicenseProfileUpdateProperties object itself.
+     */
+    public LicenseProfileUpdateProperties withProductType(LicenseProfileProductType productType) {
+        if (this.innerProductProfile() == null) {
+            this.innerProductProfile = new ProductProfileUpdateProperties();
+        }
+        this.innerProductProfile().withProductType(productType);
+        return this;
+    }
+
+    /**
+     * Get the productFeatures property: The list of product feature updates.
+     * 
+     * @return the productFeatures value.
+     */
+    public List<ProductFeatureUpdate> productFeatures() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().productFeatures();
+    }
+
+    /**
+     * Set the productFeatures property: The list of product feature updates.
+     * 
+     * @param productFeatures the productFeatures value to set.
+     * @return the LicenseProfileUpdateProperties object itself.
+     */
+    public LicenseProfileUpdateProperties withProductFeatures(List<ProductFeatureUpdate> productFeatures) {
+        if (this.innerProductProfile() == null) {
+            this.innerProductProfile = new ProductProfileUpdateProperties();
+        }
+        this.innerProductProfile().withProductFeatures(productFeatures);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerSoftwareAssurance() != null) {
+            innerSoftwareAssurance().validate();
+        }
         if (innerEsuProfile() != null) {
             innerEsuProfile().validate();
         }
+        if (innerProductProfile() != null) {
+            innerProductProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("softwareAssurance", this.innerSoftwareAssurance);
+        jsonWriter.writeJsonField("esuProfile", this.innerEsuProfile);
+        jsonWriter.writeJsonField("productProfile", this.innerProductProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseProfileUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseProfileUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseProfileUpdateProperties.
+     */
+    public static LicenseProfileUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseProfileUpdateProperties deserializedLicenseProfileUpdateProperties
+                = new LicenseProfileUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("softwareAssurance".equals(fieldName)) {
+                    deserializedLicenseProfileUpdateProperties.innerSoftwareAssurance
+                        = LicenseProfileUpdatePropertiesSoftwareAssurance.fromJson(reader);
+                } else if ("esuProfile".equals(fieldName)) {
+                    deserializedLicenseProfileUpdateProperties.innerEsuProfile
+                        = EsuProfileUpdateProperties.fromJson(reader);
+                } else if ("productProfile".equals(fieldName)) {
+                    deserializedLicenseProfileUpdateProperties.innerProductProfile
+                        = ProductProfileUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseProfileUpdateProperties;
+        });
     }
 }

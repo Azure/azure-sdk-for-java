@@ -5,33 +5,110 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Provider specific failover input. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = PlannedFailoverProviderSpecificFailoverInput.class)
-@JsonTypeName("PlannedFailoverProviderSpecificFailoverInput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "HyperVReplicaAzureFailback", value = HyperVReplicaAzureFailbackProviderInput.class),
-    @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzurePlannedFailoverProviderInput.class),
-    @JsonSubTypes.Type(name = "InMageRcmFailback", value = InMageRcmFailbackPlannedFailoverProviderInput.class)
-})
+/**
+ * Provider specific failover input.
+ */
 @Immutable
-public class PlannedFailoverProviderSpecificFailoverInput {
-    /** Creates an instance of PlannedFailoverProviderSpecificFailoverInput class. */
+public class PlannedFailoverProviderSpecificFailoverInput
+    implements JsonSerializable<PlannedFailoverProviderSpecificFailoverInput> {
+    /*
+     * The class type.
+     */
+    private String instanceType = "PlannedFailoverProviderSpecificFailoverInput";
+
+    /**
+     * Creates an instance of PlannedFailoverProviderSpecificFailoverInput class.
+     */
     public PlannedFailoverProviderSpecificFailoverInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlannedFailoverProviderSpecificFailoverInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlannedFailoverProviderSpecificFailoverInput if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PlannedFailoverProviderSpecificFailoverInput.
+     */
+    public static PlannedFailoverProviderSpecificFailoverInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("HyperVReplicaAzureFailback".equals(discriminatorValue)) {
+                    return HyperVReplicaAzureFailbackProviderInput.fromJson(readerToUse.reset());
+                } else if ("HyperVReplicaAzure".equals(discriminatorValue)) {
+                    return HyperVReplicaAzurePlannedFailoverProviderInput.fromJson(readerToUse.reset());
+                } else if ("InMageRcmFailback".equals(discriminatorValue)) {
+                    return InMageRcmFailbackPlannedFailoverProviderInput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static PlannedFailoverProviderSpecificFailoverInput fromJsonKnownDiscriminator(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlannedFailoverProviderSpecificFailoverInput deserializedPlannedFailoverProviderSpecificFailoverInput
+                = new PlannedFailoverProviderSpecificFailoverInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedPlannedFailoverProviderSpecificFailoverInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlannedFailoverProviderSpecificFailoverInput;
+        });
     }
 }

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The error details provided when the checkAmlFSSubnets call fails. */
+/**
+ * The error details provided when the checkAmlFSSubnets call fails.
+ */
 @Fluent
-public final class AmlFilesystemCheckSubnetError {
+public final class AmlFilesystemCheckSubnetError implements JsonSerializable<AmlFilesystemCheckSubnetError> {
     /*
      * The error details for the AML file system's subnet.
      */
-    @JsonProperty(value = "filesystemSubnet")
     private AmlFilesystemCheckSubnetErrorFilesystemSubnet filesystemSubnet;
 
-    /** Creates an instance of AmlFilesystemCheckSubnetError class. */
+    /**
+     * Creates an instance of AmlFilesystemCheckSubnetError class.
+     */
     public AmlFilesystemCheckSubnetError() {
     }
 
     /**
      * Get the filesystemSubnet property: The error details for the AML file system's subnet.
-     *
+     * 
      * @return the filesystemSubnet value.
      */
     public AmlFilesystemCheckSubnetErrorFilesystemSubnet filesystemSubnet() {
@@ -31,24 +38,62 @@ public final class AmlFilesystemCheckSubnetError {
 
     /**
      * Set the filesystemSubnet property: The error details for the AML file system's subnet.
-     *
+     * 
      * @param filesystemSubnet the filesystemSubnet value to set.
      * @return the AmlFilesystemCheckSubnetError object itself.
      */
-    public AmlFilesystemCheckSubnetError withFilesystemSubnet(
-        AmlFilesystemCheckSubnetErrorFilesystemSubnet filesystemSubnet) {
+    public AmlFilesystemCheckSubnetError
+        withFilesystemSubnet(AmlFilesystemCheckSubnetErrorFilesystemSubnet filesystemSubnet) {
         this.filesystemSubnet = filesystemSubnet;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filesystemSubnet() != null) {
             filesystemSubnet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("filesystemSubnet", this.filesystemSubnet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemCheckSubnetError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemCheckSubnetError if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemCheckSubnetError.
+     */
+    public static AmlFilesystemCheckSubnetError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemCheckSubnetError deserializedAmlFilesystemCheckSubnetError
+                = new AmlFilesystemCheckSubnetError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filesystemSubnet".equals(fieldName)) {
+                    deserializedAmlFilesystemCheckSubnetError.filesystemSubnet
+                        = AmlFilesystemCheckSubnetErrorFilesystemSubnet.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemCheckSubnetError;
+        });
     }
 }

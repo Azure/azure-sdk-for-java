@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ApiDefinitionInfo;
 import com.azure.resourcemanager.appservice.models.ApiManagementConfig;
 import com.azure.resourcemanager.appservice.models.AutoHealRules;
@@ -26,7 +29,7 @@ import com.azure.resourcemanager.appservice.models.SiteMachineKey;
 import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
 import com.azure.resourcemanager.appservice.models.TlsCipherSuites;
 import com.azure.resourcemanager.appservice.models.VirtualApplication;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +42,22 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /*
      * Core resource properties
      */
-    @JsonProperty(value = "properties")
     private SiteConfigInner innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of SiteConfigResourceInner class.
@@ -55,6 +72,36 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     private SiteConfigInner innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -322,8 +369,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the remoteDebuggingEnabled value.
      */
@@ -332,8 +379,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param remoteDebuggingEnabled the remoteDebuggingEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
@@ -464,8 +511,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is
-     * enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the detailedErrorLoggingEnabled value.
      */
@@ -474,8 +521,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is
-     * enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param detailedErrorLoggingEnabled the detailedErrorLoggingEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
@@ -535,8 +582,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the metadata property: Application metadata. This property cannot be retrieved, since it may contain
-     * secrets.
+     * Get the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
      * 
      * @return the metadata value.
      */
@@ -545,8 +591,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the metadata property: Application metadata. This property cannot be retrieved, since it may contain
-     * secrets.
+     * Set the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
      * 
      * @param metadata the metadata value to set.
      * @return the SiteConfigResourceInner object itself.
@@ -1037,8 +1082,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
+     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
      * 
      * @return the vnetRouteAllEnabled value.
      */
@@ -1047,8 +1092,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
+     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
      * 
      * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
@@ -1663,9 +1708,9 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with
-     * Linux and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For
-     * Linux, expects tz database values https://www.iana.org/time-zones (for a quick reference see
+     * Get the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with Linux
+     * and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux,
+     * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
      * 
@@ -1676,9 +1721,9 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with
-     * Linux and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For
-     * Linux, expects tz database values https://www.iana.org/time-zones (for a quick reference see
+     * Set the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with Linux
+     * and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux,
+     * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
      * 
@@ -1771,9 +1816,54 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteConfigResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteConfigResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SiteConfigResourceInner.
+     */
+    public static SiteConfigResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteConfigResourceInner deserializedSiteConfigResourceInner = new SiteConfigResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSiteConfigResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSiteConfigResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSiteConfigResourceInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSiteConfigResourceInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSiteConfigResourceInner.innerProperties = SiteConfigInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteConfigResourceInner;
+        });
     }
 }

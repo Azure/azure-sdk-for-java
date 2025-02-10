@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of JobDefinitions. */
+/**
+ * Resource collection API of JobDefinitions.
+ */
 public interface JobDefinitions {
     /**
      * Lists all Job Definitions in a Project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -25,7 +27,7 @@ public interface JobDefinitions {
 
     /**
      * Lists all Job Definitions in a Project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -35,12 +37,12 @@ public interface JobDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Job Definitions as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JobDefinition> list(
-        String resourceGroupName, String storageMoverName, String projectName, Context context);
+    PagedIterable<JobDefinition> list(String resourceGroupName, String storageMoverName, String projectName,
+        Context context);
 
     /**
      * Gets a Job Definition resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -51,16 +53,12 @@ public interface JobDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Job Definition resource along with {@link Response}.
      */
-    Response<JobDefinition> getWithResponse(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
-        Context context);
+    Response<JobDefinition> getWithResponse(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName, Context context);
 
     /**
      * Gets a Job Definition resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -74,7 +72,7 @@ public interface JobDefinitions {
 
     /**
      * Deletes a Job Definition resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -87,7 +85,7 @@ public interface JobDefinitions {
 
     /**
      * Deletes a Job Definition resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -97,51 +95,12 @@ public interface JobDefinitions {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
+    void delete(String resourceGroupName, String storageMoverName, String projectName, String jobDefinitionName,
         Context context);
 
     /**
-     * Requests an Agent to start a new instance of this Job Definition, generating a new Job Run resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response that identifies a Job Run along with {@link Response}.
-     */
-    Response<JobRunResourceId> startJobWithResponse(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
-        Context context);
-
-    /**
-     * Requests an Agent to start a new instance of this Job Definition, generating a new Job Run resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response that identifies a Job Run.
-     */
-    JobRunResourceId startJob(
-        String resourceGroupName, String storageMoverName, String projectName, String jobDefinitionName);
-
-    /**
-     * Requests the Agent of any active instance of this Job Definition to stop.
-     *
+     * Creates a new Job Run resource for the specified Job Definition and passes it to the Agent for execution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -152,16 +111,12 @@ public interface JobDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response that identifies a Job Run along with {@link Response}.
      */
-    Response<JobRunResourceId> stopJobWithResponse(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
-        Context context);
+    Response<JobRunResourceId> startJobWithResponse(String resourceGroupName, String storageMoverName,
+        String projectName, String jobDefinitionName, Context context);
 
     /**
-     * Requests the Agent of any active instance of this Job Definition to stop.
-     *
+     * Creates a new Job Run resource for the specified Job Definition and passes it to the Agent for execution.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -171,12 +126,43 @@ public interface JobDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response that identifies a Job Run.
      */
-    JobRunResourceId stopJob(
-        String resourceGroupName, String storageMoverName, String projectName, String jobDefinitionName);
+    JobRunResourceId startJob(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName);
+
+    /**
+     * Requests the Agent of any active instance of this Job Definition to stop.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param jobDefinitionName The name of the Job Definition resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response that identifies a Job Run along with {@link Response}.
+     */
+    Response<JobRunResourceId> stopJobWithResponse(String resourceGroupName, String storageMoverName,
+        String projectName, String jobDefinitionName, Context context);
+
+    /**
+     * Requests the Agent of any active instance of this Job Definition to stop.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageMoverName The name of the Storage Mover resource.
+     * @param projectName The name of the Project resource.
+     * @param jobDefinitionName The name of the Job Definition resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response that identifies a Job Run.
+     */
+    JobRunResourceId stopJob(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName);
 
     /**
      * Gets a Job Definition resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -187,7 +173,7 @@ public interface JobDefinitions {
 
     /**
      * Gets a Job Definition resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,7 +185,7 @@ public interface JobDefinitions {
 
     /**
      * Deletes a Job Definition resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -209,7 +195,7 @@ public interface JobDefinitions {
 
     /**
      * Deletes a Job Definition resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -220,7 +206,7 @@ public interface JobDefinitions {
 
     /**
      * Begins definition for a new JobDefinition resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new JobDefinition definition.
      */

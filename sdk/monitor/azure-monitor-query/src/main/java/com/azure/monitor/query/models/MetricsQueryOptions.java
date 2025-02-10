@@ -23,6 +23,12 @@ public final class MetricsQueryOptions {
     private String metricNamespace;
 
     /**
+     * Creates an instance of MetricsQueryOptions.
+     */
+    public MetricsQueryOptions() {
+    }
+
+    /**
      * Returns the time span for which the metrics data is queried.
      * @return the time span for which the metrics data is queried.
      */

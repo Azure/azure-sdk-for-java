@@ -36,7 +36,7 @@ public class ComputedPropertiesCodeSnippet {
                 )
         );
         containerProperties.setComputedProperties(computedProperties);
-        database.createContainer(containerProperties);
+        database.createContainer(containerProperties).subscribe();
         // END: com.azure.cosmos.computedProperty.createContainer
     }
 
@@ -48,8 +48,9 @@ public class ComputedPropertiesCodeSnippet {
                         new ComputedProperty("upperName", "SELECT VALUE UPPER(c.name) FROM c")
                 )
         );
+        containerProperties.setComputedProperties(computedProperties);
         container = database.getContainer(containerName);
-        container.replace(containerProperties);
+        container.replace(containerProperties).subscribe();
         // END: com.azure.cosmos.computedProperty.replaceContainer
     }
 
@@ -57,12 +58,12 @@ public class ComputedPropertiesCodeSnippet {
         // BEGIN: com.azure.cosmos.computedProperty.replaceContainer.existingProperties
         container = database.getContainer(containerName);
 
-        CosmosContainerProperties modifiedProperites = container.read().block().getProperties();
-        Collection<ComputedProperty> modifiedComputedProperites = modifiedProperites.getComputedProperties();
-        modifiedComputedProperites.add(new ComputedProperty("upperName", "SELECT VALUE UPPER(c.firstName) FROM c"));
-        modifiedProperites.setComputedProperties(modifiedComputedProperites);
+        CosmosContainerProperties modifiedProperties = container.read().block().getProperties();
+        Collection<ComputedProperty> modifiedComputedProperties = modifiedProperties.getComputedProperties();
+        modifiedComputedProperties.add(new ComputedProperty("upperName", "SELECT VALUE UPPER(c.firstName) FROM c"));
+        modifiedProperties.setComputedProperties(modifiedComputedProperties);
 
-        container.replace(modifiedProperites);
+        container.replace(modifiedProperties).subscribe();
         // END: com.azure.cosmos.computedProperty.replaceContainer.existingProperties
     }
 

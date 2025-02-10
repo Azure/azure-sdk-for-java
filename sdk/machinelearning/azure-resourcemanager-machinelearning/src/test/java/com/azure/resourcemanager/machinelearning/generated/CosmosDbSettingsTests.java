@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CosmosDbSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CosmosDbSettings model =
-            BinaryData.fromString("{\"collectionsThroughput\":1098993569}").toObject(CosmosDbSettings.class);
-        Assertions.assertEquals(1098993569, model.collectionsThroughput());
+        CosmosDbSettings model
+            = BinaryData.fromString("{\"collectionsThroughput\":1838469652}").toObject(CosmosDbSettings.class);
+        Assertions.assertEquals(1838469652, model.collectionsThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbSettings model = new CosmosDbSettings().withCollectionsThroughput(1098993569);
+        CosmosDbSettings model = new CosmosDbSettings().withCollectionsThroughput(1838469652);
         model = BinaryData.fromObject(model).toObject(CosmosDbSettings.class);
-        Assertions.assertEquals(1098993569, model.collectionsThroughput());
+        Assertions.assertEquals(1838469652, model.collectionsThroughput());
     }
 }

@@ -5,27 +5,33 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Namespace/NotificationHub Regenerate Keys. */
+/**
+ * Namespace/NotificationHub Regenerate Keys.
+ */
 @Fluent
-public final class PolicykeyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicykeyResource.class);
-
+public final class PolicykeyResource implements JsonSerializable<PolicykeyResource> {
     /*
-     * Name of the key that has to be regenerated for the
-     * Namespace/Notification Hub Authorization Rule. The value can be Primary
-     * Key/Secondary Key.
+     * Name of the key that has to be regenerated for the Namespace/Notification Hub Authorization Rule. The value can
+     * be Primary Key/Secondary Key.
      */
-    @JsonProperty(value = "policyKey")
     private String policyKey;
+
+    /**
+     * Creates an instance of PolicykeyResource class.
+     */
+    public PolicykeyResource() {
+    }
 
     /**
      * Get the policyKey property: Name of the key that has to be regenerated for the Namespace/Notification Hub
      * Authorization Rule. The value can be Primary Key/Secondary Key.
-     *
+     * 
      * @return the policyKey value.
      */
     public String policyKey() {
@@ -35,7 +41,7 @@ public final class PolicykeyResource {
     /**
      * Set the policyKey property: Name of the key that has to be regenerated for the Namespace/Notification Hub
      * Authorization Rule. The value can be Primary Key/Secondary Key.
-     *
+     * 
      * @param policyKey the policyKey value to set.
      * @return the PolicykeyResource object itself.
      */
@@ -46,9 +52,45 @@ public final class PolicykeyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyKey", this.policyKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicykeyResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicykeyResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicykeyResource.
+     */
+    public static PolicykeyResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicykeyResource deserializedPolicykeyResource = new PolicykeyResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyKey".equals(fieldName)) {
+                    deserializedPolicykeyResource.policyKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicykeyResource;
+        });
     }
 }

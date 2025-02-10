@@ -24,6 +24,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redisenterprise.fluent.RedisEnterpriseManagementClient;
+import com.azure.resourcemanager.redisenterprise.implementation.AccessPolicyAssignmentsImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.DatabasesImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.OperationsImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.OperationsStatusImpl;
@@ -31,14 +32,13 @@ import com.azure.resourcemanager.redisenterprise.implementation.PrivateEndpointC
 import com.azure.resourcemanager.redisenterprise.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.RedisEnterpriseManagementClientBuilder;
 import com.azure.resourcemanager.redisenterprise.implementation.RedisEnterprisesImpl;
-import com.azure.resourcemanager.redisenterprise.implementation.SkusImpl;
+import com.azure.resourcemanager.redisenterprise.models.AccessPolicyAssignments;
 import com.azure.resourcemanager.redisenterprise.models.Databases;
 import com.azure.resourcemanager.redisenterprise.models.Operations;
 import com.azure.resourcemanager.redisenterprise.models.OperationsStatus;
 import com.azure.resourcemanager.redisenterprise.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.redisenterprise.models.PrivateLinkResources;
 import com.azure.resourcemanager.redisenterprise.models.RedisEnterprises;
-import com.azure.resourcemanager.redisenterprise.models.Skus;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -46,7 +46,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to RedisEnterpriseManager. REST API for managing Redis Enterprise resources in Azure. */
+/**
+ * Entry point to RedisEnterpriseManager.
+ * REST API for managing Redis Enterprise resources in Azure.
+ */
 public final class RedisEnterpriseManager {
     private Operations operations;
 
@@ -56,29 +59,27 @@ public final class RedisEnterpriseManager {
 
     private Databases databases;
 
+    private AccessPolicyAssignments accessPolicyAssignments;
+
     private PrivateEndpointConnections privateEndpointConnections;
 
     private PrivateLinkResources privateLinkResources;
-
-    private Skus skus;
 
     private final RedisEnterpriseManagementClient clientObject;
 
     private RedisEnterpriseManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new RedisEnterpriseManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new RedisEnterpriseManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of RedisEnterprise service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the RedisEnterprise service API instance.
@@ -91,7 +92,7 @@ public final class RedisEnterpriseManager {
 
     /**
      * Creates an instance of RedisEnterprise service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the RedisEnterprise service API instance.
@@ -104,14 +105,16 @@ public final class RedisEnterpriseManager {
 
     /**
      * Gets a Configurable instance that can be used to create RedisEnterpriseManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new RedisEnterpriseManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -183,8 +186,8 @@ public final class RedisEnterpriseManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -201,8 +204,8 @@ public final class RedisEnterpriseManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -222,15 +225,13 @@ public final class RedisEnterpriseManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.redisenterprise")
                 .append("/")
-                .append("1.1.0-beta.3");
+                .append("2.1.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -255,38 +256,28 @@ public final class RedisEnterpriseManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new RedisEnterpriseManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -298,7 +289,7 @@ public final class RedisEnterpriseManager {
 
     /**
      * Gets the resource collection API of OperationsStatus.
-     *
+     * 
      * @return Resource collection API of OperationsStatus.
      */
     public OperationsStatus operationsStatus() {
@@ -310,7 +301,7 @@ public final class RedisEnterpriseManager {
 
     /**
      * Gets the resource collection API of RedisEnterprises. It manages Cluster.
-     *
+     * 
      * @return Resource collection API of RedisEnterprises.
      */
     public RedisEnterprises redisEnterprises() {
@@ -322,7 +313,7 @@ public final class RedisEnterpriseManager {
 
     /**
      * Gets the resource collection API of Databases. It manages Database.
-     *
+     * 
      * @return Resource collection API of Databases.
      */
     public Databases databases() {
@@ -333,21 +324,34 @@ public final class RedisEnterpriseManager {
     }
 
     /**
+     * Gets the resource collection API of AccessPolicyAssignments. It manages AccessPolicyAssignment.
+     * 
+     * @return Resource collection API of AccessPolicyAssignments.
+     */
+    public AccessPolicyAssignments accessPolicyAssignments() {
+        if (this.accessPolicyAssignments == null) {
+            this.accessPolicyAssignments
+                = new AccessPolicyAssignmentsImpl(clientObject.getAccessPolicyAssignments(), this);
+        }
+        return accessPolicyAssignments;
+    }
+
+    /**
      * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections =
-                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
     }
 
     /**
      * Gets the resource collection API of PrivateLinkResources.
-     *
+     * 
      * @return Resource collection API of PrivateLinkResources.
      */
     public PrivateLinkResources privateLinkResources() {
@@ -358,20 +362,10 @@ public final class RedisEnterpriseManager {
     }
 
     /**
-     * Gets the resource collection API of Skus.
-     *
-     * @return Resource collection API of Skus.
-     */
-    public Skus skus() {
-        if (this.skus == null) {
-            this.skus = new SkusImpl(clientObject.getSkus(), this);
-        }
-        return skus;
-    }
-
-    /**
-     * @return Wrapped service client RedisEnterpriseManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client RedisEnterpriseManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client RedisEnterpriseManagementClient.
      */
     public RedisEnterpriseManagementClient serviceClient() {
         return this.clientObject;

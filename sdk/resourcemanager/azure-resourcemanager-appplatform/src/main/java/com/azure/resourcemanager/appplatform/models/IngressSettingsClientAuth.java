@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Client-Certification Authentication. */
+/**
+ * Client-Certification Authentication.
+ */
 @Fluent
-public final class IngressSettingsClientAuth {
+public final class IngressSettingsClientAuth implements JsonSerializable<IngressSettingsClientAuth> {
     /*
      * Collection of certificate resource id.
      */
-    @JsonProperty(value = "certificates")
     private List<String> certificates;
 
     /**
+     * Creates an instance of IngressSettingsClientAuth class.
+     */
+    public IngressSettingsClientAuth() {
+    }
+
+    /**
      * Get the certificates property: Collection of certificate resource id.
-     *
+     * 
      * @return the certificates value.
      */
     public List<String> certificates() {
@@ -28,7 +39,7 @@ public final class IngressSettingsClientAuth {
 
     /**
      * Set the certificates property: Collection of certificate resource id.
-     *
+     * 
      * @param certificates the certificates value to set.
      * @return the IngressSettingsClientAuth object itself.
      */
@@ -39,9 +50,46 @@ public final class IngressSettingsClientAuth {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("certificates", this.certificates, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IngressSettingsClientAuth from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IngressSettingsClientAuth if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IngressSettingsClientAuth.
+     */
+    public static IngressSettingsClientAuth fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IngressSettingsClientAuth deserializedIngressSettingsClientAuth = new IngressSettingsClientAuth();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificates".equals(fieldName)) {
+                    List<String> certificates = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIngressSettingsClientAuth.certificates = certificates;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIngressSettingsClientAuth;
+        });
     }
 }

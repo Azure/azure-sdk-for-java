@@ -18,32 +18,35 @@ public final class MapperConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MapperConnection model = BinaryData.fromString(
-            "{\"linkedService\":{\"referenceName\":\"sdtcjbctvivuzqym\",\"parameters\":{\"zvbrzcdbanfzndsc\":\"datawogtgitsq\"}},\"linkedServiceType\":\"xeatkd\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{\"name\":\"yibqbnao\",\"value\":\"datajrmkuhmaxljalf\"},{\"name\":\"cjmobcanc\",\"value\":\"dataxxqcwgaxf\"},{\"name\":\"aknokzwjjzrl\",\"value\":\"dataxldzyyfytpqsix\"},{\"name\":\"m\",\"value\":\"datajivyqlkjuv\"}]}")
+            "{\"linkedService\":{\"referenceName\":\"ncn\",\"parameters\":{\"qodkadppyibngql\":\"dataehllizhceum\",\"wrxwhydtl\":\"datad\",\"uyem\":\"datavvadswzs\"}},\"linkedServiceType\":\"wuowhlxlnwy\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{\"name\":\"gmokzkltrfowt\",\"value\":\"datarfmvlihcvjdrqcrj\"},{\"name\":\"h\",\"value\":\"dataukvhd\"},{\"name\":\"wyojbfqzdkfnjyi\",\"value\":\"dataafr\"},{\"name\":\"qxmbjroumzzn\",\"value\":\"datal\"}]}")
             .toObject(MapperConnection.class);
-        Assertions.assertEquals("sdtcjbctvivuzqym", model.linkedService().referenceName());
-        Assertions.assertEquals("xeatkd", model.linkedServiceType());
+        Assertions.assertEquals("ncn", model.linkedService().referenceName());
+        Assertions.assertEquals("wuowhlxlnwy", model.linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.type());
         Assertions.assertEquals(false, model.isInlineDataset());
-        Assertions.assertEquals("yibqbnao", model.commonDslConnectorProperties().get(0).name());
+        Assertions.assertEquals("gmokzkltrfowt", model.commonDslConnectorProperties().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MapperConnection model = new MapperConnection()
-            .withLinkedService(new LinkedServiceReference().withReferenceName("sdtcjbctvivuzqym")
-                .withParameters(mapOf("zvbrzcdbanfzndsc", "datawogtgitsq")))
-            .withLinkedServiceType("xeatkd").withType(ConnectionType.LINKEDSERVICETYPE).withIsInlineDataset(false)
-            .withCommonDslConnectorProperties(
-                Arrays.asList(new MapperDslConnectorProperties().withName("yibqbnao").withValue("datajrmkuhmaxljalf"),
-                    new MapperDslConnectorProperties().withName("cjmobcanc").withValue("dataxxqcwgaxf"),
-                    new MapperDslConnectorProperties().withName("aknokzwjjzrl").withValue("dataxldzyyfytpqsix"),
-                    new MapperDslConnectorProperties().withName("m").withValue("datajivyqlkjuv")));
+            .withLinkedService(new LinkedServiceReference().withReferenceName("ncn")
+                .withParameters(
+                    mapOf("qodkadppyibngql", "dataehllizhceum", "wrxwhydtl", "datad", "uyem", "datavvadswzs")))
+            .withLinkedServiceType("wuowhlxlnwy")
+            .withType(ConnectionType.LINKEDSERVICETYPE)
+            .withIsInlineDataset(false)
+            .withCommonDslConnectorProperties(Arrays.asList(
+                new MapperDslConnectorProperties().withName("gmokzkltrfowt").withValue("datarfmvlihcvjdrqcrj"),
+                new MapperDslConnectorProperties().withName("h").withValue("dataukvhd"),
+                new MapperDslConnectorProperties().withName("wyojbfqzdkfnjyi").withValue("dataafr"),
+                new MapperDslConnectorProperties().withName("qxmbjroumzzn").withValue("datal")));
         model = BinaryData.fromObject(model).toObject(MapperConnection.class);
-        Assertions.assertEquals("sdtcjbctvivuzqym", model.linkedService().referenceName());
-        Assertions.assertEquals("xeatkd", model.linkedServiceType());
+        Assertions.assertEquals("ncn", model.linkedService().referenceName());
+        Assertions.assertEquals("wuowhlxlnwy", model.linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.type());
         Assertions.assertEquals(false, model.isInlineDataset());
-        Assertions.assertEquals("yibqbnao", model.commonDslConnectorProperties().get(0).name());
+        Assertions.assertEquals("gmokzkltrfowt", model.commonDslConnectorProperties().get(0).name());
     }
 
     // Use "Map.of" if available

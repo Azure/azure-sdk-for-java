@@ -6,8 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallIpConfigurationPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * IP configuration of an Azure Firewall.
@@ -17,25 +20,21 @@ public final class AzureFirewallIpConfiguration extends SubResource {
     /*
      * Properties of the azure firewall IP configuration.
      */
-    @JsonProperty(value = "properties")
     private AzureFirewallIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * Name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -180,5 +179,52 @@ public final class AzureFirewallIpConfiguration extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFirewallIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFirewallIpConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFirewallIpConfiguration.
+     */
+    public static AzureFirewallIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFirewallIpConfiguration deserializedAzureFirewallIpConfiguration = new AzureFirewallIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAzureFirewallIpConfiguration.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureFirewallIpConfiguration.innerProperties
+                        = AzureFirewallIpConfigurationPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedAzureFirewallIpConfiguration.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAzureFirewallIpConfiguration.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureFirewallIpConfiguration.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFirewallIpConfiguration;
+        });
     }
 }

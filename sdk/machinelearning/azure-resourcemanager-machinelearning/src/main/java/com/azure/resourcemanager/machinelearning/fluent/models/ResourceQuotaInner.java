@@ -5,58 +5,58 @@
 package com.azure.resourcemanager.machinelearning.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.machinelearning.models.QuotaUnit;
 import com.azure.resourcemanager.machinelearning.models.ResourceName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The quota assigned to a resource. */
+/**
+ * The quota assigned to a resource.
+ */
 @Immutable
-public final class ResourceQuotaInner {
+public final class ResourceQuotaInner implements JsonSerializable<ResourceQuotaInner> {
     /*
      * Specifies the resource ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Region of the AML workspace in the id.
      */
-    @JsonProperty(value = "amlWorkspaceLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String amlWorkspaceLocation;
 
     /*
      * Specifies the resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Name of the resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceName name;
 
     /*
-     * Limit.
-     *
      * The maximum permitted quota of the resource.
      */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Long limit;
 
     /*
      * An enum describing the unit of quota measurement.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaUnit unit;
 
-    /** Creates an instance of ResourceQuotaInner class. */
+    /**
+     * Creates an instance of ResourceQuotaInner class.
+     */
     public ResourceQuotaInner() {
     }
 
     /**
      * Get the id property: Specifies the resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -65,7 +65,7 @@ public final class ResourceQuotaInner {
 
     /**
      * Get the amlWorkspaceLocation property: Region of the AML workspace in the id.
-     *
+     * 
      * @return the amlWorkspaceLocation value.
      */
     public String amlWorkspaceLocation() {
@@ -74,7 +74,7 @@ public final class ResourceQuotaInner {
 
     /**
      * Get the type property: Specifies the resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -83,7 +83,7 @@ public final class ResourceQuotaInner {
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public ResourceName name() {
@@ -91,10 +91,8 @@ public final class ResourceQuotaInner {
     }
 
     /**
-     * Get the limit property: Limit.
-     *
-     * <p>The maximum permitted quota of the resource.
-     *
+     * Get the limit property: The maximum permitted quota of the resource.
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -103,7 +101,7 @@ public final class ResourceQuotaInner {
 
     /**
      * Get the unit property: An enum describing the unit of quota measurement.
-     *
+     * 
      * @return the unit value.
      */
     public QuotaUnit unit() {
@@ -112,12 +110,57 @@ public final class ResourceQuotaInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceQuotaInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceQuotaInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceQuotaInner.
+     */
+    public static ResourceQuotaInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceQuotaInner deserializedResourceQuotaInner = new ResourceQuotaInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedResourceQuotaInner.id = reader.getString();
+                } else if ("amlWorkspaceLocation".equals(fieldName)) {
+                    deserializedResourceQuotaInner.amlWorkspaceLocation = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedResourceQuotaInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceQuotaInner.name = ResourceName.fromJson(reader);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedResourceQuotaInner.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedResourceQuotaInner.unit = QuotaUnit.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceQuotaInner;
+        });
     }
 }

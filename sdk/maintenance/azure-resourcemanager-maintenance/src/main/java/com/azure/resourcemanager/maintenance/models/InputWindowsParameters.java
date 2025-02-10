@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Input properties for patching a Windows machine. */
+/**
+ * Input properties for patching a Windows machine.
+ */
 @Fluent
-public final class InputWindowsParameters {
+public final class InputWindowsParameters implements JsonSerializable<InputWindowsParameters> {
     /*
      * Windows KBID to be excluded for patching.
      */
-    @JsonProperty(value = "kbNumbersToExclude")
     private List<String> kbNumbersToExclude;
 
     /*
      * Windows KBID to be included for patching.
      */
-    @JsonProperty(value = "kbNumbersToInclude")
     private List<String> kbNumbersToInclude;
 
     /*
      * Classification category of patches to be patched
      */
-    @JsonProperty(value = "classificationsToInclude")
     private List<String> classificationsToInclude;
 
     /*
      * Exclude patches which need reboot
      */
-    @JsonProperty(value = "excludeKbsRequiringReboot")
     private Boolean excludeKbsRequiringReboot;
 
-    /** Creates an instance of InputWindowsParameters class. */
+    /**
+     * Creates an instance of InputWindowsParameters class.
+     */
     public InputWindowsParameters() {
     }
 
     /**
      * Get the kbNumbersToExclude property: Windows KBID to be excluded for patching.
-     *
+     * 
      * @return the kbNumbersToExclude value.
      */
     public List<String> kbNumbersToExclude() {
@@ -50,7 +54,7 @@ public final class InputWindowsParameters {
 
     /**
      * Set the kbNumbersToExclude property: Windows KBID to be excluded for patching.
-     *
+     * 
      * @param kbNumbersToExclude the kbNumbersToExclude value to set.
      * @return the InputWindowsParameters object itself.
      */
@@ -61,7 +65,7 @@ public final class InputWindowsParameters {
 
     /**
      * Get the kbNumbersToInclude property: Windows KBID to be included for patching.
-     *
+     * 
      * @return the kbNumbersToInclude value.
      */
     public List<String> kbNumbersToInclude() {
@@ -70,7 +74,7 @@ public final class InputWindowsParameters {
 
     /**
      * Set the kbNumbersToInclude property: Windows KBID to be included for patching.
-     *
+     * 
      * @param kbNumbersToInclude the kbNumbersToInclude value to set.
      * @return the InputWindowsParameters object itself.
      */
@@ -81,7 +85,7 @@ public final class InputWindowsParameters {
 
     /**
      * Get the classificationsToInclude property: Classification category of patches to be patched.
-     *
+     * 
      * @return the classificationsToInclude value.
      */
     public List<String> classificationsToInclude() {
@@ -90,7 +94,7 @@ public final class InputWindowsParameters {
 
     /**
      * Set the classificationsToInclude property: Classification category of patches to be patched.
-     *
+     * 
      * @param classificationsToInclude the classificationsToInclude value to set.
      * @return the InputWindowsParameters object itself.
      */
@@ -101,7 +105,7 @@ public final class InputWindowsParameters {
 
     /**
      * Get the excludeKbsRequiringReboot property: Exclude patches which need reboot.
-     *
+     * 
      * @return the excludeKbsRequiringReboot value.
      */
     public Boolean excludeKbsRequiringReboot() {
@@ -110,7 +114,7 @@ public final class InputWindowsParameters {
 
     /**
      * Set the excludeKbsRequiringReboot property: Exclude patches which need reboot.
-     *
+     * 
      * @param excludeKbsRequiringReboot the excludeKbsRequiringReboot value to set.
      * @return the InputWindowsParameters object itself.
      */
@@ -121,9 +125,61 @@ public final class InputWindowsParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("kbNumbersToExclude", this.kbNumbersToExclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("kbNumbersToInclude", this.kbNumbersToInclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("classificationsToInclude", this.classificationsToInclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("excludeKbsRequiringReboot", this.excludeKbsRequiringReboot);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InputWindowsParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InputWindowsParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InputWindowsParameters.
+     */
+    public static InputWindowsParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InputWindowsParameters deserializedInputWindowsParameters = new InputWindowsParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kbNumbersToExclude".equals(fieldName)) {
+                    List<String> kbNumbersToExclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInputWindowsParameters.kbNumbersToExclude = kbNumbersToExclude;
+                } else if ("kbNumbersToInclude".equals(fieldName)) {
+                    List<String> kbNumbersToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInputWindowsParameters.kbNumbersToInclude = kbNumbersToInclude;
+                } else if ("classificationsToInclude".equals(fieldName)) {
+                    List<String> classificationsToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInputWindowsParameters.classificationsToInclude = classificationsToInclude;
+                } else if ("excludeKbsRequiringReboot".equals(fieldName)) {
+                    deserializedInputWindowsParameters.excludeKbsRequiringReboot
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInputWindowsParameters;
+        });
     }
 }

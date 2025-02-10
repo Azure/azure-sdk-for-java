@@ -6,34 +6,40 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectUpdateProperties;
+import com.azure.resourcemanager.devcenter.models.CatalogItemType;
+import com.azure.resourcemanager.devcenter.models.ProjectCatalogSettings;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ProjectUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProjectUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"devCenterId\":\"bdkvwrwjf\",\"description\":\"snhu\",\"maxDevBoxesPerUser\":1936335434,\"displayName\":\"tmrldhugjzzdatq\"}")
-                .toObject(ProjectUpdateProperties.class);
-        Assertions.assertEquals("bdkvwrwjf", model.devCenterId());
-        Assertions.assertEquals("snhu", model.description());
-        Assertions.assertEquals(1936335434, model.maxDevBoxesPerUser());
-        Assertions.assertEquals("tmrldhugjzzdatq", model.displayName());
+        ProjectUpdateProperties model = BinaryData.fromString(
+            "{\"devCenterId\":\"qsrxybzqqed\",\"description\":\"tbciqfouflmm\",\"maxDevBoxesPerUser\":799119693,\"displayName\":\"modmglougpb\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}}")
+            .toObject(ProjectUpdateProperties.class);
+        Assertions.assertEquals("qsrxybzqqed", model.devCenterId());
+        Assertions.assertEquals("tbciqfouflmm", model.description());
+        Assertions.assertEquals(799119693, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("modmglougpb", model.displayName());
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
+            model.catalogSettings().catalogItemSyncTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectUpdateProperties model =
-            new ProjectUpdateProperties()
-                .withDevCenterId("bdkvwrwjf")
-                .withDescription("snhu")
-                .withMaxDevBoxesPerUser(1936335434)
-                .withDisplayName("tmrldhugjzzdatq");
+        ProjectUpdateProperties model = new ProjectUpdateProperties().withDevCenterId("qsrxybzqqed")
+            .withDescription("tbciqfouflmm")
+            .withMaxDevBoxesPerUser(799119693)
+            .withDisplayName("modmglougpb")
+            .withCatalogSettings(new ProjectCatalogSettings()
+                .withCatalogItemSyncTypes(Arrays.asList(CatalogItemType.ENVIRONMENT_DEFINITION,
+                    CatalogItemType.ENVIRONMENT_DEFINITION, CatalogItemType.ENVIRONMENT_DEFINITION)));
         model = BinaryData.fromObject(model).toObject(ProjectUpdateProperties.class);
-        Assertions.assertEquals("bdkvwrwjf", model.devCenterId());
-        Assertions.assertEquals("snhu", model.description());
-        Assertions.assertEquals(1936335434, model.maxDevBoxesPerUser());
-        Assertions.assertEquals("tmrldhugjzzdatq", model.displayName());
+        Assertions.assertEquals("qsrxybzqqed", model.devCenterId());
+        Assertions.assertEquals("tbciqfouflmm", model.description());
+        Assertions.assertEquals(799119693, model.maxDevBoxesPerUser());
+        Assertions.assertEquals("modmglougpb", model.displayName());
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
+            model.catalogSettings().catalogItemSyncTypes().get(0));
     }
 }

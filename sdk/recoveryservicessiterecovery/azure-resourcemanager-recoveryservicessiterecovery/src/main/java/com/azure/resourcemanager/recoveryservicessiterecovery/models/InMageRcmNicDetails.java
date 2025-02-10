@@ -5,96 +5,91 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** InMageRcm NIC details. */
+/**
+ * InMageRcm NIC details.
+ */
 @Fluent
-public final class InMageRcmNicDetails {
+public final class InMageRcmNicDetails implements JsonSerializable<InMageRcmNicDetails> {
     /*
      * The NIC Id.
      */
-    @JsonProperty(value = "nicId", access = JsonProperty.Access.WRITE_ONLY)
     private String nicId;
 
     /*
      * A value indicating whether this is the primary NIC.
      */
-    @JsonProperty(value = "isPrimaryNic")
     private String isPrimaryNic;
 
     /*
      * A value indicating whether this NIC is selected for failover.
      */
-    @JsonProperty(value = "isSelectedForFailover")
     private String isSelectedForFailover;
 
     /*
      * The source IP address.
      */
-    @JsonProperty(value = "sourceIPAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceIpAddress;
 
     /*
      * The source IP address type.
      */
-    @JsonProperty(value = "sourceIPAddressType", access = JsonProperty.Access.WRITE_ONLY)
     private EthernetAddressType sourceIpAddressType;
 
     /*
      * Source network Id.
      */
-    @JsonProperty(value = "sourceNetworkId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceNetworkId;
 
     /*
      * Source subnet name.
      */
-    @JsonProperty(value = "sourceSubnetName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceSubnetName;
 
     /*
      * The target IP address.
      */
-    @JsonProperty(value = "targetIPAddress")
     private String targetIpAddress;
 
     /*
      * The target IP address type.
      */
-    @JsonProperty(value = "targetIPAddressType")
     private EthernetAddressType targetIpAddressType;
 
     /*
      * Target subnet name.
      */
-    @JsonProperty(value = "targetSubnetName")
     private String targetSubnetName;
 
     /*
      * Test subnet name.
      */
-    @JsonProperty(value = "testSubnetName")
     private String testSubnetName;
 
     /*
      * The test IP address.
      */
-    @JsonProperty(value = "testIPAddress")
     private String testIpAddress;
 
     /*
      * The test IP address type.
      */
-    @JsonProperty(value = "testIPAddressType")
     private EthernetAddressType testIpAddressType;
 
-    /** Creates an instance of InMageRcmNicDetails class. */
+    /**
+     * Creates an instance of InMageRcmNicDetails class.
+     */
     public InMageRcmNicDetails() {
     }
 
     /**
      * Get the nicId property: The NIC Id.
-     *
+     * 
      * @return the nicId value.
      */
     public String nicId() {
@@ -103,7 +98,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @return the isPrimaryNic value.
      */
     public String isPrimaryNic() {
@@ -112,7 +107,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @param isPrimaryNic the isPrimaryNic value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -123,7 +118,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the isSelectedForFailover property: A value indicating whether this NIC is selected for failover.
-     *
+     * 
      * @return the isSelectedForFailover value.
      */
     public String isSelectedForFailover() {
@@ -132,7 +127,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the isSelectedForFailover property: A value indicating whether this NIC is selected for failover.
-     *
+     * 
      * @param isSelectedForFailover the isSelectedForFailover value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -143,7 +138,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the sourceIpAddress property: The source IP address.
-     *
+     * 
      * @return the sourceIpAddress value.
      */
     public String sourceIpAddress() {
@@ -152,7 +147,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the sourceIpAddressType property: The source IP address type.
-     *
+     * 
      * @return the sourceIpAddressType value.
      */
     public EthernetAddressType sourceIpAddressType() {
@@ -161,7 +156,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the sourceNetworkId property: Source network Id.
-     *
+     * 
      * @return the sourceNetworkId value.
      */
     public String sourceNetworkId() {
@@ -170,7 +165,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the sourceSubnetName property: Source subnet name.
-     *
+     * 
      * @return the sourceSubnetName value.
      */
     public String sourceSubnetName() {
@@ -179,7 +174,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the targetIpAddress property: The target IP address.
-     *
+     * 
      * @return the targetIpAddress value.
      */
     public String targetIpAddress() {
@@ -188,7 +183,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the targetIpAddress property: The target IP address.
-     *
+     * 
      * @param targetIpAddress the targetIpAddress value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -199,7 +194,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the targetIpAddressType property: The target IP address type.
-     *
+     * 
      * @return the targetIpAddressType value.
      */
     public EthernetAddressType targetIpAddressType() {
@@ -208,7 +203,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the targetIpAddressType property: The target IP address type.
-     *
+     * 
      * @param targetIpAddressType the targetIpAddressType value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -219,7 +214,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @return the targetSubnetName value.
      */
     public String targetSubnetName() {
@@ -228,7 +223,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @param targetSubnetName the targetSubnetName value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -239,7 +234,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the testSubnetName property: Test subnet name.
-     *
+     * 
      * @return the testSubnetName value.
      */
     public String testSubnetName() {
@@ -248,7 +243,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the testSubnetName property: Test subnet name.
-     *
+     * 
      * @param testSubnetName the testSubnetName value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -259,7 +254,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the testIpAddress property: The test IP address.
-     *
+     * 
      * @return the testIpAddress value.
      */
     public String testIpAddress() {
@@ -268,7 +263,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the testIpAddress property: The test IP address.
-     *
+     * 
      * @param testIpAddress the testIpAddress value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -279,7 +274,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the testIpAddressType property: The test IP address type.
-     *
+     * 
      * @return the testIpAddressType value.
      */
     public EthernetAddressType testIpAddressType() {
@@ -288,7 +283,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the testIpAddressType property: The test IP address type.
-     *
+     * 
      * @param testIpAddressType the testIpAddressType value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -299,9 +294,81 @@ public final class InMageRcmNicDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("isPrimaryNic", this.isPrimaryNic);
+        jsonWriter.writeStringField("isSelectedForFailover", this.isSelectedForFailover);
+        jsonWriter.writeStringField("targetIPAddress", this.targetIpAddress);
+        jsonWriter.writeStringField("targetIPAddressType",
+            this.targetIpAddressType == null ? null : this.targetIpAddressType.toString());
+        jsonWriter.writeStringField("targetSubnetName", this.targetSubnetName);
+        jsonWriter.writeStringField("testSubnetName", this.testSubnetName);
+        jsonWriter.writeStringField("testIPAddress", this.testIpAddress);
+        jsonWriter.writeStringField("testIPAddressType",
+            this.testIpAddressType == null ? null : this.testIpAddressType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmNicDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmNicDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmNicDetails.
+     */
+    public static InMageRcmNicDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmNicDetails deserializedInMageRcmNicDetails = new InMageRcmNicDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nicId".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.nicId = reader.getString();
+                } else if ("isPrimaryNic".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.isPrimaryNic = reader.getString();
+                } else if ("isSelectedForFailover".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.isSelectedForFailover = reader.getString();
+                } else if ("sourceIPAddress".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.sourceIpAddress = reader.getString();
+                } else if ("sourceIPAddressType".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.sourceIpAddressType
+                        = EthernetAddressType.fromString(reader.getString());
+                } else if ("sourceNetworkId".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.sourceNetworkId = reader.getString();
+                } else if ("sourceSubnetName".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.sourceSubnetName = reader.getString();
+                } else if ("targetIPAddress".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.targetIpAddress = reader.getString();
+                } else if ("targetIPAddressType".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.targetIpAddressType
+                        = EthernetAddressType.fromString(reader.getString());
+                } else if ("targetSubnetName".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.targetSubnetName = reader.getString();
+                } else if ("testSubnetName".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.testSubnetName = reader.getString();
+                } else if ("testIPAddress".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.testIpAddress = reader.getString();
+                } else if ("testIPAddressType".equals(fieldName)) {
+                    deserializedInMageRcmNicDetails.testIpAddressType
+                        = EthernetAddressType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmNicDetails;
+        });
     }
 }

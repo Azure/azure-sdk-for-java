@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
  * terminal. It allows users to
  * <a href="https://learn.microsoft.com/cli/azure/authenticate-azure-cli">authenticate interactively</a> as a
  * user and/or a service principal against
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>.
  * The AzureCliCredential authenticates in a development environment and acquires a token on behalf of the
  * logged-in user or service principal in Azure CLI. It acts as the Azure CLI logged in user or service principal
  * and executes an Azure CLI command underneath to authenticate the application against Microsoft Entra ID.</p>
@@ -49,8 +49,7 @@ import reactor.core.publisher.Mono;
  *
  * <!-- src_embed com.azure.identity.credential.azureclicredential.construct -->
  * <pre>
- * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.azureclicredential.construct -->
  *
@@ -70,9 +69,8 @@ public class AzureCliCredential implements TokenCredential {
      * @param identityClientOptions the options to configure the identity client
      */
     AzureCliCredential(String tenantId, IdentityClientOptions identityClientOptions) {
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
-            .identityClientOptions(identityClientOptions);
+        IdentityClientBuilder builder
+            = new IdentityClientBuilder().tenantId(tenantId).identityClientOptions(identityClientOptions);
 
         identityClient = builder.build();
         identitySyncClient = builder.buildSyncClient();
@@ -82,8 +80,8 @@ public class AzureCliCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzureCli(request)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error))
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error))
             .onErrorMap(error -> {
                 if (identityClient.getIdentityClientOptions().isChained()) {
                     return new CredentialUnavailableException(error.getMessage(), error);

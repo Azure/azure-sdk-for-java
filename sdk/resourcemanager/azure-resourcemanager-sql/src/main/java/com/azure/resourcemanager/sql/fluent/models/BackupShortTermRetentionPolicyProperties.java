@@ -5,33 +5,40 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.DiffBackupIntervalInHours;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of a short term retention policy. */
+/**
+ * Properties of a short term retention policy.
+ */
 @Fluent
-public final class BackupShortTermRetentionPolicyProperties {
+public final class BackupShortTermRetentionPolicyProperties
+    implements JsonSerializable<BackupShortTermRetentionPolicyProperties> {
     /*
      * The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
      */
-    @JsonProperty(value = "retentionDays")
     private Integer retentionDays;
 
     /*
      * The differential backup interval in hours. This is how many interval hours between each differential backup will
      * be supported. This is only applicable to live databases but not dropped databases.
      */
-    @JsonProperty(value = "diffBackupIntervalInHours")
     private DiffBackupIntervalInHours diffBackupIntervalInHours;
 
-    /** Creates an instance of BackupShortTermRetentionPolicyProperties class. */
+    /**
+     * Creates an instance of BackupShortTermRetentionPolicyProperties class.
+     */
     public BackupShortTermRetentionPolicyProperties() {
     }
 
     /**
      * Get the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -41,7 +48,7 @@ public final class BackupShortTermRetentionPolicyProperties {
     /**
      * Set the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the BackupShortTermRetentionPolicyProperties object itself.
      */
@@ -54,7 +61,7 @@ public final class BackupShortTermRetentionPolicyProperties {
      * Get the diffBackupIntervalInHours property: The differential backup interval in hours. This is how many interval
      * hours between each differential backup will be supported. This is only applicable to live databases but not
      * dropped databases.
-     *
+     * 
      * @return the diffBackupIntervalInHours value.
      */
     public DiffBackupIntervalInHours diffBackupIntervalInHours() {
@@ -65,21 +72,64 @@ public final class BackupShortTermRetentionPolicyProperties {
      * Set the diffBackupIntervalInHours property: The differential backup interval in hours. This is how many interval
      * hours between each differential backup will be supported. This is only applicable to live databases but not
      * dropped databases.
-     *
+     * 
      * @param diffBackupIntervalInHours the diffBackupIntervalInHours value to set.
      * @return the BackupShortTermRetentionPolicyProperties object itself.
      */
-    public BackupShortTermRetentionPolicyProperties withDiffBackupIntervalInHours(
-        DiffBackupIntervalInHours diffBackupIntervalInHours) {
+    public BackupShortTermRetentionPolicyProperties
+        withDiffBackupIntervalInHours(DiffBackupIntervalInHours diffBackupIntervalInHours) {
         this.diffBackupIntervalInHours = diffBackupIntervalInHours;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("retentionDays", this.retentionDays);
+        jsonWriter.writeStringField("diffBackupIntervalInHours",
+            this.diffBackupIntervalInHours == null ? null : this.diffBackupIntervalInHours.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupShortTermRetentionPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupShortTermRetentionPolicyProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupShortTermRetentionPolicyProperties.
+     */
+    public static BackupShortTermRetentionPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupShortTermRetentionPolicyProperties deserializedBackupShortTermRetentionPolicyProperties
+                = new BackupShortTermRetentionPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("retentionDays".equals(fieldName)) {
+                    deserializedBackupShortTermRetentionPolicyProperties.retentionDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("diffBackupIntervalInHours".equals(fieldName)) {
+                    deserializedBackupShortTermRetentionPolicyProperties.diffBackupIntervalInHours
+                        = DiffBackupIntervalInHours.fromInt(reader.getInt());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupShortTermRetentionPolicyProperties;
+        });
     }
 }

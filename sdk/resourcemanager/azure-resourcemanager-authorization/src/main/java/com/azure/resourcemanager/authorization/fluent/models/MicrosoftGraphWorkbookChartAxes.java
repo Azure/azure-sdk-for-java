@@ -5,46 +5,47 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookChartAxes. */
+/**
+ * workbookChartAxes.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity {
     /*
      * workbookChartAxis
      */
-    @JsonProperty(value = "categoryAxis")
     private MicrosoftGraphWorkbookChartAxis categoryAxis;
 
     /*
      * workbookChartAxis
      */
-    @JsonProperty(value = "seriesAxis")
     private MicrosoftGraphWorkbookChartAxis seriesAxis;
 
     /*
      * workbookChartAxis
      */
-    @JsonProperty(value = "valueAxis")
     private MicrosoftGraphWorkbookChartAxis valueAxis;
 
     /*
      * workbookChartAxes
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookChartAxes class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookChartAxes class.
+     */
     public MicrosoftGraphWorkbookChartAxes() {
     }
 
     /**
      * Get the categoryAxis property: workbookChartAxis.
-     *
+     * 
      * @return the categoryAxis value.
      */
     public MicrosoftGraphWorkbookChartAxis categoryAxis() {
@@ -53,7 +54,7 @@ public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity 
 
     /**
      * Set the categoryAxis property: workbookChartAxis.
-     *
+     * 
      * @param categoryAxis the categoryAxis value to set.
      * @return the MicrosoftGraphWorkbookChartAxes object itself.
      */
@@ -64,7 +65,7 @@ public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity 
 
     /**
      * Get the seriesAxis property: workbookChartAxis.
-     *
+     * 
      * @return the seriesAxis value.
      */
     public MicrosoftGraphWorkbookChartAxis seriesAxis() {
@@ -73,7 +74,7 @@ public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity 
 
     /**
      * Set the seriesAxis property: workbookChartAxis.
-     *
+     * 
      * @param seriesAxis the seriesAxis value to set.
      * @return the MicrosoftGraphWorkbookChartAxes object itself.
      */
@@ -84,7 +85,7 @@ public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity 
 
     /**
      * Get the valueAxis property: workbookChartAxis.
-     *
+     * 
      * @return the valueAxis value.
      */
     public MicrosoftGraphWorkbookChartAxis valueAxis() {
@@ -93,7 +94,7 @@ public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity 
 
     /**
      * Set the valueAxis property: workbookChartAxis.
-     *
+     * 
      * @param valueAxis the valueAxis value to set.
      * @return the MicrosoftGraphWorkbookChartAxes object itself.
      */
@@ -104,17 +105,16 @@ public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity 
 
     /**
      * Get the additionalProperties property: workbookChartAxes.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookChartAxes.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookChartAxes object itself.
      */
@@ -123,15 +123,9 @@ public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity 
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookChartAxes withId(String id) {
         super.withId(id);
@@ -140,7 +134,7 @@ public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -155,5 +149,65 @@ public final class MicrosoftGraphWorkbookChartAxes extends MicrosoftGraphEntity 
         if (valueAxis() != null) {
             valueAxis().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("categoryAxis", this.categoryAxis);
+        jsonWriter.writeJsonField("seriesAxis", this.seriesAxis);
+        jsonWriter.writeJsonField("valueAxis", this.valueAxis);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookChartAxes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookChartAxes if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookChartAxes.
+     */
+    public static MicrosoftGraphWorkbookChartAxes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookChartAxes deserializedMicrosoftGraphWorkbookChartAxes
+                = new MicrosoftGraphWorkbookChartAxes();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxes.withId(reader.getString());
+                } else if ("categoryAxis".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxes.categoryAxis
+                        = MicrosoftGraphWorkbookChartAxis.fromJson(reader);
+                } else if ("seriesAxis".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxes.seriesAxis
+                        = MicrosoftGraphWorkbookChartAxis.fromJson(reader);
+                } else if ("valueAxis".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxes.valueAxis
+                        = MicrosoftGraphWorkbookChartAxis.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookChartAxes.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookChartAxes;
+        });
     }
 }

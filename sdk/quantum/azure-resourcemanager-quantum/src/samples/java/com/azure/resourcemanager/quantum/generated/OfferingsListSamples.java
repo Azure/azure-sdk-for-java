@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.quantum.generated;
 
-/** Samples for Offerings List. */
+/**
+ * Samples for Offerings List.
+ */
 public final class OfferingsListSamples {
     /*
-     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2022-01-10-preview/examples/offeringsList.json
+     * x-ms-original-file:
+     * specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/offeringsList.json
      */
     /**
      * Sample code: OfferingsList.
-     *
+     * 
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void offeringsList(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {

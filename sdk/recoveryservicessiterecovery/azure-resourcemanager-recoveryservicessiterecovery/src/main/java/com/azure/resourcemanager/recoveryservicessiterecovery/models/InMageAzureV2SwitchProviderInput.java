@@ -6,40 +6,55 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Provider specific input for InMageAzureV2 switch provider. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageAzureV2")
+/**
+ * Provider specific input for InMageAzureV2 switch provider.
+ */
 @Fluent
 public final class InMageAzureV2SwitchProviderInput extends SwitchProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMageAzureV2";
+
+    /*
      * The target vault Id.
      */
-    @JsonProperty(value = "targetVaultID", required = true)
     private String targetVaultId;
 
     /*
      * The target fabric Id.
      */
-    @JsonProperty(value = "targetFabricID", required = true)
     private String targetFabricId;
 
     /*
      * The target appliance Id.
      */
-    @JsonProperty(value = "targetApplianceID", required = true)
     private String targetApplianceId;
 
-    /** Creates an instance of InMageAzureV2SwitchProviderInput class. */
+    /**
+     * Creates an instance of InMageAzureV2SwitchProviderInput class.
+     */
     public InMageAzureV2SwitchProviderInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the targetVaultId property: The target vault Id.
-     *
+     * 
      * @return the targetVaultId value.
      */
     public String targetVaultId() {
@@ -48,7 +63,7 @@ public final class InMageAzureV2SwitchProviderInput extends SwitchProviderSpecif
 
     /**
      * Set the targetVaultId property: The target vault Id.
-     *
+     * 
      * @param targetVaultId the targetVaultId value to set.
      * @return the InMageAzureV2SwitchProviderInput object itself.
      */
@@ -59,7 +74,7 @@ public final class InMageAzureV2SwitchProviderInput extends SwitchProviderSpecif
 
     /**
      * Get the targetFabricId property: The target fabric Id.
-     *
+     * 
      * @return the targetFabricId value.
      */
     public String targetFabricId() {
@@ -68,7 +83,7 @@ public final class InMageAzureV2SwitchProviderInput extends SwitchProviderSpecif
 
     /**
      * Set the targetFabricId property: The target fabric Id.
-     *
+     * 
      * @param targetFabricId the targetFabricId value to set.
      * @return the InMageAzureV2SwitchProviderInput object itself.
      */
@@ -79,7 +94,7 @@ public final class InMageAzureV2SwitchProviderInput extends SwitchProviderSpecif
 
     /**
      * Get the targetApplianceId property: The target appliance Id.
-     *
+     * 
      * @return the targetApplianceId value.
      */
     public String targetApplianceId() {
@@ -88,7 +103,7 @@ public final class InMageAzureV2SwitchProviderInput extends SwitchProviderSpecif
 
     /**
      * Set the targetApplianceId property: The target appliance Id.
-     *
+     * 
      * @param targetApplianceId the targetApplianceId value to set.
      * @return the InMageAzureV2SwitchProviderInput object itself.
      */
@@ -99,31 +114,74 @@ public final class InMageAzureV2SwitchProviderInput extends SwitchProviderSpecif
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (targetVaultId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetVaultId in model InMageAzureV2SwitchProviderInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetVaultId in model InMageAzureV2SwitchProviderInput"));
         }
         if (targetFabricId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetFabricId in model InMageAzureV2SwitchProviderInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetFabricId in model InMageAzureV2SwitchProviderInput"));
         }
         if (targetApplianceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetApplianceId in model InMageAzureV2SwitchProviderInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetApplianceId in model InMageAzureV2SwitchProviderInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InMageAzureV2SwitchProviderInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetVaultID", this.targetVaultId);
+        jsonWriter.writeStringField("targetFabricID", this.targetFabricId);
+        jsonWriter.writeStringField("targetApplianceID", this.targetApplianceId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageAzureV2SwitchProviderInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageAzureV2SwitchProviderInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InMageAzureV2SwitchProviderInput.
+     */
+    public static InMageAzureV2SwitchProviderInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageAzureV2SwitchProviderInput deserializedInMageAzureV2SwitchProviderInput
+                = new InMageAzureV2SwitchProviderInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetVaultID".equals(fieldName)) {
+                    deserializedInMageAzureV2SwitchProviderInput.targetVaultId = reader.getString();
+                } else if ("targetFabricID".equals(fieldName)) {
+                    deserializedInMageAzureV2SwitchProviderInput.targetFabricId = reader.getString();
+                } else if ("targetApplianceID".equals(fieldName)) {
+                    deserializedInMageAzureV2SwitchProviderInput.targetApplianceId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedInMageAzureV2SwitchProviderInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageAzureV2SwitchProviderInput;
+        });
+    }
 }

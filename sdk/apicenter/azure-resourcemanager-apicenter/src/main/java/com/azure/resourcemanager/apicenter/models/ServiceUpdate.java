@@ -4,49 +4,123 @@
 
 package com.azure.resourcemanager.apicenter.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.resourcemanager.apicenter.fluent.models.ServiceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Map;
 
-/** The service properties to be updated. */
-@Immutable
-public final class ServiceUpdate {
+/**
+ * The type used for update operations of the Service.
+ */
+@Fluent
+public final class ServiceUpdate implements JsonSerializable<ServiceUpdate> {
     /*
-     * The properties of the service.
+     * The managed service identities assigned to this resource.
      */
-    @JsonProperty(value = "properties")
-    private ServiceProperties innerProperties;
+    private ManagedServiceIdentity identity;
 
-    /** Creates an instance of ServiceUpdate class. */
+    /*
+     * Resource tags.
+     */
+    private Map<String, String> tags;
+
+    /**
+     * Creates an instance of ServiceUpdate class.
+     */
     public ServiceUpdate() {
     }
 
     /**
-     * Get the innerProperties property: The properties of the service.
-     *
-     * @return the innerProperties value.
+     * Get the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
      */
-    private ServiceProperties innerProperties() {
-        return this.innerProperties;
+    public ManagedServiceIdentity identity() {
+        return this.identity;
     }
 
     /**
-     * Get the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
+     * Set the identity property: The managed service identities assigned to this resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the ServiceUpdate object itself.
      */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    public ServiceUpdate withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the ServiceUpdate object itself.
+     */
+    public ServiceUpdate withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (identity() != null) {
+            identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceUpdate.
+     */
+    public static ServiceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceUpdate deserializedServiceUpdate = new ServiceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedServiceUpdate.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceUpdate.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceUpdate;
+        });
     }
 }

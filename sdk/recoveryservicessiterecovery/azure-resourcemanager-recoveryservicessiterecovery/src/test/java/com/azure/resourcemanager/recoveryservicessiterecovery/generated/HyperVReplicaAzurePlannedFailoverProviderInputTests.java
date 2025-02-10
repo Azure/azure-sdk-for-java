@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HyperVReplicaAzurePlannedFailoverProviderInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVReplicaAzurePlannedFailoverProviderInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"fsbw\",\"secondaryKekCertificatePfx\":\"ivbvzi\",\"recoveryPointId\":\"wxgoooxzpra\",\"osUpgradeVersion\":\"s\"}")
-                .toObject(HyperVReplicaAzurePlannedFailoverProviderInput.class);
+        HyperVReplicaAzurePlannedFailoverProviderInput model = BinaryData.fromString(
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"fsbw\",\"secondaryKekCertificatePfx\":\"ivbvzi\",\"recoveryPointId\":\"wxgoooxzpra\",\"osUpgradeVersion\":\"s\"}")
+            .toObject(HyperVReplicaAzurePlannedFailoverProviderInput.class);
         Assertions.assertEquals("fsbw", model.primaryKekCertificatePfx());
         Assertions.assertEquals("ivbvzi", model.secondaryKekCertificatePfx());
         Assertions.assertEquals("wxgoooxzpra", model.recoveryPointId());
@@ -24,9 +22,8 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzurePlannedFailoverProviderInput model =
-            new HyperVReplicaAzurePlannedFailoverProviderInput()
-                .withPrimaryKekCertificatePfx("fsbw")
+        HyperVReplicaAzurePlannedFailoverProviderInput model
+            = new HyperVReplicaAzurePlannedFailoverProviderInput().withPrimaryKekCertificatePfx("fsbw")
                 .withSecondaryKekCertificatePfx("ivbvzi")
                 .withRecoveryPointId("wxgoooxzpra")
                 .withOsUpgradeVersion("s");

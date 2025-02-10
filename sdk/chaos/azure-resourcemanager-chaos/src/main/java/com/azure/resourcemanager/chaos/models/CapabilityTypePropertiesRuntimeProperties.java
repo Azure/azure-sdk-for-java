@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Runtime properties of this Capability Type. */
+/**
+ * Runtime properties of this Capability Type.
+ */
 @Immutable
-public final class CapabilityTypePropertiesRuntimeProperties {
+public final class CapabilityTypePropertiesRuntimeProperties
+    implements JsonSerializable<CapabilityTypePropertiesRuntimeProperties> {
     /*
      * String of the kind of the resource's action type (continuous or discrete).
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
-    /** Creates an instance of CapabilityTypePropertiesRuntimeProperties class. */
+    /**
+     * Creates an instance of CapabilityTypePropertiesRuntimeProperties class.
+     */
     public CapabilityTypePropertiesRuntimeProperties() {
     }
 
     /**
      * Get the kind property: String of the kind of the resource's action type (continuous or discrete).
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -31,9 +39,45 @@ public final class CapabilityTypePropertiesRuntimeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilityTypePropertiesRuntimeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilityTypePropertiesRuntimeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapabilityTypePropertiesRuntimeProperties.
+     */
+    public static CapabilityTypePropertiesRuntimeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilityTypePropertiesRuntimeProperties deserializedCapabilityTypePropertiesRuntimeProperties
+                = new CapabilityTypePropertiesRuntimeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedCapabilityTypePropertiesRuntimeProperties.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilityTypePropertiesRuntimeProperties;
+        });
     }
 }

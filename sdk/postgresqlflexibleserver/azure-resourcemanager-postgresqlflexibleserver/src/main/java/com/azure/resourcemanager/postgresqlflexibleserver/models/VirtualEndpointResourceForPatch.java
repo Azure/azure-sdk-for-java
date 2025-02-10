@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualEndpointResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents a virtual endpoint for a server. */
+/**
+ * Represents a virtual endpoint for a server.
+ */
 @Fluent
-public class VirtualEndpointResourceForPatch {
+public class VirtualEndpointResourceForPatch implements JsonSerializable<VirtualEndpointResourceForPatch> {
     /*
      * Properties of the virtual endpoint resource.
      */
-    @JsonProperty(value = "properties")
     private VirtualEndpointResourceProperties innerProperties;
 
-    /** Creates an instance of VirtualEndpointResourceForPatch class. */
+    /**
+     * Creates an instance of VirtualEndpointResourceForPatch class.
+     */
     public VirtualEndpointResourceForPatch() {
     }
 
     /**
      * Get the innerProperties property: Properties of the virtual endpoint resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualEndpointResourceProperties innerProperties() {
@@ -32,8 +39,19 @@ public class VirtualEndpointResourceForPatch {
     }
 
     /**
+     * Set the innerProperties property: Properties of the virtual endpoint resource.
+     * 
+     * @param innerProperties the innerProperties value to set.
+     * @return the VirtualEndpointResourceForPatch object itself.
+     */
+    VirtualEndpointResourceForPatch withInnerProperties(VirtualEndpointResourceProperties innerProperties) {
+        this.innerProperties = innerProperties;
+        return this;
+    }
+
+    /**
      * Get the endpointType property: The endpoint type for the virtual endpoint.
-     *
+     * 
      * @return the endpointType value.
      */
     public VirtualEndpointType endpointType() {
@@ -42,7 +60,7 @@ public class VirtualEndpointResourceForPatch {
 
     /**
      * Set the endpointType property: The endpoint type for the virtual endpoint.
-     *
+     * 
      * @param endpointType the endpointType value to set.
      * @return the VirtualEndpointResourceForPatch object itself.
      */
@@ -56,7 +74,7 @@ public class VirtualEndpointResourceForPatch {
 
     /**
      * Get the members property: List of members for a virtual endpoint.
-     *
+     * 
      * @return the members value.
      */
     public List<String> members() {
@@ -65,7 +83,7 @@ public class VirtualEndpointResourceForPatch {
 
     /**
      * Set the members property: List of members for a virtual endpoint.
-     *
+     * 
      * @param members the members value to set.
      * @return the VirtualEndpointResourceForPatch object itself.
      */
@@ -79,7 +97,7 @@ public class VirtualEndpointResourceForPatch {
 
     /**
      * Get the virtualEndpoints property: List of virtual endpoints for a server.
-     *
+     * 
      * @return the virtualEndpoints value.
      */
     public List<String> virtualEndpoints() {
@@ -88,12 +106,50 @@ public class VirtualEndpointResourceForPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualEndpointResourceForPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualEndpointResourceForPatch if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualEndpointResourceForPatch.
+     */
+    public static VirtualEndpointResourceForPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualEndpointResourceForPatch deserializedVirtualEndpointResourceForPatch
+                = new VirtualEndpointResourceForPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedVirtualEndpointResourceForPatch.innerProperties
+                        = VirtualEndpointResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualEndpointResourceForPatch;
+        });
     }
 }

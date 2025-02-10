@@ -74,7 +74,7 @@ public interface Namespace {
     SystemData systemData();
 
     /**
-     * Gets the privateEndpointConnections property: The privateEndpointConnections property.
+     * Gets the privateEndpointConnections property: List of private endpoint connections.
      * 
      * @return the privateEndpointConnections value.
      */
@@ -288,9 +288,9 @@ public interface Namespace {
          */
         interface WithPrivateEndpointConnections {
             /**
-             * Specifies the privateEndpointConnections property: The privateEndpointConnections property..
+             * Specifies the privateEndpointConnections property: List of private endpoint connections..
              * 
-             * @param privateEndpointConnections The privateEndpointConnections property.
+             * @param privateEndpointConnections List of private endpoint connections.
              * @return the next definition stage.
              */
             WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
@@ -409,8 +409,8 @@ public interface Namespace {
      * The template for Namespace update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithSku,
-        UpdateStages.WithTopicSpacesConfiguration, UpdateStages.WithPublicNetworkAccess,
-        UpdateStages.WithInboundIpRules {
+        UpdateStages.WithTopicSpacesConfiguration, UpdateStages.WithTopicsConfiguration,
+        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithInboundIpRules {
         /**
          * Executes the update request.
          * 
@@ -482,6 +482,19 @@ public interface Namespace {
              * @return the next definition stage.
              */
             Update withTopicSpacesConfiguration(UpdateTopicSpacesConfigurationInfo topicSpacesConfiguration);
+        }
+
+        /**
+         * The stage of the Namespace update allowing to specify topicsConfiguration.
+         */
+        interface WithTopicsConfiguration {
+            /**
+             * Specifies the topicsConfiguration property: Topics configuration properties that can be updated..
+             * 
+             * @param topicsConfiguration Topics configuration properties that can be updated.
+             * @return the next definition stage.
+             */
+            Update withTopicsConfiguration(UpdateTopicsConfigurationInfo topicsConfiguration);
         }
 
         /**
@@ -586,4 +599,28 @@ public interface Namespace {
      * @return shared access keys of the Namespace.
      */
     NamespaceSharedAccessKeys regenerateKey(NamespaceRegenerateKeyRequest regenerateKeyRequest, Context context);
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace custom domain ownership validation result.
+     */
+    CustomDomainOwnershipValidationResult validateCustomDomainOwnership();
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace custom domain ownership validation result.
+     */
+    CustomDomainOwnershipValidationResult validateCustomDomainOwnership(Context context);
 }

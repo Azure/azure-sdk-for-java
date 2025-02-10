@@ -7,31 +7,51 @@ package com.azure.resourcemanager.support.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Object that represents File Details resource. */
+/**
+ * Object that represents File Details resource.
+ */
 @Fluent
 public final class FileDetailsInner extends ProxyResource {
     /*
      * Properties of the resource
      */
-    @JsonProperty(value = "properties")
     private FileDetailsProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of FileDetailsInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FileDetailsInner class.
+     */
     public FileDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FileDetailsProperties innerProperties() {
@@ -40,7 +60,7 @@ public final class FileDetailsInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,8 +68,38 @@ public final class FileDetailsInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the createdOn property: Time in UTC (ISO 8601 format) when file workspace was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -57,21 +107,23 @@ public final class FileDetailsInner extends ProxyResource {
     }
 
     /**
-     * Get the chunkSize property: Size of each chunk.
-     *
+     * Get the chunkSize property: Size of each chunk. The size of each chunk should be provided in bytes and must not
+     * exceed 2.5 megabytes (MB).
+     * 
      * @return the chunkSize value.
      */
-    public Float chunkSize() {
+    public Integer chunkSize() {
         return this.innerProperties() == null ? null : this.innerProperties().chunkSize();
     }
 
     /**
-     * Set the chunkSize property: Size of each chunk.
-     *
+     * Set the chunkSize property: Size of each chunk. The size of each chunk should be provided in bytes and must not
+     * exceed 2.5 megabytes (MB).
+     * 
      * @param chunkSize the chunkSize value to set.
      * @return the FileDetailsInner object itself.
      */
-    public FileDetailsInner withChunkSize(Float chunkSize) {
+    public FileDetailsInner withChunkSize(Integer chunkSize) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FileDetailsProperties();
         }
@@ -80,21 +132,23 @@ public final class FileDetailsInner extends ProxyResource {
     }
 
     /**
-     * Get the fileSize property: Size of the file to be uploaded.
-     *
+     * Get the fileSize property: Size of the file to be uploaded. The file size must not exceed 5 MB and should be
+     * provided in bytes.
+     * 
      * @return the fileSize value.
      */
-    public Float fileSize() {
+    public Integer fileSize() {
         return this.innerProperties() == null ? null : this.innerProperties().fileSize();
     }
 
     /**
-     * Set the fileSize property: Size of the file to be uploaded.
-     *
+     * Set the fileSize property: Size of the file to be uploaded. The file size must not exceed 5 MB and should be
+     * provided in bytes.
+     * 
      * @param fileSize the fileSize value to set.
      * @return the FileDetailsInner object itself.
      */
-    public FileDetailsInner withFileSize(Float fileSize) {
+    public FileDetailsInner withFileSize(Integer fileSize) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FileDetailsProperties();
         }
@@ -103,21 +157,21 @@ public final class FileDetailsInner extends ProxyResource {
     }
 
     /**
-     * Get the numberOfChunks property: Number of chunks to be uploaded.
-     *
+     * Get the numberOfChunks property: Number of chunks to be uploaded. The maximum number of allowed chunks is 2.
+     * 
      * @return the numberOfChunks value.
      */
-    public Float numberOfChunks() {
+    public Integer numberOfChunks() {
         return this.innerProperties() == null ? null : this.innerProperties().numberOfChunks();
     }
 
     /**
-     * Set the numberOfChunks property: Number of chunks to be uploaded.
-     *
+     * Set the numberOfChunks property: Number of chunks to be uploaded. The maximum number of allowed chunks is 2.
+     * 
      * @param numberOfChunks the numberOfChunks value to set.
      * @return the FileDetailsInner object itself.
      */
-    public FileDetailsInner withNumberOfChunks(Float numberOfChunks) {
+    public FileDetailsInner withNumberOfChunks(Integer numberOfChunks) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FileDetailsProperties();
         }
@@ -127,12 +181,57 @@ public final class FileDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileDetailsInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileDetailsInner.
+     */
+    public static FileDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileDetailsInner deserializedFileDetailsInner = new FileDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFileDetailsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFileDetailsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFileDetailsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFileDetailsInner.innerProperties = FileDetailsProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFileDetailsInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileDetailsInner;
+        });
     }
 }

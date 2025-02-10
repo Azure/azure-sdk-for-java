@@ -22,25 +22,29 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for StreamingJobs CreateOrReplace. */
+/**
+ * Samples for StreamingJobs CreateOrReplace.
+ */
 public final class StreamingJobsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/StreamingJob_Create_JobShell.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * StreamingJob_Create_JobShell.json
      */
     /**
      * Sample code: Create a streaming job shell (a streaming job with no inputs, outputs, transformation, or
      * functions).
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createAStreamingJobShellAStreamingJobWithNoInputsOutputsTransformationOrFunctions(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .streamingJobs()
+        manager.streamingJobs()
             .define("sj59")
             .withRegion("West US")
             .withExistingResourceGroup("sjrg6936")
-            .withTags(mapOf("key1", "value1", "key3", "value3", "randomKey", "randomValue"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
+                "fakeTokenPlaceholder"))
             .withSku(new Sku().withName(SkuName.STANDARD))
             .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
             .withOutputErrorPolicy(OutputErrorPolicy.DROP)
@@ -55,22 +59,24 @@ public final class StreamingJobsCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/StreamingJob_Create_CompleteJob.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * StreamingJob_Create_CompleteJob.json
      */
     /**
      * Sample code: Create a complete streaming job (a streaming job with a transformation, at least 1 input and at
      * least 1 output).
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createACompleteStreamingJobAStreamingJobWithATransformationAtLeast1InputAndAtLeast1Output(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .streamingJobs()
+        manager.streamingJobs()
             .define("sj7804")
             .withRegion("West US")
             .withExistingResourceGroup("sjrg3276")
-            .withTags(mapOf("key1", "value1", "key3", "value3", "randomKey", "randomValue"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder", "randomKey",
+                "fakeTokenPlaceholder"))
             .withSku(new Sku().withName(SkuName.STANDARD))
             .withEventsOutOfOrderPolicy(EventsOutOfOrderPolicy.DROP)
             .withOutputErrorPolicy(OutputErrorPolicy.DROP)
@@ -82,35 +88,29 @@ public final class StreamingJobsCreateOrReplaceSamples {
                 Arrays
                     .asList(
                         new InputInner()
-                            .withProperties(
-                                new StreamInputProperties()
-                                    .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8))
-                                    .withDatasource(
-                                        new BlobStreamInputDataSource()
-                                            .withStorageAccounts(
-                                                Arrays
-                                                    .asList(
-                                                        new StorageAccount()
-                                                            .withAccountName("yourAccountName")
-                                                            .withAccountKey("yourAccountKey==")))
-                                            .withContainer("containerName")
-                                            .withPathPattern("")))
+                            .withProperties(new StreamInputProperties()
+                                .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8))
+                                .withDatasource(new BlobStreamInputDataSource()
+                                    .withStorageAccounts(
+                                        Arrays.asList(new StorageAccount().withAccountName("yourAccountName")
+                                            .withAccountKey("fakeTokenPlaceholder")))
+                                    .withContainer("containerName")
+                                    .withPathPattern("")))
                             .withName("inputtest")))
-            .withTransformation(
-                new TransformationInner()
-                    .withName("transformationtest")
-                    .withStreamingUnits(1)
-                    .withQuery("Select Id, Name from inputtest"))
-            .withOutputs(
-                Arrays
-                    .asList(
-                        new OutputInner()
-                            .withName("outputtest")
-                            .withDatasource(new AzureSqlDatabaseOutputDataSource())))
+            .withTransformation(new TransformationInner().withName("transformationtest")
+                .withStreamingUnits(1)
+                .withQuery("Select Id, Name from inputtest"))
+            .withOutputs(Arrays.asList(new OutputInner().withName("outputtest")
+                .withDatasource(new AzureSqlDatabaseOutputDataSource().withServer("serverName")
+                    .withDatabase("databaseName")
+                    .withUser("<user>")
+                    .withPassword("fakeTokenPlaceholder")
+                    .withTable("tableName"))))
             .withFunctions(Arrays.asList())
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

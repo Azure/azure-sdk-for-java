@@ -24,11 +24,12 @@ public final class MetricAnomalyFeedback extends MetricFeedback {
         MetricAnomalyFeedbackHelper.setAccessor(new MetricAnomalyFeedbackHelper.MetricAnomalyFeedbackAccessor() {
             @Override
             public void setDetectionConfiguration(MetricAnomalyFeedback feedback,
-                                                  AnomalyDetectionConfiguration configuration) {
+                AnomalyDetectionConfiguration configuration) {
                 feedback.setDetectionConfiguration(configuration);
             }
         });
     }
+
     /**
      * Creates an instance of MetricAnomalyFeedback.
      *
@@ -37,9 +38,7 @@ public final class MetricAnomalyFeedback extends MetricFeedback {
      * only one timestamp
      * @param anomalyValue the value of the anomaly.
      */
-    public MetricAnomalyFeedback(OffsetDateTime startTime,
-        OffsetDateTime endTime,
-        AnomalyValue anomalyValue) {
+    public MetricAnomalyFeedback(OffsetDateTime startTime, OffsetDateTime endTime, AnomalyValue anomalyValue) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.anomalyValue = anomalyValue;
@@ -89,8 +88,7 @@ public final class MetricAnomalyFeedback extends MetricFeedback {
      * @param detectionConfigurationId the detectionConfigurationId value to set.
      * @return the MetricAnomalyFeedback object itself.
      */
-    public MetricAnomalyFeedback setDetectionConfigurationId(
-        final String detectionConfigurationId) {
+    public MetricAnomalyFeedback setDetectionConfigurationId(final String detectionConfigurationId) {
         this.detectionConfigurationId = detectionConfigurationId;
         return this;
     }

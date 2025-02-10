@@ -5,32 +5,40 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Represents a predictive metric value in the given bucket. */
+/**
+ * Represents a predictive metric value in the given bucket.
+ */
 @Fluent
-public final class PredictiveValue {
+public final class PredictiveValue implements JsonSerializable<PredictiveValue> {
     /*
      * the timestamp for the metric value in ISO 8601 format.
      */
-    @JsonProperty(value = "timeStamp", required = true)
     private OffsetDateTime timestamp;
 
     /*
      * Predictive value in this time bucket.
      */
-    @JsonProperty(value = "value", required = true)
     private double value;
 
-    /** Creates an instance of PredictiveValue class. */
+    /**
+     * Creates an instance of PredictiveValue class.
+     */
     public PredictiveValue() {
     }
 
     /**
      * Get the timestamp property: the timestamp for the metric value in ISO 8601 format.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -39,7 +47,7 @@ public final class PredictiveValue {
 
     /**
      * Set the timestamp property: the timestamp for the metric value in ISO 8601 format.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the PredictiveValue object itself.
      */
@@ -50,7 +58,7 @@ public final class PredictiveValue {
 
     /**
      * Get the value property: Predictive value in this time bucket.
-     *
+     * 
      * @return the value value.
      */
     public double value() {
@@ -59,7 +67,7 @@ public final class PredictiveValue {
 
     /**
      * Set the value property: Predictive value in this time bucket.
-     *
+     * 
      * @param value the value value to set.
      * @return the PredictiveValue object itself.
      */
@@ -70,16 +78,57 @@ public final class PredictiveValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (timestamp() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timestamp in model PredictiveValue"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timestamp in model PredictiveValue"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PredictiveValue.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeStamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeDoubleField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredictiveValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredictiveValue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PredictiveValue.
+     */
+    public static PredictiveValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredictiveValue deserializedPredictiveValue = new PredictiveValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeStamp".equals(fieldName)) {
+                    deserializedPredictiveValue.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("value".equals(fieldName)) {
+                    deserializedPredictiveValue.value = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredictiveValue;
+        });
+    }
 }

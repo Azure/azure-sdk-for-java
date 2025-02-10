@@ -5,39 +5,44 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.CanMigrateDefaultSku;
 import com.azure.resourcemanager.cdn.models.MigrationErrorType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The CanMigrateProperties model. */
+/**
+ * The CanMigrateProperties model.
+ */
 @Fluent
-public final class CanMigrateProperties {
+public final class CanMigrateProperties implements JsonSerializable<CanMigrateProperties> {
     /*
      * Flag that says if the profile can be migrated
      */
-    @JsonProperty(value = "canMigrate", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean canMigrate;
 
     /*
      * Recommended sku for the migration
      */
-    @JsonProperty(value = "defaultSku", access = JsonProperty.Access.WRITE_ONLY)
     private CanMigrateDefaultSku defaultSku;
 
     /*
      * The errors property.
      */
-    @JsonProperty(value = "errors")
     private List<MigrationErrorType> errors;
 
-    /** Creates an instance of CanMigrateProperties class. */
+    /**
+     * Creates an instance of CanMigrateProperties class.
+     */
     public CanMigrateProperties() {
     }
 
     /**
      * Get the canMigrate property: Flag that says if the profile can be migrated.
-     *
+     * 
      * @return the canMigrate value.
      */
     public Boolean canMigrate() {
@@ -46,7 +51,7 @@ public final class CanMigrateProperties {
 
     /**
      * Get the defaultSku property: Recommended sku for the migration.
-     *
+     * 
      * @return the defaultSku value.
      */
     public CanMigrateDefaultSku defaultSku() {
@@ -55,7 +60,7 @@ public final class CanMigrateProperties {
 
     /**
      * Get the errors property: The errors property.
-     *
+     * 
      * @return the errors value.
      */
     public List<MigrationErrorType> errors() {
@@ -64,7 +69,7 @@ public final class CanMigrateProperties {
 
     /**
      * Set the errors property: The errors property.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the CanMigrateProperties object itself.
      */
@@ -75,12 +80,53 @@ public final class CanMigrateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CanMigrateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CanMigrateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CanMigrateProperties.
+     */
+    public static CanMigrateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CanMigrateProperties deserializedCanMigrateProperties = new CanMigrateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("canMigrate".equals(fieldName)) {
+                    deserializedCanMigrateProperties.canMigrate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultSku".equals(fieldName)) {
+                    deserializedCanMigrateProperties.defaultSku = CanMigrateDefaultSku.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    List<MigrationErrorType> errors = reader.readArray(reader1 -> MigrationErrorType.fromJson(reader1));
+                    deserializedCanMigrateProperties.errors = errors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCanMigrateProperties;
+        });
     }
 }

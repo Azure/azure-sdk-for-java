@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data encryption properties of a server. */
+/**
+ * Data encryption properties of a server.
+ */
 @Fluent
-public final class DataEncryption {
+public final class DataEncryption implements JsonSerializable<DataEncryption> {
     /*
      * URI for the key in keyvault for data encryption of the primary server.
      */
-    @JsonProperty(value = "primaryKeyURI")
     private String primaryKeyUri;
 
     /*
      * Resource Id for the User assigned identity to be used for data encryption of the primary server.
      */
-    @JsonProperty(value = "primaryUserAssignedIdentityId")
     private String primaryUserAssignedIdentityId;
 
     /*
      * URI for the key in keyvault for data encryption for geo-backup of server.
      */
-    @JsonProperty(value = "geoBackupKeyURI")
     private String geoBackupKeyUri;
 
     /*
      * Resource Id for the User assigned identity to be used for data encryption for geo-backup of server.
      */
-    @JsonProperty(value = "geoBackupUserAssignedIdentityId")
     private String geoBackupUserAssignedIdentityId;
 
     /*
      * Data encryption type to depict if it is System Managed vs Azure Key vault.
      */
-    @JsonProperty(value = "type")
     private ArmServerKeyType type;
 
     /*
      * Primary encryption key status for Data encryption enabled server.
      */
-    @JsonProperty(value = "primaryEncryptionKeyStatus")
     private KeyStatusEnum primaryEncryptionKeyStatus;
 
     /*
      * Geo-backup encryption key status for Data encryption enabled server.
      */
-    @JsonProperty(value = "geoBackupEncryptionKeyStatus")
     private KeyStatusEnum geoBackupEncryptionKeyStatus;
 
-    /** Creates an instance of DataEncryption class. */
+    /**
+     * Creates an instance of DataEncryption class.
+     */
     public DataEncryption() {
     }
 
     /**
      * Get the primaryKeyUri property: URI for the key in keyvault for data encryption of the primary server.
-     *
+     * 
      * @return the primaryKeyUri value.
      */
     public String primaryKeyUri() {
@@ -67,7 +68,7 @@ public final class DataEncryption {
 
     /**
      * Set the primaryKeyUri property: URI for the key in keyvault for data encryption of the primary server.
-     *
+     * 
      * @param primaryKeyUri the primaryKeyUri value to set.
      * @return the DataEncryption object itself.
      */
@@ -79,7 +80,7 @@ public final class DataEncryption {
     /**
      * Get the primaryUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
      * encryption of the primary server.
-     *
+     * 
      * @return the primaryUserAssignedIdentityId value.
      */
     public String primaryUserAssignedIdentityId() {
@@ -89,7 +90,7 @@ public final class DataEncryption {
     /**
      * Set the primaryUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
      * encryption of the primary server.
-     *
+     * 
      * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
      * @return the DataEncryption object itself.
      */
@@ -100,7 +101,7 @@ public final class DataEncryption {
 
     /**
      * Get the geoBackupKeyUri property: URI for the key in keyvault for data encryption for geo-backup of server.
-     *
+     * 
      * @return the geoBackupKeyUri value.
      */
     public String geoBackupKeyUri() {
@@ -109,7 +110,7 @@ public final class DataEncryption {
 
     /**
      * Set the geoBackupKeyUri property: URI for the key in keyvault for data encryption for geo-backup of server.
-     *
+     * 
      * @param geoBackupKeyUri the geoBackupKeyUri value to set.
      * @return the DataEncryption object itself.
      */
@@ -121,7 +122,7 @@ public final class DataEncryption {
     /**
      * Get the geoBackupUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
      * encryption for geo-backup of server.
-     *
+     * 
      * @return the geoBackupUserAssignedIdentityId value.
      */
     public String geoBackupUserAssignedIdentityId() {
@@ -131,7 +132,7 @@ public final class DataEncryption {
     /**
      * Set the geoBackupUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
      * encryption for geo-backup of server.
-     *
+     * 
      * @param geoBackupUserAssignedIdentityId the geoBackupUserAssignedIdentityId value to set.
      * @return the DataEncryption object itself.
      */
@@ -142,7 +143,7 @@ public final class DataEncryption {
 
     /**
      * Get the type property: Data encryption type to depict if it is System Managed vs Azure Key vault.
-     *
+     * 
      * @return the type value.
      */
     public ArmServerKeyType type() {
@@ -151,7 +152,7 @@ public final class DataEncryption {
 
     /**
      * Set the type property: Data encryption type to depict if it is System Managed vs Azure Key vault.
-     *
+     * 
      * @param type the type value to set.
      * @return the DataEncryption object itself.
      */
@@ -162,7 +163,7 @@ public final class DataEncryption {
 
     /**
      * Get the primaryEncryptionKeyStatus property: Primary encryption key status for Data encryption enabled server.
-     *
+     * 
      * @return the primaryEncryptionKeyStatus value.
      */
     public KeyStatusEnum primaryEncryptionKeyStatus() {
@@ -171,7 +172,7 @@ public final class DataEncryption {
 
     /**
      * Set the primaryEncryptionKeyStatus property: Primary encryption key status for Data encryption enabled server.
-     *
+     * 
      * @param primaryEncryptionKeyStatus the primaryEncryptionKeyStatus value to set.
      * @return the DataEncryption object itself.
      */
@@ -183,7 +184,7 @@ public final class DataEncryption {
     /**
      * Get the geoBackupEncryptionKeyStatus property: Geo-backup encryption key status for Data encryption enabled
      * server.
-     *
+     * 
      * @return the geoBackupEncryptionKeyStatus value.
      */
     public KeyStatusEnum geoBackupEncryptionKeyStatus() {
@@ -193,7 +194,7 @@ public final class DataEncryption {
     /**
      * Set the geoBackupEncryptionKeyStatus property: Geo-backup encryption key status for Data encryption enabled
      * server.
-     *
+     * 
      * @param geoBackupEncryptionKeyStatus the geoBackupEncryptionKeyStatus value to set.
      * @return the DataEncryption object itself.
      */
@@ -204,9 +205,67 @@ public final class DataEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryKeyURI", this.primaryKeyUri);
+        jsonWriter.writeStringField("primaryUserAssignedIdentityId", this.primaryUserAssignedIdentityId);
+        jsonWriter.writeStringField("geoBackupKeyURI", this.geoBackupKeyUri);
+        jsonWriter.writeStringField("geoBackupUserAssignedIdentityId", this.geoBackupUserAssignedIdentityId);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("primaryEncryptionKeyStatus",
+            this.primaryEncryptionKeyStatus == null ? null : this.primaryEncryptionKeyStatus.toString());
+        jsonWriter.writeStringField("geoBackupEncryptionKeyStatus",
+            this.geoBackupEncryptionKeyStatus == null ? null : this.geoBackupEncryptionKeyStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataEncryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataEncryption if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataEncryption.
+     */
+    public static DataEncryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataEncryption deserializedDataEncryption = new DataEncryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryKeyURI".equals(fieldName)) {
+                    deserializedDataEncryption.primaryKeyUri = reader.getString();
+                } else if ("primaryUserAssignedIdentityId".equals(fieldName)) {
+                    deserializedDataEncryption.primaryUserAssignedIdentityId = reader.getString();
+                } else if ("geoBackupKeyURI".equals(fieldName)) {
+                    deserializedDataEncryption.geoBackupKeyUri = reader.getString();
+                } else if ("geoBackupUserAssignedIdentityId".equals(fieldName)) {
+                    deserializedDataEncryption.geoBackupUserAssignedIdentityId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataEncryption.type = ArmServerKeyType.fromString(reader.getString());
+                } else if ("primaryEncryptionKeyStatus".equals(fieldName)) {
+                    deserializedDataEncryption.primaryEncryptionKeyStatus
+                        = KeyStatusEnum.fromString(reader.getString());
+                } else if ("geoBackupEncryptionKeyStatus".equals(fieldName)) {
+                    deserializedDataEncryption.geoBackupEncryptionKeyStatus
+                        = KeyStatusEnum.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataEncryption;
+        });
     }
 }

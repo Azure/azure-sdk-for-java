@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.resourcemanager.compute.fluent.models.GalleryImageVersionInner;
+import com.azure.resourcemanager.compute.models.AdditionalReplicaSet;
 import com.azure.resourcemanager.compute.models.DataDiskImageEncryption;
 import com.azure.resourcemanager.compute.models.EncryptionImages;
 import com.azure.resourcemanager.compute.models.GalleryArtifactVersionFullSource;
@@ -33,7 +34,7 @@ import java.util.Arrays;
 public final class GalleryImageVersionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithShallowReplicationMode.json
      */
     /**
@@ -43,24 +44,29 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateASimpleGalleryImageVersionUsingShallowReplicationMode(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
             .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
                 new GalleryImageVersionInner().withLocation("West US")
                     .withPublishingProfile(new GalleryImageVersionPublishingProfile()
                         .withTargetRegions(Arrays.asList(new TargetRegion().withName("West US")
-                            .withRegionalReplicaCount(1).withExcludeFromLatest(false)))
+                            .withRegionalReplicaCount(1)
+                            .withExcludeFromLatest(false)))
                         .withReplicationMode(ReplicationMode.SHALLOW))
                     .withStorageProfile(new GalleryImageVersionStorageProfile()
                         .withSource(new GalleryArtifactVersionFullSource().withId(
                             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}")))
                     .withSafetyProfile(
-                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
+                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)
+                            .withBlockDeletionBeforeEndOfLife(false)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithVHD.json
      */
     /**
@@ -70,41 +76,47 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateASimpleGalleryImageVersionUsingVhdAsASource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().createOrUpdate("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0",
-            new GalleryImageVersionInner().withLocation("West US").withPublishingProfile(
-                new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(new TargetRegion()
-                    .withName("West US").withRegionalReplicaCount(
-                        1)
-                    .withEncryption(new EncryptionImages().withOsDiskImage(
-                        new OSDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myDiskEncryptionSet"))
-                        .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherDiskEncryptionSet")
-                            .withLun(1))))
-                    .withExcludeFromLatest(false),
-                    new TargetRegion().withName("East US").withRegionalReplicaCount(2)
-                        .withStorageAccountType(StorageAccountType.STANDARD_ZRS).withExcludeFromLatest(false))))
-                .withStorageProfile(new GalleryImageVersionStorageProfile().withOsDiskImage(new GalleryOSDiskImage()
-                    .withHostCaching(HostCaching.READ_ONLY)
-                    .withSource(new GalleryDiskImageSource().withUri(
-                        "https://gallerysourcencus.blob.core.windows.net/myvhds/Windows-Server-2012-R2-20171216-en.us-128GB.vhd")
-                        .withStorageAccountId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/{storageAccount}")))
-                    .withDataDiskImages(Arrays.asList(new GalleryDataDiskImage().withHostCaching(HostCaching.NONE)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                new GalleryImageVersionInner().withLocation("West US")
+                    .withPublishingProfile(new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(
+                        new TargetRegion().withName("West US")
+                            .withRegionalReplicaCount(1)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherDiskEncryptionSet")
+                                    .withLun(1))))
+                            .withExcludeFromLatest(false),
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
+                            .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
+                            .withExcludeFromLatest(false))))
+                    .withStorageProfile(new GalleryImageVersionStorageProfile().withOsDiskImage(new GalleryOSDiskImage()
+                        .withHostCaching(HostCaching.READ_ONLY)
                         .withSource(new GalleryDiskImageSource().withUri(
                             "https://gallerysourcencus.blob.core.windows.net/myvhds/Windows-Server-2012-R2-20171216-en.us-128GB.vhd")
                             .withStorageAccountId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/{storageAccount}"))
-                        .withLun(1))))
-                .withSafetyProfile(
-                    new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-            com.azure.core.util.Context.NONE);
+                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/{storageAccount}")))
+                        .withDataDiskImages(Arrays.asList(new GalleryDataDiskImage().withHostCaching(HostCaching.NONE)
+                            .withSource(new GalleryDiskImageSource().withUri(
+                                "https://gallerysourcencus.blob.core.windows.net/myvhds/Windows-Server-2012-R2-20171216-en.us-128GB.vhd")
+                                .withStorageAccountId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/{storageAccount}"))
+                            .withLun(1))))
+                    .withSafetyProfile(
+                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)
+                            .withBlockDeletionBeforeEndOfLife(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithVmAsSource.json
      */
     /**
@@ -114,45 +126,50 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateASimpleGalleryImageVersionUsingVMAsSource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().createOrUpdate("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0",
-            new GalleryImageVersionInner().withLocation("West US").withPublishingProfile(
-                new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(new TargetRegion()
-                    .withName("West US").withRegionalReplicaCount(
-                        2)
-                    .withEncryption(new EncryptionImages().withOsDiskImage(
-                        new OSDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
-                        .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet")
-                            .withLun(0),
-                            new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
-                                .withLun(1))))
-                    .withExcludeFromLatest(false),
-                    new TargetRegion().withName("East US").withRegionalReplicaCount(2)
-                        .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
-                        .withEncryption(new EncryptionImages()
-                            .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
-                            .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet")
-                                .withLun(0),
-                                new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
-                                    .withLun(1))))
-                        .withExcludeFromLatest(false))))
-                .withStorageProfile(
-                    new GalleryImageVersionStorageProfile().withSource(new GalleryArtifactVersionFullSource().withId(
-                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/{vmName}")))
-                .withSafetyProfile(
-                    new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                new GalleryImageVersionInner().withLocation("West US")
+                    .withPublishingProfile(new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(
+                        new TargetRegion().withName("West US")
+                            .withRegionalReplicaCount(2)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false),
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
+                            .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false))))
+                    .withStorageProfile(new GalleryImageVersionStorageProfile()
+                        .withSource(new GalleryArtifactVersionFullSource().withVirtualMachineId(
+                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/{vmName}")))
+                    .withSafetyProfile(
+                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)
+                            .withBlockDeletionBeforeEndOfLife(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithImageVersionAsSource.json
      */
     /**
@@ -162,45 +179,50 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateASimpleGalleryImageVersionUsingSharedImageAsSource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().createOrUpdate("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0",
-            new GalleryImageVersionInner().withLocation("West US").withPublishingProfile(
-                new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(new TargetRegion()
-                    .withName("West US").withRegionalReplicaCount(
-                        1)
-                    .withEncryption(new EncryptionImages().withOsDiskImage(
-                        new OSDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
-                        .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet")
-                            .withLun(0),
-                            new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
-                                .withLun(1))))
-                    .withExcludeFromLatest(false),
-                    new TargetRegion().withName("East US").withRegionalReplicaCount(2)
-                        .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
-                        .withEncryption(new EncryptionImages()
-                            .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
-                            .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet")
-                                .withLun(0),
-                                new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
-                                    .withLun(1))))
-                        .withExcludeFromLatest(false))))
-                .withStorageProfile(
-                    new GalleryImageVersionStorageProfile().withSource(new GalleryArtifactVersionFullSource().withId(
-                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{versionName}")))
-                .withSafetyProfile(
-                    new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                new GalleryImageVersionInner().withLocation("West US")
+                    .withPublishingProfile(new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(
+                        new TargetRegion().withName("West US")
+                            .withRegionalReplicaCount(1)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false),
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
+                            .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false))))
+                    .withStorageProfile(new GalleryImageVersionStorageProfile()
+                        .withSource(new GalleryArtifactVersionFullSource().withId(
+                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{versionName}")))
+                    .withSafetyProfile(
+                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)
+                            .withBlockDeletionBeforeEndOfLife(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithVHD_UefiSettings.json
      */
     /**
@@ -210,51 +232,58 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateASimpleGalleryImageVersionUsingVhdAsASourceWithCustomUEFIKeys(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().createOrUpdate("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0",
-            new GalleryImageVersionInner().withLocation("West US").withPublishingProfile(
-                new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(new TargetRegion()
-                    .withName("West US").withRegionalReplicaCount(
-                        1)
-                    .withEncryption(new EncryptionImages().withOsDiskImage(
-                        new OSDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myDiskEncryptionSet"))
-                        .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherDiskEncryptionSet")
-                            .withLun(1))))
-                    .withExcludeFromLatest(false),
-                    new TargetRegion().withName("East US").withRegionalReplicaCount(2)
-                        .withStorageAccountType(StorageAccountType.STANDARD_ZRS).withExcludeFromLatest(false))))
-                .withStorageProfile(new GalleryImageVersionStorageProfile().withOsDiskImage(new GalleryOSDiskImage()
-                    .withHostCaching(HostCaching.READ_ONLY)
-                    .withSource(new GalleryDiskImageSource().withUri(
-                        "https://gallerysourcencus.blob.core.windows.net/myvhds/Windows-Server-2012-R2-20171216-en.us-128GB.vhd")
-                        .withStorageAccountId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/{storageAccount}")))
-                    .withDataDiskImages(Arrays.asList(new GalleryDataDiskImage().withHostCaching(HostCaching.NONE)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                new GalleryImageVersionInner().withLocation("West US")
+                    .withPublishingProfile(new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(
+                        new TargetRegion().withName("West US")
+                            .withRegionalReplicaCount(1)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherDiskEncryptionSet")
+                                    .withLun(1))))
+                            .withExcludeFromLatest(false),
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
+                            .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
+                            .withExcludeFromLatest(false))))
+                    .withStorageProfile(new GalleryImageVersionStorageProfile().withOsDiskImage(new GalleryOSDiskImage()
+                        .withHostCaching(HostCaching.READ_ONLY)
                         .withSource(new GalleryDiskImageSource().withUri(
                             "https://gallerysourcencus.blob.core.windows.net/myvhds/Windows-Server-2012-R2-20171216-en.us-128GB.vhd")
                             .withStorageAccountId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/{storageAccount}"))
-                        .withLun(1))))
-                .withSafetyProfile(new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false))
-                .withSecurityProfile(
-                    new ImageVersionSecurityProfile().withUefiSettings(new GalleryImageVersionUefiSettings()
-                        .withSignatureTemplateNames(
-                            Arrays.asList(UefiSignatureTemplateName.MICROSOFT_UEFI_CERTIFICATE_AUTHORITY_TEMPLATE))
-                        .withAdditionalSignatures(new UefiKeySignatures()
-                            .withKek(Arrays.asList(
-                                new UefiKey().withType(UefiKeyType.SHA256).withValue(Arrays.asList("<sha256 value>"))))
-                            .withDb(Arrays.asList(
-                                new UefiKey().withType(UefiKeyType.X509).withValue(Arrays.asList("<x509 value>"))))
-                            .withDbx(Arrays.asList(
-                                new UefiKey().withType(UefiKeyType.X509).withValue(Arrays.asList("<x509 value>"))))))),
-            com.azure.core.util.Context.NONE);
+                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/{storageAccount}")))
+                        .withDataDiskImages(Arrays.asList(new GalleryDataDiskImage().withHostCaching(HostCaching.NONE)
+                            .withSource(new GalleryDiskImageSource().withUri(
+                                "https://gallerysourcencus.blob.core.windows.net/myvhds/Windows-Server-2012-R2-20171216-en.us-128GB.vhd")
+                                .withStorageAccountId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/{storageAccount}"))
+                            .withLun(1))))
+                    .withSafetyProfile(
+                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)
+                            .withBlockDeletionBeforeEndOfLife(false))
+                    .withSecurityProfile(
+                        new ImageVersionSecurityProfile().withUefiSettings(new GalleryImageVersionUefiSettings()
+                            .withSignatureTemplateNames(
+                                Arrays.asList(UefiSignatureTemplateName.MICROSOFT_UEFI_CERTIFICATE_AUTHORITY_TEMPLATE))
+                            .withAdditionalSignatures(new UefiKeySignatures()
+                                .withKek(Arrays.asList(new UefiKey().withType(UefiKeyType.SHA256)
+                                    .withValue(Arrays.asList("<sha256 value>"))))
+                                .withDb(Arrays.asList(
+                                    new UefiKey().withType(UefiKeyType.X509).withValue(Arrays.asList("<x509 value>"))))
+                                .withDbx(Arrays.asList(new UefiKey().withType(UefiKeyType.X509)
+                                    .withValue(Arrays.asList("<x509 value>"))))))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithSnapshotsAsSource.json
      */
     /**
@@ -264,44 +293,49 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateASimpleGalleryImageVersionUsingMixOfDisksAndSnapshotsAsASource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().createOrUpdate("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0",
-            new GalleryImageVersionInner().withLocation("West US").withPublishingProfile(
-                new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(new TargetRegion()
-                    .withName("West US").withRegionalReplicaCount(
-                        1)
-                    .withEncryption(new EncryptionImages().withOsDiskImage(
-                        new OSDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
-                        .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
-                            .withLun(1))))
-                    .withExcludeFromLatest(false),
-                    new TargetRegion().withName("East US").withRegionalReplicaCount(2)
-                        .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
-                        .withEncryption(new EncryptionImages()
-                            .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
-                            .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
-                                .withLun(1))))
-                        .withExcludeFromLatest(false))))
-                .withStorageProfile(new GalleryImageVersionStorageProfile().withOsDiskImage(new GalleryOSDiskImage()
-                    .withHostCaching(HostCaching.READ_ONLY)
-                    .withSource(new GalleryDiskImageSource().withId(
-                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/snapshots/{osSnapshotName}")))
-                    .withDataDiskImages(Arrays.asList(new GalleryDataDiskImage().withHostCaching(HostCaching.NONE)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                new GalleryImageVersionInner().withLocation("West US")
+                    .withPublishingProfile(new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(
+                        new TargetRegion().withName("West US")
+                            .withRegionalReplicaCount(1)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
+                                    .withLun(1))))
+                            .withExcludeFromLatest(false),
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
+                            .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
+                                    .withLun(1))))
+                            .withExcludeFromLatest(false))))
+                    .withStorageProfile(new GalleryImageVersionStorageProfile().withOsDiskImage(new GalleryOSDiskImage()
+                        .withHostCaching(HostCaching.READ_ONLY)
                         .withSource(new GalleryDiskImageSource().withId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/disks/{dataDiskName}"))
-                        .withLun(1))))
-                .withSafetyProfile(
-                    new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-            com.azure.core.util.Context.NONE);
+                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/snapshots/{osSnapshotName}")))
+                        .withDataDiskImages(Arrays.asList(new GalleryDataDiskImage().withHostCaching(HostCaching.NONE)
+                            .withSource(new GalleryDiskImageSource().withId(
+                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/disks/{dataDiskName}"))
+                            .withLun(1))))
+                    .withSafetyProfile(
+                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)
+                            .withBlockDeletionBeforeEndOfLife(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithSnapshotsAsSource.json
      */
     /**
@@ -311,44 +345,49 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateASimpleGalleryImageVersionUsingSnapshotsAsASource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().createOrUpdate("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0",
-            new GalleryImageVersionInner().withLocation("West US").withPublishingProfile(
-                new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(new TargetRegion()
-                    .withName("West US").withRegionalReplicaCount(
-                        1)
-                    .withEncryption(new EncryptionImages().withOsDiskImage(
-                        new OSDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
-                        .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
-                            .withLun(1))))
-                    .withExcludeFromLatest(false),
-                    new TargetRegion().withName("East US").withRegionalReplicaCount(2)
-                        .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
-                        .withEncryption(new EncryptionImages()
-                            .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
-                            .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
-                                .withLun(1))))
-                        .withExcludeFromLatest(false))))
-                .withStorageProfile(new GalleryImageVersionStorageProfile().withOsDiskImage(new GalleryOSDiskImage()
-                    .withHostCaching(HostCaching.READ_ONLY)
-                    .withSource(new GalleryDiskImageSource().withId(
-                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/snapshots/{osSnapshotName}")))
-                    .withDataDiskImages(Arrays.asList(new GalleryDataDiskImage().withHostCaching(HostCaching.NONE)
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                new GalleryImageVersionInner().withLocation("West US")
+                    .withPublishingProfile(new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(
+                        new TargetRegion().withName("West US")
+                            .withRegionalReplicaCount(1)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
+                                    .withLun(1))))
+                            .withExcludeFromLatest(false),
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
+                            .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
+                                    .withLun(1))))
+                            .withExcludeFromLatest(false))))
+                    .withStorageProfile(new GalleryImageVersionStorageProfile().withOsDiskImage(new GalleryOSDiskImage()
+                        .withHostCaching(HostCaching.READ_ONLY)
                         .withSource(new GalleryDiskImageSource().withId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/disks/{dataDiskName}"))
-                        .withLun(1))))
-                .withSafetyProfile(
-                    new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-            com.azure.core.util.Context.NONE);
+                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/snapshots/{osSnapshotName}")))
+                        .withDataDiskImages(Arrays.asList(new GalleryDataDiskImage().withHostCaching(HostCaching.NONE)
+                            .withSource(new GalleryDiskImageSource().withId(
+                                "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/disks/{dataDiskName}"))
+                            .withLun(1))))
+                    .withSafetyProfile(
+                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)
+                            .withBlockDeletionBeforeEndOfLife(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithTargetExtendedLocations.json
      */
     /**
@@ -358,45 +397,50 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateASimpleGalleryImageVersionWithTargetExtendedLocationsSpecified(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().createOrUpdate("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0",
-            new GalleryImageVersionInner().withLocation("West US").withPublishingProfile(
-                new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(new TargetRegion()
-                    .withName("West US").withRegionalReplicaCount(
-                        1)
-                    .withEncryption(new EncryptionImages().withOsDiskImage(
-                        new OSDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
-                        .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet")
-                            .withLun(0),
-                            new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
-                                .withLun(1))))
-                    .withExcludeFromLatest(false),
-                    new TargetRegion().withName("East US").withRegionalReplicaCount(2)
-                        .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
-                        .withEncryption(new EncryptionImages()
-                            .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
-                            .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet")
-                                .withLun(0),
-                                new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
-                                    .withLun(1))))
-                        .withExcludeFromLatest(false))))
-                .withStorageProfile(
-                    new GalleryImageVersionStorageProfile().withSource(new GalleryArtifactVersionFullSource().withId(
-                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}")))
-                .withSafetyProfile(
-                    new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                new GalleryImageVersionInner().withLocation("West US")
+                    .withPublishingProfile(new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(
+                        new TargetRegion().withName("West US")
+                            .withRegionalReplicaCount(1)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false),
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
+                            .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false))))
+                    .withStorageProfile(new GalleryImageVersionStorageProfile()
+                        .withSource(new GalleryArtifactVersionFullSource().withId(
+                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}")))
+                    .withSafetyProfile(
+                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)
+                            .withBlockDeletionBeforeEndOfLife(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithCommunityImageVersionAsSource.json
      */
     /**
@@ -406,45 +450,50 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateASimpleGalleryImageVersionUsingCommunityGalleryImageAsSource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().createOrUpdate("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0",
-            new GalleryImageVersionInner().withLocation("West US").withPublishingProfile(
-                new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(new TargetRegion()
-                    .withName("West US").withRegionalReplicaCount(
-                        1)
-                    .withEncryption(new EncryptionImages().withOsDiskImage(
-                        new OSDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
-                        .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet")
-                            .withLun(0),
-                            new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
-                                .withLun(1))))
-                    .withExcludeFromLatest(false),
-                    new TargetRegion().withName("East US").withRegionalReplicaCount(2)
-                        .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
-                        .withEncryption(new EncryptionImages()
-                            .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
-                            .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet")
-                                .withLun(0),
-                                new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
-                                    .withLun(1))))
-                        .withExcludeFromLatest(false))))
-                .withStorageProfile(new GalleryImageVersionStorageProfile()
-                    .withSource(new GalleryArtifactVersionFullSource().withCommunityGalleryImageId(
-                        "/communityGalleries/{communityGalleryName}/images/{communityGalleryImageName}")))
-                .withSafetyProfile(
-                    new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                new GalleryImageVersionInner().withLocation("West US")
+                    .withPublishingProfile(new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(
+                        new TargetRegion().withName("West US")
+                            .withRegionalReplicaCount(1)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false),
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
+                            .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false))))
+                    .withStorageProfile(new GalleryImageVersionStorageProfile()
+                        .withSource(new GalleryArtifactVersionFullSource().withCommunityGalleryImageId(
+                            "/communityGalleries/{communityGalleryName}/images/{communityGalleryImageName}")))
+                    .withSafetyProfile(
+                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)
+                            .withBlockDeletionBeforeEndOfLife(false)),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Create.json
      */
     /**
@@ -454,39 +503,99 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateASimpleGalleryImageVersionUsingManagedImageAsSource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().createOrUpdate("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0",
-            new GalleryImageVersionInner().withLocation("West US").withPublishingProfile(
-                new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(new TargetRegion()
-                    .withName("West US").withRegionalReplicaCount(
-                        1)
-                    .withEncryption(new EncryptionImages().withOsDiskImage(
-                        new OSDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
-                        .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                            "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet")
-                            .withLun(0),
-                            new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
-                                .withLun(1))))
-                    .withExcludeFromLatest(false),
-                    new TargetRegion().withName("East US").withRegionalReplicaCount(2)
-                        .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
-                        .withEncryption(new EncryptionImages()
-                            .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
-                            .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet")
-                                .withLun(0),
-                                new DataDiskImageEncryption().withDiskEncryptionSetId(
-                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
-                                    .withLun(1))))
-                        .withExcludeFromLatest(false))))
-                .withStorageProfile(
-                    new GalleryImageVersionStorageProfile().withSource(new GalleryArtifactVersionFullSource().withId(
-                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}")))
-                .withSafetyProfile(
-                    new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                new GalleryImageVersionInner().withLocation("West US")
+                    .withPublishingProfile(new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(
+                        new TargetRegion().withName("West US")
+                            .withRegionalReplicaCount(1)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false),
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
+                            .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false))))
+                    .withStorageProfile(new GalleryImageVersionStorageProfile()
+                        .withSource(new GalleryArtifactVersionFullSource().withId(
+                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}")))
+                    .withSafetyProfile(
+                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)
+                            .withBlockDeletionBeforeEndOfLife(false)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * GalleryImageVersion_Create_WithAdditionalReplicaSets.json
+     */
+    /**
+     * Sample code: Create or update a simple Gallery Image Version with Direct Drive replicas.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createOrUpdateASimpleGalleryImageVersionWithDirectDriveReplicas(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                new GalleryImageVersionInner().withLocation("West US")
+                    .withPublishingProfile(new GalleryImageVersionPublishingProfile().withTargetRegions(Arrays.asList(
+                        new TargetRegion().withName("West US")
+                            .withRegionalReplicaCount(1)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false)
+                            .withAdditionalReplicaSets(Arrays.asList(new AdditionalReplicaSet()
+                                .withStorageAccountType(StorageAccountType.fromString("PreviumV2_LRS"))
+                                .withRegionalReplicaCount(1))),
+                        new TargetRegion().withName("East US")
+                            .withRegionalReplicaCount(2)
+                            .withStorageAccountType(StorageAccountType.STANDARD_ZRS)
+                            .withEncryption(new EncryptionImages()
+                                .withOsDiskImage(new OSDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"))
+                                .withDataDiskImages(Arrays.asList(new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                    "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet")
+                                    .withLun(0),
+                                    new DataDiskImageEncryption().withDiskEncryptionSetId(
+                                        "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
+                                        .withLun(1))))
+                            .withExcludeFromLatest(false))))
+                    .withStorageProfile(new GalleryImageVersionStorageProfile()
+                        .withSource(new GalleryArtifactVersionFullSource().withId(
+                            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}")))
+                    .withSafetyProfile(
+                        new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
+                com.azure.core.util.Context.NONE);
     }
 }

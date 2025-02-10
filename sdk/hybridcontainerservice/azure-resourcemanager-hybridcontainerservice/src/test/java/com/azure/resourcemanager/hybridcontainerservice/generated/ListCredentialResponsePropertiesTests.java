@@ -10,8 +10,7 @@ import com.azure.resourcemanager.hybridcontainerservice.models.ListCredentialRes
 public final class ListCredentialResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListCredentialResponseProperties model = BinaryData.fromString(
-            "{\"kubeconfigs\":[{\"name\":\"lcuiywgqywgndr\"},{\"name\":\"hzgpphrcgyncocpe\"},{\"name\":\"m\"},{\"name\":\"ofsx\"}]}")
+        ListCredentialResponseProperties model = BinaryData.fromString("{\"kubeconfigs\":[{\"name\":\"mvvd\"}]}")
             .toObject(ListCredentialResponseProperties.class);
     }
 

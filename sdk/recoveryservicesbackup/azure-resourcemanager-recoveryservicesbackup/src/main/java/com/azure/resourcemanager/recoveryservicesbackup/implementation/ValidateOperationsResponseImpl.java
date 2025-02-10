@@ -13,8 +13,7 @@ public final class ValidateOperationsResponseImpl implements ValidateOperationsR
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    ValidateOperationsResponseImpl(
-        ValidateOperationsResponseInner innerObject,
+    ValidateOperationsResponseImpl(ValidateOperationsResponseInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

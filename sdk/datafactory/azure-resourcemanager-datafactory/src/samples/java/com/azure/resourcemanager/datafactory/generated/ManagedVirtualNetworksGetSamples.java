@@ -18,7 +18,8 @@ public final class ManagedVirtualNetworksGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedVirtualNetworksGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedVirtualNetworks().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedVirtualNetworkName", null, com.azure.core.util.Context.NONE);
+        manager.managedVirtualNetworks()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName", null,
+                com.azure.core.util.Context.NONE);
     }
 }

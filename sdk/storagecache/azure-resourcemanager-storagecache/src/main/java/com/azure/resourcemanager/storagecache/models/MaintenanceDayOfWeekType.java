@@ -4,33 +4,48 @@
 
 package com.azure.resourcemanager.storagecache.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Day of the week on which the maintenance window will occur. */
+/**
+ * Day of the week on which the maintenance window will occur.
+ */
 public enum MaintenanceDayOfWeekType {
-    /** Enum value Monday. */
+    /**
+     * Enum value Monday.
+     */
     MONDAY("Monday"),
 
-    /** Enum value Tuesday. */
+    /**
+     * Enum value Tuesday.
+     */
     TUESDAY("Tuesday"),
 
-    /** Enum value Wednesday. */
+    /**
+     * Enum value Wednesday.
+     */
     WEDNESDAY("Wednesday"),
 
-    /** Enum value Thursday. */
+    /**
+     * Enum value Thursday.
+     */
     THURSDAY("Thursday"),
 
-    /** Enum value Friday. */
+    /**
+     * Enum value Friday.
+     */
     FRIDAY("Friday"),
 
-    /** Enum value Saturday. */
+    /**
+     * Enum value Saturday.
+     */
     SATURDAY("Saturday"),
 
-    /** Enum value Sunday. */
+    /**
+     * Enum value Sunday.
+     */
     SUNDAY("Sunday");
 
-    /** The actual serialized value for a MaintenanceDayOfWeekType instance. */
+    /**
+     * The actual serialized value for a MaintenanceDayOfWeekType instance.
+     */
     private final String value;
 
     MaintenanceDayOfWeekType(String value) {
@@ -39,11 +54,10 @@ public enum MaintenanceDayOfWeekType {
 
     /**
      * Parses a serialized value to a MaintenanceDayOfWeekType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MaintenanceDayOfWeekType object, or null if unable to parse.
      */
-    @JsonCreator
     public static MaintenanceDayOfWeekType fromString(String value) {
         if (value == null) {
             return null;
@@ -57,8 +71,9 @@ public enum MaintenanceDayOfWeekType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.quantum.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information about a Provider. A Provider is an entity that offers Targets to run Azure Quantum Jobs. */
+/**
+ * Information about a Provider. A Provider is an entity that offers Targets to run Azure Quantum Jobs.
+ */
 @Fluent
-public final class Provider {
+public final class Provider implements JsonSerializable<Provider> {
     /*
      * Unique id of this provider.
      */
-    @JsonProperty(value = "providerId")
     private String providerId;
 
     /*
      * The sku associated with pricing information for this provider.
      */
-    @JsonProperty(value = "providerSku")
     private String providerSku;
 
     /*
      * A Uri identifying the specific instance of this provider.
      */
-    @JsonProperty(value = "instanceUri")
     private String instanceUri;
 
     /*
      * The provider's marketplace application display name.
      */
-    @JsonProperty(value = "applicationName")
     private String applicationName;
 
     /*
      * Provisioning status field
      */
-    @JsonProperty(value = "provisioningState")
     private Status provisioningState;
 
     /*
      * Id to track resource usage for the provider.
      */
-    @JsonProperty(value = "resourceUsageId")
     private String resourceUsageId;
 
-    /** Creates an instance of Provider class. */
+    /**
+     * Creates an instance of Provider class.
+     */
     public Provider() {
     }
 
     /**
      * Get the providerId property: Unique id of this provider.
-     *
+     * 
      * @return the providerId value.
      */
     public String providerId() {
@@ -61,7 +63,7 @@ public final class Provider {
 
     /**
      * Set the providerId property: Unique id of this provider.
-     *
+     * 
      * @param providerId the providerId value to set.
      * @return the Provider object itself.
      */
@@ -72,7 +74,7 @@ public final class Provider {
 
     /**
      * Get the providerSku property: The sku associated with pricing information for this provider.
-     *
+     * 
      * @return the providerSku value.
      */
     public String providerSku() {
@@ -81,7 +83,7 @@ public final class Provider {
 
     /**
      * Set the providerSku property: The sku associated with pricing information for this provider.
-     *
+     * 
      * @param providerSku the providerSku value to set.
      * @return the Provider object itself.
      */
@@ -92,7 +94,7 @@ public final class Provider {
 
     /**
      * Get the instanceUri property: A Uri identifying the specific instance of this provider.
-     *
+     * 
      * @return the instanceUri value.
      */
     public String instanceUri() {
@@ -101,7 +103,7 @@ public final class Provider {
 
     /**
      * Set the instanceUri property: A Uri identifying the specific instance of this provider.
-     *
+     * 
      * @param instanceUri the instanceUri value to set.
      * @return the Provider object itself.
      */
@@ -112,7 +114,7 @@ public final class Provider {
 
     /**
      * Get the applicationName property: The provider's marketplace application display name.
-     *
+     * 
      * @return the applicationName value.
      */
     public String applicationName() {
@@ -121,7 +123,7 @@ public final class Provider {
 
     /**
      * Set the applicationName property: The provider's marketplace application display name.
-     *
+     * 
      * @param applicationName the applicationName value to set.
      * @return the Provider object itself.
      */
@@ -132,7 +134,7 @@ public final class Provider {
 
     /**
      * Get the provisioningState property: Provisioning status field.
-     *
+     * 
      * @return the provisioningState value.
      */
     public Status provisioningState() {
@@ -141,7 +143,7 @@ public final class Provider {
 
     /**
      * Set the provisioningState property: Provisioning status field.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the Provider object itself.
      */
@@ -152,7 +154,7 @@ public final class Provider {
 
     /**
      * Get the resourceUsageId property: Id to track resource usage for the provider.
-     *
+     * 
      * @return the resourceUsageId value.
      */
     public String resourceUsageId() {
@@ -161,7 +163,7 @@ public final class Provider {
 
     /**
      * Set the resourceUsageId property: Id to track resource usage for the provider.
-     *
+     * 
      * @param resourceUsageId the resourceUsageId value to set.
      * @return the Provider object itself.
      */
@@ -172,9 +174,61 @@ public final class Provider {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("providerId", this.providerId);
+        jsonWriter.writeStringField("providerSku", this.providerSku);
+        jsonWriter.writeStringField("instanceUri", this.instanceUri);
+        jsonWriter.writeStringField("applicationName", this.applicationName);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("resourceUsageId", this.resourceUsageId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Provider from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Provider if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Provider.
+     */
+    public static Provider fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Provider deserializedProvider = new Provider();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerId".equals(fieldName)) {
+                    deserializedProvider.providerId = reader.getString();
+                } else if ("providerSku".equals(fieldName)) {
+                    deserializedProvider.providerSku = reader.getString();
+                } else if ("instanceUri".equals(fieldName)) {
+                    deserializedProvider.instanceUri = reader.getString();
+                } else if ("applicationName".equals(fieldName)) {
+                    deserializedProvider.applicationName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedProvider.provisioningState = Status.fromString(reader.getString());
+                } else if ("resourceUsageId".equals(fieldName)) {
+                    deserializedProvider.resourceUsageId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProvider;
+        });
     }
 }

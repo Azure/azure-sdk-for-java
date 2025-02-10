@@ -5,85 +5,134 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Container for SQL workloads under SQL Availability Group. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
-@JsonTypeName("SQLAGWorkLoadContainer")
+/**
+ * Container for SQL workloads under SQL Availability Group.
+ */
 @Fluent
 public final class AzureSqlagWorkloadContainerProtectionContainer extends AzureWorkloadContainer {
-    /** Creates an instance of AzureSqlagWorkloadContainerProtectionContainer class. */
+    /*
+     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+     * 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer
+     */
+    private ProtectableContainerType containerType = ProtectableContainerType.SQLAGWORK_LOAD_CONTAINER;
+
+    /**
+     * Creates an instance of AzureSqlagWorkloadContainerProtectionContainer class.
+     */
     public AzureSqlagWorkloadContainerProtectionContainer() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the containerType property: Type of the container. The value of this property for: 1. Compute Azure VM is
+     * Microsoft.Compute/virtualMachines 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer.
+     * 
+     * @return the containerType value.
+     */
+    @Override
+    public ProtectableContainerType containerType() {
+        return this.containerType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlagWorkloadContainerProtectionContainer withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlagWorkloadContainerProtectionContainer withLastUpdatedTime(OffsetDateTime lastUpdatedTime) {
         super.withLastUpdatedTime(lastUpdatedTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureSqlagWorkloadContainerProtectionContainer withExtendedInfo(
-        AzureWorkloadContainerExtendedInfo extendedInfo) {
+    public AzureSqlagWorkloadContainerProtectionContainer
+        withExtendedInfo(AzureWorkloadContainerExtendedInfo extendedInfo) {
         super.withExtendedInfo(extendedInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlagWorkloadContainerProtectionContainer withWorkloadType(WorkloadType workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlagWorkloadContainerProtectionContainer withOperationType(OperationType operationType) {
         super.withOperationType(operationType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlagWorkloadContainerProtectionContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureSqlagWorkloadContainerProtectionContainer withBackupManagementType(
-        BackupManagementType backupManagementType) {
+    public AzureSqlagWorkloadContainerProtectionContainer
+        withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlagWorkloadContainerProtectionContainer withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlagWorkloadContainerProtectionContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlagWorkloadContainerProtectionContainer withProtectableObjectType(String protectableObjectType) {
         super.withProtectableObjectType(protectableObjectType);
@@ -92,11 +141,90 @@ public final class AzureSqlagWorkloadContainerProtectionContainer extends AzureW
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (extendedInfo() != null) {
+            extendedInfo().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("registrationStatus", registrationStatus());
+        jsonWriter.writeStringField("healthStatus", healthStatus());
+        jsonWriter.writeStringField("protectableObjectType", protectableObjectType());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("lastUpdatedTime",
+            lastUpdatedTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastUpdatedTime()));
+        jsonWriter.writeJsonField("extendedInfo", extendedInfo());
+        jsonWriter.writeStringField("workloadType", workloadType() == null ? null : workloadType().toString());
+        jsonWriter.writeStringField("operationType", operationType() == null ? null : operationType().toString());
+        jsonWriter.writeStringField("containerType", this.containerType == null ? null : this.containerType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlagWorkloadContainerProtectionContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlagWorkloadContainerProtectionContainer if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlagWorkloadContainerProtectionContainer.
+     */
+    public static AzureSqlagWorkloadContainerProtectionContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlagWorkloadContainerProtectionContainer deserializedAzureSqlagWorkloadContainerProtectionContainer
+                = new AzureSqlagWorkloadContainerProtectionContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer.withFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer
+                        .withRegistrationStatus(reader.getString());
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer.withHealthStatus(reader.getString());
+                } else if ("protectableObjectType".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer
+                        .withProtectableObjectType(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer.withSourceResourceId(reader.getString());
+                } else if ("lastUpdatedTime".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer.withLastUpdatedTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer
+                        .withExtendedInfo(AzureWorkloadContainerExtendedInfo.fromJson(reader));
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer
+                        .withWorkloadType(WorkloadType.fromString(reader.getString()));
+                } else if ("operationType".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer
+                        .withOperationType(OperationType.fromString(reader.getString()));
+                } else if ("containerType".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer.containerType
+                        = ProtectableContainerType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlagWorkloadContainerProtectionContainer;
+        });
     }
 }

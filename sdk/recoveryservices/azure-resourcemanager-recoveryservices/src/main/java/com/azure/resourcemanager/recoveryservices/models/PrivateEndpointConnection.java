@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Private Endpoint Connection Response Properties. */
+/**
+ * Private Endpoint Connection Response Properties.
+ */
 @Fluent
-public final class PrivateEndpointConnection {
+public final class PrivateEndpointConnection implements JsonSerializable<PrivateEndpointConnection> {
     /*
      * Gets or sets provisioning state of the private endpoint connection.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The Private Endpoint network resource that is linked to the Private Endpoint connection.
      */
-    @JsonProperty(value = "privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpoint privateEndpoint;
 
     /*
      * Gets or sets private link service connection state.
      */
-    @JsonProperty(value = "privateLinkServiceConnectionState", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
      * Group Ids for the Private Endpoint
      */
-    @JsonProperty(value = "groupIds")
     private List<VaultSubResourceType> groupIds;
 
-    /** Creates an instance of PrivateEndpointConnection class. */
+    /**
+     * Creates an instance of PrivateEndpointConnection class.
+     */
     public PrivateEndpointConnection() {
     }
 
     /**
      * Get the provisioningState property: Gets or sets provisioning state of the private endpoint connection.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -51,7 +55,7 @@ public final class PrivateEndpointConnection {
     /**
      * Get the privateEndpoint property: The Private Endpoint network resource that is linked to the Private Endpoint
      * connection.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpoint privateEndpoint() {
@@ -60,7 +64,7 @@ public final class PrivateEndpointConnection {
 
     /**
      * Get the privateLinkServiceConnectionState property: Gets or sets private link service connection state.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -69,7 +73,7 @@ public final class PrivateEndpointConnection {
 
     /**
      * Get the groupIds property: Group Ids for the Private Endpoint.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<VaultSubResourceType> groupIds() {
@@ -78,7 +82,7 @@ public final class PrivateEndpointConnection {
 
     /**
      * Set the groupIds property: Group Ids for the Private Endpoint.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateEndpointConnection object itself.
      */
@@ -89,7 +93,7 @@ public final class PrivateEndpointConnection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -99,5 +103,52 @@ public final class PrivateEndpointConnection {
         if (privateLinkServiceConnectionState() != null) {
             privateLinkServiceConnectionState().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("groupIds", this.groupIds,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnection.
+     */
+    public static PrivateEndpointConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnection deserializedPrivateEndpointConnection = new PrivateEndpointConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedPrivateEndpointConnection.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("privateEndpoint".equals(fieldName)) {
+                    deserializedPrivateEndpointConnection.privateEndpoint = PrivateEndpoint.fromJson(reader);
+                } else if ("privateLinkServiceConnectionState".equals(fieldName)) {
+                    deserializedPrivateEndpointConnection.privateLinkServiceConnectionState
+                        = PrivateLinkServiceConnectionState.fromJson(reader);
+                } else if ("groupIds".equals(fieldName)) {
+                    List<VaultSubResourceType> groupIds
+                        = reader.readArray(reader1 -> VaultSubResourceType.fromString(reader1.getString()));
+                    deserializedPrivateEndpointConnection.groupIds = groupIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnection;
+        });
     }
 }

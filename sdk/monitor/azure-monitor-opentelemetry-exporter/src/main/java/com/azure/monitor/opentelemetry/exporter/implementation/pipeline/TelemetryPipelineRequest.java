@@ -14,22 +14,19 @@ import java.util.List;
 
 public class TelemetryPipelineRequest {
 
-    private static final HttpHeaderName CONTENT_LENGTH = HttpHeaderName.fromString("Content-Length");
-    private static final HttpHeaderName USER_AGENT = HttpHeaderName.fromString("User-Agent");
-    private static final HttpHeaderName CONTENT_ENCODING = HttpHeaderName.fromString("Content-Encoding");
     private volatile URL url;
     private final String connectionString;
     private final String instrumentationKey;
-    private final List<ByteBuffer> telemetry;
+    private final List<ByteBuffer> byteBuffers;
     private final int contentLength;
 
-    TelemetryPipelineRequest(
-        URL url, String connectionString, String instrumentationKey, List<ByteBuffer> telemetry) {
+    TelemetryPipelineRequest(URL url, String connectionString, String instrumentationKey,
+        List<ByteBuffer> byteBuffers) {
         this.url = url;
         this.connectionString = connectionString;
         this.instrumentationKey = instrumentationKey;
-        this.telemetry = telemetry;
-        contentLength = telemetry.stream().mapToInt(ByteBuffer::limit).sum();
+        this.byteBuffers = byteBuffers;
+        contentLength = byteBuffers.stream().mapToInt(ByteBuffer::limit).sum();
     }
 
     public URL getUrl() {
@@ -40,8 +37,8 @@ public class TelemetryPipelineRequest {
         this.url = url;
     }
 
-    public List<ByteBuffer> getTelemetry() {
-        return telemetry;
+    public List<ByteBuffer> getByteBuffers() {
+        return byteBuffers;
     }
 
     public String getConnectionString() {
@@ -55,8 +52,8 @@ public class TelemetryPipelineRequest {
 
     HttpRequest createHttpRequest() {
         HttpRequest request = new HttpRequest(HttpMethod.POST, url);
-        request.setBody(Flux.fromIterable(telemetry));
-        request.setHeader(CONTENT_LENGTH, Integer.toString(contentLength));
+        request.setBody(Flux.fromIterable(byteBuffers));
+        request.setHeader(HttpHeaderName.CONTENT_LENGTH, Integer.toString(contentLength));
 
         // need to suppress the default User-Agent "ReactorNetty/dev", otherwise Breeze ingestionservice
         // will put that User-Agent header into the client_Browser field for all telemetry that doesn't
@@ -64,8 +61,8 @@ public class TelemetryPipelineRequest {
         // directly from browsers)
         // TODO (trask) not setting User-Agent header at all would be a better option, but haven't
         //  figured out how to do that yet
-        request.setHeader(USER_AGENT, "");
-        request.setHeader(CONTENT_ENCODING, "gzip");
+        request.setHeader(HttpHeaderName.USER_AGENT, "");
+        request.setHeader(HttpHeaderName.CONTENT_ENCODING, "gzip");
 
         return request;
     }

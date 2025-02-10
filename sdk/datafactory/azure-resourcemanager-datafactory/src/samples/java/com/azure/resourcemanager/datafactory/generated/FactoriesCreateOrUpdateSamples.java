@@ -18,7 +18,10 @@ public final class FactoriesCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesCreateOrUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().define("exampleFactoryName").withRegion("East US")
-            .withExistingResourceGroup("exampleResourceGroup").create();
+        manager.factories()
+            .define("exampleFactoryName")
+            .withRegion("East US")
+            .withExistingResourceGroup("exampleResourceGroup")
+            .create();
     }
 }

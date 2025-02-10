@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ActionGroups ListByResourceGroup. */
+/**
+ * Samples for ActionGroups ListByResourceGroup.
+ */
 public final class ActionGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/listActionGroups.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/listActionGroups.json
      */
     /**
      * Sample code: List action groups at resource group level.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listActionGroupsAtResourceGroupLevel(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getActionGroups()
-            .listByResourceGroup("Default-NotificationRules", Context.NONE);
+            .listByResourceGroup("Default-NotificationRules", com.azure.core.util.Context.NONE);
     }
 }

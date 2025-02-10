@@ -10,7 +10,7 @@ package com.azure.resourcemanager.healthcareapis.generated;
 public final class IotConnectorsListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/iotconnectors/
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/
      * iotconnector_List.json
      */
     /**

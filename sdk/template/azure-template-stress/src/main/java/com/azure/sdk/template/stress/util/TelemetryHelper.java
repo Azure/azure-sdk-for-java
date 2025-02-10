@@ -3,9 +3,10 @@
 
 package com.azure.sdk.template.stress.util;
 
-import com.azure.core.http.HttpClientProvider;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure;
+import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.sdk.template.stress.StressOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
@@ -37,6 +38,11 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
+
+import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.JDK;
+import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.NETTY;
+import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.OKHTTP;
+import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.VERTX;
 
 /**
  * Telemetry helper is used to monitor test execution and record stats.
@@ -81,9 +87,11 @@ public class TelemetryHelper {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         String applicationInsightsConnectionString = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING");
         if (applicationInsightsConnectionString != null) {
-            new AzureMonitorExporterBuilder()
-                .connectionString(applicationInsightsConnectionString)
-                .install(sdkBuilder);
+            AzureMonitorAutoConfigure.customize(sdkBuilder, applicationInsightsConnectionString);
+        } else {
+            System.setProperty("otel.traces.exporter", "none");
+            System.setProperty("otel.logs.exporter", "none");
+            System.setProperty("otel.metrics.exporter", "none");
         }
 
         OpenTelemetry otel = sdkBuilder
@@ -193,32 +201,43 @@ public class TelemetryHelper {
      * @param options test parameters
      */
     public void recordStart(StressOptions options) {
-        String libraryPackageVersion = "unknown";
-        try {
-            Class<?> libraryPackage = Class.forName(HttpClientProvider.class.getName());
-            libraryPackageVersion = libraryPackage.getPackage().getImplementationVersion();
-            if (libraryPackageVersion == null) {
-                libraryPackageVersion = "null";
-            }
-        } catch (ClassNotFoundException e) {
-            logger.atWarning()
-                .addKeyValue("class", HttpClientProvider.class.getName())
-                .log("Could not determine azure-core version, HttpClientProvider class is not found", e);
-        }
-
         Span before = startSampledInSpan("before run");
         before.setAttribute(AttributeKey.longKey("durationSec"), options.getDuration());
         before.setAttribute(AttributeKey.stringKey("scenarioName"), scenarioName);
         before.setAttribute(AttributeKey.longKey("concurrency"), options.getParallel());
-        before.setAttribute(AttributeKey.stringKey("libraryPackageVersion"), libraryPackageVersion);
+        before.setAttribute(AttributeKey.stringKey("azureCoreVersion"), getPackageVersionInUberJar("azure-core"));
+
+        String httpClientPackageName = getHttpClientPackageName(options.getHttpClient());
+        before.setAttribute(AttributeKey.stringKey("httpClientPackage"), httpClientPackageName);
+        before.setAttribute(AttributeKey.stringKey("httpClientPackageVersion"), getPackageVersionInUberJar(httpClientPackageName));
+
         before.setAttribute(AttributeKey.booleanKey("sync"), options.isSync());
         before.setAttribute(AttributeKey.longKey("size"), options.getSize());
         before.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
         before.setAttribute(AttributeKey.stringKey("serviceEndpoint"), options.getServiceEndpoint());
-        before.setAttribute(AttributeKey.stringKey("httpClientProvider"), options.getHttpClient().toString());
+        before.setAttribute(AttributeKey.stringKey("httpClient"), options.getHttpClient().toString());
         before.setAttribute(AttributeKey.stringKey("jreVersion"), System.getProperty("java.version"));
         before.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));
+        before.setAttribute(AttributeKey.stringKey("gitCommit"), System.getenv("GIT_COMMIT"));
         before.end();
+    }
+
+    private static String getPackageVersionInUberJar(String packageName) {
+        String fullPath = String.format("META-INF/maven/com.azure/%s/pom.properties", packageName);
+        return CoreUtils.getProperties(fullPath).get("version");
+    }
+
+    private static String getHttpClientPackageName(PerfStressOptions.HttpClientType httpClientType) {
+        if (httpClientType.equals(NETTY)) {
+            return "azure-core-http-netty";
+        } else if (httpClientType.equals(OKHTTP)) {
+            return "azure-core-http-okhttp";
+        } else if (httpClientType.equals(VERTX)) {
+            return "azure-core-http-vertx";
+        } else if (httpClientType.equals(JDK)) {
+            return "azure-core-http-jdk-httpclient";
+        }
+        return "unknown";
     }
 
     /**

@@ -5,70 +5,60 @@
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A class represent the control family. */
+/**
+ * A class represent the control family.
+ */
 @Immutable
-public final class ControlFamily {
+public final class ControlFamily implements JsonSerializable<ControlFamily> {
     /*
      * The name of the control family. e.g. "Malware Protection - Anti-Virus"
      */
-    @JsonProperty(value = "familyName", access = JsonProperty.Access.WRITE_ONLY)
-    private String familyName;
+    private String controlFamilyName;
 
     /*
-     * The control family type
+     * The control family status
      */
-    @JsonProperty(value = "familyType", access = JsonProperty.Access.WRITE_ONLY)
-    private ControlFamilyType familyType;
-
-    /*
-     * Control family status.
-     */
-    @JsonProperty(value = "familyStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private ControlFamilyStatus familyStatus;
+    private ControlFamilyStatus controlFamilyStatus;
 
     /*
      * List of controls.
      */
-    @JsonProperty(value = "controls", access = JsonProperty.Access.WRITE_ONLY)
     private List<Control> controls;
 
-    /** Creates an instance of ControlFamily class. */
+    /**
+     * Creates an instance of ControlFamily class.
+     */
     public ControlFamily() {
     }
 
     /**
-     * Get the familyName property: The name of the control family. e.g. "Malware Protection - Anti-Virus".
-     *
-     * @return the familyName value.
+     * Get the controlFamilyName property: The name of the control family. e.g. "Malware Protection - Anti-Virus".
+     * 
+     * @return the controlFamilyName value.
      */
-    public String familyName() {
-        return this.familyName;
+    public String controlFamilyName() {
+        return this.controlFamilyName;
     }
 
     /**
-     * Get the familyType property: The control family type.
-     *
-     * @return the familyType value.
+     * Get the controlFamilyStatus property: The control family status.
+     * 
+     * @return the controlFamilyStatus value.
      */
-    public ControlFamilyType familyType() {
-        return this.familyType;
-    }
-
-    /**
-     * Get the familyStatus property: Control family status.
-     *
-     * @return the familyStatus value.
-     */
-    public ControlFamilyStatus familyStatus() {
-        return this.familyStatus;
+    public ControlFamilyStatus controlFamilyStatus() {
+        return this.controlFamilyStatus;
     }
 
     /**
      * Get the controls property: List of controls.
-     *
+     * 
      * @return the controls value.
      */
     public List<Control> controls() {
@@ -77,12 +67,52 @@ public final class ControlFamily {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (controls() != null) {
             controls().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControlFamily from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControlFamily if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ControlFamily.
+     */
+    public static ControlFamily fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControlFamily deserializedControlFamily = new ControlFamily();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("controlFamilyName".equals(fieldName)) {
+                    deserializedControlFamily.controlFamilyName = reader.getString();
+                } else if ("controlFamilyStatus".equals(fieldName)) {
+                    deserializedControlFamily.controlFamilyStatus = ControlFamilyStatus.fromString(reader.getString());
+                } else if ("controls".equals(fieldName)) {
+                    List<Control> controls = reader.readArray(reader1 -> Control.fromJson(reader1));
+                    deserializedControlFamily.controls = controls;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControlFamily;
+        });
     }
 }

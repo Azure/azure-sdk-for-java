@@ -5,13 +5,14 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.Objects;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
@@ -204,12 +205,17 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("incidentId", this.incidentId);
-        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
-        jsonWriter.writeStringField("lastTime", Objects.toString(this.lastTime, null));
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("lastTime",
+            this.lastTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastTime));
         jsonWriter.writeJsonField("rootNode", this.rootNode);
         jsonWriter.writeJsonField("property", this.property);
         return jsonWriter.writeEndObject();
@@ -234,11 +240,11 @@ public final class IncidentResult implements JsonSerializable<IncidentResult> {
                 if ("incidentId".equals(fieldName)) {
                     deserializedIncidentResult.incidentId = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    deserializedIncidentResult.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedIncidentResult.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastTime".equals(fieldName)) {
-                    deserializedIncidentResult.lastTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedIncidentResult.lastTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("rootNode".equals(fieldName)) {
                     deserializedIncidentResult.rootNode = SeriesIdentity.fromJson(reader);
                 } else if ("property".equals(fieldName)) {

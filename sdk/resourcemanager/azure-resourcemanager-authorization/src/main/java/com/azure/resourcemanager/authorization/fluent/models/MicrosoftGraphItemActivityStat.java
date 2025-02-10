@@ -5,90 +5,86 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** itemActivityStat. */
+/**
+ * itemActivityStat.
+ */
 @Fluent
 public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
     /*
      * itemActionStat
      */
-    @JsonProperty(value = "access")
     private MicrosoftGraphItemActionStat access;
 
     /*
      * itemActionStat
      */
-    @JsonProperty(value = "create")
     private MicrosoftGraphItemActionStat create;
 
     /*
      * itemActionStat
      */
-    @JsonProperty(value = "delete")
     private MicrosoftGraphItemActionStat delete;
 
     /*
      * itemActionStat
      */
-    @JsonProperty(value = "edit")
     private MicrosoftGraphItemActionStat edit;
 
     /*
      * When the interval ends. Read-only.
      */
-    @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
      * incompleteData
      */
-    @JsonProperty(value = "incompleteData")
     private MicrosoftGraphIncompleteData incompleteData;
 
     /*
      * Indicates whether the item is 'trending.' Read-only.
      */
-    @JsonProperty(value = "isTrending")
     private Boolean isTrending;
 
     /*
      * itemActionStat
      */
-    @JsonProperty(value = "move")
     private MicrosoftGraphItemActionStat move;
 
     /*
      * When the interval starts. Read-only.
      */
-    @JsonProperty(value = "startDateTime")
     private OffsetDateTime startDateTime;
 
     /*
      * Exposes the itemActivities represented in this itemActivityStat resource.
      */
-    @JsonProperty(value = "activities")
     private List<MicrosoftGraphItemActivity> activities;
 
     /*
      * itemActivityStat
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphItemActivityStat class. */
+    /**
+     * Creates an instance of MicrosoftGraphItemActivityStat class.
+     */
     public MicrosoftGraphItemActivityStat() {
     }
 
     /**
      * Get the access property: itemActionStat.
-     *
+     * 
      * @return the access value.
      */
     public MicrosoftGraphItemActionStat access() {
@@ -97,7 +93,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Set the access property: itemActionStat.
-     *
+     * 
      * @param access the access value to set.
      * @return the MicrosoftGraphItemActivityStat object itself.
      */
@@ -108,7 +104,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Get the create property: itemActionStat.
-     *
+     * 
      * @return the create value.
      */
     public MicrosoftGraphItemActionStat create() {
@@ -117,7 +113,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Set the create property: itemActionStat.
-     *
+     * 
      * @param create the create value to set.
      * @return the MicrosoftGraphItemActivityStat object itself.
      */
@@ -128,7 +124,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Get the delete property: itemActionStat.
-     *
+     * 
      * @return the delete value.
      */
     public MicrosoftGraphItemActionStat delete() {
@@ -137,7 +133,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Set the delete property: itemActionStat.
-     *
+     * 
      * @param delete the delete value to set.
      * @return the MicrosoftGraphItemActivityStat object itself.
      */
@@ -148,7 +144,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Get the edit property: itemActionStat.
-     *
+     * 
      * @return the edit value.
      */
     public MicrosoftGraphItemActionStat edit() {
@@ -157,7 +153,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Set the edit property: itemActionStat.
-     *
+     * 
      * @param edit the edit value to set.
      * @return the MicrosoftGraphItemActivityStat object itself.
      */
@@ -168,7 +164,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Get the endDateTime property: When the interval ends. Read-only.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -177,7 +173,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Set the endDateTime property: When the interval ends. Read-only.
-     *
+     * 
      * @param endDateTime the endDateTime value to set.
      * @return the MicrosoftGraphItemActivityStat object itself.
      */
@@ -188,7 +184,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Get the incompleteData property: incompleteData.
-     *
+     * 
      * @return the incompleteData value.
      */
     public MicrosoftGraphIncompleteData incompleteData() {
@@ -197,7 +193,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Set the incompleteData property: incompleteData.
-     *
+     * 
      * @param incompleteData the incompleteData value to set.
      * @return the MicrosoftGraphItemActivityStat object itself.
      */
@@ -208,7 +204,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Get the isTrending property: Indicates whether the item is 'trending.' Read-only.
-     *
+     * 
      * @return the isTrending value.
      */
     public Boolean isTrending() {
@@ -217,7 +213,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Set the isTrending property: Indicates whether the item is 'trending.' Read-only.
-     *
+     * 
      * @param isTrending the isTrending value to set.
      * @return the MicrosoftGraphItemActivityStat object itself.
      */
@@ -228,7 +224,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Get the move property: itemActionStat.
-     *
+     * 
      * @return the move value.
      */
     public MicrosoftGraphItemActionStat move() {
@@ -237,7 +233,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Set the move property: itemActionStat.
-     *
+     * 
      * @param move the move value to set.
      * @return the MicrosoftGraphItemActivityStat object itself.
      */
@@ -248,7 +244,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Get the startDateTime property: When the interval starts. Read-only.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -257,7 +253,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Set the startDateTime property: When the interval starts. Read-only.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the MicrosoftGraphItemActivityStat object itself.
      */
@@ -268,7 +264,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Get the activities property: Exposes the itemActivities represented in this itemActivityStat resource.
-     *
+     * 
      * @return the activities value.
      */
     public List<MicrosoftGraphItemActivity> activities() {
@@ -277,7 +273,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Set the activities property: Exposes the itemActivities represented in this itemActivityStat resource.
-     *
+     * 
      * @param activities the activities value to set.
      * @return the MicrosoftGraphItemActivityStat object itself.
      */
@@ -288,17 +284,16 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: itemActivityStat.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: itemActivityStat.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphItemActivityStat object itself.
      */
@@ -307,15 +302,9 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphItemActivityStat withId(String id) {
         super.withId(id);
@@ -324,7 +313,7 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -351,5 +340,90 @@ public final class MicrosoftGraphItemActivityStat extends MicrosoftGraphEntity {
         if (activities() != null) {
             activities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("access", this.access);
+        jsonWriter.writeJsonField("create", this.create);
+        jsonWriter.writeJsonField("delete", this.delete);
+        jsonWriter.writeJsonField("edit", this.edit);
+        jsonWriter.writeStringField("endDateTime",
+            this.endDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDateTime));
+        jsonWriter.writeJsonField("incompleteData", this.incompleteData);
+        jsonWriter.writeBooleanField("isTrending", this.isTrending);
+        jsonWriter.writeJsonField("move", this.move);
+        jsonWriter.writeStringField("startDateTime",
+            this.startDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDateTime));
+        jsonWriter.writeArrayField("activities", this.activities, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphItemActivityStat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphItemActivityStat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphItemActivityStat.
+     */
+    public static MicrosoftGraphItemActivityStat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphItemActivityStat deserializedMicrosoftGraphItemActivityStat
+                = new MicrosoftGraphItemActivityStat();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivityStat.withId(reader.getString());
+                } else if ("access".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivityStat.access = MicrosoftGraphItemActionStat.fromJson(reader);
+                } else if ("create".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivityStat.create = MicrosoftGraphItemActionStat.fromJson(reader);
+                } else if ("delete".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivityStat.delete = MicrosoftGraphItemActionStat.fromJson(reader);
+                } else if ("edit".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivityStat.edit = MicrosoftGraphItemActionStat.fromJson(reader);
+                } else if ("endDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivityStat.endDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("incompleteData".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivityStat.incompleteData
+                        = MicrosoftGraphIncompleteData.fromJson(reader);
+                } else if ("isTrending".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivityStat.isTrending = reader.getNullable(JsonReader::getBoolean);
+                } else if ("move".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivityStat.move = MicrosoftGraphItemActionStat.fromJson(reader);
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivityStat.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("activities".equals(fieldName)) {
+                    List<MicrosoftGraphItemActivity> activities
+                        = reader.readArray(reader1 -> MicrosoftGraphItemActivity.fromJson(reader1));
+                    deserializedMicrosoftGraphItemActivityStat.activities = activities;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphItemActivityStat.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphItemActivityStat;
+        });
     }
 }

@@ -5,15 +5,25 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** CLuster pool profile. */
+/**
+ * CLuster pool profile.
+ */
 @Fluent
 public final class ClusterPoolResourcePropertiesClusterPoolProfile extends ClusterPoolProfile {
-    /** Creates an instance of ClusterPoolResourcePropertiesClusterPoolProfile class. */
+    /**
+     * Creates an instance of ClusterPoolResourcePropertiesClusterPoolProfile class.
+     */
     public ClusterPoolResourcePropertiesClusterPoolProfile() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterPoolResourcePropertiesClusterPoolProfile withClusterPoolVersion(String clusterPoolVersion) {
         super.withClusterPoolVersion(clusterPoolVersion);
@@ -21,12 +31,63 @@ public final class ClusterPoolResourcePropertiesClusterPoolProfile extends Clust
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ClusterPoolResourcePropertiesClusterPoolProfile withPublicIpTag(IpTag publicIpTag) {
+        super.withPublicIpTag(publicIpTag);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clusterPoolVersion", clusterPoolVersion());
+        jsonWriter.writeJsonField("publicIpTag", publicIpTag());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPoolResourcePropertiesClusterPoolProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPoolResourcePropertiesClusterPoolProfile if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterPoolResourcePropertiesClusterPoolProfile.
+     */
+    public static ClusterPoolResourcePropertiesClusterPoolProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPoolResourcePropertiesClusterPoolProfile deserializedClusterPoolResourcePropertiesClusterPoolProfile
+                = new ClusterPoolResourcePropertiesClusterPoolProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clusterPoolVersion".equals(fieldName)) {
+                    deserializedClusterPoolResourcePropertiesClusterPoolProfile
+                        .withClusterPoolVersion(reader.getString());
+                } else if ("publicIpTag".equals(fieldName)) {
+                    deserializedClusterPoolResourcePropertiesClusterPoolProfile.withPublicIpTag(IpTag.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPoolResourcePropertiesClusterPoolProfile;
+        });
     }
 }

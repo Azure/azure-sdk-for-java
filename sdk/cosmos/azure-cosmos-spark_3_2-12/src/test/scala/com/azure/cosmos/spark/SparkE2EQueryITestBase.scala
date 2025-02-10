@@ -2,22 +2,35 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
-import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
+import com.azure.cosmos.models.{CosmosContainerProperties, CosmosItemIdentity, CosmosItemRequestOptions, PartitionKey, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.spark.udf.GetFeedRangeForPartitionKeyValue
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.azure.cosmos.spark.udf.{GetCosmosItemIdentityValue, GetFeedRangeForPartitionKeyValue}
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper, SerializationFeature}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import org.apache.spark.sql.functions.expr
+import org.apache.spark.sql.types.StringType
 
 import java.sql.Timestamp
+import java.util
 import java.util.UUID
 import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
+
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+import org.apache.spark.sql.types._
+// scalastyle:on underscore.import
 
 abstract class SparkE2EQueryITestBase
   extends IntegrationSpec
     with SparkWithJustDropwizardAndNoSlf4jMetrics
     with CosmosClient
-    with AutoCleanableCosmosContainer
+    with AutoCleanableCosmosContainersWithPkAsPartitionKey
     with BasicLoggingTrait
     with MetricAssertions {
 
@@ -32,7 +45,6 @@ abstract class SparkE2EQueryITestBase
   // "spark.cosmos.read.partitioning.strategy" -> "Restrictive" is added to the query tests
   // to ensure we don't do sub-range feed-range
   // once emulator fixed switch back to default partitioning.
-
   "spark items DataSource version" can "be determined" in {
     CosmosItemsDataSource.version shouldEqual CosmosConstants.currentVersion
   }
@@ -88,7 +100,60 @@ abstract class SparkE2EQueryITestBase
     // assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = true)
   }
 
-  private def insertDummyValue() : Unit = {
+  "cosmos client" can "be retrieved from cache" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+    )
+    var clientCacheItem = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+      .getCosmosClientFromCache(cfg)
+    var clientFromCache = clientCacheItem
+      .getClient
+      .asInstanceOf[CosmosAsyncClient]
+    var dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
+
+    dbResponse.getProperties.getId shouldEqual cosmosDatabase
+
+    clientCacheItem = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+      .getCosmosClientFuncFromCache(cfg)()
+    clientFromCache = clientCacheItem
+      .getClient
+      .asInstanceOf[CosmosAsyncClient]
+    dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
+
+    dbResponse.getProperties.getId shouldEqual cosmosDatabase
+
+    val idOfTestDoc = insertDummyValue()
+    val itemIdentities = new util.ArrayList[CosmosItemIdentity]()
+    itemIdentities.add(new CosmosItemIdentity(new PartitionKey(idOfTestDoc), idOfTestDoc))
+    val response = clientFromCache
+      .getDatabase(cosmosDatabase)
+      .getContainer(cosmosContainer)
+      .readMany(itemIdentities, classOf[ObjectNode])
+      .block()
+
+    val customObjectMapper = new com.fasterxml.jackson.databind.ObjectMapper()
+    customObjectMapper.registerModule(new JavaTimeModule())
+    customObjectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+    customObjectMapper.registerModule(new DefaultScalaModule())
+    customObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    customObjectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+
+    val returnValues = response.getResults.asScala.map(shadedObjectNode => {
+      val json: String = shadedObjectNode.toString();
+      customObjectMapper.readValue(json, classOf[TestScalaDoc]);
+    })
+
+    returnValues.size shouldEqual 1
+
+    clientCacheItem.close()
+  }
+
+  private def insertDummyValue() : String = {
     val id = UUID.randomUUID().toString
 
     val rawItem = s"""
@@ -105,6 +170,8 @@ abstract class SparkE2EQueryITestBase
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
     container.createItem(objectNode).block()
+
+    id
   }
 
   "spark query" can "support StringStartsWith" in {
@@ -363,6 +430,189 @@ abstract class SparkE2EQueryITestBase
       row.getAs[Integer]("age") shouldEqual index + 1
       row.getAs[Boolean]("isAlive") shouldEqual true
     }
+  }
+
+  "spark read many" can "use user provided schema" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    // assert that there is more than one range to ensure the test really is testing the parallelization of work
+    container.getFeedRanges.block().size() should be > 1
+
+    for (age <- 1 to 20) {
+      for (state <- Array(true, false)) {
+        val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+        objectNode.put("name", "Shrodigner's cat")
+        objectNode.put("type", "cat")
+        objectNode.put("age", age)
+        objectNode.put("isAlive", state)
+        objectNode.put("id", UUID.randomUUID().toString)
+        container.createItem(objectNode).block()
+      }
+    }
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+    )
+
+    val customSchema = StructType(Array(
+      StructField("id", StringType),
+      StructField("name", StringType),
+      StructField("type", StringType),
+      StructField("age", IntegerType),
+      StructField("isAlive", BooleanType)
+    ))
+
+    val df = spark.read.schema(customSchema).format("cosmos.oltp").options(cfg).load()
+    val filteredDf = df
+      .where("isAlive = 'true' and type = 'cat'").orderBy("age")
+    var rowsArray = filteredDf.collect()
+    rowsArray should have size 20
+
+    for (index <- rowsArray.indices) {
+      val row = rowsArray(index)
+      row.getAs[String]("name") shouldEqual "Shrodigner's cat"
+      row.getAs[String]("type") shouldEqual "cat"
+      row.getAs[Integer]("age") shouldEqual index + 1
+      row.getAs[Boolean]("isAlive") shouldEqual true
+    }
+
+    val readManyDf = CosmosItemsDataSource.readMany(filteredDf, cfg.asJava, customSchema).orderBy("age")
+    rowsArray = readManyDf.collect()
+    rowsArray should have size 20
+
+    for (index <- rowsArray.indices) {
+      val row = rowsArray(index)
+      row.getAs[String]("name") shouldEqual "Shrodigner's cat"
+      row.getAs[String]("type") shouldEqual "cat"
+      row.getAs[Integer]("age") shouldEqual index + 1
+      row.getAs[Boolean]("isAlive") shouldEqual true
+    }
+  }
+
+  "spark read many" can "use default schema" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    // assert that there is more than one range to ensure the test really is testing the parallelization of work
+    container.getFeedRanges.block().size() should be > 1
+
+    for (age <- 1 to 20) {
+      for (state <- Array(true, false)) {
+        val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+        objectNode.put("name", "Shrodigner's cat")
+        objectNode.put("type", "cat")
+        objectNode.put("age", age)
+        objectNode.put("isAlive", state)
+        objectNode.put("id", UUID.randomUUID().toString)
+        container.createItem(objectNode).block()
+      }
+    }
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.read.inferSchema.enabled" -> "false"
+    )
+
+    val df = spark.read.format("cosmos.oltp").options(cfg).load()
+    val filteredDf = df.limit(10)
+    filteredDf.schema shouldEqual ItemsTable.defaultSchemaForInferenceDisabled
+    var rowsArray = filteredDf.collect()
+    rowsArray should have size 10
+
+    val readManyDf = CosmosItemsDataSource.readMany(filteredDf, cfg.asJava)
+    readManyDf.schema shouldEqual ItemsTable.defaultSchemaForInferenceDisabled
+    rowsArray = readManyDf.collect()
+    rowsArray should have size 10
+  }
+
+  "spark read many" can "use schema inference with system properties and timestamp" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    // assert that there is more than one range to ensure the test really is testing the parallelization of work
+    container.getFeedRanges.block().size() should be > 1
+
+    for (state <- Array(true, false)) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's dog")
+      objectNode.put("type", "dog")
+      objectNode.put("age", 20)
+      objectNode.put("isAlive", state)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    val cfgWithInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.read.inferSchema.enabled" -> "true",
+      "spark.cosmos.read.inferSchema.includeSystemProperties" -> "true",
+    )
+
+    // Not passing schema, letting inference work
+    val dfWithInference = spark.read.format("cosmos.oltp").options(cfgWithInference).load()
+    var rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'dog'").collect()
+    rowsArrayWithInference should have size 1
+
+    var rowWithInference = rowsArrayWithInference(0)
+    rowWithInference.getAs[String]("name") shouldEqual "Shrodigner's dog"
+    rowWithInference.getAs[String]("type") shouldEqual "dog"
+    rowWithInference.getAs[Integer]("age") shouldEqual 20
+    rowWithInference.getAs[Boolean]("isAlive") shouldEqual true
+
+    var fieldNames = rowWithInference.schema.fields.map(field => field.name)
+    fieldNames.contains(CosmosTableSchemaInferrer.SelfAttributeName) shouldBe true
+    fieldNames.contains(CosmosTableSchemaInferrer.TimestampAttributeName) shouldBe true
+    fieldNames.contains(CosmosTableSchemaInferrer.ResourceIdAttributeName) shouldBe true
+    fieldNames.contains(CosmosTableSchemaInferrer.ETagAttributeName) shouldBe true
+    fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe true
+
+    rowWithInference.schema(CosmosTableSchemaInferrer.SelfAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.TimestampAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.ResourceIdAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.ETagAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.AttachmentsAttributeName).nullable shouldBe false
+
+    val filteredDf = dfWithInference
+      .where("isAlive = 'true' and type = 'dog'").orderBy("age")
+
+    val readManyDf = CosmosItemsDataSource.readMany(filteredDf, cfgWithInference.asJava).orderBy("age")
+    rowsArrayWithInference = readManyDf.collect()
+    rowsArrayWithInference should have size 1
+
+    rowWithInference = rowsArrayWithInference(0)
+    rowWithInference.getAs[String]("name") shouldEqual "Shrodigner's dog"
+    rowWithInference.getAs[String]("type") shouldEqual "dog"
+    rowWithInference.getAs[Integer]("age") shouldEqual 20
+    rowWithInference.getAs[Boolean]("isAlive") shouldEqual true
+
+    fieldNames = rowWithInference.schema.fields.map(field => field.name)
+    fieldNames.contains(CosmosTableSchemaInferrer.SelfAttributeName) shouldBe true
+    fieldNames.contains(CosmosTableSchemaInferrer.TimestampAttributeName) shouldBe true
+    fieldNames.contains(CosmosTableSchemaInferrer.ResourceIdAttributeName) shouldBe true
+    fieldNames.contains(CosmosTableSchemaInferrer.ETagAttributeName) shouldBe true
+    fieldNames.contains(CosmosTableSchemaInferrer.AttachmentsAttributeName) shouldBe true
+
+    rowWithInference.schema(CosmosTableSchemaInferrer.SelfAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.TimestampAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.ResourceIdAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.ETagAttributeName).nullable shouldBe false
+    rowWithInference.schema(CosmosTableSchemaInferrer.AttachmentsAttributeName).nullable shouldBe false
   }
 
   "spark query" can "use schema inference with system properties and timestamp" in {
@@ -1177,7 +1427,7 @@ abstract class SparkE2EQueryITestBase
 
     val rawItem = s"""
                      | {
-                     |   "id" : "${id}",
+                     |   "id" : "$id",
                      |   "prop1" : 5,
                      |   "prop1" : 7,
                      |   "nestedObject" : {
@@ -1216,6 +1466,206 @@ abstract class SparkE2EQueryITestBase
       }
     }
   }
+
+  "spark query" can "read item by using readMany" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val id = UUID.randomUUID().toString
+
+    val rawItem =
+      s"""
+         | {
+         |   "id" : "$id",
+         |   "prop1" : 5,
+         |   "nestedObject" : {
+         |     "prop2" : "6"
+         |   }
+         | }
+         |""".stripMargin
+
+    val blob = rawItem.getBytes("UTF-8")
+
+    val joinContainerName = UUID.randomUUID().toString
+    val joinContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(joinContainerName)
+    try {
+      cosmosClient
+        .getDatabase(cosmosDatabase)
+        .createContainerIfNotExists(joinContainerName, "/id", ThroughputProperties.createManualThroughput(400))
+        .block()
+
+      val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+      val requestOptions = new CosmosItemRequestOptions()
+      container.createItem(blob, new PartitionKey(id), requestOptions).block()
+      joinContainer.createItem(blob, new PartitionKey(id), requestOptions).block()
+
+      val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> cosmosContainer,
+        "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+        "spark.cosmos.read.readManyFiltering.enabled" -> "true"
+      )
+
+      val joinCfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> joinContainerName,
+        "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+      )
+
+      val joinDf = spark.read.format("cosmos.oltp").options(joinCfg).load().select("id")
+      val valuesForFilter = joinDf.collect().map(_.getString(0))
+
+      val df = spark.read.format("cosmos.oltp").options(cfg).load()
+      val rowsArray = df.where(df("id") isin (valuesForFilter: _*)).collect()
+      rowsArray should have size 1
+
+      val item = rowsArray(0)
+      item.getAs[String]("id") shouldEqual id
+      item.getAs[Int]("prop1") shouldEqual 5
+
+    } finally {
+      joinContainer.delete().block()
+    }
+  }
+
+  "spark query" can "read item by using readMany with subpartitions" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val joinContainerName = s"join-${UUID.randomUUID().toString}"
+    val joinContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(joinContainerName)
+    val containerWithSubPartitionsName = s"subpartition-${UUID.randomUUID().toString}"
+    val containerWithSubPartitions = cosmosClient.getDatabase(cosmosDatabase).getContainer(containerWithSubPartitionsName)
+
+    try {
+      val subpartitionKeyDefinition = getDefaultPartitionKeyDefinitionWithSubpartitions
+      createContainerIfNotExists(joinContainerName, subpartitionKeyDefinition)
+      createContainerIfNotExists(containerWithSubPartitionsName, subpartitionKeyDefinition)
+
+      val createdItemIds = ListBuffer[String]()
+      // create two items in both containers
+      for (i <- 0 to 2) {
+        val id = UUID.randomUUID().toString
+        val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+        objectNode.put("name", "Shrodigner's cat")
+        objectNode.put("type", "cat")
+        objectNode.put("age", 20)
+        objectNode.put("index", i.toString)
+        objectNode.put("id", id)
+        objectNode.put("tenantId", id)
+        objectNode.put("userId", "userId1")
+        objectNode.put("sessionId", "sessionId1")
+        containerWithSubPartitions.createItem(objectNode).block()
+        joinContainer.createItem(objectNode).block()
+        createdItemIds += id
+      }
+
+      val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> containerWithSubPartitionsName,
+        "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+        "spark.cosmos.read.readManyFiltering.enabled" -> "true"
+      )
+
+      val joinCfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> joinContainerName,
+        "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+      )
+
+      spark.udf.register("GetCosmosItemIdentityValue", new GetCosmosItemIdentityValue(), StringType)
+
+      val joinDf =
+        spark
+          .read
+          .format("cosmos.oltp")
+          .options(joinCfg)
+          .load()
+          .withColumn("_itemIdentity", expr("GetCosmosItemIdentityValue(id, array(tenantId, userId, sessionId))"))
+          .select("_itemIdentity")
+
+      val valuesForFilter = joinDf.collect().map(_.getString(0))
+
+      val df = spark.read.format("cosmos.oltp").options(cfg).load()
+      val rowsArrays = df.where(df("_itemIdentity") isin (valuesForFilter: _*)).collect()
+      rowsArrays should have size createdItemIds.size
+
+      val itemIds = rowsArrays.map(rowArray => rowArray.getAs[String]("id"))
+      itemIds should contain allElementsOf createdItemIds
+
+    } finally {
+      joinContainer.delete().block()
+      containerWithSubPartitions.delete().block()
+    }
+  }
+
+  "spark query" should "always populate the readMany filtering property if readMany filtering enabled" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val id = UUID.randomUUID().toString
+    val pk = UUID.randomUUID().toString
+    val rawItem =
+      s"""
+         | {
+         |   "id" : "${id}",
+         |   "pk" : "${pk}",
+         |   "prop1" : 5,
+         |   "nestedObject" : {
+         |     "prop2" : "6"
+         |   }
+         | }
+         |""".stripMargin
+
+    val blob = rawItem.getBytes("UTF-8")
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+    val requestOptions = new CosmosItemRequestOptions()
+    container.createItem(blob, new PartitionKey(pk), requestOptions).block()
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainersWithPkAsPartitionKey,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.read.readManyFiltering.enabled" -> "true"
+    )
+
+    val df = spark.read.format("cosmos.oltp").options(cfg).load()
+    val rowsArray = df.collect()
+    rowsArray should have size 1
+
+    val item = rowsArray(0)
+    item.getAs[String]("id") shouldEqual id
+    item.getAs[Int]("prop1") shouldEqual 5
+    item.getAs[String]("_itemIdentity") shouldEqual CosmosItemIdentityHelper.getCosmosItemIdentityValueString(id, List[String](pk))
+  }
+
+  private def getDefaultPartitionKeyDefinitionWithSubpartitions: PartitionKeyDefinition = {
+    val partitionKeyPaths = new util.ArrayList[String]
+    partitionKeyPaths.add("/tenantId")
+    partitionKeyPaths.add("/userId")
+    partitionKeyPaths.add("/sessionId")
+    val subpartitionKeyDefinition = new PartitionKeyDefinition
+    subpartitionKeyDefinition.setPaths(partitionKeyPaths)
+    subpartitionKeyDefinition.setKind(PartitionKind.MULTI_HASH)
+    subpartitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2)
+
+    subpartitionKeyDefinition
+  }
+
+  private def createContainerIfNotExists(containerName: String, partitionKeyDefinition: PartitionKeyDefinition): Unit = {
+    val containerProperties = new CosmosContainerProperties(containerName, partitionKeyDefinition)
+    cosmosClient
+      .getDatabase(cosmosDatabase)
+      .createContainerIfNotExists(containerProperties, ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput))
+      .block()
+  }
+
 
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals

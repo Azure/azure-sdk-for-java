@@ -80,7 +80,10 @@ public final class UniqueKeyPolicy {
             for (UniqueKey uniqueKey : uniqueKeys) {
                 uniqueKey.populatePropertyBag();
             }
-            this.jsonSerializable.set(Constants.Properties.UNIQUE_KEYS, uniqueKeys);
+            this.jsonSerializable.set(
+                Constants.Properties.UNIQUE_KEYS,
+                uniqueKeys
+            );
         }
     }
 

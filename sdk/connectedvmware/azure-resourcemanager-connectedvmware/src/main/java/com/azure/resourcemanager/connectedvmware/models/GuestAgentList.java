@@ -6,32 +6,38 @@ package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.connectedvmware.fluent.models.GuestAgentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of GuestAgent. */
+/**
+ * List of GuestAgent.
+ */
 @Fluent
-public final class GuestAgentList {
+public final class GuestAgentList implements JsonSerializable<GuestAgentList> {
     /*
      * Url to follow for getting next page of GuestAgent.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Array of GuestAgent
      */
-    @JsonProperty(value = "value", required = true)
     private List<GuestAgentInner> value;
 
-    /** Creates an instance of GuestAgentList class. */
+    /**
+     * Creates an instance of GuestAgentList class.
+     */
     public GuestAgentList() {
     }
 
     /**
      * Get the nextLink property: Url to follow for getting next page of GuestAgent.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -40,7 +46,7 @@ public final class GuestAgentList {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of GuestAgent.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GuestAgentList object itself.
      */
@@ -51,7 +57,7 @@ public final class GuestAgentList {
 
     /**
      * Get the value property: Array of GuestAgent.
-     *
+     * 
      * @return the value value.
      */
     public List<GuestAgentInner> value() {
@@ -60,7 +66,7 @@ public final class GuestAgentList {
 
     /**
      * Set the value property: Array of GuestAgent.
-     *
+     * 
      * @param value the value value to set.
      * @return the GuestAgentList object itself.
      */
@@ -71,18 +77,58 @@ public final class GuestAgentList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model GuestAgentList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model GuestAgentList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GuestAgentList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GuestAgentList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GuestAgentList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GuestAgentList.
+     */
+    public static GuestAgentList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GuestAgentList deserializedGuestAgentList = new GuestAgentList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GuestAgentInner> value = reader.readArray(reader1 -> GuestAgentInner.fromJson(reader1));
+                    deserializedGuestAgentList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedGuestAgentList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGuestAgentList;
+        });
+    }
 }

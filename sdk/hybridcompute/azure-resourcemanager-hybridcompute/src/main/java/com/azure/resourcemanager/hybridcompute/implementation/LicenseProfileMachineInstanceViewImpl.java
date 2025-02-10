@@ -4,21 +4,36 @@
 
 package com.azure.resourcemanager.hybridcompute.implementation;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewEsuPropertiesInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewInner;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceViewEsuProperties;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileProductType;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatus;
+import com.azure.resourcemanager.hybridcompute.models.LicenseStatus;
+import com.azure.resourcemanager.hybridcompute.models.ProductFeature;
+import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.List;
 
 public final class LicenseProfileMachineInstanceViewImpl implements LicenseProfileMachineInstanceView {
     private LicenseProfileMachineInstanceViewInner innerObject;
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    LicenseProfileMachineInstanceViewImpl(
-        LicenseProfileMachineInstanceViewInner innerObject,
+    LicenseProfileMachineInstanceViewImpl(LicenseProfileMachineInstanceViewInner innerObject,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public LicenseStatus licenseStatus() {
+        return this.innerModel().licenseStatus();
+    }
+
+    public String licenseChannel() {
+        return this.innerModel().licenseChannel();
     }
 
     public LicenseProfileMachineInstanceViewEsuProperties esuProfile() {
@@ -27,6 +42,47 @@ public final class LicenseProfileMachineInstanceViewImpl implements LicenseProfi
             return new LicenseProfileMachineInstanceViewEsuPropertiesImpl(inner, this.manager());
         } else {
             return null;
+        }
+    }
+
+    public Boolean softwareAssuranceCustomer() {
+        return this.innerModel().softwareAssuranceCustomer();
+    }
+
+    public LicenseProfileSubscriptionStatus subscriptionStatus() {
+        return this.innerModel().subscriptionStatus();
+    }
+
+    public LicenseProfileProductType productType() {
+        return this.innerModel().productType();
+    }
+
+    public OffsetDateTime enrollmentDate() {
+        return this.innerModel().enrollmentDate();
+    }
+
+    public OffsetDateTime billingStartDate() {
+        return this.innerModel().billingStartDate();
+    }
+
+    public OffsetDateTime disenrollmentDate() {
+        return this.innerModel().disenrollmentDate();
+    }
+
+    public OffsetDateTime billingEndDate() {
+        return this.innerModel().billingEndDate();
+    }
+
+    public ManagementError error() {
+        return this.innerModel().error();
+    }
+
+    public List<ProductFeature> productFeatures() {
+        List<ProductFeature> inner = this.innerModel().productFeatures();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
         }
     }
 

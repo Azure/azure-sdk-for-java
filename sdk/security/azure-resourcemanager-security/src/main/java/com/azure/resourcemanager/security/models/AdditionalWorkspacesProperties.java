@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of the additional workspaces. */
+/**
+ * Properties of the additional workspaces.
+ */
 @Fluent
-public final class AdditionalWorkspacesProperties {
+public final class AdditionalWorkspacesProperties implements JsonSerializable<AdditionalWorkspacesProperties> {
     /*
      * Workspace resource id
      */
-    @JsonProperty(value = "workspace")
     private String workspace;
 
     /*
      * Workspace type.
      */
-    @JsonProperty(value = "type")
     private AdditionalWorkspaceType type;
 
     /*
      * List of data types sent to workspace
      */
-    @JsonProperty(value = "dataTypes")
     private List<AdditionalWorkspaceDataType> dataTypes;
 
-    /** Creates an instance of AdditionalWorkspacesProperties class. */
+    /**
+     * Creates an instance of AdditionalWorkspacesProperties class.
+     */
     public AdditionalWorkspacesProperties() {
     }
 
     /**
      * Get the workspace property: Workspace resource id.
-     *
+     * 
      * @return the workspace value.
      */
     public String workspace() {
@@ -44,7 +49,7 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Set the workspace property: Workspace resource id.
-     *
+     * 
      * @param workspace the workspace value to set.
      * @return the AdditionalWorkspacesProperties object itself.
      */
@@ -55,7 +60,7 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Get the type property: Workspace type.
-     *
+     * 
      * @return the type value.
      */
     public AdditionalWorkspaceType type() {
@@ -64,7 +69,7 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Set the type property: Workspace type.
-     *
+     * 
      * @param type the type value to set.
      * @return the AdditionalWorkspacesProperties object itself.
      */
@@ -75,7 +80,7 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Get the dataTypes property: List of data types sent to workspace.
-     *
+     * 
      * @return the dataTypes value.
      */
     public List<AdditionalWorkspaceDataType> dataTypes() {
@@ -84,7 +89,7 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Set the dataTypes property: List of data types sent to workspace.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the AdditionalWorkspacesProperties object itself.
      */
@@ -95,9 +100,56 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workspace", this.workspace);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("dataTypes", this.dataTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdditionalWorkspacesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdditionalWorkspacesProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdditionalWorkspacesProperties.
+     */
+    public static AdditionalWorkspacesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdditionalWorkspacesProperties deserializedAdditionalWorkspacesProperties
+                = new AdditionalWorkspacesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspace".equals(fieldName)) {
+                    deserializedAdditionalWorkspacesProperties.workspace = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAdditionalWorkspacesProperties.type
+                        = AdditionalWorkspaceType.fromString(reader.getString());
+                } else if ("dataTypes".equals(fieldName)) {
+                    List<AdditionalWorkspaceDataType> dataTypes
+                        = reader.readArray(reader1 -> AdditionalWorkspaceDataType.fromString(reader1.getString()));
+                    deserializedAdditionalWorkspacesProperties.dataTypes = dataTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdditionalWorkspacesProperties;
+        });
     }
 }

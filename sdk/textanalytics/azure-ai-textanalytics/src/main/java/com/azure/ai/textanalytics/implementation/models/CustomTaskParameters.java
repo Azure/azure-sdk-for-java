@@ -10,7 +10,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Parameters object for a text analysis task using custom models. */
+/**
+ * Parameters object for a text analysis task using custom models.
+ */
 @Fluent
 public class CustomTaskParameters extends TaskParameters {
     /*
@@ -23,12 +25,15 @@ public class CustomTaskParameters extends TaskParameters {
      */
     private String deploymentName;
 
-    /** Creates an instance of CustomTaskParameters class. */
-    public CustomTaskParameters() {}
+    /**
+     * Creates an instance of CustomTaskParameters class.
+     */
+    public CustomTaskParameters() {
+    }
 
     /**
      * Get the projectName property: This field indicates the project name for the model.
-     *
+     * 
      * @return the projectName value.
      */
     public String getProjectName() {
@@ -37,7 +42,7 @@ public class CustomTaskParameters extends TaskParameters {
 
     /**
      * Set the projectName property: This field indicates the project name for the model.
-     *
+     * 
      * @param projectName the projectName value to set.
      * @return the CustomTaskParameters object itself.
      */
@@ -48,7 +53,7 @@ public class CustomTaskParameters extends TaskParameters {
 
     /**
      * Get the deploymentName property: This field indicates the deployment name for the model.
-     *
+     * 
      * @return the deploymentName value.
      */
     public String getDeploymentName() {
@@ -57,7 +62,7 @@ public class CustomTaskParameters extends TaskParameters {
 
     /**
      * Set the deploymentName property: This field indicates the deployment name for the model.
-     *
+     * 
      * @param deploymentName the deploymentName value to set.
      * @return the CustomTaskParameters object itself.
      */
@@ -66,13 +71,18 @@ public class CustomTaskParameters extends TaskParameters {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,34 +94,32 @@ public class CustomTaskParameters extends TaskParameters {
 
     /**
      * Reads an instance of CustomTaskParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomTaskParameters if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomTaskParameters.
      */
     public static CustomTaskParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CustomTaskParameters deserializedCustomTaskParameters = new CustomTaskParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CustomTaskParameters deserializedCustomTaskParameters = new CustomTaskParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("loggingOptOut".equals(fieldName)) {
-                            deserializedCustomTaskParameters.setLoggingOptOut(
-                                    reader.getNullable(JsonReader::getBoolean));
-                        } else if ("projectName".equals(fieldName)) {
-                            deserializedCustomTaskParameters.projectName = reader.getString();
-                        } else if ("deploymentName".equals(fieldName)) {
-                            deserializedCustomTaskParameters.deploymentName = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("loggingOptOut".equals(fieldName)) {
+                    deserializedCustomTaskParameters.setLoggingOptOut(reader.getNullable(JsonReader::getBoolean));
+                } else if ("projectName".equals(fieldName)) {
+                    deserializedCustomTaskParameters.projectName = reader.getString();
+                } else if ("deploymentName".equals(fieldName)) {
+                    deserializedCustomTaskParameters.deploymentName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCustomTaskParameters;
-                });
+            return deserializedCustomTaskParameters;
+        });
     }
 }

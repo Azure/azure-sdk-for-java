@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Service-set extensible enum indicating the status of operation. */
+/**
+ * Service-set extensible enum indicating the status of operation.
+ */
 public final class ExecutionStatus extends ExpandableStringEnum<ExecutionStatus> {
-    /** Static value Running for ExecutionStatus. */
+    /**
+     * Static value Running for ExecutionStatus.
+     */
     public static final ExecutionStatus RUNNING = fromString("Running");
 
-    /** Static value Cancelled for ExecutionStatus. */
+    /**
+     * Static value Cancelled for ExecutionStatus.
+     */
     public static final ExecutionStatus CANCELLED = fromString("Cancelled");
 
-    /** Static value Failed for ExecutionStatus. */
+    /**
+     * Static value Failed for ExecutionStatus.
+     */
     public static final ExecutionStatus FAILED = fromString("Failed");
 
-    /** Static value Succeeded for ExecutionStatus. */
+    /**
+     * Static value Succeeded for ExecutionStatus.
+     */
     public static final ExecutionStatus SUCCEEDED = fromString("Succeeded");
 
     /**
      * Creates a new instance of ExecutionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ExecutionStatus extends ExpandableStringEnum<ExecutionStatus>
 
     /**
      * Creates or finds a ExecutionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExecutionStatus.
      */
-    @JsonCreator
     public static ExecutionStatus fromString(String name) {
         return fromString(name, ExecutionStatus.class);
     }
 
     /**
      * Gets known ExecutionStatus values.
-     *
+     * 
      * @return known ExecutionStatus values.
      */
     public static Collection<ExecutionStatus> values() {

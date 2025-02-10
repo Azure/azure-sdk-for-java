@@ -5,28 +5,37 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Primary metrics for Forecasting task. */
+/**
+ * Primary metrics for Forecasting task.
+ */
 public final class ForecastingPrimaryMetrics extends ExpandableStringEnum<ForecastingPrimaryMetrics> {
-    /** Static value SpearmanCorrelation for ForecastingPrimaryMetrics. */
+    /**
+     * Static value SpearmanCorrelation for ForecastingPrimaryMetrics.
+     */
     public static final ForecastingPrimaryMetrics SPEARMAN_CORRELATION = fromString("SpearmanCorrelation");
 
-    /** Static value NormalizedRootMeanSquaredError for ForecastingPrimaryMetrics. */
-    public static final ForecastingPrimaryMetrics NORMALIZED_ROOT_MEAN_SQUARED_ERROR =
-        fromString("NormalizedRootMeanSquaredError");
+    /**
+     * Static value NormalizedRootMeanSquaredError for ForecastingPrimaryMetrics.
+     */
+    public static final ForecastingPrimaryMetrics NORMALIZED_ROOT_MEAN_SQUARED_ERROR
+        = fromString("NormalizedRootMeanSquaredError");
 
-    /** Static value R2Score for ForecastingPrimaryMetrics. */
+    /**
+     * Static value R2Score for ForecastingPrimaryMetrics.
+     */
     public static final ForecastingPrimaryMetrics R2SCORE = fromString("R2Score");
 
-    /** Static value NormalizedMeanAbsoluteError for ForecastingPrimaryMetrics. */
-    public static final ForecastingPrimaryMetrics NORMALIZED_MEAN_ABSOLUTE_ERROR =
-        fromString("NormalizedMeanAbsoluteError");
+    /**
+     * Static value NormalizedMeanAbsoluteError for ForecastingPrimaryMetrics.
+     */
+    public static final ForecastingPrimaryMetrics NORMALIZED_MEAN_ABSOLUTE_ERROR
+        = fromString("NormalizedMeanAbsoluteError");
 
     /**
      * Creates a new instance of ForecastingPrimaryMetrics value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,18 +44,17 @@ public final class ForecastingPrimaryMetrics extends ExpandableStringEnum<Foreca
 
     /**
      * Creates or finds a ForecastingPrimaryMetrics from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ForecastingPrimaryMetrics.
      */
-    @JsonCreator
     public static ForecastingPrimaryMetrics fromString(String name) {
         return fromString(name, ForecastingPrimaryMetrics.class);
     }
 
     /**
      * Gets known ForecastingPrimaryMetrics values.
-     *
+     * 
      * @return known ForecastingPrimaryMetrics values.
      */
     public static Collection<ForecastingPrimaryMetrics> values() {

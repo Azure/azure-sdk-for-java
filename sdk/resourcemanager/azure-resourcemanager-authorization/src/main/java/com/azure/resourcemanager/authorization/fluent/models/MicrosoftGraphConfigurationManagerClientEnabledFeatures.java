@@ -5,68 +5,66 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * configurationManagerClientEnabledFeatures
- *
- * <p>configuration Manager client enabled features.
+ * 
+ * configuration Manager client enabled features.
  */
 @Fluent
-public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
+public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures
+    implements JsonSerializable<MicrosoftGraphConfigurationManagerClientEnabledFeatures> {
     /*
      * Whether compliance policy is managed by Intune
      */
-    @JsonProperty(value = "compliancePolicy")
     private Boolean compliancePolicy;
 
     /*
      * Whether device configuration is managed by Intune
      */
-    @JsonProperty(value = "deviceConfiguration")
     private Boolean deviceConfiguration;
 
     /*
      * Whether inventory is managed by Intune
      */
-    @JsonProperty(value = "inventory")
     private Boolean inventory;
 
     /*
      * Whether modern application is managed by Intune
      */
-    @JsonProperty(value = "modernApps")
     private Boolean modernApps;
 
     /*
      * Whether resource access is managed by Intune
      */
-    @JsonProperty(value = "resourceAccess")
     private Boolean resourceAccess;
 
     /*
      * Whether Windows Update for Business is managed by Intune
      */
-    @JsonProperty(value = "windowsUpdateForBusiness")
     private Boolean windowsUpdateForBusiness;
 
     /*
      * configuration Manager client enabled features
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphConfigurationManagerClientEnabledFeatures class. */
+    /**
+     * Creates an instance of MicrosoftGraphConfigurationManagerClientEnabledFeatures class.
+     */
     public MicrosoftGraphConfigurationManagerClientEnabledFeatures() {
     }
 
     /**
      * Get the compliancePolicy property: Whether compliance policy is managed by Intune.
-     *
+     * 
      * @return the compliancePolicy value.
      */
     public Boolean compliancePolicy() {
@@ -75,7 +73,7 @@ public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
 
     /**
      * Set the compliancePolicy property: Whether compliance policy is managed by Intune.
-     *
+     * 
      * @param compliancePolicy the compliancePolicy value to set.
      * @return the MicrosoftGraphConfigurationManagerClientEnabledFeatures object itself.
      */
@@ -86,7 +84,7 @@ public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
 
     /**
      * Get the deviceConfiguration property: Whether device configuration is managed by Intune.
-     *
+     * 
      * @return the deviceConfiguration value.
      */
     public Boolean deviceConfiguration() {
@@ -95,19 +93,19 @@ public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
 
     /**
      * Set the deviceConfiguration property: Whether device configuration is managed by Intune.
-     *
+     * 
      * @param deviceConfiguration the deviceConfiguration value to set.
      * @return the MicrosoftGraphConfigurationManagerClientEnabledFeatures object itself.
      */
-    public MicrosoftGraphConfigurationManagerClientEnabledFeatures withDeviceConfiguration(
-        Boolean deviceConfiguration) {
+    public MicrosoftGraphConfigurationManagerClientEnabledFeatures
+        withDeviceConfiguration(Boolean deviceConfiguration) {
         this.deviceConfiguration = deviceConfiguration;
         return this;
     }
 
     /**
      * Get the inventory property: Whether inventory is managed by Intune.
-     *
+     * 
      * @return the inventory value.
      */
     public Boolean inventory() {
@@ -116,7 +114,7 @@ public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
 
     /**
      * Set the inventory property: Whether inventory is managed by Intune.
-     *
+     * 
      * @param inventory the inventory value to set.
      * @return the MicrosoftGraphConfigurationManagerClientEnabledFeatures object itself.
      */
@@ -127,7 +125,7 @@ public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
 
     /**
      * Get the modernApps property: Whether modern application is managed by Intune.
-     *
+     * 
      * @return the modernApps value.
      */
     public Boolean modernApps() {
@@ -136,7 +134,7 @@ public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
 
     /**
      * Set the modernApps property: Whether modern application is managed by Intune.
-     *
+     * 
      * @param modernApps the modernApps value to set.
      * @return the MicrosoftGraphConfigurationManagerClientEnabledFeatures object itself.
      */
@@ -147,7 +145,7 @@ public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
 
     /**
      * Get the resourceAccess property: Whether resource access is managed by Intune.
-     *
+     * 
      * @return the resourceAccess value.
      */
     public Boolean resourceAccess() {
@@ -156,7 +154,7 @@ public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
 
     /**
      * Set the resourceAccess property: Whether resource access is managed by Intune.
-     *
+     * 
      * @param resourceAccess the resourceAccess value to set.
      * @return the MicrosoftGraphConfigurationManagerClientEnabledFeatures object itself.
      */
@@ -167,7 +165,7 @@ public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
 
     /**
      * Get the windowsUpdateForBusiness property: Whether Windows Update for Business is managed by Intune.
-     *
+     * 
      * @return the windowsUpdateForBusiness value.
      */
     public Boolean windowsUpdateForBusiness() {
@@ -176,51 +174,113 @@ public final class MicrosoftGraphConfigurationManagerClientEnabledFeatures {
 
     /**
      * Set the windowsUpdateForBusiness property: Whether Windows Update for Business is managed by Intune.
-     *
+     * 
      * @param windowsUpdateForBusiness the windowsUpdateForBusiness value to set.
      * @return the MicrosoftGraphConfigurationManagerClientEnabledFeatures object itself.
      */
-    public MicrosoftGraphConfigurationManagerClientEnabledFeatures withWindowsUpdateForBusiness(
-        Boolean windowsUpdateForBusiness) {
+    public MicrosoftGraphConfigurationManagerClientEnabledFeatures
+        withWindowsUpdateForBusiness(Boolean windowsUpdateForBusiness) {
         this.windowsUpdateForBusiness = windowsUpdateForBusiness;
         return this;
     }
 
     /**
      * Get the additionalProperties property: configuration Manager client enabled features.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: configuration Manager client enabled features.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphConfigurationManagerClientEnabledFeatures object itself.
      */
-    public MicrosoftGraphConfigurationManagerClientEnabledFeatures withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphConfigurationManagerClientEnabledFeatures
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("compliancePolicy", this.compliancePolicy);
+        jsonWriter.writeBooleanField("deviceConfiguration", this.deviceConfiguration);
+        jsonWriter.writeBooleanField("inventory", this.inventory);
+        jsonWriter.writeBooleanField("modernApps", this.modernApps);
+        jsonWriter.writeBooleanField("resourceAccess", this.resourceAccess);
+        jsonWriter.writeBooleanField("windowsUpdateForBusiness", this.windowsUpdateForBusiness);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphConfigurationManagerClientEnabledFeatures from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphConfigurationManagerClientEnabledFeatures if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphConfigurationManagerClientEnabledFeatures.
+     */
+    public static MicrosoftGraphConfigurationManagerClientEnabledFeatures fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphConfigurationManagerClientEnabledFeatures deserializedMicrosoftGraphConfigurationManagerClientEnabledFeatures
+                = new MicrosoftGraphConfigurationManagerClientEnabledFeatures();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("compliancePolicy".equals(fieldName)) {
+                    deserializedMicrosoftGraphConfigurationManagerClientEnabledFeatures.compliancePolicy
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deviceConfiguration".equals(fieldName)) {
+                    deserializedMicrosoftGraphConfigurationManagerClientEnabledFeatures.deviceConfiguration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("inventory".equals(fieldName)) {
+                    deserializedMicrosoftGraphConfigurationManagerClientEnabledFeatures.inventory
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("modernApps".equals(fieldName)) {
+                    deserializedMicrosoftGraphConfigurationManagerClientEnabledFeatures.modernApps
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resourceAccess".equals(fieldName)) {
+                    deserializedMicrosoftGraphConfigurationManagerClientEnabledFeatures.resourceAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("windowsUpdateForBusiness".equals(fieldName)) {
+                    deserializedMicrosoftGraphConfigurationManagerClientEnabledFeatures.windowsUpdateForBusiness
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphConfigurationManagerClientEnabledFeatures.additionalProperties
+                = additionalProperties;
+
+            return deserializedMicrosoftGraphConfigurationManagerClientEnabledFeatures;
+        });
     }
 }

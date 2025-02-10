@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.automation.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -78,7 +79,9 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the AutomationClientImpl type. */
+/**
+ * Initializes a new instance of the AutomationClientImpl type.
+ */
 @ServiceClient(builder = AutomationClientBuilder.class)
 public final class AutomationClientImpl implements AutomationClient {
     /**
@@ -90,607 +93,707 @@ public final class AutomationClientImpl implements AutomationClient {
     /**
      * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
      * forms part of the URI for every service call.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** The PrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
     private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
     }
 
-    /** The Python2PackagesClient object to access its operations. */
+    /**
+     * The Python2PackagesClient object to access its operations.
+     */
     private final Python2PackagesClient python2Packages;
 
     /**
      * Gets the Python2PackagesClient object to access its operations.
-     *
+     * 
      * @return the Python2PackagesClient object.
      */
     public Python2PackagesClient getPython2Packages() {
         return this.python2Packages;
     }
 
-    /** The AgentRegistrationInformationsClient object to access its operations. */
+    /**
+     * The AgentRegistrationInformationsClient object to access its operations.
+     */
     private final AgentRegistrationInformationsClient agentRegistrationInformations;
 
     /**
      * Gets the AgentRegistrationInformationsClient object to access its operations.
-     *
+     * 
      * @return the AgentRegistrationInformationsClient object.
      */
     public AgentRegistrationInformationsClient getAgentRegistrationInformations() {
         return this.agentRegistrationInformations;
     }
 
-    /** The DscNodesClient object to access its operations. */
+    /**
+     * The DscNodesClient object to access its operations.
+     */
     private final DscNodesClient dscNodes;
 
     /**
      * Gets the DscNodesClient object to access its operations.
-     *
+     * 
      * @return the DscNodesClient object.
      */
     public DscNodesClient getDscNodes() {
         return this.dscNodes;
     }
 
-    /** The NodeReportsClient object to access its operations. */
+    /**
+     * The NodeReportsClient object to access its operations.
+     */
     private final NodeReportsClient nodeReports;
 
     /**
      * Gets the NodeReportsClient object to access its operations.
-     *
+     * 
      * @return the NodeReportsClient object.
      */
     public NodeReportsClient getNodeReports() {
         return this.nodeReports;
     }
 
-    /** The DscNodeConfigurationsClient object to access its operations. */
+    /**
+     * The DscNodeConfigurationsClient object to access its operations.
+     */
     private final DscNodeConfigurationsClient dscNodeConfigurations;
 
     /**
      * Gets the DscNodeConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the DscNodeConfigurationsClient object.
      */
     public DscNodeConfigurationsClient getDscNodeConfigurations() {
         return this.dscNodeConfigurations;
     }
 
-    /** The DscCompilationJobsClient object to access its operations. */
+    /**
+     * The DscCompilationJobsClient object to access its operations.
+     */
     private final DscCompilationJobsClient dscCompilationJobs;
 
     /**
      * Gets the DscCompilationJobsClient object to access its operations.
-     *
+     * 
      * @return the DscCompilationJobsClient object.
      */
     public DscCompilationJobsClient getDscCompilationJobs() {
         return this.dscCompilationJobs;
     }
 
-    /** The DscCompilationJobStreamsClient object to access its operations. */
+    /**
+     * The DscCompilationJobStreamsClient object to access its operations.
+     */
     private final DscCompilationJobStreamsClient dscCompilationJobStreams;
 
     /**
      * Gets the DscCompilationJobStreamsClient object to access its operations.
-     *
+     * 
      * @return the DscCompilationJobStreamsClient object.
      */
     public DscCompilationJobStreamsClient getDscCompilationJobStreams() {
         return this.dscCompilationJobStreams;
     }
 
-    /** The NodeCountInformationsClient object to access its operations. */
+    /**
+     * The NodeCountInformationsClient object to access its operations.
+     */
     private final NodeCountInformationsClient nodeCountInformations;
 
     /**
      * Gets the NodeCountInformationsClient object to access its operations.
-     *
+     * 
      * @return the NodeCountInformationsClient object.
      */
     public NodeCountInformationsClient getNodeCountInformations() {
         return this.nodeCountInformations;
     }
 
-    /** The SourceControlsClient object to access its operations. */
+    /**
+     * The SourceControlsClient object to access its operations.
+     */
     private final SourceControlsClient sourceControls;
 
     /**
      * Gets the SourceControlsClient object to access its operations.
-     *
+     * 
      * @return the SourceControlsClient object.
      */
     public SourceControlsClient getSourceControls() {
         return this.sourceControls;
     }
 
-    /** The SourceControlSyncJobsClient object to access its operations. */
+    /**
+     * The SourceControlSyncJobsClient object to access its operations.
+     */
     private final SourceControlSyncJobsClient sourceControlSyncJobs;
 
     /**
      * Gets the SourceControlSyncJobsClient object to access its operations.
-     *
+     * 
      * @return the SourceControlSyncJobsClient object.
      */
     public SourceControlSyncJobsClient getSourceControlSyncJobs() {
         return this.sourceControlSyncJobs;
     }
 
-    /** The SourceControlSyncJobStreamsClient object to access its operations. */
+    /**
+     * The SourceControlSyncJobStreamsClient object to access its operations.
+     */
     private final SourceControlSyncJobStreamsClient sourceControlSyncJobStreams;
 
     /**
      * Gets the SourceControlSyncJobStreamsClient object to access its operations.
-     *
+     * 
      * @return the SourceControlSyncJobStreamsClient object.
      */
     public SourceControlSyncJobStreamsClient getSourceControlSyncJobStreams() {
         return this.sourceControlSyncJobStreams;
     }
 
-    /** The AutomationAccountsClient object to access its operations. */
+    /**
+     * The AutomationAccountsClient object to access its operations.
+     */
     private final AutomationAccountsClient automationAccounts;
 
     /**
      * Gets the AutomationAccountsClient object to access its operations.
-     *
+     * 
      * @return the AutomationAccountsClient object.
      */
     public AutomationAccountsClient getAutomationAccounts() {
         return this.automationAccounts;
     }
 
-    /** The StatisticsOperationsClient object to access its operations. */
+    /**
+     * The StatisticsOperationsClient object to access its operations.
+     */
     private final StatisticsOperationsClient statisticsOperations;
 
     /**
      * Gets the StatisticsOperationsClient object to access its operations.
-     *
+     * 
      * @return the StatisticsOperationsClient object.
      */
     public StatisticsOperationsClient getStatisticsOperations() {
         return this.statisticsOperations;
     }
 
-    /** The UsagesClient object to access its operations. */
+    /**
+     * The UsagesClient object to access its operations.
+     */
     private final UsagesClient usages;
 
     /**
      * Gets the UsagesClient object to access its operations.
-     *
+     * 
      * @return the UsagesClient object.
      */
     public UsagesClient getUsages() {
         return this.usages;
     }
 
-    /** The KeysClient object to access its operations. */
+    /**
+     * The KeysClient object to access its operations.
+     */
     private final KeysClient keys;
 
     /**
      * Gets the KeysClient object to access its operations.
-     *
+     * 
      * @return the KeysClient object.
      */
     public KeysClient getKeys() {
         return this.keys;
     }
 
-    /** The CertificatesClient object to access its operations. */
+    /**
+     * The CertificatesClient object to access its operations.
+     */
     private final CertificatesClient certificates;
 
     /**
      * Gets the CertificatesClient object to access its operations.
-     *
+     * 
      * @return the CertificatesClient object.
      */
     public CertificatesClient getCertificates() {
         return this.certificates;
     }
 
-    /** The ConnectionsClient object to access its operations. */
+    /**
+     * The ConnectionsClient object to access its operations.
+     */
     private final ConnectionsClient connections;
 
     /**
      * Gets the ConnectionsClient object to access its operations.
-     *
+     * 
      * @return the ConnectionsClient object.
      */
     public ConnectionsClient getConnections() {
         return this.connections;
     }
 
-    /** The ConnectionTypesClient object to access its operations. */
+    /**
+     * The ConnectionTypesClient object to access its operations.
+     */
     private final ConnectionTypesClient connectionTypes;
 
     /**
      * Gets the ConnectionTypesClient object to access its operations.
-     *
+     * 
      * @return the ConnectionTypesClient object.
      */
     public ConnectionTypesClient getConnectionTypes() {
         return this.connectionTypes;
     }
 
-    /** The CredentialsClient object to access its operations. */
+    /**
+     * The CredentialsClient object to access its operations.
+     */
     private final CredentialsClient credentials;
 
     /**
      * Gets the CredentialsClient object to access its operations.
-     *
+     * 
      * @return the CredentialsClient object.
      */
     public CredentialsClient getCredentials() {
         return this.credentials;
     }
 
-    /** The JobSchedulesClient object to access its operations. */
+    /**
+     * The JobSchedulesClient object to access its operations.
+     */
     private final JobSchedulesClient jobSchedules;
 
     /**
      * Gets the JobSchedulesClient object to access its operations.
-     *
+     * 
      * @return the JobSchedulesClient object.
      */
     public JobSchedulesClient getJobSchedules() {
         return this.jobSchedules;
     }
 
-    /** The LinkedWorkspacesClient object to access its operations. */
+    /**
+     * The LinkedWorkspacesClient object to access its operations.
+     */
     private final LinkedWorkspacesClient linkedWorkspaces;
 
     /**
      * Gets the LinkedWorkspacesClient object to access its operations.
-     *
+     * 
      * @return the LinkedWorkspacesClient object.
      */
     public LinkedWorkspacesClient getLinkedWorkspaces() {
         return this.linkedWorkspaces;
     }
 
-    /** The ActivitiesClient object to access its operations. */
+    /**
+     * The ActivitiesClient object to access its operations.
+     */
     private final ActivitiesClient activities;
 
     /**
      * Gets the ActivitiesClient object to access its operations.
-     *
+     * 
      * @return the ActivitiesClient object.
      */
     public ActivitiesClient getActivities() {
         return this.activities;
     }
 
-    /** The ModulesClient object to access its operations. */
+    /**
+     * The ModulesClient object to access its operations.
+     */
     private final ModulesClient modules;
 
     /**
      * Gets the ModulesClient object to access its operations.
-     *
+     * 
      * @return the ModulesClient object.
      */
     public ModulesClient getModules() {
         return this.modules;
     }
 
-    /** The ObjectDataTypesClient object to access its operations. */
+    /**
+     * The ObjectDataTypesClient object to access its operations.
+     */
     private final ObjectDataTypesClient objectDataTypes;
 
     /**
      * Gets the ObjectDataTypesClient object to access its operations.
-     *
+     * 
      * @return the ObjectDataTypesClient object.
      */
     public ObjectDataTypesClient getObjectDataTypes() {
         return this.objectDataTypes;
     }
 
-    /** The FieldsClient object to access its operations. */
+    /**
+     * The FieldsClient object to access its operations.
+     */
     private final FieldsClient fields;
 
     /**
      * Gets the FieldsClient object to access its operations.
-     *
+     * 
      * @return the FieldsClient object.
      */
     public FieldsClient getFields() {
         return this.fields;
     }
 
-    /** The SchedulesClient object to access its operations. */
+    /**
+     * The SchedulesClient object to access its operations.
+     */
     private final SchedulesClient schedules;
 
     /**
      * Gets the SchedulesClient object to access its operations.
-     *
+     * 
      * @return the SchedulesClient object.
      */
     public SchedulesClient getSchedules() {
         return this.schedules;
     }
 
-    /** The VariablesClient object to access its operations. */
+    /**
+     * The VariablesClient object to access its operations.
+     */
     private final VariablesClient variables;
 
     /**
      * Gets the VariablesClient object to access its operations.
-     *
+     * 
      * @return the VariablesClient object.
      */
     public VariablesClient getVariables() {
         return this.variables;
     }
 
-    /** The WatchersClient object to access its operations. */
+    /**
+     * The WatchersClient object to access its operations.
+     */
     private final WatchersClient watchers;
 
     /**
      * Gets the WatchersClient object to access its operations.
-     *
+     * 
      * @return the WatchersClient object.
      */
     public WatchersClient getWatchers() {
         return this.watchers;
     }
 
-    /** The DscConfigurationsClient object to access its operations. */
+    /**
+     * The DscConfigurationsClient object to access its operations.
+     */
     private final DscConfigurationsClient dscConfigurations;
 
     /**
      * Gets the DscConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the DscConfigurationsClient object.
      */
     public DscConfigurationsClient getDscConfigurations() {
         return this.dscConfigurations;
     }
 
-    /** The JobsClient object to access its operations. */
+    /**
+     * The JobsClient object to access its operations.
+     */
     private final JobsClient jobs;
 
     /**
      * Gets the JobsClient object to access its operations.
-     *
+     * 
      * @return the JobsClient object.
      */
     public JobsClient getJobs() {
         return this.jobs;
     }
 
-    /** The JobStreamsClient object to access its operations. */
+    /**
+     * The JobStreamsClient object to access its operations.
+     */
     private final JobStreamsClient jobStreams;
 
     /**
      * Gets the JobStreamsClient object to access its operations.
-     *
+     * 
      * @return the JobStreamsClient object.
      */
     public JobStreamsClient getJobStreams() {
         return this.jobStreams;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The ResourceProvidersClient object to access its operations. */
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
     private final ResourceProvidersClient resourceProviders;
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
     }
 
-    /** The SoftwareUpdateConfigurationsClient object to access its operations. */
+    /**
+     * The SoftwareUpdateConfigurationsClient object to access its operations.
+     */
     private final SoftwareUpdateConfigurationsClient softwareUpdateConfigurations;
 
     /**
      * Gets the SoftwareUpdateConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the SoftwareUpdateConfigurationsClient object.
      */
     public SoftwareUpdateConfigurationsClient getSoftwareUpdateConfigurations() {
         return this.softwareUpdateConfigurations;
     }
 
-    /** The SoftwareUpdateConfigurationRunsClient object to access its operations. */
+    /**
+     * The SoftwareUpdateConfigurationRunsClient object to access its operations.
+     */
     private final SoftwareUpdateConfigurationRunsClient softwareUpdateConfigurationRuns;
 
     /**
      * Gets the SoftwareUpdateConfigurationRunsClient object to access its operations.
-     *
+     * 
      * @return the SoftwareUpdateConfigurationRunsClient object.
      */
     public SoftwareUpdateConfigurationRunsClient getSoftwareUpdateConfigurationRuns() {
         return this.softwareUpdateConfigurationRuns;
     }
 
-    /** The SoftwareUpdateConfigurationMachineRunsClient object to access its operations. */
+    /**
+     * The SoftwareUpdateConfigurationMachineRunsClient object to access its operations.
+     */
     private final SoftwareUpdateConfigurationMachineRunsClient softwareUpdateConfigurationMachineRuns;
 
     /**
      * Gets the SoftwareUpdateConfigurationMachineRunsClient object to access its operations.
-     *
+     * 
      * @return the SoftwareUpdateConfigurationMachineRunsClient object.
      */
     public SoftwareUpdateConfigurationMachineRunsClient getSoftwareUpdateConfigurationMachineRuns() {
         return this.softwareUpdateConfigurationMachineRuns;
     }
 
-    /** The RunbookDraftsClient object to access its operations. */
+    /**
+     * The RunbookDraftsClient object to access its operations.
+     */
     private final RunbookDraftsClient runbookDrafts;
 
     /**
      * Gets the RunbookDraftsClient object to access its operations.
-     *
+     * 
      * @return the RunbookDraftsClient object.
      */
     public RunbookDraftsClient getRunbookDrafts() {
         return this.runbookDrafts;
     }
 
-    /** The RunbooksClient object to access its operations. */
+    /**
+     * The RunbooksClient object to access its operations.
+     */
     private final RunbooksClient runbooks;
 
     /**
      * Gets the RunbooksClient object to access its operations.
-     *
+     * 
      * @return the RunbooksClient object.
      */
     public RunbooksClient getRunbooks() {
         return this.runbooks;
     }
 
-    /** The TestJobStreamsClient object to access its operations. */
+    /**
+     * The TestJobStreamsClient object to access its operations.
+     */
     private final TestJobStreamsClient testJobStreams;
 
     /**
      * Gets the TestJobStreamsClient object to access its operations.
-     *
+     * 
      * @return the TestJobStreamsClient object.
      */
     public TestJobStreamsClient getTestJobStreams() {
         return this.testJobStreams;
     }
 
-    /** The TestJobsClient object to access its operations. */
+    /**
+     * The TestJobsClient object to access its operations.
+     */
     private final TestJobsClient testJobs;
 
     /**
      * Gets the TestJobsClient object to access its operations.
-     *
+     * 
      * @return the TestJobsClient object.
      */
     public TestJobsClient getTestJobs() {
         return this.testJobs;
     }
 
-    /** The WebhooksClient object to access its operations. */
+    /**
+     * The WebhooksClient object to access its operations.
+     */
     private final WebhooksClient webhooks;
 
     /**
      * Gets the WebhooksClient object to access its operations.
-     *
+     * 
      * @return the WebhooksClient object.
      */
     public WebhooksClient getWebhooks() {
         return this.webhooks;
     }
 
-    /** The HybridRunbookWorkersClient object to access its operations. */
+    /**
+     * The HybridRunbookWorkersClient object to access its operations.
+     */
     private final HybridRunbookWorkersClient hybridRunbookWorkers;
 
     /**
      * Gets the HybridRunbookWorkersClient object to access its operations.
-     *
+     * 
      * @return the HybridRunbookWorkersClient object.
      */
     public HybridRunbookWorkersClient getHybridRunbookWorkers() {
         return this.hybridRunbookWorkers;
     }
 
-    /** The DeletedAutomationAccountsClient object to access its operations. */
+    /**
+     * The DeletedAutomationAccountsClient object to access its operations.
+     */
     private final DeletedAutomationAccountsClient deletedAutomationAccounts;
 
     /**
      * Gets the DeletedAutomationAccountsClient object to access its operations.
-     *
+     * 
      * @return the DeletedAutomationAccountsClient object.
      */
     public DeletedAutomationAccountsClient getDeletedAutomationAccounts() {
         return this.deletedAutomationAccounts;
     }
 
-    /** The HybridRunbookWorkerGroupsClient object to access its operations. */
+    /**
+     * The HybridRunbookWorkerGroupsClient object to access its operations.
+     */
     private final HybridRunbookWorkerGroupsClient hybridRunbookWorkerGroups;
 
     /**
      * Gets the HybridRunbookWorkerGroupsClient object to access its operations.
-     *
+     * 
      * @return the HybridRunbookWorkerGroupsClient object.
      */
     public HybridRunbookWorkerGroupsClient getHybridRunbookWorkerGroups() {
@@ -699,22 +802,17 @@ public final class AutomationClientImpl implements AutomationClient {
 
     /**
      * Initializes an instance of AutomationClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param subscriptionId Gets subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
-    AutomationClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    AutomationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
+        AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -770,7 +868,7 @@ public final class AutomationClientImpl implements AutomationClient {
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -779,7 +877,7 @@ public final class AutomationClientImpl implements AutomationClient {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -789,7 +887,7 @@ public final class AutomationClientImpl implements AutomationClient {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -799,26 +897,15 @@ public final class AutomationClientImpl implements AutomationClient {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -831,19 +918,16 @@ public final class AutomationClientImpl implements AutomationClient {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -884,7 +968,7 @@ public final class AutomationClientImpl implements AutomationClient {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

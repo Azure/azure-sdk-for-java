@@ -5,7 +5,6 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,10 +31,22 @@ public final class LabelOperator extends ExpandableStringEnum<LabelOperator> {
     public static final LabelOperator LESS_THAN = fromString("lessThan");
 
     /**
+     * Less than or equal.
+     */
+    @Generated
+    public static final LabelOperator LESS_THAN_OR_EQUAL = fromString("lessThanOrEqual");
+
+    /**
      * Greater than.
      */
     @Generated
     public static final LabelOperator GREATER_THAN = fromString("greaterThan");
+
+    /**
+     * Greater than or equal.
+     */
+    @Generated
+    public static final LabelOperator GREATER_THAN_OR_EQUAL = fromString("greaterThanOrEqual");
 
     /**
      * Creates a new instance of LabelOperator value.
@@ -54,7 +65,6 @@ public final class LabelOperator extends ExpandableStringEnum<LabelOperator> {
      * @return the corresponding LabelOperator.
      */
     @Generated
-    @JsonCreator
     public static LabelOperator fromString(String name) {
         return fromString(name, LabelOperator.class);
     }
@@ -68,16 +78,4 @@ public final class LabelOperator extends ExpandableStringEnum<LabelOperator> {
     public static Collection<LabelOperator> values() {
         return values(LabelOperator.class);
     }
-
-    /**
-     * Less than or equal.
-     */
-    @Generated
-    public static final LabelOperator LESS_THAN_OR_EQUAL = fromString("lessThanOrEqual");
-
-    /**
-     * Greater than or equal.
-     */
-    @Generated
-    public static final LabelOperator GREATER_THAN_OR_EQUAL = fromString("greaterThanOrEqual");
 }

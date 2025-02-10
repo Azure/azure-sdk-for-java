@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.SecuritySolutionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The SecuritySolutionList model. */
+/**
+ * The SecuritySolutionList model.
+ */
 @Fluent
-public final class SecuritySolutionList {
+public final class SecuritySolutionList implements JsonSerializable<SecuritySolutionList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<SecuritySolutionInner> value;
 
     /*
      * The URI to fetch the next page.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SecuritySolutionList class. */
+    /**
+     * Creates an instance of SecuritySolutionList class.
+     */
     public SecuritySolutionList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<SecuritySolutionInner> value() {
@@ -39,7 +45,7 @@ public final class SecuritySolutionList {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecuritySolutionList object itself.
      */
@@ -50,7 +56,7 @@ public final class SecuritySolutionList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,52 @@ public final class SecuritySolutionList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecuritySolutionList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecuritySolutionList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecuritySolutionList.
+     */
+    public static SecuritySolutionList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecuritySolutionList deserializedSecuritySolutionList = new SecuritySolutionList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SecuritySolutionInner> value
+                        = reader.readArray(reader1 -> SecuritySolutionInner.fromJson(reader1));
+                    deserializedSecuritySolutionList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSecuritySolutionList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecuritySolutionList;
+        });
     }
 }

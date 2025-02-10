@@ -5,53 +5,54 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** publicInnerError. */
+/**
+ * publicInnerError.
+ */
 @Fluent
-public final class MicrosoftGraphPublicInnerError {
+public final class MicrosoftGraphPublicInnerError implements JsonSerializable<MicrosoftGraphPublicInnerError> {
     /*
      * The code property.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The details property.
      */
-    @JsonProperty(value = "details")
     private List<MicrosoftGraphPublicErrorDetail> details;
 
     /*
      * The message property.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The target property.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * publicInnerError
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPublicInnerError class. */
+    /**
+     * Creates an instance of MicrosoftGraphPublicInnerError class.
+     */
     public MicrosoftGraphPublicInnerError() {
     }
 
     /**
      * Get the code property: The code property.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -60,7 +61,7 @@ public final class MicrosoftGraphPublicInnerError {
 
     /**
      * Set the code property: The code property.
-     *
+     * 
      * @param code the code value to set.
      * @return the MicrosoftGraphPublicInnerError object itself.
      */
@@ -71,7 +72,7 @@ public final class MicrosoftGraphPublicInnerError {
 
     /**
      * Get the details property: The details property.
-     *
+     * 
      * @return the details value.
      */
     public List<MicrosoftGraphPublicErrorDetail> details() {
@@ -80,7 +81,7 @@ public final class MicrosoftGraphPublicInnerError {
 
     /**
      * Set the details property: The details property.
-     *
+     * 
      * @param details the details value to set.
      * @return the MicrosoftGraphPublicInnerError object itself.
      */
@@ -91,7 +92,7 @@ public final class MicrosoftGraphPublicInnerError {
 
     /**
      * Get the message property: The message property.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -100,7 +101,7 @@ public final class MicrosoftGraphPublicInnerError {
 
     /**
      * Set the message property: The message property.
-     *
+     * 
      * @param message the message value to set.
      * @return the MicrosoftGraphPublicInnerError object itself.
      */
@@ -111,7 +112,7 @@ public final class MicrosoftGraphPublicInnerError {
 
     /**
      * Get the target property: The target property.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -120,7 +121,7 @@ public final class MicrosoftGraphPublicInnerError {
 
     /**
      * Set the target property: The target property.
-     *
+     * 
      * @param target the target value to set.
      * @return the MicrosoftGraphPublicInnerError object itself.
      */
@@ -131,17 +132,16 @@ public final class MicrosoftGraphPublicInnerError {
 
     /**
      * Get the additionalProperties property: publicInnerError.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: publicInnerError.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPublicInnerError object itself.
      */
@@ -150,22 +150,73 @@ public final class MicrosoftGraphPublicInnerError {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (details() != null) {
             details().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPublicInnerError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPublicInnerError if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPublicInnerError.
+     */
+    public static MicrosoftGraphPublicInnerError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPublicInnerError deserializedMicrosoftGraphPublicInnerError
+                = new MicrosoftGraphPublicInnerError();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedMicrosoftGraphPublicInnerError.code = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<MicrosoftGraphPublicErrorDetail> details
+                        = reader.readArray(reader1 -> MicrosoftGraphPublicErrorDetail.fromJson(reader1));
+                    deserializedMicrosoftGraphPublicInnerError.details = details;
+                } else if ("message".equals(fieldName)) {
+                    deserializedMicrosoftGraphPublicInnerError.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedMicrosoftGraphPublicInnerError.target = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPublicInnerError.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPublicInnerError;
+        });
     }
 }

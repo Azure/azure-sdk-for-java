@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.ProtectableItemInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Protectable item collection. */
+/**
+ * Protectable item collection.
+ */
 @Fluent
-public final class ProtectableItemCollection {
+public final class ProtectableItemCollection implements JsonSerializable<ProtectableItemCollection> {
     /*
      * The Protectable item details.
      */
-    @JsonProperty(value = "value")
     private List<ProtectableItemInner> value;
 
     /*
      * The value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ProtectableItemCollection class. */
+    /**
+     * Creates an instance of ProtectableItemCollection class.
+     */
     public ProtectableItemCollection() {
     }
 
     /**
      * Get the value property: The Protectable item details.
-     *
+     * 
      * @return the value value.
      */
     public List<ProtectableItemInner> value() {
@@ -39,7 +45,7 @@ public final class ProtectableItemCollection {
 
     /**
      * Set the value property: The Protectable item details.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProtectableItemCollection object itself.
      */
@@ -50,7 +56,7 @@ public final class ProtectableItemCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ProtectableItemCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProtectableItemCollection object itself.
      */
@@ -70,12 +76,53 @@ public final class ProtectableItemCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectableItemCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectableItemCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtectableItemCollection.
+     */
+    public static ProtectableItemCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectableItemCollection deserializedProtectableItemCollection = new ProtectableItemCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ProtectableItemInner> value
+                        = reader.readArray(reader1 -> ProtectableItemInner.fromJson(reader1));
+                    deserializedProtectableItemCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedProtectableItemCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectableItemCollection;
+        });
     }
 }

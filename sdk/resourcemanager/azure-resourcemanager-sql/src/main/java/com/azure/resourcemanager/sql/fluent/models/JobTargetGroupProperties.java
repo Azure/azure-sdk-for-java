@@ -6,26 +6,33 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.JobTarget;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of job target group. */
+/**
+ * Properties of job target group.
+ */
 @Fluent
-public final class JobTargetGroupProperties {
+public final class JobTargetGroupProperties implements JsonSerializable<JobTargetGroupProperties> {
     /*
      * Members of the target group.
      */
-    @JsonProperty(value = "members", required = true)
     private List<JobTarget> members;
 
-    /** Creates an instance of JobTargetGroupProperties class. */
+    /**
+     * Creates an instance of JobTargetGroupProperties class.
+     */
     public JobTargetGroupProperties() {
     }
 
     /**
      * Get the members property: Members of the target group.
-     *
+     * 
      * @return the members value.
      */
     public List<JobTarget> members() {
@@ -34,7 +41,7 @@ public final class JobTargetGroupProperties {
 
     /**
      * Set the members property: Members of the target group.
-     *
+     * 
      * @param members the members value to set.
      * @return the JobTargetGroupProperties object itself.
      */
@@ -45,19 +52,56 @@ public final class JobTargetGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (members() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property members in model JobTargetGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property members in model JobTargetGroupProperties"));
         } else {
             members().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobTargetGroupProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("members", this.members, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobTargetGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobTargetGroupProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobTargetGroupProperties.
+     */
+    public static JobTargetGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobTargetGroupProperties deserializedJobTargetGroupProperties = new JobTargetGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("members".equals(fieldName)) {
+                    List<JobTarget> members = reader.readArray(reader1 -> JobTarget.fromJson(reader1));
+                    deserializedJobTargetGroupProperties.members = members;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobTargetGroupProperties;
+        });
+    }
 }

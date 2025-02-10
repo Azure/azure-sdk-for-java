@@ -5,73 +5,74 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Network base admin rule.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = ActiveBaseSecurityAdminRule.class)
-@JsonTypeName("ActiveBaseSecurityAdminRule")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Custom", value = ActiveSecurityAdminRule.class),
-    @JsonSubTypes.Type(name = "Default", value = ActiveDefaultSecurityAdminRule.class) })
 @Fluent
-public class ActiveBaseSecurityAdminRule {
+public class ActiveBaseSecurityAdminRule implements JsonSerializable<ActiveBaseSecurityAdminRule> {
+    /*
+     * Whether the rule is custom or default.
+     */
+    private EffectiveAdminRuleKind kind = EffectiveAdminRuleKind.fromString("ActiveBaseSecurityAdminRule");
+
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Deployment time string.
      */
-    @JsonProperty(value = "commitTime")
     private OffsetDateTime commitTime;
 
     /*
      * Deployment region.
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * A description of the security admin configuration.
      */
-    @JsonProperty(value = "configurationDescription")
     private String configurationDescription;
 
     /*
      * A description of the rule collection.
      */
-    @JsonProperty(value = "ruleCollectionDescription")
     private String ruleCollectionDescription;
 
     /*
      * Groups for rule collection
      */
-    @JsonProperty(value = "ruleCollectionAppliesToGroups")
     private List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups;
 
     /*
      * Effective configuration groups.
      */
-    @JsonProperty(value = "ruleGroups")
     private List<ConfigurationGroup> ruleGroups;
 
     /**
      * Creates an instance of ActiveBaseSecurityAdminRule class.
      */
     public ActiveBaseSecurityAdminRule() {
+    }
+
+    /**
+     * Get the kind property: Whether the rule is custom or default.
+     * 
+     * @return the kind value.
+     */
+    public EffectiveAdminRuleKind kind() {
+        return this.kind;
     }
 
     /**
@@ -227,5 +228,98 @@ public class ActiveBaseSecurityAdminRule {
         if (ruleGroups() != null) {
             ruleGroups().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("commitTime",
+            this.commitTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.commitTime));
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("configurationDescription", this.configurationDescription);
+        jsonWriter.writeStringField("ruleCollectionDescription", this.ruleCollectionDescription);
+        jsonWriter.writeArrayField("ruleCollectionAppliesToGroups", this.ruleCollectionAppliesToGroups,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ruleGroups", this.ruleGroups, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActiveBaseSecurityAdminRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActiveBaseSecurityAdminRule if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActiveBaseSecurityAdminRule.
+     */
+    public static ActiveBaseSecurityAdminRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Custom".equals(discriminatorValue)) {
+                    return ActiveSecurityAdminRule.fromJson(readerToUse.reset());
+                } else if ("Default".equals(discriminatorValue)) {
+                    return ActiveDefaultSecurityAdminRule.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ActiveBaseSecurityAdminRule fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActiveBaseSecurityAdminRule deserializedActiveBaseSecurityAdminRule = new ActiveBaseSecurityAdminRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedActiveBaseSecurityAdminRule.kind
+                        = EffectiveAdminRuleKind.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedActiveBaseSecurityAdminRule.id = reader.getString();
+                } else if ("commitTime".equals(fieldName)) {
+                    deserializedActiveBaseSecurityAdminRule.commitTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("region".equals(fieldName)) {
+                    deserializedActiveBaseSecurityAdminRule.region = reader.getString();
+                } else if ("configurationDescription".equals(fieldName)) {
+                    deserializedActiveBaseSecurityAdminRule.configurationDescription = reader.getString();
+                } else if ("ruleCollectionDescription".equals(fieldName)) {
+                    deserializedActiveBaseSecurityAdminRule.ruleCollectionDescription = reader.getString();
+                } else if ("ruleCollectionAppliesToGroups".equals(fieldName)) {
+                    List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups
+                        = reader.readArray(reader1 -> NetworkManagerSecurityGroupItem.fromJson(reader1));
+                    deserializedActiveBaseSecurityAdminRule.ruleCollectionAppliesToGroups
+                        = ruleCollectionAppliesToGroups;
+                } else if ("ruleGroups".equals(fieldName)) {
+                    List<ConfigurationGroup> ruleGroups
+                        = reader.readArray(reader1 -> ConfigurationGroup.fromJson(reader1));
+                    deserializedActiveBaseSecurityAdminRule.ruleGroups = ruleGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActiveBaseSecurityAdminRule;
+        });
     }
 }

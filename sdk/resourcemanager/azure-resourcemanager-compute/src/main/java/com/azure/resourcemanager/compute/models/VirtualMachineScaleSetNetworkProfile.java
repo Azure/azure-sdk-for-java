@@ -5,34 +5,36 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a virtual machine scale set network profile.
  */
 @Fluent
-public final class VirtualMachineScaleSetNetworkProfile {
+public final class VirtualMachineScaleSetNetworkProfile
+    implements JsonSerializable<VirtualMachineScaleSetNetworkProfile> {
     /*
      * A reference to a load balancer probe used to determine the health of an instance in the virtual machine scale
      * set. The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{
      * loadBalancerName}/probes/{probeName}'.
      */
-    @JsonProperty(value = "healthProbe")
     private ApiEntityReference healthProbe;
 
     /*
      * The list of network configurations.
      */
-    @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
     /*
      * specifies the Microsoft.Network API version used when creating networking resources in the Network Interface
      * Configurations for Virtual Machine Scale Set with orchestration mode 'Flexible'
      */
-    @JsonProperty(value = "networkApiVersion")
     private NetworkApiVersion networkApiVersion;
 
     /**
@@ -42,8 +44,8 @@ public final class VirtualMachineScaleSetNetworkProfile {
     }
 
     /**
-     * Get the healthProbe property: A reference to a load balancer probe used to determine the health of an instance
-     * in the virtual machine scale set. The reference will be in the form:
+     * Get the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
+     * the virtual machine scale set. The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
      * 
      * @return the healthProbe value.
@@ -53,8 +55,8 @@ public final class VirtualMachineScaleSetNetworkProfile {
     }
 
     /**
-     * Set the healthProbe property: A reference to a load balancer probe used to determine the health of an instance
-     * in the virtual machine scale set. The reference will be in the form:
+     * Set the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
+     * the virtual machine scale set. The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
      * 
      * @param healthProbe the healthProbe value to set.
@@ -122,5 +124,54 @@ public final class VirtualMachineScaleSetNetworkProfile {
         if (networkInterfaceConfigurations() != null) {
             networkInterfaceConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("healthProbe", this.healthProbe);
+        jsonWriter.writeArrayField("networkInterfaceConfigurations", this.networkInterfaceConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("networkApiVersion",
+            this.networkApiVersion == null ? null : this.networkApiVersion.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetNetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetNetworkProfile if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetNetworkProfile.
+     */
+    public static VirtualMachineScaleSetNetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetNetworkProfile deserializedVirtualMachineScaleSetNetworkProfile
+                = new VirtualMachineScaleSetNetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("healthProbe".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkProfile.healthProbe = ApiEntityReference.fromJson(reader);
+                } else if ("networkInterfaceConfigurations".equals(fieldName)) {
+                    List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations
+                        = reader.readArray(reader1 -> VirtualMachineScaleSetNetworkConfiguration.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetNetworkProfile.networkInterfaceConfigurations
+                        = networkInterfaceConfigurations;
+                } else if ("networkApiVersion".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkProfile.networkApiVersion
+                        = NetworkApiVersion.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetNetworkProfile;
+        });
     }
 }

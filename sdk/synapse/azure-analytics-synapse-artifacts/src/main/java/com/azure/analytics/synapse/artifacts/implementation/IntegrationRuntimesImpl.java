@@ -50,8 +50,8 @@ public final class IntegrationRuntimesImpl {
     }
 
     /**
-     * The interface defining all the services for ArtifactsClientIntegrationRuntimes to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for ArtifactsClientIntegrationRuntimes to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientInteg")
@@ -81,9 +81,7 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeListResponse>> listWithResponseAsync() {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context));
+        return FluxUtil.withContext(context -> listWithResponseAsync(context));
     }
 
     /**
@@ -166,10 +164,7 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeResource>> getWithResponseAsync(String integrationRuntimeName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.get(this.client.getEndpoint(), apiVersion, integrationRuntimeName, accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(integrationRuntimeName, context));
     }
 
     /**

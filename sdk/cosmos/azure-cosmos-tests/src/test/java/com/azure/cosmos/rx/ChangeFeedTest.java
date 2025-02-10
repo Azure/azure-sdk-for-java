@@ -3,11 +3,15 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
@@ -33,6 +37,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -92,8 +97,16 @@ public class ChangeFeedTest extends TestSuiteBase {
         subscriberValidationTimeout = TIMEOUT;
     }
 
+    @DataProvider(name = "startFromParamProvider")
+    public Object[] startFromParamProvider() {
+        return new Object[]{
+            false,
+            true
+        };
+    }
+
     @Test(groups = { "query" }, timeOut = TIMEOUT)
-    public void changeFeed_fromBeginning() throws Exception {
+    public void changeFeed_fromBeginning() {
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
         Collection<Document> expectedDocuments = partitionKeyToDocuments.get(partitionKey);
 
@@ -187,6 +200,34 @@ public class ChangeFeedTest extends TestSuiteBase {
             getContinuationToken()).as("Response continuation should not be null").isNotNull();
     }
 
+    @Test(groups = { "query" }, dataProvider = "startFromParamProvider", timeOut = TIMEOUT)
+    public void changeFeed_cosmosDiagnostics(boolean startFromBeginning) {
+        // READ change feed from a partitionKey.
+        String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
+        FeedRange feedRange = new FeedRangePartitionKeyImpl(
+            ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(partitionKey)));
+        CosmosChangeFeedRequestOptions changeFeedOption =
+            startFromBeginning ?
+                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange) :
+                CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange);
+
+        List<FeedResponse<Document>> changeFeedResultsList = client
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .collectList()
+            .block();
+
+        // since the changeFeed is targeting a specific partitionKey,
+        // for each feedResponse,
+        // we should only expect one store result in stable situation(no error happens)
+        assertThat(changeFeedResultsList.size()).isGreaterThanOrEqualTo(1);
+        for (FeedResponse<Document> changeFeedResponse : changeFeedResultsList) {
+            validateStoreResultInDiagnostics(
+                changeFeedResponse.getCosmosDiagnostics(),
+                1,
+                this.client.getConnectionPolicy().getConnectionMode());
+        }
+    }
+
     private void changeFeed_withUpdatesAndDelete(boolean enableFullFidelityChangeFeedMode) {
 
         // READ change feed from current.
@@ -220,7 +261,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             .getContinuationToken();
 
         Document docToBeDeleted = partitionKeyToDocuments.get(partitionKey).stream().findFirst().get();
-        deleteDocument(client, docToBeDeleted.getSelfLink(), new PartitionKey(partitionKey));
+        deleteDocument(client, docToBeDeleted.getSelfLink(), new PartitionKey(partitionKey), TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
 
         CosmosChangeFeedRequestOptions changeFeedOptionForContinuationAfterDeletes =
             CosmosChangeFeedRequestOptions
@@ -451,7 +492,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     public Document updateDocument(AsyncDocumentClient client, Document originalDocument) {
         String uuid = UUID.randomUUID().toString();
-        BridgeInternal.setProperty(originalDocument, "prop", uuid);
+        originalDocument.set("prop", uuid);
 
         return client
             .replaceDocument(originalDocument.getSelfLink(), originalDocument, null)
@@ -524,7 +565,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "query", "emulator" }, timeOut = SETUP_TIMEOUT)
-    public void before_ChangeFeedTest() throws Exception {
+    public void before_ChangeFeedTest() {
         // set up the client
         client = clientBuilder().build();
         createdDatabase = SHARED_DATABASE;
@@ -539,14 +580,38 @@ public class ChangeFeedTest extends TestSuiteBase {
         String uuid = UUID.randomUUID().toString();
         Document doc = new Document();
         doc.setId(uuid);
-        BridgeInternal.setProperty(doc, "mypk", partitionKey);
-        BridgeInternal.setProperty(doc, "prop", uuid);
+        doc.set("mypk", partitionKey);
+        doc.set("prop", uuid);
         return doc;
     }
 
     private static void waitAtleastASecond(Instant befTime) throws InterruptedException {
         while (befTime.plusSeconds(1).isAfter(Instant.now())) {
             Thread.sleep(100);
+        }
+    }
+
+    private void validateStoreResultInDiagnostics(
+        CosmosDiagnostics cosmosDiagnostics,
+        int expectedResponseCount,
+        ConnectionMode connectionMode) {
+        Collection<ClientSideRequestStatistics> clientSideRequestStatistics = ImplementationBridgeHelpers
+            .CosmosDiagnosticsHelper
+            .getCosmosDiagnosticsAccessor()
+            .getClientSideRequestStatistics(cosmosDiagnostics);
+        assertThat(clientSideRequestStatistics.size()).isEqualTo(1);
+
+        if (connectionMode == ConnectionMode.DIRECT) {
+            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics =
+                clientSideRequestStatistics
+                    .iterator()
+                    .next()
+                    .getResponseStatisticsList();
+            assertThat(storeResponseStatistics.size()).isEqualTo(expectedResponseCount);
+        } else {
+            List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatistics =
+                clientSideRequestStatistics.iterator().next().getGatewayStatisticsList();
+            assertThat(gatewayStatistics.size()).isEqualTo(expectedResponseCount);
         }
     }
 

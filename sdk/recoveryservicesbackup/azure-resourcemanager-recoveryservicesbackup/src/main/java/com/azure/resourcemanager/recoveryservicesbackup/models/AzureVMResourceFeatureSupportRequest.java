@@ -5,34 +5,50 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** AzureResource(IaaS VM) Specific feature support request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "featureType")
-@JsonTypeName("AzureVMResourceBackup")
+/**
+ * AzureResource(IaaS VM) Specific feature support request.
+ */
 @Fluent
 public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRequest {
     /*
+     * backup support feature type.
+     */
+    private String featureType = "AzureVMResourceBackup";
+
+    /*
      * Size of the resource: VM size(A/D series etc) in case of IaasVM
      */
-    @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
      * SKUs (Premium/Managed etc) in case of IaasVM
      */
-    @JsonProperty(value = "vmSku")
     private String vmSku;
 
-    /** Creates an instance of AzureVMResourceFeatureSupportRequest class. */
+    /**
+     * Creates an instance of AzureVMResourceFeatureSupportRequest class.
+     */
     public AzureVMResourceFeatureSupportRequest() {
     }
 
     /**
+     * Get the featureType property: backup support feature type.
+     * 
+     * @return the featureType value.
+     */
+    @Override
+    public String featureType() {
+        return this.featureType;
+    }
+
+    /**
      * Get the vmSize property: Size of the resource: VM size(A/D series etc) in case of IaasVM.
-     *
+     * 
      * @return the vmSize value.
      */
     public String vmSize() {
@@ -41,7 +57,7 @@ public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRe
 
     /**
      * Set the vmSize property: Size of the resource: VM size(A/D series etc) in case of IaasVM.
-     *
+     * 
      * @param vmSize the vmSize value to set.
      * @return the AzureVMResourceFeatureSupportRequest object itself.
      */
@@ -52,7 +68,7 @@ public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRe
 
     /**
      * Get the vmSku property: SKUs (Premium/Managed etc) in case of IaasVM.
-     *
+     * 
      * @return the vmSku value.
      */
     public String vmSku() {
@@ -61,7 +77,7 @@ public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRe
 
     /**
      * Set the vmSku property: SKUs (Premium/Managed etc) in case of IaasVM.
-     *
+     * 
      * @param vmSku the vmSku value to set.
      * @return the AzureVMResourceFeatureSupportRequest object itself.
      */
@@ -72,11 +88,53 @@ public final class AzureVMResourceFeatureSupportRequest extends FeatureSupportRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("featureType", this.featureType);
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeStringField("vmSku", this.vmSku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVMResourceFeatureSupportRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVMResourceFeatureSupportRequest if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVMResourceFeatureSupportRequest.
+     */
+    public static AzureVMResourceFeatureSupportRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVMResourceFeatureSupportRequest deserializedAzureVMResourceFeatureSupportRequest
+                = new AzureVMResourceFeatureSupportRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("featureType".equals(fieldName)) {
+                    deserializedAzureVMResourceFeatureSupportRequest.featureType = reader.getString();
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedAzureVMResourceFeatureSupportRequest.vmSize = reader.getString();
+                } else if ("vmSku".equals(fieldName)) {
+                    deserializedAzureVMResourceFeatureSupportRequest.vmSku = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVMResourceFeatureSupportRequest;
+        });
     }
 }

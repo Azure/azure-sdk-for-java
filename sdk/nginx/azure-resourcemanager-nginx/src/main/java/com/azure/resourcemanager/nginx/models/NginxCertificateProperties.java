@@ -5,36 +5,58 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * The NginxCertificateProperties model.
  */
 @Fluent
-public final class NginxCertificateProperties {
+public final class NginxCertificateProperties implements JsonSerializable<NginxCertificateProperties> {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The keyVirtualPath property.
      */
-    @JsonProperty(value = "keyVirtualPath")
     private String keyVirtualPath;
 
     /*
      * The certificateVirtualPath property.
      */
-    @JsonProperty(value = "certificateVirtualPath")
     private String certificateVirtualPath;
 
     /*
      * The keyVaultSecretId property.
      */
-    @JsonProperty(value = "keyVaultSecretId")
     private String keyVaultSecretId;
+
+    /*
+     * The sha1Thumbprint property.
+     */
+    private String sha1Thumbprint;
+
+    /*
+     * The keyVaultSecretVersion property.
+     */
+    private String keyVaultSecretVersion;
+
+    /*
+     * The keyVaultSecretCreated property.
+     */
+    private OffsetDateTime keyVaultSecretCreated;
+
+    /*
+     * The certificateError property.
+     */
+    private NginxCertificateErrorResponseBody certificateError;
 
     /**
      * Creates an instance of NginxCertificateProperties class.
@@ -112,10 +134,116 @@ public final class NginxCertificateProperties {
     }
 
     /**
+     * Get the sha1Thumbprint property: The sha1Thumbprint property.
+     * 
+     * @return the sha1Thumbprint value.
+     */
+    public String sha1Thumbprint() {
+        return this.sha1Thumbprint;
+    }
+
+    /**
+     * Get the keyVaultSecretVersion property: The keyVaultSecretVersion property.
+     * 
+     * @return the keyVaultSecretVersion value.
+     */
+    public String keyVaultSecretVersion() {
+        return this.keyVaultSecretVersion;
+    }
+
+    /**
+     * Get the keyVaultSecretCreated property: The keyVaultSecretCreated property.
+     * 
+     * @return the keyVaultSecretCreated value.
+     */
+    public OffsetDateTime keyVaultSecretCreated() {
+        return this.keyVaultSecretCreated;
+    }
+
+    /**
+     * Get the certificateError property: The certificateError property.
+     * 
+     * @return the certificateError value.
+     */
+    public NginxCertificateErrorResponseBody certificateError() {
+        return this.certificateError;
+    }
+
+    /**
+     * Set the certificateError property: The certificateError property.
+     * 
+     * @param certificateError the certificateError value to set.
+     * @return the NginxCertificateProperties object itself.
+     */
+    public NginxCertificateProperties withCertificateError(NginxCertificateErrorResponseBody certificateError) {
+        this.certificateError = certificateError;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (certificateError() != null) {
+            certificateError().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyVirtualPath", this.keyVirtualPath);
+        jsonWriter.writeStringField("certificateVirtualPath", this.certificateVirtualPath);
+        jsonWriter.writeStringField("keyVaultSecretId", this.keyVaultSecretId);
+        jsonWriter.writeJsonField("certificateError", this.certificateError);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NginxCertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NginxCertificateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NginxCertificateProperties.
+     */
+    public static NginxCertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NginxCertificateProperties deserializedNginxCertificateProperties = new NginxCertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedNginxCertificateProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("keyVirtualPath".equals(fieldName)) {
+                    deserializedNginxCertificateProperties.keyVirtualPath = reader.getString();
+                } else if ("certificateVirtualPath".equals(fieldName)) {
+                    deserializedNginxCertificateProperties.certificateVirtualPath = reader.getString();
+                } else if ("keyVaultSecretId".equals(fieldName)) {
+                    deserializedNginxCertificateProperties.keyVaultSecretId = reader.getString();
+                } else if ("sha1Thumbprint".equals(fieldName)) {
+                    deserializedNginxCertificateProperties.sha1Thumbprint = reader.getString();
+                } else if ("keyVaultSecretVersion".equals(fieldName)) {
+                    deserializedNginxCertificateProperties.keyVaultSecretVersion = reader.getString();
+                } else if ("keyVaultSecretCreated".equals(fieldName)) {
+                    deserializedNginxCertificateProperties.keyVaultSecretCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("certificateError".equals(fieldName)) {
+                    deserializedNginxCertificateProperties.certificateError
+                        = NginxCertificateErrorResponseBody.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNginxCertificateProperties;
+        });
     }
 }

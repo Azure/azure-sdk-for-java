@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class GalleryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GalleryProperties model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Deleting\",\"galleryResourceId\":\"nrosfqpte\"}")
+        GalleryProperties model
+            = BinaryData.fromString("{\"provisioningState\":\"MovingResources\",\"galleryResourceId\":\"xepcyvahfn\"}")
                 .toObject(GalleryProperties.class);
-        Assertions.assertEquals("nrosfqpte", model.galleryResourceId());
+        Assertions.assertEquals("xepcyvahfn", model.galleryResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GalleryProperties model = new GalleryProperties().withGalleryResourceId("nrosfqpte");
+        GalleryProperties model = new GalleryProperties().withGalleryResourceId("xepcyvahfn");
         model = BinaryData.fromObject(model).toObject(GalleryProperties.class);
-        Assertions.assertEquals("nrosfqpte", model.galleryResourceId());
+        Assertions.assertEquals("xepcyvahfn", model.galleryResourceId());
     }
 }

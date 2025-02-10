@@ -6,34 +6,40 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters for DataStore.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = DataStoreParameters.class)
-@JsonTypeName("DataStoreParameters")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureOperationalStoreParameters", value = AzureOperationalStoreParameters.class) })
 @Fluent
-public class DataStoreParameters {
+public class DataStoreParameters implements JsonSerializable<DataStoreParameters> {
+    /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "DataStoreParameters";
+
     /*
      * type of datastore; Operational/Vault/Archive
      */
-    @JsonProperty(value = "dataStoreType", required = true)
     private DataStoreTypes dataStoreType;
 
     /**
      * Creates an instance of DataStoreParameters class.
      */
     public DataStoreParameters() {
+    }
+
+    /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -63,10 +69,76 @@ public class DataStoreParameters {
      */
     public void validate() {
         if (dataStoreType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dataStoreType in model DataStoreParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataStoreType in model DataStoreParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataStoreParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataStoreType", this.dataStoreType == null ? null : this.dataStoreType.toString());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataStoreParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataStoreParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataStoreParameters.
+     */
+    public static DataStoreParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureOperationalStoreParameters".equals(discriminatorValue)) {
+                    return AzureOperationalStoreParameters.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DataStoreParameters fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataStoreParameters deserializedDataStoreParameters = new DataStoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataStoreType".equals(fieldName)) {
+                    deserializedDataStoreParameters.dataStoreType = DataStoreTypes.fromString(reader.getString());
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedDataStoreParameters.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataStoreParameters;
+        });
+    }
 }

@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** An object containing specific information about an error. */
+/**
+ * An object containing specific information about an error.
+ */
 @Fluent
 public final class InnerError implements JsonSerializable<InnerError> {
     /*
@@ -24,12 +26,15 @@ public final class InnerError implements JsonSerializable<InnerError> {
      */
     private InnerError innererror;
 
-    /** Creates an instance of InnerError class. */
-    public InnerError() {}
+    /**
+     * Creates an instance of InnerError class.
+     */
+    public InnerError() {
+    }
 
     /**
      * Get the code property: One of a server-defined set of error codes.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -38,7 +43,7 @@ public final class InnerError implements JsonSerializable<InnerError> {
 
     /**
      * Set the code property: One of a server-defined set of error codes.
-     *
+     * 
      * @param code the code value to set.
      * @return the InnerError object itself.
      */
@@ -50,7 +55,7 @@ public final class InnerError implements JsonSerializable<InnerError> {
     /**
      * Get the innererror property: An object containing more specific information than the current object about the
      * error.
-     *
+     * 
      * @return the innererror value.
      */
     public InnerError getInnererror() {
@@ -60,7 +65,7 @@ public final class InnerError implements JsonSerializable<InnerError> {
     /**
      * Set the innererror property: An object containing more specific information than the current object about the
      * error.
-     *
+     * 
      * @param innererror the innererror value to set.
      * @return the InnerError object itself.
      */
@@ -69,6 +74,9 @@ public final class InnerError implements JsonSerializable<InnerError> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -79,30 +87,29 @@ public final class InnerError implements JsonSerializable<InnerError> {
 
     /**
      * Reads an instance of InnerError from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of InnerError if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IOException If an error occurs while reading the InnerError.
      */
     public static InnerError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    InnerError deserializedInnerError = new InnerError();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            InnerError deserializedInnerError = new InnerError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("code".equals(fieldName)) {
-                            deserializedInnerError.code = reader.getString();
-                        } else if ("innererror".equals(fieldName)) {
-                            deserializedInnerError.innererror = InnerError.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("code".equals(fieldName)) {
+                    deserializedInnerError.code = reader.getString();
+                } else if ("innererror".equals(fieldName)) {
+                    deserializedInnerError.innererror = InnerError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedInnerError;
-                });
+            return deserializedInnerError;
+        });
     }
 }

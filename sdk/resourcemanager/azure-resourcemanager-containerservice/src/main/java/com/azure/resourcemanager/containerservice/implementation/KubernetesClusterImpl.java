@@ -29,13 +29,18 @@ import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
+import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuName;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuTier;
 import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
@@ -60,9 +65,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /** The implementation for KubernetesCluster and its create and update interfaces. */
-public class KubernetesClusterImpl
-    extends GroupableResourceImpl<
-        KubernetesCluster, ManagedClusterInner, KubernetesClusterImpl, ContainerServiceManager>
+public class KubernetesClusterImpl extends
+    GroupableResourceImpl<KubernetesCluster, ManagedClusterInner, KubernetesClusterImpl, ContainerServiceManager>
     implements KubernetesCluster, KubernetesCluster.Definition, KubernetesCluster.Update {
     private final ClientLogger logger = new ClientLogger(getClass());
 
@@ -71,8 +75,8 @@ public class KubernetesClusterImpl
     private final Map<Format, List<CredentialResult>> formatUserKubeConfigsMap = new ConcurrentHashMap<>();
 
     private ManagedClusterInner parameterSnapshotOnUpdate;
-    private static final SerializerAdapter SERIALIZER_ADAPTER =
-        SerializerFactory.createDefaultManagementSerializerAdapter();
+    private static final SerializerAdapter SERIALIZER_ADAPTER
+        = SerializerFactory.createDefaultManagementSerializerAdapter();
 
     protected KubernetesClusterImpl(String name, ManagedClusterInner innerObject, ContainerServiceManager manager) {
         super(name, innerObject, manager);
@@ -107,8 +111,8 @@ public class KubernetesClusterImpl
     @Override
     public List<CredentialResult> adminKubeConfigs() {
         if (this.adminKubeConfigs == null || this.adminKubeConfigs.size() == 0) {
-            this.adminKubeConfigs =
-                this.manager().kubernetesClusters().listAdminKubeConfigContent(this.resourceGroupName(), this.name());
+            this.adminKubeConfigs
+                = this.manager().kubernetesClusters().listAdminKubeConfigContent(this.resourceGroupName(), this.name());
         }
         return Collections.unmodifiableList(this.adminKubeConfigs);
     }
@@ -116,8 +120,8 @@ public class KubernetesClusterImpl
     @Override
     public List<CredentialResult> userKubeConfigs() {
         if (this.userKubeConfigs == null || this.userKubeConfigs.size() == 0) {
-            this.userKubeConfigs =
-                this.manager().kubernetesClusters().listUserKubeConfigContent(this.resourceGroupName(), this.name());
+            this.userKubeConfigs
+                = this.manager().kubernetesClusters().listUserKubeConfigContent(this.resourceGroupName(), this.name());
         }
         return Collections.unmodifiableList(this.userKubeConfigs);
     }
@@ -127,18 +131,11 @@ public class KubernetesClusterImpl
         if (format == null) {
             return userKubeConfigs();
         }
-        return Collections.unmodifiableList(
-            this.formatUserKubeConfigsMap.computeIfAbsent(
-                format,
-                key -> KubernetesClusterImpl.this
-                    .manager()
-                    .kubernetesClusters()
-                    .listUserKubeConfigContent(
-                        KubernetesClusterImpl.this.resourceGroupName(),
-                        KubernetesClusterImpl.this.name(),
-                        format
-                    ))
-        );
+        return Collections.unmodifiableList(this.formatUserKubeConfigsMap.computeIfAbsent(format,
+            key -> KubernetesClusterImpl.this.manager()
+                .kubernetesClusters()
+                .listUserKubeConfigContent(KubernetesClusterImpl.this.resourceGroupName(),
+                    KubernetesClusterImpl.this.name(), format)));
     }
 
     @Override
@@ -247,11 +244,15 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public ManagedClusterSku sku() {
+        return this.innerModel().sku();
+    }
+
+    @Override
     public String systemAssignedManagedServiceIdentityPrincipalId() {
         String objectId = null;
         if (this.innerModel().identityProfile() != null) {
-            UserAssignedIdentity identity =
-                this.innerModel().identityProfile().get("kubeletidentity");
+            UserAssignedIdentity identity = this.innerModel().identityProfile().get("kubeletidentity");
             if (identity != null) {
                 objectId = identity.objectId();
             }
@@ -291,6 +292,11 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    @Override
     public void start() {
         this.startAsync().block();
     }
@@ -312,23 +318,20 @@ public class KubernetesClusterImpl
 
     @Override
     public Accepted<AgentPool> beginCreateAgentPool(String agentPoolName, AgentPoolData agentPool) {
-        return AcceptedImpl.newAccepted(
-            logger,
-            this.manager().serviceClient().getHttpPipeline(),
+        return AcceptedImpl.newAccepted(logger, this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
-            () -> this.manager().serviceClient().getAgentPools()
-                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), agentPoolName, agentPool.innerModel())
+            () -> this.manager()
+                .serviceClient()
+                .getAgentPools()
+                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), agentPoolName, agentPool.innerModel(),
+                    null, null)
                 .block(),
-            AgentPoolDataImpl::new,
-            AgentPoolInner.class,
-            null,
-            Context.NONE);
+            AgentPoolDataImpl::new, AgentPoolInner.class, null, Context.NONE);
     }
 
     @Override
     protected Mono<ManagedClusterInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getManagedClusters()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name())
@@ -349,15 +352,17 @@ public class KubernetesClusterImpl
         if (parameterSnapshotOnUpdate == null || parameter == null) {
             return true;
         } else {
-            final List<ManagedClusterAgentPoolProfile> parameterSnapshotAgentPools =
-                parameterSnapshotOnUpdate.agentPoolProfiles();
+            final List<ManagedClusterAgentPoolProfile> parameterSnapshotAgentPools
+                = parameterSnapshotOnUpdate.agentPoolProfiles();
             final List<ManagedClusterAgentPoolProfile> parameterAgentPools = parameter.agentPoolProfiles();
 
             // intersection of agent pool names
-            Set<String> intersectAgentPoolNames = parameter.agentPoolProfiles().stream()
+            Set<String> intersectAgentPoolNames = parameter.agentPoolProfiles()
+                .stream()
                 .map(ManagedClusterAgentPoolProfile::name)
                 .collect(Collectors.toSet());
-            intersectAgentPoolNames.retainAll(parameterSnapshotOnUpdate.agentPoolProfiles().stream()
+            intersectAgentPoolNames.retainAll(parameterSnapshotOnUpdate.agentPoolProfiles()
+                .stream()
                 .map(ManagedClusterAgentPoolProfile::name)
                 .collect(Collectors.toSet()));
 
@@ -377,8 +382,8 @@ public class KubernetesClusterImpl
             parameter.withAgentPoolProfiles(agentPools);
 
             try {
-                String jsonStrSnapshot =
-                    SERIALIZER_ADAPTER.serialize(parameterSnapshotOnUpdate, SerializerEncoding.JSON);
+                String jsonStrSnapshot
+                    = SERIALIZER_ADAPTER.serialize(parameterSnapshotOnUpdate, SerializerEncoding.JSON);
                 String jsonStr = SERIALIZER_ADAPTER.serialize(parameter, SerializerEncoding.JSON);
                 return !jsonStr.equals(jsonStrSnapshot);
             } catch (IOException e) {
@@ -396,8 +401,8 @@ public class KubernetesClusterImpl
         try {
             // deep copy via json
             String jsonStr = SERIALIZER_ADAPTER.serialize(this.innerModel(), SerializerEncoding.JSON);
-            updateParameter =
-                SERIALIZER_ADAPTER.deserialize(jsonStr, ManagedClusterInner.class, SerializerEncoding.JSON);
+            updateParameter
+                = SERIALIZER_ADAPTER.deserialize(jsonStr, ManagedClusterInner.class, SerializerEncoding.JSON);
         } catch (IOException e) {
             // ignored, null to signify not available
             updateParameter = null;
@@ -415,8 +420,7 @@ public class KubernetesClusterImpl
         final boolean createOrModified = this.isInCreateMode() || this.isClusterModifiedDuringUpdate(this.innerModel());
 
         if (createOrModified) {
-            return this
-                .manager()
+            return this.manager()
                 .serviceClient()
                 .getManagedClusters()
                 .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.innerModel())
@@ -434,6 +438,32 @@ public class KubernetesClusterImpl
         this.adminKubeConfigs = null;
         this.userKubeConfigs = null;
         this.formatUserKubeConfigsMap.clear();
+    }
+
+    @Override
+    public KubernetesClusterImpl withFreeSku() {
+        this.innerModel()
+            .withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.FREE).withName(ManagedClusterSkuName.BASE));
+        this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withStandardSku() {
+        this.innerModel()
+            .withSku(
+                new ManagedClusterSku().withTier(ManagedClusterSkuTier.STANDARD).withName(ManagedClusterSkuName.BASE));
+        this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withPremiumSku() {
+        this.innerModel()
+            .withSku(
+                new ManagedClusterSku().withTier(ManagedClusterSkuTier.PREMIUM).withName(ManagedClusterSkuName.BASE));
+        this.innerModel().withSupportPlan(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT);
+        return this;
     }
 
     @Override
@@ -460,21 +490,23 @@ public class KubernetesClusterImpl
 
     @Override
     public KubernetesClusterImpl withSshKey(String sshKeyData) {
-        this
-            .innerModel()
+        this.innerModel()
             .linuxProfile()
             .withSsh(
                 new ContainerServiceSshConfiguration().withPublicKeys(new ArrayList<ContainerServiceSshPublicKey>()));
-        this.innerModel().linuxProfile().ssh().publicKeys().add(
-            new ContainerServiceSshPublicKey().withKeyData(sshKeyData));
+        this.innerModel()
+            .linuxProfile()
+            .ssh()
+            .publicKeys()
+            .add(new ContainerServiceSshPublicKey().withKeyData(sshKeyData));
 
         return this;
     }
 
     @Override
     public KubernetesClusterImpl withServicePrincipalClientId(String clientId) {
-        this.innerModel().withServicePrincipalProfile(
-            new ManagedClusterServicePrincipalProfile().withClientId(clientId));
+        this.innerModel()
+            .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId(clientId));
         return this;
     }
 
@@ -498,8 +530,7 @@ public class KubernetesClusterImpl
 
     @Override
     public KubernetesClusterAgentPoolImpl defineAgentPool(String name) {
-        ManagedClusterAgentPoolProfile innerPoolProfile = new ManagedClusterAgentPoolProfile()
-            .withName(name)
+        ManagedClusterAgentPoolProfile innerPoolProfile = new ManagedClusterAgentPoolProfile().withName(name)
             .withOrchestratorVersion(this.innerModel().kubernetesVersion());
         return new KubernetesClusterAgentPoolImpl(innerPoolProfile, this);
     }
@@ -511,28 +542,29 @@ public class KubernetesClusterImpl
                 return new KubernetesClusterAgentPoolImpl(agentPoolProfile, this);
             }
         }
-        throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-            "Cannot get agent pool named %s", name)));
+        throw logger
+            .logExceptionAsError(new IllegalArgumentException(String.format("Cannot get agent pool named %s", name)));
     }
 
     @Override
     public Update withoutAgentPool(String name) {
         if (innerModel().agentPoolProfiles() != null) {
-            innerModel().withAgentPoolProfiles(
-                innerModel().agentPoolProfiles().stream()
-                    .filter(p -> !name.equals(p.name()))
-                    .collect(Collectors.toList()));
+            innerModel().withAgentPoolProfiles(innerModel().agentPoolProfiles()
+                .stream()
+                .filter(p -> !name.equals(p.name()))
+                .collect(Collectors.toList()));
 
-            this.addDependency(context ->
-                manager().serviceClient().getAgentPools().deleteAsync(resourceGroupName(), name(), name)
-                    .then(context.voidMono()));
+            this.addDependency(context -> manager().serviceClient()
+                .getAgentPools()
+                .deleteAsync(resourceGroupName(), name(), name)
+                .then(context.voidMono()));
         }
         return this;
     }
 
     @Override
-    public KubernetesCluster.DefinitionStages.NetworkProfileDefinitionStages.Blank<
-            KubernetesCluster.DefinitionStages.WithCreate>
+    public
+        KubernetesCluster.DefinitionStages.NetworkProfileDefinitionStages.Blank<KubernetesCluster.DefinitionStages.WithCreate>
         defineNetworkProfile() {
         return new KubernetesClusterNetworkProfileImpl(this);
     }
@@ -563,10 +595,10 @@ public class KubernetesClusterImpl
 
     public KubernetesClusterImpl addNewAgentPool(KubernetesClusterAgentPoolImpl agentPool) {
         if (!isInCreateMode()) {
-            this.addDependency(context ->
-                manager().serviceClient().getAgentPools().createOrUpdateAsync(
-                    resourceGroupName(), name(), agentPool.name(), agentPool.getAgentPoolInner())
-                    .then(context.voidMono()));
+            this.addDependency(context -> manager().serviceClient()
+                .getAgentPools()
+                .createOrUpdateAsync(resourceGroupName(), name(), agentPool.name(), agentPool.getAgentPoolInner())
+                .then(context.voidMono()));
         }
         innerModel().agentPoolProfiles().add(agentPool.innerModel());
         return this;
@@ -594,11 +626,12 @@ public class KubernetesClusterImpl
 
     @Override
     public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
-        Mono<Response<List<PrivateLinkResource>>> retList = this.manager().serviceClient().getPrivateLinkResources()
+        Mono<Response<List<PrivateLinkResource>>> retList = this.manager()
+            .serviceClient()
+            .getPrivateLinkResources()
             .listWithResponseAsync(this.resourceGroupName(), this.name())
-            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
-                .map(PrivateLinkResourceImpl::new)
-                .collect(Collectors.toList())));
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue().value().stream().map(PrivateLinkResourceImpl::new).collect(Collectors.toList())));
 
         return PagedConverter.convertListToPagedFlux(retList);
     }
@@ -610,12 +643,16 @@ public class KubernetesClusterImpl
 
     @Override
     public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
-        Mono<Response<List<PrivateEndpointConnection>>> retList = this.manager().serviceClient()
+        Mono<Response<List<PrivateEndpointConnection>>> retList = this.manager()
+            .serviceClient()
             .getPrivateEndpointConnections()
             .listWithResponseAsync(this.resourceGroupName(), this.name())
-            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
-                .map(PrivateEndpointConnectionImpl::new)
-                .collect(Collectors.toList())));
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue()
+                    .value()
+                    .stream()
+                    .map(PrivateEndpointConnectionImpl::new)
+                    .collect(Collectors.toList())));
 
         return PagedConverter.convertListToPagedFlux(retList);
     }
@@ -675,6 +712,18 @@ public class KubernetesClusterImpl
         return this;
     }
 
+    @Override
+    public KubernetesClusterImpl enablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl disablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        return this;
+    }
+
     private static final class PrivateLinkResourceImpl implements PrivateLinkResource {
         private final PrivateLinkResourceInner innerModel;
 
@@ -702,25 +751,22 @@ public class KubernetesClusterImpl
         private final PrivateEndpointConnectionInner innerModel;
 
         private final PrivateEndpoint privateEndpoint;
-        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
-            privateLinkServiceConnectionState;
+        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
         private final PrivateEndpointConnectionProvisioningState provisioningState;
 
         private PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
             this.innerModel = innerModel;
 
-            this.privateEndpoint = innerModel.privateEndpoint() == null
-                ? null
-                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+            this.privateEndpoint
+                = innerModel.privateEndpoint() == null ? null : new PrivateEndpoint(innerModel.privateEndpoint().id());
             this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
                 ? null
                 : new com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState(
-                innerModel.privateLinkServiceConnectionState().status() == null
-                    ? null
-                    : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
-                    .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
-                innerModel.privateLinkServiceConnectionState().description(),
-                "");
+                    innerModel.privateLinkServiceConnectionState().status() == null
+                        ? null
+                        : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
+                            .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
+                    innerModel.privateLinkServiceConnectionState().description(), "");
             this.provisioningState = innerModel.provisioningState() == null
                 ? null
                 : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());

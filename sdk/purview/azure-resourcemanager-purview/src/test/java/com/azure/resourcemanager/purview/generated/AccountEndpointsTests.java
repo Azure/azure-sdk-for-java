@@ -10,9 +10,8 @@ import com.azure.resourcemanager.purview.models.AccountEndpoints;
 public final class AccountEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountEndpoints model =
-            BinaryData
-                .fromString("{\"catalog\":\"guhmuouqfpr\",\"guardian\":\"wbnguitnwui\",\"scan\":\"a\"}")
+        AccountEndpoints model
+            = BinaryData.fromString("{\"catalog\":\"zdmohctbqvu\",\"guardian\":\"xdn\",\"scan\":\"vo\"}")
                 .toObject(AccountEndpoints.class);
     }
 

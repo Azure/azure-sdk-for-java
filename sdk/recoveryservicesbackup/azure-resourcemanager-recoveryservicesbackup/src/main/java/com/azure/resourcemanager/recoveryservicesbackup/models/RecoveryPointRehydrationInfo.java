@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** RP Rehydration Info. */
+/**
+ * RP Rehydration Info.
+ */
 @Fluent
-public final class RecoveryPointRehydrationInfo {
+public final class RecoveryPointRehydrationInfo implements JsonSerializable<RecoveryPointRehydrationInfo> {
     /*
      * How long the rehydrated RP should be kept
      * Should be ISO8601 Duration format e.g. "P7D"
      */
-    @JsonProperty(value = "rehydrationRetentionDuration")
     private String rehydrationRetentionDuration;
 
     /*
      * Rehydration Priority
      */
-    @JsonProperty(value = "rehydrationPriority")
     private RehydrationPriority rehydrationPriority;
 
-    /** Creates an instance of RecoveryPointRehydrationInfo class. */
+    /**
+     * Creates an instance of RecoveryPointRehydrationInfo class.
+     */
     public RecoveryPointRehydrationInfo() {
     }
 
     /**
-     * Get the rehydrationRetentionDuration property: How long the rehydrated RP should be kept Should be ISO8601
-     * Duration format e.g. "P7D".
-     *
+     * Get the rehydrationRetentionDuration property: How long the rehydrated RP should be kept
+     * Should be ISO8601 Duration format e.g. "P7D".
+     * 
      * @return the rehydrationRetentionDuration value.
      */
     public String rehydrationRetentionDuration() {
@@ -38,9 +44,9 @@ public final class RecoveryPointRehydrationInfo {
     }
 
     /**
-     * Set the rehydrationRetentionDuration property: How long the rehydrated RP should be kept Should be ISO8601
-     * Duration format e.g. "P7D".
-     *
+     * Set the rehydrationRetentionDuration property: How long the rehydrated RP should be kept
+     * Should be ISO8601 Duration format e.g. "P7D".
+     * 
      * @param rehydrationRetentionDuration the rehydrationRetentionDuration value to set.
      * @return the RecoveryPointRehydrationInfo object itself.
      */
@@ -51,7 +57,7 @@ public final class RecoveryPointRehydrationInfo {
 
     /**
      * Get the rehydrationPriority property: Rehydration Priority.
-     *
+     * 
      * @return the rehydrationPriority value.
      */
     public RehydrationPriority rehydrationPriority() {
@@ -60,7 +66,7 @@ public final class RecoveryPointRehydrationInfo {
 
     /**
      * Set the rehydrationPriority property: Rehydration Priority.
-     *
+     * 
      * @param rehydrationPriority the rehydrationPriority value to set.
      * @return the RecoveryPointRehydrationInfo object itself.
      */
@@ -71,9 +77,50 @@ public final class RecoveryPointRehydrationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rehydrationRetentionDuration", this.rehydrationRetentionDuration);
+        jsonWriter.writeStringField("rehydrationPriority",
+            this.rehydrationPriority == null ? null : this.rehydrationPriority.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPointRehydrationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPointRehydrationInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPointRehydrationInfo.
+     */
+    public static RecoveryPointRehydrationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPointRehydrationInfo deserializedRecoveryPointRehydrationInfo = new RecoveryPointRehydrationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rehydrationRetentionDuration".equals(fieldName)) {
+                    deserializedRecoveryPointRehydrationInfo.rehydrationRetentionDuration = reader.getString();
+                } else if ("rehydrationPriority".equals(fieldName)) {
+                    deserializedRecoveryPointRehydrationInfo.rehydrationPriority
+                        = RehydrationPriority.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPointRehydrationInfo;
+        });
     }
 }

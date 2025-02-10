@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.fluent.models.CapabilityProperties;
 public final class CapabilityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilityProperties model =
-            BinaryData
-                .fromString(
-                    "{\"publisher\":\"wczbys\",\"targetType\":\"pqxu\",\"description\":\"vyq\",\"parametersSchema\":\"wby\",\"urn\":\"k\"}")
-                .toObject(CapabilityProperties.class);
+        CapabilityProperties model = BinaryData.fromString(
+            "{\"publisher\":\"wczbys\",\"targetType\":\"pqxu\",\"description\":\"vyq\",\"parametersSchema\":\"wby\",\"urn\":\"k\"}")
+            .toObject(CapabilityProperties.class);
     }
 
     @org.junit.jupiter.api.Test

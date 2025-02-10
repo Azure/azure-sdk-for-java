@@ -5,64 +5,64 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Probe describes a health check to be performed against an App Instance to determine whether it is alive or ready to
  * receive traffic.
  */
 @Fluent
-public final class Probe {
+public final class Probe implements JsonSerializable<Probe> {
     /*
      * The action of the probe.
      */
-    @JsonProperty(value = "probeAction")
     private ProbeAction probeAction;
 
     /*
      * Indicate whether the probe is disabled.
      */
-    @JsonProperty(value = "disableProbe", required = true)
     private boolean disableProbe;
 
     /*
-     * Number of seconds after the App Instance has started before probes are
-     * initiated. More info:
+     * Number of seconds after the App Instance has started before probes are initiated. More info:
      * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
      */
-    @JsonProperty(value = "initialDelaySeconds")
     private Integer initialDelaySeconds;
 
     /*
      * How often (in seconds) to perform the probe. Minimum value is 1.
      */
-    @JsonProperty(value = "periodSeconds")
     private Integer periodSeconds;
 
     /*
      * Number of seconds after which the probe times out. Minimum value is 1.
      */
-    @JsonProperty(value = "timeoutSeconds")
     private Integer timeoutSeconds;
 
     /*
-     * Minimum consecutive failures for the probe to be considered failed after
-     * having succeeded. Minimum value is 1.
+     * Minimum consecutive failures for the probe to be considered failed after having succeeded. Minimum value is 1.
      */
-    @JsonProperty(value = "failureThreshold")
     private Integer failureThreshold;
 
     /*
-     * Minimum consecutive successes for the probe to be considered successful
-     * after having failed. Must be 1 for liveness and startup. Minimum value
-     * is 1.
+     * Minimum consecutive successes for the probe to be considered successful after having failed. Must be 1 for
+     * liveness and startup. Minimum value is 1.
      */
-    @JsonProperty(value = "successThreshold")
     private Integer successThreshold;
 
     /**
+     * Creates an instance of Probe class.
+     */
+    public Probe() {
+    }
+
+    /**
      * Get the probeAction property: The action of the probe.
-     *
+     * 
      * @return the probeAction value.
      */
     public ProbeAction probeAction() {
@@ -71,7 +71,7 @@ public final class Probe {
 
     /**
      * Set the probeAction property: The action of the probe.
-     *
+     * 
      * @param probeAction the probeAction value to set.
      * @return the Probe object itself.
      */
@@ -82,7 +82,7 @@ public final class Probe {
 
     /**
      * Get the disableProbe property: Indicate whether the probe is disabled.
-     *
+     * 
      * @return the disableProbe value.
      */
     public boolean disableProbe() {
@@ -91,7 +91,7 @@ public final class Probe {
 
     /**
      * Set the disableProbe property: Indicate whether the probe is disabled.
-     *
+     * 
      * @param disableProbe the disableProbe value to set.
      * @return the Probe object itself.
      */
@@ -103,7 +103,7 @@ public final class Probe {
     /**
      * Get the initialDelaySeconds property: Number of seconds after the App Instance has started before probes are
      * initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
-     *
+     * 
      * @return the initialDelaySeconds value.
      */
     public Integer initialDelaySeconds() {
@@ -113,7 +113,7 @@ public final class Probe {
     /**
      * Set the initialDelaySeconds property: Number of seconds after the App Instance has started before probes are
      * initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
-     *
+     * 
      * @param initialDelaySeconds the initialDelaySeconds value to set.
      * @return the Probe object itself.
      */
@@ -124,7 +124,7 @@ public final class Probe {
 
     /**
      * Get the periodSeconds property: How often (in seconds) to perform the probe. Minimum value is 1.
-     *
+     * 
      * @return the periodSeconds value.
      */
     public Integer periodSeconds() {
@@ -133,7 +133,7 @@ public final class Probe {
 
     /**
      * Set the periodSeconds property: How often (in seconds) to perform the probe. Minimum value is 1.
-     *
+     * 
      * @param periodSeconds the periodSeconds value to set.
      * @return the Probe object itself.
      */
@@ -144,7 +144,7 @@ public final class Probe {
 
     /**
      * Get the timeoutSeconds property: Number of seconds after which the probe times out. Minimum value is 1.
-     *
+     * 
      * @return the timeoutSeconds value.
      */
     public Integer timeoutSeconds() {
@@ -153,7 +153,7 @@ public final class Probe {
 
     /**
      * Set the timeoutSeconds property: Number of seconds after which the probe times out. Minimum value is 1.
-     *
+     * 
      * @param timeoutSeconds the timeoutSeconds value to set.
      * @return the Probe object itself.
      */
@@ -165,7 +165,7 @@ public final class Probe {
     /**
      * Get the failureThreshold property: Minimum consecutive failures for the probe to be considered failed after
      * having succeeded. Minimum value is 1.
-     *
+     * 
      * @return the failureThreshold value.
      */
     public Integer failureThreshold() {
@@ -175,7 +175,7 @@ public final class Probe {
     /**
      * Set the failureThreshold property: Minimum consecutive failures for the probe to be considered failed after
      * having succeeded. Minimum value is 1.
-     *
+     * 
      * @param failureThreshold the failureThreshold value to set.
      * @return the Probe object itself.
      */
@@ -187,7 +187,7 @@ public final class Probe {
     /**
      * Get the successThreshold property: Minimum consecutive successes for the probe to be considered successful after
      * having failed. Must be 1 for liveness and startup. Minimum value is 1.
-     *
+     * 
      * @return the successThreshold value.
      */
     public Integer successThreshold() {
@@ -197,7 +197,7 @@ public final class Probe {
     /**
      * Set the successThreshold property: Minimum consecutive successes for the probe to be considered successful after
      * having failed. Must be 1 for liveness and startup. Minimum value is 1.
-     *
+     * 
      * @param successThreshold the successThreshold value to set.
      * @return the Probe object itself.
      */
@@ -208,12 +208,67 @@ public final class Probe {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (probeAction() != null) {
             probeAction().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("disableProbe", this.disableProbe);
+        jsonWriter.writeJsonField("probeAction", this.probeAction);
+        jsonWriter.writeNumberField("initialDelaySeconds", this.initialDelaySeconds);
+        jsonWriter.writeNumberField("periodSeconds", this.periodSeconds);
+        jsonWriter.writeNumberField("timeoutSeconds", this.timeoutSeconds);
+        jsonWriter.writeNumberField("failureThreshold", this.failureThreshold);
+        jsonWriter.writeNumberField("successThreshold", this.successThreshold);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Probe from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Probe if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Probe.
+     */
+    public static Probe fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Probe deserializedProbe = new Probe();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disableProbe".equals(fieldName)) {
+                    deserializedProbe.disableProbe = reader.getBoolean();
+                } else if ("probeAction".equals(fieldName)) {
+                    deserializedProbe.probeAction = ProbeAction.fromJson(reader);
+                } else if ("initialDelaySeconds".equals(fieldName)) {
+                    deserializedProbe.initialDelaySeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("periodSeconds".equals(fieldName)) {
+                    deserializedProbe.periodSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("timeoutSeconds".equals(fieldName)) {
+                    deserializedProbe.timeoutSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("failureThreshold".equals(fieldName)) {
+                    deserializedProbe.failureThreshold = reader.getNullable(JsonReader::getInt);
+                } else if ("successThreshold".equals(fieldName)) {
+                    deserializedProbe.successThreshold = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProbe;
+        });
     }
 }

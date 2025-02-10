@@ -16,13 +16,10 @@ import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.message.RawMessageEncoder;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -47,37 +44,19 @@ public class AvroSerializerTest {
     private final EncoderFactory encoderFactory = EncoderFactory.get();
     private final DecoderFactory decoderFactory = DecoderFactory.get();
 
-    private AutoCloseable mocksCloseable;
-
-    @BeforeEach
-    public void beforeEach() {
-        mocksCloseable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    public void afterEach() throws Exception {
-        if (mocksCloseable != null) {
-            mocksCloseable.close();
-        }
-    }
-
     /**
      * Tests that the correct exceptions are thrown when constructing an instance with null.
      */
     @Test
     public void constructorNull() {
-        assertThrows(NullPointerException.class,
-            () -> new AvroSerializer(true, null, decoderFactory));
-        assertThrows(NullPointerException.class,
-            () -> new AvroSerializer(true, encoderFactory, null));
+        assertThrows(NullPointerException.class, () -> new AvroSerializer(true, null, decoderFactory));
+        assertThrows(NullPointerException.class, () -> new AvroSerializer(true, encoderFactory, null));
     }
 
     public static Stream<Arguments> getSchemaStringPrimitive() {
-        return Stream.of(
-            Arguments.of("foo", Schema.create(Schema.Type.STRING)),
+        return Stream.of(Arguments.of("foo", Schema.create(Schema.Type.STRING)),
             Arguments.of(new byte[4], Schema.create(Schema.Type.BYTES)),
-            Arguments.of(14, Schema.create(Schema.Type.INT)),
-            Arguments.of(14L, Schema.create(Schema.Type.LONG)),
+            Arguments.of(14, Schema.create(Schema.Type.INT)), Arguments.of(14L, Schema.create(Schema.Type.LONG)),
             Arguments.of(15.0f, Schema.create(Schema.Type.FLOAT)),
             Arguments.of(15.00d, Schema.create(Schema.Type.DOUBLE)),
             Arguments.of(Boolean.FALSE, Schema.create(Schema.Type.BOOLEAN)),
@@ -128,14 +107,15 @@ public class AvroSerializerTest {
 
         final PlayingCard card = PlayingCard.newBuilder()
             .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
-            .setIsFaceCard(true).setCardValue(13)
+            .setIsFaceCard(true)
+            .setCardValue(13)
             .build();
         final String schemaId = "schema-id-1";
 
         // Using the raw message encoder because the default card.getByteBuffer() uses BinaryMessageEncoder which adds
         // a header.
-        final RawMessageEncoder<PlayingCard> rawMessageEncoder = new RawMessageEncoder<>(card.getSpecificData(),
-            card.getSchema());
+        final RawMessageEncoder<PlayingCard> rawMessageEncoder
+            = new RawMessageEncoder<>(card.getSpecificData(), card.getSchema());
         final byte[] expectedData = rawMessageEncoder.encode(card).array();
 
         // Act
@@ -155,10 +135,10 @@ public class AvroSerializerTest {
         final AvroSerializer registryUtils = new AvroSerializer(false, encoderFactory, decoderFactory);
 
         final PlayingCard expected = PlayingCard.newBuilder()
-                .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
-                .setIsFaceCard(true)
-                .setCardValue(13)
-                .build();
+            .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
+            .setIsFaceCard(true)
+            .setCardValue(13)
+            .build();
         final String schemaId = "schema-id-1";
 
         // Using the raw message encoder because the default card.getByteBuffer() uses BinaryMessageEncoder which adds
@@ -167,7 +147,7 @@ public class AvroSerializerTest {
 
         // Act
         final PlayingCard actual = registryUtils.deserialize(ByteBuffer.wrap(encoded), expected.getSchema(),
-                TypeReference.createInstance(PlayingCard.class));
+            TypeReference.createInstance(PlayingCard.class));
 
         // Assert
         assertCardEquals(expected, actual);
@@ -185,15 +165,15 @@ public class AvroSerializerTest {
 
         final PlayingCard card = PlayingCard.newBuilder()
             .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
-            .setIsFaceCard(true).setCardValue(13)
+            .setIsFaceCard(true)
+            .setCardValue(13)
             .build();
         final PlayingCard card2 = PlayingCard.newBuilder()
             .setPlayingCardSuit(PlayingCardSuit.SPADES)
-            .setIsFaceCard(false).setCardValue(25)
+            .setIsFaceCard(false)
+            .setCardValue(25)
             .build();
-        final HandOfCards expected = HandOfCards.newBuilder()
-            .setCards(Arrays.asList(card, card2))
-            .build();
+        final HandOfCards expected = HandOfCards.newBuilder().setCards(Arrays.asList(card, card2)).build();
 
         final ByteBuffer expectedData = expected.toByteBuffer();
 
@@ -211,8 +191,7 @@ public class AvroSerializerTest {
         expected.getCards().forEach(expectedCard -> {
             final int expectedSize = list.size() - 1;
 
-            assertTrue(list.removeIf(playingCard ->
-                expectedCard.getIsFaceCard() == playingCard.getIsFaceCard()
+            assertTrue(list.removeIf(playingCard -> expectedCard.getIsFaceCard() == playingCard.getIsFaceCard()
                 && expectedCard.getCardValue() == playingCard.getCardValue()
                 && expectedCard.getPlayingCardSuit() == playingCard.getPlayingCardSuit()));
 
@@ -223,12 +202,11 @@ public class AvroSerializerTest {
     }
 
     public static Stream<Arguments> getSchemaForType() {
-        final byte[] byteArray = new byte[]{10, 3, 5};
+        final byte[] byteArray = new byte[] { 10, 3, 5 };
         final ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
-        final Byte[] byteObjectArray = new Byte[]{5, 10, 5, 2};
+        final Byte[] byteObjectArray = new Byte[] { 5, 10, 5, 2 };
 
-        return Stream.of(
-            Arguments.of("foo", Schema.create(Schema.Type.STRING)),
+        return Stream.of(Arguments.of("foo", Schema.create(Schema.Type.STRING)),
 
             Arguments.of(byteArray, Schema.create(Schema.Type.BYTES)),
             Arguments.of(byteObjectArray, Schema.create(Schema.Type.BYTES)),
@@ -249,8 +227,7 @@ public class AvroSerializerTest {
             Arguments.of(Boolean.TRUE, Schema.create(Schema.Type.BOOLEAN)),
             Arguments.of(false, Schema.create(Schema.Type.BOOLEAN)),
 
-            Arguments.of(null, Schema.create(Schema.Type.NULL))
-        );
+            Arguments.of(null, Schema.create(Schema.Type.NULL)));
     }
 
     /**
@@ -271,29 +248,13 @@ public class AvroSerializerTest {
 
     @Test
     public void getSchemaTypeGenericRecord() {
-        final String json = "{\n"
-            + "   \"type\": \"record\",\n"
-            + "   \"name\": \"Shoe\",\n"
-            + "   \"namespace\": \"org.example.model\",\n"
-            + "   \"fields\": [\n"
-            + "      {\n"
-            + "         \"name\": \"name\",\n"
-            + "         \"type\": \"string\"\n"
-            + "      },\n"
-            + "      {\n"
-            + "         \"name\": \"size\",\n"
-            + "         \"type\": \"double\"\n"
-            + "      },\n"
-            + "      {\n"
-            + "         \"name\": \"quantities\",\n"
-            + "         \"type\": {\n"
-            + "            \"type\": \"array\",\n"
-            + "            \"items\": \"int\",\n"
-            + "            \"java-class\": \"java.util.List\"\n"
-            + "         }\n"
-            + "      }\n"
-            + "   ]\n"
-            + "}";
+        final String json = "{\n" + "   \"type\": \"record\",\n" + "   \"name\": \"Shoe\",\n"
+            + "   \"namespace\": \"org.example.model\",\n" + "   \"fields\": [\n" + "      {\n"
+            + "         \"name\": \"name\",\n" + "         \"type\": \"string\"\n" + "      },\n" + "      {\n"
+            + "         \"name\": \"size\",\n" + "         \"type\": \"double\"\n" + "      },\n" + "      {\n"
+            + "         \"name\": \"quantities\",\n" + "         \"type\": {\n" + "            \"type\": \"array\",\n"
+            + "            \"items\": \"int\",\n" + "            \"java-class\": \"java.util.List\"\n" + "         }\n"
+            + "      }\n" + "   ]\n" + "}";
         final Schema expectedSchema = new Schema.Parser().parse(json);
         final GenericRecord record = new GenericData.Record(expectedSchema);
 
@@ -327,8 +288,7 @@ public class AvroSerializerTest {
     }
 
     public static Stream<Arguments> getSchemaForTypeReference() {
-        return Stream.of(
-            Arguments.of(TypeReference.createInstance(Person.class), Person.SCHEMA$),
+        return Stream.of(Arguments.of(TypeReference.createInstance(Person.class), Person.SCHEMA$),
             Arguments.of(TypeReference.createInstance(SchemaBuilder.class), null),
             Arguments.of(TypeReference.createInstance(Person2.class), Person2.SCHEMA$));
     }

@@ -5,49 +5,53 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The KeyVaultProperties model. */
+/**
+ * The KeyVaultProperties model.
+ */
 @Fluent
-public final class KeyVaultProperties {
+public final class KeyVaultProperties implements JsonSerializable<KeyVaultProperties> {
     /*
      * Key vault uri to access the encryption key.
      */
-    @JsonProperty(value = "keyIdentifier")
     private String keyIdentifier;
 
     /*
      * The fully qualified key identifier that includes the version of the key that is actually used for encryption.
      */
-    @JsonProperty(value = "versionedKeyIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String versionedKeyIdentifier;
 
     /*
      * The client id of the identity which will be used to access key vault.
      */
-    @JsonProperty(value = "identity")
     private String identity;
 
     /*
      * Auto key rotation status for a CMK enabled registry.
      */
-    @JsonProperty(value = "keyRotationEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean keyRotationEnabled;
 
     /*
      * Timestamp of the last successful key rotation.
      */
-    @JsonProperty(value = "lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastKeyRotationTimestamp;
 
-    /** Creates an instance of KeyVaultProperties class. */
+    /**
+     * Creates an instance of KeyVaultProperties class.
+     */
     public KeyVaultProperties() {
     }
 
     /**
      * Get the keyIdentifier property: Key vault uri to access the encryption key.
-     *
+     * 
      * @return the keyIdentifier value.
      */
     public String keyIdentifier() {
@@ -56,7 +60,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyIdentifier property: Key vault uri to access the encryption key.
-     *
+     * 
      * @param keyIdentifier the keyIdentifier value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class KeyVaultProperties {
     /**
      * Get the versionedKeyIdentifier property: The fully qualified key identifier that includes the version of the key
      * that is actually used for encryption.
-     *
+     * 
      * @return the versionedKeyIdentifier value.
      */
     public String versionedKeyIdentifier() {
@@ -77,7 +81,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the identity property: The client id of the identity which will be used to access key vault.
-     *
+     * 
      * @return the identity value.
      */
     public String identity() {
@@ -86,7 +90,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the identity property: The client id of the identity which will be used to access key vault.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -97,7 +101,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyRotationEnabled property: Auto key rotation status for a CMK enabled registry.
-     *
+     * 
      * @return the keyRotationEnabled value.
      */
     public Boolean keyRotationEnabled() {
@@ -106,7 +110,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the lastKeyRotationTimestamp property: Timestamp of the last successful key rotation.
-     *
+     * 
      * @return the lastKeyRotationTimestamp value.
      */
     public OffsetDateTime lastKeyRotationTimestamp() {
@@ -115,9 +119,55 @@ public final class KeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyIdentifier", this.keyIdentifier);
+        jsonWriter.writeStringField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultProperties.
+     */
+    public static KeyVaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultProperties deserializedKeyVaultProperties = new KeyVaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyIdentifier".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyIdentifier = reader.getString();
+                } else if ("versionedKeyIdentifier".equals(fieldName)) {
+                    deserializedKeyVaultProperties.versionedKeyIdentifier = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedKeyVaultProperties.identity = reader.getString();
+                } else if ("keyRotationEnabled".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyRotationEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastKeyRotationTimestamp".equals(fieldName)) {
+                    deserializedKeyVaultProperties.lastKeyRotationTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultProperties;
+        });
     }
 }

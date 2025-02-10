@@ -7,11 +7,13 @@ package com.azure.resourcemanager.logic.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationServiceEnvironmentSkus. */
+/**
+ * Resource collection API of IntegrationServiceEnvironmentSkus.
+ */
 public interface IntegrationServiceEnvironmentSkus {
     /**
      * Gets a list of integration service environment Skus.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -19,12 +21,12 @@ public interface IntegrationServiceEnvironmentSkus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration service environment Skus as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IntegrationServiceEnvironmentSkuDefinition> list(
-        String resourceGroup, String integrationServiceEnvironmentName);
+    PagedIterable<IntegrationServiceEnvironmentSkuDefinition> list(String resourceGroup,
+        String integrationServiceEnvironmentName);
 
     /**
      * Gets a list of integration service environment Skus.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param context The context to associate with this operation.
@@ -33,6 +35,6 @@ public interface IntegrationServiceEnvironmentSkus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration service environment Skus as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IntegrationServiceEnvironmentSkuDefinition> list(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context);
+    PagedIterable<IntegrationServiceEnvironmentSkuDefinition> list(String resourceGroup,
+        String integrationServiceEnvironmentName, Context context);
 }

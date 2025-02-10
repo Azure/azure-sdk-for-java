@@ -15,21 +15,22 @@ public final class DataFlowReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowReference model = BinaryData.fromString(
-            "{\"type\":\"DataFlowReference\",\"referenceName\":\"sbede\",\"datasetParameters\":\"dataexkxbhx\",\"parameters\":{\"mnhjevdyzn\":\"datanul\",\"kmq\":\"dataajsvk\",\"iizjixlqfhefkwa\":\"datazzkivyhjr\",\"nlqxsjxtele\":\"datasolronqqlm\"},\"\":{\"oolzqocarkuzl\":\"datauqbo\",\"t\":\"datacnn\"}}")
+            "{\"type\":\"DataFlowReference\",\"referenceName\":\"eqir\",\"datasetParameters\":\"datajclykcg\",\"parameters\":{\"punettepdjxq\":\"datapjlvczuoda\"},\"\":{\"uiylpc\":\"dataoy\",\"vesk\":\"dataaewse\",\"fn\":\"dataxegqphr\",\"bcbcpz\":\"datahctmjtsgh\"}}")
             .toObject(DataFlowReference.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.type());
-        Assertions.assertEquals("sbede", model.referenceName());
+        Assertions.assertEquals("eqir", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataFlowReference model = new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-            .withReferenceName("sbede").withDatasetParameters("dataexkxbhx").withParameters(mapOf("mnhjevdyzn",
-                "datanul", "kmq", "dataajsvk", "iizjixlqfhefkwa", "datazzkivyhjr", "nlqxsjxtele", "datasolronqqlm"))
+            .withReferenceName("eqir")
+            .withDatasetParameters("datajclykcg")
+            .withParameters(mapOf("punettepdjxq", "datapjlvczuoda"))
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DataFlowReference.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.type());
-        Assertions.assertEquals("sbede", model.referenceName());
+        Assertions.assertEquals("eqir", model.referenceName());
     }
 
     // Use "Map.of" if available

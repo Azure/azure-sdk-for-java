@@ -6,26 +6,33 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.IpAddressGroup;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The JSON object that contains the properties required to create an edgenode. */
+/**
+ * The JSON object that contains the properties required to create an edgenode.
+ */
 @Fluent
-public final class EdgeNodeProperties {
+public final class EdgeNodeProperties implements JsonSerializable<EdgeNodeProperties> {
     /*
      * List of ip address groups.
      */
-    @JsonProperty(value = "ipAddressGroups", required = true)
     private List<IpAddressGroup> ipAddressGroups;
 
-    /** Creates an instance of EdgeNodeProperties class. */
+    /**
+     * Creates an instance of EdgeNodeProperties class.
+     */
     public EdgeNodeProperties() {
     }
 
     /**
      * Get the ipAddressGroups property: List of ip address groups.
-     *
+     * 
      * @return the ipAddressGroups value.
      */
     public List<IpAddressGroup> ipAddressGroups() {
@@ -34,7 +41,7 @@ public final class EdgeNodeProperties {
 
     /**
      * Set the ipAddressGroups property: List of ip address groups.
-     *
+     * 
      * @param ipAddressGroups the ipAddressGroups value to set.
      * @return the EdgeNodeProperties object itself.
      */
@@ -45,19 +52,58 @@ public final class EdgeNodeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipAddressGroups() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipAddressGroups in model EdgeNodeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ipAddressGroups in model EdgeNodeProperties"));
         } else {
             ipAddressGroups().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EdgeNodeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipAddressGroups", this.ipAddressGroups,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdgeNodeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdgeNodeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdgeNodeProperties.
+     */
+    public static EdgeNodeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdgeNodeProperties deserializedEdgeNodeProperties = new EdgeNodeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipAddressGroups".equals(fieldName)) {
+                    List<IpAddressGroup> ipAddressGroups
+                        = reader.readArray(reader1 -> IpAddressGroup.fromJson(reader1));
+                    deserializedEdgeNodeProperties.ipAddressGroups = ipAddressGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdgeNodeProperties;
+        });
+    }
 }

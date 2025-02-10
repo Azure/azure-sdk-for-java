@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Indicates whether the Role Definition was built-in or user created.
  */
@@ -36,7 +33,6 @@ public enum MongoRoleDefinitionType {
      * @param value the serialized value to parse.
      * @return the parsed MongoRoleDefinitionType object, or null if unable to parse.
      */
-    @JsonCreator
     public static MongoRoleDefinitionType fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum MongoRoleDefinitionType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

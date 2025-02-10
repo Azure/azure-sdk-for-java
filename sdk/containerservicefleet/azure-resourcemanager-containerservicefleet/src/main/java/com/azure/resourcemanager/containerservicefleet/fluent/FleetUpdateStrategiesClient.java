@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetUpdateStrategyInner;
 
-/** An instance of this class provides access to all the operations defined in FleetUpdateStrategiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FleetUpdateStrategiesClient.
+ */
 public interface FleetUpdateStrategiesClient {
     /**
      * List FleetUpdateStrategy resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface FleetUpdateStrategiesClient {
 
     /**
      * List FleetUpdateStrategy resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface FleetUpdateStrategiesClient {
 
     /**
      * Get a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -55,12 +57,12 @@ public interface FleetUpdateStrategiesClient {
      * @return a FleetUpdateStrategy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FleetUpdateStrategyInner> getWithResponse(
-        String resourceGroupName, String fleetName, String updateStrategyName, Context context);
+    Response<FleetUpdateStrategyInner> getWithResponse(String resourceGroupName, String fleetName,
+        String updateStrategyName, Context context);
 
     /**
      * Get a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -74,7 +76,7 @@ public interface FleetUpdateStrategiesClient {
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -83,7 +85,7 @@ public interface FleetUpdateStrategiesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of defines a multi-stage process to perform update operations across
-     *     members of a Fleet.
+     * members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdate(
@@ -91,7 +93,7 @@ public interface FleetUpdateStrategiesClient {
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -103,21 +105,16 @@ public interface FleetUpdateStrategiesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of defines a multi-stage process to perform update operations across
-     *     members of a Fleet.
+     * members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String fleetName,
-        String updateStrategyName,
-        FleetUpdateStrategyInner resource,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+        String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource,
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -128,12 +125,12 @@ public interface FleetUpdateStrategiesClient {
      * @return defines a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FleetUpdateStrategyInner createOrUpdate(
-        String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource);
+    FleetUpdateStrategyInner createOrUpdate(String resourceGroupName, String fleetName, String updateStrategyName,
+        FleetUpdateStrategyInner resource);
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -147,18 +144,12 @@ public interface FleetUpdateStrategiesClient {
      * @return defines a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FleetUpdateStrategyInner createOrUpdate(
-        String resourceGroupName,
-        String fleetName,
-        String updateStrategyName,
-        FleetUpdateStrategyInner resource,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    FleetUpdateStrategyInner createOrUpdate(String resourceGroupName, String fleetName, String updateStrategyName,
+        FleetUpdateStrategyInner resource, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -168,12 +159,12 @@ public interface FleetUpdateStrategiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String fleetName, String updateStrategyName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+        String updateStrategyName);
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -185,12 +176,12 @@ public interface FleetUpdateStrategiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String fleetName, String updateStrategyName, String ifMatch, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+        String updateStrategyName, String ifMatch, Context context);
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -203,7 +194,7 @@ public interface FleetUpdateStrategiesClient {
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.

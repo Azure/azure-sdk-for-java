@@ -24,8 +24,7 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public ConnectedEnvironmentsImpl(
-        ConnectedEnvironmentsClient innerClient,
+    public ConnectedEnvironmentsImpl(ConnectedEnvironmentsClient innerClient,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -33,34 +32,31 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
 
     public PagedIterable<ConnectedEnvironment> list() {
         PagedIterable<ConnectedEnvironmentInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ConnectedEnvironmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectedEnvironmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConnectedEnvironment> list(Context context) {
         PagedIterable<ConnectedEnvironmentInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ConnectedEnvironmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectedEnvironmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConnectedEnvironment> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ConnectedEnvironmentInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ConnectedEnvironmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectedEnvironmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConnectedEnvironment> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<ConnectedEnvironmentInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ConnectedEnvironmentImpl(inner1, this.manager()));
+        PagedIterable<ConnectedEnvironmentInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConnectedEnvironmentImpl(inner1, this.manager()));
     }
 
-    public Response<ConnectedEnvironment> getByResourceGroupWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, Context context) {
-        Response<ConnectedEnvironmentInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, context);
+    public Response<ConnectedEnvironment> getByResourceGroupWithResponse(String resourceGroupName,
+        String connectedEnvironmentName, Context context) {
+        Response<ConnectedEnvironmentInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConnectedEnvironmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -68,8 +64,8 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
     }
 
     public ConnectedEnvironment getByResourceGroup(String resourceGroupName, String connectedEnvironmentName) {
-        ConnectedEnvironmentInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, connectedEnvironmentName);
+        ConnectedEnvironmentInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, connectedEnvironmentName);
         if (inner != null) {
             return new ConnectedEnvironmentImpl(inner, this.manager());
         } else {
@@ -85,15 +81,12 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
         this.serviceClient().delete(resourceGroupName, connectedEnvironmentName, context);
     }
 
-    public Response<ConnectedEnvironment> updateWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, Context context) {
-        Response<ConnectedEnvironmentInner> inner =
-            this.serviceClient().updateWithResponse(resourceGroupName, connectedEnvironmentName, context);
+    public Response<ConnectedEnvironment> updateWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        Context context) {
+        Response<ConnectedEnvironmentInner> inner
+            = this.serviceClient().updateWithResponse(resourceGroupName, connectedEnvironmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConnectedEnvironmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -109,35 +102,23 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
         }
     }
 
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest,
-        Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this
-                .serviceClient()
-                .checkNameAvailabilityWithResponse(
-                    resourceGroupName, connectedEnvironmentName, checkNameAvailabilityRequest, context);
+    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String connectedEnvironmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
+        Response<CheckNameAvailabilityResponseInner> inner = this.serviceClient()
+            .checkNameAvailabilityWithResponse(resourceGroupName, connectedEnvironmentName,
+                checkNameAvailabilityRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckNameAvailabilityResponse checkNameAvailability(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
-        CheckNameAvailabilityResponseInner inner =
-            this
-                .serviceClient()
-                .checkNameAvailability(resourceGroupName, connectedEnvironmentName, checkNameAvailabilityRequest);
+    public CheckNameAvailabilityResponse checkNameAvailability(String resourceGroupName,
+        String connectedEnvironmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+        CheckNameAvailabilityResponseInner inner = this.serviceClient()
+            .checkNameAvailability(resourceGroupName, connectedEnvironmentName, checkNameAvailabilityRequest);
         if (inner != null) {
             return new CheckNameAvailabilityResponseImpl(inner, this.manager());
         } else {
@@ -146,91 +127,58 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
     }
 
     public ConnectedEnvironment getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String connectedEnvironmentName = Utils.getValueFromIdByName(id, "connectedEnvironments");
+        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
         if (connectedEnvironmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, Context.NONE)
             .getValue();
     }
 
     public Response<ConnectedEnvironment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String connectedEnvironmentName = Utils.getValueFromIdByName(id, "connectedEnvironments");
+        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
         if (connectedEnvironmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, connectedEnvironmentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String connectedEnvironmentName = Utils.getValueFromIdByName(id, "connectedEnvironments");
+        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
         if (connectedEnvironmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
         }
         this.delete(resourceGroupName, connectedEnvironmentName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String connectedEnvironmentName = Utils.getValueFromIdByName(id, "connectedEnvironments");
+        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
         if (connectedEnvironmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
         }
         this.delete(resourceGroupName, connectedEnvironmentName, context);
     }

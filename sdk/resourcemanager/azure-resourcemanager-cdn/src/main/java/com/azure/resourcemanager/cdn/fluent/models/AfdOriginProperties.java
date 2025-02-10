@@ -5,35 +5,45 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The JSON object that contains the properties of the origin. */
+/**
+ * The JSON object that contains the properties of the origin.
+ */
 @Fluent
 public final class AfdOriginProperties extends AfdOriginUpdatePropertiesParameters {
     /*
      * Provisioning status
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AfdProvisioningState provisioningState;
 
     /*
      * The deploymentStatus property.
      */
-    @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
 
-    /** Creates an instance of AfdOriginProperties class. */
+    /*
+     * The name of the origin group which contains this origin.
+     */
+    private String originGroupName;
+
+    /**
+     * Creates an instance of AfdOriginProperties class.
+     */
     public AfdOriginProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -42,78 +52,108 @@ public final class AfdOriginProperties extends AfdOriginUpdatePropertiesParamete
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
         return this.deploymentStatus;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the originGroupName property: The name of the origin group which contains this origin.
+     * 
+     * @return the originGroupName value.
+     */
+    @Override
+    public String originGroupName() {
+        return this.originGroupName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withAzureOrigin(ResourceReference azureOrigin) {
         super.withAzureOrigin(azureOrigin);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withHostname(String hostname) {
         super.withHostname(hostname);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withHttpPort(Integer httpPort) {
         super.withHttpPort(httpPort);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withHttpsPort(Integer httpsPort) {
         super.withHttpsPort(httpsPort);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withOriginHostHeader(String originHostHeader) {
         super.withOriginHostHeader(originHostHeader);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withPriority(Integer priority) {
         super.withPriority(priority);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withWeight(Integer weight) {
         super.withWeight(weight);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AfdOriginProperties withSharedPrivateLinkResource(
-        SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
+    public AfdOriginProperties
+        withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         super.withSharedPrivateLinkResource(sharedPrivateLinkResource);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withEnabledState(EnabledState enabledState) {
         super.withEnabledState(enabledState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AfdOriginProperties withEnforceCertificateNameCheck(Boolean enforceCertificateNameCheck) {
         super.withEnforceCertificateNameCheck(enforceCertificateNameCheck);
@@ -122,11 +162,83 @@ public final class AfdOriginProperties extends AfdOriginUpdatePropertiesParamete
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("azureOrigin", azureOrigin());
+        jsonWriter.writeStringField("hostName", hostname());
+        jsonWriter.writeNumberField("httpPort", httpPort());
+        jsonWriter.writeNumberField("httpsPort", httpsPort());
+        jsonWriter.writeStringField("originHostHeader", originHostHeader());
+        jsonWriter.writeNumberField("priority", priority());
+        jsonWriter.writeNumberField("weight", weight());
+        jsonWriter.writeJsonField("sharedPrivateLinkResource", sharedPrivateLinkResource());
+        jsonWriter.writeStringField("enabledState", enabledState() == null ? null : enabledState().toString());
+        jsonWriter.writeBooleanField("enforceCertificateNameCheck", enforceCertificateNameCheck());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdOriginProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdOriginProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AfdOriginProperties.
+     */
+    public static AfdOriginProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdOriginProperties deserializedAfdOriginProperties = new AfdOriginProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("originGroupName".equals(fieldName)) {
+                    deserializedAfdOriginProperties.originGroupName = reader.getString();
+                } else if ("azureOrigin".equals(fieldName)) {
+                    deserializedAfdOriginProperties.withAzureOrigin(ResourceReference.fromJson(reader));
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedAfdOriginProperties.withHostname(reader.getString());
+                } else if ("httpPort".equals(fieldName)) {
+                    deserializedAfdOriginProperties.withHttpPort(reader.getNullable(JsonReader::getInt));
+                } else if ("httpsPort".equals(fieldName)) {
+                    deserializedAfdOriginProperties.withHttpsPort(reader.getNullable(JsonReader::getInt));
+                } else if ("originHostHeader".equals(fieldName)) {
+                    deserializedAfdOriginProperties.withOriginHostHeader(reader.getString());
+                } else if ("priority".equals(fieldName)) {
+                    deserializedAfdOriginProperties.withPriority(reader.getNullable(JsonReader::getInt));
+                } else if ("weight".equals(fieldName)) {
+                    deserializedAfdOriginProperties.withWeight(reader.getNullable(JsonReader::getInt));
+                } else if ("sharedPrivateLinkResource".equals(fieldName)) {
+                    deserializedAfdOriginProperties
+                        .withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties.fromJson(reader));
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedAfdOriginProperties.withEnabledState(EnabledState.fromString(reader.getString()));
+                } else if ("enforceCertificateNameCheck".equals(fieldName)) {
+                    deserializedAfdOriginProperties
+                        .withEnforceCertificateNameCheck(reader.getNullable(JsonReader::getBoolean));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAfdOriginProperties.provisioningState
+                        = AfdProvisioningState.fromString(reader.getString());
+                } else if ("deploymentStatus".equals(fieldName)) {
+                    deserializedAfdOriginProperties.deploymentStatus = DeploymentStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdOriginProperties;
+        });
     }
 }

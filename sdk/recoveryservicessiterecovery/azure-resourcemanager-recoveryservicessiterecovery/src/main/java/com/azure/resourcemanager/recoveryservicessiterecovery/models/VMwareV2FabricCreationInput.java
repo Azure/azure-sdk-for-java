@@ -6,40 +6,55 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VMwareV2 fabric provider specific settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareV2")
+/**
+ * VMwareV2 fabric provider specific settings.
+ */
 @Fluent
 public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInput {
     /*
+     * Gets the class type.
+     */
+    private String instanceType = "VMwareV2";
+
+    /*
      * The ARM Id of the VMware site.
      */
-    @JsonProperty(value = "vmwareSiteId")
     private String vmwareSiteId;
 
     /*
      * The ARM Id of the physical site.
      */
-    @JsonProperty(value = "physicalSiteId")
     private String physicalSiteId;
 
     /*
      * The ARM Id of the migration solution.
      */
-    @JsonProperty(value = "migrationSolutionId", required = true)
     private String migrationSolutionId;
 
-    /** Creates an instance of VMwareV2FabricCreationInput class. */
+    /**
+     * Creates an instance of VMwareV2FabricCreationInput class.
+     */
     public VMwareV2FabricCreationInput() {
     }
 
     /**
+     * Get the instanceType property: Gets the class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the vmwareSiteId property: The ARM Id of the VMware site.
-     *
+     * 
      * @return the vmwareSiteId value.
      */
     public String vmwareSiteId() {
@@ -48,7 +63,7 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Set the vmwareSiteId property: The ARM Id of the VMware site.
-     *
+     * 
      * @param vmwareSiteId the vmwareSiteId value to set.
      * @return the VMwareV2FabricCreationInput object itself.
      */
@@ -59,7 +74,7 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Get the physicalSiteId property: The ARM Id of the physical site.
-     *
+     * 
      * @return the physicalSiteId value.
      */
     public String physicalSiteId() {
@@ -68,7 +83,7 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Set the physicalSiteId property: The ARM Id of the physical site.
-     *
+     * 
      * @param physicalSiteId the physicalSiteId value to set.
      * @return the VMwareV2FabricCreationInput object itself.
      */
@@ -79,7 +94,7 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Get the migrationSolutionId property: The ARM Id of the migration solution.
-     *
+     * 
      * @return the migrationSolutionId value.
      */
     public String migrationSolutionId() {
@@ -88,7 +103,7 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Set the migrationSolutionId property: The ARM Id of the migration solution.
-     *
+     * 
      * @param migrationSolutionId the migrationSolutionId value to set.
      * @return the VMwareV2FabricCreationInput object itself.
      */
@@ -99,19 +114,63 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (migrationSolutionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property migrationSolutionId in model VMwareV2FabricCreationInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property migrationSolutionId in model VMwareV2FabricCreationInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMwareV2FabricCreationInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("migrationSolutionId", this.migrationSolutionId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("vmwareSiteId", this.vmwareSiteId);
+        jsonWriter.writeStringField("physicalSiteId", this.physicalSiteId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareV2FabricCreationInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareV2FabricCreationInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMwareV2FabricCreationInput.
+     */
+    public static VMwareV2FabricCreationInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareV2FabricCreationInput deserializedVMwareV2FabricCreationInput = new VMwareV2FabricCreationInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("migrationSolutionId".equals(fieldName)) {
+                    deserializedVMwareV2FabricCreationInput.migrationSolutionId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareV2FabricCreationInput.instanceType = reader.getString();
+                } else if ("vmwareSiteId".equals(fieldName)) {
+                    deserializedVMwareV2FabricCreationInput.vmwareSiteId = reader.getString();
+                } else if ("physicalSiteId".equals(fieldName)) {
+                    deserializedVMwareV2FabricCreationInput.physicalSiteId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareV2FabricCreationInput;
+        });
+    }
 }

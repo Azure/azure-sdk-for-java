@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClusterSkuName. */
+/**
+ * Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate) requests.
+ */
 public final class ClusterSkuName extends ExpandableStringEnum<ClusterSkuName> {
-    /** Static value Default for ClusterSkuName. */
+    /**
+     * Static value Default for ClusterSkuName.
+     */
     public static final ClusterSkuName DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of ClusterSkuName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterSkuName() {
+    }
+
+    /**
      * Creates or finds a ClusterSkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClusterSkuName.
      */
-    @JsonCreator
     public static ClusterSkuName fromString(String name) {
         return fromString(name, ClusterSkuName.class);
     }
 
-    /** @return known ClusterSkuName values. */
+    /**
+     * Gets known ClusterSkuName values.
+     * 
+     * @return known ClusterSkuName values.
+     */
     public static Collection<ClusterSkuName> values() {
         return values(ClusterSkuName.class);
     }

@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SupportStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Response for feature support requests for Azure IaasVm. */
+/**
+ * Response for feature support requests for Azure IaasVm.
+ */
 @Fluent
-public final class AzureVMResourceFeatureSupportResponseInner {
+public final class AzureVMResourceFeatureSupportResponseInner
+    implements JsonSerializable<AzureVMResourceFeatureSupportResponseInner> {
     /*
      * Support status of feature
      */
-    @JsonProperty(value = "supportStatus")
     private SupportStatus supportStatus;
 
-    /** Creates an instance of AzureVMResourceFeatureSupportResponseInner class. */
+    /**
+     * Creates an instance of AzureVMResourceFeatureSupportResponseInner class.
+     */
     public AzureVMResourceFeatureSupportResponseInner() {
     }
 
     /**
      * Get the supportStatus property: Support status of feature.
-     *
+     * 
      * @return the supportStatus value.
      */
     public SupportStatus supportStatus() {
@@ -32,7 +40,7 @@ public final class AzureVMResourceFeatureSupportResponseInner {
 
     /**
      * Set the supportStatus property: Support status of feature.
-     *
+     * 
      * @param supportStatus the supportStatus value to set.
      * @return the AzureVMResourceFeatureSupportResponseInner object itself.
      */
@@ -43,9 +51,47 @@ public final class AzureVMResourceFeatureSupportResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("supportStatus", this.supportStatus == null ? null : this.supportStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVMResourceFeatureSupportResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVMResourceFeatureSupportResponseInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVMResourceFeatureSupportResponseInner.
+     */
+    public static AzureVMResourceFeatureSupportResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVMResourceFeatureSupportResponseInner deserializedAzureVMResourceFeatureSupportResponseInner
+                = new AzureVMResourceFeatureSupportResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("supportStatus".equals(fieldName)) {
+                    deserializedAzureVMResourceFeatureSupportResponseInner.supportStatus
+                        = SupportStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVMResourceFeatureSupportResponseInner;
+        });
     }
 }

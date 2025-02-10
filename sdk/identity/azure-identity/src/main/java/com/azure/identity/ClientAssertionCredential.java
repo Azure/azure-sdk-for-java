@@ -25,7 +25,7 @@ import java.util.function.Supplier;
  * In this authentication method, the client application creates a JSON Web Token (JWT) that includes information about
  * the service principal (such as its client ID and tenant ID) and signs it using a client secret. The client then
  * sends this token to
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> as proof of its
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> as proof of its
  * identity. Microsoft Entra ID verifies the token signature and checks that the service principal has
  * the necessary permissions to access the requested Azure resource. If the token is valid and the service principal is
  * authorized, Microsoft Entra ID issues an access token that the client application can use to access the requested resource.
@@ -49,8 +49,7 @@ import java.util.function.Supplier;
  *
  * <!-- src_embed com.azure.identity.credential.clientassertioncredential.construct -->
  * <pre>
- * TokenCredential clientAssertionCredential = new ClientAssertionCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential clientAssertionCredential = new ClientAssertionCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientAssertion&#40;&#40;&#41; -&gt; &quot;&lt;Client-Assertion&gt;&quot;&#41;
  *     .build&#40;&#41;;
@@ -68,8 +67,7 @@ import java.util.function.Supplier;
  *
  * <!-- src_embed com.azure.identity.credential.clientassertioncredential.constructwithproxy -->
  * <pre>
- * TokenCredential assertionCredential = new ClientAssertionCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential assertionCredential = new ClientAssertionCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientAssertion&#40;&#40;&#41; -&gt; &quot;&lt;Client-Assertion&gt;&quot;&#41;
  *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
@@ -85,6 +83,7 @@ public class ClientAssertionCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ClientAssertionCredential.class);
     private final IdentityClient identityClient;
     private final IdentitySyncClient identitySyncClient;
+
     /**
      * Creates an instance of ClientAssertionCredential.
      *
@@ -94,9 +93,8 @@ public class ClientAssertionCredential implements TokenCredential {
      * @param identityClientOptions the options to configure the identity client
      */
     ClientAssertionCredential(String clientId, String tenantId, Supplier<String> clientAssertion,
-                              IdentityClientOptions identityClientOptions) {
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
+        IdentityClientOptions identityClientOptions) {
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .clientAssertionSupplier(clientAssertion)
             .identityClientOptions(identityClientOptions);
@@ -111,17 +109,20 @@ public class ClientAssertionCredential implements TokenCredential {
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error));
     }
 
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClientCache(request);
-            LoggingUtil.logTokenSuccess(LOGGER, request);
-            return token;
-        } catch (Exception e) { }
+            if (token != null) {
+                LoggingUtil.logTokenSuccess(LOGGER, request);
+                return token;
+            }
+        } catch (Exception ignored) {
+        }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);
@@ -129,7 +130,8 @@ public class ClientAssertionCredential implements TokenCredential {
             return token;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
-            throw e;
+            // wrap the exception in a RuntimeException to avoid checked exception problems.
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 }

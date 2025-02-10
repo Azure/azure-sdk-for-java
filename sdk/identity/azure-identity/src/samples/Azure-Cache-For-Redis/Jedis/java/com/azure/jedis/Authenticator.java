@@ -4,36 +4,29 @@
 package com.azure.jedis;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.jedis.implementation.authentication.AccessTokenCache;
 import com.azure.jedis.implementation.authentication.AccessTokenResult;
 import com.azure.jedis.implementation.authentication.AuthenticationInfo;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Authenticator manages authentication for Jedis client connection.
  */
 class Authenticator {
-    private final ClientLogger clientLogger = new ClientLogger(Authenticator.class);
-    private String username;
-    private AccessTokenCache tokenCache;
-    private TokenRequestContext tokenRequestContext;
-    private String password;
+    private final AccessTokenCache tokenCache;
+    private final TokenRequestContext tokenRequestContext;
     private volatile boolean authenticated;
-    ReentrantLock lock;
+    private final ReentrantLock lock;
 
-    Authenticator(String username, AccessTokenCache tokenCache) {
-        this.username = username;
+    Authenticator(AccessTokenCache tokenCache) {
         this.tokenCache = tokenCache;
         this.tokenRequestContext = new TokenRequestContext()
-                .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
-        lock = new ReentrantLock();
-    }
-
-    Authenticator(String username, String password) {
-        this.password = password;
-        this.username = username;
+                .addScopes("https://redis.azure.com/.default");
         lock = new ReentrantLock();
     }
 
@@ -44,10 +37,10 @@ class Authenticator {
             if (client.isBroken()) {
                 client.resetClientIfBroken();
                 authenticationInfo = getAuthInfo(true);
-                client.authenticate(username, authenticationInfo.getAuthToken());
+                client.authenticate(extractUsernameFromToken(authenticationInfo.getAuthToken()),
+                    authenticationInfo.getAuthToken());
             }
             lock.unlock();
-            return;
         } else {
             authenticationInfo = getAuthInfo(false);
             if (authenticationInfo.isShouldAuthenticate()) {
@@ -55,10 +48,12 @@ class Authenticator {
                 if (authenticated) {
                     if (authenticationInfo.isRefreshedToken()) {
                         client.resetClient();
-                        client.authenticate(username, authenticationInfo.getAuthToken());
+                        client.authenticate(extractUsernameFromToken(authenticationInfo.getAuthToken()),
+                            authenticationInfo.getAuthToken());
                     }
                 } else {
-                    client.authenticate(username, authenticationInfo.getAuthToken());
+                    client.authenticate(extractUsernameFromToken(authenticationInfo.getAuthToken()),
+                        authenticationInfo.getAuthToken());
                     authenticated = true;
                 }
                 lock.unlock();
@@ -72,10 +67,26 @@ class Authenticator {
                     .getToken(tokenRequestContext, forceAuth).block();
             return new AuthenticationInfo(result.getAccessToken().getToken(),
                     result.isRefreshedToken() || !authenticated, result.isRefreshedToken());
-        } else if (password != null) {
-            return new AuthenticationInfo(password, !authenticated);
         } else {
             return new AuthenticationInfo(null, false);
         }
+    }
+
+    private String extractUsernameFromToken(String token) {
+        String[] parts = token.split("\\.");
+        String base64 = parts[1];
+
+        int modulo = base64.length() % 4;
+        if (modulo == 2) {
+            base64 += "==";
+        } else if (modulo == 3) {
+            base64 += "=";
+        }
+
+        byte[] jsonBytes = Base64.getDecoder().decode(base64);
+        String json = new String(jsonBytes, StandardCharsets.UTF_8);
+        JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+        return jwt.get("oid").getAsString();
     }
 }

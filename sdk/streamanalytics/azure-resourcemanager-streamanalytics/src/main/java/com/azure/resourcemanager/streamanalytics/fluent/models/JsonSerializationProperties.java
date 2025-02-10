@@ -5,41 +5,44 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
 import com.azure.resourcemanager.streamanalytics.models.JsonOutputSerializationFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties that are associated with the JSON serialization type. */
+/**
+ * The properties that are associated with the JSON serialization type.
+ */
 @Fluent
-public final class JsonSerializationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonSerializationProperties.class);
-
+public final class JsonSerializationProperties implements JsonSerializable<JsonSerializationProperties> {
     /*
-     * Specifies the encoding of the incoming data in the case of input and the
-     * encoding of outgoing data in the case of output. Required on PUT
-     * (CreateOrReplace) requests.
+     * Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of
+     * output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "encoding")
     private Encoding encoding;
 
     /*
-     * This property only applies to JSON serialization of outputs only. It is
-     * not applicable to inputs. This property specifies the format of the JSON
-     * the output will be written in. The currently supported values are
-     * 'lineSeparated' indicating the output will be formatted by having each
-     * JSON object separated by a new line and 'array' indicating the output
-     * will be formatted as an array of JSON objects. Default value is
-     * 'lineSeparated' if left null.
+     * This property only applies to JSON serialization of outputs only. It is not applicable to inputs. This property
+     * specifies the format of the JSON the output will be written in. The currently supported values are
+     * 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new line and
+     * 'array' indicating the output will be formatted as an array of JSON objects. Default value is 'lineSeparated' if
+     * left null.
      */
-    @JsonProperty(value = "format")
     private JsonOutputSerializationFormat format;
+
+    /**
+     * Creates an instance of JsonSerializationProperties class.
+     */
+    public JsonSerializationProperties() {
+    }
 
     /**
      * Get the encoding property: Specifies the encoding of the incoming data in the case of input and the encoding of
      * outgoing data in the case of output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the encoding value.
      */
     public Encoding encoding() {
@@ -49,7 +52,7 @@ public final class JsonSerializationProperties {
     /**
      * Set the encoding property: Specifies the encoding of the incoming data in the case of input and the encoding of
      * outgoing data in the case of output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param encoding the encoding value to set.
      * @return the JsonSerializationProperties object itself.
      */
@@ -64,7 +67,7 @@ public final class JsonSerializationProperties {
      * values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new
      * line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is
      * 'lineSeparated' if left null.
-     *
+     * 
      * @return the format value.
      */
     public JsonOutputSerializationFormat format() {
@@ -77,7 +80,7 @@ public final class JsonSerializationProperties {
      * values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new
      * line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is
      * 'lineSeparated' if left null.
-     *
+     * 
      * @param format the format value to set.
      * @return the JsonSerializationProperties object itself.
      */
@@ -88,9 +91,49 @@ public final class JsonSerializationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("encoding", this.encoding == null ? null : this.encoding.toString());
+        jsonWriter.writeStringField("format", this.format == null ? null : this.format.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JsonSerializationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JsonSerializationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JsonSerializationProperties.
+     */
+    public static JsonSerializationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonSerializationProperties deserializedJsonSerializationProperties = new JsonSerializationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encoding".equals(fieldName)) {
+                    deserializedJsonSerializationProperties.encoding = Encoding.fromString(reader.getString());
+                } else if ("format".equals(fieldName)) {
+                    deserializedJsonSerializationProperties.format
+                        = JsonOutputSerializationFormat.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJsonSerializationProperties;
+        });
     }
 }

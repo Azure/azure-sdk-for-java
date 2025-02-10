@@ -6,9 +6,10 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,31 +18,31 @@ import java.util.List;
  */
 @Fluent
 public final class TransformationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransformationInner.class);
-
     /*
-     * The properties that are associated with a transformation. Required on
-     * PUT (CreateOrReplace) requests.
+     * The properties that are associated with a transformation. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private TransformationProperties innerProperties;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /**
+     * Creates an instance of TransformationInner class.
+     */
+    public TransformationInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties that are associated with a transformation. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TransformationProperties innerProperties() {
@@ -50,7 +51,7 @@ public final class TransformationInner extends SubResource {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +60,7 @@ public final class TransformationInner extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the TransformationInner object itself.
      */
@@ -70,14 +71,16 @@ public final class TransformationInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TransformationInner withId(String id) {
         super.withId(id);
@@ -86,7 +89,7 @@ public final class TransformationInner extends SubResource {
 
     /**
      * Get the streamingUnits property: Specifies the number of streaming units that the streaming job uses.
-     *
+     * 
      * @return the streamingUnits value.
      */
     public Integer streamingUnits() {
@@ -95,7 +98,7 @@ public final class TransformationInner extends SubResource {
 
     /**
      * Set the streamingUnits property: Specifies the number of streaming units that the streaming job uses.
-     *
+     * 
      * @param streamingUnits the streamingUnits value to set.
      * @return the TransformationInner object itself.
      */
@@ -109,7 +112,7 @@ public final class TransformationInner extends SubResource {
 
     /**
      * Get the validStreamingUnits property: Specifies the valid streaming units a streaming job can scale to.
-     *
+     * 
      * @return the validStreamingUnits value.
      */
     public List<Integer> validStreamingUnits() {
@@ -118,7 +121,7 @@ public final class TransformationInner extends SubResource {
 
     /**
      * Set the validStreamingUnits property: Specifies the valid streaming units a streaming job can scale to.
-     *
+     * 
      * @param validStreamingUnits the validStreamingUnits value to set.
      * @return the TransformationInner object itself.
      */
@@ -134,7 +137,7 @@ public final class TransformationInner extends SubResource {
      * Get the query property: Specifies the query that will be run in the streaming job. You can learn more about the
      * Stream Analytics Query Language (SAQL) here: https://msdn.microsoft.com/library/azure/dn834998 . Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -145,7 +148,7 @@ public final class TransformationInner extends SubResource {
      * Set the query property: Specifies the query that will be run in the streaming job. You can learn more about the
      * Stream Analytics Query Language (SAQL) here: https://msdn.microsoft.com/library/azure/dn834998 . Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @param query the query value to set.
      * @return the TransformationInner object itself.
      */
@@ -161,7 +164,7 @@ public final class TransformationInner extends SubResource {
      * Get the etag property: The current entity tag for the transformation. This is an opaque string. You can use it to
      * detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match
      * headers for write operations for optimistic concurrency.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -170,12 +173,56 @@ public final class TransformationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransformationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransformationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TransformationInner.
+     */
+    public static TransformationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransformationInner deserializedTransformationInner = new TransformationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTransformationInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTransformationInner.innerProperties = TransformationProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedTransformationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTransformationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransformationInner;
+        });
     }
 }

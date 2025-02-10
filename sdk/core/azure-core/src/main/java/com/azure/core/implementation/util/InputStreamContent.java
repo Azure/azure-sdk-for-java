@@ -10,6 +10,7 @@ import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -47,7 +48,6 @@ public final class InputStreamContent extends BinaryDataContent {
     private volatile byte[] bytes;
     private static final AtomicReferenceFieldUpdater<InputStreamContent, byte[]> BYTES_UPDATER
         = AtomicReferenceFieldUpdater.newUpdater(InputStreamContent.class, byte[].class, "bytes");
-
 
     /**
      * Creates an instance of {@link InputStreamContent}.
@@ -149,6 +149,13 @@ public final class InputStreamContent extends BinaryDataContent {
     }
 
     @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
+
+        jsonWriter.writeBinary(toBytes());
+    }
+
+    @Override
     public boolean isReplayable() {
         return isReplayable;
     }
@@ -194,8 +201,8 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {
         try {
-            Tuple2<Long, List<ByteBuffer>> streamRead = StreamUtil.readStreamToListOfByteBuffers(
-                inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
+            Tuple2<Long, List<ByteBuffer>> streamRead = StreamUtil.readStreamToListOfByteBuffers(inputStream, length,
+                INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
             long readLength = streamRead.getT1();
             List<ByteBuffer> byteBuffers = streamRead.getT2();
 
@@ -216,7 +223,8 @@ public final class InputStreamContent extends BinaryDataContent {
     private byte[] getBytes() {
         try {
             AccessibleByteArrayOutputStream dataOutputBuffer = (length == null || length < MAX_ARRAY_LENGTH)
-                ? new AccessibleByteArrayOutputStream() : new AccessibleByteArrayOutputStream(length.intValue());
+                ? new AccessibleByteArrayOutputStream()
+                : new AccessibleByteArrayOutputStream(length.intValue());
             int nRead;
             byte[] data = new byte[STREAM_READ_SIZE];
             InputStream inputStream = this.content.get();

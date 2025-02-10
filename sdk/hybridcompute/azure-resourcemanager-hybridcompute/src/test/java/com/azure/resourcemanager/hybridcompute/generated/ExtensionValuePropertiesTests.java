@@ -10,10 +10,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.ExtensionValuePrope
 public final class ExtensionValuePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtensionValueProperties model =
-            BinaryData
-                .fromString("{\"version\":\"wozuhkf\",\"extensionType\":\"sjyofdx\",\"publisher\":\"us\"}")
-                .toObject(ExtensionValueProperties.class);
+        ExtensionValueProperties model = BinaryData
+            .fromString("{\"version\":\"bldtlww\",\"extensionType\":\"kdmtncvokotll\",\"publisher\":\"yhgsy\"}")
+            .toObject(ExtensionValueProperties.class);
     }
 
     @org.junit.jupiter.api.Test

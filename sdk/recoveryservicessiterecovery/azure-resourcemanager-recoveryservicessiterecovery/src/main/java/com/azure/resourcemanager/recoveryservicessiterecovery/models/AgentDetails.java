@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Agent details. */
+/**
+ * Agent details.
+ */
 @Immutable
-public final class AgentDetails {
+public final class AgentDetails implements JsonSerializable<AgentDetails> {
     /*
      * The Id of the agent running on the server.
      */
-    @JsonProperty(value = "agentId", access = JsonProperty.Access.WRITE_ONLY)
     private String agentId;
 
     /*
      * The Id of the machine to which the agent is registered.
      */
-    @JsonProperty(value = "machineId", access = JsonProperty.Access.WRITE_ONLY)
     private String machineId;
 
     /*
      * The machine BIOS Id.
      */
-    @JsonProperty(value = "biosId", access = JsonProperty.Access.WRITE_ONLY)
     private String biosId;
 
     /*
      * The machine FQDN.
      */
-    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /*
      * The disks.
      */
-    @JsonProperty(value = "disks", access = JsonProperty.Access.WRITE_ONLY)
     private List<AgentDiskDetails> disks;
 
-    /** Creates an instance of AgentDetails class. */
+    /**
+     * Creates an instance of AgentDetails class.
+     */
     public AgentDetails() {
     }
 
     /**
      * Get the agentId property: The Id of the agent running on the server.
-     *
+     * 
      * @return the agentId value.
      */
     public String agentId() {
@@ -56,7 +59,7 @@ public final class AgentDetails {
 
     /**
      * Get the machineId property: The Id of the machine to which the agent is registered.
-     *
+     * 
      * @return the machineId value.
      */
     public String machineId() {
@@ -65,7 +68,7 @@ public final class AgentDetails {
 
     /**
      * Get the biosId property: The machine BIOS Id.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -74,7 +77,7 @@ public final class AgentDetails {
 
     /**
      * Get the fqdn property: The machine FQDN.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -83,7 +86,7 @@ public final class AgentDetails {
 
     /**
      * Get the disks property: The disks.
-     *
+     * 
      * @return the disks value.
      */
     public List<AgentDiskDetails> disks() {
@@ -92,12 +95,56 @@ public final class AgentDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (disks() != null) {
             disks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentDetails.
+     */
+    public static AgentDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentDetails deserializedAgentDetails = new AgentDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("agentId".equals(fieldName)) {
+                    deserializedAgentDetails.agentId = reader.getString();
+                } else if ("machineId".equals(fieldName)) {
+                    deserializedAgentDetails.machineId = reader.getString();
+                } else if ("biosId".equals(fieldName)) {
+                    deserializedAgentDetails.biosId = reader.getString();
+                } else if ("fqdn".equals(fieldName)) {
+                    deserializedAgentDetails.fqdn = reader.getString();
+                } else if ("disks".equals(fieldName)) {
+                    List<AgentDiskDetails> disks = reader.readArray(reader1 -> AgentDiskDetails.fromJson(reader1));
+                    deserializedAgentDetails.disks = disks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentDetails;
+        });
     }
 }

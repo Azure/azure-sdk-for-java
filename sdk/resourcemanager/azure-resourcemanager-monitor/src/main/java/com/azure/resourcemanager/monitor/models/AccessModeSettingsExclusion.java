@@ -5,41 +5,44 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties that define the scope private link mode settings exclusion item. This setting applies to a specific
  * private endpoint connection and overrides the default settings for that private endpoint connection.
  */
 @Fluent
-public final class AccessModeSettingsExclusion {
+public final class AccessModeSettingsExclusion implements JsonSerializable<AccessModeSettingsExclusion> {
     /*
      * The private endpoint connection name associated to the private endpoint on which we want to apply the specific
      * access mode settings.
      */
-    @JsonProperty(value = "privateEndpointConnectionName")
     private String privateEndpointConnectionName;
 
     /*
      * Specifies the access mode of queries through the specified private endpoint connection in the exclusion.
      */
-    @JsonProperty(value = "queryAccessMode")
     private AccessMode queryAccessMode;
 
     /*
      * Specifies the access mode of ingestion through the specified private endpoint connection in the exclusion.
      */
-    @JsonProperty(value = "ingestionAccessMode")
     private AccessMode ingestionAccessMode;
 
-    /** Creates an instance of AccessModeSettingsExclusion class. */
+    /**
+     * Creates an instance of AccessModeSettingsExclusion class.
+     */
     public AccessModeSettingsExclusion() {
     }
 
     /**
      * Get the privateEndpointConnectionName property: The private endpoint connection name associated to the private
      * endpoint on which we want to apply the specific access mode settings.
-     *
+     * 
      * @return the privateEndpointConnectionName value.
      */
     public String privateEndpointConnectionName() {
@@ -49,7 +52,7 @@ public final class AccessModeSettingsExclusion {
     /**
      * Set the privateEndpointConnectionName property: The private endpoint connection name associated to the private
      * endpoint on which we want to apply the specific access mode settings.
-     *
+     * 
      * @param privateEndpointConnectionName the privateEndpointConnectionName value to set.
      * @return the AccessModeSettingsExclusion object itself.
      */
@@ -61,7 +64,7 @@ public final class AccessModeSettingsExclusion {
     /**
      * Get the queryAccessMode property: Specifies the access mode of queries through the specified private endpoint
      * connection in the exclusion.
-     *
+     * 
      * @return the queryAccessMode value.
      */
     public AccessMode queryAccessMode() {
@@ -71,7 +74,7 @@ public final class AccessModeSettingsExclusion {
     /**
      * Set the queryAccessMode property: Specifies the access mode of queries through the specified private endpoint
      * connection in the exclusion.
-     *
+     * 
      * @param queryAccessMode the queryAccessMode value to set.
      * @return the AccessModeSettingsExclusion object itself.
      */
@@ -83,7 +86,7 @@ public final class AccessModeSettingsExclusion {
     /**
      * Get the ingestionAccessMode property: Specifies the access mode of ingestion through the specified private
      * endpoint connection in the exclusion.
-     *
+     * 
      * @return the ingestionAccessMode value.
      */
     public AccessMode ingestionAccessMode() {
@@ -93,7 +96,7 @@ public final class AccessModeSettingsExclusion {
     /**
      * Set the ingestionAccessMode property: Specifies the access mode of ingestion through the specified private
      * endpoint connection in the exclusion.
-     *
+     * 
      * @param ingestionAccessMode the ingestionAccessMode value to set.
      * @return the AccessModeSettingsExclusion object itself.
      */
@@ -104,9 +107,54 @@ public final class AccessModeSettingsExclusion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("privateEndpointConnectionName", this.privateEndpointConnectionName);
+        jsonWriter.writeStringField("queryAccessMode",
+            this.queryAccessMode == null ? null : this.queryAccessMode.toString());
+        jsonWriter.writeStringField("ingestionAccessMode",
+            this.ingestionAccessMode == null ? null : this.ingestionAccessMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessModeSettingsExclusion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessModeSettingsExclusion if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessModeSettingsExclusion.
+     */
+    public static AccessModeSettingsExclusion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessModeSettingsExclusion deserializedAccessModeSettingsExclusion = new AccessModeSettingsExclusion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateEndpointConnectionName".equals(fieldName)) {
+                    deserializedAccessModeSettingsExclusion.privateEndpointConnectionName = reader.getString();
+                } else if ("queryAccessMode".equals(fieldName)) {
+                    deserializedAccessModeSettingsExclusion.queryAccessMode = AccessMode.fromString(reader.getString());
+                } else if ("ingestionAccessMode".equals(fieldName)) {
+                    deserializedAccessModeSettingsExclusion.ingestionAccessMode
+                        = AccessMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessModeSettingsExclusion;
+        });
     }
 }

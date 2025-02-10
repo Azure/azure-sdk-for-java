@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Segment status. */
+/**
+ * Segment status.
+ */
 public final class SegmentStatusEnum extends ExpandableStringEnum<SegmentStatusEnum> {
-    /** Static value SUCCESS for SegmentStatusEnum. */
+    /**
+     * Static value SUCCESS for SegmentStatusEnum.
+     */
     public static final SegmentStatusEnum SUCCESS = fromString("SUCCESS");
 
-    /** Static value FAILURE for SegmentStatusEnum. */
+    /**
+     * Static value FAILURE for SegmentStatusEnum.
+     */
     public static final SegmentStatusEnum FAILURE = fromString("FAILURE");
 
     /**
      * Creates a new instance of SegmentStatusEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class SegmentStatusEnum extends ExpandableStringEnum<SegmentStatusE
 
     /**
      * Creates or finds a SegmentStatusEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SegmentStatusEnum.
      */
-    @JsonCreator
     public static SegmentStatusEnum fromString(String name) {
         return fromString(name, SegmentStatusEnum.class);
     }
 
     /**
      * Gets known SegmentStatusEnum values.
-     *
+     * 
      * @return known SegmentStatusEnum values.
      */
     public static Collection<SegmentStatusEnum> values() {

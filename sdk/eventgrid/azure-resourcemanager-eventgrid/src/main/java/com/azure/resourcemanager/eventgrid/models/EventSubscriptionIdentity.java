@@ -5,24 +5,25 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The identity information with the event subscription.
  */
 @Fluent
-public final class EventSubscriptionIdentity {
+public final class EventSubscriptionIdentity implements JsonSerializable<EventSubscriptionIdentity> {
     /*
-     * The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
-     * identity and a set of user-assigned identities. The type 'None' will remove any identity.
+     * The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
      */
-    @JsonProperty(value = "type")
     private EventSubscriptionIdentityType type;
 
     /*
      * The user identity associated with the resource.
      */
-    @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
     /**
@@ -32,8 +33,7 @@ public final class EventSubscriptionIdentity {
     }
 
     /**
-     * Get the type property: The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both
-     * an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identity.
+     * Get the type property: The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
      * 
      * @return the type value.
      */
@@ -42,8 +42,7 @@ public final class EventSubscriptionIdentity {
     }
 
     /**
-     * Set the type property: The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both
-     * an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identity.
+     * Set the type property: The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
      * 
      * @param type the type value to set.
      * @return the EventSubscriptionIdentity object itself.
@@ -79,5 +78,45 @@ public final class EventSubscriptionIdentity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventSubscriptionIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventSubscriptionIdentity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventSubscriptionIdentity.
+     */
+    public static EventSubscriptionIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventSubscriptionIdentity deserializedEventSubscriptionIdentity = new EventSubscriptionIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedEventSubscriptionIdentity.type
+                        = EventSubscriptionIdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentity".equals(fieldName)) {
+                    deserializedEventSubscriptionIdentity.userAssignedIdentity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventSubscriptionIdentity;
+        });
     }
 }

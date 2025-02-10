@@ -12,32 +12,32 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableWorkloadProfilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableWorkloadProfileProperties model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"mcmatuokthfuiu\",\"applicability\":\"Custom\",\"cores\":680550088,\"memoryGiB\":397485144,\"displayName\":\"vxodpu\"}")
-                .toObject(AvailableWorkloadProfileProperties.class);
-        Assertions.assertEquals("mcmatuokthfuiu", model.category());
-        Assertions.assertEquals(Applicability.CUSTOM, model.applicability());
-        Assertions.assertEquals(680550088, model.cores());
-        Assertions.assertEquals(397485144, model.memoryGiB());
-        Assertions.assertEquals("vxodpu", model.displayName());
+        AvailableWorkloadProfileProperties model = BinaryData.fromString(
+            "{\"category\":\"imoryocfsfksym\",\"applicability\":\"LocationDefault\",\"cores\":666664165,\"memoryGiB\":30564685,\"gpus\":741108852,\"displayName\":\"hqyudxorrqnbpoc\"}")
+            .toObject(AvailableWorkloadProfileProperties.class);
+        Assertions.assertEquals("imoryocfsfksym", model.category());
+        Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.applicability());
+        Assertions.assertEquals(666664165, model.cores());
+        Assertions.assertEquals(30564685, model.memoryGiB());
+        Assertions.assertEquals(741108852, model.gpus());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableWorkloadProfileProperties model =
-            new AvailableWorkloadProfileProperties()
-                .withCategory("mcmatuokthfuiu")
-                .withApplicability(Applicability.CUSTOM)
-                .withCores(680550088)
-                .withMemoryGiB(397485144)
-                .withDisplayName("vxodpu");
+        AvailableWorkloadProfileProperties model
+            = new AvailableWorkloadProfileProperties().withCategory("imoryocfsfksym")
+                .withApplicability(Applicability.LOCATION_DEFAULT)
+                .withCores(666664165)
+                .withMemoryGiB(30564685)
+                .withGpus(741108852)
+                .withDisplayName("hqyudxorrqnbpoc");
         model = BinaryData.fromObject(model).toObject(AvailableWorkloadProfileProperties.class);
-        Assertions.assertEquals("mcmatuokthfuiu", model.category());
-        Assertions.assertEquals(Applicability.CUSTOM, model.applicability());
-        Assertions.assertEquals(680550088, model.cores());
-        Assertions.assertEquals(397485144, model.memoryGiB());
-        Assertions.assertEquals("vxodpu", model.displayName());
+        Assertions.assertEquals("imoryocfsfksym", model.category());
+        Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.applicability());
+        Assertions.assertEquals(666664165, model.cores());
+        Assertions.assertEquals(30564685, model.memoryGiB());
+        Assertions.assertEquals(741108852, model.gpus());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.displayName());
     }
 }

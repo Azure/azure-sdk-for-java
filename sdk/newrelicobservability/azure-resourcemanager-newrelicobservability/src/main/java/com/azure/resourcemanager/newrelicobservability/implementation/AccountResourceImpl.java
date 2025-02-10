@@ -13,8 +13,7 @@ public final class AccountResourceImpl implements AccountResource {
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    AccountResourceImpl(
-        AccountResourceInner innerObject,
+    AccountResourceImpl(AccountResourceInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

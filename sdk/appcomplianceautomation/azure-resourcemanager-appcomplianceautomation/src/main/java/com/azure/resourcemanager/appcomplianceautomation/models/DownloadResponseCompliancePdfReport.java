@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** compliance pdf report. */
+/**
+ * Compliance pdf report.
+ */
 @Immutable
-public final class DownloadResponseCompliancePdfReport {
+public final class DownloadResponseCompliancePdfReport
+    implements JsonSerializable<DownloadResponseCompliancePdfReport> {
     /*
-     * uri of compliance pdf report
+     * The uri of compliance pdf report
      */
-    @JsonProperty(value = "sasUri", access = JsonProperty.Access.WRITE_ONLY)
     private String sasUri;
 
-    /** Creates an instance of DownloadResponseCompliancePdfReport class. */
-    public DownloadResponseCompliancePdfReport() {
+    /**
+     * Creates an instance of DownloadResponseCompliancePdfReport class.
+     */
+    private DownloadResponseCompliancePdfReport() {
     }
 
     /**
-     * Get the sasUri property: uri of compliance pdf report.
-     *
+     * Get the sasUri property: The uri of compliance pdf report.
+     * 
      * @return the sasUri value.
      */
     public String sasUri() {
@@ -31,9 +39,45 @@ public final class DownloadResponseCompliancePdfReport {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DownloadResponseCompliancePdfReport from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DownloadResponseCompliancePdfReport if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DownloadResponseCompliancePdfReport.
+     */
+    public static DownloadResponseCompliancePdfReport fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DownloadResponseCompliancePdfReport deserializedDownloadResponseCompliancePdfReport
+                = new DownloadResponseCompliancePdfReport();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sasUri".equals(fieldName)) {
+                    deserializedDownloadResponseCompliancePdfReport.sasUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDownloadResponseCompliancePdfReport;
+        });
     }
 }

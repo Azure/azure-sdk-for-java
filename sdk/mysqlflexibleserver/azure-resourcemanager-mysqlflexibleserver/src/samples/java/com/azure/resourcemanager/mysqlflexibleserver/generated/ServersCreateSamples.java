@@ -24,19 +24,22 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Servers Create. */
+/**
+ * Samples for Servers Create.
+ */
 public final class ServersCreateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreateReplica.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerCreateReplica.
+     * json
      */
     /**
      * Sample code: Create a replica server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void createAReplicaServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .servers()
+        manager.servers()
             .define("replica-server")
             .withRegion("SoutheastAsia")
             .withExistingResourceGroup("testgr")
@@ -47,16 +50,16 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreate.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerCreate.json
      */
     /**
      * Sample code: Create a new server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void createANewServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .servers()
+        manager.servers()
             .define("mysqltestserver")
             .withRegion("southeastasia")
             .withExistingResourceGroup("testrg")
@@ -75,45 +78,40 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreateWithBYOK.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerCreateWithBYOK.
+     * json
      */
     /**
      * Sample code: Create a server with byok.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void createAServerWithByok(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager)
         throws IOException {
-        manager
-            .servers()
+        manager.servers()
             .define("mysqltestserver")
             .withRegion("southeastasia")
             .withExistingResourceGroup("testrg")
             .withTags(mapOf("num", "1"))
-            .withIdentity(
-                new Identity()
-                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize("{}", Object.class, SerializerEncoding.JSON))))
+            .withIdentity(new Identity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
+                    SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))))
             .withSku(new Sku().withName("Standard_D2ds_v4").withTier(SkuTier.GENERAL_PURPOSE))
             .withAdministratorLogin("cloudsa")
             .withAdministratorLoginPassword("your_password")
             .withVersion(ServerVersion.FIVE_SEVEN)
             .withAvailabilityZone("1")
             .withCreateMode(CreateMode.DEFAULT)
-            .withDataEncryption(
-                new DataEncryption()
-                    .withPrimaryUserAssignedIdentityId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity")
-                    .withPrimaryKeyUri("fakeTokenPlaceholder")
-                    .withGeoBackupUserAssignedIdentityId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-identity")
-                    .withGeoBackupKeyUri("fakeTokenPlaceholder")
-                    .withType(DataEncryptionType.AZURE_KEY_VAULT))
+            .withDataEncryption(new DataEncryption().withPrimaryUserAssignedIdentityId(
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity")
+                .withPrimaryKeyUri("fakeTokenPlaceholder")
+                .withGeoBackupUserAssignedIdentityId(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-identity")
+                .withGeoBackupKeyUri("fakeTokenPlaceholder")
+                .withType(DataEncryptionType.AZURE_KEY_VAULT))
             .withStorage(new Storage().withStorageSizeGB(100).withIops(600).withAutoGrow(EnableStatusEnum.DISABLED))
             .withBackup(new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(EnableStatusEnum.DISABLED))
             .withHighAvailability(
@@ -122,17 +120,17 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreateWithPointInTimeRestore.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * ServerCreateWithPointInTimeRestore.json
      */
     /**
      * Sample code: Create a server as a point in time restore.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
-    public static void createAServerAsAPointInTimeRestore(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .servers()
+    public static void
+        createAServerAsAPointInTimeRestore(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+        manager.servers()
             .define("targetserver")
             .withRegion("SoutheastAsia")
             .withExistingResourceGroup("TargetResourceGroup")
@@ -145,6 +143,7 @@ public final class ServersCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

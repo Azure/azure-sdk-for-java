@@ -6,53 +6,54 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Cluster configuration files. */
+/**
+ * Cluster configuration files.
+ */
 @Fluent
-public final class ClusterConfigFile {
+public final class ClusterConfigFile implements JsonSerializable<ClusterConfigFile> {
     /*
      * Configuration file name.
      */
-    @JsonProperty(value = "fileName", required = true)
     private String fileName;
 
     /*
      * Free form content of the entire configuration file.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * This property indicates if the content is encoded and is case-insensitive. Please set the value to base64 if the
      * content is base64 encoded. Set it to none or skip it if the content is plain text.
      */
-    @JsonProperty(value = "encoding")
     private ContentEncoding encoding;
 
     /*
      * Path of the config file if content is specified.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * List of key value pairs
      * where key represents a valid service configuration name and value represents the value of the config.
      */
-    @JsonProperty(value = "values")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> values;
 
-    /** Creates an instance of ClusterConfigFile class. */
+    /**
+     * Creates an instance of ClusterConfigFile class.
+     */
     public ClusterConfigFile() {
     }
 
     /**
      * Get the fileName property: Configuration file name.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -61,7 +62,7 @@ public final class ClusterConfigFile {
 
     /**
      * Set the fileName property: Configuration file name.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the ClusterConfigFile object itself.
      */
@@ -72,7 +73,7 @@ public final class ClusterConfigFile {
 
     /**
      * Get the content property: Free form content of the entire configuration file.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -81,7 +82,7 @@ public final class ClusterConfigFile {
 
     /**
      * Set the content property: Free form content of the entire configuration file.
-     *
+     * 
      * @param content the content value to set.
      * @return the ClusterConfigFile object itself.
      */
@@ -93,7 +94,7 @@ public final class ClusterConfigFile {
     /**
      * Get the encoding property: This property indicates if the content is encoded and is case-insensitive. Please set
      * the value to base64 if the content is base64 encoded. Set it to none or skip it if the content is plain text.
-     *
+     * 
      * @return the encoding value.
      */
     public ContentEncoding encoding() {
@@ -103,7 +104,7 @@ public final class ClusterConfigFile {
     /**
      * Set the encoding property: This property indicates if the content is encoded and is case-insensitive. Please set
      * the value to base64 if the content is base64 encoded. Set it to none or skip it if the content is plain text.
-     *
+     * 
      * @param encoding the encoding value to set.
      * @return the ClusterConfigFile object itself.
      */
@@ -114,7 +115,7 @@ public final class ClusterConfigFile {
 
     /**
      * Get the path property: Path of the config file if content is specified.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -123,7 +124,7 @@ public final class ClusterConfigFile {
 
     /**
      * Set the path property: Path of the config file if content is specified.
-     *
+     * 
      * @param path the path value to set.
      * @return the ClusterConfigFile object itself.
      */
@@ -133,9 +134,9 @@ public final class ClusterConfigFile {
     }
 
     /**
-     * Get the values property: List of key value pairs where key represents a valid service configuration name and
-     * value represents the value of the config.
-     *
+     * Get the values property: List of key value pairs
+     * where key represents a valid service configuration name and value represents the value of the config.
+     * 
      * @return the values value.
      */
     public Map<String, String> values() {
@@ -143,9 +144,9 @@ public final class ClusterConfigFile {
     }
 
     /**
-     * Set the values property: List of key value pairs where key represents a valid service configuration name and
-     * value represents the value of the config.
-     *
+     * Set the values property: List of key value pairs
+     * where key represents a valid service configuration name and value represents the value of the config.
+     * 
      * @param values the values value to set.
      * @return the ClusterConfigFile object itself.
      */
@@ -156,16 +157,65 @@ public final class ClusterConfigFile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fileName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property fileName in model ClusterConfigFile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property fileName in model ClusterConfigFile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterConfigFile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fileName", this.fileName);
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("encoding", this.encoding == null ? null : this.encoding.toString());
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeMapField("values", this.values, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterConfigFile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterConfigFile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterConfigFile.
+     */
+    public static ClusterConfigFile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterConfigFile deserializedClusterConfigFile = new ClusterConfigFile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fileName".equals(fieldName)) {
+                    deserializedClusterConfigFile.fileName = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedClusterConfigFile.content = reader.getString();
+                } else if ("encoding".equals(fieldName)) {
+                    deserializedClusterConfigFile.encoding = ContentEncoding.fromString(reader.getString());
+                } else if ("path".equals(fieldName)) {
+                    deserializedClusterConfigFile.path = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    Map<String, String> values = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterConfigFile.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterConfigFile;
+        });
+    }
 }

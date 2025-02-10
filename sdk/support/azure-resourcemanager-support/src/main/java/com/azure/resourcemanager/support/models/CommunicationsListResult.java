@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.support.fluent.models.CommunicationDetailsInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection of Communication resources. */
+/**
+ * Collection of Communication resources.
+ */
 @Fluent
-public final class CommunicationsListResult {
+public final class CommunicationsListResult implements JsonSerializable<CommunicationsListResult> {
     /*
      * List of Communication resources.
      */
-    @JsonProperty(value = "value")
     private List<CommunicationDetailsInner> value;
 
     /*
      * The URI to fetch the next page of Communication resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CommunicationsListResult class. */
+    /**
+     * Creates an instance of CommunicationsListResult class.
+     */
     public CommunicationsListResult() {
     }
 
     /**
      * Get the value property: List of Communication resources.
-     *
+     * 
      * @return the value value.
      */
     public List<CommunicationDetailsInner> value() {
@@ -39,7 +45,7 @@ public final class CommunicationsListResult {
 
     /**
      * Set the value property: List of Communication resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the CommunicationsListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class CommunicationsListResult {
 
     /**
      * Get the nextLink property: The URI to fetch the next page of Communication resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class CommunicationsListResult {
 
     /**
      * Set the nextLink property: The URI to fetch the next page of Communication resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CommunicationsListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class CommunicationsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunicationsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunicationsListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommunicationsListResult.
+     */
+    public static CommunicationsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunicationsListResult deserializedCommunicationsListResult = new CommunicationsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CommunicationDetailsInner> value
+                        = reader.readArray(reader1 -> CommunicationDetailsInner.fromJson(reader1));
+                    deserializedCommunicationsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCommunicationsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunicationsListResult;
+        });
     }
 }

@@ -6,43 +6,46 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the parameters for the request header action. */
+/**
+ * Defines the parameters for the request header action.
+ */
 @Fluent
-public final class HeaderActionParameters {
+public final class HeaderActionParameters implements JsonSerializable<HeaderActionParameters> {
     /*
      * The typeName property.
      */
-    @JsonProperty(value = "typeName", required = true)
     private String typeName = "DeliveryRuleHeaderActionParameters";
 
     /*
      * Action to perform
      */
-    @JsonProperty(value = "headerAction", required = true)
     private HeaderAction headerAction;
 
     /*
      * Name of the header to modify
      */
-    @JsonProperty(value = "headerName", required = true)
     private String headerName;
 
     /*
      * Value for the specified action
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of HeaderActionParameters class. */
+    /**
+     * Creates an instance of HeaderActionParameters class.
+     */
     public HeaderActionParameters() {
-        typeName = "DeliveryRuleHeaderActionParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -51,7 +54,7 @@ public final class HeaderActionParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the HeaderActionParameters object itself.
      */
@@ -62,7 +65,7 @@ public final class HeaderActionParameters {
 
     /**
      * Get the headerAction property: Action to perform.
-     *
+     * 
      * @return the headerAction value.
      */
     public HeaderAction headerAction() {
@@ -71,7 +74,7 @@ public final class HeaderActionParameters {
 
     /**
      * Set the headerAction property: Action to perform.
-     *
+     * 
      * @param headerAction the headerAction value to set.
      * @return the HeaderActionParameters object itself.
      */
@@ -82,7 +85,7 @@ public final class HeaderActionParameters {
 
     /**
      * Get the headerName property: Name of the header to modify.
-     *
+     * 
      * @return the headerName value.
      */
     public String headerName() {
@@ -91,7 +94,7 @@ public final class HeaderActionParameters {
 
     /**
      * Set the headerName property: Name of the header to modify.
-     *
+     * 
      * @param headerName the headerName value to set.
      * @return the HeaderActionParameters object itself.
      */
@@ -102,7 +105,7 @@ public final class HeaderActionParameters {
 
     /**
      * Get the value property: Value for the specified action.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -111,7 +114,7 @@ public final class HeaderActionParameters {
 
     /**
      * Set the value property: Value for the specified action.
-     *
+     * 
      * @param value the value value to set.
      * @return the HeaderActionParameters object itself.
      */
@@ -122,23 +125,65 @@ public final class HeaderActionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (headerAction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property headerAction in model HeaderActionParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property headerAction in model HeaderActionParameters"));
         }
         if (headerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property headerName in model HeaderActionParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property headerName in model HeaderActionParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HeaderActionParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeStringField("headerAction", this.headerAction == null ? null : this.headerAction.toString());
+        jsonWriter.writeStringField("headerName", this.headerName);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HeaderActionParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HeaderActionParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HeaderActionParameters.
+     */
+    public static HeaderActionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HeaderActionParameters deserializedHeaderActionParameters = new HeaderActionParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("headerAction".equals(fieldName)) {
+                    deserializedHeaderActionParameters.headerAction = HeaderAction.fromString(reader.getString());
+                } else if ("headerName".equals(fieldName)) {
+                    deserializedHeaderActionParameters.headerName = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedHeaderActionParameters.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHeaderActionParameters;
+        });
+    }
 }

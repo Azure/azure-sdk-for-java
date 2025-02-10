@@ -12,8 +12,7 @@ public class SparkBatchClientTest extends SparkClientTestBase {
 
     @Override
     protected void beforeTest() {
-        client = clientSetup(httpPipeline -> new SparkClientBuilder()
-            .endpoint(getEndpoint())
+        client = clientSetup(httpPipeline -> new SparkClientBuilder().endpoint(getEndpoint())
             .pipeline(httpPipeline)
             .sparkPoolName(getSparkPoolName())
             .livyApiVersion(livyApiVersion)

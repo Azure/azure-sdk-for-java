@@ -6,40 +6,56 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Recovery plan script action details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("ScriptActionDetails")
+/**
+ * Recovery plan script action details.
+ */
 @Fluent
 public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDetails {
     /*
+     * Gets the type of action details (see RecoveryPlanActionDetailsTypes enum for possible values).
+     */
+    private String instanceType = "ScriptActionDetails";
+
+    /*
      * The script path.
      */
-    @JsonProperty(value = "path", required = true)
     private String path;
 
     /*
      * The script timeout.
      */
-    @JsonProperty(value = "timeout")
     private String timeout;
 
     /*
      * The fabric location.
      */
-    @JsonProperty(value = "fabricLocation", required = true)
     private RecoveryPlanActionLocation fabricLocation;
 
-    /** Creates an instance of RecoveryPlanScriptActionDetails class. */
+    /**
+     * Creates an instance of RecoveryPlanScriptActionDetails class.
+     */
     public RecoveryPlanScriptActionDetails() {
     }
 
     /**
+     * Get the instanceType property: Gets the type of action details (see RecoveryPlanActionDetailsTypes enum for
+     * possible values).
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the path property: The script path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -48,7 +64,7 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Set the path property: The script path.
-     *
+     * 
      * @param path the path value to set.
      * @return the RecoveryPlanScriptActionDetails object itself.
      */
@@ -59,7 +75,7 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Get the timeout property: The script timeout.
-     *
+     * 
      * @return the timeout value.
      */
     public String timeout() {
@@ -68,7 +84,7 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Set the timeout property: The script timeout.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the RecoveryPlanScriptActionDetails object itself.
      */
@@ -79,7 +95,7 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Get the fabricLocation property: The fabric location.
-     *
+     * 
      * @return the fabricLocation value.
      */
     public RecoveryPlanActionLocation fabricLocation() {
@@ -88,7 +104,7 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Set the fabricLocation property: The fabric location.
-     *
+     * 
      * @param fabricLocation the fabricLocation value to set.
      * @return the RecoveryPlanScriptActionDetails object itself.
      */
@@ -99,25 +115,71 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (path() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property path in model RecoveryPlanScriptActionDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property path in model RecoveryPlanScriptActionDetails"));
         }
         if (fabricLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fabricLocation in model RecoveryPlanScriptActionDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fabricLocation in model RecoveryPlanScriptActionDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPlanScriptActionDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("fabricLocation",
+            this.fabricLocation == null ? null : this.fabricLocation.toString());
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("timeout", this.timeout);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanScriptActionDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanScriptActionDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryPlanScriptActionDetails.
+     */
+    public static RecoveryPlanScriptActionDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanScriptActionDetails deserializedRecoveryPlanScriptActionDetails
+                = new RecoveryPlanScriptActionDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedRecoveryPlanScriptActionDetails.path = reader.getString();
+                } else if ("fabricLocation".equals(fieldName)) {
+                    deserializedRecoveryPlanScriptActionDetails.fabricLocation
+                        = RecoveryPlanActionLocation.fromString(reader.getString());
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedRecoveryPlanScriptActionDetails.instanceType = reader.getString();
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedRecoveryPlanScriptActionDetails.timeout = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanScriptActionDetails;
+        });
+    }
 }

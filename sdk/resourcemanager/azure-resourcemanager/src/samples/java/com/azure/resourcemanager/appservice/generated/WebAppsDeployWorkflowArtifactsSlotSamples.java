@@ -17,7 +17,7 @@ import java.util.Map;
 public final class WebAppsDeployWorkflowArtifactsSlotSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/PostDeployWorkflowArtifactsSlot.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/PostDeployWorkflowArtifactsSlot.json
      */
     /**
      * Sample code: Deploys workflow artifacts slot.
@@ -26,19 +26,24 @@ public final class WebAppsDeployWorkflowArtifactsSlotSamples {
      */
     public static void deploysWorkflowArtifactsSlot(com.azure.resourcemanager.AzureResourceManager azure)
         throws IOException {
-        azure.webApps().manager().serviceClient().getWebApps()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
             .deployWorkflowArtifactsSlotWithResponse("testrg123", "testsite2", "testsSlot", new WorkflowArtifacts()
-                .withAppSettings(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                    "{\"eventHub_connectionString\":\"Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=EXAMPLE1a2b3c4d5e6fEXAMPLE=\"}",
-                    Object.class, SerializerEncoding.JSON))
-                .withFiles(mapOf("connections.json",
-                    SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
+                .withAppSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize(
+                        "{\"eventHub_connectionString\":\"Endpoint=sb://example.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=EXAMPLE1a2b3c4d5e6fEXAMPLE=\"}",
+                        Object.class, SerializerEncoding.JSON))
+                .withFiles(mapOf("connections.json", SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize(
                         "{\"managedApiConnections\":{},\"serviceProviderConnections\":{\"eventHub\":{\"displayName\":\"example1\",\"parameterValues\":{\"connectionString\":\"@appsetting('eventHub_connectionString')\"},\"serviceProvider\":{\"id\":\"/serviceProviders/eventHub\"}}}}",
                         Object.class, SerializerEncoding.JSON),
                     "test1/workflow.json",
-                    SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                        "{\"definition\":{\"$schema\":\"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#\",\"actions\":{},\"contentVersion\":\"1.0.0.0\",\"outputs\":{},\"triggers\":{\"When_events_are_available_in_Event_hub\":{\"type\":\"ServiceProvider\",\"inputs\":{\"parameters\":{\"eventHubName\":\"test123\"},\"serviceProviderConfiguration\":{\"operationId\":\"receiveEvents\",\"connectionName\":\"eventHub\",\"serviceProviderId\":\"/serviceProviders/eventHub\"}},\"splitOn\":\"@triggerOutputs()?['body']\"}}},\"kind\":\"Stateful\"}",
-                        Object.class, SerializerEncoding.JSON))),
+                    SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize(
+                            "{\"definition\":{\"$schema\":\"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#\",\"actions\":{},\"contentVersion\":\"1.0.0.0\",\"outputs\":{},\"triggers\":{\"When_events_are_available_in_Event_hub\":{\"type\":\"ServiceProvider\",\"inputs\":{\"parameters\":{\"eventHubName\":\"test123\"},\"serviceProviderConfiguration\":{\"operationId\":\"receiveEvents\",\"connectionName\":\"eventHub\",\"serviceProviderId\":\"/serviceProviders/eventHub\"}},\"splitOn\":\"@triggerOutputs()?['body']\"}}},\"kind\":\"Stateful\"}",
+                            Object.class, SerializerEncoding.JSON))),
                 com.azure.core.util.Context.NONE);
     }
 

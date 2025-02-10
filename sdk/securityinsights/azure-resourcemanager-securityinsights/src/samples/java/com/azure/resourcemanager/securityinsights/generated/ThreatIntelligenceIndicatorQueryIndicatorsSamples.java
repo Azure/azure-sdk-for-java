@@ -4,42 +4,35 @@
 
 package com.azure.resourcemanager.securityinsights.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceFilteringCriteria;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceSortingCriteria;
-import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceSortingCriteriaEnum;
+import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceSortingOrder;
 import java.util.Arrays;
 
-/** Samples for ThreatIntelligenceIndicator QueryIndicators. */
+/**
+ * Samples for ThreatIntelligenceIndicator QueryIndicators.
+ */
 public final class ThreatIntelligenceIndicatorQueryIndicatorsSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/threatintelligence/QueryThreatIntelligence.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/
+     * threatintelligence/QueryThreatIntelligence.json
      */
     /**
      * Sample code: Query threat intelligence indicators as per filtering criteria.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
     public static void queryThreatIntelligenceIndicatorsAsPerFilteringCriteria(
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .threatIntelligenceIndicators()
-            .queryIndicators(
-                "myRg",
-                "myWorkspace",
-                new ThreatIntelligenceFilteringCriteria()
-                    .withPageSize(100)
-                    .withMinConfidence(25)
-                    .withMaxConfidence(80)
-                    .withMinValidUntil("2021-04-05T17:44:00.114052Z")
-                    .withMaxValidUntil("2021-04-25T17:44:00.114052Z")
-                    .withSortBy(
-                        Arrays
-                            .asList(
-                                new ThreatIntelligenceSortingCriteria()
-                                    .withItemKey("lastUpdatedTimeUtc")
-                                    .withSortOrder(ThreatIntelligenceSortingCriteriaEnum.DESCENDING)))
-                    .withSources(Arrays.asList("Azure Sentinel")),
-                Context.NONE);
+        manager.threatIntelligenceIndicators()
+            .queryIndicators("myRg", "myWorkspace", new ThreatIntelligenceFilteringCriteria().withPageSize(100)
+                .withMinConfidence(25)
+                .withMaxConfidence(80)
+                .withMinValidUntil("2020-04-05T17:44:00.114052Z")
+                .withMaxValidUntil("2020-04-25T17:44:00.114052Z")
+                .withSortBy(Arrays.asList(new ThreatIntelligenceSortingCriteria().withItemKey("fakeTokenPlaceholder")
+                    .withSortOrder(ThreatIntelligenceSortingOrder.DESCENDING)))
+                .withSources(Arrays.asList("Azure Sentinel")), com.azure.core.util.Context.NONE);
     }
 }

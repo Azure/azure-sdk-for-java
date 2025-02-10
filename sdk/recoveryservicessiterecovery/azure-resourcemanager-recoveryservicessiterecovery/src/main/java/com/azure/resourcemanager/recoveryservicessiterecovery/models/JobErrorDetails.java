@@ -5,49 +5,54 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** This class contains the error details per object. */
+/**
+ * This class contains the error details per object.
+ */
 @Fluent
-public final class JobErrorDetails {
+public final class JobErrorDetails implements JsonSerializable<JobErrorDetails> {
     /*
      * The Service error details.
      */
-    @JsonProperty(value = "serviceErrorDetails")
     private ServiceError serviceErrorDetails;
 
     /*
      * The Provider error details.
      */
-    @JsonProperty(value = "providerErrorDetails")
     private ProviderError providerErrorDetails;
 
     /*
      * Error level of error.
      */
-    @JsonProperty(value = "errorLevel")
     private String errorLevel;
 
     /*
      * The creation time of job error.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * The Id of the task.
      */
-    @JsonProperty(value = "taskId")
     private String taskId;
 
-    /** Creates an instance of JobErrorDetails class. */
+    /**
+     * Creates an instance of JobErrorDetails class.
+     */
     public JobErrorDetails() {
     }
 
     /**
      * Get the serviceErrorDetails property: The Service error details.
-     *
+     * 
      * @return the serviceErrorDetails value.
      */
     public ServiceError serviceErrorDetails() {
@@ -56,7 +61,7 @@ public final class JobErrorDetails {
 
     /**
      * Set the serviceErrorDetails property: The Service error details.
-     *
+     * 
      * @param serviceErrorDetails the serviceErrorDetails value to set.
      * @return the JobErrorDetails object itself.
      */
@@ -67,7 +72,7 @@ public final class JobErrorDetails {
 
     /**
      * Get the providerErrorDetails property: The Provider error details.
-     *
+     * 
      * @return the providerErrorDetails value.
      */
     public ProviderError providerErrorDetails() {
@@ -76,7 +81,7 @@ public final class JobErrorDetails {
 
     /**
      * Set the providerErrorDetails property: The Provider error details.
-     *
+     * 
      * @param providerErrorDetails the providerErrorDetails value to set.
      * @return the JobErrorDetails object itself.
      */
@@ -87,7 +92,7 @@ public final class JobErrorDetails {
 
     /**
      * Get the errorLevel property: Error level of error.
-     *
+     * 
      * @return the errorLevel value.
      */
     public String errorLevel() {
@@ -96,7 +101,7 @@ public final class JobErrorDetails {
 
     /**
      * Set the errorLevel property: Error level of error.
-     *
+     * 
      * @param errorLevel the errorLevel value to set.
      * @return the JobErrorDetails object itself.
      */
@@ -107,7 +112,7 @@ public final class JobErrorDetails {
 
     /**
      * Get the creationTime property: The creation time of job error.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -116,7 +121,7 @@ public final class JobErrorDetails {
 
     /**
      * Set the creationTime property: The creation time of job error.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the JobErrorDetails object itself.
      */
@@ -127,7 +132,7 @@ public final class JobErrorDetails {
 
     /**
      * Get the taskId property: The Id of the task.
-     *
+     * 
      * @return the taskId value.
      */
     public String taskId() {
@@ -136,7 +141,7 @@ public final class JobErrorDetails {
 
     /**
      * Set the taskId property: The Id of the task.
-     *
+     * 
      * @param taskId the taskId value to set.
      * @return the JobErrorDetails object itself.
      */
@@ -147,7 +152,7 @@ public final class JobErrorDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -157,5 +162,55 @@ public final class JobErrorDetails {
         if (providerErrorDetails() != null) {
             providerErrorDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("serviceErrorDetails", this.serviceErrorDetails);
+        jsonWriter.writeJsonField("providerErrorDetails", this.providerErrorDetails);
+        jsonWriter.writeStringField("errorLevel", this.errorLevel);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("taskId", this.taskId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobErrorDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobErrorDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobErrorDetails.
+     */
+    public static JobErrorDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobErrorDetails deserializedJobErrorDetails = new JobErrorDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceErrorDetails".equals(fieldName)) {
+                    deserializedJobErrorDetails.serviceErrorDetails = ServiceError.fromJson(reader);
+                } else if ("providerErrorDetails".equals(fieldName)) {
+                    deserializedJobErrorDetails.providerErrorDetails = ProviderError.fromJson(reader);
+                } else if ("errorLevel".equals(fieldName)) {
+                    deserializedJobErrorDetails.errorLevel = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedJobErrorDetails.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("taskId".equals(fieldName)) {
+                    deserializedJobErrorDetails.taskId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobErrorDetails;
+        });
     }
 }

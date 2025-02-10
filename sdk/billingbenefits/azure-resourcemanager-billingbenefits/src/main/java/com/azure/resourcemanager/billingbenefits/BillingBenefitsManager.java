@@ -44,7 +44,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to BillingBenefitsManager. Azure Benefits RP let users create and manage benefits like savings plan. */
+/**
+ * Entry point to BillingBenefitsManager.
+ * Azure Benefits RP let users create and manage benefits like savings plan.
+ */
 public final class BillingBenefitsManager {
     private Operations operations;
 
@@ -63,17 +66,15 @@ public final class BillingBenefitsManager {
     private BillingBenefitsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new BillingBenefitsRPBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new BillingBenefitsRPBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of BillingBenefits service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the BillingBenefits service API instance.
@@ -86,7 +87,7 @@ public final class BillingBenefitsManager {
 
     /**
      * Creates an instance of BillingBenefits service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the BillingBenefits service API instance.
@@ -99,14 +100,16 @@ public final class BillingBenefitsManager {
 
     /**
      * Gets a Configurable instance that can be used to create BillingBenefitsManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new BillingBenefitsManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -178,8 +181,8 @@ public final class BillingBenefitsManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -196,8 +199,8 @@ public final class BillingBenefitsManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -217,15 +220,13 @@ public final class BillingBenefitsManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.billingbenefits")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -250,38 +251,28 @@ public final class BillingBenefitsManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new BillingBenefitsManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -293,7 +284,7 @@ public final class BillingBenefitsManager {
 
     /**
      * Gets the resource collection API of SavingsPlanOrderAlias.
-     *
+     * 
      * @return Resource collection API of SavingsPlanOrderAlias.
      */
     public SavingsPlanOrderAlias savingsPlanOrderAlias() {
@@ -305,7 +296,7 @@ public final class BillingBenefitsManager {
 
     /**
      * Gets the resource collection API of SavingsPlanOrders.
-     *
+     * 
      * @return Resource collection API of SavingsPlanOrders.
      */
     public SavingsPlanOrders savingsPlanOrders() {
@@ -317,7 +308,7 @@ public final class BillingBenefitsManager {
 
     /**
      * Gets the resource collection API of SavingsPlans.
-     *
+     * 
      * @return Resource collection API of SavingsPlans.
      */
     public SavingsPlans savingsPlans() {
@@ -329,7 +320,7 @@ public final class BillingBenefitsManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -341,7 +332,7 @@ public final class BillingBenefitsManager {
 
     /**
      * Gets the resource collection API of ReservationOrderAlias.
-     *
+     * 
      * @return Resource collection API of ReservationOrderAlias.
      */
     public ReservationOrderAlias reservationOrderAlias() {
@@ -352,8 +343,10 @@ public final class BillingBenefitsManager {
     }
 
     /**
-     * @return Wrapped service client BillingBenefitsRP providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client BillingBenefitsRP providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client BillingBenefitsRP.
      */
     public BillingBenefitsRP serviceClient() {
         return this.clientObject;

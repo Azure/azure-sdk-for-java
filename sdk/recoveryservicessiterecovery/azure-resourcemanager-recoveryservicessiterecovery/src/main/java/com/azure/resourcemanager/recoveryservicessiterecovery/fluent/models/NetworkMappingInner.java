@@ -6,8 +6,11 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.NetworkMappingProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Network Mapping model. Ideally it should have been possible to inherit this class from prev version in
@@ -20,22 +23,37 @@ public final class NetworkMappingInner extends ProxyResource {
     /*
      * The Network Mapping Properties.
      */
-    @JsonProperty(value = "properties")
     private NetworkMappingProperties properties;
 
     /*
      * Resource Location
      */
-    @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of NetworkMappingInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NetworkMappingInner class.
+     */
     public NetworkMappingInner() {
     }
 
     /**
      * Get the properties property: The Network Mapping Properties.
-     *
+     * 
      * @return the properties value.
      */
     public NetworkMappingProperties properties() {
@@ -44,7 +62,7 @@ public final class NetworkMappingInner extends ProxyResource {
 
     /**
      * Set the properties property: The Network Mapping Properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the NetworkMappingInner object itself.
      */
@@ -55,7 +73,7 @@ public final class NetworkMappingInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -64,7 +82,7 @@ public final class NetworkMappingInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the NetworkMappingInner object itself.
      */
@@ -74,13 +92,89 @@ public final class NetworkMappingInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkMappingInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkMappingInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkMappingInner.
+     */
+    public static NetworkMappingInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkMappingInner deserializedNetworkMappingInner = new NetworkMappingInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetworkMappingInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkMappingInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkMappingInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkMappingInner.properties = NetworkMappingProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedNetworkMappingInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkMappingInner;
+        });
     }
 }

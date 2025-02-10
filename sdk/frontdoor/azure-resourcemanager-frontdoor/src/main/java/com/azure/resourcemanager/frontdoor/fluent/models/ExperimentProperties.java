@@ -5,63 +5,64 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.Endpoint;
 import com.azure.resourcemanager.frontdoor.models.NetworkExperimentResourceState;
 import com.azure.resourcemanager.frontdoor.models.State;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Defines the properties of an experiment. */
+/**
+ * Defines the properties of an experiment.
+ */
 @Fluent
-public final class ExperimentProperties {
+public final class ExperimentProperties implements JsonSerializable<ExperimentProperties> {
     /*
      * The description of the details or intents of the Experiment
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The endpoint A of an experiment
      */
-    @JsonProperty(value = "endpointA")
     private Endpoint endpointA;
 
     /*
      * The endpoint B of an experiment
      */
-    @JsonProperty(value = "endpointB")
     private Endpoint endpointB;
 
     /*
      * The state of the Experiment
      */
-    @JsonProperty(value = "enabledState")
     private State enabledState;
 
     /*
      * Resource status.
      */
-    @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkExperimentResourceState resourceState;
 
     /*
      * The description of Experiment status from the server side
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * The uri to the Script used in the Experiment
      */
-    @JsonProperty(value = "scriptFileUri", access = JsonProperty.Access.WRITE_ONLY)
     private String scriptFileUri;
 
-    /** Creates an instance of ExperimentProperties class. */
+    /**
+     * Creates an instance of ExperimentProperties class.
+     */
     public ExperimentProperties() {
     }
 
     /**
      * Get the description property: The description of the details or intents of the Experiment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -70,7 +71,7 @@ public final class ExperimentProperties {
 
     /**
      * Set the description property: The description of the details or intents of the Experiment.
-     *
+     * 
      * @param description the description value to set.
      * @return the ExperimentProperties object itself.
      */
@@ -81,7 +82,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the endpointA property: The endpoint A of an experiment.
-     *
+     * 
      * @return the endpointA value.
      */
     public Endpoint endpointA() {
@@ -90,7 +91,7 @@ public final class ExperimentProperties {
 
     /**
      * Set the endpointA property: The endpoint A of an experiment.
-     *
+     * 
      * @param endpointA the endpointA value to set.
      * @return the ExperimentProperties object itself.
      */
@@ -101,7 +102,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the endpointB property: The endpoint B of an experiment.
-     *
+     * 
      * @return the endpointB value.
      */
     public Endpoint endpointB() {
@@ -110,7 +111,7 @@ public final class ExperimentProperties {
 
     /**
      * Set the endpointB property: The endpoint B of an experiment.
-     *
+     * 
      * @param endpointB the endpointB value to set.
      * @return the ExperimentProperties object itself.
      */
@@ -121,7 +122,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the enabledState property: The state of the Experiment.
-     *
+     * 
      * @return the enabledState value.
      */
     public State enabledState() {
@@ -130,7 +131,7 @@ public final class ExperimentProperties {
 
     /**
      * Set the enabledState property: The state of the Experiment.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ExperimentProperties object itself.
      */
@@ -141,7 +142,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the resourceState property: Resource status.
-     *
+     * 
      * @return the resourceState value.
      */
     public NetworkExperimentResourceState resourceState() {
@@ -150,7 +151,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the status property: The description of Experiment status from the server side.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -159,7 +160,7 @@ public final class ExperimentProperties {
 
     /**
      * Get the scriptFileUri property: The uri to the Script used in the Experiment.
-     *
+     * 
      * @return the scriptFileUri value.
      */
     public String scriptFileUri() {
@@ -168,7 +169,7 @@ public final class ExperimentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -178,5 +179,57 @@ public final class ExperimentProperties {
         if (endpointB() != null) {
             endpointB().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("endpointA", this.endpointA);
+        jsonWriter.writeJsonField("endpointB", this.endpointB);
+        jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExperimentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExperimentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExperimentProperties.
+     */
+    public static ExperimentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExperimentProperties deserializedExperimentProperties = new ExperimentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedExperimentProperties.description = reader.getString();
+                } else if ("endpointA".equals(fieldName)) {
+                    deserializedExperimentProperties.endpointA = Endpoint.fromJson(reader);
+                } else if ("endpointB".equals(fieldName)) {
+                    deserializedExperimentProperties.endpointB = Endpoint.fromJson(reader);
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedExperimentProperties.enabledState = State.fromString(reader.getString());
+                } else if ("resourceState".equals(fieldName)) {
+                    deserializedExperimentProperties.resourceState
+                        = NetworkExperimentResourceState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedExperimentProperties.status = reader.getString();
+                } else if ("scriptFileUri".equals(fieldName)) {
+                    deserializedExperimentProperties.scriptFileUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExperimentProperties;
+        });
     }
 }

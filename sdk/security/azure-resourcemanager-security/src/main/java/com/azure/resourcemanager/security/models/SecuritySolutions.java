@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SecuritySolutions. */
+/**
+ * Resource collection API of SecuritySolutions.
+ */
 public interface SecuritySolutions {
     /**
      * Gets a list of Security Solutions for the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Security Solutions for the subscription as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface SecuritySolutions {
 
     /**
      * Gets a list of Security Solutions for the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,11 +34,11 @@ public interface SecuritySolutions {
 
     /**
      * Gets a specific Security Solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param securitySolutionName Name of security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,16 +46,16 @@ public interface SecuritySolutions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Security Solution along with {@link Response}.
      */
-    Response<SecuritySolution> getWithResponse(
-        String resourceGroupName, String ascLocation, String securitySolutionName, Context context);
+    Response<SecuritySolution> getWithResponse(String resourceGroupName, String ascLocation,
+        String securitySolutionName, Context context);
 
     /**
      * Gets a specific Security Solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param securitySolutionName Name of security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

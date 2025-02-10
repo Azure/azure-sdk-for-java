@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether the environment type is either enabled or disabled. */
+/**
+ * Indicates whether the environment type is either enabled or disabled.
+ */
 public final class EnvironmentTypeEnableStatus extends ExpandableStringEnum<EnvironmentTypeEnableStatus> {
-    /** Static value Enabled for EnvironmentTypeEnableStatus. */
+    /**
+     * Static value Enabled for EnvironmentTypeEnableStatus.
+     */
     public static final EnvironmentTypeEnableStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for EnvironmentTypeEnableStatus. */
+    /**
+     * Static value Disabled for EnvironmentTypeEnableStatus.
+     */
     public static final EnvironmentTypeEnableStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of EnvironmentTypeEnableStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class EnvironmentTypeEnableStatus extends ExpandableStringEnum<Envi
 
     /**
      * Creates or finds a EnvironmentTypeEnableStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnvironmentTypeEnableStatus.
      */
-    @JsonCreator
     public static EnvironmentTypeEnableStatus fromString(String name) {
         return fromString(name, EnvironmentTypeEnableStatus.class);
     }
 
     /**
      * Gets known EnvironmentTypeEnableStatus values.
-     *
+     * 
      * @return known EnvironmentTypeEnableStatus values.
      */
     public static Collection<EnvironmentTypeEnableStatus> values() {

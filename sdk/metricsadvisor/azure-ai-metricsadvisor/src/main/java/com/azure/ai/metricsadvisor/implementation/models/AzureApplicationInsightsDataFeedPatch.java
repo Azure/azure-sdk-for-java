@@ -5,19 +5,25 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The AzureApplicationInsightsDataFeedPatch model.
  */
 @Fluent
 public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailPatch {
+    /*
+     * data source type
+     */
+    private DataSourceType dataSourceType = DataSourceType.AZURE_APPLICATION_INSIGHTS;
+
     /*
      * The dataSourceParameter property.
      */
@@ -27,6 +33,16 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
      * Creates an instance of AzureApplicationInsightsDataFeedPatch class.
      */
     public AzureApplicationInsightsDataFeedPatch() {
+    }
+
+    /**
+     * Get the dataSourceType property: data source type.
+     * 
+     * @return the dataSourceType value.
+     */
+    @Override
+    public DataSourceType getDataSourceType() {
+        return this.dataSourceType;
     }
 
     /**
@@ -239,33 +255,39 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            Objects.toString(DataSourceType.AZURE_APPLICATION_INSIGHTS, null));
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
         jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
-        jsonWriter.writeStringField("dataStartFrom", Objects.toString(getDataStartFrom(), null));
+        jsonWriter.writeStringField("dataStartFrom",
+            getDataStartFrom() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getDataStartFrom()));
         jsonWriter.writeNumberField("startOffsetInSeconds", getStartOffsetInSeconds());
         jsonWriter.writeNumberField("maxConcurrency", getMaxConcurrency());
         jsonWriter.writeNumberField("minRetryIntervalInSeconds", getMinRetryIntervalInSeconds());
         jsonWriter.writeNumberField("stopRetryAfterInSeconds", getStopRetryAfterInSeconds());
-        jsonWriter.writeStringField("needRollup", Objects.toString(getNeedRollup(), null));
-        jsonWriter.writeStringField("rollUpMethod", Objects.toString(getRollUpMethod(), null));
+        jsonWriter.writeStringField("needRollup", getNeedRollup() == null ? null : getNeedRollup().toString());
+        jsonWriter.writeStringField("rollUpMethod", getRollUpMethod() == null ? null : getRollUpMethod().toString());
         jsonWriter.writeArrayField("rollUpColumns", getRollUpColumns(),
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("allUpIdentification", getAllUpIdentification());
-        jsonWriter.writeStringField("fillMissingPointType", Objects.toString(getFillMissingPointType(), null));
+        jsonWriter.writeStringField("fillMissingPointType",
+            getFillMissingPointType() == null ? null : getFillMissingPointType().toString());
         jsonWriter.writeNumberField("fillMissingPointValue", getFillMissingPointValue());
-        jsonWriter.writeStringField("viewMode", Objects.toString(getViewMode(), null));
+        jsonWriter.writeStringField("viewMode", getViewMode() == null ? null : getViewMode().toString());
         jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("viewers", getViewers(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("status", Objects.toString(getStatus(), null));
+        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("actionLinkTemplate", getActionLinkTemplate());
-        jsonWriter.writeStringField("authenticationType", Objects.toString(getAuthenticationType(), null));
+        jsonWriter.writeStringField("authenticationType",
+            getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
+        jsonWriter.writeStringField("dataSourceType",
+            this.dataSourceType == null ? null : this.dataSourceType.toString());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
         return jsonWriter.writeEndObject();
     }
@@ -276,7 +298,6 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureApplicationInsightsDataFeedPatch if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AzureApplicationInsightsDataFeedPatch.
      */
     public static AzureApplicationInsightsDataFeedPatch fromJson(JsonReader jsonReader) throws IOException {
@@ -287,22 +308,15 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceType".equals(fieldName)) {
-                    String dataSourceType = reader.getString();
-                    if (!"AzureApplicationInsights".equals(dataSourceType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceType' was expected to be non-null and equal to 'AzureApplicationInsights'. The found 'dataSourceType' was '"
-                                + dataSourceType + "'.");
-                    }
-                } else if ("dataFeedName".equals(fieldName)) {
+                if ("dataFeedName".equals(fieldName)) {
                     deserializedAzureApplicationInsightsDataFeedPatch.setDataFeedName(reader.getString());
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedAzureApplicationInsightsDataFeedPatch.setDataFeedDescription(reader.getString());
                 } else if ("timestampColumn".equals(fieldName)) {
                     deserializedAzureApplicationInsightsDataFeedPatch.setTimestampColumn(reader.getString());
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsDataFeedPatch.setDataStartFrom(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAzureApplicationInsightsDataFeedPatch.setDataStartFrom(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("startOffsetInSeconds".equals(fieldName)) {
                     deserializedAzureApplicationInsightsDataFeedPatch
                         .setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
@@ -351,6 +365,9 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
                         .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
                 } else if ("credentialId".equals(fieldName)) {
                     deserializedAzureApplicationInsightsDataFeedPatch.setCredentialId(reader.getString());
+                } else if ("dataSourceType".equals(fieldName)) {
+                    deserializedAzureApplicationInsightsDataFeedPatch.dataSourceType
+                        = DataSourceType.fromString(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedAzureApplicationInsightsDataFeedPatch.dataSourceParameter
                         = AzureApplicationInsightsParameterPatch.fromJson(reader);

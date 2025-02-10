@@ -7,25 +7,27 @@ package com.azure.resourcemanager.elasticsan.models;
 import com.azure.resourcemanager.elasticsan.fluent.models.PrivateLinkResourceListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of PrivateLinkResourceListResult. */
+/**
+ * An immutable client-side representation of PrivateLinkResourceListResult.
+ */
 public interface PrivateLinkResourceListResult {
     /**
      * Gets the value property: Array of private link resources.
-     *
+     * 
      * @return the value value.
      */
     List<PrivateLinkResource> value();
 
     /**
      * Gets the nextLink property: URI to fetch the next section of the paginated response.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.elasticsan.fluent.models.PrivateLinkResourceListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateLinkResourceListResultInner innerModel();

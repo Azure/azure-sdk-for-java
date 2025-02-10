@@ -65,8 +65,8 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * The interface defining all the services for NetAppManagementClientNetAppResources to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for NetAppManagementClientNetAppResources to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")

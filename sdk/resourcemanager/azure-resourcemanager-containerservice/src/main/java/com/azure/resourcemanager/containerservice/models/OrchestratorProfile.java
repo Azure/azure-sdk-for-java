@@ -6,29 +6,30 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contains information about orchestrator.
  */
 @Fluent
-public final class OrchestratorProfile {
+public final class OrchestratorProfile implements JsonSerializable<OrchestratorProfile> {
     /*
      * Orchestrator type.
      */
-    @JsonProperty(value = "orchestratorType")
     private String orchestratorType;
 
     /*
      * Orchestrator version (major, minor, patch).
      */
-    @JsonProperty(value = "orchestratorVersion", required = true)
     private String orchestratorVersion;
 
     /*
      * Whether Kubernetes version is currently in preview.
      */
-    @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
     /**
@@ -39,7 +40,7 @@ public final class OrchestratorProfile {
 
     /**
      * Get the orchestratorType property: Orchestrator type.
-     *
+     * 
      * @return the orchestratorType value.
      */
     public String orchestratorType() {
@@ -48,7 +49,7 @@ public final class OrchestratorProfile {
 
     /**
      * Set the orchestratorType property: Orchestrator type.
-     *
+     * 
      * @param orchestratorType the orchestratorType value to set.
      * @return the OrchestratorProfile object itself.
      */
@@ -59,7 +60,7 @@ public final class OrchestratorProfile {
 
     /**
      * Get the orchestratorVersion property: Orchestrator version (major, minor, patch).
-     *
+     * 
      * @return the orchestratorVersion value.
      */
     public String orchestratorVersion() {
@@ -68,7 +69,7 @@ public final class OrchestratorProfile {
 
     /**
      * Set the orchestratorVersion property: Orchestrator version (major, minor, patch).
-     *
+     * 
      * @param orchestratorVersion the orchestratorVersion value to set.
      * @return the OrchestratorProfile object itself.
      */
@@ -79,7 +80,7 @@ public final class OrchestratorProfile {
 
     /**
      * Get the isPreview property: Whether Kubernetes version is currently in preview.
-     *
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -88,7 +89,7 @@ public final class OrchestratorProfile {
 
     /**
      * Set the isPreview property: Whether Kubernetes version is currently in preview.
-     *
+     * 
      * @param isPreview the isPreview value to set.
      * @return the OrchestratorProfile object itself.
      */
@@ -99,15 +100,59 @@ public final class OrchestratorProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (orchestratorVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property orchestratorVersion in model OrchestratorProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property orchestratorVersion in model OrchestratorProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OrchestratorProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("orchestratorVersion", this.orchestratorVersion);
+        jsonWriter.writeStringField("orchestratorType", this.orchestratorType);
+        jsonWriter.writeBooleanField("isPreview", this.isPreview);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrchestratorProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrchestratorProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrchestratorProfile.
+     */
+    public static OrchestratorProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrchestratorProfile deserializedOrchestratorProfile = new OrchestratorProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("orchestratorVersion".equals(fieldName)) {
+                    deserializedOrchestratorProfile.orchestratorVersion = reader.getString();
+                } else if ("orchestratorType".equals(fieldName)) {
+                    deserializedOrchestratorProfile.orchestratorType = reader.getString();
+                } else if ("isPreview".equals(fieldName)) {
+                    deserializedOrchestratorProfile.isPreview = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrchestratorProfile;
+        });
+    }
 }

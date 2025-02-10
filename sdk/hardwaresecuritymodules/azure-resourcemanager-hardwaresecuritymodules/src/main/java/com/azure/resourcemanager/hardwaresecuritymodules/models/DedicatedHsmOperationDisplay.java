@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The display string. */
+/**
+ * The display string.
+ */
 @Fluent
-public final class DedicatedHsmOperationDisplay {
+public final class DedicatedHsmOperationDisplay implements JsonSerializable<DedicatedHsmOperationDisplay> {
     /*
      * The Resource Provider of the operation
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
      * Resource on which the operation is performed.
      */
-    @JsonProperty(value = "resource")
     private String resource;
 
     /*
      * Operation type: Read, write, delete, etc.
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
     /*
      * The object that represents the operation.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of DedicatedHsmOperationDisplay class.
+     */
+    public DedicatedHsmOperationDisplay() {
+    }
+
+    /**
      * Get the provider property: The Resource Provider of the operation.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -45,7 +53,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Set the provider property: The Resource Provider of the operation.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the DedicatedHsmOperationDisplay object itself.
      */
@@ -56,7 +64,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Get the resource property: Resource on which the operation is performed.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -65,7 +73,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Set the resource property: Resource on which the operation is performed.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the DedicatedHsmOperationDisplay object itself.
      */
@@ -76,7 +84,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Get the operation property: Operation type: Read, write, delete, etc.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -85,7 +93,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Set the operation property: Operation type: Read, write, delete, etc.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the DedicatedHsmOperationDisplay object itself.
      */
@@ -96,7 +104,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Get the description property: The object that represents the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -105,7 +113,7 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Set the description property: The object that represents the operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the DedicatedHsmOperationDisplay object itself.
      */
@@ -116,9 +124,54 @@ public final class DedicatedHsmOperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("resource", this.resource);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHsmOperationDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHsmOperationDisplay if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedHsmOperationDisplay.
+     */
+    public static DedicatedHsmOperationDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHsmOperationDisplay deserializedDedicatedHsmOperationDisplay = new DedicatedHsmOperationDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedDedicatedHsmOperationDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedDedicatedHsmOperationDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedDedicatedHsmOperationDisplay.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDedicatedHsmOperationDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHsmOperationDisplay;
+        });
     }
 }

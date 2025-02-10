@@ -6,53 +6,55 @@ package com.azure.resourcemanager.purview.models;
 
 import com.azure.resourcemanager.purview.fluent.models.DefaultAccountPayloadInner;
 
-/** An immutable client-side representation of DefaultAccountPayload. */
+/**
+ * An immutable client-side representation of DefaultAccountPayload.
+ */
 public interface DefaultAccountPayload {
     /**
      * Gets the accountName property: The name of the account that is set as the default.
-     *
+     * 
      * @return the accountName value.
      */
     String accountName();
 
     /**
      * Gets the resourceGroupName property: The resource group name of the account that is set as the default.
-     *
+     * 
      * @return the resourceGroupName value.
      */
     String resourceGroupName();
 
     /**
      * Gets the scope property: The scope object ID. For example, sub ID or tenant ID.
-     *
+     * 
      * @return the scope value.
      */
     String scope();
 
     /**
      * Gets the scopeTenantId property: The scope tenant in which the default account is set.
-     *
+     * 
      * @return the scopeTenantId value.
      */
     String scopeTenantId();
 
     /**
      * Gets the scopeType property: The scope where the default account is set.
-     *
+     * 
      * @return the scopeType value.
      */
     ScopeType scopeType();
 
     /**
      * Gets the subscriptionId property: The subscription ID of the account that is set as the default.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String subscriptionId();
 
     /**
      * Gets the inner com.azure.resourcemanager.purview.fluent.models.DefaultAccountPayloadInner object.
-     *
+     * 
      * @return the inner object.
      */
     DefaultAccountPayloadInner innerModel();

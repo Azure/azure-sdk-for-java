@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** If Enabled, Password authentication is enabled. */
+/**
+ * If Enabled, Password authentication is enabled.
+ */
 public final class PasswordAuthEnum extends ExpandableStringEnum<PasswordAuthEnum> {
-    /** Static value Enabled for PasswordAuthEnum. */
+    /**
+     * Static value Enabled for PasswordAuthEnum.
+     */
     public static final PasswordAuthEnum ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for PasswordAuthEnum. */
+    /**
+     * Static value Disabled for PasswordAuthEnum.
+     */
     public static final PasswordAuthEnum DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of PasswordAuthEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class PasswordAuthEnum extends ExpandableStringEnum<PasswordAuthEnu
 
     /**
      * Creates or finds a PasswordAuthEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PasswordAuthEnum.
      */
-    @JsonCreator
     public static PasswordAuthEnum fromString(String name) {
         return fromString(name, PasswordAuthEnum.class);
     }
 
     /**
      * Gets known PasswordAuthEnum values.
-     *
+     * 
      * @return known PasswordAuthEnum values.
      */
     public static Collection<PasswordAuthEnum> values() {

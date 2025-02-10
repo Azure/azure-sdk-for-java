@@ -6,11 +6,14 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.ChainingTriggerTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Trigger that allows the referenced pipeline to depend on other pipeline runs based on runDimension Name/Value pairs.
@@ -18,20 +21,21 @@ import java.util.List;
  * runDimensions. The referenced pipeline run would be triggered if the values for the runDimension match for all
  * upstream pipeline runs.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ChainingTrigger")
 @Fluent
 public final class ChainingTrigger extends Trigger {
     /*
+     * Trigger type.
+     */
+    private String type = "ChainingTrigger";
+
+    /*
      * Pipeline for which runs are created when all upstream pipelines complete successfully.
      */
-    @JsonProperty(value = "pipeline", required = true)
     private TriggerPipelineReference pipeline;
 
     /*
      * Chaining Trigger properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private ChainingTriggerTypeProperties innerTypeProperties = new ChainingTriggerTypeProperties();
 
     /**
@@ -41,8 +45,17 @@ public final class ChainingTrigger extends Trigger {
     }
 
     /**
-     * Get the pipeline property: Pipeline for which runs are created when all upstream pipelines complete
-     * successfully.
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the pipeline property: Pipeline for which runs are created when all upstream pipelines complete successfully.
      * 
      * @return the pipeline value.
      */
@@ -51,8 +64,7 @@ public final class ChainingTrigger extends Trigger {
     }
 
     /**
-     * Set the pipeline property: Pipeline for which runs are created when all upstream pipelines complete
-     * successfully.
+     * Set the pipeline property: Pipeline for which runs are created when all upstream pipelines complete successfully.
      * 
      * @param pipeline the pipeline value to set.
      * @return the ChainingTrigger object itself.
@@ -142,20 +154,83 @@ public final class ChainingTrigger extends Trigger {
      */
     @Override
     public void validate() {
-        super.validate();
         if (pipeline() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property pipeline in model ChainingTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property pipeline in model ChainingTrigger"));
         } else {
             pipeline().validate();
         }
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerTypeProperties in model ChainingTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ChainingTrigger"));
         } else {
             innerTypeProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ChainingTrigger.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("pipeline", this.pipeline);
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChainingTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChainingTrigger if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChainingTrigger.
+     */
+    public static ChainingTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChainingTrigger deserializedChainingTrigger = new ChainingTrigger();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedChainingTrigger.withDescription(reader.getString());
+                } else if ("runtimeState".equals(fieldName)) {
+                    deserializedChainingTrigger.withRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedChainingTrigger.withAnnotations(annotations);
+                } else if ("pipeline".equals(fieldName)) {
+                    deserializedChainingTrigger.pipeline = TriggerPipelineReference.fromJson(reader);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedChainingTrigger.innerTypeProperties = ChainingTriggerTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedChainingTrigger.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedChainingTrigger.withAdditionalProperties(additionalProperties);
+
+            return deserializedChainingTrigger;
+        });
+    }
 }

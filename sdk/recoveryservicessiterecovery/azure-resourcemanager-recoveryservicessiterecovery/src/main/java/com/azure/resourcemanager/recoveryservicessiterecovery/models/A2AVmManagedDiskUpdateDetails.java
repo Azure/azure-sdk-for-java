@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A2A Vm managed disk update details. */
+/**
+ * A2A Vm managed disk update details.
+ */
 @Fluent
-public final class A2AVmManagedDiskUpdateDetails {
+public final class A2AVmManagedDiskUpdateDetails implements JsonSerializable<A2AVmManagedDiskUpdateDetails> {
     /*
      * The disk Id.
      */
-    @JsonProperty(value = "diskId")
     private String diskId;
 
     /*
      * The target disk type before failover.
      */
-    @JsonProperty(value = "recoveryTargetDiskAccountType")
     private String recoveryTargetDiskAccountType;
 
     /*
      * The replica disk type before failover.
      */
-    @JsonProperty(value = "recoveryReplicaDiskAccountType")
     private String recoveryReplicaDiskAccountType;
 
     /*
      * The recovery os disk encryption information.
      */
-    @JsonProperty(value = "diskEncryptionInfo")
     private DiskEncryptionInfo diskEncryptionInfo;
 
     /*
      * The target disk name for unplanned failover operation.
      */
-    @JsonProperty(value = "failoverDiskName")
     private String failoverDiskName;
 
     /*
      * The target disk name for test failover operation.
      */
-    @JsonProperty(value = "tfoDiskName")
     private String tfoDiskName;
 
-    /** Creates an instance of A2AVmManagedDiskUpdateDetails class. */
+    /**
+     * Creates an instance of A2AVmManagedDiskUpdateDetails class.
+     */
     public A2AVmManagedDiskUpdateDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -61,7 +63,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -72,7 +74,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Get the recoveryTargetDiskAccountType property: The target disk type before failover.
-     *
+     * 
      * @return the recoveryTargetDiskAccountType value.
      */
     public String recoveryTargetDiskAccountType() {
@@ -81,7 +83,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the recoveryTargetDiskAccountType property: The target disk type before failover.
-     *
+     * 
      * @param recoveryTargetDiskAccountType the recoveryTargetDiskAccountType value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -92,7 +94,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Get the recoveryReplicaDiskAccountType property: The replica disk type before failover.
-     *
+     * 
      * @return the recoveryReplicaDiskAccountType value.
      */
     public String recoveryReplicaDiskAccountType() {
@@ -101,7 +103,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the recoveryReplicaDiskAccountType property: The replica disk type before failover.
-     *
+     * 
      * @param recoveryReplicaDiskAccountType the recoveryReplicaDiskAccountType value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -112,7 +114,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Get the diskEncryptionInfo property: The recovery os disk encryption information.
-     *
+     * 
      * @return the diskEncryptionInfo value.
      */
     public DiskEncryptionInfo diskEncryptionInfo() {
@@ -121,7 +123,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the diskEncryptionInfo property: The recovery os disk encryption information.
-     *
+     * 
      * @param diskEncryptionInfo the diskEncryptionInfo value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -132,7 +134,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Get the failoverDiskName property: The target disk name for unplanned failover operation.
-     *
+     * 
      * @return the failoverDiskName value.
      */
     public String failoverDiskName() {
@@ -141,7 +143,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the failoverDiskName property: The target disk name for unplanned failover operation.
-     *
+     * 
      * @param failoverDiskName the failoverDiskName value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -152,7 +154,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Get the tfoDiskName property: The target disk name for test failover operation.
-     *
+     * 
      * @return the tfoDiskName value.
      */
     public String tfoDiskName() {
@@ -161,7 +163,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the tfoDiskName property: The target disk name for test failover operation.
-     *
+     * 
      * @param tfoDiskName the tfoDiskName value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -172,12 +174,64 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskEncryptionInfo() != null) {
             diskEncryptionInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("recoveryTargetDiskAccountType", this.recoveryTargetDiskAccountType);
+        jsonWriter.writeStringField("recoveryReplicaDiskAccountType", this.recoveryReplicaDiskAccountType);
+        jsonWriter.writeJsonField("diskEncryptionInfo", this.diskEncryptionInfo);
+        jsonWriter.writeStringField("failoverDiskName", this.failoverDiskName);
+        jsonWriter.writeStringField("tfoDiskName", this.tfoDiskName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AVmManagedDiskUpdateDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AVmManagedDiskUpdateDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AVmManagedDiskUpdateDetails.
+     */
+    public static A2AVmManagedDiskUpdateDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AVmManagedDiskUpdateDetails deserializedA2AVmManagedDiskUpdateDetails
+                = new A2AVmManagedDiskUpdateDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskUpdateDetails.diskId = reader.getString();
+                } else if ("recoveryTargetDiskAccountType".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskUpdateDetails.recoveryTargetDiskAccountType = reader.getString();
+                } else if ("recoveryReplicaDiskAccountType".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskUpdateDetails.recoveryReplicaDiskAccountType = reader.getString();
+                } else if ("diskEncryptionInfo".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskUpdateDetails.diskEncryptionInfo = DiskEncryptionInfo.fromJson(reader);
+                } else if ("failoverDiskName".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskUpdateDetails.failoverDiskName = reader.getString();
+                } else if ("tfoDiskName".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskUpdateDetails.tfoDiskName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AVmManagedDiskUpdateDetails;
+        });
     }
 }

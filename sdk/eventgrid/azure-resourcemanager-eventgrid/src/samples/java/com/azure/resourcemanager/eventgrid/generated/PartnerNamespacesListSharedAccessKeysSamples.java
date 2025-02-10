@@ -10,7 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class PartnerNamespacesListSharedAccessKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * PartnerNamespaces_ListSharedAccessKeys.json
      */
     /**
@@ -20,7 +20,8 @@ public final class PartnerNamespacesListSharedAccessKeysSamples {
      */
     public static void
         partnerNamespacesListSharedAccessKeys(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerNamespaces().listSharedAccessKeysWithResponse("examplerg", "examplePartnerNamespaceName1",
-            com.azure.core.util.Context.NONE);
+        manager.partnerNamespaces()
+            .listSharedAccessKeysWithResponse("examplerg", "examplePartnerNamespaceName1",
+                com.azure.core.util.Context.NONE);
     }
 }

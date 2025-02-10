@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.fluent.models.DevBoxDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Results of the Dev Box definition list operation. */
+/**
+ * Results of the Dev Box definition list operation.
+ */
 @Immutable
-public final class DevBoxDefinitionListResult {
+public final class DevBoxDefinitionListResult implements JsonSerializable<DevBoxDefinitionListResult> {
     /*
      * Current page of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DevBoxDefinitionInner> value;
 
     /*
      * URL to get the next set of results if there are any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DevBoxDefinitionListResult class. */
+    /**
+     * Creates an instance of DevBoxDefinitionListResult class.
+     */
     public DevBoxDefinitionListResult() {
     }
 
     /**
      * Get the value property: Current page of results.
-     *
+     * 
      * @return the value value.
      */
     public List<DevBoxDefinitionInner> value() {
@@ -39,7 +45,7 @@ public final class DevBoxDefinitionListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class DevBoxDefinitionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBoxDefinitionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBoxDefinitionListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevBoxDefinitionListResult.
+     */
+    public static DevBoxDefinitionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevBoxDefinitionListResult deserializedDevBoxDefinitionListResult = new DevBoxDefinitionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DevBoxDefinitionInner> value
+                        = reader.readArray(reader1 -> DevBoxDefinitionInner.fromJson(reader1));
+                    deserializedDevBoxDefinitionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDevBoxDefinitionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevBoxDefinitionListResult;
+        });
     }
 }

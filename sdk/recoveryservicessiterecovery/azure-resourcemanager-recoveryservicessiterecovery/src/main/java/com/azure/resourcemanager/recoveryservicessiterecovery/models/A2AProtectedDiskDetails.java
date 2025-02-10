@@ -5,157 +5,142 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A2A protected disk details. */
+/**
+ * A2A protected disk details.
+ */
 @Fluent
-public final class A2AProtectedDiskDetails {
+public final class A2AProtectedDiskDetails implements JsonSerializable<A2AProtectedDiskDetails> {
     /*
      * The disk uri.
      */
-    @JsonProperty(value = "diskUri")
     private String diskUri;
 
     /*
      * The recovery disk storage account.
      */
-    @JsonProperty(value = "recoveryAzureStorageAccountId")
     private String recoveryAzureStorageAccountId;
 
     /*
      * The primary disk storage account.
      */
-    @JsonProperty(value = "primaryDiskAzureStorageAccountId")
     private String primaryDiskAzureStorageAccountId;
 
     /*
      * Recovery disk uri.
      */
-    @JsonProperty(value = "recoveryDiskUri")
     private String recoveryDiskUri;
 
     /*
      * The disk name.
      */
-    @JsonProperty(value = "diskName")
     private String diskName;
 
     /*
      * The disk capacity in bytes.
      */
-    @JsonProperty(value = "diskCapacityInBytes")
     private Long diskCapacityInBytes;
 
     /*
      * The primary staging storage account.
      */
-    @JsonProperty(value = "primaryStagingAzureStorageAccountId")
     private String primaryStagingAzureStorageAccountId;
 
     /*
      * The type of disk.
      */
-    @JsonProperty(value = "diskType")
     private String diskType;
 
     /*
      * A value indicating whether resync is required for this disk.
      */
-    @JsonProperty(value = "resyncRequired")
     private Boolean resyncRequired;
 
     /*
      * The percentage of the monitoring job. The type of the monitoring job is defined by MonitoringJobType property.
      */
-    @JsonProperty(value = "monitoringPercentageCompletion")
     private Integer monitoringPercentageCompletion;
 
     /*
      * The type of the monitoring job. The progress is contained in MonitoringPercentageCompletion property.
      */
-    @JsonProperty(value = "monitoringJobType")
     private String monitoringJobType;
 
     /*
      * The data pending for replication in MB at staging account.
      */
-    @JsonProperty(value = "dataPendingInStagingStorageAccountInMB")
     private Double dataPendingInStagingStorageAccountInMB;
 
     /*
      * The data pending at source virtual machine in MB.
      */
-    @JsonProperty(value = "dataPendingAtSourceAgentInMB")
     private Double dataPendingAtSourceAgentInMB;
 
     /*
      * The disk state.
      */
-    @JsonProperty(value = "diskState")
     private String diskState;
 
     /*
      * The disk level operations list.
      */
-    @JsonProperty(value = "allowedDiskLevelOperation")
     private List<String> allowedDiskLevelOperation;
 
     /*
      * A value indicating whether vm has encrypted os disk or not.
      */
-    @JsonProperty(value = "isDiskEncrypted")
     private Boolean isDiskEncrypted;
 
     /*
      * The secret URL / identifier (BEK).
      */
-    @JsonProperty(value = "secretIdentifier")
     private String secretIdentifier;
 
     /*
      * The KeyVault resource id for secret (BEK).
      */
-    @JsonProperty(value = "dekKeyVaultArmId")
     private String dekKeyVaultArmId;
 
     /*
      * A value indicating whether disk key got encrypted or not.
      */
-    @JsonProperty(value = "isDiskKeyEncrypted")
     private Boolean isDiskKeyEncrypted;
 
     /*
      * The key URL / identifier (KEK).
      */
-    @JsonProperty(value = "keyIdentifier")
     private String keyIdentifier;
 
     /*
      * The KeyVault resource id for key (KEK).
      */
-    @JsonProperty(value = "kekKeyVaultArmId")
     private String kekKeyVaultArmId;
 
     /*
      * The failover name for the managed disk.
      */
-    @JsonProperty(value = "failoverDiskName")
     private String failoverDiskName;
 
     /*
      * The test failover name for the managed disk.
      */
-    @JsonProperty(value = "tfoDiskName")
     private String tfoDiskName;
 
-    /** Creates an instance of A2AProtectedDiskDetails class. */
+    /**
+     * Creates an instance of A2AProtectedDiskDetails class.
+     */
     public A2AProtectedDiskDetails() {
     }
 
     /**
      * Get the diskUri property: The disk uri.
-     *
+     * 
      * @return the diskUri value.
      */
     public String diskUri() {
@@ -164,7 +149,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the diskUri property: The disk uri.
-     *
+     * 
      * @param diskUri the diskUri value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -175,7 +160,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the recoveryAzureStorageAccountId property: The recovery disk storage account.
-     *
+     * 
      * @return the recoveryAzureStorageAccountId value.
      */
     public String recoveryAzureStorageAccountId() {
@@ -184,7 +169,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the recoveryAzureStorageAccountId property: The recovery disk storage account.
-     *
+     * 
      * @param recoveryAzureStorageAccountId the recoveryAzureStorageAccountId value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -195,7 +180,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the primaryDiskAzureStorageAccountId property: The primary disk storage account.
-     *
+     * 
      * @return the primaryDiskAzureStorageAccountId value.
      */
     public String primaryDiskAzureStorageAccountId() {
@@ -204,7 +189,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the primaryDiskAzureStorageAccountId property: The primary disk storage account.
-     *
+     * 
      * @param primaryDiskAzureStorageAccountId the primaryDiskAzureStorageAccountId value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -215,7 +200,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the recoveryDiskUri property: Recovery disk uri.
-     *
+     * 
      * @return the recoveryDiskUri value.
      */
     public String recoveryDiskUri() {
@@ -224,7 +209,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the recoveryDiskUri property: Recovery disk uri.
-     *
+     * 
      * @param recoveryDiskUri the recoveryDiskUri value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -235,7 +220,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the diskName property: The disk name.
-     *
+     * 
      * @return the diskName value.
      */
     public String diskName() {
@@ -244,7 +229,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the diskName property: The disk name.
-     *
+     * 
      * @param diskName the diskName value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -255,7 +240,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the diskCapacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @return the diskCapacityInBytes value.
      */
     public Long diskCapacityInBytes() {
@@ -264,7 +249,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the diskCapacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @param diskCapacityInBytes the diskCapacityInBytes value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -275,7 +260,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the primaryStagingAzureStorageAccountId property: The primary staging storage account.
-     *
+     * 
      * @return the primaryStagingAzureStorageAccountId value.
      */
     public String primaryStagingAzureStorageAccountId() {
@@ -284,7 +269,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the primaryStagingAzureStorageAccountId property: The primary staging storage account.
-     *
+     * 
      * @param primaryStagingAzureStorageAccountId the primaryStagingAzureStorageAccountId value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -295,7 +280,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the diskType property: The type of disk.
-     *
+     * 
      * @return the diskType value.
      */
     public String diskType() {
@@ -304,7 +289,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the diskType property: The type of disk.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -315,7 +300,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the resyncRequired property: A value indicating whether resync is required for this disk.
-     *
+     * 
      * @return the resyncRequired value.
      */
     public Boolean resyncRequired() {
@@ -324,7 +309,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the resyncRequired property: A value indicating whether resync is required for this disk.
-     *
+     * 
      * @param resyncRequired the resyncRequired value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -336,7 +321,7 @@ public final class A2AProtectedDiskDetails {
     /**
      * Get the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the monitoring
      * job is defined by MonitoringJobType property.
-     *
+     * 
      * @return the monitoringPercentageCompletion value.
      */
     public Integer monitoringPercentageCompletion() {
@@ -346,7 +331,7 @@ public final class A2AProtectedDiskDetails {
     /**
      * Set the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the monitoring
      * job is defined by MonitoringJobType property.
-     *
+     * 
      * @param monitoringPercentageCompletion the monitoringPercentageCompletion value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -358,7 +343,7 @@ public final class A2AProtectedDiskDetails {
     /**
      * Get the monitoringJobType property: The type of the monitoring job. The progress is contained in
      * MonitoringPercentageCompletion property.
-     *
+     * 
      * @return the monitoringJobType value.
      */
     public String monitoringJobType() {
@@ -368,7 +353,7 @@ public final class A2AProtectedDiskDetails {
     /**
      * Set the monitoringJobType property: The type of the monitoring job. The progress is contained in
      * MonitoringPercentageCompletion property.
-     *
+     * 
      * @param monitoringJobType the monitoringJobType value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -380,7 +365,7 @@ public final class A2AProtectedDiskDetails {
     /**
      * Get the dataPendingInStagingStorageAccountInMB property: The data pending for replication in MB at staging
      * account.
-     *
+     * 
      * @return the dataPendingInStagingStorageAccountInMB value.
      */
     public Double dataPendingInStagingStorageAccountInMB() {
@@ -390,19 +375,19 @@ public final class A2AProtectedDiskDetails {
     /**
      * Set the dataPendingInStagingStorageAccountInMB property: The data pending for replication in MB at staging
      * account.
-     *
+     * 
      * @param dataPendingInStagingStorageAccountInMB the dataPendingInStagingStorageAccountInMB value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
-    public A2AProtectedDiskDetails withDataPendingInStagingStorageAccountInMB(
-        Double dataPendingInStagingStorageAccountInMB) {
+    public A2AProtectedDiskDetails
+        withDataPendingInStagingStorageAccountInMB(Double dataPendingInStagingStorageAccountInMB) {
         this.dataPendingInStagingStorageAccountInMB = dataPendingInStagingStorageAccountInMB;
         return this;
     }
 
     /**
      * Get the dataPendingAtSourceAgentInMB property: The data pending at source virtual machine in MB.
-     *
+     * 
      * @return the dataPendingAtSourceAgentInMB value.
      */
     public Double dataPendingAtSourceAgentInMB() {
@@ -411,7 +396,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the dataPendingAtSourceAgentInMB property: The data pending at source virtual machine in MB.
-     *
+     * 
      * @param dataPendingAtSourceAgentInMB the dataPendingAtSourceAgentInMB value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -422,7 +407,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the diskState property: The disk state.
-     *
+     * 
      * @return the diskState value.
      */
     public String diskState() {
@@ -431,7 +416,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the diskState property: The disk state.
-     *
+     * 
      * @param diskState the diskState value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -442,7 +427,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the allowedDiskLevelOperation property: The disk level operations list.
-     *
+     * 
      * @return the allowedDiskLevelOperation value.
      */
     public List<String> allowedDiskLevelOperation() {
@@ -451,7 +436,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the allowedDiskLevelOperation property: The disk level operations list.
-     *
+     * 
      * @param allowedDiskLevelOperation the allowedDiskLevelOperation value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -462,7 +447,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the isDiskEncrypted property: A value indicating whether vm has encrypted os disk or not.
-     *
+     * 
      * @return the isDiskEncrypted value.
      */
     public Boolean isDiskEncrypted() {
@@ -471,7 +456,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the isDiskEncrypted property: A value indicating whether vm has encrypted os disk or not.
-     *
+     * 
      * @param isDiskEncrypted the isDiskEncrypted value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -482,7 +467,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the secretIdentifier property: The secret URL / identifier (BEK).
-     *
+     * 
      * @return the secretIdentifier value.
      */
     public String secretIdentifier() {
@@ -491,7 +476,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the secretIdentifier property: The secret URL / identifier (BEK).
-     *
+     * 
      * @param secretIdentifier the secretIdentifier value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -502,7 +487,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the dekKeyVaultArmId property: The KeyVault resource id for secret (BEK).
-     *
+     * 
      * @return the dekKeyVaultArmId value.
      */
     public String dekKeyVaultArmId() {
@@ -511,7 +496,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the dekKeyVaultArmId property: The KeyVault resource id for secret (BEK).
-     *
+     * 
      * @param dekKeyVaultArmId the dekKeyVaultArmId value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -522,7 +507,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the isDiskKeyEncrypted property: A value indicating whether disk key got encrypted or not.
-     *
+     * 
      * @return the isDiskKeyEncrypted value.
      */
     public Boolean isDiskKeyEncrypted() {
@@ -531,7 +516,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the isDiskKeyEncrypted property: A value indicating whether disk key got encrypted or not.
-     *
+     * 
      * @param isDiskKeyEncrypted the isDiskKeyEncrypted value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -542,7 +527,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the keyIdentifier property: The key URL / identifier (KEK).
-     *
+     * 
      * @return the keyIdentifier value.
      */
     public String keyIdentifier() {
@@ -551,7 +536,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the keyIdentifier property: The key URL / identifier (KEK).
-     *
+     * 
      * @param keyIdentifier the keyIdentifier value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -562,7 +547,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the kekKeyVaultArmId property: The KeyVault resource id for key (KEK).
-     *
+     * 
      * @return the kekKeyVaultArmId value.
      */
     public String kekKeyVaultArmId() {
@@ -571,7 +556,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the kekKeyVaultArmId property: The KeyVault resource id for key (KEK).
-     *
+     * 
      * @param kekKeyVaultArmId the kekKeyVaultArmId value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -582,7 +567,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the failoverDiskName property: The failover name for the managed disk.
-     *
+     * 
      * @return the failoverDiskName value.
      */
     public String failoverDiskName() {
@@ -591,7 +576,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the failoverDiskName property: The failover name for the managed disk.
-     *
+     * 
      * @param failoverDiskName the failoverDiskName value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -602,7 +587,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Get the tfoDiskName property: The test failover name for the managed disk.
-     *
+     * 
      * @return the tfoDiskName value.
      */
     public String tfoDiskName() {
@@ -611,7 +596,7 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Set the tfoDiskName property: The test failover name for the managed disk.
-     *
+     * 
      * @param tfoDiskName the tfoDiskName value to set.
      * @return the A2AProtectedDiskDetails object itself.
      */
@@ -622,9 +607,117 @@ public final class A2AProtectedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskUri", this.diskUri);
+        jsonWriter.writeStringField("recoveryAzureStorageAccountId", this.recoveryAzureStorageAccountId);
+        jsonWriter.writeStringField("primaryDiskAzureStorageAccountId", this.primaryDiskAzureStorageAccountId);
+        jsonWriter.writeStringField("recoveryDiskUri", this.recoveryDiskUri);
+        jsonWriter.writeStringField("diskName", this.diskName);
+        jsonWriter.writeNumberField("diskCapacityInBytes", this.diskCapacityInBytes);
+        jsonWriter.writeStringField("primaryStagingAzureStorageAccountId", this.primaryStagingAzureStorageAccountId);
+        jsonWriter.writeStringField("diskType", this.diskType);
+        jsonWriter.writeBooleanField("resyncRequired", this.resyncRequired);
+        jsonWriter.writeNumberField("monitoringPercentageCompletion", this.monitoringPercentageCompletion);
+        jsonWriter.writeStringField("monitoringJobType", this.monitoringJobType);
+        jsonWriter.writeNumberField("dataPendingInStagingStorageAccountInMB",
+            this.dataPendingInStagingStorageAccountInMB);
+        jsonWriter.writeNumberField("dataPendingAtSourceAgentInMB", this.dataPendingAtSourceAgentInMB);
+        jsonWriter.writeStringField("diskState", this.diskState);
+        jsonWriter.writeArrayField("allowedDiskLevelOperation", this.allowedDiskLevelOperation,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isDiskEncrypted", this.isDiskEncrypted);
+        jsonWriter.writeStringField("secretIdentifier", this.secretIdentifier);
+        jsonWriter.writeStringField("dekKeyVaultArmId", this.dekKeyVaultArmId);
+        jsonWriter.writeBooleanField("isDiskKeyEncrypted", this.isDiskKeyEncrypted);
+        jsonWriter.writeStringField("keyIdentifier", this.keyIdentifier);
+        jsonWriter.writeStringField("kekKeyVaultArmId", this.kekKeyVaultArmId);
+        jsonWriter.writeStringField("failoverDiskName", this.failoverDiskName);
+        jsonWriter.writeStringField("tfoDiskName", this.tfoDiskName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AProtectedDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AProtectedDiskDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AProtectedDiskDetails.
+     */
+    public static A2AProtectedDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AProtectedDiskDetails deserializedA2AProtectedDiskDetails = new A2AProtectedDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskUri".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.diskUri = reader.getString();
+                } else if ("recoveryAzureStorageAccountId".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.recoveryAzureStorageAccountId = reader.getString();
+                } else if ("primaryDiskAzureStorageAccountId".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.primaryDiskAzureStorageAccountId = reader.getString();
+                } else if ("recoveryDiskUri".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.recoveryDiskUri = reader.getString();
+                } else if ("diskName".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.diskName = reader.getString();
+                } else if ("diskCapacityInBytes".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.diskCapacityInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("primaryStagingAzureStorageAccountId".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.primaryStagingAzureStorageAccountId = reader.getString();
+                } else if ("diskType".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.diskType = reader.getString();
+                } else if ("resyncRequired".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.resyncRequired = reader.getNullable(JsonReader::getBoolean);
+                } else if ("monitoringPercentageCompletion".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.monitoringPercentageCompletion
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("monitoringJobType".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.monitoringJobType = reader.getString();
+                } else if ("dataPendingInStagingStorageAccountInMB".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.dataPendingInStagingStorageAccountInMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("dataPendingAtSourceAgentInMB".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.dataPendingAtSourceAgentInMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("diskState".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.diskState = reader.getString();
+                } else if ("allowedDiskLevelOperation".equals(fieldName)) {
+                    List<String> allowedDiskLevelOperation = reader.readArray(reader1 -> reader1.getString());
+                    deserializedA2AProtectedDiskDetails.allowedDiskLevelOperation = allowedDiskLevelOperation;
+                } else if ("isDiskEncrypted".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.isDiskEncrypted = reader.getNullable(JsonReader::getBoolean);
+                } else if ("secretIdentifier".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.secretIdentifier = reader.getString();
+                } else if ("dekKeyVaultArmId".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.dekKeyVaultArmId = reader.getString();
+                } else if ("isDiskKeyEncrypted".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.isDiskKeyEncrypted = reader.getNullable(JsonReader::getBoolean);
+                } else if ("keyIdentifier".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.keyIdentifier = reader.getString();
+                } else if ("kekKeyVaultArmId".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.kekKeyVaultArmId = reader.getString();
+                } else if ("failoverDiskName".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.failoverDiskName = reader.getString();
+                } else if ("tfoDiskName".equals(fieldName)) {
+                    deserializedA2AProtectedDiskDetails.tfoDiskName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AProtectedDiskDetails;
+        });
     }
 }

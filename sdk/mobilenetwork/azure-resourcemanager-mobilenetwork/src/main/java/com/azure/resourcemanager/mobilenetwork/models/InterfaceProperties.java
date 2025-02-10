@@ -5,44 +5,64 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** Interface properties. */
+/**
+ * Interface properties.
+ */
 @Fluent
-public final class InterfaceProperties {
+public final class InterfaceProperties implements JsonSerializable<InterfaceProperties> {
     /*
      * The logical name for this interface. This should match one of the interfaces configured on your Azure Stack Edge
      * device.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The IPv4 address.
      */
-    @JsonProperty(value = "ipv4Address")
     private String ipv4Address;
 
     /*
      * The IPv4 subnet.
      */
-    @JsonProperty(value = "ipv4Subnet")
     private String ipv4Subnet;
 
     /*
      * The default IPv4 gateway (router).
      */
-    @JsonProperty(value = "ipv4Gateway")
     private String ipv4Gateway;
 
-    /** Creates an instance of InterfaceProperties class. */
+    /*
+     * VLAN identifier of the network interface. Example: 501.
+     */
+    private Integer vlanId;
+
+    /*
+     * The list of IPv4 addresses, for a multi-node system.
+     */
+    private List<String> ipv4AddressList;
+
+    /*
+     * The IPv4 addresses of the endpoints to send BFD probes to.
+     */
+    private List<String> bfdIpv4Endpoints;
+
+    /**
+     * Creates an instance of InterfaceProperties class.
+     */
     public InterfaceProperties() {
     }
 
     /**
      * Get the name property: The logical name for this interface. This should match one of the interfaces configured on
      * your Azure Stack Edge device.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +72,7 @@ public final class InterfaceProperties {
     /**
      * Set the name property: The logical name for this interface. This should match one of the interfaces configured on
      * your Azure Stack Edge device.
-     *
+     * 
      * @param name the name value to set.
      * @return the InterfaceProperties object itself.
      */
@@ -63,7 +83,7 @@ public final class InterfaceProperties {
 
     /**
      * Get the ipv4Address property: The IPv4 address.
-     *
+     * 
      * @return the ipv4Address value.
      */
     public String ipv4Address() {
@@ -72,7 +92,7 @@ public final class InterfaceProperties {
 
     /**
      * Set the ipv4Address property: The IPv4 address.
-     *
+     * 
      * @param ipv4Address the ipv4Address value to set.
      * @return the InterfaceProperties object itself.
      */
@@ -83,7 +103,7 @@ public final class InterfaceProperties {
 
     /**
      * Get the ipv4Subnet property: The IPv4 subnet.
-     *
+     * 
      * @return the ipv4Subnet value.
      */
     public String ipv4Subnet() {
@@ -92,7 +112,7 @@ public final class InterfaceProperties {
 
     /**
      * Set the ipv4Subnet property: The IPv4 subnet.
-     *
+     * 
      * @param ipv4Subnet the ipv4Subnet value to set.
      * @return the InterfaceProperties object itself.
      */
@@ -103,7 +123,7 @@ public final class InterfaceProperties {
 
     /**
      * Get the ipv4Gateway property: The default IPv4 gateway (router).
-     *
+     * 
      * @return the ipv4Gateway value.
      */
     public String ipv4Gateway() {
@@ -112,7 +132,7 @@ public final class InterfaceProperties {
 
     /**
      * Set the ipv4Gateway property: The default IPv4 gateway (router).
-     *
+     * 
      * @param ipv4Gateway the ipv4Gateway value to set.
      * @return the InterfaceProperties object itself.
      */
@@ -122,10 +142,128 @@ public final class InterfaceProperties {
     }
 
     /**
+     * Get the vlanId property: VLAN identifier of the network interface. Example: 501.
+     * 
+     * @return the vlanId value.
+     */
+    public Integer vlanId() {
+        return this.vlanId;
+    }
+
+    /**
+     * Set the vlanId property: VLAN identifier of the network interface. Example: 501.
+     * 
+     * @param vlanId the vlanId value to set.
+     * @return the InterfaceProperties object itself.
+     */
+    public InterfaceProperties withVlanId(Integer vlanId) {
+        this.vlanId = vlanId;
+        return this;
+    }
+
+    /**
+     * Get the ipv4AddressList property: The list of IPv4 addresses, for a multi-node system.
+     * 
+     * @return the ipv4AddressList value.
+     */
+    public List<String> ipv4AddressList() {
+        return this.ipv4AddressList;
+    }
+
+    /**
+     * Set the ipv4AddressList property: The list of IPv4 addresses, for a multi-node system.
+     * 
+     * @param ipv4AddressList the ipv4AddressList value to set.
+     * @return the InterfaceProperties object itself.
+     */
+    public InterfaceProperties withIpv4AddressList(List<String> ipv4AddressList) {
+        this.ipv4AddressList = ipv4AddressList;
+        return this;
+    }
+
+    /**
+     * Get the bfdIpv4Endpoints property: The IPv4 addresses of the endpoints to send BFD probes to.
+     * 
+     * @return the bfdIpv4Endpoints value.
+     */
+    public List<String> bfdIpv4Endpoints() {
+        return this.bfdIpv4Endpoints;
+    }
+
+    /**
+     * Set the bfdIpv4Endpoints property: The IPv4 addresses of the endpoints to send BFD probes to.
+     * 
+     * @param bfdIpv4Endpoints the bfdIpv4Endpoints value to set.
+     * @return the InterfaceProperties object itself.
+     */
+    public InterfaceProperties withBfdIpv4Endpoints(List<String> bfdIpv4Endpoints) {
+        this.bfdIpv4Endpoints = bfdIpv4Endpoints;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("ipv4Address", this.ipv4Address);
+        jsonWriter.writeStringField("ipv4Subnet", this.ipv4Subnet);
+        jsonWriter.writeStringField("ipv4Gateway", this.ipv4Gateway);
+        jsonWriter.writeNumberField("vlanId", this.vlanId);
+        jsonWriter.writeArrayField("ipv4AddressList", this.ipv4AddressList,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("bfdIpv4Endpoints", this.bfdIpv4Endpoints,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InterfaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InterfaceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InterfaceProperties.
+     */
+    public static InterfaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InterfaceProperties deserializedInterfaceProperties = new InterfaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedInterfaceProperties.name = reader.getString();
+                } else if ("ipv4Address".equals(fieldName)) {
+                    deserializedInterfaceProperties.ipv4Address = reader.getString();
+                } else if ("ipv4Subnet".equals(fieldName)) {
+                    deserializedInterfaceProperties.ipv4Subnet = reader.getString();
+                } else if ("ipv4Gateway".equals(fieldName)) {
+                    deserializedInterfaceProperties.ipv4Gateway = reader.getString();
+                } else if ("vlanId".equals(fieldName)) {
+                    deserializedInterfaceProperties.vlanId = reader.getNullable(JsonReader::getInt);
+                } else if ("ipv4AddressList".equals(fieldName)) {
+                    List<String> ipv4AddressList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInterfaceProperties.ipv4AddressList = ipv4AddressList;
+                } else if ("bfdIpv4Endpoints".equals(fieldName)) {
+                    List<String> bfdIpv4Endpoints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInterfaceProperties.bfdIpv4Endpoints = bfdIpv4Endpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInterfaceProperties;
+        });
     }
 }

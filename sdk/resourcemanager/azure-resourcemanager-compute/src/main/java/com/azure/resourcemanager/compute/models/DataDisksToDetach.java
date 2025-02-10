@@ -6,24 +6,26 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the data disk to be detached.
  */
 @Fluent
-public final class DataDisksToDetach {
+public final class DataDisksToDetach implements JsonSerializable<DataDisksToDetach> {
     /*
      * ID of the managed data disk.
      */
-    @JsonProperty(value = "diskId", required = true)
     private String diskId;
 
     /*
      * Supported options available for Detach of a disk from a VM. Refer to DetachOption object reference for more
      * details.
      */
-    @JsonProperty(value = "detachOption")
     private DiskDetachOptionTypes detachOption;
 
     /**
@@ -81,10 +83,50 @@ public final class DataDisksToDetach {
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property diskId in model DataDisksToDetach"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property diskId in model DataDisksToDetach"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataDisksToDetach.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("detachOption", this.detachOption == null ? null : this.detachOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataDisksToDetach from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataDisksToDetach if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataDisksToDetach.
+     */
+    public static DataDisksToDetach fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataDisksToDetach deserializedDataDisksToDetach = new DataDisksToDetach();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedDataDisksToDetach.diskId = reader.getString();
+                } else if ("detachOption".equals(fieldName)) {
+                    deserializedDataDisksToDetach.detachOption = DiskDetachOptionTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataDisksToDetach;
+        });
+    }
 }

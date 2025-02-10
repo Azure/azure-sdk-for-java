@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List Restore Ranges Response.
  */
 @Fluent
-public final class AzureBackupFindRestorableTimeRangesResponse {
+public final class AzureBackupFindRestorableTimeRangesResponse
+    implements JsonSerializable<AzureBackupFindRestorableTimeRangesResponse> {
     /*
      * Returns the Restore Ranges available on the Backup Instance.
      */
-    @JsonProperty(value = "restorableTimeRanges")
     private List<RestorableTimeRange> restorableTimeRanges;
 
     /*
      * The objectType property.
      */
-    @JsonProperty(value = "objectType")
     private String objectType;
 
     /**
@@ -81,5 +84,48 @@ public final class AzureBackupFindRestorableTimeRangesResponse {
         if (restorableTimeRanges() != null) {
             restorableTimeRanges().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("restorableTimeRanges", this.restorableTimeRanges,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupFindRestorableTimeRangesResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupFindRestorableTimeRangesResponse if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBackupFindRestorableTimeRangesResponse.
+     */
+    public static AzureBackupFindRestorableTimeRangesResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupFindRestorableTimeRangesResponse deserializedAzureBackupFindRestorableTimeRangesResponse
+                = new AzureBackupFindRestorableTimeRangesResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("restorableTimeRanges".equals(fieldName)) {
+                    List<RestorableTimeRange> restorableTimeRanges
+                        = reader.readArray(reader1 -> RestorableTimeRange.fromJson(reader1));
+                    deserializedAzureBackupFindRestorableTimeRangesResponse.restorableTimeRanges = restorableTimeRanges;
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureBackupFindRestorableTimeRangesResponse.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupFindRestorableTimeRangesResponse;
+        });
     }
 }

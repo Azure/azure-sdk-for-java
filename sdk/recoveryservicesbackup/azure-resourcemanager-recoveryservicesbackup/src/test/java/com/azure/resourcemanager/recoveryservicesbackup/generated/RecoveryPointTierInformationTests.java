@@ -15,11 +15,10 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPointTierInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPointTierInformation model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ArchivedRP\",\"status\":\"Disabled\",\"extendedInfo\":{\"jrajcivm\":\"azkmtgguwp\"}}")
-                .toObject(RecoveryPointTierInformation.class);
+        RecoveryPointTierInformation model = BinaryData
+            .fromString(
+                "{\"type\":\"ArchivedRP\",\"status\":\"Disabled\",\"extendedInfo\":{\"jrajcivm\":\"azkmtgguwp\"}}")
+            .toObject(RecoveryPointTierInformation.class);
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
         Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.status());
         Assertions.assertEquals("azkmtgguwp", model.extendedInfo().get("jrajcivm"));
@@ -27,9 +26,8 @@ public final class RecoveryPointTierInformationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointTierInformation model =
-            new RecoveryPointTierInformation()
-                .withType(RecoveryPointTierType.ARCHIVED_RP)
+        RecoveryPointTierInformation model
+            = new RecoveryPointTierInformation().withType(RecoveryPointTierType.ARCHIVED_RP)
                 .withStatus(RecoveryPointTierStatus.DISABLED)
                 .withExtendedInfo(mapOf("jrajcivm", "azkmtgguwp"));
         model = BinaryData.fromObject(model).toObject(RecoveryPointTierInformation.class);

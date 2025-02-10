@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class CassandraResourcesUpdateCassandraTableThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBCassandraTableThroughputUpdate.json
      */
     /**
@@ -23,10 +23,15 @@ public final class CassandraResourcesUpdateCassandraTableThroughputSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBCassandraTableThroughputUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getCassandraResources().updateCassandraTableThroughput("rg1",
-            "ddb1", "keyspaceName", "tableName", new ThroughputSettingsUpdateParameters().withLocation("West US")
-                .withTags(mapOf()).withResource(new ThroughputSettingsResource().withThroughput(400)),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraResources()
+            .updateCassandraTableThroughput("rg1", "ddb1", "keyspaceName", "tableName",
+                new ThroughputSettingsUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new ThroughputSettingsResource().withThroughput(400)),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

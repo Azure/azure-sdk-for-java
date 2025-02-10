@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class UpgradePreference extends ExpandableStringEnum<UpgradePrefere
      * @param name a name to look for.
      * @return the corresponding UpgradePreference.
      */
-    @JsonCreator
     public static UpgradePreference fromString(String name) {
         return fromString(name, UpgradePreference.class);
     }

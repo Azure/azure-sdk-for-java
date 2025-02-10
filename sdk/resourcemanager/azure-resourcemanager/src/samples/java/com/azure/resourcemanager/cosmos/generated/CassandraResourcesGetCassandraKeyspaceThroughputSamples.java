@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraResourcesGetCassandraKeyspaceThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBCassandraKeyspaceThroughputGet.json
      */
     /**
@@ -18,7 +18,10 @@ public final class CassandraResourcesGetCassandraKeyspaceThroughputSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBCassandraKeyspaceThroughputGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getCassandraResources()
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraResources()
             .getCassandraKeyspaceThroughputWithResponse("rg1", "ddb1", "keyspaceName",
                 com.azure.core.util.Context.NONE);
     }

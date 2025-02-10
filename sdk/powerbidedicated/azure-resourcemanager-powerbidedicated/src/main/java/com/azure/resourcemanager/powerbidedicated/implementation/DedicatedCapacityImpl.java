@@ -113,25 +113,21 @@ public final class DedicatedCapacityImpl
     }
 
     public DedicatedCapacity create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCapacities()
-                .create(resourceGroupName, dedicatedCapacityName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCapacities()
+            .create(resourceGroupName, dedicatedCapacityName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DedicatedCapacity create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCapacities()
-                .create(resourceGroupName, dedicatedCapacityName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCapacities()
+            .create(resourceGroupName, dedicatedCapacityName, this.innerModel(), context);
         return this;
     }
 
-    DedicatedCapacityImpl(
-        String name, com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
+    DedicatedCapacityImpl(String name,
+        com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
         this.innerObject = new DedicatedCapacityInner();
         this.serviceManager = serviceManager;
         this.dedicatedCapacityName = name;
@@ -143,49 +139,40 @@ public final class DedicatedCapacityImpl
     }
 
     public DedicatedCapacity apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCapacities()
-                .update(resourceGroupName, dedicatedCapacityName, updateCapacityUpdateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCapacities()
+            .update(resourceGroupName, dedicatedCapacityName, updateCapacityUpdateParameters, Context.NONE);
         return this;
     }
 
     public DedicatedCapacity apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCapacities()
-                .update(resourceGroupName, dedicatedCapacityName, updateCapacityUpdateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCapacities()
+            .update(resourceGroupName, dedicatedCapacityName, updateCapacityUpdateParameters, context);
         return this;
     }
 
-    DedicatedCapacityImpl(
-        DedicatedCapacityInner innerObject,
+    DedicatedCapacityImpl(DedicatedCapacityInner innerObject,
         com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dedicatedCapacityName = Utils.getValueFromIdByName(innerObject.id(), "capacities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacities");
     }
 
     public DedicatedCapacity refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCapacities()
-                .getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCapacities()
+            .getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DedicatedCapacity refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCapacities()
-                .getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCapacities()
+            .getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, context)
+            .getValue();
         return this;
     }
 

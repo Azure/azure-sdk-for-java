@@ -4,34 +4,36 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.ActionGroupPatchBody;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ActionGroups Update. */
+/**
+ * Samples for ActionGroups Update.
+ */
 public final class ActionGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/patchActionGroup.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/patchActionGroup.json
      */
     /**
      * Sample code: Patch an action group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void patchAnActionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getActionGroups()
-            .updateWithResponse(
-                "Default-NotificationRules",
-                "SampleActionGroup",
-                new ActionGroupPatchBody().withTags(mapOf("key1", "value1", "key2", "value2")).withEnabled(false),
-                Context.NONE);
+            .updateWithResponse("Default-NotificationRules", "SampleActionGroup",
+                new ActionGroupPatchBody()
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+                    .withEnabled(false),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

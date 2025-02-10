@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PacketCoreControlPlanes. */
+/**
+ * Resource collection API of PacketCoreControlPlanes.
+ */
 public interface PacketCoreControlPlanes {
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface PacketCoreControlPlanes {
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -35,7 +37,7 @@ public interface PacketCoreControlPlanes {
 
     /**
      * Gets information about the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -44,12 +46,12 @@ public interface PacketCoreControlPlanes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified packet core control plane along with {@link Response}.
      */
-    Response<PacketCoreControlPlane> getByResourceGroupWithResponse(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context);
+    Response<PacketCoreControlPlane> getByResourceGroupWithResponse(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context);
 
     /**
      * Gets information about the specified packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,55 +63,55 @@ public interface PacketCoreControlPlanes {
 
     /**
      * Lists all the packet core control planes in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for packet core control planes API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for packet core control planes API service call as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<PacketCoreControlPlane> list();
 
     /**
      * Lists all the packet core control planes in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for packet core control planes API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for packet core control planes API service call as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<PacketCoreControlPlane> list(Context context);
 
     /**
      * Lists all the packet core control planes in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for packet core control planes API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for packet core control planes API service call as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<PacketCoreControlPlane> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all the packet core control planes in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for packet core control planes API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for packet core control planes API service call as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<PacketCoreControlPlane> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +124,7 @@ public interface PacketCoreControlPlanes {
     /**
      * Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
      * consecutive rollbacks are not possible. This action may cause a service outage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -134,9 +136,9 @@ public interface PacketCoreControlPlanes {
     AsyncOperationStatus rollback(String resourceGroupName, String packetCoreControlPlaneName, Context context);
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +149,9 @@ public interface PacketCoreControlPlanes {
     AsyncOperationStatus reinstall(String resourceGroupName, String packetCoreControlPlaneName);
 
     /**
-     * Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
-     * core to return it to a known state. This action will cause a service outage.
-     *
+     * Reinstall the specified packet core control plane. This action will try to restore the packet core to the
+     * installed state that was disrupted by a transient failure. This action will cause a service outage.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -163,7 +165,7 @@ public interface PacketCoreControlPlanes {
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
@@ -172,15 +174,13 @@ public interface PacketCoreControlPlanes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    AsyncOperationStatus collectDiagnosticsPackage(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
+    AsyncOperationStatus collectDiagnosticsPackage(String resourceGroupName, String packetCoreControlPlaneName,
         PacketCoreControlPlaneCollectDiagnosticsPackage parameters);
 
     /**
      * Collect a diagnostics package for the specified packet core control plane. This action will upload the
      * diagnostics to a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to the packet core control plane collect diagnostics package operation.
@@ -190,15 +190,12 @@ public interface PacketCoreControlPlanes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    AsyncOperationStatus collectDiagnosticsPackage(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        PacketCoreControlPlaneCollectDiagnosticsPackage parameters,
-        Context context);
+    AsyncOperationStatus collectDiagnosticsPackage(String resourceGroupName, String packetCoreControlPlaneName,
+        PacketCoreControlPlaneCollectDiagnosticsPackage parameters, Context context);
 
     /**
      * Gets information about the specified packet core control plane.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -209,7 +206,7 @@ public interface PacketCoreControlPlanes {
 
     /**
      * Gets information about the specified packet core control plane.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +218,7 @@ public interface PacketCoreControlPlanes {
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -231,7 +228,7 @@ public interface PacketCoreControlPlanes {
 
     /**
      * Deletes the specified packet core control plane.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,7 +239,7 @@ public interface PacketCoreControlPlanes {
 
     /**
      * Begins definition for a new PacketCoreControlPlane resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PacketCoreControlPlane definition.
      */

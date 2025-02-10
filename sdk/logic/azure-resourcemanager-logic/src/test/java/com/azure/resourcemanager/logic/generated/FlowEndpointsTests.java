@@ -13,28 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class FlowEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FlowEndpoints model =
-            BinaryData
-                .fromString(
-                    "{\"outgoingIpAddresses\":[{\"address\":\"hmuouqfprwzwbn\"},{\"address\":\"itnwuizgazxufi\"},{\"address\":\"ckyfih\"}],\"accessEndpointIpAddresses\":[{\"address\":\"fvzwdzuhty\"}]}")
-                .toObject(FlowEndpoints.class);
-        Assertions.assertEquals("hmuouqfprwzwbn", model.outgoingIpAddresses().get(0).address());
-        Assertions.assertEquals("fvzwdzuhty", model.accessEndpointIpAddresses().get(0).address());
+        FlowEndpoints model = BinaryData.fromString(
+            "{\"outgoingIpAddresses\":[{\"address\":\"fbxzpuzycisp\"},{\"address\":\"zahmgkbrpyydhibn\"},{\"address\":\"qkpikadrgvtqagnb\"},{\"address\":\"nhijggmebfsi\"}],\"accessEndpointIpAddresses\":[{\"address\":\"trcvpnazzmh\"}]}")
+            .toObject(FlowEndpoints.class);
+        Assertions.assertEquals("fbxzpuzycisp", model.outgoingIpAddresses().get(0).address());
+        Assertions.assertEquals("trcvpnazzmh", model.accessEndpointIpAddresses().get(0).address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FlowEndpoints model =
-            new FlowEndpoints()
-                .withOutgoingIpAddresses(
-                    Arrays
-                        .asList(
-                            new IpAddress().withAddress("hmuouqfprwzwbn"),
-                            new IpAddress().withAddress("itnwuizgazxufi"),
-                            new IpAddress().withAddress("ckyfih")))
-                .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress().withAddress("fvzwdzuhty")));
+        FlowEndpoints model = new FlowEndpoints()
+            .withOutgoingIpAddresses(Arrays.asList(new IpAddress().withAddress("fbxzpuzycisp"),
+                new IpAddress().withAddress("zahmgkbrpyydhibn"), new IpAddress().withAddress("qkpikadrgvtqagnb"),
+                new IpAddress().withAddress("nhijggmebfsi")))
+            .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress().withAddress("trcvpnazzmh")));
         model = BinaryData.fromObject(model).toObject(FlowEndpoints.class);
-        Assertions.assertEquals("hmuouqfprwzwbn", model.outgoingIpAddresses().get(0).address());
-        Assertions.assertEquals("fvzwdzuhty", model.accessEndpointIpAddresses().get(0).address());
+        Assertions.assertEquals("fbxzpuzycisp", model.outgoingIpAddresses().get(0).address());
+        Assertions.assertEquals("trcvpnazzmh", model.accessEndpointIpAddresses().get(0).address());
     }
 }

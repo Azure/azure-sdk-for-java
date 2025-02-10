@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -24,7 +23,7 @@ public final class IpFamily extends ExpandableStringEnum<IpFamily> {
 
     /**
      * Creates a new instance of IpFamily value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +32,17 @@ public final class IpFamily extends ExpandableStringEnum<IpFamily> {
 
     /**
      * Creates or finds a IpFamily from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IpFamily.
      */
-    @JsonCreator
     public static IpFamily fromString(String name) {
         return fromString(name, IpFamily.class);
     }
 
     /**
      * Gets known IpFamily values.
-     *
+     * 
      * @return known IpFamily values.
      */
     public static Collection<IpFamily> values() {

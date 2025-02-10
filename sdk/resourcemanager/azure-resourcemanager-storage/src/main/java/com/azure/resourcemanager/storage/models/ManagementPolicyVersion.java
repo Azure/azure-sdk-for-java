@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Management policy action for blob version. */
+/**
+ * Management policy action for blob version.
+ */
 @Fluent
-public final class ManagementPolicyVersion {
+public final class ManagementPolicyVersion implements JsonSerializable<ManagementPolicyVersion> {
     /*
      * The function to tier blob version to cool storage.
      */
-    @JsonProperty(value = "tierToCool")
     private DateAfterCreation tierToCool;
 
     /*
      * The function to tier blob version to archive storage.
      */
-    @JsonProperty(value = "tierToArchive")
     private DateAfterCreation tierToArchive;
 
     /*
      * The function to tier blobs to cold storage.
      */
-    @JsonProperty(value = "tierToCold")
     private DateAfterCreation tierToCold;
 
     /*
      * The function to tier blobs to hot storage. This action can only be used with Premium Block Blob Storage Accounts
      */
-    @JsonProperty(value = "tierToHot")
     private DateAfterCreation tierToHot;
 
     /*
      * The function to delete the blob version
      */
-    @JsonProperty(value = "delete")
     private DateAfterCreation delete;
 
-    /** Creates an instance of ManagementPolicyVersion class. */
+    /**
+     * Creates an instance of ManagementPolicyVersion class.
+     */
     public ManagementPolicyVersion() {
     }
 
     /**
      * Get the tierToCool property: The function to tier blob version to cool storage.
-     *
+     * 
      * @return the tierToCool value.
      */
     public DateAfterCreation tierToCool() {
@@ -55,7 +58,7 @@ public final class ManagementPolicyVersion {
 
     /**
      * Set the tierToCool property: The function to tier blob version to cool storage.
-     *
+     * 
      * @param tierToCool the tierToCool value to set.
      * @return the ManagementPolicyVersion object itself.
      */
@@ -66,7 +69,7 @@ public final class ManagementPolicyVersion {
 
     /**
      * Get the tierToArchive property: The function to tier blob version to archive storage.
-     *
+     * 
      * @return the tierToArchive value.
      */
     public DateAfterCreation tierToArchive() {
@@ -75,7 +78,7 @@ public final class ManagementPolicyVersion {
 
     /**
      * Set the tierToArchive property: The function to tier blob version to archive storage.
-     *
+     * 
      * @param tierToArchive the tierToArchive value to set.
      * @return the ManagementPolicyVersion object itself.
      */
@@ -86,7 +89,7 @@ public final class ManagementPolicyVersion {
 
     /**
      * Get the tierToCold property: The function to tier blobs to cold storage.
-     *
+     * 
      * @return the tierToCold value.
      */
     public DateAfterCreation tierToCold() {
@@ -95,7 +98,7 @@ public final class ManagementPolicyVersion {
 
     /**
      * Set the tierToCold property: The function to tier blobs to cold storage.
-     *
+     * 
      * @param tierToCold the tierToCold value to set.
      * @return the ManagementPolicyVersion object itself.
      */
@@ -107,7 +110,7 @@ public final class ManagementPolicyVersion {
     /**
      * Get the tierToHot property: The function to tier blobs to hot storage. This action can only be used with Premium
      * Block Blob Storage Accounts.
-     *
+     * 
      * @return the tierToHot value.
      */
     public DateAfterCreation tierToHot() {
@@ -117,7 +120,7 @@ public final class ManagementPolicyVersion {
     /**
      * Set the tierToHot property: The function to tier blobs to hot storage. This action can only be used with Premium
      * Block Blob Storage Accounts.
-     *
+     * 
      * @param tierToHot the tierToHot value to set.
      * @return the ManagementPolicyVersion object itself.
      */
@@ -128,7 +131,7 @@ public final class ManagementPolicyVersion {
 
     /**
      * Get the delete property: The function to delete the blob version.
-     *
+     * 
      * @return the delete value.
      */
     public DateAfterCreation delete() {
@@ -137,7 +140,7 @@ public final class ManagementPolicyVersion {
 
     /**
      * Set the delete property: The function to delete the blob version.
-     *
+     * 
      * @param delete the delete value to set.
      * @return the ManagementPolicyVersion object itself.
      */
@@ -148,7 +151,7 @@ public final class ManagementPolicyVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -167,5 +170,53 @@ public final class ManagementPolicyVersion {
         if (delete() != null) {
             delete().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("tierToCool", this.tierToCool);
+        jsonWriter.writeJsonField("tierToArchive", this.tierToArchive);
+        jsonWriter.writeJsonField("tierToCold", this.tierToCold);
+        jsonWriter.writeJsonField("tierToHot", this.tierToHot);
+        jsonWriter.writeJsonField("delete", this.delete);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementPolicyVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementPolicyVersion if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementPolicyVersion.
+     */
+    public static ManagementPolicyVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementPolicyVersion deserializedManagementPolicyVersion = new ManagementPolicyVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tierToCool".equals(fieldName)) {
+                    deserializedManagementPolicyVersion.tierToCool = DateAfterCreation.fromJson(reader);
+                } else if ("tierToArchive".equals(fieldName)) {
+                    deserializedManagementPolicyVersion.tierToArchive = DateAfterCreation.fromJson(reader);
+                } else if ("tierToCold".equals(fieldName)) {
+                    deserializedManagementPolicyVersion.tierToCold = DateAfterCreation.fromJson(reader);
+                } else if ("tierToHot".equals(fieldName)) {
+                    deserializedManagementPolicyVersion.tierToHot = DateAfterCreation.fromJson(reader);
+                } else if ("delete".equals(fieldName)) {
+                    deserializedManagementPolicyVersion.delete = DateAfterCreation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementPolicyVersion;
+        });
     }
 }

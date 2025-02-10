@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.OSUpgradeSu
 public final class OSUpgradeSupportedVersionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OSUpgradeSupportedVersions model =
-            BinaryData
-                .fromString(
-                    "{\"supportedSourceOsVersion\":\"hhkvguavtptbk\",\"supportedTargetOsVersions\":[\"qynspgbvoffb\",\"kwvdxa\",\"xqokmyrlji\"]}")
-                .toObject(OSUpgradeSupportedVersions.class);
+        OSUpgradeSupportedVersions model = BinaryData.fromString(
+            "{\"supportedSourceOsVersion\":\"hhkvguavtptbk\",\"supportedTargetOsVersions\":[\"qynspgbvoffb\",\"kwvdxa\",\"xqokmyrlji\"]}")
+            .toObject(OSUpgradeSupportedVersions.class);
     }
 
     @org.junit.jupiter.api.Test

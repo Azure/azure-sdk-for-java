@@ -60,8 +60,9 @@ public final class CommunicationServicesImpl implements CommunicationServices {
 
     public Response<LinkedNotificationHub> linkNotificationHubWithResponse(String resourceGroupName,
         String communicationServiceName, LinkNotificationHubParameters linkNotificationHubParameters, Context context) {
-        Response<LinkedNotificationHubInner> inner = this.serviceClient().linkNotificationHubWithResponse(
-            resourceGroupName, communicationServiceName, linkNotificationHubParameters, context);
+        Response<LinkedNotificationHubInner> inner = this.serviceClient()
+            .linkNotificationHubWithResponse(resourceGroupName, communicationServiceName, linkNotificationHubParameters,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LinkedNotificationHubImpl(inner.getValue(), this.manager()));
@@ -82,24 +83,28 @@ public final class CommunicationServicesImpl implements CommunicationServices {
 
     public PagedIterable<CommunicationServiceResource> list() {
         PagedIterable<CommunicationServiceResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommunicationServiceResource> list(Context context) {
         PagedIterable<CommunicationServiceResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommunicationServiceResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<CommunicationServiceResourceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommunicationServiceResource> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<CommunicationServiceResourceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
     }
 
     public Response<CommunicationServiceResource> getByResourceGroupWithResponse(String resourceGroupName,
@@ -178,12 +183,12 @@ public final class CommunicationServicesImpl implements CommunicationServices {
     }
 
     public CommunicationServiceResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
+        String communicationServiceName = ResourceManagerUtils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'communicationServices'.", id)));
@@ -193,12 +198,12 @@ public final class CommunicationServicesImpl implements CommunicationServices {
     }
 
     public Response<CommunicationServiceResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
+        String communicationServiceName = ResourceManagerUtils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'communicationServices'.", id)));
@@ -207,12 +212,12 @@ public final class CommunicationServicesImpl implements CommunicationServices {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
+        String communicationServiceName = ResourceManagerUtils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'communicationServices'.", id)));
@@ -221,12 +226,12 @@ public final class CommunicationServicesImpl implements CommunicationServices {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
+        String communicationServiceName = ResourceManagerUtils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'communicationServices'.", id)));

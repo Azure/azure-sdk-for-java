@@ -8,12 +8,15 @@ parameters:
   - name: release_azuresdkbom
     displayName: 'azure-sdk-bom'
     type: boolean
+    default: true
   - name: release_springcloudazuredependencies
     displayName: 'spring-cloud-azure-dependencies'
     type: boolean
+    default: false
   - name: release_azuresdktemplatebom
     displayName: 'azure-sdk-template-bom'
     type: boolean
+    default: false
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-pom-only.yml

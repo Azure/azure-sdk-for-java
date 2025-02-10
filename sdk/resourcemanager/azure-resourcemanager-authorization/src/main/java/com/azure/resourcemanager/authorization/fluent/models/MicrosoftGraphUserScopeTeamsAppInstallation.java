@@ -5,34 +5,37 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** userScopeTeamsAppInstallation. */
+/**
+ * userScopeTeamsAppInstallation.
+ */
 @Fluent
 public final class MicrosoftGraphUserScopeTeamsAppInstallation extends MicrosoftGraphTeamsAppInstallation {
     /*
      * chat
      */
-    @JsonProperty(value = "chat")
     private MicrosoftGraphChat chat;
 
     /*
      * userScopeTeamsAppInstallation
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphUserScopeTeamsAppInstallation class. */
+    /**
+     * Creates an instance of MicrosoftGraphUserScopeTeamsAppInstallation class.
+     */
     public MicrosoftGraphUserScopeTeamsAppInstallation() {
     }
 
     /**
      * Get the chat property: chat.
-     *
+     * 
      * @return the chat value.
      */
     public MicrosoftGraphChat chat() {
@@ -41,7 +44,7 @@ public final class MicrosoftGraphUserScopeTeamsAppInstallation extends Microsoft
 
     /**
      * Set the chat property: chat.
-     *
+     * 
      * @param chat the chat value to set.
      * @return the MicrosoftGraphUserScopeTeamsAppInstallation object itself.
      */
@@ -52,50 +55,47 @@ public final class MicrosoftGraphUserScopeTeamsAppInstallation extends Microsoft
 
     /**
      * Get the additionalProperties property: userScopeTeamsAppInstallation.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: userScopeTeamsAppInstallation.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphUserScopeTeamsAppInstallation object itself.
      */
-    public MicrosoftGraphUserScopeTeamsAppInstallation withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphUserScopeTeamsAppInstallation
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphUserScopeTeamsAppInstallation withTeamsApp(MicrosoftGraphTeamsApp teamsApp) {
         super.withTeamsApp(teamsApp);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public MicrosoftGraphUserScopeTeamsAppInstallation withTeamsAppDefinition(
-        MicrosoftGraphTeamsAppDefinition teamsAppDefinition) {
+    public MicrosoftGraphUserScopeTeamsAppInstallation
+        withTeamsAppDefinition(MicrosoftGraphTeamsAppDefinition teamsAppDefinition) {
         super.withTeamsAppDefinition(teamsAppDefinition);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphUserScopeTeamsAppInstallation withId(String id) {
         super.withId(id);
@@ -104,7 +104,7 @@ public final class MicrosoftGraphUserScopeTeamsAppInstallation extends Microsoft
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -113,5 +113,64 @@ public final class MicrosoftGraphUserScopeTeamsAppInstallation extends Microsoft
         if (chat() != null) {
             chat().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("teamsApp", teamsApp());
+        jsonWriter.writeJsonField("teamsAppDefinition", teamsAppDefinition());
+        jsonWriter.writeJsonField("chat", this.chat);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphUserScopeTeamsAppInstallation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphUserScopeTeamsAppInstallation if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphUserScopeTeamsAppInstallation.
+     */
+    public static MicrosoftGraphUserScopeTeamsAppInstallation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphUserScopeTeamsAppInstallation deserializedMicrosoftGraphUserScopeTeamsAppInstallation
+                = new MicrosoftGraphUserScopeTeamsAppInstallation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphUserScopeTeamsAppInstallation.withId(reader.getString());
+                } else if ("teamsApp".equals(fieldName)) {
+                    deserializedMicrosoftGraphUserScopeTeamsAppInstallation
+                        .withTeamsApp(MicrosoftGraphTeamsApp.fromJson(reader));
+                } else if ("teamsAppDefinition".equals(fieldName)) {
+                    deserializedMicrosoftGraphUserScopeTeamsAppInstallation
+                        .withTeamsAppDefinition(MicrosoftGraphTeamsAppDefinition.fromJson(reader));
+                } else if ("chat".equals(fieldName)) {
+                    deserializedMicrosoftGraphUserScopeTeamsAppInstallation.chat = MicrosoftGraphChat.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphUserScopeTeamsAppInstallation.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphUserScopeTeamsAppInstallation;
+        });
     }
 }

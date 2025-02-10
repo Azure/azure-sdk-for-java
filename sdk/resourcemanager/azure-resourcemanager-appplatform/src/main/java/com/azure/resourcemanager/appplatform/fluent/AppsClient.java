@@ -22,13 +22,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AppsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AppsClient.
+ */
 public interface AppsClient {
     /**
      * Get an App and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param syncStatus Indicates whether sync status.
@@ -38,30 +40,14 @@ public interface AppsClient {
      * @return an App and its properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AppResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String syncStatus);
+    Mono<Response<AppResourceInner>> getWithResponseAsync(String resourceGroupName, String serviceName, String appName,
+        String syncStatus);
 
     /**
      * Get an App and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param syncStatus Indicates whether sync status.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AppResourceInner> getAsync(String resourceGroupName, String serviceName, String appName, String syncStatus);
-
-    /**
-     * Get an App and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -74,9 +60,27 @@ public interface AppsClient {
 
     /**
      * Get an App and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param syncStatus Indicates whether sync status.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an App and its properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AppResourceInner> getWithResponse(String resourceGroupName, String serviceName, String appName,
+        String syncStatus, Context context);
+
+    /**
+     * Get an App and its properties.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -88,28 +92,10 @@ public interface AppsClient {
     AppResourceInner get(String resourceGroupName, String serviceName, String appName);
 
     /**
-     * Get an App and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param syncStatus Indicates whether sync status.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AppResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String appName, String syncStatus, Context context);
-
-    /**
      * Create a new App or update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the create or update operation.
@@ -119,14 +105,14 @@ public interface AppsClient {
      * @return app resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, AppResourceInner appResource);
 
     /**
      * Create a new App or update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the create or update operation.
@@ -136,14 +122,14 @@ public interface AppsClient {
      * @return the {@link PollerFlux} for polling of app resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource);
+    PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serviceName, String appName, AppResourceInner appResource);
 
     /**
      * Create a new App or update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the create or update operation.
@@ -153,14 +139,14 @@ public interface AppsClient {
      * @return the {@link SyncPoller} for polling of app resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource);
+    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String appName, AppResourceInner appResource);
 
     /**
      * Create a new App or update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the create or update operation.
@@ -171,14 +157,14 @@ public interface AppsClient {
      * @return the {@link SyncPoller} for polling of app resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context);
+    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String appName, AppResourceInner appResource, Context context);
 
     /**
      * Create a new App or update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the create or update operation.
@@ -188,14 +174,14 @@ public interface AppsClient {
      * @return app resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AppResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource);
+    Mono<AppResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String appName,
+        AppResourceInner appResource);
 
     /**
      * Create a new App or update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the create or update operation.
@@ -205,14 +191,14 @@ public interface AppsClient {
      * @return app resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AppResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource);
+    AppResourceInner createOrUpdate(String resourceGroupName, String serviceName, String appName,
+        AppResourceInner appResource);
 
     /**
      * Create a new App or update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the create or update operation.
@@ -223,14 +209,14 @@ public interface AppsClient {
      * @return app resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AppResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context);
+    AppResourceInner createOrUpdate(String resourceGroupName, String serviceName, String appName,
+        AppResourceInner appResource, Context context);
 
     /**
      * Operation to delete an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -239,14 +225,14 @@ public interface AppsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName);
 
     /**
      * Operation to delete an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,9 +245,9 @@ public interface AppsClient {
 
     /**
      * Operation to delete an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -274,9 +260,9 @@ public interface AppsClient {
 
     /**
      * Operation to delete an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param context The context to associate with this operation.
@@ -286,14 +272,14 @@ public interface AppsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String appName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String appName,
+        Context context);
 
     /**
      * Operation to delete an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,9 +292,9 @@ public interface AppsClient {
 
     /**
      * Operation to delete an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,9 +306,9 @@ public interface AppsClient {
 
     /**
      * Operation to delete an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param context The context to associate with this operation.
@@ -335,9 +321,9 @@ public interface AppsClient {
 
     /**
      * Operation to update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the update operation.
@@ -347,14 +333,14 @@ public interface AppsClient {
      * @return app resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, AppResourceInner appResource);
 
     /**
      * Operation to update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the update operation.
@@ -364,14 +350,14 @@ public interface AppsClient {
      * @return the {@link PollerFlux} for polling of app resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginUpdateAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource);
+    PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginUpdateAsync(String resourceGroupName,
+        String serviceName, String appName, AppResourceInner appResource);
 
     /**
      * Operation to update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the update operation.
@@ -381,14 +367,14 @@ public interface AppsClient {
      * @return the {@link SyncPoller} for polling of app resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource);
+    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(String resourceGroupName, String serviceName,
+        String appName, AppResourceInner appResource);
 
     /**
      * Operation to update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the update operation.
@@ -399,14 +385,14 @@ public interface AppsClient {
      * @return the {@link SyncPoller} for polling of app resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context);
+    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(String resourceGroupName, String serviceName,
+        String appName, AppResourceInner appResource, Context context);
 
     /**
      * Operation to update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the update operation.
@@ -416,14 +402,14 @@ public interface AppsClient {
      * @return app resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AppResourceInner> updateAsync(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource);
+    Mono<AppResourceInner> updateAsync(String resourceGroupName, String serviceName, String appName,
+        AppResourceInner appResource);
 
     /**
      * Operation to update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the update operation.
@@ -437,9 +423,9 @@ public interface AppsClient {
 
     /**
      * Operation to update an exiting App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param appResource Parameters for the update operation.
@@ -450,94 +436,111 @@ public interface AppsClient {
      * @return app resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AppResourceInner update(
-        String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context);
+    AppResourceInner update(String resourceGroupName, String serviceName, String appName, AppResourceInner appResource,
+        Context context);
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AppResourceInner> listAsync(String resourceGroupName, String serviceName);
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AppResourceInner> list(String resourceGroupName, String serviceName);
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AppResourceInner> list(String resourceGroupName, String serviceName, Context context);
 
     /**
      * Get an resource upload URL for an App, which may be artifacts or source archive.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an resource upload URL for an App, which may be artifacts or source archive along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ResourceUploadDefinition>> getResourceUploadUrlWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName);
+    Mono<Response<ResourceUploadDefinition>> getResourceUploadUrlWithResponseAsync(String resourceGroupName,
+        String serviceName, String appName);
 
     /**
      * Get an resource upload URL for an App, which may be artifacts or source archive.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an resource upload URL for an App, which may be artifacts or source archive on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceUploadDefinition> getResourceUploadUrlAsync(
-        String resourceGroupName, String serviceName, String appName);
+    Mono<ResourceUploadDefinition> getResourceUploadUrlAsync(String resourceGroupName, String serviceName,
+        String appName);
 
     /**
      * Get an resource upload URL for an App, which may be artifacts or source archive.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an resource upload URL for an App, which may be artifacts or source archive along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ResourceUploadDefinition> getResourceUploadUrlWithResponse(String resourceGroupName, String serviceName,
+        String appName, Context context);
+
+    /**
+     * Get an resource upload URL for an App, which may be artifacts or source archive.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -549,27 +552,10 @@ public interface AppsClient {
     ResourceUploadDefinition getResourceUploadUrl(String resourceGroupName, String serviceName, String appName);
 
     /**
-     * Get an resource upload URL for an App, which may be artifacts or source archive.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an resource upload URL for an App, which may be artifacts or source archive along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceUploadDefinition> getResourceUploadUrlWithResponse(
-        String resourceGroupName, String serviceName, String appName, Context context);
-
-    /**
      * Set existing Deployment under the app as active.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param activeDeploymentCollection A list of Deployment name to be active.
@@ -579,17 +565,14 @@ public interface AppsClient {
      * @return app resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> setActiveDeploymentsWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        ActiveDeploymentCollection activeDeploymentCollection);
+    Mono<Response<Flux<ByteBuffer>>> setActiveDeploymentsWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, ActiveDeploymentCollection activeDeploymentCollection);
 
     /**
      * Set existing Deployment under the app as active.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param activeDeploymentCollection A list of Deployment name to be active.
@@ -599,17 +582,14 @@ public interface AppsClient {
      * @return the {@link PollerFlux} for polling of app resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginSetActiveDeploymentsAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        ActiveDeploymentCollection activeDeploymentCollection);
+    PollerFlux<PollResult<AppResourceInner>, AppResourceInner> beginSetActiveDeploymentsAsync(String resourceGroupName,
+        String serviceName, String appName, ActiveDeploymentCollection activeDeploymentCollection);
 
     /**
      * Set existing Deployment under the app as active.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param activeDeploymentCollection A list of Deployment name to be active.
@@ -619,17 +599,14 @@ public interface AppsClient {
      * @return the {@link SyncPoller} for polling of app resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginSetActiveDeployments(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        ActiveDeploymentCollection activeDeploymentCollection);
+    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginSetActiveDeployments(String resourceGroupName,
+        String serviceName, String appName, ActiveDeploymentCollection activeDeploymentCollection);
 
     /**
      * Set existing Deployment under the app as active.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param activeDeploymentCollection A list of Deployment name to be active.
@@ -640,18 +617,14 @@ public interface AppsClient {
      * @return the {@link SyncPoller} for polling of app resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginSetActiveDeployments(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        ActiveDeploymentCollection activeDeploymentCollection,
-        Context context);
+    SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginSetActiveDeployments(String resourceGroupName,
+        String serviceName, String appName, ActiveDeploymentCollection activeDeploymentCollection, Context context);
 
     /**
      * Set existing Deployment under the app as active.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param activeDeploymentCollection A list of Deployment name to be active.
@@ -661,17 +634,14 @@ public interface AppsClient {
      * @return app resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AppResourceInner> setActiveDeploymentsAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
+    Mono<AppResourceInner> setActiveDeploymentsAsync(String resourceGroupName, String serviceName, String appName,
         ActiveDeploymentCollection activeDeploymentCollection);
 
     /**
      * Set existing Deployment under the app as active.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param activeDeploymentCollection A list of Deployment name to be active.
@@ -681,17 +651,14 @@ public interface AppsClient {
      * @return app resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AppResourceInner setActiveDeployments(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
+    AppResourceInner setActiveDeployments(String resourceGroupName, String serviceName, String appName,
         ActiveDeploymentCollection activeDeploymentCollection);
 
     /**
      * Set existing Deployment under the app as active.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param activeDeploymentCollection A list of Deployment name to be active.
@@ -702,18 +669,14 @@ public interface AppsClient {
      * @return app resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AppResourceInner setActiveDeployments(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        ActiveDeploymentCollection activeDeploymentCollection,
-        Context context);
+    AppResourceInner setActiveDeployments(String resourceGroupName, String serviceName, String appName,
+        ActiveDeploymentCollection activeDeploymentCollection, Context context);
 
     /**
      * Check the resource name is valid as well as not in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param validatePayload Custom domain payload to be validated.
@@ -723,14 +686,14 @@ public interface AppsClient {
      * @return validation result for custom domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CustomDomainValidateResult>> validateDomainWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, CustomDomainValidatePayload validatePayload);
+    Mono<Response<CustomDomainValidateResult>> validateDomainWithResponseAsync(String resourceGroupName,
+        String serviceName, String appName, CustomDomainValidatePayload validatePayload);
 
     /**
      * Check the resource name is valid as well as not in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param validatePayload Custom domain payload to be validated.
@@ -740,31 +703,14 @@ public interface AppsClient {
      * @return validation result for custom domain on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomDomainValidateResult> validateDomainAsync(
-        String resourceGroupName, String serviceName, String appName, CustomDomainValidatePayload validatePayload);
+    Mono<CustomDomainValidateResult> validateDomainAsync(String resourceGroupName, String serviceName, String appName,
+        CustomDomainValidatePayload validatePayload);
 
     /**
      * Check the resource name is valid as well as not in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param validatePayload Custom domain payload to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainValidateResult validateDomain(
-        String resourceGroupName, String serviceName, String appName, CustomDomainValidatePayload validatePayload);
-
-    /**
-     * Check the resource name is valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param validatePayload Custom domain payload to be validated.
@@ -775,10 +721,23 @@ public interface AppsClient {
      * @return validation result for custom domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomDomainValidateResult> validateDomainWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        CustomDomainValidatePayload validatePayload,
-        Context context);
+    Response<CustomDomainValidateResult> validateDomainWithResponse(String resourceGroupName, String serviceName,
+        String appName, CustomDomainValidatePayload validatePayload, Context context);
+
+    /**
+     * Check the resource name is valid as well as not in use.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param validatePayload Custom domain payload to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainValidateResult validateDomain(String resourceGroupName, String serviceName, String appName,
+        CustomDomainValidatePayload validatePayload);
 }

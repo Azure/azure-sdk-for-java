@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** objectIdentity. */
+/**
+ * objectIdentity.
+ */
 @Fluent
-public final class MicrosoftGraphObjectIdentity {
+public final class MicrosoftGraphObjectIdentity implements JsonSerializable<MicrosoftGraphObjectIdentity> {
     /*
      * Specifies the issuer of the identity, for example facebook.com.For local accounts (where signInType is not
      * federated), this property is the local B2C tenant default domain name, for example contoso.onmicrosoft.com.For
      * external users from other Azure AD organization, this will be the domain of the federated organization, for
      * example contoso.com.Supports $filter. 512 character limit.
      */
-    @JsonProperty(value = "issuer")
     private String issuer;
 
     /*
@@ -32,7 +34,6 @@ public final class MicrosoftGraphObjectIdentity {
      * addressuserName, issuerAssignedId must be a valid local part of an email addressSupports $filter. 512 character
      * limit.
      */
-    @JsonProperty(value = "issuerAssignedId")
     private String issuerAssignedId;
 
     /*
@@ -41,15 +42,16 @@ public final class MicrosoftGraphObjectIdentity {
      * Additional validation is enforced on issuerAssignedId when the sign-in type is set to emailAddress or userName.
      * This property can also be set to any custom string.
      */
-    @JsonProperty(value = "signInType")
     private String signInType;
 
     /*
      * objectIdentity
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphObjectIdentity class. */
+    /**
+     * Creates an instance of MicrosoftGraphObjectIdentity class.
+     */
     public MicrosoftGraphObjectIdentity() {
     }
 
@@ -58,7 +60,7 @@ public final class MicrosoftGraphObjectIdentity {
      * signInType is not federated), this property is the local B2C tenant default domain name, for example
      * contoso.onmicrosoft.com.For external users from other Azure AD organization, this will be the domain of the
      * federated organization, for example contoso.com.Supports $filter. 512 character limit.
-     *
+     * 
      * @return the issuer value.
      */
     public String issuer() {
@@ -70,7 +72,7 @@ public final class MicrosoftGraphObjectIdentity {
      * signInType is not federated), this property is the local B2C tenant default domain name, for example
      * contoso.onmicrosoft.com.For external users from other Azure AD organization, this will be the domain of the
      * federated organization, for example contoso.com.Supports $filter. 512 character limit.
-     *
+     * 
      * @param issuer the issuer value to set.
      * @return the MicrosoftGraphObjectIdentity object itself.
      */
@@ -86,7 +88,7 @@ public final class MicrosoftGraphObjectIdentity {
      * is set to: emailAddress, (or starts with emailAddress like emailAddress1) issuerAssignedId must be a valid email
      * addressuserName, issuerAssignedId must be a valid local part of an email addressSupports $filter. 512 character
      * limit.
-     *
+     * 
      * @return the issuerAssignedId value.
      */
     public String issuerAssignedId() {
@@ -100,7 +102,7 @@ public final class MicrosoftGraphObjectIdentity {
      * is set to: emailAddress, (or starts with emailAddress like emailAddress1) issuerAssignedId must be a valid email
      * addressuserName, issuerAssignedId must be a valid local part of an email addressSupports $filter. 512 character
      * limit.
-     *
+     * 
      * @param issuerAssignedId the issuerAssignedId value to set.
      * @return the MicrosoftGraphObjectIdentity object itself.
      */
@@ -114,7 +116,7 @@ public final class MicrosoftGraphObjectIdentity {
      * or federated. Here, federated represents a unique identifier for a user from an issuer, that can be in any format
      * chosen by the issuer. Additional validation is enforced on issuerAssignedId when the sign-in type is set to
      * emailAddress or userName. This property can also be set to any custom string.
-     *
+     * 
      * @return the signInType value.
      */
     public String signInType() {
@@ -126,7 +128,7 @@ public final class MicrosoftGraphObjectIdentity {
      * or federated. Here, federated represents a unique identifier for a user from an issuer, that can be in any format
      * chosen by the issuer. Additional validation is enforced on issuerAssignedId when the sign-in type is set to
      * emailAddress or userName. This property can also be set to any custom string.
-     *
+     * 
      * @param signInType the signInType value to set.
      * @return the MicrosoftGraphObjectIdentity object itself.
      */
@@ -137,17 +139,16 @@ public final class MicrosoftGraphObjectIdentity {
 
     /**
      * Get the additionalProperties property: objectIdentity.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: objectIdentity.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphObjectIdentity object itself.
      */
@@ -156,19 +157,64 @@ public final class MicrosoftGraphObjectIdentity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("issuer", this.issuer);
+        jsonWriter.writeStringField("issuerAssignedId", this.issuerAssignedId);
+        jsonWriter.writeStringField("signInType", this.signInType);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphObjectIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphObjectIdentity if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphObjectIdentity.
+     */
+    public static MicrosoftGraphObjectIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphObjectIdentity deserializedMicrosoftGraphObjectIdentity = new MicrosoftGraphObjectIdentity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("issuer".equals(fieldName)) {
+                    deserializedMicrosoftGraphObjectIdentity.issuer = reader.getString();
+                } else if ("issuerAssignedId".equals(fieldName)) {
+                    deserializedMicrosoftGraphObjectIdentity.issuerAssignedId = reader.getString();
+                } else if ("signInType".equals(fieldName)) {
+                    deserializedMicrosoftGraphObjectIdentity.signInType = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphObjectIdentity.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphObjectIdentity;
+        });
     }
 }

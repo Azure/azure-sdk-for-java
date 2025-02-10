@@ -37,20 +37,20 @@
         },
         {
             "file": [
+                "test-proxy.log"
+            ],
+            "_justification": "Transient test file that is locked by test-proxy and should not be scanned"
+        },
+        {
+            "file": [
                 "eng/common/testproxy/dotnet-devcert.pfx",
+                "sdk/core/azure-core/target/test-classes/keystore.jks",
                 "sdk/cosmos/azure-cosmos-tests/src/test/resources/server.jks",
                 "sdk/cosmos/azure-cosmos-tests/src/test/resources/client.jks",
                 "sdk/identity/azure-identity/src/test/resources/cert-chain.pem",
                 "sdk/identity/azure-identity/src/test/resources/key.pem",
                 "sdk/identity/azure-identity/src/test/resources/keyStore.pfx",
-                "sdk/keyvault/azure-security-keyvault-certificates/src/test/resources/pemCert.pem",
-                "sdk/keyvault/microsoft-azure-keyvault/src/test/resources/pkcs12_base64_testdata.cer",
-                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p256key.pem",
-                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p256keynew.pem",
-                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p384keynew.pem",
-                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/p521keynew.pem",
-                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/SECP256key.pem",
-                "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/secp256keynew.pem"
+                "sdk/keyvault/azure-security-keyvault-certificates/src/test/resources/pemCert.pem"
             ],
             "_justification": "File contains private key used by test code."
         },
@@ -64,6 +64,7 @@
             "file": [
                 "sdk/communication/azure-communication-common-perf/src/main/java/com.azure.communication.common.perf/FakeCredentialInTest.java",
                 "sdk/keyvault/azure-security-keyvault-certificates/src/test/java/com/azure/security/keyvault/certificates/FakeCredentialInTest.java",
+                "sdk/resourcemanagerhybrid/azure-resourcemanager/src/test/resources/session-records/AzureResourceManagerTests.testContainerRegistry.json",
                 "sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/FakeCredentialInTest.java",
                 "sdk/spring/spring-cloud-azure-service/src/test/java/com/azure/spring/cloud/service/implementation/storage/FakeCredentialInTest.java",
                 "sdk/storage/azure-storage-blob/src/test/java/com/azure/storage/blob/FakeCredentialInTest.java",
@@ -73,8 +74,14 @@
             "_justification": "File contains fake key used by test code."
         },
         {
+          "file":[
+            "sdk/identity/azure-identity/src/test/resources/pemCert.pem"
+          ],
+          "_justification": "Files contain private keys used by test code."
+        },
+        {
             "file": [
-              "sdk/core/azure-core-test/src/main/resources/keystore.jks"
+              "sdk/core/azure-core/src/test/resources/keystore.jks"
             ],
             "_justification": "Dummy keystore to enable HTTPS testing with LocalTestServer. Contains no real secrets."
         }

@@ -29,12 +29,12 @@ public class MessageSessionProcessor extends ServiceBusScenario {
 
     @Override
     public void run() {
-        ServiceBusProcessorClient processor = toClose(getSessionProcessorBuilder(options)
-                .maxConcurrentSessions(maxConcurrentSessions)
+        ServiceBusProcessorClient processor
+            = toClose(getSessionProcessorBuilder(options).maxConcurrentSessions(maxConcurrentSessions)
                 .maxConcurrentCalls(maxConcurrentCalls)
                 .prefetchCount(prefetchCount)
                 .processMessage(messageContext -> messageContext.complete())
-                .processError(err -> recordError(err.getException().getClass().getName(), err.getException(), "processError"))
+                .processError(err -> telemetryHelper.recordError(err.getException(), "processError"))
                 .buildProcessorClient());
         processor.start();
 

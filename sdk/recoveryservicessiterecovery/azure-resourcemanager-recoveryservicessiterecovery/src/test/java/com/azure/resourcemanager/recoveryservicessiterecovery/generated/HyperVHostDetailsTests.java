@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVHostD
 public final class HyperVHostDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVHostDetails model =
-            BinaryData
-                .fromString("{\"id\":\"zocrdzgczeu\",\"name\":\"g\",\"marsAgentVersion\":\"ncaqttiekoifu\"}")
+        HyperVHostDetails model
+            = BinaryData.fromString("{\"id\":\"zocrdzgczeu\",\"name\":\"g\",\"marsAgentVersion\":\"ncaqttiekoifu\"}")
                 .toObject(HyperVHostDetails.class);
     }
 

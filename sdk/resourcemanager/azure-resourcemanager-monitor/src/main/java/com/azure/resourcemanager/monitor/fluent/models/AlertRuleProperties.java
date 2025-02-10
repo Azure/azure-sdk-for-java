@@ -6,47 +6,50 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.ActionList;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** An Azure Activity Log Alert rule. */
+/**
+ * An Azure Activity Log Alert rule.
+ */
 @Fluent
-public final class AlertRuleProperties {
+public final class AlertRuleProperties implements JsonSerializable<AlertRuleProperties> {
     /*
      * A list of resource IDs that will be used as prefixes. The alert will only apply to Activity Log events with
      * resource IDs that fall under one of these prefixes. This list must include at least one item.
      */
-    @JsonProperty(value = "scopes", required = true)
     private List<String> scopes;
 
     /*
      * The condition that will cause this alert to activate.
      */
-    @JsonProperty(value = "condition", required = true)
     private ActivityLogAlertAllOfCondition condition;
 
     /*
      * The actions that will activate when the condition is met.
      */
-    @JsonProperty(value = "actions", required = true)
     private ActionList actions;
 
     /*
      * Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert rule is not enabled, then
      * none of its actions will be activated.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * A description of this Activity Log Alert rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of AlertRuleProperties class. */
+    /**
+     * Creates an instance of AlertRuleProperties class.
+     */
     public AlertRuleProperties() {
     }
 
@@ -54,7 +57,7 @@ public final class AlertRuleProperties {
      * Get the scopes property: A list of resource IDs that will be used as prefixes. The alert will only apply to
      * Activity Log events with resource IDs that fall under one of these prefixes. This list must include at least one
      * item.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -65,7 +68,7 @@ public final class AlertRuleProperties {
      * Set the scopes property: A list of resource IDs that will be used as prefixes. The alert will only apply to
      * Activity Log events with resource IDs that fall under one of these prefixes. This list must include at least one
      * item.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the AlertRuleProperties object itself.
      */
@@ -76,7 +79,7 @@ public final class AlertRuleProperties {
 
     /**
      * Get the condition property: The condition that will cause this alert to activate.
-     *
+     * 
      * @return the condition value.
      */
     public ActivityLogAlertAllOfCondition condition() {
@@ -85,7 +88,7 @@ public final class AlertRuleProperties {
 
     /**
      * Set the condition property: The condition that will cause this alert to activate.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the AlertRuleProperties object itself.
      */
@@ -96,7 +99,7 @@ public final class AlertRuleProperties {
 
     /**
      * Get the actions property: The actions that will activate when the condition is met.
-     *
+     * 
      * @return the actions value.
      */
     public ActionList actions() {
@@ -105,7 +108,7 @@ public final class AlertRuleProperties {
 
     /**
      * Set the actions property: The actions that will activate when the condition is met.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the AlertRuleProperties object itself.
      */
@@ -117,7 +120,7 @@ public final class AlertRuleProperties {
     /**
      * Get the enabled property: Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert
      * rule is not enabled, then none of its actions will be activated.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -127,7 +130,7 @@ public final class AlertRuleProperties {
     /**
      * Set the enabled property: Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert
      * rule is not enabled, then none of its actions will be activated.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AlertRuleProperties object itself.
      */
@@ -138,7 +141,7 @@ public final class AlertRuleProperties {
 
     /**
      * Get the description property: A description of this Activity Log Alert rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -147,7 +150,7 @@ public final class AlertRuleProperties {
 
     /**
      * Set the description property: A description of this Activity Log Alert rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the AlertRuleProperties object itself.
      */
@@ -158,30 +161,77 @@ public final class AlertRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scopes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property scopes in model AlertRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property scopes in model AlertRuleProperties"));
         }
         if (condition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property condition in model AlertRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property condition in model AlertRuleProperties"));
         } else {
             condition().validate();
         }
         if (actions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property actions in model AlertRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property actions in model AlertRuleProperties"));
         } else {
             actions().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AlertRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("condition", this.condition);
+        jsonWriter.writeJsonField("actions", this.actions);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertRuleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AlertRuleProperties.
+     */
+    public static AlertRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertRuleProperties deserializedAlertRuleProperties = new AlertRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scopes".equals(fieldName)) {
+                    List<String> scopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAlertRuleProperties.scopes = scopes;
+                } else if ("condition".equals(fieldName)) {
+                    deserializedAlertRuleProperties.condition = ActivityLogAlertAllOfCondition.fromJson(reader);
+                } else if ("actions".equals(fieldName)) {
+                    deserializedAlertRuleProperties.actions = ActionList.fromJson(reader);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedAlertRuleProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("description".equals(fieldName)) {
+                    deserializedAlertRuleProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertRuleProperties;
+        });
+    }
 }

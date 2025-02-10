@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.AlertInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection of alerts. */
+/**
+ * Collection of alerts.
+ */
 @Fluent
-public final class AlertCollection {
+public final class AlertCollection implements JsonSerializable<AlertCollection> {
     /*
      * The list of alerts.
      */
-    @JsonProperty(value = "value")
     private List<AlertInner> value;
 
     /*
      * The value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AlertCollection class. */
+    /**
+     * Creates an instance of AlertCollection class.
+     */
     public AlertCollection() {
     }
 
     /**
      * Get the value property: The list of alerts.
-     *
+     * 
      * @return the value value.
      */
     public List<AlertInner> value() {
@@ -39,7 +45,7 @@ public final class AlertCollection {
 
     /**
      * Set the value property: The list of alerts.
-     *
+     * 
      * @param value the value value to set.
      * @return the AlertCollection object itself.
      */
@@ -50,7 +56,7 @@ public final class AlertCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class AlertCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AlertCollection object itself.
      */
@@ -70,12 +76,52 @@ public final class AlertCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertCollection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertCollection.
+     */
+    public static AlertCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertCollection deserializedAlertCollection = new AlertCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AlertInner> value = reader.readArray(reader1 -> AlertInner.fromJson(reader1));
+                    deserializedAlertCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAlertCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertCollection;
+        });
     }
 }

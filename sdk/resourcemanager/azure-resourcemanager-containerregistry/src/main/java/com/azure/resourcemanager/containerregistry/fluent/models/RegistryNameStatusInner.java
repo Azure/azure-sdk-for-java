@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The result of a request to check the availability of a container registry name. */
+/**
+ * The result of a request to check the availability of a container registry name.
+ */
 @Fluent
-public final class RegistryNameStatusInner {
+public final class RegistryNameStatusInner implements JsonSerializable<RegistryNameStatusInner> {
     /*
      * The value that indicates whether the name is available.
      */
-    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /*
      * If any, the reason that the name is not available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * If any, the error message that provides more detail for the reason that the name is not available.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of RegistryNameStatusInner class. */
+    /**
+     * Creates an instance of RegistryNameStatusInner class.
+     */
     public RegistryNameStatusInner() {
     }
 
     /**
      * Get the nameAvailable property: The value that indicates whether the name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -43,7 +48,7 @@ public final class RegistryNameStatusInner {
 
     /**
      * Set the nameAvailable property: The value that indicates whether the name is available.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the RegistryNameStatusInner object itself.
      */
@@ -54,7 +59,7 @@ public final class RegistryNameStatusInner {
 
     /**
      * Get the reason property: If any, the reason that the name is not available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -63,7 +68,7 @@ public final class RegistryNameStatusInner {
 
     /**
      * Set the reason property: If any, the reason that the name is not available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the RegistryNameStatusInner object itself.
      */
@@ -75,7 +80,7 @@ public final class RegistryNameStatusInner {
     /**
      * Get the message property: If any, the error message that provides more detail for the reason that the name is not
      * available.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -85,7 +90,7 @@ public final class RegistryNameStatusInner {
     /**
      * Set the message property: If any, the error message that provides more detail for the reason that the name is not
      * available.
-     *
+     * 
      * @param message the message value to set.
      * @return the RegistryNameStatusInner object itself.
      */
@@ -96,9 +101,51 @@ public final class RegistryNameStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryNameStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryNameStatusInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryNameStatusInner.
+     */
+    public static RegistryNameStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryNameStatusInner deserializedRegistryNameStatusInner = new RegistryNameStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedRegistryNameStatusInner.nameAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedRegistryNameStatusInner.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedRegistryNameStatusInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryNameStatusInner;
+        });
     }
 }

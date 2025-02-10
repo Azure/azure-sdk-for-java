@@ -6,81 +6,79 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Cosmos DB SQL container resource object.
  */
 @Fluent
-public class SqlContainerResource {
+public class SqlContainerResource implements JsonSerializable<SqlContainerResource> {
     /*
      * Name of the Cosmos DB SQL container
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
-     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within
-     * the container
+     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the
+     * container
      */
-    @JsonProperty(value = "indexingPolicy")
     private IndexingPolicy indexingPolicy;
 
     /*
      * The configuration of the partition key to be used for partitioning data into multiple partitions
      */
-    @JsonProperty(value = "partitionKey")
     private ContainerPartitionKey partitionKey;
 
     /*
      * Default time to live
      */
-    @JsonProperty(value = "defaultTtl")
     private Integer defaultTtl;
 
     /*
      * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the
      * Azure Cosmos DB service.
      */
-    @JsonProperty(value = "uniqueKeyPolicy")
     private UniqueKeyPolicy uniqueKeyPolicy;
 
     /*
      * The conflict resolution policy for the container.
      */
-    @JsonProperty(value = "conflictResolutionPolicy")
     private ConflictResolutionPolicy conflictResolutionPolicy;
 
     /*
      * The client encryption policy for the container.
      */
-    @JsonProperty(value = "clientEncryptionPolicy")
     private ClientEncryptionPolicy clientEncryptionPolicy;
 
     /*
      * Analytical TTL.
      */
-    @JsonProperty(value = "analyticalStorageTtl")
     private Long analyticalStorageTtl;
 
     /*
      * Parameters to indicate the information about the restore
      */
-    @JsonProperty(value = "restoreParameters")
     private ResourceRestoreParameters restoreParameters;
 
     /*
      * Enum to indicate the mode of resource creation.
      */
-    @JsonProperty(value = "createMode")
     private CreateMode createMode;
 
     /*
      * List of computed properties
      */
-    @JsonProperty(value = "computedProperties")
     private List<ComputedProperty> computedProperties;
+
+    /*
+     * The vector embedding policy for the container.
+     */
+    private VectorEmbeddingPolicy vectorEmbeddingPolicy;
 
     /**
      * Creates an instance of SqlContainerResource class.
@@ -315,14 +313,34 @@ public class SqlContainerResource {
     }
 
     /**
+     * Get the vectorEmbeddingPolicy property: The vector embedding policy for the container.
+     * 
+     * @return the vectorEmbeddingPolicy value.
+     */
+    public VectorEmbeddingPolicy vectorEmbeddingPolicy() {
+        return this.vectorEmbeddingPolicy;
+    }
+
+    /**
+     * Set the vectorEmbeddingPolicy property: The vector embedding policy for the container.
+     * 
+     * @param vectorEmbeddingPolicy the vectorEmbeddingPolicy value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withVectorEmbeddingPolicy(VectorEmbeddingPolicy vectorEmbeddingPolicy) {
+        this.vectorEmbeddingPolicy = vectorEmbeddingPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
         }
         if (indexingPolicy() != null) {
             indexingPolicy().validate();
@@ -345,7 +363,84 @@ public class SqlContainerResource {
         if (computedProperties() != null) {
             computedProperties().forEach(e -> e.validate());
         }
+        if (vectorEmbeddingPolicy() != null) {
+            vectorEmbeddingPolicy().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlContainerResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("indexingPolicy", this.indexingPolicy);
+        jsonWriter.writeJsonField("partitionKey", this.partitionKey);
+        jsonWriter.writeNumberField("defaultTtl", this.defaultTtl);
+        jsonWriter.writeJsonField("uniqueKeyPolicy", this.uniqueKeyPolicy);
+        jsonWriter.writeJsonField("conflictResolutionPolicy", this.conflictResolutionPolicy);
+        jsonWriter.writeJsonField("clientEncryptionPolicy", this.clientEncryptionPolicy);
+        jsonWriter.writeNumberField("analyticalStorageTtl", this.analyticalStorageTtl);
+        jsonWriter.writeJsonField("restoreParameters", this.restoreParameters);
+        jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        jsonWriter.writeArrayField("computedProperties", this.computedProperties,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("vectorEmbeddingPolicy", this.vectorEmbeddingPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlContainerResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlContainerResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlContainerResource.
+     */
+    public static SqlContainerResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlContainerResource deserializedSqlContainerResource = new SqlContainerResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlContainerResource.id = reader.getString();
+                } else if ("indexingPolicy".equals(fieldName)) {
+                    deserializedSqlContainerResource.indexingPolicy = IndexingPolicy.fromJson(reader);
+                } else if ("partitionKey".equals(fieldName)) {
+                    deserializedSqlContainerResource.partitionKey = ContainerPartitionKey.fromJson(reader);
+                } else if ("defaultTtl".equals(fieldName)) {
+                    deserializedSqlContainerResource.defaultTtl = reader.getNullable(JsonReader::getInt);
+                } else if ("uniqueKeyPolicy".equals(fieldName)) {
+                    deserializedSqlContainerResource.uniqueKeyPolicy = UniqueKeyPolicy.fromJson(reader);
+                } else if ("conflictResolutionPolicy".equals(fieldName)) {
+                    deserializedSqlContainerResource.conflictResolutionPolicy
+                        = ConflictResolutionPolicy.fromJson(reader);
+                } else if ("clientEncryptionPolicy".equals(fieldName)) {
+                    deserializedSqlContainerResource.clientEncryptionPolicy = ClientEncryptionPolicy.fromJson(reader);
+                } else if ("analyticalStorageTtl".equals(fieldName)) {
+                    deserializedSqlContainerResource.analyticalStorageTtl = reader.getNullable(JsonReader::getLong);
+                } else if ("restoreParameters".equals(fieldName)) {
+                    deserializedSqlContainerResource.restoreParameters = ResourceRestoreParameters.fromJson(reader);
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedSqlContainerResource.createMode = CreateMode.fromString(reader.getString());
+                } else if ("computedProperties".equals(fieldName)) {
+                    List<ComputedProperty> computedProperties
+                        = reader.readArray(reader1 -> ComputedProperty.fromJson(reader1));
+                    deserializedSqlContainerResource.computedProperties = computedProperties;
+                } else if ("vectorEmbeddingPolicy".equals(fieldName)) {
+                    deserializedSqlContainerResource.vectorEmbeddingPolicy = VectorEmbeddingPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlContainerResource;
+        });
+    }
 }

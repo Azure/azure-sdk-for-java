@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of Recovery Point. */
+/**
+ * Properties of Recovery Point.
+ */
 @Fluent
-public final class RecoveryPointProperties {
+public final class RecoveryPointProperties implements JsonSerializable<RecoveryPointProperties> {
     /*
      * Expiry time of Recovery Point in UTC.
      */
-    @JsonProperty(value = "expiryTime")
     private String expiryTime;
 
     /*
      * Rule name tagged on Recovery Point that governs life cycle
      */
-    @JsonProperty(value = "ruleName")
     private String ruleName;
 
     /*
      * Bool to indicate whether RP is in soft delete state or not
      */
-    @JsonProperty(value = "isSoftDeleted")
     private Boolean isSoftDeleted;
 
-    /** Creates an instance of RecoveryPointProperties class. */
+    /**
+     * Creates an instance of RecoveryPointProperties class.
+     */
     public RecoveryPointProperties() {
     }
 
     /**
      * Get the expiryTime property: Expiry time of Recovery Point in UTC.
-     *
+     * 
      * @return the expiryTime value.
      */
     public String expiryTime() {
@@ -43,7 +48,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Set the expiryTime property: Expiry time of Recovery Point in UTC.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the RecoveryPointProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Get the ruleName property: Rule name tagged on Recovery Point that governs life cycle.
-     *
+     * 
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -63,7 +68,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Set the ruleName property: Rule name tagged on Recovery Point that governs life cycle.
-     *
+     * 
      * @param ruleName the ruleName value to set.
      * @return the RecoveryPointProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Get the isSoftDeleted property: Bool to indicate whether RP is in soft delete state or not.
-     *
+     * 
      * @return the isSoftDeleted value.
      */
     public Boolean isSoftDeleted() {
@@ -83,7 +88,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Set the isSoftDeleted property: Bool to indicate whether RP is in soft delete state or not.
-     *
+     * 
      * @param isSoftDeleted the isSoftDeleted value to set.
      * @return the RecoveryPointProperties object itself.
      */
@@ -94,9 +99,51 @@ public final class RecoveryPointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("expiryTime", this.expiryTime);
+        jsonWriter.writeStringField("ruleName", this.ruleName);
+        jsonWriter.writeBooleanField("isSoftDeleted", this.isSoftDeleted);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPointProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPointProperties.
+     */
+    public static RecoveryPointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPointProperties deserializedRecoveryPointProperties = new RecoveryPointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expiryTime".equals(fieldName)) {
+                    deserializedRecoveryPointProperties.expiryTime = reader.getString();
+                } else if ("ruleName".equals(fieldName)) {
+                    deserializedRecoveryPointProperties.ruleName = reader.getString();
+                } else if ("isSoftDeleted".equals(fieldName)) {
+                    deserializedRecoveryPointProperties.isSoftDeleted = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPointProperties;
+        });
     }
 }

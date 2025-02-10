@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner;
 
-/** An instance of this class provides access to all the operations defined in ApplyUpdatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplyUpdatesClient.
+ */
 public interface ApplyUpdatesClient {
     /**
      * Track Updates to resource with parent
-     *
-     * <p>Track maintenance updates to resource with parent.
-     *
+     * 
+     * Track maintenance updates to resource with parent.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -32,21 +34,15 @@ public interface ApplyUpdatesClient {
      * @return apply Update request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplyUpdateInner> getParentWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
-        String applyUpdateName,
-        Context context);
+    Response<ApplyUpdateInner> getParentWithResponse(String resourceGroupName, String providerName,
+        String resourceParentType, String resourceParentName, String resourceType, String resourceName,
+        String applyUpdateName, Context context);
 
     /**
      * Track Updates to resource with parent
-     *
-     * <p>Track maintenance updates to resource with parent.
-     *
+     * 
+     * Track maintenance updates to resource with parent.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -60,20 +56,14 @@ public interface ApplyUpdatesClient {
      * @return apply Update request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplyUpdateInner getParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
-        String applyUpdateName);
+    ApplyUpdateInner getParent(String resourceGroupName, String providerName, String resourceParentType,
+        String resourceParentName, String resourceType, String resourceName, String applyUpdateName);
 
     /**
      * Track Updates to resource
-     *
-     * <p>Track maintenance updates to resource.
-     *
+     * 
+     * Track maintenance updates to resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
@@ -86,19 +76,14 @@ public interface ApplyUpdatesClient {
      * @return apply Update request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplyUpdateInner> getWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String applyUpdateName,
-        Context context);
+    Response<ApplyUpdateInner> getWithResponse(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String applyUpdateName, Context context);
 
     /**
      * Track Updates to resource
-     *
-     * <p>Track maintenance updates to resource.
-     *
+     * 
+     * Track maintenance updates to resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
@@ -110,18 +95,56 @@ public interface ApplyUpdatesClient {
      * @return apply Update request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplyUpdateInner get(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
+    ApplyUpdateInner get(String resourceGroupName, String providerName, String resourceType, String resourceName,
         String applyUpdateName);
 
     /**
+     * Apply Updates to resource
+     * 
+     * Apply maintenance updates to resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param applyUpdateName ApplyUpdate name.
+     * @param applyUpdate The ApplyUpdate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return apply Update request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ApplyUpdateInner> createOrUpdateOrCancelWithResponse(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String applyUpdateName, ApplyUpdateInner applyUpdate,
+        Context context);
+
+    /**
+     * Apply Updates to resource
+     * 
+     * Apply maintenance updates to resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param applyUpdateName ApplyUpdate name.
+     * @param applyUpdate The ApplyUpdate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return apply Update request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApplyUpdateInner createOrUpdateOrCancel(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String applyUpdateName, ApplyUpdateInner applyUpdate);
+
+    /**
      * Apply Updates to resource with parent
-     *
-     * <p>Apply maintenance updates to resource with parent.
-     *
+     * 
+     * Apply maintenance updates to resource with parent.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -135,20 +158,15 @@ public interface ApplyUpdatesClient {
      * @return apply Update request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplyUpdateInner> createOrUpdateParentWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
+    Response<ApplyUpdateInner> createOrUpdateParentWithResponse(String resourceGroupName, String providerName,
+        String resourceParentType, String resourceParentName, String resourceType, String resourceName,
         Context context);
 
     /**
      * Apply Updates to resource with parent
-     *
-     * <p>Apply maintenance updates to resource with parent.
-     *
+     * 
+     * Apply maintenance updates to resource with parent.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -161,54 +179,49 @@ public interface ApplyUpdatesClient {
      * @return apply Update request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplyUpdateInner createOrUpdateParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
+    ApplyUpdateInner createOrUpdateParent(String resourceGroupName, String providerName, String resourceParentType,
+        String resourceParentName, String resourceType, String resourceName);
+
+    /**
+     * Apply Updates to resource
+     * 
+     * Apply maintenance updates to resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return apply Update request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ApplyUpdateInner> createOrUpdateWithResponse(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, Context context);
+
+    /**
+     * Apply Updates to resource
+     * 
+     * Apply maintenance updates to resource.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return apply Update request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApplyUpdateInner createOrUpdate(String resourceGroupName, String providerName, String resourceType,
         String resourceName);
 
     /**
-     * Apply Updates to resource
-     *
-     * <p>Apply maintenance updates to resource.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplyUpdateInner> createOrUpdateWithResponse(
-        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context);
-
-    /**
-     * Apply Updates to resource
-     *
-     * <p>Apply maintenance updates to resource.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return apply Update request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplyUpdateInner createOrUpdate(
-        String resourceGroupName, String providerName, String resourceType, String resourceName);
-
-    /**
      * Get Configuration records within a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
@@ -218,7 +231,7 @@ public interface ApplyUpdatesClient {
 
     /**
      * Get Configuration records within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

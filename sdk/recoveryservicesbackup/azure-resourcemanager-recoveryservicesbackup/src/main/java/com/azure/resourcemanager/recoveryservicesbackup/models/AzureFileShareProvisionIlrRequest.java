@@ -5,34 +5,52 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Update snapshot Uri with the correct friendly Name of the source Azure file share. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureFileShareProvisionILRRequest")
+/**
+ * Update snapshot Uri with the correct friendly Name of the source Azure file share.
+ */
 @Fluent
 public final class AzureFileShareProvisionIlrRequest extends IlrRequest {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "AzureFileShareProvisionILRRequest";
+
+    /*
      * Recovery point ID.
      */
-    @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
     /*
      * Source Storage account ARM Id
      */
-    @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
-    /** Creates an instance of AzureFileShareProvisionIlrRequest class. */
+    /**
+     * Creates an instance of AzureFileShareProvisionIlrRequest class.
+     */
     public AzureFileShareProvisionIlrRequest() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the recoveryPointId property: Recovery point ID.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -41,7 +59,7 @@ public final class AzureFileShareProvisionIlrRequest extends IlrRequest {
 
     /**
      * Set the recoveryPointId property: Recovery point ID.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the AzureFileShareProvisionIlrRequest object itself.
      */
@@ -52,7 +70,7 @@ public final class AzureFileShareProvisionIlrRequest extends IlrRequest {
 
     /**
      * Get the sourceResourceId property: Source Storage account ARM Id.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -61,7 +79,7 @@ public final class AzureFileShareProvisionIlrRequest extends IlrRequest {
 
     /**
      * Set the sourceResourceId property: Source Storage account ARM Id.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the AzureFileShareProvisionIlrRequest object itself.
      */
@@ -72,11 +90,53 @@ public final class AzureFileShareProvisionIlrRequest extends IlrRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileShareProvisionIlrRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileShareProvisionIlrRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileShareProvisionIlrRequest.
+     */
+    public static AzureFileShareProvisionIlrRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileShareProvisionIlrRequest deserializedAzureFileShareProvisionIlrRequest
+                = new AzureFileShareProvisionIlrRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedAzureFileShareProvisionIlrRequest.objectType = reader.getString();
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedAzureFileShareProvisionIlrRequest.recoveryPointId = reader.getString();
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureFileShareProvisionIlrRequest.sourceResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileShareProvisionIlrRequest;
+        });
     }
 }

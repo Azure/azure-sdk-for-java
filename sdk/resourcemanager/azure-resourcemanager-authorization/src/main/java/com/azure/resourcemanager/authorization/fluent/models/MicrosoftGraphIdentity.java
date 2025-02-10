@@ -5,36 +5,39 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** identity. */
+/**
+ * identity.
+ */
 @Fluent
-public final class MicrosoftGraphIdentity {
+public final class MicrosoftGraphIdentity implements JsonSerializable<MicrosoftGraphIdentity> {
     /*
      * The identity's display name. Note that this may not always be available or up to date. For example, if a user
      * changes their display name, the API may show the new value in a future response, but the items associated with
      * the user won't show up as having changed when using delta.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Unique identifier for the identity.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * identity
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphIdentity class. */
+    /**
+     * Creates an instance of MicrosoftGraphIdentity class.
+     */
     public MicrosoftGraphIdentity() {
     }
 
@@ -42,7 +45,7 @@ public final class MicrosoftGraphIdentity {
      * Get the displayName property: The identity's display name. Note that this may not always be available or up to
      * date. For example, if a user changes their display name, the API may show the new value in a future response, but
      * the items associated with the user won't show up as having changed when using delta.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -53,7 +56,7 @@ public final class MicrosoftGraphIdentity {
      * Set the displayName property: The identity's display name. Note that this may not always be available or up to
      * date. For example, if a user changes their display name, the API may show the new value in a future response, but
      * the items associated with the user won't show up as having changed when using delta.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphIdentity object itself.
      */
@@ -64,7 +67,7 @@ public final class MicrosoftGraphIdentity {
 
     /**
      * Get the id property: Unique identifier for the identity.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -73,7 +76,7 @@ public final class MicrosoftGraphIdentity {
 
     /**
      * Set the id property: Unique identifier for the identity.
-     *
+     * 
      * @param id the id value to set.
      * @return the MicrosoftGraphIdentity object itself.
      */
@@ -84,17 +87,16 @@ public final class MicrosoftGraphIdentity {
 
     /**
      * Get the additionalProperties property: identity.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: identity.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphIdentity object itself.
      */
@@ -103,19 +105,61 @@ public final class MicrosoftGraphIdentity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("id", this.id);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphIdentity.
+     */
+    public static MicrosoftGraphIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphIdentity deserializedMicrosoftGraphIdentity = new MicrosoftGraphIdentity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphIdentity.displayName = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphIdentity.id = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphIdentity.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphIdentity;
+        });
     }
 }

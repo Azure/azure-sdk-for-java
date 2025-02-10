@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** onlineMeetingRole. */
+/**
+ * onlineMeetingRole.
+ */
 public final class MicrosoftGraphOnlineMeetingRole extends ExpandableStringEnum<MicrosoftGraphOnlineMeetingRole> {
-    /** Static value attendee for MicrosoftGraphOnlineMeetingRole. */
+    /**
+     * Static value attendee for MicrosoftGraphOnlineMeetingRole.
+     */
     public static final MicrosoftGraphOnlineMeetingRole ATTENDEE = fromString("attendee");
 
-    /** Static value presenter for MicrosoftGraphOnlineMeetingRole. */
+    /**
+     * Static value presenter for MicrosoftGraphOnlineMeetingRole.
+     */
     public static final MicrosoftGraphOnlineMeetingRole PRESENTER = fromString("presenter");
 
-    /** Static value unknownFutureValue for MicrosoftGraphOnlineMeetingRole. */
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphOnlineMeetingRole.
+     */
     public static final MicrosoftGraphOnlineMeetingRole UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphOnlineMeetingRole value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class MicrosoftGraphOnlineMeetingRole extends ExpandableStringEnum<
 
     /**
      * Creates or finds a MicrosoftGraphOnlineMeetingRole from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphOnlineMeetingRole.
      */
-    @JsonCreator
     public static MicrosoftGraphOnlineMeetingRole fromString(String name) {
         return fromString(name, MicrosoftGraphOnlineMeetingRole.class);
     }
 
     /**
      * Gets known MicrosoftGraphOnlineMeetingRole values.
-     *
+     * 
      * @return known MicrosoftGraphOnlineMeetingRole values.
      */
     public static Collection<MicrosoftGraphOnlineMeetingRole> values() {

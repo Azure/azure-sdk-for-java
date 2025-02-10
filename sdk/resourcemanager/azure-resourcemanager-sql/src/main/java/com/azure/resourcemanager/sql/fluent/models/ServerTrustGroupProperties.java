@@ -6,33 +6,39 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ServerInfo;
 import com.azure.resourcemanager.sql.models.ServerTrustGroupPropertiesTrustScopesItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of a server trust group. */
+/**
+ * Properties of a server trust group.
+ */
 @Fluent
-public final class ServerTrustGroupProperties {
+public final class ServerTrustGroupProperties implements JsonSerializable<ServerTrustGroupProperties> {
     /*
      * Group members information for the server trust group.
      */
-    @JsonProperty(value = "groupMembers", required = true)
     private List<ServerInfo> groupMembers;
 
     /*
      * Trust scope of the server trust group.
      */
-    @JsonProperty(value = "trustScopes", required = true)
     private List<ServerTrustGroupPropertiesTrustScopesItem> trustScopes;
 
-    /** Creates an instance of ServerTrustGroupProperties class. */
+    /**
+     * Creates an instance of ServerTrustGroupProperties class.
+     */
     public ServerTrustGroupProperties() {
     }
 
     /**
      * Get the groupMembers property: Group members information for the server trust group.
-     *
+     * 
      * @return the groupMembers value.
      */
     public List<ServerInfo> groupMembers() {
@@ -41,7 +47,7 @@ public final class ServerTrustGroupProperties {
 
     /**
      * Set the groupMembers property: Group members information for the server trust group.
-     *
+     * 
      * @param groupMembers the groupMembers value to set.
      * @return the ServerTrustGroupProperties object itself.
      */
@@ -52,7 +58,7 @@ public final class ServerTrustGroupProperties {
 
     /**
      * Get the trustScopes property: Trust scope of the server trust group.
-     *
+     * 
      * @return the trustScopes value.
      */
     public List<ServerTrustGroupPropertiesTrustScopesItem> trustScopes() {
@@ -61,7 +67,7 @@ public final class ServerTrustGroupProperties {
 
     /**
      * Set the trustScopes property: Trust scope of the server trust group.
-     *
+     * 
      * @param trustScopes the trustScopes value to set.
      * @return the ServerTrustGroupProperties object itself.
      */
@@ -72,25 +78,67 @@ public final class ServerTrustGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (groupMembers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groupMembers in model ServerTrustGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property groupMembers in model ServerTrustGroupProperties"));
         } else {
             groupMembers().forEach(e -> e.validate());
         }
         if (trustScopes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property trustScopes in model ServerTrustGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trustScopes in model ServerTrustGroupProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServerTrustGroupProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("groupMembers", this.groupMembers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("trustScopes", this.trustScopes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerTrustGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerTrustGroupProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerTrustGroupProperties.
+     */
+    public static ServerTrustGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerTrustGroupProperties deserializedServerTrustGroupProperties = new ServerTrustGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupMembers".equals(fieldName)) {
+                    List<ServerInfo> groupMembers = reader.readArray(reader1 -> ServerInfo.fromJson(reader1));
+                    deserializedServerTrustGroupProperties.groupMembers = groupMembers;
+                } else if ("trustScopes".equals(fieldName)) {
+                    List<ServerTrustGroupPropertiesTrustScopesItem> trustScopes = reader.readArray(
+                        reader1 -> ServerTrustGroupPropertiesTrustScopesItem.fromString(reader1.getString()));
+                    deserializedServerTrustGroupProperties.trustScopes = trustScopes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerTrustGroupProperties;
+        });
+    }
 }

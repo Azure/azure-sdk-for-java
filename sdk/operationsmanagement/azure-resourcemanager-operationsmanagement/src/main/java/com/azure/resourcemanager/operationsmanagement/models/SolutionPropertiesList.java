@@ -7,18 +7,20 @@ package com.azure.resourcemanager.operationsmanagement.models;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.SolutionPropertiesListInner;
 import java.util.List;
 
-/** An immutable client-side representation of SolutionPropertiesList. */
+/**
+ * An immutable client-side representation of SolutionPropertiesList.
+ */
 public interface SolutionPropertiesList {
     /**
      * Gets the value property: List of solution properties within the subscription.
-     *
+     * 
      * @return the value value.
      */
     List<Solution> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.operationsmanagement.fluent.models.SolutionPropertiesListInner object.
-     *
+     * 
      * @return the inner object.
      */
     SolutionPropertiesListInner innerModel();

@@ -6,65 +6,36 @@ package com.azure.resourcemanager.operationsmanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.operationsmanagement.OperationsManagementManager;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementConfigurationPropertiesList;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ManagementConfigurationsListBySubscriptionWithResponseMockTests {
     @Test
     public void testListBySubscriptionWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"location\":\"b\",\"properties\":{\"applicationId\":\"e\",\"parentResourceType\":\"jzzvdud\",\"parameters\":[{},{},{}],\"provisioningState\":\"slfhotwm\",\"template\":\"dataynpwlbj\"},\"id\":\"pgacftadehxnlty\",\"name\":\"sop\",\"type\":\"usue\"},{\"location\":\"zwdejbavor\",\"properties\":{\"applicationId\":\"mohctb\",\"parentResourceType\":\"vudwx\",\"parameters\":[{},{}],\"provisioningState\":\"nvowgujju\",\"template\":\"datawdkcglhsl\"},\"id\":\"zj\",\"name\":\"yggdtjixh\",\"type\":\"kuofqweykhme\"},{\"location\":\"vfyexfw\",\"properties\":{\"applicationId\":\"cibvyvdcsitynn\",\"parentResourceType\":\"amdecte\",\"parameters\":[{}],\"provisioningState\":\"qsc\",\"template\":\"dataeypvhezrkg\"},\"id\":\"hcjrefovgmk\",\"name\":\"sle\",\"type\":\"yvxyqjp\"},{\"location\":\"attpngjcrcczsq\",\"properties\":{\"applicationId\":\"vmdajvnysou\",\"parentResourceType\":\"q\",\"parameters\":[{},{},{}],\"provisioningState\":\"noae\",\"template\":\"datapfhyhl\"},\"id\":\"rpmopjmc\",\"name\":\"atuokthfuiu\",\"type\":\"odsfcpkvxodpuozm\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"location\":\"yggdtjixh\",\"id\":\"uofqwe\",\"name\":\"kh\",\"type\":\"enevfyexfwhybci\"},{\"location\":\"yvdcsitynnaa\",\"id\":\"ectehf\",\"name\":\"qsc\",\"type\":\"eypvhezrkg\"},{\"location\":\"c\",\"id\":\"efovgmk\",\"name\":\"sle\",\"type\":\"yvxyqjp\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        OperationsManagementManager manager = OperationsManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ManagementConfigurationPropertiesList response = manager.managementConfigurations()
+            .listBySubscriptionWithResponse(com.azure.core.util.Context.NONE)
+            .getValue();
 
-        OperationsManagementManager manager =
-            OperationsManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ManagementConfigurationPropertiesList response =
-            manager
-                .managementConfigurations()
-                .listBySubscriptionWithResponse(com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("yggdtjixh", response.value().get(0).location());
+        Assertions.assertEquals("b", response.value().get(0).location());
+        Assertions.assertEquals("e", response.value().get(0).properties().applicationId());
+        Assertions.assertEquals("jzzvdud", response.value().get(0).properties().parentResourceType());
     }
 }

@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.models.CustomImageInner;
 import com.azure.resourcemanager.devtestlabs.models.CustomImageFragment;
 
-/** An instance of this class provides access to all the operations defined in CustomImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomImagesClient.
+ */
 public interface CustomImagesClient {
     /**
      * List custom images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface CustomImagesClient {
 
     /**
      * List custom images in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($select=vm)'.
@@ -45,18 +47,12 @@ public interface CustomImagesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CustomImageInner> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<CustomImageInner> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -68,12 +64,12 @@ public interface CustomImagesClient {
      * @return custom image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomImageInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<CustomImageInner> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get custom image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -87,7 +83,7 @@ public interface CustomImagesClient {
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -98,12 +94,12 @@ public interface CustomImagesClient {
      * @return the {@link SyncPoller} for polling of a custom image.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, CustomImageInner customImage);
+    SyncPoller<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdate(String resourceGroupName,
+        String labName, String name, CustomImageInner customImage);
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -115,12 +111,12 @@ public interface CustomImagesClient {
      * @return the {@link SyncPoller} for polling of a custom image.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, CustomImageInner customImage, Context context);
+    SyncPoller<PollResult<CustomImageInner>, CustomImageInner> beginCreateOrUpdate(String resourceGroupName,
+        String labName, String name, CustomImageInner customImage, Context context);
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -131,12 +127,12 @@ public interface CustomImagesClient {
      * @return a custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomImageInner createOrUpdate(
-        String resourceGroupName, String labName, String name, CustomImageInner customImage);
+    CustomImageInner createOrUpdate(String resourceGroupName, String labName, String name,
+        CustomImageInner customImage);
 
     /**
      * Create or replace an existing custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -148,12 +144,12 @@ public interface CustomImagesClient {
      * @return a custom image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomImageInner createOrUpdate(
-        String resourceGroupName, String labName, String name, CustomImageInner customImage, Context context);
+    CustomImageInner createOrUpdate(String resourceGroupName, String labName, String name, CustomImageInner customImage,
+        Context context);
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -167,7 +163,7 @@ public interface CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -178,12 +174,12 @@ public interface CustomImagesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name,
+        Context context);
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -196,7 +192,7 @@ public interface CustomImagesClient {
 
     /**
      * Delete custom image. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -210,7 +206,7 @@ public interface CustomImagesClient {
 
     /**
      * Allows modifying tags of custom images. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.
@@ -222,12 +218,12 @@ public interface CustomImagesClient {
      * @return a custom image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomImageInner> updateWithResponse(
-        String resourceGroupName, String labName, String name, CustomImageFragment customImage, Context context);
+    Response<CustomImageInner> updateWithResponse(String resourceGroupName, String labName, String name,
+        CustomImageFragment customImage, Context context);
 
     /**
      * Allows modifying tags of custom images. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the custom image.

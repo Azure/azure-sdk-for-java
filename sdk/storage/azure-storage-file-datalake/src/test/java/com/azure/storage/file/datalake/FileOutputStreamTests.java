@@ -64,8 +64,8 @@ public class FileOutputStreamTests extends DataLakeTestBase {
             outStream.write(randomBytes);
         }
 
-        try (InputStream inputStream = fc.openInputStream(new DataLakeFileInputStreamOptions().setBlockSize(blockSize))
-            .getInputStream()) {
+        try (InputStream inputStream
+            = fc.openInputStream(new DataLakeFileInputStreamOptions().setBlockSize(blockSize)).getInputStream()) {
             int b;
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream(length);
 
@@ -93,9 +93,9 @@ public class FileOutputStreamTests extends DataLakeTestBase {
     private static Stream<Arguments> uploadDownloadBlockSizeSupplier() {
         return Stream.of(
             // blockSize || numChunks | sizes
-            Arguments.of(null, 2, new int[]{4 * Constants.MB, 2 * Constants.MB}), // Default
-            Arguments.of(5 * Constants.MB, 2, new int[]{5 * Constants.MB, Constants.MB}), // Greater than default
-            Arguments.of(3 * Constants.MB, 2, new int[]{3 * Constants.MB, 3 * Constants.MB}) // Smaller than default
+            Arguments.of(null, 2, new int[] { 4 * Constants.MB, 2 * Constants.MB }), // Default
+            Arguments.of(5 * Constants.MB, 2, new int[] { 5 * Constants.MB, Constants.MB }), // Greater than default
+            Arguments.of(3 * Constants.MB, 2, new int[] { 3 * Constants.MB, 3 * Constants.MB }) // Smaller than default
         );
     }
 
@@ -119,7 +119,8 @@ public class FileOutputStreamTests extends DataLakeTestBase {
         assertEquals(etag, fc.getProperties().getETag());
 
         assertEquals(data.length, fc.getProperties().getFileSize());
-        TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(fc.openInputStream().getInputStream(), data.length));
+        TestUtils.assertArraysEqual(data,
+            convertInputStreamToByteArray(fc.openInputStream().getInputStream(), data.length));
     }
 
     @LiveOnly
@@ -163,6 +164,7 @@ public class FileOutputStreamTests extends DataLakeTestBase {
         }
 
         assertEquals(data.length, fc.getProperties().getFileSize());
-        TestUtils.assertArraysEqual(data, convertInputStreamToByteArray(fc.openInputStream().getInputStream(), data.length));
+        TestUtils.assertArraysEqual(data,
+            convertInputStreamToByteArray(fc.openInputStream().getInputStream(), data.length));
     }
 }

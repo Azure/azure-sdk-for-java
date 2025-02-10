@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"tvfcivfsn\",\"name\":\"ymuctqhjfbebrj\",\"type\":\"erfuwuttt\",\"properties\":{\"provisioningState\":\"Failed\",\"primary\":true,\"privateIPAddress\":\"rp\",\"privateIPAllocationMethod\":\"static\",\"subnet\":{\"id\":\"yva\"}}}")
-                .toObject(IpConfiguration.class);
+        IpConfiguration model = BinaryData.fromString(
+            "{\"id\":\"tvfcivfsn\",\"name\":\"ymuctqhjfbebrj\",\"type\":\"erfuwuttt\",\"properties\":{\"provisioningState\":\"Failed\",\"primary\":true,\"privateIPAddress\":\"rp\",\"privateIPAllocationMethod\":\"static\",\"subnet\":{\"id\":\"yva\"}}}")
+            .toObject(IpConfiguration.class);
         Assertions.assertEquals("ymuctqhjfbebrj", model.name());
         Assertions.assertEquals(true, model.primary());
         Assertions.assertEquals("rp", model.privateIpAddress());
@@ -27,13 +25,11 @@ public final class IpConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpConfiguration model =
-            new IpConfiguration()
-                .withName("ymuctqhjfbebrj")
-                .withPrimary(true)
-                .withPrivateIpAddress("rp")
-                .withPrivateIpAllocationMethod(PrivateIpAllocationMethod.STATIC)
-                .withSubnet(new ResourceId().withId("yva"));
+        IpConfiguration model = new IpConfiguration().withName("ymuctqhjfbebrj")
+            .withPrimary(true)
+            .withPrivateIpAddress("rp")
+            .withPrivateIpAllocationMethod(PrivateIpAllocationMethod.STATIC)
+            .withSubnet(new ResourceId().withId("yva"));
         model = BinaryData.fromObject(model).toObject(IpConfiguration.class);
         Assertions.assertEquals("ymuctqhjfbebrj", model.name());
         Assertions.assertEquals(true, model.primary());

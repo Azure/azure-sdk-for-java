@@ -6,30 +6,50 @@ package com.azure.resourcemanager.recoveryservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Vault extended information. */
+/**
+ * Vault extended information.
+ */
 @Fluent
 public final class VaultExtendedInfoResourceInner extends ProxyResource {
     /*
      * Vault extended information.
      */
-    @JsonProperty(value = "properties")
     private VaultExtendedInfo innerProperties;
 
     /*
      * Optional ETag.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
-    /** Creates an instance of VaultExtendedInfoResourceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VaultExtendedInfoResourceInner class.
+     */
     public VaultExtendedInfoResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Vault extended information.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VaultExtendedInfo innerProperties() {
@@ -38,7 +58,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -47,7 +67,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the VaultExtendedInfoResourceInner object itself.
      */
@@ -57,8 +77,38 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the integrityKey property: Integrity key.
-     *
+     * 
      * @return the integrityKey value.
      */
     public String integrityKey() {
@@ -67,7 +117,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Set the integrityKey property: Integrity key.
-     *
+     * 
      * @param integrityKey the integrityKey value to set.
      * @return the VaultExtendedInfoResourceInner object itself.
      */
@@ -81,7 +131,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Get the encryptionKey property: Encryption key.
-     *
+     * 
      * @return the encryptionKey value.
      */
     public String encryptionKey() {
@@ -90,7 +140,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Set the encryptionKey property: Encryption key.
-     *
+     * 
      * @param encryptionKey the encryptionKey value to set.
      * @return the VaultExtendedInfoResourceInner object itself.
      */
@@ -104,7 +154,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Get the encryptionKeyThumbprint property: Encryption key thumbprint.
-     *
+     * 
      * @return the encryptionKeyThumbprint value.
      */
     public String encryptionKeyThumbprint() {
@@ -113,7 +163,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Set the encryptionKeyThumbprint property: Encryption key thumbprint.
-     *
+     * 
      * @param encryptionKeyThumbprint the encryptionKeyThumbprint value to set.
      * @return the VaultExtendedInfoResourceInner object itself.
      */
@@ -127,7 +177,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Get the algorithm property: Algorithm for Vault ExtendedInfo.
-     *
+     * 
      * @return the algorithm value.
      */
     public String algorithm() {
@@ -136,7 +186,7 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Set the algorithm property: Algorithm for Vault ExtendedInfo.
-     *
+     * 
      * @param algorithm the algorithm value to set.
      * @return the VaultExtendedInfoResourceInner object itself.
      */
@@ -150,12 +200,59 @@ public final class VaultExtendedInfoResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultExtendedInfoResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultExtendedInfoResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VaultExtendedInfoResourceInner.
+     */
+    public static VaultExtendedInfoResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultExtendedInfoResourceInner deserializedVaultExtendedInfoResourceInner
+                = new VaultExtendedInfoResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVaultExtendedInfoResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVaultExtendedInfoResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVaultExtendedInfoResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVaultExtendedInfoResourceInner.innerProperties = VaultExtendedInfo.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVaultExtendedInfoResourceInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultExtendedInfoResourceInner;
+        });
     }
 }

@@ -21,35 +21,40 @@ public final class XmlDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         XmlDataset model = BinaryData.fromString(
-            "{\"type\":\"Xml\",\"typeProperties\":{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datahkun\",\"fileName\":\"datafjh\",\"\":{\"nwqsttewu\":\"datatpkvegeattbzkgtz\"}},\"encodingName\":\"dataysjeufjx\",\"nullValue\":\"datapditfnonpi\",\"compression\":{\"type\":\"dataxlvrhprrvbwonleq\",\"level\":\"datavtlrvbstph\",\"\":{\"u\":\"datauninttlnrjdszd\",\"vgp\":\"dataiciqppo\",\"uhwfwj\":\"datae\",\"tfnressfepgck\":\"dataoxuo\"}}},\"description\":\"jmgvsnvbtqdxf\",\"structure\":\"dataym\",\"schema\":\"datahjluqllbsupubdx\",\"linkedServiceName\":{\"referenceName\":\"kdlhzwhc\",\"parameters\":{\"zhrjqfyaytvsly\":\"databosjjfd\",\"uarlcjiwgsxfaioc\":\"datakcgn\"}},\"parameters\":{\"bpaefzqsymjw\":{\"type\":\"String\",\"defaultValue\":\"datajgnfgrzxbar\"},\"crtfodqhuauzm\":{\"type\":\"Array\",\"defaultValue\":\"datacytesmf\"}},\"annotations\":[\"datartrfzh\",\"dataezvhj\"],\"folder\":{\"name\":\"dyyrudma\"},\"\":{\"ssgfenffdxbvwfqj\":\"datatvdkxb\",\"xndmuvar\":\"datahivdrija\"}}")
+            "{\"type\":\"Xml\",\"typeProperties\":{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datalurb\",\"fileName\":\"dataygpnyhgdzuqsca\",\"\":{\"y\":\"datavoupr\",\"mgw\":\"dataqzssl\",\"hgyqvpbfj\":\"datanivrxpfduio\"}},\"encodingName\":\"dataqzucfzluczdquur\",\"nullValue\":\"datarmvhvzi\",\"compression\":{\"type\":\"databprnqujywzcqygg\",\"level\":\"datawsvh\",\"\":{\"jtobdrrp\":\"dataqiwy\",\"w\":\"datarehkunsbfjhh\"}}},\"description\":\"kvegeattbzkgtzq\",\"structure\":\"dataqsttewuvcysjeuf\",\"schema\":\"dataflpd\",\"linkedServiceName\":{\"referenceName\":\"tfnonpi\",\"parameters\":{\"lvtlrvbst\":\"datalvrhprrvbwonleq\",\"uninttlnrjdszd\":\"datahuy\",\"iciqppo\":\"datau\",\"e\":\"datavgp\"}},\"parameters\":{\"tfnressfepgck\":{\"type\":\"Array\",\"defaultValue\":\"datawjnoxuo\"},\"mjnhjlu\":{\"type\":\"Float\",\"defaultValue\":\"datamgvsnvbtqdxfmj\"}},\"annotations\":[\"databsupu\"],\"folder\":{\"name\":\"ck\"},\"\":{\"sjjfd\":\"datazwhcukvb\",\"kcgn\":\"datazhrjqfyaytvsly\"}}")
             .toObject(XmlDataset.class);
-        Assertions.assertEquals("jmgvsnvbtqdxf", model.description());
-        Assertions.assertEquals("kdlhzwhc", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("bpaefzqsymjw").type());
-        Assertions.assertEquals("dyyrudma", model.folder().name());
+        Assertions.assertEquals("kvegeattbzkgtzq", model.description());
+        Assertions.assertEquals("tfnonpi", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("tfnressfepgck").type());
+        Assertions.assertEquals("ck", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        XmlDataset model = new XmlDataset().withDescription("jmgvsnvbtqdxf").withStructure("dataym")
-            .withSchema("datahjluqllbsupubdx")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("kdlhzwhc")
-                .withParameters(mapOf("zhrjqfyaytvsly", "databosjjfd", "uarlcjiwgsxfaioc", "datakcgn")))
-            .withParameters(mapOf("bpaefzqsymjw",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datajgnfgrzxbar"),
-                "crtfodqhuauzm",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datacytesmf")))
-            .withAnnotations(Arrays.asList("datartrfzh", "dataezvhj"))
-            .withFolder(new DatasetFolder().withName("dyyrudma"))
-            .withLocation(new DatasetLocation().withFolderPath("datahkun").withFileName("datafjh")
+        XmlDataset model = new XmlDataset().withDescription("kvegeattbzkgtzq")
+            .withStructure("dataqsttewuvcysjeuf")
+            .withSchema("dataflpd")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tfnonpi")
+                .withParameters(mapOf("lvtlrvbst", "datalvrhprrvbwonleq", "uninttlnrjdszd", "datahuy", "iciqppo",
+                    "datau", "e", "datavgp")))
+            .withParameters(mapOf("tfnressfepgck",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datawjnoxuo"), "mjnhjlu",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datamgvsnvbtqdxfmj")))
+            .withAnnotations(Arrays.asList("databsupu"))
+            .withFolder(new DatasetFolder().withName("ck"))
+            .withLocation(new DatasetLocation().withFolderPath("datalurb")
+                .withFileName("dataygpnyhgdzuqsca")
                 .withAdditionalProperties(mapOf("type", "DatasetLocation")))
-            .withEncodingName("dataysjeufjx").withNullValue("datapditfnonpi").withCompression(new DatasetCompression()
-                .withType("dataxlvrhprrvbwonleq").withLevel("datavtlrvbstph").withAdditionalProperties(mapOf()));
+            .withEncodingName("dataqzucfzluczdquur")
+            .withNullValue("datarmvhvzi")
+            .withCompression(new DatasetCompression().withType("databprnqujywzcqygg")
+                .withLevel("datawsvh")
+                .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(XmlDataset.class);
-        Assertions.assertEquals("jmgvsnvbtqdxf", model.description());
-        Assertions.assertEquals("kdlhzwhc", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("bpaefzqsymjw").type());
-        Assertions.assertEquals("dyyrudma", model.folder().name());
+        Assertions.assertEquals("kvegeattbzkgtzq", model.description());
+        Assertions.assertEquals("tfnonpi", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("tfnressfepgck").type());
+        Assertions.assertEquals("ck", model.folder().name());
     }
 
     // Use "Map.of" if available

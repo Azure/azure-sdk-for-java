@@ -5,29 +5,39 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.fluent.models.BuildResultInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Object that includes an array of Build result resources and a possible link for next set. */
+/**
+ * Object that includes an array of Build result resources and a possible link for next set.
+ */
 @Fluent
-public final class BuildResultCollection {
+public final class BuildResultCollection implements JsonSerializable<BuildResultCollection> {
     /*
      * Collection of Build result resources
      */
-    @JsonProperty(value = "value")
     private List<BuildResultInner> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of BuildResultCollection class.
+     */
+    public BuildResultCollection() {
+    }
+
+    /**
      * Get the value property: Collection of Build result resources.
-     *
+     * 
      * @return the value value.
      */
     public List<BuildResultInner> value() {
@@ -36,7 +46,7 @@ public final class BuildResultCollection {
 
     /**
      * Set the value property: Collection of Build result resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the BuildResultCollection object itself.
      */
@@ -46,9 +56,9 @@ public final class BuildResultCollection {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +66,9 @@ public final class BuildResultCollection {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BuildResultCollection object itself.
      */
@@ -69,12 +79,52 @@ public final class BuildResultCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildResultCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildResultCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildResultCollection.
+     */
+    public static BuildResultCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildResultCollection deserializedBuildResultCollection = new BuildResultCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<BuildResultInner> value = reader.readArray(reader1 -> BuildResultInner.fromJson(reader1));
+                    deserializedBuildResultCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedBuildResultCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildResultCollection;
+        });
     }
 }

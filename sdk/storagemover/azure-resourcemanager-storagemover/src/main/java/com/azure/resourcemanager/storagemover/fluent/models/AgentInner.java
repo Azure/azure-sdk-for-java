@@ -8,34 +8,55 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.AgentPropertiesErrorDetails;
 import com.azure.resourcemanager.storagemover.models.AgentStatus;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.storagemover.models.UploadLimitSchedule;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The Agent resource. */
+/**
+ * The Agent resource.
+ */
 @Fluent
 public final class AgentInner extends ProxyResource {
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties", required = true)
     private AgentProperties innerProperties = new AgentProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AgentInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AgentInner class.
+     */
     public AgentInner() {
     }
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AgentProperties innerProperties() {
@@ -44,7 +65,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,8 +73,38 @@ public final class AgentInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the description property: A description for the Agent.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -62,7 +113,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Set the description property: A description for the Agent.
-     *
+     * 
      * @param description the description value to set.
      * @return the AgentInner object itself.
      */
@@ -76,7 +127,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Get the agentVersion property: The Agent version.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -85,7 +136,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Get the arcResourceId property: The fully qualified resource ID of the Hybrid Compute resource for the Agent.
-     *
+     * 
      * @return the arcResourceId value.
      */
     public String arcResourceId() {
@@ -94,7 +145,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Set the arcResourceId property: The fully qualified resource ID of the Hybrid Compute resource for the Agent.
-     *
+     * 
      * @param arcResourceId the arcResourceId value to set.
      * @return the AgentInner object itself.
      */
@@ -108,7 +159,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Get the arcVmUuid property: The VM UUID of the Hybrid Compute resource for the Agent.
-     *
+     * 
      * @return the arcVmUuid value.
      */
     public String arcVmUuid() {
@@ -117,7 +168,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Set the arcVmUuid property: The VM UUID of the Hybrid Compute resource for the Agent.
-     *
+     * 
      * @param arcVmUuid the arcVmUuid value to set.
      * @return the AgentInner object itself.
      */
@@ -131,7 +182,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Get the agentStatus property: The Agent status.
-     *
+     * 
      * @return the agentStatus value.
      */
     public AgentStatus agentStatus() {
@@ -140,7 +191,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Get the lastStatusUpdate property: The last updated time of the Agent status.
-     *
+     * 
      * @return the lastStatusUpdate value.
      */
     public OffsetDateTime lastStatusUpdate() {
@@ -149,7 +200,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Get the localIpAddress property: Local IP address reported by the Agent.
-     *
+     * 
      * @return the localIpAddress value.
      */
     public String localIpAddress() {
@@ -158,7 +209,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Get the memoryInMB property: Available memory reported by the Agent, in MB.
-     *
+     * 
      * @return the memoryInMB value.
      */
     public Long memoryInMB() {
@@ -167,7 +218,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Get the numberOfCores property: Available compute cores reported by the Agent.
-     *
+     * 
      * @return the numberOfCores value.
      */
     public Long numberOfCores() {
@@ -176,7 +227,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Get the uptimeInSeconds property: Uptime of the Agent in seconds.
-     *
+     * 
      * @return the uptimeInSeconds value.
      */
     public Long uptimeInSeconds() {
@@ -184,8 +235,46 @@ public final class AgentInner extends ProxyResource {
     }
 
     /**
+     * Get the timeZone property: The agent's local time zone represented in Windows format.
+     * 
+     * @return the timeZone value.
+     */
+    public String timeZone() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeZone();
+    }
+
+    /**
+     * Get the uploadLimitSchedule property: The WAN-link upload limit schedule that applies to any Job Run the agent
+     * executes. Data plane operations (migrating files) are affected. Control plane operations ensure seamless
+     * migration functionality and are not limited by this schedule. The schedule is interpreted with the agent's local
+     * time.
+     * 
+     * @return the uploadLimitSchedule value.
+     */
+    public UploadLimitSchedule uploadLimitSchedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().uploadLimitSchedule();
+    }
+
+    /**
+     * Set the uploadLimitSchedule property: The WAN-link upload limit schedule that applies to any Job Run the agent
+     * executes. Data plane operations (migrating files) are affected. Control plane operations ensure seamless
+     * migration functionality and are not limited by this schedule. The schedule is interpreted with the agent's local
+     * time.
+     * 
+     * @param uploadLimitSchedule the uploadLimitSchedule value to set.
+     * @return the AgentInner object itself.
+     */
+    public AgentInner withUploadLimitSchedule(UploadLimitSchedule uploadLimitSchedule) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgentProperties();
+        }
+        this.innerProperties().withUploadLimitSchedule(uploadLimitSchedule);
+        return this;
+    }
+
+    /**
      * Get the errorDetails property: The errorDetails property.
-     *
+     * 
      * @return the errorDetails value.
      */
     public AgentPropertiesErrorDetails errorDetails() {
@@ -194,7 +283,7 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of this resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -203,18 +292,62 @@ public final class AgentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model AgentInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model AgentInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AgentInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AgentInner.
+     */
+    public static AgentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentInner deserializedAgentInner = new AgentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAgentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAgentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAgentInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAgentInner.innerProperties = AgentProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAgentInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentInner;
+        });
+    }
 }

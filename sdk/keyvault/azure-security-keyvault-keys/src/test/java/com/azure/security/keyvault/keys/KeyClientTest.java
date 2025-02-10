@@ -7,6 +7,8 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -40,6 +42,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyClientTest extends KeyClientTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(KeyClientTest.class);
+
     protected KeyClient keyClient;
 
     @Override
@@ -52,10 +56,10 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion, String testTenantId) {
-        keyClient = getKeyClientBuilder(buildSyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId,
-            getEndpoint(), serviceVersion)
-            .buildClient();
+        keyClient = getKeyClientBuilder(
+            buildSyncAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
+            testTenantId, getEndpoint(), serviceVersion).buildClient();
     }
 
     /**
@@ -66,7 +70,15 @@ public class KeyClientTest extends KeyClientTestBase {
     public void createKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        createKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createKey(keyToCreate)));
+        createKeyRunner((keyToCreate) -> {
+            KeyVaultKey createdKey = keyClient.createKey(keyToCreate);
+
+            assertKeyEquals(keyToCreate, createdKey);
+
+            if (!isHsmEnabled) {
+                assertEquals("0", createdKey.getProperties().getHsmPlatform());
+            }
+        });
     }
 
     /**
@@ -117,9 +129,9 @@ public class KeyClientTest extends KeyClientTestBase {
     public void createKeyNullType(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        createKeyEmptyValueRunner((keyToCreate) ->
-            assertRestException(() -> keyClient.createKey(keyToCreate.getName(), keyToCreate.getKeyType()),
-                ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
+        createKeyEmptyValueRunner((keyToCreate) -> assertRestException(
+            () -> keyClient.createKey(keyToCreate.getName(), keyToCreate.getKeyType()), ResourceModifiedException.class,
+            HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
     /**
@@ -146,8 +158,8 @@ public class KeyClientTest extends KeyClientTestBase {
 
             assertKeyEquals(originalKeyOptions, createdKey);
 
-            KeyVaultKey updatedKey =
-                keyClient.updateKeyProperties(createdKey.getProperties().setExpiresOn(updatedKeyOptions.getExpiresOn()));
+            KeyVaultKey updatedKey = keyClient
+                .updateKeyProperties(createdKey.getProperties().setExpiresOn(updatedKeyOptions.getExpiresOn()));
 
             assertKeyEquals(updatedKeyOptions, updatedKey);
         });
@@ -166,8 +178,8 @@ public class KeyClientTest extends KeyClientTestBase {
 
             assertKeyEquals(createKeyOptions, createdKey);
 
-            KeyVaultKey updatedKey =
-                keyClient.updateKeyProperties(createdKey.getProperties().setExpiresOn(updateKeyOptions.getExpiresOn()));
+            KeyVaultKey updatedKey = keyClient
+                .updateKeyProperties(createdKey.getProperties().setExpiresOn(updateKeyOptions.getExpiresOn()));
 
             assertKeyEquals(updateKeyOptions, updatedKey);
         });
@@ -184,7 +196,13 @@ public class KeyClientTest extends KeyClientTestBase {
         getKeyRunner((keyToSetAndGet) -> {
             keyClient.createKey(keyToSetAndGet);
 
-            assertKeyEquals(keyToSetAndGet, keyClient.getKey(keyToSetAndGet.getName()));
+            KeyVaultKey retrievedKey = keyClient.getKey(keyToSetAndGet.getName());
+
+            assertKeyEquals(keyToSetAndGet, retrievedKey);
+
+            if (!isHsmEnabled) {
+                assertEquals("0", retrievedKey.getProperties().getHsmPlatform());
+            }
         });
     }
 
@@ -215,8 +233,8 @@ public class KeyClientTest extends KeyClientTestBase {
     public void getKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        assertRestException(() -> keyClient.getKey("non-existing"),
-            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> keyClient.getKey("non-existing"), ResourceNotFoundException.class,
+            HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -231,8 +249,8 @@ public class KeyClientTest extends KeyClientTestBase {
 
             assertKeyEquals(keyToDelete, keyClient.createKey(keyToDelete));
 
-            SyncPoller<DeletedKey, Void> deletedKeyPoller = setPlaybackSyncPollerPollInterval(
-                keyClient.beginDeleteKey(keyToDelete.getName()));
+            SyncPoller<DeletedKey, Void> deletedKeyPoller
+                = setPlaybackSyncPollerPollInterval(keyClient.beginDeleteKey(keyToDelete.getName()));
 
             DeletedKey deletedKey = deletedKeyPoller.waitForCompletion().getValue();
 
@@ -248,8 +266,8 @@ public class KeyClientTest extends KeyClientTestBase {
     public void deleteKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        assertRestException(() -> keyClient.beginDeleteKey("non-existing"),
-            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> keyClient.beginDeleteKey("non-existing"), ResourceNotFoundException.class,
+            HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -260,10 +278,9 @@ public class KeyClientTest extends KeyClientTestBase {
     public void getDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        assertRestException(() -> keyClient.getDeletedKey("non-existing"),
-            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> keyClient.getDeletedKey("non-existing"), ResourceNotFoundException.class,
+            HttpURLConnection.HTTP_NOT_FOUND);
     }
-
 
     /**
      * Tests that a deleted key can be recovered on a soft-delete enabled vault.
@@ -276,13 +293,13 @@ public class KeyClientTest extends KeyClientTestBase {
         recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
             assertKeyEquals(keyToDeleteAndRecover, keyClient.createKey(keyToDeleteAndRecover));
 
-            SyncPoller<DeletedKey, Void> poller = setPlaybackSyncPollerPollInterval(
-                keyClient.beginDeleteKey(keyToDeleteAndRecover.getName()));
+            SyncPoller<DeletedKey, Void> poller
+                = setPlaybackSyncPollerPollInterval(keyClient.beginDeleteKey(keyToDeleteAndRecover.getName()));
 
             assertNotNull(poller.waitForCompletion());
 
-            SyncPoller<KeyVaultKey, Void> recoverPoller = setPlaybackSyncPollerPollInterval(
-                keyClient.beginRecoverDeletedKey(keyToDeleteAndRecover.getName()));
+            SyncPoller<KeyVaultKey, Void> recoverPoller
+                = setPlaybackSyncPollerPollInterval(keyClient.beginRecoverDeletedKey(keyToDeleteAndRecover.getName()));
 
             KeyVaultKey recoveredKey = recoverPoller.waitForCompletion().getValue();
 
@@ -300,8 +317,8 @@ public class KeyClientTest extends KeyClientTestBase {
     public void recoverDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        assertRestException(() -> keyClient.beginRecoverDeletedKey("non-existing"),
-            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> keyClient.beginRecoverDeletedKey("non-existing"), ResourceNotFoundException.class,
+            HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -330,8 +347,8 @@ public class KeyClientTest extends KeyClientTestBase {
     public void backupKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        assertRestException(() -> keyClient.backupKey("non-existing"),
-            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertRestException(() -> keyClient.backupKey("non-existing"), ResourceNotFoundException.class,
+            HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -350,8 +367,8 @@ public class KeyClientTest extends KeyClientTestBase {
             assertNotNull(backupBytes);
             assertTrue(backupBytes.length > 0);
 
-            SyncPoller<DeletedKey, Void> poller = setPlaybackSyncPollerPollInterval(
-                keyClient.beginDeleteKey(keyToBackupAndRestore.getName()));
+            SyncPoller<DeletedKey, Void> poller
+                = setPlaybackSyncPollerPollInterval(keyClient.beginDeleteKey(keyToBackupAndRestore.getName()));
 
             poller.waitForCompletion();
 
@@ -377,8 +394,8 @@ public class KeyClientTest extends KeyClientTestBase {
 
         byte[] keyBackupBytes = "non-existing".getBytes();
 
-        assertRestException(() -> keyClient.restoreKeyBackup(keyBackupBytes),
-            ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
+        assertRestException(() -> keyClient.restoreKeyBackup(keyBackupBytes), ResourceModifiedException.class,
+            HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     /**
@@ -422,8 +439,8 @@ public class KeyClientTest extends KeyClientTestBase {
         getDeletedKeyRunner((keyToDeleteAndGet) -> {
             assertKeyEquals(keyToDeleteAndGet, keyClient.createKey(keyToDeleteAndGet));
 
-            SyncPoller<DeletedKey, Void> poller = setPlaybackSyncPollerPollInterval(
-                keyClient.beginDeleteKey(keyToDeleteAndGet.getName()));
+            SyncPoller<DeletedKey, Void> poller
+                = setPlaybackSyncPollerPollInterval(keyClient.beginDeleteKey(keyToDeleteAndGet.getName()));
 
             poller.waitForCompletion();
 
@@ -457,8 +474,8 @@ public class KeyClientTest extends KeyClientTestBase {
             }
 
             for (CreateKeyOptions key : keysToList.values()) {
-                SyncPoller<DeletedKey, Void> poller = setPlaybackSyncPollerPollInterval(
-                    keyClient.beginDeleteKey(key.getName()));
+                SyncPoller<DeletedKey, Void> poller
+                    = setPlaybackSyncPollerPollInterval(keyClient.beginDeleteKey(key.getName()));
 
                 poller.waitForCompletion();
             }
@@ -586,7 +603,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @Disabled("Disable after https://github.com/Azure/azure-sdk-for-java/issues/31510 is fixed.")
     //@DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient,
-                                                                KeyServiceVersion serviceVersion) {
+        KeyServiceVersion serviceVersion) {
         // Key Rotation is not yet enabled in Managed HSM.
         Assumptions.assumeTrue(!isHsmEnabled);
 
@@ -595,8 +612,7 @@ public class KeyClientTest extends KeyClientTestBase {
         updateGetKeyRotationPolicyWithMinimumPropertiesRunner((keyName, keyRotationPolicy) -> {
             keyClient.createRsaKey(new CreateRsaKeyOptions(keyName));
 
-            KeyRotationPolicy updatedKeyRotationPolicy =
-                keyClient.updateKeyRotationPolicy(keyName, keyRotationPolicy);
+            KeyRotationPolicy updatedKeyRotationPolicy = keyClient.updateKeyRotationPolicy(keyName, keyRotationPolicy);
             KeyRotationPolicy retrievedKeyRotationPolicy = keyClient.getKeyRotationPolicy(keyName);
 
             assertKeyVaultRotationPolicyEquals(updatedKeyRotationPolicy, retrievedKeyRotationPolicy);
@@ -618,8 +634,7 @@ public class KeyClientTest extends KeyClientTestBase {
         updateGetKeyRotationPolicyWithAllPropertiesRunner((keyName, keyRotationPolicy) -> {
             keyClient.createRsaKey(new CreateRsaKeyOptions(keyName));
 
-            KeyRotationPolicy updatedKeyRotationPolicy =
-                keyClient.updateKeyRotationPolicy(keyName, keyRotationPolicy);
+            KeyRotationPolicy updatedKeyRotationPolicy = keyClient.updateKeyRotationPolicy(keyName, keyRotationPolicy);
             KeyRotationPolicy retrievedKeyRotationPolicy = keyClient.getKeyRotationPolicy(keyName);
 
             assertKeyVaultRotationPolicyEquals(updatedKeyRotationPolicy, retrievedKeyRotationPolicy);
@@ -691,8 +706,8 @@ public class KeyClientTest extends KeyClientTestBase {
     public void getCryptographyClientWithKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        CryptographyClient cryptographyClient =
-            keyClient.getCryptographyClient("myKey", "6A385B124DEF4096AF1361A85B16C204");
+        CryptographyClient cryptographyClient
+            = keyClient.getCryptographyClient("myKey", "6A385B124DEF4096AF1361A85B16C204");
 
         assertNotNull(cryptographyClient);
     }
@@ -743,6 +758,6 @@ public class KeyClientTest extends KeyClientTestBase {
             }
         }
 
-        System.err.printf("Deleted Key %s was not purged \n", keyName);
+        LOGGER.log(LogLevel.VERBOSE, () -> "Deleted Key " + keyName + " was not purged");
     }
 }

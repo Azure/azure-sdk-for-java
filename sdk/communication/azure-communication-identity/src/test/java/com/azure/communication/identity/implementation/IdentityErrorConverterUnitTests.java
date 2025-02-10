@@ -9,13 +9,20 @@ import com.azure.communication.identity.implementation.models.CommunicationError
 import com.azure.communication.identity.models.IdentityError;
 import com.azure.communication.identity.models.IdentityErrorResponseException;
 import com.azure.core.http.HttpResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IdentityErrorConverterUnitTests {
 
@@ -24,7 +31,7 @@ public class IdentityErrorConverterUnitTests {
 
     @BeforeEach
     public void setUp() {
-        httpResponse = Mockito.mock(HttpResponse.class);
+        httpResponse = new MockHttpResponse(null, 0);
     }
 
     @AfterEach
@@ -39,7 +46,8 @@ public class IdentityErrorConverterUnitTests {
         communicationResponseException = setUpCommunicationResponseExceptionWithAllProperties();
 
         // Action
-        IdentityErrorResponseException identityResponseException = IdentityErrorConverter.translateException(communicationResponseException);
+        IdentityErrorResponseException identityResponseException
+            = IdentityErrorConverter.translateException(communicationResponseException);
 
         // Assert
         assertIdentityResponseExceptionMandates(identityResponseException);
@@ -54,7 +62,8 @@ public class IdentityErrorConverterUnitTests {
         communicationResponseException = setUpCommunicationResponseExceptionWithoutAllProperties();
 
         // Action
-        IdentityErrorResponseException identityResponseException = IdentityErrorConverter.translateException(communicationResponseException);
+        IdentityErrorResponseException identityResponseException
+            = IdentityErrorConverter.translateException(communicationResponseException);
 
         // Assert
         assertIdentityResponseExceptionMandates(identityResponseException);
@@ -69,7 +78,8 @@ public class IdentityErrorConverterUnitTests {
         communicationResponseException = new CommunicationErrorResponseException("Exception Message", httpResponse);
 
         // Action
-        IdentityErrorResponseException identityResponseException = IdentityErrorConverter.translateException(communicationResponseException);
+        IdentityErrorResponseException identityResponseException
+            = IdentityErrorConverter.translateException(communicationResponseException);
 
         // Assert
         assertIdentityResponseExceptionMandates(identityResponseException);
@@ -88,17 +98,19 @@ public class IdentityErrorConverterUnitTests {
     }
 
     private CommunicationErrorResponseException setUpCommunicationResponseExceptionWithoutAllProperties() {
-        CommunicationError communicationError = new CommunicationError().setCode("Error Code").setMessage("Error Message");
+        CommunicationError communicationError
+            = new CommunicationError().setCode("Error Code").setMessage("Error Message");
         CommunicationErrorResponse errorResponse = new CommunicationErrorResponse().setError(communicationError);
         return new CommunicationErrorResponseException("Exception Message", httpResponse, errorResponse);
     }
 
     private CommunicationErrorResponseException setUpCommunicationResponseExceptionWithAllProperties() {
-        String value = "{\"code\":\"Error Code\",\"message\":\"Error Message\",\"target\":\"Error Target\",\"details\":[{\"code\":\"New Error Code\",\"message\":\"New Error Message\"}]}";
+        String value
+            = "{\"code\":\"Error Code\",\"message\":\"Error Message\",\"target\":\"Error Target\",\"details\":[{\"code\":\"New Error Code\",\"message\":\"New Error Message\"}]}";
         CommunicationError communicationError;
-        try {
-            communicationError = new ObjectMapper().readValue(value, CommunicationError.class);
-        } catch (JsonProcessingException e) {
+        try (JsonReader jsonReader = JsonProviders.createReader(value)) {
+            communicationError = CommunicationError.fromJson(jsonReader);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         CommunicationErrorResponse errorResponse = new CommunicationErrorResponse().setError(communicationError);

@@ -6,43 +6,47 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Recovery plan action details. */
+/**
+ * Recovery plan action details.
+ */
 @Fluent
-public final class RecoveryPlanAction {
+public final class RecoveryPlanAction implements JsonSerializable<RecoveryPlanAction> {
     /*
      * The action name.
      */
-    @JsonProperty(value = "actionName", required = true)
     private String actionName;
 
     /*
      * The list of failover types.
      */
-    @JsonProperty(value = "failoverTypes", required = true)
     private List<ReplicationProtectedItemOperation> failoverTypes;
 
     /*
      * The list of failover directions.
      */
-    @JsonProperty(value = "failoverDirections", required = true)
     private List<PossibleOperationsDirections> failoverDirections;
 
     /*
      * The custom details.
      */
-    @JsonProperty(value = "customDetails", required = true)
     private RecoveryPlanActionDetails customDetails;
 
-    /** Creates an instance of RecoveryPlanAction class. */
+    /**
+     * Creates an instance of RecoveryPlanAction class.
+     */
     public RecoveryPlanAction() {
     }
 
     /**
      * Get the actionName property: The action name.
-     *
+     * 
      * @return the actionName value.
      */
     public String actionName() {
@@ -51,7 +55,7 @@ public final class RecoveryPlanAction {
 
     /**
      * Set the actionName property: The action name.
-     *
+     * 
      * @param actionName the actionName value to set.
      * @return the RecoveryPlanAction object itself.
      */
@@ -62,7 +66,7 @@ public final class RecoveryPlanAction {
 
     /**
      * Get the failoverTypes property: The list of failover types.
-     *
+     * 
      * @return the failoverTypes value.
      */
     public List<ReplicationProtectedItemOperation> failoverTypes() {
@@ -71,7 +75,7 @@ public final class RecoveryPlanAction {
 
     /**
      * Set the failoverTypes property: The list of failover types.
-     *
+     * 
      * @param failoverTypes the failoverTypes value to set.
      * @return the RecoveryPlanAction object itself.
      */
@@ -82,7 +86,7 @@ public final class RecoveryPlanAction {
 
     /**
      * Get the failoverDirections property: The list of failover directions.
-     *
+     * 
      * @return the failoverDirections value.
      */
     public List<PossibleOperationsDirections> failoverDirections() {
@@ -91,7 +95,7 @@ public final class RecoveryPlanAction {
 
     /**
      * Set the failoverDirections property: The list of failover directions.
-     *
+     * 
      * @param failoverDirections the failoverDirections value to set.
      * @return the RecoveryPlanAction object itself.
      */
@@ -102,7 +106,7 @@ public final class RecoveryPlanAction {
 
     /**
      * Get the customDetails property: The custom details.
-     *
+     * 
      * @return the customDetails value.
      */
     public RecoveryPlanActionDetails customDetails() {
@@ -111,7 +115,7 @@ public final class RecoveryPlanAction {
 
     /**
      * Set the customDetails property: The custom details.
-     *
+     * 
      * @param customDetails the customDetails value to set.
      * @return the RecoveryPlanAction object itself.
      */
@@ -122,36 +126,84 @@ public final class RecoveryPlanAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (actionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property actionName in model RecoveryPlanAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property actionName in model RecoveryPlanAction"));
         }
         if (failoverTypes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property failoverTypes in model RecoveryPlanAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property failoverTypes in model RecoveryPlanAction"));
         }
         if (failoverDirections() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property failoverDirections in model RecoveryPlanAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property failoverDirections in model RecoveryPlanAction"));
         }
         if (customDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customDetails in model RecoveryPlanAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customDetails in model RecoveryPlanAction"));
         } else {
             customDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPlanAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("actionName", this.actionName);
+        jsonWriter.writeArrayField("failoverTypes", this.failoverTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("failoverDirections", this.failoverDirections,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("customDetails", this.customDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryPlanAction.
+     */
+    public static RecoveryPlanAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanAction deserializedRecoveryPlanAction = new RecoveryPlanAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionName".equals(fieldName)) {
+                    deserializedRecoveryPlanAction.actionName = reader.getString();
+                } else if ("failoverTypes".equals(fieldName)) {
+                    List<ReplicationProtectedItemOperation> failoverTypes = reader
+                        .readArray(reader1 -> ReplicationProtectedItemOperation.fromString(reader1.getString()));
+                    deserializedRecoveryPlanAction.failoverTypes = failoverTypes;
+                } else if ("failoverDirections".equals(fieldName)) {
+                    List<PossibleOperationsDirections> failoverDirections
+                        = reader.readArray(reader1 -> PossibleOperationsDirections.fromString(reader1.getString()));
+                    deserializedRecoveryPlanAction.failoverDirections = failoverDirections;
+                } else if ("customDetails".equals(fieldName)) {
+                    deserializedRecoveryPlanAction.customDetails = RecoveryPlanActionDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanAction;
+        });
+    }
 }

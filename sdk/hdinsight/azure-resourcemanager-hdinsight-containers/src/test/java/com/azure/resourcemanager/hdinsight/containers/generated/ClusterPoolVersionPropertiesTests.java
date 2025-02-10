@@ -5,31 +5,28 @@
 package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterPoolVersionProperties;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolVersionProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class ClusterPoolVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolVersionProperties model =
-            BinaryData
-                .fromString("{\"clusterPoolVersion\":\"luhczbw\",\"aksVersion\":\"hairsbrgzdwms\",\"isPreview\":true}")
-                .toObject(ClusterPoolVersionProperties.class);
-        Assertions.assertEquals("luhczbw", model.clusterPoolVersion());
-        Assertions.assertEquals("hairsbrgzdwms", model.aksVersion());
+        ClusterPoolVersionProperties model = BinaryData
+            .fromString("{\"clusterPoolVersion\":\"khbejdznxc\",\"aksVersion\":\"srhnjivo\",\"isPreview\":true}")
+            .toObject(ClusterPoolVersionProperties.class);
+        Assertions.assertEquals("khbejdznxc", model.clusterPoolVersion());
+        Assertions.assertEquals("srhnjivo", model.aksVersion());
         Assertions.assertEquals(true, model.isPreview());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolVersionProperties model =
-            new ClusterPoolVersionProperties()
-                .withClusterPoolVersion("luhczbw")
-                .withAksVersion("hairsbrgzdwms")
-                .withIsPreview(true);
+        ClusterPoolVersionProperties model = new ClusterPoolVersionProperties().withClusterPoolVersion("khbejdznxc")
+            .withAksVersion("srhnjivo")
+            .withIsPreview(true);
         model = BinaryData.fromObject(model).toObject(ClusterPoolVersionProperties.class);
-        Assertions.assertEquals("luhczbw", model.clusterPoolVersion());
-        Assertions.assertEquals("hairsbrgzdwms", model.aksVersion());
+        Assertions.assertEquals("khbejdznxc", model.clusterPoolVersion());
+        Assertions.assertEquals("srhnjivo", model.aksVersion());
         Assertions.assertEquals(true, model.isPreview());
     }
 }

@@ -6,26 +6,32 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The repeating times at which this profile begins. This element is not used if the FixedDate element is used. */
+/**
+ * The repeating times at which this profile begins. This element is not used if the FixedDate element is used.
+ */
 @Fluent
-public final class Recurrence {
+public final class Recurrence implements JsonSerializable<Recurrence> {
     /*
      * the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning
-     * each week will have the same set of profiles. For example, to set a daily schedule, set **schedule** to every
-     * day of the week. The frequency property specifies that the schedule is repeated weekly.
+     * each week will have the same set of profiles. For example, to set a daily schedule, set **schedule** to every day
+     * of the week. The frequency property specifies that the schedule is repeated weekly.
      */
-    @JsonProperty(value = "frequency", required = true)
     private RecurrenceFrequency frequency;
 
     /*
      * the scheduling constraints for when the profile begins.
      */
-    @JsonProperty(value = "schedule", required = true)
     private RecurrentSchedule schedule;
 
-    /** Creates an instance of Recurrence class. */
+    /**
+     * Creates an instance of Recurrence class.
+     */
     public Recurrence() {
     }
 
@@ -33,7 +39,7 @@ public final class Recurrence {
      * Get the frequency property: the recurrence frequency. How often the schedule profile should take effect. This
      * value must be Week, meaning each week will have the same set of profiles. For example, to set a daily schedule,
      * set **schedule** to every day of the week. The frequency property specifies that the schedule is repeated weekly.
-     *
+     * 
      * @return the frequency value.
      */
     public RecurrenceFrequency frequency() {
@@ -44,7 +50,7 @@ public final class Recurrence {
      * Set the frequency property: the recurrence frequency. How often the schedule profile should take effect. This
      * value must be Week, meaning each week will have the same set of profiles. For example, to set a daily schedule,
      * set **schedule** to every day of the week. The frequency property specifies that the schedule is repeated weekly.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the Recurrence object itself.
      */
@@ -55,7 +61,7 @@ public final class Recurrence {
 
     /**
      * Get the schedule property: the scheduling constraints for when the profile begins.
-     *
+     * 
      * @return the schedule value.
      */
     public RecurrentSchedule schedule() {
@@ -64,7 +70,7 @@ public final class Recurrence {
 
     /**
      * Set the schedule property: the scheduling constraints for when the profile begins.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the Recurrence object itself.
      */
@@ -75,23 +81,61 @@ public final class Recurrence {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (frequency() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property frequency in model Recurrence"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property frequency in model Recurrence"));
         }
         if (schedule() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property schedule in model Recurrence"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property schedule in model Recurrence"));
         } else {
             schedule().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Recurrence.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Recurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Recurrence if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Recurrence.
+     */
+    public static Recurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Recurrence deserializedRecurrence = new Recurrence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frequency".equals(fieldName)) {
+                    deserializedRecurrence.frequency = RecurrenceFrequency.fromString(reader.getString());
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedRecurrence.schedule = RecurrentSchedule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecurrence;
+        });
+    }
 }

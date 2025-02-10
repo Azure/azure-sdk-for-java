@@ -5,67 +5,82 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** MAB workload-specific job. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
-@JsonTypeName("MabJob")
+/**
+ * MAB workload-specific job.
+ */
 @Fluent
 public final class MabJob extends Job {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String jobType = "MabJob";
+
+    /*
      * Time taken by job to run.
      */
-    @JsonProperty(value = "duration")
     private Duration duration;
 
     /*
      * The state/actions applicable on jobs like cancel/retry.
      */
-    @JsonProperty(value = "actionsInfo")
     private List<JobSupportedAction> actionsInfo;
 
     /*
      * Name of server protecting the DS.
      */
-    @JsonProperty(value = "mabServerName")
     private String mabServerName;
 
     /*
      * Server type of MAB container.
      */
-    @JsonProperty(value = "mabServerType")
     private MabServerType mabServerType;
 
     /*
      * Workload type of backup item.
      */
-    @JsonProperty(value = "workloadType")
     private WorkloadType workloadType;
 
     /*
      * The errors.
      */
-    @JsonProperty(value = "errorDetails")
     private List<MabErrorInfo> errorDetails;
 
     /*
      * Additional information on the job.
      */
-    @JsonProperty(value = "extendedInfo")
     private MabJobExtendedInfo extendedInfo;
 
-    /** Creates an instance of MabJob class. */
+    /**
+     * Creates an instance of MabJob class.
+     */
     public MabJob() {
     }
 
     /**
+     * Get the jobType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the jobType value.
+     */
+    @Override
+    public String jobType() {
+        return this.jobType;
+    }
+
+    /**
      * Get the duration property: Time taken by job to run.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -74,7 +89,7 @@ public final class MabJob extends Job {
 
     /**
      * Set the duration property: Time taken by job to run.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the MabJob object itself.
      */
@@ -85,7 +100,7 @@ public final class MabJob extends Job {
 
     /**
      * Get the actionsInfo property: The state/actions applicable on jobs like cancel/retry.
-     *
+     * 
      * @return the actionsInfo value.
      */
     public List<JobSupportedAction> actionsInfo() {
@@ -94,7 +109,7 @@ public final class MabJob extends Job {
 
     /**
      * Set the actionsInfo property: The state/actions applicable on jobs like cancel/retry.
-     *
+     * 
      * @param actionsInfo the actionsInfo value to set.
      * @return the MabJob object itself.
      */
@@ -105,7 +120,7 @@ public final class MabJob extends Job {
 
     /**
      * Get the mabServerName property: Name of server protecting the DS.
-     *
+     * 
      * @return the mabServerName value.
      */
     public String mabServerName() {
@@ -114,7 +129,7 @@ public final class MabJob extends Job {
 
     /**
      * Set the mabServerName property: Name of server protecting the DS.
-     *
+     * 
      * @param mabServerName the mabServerName value to set.
      * @return the MabJob object itself.
      */
@@ -125,7 +140,7 @@ public final class MabJob extends Job {
 
     /**
      * Get the mabServerType property: Server type of MAB container.
-     *
+     * 
      * @return the mabServerType value.
      */
     public MabServerType mabServerType() {
@@ -134,7 +149,7 @@ public final class MabJob extends Job {
 
     /**
      * Set the mabServerType property: Server type of MAB container.
-     *
+     * 
      * @param mabServerType the mabServerType value to set.
      * @return the MabJob object itself.
      */
@@ -145,7 +160,7 @@ public final class MabJob extends Job {
 
     /**
      * Get the workloadType property: Workload type of backup item.
-     *
+     * 
      * @return the workloadType value.
      */
     public WorkloadType workloadType() {
@@ -154,7 +169,7 @@ public final class MabJob extends Job {
 
     /**
      * Set the workloadType property: Workload type of backup item.
-     *
+     * 
      * @param workloadType the workloadType value to set.
      * @return the MabJob object itself.
      */
@@ -165,7 +180,7 @@ public final class MabJob extends Job {
 
     /**
      * Get the errorDetails property: The errors.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<MabErrorInfo> errorDetails() {
@@ -174,7 +189,7 @@ public final class MabJob extends Job {
 
     /**
      * Set the errorDetails property: The errors.
-     *
+     * 
      * @param errorDetails the errorDetails value to set.
      * @return the MabJob object itself.
      */
@@ -185,7 +200,7 @@ public final class MabJob extends Job {
 
     /**
      * Get the extendedInfo property: Additional information on the job.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public MabJobExtendedInfo extendedInfo() {
@@ -194,7 +209,7 @@ public final class MabJob extends Job {
 
     /**
      * Set the extendedInfo property: Additional information on the job.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the MabJob object itself.
      */
@@ -203,49 +218,63 @@ public final class MabJob extends Job {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabJob withEntityFriendlyName(String entityFriendlyName) {
         super.withEntityFriendlyName(entityFriendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabJob withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabJob withOperation(String operation) {
         super.withOperation(operation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabJob withStatus(String status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabJob withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabJob withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabJob withActivityId(String activityId) {
         super.withActivityId(activityId);
@@ -254,17 +283,104 @@ public final class MabJob extends Job {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (errorDetails() != null) {
             errorDetails().forEach(e -> e.validate());
         }
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entityFriendlyName", entityFriendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("operation", operation());
+        jsonWriter.writeStringField("status", status());
+        jsonWriter.writeStringField("startTime",
+            startTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startTime()));
+        jsonWriter.writeStringField("endTime",
+            endTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(endTime()));
+        jsonWriter.writeStringField("activityId", activityId());
+        jsonWriter.writeStringField("jobType", this.jobType);
+        jsonWriter.writeStringField("duration", CoreUtils.durationToStringWithDays(this.duration));
+        jsonWriter.writeArrayField("actionsInfo", this.actionsInfo,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("mabServerName", this.mabServerName);
+        jsonWriter.writeStringField("mabServerType", this.mabServerType == null ? null : this.mabServerType.toString());
+        jsonWriter.writeStringField("workloadType", this.workloadType == null ? null : this.workloadType.toString());
+        jsonWriter.writeArrayField("errorDetails", this.errorDetails, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MabJob from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MabJob if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the MabJob.
+     */
+    public static MabJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MabJob deserializedMabJob = new MabJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityFriendlyName".equals(fieldName)) {
+                    deserializedMabJob.withEntityFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedMabJob.withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("operation".equals(fieldName)) {
+                    deserializedMabJob.withOperation(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedMabJob.withStatus(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedMabJob.withStartTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedMabJob.withEndTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("activityId".equals(fieldName)) {
+                    deserializedMabJob.withActivityId(reader.getString());
+                } else if ("jobType".equals(fieldName)) {
+                    deserializedMabJob.jobType = reader.getString();
+                } else if ("duration".equals(fieldName)) {
+                    deserializedMabJob.duration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("actionsInfo".equals(fieldName)) {
+                    List<JobSupportedAction> actionsInfo
+                        = reader.readArray(reader1 -> JobSupportedAction.fromString(reader1.getString()));
+                    deserializedMabJob.actionsInfo = actionsInfo;
+                } else if ("mabServerName".equals(fieldName)) {
+                    deserializedMabJob.mabServerName = reader.getString();
+                } else if ("mabServerType".equals(fieldName)) {
+                    deserializedMabJob.mabServerType = MabServerType.fromString(reader.getString());
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedMabJob.workloadType = WorkloadType.fromString(reader.getString());
+                } else if ("errorDetails".equals(fieldName)) {
+                    List<MabErrorInfo> errorDetails = reader.readArray(reader1 -> MabErrorInfo.fromJson(reader1));
+                    deserializedMabJob.errorDetails = errorDetails;
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedMabJob.extendedInfo = MabJobExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMabJob;
+        });
     }
 }

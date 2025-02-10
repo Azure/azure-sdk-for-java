@@ -7,39 +7,58 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventhubs.models.ClusterSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.eventhubs.models.ProvisioningState;
+import java.io.IOException;
 import java.util.Map;
 
-/** Single Event Hubs Cluster resource in List or Get operations. */
+/**
+ * Single Event Hubs Cluster resource in List or Get operations.
+ */
 @Fluent
 public final class ClusterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
-
     /*
      * Properties of the cluster SKU.
      */
-    @JsonProperty(value = "sku")
     private ClusterSku sku;
 
     /*
      * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
-     * Event Hubs Cluster properties supplied in responses in List or Get
-     * operations.
+     * Event Hubs Cluster properties supplied in responses in List or Get operations.
      */
-    @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ClusterInner class.
+     */
+    public ClusterInner() {
+    }
 
     /**
      * Get the sku property: Properties of the cluster SKU.
-     *
+     * 
      * @return the sku value.
      */
     public ClusterSku sku() {
@@ -48,7 +67,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the sku property: Properties of the cluster SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ClusterInner object itself.
      */
@@ -59,7 +78,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -68,21 +87,55 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the innerProperties property: Event Hubs Cluster properties supplied in responses in List or Get operations.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClusterProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -91,7 +144,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the createdAt property: The UTC time when the Event Hubs Cluster was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public String createdAt() {
@@ -99,8 +152,17 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the Cluster.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the updatedAt property: The UTC time when the Event Hubs Cluster was last updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public String updatedAt() {
@@ -110,7 +172,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the metricId property: The metric ID of the cluster resource. Provided by the service and not modifiable by
      * the user.
-     *
+     * 
      * @return the metricId value.
      */
     public String metricId() {
@@ -119,7 +181,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the status property: Status of the Cluster resource.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -127,8 +189,31 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the supportsScaling property: A value that indicates whether Scaling is Supported.
+     * 
+     * @return the supportsScaling value.
+     */
+    public Boolean supportsScaling() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportsScaling();
+    }
+
+    /**
+     * Set the supportsScaling property: A value that indicates whether Scaling is Supported.
+     * 
+     * @param supportsScaling the supportsScaling value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withSupportsScaling(Boolean supportsScaling) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withSupportsScaling(supportsScaling);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -138,5 +223,60 @@ public final class ClusterInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInner.
+     */
+    public static ClusterInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInner deserializedClusterInner = new ClusterInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedClusterInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedClusterInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedClusterInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedClusterInner.sku = ClusterSku.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedClusterInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInner;
+        });
     }
 }

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class A2AZoneDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2AZoneDetails model =
-            BinaryData.fromString("{\"source\":\"rl\",\"target\":\"zji\"}").toObject(A2AZoneDetails.class);
+        A2AZoneDetails model
+            = BinaryData.fromString("{\"source\":\"rl\",\"target\":\"zji\"}").toObject(A2AZoneDetails.class);
         Assertions.assertEquals("rl", model.source());
         Assertions.assertEquals("zji", model.target());
     }

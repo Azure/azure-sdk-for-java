@@ -5,37 +5,38 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties that represent the Azure Function destination of an event subscription.
  */
 @Fluent
-public final class AzureFunctionEventSubscriptionDestinationProperties {
+public final class AzureFunctionEventSubscriptionDestinationProperties
+    implements JsonSerializable<AzureFunctionEventSubscriptionDestinationProperties> {
     /*
      * The Azure Resource Id that represents the endpoint of the Azure Function destination of an event subscription.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Maximum number of events per batch.
      */
-    @JsonProperty(value = "maxEventsPerBatch")
     private Integer maxEventsPerBatch;
 
     /*
      * Preferred batch size in Kilobytes.
      */
-    @JsonProperty(value = "preferredBatchSizeInKilobytes")
     private Integer preferredBatchSizeInKilobytes;
 
     /*
      * Delivery attribute details.
      */
-    @JsonProperty(value = "deliveryAttributeMappings")
     private List<DeliveryAttributeMapping> deliveryAttributeMappings;
 
     /**
@@ -45,8 +46,8 @@ public final class AzureFunctionEventSubscriptionDestinationProperties {
     }
 
     /**
-     * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function
-     * destination of an event subscription.
+     * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function destination
+     * of an event subscription.
      * 
      * @return the resourceId value.
      */
@@ -55,8 +56,8 @@ public final class AzureFunctionEventSubscriptionDestinationProperties {
     }
 
     /**
-     * Set the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function
-     * destination of an event subscription.
+     * Set the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function destination
+     * of an event subscription.
      * 
      * @param resourceId the resourceId value to set.
      * @return the AzureFunctionEventSubscriptionDestinationProperties object itself.
@@ -137,5 +138,58 @@ public final class AzureFunctionEventSubscriptionDestinationProperties {
         if (deliveryAttributeMappings() != null) {
             deliveryAttributeMappings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeNumberField("maxEventsPerBatch", this.maxEventsPerBatch);
+        jsonWriter.writeNumberField("preferredBatchSizeInKilobytes", this.preferredBatchSizeInKilobytes);
+        jsonWriter.writeArrayField("deliveryAttributeMappings", this.deliveryAttributeMappings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFunctionEventSubscriptionDestinationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFunctionEventSubscriptionDestinationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFunctionEventSubscriptionDestinationProperties.
+     */
+    public static AzureFunctionEventSubscriptionDestinationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFunctionEventSubscriptionDestinationProperties deserializedAzureFunctionEventSubscriptionDestinationProperties
+                = new AzureFunctionEventSubscriptionDestinationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedAzureFunctionEventSubscriptionDestinationProperties.resourceId = reader.getString();
+                } else if ("maxEventsPerBatch".equals(fieldName)) {
+                    deserializedAzureFunctionEventSubscriptionDestinationProperties.maxEventsPerBatch
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("preferredBatchSizeInKilobytes".equals(fieldName)) {
+                    deserializedAzureFunctionEventSubscriptionDestinationProperties.preferredBatchSizeInKilobytes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("deliveryAttributeMappings".equals(fieldName)) {
+                    List<DeliveryAttributeMapping> deliveryAttributeMappings
+                        = reader.readArray(reader1 -> DeliveryAttributeMapping.fromJson(reader1));
+                    deserializedAzureFunctionEventSubscriptionDestinationProperties.deliveryAttributeMappings
+                        = deliveryAttributeMappings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFunctionEventSubscriptionDestinationProperties;
+        });
     }
 }

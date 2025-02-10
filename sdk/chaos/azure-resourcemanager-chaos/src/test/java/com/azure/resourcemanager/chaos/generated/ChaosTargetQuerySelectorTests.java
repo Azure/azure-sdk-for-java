@@ -13,27 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ChaosTargetQuerySelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChaosTargetQuerySelector model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Query\",\"queryString\":\"c\",\"subscriptionIds\":[\"df\"],\"id\":\"wwa\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"bxarzgszufoxci\":\"datajvdcpzfoqouic\",\"haz\":\"dataopidoamciodh\",\"toego\":\"datakhnzbonlw\"}}")
-                .toObject(ChaosTargetQuerySelector.class);
-        Assertions.assertEquals("wwa", model.id());
-        Assertions.assertEquals("c", model.queryString());
-        Assertions.assertEquals("df", model.subscriptionIds().get(0));
+        ChaosTargetQuerySelector model = BinaryData.fromString(
+            "{\"type\":\"Query\",\"queryString\":\"gsfraoyzkoow\",\"subscriptionIds\":[\"mnguxawqaldsyu\",\"ximerqfobwyznk\"],\"id\":\"ykutwpf\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"r\":\"datam\",\"kkze\":\"datakdsnfdsdoakgtdl\",\"sdsttwvog\":\"datadlhewp\",\"akufgmjz\":\"databbejdcngqqm\"}}")
+            .toObject(ChaosTargetQuerySelector.class);
+        Assertions.assertEquals("ykutwpf", model.id());
+        Assertions.assertEquals("gsfraoyzkoow", model.queryString());
+        Assertions.assertEquals("mnguxawqaldsyu", model.subscriptionIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosTargetQuerySelector model =
-            new ChaosTargetQuerySelector()
-                .withId("wwa")
-                .withFilter(new ChaosTargetFilter())
-                .withQueryString("c")
-                .withSubscriptionIds(Arrays.asList("df"));
+        ChaosTargetQuerySelector model = new ChaosTargetQuerySelector().withId("ykutwpf")
+            .withFilter(new ChaosTargetFilter())
+            .withQueryString("gsfraoyzkoow")
+            .withSubscriptionIds(Arrays.asList("mnguxawqaldsyu", "ximerqfobwyznk"));
         model = BinaryData.fromObject(model).toObject(ChaosTargetQuerySelector.class);
-        Assertions.assertEquals("wwa", model.id());
-        Assertions.assertEquals("c", model.queryString());
-        Assertions.assertEquals("df", model.subscriptionIds().get(0));
+        Assertions.assertEquals("ykutwpf", model.id());
+        Assertions.assertEquals("gsfraoyzkoow", model.queryString());
+        Assertions.assertEquals("mnguxawqaldsyu", model.subscriptionIds().get(0));
     }
 }

@@ -5,6 +5,8 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
@@ -49,6 +51,8 @@ import static org.mockito.Mockito.when;
  */
 @Isolated
 public class EventHubBufferedPartitionProducerTest {
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubBufferedPartitionProducerTest.class);
+
     private static final String PARTITION_ID = "10";
     private static final String NAMESPACE = "test-eventhubs-namespace";
     private static final String EVENT_HUB_NAME = "test-hub";
@@ -312,7 +316,7 @@ public class EventHubBufferedPartitionProducerTest {
         final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
         options.setMaxWaitTime(Duration.ofSeconds(5));
         options.setSendSucceededContext(context -> {
-            System.out.println("Batch received.");
+            LOGGER.log(LogLevel.VERBOSE, () -> "Batch received.");
             holder.onSucceed(context);
             success.countDown();
         });
@@ -342,8 +346,10 @@ public class EventHubBufferedPartitionProducerTest {
             options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue, null);
 
         // Act & Assert
-        StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2),
-                producer.enqueueEvent(event3)), 1L)
+        StepVerifier
+            .create(
+                Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2), producer.enqueueEvent(event3)),
+                1L)
             .then(() -> {
                 // event1 was enqueued, event2 is in a batch, and event3 is currently in the queue waiting to be
                 // pushed downstream.
@@ -363,7 +369,8 @@ public class EventHubBufferedPartitionProducerTest {
         assertTrue(success.await(DEFAULT_RETRY_OPTIONS.getTryTimeout().toMillis(), TimeUnit.MILLISECONDS),
             "Should have been able to get a successful signal downstream.");
 
-        assertTrue(1 <= holder.succeededContexts.size(), "Expected at least 1 succeeded contexts. Actual: " + holder.succeededContexts.size());
+        assertTrue(1 <= holder.succeededContexts.size(),
+            "Expected at least 1 succeeded contexts. Actual: " + holder.succeededContexts.size());
 
         // Verify the completed ones.
         final SendBatchSucceededContext first = holder.succeededContexts.get(0);
@@ -441,11 +448,8 @@ public class EventHubBufferedPartitionProducerTest {
         when(mockedEventSink.tryEmitNext(event1)).thenReturn(Sinks.EmitResult.OK);
 
         // Return an error emit result, then try again
-        when(mockedEventSink.tryEmitNext(event2)).thenReturn(
-            Sinks.EmitResult.FAIL_OVERFLOW,
-            Sinks.EmitResult.FAIL_NON_SERIALIZED,
-            Sinks.EmitResult.FAIL_OVERFLOW,
-            Sinks.EmitResult.OK);
+        when(mockedEventSink.tryEmitNext(event2)).thenReturn(Sinks.EmitResult.FAIL_OVERFLOW,
+            Sinks.EmitResult.FAIL_NON_SERIALIZED, Sinks.EmitResult.FAIL_OVERFLOW, Sinks.EmitResult.OK);
         when(mockedEventSink.tryEmitNext(event3)).thenReturn(Sinks.EmitResult.OK);
 
         final List<EventData> batchEvents = new ArrayList<>();
@@ -463,14 +467,12 @@ public class EventHubBufferedPartitionProducerTest {
             .expectComplete()
             .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
-        StepVerifier.create(producer.enqueueEvent(event2))
-            .consumeErrorWith(error -> {
-                assertTrue(error instanceof AmqpException);
+        StepVerifier.create(producer.enqueueEvent(event2)).consumeErrorWith(error -> {
+            assertTrue(error instanceof AmqpException);
 
-                final AmqpException amqpException = (AmqpException) error;
-                assertTrue(amqpException.isTransient());
-            })
-            .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
+            final AmqpException amqpException = (AmqpException) error;
+            assertTrue(amqpException.isTransient());
+        }).verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
 
         StepVerifier.create(producer.enqueueEvent(event3))
             .expectComplete()

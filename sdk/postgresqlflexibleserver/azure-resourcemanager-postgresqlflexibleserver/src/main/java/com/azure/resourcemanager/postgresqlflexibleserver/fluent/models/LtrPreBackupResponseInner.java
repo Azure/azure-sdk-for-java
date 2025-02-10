@@ -6,24 +6,31 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Response for the LTR pre-backup API call. */
+/**
+ * Response for the LTR pre-backup API call.
+ */
 @Fluent
-public final class LtrPreBackupResponseInner {
+public final class LtrPreBackupResponseInner implements JsonSerializable<LtrPreBackupResponseInner> {
     /*
      * Additional Properties for the pre backup response
      */
-    @JsonProperty(value = "properties", required = true)
     private LtrPreBackupResponseProperties innerProperties = new LtrPreBackupResponseProperties();
 
-    /** Creates an instance of LtrPreBackupResponseInner class. */
+    /**
+     * Creates an instance of LtrPreBackupResponseInner class.
+     */
     public LtrPreBackupResponseInner() {
     }
 
     /**
      * Get the innerProperties property: Additional Properties for the pre backup response.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LtrPreBackupResponseProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class LtrPreBackupResponseInner {
     /**
      * Get the numberOfContainers property: Number of storage containers the plugin will use during backup. More than
      * one containers may be used for size limitations, parallelism, or redundancy etc.
-     *
+     * 
      * @return the numberOfContainers value.
      */
     public int numberOfContainers() {
@@ -43,7 +50,7 @@ public final class LtrPreBackupResponseInner {
     /**
      * Set the numberOfContainers property: Number of storage containers the plugin will use during backup. More than
      * one containers may be used for size limitations, parallelism, or redundancy etc.
-     *
+     * 
      * @param numberOfContainers the numberOfContainers value to set.
      * @return the LtrPreBackupResponseInner object itself.
      */
@@ -57,19 +64,56 @@ public final class LtrPreBackupResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LtrPreBackupResponseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model LtrPreBackupResponseInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LtrPreBackupResponseInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LtrPreBackupResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LtrPreBackupResponseInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LtrPreBackupResponseInner.
+     */
+    public static LtrPreBackupResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LtrPreBackupResponseInner deserializedLtrPreBackupResponseInner = new LtrPreBackupResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedLtrPreBackupResponseInner.innerProperties
+                        = LtrPreBackupResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLtrPreBackupResponseInner;
+        });
+    }
 }

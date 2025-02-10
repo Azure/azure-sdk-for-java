@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class BasicAuthName extends ExpandableStringEnum<BasicAuthName> {
      * @param name a name to look for.
      * @return the corresponding BasicAuthName.
      */
-    @JsonCreator
     public static BasicAuthName fromString(String name) {
         return fromString(name, BasicAuthName.class);
     }

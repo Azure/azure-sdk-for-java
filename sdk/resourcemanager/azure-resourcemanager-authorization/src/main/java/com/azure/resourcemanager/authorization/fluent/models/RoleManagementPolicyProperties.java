@@ -5,77 +5,77 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.models.PolicyProperties;
 import com.azure.resourcemanager.authorization.models.Principal;
 import com.azure.resourcemanager.authorization.models.RoleManagementPolicyRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Role management policy properties with scope. */
+/**
+ * Role management policy properties with scope.
+ */
 @Fluent
-public final class RoleManagementPolicyProperties {
+public final class RoleManagementPolicyProperties implements JsonSerializable<RoleManagementPolicyProperties> {
     /*
      * The role management policy scope.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * The role management policy display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The role management policy description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The role management policy is default policy.
      */
-    @JsonProperty(value = "isOrganizationDefault")
     private Boolean isOrganizationDefault;
 
     /*
      * The name of the entity last modified it
      */
-    @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
     private Principal lastModifiedBy;
 
     /*
      * The last modified date time.
      */
-    @JsonProperty(value = "lastModifiedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * The rule applied to the policy.
      */
-    @JsonProperty(value = "rules")
     private List<RoleManagementPolicyRule> rules;
 
     /*
      * The readonly computed rule applied to the policy.
      */
-    @JsonProperty(value = "effectiveRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<RoleManagementPolicyRule> effectiveRules;
 
     /*
      * Additional properties of scope
      */
-    @JsonProperty(value = "policyProperties", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyProperties policyProperties;
 
-    /** Creates an instance of RoleManagementPolicyProperties class. */
+    /**
+     * Creates an instance of RoleManagementPolicyProperties class.
+     */
     public RoleManagementPolicyProperties() {
     }
 
     /**
      * Get the scope property: The role management policy scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -84,7 +84,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Set the scope property: The role management policy scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the RoleManagementPolicyProperties object itself.
      */
@@ -95,7 +95,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Get the displayName property: The role management policy display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -104,7 +104,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Set the displayName property: The role management policy display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RoleManagementPolicyProperties object itself.
      */
@@ -115,7 +115,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Get the description property: The role management policy description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -124,7 +124,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Set the description property: The role management policy description.
-     *
+     * 
      * @param description the description value to set.
      * @return the RoleManagementPolicyProperties object itself.
      */
@@ -135,7 +135,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Get the isOrganizationDefault property: The role management policy is default policy.
-     *
+     * 
      * @return the isOrganizationDefault value.
      */
     public Boolean isOrganizationDefault() {
@@ -144,7 +144,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Set the isOrganizationDefault property: The role management policy is default policy.
-     *
+     * 
      * @param isOrganizationDefault the isOrganizationDefault value to set.
      * @return the RoleManagementPolicyProperties object itself.
      */
@@ -155,7 +155,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Get the lastModifiedBy property: The name of the entity last modified it.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public Principal lastModifiedBy() {
@@ -164,7 +164,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Get the lastModifiedDateTime property: The last modified date time.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -173,7 +173,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Get the rules property: The rule applied to the policy.
-     *
+     * 
      * @return the rules value.
      */
     public List<RoleManagementPolicyRule> rules() {
@@ -182,7 +182,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Set the rules property: The rule applied to the policy.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RoleManagementPolicyProperties object itself.
      */
@@ -193,7 +193,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Get the effectiveRules property: The readonly computed rule applied to the policy.
-     *
+     * 
      * @return the effectiveRules value.
      */
     public List<RoleManagementPolicyRule> effectiveRules() {
@@ -202,7 +202,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Get the policyProperties property: Additional properties of scope.
-     *
+     * 
      * @return the policyProperties value.
      */
     public PolicyProperties policyProperties() {
@@ -211,7 +211,7 @@ public final class RoleManagementPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -227,5 +227,68 @@ public final class RoleManagementPolicyProperties {
         if (policyProperties() != null) {
             policyProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("isOrganizationDefault", this.isOrganizationDefault);
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleManagementPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleManagementPolicyProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleManagementPolicyProperties.
+     */
+    public static RoleManagementPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleManagementPolicyProperties deserializedRoleManagementPolicyProperties
+                = new RoleManagementPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    deserializedRoleManagementPolicyProperties.scope = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedRoleManagementPolicyProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedRoleManagementPolicyProperties.description = reader.getString();
+                } else if ("isOrganizationDefault".equals(fieldName)) {
+                    deserializedRoleManagementPolicyProperties.isOrganizationDefault
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedRoleManagementPolicyProperties.lastModifiedBy = Principal.fromJson(reader);
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedRoleManagementPolicyProperties.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("rules".equals(fieldName)) {
+                    List<RoleManagementPolicyRule> rules
+                        = reader.readArray(reader1 -> RoleManagementPolicyRule.fromJson(reader1));
+                    deserializedRoleManagementPolicyProperties.rules = rules;
+                } else if ("effectiveRules".equals(fieldName)) {
+                    List<RoleManagementPolicyRule> effectiveRules
+                        = reader.readArray(reader1 -> RoleManagementPolicyRule.fromJson(reader1));
+                    deserializedRoleManagementPolicyProperties.effectiveRules = effectiveRules;
+                } else if ("policyProperties".equals(fieldName)) {
+                    deserializedRoleManagementPolicyProperties.policyProperties = PolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleManagementPolicyProperties;
+        });
     }
 }

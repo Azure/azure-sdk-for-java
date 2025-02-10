@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ResourcesResponseCustomDomainsItem model. */
+/**
+ * The ResourcesResponseCustomDomainsItem model.
+ */
 @Fluent
-public final class ResourcesResponseCustomDomainsItem {
+public final class ResourcesResponseCustomDomainsItem implements JsonSerializable<ResourcesResponseCustomDomainsItem> {
     /*
      * The id property.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The endpointId property.
      */
-    @JsonProperty(value = "endpointId")
     private String endpointId;
 
     /*
      * The history property.
      */
-    @JsonProperty(value = "history")
     private Boolean history;
 
-    /** Creates an instance of ResourcesResponseCustomDomainsItem class. */
+    /**
+     * Creates an instance of ResourcesResponseCustomDomainsItem class.
+     */
     public ResourcesResponseCustomDomainsItem() {
     }
 
     /**
      * Get the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -49,7 +53,7 @@ public final class ResourcesResponseCustomDomainsItem {
 
     /**
      * Set the id property: The id property.
-     *
+     * 
      * @param id the id value to set.
      * @return the ResourcesResponseCustomDomainsItem object itself.
      */
@@ -60,7 +64,7 @@ public final class ResourcesResponseCustomDomainsItem {
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -69,7 +73,7 @@ public final class ResourcesResponseCustomDomainsItem {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourcesResponseCustomDomainsItem object itself.
      */
@@ -80,7 +84,7 @@ public final class ResourcesResponseCustomDomainsItem {
 
     /**
      * Get the endpointId property: The endpointId property.
-     *
+     * 
      * @return the endpointId value.
      */
     public String endpointId() {
@@ -89,7 +93,7 @@ public final class ResourcesResponseCustomDomainsItem {
 
     /**
      * Set the endpointId property: The endpointId property.
-     *
+     * 
      * @param endpointId the endpointId value to set.
      * @return the ResourcesResponseCustomDomainsItem object itself.
      */
@@ -100,7 +104,7 @@ public final class ResourcesResponseCustomDomainsItem {
 
     /**
      * Get the history property: The history property.
-     *
+     * 
      * @return the history value.
      */
     public Boolean history() {
@@ -109,7 +113,7 @@ public final class ResourcesResponseCustomDomainsItem {
 
     /**
      * Set the history property: The history property.
-     *
+     * 
      * @param history the history value to set.
      * @return the ResourcesResponseCustomDomainsItem object itself.
      */
@@ -120,9 +124,55 @@ public final class ResourcesResponseCustomDomainsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("endpointId", this.endpointId);
+        jsonWriter.writeBooleanField("history", this.history);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourcesResponseCustomDomainsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourcesResponseCustomDomainsItem if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourcesResponseCustomDomainsItem.
+     */
+    public static ResourcesResponseCustomDomainsItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourcesResponseCustomDomainsItem deserializedResourcesResponseCustomDomainsItem
+                = new ResourcesResponseCustomDomainsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedResourcesResponseCustomDomainsItem.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourcesResponseCustomDomainsItem.name = reader.getString();
+                } else if ("endpointId".equals(fieldName)) {
+                    deserializedResourcesResponseCustomDomainsItem.endpointId = reader.getString();
+                } else if ("history".equals(fieldName)) {
+                    deserializedResourcesResponseCustomDomainsItem.history = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourcesResponseCustomDomainsItem;
+        });
     }
 }

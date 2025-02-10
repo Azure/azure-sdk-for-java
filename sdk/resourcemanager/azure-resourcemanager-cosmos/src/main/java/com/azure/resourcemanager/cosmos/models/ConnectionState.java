@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -60,7 +59,6 @@ public final class ConnectionState extends ExpandableStringEnum<ConnectionState>
      * @param name a name to look for.
      * @return the corresponding ConnectionState.
      */
-    @JsonCreator
     public static ConnectionState fromString(String name) {
         return fromString(name, ConnectionState.class);
     }

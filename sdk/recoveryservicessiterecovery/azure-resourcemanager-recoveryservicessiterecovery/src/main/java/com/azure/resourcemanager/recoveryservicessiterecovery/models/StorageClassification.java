@@ -6,39 +6,41 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.StorageClassificationInner;
 
-/** An immutable client-side representation of StorageClassification. */
+/**
+ * An immutable client-side representation of StorageClassification.
+ */
 public interface StorageClassification {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Properties of the storage object.
-     *
+     * 
      * @return the properties value.
      */
     StorageClassificationProperties properties();
 
     /**
      * Gets the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     String location();
@@ -46,7 +48,7 @@ public interface StorageClassification {
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.StorageClassificationInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     StorageClassificationInner innerModel();

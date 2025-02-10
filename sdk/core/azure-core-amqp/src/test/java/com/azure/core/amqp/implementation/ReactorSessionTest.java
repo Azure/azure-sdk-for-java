@@ -104,7 +104,8 @@ public class ReactorSessionTest {
     public void setup() throws IOException {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
-        this.handler = new SessionHandler(ID, HOST, ENTITY_PATH, reactorDispatcher, Duration.ofSeconds(60), AmqpMetricsProvider.noop());
+        this.handler
+            = new SessionHandler(ID, HOST, NAME, reactorDispatcher, Duration.ofSeconds(60), AmqpMetricsProvider.noop());
         this.cbsNodeSupplier = Mono.just(cbsNode);
 
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -123,8 +124,9 @@ public class ReactorSessionTest {
 
         when(amqpConnection.getShutdownSignals()).thenReturn(connectionShutdown.flux());
         final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
-        this.reactorSession = new ReactorSession(amqpConnection, session, handler, NAME, reactorProvider,
-            reactorHandlerProvider, new AmqpLinkProvider(), cbsNodeSupplier, tokenManagerProvider, serializer, options);
+        final ProtonSessionWrapper protonSession = new ProtonSessionWrapper(session, handler, reactorProvider);
+        this.reactorSession = new ReactorSession(amqpConnection, protonSession, reactorHandlerProvider,
+            new AmqpLinkProvider(), cbsNodeSupplier, tokenManagerProvider, serializer, options);
     }
 
     @AfterEach
@@ -141,7 +143,7 @@ public class ReactorSessionTest {
         // Assert
         verify(session, times(1)).open();
 
-        Assertions.assertSame(session, reactorSession.session());
+        // Assertions.assertSame(session, reactorSession.session());
         Assertions.assertEquals(NAME, reactorSession.getSessionName());
         Assertions.assertEquals(TIMEOUT, reactorSession.getOperationTimeout());
     }
@@ -176,14 +178,14 @@ public class ReactorSessionTest {
         final String entityPath = "test-entity-path";
 
         final Duration timeout = Duration.ofSeconds(10);
-        final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(timeout)
-            .setMaxRetries(1)
-            .setMode(AmqpRetryMode.FIXED);
+        final AmqpRetryOptions options
+            = new AmqpRetryOptions().setTryTimeout(timeout).setMaxRetries(1).setMode(AmqpRetryMode.FIXED);
         final AmqpRetryPolicy amqpRetryPolicy = new FixedAmqpRetryPolicy(options);
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
+        final SendLinkHandler sendLinkHandler
+            = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
 
         when(session.sender(linkName)).thenReturn(sender);
         when(session.getRemoteState()).thenReturn(EndpointState.ACTIVE);
@@ -192,19 +194,18 @@ public class ReactorSessionTest {
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults())
             .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
-        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath))
-            .thenReturn(sendLinkHandler);
+        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
 
-        StepVerifier.create(
-            reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties))
+        StepVerifier
+            .create(reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties))
             .then(() -> handler.onSessionRemoteOpen(event))
             .thenAwait(Duration.ofSeconds(2))
             .assertNext(producer -> assertTrue(producer instanceof ReactorSender))
             .verifyComplete();
 
-        final AmqpLink sendLink = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy,
-            linkProperties)
-            .block(TIMEOUT);
+        final AmqpLink sendLink
+            = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties)
+                .block(TIMEOUT);
 
         assertNotNull(sendLink);
     }
@@ -219,20 +220,20 @@ public class ReactorSessionTest {
         final String entityPath = "test-entity-path";
 
         final Duration timeout = Duration.ofSeconds(10);
-        final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(timeout)
-            .setMaxRetries(1)
-            .setMode(AmqpRetryMode.FIXED);
+        final AmqpRetryOptions options
+            = new AmqpRetryOptions().setTryTimeout(timeout).setMaxRetries(1).setMode(AmqpRetryMode.FIXED);
         final AmqpRetryPolicy amqpRetryPolicy = new FixedAmqpRetryPolicy(options);
 
         final Map<Symbol, Object> linkProperties = new HashMap<>();
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
+        final SendLinkHandler sendLinkHandler
+            = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
 
         final Event closeSendEvent = mock(Event.class);
         when(closeSendEvent.getLink()).thenReturn(sender);
 
-        final ErrorCondition errorCondition = new ErrorCondition(
-            Symbol.valueOf(AmqpErrorCondition.SERVER_BUSY_ERROR.getErrorCondition()), "test-busy");
+        final ErrorCondition errorCondition
+            = new ErrorCondition(Symbol.valueOf(AmqpErrorCondition.SERVER_BUSY_ERROR.getErrorCondition()), "test-busy");
         when(sender.getRemoteCondition()).thenReturn(errorCondition);
 
         when(session.sender(linkName)).thenReturn(sender);
@@ -241,14 +242,13 @@ public class ReactorSessionTest {
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults())
             .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
-        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath))
-            .thenReturn(sendLinkHandler);
+        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
 
         handler.onSessionRemoteOpen(event);
 
-        final AmqpLink sendLink = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy,
-            linkProperties)
-            .block(TIMEOUT);
+        final AmqpLink sendLink
+            = reactorSession.createProducer(linkName, entityPath, timeout, amqpRetryPolicy, linkProperties)
+                .block(TIMEOUT);
 
         assertNotNull(sendLink);
         assertTrue(sendLink instanceof AmqpSendLink);
@@ -268,18 +268,17 @@ public class ReactorSessionTest {
         final String entityPath = transactionLinkName;
 
         final TokenManager tokenManager = mock(TokenManager.class);
-        final SendLinkHandler sendLinkHandler = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
+        final SendLinkHandler sendLinkHandler
+            = new SendLinkHandler(ID, HOST, linkName, entityPath, AmqpMetricsProvider.noop());
 
         when(session.sender(linkName)).thenReturn(sender);
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManager);
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults())
             .thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.ACCEPTED)));
-        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath))
-            .thenReturn(sendLinkHandler);
+        when(reactorHandlerProvider.createSendLinkHandler(ID, HOST, linkName, entityPath)).thenReturn(sendLinkHandler);
 
-        StepVerifier.create(
-            reactorSession.getOrCreateTransactionCoordinator())
+        StepVerifier.create(reactorSession.getOrCreateTransactionCoordinator())
             .then(() -> handler.onSessionRemoteOpen(event))
             .thenAwait(Duration.ofSeconds(2))
             .assertNext(Assertions::assertNotNull)
@@ -289,11 +288,11 @@ public class ReactorSessionTest {
         verify(sender).setTarget(any(Coordinator.class));
         verify(session).open();
 
-        final AmqpTransactionCoordinator coordinator1 = reactorSession.getOrCreateTransactionCoordinator()
-            .block(TIMEOUT);
+        final AmqpTransactionCoordinator coordinator1
+            = reactorSession.getOrCreateTransactionCoordinator().block(TIMEOUT);
 
-        final AmqpTransactionCoordinator coordinator2 = reactorSession.getOrCreateTransactionCoordinator()
-            .block(TIMEOUT);
+        final AmqpTransactionCoordinator coordinator2
+            = reactorSession.getOrCreateTransactionCoordinator().block(TIMEOUT);
 
         assertSame(coordinator1, coordinator2);
     }
@@ -312,20 +311,24 @@ public class ReactorSessionTest {
     @Test
     void onSessionRemoteCloseWithErrorReportsMetrics() {
         // Arrange
-        final ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED.getErrorCondition()), "");
+        final ErrorCondition errorCondition
+            = new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED.getErrorCondition()), "");
 
         when(session.getRemoteCondition()).thenReturn(errorCondition);
         when(session.getLocalState()).thenReturn(EndpointState.CLOSED);
 
         TestMeter meter = new TestMeter();
-        SessionHandler handlerWithMetrics = new SessionHandler(ID, HOST, ENTITY_PATH,  reactorDispatcher, Duration.ofSeconds(60), new AmqpMetricsProvider(meter, HOST, ENTITY_PATH));
+        SessionHandler handlerWithMetrics = new SessionHandler(ID, HOST, NAME, reactorDispatcher,
+            Duration.ofSeconds(60), new AmqpMetricsProvider(meter, HOST, ENTITY_PATH));
         handlerWithMetrics.onSessionRemoteClose(event);
 
         // Assert
-        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.client.session.errors").getMeasurements();
+        List<TestMeasurement<Long>> errors
+            = meter.getCounters().get("messaging.az.amqp.client.session.errors").getMeasurements();
         assertEquals(1, errors.size());
         assertEquals(1, errors.get(0).getValue());
-        assertEquals("amqp:resource-limit-exceeded", errors.get(0).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
+        assertEquals("amqp:resource-limit-exceeded",
+            errors.get(0).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
         assertEquals(HOST, errors.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
         assertEquals(ENTITY_PATH, errors.get(0).getAttributes().get(ClientConstants.ENTITY_NAME_KEY));
     }
@@ -342,11 +345,13 @@ public class ReactorSessionTest {
         when(session.getLocalState()).thenReturn(EndpointState.CLOSED);
 
         TestMeter meter = new TestMeter();
-        SessionHandler handlerWithMetrics = new SessionHandler(ID, HOST, ENTITY_PATH,  reactorDispatcher, Duration.ofSeconds(60), new AmqpMetricsProvider(meter, HOST, null));
+        SessionHandler handlerWithMetrics = new SessionHandler(ID, HOST, NAME, reactorDispatcher,
+            Duration.ofSeconds(60), new AmqpMetricsProvider(meter, HOST, null));
         handlerWithMetrics.onSessionRemoteClose(event);
 
         // Assert
-        List<TestMeasurement<Long>> errors = meter.getCounters().get("messaging.az.amqp.client.session.errors").getMeasurements();
+        List<TestMeasurement<Long>> errors
+            = meter.getCounters().get("messaging.az.amqp.client.session.errors").getMeasurements();
         assertEquals(0, errors.size());
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
      * @param name a name to look for.
      * @return the corresponding IndexingMode.
      */
-    @JsonCreator
     public static IndexingMode fromString(String name) {
         return fromString(name, IndexingMode.class);
     }

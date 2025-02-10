@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ObjectReferenceDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ObjectReferenceDefinition model =
-            BinaryData
-                .fromString("{\"name\":\"hltrpmopjmcmatuo\",\"namespace\":\"hfuiuaodsfc\"}")
+        ObjectReferenceDefinition model
+            = BinaryData.fromString("{\"name\":\"hltrpmopjmcmatuo\",\"namespace\":\"hfuiuaodsfc\"}")
                 .toObject(ObjectReferenceDefinition.class);
         Assertions.assertEquals("hltrpmopjmcmatuo", model.name());
         Assertions.assertEquals("hfuiuaodsfc", model.namespace());
@@ -21,8 +20,8 @@ public final class ObjectReferenceDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ObjectReferenceDefinition model =
-            new ObjectReferenceDefinition().withName("hltrpmopjmcmatuo").withNamespace("hfuiuaodsfc");
+        ObjectReferenceDefinition model
+            = new ObjectReferenceDefinition().withName("hltrpmopjmcmatuo").withNamespace("hfuiuaodsfc");
         model = BinaryData.fromObject(model).toObject(ObjectReferenceDefinition.class);
         Assertions.assertEquals("hltrpmopjmcmatuo", model.name());
         Assertions.assertEquals("hfuiuaodsfc", model.namespace());

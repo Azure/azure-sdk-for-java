@@ -7,21 +7,21 @@ package com.azure.communication.email.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EmailsGetSendResultHeaders model. */
+/**
+ * The EmailsGetSendResultHeaders model.
+ */
 @Fluent
 public final class EmailsGetSendResultHeaders {
     /*
      * The retry-after property.
      */
-    @JsonProperty(value = "retry-after")
     private Integer retryAfter;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of EmailsGetSendResultHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public EmailsGetSendResultHeaders(HttpHeaders rawHeaders) {
@@ -33,7 +33,7 @@ public final class EmailsGetSendResultHeaders {
 
     /**
      * Get the retryAfter property: The retry-after property.
-     *
+     * 
      * @return the retryAfter value.
      */
     public Integer getRetryAfter() {
@@ -42,7 +42,7 @@ public final class EmailsGetSendResultHeaders {
 
     /**
      * Set the retryAfter property: The retry-after property.
-     *
+     * 
      * @param retryAfter the retryAfter value to set.
      * @return the EmailsGetSendResultHeaders object itself.
      */

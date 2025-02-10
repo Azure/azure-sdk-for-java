@@ -11,16 +11,19 @@ public final class QuickBooksSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuickBooksSource model = BinaryData.fromString(
-            "{\"type\":\"QuickBooksSource\",\"query\":\"datagyivsiirx\",\"queryTimeout\":\"datappqpsiniidaxbesb\",\"additionalColumns\":\"dataizyjch\",\"sourceRetryCount\":\"dataasjrseqpo\",\"sourceRetryWait\":\"datahgksqwzuosyyxl\",\"maxConcurrentConnections\":\"dataxzudfarzayrdyrow\",\"disableMetricsCollection\":\"datakpdpudqiwhvxb\",\"\":{\"deffrbxzjedy\":\"dataoeuufws\",\"no\":\"datajisxspnmfydphls\",\"vjlqfzlbpe\":\"dataqb\",\"nlxstp\":\"datavjpgllr\"}}")
+            "{\"type\":\"QuickBooksSource\",\"query\":\"dataeycakkon\",\"queryTimeout\":\"datadpd\",\"additionalColumns\":\"datahadzyxaanhwuqewc\",\"sourceRetryCount\":\"datasksfbkxfkeeqo\",\"sourceRetryWait\":\"databek\",\"maxConcurrentConnections\":\"dataerwss\",\"disableMetricsCollection\":\"datamrpdjrylfpdudx\",\"\":{\"tqssngeviyffg\":\"dataeuriehxbanfsqfh\",\"hdapynpvgyaf\":\"datahrhjsps\"}}")
             .toObject(QuickBooksSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuickBooksSource model = new QuickBooksSource().withSourceRetryCount("dataasjrseqpo")
-            .withSourceRetryWait("datahgksqwzuosyyxl").withMaxConcurrentConnections("dataxzudfarzayrdyrow")
-            .withDisableMetricsCollection("datakpdpudqiwhvxb").withQueryTimeout("datappqpsiniidaxbesb")
-            .withAdditionalColumns("dataizyjch").withQuery("datagyivsiirx");
+        QuickBooksSource model = new QuickBooksSource().withSourceRetryCount("datasksfbkxfkeeqo")
+            .withSourceRetryWait("databek")
+            .withMaxConcurrentConnections("dataerwss")
+            .withDisableMetricsCollection("datamrpdjrylfpdudx")
+            .withQueryTimeout("datadpd")
+            .withAdditionalColumns("datahadzyxaanhwuqewc")
+            .withQuery("dataeycakkon");
         model = BinaryData.fromObject(model).toObject(QuickBooksSource.class);
     }
 }

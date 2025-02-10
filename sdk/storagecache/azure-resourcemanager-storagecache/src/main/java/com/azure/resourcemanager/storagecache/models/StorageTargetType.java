@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the Storage Target. */
+/**
+ * Type of the Storage Target.
+ */
 public final class StorageTargetType extends ExpandableStringEnum<StorageTargetType> {
-    /** Static value nfs3 for StorageTargetType. */
+    /**
+     * Static value nfs3 for StorageTargetType.
+     */
     public static final StorageTargetType NFS3 = fromString("nfs3");
 
-    /** Static value clfs for StorageTargetType. */
+    /**
+     * Static value clfs for StorageTargetType.
+     */
     public static final StorageTargetType CLFS = fromString("clfs");
 
-    /** Static value unknown for StorageTargetType. */
+    /**
+     * Static value unknown for StorageTargetType.
+     */
     public static final StorageTargetType UNKNOWN = fromString("unknown");
 
-    /** Static value blobNfs for StorageTargetType. */
+    /**
+     * Static value blobNfs for StorageTargetType.
+     */
     public static final StorageTargetType BLOB_NFS = fromString("blobNfs");
 
     /**
      * Creates a new instance of StorageTargetType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class StorageTargetType extends ExpandableStringEnum<StorageTargetT
 
     /**
      * Creates or finds a StorageTargetType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageTargetType.
      */
-    @JsonCreator
     public static StorageTargetType fromString(String name) {
         return fromString(name, StorageTargetType.class);
     }
 
     /**
      * Gets known StorageTargetType values.
-     *
+     * 
      * @return known StorageTargetType values.
      */
     public static Collection<StorageTargetType> values() {

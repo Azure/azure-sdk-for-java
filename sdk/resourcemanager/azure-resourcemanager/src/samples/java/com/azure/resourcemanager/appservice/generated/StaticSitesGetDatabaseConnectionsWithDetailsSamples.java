@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesGetDatabaseConnectionsWithDetailsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
      * GetStaticSiteDatabaseConnectionsWithDetails.json
      */
     /**
@@ -19,7 +19,10 @@ public final class StaticSitesGetDatabaseConnectionsWithDetailsSamples {
      */
     public static void
         listFullDetailsOfDatabaseConnectionsForTheStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().getDatabaseConnectionsWithDetails("rg",
-            "testStaticSite0", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .getDatabaseConnectionsWithDetails("rg", "testStaticSite0", com.azure.core.util.Context.NONE);
     }
 }

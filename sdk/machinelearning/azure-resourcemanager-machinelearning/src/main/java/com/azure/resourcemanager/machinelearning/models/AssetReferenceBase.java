@@ -5,33 +5,107 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base definition for asset references. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "referenceType",
-    defaultImpl = AssetReferenceBase.class)
-@JsonTypeName("AssetReferenceBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DataPath", value = DataPathAssetReference.class),
-    @JsonSubTypes.Type(name = "Id", value = IdAssetReference.class),
-    @JsonSubTypes.Type(name = "OutputPath", value = OutputPathAssetReference.class)
-})
+/**
+ * Base definition for asset references.
+ */
 @Immutable
-public class AssetReferenceBase {
-    /** Creates an instance of AssetReferenceBase class. */
+public class AssetReferenceBase implements JsonSerializable<AssetReferenceBase> {
+    /*
+     * [Required] Specifies the type of asset reference.
+     */
+    private ReferenceType referenceType = ReferenceType.fromString("AssetReferenceBase");
+
+    /**
+     * Creates an instance of AssetReferenceBase class.
+     */
     public AssetReferenceBase() {
     }
 
     /**
+     * Get the referenceType property: [Required] Specifies the type of asset reference.
+     * 
+     * @return the referenceType value.
+     */
+    public ReferenceType referenceType() {
+        return this.referenceType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("referenceType", this.referenceType == null ? null : this.referenceType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssetReferenceBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssetReferenceBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AssetReferenceBase.
+     */
+    public static AssetReferenceBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("referenceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Id".equals(discriminatorValue)) {
+                    return IdAssetReference.fromJson(readerToUse.reset());
+                } else if ("DataPath".equals(discriminatorValue)) {
+                    return DataPathAssetReference.fromJson(readerToUse.reset());
+                } else if ("OutputPath".equals(discriminatorValue)) {
+                    return OutputPathAssetReference.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AssetReferenceBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssetReferenceBase deserializedAssetReferenceBase = new AssetReferenceBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("referenceType".equals(fieldName)) {
+                    deserializedAssetReferenceBase.referenceType = ReferenceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAssetReferenceBase;
+        });
     }
 }

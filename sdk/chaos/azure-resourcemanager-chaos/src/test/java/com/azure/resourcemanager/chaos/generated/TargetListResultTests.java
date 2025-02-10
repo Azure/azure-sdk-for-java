@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.models.TargetListResult;
 public final class TargetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"dgssofwqmzqal\",\"properties\":{\"byxbaaabjy\":\"datamnjijpxacqqudf\",\"zrtuzq\":\"dataayffim\"},\"id\":\"gsexne\",\"name\":\"fdnw\",\"type\":\"wmewzsyy\"},{\"location\":\"zsoibjudpfrxtr\",\"properties\":{\"ubpaxhe\":\"datazvaytdwkqbr\"},\"id\":\"iilivpdtiirqtd\",\"name\":\"oaxoruzfgsqu\",\"type\":\"fxrxxle\"},{\"location\":\"amxjezwlw\",\"properties\":{\"ooaojkniodkooebw\":\"dataxuqlcvydypat\",\"infwjlfltkacjve\":\"dataujhemmsbvdkcrodt\",\"ggkfpagaowpul\":\"datakdlfoa\",\"sjervti\":\"dataqblylsyxkqj\"},\"id\":\"gxsds\",\"name\":\"uem\",\"type\":\"sbzkf\"}],\"nextLink\":\"eyvpnqicvinvkj\"}")
-                .toObject(TargetListResult.class);
+        TargetListResult model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"vti\",\"properties\":{\"kfzbeyvpnqicvi\":\"dataxsdszuempsb\",\"jjxd\":\"datav\"},\"id\":\"rbuukzclewyhmlwp\",\"name\":\"ztzp\",\"type\":\"fn\"},{\"location\":\"wyfzqwhxxbuyqa\",\"properties\":{\"or\":\"datafeqztppriol\",\"ncwsob\":\"dataaltol\",\"pfuvglsbjjca\":\"datawcsdbnwdcfhucq\"},\"id\":\"vxb\",\"name\":\"t\",\"type\":\"udutnco\"}],\"nextLink\":\"r\"}")
+            .toObject(TargetListResult.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -6,63 +6,33 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.OutboundEnvironmentEndpoint;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkConnectionsListOutboundNetworkDependenciesEndpointsMockTests {
     @Test
     public void testListOutboundNetworkDependenciesEndpoints() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"category\":\"tqpbrlcy\",\"endpoints\":[{\"domainName\":\"zkgofxyf\",\"description\":\"uc\",\"endpointDetails\":[{\"port\":1456514758}]},{\"domainName\":\"jttbstv\",\"description\":\"aqnrmvvfkoxmlg\",\"endpointDetails\":[{\"port\":1858596156},{\"port\":2137769434},{\"port\":480189667}]},{\"domainName\":\"zlpdwwex\",\"description\":\"zvlazipbhpwvqsgn\",\"endpointDetails\":[{\"port\":1287157964},{\"port\":1792217092},{\"port\":2008029409},{\"port\":1210376320}]},{\"domainName\":\"meyyvpkpatlb\",\"description\":\"pzgsk\",\"endpointDetails\":[{\"port\":1155999563}]}]}]}";
 
-        String responseStr =
-            "{\"value\":[{\"category\":\"hvj\",\"endpoints\":[{\"domainName\":\"cuyzlwhhmemhoocl\",\"description\":\"n\",\"endpointDetails\":[{\"port\":1579133253},{\"port\":978013329},{\"port\":1328694478}]}]}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<OutboundEnvironmentEndpoint> response = manager.networkConnections()
+            .listOutboundNetworkDependenciesEndpoints("hcbjpibk", "phuuuerctato", 762617620,
+                com.azure.core.util.Context.NONE);
 
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<OutboundEnvironmentEndpoint> response =
-            manager
-                .networkConnections()
-                .listOutboundNetworkDependenciesEndpoints(
-                    "uic", "hvtrrmhwrbfdpyf", 1126783291, com.azure.core.util.Context.NONE);
     }
 }

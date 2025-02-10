@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of customer managed encryption key. */
+/**
+ * Whether encryption is enabled or disabled.
+ */
 public final class EncryptionState extends ExpandableStringEnum<EncryptionState> {
-    /** Static value Enabled for EncryptionState. */
+    /**
+     * Static value Enabled for EncryptionState.
+     */
     public static final EncryptionState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for EncryptionState. */
+    /**
+     * Static value Disabled for EncryptionState.
+     */
     public static final EncryptionState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of EncryptionState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class EncryptionState extends ExpandableStringEnum<EncryptionState>
 
     /**
      * Creates or finds a EncryptionState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionState.
      */
-    @JsonCreator
     public static EncryptionState fromString(String name) {
         return fromString(name, EncryptionState.class);
     }
 
     /**
      * Gets known EncryptionState values.
-     *
+     * 
      * @return known EncryptionState values.
      */
     public static Collection<EncryptionState> values() {

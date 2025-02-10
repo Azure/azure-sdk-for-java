@@ -18,6 +18,11 @@ import java.io.IOException;
 public final class CognitiveServicesAccountKey extends CognitiveServicesAccount {
 
     /*
+     * A URI fragment specifying the type of Azure AI service resource attached to a skillset.
+     */
+    private String odataType = "#Microsoft.Azure.Search.CognitiveServicesByKey";
+
+    /*
      * The key used to provision the Azure AI service resource attached to a skillset.
      */
     private String key;
@@ -29,6 +34,17 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
      */
     public CognitiveServicesAccountKey(String key) {
         this.key = key;
+    }
+
+    /**
+     * Get the odataType property: A URI fragment specifying the type of Azure AI service resource attached to a
+     * skillset.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -49,12 +65,15 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.CognitiveServicesByKey");
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("@odata.type", this.odataType);
         return jsonWriter.writeEndObject();
     }
 
@@ -64,8 +83,7 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CognitiveServicesAccountKey if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CognitiveServicesAccountKey.
      */
     public static CognitiveServicesAccountKey fromJson(JsonReader jsonReader) throws IOException {
@@ -73,21 +91,17 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
             String description = null;
             boolean keyFound = false;
             String key = null;
+            String odataType = "#Microsoft.Azure.Search.CognitiveServicesByKey";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.CognitiveServicesByKey".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.CognitiveServicesByKey'. The found '@odata.type' was '"
-                                + odataType + "'.");
-                    }
-                } else if ("description".equals(fieldName)) {
+                if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("key".equals(fieldName)) {
                     key = reader.getString();
                     keyFound = true;
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -96,6 +110,7 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
                 CognitiveServicesAccountKey deserializedCognitiveServicesAccountKey
                     = new CognitiveServicesAccountKey(key);
                 deserializedCognitiveServicesAccountKey.setDescription(description);
+                deserializedCognitiveServicesAccountKey.odataType = odataType;
                 return deserializedCognitiveServicesAccountKey;
             }
             throw new IllegalStateException("Missing required property: key");

@@ -5,37 +5,45 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Additional information on the backed up item. */
+/**
+ * Additional information on the backed up item.
+ */
 @Fluent
-public final class MabFileFolderProtectedItemExtendedInfo {
+public final class MabFileFolderProtectedItemExtendedInfo
+    implements JsonSerializable<MabFileFolderProtectedItemExtendedInfo> {
     /*
      * Last time when the agent data synced to service.
      */
-    @JsonProperty(value = "lastRefreshedAt")
     private OffsetDateTime lastRefreshedAt;
 
     /*
      * The oldest backup copy available.
      */
-    @JsonProperty(value = "oldestRecoveryPoint")
     private OffsetDateTime oldestRecoveryPoint;
 
     /*
      * Number of backup copies associated with the backup item.
      */
-    @JsonProperty(value = "recoveryPointCount")
     private Integer recoveryPointCount;
 
-    /** Creates an instance of MabFileFolderProtectedItemExtendedInfo class. */
+    /**
+     * Creates an instance of MabFileFolderProtectedItemExtendedInfo class.
+     */
     public MabFileFolderProtectedItemExtendedInfo() {
     }
 
     /**
      * Get the lastRefreshedAt property: Last time when the agent data synced to service.
-     *
+     * 
      * @return the lastRefreshedAt value.
      */
     public OffsetDateTime lastRefreshedAt() {
@@ -44,7 +52,7 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Set the lastRefreshedAt property: Last time when the agent data synced to service.
-     *
+     * 
      * @param lastRefreshedAt the lastRefreshedAt value to set.
      * @return the MabFileFolderProtectedItemExtendedInfo object itself.
      */
@@ -55,7 +63,7 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Get the oldestRecoveryPoint property: The oldest backup copy available.
-     *
+     * 
      * @return the oldestRecoveryPoint value.
      */
     public OffsetDateTime oldestRecoveryPoint() {
@@ -64,7 +72,7 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Set the oldestRecoveryPoint property: The oldest backup copy available.
-     *
+     * 
      * @param oldestRecoveryPoint the oldestRecoveryPoint value to set.
      * @return the MabFileFolderProtectedItemExtendedInfo object itself.
      */
@@ -75,7 +83,7 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Get the recoveryPointCount property: Number of backup copies associated with the backup item.
-     *
+     * 
      * @return the recoveryPointCount value.
      */
     public Integer recoveryPointCount() {
@@ -84,7 +92,7 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Set the recoveryPointCount property: Number of backup copies associated with the backup item.
-     *
+     * 
      * @param recoveryPointCount the recoveryPointCount value to set.
      * @return the MabFileFolderProtectedItemExtendedInfo object itself.
      */
@@ -95,9 +103,59 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastRefreshedAt",
+            this.lastRefreshedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRefreshedAt));
+        jsonWriter.writeStringField("oldestRecoveryPoint",
+            this.oldestRecoveryPoint == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.oldestRecoveryPoint));
+        jsonWriter.writeNumberField("recoveryPointCount", this.recoveryPointCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MabFileFolderProtectedItemExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MabFileFolderProtectedItemExtendedInfo if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MabFileFolderProtectedItemExtendedInfo.
+     */
+    public static MabFileFolderProtectedItemExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MabFileFolderProtectedItemExtendedInfo deserializedMabFileFolderProtectedItemExtendedInfo
+                = new MabFileFolderProtectedItemExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastRefreshedAt".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItemExtendedInfo.lastRefreshedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("oldestRecoveryPoint".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItemExtendedInfo.oldestRecoveryPoint = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveryPointCount".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItemExtendedInfo.recoveryPointCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMabFileFolderProtectedItemExtendedInfo;
+        });
     }
 }

@@ -13,8 +13,7 @@ public final class NetworkImpl implements Network {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    NetworkImpl(
-        NetworkInner innerObject,
+    NetworkImpl(NetworkInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -5,40 +5,57 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** deviceRegistrationState. */
+/**
+ * deviceRegistrationState.
+ */
 public final class MicrosoftGraphDeviceRegistrationState
     extends ExpandableStringEnum<MicrosoftGraphDeviceRegistrationState> {
-    /** Static value notRegistered for MicrosoftGraphDeviceRegistrationState. */
+    /**
+     * Static value notRegistered for MicrosoftGraphDeviceRegistrationState.
+     */
     public static final MicrosoftGraphDeviceRegistrationState NOT_REGISTERED = fromString("notRegistered");
 
-    /** Static value registered for MicrosoftGraphDeviceRegistrationState. */
+    /**
+     * Static value registered for MicrosoftGraphDeviceRegistrationState.
+     */
     public static final MicrosoftGraphDeviceRegistrationState REGISTERED = fromString("registered");
 
-    /** Static value revoked for MicrosoftGraphDeviceRegistrationState. */
+    /**
+     * Static value revoked for MicrosoftGraphDeviceRegistrationState.
+     */
     public static final MicrosoftGraphDeviceRegistrationState REVOKED = fromString("revoked");
 
-    /** Static value keyConflict for MicrosoftGraphDeviceRegistrationState. */
+    /**
+     * Static value keyConflict for MicrosoftGraphDeviceRegistrationState.
+     */
     public static final MicrosoftGraphDeviceRegistrationState KEY_CONFLICT = fromString("keyConflict");
 
-    /** Static value approvalPending for MicrosoftGraphDeviceRegistrationState. */
+    /**
+     * Static value approvalPending for MicrosoftGraphDeviceRegistrationState.
+     */
     public static final MicrosoftGraphDeviceRegistrationState APPROVAL_PENDING = fromString("approvalPending");
 
-    /** Static value certificateReset for MicrosoftGraphDeviceRegistrationState. */
+    /**
+     * Static value certificateReset for MicrosoftGraphDeviceRegistrationState.
+     */
     public static final MicrosoftGraphDeviceRegistrationState CERTIFICATE_RESET = fromString("certificateReset");
 
-    /** Static value notRegisteredPendingEnrollment for MicrosoftGraphDeviceRegistrationState. */
-    public static final MicrosoftGraphDeviceRegistrationState NOT_REGISTERED_PENDING_ENROLLMENT =
-        fromString("notRegisteredPendingEnrollment");
+    /**
+     * Static value notRegisteredPendingEnrollment for MicrosoftGraphDeviceRegistrationState.
+     */
+    public static final MicrosoftGraphDeviceRegistrationState NOT_REGISTERED_PENDING_ENROLLMENT
+        = fromString("notRegisteredPendingEnrollment");
 
-    /** Static value unknown for MicrosoftGraphDeviceRegistrationState. */
+    /**
+     * Static value unknown for MicrosoftGraphDeviceRegistrationState.
+     */
     public static final MicrosoftGraphDeviceRegistrationState UNKNOWN = fromString("unknown");
 
     /**
      * Creates a new instance of MicrosoftGraphDeviceRegistrationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -47,18 +64,17 @@ public final class MicrosoftGraphDeviceRegistrationState
 
     /**
      * Creates or finds a MicrosoftGraphDeviceRegistrationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphDeviceRegistrationState.
      */
-    @JsonCreator
     public static MicrosoftGraphDeviceRegistrationState fromString(String name) {
         return fromString(name, MicrosoftGraphDeviceRegistrationState.class);
     }
 
     /**
      * Gets known MicrosoftGraphDeviceRegistrationState values.
-     *
+     * 
      * @return known MicrosoftGraphDeviceRegistrationState values.
      */
     public static Collection<MicrosoftGraphDeviceRegistrationState> values() {

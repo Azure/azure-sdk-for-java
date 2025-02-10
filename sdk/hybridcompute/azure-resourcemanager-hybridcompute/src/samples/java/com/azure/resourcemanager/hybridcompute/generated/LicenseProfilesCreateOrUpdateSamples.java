@@ -4,24 +4,37 @@
 
 package com.azure.resourcemanager.hybridcompute.generated;
 
-/** Samples for LicenseProfiles CreateOrUpdate. */
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileProductType;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatus;
+import com.azure.resourcemanager.hybridcompute.models.ProductFeature;
+import java.util.Arrays;
+
+/**
+ * Samples for LicenseProfiles CreateOrUpdate.
+ */
 public final class LicenseProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/licenseProfile/LicenseProfile_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/
+     * licenseProfile/LicenseProfile_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a License Profile.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
-    public static void createOrUpdateALicenseProfile(
-        com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
-        manager
-            .licenseProfiles()
+    public static void
+        createOrUpdateALicenseProfile(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
+        manager.licenseProfiles()
             .define()
             .withRegion("eastus2euap")
             .withExistingMachine("myResourceGroup", "myMachine")
+            .withSoftwareAssuranceCustomer(true)
             .withAssignedLicense("{LicenseResourceId}")
+            .withSubscriptionStatus(LicenseProfileSubscriptionStatus.ENABLED)
+            .withProductType(LicenseProfileProductType.WINDOWS_SERVER)
+            .withProductFeatures(Arrays.asList(new ProductFeature().withName("Hotpatch")
+                .withSubscriptionStatus(LicenseProfileSubscriptionStatus.ENABLED)))
             .create();
     }
 }

@@ -27,10 +27,8 @@ public class SyncAsyncExtensionTest {
     @Order(1)
     @SyncAsyncTest
     public void sampleSyncAsyncWithReturnTest() {
-        Integer value = SyncAsyncExtension.execute(
-            SYNC_INVOCATIONS::incrementAndGet,
-            () -> Mono.fromCallable(ASYNC_INVOCATIONS::incrementAndGet)
-        );
+        Integer value = SyncAsyncExtension.execute(SYNC_INVOCATIONS::incrementAndGet,
+            () -> Mono.fromCallable(ASYNC_INVOCATIONS::incrementAndGet));
 
         assertEquals(1, value);
     }
@@ -38,10 +36,8 @@ public class SyncAsyncExtensionTest {
     @Order(2)
     @SyncAsyncTest
     public void sampleSyncAsyncWithoutReturnTest() {
-        SyncAsyncExtension.execute(
-            SYNC_INVOCATIONS::incrementAndGet,
-            () -> Mono.fromCallable(ASYNC_INVOCATIONS::incrementAndGet).then()
-        );
+        SyncAsyncExtension.execute(SYNC_INVOCATIONS::incrementAndGet,
+            () -> Mono.fromCallable(ASYNC_INVOCATIONS::incrementAndGet).then());
     }
 
     @Order(3)
@@ -53,10 +49,6 @@ public class SyncAsyncExtensionTest {
 
     @Test
     public void throwsIfExtensionUsedWithoutAnnotation() {
-        assertThrows(IllegalStateException.class,
-            () -> SyncAsyncExtension.execute(
-                () -> 1L,
-                () -> Mono.just(1L)
-            ));
+        assertThrows(IllegalStateException.class, () -> SyncAsyncExtension.execute(() -> 1L, () -> Mono.just(1L)));
     }
 }

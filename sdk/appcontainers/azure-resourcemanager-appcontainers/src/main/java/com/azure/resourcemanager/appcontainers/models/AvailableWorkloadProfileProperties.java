@@ -5,48 +5,56 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Revision resource specific properties. */
+/**
+ * Revision resource specific properties.
+ */
 @Fluent
-public final class AvailableWorkloadProfileProperties {
+public final class AvailableWorkloadProfileProperties implements JsonSerializable<AvailableWorkloadProfileProperties> {
     /*
      * Used to categorize workload profiles.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * indicates whether the profile is default for the location.
      */
-    @JsonProperty(value = "applicability")
     private Applicability applicability;
 
     /*
      * Number of cores in CPU.
      */
-    @JsonProperty(value = "cores")
     private Integer cores;
 
     /*
      * Memory in GiB.
      */
-    @JsonProperty(value = "memoryGiB")
     private Integer memoryGiB;
+
+    /*
+     * Number of GPUs.
+     */
+    private Integer gpus;
 
     /*
      * The everyday name of the workload profile.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of AvailableWorkloadProfileProperties class. */
+    /**
+     * Creates an instance of AvailableWorkloadProfileProperties class.
+     */
     public AvailableWorkloadProfileProperties() {
     }
 
     /**
      * Get the category property: Used to categorize workload profiles.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -55,7 +63,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Set the category property: Used to categorize workload profiles.
-     *
+     * 
      * @param category the category value to set.
      * @return the AvailableWorkloadProfileProperties object itself.
      */
@@ -66,7 +74,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Get the applicability property: indicates whether the profile is default for the location.
-     *
+     * 
      * @return the applicability value.
      */
     public Applicability applicability() {
@@ -75,7 +83,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Set the applicability property: indicates whether the profile is default for the location.
-     *
+     * 
      * @param applicability the applicability value to set.
      * @return the AvailableWorkloadProfileProperties object itself.
      */
@@ -86,7 +94,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Get the cores property: Number of cores in CPU.
-     *
+     * 
      * @return the cores value.
      */
     public Integer cores() {
@@ -95,7 +103,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Set the cores property: Number of cores in CPU.
-     *
+     * 
      * @param cores the cores value to set.
      * @return the AvailableWorkloadProfileProperties object itself.
      */
@@ -106,7 +114,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Get the memoryGiB property: Memory in GiB.
-     *
+     * 
      * @return the memoryGiB value.
      */
     public Integer memoryGiB() {
@@ -115,7 +123,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Set the memoryGiB property: Memory in GiB.
-     *
+     * 
      * @param memoryGiB the memoryGiB value to set.
      * @return the AvailableWorkloadProfileProperties object itself.
      */
@@ -125,8 +133,28 @@ public final class AvailableWorkloadProfileProperties {
     }
 
     /**
+     * Get the gpus property: Number of GPUs.
+     * 
+     * @return the gpus value.
+     */
+    public Integer gpus() {
+        return this.gpus;
+    }
+
+    /**
+     * Set the gpus property: Number of GPUs.
+     * 
+     * @param gpus the gpus value to set.
+     * @return the AvailableWorkloadProfileProperties object itself.
+     */
+    public AvailableWorkloadProfileProperties withGpus(Integer gpus) {
+        this.gpus = gpus;
+        return this;
+    }
+
+    /**
      * Get the displayName property: The everyday name of the workload profile.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -135,7 +163,7 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Set the displayName property: The everyday name of the workload profile.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AvailableWorkloadProfileProperties object itself.
      */
@@ -146,9 +174,62 @@ public final class AvailableWorkloadProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("applicability", this.applicability == null ? null : this.applicability.toString());
+        jsonWriter.writeNumberField("cores", this.cores);
+        jsonWriter.writeNumberField("memoryGiB", this.memoryGiB);
+        jsonWriter.writeNumberField("gpus", this.gpus);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableWorkloadProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableWorkloadProfileProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableWorkloadProfileProperties.
+     */
+    public static AvailableWorkloadProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableWorkloadProfileProperties deserializedAvailableWorkloadProfileProperties
+                = new AvailableWorkloadProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileProperties.category = reader.getString();
+                } else if ("applicability".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileProperties.applicability
+                        = Applicability.fromString(reader.getString());
+                } else if ("cores".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileProperties.cores = reader.getNullable(JsonReader::getInt);
+                } else if ("memoryGiB".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileProperties.memoryGiB = reader.getNullable(JsonReader::getInt);
+                } else if ("gpus".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileProperties.gpus = reader.getNullable(JsonReader::getInt);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAvailableWorkloadProfileProperties.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableWorkloadProfileProperties;
+        });
     }
 }

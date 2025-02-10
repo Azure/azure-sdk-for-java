@@ -6,32 +6,38 @@ package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A member of the Fleet. It contains a reference to an existing Kubernetes cluster on Azure. */
+/**
+ * A member of the Fleet. It contains a reference to an existing Kubernetes cluster on Azure.
+ */
 @Fluent
-public final class FleetMemberProperties {
+public final class FleetMemberProperties implements JsonSerializable<FleetMemberProperties> {
     /*
      * The ARM resource id of the cluster that joins the Fleet. Must be a valid Azure resource id. e.g.:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{clusterName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/
+     * managedClusters/{clusterName}'.
      */
-    @JsonProperty(value = "clusterResourceId", required = true)
     private String clusterResourceId;
 
     /*
      * The group this member belongs to for multi-cluster update management.
      */
-    @JsonProperty(value = "group")
     private String group;
 
     /*
      * The status of the last operation.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private FleetMemberProvisioningState provisioningState;
 
-    /** Creates an instance of FleetMemberProperties class. */
+    /**
+     * Creates an instance of FleetMemberProperties class.
+     */
     public FleetMemberProperties() {
     }
 
@@ -39,7 +45,7 @@ public final class FleetMemberProperties {
      * Get the clusterResourceId property: The ARM resource id of the cluster that joins the Fleet. Must be a valid
      * Azure resource id. e.g.:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{clusterName}'.
-     *
+     * 
      * @return the clusterResourceId value.
      */
     public String clusterResourceId() {
@@ -50,7 +56,7 @@ public final class FleetMemberProperties {
      * Set the clusterResourceId property: The ARM resource id of the cluster that joins the Fleet. Must be a valid
      * Azure resource id. e.g.:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{clusterName}'.
-     *
+     * 
      * @param clusterResourceId the clusterResourceId value to set.
      * @return the FleetMemberProperties object itself.
      */
@@ -61,7 +67,7 @@ public final class FleetMemberProperties {
 
     /**
      * Get the group property: The group this member belongs to for multi-cluster update management.
-     *
+     * 
      * @return the group value.
      */
     public String group() {
@@ -70,7 +76,7 @@ public final class FleetMemberProperties {
 
     /**
      * Set the group property: The group this member belongs to for multi-cluster update management.
-     *
+     * 
      * @param group the group value to set.
      * @return the FleetMemberProperties object itself.
      */
@@ -81,7 +87,7 @@ public final class FleetMemberProperties {
 
     /**
      * Get the provisioningState property: The status of the last operation.
-     *
+     * 
      * @return the provisioningState value.
      */
     public FleetMemberProvisioningState provisioningState() {
@@ -90,17 +96,59 @@ public final class FleetMemberProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clusterResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterResourceId in model FleetMemberProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clusterResourceId in model FleetMemberProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FleetMemberProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clusterResourceId", this.clusterResourceId);
+        jsonWriter.writeStringField("group", this.group);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FleetMemberProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FleetMemberProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FleetMemberProperties.
+     */
+    public static FleetMemberProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FleetMemberProperties deserializedFleetMemberProperties = new FleetMemberProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clusterResourceId".equals(fieldName)) {
+                    deserializedFleetMemberProperties.clusterResourceId = reader.getString();
+                } else if ("group".equals(fieldName)) {
+                    deserializedFleetMemberProperties.group = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFleetMemberProperties.provisioningState
+                        = FleetMemberProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFleetMemberProperties;
+        });
+    }
 }

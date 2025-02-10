@@ -6,76 +6,38 @@ package com.azure.resourcemanager.maintenance.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.maintenance.MaintenanceManager;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdate;
 import com.azure.resourcemanager.maintenance.models.UpdateStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ApplyUpdatesGetParentWithResponseMockTests {
     @Test
     public void testGetParentWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"status\":\"Pending\",\"resourceId\":\"owwquuvxz\",\"lastUpdateTime\":\"2021-05-22T14:25:48Z\"},\"id\":\"ithhqzon\",\"name\":\"sg\",\"type\":\"b\"}";
 
-        String responseStr =
-            "{\"properties\":{\"status\":\"InProgress\",\"resourceId\":\"cblylpstdbhhxsr\",\"lastUpdateTime\":\"2021-01-07T21:40:15Z\"},\"id\":\"cers\",\"name\":\"dntnevf\",\"type\":\"wjmy\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MaintenanceManager manager = MaintenanceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ApplyUpdate response = manager.applyUpdates()
+            .getParentWithResponse("ltmuwlauwzizx", "mpgcjefuzmuvpbt", "d", "morppxebmnzbtbh", "pglkf", "ohdneuel",
+                "phsdyhto", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MaintenanceManager manager =
-            MaintenanceManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ApplyUpdate response =
-            manager
-                .applyUpdates()
-                .getParentWithResponse(
-                    "bgycduiertgccym",
-                    "aolps",
-                    "lqlfm",
-                    "dnbbglzps",
-                    "iydmcwyhzdxs",
-                    "adbzmnvdfznud",
-                    "od",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(UpdateStatus.IN_PROGRESS, response.status());
-        Assertions.assertEquals("cblylpstdbhhxsr", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-07T21:40:15Z"), response.lastUpdateTime());
+        Assertions.assertEquals(UpdateStatus.PENDING, response.status());
+        Assertions.assertEquals("owwquuvxz", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T14:25:48Z"), response.lastUpdateTime());
     }
 }

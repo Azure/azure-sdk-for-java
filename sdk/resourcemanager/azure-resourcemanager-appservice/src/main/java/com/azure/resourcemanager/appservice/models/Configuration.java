@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Non versioned Container App configuration properties that define the mutable settings of a Container app.
  */
 @Fluent
-public final class Configuration {
+public final class Configuration implements JsonSerializable<Configuration> {
     /*
      * Collection of secrets used by a Container app
      */
-    @JsonProperty(value = "secrets")
     private List<Secret> secrets;
 
     /*
@@ -25,19 +28,16 @@ public final class Configuration {
      * default</item><item>Single: Only one revision can be active at a time. Revision weights can not be used in this
      * mode</item></list>
      */
-    @JsonProperty(value = "activeRevisionsMode")
     private ActiveRevisionsMode activeRevisionsMode;
 
     /*
      * Ingress configurations.
      */
-    @JsonProperty(value = "ingress")
     private Ingress ingress;
 
     /*
      * Collection of private container registry credentials for containers used by the Container app
      */
-    @JsonProperty(value = "registries")
     private List<RegistryCredentials> registries;
 
     /**
@@ -151,5 +151,54 @@ public final class Configuration {
         if (registries() != null) {
             registries().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("secrets", this.secrets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("activeRevisionsMode",
+            this.activeRevisionsMode == null ? null : this.activeRevisionsMode.toString());
+        jsonWriter.writeJsonField("ingress", this.ingress);
+        jsonWriter.writeArrayField("registries", this.registries, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Configuration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Configuration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Configuration.
+     */
+    public static Configuration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Configuration deserializedConfiguration = new Configuration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secrets".equals(fieldName)) {
+                    List<Secret> secrets = reader.readArray(reader1 -> Secret.fromJson(reader1));
+                    deserializedConfiguration.secrets = secrets;
+                } else if ("activeRevisionsMode".equals(fieldName)) {
+                    deserializedConfiguration.activeRevisionsMode = ActiveRevisionsMode.fromString(reader.getString());
+                } else if ("ingress".equals(fieldName)) {
+                    deserializedConfiguration.ingress = Ingress.fromJson(reader);
+                } else if ("registries".equals(fieldName)) {
+                    List<RegistryCredentials> registries
+                        = reader.readArray(reader1 -> RegistryCredentials.fromJson(reader1));
+                    deserializedConfiguration.registries = registries;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfiguration;
+        });
     }
 }

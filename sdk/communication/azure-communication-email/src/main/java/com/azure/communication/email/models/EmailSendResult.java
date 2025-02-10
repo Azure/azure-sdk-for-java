@@ -5,28 +5,29 @@ package com.azure.communication.email.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.models.ResponseError;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Status of the long running operation. */
 @Fluent
-public final class EmailSendResult {
+public final class EmailSendResult implements JsonSerializable<EmailSendResult> {
     /*
      * The unique id of the operation. Use a UUID.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Status of operation.
      */
-    @JsonProperty(value = "status", required = true)
     private EmailSendStatus status;
 
     /*
      * Response error when status is a non-success terminal state.
      */
-    @JsonProperty(value = "error")
     private ResponseError error;
 
     /**
@@ -36,11 +37,7 @@ public final class EmailSendResult {
      * @param status the status value to set.
      * @param error the error value to set.
      */
-    @JsonCreator
-    public EmailSendResult(
-        @JsonProperty(value = "id", required = true) String id,
-        @JsonProperty(value = "status", required = true) EmailSendStatus status,
-        @JsonProperty(value = "error") ResponseError error) {
+    public EmailSendResult(String id, EmailSendStatus status, ResponseError error) {
         this.id = id;
         this.status = status;
         this.error = error;
@@ -71,5 +68,47 @@ public final class EmailSendResult {
      */
     public ResponseError getError() {
         return this.error;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id);
+        jsonWriter.writeStringField("status", status != null ? status.toString() : null);
+        jsonWriter.writeJsonField("error", error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailSendResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailSendResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EmailSendResult.
+     */
+    public static EmailSendResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            EmailSendStatus status = null;
+            ResponseError error = null;
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = EmailSendStatus.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    error = ResponseError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new EmailSendResult(id, status, error);
+        });
     }
 }

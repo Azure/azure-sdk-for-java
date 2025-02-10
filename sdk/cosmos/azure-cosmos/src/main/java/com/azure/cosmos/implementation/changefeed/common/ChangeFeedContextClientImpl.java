@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -39,7 +38,6 @@ import reactor.core.scheduler.Schedulers;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -53,6 +51,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     private final AsyncDocumentClient documentClient;
     private final CosmosAsyncContainer cosmosContainer;
     private Scheduler scheduler;
+   private static final ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor cosmosAsyncDatabaseAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor();
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
@@ -144,41 +144,10 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         if (isSplitHandlingDisabled) {
             ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
         }
-
-        AsyncDocumentClient clientWrapper =
-            CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
-        Flux<FeedResponse<T>> feedResponseFlux =
-            clientWrapper
-                .getCollectionCache()
-                .resolveByNameAsync(
-                    null,
-                    BridgeInternal.extractContainerSelfLink(collectionLink),
-                    null)
-                .flatMapMany((collection) -> {
-                    if (collection == null) {
-                        throw new IllegalStateException("Collection cannot be null");
-                    }
-
-                    return clientWrapper
-                        .queryDocumentChangeFeed(collection, changeFeedRequestOptions, Document.class)
-                        .map(response -> {
-                            List<T> results = response.getResults()
-                                                             .stream()
-                                                             .map(document ->
-                                                                 ModelBridgeInternal.toObjectFromJsonSerializable(
-                                                                     document,
-                                                                     klass))
-                                                             .collect(Collectors.toList());
-                            return BridgeInternal.toFeedResponsePage(
-                                results,
-                                response.getResponseHeaders(),
-                                ImplementationBridgeHelpers
-                                    .FeedResponseHelper
-                                    .getFeedResponseAccessor().getNoChanges(response),
-                                response.getCosmosDiagnostics());
-                        });
-                });
-        return feedResponseFlux.publishOn(this.scheduler);
+        return collectionLink
+            .queryChangeFeed(changeFeedRequestOptions, klass)
+            .byPage().take(1, true)
+            .publishOn(this.scheduler);
     }
 
     @Override

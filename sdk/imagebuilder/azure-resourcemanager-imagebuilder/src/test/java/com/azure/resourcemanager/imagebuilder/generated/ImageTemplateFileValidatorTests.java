@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateFileValidatorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateFileValidator model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"File\",\"sourceUri\":\"lhslazjdyggdtj\",\"sha256Checksum\":\"hbkuofqwey\",\"destination\":\"menevfyexfwh\",\"name\":\"cibvyvdcsitynn\"}")
-                .toObject(ImageTemplateFileValidator.class);
-        Assertions.assertEquals("cibvyvdcsitynn", model.name());
-        Assertions.assertEquals("lhslazjdyggdtj", model.sourceUri());
-        Assertions.assertEquals("hbkuofqwey", model.sha256Checksum());
-        Assertions.assertEquals("menevfyexfwh", model.destination());
+        ImageTemplateFileValidator model = BinaryData.fromString(
+            "{\"type\":\"File\",\"sourceUri\":\"czvyifq\",\"sha256Checksum\":\"kdvjsll\",\"destination\":\"vvdfwatkpnpul\",\"name\":\"xbczwtruwiqz\"}")
+            .toObject(ImageTemplateFileValidator.class);
+        Assertions.assertEquals("xbczwtruwiqz", model.name());
+        Assertions.assertEquals("czvyifq", model.sourceUri());
+        Assertions.assertEquals("kdvjsll", model.sha256Checksum());
+        Assertions.assertEquals("vvdfwatkpnpul", model.destination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateFileValidator model =
-            new ImageTemplateFileValidator()
-                .withName("cibvyvdcsitynn")
-                .withSourceUri("lhslazjdyggdtj")
-                .withSha256Checksum("hbkuofqwey")
-                .withDestination("menevfyexfwh");
+        ImageTemplateFileValidator model = new ImageTemplateFileValidator().withName("xbczwtruwiqz")
+            .withSourceUri("czvyifq")
+            .withSha256Checksum("kdvjsll")
+            .withDestination("vvdfwatkpnpul");
         model = BinaryData.fromObject(model).toObject(ImageTemplateFileValidator.class);
-        Assertions.assertEquals("cibvyvdcsitynn", model.name());
-        Assertions.assertEquals("lhslazjdyggdtj", model.sourceUri());
-        Assertions.assertEquals("hbkuofqwey", model.sha256Checksum());
-        Assertions.assertEquals("menevfyexfwh", model.destination());
+        Assertions.assertEquals("xbczwtruwiqz", model.name());
+        Assertions.assertEquals("czvyifq", model.sourceUri());
+        Assertions.assertEquals("kdvjsll", model.sha256Checksum());
+        Assertions.assertEquals("vvdfwatkpnpul", model.destination());
     }
 }

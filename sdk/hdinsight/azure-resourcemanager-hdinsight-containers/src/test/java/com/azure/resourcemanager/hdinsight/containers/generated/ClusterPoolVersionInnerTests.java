@@ -6,28 +6,29 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterPoolVersionInner;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolVersionProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class ClusterPoolVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolVersionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"clusterPoolVersion\":\"ae\",\"aksVersion\":\"iahxicsl\",\"isPreview\":true},\"id\":\"qzpiyyl\",\"name\":\"alnswhccsphk\",\"type\":\"ivwitqscywugg\"}")
-                .toObject(ClusterPoolVersionInner.class);
-        Assertions.assertEquals("ae", model.clusterPoolVersion());
-        Assertions.assertEquals("iahxicsl", model.aksVersion());
-        Assertions.assertEquals(true, model.isPreview());
+        ClusterPoolVersionInner model = BinaryData.fromString(
+            "{\"properties\":{\"clusterPoolVersion\":\"jgcyztsfmznba\",\"aksVersion\":\"ph\",\"isPreview\":true},\"id\":\"rn\",\"name\":\"pxehuwrykqga\",\"type\":\"fmviklby\"}")
+            .toObject(ClusterPoolVersionInner.class);
+        Assertions.assertEquals("jgcyztsfmznba", model.properties().clusterPoolVersion());
+        Assertions.assertEquals("ph", model.properties().aksVersion());
+        Assertions.assertEquals(true, model.properties().isPreview());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolVersionInner model =
-            new ClusterPoolVersionInner().withClusterPoolVersion("ae").withAksVersion("iahxicsl").withIsPreview(true);
+        ClusterPoolVersionInner model = new ClusterPoolVersionInner()
+            .withProperties(new ClusterPoolVersionProperties().withClusterPoolVersion("jgcyztsfmznba")
+                .withAksVersion("ph")
+                .withIsPreview(true));
         model = BinaryData.fromObject(model).toObject(ClusterPoolVersionInner.class);
-        Assertions.assertEquals("ae", model.clusterPoolVersion());
-        Assertions.assertEquals("iahxicsl", model.aksVersion());
-        Assertions.assertEquals(true, model.isPreview());
+        Assertions.assertEquals("jgcyztsfmznba", model.properties().clusterPoolVersion());
+        Assertions.assertEquals("ph", model.properties().aksVersion());
+        Assertions.assertEquals(true, model.properties().isPreview());
     }
 }

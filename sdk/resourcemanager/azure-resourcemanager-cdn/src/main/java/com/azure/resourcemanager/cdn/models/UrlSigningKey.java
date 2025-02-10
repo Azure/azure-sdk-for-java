@@ -6,32 +6,38 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Url signing key. */
+/**
+ * Url signing key.
+ */
 @Fluent
-public final class UrlSigningKey {
+public final class UrlSigningKey implements JsonSerializable<UrlSigningKey> {
     /*
      * Defines the customer defined key Id. This id will exist in the incoming request to indicate the key used to form
      * the hash.
      */
-    @JsonProperty(value = "keyId", required = true)
     private String keyId;
 
     /*
      * Defines the parameters for using customer key vault for Url Signing Key.
      */
-    @JsonProperty(value = "keySourceParameters", required = true)
     private KeyVaultSigningKeyParameters keySourceParameters;
 
-    /** Creates an instance of UrlSigningKey class. */
+    /**
+     * Creates an instance of UrlSigningKey class.
+     */
     public UrlSigningKey() {
     }
 
     /**
      * Get the keyId property: Defines the customer defined key Id. This id will exist in the incoming request to
      * indicate the key used to form the hash.
-     *
+     * 
      * @return the keyId value.
      */
     public String keyId() {
@@ -41,7 +47,7 @@ public final class UrlSigningKey {
     /**
      * Set the keyId property: Defines the customer defined key Id. This id will exist in the incoming request to
      * indicate the key used to form the hash.
-     *
+     * 
      * @param keyId the keyId value to set.
      * @return the UrlSigningKey object itself.
      */
@@ -52,7 +58,7 @@ public final class UrlSigningKey {
 
     /**
      * Get the keySourceParameters property: Defines the parameters for using customer key vault for Url Signing Key.
-     *
+     * 
      * @return the keySourceParameters value.
      */
     public KeyVaultSigningKeyParameters keySourceParameters() {
@@ -61,7 +67,7 @@ public final class UrlSigningKey {
 
     /**
      * Set the keySourceParameters property: Defines the parameters for using customer key vault for Url Signing Key.
-     *
+     * 
      * @param keySourceParameters the keySourceParameters value to set.
      * @return the UrlSigningKey object itself.
      */
@@ -72,24 +78,62 @@ public final class UrlSigningKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyId in model UrlSigningKey"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keyId in model UrlSigningKey"));
         }
         if (keySourceParameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keySourceParameters in model UrlSigningKey"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keySourceParameters in model UrlSigningKey"));
         } else {
             keySourceParameters().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UrlSigningKey.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyId", this.keyId);
+        jsonWriter.writeJsonField("keySourceParameters", this.keySourceParameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UrlSigningKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UrlSigningKey if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UrlSigningKey.
+     */
+    public static UrlSigningKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UrlSigningKey deserializedUrlSigningKey = new UrlSigningKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyId".equals(fieldName)) {
+                    deserializedUrlSigningKey.keyId = reader.getString();
+                } else if ("keySourceParameters".equals(fieldName)) {
+                    deserializedUrlSigningKey.keySourceParameters = KeyVaultSigningKeyParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUrlSigningKey;
+        });
+    }
 }

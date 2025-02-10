@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.IoTSecurityDeviceRecommendation
 public final class IoTSecurityDeviceRecommendationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IoTSecurityDeviceRecommendation model =
-            BinaryData
-                .fromString(
-                    "{\"recommendationDisplayName\":\"vgomz\",\"reportedSeverity\":\"Low\",\"devicesCount\":2110052424631332756}")
-                .toObject(IoTSecurityDeviceRecommendation.class);
+        IoTSecurityDeviceRecommendation model = BinaryData.fromString(
+            "{\"recommendationDisplayName\":\"xrhdwbavxbniwdjs\",\"reportedSeverity\":\"Low\",\"devicesCount\":2880353456116262366}")
+            .toObject(IoTSecurityDeviceRecommendation.class);
     }
 
     @org.junit.jupiter.api.Test

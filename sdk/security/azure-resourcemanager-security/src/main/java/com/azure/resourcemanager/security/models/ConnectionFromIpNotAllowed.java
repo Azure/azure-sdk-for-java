@@ -5,27 +5,51 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Inbound connection from an ip that isn't allowed. Allow list consists of ipv4 or ipv6 range in CIDR notation. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
-@JsonTypeName("ConnectionFromIpNotAllowed")
+/**
+ * Inbound connection from an ip that isn't allowed. Allow list consists of ipv4 or ipv6 range in CIDR notation.
+ */
 @Fluent
 public final class ConnectionFromIpNotAllowed extends AllowlistCustomAlertRule {
-    /** Creates an instance of ConnectionFromIpNotAllowed class. */
+    /*
+     * The type of the custom alert rule.
+     */
+    private String ruleType = "ConnectionFromIpNotAllowed";
+
+    /**
+     * Creates an instance of ConnectionFromIpNotAllowed class.
+     */
     public ConnectionFromIpNotAllowed() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionFromIpNotAllowed withAllowlistValues(List<String> allowlistValues) {
         super.withAllowlistValues(allowlistValues);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionFromIpNotAllowed withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -34,11 +58,68 @@ public final class ConnectionFromIpNotAllowed extends AllowlistCustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (allowlistValues() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property allowlistValues in model ConnectionFromIpNotAllowed"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionFromIpNotAllowed.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeArrayField("allowlistValues", allowlistValues(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionFromIpNotAllowed from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionFromIpNotAllowed if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionFromIpNotAllowed.
+     */
+    public static ConnectionFromIpNotAllowed fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionFromIpNotAllowed deserializedConnectionFromIpNotAllowed = new ConnectionFromIpNotAllowed();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedConnectionFromIpNotAllowed.withIsEnabled(reader.getBoolean());
+                } else if ("allowlistValues".equals(fieldName)) {
+                    List<String> allowlistValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConnectionFromIpNotAllowed.withAllowlistValues(allowlistValues);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedConnectionFromIpNotAllowed.withDisplayName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedConnectionFromIpNotAllowed.withDescription(reader.getString());
+                } else if ("valueType".equals(fieldName)) {
+                    deserializedConnectionFromIpNotAllowed.withValueType(ValueType.fromString(reader.getString()));
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedConnectionFromIpNotAllowed.ruleType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionFromIpNotAllowed;
+        });
     }
 }

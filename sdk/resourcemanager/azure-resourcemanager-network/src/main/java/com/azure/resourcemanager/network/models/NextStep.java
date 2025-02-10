@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class NextStep extends ExpandableStringEnum<NextStep> {
      * @param name a name to look for.
      * @return the corresponding NextStep.
      */
-    @JsonCreator
     public static NextStep fromString(String name) {
         return fromString(name, NextStep.class);
     }

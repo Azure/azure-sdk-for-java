@@ -6,51 +6,34 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.ResourceMetadata;
-import java.util.HashMap;
-import java.util.Map;
+import com.azure.resourcemanager.appcomplianceautomation.models.ResourceOrigin;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceMetadataTests {
-    @Test
-    public void testDeserialize() {
-        ResourceMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"resourceId\":\"yypnddhsgcbacphe\",\"resourceType\":\"ot\",\"resourceKind\":\"qgoulznd\",\"resourceName\":\"kwy\",\"tags\":{\"rxybz\":\"fgibmadgakeq\",\"mnkzsmod\":\"qedqytbciqfoufl\"}}")
-                .toObject(ResourceMetadata.class);
-        Assertions.assertEquals("yypnddhsgcbacphe", model.resourceId());
-        Assertions.assertEquals("ot", model.resourceType());
-        Assertions.assertEquals("qgoulznd", model.resourceKind());
-        Assertions.assertEquals("kwy", model.resourceName());
-        Assertions.assertEquals("fgibmadgakeq", model.tags().get("rxybz"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ResourceMetadata model = BinaryData.fromString(
+            "{\"resourceId\":\"dndnvow\",\"resourceType\":\"jjugwdkcglhslaz\",\"resourceKind\":\"yggdtjixh\",\"resourceOrigin\":\"GCP\",\"accountId\":\"fqweykhmene\"}")
+            .toObject(ResourceMetadata.class);
+        Assertions.assertEquals("dndnvow", model.resourceId());
+        Assertions.assertEquals("jjugwdkcglhslaz", model.resourceType());
+        Assertions.assertEquals("yggdtjixh", model.resourceKind());
+        Assertions.assertEquals(ResourceOrigin.GCP, model.resourceOrigin());
+        Assertions.assertEquals("fqweykhmene", model.accountId());
     }
 
-    @Test
-    public void testSerialize() {
-        ResourceMetadata model =
-            new ResourceMetadata()
-                .withResourceId("yypnddhsgcbacphe")
-                .withResourceType("ot")
-                .withResourceKind("qgoulznd")
-                .withResourceName("kwy")
-                .withTags(mapOf("rxybz", "fgibmadgakeq", "mnkzsmod", "qedqytbciqfoufl"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ResourceMetadata model = new ResourceMetadata().withResourceId("dndnvow")
+            .withResourceType("jjugwdkcglhslaz")
+            .withResourceKind("yggdtjixh")
+            .withResourceOrigin(ResourceOrigin.GCP)
+            .withAccountId("fqweykhmene");
         model = BinaryData.fromObject(model).toObject(ResourceMetadata.class);
-        Assertions.assertEquals("yypnddhsgcbacphe", model.resourceId());
-        Assertions.assertEquals("ot", model.resourceType());
-        Assertions.assertEquals("qgoulznd", model.resourceKind());
-        Assertions.assertEquals("kwy", model.resourceName());
-        Assertions.assertEquals("fgibmadgakeq", model.tags().get("rxybz"));
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals("dndnvow", model.resourceId());
+        Assertions.assertEquals("jjugwdkcglhslaz", model.resourceType());
+        Assertions.assertEquals("yggdtjixh", model.resourceKind());
+        Assertions.assertEquals(ResourceOrigin.GCP, model.resourceOrigin());
+        Assertions.assertEquals("fqweykhmene", model.accountId());
     }
 }

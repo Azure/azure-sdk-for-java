@@ -26,11 +26,11 @@ class BootstrapperImpl implements Bootstrapper {
 
     public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime) {
         if (synchronizer == null) {
-            throw new IllegalArgumentException("synchronizer");
+            throw new IllegalArgumentException("synchronizer cannot be null!");
         }
 
         if (leaseStore == null) {
-            throw new IllegalArgumentException("leaseStore");
+            throw new IllegalArgumentException("leaseStore cannot be null!");
         }
 
         if (lockTime == null || lockTime.isNegative() || lockTime.isZero()) {
@@ -59,6 +59,9 @@ class BootstrapperImpl implements Bootstrapper {
                 this.isInitialized = initialized;
 
                 if (initialized) {
+                    // Compared to epk version based lease, there is no need to verify the changeFeedProcessor has been initialized
+                    // with the same change feed mode as the one being tracked in the lease
+                    // because only incremental change feed mode is supported in the pkRange based lease
                     return Mono.empty();
                 } else {
                     logger.info("Acquire initialization lock");

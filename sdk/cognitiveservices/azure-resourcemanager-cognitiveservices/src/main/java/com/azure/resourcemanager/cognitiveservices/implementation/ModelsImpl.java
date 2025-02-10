@@ -19,20 +19,20 @@ public final class ModelsImpl implements Models {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    public ModelsImpl(
-        ModelsClient innerClient, com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
+    public ModelsImpl(ModelsClient innerClient,
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Model> list(String location) {
         PagedIterable<ModelInner> inner = this.serviceClient().list(location);
-        return Utils.mapPage(inner, inner1 -> new ModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Model> list(String location, Context context) {
         PagedIterable<ModelInner> inner = this.serviceClient().list(location, context);
-        return Utils.mapPage(inner, inner1 -> new ModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ModelImpl(inner1, this.manager()));
     }
 
     private ModelsClient serviceClient() {

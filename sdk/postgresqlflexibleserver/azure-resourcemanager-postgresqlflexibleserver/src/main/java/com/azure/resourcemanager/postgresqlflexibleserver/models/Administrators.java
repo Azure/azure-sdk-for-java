@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Administrators. */
+/**
+ * Resource collection API of Administrators.
+ */
 public interface Administrators {
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -24,7 +26,7 @@ public interface Administrators {
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -37,7 +39,7 @@ public interface Administrators {
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -47,12 +49,12 @@ public interface Administrators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a server along with {@link Response}.
      */
-    Response<ActiveDirectoryAdministrator> getWithResponse(
-        String resourceGroupName, String serverName, String objectId, Context context);
+    Response<ActiveDirectoryAdministrator> getWithResponse(String resourceGroupName, String serverName, String objectId,
+        Context context);
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -65,7 +67,7 @@ public interface Administrators {
 
     /**
      * List all the AAD administrators for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,7 +79,7 @@ public interface Administrators {
 
     /**
      * List all the AAD administrators for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -86,12 +88,12 @@ public interface Administrators {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of active directory administrators as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ActiveDirectoryAdministrator> listByServer(
-        String resourceGroupName, String serverName, Context context);
+    PagedIterable<ActiveDirectoryAdministrator> listByServer(String resourceGroupName, String serverName,
+        Context context);
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +104,7 @@ public interface Administrators {
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface Administrators {
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +126,7 @@ public interface Administrators {
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +137,7 @@ public interface Administrators {
 
     /**
      * Begins definition for a new ActiveDirectoryAdministrator resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ActiveDirectoryAdministrator definition.
      */

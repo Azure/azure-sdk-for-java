@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public final class FeedRangeEpkImpl extends FeedRangeInternal {
@@ -203,8 +202,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                                             "EpkRange %s spans %s physical partitions: %s",
                                             this.range,
                                             pkRanges.size(),
-                                            pkRanges.stream().map(pkRange -> pkRange.getId()).collect(Collectors.toList()),
-                                    this.range));
+                                            pkRanges.stream().map(pkRange -> pkRange.getId()).collect(Collectors.toList())));
                             BridgeInternal.setSubStatusCode(
                                 goneException,
                                 HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
@@ -219,6 +217,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                             // 2) The EpkRange spans exactly one physical partition
                             // In this case we can route to the physical pkrange id
                             request.routeTo(new PartitionKeyRangeIdentity(pkRanges.get(0).getId()));
+                            request.setHasFeedRangeFilteringBeenApplied(true);
                         } else {
                             // 3) The EpkRange spans less than single physical partition
                             // In this case we route to the physical partition and
@@ -236,6 +235,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                                 HttpConstants.HttpHeaders.END_EPK,
                                 this.range.getMax());
 
+                            request.setHasFeedRangeFilteringBeenApplied(true);
                         }
 
                         return Mono.just(request);
@@ -258,7 +258,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
         if (this.range != null) {
             ModelBridgeInternal.populatePropertyBag(this.range);
-            setProperty(serializable, Constants.Properties.RANGE, this.range);
+            serializable.set(Constants.Properties.RANGE, this.range);
         }
     }
 

@@ -6,90 +6,86 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Shipping address where customer wishes to receive the device. */
+/**
+ * Shipping address where customer wishes to receive the device.
+ */
 @Fluent
-public final class ShippingAddress {
+public final class ShippingAddress implements JsonSerializable<ShippingAddress> {
     /*
      * Street Address line 1.
      */
-    @JsonProperty(value = "streetAddress1", required = true)
     private String streetAddress1;
 
     /*
      * Street Address line 2.
      */
-    @JsonProperty(value = "streetAddress2")
     private String streetAddress2;
 
     /*
      * Street Address line 3.
      */
-    @JsonProperty(value = "streetAddress3")
     private String streetAddress3;
 
     /*
      * Name of the City.
      */
-    @JsonProperty(value = "city")
     private String city;
 
     /*
      * Name of the State or Province.
      */
-    @JsonProperty(value = "stateOrProvince")
     private String stateOrProvince;
 
     /*
      * Name of the Country.
      */
-    @JsonProperty(value = "country", required = true)
     private String country;
 
     /*
      * Postal code.
      */
-    @JsonProperty(value = "postalCode")
     private String postalCode;
 
     /*
      * Extended Zip Code.
      */
-    @JsonProperty(value = "zipExtendedCode")
     private String zipExtendedCode;
 
     /*
      * Name of the company.
      */
-    @JsonProperty(value = "companyName")
     private String companyName;
 
     /*
      * Type of address.
      */
-    @JsonProperty(value = "addressType")
     private AddressType addressType;
 
     /*
      * Flag to indicate if customer has chosen to skip default address validation
      */
-    @JsonProperty(value = "skipAddressValidation")
     private Boolean skipAddressValidation;
 
     /*
      * Tax Identification Number
      */
-    @JsonProperty(value = "taxIdentificationNumber")
     private String taxIdentificationNumber;
 
-    /** Creates an instance of ShippingAddress class. */
+    /**
+     * Creates an instance of ShippingAddress class.
+     */
     public ShippingAddress() {
     }
 
     /**
      * Get the streetAddress1 property: Street Address line 1.
-     *
+     * 
      * @return the streetAddress1 value.
      */
     public String streetAddress1() {
@@ -98,7 +94,7 @@ public final class ShippingAddress {
 
     /**
      * Set the streetAddress1 property: Street Address line 1.
-     *
+     * 
      * @param streetAddress1 the streetAddress1 value to set.
      * @return the ShippingAddress object itself.
      */
@@ -109,7 +105,7 @@ public final class ShippingAddress {
 
     /**
      * Get the streetAddress2 property: Street Address line 2.
-     *
+     * 
      * @return the streetAddress2 value.
      */
     public String streetAddress2() {
@@ -118,7 +114,7 @@ public final class ShippingAddress {
 
     /**
      * Set the streetAddress2 property: Street Address line 2.
-     *
+     * 
      * @param streetAddress2 the streetAddress2 value to set.
      * @return the ShippingAddress object itself.
      */
@@ -129,7 +125,7 @@ public final class ShippingAddress {
 
     /**
      * Get the streetAddress3 property: Street Address line 3.
-     *
+     * 
      * @return the streetAddress3 value.
      */
     public String streetAddress3() {
@@ -138,7 +134,7 @@ public final class ShippingAddress {
 
     /**
      * Set the streetAddress3 property: Street Address line 3.
-     *
+     * 
      * @param streetAddress3 the streetAddress3 value to set.
      * @return the ShippingAddress object itself.
      */
@@ -149,7 +145,7 @@ public final class ShippingAddress {
 
     /**
      * Get the city property: Name of the City.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -158,7 +154,7 @@ public final class ShippingAddress {
 
     /**
      * Set the city property: Name of the City.
-     *
+     * 
      * @param city the city value to set.
      * @return the ShippingAddress object itself.
      */
@@ -169,7 +165,7 @@ public final class ShippingAddress {
 
     /**
      * Get the stateOrProvince property: Name of the State or Province.
-     *
+     * 
      * @return the stateOrProvince value.
      */
     public String stateOrProvince() {
@@ -178,7 +174,7 @@ public final class ShippingAddress {
 
     /**
      * Set the stateOrProvince property: Name of the State or Province.
-     *
+     * 
      * @param stateOrProvince the stateOrProvince value to set.
      * @return the ShippingAddress object itself.
      */
@@ -189,7 +185,7 @@ public final class ShippingAddress {
 
     /**
      * Get the country property: Name of the Country.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -198,7 +194,7 @@ public final class ShippingAddress {
 
     /**
      * Set the country property: Name of the Country.
-     *
+     * 
      * @param country the country value to set.
      * @return the ShippingAddress object itself.
      */
@@ -209,7 +205,7 @@ public final class ShippingAddress {
 
     /**
      * Get the postalCode property: Postal code.
-     *
+     * 
      * @return the postalCode value.
      */
     public String postalCode() {
@@ -218,7 +214,7 @@ public final class ShippingAddress {
 
     /**
      * Set the postalCode property: Postal code.
-     *
+     * 
      * @param postalCode the postalCode value to set.
      * @return the ShippingAddress object itself.
      */
@@ -229,7 +225,7 @@ public final class ShippingAddress {
 
     /**
      * Get the zipExtendedCode property: Extended Zip Code.
-     *
+     * 
      * @return the zipExtendedCode value.
      */
     public String zipExtendedCode() {
@@ -238,7 +234,7 @@ public final class ShippingAddress {
 
     /**
      * Set the zipExtendedCode property: Extended Zip Code.
-     *
+     * 
      * @param zipExtendedCode the zipExtendedCode value to set.
      * @return the ShippingAddress object itself.
      */
@@ -249,7 +245,7 @@ public final class ShippingAddress {
 
     /**
      * Get the companyName property: Name of the company.
-     *
+     * 
      * @return the companyName value.
      */
     public String companyName() {
@@ -258,7 +254,7 @@ public final class ShippingAddress {
 
     /**
      * Set the companyName property: Name of the company.
-     *
+     * 
      * @param companyName the companyName value to set.
      * @return the ShippingAddress object itself.
      */
@@ -269,7 +265,7 @@ public final class ShippingAddress {
 
     /**
      * Get the addressType property: Type of address.
-     *
+     * 
      * @return the addressType value.
      */
     public AddressType addressType() {
@@ -278,7 +274,7 @@ public final class ShippingAddress {
 
     /**
      * Set the addressType property: Type of address.
-     *
+     * 
      * @param addressType the addressType value to set.
      * @return the ShippingAddress object itself.
      */
@@ -290,7 +286,7 @@ public final class ShippingAddress {
     /**
      * Get the skipAddressValidation property: Flag to indicate if customer has chosen to skip default address
      * validation.
-     *
+     * 
      * @return the skipAddressValidation value.
      */
     public Boolean skipAddressValidation() {
@@ -300,7 +296,7 @@ public final class ShippingAddress {
     /**
      * Set the skipAddressValidation property: Flag to indicate if customer has chosen to skip default address
      * validation.
-     *
+     * 
      * @param skipAddressValidation the skipAddressValidation value to set.
      * @return the ShippingAddress object itself.
      */
@@ -311,7 +307,7 @@ public final class ShippingAddress {
 
     /**
      * Get the taxIdentificationNumber property: Tax Identification Number.
-     *
+     * 
      * @return the taxIdentificationNumber value.
      */
     public String taxIdentificationNumber() {
@@ -320,7 +316,7 @@ public final class ShippingAddress {
 
     /**
      * Set the taxIdentificationNumber property: Tax Identification Number.
-     *
+     * 
      * @param taxIdentificationNumber the taxIdentificationNumber value to set.
      * @return the ShippingAddress object itself.
      */
@@ -331,21 +327,89 @@ public final class ShippingAddress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (streetAddress1() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property streetAddress1 in model ShippingAddress"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property streetAddress1 in model ShippingAddress"));
         }
         if (country() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property country in model ShippingAddress"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property country in model ShippingAddress"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ShippingAddress.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("streetAddress1", this.streetAddress1);
+        jsonWriter.writeStringField("country", this.country);
+        jsonWriter.writeStringField("streetAddress2", this.streetAddress2);
+        jsonWriter.writeStringField("streetAddress3", this.streetAddress3);
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeStringField("stateOrProvince", this.stateOrProvince);
+        jsonWriter.writeStringField("postalCode", this.postalCode);
+        jsonWriter.writeStringField("zipExtendedCode", this.zipExtendedCode);
+        jsonWriter.writeStringField("companyName", this.companyName);
+        jsonWriter.writeStringField("addressType", this.addressType == null ? null : this.addressType.toString());
+        jsonWriter.writeBooleanField("skipAddressValidation", this.skipAddressValidation);
+        jsonWriter.writeStringField("taxIdentificationNumber", this.taxIdentificationNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ShippingAddress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ShippingAddress if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ShippingAddress.
+     */
+    public static ShippingAddress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ShippingAddress deserializedShippingAddress = new ShippingAddress();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("streetAddress1".equals(fieldName)) {
+                    deserializedShippingAddress.streetAddress1 = reader.getString();
+                } else if ("country".equals(fieldName)) {
+                    deserializedShippingAddress.country = reader.getString();
+                } else if ("streetAddress2".equals(fieldName)) {
+                    deserializedShippingAddress.streetAddress2 = reader.getString();
+                } else if ("streetAddress3".equals(fieldName)) {
+                    deserializedShippingAddress.streetAddress3 = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedShippingAddress.city = reader.getString();
+                } else if ("stateOrProvince".equals(fieldName)) {
+                    deserializedShippingAddress.stateOrProvince = reader.getString();
+                } else if ("postalCode".equals(fieldName)) {
+                    deserializedShippingAddress.postalCode = reader.getString();
+                } else if ("zipExtendedCode".equals(fieldName)) {
+                    deserializedShippingAddress.zipExtendedCode = reader.getString();
+                } else if ("companyName".equals(fieldName)) {
+                    deserializedShippingAddress.companyName = reader.getString();
+                } else if ("addressType".equals(fieldName)) {
+                    deserializedShippingAddress.addressType = AddressType.fromString(reader.getString());
+                } else if ("skipAddressValidation".equals(fieldName)) {
+                    deserializedShippingAddress.skipAddressValidation = reader.getNullable(JsonReader::getBoolean);
+                } else if ("taxIdentificationNumber".equals(fieldName)) {
+                    deserializedShippingAddress.taxIdentificationNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedShippingAddress;
+        });
+    }
 }

@@ -6,36 +6,41 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The node profile. */
+/**
+ * The node profile.
+ */
 @Fluent
-public final class NodeProfile {
+public final class NodeProfile implements JsonSerializable<NodeProfile> {
     /*
      * The node type.
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
      * The virtual machine SKU.
      */
-    @JsonProperty(value = "vmSize", required = true)
     private String vmSize;
 
     /*
      * The number of virtual machines.
      */
-    @JsonProperty(value = "count", required = true)
     private int count;
 
-    /** Creates an instance of NodeProfile class. */
+    /**
+     * Creates an instance of NodeProfile class.
+     */
     public NodeProfile() {
     }
 
     /**
      * Get the type property: The node type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -44,7 +49,7 @@ public final class NodeProfile {
 
     /**
      * Set the type property: The node type.
-     *
+     * 
      * @param type the type value to set.
      * @return the NodeProfile object itself.
      */
@@ -55,7 +60,7 @@ public final class NodeProfile {
 
     /**
      * Get the vmSize property: The virtual machine SKU.
-     *
+     * 
      * @return the vmSize value.
      */
     public String vmSize() {
@@ -64,7 +69,7 @@ public final class NodeProfile {
 
     /**
      * Set the vmSize property: The virtual machine SKU.
-     *
+     * 
      * @param vmSize the vmSize value to set.
      * @return the NodeProfile object itself.
      */
@@ -75,7 +80,7 @@ public final class NodeProfile {
 
     /**
      * Get the count property: The number of virtual machines.
-     *
+     * 
      * @return the count value.
      */
     public int count() {
@@ -84,7 +89,7 @@ public final class NodeProfile {
 
     /**
      * Set the count property: The number of virtual machines.
-     *
+     * 
      * @param count the count value to set.
      * @return the NodeProfile object itself.
      */
@@ -95,21 +100,62 @@ public final class NodeProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model NodeProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model NodeProfile"));
         }
         if (vmSize() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property vmSize in model NodeProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property vmSize in model NodeProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NodeProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeIntField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NodeProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NodeProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NodeProfile.
+     */
+    public static NodeProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NodeProfile deserializedNodeProfile = new NodeProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedNodeProfile.type = reader.getString();
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedNodeProfile.vmSize = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedNodeProfile.count = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNodeProfile;
+        });
+    }
 }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether this version is obsolete. */
+/**
+ * Indicates whether this version is obsolete.
+ */
 public final class ObsoleteVersion extends ExpandableStringEnum<ObsoleteVersion> {
-    /** Static value Obsolete for ObsoleteVersion. */
+    /**
+     * Static value Obsolete for ObsoleteVersion.
+     */
     public static final ObsoleteVersion OBSOLETE = fromString("Obsolete");
 
-    /** Static value NotObsolete for ObsoleteVersion. */
+    /**
+     * Static value NotObsolete for ObsoleteVersion.
+     */
     public static final ObsoleteVersion NOT_OBSOLETE = fromString("NotObsolete");
 
     /**
      * Creates a new instance of ObsoleteVersion value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ObsoleteVersion extends ExpandableStringEnum<ObsoleteVersion>
 
     /**
      * Creates or finds a ObsoleteVersion from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ObsoleteVersion.
      */
-    @JsonCreator
     public static ObsoleteVersion fromString(String name) {
         return fromString(name, ObsoleteVersion.class);
     }
 
     /**
      * Gets known ObsoleteVersion values.
-     *
+     * 
      * @return known ObsoleteVersion values.
      */
     public static Collection<ObsoleteVersion> values() {

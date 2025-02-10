@@ -6,68 +6,117 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** A plan's extension properties. */
+/**
+ * A plan's extension properties.
+ */
 @Fluent
-public final class Extension {
+public final class Extension implements JsonSerializable<Extension> {
     /*
-     * The extension name. Supported values are: <br><br>**AgentlessDiscoveryForKubernetes** - API-based discovery of
-     * information about Kubernetes cluster architecture, workload objects, and setup. Required for Kubernetes
-     * inventory, identity and network exposure detection, attack path analysis and risk hunting as part of the cloud
-     * security explorer.
-     * Available for CloudPosture plan.<br><br>**OnUploadMalwareScanning** - Limits the GB to be scanned per month for
-     * each storage account within the subscription. Once this limit reached on a given storage account, Blobs won't be
-     * scanned during current calendar month.
-     * Available for StorageAccounts plan.<br><br>**SensitiveDataDiscovery** - Sensitive data discovery identifies Blob
-     * storage container with sensitive data such as credentials, credit cards, and more, to help prioritize and
-     * investigate security events.
-     * Available for StorageAccounts and CloudPosture plans.<br><br>**ContainerRegistriesVulnerabilityAssessments** -
-     * Provides vulnerability management for images stored in your container registries.
-     * Available for CloudPosture and Containers plans.
+     * The extension name. Supported values are: <br><br>**AgentlessDiscoveryForKubernetes** - Provides zero footprint,
+     * API-based discovery of Kubernetes clusters, their configurations and deployments. The collected data is used to
+     * create a contextualized security graph for Kubernetes clusters, provide risk hunting capabilities, and visualize
+     * risks and threats to Kubernetes environments and workloads.<br>Available for CloudPosture plan and Containers
+     * plan.<br><br>**OnUploadMalwareScanning** - Limits the GB to be scanned per month for each storage account within
+     * the subscription. Once this limit reached on a given storage account, Blobs won't be scanned during current
+     * calendar month.<br>Available for StorageAccounts plan (DefenderForStorageV2 sub
+     * plans).<br><br>**SensitiveDataDiscovery** - Sensitive data discovery identifies Blob storage container with
+     * sensitive data such as credentials, credit cards, and more, to help prioritize and investigate security
+     * events.<br>Available for StorageAccounts plan (DefenderForStorageV2 sub plan) and CloudPosture
+     * plan.<br><br>**ContainerRegistriesVulnerabilityAssessments** - Provides vulnerability management for images
+     * stored in your container registries.<br>Available for CloudPosture plan and Containers
+     * plan.<br><br>**MdeDesignatedSubscription** - Direct onboarding is a seamless integration between Defender for
+     * Endpoint and Defender for Cloud that doesn’t require extra software deployment on your servers. The onboarded
+     * resources will be presented under a designated Azure Subscription you configure<br>Available for VirtualMachines
+     * plan (P1 and P2 sub plans).<br><br>**AgentlessVmScanning** - Scans your machines for installed software,
+     * vulnerabilities, malware and secret scanning without relying on agents or impacting machine performance. Learn
+     * more here
+     * https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-agentless-data-collection.<br>Available for
+     * CloudPosture plan, VirtualMachines plan (P2 sub plan) and Containers plan.<br><br>**EntraPermissionsManagement**
+     * - Permissions Management provides Cloud Infrastructure Entitlement Management (CIEM) capabilities that helps
+     * organizations to manage and control user access and entitlements in their cloud infrastructure - important attack
+     * vector for cloud environments.<br>Permissions Management analyzes all permissions and active usage, and suggests
+     * recommendations to reduce permissions to enforce the principle of least privilege. Learn more here
+     * https://learn.microsoft.com/en-us/azure/defender-for-cloud/permissions-management.<br>Available for CloudPosture
+     * plan. <br><br>**FileIntegrityMonitoring** - File integrity monitoring (FIM), examines operating system
+     * files.<br>Windows registries, Linux system files, in real time, for changes that might indicate an
+     * attack.<br>Available for VirtualMachines plan (P2 sub plan). <br><br>**ContainerSensor** - The sensor is based on
+     * IG and provides a rich threat detection suite for Kubernetes clusters, nodes, and workloads, powered by Microsoft
+     * leading threat intelligence, provides mapping to MITRE ATT&CK framework.<br>Available for Containers plan.
+     * <br><br>**AIPromptEvidence** - Exposes the prompts passed between the user and the AI model as alert evidence.
+     * This helps classify and triage the alerts with relevant user context. The prompt snippets will include only
+     * segments of the user prompt or model response that were deemed suspicious and relevant for security
+     * classifications. The prompt evidence will be available through Defender portal as part of each
+     * alert.<br>Available for AI plan. <br><br>
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Indicates whether the extension is enabled.
      */
-    @JsonProperty(value = "isEnabled", required = true)
     private IsEnabled isEnabled;
 
     /*
      * Property values associated with the extension.
      */
-    @JsonProperty(value = "additionalExtensionProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalExtensionProperties;
 
     /*
      * Optional. A status describing the success/failure of the extension's enablement/disablement operation.
      */
-    @JsonProperty(value = "operationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private OperationStatus operationStatus;
 
-    /** Creates an instance of Extension class. */
+    /**
+     * Creates an instance of Extension class.
+     */
     public Extension() {
     }
 
     /**
      * Get the name property: The extension name. Supported values are:
-     * &lt;br&gt;&lt;br&gt;**AgentlessDiscoveryForKubernetes** - API-based discovery of information about Kubernetes
-     * cluster architecture, workload objects, and setup. Required for Kubernetes inventory, identity and network
-     * exposure detection, attack path analysis and risk hunting as part of the cloud security explorer. Available for
-     * CloudPosture plan.&lt;br&gt;&lt;br&gt;**OnUploadMalwareScanning** - Limits the GB to be scanned per month for
-     * each storage account within the subscription. Once this limit reached on a given storage account, Blobs won't be
-     * scanned during current calendar month. Available for StorageAccounts
-     * plan.&lt;br&gt;&lt;br&gt;**SensitiveDataDiscovery** - Sensitive data discovery identifies Blob storage container
-     * with sensitive data such as credentials, credit cards, and more, to help prioritize and investigate security
-     * events. Available for StorageAccounts and CloudPosture
-     * plans.&lt;br&gt;&lt;br&gt;**ContainerRegistriesVulnerabilityAssessments** - Provides vulnerability management for
-     * images stored in your container registries. Available for CloudPosture and Containers plans.
-     *
+     * &lt;br&gt;&lt;br&gt;**AgentlessDiscoveryForKubernetes** - Provides zero footprint, API-based discovery of
+     * Kubernetes clusters, their configurations and deployments. The collected data is used to create a contextualized
+     * security graph for Kubernetes clusters, provide risk hunting capabilities, and visualize risks and threats to
+     * Kubernetes environments and workloads.&lt;br&gt;Available for CloudPosture plan and Containers
+     * plan.&lt;br&gt;&lt;br&gt;**OnUploadMalwareScanning** - Limits the GB to be scanned per month for each storage
+     * account within the subscription. Once this limit reached on a given storage account, Blobs won't be scanned
+     * during current calendar month.&lt;br&gt;Available for StorageAccounts plan (DefenderForStorageV2 sub
+     * plans).&lt;br&gt;&lt;br&gt;**SensitiveDataDiscovery** - Sensitive data discovery identifies Blob storage
+     * container with sensitive data such as credentials, credit cards, and more, to help prioritize and investigate
+     * security events.&lt;br&gt;Available for StorageAccounts plan (DefenderForStorageV2 sub plan) and CloudPosture
+     * plan.&lt;br&gt;&lt;br&gt;**ContainerRegistriesVulnerabilityAssessments** - Provides vulnerability management for
+     * images stored in your container registries.&lt;br&gt;Available for CloudPosture plan and Containers
+     * plan.&lt;br&gt;&lt;br&gt;**MdeDesignatedSubscription** - Direct onboarding is a seamless integration between
+     * Defender for Endpoint and Defender for Cloud that doesn’t require extra software deployment on your servers. The
+     * onboarded resources will be presented under a designated Azure Subscription you configure&lt;br&gt;Available for
+     * VirtualMachines plan (P1 and P2 sub plans).&lt;br&gt;&lt;br&gt;**AgentlessVmScanning** - Scans your machines for
+     * installed software, vulnerabilities, malware and secret scanning without relying on agents or impacting machine
+     * performance. Learn more here
+     * https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-agentless-data-collection.&lt;br&gt;Available
+     * for CloudPosture plan, VirtualMachines plan (P2 sub plan) and Containers
+     * plan.&lt;br&gt;&lt;br&gt;**EntraPermissionsManagement** - Permissions Management provides Cloud Infrastructure
+     * Entitlement Management (CIEM) capabilities that helps organizations to manage and control user access and
+     * entitlements in their cloud infrastructure - important attack vector for cloud environments.&lt;br&gt;Permissions
+     * Management analyzes all permissions and active usage, and suggests recommendations to reduce permissions to
+     * enforce the principle of least privilege. Learn more here
+     * https://learn.microsoft.com/en-us/azure/defender-for-cloud/permissions-management.&lt;br&gt;Available for
+     * CloudPosture plan. &lt;br&gt;&lt;br&gt;**FileIntegrityMonitoring** - File integrity monitoring (FIM), examines
+     * operating system files.&lt;br&gt;Windows registries, Linux system files, in real time, for changes that might
+     * indicate an attack.&lt;br&gt;Available for VirtualMachines plan (P2 sub plan).
+     * &lt;br&gt;&lt;br&gt;**ContainerSensor** - The sensor is based on IG and provides a rich threat detection suite
+     * for Kubernetes clusters, nodes, and workloads, powered by Microsoft leading threat intelligence, provides mapping
+     * to MITRE ATT&amp;CK framework.&lt;br&gt;Available for Containers plan. &lt;br&gt;&lt;br&gt;**AIPromptEvidence** -
+     * Exposes the prompts passed between the user and the AI model as alert evidence. This helps classify and triage
+     * the alerts with relevant user context. The prompt snippets will include only segments of the user prompt or model
+     * response that were deemed suspicious and relevant for security classifications. The prompt evidence will be
+     * available through Defender portal as part of each alert.&lt;br&gt;Available for AI plan. &lt;br&gt;&lt;br&gt;.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -76,18 +125,43 @@ public final class Extension {
 
     /**
      * Set the name property: The extension name. Supported values are:
-     * &lt;br&gt;&lt;br&gt;**AgentlessDiscoveryForKubernetes** - API-based discovery of information about Kubernetes
-     * cluster architecture, workload objects, and setup. Required for Kubernetes inventory, identity and network
-     * exposure detection, attack path analysis and risk hunting as part of the cloud security explorer. Available for
-     * CloudPosture plan.&lt;br&gt;&lt;br&gt;**OnUploadMalwareScanning** - Limits the GB to be scanned per month for
-     * each storage account within the subscription. Once this limit reached on a given storage account, Blobs won't be
-     * scanned during current calendar month. Available for StorageAccounts
-     * plan.&lt;br&gt;&lt;br&gt;**SensitiveDataDiscovery** - Sensitive data discovery identifies Blob storage container
-     * with sensitive data such as credentials, credit cards, and more, to help prioritize and investigate security
-     * events. Available for StorageAccounts and CloudPosture
-     * plans.&lt;br&gt;&lt;br&gt;**ContainerRegistriesVulnerabilityAssessments** - Provides vulnerability management for
-     * images stored in your container registries. Available for CloudPosture and Containers plans.
-     *
+     * &lt;br&gt;&lt;br&gt;**AgentlessDiscoveryForKubernetes** - Provides zero footprint, API-based discovery of
+     * Kubernetes clusters, their configurations and deployments. The collected data is used to create a contextualized
+     * security graph for Kubernetes clusters, provide risk hunting capabilities, and visualize risks and threats to
+     * Kubernetes environments and workloads.&lt;br&gt;Available for CloudPosture plan and Containers
+     * plan.&lt;br&gt;&lt;br&gt;**OnUploadMalwareScanning** - Limits the GB to be scanned per month for each storage
+     * account within the subscription. Once this limit reached on a given storage account, Blobs won't be scanned
+     * during current calendar month.&lt;br&gt;Available for StorageAccounts plan (DefenderForStorageV2 sub
+     * plans).&lt;br&gt;&lt;br&gt;**SensitiveDataDiscovery** - Sensitive data discovery identifies Blob storage
+     * container with sensitive data such as credentials, credit cards, and more, to help prioritize and investigate
+     * security events.&lt;br&gt;Available for StorageAccounts plan (DefenderForStorageV2 sub plan) and CloudPosture
+     * plan.&lt;br&gt;&lt;br&gt;**ContainerRegistriesVulnerabilityAssessments** - Provides vulnerability management for
+     * images stored in your container registries.&lt;br&gt;Available for CloudPosture plan and Containers
+     * plan.&lt;br&gt;&lt;br&gt;**MdeDesignatedSubscription** - Direct onboarding is a seamless integration between
+     * Defender for Endpoint and Defender for Cloud that doesn’t require extra software deployment on your servers. The
+     * onboarded resources will be presented under a designated Azure Subscription you configure&lt;br&gt;Available for
+     * VirtualMachines plan (P1 and P2 sub plans).&lt;br&gt;&lt;br&gt;**AgentlessVmScanning** - Scans your machines for
+     * installed software, vulnerabilities, malware and secret scanning without relying on agents or impacting machine
+     * performance. Learn more here
+     * https://learn.microsoft.com/en-us/azure/defender-for-cloud/concept-agentless-data-collection.&lt;br&gt;Available
+     * for CloudPosture plan, VirtualMachines plan (P2 sub plan) and Containers
+     * plan.&lt;br&gt;&lt;br&gt;**EntraPermissionsManagement** - Permissions Management provides Cloud Infrastructure
+     * Entitlement Management (CIEM) capabilities that helps organizations to manage and control user access and
+     * entitlements in their cloud infrastructure - important attack vector for cloud environments.&lt;br&gt;Permissions
+     * Management analyzes all permissions and active usage, and suggests recommendations to reduce permissions to
+     * enforce the principle of least privilege. Learn more here
+     * https://learn.microsoft.com/en-us/azure/defender-for-cloud/permissions-management.&lt;br&gt;Available for
+     * CloudPosture plan. &lt;br&gt;&lt;br&gt;**FileIntegrityMonitoring** - File integrity monitoring (FIM), examines
+     * operating system files.&lt;br&gt;Windows registries, Linux system files, in real time, for changes that might
+     * indicate an attack.&lt;br&gt;Available for VirtualMachines plan (P2 sub plan).
+     * &lt;br&gt;&lt;br&gt;**ContainerSensor** - The sensor is based on IG and provides a rich threat detection suite
+     * for Kubernetes clusters, nodes, and workloads, powered by Microsoft leading threat intelligence, provides mapping
+     * to MITRE ATT&amp;CK framework.&lt;br&gt;Available for Containers plan. &lt;br&gt;&lt;br&gt;**AIPromptEvidence** -
+     * Exposes the prompts passed between the user and the AI model as alert evidence. This helps classify and triage
+     * the alerts with relevant user context. The prompt snippets will include only segments of the user prompt or model
+     * response that were deemed suspicious and relevant for security classifications. The prompt evidence will be
+     * available through Defender portal as part of each alert.&lt;br&gt;Available for AI plan. &lt;br&gt;&lt;br&gt;.
+     * 
      * @param name the name value to set.
      * @return the Extension object itself.
      */
@@ -98,7 +172,7 @@ public final class Extension {
 
     /**
      * Get the isEnabled property: Indicates whether the extension is enabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public IsEnabled isEnabled() {
@@ -107,7 +181,7 @@ public final class Extension {
 
     /**
      * Set the isEnabled property: Indicates whether the extension is enabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the Extension object itself.
      */
@@ -118,7 +192,7 @@ public final class Extension {
 
     /**
      * Get the additionalExtensionProperties property: Property values associated with the extension.
-     *
+     * 
      * @return the additionalExtensionProperties value.
      */
     public Map<String, Object> additionalExtensionProperties() {
@@ -127,7 +201,7 @@ public final class Extension {
 
     /**
      * Set the additionalExtensionProperties property: Property values associated with the extension.
-     *
+     * 
      * @param additionalExtensionProperties the additionalExtensionProperties value to set.
      * @return the Extension object itself.
      */
@@ -139,7 +213,7 @@ public final class Extension {
     /**
      * Get the operationStatus property: Optional. A status describing the success/failure of the extension's
      * enablement/disablement operation.
-     *
+     * 
      * @return the operationStatus value.
      */
     public OperationStatus operationStatus() {
@@ -148,18 +222,17 @@ public final class Extension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Extension"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model Extension"));
         }
         if (isEnabled() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property isEnabled in model Extension"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property isEnabled in model Extension"));
         }
         if (operationStatus() != null) {
             operationStatus().validate();
@@ -167,4 +240,52 @@ public final class Extension {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Extension.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("isEnabled", this.isEnabled == null ? null : this.isEnabled.toString());
+        jsonWriter.writeMapField("additionalExtensionProperties", this.additionalExtensionProperties,
+            (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Extension from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Extension if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Extension.
+     */
+    public static Extension fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Extension deserializedExtension = new Extension();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedExtension.name = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedExtension.isEnabled = IsEnabled.fromString(reader.getString());
+                } else if ("additionalExtensionProperties".equals(fieldName)) {
+                    Map<String, Object> additionalExtensionProperties
+                        = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedExtension.additionalExtensionProperties = additionalExtensionProperties;
+                } else if ("operationStatus".equals(fieldName)) {
+                    deserializedExtension.operationStatus = OperationStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtension;
+        });
+    }
 }

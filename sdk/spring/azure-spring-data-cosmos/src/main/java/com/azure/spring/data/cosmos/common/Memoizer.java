@@ -8,6 +8,9 @@ import java.util.function.Function;
 
 /**
  * Memoize function computation results
+ *
+ * @param <I> the type of the input to the function.
+ * @param <O> the type of the output of the function.
  */
 public final class Memoizer<I, O> {
 

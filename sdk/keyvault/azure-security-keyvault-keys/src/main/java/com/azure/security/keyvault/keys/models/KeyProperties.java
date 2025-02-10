@@ -67,6 +67,11 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
             public void setRecoverableDays(KeyProperties keyProperties, Integer recoverableDays) {
                 keyProperties.recoverableDays = recoverableDays;
             }
+
+            @Override
+            public void setHsmPlatform(KeyProperties keyProperties, String hsmPlatform) {
+                keyProperties.hsmPlatform = hsmPlatform;
+            }
         });
     }
     /**
@@ -203,7 +208,6 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
         return this.name;
     }
 
-
     /**
      * Get the enabled value.
      *
@@ -318,7 +322,6 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
     public String getId() {
         return this.id;
     }
-
 
     /**
      * Get the tags associated with the key.

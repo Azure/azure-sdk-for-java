@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The name of the entity last modified it. */
+/**
+ * The name of the entity last modified it.
+ */
 @Fluent
-public final class Principal {
+public final class Principal implements JsonSerializable<Principal> {
     /*
      * The id of the principal made changes
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the principal made changes
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Type of principal such as user , group etc
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Email of principal
      */
-    @JsonProperty(value = "email")
     private String email;
 
-    /** Creates an instance of Principal class. */
+    /**
+     * Creates an instance of Principal class.
+     */
     public Principal() {
     }
 
     /**
      * Get the id property: The id of the principal made changes.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -49,7 +53,7 @@ public final class Principal {
 
     /**
      * Set the id property: The id of the principal made changes.
-     *
+     * 
      * @param id the id value to set.
      * @return the Principal object itself.
      */
@@ -60,7 +64,7 @@ public final class Principal {
 
     /**
      * Get the displayName property: The name of the principal made changes.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -69,7 +73,7 @@ public final class Principal {
 
     /**
      * Set the displayName property: The name of the principal made changes.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the Principal object itself.
      */
@@ -80,7 +84,7 @@ public final class Principal {
 
     /**
      * Get the type property: Type of principal such as user , group etc.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -89,7 +93,7 @@ public final class Principal {
 
     /**
      * Set the type property: Type of principal such as user , group etc.
-     *
+     * 
      * @param type the type value to set.
      * @return the Principal object itself.
      */
@@ -100,7 +104,7 @@ public final class Principal {
 
     /**
      * Get the email property: Email of principal.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -109,7 +113,7 @@ public final class Principal {
 
     /**
      * Set the email property: Email of principal.
-     *
+     * 
      * @param email the email value to set.
      * @return the Principal object itself.
      */
@@ -120,9 +124,54 @@ public final class Principal {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("email", this.email);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Principal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Principal if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Principal.
+     */
+    public static Principal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Principal deserializedPrincipal = new Principal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrincipal.id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPrincipal.displayName = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrincipal.type = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedPrincipal.email = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrincipal;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -45,7 +44,7 @@ public final class ManagedClusterPodIdentityProvisioningState
 
     /**
      * Creates a new instance of ManagedClusterPodIdentityProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -54,18 +53,17 @@ public final class ManagedClusterPodIdentityProvisioningState
 
     /**
      * Creates or finds a ManagedClusterPodIdentityProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedClusterPodIdentityProvisioningState.
      */
-    @JsonCreator
     public static ManagedClusterPodIdentityProvisioningState fromString(String name) {
         return fromString(name, ManagedClusterPodIdentityProvisioningState.class);
     }
 
     /**
      * Gets known ManagedClusterPodIdentityProvisioningState values.
-     *
+     * 
      * @return known ManagedClusterPodIdentityProvisioningState values.
      */
     public static Collection<ManagedClusterPodIdentityProvisioningState> values() {

@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The class of the metric. */
+/**
+ * The class of the metric.
+ */
 public final class MetricClass extends ExpandableStringEnum<MetricClass> {
-    /** Static value Availability for MetricClass. */
+    /**
+     * Static value Availability for MetricClass.
+     */
     public static final MetricClass AVAILABILITY = fromString("Availability");
 
-    /** Static value Transactions for MetricClass. */
+    /**
+     * Static value Transactions for MetricClass.
+     */
     public static final MetricClass TRANSACTIONS = fromString("Transactions");
 
-    /** Static value Errors for MetricClass. */
+    /**
+     * Static value Errors for MetricClass.
+     */
     public static final MetricClass ERRORS = fromString("Errors");
 
-    /** Static value Latency for MetricClass. */
+    /**
+     * Static value Latency for MetricClass.
+     */
     public static final MetricClass LATENCY = fromString("Latency");
 
-    /** Static value Saturation for MetricClass. */
+    /**
+     * Static value Saturation for MetricClass.
+     */
     public static final MetricClass SATURATION = fromString("Saturation");
 
     /**
+     * Creates a new instance of MetricClass value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricClass() {
+    }
+
+    /**
      * Creates or finds a MetricClass from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MetricClass.
      */
-    @JsonCreator
     public static MetricClass fromString(String name) {
         return fromString(name, MetricClass.class);
     }
 
     /**
      * Gets known MetricClass values.
-     *
+     * 
      * @return known MetricClass values.
      */
     public static Collection<MetricClass> values() {

@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The extended location type.
+ * The extended location type. Allowed value: 'CustomLocation'.
  */
 public final class ExtendedLocationTypes extends ExpandableStringEnum<ExtendedLocationTypes> {
     /**
@@ -32,7 +31,6 @@ public final class ExtendedLocationTypes extends ExpandableStringEnum<ExtendedLo
      * @param name a name to look for.
      * @return the corresponding ExtendedLocationTypes.
      */
-    @JsonCreator
     public static ExtendedLocationTypes fromString(String name) {
         return fromString(name, ExtendedLocationTypes.class);
     }

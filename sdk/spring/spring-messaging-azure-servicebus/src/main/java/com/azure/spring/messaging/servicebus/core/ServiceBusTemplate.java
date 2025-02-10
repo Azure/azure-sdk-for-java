@@ -4,12 +4,14 @@
 package com.azure.spring.messaging.servicebus.core;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
+import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
@@ -27,7 +29,7 @@ public class ServiceBusTemplate implements SendOperation {
 
     private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();
     private final ServiceBusProducerFactory producerFactory;
-    private ServiceBusMessageConverter messageConverter = DEFAULT_CONVERTER;
+    private AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter = DEFAULT_CONVERTER;
     private ServiceBusEntityType defaultEntityType;
 
     /**
@@ -48,10 +50,10 @@ public class ServiceBusTemplate implements SendOperation {
     }
 
     /**
-     * Set the message converter.
+     * Set the message converter to use.
      * @param messageConverter the message converter.
      */
-    public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
+    public void setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter) {
         this.messageConverter = messageConverter;
     }
 
@@ -59,7 +61,7 @@ public class ServiceBusTemplate implements SendOperation {
      * Get the message converter.
      * @return the message converter.
      */
-    public ServiceBusMessageConverter getMessageConverter() {
+    public AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> getMessageConverter() {
         return messageConverter;
     }
 

@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.NameAvailabilityResultInner;
 import com.azure.resourcemanager.hdinsight.containers.models.NameAvailabilityParameters;
 
-/** An instance of this class provides access to all the operations defined in LocationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LocationsClient.
+ */
 public interface LocationsClient {
     /**
      * Check the availability of the resource name.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param nameAvailabilityParameters The name and type of the resource.
      * @param context The context to associate with this operation.
@@ -25,12 +27,12 @@ public interface LocationsClient {
      * @return result of check name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityParameters nameAvailabilityParameters, Context context);
+    Response<NameAvailabilityResultInner> checkNameAvailabilityWithResponse(String location,
+        NameAvailabilityParameters nameAvailabilityParameters, Context context);
 
     /**
      * Check the availability of the resource name.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param nameAvailabilityParameters The name and type of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -39,6 +41,6 @@ public interface LocationsClient {
      * @return result of check name availability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NameAvailabilityResultInner checkNameAvailability(
-        String location, NameAvailabilityParameters nameAvailabilityParameters);
+    NameAvailabilityResultInner checkNameAvailability(String location,
+        NameAvailabilityParameters nameAvailabilityParameters);
 }

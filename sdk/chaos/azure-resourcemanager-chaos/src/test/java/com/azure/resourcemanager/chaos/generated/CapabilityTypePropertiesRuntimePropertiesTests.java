@@ -10,10 +10,8 @@ import com.azure.resourcemanager.chaos.models.CapabilityTypePropertiesRuntimePro
 public final class CapabilityTypePropertiesRuntimePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilityTypePropertiesRuntimeProperties model =
-            BinaryData
-                .fromString("{\"kind\":\"uhmuouqfprwzwbn\"}")
-                .toObject(CapabilityTypePropertiesRuntimeProperties.class);
+        CapabilityTypePropertiesRuntimeProperties model = BinaryData.fromString("{\"kind\":\"uhmuouqfprwzwbn\"}")
+            .toObject(CapabilityTypePropertiesRuntimeProperties.class);
     }
 
     @org.junit.jupiter.api.Test

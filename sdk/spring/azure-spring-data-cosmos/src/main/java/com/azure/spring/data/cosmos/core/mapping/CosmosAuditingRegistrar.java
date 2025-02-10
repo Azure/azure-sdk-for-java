@@ -8,6 +8,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.core.Ordered;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.auditing.config.AuditingBeanDefinitionRegistrarSupport;
 import org.springframework.data.auditing.config.AuditingConfiguration;
@@ -19,7 +20,7 @@ import java.lang.annotation.Annotation;
  * Adapted from <a href="https://github.com/spring-projects/spring-data-mongodb/blob/master/spring-data-mongodb
  * /src/main/java/org/springframework/data/mongodb/config/MongoAuditingRegistrar.java">MongoAuditingRegistrar.java</a>
  */
-class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
+class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport implements Ordered {
 
     /*
      * (non-Javadoc)
@@ -39,6 +40,14 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
         return Constants.AUDITING_HANDLER_BEAN_NAME;
     }
 
+    @Override
+    protected void postProcess(BeanDefinitionBuilder builder, AuditingConfiguration configuration, BeanDefinitionRegistry registry) {
+        final BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(CosmosMappingContext.class);
+        definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
+
+        builder.setFactoryMethod("from").addConstructorArgValue(definition.getBeanDefinition());
+    }
+
     /*
      * (non-Javadoc)
      * @see org.springframework.data.auditing.config.AuditingBeanDefinitionRegistrarSupport#
@@ -48,15 +57,8 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
     protected BeanDefinitionBuilder getAuditHandlerBeanDefinitionBuilder(AuditingConfiguration configuration) {
         Assert.notNull(configuration, "AuditingConfiguration must not be null!");
 
-        final BeanDefinitionBuilder builder =
-            BeanDefinitionBuilder.rootBeanDefinition(IsNewAwareAuditingHandler.class);
-
-        final BeanDefinitionBuilder definition =
-            BeanDefinitionBuilder.genericBeanDefinition(CosmosMappingContext.class);
-        definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
-
-        builder.addConstructorArgValue(definition.getBeanDefinition());
-        return configureDefaultAuditHandlerAttributes(configuration, builder);
+        return configureDefaultAuditHandlerAttributes(configuration,
+            BeanDefinitionBuilder.rootBeanDefinition(IsNewAwareAuditingHandler.class));
     }
 
     /*
@@ -71,5 +73,10 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport {
         // TODO: consider moving to event listener for auditing rather than injecting the
         // IsNewAwareAuditingHandler directly - this would require integrating CosmosTemplate with
         // the spring eventing system which would be a chunk of work beyond the scope of this PR
+    }
+
+    @Override
+    public int getOrder() {
+        return Ordered.LOWEST_PRECEDENCE;
     }
 }

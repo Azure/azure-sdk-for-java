@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for Group Delete. */
+/**
+ * Samples for Group Delete.
+ */
 public final class GroupDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteGroup.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementDeleteGroup.json
      */
     /**
      * Sample code: ApiManagementDeleteGroup.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementDeleteGroup(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {

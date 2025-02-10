@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.search.generated;
 
-/** Samples for Services Delete. */
+/**
+ * Samples for Services Delete.
+ */
 public final class ServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchDeleteService.json
+     * x-ms-original-file:
+     * specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchDeleteService.json
      */
     /**
      * Sample code: SearchDeleteService.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchDeleteService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
+        azure.searchServices()
             .manager()
             .serviceClient()
             .getServices()

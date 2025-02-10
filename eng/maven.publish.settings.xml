@@ -21,15 +21,4 @@
   <activeProfiles>
     <activeProfile>signing</activeProfile>
   </activeProfiles>
-
-  <!--
-  NOTE: Maven Central downloads are quite unreliable. This gives us better reliability.
-  -->
-  <mirrors>
-      <mirror>
-          <id>repo-maven-apache-org-mirror</id>
-          <url>https://repo-maven-apache-org.azurefd.net/maven2</url>
-          <mirrorOf>central</mirrorOf>
-      </mirror>
-  </mirrors>
 </settings>

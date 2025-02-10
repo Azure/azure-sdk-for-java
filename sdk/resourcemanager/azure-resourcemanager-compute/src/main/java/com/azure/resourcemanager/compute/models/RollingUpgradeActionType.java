@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The last action performed on the rolling upgrade.
  */
@@ -36,7 +33,6 @@ public enum RollingUpgradeActionType {
      * @param value the serialized value to parse.
      * @return the parsed RollingUpgradeActionType object, or null if unable to parse.
      */
-    @JsonCreator
     public static RollingUpgradeActionType fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum RollingUpgradeActionType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

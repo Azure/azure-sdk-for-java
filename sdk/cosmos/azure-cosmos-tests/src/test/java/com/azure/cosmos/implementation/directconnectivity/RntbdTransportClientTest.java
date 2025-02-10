@@ -37,6 +37,7 @@ import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionRntbdRequestRecord;
@@ -58,7 +59,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseDecoder;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUUID;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUtils;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import io.micrometer.core.instrument.Tag;
@@ -118,6 +118,7 @@ public final class RntbdTransportClientTest {
     private static final int timeoutDetectionOnWriteThreshold = 1;
     private static final Duration timeoutDetectionOnWriteTimeLimit = Duration.ofSeconds(6L);
     private static final double timeoutDetectionDisableCPUThreshold = 90.0;
+    private static final double  channelAcquisitionContextLatencyThresholdInMillis = 1000;
 
     @DataProvider(name = "fromMockedNetworkFailureToExpectedDocumentClientException")
     public Object[][] fromMockedNetworkFailureToExpectedDocumentClientException() {
@@ -761,6 +762,7 @@ public final class RntbdTransportClientTest {
         assertEquals(options.timeoutDetectionOnWriteThreshold(), timeoutDetectionOnWriteThreshold);
         assertEquals(options.timeoutDetectionOnWriteTimeLimit(), timeoutDetectionOnWriteTimeLimit);
         assertEquals(options.timeoutDetectionDisableCPUThreshold(), timeoutDetectionDisableCPUThreshold);
+        assertEquals(options.channelAcquisitionContextLatencyThresholdInMillis(), channelAcquisitionContextLatencyThresholdInMillis);
     }
 
     // TODO: add validations for other properties
@@ -774,7 +776,8 @@ public final class RntbdTransportClientTest {
                 "{\"sslHandshakeTimeoutMinDuration\":\"PT15S\"," +
                     "\"timeoutDetectionTimeLimit\":\"PT61S\", \"timeoutDetectionHighFrequencyThreshold\":\"4\", " +
                     "\"timeoutDetectionHighFrequencyTimeLimit\":\"PT11S\", \"timeoutDetectionOnWriteThreshold\":\"2\"," +
-                    "\"timeoutDetectionOnWriteTimeLimit\":\"PT7S\", \"timeoutDetectionDisableCPUThreshold\":\"80.0\"}");
+                    "\"timeoutDetectionOnWriteTimeLimit\":\"PT7S\", \"timeoutDetectionDisableCPUThreshold\":\"80.0\"," +
+                        "\"channelAcquisitionContextLatencyThresholdInMillis\":\"2000\"}");
 
             ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             UserAgentContainer userAgentContainer = new UserAgentContainer();
@@ -791,6 +794,7 @@ public final class RntbdTransportClientTest {
             assertEquals(options.timeoutDetectionOnWriteThreshold(), 2);
             assertEquals(options.timeoutDetectionOnWriteTimeLimit(), Duration.ofSeconds(7));
             assertEquals(options.timeoutDetectionDisableCPUThreshold(), 80.0);
+            assertEquals(options.channelAcquisitionContextLatencyThresholdInMillis(), 2000);
 
         } finally {
             System.clearProperty("azure.cosmos.directTcp.defaultOptions");
@@ -980,7 +984,7 @@ public final class RntbdTransportClientTest {
         private final RntbdDurableEndpointMetrics durableEndpointMetrics;
 
         private FakeEndpoint(
-            final Config config, final RntbdRequestTimer timer, final Uri addressUri,
+            final Config config, final ClientTelemetry clientTelemetry, RntbdRequestTimer timer, final Uri addressUri,
             final RntbdResponse... expected
         ) {
 
@@ -1009,7 +1013,7 @@ public final class RntbdTransportClientTest {
             );
 
             RntbdRequestManager requestManager = new RntbdRequestManager(
-                    new RntbdClientChannelHealthChecker(config),
+                    new RntbdClientChannelHealthChecker(config, clientTelemetry),
                     config,
                     null,
                     null);
@@ -1179,12 +1183,14 @@ public final class RntbdTransportClientTest {
         static class Provider implements RntbdEndpoint.Provider {
 
             final Config config;
+            final ClientTelemetry clientTelemetry;
             final RntbdResponse expected;
             final RntbdRequestTimer timer;
             final IAddressResolver addressResolver;
 
             Provider(RntbdTransportClient.Options options, SslContext sslContext, RntbdResponse expected, IAddressResolver addressResolver) {
                 this.config = new Config(options, sslContext, LogLevel.WARN);
+                this.clientTelemetry = new ClientTelemetry(mockDiagnosticsClientContext(), false, null, null, null, null, null, null, null, null, null, null);
                 this.timer = new RntbdRequestTimer(
                     config.tcpNetworkRequestTimeoutInNanos(),
                     config.requestTimerResolutionInNanos());
@@ -1214,12 +1220,12 @@ public final class RntbdTransportClientTest {
 
             @Override
             public RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri addressUri, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minRequiredChannelsForEndpoint, AddressSelector addressSelector) {
-                return new FakeEndpoint(config, timer, addressUri, expected);
+                return new FakeEndpoint(config, clientTelemetry, timer, addressUri, expected);
             }
 
             @Override
             public RntbdEndpoint get(URI physicalAddress) {
-                return new FakeEndpoint(config, timer, new Uri(physicalAddress.toString()), expected);
+                return new FakeEndpoint(config, clientTelemetry, timer, new Uri(physicalAddress.toString()), expected);
             }
 
             @Override

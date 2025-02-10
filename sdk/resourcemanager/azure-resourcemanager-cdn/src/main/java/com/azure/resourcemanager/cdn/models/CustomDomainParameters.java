@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.CustomDomainPropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The customDomain JSON object required for custom domain creation or update. */
+/**
+ * The customDomain JSON object required for custom domain creation or update.
+ */
 @Fluent
-public final class CustomDomainParameters {
+public final class CustomDomainParameters implements JsonSerializable<CustomDomainParameters> {
     /*
      * The JSON object that contains the properties of the custom domain to create.
      */
-    @JsonProperty(value = "properties")
     private CustomDomainPropertiesParameters innerProperties;
 
-    /** Creates an instance of CustomDomainParameters class. */
+    /**
+     * Creates an instance of CustomDomainParameters class.
+     */
     public CustomDomainParameters() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the custom domain to create.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CustomDomainPropertiesParameters innerProperties() {
@@ -32,7 +39,7 @@ public final class CustomDomainParameters {
 
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -41,7 +48,7 @@ public final class CustomDomainParameters {
 
     /**
      * Set the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the CustomDomainParameters object itself.
      */
@@ -55,12 +62,49 @@ public final class CustomDomainParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDomainParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDomainParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomDomainParameters.
+     */
+    public static CustomDomainParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDomainParameters deserializedCustomDomainParameters = new CustomDomainParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedCustomDomainParameters.innerProperties
+                        = CustomDomainPropertiesParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDomainParameters;
+        });
     }
 }

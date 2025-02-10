@@ -68,8 +68,8 @@ public final class QueryTimeInterval {
 
     private static final ClientLogger LOGGER = new ClientLogger(QueryTimeInterval.class);
     private static final String ERROR_MESSAGE = "%s is an invalid time interval. It must be in one of the "
-            + "following ISO 8601 time interval formats: duration, startDuration/endTime, "
-            + "startTime/endTime, startTime/endDuration";
+        + "following ISO 8601 time interval formats: duration, startDuration/endTime, "
+        + "startTime/endTime, startTime/endDuration";
 
     private final Duration duration;
     private final OffsetDateTime startTime;
@@ -180,8 +180,7 @@ public final class QueryTimeInterval {
             Duration duration = parseDuration(parts[0]);
             if (duration == null || parts[0].length() + 1 == value.length()) {
                 // input strings like "PT24H/" are invalid
-                throw LOGGER.logExceptionAsError(
-                        new IllegalArgumentException(String.format(ERROR_MESSAGE, value)));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(ERROR_MESSAGE, value)));
             }
 
             return new QueryTimeInterval(duration);
@@ -204,8 +203,7 @@ public final class QueryTimeInterval {
                 return new QueryTimeInterval(startTime, endDuration);
             }
         }
-        throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException(String.format(ERROR_MESSAGE, value)));
+        throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(ERROR_MESSAGE, value)));
     }
 
     @Override
@@ -214,23 +212,11 @@ public final class QueryTimeInterval {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         if (duration != null && endTime != null) {
-            sb.append("duration: ")
-                    .append(duration)
-                    .append(", ")
-                    .append("end time: ")
-                    .append(endTime);
+            sb.append("duration: ").append(duration).append(", ").append("end time: ").append(endTime);
         } else if (startTime != null && endTime != null) {
-            sb.append("start time: ")
-                    .append(startTime)
-                    .append(", ")
-                    .append("end time: ")
-                    .append(endTime);
+            sb.append("start time: ").append(startTime).append(", ").append("end time: ").append(endTime);
         } else if (startTime != null && duration != null) {
-            sb.append("start time: ")
-                    .append(startTime)
-                    .append(", ")
-                    .append("duration: ")
-                    .append(duration);
+            sb.append("start time: ").append(startTime).append(", ").append("duration: ").append(duration);
         } else {
             sb.append("duration: ").append(duration);
         }
@@ -249,8 +235,8 @@ public final class QueryTimeInterval {
         QueryTimeInterval that = (QueryTimeInterval) o;
 
         return Objects.equals(this.duration, that.duration)
-                && Objects.equals(this.startTime, that.startTime)
-                && Objects.equals(this.endTime, that.endTime);
+            && Objects.equals(this.startTime, that.startTime)
+            && Objects.equals(this.endTime, that.endTime);
     }
 
     @Override

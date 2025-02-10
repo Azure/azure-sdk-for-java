@@ -28,35 +28,32 @@ public final class PrivateCloudsImpl implements PrivateClouds {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<PrivateCloud> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<PrivateCloudInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new PrivateCloudImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<PrivateCloud> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<PrivateCloudInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateCloudImpl(inner1, this.manager()));
-    }
-
     public PagedIterable<PrivateCloud> list() {
         PagedIterable<PrivateCloudInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PrivateCloudImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateCloudImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateCloud> list(Context context) {
         PagedIterable<PrivateCloudInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new PrivateCloudImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateCloudImpl(inner1, this.manager()));
     }
 
-    public Response<PrivateCloud> getByResourceGroupWithResponse(
-        String resourceGroupName, String privateCloudName, Context context) {
-        Response<PrivateCloudInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, privateCloudName, context);
+    public PagedIterable<PrivateCloud> listByResourceGroup(String resourceGroupName) {
+        PagedIterable<PrivateCloudInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateCloudImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<PrivateCloud> listByResourceGroup(String resourceGroupName, Context context) {
+        PagedIterable<PrivateCloudInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateCloudImpl(inner1, this.manager()));
+    }
+
+    public Response<PrivateCloud> getByResourceGroupWithResponse(String resourceGroupName, String privateCloudName,
+        Context context) {
+        Response<PrivateCloudInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, privateCloudName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateCloudImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -80,31 +77,12 @@ public final class PrivateCloudsImpl implements PrivateClouds {
         this.serviceClient().delete(resourceGroupName, privateCloudName, context);
     }
 
-    public void rotateVcenterPassword(String resourceGroupName, String privateCloudName) {
-        this.serviceClient().rotateVcenterPassword(resourceGroupName, privateCloudName);
-    }
-
-    public void rotateVcenterPassword(String resourceGroupName, String privateCloudName, Context context) {
-        this.serviceClient().rotateVcenterPassword(resourceGroupName, privateCloudName, context);
-    }
-
-    public void rotateNsxtPassword(String resourceGroupName, String privateCloudName) {
-        this.serviceClient().rotateNsxtPassword(resourceGroupName, privateCloudName);
-    }
-
-    public void rotateNsxtPassword(String resourceGroupName, String privateCloudName, Context context) {
-        this.serviceClient().rotateNsxtPassword(resourceGroupName, privateCloudName, context);
-    }
-
-    public Response<AdminCredentials> listAdminCredentialsWithResponse(
-        String resourceGroupName, String privateCloudName, Context context) {
-        Response<AdminCredentialsInner> inner =
-            this.serviceClient().listAdminCredentialsWithResponse(resourceGroupName, privateCloudName, context);
+    public Response<AdminCredentials> listAdminCredentialsWithResponse(String resourceGroupName,
+        String privateCloudName, Context context) {
+        Response<AdminCredentialsInner> inner
+            = this.serviceClient().listAdminCredentialsWithResponse(resourceGroupName, privateCloudName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AdminCredentialsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -120,78 +98,74 @@ public final class PrivateCloudsImpl implements PrivateClouds {
         }
     }
 
+    public void rotateNsxtPassword(String resourceGroupName, String privateCloudName) {
+        this.serviceClient().rotateNsxtPassword(resourceGroupName, privateCloudName);
+    }
+
+    public void rotateNsxtPassword(String resourceGroupName, String privateCloudName, Context context) {
+        this.serviceClient().rotateNsxtPassword(resourceGroupName, privateCloudName, context);
+    }
+
+    public void rotateVcenterPassword(String resourceGroupName, String privateCloudName) {
+        this.serviceClient().rotateVcenterPassword(resourceGroupName, privateCloudName);
+    }
+
+    public void rotateVcenterPassword(String resourceGroupName, String privateCloudName, Context context) {
+        this.serviceClient().rotateVcenterPassword(resourceGroupName, privateCloudName, context);
+    }
+
     public PrivateCloud getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, privateCloudName, Context.NONE).getValue();
     }
 
     public Response<PrivateCloud> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, privateCloudName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         this.delete(resourceGroupName, privateCloudName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
         this.delete(resourceGroupName, privateCloudName, context);
     }

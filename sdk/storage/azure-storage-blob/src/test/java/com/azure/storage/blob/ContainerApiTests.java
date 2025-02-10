@@ -44,6 +44,8 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.TestHttpClientType;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,6 +91,11 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    public void blobNameNull() {
+        assertThrows(NullPointerException.class, () -> cc.getBlobClient(null));
+    }
+
+    @Test
     public void createAllNull() {
         // Overwrite the existing cc, which has already been created
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
@@ -119,19 +126,25 @@ public class ContainerApiTests extends BlobTestBase {
         cc.createWithResponse(metadata, null, null, null);
         Response<BlobContainerProperties> response = cc.getPropertiesWithResponse(null, null, null);
 
-        assertEquals(response.getValue().getMetadata(), metadata);
+        if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
+            // JDK HttpClient returns headers with names lowercased.
+            Map<String, String> lowercasedMetadata = metadata.entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
+            assertEquals(lowercasedMetadata, response.getValue().getMetadata());
+        } else {
+            assertEquals(metadata, response.getValue().getMetadata());
+        }
     }
 
     private static Stream<Arguments> createMetadataSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
-            Arguments.of("foo", "bar", "fizz", "buzz"),
-            Arguments.of("testFoo", "testBar", "testFizz", "testBuzz")
-        );
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of("foo", "bar", "fizz", "buzz"),
+            Arguments.of("testFoo", "testBar", "testFizz", "testBuzz"));
     }
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createPublicAccess(PublicAccessType publicAccess) {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
         cc.createWithResponse(null, publicAccess, null, null);
@@ -140,9 +153,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> publicAccessSupplier() {
-        return Stream.of(
-            Arguments.of(PublicAccessType.BLOB),
-            Arguments.of(PublicAccessType.CONTAINER),
+        return Stream.of(Arguments.of(PublicAccessType.BLOB), Arguments.of(PublicAccessType.CONTAINER),
             Arguments.of((PublicAccessType) null));
     }
 
@@ -151,6 +162,16 @@ public class ContainerApiTests extends BlobTestBase {
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> cc.create());
         assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_ALREADY_EXISTS);
         assertTrue(e.getServiceMessage().contains("The specified container already exists."));
+    }
+
+    @Test
+    public void createBlobVersionClient() {
+        String name = generateBlobName();
+        BlockBlobClient bc = cc.getBlobClient(name).getBlockBlobClient();
+        bc.upload(DATA.getDefaultInputStream(), 7);
+        BlobClient vc = cc.getBlobVersionClient(name, null);
+
+        assertTrue(vc.exists());
     }
 
     @Test
@@ -180,8 +201,8 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void createIfNotExistsWithResponse() {
-        Response<BlobContainerClient> response = primaryBlobServiceClient
-            .createBlobContainerIfNotExistsWithResponse(generateContainerName(), null, null);
+        Response<BlobContainerClient> response
+            = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(generateContainerName(), null, null);
 
         assertResponseStatusCode(response, 201);
     }
@@ -189,10 +210,10 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void createIfNotExistsBlobServiceThatAlreadyExists() {
         String containerName = generateContainerName();
-        Response<BlobContainerClient> response =
-            primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null);
-        Response<BlobContainerClient> secondResponse =
-            primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null);
+        Response<BlobContainerClient> response
+            = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null);
+        Response<BlobContainerClient> secondResponse
+            = primaryBlobServiceClient.createBlobContainerIfNotExistsWithResponse(containerName, null, null);
 
         assertResponseStatusCode(response, 201);
         assertResponseStatusCode(secondResponse, 409);
@@ -214,16 +235,25 @@ public class ContainerApiTests extends BlobTestBase {
         Response<Boolean> result = cc.createIfNotExistsWithResponse(options, null, null);
         Response<BlobContainerProperties> response = cc.getPropertiesWithResponse(null, null, null);
 
-        assertEquals(response.getValue().getMetadata(), metadata);
+        if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
+            // JDK HttpClient returns headers with names lowercased.
+            Map<String, String> lowercasedMetadata = metadata.entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
+            assertEquals(lowercasedMetadata, response.getValue().getMetadata());
+        } else {
+            assertEquals(metadata, response.getValue().getMetadata());
+        }
         assertTrue(result.getValue());
     }
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createIfNotExistsPublicAccess(PublicAccessType publicAccess) {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
-        Response<Boolean> result = cc.createIfNotExistsWithResponse(new BlobContainerCreateOptions()
-            .setPublicAccessType(publicAccess), null, null);
+        Response<Boolean> result = cc.createIfNotExistsWithResponse(
+            new BlobContainerCreateOptions().setPublicAccessType(publicAccess), null, null);
         PublicAccessType access = cc.getProperties().getBlobPublicAccess();
         assertEquals(access, publicAccess);
         assertTrue(result.getValue());
@@ -277,8 +307,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void getPropertiesLeaseFail() {
-        assertThrows(BlobStorageException.class, () ->
-            cc.getPropertiesWithResponse("garbage", null, null));
+        assertThrows(BlobStorageException.class, () -> cc.getPropertiesWithResponse("garbage", null, null));
     }
 
     @Test
@@ -327,64 +356,47 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> setMetadataMetadataSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, null),
-            Arguments.of("foo", "bar", "fizz", "buzz")
-        );
+        return Stream.of(Arguments.of(null, null, null, null), Arguments.of("foo", "bar", "fizz", "buzz"));
     }
 
     @ParameterizedTest
     @MethodSource("setMetadataACSupplier")
     public void setMetadataAC(OffsetDateTime modified, String leaseID) {
         leaseID = setupContainerLeaseCondition(cc, leaseID);
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfModifiedSince(modified);
+        BlobRequestConditions cac = new BlobRequestConditions().setLeaseId(leaseID).setIfModifiedSince(modified);
 
         assertResponseStatusCode(cc.setMetadataWithResponse(null, cac, null, null), 200);
     }
 
     private static Stream<Arguments> setMetadataACSupplier() {
-        return Stream.of(
-            Arguments.of(null, null),
-            Arguments.of(OLD_DATE, null),
-            Arguments.of(null, RECEIVED_LEASE_ID));
+        return Stream.of(Arguments.of(null, null), Arguments.of(OLD_DATE, null), Arguments.of(null, RECEIVED_LEASE_ID));
     }
 
     @ParameterizedTest
     @MethodSource("setMetadataACFailSupplier")
     public void setMetadataACFail(OffsetDateTime modified, String leaseID) {
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
-            .setIfModifiedSince(modified);
+        BlobRequestConditions cac = new BlobRequestConditions().setLeaseId(leaseID).setIfModifiedSince(modified);
 
         assertThrows(BlobStorageException.class, () -> cc.setMetadataWithResponse(null, cac, null, null));
     }
 
     private static Stream<Arguments> setMetadataACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null),
-            Arguments.of(null, GARBAGE_LEASE_ID));
+        return Stream.of(Arguments.of(NEW_DATE, null), Arguments.of(null, GARBAGE_LEASE_ID));
     }
 
     @ParameterizedTest
     @MethodSource("setMetadataACIllegalSupplier")
     public void setMetadataACIllegal(OffsetDateTime unmodified, String match, String noneMatch) {
-        BlobRequestConditions mac = new BlobRequestConditions()
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch);
+        BlobRequestConditions mac
+            = new BlobRequestConditions().setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch);
 
         assertThrows(UnsupportedOperationException.class, () -> cc.setMetadataWithResponse(null, mac, null, null));
     }
 
     private static Stream<Arguments> setMetadataACIllegalSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null),
-            Arguments.of(null, RECEIVED_ETAG, null),
+        return Stream.of(Arguments.of(NEW_DATE, null, null), Arguments.of(null, RECEIVED_ETAG, null),
             Arguments.of(null, null, GARBAGE_ETAG));
     }
-
 
     @Test
     public void setMetadataError() {
@@ -394,6 +406,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void setAccessPolicy(PublicAccessType publicAccess) {
         Response<Void> response = cc.setAccessPolicyWithResponse(publicAccess, null, null, null, null);
 
@@ -401,29 +414,22 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(cc.getProperties().getBlobPublicAccess(), publicAccess);
     }
 
-
-
     @Test
     public void setAccessPolicyIds() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(testResourceNamer.now())
+        BlobSignedIdentifier identifier = new BlobSignedIdentifier().setId("0000")
+            .setAccessPolicy(new BlobAccessPolicy().setStartsOn(testResourceNamer.now())
                 .setExpiresOn(testResourceNamer.now().plusDays(1))
                 .setPermissions("r"));
-        BlobSignedIdentifier identifier2 = new BlobSignedIdentifier()
-            .setId("0001")
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(testResourceNamer.now())
+        BlobSignedIdentifier identifier2 = new BlobSignedIdentifier().setId("0001")
+            .setAccessPolicy(new BlobAccessPolicy().setStartsOn(testResourceNamer.now())
                 .setExpiresOn(testResourceNamer.now().plusDays(2))
                 .setPermissions("w"));
         List<BlobSignedIdentifier> ids = Arrays.asList(identifier, identifier2);
 
         Response<Void> response = cc.setAccessPolicyWithResponse(null, ids, null, null, null);
 
-
-        List<BlobSignedIdentifier> receivedIdentifiers = cc.getAccessPolicyWithResponse(null, null, null)
-            .getValue().getIdentifiers();
+        List<BlobSignedIdentifier> receivedIdentifiers
+            = cc.getAccessPolicyWithResponse(null, null, null).getValue().getIdentifiers();
 
         assertResponseStatusCode(response, 200);
         assertTrue(validateBasicHeaders(response.getHeaders()));
@@ -445,8 +451,7 @@ public class ContainerApiTests extends BlobTestBase {
     @MethodSource("setAccessPolicyACSupplier")
     public void setAccessPolicyAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         leaseID = setupContainerLeaseCondition(cc, leaseID);
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions cac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
@@ -454,46 +459,36 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> setAccessPolicyACSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null),
-            Arguments.of(OLD_DATE, null, null),
-            Arguments.of(null, NEW_DATE, null),
-            Arguments.of(null, null, RECEIVED_LEASE_ID));
+        return Stream.of(Arguments.of(null, null, null), Arguments.of(OLD_DATE, null, null),
+            Arguments.of(null, NEW_DATE, null), Arguments.of(null, null, RECEIVED_LEASE_ID));
     }
 
     @ParameterizedTest
     @MethodSource("setAccessPolicyACFailSupplier")
     public void setAccessPolicyACFail(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions cac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
-        assertThrows(BlobStorageException.class, () ->
-            cc.setAccessPolicyWithResponse(null, null, cac, null, null));
+        assertThrows(BlobStorageException.class, () -> cc.setAccessPolicyWithResponse(null, null, cac, null, null));
     }
 
     private static Stream<Arguments> setAccessPolicyACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null),
-            Arguments.of(null, OLD_DATE, null),
+        return Stream.of(Arguments.of(NEW_DATE, null, null), Arguments.of(null, OLD_DATE, null),
             Arguments.of(null, null, GARBAGE_LEASE_ID));
     }
-
 
     @ParameterizedTest
     @MethodSource("setAccessPolicyACIllegalSupplier")
     public void setAccessPolicyACIllegal(String match, String noneMatch) {
         BlobRequestConditions mac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch);
 
-        assertThrows(UnsupportedOperationException.class, () ->
-                cc.setAccessPolicyWithResponse(null, null, mac, null, null));
+        assertThrows(UnsupportedOperationException.class,
+            () -> cc.setAccessPolicyWithResponse(null, null, mac, null, null));
     }
 
     private static Stream<Arguments> setAccessPolicyACIllegalSupplier() {
-        return Stream.of(
-            Arguments.of(RECEIVED_ETAG, null),
-            Arguments.of(null, GARBAGE_ETAG));
+        return Stream.of(Arguments.of(RECEIVED_ETAG, null), Arguments.of(null, GARBAGE_ETAG));
     }
 
     @Test
@@ -504,8 +499,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void getAccessPolicyLeaseFail() {
-        assertThrows(BlobStorageException.class, () ->
-            cc.getAccessPolicyWithResponse(GARBAGE_LEASE_ID, null, null));
+        assertThrows(BlobStorageException.class, () -> cc.getAccessPolicyWithResponse(GARBAGE_LEASE_ID, null, null));
     }
 
     @Test
@@ -534,8 +528,7 @@ public class ContainerApiTests extends BlobTestBase {
     @MethodSource("setAccessPolicyACSupplier")
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         leaseID = setupContainerLeaseCondition(cc, leaseID);
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions cac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
@@ -545,8 +538,7 @@ public class ContainerApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setAccessPolicyACFailSupplier")
     public void deleteACFail(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions cac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
@@ -590,8 +582,7 @@ public class ContainerApiTests extends BlobTestBase {
     @MethodSource("setAccessPolicyACSupplier")
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
         leaseID = setupContainerLeaseCondition(cc, leaseID);
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions cac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
@@ -601,8 +592,7 @@ public class ContainerApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setAccessPolicyACFailSupplier")
     public void deleteIfExistsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
-        BlobRequestConditions cac = new BlobRequestConditions()
-            .setLeaseId(leaseID)
+        BlobRequestConditions cac = new BlobRequestConditions().setLeaseId(leaseID)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified);
 
@@ -635,8 +625,8 @@ public class ContainerApiTests extends BlobTestBase {
         boolean result2 = cc.deleteIfExists();
 
         assertTrue(result);
-            // Confirming the behavior of the api when the container is in the deleting state.
-            // After deletehas been called once but before it has been garbage collected
+        // Confirming the behavior of the api when the container is in the deleting state.
+        // After deletehas been called once but before it has been garbage collected
         assertTrue(result2);
         assertFalse(cc.exists());
     }
@@ -888,7 +878,8 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void listBlobsFlatOptionsUncommitted() {
-        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveUncommittedBlobs(true));
+        ListBlobsOptions options
+            = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveUncommittedBlobs(true));
         String normalName = "a" + generateBlobName();
         String copyName = "c" + generateBlobName();
         String metadataName = "m" + generateBlobName();
@@ -922,8 +913,9 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void listBlobsFlatOptionsMaxResults() {
         int pageSize = 2;
-        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
-            .setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true)).setMaxResultsPerPage(pageSize);
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(
+            new BlobListDetails().setRetrieveCopy(true).setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true))
+            .setMaxResultsPerPage(pageSize);
         String normalName = "a" + generateBlobName();
         String copyName = "c" + generateBlobName();
         String metadataName = "m" + generateBlobName();
@@ -938,8 +930,8 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void listBlobsFlatOptionsMaxResultsByPage() {
         int pageSize = 2;
-        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
-            .setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true));
+        ListBlobsOptions options = new ListBlobsOptions().setDetails(
+            new BlobListDetails().setRetrieveCopy(true).setRetrieveSnapshots(true).setRetrieveUncommittedBlobs(true));
         String normalName = "a" + generateBlobName();
         String copyName = "c" + generateBlobName();
         String metadataName = "m" + generateBlobName();
@@ -965,8 +957,8 @@ public class ContainerApiTests extends BlobTestBase {
         metadata.put("foo", "bar");
         blob.setMetadata(metadata);
         blob.delete();
-        ListBlobsOptions options = new ListBlobsOptions().setPrefix(blobName).setDetails(new BlobListDetails()
-            .setRetrieveDeletedBlobsWithVersions(true));
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix(blobName)
+            .setDetails(new BlobListDetails().setRetrieveDeletedBlobsWithVersions(true));
 
         Iterator<BlobItem> blobs = versionedCC.listBlobs(options, null).iterator();
 
@@ -1005,10 +997,11 @@ public class ContainerApiTests extends BlobTestBase {
         }
 
         // when: "listBlobs with sync client"
-        PagedIterable<BlobItem> pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize), null);
+        PagedIterable<BlobItem> pagedIterable
+            = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize), null);
         PagedResponse<BlobItem> pagedSyncResponse1 = pagedIterable.iterableByPage().iterator().next();
-        PagedResponse<BlobItem> pagedSyncResponse2 =
-            pagedIterable.iterableByPage(pagedSyncResponse1.getContinuationToken()).iterator().next();
+        PagedResponse<BlobItem> pagedSyncResponse2
+            = pagedIterable.iterableByPage(pagedSyncResponse1.getContinuationToken()).iterator().next();
 
         assertEquals(pageSize, pagedSyncResponse1.getValue().size());
         assertEquals(numBlobs - pageSize, pagedSyncResponse2.getValue().size());
@@ -1025,8 +1018,8 @@ public class ContainerApiTests extends BlobTestBase {
         }
 
         // when: "listBlobs with sync client"
-        PagedIterable<BlobItem> pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize),
-            null);
+        PagedIterable<BlobItem> pagedIterable
+            = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize), null);
         PagedResponse<BlobItem> pagedSyncResponse1 = pagedIterable.iterableByPage().iterator().next();
 
         pagedIterable = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize),
@@ -1048,17 +1041,15 @@ public class ContainerApiTests extends BlobTestBase {
 
         if (rehydratePriority != null) {
             bc.setAccessTier(AccessTier.ARCHIVE);
-            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
-                .setPriority(rehydratePriority), null, null);
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority),
+                null, null);
         }
         BlobItem item = cc.listBlobs().iterator().next();
         assertEquals(rehydratePriority, item.getProperties().getRehydratePriority());
     }
 
     private static Stream<Arguments> listBlobsFlatRehydratePrioritySupplier() {
-        return Stream.of(
-            Arguments.of((RehydratePriority) null),
-            Arguments.of(RehydratePriority.STANDARD),
+        return Stream.of(Arguments.of((RehydratePriority) null), Arguments.of(RehydratePriority.STANDARD),
             Arguments.of(RehydratePriority.HIGH));
     }
 
@@ -1079,7 +1070,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
-    public void listBlobsFlatWithTimeoutStillBackedByPagedFlux() {
+    public void listBlobsFlatWithTimeoutStillBackedByPagedStream() {
         int numBlobs = 5;
         int pageResults = 3;
 
@@ -1089,12 +1080,14 @@ public class ContainerApiTests extends BlobTestBase {
         }
 
         // when: "Consume results by page, then still have paging functionality"
-        assertDoesNotThrow(() -> cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults),
-            Duration.ofSeconds(10)).streamByPage().count());
+        assertDoesNotThrow(
+            () -> cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults), Duration.ofSeconds(10))
+                .streamByPage()
+                .count());
     }
 
     @Test
-    public void listBlobsHierWithTimeoutStillBackedByPagedFlux() {
+    public void listBlobsHierWithTimeoutStillBackedByPagedStream() {
         int numBlobs = 5;
         int pageResults = 3;
 
@@ -1104,8 +1097,10 @@ public class ContainerApiTests extends BlobTestBase {
         }
 
         // when: "Consume results by page, then still have paging functionality"
-        assertDoesNotThrow(() -> cc.listBlobsByHierarchy("/", new ListBlobsOptions()
-            .setMaxResultsPerPage(pageResults), Duration.ofSeconds(10)).streamByPage().count());
+        assertDoesNotThrow(() -> cc
+            .listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageResults), Duration.ofSeconds(10))
+            .streamByPage()
+            .count());
     }
 
     /*
@@ -1128,10 +1123,7 @@ public class ContainerApiTests extends BlobTestBase {
             if (i == 1) {
                 assertNull(blob.getObjectReplicationSourcePolicies());
             } else {
-                assertTrue(validateOR(
-                    blob.getObjectReplicationSourcePolicies(),
-                    "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80",
-                    "105f9aad-f39b-4064-8e47-ccd7937295ca"));
+                assertTrue(validateOR(blob.getObjectReplicationSourcePolicies()));
             }
             i++;
         }
@@ -1142,14 +1134,14 @@ public class ContainerApiTests extends BlobTestBase {
         }
     }
 
-    private boolean validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
+    private boolean validateOR(List<ObjectReplicationPolicy> policies) {
         return policies.stream()
-            .filter(policy -> policyId.equals(policy.getPolicyId()))
+            .filter(policy -> "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80".equals(policy.getPolicyId()))
             .findFirst()
             .get()
             .getRules()
             .stream()
-            .filter(rule -> ruleId.equals(rule.getRuleId()))
+            .filter(rule -> "105f9aad-f39b-4064-8e47-ccd7937295ca".equals(rule.getRuleId()))
             .findFirst()
             .get()
             .getStatus() == ObjectReplicationStatus.COMPLETE;
@@ -1204,7 +1196,7 @@ public class ContainerApiTests extends BlobTestBase {
         String uncommittedName = "u" + generateBlobName();
         setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
 
-        List<BlobItem>  blobs = cc.listBlobsByHierarchy("", options, null).stream().collect(Collectors.toList());
+        List<BlobItem> blobs = cc.listBlobsByHierarchy("", options, null).stream().collect(Collectors.toList());
 
         assertEquals(normalName, blobs.get(0).getName());
         assertEquals(copyName, blobs.get(1).getName());
@@ -1239,8 +1231,8 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void listBlobsHierOptionsUncommitted() {
-        ListBlobsOptions options = new ListBlobsOptions().setDetails(
-            new BlobListDetails().setRetrieveUncommittedBlobs(true));
+        ListBlobsOptions options
+            = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveUncommittedBlobs(true));
         String normalName = "a" + generateBlobName();
         String copyName = "c" + generateBlobName();
         String metadataName = "m" + generateBlobName();
@@ -1273,8 +1265,8 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void listBlobsHierOptionsMaxResultsByPage() {
-        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
-            .setRetrieveUncommittedBlobs(true));
+        ListBlobsOptions options = new ListBlobsOptions()
+            .setDetails(new BlobListDetails().setRetrieveCopy(true).setRetrieveUncommittedBlobs(true));
         String normalName = "a" + generateBlobName();
         String copyName = "c" + generateBlobName();
         String metadataName = "m" + generateBlobName();
@@ -1320,16 +1312,15 @@ public class ContainerApiTests extends BlobTestBase {
     @MethodSource("listBlobsHierOptionsFailSupplier")
     public void listBlobsHierOptionsFail(boolean snapshots, int maxResults, Class<? extends Throwable> exceptionType) {
         assertThrows(exceptionType, () -> {
-            ListBlobsOptions options = new ListBlobsOptions()
-                .setDetails(new BlobListDetails().setRetrieveSnapshots(snapshots))
-                .setMaxResultsPerPage(maxResults);
+            ListBlobsOptions options
+                = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveSnapshots(snapshots))
+                    .setMaxResultsPerPage(maxResults);
             cc.listBlobsByHierarchy(null, options, null).iterator().hasNext();
         });
     }
 
     private static Stream<Arguments> listBlobsHierOptionsFailSupplier() {
-        return Stream.of(
-            Arguments.of(true, 5, UnsupportedOperationException.class),
+        return Stream.of(Arguments.of(true, 5, UnsupportedOperationException.class),
             Arguments.of(false, 0, IllegalArgumentException.class));
     }
 
@@ -1343,14 +1334,13 @@ public class ContainerApiTests extends BlobTestBase {
 
         Set<String> foundBlobs = new HashSet<>();
         Set<String> foundPrefixes = new HashSet<>();
-        cc.listBlobsByHierarchy(null).stream().collect(Collectors.toList())
-            .forEach(blobItem -> {
-                if (blobItem.isPrefix()) {
-                    foundPrefixes.add(blobItem.getName());
-                } else {
-                    foundBlobs.add(blobItem.getName());
-                }
-            });
+        cc.listBlobsByHierarchy(null).stream().collect(Collectors.toList()).forEach(blobItem -> {
+            if (blobItem.isPrefix()) {
+                foundPrefixes.add(blobItem.getName());
+            } else {
+                foundBlobs.add(blobItem.getName());
+            }
+        });
 
         List<String> expectedBlobs = Arrays.asList("a", "c", "e", "f");
         List<String> expectedPrefixes = Arrays.asList("b/", "d/", "g/");
@@ -1373,8 +1363,8 @@ public class ContainerApiTests extends BlobTestBase {
             bc.create(512);
         }
 
-        PagedIterable<BlobItem> blobs = cc.listBlobsByHierarchy("/",
-            new ListBlobsOptions().setMaxResultsPerPage(pageSize), null);
+        PagedIterable<BlobItem> blobs
+            = cc.listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageSize), null);
 
         PagedResponse<BlobItem> firstPage = blobs.iterableByPage().iterator().next();
 
@@ -1406,8 +1396,7 @@ public class ContainerApiTests extends BlobTestBase {
             if (i == 1) {
                 assertNull(blob.getObjectReplicationSourcePolicies());
             } else {
-                assertTrue(validateOR(blob.getObjectReplicationSourcePolicies(),
-                    "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca"));
+                assertTrue(validateOR(blob.getObjectReplicationSourcePolicies()));
             }
             i++;
         }
@@ -1443,8 +1432,8 @@ public class ContainerApiTests extends BlobTestBase {
 
         if (rehydratePriority != null) {
             bc.setAccessTier(AccessTier.ARCHIVE);
-            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT)
-                .setPriority(rehydratePriority), null, null);
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority),
+                null, null);
         }
 
         BlobItem item = cc.listBlobsByHierarchy(null).iterator().next();
@@ -1459,8 +1448,8 @@ public class ContainerApiTests extends BlobTestBase {
         bu.create();
         bu.seal();
 
-        Iterator<BlobItem> blobs = cc.listBlobsByHierarchy(null, new ListBlobsOptions().setPrefix(prefix), null)
-            .iterator();
+        Iterator<BlobItem> blobs
+            = cc.listBlobsByHierarchy(null, new ListBlobsOptions().setPrefix(prefix), null).iterator();
 
         BlobItem blob = blobs.next();
         assertFalse(blobs.hasNext());
@@ -1495,7 +1484,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-02-12")
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void listBlobsHierInvalidXml(boolean delimiter) {
         String blobName = "dir1/dir2/file\uFFFE.blob";
         cc.getBlobClient(blobName).getAppendBlobClient().create();
@@ -1518,8 +1507,8 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     private void setupContainerForListing(BlobContainerClient containerClient) {
-        List<String> blobNames = Arrays.asList("foo", "bar", "baz", "foo/foo", "foo/bar", "baz/foo", "baz/foo/bar",
-            "baz/bar/foo");
+        List<String> blobNames
+            = Arrays.asList("foo", "bar", "baz", "foo/foo", "foo/bar", "baz/foo", "baz/foo/bar", "baz/bar/foo");
         byte[] data = getRandomByteArray(Constants.KB);
 
         for (String blob : blobNames) {
@@ -1533,23 +1522,21 @@ public class ContainerApiTests extends BlobTestBase {
     public void listBlobsHierSegmentWithVersionPrefixAndDelimiter() {
         BlobContainerClient versionedCC = versionedBlobServiceClient.getBlobContainerClient(containerName);
         versionedCC.createIfNotExists();
-        ListBlobsOptions options = new ListBlobsOptions()
-            .setDetails(new BlobListDetails().setRetrieveVersions(true))
-            .setPrefix("baz");
+        ListBlobsOptions options
+            = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)).setPrefix("baz");
 
         setupContainerForListing(versionedCC);
 
         Set<BlobItem> foundBlobs = new HashSet<>();
         Set<BlobItem> foundPrefixes = new HashSet<>();
 
-        versionedCC.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList())
-            .forEach(blobItem -> {
-                if (blobItem.isPrefix()) {
-                    foundPrefixes.add(blobItem);
-                } else {
-                    foundBlobs.add(blobItem);
-                }
-            });
+        versionedCC.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList()).forEach(blobItem -> {
+            if (blobItem.isPrefix()) {
+                foundPrefixes.add(blobItem);
+            } else {
+                foundBlobs.add(blobItem);
+            }
+        });
 
         assertEquals(1, foundBlobs.size());
         assertEquals(1, foundPrefixes.size());
@@ -1568,15 +1555,18 @@ public class ContainerApiTests extends BlobTestBase {
         assertDoesNotThrow(() -> cc.findBlobsByTags("\"key\"='value'").iterator().hasNext());
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsQuery() {
         BlobClient blobClient = cc.getBlobClient(generateBlobName());
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("key", "value")), null, null);
+        blobClient
+            .uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize())
+                .setTags(Collections.singletonMap("key", "value")), null, null);
         blobClient = cc.getBlobClient(generateBlobName());
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("bar", "foo")), null, null);
+        blobClient
+            .uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize())
+                .setTags(Collections.singletonMap("bar", "foo")), null, null);
         blobClient = cc.getBlobClient(generateBlobName());
         blobClient.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
@@ -1597,8 +1587,9 @@ public class ContainerApiTests extends BlobTestBase {
     public void findBlobsMarker() {
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
         for (int i = 0; i < 10; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
+            cc.getBlobClient(generateBlobName())
+                .uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null,
+                    null);
         }
 
         sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
@@ -1625,13 +1616,16 @@ public class ContainerApiTests extends BlobTestBase {
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
         for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
+            cc.getBlobClient(generateBlobName())
+                .uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null,
+                    null);
         }
 
-        for (PagedResponse<TaggedBlobItem> page : cc.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults),
-            null, Context.NONE).iterableByPage()) {
+        for (PagedResponse<TaggedBlobItem> page : cc
+            .findBlobsByTags(
+                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults),
+                null, Context.NONE)
+            .iterableByPage()) {
             assertTrue(page.getValue().size() <= pageResults);
         }
     }
@@ -1644,12 +1638,14 @@ public class ContainerApiTests extends BlobTestBase {
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
         for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
+            cc.getBlobClient(generateBlobName())
+                .uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null,
+                    null);
         }
 
-        for (PagedResponse<TaggedBlobItem> page : cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'",
-            tagKey, tagValue)), null, Context.NONE).iterableByPage(pageResults)) {
+        for (PagedResponse<TaggedBlobItem> page : cc
+            .findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE)
+            .iterableByPage(pageResults)) {
             assertTrue(page.getValue().size() <= pageResults);
         }
     }
@@ -1659,32 +1655,30 @@ public class ContainerApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> cc.findBlobsByTags("garbageTag").streamByPage().count());
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
-    public void findBlobsWithTimeoutStillBackedByPagedFlux() {
+    public void findBlobsWithTimeoutStillBackedByPagedStream() {
         int numBlobs = 5;
         int pageResults = 3;
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
         for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags),
-                null, null);
+            cc.getBlobClient(generateBlobName())
+                .uploadWithResponse(
+                    new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize())
+                        .setTags(tags),
+                    null, null);
         }
 
         // when: "Consume results by page, still have paging functionality"
-        assertDoesNotThrow(() -> cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
-                .setMaxResultsPerPage(pageResults), Duration.ofSeconds(10), Context.NONE).streamByPage().count());
+        assertDoesNotThrow(() -> cc.findBlobsByTags(
+            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults),
+            Duration.ofSeconds(10), Context.NONE).streamByPage().count());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"中文",
-        "az[]",
-        "hello world",
-        "hello/world",
-        "hello&world",
-        "!*'();:@&=+/$,/?#[]"
-    })
+    @ValueSource(strings = { "中文", "az[]", "hello world", "hello/world", "hello&world", "!*'();:@&=+/$,/?#[]" })
     public void createURLSpecialChars(String name) {
         // This test checks that we encode special characters in blob names correctly.
         AppendBlobClient bu2 = cc.getBlobClient(name).getAppendBlobClient();
@@ -1694,10 +1688,9 @@ public class ContainerApiTests extends BlobTestBase {
 
         assertResponseStatusCode(bu2.createWithResponse(null, null, null, null, null), 201);
         assertResponseStatusCode(bu5.getPropertiesWithResponse(null, null, null), 200);
-        assertResponseStatusCode(bu3.createWithResponse(512, null, null, null,
-            null, null, null), 201);
-        assertResponseStatusCode(bu4.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(),
-            null, null, null, null, null, null, null), 201);
+        assertResponseStatusCode(bu3.createWithResponse(512, null, null, null, null, null, null), 201);
+        assertResponseStatusCode(bu4.uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null,
+            null, null, null, null, null, null), 201);
 
         Iterator<BlobItem> blobs = cc.listBlobs().iterator();
 
@@ -1707,15 +1700,15 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "%E4%B8%AD%E6%96%87",
-        "az%5B%5D",
-        "hello%20world",
-        "hello%2Fworld",
-        "hello%26world",
-        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%23%5B%5D"
-    })
-        public void createURLSpecialCharsEncoded(String name) {
+    @ValueSource(
+        strings = {
+            "%E4%B8%AD%E6%96%87",
+            "az%5B%5D",
+            "hello%20world",
+            "hello%2Fworld",
+            "hello%26world",
+            "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%23%5B%5D" })
+    public void createURLSpecialCharsEncoded(String name) {
         // This test checks that we handle blob names with encoded special characters correctly.
         AppendBlobClient bu2 = cc.getBlobClient(name).getAppendBlobClient();
         PageBlobClient bu3 = cc.getBlobClient(name + "2").getPageBlobClient();
@@ -1736,14 +1729,14 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "%E4%B8%AD%E6%96%87",
-        "az%5B%5D",
-        "hello%20world",
-        "hello%2Fworld",
-        "hello%26world",
-        "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%23%5B%5D"
-    })
+    @ValueSource(
+        strings = {
+            "%E4%B8%AD%E6%96%87",
+            "az%5B%5D",
+            "hello%20world",
+            "hello%2Fworld",
+            "hello%26world",
+            "%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%23%5B%5D" })
     public void createURLSpecialCharsDecoded(String name) {
         // This test checks that we handle blob names with encoded special characters correctly.
         String decodedName = Utility.urlDecode(name);
@@ -1801,11 +1794,10 @@ public class ContainerApiTests extends BlobTestBase {
             cc.create();
         }
 
-        AppendBlobClient bc = instrument(new BlobClientBuilder()
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .blobName("rootblob"))
-            .buildClient().getAppendBlobClient();
+        AppendBlobClient bc
+            = instrument(new BlobClientBuilder().credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .blobName("rootblob")).buildClient().getAppendBlobClient();
 
         Response<AppendBlobItem> createResponse = bc.createWithResponse(null, null, null, null, null);
 
@@ -1824,11 +1816,9 @@ public class ContainerApiTests extends BlobTestBase {
             cc.create();
         }
 
-        cc = instrument(new BlobContainerClientBuilder()
-            .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+        cc = instrument(new BlobContainerClientBuilder().credential(ENVIRONMENT.getPrimaryAccount().getCredential())
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-            .containerName(null))
-            .buildClient();
+            .containerName(null)).buildClient();
 
         assertNotNull(cc.getProperties());
         assertEquals(BlobContainerAsyncClient.ROOT_CONTAINER_NAME, cc.getBlobContainerName());
@@ -1859,8 +1849,8 @@ public class ContainerApiTests extends BlobTestBase {
             }
         }
 
-        BlobContainerClient webContainer = primaryBlobServiceClient.getBlobContainerClient(
-            BlobContainerClient.STATIC_WEBSITE_CONTAINER_NAME);
+        BlobContainerClient webContainer
+            = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.STATIC_WEBSITE_CONTAINER_NAME);
 
         // Validate some basic operation.
         assertDoesNotThrow(() -> webContainer.setAccessPolicy(null, null));
@@ -1879,6 +1869,29 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void getAccountInfoMin() {
         assertResponseStatusCode(primaryBlobServiceClient.getAccountInfoWithResponse(null, null), 200);
+    }
+
+    @Test
+    public void getAccountInfoBase() {
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
+        StorageAccountInfo info = cc.getAccountInfo(null);
+
+        assertNotNull(info.getAccountKind());
+        assertNotNull(info.getSkuName());
+        assertFalse(info.isHierarchicalNamespaceEnabled());
+    }
+
+    @Test
+    public void getAccountInfoBaseFail() {
+        BlobServiceClient serviceClient
+            = instrument(new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .credential(new MockTokenCredential())).buildClient();
+
+        BlobContainerClient containerClient = serviceClient.getBlobContainerClient(generateContainerName());
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> containerClient.getAccountInfo(null));
+        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+
     }
 
     @Test
@@ -1901,9 +1914,9 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void builderBearerTokenValidation() {
         URL endpoint = BlobUrlParts.parse(cc.getBlobContainerUrl()).setScheme("http").toUrl();
-        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint(endpoint.toString());
+        BlobContainerClientBuilder builder
+            = new BlobContainerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(endpoint.toString());
 
         assertThrows(IllegalArgumentException.class, builder::buildClient);
     }
@@ -1923,9 +1936,8 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void defaultAudience() {
-        BlobContainerClient aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .audience(null)
-            .buildClient();
+        BlobContainerClient aadContainer
+            = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl()).audience(null).buildClient();
 
         assertTrue(aadContainer.exists());
     }
@@ -1939,15 +1951,18 @@ public class ContainerApiTests extends BlobTestBase {
         assertTrue(aadContainer.exists());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        BlobContainerClient aadContainer = getContainerClientBuilder(cc.getBlobContainerUrl())
-            .credential(new MockTokenCredential())
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        BlobContainerClient aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
             .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildClient();
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadContainer.exists());
-        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+        assertNotNull(aadContainer.getProperties());
     }
 
     @Test
@@ -1955,124 +1970,123 @@ public class ContainerApiTests extends BlobTestBase {
         String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
         BlobAudience audience = BlobAudience.fromString(url);
 
-        BlobContainerClient aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
-            .audience(audience)
-            .buildClient();
+        BlobContainerClient aadContainer
+            = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl()).audience(audience).buildClient();
 
         assertTrue(aadContainer.exists());
     }
 
-// TODO: Reintroduce these tests once service starts supporting it.
+    // TODO: Reintroduce these tests once service starts supporting it.
 
-//    public void Rename() {
-//        setup:
-//        def newName = generateContainerName()
-//
-//        when:
-//        def renamedContainer = cc.rename(newName)
-//
-//        then:
-//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-//
-//        cleanup:
-//        renamedContainer.delete()
-//    }
+    //    public void Rename() {
+    //        setup:
+    //        def newName = generateContainerName()
+    //
+    //        when:
+    //        def renamedContainer = cc.rename(newName)
+    //
+    //        then:
+    //        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+    //
+    //        cleanup:
+    //        renamedContainer.delete()
+    //    }
 
-//    public void Rename sas() {
-//        setup:
-//        def newName = generateContainerName()
-//        def service = new AccountSasService()
-//            .setBlobAccess(true)
-//        def resourceType = new AccountSasResourceType()
-//            .setContainer(true)
-//            .setService(true)
-//            .setObject(true)
-//        def expiryTime = testResourceNamer.now().plusDays(1)
-//        def permissions = new AccountSasPermission()
-//            .setReadPermission(true)
-//            .setWritePermission(true)
-//            .setCreatePermission(true)
-//            .setDeletePermission(true)
-//
-//        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
-//        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
-//        def sasClient = getContainerClient(sas, cc.getBlobContainerUrl())
-//
-//        when:
-//        def renamedContainer = sasClient.rename(newName)
-//
-//        then:
-//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-//
-//        cleanup:
-//        renamedContainer.delete()
-//    }
+    //    public void Rename sas() {
+    //        setup:
+    //        def newName = generateContainerName()
+    //        def service = new AccountSasService()
+    //            .setBlobAccess(true)
+    //        def resourceType = new AccountSasResourceType()
+    //            .setContainer(true)
+    //            .setService(true)
+    //            .setObject(true)
+    //        def expiryTime = testResourceNamer.now().plusDays(1)
+    //        def permissions = new AccountSasPermission()
+    //            .setReadPermission(true)
+    //            .setWritePermission(true)
+    //            .setCreatePermission(true)
+    //            .setDeletePermission(true)
+    //
+    //        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+    //        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
+    //        def sasClient = getContainerClient(sas, cc.getBlobContainerUrl())
+    //
+    //        when:
+    //        def renamedContainer = sasClient.rename(newName)
+    //
+    //        then:
+    //        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+    //
+    //        cleanup:
+    //        renamedContainer.delete()
+    //    }
 
-//    @ParameterizedTest
-//    public void Rename AC() {
-//        setup:
-//        leaseID = setupContainerLeaseCondition(cc, leaseID)
-//        BlobRequestConditions cac = new BlobRequestConditions()
-//            .setLeaseId(leaseID)
-//
-//        expect:
-//        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
-//            null, null).getStatusCode() == 200
-//
-//        where:
-//        leaseID         || _
-//        null            || _
-//        receivedLeaseID || _
-//    }
+    //    @ParameterizedTest
+    //    public void Rename AC() {
+    //        setup:
+    //        leaseID = setupContainerLeaseCondition(cc, leaseID)
+    //        BlobRequestConditions cac = new BlobRequestConditions()
+    //            .setLeaseId(leaseID)
+    //
+    //        expect:
+    //        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
+    //            null, null).getStatusCode() == 200
+    //
+    //        where:
+    //        leaseID         || _
+    //        null            || _
+    //        receivedLeaseID || _
+    //    }
 
-//    @ParameterizedTest
-//    public void Rename AC fail() {
-//        setup:
-//        BlobRequestConditions cac = new BlobRequestConditions()
-//            .setLeaseId(leaseID)
-//
-//        when:
-//        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
-//            null, null)
-//
-//        then:
-//        assertThrows(BlobStorageException.class, () ->
-//
-//        where:
-//        leaseID         || _
-//        garbageLeaseID  || _
-//    }
+    //    @ParameterizedTest
+    //    public void Rename AC fail() {
+    //        setup:
+    //        BlobRequestConditions cac = new BlobRequestConditions()
+    //            .setLeaseId(leaseID)
+    //
+    //        when:
+    //        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
+    //            null, null)
+    //
+    //        then:
+    //        assertThrows(BlobStorageException.class, () ->
+    //
+    //        where:
+    //        leaseID         || _
+    //        garbageLeaseID  || _
+    //    }
 
-//    @ParameterizedTest
-//    public void Rename AC illegal() {
-//        setup:
-//        def ac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified).setTagsConditions(tags)
-//
-//        when:
-//        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(ac),
-//            null, null)
-//
-//        then:
-//        assertThrows(UnsupportedOperationException.class, () ->
-//
-//        where:
-//        modified | unmodified | match        | noneMatch    | tags
-//        oldDate  | null       | null         | null         | null
-//        null     | newDate    | null         | null         | null
-//        null     | null       | receivedEtag | null         | null
-//        null     | null       | null         | garbageEtag  | null
-//        null     | null       | null         | null         | "tags"
-//    }
+    //    @ParameterizedTest
+    //    public void Rename AC illegal() {
+    //        setup:
+    //        def ac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified).setTagsConditions(tags)
+    //
+    //        when:
+    //        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(ac),
+    //            null, null)
+    //
+    //        then:
+    //        assertThrows(UnsupportedOperationException.class, () ->
+    //
+    //        where:
+    //        modified | unmodified | match        | noneMatch    | tags
+    //        oldDate  | null       | null         | null         | null
+    //        null     | newDate    | null         | null         | null
+    //        null     | null       | receivedEtag | null         | null
+    //        null     | null       | null         | garbageEtag  | null
+    //        null     | null       | null         | null         | "tags"
+    //    }
 
-//    public void Rename error() {
-//        setup:
-//        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-//        def newName = generateContainerName()
-//
-//        when:
-//        cc.rename(newName)
-//
-//        then:
-//        assertThrows(BlobStorageException.class, () ->
-//    }
+    //    public void Rename error() {
+    //        setup:
+    //        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+    //        def newName = generateContainerName()
+    //
+    //        when:
+    //        cc.rename(newName)
+    //
+    //        then:
+    //        assertThrows(BlobStorageException.class, () ->
+    //    }
 }

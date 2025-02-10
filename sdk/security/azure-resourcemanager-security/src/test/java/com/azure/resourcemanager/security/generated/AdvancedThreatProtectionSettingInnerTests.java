@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class AdvancedThreatProtectionSettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdvancedThreatProtectionSettingInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"isEnabled\":true},\"id\":\"ijcmmx\",\"name\":\"cufufsrpymz\",\"type\":\"dnsezcxtbzs\"}")
-                .toObject(AdvancedThreatProtectionSettingInner.class);
+        AdvancedThreatProtectionSettingInner model = BinaryData
+            .fromString(
+                "{\"properties\":{\"isEnabled\":true},\"id\":\"cipaouaj\",\"name\":\"s\",\"type\":\"ucmpoyfd\"}")
+            .toObject(AdvancedThreatProtectionSettingInner.class);
         Assertions.assertEquals(true, model.isEnabled());
     }
 

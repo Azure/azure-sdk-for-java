@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Model that represents the Experiment action target details error model. */
+/**
+ * Model that represents the Experiment action target details error model.
+ */
 @Immutable
-public final class ExperimentExecutionActionTargetDetailsError {
+public final class ExperimentExecutionActionTargetDetailsError
+    implements JsonSerializable<ExperimentExecutionActionTargetDetailsError> {
     /*
      * The error code.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * The error message
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of ExperimentExecutionActionTargetDetailsError class. */
+    /**
+     * Creates an instance of ExperimentExecutionActionTargetDetailsError class.
+     */
     public ExperimentExecutionActionTargetDetailsError() {
     }
 
     /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +44,7 @@ public final class ExperimentExecutionActionTargetDetailsError {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -46,9 +53,47 @@ public final class ExperimentExecutionActionTargetDetailsError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExperimentExecutionActionTargetDetailsError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExperimentExecutionActionTargetDetailsError if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExperimentExecutionActionTargetDetailsError.
+     */
+    public static ExperimentExecutionActionTargetDetailsError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExperimentExecutionActionTargetDetailsError deserializedExperimentExecutionActionTargetDetailsError
+                = new ExperimentExecutionActionTargetDetailsError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedExperimentExecutionActionTargetDetailsError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedExperimentExecutionActionTargetDetailsError.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExperimentExecutionActionTargetDetailsError;
+        });
     }
 }

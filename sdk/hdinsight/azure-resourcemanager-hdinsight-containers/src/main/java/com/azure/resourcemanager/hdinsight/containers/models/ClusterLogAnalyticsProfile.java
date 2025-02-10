@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cluster log analytics profile to enable or disable OMS agent for cluster. */
+/**
+ * Cluster log analytics profile to enable or disable OMS agent for cluster.
+ */
 @Fluent
-public final class ClusterLogAnalyticsProfile {
+public final class ClusterLogAnalyticsProfile implements JsonSerializable<ClusterLogAnalyticsProfile> {
     /*
      * True if log analytics is enabled for the cluster, otherwise false.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * Collection of logs to be enabled or disabled for log analytics.
      */
-    @JsonProperty(value = "applicationLogs")
     private ClusterLogAnalyticsApplicationLogs applicationLogs;
 
     /*
      * True if metrics are enabled, otherwise false.
      */
-    @JsonProperty(value = "metricsEnabled")
     private Boolean metricsEnabled;
 
-    /** Creates an instance of ClusterLogAnalyticsProfile class. */
+    /**
+     * Creates an instance of ClusterLogAnalyticsProfile class.
+     */
     public ClusterLogAnalyticsProfile() {
     }
 
     /**
      * Get the enabled property: True if log analytics is enabled for the cluster, otherwise false.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -43,7 +48,7 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Set the enabled property: True if log analytics is enabled for the cluster, otherwise false.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ClusterLogAnalyticsProfile object itself.
      */
@@ -54,7 +59,7 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Get the applicationLogs property: Collection of logs to be enabled or disabled for log analytics.
-     *
+     * 
      * @return the applicationLogs value.
      */
     public ClusterLogAnalyticsApplicationLogs applicationLogs() {
@@ -63,7 +68,7 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Set the applicationLogs property: Collection of logs to be enabled or disabled for log analytics.
-     *
+     * 
      * @param applicationLogs the applicationLogs value to set.
      * @return the ClusterLogAnalyticsProfile object itself.
      */
@@ -74,7 +79,7 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Get the metricsEnabled property: True if metrics are enabled, otherwise false.
-     *
+     * 
      * @return the metricsEnabled value.
      */
     public Boolean metricsEnabled() {
@@ -83,7 +88,7 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Set the metricsEnabled property: True if metrics are enabled, otherwise false.
-     *
+     * 
      * @param metricsEnabled the metricsEnabled value to set.
      * @return the ClusterLogAnalyticsProfile object itself.
      */
@@ -94,12 +99,56 @@ public final class ClusterLogAnalyticsProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (applicationLogs() != null) {
             applicationLogs().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("applicationLogs", this.applicationLogs);
+        jsonWriter.writeBooleanField("metricsEnabled", this.metricsEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterLogAnalyticsProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterLogAnalyticsProfile if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterLogAnalyticsProfile.
+     */
+    public static ClusterLogAnalyticsProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterLogAnalyticsProfile deserializedClusterLogAnalyticsProfile = new ClusterLogAnalyticsProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedClusterLogAnalyticsProfile.enabled = reader.getBoolean();
+                } else if ("applicationLogs".equals(fieldName)) {
+                    deserializedClusterLogAnalyticsProfile.applicationLogs
+                        = ClusterLogAnalyticsApplicationLogs.fromJson(reader);
+                } else if ("metricsEnabled".equals(fieldName)) {
+                    deserializedClusterLogAnalyticsProfile.metricsEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterLogAnalyticsProfile;
+        });
     }
 }

@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The configuration settings of the GitHub provider. */
+/**
+ * The configuration settings of the GitHub provider.
+ */
 @Fluent
-public final class GitHub {
+public final class GitHub implements JsonSerializable<GitHub> {
     /*
      * <code>false</code> if the GitHub provider should not be enabled despite the set registration; otherwise,
      * <code>true</code>.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The configuration settings of the app registration for the GitHub provider.
      */
-    @JsonProperty(value = "registration")
     private ClientRegistration registration;
 
     /*
      * The configuration settings of the login flow.
      */
-    @JsonProperty(value = "login")
     private LoginScopes login;
 
-    /** Creates an instance of GitHub class. */
+    /**
+     * Creates an instance of GitHub class.
+     */
     public GitHub() {
     }
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the GitHub provider should not be enabled despite the
      * set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -46,7 +51,7 @@ public final class GitHub {
     /**
      * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the GitHub provider should not be enabled despite the
      * set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the GitHub object itself.
      */
@@ -57,7 +62,7 @@ public final class GitHub {
 
     /**
      * Get the registration property: The configuration settings of the app registration for the GitHub provider.
-     *
+     * 
      * @return the registration value.
      */
     public ClientRegistration registration() {
@@ -66,7 +71,7 @@ public final class GitHub {
 
     /**
      * Set the registration property: The configuration settings of the app registration for the GitHub provider.
-     *
+     * 
      * @param registration the registration value to set.
      * @return the GitHub object itself.
      */
@@ -77,7 +82,7 @@ public final class GitHub {
 
     /**
      * Get the login property: The configuration settings of the login flow.
-     *
+     * 
      * @return the login value.
      */
     public LoginScopes login() {
@@ -86,7 +91,7 @@ public final class GitHub {
 
     /**
      * Set the login property: The configuration settings of the login flow.
-     *
+     * 
      * @param login the login value to set.
      * @return the GitHub object itself.
      */
@@ -97,7 +102,7 @@ public final class GitHub {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,5 +112,47 @@ public final class GitHub {
         if (login() != null) {
             login().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("registration", this.registration);
+        jsonWriter.writeJsonField("login", this.login);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHub from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHub if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the GitHub.
+     */
+    public static GitHub fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHub deserializedGitHub = new GitHub();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedGitHub.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("registration".equals(fieldName)) {
+                    deserializedGitHub.registration = ClientRegistration.fromJson(reader);
+                } else if ("login".equals(fieldName)) {
+                    deserializedGitHub.login = LoginScopes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHub;
+        });
     }
 }

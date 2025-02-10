@@ -5,87 +5,84 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AcquireStorageAccountLock;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FabricName;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** BackupStatus response. */
+/**
+ * BackupStatus response.
+ */
 @Fluent
-public final class BackupStatusResponseInner {
+public final class BackupStatusResponseInner implements JsonSerializable<BackupStatusResponseInner> {
     /*
      * Specifies whether the container is registered or not
      */
-    @JsonProperty(value = "protectionStatus")
     private ProtectionStatus protectionStatus;
 
     /*
      * Specifies the arm resource id of the vault
      */
-    @JsonProperty(value = "vaultId")
     private String vaultId;
 
     /*
      * Specifies the fabric name - Azure or AD
      */
-    @JsonProperty(value = "fabricName")
     private FabricName fabricName;
 
     /*
      * Specifies the product specific container name. E.g. iaasvmcontainer;iaasvmcontainer;csname;vmname.
      */
-    @JsonProperty(value = "containerName")
     private String containerName;
 
     /*
      * Specifies the product specific ds name. E.g. vm;iaasvmcontainer;csname;vmname.
      */
-    @JsonProperty(value = "protectedItemName")
     private String protectedItemName;
 
     /*
      * ErrorCode in case of intent failed
      */
-    @JsonProperty(value = "errorCode")
     private String errorCode;
 
     /*
      * ErrorMessage in case of intent failed.
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /*
      * Specifies the policy name which is used for protection
      */
-    @JsonProperty(value = "policyName")
     private String policyName;
 
     /*
      * Container registration status
      */
-    @JsonProperty(value = "registrationStatus")
     private String registrationStatus;
 
     /*
      * Number of protected items
      */
-    @JsonProperty(value = "protectedItemsCount")
     private Integer protectedItemsCount;
 
     /*
      * Specifies whether the storage account lock has been acquired or not
      */
-    @JsonProperty(value = "acquireStorageAccountLock")
     private AcquireStorageAccountLock acquireStorageAccountLock;
 
-    /** Creates an instance of BackupStatusResponseInner class. */
+    /**
+     * Creates an instance of BackupStatusResponseInner class.
+     */
     public BackupStatusResponseInner() {
     }
 
     /**
      * Get the protectionStatus property: Specifies whether the container is registered or not.
-     *
+     * 
      * @return the protectionStatus value.
      */
     public ProtectionStatus protectionStatus() {
@@ -94,7 +91,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Set the protectionStatus property: Specifies whether the container is registered or not.
-     *
+     * 
      * @param protectionStatus the protectionStatus value to set.
      * @return the BackupStatusResponseInner object itself.
      */
@@ -105,7 +102,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Get the vaultId property: Specifies the arm resource id of the vault.
-     *
+     * 
      * @return the vaultId value.
      */
     public String vaultId() {
@@ -114,7 +111,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Set the vaultId property: Specifies the arm resource id of the vault.
-     *
+     * 
      * @param vaultId the vaultId value to set.
      * @return the BackupStatusResponseInner object itself.
      */
@@ -125,7 +122,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Get the fabricName property: Specifies the fabric name - Azure or AD.
-     *
+     * 
      * @return the fabricName value.
      */
     public FabricName fabricName() {
@@ -134,7 +131,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Set the fabricName property: Specifies the fabric name - Azure or AD.
-     *
+     * 
      * @param fabricName the fabricName value to set.
      * @return the BackupStatusResponseInner object itself.
      */
@@ -146,7 +143,7 @@ public final class BackupStatusResponseInner {
     /**
      * Get the containerName property: Specifies the product specific container name. E.g.
      * iaasvmcontainer;iaasvmcontainer;csname;vmname.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -156,7 +153,7 @@ public final class BackupStatusResponseInner {
     /**
      * Set the containerName property: Specifies the product specific container name. E.g.
      * iaasvmcontainer;iaasvmcontainer;csname;vmname.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the BackupStatusResponseInner object itself.
      */
@@ -168,7 +165,7 @@ public final class BackupStatusResponseInner {
     /**
      * Get the protectedItemName property: Specifies the product specific ds name. E.g.
      * vm;iaasvmcontainer;csname;vmname.
-     *
+     * 
      * @return the protectedItemName value.
      */
     public String protectedItemName() {
@@ -178,7 +175,7 @@ public final class BackupStatusResponseInner {
     /**
      * Set the protectedItemName property: Specifies the product specific ds name. E.g.
      * vm;iaasvmcontainer;csname;vmname.
-     *
+     * 
      * @param protectedItemName the protectedItemName value to set.
      * @return the BackupStatusResponseInner object itself.
      */
@@ -189,7 +186,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Get the errorCode property: ErrorCode in case of intent failed.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -198,7 +195,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Set the errorCode property: ErrorCode in case of intent failed.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the BackupStatusResponseInner object itself.
      */
@@ -209,7 +206,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Get the errorMessage property: ErrorMessage in case of intent failed.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -218,7 +215,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Set the errorMessage property: ErrorMessage in case of intent failed.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the BackupStatusResponseInner object itself.
      */
@@ -229,7 +226,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Get the policyName property: Specifies the policy name which is used for protection.
-     *
+     * 
      * @return the policyName value.
      */
     public String policyName() {
@@ -238,7 +235,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Set the policyName property: Specifies the policy name which is used for protection.
-     *
+     * 
      * @param policyName the policyName value to set.
      * @return the BackupStatusResponseInner object itself.
      */
@@ -249,7 +246,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Get the registrationStatus property: Container registration status.
-     *
+     * 
      * @return the registrationStatus value.
      */
     public String registrationStatus() {
@@ -258,7 +255,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Set the registrationStatus property: Container registration status.
-     *
+     * 
      * @param registrationStatus the registrationStatus value to set.
      * @return the BackupStatusResponseInner object itself.
      */
@@ -269,7 +266,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Get the protectedItemsCount property: Number of protected items.
-     *
+     * 
      * @return the protectedItemsCount value.
      */
     public Integer protectedItemsCount() {
@@ -278,7 +275,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Set the protectedItemsCount property: Number of protected items.
-     *
+     * 
      * @param protectedItemsCount the protectedItemsCount value to set.
      * @return the BackupStatusResponseInner object itself.
      */
@@ -289,7 +286,7 @@ public final class BackupStatusResponseInner {
 
     /**
      * Get the acquireStorageAccountLock property: Specifies whether the storage account lock has been acquired or not.
-     *
+     * 
      * @return the acquireStorageAccountLock value.
      */
     public AcquireStorageAccountLock acquireStorageAccountLock() {
@@ -298,21 +295,91 @@ public final class BackupStatusResponseInner {
 
     /**
      * Set the acquireStorageAccountLock property: Specifies whether the storage account lock has been acquired or not.
-     *
+     * 
      * @param acquireStorageAccountLock the acquireStorageAccountLock value to set.
      * @return the BackupStatusResponseInner object itself.
      */
-    public BackupStatusResponseInner withAcquireStorageAccountLock(
-        AcquireStorageAccountLock acquireStorageAccountLock) {
+    public BackupStatusResponseInner
+        withAcquireStorageAccountLock(AcquireStorageAccountLock acquireStorageAccountLock) {
         this.acquireStorageAccountLock = acquireStorageAccountLock;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protectionStatus",
+            this.protectionStatus == null ? null : this.protectionStatus.toString());
+        jsonWriter.writeStringField("vaultId", this.vaultId);
+        jsonWriter.writeStringField("fabricName", this.fabricName == null ? null : this.fabricName.toString());
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("protectedItemName", this.protectedItemName);
+        jsonWriter.writeStringField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeStringField("policyName", this.policyName);
+        jsonWriter.writeStringField("registrationStatus", this.registrationStatus);
+        jsonWriter.writeNumberField("protectedItemsCount", this.protectedItemsCount);
+        jsonWriter.writeStringField("acquireStorageAccountLock",
+            this.acquireStorageAccountLock == null ? null : this.acquireStorageAccountLock.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupStatusResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupStatusResponseInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupStatusResponseInner.
+     */
+    public static BackupStatusResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupStatusResponseInner deserializedBackupStatusResponseInner = new BackupStatusResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectionStatus".equals(fieldName)) {
+                    deserializedBackupStatusResponseInner.protectionStatus
+                        = ProtectionStatus.fromString(reader.getString());
+                } else if ("vaultId".equals(fieldName)) {
+                    deserializedBackupStatusResponseInner.vaultId = reader.getString();
+                } else if ("fabricName".equals(fieldName)) {
+                    deserializedBackupStatusResponseInner.fabricName = FabricName.fromString(reader.getString());
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedBackupStatusResponseInner.containerName = reader.getString();
+                } else if ("protectedItemName".equals(fieldName)) {
+                    deserializedBackupStatusResponseInner.protectedItemName = reader.getString();
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedBackupStatusResponseInner.errorCode = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedBackupStatusResponseInner.errorMessage = reader.getString();
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedBackupStatusResponseInner.policyName = reader.getString();
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedBackupStatusResponseInner.registrationStatus = reader.getString();
+                } else if ("protectedItemsCount".equals(fieldName)) {
+                    deserializedBackupStatusResponseInner.protectedItemsCount = reader.getNullable(JsonReader::getInt);
+                } else if ("acquireStorageAccountLock".equals(fieldName)) {
+                    deserializedBackupStatusResponseInner.acquireStorageAccountLock
+                        = AcquireStorageAccountLock.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupStatusResponseInner;
+        });
     }
 }

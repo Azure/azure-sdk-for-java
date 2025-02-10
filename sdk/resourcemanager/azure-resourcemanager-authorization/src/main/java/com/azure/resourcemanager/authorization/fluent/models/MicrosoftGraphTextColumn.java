@@ -5,58 +5,58 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** textColumn. */
+/**
+ * textColumn.
+ */
 @Fluent
-public final class MicrosoftGraphTextColumn {
+public final class MicrosoftGraphTextColumn implements JsonSerializable<MicrosoftGraphTextColumn> {
     /*
      * Whether to allow multiple lines of text.
      */
-    @JsonProperty(value = "allowMultipleLines")
     private Boolean allowMultipleLines;
 
     /*
      * Whether updates to this column should replace existing text, or append to it.
      */
-    @JsonProperty(value = "appendChangesToExistingText")
     private Boolean appendChangesToExistingText;
 
     /*
      * The size of the text box.
      */
-    @JsonProperty(value = "linesForEditing")
     private Integer linesForEditing;
 
     /*
      * The maximum number of characters for the value.
      */
-    @JsonProperty(value = "maxLength")
     private Integer maxLength;
 
     /*
      * The type of text being stored. Must be one of plain or richText
      */
-    @JsonProperty(value = "textType")
     private String textType;
 
     /*
      * textColumn
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTextColumn class. */
+    /**
+     * Creates an instance of MicrosoftGraphTextColumn class.
+     */
     public MicrosoftGraphTextColumn() {
     }
 
     /**
      * Get the allowMultipleLines property: Whether to allow multiple lines of text.
-     *
+     * 
      * @return the allowMultipleLines value.
      */
     public Boolean allowMultipleLines() {
@@ -65,7 +65,7 @@ public final class MicrosoftGraphTextColumn {
 
     /**
      * Set the allowMultipleLines property: Whether to allow multiple lines of text.
-     *
+     * 
      * @param allowMultipleLines the allowMultipleLines value to set.
      * @return the MicrosoftGraphTextColumn object itself.
      */
@@ -77,7 +77,7 @@ public final class MicrosoftGraphTextColumn {
     /**
      * Get the appendChangesToExistingText property: Whether updates to this column should replace existing text, or
      * append to it.
-     *
+     * 
      * @return the appendChangesToExistingText value.
      */
     public Boolean appendChangesToExistingText() {
@@ -87,7 +87,7 @@ public final class MicrosoftGraphTextColumn {
     /**
      * Set the appendChangesToExistingText property: Whether updates to this column should replace existing text, or
      * append to it.
-     *
+     * 
      * @param appendChangesToExistingText the appendChangesToExistingText value to set.
      * @return the MicrosoftGraphTextColumn object itself.
      */
@@ -98,7 +98,7 @@ public final class MicrosoftGraphTextColumn {
 
     /**
      * Get the linesForEditing property: The size of the text box.
-     *
+     * 
      * @return the linesForEditing value.
      */
     public Integer linesForEditing() {
@@ -107,7 +107,7 @@ public final class MicrosoftGraphTextColumn {
 
     /**
      * Set the linesForEditing property: The size of the text box.
-     *
+     * 
      * @param linesForEditing the linesForEditing value to set.
      * @return the MicrosoftGraphTextColumn object itself.
      */
@@ -118,7 +118,7 @@ public final class MicrosoftGraphTextColumn {
 
     /**
      * Get the maxLength property: The maximum number of characters for the value.
-     *
+     * 
      * @return the maxLength value.
      */
     public Integer maxLength() {
@@ -127,7 +127,7 @@ public final class MicrosoftGraphTextColumn {
 
     /**
      * Set the maxLength property: The maximum number of characters for the value.
-     *
+     * 
      * @param maxLength the maxLength value to set.
      * @return the MicrosoftGraphTextColumn object itself.
      */
@@ -138,7 +138,7 @@ public final class MicrosoftGraphTextColumn {
 
     /**
      * Get the textType property: The type of text being stored. Must be one of plain or richText.
-     *
+     * 
      * @return the textType value.
      */
     public String textType() {
@@ -147,7 +147,7 @@ public final class MicrosoftGraphTextColumn {
 
     /**
      * Set the textType property: The type of text being stored. Must be one of plain or richText.
-     *
+     * 
      * @param textType the textType value to set.
      * @return the MicrosoftGraphTextColumn object itself.
      */
@@ -158,17 +158,16 @@ public final class MicrosoftGraphTextColumn {
 
     /**
      * Get the additionalProperties property: textColumn.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: textColumn.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTextColumn object itself.
      */
@@ -177,19 +176,72 @@ public final class MicrosoftGraphTextColumn {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowMultipleLines", this.allowMultipleLines);
+        jsonWriter.writeBooleanField("appendChangesToExistingText", this.appendChangesToExistingText);
+        jsonWriter.writeNumberField("linesForEditing", this.linesForEditing);
+        jsonWriter.writeNumberField("maxLength", this.maxLength);
+        jsonWriter.writeStringField("textType", this.textType);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTextColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTextColumn if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTextColumn.
+     */
+    public static MicrosoftGraphTextColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTextColumn deserializedMicrosoftGraphTextColumn = new MicrosoftGraphTextColumn();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowMultipleLines".equals(fieldName)) {
+                    deserializedMicrosoftGraphTextColumn.allowMultipleLines
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appendChangesToExistingText".equals(fieldName)) {
+                    deserializedMicrosoftGraphTextColumn.appendChangesToExistingText
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("linesForEditing".equals(fieldName)) {
+                    deserializedMicrosoftGraphTextColumn.linesForEditing = reader.getNullable(JsonReader::getInt);
+                } else if ("maxLength".equals(fieldName)) {
+                    deserializedMicrosoftGraphTextColumn.maxLength = reader.getNullable(JsonReader::getInt);
+                } else if ("textType".equals(fieldName)) {
+                    deserializedMicrosoftGraphTextColumn.textType = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTextColumn.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTextColumn;
+        });
     }
 }

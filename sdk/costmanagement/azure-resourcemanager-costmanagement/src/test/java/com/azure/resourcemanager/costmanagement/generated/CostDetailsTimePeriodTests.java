@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CostDetailsTimePeriodTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CostDetailsTimePeriod model =
-            BinaryData.fromString("{\"start\":\"nswhcc\",\"end\":\"ph\"}").toObject(CostDetailsTimePeriod.class);
-        Assertions.assertEquals("nswhcc", model.start());
-        Assertions.assertEquals("ph", model.end());
+        CostDetailsTimePeriod model = BinaryData.fromString("{\"start\":\"qqqagwwrxaomzi\",\"end\":\"glrrczez\"}")
+            .toObject(CostDetailsTimePeriod.class);
+        Assertions.assertEquals("qqqagwwrxaomzi", model.start());
+        Assertions.assertEquals("glrrczez", model.end());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CostDetailsTimePeriod model = new CostDetailsTimePeriod().withStart("nswhcc").withEnd("ph");
+        CostDetailsTimePeriod model = new CostDetailsTimePeriod().withStart("qqqagwwrxaomzi").withEnd("glrrczez");
         model = BinaryData.fromObject(model).toObject(CostDetailsTimePeriod.class);
-        Assertions.assertEquals("nswhcc", model.start());
-        Assertions.assertEquals("ph", model.end());
+        Assertions.assertEquals("qqqagwwrxaomzi", model.start());
+        Assertions.assertEquals("glrrczez", model.end());
     }
 }

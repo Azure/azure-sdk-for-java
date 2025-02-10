@@ -5,87 +5,81 @@
 package com.azure.resourcemanager.managementgroups.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managementgroups.models.EntityParentGroupInfo;
 import com.azure.resourcemanager.managementgroups.models.Permissions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The generic properties of an entity. */
+/**
+ * The generic properties of an entity.
+ */
 @Fluent
-public final class EntityInfoProperties {
+public final class EntityInfoProperties implements JsonSerializable<EntityInfoProperties> {
     /*
      * The AAD Tenant ID associated with the entity. For example, 00000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * The friendly name of the management group.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * (Optional) The ID of the parent management group.
      */
-    @JsonProperty(value = "parent")
     private EntityParentGroupInfo parent;
 
     /*
      * The users specific permissions to this item.
      */
-    @JsonProperty(value = "permissions")
     private Permissions permissions;
 
     /*
      * The users specific permissions to this item.
      */
-    @JsonProperty(value = "inheritedPermissions")
     private Permissions inheritedPermissions;
 
     /*
      * Number of Descendants
      */
-    @JsonProperty(value = "numberOfDescendants")
     private Integer numberOfDescendants;
 
     /*
-     * Number of Children
-     *
      * Number of children is the number of Groups and Subscriptions that are exactly one level underneath the current
      * Group.
      */
-    @JsonProperty(value = "numberOfChildren")
     private Integer numberOfChildren;
 
     /*
-     * Number of Child Groups
-     *
      * Number of children is the number of Groups that are exactly one level underneath the current Group.
      */
-    @JsonProperty(value = "numberOfChildGroups")
     private Integer numberOfChildGroups;
 
     /*
      * The parent display name chain from the root group to the immediate parent
      */
-    @JsonProperty(value = "parentDisplayNameChain")
     private List<String> parentDisplayNameChain;
 
     /*
      * The parent name chain from the root group to the immediate parent
      */
-    @JsonProperty(value = "parentNameChain")
     private List<String> parentNameChain;
 
-    /** Creates an instance of EntityInfoProperties class. */
+    /**
+     * Creates an instance of EntityInfoProperties class.
+     */
     public EntityInfoProperties() {
     }
 
     /**
      * Get the tenantId property: The AAD Tenant ID associated with the entity. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -95,7 +89,7 @@ public final class EntityInfoProperties {
     /**
      * Set the tenantId property: The AAD Tenant ID associated with the entity. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the EntityInfoProperties object itself.
      */
@@ -106,7 +100,7 @@ public final class EntityInfoProperties {
 
     /**
      * Get the displayName property: The friendly name of the management group.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -115,7 +109,7 @@ public final class EntityInfoProperties {
 
     /**
      * Set the displayName property: The friendly name of the management group.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the EntityInfoProperties object itself.
      */
@@ -126,7 +120,7 @@ public final class EntityInfoProperties {
 
     /**
      * Get the parent property: (Optional) The ID of the parent management group.
-     *
+     * 
      * @return the parent value.
      */
     public EntityParentGroupInfo parent() {
@@ -135,7 +129,7 @@ public final class EntityInfoProperties {
 
     /**
      * Set the parent property: (Optional) The ID of the parent management group.
-     *
+     * 
      * @param parent the parent value to set.
      * @return the EntityInfoProperties object itself.
      */
@@ -146,7 +140,7 @@ public final class EntityInfoProperties {
 
     /**
      * Get the permissions property: The users specific permissions to this item.
-     *
+     * 
      * @return the permissions value.
      */
     public Permissions permissions() {
@@ -155,7 +149,7 @@ public final class EntityInfoProperties {
 
     /**
      * Set the permissions property: The users specific permissions to this item.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the EntityInfoProperties object itself.
      */
@@ -166,7 +160,7 @@ public final class EntityInfoProperties {
 
     /**
      * Get the inheritedPermissions property: The users specific permissions to this item.
-     *
+     * 
      * @return the inheritedPermissions value.
      */
     public Permissions inheritedPermissions() {
@@ -175,7 +169,7 @@ public final class EntityInfoProperties {
 
     /**
      * Set the inheritedPermissions property: The users specific permissions to this item.
-     *
+     * 
      * @param inheritedPermissions the inheritedPermissions value to set.
      * @return the EntityInfoProperties object itself.
      */
@@ -186,7 +180,7 @@ public final class EntityInfoProperties {
 
     /**
      * Get the numberOfDescendants property: Number of Descendants.
-     *
+     * 
      * @return the numberOfDescendants value.
      */
     public Integer numberOfDescendants() {
@@ -195,7 +189,7 @@ public final class EntityInfoProperties {
 
     /**
      * Set the numberOfDescendants property: Number of Descendants.
-     *
+     * 
      * @param numberOfDescendants the numberOfDescendants value to set.
      * @return the EntityInfoProperties object itself.
      */
@@ -205,11 +199,9 @@ public final class EntityInfoProperties {
     }
 
     /**
-     * Get the numberOfChildren property: Number of Children
-     *
-     * <p>Number of children is the number of Groups and Subscriptions that are exactly one level underneath the current
-     * Group.
-     *
+     * Get the numberOfChildren property: Number of children is the number of Groups and Subscriptions that are exactly
+     * one level underneath the current Group.
+     * 
      * @return the numberOfChildren value.
      */
     public Integer numberOfChildren() {
@@ -217,11 +209,9 @@ public final class EntityInfoProperties {
     }
 
     /**
-     * Set the numberOfChildren property: Number of Children
-     *
-     * <p>Number of children is the number of Groups and Subscriptions that are exactly one level underneath the current
-     * Group.
-     *
+     * Set the numberOfChildren property: Number of children is the number of Groups and Subscriptions that are exactly
+     * one level underneath the current Group.
+     * 
      * @param numberOfChildren the numberOfChildren value to set.
      * @return the EntityInfoProperties object itself.
      */
@@ -231,10 +221,9 @@ public final class EntityInfoProperties {
     }
 
     /**
-     * Get the numberOfChildGroups property: Number of Child Groups
-     *
-     * <p>Number of children is the number of Groups that are exactly one level underneath the current Group.
-     *
+     * Get the numberOfChildGroups property: Number of children is the number of Groups that are exactly one level
+     * underneath the current Group.
+     * 
      * @return the numberOfChildGroups value.
      */
     public Integer numberOfChildGroups() {
@@ -242,10 +231,9 @@ public final class EntityInfoProperties {
     }
 
     /**
-     * Set the numberOfChildGroups property: Number of Child Groups
-     *
-     * <p>Number of children is the number of Groups that are exactly one level underneath the current Group.
-     *
+     * Set the numberOfChildGroups property: Number of children is the number of Groups that are exactly one level
+     * underneath the current Group.
+     * 
      * @param numberOfChildGroups the numberOfChildGroups value to set.
      * @return the EntityInfoProperties object itself.
      */
@@ -257,7 +245,7 @@ public final class EntityInfoProperties {
     /**
      * Get the parentDisplayNameChain property: The parent display name chain from the root group to the immediate
      * parent.
-     *
+     * 
      * @return the parentDisplayNameChain value.
      */
     public List<String> parentDisplayNameChain() {
@@ -267,7 +255,7 @@ public final class EntityInfoProperties {
     /**
      * Set the parentDisplayNameChain property: The parent display name chain from the root group to the immediate
      * parent.
-     *
+     * 
      * @param parentDisplayNameChain the parentDisplayNameChain value to set.
      * @return the EntityInfoProperties object itself.
      */
@@ -278,7 +266,7 @@ public final class EntityInfoProperties {
 
     /**
      * Get the parentNameChain property: The parent name chain from the root group to the immediate parent.
-     *
+     * 
      * @return the parentNameChain value.
      */
     public List<String> parentNameChain() {
@@ -287,7 +275,7 @@ public final class EntityInfoProperties {
 
     /**
      * Set the parentNameChain property: The parent name chain from the root group to the immediate parent.
-     *
+     * 
      * @param parentNameChain the parentNameChain value to set.
      * @return the EntityInfoProperties object itself.
      */
@@ -298,12 +286,80 @@ public final class EntityInfoProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parent() != null) {
             parent().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("parent", this.parent);
+        jsonWriter.writeStringField("permissions", this.permissions == null ? null : this.permissions.toString());
+        jsonWriter.writeStringField("inheritedPermissions",
+            this.inheritedPermissions == null ? null : this.inheritedPermissions.toString());
+        jsonWriter.writeNumberField("numberOfDescendants", this.numberOfDescendants);
+        jsonWriter.writeNumberField("numberOfChildren", this.numberOfChildren);
+        jsonWriter.writeNumberField("numberOfChildGroups", this.numberOfChildGroups);
+        jsonWriter.writeArrayField("parentDisplayNameChain", this.parentDisplayNameChain,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("parentNameChain", this.parentNameChain,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityInfoProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityInfoProperties.
+     */
+    public static EntityInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityInfoProperties deserializedEntityInfoProperties = new EntityInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedEntityInfoProperties.tenantId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedEntityInfoProperties.displayName = reader.getString();
+                } else if ("parent".equals(fieldName)) {
+                    deserializedEntityInfoProperties.parent = EntityParentGroupInfo.fromJson(reader);
+                } else if ("permissions".equals(fieldName)) {
+                    deserializedEntityInfoProperties.permissions = Permissions.fromString(reader.getString());
+                } else if ("inheritedPermissions".equals(fieldName)) {
+                    deserializedEntityInfoProperties.inheritedPermissions = Permissions.fromString(reader.getString());
+                } else if ("numberOfDescendants".equals(fieldName)) {
+                    deserializedEntityInfoProperties.numberOfDescendants = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfChildren".equals(fieldName)) {
+                    deserializedEntityInfoProperties.numberOfChildren = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfChildGroups".equals(fieldName)) {
+                    deserializedEntityInfoProperties.numberOfChildGroups = reader.getNullable(JsonReader::getInt);
+                } else if ("parentDisplayNameChain".equals(fieldName)) {
+                    List<String> parentDisplayNameChain = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEntityInfoProperties.parentDisplayNameChain = parentDisplayNameChain;
+                } else if ("parentNameChain".equals(fieldName)) {
+                    List<String> parentNameChain = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEntityInfoProperties.parentNameChain = parentNameChain;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityInfoProperties;
+        });
     }
 }

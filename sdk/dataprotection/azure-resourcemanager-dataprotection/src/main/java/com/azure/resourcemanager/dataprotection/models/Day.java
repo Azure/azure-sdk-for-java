@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Day
@@ -13,17 +17,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Day of the week.
  */
 @Fluent
-public final class Day {
+public final class Day implements JsonSerializable<Day> {
     /*
      * Date of the month
      */
-    @JsonProperty(value = "date")
     private Integer date;
 
     /*
      * Whether Date is last date of month
      */
-    @JsonProperty(value = "isLast")
     private Boolean isLast;
 
     /**
@@ -78,5 +80,44 @@ public final class Day {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("date", this.date);
+        jsonWriter.writeBooleanField("isLast", this.isLast);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Day from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Day if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Day.
+     */
+    public static Day fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Day deserializedDay = new Day();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("date".equals(fieldName)) {
+                    deserializedDay.date = reader.getNullable(JsonReader::getInt);
+                } else if ("isLast".equals(fieldName)) {
+                    deserializedDay.isLast = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDay;
+        });
     }
 }

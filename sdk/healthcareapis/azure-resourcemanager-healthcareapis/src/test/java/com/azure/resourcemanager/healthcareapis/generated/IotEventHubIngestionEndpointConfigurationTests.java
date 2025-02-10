@@ -12,20 +12,22 @@ public final class IotEventHubIngestionEndpointConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotEventHubIngestionEndpointConfiguration model = BinaryData.fromString(
-            "{\"eventHubName\":\"aboekqv\",\"consumerGroup\":\"lns\",\"fullyQualifiedEventHubNamespace\":\"bxwyjsflhhcaa\"}")
+            "{\"eventHubName\":\"ugicjooxdjebw\",\"consumerGroup\":\"cwwfvovbvme\",\"fullyQualifiedEventHubNamespace\":\"civyhzceuo\"}")
             .toObject(IotEventHubIngestionEndpointConfiguration.class);
-        Assertions.assertEquals("aboekqv", model.eventHubName());
-        Assertions.assertEquals("lns", model.consumerGroup());
-        Assertions.assertEquals("bxwyjsflhhcaa", model.fullyQualifiedEventHubNamespace());
+        Assertions.assertEquals("ugicjooxdjebw", model.eventHubName());
+        Assertions.assertEquals("cwwfvovbvme", model.consumerGroup());
+        Assertions.assertEquals("civyhzceuo", model.fullyQualifiedEventHubNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotEventHubIngestionEndpointConfiguration model = new IotEventHubIngestionEndpointConfiguration()
-            .withEventHubName("aboekqv").withConsumerGroup("lns").withFullyQualifiedEventHubNamespace("bxwyjsflhhcaa");
+        IotEventHubIngestionEndpointConfiguration model
+            = new IotEventHubIngestionEndpointConfiguration().withEventHubName("ugicjooxdjebw")
+                .withConsumerGroup("cwwfvovbvme")
+                .withFullyQualifiedEventHubNamespace("civyhzceuo");
         model = BinaryData.fromObject(model).toObject(IotEventHubIngestionEndpointConfiguration.class);
-        Assertions.assertEquals("aboekqv", model.eventHubName());
-        Assertions.assertEquals("lns", model.consumerGroup());
-        Assertions.assertEquals("bxwyjsflhhcaa", model.fullyQualifiedEventHubNamespace());
+        Assertions.assertEquals("ugicjooxdjebw", model.eventHubName());
+        Assertions.assertEquals("cwwfvovbvme", model.consumerGroup());
+        Assertions.assertEquals("civyhzceuo", model.fullyQualifiedEventHubNamespace());
     }
 }

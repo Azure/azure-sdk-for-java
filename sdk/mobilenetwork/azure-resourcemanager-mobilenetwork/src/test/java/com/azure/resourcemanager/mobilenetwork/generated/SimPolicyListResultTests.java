@@ -20,319 +20,186 @@ import org.junit.jupiter.api.Assertions;
 public final class SimPolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SimPolicyListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"siteProvisioningState\":{\"jaffmmfblcqcuu\":\"Adding\",\"qibrtalme\":\"Failed\",\"t\":\"Failed\"},\"ueAmbr\":{\"uplink\":\"gdslqxihhrmoo\",\"downlink\":\"z\"},\"defaultSlice\":{\"id\":\"seypxiutcxapz\"},\"rfspIndex\":1318130137,\"registrationTimer\":1111738970,\"sliceConfigurations\":[{\"slice\":{\"id\":\"o\"},\"defaultDataNetwork\":{\"id\":\"e\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"oxslh\"},\"sessionAmbr\":{\"uplink\":\"nhl\",\"downlink\":\"brqnkkzjcjb\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"rgaehvvibrxjj\"},\"sessionAmbr\":{\"uplink\":\"toqbeitpkxztmoob\",\"downlink\":\"lftidgfcwqmpim\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"qxzhem\"},\"sessionAmbr\":{\"uplink\":\"yhohujswtwkozzwc\",\"downlink\":\"lkb\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"wpfaj\"},\"defaultDataNetwork\":{\"id\":\"jwltlwtjjgu\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"alhsnvkc\"},\"sessionAmbr\":{\"uplink\":\"mxzrpoa\",\"downlink\":\"mlnwiaaomylweazu\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"cse\"},\"sessionAmbr\":{\"uplink\":\"hwwn\",\"downlink\":\"jhlfzswpchwahf\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"ousnfepgfewe\"},\"sessionAmbr\":{\"uplink\":\"wlyxgncxyk\",\"downlink\":\"hdjhlimmbcx\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"h\"},\"sessionAmbr\":{\"uplink\":\"cporxvxcjz\",\"downlink\":\"qizxfpxtgqscjavf\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"juhdqazkmtgguwpi\"},\"defaultDataNetwork\":{\"id\":\"r\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"civmmg\"},\"sessionAmbr\":{\"uplink\":\"f\",\"downlink\":\"fiwrxgkn\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"uvyinzqodfvpgs\"},\"sessionAmbr\":{\"uplink\":\"oxgsgbpfgzdjtx\",\"downlink\":\"zflbqvg\"},\"allowedServices\":[]}]}]},\"location\":\"vl\",\"tags\":{\"vetnwsdtutn\":\"cqusr\"},\"id\":\"lduycv\",\"name\":\"zhyrmewipmve\",\"type\":\"dxukuqgsjjxundxg\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"siteProvisioningState\":{\"hzjhf\":\"Deleting\",\"hvvmuvgpmun\":\"Failed\",\"sx\":\"NotApplicable\",\"hfbuzjyihsasbhud\":\"Adding\"},\"ueAmbr\":{\"uplink\":\"pohyuemslynsqyr\",\"downlink\":\"foobrlttyms\"},\"defaultSlice\":{\"id\":\"nygq\"},\"rfspIndex\":1366289055,\"registrationTimer\":986277752,\"sliceConfigurations\":[{\"slice\":{\"id\":\"dzgtil\"},\"defaultDataNetwork\":{\"id\":\"xhnfhqly\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"jouw\"},\"sessionAmbr\":{\"uplink\":\"vk\",\"downlink\":\"oyzunbixxr\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"ikvcpwp\"},\"sessionAmbr\":{\"uplink\":\"clrcivtsox\",\"downlink\":\"rkenx\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"m\"},\"sessionAmbr\":{\"uplink\":\"yefrpmpdnqqska\",\"downlink\":\"ao\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"vmm\"},\"sessionAmbr\":{\"uplink\":\"npqfrtqlkzmeg\",\"downlink\":\"itgvkx\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"zyqdrfegcealzx\"},\"defaultDataNetwork\":{\"id\":\"hcans\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"oyqhlwig\"},\"sessionAmbr\":{\"uplink\":\"ivbkbxgomfaj\",\"downlink\":\"wasqvdaeyyg\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"xakjsqzhzb\"},\"defaultDataNetwork\":{\"id\":\"zkgimsid\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"sicddyvv\"},\"sessionAmbr\":{\"uplink\":\"skgfmocwahpq\",\"downlink\":\"atjeaahh\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"jhhn\"},\"defaultDataNetwork\":{\"id\":\"kzyb\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"jid\"},\"sessionAmbr\":{\"uplink\":\"ksyxkyxvxevblbje\",\"downlink\":\"nljlageuaulx\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"nsmjbnkppxynen\"},\"sessionAmbr\":{\"uplink\":\"svxeizzgwklnsr\",\"downlink\":\"ffeycx\"},\"allowedServices\":[]}]}]},\"location\":\"tpiymerteea\",\"tags\":{\"g\":\"qiekkkzddrt\",\"vrefdeesv\":\"ojbmxv\",\"s\":\"cuijpxt\",\"wsawddjibabxvi\":\"wprtu\"},\"id\":\"itvtzeexavo\",\"name\":\"tfgle\",\"type\":\"dmdqb\"}],\"nextLink\":\"ypq\"}")
-                .toObject(SimPolicyListResult.class);
-        Assertions.assertEquals("vl", model.value().get(0).location());
-        Assertions.assertEquals("cqusr", model.value().get(0).tags().get("vetnwsdtutn"));
-        Assertions.assertEquals("gdslqxihhrmoo", model.value().get(0).ueAmbr().uplink());
-        Assertions.assertEquals("z", model.value().get(0).ueAmbr().downlink());
-        Assertions.assertEquals("seypxiutcxapz", model.value().get(0).defaultSlice().id());
-        Assertions.assertEquals(1318130137, model.value().get(0).rfspIndex());
-        Assertions.assertEquals(1111738970, model.value().get(0).registrationTimer());
-        Assertions.assertEquals("o", model.value().get(0).sliceConfigurations().get(0).slice().id());
-        Assertions.assertEquals("e", model.value().get(0).sliceConfigurations().get(0).defaultDataNetwork().id());
-        Assertions
-            .assertEquals(
-                "oxslh",
-                model
-                    .value()
-                    .get(0)
-                    .sliceConfigurations()
-                    .get(0)
-                    .dataNetworkConfigurations()
-                    .get(0)
-                    .dataNetwork()
-                    .id());
-        Assertions
-            .assertEquals(
-                "nhl",
-                model
-                    .value()
-                    .get(0)
-                    .sliceConfigurations()
-                    .get(0)
-                    .dataNetworkConfigurations()
-                    .get(0)
-                    .sessionAmbr()
-                    .uplink());
-        Assertions
-            .assertEquals(
-                "brqnkkzjcjb",
-                model
-                    .value()
-                    .get(0)
-                    .sliceConfigurations()
-                    .get(0)
-                    .dataNetworkConfigurations()
-                    .get(0)
-                    .sessionAmbr()
-                    .downlink());
+        SimPolicyListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"siteProvisioningState\":{\"sjjxundxgketw\":\"NotApplicable\",\"hzjhf\":\"Deleting\"},\"ueAmbr\":{\"uplink\":\"mhv\",\"downlink\":\"muvgp\"},\"defaultSlice\":{\"id\":\"uneqsxvmhf\"},\"rfspIndex\":837522232,\"registrationTimer\":1911590455,\"sliceConfigurations\":[{\"slice\":{\"id\":\"hsasbhu\"},\"defaultDataNetwork\":{\"id\":\"ypoh\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"emslynsqyrp\"},\"sessionAmbr\":{\"uplink\":\"oobrlttyms\",\"downlink\":\"nygq\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"nfwqzdzgtilaxhn\"},\"sessionAmbr\":{\"uplink\":\"hqlyvijo\",\"downlink\":\"wivkxo\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"zunbixx\"},\"defaultDataNetwork\":{\"id\":\"ti\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"cpwpg\"},\"sessionAmbr\":{\"uplink\":\"lrcivtsoxfrke\",\"downlink\":\"xpmyyefrpmpdnq\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"skawaoqvmmb\"},\"sessionAmbr\":{\"uplink\":\"pqfrtqlkz\",\"downlink\":\"egnitg\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"kxlzyqdrfeg\"},\"sessionAmbr\":{\"uplink\":\"ealzxwhcansymoyq\",\"downlink\":\"lwigdivbkbx\"},\"allowedServices\":[]}]}]},\"location\":\"mf\",\"tags\":{\"xakjsqzhzb\":\"wasqvdaeyyg\",\"asi\":\"zkgimsid\"},\"id\":\"ddyvvjskgfmo\",\"name\":\"wa\",\"type\":\"pqg\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"siteProvisioningState\":{\"hhvjhh\":\"Updating\"},\"ueAmbr\":{\"uplink\":\"akz\",\"downlink\":\"bbjjidjksyxk\"},\"defaultSlice\":{\"id\":\"xvxevblbjednljla\"},\"rfspIndex\":183271176,\"registrationTimer\":1122513421,\"sliceConfigurations\":[{\"slice\":{\"id\":\"xuns\"},\"defaultDataNetwork\":{\"id\":\"jbnkpp\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"nenlsvxeizzg\"},\"sessionAmbr\":{\"uplink\":\"klnsrmffey\",\"downlink\":\"xcktpiymerteeamm\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"qiekkkzddrt\"},\"sessionAmbr\":{\"uplink\":\"g\",\"downlink\":\"ojbmxv\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"vrefdeesv\"},\"sessionAmbr\":{\"uplink\":\"cuijpxt\",\"downlink\":\"s\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"wprtu\"},\"defaultDataNetwork\":{\"id\":\"wsawddjibabxvi\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"tvtzeexavoxtfg\"},\"sessionAmbr\":{\"uplink\":\"ecdmdqbwpy\",\"downlink\":\"q\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"gsfjac\"},\"sessionAmbr\":{\"uplink\":\"slhhxudbxv\",\"downlink\":\"d\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"tnsi\"},\"sessionAmbr\":{\"uplink\":\"ud\",\"downlink\":\"z\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"mes\"},\"defaultDataNetwork\":{\"id\":\"kdlpa\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"rcxfailcfxwmdb\"},\"sessionAmbr\":{\"uplink\":\"xdfgsftufqobr\",\"downlink\":\"lnacgcc\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"knh\"},\"sessionAmbr\":{\"uplink\":\"kizvytn\",\"downlink\":\"zvulj\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"aaeranokqgukk\"},\"sessionAmbr\":{\"uplink\":\"qnvb\",\"downlink\":\"oylaxxul\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"disdosfjbjsvgj\"},\"sessionAmbr\":{\"uplink\":\"whryvycytdcl\",\"downlink\":\"gc\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"knfnwmbtmvpdv\"},\"defaultDataNetwork\":{\"id\":\"dhttzaefedxihchr\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"k\"},\"sessionAmbr\":{\"uplink\":\"crjdqnsdfzpbgtg\",\"downlink\":\"ylkdghrje\"},\"allowedServices\":[]}]}]},\"location\":\"tl\",\"tags\":{\"zhokvbwnhh\":\"z\"},\"id\":\"qlgehg\",\"name\":\"pipifh\",\"type\":\"f\"}],\"nextLink\":\"ajvgcxtxjcsheafi\"}")
+            .toObject(SimPolicyListResult.class);
+        Assertions.assertEquals("mf", model.value().get(0).location());
+        Assertions.assertEquals("wasqvdaeyyg", model.value().get(0).tags().get("xakjsqzhzb"));
+        Assertions.assertEquals("mhv", model.value().get(0).ueAmbr().uplink());
+        Assertions.assertEquals("muvgp", model.value().get(0).ueAmbr().downlink());
+        Assertions.assertEquals("uneqsxvmhf", model.value().get(0).defaultSlice().id());
+        Assertions.assertEquals(837522232, model.value().get(0).rfspIndex());
+        Assertions.assertEquals(1911590455, model.value().get(0).registrationTimer());
+        Assertions.assertEquals("hsasbhu", model.value().get(0).sliceConfigurations().get(0).slice().id());
+        Assertions.assertEquals("ypoh", model.value().get(0).sliceConfigurations().get(0).defaultDataNetwork().id());
+        Assertions.assertEquals("emslynsqyrp",
+            model.value().get(0).sliceConfigurations().get(0).dataNetworkConfigurations().get(0).dataNetwork().id());
+        Assertions.assertEquals("oobrlttyms",
+            model.value()
+                .get(0)
+                .sliceConfigurations()
+                .get(0)
+                .dataNetworkConfigurations()
+                .get(0)
+                .sessionAmbr()
+                .uplink());
+        Assertions.assertEquals("nygq",
+            model.value()
+                .get(0)
+                .sliceConfigurations()
+                .get(0)
+                .dataNetworkConfigurations()
+                .get(0)
+                .sessionAmbr()
+                .downlink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SimPolicyListResult model =
-            new SimPolicyListResult()
+        SimPolicyListResult model
+            = new SimPolicyListResult()
                 .withValue(
                     Arrays
                         .asList(
-                            new SimPolicyInner()
-                                .withLocation("vl")
-                                .withTags(mapOf("vetnwsdtutn", "cqusr"))
-                                .withUeAmbr(new Ambr().withUplink("gdslqxihhrmoo").withDownlink("z"))
-                                .withDefaultSlice(new SliceResourceId().withId("seypxiutcxapz"))
-                                .withRfspIndex(1318130137)
-                                .withRegistrationTimer(1111738970)
-                                .withSliceConfigurations(
-                                    Arrays
-                                        .asList(
-                                            new SliceConfiguration()
-                                                .withSlice(new SliceResourceId().withId("o"))
-                                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("e"))
-                                                .withDataNetworkConfigurations(
-                                                    Arrays
-                                                        .asList(
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("oxslh"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("nhl")
-                                                                        .withDownlink("brqnkkzjcjb"))
-                                                                .withAllowedServices(Arrays.asList()),
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("rgaehvvibrxjj"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("toqbeitpkxztmoob")
-                                                                        .withDownlink("lftidgfcwqmpim"))
-                                                                .withAllowedServices(Arrays.asList()),
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("qxzhem"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("yhohujswtwkozzwc")
-                                                                        .withDownlink("lkb"))
-                                                                .withAllowedServices(Arrays.asList()))),
-                                            new SliceConfiguration()
-                                                .withSlice(new SliceResourceId().withId("wpfaj"))
-                                                .withDefaultDataNetwork(
-                                                    new DataNetworkResourceId().withId("jwltlwtjjgu"))
-                                                .withDataNetworkConfigurations(
-                                                    Arrays
-                                                        .asList(
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("alhsnvkc"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("mxzrpoa")
-                                                                        .withDownlink("mlnwiaaomylweazu"))
-                                                                .withAllowedServices(Arrays.asList()),
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("cse"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("hwwn")
-                                                                        .withDownlink("jhlfzswpchwahf"))
-                                                                .withAllowedServices(Arrays.asList()),
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("ousnfepgfewe"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("wlyxgncxyk")
-                                                                        .withDownlink("hdjhlimmbcx"))
-                                                                .withAllowedServices(Arrays.asList()),
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("h"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("cporxvxcjz")
-                                                                        .withDownlink("qizxfpxtgqscjavf"))
-                                                                .withAllowedServices(Arrays.asList()))),
-                                            new SliceConfiguration()
-                                                .withSlice(new SliceResourceId().withId("juhdqazkmtgguwpi"))
-                                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("r"))
-                                                .withDataNetworkConfigurations(
-                                                    Arrays
-                                                        .asList(
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("civmmg"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr().withUplink("f").withDownlink("fiwrxgkn"))
-                                                                .withAllowedServices(Arrays.asList()),
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId()
-                                                                        .withId("uvyinzqodfvpgs"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("oxgsgbpfgzdjtx")
-                                                                        .withDownlink("zflbqvg"))
-                                                                .withAllowedServices(Arrays.asList()))))),
-                            new SimPolicyInner()
-                                .withLocation("tpiymerteea")
-                                .withTags(
-                                    mapOf(
-                                        "g",
-                                        "qiekkkzddrt",
-                                        "vrefdeesv",
-                                        "ojbmxv",
-                                        "s",
-                                        "cuijpxt",
-                                        "wsawddjibabxvi",
-                                        "wprtu"))
-                                .withUeAmbr(new Ambr().withUplink("pohyuemslynsqyr").withDownlink("foobrlttyms"))
-                                .withDefaultSlice(new SliceResourceId().withId("nygq"))
-                                .withRfspIndex(1366289055)
-                                .withRegistrationTimer(986277752)
-                                .withSliceConfigurations(
-                                    Arrays
-                                        .asList(
-                                            new SliceConfiguration()
-                                                .withSlice(new SliceResourceId().withId("dzgtil"))
-                                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("xhnfhqly"))
-                                                .withDataNetworkConfigurations(
-                                                    Arrays
-                                                        .asList(
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("jouw"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("vk")
-                                                                        .withDownlink("oyzunbixxr"))
-                                                                .withAllowedServices(Arrays.asList()),
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("ikvcpwp"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("clrcivtsox")
-                                                                        .withDownlink("rkenx"))
-                                                                .withAllowedServices(Arrays.asList()),
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("m"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("yefrpmpdnqqska")
-                                                                        .withDownlink("ao"))
-                                                                .withAllowedServices(Arrays.asList()),
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("vmm"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("npqfrtqlkzmeg")
-                                                                        .withDownlink("itgvkx"))
-                                                                .withAllowedServices(Arrays.asList()))),
-                                            new SliceConfiguration()
-                                                .withSlice(new SliceResourceId().withId("zyqdrfegcealzx"))
-                                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("hcans"))
-                                                .withDataNetworkConfigurations(
-                                                    Arrays
-                                                        .asList(
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("oyqhlwig"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("ivbkbxgomfaj")
-                                                                        .withDownlink("wasqvdaeyyg"))
-                                                                .withAllowedServices(Arrays.asList()))),
-                                            new SliceConfiguration()
-                                                .withSlice(new SliceResourceId().withId("xakjsqzhzb"))
-                                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("zkgimsid"))
-                                                .withDataNetworkConfigurations(
-                                                    Arrays
-                                                        .asList(
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("sicddyvv"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("skgfmocwahpq")
-                                                                        .withDownlink("atjeaahh"))
-                                                                .withAllowedServices(Arrays.asList()))),
-                                            new SliceConfiguration()
-                                                .withSlice(new SliceResourceId().withId("jhhn"))
-                                                .withDefaultDataNetwork(new DataNetworkResourceId().withId("kzyb"))
-                                                .withDataNetworkConfigurations(
-                                                    Arrays
-                                                        .asList(
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId().withId("jid"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("ksyxkyxvxevblbje")
-                                                                        .withDownlink("nljlageuaulx"))
-                                                                .withAllowedServices(Arrays.asList()),
-                                                            new DataNetworkConfiguration()
-                                                                .withDataNetwork(
-                                                                    new DataNetworkResourceId()
-                                                                        .withId("nsmjbnkppxynen"))
-                                                                .withSessionAmbr(
-                                                                    new Ambr()
-                                                                        .withUplink("svxeizzgwklnsr")
-                                                                        .withDownlink("ffeycx"))
-                                                                .withAllowedServices(Arrays.asList())))))));
+                            new SimPolicyInner().withLocation("mf")
+                                .withTags(mapOf("xakjsqzhzb", "wasqvdaeyyg", "asi", "zkgimsid"))
+                                .withUeAmbr(new Ambr().withUplink("mhv").withDownlink("muvgp"))
+                                .withDefaultSlice(new SliceResourceId().withId("uneqsxvmhf"))
+                                .withRfspIndex(837522232)
+                                .withRegistrationTimer(1911590455)
+                                .withSliceConfigurations(Arrays
+                                    .asList(
+                                        new SliceConfiguration().withSlice(new SliceResourceId().withId("hsasbhu"))
+                                            .withDefaultDataNetwork(new DataNetworkResourceId().withId("ypoh"))
+                                            .withDataNetworkConfigurations(Arrays.asList(new DataNetworkConfiguration()
+                                                .withDataNetwork(new DataNetworkResourceId().withId("emslynsqyrp"))
+                                                .withSessionAmbr(
+                                                    new Ambr().withUplink("oobrlttyms").withDownlink("nygq"))
+                                                .withAllowedServices(Arrays.asList()),
+                                                new DataNetworkConfiguration()
+                                                    .withDataNetwork(
+                                                        new DataNetworkResourceId().withId("nfwqzdzgtilaxhn"))
+                                                    .withSessionAmbr(
+                                                        new Ambr().withUplink("hqlyvijo").withDownlink("wivkxo"))
+                                                    .withAllowedServices(Arrays.asList()))),
+                                        new SliceConfiguration().withSlice(new SliceResourceId().withId("zunbixx"))
+                                            .withDefaultDataNetwork(new DataNetworkResourceId().withId("ti"))
+                                            .withDataNetworkConfigurations(Arrays.asList(
+                                                new DataNetworkConfiguration()
+                                                    .withDataNetwork(new DataNetworkResourceId().withId("cpwpg"))
+                                                    .withSessionAmbr(new Ambr().withUplink("lrcivtsoxfrke")
+                                                        .withDownlink("xpmyyefrpmpdnq"))
+                                                    .withAllowedServices(Arrays.asList()),
+                                                new DataNetworkConfiguration()
+                                                    .withDataNetwork(new DataNetworkResourceId().withId("skawaoqvmmb"))
+                                                    .withSessionAmbr(
+                                                        new Ambr().withUplink("pqfrtqlkz").withDownlink("egnitg"))
+                                                    .withAllowedServices(Arrays.asList()),
+                                                new DataNetworkConfiguration()
+                                                    .withDataNetwork(new DataNetworkResourceId().withId("kxlzyqdrfeg"))
+                                                    .withSessionAmbr(new Ambr().withUplink("ealzxwhcansymoyq")
+                                                        .withDownlink("lwigdivbkbx"))
+                                                    .withAllowedServices(Arrays.asList()))))),
+                            new SimPolicyInner().withLocation("tl")
+                                .withTags(mapOf("zhokvbwnhh", "z"))
+                                .withUeAmbr(new Ambr().withUplink("akz").withDownlink("bbjjidjksyxk"))
+                                .withDefaultSlice(new SliceResourceId().withId("xvxevblbjednljla"))
+                                .withRfspIndex(183271176)
+                                .withRegistrationTimer(1122513421)
+                                .withSliceConfigurations(Arrays.asList(
+                                    new SliceConfiguration()
+                                        .withSlice(new SliceResourceId().withId("xuns"))
+                                        .withDefaultDataNetwork(new DataNetworkResourceId().withId("jbnkpp"))
+                                        .withDataNetworkConfigurations(Arrays.asList(new DataNetworkConfiguration()
+                                            .withDataNetwork(new DataNetworkResourceId().withId("nenlsvxeizzg"))
+                                            .withSessionAmbr(
+                                                new Ambr().withUplink("klnsrmffey").withDownlink("xcktpiymerteeamm"))
+                                            .withAllowedServices(Arrays.asList()),
+                                            new DataNetworkConfiguration()
+                                                .withDataNetwork(new DataNetworkResourceId().withId("qiekkkzddrt"))
+                                                .withSessionAmbr(new Ambr().withUplink("g").withDownlink("ojbmxv"))
+                                                .withAllowedServices(Arrays.asList()),
+                                            new DataNetworkConfiguration()
+                                                .withDataNetwork(new DataNetworkResourceId().withId("vrefdeesv"))
+                                                .withSessionAmbr(new Ambr().withUplink("cuijpxt").withDownlink("s"))
+                                                .withAllowedServices(Arrays.asList()))),
+                                    new SliceConfiguration().withSlice(new SliceResourceId().withId("wprtu"))
+                                        .withDefaultDataNetwork(new DataNetworkResourceId().withId("wsawddjibabxvi"))
+                                        .withDataNetworkConfigurations(
+                                            Arrays.asList(
+                                                new DataNetworkConfiguration()
+                                                    .withDataNetwork(
+                                                        new DataNetworkResourceId().withId("tvtzeexavoxtfg"))
+                                                    .withSessionAmbr(
+                                                        new Ambr().withUplink("ecdmdqbwpy").withDownlink("q"))
+                                                    .withAllowedServices(Arrays.asList()),
+                                                new DataNetworkConfiguration()
+                                                    .withDataNetwork(new DataNetworkResourceId().withId("gsfjac"))
+                                                    .withSessionAmbr(
+                                                        new Ambr().withUplink("slhhxudbxv").withDownlink("d"))
+                                                    .withAllowedServices(Arrays.asList()),
+                                                new DataNetworkConfiguration()
+                                                    .withDataNetwork(new DataNetworkResourceId().withId("tnsi"))
+                                                    .withSessionAmbr(new Ambr().withUplink("ud").withDownlink("z"))
+                                                    .withAllowedServices(Arrays.asList()))),
+                                    new SliceConfiguration()
+                                        .withSlice(new SliceResourceId().withId("mes"))
+                                        .withDefaultDataNetwork(new DataNetworkResourceId().withId("kdlpa"))
+                                        .withDataNetworkConfigurations(Arrays.asList(new DataNetworkConfiguration()
+                                            .withDataNetwork(new DataNetworkResourceId().withId("rcxfailcfxwmdb"))
+                                            .withSessionAmbr(
+                                                new Ambr().withUplink("xdfgsftufqobr").withDownlink("lnacgcc"))
+                                            .withAllowedServices(Arrays.asList()),
+                                            new DataNetworkConfiguration()
+                                                .withDataNetwork(new DataNetworkResourceId().withId("knh"))
+                                                .withSessionAmbr(new Ambr().withUplink("kizvytn").withDownlink("zvulj"))
+                                                .withAllowedServices(Arrays.asList()),
+                                            new DataNetworkConfiguration()
+                                                .withDataNetwork(new DataNetworkResourceId().withId("aaeranokqgukk"))
+                                                .withSessionAmbr(new Ambr().withUplink("qnvb").withDownlink("oylaxxul"))
+                                                .withAllowedServices(Arrays.asList()),
+                                            new DataNetworkConfiguration()
+                                                .withDataNetwork(new DataNetworkResourceId().withId("disdosfjbjsvgj"))
+                                                .withSessionAmbr(
+                                                    new Ambr().withUplink("whryvycytdcl").withDownlink("gc"))
+                                                .withAllowedServices(Arrays.asList()))),
+                                    new SliceConfiguration().withSlice(new SliceResourceId().withId("knfnwmbtmvpdv"))
+                                        .withDefaultDataNetwork(new DataNetworkResourceId().withId("dhttzaefedxihchr"))
+                                        .withDataNetworkConfigurations(Arrays.asList(new DataNetworkConfiguration()
+                                            .withDataNetwork(new DataNetworkResourceId().withId("k"))
+                                            .withSessionAmbr(
+                                                new Ambr().withUplink("crjdqnsdfzpbgtg").withDownlink("ylkdghrje"))
+                                            .withAllowedServices(Arrays.asList())))))));
         model = BinaryData.fromObject(model).toObject(SimPolicyListResult.class);
-        Assertions.assertEquals("vl", model.value().get(0).location());
-        Assertions.assertEquals("cqusr", model.value().get(0).tags().get("vetnwsdtutn"));
-        Assertions.assertEquals("gdslqxihhrmoo", model.value().get(0).ueAmbr().uplink());
-        Assertions.assertEquals("z", model.value().get(0).ueAmbr().downlink());
-        Assertions.assertEquals("seypxiutcxapz", model.value().get(0).defaultSlice().id());
-        Assertions.assertEquals(1318130137, model.value().get(0).rfspIndex());
-        Assertions.assertEquals(1111738970, model.value().get(0).registrationTimer());
-        Assertions.assertEquals("o", model.value().get(0).sliceConfigurations().get(0).slice().id());
-        Assertions.assertEquals("e", model.value().get(0).sliceConfigurations().get(0).defaultDataNetwork().id());
-        Assertions
-            .assertEquals(
-                "oxslh",
-                model
-                    .value()
-                    .get(0)
-                    .sliceConfigurations()
-                    .get(0)
-                    .dataNetworkConfigurations()
-                    .get(0)
-                    .dataNetwork()
-                    .id());
-        Assertions
-            .assertEquals(
-                "nhl",
-                model
-                    .value()
-                    .get(0)
-                    .sliceConfigurations()
-                    .get(0)
-                    .dataNetworkConfigurations()
-                    .get(0)
-                    .sessionAmbr()
-                    .uplink());
-        Assertions
-            .assertEquals(
-                "brqnkkzjcjb",
-                model
-                    .value()
-                    .get(0)
-                    .sliceConfigurations()
-                    .get(0)
-                    .dataNetworkConfigurations()
-                    .get(0)
-                    .sessionAmbr()
-                    .downlink());
+        Assertions.assertEquals("mf", model.value().get(0).location());
+        Assertions.assertEquals("wasqvdaeyyg", model.value().get(0).tags().get("xakjsqzhzb"));
+        Assertions.assertEquals("mhv", model.value().get(0).ueAmbr().uplink());
+        Assertions.assertEquals("muvgp", model.value().get(0).ueAmbr().downlink());
+        Assertions.assertEquals("uneqsxvmhf", model.value().get(0).defaultSlice().id());
+        Assertions.assertEquals(837522232, model.value().get(0).rfspIndex());
+        Assertions.assertEquals(1911590455, model.value().get(0).registrationTimer());
+        Assertions.assertEquals("hsasbhu", model.value().get(0).sliceConfigurations().get(0).slice().id());
+        Assertions.assertEquals("ypoh", model.value().get(0).sliceConfigurations().get(0).defaultDataNetwork().id());
+        Assertions.assertEquals("emslynsqyrp",
+            model.value().get(0).sliceConfigurations().get(0).dataNetworkConfigurations().get(0).dataNetwork().id());
+        Assertions.assertEquals("oobrlttyms",
+            model.value()
+                .get(0)
+                .sliceConfigurations()
+                .get(0)
+                .dataNetworkConfigurations()
+                .get(0)
+                .sessionAmbr()
+                .uplink());
+        Assertions.assertEquals("nygq",
+            model.value()
+                .get(0)
+                .sliceConfigurations()
+                .get(0)
+                .dataNetworkConfigurations()
+                .get(0)
+                .sessionAmbr()
+                .downlink());
     }
 
     // Use "Map.of" if available

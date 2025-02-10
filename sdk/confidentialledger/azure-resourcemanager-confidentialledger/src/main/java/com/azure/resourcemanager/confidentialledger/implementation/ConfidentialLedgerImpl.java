@@ -31,6 +31,14 @@ public final class ConfidentialLedgerImpl
         return this.innerModel().type();
     }
 
+    public LedgerProperties properties() {
+        return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public String location() {
         return this.innerModel().location();
     }
@@ -42,14 +50,6 @@ public final class ConfidentialLedgerImpl
         } else {
             return Collections.emptyMap();
         }
-    }
-
-    public LedgerProperties properties() {
-        return this.innerModel().properties();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public Region region() {
@@ -82,25 +82,21 @@ public final class ConfidentialLedgerImpl
     }
 
     public ConfidentialLedger create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLedgers()
-                .create(resourceGroupName, ledgerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLedgers()
+            .create(resourceGroupName, ledgerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ConfidentialLedger create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLedgers()
-                .create(resourceGroupName, ledgerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLedgers()
+            .create(resourceGroupName, ledgerName, this.innerModel(), context);
         return this;
     }
 
-    ConfidentialLedgerImpl(
-        String name, com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager) {
+    ConfidentialLedgerImpl(String name,
+        com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager) {
         this.innerObject = new ConfidentialLedgerInner();
         this.serviceManager = serviceManager;
         this.ledgerName = name;
@@ -111,49 +107,40 @@ public final class ConfidentialLedgerImpl
     }
 
     public ConfidentialLedger apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLedgers()
-                .update(resourceGroupName, ledgerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLedgers()
+            .update(resourceGroupName, ledgerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ConfidentialLedger apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLedgers()
-                .update(resourceGroupName, ledgerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLedgers()
+            .update(resourceGroupName, ledgerName, this.innerModel(), context);
         return this;
     }
 
-    ConfidentialLedgerImpl(
-        ConfidentialLedgerInner innerObject,
+    ConfidentialLedgerImpl(ConfidentialLedgerInner innerObject,
         com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.ledgerName = Utils.getValueFromIdByName(innerObject.id(), "ledgers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.ledgerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "ledgers");
     }
 
     public ConfidentialLedger refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLedgers()
-                .getByResourceGroupWithResponse(resourceGroupName, ledgerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLedgers()
+            .getByResourceGroupWithResponse(resourceGroupName, ledgerName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfidentialLedger refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLedgers()
-                .getByResourceGroupWithResponse(resourceGroupName, ledgerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLedgers()
+            .getByResourceGroupWithResponse(resourceGroupName, ledgerName, context)
+            .getValue();
         return this;
     }
 

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"charset\":\"spnqzahmgkb\",\"collation\":\"yydhibnuqqk\"},\"id\":\"kadrgvt\",\"name\":\"agnb\",\"type\":\"ynhijggme\"}")
-                .toObject(DatabaseInner.class);
+        DatabaseInner model = BinaryData.fromString(
+            "{\"properties\":{\"charset\":\"spnqzahmgkb\",\"collation\":\"yydhibnuqqk\"},\"id\":\"kadrgvt\",\"name\":\"agnb\",\"type\":\"ynhijggme\"}")
+            .toObject(DatabaseInner.class);
         Assertions.assertEquals("spnqzahmgkb", model.charset());
         Assertions.assertEquals("yydhibnuqqk", model.collation());
     }

@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The RankingsResponseTablesPropertiesItemsMetricsItem model. */
+/**
+ * The RankingsResponseTablesPropertiesItemsMetricsItem model.
+ */
 @Fluent
-public final class RankingsResponseTablesPropertiesItemsMetricsItem {
+public final class RankingsResponseTablesPropertiesItemsMetricsItem
+    implements JsonSerializable<RankingsResponseTablesPropertiesItemsMetricsItem> {
     /*
      * The metric property.
      */
-    @JsonProperty(value = "metric")
     private String metric;
 
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private Long value;
 
     /*
      * The percentage property.
      */
-    @JsonProperty(value = "percentage")
     private Float percentage;
 
-    /** Creates an instance of RankingsResponseTablesPropertiesItemsMetricsItem class. */
+    /**
+     * Creates an instance of RankingsResponseTablesPropertiesItemsMetricsItem class.
+     */
     public RankingsResponseTablesPropertiesItemsMetricsItem() {
     }
 
     /**
      * Get the metric property: The metric property.
-     *
+     * 
      * @return the metric value.
      */
     public String metric() {
@@ -43,7 +49,7 @@ public final class RankingsResponseTablesPropertiesItemsMetricsItem {
 
     /**
      * Set the metric property: The metric property.
-     *
+     * 
      * @param metric the metric value to set.
      * @return the RankingsResponseTablesPropertiesItemsMetricsItem object itself.
      */
@@ -54,7 +60,7 @@ public final class RankingsResponseTablesPropertiesItemsMetricsItem {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public Long value() {
@@ -63,7 +69,7 @@ public final class RankingsResponseTablesPropertiesItemsMetricsItem {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the RankingsResponseTablesPropertiesItemsMetricsItem object itself.
      */
@@ -74,7 +80,7 @@ public final class RankingsResponseTablesPropertiesItemsMetricsItem {
 
     /**
      * Get the percentage property: The percentage property.
-     *
+     * 
      * @return the percentage value.
      */
     public Float percentage() {
@@ -83,7 +89,7 @@ public final class RankingsResponseTablesPropertiesItemsMetricsItem {
 
     /**
      * Set the percentage property: The percentage property.
-     *
+     * 
      * @param percentage the percentage value to set.
      * @return the RankingsResponseTablesPropertiesItemsMetricsItem object itself.
      */
@@ -94,9 +100,54 @@ public final class RankingsResponseTablesPropertiesItemsMetricsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metric", this.metric);
+        jsonWriter.writeNumberField("value", this.value);
+        jsonWriter.writeNumberField("percentage", this.percentage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RankingsResponseTablesPropertiesItemsMetricsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RankingsResponseTablesPropertiesItemsMetricsItem if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RankingsResponseTablesPropertiesItemsMetricsItem.
+     */
+    public static RankingsResponseTablesPropertiesItemsMetricsItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RankingsResponseTablesPropertiesItemsMetricsItem deserializedRankingsResponseTablesPropertiesItemsMetricsItem
+                = new RankingsResponseTablesPropertiesItemsMetricsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metric".equals(fieldName)) {
+                    deserializedRankingsResponseTablesPropertiesItemsMetricsItem.metric = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedRankingsResponseTablesPropertiesItemsMetricsItem.value
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("percentage".equals(fieldName)) {
+                    deserializedRankingsResponseTablesPropertiesItemsMetricsItem.percentage
+                        = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRankingsResponseTablesPropertiesItemsMetricsItem;
+        });
     }
 }

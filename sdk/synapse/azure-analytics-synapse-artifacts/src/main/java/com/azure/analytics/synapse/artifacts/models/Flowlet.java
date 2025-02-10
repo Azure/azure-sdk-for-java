@@ -5,54 +5,61 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Data flow flowlet.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Flowlet")
-@JsonFlatten
 @Fluent
 public class Flowlet extends DataFlow {
     /*
+     * Type of data flow.
+     */
+    private String type = "Flowlet";
+
+    /*
      * List of sources in Flowlet.
      */
-    @JsonProperty(value = "typeProperties.sources")
     private List<DataFlowSource> sources;
 
     /*
      * List of sinks in Flowlet.
      */
-    @JsonProperty(value = "typeProperties.sinks")
     private List<DataFlowSink> sinks;
 
     /*
      * List of transformations in Flowlet.
      */
-    @JsonProperty(value = "typeProperties.transformations")
     private List<Transformation> transformations;
 
     /*
      * Flowlet script.
      */
-    @JsonProperty(value = "typeProperties.script")
     private String script;
 
     /*
      * Flowlet script lines.
      */
-    @JsonProperty(value = "typeProperties.scriptLines")
     private List<String> scriptLines;
 
     /**
      * Creates an instance of Flowlet class.
      */
     public Flowlet() {
+    }
+
+    /**
+     * Get the type property: Type of data flow.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -180,5 +187,87 @@ public class Flowlet extends DataFlow {
     public Flowlet setFolder(DataFlowFolder folder) {
         super.setFolder(folder);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", getFolder());
+        jsonWriter.writeStringField("type", this.type);
+        if (sources != null || sinks != null || transformations != null || script != null || scriptLines != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeArrayField("sinks", this.sinks, (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeArrayField("transformations", this.transformations,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeStringField("script", this.script);
+            jsonWriter.writeArrayField("scriptLines", this.scriptLines,
+                (writer, element) -> writer.writeString(element));
+            jsonWriter.writeEndObject();
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Flowlet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Flowlet if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Flowlet.
+     */
+    public static Flowlet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Flowlet deserializedFlowlet = new Flowlet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedFlowlet.setDescription(reader.getString());
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedFlowlet.setAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedFlowlet.setFolder(DataFlowFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedFlowlet.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("sources".equals(fieldName)) {
+                            List<DataFlowSource> sources
+                                = reader.readArray(reader1 -> DataFlowSource.fromJson(reader1));
+                            deserializedFlowlet.sources = sources;
+                        } else if ("sinks".equals(fieldName)) {
+                            List<DataFlowSink> sinks = reader.readArray(reader1 -> DataFlowSink.fromJson(reader1));
+                            deserializedFlowlet.sinks = sinks;
+                        } else if ("transformations".equals(fieldName)) {
+                            List<Transformation> transformations
+                                = reader.readArray(reader1 -> Transformation.fromJson(reader1));
+                            deserializedFlowlet.transformations = transformations;
+                        } else if ("script".equals(fieldName)) {
+                            deserializedFlowlet.script = reader.getString();
+                        } else if ("scriptLines".equals(fieldName)) {
+                            List<String> scriptLines = reader.readArray(reader1 -> reader1.getString());
+                            deserializedFlowlet.scriptLines = scriptLines;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFlowlet;
+        });
     }
 }

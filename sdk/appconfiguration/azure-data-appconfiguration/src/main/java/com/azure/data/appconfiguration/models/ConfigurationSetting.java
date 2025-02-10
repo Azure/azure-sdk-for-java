@@ -210,11 +210,8 @@ public class ConfigurationSetting implements JsonSerializable<ConfigurationSetti
 
     @Override
     public String toString() {
-        return String.format("ConfigurationSetting(key=%s, label=%s, value=%s, etag=%s)",
-            this.key,
-            this.label,
-            this.value,
-            this.etag);
+        return String.format("ConfigurationSetting(key=%s, label=%s, value=%s, etag=%s)", this.key, this.label,
+            this.value, this.etag);
     }
 
     @Override
@@ -258,8 +255,8 @@ public class ConfigurationSetting implements JsonSerializable<ConfigurationSetti
                 } else if ("etag".equals(fieldName)) {
                     setting.setETag(reader.getString());
                 } else if ("last_modified".equals(fieldName)) {
-                    setting.setLastModified(reader.getNullable(nonNullReader ->
-                        OffsetDateTime.parse(nonNullReader.getString())));
+                    setting.setLastModified(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("locked".equals(fieldName)) {
                     setting.setReadOnly(reader.getBoolean());
                 } else if ("tags".equals(fieldName)) {

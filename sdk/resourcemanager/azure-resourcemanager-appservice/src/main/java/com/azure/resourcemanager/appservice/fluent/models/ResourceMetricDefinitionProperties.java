@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ResourceMetricAvailability;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,36 +18,30 @@ import java.util.Map;
  * ResourceMetricDefinition resource specific properties.
  */
 @Immutable
-public final class ResourceMetricDefinitionProperties {
+public final class ResourceMetricDefinitionProperties implements JsonSerializable<ResourceMetricDefinitionProperties> {
     /*
      * Unit of the metric.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /*
      * Primary aggregation type.
      */
-    @JsonProperty(value = "primaryAggregationType", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryAggregationType;
 
     /*
      * List of time grains supported for the metric together with retention period.
      */
-    @JsonProperty(value = "metricAvailabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceMetricAvailability> metricAvailabilities;
 
     /*
      * Resource URI.
      */
-    @JsonProperty(value = "resourceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceUri;
 
     /*
      * Resource metric definition properties.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
     /**
@@ -108,5 +105,52 @@ public final class ResourceMetricDefinitionProperties {
         if (metricAvailabilities() != null) {
             metricAvailabilities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceMetricDefinitionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceMetricDefinitionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceMetricDefinitionProperties.
+     */
+    public static ResourceMetricDefinitionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceMetricDefinitionProperties deserializedResourceMetricDefinitionProperties
+                = new ResourceMetricDefinitionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unit".equals(fieldName)) {
+                    deserializedResourceMetricDefinitionProperties.unit = reader.getString();
+                } else if ("primaryAggregationType".equals(fieldName)) {
+                    deserializedResourceMetricDefinitionProperties.primaryAggregationType = reader.getString();
+                } else if ("metricAvailabilities".equals(fieldName)) {
+                    List<ResourceMetricAvailability> metricAvailabilities
+                        = reader.readArray(reader1 -> ResourceMetricAvailability.fromJson(reader1));
+                    deserializedResourceMetricDefinitionProperties.metricAvailabilities = metricAvailabilities;
+                } else if ("resourceUri".equals(fieldName)) {
+                    deserializedResourceMetricDefinitionProperties.resourceUri = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceMetricDefinitionProperties.properties = properties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceMetricDefinitionProperties;
+        });
     }
 }

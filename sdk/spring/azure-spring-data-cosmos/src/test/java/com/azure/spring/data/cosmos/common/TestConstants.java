@@ -5,6 +5,8 @@ package com.azure.spring.data.cosmos.common;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.domain.Address;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -65,8 +67,12 @@ public final class TestConstants {
     public static final String ID_3 = "id-3";
     public static final String ID_4 = "id-4";
     public static final String ID_5 = "id-5";
+
+    public static final String ID_6 = "id-6";
     public static final String NEW_FIRST_NAME = "new_first_name";
     public static final String NEW_LAST_NAME = "new_last_name";
+
+    public static final String TRANSIENT_PROPERTY = "transient_property";
     public static final Integer NEW_ZIP_CODE = 67890;
     public static final String UPDATED_FIRST_NAME = "updated_first_name";
     public static final String UPDATED_LAST_NAME = "updated_last_name";
@@ -89,6 +95,7 @@ public final class TestConstants {
     public static final String POSTAL_CODE = "98052";
     public static final String POSTAL_CODE_0 = "00000";
     public static final String POSTAL_CODE_1 = "11111";
+    public static final String POSTAL_CODE_3 = "10112";
     public static final String CITY = "testCity";
     public static final String CITY_0 = "testCityZero";
     public static final String CITY_1 = "testCityOne";
@@ -119,6 +126,12 @@ public final class TestConstants {
 
     public static final String PROPERTY_MESSAGE = "message";
     public static final String PROPERTY_DATE = "date";
+
+    public static final String PROPERTY_BIG_INTEGER = "bigInteger";
+    public static final String PROPERTY_BIG_DECIMAL = "bigDecimal";
+
+    public static final BigInteger BIG_INTEGER = new BigInteger("10000000000000000");
+    public static final BigDecimal BIG_DECIMAL = new BigDecimal("12345678.12345678");
 
     public static final String PROPERTY_ETAG_DEFAULT = "_etag";
     public static final String PROPERTY_ETAG_RENAMED = "etag";

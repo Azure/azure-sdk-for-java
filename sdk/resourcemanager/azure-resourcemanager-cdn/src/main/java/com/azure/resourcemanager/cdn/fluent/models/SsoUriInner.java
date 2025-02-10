@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The URI required to login to the supplemental portal from the Azure portal. */
+/**
+ * The URI required to login to the supplemental portal from the Azure portal.
+ */
 @Immutable
-public final class SsoUriInner {
+public final class SsoUriInner implements JsonSerializable<SsoUriInner> {
     /*
      * The URI used to login to the supplemental portal.
      */
-    @JsonProperty(value = "ssoUriValue", access = JsonProperty.Access.WRITE_ONLY)
     private String ssoUriValue;
 
-    /** Creates an instance of SsoUriInner class. */
+    /**
+     * Creates an instance of SsoUriInner class.
+     */
     public SsoUriInner() {
     }
 
     /**
      * Get the ssoUriValue property: The URI used to login to the supplemental portal.
-     *
+     * 
      * @return the ssoUriValue value.
      */
     public String ssoUriValue() {
@@ -31,9 +38,44 @@ public final class SsoUriInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsoUriInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsoUriInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsoUriInner.
+     */
+    public static SsoUriInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsoUriInner deserializedSsoUriInner = new SsoUriInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ssoUriValue".equals(fieldName)) {
+                    deserializedSsoUriInner.ssoUriValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsoUriInner;
+        });
     }
 }

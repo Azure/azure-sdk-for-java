@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether hibernate is enabled/disabled. */
+/**
+ * Indicates whether hibernate is enabled/disabled.
+ */
 public final class HibernateSupport extends ExpandableStringEnum<HibernateSupport> {
-    /** Static value Disabled for HibernateSupport. */
+    /**
+     * Static value Disabled for HibernateSupport.
+     */
     public static final HibernateSupport DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for HibernateSupport. */
+    /**
+     * Static value Enabled for HibernateSupport.
+     */
     public static final HibernateSupport ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of HibernateSupport value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class HibernateSupport extends ExpandableStringEnum<HibernateSuppor
 
     /**
      * Creates or finds a HibernateSupport from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HibernateSupport.
      */
-    @JsonCreator
     public static HibernateSupport fromString(String name) {
         return fromString(name, HibernateSupport.class);
     }
 
     /**
      * Gets known HibernateSupport values.
-     *
+     * 
      * @return known HibernateSupport values.
      */
     public static Collection<HibernateSupport> values() {

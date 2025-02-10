@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Existing recovery availability set input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Existing")
+/**
+ * Existing recovery availability set input.
+ */
 @Fluent
 public final class ExistingRecoveryAvailabilitySet extends RecoveryAvailabilitySetCustomDetails {
     /*
+     * The class type.
+     */
+    private String resourceType = "Existing";
+
+    /*
      * The recovery availability set Id. Will throw error, if resource does not exist.
      */
-    @JsonProperty(value = "recoveryAvailabilitySetId")
     private String recoveryAvailabilitySetId;
 
-    /** Creates an instance of ExistingRecoveryAvailabilitySet class. */
+    /**
+     * Creates an instance of ExistingRecoveryAvailabilitySet class.
+     */
     public ExistingRecoveryAvailabilitySet() {
+    }
+
+    /**
+     * Get the resourceType property: The class type.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
     }
 
     /**
      * Get the recoveryAvailabilitySetId property: The recovery availability set Id. Will throw error, if resource does
      * not exist.
-     *
+     * 
      * @return the recoveryAvailabilitySetId value.
      */
     public String recoveryAvailabilitySetId() {
@@ -37,7 +54,7 @@ public final class ExistingRecoveryAvailabilitySet extends RecoveryAvailabilityS
     /**
      * Set the recoveryAvailabilitySetId property: The recovery availability set Id. Will throw error, if resource does
      * not exist.
-     *
+     * 
      * @param recoveryAvailabilitySetId the recoveryAvailabilitySetId value to set.
      * @return the ExistingRecoveryAvailabilitySet object itself.
      */
@@ -48,11 +65,50 @@ public final class ExistingRecoveryAvailabilitySet extends RecoveryAvailabilityS
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("recoveryAvailabilitySetId", this.recoveryAvailabilitySetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExistingRecoveryAvailabilitySet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExistingRecoveryAvailabilitySet if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExistingRecoveryAvailabilitySet.
+     */
+    public static ExistingRecoveryAvailabilitySet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExistingRecoveryAvailabilitySet deserializedExistingRecoveryAvailabilitySet
+                = new ExistingRecoveryAvailabilitySet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedExistingRecoveryAvailabilitySet.resourceType = reader.getString();
+                } else if ("recoveryAvailabilitySetId".equals(fieldName)) {
+                    deserializedExistingRecoveryAvailabilitySet.recoveryAvailabilitySetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExistingRecoveryAvailabilitySet;
+        });
     }
 }

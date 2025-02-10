@@ -6,10 +6,14 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.OriginProvisioningState;
 import com.azure.resourcemanager.cdn.models.OriginResourceState;
 import com.azure.resourcemanager.cdn.models.PrivateEndpointStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by an endpoint do
@@ -20,16 +24,37 @@ public final class OriginInner extends ProxyResource {
     /*
      * The JSON object that contains the properties of the origin.
      */
-    @JsonProperty(value = "properties")
     private OriginProperties innerProperties;
 
-    /** Creates an instance of OriginInner class. */
+    /*
+     * Read only system data
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of OriginInner class.
+     */
     public OriginInner() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OriginProperties innerProperties() {
@@ -37,8 +62,47 @@ public final class OriginInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the resourceState property: Resource status of the origin.
-     *
+     * 
      * @return the resourceState value.
      */
     public OriginResourceState resourceState() {
@@ -47,7 +111,7 @@ public final class OriginInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning status of the origin.
-     *
+     * 
      * @return the provisioningState value.
      */
     public OriginProvisioningState provisioningState() {
@@ -56,7 +120,7 @@ public final class OriginInner extends ProxyResource {
 
     /**
      * Get the privateEndpointStatus property: The approval status for the connection to the Private Link.
-     *
+     * 
      * @return the privateEndpointStatus value.
      */
     public PrivateEndpointStatus privateEndpointStatus() {
@@ -66,7 +130,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Get the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
      * supported.This should be unique across all origins in an endpoint.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -76,7 +140,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Set the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
      * supported.This should be unique across all origins in an endpoint.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the OriginInner object itself.
      */
@@ -90,7 +154,7 @@ public final class OriginInner extends ProxyResource {
 
     /**
      * Get the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpPort value.
      */
     public Integer httpPort() {
@@ -99,7 +163,7 @@ public final class OriginInner extends ProxyResource {
 
     /**
      * Set the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpPort the httpPort value to set.
      * @return the OriginInner object itself.
      */
@@ -113,7 +177,7 @@ public final class OriginInner extends ProxyResource {
 
     /**
      * Get the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
@@ -122,7 +186,7 @@ public final class OriginInner extends ProxyResource {
 
     /**
      * Set the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpsPort the httpsPort value to set.
      * @return the OriginInner object itself.
      */
@@ -139,7 +203,7 @@ public final class OriginInner extends ProxyResource {
      * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
      * Services require this host header value to match the origin hostname by default. This overrides the host header
      * defined at Endpoint.
-     *
+     * 
      * @return the originHostHeader value.
      */
     public String originHostHeader() {
@@ -151,7 +215,7 @@ public final class OriginInner extends ProxyResource {
      * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
      * Services require this host header value to match the origin hostname by default. This overrides the host header
      * defined at Endpoint.
-     *
+     * 
      * @param originHostHeader the originHostHeader value to set.
      * @return the OriginInner object itself.
      */
@@ -166,7 +230,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Get the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -176,7 +240,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Set the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the OriginInner object itself.
      */
@@ -191,7 +255,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Get the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -201,7 +265,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Set the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the OriginInner object itself.
      */
@@ -215,7 +279,7 @@ public final class OriginInner extends ProxyResource {
 
     /**
      * Get the enabled property: Origin is enabled for load balancing or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -224,7 +288,7 @@ public final class OriginInner extends ProxyResource {
 
     /**
      * Set the enabled property: Origin is enabled for load balancing or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the OriginInner object itself.
      */
@@ -239,7 +303,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Get the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this origin is 'Private'.
-     *
+     * 
      * @return the privateLinkAlias value.
      */
     public String privateLinkAlias() {
@@ -249,7 +313,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Set the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this origin is 'Private'.
-     *
+     * 
      * @param privateLinkAlias the privateLinkAlias value to set.
      * @return the OriginInner object itself.
      */
@@ -264,7 +328,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Get the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
@@ -274,7 +338,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Set the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the OriginInner object itself.
      */
@@ -289,7 +353,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Get the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @return the privateLinkLocation value.
      */
     public String privateLinkLocation() {
@@ -299,7 +363,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Set the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @param privateLinkLocation the privateLinkLocation value to set.
      * @return the OriginInner object itself.
      */
@@ -314,7 +378,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Get the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @return the privateLinkApprovalMessage value.
      */
     public String privateLinkApprovalMessage() {
@@ -324,7 +388,7 @@ public final class OriginInner extends ProxyResource {
     /**
      * Set the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @param privateLinkApprovalMessage the privateLinkApprovalMessage value to set.
      * @return the OriginInner object itself.
      */
@@ -338,12 +402,57 @@ public final class OriginInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OriginInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OriginInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OriginInner.
+     */
+    public static OriginInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OriginInner deserializedOriginInner = new OriginInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOriginInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOriginInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOriginInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOriginInner.innerProperties = OriginProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedOriginInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOriginInner;
+        });
     }
 }

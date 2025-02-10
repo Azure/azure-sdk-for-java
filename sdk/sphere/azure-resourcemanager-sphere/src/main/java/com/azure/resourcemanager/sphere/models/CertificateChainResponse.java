@@ -6,18 +6,20 @@ package com.azure.resourcemanager.sphere.models;
 
 import com.azure.resourcemanager.sphere.fluent.models.CertificateChainResponseInner;
 
-/** An immutable client-side representation of CertificateChainResponse. */
+/**
+ * An immutable client-side representation of CertificateChainResponse.
+ */
 public interface CertificateChainResponse {
     /**
      * Gets the certificateChain property: The certificate chain.
-     *
+     * 
      * @return the certificateChain value.
      */
     String certificateChain();
 
     /**
      * Gets the inner com.azure.resourcemanager.sphere.fluent.models.CertificateChainResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     CertificateChainResponseInner innerModel();

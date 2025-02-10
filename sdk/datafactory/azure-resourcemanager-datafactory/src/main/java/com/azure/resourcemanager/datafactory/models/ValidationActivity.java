@@ -6,29 +6,44 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.ValidationActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This activity verifies that an external resource exists.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Validation")
 @Fluent
 public final class ValidationActivity extends ControlActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "Validation";
+
+    /*
      * Validation activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private ValidationActivityTypeProperties innerTypeProperties = new ValidationActivityTypeProperties();
 
     /**
      * Creates an instance of ValidationActivity class.
      */
     public ValidationActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -95,8 +110,8 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
-     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      * 
      * @return the timeout value.
@@ -106,8 +121,8 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it
-     * takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      * 
      * @param timeout the timeout value to set.
@@ -122,8 +137,8 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds
-     * will be used as the default. Type: integer (or Expression with resultType integer).
+     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
+     * be used as the default. Type: integer (or Expression with resultType integer).
      * 
      * @return the sleep value.
      */
@@ -132,8 +147,8 @@ public final class ValidationActivity extends ControlActivity {
     }
 
     /**
-     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds
-     * will be used as the default. Type: integer (or Expression with resultType integer).
+     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
+     * be used as the default. Type: integer (or Expression with resultType integer).
      * 
      * @param sleep the sleep value to set.
      * @return the ValidationActivity object itself.
@@ -173,8 +188,7 @@ public final class ValidationActivity extends ControlActivity {
 
     /**
      * Get the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType
-     * boolean).
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the childItems value.
      */
@@ -184,8 +198,7 @@ public final class ValidationActivity extends ControlActivity {
 
     /**
      * Set the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType
-     * boolean).
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
      * 
      * @param childItems the childItems value to set.
      * @return the ValidationActivity object itself.
@@ -228,14 +241,99 @@ public final class ValidationActivity extends ControlActivity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model ValidationActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ValidationActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ValidationActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ValidationActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ValidationActivity.
+     */
+    public static ValidationActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationActivity deserializedValidationActivity = new ValidationActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedValidationActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedValidationActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedValidationActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedValidationActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedValidationActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedValidationActivity.withUserProperties(userProperties);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedValidationActivity.innerTypeProperties
+                        = ValidationActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedValidationActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedValidationActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedValidationActivity;
+        });
+    }
 }

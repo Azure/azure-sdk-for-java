@@ -5,122 +5,115 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Properties of SqlServerInstance. */
+/**
+ * Properties of SqlServerInstance.
+ */
 @Fluent
-public final class SqlServerInstanceProperties {
+public final class SqlServerInstanceProperties implements JsonSerializable<SqlServerInstanceProperties> {
     /*
      * SQL Server version.
      */
-    @JsonProperty(value = "version")
     private SqlVersion version;
 
     /*
      * SQL Server edition.
      */
-    @JsonProperty(value = "edition")
     private EditionType edition;
 
     /*
      * ARM Resource id of the container resource (Azure Arc for Servers).
      */
-    @JsonProperty(value = "containerResourceId", required = true)
     private String containerResourceId;
 
     /*
      * The time when the resource was created.
      */
-    @JsonProperty(value = "createTime", access = JsonProperty.Access.WRITE_ONLY)
     private String createTime;
 
     /*
      * The number of logical processors used by the SQL Server instance.
      */
-    @JsonProperty(value = "vCore")
     private String vCore;
 
     /*
      * The cloud connectivity status.
      */
-    @JsonProperty(value = "status", required = true)
     private ConnectionStatus status;
 
     /*
      * SQL Server update level.
      */
-    @JsonProperty(value = "patchLevel")
     private String patchLevel;
 
     /*
      * SQL Server collation.
      */
-    @JsonProperty(value = "collation")
     private String collation;
 
     /*
      * SQL Server current version.
      */
-    @JsonProperty(value = "currentVersion")
     private String currentVersion;
 
     /*
      * SQL Server instance name.
      */
-    @JsonProperty(value = "instanceName")
     private String instanceName;
 
     /*
      * Dynamic TCP ports used by SQL Server.
      */
-    @JsonProperty(value = "tcpDynamicPorts")
     private String tcpDynamicPorts;
 
     /*
      * Static TCP ports used by SQL Server.
      */
-    @JsonProperty(value = "tcpStaticPorts")
     private String tcpStaticPorts;
 
     /*
      * SQL Server product ID.
      */
-    @JsonProperty(value = "productId")
     private String productId;
 
     /*
      * SQL Server license type.
      */
-    @JsonProperty(value = "licenseType")
     private ArcSqlServerLicenseType licenseType;
 
     /*
      * Timestamp of last Azure Defender status update.
      */
-    @JsonProperty(value = "azureDefenderStatusLastUpdated")
     private OffsetDateTime azureDefenderStatusLastUpdated;
 
     /*
      * Status of Azure Defender.
      */
-    @JsonProperty(value = "azureDefenderStatus")
     private DefenderStatus azureDefenderStatus;
 
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /** Creates an instance of SqlServerInstanceProperties class. */
+    /**
+     * Creates an instance of SqlServerInstanceProperties class.
+     */
     public SqlServerInstanceProperties() {
     }
 
     /**
      * Get the version property: SQL Server version.
-     *
+     * 
      * @return the version value.
      */
     public SqlVersion version() {
@@ -129,7 +122,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the version property: SQL Server version.
-     *
+     * 
      * @param version the version value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -140,7 +133,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the edition property: SQL Server edition.
-     *
+     * 
      * @return the edition value.
      */
     public EditionType edition() {
@@ -149,7 +142,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the edition property: SQL Server edition.
-     *
+     * 
      * @param edition the edition value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -160,7 +153,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the containerResourceId property: ARM Resource id of the container resource (Azure Arc for Servers).
-     *
+     * 
      * @return the containerResourceId value.
      */
     public String containerResourceId() {
@@ -169,7 +162,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the containerResourceId property: ARM Resource id of the container resource (Azure Arc for Servers).
-     *
+     * 
      * @param containerResourceId the containerResourceId value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -180,7 +173,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the createTime property: The time when the resource was created.
-     *
+     * 
      * @return the createTime value.
      */
     public String createTime() {
@@ -189,7 +182,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the vCore property: The number of logical processors used by the SQL Server instance.
-     *
+     * 
      * @return the vCore value.
      */
     public String vCore() {
@@ -198,7 +191,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the vCore property: The number of logical processors used by the SQL Server instance.
-     *
+     * 
      * @param vCore the vCore value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -209,7 +202,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the status property: The cloud connectivity status.
-     *
+     * 
      * @return the status value.
      */
     public ConnectionStatus status() {
@@ -218,7 +211,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the status property: The cloud connectivity status.
-     *
+     * 
      * @param status the status value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -229,7 +222,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the patchLevel property: SQL Server update level.
-     *
+     * 
      * @return the patchLevel value.
      */
     public String patchLevel() {
@@ -238,7 +231,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the patchLevel property: SQL Server update level.
-     *
+     * 
      * @param patchLevel the patchLevel value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -249,7 +242,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the collation property: SQL Server collation.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -258,7 +251,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the collation property: SQL Server collation.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -269,7 +262,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the currentVersion property: SQL Server current version.
-     *
+     * 
      * @return the currentVersion value.
      */
     public String currentVersion() {
@@ -278,7 +271,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the currentVersion property: SQL Server current version.
-     *
+     * 
      * @param currentVersion the currentVersion value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -289,7 +282,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the instanceName property: SQL Server instance name.
-     *
+     * 
      * @return the instanceName value.
      */
     public String instanceName() {
@@ -298,7 +291,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the instanceName property: SQL Server instance name.
-     *
+     * 
      * @param instanceName the instanceName value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -309,7 +302,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the tcpDynamicPorts property: Dynamic TCP ports used by SQL Server.
-     *
+     * 
      * @return the tcpDynamicPorts value.
      */
     public String tcpDynamicPorts() {
@@ -318,7 +311,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the tcpDynamicPorts property: Dynamic TCP ports used by SQL Server.
-     *
+     * 
      * @param tcpDynamicPorts the tcpDynamicPorts value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -329,7 +322,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the tcpStaticPorts property: Static TCP ports used by SQL Server.
-     *
+     * 
      * @return the tcpStaticPorts value.
      */
     public String tcpStaticPorts() {
@@ -338,7 +331,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the tcpStaticPorts property: Static TCP ports used by SQL Server.
-     *
+     * 
      * @param tcpStaticPorts the tcpStaticPorts value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -349,7 +342,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the productId property: SQL Server product ID.
-     *
+     * 
      * @return the productId value.
      */
     public String productId() {
@@ -358,7 +351,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the productId property: SQL Server product ID.
-     *
+     * 
      * @param productId the productId value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -369,7 +362,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the licenseType property: SQL Server license type.
-     *
+     * 
      * @return the licenseType value.
      */
     public ArcSqlServerLicenseType licenseType() {
@@ -378,7 +371,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the licenseType property: SQL Server license type.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -389,7 +382,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the azureDefenderStatusLastUpdated property: Timestamp of last Azure Defender status update.
-     *
+     * 
      * @return the azureDefenderStatusLastUpdated value.
      */
     public OffsetDateTime azureDefenderStatusLastUpdated() {
@@ -398,19 +391,19 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the azureDefenderStatusLastUpdated property: Timestamp of last Azure Defender status update.
-     *
+     * 
      * @param azureDefenderStatusLastUpdated the azureDefenderStatusLastUpdated value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
-    public SqlServerInstanceProperties withAzureDefenderStatusLastUpdated(
-        OffsetDateTime azureDefenderStatusLastUpdated) {
+    public SqlServerInstanceProperties
+        withAzureDefenderStatusLastUpdated(OffsetDateTime azureDefenderStatusLastUpdated) {
         this.azureDefenderStatusLastUpdated = azureDefenderStatusLastUpdated;
         return this;
     }
 
     /**
      * Get the azureDefenderStatus property: Status of Azure Defender.
-     *
+     * 
      * @return the azureDefenderStatus value.
      */
     public DefenderStatus azureDefenderStatus() {
@@ -419,7 +412,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Set the azureDefenderStatus property: Status of Azure Defender.
-     *
+     * 
      * @param azureDefenderStatus the azureDefenderStatus value to set.
      * @return the SqlServerInstanceProperties object itself.
      */
@@ -430,7 +423,7 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -439,23 +432,111 @@ public final class SqlServerInstanceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (containerResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property containerResourceId in model SqlServerInstanceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property containerResourceId in model SqlServerInstanceProperties"));
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model SqlServerInstanceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model SqlServerInstanceProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlServerInstanceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerResourceId", this.containerResourceId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("version", this.version == null ? null : this.version.toString());
+        jsonWriter.writeStringField("edition", this.edition == null ? null : this.edition.toString());
+        jsonWriter.writeStringField("vCore", this.vCore);
+        jsonWriter.writeStringField("patchLevel", this.patchLevel);
+        jsonWriter.writeStringField("collation", this.collation);
+        jsonWriter.writeStringField("currentVersion", this.currentVersion);
+        jsonWriter.writeStringField("instanceName", this.instanceName);
+        jsonWriter.writeStringField("tcpDynamicPorts", this.tcpDynamicPorts);
+        jsonWriter.writeStringField("tcpStaticPorts", this.tcpStaticPorts);
+        jsonWriter.writeStringField("productId", this.productId);
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("azureDefenderStatusLastUpdated",
+            this.azureDefenderStatusLastUpdated == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.azureDefenderStatusLastUpdated));
+        jsonWriter.writeStringField("azureDefenderStatus",
+            this.azureDefenderStatus == null ? null : this.azureDefenderStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlServerInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlServerInstanceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlServerInstanceProperties.
+     */
+    public static SqlServerInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlServerInstanceProperties deserializedSqlServerInstanceProperties = new SqlServerInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("containerResourceId".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.containerResourceId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.status = ConnectionStatus.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.version = SqlVersion.fromString(reader.getString());
+                } else if ("edition".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.edition = EditionType.fromString(reader.getString());
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.createTime = reader.getString();
+                } else if ("vCore".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.vCore = reader.getString();
+                } else if ("patchLevel".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.patchLevel = reader.getString();
+                } else if ("collation".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.collation = reader.getString();
+                } else if ("currentVersion".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.currentVersion = reader.getString();
+                } else if ("instanceName".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.instanceName = reader.getString();
+                } else if ("tcpDynamicPorts".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.tcpDynamicPorts = reader.getString();
+                } else if ("tcpStaticPorts".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.tcpStaticPorts = reader.getString();
+                } else if ("productId".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.productId = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.licenseType
+                        = ArcSqlServerLicenseType.fromString(reader.getString());
+                } else if ("azureDefenderStatusLastUpdated".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.azureDefenderStatusLastUpdated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("azureDefenderStatus".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.azureDefenderStatus
+                        = DefenderStatus.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSqlServerInstanceProperties.provisioningState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlServerInstanceProperties;
+        });
+    }
 }

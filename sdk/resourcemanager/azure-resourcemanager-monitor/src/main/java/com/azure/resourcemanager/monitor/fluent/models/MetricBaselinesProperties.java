@@ -5,42 +5,47 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.TimeSeriesBaseline;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** The response to a metric baselines query. */
+/**
+ * The response to a metric baselines query.
+ */
 @Fluent
-public final class MetricBaselinesProperties {
+public final class MetricBaselinesProperties implements JsonSerializable<MetricBaselinesProperties> {
     /*
      * The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
-     * '/'.  This may be adjusted in the future and returned back from what was originally requested.
+     * '/'. This may be adjusted in the future and returned back from what was originally requested.
      */
-    @JsonProperty(value = "timespan", required = true)
     private String timespan;
 
     /*
-     * The interval (window size) for which the metric data was returned in.  This may be adjusted in the future and
-     * returned back from what was originally requested.  This is not present if a metadata request was made.
+     * The interval (window size) for which the metric data was returned in. This may be adjusted in the future and
+     * returned back from what was originally requested. This is not present if a metadata request was made.
      */
-    @JsonProperty(value = "interval", required = true)
     private Duration interval;
 
     /*
      * The namespace of the metrics been queried.
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * The baseline for each time series that was queried.
      */
-    @JsonProperty(value = "baselines", required = true)
     private List<TimeSeriesBaseline> baselines;
 
-    /** Creates an instance of MetricBaselinesProperties class. */
+    /**
+     * Creates an instance of MetricBaselinesProperties class.
+     */
     public MetricBaselinesProperties() {
     }
 
@@ -48,7 +53,7 @@ public final class MetricBaselinesProperties {
      * Get the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
      * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
      * requested.
-     *
+     * 
      * @return the timespan value.
      */
     public String timespan() {
@@ -59,7 +64,7 @@ public final class MetricBaselinesProperties {
      * Set the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
      * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
      * requested.
-     *
+     * 
      * @param timespan the timespan value to set.
      * @return the MetricBaselinesProperties object itself.
      */
@@ -72,7 +77,7 @@ public final class MetricBaselinesProperties {
      * Get the interval property: The interval (window size) for which the metric data was returned in. This may be
      * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
      * request was made.
-     *
+     * 
      * @return the interval value.
      */
     public Duration interval() {
@@ -83,7 +88,7 @@ public final class MetricBaselinesProperties {
      * Set the interval property: The interval (window size) for which the metric data was returned in. This may be
      * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
      * request was made.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the MetricBaselinesProperties object itself.
      */
@@ -94,7 +99,7 @@ public final class MetricBaselinesProperties {
 
     /**
      * Get the namespace property: The namespace of the metrics been queried.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -103,7 +108,7 @@ public final class MetricBaselinesProperties {
 
     /**
      * Set the namespace property: The namespace of the metrics been queried.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the MetricBaselinesProperties object itself.
      */
@@ -114,7 +119,7 @@ public final class MetricBaselinesProperties {
 
     /**
      * Get the baselines property: The baseline for each time series that was queried.
-     *
+     * 
      * @return the baselines value.
      */
     public List<TimeSeriesBaseline> baselines() {
@@ -123,7 +128,7 @@ public final class MetricBaselinesProperties {
 
     /**
      * Set the baselines property: The baseline for each time series that was queried.
-     *
+     * 
      * @param baselines the baselines value to set.
      * @return the MetricBaselinesProperties object itself.
      */
@@ -134,31 +139,77 @@ public final class MetricBaselinesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (timespan() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property timespan in model MetricBaselinesProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timespan in model MetricBaselinesProperties"));
         }
         if (interval() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property interval in model MetricBaselinesProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property interval in model MetricBaselinesProperties"));
         }
         if (baselines() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property baselines in model MetricBaselinesProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property baselines in model MetricBaselinesProperties"));
         } else {
             baselines().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MetricBaselinesProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timespan", this.timespan);
+        jsonWriter.writeStringField("interval", CoreUtils.durationToStringWithDays(this.interval));
+        jsonWriter.writeArrayField("baselines", this.baselines, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("namespace", this.namespace);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricBaselinesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricBaselinesProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetricBaselinesProperties.
+     */
+    public static MetricBaselinesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricBaselinesProperties deserializedMetricBaselinesProperties = new MetricBaselinesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timespan".equals(fieldName)) {
+                    deserializedMetricBaselinesProperties.timespan = reader.getString();
+                } else if ("interval".equals(fieldName)) {
+                    deserializedMetricBaselinesProperties.interval
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("baselines".equals(fieldName)) {
+                    List<TimeSeriesBaseline> baselines
+                        = reader.readArray(reader1 -> TimeSeriesBaseline.fromJson(reader1));
+                    deserializedMetricBaselinesProperties.baselines = baselines;
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedMetricBaselinesProperties.namespace = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricBaselinesProperties;
+        });
+    }
 }

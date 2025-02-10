@@ -98,7 +98,7 @@ public final class DocumentKeyValueElement {
 
             @Override
             public void setBoundingRegions(DocumentKeyValueElement documentKeyValueElement,
-                                           List<BoundingRegion> boundingRegions) {
+                List<BoundingRegion> boundingRegions) {
                 documentKeyValueElement.setBoundingRegions(boundingRegions);
             }
 

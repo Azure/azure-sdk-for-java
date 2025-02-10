@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A value indicating whether the auto update is enabled. */
+/**
+ * A value indicating whether the auto update is enabled.
+ */
 public final class AgentAutoUpdateStatus extends ExpandableStringEnum<AgentAutoUpdateStatus> {
-    /** Static value Disabled for AgentAutoUpdateStatus. */
+    /**
+     * Static value Disabled for AgentAutoUpdateStatus.
+     */
     public static final AgentAutoUpdateStatus DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for AgentAutoUpdateStatus. */
+    /**
+     * Static value Enabled for AgentAutoUpdateStatus.
+     */
     public static final AgentAutoUpdateStatus ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of AgentAutoUpdateStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AgentAutoUpdateStatus extends ExpandableStringEnum<AgentAutoU
 
     /**
      * Creates or finds a AgentAutoUpdateStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgentAutoUpdateStatus.
      */
-    @JsonCreator
     public static AgentAutoUpdateStatus fromString(String name) {
         return fromString(name, AgentAutoUpdateStatus.class);
     }
 
     /**
      * Gets known AgentAutoUpdateStatus values.
-     *
+     * 
      * @return known AgentAutoUpdateStatus values.
      */
     public static Collection<AgentAutoUpdateStatus> values() {

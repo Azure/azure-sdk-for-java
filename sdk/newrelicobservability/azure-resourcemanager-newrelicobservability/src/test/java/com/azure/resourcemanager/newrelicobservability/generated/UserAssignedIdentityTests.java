@@ -10,11 +10,9 @@ import com.azure.resourcemanager.newrelicobservability.models.UserAssignedIdenti
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"b179bc5a-ba24-44a5-98e8-6105794eb3a6\",\"clientId\":\"e9347589-9d4e-419f-a817-e67cd01fd86d\"}")
-                .toObject(UserAssignedIdentity.class);
+        UserAssignedIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"2afaa392-448a-47a3-891b-b41604fbc1f0\",\"clientId\":\"594a5240-c392-4d0f-93ac-15a1f61c66fe\"}")
+            .toObject(UserAssignedIdentity.class);
     }
 
     @org.junit.jupiter.api.Test

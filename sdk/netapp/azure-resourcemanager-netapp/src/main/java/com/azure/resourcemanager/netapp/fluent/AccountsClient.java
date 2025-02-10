@@ -12,7 +12,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
-import com.azure.resourcemanager.netapp.models.EncryptionMigrationRequest;
+import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
+import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
 import com.azure.resourcemanager.netapp.models.NetAppAccountPatch;
 
 /**
@@ -369,10 +370,10 @@ public interface AccountsClient {
     void renewCredentials(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Migrate volumes encryption key source.
+     * Transition volumes encryption from PMK to CMK.
      * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -382,17 +383,17 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginMigrateEncryptionKey(String resourceGroupName, String accountName);
+    SyncPoller<PollResult<Void>, Void> beginTransitionToCmk(String resourceGroupName, String accountName);
 
     /**
-     * Migrate volumes encryption key source.
+     * Transition volumes encryption from PMK to CMK.
      * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
+     * @param body The required parameters to perform encryption transition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -400,14 +401,14 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginMigrateEncryptionKey(String resourceGroupName, String accountName,
-        EncryptionMigrationRequest body, Context context);
+    SyncPoller<PollResult<Void>, Void> beginTransitionToCmk(String resourceGroupName, String accountName,
+        EncryptionTransitionRequest body, Context context);
 
     /**
-     * Migrate volumes encryption key source.
+     * Transition volumes encryption from PMK to CMK.
      * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -416,23 +417,159 @@ public interface AccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void migrateEncryptionKey(String resourceGroupName, String accountName);
+    void transitionToCmk(String resourceGroupName, String accountName);
 
     /**
-     * Migrate volumes encryption key source.
+     * Transition volumes encryption from PMK to CMK.
      * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
+     * @param body The required parameters to perform encryption transition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void migrateEncryptionKey(String resourceGroupName, String accountName, EncryptionMigrationRequest body,
+    void transitionToCmk(String resourceGroupName, String accountName, EncryptionTransitionRequest body,
         Context context);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginGetChangeKeyVaultInformation(String resourceGroupName, String accountName);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginGetChangeKeyVaultInformation(String resourceGroupName, String accountName,
+        Context context);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void getChangeKeyVaultInformation(String resourceGroupName, String accountName);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void getChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginChangeKeyVault(String resourceGroupName, String accountName);
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginChangeKeyVault(String resourceGroupName, String accountName,
+        ChangeKeyVault body, Context context);
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void changeKeyVault(String resourceGroupName, String accountName);
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void changeKeyVault(String resourceGroupName, String accountName, ChangeKeyVault body, Context context);
 }

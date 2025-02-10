@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Trigger based on status code.
  */
 @Fluent
-public final class StatusCodesBasedTrigger {
+public final class StatusCodesBasedTrigger implements JsonSerializable<StatusCodesBasedTrigger> {
     /*
      * HTTP status code.
      */
-    @JsonProperty(value = "status")
     private Integer status;
 
     /*
      * Request Sub Status.
      */
-    @JsonProperty(value = "subStatus")
     private Integer subStatus;
 
     /*
      * Win32 error code.
      */
-    @JsonProperty(value = "win32Status")
     private Integer win32Status;
 
     /*
      * Request Count.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * Time interval.
      */
-    @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
     /*
      * Request Path
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /**
@@ -180,5 +178,56 @@ public final class StatusCodesBasedTrigger {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("status", this.status);
+        jsonWriter.writeNumberField("subStatus", this.subStatus);
+        jsonWriter.writeNumberField("win32Status", this.win32Status);
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("timeInterval", this.timeInterval);
+        jsonWriter.writeStringField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatusCodesBasedTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatusCodesBasedTrigger if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatusCodesBasedTrigger.
+     */
+    public static StatusCodesBasedTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatusCodesBasedTrigger deserializedStatusCodesBasedTrigger = new StatusCodesBasedTrigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.status = reader.getNullable(JsonReader::getInt);
+                } else if ("subStatus".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.subStatus = reader.getNullable(JsonReader::getInt);
+                } else if ("win32Status".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.win32Status = reader.getNullable(JsonReader::getInt);
+                } else if ("count".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.count = reader.getNullable(JsonReader::getInt);
+                } else if ("timeInterval".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.timeInterval = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.path = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatusCodesBasedTrigger;
+        });
     }
 }

@@ -18,7 +18,8 @@ public final class GlobalParametersDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void globalParametersDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.globalParameters().deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "default",
-            com.azure.core.util.Context.NONE);
+        manager.globalParameters()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "default",
+                com.azure.core.util.Context.NONE);
     }
 }

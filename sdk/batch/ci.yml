@@ -10,9 +10,11 @@ trigger:
     include:
       - sdk/batch/ci.yml
       - sdk/batch/azure-resourcemanager-batch/
+      - sdk/batch/azure-compute-batch/
     exclude:
       - sdk/batch/pom.xml
       - sdk/batch/azure-resourcemanager-batch/pom.xml
+      - sdk/batch/azure-compute-batch/pom.xml
 
 pr:
   branches:
@@ -25,16 +27,33 @@ pr:
     include:
       - sdk/batch/ci.yml
       - sdk/batch/azure-resourcemanager-batch/
+      - sdk/batch/azure-compute-batch/
     exclude:
       - sdk/batch/pom.xml
       - sdk/batch/azure-resourcemanager-batch/pom.xml
+      - sdk/batch/azure-compute-batch/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerbatch
+    displayName: azure-resourcemanager-batch
+    type: boolean
+    default: false
+
+  - name: release_azurecomputebatch
+    displayName: azure-compute-batch
+    type: boolean
+    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: batch
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-batch
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerbatch
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerbatch }}
+      - name: azure-compute-batch
+        groupId: com.azure
+        safeName: azurecomputebatch
+        releaseInBatch: ${{ parameters.release_azurecomputebatch }}

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The SeedNode model.
  */
 @Fluent
-public final class SeedNode {
+public final class SeedNode implements JsonSerializable<SeedNode> {
     /*
      * IP address of this seed node.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /**
@@ -50,5 +53,41 @@ public final class SeedNode {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SeedNode from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SeedNode if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SeedNode.
+     */
+    public static SeedNode fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SeedNode deserializedSeedNode = new SeedNode();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipAddress".equals(fieldName)) {
+                    deserializedSeedNode.ipAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSeedNode;
+        });
     }
 }

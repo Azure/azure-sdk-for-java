@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultCertificateResponseInner;
 import com.azure.resourcemanager.recoveryservices.models.CertificateRequest;
 
-/** An instance of this class provides access to all the operations defined in VaultCertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VaultCertificatesClient.
+ */
 public interface VaultCertificatesClient {
     /**
      * Uploads a certificate for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param certificateName Certificate friendly name.
@@ -25,19 +27,15 @@ public interface VaultCertificatesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultCertificateResponseInner> createWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String certificateName,
-        CertificateRequest certificateRequest,
-        Context context);
+    Response<VaultCertificateResponseInner> createWithResponse(String resourceGroupName, String vaultName,
+        String certificateName, CertificateRequest certificateRequest, Context context);
 
     /**
      * Uploads a certificate for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param certificateName Certificate friendly name.
@@ -48,6 +46,6 @@ public interface VaultCertificatesClient {
      * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VaultCertificateResponseInner create(
-        String resourceGroupName, String vaultName, String certificateName, CertificateRequest certificateRequest);
+    VaultCertificateResponseInner create(String resourceGroupName, String vaultName, String certificateName,
+        CertificateRequest certificateRequest);
 }

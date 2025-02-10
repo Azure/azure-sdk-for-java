@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** This class contains monitoring details of all the inconsistent Protected Entities in Vmm. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("ConsistencyCheckTaskDetails")
+/**
+ * This class contains monitoring details of all the inconsistent Protected Entities in Vmm.
+ */
 @Fluent
 public final class ConsistencyCheckTaskDetails extends TaskTypeDetails {
     /*
+     * The type of task details.
+     */
+    private String instanceType = "ConsistencyCheckTaskDetails";
+
+    /*
      * The list of inconsistent Vm details.
      */
-    @JsonProperty(value = "vmDetails")
     private List<InconsistentVmDetails> vmDetails;
 
-    /** Creates an instance of ConsistencyCheckTaskDetails class. */
+    /**
+     * Creates an instance of ConsistencyCheckTaskDetails class.
+     */
     public ConsistencyCheckTaskDetails() {
     }
 
     /**
+     * Get the instanceType property: The type of task details.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the vmDetails property: The list of inconsistent Vm details.
-     *
+     * 
      * @return the vmDetails value.
      */
     public List<InconsistentVmDetails> vmDetails() {
@@ -36,7 +53,7 @@ public final class ConsistencyCheckTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the vmDetails property: The list of inconsistent Vm details.
-     *
+     * 
      * @param vmDetails the vmDetails value to set.
      * @return the ConsistencyCheckTaskDetails object itself.
      */
@@ -47,14 +64,54 @@ public final class ConsistencyCheckTaskDetails extends TaskTypeDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmDetails() != null) {
             vmDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeArrayField("vmDetails", this.vmDetails, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConsistencyCheckTaskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConsistencyCheckTaskDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConsistencyCheckTaskDetails.
+     */
+    public static ConsistencyCheckTaskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConsistencyCheckTaskDetails deserializedConsistencyCheckTaskDetails = new ConsistencyCheckTaskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedConsistencyCheckTaskDetails.instanceType = reader.getString();
+                } else if ("vmDetails".equals(fieldName)) {
+                    List<InconsistentVmDetails> vmDetails
+                        = reader.readArray(reader1 -> InconsistentVmDetails.fromJson(reader1));
+                    deserializedConsistencyCheckTaskDetails.vmDetails = vmDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConsistencyCheckTaskDetails;
+        });
     }
 }

@@ -104,8 +104,7 @@ public final class BlobUrlParts {
         try {
             this.isIpUrl = ModelHelper.determineAuthorityIsIpStyle(host);
         } catch (MalformedURLException e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
-                + host, e));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: " + host, e));
         }
         return this;
     }
@@ -213,8 +212,8 @@ public final class BlobUrlParts {
     @Deprecated
     public BlobUrlParts setSasQueryParameters(BlobServiceSasQueryParameters blobServiceSasQueryParameters) {
         String encodedBlobSas = blobServiceSasQueryParameters.encode();
-        this.commonSasQueryParameters = new CommonSasQueryParameters(SasImplUtils.parseQueryString(encodedBlobSas),
-            true);
+        this.commonSasQueryParameters
+            = new CommonSasQueryParameters(SasImplUtils.parseQueryString(encodedBlobSas), true);
         return this;
     }
 
@@ -316,8 +315,7 @@ public final class BlobUrlParts {
 
         for (Map.Entry<String, String[]> entry : this.unparsedParameters.entrySet()) {
             // The commas are intentionally encoded.
-            url.setQueryParameter(entry.getKey(),
-                Utility.urlEncode(String.join(",", entry.getValue())));
+            url.setQueryParameter(entry.getKey(), Utility.urlEncode(String.join(",", entry.getValue())));
         }
 
         try {
@@ -374,8 +372,8 @@ public final class BlobUrlParts {
                 parseNonIpUrl(url, parts);
             }
         } catch (MalformedURLException e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
-                + url.getAuthority(), e));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Authority is malformed. Host: " + url.getAuthority(), e));
         }
 
         Map<String, String[]> queryParamsMap = SasImplUtils.parseQueryString(url.getQuery());
@@ -392,8 +390,7 @@ public final class BlobUrlParts {
 
         CommonSasQueryParameters commonSasQueryParameters = new CommonSasQueryParameters(queryParamsMap, true);
 
-        return parts.setCommonSasQueryParameters(commonSasQueryParameters)
-            .setUnparsedParameters(queryParamsMap);
+        return parts.setCommonSasQueryParameters(commonSasQueryParameters).setUnparsedParameters(queryParamsMap);
     }
 
     /*

@@ -20,10 +20,13 @@ class AmqpEndpointStateUtil {
         switch (state) {
             case ACTIVE:
                 return AmqpEndpointState.ACTIVE;
+
             case UNINITIALIZED:
                 return AmqpEndpointState.UNINITIALIZED;
+
             case CLOSED:
                 return AmqpEndpointState.CLOSED;
+
             default:
                 throw new IllegalArgumentException("This endpoint state is not supported. State:" + state);
         }

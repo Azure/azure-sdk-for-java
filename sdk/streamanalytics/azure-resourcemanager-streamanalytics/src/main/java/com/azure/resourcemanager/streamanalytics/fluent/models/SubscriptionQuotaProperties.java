@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the properties of the quota. */
+/**
+ * Describes the properties of the quota.
+ */
 @Immutable
-public final class SubscriptionQuotaProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionQuotaProperties.class);
-
+public final class SubscriptionQuotaProperties implements JsonSerializable<SubscriptionQuotaProperties> {
     /*
      * The max permitted usage of this resource.
      */
-    @JsonProperty(value = "maxCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxCount;
 
     /*
      * The current usage of this resource.
      */
-    @JsonProperty(value = "currentCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentCount;
 
     /**
+     * Creates an instance of SubscriptionQuotaProperties class.
+     */
+    public SubscriptionQuotaProperties() {
+    }
+
+    /**
      * Get the maxCount property: The max permitted usage of this resource.
-     *
+     * 
      * @return the maxCount value.
      */
     public Integer maxCount() {
@@ -37,7 +43,7 @@ public final class SubscriptionQuotaProperties {
 
     /**
      * Get the currentCount property: The current usage of this resource.
-     *
+     * 
      * @return the currentCount value.
      */
     public Integer currentCount() {
@@ -46,9 +52,46 @@ public final class SubscriptionQuotaProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionQuotaProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionQuotaProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionQuotaProperties.
+     */
+    public static SubscriptionQuotaProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionQuotaProperties deserializedSubscriptionQuotaProperties = new SubscriptionQuotaProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxCount".equals(fieldName)) {
+                    deserializedSubscriptionQuotaProperties.maxCount = reader.getNullable(JsonReader::getInt);
+                } else if ("currentCount".equals(fieldName)) {
+                    deserializedSubscriptionQuotaProperties.currentCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionQuotaProperties;
+        });
     }
 }

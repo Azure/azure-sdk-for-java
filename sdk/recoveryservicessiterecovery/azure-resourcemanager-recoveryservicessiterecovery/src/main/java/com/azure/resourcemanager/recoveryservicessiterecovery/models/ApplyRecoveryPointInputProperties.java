@@ -6,30 +6,36 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input properties to apply recovery point. */
+/**
+ * Input properties to apply recovery point.
+ */
 @Fluent
-public final class ApplyRecoveryPointInputProperties {
+public final class ApplyRecoveryPointInputProperties implements JsonSerializable<ApplyRecoveryPointInputProperties> {
     /*
      * The recovery point Id.
      */
-    @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
     /*
      * Provider specific input for applying recovery point.
      */
-    @JsonProperty(value = "providerSpecificDetails", required = true)
     private ApplyRecoveryPointProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of ApplyRecoveryPointInputProperties class. */
+    /**
+     * Creates an instance of ApplyRecoveryPointInputProperties class.
+     */
     public ApplyRecoveryPointInputProperties() {
     }
 
     /**
      * Get the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -38,7 +44,7 @@ public final class ApplyRecoveryPointInputProperties {
 
     /**
      * Set the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the ApplyRecoveryPointInputProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class ApplyRecoveryPointInputProperties {
 
     /**
      * Get the providerSpecificDetails property: Provider specific input for applying recovery point.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ApplyRecoveryPointProviderSpecificInput providerSpecificDetails() {
@@ -58,32 +64,72 @@ public final class ApplyRecoveryPointInputProperties {
 
     /**
      * Set the providerSpecificDetails property: Provider specific input for applying recovery point.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the ApplyRecoveryPointInputProperties object itself.
      */
-    public ApplyRecoveryPointInputProperties withProviderSpecificDetails(
-        ApplyRecoveryPointProviderSpecificInput providerSpecificDetails) {
+    public ApplyRecoveryPointInputProperties
+        withProviderSpecificDetails(ApplyRecoveryPointProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model"
-                            + " ApplyRecoveryPointInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property providerSpecificDetails in model ApplyRecoveryPointInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplyRecoveryPointInputProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplyRecoveryPointInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplyRecoveryPointInputProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplyRecoveryPointInputProperties.
+     */
+    public static ApplyRecoveryPointInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplyRecoveryPointInputProperties deserializedApplyRecoveryPointInputProperties
+                = new ApplyRecoveryPointInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedApplyRecoveryPointInputProperties.providerSpecificDetails
+                        = ApplyRecoveryPointProviderSpecificInput.fromJson(reader);
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedApplyRecoveryPointInputProperties.recoveryPointId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplyRecoveryPointInputProperties;
+        });
+    }
 }

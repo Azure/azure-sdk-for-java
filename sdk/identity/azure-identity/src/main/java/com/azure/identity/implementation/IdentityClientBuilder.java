@@ -3,9 +3,11 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.identity.SharedTokenCacheCredential;
 
 import java.time.Duration;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -18,6 +20,7 @@ public final class IdentityClientBuilder {
     private String tenantId;
     private String clientId;
     private String resourceId;
+    private String objectId;
     private String clientSecret;
     private String clientAssertionPath;
     private String certificatePath;
@@ -26,6 +29,7 @@ public final class IdentityClientBuilder {
     private boolean sharedTokenCacheCred;
     private Duration clientAssertionTimeout;
     private Supplier<String> clientAssertionSupplier;
+    private Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline;
 
     /**
      * Sets the tenant ID for the client.
@@ -47,8 +51,23 @@ public final class IdentityClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the resource ID for the client.
+     * @param resourceId the resource ID for the client.
+     * @return the IdentityClientBuilder itself
+     */
     public IdentityClientBuilder resourceId(String resourceId) {
         this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
+     * Sets the object ID for the client.
+     * @param objectId the object ID for the client.
+     * @return the IdentityClientBuilder itself
+     */
+    public IdentityClientBuilder objectId(String objectId) {
+        this.objectId = objectId;
         return this;
     }
 
@@ -81,6 +100,12 @@ public final class IdentityClientBuilder {
      */
     public IdentityClientBuilder clientAssertionSupplier(Supplier<String> clientAssertionSupplier) {
         this.clientAssertionSupplier = clientAssertionSupplier;
+        return this;
+    }
+
+    public IdentityClientBuilder
+        clientAssertionSupplierWithHttpPipeline(Function<HttpPipeline, String> clientAssertionSupplier) {
+        this.clientAssertionSupplierWithHttpPipeline = clientAssertionSupplier;
         return this;
     }
 
@@ -155,13 +180,13 @@ public final class IdentityClientBuilder {
      */
     public IdentityClient build() {
         return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
-            clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
-            identityClientOptions);
+            objectId, clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate,
+            certificatePassword, sharedTokenCacheCred, clientAssertionTimeout, identityClientOptions);
     }
 
     public IdentitySyncClient buildSyncClient() {
-        return new IdentitySyncClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
-            clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
-            identityClientOptions);
+        return new IdentitySyncClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath,
+            resourceId, objectId, clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate,
+            certificatePassword, sharedTokenCacheCred, clientAssertionTimeout, identityClientOptions);
     }
 }

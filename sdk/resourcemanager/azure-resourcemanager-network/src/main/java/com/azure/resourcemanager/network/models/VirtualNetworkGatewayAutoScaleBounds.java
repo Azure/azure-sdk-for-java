@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The VirtualNetworkGatewayAutoScaleBounds model.
  */
 @Fluent
-public final class VirtualNetworkGatewayAutoScaleBounds {
+public final class VirtualNetworkGatewayAutoScaleBounds
+    implements JsonSerializable<VirtualNetworkGatewayAutoScaleBounds> {
     /*
      * Minimum scale Units for Autoscale configuration
      */
-    @JsonProperty(value = "min")
     private Integer min;
 
     /*
      * Maximum Scale Units for Autoscale configuration
      */
-    @JsonProperty(value = "max")
     private Integer max;
 
     /**
@@ -76,5 +79,45 @@ public final class VirtualNetworkGatewayAutoScaleBounds {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("min", this.min);
+        jsonWriter.writeNumberField("max", this.max);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkGatewayAutoScaleBounds from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkGatewayAutoScaleBounds if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkGatewayAutoScaleBounds.
+     */
+    public static VirtualNetworkGatewayAutoScaleBounds fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkGatewayAutoScaleBounds deserializedVirtualNetworkGatewayAutoScaleBounds
+                = new VirtualNetworkGatewayAutoScaleBounds();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("min".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayAutoScaleBounds.min = reader.getNullable(JsonReader::getInt);
+                } else if ("max".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayAutoScaleBounds.max = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkGatewayAutoScaleBounds;
+        });
     }
 }

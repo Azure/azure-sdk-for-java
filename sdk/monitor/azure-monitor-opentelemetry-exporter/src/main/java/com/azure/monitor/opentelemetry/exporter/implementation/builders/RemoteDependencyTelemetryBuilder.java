@@ -38,8 +38,7 @@ public final class RemoteDependencyTelemetryBuilder extends AbstractTelemetryBui
     }
 
     public void setResultCode(String resultCode) {
-        data.setResultCode(
-            truncateTelemetry(resultCode, MAX_RESULT_CODE_LENGTH, "RemoteDependency.resultCode"));
+        data.setResultCode(truncateTelemetry(resultCode, MAX_RESULT_CODE_LENGTH, "RemoteDependency.resultCode"));
     }
 
     public void setData(String data) {

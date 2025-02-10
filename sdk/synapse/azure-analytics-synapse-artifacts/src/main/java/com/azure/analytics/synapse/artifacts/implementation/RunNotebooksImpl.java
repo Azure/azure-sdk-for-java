@@ -9,7 +9,7 @@ import com.azure.analytics.synapse.artifacts.models.RunNotebookRequest;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookResponse;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookResponseException;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookSnapshotResponse;
-import com.azure.analytics.synapse.artifacts.models.RunNotebooksCreateRunResponse;
+import com.azure.analytics.synapse.artifacts.models.RunNotebooksCreateRunHeaders;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -25,6 +25,7 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -65,7 +66,15 @@ public final class RunNotebooksImpl {
         @Put("/notebooks/runs/{runId}")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<RunNotebooksCreateRunResponse> createRun(@HostParam("endpoint") String endpoint,
+        Mono<ResponseBase<RunNotebooksCreateRunHeaders, RunNotebookResponse>> createRun(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("runId") String runId, @BodyParam("application/json") RunNotebookRequest runNotebookRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/notebooks/runs/{runId}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<RunNotebookResponse>> createRunNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("runId") String runId,
             @BodyParam("application/json") RunNotebookRequest runNotebookRequest, @HeaderParam("Accept") String accept,
             Context context);
@@ -101,15 +110,12 @@ public final class RunNotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run notebook response on successful completion of {@link Mono}.
+     * @return run notebook response along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RunNotebooksCreateRunResponse> createRunWithResponseAsync(String runId,
-        RunNotebookRequest runNotebookRequest) {
-        final String apiVersion = "2022-03-01-preview";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createRun(this.client.getEndpoint(), apiVersion, runId,
-            runNotebookRequest, accept, context));
+    public Mono<ResponseBase<RunNotebooksCreateRunHeaders, RunNotebookResponse>>
+        createRunWithResponseAsync(String runId, RunNotebookRequest runNotebookRequest) {
+        return FluxUtil.withContext(context -> createRunWithResponseAsync(runId, runNotebookRequest, context));
     }
 
     /**
@@ -121,11 +127,11 @@ public final class RunNotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run notebook response on successful completion of {@link Mono}.
+     * @return run notebook response along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RunNotebooksCreateRunResponse> createRunWithResponseAsync(String runId,
-        RunNotebookRequest runNotebookRequest, Context context) {
+    public Mono<ResponseBase<RunNotebooksCreateRunHeaders, RunNotebookResponse>>
+        createRunWithResponseAsync(String runId, RunNotebookRequest runNotebookRequest, Context context) {
         final String apiVersion = "2022-03-01-preview";
         final String accept = "application/json";
         return service.createRun(this.client.getEndpoint(), apiVersion, runId, runNotebookRequest, accept, context);
@@ -173,11 +179,11 @@ public final class RunNotebooksImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run notebook response.
+     * @return run notebook response along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunNotebooksCreateRunResponse createRunWithResponse(String runId, RunNotebookRequest runNotebookRequest,
-        Context context) {
+    public ResponseBase<RunNotebooksCreateRunHeaders, RunNotebookResponse> createRunWithResponse(String runId,
+        RunNotebookRequest runNotebookRequest, Context context) {
         return createRunWithResponseAsync(runId, runNotebookRequest, context).block();
     }
 
@@ -197,6 +203,60 @@ public final class RunNotebooksImpl {
     }
 
     /**
+     * Run notebook.
+     * 
+     * @param runId Notebook run id.
+     * @param runNotebookRequest Run notebook request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run notebook response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RunNotebookResponse>> createRunNoCustomHeadersWithResponseAsync(String runId,
+        RunNotebookRequest runNotebookRequest) {
+        return FluxUtil
+            .withContext(context -> createRunNoCustomHeadersWithResponseAsync(runId, runNotebookRequest, context));
+    }
+
+    /**
+     * Run notebook.
+     * 
+     * @param runId Notebook run id.
+     * @param runNotebookRequest Run notebook request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run notebook response along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RunNotebookResponse>> createRunNoCustomHeadersWithResponseAsync(String runId,
+        RunNotebookRequest runNotebookRequest, Context context) {
+        final String apiVersion = "2022-03-01-preview";
+        final String accept = "application/json";
+        return service.createRunNoCustomHeaders(this.client.getEndpoint(), apiVersion, runId, runNotebookRequest,
+            accept, context);
+    }
+
+    /**
+     * Run notebook.
+     * 
+     * @param runId Notebook run id.
+     * @param runNotebookRequest Run notebook request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run notebook response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RunNotebookResponse> createRunNoCustomHeadersWithResponse(String runId,
+        RunNotebookRequest runNotebookRequest, Context context) {
+        return createRunNoCustomHeadersWithResponseAsync(runId, runNotebookRequest, context).block();
+    }
+
+    /**
      * Get RunNotebook Status for run id.
      * 
      * @param runId Notebook run id.
@@ -207,10 +267,7 @@ public final class RunNotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RunNotebookResponse>> getStatusWithResponseAsync(String runId) {
-        final String apiVersion = "2022-03-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getStatus(this.client.getEndpoint(), apiVersion, runId, accept, context));
+        return FluxUtil.withContext(context -> getStatusWithResponseAsync(runId, context));
     }
 
     /**
@@ -300,10 +357,7 @@ public final class RunNotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RunNotebookResponse>> cancelRunWithResponseAsync(String runId) {
-        final String apiVersion = "2022-03-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.cancelRun(this.client.getEndpoint(), apiVersion, runId, accept, context));
+        return FluxUtil.withContext(context -> cancelRunWithResponseAsync(runId, context));
     }
 
     /**
@@ -397,10 +451,7 @@ public final class RunNotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RunNotebookSnapshotResponse>> getSnapshotWithResponseAsync(String runId) {
-        final String apiVersion = "2022-03-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getSnapshot(this.client.getEndpoint(), apiVersion, runId, accept, context));
+        return FluxUtil.withContext(context -> getSnapshotWithResponseAsync(runId, context));
     }
 
     /**

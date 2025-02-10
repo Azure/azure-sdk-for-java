@@ -5,88 +5,78 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.TriggeredJobRun;
 import com.azure.resourcemanager.appservice.models.WebJobType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * TriggeredWebJob resource specific properties.
  */
 @Fluent
-public final class TriggeredWebJobProperties {
+public final class TriggeredWebJobProperties implements JsonSerializable<TriggeredWebJobProperties> {
     /*
      * Latest job run information.
      */
-    @JsonProperty(value = "latest_run")
     private TriggeredJobRun latestRun;
 
     /*
      * History URL.
      */
-    @JsonProperty(value = "history_url")
     private String historyUrl;
 
     /*
      * Scheduler Logs URL.
      */
-    @JsonProperty(value = "scheduler_logs_url")
     private String schedulerLogsUrl;
 
     /*
      * Run command.
      */
-    @JsonProperty(value = "run_command")
     private String runCommand;
 
     /*
      * Job URL.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * Extra Info URL.
      */
-    @JsonProperty(value = "extra_info_url")
     private String extraInfoUrl;
 
     /*
      * Job type.
      */
-    @JsonProperty(value = "web_job_type")
     private WebJobType webJobType;
 
     /*
      * Error information.
      */
-    @JsonProperty(value = "error")
     private String error;
 
     /*
      * Using SDK?
      */
-    @JsonProperty(value = "using_sdk")
     private Boolean usingSdk;
 
     /*
      * Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private String publicNetworkAccess;
 
     /*
      * Checks if Customer provided storage account is required
      */
-    @JsonProperty(value = "storageAccountRequired")
     private Boolean storageAccountRequired;
 
     /*
      * Job settings.
      */
-    @JsonProperty(value = "settings")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> settings;
 
     /**
@@ -346,5 +336,76 @@ public final class TriggeredWebJobProperties {
         if (latestRun() != null) {
             latestRun().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("latest_run", this.latestRun);
+        jsonWriter.writeStringField("history_url", this.historyUrl);
+        jsonWriter.writeStringField("scheduler_logs_url", this.schedulerLogsUrl);
+        jsonWriter.writeStringField("run_command", this.runCommand);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("extra_info_url", this.extraInfoUrl);
+        jsonWriter.writeStringField("web_job_type", this.webJobType == null ? null : this.webJobType.toString());
+        jsonWriter.writeStringField("error", this.error);
+        jsonWriter.writeBooleanField("using_sdk", this.usingSdk);
+        jsonWriter.writeStringField("publicNetworkAccess", this.publicNetworkAccess);
+        jsonWriter.writeBooleanField("storageAccountRequired", this.storageAccountRequired);
+        jsonWriter.writeMapField("settings", this.settings, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggeredWebJobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggeredWebJobProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggeredWebJobProperties.
+     */
+    public static TriggeredWebJobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggeredWebJobProperties deserializedTriggeredWebJobProperties = new TriggeredWebJobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("latest_run".equals(fieldName)) {
+                    deserializedTriggeredWebJobProperties.latestRun = TriggeredJobRun.fromJson(reader);
+                } else if ("history_url".equals(fieldName)) {
+                    deserializedTriggeredWebJobProperties.historyUrl = reader.getString();
+                } else if ("scheduler_logs_url".equals(fieldName)) {
+                    deserializedTriggeredWebJobProperties.schedulerLogsUrl = reader.getString();
+                } else if ("run_command".equals(fieldName)) {
+                    deserializedTriggeredWebJobProperties.runCommand = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedTriggeredWebJobProperties.url = reader.getString();
+                } else if ("extra_info_url".equals(fieldName)) {
+                    deserializedTriggeredWebJobProperties.extraInfoUrl = reader.getString();
+                } else if ("web_job_type".equals(fieldName)) {
+                    deserializedTriggeredWebJobProperties.webJobType = WebJobType.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedTriggeredWebJobProperties.error = reader.getString();
+                } else if ("using_sdk".equals(fieldName)) {
+                    deserializedTriggeredWebJobProperties.usingSdk = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedTriggeredWebJobProperties.publicNetworkAccess = reader.getString();
+                } else if ("storageAccountRequired".equals(fieldName)) {
+                    deserializedTriggeredWebJobProperties.storageAccountRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("settings".equals(fieldName)) {
+                    Map<String, Object> settings = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedTriggeredWebJobProperties.settings = settings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggeredWebJobProperties;
+        });
     }
 }

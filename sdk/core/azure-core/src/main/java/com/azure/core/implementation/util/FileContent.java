@@ -7,6 +7,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonWriter;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -75,8 +76,8 @@ public class FileContent extends BinaryDataContent {
         Objects.requireNonNull(file, "'file' cannot be null.");
 
         if (!file.toFile().exists()) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(
-                new FileNotFoundException("File does not exist " + file)));
+            throw LOGGER.logExceptionAsError(
+                new UncheckedIOException(new FileNotFoundException("File does not exist " + file)));
         }
 
         return file;
@@ -84,8 +85,8 @@ public class FileContent extends BinaryDataContent {
 
     private static int validateChunkSize(int chunkSize) {
         if (chunkSize <= 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'chunkSize' cannot be less than or equal to 0."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'chunkSize' cannot be less than or equal to 0."));
         }
 
         return chunkSize;
@@ -188,8 +189,7 @@ public class FileContent extends BinaryDataContent {
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
         return Flux.using(this::openAsynchronousFileChannel,
-            channel -> FluxUtil.readFile(channel, chunkSize, position, length),
-            channel -> {
+            channel -> FluxUtil.readFile(channel, chunkSize, position, length), channel -> {
                 try {
                     channel.close();
                 } catch (IOException ex) {
@@ -225,6 +225,13 @@ public class FileContent extends BinaryDataContent {
         }
 
         return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
+    }
+
+    @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
+
+        jsonWriter.writeBinary(toBytes());
     }
 
     /**
@@ -301,4 +308,3 @@ public class FileContent extends BinaryDataContent {
         }
     }
 }
-

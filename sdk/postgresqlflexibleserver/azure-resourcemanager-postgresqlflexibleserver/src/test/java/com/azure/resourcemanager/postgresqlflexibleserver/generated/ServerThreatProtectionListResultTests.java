@@ -10,11 +10,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerThreatPro
 public final class ServerThreatProtectionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerThreatProtectionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-11-23T16:36:18Z\"},\"id\":\"ublwpcesutrg\",\"name\":\"upauut\",\"type\":\"woqhihe\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-11-12T23:28:54Z\"},\"id\":\"nfqn\",\"name\":\"cypsxjv\",\"type\":\"oimwkslirc\"}],\"nextLink\":\"jxv\"}")
-                .toObject(ServerThreatProtectionListResult.class);
+        ServerThreatProtectionListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-01-02T14:34:14Z\"},\"id\":\"twqmsniffcdmqnr\",\"name\":\"jlpijnkrx\",\"type\":\"rddh\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-10-24T17:40:19Z\"},\"id\":\"zronasxift\",\"name\":\"zq\",\"type\":\"zh\"},{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-11-23T02:30:56Z\"},\"id\":\"ogczhonnxkrlg\",\"name\":\"yhmossxkkg\",\"type\":\"h\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-07-14T05:25:31Z\"},\"id\":\"bdhqxvcxgf\",\"name\":\"pdso\",\"type\":\"bshrnsvbuswd\"}],\"nextLink\":\"yybyc\"}")
+            .toObject(ServerThreatProtectionListResult.class);
     }
 
     @org.junit.jupiter.api.Test

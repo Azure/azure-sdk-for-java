@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The role management policy rule target. */
+/**
+ * The role management policy rule target.
+ */
 @Fluent
-public final class RoleManagementPolicyRuleTarget {
+public final class RoleManagementPolicyRuleTarget implements JsonSerializable<RoleManagementPolicyRuleTarget> {
     /*
      * The caller of the setting.
      */
-    @JsonProperty(value = "caller")
     private String caller;
 
     /*
      * The type of operation.
      */
-    @JsonProperty(value = "operations")
     private List<String> operations;
 
     /*
      * The assignment level to which rule is applied.
      */
-    @JsonProperty(value = "level")
     private String level;
 
     /*
      * The list of target objects.
      */
-    @JsonProperty(value = "targetObjects")
     private List<String> targetObjects;
 
     /*
      * The list of inheritable settings.
      */
-    @JsonProperty(value = "inheritableSettings")
     private List<String> inheritableSettings;
 
     /*
      * The list of enforced settings.
      */
-    @JsonProperty(value = "enforcedSettings")
     private List<String> enforcedSettings;
 
-    /** Creates an instance of RoleManagementPolicyRuleTarget class. */
+    /**
+     * Creates an instance of RoleManagementPolicyRuleTarget class.
+     */
     public RoleManagementPolicyRuleTarget() {
     }
 
     /**
      * Get the caller property: The caller of the setting.
-     *
+     * 
      * @return the caller value.
      */
     public String caller() {
@@ -62,7 +64,7 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Set the caller property: The caller of the setting.
-     *
+     * 
      * @param caller the caller value to set.
      * @return the RoleManagementPolicyRuleTarget object itself.
      */
@@ -73,7 +75,7 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Get the operations property: The type of operation.
-     *
+     * 
      * @return the operations value.
      */
     public List<String> operations() {
@@ -82,7 +84,7 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Set the operations property: The type of operation.
-     *
+     * 
      * @param operations the operations value to set.
      * @return the RoleManagementPolicyRuleTarget object itself.
      */
@@ -93,7 +95,7 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Get the level property: The assignment level to which rule is applied.
-     *
+     * 
      * @return the level value.
      */
     public String level() {
@@ -102,7 +104,7 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Set the level property: The assignment level to which rule is applied.
-     *
+     * 
      * @param level the level value to set.
      * @return the RoleManagementPolicyRuleTarget object itself.
      */
@@ -113,7 +115,7 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Get the targetObjects property: The list of target objects.
-     *
+     * 
      * @return the targetObjects value.
      */
     public List<String> targetObjects() {
@@ -122,7 +124,7 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Set the targetObjects property: The list of target objects.
-     *
+     * 
      * @param targetObjects the targetObjects value to set.
      * @return the RoleManagementPolicyRuleTarget object itself.
      */
@@ -133,7 +135,7 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Get the inheritableSettings property: The list of inheritable settings.
-     *
+     * 
      * @return the inheritableSettings value.
      */
     public List<String> inheritableSettings() {
@@ -142,7 +144,7 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Set the inheritableSettings property: The list of inheritable settings.
-     *
+     * 
      * @param inheritableSettings the inheritableSettings value to set.
      * @return the RoleManagementPolicyRuleTarget object itself.
      */
@@ -153,7 +155,7 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Get the enforcedSettings property: The list of enforced settings.
-     *
+     * 
      * @return the enforcedSettings value.
      */
     public List<String> enforcedSettings() {
@@ -162,7 +164,7 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Set the enforcedSettings property: The list of enforced settings.
-     *
+     * 
      * @param enforcedSettings the enforcedSettings value to set.
      * @return the RoleManagementPolicyRuleTarget object itself.
      */
@@ -173,9 +175,68 @@ public final class RoleManagementPolicyRuleTarget {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("caller", this.caller);
+        jsonWriter.writeArrayField("operations", this.operations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("level", this.level);
+        jsonWriter.writeArrayField("targetObjects", this.targetObjects,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("inheritableSettings", this.inheritableSettings,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("enforcedSettings", this.enforcedSettings,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleManagementPolicyRuleTarget from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleManagementPolicyRuleTarget if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleManagementPolicyRuleTarget.
+     */
+    public static RoleManagementPolicyRuleTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleManagementPolicyRuleTarget deserializedRoleManagementPolicyRuleTarget
+                = new RoleManagementPolicyRuleTarget();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("caller".equals(fieldName)) {
+                    deserializedRoleManagementPolicyRuleTarget.caller = reader.getString();
+                } else if ("operations".equals(fieldName)) {
+                    List<String> operations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoleManagementPolicyRuleTarget.operations = operations;
+                } else if ("level".equals(fieldName)) {
+                    deserializedRoleManagementPolicyRuleTarget.level = reader.getString();
+                } else if ("targetObjects".equals(fieldName)) {
+                    List<String> targetObjects = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoleManagementPolicyRuleTarget.targetObjects = targetObjects;
+                } else if ("inheritableSettings".equals(fieldName)) {
+                    List<String> inheritableSettings = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoleManagementPolicyRuleTarget.inheritableSettings = inheritableSettings;
+                } else if ("enforcedSettings".equals(fieldName)) {
+                    List<String> enforcedSettings = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoleManagementPolicyRuleTarget.enforcedSettings = enforcedSettings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleManagementPolicyRuleTarget;
+        });
     }
 }

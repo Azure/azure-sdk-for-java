@@ -5,24 +5,30 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The common properties that are associated with Event Hub data sources. */
+/**
+ * The common properties that are associated with Event Hub data sources.
+ */
 @Fluent
 public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubDataSourceProperties.class);
-
     /*
      * The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "eventHubName")
     private String eventHubName;
 
     /**
+     * Creates an instance of EventHubDataSourceProperties class.
+     */
+    public EventHubDataSourceProperties() {
+    }
+
+    /**
      * Get the eventHubName property: The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the eventHubName value.
      */
     public String eventHubName() {
@@ -31,7 +37,7 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
 
     /**
      * Set the eventHubName property: The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param eventHubName the eventHubName value to set.
      * @return the EventHubDataSourceProperties object itself.
      */
@@ -40,28 +46,36 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubDataSourceProperties withServiceBusNamespace(String serviceBusNamespace) {
         super.withServiceBusNamespace(serviceBusNamespace);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubDataSourceProperties withSharedAccessPolicyName(String sharedAccessPolicyName) {
         super.withSharedAccessPolicyName(sharedAccessPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubDataSourceProperties withSharedAccessPolicyKey(String sharedAccessPolicyKey) {
         super.withSharedAccessPolicyKey(sharedAccessPolicyKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
         super.withAuthenticationMode(authenticationMode);
@@ -70,11 +84,60 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceBusNamespace", serviceBusNamespace());
+        jsonWriter.writeStringField("sharedAccessPolicyName", sharedAccessPolicyName());
+        jsonWriter.writeStringField("sharedAccessPolicyKey", sharedAccessPolicyKey());
+        jsonWriter.writeStringField("authenticationMode",
+            authenticationMode() == null ? null : authenticationMode().toString());
+        jsonWriter.writeStringField("eventHubName", this.eventHubName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubDataSourceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventHubDataSourceProperties.
+     */
+    public static EventHubDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubDataSourceProperties deserializedEventHubDataSourceProperties = new EventHubDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceBusNamespace".equals(fieldName)) {
+                    deserializedEventHubDataSourceProperties.withServiceBusNamespace(reader.getString());
+                } else if ("sharedAccessPolicyName".equals(fieldName)) {
+                    deserializedEventHubDataSourceProperties.withSharedAccessPolicyName(reader.getString());
+                } else if ("sharedAccessPolicyKey".equals(fieldName)) {
+                    deserializedEventHubDataSourceProperties.withSharedAccessPolicyKey(reader.getString());
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedEventHubDataSourceProperties
+                        .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
+                } else if ("eventHubName".equals(fieldName)) {
+                    deserializedEventHubDataSourceProperties.eventHubName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubDataSourceProperties;
+        });
     }
 }

@@ -5,48 +5,52 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Error model that can be exposed to the user. */
+/**
+ * Error model that can be exposed to the user.
+ */
 @Fluent
-public final class ReplicationEligibilityResultsErrorInfo {
+public final class ReplicationEligibilityResultsErrorInfo
+    implements JsonSerializable<ReplicationEligibilityResultsErrorInfo> {
     /*
      * The error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The error message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The possible causes.
      */
-    @JsonProperty(value = "possibleCauses")
     private String possibleCauses;
 
     /*
      * The recommended action.
      */
-    @JsonProperty(value = "recommendedAction")
     private String recommendedAction;
 
     /*
      * The error status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
-    /** Creates an instance of ReplicationEligibilityResultsErrorInfo class. */
+    /**
+     * Creates an instance of ReplicationEligibilityResultsErrorInfo class.
+     */
     public ReplicationEligibilityResultsErrorInfo() {
     }
 
     /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -55,7 +59,7 @@ public final class ReplicationEligibilityResultsErrorInfo {
 
     /**
      * Set the code property: The error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ReplicationEligibilityResultsErrorInfo object itself.
      */
@@ -66,7 +70,7 @@ public final class ReplicationEligibilityResultsErrorInfo {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -75,7 +79,7 @@ public final class ReplicationEligibilityResultsErrorInfo {
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ReplicationEligibilityResultsErrorInfo object itself.
      */
@@ -86,7 +90,7 @@ public final class ReplicationEligibilityResultsErrorInfo {
 
     /**
      * Get the possibleCauses property: The possible causes.
-     *
+     * 
      * @return the possibleCauses value.
      */
     public String possibleCauses() {
@@ -95,7 +99,7 @@ public final class ReplicationEligibilityResultsErrorInfo {
 
     /**
      * Set the possibleCauses property: The possible causes.
-     *
+     * 
      * @param possibleCauses the possibleCauses value to set.
      * @return the ReplicationEligibilityResultsErrorInfo object itself.
      */
@@ -106,7 +110,7 @@ public final class ReplicationEligibilityResultsErrorInfo {
 
     /**
      * Get the recommendedAction property: The recommended action.
-     *
+     * 
      * @return the recommendedAction value.
      */
     public String recommendedAction() {
@@ -115,7 +119,7 @@ public final class ReplicationEligibilityResultsErrorInfo {
 
     /**
      * Set the recommendedAction property: The recommended action.
-     *
+     * 
      * @param recommendedAction the recommendedAction value to set.
      * @return the ReplicationEligibilityResultsErrorInfo object itself.
      */
@@ -126,7 +130,7 @@ public final class ReplicationEligibilityResultsErrorInfo {
 
     /**
      * Get the status property: The error status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -135,9 +139,57 @@ public final class ReplicationEligibilityResultsErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("possibleCauses", this.possibleCauses);
+        jsonWriter.writeStringField("recommendedAction", this.recommendedAction);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationEligibilityResultsErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationEligibilityResultsErrorInfo if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationEligibilityResultsErrorInfo.
+     */
+    public static ReplicationEligibilityResultsErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationEligibilityResultsErrorInfo deserializedReplicationEligibilityResultsErrorInfo
+                = new ReplicationEligibilityResultsErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedReplicationEligibilityResultsErrorInfo.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedReplicationEligibilityResultsErrorInfo.message = reader.getString();
+                } else if ("possibleCauses".equals(fieldName)) {
+                    deserializedReplicationEligibilityResultsErrorInfo.possibleCauses = reader.getString();
+                } else if ("recommendedAction".equals(fieldName)) {
+                    deserializedReplicationEligibilityResultsErrorInfo.recommendedAction = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedReplicationEligibilityResultsErrorInfo.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationEligibilityResultsErrorInfo;
+        });
     }
 }

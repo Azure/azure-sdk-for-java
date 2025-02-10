@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class LtrPreBackupResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LtrPreBackupResponseProperties model =
-            BinaryData.fromString("{\"numberOfContainers\":622690283}").toObject(LtrPreBackupResponseProperties.class);
-        Assertions.assertEquals(622690283, model.numberOfContainers());
+        LtrPreBackupResponseProperties model = BinaryData.fromString("{\"numberOfContainers\":1761160515}")
+            .toObject(LtrPreBackupResponseProperties.class);
+        Assertions.assertEquals(1761160515, model.numberOfContainers());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LtrPreBackupResponseProperties model = new LtrPreBackupResponseProperties().withNumberOfContainers(622690283);
+        LtrPreBackupResponseProperties model = new LtrPreBackupResponseProperties().withNumberOfContainers(1761160515);
         model = BinaryData.fromObject(model).toObject(LtrPreBackupResponseProperties.class);
-        Assertions.assertEquals(622690283, model.numberOfContainers());
+        Assertions.assertEquals(1761160515, model.numberOfContainers());
     }
 }

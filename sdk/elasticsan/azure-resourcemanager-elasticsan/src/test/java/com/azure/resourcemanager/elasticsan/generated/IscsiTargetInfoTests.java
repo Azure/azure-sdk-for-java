@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class IscsiTargetInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IscsiTargetInfo model =
-            BinaryData
-                .fromString(
-                    "{\"targetIqn\":\"unmpxttd\",\"targetPortalHostname\":\"rbnlankxmyskp\",\"targetPortalPort\":743667383,\"provisioningState\":\"Deleting\",\"status\":\"Unhealthy\"}")
-                .toObject(IscsiTargetInfo.class);
-        Assertions.assertEquals(OperationalStatus.UNHEALTHY, model.status());
+        IscsiTargetInfo model = BinaryData.fromString(
+            "{\"targetIqn\":\"avxbniwdjswztsdb\",\"targetPortalHostname\":\"nxytxh\",\"targetPortalPort\":2031325450,\"provisioningState\":\"Pending\",\"status\":\"Unknown\"}")
+            .toObject(IscsiTargetInfo.class);
+        Assertions.assertEquals(OperationalStatus.UNKNOWN, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IscsiTargetInfo model = new IscsiTargetInfo().withStatus(OperationalStatus.UNHEALTHY);
+        IscsiTargetInfo model = new IscsiTargetInfo().withStatus(OperationalStatus.UNKNOWN);
         model = BinaryData.fromObject(model).toObject(IscsiTargetInfo.class);
-        Assertions.assertEquals(OperationalStatus.UNHEALTHY, model.status());
+        Assertions.assertEquals(OperationalStatus.UNKNOWN, model.status());
     }
 }

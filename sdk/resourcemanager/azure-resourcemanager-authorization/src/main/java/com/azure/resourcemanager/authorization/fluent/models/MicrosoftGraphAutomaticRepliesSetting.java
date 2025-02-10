@@ -5,65 +5,65 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** automaticRepliesSetting. */
+/**
+ * automaticRepliesSetting.
+ */
 @Fluent
-public final class MicrosoftGraphAutomaticRepliesSetting {
+public final class MicrosoftGraphAutomaticRepliesSetting
+    implements JsonSerializable<MicrosoftGraphAutomaticRepliesSetting> {
     /*
      * externalAudienceScope
      */
-    @JsonProperty(value = "externalAudience")
     private MicrosoftGraphExternalAudienceScope externalAudience;
 
     /*
      * The automatic reply to send to the specified external audience, if Status is AlwaysEnabled or Scheduled.
      */
-    @JsonProperty(value = "externalReplyMessage")
     private String externalReplyMessage;
 
     /*
      * The automatic reply to send to the audience internal to the signed-in user's organization, if Status is
      * AlwaysEnabled or Scheduled.
      */
-    @JsonProperty(value = "internalReplyMessage")
     private String internalReplyMessage;
 
     /*
      * dateTimeTimeZone
      */
-    @JsonProperty(value = "scheduledEndDateTime")
     private MicrosoftGraphDateTimeZone scheduledEndDateTime;
 
     /*
      * dateTimeTimeZone
      */
-    @JsonProperty(value = "scheduledStartDateTime")
     private MicrosoftGraphDateTimeZone scheduledStartDateTime;
 
     /*
      * automaticRepliesStatus
      */
-    @JsonProperty(value = "status")
     private MicrosoftGraphAutomaticRepliesStatus status;
 
     /*
      * automaticRepliesSetting
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphAutomaticRepliesSetting class. */
+    /**
+     * Creates an instance of MicrosoftGraphAutomaticRepliesSetting class.
+     */
     public MicrosoftGraphAutomaticRepliesSetting() {
     }
 
     /**
      * Get the externalAudience property: externalAudienceScope.
-     *
+     * 
      * @return the externalAudience value.
      */
     public MicrosoftGraphExternalAudienceScope externalAudience() {
@@ -72,12 +72,12 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
 
     /**
      * Set the externalAudience property: externalAudienceScope.
-     *
+     * 
      * @param externalAudience the externalAudience value to set.
      * @return the MicrosoftGraphAutomaticRepliesSetting object itself.
      */
-    public MicrosoftGraphAutomaticRepliesSetting withExternalAudience(
-        MicrosoftGraphExternalAudienceScope externalAudience) {
+    public MicrosoftGraphAutomaticRepliesSetting
+        withExternalAudience(MicrosoftGraphExternalAudienceScope externalAudience) {
         this.externalAudience = externalAudience;
         return this;
     }
@@ -85,7 +85,7 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
     /**
      * Get the externalReplyMessage property: The automatic reply to send to the specified external audience, if Status
      * is AlwaysEnabled or Scheduled.
-     *
+     * 
      * @return the externalReplyMessage value.
      */
     public String externalReplyMessage() {
@@ -95,7 +95,7 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
     /**
      * Set the externalReplyMessage property: The automatic reply to send to the specified external audience, if Status
      * is AlwaysEnabled or Scheduled.
-     *
+     * 
      * @param externalReplyMessage the externalReplyMessage value to set.
      * @return the MicrosoftGraphAutomaticRepliesSetting object itself.
      */
@@ -107,7 +107,7 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
     /**
      * Get the internalReplyMessage property: The automatic reply to send to the audience internal to the signed-in
      * user's organization, if Status is AlwaysEnabled or Scheduled.
-     *
+     * 
      * @return the internalReplyMessage value.
      */
     public String internalReplyMessage() {
@@ -117,7 +117,7 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
     /**
      * Set the internalReplyMessage property: The automatic reply to send to the audience internal to the signed-in
      * user's organization, if Status is AlwaysEnabled or Scheduled.
-     *
+     * 
      * @param internalReplyMessage the internalReplyMessage value to set.
      * @return the MicrosoftGraphAutomaticRepliesSetting object itself.
      */
@@ -128,7 +128,7 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
 
     /**
      * Get the scheduledEndDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @return the scheduledEndDateTime value.
      */
     public MicrosoftGraphDateTimeZone scheduledEndDateTime() {
@@ -137,19 +137,19 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
 
     /**
      * Set the scheduledEndDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @param scheduledEndDateTime the scheduledEndDateTime value to set.
      * @return the MicrosoftGraphAutomaticRepliesSetting object itself.
      */
-    public MicrosoftGraphAutomaticRepliesSetting withScheduledEndDateTime(
-        MicrosoftGraphDateTimeZone scheduledEndDateTime) {
+    public MicrosoftGraphAutomaticRepliesSetting
+        withScheduledEndDateTime(MicrosoftGraphDateTimeZone scheduledEndDateTime) {
         this.scheduledEndDateTime = scheduledEndDateTime;
         return this;
     }
 
     /**
      * Get the scheduledStartDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @return the scheduledStartDateTime value.
      */
     public MicrosoftGraphDateTimeZone scheduledStartDateTime() {
@@ -158,19 +158,19 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
 
     /**
      * Set the scheduledStartDateTime property: dateTimeTimeZone.
-     *
+     * 
      * @param scheduledStartDateTime the scheduledStartDateTime value to set.
      * @return the MicrosoftGraphAutomaticRepliesSetting object itself.
      */
-    public MicrosoftGraphAutomaticRepliesSetting withScheduledStartDateTime(
-        MicrosoftGraphDateTimeZone scheduledStartDateTime) {
+    public MicrosoftGraphAutomaticRepliesSetting
+        withScheduledStartDateTime(MicrosoftGraphDateTimeZone scheduledStartDateTime) {
         this.scheduledStartDateTime = scheduledStartDateTime;
         return this;
     }
 
     /**
      * Get the status property: automaticRepliesStatus.
-     *
+     * 
      * @return the status value.
      */
     public MicrosoftGraphAutomaticRepliesStatus status() {
@@ -179,7 +179,7 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
 
     /**
      * Set the status property: automaticRepliesStatus.
-     *
+     * 
      * @param status the status value to set.
      * @return the MicrosoftGraphAutomaticRepliesSetting object itself.
      */
@@ -190,17 +190,16 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
 
     /**
      * Get the additionalProperties property: automaticRepliesSetting.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: automaticRepliesSetting.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphAutomaticRepliesSetting object itself.
      */
@@ -209,17 +208,9 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -229,5 +220,73 @@ public final class MicrosoftGraphAutomaticRepliesSetting {
         if (scheduledStartDateTime() != null) {
             scheduledStartDateTime().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("externalAudience",
+            this.externalAudience == null ? null : this.externalAudience.toString());
+        jsonWriter.writeStringField("externalReplyMessage", this.externalReplyMessage);
+        jsonWriter.writeStringField("internalReplyMessage", this.internalReplyMessage);
+        jsonWriter.writeJsonField("scheduledEndDateTime", this.scheduledEndDateTime);
+        jsonWriter.writeJsonField("scheduledStartDateTime", this.scheduledStartDateTime);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphAutomaticRepliesSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphAutomaticRepliesSetting if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphAutomaticRepliesSetting.
+     */
+    public static MicrosoftGraphAutomaticRepliesSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphAutomaticRepliesSetting deserializedMicrosoftGraphAutomaticRepliesSetting
+                = new MicrosoftGraphAutomaticRepliesSetting();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("externalAudience".equals(fieldName)) {
+                    deserializedMicrosoftGraphAutomaticRepliesSetting.externalAudience
+                        = MicrosoftGraphExternalAudienceScope.fromString(reader.getString());
+                } else if ("externalReplyMessage".equals(fieldName)) {
+                    deserializedMicrosoftGraphAutomaticRepliesSetting.externalReplyMessage = reader.getString();
+                } else if ("internalReplyMessage".equals(fieldName)) {
+                    deserializedMicrosoftGraphAutomaticRepliesSetting.internalReplyMessage = reader.getString();
+                } else if ("scheduledEndDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphAutomaticRepliesSetting.scheduledEndDateTime
+                        = MicrosoftGraphDateTimeZone.fromJson(reader);
+                } else if ("scheduledStartDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphAutomaticRepliesSetting.scheduledStartDateTime
+                        = MicrosoftGraphDateTimeZone.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedMicrosoftGraphAutomaticRepliesSetting.status
+                        = MicrosoftGraphAutomaticRepliesStatus.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphAutomaticRepliesSetting.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphAutomaticRepliesSetting;
+        });
     }
 }

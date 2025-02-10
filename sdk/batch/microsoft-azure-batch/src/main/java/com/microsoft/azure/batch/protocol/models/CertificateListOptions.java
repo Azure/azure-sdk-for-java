@@ -20,7 +20,7 @@ public class CertificateListOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-certificates.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -40,7 +40,8 @@ public class CertificateListOptions {
 
     /**
      * The maximum time that the server can spend processing the request, in
-     * seconds. The default is 30 seconds.
+     * seconds. The default is 30 seconds. If the value is larger than 30, the
+     * default will be used instead.
      */
     @JsonProperty(value = "")
     private Integer timeout;
@@ -68,7 +69,7 @@ public class CertificateListOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-certificates.
      *
      * @return the filter value
      */
@@ -77,7 +78,7 @@ public class CertificateListOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-certificates.
      *
      * @param filter the filter value to set
      * @return the CertificateListOptions object itself.
@@ -128,7 +129,7 @@ public class CertificateListOptions {
     }
 
     /**
-     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @return the timeout value
      */
@@ -137,7 +138,7 @@ public class CertificateListOptions {
     }
 
     /**
-     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @param timeout the timeout value to set
      * @return the CertificateListOptions object itself.

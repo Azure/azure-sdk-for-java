@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Communication type. */
+/**
+ * Communication type.
+ */
 public final class CommunicationType extends ExpandableStringEnum<CommunicationType> {
-    /** Static value web for CommunicationType. */
+    /**
+     * Static value web for CommunicationType.
+     */
     public static final CommunicationType WEB = fromString("web");
 
-    /** Static value phone for CommunicationType. */
+    /**
+     * Static value phone for CommunicationType.
+     */
     public static final CommunicationType PHONE = fromString("phone");
 
     /**
      * Creates a new instance of CommunicationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class CommunicationType extends ExpandableStringEnum<CommunicationT
 
     /**
      * Creates or finds a CommunicationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CommunicationType.
      */
-    @JsonCreator
     public static CommunicationType fromString(String name) {
         return fromString(name, CommunicationType.class);
     }
 
     /**
      * Gets known CommunicationType values.
-     *
+     * 
      * @return known CommunicationType values.
      */
     public static Collection<CommunicationType> values() {

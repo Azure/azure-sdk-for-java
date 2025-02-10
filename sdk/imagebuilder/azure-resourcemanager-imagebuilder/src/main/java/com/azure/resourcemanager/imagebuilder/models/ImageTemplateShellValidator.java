@@ -5,45 +5,59 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Runs the specified shell script during the validation phase (Linux). Corresponds to Packer shell provisioner. Exactly
  * one of 'scriptUri' or 'inline' can be specified.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Shell")
 @Fluent
 public final class ImageTemplateShellValidator extends ImageTemplateInVMValidator {
     /*
+     * The type of validation you want to use on the Image. For example, "Shell" can be shell validation
+     */
+    private String type = "Shell";
+
+    /*
      * URI of the shell script to be run for validation. It can be a github link, Azure Storage URI, etc
      */
-    @JsonProperty(value = "scriptUri")
     private String scriptUri;
 
     /*
      * SHA256 checksum of the shell script provided in the scriptUri field
      */
-    @JsonProperty(value = "sha256Checksum")
     private String sha256Checksum;
 
     /*
      * Array of shell commands to execute
      */
-    @JsonProperty(value = "inline")
     private List<String> inline;
 
-    /** Creates an instance of ImageTemplateShellValidator class. */
+    /**
+     * Creates an instance of ImageTemplateShellValidator class.
+     */
     public ImageTemplateShellValidator() {
+    }
+
+    /**
+     * Get the type property: The type of validation you want to use on the Image. For example, "Shell" can be shell
+     * validation.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the scriptUri property: URI of the shell script to be run for validation. It can be a github link, Azure
      * Storage URI, etc.
-     *
+     * 
      * @return the scriptUri value.
      */
     public String scriptUri() {
@@ -53,7 +67,7 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
     /**
      * Set the scriptUri property: URI of the shell script to be run for validation. It can be a github link, Azure
      * Storage URI, etc.
-     *
+     * 
      * @param scriptUri the scriptUri value to set.
      * @return the ImageTemplateShellValidator object itself.
      */
@@ -64,7 +78,7 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
 
     /**
      * Get the sha256Checksum property: SHA256 checksum of the shell script provided in the scriptUri field.
-     *
+     * 
      * @return the sha256Checksum value.
      */
     public String sha256Checksum() {
@@ -73,7 +87,7 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
 
     /**
      * Set the sha256Checksum property: SHA256 checksum of the shell script provided in the scriptUri field.
-     *
+     * 
      * @param sha256Checksum the sha256Checksum value to set.
      * @return the ImageTemplateShellValidator object itself.
      */
@@ -84,7 +98,7 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
 
     /**
      * Get the inline property: Array of shell commands to execute.
-     *
+     * 
      * @return the inline value.
      */
     public List<String> inline() {
@@ -93,7 +107,7 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
 
     /**
      * Set the inline property: Array of shell commands to execute.
-     *
+     * 
      * @param inline the inline value to set.
      * @return the ImageTemplateShellValidator object itself.
      */
@@ -102,7 +116,9 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateShellValidator withName(String name) {
         super.withName(name);
@@ -111,11 +127,59 @@ public final class ImageTemplateShellValidator extends ImageTemplateInVMValidato
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("scriptUri", this.scriptUri);
+        jsonWriter.writeStringField("sha256Checksum", this.sha256Checksum);
+        jsonWriter.writeArrayField("inline", this.inline, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateShellValidator from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateShellValidator if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateShellValidator.
+     */
+    public static ImageTemplateShellValidator fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateShellValidator deserializedImageTemplateShellValidator = new ImageTemplateShellValidator();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedImageTemplateShellValidator.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateShellValidator.type = reader.getString();
+                } else if ("scriptUri".equals(fieldName)) {
+                    deserializedImageTemplateShellValidator.scriptUri = reader.getString();
+                } else if ("sha256Checksum".equals(fieldName)) {
+                    deserializedImageTemplateShellValidator.sha256Checksum = reader.getString();
+                } else if ("inline".equals(fieldName)) {
+                    List<String> inline = reader.readArray(reader1 -> reader1.getString());
+                    deserializedImageTemplateShellValidator.inline = inline;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateShellValidator;
+        });
     }
 }

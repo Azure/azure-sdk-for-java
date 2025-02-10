@@ -5,74 +5,68 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties that are associated with an Azure SQL database data source. */
+/**
+ * The properties that are associated with an Azure SQL database data source.
+ */
 @Fluent
-public class AzureSqlDatabaseDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlDatabaseDataSourceProperties.class);
-
+public class AzureSqlDatabaseDataSourceProperties implements JsonSerializable<AzureSqlDatabaseDataSourceProperties> {
     /*
-     * The name of the SQL server containing the Azure SQL database. Required
-     * on PUT (CreateOrReplace) requests.
+     * The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "server")
     private String server;
 
     /*
-     * The name of the Azure SQL database. Required on PUT (CreateOrReplace)
-     * requests.
+     * The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "database")
     private String database;
 
     /*
-     * The user name that will be used to connect to the Azure SQL database.
-     * Required on PUT (CreateOrReplace) requests.
+     * The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "user")
     private String user;
 
     /*
-     * The password that will be used to connect to the Azure SQL database.
-     * Required on PUT (CreateOrReplace) requests.
+     * The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
-     * The name of the table in the Azure SQL database. Required on PUT
-     * (CreateOrReplace) requests.
+     * The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "table")
     private String table;
 
     /*
-     * Max Batch count for write to Sql database, the default value is 10,000.
-     * Optional on PUT requests.
+     * Max Batch count for write to Sql database, the default value is 10,000. Optional on PUT requests.
      */
-    @JsonProperty(value = "maxBatchCount")
     private Float maxBatchCount;
 
     /*
-     * Max Writer count, currently only 1(single writer) and 0(based on query
-     * partition) are available. Optional on PUT requests.
+     * Max Writer count, currently only 1(single writer) and 0(based on query partition) are available. Optional on PUT
+     * requests.
      */
-    @JsonProperty(value = "maxWriterCount")
     private Float maxWriterCount;
 
     /*
      * Authentication Mode.
      */
-    @JsonProperty(value = "authenticationMode")
     private AuthenticationMode authenticationMode;
+
+    /**
+     * Creates an instance of AzureSqlDatabaseDataSourceProperties class.
+     */
+    public AzureSqlDatabaseDataSourceProperties() {
+    }
 
     /**
      * Get the server property: The name of the SQL server containing the Azure SQL database. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -82,7 +76,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     /**
      * Set the server property: The name of the SQL server containing the Azure SQL database. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @param server the server value to set.
      * @return the AzureSqlDatabaseDataSourceProperties object itself.
      */
@@ -93,7 +87,7 @@ public class AzureSqlDatabaseDataSourceProperties {
 
     /**
      * Get the database property: The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the database value.
      */
     public String database() {
@@ -102,7 +96,7 @@ public class AzureSqlDatabaseDataSourceProperties {
 
     /**
      * Set the database property: The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param database the database value to set.
      * @return the AzureSqlDatabaseDataSourceProperties object itself.
      */
@@ -114,7 +108,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     /**
      * Get the user property: The user name that will be used to connect to the Azure SQL database. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the user value.
      */
     public String user() {
@@ -124,7 +118,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     /**
      * Set the user property: The user name that will be used to connect to the Azure SQL database. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @param user the user value to set.
      * @return the AzureSqlDatabaseDataSourceProperties object itself.
      */
@@ -136,7 +130,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     /**
      * Get the password property: The password that will be used to connect to the Azure SQL database. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -146,7 +140,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     /**
      * Set the password property: The password that will be used to connect to the Azure SQL database. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @param password the password value to set.
      * @return the AzureSqlDatabaseDataSourceProperties object itself.
      */
@@ -158,7 +152,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     /**
      * Get the table property: The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @return the table value.
      */
     public String table() {
@@ -168,7 +162,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     /**
      * Set the table property: The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureSqlDatabaseDataSourceProperties object itself.
      */
@@ -180,7 +174,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     /**
      * Get the maxBatchCount property: Max Batch count for write to Sql database, the default value is 10,000. Optional
      * on PUT requests.
-     *
+     * 
      * @return the maxBatchCount value.
      */
     public Float maxBatchCount() {
@@ -190,7 +184,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     /**
      * Set the maxBatchCount property: Max Batch count for write to Sql database, the default value is 10,000. Optional
      * on PUT requests.
-     *
+     * 
      * @param maxBatchCount the maxBatchCount value to set.
      * @return the AzureSqlDatabaseDataSourceProperties object itself.
      */
@@ -202,7 +196,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     /**
      * Get the maxWriterCount property: Max Writer count, currently only 1(single writer) and 0(based on query
      * partition) are available. Optional on PUT requests.
-     *
+     * 
      * @return the maxWriterCount value.
      */
     public Float maxWriterCount() {
@@ -212,7 +206,7 @@ public class AzureSqlDatabaseDataSourceProperties {
     /**
      * Set the maxWriterCount property: Max Writer count, currently only 1(single writer) and 0(based on query
      * partition) are available. Optional on PUT requests.
-     *
+     * 
      * @param maxWriterCount the maxWriterCount value to set.
      * @return the AzureSqlDatabaseDataSourceProperties object itself.
      */
@@ -223,7 +217,7 @@ public class AzureSqlDatabaseDataSourceProperties {
 
     /**
      * Get the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @return the authenticationMode value.
      */
     public AuthenticationMode authenticationMode() {
@@ -232,7 +226,7 @@ public class AzureSqlDatabaseDataSourceProperties {
 
     /**
      * Set the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @param authenticationMode the authenticationMode value to set.
      * @return the AzureSqlDatabaseDataSourceProperties object itself.
      */
@@ -243,9 +237,71 @@ public class AzureSqlDatabaseDataSourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("database", this.database);
+        jsonWriter.writeStringField("user", this.user);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("table", this.table);
+        jsonWriter.writeNumberField("maxBatchCount", this.maxBatchCount);
+        jsonWriter.writeNumberField("maxWriterCount", this.maxWriterCount);
+        jsonWriter.writeStringField("authenticationMode",
+            this.authenticationMode == null ? null : this.authenticationMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlDatabaseDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlDatabaseDataSourceProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlDatabaseDataSourceProperties.
+     */
+    public static AzureSqlDatabaseDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlDatabaseDataSourceProperties deserializedAzureSqlDatabaseDataSourceProperties
+                = new AzureSqlDatabaseDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.server = reader.getString();
+                } else if ("database".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.database = reader.getString();
+                } else if ("user".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.user = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.password = reader.getString();
+                } else if ("table".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.table = reader.getString();
+                } else if ("maxBatchCount".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.maxBatchCount
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("maxWriterCount".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.maxWriterCount
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseDataSourceProperties.authenticationMode
+                        = AuthenticationMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlDatabaseDataSourceProperties;
+        });
     }
 }

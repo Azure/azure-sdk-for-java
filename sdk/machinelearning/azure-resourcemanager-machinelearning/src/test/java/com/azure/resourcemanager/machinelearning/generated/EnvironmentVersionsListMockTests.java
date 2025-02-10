@@ -6,88 +6,61 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.AutoRebuildSetting;
 import com.azure.resourcemanager.machinelearning.models.EnvironmentVersion;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 import com.azure.resourcemanager.machinelearning.models.OperatingSystemType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class EnvironmentVersionsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"environmentType\":\"UserCreated\",\"image\":\"aljomgzorprrap\",\"condaFile\":\"bjenylgebrsnvof\",\"build\":{\"contextUri\":\"zvbploazc\",\"dockerfilePath\":\"hgermm\"},\"osType\":\"Linux\",\"inferenceConfig\":{\"livenessRoute\":{\"path\":\"uipsoawxugpu\",\"port\":1995117934},\"readinessRoute\":{\"path\":\"kwxzmuzg\",\"port\":1007623800},\"scoringRoute\":{\"path\":\"ygpbhauhej\",\"port\":803038260}},\"autoRebuild\":\"Disabled\",\"provisioningState\":\"Deleting\",\"stage\":\"xxzxwrnqwdjvlw\",\"isArchived\":false,\"isAnonymous\":false,\"description\":\"wsfxqc\",\"tags\":{\"cbciu\":\"ez\",\"jguzsyfwamhmeo\":\"gakmxgwwmavllp\",\"nzcufysalbjfkje\":\"xbzagwnompvyis\"},\"properties\":{\"ridipw\":\"zmh\",\"jqhjenbdupfp\":\"zjnnmpi\",\"rsfghyye\":\"losadjffl\"}},\"id\":\"adzu\",\"name\":\"dcccls\",\"type\":\"flcxxp\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"autoRebuild\":\"OnBaseImageUpdate\",\"build\":{\"contextUri\":\"yljurkeposehqqyl\",\"dockerfilePath\":\"ctwjwdsdlzm\"},\"condaFile\":\"erxxxoteehkhowgo\",\"environmentType\":\"UserCreated\",\"image\":\"xowpcbapn\",\"inferenceConfig\":{},\"osType\":\"Windows\",\"isAnonymous\":true,\"isArchived\":true,\"description\":\"fey\",\"properties\":{\"jnmzp\":\"ocvvujexayglxrk\",\"ieidzlv\":\"slavxjfiuof\",\"ydv\":\"sqywjopacky\",\"izwgsoriobijeiyd\":\"kmfngpmillxgjs\"},\"tags\":{\"ybriop\":\"ynhbokayrg\",\"igsioctqkm\":\"weoftnorw\",\"xvzfffhtjnwos\":\"ja\",\"zqfcwrriomxee\":\"tfjxtvlx\"}},\"id\":\"yhjm\",\"name\":\"jiqegmxdbs\",\"type\":\"hc\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<EnvironmentVersion> response = manager.environmentVersions()
+            .list("iyapifcjl", "ugnrzowc", "r", "afqsozawqxnhlv", 633579364, "ugwxdwtfmfjk", ListViewType.ACTIVE_ONLY,
+                com.azure.core.util.Context.NONE);
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<EnvironmentVersion> response =
-            manager
-                .environmentVersions()
-                .list(
-                    "eu",
-                    "rbgpxeb",
-                    "ludca",
-                    "tujraxdtpryjm",
-                    1855345037,
-                    "nsewouxl",
-                    ListViewType.ACTIVE_ONLY,
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("fey", response.iterator().next().properties().description());
-        Assertions.assertEquals("ocvvujexayglxrk", response.iterator().next().properties().properties().get("jnmzp"));
-        Assertions.assertEquals("ynhbokayrg", response.iterator().next().properties().tags().get("ybriop"));
-        Assertions.assertEquals(true, response.iterator().next().properties().isAnonymous());
-        Assertions.assertEquals(true, response.iterator().next().properties().isArchived());
-        Assertions
-            .assertEquals(
-                AutoRebuildSetting.ON_BASE_IMAGE_UPDATE, response.iterator().next().properties().autoRebuild());
-        Assertions.assertEquals("yljurkeposehqqyl", response.iterator().next().properties().build().contextUri());
-        Assertions.assertEquals("ctwjwdsdlzm", response.iterator().next().properties().build().dockerfilePath());
-        Assertions.assertEquals("erxxxoteehkhowgo", response.iterator().next().properties().condaFile());
-        Assertions.assertEquals("xowpcbapn", response.iterator().next().properties().image());
-        Assertions.assertEquals(OperatingSystemType.WINDOWS, response.iterator().next().properties().osType());
+        Assertions.assertEquals("wsfxqc", response.iterator().next().properties().description());
+        Assertions.assertEquals("ez", response.iterator().next().properties().tags().get("cbciu"));
+        Assertions.assertEquals("zmh", response.iterator().next().properties().properties().get("ridipw"));
+        Assertions.assertEquals(false, response.iterator().next().properties().isArchived());
+        Assertions.assertEquals(false, response.iterator().next().properties().isAnonymous());
+        Assertions.assertEquals("aljomgzorprrap", response.iterator().next().properties().image());
+        Assertions.assertEquals("bjenylgebrsnvof", response.iterator().next().properties().condaFile());
+        Assertions.assertEquals("zvbploazc", response.iterator().next().properties().build().contextUri());
+        Assertions.assertEquals("hgermm", response.iterator().next().properties().build().dockerfilePath());
+        Assertions.assertEquals(OperatingSystemType.LINUX, response.iterator().next().properties().osType());
+        Assertions.assertEquals("uipsoawxugpu",
+            response.iterator().next().properties().inferenceConfig().livenessRoute().path());
+        Assertions.assertEquals(1995117934,
+            response.iterator().next().properties().inferenceConfig().livenessRoute().port());
+        Assertions.assertEquals("kwxzmuzg",
+            response.iterator().next().properties().inferenceConfig().readinessRoute().path());
+        Assertions.assertEquals(1007623800,
+            response.iterator().next().properties().inferenceConfig().readinessRoute().port());
+        Assertions.assertEquals("ygpbhauhej",
+            response.iterator().next().properties().inferenceConfig().scoringRoute().path());
+        Assertions.assertEquals(803038260,
+            response.iterator().next().properties().inferenceConfig().scoringRoute().port());
+        Assertions.assertEquals(AutoRebuildSetting.DISABLED, response.iterator().next().properties().autoRebuild());
+        Assertions.assertEquals("xxzxwrnqwdjvlw", response.iterator().next().properties().stage());
     }
 }

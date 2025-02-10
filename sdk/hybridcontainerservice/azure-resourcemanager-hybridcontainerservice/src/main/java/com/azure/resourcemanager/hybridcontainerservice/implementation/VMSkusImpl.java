@@ -27,12 +27,12 @@ public final class VMSkusImpl implements VMSkus {
 
     public PagedIterable<VmSkuProfile> list(String customLocationResourceUri) {
         PagedIterable<VmSkuProfileInner> inner = this.serviceClient().list(customLocationResourceUri);
-        return Utils.mapPage(inner, inner1 -> new VmSkuProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VmSkuProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VmSkuProfile> list(String customLocationResourceUri, Context context) {
         PagedIterable<VmSkuProfileInner> inner = this.serviceClient().list(customLocationResourceUri, context);
-        return Utils.mapPage(inner, inner1 -> new VmSkuProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VmSkuProfileImpl(inner1, this.manager()));
     }
 
     private VMSkusClient serviceClient() {

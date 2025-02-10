@@ -6,25 +6,30 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Packet core data plane properties. */
+/**
+ * Packet core data plane properties.
+ */
 @Fluent
-public final class PacketCoreDataPlanePropertiesFormat {
+public final class PacketCoreDataPlanePropertiesFormat
+    implements JsonSerializable<PacketCoreDataPlanePropertiesFormat> {
     /*
      * The provisioning state of the packet core data plane resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The user plane interface on the access network. For 5G networks, this is the N3 interface. For 4G networks, this
      * is the S1-U interface.
      */
-    @JsonProperty(value = "userPlaneAccessInterface", required = true)
     private InterfaceProperties userPlaneAccessInterface;
 
     /*
@@ -32,16 +37,17 @@ public final class PacketCoreDataPlanePropertiesFormat {
      * deployment the access network router should be configured to forward traffic for this address to the control
      * plane access interface on the active or standby node. In non-HA system this list should be omitted or empty.
      */
-    @JsonProperty(value = "userPlaneAccessVirtualIpv4Addresses")
     private List<String> userPlaneAccessVirtualIpv4Addresses;
 
-    /** Creates an instance of PacketCoreDataPlanePropertiesFormat class. */
+    /**
+     * Creates an instance of PacketCoreDataPlanePropertiesFormat class.
+     */
     public PacketCoreDataPlanePropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the packet core data plane resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -51,7 +57,7 @@ public final class PacketCoreDataPlanePropertiesFormat {
     /**
      * Get the userPlaneAccessInterface property: The user plane interface on the access network. For 5G networks, this
      * is the N3 interface. For 4G networks, this is the S1-U interface.
-     *
+     * 
      * @return the userPlaneAccessInterface value.
      */
     public InterfaceProperties userPlaneAccessInterface() {
@@ -61,12 +67,12 @@ public final class PacketCoreDataPlanePropertiesFormat {
     /**
      * Set the userPlaneAccessInterface property: The user plane interface on the access network. For 5G networks, this
      * is the N3 interface. For 4G networks, this is the S1-U interface.
-     *
+     * 
      * @param userPlaneAccessInterface the userPlaneAccessInterface value to set.
      * @return the PacketCoreDataPlanePropertiesFormat object itself.
      */
-    public PacketCoreDataPlanePropertiesFormat withUserPlaneAccessInterface(
-        InterfaceProperties userPlaneAccessInterface) {
+    public PacketCoreDataPlanePropertiesFormat
+        withUserPlaneAccessInterface(InterfaceProperties userPlaneAccessInterface) {
         this.userPlaneAccessInterface = userPlaneAccessInterface;
         return this;
     }
@@ -76,7 +82,7 @@ public final class PacketCoreDataPlanePropertiesFormat {
      * network in a High Availability (HA) system. In an HA deployment the access network router should be configured to
      * forward traffic for this address to the control plane access interface on the active or standby node. In non-HA
      * system this list should be omitted or empty.
-     *
+     * 
      * @return the userPlaneAccessVirtualIpv4Addresses value.
      */
     public List<String> userPlaneAccessVirtualIpv4Addresses() {
@@ -88,32 +94,78 @@ public final class PacketCoreDataPlanePropertiesFormat {
      * network in a High Availability (HA) system. In an HA deployment the access network router should be configured to
      * forward traffic for this address to the control plane access interface on the active or standby node. In non-HA
      * system this list should be omitted or empty.
-     *
+     * 
      * @param userPlaneAccessVirtualIpv4Addresses the userPlaneAccessVirtualIpv4Addresses value to set.
      * @return the PacketCoreDataPlanePropertiesFormat object itself.
      */
-    public PacketCoreDataPlanePropertiesFormat withUserPlaneAccessVirtualIpv4Addresses(
-        List<String> userPlaneAccessVirtualIpv4Addresses) {
+    public PacketCoreDataPlanePropertiesFormat
+        withUserPlaneAccessVirtualIpv4Addresses(List<String> userPlaneAccessVirtualIpv4Addresses) {
         this.userPlaneAccessVirtualIpv4Addresses = userPlaneAccessVirtualIpv4Addresses;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userPlaneAccessInterface() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property userPlaneAccessInterface in model"
-                            + " PacketCoreDataPlanePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property userPlaneAccessInterface in model PacketCoreDataPlanePropertiesFormat"));
         } else {
             userPlaneAccessInterface().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PacketCoreDataPlanePropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("userPlaneAccessInterface", this.userPlaneAccessInterface);
+        jsonWriter.writeArrayField("userPlaneAccessVirtualIpv4Addresses", this.userPlaneAccessVirtualIpv4Addresses,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCoreDataPlanePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCoreDataPlanePropertiesFormat if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PacketCoreDataPlanePropertiesFormat.
+     */
+    public static PacketCoreDataPlanePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCoreDataPlanePropertiesFormat deserializedPacketCoreDataPlanePropertiesFormat
+                = new PacketCoreDataPlanePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userPlaneAccessInterface".equals(fieldName)) {
+                    deserializedPacketCoreDataPlanePropertiesFormat.userPlaneAccessInterface
+                        = InterfaceProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPacketCoreDataPlanePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("userPlaneAccessVirtualIpv4Addresses".equals(fieldName)) {
+                    List<String> userPlaneAccessVirtualIpv4Addresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPacketCoreDataPlanePropertiesFormat.userPlaneAccessVirtualIpv4Addresses
+                        = userPlaneAccessVirtualIpv4Addresses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCoreDataPlanePropertiesFormat;
+        });
+    }
 }

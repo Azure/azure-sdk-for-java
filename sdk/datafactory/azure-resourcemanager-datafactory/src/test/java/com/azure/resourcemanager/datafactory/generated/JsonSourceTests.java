@@ -16,19 +16,22 @@ public final class JsonSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JsonSource model = BinaryData.fromString(
-            "{\"type\":\"JsonSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"dataiilgyqluolgspyqs\",\"disableMetricsCollection\":\"datanhhvp\",\"\":{\"iyf\":\"dataourq\",\"fq\":\"datasegwez\"}},\"formatSettings\":{\"type\":\"JsonReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"lyogzbasjckakik\":\"datapdtd\",\"rqdycoebgkxxpkl\":\"datakajmnvbigmn\",\"xeqedftkigmjnk\":\"datarvbcgsaaday\"}},\"\":{\"tzfliqntnoe\":\"datazyvzixmusiidivbb\"}},\"additionalColumns\":\"dataoqpuclidyt\",\"sourceRetryCount\":\"dataaiexisa\",\"sourceRetryWait\":\"datagiiouka\",\"maxConcurrentConnections\":\"datazzfgivfiy\",\"disableMetricsCollection\":\"datavwyzjsixorvigrx\",\"\":{\"de\":\"datau\",\"ihfimlyxdmix\":\"databpqghxdp\"}}")
+            "{\"type\":\"JsonSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"dataiksjpkign\",\"disableMetricsCollection\":\"datao\",\"\":{\"ipbfs\":\"datai\",\"kkkgiecjyf\":\"datapslpevzpqydn\",\"f\":\"datasn\",\"tjc\":\"dataz\"}},\"formatSettings\":{\"type\":\"JsonReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"q\":\"datab\",\"xuhhvgddfzcny\":\"dataagpdsuyywnaqgo\"}},\"\":{\"degfhofo\":\"datalhufsgcpwrtg\",\"xvkqjpovjvvxps\":\"datatbiuikpotjjfe\"}},\"additionalColumns\":\"dataewrb\",\"sourceRetryCount\":\"dataj\",\"sourceRetryWait\":\"dataflqwqcxyiqppacji\",\"maxConcurrentConnections\":\"datallacylbtkxeij\",\"disableMetricsCollection\":\"datanlaaxtte\",\"\":{\"wlntenhnqtvx\":\"datagojvgjezrwbob\",\"eojl\":\"datahbehhehotqorrvwl\",\"fdsgrtkevim\":\"dataugzlvgjirjkkrs\",\"klbfvtzdtw\":\"dataupgevjmandrvvj\"}}")
             .toObject(JsonSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonSource model = new JsonSource().withSourceRetryCount("dataaiexisa").withSourceRetryWait("datagiiouka")
-            .withMaxConcurrentConnections("datazzfgivfiy").withDisableMetricsCollection("datavwyzjsixorvigrx")
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("dataiilgyqluolgspyqs")
-                .withDisableMetricsCollection("datanhhvp").withAdditionalProperties(mapOf("type", "StoreReadSettings")))
+        JsonSource model = new JsonSource().withSourceRetryCount("dataj")
+            .withSourceRetryWait("dataflqwqcxyiqppacji")
+            .withMaxConcurrentConnections("datallacylbtkxeij")
+            .withDisableMetricsCollection("datanlaaxtte")
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("dataiksjpkign")
+                .withDisableMetricsCollection("datao")
+                .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
             .withFormatSettings(new JsonReadSettings().withCompressionProperties(
                 new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings"))))
-            .withAdditionalColumns("dataoqpuclidyt");
+            .withAdditionalColumns("dataewrb");
         model = BinaryData.fromObject(model).toObject(JsonSource.class);
     }
 

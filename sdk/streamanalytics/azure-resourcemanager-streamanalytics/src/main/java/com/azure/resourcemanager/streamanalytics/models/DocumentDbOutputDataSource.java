@@ -5,40 +5,57 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.DocumentDbOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Describes a DocumentDB output data source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.Storage/DocumentDB")
+/**
+ * Describes a DocumentDB output data source.
+ */
 @Fluent
 public final class DocumentDbOutputDataSource extends OutputDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DocumentDbOutputDataSource.class);
+    /*
+     * Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+     */
+    private String type = "Microsoft.Storage/DocumentDB";
 
     /*
-     * The properties that are associated with a DocumentDB output. Required on
-     * PUT (CreateOrReplace) requests.
+     * The properties that are associated with a DocumentDB output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private DocumentDbOutputDataSourceProperties innerProperties;
+
+    /**
+     * Creates an instance of DocumentDbOutputDataSource class.
+     */
+    public DocumentDbOutputDataSource() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of data source output will be written to. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
 
     /**
      * Get the innerProperties property: The properties that are associated with a DocumentDB output. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the innerProperties value.
      */
-    private DocumentDbOutputDataSourceProperties innerProperties() {
+    DocumentDbOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
     /**
      * Get the accountId property: The DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -47,7 +64,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
 
     /**
      * Set the accountId property: The DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the DocumentDbOutputDataSource object itself.
      */
@@ -62,7 +79,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
     /**
      * Get the accountKey property: The account key for the DocumentDB account. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @return the accountKey value.
      */
     public String accountKey() {
@@ -72,7 +89,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
     /**
      * Set the accountKey property: The account key for the DocumentDB account. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the DocumentDbOutputDataSource object itself.
      */
@@ -86,7 +103,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
 
     /**
      * Get the database property: The name of the DocumentDB database. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the database value.
      */
     public String database() {
@@ -95,7 +112,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
 
     /**
      * Set the database property: The name of the DocumentDB database. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param database the database value to set.
      * @return the DocumentDbOutputDataSource object itself.
      */
@@ -112,7 +129,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
      * collection name format can be constructed using the optional {partition} token, where partitions start from 0.
      * See the DocumentDB section of https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
      * for more information. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the collectionNamePattern value.
      */
     public String collectionNamePattern() {
@@ -124,7 +141,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
      * collection name format can be constructed using the optional {partition} token, where partitions start from 0.
      * See the DocumentDB section of https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
      * for more information. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param collectionNamePattern the collectionNamePattern value to set.
      * @return the DocumentDbOutputDataSource object itself.
      */
@@ -140,7 +157,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
      * Get the partitionKey property: The name of the field in output events used to specify the key for partitioning
      * output across collections. If 'collectionNamePattern' contains the {partition} token, this property is required
      * to be specified.
-     *
+     * 
      * @return the partitionKey value.
      */
     public String partitionKey() {
@@ -151,7 +168,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
      * Set the partitionKey property: The name of the field in output events used to specify the key for partitioning
      * output across collections. If 'collectionNamePattern' contains the {partition} token, this property is required
      * to be specified.
-     *
+     * 
      * @param partitionKey the partitionKey value to set.
      * @return the DocumentDbOutputDataSource object itself.
      */
@@ -166,7 +183,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
     /**
      * Get the documentId property: The name of the field in output events used to specify the primary key which insert
      * or update operations are based on.
-     *
+     * 
      * @return the documentId value.
      */
     public String documentId() {
@@ -176,7 +193,7 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
     /**
      * Set the documentId property: The name of the field in output events used to specify the primary key which insert
      * or update operations are based on.
-     *
+     * 
      * @param documentId the documentId value to set.
      * @return the DocumentDbOutputDataSource object itself.
      */
@@ -190,14 +207,53 @@ public final class DocumentDbOutputDataSource extends OutputDataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentDbOutputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentDbOutputDataSource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DocumentDbOutputDataSource.
+     */
+    public static DocumentDbOutputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DocumentDbOutputDataSource deserializedDocumentDbOutputDataSource = new DocumentDbOutputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDocumentDbOutputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDocumentDbOutputDataSource.innerProperties
+                        = DocumentDbOutputDataSourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDocumentDbOutputDataSource;
+        });
     }
 }

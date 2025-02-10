@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WebAppsListProductionSiteDeploymentStatusesSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListSiteDeploymentStatus.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ListSiteDeploymentStatus.json
      */
     /**
      * Sample code: List Deployment Status.
@@ -18,7 +18,10 @@ public final class WebAppsListProductionSiteDeploymentStatusesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listDeploymentStatus(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().listProductionSiteDeploymentStatuses("rg", "testSite",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .listProductionSiteDeploymentStatuses("rg", "testSite", com.azure.core.util.Context.NONE);
     }
 }

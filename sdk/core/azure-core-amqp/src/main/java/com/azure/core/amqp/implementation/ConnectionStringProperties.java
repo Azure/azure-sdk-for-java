@@ -28,19 +28,21 @@ public class ConnectionStringProperties {
     private static final String SHARED_ACCESS_SIGNATURE = "SharedAccessSignature";
     private static final String SAS_VALUE_PREFIX = "sharedaccesssignature ";
     private static final String ENTITY_PATH = "EntityPath";
+    private static final String USE_DEVELOPMENT_EMULATOR = "UseDevelopmentEmulator";
     private static final String CONNECTION_STRING_WITH_ACCESS_KEY = "Endpoint={endpoint};"
         + "SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={entityPath}";
     private static final String CONNECTION_STRING_WITH_SAS = "Endpoint={endpoint};SharedAccessSignature="
         + "SharedAccessSignature {sharedAccessSignature};EntityPath={entityPath}";
-    private static final String ERROR_MESSAGE_FORMAT = String.format(Locale.US,
-        "Could not parse 'connectionString'. Expected format: %s or %s.", CONNECTION_STRING_WITH_ACCESS_KEY,
-        CONNECTION_STRING_WITH_SAS);
+    private static final String ERROR_MESSAGE_FORMAT
+        = String.format(Locale.US, "Could not parse 'connectionString'. Expected format: %s or %s.",
+            CONNECTION_STRING_WITH_ACCESS_KEY, CONNECTION_STRING_WITH_SAS);
 
     private final URI endpoint;
     private final String entityPath;
     private final String sharedAccessKeyName;
     private final String sharedAccessKey;
     private final String sharedAccessSignature;
+    private final boolean useDevelopmentEmulator;
 
     /**
      * Creates a new instance by parsing the {@code connectionString} into its components.
@@ -62,14 +64,13 @@ public class ConnectionStringProperties {
         String sharedAccessKeyName = null;
         String sharedAccessKeyValue = null;
         String sharedAccessSignature = null;
+        Boolean useDevelopmentEmulator = null;
 
         for (String tokenValuePair : tokenValuePairs) {
             final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPARATOR, 2);
             if (pair.length != 2) {
-                throw new IllegalArgumentException(String.format(
-                    Locale.US,
-                    "Connection string has invalid key value pair: %s",
-                    tokenValuePair));
+                throw new IllegalArgumentException(
+                    String.format(Locale.US, "Connection string has invalid key value pair: %s", tokenValuePair));
             }
 
             final String key = pair[0].trim();
@@ -80,8 +81,8 @@ public class ConnectionStringProperties {
                 try {
                     endpoint = new URI(endpointUri);
                 } catch (URISyntaxException e) {
-                    throw new IllegalArgumentException(
-                        String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair), e);
+                    throw new IllegalArgumentException(String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair),
+                        e);
                 }
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME)) {
                 sharedAccessKeyName = value;
@@ -89,6 +90,8 @@ public class ConnectionStringProperties {
                 sharedAccessKeyValue = value;
             } else if (key.equalsIgnoreCase(ENTITY_PATH)) {
                 entityPath = value;
+            } else if (key.equalsIgnoreCase(USE_DEVELOPMENT_EMULATOR)) {
+                useDevelopmentEmulator = Boolean.valueOf(value);
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_SIGNATURE)
                 && value.toLowerCase(Locale.ROOT).startsWith(SAS_VALUE_PREFIX)) {
                 sharedAccessSignature = value;
@@ -103,7 +106,8 @@ public class ConnectionStringProperties {
         boolean hasSharedKeyAndValue = sharedAccessKeyName != null && sharedAccessKeyValue != null;
         boolean includesSharedAccessSignature = sharedAccessSignature != null;
         if (endpoint == null
-            || (includesSharedKey && includesSharedAccessSignature) // includes both SAS and key or value
+            || (includesSharedKey && includesSharedAccessSignature) // includes both SAS and key or
+                                                                                        // value
             || (!hasSharedKeyAndValue && !includesSharedAccessSignature)) { // invalid key, value and SAS
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(ERROR_MESSAGE_FORMAT));
         }
@@ -113,6 +117,8 @@ public class ConnectionStringProperties {
         this.sharedAccessKeyName = sharedAccessKeyName;
         this.sharedAccessKey = sharedAccessKeyValue;
         this.sharedAccessSignature = sharedAccessSignature;
+
+        this.useDevelopmentEmulator = useDevelopmentEmulator != null ? useDevelopmentEmulator : false;
     }
 
     /**
@@ -156,6 +162,15 @@ public class ConnectionStringProperties {
         return sharedAccessSignature;
     }
 
+    /**
+     * Gets whether the connection string points to a development emulator.
+     *
+     * @return true if the connection string's endpoint is a development emulator.
+     */
+    public boolean useDevelopmentEmulator() {
+        return useDevelopmentEmulator;
+    }
+
     /*
      * The function checks for pre existing scheme of "sb://" , "http://" or "https://". If the scheme is not provided
      * in endpoint, it will set the default scheme to "sb://".
@@ -163,8 +178,8 @@ public class ConnectionStringProperties {
     private String validateAndUpdateDefaultScheme(final String endpoint) {
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'Endpoint' must be provided in 'connectionString'."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'Endpoint' must be provided in 'connectionString'."));
         }
 
         final String endpointLowerCase = endpoint.trim().toLowerCase(Locale.ROOT);

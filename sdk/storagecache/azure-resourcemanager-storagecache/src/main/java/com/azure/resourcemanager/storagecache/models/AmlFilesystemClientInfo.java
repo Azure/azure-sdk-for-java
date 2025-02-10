@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** AML file system client information. */
+/**
+ * AML file system client information.
+ */
 @Immutable
-public final class AmlFilesystemClientInfo {
+public final class AmlFilesystemClientInfo implements JsonSerializable<AmlFilesystemClientInfo> {
     /*
      * The IPv4 address used by clients to mount the AML file system's Lustre Management Service (MGS).
      */
-    @JsonProperty(value = "mgsAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String mgsAddress;
 
     /*
      * Recommended command to mount the AML file system
      */
-    @JsonProperty(value = "mountCommand", access = JsonProperty.Access.WRITE_ONLY)
     private String mountCommand;
 
     /*
      * The version of Lustre running in the AML file system
      */
-    @JsonProperty(value = "lustreVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String lustreVersion;
 
     /*
      * Container Storage Interface information for the AML file system.
      */
-    @JsonProperty(value = "containerStorageInterface", access = JsonProperty.Access.WRITE_ONLY)
     private AmlFilesystemContainerStorageInterface containerStorageInterface;
 
-    /** Creates an instance of AmlFilesystemClientInfo class. */
+    /**
+     * Creates an instance of AmlFilesystemClientInfo class.
+     */
     public AmlFilesystemClientInfo() {
     }
 
     /**
      * Get the mgsAddress property: The IPv4 address used by clients to mount the AML file system's Lustre Management
      * Service (MGS).
-     *
+     * 
      * @return the mgsAddress value.
      */
     public String mgsAddress() {
@@ -50,7 +54,7 @@ public final class AmlFilesystemClientInfo {
 
     /**
      * Get the mountCommand property: Recommended command to mount the AML file system.
-     *
+     * 
      * @return the mountCommand value.
      */
     public String mountCommand() {
@@ -59,7 +63,7 @@ public final class AmlFilesystemClientInfo {
 
     /**
      * Get the lustreVersion property: The version of Lustre running in the AML file system.
-     *
+     * 
      * @return the lustreVersion value.
      */
     public String lustreVersion() {
@@ -68,7 +72,7 @@ public final class AmlFilesystemClientInfo {
 
     /**
      * Get the containerStorageInterface property: Container Storage Interface information for the AML file system.
-     *
+     * 
      * @return the containerStorageInterface value.
      */
     public AmlFilesystemContainerStorageInterface containerStorageInterface() {
@@ -77,12 +81,54 @@ public final class AmlFilesystemClientInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (containerStorageInterface() != null) {
             containerStorageInterface().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemClientInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemClientInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemClientInfo.
+     */
+    public static AmlFilesystemClientInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemClientInfo deserializedAmlFilesystemClientInfo = new AmlFilesystemClientInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mgsAddress".equals(fieldName)) {
+                    deserializedAmlFilesystemClientInfo.mgsAddress = reader.getString();
+                } else if ("mountCommand".equals(fieldName)) {
+                    deserializedAmlFilesystemClientInfo.mountCommand = reader.getString();
+                } else if ("lustreVersion".equals(fieldName)) {
+                    deserializedAmlFilesystemClientInfo.lustreVersion = reader.getString();
+                } else if ("containerStorageInterface".equals(fieldName)) {
+                    deserializedAmlFilesystemClientInfo.containerStorageInterface
+                        = AmlFilesystemContainerStorageInterface.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemClientInfo;
+        });
     }
 }

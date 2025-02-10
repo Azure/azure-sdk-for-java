@@ -5,88 +5,75 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsConfigPendingRestart;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsDynamicConfig;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsReadOnly;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a configuration. */
+/**
+ * The properties of a configuration.
+ */
 @Fluent
-public final class ConfigurationProperties {
+public final class ConfigurationProperties implements JsonSerializable<ConfigurationProperties> {
     /*
      * Value of the configuration.
      */
-    @JsonProperty(value = "value")
     private String value;
-
-    /*
-     * Current value of the configuration.
-     */
-    @JsonProperty(value = "currentValue")
-    private String currentValue;
 
     /*
      * Description of the configuration.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
-
-    /*
-     * The link used to get the document from community or Azure site.
-     */
-    @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String documentationLink;
 
     /*
      * Default value of the configuration.
      */
-    @JsonProperty(value = "defaultValue", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultValue;
 
     /*
      * Data type of the configuration.
      */
-    @JsonProperty(value = "dataType", access = JsonProperty.Access.WRITE_ONLY)
     private String dataType;
 
     /*
      * Allowed values of the configuration.
      */
-    @JsonProperty(value = "allowedValues", access = JsonProperty.Access.WRITE_ONLY)
     private String allowedValues;
 
     /*
      * Source of the configuration.
      */
-    @JsonProperty(value = "source")
     private ConfigurationSource source;
 
     /*
      * If is the configuration read only.
      */
-    @JsonProperty(value = "isReadOnly", access = JsonProperty.Access.WRITE_ONLY)
     private IsReadOnly isReadOnly;
 
     /*
      * If is the configuration pending restart or not.
      */
-    @JsonProperty(value = "isConfigPendingRestart", access = JsonProperty.Access.WRITE_ONLY)
     private IsConfigPendingRestart isConfigPendingRestart;
 
     /*
      * If is the configuration dynamic.
      */
-    @JsonProperty(value = "isDynamicConfig", access = JsonProperty.Access.WRITE_ONLY)
     private IsDynamicConfig isDynamicConfig;
 
-    /** Creates an instance of ConfigurationProperties class. */
+    /**
+     * Creates an instance of ConfigurationProperties class.
+     */
     public ConfigurationProperties() {
     }
 
     /**
      * Get the value property: Value of the configuration.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -95,7 +82,7 @@ public final class ConfigurationProperties {
 
     /**
      * Set the value property: Value of the configuration.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationProperties object itself.
      */
@@ -105,28 +92,8 @@ public final class ConfigurationProperties {
     }
 
     /**
-     * Get the currentValue property: Current value of the configuration.
-     *
-     * @return the currentValue value.
-     */
-    public String currentValue() {
-        return this.currentValue;
-    }
-
-    /**
-     * Set the currentValue property: Current value of the configuration.
-     *
-     * @param currentValue the currentValue value to set.
-     * @return the ConfigurationProperties object itself.
-     */
-    public ConfigurationProperties withCurrentValue(String currentValue) {
-        this.currentValue = currentValue;
-        return this;
-    }
-
-    /**
      * Get the description property: Description of the configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -134,17 +101,8 @@ public final class ConfigurationProperties {
     }
 
     /**
-     * Get the documentationLink property: The link used to get the document from community or Azure site.
-     *
-     * @return the documentationLink value.
-     */
-    public String documentationLink() {
-        return this.documentationLink;
-    }
-
-    /**
      * Get the defaultValue property: Default value of the configuration.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
@@ -153,7 +111,7 @@ public final class ConfigurationProperties {
 
     /**
      * Get the dataType property: Data type of the configuration.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -162,7 +120,7 @@ public final class ConfigurationProperties {
 
     /**
      * Get the allowedValues property: Allowed values of the configuration.
-     *
+     * 
      * @return the allowedValues value.
      */
     public String allowedValues() {
@@ -171,7 +129,7 @@ public final class ConfigurationProperties {
 
     /**
      * Get the source property: Source of the configuration.
-     *
+     * 
      * @return the source value.
      */
     public ConfigurationSource source() {
@@ -180,7 +138,7 @@ public final class ConfigurationProperties {
 
     /**
      * Set the source property: Source of the configuration.
-     *
+     * 
      * @param source the source value to set.
      * @return the ConfigurationProperties object itself.
      */
@@ -191,7 +149,7 @@ public final class ConfigurationProperties {
 
     /**
      * Get the isReadOnly property: If is the configuration read only.
-     *
+     * 
      * @return the isReadOnly value.
      */
     public IsReadOnly isReadOnly() {
@@ -200,7 +158,7 @@ public final class ConfigurationProperties {
 
     /**
      * Get the isConfigPendingRestart property: If is the configuration pending restart or not.
-     *
+     * 
      * @return the isConfigPendingRestart value.
      */
     public IsConfigPendingRestart isConfigPendingRestart() {
@@ -209,7 +167,7 @@ public final class ConfigurationProperties {
 
     /**
      * Get the isDynamicConfig property: If is the configuration dynamic.
-     *
+     * 
      * @return the isDynamicConfig value.
      */
     public IsDynamicConfig isDynamicConfig() {
@@ -218,9 +176,64 @@ public final class ConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationProperties.
+     */
+    public static ConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationProperties deserializedConfigurationProperties = new ConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedConfigurationProperties.value = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedConfigurationProperties.description = reader.getString();
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedConfigurationProperties.defaultValue = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedConfigurationProperties.dataType = reader.getString();
+                } else if ("allowedValues".equals(fieldName)) {
+                    deserializedConfigurationProperties.allowedValues = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedConfigurationProperties.source = ConfigurationSource.fromString(reader.getString());
+                } else if ("isReadOnly".equals(fieldName)) {
+                    deserializedConfigurationProperties.isReadOnly = IsReadOnly.fromString(reader.getString());
+                } else if ("isConfigPendingRestart".equals(fieldName)) {
+                    deserializedConfigurationProperties.isConfigPendingRestart
+                        = IsConfigPendingRestart.fromString(reader.getString());
+                } else if ("isDynamicConfig".equals(fieldName)) {
+                    deserializedConfigurationProperties.isDynamicConfig
+                        = IsDynamicConfig.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationProperties;
+        });
     }
 }

@@ -11,6 +11,7 @@ import com.azure.resourcemanager.machinelearning.models.BuildContext;
 import com.azure.resourcemanager.machinelearning.models.EnvironmentVersionProperties;
 import com.azure.resourcemanager.machinelearning.models.InferenceContainerProperties;
 import com.azure.resourcemanager.machinelearning.models.OperatingSystemType;
+import com.azure.resourcemanager.machinelearning.models.Route;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -18,55 +19,70 @@ import org.junit.jupiter.api.Assertions;
 public final class EnvironmentVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentVersionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"autoRebuild\":\"OnBaseImageUpdate\",\"build\":{\"contextUri\":\"vizqzdwl\",\"dockerfilePath\":\"lyoupfgfbkju\"},\"condaFile\":\"yhgk\",\"environmentType\":\"Curated\",\"image\":\"sgow\",\"inferenceConfig\":{},\"osType\":\"Linux\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"bqactxtgzukx\",\"properties\":{\"tg\":\"m\",\"isavok\":\"qqxhrnxrxcpj\",\"azivjlfrqttbajl\":\"dzf\"},\"tags\":{\"dkqqfkuvscxkd\":\"nwxyiop\",\"oaz\":\"ligovibrxkpm\"}},\"id\":\"u\",\"name\":\"cbgoor\",\"type\":\"te\"}")
-                .toObject(EnvironmentVersionInner.class);
-        Assertions.assertEquals("bqactxtgzukx", model.properties().description());
-        Assertions.assertEquals("m", model.properties().properties().get("tg"));
-        Assertions.assertEquals("nwxyiop", model.properties().tags().get("dkqqfkuvscxkd"));
+        EnvironmentVersionInner model = BinaryData.fromString(
+            "{\"properties\":{\"environmentType\":\"UserCreated\",\"image\":\"fhqlyvi\",\"condaFile\":\"uwivkxoy\",\"build\":{\"contextUri\":\"nbixxrti\",\"dockerfilePath\":\"cpwpg\"},\"osType\":\"Linux\",\"inferenceConfig\":{\"livenessRoute\":{\"path\":\"vtsoxf\",\"port\":967528675},\"readinessRoute\":{\"path\":\"nxpmyyefrpmpdnq\",\"port\":663766748},\"scoringRoute\":{\"path\":\"awaoqvmmbnpqfrt\",\"port\":1516123032}},\"autoRebuild\":\"OnBaseImageUpdate\",\"provisioningState\":\"Canceled\",\"stage\":\"nitgvkxlz\",\"isArchived\":false,\"isAnonymous\":false,\"description\":\"gcealzxwh\",\"tags\":{\"lwigdivbkbx\":\"symoyq\",\"wasqvdaeyyg\":\"omfaj\",\"zkgimsid\":\"xakjsqzhzb\",\"ddyvvjskgfmo\":\"asi\"},\"properties\":{\"hnakzyb\":\"hpqgatjeaahhvj\"}},\"id\":\"jid\",\"name\":\"ksyxkyxvxevblbje\",\"type\":\"nljlageuaulx\"}")
+            .toObject(EnvironmentVersionInner.class);
+        Assertions.assertEquals("gcealzxwh", model.properties().description());
+        Assertions.assertEquals("symoyq", model.properties().tags().get("lwigdivbkbx"));
+        Assertions.assertEquals("hpqgatjeaahhvj", model.properties().properties().get("hnakzyb"));
+        Assertions.assertEquals(false, model.properties().isArchived());
         Assertions.assertEquals(false, model.properties().isAnonymous());
-        Assertions.assertEquals(true, model.properties().isArchived());
-        Assertions.assertEquals(AutoRebuildSetting.ON_BASE_IMAGE_UPDATE, model.properties().autoRebuild());
-        Assertions.assertEquals("vizqzdwl", model.properties().build().contextUri());
-        Assertions.assertEquals("lyoupfgfbkju", model.properties().build().dockerfilePath());
-        Assertions.assertEquals("yhgk", model.properties().condaFile());
-        Assertions.assertEquals("sgow", model.properties().image());
+        Assertions.assertEquals("fhqlyvi", model.properties().image());
+        Assertions.assertEquals("uwivkxoy", model.properties().condaFile());
+        Assertions.assertEquals("nbixxrti", model.properties().build().contextUri());
+        Assertions.assertEquals("cpwpg", model.properties().build().dockerfilePath());
         Assertions.assertEquals(OperatingSystemType.LINUX, model.properties().osType());
+        Assertions.assertEquals("vtsoxf", model.properties().inferenceConfig().livenessRoute().path());
+        Assertions.assertEquals(967528675, model.properties().inferenceConfig().livenessRoute().port());
+        Assertions.assertEquals("nxpmyyefrpmpdnq", model.properties().inferenceConfig().readinessRoute().path());
+        Assertions.assertEquals(663766748, model.properties().inferenceConfig().readinessRoute().port());
+        Assertions.assertEquals("awaoqvmmbnpqfrt", model.properties().inferenceConfig().scoringRoute().path());
+        Assertions.assertEquals(1516123032, model.properties().inferenceConfig().scoringRoute().port());
+        Assertions.assertEquals(AutoRebuildSetting.ON_BASE_IMAGE_UPDATE, model.properties().autoRebuild());
+        Assertions.assertEquals("nitgvkxlz", model.properties().stage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentVersionInner model =
-            new EnvironmentVersionInner()
-                .withProperties(
-                    new EnvironmentVersionProperties()
-                        .withDescription("bqactxtgzukx")
-                        .withProperties(mapOf("tg", "m", "isavok", "qqxhrnxrxcpj", "azivjlfrqttbajl", "dzf"))
-                        .withTags(mapOf("dkqqfkuvscxkd", "nwxyiop", "oaz", "ligovibrxkpm"))
-                        .withIsAnonymous(false)
-                        .withIsArchived(true)
-                        .withAutoRebuild(AutoRebuildSetting.ON_BASE_IMAGE_UPDATE)
-                        .withBuild(new BuildContext().withContextUri("vizqzdwl").withDockerfilePath("lyoupfgfbkju"))
-                        .withCondaFile("yhgk")
-                        .withImage("sgow")
-                        .withInferenceConfig(new InferenceContainerProperties())
-                        .withOsType(OperatingSystemType.LINUX));
+        EnvironmentVersionInner model = new EnvironmentVersionInner().withProperties(new EnvironmentVersionProperties()
+            .withDescription("gcealzxwh")
+            .withTags(
+                mapOf("lwigdivbkbx", "symoyq", "wasqvdaeyyg", "omfaj", "zkgimsid", "xakjsqzhzb", "ddyvvjskgfmo", "asi"))
+            .withProperties(mapOf("hnakzyb", "hpqgatjeaahhvj"))
+            .withIsArchived(false)
+            .withIsAnonymous(false)
+            .withImage("fhqlyvi")
+            .withCondaFile("uwivkxoy")
+            .withBuild(new BuildContext().withContextUri("nbixxrti").withDockerfilePath("cpwpg"))
+            .withOsType(OperatingSystemType.LINUX)
+            .withInferenceConfig(
+                new InferenceContainerProperties().withLivenessRoute(new Route().withPath("vtsoxf").withPort(967528675))
+                    .withReadinessRoute(new Route().withPath("nxpmyyefrpmpdnq").withPort(663766748))
+                    .withScoringRoute(new Route().withPath("awaoqvmmbnpqfrt").withPort(1516123032)))
+            .withAutoRebuild(AutoRebuildSetting.ON_BASE_IMAGE_UPDATE)
+            .withStage("nitgvkxlz"));
         model = BinaryData.fromObject(model).toObject(EnvironmentVersionInner.class);
-        Assertions.assertEquals("bqactxtgzukx", model.properties().description());
-        Assertions.assertEquals("m", model.properties().properties().get("tg"));
-        Assertions.assertEquals("nwxyiop", model.properties().tags().get("dkqqfkuvscxkd"));
+        Assertions.assertEquals("gcealzxwh", model.properties().description());
+        Assertions.assertEquals("symoyq", model.properties().tags().get("lwigdivbkbx"));
+        Assertions.assertEquals("hpqgatjeaahhvj", model.properties().properties().get("hnakzyb"));
+        Assertions.assertEquals(false, model.properties().isArchived());
         Assertions.assertEquals(false, model.properties().isAnonymous());
-        Assertions.assertEquals(true, model.properties().isArchived());
-        Assertions.assertEquals(AutoRebuildSetting.ON_BASE_IMAGE_UPDATE, model.properties().autoRebuild());
-        Assertions.assertEquals("vizqzdwl", model.properties().build().contextUri());
-        Assertions.assertEquals("lyoupfgfbkju", model.properties().build().dockerfilePath());
-        Assertions.assertEquals("yhgk", model.properties().condaFile());
-        Assertions.assertEquals("sgow", model.properties().image());
+        Assertions.assertEquals("fhqlyvi", model.properties().image());
+        Assertions.assertEquals("uwivkxoy", model.properties().condaFile());
+        Assertions.assertEquals("nbixxrti", model.properties().build().contextUri());
+        Assertions.assertEquals("cpwpg", model.properties().build().dockerfilePath());
         Assertions.assertEquals(OperatingSystemType.LINUX, model.properties().osType());
+        Assertions.assertEquals("vtsoxf", model.properties().inferenceConfig().livenessRoute().path());
+        Assertions.assertEquals(967528675, model.properties().inferenceConfig().livenessRoute().port());
+        Assertions.assertEquals("nxpmyyefrpmpdnq", model.properties().inferenceConfig().readinessRoute().path());
+        Assertions.assertEquals(663766748, model.properties().inferenceConfig().readinessRoute().port());
+        Assertions.assertEquals("awaoqvmmbnpqfrt", model.properties().inferenceConfig().scoringRoute().path());
+        Assertions.assertEquals(1516123032, model.properties().inferenceConfig().scoringRoute().port());
+        Assertions.assertEquals(AutoRebuildSetting.ON_BASE_IMAGE_UPDATE, model.properties().autoRebuild());
+        Assertions.assertEquals("nitgvkxlz", model.properties().stage());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

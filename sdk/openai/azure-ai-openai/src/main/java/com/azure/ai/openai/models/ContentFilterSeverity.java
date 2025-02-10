@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -63,7 +62,6 @@ public final class ContentFilterSeverity extends ExpandableStringEnum<ContentFil
      * @return the corresponding ContentFilterSeverity.
      */
     @Generated
-    @JsonCreator
     public static ContentFilterSeverity fromString(String name) {
         return fromString(name, ContentFilterSeverity.class);
     }

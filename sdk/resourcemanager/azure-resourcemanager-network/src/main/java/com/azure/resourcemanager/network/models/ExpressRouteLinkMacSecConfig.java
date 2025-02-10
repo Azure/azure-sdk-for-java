@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Definition of ExpressRouteLink Mac Security configuration.
@@ -13,29 +17,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * ExpressRouteLink Mac Security Configuration.
  */
 @Fluent
-public final class ExpressRouteLinkMacSecConfig {
+public final class ExpressRouteLinkMacSecConfig implements JsonSerializable<ExpressRouteLinkMacSecConfig> {
     /*
      * Keyvault Secret Identifier URL containing Mac security CKN key.
      */
-    @JsonProperty(value = "cknSecretIdentifier")
     private String cknSecretIdentifier;
 
     /*
      * Keyvault Secret Identifier URL containing Mac security CAK key.
      */
-    @JsonProperty(value = "cakSecretIdentifier")
     private String cakSecretIdentifier;
 
     /*
      * Mac security cipher.
      */
-    @JsonProperty(value = "cipher")
     private ExpressRouteLinkMacSecCipher cipher;
 
     /*
      * Sci mode enabled/disabled.
      */
-    @JsonProperty(value = "sciState")
     private ExpressRouteLinkMacSecSciState sciState;
 
     /**
@@ -130,5 +130,52 @@ public final class ExpressRouteLinkMacSecConfig {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cknSecretIdentifier", this.cknSecretIdentifier);
+        jsonWriter.writeStringField("cakSecretIdentifier", this.cakSecretIdentifier);
+        jsonWriter.writeStringField("cipher", this.cipher == null ? null : this.cipher.toString());
+        jsonWriter.writeStringField("sciState", this.sciState == null ? null : this.sciState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteLinkMacSecConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteLinkMacSecConfig if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteLinkMacSecConfig.
+     */
+    public static ExpressRouteLinkMacSecConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteLinkMacSecConfig deserializedExpressRouteLinkMacSecConfig = new ExpressRouteLinkMacSecConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cknSecretIdentifier".equals(fieldName)) {
+                    deserializedExpressRouteLinkMacSecConfig.cknSecretIdentifier = reader.getString();
+                } else if ("cakSecretIdentifier".equals(fieldName)) {
+                    deserializedExpressRouteLinkMacSecConfig.cakSecretIdentifier = reader.getString();
+                } else if ("cipher".equals(fieldName)) {
+                    deserializedExpressRouteLinkMacSecConfig.cipher
+                        = ExpressRouteLinkMacSecCipher.fromString(reader.getString());
+                } else if ("sciState".equals(fieldName)) {
+                    deserializedExpressRouteLinkMacSecConfig.sciState
+                        = ExpressRouteLinkMacSecSciState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteLinkMacSecConfig;
+        });
     }
 }

@@ -23,7 +23,30 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The pipeline policy that which stores cookies based on the response "Set-Cookie" header and adds cookies to requests.
+ * <p>The {@code CookiePolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
+ * used to handle cookies in HTTP requests and responses.</p>
+ *
+ * <p>This class stores cookies from the "Set-Cookie" header of the HTTP response and adds them to subsequent HTTP
+ * requests. This is useful for maintaining session information or other stateful information across multiple requests
+ * to the same server.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, a {@code CookiePolicy} is constructed. The policy can then be added to a pipeline.
+ * Any cookies set by the server in the response to a request by the pipeline will be stored by the {@code CookiePolicy}
+ * and added to subsequent requests to the same server.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.CookiePolicy.constructor -->
+ * <pre>
+ * CookiePolicy cookiePolicy = new CookiePolicy&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.CookiePolicy.constructor -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public class CookiePolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(CookiePolicy.class);

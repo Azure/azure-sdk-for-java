@@ -93,13 +93,10 @@ import static com.azure.messaging.eventgrid.implementation.Constants.EVENT_GRID_
  * @see EventGridEvent
  * @see CloudEvent
  */
-@ServiceClientBuilder(serviceClients = {EventGridPublisherClient.class, EventGridPublisherAsyncClient.class})
-public final class EventGridPublisherClientBuilder implements
-    TokenCredentialTrait<EventGridPublisherClientBuilder>,
-    AzureKeyCredentialTrait<EventGridPublisherClientBuilder>,
-    AzureSasCredentialTrait<EventGridPublisherClientBuilder>,
-    HttpTrait<EventGridPublisherClientBuilder>,
-    ConfigurationTrait<EventGridPublisherClientBuilder>,
+@ServiceClientBuilder(serviceClients = { EventGridPublisherClient.class, EventGridPublisherAsyncClient.class })
+public final class EventGridPublisherClientBuilder implements TokenCredentialTrait<EventGridPublisherClientBuilder>,
+    AzureKeyCredentialTrait<EventGridPublisherClientBuilder>, AzureSasCredentialTrait<EventGridPublisherClientBuilder>,
+    HttpTrait<EventGridPublisherClientBuilder>, ConfigurationTrait<EventGridPublisherClientBuilder>,
     EndpointTrait<EventGridPublisherClientBuilder> {
 
     private static final String AEG_SAS_KEY = "aeg-sas-key";
@@ -154,7 +151,6 @@ public final class EventGridPublisherClientBuilder implements
         clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     }
 
-
     /**
      * Build a publisher client with asynchronous publishing methods and the current settings. An endpoint must be set,
      * and either a pipeline with correct authentication must be set, or a credential must be set in the form of
@@ -168,32 +164,27 @@ public final class EventGridPublisherClientBuilder implements
     private <T> EventGridPublisherAsyncClient<T> buildAsyncClient(Class<T> eventClass) {
         Objects.requireNonNull(endpoint, "'endpoint' is required and can not be null.");
 
-        return new EventGridPublisherAsyncClient<T>((httpPipeline != null ? httpPipeline : getHttpPipeline()),
-            endpoint,
-            getEventGridServiceVersion(),
-            eventClass);
+        return new EventGridPublisherAsyncClient<T>((httpPipeline != null ? httpPipeline : getHttpPipeline()), endpoint,
+            getEventGridServiceVersion(), eventClass);
     }
 
     private EventGridServiceVersion getEventGridServiceVersion() {
-        EventGridServiceVersion buildServiceVersion = serviceVersion == null
-            ? EventGridServiceVersion.getLatest()
-            : serviceVersion;
+        EventGridServiceVersion buildServiceVersion
+            = serviceVersion == null ? EventGridServiceVersion.getLatest() : serviceVersion;
         return buildServiceVersion;
     }
 
     private HttpPipeline getHttpPipeline() {
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
 
-        String applicationId =
-            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
+        String applicationId
+            = clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
 
-        httpPipelinePolicies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
-            buildConfiguration));
+        httpPipelinePolicies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         httpPipelinePolicies.add(new AddHeadersFromContextPolicy());
         httpPipelinePolicies.add(new RequestIdPolicy());
 
@@ -202,16 +193,16 @@ public final class EventGridPublisherClientBuilder implements
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
-        final int credentialCount = (sasToken != null ? 1 : 0) + (keyCredential != null ? 1 : 0)
-            + (tokenCredential != null ? 1 : 0);
+        final int credentialCount
+            = (sasToken != null ? 1 : 0) + (keyCredential != null ? 1 : 0) + (tokenCredential != null ? 1 : 0);
         if (credentialCount > 1) {
             throw logger.logExceptionAsError(
                 new IllegalStateException("More than 1 credentials are set while building a client. "
                     + "You should set one and only one credential of type 'TokenCredential', 'AzureSasCredential', "
                     + "or 'AzureKeyCredential'."));
         } else if (credentialCount == 0) {
-            throw logger.logExceptionAsError(
-                new IllegalStateException("Missing credential information while building a client."
+            throw logger
+                .logExceptionAsError(new IllegalStateException("Missing credential information while building a client."
                     + "You should set one and only one credential of type 'TokenCredential', 'AzureSasCredential', "
                     + "or 'AzureKeyCredential'."));
         }
@@ -223,16 +214,16 @@ public final class EventGridPublisherClientBuilder implements
         } else if (keyCredential != null) {
             httpPipelinePolicies.add(new AzureKeyCredentialPolicy(AEG_SAS_KEY, keyCredential));
         } else {
-            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                DEFAULT_EVENTGRID_SCOPE));
+            httpPipelinePolicies
+                .add(new BearerTokenAuthenticationPolicy(this.tokenCredential, DEFAULT_EVENTGRID_SCOPE));
         }
 
         httpPipelinePolicies.addAll(policies);
 
         if (clientOptions != null) {
             List<HttpHeader> httpHeaderList = new ArrayList<>();
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            clientOptions.getHeaders()
+                .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
             policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
         }
 
@@ -252,8 +243,7 @@ public final class EventGridPublisherClientBuilder implements
 
         httpPipelinePolicies.add(new HttpLoggingPolicy(httpLogOptions));
 
-        HttpPipeline buildPipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
+        HttpPipeline buildPipeline = new HttpPipelineBuilder().httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .clientOptions(clientOptions)
             .tracer(tracer)
@@ -269,10 +259,8 @@ public final class EventGridPublisherClientBuilder implements
     private <T> EventGridPublisherClient<T> buildClient(Class<T> eventClass) {
         Objects.requireNonNull(endpoint, "'endpoint' is required and can not be null.");
 
-        return new EventGridPublisherClient<T>((httpPipeline != null ? httpPipeline : getHttpPipeline()),
-            endpoint,
-            getEventGridServiceVersion(),
-            eventClass);
+        return new EventGridPublisherClient<T>((httpPipeline != null ? httpPipeline : getHttpPipeline()), endpoint,
+            getEventGridServiceVersion(), eventClass);
     }
 
     @Override

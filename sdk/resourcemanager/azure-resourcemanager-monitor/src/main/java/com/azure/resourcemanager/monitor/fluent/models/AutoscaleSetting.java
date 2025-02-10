@@ -6,65 +6,66 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.AutoscaleNotification;
 import com.azure.resourcemanager.monitor.models.PredictiveAutoscalePolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A setting that contains all of the configuration for the automatic scaling of a resource. */
+/**
+ * A setting that contains all of the configuration for the automatic scaling of a resource.
+ */
 @Fluent
-public final class AutoscaleSetting {
+public final class AutoscaleSetting implements JsonSerializable<AutoscaleSetting> {
     /*
      * the collection of automatic scaling profiles that specify different scaling parameters for different time
      * periods. A maximum of 20 profiles can be specified.
      */
-    @JsonProperty(value = "profiles", required = true)
     private List<AutoscaleProfileInner> profiles;
 
     /*
      * the collection of notifications.
      */
-    @JsonProperty(value = "notifications")
     private List<AutoscaleNotification> notifications;
 
     /*
      * the enabled flag. Specifies whether automatic scaling is enabled for the resource. The default value is 'false'.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * the predictive autoscale policy mode.
      */
-    @JsonProperty(value = "predictiveAutoscalePolicy")
     private PredictiveAutoscalePolicy predictiveAutoscalePolicy;
 
     /*
      * the name of the autoscale setting.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * the resource identifier of the resource that the autoscale setting should be added to.
      */
-    @JsonProperty(value = "targetResourceUri")
     private String targetResourceUri;
 
     /*
      * the location of the resource that the autoscale setting should be added to.
      */
-    @JsonProperty(value = "targetResourceLocation")
     private String targetResourceLocation;
 
-    /** Creates an instance of AutoscaleSetting class. */
+    /**
+     * Creates an instance of AutoscaleSetting class.
+     */
     public AutoscaleSetting() {
     }
 
     /**
      * Get the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
      * for different time periods. A maximum of 20 profiles can be specified.
-     *
+     * 
      * @return the profiles value.
      */
     public List<AutoscaleProfileInner> profiles() {
@@ -74,7 +75,7 @@ public final class AutoscaleSetting {
     /**
      * Set the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
      * for different time periods. A maximum of 20 profiles can be specified.
-     *
+     * 
      * @param profiles the profiles value to set.
      * @return the AutoscaleSetting object itself.
      */
@@ -85,7 +86,7 @@ public final class AutoscaleSetting {
 
     /**
      * Get the notifications property: the collection of notifications.
-     *
+     * 
      * @return the notifications value.
      */
     public List<AutoscaleNotification> notifications() {
@@ -94,7 +95,7 @@ public final class AutoscaleSetting {
 
     /**
      * Set the notifications property: the collection of notifications.
-     *
+     * 
      * @param notifications the notifications value to set.
      * @return the AutoscaleSetting object itself.
      */
@@ -106,7 +107,7 @@ public final class AutoscaleSetting {
     /**
      * Get the enabled property: the enabled flag. Specifies whether automatic scaling is enabled for the resource. The
      * default value is 'false'.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -116,7 +117,7 @@ public final class AutoscaleSetting {
     /**
      * Set the enabled property: the enabled flag. Specifies whether automatic scaling is enabled for the resource. The
      * default value is 'false'.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AutoscaleSetting object itself.
      */
@@ -127,7 +128,7 @@ public final class AutoscaleSetting {
 
     /**
      * Get the predictiveAutoscalePolicy property: the predictive autoscale policy mode.
-     *
+     * 
      * @return the predictiveAutoscalePolicy value.
      */
     public PredictiveAutoscalePolicy predictiveAutoscalePolicy() {
@@ -136,7 +137,7 @@ public final class AutoscaleSetting {
 
     /**
      * Set the predictiveAutoscalePolicy property: the predictive autoscale policy mode.
-     *
+     * 
      * @param predictiveAutoscalePolicy the predictiveAutoscalePolicy value to set.
      * @return the AutoscaleSetting object itself.
      */
@@ -147,7 +148,7 @@ public final class AutoscaleSetting {
 
     /**
      * Get the name property: the name of the autoscale setting.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -156,7 +157,7 @@ public final class AutoscaleSetting {
 
     /**
      * Set the name property: the name of the autoscale setting.
-     *
+     * 
      * @param name the name value to set.
      * @return the AutoscaleSetting object itself.
      */
@@ -168,7 +169,7 @@ public final class AutoscaleSetting {
     /**
      * Get the targetResourceUri property: the resource identifier of the resource that the autoscale setting should be
      * added to.
-     *
+     * 
      * @return the targetResourceUri value.
      */
     public String targetResourceUri() {
@@ -178,7 +179,7 @@ public final class AutoscaleSetting {
     /**
      * Set the targetResourceUri property: the resource identifier of the resource that the autoscale setting should be
      * added to.
-     *
+     * 
      * @param targetResourceUri the targetResourceUri value to set.
      * @return the AutoscaleSetting object itself.
      */
@@ -190,7 +191,7 @@ public final class AutoscaleSetting {
     /**
      * Get the targetResourceLocation property: the location of the resource that the autoscale setting should be added
      * to.
-     *
+     * 
      * @return the targetResourceLocation value.
      */
     public String targetResourceLocation() {
@@ -200,7 +201,7 @@ public final class AutoscaleSetting {
     /**
      * Set the targetResourceLocation property: the location of the resource that the autoscale setting should be added
      * to.
-     *
+     * 
      * @param targetResourceLocation the targetResourceLocation value to set.
      * @return the AutoscaleSetting object itself.
      */
@@ -211,14 +212,13 @@ public final class AutoscaleSetting {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (profiles() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property profiles in model AutoscaleSetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property profiles in model AutoscaleSetting"));
         } else {
             profiles().forEach(e -> e.validate());
         }
@@ -231,4 +231,63 @@ public final class AutoscaleSetting {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoscaleSetting.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("profiles", this.profiles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("notifications", this.notifications, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("predictiveAutoscalePolicy", this.predictiveAutoscalePolicy);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("targetResourceUri", this.targetResourceUri);
+        jsonWriter.writeStringField("targetResourceLocation", this.targetResourceLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoscaleSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoscaleSetting if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoscaleSetting.
+     */
+    public static AutoscaleSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoscaleSetting deserializedAutoscaleSetting = new AutoscaleSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("profiles".equals(fieldName)) {
+                    List<AutoscaleProfileInner> profiles
+                        = reader.readArray(reader1 -> AutoscaleProfileInner.fromJson(reader1));
+                    deserializedAutoscaleSetting.profiles = profiles;
+                } else if ("notifications".equals(fieldName)) {
+                    List<AutoscaleNotification> notifications
+                        = reader.readArray(reader1 -> AutoscaleNotification.fromJson(reader1));
+                    deserializedAutoscaleSetting.notifications = notifications;
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedAutoscaleSetting.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("predictiveAutoscalePolicy".equals(fieldName)) {
+                    deserializedAutoscaleSetting.predictiveAutoscalePolicy = PredictiveAutoscalePolicy.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedAutoscaleSetting.name = reader.getString();
+                } else if ("targetResourceUri".equals(fieldName)) {
+                    deserializedAutoscaleSetting.targetResourceUri = reader.getString();
+                } else if ("targetResourceLocation".equals(fieldName)) {
+                    deserializedAutoscaleSetting.targetResourceLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoscaleSetting;
+        });
+    }
 }

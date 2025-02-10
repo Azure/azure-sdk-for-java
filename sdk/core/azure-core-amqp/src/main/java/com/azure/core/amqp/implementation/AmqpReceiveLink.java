@@ -25,7 +25,8 @@ public interface AmqpReceiveLink extends AmqpLink {
      *
      * @return The connection identifier.
      */
-    // Note: Ideally, we may expose connectionId in AmqpLink, but given it's a public contract, lets not do that until a use case needing it.
+    // Note: Ideally, we may expose connectionId in AmqpLink, but given it's a public contract, lets not do that until a
+    // use case needing it.
     String getConnectionId();
 
     /**

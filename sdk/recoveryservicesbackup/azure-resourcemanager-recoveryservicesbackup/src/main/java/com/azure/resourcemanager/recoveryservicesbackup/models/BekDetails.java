@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** BEK is bitlocker encryption key. */
+/**
+ * BEK is bitlocker encryption key.
+ */
 @Fluent
-public final class BekDetails {
+public final class BekDetails implements JsonSerializable<BekDetails> {
     /*
      * Secret is BEK.
      */
-    @JsonProperty(value = "secretUrl")
     private String secretUrl;
 
     /*
      * ID of the Key Vault where this Secret is stored.
      */
-    @JsonProperty(value = "secretVaultId")
     private String secretVaultId;
 
     /*
      * BEK data.
      */
-    @JsonProperty(value = "secretData")
     private String secretData;
 
-    /** Creates an instance of BekDetails class. */
+    /**
+     * Creates an instance of BekDetails class.
+     */
     public BekDetails() {
     }
 
     /**
      * Get the secretUrl property: Secret is BEK.
-     *
+     * 
      * @return the secretUrl value.
      */
     public String secretUrl() {
@@ -43,7 +48,7 @@ public final class BekDetails {
 
     /**
      * Set the secretUrl property: Secret is BEK.
-     *
+     * 
      * @param secretUrl the secretUrl value to set.
      * @return the BekDetails object itself.
      */
@@ -54,7 +59,7 @@ public final class BekDetails {
 
     /**
      * Get the secretVaultId property: ID of the Key Vault where this Secret is stored.
-     *
+     * 
      * @return the secretVaultId value.
      */
     public String secretVaultId() {
@@ -63,7 +68,7 @@ public final class BekDetails {
 
     /**
      * Set the secretVaultId property: ID of the Key Vault where this Secret is stored.
-     *
+     * 
      * @param secretVaultId the secretVaultId value to set.
      * @return the BekDetails object itself.
      */
@@ -74,7 +79,7 @@ public final class BekDetails {
 
     /**
      * Get the secretData property: BEK data.
-     *
+     * 
      * @return the secretData value.
      */
     public String secretData() {
@@ -83,7 +88,7 @@ public final class BekDetails {
 
     /**
      * Set the secretData property: BEK data.
-     *
+     * 
      * @param secretData the secretData value to set.
      * @return the BekDetails object itself.
      */
@@ -94,9 +99,51 @@ public final class BekDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("secretUrl", this.secretUrl);
+        jsonWriter.writeStringField("secretVaultId", this.secretVaultId);
+        jsonWriter.writeStringField("secretData", this.secretData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BekDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BekDetails if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the BekDetails.
+     */
+    public static BekDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BekDetails deserializedBekDetails = new BekDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secretUrl".equals(fieldName)) {
+                    deserializedBekDetails.secretUrl = reader.getString();
+                } else if ("secretVaultId".equals(fieldName)) {
+                    deserializedBekDetails.secretVaultId = reader.getString();
+                } else if ("secretData".equals(fieldName)) {
+                    deserializedBekDetails.secretData = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBekDetails;
+        });
     }
 }

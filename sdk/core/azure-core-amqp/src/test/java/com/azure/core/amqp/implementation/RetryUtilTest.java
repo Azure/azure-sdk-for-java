@@ -37,8 +37,7 @@ public class RetryUtilTest {
     @Test
     void getCorrectModeFixed() {
         // Act
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
-            .setMode(AmqpRetryMode.FIXED);
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED);
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         // Assert
@@ -49,8 +48,7 @@ public class RetryUtilTest {
     @Test
     void getCorrectModeExponential() {
         // Act
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
-            .setMode(AmqpRetryMode.EXPONENTIAL);
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMode(AmqpRetryMode.EXPONENTIAL);
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
         // Assert
@@ -66,16 +64,14 @@ public class RetryUtilTest {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofMillis(1500);
-        final AmqpRetryOptions options = new AmqpRetryOptions()
-            .setDelay(Duration.ofSeconds(1))
-            .setMaxRetries(2)
-            .setTryTimeout(timeout);
-        final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds())
-            .plus(timeout);
+        final AmqpRetryOptions options
+            = new AmqpRetryOptions().setDelay(Duration.ofSeconds(1)).setMaxRetries(2).setTryTimeout(timeout);
+        final Duration totalWaitTime
+            = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds()).plus(timeout);
 
         final AtomicInteger resubscribe = new AtomicInteger();
-        final Flux<AmqpTransportType> neverFlux = Flux.<AmqpTransportType>never()
-            .doOnSubscribe(s -> resubscribe.incrementAndGet());
+        final Flux<AmqpTransportType> neverFlux
+            = Flux.<AmqpTransportType>never().doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
         StepVerifier.create(RetryUtil.withRetry(neverFlux, options, timeoutMessage))
@@ -95,15 +91,13 @@ public class RetryUtilTest {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofMillis(500);
-        final AmqpRetryOptions options = new AmqpRetryOptions()
-            .setDelay(Duration.ofSeconds(1))
-            .setMaxRetries(2)
-            .setTryTimeout(timeout);
+        final AmqpRetryOptions options
+            = new AmqpRetryOptions().setDelay(Duration.ofSeconds(1)).setMaxRetries(2).setTryTimeout(timeout);
         final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
 
         final AtomicInteger resubscribe = new AtomicInteger();
-        final Mono<AmqpTransportType> neverFlux = TestPublisher.<AmqpTransportType>create().mono()
-            .doOnSubscribe(s -> resubscribe.incrementAndGet());
+        final Mono<AmqpTransportType> neverFlux
+            = TestPublisher.<AmqpTransportType>create().mono().doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
         StepVerifier.create(RetryUtil.withRetry(neverFlux, options, timeoutMessage))
@@ -116,10 +110,8 @@ public class RetryUtilTest {
     }
 
     static Stream<Throwable> withTransientError() {
-        return Stream.of(
-            new AmqpException(true, "Test-exception", new AmqpErrorContext("test-ns")),
-            new TimeoutException("Test-timeout")
-        );
+        return Stream.of(new AmqpException(true, "Test-exception", new AmqpErrorContext("test-ns")),
+            new TimeoutException("Test-timeout"));
     }
 
     @ParameterizedTest
@@ -128,24 +120,20 @@ public class RetryUtilTest {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofSeconds(30);
-        final AmqpRetryOptions options = new AmqpRetryOptions()
-            .setMode(AmqpRetryMode.FIXED)
+        final AmqpRetryOptions options = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(1)
             .setTryTimeout(timeout);
         final AtomicBoolean wasSent = new AtomicBoolean();
 
-        final Flux<Integer> stream = Flux.concat(
-            Flux.just(0, 1),
-            Flux.create(sink -> {
-                if (wasSent.getAndSet(true)) {
-                    sink.next(10);
-                    sink.complete();
-                } else {
-                    sink.error(transientError);
-                }
-            }),
-            Flux.just(3, 4));
+        final Flux<Integer> stream = Flux.concat(Flux.just(0, 1), Flux.create(sink -> {
+            if (wasSent.getAndSet(true)) {
+                sink.next(10);
+                sink.complete();
+            } else {
+                sink.error(transientError);
+            }
+        }), Flux.just(3, 4));
 
         // Act & Assert
         StepVerifier.create(RetryUtil.withRetry(stream, options, timeoutMessage))
@@ -159,13 +147,11 @@ public class RetryUtilTest {
     }
 
     static Stream<AmqpRetryOptions> createRetry() {
-        final AmqpRetryOptions fixed = new AmqpRetryOptions()
-            .setMode(AmqpRetryMode.FIXED)
+        final AmqpRetryOptions fixed = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
             .setDelay(Duration.ofSeconds(10))
             .setMaxRetries(2)
             .setMaxDelay(Duration.ofSeconds(90));
-        final AmqpRetryOptions exponential = new AmqpRetryOptions()
-            .setMode(AmqpRetryMode.EXPONENTIAL)
+        final AmqpRetryOptions exponential = new AmqpRetryOptions().setMode(AmqpRetryMode.EXPONENTIAL)
             .setDelay(Duration.ofSeconds(5))
             .setMaxRetries(5)
             .setMaxDelay(Duration.ofSeconds(35));
@@ -193,12 +179,10 @@ public class RetryUtilTest {
     }
 
     static Stream<Arguments> retryFilter() {
-        return Stream.of(
-            Arguments.of(new TimeoutException("Something"), true),
+        return Stream.of(Arguments.of(new TimeoutException("Something"), true),
             Arguments.of(new AmqpException(true, "foo message", new AmqpErrorContext("test-namespace")), true),
             Arguments.of(new AmqpException(false, "foo message", new AmqpErrorContext("test-ns")), false),
-            Arguments.of(new IllegalArgumentException("invalid"), false)
-        );
+            Arguments.of(new IllegalArgumentException("invalid"), false));
     }
 
     @MethodSource

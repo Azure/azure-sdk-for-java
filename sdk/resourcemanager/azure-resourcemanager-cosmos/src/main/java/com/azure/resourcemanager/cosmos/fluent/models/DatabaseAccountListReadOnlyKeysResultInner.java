@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The read-only access keys for the given database account.
  */
 @Immutable
-public class DatabaseAccountListReadOnlyKeysResultInner {
+public class DatabaseAccountListReadOnlyKeysResultInner
+    implements JsonSerializable<DatabaseAccountListReadOnlyKeysResultInner> {
     /*
      * Base 64 encoded value of the primary read-only key.
      */
-    @JsonProperty(value = "primaryReadonlyMasterKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryReadonlyMasterKey;
 
     /*
      * Base 64 encoded value of the secondary read-only key.
      */
-    @JsonProperty(value = "secondaryReadonlyMasterKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryReadonlyMasterKey;
 
     /**
@@ -40,6 +43,17 @@ public class DatabaseAccountListReadOnlyKeysResultInner {
     }
 
     /**
+     * Set the primaryReadonlyMasterKey property: Base 64 encoded value of the primary read-only key.
+     * 
+     * @param primaryReadonlyMasterKey the primaryReadonlyMasterKey value to set.
+     * @return the DatabaseAccountListReadOnlyKeysResultInner object itself.
+     */
+    DatabaseAccountListReadOnlyKeysResultInner withPrimaryReadonlyMasterKey(String primaryReadonlyMasterKey) {
+        this.primaryReadonlyMasterKey = primaryReadonlyMasterKey;
+        return this;
+    }
+
+    /**
      * Get the secondaryReadonlyMasterKey property: Base 64 encoded value of the secondary read-only key.
      * 
      * @return the secondaryReadonlyMasterKey value.
@@ -49,10 +63,61 @@ public class DatabaseAccountListReadOnlyKeysResultInner {
     }
 
     /**
+     * Set the secondaryReadonlyMasterKey property: Base 64 encoded value of the secondary read-only key.
+     * 
+     * @param secondaryReadonlyMasterKey the secondaryReadonlyMasterKey value to set.
+     * @return the DatabaseAccountListReadOnlyKeysResultInner object itself.
+     */
+    DatabaseAccountListReadOnlyKeysResultInner withSecondaryReadonlyMasterKey(String secondaryReadonlyMasterKey) {
+        this.secondaryReadonlyMasterKey = secondaryReadonlyMasterKey;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseAccountListReadOnlyKeysResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseAccountListReadOnlyKeysResultInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseAccountListReadOnlyKeysResultInner.
+     */
+    public static DatabaseAccountListReadOnlyKeysResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseAccountListReadOnlyKeysResultInner deserializedDatabaseAccountListReadOnlyKeysResultInner
+                = new DatabaseAccountListReadOnlyKeysResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryReadonlyMasterKey".equals(fieldName)) {
+                    deserializedDatabaseAccountListReadOnlyKeysResultInner.primaryReadonlyMasterKey
+                        = reader.getString();
+                } else if ("secondaryReadonlyMasterKey".equals(fieldName)) {
+                    deserializedDatabaseAccountListReadOnlyKeysResultInner.secondaryReadonlyMasterKey
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseAccountListReadOnlyKeysResultInner;
+        });
     }
 }

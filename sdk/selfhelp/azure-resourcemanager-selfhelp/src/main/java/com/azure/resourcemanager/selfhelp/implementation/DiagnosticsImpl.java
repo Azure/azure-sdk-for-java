@@ -47,13 +47,13 @@ public final class DiagnosticsImpl implements Diagnostics {
     }
 
     public DiagnosticResource getById(String id) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String diagnosticsResourceName = Utils.getValueFromIdByParameterName(id,
+        String diagnosticsResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "diagnosticsResourceName");
         if (diagnosticsResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -63,13 +63,13 @@ public final class DiagnosticsImpl implements Diagnostics {
     }
 
     public Response<DiagnosticResource> getByIdWithResponse(String id, Context context) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String diagnosticsResourceName = Utils.getValueFromIdByParameterName(id,
+        String diagnosticsResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "diagnosticsResourceName");
         if (diagnosticsResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(

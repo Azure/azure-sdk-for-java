@@ -8,6 +8,12 @@ package com.azure.storage.file.share;
  */
 public final class FileConstants {
     /**
+     * Creates a new instance of {@link FileConstants}.
+     */
+    public FileConstants() {
+    }
+
+    /**
      * Default header value for file permission.
      */
     public static final String FILE_PERMISSION_INHERIT = "Inherit";
@@ -69,20 +75,11 @@ public final class FileConstants {
         public static final String FILE_ID = "x-ms-file-id";
 
         /**
-         * Header that spcifies file parent id.
+         * Header that specifies file parent id.
          */
         public static final String FILE_PARENT_ID = "x-ms-file-parent-id";
 
         private HeaderConstants() {
         }
     }
-
-    static final class MessageConstants {
-        public static final String FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID =
-            "File permission and file permission key cannot both be set";
-
-        private MessageConstants() {
-        }
-    }
 }
-

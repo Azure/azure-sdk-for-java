@@ -64,16 +64,20 @@ public final class ManagedVirtualNetworkResourceImpl implements ManagedVirtualNe
     }
 
     public ManagedVirtualNetworkResource create() {
-        this.innerObject
-            = serviceManager.serviceClient().getManagedVirtualNetworks().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, managedVirtualNetworkName, this.innerModel(), createIfMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedVirtualNetworks()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagedVirtualNetworkResource create(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getManagedVirtualNetworks().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, managedVirtualNetworkName, this.innerModel(), createIfMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedVirtualNetworks()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -91,16 +95,20 @@ public final class ManagedVirtualNetworkResourceImpl implements ManagedVirtualNe
     }
 
     public ManagedVirtualNetworkResource apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getManagedVirtualNetworks().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, managedVirtualNetworkName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedVirtualNetworks()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, this.innerModel(),
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagedVirtualNetworkResource apply(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getManagedVirtualNetworks().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, managedVirtualNetworkName, this.innerModel(), updateIfMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedVirtualNetworks()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, this.innerModel(),
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -108,14 +116,16 @@ public final class ManagedVirtualNetworkResourceImpl implements ManagedVirtualNe
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.managedVirtualNetworkName = Utils.getValueFromIdByName(innerObject.id(), "managedVirtualNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.managedVirtualNetworkName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedVirtualNetworks");
     }
 
     public ManagedVirtualNetworkResource refresh() {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getManagedVirtualNetworks()
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedVirtualNetworks()
             .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, localIfNoneMatch, Context.NONE)
             .getValue();
         return this;
@@ -123,7 +133,8 @@ public final class ManagedVirtualNetworkResourceImpl implements ManagedVirtualNe
 
     public ManagedVirtualNetworkResource refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getManagedVirtualNetworks()
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedVirtualNetworks()
             .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, localIfNoneMatch, context)
             .getValue();
         return this;

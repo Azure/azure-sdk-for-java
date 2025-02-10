@@ -15,55 +15,80 @@ stages:
       TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
+      ClientIdCert: $(spark-databricks-cosmos-spn-clientIdCert)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      ClientCertPem: $(spark-databricks-cosmos-spn-clientCertBase64)
       CosmosContainerName: 'sampleContainer1'
       CosmosDatabaseName: 'sampleDB1'
-      DatabricksEndpoint: $(spark-databricks-endpoint)
-      DatabricksToken: $(spark-databricks-token)
+      DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
+      DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-1_2-12'
       ClusterName: 'oltp-ci-2workers-ds3v2'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
-      DatabricksEndpoint: $(spark-databricks-endpoint)
+      DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
       SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
       TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
+      ClientIdCert: $(spark-databricks-cosmos-spn-clientIdCert)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      ClientCertPem: $(spark-databricks-cosmos-spn-clientCertBase64)
       CosmosContainerName: 'sampleContainer2'
       CosmosDatabaseName: 'sampleDB2'
-      DatabricksToken: $(spark-databricks-token)
+      DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-2_2-12'
       ClusterName: 'oltp-ci-spark32-2workers-ds3v2'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
-      DatabricksEndpoint: $(spark-databricks-endpoint)
+      DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
       SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
       TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
+      ClientIdCert: $(spark-databricks-cosmos-spn-clientIdCert)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      ClientCertPem: $(spark-databricks-cosmos-spn-clientCertBase64)
       CosmosContainerName: 'sampleContainer3'
       CosmosDatabaseName: 'sampleDB3'
-      DatabricksToken: $(spark-databricks-token)
+      DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-3_2-12'
       ClusterName: 'oltp-ci-spark33-2workers-ds3v2'
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
       CosmosKey: $(spark-databricks-cosmos-key)
-      DatabricksEndpoint: $(spark-databricks-endpoint)
+      DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
       SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
       TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
+      ClientIdCert: $(spark-databricks-cosmos-spn-clientIdCert)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      ClientCertPem: $(spark-databricks-cosmos-spn-clientCertBase64)
       CosmosContainerName: 'sampleContainer4'
       CosmosDatabaseName: 'sampleDB4'
-      DatabricksToken: $(spark-databricks-token)
+      DatabricksToken: $(spark-databricks-token-with-msi)
       SparkVersion: 'azure-cosmos-spark_3-4_2-12'
       ClusterName: 'oltp-ci-spark34-2workers-ds3v2'
+  - template: /sdk/cosmos/spark.databricks.yml
+    parameters:
+      CosmosEndpoint: $(spark-databricks-cosmos-endpoint)
+      CosmosKey: $(spark-databricks-cosmos-key)
+      DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)
+      SubscriptionId: '8fba6d4f-7c37-4d13-9063-fd58ad2b86e2'
+      TenantId: '72f988bf-86f1-41af-91ab-2d7cd011db47'
+      ResourceGroupName: 'oltp-spark-ci'
+      ClientId: $(spark-databricks-cosmos-spn-clientId)
+      ClientIdCert: $(spark-databricks-cosmos-spn-clientIdCert)
+      ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      ClientCertPem: $(spark-databricks-cosmos-spn-clientCertBase64)
+      CosmosContainerName: 'sampleContainer5'
+      CosmosDatabaseName: 'sampleDB5'
+      DatabricksToken: $(spark-databricks-token-with-msi)
+      SparkVersion: 'azure-cosmos-spark_3-5_2-12'
+      ClusterName: 'oltp-ci-spark35-2workers-ds3v2'

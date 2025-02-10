@@ -40,7 +40,8 @@ import java.util.stream.IntStream;
 /**
  * Tests for {@link ReactorConnectionCache}.
  * <p>
- * See <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
+ * See <a href=
+ * "https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
  * for why this test class needs to run in Isolated mode.
  * </p>
  */
@@ -79,8 +80,8 @@ public class ReactorConnectionCacheIsolatedTest {
         connectionStates.add(ConnectionState.as(EndpointState.ACTIVE));
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
@@ -114,8 +115,8 @@ public class ReactorConnectionCacheIsolatedTest {
         connectionStates.add(ConnectionState.as(EndpointState.ACTIVE));
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
@@ -149,8 +150,8 @@ public class ReactorConnectionCacheIsolatedTest {
         connectionStates.add(ConnectionState.as(EndpointState.ACTIVE));
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
@@ -188,14 +189,13 @@ public class ReactorConnectionCacheIsolatedTest {
         connectionStates.add(ConnectionState.error(new AmqpException(true, "retriable6", null)));
         connectionStates.add(ConnectionState.as(EndpointState.ACTIVE));
 
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
-            .setTryTimeout(OPERATION_TIMEOUT)
-            .setMaxRetries(maxRetryCount);
+        final AmqpRetryOptions retryOptions
+            = new AmqpRetryOptions().setTryTimeout(OPERATION_TIMEOUT).setMaxRetries(maxRetryCount);
         final FixedAmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(retryOptions);
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
@@ -241,19 +241,19 @@ public class ReactorConnectionCacheIsolatedTest {
         }
         connectionStates.add(ConnectionState.as(EndpointState.ACTIVE));
 
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
-            .setTryTimeout(OPERATION_TIMEOUT)
-            .setMaxRetries(4);
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(OPERATION_TIMEOUT).setMaxRetries(4);
 
         // A RetryPolicy to capture "Retry Attempts" (first parameter to 'calculateRetryDelay') to assert.
         final class TestRetryPolicy extends FixedAmqpRetryPolicy {
             private final List<Integer> allRetryAttempts = new ArrayList<>();
+
             protected TestRetryPolicy(AmqpRetryOptions retryOptions) {
                 super(retryOptions);
             }
 
             @Override
-            protected Duration calculateRetryDelay(int retryAttempts, Duration bDelay, Duration bJitter, ThreadLocalRandom rnd) {
+            protected Duration calculateRetryDelay(int retryAttempts, Duration bDelay, Duration bJitter,
+                ThreadLocalRandom rnd) {
                 allRetryAttempts.add(retryAttempts);
                 return super.calculateRetryDelay(retryAttempts, bDelay, bJitter, rnd);
             }
@@ -265,8 +265,8 @@ public class ReactorConnectionCacheIsolatedTest {
 
         final TestRetryPolicy retryPolicy = new TestRetryPolicy(retryOptions);
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
 
@@ -288,8 +288,8 @@ public class ReactorConnectionCacheIsolatedTest {
             Assertions.assertEquals(connectionsCountSet1 - 1, attempts.size());
             // expectedAttempts1 is the retry-attempt values in the retry-cycle associated with the first connection.
             // the last retry-attempt in the retry-cycle will be 4 since min(attempt, retryOptions.getMaxRetry()) == 4.
-            final List<Integer> expectedAttempts1 = IntStream.of(new int[] { 0, 1, 2, 3, 4, 4 })
-                .boxed().collect(Collectors.toList());
+            final List<Integer> expectedAttempts1
+                = IntStream.of(new int[] { 0, 1, 2, 3, 4, 4 }).boxed().collect(Collectors.toList());
             Assertions.assertIterableEquals(expectedAttempts1, attempts);
 
             // Close the cached connection by completing connection endpoint,
@@ -313,9 +313,10 @@ public class ReactorConnectionCacheIsolatedTest {
             attempts = retryPolicy.getAllRetryAttempts();
             Assertions.assertEquals(connectionsCountSet1 + connectionsCountSet2 - 2, attempts.size());
             // Assert that the retry-cycle associated with the second connection request had retry-attempt "reset" to 0.
-            final List<Integer> expectedAttempts2 = IntStream.of(new int[] { 0, 1, 2, 3, 4 })
-                .boxed().collect(Collectors.toList());
-            Assertions.assertIterableEquals(expectedAttempts2, attempts.subList(connectionsCountSet1 - 1, attempts.size()));
+            final List<Integer> expectedAttempts2
+                = IntStream.of(new int[] { 0, 1, 2, 3, 4 }).boxed().collect(Collectors.toList());
+            Assertions.assertIterableEquals(expectedAttempts2,
+                attempts.subList(connectionsCountSet1 - 1, attempts.size()));
         } finally {
             connectionSupplier.dispose();
             connectionCache.dispose();
@@ -342,10 +343,7 @@ public class ReactorConnectionCacheIsolatedTest {
         final Retry retrySpec = retryWhenSpec(retryPolicy);
         final Mono<Void> sourceWithRetry = source.retryWhen(retrySpec);
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> sourceWithRetry)
-                .thenRequest(1)
-                .thenAwait(VIRTUAL_TIME_SHIFT)
-                .verifyComplete();
+            verifier.create(() -> sourceWithRetry).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT).verifyComplete();
         }
         Assertions.assertTrue(retriableErrors.isEmpty());
     }
@@ -385,7 +383,8 @@ public class ReactorConnectionCacheIsolatedTest {
     public void specShouldNeverExhaustRetryProvidedErrorsAreRetriable() {
         final int retriableErrorCount = 8;
         final int maxRetryCount = 4;
-        // There are 7 retriable error, though max-retry is 4, given these are retriable errors, all those errors will be retried.
+        // There are 7 retriable error, though max-retry is 4, given these are retriable errors, all those errors will
+        // be retried.
         final Deque<Throwable> retriableErrors = new ArrayDeque<>(retriableErrorCount);
         retriableErrors.add(new AmqpException(true, "retriable0", null));
         retriableErrors.add(new AmqpException(true, "retriable1", null));
@@ -403,17 +402,13 @@ public class ReactorConnectionCacheIsolatedTest {
                 sink.success();
             }
         });
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
-            .setTryTimeout(OPERATION_TIMEOUT)
-            .setMaxRetries(maxRetryCount);
+        final AmqpRetryOptions retryOptions
+            = new AmqpRetryOptions().setTryTimeout(OPERATION_TIMEOUT).setMaxRetries(maxRetryCount);
         final FixedAmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(retryOptions);
         final Retry retrySpec = retryWhenSpec(retryPolicy);
         final Mono<Void> sourceWithRetry = source.retryWhen(retrySpec);
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> sourceWithRetry)
-                .thenRequest(1)
-                .thenAwait(VIRTUAL_TIME_SHIFT)
-                .verifyComplete();
+            verifier.create(() -> sourceWithRetry).thenRequest(1).thenAwait(VIRTUAL_TIME_SHIFT).verifyComplete();
         }
         // assert that all 7 errors were consumed though the max-retry was 4.
         Assertions.assertTrue(retriableErrors.isEmpty());
@@ -434,8 +429,8 @@ public class ReactorConnectionCacheIsolatedTest {
             }
         });
         final Supplier<ReactorConnection> nopConnectionSupplier = () -> null;
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            nopConnectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(nopConnectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         final Retry retrySpec = connectionCache.retryWhenSpec(retryPolicy);
         final Mono<Void> sourceWithRetry = source.retryWhen(retrySpec);
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
@@ -448,15 +443,16 @@ public class ReactorConnectionCacheIsolatedTest {
                     final AmqpException amqpException = (AmqpException) e;
                     Assertions.assertFalse(amqpException.isTransient());
                     Assertions.assertNotNull(amqpException.getMessage());
-                    Assertions.assertTrue(amqpException.getMessage().startsWith("Connection recovery support is terminated."));
+                    Assertions.assertTrue(
+                        amqpException.getMessage().startsWith("Connection recovery support is terminated."));
                 });
         }
     }
 
     private Retry retryWhenSpec(AmqpRetryPolicy retryPolicy) {
         final Supplier<ReactorConnection> nopConnectionSupplier = () -> null;
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            nopConnectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(nopConnectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         return connectionCache.retryWhenSpec(retryPolicy);
     }
 

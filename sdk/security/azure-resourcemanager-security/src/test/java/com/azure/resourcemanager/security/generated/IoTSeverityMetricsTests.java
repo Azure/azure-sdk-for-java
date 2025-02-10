@@ -11,25 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class IoTSeverityMetricsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IoTSeverityMetrics model =
-            BinaryData
-                .fromString("{\"high\":9028045602986691631,\"medium\":2874780118088744582,\"low\":9144697658006681867}")
-                .toObject(IoTSeverityMetrics.class);
-        Assertions.assertEquals(9028045602986691631L, model.high());
-        Assertions.assertEquals(2874780118088744582L, model.medium());
-        Assertions.assertEquals(9144697658006681867L, model.low());
+        IoTSeverityMetrics model = BinaryData
+            .fromString("{\"high\":6549908751821876892,\"medium\":914612677751220292,\"low\":1656220423281189334}")
+            .toObject(IoTSeverityMetrics.class);
+        Assertions.assertEquals(6549908751821876892L, model.high());
+        Assertions.assertEquals(914612677751220292L, model.medium());
+        Assertions.assertEquals(1656220423281189334L, model.low());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSeverityMetrics model =
-            new IoTSeverityMetrics()
-                .withHigh(9028045602986691631L)
-                .withMedium(2874780118088744582L)
-                .withLow(9144697658006681867L);
+        IoTSeverityMetrics model = new IoTSeverityMetrics().withHigh(6549908751821876892L)
+            .withMedium(914612677751220292L)
+            .withLow(1656220423281189334L);
         model = BinaryData.fromObject(model).toObject(IoTSeverityMetrics.class);
-        Assertions.assertEquals(9028045602986691631L, model.high());
-        Assertions.assertEquals(2874780118088744582L, model.medium());
-        Assertions.assertEquals(9144697658006681867L, model.low());
+        Assertions.assertEquals(6549908751821876892L, model.high());
+        Assertions.assertEquals(914612677751220292L, model.medium());
+        Assertions.assertEquals(1656220423281189334L, model.low());
     }
 }

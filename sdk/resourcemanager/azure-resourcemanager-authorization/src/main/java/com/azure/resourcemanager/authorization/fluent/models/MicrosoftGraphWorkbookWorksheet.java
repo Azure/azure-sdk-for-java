@@ -5,77 +5,73 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** workbookWorksheet. */
+/**
+ * workbookWorksheet.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity {
     /*
      * The display name of the worksheet.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The zero-based position of the worksheet within the workbook.
      */
-    @JsonProperty(value = "position")
     private Integer position;
 
     /*
      * The Visibility of the worksheet. The possible values are: Visible, Hidden, VeryHidden.
      */
-    @JsonProperty(value = "visibility")
     private String visibility;
 
     /*
      * Returns collection of charts that are part of the worksheet. Read-only.
      */
-    @JsonProperty(value = "charts")
     private List<MicrosoftGraphWorkbookChart> charts;
 
     /*
      * Returns collection of names that are associated with the worksheet. Read-only.
      */
-    @JsonProperty(value = "names")
     private List<MicrosoftGraphWorkbookNamedItem> names;
 
     /*
      * Collection of PivotTables that are part of the worksheet.
      */
-    @JsonProperty(value = "pivotTables")
     private List<MicrosoftGraphWorkbookPivotTable> pivotTables;
 
     /*
      * workbookWorksheetProtection
      */
-    @JsonProperty(value = "protection")
     private MicrosoftGraphWorkbookWorksheetProtection protection;
 
     /*
      * Collection of tables that are part of the worksheet. Read-only.
      */
-    @JsonProperty(value = "tables")
     private List<MicrosoftGraphWorkbookTable> tables;
 
     /*
      * workbookWorksheet
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookWorksheet class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookWorksheet class.
+     */
     public MicrosoftGraphWorkbookWorksheet() {
     }
 
     /**
      * Get the name property: The display name of the worksheet.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -84,7 +80,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Set the name property: The display name of the worksheet.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphWorkbookWorksheet object itself.
      */
@@ -95,7 +91,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Get the position property: The zero-based position of the worksheet within the workbook.
-     *
+     * 
      * @return the position value.
      */
     public Integer position() {
@@ -104,7 +100,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Set the position property: The zero-based position of the worksheet within the workbook.
-     *
+     * 
      * @param position the position value to set.
      * @return the MicrosoftGraphWorkbookWorksheet object itself.
      */
@@ -116,7 +112,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
     /**
      * Get the visibility property: The Visibility of the worksheet. The possible values are: Visible, Hidden,
      * VeryHidden.
-     *
+     * 
      * @return the visibility value.
      */
     public String visibility() {
@@ -126,7 +122,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
     /**
      * Set the visibility property: The Visibility of the worksheet. The possible values are: Visible, Hidden,
      * VeryHidden.
-     *
+     * 
      * @param visibility the visibility value to set.
      * @return the MicrosoftGraphWorkbookWorksheet object itself.
      */
@@ -137,7 +133,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Get the charts property: Returns collection of charts that are part of the worksheet. Read-only.
-     *
+     * 
      * @return the charts value.
      */
     public List<MicrosoftGraphWorkbookChart> charts() {
@@ -146,7 +142,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Set the charts property: Returns collection of charts that are part of the worksheet. Read-only.
-     *
+     * 
      * @param charts the charts value to set.
      * @return the MicrosoftGraphWorkbookWorksheet object itself.
      */
@@ -157,7 +153,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Get the names property: Returns collection of names that are associated with the worksheet. Read-only.
-     *
+     * 
      * @return the names value.
      */
     public List<MicrosoftGraphWorkbookNamedItem> names() {
@@ -166,7 +162,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Set the names property: Returns collection of names that are associated with the worksheet. Read-only.
-     *
+     * 
      * @param names the names value to set.
      * @return the MicrosoftGraphWorkbookWorksheet object itself.
      */
@@ -177,7 +173,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Get the pivotTables property: Collection of PivotTables that are part of the worksheet.
-     *
+     * 
      * @return the pivotTables value.
      */
     public List<MicrosoftGraphWorkbookPivotTable> pivotTables() {
@@ -186,7 +182,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Set the pivotTables property: Collection of PivotTables that are part of the worksheet.
-     *
+     * 
      * @param pivotTables the pivotTables value to set.
      * @return the MicrosoftGraphWorkbookWorksheet object itself.
      */
@@ -197,7 +193,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Get the protection property: workbookWorksheetProtection.
-     *
+     * 
      * @return the protection value.
      */
     public MicrosoftGraphWorkbookWorksheetProtection protection() {
@@ -206,7 +202,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Set the protection property: workbookWorksheetProtection.
-     *
+     * 
      * @param protection the protection value to set.
      * @return the MicrosoftGraphWorkbookWorksheet object itself.
      */
@@ -217,7 +213,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Get the tables property: Collection of tables that are part of the worksheet. Read-only.
-     *
+     * 
      * @return the tables value.
      */
     public List<MicrosoftGraphWorkbookTable> tables() {
@@ -226,7 +222,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Set the tables property: Collection of tables that are part of the worksheet. Read-only.
-     *
+     * 
      * @param tables the tables value to set.
      * @return the MicrosoftGraphWorkbookWorksheet object itself.
      */
@@ -237,17 +233,16 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Get the additionalProperties property: workbookWorksheet.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookWorksheet.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookWorksheet object itself.
      */
@@ -256,15 +251,9 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookWorksheet withId(String id) {
         super.withId(id);
@@ -273,7 +262,7 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -294,5 +283,86 @@ public final class MicrosoftGraphWorkbookWorksheet extends MicrosoftGraphEntity 
         if (tables() != null) {
             tables().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("position", this.position);
+        jsonWriter.writeStringField("visibility", this.visibility);
+        jsonWriter.writeArrayField("charts", this.charts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("names", this.names, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("pivotTables", this.pivotTables, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("protection", this.protection);
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookWorksheet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookWorksheet if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookWorksheet.
+     */
+    public static MicrosoftGraphWorkbookWorksheet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookWorksheet deserializedMicrosoftGraphWorkbookWorksheet
+                = new MicrosoftGraphWorkbookWorksheet();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheet.withId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheet.name = reader.getString();
+                } else if ("position".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheet.position = reader.getNullable(JsonReader::getInt);
+                } else if ("visibility".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheet.visibility = reader.getString();
+                } else if ("charts".equals(fieldName)) {
+                    List<MicrosoftGraphWorkbookChart> charts
+                        = reader.readArray(reader1 -> MicrosoftGraphWorkbookChart.fromJson(reader1));
+                    deserializedMicrosoftGraphWorkbookWorksheet.charts = charts;
+                } else if ("names".equals(fieldName)) {
+                    List<MicrosoftGraphWorkbookNamedItem> names
+                        = reader.readArray(reader1 -> MicrosoftGraphWorkbookNamedItem.fromJson(reader1));
+                    deserializedMicrosoftGraphWorkbookWorksheet.names = names;
+                } else if ("pivotTables".equals(fieldName)) {
+                    List<MicrosoftGraphWorkbookPivotTable> pivotTables
+                        = reader.readArray(reader1 -> MicrosoftGraphWorkbookPivotTable.fromJson(reader1));
+                    deserializedMicrosoftGraphWorkbookWorksheet.pivotTables = pivotTables;
+                } else if ("protection".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheet.protection
+                        = MicrosoftGraphWorkbookWorksheetProtection.fromJson(reader);
+                } else if ("tables".equals(fieldName)) {
+                    List<MicrosoftGraphWorkbookTable> tables
+                        = reader.readArray(reader1 -> MicrosoftGraphWorkbookTable.fromJson(reader1));
+                    deserializedMicrosoftGraphWorkbookWorksheet.tables = tables;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookWorksheet.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookWorksheet;
+        });
     }
 }

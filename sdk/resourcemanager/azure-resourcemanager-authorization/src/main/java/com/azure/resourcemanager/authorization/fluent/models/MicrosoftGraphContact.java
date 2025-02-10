@@ -5,65 +5,61 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** contact. */
+/**
+ * contact.
+ */
 @Fluent
 public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
     /*
      * The name of the contact's assistant.
      */
-    @JsonProperty(value = "assistantName")
     private String assistantName;
 
     /*
      * The contact's birthday. The Timestamp type represents date and time information using ISO 8601 format and is
      * always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "birthday")
     private OffsetDateTime birthday;
 
     /*
      * physicalAddress
      */
-    @JsonProperty(value = "businessAddress")
     private MicrosoftGraphPhysicalAddress businessAddress;
 
     /*
      * The business home page of the contact.
      */
-    @JsonProperty(value = "businessHomePage")
     private String businessHomePage;
 
     /*
      * The contact's business phone numbers.
      */
-    @JsonProperty(value = "businessPhones")
     private List<String> businessPhones;
 
     /*
      * The names of the contact's children.
      */
-    @JsonProperty(value = "children")
     private List<String> children;
 
     /*
      * The name of the contact's company.
      */
-    @JsonProperty(value = "companyName")
     private String companyName;
 
     /*
      * The contact's department.
      */
-    @JsonProperty(value = "department")
     private String department;
 
     /*
@@ -71,189 +67,162 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
      * updates to other properties may cause an automatically generated value to overwrite the displayName value you
      * have specified. To preserve a pre-existing value, always include it as displayName in an update operation.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The contact's email addresses.
      */
-    @JsonProperty(value = "emailAddresses")
     private List<MicrosoftGraphEmailAddress> emailAddresses;
 
     /*
      * The name the contact is filed under.
      */
-    @JsonProperty(value = "fileAs")
     private String fileAs;
 
     /*
      * The contact's generation.
      */
-    @JsonProperty(value = "generation")
     private String generation;
 
     /*
      * The contact's given name.
      */
-    @JsonProperty(value = "givenName")
     private String givenName;
 
     /*
      * physicalAddress
      */
-    @JsonProperty(value = "homeAddress")
     private MicrosoftGraphPhysicalAddress homeAddress;
 
     /*
      * The contact's home phone numbers.
      */
-    @JsonProperty(value = "homePhones")
     private List<String> homePhones;
 
     /*
      * The contact's instant messaging (IM) addresses.
      */
-    @JsonProperty(value = "imAddresses")
     private List<String> imAddresses;
 
     /*
      * The contact's initials.
      */
-    @JsonProperty(value = "initials")
     private String initials;
 
     /*
      * The contact’s job title.
      */
-    @JsonProperty(value = "jobTitle")
     private String jobTitle;
 
     /*
      * The name of the contact's manager.
      */
-    @JsonProperty(value = "manager")
     private String manager;
 
     /*
      * The contact's middle name.
      */
-    @JsonProperty(value = "middleName")
     private String middleName;
 
     /*
      * The contact's mobile phone number.
      */
-    @JsonProperty(value = "mobilePhone")
     private String mobilePhone;
 
     /*
      * The contact's nickname.
      */
-    @JsonProperty(value = "nickName")
     private String nickName;
 
     /*
      * The location of the contact's office.
      */
-    @JsonProperty(value = "officeLocation")
     private String officeLocation;
 
     /*
      * physicalAddress
      */
-    @JsonProperty(value = "otherAddress")
     private MicrosoftGraphPhysicalAddress otherAddress;
 
     /*
      * The ID of the contact's parent folder.
      */
-    @JsonProperty(value = "parentFolderId")
     private String parentFolderId;
 
     /*
      * The user's notes about the contact.
      */
-    @JsonProperty(value = "personalNotes")
     private String personalNotes;
 
     /*
      * The contact's profession.
      */
-    @JsonProperty(value = "profession")
     private String profession;
 
     /*
      * The name of the contact's spouse/partner.
      */
-    @JsonProperty(value = "spouseName")
     private String spouseName;
 
     /*
      * The contact's surname.
      */
-    @JsonProperty(value = "surname")
     private String surname;
 
     /*
      * The contact's title.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The phonetic Japanese company name of the contact.
      */
-    @JsonProperty(value = "yomiCompanyName")
     private String yomiCompanyName;
 
     /*
      * The phonetic Japanese given name (first name) of the contact.
      */
-    @JsonProperty(value = "yomiGivenName")
     private String yomiGivenName;
 
     /*
-     * The phonetic Japanese surname (last name)  of the contact.
+     * The phonetic Japanese surname (last name) of the contact.
      */
-    @JsonProperty(value = "yomiSurname")
     private String yomiSurname;
 
     /*
      * The collection of open extensions defined for the contact. Read-only. Nullable.
      */
-    @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
      * The collection of multi-value extended properties defined for the contact. Read-only. Nullable.
      */
-    @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * profilePhoto
      */
-    @JsonProperty(value = "photo")
     private MicrosoftGraphProfilePhoto photo;
 
     /*
      * The collection of single-value extended properties defined for the contact. Read-only. Nullable.
      */
-    @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * contact
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphContact class. */
+    /**
+     * Creates an instance of MicrosoftGraphContact class.
+     */
     public MicrosoftGraphContact() {
     }
 
     /**
      * Get the assistantName property: The name of the contact's assistant.
-     *
+     * 
      * @return the assistantName value.
      */
     public String assistantName() {
@@ -262,7 +231,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the assistantName property: The name of the contact's assistant.
-     *
+     * 
      * @param assistantName the assistantName value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -275,7 +244,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
      * Get the birthday property: The contact's birthday. The Timestamp type represents date and time information using
      * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the birthday value.
      */
     public OffsetDateTime birthday() {
@@ -286,7 +255,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
      * Set the birthday property: The contact's birthday. The Timestamp type represents date and time information using
      * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param birthday the birthday value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -297,7 +266,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the businessAddress property: physicalAddress.
-     *
+     * 
      * @return the businessAddress value.
      */
     public MicrosoftGraphPhysicalAddress businessAddress() {
@@ -306,7 +275,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the businessAddress property: physicalAddress.
-     *
+     * 
      * @param businessAddress the businessAddress value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -317,7 +286,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the businessHomePage property: The business home page of the contact.
-     *
+     * 
      * @return the businessHomePage value.
      */
     public String businessHomePage() {
@@ -326,7 +295,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the businessHomePage property: The business home page of the contact.
-     *
+     * 
      * @param businessHomePage the businessHomePage value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -337,7 +306,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the businessPhones property: The contact's business phone numbers.
-     *
+     * 
      * @return the businessPhones value.
      */
     public List<String> businessPhones() {
@@ -346,7 +315,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the businessPhones property: The contact's business phone numbers.
-     *
+     * 
      * @param businessPhones the businessPhones value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -357,7 +326,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the children property: The names of the contact's children.
-     *
+     * 
      * @return the children value.
      */
     public List<String> children() {
@@ -366,7 +335,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the children property: The names of the contact's children.
-     *
+     * 
      * @param children the children value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -377,7 +346,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the companyName property: The name of the contact's company.
-     *
+     * 
      * @return the companyName value.
      */
     public String companyName() {
@@ -386,7 +355,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the companyName property: The name of the contact's company.
-     *
+     * 
      * @param companyName the companyName value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -397,7 +366,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the department property: The contact's department.
-     *
+     * 
      * @return the department value.
      */
     public String department() {
@@ -406,7 +375,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the department property: The contact's department.
-     *
+     * 
      * @param department the department value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -420,7 +389,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
      * operation. Note that later updates to other properties may cause an automatically generated value to overwrite
      * the displayName value you have specified. To preserve a pre-existing value, always include it as displayName in
      * an update operation.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -432,7 +401,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
      * operation. Note that later updates to other properties may cause an automatically generated value to overwrite
      * the displayName value you have specified. To preserve a pre-existing value, always include it as displayName in
      * an update operation.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -443,7 +412,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the emailAddresses property: The contact's email addresses.
-     *
+     * 
      * @return the emailAddresses value.
      */
     public List<MicrosoftGraphEmailAddress> emailAddresses() {
@@ -452,7 +421,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the emailAddresses property: The contact's email addresses.
-     *
+     * 
      * @param emailAddresses the emailAddresses value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -463,7 +432,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the fileAs property: The name the contact is filed under.
-     *
+     * 
      * @return the fileAs value.
      */
     public String fileAs() {
@@ -472,7 +441,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the fileAs property: The name the contact is filed under.
-     *
+     * 
      * @param fileAs the fileAs value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -483,7 +452,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the generation property: The contact's generation.
-     *
+     * 
      * @return the generation value.
      */
     public String generation() {
@@ -492,7 +461,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the generation property: The contact's generation.
-     *
+     * 
      * @param generation the generation value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -503,7 +472,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the givenName property: The contact's given name.
-     *
+     * 
      * @return the givenName value.
      */
     public String givenName() {
@@ -512,7 +481,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the givenName property: The contact's given name.
-     *
+     * 
      * @param givenName the givenName value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -523,7 +492,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the homeAddress property: physicalAddress.
-     *
+     * 
      * @return the homeAddress value.
      */
     public MicrosoftGraphPhysicalAddress homeAddress() {
@@ -532,7 +501,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the homeAddress property: physicalAddress.
-     *
+     * 
      * @param homeAddress the homeAddress value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -543,7 +512,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the homePhones property: The contact's home phone numbers.
-     *
+     * 
      * @return the homePhones value.
      */
     public List<String> homePhones() {
@@ -552,7 +521,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the homePhones property: The contact's home phone numbers.
-     *
+     * 
      * @param homePhones the homePhones value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -563,7 +532,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the imAddresses property: The contact's instant messaging (IM) addresses.
-     *
+     * 
      * @return the imAddresses value.
      */
     public List<String> imAddresses() {
@@ -572,7 +541,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the imAddresses property: The contact's instant messaging (IM) addresses.
-     *
+     * 
      * @param imAddresses the imAddresses value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -583,7 +552,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the initials property: The contact's initials.
-     *
+     * 
      * @return the initials value.
      */
     public String initials() {
@@ -592,7 +561,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the initials property: The contact's initials.
-     *
+     * 
      * @param initials the initials value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -603,7 +572,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the jobTitle property: The contact’s job title.
-     *
+     * 
      * @return the jobTitle value.
      */
     public String jobTitle() {
@@ -612,7 +581,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the jobTitle property: The contact’s job title.
-     *
+     * 
      * @param jobTitle the jobTitle value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -623,7 +592,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the manager property: The name of the contact's manager.
-     *
+     * 
      * @return the manager value.
      */
     public String manager() {
@@ -632,7 +601,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the manager property: The name of the contact's manager.
-     *
+     * 
      * @param manager the manager value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -643,7 +612,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the middleName property: The contact's middle name.
-     *
+     * 
      * @return the middleName value.
      */
     public String middleName() {
@@ -652,7 +621,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the middleName property: The contact's middle name.
-     *
+     * 
      * @param middleName the middleName value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -663,7 +632,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the mobilePhone property: The contact's mobile phone number.
-     *
+     * 
      * @return the mobilePhone value.
      */
     public String mobilePhone() {
@@ -672,7 +641,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the mobilePhone property: The contact's mobile phone number.
-     *
+     * 
      * @param mobilePhone the mobilePhone value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -683,7 +652,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the nickName property: The contact's nickname.
-     *
+     * 
      * @return the nickName value.
      */
     public String nickName() {
@@ -692,7 +661,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the nickName property: The contact's nickname.
-     *
+     * 
      * @param nickName the nickName value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -703,7 +672,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the officeLocation property: The location of the contact's office.
-     *
+     * 
      * @return the officeLocation value.
      */
     public String officeLocation() {
@@ -712,7 +681,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the officeLocation property: The location of the contact's office.
-     *
+     * 
      * @param officeLocation the officeLocation value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -723,7 +692,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the otherAddress property: physicalAddress.
-     *
+     * 
      * @return the otherAddress value.
      */
     public MicrosoftGraphPhysicalAddress otherAddress() {
@@ -732,7 +701,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the otherAddress property: physicalAddress.
-     *
+     * 
      * @param otherAddress the otherAddress value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -743,7 +712,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the parentFolderId property: The ID of the contact's parent folder.
-     *
+     * 
      * @return the parentFolderId value.
      */
     public String parentFolderId() {
@@ -752,7 +721,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the parentFolderId property: The ID of the contact's parent folder.
-     *
+     * 
      * @param parentFolderId the parentFolderId value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -763,7 +732,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the personalNotes property: The user's notes about the contact.
-     *
+     * 
      * @return the personalNotes value.
      */
     public String personalNotes() {
@@ -772,7 +741,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the personalNotes property: The user's notes about the contact.
-     *
+     * 
      * @param personalNotes the personalNotes value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -783,7 +752,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the profession property: The contact's profession.
-     *
+     * 
      * @return the profession value.
      */
     public String profession() {
@@ -792,7 +761,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the profession property: The contact's profession.
-     *
+     * 
      * @param profession the profession value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -803,7 +772,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the spouseName property: The name of the contact's spouse/partner.
-     *
+     * 
      * @return the spouseName value.
      */
     public String spouseName() {
@@ -812,7 +781,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the spouseName property: The name of the contact's spouse/partner.
-     *
+     * 
      * @param spouseName the spouseName value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -823,7 +792,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the surname property: The contact's surname.
-     *
+     * 
      * @return the surname value.
      */
     public String surname() {
@@ -832,7 +801,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the surname property: The contact's surname.
-     *
+     * 
      * @param surname the surname value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -843,7 +812,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the title property: The contact's title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -852,7 +821,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the title property: The contact's title.
-     *
+     * 
      * @param title the title value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -863,7 +832,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the yomiCompanyName property: The phonetic Japanese company name of the contact.
-     *
+     * 
      * @return the yomiCompanyName value.
      */
     public String yomiCompanyName() {
@@ -872,7 +841,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the yomiCompanyName property: The phonetic Japanese company name of the contact.
-     *
+     * 
      * @param yomiCompanyName the yomiCompanyName value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -883,7 +852,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the yomiGivenName property: The phonetic Japanese given name (first name) of the contact.
-     *
+     * 
      * @return the yomiGivenName value.
      */
     public String yomiGivenName() {
@@ -892,7 +861,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the yomiGivenName property: The phonetic Japanese given name (first name) of the contact.
-     *
+     * 
      * @param yomiGivenName the yomiGivenName value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -903,7 +872,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the yomiSurname property: The phonetic Japanese surname (last name) of the contact.
-     *
+     * 
      * @return the yomiSurname value.
      */
     public String yomiSurname() {
@@ -912,7 +881,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the yomiSurname property: The phonetic Japanese surname (last name) of the contact.
-     *
+     * 
      * @param yomiSurname the yomiSurname value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -923,7 +892,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the extensions property: The collection of open extensions defined for the contact. Read-only. Nullable.
-     *
+     * 
      * @return the extensions value.
      */
     public List<MicrosoftGraphExtension> extensions() {
@@ -932,7 +901,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the extensions property: The collection of open extensions defined for the contact. Read-only. Nullable.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -944,7 +913,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
     /**
      * Get the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * contact. Read-only. Nullable.
-     *
+     * 
      * @return the multiValueExtendedProperties value.
      */
     public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
@@ -954,7 +923,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
     /**
      * Set the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * contact. Read-only. Nullable.
-     *
+     * 
      * @param multiValueExtendedProperties the multiValueExtendedProperties value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -966,7 +935,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the photo property: profilePhoto.
-     *
+     * 
      * @return the photo value.
      */
     public MicrosoftGraphProfilePhoto photo() {
@@ -975,7 +944,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the photo property: profilePhoto.
-     *
+     * 
      * @param photo the photo value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -987,7 +956,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
     /**
      * Get the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the contact. Read-only. Nullable.
-     *
+     * 
      * @return the singleValueExtendedProperties value.
      */
     public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
@@ -997,7 +966,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
     /**
      * Set the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the contact. Read-only. Nullable.
-     *
+     * 
      * @param singleValueExtendedProperties the singleValueExtendedProperties value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -1009,17 +978,16 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the additionalProperties property: contact.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: contact.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphContact object itself.
      */
@@ -1028,43 +996,45 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphContact withCategories(List<String> categories) {
         super.withCategories(categories);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphContact withChangeKey(String changeKey) {
         super.withChangeKey(changeKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphContact withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphContact withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphContact withId(String id) {
         super.withId(id);
@@ -1073,7 +1043,7 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -1103,5 +1073,200 @@ public final class MicrosoftGraphContact extends MicrosoftGraphOutlookItem {
         if (singleValueExtendedProperties() != null) {
             singleValueExtendedProperties().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("categories", categories(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("changeKey", changeKey());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeStringField("assistantName", this.assistantName);
+        jsonWriter.writeStringField("birthday",
+            this.birthday == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.birthday));
+        jsonWriter.writeJsonField("businessAddress", this.businessAddress);
+        jsonWriter.writeStringField("businessHomePage", this.businessHomePage);
+        jsonWriter.writeArrayField("businessPhones", this.businessPhones,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("children", this.children, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("companyName", this.companyName);
+        jsonWriter.writeStringField("department", this.department);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("emailAddresses", this.emailAddresses,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("fileAs", this.fileAs);
+        jsonWriter.writeStringField("generation", this.generation);
+        jsonWriter.writeStringField("givenName", this.givenName);
+        jsonWriter.writeJsonField("homeAddress", this.homeAddress);
+        jsonWriter.writeArrayField("homePhones", this.homePhones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("imAddresses", this.imAddresses, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("initials", this.initials);
+        jsonWriter.writeStringField("jobTitle", this.jobTitle);
+        jsonWriter.writeStringField("manager", this.manager);
+        jsonWriter.writeStringField("middleName", this.middleName);
+        jsonWriter.writeStringField("mobilePhone", this.mobilePhone);
+        jsonWriter.writeStringField("nickName", this.nickName);
+        jsonWriter.writeStringField("officeLocation", this.officeLocation);
+        jsonWriter.writeJsonField("otherAddress", this.otherAddress);
+        jsonWriter.writeStringField("parentFolderId", this.parentFolderId);
+        jsonWriter.writeStringField("personalNotes", this.personalNotes);
+        jsonWriter.writeStringField("profession", this.profession);
+        jsonWriter.writeStringField("spouseName", this.spouseName);
+        jsonWriter.writeStringField("surname", this.surname);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("yomiCompanyName", this.yomiCompanyName);
+        jsonWriter.writeStringField("yomiGivenName", this.yomiGivenName);
+        jsonWriter.writeStringField("yomiSurname", this.yomiSurname);
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("multiValueExtendedProperties", this.multiValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("photo", this.photo);
+        jsonWriter.writeArrayField("singleValueExtendedProperties", this.singleValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphContact from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphContact if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphContact.
+     */
+    public static MicrosoftGraphContact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphContact deserializedMicrosoftGraphContact = new MicrosoftGraphContact();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.withId(reader.getString());
+                } else if ("categories".equals(fieldName)) {
+                    List<String> categories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphContact.withCategories(categories);
+                } else if ("changeKey".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.withChangeKey(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("assistantName".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.assistantName = reader.getString();
+                } else if ("birthday".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.birthday = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("businessAddress".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.businessAddress = MicrosoftGraphPhysicalAddress.fromJson(reader);
+                } else if ("businessHomePage".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.businessHomePage = reader.getString();
+                } else if ("businessPhones".equals(fieldName)) {
+                    List<String> businessPhones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphContact.businessPhones = businessPhones;
+                } else if ("children".equals(fieldName)) {
+                    List<String> children = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphContact.children = children;
+                } else if ("companyName".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.companyName = reader.getString();
+                } else if ("department".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.department = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.displayName = reader.getString();
+                } else if ("emailAddresses".equals(fieldName)) {
+                    List<MicrosoftGraphEmailAddress> emailAddresses
+                        = reader.readArray(reader1 -> MicrosoftGraphEmailAddress.fromJson(reader1));
+                    deserializedMicrosoftGraphContact.emailAddresses = emailAddresses;
+                } else if ("fileAs".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.fileAs = reader.getString();
+                } else if ("generation".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.generation = reader.getString();
+                } else if ("givenName".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.givenName = reader.getString();
+                } else if ("homeAddress".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.homeAddress = MicrosoftGraphPhysicalAddress.fromJson(reader);
+                } else if ("homePhones".equals(fieldName)) {
+                    List<String> homePhones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphContact.homePhones = homePhones;
+                } else if ("imAddresses".equals(fieldName)) {
+                    List<String> imAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphContact.imAddresses = imAddresses;
+                } else if ("initials".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.initials = reader.getString();
+                } else if ("jobTitle".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.jobTitle = reader.getString();
+                } else if ("manager".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.manager = reader.getString();
+                } else if ("middleName".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.middleName = reader.getString();
+                } else if ("mobilePhone".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.mobilePhone = reader.getString();
+                } else if ("nickName".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.nickName = reader.getString();
+                } else if ("officeLocation".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.officeLocation = reader.getString();
+                } else if ("otherAddress".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.otherAddress = MicrosoftGraphPhysicalAddress.fromJson(reader);
+                } else if ("parentFolderId".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.parentFolderId = reader.getString();
+                } else if ("personalNotes".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.personalNotes = reader.getString();
+                } else if ("profession".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.profession = reader.getString();
+                } else if ("spouseName".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.spouseName = reader.getString();
+                } else if ("surname".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.surname = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.title = reader.getString();
+                } else if ("yomiCompanyName".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.yomiCompanyName = reader.getString();
+                } else if ("yomiGivenName".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.yomiGivenName = reader.getString();
+                } else if ("yomiSurname".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.yomiSurname = reader.getString();
+                } else if ("extensions".equals(fieldName)) {
+                    List<MicrosoftGraphExtension> extensions
+                        = reader.readArray(reader1 -> MicrosoftGraphExtension.fromJson(reader1));
+                    deserializedMicrosoftGraphContact.extensions = extensions;
+                } else if ("multiValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties
+                        = reader.readArray(reader1 -> MicrosoftGraphMultiValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphContact.multiValueExtendedProperties = multiValueExtendedProperties;
+                } else if ("photo".equals(fieldName)) {
+                    deserializedMicrosoftGraphContact.photo = MicrosoftGraphProfilePhoto.fromJson(reader);
+                } else if ("singleValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties = reader
+                        .readArray(reader1 -> MicrosoftGraphSingleValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphContact.singleValueExtendedProperties = singleValueExtendedProperties;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphContact.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphContact;
+        });
     }
 }

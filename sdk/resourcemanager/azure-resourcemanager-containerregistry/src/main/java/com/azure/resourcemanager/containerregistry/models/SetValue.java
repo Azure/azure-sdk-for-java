@@ -6,36 +6,41 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of a overridable value that can be passed to a task template. */
+/**
+ * The properties of a overridable value that can be passed to a task template.
+ */
 @Fluent
-public final class SetValue {
+public final class SetValue implements JsonSerializable<SetValue> {
     /*
      * The name of the overridable value.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The overridable value.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
      * Flag to indicate whether the value represents a secret or not.
      */
-    @JsonProperty(value = "isSecret")
     private Boolean isSecret;
 
-    /** Creates an instance of SetValue class. */
+    /**
+     * Creates an instance of SetValue class.
+     */
     public SetValue() {
     }
 
     /**
      * Get the name property: The name of the overridable value.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +49,7 @@ public final class SetValue {
 
     /**
      * Set the name property: The name of the overridable value.
-     *
+     * 
      * @param name the name value to set.
      * @return the SetValue object itself.
      */
@@ -55,7 +60,7 @@ public final class SetValue {
 
     /**
      * Get the value property: The overridable value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -64,7 +69,7 @@ public final class SetValue {
 
     /**
      * Set the value property: The overridable value.
-     *
+     * 
      * @param value the value value to set.
      * @return the SetValue object itself.
      */
@@ -75,7 +80,7 @@ public final class SetValue {
 
     /**
      * Get the isSecret property: Flag to indicate whether the value represents a secret or not.
-     *
+     * 
      * @return the isSecret value.
      */
     public Boolean isSecret() {
@@ -84,7 +89,7 @@ public final class SetValue {
 
     /**
      * Set the isSecret property: Flag to indicate whether the value represents a secret or not.
-     *
+     * 
      * @param isSecret the isSecret value to set.
      * @return the SetValue object itself.
      */
@@ -95,19 +100,62 @@ public final class SetValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model SetValue"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SetValue"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property value in model SetValue"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model SetValue"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SetValue.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeBooleanField("isSecret", this.isSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SetValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SetValue if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SetValue.
+     */
+    public static SetValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SetValue deserializedSetValue = new SetValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSetValue.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedSetValue.value = reader.getString();
+                } else if ("isSecret".equals(fieldName)) {
+                    deserializedSetValue.isSecret = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSetValue;
+        });
+    }
 }

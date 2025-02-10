@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionContainerResourceInner;
 
-/** An instance of this class provides access to all the operations defined in ProtectionContainersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectionContainersClient.
+ */
 public interface ProtectionContainersClient {
     /**
      * Gets details of the specific container registered to your Recovery Services Vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric where the container belongs.
@@ -28,12 +30,12 @@ public interface ProtectionContainersClient {
      * @return details of the specific container registered to your Recovery Services Vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectionContainerResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, Context context);
+    Response<ProtectionContainerResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, Context context);
 
     /**
      * Gets details of the specific container registered to your Recovery Services Vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric where the container belongs.
@@ -44,13 +46,15 @@ public interface ProtectionContainersClient {
      * @return details of the specific container registered to your Recovery Services Vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionContainerResourceInner get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName);
+    ProtectionContainerResourceInner get(String vaultName, String resourceGroupName, String fabricName,
+        String containerName);
 
     /**
-     * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
-     * status, use location header to call get latest status of the operation.
-     *
+     * Registers the container with Recovery Services vault.
+     * This is an asynchronous operation. To track the operation status, use location header to call get latest status
+     * of
+     * the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -63,16 +67,15 @@ public interface ProtectionContainersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProtectionContainerResourceInner>, ProtectionContainerResourceInner> beginRegister(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
+        String vaultName, String resourceGroupName, String fabricName, String containerName,
         ProtectionContainerResourceInner parameters);
 
     /**
-     * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
-     * status, use location header to call get latest status of the operation.
-     *
+     * Registers the container with Recovery Services vault.
+     * This is an asynchronous operation. To track the operation status, use location header to call get latest status
+     * of
+     * the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -86,17 +89,15 @@ public interface ProtectionContainersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProtectionContainerResourceInner>, ProtectionContainerResourceInner> beginRegister(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        ProtectionContainerResourceInner parameters,
-        Context context);
+        String vaultName, String resourceGroupName, String fabricName, String containerName,
+        ProtectionContainerResourceInner parameters, Context context);
 
     /**
-     * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
-     * status, use location header to call get latest status of the operation.
-     *
+     * Registers the container with Recovery Services vault.
+     * This is an asynchronous operation. To track the operation status, use location header to call get latest status
+     * of
+     * the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -108,17 +109,15 @@ public interface ProtectionContainersClient {
      * @return base class for container with backup items.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionContainerResourceInner register(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        ProtectionContainerResourceInner parameters);
+    ProtectionContainerResourceInner register(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, ProtectionContainerResourceInner parameters);
 
     /**
-     * Registers the container with Recovery Services vault. This is an asynchronous operation. To track the operation
-     * status, use location header to call get latest status of the operation.
-     *
+     * Registers the container with Recovery Services vault.
+     * This is an asynchronous operation. To track the operation status, use location header to call get latest status
+     * of
+     * the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -131,19 +130,14 @@ public interface ProtectionContainersClient {
      * @return base class for container with backup items.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionContainerResourceInner register(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        ProtectionContainerResourceInner parameters,
-        Context context);
+    ProtectionContainerResourceInner register(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, ProtectionContainerResourceInner parameters, Context context);
 
     /**
      * Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To
-     * determine whether the backend service has finished processing the request, call Get Container Operation Result
-     * API.
-     *
+     * determine
+     * whether the backend service has finished processing the request, call Get Container Operation Result API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric where the container belongs.
@@ -155,14 +149,14 @@ public interface ProtectionContainersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> unregisterWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, Context context);
+    Response<Void> unregisterWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, Context context);
 
     /**
      * Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To
-     * determine whether the backend service has finished processing the request, call Get Container Operation Result
-     * API.
-     *
+     * determine
+     * whether the backend service has finished processing the request, call Get Container Operation Result API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric where the container belongs.
@@ -176,9 +170,9 @@ public interface ProtectionContainersClient {
 
     /**
      * Inquires all the protectable items under the given container.
-     *
-     * <p>This is an async operation and the results should be tracked using location header or Azure-async-url.
-     *
+     * 
+     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric Name associated with the container.
@@ -191,19 +185,14 @@ public interface ProtectionContainersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> inquireWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String filter,
-        Context context);
+    Response<Void> inquireWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String filter, Context context);
 
     /**
      * Inquires all the protectable items under the given container.
-     *
-     * <p>This is an async operation and the results should be tracked using location header or Azure-async-url.
-     *
+     * 
+     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric Name associated with the container.
@@ -218,7 +207,7 @@ public interface ProtectionContainersClient {
     /**
      * Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
      * asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated the container.
@@ -230,13 +219,13 @@ public interface ProtectionContainersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> refreshWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String filter, Context context);
+    Response<Void> refreshWithResponse(String vaultName, String resourceGroupName, String fabricName, String filter,
+        Context context);
 
     /**
      * Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
      * asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated the container.

@@ -23,8 +23,11 @@ public final class SsisObjectMetadataStatusResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisObjectMetadataStatusResponseInner model = new SsisObjectMetadataStatusResponseInner()
-            .withStatus("tdhxujznbmpowuwp").withName("qlveualupjmkh").withProperties("obbc").withError("s");
+        SsisObjectMetadataStatusResponseInner model
+            = new SsisObjectMetadataStatusResponseInner().withStatus("tdhxujznbmpowuwp")
+                .withName("qlveualupjmkh")
+                .withProperties("obbc")
+                .withError("s");
         model = BinaryData.fromObject(model).toObject(SsisObjectMetadataStatusResponseInner.class);
         Assertions.assertEquals("tdhxujznbmpowuwp", model.status());
         Assertions.assertEquals("qlveualupjmkh", model.name());

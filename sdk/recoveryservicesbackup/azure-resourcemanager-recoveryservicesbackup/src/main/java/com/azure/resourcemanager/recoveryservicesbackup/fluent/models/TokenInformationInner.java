@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The token information details. */
+/**
+ * The token information details.
+ */
 @Fluent
-public final class TokenInformationInner {
+public final class TokenInformationInner implements JsonSerializable<TokenInformationInner> {
     /*
      * Token value.
      */
-    @JsonProperty(value = "token")
     private String token;
 
     /*
      * Expiry time of token.
      */
-    @JsonProperty(value = "expiryTimeInUtcTicks")
     private Long expiryTimeInUtcTicks;
 
     /*
      * Security PIN
      */
-    @JsonProperty(value = "securityPIN")
     private String securityPin;
 
-    /** Creates an instance of TokenInformationInner class. */
+    /**
+     * Creates an instance of TokenInformationInner class.
+     */
     public TokenInformationInner() {
     }
 
     /**
      * Get the token property: Token value.
-     *
+     * 
      * @return the token value.
      */
     public String token() {
@@ -43,7 +48,7 @@ public final class TokenInformationInner {
 
     /**
      * Set the token property: Token value.
-     *
+     * 
      * @param token the token value to set.
      * @return the TokenInformationInner object itself.
      */
@@ -54,7 +59,7 @@ public final class TokenInformationInner {
 
     /**
      * Get the expiryTimeInUtcTicks property: Expiry time of token.
-     *
+     * 
      * @return the expiryTimeInUtcTicks value.
      */
     public Long expiryTimeInUtcTicks() {
@@ -63,7 +68,7 @@ public final class TokenInformationInner {
 
     /**
      * Set the expiryTimeInUtcTicks property: Expiry time of token.
-     *
+     * 
      * @param expiryTimeInUtcTicks the expiryTimeInUtcTicks value to set.
      * @return the TokenInformationInner object itself.
      */
@@ -74,7 +79,7 @@ public final class TokenInformationInner {
 
     /**
      * Get the securityPin property: Security PIN.
-     *
+     * 
      * @return the securityPin value.
      */
     public String securityPin() {
@@ -83,7 +88,7 @@ public final class TokenInformationInner {
 
     /**
      * Set the securityPin property: Security PIN.
-     *
+     * 
      * @param securityPin the securityPin value to set.
      * @return the TokenInformationInner object itself.
      */
@@ -94,9 +99,51 @@ public final class TokenInformationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("token", this.token);
+        jsonWriter.writeNumberField("expiryTimeInUtcTicks", this.expiryTimeInUtcTicks);
+        jsonWriter.writeStringField("securityPIN", this.securityPin);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TokenInformationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TokenInformationInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TokenInformationInner.
+     */
+    public static TokenInformationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TokenInformationInner deserializedTokenInformationInner = new TokenInformationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("token".equals(fieldName)) {
+                    deserializedTokenInformationInner.token = reader.getString();
+                } else if ("expiryTimeInUtcTicks".equals(fieldName)) {
+                    deserializedTokenInformationInner.expiryTimeInUtcTicks = reader.getNullable(JsonReader::getLong);
+                } else if ("securityPIN".equals(fieldName)) {
+                    deserializedTokenInformationInner.securityPin = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTokenInformationInner;
+        });
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.workflow.implementation;
 
+import com.azure.analytics.purview.workflow.PurviewWorkflowServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -27,23 +28,38 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in UserRequests. */
+/**
+ * An instance of this class provides access to all the operations defined in UserRequests.
+ */
 public final class UserRequestsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final UserRequestsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewWorkflowClientImpl client;
 
     /**
      * Initializes an instance of UserRequestsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     UserRequestsImpl(PurviewWorkflowClientImpl client) {
-        this.service =
-                RestProxy.create(UserRequestsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(UserRequestsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewWorkflowServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -54,53 +70,33 @@ public final class UserRequestsImpl {
     @ServiceInterface(name = "PurviewWorkflowUserR")
     public interface UserRequestsService {
         @Post("/userrequests")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> submit(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData userRequestsPayload,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> submit(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData userRequestsPayload,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/userrequests")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> submitSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData userRequestsPayload,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> submitSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData userRequestsPayload,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
      * Submit a user request for requestor, a user request describes user ask to do operation(s) on Purview. If any
      * workflow's trigger matches with an operation in request, a run of the workflow is created.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     operations (Required): [
      *          (Required){
@@ -110,11 +106,13 @@ public final class UserRequestsImpl {
      *     ]
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     requestId: String (Required)
      *     requestor: String (Required)
@@ -130,8 +128,9 @@ public final class UserRequestsImpl {
      *     comment: String (Optional)
      *     status: String(NotStarted/InProgress/Failed/Completed/Canceling/CancellationFailed/Canceled) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param userRequestsPayload The payload of submitting a user request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -139,30 +138,23 @@ public final class UserRequestsImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return describes user ask to do operation(s) on Purview along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> submitWithResponseAsync(
-            BinaryData userRequestsPayload, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> submitWithResponseAsync(BinaryData userRequestsPayload,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.submit(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                userRequestsPayload,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.submit(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), userRequestsPayload, accept, requestOptions, context));
     }
 
     /**
      * Submit a user request for requestor, a user request describes user ask to do operation(s) on Purview. If any
      * workflow's trigger matches with an operation in request, a run of the workflow is created.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     operations (Required): [
      *          (Required){
@@ -172,11 +164,13 @@ public final class UserRequestsImpl {
      *     ]
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     requestId: String (Required)
      *     requestor: String (Required)
@@ -192,8 +186,9 @@ public final class UserRequestsImpl {
      *     comment: String (Optional)
      *     status: String(NotStarted/InProgress/Failed/Completed/Canceling/CancellationFailed/Canceled) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param userRequestsPayload The payload of submitting a user request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -205,12 +200,7 @@ public final class UserRequestsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> submitWithResponse(BinaryData userRequestsPayload, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.submitSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                userRequestsPayload,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.submitSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            userRequestsPayload, accept, requestOptions, Context.NONE);
     }
 }

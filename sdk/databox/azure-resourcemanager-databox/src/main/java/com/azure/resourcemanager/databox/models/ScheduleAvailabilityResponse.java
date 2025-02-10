@@ -5,26 +5,34 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Schedule availability for given sku in a region. */
+/**
+ * Schedule availability for given sku in a region.
+ */
 @Immutable
-public final class ScheduleAvailabilityResponse {
+public final class ScheduleAvailabilityResponse implements JsonSerializable<ScheduleAvailabilityResponse> {
     /*
      * List of dates available to schedule
      */
-    @JsonProperty(value = "availableDates", access = JsonProperty.Access.WRITE_ONLY)
     private List<OffsetDateTime> availableDates;
 
-    /** Creates an instance of ScheduleAvailabilityResponse class. */
+    /**
+     * Creates an instance of ScheduleAvailabilityResponse class.
+     */
     public ScheduleAvailabilityResponse() {
     }
 
     /**
      * Get the availableDates property: List of dates available to schedule.
-     *
+     * 
      * @return the availableDates value.
      */
     public List<OffsetDateTime> availableDates() {
@@ -33,9 +41,46 @@ public final class ScheduleAvailabilityResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleAvailabilityResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleAvailabilityResponse if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleAvailabilityResponse.
+     */
+    public static ScheduleAvailabilityResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleAvailabilityResponse deserializedScheduleAvailabilityResponse = new ScheduleAvailabilityResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("availableDates".equals(fieldName)) {
+                    List<OffsetDateTime> availableDates = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedScheduleAvailabilityResponse.availableDates = availableDates;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleAvailabilityResponse;
+        });
     }
 }

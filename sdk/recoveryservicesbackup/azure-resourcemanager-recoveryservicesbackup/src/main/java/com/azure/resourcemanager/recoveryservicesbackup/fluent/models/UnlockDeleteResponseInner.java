@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Response of Unlock Delete API. */
+/**
+ * Response of Unlock Delete API.
+ */
 @Fluent
-public final class UnlockDeleteResponseInner {
+public final class UnlockDeleteResponseInner implements JsonSerializable<UnlockDeleteResponseInner> {
     /*
      * This is the time when unlock delete privileges will get expired.
      */
-    @JsonProperty(value = "unlockDeleteExpiryTime")
     private String unlockDeleteExpiryTime;
 
-    /** Creates an instance of UnlockDeleteResponseInner class. */
+    /**
+     * Creates an instance of UnlockDeleteResponseInner class.
+     */
     public UnlockDeleteResponseInner() {
     }
 
     /**
      * Get the unlockDeleteExpiryTime property: This is the time when unlock delete privileges will get expired.
-     *
+     * 
      * @return the unlockDeleteExpiryTime value.
      */
     public String unlockDeleteExpiryTime() {
@@ -31,7 +38,7 @@ public final class UnlockDeleteResponseInner {
 
     /**
      * Set the unlockDeleteExpiryTime property: This is the time when unlock delete privileges will get expired.
-     *
+     * 
      * @param unlockDeleteExpiryTime the unlockDeleteExpiryTime value to set.
      * @return the UnlockDeleteResponseInner object itself.
      */
@@ -42,9 +49,45 @@ public final class UnlockDeleteResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("unlockDeleteExpiryTime", this.unlockDeleteExpiryTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UnlockDeleteResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UnlockDeleteResponseInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UnlockDeleteResponseInner.
+     */
+    public static UnlockDeleteResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UnlockDeleteResponseInner deserializedUnlockDeleteResponseInner = new UnlockDeleteResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unlockDeleteExpiryTime".equals(fieldName)) {
+                    deserializedUnlockDeleteResponseInner.unlockDeleteExpiryTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUnlockDeleteResponseInner;
+        });
     }
 }

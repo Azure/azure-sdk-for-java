@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The WafRankingsResponseDataItemMetric model. */
+/**
+ * The WafRankingsResponseDataItemMetric model.
+ */
 @Fluent
-public final class WafRankingsResponseDataItemMetric {
+public final class WafRankingsResponseDataItemMetric implements JsonSerializable<WafRankingsResponseDataItemMetric> {
     /*
      * The metric property.
      */
-    @JsonProperty(value = "metric")
     private String metric;
 
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private Long value;
 
     /*
      * The percentage property.
      */
-    @JsonProperty(value = "percentage")
     private Double percentage;
 
-    /** Creates an instance of WafRankingsResponseDataItemMetric class. */
+    /**
+     * Creates an instance of WafRankingsResponseDataItemMetric class.
+     */
     public WafRankingsResponseDataItemMetric() {
     }
 
     /**
      * Get the metric property: The metric property.
-     *
+     * 
      * @return the metric value.
      */
     public String metric() {
@@ -43,7 +48,7 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Set the metric property: The metric property.
-     *
+     * 
      * @param metric the metric value to set.
      * @return the WafRankingsResponseDataItemMetric object itself.
      */
@@ -54,7 +59,7 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public Long value() {
@@ -63,7 +68,7 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the WafRankingsResponseDataItemMetric object itself.
      */
@@ -74,7 +79,7 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Get the percentage property: The percentage property.
-     *
+     * 
      * @return the percentage value.
      */
     public Double percentage() {
@@ -83,7 +88,7 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Set the percentage property: The percentage property.
-     *
+     * 
      * @param percentage the percentage value to set.
      * @return the WafRankingsResponseDataItemMetric object itself.
      */
@@ -94,9 +99,53 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metric", this.metric);
+        jsonWriter.writeNumberField("value", this.value);
+        jsonWriter.writeNumberField("percentage", this.percentage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WafRankingsResponseDataItemMetric from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WafRankingsResponseDataItemMetric if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WafRankingsResponseDataItemMetric.
+     */
+    public static WafRankingsResponseDataItemMetric fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WafRankingsResponseDataItemMetric deserializedWafRankingsResponseDataItemMetric
+                = new WafRankingsResponseDataItemMetric();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metric".equals(fieldName)) {
+                    deserializedWafRankingsResponseDataItemMetric.metric = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedWafRankingsResponseDataItemMetric.value = reader.getNullable(JsonReader::getLong);
+                } else if ("percentage".equals(fieldName)) {
+                    deserializedWafRankingsResponseDataItemMetric.percentage
+                        = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWafRankingsResponseDataItemMetric;
+        });
     }
 }

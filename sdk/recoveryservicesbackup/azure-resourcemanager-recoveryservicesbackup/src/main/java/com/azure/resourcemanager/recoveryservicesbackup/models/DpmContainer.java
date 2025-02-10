@@ -5,77 +5,89 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** DPM workload-specific protection container. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "containerType",
-    defaultImpl = DpmContainer.class)
-@JsonTypeName("DPMContainer")
-@JsonSubTypes({@JsonSubTypes.Type(name = "AzureBackupServerContainer", value = AzureBackupServerContainer.class)})
+/**
+ * DPM workload-specific protection container.
+ */
 @Fluent
 public class DpmContainer extends ProtectionContainer {
     /*
+     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+     * 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer
+     */
+    private ProtectableContainerType containerType = ProtectableContainerType.DPMCONTAINER;
+
+    /*
      * Specifies whether the container is re-registrable.
      */
-    @JsonProperty(value = "canReRegister")
     private Boolean canReRegister;
 
     /*
      * ID of container.
      */
-    @JsonProperty(value = "containerId")
     private String containerId;
 
     /*
      * Number of protected items in the BackupEngine
      */
-    @JsonProperty(value = "protectedItemCount")
     private Long protectedItemCount;
 
     /*
      * Backup engine Agent version
      */
-    @JsonProperty(value = "dpmAgentVersion")
     private String dpmAgentVersion;
 
     /*
      * List of BackupEngines protecting the container
      */
-    @JsonProperty(value = "dpmServers")
     private List<String> dpmServers;
 
     /*
      * To check if upgrade available
      */
-    @JsonProperty(value = "upgradeAvailable")
     private Boolean upgradeAvailable;
 
     /*
      * Protection status of the container.
      */
-    @JsonProperty(value = "protectionStatus")
     private String protectionStatus;
 
     /*
      * Extended Info of the container.
      */
-    @JsonProperty(value = "extendedInfo")
     private DpmContainerExtendedInfo extendedInfo;
 
-    /** Creates an instance of DpmContainer class. */
+    /**
+     * Creates an instance of DpmContainer class.
+     */
     public DpmContainer() {
     }
 
     /**
+     * Get the containerType property: Type of the container. The value of this property for: 1. Compute Azure VM is
+     * Microsoft.Compute/virtualMachines 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer.
+     * 
+     * @return the containerType value.
+     */
+    @Override
+    public ProtectableContainerType containerType() {
+        return this.containerType;
+    }
+
+    /**
      * Get the canReRegister property: Specifies whether the container is re-registrable.
-     *
+     * 
      * @return the canReRegister value.
      */
     public Boolean canReRegister() {
@@ -84,7 +96,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the canReRegister property: Specifies whether the container is re-registrable.
-     *
+     * 
      * @param canReRegister the canReRegister value to set.
      * @return the DpmContainer object itself.
      */
@@ -95,7 +107,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the containerId property: ID of container.
-     *
+     * 
      * @return the containerId value.
      */
     public String containerId() {
@@ -104,7 +116,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the containerId property: ID of container.
-     *
+     * 
      * @param containerId the containerId value to set.
      * @return the DpmContainer object itself.
      */
@@ -115,7 +127,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the protectedItemCount property: Number of protected items in the BackupEngine.
-     *
+     * 
      * @return the protectedItemCount value.
      */
     public Long protectedItemCount() {
@@ -124,7 +136,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the protectedItemCount property: Number of protected items in the BackupEngine.
-     *
+     * 
      * @param protectedItemCount the protectedItemCount value to set.
      * @return the DpmContainer object itself.
      */
@@ -135,7 +147,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the dpmAgentVersion property: Backup engine Agent version.
-     *
+     * 
      * @return the dpmAgentVersion value.
      */
     public String dpmAgentVersion() {
@@ -144,7 +156,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the dpmAgentVersion property: Backup engine Agent version.
-     *
+     * 
      * @param dpmAgentVersion the dpmAgentVersion value to set.
      * @return the DpmContainer object itself.
      */
@@ -155,7 +167,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the dpmServers property: List of BackupEngines protecting the container.
-     *
+     * 
      * @return the dpmServers value.
      */
     public List<String> dpmServers() {
@@ -164,7 +176,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the dpmServers property: List of BackupEngines protecting the container.
-     *
+     * 
      * @param dpmServers the dpmServers value to set.
      * @return the DpmContainer object itself.
      */
@@ -175,7 +187,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the upgradeAvailable property: To check if upgrade available.
-     *
+     * 
      * @return the upgradeAvailable value.
      */
     public Boolean upgradeAvailable() {
@@ -184,7 +196,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the upgradeAvailable property: To check if upgrade available.
-     *
+     * 
      * @param upgradeAvailable the upgradeAvailable value to set.
      * @return the DpmContainer object itself.
      */
@@ -195,7 +207,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the protectionStatus property: Protection status of the container.
-     *
+     * 
      * @return the protectionStatus value.
      */
     public String protectionStatus() {
@@ -204,7 +216,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the protectionStatus property: Protection status of the container.
-     *
+     * 
      * @param protectionStatus the protectionStatus value to set.
      * @return the DpmContainer object itself.
      */
@@ -215,7 +227,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Get the extendedInfo property: Extended Info of the container.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public DpmContainerExtendedInfo extendedInfo() {
@@ -224,7 +236,7 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Set the extendedInfo property: Extended Info of the container.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the DpmContainer object itself.
      */
@@ -233,35 +245,45 @@ public class DpmContainer extends ProtectionContainer {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmContainer withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmContainer withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmContainer withProtectableObjectType(String protectableObjectType) {
         super.withProtectableObjectType(protectableObjectType);
@@ -270,14 +292,116 @@ public class DpmContainer extends ProtectionContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("registrationStatus", registrationStatus());
+        jsonWriter.writeStringField("healthStatus", healthStatus());
+        jsonWriter.writeStringField("protectableObjectType", protectableObjectType());
+        jsonWriter.writeStringField("containerType", this.containerType == null ? null : this.containerType.toString());
+        jsonWriter.writeBooleanField("canReRegister", this.canReRegister);
+        jsonWriter.writeStringField("containerId", this.containerId);
+        jsonWriter.writeNumberField("protectedItemCount", this.protectedItemCount);
+        jsonWriter.writeStringField("dpmAgentVersion", this.dpmAgentVersion);
+        jsonWriter.writeArrayField("dpmServers", this.dpmServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("upgradeAvailable", this.upgradeAvailable);
+        jsonWriter.writeStringField("protectionStatus", this.protectionStatus);
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DpmContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DpmContainer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DpmContainer.
+     */
+    public static DpmContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("containerType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureBackupServerContainer".equals(discriminatorValue)) {
+                    return AzureBackupServerContainer.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DpmContainer fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DpmContainer deserializedDpmContainer = new DpmContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedDpmContainer.withFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedDpmContainer
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedDpmContainer.withRegistrationStatus(reader.getString());
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedDpmContainer.withHealthStatus(reader.getString());
+                } else if ("protectableObjectType".equals(fieldName)) {
+                    deserializedDpmContainer.withProtectableObjectType(reader.getString());
+                } else if ("containerType".equals(fieldName)) {
+                    deserializedDpmContainer.containerType = ProtectableContainerType.fromString(reader.getString());
+                } else if ("canReRegister".equals(fieldName)) {
+                    deserializedDpmContainer.canReRegister = reader.getNullable(JsonReader::getBoolean);
+                } else if ("containerId".equals(fieldName)) {
+                    deserializedDpmContainer.containerId = reader.getString();
+                } else if ("protectedItemCount".equals(fieldName)) {
+                    deserializedDpmContainer.protectedItemCount = reader.getNullable(JsonReader::getLong);
+                } else if ("dpmAgentVersion".equals(fieldName)) {
+                    deserializedDpmContainer.dpmAgentVersion = reader.getString();
+                } else if ("dpmServers".equals(fieldName)) {
+                    List<String> dpmServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDpmContainer.dpmServers = dpmServers;
+                } else if ("upgradeAvailable".equals(fieldName)) {
+                    deserializedDpmContainer.upgradeAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("protectionStatus".equals(fieldName)) {
+                    deserializedDpmContainer.protectionStatus = reader.getString();
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedDpmContainer.extendedInfo = DpmContainerExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDpmContainer;
+        });
     }
 }

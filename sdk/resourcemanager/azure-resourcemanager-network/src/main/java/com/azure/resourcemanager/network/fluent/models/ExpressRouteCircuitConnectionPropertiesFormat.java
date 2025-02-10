@@ -6,56 +6,54 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
 import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of the express route circuit connection.
  */
 @Fluent
-public final class ExpressRouteCircuitConnectionPropertiesFormat {
+public final class ExpressRouteCircuitConnectionPropertiesFormat
+    implements JsonSerializable<ExpressRouteCircuitConnectionPropertiesFormat> {
     /*
      * Reference to Express Route Circuit Private Peering Resource of the circuit initiating connection.
      */
-    @JsonProperty(value = "expressRouteCircuitPeering")
     private SubResource expressRouteCircuitPeering;
 
     /*
      * Reference to Express Route Circuit Private Peering Resource of the peered circuit.
      */
-    @JsonProperty(value = "peerExpressRouteCircuitPeering")
     private SubResource peerExpressRouteCircuitPeering;
 
     /*
      * /29 IP address space to carve out Customer addresses for tunnels.
      */
-    @JsonProperty(value = "addressPrefix")
     private String addressPrefix;
 
     /*
      * The authorization key.
      */
-    @JsonProperty(value = "authorizationKey")
     private String authorizationKey;
 
     /*
      * IPv6 Address PrefixProperties of the express route circuit connection.
      */
-    @JsonProperty(value = "ipv6CircuitConnectionConfig")
     private Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig;
 
     /*
      * Express Route Circuit connection state.
      */
-    @JsonProperty(value = "circuitConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private CircuitConnectionStatus circuitConnectionStatus;
 
     /*
      * The provisioning state of the express route circuit connection resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -200,5 +198,63 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
         if (ipv6CircuitConnectionConfig() != null) {
             ipv6CircuitConnectionConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("expressRouteCircuitPeering", this.expressRouteCircuitPeering);
+        jsonWriter.writeJsonField("peerExpressRouteCircuitPeering", this.peerExpressRouteCircuitPeering);
+        jsonWriter.writeStringField("addressPrefix", this.addressPrefix);
+        jsonWriter.writeStringField("authorizationKey", this.authorizationKey);
+        jsonWriter.writeJsonField("ipv6CircuitConnectionConfig", this.ipv6CircuitConnectionConfig);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCircuitConnectionPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCircuitConnectionPropertiesFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCircuitConnectionPropertiesFormat.
+     */
+    public static ExpressRouteCircuitConnectionPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCircuitConnectionPropertiesFormat deserializedExpressRouteCircuitConnectionPropertiesFormat
+                = new ExpressRouteCircuitConnectionPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expressRouteCircuitPeering".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.expressRouteCircuitPeering
+                        = SubResource.fromJson(reader);
+                } else if ("peerExpressRouteCircuitPeering".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.peerExpressRouteCircuitPeering
+                        = SubResource.fromJson(reader);
+                } else if ("addressPrefix".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.addressPrefix = reader.getString();
+                } else if ("authorizationKey".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.authorizationKey = reader.getString();
+                } else if ("ipv6CircuitConnectionConfig".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.ipv6CircuitConnectionConfig
+                        = Ipv6CircuitConnectionConfig.fromJson(reader);
+                } else if ("circuitConnectionStatus".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.circuitConnectionStatus
+                        = CircuitConnectionStatus.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCircuitConnectionPropertiesFormat;
+        });
     }
 }

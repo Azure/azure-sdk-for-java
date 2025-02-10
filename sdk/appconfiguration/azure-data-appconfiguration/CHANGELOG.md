@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,131 @@
 
 ### Other Changes
 
+## 1.7.3 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
+## 1.7.2 (2024-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+## 1.7.1 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
+## 1.7.0 (2024-08-07)
+
+### Features Added
+
+- Added a new service API support: `2023-11-01`.
+- Added a new method `listLabels` to support listing labels capabilities.
+- Added new class `SettingLabel` and `SettingLabelSelector`, and a new enum `SettingLabelFields`.
+- Added a new property `tagsFilter` to `SettingSelector` to support filtering settings or revisions with tags filter.
+- Added a new property `tags` to `ConfigurationSettingsFilter` to support filtering settings with tags filter for snapshot.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
+
+## 1.6.3 (2024-07-26)
+
+### Bugs Fixed
+
+Fixed `FeatureFlagConfigurationSetting`'s `setKey()` which should always add the feature flag prefix `.appconfig.featureflag/` before the input key. ([#33332](https://github.com/Azure/azure-sdk-for-java/issues/33332))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+
+## 1.6.2 (2024-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+
+## 1.6.1 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+## 1.6.0 (2024-04-09)
+
+### Features Added
+
+- Added Page ETag support in listing configuration setting, which returns empty body and status code `304 not modified`
+  if settings in the page and ETag of the page are not changed. If status code `200` returns in the page response,
+  which means page's settings and ETag have changed. A full page of settings and a new page ETag will be returned in
+  response.
+  Use the new parameter `matchConditions` in the `SettingSelector` to assign the page ETags in the request to service.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+
+## 1.5.3 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+
+## 1.6.0-beta.1 (2024-03-04)
+
+### Features Added
+
+- Added Page ETag support in listing configuration setting, which returns empty body and status code `304 not modified` 
+  if settings in the page and ETag of the page are not changed. If status code `200` returns in the page response, 
+  which means page's settings and ETag have changed. A full page of settings and a new page ETag will be returned in
+  response.
+  Use the new parameter `matchConditions` in the `SettingSelector` to assign the page ETags in the request to service.
+
+
+## 1.5.2 (2024-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
+
 ## 1.5.1 (2023-12-04)
 
 ### Other Changes
@@ -18,6 +143,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
 
 ## 1.5.0 (2023-11-08)
 
@@ -189,7 +315,7 @@ Note: Below breaking changes only affect the version `1.5.0-beta.1`.
 ## 1.4.0 (2023-01-11)
 
 ### Features Added
-- Added `getEnpoint()` method to both App Configuration synchronous and asynchronous clients.
+- Added `getEndpoint()` method to both App Configuration synchronous and asynchronous clients.
 
 ### Other Changes
 
@@ -424,7 +550,7 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 
 ## 1.0.0-preview.5 (2019-10-11)
-- Fixed a explored bug that ConfigurationClientCredential is already pacakge-private. Using connection String instead.
+- Fixed a explored bug that ConfigurationClientCredential is already package-private. Using connection String instead.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
@@ -447,7 +573,7 @@ demonstrate the new API.
 
 ## 1.0.0-preview.3 (2019-09-10)
 - Removed dependency on Netty.
-- Added logging when throwing `RutimeException`s.
+- Added logging when throwing `RuntimeException`s.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 

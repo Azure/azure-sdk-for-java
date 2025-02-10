@@ -23,9 +23,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateProte
 public interface ReplicationProtectionContainerMappingsClient {
     /**
      * Gets the list of protection container mappings for a protection container.
-     *
-     * <p>Lists the protection container mappings for a protection container.
-     *
+     * 
+     * Lists the protection container mappings for a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -36,14 +36,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return protection container mapping collection class as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProtectionContainerMappingInner> listByReplicationProtectionContainers(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName);
+    PagedIterable<ProtectionContainerMappingInner> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName);
 
     /**
      * Gets the list of protection container mappings for a protection container.
-     *
-     * <p>Lists the protection container mappings for a protection container.
-     *
+     * 
+     * Lists the protection container mappings for a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -55,18 +55,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return protection container mapping collection class as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProtectionContainerMappingInner> listByReplicationProtectionContainers(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        Context context);
+    PagedIterable<ProtectionContainerMappingInner> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName, Context context);
 
     /**
      * Gets a protection container mapping.
-     *
-     * <p>Gets the details of a protection container mapping.
-     *
+     * 
+     * Gets the details of a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -79,19 +75,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return the details of a protection container mapping along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectionContainerMappingInner> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        Context context);
+    Response<ProtectionContainerMappingInner> getWithResponse(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName, Context context);
 
     /**
      * Gets a protection container mapping.
-     *
-     * <p>Gets the details of a protection container mapping.
-     *
+     * 
+     * Gets the details of a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -103,18 +94,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return the details of a protection container mapping.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionContainerMappingInner get(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName);
+    ProtectionContainerMappingInner get(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName);
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -128,18 +115,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, CreateProtectionContainerMappingInput creationInput);
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -154,19 +137,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, CreateProtectionContainerMappingInput creationInput, Context context);
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -179,19 +157,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return protection container mapping object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionContainerMappingInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput);
+    ProtectionContainerMappingInner create(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, CreateProtectionContainerMappingInput creationInput);
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -205,20 +178,15 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return protection container mapping object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionContainerMappingInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput,
+    ProtectionContainerMappingInner create(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, CreateProtectionContainerMappingInput creationInput,
         Context context);
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -230,18 +198,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName);
+    SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName);
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -254,19 +218,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, Context context);
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -277,18 +236,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void purge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
+    void purge(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String mappingName);
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -300,19 +255,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void purge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        Context context);
+    void purge(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, Context context);
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -326,18 +276,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, UpdateProtectionContainerMappingInput updateInput);
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -352,19 +298,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, UpdateProtectionContainerMappingInput updateInput, Context context);
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -377,19 +318,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return protection container mapping object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionContainerMappingInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput);
+    ProtectionContainerMappingInner update(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, UpdateProtectionContainerMappingInput updateInput);
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -403,20 +339,15 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return protection container mapping object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionContainerMappingInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput,
+    ProtectionContainerMappingInner update(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, UpdateProtectionContainerMappingInput updateInput,
         Context context);
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -429,19 +360,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, RemoveProtectionContainerMappingInput removalInput);
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -455,20 +381,15 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput,
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, RemoveProtectionContainerMappingInput removalInput,
         Context context);
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -480,19 +401,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput);
+    void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, RemoveProtectionContainerMappingInput removalInput);
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -505,20 +421,14 @@ public interface ReplicationProtectionContainerMappingsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput,
-        Context context);
+    void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, RemoveProtectionContainerMappingInput removalInput, Context context);
 
     /**
      * Gets the list of all protection container mappings in a vault.
-     *
-     * <p>Lists the protection container mappings in the vault.
-     *
+     * 
+     * Lists the protection container mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -531,9 +441,9 @@ public interface ReplicationProtectionContainerMappingsClient {
 
     /**
      * Gets the list of all protection container mappings in a vault.
-     *
-     * <p>Lists the protection container mappings in the vault.
-     *
+     * 
+     * Lists the protection container mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.

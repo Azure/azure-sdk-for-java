@@ -6,57 +6,38 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.UnlockDeleteRequest;
 import com.azure.resourcemanager.dataprotection.models.UnlockDeleteResponse;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DppResourceGuardProxiesUnlockDeleteWithResponseMockTests {
     @Test
     public void testUnlockDeleteWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr = "{\"unlockDeleteExpiryTime\":\"fyuicdh\"}";
 
-        String responseStr = "{\"unlockDeleteExpiryTime\":\"ovyrrleaesinu\"}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataProtectionManager manager = DataProtectionManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         UnlockDeleteResponse response = manager.dppResourceGuardProxies()
-            .unlockDeleteWithResponse("mdgycxn", "skw", "qjjyslurl",
-                new UnlockDeleteRequest()
-                    .withResourceGuardOperationRequests(Arrays.asList("hkvpedwqsls", "hmpqvw", "skondcbrwimu"))
-                    .withResourceToBeDeleted("ej"),
+            .unlockDeleteWithResponse("op", "hbzxli", "hrdd",
+                new UnlockDeleteRequest().withResourceGuardOperationRequests(Arrays.asList("gxqbawpcb"))
+                    .withResourceToBeDeleted("zqcyknap"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ovyrrleaesinu", response.unlockDeleteExpiryTime());
+        Assertions.assertEquals("fyuicdh", response.unlockDeleteExpiryTime());
     }
 }

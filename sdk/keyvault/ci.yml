@@ -80,7 +80,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: keyvault
-    EnableBatchRelease: true
     AdditionalLintingOptions: '-DcreateSourcesJar=false'
     Artifacts:
       - name: azure-security-keyvault-administration

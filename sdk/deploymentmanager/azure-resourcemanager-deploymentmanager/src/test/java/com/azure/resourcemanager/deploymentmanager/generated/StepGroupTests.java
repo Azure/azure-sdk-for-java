@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StepGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StepGroup model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"dlikwyqkgfgibma\",\"dependsOnStepGroups\":[\"keqsrxybzqqedq\",\"tbciqfouflmm\"],\"preDeploymentSteps\":[{\"stepId\":\"smodmgloug\"}],\"deploymentTargetId\":\"b\",\"postDeploymentSteps\":[{\"stepId\":\"mutduqktaps\"}]}")
-                .toObject(StepGroup.class);
+        StepGroup model = BinaryData.fromString(
+            "{\"name\":\"dlikwyqkgfgibma\",\"dependsOnStepGroups\":[\"keqsrxybzqqedq\",\"tbciqfouflmm\"],\"preDeploymentSteps\":[{\"stepId\":\"smodmgloug\"}],\"deploymentTargetId\":\"b\",\"postDeploymentSteps\":[{\"stepId\":\"mutduqktaps\"}]}")
+            .toObject(StepGroup.class);
         Assertions.assertEquals("dlikwyqkgfgibma", model.name());
         Assertions.assertEquals("keqsrxybzqqedq", model.dependsOnStepGroups().get(0));
         Assertions.assertEquals("smodmgloug", model.preDeploymentSteps().get(0).stepId());
@@ -27,13 +25,11 @@ public final class StepGroupTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StepGroup model =
-            new StepGroup()
-                .withName("dlikwyqkgfgibma")
-                .withDependsOnStepGroups(Arrays.asList("keqsrxybzqqedq", "tbciqfouflmm"))
-                .withPreDeploymentSteps(Arrays.asList(new PrePostStep().withStepId("smodmgloug")))
-                .withDeploymentTargetId("b")
-                .withPostDeploymentSteps(Arrays.asList(new PrePostStep().withStepId("mutduqktaps")));
+        StepGroup model = new StepGroup().withName("dlikwyqkgfgibma")
+            .withDependsOnStepGroups(Arrays.asList("keqsrxybzqqedq", "tbciqfouflmm"))
+            .withPreDeploymentSteps(Arrays.asList(new PrePostStep().withStepId("smodmgloug")))
+            .withDeploymentTargetId("b")
+            .withPostDeploymentSteps(Arrays.asList(new PrePostStep().withStepId("mutduqktaps")));
         model = BinaryData.fromObject(model).toObject(StepGroup.class);
         Assertions.assertEquals("dlikwyqkgfgibma", model.name());
         Assertions.assertEquals("keqsrxybzqqedq", model.dependsOnStepGroups().get(0));

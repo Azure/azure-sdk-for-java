@@ -6,24 +6,31 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Resync input properties. */
+/**
+ * Resync input properties.
+ */
 @Fluent
-public final class ResyncInputProperties {
+public final class ResyncInputProperties implements JsonSerializable<ResyncInputProperties> {
     /*
      * The provider specific details.
      */
-    @JsonProperty(value = "providerSpecificDetails", required = true)
     private ResyncProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of ResyncInputProperties class. */
+    /**
+     * Creates an instance of ResyncInputProperties class.
+     */
     public ResyncInputProperties() {
     }
 
     /**
      * Get the providerSpecificDetails property: The provider specific details.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ResyncProviderSpecificInput providerSpecificDetails() {
@@ -32,7 +39,7 @@ public final class ResyncInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific details.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the ResyncInputProperties object itself.
      */
@@ -43,19 +50,56 @@ public final class ResyncInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model ResyncInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property providerSpecificDetails in model ResyncInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResyncInputProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResyncInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResyncInputProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResyncInputProperties.
+     */
+    public static ResyncInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResyncInputProperties deserializedResyncInputProperties = new ResyncInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedResyncInputProperties.providerSpecificDetails
+                        = ResyncProviderSpecificInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResyncInputProperties;
+        });
+    }
 }

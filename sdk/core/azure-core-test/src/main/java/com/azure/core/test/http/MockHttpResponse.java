@@ -27,9 +27,7 @@ public class MockHttpResponse extends HttpResponse {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     private final int statusCode;
-
     private final HttpHeaders headers;
-
     private final byte[] bodyBytes;
 
     /**
@@ -168,9 +166,7 @@ public class MockHttpResponse extends HttpResponse {
     public Mono<String> getBodyAsString(Charset charset) {
         Objects.requireNonNull(charset, "'charset' cannot be null.");
 
-        return bodyBytes == null
-                ? Mono.empty()
-                : Mono.just(new String(bodyBytes, charset));
+        return bodyBytes == null ? Mono.empty() : Mono.just(new String(bodyBytes, charset));
     }
 
     /**

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/Operations_List.
+     * json
      */
     /**
      * Sample code: Operations_List.
-     *
+     * 
      * @param manager Entry point to StorageCacheManager.
      */
     public static void operationsList(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {

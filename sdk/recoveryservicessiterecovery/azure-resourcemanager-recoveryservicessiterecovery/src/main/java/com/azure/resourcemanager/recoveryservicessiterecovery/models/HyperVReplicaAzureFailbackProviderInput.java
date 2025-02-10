@@ -5,40 +5,55 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** HyperVReplicaAzureFailback specific planned failover input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVReplicaAzureFailback")
+/**
+ * HyperVReplicaAzureFailback specific planned failover input.
+ */
 @Fluent
 public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailoverProviderSpecificFailoverInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "HyperVReplicaAzureFailback";
+
+    /*
      * Data sync option.
      */
-    @JsonProperty(value = "dataSyncOption")
     private String dataSyncOption;
 
     /*
      * ALR options to create alternate recovery.
      */
-    @JsonProperty(value = "recoveryVmCreationOption")
     private String recoveryVmCreationOption;
 
     /*
      * Provider Id for alternate location.
      */
-    @JsonProperty(value = "providerIdForAlternateRecovery")
     private String providerIdForAlternateRecovery;
 
-    /** Creates an instance of HyperVReplicaAzureFailbackProviderInput class. */
+    /**
+     * Creates an instance of HyperVReplicaAzureFailbackProviderInput class.
+     */
     public HyperVReplicaAzureFailbackProviderInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the dataSyncOption property: Data sync option.
-     *
+     * 
      * @return the dataSyncOption value.
      */
     public String dataSyncOption() {
@@ -47,7 +62,7 @@ public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailov
 
     /**
      * Set the dataSyncOption property: Data sync option.
-     *
+     * 
      * @param dataSyncOption the dataSyncOption value to set.
      * @return the HyperVReplicaAzureFailbackProviderInput object itself.
      */
@@ -58,7 +73,7 @@ public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailov
 
     /**
      * Get the recoveryVmCreationOption property: ALR options to create alternate recovery.
-     *
+     * 
      * @return the recoveryVmCreationOption value.
      */
     public String recoveryVmCreationOption() {
@@ -67,7 +82,7 @@ public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailov
 
     /**
      * Set the recoveryVmCreationOption property: ALR options to create alternate recovery.
-     *
+     * 
      * @param recoveryVmCreationOption the recoveryVmCreationOption value to set.
      * @return the HyperVReplicaAzureFailbackProviderInput object itself.
      */
@@ -78,7 +93,7 @@ public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailov
 
     /**
      * Get the providerIdForAlternateRecovery property: Provider Id for alternate location.
-     *
+     * 
      * @return the providerIdForAlternateRecovery value.
      */
     public String providerIdForAlternateRecovery() {
@@ -87,23 +102,69 @@ public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailov
 
     /**
      * Set the providerIdForAlternateRecovery property: Provider Id for alternate location.
-     *
+     * 
      * @param providerIdForAlternateRecovery the providerIdForAlternateRecovery value to set.
      * @return the HyperVReplicaAzureFailbackProviderInput object itself.
      */
-    public HyperVReplicaAzureFailbackProviderInput withProviderIdForAlternateRecovery(
-        String providerIdForAlternateRecovery) {
+    public HyperVReplicaAzureFailbackProviderInput
+        withProviderIdForAlternateRecovery(String providerIdForAlternateRecovery) {
         this.providerIdForAlternateRecovery = providerIdForAlternateRecovery;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("dataSyncOption", this.dataSyncOption);
+        jsonWriter.writeStringField("recoveryVmCreationOption", this.recoveryVmCreationOption);
+        jsonWriter.writeStringField("providerIdForAlternateRecovery", this.providerIdForAlternateRecovery);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVReplicaAzureFailbackProviderInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVReplicaAzureFailbackProviderInput if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVReplicaAzureFailbackProviderInput.
+     */
+    public static HyperVReplicaAzureFailbackProviderInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVReplicaAzureFailbackProviderInput deserializedHyperVReplicaAzureFailbackProviderInput
+                = new HyperVReplicaAzureFailbackProviderInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureFailbackProviderInput.instanceType = reader.getString();
+                } else if ("dataSyncOption".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureFailbackProviderInput.dataSyncOption = reader.getString();
+                } else if ("recoveryVmCreationOption".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureFailbackProviderInput.recoveryVmCreationOption = reader.getString();
+                } else if ("providerIdForAlternateRecovery".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureFailbackProviderInput.providerIdForAlternateRecovery
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVReplicaAzureFailbackProviderInput;
+        });
     }
 }

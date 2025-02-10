@@ -30,23 +30,28 @@ import com.azure.resourcemanager.authorization.fluent.models.RoleEligibilitySche
 import com.azure.resourcemanager.authorization.models.RoleEligibilityScheduleListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RoleEligibilitySchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoleEligibilitySchedulesClient.
+ */
 public final class RoleEligibilitySchedulesClientImpl implements RoleEligibilitySchedulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RoleEligibilitySchedulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AuthorizationManagementClientImpl client;
 
     /**
      * Initializes an instance of RoleEligibilitySchedulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RoleEligibilitySchedulesClientImpl(AuthorizationManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(RoleEligibilitySchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(RoleEligibilitySchedulesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,84 +62,68 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
     public interface RoleEligibilitySchedulesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Authorization/roleEligibilitySchedules/{roleEligibilityScheduleName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleEligibilityScheduleInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RoleEligibilityScheduleInner>> get(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleEligibilityScheduleName") String roleEligibilityScheduleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Authorization/roleEligibilitySchedules")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleEligibilityScheduleListResult>> listForScope(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RoleEligibilityScheduleListResult>> listForScope(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("$filter") String filter,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleEligibilityScheduleListResult>> listForScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the specified role eligibility schedule for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedule.
      * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified role eligibility schedule for a resource scope along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleEligibilityScheduleInner>> getWithResponseAsync(
-        String scope, String roleEligibilityScheduleName) {
+    public Mono<Response<RoleEligibilityScheduleInner>> getWithResponseAsync(String scope,
+        String roleEligibilityScheduleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleEligibilityScheduleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleEligibilityScheduleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter roleEligibilityScheduleName is required and cannot be null."));
         }
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(), scope, roleEligibilityScheduleName, apiVersion, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), scope, roleEligibilityScheduleName,
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the specified role eligibility schedule for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedule.
      * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
      * @param context The context to associate with this operation.
@@ -142,25 +131,21 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified role eligibility schedule for a resource scope along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleEligibilityScheduleInner>> getWithResponseAsync(
-        String scope, String roleEligibilityScheduleName, Context context) {
+    private Mono<Response<RoleEligibilityScheduleInner>> getWithResponseAsync(String scope,
+        String roleEligibilityScheduleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleEligibilityScheduleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleEligibilityScheduleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter roleEligibilityScheduleName is required and cannot be null."));
         }
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
@@ -170,7 +155,7 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
 
     /**
      * Get the specified role eligibility schedule for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedule.
      * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -186,7 +171,7 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
 
     /**
      * Get the specified role eligibility schedule for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedule.
      * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
      * @param context The context to associate with this operation.
@@ -196,14 +181,14 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
      * @return the specified role eligibility schedule for a resource scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleEligibilityScheduleInner> getWithResponse(
-        String scope, String roleEligibilityScheduleName, Context context) {
+    public Response<RoleEligibilityScheduleInner> getWithResponse(String scope, String roleEligibilityScheduleName,
+        Context context) {
         return getWithResponseAsync(scope, roleEligibilityScheduleName, context).block();
     }
 
     /**
      * Get the specified role eligibility schedule for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedule.
      * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,26 +203,24 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
 
     /**
      * Gets role eligibility schedules for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedules.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role eligibility
-     *     schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
-     *     above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
-     *     eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created
-     *     for the current user.
+     * schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
+     * above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
+     * eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for
+     * the current user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role eligibility schedules for a resource scope along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleEligibilityScheduleInner>> listForScopeSinglePageAsync(String scope, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -247,42 +230,33 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
         return FluxUtil
             .withContext(
                 context -> service.listForScope(this.client.getEndpoint(), scope, filter, apiVersion, accept, context))
-            .<PagedResponse<RoleEligibilityScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RoleEligibilityScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets role eligibility schedules for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedules.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role eligibility
-     *     schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
-     *     above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
-     *     eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created
-     *     for the current user.
+     * schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
+     * above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
+     * eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for
+     * the current user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role eligibility schedules for a resource scope along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleEligibilityScheduleInner>> listForScopeSinglePageAsync(
-        String scope, String filter, Context context) {
+    private Mono<PagedResponse<RoleEligibilityScheduleInner>> listForScopeSinglePageAsync(String scope, String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -290,28 +264,20 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listForScope(this.client.getEndpoint(), scope, filter, apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listForScope(this.client.getEndpoint(), scope, filter, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets role eligibility schedules for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedules.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role eligibility
-     *     schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
-     *     above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
-     *     eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created
-     *     for the current user.
+     * schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
+     * above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
+     * eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for
+     * the current user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -319,13 +285,13 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleEligibilityScheduleInner> listForScopeAsync(String scope, String filter) {
-        return new PagedFlux<>(
-            () -> listForScopeSinglePageAsync(scope, filter), nextLink -> listForScopeNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope, filter),
+            nextLink -> listForScopeNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets role eligibility schedules for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedules.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -335,19 +301,19 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleEligibilityScheduleInner> listForScopeAsync(String scope) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listForScopeSinglePageAsync(scope, filter), nextLink -> listForScopeNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope, filter),
+            nextLink -> listForScopeNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets role eligibility schedules for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedules.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role eligibility
-     *     schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
-     *     above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
-     *     eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created
-     *     for the current user.
+     * schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
+     * above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
+     * eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for
+     * the current user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -356,14 +322,13 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleEligibilityScheduleInner> listForScopeAsync(String scope, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listForScopeSinglePageAsync(scope, filter, context),
+        return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope, filter, context),
             nextLink -> listForScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets role eligibility schedules for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedules.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -378,13 +343,13 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
 
     /**
      * Gets role eligibility schedules for a resource scope.
-     *
+     * 
      * @param scope The scope of the role eligibility schedules.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role eligibility
-     *     schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
-     *     above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
-     *     eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created
-     *     for the current user.
+     * schedules at or above the scope. Use $filter=principalId eq {id} to return all role eligibility schedules at,
+     * above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all role
+     * eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for
+     * the current user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -398,14 +363,13 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role eligibility schedule list operation result along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleEligibilityScheduleInner>> listForScopeNextSinglePageAsync(String nextLink) {
@@ -413,62 +377,42 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForScopeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RoleEligibilityScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RoleEligibilityScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role eligibility schedule list operation result along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleEligibilityScheduleInner>> listForScopeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<RoleEligibilityScheduleInner>> listForScopeNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listForScopeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listForScopeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

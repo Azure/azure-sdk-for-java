@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** the sensitivity of the baseline. */
+/**
+ * the sensitivity of the baseline.
+ */
 public final class BaselineSensitivity extends ExpandableStringEnum<BaselineSensitivity> {
-    /** Static value Low for BaselineSensitivity. */
+    /**
+     * Static value Low for BaselineSensitivity.
+     */
     public static final BaselineSensitivity LOW = fromString("Low");
 
-    /** Static value Medium for BaselineSensitivity. */
+    /**
+     * Static value Medium for BaselineSensitivity.
+     */
     public static final BaselineSensitivity MEDIUM = fromString("Medium");
 
-    /** Static value High for BaselineSensitivity. */
+    /**
+     * Static value High for BaselineSensitivity.
+     */
     public static final BaselineSensitivity HIGH = fromString("High");
 
     /**
+     * Creates a new instance of BaselineSensitivity value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BaselineSensitivity() {
+    }
+
+    /**
      * Creates or finds a BaselineSensitivity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BaselineSensitivity.
      */
-    @JsonCreator
     public static BaselineSensitivity fromString(String name) {
         return fromString(name, BaselineSensitivity.class);
     }
 
     /**
      * Gets known BaselineSensitivity values.
-     *
+     * 
      * @return known BaselineSensitivity values.
      */
     public static Collection<BaselineSensitivity> values() {

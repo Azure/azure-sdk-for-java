@@ -11,15 +11,19 @@ public final class VerticaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VerticaSource model = BinaryData.fromString(
-            "{\"type\":\"VerticaSource\",\"query\":\"datambpgcbltthsuzx\",\"queryTimeout\":\"datavifl\",\"additionalColumns\":\"datarknsc\",\"sourceRetryCount\":\"datah\",\"sourceRetryWait\":\"dataljsvpokvh\",\"maxConcurrentConnections\":\"dataygffuzhnusrfffag\",\"disableMetricsCollection\":\"datavfwzysv\",\"\":{\"pv\":\"datafjgbx\",\"novwujearowrmesz\":\"datag\"}}")
+            "{\"type\":\"VerticaSource\",\"query\":\"datafyb\",\"queryTimeout\":\"datadzvuhw\",\"additionalColumns\":\"datanazjvyiiezdnez\",\"sourceRetryCount\":\"dataqzd\",\"sourceRetryWait\":\"datamyutzttroymi\",\"maxConcurrentConnections\":\"datakuz\",\"disableMetricsCollection\":\"datacegyztzhcfuwm\",\"\":{\"pxb\":\"datazumklroogflhho\"}}")
             .toObject(VerticaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VerticaSource model = new VerticaSource().withSourceRetryCount("datah").withSourceRetryWait("dataljsvpokvh")
-            .withMaxConcurrentConnections("dataygffuzhnusrfffag").withDisableMetricsCollection("datavfwzysv")
-            .withQueryTimeout("datavifl").withAdditionalColumns("datarknsc").withQuery("datambpgcbltthsuzx");
+        VerticaSource model = new VerticaSource().withSourceRetryCount("dataqzd")
+            .withSourceRetryWait("datamyutzttroymi")
+            .withMaxConcurrentConnections("datakuz")
+            .withDisableMetricsCollection("datacegyztzhcfuwm")
+            .withQueryTimeout("datadzvuhw")
+            .withAdditionalColumns("datanazjvyiiezdnez")
+            .withQuery("datafyb");
         model = BinaryData.fromObject(model).toObject(VerticaSource.class);
     }
 }

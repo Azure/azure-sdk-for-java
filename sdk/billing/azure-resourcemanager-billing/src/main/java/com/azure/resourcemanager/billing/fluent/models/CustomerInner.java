@@ -5,129 +5,178 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.billing.models.AzurePlan;
-import com.azure.resourcemanager.billing.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.billing.models.CustomerProperties;
+import com.azure.resourcemanager.billing.models.ProxyResourceWithTags;
+import java.io.IOException;
+import java.util.Map;
 
-/** A partner's customer. */
+/**
+ * A partner's customer.
+ */
 @Fluent
-public final class CustomerInner extends ProxyResource {
+public final class CustomerInner extends ProxyResourceWithTags {
     /*
-     * The customer.
+     * A partner's customer.
      */
-    @JsonProperty(value = "properties")
-    private CustomerProperties innerProperties;
+    private CustomerProperties properties;
 
-    /** Creates an instance of CustomerInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CustomerInner class.
+     */
     public CustomerInner() {
     }
 
     /**
-     * Get the innerProperties property: The customer.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: A partner's customer.
+     * 
+     * @return the properties value.
      */
-    private CustomerProperties innerProperties() {
-        return this.innerProperties;
+    public CustomerProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the billingProfileId property: The ID of the billing profile for the invoice section.
-     *
-     * @return the billingProfileId value.
-     */
-    public String billingProfileId() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
-    }
-
-    /**
-     * Get the billingProfileDisplayName property: The name of the billing profile for the invoice section.
-     *
-     * @return the billingProfileDisplayName value.
-     */
-    public String billingProfileDisplayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingProfileDisplayName();
-    }
-
-    /**
-     * Get the displayName property: The name of the customer.
-     *
-     * @return the displayName value.
-     */
-    public String displayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().displayName();
-    }
-
-    /**
-     * Set the displayName property: The name of the customer.
-     *
-     * @param displayName the displayName value to set.
+     * Set the properties property: A partner's customer.
+     * 
+     * @param properties the properties value to set.
      * @return the CustomerInner object itself.
      */
-    public CustomerInner withDisplayName(String displayName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CustomerProperties();
-        }
-        this.innerProperties().withDisplayName(displayName);
+    public CustomerInner withProperties(CustomerProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the enabledAzurePlans property: Azure plans enabled for the customer.
-     *
-     * @return the enabledAzurePlans value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public List<AzurePlan> enabledAzurePlans() {
-        return this.innerProperties() == null ? null : this.innerProperties().enabledAzurePlans();
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Set the enabledAzurePlans property: Azure plans enabled for the customer.
-     *
-     * @param enabledAzurePlans the enabledAzurePlans value to set.
-     * @return the CustomerInner object itself.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public CustomerInner withEnabledAzurePlans(List<AzurePlan> enabledAzurePlans) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CustomerProperties();
-        }
-        this.innerProperties().withEnabledAzurePlans(enabledAzurePlans);
-        return this;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the resellers property: The list of resellers for which an Azure plan is enabled for the customer.
-     *
-     * @return the resellers value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public List<Reseller> resellers() {
-        return this.innerProperties() == null ? null : this.innerProperties().resellers();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the resellers property: The list of resellers for which an Azure plan is enabled for the customer.
-     *
-     * @param resellers the resellers value to set.
-     * @return the CustomerInner object itself.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public CustomerInner withResellers(List<Reseller> resellers) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CustomerProperties();
-        }
-        this.innerProperties().withResellers(resellers);
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CustomerInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomerInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomerInner.
+     */
+    public static CustomerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomerInner deserializedCustomerInner = new CustomerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCustomerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCustomerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomerInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCustomerInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCustomerInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCustomerInner.properties = CustomerProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomerInner;
+        });
     }
 }

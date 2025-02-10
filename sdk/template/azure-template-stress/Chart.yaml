@@ -4,7 +4,7 @@ description: An example stress test chart for performing azure resource deployme
 version: 0.1.1
 appVersion: v0.1
 annotations:
-  stressTest: 'false'  # change it to true. This enables auto-discovery of this test via `find-all-stress-packages.ps1`
+  stressTest: 'true'  # change it to true. This enables auto-discovery of this test via `find-all-stress-packages.ps1`
   namespace: 'java-template'
 
 dependencies:

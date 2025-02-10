@@ -12,18 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class TestMigrateCleanupInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestMigrateCleanupInput model =
-            BinaryData
-                .fromString("{\"properties\":{\"comments\":\"xwyjsflhhc\"}}")
-                .toObject(TestMigrateCleanupInput.class);
+        TestMigrateCleanupInput model = BinaryData.fromString("{\"properties\":{\"comments\":\"xwyjsflhhc\"}}")
+            .toObject(TestMigrateCleanupInput.class);
         Assertions.assertEquals("xwyjsflhhc", model.properties().comments());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestMigrateCleanupInput model =
-            new TestMigrateCleanupInput()
-                .withProperties(new TestMigrateCleanupInputProperties().withComments("xwyjsflhhc"));
+        TestMigrateCleanupInput model = new TestMigrateCleanupInput()
+            .withProperties(new TestMigrateCleanupInputProperties().withComments("xwyjsflhhc"));
         model = BinaryData.fromObject(model).toObject(TestMigrateCleanupInput.class);
         Assertions.assertEquals("xwyjsflhhc", model.properties().comments());
     }

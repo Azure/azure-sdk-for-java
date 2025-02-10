@@ -5,136 +5,122 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** calendar. */
+/**
+ * calendar.
+ */
 @Fluent
 public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /*
      * Represent the online meeting service providers that can be used to create online meetings in this calendar.
      * Possible values are: unknown, skypeForBusiness, skypeForConsumer, teamsForBusiness.
      */
-    @JsonProperty(value = "allowedOnlineMeetingProviders")
     private List<MicrosoftGraphOnlineMeetingProviderType> allowedOnlineMeetingProviders;
 
     /*
      * True if the user can write to the calendar, false otherwise. This property is true for the user who created the
      * calendar. This property is also true for a user who has been shared a calendar and granted write access.
      */
-    @JsonProperty(value = "canEdit")
     private Boolean canEdit;
 
     /*
      * True if the user has the permission to share the calendar, false otherwise. Only the user who created the
      * calendar can share it.
      */
-    @JsonProperty(value = "canShare")
     private Boolean canShare;
 
     /*
      * True if the user can read calendar items that have been marked private, false otherwise.
      */
-    @JsonProperty(value = "canViewPrivateItems")
     private Boolean canViewPrivateItems;
 
     /*
      * Identifies the version of the calendar object. Every time the calendar is changed, changeKey changes as well.
      * This allows Exchange to apply changes to the correct version of the object. Read-only.
      */
-    @JsonProperty(value = "changeKey")
     private String changeKey;
 
     /*
      * calendarColor
      */
-    @JsonProperty(value = "color")
     private MicrosoftGraphCalendarColor color;
 
     /*
      * onlineMeetingProviderType
      */
-    @JsonProperty(value = "defaultOnlineMeetingProvider")
     private MicrosoftGraphOnlineMeetingProviderType defaultOnlineMeetingProvider;
 
     /*
      * The hexColor property.
      */
-    @JsonProperty(value = "hexColor")
     private String hexColor;
 
     /*
      * The isDefaultCalendar property.
      */
-    @JsonProperty(value = "isDefaultCalendar")
     private Boolean isDefaultCalendar;
 
     /*
      * Indicates whether this user calendar can be deleted from the user mailbox.
      */
-    @JsonProperty(value = "isRemovable")
     private Boolean isRemovable;
 
     /*
      * Indicates whether this user calendar supports tracking of meeting responses. Only meeting invites sent from
      * users' primary calendars support tracking of meeting responses.
      */
-    @JsonProperty(value = "isTallyingResponses")
     private Boolean isTallyingResponses;
 
     /*
      * The calendar name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * emailAddress
      */
-    @JsonProperty(value = "owner")
     private MicrosoftGraphEmailAddress owner;
 
     /*
      * The permissions of the users with whom the calendar is shared.
      */
-    @JsonProperty(value = "calendarPermissions")
     private List<MicrosoftGraphCalendarPermission> calendarPermissions;
 
     /*
      * The calendar view for the calendar. Navigation property. Read-only.
      */
-    @JsonProperty(value = "calendarView")
     private List<MicrosoftGraphEvent> calendarView;
 
     /*
      * The events in the calendar. Navigation property. Read-only.
      */
-    @JsonProperty(value = "events")
     private List<MicrosoftGraphEvent> events;
 
     /*
      * The collection of multi-value extended properties defined for the calendar. Read-only. Nullable.
      */
-    @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * The collection of single-value extended properties defined for the calendar. Read-only. Nullable.
      */
-    @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * calendar
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphCalendar class. */
+    /**
+     * Creates an instance of MicrosoftGraphCalendar class.
+     */
     public MicrosoftGraphCalendar() {
     }
 
@@ -142,7 +128,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      * Get the allowedOnlineMeetingProviders property: Represent the online meeting service providers that can be used
      * to create online meetings in this calendar. Possible values are: unknown, skypeForBusiness, skypeForConsumer,
      * teamsForBusiness.
-     *
+     * 
      * @return the allowedOnlineMeetingProviders value.
      */
     public List<MicrosoftGraphOnlineMeetingProviderType> allowedOnlineMeetingProviders() {
@@ -153,12 +139,12 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      * Set the allowedOnlineMeetingProviders property: Represent the online meeting service providers that can be used
      * to create online meetings in this calendar. Possible values are: unknown, skypeForBusiness, skypeForConsumer,
      * teamsForBusiness.
-     *
+     * 
      * @param allowedOnlineMeetingProviders the allowedOnlineMeetingProviders value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
-    public MicrosoftGraphCalendar withAllowedOnlineMeetingProviders(
-        List<MicrosoftGraphOnlineMeetingProviderType> allowedOnlineMeetingProviders) {
+    public MicrosoftGraphCalendar
+        withAllowedOnlineMeetingProviders(List<MicrosoftGraphOnlineMeetingProviderType> allowedOnlineMeetingProviders) {
         this.allowedOnlineMeetingProviders = allowedOnlineMeetingProviders;
         return this;
     }
@@ -167,7 +153,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      * Get the canEdit property: True if the user can write to the calendar, false otherwise. This property is true for
      * the user who created the calendar. This property is also true for a user who has been shared a calendar and
      * granted write access.
-     *
+     * 
      * @return the canEdit value.
      */
     public Boolean canEdit() {
@@ -178,7 +164,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      * Set the canEdit property: True if the user can write to the calendar, false otherwise. This property is true for
      * the user who created the calendar. This property is also true for a user who has been shared a calendar and
      * granted write access.
-     *
+     * 
      * @param canEdit the canEdit value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -190,7 +176,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Get the canShare property: True if the user has the permission to share the calendar, false otherwise. Only the
      * user who created the calendar can share it.
-     *
+     * 
      * @return the canShare value.
      */
     public Boolean canShare() {
@@ -200,7 +186,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Set the canShare property: True if the user has the permission to share the calendar, false otherwise. Only the
      * user who created the calendar can share it.
-     *
+     * 
      * @param canShare the canShare value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -212,7 +198,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Get the canViewPrivateItems property: True if the user can read calendar items that have been marked private,
      * false otherwise.
-     *
+     * 
      * @return the canViewPrivateItems value.
      */
     public Boolean canViewPrivateItems() {
@@ -222,7 +208,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Set the canViewPrivateItems property: True if the user can read calendar items that have been marked private,
      * false otherwise.
-     *
+     * 
      * @param canViewPrivateItems the canViewPrivateItems value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -234,7 +220,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Get the changeKey property: Identifies the version of the calendar object. Every time the calendar is changed,
      * changeKey changes as well. This allows Exchange to apply changes to the correct version of the object. Read-only.
-     *
+     * 
      * @return the changeKey value.
      */
     public String changeKey() {
@@ -244,7 +230,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Set the changeKey property: Identifies the version of the calendar object. Every time the calendar is changed,
      * changeKey changes as well. This allows Exchange to apply changes to the correct version of the object. Read-only.
-     *
+     * 
      * @param changeKey the changeKey value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -255,7 +241,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Get the color property: calendarColor.
-     *
+     * 
      * @return the color value.
      */
     public MicrosoftGraphCalendarColor color() {
@@ -264,7 +250,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Set the color property: calendarColor.
-     *
+     * 
      * @param color the color value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -275,7 +261,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Get the defaultOnlineMeetingProvider property: onlineMeetingProviderType.
-     *
+     * 
      * @return the defaultOnlineMeetingProvider value.
      */
     public MicrosoftGraphOnlineMeetingProviderType defaultOnlineMeetingProvider() {
@@ -284,19 +270,19 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Set the defaultOnlineMeetingProvider property: onlineMeetingProviderType.
-     *
+     * 
      * @param defaultOnlineMeetingProvider the defaultOnlineMeetingProvider value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
-    public MicrosoftGraphCalendar withDefaultOnlineMeetingProvider(
-        MicrosoftGraphOnlineMeetingProviderType defaultOnlineMeetingProvider) {
+    public MicrosoftGraphCalendar
+        withDefaultOnlineMeetingProvider(MicrosoftGraphOnlineMeetingProviderType defaultOnlineMeetingProvider) {
         this.defaultOnlineMeetingProvider = defaultOnlineMeetingProvider;
         return this;
     }
 
     /**
      * Get the hexColor property: The hexColor property.
-     *
+     * 
      * @return the hexColor value.
      */
     public String hexColor() {
@@ -305,7 +291,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Set the hexColor property: The hexColor property.
-     *
+     * 
      * @param hexColor the hexColor value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -316,7 +302,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Get the isDefaultCalendar property: The isDefaultCalendar property.
-     *
+     * 
      * @return the isDefaultCalendar value.
      */
     public Boolean isDefaultCalendar() {
@@ -325,7 +311,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Set the isDefaultCalendar property: The isDefaultCalendar property.
-     *
+     * 
      * @param isDefaultCalendar the isDefaultCalendar value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -336,7 +322,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Get the isRemovable property: Indicates whether this user calendar can be deleted from the user mailbox.
-     *
+     * 
      * @return the isRemovable value.
      */
     public Boolean isRemovable() {
@@ -345,7 +331,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Set the isRemovable property: Indicates whether this user calendar can be deleted from the user mailbox.
-     *
+     * 
      * @param isRemovable the isRemovable value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -357,7 +343,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Get the isTallyingResponses property: Indicates whether this user calendar supports tracking of meeting
      * responses. Only meeting invites sent from users' primary calendars support tracking of meeting responses.
-     *
+     * 
      * @return the isTallyingResponses value.
      */
     public Boolean isTallyingResponses() {
@@ -367,7 +353,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Set the isTallyingResponses property: Indicates whether this user calendar supports tracking of meeting
      * responses. Only meeting invites sent from users' primary calendars support tracking of meeting responses.
-     *
+     * 
      * @param isTallyingResponses the isTallyingResponses value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -378,7 +364,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Get the name property: The calendar name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -387,7 +373,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Set the name property: The calendar name.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -398,7 +384,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Get the owner property: emailAddress.
-     *
+     * 
      * @return the owner value.
      */
     public MicrosoftGraphEmailAddress owner() {
@@ -407,7 +393,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Set the owner property: emailAddress.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -418,7 +404,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Get the calendarPermissions property: The permissions of the users with whom the calendar is shared.
-     *
+     * 
      * @return the calendarPermissions value.
      */
     public List<MicrosoftGraphCalendarPermission> calendarPermissions() {
@@ -427,7 +413,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Set the calendarPermissions property: The permissions of the users with whom the calendar is shared.
-     *
+     * 
      * @param calendarPermissions the calendarPermissions value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -438,7 +424,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Get the calendarView property: The calendar view for the calendar. Navigation property. Read-only.
-     *
+     * 
      * @return the calendarView value.
      */
     public List<MicrosoftGraphEvent> calendarView() {
@@ -447,7 +433,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Set the calendarView property: The calendar view for the calendar. Navigation property. Read-only.
-     *
+     * 
      * @param calendarView the calendarView value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -458,7 +444,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Get the events property: The events in the calendar. Navigation property. Read-only.
-     *
+     * 
      * @return the events value.
      */
     public List<MicrosoftGraphEvent> events() {
@@ -467,7 +453,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Set the events property: The events in the calendar. Navigation property. Read-only.
-     *
+     * 
      * @param events the events value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -479,7 +465,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Get the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * calendar. Read-only. Nullable.
-     *
+     * 
      * @return the multiValueExtendedProperties value.
      */
     public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
@@ -489,7 +475,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Set the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * calendar. Read-only. Nullable.
-     *
+     * 
      * @param multiValueExtendedProperties the multiValueExtendedProperties value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -502,7 +488,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Get the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the calendar. Read-only. Nullable.
-     *
+     * 
      * @return the singleValueExtendedProperties value.
      */
     public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
@@ -512,7 +498,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
     /**
      * Set the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the calendar. Read-only. Nullable.
-     *
+     * 
      * @param singleValueExtendedProperties the singleValueExtendedProperties value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -524,17 +510,16 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: calendar.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: calendar.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
@@ -543,15 +528,9 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphCalendar withId(String id) {
         super.withId(id);
@@ -560,7 +539,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -584,5 +563,125 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
         if (singleValueExtendedProperties() != null) {
             singleValueExtendedProperties().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("allowedOnlineMeetingProviders", this.allowedOnlineMeetingProviders,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeBooleanField("canEdit", this.canEdit);
+        jsonWriter.writeBooleanField("canShare", this.canShare);
+        jsonWriter.writeBooleanField("canViewPrivateItems", this.canViewPrivateItems);
+        jsonWriter.writeStringField("changeKey", this.changeKey);
+        jsonWriter.writeStringField("color", this.color == null ? null : this.color.toString());
+        jsonWriter.writeStringField("defaultOnlineMeetingProvider",
+            this.defaultOnlineMeetingProvider == null ? null : this.defaultOnlineMeetingProvider.toString());
+        jsonWriter.writeStringField("hexColor", this.hexColor);
+        jsonWriter.writeBooleanField("isDefaultCalendar", this.isDefaultCalendar);
+        jsonWriter.writeBooleanField("isRemovable", this.isRemovable);
+        jsonWriter.writeBooleanField("isTallyingResponses", this.isTallyingResponses);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("owner", this.owner);
+        jsonWriter.writeArrayField("calendarPermissions", this.calendarPermissions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("calendarView", this.calendarView, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("multiValueExtendedProperties", this.multiValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("singleValueExtendedProperties", this.singleValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphCalendar from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphCalendar if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphCalendar.
+     */
+    public static MicrosoftGraphCalendar fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphCalendar deserializedMicrosoftGraphCalendar = new MicrosoftGraphCalendar();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.withId(reader.getString());
+                } else if ("allowedOnlineMeetingProviders".equals(fieldName)) {
+                    List<MicrosoftGraphOnlineMeetingProviderType> allowedOnlineMeetingProviders = reader
+                        .readArray(reader1 -> MicrosoftGraphOnlineMeetingProviderType.fromString(reader1.getString()));
+                    deserializedMicrosoftGraphCalendar.allowedOnlineMeetingProviders = allowedOnlineMeetingProviders;
+                } else if ("canEdit".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.canEdit = reader.getNullable(JsonReader::getBoolean);
+                } else if ("canShare".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.canShare = reader.getNullable(JsonReader::getBoolean);
+                } else if ("canViewPrivateItems".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.canViewPrivateItems = reader.getNullable(JsonReader::getBoolean);
+                } else if ("changeKey".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.changeKey = reader.getString();
+                } else if ("color".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.color
+                        = MicrosoftGraphCalendarColor.fromString(reader.getString());
+                } else if ("defaultOnlineMeetingProvider".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.defaultOnlineMeetingProvider
+                        = MicrosoftGraphOnlineMeetingProviderType.fromString(reader.getString());
+                } else if ("hexColor".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.hexColor = reader.getString();
+                } else if ("isDefaultCalendar".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.isDefaultCalendar = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isRemovable".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.isRemovable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isTallyingResponses".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.isTallyingResponses = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.name = reader.getString();
+                } else if ("owner".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendar.owner = MicrosoftGraphEmailAddress.fromJson(reader);
+                } else if ("calendarPermissions".equals(fieldName)) {
+                    List<MicrosoftGraphCalendarPermission> calendarPermissions
+                        = reader.readArray(reader1 -> MicrosoftGraphCalendarPermission.fromJson(reader1));
+                    deserializedMicrosoftGraphCalendar.calendarPermissions = calendarPermissions;
+                } else if ("calendarView".equals(fieldName)) {
+                    List<MicrosoftGraphEvent> calendarView
+                        = reader.readArray(reader1 -> MicrosoftGraphEvent.fromJson(reader1));
+                    deserializedMicrosoftGraphCalendar.calendarView = calendarView;
+                } else if ("events".equals(fieldName)) {
+                    List<MicrosoftGraphEvent> events
+                        = reader.readArray(reader1 -> MicrosoftGraphEvent.fromJson(reader1));
+                    deserializedMicrosoftGraphCalendar.events = events;
+                } else if ("multiValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties
+                        = reader.readArray(reader1 -> MicrosoftGraphMultiValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphCalendar.multiValueExtendedProperties = multiValueExtendedProperties;
+                } else if ("singleValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties = reader
+                        .readArray(reader1 -> MicrosoftGraphSingleValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphCalendar.singleValueExtendedProperties = singleValueExtendedProperties;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphCalendar.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphCalendar;
+        });
     }
 }

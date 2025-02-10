@@ -5,73 +5,72 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Location metadata information. */
+/**
+ * Location metadata information.
+ */
 @Fluent
-public final class LocationMetadata {
+public final class LocationMetadata implements JsonSerializable<LocationMetadata> {
     /*
      * The type of the region.
      */
-    @JsonProperty(value = "regionType", access = JsonProperty.Access.WRITE_ONLY)
     private RegionType regionType;
 
     /*
      * The category of the region.
      */
-    @JsonProperty(value = "regionCategory", access = JsonProperty.Access.WRITE_ONLY)
     private RegionCategory regionCategory;
 
     /*
      * The geography of the location.
      */
-    @JsonProperty(value = "geography", access = JsonProperty.Access.WRITE_ONLY)
     private String geography;
 
     /*
      * The geography group of the location.
      */
-    @JsonProperty(value = "geographyGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String geographyGroup;
 
     /*
      * The longitude of the location.
      */
-    @JsonProperty(value = "longitude", access = JsonProperty.Access.WRITE_ONLY)
     private String longitude;
 
     /*
      * The latitude of the location.
      */
-    @JsonProperty(value = "latitude", access = JsonProperty.Access.WRITE_ONLY)
     private String latitude;
 
     /*
      * The physical location of the Azure location.
      */
-    @JsonProperty(value = "physicalLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String physicalLocation;
 
     /*
      * The regions paired to this region.
      */
-    @JsonProperty(value = "pairedRegion")
     private List<PairedRegion> pairedRegion;
 
     /*
      * The home location of an edge zone.
      */
-    @JsonProperty(value = "homeLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String homeLocation;
 
-    /** Creates an instance of LocationMetadata class. */
+    /**
+     * Creates an instance of LocationMetadata class.
+     */
     public LocationMetadata() {
     }
 
     /**
      * Get the regionType property: The type of the region.
-     *
+     * 
      * @return the regionType value.
      */
     public RegionType regionType() {
@@ -80,7 +79,7 @@ public final class LocationMetadata {
 
     /**
      * Get the regionCategory property: The category of the region.
-     *
+     * 
      * @return the regionCategory value.
      */
     public RegionCategory regionCategory() {
@@ -89,7 +88,7 @@ public final class LocationMetadata {
 
     /**
      * Get the geography property: The geography of the location.
-     *
+     * 
      * @return the geography value.
      */
     public String geography() {
@@ -98,7 +97,7 @@ public final class LocationMetadata {
 
     /**
      * Get the geographyGroup property: The geography group of the location.
-     *
+     * 
      * @return the geographyGroup value.
      */
     public String geographyGroup() {
@@ -107,7 +106,7 @@ public final class LocationMetadata {
 
     /**
      * Get the longitude property: The longitude of the location.
-     *
+     * 
      * @return the longitude value.
      */
     public String longitude() {
@@ -116,7 +115,7 @@ public final class LocationMetadata {
 
     /**
      * Get the latitude property: The latitude of the location.
-     *
+     * 
      * @return the latitude value.
      */
     public String latitude() {
@@ -125,7 +124,7 @@ public final class LocationMetadata {
 
     /**
      * Get the physicalLocation property: The physical location of the Azure location.
-     *
+     * 
      * @return the physicalLocation value.
      */
     public String physicalLocation() {
@@ -134,7 +133,7 @@ public final class LocationMetadata {
 
     /**
      * Get the pairedRegion property: The regions paired to this region.
-     *
+     * 
      * @return the pairedRegion value.
      */
     public List<PairedRegion> pairedRegion() {
@@ -143,7 +142,7 @@ public final class LocationMetadata {
 
     /**
      * Set the pairedRegion property: The regions paired to this region.
-     *
+     * 
      * @param pairedRegion the pairedRegion value to set.
      * @return the LocationMetadata object itself.
      */
@@ -154,7 +153,7 @@ public final class LocationMetadata {
 
     /**
      * Get the homeLocation property: The home location of an edge zone.
-     *
+     * 
      * @return the homeLocation value.
      */
     public String homeLocation() {
@@ -163,12 +162,65 @@ public final class LocationMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (pairedRegion() != null) {
             pairedRegion().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("pairedRegion", this.pairedRegion, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocationMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocationMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LocationMetadata.
+     */
+    public static LocationMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocationMetadata deserializedLocationMetadata = new LocationMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("regionType".equals(fieldName)) {
+                    deserializedLocationMetadata.regionType = RegionType.fromString(reader.getString());
+                } else if ("regionCategory".equals(fieldName)) {
+                    deserializedLocationMetadata.regionCategory = RegionCategory.fromString(reader.getString());
+                } else if ("geography".equals(fieldName)) {
+                    deserializedLocationMetadata.geography = reader.getString();
+                } else if ("geographyGroup".equals(fieldName)) {
+                    deserializedLocationMetadata.geographyGroup = reader.getString();
+                } else if ("longitude".equals(fieldName)) {
+                    deserializedLocationMetadata.longitude = reader.getString();
+                } else if ("latitude".equals(fieldName)) {
+                    deserializedLocationMetadata.latitude = reader.getString();
+                } else if ("physicalLocation".equals(fieldName)) {
+                    deserializedLocationMetadata.physicalLocation = reader.getString();
+                } else if ("pairedRegion".equals(fieldName)) {
+                    List<PairedRegion> pairedRegion = reader.readArray(reader1 -> PairedRegion.fromJson(reader1));
+                    deserializedLocationMetadata.pairedRegion = pairedRegion;
+                } else if ("homeLocation".equals(fieldName)) {
+                    deserializedLocationMetadata.homeLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocationMetadata;
+        });
     }
 }

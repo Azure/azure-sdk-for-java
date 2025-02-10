@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"er\",\"status\":\"Disabled\",\"factName\":\"LabVmSize\",\"factData\":\"f\",\"threshold\":\"babwidfcxss\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-09-13T22:10:41Z\",\"provisioningState\":\"xyh\",\"uniqueIdentifier\":\"g\"},\"location\":\"ddrihpf\",\"tags\":{\"djvlpj\":\"caaewdao\",\"msgeivsiykzk\":\"xkzb\",\"xonbzoggculapz\":\"ncj\",\"pgogtqxepny\":\"y\"},\"id\":\"b\",\"name\":\"uajlyj\",\"type\":\"lvofqzhvfcibyfmo\"},{\"properties\":{\"description\":\"xrkjpvdw\",\"status\":\"Disabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"vwzjbhyz\",\"threshold\":\"jrkambtrnegvmnv\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-12-07T03:49:26Z\",\"provisioningState\":\"dspastjbkkdmfl\",\"uniqueIdentifier\":\"stmjlxrri\"},\"location\":\"ozapeew\",\"tags\":{\"cslevufuztckt\":\"xlktwkuzi\",\"tqedcgzulwm\":\"h\",\"rjvpglydzgkrvqee\":\"rqzz\",\"nwy\":\"toepryu\"},\"id\":\"pzdm\",\"name\":\"vzvfvaawzqadfl\",\"type\":\"z\"},{\"properties\":{\"description\":\"iglaecx\",\"status\":\"Enabled\",\"factName\":\"UserOwnedLabVmCount\",\"factData\":\"kpvzmlq\",\"threshold\":\"ld\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-04-30T06:35:53Z\",\"provisioningState\":\"rclnpkc\",\"uniqueIdentifier\":\"yzriykhy\"},\"location\":\"wf\",\"tags\":{\"xqvkjlmxhomdyn\":\"b\",\"raauzzpt\":\"dwdigumb\",\"ysdzhez\":\"a\"},\"id\":\"wva\",\"name\":\"qyuvvfonkp\",\"type\":\"hqyikvy\"},{\"properties\":{\"description\":\"uyav\",\"status\":\"Enabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"sttijfybvp\",\"threshold\":\"krsgsgb\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-08-27T04:01:57Z\",\"provisioningState\":\"njdgkynscliq\",\"uniqueIdentifier\":\"vhxnk\"},\"location\":\"mtk\",\"tags\":{\"dxzxhi\":\"tppn\",\"vqagtltdhlf\":\"frbbc\"},\"id\":\"qojpy\",\"name\":\"vgtrdcnifmzzs\",\"type\":\"ymbrnysuxmpraf\"}],\"nextLink\":\"ckh\"}")
-                .toObject(PolicyList.class);
+        PolicyList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"er\",\"status\":\"Disabled\",\"factName\":\"LabVmSize\",\"factData\":\"f\",\"threshold\":\"babwidfcxss\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-09-13T22:10:41Z\",\"provisioningState\":\"xyh\",\"uniqueIdentifier\":\"g\"},\"location\":\"ddrihpf\",\"tags\":{\"djvlpj\":\"caaewdao\",\"msgeivsiykzk\":\"xkzb\",\"xonbzoggculapz\":\"ncj\",\"pgogtqxepny\":\"y\"},\"id\":\"b\",\"name\":\"uajlyj\",\"type\":\"lvofqzhvfcibyfmo\"},{\"properties\":{\"description\":\"xrkjpvdw\",\"status\":\"Disabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"vwzjbhyz\",\"threshold\":\"jrkambtrnegvmnv\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-12-07T03:49:26Z\",\"provisioningState\":\"dspastjbkkdmfl\",\"uniqueIdentifier\":\"stmjlxrri\"},\"location\":\"ozapeew\",\"tags\":{\"cslevufuztckt\":\"xlktwkuzi\",\"tqedcgzulwm\":\"h\",\"rjvpglydzgkrvqee\":\"rqzz\",\"nwy\":\"toepryu\"},\"id\":\"pzdm\",\"name\":\"vzvfvaawzqadfl\",\"type\":\"z\"},{\"properties\":{\"description\":\"iglaecx\",\"status\":\"Enabled\",\"factName\":\"UserOwnedLabVmCount\",\"factData\":\"kpvzmlq\",\"threshold\":\"ld\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-04-30T06:35:53Z\",\"provisioningState\":\"rclnpkc\",\"uniqueIdentifier\":\"yzriykhy\"},\"location\":\"wf\",\"tags\":{\"xqvkjlmxhomdyn\":\"b\",\"raauzzpt\":\"dwdigumb\",\"ysdzhez\":\"a\"},\"id\":\"wva\",\"name\":\"qyuvvfonkp\",\"type\":\"hqyikvy\"},{\"properties\":{\"description\":\"uyav\",\"status\":\"Enabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"sttijfybvp\",\"threshold\":\"krsgsgb\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-08-27T04:01:57Z\",\"provisioningState\":\"njdgkynscliq\",\"uniqueIdentifier\":\"vhxnk\"},\"location\":\"mtk\",\"tags\":{\"dxzxhi\":\"tppn\",\"vqagtltdhlf\":\"frbbc\"},\"id\":\"qojpy\",\"name\":\"vgtrdcnifmzzs\",\"type\":\"ymbrnysuxmpraf\"}],\"nextLink\":\"ckh\"}")
+            .toObject(PolicyList.class);
         Assertions.assertEquals("ddrihpf", model.value().get(0).location());
         Assertions.assertEquals("caaewdao", model.value().get(0).tags().get("djvlpj"));
         Assertions.assertEquals("er", model.value().get(0).description());
@@ -36,65 +34,42 @@ public final class PolicyListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyList model =
-            new PolicyList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PolicyInner()
-                                .withLocation("ddrihpf")
-                                .withTags(
-                                    mapOf(
-                                        "djvlpj",
-                                        "caaewdao",
-                                        "msgeivsiykzk",
-                                        "xkzb",
-                                        "xonbzoggculapz",
-                                        "ncj",
-                                        "pgogtqxepny",
-                                        "y"))
-                                .withDescription("er")
-                                .withStatus(PolicyStatus.DISABLED)
-                                .withFactName(PolicyFactName.LAB_VM_SIZE)
-                                .withFactData("f")
-                                .withThreshold("babwidfcxss")
-                                .withEvaluatorType(PolicyEvaluatorType.ALLOWED_VALUES_POLICY),
-                            new PolicyInner()
-                                .withLocation("ozapeew")
-                                .withTags(
-                                    mapOf(
-                                        "cslevufuztckt",
-                                        "xlktwkuzi",
-                                        "tqedcgzulwm",
-                                        "h",
-                                        "rjvpglydzgkrvqee",
-                                        "rqzz",
-                                        "nwy",
-                                        "toepryu"))
-                                .withDescription("xrkjpvdw")
-                                .withStatus(PolicyStatus.DISABLED)
-                                .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET)
-                                .withFactData("vwzjbhyz")
-                                .withThreshold("jrkambtrnegvmnv")
-                                .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY),
-                            new PolicyInner()
-                                .withLocation("wf")
-                                .withTags(mapOf("xqvkjlmxhomdyn", "b", "raauzzpt", "dwdigumb", "ysdzhez", "a"))
-                                .withDescription("iglaecx")
-                                .withStatus(PolicyStatus.ENABLED)
-                                .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT)
-                                .withFactData("kpvzmlq")
-                                .withThreshold("ld")
-                                .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY),
-                            new PolicyInner()
-                                .withLocation("mtk")
-                                .withTags(mapOf("dxzxhi", "tppn", "vqagtltdhlf", "frbbc"))
-                                .withDescription("uyav")
-                                .withStatus(PolicyStatus.ENABLED)
-                                .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET)
-                                .withFactData("sttijfybvp")
-                                .withThreshold("krsgsgb")
-                                .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY)))
+        PolicyList model
+            = new PolicyList().withValue(Arrays.asList(
+                new PolicyInner().withLocation("ddrihpf")
+                    .withTags(mapOf("djvlpj", "caaewdao", "msgeivsiykzk", "xkzb", "xonbzoggculapz", "ncj",
+                        "pgogtqxepny", "y"))
+                    .withDescription("er")
+                    .withStatus(PolicyStatus.DISABLED)
+                    .withFactName(PolicyFactName.LAB_VM_SIZE)
+                    .withFactData("f")
+                    .withThreshold("babwidfcxss")
+                    .withEvaluatorType(PolicyEvaluatorType.ALLOWED_VALUES_POLICY),
+                new PolicyInner().withLocation("ozapeew")
+                    .withTags(mapOf("cslevufuztckt", "xlktwkuzi", "tqedcgzulwm", "h", "rjvpglydzgkrvqee", "rqzz", "nwy",
+                        "toepryu"))
+                    .withDescription("xrkjpvdw")
+                    .withStatus(PolicyStatus.DISABLED)
+                    .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET)
+                    .withFactData("vwzjbhyz")
+                    .withThreshold("jrkambtrnegvmnv")
+                    .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY),
+                new PolicyInner().withLocation("wf")
+                    .withTags(mapOf("xqvkjlmxhomdyn", "b", "raauzzpt", "dwdigumb", "ysdzhez", "a"))
+                    .withDescription("iglaecx")
+                    .withStatus(PolicyStatus.ENABLED)
+                    .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT)
+                    .withFactData("kpvzmlq")
+                    .withThreshold("ld")
+                    .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY),
+                new PolicyInner().withLocation("mtk")
+                    .withTags(mapOf("dxzxhi", "tppn", "vqagtltdhlf", "frbbc"))
+                    .withDescription("uyav")
+                    .withStatus(PolicyStatus.ENABLED)
+                    .withFactName(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET)
+                    .withFactData("sttijfybvp")
+                    .withThreshold("krsgsgb")
+                    .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY)))
                 .withNextLink("ckh");
         model = BinaryData.fromObject(model).toObject(PolicyList.class);
         Assertions.assertEquals("ddrihpf", model.value().get(0).location());

@@ -5,41 +5,58 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Azure VM (Mercury) workload-specific backup policy. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
-@JsonTypeName("GenericProtectionPolicy")
+/**
+ * Azure VM (Mercury) workload-specific backup policy.
+ */
 @Fluent
 public final class GenericProtectionPolicy extends ProtectionPolicy {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String backupManagementType = "GenericProtectionPolicy";
+
+    /*
      * List of sub-protection policies which includes schedule and retention
      */
-    @JsonProperty(value = "subProtectionPolicy")
     private List<SubProtectionPolicy> subProtectionPolicy;
 
     /*
      * TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * Name of this policy's fabric.
      */
-    @JsonProperty(value = "fabricName")
     private String fabricName;
 
-    /** Creates an instance of GenericProtectionPolicy class. */
+    /**
+     * Creates an instance of GenericProtectionPolicy class.
+     */
     public GenericProtectionPolicy() {
     }
 
     /**
+     * Get the backupManagementType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the backupManagementType value.
+     */
+    @Override
+    public String backupManagementType() {
+        return this.backupManagementType;
+    }
+
+    /**
      * Get the subProtectionPolicy property: List of sub-protection policies which includes schedule and retention.
-     *
+     * 
      * @return the subProtectionPolicy value.
      */
     public List<SubProtectionPolicy> subProtectionPolicy() {
@@ -48,7 +65,7 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the subProtectionPolicy property: List of sub-protection policies which includes schedule and retention.
-     *
+     * 
      * @param subProtectionPolicy the subProtectionPolicy value to set.
      * @return the GenericProtectionPolicy object itself.
      */
@@ -59,7 +76,7 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Get the timeZone property: TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -68,7 +85,7 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the timeZone property: TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the GenericProtectionPolicy object itself.
      */
@@ -79,7 +96,7 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Get the fabricName property: Name of this policy's fabric.
-     *
+     * 
      * @return the fabricName value.
      */
     public String fabricName() {
@@ -88,7 +105,7 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the fabricName property: Name of this policy's fabric.
-     *
+     * 
      * @param fabricName the fabricName value to set.
      * @return the GenericProtectionPolicy object itself.
      */
@@ -97,14 +114,18 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         super.withProtectedItemsCount(protectedItemsCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectionPolicy withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
@@ -113,14 +134,70 @@ public final class GenericProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (subProtectionPolicy() != null) {
             subProtectionPolicy().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("protectedItemsCount", protectedItemsCount());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("backupManagementType", this.backupManagementType);
+        jsonWriter.writeArrayField("subProtectionPolicy", this.subProtectionPolicy,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("fabricName", this.fabricName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenericProtectionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenericProtectionPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenericProtectionPolicy.
+     */
+    public static GenericProtectionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenericProtectionPolicy deserializedGenericProtectionPolicy = new GenericProtectionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectedItemsCount".equals(fieldName)) {
+                    deserializedGenericProtectionPolicy.withProtectedItemsCount(reader.getNullable(JsonReader::getInt));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGenericProtectionPolicy
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedGenericProtectionPolicy.backupManagementType = reader.getString();
+                } else if ("subProtectionPolicy".equals(fieldName)) {
+                    List<SubProtectionPolicy> subProtectionPolicy
+                        = reader.readArray(reader1 -> SubProtectionPolicy.fromJson(reader1));
+                    deserializedGenericProtectionPolicy.subProtectionPolicy = subProtectionPolicy;
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedGenericProtectionPolicy.timeZone = reader.getString();
+                } else if ("fabricName".equals(fieldName)) {
+                    deserializedGenericProtectionPolicy.fabricName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenericProtectionPolicy;
+        });
     }
 }

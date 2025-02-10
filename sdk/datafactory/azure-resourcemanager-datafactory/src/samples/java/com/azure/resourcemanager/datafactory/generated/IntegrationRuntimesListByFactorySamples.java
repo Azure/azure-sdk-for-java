@@ -19,7 +19,7 @@ public final class IntegrationRuntimesListByFactorySamples {
      */
     public static void
         integrationRuntimesListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

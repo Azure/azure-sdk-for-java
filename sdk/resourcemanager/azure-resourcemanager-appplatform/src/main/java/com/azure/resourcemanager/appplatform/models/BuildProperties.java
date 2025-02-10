@@ -5,59 +5,73 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-/** Build resource properties payload. */
+/**
+ * Build resource properties payload.
+ */
 @Fluent
-public final class BuildProperties {
+public final class BuildProperties implements JsonSerializable<BuildProperties> {
     /*
      * The relative path of source code
      */
-    @JsonProperty(value = "relativePath")
     private String relativePath;
 
     /*
      * The resource id of builder to build the source code
      */
-    @JsonProperty(value = "builder")
     private String builder;
 
     /*
      * The resource id of agent pool
      */
-    @JsonProperty(value = "agentPool")
     private String agentPool;
 
     /*
      * Provisioning state of the KPack build result
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private BuildProvisioningState provisioningState;
 
     /*
      * The environment variables for this build
      */
-    @JsonProperty(value = "env")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> env;
+
+    /*
+     * The APMs for this build
+     */
+    private List<ApmReference> apms;
+
+    /*
+     * The CA Certificates for this build
+     */
+    private List<CertificateReference> certificates;
 
     /*
      * The build result triggered by this build
      */
-    @JsonProperty(value = "triggeredBuildResult", access = JsonProperty.Access.WRITE_ONLY)
     private TriggeredBuildResult triggeredBuildResult;
 
     /*
      * The customized build resource for this build
      */
-    @JsonProperty(value = "resourceRequests")
     private BuildResourceRequests resourceRequests;
 
     /**
+     * Creates an instance of BuildProperties class.
+     */
+    public BuildProperties() {
+    }
+
+    /**
      * Get the relativePath property: The relative path of source code.
-     *
+     * 
      * @return the relativePath value.
      */
     public String relativePath() {
@@ -66,7 +80,7 @@ public final class BuildProperties {
 
     /**
      * Set the relativePath property: The relative path of source code.
-     *
+     * 
      * @param relativePath the relativePath value to set.
      * @return the BuildProperties object itself.
      */
@@ -77,7 +91,7 @@ public final class BuildProperties {
 
     /**
      * Get the builder property: The resource id of builder to build the source code.
-     *
+     * 
      * @return the builder value.
      */
     public String builder() {
@@ -86,7 +100,7 @@ public final class BuildProperties {
 
     /**
      * Set the builder property: The resource id of builder to build the source code.
-     *
+     * 
      * @param builder the builder value to set.
      * @return the BuildProperties object itself.
      */
@@ -97,7 +111,7 @@ public final class BuildProperties {
 
     /**
      * Get the agentPool property: The resource id of agent pool.
-     *
+     * 
      * @return the agentPool value.
      */
     public String agentPool() {
@@ -106,7 +120,7 @@ public final class BuildProperties {
 
     /**
      * Set the agentPool property: The resource id of agent pool.
-     *
+     * 
      * @param agentPool the agentPool value to set.
      * @return the BuildProperties object itself.
      */
@@ -117,7 +131,7 @@ public final class BuildProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the KPack build result.
-     *
+     * 
      * @return the provisioningState value.
      */
     public BuildProvisioningState provisioningState() {
@@ -126,7 +140,7 @@ public final class BuildProperties {
 
     /**
      * Get the env property: The environment variables for this build.
-     *
+     * 
      * @return the env value.
      */
     public Map<String, String> env() {
@@ -135,7 +149,7 @@ public final class BuildProperties {
 
     /**
      * Set the env property: The environment variables for this build.
-     *
+     * 
      * @param env the env value to set.
      * @return the BuildProperties object itself.
      */
@@ -145,8 +159,48 @@ public final class BuildProperties {
     }
 
     /**
+     * Get the apms property: The APMs for this build.
+     * 
+     * @return the apms value.
+     */
+    public List<ApmReference> apms() {
+        return this.apms;
+    }
+
+    /**
+     * Set the apms property: The APMs for this build.
+     * 
+     * @param apms the apms value to set.
+     * @return the BuildProperties object itself.
+     */
+    public BuildProperties withApms(List<ApmReference> apms) {
+        this.apms = apms;
+        return this;
+    }
+
+    /**
+     * Get the certificates property: The CA Certificates for this build.
+     * 
+     * @return the certificates value.
+     */
+    public List<CertificateReference> certificates() {
+        return this.certificates;
+    }
+
+    /**
+     * Set the certificates property: The CA Certificates for this build.
+     * 
+     * @param certificates the certificates value to set.
+     * @return the BuildProperties object itself.
+     */
+    public BuildProperties withCertificates(List<CertificateReference> certificates) {
+        this.certificates = certificates;
+        return this;
+    }
+
+    /**
      * Get the triggeredBuildResult property: The build result triggered by this build.
-     *
+     * 
      * @return the triggeredBuildResult value.
      */
     public TriggeredBuildResult triggeredBuildResult() {
@@ -155,7 +209,7 @@ public final class BuildProperties {
 
     /**
      * Get the resourceRequests property: The customized build resource for this build.
-     *
+     * 
      * @return the resourceRequests value.
      */
     public BuildResourceRequests resourceRequests() {
@@ -164,7 +218,7 @@ public final class BuildProperties {
 
     /**
      * Set the resourceRequests property: The customized build resource for this build.
-     *
+     * 
      * @param resourceRequests the resourceRequests value to set.
      * @return the BuildProperties object itself.
      */
@@ -175,15 +229,84 @@ public final class BuildProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (apms() != null) {
+            apms().forEach(e -> e.validate());
+        }
+        if (certificates() != null) {
+            certificates().forEach(e -> e.validate());
+        }
         if (triggeredBuildResult() != null) {
             triggeredBuildResult().validate();
         }
         if (resourceRequests() != null) {
             resourceRequests().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("relativePath", this.relativePath);
+        jsonWriter.writeStringField("builder", this.builder);
+        jsonWriter.writeStringField("agentPool", this.agentPool);
+        jsonWriter.writeMapField("env", this.env, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("apms", this.apms, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("certificates", this.certificates, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("resourceRequests", this.resourceRequests);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildProperties.
+     */
+    public static BuildProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildProperties deserializedBuildProperties = new BuildProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("relativePath".equals(fieldName)) {
+                    deserializedBuildProperties.relativePath = reader.getString();
+                } else if ("builder".equals(fieldName)) {
+                    deserializedBuildProperties.builder = reader.getString();
+                } else if ("agentPool".equals(fieldName)) {
+                    deserializedBuildProperties.agentPool = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedBuildProperties.provisioningState
+                        = BuildProvisioningState.fromString(reader.getString());
+                } else if ("env".equals(fieldName)) {
+                    Map<String, String> env = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBuildProperties.env = env;
+                } else if ("apms".equals(fieldName)) {
+                    List<ApmReference> apms = reader.readArray(reader1 -> ApmReference.fromJson(reader1));
+                    deserializedBuildProperties.apms = apms;
+                } else if ("certificates".equals(fieldName)) {
+                    List<CertificateReference> certificates
+                        = reader.readArray(reader1 -> CertificateReference.fromJson(reader1));
+                    deserializedBuildProperties.certificates = certificates;
+                } else if ("triggeredBuildResult".equals(fieldName)) {
+                    deserializedBuildProperties.triggeredBuildResult = TriggeredBuildResult.fromJson(reader);
+                } else if ("resourceRequests".equals(fieldName)) {
+                    deserializedBuildProperties.resourceRequests = BuildResourceRequests.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildProperties;
+        });
     }
 }

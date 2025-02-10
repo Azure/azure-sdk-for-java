@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Switch protection input. */
+/**
+ * Switch protection input.
+ */
 @Fluent
-public final class SwitchProtectionInput {
+public final class SwitchProtectionInput implements JsonSerializable<SwitchProtectionInput> {
     /*
      * Switch protection properties.
      */
-    @JsonProperty(value = "properties")
     private SwitchProtectionInputProperties properties;
 
-    /** Creates an instance of SwitchProtectionInput class. */
+    /**
+     * Creates an instance of SwitchProtectionInput class.
+     */
     public SwitchProtectionInput() {
     }
 
     /**
      * Get the properties property: Switch protection properties.
-     *
+     * 
      * @return the properties value.
      */
     public SwitchProtectionInputProperties properties() {
@@ -31,7 +38,7 @@ public final class SwitchProtectionInput {
 
     /**
      * Set the properties property: Switch protection properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SwitchProtectionInput object itself.
      */
@@ -42,12 +49,48 @@ public final class SwitchProtectionInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwitchProtectionInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwitchProtectionInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwitchProtectionInput.
+     */
+    public static SwitchProtectionInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwitchProtectionInput deserializedSwitchProtectionInput = new SwitchProtectionInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSwitchProtectionInput.properties = SwitchProtectionInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwitchProtectionInput;
+        });
     }
 }

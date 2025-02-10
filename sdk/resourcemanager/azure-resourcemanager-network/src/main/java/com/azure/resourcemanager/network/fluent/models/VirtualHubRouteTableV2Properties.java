@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualHubRouteV2;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for VirtualHubRouteTableV2.
  */
 @Fluent
-public final class VirtualHubRouteTableV2Properties {
+public final class VirtualHubRouteTableV2Properties implements JsonSerializable<VirtualHubRouteTableV2Properties> {
     /*
      * List of all routes.
      */
-    @JsonProperty(value = "routes")
     private List<VirtualHubRouteV2> routes;
 
     /*
      * List of all connections attached to this route table v2.
      */
-    @JsonProperty(value = "attachedConnections")
     private List<String> attachedConnections;
 
     /*
      * The provisioning state of the virtual hub route table v2 resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -97,5 +98,51 @@ public final class VirtualHubRouteTableV2Properties {
         if (routes() != null) {
             routes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("routes", this.routes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("attachedConnections", this.attachedConnections,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualHubRouteTableV2Properties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualHubRouteTableV2Properties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualHubRouteTableV2Properties.
+     */
+    public static VirtualHubRouteTableV2Properties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualHubRouteTableV2Properties deserializedVirtualHubRouteTableV2Properties
+                = new VirtualHubRouteTableV2Properties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("routes".equals(fieldName)) {
+                    List<VirtualHubRouteV2> routes = reader.readArray(reader1 -> VirtualHubRouteV2.fromJson(reader1));
+                    deserializedVirtualHubRouteTableV2Properties.routes = routes;
+                } else if ("attachedConnections".equals(fieldName)) {
+                    List<String> attachedConnections = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualHubRouteTableV2Properties.attachedConnections = attachedConnections;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualHubRouteTableV2Properties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualHubRouteTableV2Properties;
+        });
     }
 }

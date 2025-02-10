@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class VMGuestPatchRebootStatus extends ExpandableStringEnum<VMGuest
      * @param name a name to look for.
      * @return the corresponding VMGuestPatchRebootStatus.
      */
-    @JsonCreator
     public static VMGuestPatchRebootStatus fromString(String name) {
         return fromString(name, VMGuestPatchRebootStatus.class);
     }

@@ -5,49 +5,42 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The schedule properties for partial update. Properties not provided in the update request will not be changed. */
+/**
+ * The schedule properties for partial update. Properties not provided in the update request will not be changed.
+ */
 @Fluent
-public final class ScheduleUpdate extends TrackedResourceUpdate {
+public final class ScheduleUpdate implements JsonSerializable<ScheduleUpdate> {
     /*
      * Properties of a schedule resource to be updated.
      */
-    @JsonProperty(value = "properties")
     private ScheduleUpdateProperties innerProperties;
 
-    /** Creates an instance of ScheduleUpdate class. */
+    /**
+     * Creates an instance of ScheduleUpdate class.
+     */
     public ScheduleUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties of a schedule resource to be updated.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScheduleUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ScheduleUpdate withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ScheduleUpdate withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
     /**
      * Get the type property: Supported type this scheduled task represents.
-     *
+     * 
      * @return the type value.
      */
     public ScheduledType type() {
@@ -56,7 +49,7 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the type property: Supported type this scheduled task represents.
-     *
+     * 
      * @param type the type value to set.
      * @return the ScheduleUpdate object itself.
      */
@@ -70,7 +63,7 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the frequency property: The frequency of this scheduled task.
-     *
+     * 
      * @return the frequency value.
      */
     public ScheduledFrequency frequency() {
@@ -79,7 +72,7 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the frequency property: The frequency of this scheduled task.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the ScheduleUpdate object itself.
      */
@@ -93,7 +86,7 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the time property: The target time to trigger the action. The format is HH:MM.
-     *
+     * 
      * @return the time value.
      */
     public String time() {
@@ -102,7 +95,7 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the time property: The target time to trigger the action. The format is HH:MM.
-     *
+     * 
      * @param time the time value to set.
      * @return the ScheduleUpdate object itself.
      */
@@ -116,7 +109,7 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the timeZone property: The IANA timezone id at which the schedule should execute.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -125,7 +118,7 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the timeZone property: The IANA timezone id at which the schedule should execute.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the ScheduleUpdate object itself.
      */
@@ -139,7 +132,7 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the state property: Indicates whether or not this scheduled task is enabled.
-     *
+     * 
      * @return the state value.
      */
     public ScheduleEnableStatus state() {
@@ -148,7 +141,7 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the state property: Indicates whether or not this scheduled task is enabled.
-     *
+     * 
      * @param state the state value to set.
      * @return the ScheduleUpdate object itself.
      */
@@ -161,15 +154,95 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
     }
 
     /**
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.innerProperties() == null ? null : this.innerProperties().tags();
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the ScheduleUpdate object itself.
+     */
+    public ScheduleUpdate withTags(Map<String, String> tags) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleUpdateProperties();
+        }
+        this.innerProperties().withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.innerProperties() == null ? null : this.innerProperties().location();
+    }
+
+    /**
+     * Set the location property: The geo-location where the resource lives.
+     * 
+     * @param location the location value to set.
+     * @return the ScheduleUpdate object itself.
+     */
+    public ScheduleUpdate withLocation(String location) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleUpdateProperties();
+        }
+        this.innerProperties().withLocation(location);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleUpdate.
+     */
+    public static ScheduleUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleUpdate deserializedScheduleUpdate = new ScheduleUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedScheduleUpdate.innerProperties = ScheduleUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleUpdate;
+        });
     }
 }

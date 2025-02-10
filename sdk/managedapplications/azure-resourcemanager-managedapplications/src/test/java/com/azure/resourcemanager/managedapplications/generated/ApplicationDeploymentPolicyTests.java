@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationDeploymentPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationDeploymentPolicy model =
-            BinaryData.fromString("{\"deploymentMode\":\"Complete\"}").toObject(ApplicationDeploymentPolicy.class);
+        ApplicationDeploymentPolicy model
+            = BinaryData.fromString("{\"deploymentMode\":\"Complete\"}").toObject(ApplicationDeploymentPolicy.class);
         Assertions.assertEquals(DeploymentMode.COMPLETE, model.deploymentMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationDeploymentPolicy model =
-            new ApplicationDeploymentPolicy().withDeploymentMode(DeploymentMode.COMPLETE);
+        ApplicationDeploymentPolicy model
+            = new ApplicationDeploymentPolicy().withDeploymentMode(DeploymentMode.COMPLETE);
         model = BinaryData.fromObject(model).toObject(ApplicationDeploymentPolicy.class);
         Assertions.assertEquals(DeploymentMode.COMPLETE, model.deploymentMode());
     }

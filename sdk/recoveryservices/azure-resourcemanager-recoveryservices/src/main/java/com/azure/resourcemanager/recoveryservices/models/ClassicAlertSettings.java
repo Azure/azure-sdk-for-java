@@ -5,24 +5,36 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Settings for classic alerts. */
+/**
+ * Settings for classic alerts.
+ */
 @Fluent
-public final class ClassicAlertSettings {
+public final class ClassicAlertSettings implements JsonSerializable<ClassicAlertSettings> {
     /*
      * The alertsForCriticalOperations property.
      */
-    @JsonProperty(value = "alertsForCriticalOperations")
     private AlertsState alertsForCriticalOperations;
 
-    /** Creates an instance of ClassicAlertSettings class. */
+    /*
+     * The emailNotificationsForSiteRecovery property.
+     */
+    private AlertsState emailNotificationsForSiteRecovery;
+
+    /**
+     * Creates an instance of ClassicAlertSettings class.
+     */
     public ClassicAlertSettings() {
     }
 
     /**
      * Get the alertsForCriticalOperations property: The alertsForCriticalOperations property.
-     *
+     * 
      * @return the alertsForCriticalOperations value.
      */
     public AlertsState alertsForCriticalOperations() {
@@ -31,7 +43,7 @@ public final class ClassicAlertSettings {
 
     /**
      * Set the alertsForCriticalOperations property: The alertsForCriticalOperations property.
-     *
+     * 
      * @param alertsForCriticalOperations the alertsForCriticalOperations value to set.
      * @return the ClassicAlertSettings object itself.
      */
@@ -41,10 +53,73 @@ public final class ClassicAlertSettings {
     }
 
     /**
+     * Get the emailNotificationsForSiteRecovery property: The emailNotificationsForSiteRecovery property.
+     * 
+     * @return the emailNotificationsForSiteRecovery value.
+     */
+    public AlertsState emailNotificationsForSiteRecovery() {
+        return this.emailNotificationsForSiteRecovery;
+    }
+
+    /**
+     * Set the emailNotificationsForSiteRecovery property: The emailNotificationsForSiteRecovery property.
+     * 
+     * @param emailNotificationsForSiteRecovery the emailNotificationsForSiteRecovery value to set.
+     * @return the ClassicAlertSettings object itself.
+     */
+    public ClassicAlertSettings withEmailNotificationsForSiteRecovery(AlertsState emailNotificationsForSiteRecovery) {
+        this.emailNotificationsForSiteRecovery = emailNotificationsForSiteRecovery;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("alertsForCriticalOperations",
+            this.alertsForCriticalOperations == null ? null : this.alertsForCriticalOperations.toString());
+        jsonWriter.writeStringField("emailNotificationsForSiteRecovery",
+            this.emailNotificationsForSiteRecovery == null ? null : this.emailNotificationsForSiteRecovery.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClassicAlertSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClassicAlertSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClassicAlertSettings.
+     */
+    public static ClassicAlertSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClassicAlertSettings deserializedClassicAlertSettings = new ClassicAlertSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertsForCriticalOperations".equals(fieldName)) {
+                    deserializedClassicAlertSettings.alertsForCriticalOperations
+                        = AlertsState.fromString(reader.getString());
+                } else if ("emailNotificationsForSiteRecovery".equals(fieldName)) {
+                    deserializedClassicAlertSettings.emailNotificationsForSiteRecovery
+                        = AlertsState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClassicAlertSettings;
+        });
     }
 }

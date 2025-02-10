@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
 public final class AppServiceEnvironmentsChangeVnetSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/AppServiceEnvironments_ChangeVnet.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/AppServiceEnvironments_ChangeVnet.
      * json
      */
     /**
@@ -22,9 +22,12 @@ public final class AppServiceEnvironmentsChangeVnetSamples {
      */
     public static void
         moveAnAppServiceEnvironmentToADifferentVNET(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().changeVnet("test-rg", "test-ase",
-            new VirtualNetworkProfile().withId(
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .changeVnet("test-rg", "test-ase", new VirtualNetworkProfile().withId(
                 "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

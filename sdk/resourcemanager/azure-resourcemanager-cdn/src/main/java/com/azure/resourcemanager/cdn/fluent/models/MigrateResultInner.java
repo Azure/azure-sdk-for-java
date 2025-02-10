@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Result for migrate operation. */
+/**
+ * Result for migrate operation.
+ */
 @Immutable
-public final class MigrateResultInner {
+public final class MigrateResultInner implements JsonSerializable<MigrateResultInner> {
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private MigrateResultProperties innerProperties;
 
-    /** Creates an instance of MigrateResultInner class. */
+    /**
+     * Creates an instance of MigrateResultInner class.
+     */
     public MigrateResultInner() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +49,7 @@ public final class MigrateResultInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -53,7 +58,7 @@ public final class MigrateResultInner {
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MigrateResultProperties innerProperties() {
@@ -62,7 +67,7 @@ public final class MigrateResultInner {
 
     /**
      * Get the migratedProfileResourceId property: Arm resource id of the migrated profile.
-     *
+     * 
      * @return the migratedProfileResourceId value.
      */
     public ResourceReference migratedProfileResourceId() {
@@ -71,12 +76,52 @@ public final class MigrateResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateResultInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateResultInner.
+     */
+    public static MigrateResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateResultInner deserializedMigrateResultInner = new MigrateResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateResultInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMigrateResultInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMigrateResultInner.innerProperties = MigrateResultProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateResultInner;
+        });
     }
 }

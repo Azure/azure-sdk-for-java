@@ -5,44 +5,65 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A List custom alert rule. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "ruleType",
-    defaultImpl = ListCustomAlertRule.class)
-@JsonTypeName("ListCustomAlertRule")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AllowlistCustomAlertRule", value = AllowlistCustomAlertRule.class),
-    @JsonSubTypes.Type(name = "DenylistCustomAlertRule", value = DenylistCustomAlertRule.class)
-})
+/**
+ * A List custom alert rule.
+ */
 @Fluent
 public class ListCustomAlertRule extends CustomAlertRule {
     /*
+     * The type of the custom alert rule.
+     */
+    private String ruleType = "ListCustomAlertRule";
+
+    /*
      * The value type of the items in the list.
      */
-    @JsonProperty(value = "valueType", access = JsonProperty.Access.WRITE_ONLY)
     private ValueType valueType;
 
-    /** Creates an instance of ListCustomAlertRule class. */
+    /**
+     * Creates an instance of ListCustomAlertRule class.
+     */
     public ListCustomAlertRule() {
     }
 
     /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
+    }
+
+    /**
      * Get the valueType property: The value type of the items in the list.
-     *
+     * 
      * @return the valueType value.
      */
     public ValueType valueType() {
         return this.valueType;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Set the valueType property: The value type of the items in the list.
+     * 
+     * @param valueType the valueType value to set.
+     * @return the ListCustomAlertRule object itself.
+     */
+    ListCustomAlertRule withValueType(ValueType valueType) {
+        this.valueType = valueType;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ListCustomAlertRule withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -51,11 +72,91 @@ public class ListCustomAlertRule extends CustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListCustomAlertRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListCustomAlertRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ListCustomAlertRule.
+     */
+    public static ListCustomAlertRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("ruleType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AllowlistCustomAlertRule".equals(discriminatorValue)) {
+                    return AllowlistCustomAlertRule.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("ConnectionToIpNotAllowed".equals(discriminatorValue)) {
+                    return ConnectionToIpNotAllowed.fromJson(readerToUse.reset());
+                } else if ("ConnectionFromIpNotAllowed".equals(discriminatorValue)) {
+                    return ConnectionFromIpNotAllowed.fromJson(readerToUse.reset());
+                } else if ("LocalUserNotAllowed".equals(discriminatorValue)) {
+                    return LocalUserNotAllowed.fromJson(readerToUse.reset());
+                } else if ("ProcessNotAllowed".equals(discriminatorValue)) {
+                    return ProcessNotAllowed.fromJson(readerToUse.reset());
+                } else if ("DenylistCustomAlertRule".equals(discriminatorValue)) {
+                    return DenylistCustomAlertRule.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ListCustomAlertRule fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListCustomAlertRule deserializedListCustomAlertRule = new ListCustomAlertRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedListCustomAlertRule.withIsEnabled(reader.getBoolean());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedListCustomAlertRule.withDisplayName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedListCustomAlertRule.withDescription(reader.getString());
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedListCustomAlertRule.ruleType = reader.getString();
+                } else if ("valueType".equals(fieldName)) {
+                    deserializedListCustomAlertRule.valueType = ValueType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListCustomAlertRule;
+        });
     }
 }

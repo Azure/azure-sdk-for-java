@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** IP Extended Community add operation properties. */
+/**
+ * IP Extended Community add operation properties.
+ */
 @Fluent
-public class IpExtendedCommunityAddOperationProperties {
+public class IpExtendedCommunityAddOperationProperties
+    implements JsonSerializable<IpExtendedCommunityAddOperationProperties> {
     /*
      * List of IP Extended Community IDs.
      */
-    @JsonProperty(value = "add")
     private IpExtendedCommunityIdList add;
 
-    /** Creates an instance of IpExtendedCommunityAddOperationProperties class. */
+    /**
+     * Creates an instance of IpExtendedCommunityAddOperationProperties class.
+     */
     public IpExtendedCommunityAddOperationProperties() {
     }
 
     /**
      * Get the add property: List of IP Extended Community IDs.
-     *
+     * 
      * @return the add value.
      */
     public IpExtendedCommunityIdList add() {
@@ -31,7 +39,7 @@ public class IpExtendedCommunityAddOperationProperties {
 
     /**
      * Set the add property: List of IP Extended Community IDs.
-     *
+     * 
      * @param add the add value to set.
      * @return the IpExtendedCommunityAddOperationProperties object itself.
      */
@@ -42,12 +50,50 @@ public class IpExtendedCommunityAddOperationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (add() != null) {
             add().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("add", this.add);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpExtendedCommunityAddOperationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpExtendedCommunityAddOperationProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpExtendedCommunityAddOperationProperties.
+     */
+    public static IpExtendedCommunityAddOperationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpExtendedCommunityAddOperationProperties deserializedIpExtendedCommunityAddOperationProperties
+                = new IpExtendedCommunityAddOperationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("add".equals(fieldName)) {
+                    deserializedIpExtendedCommunityAddOperationProperties.add
+                        = IpExtendedCommunityIdList.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpExtendedCommunityAddOperationProperties;
+        });
     }
 }

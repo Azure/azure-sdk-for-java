@@ -5,62 +5,61 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The SoaRecord model.
  */
 @Immutable
-public final class SoaRecord {
+public final class SoaRecord implements JsonSerializable<SoaRecord> {
 
     /*
      * The nameServer property.
      */
     @Generated
-    @JsonProperty(value = "nameServer")
     private String nameServer;
 
     /*
      * The email property.
      */
     @Generated
-    @JsonProperty(value = "email")
     private String email;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The serialNumber property.
      */
     @Generated
-    @JsonProperty(value = "serialNumber")
     private Long serialNumber;
 
     /*
      * The recent property.
      */
     @Generated
-    @JsonProperty(value = "recent")
     private Boolean recent;
 
     /**
@@ -138,5 +137,63 @@ public final class SoaRecord {
     @Generated
     public Boolean isRecent() {
         return this.recent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nameServer", this.nameServer);
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeNumberField("serialNumber", this.serialNumber);
+        jsonWriter.writeBooleanField("recent", this.recent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoaRecord from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoaRecord if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SoaRecord.
+     */
+    @Generated
+    public static SoaRecord fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoaRecord deserializedSoaRecord = new SoaRecord();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("nameServer".equals(fieldName)) {
+                    deserializedSoaRecord.nameServer = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedSoaRecord.email = reader.getString();
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedSoaRecord.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedSoaRecord.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedSoaRecord.count = reader.getNullable(JsonReader::getLong);
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedSoaRecord.serialNumber = reader.getNullable(JsonReader::getLong);
+                } else if ("recent".equals(fieldName)) {
+                    deserializedSoaRecord.recent = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedSoaRecord;
+        });
     }
 }

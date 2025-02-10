@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,21 +12,29 @@ import java.util.Collection;
  * Require are recommended SSL modes for other source types.
  */
 public final class SslMode extends ExpandableStringEnum<SslMode> {
-    /** Static value Prefer for SslMode. */
+    /**
+     * Static value Prefer for SslMode.
+     */
     public static final SslMode PREFER = fromString("Prefer");
 
-    /** Static value Require for SslMode. */
+    /**
+     * Static value Require for SslMode.
+     */
     public static final SslMode REQUIRE = fromString("Require");
 
-    /** Static value VerifyCA for SslMode. */
+    /**
+     * Static value VerifyCA for SslMode.
+     */
     public static final SslMode VERIFY_CA = fromString("VerifyCA");
 
-    /** Static value VerifyFull for SslMode. */
+    /**
+     * Static value VerifyFull for SslMode.
+     */
     public static final SslMode VERIFY_FULL = fromString("VerifyFull");
 
     /**
      * Creates a new instance of SslMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +43,17 @@ public final class SslMode extends ExpandableStringEnum<SslMode> {
 
     /**
      * Creates or finds a SslMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SslMode.
      */
-    @JsonCreator
     public static SslMode fromString(String name) {
         return fromString(name, SslMode.class);
     }
 
     /**
      * Gets known SslMode values.
-     *
+     * 
      * @return known SslMode values.
      */
     public static Collection<SslMode> values() {

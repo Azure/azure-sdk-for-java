@@ -10,7 +10,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 @Fluent()
 public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
 
-    /** @return the HTTP request path for the HTTP probe to call to check the health status */
+    /**
+     * Gets the HTTP request path for the HTTP probe to call to check the health status.
+     *
+     * @return the HTTP request path for the HTTP probe to call to check the health status
+     */
     String requestPath();
 
     /** Grouping of probe definition stages. */
@@ -31,11 +35,8 @@ public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                WithPort<ParentT>,
-                WithIntervalInSeconds<ParentT>,
-                WithNumberOfProbes<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, WithPort<ParentT>,
+            WithIntervalInSeconds<ParentT>, WithNumberOfProbes<ParentT> {
         }
 
         /**
@@ -105,10 +106,8 @@ public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithRequestPath<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithRequestPath<ParentT> {
     }
 
     /** Grouping of probe update stages. */
@@ -162,12 +161,8 @@ public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
     }
 
     /** The entirety of a probe update as part of a load balancer update. */
-    interface Update
-        extends Settable<LoadBalancer.Update>,
-            UpdateStages.WithIntervalInSeconds,
-            UpdateStages.WithNumberOfProbes,
-            UpdateStages.WithPort,
-            UpdateStages.WithRequestPath {
+    interface Update extends Settable<LoadBalancer.Update>, UpdateStages.WithIntervalInSeconds,
+        UpdateStages.WithNumberOfProbes, UpdateStages.WithPort, UpdateStages.WithRequestPath {
     }
 
     /** Grouping of probe definition stages applicable as part of a load balancer update. */
@@ -188,11 +183,8 @@ public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InUpdate<ParentT>,
-                WithPort<ParentT>,
-                WithIntervalInSeconds<ParentT>,
-                WithNumberOfProbes<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT>, WithPort<ParentT>,
+            WithIntervalInSeconds<ParentT>, WithNumberOfProbes<ParentT> {
         }
 
         /**
@@ -262,9 +254,7 @@ public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithRequestPath<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT>, UpdateDefinitionStages.WithRequestPath<ParentT> {
     }
 }

@@ -5,27 +5,51 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Login by a local user that isn't allowed. Allow list consists of login names to allow. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
-@JsonTypeName("LocalUserNotAllowed")
+/**
+ * Login by a local user that isn't allowed. Allow list consists of login names to allow.
+ */
 @Fluent
 public final class LocalUserNotAllowed extends AllowlistCustomAlertRule {
-    /** Creates an instance of LocalUserNotAllowed class. */
+    /*
+     * The type of the custom alert rule.
+     */
+    private String ruleType = "LocalUserNotAllowed";
+
+    /**
+     * Creates an instance of LocalUserNotAllowed class.
+     */
     public LocalUserNotAllowed() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LocalUserNotAllowed withAllowlistValues(List<String> allowlistValues) {
         super.withAllowlistValues(allowlistValues);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LocalUserNotAllowed withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -34,11 +58,68 @@ public final class LocalUserNotAllowed extends AllowlistCustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (allowlistValues() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property allowlistValues in model LocalUserNotAllowed"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LocalUserNotAllowed.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeArrayField("allowlistValues", allowlistValues(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocalUserNotAllowed from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocalUserNotAllowed if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LocalUserNotAllowed.
+     */
+    public static LocalUserNotAllowed fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocalUserNotAllowed deserializedLocalUserNotAllowed = new LocalUserNotAllowed();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedLocalUserNotAllowed.withIsEnabled(reader.getBoolean());
+                } else if ("allowlistValues".equals(fieldName)) {
+                    List<String> allowlistValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLocalUserNotAllowed.withAllowlistValues(allowlistValues);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedLocalUserNotAllowed.withDisplayName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedLocalUserNotAllowed.withDescription(reader.getString());
+                } else if ("valueType".equals(fieldName)) {
+                    deserializedLocalUserNotAllowed.withValueType(ValueType.fromString(reader.getString()));
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedLocalUserNotAllowed.ruleType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocalUserNotAllowed;
+        });
     }
 }

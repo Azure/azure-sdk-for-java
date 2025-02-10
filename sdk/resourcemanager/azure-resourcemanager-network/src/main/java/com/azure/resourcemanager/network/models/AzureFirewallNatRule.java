@@ -5,72 +5,66 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of a NAT rule.
  */
 @Fluent
-public final class AzureFirewallNatRule {
+public final class AzureFirewallNatRule implements JsonSerializable<AzureFirewallNatRule> {
     /*
      * Name of the NAT rule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Description of the rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * List of source IP addresses for this rule.
      */
-    @JsonProperty(value = "sourceAddresses")
     private List<String> sourceAddresses;
 
     /*
      * List of destination IP addresses for this rule. Supports IP ranges, prefixes, and service tags.
      */
-    @JsonProperty(value = "destinationAddresses")
     private List<String> destinationAddresses;
 
     /*
      * List of destination ports.
      */
-    @JsonProperty(value = "destinationPorts")
     private List<String> destinationPorts;
 
     /*
      * Array of AzureFirewallNetworkRuleProtocols applicable to this NAT rule.
      */
-    @JsonProperty(value = "protocols")
     private List<AzureFirewallNetworkRuleProtocol> protocols;
 
     /*
      * The translated address for this NAT rule.
      */
-    @JsonProperty(value = "translatedAddress")
     private String translatedAddress;
 
     /*
      * The translated port for this NAT rule.
      */
-    @JsonProperty(value = "translatedPort")
     private String translatedPort;
 
     /*
      * The translated FQDN for this NAT rule.
      */
-    @JsonProperty(value = "translatedFqdn")
     private String translatedFqdn;
 
     /*
      * List of source IpGroups for this rule.
      */
-    @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
 
     /**
@@ -287,5 +281,79 @@ public final class AzureFirewallNatRule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("sourceAddresses", this.sourceAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationAddresses", this.destinationAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationPorts", this.destinationPorts,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("protocols", this.protocols,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("translatedAddress", this.translatedAddress);
+        jsonWriter.writeStringField("translatedPort", this.translatedPort);
+        jsonWriter.writeStringField("translatedFqdn", this.translatedFqdn);
+        jsonWriter.writeArrayField("sourceIpGroups", this.sourceIpGroups,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFirewallNatRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFirewallNatRule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFirewallNatRule.
+     */
+    public static AzureFirewallNatRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFirewallNatRule deserializedAzureFirewallNatRule = new AzureFirewallNatRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureFirewallNatRule.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureFirewallNatRule.description = reader.getString();
+                } else if ("sourceAddresses".equals(fieldName)) {
+                    List<String> sourceAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallNatRule.sourceAddresses = sourceAddresses;
+                } else if ("destinationAddresses".equals(fieldName)) {
+                    List<String> destinationAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallNatRule.destinationAddresses = destinationAddresses;
+                } else if ("destinationPorts".equals(fieldName)) {
+                    List<String> destinationPorts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallNatRule.destinationPorts = destinationPorts;
+                } else if ("protocols".equals(fieldName)) {
+                    List<AzureFirewallNetworkRuleProtocol> protocols
+                        = reader.readArray(reader1 -> AzureFirewallNetworkRuleProtocol.fromString(reader1.getString()));
+                    deserializedAzureFirewallNatRule.protocols = protocols;
+                } else if ("translatedAddress".equals(fieldName)) {
+                    deserializedAzureFirewallNatRule.translatedAddress = reader.getString();
+                } else if ("translatedPort".equals(fieldName)) {
+                    deserializedAzureFirewallNatRule.translatedPort = reader.getString();
+                } else if ("translatedFqdn".equals(fieldName)) {
+                    deserializedAzureFirewallNatRule.translatedFqdn = reader.getString();
+                } else if ("sourceIpGroups".equals(fieldName)) {
+                    List<String> sourceIpGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFirewallNatRule.sourceIpGroups = sourceIpGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFirewallNatRule;
+        });
     }
 }

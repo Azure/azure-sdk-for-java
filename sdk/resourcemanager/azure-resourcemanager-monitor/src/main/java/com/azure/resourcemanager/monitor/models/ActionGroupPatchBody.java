@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.fluent.models.ActionGroupPatch;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** An action group object for the body of patch operations. */
+/**
+ * An action group object for the body of patch operations.
+ */
 @Fluent
-public final class ActionGroupPatchBody {
+public final class ActionGroupPatchBody implements JsonSerializable<ActionGroupPatchBody> {
     /*
      * Resource tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The action group settings for an update operation.
      */
-    @JsonProperty(value = "properties")
     private ActionGroupPatch innerProperties;
 
-    /** Creates an instance of ActionGroupPatchBody class. */
+    /**
+     * Creates an instance of ActionGroupPatchBody class.
+     */
     public ActionGroupPatchBody() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class ActionGroupPatchBody {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ActionGroupPatchBody object itself.
      */
@@ -52,7 +56,7 @@ public final class ActionGroupPatchBody {
 
     /**
      * Get the innerProperties property: The action group settings for an update operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ActionGroupPatch innerProperties() {
@@ -62,7 +66,7 @@ public final class ActionGroupPatchBody {
     /**
      * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
      * none of its actions will be activated.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -72,7 +76,7 @@ public final class ActionGroupPatchBody {
     /**
      * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
      * none of its actions will be activated.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ActionGroupPatchBody object itself.
      */
@@ -86,12 +90,52 @@ public final class ActionGroupPatchBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionGroupPatchBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionGroupPatchBody if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActionGroupPatchBody.
+     */
+    public static ActionGroupPatchBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionGroupPatchBody deserializedActionGroupPatchBody = new ActionGroupPatchBody();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedActionGroupPatchBody.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedActionGroupPatchBody.innerProperties = ActionGroupPatch.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionGroupPatchBody;
+        });
     }
 }

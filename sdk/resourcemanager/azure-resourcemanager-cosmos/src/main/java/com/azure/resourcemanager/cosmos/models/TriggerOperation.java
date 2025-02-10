@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class TriggerOperation extends ExpandableStringEnum<TriggerOperatio
      * @param name a name to look for.
      * @return the corresponding TriggerOperation.
      */
-    @JsonCreator
     public static TriggerOperation fromString(String name) {
         return fromString(name, TriggerOperation.class);
     }

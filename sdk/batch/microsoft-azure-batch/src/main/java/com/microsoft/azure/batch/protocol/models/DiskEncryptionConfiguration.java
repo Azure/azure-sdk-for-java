@@ -13,21 +13,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The disk encryption configuration applied on compute nodes in the pool. Disk
- * encryption configuration is not supported on Linux pool created with Shared
- * Image Gallery Image.
+ * encryption configuration is not supported on Linux pool created with Azure
+ * Compute Gallery Image.
  */
 public class DiskEncryptionConfiguration {
     /**
      * The list of disk targets Batch Service will encrypt on the compute node.
-     * If omitted, no disks on the compute nodes in the pool will be encrypted.
-     * On Linux pool, only "TemporaryDisk" is supported; on Windows pool,
-     * "OsDisk" and "TemporaryDisk" must be specified.
+     * The list of disk targets Batch Service will encrypt on the compute node.
      */
     @JsonProperty(value = "targets")
     private List<DiskEncryptionTarget> targets;
 
     /**
-     * Get if omitted, no disks on the compute nodes in the pool will be encrypted. On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
+     * Get the list of disk targets Batch Service will encrypt on the compute node.
      *
      * @return the targets value
      */
@@ -36,7 +34,7 @@ public class DiskEncryptionConfiguration {
     }
 
     /**
-     * Set if omitted, no disks on the compute nodes in the pool will be encrypted. On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
+     * Set the list of disk targets Batch Service will encrypt on the compute node.
      *
      * @param targets the targets value to set
      * @return the DiskEncryptionConfiguration object itself.

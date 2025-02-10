@@ -16,8 +16,7 @@ public final class CredentialResultsImpl implements CredentialResults {
 
     private final com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager;
 
-    CredentialResultsImpl(
-        CredentialResultsInner innerObject,
+    CredentialResultsImpl(CredentialResultsInner innerObject,
         com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

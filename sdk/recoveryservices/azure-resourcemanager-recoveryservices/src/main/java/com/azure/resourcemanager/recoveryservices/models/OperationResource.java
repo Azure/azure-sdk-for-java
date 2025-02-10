@@ -8,11 +8,13 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.recoveryservices.fluent.models.OperationResourceInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of OperationResource. */
+/**
+ * An immutable client-side representation of OperationResource.
+ */
 public interface OperationResource {
     /**
      * Gets the endTime property: End time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     OffsetDateTime endTime();
@@ -20,14 +22,14 @@ public interface OperationResource {
     /**
      * Gets the error property: Required if status == failed or status == canceled. This is the OData v4 error format,
      * used by the RPC and will go into the v2.2 Azure REST API guidelines.
-     *
+     * 
      * @return the error value.
      */
     ManagementError error();
 
     /**
      * Gets the id property: It should match what is used to GET the operation result.
-     *
+     * 
      * @return the id value.
      */
     String id();
@@ -35,28 +37,28 @@ public interface OperationResource {
     /**
      * Gets the name property: It must match the last segment of the "id" field, and will typically be a GUID / system
      * generated value.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the status property: The status of the operation. (InProgress/Success/Failed/Cancelled).
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the startTime property: Start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     OffsetDateTime startTime();
 
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservices.fluent.models.OperationResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationResourceInner innerModel();

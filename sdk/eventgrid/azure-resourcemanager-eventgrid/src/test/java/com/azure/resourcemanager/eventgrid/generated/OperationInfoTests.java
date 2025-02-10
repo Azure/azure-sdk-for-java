@@ -11,23 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInfo model = BinaryData.fromString(
-            "{\"provider\":\"ynhdwdigum\",\"resource\":\"raauzzpt\",\"operation\":\"zysdzh\",\"description\":\"wwvaiqyuvvfonk\"}")
+        OperationInfo model = BinaryData
+            .fromString(
+                "{\"provider\":\"gy\",\"resource\":\"qfby\",\"operation\":\"rfgi\",\"description\":\"tcojocqwo\"}")
             .toObject(OperationInfo.class);
-        Assertions.assertEquals("ynhdwdigum", model.provider());
-        Assertions.assertEquals("raauzzpt", model.resource());
-        Assertions.assertEquals("zysdzh", model.operation());
-        Assertions.assertEquals("wwvaiqyuvvfonk", model.description());
+        Assertions.assertEquals("gy", model.provider());
+        Assertions.assertEquals("qfby", model.resource());
+        Assertions.assertEquals("rfgi", model.operation());
+        Assertions.assertEquals("tcojocqwo", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInfo model = new OperationInfo().withProvider("ynhdwdigum").withResource("raauzzpt")
-            .withOperation("zysdzh").withDescription("wwvaiqyuvvfonk");
+        OperationInfo model = new OperationInfo().withProvider("gy")
+            .withResource("qfby")
+            .withOperation("rfgi")
+            .withDescription("tcojocqwo");
         model = BinaryData.fromObject(model).toObject(OperationInfo.class);
-        Assertions.assertEquals("ynhdwdigum", model.provider());
-        Assertions.assertEquals("raauzzpt", model.resource());
-        Assertions.assertEquals("zysdzh", model.operation());
-        Assertions.assertEquals("wwvaiqyuvvfonk", model.description());
+        Assertions.assertEquals("gy", model.provider());
+        Assertions.assertEquals("qfby", model.resource());
+        Assertions.assertEquals("rfgi", model.operation());
+        Assertions.assertEquals("tcojocqwo", model.description());
     }
 }

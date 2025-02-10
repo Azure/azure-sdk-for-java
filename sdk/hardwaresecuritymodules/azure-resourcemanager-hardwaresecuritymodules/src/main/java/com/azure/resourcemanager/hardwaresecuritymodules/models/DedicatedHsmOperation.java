@@ -6,32 +6,41 @@ package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.DedicatedHsmOperationInner;
 
-/** An immutable client-side representation of DedicatedHsmOperation. */
+/**
+ * An immutable client-side representation of DedicatedHsmOperation.
+ */
 public interface DedicatedHsmOperation {
     /**
      * Gets the name property: The name of the Dedicated HSM Resource Provider Operation.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the isDataAction property: Gets or sets a value indicating whether it is a data plane action.
-     *
+     * 
      * @return the isDataAction value.
      */
-    String isDataAction();
+    Boolean isDataAction();
+
+    /**
+     * Gets the origin property: The origin of the operation.
+     * 
+     * @return the origin value.
+     */
+    String origin();
 
     /**
      * Gets the display property: The display string.
-     *
+     * 
      * @return the display value.
      */
     DedicatedHsmOperationDisplay display();
 
     /**
      * Gets the inner com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.DedicatedHsmOperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     DedicatedHsmOperationInner innerModel();

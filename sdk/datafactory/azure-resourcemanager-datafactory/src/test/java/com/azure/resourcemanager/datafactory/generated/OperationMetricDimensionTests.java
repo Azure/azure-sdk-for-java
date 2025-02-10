@@ -21,7 +21,8 @@ public final class OperationMetricDimensionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetricDimension model = new OperationMetricDimension().withName("yd").withDisplayName("lmjthjq")
+        OperationMetricDimension model = new OperationMetricDimension().withName("yd")
+            .withDisplayName("lmjthjq")
             .withToBeExportedForShoebox(false);
         model = BinaryData.fromObject(model).toObject(OperationMetricDimension.class);
         Assertions.assertEquals("yd", model.name());

@@ -1,0 +1,16 @@
+displayNames:
+  java-template: ""
+  dockerfiles/java21: jre21
+  dockerfiles/java17: jre17
+matrix:
+  image:
+    - dockerfiles/java17
+    - dockerfiles/java21
+  httpClient: [default, okhttp]
+  scenarios:
+    get:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 30
+      testScenario: httpget
+      concurrency: 75
+

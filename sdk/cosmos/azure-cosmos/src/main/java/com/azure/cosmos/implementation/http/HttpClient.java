@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.http;
 
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.Http2AllocationStrategy;
 import reactor.netty.resources.ConnectionProvider;
 
 import java.time.Duration;
@@ -39,24 +40,21 @@ public interface HttpClient {
             throw new IllegalArgumentException("HttpClientConfig is null");
         }
 
-        Duration maxIdleConnectionTimeoutInMillis = httpClientConfig.getConfigs().getMaxIdleConnectionTimeout();
-        if (httpClientConfig.getMaxIdleConnectionTimeout() != null) {
-            maxIdleConnectionTimeoutInMillis = httpClientConfig.getMaxIdleConnectionTimeout();
-        }
-
-        //  Default pool size
-        Integer maxPoolSize = httpClientConfig.getConfigs().getReactorNettyMaxConnectionPoolSize();
-        if (httpClientConfig.getMaxPoolSize() != null) {
-            maxPoolSize = httpClientConfig.getMaxPoolSize();
-        }
-
-        Duration connectionAcquireTimeout = httpClientConfig.getConfigs().getConnectionAcquireTimeout();
-
         ConnectionProvider.Builder fixedConnectionProviderBuilder = ConnectionProvider
-            .builder(httpClientConfig.getConfigs().getReactorNettyConnectionPoolName());
-        fixedConnectionProviderBuilder.maxConnections(maxPoolSize);
-        fixedConnectionProviderBuilder.pendingAcquireTimeout(connectionAcquireTimeout);
-        fixedConnectionProviderBuilder.maxIdleTime(maxIdleConnectionTimeoutInMillis);
+            .builder(httpClientConfig.getConnectionPoolName());
+        fixedConnectionProviderBuilder.maxConnections(httpClientConfig.getMaxPoolSize());
+        fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
+        fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
+
+        if (httpClientConfig.getHttp2Config().isEnabled()) {
+            fixedConnectionProviderBuilder.allocationStrategy(
+                Http2AllocationStrategy.builder()
+                    .maxConnections(httpClientConfig.getHttp2Config().getMaxConnectionPoolSize())
+                    .minConnections(httpClientConfig.getHttp2Config().getMinConnectionPoolSize())
+                    .maxConcurrentStreams(httpClientConfig.getHttp2Config().getMaxConcurrentStreams())
+                    .build()
+            );
+        }
 
         return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProviderBuilder.build(),
             httpClientConfig);

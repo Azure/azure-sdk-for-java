@@ -7,33 +7,53 @@ package com.azure.resourcemanager.support.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.support.models.MessageProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Object that represents a Chat Transcript resource. */
+/**
+ * Object that represents a Chat Transcript resource.
+ */
 @Fluent
 public final class ChatTranscriptDetailsInner extends ProxyResource {
     /*
      * Properties of the resource.
      */
-    @JsonProperty(value = "properties")
     private ChatTranscriptDetailsProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ChatTranscriptDetailsInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ChatTranscriptDetailsInner class.
+     */
     public ChatTranscriptDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ChatTranscriptDetailsProperties innerProperties() {
@@ -42,7 +62,7 @@ public final class ChatTranscriptDetailsInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,8 +70,38 @@ public final class ChatTranscriptDetailsInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the messages property: List of chat transcript communication resources.
-     *
+     * 
      * @return the messages value.
      */
     public List<MessageProperties> messages() {
@@ -60,7 +110,7 @@ public final class ChatTranscriptDetailsInner extends ProxyResource {
 
     /**
      * Set the messages property: List of chat transcript communication resources.
-     *
+     * 
      * @param messages the messages value to set.
      * @return the ChatTranscriptDetailsInner object itself.
      */
@@ -74,7 +124,7 @@ public final class ChatTranscriptDetailsInner extends ProxyResource {
 
     /**
      * Get the startTime property: Time in UTC (ISO 8601 format) when the chat began.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -83,12 +133,58 @@ public final class ChatTranscriptDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatTranscriptDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatTranscriptDetailsInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatTranscriptDetailsInner.
+     */
+    public static ChatTranscriptDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatTranscriptDetailsInner deserializedChatTranscriptDetailsInner = new ChatTranscriptDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedChatTranscriptDetailsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedChatTranscriptDetailsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedChatTranscriptDetailsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedChatTranscriptDetailsInner.innerProperties
+                        = ChatTranscriptDetailsProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedChatTranscriptDetailsInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChatTranscriptDetailsInner;
+        });
     }
 }

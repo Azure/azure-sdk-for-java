@@ -50,7 +50,10 @@ public final class ExcludedPath {
      * @return the excluded path.
      */
     public ExcludedPath setPath(String path) {
-        this.jsonSerializable.set(Constants.Properties.PATH, path);
+        this.jsonSerializable.set(
+            Constants.Properties.PATH,
+            path
+        );
         return this;
     }
 

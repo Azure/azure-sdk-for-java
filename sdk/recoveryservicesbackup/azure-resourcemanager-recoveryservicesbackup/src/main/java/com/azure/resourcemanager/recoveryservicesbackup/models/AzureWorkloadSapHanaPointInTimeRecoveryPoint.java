@@ -5,74 +5,194 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** Recovery point specific to PointInTime in SAPHana. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureWorkloadSAPHanaPointInTimeRecoveryPoint")
+/**
+ * Recovery point specific to PointInTime in SAPHana.
+ */
 @Fluent
 public final class AzureWorkloadSapHanaPointInTimeRecoveryPoint extends AzureWorkloadPointInTimeRecoveryPoint {
-    /** Creates an instance of AzureWorkloadSapHanaPointInTimeRecoveryPoint class. */
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "AzureWorkloadSAPHanaPointInTimeRecoveryPoint";
+
+    /**
+     * Creates an instance of AzureWorkloadSapHanaPointInTimeRecoveryPoint class.
+     */
     public AzureWorkloadSapHanaPointInTimeRecoveryPoint() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRecoveryPoint withTimeRanges(List<PointInTimeRange> timeRanges) {
         super.withTimeRanges(timeRanges);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSapHanaPointInTimeRecoveryPoint withRecoveryPointTimeInUtc(
-        OffsetDateTime recoveryPointTimeInUtc) {
+    public AzureWorkloadSapHanaPointInTimeRecoveryPoint
+        withRecoveryPointTimeInUtc(OffsetDateTime recoveryPointTimeInUtc) {
         super.withRecoveryPointTimeInUtc(recoveryPointTimeInUtc);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRecoveryPoint withType(RestorePointType type) {
         super.withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSapHanaPointInTimeRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
+    public AzureWorkloadSapHanaPointInTimeRecoveryPoint
+        withRecoveryPointTierDetails(List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         super.withRecoveryPointTierDetails(recoveryPointTierDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSapHanaPointInTimeRecoveryPoint withRecoveryPointMoveReadinessInfo(
-        Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
+    public AzureWorkloadSapHanaPointInTimeRecoveryPoint
+        withRecoveryPointMoveReadinessInfo(Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
         super.withRecoveryPointMoveReadinessInfo(recoveryPointMoveReadinessInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSapHanaPointInTimeRecoveryPoint withRecoveryPointProperties(
-        RecoveryPointProperties recoveryPointProperties) {
+    public AzureWorkloadSapHanaPointInTimeRecoveryPoint
+        withRecoveryPointProperties(RecoveryPointProperties recoveryPointProperties) {
         super.withRecoveryPointProperties(recoveryPointProperties);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (recoveryPointTierDetails() != null) {
+            recoveryPointTierDetails().forEach(e -> e.validate());
+        }
+        if (recoveryPointMoveReadinessInfo() != null) {
+            recoveryPointMoveReadinessInfo().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (recoveryPointProperties() != null) {
+            recoveryPointProperties().validate();
+        }
+        if (timeRanges() != null) {
+            timeRanges().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryPointTimeInUTC",
+            recoveryPointTimeInUtc() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(recoveryPointTimeInUtc()));
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
+        jsonWriter.writeArrayField("recoveryPointTierDetails", recoveryPointTierDetails(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("recoveryPointMoveReadinessInfo", recoveryPointMoveReadinessInfo(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("recoveryPointProperties", recoveryPointProperties());
+        jsonWriter.writeArrayField("timeRanges", timeRanges(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWorkloadSapHanaPointInTimeRecoveryPoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWorkloadSapHanaPointInTimeRecoveryPoint if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWorkloadSapHanaPointInTimeRecoveryPoint.
+     */
+    public static AzureWorkloadSapHanaPointInTimeRecoveryPoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWorkloadSapHanaPointInTimeRecoveryPoint deserializedAzureWorkloadSapHanaPointInTimeRecoveryPoint
+                = new AzureWorkloadSapHanaPointInTimeRecoveryPoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryPointTimeInUTC".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaPointInTimeRecoveryPoint.withRecoveryPointTimeInUtc(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaPointInTimeRecoveryPoint
+                        .withType(RestorePointType.fromString(reader.getString()));
+                } else if ("recoveryPointTierDetails".equals(fieldName)) {
+                    List<RecoveryPointTierInformationV2> recoveryPointTierDetails
+                        = reader.readArray(reader1 -> RecoveryPointTierInformationV2.fromJson(reader1));
+                    deserializedAzureWorkloadSapHanaPointInTimeRecoveryPoint
+                        .withRecoveryPointTierDetails(recoveryPointTierDetails);
+                } else if ("recoveryPointMoveReadinessInfo".equals(fieldName)) {
+                    Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo
+                        = reader.readMap(reader1 -> RecoveryPointMoveReadinessInfo.fromJson(reader1));
+                    deserializedAzureWorkloadSapHanaPointInTimeRecoveryPoint
+                        .withRecoveryPointMoveReadinessInfo(recoveryPointMoveReadinessInfo);
+                } else if ("recoveryPointProperties".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaPointInTimeRecoveryPoint
+                        .withRecoveryPointProperties(RecoveryPointProperties.fromJson(reader));
+                } else if ("timeRanges".equals(fieldName)) {
+                    List<PointInTimeRange> timeRanges = reader.readArray(reader1 -> PointInTimeRange.fromJson(reader1));
+                    deserializedAzureWorkloadSapHanaPointInTimeRecoveryPoint.withTimeRanges(timeRanges);
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaPointInTimeRecoveryPoint.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWorkloadSapHanaPointInTimeRecoveryPoint;
+        });
     }
 }

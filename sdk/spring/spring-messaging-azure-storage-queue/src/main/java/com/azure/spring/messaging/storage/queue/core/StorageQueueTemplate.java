@@ -4,12 +4,13 @@
 package com.azure.spring.messaging.storage.queue.core;
 
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
+import com.azure.spring.messaging.implementation.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.messaging.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.messaging.storage.queue.implementation.StorageQueueHelper;
-import com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter;
+import com.azure.spring.messaging.storage.queue.implementation.support.converter.StorageQueueMessageConverter;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.QueueMessageItem;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public class StorageQueueTemplate implements SendOperation {
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in storage queue '%s'";
     private final StorageQueueClientFactory storageQueueClientFactory;
 
-    private StorageQueueMessageConverter messageConverter = new StorageQueueMessageConverter();
+    private AzureMessageConverter<QueueMessageItem, QueueMessageItem> messageConverter = new StorageQueueMessageConverter();
 
     private Class<?> messagePayloadType = byte[].class;
 
@@ -109,18 +110,18 @@ public class StorageQueueTemplate implements SendOperation {
     }
 
     /**
-     * Get the {@code StorageQueueMessageConverter}.
-     * @return the StorageQueueMessageConverter.
+     * Get the message converter.
+     * @return the message converter.
      */
-    public StorageQueueMessageConverter getMessageConverter() {
+    public AzureMessageConverter<QueueMessageItem, QueueMessageItem> getMessageConverter() {
         return messageConverter;
     }
 
     /**
-     * Set the {@code StorageQueueMessageConverter}.
-     * @param messageConverter the StorageQueueMessageConverter.
+     * Set the message converter to use.
+     * @param messageConverter the message converter.
      */
-    public void setMessageConverter(StorageQueueMessageConverter messageConverter) {
+    public void setMessageConverter(AzureMessageConverter<QueueMessageItem, QueueMessageItem> messageConverter) {
         this.messageConverter = messageConverter;
     }
 

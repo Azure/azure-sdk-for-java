@@ -6,28 +6,56 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
+import com.azure.storage.blob.implementation.models.BlobTag;
+import com.azure.storage.blob.implementation.models.BlobTags;
+import com.azure.storage.blob.implementation.models.BlobsCopyFromURLHeaders;
+import com.azure.storage.blob.implementation.models.BlobsCreateSnapshotHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetTagsHeaders;
+import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
+import com.azure.storage.blob.implementation.models.BlobsSetLegalHoldHeaders;
+import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.models.InternalBlobLegalHoldResult;
+import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
+import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
+import com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
@@ -37,6 +65,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSeekableByteChannelReadResult;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ConsistentReadControl;
+import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -55,18 +84,21 @@ import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
@@ -75,12 +107,23 @@ import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Consumer;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -91,6 +134,42 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 public class BlobClientBase {
     private static final ClientLogger LOGGER = new ClientLogger(BlobClientBase.class);
+    private static final Set<OpenOption> DEFAULT_OPEN_OPTIONS_SET = Collections.unmodifiableSet(
+        new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.READ, StandardOpenOption.WRITE)));
+
+    /**
+     * Backing REST client for the blob client.
+     */
+    final AzureBlobStorageImpl azureBlobStorage;
+
+    private final String snapshot;
+    private final String versionId;
+    private final CpkInfo customerProvidedKey;
+
+    /**
+     * Encryption scope of the blob.
+     */
+    final EncryptionScope encryptionScope;
+
+    /**
+     * Storage account name that contains the blob.
+     */
+    protected final String accountName;
+
+    /**
+     * Container name that contains the blob.
+     */
+    protected final String containerName;
+
+    /**
+     * Name of the blob.
+     */
+    protected final String blobName;
+
+    /**
+     * Storage REST API version used in requests to the Storage service.
+     */
+    protected final BlobServiceVersion serviceVersion;
 
     private final BlobAsyncClientBase client;
 
@@ -100,7 +179,57 @@ public class BlobClientBase {
      * @param client the async blob client
      */
     protected BlobClientBase(BlobAsyncClientBase client) {
+        this(client, client.getHttpPipeline(), client.getAccountUrl(), client.getServiceVersion(),
+            client.getAccountName(), client.getContainerName(), client.getBlobName(), client.getSnapshotId(),
+            client.getCustomerProvidedKey(), new EncryptionScope().setEncryptionScope(client.getEncryptionScope()),
+            client.getVersionId());
+    }
+
+    /**
+     * Protected constructor for use by {@link SpecializedBlobClientBuilder}.
+     *
+     * @param client the async blob client
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     */
+    protected BlobClientBase(BlobAsyncClientBase client, HttpPipeline pipeline, String url,
+        BlobServiceVersion serviceVersion, String accountName, String containerName, String blobName, String snapshot,
+        CpkInfo customerProvidedKey, EncryptionScope encryptionScope, String versionId) {
+        if (snapshot != null && versionId != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
+        }
         this.client = client;
+        this.azureBlobStorage = new AzureBlobStorageImplBuilder().pipeline(pipeline)
+            .url(url)
+            .version(serviceVersion.getVersion())
+            .buildClient();
+        this.serviceVersion = serviceVersion;
+
+        this.accountName = accountName;
+        this.containerName = containerName;
+        this.blobName = blobName;
+        this.snapshot = snapshot;
+        this.customerProvidedKey = customerProvidedKey;
+        this.encryptionScope = encryptionScope;
+        this.versionId = versionId;
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(getBlobUrl());
+        } catch (IllegalArgumentException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -110,7 +239,9 @@ public class BlobClientBase {
      * @return a {@link BlobClientBase} used to interact with the specific snapshot.
      */
     public BlobClientBase getSnapshotClient(String snapshot) {
-        return new BlobClientBase(client.getSnapshotClient(snapshot));
+        return new BlobClientBase(this.client.getSnapshotClient(snapshot), getHttpPipeline(), getAccountUrl(),
+            getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), snapshot,
+            getCustomerProvidedKey(), encryptionScope, getVersionId());
     }
 
     /**
@@ -121,7 +252,9 @@ public class BlobClientBase {
      * @return a {@link BlobClientBase} used to interact with the specific version.
      */
     public BlobClientBase getVersionClient(String versionId) {
-        return new BlobClientBase(client.getVersionClient(versionId));
+        return new BlobClientBase(this.client.getVersionClient(versionId), getHttpPipeline(), getAccountUrl(),
+            getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
+            getCustomerProvidedKey(), encryptionScope, versionId);
     }
 
     /**
@@ -131,7 +264,13 @@ public class BlobClientBase {
      * @return a {@link BlobClientBase} with the specified {@code encryptionScope}.
      */
     public BlobClientBase getEncryptionScopeClient(String encryptionScope) {
-        return new BlobClientBase(client.getEncryptionScopeAsyncClient(encryptionScope));
+        EncryptionScope finalEncryptionScope = null;
+        if (encryptionScope != null) {
+            finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+        return new BlobClientBase(this.client.getEncryptionScopeAsyncClient(encryptionScope), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), snapshot,
+            getCustomerProvidedKey(), finalEncryptionScope, getVersionId());
     }
 
     /**
@@ -142,7 +281,15 @@ public class BlobClientBase {
      * @return a {@link BlobClientBase} with the specified {@code customerProvidedKey}.
      */
     public BlobClientBase getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new BlobClientBase(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new BlobClientBase(this.client.getCustomerProvidedKeyAsyncClient(customerProvidedKey), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), snapshot,
+            finalCustomerProvidedKey, encryptionScope, getVersionId());
     }
 
     /**
@@ -151,7 +298,7 @@ public class BlobClientBase {
      * @return the URL of the storage account
      */
     public String getAccountUrl() {
-        return client.getAccountUrl();
+        return azureBlobStorage.getUrl();
     }
 
     /**
@@ -160,7 +307,14 @@ public class BlobClientBase {
      * @return the URL.
      */
     public String getBlobUrl() {
-        return client.getBlobUrl();
+        String blobUrl = azureBlobStorage.getUrl() + "/" + containerName + "/" + Utility.urlEncode(blobName);
+        if (this.isSnapshot()) {
+            blobUrl = Utility.appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
+        }
+        if (this.getVersionId() != null) {
+            blobUrl = Utility.appendQueryParameter(blobUrl, "versionid", getVersionId());
+        }
+        return blobUrl;
     }
 
     /**
@@ -169,7 +323,7 @@ public class BlobClientBase {
      * @return account name associated with this storage resource.
      */
     public String getAccountName() {
-        return client.getAccountName();
+        return this.accountName;
     }
 
     /**
@@ -187,7 +341,7 @@ public class BlobClientBase {
      * @return The name of the container.
      */
     public final String getContainerName() {
-        return client.getContainerName();
+        return this.containerName;
     }
 
     /**
@@ -205,7 +359,15 @@ public class BlobClientBase {
      * @return {@link BlobContainerClient}
      */
     public BlobContainerClient getContainerClient() {
-        return client.getContainerClientBuilder().buildClient();
+        CustomerProvidedKey encryptionKey = this.customerProvidedKey == null
+            ? null
+            : new CustomerProvidedKey(this.customerProvidedKey.getEncryptionKey());
+        return new BlobContainerClientBuilder().endpoint(this.getBlobUrl())
+            .pipeline(this.getHttpPipeline())
+            .serviceVersion(this.serviceVersion)
+            .customerProvidedKey(encryptionKey)
+            .encryptionScope(this.getEncryptionScope())
+            .buildClient();
     }
 
     /**
@@ -223,7 +385,7 @@ public class BlobClientBase {
      * @return The decoded name of the blob.
      */
     public final String getBlobName() {
-        return client.getBlobName();
+        return this.blobName;
     }
 
     /**
@@ -232,7 +394,7 @@ public class BlobClientBase {
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
-        return client.getHttpPipeline();
+        return azureBlobStorage.getHttpPipeline();
     }
 
     /**
@@ -241,7 +403,7 @@ public class BlobClientBase {
      * @return the customer provided key used for encryption.
      */
     public CpkInfo getCustomerProvidedKey() {
-        return client.getCustomerProvidedKey();
+        return this.customerProvidedKey;
     }
 
     /**
@@ -250,7 +412,10 @@ public class BlobClientBase {
      * @return the encryption scope used for encryption.
      */
     public String getEncryptionScope() {
-        return client.getEncryptionScope();
+        if (encryptionScope == null) {
+            return null;
+        }
+        return encryptionScope.getEncryptionScope();
     }
 
     /**
@@ -259,7 +424,7 @@ public class BlobClientBase {
      * @return the service version the client is using.
      */
     public BlobServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+        return this.serviceVersion;
     }
 
     /**
@@ -268,7 +433,7 @@ public class BlobClientBase {
      * @return A string that represents the snapshotId of the snapshot blob
      */
     public String getSnapshotId() {
-        return client.getSnapshotId();
+        return this.snapshot;
     }
 
     /**
@@ -277,7 +442,7 @@ public class BlobClientBase {
      * @return A string that represents the versionId of the snapshot blob
      */
     public String getVersionId() {
-        return client.getVersionId();
+        return this.versionId;
     }
 
     /**
@@ -286,7 +451,7 @@ public class BlobClientBase {
      * @return A boolean that indicates if a blob is a snapshot
      */
     public boolean isSnapshot() {
-        return client.isSnapshot();
+        return this.snapshot != null;
     }
 
     /**
@@ -335,18 +500,20 @@ public class BlobClientBase {
         Context contextFinal = context == null ? Context.NONE : context;
         options = options == null ? new BlobInputStreamOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
-            ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
-        BlobRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new BlobRequestConditions() : options.getRequestConditions();
+            ? ConsistentReadControl.ETAG
+            : options.getConsistentReadControl();
+        BlobRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
 
-        com.azure.storage.common.ParallelTransferOptions parallelTransferOptions =
-            new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
-        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
-            (chunkRange, conditions) -> client.downloadStreamWithResponse(chunkRange, null, conditions, false, contextFinal);
-        return ChunkedDownloadUtils.downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
+        com.azure.storage.common.ParallelTransferOptions parallelTransferOptions
+            = new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc = (chunkRange,
+            conditions) -> client.downloadStreamWithResponse(chunkRange, null, conditions, false, contextFinal);
+        return ChunkedDownloadUtils
+            .downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
             .flatMap(tuple3 -> {
                 BlobDownloadAsyncResponse downloadResponse = tuple3.getT3();
                 return FluxUtil.collectBytesInByteBufferStream(downloadResponse.getValue())
@@ -361,36 +528,40 @@ public class BlobClientBase {
 
                 String eTag = properties.getETag();
                 String versionId = properties.getVersionId();
-                BlobAsyncClientBase client = this.client;
+                BlobClientBase client = this;
 
                 switch (consistentReadControl) {
                     case NONE:
                         break;
+
                     case ETAG:
                         // Target the user specified eTag by default. If not provided, target the latest eTag.
                         if (requestConditions.getIfMatch() == null) {
                             requestConditions.setIfMatch(eTag);
                         }
                         break;
+
                     case VERSION_ID:
                         if (versionId == null) {
                             return FluxUtil.monoError(LOGGER,
                                 new UnsupportedOperationException("Versioning is not supported on this account."));
                         } else {
                             // Target the user specified version by default. If not provided, target the latest version.
-                            if (this.client.getVersionId() == null) {
-                                client = this.client.getVersionClient(versionId);
+                            if (getVersionId() == null) {
+                                client = getVersionClient(versionId);
                             }
                         }
                         break;
+
                     default:
-                        return FluxUtil.monoError(LOGGER, new IllegalArgumentException("Concurrency control type not "
-                            + "supported."));
+                        return FluxUtil.monoError(LOGGER,
+                            new IllegalArgumentException("Concurrency control type not " + "supported."));
                 }
 
-                return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
-                    requestConditions, properties, contextFinal));
-            }).block();
+                return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
+                    initialBuffer, requestConditions, properties, contextFinal));
+            })
+            .block();
     }
 
     /**
@@ -401,19 +572,20 @@ public class BlobClientBase {
      * @return A <code>SeekableByteChannel</code> that represents the channel to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public BlobSeekableByteChannelReadResult openSeekableByteChannelRead(
-        BlobSeekableByteChannelReadOptions options, Context context) {
+    public BlobSeekableByteChannelReadResult openSeekableByteChannelRead(BlobSeekableByteChannelReadOptions options,
+        Context context) {
         context = context == null ? Context.NONE : context;
         options = options == null ? new BlobSeekableByteChannelReadOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
-            ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
+            ? ConsistentReadControl.ETAG
+            : options.getConsistentReadControl();
         int chunkSize = options.getReadSizeInBytes() == null ? 4 * Constants.MB : options.getReadSizeInBytes();
         long initialPosition = options.getInitialPosition() == null ? 0 : options.getInitialPosition();
 
         ByteBuffer initialRange = ByteBuffer.allocate(chunkSize);
         BlobProperties properties;
         BlobDownloadResponse response;
-        try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(initialRange)) {
+        try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(initialRange)) {
             response = this.downloadStreamWithResponse(dstStream,
                 new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
                 options.getRequestConditions(), false, null, context);
@@ -430,6 +602,7 @@ public class BlobClientBase {
         switch (consistentReadControl) {
             case NONE:
                 break;
+
             case ETAG:
                 requestConditions = requestConditions != null ? requestConditions : new BlobRequestConditions();
                 // If etag locking but no explicitly specified etag, use the etag from prefetch
@@ -437,11 +610,11 @@ public class BlobClientBase {
                     requestConditions.setIfMatch(properties.getETag());
                 }
                 break;
+
             case VERSION_ID:
                 if (properties.getVersionId() == null) {
-                    throw LOGGER.logExceptionAsError(
-                        new UnsupportedOperationException(
-                            "Version ID locking unsupported. Versioning is not supported on this account."));
+                    throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                        "Version ID locking unsupported. Versioning is not supported on this account."));
                 } else {
                     // If version locking but no explicitly specified version, use the latest version from prefetch
                     if (getVersionId() == null) {
@@ -449,6 +622,7 @@ public class BlobClientBase {
                     }
                 }
                 break;
+
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "Concurrency control type " + consistentReadControl + " not supported."));
@@ -496,9 +670,28 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
-        Mono<Response<Boolean>> response = client.existsWithResponse(context);
-
-        return blockWithOptionalTimeout(response, timeout);
+        try {
+            Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
+                .getPropertiesNoCustomHeadersWithResponse(containerName, blobName, snapshot, versionId, null, null,
+                    null, null, null, null, null, null, customerProvidedKey, context);
+            return new SimpleResponse<>(sendRequest(operation, timeout, BlobStorageException.class), true);
+        } catch (RuntimeException e) {
+            if (e instanceof BlobStorageException) {
+                HttpResponse response = ((BlobStorageException) e).getResponse();
+                if (BlobErrorCode.BLOB_USES_CUSTOMER_SPECIFIED_ENCRYPTION
+                    .equals(((BlobStorageException) e).getErrorCode())) {
+                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        true);
+                } else if (((BlobStorageException) e).getResponse().getStatusCode() == 404) {
+                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        false);
+                } else {
+                    throw LOGGER.logExceptionAsError(e);
+                }
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        }
     }
 
     /**
@@ -529,12 +722,7 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Duration pollInterval) {
-        return beginCopy(sourceUrl,
-                null,
-                null,
-                null,
-                null,
-                null, pollInterval);
+        return beginCopy(sourceUrl, null, null, null, null, null, pollInterval);
     }
 
     /**
@@ -580,12 +768,15 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
-            RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
-            BlobRequestConditions destRequestConditions, Duration pollInterval) {
-        return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
-            .setRehydratePriority(priority).setSourceRequestConditions(
+        RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
+        BlobRequestConditions destRequestConditions, Duration pollInterval) {
+        return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata)
+            .setTier(tier)
+            .setRehydratePriority(priority)
+            .setSourceRequestConditions(
                 ModelHelper.populateBlobSourceRequestConditions(sourceModifiedRequestConditions))
-            .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
+            .setDestinationRequestConditions(destRequestConditions)
+            .setPollInterval(pollInterval));
     }
 
     /**
@@ -623,10 +814,96 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<BlobCopyInfo, Void> beginCopy(BlobBeginCopyOptions options) {
-        return client.beginCopy(options).getSyncPoller();
+        StorageImplUtils.assertNotNull("options", options);
+        final AtomicReference<String> copyId = new AtomicReference<>();
+        final Duration interval = options.getPollInterval() != null ? options.getPollInterval() : Duration.ofSeconds(1);
+        final BlobBeginCopySourceRequestConditions sourceModifiedConditions
+            = options.getSourceRequestConditions() == null
+                ? new BlobBeginCopySourceRequestConditions()
+                : options.getSourceRequestConditions();
+        final BlobRequestConditions destinationRequestConditions = options.getDestinationRequestConditions() == null
+            ? new BlobRequestConditions()
+            : options.getDestinationRequestConditions();
+        final BlobImmutabilityPolicy immutabilityPolicy
+            = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
+
+        Function<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>> syncActivationOperation
+            = (pollingContext) -> {
+                try {
+                    new URL(options.getSourceUrl());
+                } catch (MalformedURLException ex) {
+                    throw LOGGER
+                        .logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
+                }
+                ResponseBase<BlobsStartCopyFromURLHeaders, Void> response = azureBlobStorage.getBlobs()
+                    .startCopyFromURLWithResponse(containerName, blobName, options.getSourceUrl(), null,
+                        options.getMetadata(), options.getTier(), options.getRehydratePriority(),
+                        sourceModifiedConditions.getIfModifiedSince(), sourceModifiedConditions.getIfUnmodifiedSince(),
+                        sourceModifiedConditions.getIfMatch(), sourceModifiedConditions.getIfNoneMatch(),
+                        sourceModifiedConditions.getTagsConditions(), destinationRequestConditions.getIfModifiedSince(),
+                        destinationRequestConditions.getIfUnmodifiedSince(), destinationRequestConditions.getIfMatch(),
+                        destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getTagsConditions(),
+                        destinationRequestConditions.getLeaseId(), null, ModelHelper.tagsToString(options.getTags()),
+                        options.isSealDestination(), immutabilityPolicy.getExpiryTime(),
+                        immutabilityPolicy.getPolicyMode(), options.isLegalHold(), Context.NONE);
+
+                BlobsStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
+                copyId.set(headers.getXMsCopyId());
+
+                return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                    new BlobCopyInfo(options.getSourceUrl(), headers.getXMsCopyId(), headers.getXMsCopyStatus(),
+                        headers.getETag(), headers.getLastModified(), ModelHelper.getErrorCode(response.getHeaders()),
+                        headers.getXMsVersionId()));
+            };
+
+        Function<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>> pollOperation
+            = (pollingContext) -> onPoll(pollingContext.getLatestResponse());
+
+        BiFunction<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>, BlobCopyInfo> cancelOperation
+            = (pollingContext, firstResponse) -> {
+                if (firstResponse == null || firstResponse.getValue() == null) {
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalArgumentException("Cannot cancel a poll response that never started."));
+                }
+                final String copyIdentifier = firstResponse.getValue().getCopyId();
+                if (!CoreUtils.isNullOrEmpty(copyIdentifier)) {
+                    LOGGER.info("Cancelling copy operation for copy id: {}", copyIdentifier);
+                    abortCopyFromUrl(copyIdentifier);
+                    return firstResponse.getValue();
+                }
+                return null;
+            };
+
+        Function<PollingContext<BlobCopyInfo>, Void> fetchResultOperation = (pollingContext) -> null;
+        return SyncPoller.createPoller(interval, syncActivationOperation, pollOperation, cancelOperation,
+            fetchResultOperation);
     }
 
+    private PollResponse<BlobCopyInfo> onPoll(PollResponse<BlobCopyInfo> pollResponse) {
+        if (pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+            || pollResponse.getStatus() == LongRunningOperationStatus.FAILED) {
+            return pollResponse;
+        }
 
+        final BlobCopyInfo lastInfo = pollResponse.getValue();
+        if (lastInfo == null) {
+            LOGGER.warning("BlobCopyInfo does not exist. Activation operation failed.");
+            return new PollResponse<>(LongRunningOperationStatus.fromString("COPY_START_FAILED", true), null);
+        }
+
+        try {
+            BlobProperties properties = getProperties();
+            final CopyStatusType status = properties.getCopyStatus();
+            final BlobCopyInfo result = new BlobCopyInfo(properties.getCopySource(), properties.getCopyId(), status,
+                properties.getETag(), properties.getCopyCompletionTime(), properties.getCopyStatusDescription(),
+                properties.getVersionId());
+
+            LongRunningOperationStatus operationStatus = ModelHelper.mapStatusToLongRunningOperationStatus(status);
+            return new PollResponse<>(operationStatus, result);
+        } catch (Exception e) {
+            return new PollResponse<>(LongRunningOperationStatus.fromString("POLLING_FAILED", true), lastInfo);
+        }
+    }
 
     /**
      * Stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
@@ -674,8 +951,13 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> abortCopyFromUrlWithResponse(String copyId, String leaseId, Duration timeout,
-            Context context) {
-        return blockWithOptionalTimeout(client.abortCopyFromUrlWithResponse(copyId, leaseId, context), timeout);
+        Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .abortCopyFromURLNoCustomHeadersWithResponse(containerName, blobName, copyId, null, leaseId, null,
+                finalContext);
+
+        return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
     /**
@@ -745,10 +1027,11 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
-            RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
-            Duration timeout, Context context) {
+        RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
+        Duration timeout, Context context) {
         return this.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(copySource).setMetadata(metadata)
-            .setTier(tier).setSourceRequestConditions(sourceModifiedRequestConditions)
+            .setTier(tier)
+            .setSourceRequestConditions(sourceModifiedRequestConditions)
             .setDestinationRequestConditions(destRequestConditions), timeout, context);
     }
 
@@ -786,12 +1069,40 @@ public class BlobClientBase {
      * @throws IllegalArgumentException If {@code copySource} is a malformed {@link URL}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> copyFromUrlWithResponse(BlobCopyFromUrlOptions options, Duration timeout,
-        Context context) {
-        Mono<Response<String>> response = client
-            .copyFromUrlWithResponse(options, context);
+    public Response<String> copyFromUrlWithResponse(BlobCopyFromUrlOptions options, Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        RequestConditions sourceModifiedRequestConditions = options.getSourceRequestConditions() == null
+            ? new RequestConditions()
+            : options.getSourceRequestConditions();
+        BlobRequestConditions destRequestConditions = options.getDestinationRequestConditions() == null
+            ? new BlobRequestConditions()
+            : options.getDestinationRequestConditions();
+        BlobImmutabilityPolicy immutabilityPolicy
+            = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        return blockWithOptionalTimeout(response, timeout);
+        try {
+            new URL(options.getCopySource());
+        } catch (MalformedURLException ex) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'copySource' is not a valid url.", ex));
+        }
+        String sourceAuth
+            = options.getSourceAuthorization() == null ? null : options.getSourceAuthorization().toString();
+        Context finalContext = context == null ? Context.NONE : context;
+
+        Callable<ResponseBase<BlobsCopyFromURLHeaders, Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .copyFromURLWithResponse(containerName, blobName, options.getCopySource(), null, options.getMetadata(),
+                options.getTier(), sourceModifiedRequestConditions.getIfModifiedSince(),
+                sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
+                sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getIfModifiedSince(),
+                destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
+                destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
+                destRequestConditions.getLeaseId(), null, null, ModelHelper.tagsToString(options.getTags()),
+                immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.hasLegalHold(),
+                sourceAuth, options.getCopySourceTagsMode(), this.encryptionScope, finalContext);
+
+        ResponseBase<BlobsCopyFromURLHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
+        return new SimpleResponse<>(response, response.getDeserializedHeaders().getXMsCopyId());
     }
 
     /**
@@ -864,8 +1175,8 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * <p>This method supports downloads up to 2GB of data.
-     * Use {@link #downloadStream(OutputStream)} to download larger blobs.</p>
+     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
+     * use {@link #downloadStream(OutputStream)} to download larger blobs.</p>
      *
      * @return The content of the blob.
      * @throws UncheckedIOException If an I/O error occurs.
@@ -913,11 +1224,10 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     @Deprecated
-    public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
-        DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
-        Duration timeout, Context context) {
-        return downloadStreamWithResponse(stream, range,
-            options, requestConditions, getRangeContentMd5, timeout, context);
+    public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Duration timeout, Context context) {
+        return downloadStreamWithResponse(stream, range, options, requestConditions, getRangeContentMd5, timeout,
+            context);
     }
 
     /**
@@ -956,10 +1266,10 @@ public class BlobClientBase {
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
-        Mono<BlobDownloadResponse> download = client
-            .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-                .thenReturn(new BlobDownloadResponse(response)));
+        Mono<BlobDownloadResponse> download
+            = client.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
+                .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
+                    .thenReturn(new BlobDownloadResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
     }
@@ -985,8 +1295,8 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * <p>This method supports downloads up to 2GB of data.
-     * Use {@link #downloadStreamWithResponse(OutputStream, BlobRange,
+     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
+     * use {@link #downloadStreamWithResponse(OutputStream, BlobRange,
      * DownloadRetryOptions, BlobRequestConditions, boolean, Duration, Context)}  to download larger blobs.</p>
      *
      * @param options {@link DownloadRetryOptions}
@@ -996,19 +1306,62 @@ public class BlobClientBase {
      * @return A response containing status code and HTTP headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobDownloadContentResponse downloadContentWithResponse(
-        DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<BlobDownloadContentResponse> download = client
-            .downloadStreamWithResponse(null, options, requestConditions, false, context)
-            .flatMap(r ->
-                BinaryData.fromFlux(r.getValue())
-                    .map(data ->
-                        new BlobDownloadContentAsyncResponse(
-                            r.getRequest(), r.getStatusCode(),
-                            r.getHeaders(), data,
-                            r.getDeserializedHeaders())
-                    ))
-            .map(BlobDownloadContentResponse::new);
+    public BlobDownloadContentResponse downloadContentWithResponse(DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        Mono<BlobDownloadContentResponse> download
+            = client.downloadStreamWithResponse(null, options, requestConditions, false, context)
+                .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        data, r.getDeserializedHeaders())))
+                .map(BlobDownloadContentResponse::new);
+
+        return blockWithOptionalTimeout(download, timeout);
+    }
+
+    /**
+     * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link
+     * BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions-BlobRange-boolean-Duration-Context -->
+     * <pre>
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     * BlobRange range = new BlobRange&#40;1024, 2048L&#41;;
+     *
+     * BlobDownloadContentResponse contentResponse = client.downloadContentWithResponse&#40;options, null,
+     *     range, false, timeout, new Context&#40;key2, value2&#41;&#41;;
+     * BinaryData content = contentResponse.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Download completed with status %d and content%s%n&quot;,
+     *     contentResponse.getStatusCode&#40;&#41;, content.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions-BlobRange-boolean-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
+     * use {@link #downloadStreamWithResponse(OutputStream, BlobRange,
+     * DownloadRetryOptions, BlobRequestConditions, boolean, Duration, Context)}  to download larger blobs.</p>
+     *
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param range {@link BlobRange}
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadContentResponse downloadContentWithResponse(DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, BlobRange range, boolean getRangeContentMd5, Duration timeout,
+        Context context) {
+        Mono<BlobDownloadContentResponse> download
+            = client.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
+                .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        data, r.getDeserializedHeaders())))
+                .map(BlobDownloadContentResponse::new);
 
         return blockWithOptionalTimeout(download, timeout);
     }
@@ -1164,12 +1517,14 @@ public class BlobClientBase {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
         Duration timeout, Context context) {
-        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
-            ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
+            = ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
         return downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
             .setParallelTransferOptions(finalParallelTransferOptions)
-            .setDownloadRetryOptions(downloadRetryOptions).setRequestConditions(requestConditions)
-            .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout, context);
+            .setDownloadRetryOptions(downloadRetryOptions)
+            .setRequestConditions(requestConditions)
+            .setRetrieveContentRangeMd5(rangeGetContentMd5)
+            .setOpenOptions(openOptions), timeout, context);
     }
 
     /**
@@ -1259,10 +1614,17 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client
-            .deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context);
+        Context finalContext = context == null ? Context.NONE : context;
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        Callable<Response<Void>> operation = () -> azureBlobStorage.getBlobs()
+            .deleteNoCustomHeadersWithResponse(containerName, blobName, snapshot, versionId, null,
+                finalRequestConditions.getLeaseId(), deleteBlobSnapshotOptions,
+                finalRequestConditions.getIfModifiedSince(), finalRequestConditions.getIfUnmodifiedSince(),
+                finalRequestConditions.getIfMatch(), finalRequestConditions.getIfNoneMatch(),
+                finalRequestConditions.getTagsConditions(), null, null, finalContext);
 
-        return blockWithOptionalTimeout(response, timeout);
+        return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
     /**
@@ -1322,8 +1684,19 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.deleteIfExistsWithResponse(deleteBlobSnapshotOptions,
-            requestConditions, context), timeout);
+        try {
+            Response<Void> response
+                = this.deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, timeout, context);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), true);
+        } catch (RuntimeException e) {
+            if (e instanceof BlobStorageException && ((BlobStorageException) e).getResponse().getStatusCode() == 404) {
+                HttpResponse response = ((BlobStorageException) e).getResponse();
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    false);
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        }
     }
 
     /**
@@ -1374,9 +1747,19 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobProperties> getPropertiesWithResponse(BlobRequestConditions requestConditions, Duration timeout,
         Context context) {
-        Mono<Response<BlobProperties>> response = client.getPropertiesWithResponse(requestConditions, context);
-
-        return blockWithOptionalTimeout(response, timeout);
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<ResponseBase<BlobsGetPropertiesHeaders, Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .getPropertiesWithResponse(containerName, blobName, snapshot, versionId, null,
+                finalRequestConditions.getLeaseId(), finalRequestConditions.getIfModifiedSince(),
+                finalRequestConditions.getIfUnmodifiedSince(), finalRequestConditions.getIfMatch(),
+                finalRequestConditions.getIfNoneMatch(), finalRequestConditions.getTagsConditions(), null,
+                customerProvidedKey, finalContext);
+        ResponseBase<BlobsGetPropertiesHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
+        return new SimpleResponse<>(response, BlobPropertiesConstructorProxy
+            .create(new BlobPropertiesInternalGetProperties(response.getDeserializedHeaders())));
     }
 
     /**
@@ -1434,10 +1817,18 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setHttpHeadersWithResponse(BlobHttpHeaders headers, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
-        Mono<Response<Void>> response = client
-            .setHttpHeadersWithResponse(headers, requestConditions, context);
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        Context finalContext = context == null ? Context.NONE : context;
 
-        return blockWithOptionalTimeout(response, timeout);
+        Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .setHttpHeadersNoCustomHeadersWithResponse(containerName, blobName, null,
+                finalRequestConditions.getLeaseId(), finalRequestConditions.getIfModifiedSince(),
+                finalRequestConditions.getIfUnmodifiedSince(), finalRequestConditions.getIfMatch(),
+                finalRequestConditions.getIfNoneMatch(), finalRequestConditions.getTagsConditions(), null, headers,
+                finalContext);
+
+        return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
     /**
@@ -1493,9 +1884,18 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, requestConditions, context);
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        Context finalContext = context == null ? Context.NONE : context;
 
-        return blockWithOptionalTimeout(response, timeout);
+        Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .setMetadataNoCustomHeadersWithResponse(containerName, blobName, null, metadata,
+                finalRequestConditions.getLeaseId(), finalRequestConditions.getIfModifiedSince(),
+                finalRequestConditions.getIfUnmodifiedSince(), finalRequestConditions.getIfMatch(),
+                finalRequestConditions.getIfNoneMatch(), finalRequestConditions.getTagsConditions(), null,
+                customerProvidedKey, encryptionScope, finalContext);
+
+        return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
     /**
@@ -1544,9 +1944,23 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Map<String, String>> getTagsWithResponse(BlobGetTagsOptions options, Duration timeout,
         Context context) {
-        Mono<Response<Map<String, String>>> response = client.getTagsWithResponse(options, context);
+        BlobGetTagsOptions finalTagOptions = (options == null) ? new BlobGetTagsOptions() : options;
+        BlobRequestConditions requestConditions = (finalTagOptions.getRequestConditions() == null)
+            ? new BlobRequestConditions()
+            : finalTagOptions.getRequestConditions();
+        Context finalContext = context == null ? Context.NONE : context;
 
-        return blockWithOptionalTimeout(response, timeout);
+        Callable<ResponseBase<BlobsGetTagsHeaders, BlobTags>> operation = () -> this.azureBlobStorage.getBlobs()
+            .getTagsWithResponse(containerName, blobName, null, null, snapshot, versionId,
+                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), finalContext);
+
+        ResponseBase<BlobsGetTagsHeaders, BlobTags> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
+        Map<String, String> tags = new HashMap<>();
+        for (BlobTag tag : response.getValue().getBlobTagSet()) {
+            tags.put(tag.getKey(), tag.getValue());
+        }
+        return new SimpleResponse<>(response, tags);
     }
 
     /**
@@ -1597,9 +2011,22 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setTagsWithResponse(BlobSetTagsOptions options, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.setTagsWithResponse(options, context);
-
-        return blockWithOptionalTimeout(response, timeout);
+        StorageImplUtils.assertNotNull("options", options);
+        Context finalContext = context == null ? Context.NONE : context;
+        BlobRequestConditions requestConditions
+            = (options.getRequestConditions() == null) ? new BlobRequestConditions() : options.getRequestConditions();
+        List<BlobTag> tagList = null;
+        if (options.getTags() != null) {
+            tagList = new ArrayList<>();
+            for (Map.Entry<String, String> entry : options.getTags().entrySet()) {
+                tagList.add(new BlobTag().setKey(entry.getKey()).setValue(entry.getValue()));
+            }
+        }
+        BlobTags t = new BlobTags().setBlobTagSet(tagList);
+        Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .setTagsNoCustomHeadersWithResponse(containerName, blobName, null, versionId, null, null, null,
+                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), t, finalContext);
+        return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
     /**
@@ -1623,7 +2050,6 @@ public class BlobClientBase {
     public BlobClientBase createSnapshot() {
         return createSnapshotWithResponse(null, null, null, Context.NONE).getValue();
     }
-
 
     /**
      * Creates a read-only snapshot of the blob.
@@ -1655,11 +2081,21 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobClientBase> createSnapshotWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<Response<BlobClientBase>> response = client
-            .createSnapshotWithResponse(metadata, requestConditions, context)
-            .map(rb -> new SimpleResponse<>(rb, new BlobClientBase(rb.getValue())));
+        Context finalContext = context == null ? Context.NONE : context;
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        return blockWithOptionalTimeout(response, timeout);
+        Callable<ResponseBase<BlobsCreateSnapshotHeaders, Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .createSnapshotWithResponse(containerName, blobName, null, metadata,
+                finalRequestConditions.getIfModifiedSince(), finalRequestConditions.getIfUnmodifiedSince(),
+                finalRequestConditions.getIfMatch(), finalRequestConditions.getIfNoneMatch(),
+                finalRequestConditions.getTagsConditions(), finalRequestConditions.getLeaseId(), null,
+                customerProvidedKey, encryptionScope, finalContext);
+
+        ResponseBase<BlobsCreateSnapshotHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
+        return new SimpleResponse<>(response,
+            this.getSnapshotClient(response.getDeserializedHeaders().getXMsSnapshot()));
     }
 
     /**
@@ -1748,9 +2184,15 @@ public class BlobClientBase {
      * @return A response containing status code and HTTP headers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setAccessTierWithResponse(BlobSetAccessTierOptions options,
-        Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.setTierWithResponse(options, context), timeout);
+    public Response<Void> setAccessTierWithResponse(BlobSetAccessTierOptions options, Duration timeout,
+        Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        Context finalContext = context == null ? Context.NONE : context;
+
+        Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .setTierNoCustomHeadersWithResponse(containerName, blobName, options.getTier(), snapshot, versionId, null,
+                options.getPriority(), null, options.getLeaseId(), options.getTagsConditions(), finalContext);
+        return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
     /**
@@ -1794,9 +2236,10 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> undeleteWithResponse(Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.undeleteWithResponse(context);
-
-        return blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .undeleteNoCustomHeadersWithResponse(containerName, blobName, null, null, finalContext);
+        return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
     /**
@@ -1842,9 +2285,14 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context) {
-        Mono<Response<StorageAccountInfo>> response = client.getAccountInfoWithResponse(context);
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<ResponseBase<BlobsGetAccountInfoHeaders, Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .getAccountInfoWithResponse(containerName, blobName, null, null, finalContext);
 
-        return blockWithOptionalTimeout(response, timeout);
+        ResponseBase<BlobsGetAccountInfoHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
+        BlobsGetAccountInfoHeaders hd = response.getDeserializedHeaders();
+        return new SimpleResponse<>(response, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));
     }
 
     /**
@@ -1873,7 +2321,8 @@ public class BlobClientBase {
      */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
-        return this.client.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
+        return generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey, getAccountName(),
+            Context.NONE);
     }
 
     /**
@@ -1904,8 +2353,29 @@ public class BlobClientBase {
      */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, String accountName, Context context) {
-        return this.client.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey, accountName,
-            context);
+        return generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey, accountName, null, context);
+    }
+
+    /**
+     * Generates a user delegation SAS for the blob using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link BlobServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key.
+     * @param accountName The account name.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Consumer<String> stringToSignHandler,
+        Context context) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(), getSnapshotId(),
+            getVersionId(), getEncryptionScope()).generateUserDelegationSas(userDelegationKey, accountName,
+                stringToSignHandler, context);
     }
 
     /**
@@ -1932,7 +2402,7 @@ public class BlobClientBase {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
-        return this.client.generateSas(blobServiceSasSignatureValues);
+        return generateSas(blobServiceSasSignatureValues, Context.NONE);
     }
 
     /**
@@ -1961,7 +2431,26 @@ public class BlobClientBase {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
-        return this.client.generateSas(blobServiceSasSignatureValues, context);
+        return generateSas(blobServiceSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates a service SAS for the blob using the specified {@link BlobServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(), getSnapshotId(),
+            getVersionId(), getEncryptionScope())
+                .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
     /**
@@ -2116,8 +2605,7 @@ public class BlobClientBase {
     public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", queryOptions);
         StorageImplUtils.assertNotNull("outputStream", queryOptions.getOutputStream());
-        Mono<BlobQueryResponse> download = client
-            .queryWithResponse(queryOptions, context)
+        Mono<BlobQueryResponse> download = client.queryWithResponse(queryOptions, context)
             .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), queryOptions.getOutputStream())
                 .thenReturn(new BlobQueryResponse(response)));
 
@@ -2178,10 +2666,37 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobImmutabilityPolicy> setImmutabilityPolicyWithResponse(BlobImmutabilityPolicy immutabilityPolicy,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<Response<BlobImmutabilityPolicy>> response = client.setImmutabilityPolicyWithResponse(immutabilityPolicy,
-            requestConditions, context);
+        Context finalContext = context == null ? Context.NONE : context;
+        BlobImmutabilityPolicy finalImmutabilityPolicy
+            = immutabilityPolicy == null ? new BlobImmutabilityPolicy() : immutabilityPolicy;
+        if (BlobImmutabilityPolicyMode.MUTABLE.equals(finalImmutabilityPolicy.getPolicyMode())) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(String.format("immutabilityPolicy.policyMode must be %s or %s",
+                    BlobImmutabilityPolicyMode.LOCKED.toString(), BlobImmutabilityPolicyMode.UNLOCKED.toString())));
+        }
 
-        return blockWithOptionalTimeout(response, timeout);
+        BlobRequestConditions finalRequestConditions
+            = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+
+        ModelHelper.validateConditionsNotPresent(finalRequestConditions,
+            EnumSet.of(BlobRequestConditionProperty.LEASE_ID, BlobRequestConditionProperty.TAGS_CONDITIONS,
+                BlobRequestConditionProperty.IF_MATCH, BlobRequestConditionProperty.IF_NONE_MATCH,
+                BlobRequestConditionProperty.IF_MODIFIED_SINCE),
+            "setImmutabilityPolicy(WithResponse)", "requestConditions");
+
+        Callable<ResponseBase<BlobsSetImmutabilityPolicyHeaders, Void>> operation
+            = () -> this.azureBlobStorage.getBlobs()
+                .setImmutabilityPolicyWithResponse(containerName, blobName, null, null,
+                    finalRequestConditions.getIfUnmodifiedSince(), finalImmutabilityPolicy.getExpiryTime(),
+                    finalImmutabilityPolicy.getPolicyMode(), snapshot, versionId, finalContext);
+        ResponseBase<BlobsSetImmutabilityPolicyHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
+
+        BlobsSetImmutabilityPolicyHeaders headers = response.getDeserializedHeaders();
+        BlobImmutabilityPolicy responsePolicy
+            = new BlobImmutabilityPolicy().setPolicyMode(headers.getXMsImmutabilityPolicyMode())
+                .setExpiryTime(headers.getXMsImmutabilityPolicyUntilDate());
+        return new SimpleResponse<>(response, responsePolicy);
     }
 
     /**
@@ -2224,9 +2739,11 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteImmutabilityPolicyWithResponse(Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.deleteImmutabilityPolicyWithResponse(context);
-
-        return blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .deleteImmutabilityPolicyNoCustomHeadersWithResponse(containerName, blobName, null, null, snapshot,
+                versionId, finalContext);
+        return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
     /**
@@ -2270,9 +2787,16 @@ public class BlobClientBase {
      * @return A response containing the legal hold result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BlobLegalHoldResult> setLegalHoldWithResponse(boolean legalHold, Duration timeout, Context context) {
-        Mono<Response<BlobLegalHoldResult>> response = client.setLegalHoldWithResponse(legalHold, context);
+    public Response<BlobLegalHoldResult> setLegalHoldWithResponse(boolean legalHold, Duration timeout,
+        Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<ResponseBase<BlobsSetLegalHoldHeaders, Void>> operation = () -> this.azureBlobStorage.getBlobs()
+            .setLegalHoldWithResponse(containerName, blobName, legalHold, null, null, snapshot, versionId,
+                finalContext);
+        ResponseBase<BlobsSetLegalHoldHeaders, Void> response
+            = sendRequest(operation, timeout, BlobStorageException.class);
+        return new SimpleResponse<>(response,
+            new InternalBlobLegalHoldResult(response.getDeserializedHeaders().isXMsLegalHold()));
 
-        return blockWithOptionalTimeout(response, timeout);
     }
 }

@@ -9,11 +9,14 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.models.GeoObjectType;
 import com.azure.core.models.JsonPatchDocument;
+import com.azure.core.serializer.json.jackson.implementation.nojackson.Simple;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -144,15 +147,13 @@ public class JacksonAdapterTests {
     }
 
     private static Stream<Arguments> serializeCollectionSupplier() {
-        return Stream.of(
-            Arguments.of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.CSV, "foo,bar,baz"),
+        return Stream.of(Arguments.of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.CSV, "foo,bar,baz"),
             Arguments.of(Arrays.asList("foo", null, "baz"), CollectionFormat.CSV, "foo,,baz"),
             Arguments.of(Arrays.asList(null, "bar", null, null), CollectionFormat.CSV, ",bar,,"),
             Arguments.of(Arrays.asList(1, 2, 3), CollectionFormat.CSV, "1,2,3"),
             Arguments.of(Arrays.asList(1, 2, 3), CollectionFormat.PIPES, "1|2|3"),
             Arguments.of(Arrays.asList(1, 2, 3), CollectionFormat.SSV, "1 2 3"),
-            Arguments.of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.MULTI, "foo&bar&baz")
-        );
+            Arguments.of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.MULTI, "foo&bar&baz"));
     }
 
     private static Stream<Arguments> deserializeJsonSupplier() {
@@ -160,19 +161,17 @@ public class JacksonAdapterTests {
         OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
-        return Stream.of(
-            Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00"), minValue),
+        return Stream.of(Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00"), minValue),
             Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00Z"), minValue),
             Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00"), unixEpoch),
-            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00Z"), unixEpoch)
-        );
+            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00Z"), unixEpoch));
     }
 
     @ParameterizedTest
     @MethodSource("deserializeXmlSupplier")
     public void deserializeXml(String xml, OffsetDateTime expected) throws IOException {
-        DateTimeWrapper wrapper = JacksonAdapter.defaultSerializerAdapter()
-            .deserialize(xml, DateTimeWrapper.class, SerializerEncoding.XML);
+        DateTimeWrapper wrapper
+            = JacksonAdapter.defaultSerializerAdapter().deserialize(xml, DateTimeWrapper.class, SerializerEncoding.XML);
 
         assertEquals(expected, wrapper.getOffsetDateTime());
     }
@@ -182,12 +181,10 @@ public class JacksonAdapterTests {
         OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
-        return Stream.of(
-            Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00"), minValue),
+        return Stream.of(Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00"), minValue),
             Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00Z"), minValue),
             Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00"), unixEpoch),
-            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00Z"), unixEpoch)
-        );
+            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00Z"), unixEpoch));
     }
 
     @JacksonXmlRootElement(localName = "Wrapper")
@@ -211,8 +208,8 @@ public class JacksonAdapterTests {
 
         HttpHeaders rawHeaders = new HttpHeaders().set(HttpHeaderName.DATE, expectedDate);
 
-        StronglyTypedHeaders stronglyTypedHeaders = JacksonAdapter.defaultSerializerAdapter()
-            .deserialize(rawHeaders, StronglyTypedHeaders.class);
+        StronglyTypedHeaders stronglyTypedHeaders
+            = JacksonAdapter.defaultSerializerAdapter().deserialize(rawHeaders, StronglyTypedHeaders.class);
 
         assertEquals(expectedDate, DateTimeRfc1123.toRfc1123String(stronglyTypedHeaders.getDate()));
     }
@@ -221,8 +218,8 @@ public class JacksonAdapterTests {
     public void stronglyTypedHeadersClassThrowsEagerly() {
         HttpHeaders rawHeaders = new HttpHeaders().set(HttpHeaderName.DATE, "invalid-rfc1123-date");
 
-        assertThrows(DateTimeParseException.class, () -> JacksonAdapter.defaultSerializerAdapter()
-            .deserialize(rawHeaders, StronglyTypedHeaders.class));
+        assertThrows(DateTimeParseException.class,
+            () -> JacksonAdapter.defaultSerializerAdapter().deserialize(rawHeaders, StronglyTypedHeaders.class));
     }
 
     @Test
@@ -244,13 +241,9 @@ public class JacksonAdapterTests {
     }
 
     private static Stream<Arguments> quoteRemovalSupplier() {
-        return Stream.of(
-            Arguments.of("", ""),
-            Arguments.of("\"\"", ""),
-            Arguments.of("\"\"\"\"\"\"\"\"", ""),
+        return Stream.of(Arguments.of("", ""), Arguments.of("\"\"", ""), Arguments.of("\"\"\"\"\"\"\"\"", ""),
             Arguments.of("\"\"hello\"\"", "hello"),
-            Arguments.of("\"\"they said \"hello\" to you\"\"", "they said \"hello\" to you")
-        );
+            Arguments.of("\"\"they said \"hello\" to you\"\"", "they said \"hello\" to you"));
     }
 
     @ParameterizedTest
@@ -287,24 +280,17 @@ public class JacksonAdapterTests {
     private static Stream<Arguments> textSerializationSupplier() {
         Map<String, String> map = Collections.singletonMap("key", "value");
 
-        return Stream.of(
-            Arguments.of(1, "1"),
-            Arguments.of(1L, "1"),
-            Arguments.of(1.0F, "1.0"),
-            Arguments.of(1.0D, "1.0"),
-            Arguments.of("1", "1"),
-            Arguments.of(HttpMethod.GET, "GET"),
-            Arguments.of(GeoObjectType.POINT, "Point"),
-            Arguments.of(map, String.valueOf(map)),
-            Arguments.of(null, null)
-        );
+        return Stream.of(Arguments.of(1, "1"), Arguments.of(1L, "1"), Arguments.of(1.0F, "1.0"),
+            Arguments.of(1.0D, "1.0"), Arguments.of("1", "1"), Arguments.of(HttpMethod.GET, "GET"),
+            Arguments.of(GeoObjectType.POINT, "Point"), Arguments.of(map, String.valueOf(map)),
+            Arguments.of(null, null));
     }
 
     @ParameterizedTest
     @MethodSource("textDeserializationSupplier")
     public void stringToTextDeserialization(byte[] stringBytes, Class<?> type, Object expected) throws IOException {
-        Object actual = ADAPTER.deserialize(new String(stringBytes, StandardCharsets.UTF_8), type,
-            SerializerEncoding.TEXT);
+        Object actual
+            = ADAPTER.deserialize(new String(stringBytes, StandardCharsets.UTF_8), type, SerializerEncoding.TEXT);
 
         if (type == byte[].class) {
             assertArrayEquals((byte[]) expected, (byte[]) actual);
@@ -349,8 +335,7 @@ public class JacksonAdapterTests {
         HttpMethod httpMethod = HttpMethod.GET;
         GeoObjectType geoObjectType = GeoObjectType.POINT;
 
-        return Stream.of(
-            Arguments.of(helloBytes, String.class, "hello"),
+        return Stream.of(Arguments.of(helloBytes, String.class, "hello"),
             Arguments.of(helloBytes, CharSequence.class, "hello"),
             Arguments.of("1".getBytes(StandardCharsets.UTF_8), int.class, 1),
             Arguments.of("1".getBytes(StandardCharsets.UTF_8), Integer.class, 1),
@@ -376,8 +361,7 @@ public class JacksonAdapterTests {
             Arguments.of(getObjectBytes(localDate), LocalDate.class, localDate),
             Arguments.of(getObjectBytes(uuid), UUID.class, uuid),
             Arguments.of(getObjectBytes(httpMethod), HttpMethod.class, httpMethod),
-            Arguments.of(getObjectBytes(geoObjectType), GeoObjectType.class, geoObjectType)
-        );
+            Arguments.of(getObjectBytes(geoObjectType), GeoObjectType.class, geoObjectType));
     }
 
     @ParameterizedTest
@@ -388,8 +372,7 @@ public class JacksonAdapterTests {
     }
 
     private static Stream<Arguments> textUnsupportedDeserializationSupplier() {
-        return Stream.of(
-            Arguments.of(InputStream.class, IllegalStateException.class),
+        return Stream.of(Arguments.of(InputStream.class, IllegalStateException.class),
             Arguments.of(JsonPatchDocument.class, IllegalStateException.class),
             Arguments.of(URL.class, IOException.class), // Thrown when the String isn't a valid URL
             Arguments.of(URI.class, IllegalArgumentException.class) // Thrown when the String isn't a valid URI
@@ -407,6 +390,68 @@ public class JacksonAdapterTests {
         OffsetDateTime getDate() {
             return (date == null) ? null : date.getDateTime();
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryDataWithJsonSerializableContainerSerializationSupplier")
+    public void binaryDataWithJsonSerializableContainerSerialization(BinaryData binaryData, String expectedJson) {
+        assertEquals(expectedJson, binaryData.toString());
+    }
+
+    private static Stream<Arguments> binaryDataWithJsonSerializableContainerSerializationSupplier() {
+        Simple[] array = new Simple[] { new Simple("id", "name") };
+        List<Simple> list = Collections.singletonList(new Simple("id", "name"));
+        Iterable<Simple> iterable = () -> Collections.singletonList(new Simple("id", "name")).iterator();
+        Map<String, Simple> map = Collections.singletonMap("key", new Simple("id", "name"));
+
+        return Stream.of(
+            // Should use modifyArraySerializer
+            Arguments.of(BinaryData.fromObject(array, new JacksonJsonSerializerProvider().createInstance()),
+                "[{\"id\":\"id\",\"name\":\"name\"}]"),
+
+            // Should use modifyCollectionSerializer or modifyCollectionLikeSerializer
+            Arguments.of(BinaryData.fromObject(list, new JacksonJsonSerializerProvider().createInstance()),
+                "[{\"id\":\"id\",\"name\":\"name\"}]"),
+            Arguments.of(BinaryData.fromObject(iterable, new JacksonJsonSerializerProvider().createInstance()),
+                "[{\"id\":\"id\",\"name\":\"name\"}]"),
+
+            // Should use modifyMapSerializer or modifyMapLikeSerializer
+            Arguments.of(BinaryData.fromObject(map, new JacksonJsonSerializerProvider().createInstance()),
+                "{\"key\":{\"id\":\"id\",\"name\":\"name\"}}"));
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerArrayDeserialization() {
+        Simple[] expected = new Simple[] { new Simple("id", "name") };
+        Simple[] actual = BinaryData.fromString("[{\"id\":\"id\",\"name\":\"name\"}]")
+            .toObject(Simple[].class, new JacksonJsonSerializerProvider().createInstance());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerArrayArrayDeserialization() {
+        Simple[][] expected = new Simple[][] { { new Simple("id", "name") } };
+        Simple[][] actual = BinaryData.fromString("[[{\"id\":\"id\",\"name\":\"name\"}]]")
+            .toObject(Simple[][].class, new JacksonJsonSerializerProvider().createInstance());
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerListDeserialization() {
+        List<Simple> expected = Collections.singletonList(new Simple("id", "name"));
+        List<Simple> actual
+            = BinaryData.fromString("[{\"id\":\"id\",\"name\":\"name\"}]").toObject(new TypeReference<List<Simple>>() {
+            }, new JacksonJsonSerializerProvider().createInstance());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerMapDeserialization() {
+        Map<String, Simple> expected = Collections.singletonMap("key", new Simple("id", "name"));
+        Map<String, Simple> actual = BinaryData.fromString("{\"key\":{\"id\":\"id\",\"name\":\"name\"}}")
+            .toObject(new TypeReference<Map<String, Simple>>() {
+            }, new JacksonJsonSerializerProvider().createInstance());
+        assertEquals(expected, actual);
     }
 
     public static final class InvalidStronglyTypedHeaders {

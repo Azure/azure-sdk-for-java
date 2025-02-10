@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for FirewallRules Get. */
+/**
+ * Samples for FirewallRules Get.
+ */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleGet.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleGet.json
      */
     /**
      * Sample code: Get Firewall Rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getFirewallRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getFirewallRules()
-            .getWithResponse(
-                "firewallrulecrudtest-12", "firewallrulecrudtest-6285", "firewallrulecrudtest-2304", Context.NONE);
+            .getWithResponse("firewallrulecrudtest-12", "firewallrulecrudtest-6285", "firewallrulecrudtest-2304",
+                com.azure.core.util.Context.NONE);
     }
 }

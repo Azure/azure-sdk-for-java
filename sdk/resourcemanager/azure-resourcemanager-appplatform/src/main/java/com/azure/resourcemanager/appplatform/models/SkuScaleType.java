@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuScaleType. */
+/**
+ * Gets or sets the type of the scale.
+ */
 public final class SkuScaleType extends ExpandableStringEnum<SkuScaleType> {
-    /** Static value None for SkuScaleType. */
+    /**
+     * Static value None for SkuScaleType.
+     */
     public static final SkuScaleType NONE = fromString("None");
 
-    /** Static value Manual for SkuScaleType. */
+    /**
+     * Static value Manual for SkuScaleType.
+     */
     public static final SkuScaleType MANUAL = fromString("Manual");
 
-    /** Static value Automatic for SkuScaleType. */
+    /**
+     * Static value Automatic for SkuScaleType.
+     */
     public static final SkuScaleType AUTOMATIC = fromString("Automatic");
 
     /**
+     * Creates a new instance of SkuScaleType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuScaleType() {
+    }
+
+    /**
      * Creates or finds a SkuScaleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SkuScaleType.
      */
-    @JsonCreator
     public static SkuScaleType fromString(String name) {
         return fromString(name, SkuScaleType.class);
     }
 
     /**
      * Gets known SkuScaleType values.
-     *
+     * 
      * @return known SkuScaleType values.
      */
     public static Collection<SkuScaleType> values() {

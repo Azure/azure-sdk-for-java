@@ -5,74 +5,74 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** DRA details. */
+/**
+ * DRA details.
+ */
 @Immutable
-public final class DraDetails {
+public final class DraDetails implements JsonSerializable<DraDetails> {
     /*
      * The DRA Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The DRA name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The DRA Bios Id.
      */
-    @JsonProperty(value = "biosId", access = JsonProperty.Access.WRITE_ONLY)
     private String biosId;
 
     /*
      * The version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * The last heartbeat received from the DRA.
      */
-    @JsonProperty(value = "lastHeartbeatUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastHeartbeatUtc;
 
     /*
      * The health.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectionHealth health;
 
     /*
      * The health errors.
      */
-    @JsonProperty(value = "healthErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthError> healthErrors;
 
     /*
      * The count of protected items which are protected in forward direction.
      */
-    @JsonProperty(value = "forwardProtectedItemCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer forwardProtectedItemCount;
 
     /*
      * The count of protected items which are protected in reverse direction.
      */
-    @JsonProperty(value = "reverseProtectedItemCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer reverseProtectedItemCount;
 
-    /** Creates an instance of DraDetails class. */
+    /**
+     * Creates an instance of DraDetails class.
+     */
     public DraDetails() {
     }
 
     /**
      * Get the id property: The DRA Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -81,7 +81,7 @@ public final class DraDetails {
 
     /**
      * Get the name property: The DRA name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -90,7 +90,7 @@ public final class DraDetails {
 
     /**
      * Get the biosId property: The DRA Bios Id.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -99,7 +99,7 @@ public final class DraDetails {
 
     /**
      * Get the version property: The version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -108,7 +108,7 @@ public final class DraDetails {
 
     /**
      * Get the lastHeartbeatUtc property: The last heartbeat received from the DRA.
-     *
+     * 
      * @return the lastHeartbeatUtc value.
      */
     public OffsetDateTime lastHeartbeatUtc() {
@@ -117,7 +117,7 @@ public final class DraDetails {
 
     /**
      * Get the health property: The health.
-     *
+     * 
      * @return the health value.
      */
     public ProtectionHealth health() {
@@ -126,7 +126,7 @@ public final class DraDetails {
 
     /**
      * Get the healthErrors property: The health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -136,7 +136,7 @@ public final class DraDetails {
     /**
      * Get the forwardProtectedItemCount property: The count of protected items which are protected in forward
      * direction.
-     *
+     * 
      * @return the forwardProtectedItemCount value.
      */
     public Integer forwardProtectedItemCount() {
@@ -146,7 +146,7 @@ public final class DraDetails {
     /**
      * Get the reverseProtectedItemCount property: The count of protected items which are protected in reverse
      * direction.
-     *
+     * 
      * @return the reverseProtectedItemCount value.
      */
     public Integer reverseProtectedItemCount() {
@@ -155,12 +155,65 @@ public final class DraDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (healthErrors() != null) {
             healthErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DraDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DraDetails if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the DraDetails.
+     */
+    public static DraDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DraDetails deserializedDraDetails = new DraDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDraDetails.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDraDetails.name = reader.getString();
+                } else if ("biosId".equals(fieldName)) {
+                    deserializedDraDetails.biosId = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedDraDetails.version = reader.getString();
+                } else if ("lastHeartbeatUtc".equals(fieldName)) {
+                    deserializedDraDetails.lastHeartbeatUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("health".equals(fieldName)) {
+                    deserializedDraDetails.health = ProtectionHealth.fromString(reader.getString());
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthError> healthErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedDraDetails.healthErrors = healthErrors;
+                } else if ("forwardProtectedItemCount".equals(fieldName)) {
+                    deserializedDraDetails.forwardProtectedItemCount = reader.getNullable(JsonReader::getInt);
+                } else if ("reverseProtectedItemCount".equals(fieldName)) {
+                    deserializedDraDetails.reverseProtectedItemCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDraDetails;
+        });
     }
 }

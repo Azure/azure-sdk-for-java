@@ -5,78 +5,76 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Disk details for E2A provider. */
+/**
+ * Disk details for E2A provider.
+ */
 @Fluent
-public final class AzureVmDiskDetails {
+public final class AzureVmDiskDetails implements JsonSerializable<AzureVmDiskDetails> {
     /*
      * VHD type.
      */
-    @JsonProperty(value = "vhdType")
     private String vhdType;
 
     /*
      * The VHD id.
      */
-    @JsonProperty(value = "vhdId")
     private String vhdId;
 
     /*
      * The disk resource id.
      */
-    @JsonProperty(value = "diskId")
     private String diskId;
 
     /*
      * VHD name.
      */
-    @JsonProperty(value = "vhdName")
     private String vhdName;
 
     /*
      * Max side in MB.
      */
-    @JsonProperty(value = "maxSizeMB")
     private String maxSizeMB;
 
     /*
      * Blob uri of the Azure disk.
      */
-    @JsonProperty(value = "targetDiskLocation")
     private String targetDiskLocation;
 
     /*
      * The target Azure disk name.
      */
-    @JsonProperty(value = "targetDiskName")
     private String targetDiskName;
 
     /*
      * Ordinal\LunId of the disk for the Azure VM.
      */
-    @JsonProperty(value = "lunId")
     private String lunId;
 
     /*
      * The DiskEncryptionSet ARM ID.
      */
-    @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
     /*
      * The custom target Azure disk name.
      */
-    @JsonProperty(value = "customTargetDiskName")
     private String customTargetDiskName;
 
-    /** Creates an instance of AzureVmDiskDetails class. */
+    /**
+     * Creates an instance of AzureVmDiskDetails class.
+     */
     public AzureVmDiskDetails() {
     }
 
     /**
      * Get the vhdType property: VHD type.
-     *
+     * 
      * @return the vhdType value.
      */
     public String vhdType() {
@@ -85,7 +83,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the vhdType property: VHD type.
-     *
+     * 
      * @param vhdType the vhdType value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -96,7 +94,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the vhdId property: The VHD id.
-     *
+     * 
      * @return the vhdId value.
      */
     public String vhdId() {
@@ -105,7 +103,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the vhdId property: The VHD id.
-     *
+     * 
      * @param vhdId the vhdId value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -116,7 +114,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the diskId property: The disk resource id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -125,7 +123,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the diskId property: The disk resource id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -136,7 +134,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the vhdName property: VHD name.
-     *
+     * 
      * @return the vhdName value.
      */
     public String vhdName() {
@@ -145,7 +143,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the vhdName property: VHD name.
-     *
+     * 
      * @param vhdName the vhdName value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -156,7 +154,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the maxSizeMB property: Max side in MB.
-     *
+     * 
      * @return the maxSizeMB value.
      */
     public String maxSizeMB() {
@@ -165,7 +163,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the maxSizeMB property: Max side in MB.
-     *
+     * 
      * @param maxSizeMB the maxSizeMB value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -176,7 +174,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the targetDiskLocation property: Blob uri of the Azure disk.
-     *
+     * 
      * @return the targetDiskLocation value.
      */
     public String targetDiskLocation() {
@@ -185,7 +183,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the targetDiskLocation property: Blob uri of the Azure disk.
-     *
+     * 
      * @param targetDiskLocation the targetDiskLocation value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -196,7 +194,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the targetDiskName property: The target Azure disk name.
-     *
+     * 
      * @return the targetDiskName value.
      */
     public String targetDiskName() {
@@ -205,7 +203,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the targetDiskName property: The target Azure disk name.
-     *
+     * 
      * @param targetDiskName the targetDiskName value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -216,7 +214,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the lunId property: Ordinal\LunId of the disk for the Azure VM.
-     *
+     * 
      * @return the lunId value.
      */
     public String lunId() {
@@ -225,7 +223,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the lunId property: Ordinal\LunId of the disk for the Azure VM.
-     *
+     * 
      * @param lunId the lunId value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -236,7 +234,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the diskEncryptionSetId property: The DiskEncryptionSet ARM ID.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -245,7 +243,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the diskEncryptionSetId property: The DiskEncryptionSet ARM ID.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -256,7 +254,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the customTargetDiskName property: The custom target Azure disk name.
-     *
+     * 
      * @return the customTargetDiskName value.
      */
     public String customTargetDiskName() {
@@ -265,7 +263,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the customTargetDiskName property: The custom target Azure disk name.
-     *
+     * 
      * @param customTargetDiskName the customTargetDiskName value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -276,9 +274,72 @@ public final class AzureVmDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vhdType", this.vhdType);
+        jsonWriter.writeStringField("vhdId", this.vhdId);
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("vhdName", this.vhdName);
+        jsonWriter.writeStringField("maxSizeMB", this.maxSizeMB);
+        jsonWriter.writeStringField("targetDiskLocation", this.targetDiskLocation);
+        jsonWriter.writeStringField("targetDiskName", this.targetDiskName);
+        jsonWriter.writeStringField("lunId", this.lunId);
+        jsonWriter.writeStringField("diskEncryptionSetId", this.diskEncryptionSetId);
+        jsonWriter.writeStringField("customTargetDiskName", this.customTargetDiskName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVmDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVmDiskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVmDiskDetails.
+     */
+    public static AzureVmDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVmDiskDetails deserializedAzureVmDiskDetails = new AzureVmDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vhdType".equals(fieldName)) {
+                    deserializedAzureVmDiskDetails.vhdType = reader.getString();
+                } else if ("vhdId".equals(fieldName)) {
+                    deserializedAzureVmDiskDetails.vhdId = reader.getString();
+                } else if ("diskId".equals(fieldName)) {
+                    deserializedAzureVmDiskDetails.diskId = reader.getString();
+                } else if ("vhdName".equals(fieldName)) {
+                    deserializedAzureVmDiskDetails.vhdName = reader.getString();
+                } else if ("maxSizeMB".equals(fieldName)) {
+                    deserializedAzureVmDiskDetails.maxSizeMB = reader.getString();
+                } else if ("targetDiskLocation".equals(fieldName)) {
+                    deserializedAzureVmDiskDetails.targetDiskLocation = reader.getString();
+                } else if ("targetDiskName".equals(fieldName)) {
+                    deserializedAzureVmDiskDetails.targetDiskName = reader.getString();
+                } else if ("lunId".equals(fieldName)) {
+                    deserializedAzureVmDiskDetails.lunId = reader.getString();
+                } else if ("diskEncryptionSetId".equals(fieldName)) {
+                    deserializedAzureVmDiskDetails.diskEncryptionSetId = reader.getString();
+                } else if ("customTargetDiskName".equals(fieldName)) {
+                    deserializedAzureVmDiskDetails.customTargetDiskName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVmDiskDetails;
+        });
     }
 }

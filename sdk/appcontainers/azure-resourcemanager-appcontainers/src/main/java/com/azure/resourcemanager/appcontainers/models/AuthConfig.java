@@ -8,32 +8,34 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.AuthConfigInner;
 
-/** An immutable client-side representation of AuthConfig. */
+/**
+ * An immutable client-side representation of AuthConfig.
+ */
 public interface AuthConfig {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
@@ -41,7 +43,7 @@ public interface AuthConfig {
     /**
      * Gets the platform property: The configuration settings of the platform of ContainerApp Service
      * Authentication/Authorization.
-     *
+     * 
      * @return the platform value.
      */
     AuthPlatform platform();
@@ -49,7 +51,7 @@ public interface AuthConfig {
     /**
      * Gets the globalValidation property: The configuration settings that determines the validation flow of users using
      * Service Authentication/Authorization.
-     *
+     * 
      * @return the globalValidation value.
      */
     GlobalValidation globalValidation();
@@ -57,7 +59,7 @@ public interface AuthConfig {
     /**
      * Gets the identityProviders property: The configuration settings of each of the identity providers used to
      * configure ContainerApp Service Authentication/Authorization.
-     *
+     * 
      * @return the identityProviders value.
      */
     IdentityProviders identityProviders();
@@ -65,7 +67,7 @@ public interface AuthConfig {
     /**
      * Gets the login property: The configuration settings of the login flow of users using ContainerApp Service
      * Authentication/Authorization.
-     *
+     * 
      * @return the login value.
      */
     Login login();
@@ -73,41 +75,57 @@ public interface AuthConfig {
     /**
      * Gets the httpSettings property: The configuration settings of the HTTP requests for authentication and
      * authorization requests made against ContainerApp Service Authentication/Authorization.
-     *
+     * 
      * @return the httpSettings value.
      */
     HttpSettings httpSettings();
 
     /**
+     * Gets the encryptionSettings property: The configuration settings of the secrets references of encryption key and
+     * signing key for ContainerApp Service Authentication/Authorization.
+     * 
+     * @return the encryptionSettings value.
+     */
+    EncryptionSettings encryptionSettings();
+
+    /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.AuthConfigInner object.
-     *
+     * 
      * @return the inner object.
      */
     AuthConfigInner innerModel();
 
-    /** The entirety of the AuthConfig definition. */
+    /**
+     * The entirety of the AuthConfig definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The AuthConfig definition stages. */
+    /**
+     * The AuthConfig definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the AuthConfig definition. */
+        /**
+         * The first stage of the AuthConfig definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the AuthConfig definition allowing to specify parent resource. */
+        /**
+         * The stage of the AuthConfig definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, containerAppName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param containerAppName Name of the Container App.
              * @return the next definition stage.
@@ -119,202 +137,250 @@ public interface AuthConfig {
          * The stage of the AuthConfig definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithPlatform,
-                DefinitionStages.WithGlobalValidation,
-                DefinitionStages.WithIdentityProviders,
-                DefinitionStages.WithLogin,
-                DefinitionStages.WithHttpSettings {
+        interface WithCreate extends DefinitionStages.WithPlatform, DefinitionStages.WithGlobalValidation,
+            DefinitionStages.WithIdentityProviders, DefinitionStages.WithLogin, DefinitionStages.WithHttpSettings,
+            DefinitionStages.WithEncryptionSettings {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             AuthConfig create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             AuthConfig create(Context context);
         }
 
-        /** The stage of the AuthConfig definition allowing to specify platform. */
+        /**
+         * The stage of the AuthConfig definition allowing to specify platform.
+         */
         interface WithPlatform {
             /**
              * Specifies the platform property: The configuration settings of the platform of ContainerApp Service
              * Authentication/Authorization..
-             *
+             * 
              * @param platform The configuration settings of the platform of ContainerApp Service
-             *     Authentication/Authorization.
+             * Authentication/Authorization.
              * @return the next definition stage.
              */
             WithCreate withPlatform(AuthPlatform platform);
         }
 
-        /** The stage of the AuthConfig definition allowing to specify globalValidation. */
+        /**
+         * The stage of the AuthConfig definition allowing to specify globalValidation.
+         */
         interface WithGlobalValidation {
             /**
              * Specifies the globalValidation property: The configuration settings that determines the validation flow
              * of users using Service Authentication/Authorization..
-             *
+             * 
              * @param globalValidation The configuration settings that determines the validation flow of users using
-             *     Service Authentication/Authorization.
+             * Service Authentication/Authorization.
              * @return the next definition stage.
              */
             WithCreate withGlobalValidation(GlobalValidation globalValidation);
         }
 
-        /** The stage of the AuthConfig definition allowing to specify identityProviders. */
+        /**
+         * The stage of the AuthConfig definition allowing to specify identityProviders.
+         */
         interface WithIdentityProviders {
             /**
              * Specifies the identityProviders property: The configuration settings of each of the identity providers
              * used to configure ContainerApp Service Authentication/Authorization..
-             *
+             * 
              * @param identityProviders The configuration settings of each of the identity providers used to configure
-             *     ContainerApp Service Authentication/Authorization.
+             * ContainerApp Service Authentication/Authorization.
              * @return the next definition stage.
              */
             WithCreate withIdentityProviders(IdentityProviders identityProviders);
         }
 
-        /** The stage of the AuthConfig definition allowing to specify login. */
+        /**
+         * The stage of the AuthConfig definition allowing to specify login.
+         */
         interface WithLogin {
             /**
              * Specifies the login property: The configuration settings of the login flow of users using ContainerApp
              * Service Authentication/Authorization..
-             *
+             * 
              * @param login The configuration settings of the login flow of users using ContainerApp Service
-             *     Authentication/Authorization.
+             * Authentication/Authorization.
              * @return the next definition stage.
              */
             WithCreate withLogin(Login login);
         }
 
-        /** The stage of the AuthConfig definition allowing to specify httpSettings. */
+        /**
+         * The stage of the AuthConfig definition allowing to specify httpSettings.
+         */
         interface WithHttpSettings {
             /**
              * Specifies the httpSettings property: The configuration settings of the HTTP requests for authentication
              * and authorization requests made against ContainerApp Service Authentication/Authorization..
-             *
+             * 
              * @param httpSettings The configuration settings of the HTTP requests for authentication and authorization
-             *     requests made against ContainerApp Service Authentication/Authorization.
+             * requests made against ContainerApp Service Authentication/Authorization.
              * @return the next definition stage.
              */
             WithCreate withHttpSettings(HttpSettings httpSettings);
+        }
+
+        /**
+         * The stage of the AuthConfig definition allowing to specify encryptionSettings.
+         */
+        interface WithEncryptionSettings {
+            /**
+             * Specifies the encryptionSettings property: The configuration settings of the secrets references of
+             * encryption key and signing key for ContainerApp Service Authentication/Authorization..
+             * 
+             * @param encryptionSettings The configuration settings of the secrets references of encryption key and
+             * signing key for ContainerApp Service Authentication/Authorization.
+             * @return the next definition stage.
+             */
+            WithCreate withEncryptionSettings(EncryptionSettings encryptionSettings);
         }
     }
 
     /**
      * Begins update for the AuthConfig resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     AuthConfig.Update update();
 
-    /** The template for AuthConfig update. */
+    /**
+     * The template for AuthConfig update.
+     */
     interface Update
-        extends UpdateStages.WithPlatform,
-            UpdateStages.WithGlobalValidation,
-            UpdateStages.WithIdentityProviders,
-            UpdateStages.WithLogin,
-            UpdateStages.WithHttpSettings {
+        extends UpdateStages.WithPlatform, UpdateStages.WithGlobalValidation, UpdateStages.WithIdentityProviders,
+        UpdateStages.WithLogin, UpdateStages.WithHttpSettings, UpdateStages.WithEncryptionSettings {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         AuthConfig apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         AuthConfig apply(Context context);
     }
 
-    /** The AuthConfig update stages. */
+    /**
+     * The AuthConfig update stages.
+     */
     interface UpdateStages {
-        /** The stage of the AuthConfig update allowing to specify platform. */
+        /**
+         * The stage of the AuthConfig update allowing to specify platform.
+         */
         interface WithPlatform {
             /**
              * Specifies the platform property: The configuration settings of the platform of ContainerApp Service
              * Authentication/Authorization..
-             *
+             * 
              * @param platform The configuration settings of the platform of ContainerApp Service
-             *     Authentication/Authorization.
+             * Authentication/Authorization.
              * @return the next definition stage.
              */
             Update withPlatform(AuthPlatform platform);
         }
 
-        /** The stage of the AuthConfig update allowing to specify globalValidation. */
+        /**
+         * The stage of the AuthConfig update allowing to specify globalValidation.
+         */
         interface WithGlobalValidation {
             /**
              * Specifies the globalValidation property: The configuration settings that determines the validation flow
              * of users using Service Authentication/Authorization..
-             *
+             * 
              * @param globalValidation The configuration settings that determines the validation flow of users using
-             *     Service Authentication/Authorization.
+             * Service Authentication/Authorization.
              * @return the next definition stage.
              */
             Update withGlobalValidation(GlobalValidation globalValidation);
         }
 
-        /** The stage of the AuthConfig update allowing to specify identityProviders. */
+        /**
+         * The stage of the AuthConfig update allowing to specify identityProviders.
+         */
         interface WithIdentityProviders {
             /**
              * Specifies the identityProviders property: The configuration settings of each of the identity providers
              * used to configure ContainerApp Service Authentication/Authorization..
-             *
+             * 
              * @param identityProviders The configuration settings of each of the identity providers used to configure
-             *     ContainerApp Service Authentication/Authorization.
+             * ContainerApp Service Authentication/Authorization.
              * @return the next definition stage.
              */
             Update withIdentityProviders(IdentityProviders identityProviders);
         }
 
-        /** The stage of the AuthConfig update allowing to specify login. */
+        /**
+         * The stage of the AuthConfig update allowing to specify login.
+         */
         interface WithLogin {
             /**
              * Specifies the login property: The configuration settings of the login flow of users using ContainerApp
              * Service Authentication/Authorization..
-             *
+             * 
              * @param login The configuration settings of the login flow of users using ContainerApp Service
-             *     Authentication/Authorization.
+             * Authentication/Authorization.
              * @return the next definition stage.
              */
             Update withLogin(Login login);
         }
 
-        /** The stage of the AuthConfig update allowing to specify httpSettings. */
+        /**
+         * The stage of the AuthConfig update allowing to specify httpSettings.
+         */
         interface WithHttpSettings {
             /**
              * Specifies the httpSettings property: The configuration settings of the HTTP requests for authentication
              * and authorization requests made against ContainerApp Service Authentication/Authorization..
-             *
+             * 
              * @param httpSettings The configuration settings of the HTTP requests for authentication and authorization
-             *     requests made against ContainerApp Service Authentication/Authorization.
+             * requests made against ContainerApp Service Authentication/Authorization.
              * @return the next definition stage.
              */
             Update withHttpSettings(HttpSettings httpSettings);
+        }
+
+        /**
+         * The stage of the AuthConfig update allowing to specify encryptionSettings.
+         */
+        interface WithEncryptionSettings {
+            /**
+             * Specifies the encryptionSettings property: The configuration settings of the secrets references of
+             * encryption key and signing key for ContainerApp Service Authentication/Authorization..
+             * 
+             * @param encryptionSettings The configuration settings of the secrets references of encryption key and
+             * signing key for ContainerApp Service Authentication/Authorization.
+             * @return the next definition stage.
+             */
+            Update withEncryptionSettings(EncryptionSettings encryptionSettings);
         }
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     AuthConfig refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

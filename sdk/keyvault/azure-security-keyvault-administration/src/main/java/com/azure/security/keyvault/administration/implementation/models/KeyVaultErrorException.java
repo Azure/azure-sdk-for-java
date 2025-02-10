@@ -7,11 +7,13 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/** Exception thrown for an invalid response with KeyVaultError information. */
+/**
+ * Exception thrown for an invalid response with KeyVaultError information.
+ */
 public final class KeyVaultErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the KeyVaultErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -21,7 +23,7 @@ public final class KeyVaultErrorException extends HttpResponseException {
 
     /**
      * Initializes a new instance of the KeyVaultErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
@@ -30,7 +32,9 @@ public final class KeyVaultErrorException extends HttpResponseException {
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyVaultError getValue() {
         return (KeyVaultError) super.getValue();

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class KeyKind extends ExpandableStringEnum<KeyKind> {
      * @param name a name to look for.
      * @return the corresponding KeyKind.
      */
-    @JsonCreator
     public static KeyKind fromString(String name) {
         return fromString(name, KeyKind.class);
     }

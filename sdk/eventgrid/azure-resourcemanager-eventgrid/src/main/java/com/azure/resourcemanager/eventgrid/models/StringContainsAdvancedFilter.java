@@ -5,28 +5,42 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * StringContains Advanced Filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
-@JsonTypeName("StringContains")
 @Fluent
 public final class StringContainsAdvancedFilter extends AdvancedFilter {
     /*
+     * The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+     */
+    private AdvancedFilterOperatorType operatorType = AdvancedFilterOperatorType.STRING_CONTAINS;
+
+    /*
      * The set of filter values.
      */
-    @JsonProperty(value = "values")
     private List<String> values;
 
     /**
      * Creates an instance of StringContainsAdvancedFilter class.
      */
     public StringContainsAdvancedFilter() {
+    }
+
+    /**
+     * Get the operatorType property: The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals
+     * and others.
+     * 
+     * @return the operatorType value.
+     */
+    @Override
+    public AdvancedFilterOperatorType operatorType() {
+        return this.operatorType;
     }
 
     /**
@@ -65,6 +79,49 @@ public final class StringContainsAdvancedFilter extends AdvancedFilter {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", key());
+        jsonWriter.writeStringField("operatorType", this.operatorType == null ? null : this.operatorType.toString());
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StringContainsAdvancedFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StringContainsAdvancedFilter if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StringContainsAdvancedFilter.
+     */
+    public static StringContainsAdvancedFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StringContainsAdvancedFilter deserializedStringContainsAdvancedFilter = new StringContainsAdvancedFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedStringContainsAdvancedFilter.withKey(reader.getString());
+                } else if ("operatorType".equals(fieldName)) {
+                    deserializedStringContainsAdvancedFilter.operatorType
+                        = AdvancedFilterOperatorType.fromString(reader.getString());
+                } else if ("values".equals(fieldName)) {
+                    List<String> values = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStringContainsAdvancedFilter.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStringContainsAdvancedFilter;
+        });
     }
 }

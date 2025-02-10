@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class MongoDBResourcesCreateUpdateMongoUserDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBMongoDBUserDefinitionCreateUpdate.json
      */
     /**
@@ -22,12 +22,17 @@ public final class MongoDBResourcesCreateUpdateMongoUserDefinitionSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBUserDefinitionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getMongoDBResources().createUpdateMongoUserDefinition(
-            "myMongoUserDefinitionId", "myResourceGroupName", "myAccountName",
-            new MongoUserDefinitionCreateUpdateParameters().withUsername("myUserName")
-                .withPassword("fakeTokenPlaceholder").withDatabaseName("sales").withCustomData("My custom data")
-                .withRoles(Arrays.asList(new Role().withDb("sales").withRole("myReadRole")))
-                .withMechanisms("SCRAM-SHA-256"),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getMongoDBResources()
+            .createUpdateMongoUserDefinition("myMongoUserDefinitionId", "myResourceGroupName", "myAccountName",
+                new MongoUserDefinitionCreateUpdateParameters().withUsername("myUserName")
+                    .withPassword("fakeTokenPlaceholder")
+                    .withDatabaseName("sales")
+                    .withCustomData("My custom data")
+                    .withRoles(Arrays.asList(new Role().withDb("sales").withRole("myReadRole")))
+                    .withMechanisms("SCRAM-SHA-256"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Appliance details of the migration item. */
+/**
+ * Appliance details of the migration item.
+ */
 @Immutable
-public final class ApplianceMonitoringDetails {
+public final class ApplianceMonitoringDetails implements JsonSerializable<ApplianceMonitoringDetails> {
     /*
      * The appliance CPU details.
      */
-    @JsonProperty(value = "cpuDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ApplianceResourceDetails cpuDetails;
 
     /*
      * The appliance RAM details.
      */
-    @JsonProperty(value = "ramDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ApplianceResourceDetails ramDetails;
 
     /*
      * The appliance datastore snapshot details.
      */
-    @JsonProperty(value = "datastoreSnapshot", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataStoreUtilizationDetails> datastoreSnapshot;
 
     /*
      * The disk replication details.
      */
-    @JsonProperty(value = "disksReplicationDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ApplianceResourceDetails disksReplicationDetails;
 
     /*
      * The ESXi NFC buffer details.
      */
-    @JsonProperty(value = "esxiNfcBuffer", access = JsonProperty.Access.WRITE_ONLY)
     private ApplianceResourceDetails esxiNfcBuffer;
 
     /*
      * The appliance network bandwidth details.
      */
-    @JsonProperty(value = "networkBandwidth", access = JsonProperty.Access.WRITE_ONLY)
     private ApplianceResourceDetails networkBandwidth;
 
-    /** Creates an instance of ApplianceMonitoringDetails class. */
+    /**
+     * Creates an instance of ApplianceMonitoringDetails class.
+     */
     public ApplianceMonitoringDetails() {
     }
 
     /**
      * Get the cpuDetails property: The appliance CPU details.
-     *
+     * 
      * @return the cpuDetails value.
      */
     public ApplianceResourceDetails cpuDetails() {
@@ -62,7 +64,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Get the ramDetails property: The appliance RAM details.
-     *
+     * 
      * @return the ramDetails value.
      */
     public ApplianceResourceDetails ramDetails() {
@@ -71,7 +73,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Get the datastoreSnapshot property: The appliance datastore snapshot details.
-     *
+     * 
      * @return the datastoreSnapshot value.
      */
     public List<DataStoreUtilizationDetails> datastoreSnapshot() {
@@ -80,7 +82,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Get the disksReplicationDetails property: The disk replication details.
-     *
+     * 
      * @return the disksReplicationDetails value.
      */
     public ApplianceResourceDetails disksReplicationDetails() {
@@ -89,7 +91,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Get the esxiNfcBuffer property: The ESXi NFC buffer details.
-     *
+     * 
      * @return the esxiNfcBuffer value.
      */
     public ApplianceResourceDetails esxiNfcBuffer() {
@@ -98,7 +100,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Get the networkBandwidth property: The appliance network bandwidth details.
-     *
+     * 
      * @return the networkBandwidth value.
      */
     public ApplianceResourceDetails networkBandwidth() {
@@ -107,7 +109,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -129,5 +131,53 @@ public final class ApplianceMonitoringDetails {
         if (networkBandwidth() != null) {
             networkBandwidth().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplianceMonitoringDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplianceMonitoringDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplianceMonitoringDetails.
+     */
+    public static ApplianceMonitoringDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplianceMonitoringDetails deserializedApplianceMonitoringDetails = new ApplianceMonitoringDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cpuDetails".equals(fieldName)) {
+                    deserializedApplianceMonitoringDetails.cpuDetails = ApplianceResourceDetails.fromJson(reader);
+                } else if ("ramDetails".equals(fieldName)) {
+                    deserializedApplianceMonitoringDetails.ramDetails = ApplianceResourceDetails.fromJson(reader);
+                } else if ("datastoreSnapshot".equals(fieldName)) {
+                    List<DataStoreUtilizationDetails> datastoreSnapshot
+                        = reader.readArray(reader1 -> DataStoreUtilizationDetails.fromJson(reader1));
+                    deserializedApplianceMonitoringDetails.datastoreSnapshot = datastoreSnapshot;
+                } else if ("disksReplicationDetails".equals(fieldName)) {
+                    deserializedApplianceMonitoringDetails.disksReplicationDetails
+                        = ApplianceResourceDetails.fromJson(reader);
+                } else if ("esxiNfcBuffer".equals(fieldName)) {
+                    deserializedApplianceMonitoringDetails.esxiNfcBuffer = ApplianceResourceDetails.fromJson(reader);
+                } else if ("networkBandwidth".equals(fieldName)) {
+                    deserializedApplianceMonitoringDetails.networkBandwidth = ApplianceResourceDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplianceMonitoringDetails;
+        });
     }
 }

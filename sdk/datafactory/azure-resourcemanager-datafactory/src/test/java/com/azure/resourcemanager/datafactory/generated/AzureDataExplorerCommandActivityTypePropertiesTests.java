@@ -11,14 +11,15 @@ public final class AzureDataExplorerCommandActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataExplorerCommandActivityTypeProperties model
-            = BinaryData.fromString("{\"command\":\"datapfviiw\",\"commandTimeout\":\"dataqp\"}")
+            = BinaryData.fromString("{\"command\":\"dataqdotqe\",\"commandTimeout\":\"dataenteucaojj\"}")
                 .toObject(AzureDataExplorerCommandActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataExplorerCommandActivityTypeProperties model = new AzureDataExplorerCommandActivityTypeProperties()
-            .withCommand("datapfviiw").withCommandTimeout("dataqp");
+        AzureDataExplorerCommandActivityTypeProperties model
+            = new AzureDataExplorerCommandActivityTypeProperties().withCommand("dataqdotqe")
+                .withCommandTimeout("dataenteucaojj");
         model = BinaryData.fromObject(model).toObject(AzureDataExplorerCommandActivityTypeProperties.class);
     }
 }

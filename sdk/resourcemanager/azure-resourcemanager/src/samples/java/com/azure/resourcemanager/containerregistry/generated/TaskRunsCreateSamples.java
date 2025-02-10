@@ -12,35 +12,32 @@ import com.azure.resourcemanager.containerregistry.models.OS;
 import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
 import java.util.Arrays;
 
-/** Samples for TaskRuns Create. */
+/**
+ * Samples for TaskRuns Create.
+ */
 public final class TaskRunsCreateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsCreate.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
+     * TaskRunsCreate.json
      */
     /**
      * Sample code: TaskRuns_Create.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void taskRunsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
+        azure.containerRegistries()
             .manager()
             .serviceClient()
             .getTaskRuns()
-            .create(
-                "myResourceGroup",
-                "myRegistry",
-                "myRun",
+            .create("myResourceGroup", "myRegistry", "myRun",
                 new TaskRunInner()
-                    .withRunRequest(
-                        new EncodedTaskRunRequest()
-                            .withEncodedTaskContent("fakeTokenPlaceholder")
-                            .withEncodedValuesContent("fakeTokenPlaceholder")
-                            .withValues(Arrays.asList())
-                            .withPlatform(
-                                new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
-                            .withCredentials(new Credentials()))
+                    .withRunRequest(new EncodedTaskRunRequest().withEncodedTaskContent("fakeTokenPlaceholder")
+                        .withEncodedValuesContent("fakeTokenPlaceholder")
+                        .withValues(Arrays.asList())
+                        .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
+                        .withCredentials(new Credentials()))
                     .withForceUpdateTag("test"),
                 com.azure.core.util.Context.NONE);
     }

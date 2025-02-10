@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The approval stage. */
+/**
+ * The approval stage.
+ */
 @Fluent
-public final class ApprovalStage {
+public final class ApprovalStage implements JsonSerializable<ApprovalStage> {
     /*
      * The time in days when approval request would be timed out
      */
-    @JsonProperty(value = "approvalStageTimeOutInDays")
     private Integer approvalStageTimeOutInDays;
 
     /*
      * Determines whether approver need to provide justification for his decision.
      */
-    @JsonProperty(value = "isApproverJustificationRequired")
     private Boolean isApproverJustificationRequired;
 
     /*
      * The time in minutes when the approval request would be escalated if the primary approver does not approve
      */
-    @JsonProperty(value = "escalationTimeInMinutes")
     private Integer escalationTimeInMinutes;
 
     /*
      * The primary approver of the request.
      */
-    @JsonProperty(value = "primaryApprovers")
     private List<UserSet> primaryApprovers;
 
     /*
      * The value determine whether escalation feature is enabled.
      */
-    @JsonProperty(value = "isEscalationEnabled")
     private Boolean isEscalationEnabled;
 
     /*
      * The escalation approver of the request.
      */
-    @JsonProperty(value = "escalationApprovers")
     private List<UserSet> escalationApprovers;
 
-    /** Creates an instance of ApprovalStage class. */
+    /**
+     * Creates an instance of ApprovalStage class.
+     */
     public ApprovalStage() {
     }
 
     /**
      * Get the approvalStageTimeOutInDays property: The time in days when approval request would be timed out.
-     *
+     * 
      * @return the approvalStageTimeOutInDays value.
      */
     public Integer approvalStageTimeOutInDays() {
@@ -62,7 +64,7 @@ public final class ApprovalStage {
 
     /**
      * Set the approvalStageTimeOutInDays property: The time in days when approval request would be timed out.
-     *
+     * 
      * @param approvalStageTimeOutInDays the approvalStageTimeOutInDays value to set.
      * @return the ApprovalStage object itself.
      */
@@ -74,7 +76,7 @@ public final class ApprovalStage {
     /**
      * Get the isApproverJustificationRequired property: Determines whether approver need to provide justification for
      * his decision.
-     *
+     * 
      * @return the isApproverJustificationRequired value.
      */
     public Boolean isApproverJustificationRequired() {
@@ -84,7 +86,7 @@ public final class ApprovalStage {
     /**
      * Set the isApproverJustificationRequired property: Determines whether approver need to provide justification for
      * his decision.
-     *
+     * 
      * @param isApproverJustificationRequired the isApproverJustificationRequired value to set.
      * @return the ApprovalStage object itself.
      */
@@ -96,7 +98,7 @@ public final class ApprovalStage {
     /**
      * Get the escalationTimeInMinutes property: The time in minutes when the approval request would be escalated if the
      * primary approver does not approve.
-     *
+     * 
      * @return the escalationTimeInMinutes value.
      */
     public Integer escalationTimeInMinutes() {
@@ -106,7 +108,7 @@ public final class ApprovalStage {
     /**
      * Set the escalationTimeInMinutes property: The time in minutes when the approval request would be escalated if the
      * primary approver does not approve.
-     *
+     * 
      * @param escalationTimeInMinutes the escalationTimeInMinutes value to set.
      * @return the ApprovalStage object itself.
      */
@@ -117,7 +119,7 @@ public final class ApprovalStage {
 
     /**
      * Get the primaryApprovers property: The primary approver of the request.
-     *
+     * 
      * @return the primaryApprovers value.
      */
     public List<UserSet> primaryApprovers() {
@@ -126,7 +128,7 @@ public final class ApprovalStage {
 
     /**
      * Set the primaryApprovers property: The primary approver of the request.
-     *
+     * 
      * @param primaryApprovers the primaryApprovers value to set.
      * @return the ApprovalStage object itself.
      */
@@ -137,7 +139,7 @@ public final class ApprovalStage {
 
     /**
      * Get the isEscalationEnabled property: The value determine whether escalation feature is enabled.
-     *
+     * 
      * @return the isEscalationEnabled value.
      */
     public Boolean isEscalationEnabled() {
@@ -146,7 +148,7 @@ public final class ApprovalStage {
 
     /**
      * Set the isEscalationEnabled property: The value determine whether escalation feature is enabled.
-     *
+     * 
      * @param isEscalationEnabled the isEscalationEnabled value to set.
      * @return the ApprovalStage object itself.
      */
@@ -157,7 +159,7 @@ public final class ApprovalStage {
 
     /**
      * Get the escalationApprovers property: The escalation approver of the request.
-     *
+     * 
      * @return the escalationApprovers value.
      */
     public List<UserSet> escalationApprovers() {
@@ -166,7 +168,7 @@ public final class ApprovalStage {
 
     /**
      * Set the escalationApprovers property: The escalation approver of the request.
-     *
+     * 
      * @param escalationApprovers the escalationApprovers value to set.
      * @return the ApprovalStage object itself.
      */
@@ -177,7 +179,7 @@ public final class ApprovalStage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -187,5 +189,61 @@ public final class ApprovalStage {
         if (escalationApprovers() != null) {
             escalationApprovers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("approvalStageTimeOutInDays", this.approvalStageTimeOutInDays);
+        jsonWriter.writeBooleanField("isApproverJustificationRequired", this.isApproverJustificationRequired);
+        jsonWriter.writeNumberField("escalationTimeInMinutes", this.escalationTimeInMinutes);
+        jsonWriter.writeArrayField("primaryApprovers", this.primaryApprovers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isEscalationEnabled", this.isEscalationEnabled);
+        jsonWriter.writeArrayField("escalationApprovers", this.escalationApprovers,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApprovalStage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApprovalStage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApprovalStage.
+     */
+    public static ApprovalStage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApprovalStage deserializedApprovalStage = new ApprovalStage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("approvalStageTimeOutInDays".equals(fieldName)) {
+                    deserializedApprovalStage.approvalStageTimeOutInDays = reader.getNullable(JsonReader::getInt);
+                } else if ("isApproverJustificationRequired".equals(fieldName)) {
+                    deserializedApprovalStage.isApproverJustificationRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("escalationTimeInMinutes".equals(fieldName)) {
+                    deserializedApprovalStage.escalationTimeInMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("primaryApprovers".equals(fieldName)) {
+                    List<UserSet> primaryApprovers = reader.readArray(reader1 -> UserSet.fromJson(reader1));
+                    deserializedApprovalStage.primaryApprovers = primaryApprovers;
+                } else if ("isEscalationEnabled".equals(fieldName)) {
+                    deserializedApprovalStage.isEscalationEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("escalationApprovers".equals(fieldName)) {
+                    List<UserSet> escalationApprovers = reader.readArray(reader1 -> UserSet.fromJson(reader1));
+                    deserializedApprovalStage.escalationApprovers = escalationApprovers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApprovalStage;
+        });
     }
 }

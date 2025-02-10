@@ -15,12 +15,14 @@ import com.azure.resourcemanager.support.fluent.models.CheckNameAvailabilityOutp
 import com.azure.resourcemanager.support.fluent.models.CommunicationDetailsInner;
 import com.azure.resourcemanager.support.models.CheckNameAvailabilityInput;
 
-/** An instance of this class provides access to all the operations defined in CommunicationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CommunicationsClient.
+ */
 public interface CommunicationsClient {
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
      * a new communication to the support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
@@ -30,13 +32,13 @@ public interface CommunicationsClient {
      * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
+    Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(String supportTicketName,
+        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
      * a new communication to the support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,8 +47,8 @@ public interface CommunicationsClient {
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityOutputInner checkNameAvailability(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput);
+    CheckNameAvailabilityOutputInner checkNameAvailability(String supportTicketName,
+        CheckNameAvailabilityInput checkNameAvailabilityInput);
 
     /**
      * Lists all communications (attachments not included) for a support ticket. &lt;br/&gt;&lt;/br&gt; You can also
@@ -55,7 +57,7 @@ public interface CommunicationsClient {
      * you can retrieve the next set of Communication results. &lt;br/&gt;&lt;br/&gt;Support ticket data is available
      * for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might
      * cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,13 +74,13 @@ public interface CommunicationsClient {
      * you can retrieve the next set of Communication results. &lt;br/&gt;&lt;br/&gt;Support ticket data is available
      * for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might
      * cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param top The number of values to return in the collection. Default is 10 and max is 10.
      * @param filter The filter to apply on the operation. You can filter by communicationType and createdDate
-     *     properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt')
-     *     and Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by
-     *     Logical And ('and') operator.
+     * properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt') and
+     * Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by Logical
+     * And ('and') operator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -86,12 +88,12 @@ public interface CommunicationsClient {
      * @return collection of Communication resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CommunicationDetailsInner> list(
-        String supportTicketName, Integer top, String filter, Context context);
+    PagedIterable<CommunicationDetailsInner> list(String supportTicketName, Integer top, String filter,
+        Context context);
 
     /**
      * Returns communication details for a support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param context The context to associate with this operation.
@@ -101,12 +103,12 @@ public interface CommunicationsClient {
      * @return object that represents a Communication resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CommunicationDetailsInner> getWithResponse(
-        String supportTicketName, String communicationName, Context context);
+    Response<CommunicationDetailsInner> getWithResponse(String supportTicketName, String communicationName,
+        Context context);
 
     /**
      * Returns communication details for a support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +121,7 @@ public interface CommunicationsClient {
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -129,12 +131,12 @@ public interface CommunicationsClient {
      * @return the {@link SyncPoller} for polling of object that represents a Communication resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreate(
-        String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters);
+    SyncPoller<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreate(String supportTicketName,
+        String communicationName, CommunicationDetailsInner createCommunicationParameters);
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -145,15 +147,12 @@ public interface CommunicationsClient {
      * @return the {@link SyncPoller} for polling of object that represents a Communication resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreate(
-        String supportTicketName,
-        String communicationName,
-        CommunicationDetailsInner createCommunicationParameters,
-        Context context);
+    SyncPoller<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreate(String supportTicketName,
+        String communicationName, CommunicationDetailsInner createCommunicationParameters, Context context);
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -163,12 +162,12 @@ public interface CommunicationsClient {
      * @return object that represents a Communication resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationDetailsInner create(
-        String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters);
+    CommunicationDetailsInner create(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters);
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -179,9 +178,6 @@ public interface CommunicationsClient {
      * @return object that represents a Communication resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationDetailsInner create(
-        String supportTicketName,
-        String communicationName,
-        CommunicationDetailsInner createCommunicationParameters,
-        Context context);
+    CommunicationDetailsInner create(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters, Context context);
 }

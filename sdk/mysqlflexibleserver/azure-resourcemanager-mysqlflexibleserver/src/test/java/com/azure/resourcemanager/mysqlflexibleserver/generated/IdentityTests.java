@@ -14,24 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Identity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"icxm\",\"tenantId\":\"iwqvhkh\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"og\":\"datadtopbob\",\"w\":\"datam\",\"a\":\"dataa\"}}")
-                .toObject(Identity.class);
+        Identity model = BinaryData.fromString(
+            "{\"principalId\":\"qjnqglhqgnufoooj\",\"tenantId\":\"ifsqesaagdfmg\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zntocipaouajps\":\"dataxrifkwmrvkts\"}}")
+            .toObject(Identity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Identity model =
-            new Identity()
-                .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("og", "datadtopbob", "w", "datam", "a", "dataa"));
+        Identity model = new Identity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("zntocipaouajps", "dataxrifkwmrvkts"));
         model = BinaryData.fromObject(model).toObject(Identity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

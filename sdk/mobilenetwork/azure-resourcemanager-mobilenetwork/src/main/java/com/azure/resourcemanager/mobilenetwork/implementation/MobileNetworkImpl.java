@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.MobileNetworkInner;
+import com.azure.resourcemanager.mobilenetwork.models.IdentityAndTagsObject;
+import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetwork;
 import com.azure.resourcemanager.mobilenetwork.models.PlmnId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
+import com.azure.resourcemanager.mobilenetwork.models.PublicLandMobileNetwork;
+import com.azure.resourcemanager.mobilenetwork.models.SimGroup;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class MobileNetworkImpl implements MobileNetwork, MobileNetwork.Definition, MobileNetwork.Update {
@@ -45,6 +50,10 @@ public final class MobileNetworkImpl implements MobileNetwork, MobileNetwork.Def
         }
     }
 
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -55,6 +64,15 @@ public final class MobileNetworkImpl implements MobileNetwork, MobileNetwork.Def
 
     public PlmnId publicLandMobileNetworkIdentifier() {
         return this.innerModel().publicLandMobileNetworkIdentifier();
+    }
+
+    public List<PublicLandMobileNetwork> publicLandMobileNetworks() {
+        List<PublicLandMobileNetwork> inner = this.innerModel().publicLandMobileNetworks();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String serviceKey() {
@@ -85,7 +103,7 @@ public final class MobileNetworkImpl implements MobileNetwork, MobileNetwork.Def
 
     private String mobileNetworkName;
 
-    private TagsObject updateParameters;
+    private IdentityAndTagsObject updateParameters;
 
     public MobileNetworkImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -93,20 +111,16 @@ public final class MobileNetworkImpl implements MobileNetwork, MobileNetwork.Def
     }
 
     public MobileNetwork create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMobileNetworks()
-                .createOrUpdate(resourceGroupName, mobileNetworkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMobileNetworks()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MobileNetwork create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMobileNetworks()
-                .createOrUpdate(resourceGroupName, mobileNetworkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMobileNetworks()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, this.innerModel(), context);
         return this;
     }
 
@@ -117,56 +131,56 @@ public final class MobileNetworkImpl implements MobileNetwork, MobileNetwork.Def
     }
 
     public MobileNetworkImpl update() {
-        this.updateParameters = new TagsObject();
+        this.updateParameters = new IdentityAndTagsObject();
         return this;
     }
 
     public MobileNetwork apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMobileNetworks()
-                .updateTagsWithResponse(resourceGroupName, mobileNetworkName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMobileNetworks()
+            .updateTagsWithResponse(resourceGroupName, mobileNetworkName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MobileNetwork apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMobileNetworks()
-                .updateTagsWithResponse(resourceGroupName, mobileNetworkName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMobileNetworks()
+            .updateTagsWithResponse(resourceGroupName, mobileNetworkName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    MobileNetworkImpl(
-        MobileNetworkInner innerObject, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
+    MobileNetworkImpl(MobileNetworkInner innerObject,
+        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.mobileNetworkName = Utils.getValueFromIdByName(innerObject.id(), "mobileNetworks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.mobileNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mobileNetworks");
     }
 
     public MobileNetwork refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMobileNetworks()
-                .getByResourceGroupWithResponse(resourceGroupName, mobileNetworkName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMobileNetworks()
+            .getByResourceGroupWithResponse(resourceGroupName, mobileNetworkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MobileNetwork refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMobileNetworks()
-                .getByResourceGroupWithResponse(resourceGroupName, mobileNetworkName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMobileNetworks()
+            .getByResourceGroupWithResponse(resourceGroupName, mobileNetworkName, context)
+            .getValue();
         return this;
+    }
+
+    public PagedIterable<SimGroup> listSimGroups() {
+        return serviceManager.mobileNetworks().listSimGroups(resourceGroupName, mobileNetworkName);
+    }
+
+    public PagedIterable<SimGroup> listSimGroups(Context context) {
+        return serviceManager.mobileNetworks().listSimGroups(resourceGroupName, mobileNetworkName, context);
     }
 
     public MobileNetworkImpl withRegion(Region location) {
@@ -192,6 +206,21 @@ public final class MobileNetworkImpl implements MobileNetwork, MobileNetwork.Def
             this.updateParameters.withTags(tags);
             return this;
         }
+    }
+
+    public MobileNetworkImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
+    public MobileNetworkImpl withPublicLandMobileNetworks(List<PublicLandMobileNetwork> publicLandMobileNetworks) {
+        this.innerModel().withPublicLandMobileNetworks(publicLandMobileNetworks);
+        return this;
     }
 
     private boolean isInCreateMode() {

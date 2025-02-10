@@ -8,11 +8,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 
 public class RxDocumentServiceRequestTest {
 
@@ -412,6 +415,16 @@ public class RxDocumentServiceRequestTest {
 
         assertThat(request.isValidAddress(ResourceType.Attachment)).isTrue();
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
+    }
+
+    @Test(groups = { "unit" })
+    public void createWithInvalidPath() {
+        try {
+            RxDocumentServiceRequest.create(null, OperationType.Read, ResourceType.Document, "/someInvalidPath", (Map<String, String>)null, null, (ByteBuffer)null);
+            fail("Should have thrown an IllegalArgumentException");
+        } catch (IllegalArgumentException errorCandidate) {
+            assertThat(errorCandidate.getMessage()).contains("someInvalidPath");
+        }
     }
 
     private Document getDocumentDefinition() {

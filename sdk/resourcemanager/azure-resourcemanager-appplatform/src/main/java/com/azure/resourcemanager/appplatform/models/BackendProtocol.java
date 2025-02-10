@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackendProtocol. */
+/**
+ * How ingress should communicate with this app backend service.
+ */
 public final class BackendProtocol extends ExpandableStringEnum<BackendProtocol> {
-    /** Static value GRPC for BackendProtocol. */
+    /**
+     * Static value GRPC for BackendProtocol.
+     */
     public static final BackendProtocol GRPC = fromString("GRPC");
 
-    /** Static value Default for BackendProtocol. */
+    /**
+     * Static value Default for BackendProtocol.
+     */
     public static final BackendProtocol DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of BackendProtocol value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackendProtocol() {
+    }
+
+    /**
      * Creates or finds a BackendProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackendProtocol.
      */
-    @JsonCreator
     public static BackendProtocol fromString(String name) {
         return fromString(name, BackendProtocol.class);
     }
 
     /**
      * Gets known BackendProtocol values.
-     *
+     * 
      * @return known BackendProtocol values.
      */
     public static Collection<BackendProtocol> values() {

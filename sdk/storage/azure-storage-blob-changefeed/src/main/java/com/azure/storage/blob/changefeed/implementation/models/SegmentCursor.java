@@ -4,8 +4,12 @@
 package com.azure.storage.blob.changefeed.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,15 +19,9 @@ import java.util.Objects;
  * Represents a cursor for a segment in BlobChangefeed.
  */
 @Fluent
-public class SegmentCursor {
-
-    @JsonProperty("ShardCursors")
+public class SegmentCursor implements JsonSerializable<SegmentCursor> {
     private List<ShardCursor> shardCursors;
-
-    @JsonProperty("CurrentShardPath")
     private String currentShardPath; // 'log/00/2020/07/06/1600/'
-
-    @JsonProperty("SegmentPath")
     private String segmentPath; //  'idx/segments/2020/07/06/1600/meta.json'
 
     /**
@@ -56,9 +54,8 @@ public class SegmentCursor {
         List<ShardCursor> copy = new ArrayList<>();
         if (userSegmentCursor != null) {
             userSegmentCursor.getShardCursors()
-                .forEach(shardCursor ->
-                    copy.add(new ShardCursor(shardCursor.getCurrentChunkPath(), shardCursor.getBlockOffset(),
-                        shardCursor.getEventIndex())));
+                .forEach(shardCursor -> copy.add(new ShardCursor(shardCursor.getCurrentChunkPath(),
+                    shardCursor.getBlockOffset(), shardCursor.getEventIndex())));
         }
         this.shardCursors = copy;
         this.currentShardPath = null;
@@ -92,10 +89,7 @@ public class SegmentCursor {
             /* If we found a shard cursor for this shard, modify it. */
             if (cursor.getCurrentChunkPath().contains(this.currentShardPath)) {
                 found = true;
-                cursor
-                    .setCurrentChunkPath(chunkPath)
-                    .setBlockOffset(blockOffset)
-                    .setEventIndex(eventIndex);
+                cursor.setCurrentChunkPath(chunkPath).setBlockOffset(blockOffset).setEventIndex(eventIndex);
             }
             /* Add the cursor to the copied list after modifying it. */
             copy.add(new ShardCursor(cursor.getCurrentChunkPath(), cursor.getBlockOffset(), cursor.getEventIndex()));
@@ -157,6 +151,45 @@ public class SegmentCursor {
     public SegmentCursor setCurrentShardPath(String currentShardPath) {
         this.currentShardPath = currentShardPath;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeArrayField("ShardCursors", shardCursors, JsonWriter::writeJson)
+            .writeStringField("CurrentShardPath", currentShardPath)
+            .writeStringField("SegmentPath", segmentPath)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserialize a SegmentCursor from JSON.
+     *
+     * @param jsonReader The JSON reader to deserialize from.
+     * @return The deserialized SegmentCursor.
+     * @throws IOException If the JSON object cannot be properly deserialized.
+     */
+    public static SegmentCursor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SegmentCursor segmentCursor = new SegmentCursor();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ShardCursors".equals(fieldName)) {
+                    segmentCursor.shardCursors = reader.readArray(ShardCursor::fromJson);
+                } else if ("CurrentShardPath".equals(fieldName)) {
+                    segmentCursor.currentShardPath = reader.getString();
+                } else if ("SegmentPath".equals(fieldName)) {
+                    segmentCursor.segmentPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return segmentCursor;
+        });
     }
 
     @Override

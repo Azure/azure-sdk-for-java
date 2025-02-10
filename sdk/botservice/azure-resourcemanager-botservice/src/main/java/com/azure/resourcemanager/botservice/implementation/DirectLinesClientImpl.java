@@ -28,22 +28,28 @@ import com.azure.resourcemanager.botservice.models.RegenerateKeysChannelName;
 import com.azure.resourcemanager.botservice.models.SiteInfo;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DirectLinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DirectLinesClient.
+ */
 public final class DirectLinesClientImpl implements DirectLinesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DirectLinesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureBotServiceImpl client;
 
     /**
      * Initializes an instance of DirectLinesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DirectLinesClientImpl(AzureBotServiceImpl client) {
-        this.service =
-            RestProxy.create(DirectLinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DirectLinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,28 +59,22 @@ public final class DirectLinesClientImpl implements DirectLinesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureBotServiceDirec")
-    private interface DirectLinesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService"
-                + "/botServices/{resourceName}/channels/{channelName}/regeneratekeys")
-        @ExpectedResponses({200})
+    public interface DirectLinesService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/channels/{channelName}/regeneratekeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BotChannelInner>> regenerateKeys(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<BotChannelInner>> regenerateKeys(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("channelName") RegenerateKeysChannelName channelName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SiteInfo parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SiteInfo parameters,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Regenerates secret keys and returns them for the DirectLine Channel of a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param channelName The name of the Channel resource for which keys are to be regenerated.
@@ -85,13 +85,11 @@ public final class DirectLinesClientImpl implements DirectLinesClient {
      * @return bot channel resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BotChannelInner>> regenerateKeysWithResponseAsync(
-        String resourceGroupName, String resourceName, RegenerateKeysChannelName channelName, SiteInfo parameters) {
+    private Mono<Response<BotChannelInner>> regenerateKeysWithResponseAsync(String resourceGroupName,
+        String resourceName, RegenerateKeysChannelName channelName, SiteInfo parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -101,10 +99,8 @@ public final class DirectLinesClientImpl implements DirectLinesClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (channelName == null) {
             return Mono.error(new IllegalArgumentException("Parameter channelName is required and cannot be null."));
@@ -116,25 +112,14 @@ public final class DirectLinesClientImpl implements DirectLinesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateKeys(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceName,
-                            this.client.getSubscriptionId(),
-                            channelName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.regenerateKeys(this.client.getEndpoint(), resourceGroupName, resourceName,
+                this.client.getSubscriptionId(), channelName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerates secret keys and returns them for the DirectLine Channel of a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param channelName The name of the Channel resource for which keys are to be regenerated.
@@ -146,17 +131,11 @@ public final class DirectLinesClientImpl implements DirectLinesClient {
      * @return bot channel resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BotChannelInner>> regenerateKeysWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        RegenerateKeysChannelName channelName,
-        SiteInfo parameters,
-        Context context) {
+    private Mono<Response<BotChannelInner>> regenerateKeysWithResponseAsync(String resourceGroupName,
+        String resourceName, RegenerateKeysChannelName channelName, SiteInfo parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -166,10 +145,8 @@ public final class DirectLinesClientImpl implements DirectLinesClient {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (channelName == null) {
             return Mono.error(new IllegalArgumentException("Parameter channelName is required and cannot be null."));
@@ -181,22 +158,13 @@ public final class DirectLinesClientImpl implements DirectLinesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerateKeys(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceName,
-                this.client.getSubscriptionId(),
-                channelName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.regenerateKeys(this.client.getEndpoint(), resourceGroupName, resourceName,
+            this.client.getSubscriptionId(), channelName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Regenerates secret keys and returns them for the DirectLine Channel of a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param channelName The name of the Channel resource for which keys are to be regenerated.
@@ -207,33 +175,15 @@ public final class DirectLinesClientImpl implements DirectLinesClient {
      * @return bot channel resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BotChannelInner> regenerateKeysAsync(
-        String resourceGroupName, String resourceName, RegenerateKeysChannelName channelName, SiteInfo parameters) {
+    private Mono<BotChannelInner> regenerateKeysAsync(String resourceGroupName, String resourceName,
+        RegenerateKeysChannelName channelName, SiteInfo parameters) {
         return regenerateKeysWithResponseAsync(resourceGroupName, resourceName, channelName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Regenerates secret keys and returns them for the DirectLine Channel of a particular BotService resource.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param channelName The name of the Channel resource for which keys are to be regenerated.
-     * @param parameters The parameters to provide for the created bot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot channel resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BotChannelInner regenerateKeys(
-        String resourceGroupName, String resourceName, RegenerateKeysChannelName channelName, SiteInfo parameters) {
-        return regenerateKeysAsync(resourceGroupName, resourceName, channelName, parameters).block();
-    }
-
-    /**
-     * Regenerates secret keys and returns them for the DirectLine Channel of a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param channelName The name of the Channel resource for which keys are to be regenerated.
@@ -245,13 +195,28 @@ public final class DirectLinesClientImpl implements DirectLinesClient {
      * @return bot channel resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BotChannelInner> regenerateKeysWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        RegenerateKeysChannelName channelName,
-        SiteInfo parameters,
-        Context context) {
+    public Response<BotChannelInner> regenerateKeysWithResponse(String resourceGroupName, String resourceName,
+        RegenerateKeysChannelName channelName, SiteInfo parameters, Context context) {
         return regenerateKeysWithResponseAsync(resourceGroupName, resourceName, channelName, parameters, context)
             .block();
+    }
+
+    /**
+     * Regenerates secret keys and returns them for the DirectLine Channel of a particular BotService resource.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param channelName The name of the Channel resource for which keys are to be regenerated.
+     * @param parameters The parameters to provide for the created bot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot channel resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BotChannelInner regenerateKeys(String resourceGroupName, String resourceName,
+        RegenerateKeysChannelName channelName, SiteInfo parameters) {
+        return regenerateKeysWithResponse(resourceGroupName, resourceName, channelName, parameters, Context.NONE)
+            .getValue();
     }
 }

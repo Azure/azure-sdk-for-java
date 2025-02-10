@@ -9,6 +9,7 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -31,6 +32,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,29 +51,28 @@ public class SyncRestProxyTests {
     @ServiceInterface(name = "myService")
     interface TestInterface {
         @Post("my/url/path")
-        @ExpectedResponses({200})
-        Response<Void> testMethod(
-            @BodyParam("application/octet-stream") BinaryData data,
-            @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") Long contentLength,
-            Context context
-        );
+        @ExpectedResponses({ 200 })
+        Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength,
+            Context context);
 
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         StreamResponse testDownload(Context context);
 
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void testVoidMethod(Context context);
+
+        @Put("my/url/path")
+        @ExpectedResponses({ 200 })
+        Response<InputStream> testInputStreamResponse(Context context);
     }
 
     @Test
     public void voidReturningApiClosesResponse() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         testInterface.testVoidMethod(Context.NONE);
@@ -94,9 +96,7 @@ public class SyncRestProxyTests {
             }
         };
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         testInterface.testVoidMethod(new Context("com.azure.core.http.restproxy.syncproxy.enable", false));
@@ -106,24 +106,20 @@ public class SyncRestProxyTests {
     @Test
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
         HttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
-        Response<Void> response = testInterface.testMethod(BinaryData.fromStream(
-            new ByteArrayInputStream(bytes), (long) bytes.length), "application/json", (long) bytes.length,
-            Context.NONE);
+        Response<Void> response
+            = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),
+                "application/json", (long) bytes.length, Context.NONE);
         assertEquals(200, response.getStatusCode());
     }
 
     @Test
     public void streamResponseShouldHaveHttpResponseReference() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         StreamResponse streamResponse = testInterface.testDownload(Context.NONE);
@@ -146,8 +142,18 @@ public class SyncRestProxyTests {
             boolean success = request.getUrl().getPath().equals("/my/url/path");
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
                 success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
-            } else {
+            } else if (request.getHttpMethod().equals(HttpMethod.GET)) {
                 success &= request.getHttpMethod().equals(HttpMethod.GET);
+            } else {
+                success &= request.getHttpMethod().equals(HttpMethod.PUT);
+                return new MockHttpResponse(request, success ? 200 : 400,
+                    (InputStream) new ByteArrayInputStream("hello".getBytes())) {
+                    @Override
+                    public void close() {
+                        lastResponseClosed = true;
+                        super.close();
+                    }
+                };
             }
 
             return new MockHttpResponse(request, success ? 200 : 400) {
@@ -163,15 +169,28 @@ public class SyncRestProxyTests {
     @ParameterizedTest
     @MethodSource("mergeRequestOptionsContextSupplier")
     public void mergeRequestOptionsContext(Context context, RequestOptions options,
-                                           Map<Object, Object> expectedContextValues) {
-        Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
+        Map<Object, Object> expectedContextValues) {
+        Map<Object, Object> actualContextValues
+            = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());
         for (Map.Entry<Object, Object> expectedKvp : expectedContextValues.entrySet()) {
-            assertTrue(actualContextValues.containsKey(expectedKvp.getKey()), () ->
-                "Missing expected key '" + expectedKvp.getKey() + "'.");
+            assertTrue(actualContextValues.containsKey(expectedKvp.getKey()),
+                () -> "Missing expected key '" + expectedKvp.getKey() + "'.");
             assertEquals(expectedKvp.getValue(), actualContextValues.get(expectedKvp.getKey()));
         }
+    }
+
+    @Test
+    public void testInputStream() throws IOException {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        Response<InputStream> inputStreamResponse = testInterface.testInputStreamResponse(Context.NONE);
+        InputStream stream = inputStreamResponse.getValue();
+        byte[] bytes = MockHttpResponse.readAllBytes(stream);
+        assertEquals("hello", new String(bytes));
     }
 
     private static Stream<Arguments> mergeRequestOptionsContextSupplier() {
@@ -195,7 +214,6 @@ public class SyncRestProxyTests {
 
             // Case where the RequestOptions Context is merged and overrides an existing Context.
             Arguments.of(new Context("key", "value"), new RequestOptions().setContext(new Context("key", "value2")),
-                Collections.singletonMap("key", "value2"))
-        );
+                Collections.singletonMap("key", "value2")));
     }
 }

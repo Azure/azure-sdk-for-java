@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enabled or Disabled. */
+/**
+ * Enabled or Disabled.
+ */
 public final class EnhancedSecurityState extends ExpandableStringEnum<EnhancedSecurityState> {
-    /** Static value Invalid for EnhancedSecurityState. */
+    /**
+     * Static value Invalid for EnhancedSecurityState.
+     */
     public static final EnhancedSecurityState INVALID = fromString("Invalid");
 
-    /** Static value Enabled for EnhancedSecurityState. */
+    /**
+     * Static value Enabled for EnhancedSecurityState.
+     */
     public static final EnhancedSecurityState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for EnhancedSecurityState. */
+    /**
+     * Static value Disabled for EnhancedSecurityState.
+     */
     public static final EnhancedSecurityState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of EnhancedSecurityState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class EnhancedSecurityState extends ExpandableStringEnum<EnhancedSe
 
     /**
      * Creates or finds a EnhancedSecurityState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnhancedSecurityState.
      */
-    @JsonCreator
     public static EnhancedSecurityState fromString(String name) {
         return fromString(name, EnhancedSecurityState.class);
     }
 
     /**
      * Gets known EnhancedSecurityState values.
-     *
+     * 
      * @return known EnhancedSecurityState values.
      */
     public static Collection<EnhancedSecurityState> values() {

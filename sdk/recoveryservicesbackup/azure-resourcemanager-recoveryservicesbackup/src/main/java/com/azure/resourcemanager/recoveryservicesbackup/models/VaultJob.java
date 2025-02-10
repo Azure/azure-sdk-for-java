@@ -5,49 +5,67 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Vault level Job. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
-@JsonTypeName("VaultJob")
+/**
+ * Vault level Job.
+ */
 @Fluent
 public final class VaultJob extends Job {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String jobType = "VaultJob";
+
+    /*
      * Time elapsed during the execution of this job.
      */
-    @JsonProperty(value = "duration")
     private Duration duration;
 
     /*
      * Gets or sets the state/actions applicable on this job like cancel/retry.
      */
-    @JsonProperty(value = "actionsInfo")
     private List<JobSupportedAction> actionsInfo;
 
     /*
      * Error details on execution of this job.
      */
-    @JsonProperty(value = "errorDetails")
     private List<VaultJobErrorInfo> errorDetails;
 
     /*
      * Additional information about the job.
      */
-    @JsonProperty(value = "extendedInfo")
     private VaultJobExtendedInfo extendedInfo;
 
-    /** Creates an instance of VaultJob class. */
+    /**
+     * Creates an instance of VaultJob class.
+     */
     public VaultJob() {
     }
 
     /**
+     * Get the jobType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the jobType value.
+     */
+    @Override
+    public String jobType() {
+        return this.jobType;
+    }
+
+    /**
      * Get the duration property: Time elapsed during the execution of this job.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -56,7 +74,7 @@ public final class VaultJob extends Job {
 
     /**
      * Set the duration property: Time elapsed during the execution of this job.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the VaultJob object itself.
      */
@@ -67,7 +85,7 @@ public final class VaultJob extends Job {
 
     /**
      * Get the actionsInfo property: Gets or sets the state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @return the actionsInfo value.
      */
     public List<JobSupportedAction> actionsInfo() {
@@ -76,7 +94,7 @@ public final class VaultJob extends Job {
 
     /**
      * Set the actionsInfo property: Gets or sets the state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @param actionsInfo the actionsInfo value to set.
      * @return the VaultJob object itself.
      */
@@ -87,7 +105,7 @@ public final class VaultJob extends Job {
 
     /**
      * Get the errorDetails property: Error details on execution of this job.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<VaultJobErrorInfo> errorDetails() {
@@ -96,7 +114,7 @@ public final class VaultJob extends Job {
 
     /**
      * Set the errorDetails property: Error details on execution of this job.
-     *
+     * 
      * @param errorDetails the errorDetails value to set.
      * @return the VaultJob object itself.
      */
@@ -107,7 +125,7 @@ public final class VaultJob extends Job {
 
     /**
      * Get the extendedInfo property: Additional information about the job.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public VaultJobExtendedInfo extendedInfo() {
@@ -116,7 +134,7 @@ public final class VaultJob extends Job {
 
     /**
      * Set the extendedInfo property: Additional information about the job.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the VaultJob object itself.
      */
@@ -125,49 +143,63 @@ public final class VaultJob extends Job {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VaultJob withEntityFriendlyName(String entityFriendlyName) {
         super.withEntityFriendlyName(entityFriendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VaultJob withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VaultJob withOperation(String operation) {
         super.withOperation(operation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VaultJob withStatus(String status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VaultJob withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VaultJob withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VaultJob withActivityId(String activityId) {
         super.withActivityId(activityId);
@@ -176,17 +208,96 @@ public final class VaultJob extends Job {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (errorDetails() != null) {
             errorDetails().forEach(e -> e.validate());
         }
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entityFriendlyName", entityFriendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("operation", operation());
+        jsonWriter.writeStringField("status", status());
+        jsonWriter.writeStringField("startTime",
+            startTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startTime()));
+        jsonWriter.writeStringField("endTime",
+            endTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(endTime()));
+        jsonWriter.writeStringField("activityId", activityId());
+        jsonWriter.writeStringField("jobType", this.jobType);
+        jsonWriter.writeStringField("duration", CoreUtils.durationToStringWithDays(this.duration));
+        jsonWriter.writeArrayField("actionsInfo", this.actionsInfo,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("errorDetails", this.errorDetails, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultJob from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultJob if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the VaultJob.
+     */
+    public static VaultJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultJob deserializedVaultJob = new VaultJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityFriendlyName".equals(fieldName)) {
+                    deserializedVaultJob.withEntityFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedVaultJob.withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("operation".equals(fieldName)) {
+                    deserializedVaultJob.withOperation(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedVaultJob.withStatus(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedVaultJob.withStartTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedVaultJob.withEndTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("activityId".equals(fieldName)) {
+                    deserializedVaultJob.withActivityId(reader.getString());
+                } else if ("jobType".equals(fieldName)) {
+                    deserializedVaultJob.jobType = reader.getString();
+                } else if ("duration".equals(fieldName)) {
+                    deserializedVaultJob.duration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("actionsInfo".equals(fieldName)) {
+                    List<JobSupportedAction> actionsInfo
+                        = reader.readArray(reader1 -> JobSupportedAction.fromString(reader1.getString()));
+                    deserializedVaultJob.actionsInfo = actionsInfo;
+                } else if ("errorDetails".equals(fieldName)) {
+                    List<VaultJobErrorInfo> errorDetails
+                        = reader.readArray(reader1 -> VaultJobErrorInfo.fromJson(reader1));
+                    deserializedVaultJob.errorDetails = errorDetails;
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedVaultJob.extendedInfo = VaultJobExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultJob;
+        });
     }
 }

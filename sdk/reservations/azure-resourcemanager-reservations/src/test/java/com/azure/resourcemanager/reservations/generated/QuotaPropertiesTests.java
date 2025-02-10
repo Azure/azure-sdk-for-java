@@ -13,30 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaProperties model =
-            BinaryData
-                .fromString(
-                    "{\"limit\":671328296,\"currentValue\":1223269261,\"unit\":\"uiizynke\",\"name\":{\"value\":\"trwyhqmib\",\"localizedValue\":\"hwit\"},\"resourceType\":\"lowPriority\",\"quotaPeriod\":\"yynpcdpumnzgmwz\",\"properties\":\"dataabikns\"}")
-                .toObject(QuotaProperties.class);
-        Assertions.assertEquals(671328296, model.limit());
-        Assertions.assertEquals("uiizynke", model.unit());
-        Assertions.assertEquals("trwyhqmib", model.name().value());
-        Assertions.assertEquals(ResourceType.LOW_PRIORITY, model.resourceType());
+        QuotaProperties model = BinaryData.fromString(
+            "{\"limit\":1415235910,\"currentValue\":613432064,\"unit\":\"mibzyhwitsmypyyn\",\"name\":{\"value\":\"pumnz\",\"localizedValue\":\"wznm\"},\"resourceType\":\"serviceSpecific\",\"quotaPeriod\":\"nsorgjhxbldt\",\"properties\":\"datawrlkdmtn\"}")
+            .toObject(QuotaProperties.class);
+        Assertions.assertEquals(1415235910, model.limit());
+        Assertions.assertEquals("mibzyhwitsmypyyn", model.unit());
+        Assertions.assertEquals("pumnz", model.name().value());
+        Assertions.assertEquals(ResourceType.SERVICE_SPECIFIC, model.resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaProperties model =
-            new QuotaProperties()
-                .withLimit(671328296)
-                .withUnit("uiizynke")
-                .withName(new ResourceName().withValue("trwyhqmib"))
-                .withResourceType(ResourceType.LOW_PRIORITY)
-                .withProperties("dataabikns");
+        QuotaProperties model = new QuotaProperties().withLimit(1415235910)
+            .withUnit("mibzyhwitsmypyyn")
+            .withName(new ResourceName().withValue("pumnz"))
+            .withResourceType(ResourceType.SERVICE_SPECIFIC)
+            .withProperties("datawrlkdmtn");
         model = BinaryData.fromObject(model).toObject(QuotaProperties.class);
-        Assertions.assertEquals(671328296, model.limit());
-        Assertions.assertEquals("uiizynke", model.unit());
-        Assertions.assertEquals("trwyhqmib", model.name().value());
-        Assertions.assertEquals(ResourceType.LOW_PRIORITY, model.resourceType());
+        Assertions.assertEquals(1415235910, model.limit());
+        Assertions.assertEquals("mibzyhwitsmypyyn", model.unit());
+        Assertions.assertEquals("pumnz", model.name().value());
+        Assertions.assertEquals(ResourceType.SERVICE_SPECIFIC, model.resourceType());
     }
 }

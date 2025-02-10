@@ -102,20 +102,16 @@ public final class LicenseImpl implements License, License.Definition, License.U
     }
 
     public License create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenses()
-                .createOrUpdate(resourceGroupName, licenseName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenses()
+            .createOrUpdate(resourceGroupName, licenseName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public License create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenses()
-                .createOrUpdate(resourceGroupName, licenseName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenses()
+            .createOrUpdate(resourceGroupName, licenseName, this.innerModel(), context);
         return this;
     }
 
@@ -131,47 +127,39 @@ public final class LicenseImpl implements License, License.Definition, License.U
     }
 
     public License apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenses()
-                .update(resourceGroupName, licenseName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenses()
+            .update(resourceGroupName, licenseName, updateParameters, Context.NONE);
         return this;
     }
 
     public License apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenses()
-                .update(resourceGroupName, licenseName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenses()
+            .update(resourceGroupName, licenseName, updateParameters, context);
         return this;
     }
 
     LicenseImpl(LicenseInner innerObject, com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.licenseName = Utils.getValueFromIdByName(innerObject.id(), "licenses");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.licenseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "licenses");
     }
 
     public License refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenses()
-                .getByResourceGroupWithResponse(resourceGroupName, licenseName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenses()
+            .getByResourceGroupWithResponse(resourceGroupName, licenseName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public License refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenses()
-                .getByResourceGroupWithResponse(resourceGroupName, licenseName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenses()
+            .getByResourceGroupWithResponse(resourceGroupName, licenseName, context)
+            .getValue();
         return this;
     }
 

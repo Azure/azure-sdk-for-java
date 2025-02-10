@@ -5,68 +5,118 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-/** AzureWorkload SAP Hana-specific restore. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = AzureWorkloadSapHanaRestoreRequest.class)
-@JsonTypeName("AzureWorkloadSAPHanaRestoreRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "AzureWorkloadSAPHanaPointInTimeRestoreRequest",
-        value = AzureWorkloadSapHanaPointInTimeRestoreRequest.class),
-    @JsonSubTypes.Type(
-        name = "AzureWorkloadSAPHanaRestoreWithRehydrateRequest",
-        value = AzureWorkloadSapHanaRestoreWithRehydrateRequest.class)
-})
+/**
+ * AzureWorkload SAP Hana-specific restore.
+ */
 @Fluent
 public class AzureWorkloadSapHanaRestoreRequest extends AzureWorkloadRestoreRequest {
-    /** Creates an instance of AzureWorkloadSapHanaRestoreRequest class. */
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "AzureWorkloadSAPHanaRestoreRequest";
+
+    /**
+     * Creates an instance of AzureWorkloadSapHanaRestoreRequest class.
+     */
     public AzureWorkloadSapHanaRestoreRequest() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreRequest withRecoveryType(RecoveryType recoveryType) {
         super.withRecoveryType(recoveryType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreRequest withPropertyBag(Map<String, String> propertyBag) {
         super.withPropertyBag(propertyBag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreRequest withTargetInfo(TargetRestoreInfo targetInfo) {
         super.withTargetInfo(targetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaRestoreRequest withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaRestoreRequest
+        withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails userAssignedManagedIdentityDetails) {
+        super.withUserAssignedManagedIdentityDetails(userAssignedManagedIdentityDetails);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaRestoreRequest
+        withSnapshotRestoreParameters(SnapshotRestoreParameters snapshotRestoreParameters) {
+        super.withSnapshotRestoreParameters(snapshotRestoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
@@ -74,12 +124,135 @@ public class AzureWorkloadSapHanaRestoreRequest extends AzureWorkloadRestoreRequ
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaRestoreRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (targetInfo() != null) {
+            targetInfo().validate();
+        }
+        if (userAssignedManagedIdentityDetails() != null) {
+            userAssignedManagedIdentityDetails().validate();
+        }
+        if (snapshotRestoreParameters() != null) {
+            snapshotRestoreParameters().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("recoveryType", recoveryType() == null ? null : recoveryType().toString());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeMapField("propertyBag", propertyBag(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("targetInfo", targetInfo());
+        jsonWriter.writeStringField("recoveryMode", recoveryMode() == null ? null : recoveryMode().toString());
+        jsonWriter.writeStringField("targetResourceGroupName", targetResourceGroupName());
+        jsonWriter.writeJsonField("userAssignedManagedIdentityDetails", userAssignedManagedIdentityDetails());
+        jsonWriter.writeJsonField("snapshotRestoreParameters", snapshotRestoreParameters());
+        jsonWriter.writeStringField("targetVirtualMachineId", targetVirtualMachineId());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWorkloadSapHanaRestoreRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWorkloadSapHanaRestoreRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWorkloadSapHanaRestoreRequest.
+     */
+    public static AzureWorkloadSapHanaRestoreRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureWorkloadSAPHanaPointInTimeRestoreRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSapHanaPointInTimeRestoreRequest
+                        .fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSAPHanaRestoreWithRehydrateRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSapHanaRestoreWithRehydrateRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AzureWorkloadSapHanaRestoreRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWorkloadSapHanaRestoreRequest deserializedAzureWorkloadSapHanaRestoreRequest
+                = new AzureWorkloadSapHanaRestoreRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureWorkloadSapHanaRestoreRequest
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("recoveryType".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreRequest
+                        .withRecoveryType(RecoveryType.fromString(reader.getString()));
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreRequest.withSourceResourceId(reader.getString());
+                } else if ("propertyBag".equals(fieldName)) {
+                    Map<String, String> propertyBag = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureWorkloadSapHanaRestoreRequest.withPropertyBag(propertyBag);
+                } else if ("targetInfo".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreRequest.withTargetInfo(TargetRestoreInfo.fromJson(reader));
+                } else if ("recoveryMode".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreRequest
+                        .withRecoveryMode(RecoveryMode.fromString(reader.getString()));
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreRequest.withTargetResourceGroupName(reader.getString());
+                } else if ("userAssignedManagedIdentityDetails".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreRequest
+                        .withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails.fromJson(reader));
+                } else if ("snapshotRestoreParameters".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreRequest
+                        .withSnapshotRestoreParameters(SnapshotRestoreParameters.fromJson(reader));
+                } else if ("targetVirtualMachineId".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreRequest.withTargetVirtualMachineId(reader.getString());
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureWorkloadSapHanaRestoreRequest.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWorkloadSapHanaRestoreRequest;
+        });
     }
 }

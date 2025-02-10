@@ -27,14 +27,14 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
 
     private final AsynchronousFileChannel fileChannel;
 
-    private static final AtomicLongFieldUpdater<AsynchronousFileChannelAdapter> POSITION_ATOMIC_UPDATER =
-        AtomicLongFieldUpdater.newUpdater(AsynchronousFileChannelAdapter.class, "position");
+    private static final AtomicLongFieldUpdater<AsynchronousFileChannelAdapter> POSITION_ATOMIC_UPDATER
+        = AtomicLongFieldUpdater.newUpdater(AsynchronousFileChannelAdapter.class, "position");
     private volatile long position;
 
     // AsynchronousByteChannel implementation may disallow concurrent reads and writes.
-    private static final AtomicReferenceFieldUpdater<AsynchronousFileChannelAdapter, Operation> PENDING_OPERATION_ATOMIC_UPDATER =
-        AtomicReferenceFieldUpdater.newUpdater(
-            AsynchronousFileChannelAdapter.class, Operation.class, "pendingOperation");
+    private static final AtomicReferenceFieldUpdater<AsynchronousFileChannelAdapter, Operation> PENDING_OPERATION_ATOMIC_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(AsynchronousFileChannelAdapter.class, Operation.class,
+            "pendingOperation");
     private volatile Operation pendingOperation = null;
 
     /**
@@ -100,8 +100,10 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
             switch (PENDING_OPERATION_ATOMIC_UPDATER.get(this)) {
                 case READ:
                     throw LOGGER.logExceptionAsError(new ReadPendingException());
+
                 case WRITE:
                     throw LOGGER.logExceptionAsError(new WritePendingException());
+
                 default:
                     throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown channel operation"));
             }

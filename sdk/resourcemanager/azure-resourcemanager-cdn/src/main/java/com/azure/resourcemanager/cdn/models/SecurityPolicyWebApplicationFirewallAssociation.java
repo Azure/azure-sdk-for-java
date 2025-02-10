@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** settings for security policy patterns to match. */
+/**
+ * settings for security policy patterns to match.
+ */
 @Fluent
-public final class SecurityPolicyWebApplicationFirewallAssociation {
+public final class SecurityPolicyWebApplicationFirewallAssociation
+    implements JsonSerializable<SecurityPolicyWebApplicationFirewallAssociation> {
     /*
      * List of domains.
      */
-    @JsonProperty(value = "domains")
     private List<ActivatedResourceReference> domains;
 
     /*
      * List of paths
      */
-    @JsonProperty(value = "patternsToMatch")
     private List<String> patternsToMatch;
 
-    /** Creates an instance of SecurityPolicyWebApplicationFirewallAssociation class. */
+    /**
+     * Creates an instance of SecurityPolicyWebApplicationFirewallAssociation class.
+     */
     public SecurityPolicyWebApplicationFirewallAssociation() {
     }
 
     /**
      * Get the domains property: List of domains.
-     *
+     * 
      * @return the domains value.
      */
     public List<ActivatedResourceReference> domains() {
@@ -38,7 +45,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
 
     /**
      * Set the domains property: List of domains.
-     *
+     * 
      * @param domains the domains value to set.
      * @return the SecurityPolicyWebApplicationFirewallAssociation object itself.
      */
@@ -49,7 +56,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
 
     /**
      * Get the patternsToMatch property: List of paths.
-     *
+     * 
      * @return the patternsToMatch value.
      */
     public List<String> patternsToMatch() {
@@ -58,7 +65,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
 
     /**
      * Set the patternsToMatch property: List of paths.
-     *
+     * 
      * @param patternsToMatch the patternsToMatch value to set.
      * @return the SecurityPolicyWebApplicationFirewallAssociation object itself.
      */
@@ -69,12 +76,56 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (domains() != null) {
             domains().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("domains", this.domains, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("patternsToMatch", this.patternsToMatch,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityPolicyWebApplicationFirewallAssociation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityPolicyWebApplicationFirewallAssociation if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityPolicyWebApplicationFirewallAssociation.
+     */
+    public static SecurityPolicyWebApplicationFirewallAssociation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityPolicyWebApplicationFirewallAssociation deserializedSecurityPolicyWebApplicationFirewallAssociation
+                = new SecurityPolicyWebApplicationFirewallAssociation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domains".equals(fieldName)) {
+                    List<ActivatedResourceReference> domains
+                        = reader.readArray(reader1 -> ActivatedResourceReference.fromJson(reader1));
+                    deserializedSecurityPolicyWebApplicationFirewallAssociation.domains = domains;
+                } else if ("patternsToMatch".equals(fieldName)) {
+                    List<String> patternsToMatch = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecurityPolicyWebApplicationFirewallAssociation.patternsToMatch = patternsToMatch;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityPolicyWebApplicationFirewallAssociation;
+        });
     }
 }

@@ -11,26 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationForBatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationForBatchUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ldhugjzzdatqxh\",\"properties\":{\"value\":\"geablgphuticndvk\",\"source\":\"zwyiftyhxhur\"}}")
-                .toObject(ConfigurationForBatchUpdate.class);
-        Assertions.assertEquals("ldhugjzzdatqxh", model.name());
-        Assertions.assertEquals("geablgphuticndvk", model.value());
-        Assertions.assertEquals("zwyiftyhxhur", model.source());
+        ConfigurationForBatchUpdate model = BinaryData
+            .fromString(
+                "{\"name\":\"hurzafblj\",\"properties\":{\"value\":\"btoqcjmkljavbqid\",\"source\":\"ajzyul\"}}")
+            .toObject(ConfigurationForBatchUpdate.class);
+        Assertions.assertEquals("hurzafblj", model.name());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.value());
+        Assertions.assertEquals("ajzyul", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationForBatchUpdate model =
-            new ConfigurationForBatchUpdate()
-                .withName("ldhugjzzdatqxh")
-                .withValue("geablgphuticndvk")
-                .withSource("zwyiftyhxhur");
+        ConfigurationForBatchUpdate model = new ConfigurationForBatchUpdate().withName("hurzafblj")
+            .withValue("btoqcjmkljavbqid")
+            .withSource("ajzyul");
         model = BinaryData.fromObject(model).toObject(ConfigurationForBatchUpdate.class);
-        Assertions.assertEquals("ldhugjzzdatqxh", model.name());
-        Assertions.assertEquals("geablgphuticndvk", model.value());
-        Assertions.assertEquals("zwyiftyhxhur", model.source());
+        Assertions.assertEquals("hurzafblj", model.name());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.value());
+        Assertions.assertEquals("ajzyul", model.source());
     }
 }

@@ -16,7 +16,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.Protection
 public interface ProtectionPolicyOperationResultsClient {
     /**
      * Provides the result of an operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's result needs to be fetched.
@@ -28,12 +28,12 @@ public interface ProtectionPolicyOperationResultsClient {
      * @return base class for backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectionPolicyResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String policyName, String operationId, Context context);
+    Response<ProtectionPolicyResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String policyName, String operationId, Context context);
 
     /**
      * Provides the result of an operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's result needs to be fetched.
@@ -44,6 +44,6 @@ public interface ProtectionPolicyOperationResultsClient {
      * @return base class for backup policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionPolicyResourceInner get(
-        String vaultName, String resourceGroupName, String policyName, String operationId);
+    ProtectionPolicyResourceInner get(String vaultName, String resourceGroupName, String policyName,
+        String operationId);
 }

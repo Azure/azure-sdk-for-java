@@ -21,105 +21,85 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoscaleProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoscaleProfile model =
-            BinaryData
-                .fromString(
-                    "{\"enabled\":true,\"gracefulDecommissionTimeout\":1640882234,\"autoscaleType\":\"ScheduleBased\",\"scheduleBasedConfig\":{\"timeZone\":\"hdzhlrqj\",\"defaultCount\":203364386,\"schedules\":[{\"startTime\":\"kfrlhrxsbky\",\"endTime\":\"pycanuzbpz\",\"count\":1414672968,\"days\":[\"Wednesday\",\"Friday\",\"Sunday\",\"Saturday\"]}]},\"loadBasedConfig\":{\"minNodes\":870696272,\"maxNodes\":1514524475,\"pollInterval\":1300207213,\"cooldownPeriod\":1267023941,\"scalingRules\":[{\"actionType\":\"scaleup\",\"evaluationCount\":1198251199,\"scalingMetric\":\"eyvjusrtslhspkde\",\"comparisonRule\":{\"operator\":\"lessThan\",\"threshold\":68.91014}},{\"actionType\":\"scaledown\",\"evaluationCount\":441408788,\"scalingMetric\":\"mx\",\"comparisonRule\":{\"operator\":\"lessThanOrEqual\",\"threshold\":7.4486313}}]}}")
-                .toObject(AutoscaleProfile.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals(1640882234, model.gracefulDecommissionTimeout());
-        Assertions.assertEquals(AutoscaleType.SCHEDULE_BASED, model.autoscaleType());
-        Assertions.assertEquals("hdzhlrqj", model.scheduleBasedConfig().timeZone());
-        Assertions.assertEquals(203364386, model.scheduleBasedConfig().defaultCount());
-        Assertions.assertEquals("kfrlhrxsbky", model.scheduleBasedConfig().schedules().get(0).startTime());
-        Assertions.assertEquals("pycanuzbpz", model.scheduleBasedConfig().schedules().get(0).endTime());
-        Assertions.assertEquals(1414672968, model.scheduleBasedConfig().schedules().get(0).count());
-        Assertions.assertEquals(ScheduleDay.WEDNESDAY, model.scheduleBasedConfig().schedules().get(0).days().get(0));
-        Assertions.assertEquals(870696272, model.loadBasedConfig().minNodes());
-        Assertions.assertEquals(1514524475, model.loadBasedConfig().maxNodes());
-        Assertions.assertEquals(1300207213, model.loadBasedConfig().pollInterval());
-        Assertions.assertEquals(1267023941, model.loadBasedConfig().cooldownPeriod());
-        Assertions.assertEquals(ScaleActionType.SCALEUP, model.loadBasedConfig().scalingRules().get(0).actionType());
-        Assertions.assertEquals(1198251199, model.loadBasedConfig().scalingRules().get(0).evaluationCount());
-        Assertions.assertEquals("eyvjusrtslhspkde", model.loadBasedConfig().scalingRules().get(0).scalingMetric());
-        Assertions
-            .assertEquals(
-                ComparisonOperator.LESS_THAN,
-                model.loadBasedConfig().scalingRules().get(0).comparisonRule().operator());
-        Assertions.assertEquals(68.91014f, model.loadBasedConfig().scalingRules().get(0).comparisonRule().threshold());
+        AutoscaleProfile model = BinaryData.fromString(
+            "{\"enabled\":false,\"gracefulDecommissionTimeout\":855265021,\"autoscaleType\":\"LoadBased\",\"scheduleBasedConfig\":{\"timeZone\":\"zvszj\",\"defaultCount\":928593835,\"schedules\":[{\"startTime\":\"vjfdx\",\"endTime\":\"ivetvtcq\",\"count\":928990245,\"days\":[\"Friday\"]},{\"startTime\":\"oqmcbxvwvxyslq\",\"endTime\":\"hsfxoblytkb\",\"count\":857226054,\"days\":[\"Monday\"]},{\"startTime\":\"wwwfbkr\",\"endTime\":\"rn\",\"count\":309197108,\"days\":[\"Saturday\",\"Wednesday\",\"Tuesday\"]}]},\"loadBasedConfig\":{\"minNodes\":925506689,\"maxNodes\":475216783,\"pollInterval\":1216343785,\"cooldownPeriod\":1861824237,\"scalingRules\":[{\"actionType\":\"scaledown\",\"evaluationCount\":249445305,\"scalingMetric\":\"asrru\",\"comparisonRule\":{\"operator\":\"lessThan\",\"threshold\":94.09205}},{\"actionType\":\"scaledown\",\"evaluationCount\":1393923794,\"scalingMetric\":\"qfsubcgjbirx\",\"comparisonRule\":{\"operator\":\"lessThan\",\"threshold\":79.85491}}]}}")
+            .toObject(AutoscaleProfile.class);
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(855265021, model.gracefulDecommissionTimeout());
+        Assertions.assertEquals(AutoscaleType.LOAD_BASED, model.autoscaleType());
+        Assertions.assertEquals("zvszj", model.scheduleBasedConfig().timeZone());
+        Assertions.assertEquals(928593835, model.scheduleBasedConfig().defaultCount());
+        Assertions.assertEquals("vjfdx", model.scheduleBasedConfig().schedules().get(0).startTime());
+        Assertions.assertEquals("ivetvtcq", model.scheduleBasedConfig().schedules().get(0).endTime());
+        Assertions.assertEquals(928990245, model.scheduleBasedConfig().schedules().get(0).count());
+        Assertions.assertEquals(ScheduleDay.FRIDAY, model.scheduleBasedConfig().schedules().get(0).days().get(0));
+        Assertions.assertEquals(925506689, model.loadBasedConfig().minNodes());
+        Assertions.assertEquals(475216783, model.loadBasedConfig().maxNodes());
+        Assertions.assertEquals(1216343785, model.loadBasedConfig().pollInterval());
+        Assertions.assertEquals(1861824237, model.loadBasedConfig().cooldownPeriod());
+        Assertions.assertEquals(ScaleActionType.SCALEDOWN, model.loadBasedConfig().scalingRules().get(0).actionType());
+        Assertions.assertEquals(249445305, model.loadBasedConfig().scalingRules().get(0).evaluationCount());
+        Assertions.assertEquals("asrru", model.loadBasedConfig().scalingRules().get(0).scalingMetric());
+        Assertions.assertEquals(ComparisonOperator.LESS_THAN,
+            model.loadBasedConfig().scalingRules().get(0).comparisonRule().operator());
+        Assertions.assertEquals(94.09205f, model.loadBasedConfig().scalingRules().get(0).comparisonRule().threshold());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoscaleProfile model =
-            new AutoscaleProfile()
-                .withEnabled(true)
-                .withGracefulDecommissionTimeout(1640882234)
-                .withAutoscaleType(AutoscaleType.SCHEDULE_BASED)
-                .withScheduleBasedConfig(
-                    new ScheduleBasedConfig()
-                        .withTimeZone("hdzhlrqj")
-                        .withDefaultCount(203364386)
-                        .withSchedules(
-                            Arrays
-                                .asList(
-                                    new Schedule()
-                                        .withStartTime("kfrlhrxsbky")
-                                        .withEndTime("pycanuzbpz")
-                                        .withCount(1414672968)
-                                        .withDays(
-                                            Arrays
-                                                .asList(
-                                                    ScheduleDay.WEDNESDAY,
-                                                    ScheduleDay.FRIDAY,
-                                                    ScheduleDay.SUNDAY,
-                                                    ScheduleDay.SATURDAY)))))
-                .withLoadBasedConfig(
-                    new LoadBasedConfig()
-                        .withMinNodes(870696272)
-                        .withMaxNodes(1514524475)
-                        .withPollInterval(1300207213)
-                        .withCooldownPeriod(1267023941)
-                        .withScalingRules(
-                            Arrays
-                                .asList(
-                                    new ScalingRule()
-                                        .withActionType(ScaleActionType.SCALEUP)
-                                        .withEvaluationCount(1198251199)
-                                        .withScalingMetric("eyvjusrtslhspkde")
-                                        .withComparisonRule(
-                                            new ComparisonRule()
-                                                .withOperator(ComparisonOperator.LESS_THAN)
-                                                .withThreshold(68.91014f)),
-                                    new ScalingRule()
-                                        .withActionType(ScaleActionType.SCALEDOWN)
-                                        .withEvaluationCount(441408788)
-                                        .withScalingMetric("mx")
-                                        .withComparisonRule(
-                                            new ComparisonRule()
-                                                .withOperator(ComparisonOperator.LESS_THAN_OR_EQUAL)
-                                                .withThreshold(7.4486313f)))));
+        AutoscaleProfile model = new AutoscaleProfile().withEnabled(false)
+            .withGracefulDecommissionTimeout(855265021)
+            .withAutoscaleType(AutoscaleType.LOAD_BASED)
+            .withScheduleBasedConfig(new ScheduleBasedConfig().withTimeZone("zvszj")
+                .withDefaultCount(928593835)
+                .withSchedules(Arrays.asList(
+                    new Schedule().withStartTime("vjfdx")
+                        .withEndTime("ivetvtcq")
+                        .withCount(928990245)
+                        .withDays(Arrays.asList(ScheduleDay.FRIDAY)),
+                    new Schedule().withStartTime("oqmcbxvwvxyslq")
+                        .withEndTime("hsfxoblytkb")
+                        .withCount(857226054)
+                        .withDays(Arrays.asList(ScheduleDay.MONDAY)),
+                    new Schedule().withStartTime("wwwfbkr")
+                        .withEndTime("rn")
+                        .withCount(309197108)
+                        .withDays(Arrays.asList(ScheduleDay.SATURDAY, ScheduleDay.WEDNESDAY, ScheduleDay.TUESDAY)))))
+            .withLoadBasedConfig(
+                new LoadBasedConfig().withMinNodes(925506689)
+                    .withMaxNodes(475216783)
+                    .withPollInterval(1216343785)
+                    .withCooldownPeriod(1861824237)
+                    .withScalingRules(Arrays.asList(
+                        new ScalingRule().withActionType(ScaleActionType.SCALEDOWN)
+                            .withEvaluationCount(249445305)
+                            .withScalingMetric("asrru")
+                            .withComparisonRule(new ComparisonRule().withOperator(ComparisonOperator.LESS_THAN)
+                                .withThreshold(94.09205f)),
+                        new ScalingRule().withActionType(ScaleActionType.SCALEDOWN)
+                            .withEvaluationCount(1393923794)
+                            .withScalingMetric("qfsubcgjbirx")
+                            .withComparisonRule(new ComparisonRule().withOperator(ComparisonOperator.LESS_THAN)
+                                .withThreshold(79.85491f)))));
         model = BinaryData.fromObject(model).toObject(AutoscaleProfile.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals(1640882234, model.gracefulDecommissionTimeout());
-        Assertions.assertEquals(AutoscaleType.SCHEDULE_BASED, model.autoscaleType());
-        Assertions.assertEquals("hdzhlrqj", model.scheduleBasedConfig().timeZone());
-        Assertions.assertEquals(203364386, model.scheduleBasedConfig().defaultCount());
-        Assertions.assertEquals("kfrlhrxsbky", model.scheduleBasedConfig().schedules().get(0).startTime());
-        Assertions.assertEquals("pycanuzbpz", model.scheduleBasedConfig().schedules().get(0).endTime());
-        Assertions.assertEquals(1414672968, model.scheduleBasedConfig().schedules().get(0).count());
-        Assertions.assertEquals(ScheduleDay.WEDNESDAY, model.scheduleBasedConfig().schedules().get(0).days().get(0));
-        Assertions.assertEquals(870696272, model.loadBasedConfig().minNodes());
-        Assertions.assertEquals(1514524475, model.loadBasedConfig().maxNodes());
-        Assertions.assertEquals(1300207213, model.loadBasedConfig().pollInterval());
-        Assertions.assertEquals(1267023941, model.loadBasedConfig().cooldownPeriod());
-        Assertions.assertEquals(ScaleActionType.SCALEUP, model.loadBasedConfig().scalingRules().get(0).actionType());
-        Assertions.assertEquals(1198251199, model.loadBasedConfig().scalingRules().get(0).evaluationCount());
-        Assertions.assertEquals("eyvjusrtslhspkde", model.loadBasedConfig().scalingRules().get(0).scalingMetric());
-        Assertions
-            .assertEquals(
-                ComparisonOperator.LESS_THAN,
-                model.loadBasedConfig().scalingRules().get(0).comparisonRule().operator());
-        Assertions.assertEquals(68.91014f, model.loadBasedConfig().scalingRules().get(0).comparisonRule().threshold());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(855265021, model.gracefulDecommissionTimeout());
+        Assertions.assertEquals(AutoscaleType.LOAD_BASED, model.autoscaleType());
+        Assertions.assertEquals("zvszj", model.scheduleBasedConfig().timeZone());
+        Assertions.assertEquals(928593835, model.scheduleBasedConfig().defaultCount());
+        Assertions.assertEquals("vjfdx", model.scheduleBasedConfig().schedules().get(0).startTime());
+        Assertions.assertEquals("ivetvtcq", model.scheduleBasedConfig().schedules().get(0).endTime());
+        Assertions.assertEquals(928990245, model.scheduleBasedConfig().schedules().get(0).count());
+        Assertions.assertEquals(ScheduleDay.FRIDAY, model.scheduleBasedConfig().schedules().get(0).days().get(0));
+        Assertions.assertEquals(925506689, model.loadBasedConfig().minNodes());
+        Assertions.assertEquals(475216783, model.loadBasedConfig().maxNodes());
+        Assertions.assertEquals(1216343785, model.loadBasedConfig().pollInterval());
+        Assertions.assertEquals(1861824237, model.loadBasedConfig().cooldownPeriod());
+        Assertions.assertEquals(ScaleActionType.SCALEDOWN, model.loadBasedConfig().scalingRules().get(0).actionType());
+        Assertions.assertEquals(249445305, model.loadBasedConfig().scalingRules().get(0).evaluationCount());
+        Assertions.assertEquals("asrru", model.loadBasedConfig().scalingRules().get(0).scalingMetric());
+        Assertions.assertEquals(ComparisonOperator.LESS_THAN,
+            model.loadBasedConfig().scalingRules().get(0).comparisonRule().operator());
+        Assertions.assertEquals(94.09205f, model.loadBasedConfig().scalingRules().get(0).comparisonRule().threshold());
     }
 }

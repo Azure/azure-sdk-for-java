@@ -14,8 +14,7 @@ public final class OrganizationResourceImpl implements OrganizationResource {
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    OrganizationResourceImpl(
-        OrganizationResourceInner innerObject,
+    OrganizationResourceImpl(OrganizationResourceInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -7,19 +7,21 @@ package com.azure.resourcemanager.hdinsight.models;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterConfigurationsInner;
 import java.util.Map;
 
-/** An immutable client-side representation of ClusterConfigurations. */
+/**
+ * An immutable client-side representation of ClusterConfigurations.
+ */
 public interface ClusterConfigurations {
     /**
      * Gets the configurations property: The configuration object for the specified configuration for the specified
      * cluster.
-     *
+     * 
      * @return the configurations value.
      */
     Map<String, Map<String, String>> configurations();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.ClusterConfigurationsInner object.
-     *
+     * 
      * @return the inner object.
      */
     ClusterConfigurationsInner innerModel();

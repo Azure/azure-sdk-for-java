@@ -5,39 +5,42 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.streamanalytics.fluent.models.ScalarFunctionConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.streamanalytics.fluent.models.FunctionConfiguration;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties that are associated with a scalar function. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Scalar")
+/**
+ * The properties that are associated with a scalar function.
+ */
 @Fluent
 public final class ScalarFunctionProperties extends FunctionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScalarFunctionProperties.class);
-
     /*
-     * Describes the configuration of the scalar function.
+     * Indicates the type of function.
      */
-    @JsonProperty(value = "properties")
-    private ScalarFunctionConfiguration innerProperties;
+    private String type = "Scalar";
 
     /**
-     * Get the innerProperties property: Describes the configuration of the scalar function.
-     *
-     * @return the innerProperties value.
+     * Creates an instance of ScalarFunctionProperties class.
      */
-    private ScalarFunctionConfiguration innerProperties() {
-        return this.innerProperties;
+    public ScalarFunctionProperties() {
     }
 
     /**
-     * Get the inputs property: A list of inputs describing the parameters of the function.
-     *
+     * Get the type property: Indicates the type of function.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the inputs property: The inputs property.
+     * 
      * @return the inputs value.
      */
     public List<FunctionInput> inputs() {
@@ -45,22 +48,22 @@ public final class ScalarFunctionProperties extends FunctionProperties {
     }
 
     /**
-     * Set the inputs property: A list of inputs describing the parameters of the function.
-     *
+     * Set the inputs property: The inputs property.
+     * 
      * @param inputs the inputs value to set.
      * @return the ScalarFunctionProperties object itself.
      */
     public ScalarFunctionProperties withInputs(List<FunctionInput> inputs) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ScalarFunctionConfiguration();
+            this.withInnerProperties(new FunctionConfiguration());
         }
         this.innerProperties().withInputs(inputs);
         return this;
     }
 
     /**
-     * Get the output property: The output of the function.
-     *
+     * Get the output property: Describes the output of a function.
+     * 
      * @return the output value.
      */
     public FunctionOutput output() {
@@ -68,14 +71,14 @@ public final class ScalarFunctionProperties extends FunctionProperties {
     }
 
     /**
-     * Set the output property: The output of the function.
-     *
+     * Set the output property: Describes the output of a function.
+     * 
      * @param output the output value to set.
      * @return the ScalarFunctionProperties object itself.
      */
     public ScalarFunctionProperties withOutput(FunctionOutput output) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ScalarFunctionConfiguration();
+            this.withInnerProperties(new FunctionConfiguration());
         }
         this.innerProperties().withOutput(output);
         return this;
@@ -84,7 +87,7 @@ public final class ScalarFunctionProperties extends FunctionProperties {
     /**
      * Get the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
      * service’s case, this describes the endpoint.
-     *
+     * 
      * @return the binding value.
      */
     public FunctionBinding binding() {
@@ -94,13 +97,13 @@ public final class ScalarFunctionProperties extends FunctionProperties {
     /**
      * Set the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
      * service’s case, this describes the endpoint.
-     *
+     * 
      * @param binding the binding value to set.
      * @return the ScalarFunctionProperties object itself.
      */
     public ScalarFunctionProperties withBinding(FunctionBinding binding) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ScalarFunctionConfiguration();
+            this.withInnerProperties(new FunctionConfiguration());
         }
         this.innerProperties().withBinding(binding);
         return this;
@@ -108,14 +111,54 @@ public final class ScalarFunctionProperties extends FunctionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", innerProperties());
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScalarFunctionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScalarFunctionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScalarFunctionProperties.
+     */
+    public static ScalarFunctionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScalarFunctionProperties deserializedScalarFunctionProperties = new ScalarFunctionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("etag".equals(fieldName)) {
+                    deserializedScalarFunctionProperties.withEtag(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScalarFunctionProperties.withInnerProperties(FunctionConfiguration.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedScalarFunctionProperties.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScalarFunctionProperties;
+        });
     }
 }

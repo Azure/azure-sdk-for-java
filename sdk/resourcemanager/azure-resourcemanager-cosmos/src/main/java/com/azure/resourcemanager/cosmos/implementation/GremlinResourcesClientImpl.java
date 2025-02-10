@@ -701,8 +701,10 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
         beginCreateUpdateGremlinDatabase(String resourceGroupName, String accountName, String databaseName,
             GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters) {
-        return this.beginCreateUpdateGremlinDatabaseAsync(resourceGroupName, accountName, databaseName,
-            createUpdateGremlinDatabaseParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateGremlinDatabaseAsync(resourceGroupName, accountName, databaseName,
+                createUpdateGremlinDatabaseParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -722,8 +724,10 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
         beginCreateUpdateGremlinDatabase(String resourceGroupName, String accountName, String databaseName,
             GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters, Context context) {
-        return this.beginCreateUpdateGremlinDatabaseAsync(resourceGroupName, accountName, databaseName,
-            createUpdateGremlinDatabaseParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateGremlinDatabaseAsync(resourceGroupName, accountName, databaseName,
+                createUpdateGremlinDatabaseParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1340,8 +1344,10 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateGremlinDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateGremlinDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateGremlinDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1362,8 +1368,10 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateGremlinDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateGremlinDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateGremlinDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1888,7 +1896,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     private Mono<ThroughputSettingsGetResultsInner> migrateGremlinDatabaseToManualThroughputAsync(
         String resourceGroupName, String accountName, String databaseName, Context context) {
         return beginMigrateGremlinDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2406,8 +2415,10 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner>
         beginCreateUpdateGremlinGraph(String resourceGroupName, String accountName, String databaseName,
             String graphName, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters) {
-        return this.beginCreateUpdateGremlinGraphAsync(resourceGroupName, accountName, databaseName, graphName,
-            createUpdateGremlinGraphParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateGremlinGraphAsync(resourceGroupName, accountName, databaseName, graphName,
+                createUpdateGremlinGraphParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -2428,8 +2439,10 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner>
         beginCreateUpdateGremlinGraph(String resourceGroupName, String accountName, String databaseName,
             String graphName, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters, Context context) {
-        return this.beginCreateUpdateGremlinGraphAsync(resourceGroupName, accountName, databaseName, graphName,
-            createUpdateGremlinGraphParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateGremlinGraphAsync(resourceGroupName, accountName, databaseName, graphName,
+                createUpdateGremlinGraphParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3080,8 +3093,10 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateGremlinGraphThroughput(String resourceGroupName, String accountName, String databaseName,
             String graphName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateGremlinGraphThroughputAsync(resourceGroupName, accountName, databaseName, graphName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateGremlinGraphThroughputAsync(resourceGroupName, accountName, databaseName, graphName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -3102,8 +3117,10 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateGremlinGraphThroughput(String resourceGroupName, String accountName, String databaseName,
             String graphName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateGremlinGraphThroughputAsync(resourceGroupName, accountName, databaseName, graphName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateGremlinGraphThroughputAsync(resourceGroupName, accountName, databaseName, graphName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3622,8 +3639,10 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinGraphToManualThroughput(String resourceGroupName, String accountName, String databaseName,
             String graphName, Context context) {
-        return this.beginMigrateGremlinGraphToManualThroughputAsync(resourceGroupName, accountName, databaseName,
-            graphName, context).getSyncPoller();
+        return this
+            .beginMigrateGremlinGraphToManualThroughputAsync(resourceGroupName, accountName, databaseName, graphName,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -3642,7 +3661,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public Mono<ThroughputSettingsGetResultsInner> migrateGremlinGraphToManualThroughputAsync(String resourceGroupName,
         String accountName, String databaseName, String graphName) {
         return beginMigrateGremlinGraphToManualThroughputAsync(resourceGroupName, accountName, databaseName, graphName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3872,8 +3892,10 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
             String graphName, ContinuousBackupRestoreLocation location) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName,
-            graphName, location).getSyncPoller();
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, graphName,
+                location)
+            .getSyncPoller();
     }
 
     /**
@@ -3894,8 +3916,10 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
             String graphName, ContinuousBackupRestoreLocation location, Context context) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName,
-            graphName, location, context).getSyncPoller();
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, graphName,
+                location, context)
+            .getSyncPoller();
     }
 
     /**

@@ -22,15 +22,14 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> checkAmlFSSubnetsWithResponse(
-        AmlFilesystemSubnetInfo amlFilesystemSubnetInfo, Context context) {
+    public Response<Void> checkAmlFSSubnetsWithResponse(AmlFilesystemSubnetInfo amlFilesystemSubnetInfo,
+        Context context) {
         return this.serviceClient().checkAmlFSSubnetsWithResponse(amlFilesystemSubnetInfo, context);
     }
 
@@ -40,13 +39,10 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     public Response<RequiredAmlFilesystemSubnetsSize> getRequiredAmlFSSubnetsSizeWithResponse(
         RequiredAmlFilesystemSubnetsSizeInfo requiredAmlFilesystemSubnetsSizeInfo, Context context) {
-        Response<RequiredAmlFilesystemSubnetsSizeInner> inner =
-            this.serviceClient().getRequiredAmlFSSubnetsSizeWithResponse(requiredAmlFilesystemSubnetsSizeInfo, context);
+        Response<RequiredAmlFilesystemSubnetsSizeInner> inner = this.serviceClient()
+            .getRequiredAmlFSSubnetsSizeWithResponse(requiredAmlFilesystemSubnetsSizeInfo, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RequiredAmlFilesystemSubnetsSizeImpl(inner.getValue(), this.manager()));
         } else {
             return null;

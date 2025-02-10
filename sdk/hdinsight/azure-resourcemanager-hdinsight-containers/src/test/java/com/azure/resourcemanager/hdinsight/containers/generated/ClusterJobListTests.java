@@ -14,25 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterJobListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterJobList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"luicpdggkzzlvmbm\",\"name\":\"axmodfvuef\",\"type\":\"wsbpfvm\"},{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"hrfou\",\"name\":\"ft\",\"type\":\"akcp\"}],\"nextLink\":\"yzvqt\"}")
-                .toObject(ClusterJobList.class);
-        Assertions.assertEquals("yzvqt", model.nextLink());
+        ClusterJobList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"vxccedcp\",\"name\":\"md\",\"type\":\"odn\"},{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"xltjcvnhltiu\",\"name\":\"cxnavv\",\"type\":\"xqi\"}],\"nextLink\":\"qunyowxwlmdjr\"}")
+            .toObject(ClusterJobList.class);
+        Assertions.assertEquals("qunyowxwlmdjr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterJobList model =
-            new ClusterJobList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ClusterJobInner().withProperties(new ClusterJobProperties()),
-                            new ClusterJobInner().withProperties(new ClusterJobProperties())))
-                .withNextLink("yzvqt");
+        ClusterJobList model = new ClusterJobList()
+            .withValue(Arrays.asList(new ClusterJobInner().withProperties(new ClusterJobProperties()),
+                new ClusterJobInner().withProperties(new ClusterJobProperties())))
+            .withNextLink("qunyowxwlmdjr");
         model = BinaryData.fromObject(model).toObject(ClusterJobList.class);
-        Assertions.assertEquals("yzvqt", model.nextLink());
+        Assertions.assertEquals("qunyowxwlmdjr", model.nextLink());
     }
 }

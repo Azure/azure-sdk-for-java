@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * Defines the observed state of the agent pool.
+ * The observed status of the agent pool.
  */
 @Fluent
-public final class AgentPoolProvisioningStatusStatus {
+public final class AgentPoolProvisioningStatusStatus implements JsonSerializable<AgentPoolProvisioningStatusStatus> {
     /*
-     * ErrorMessage - Error messages during creation of agent pool
+     * The current state of the agent pool.
      */
-    @JsonProperty(value = "errorMessage")
-    private String errorMessage;
+    private ResourceProvisioningState currentState;
 
     /*
-     * Contains Provisioning errors
+     * Error messages during an agent pool operation or steady state.
      */
-    @JsonProperty(value = "operationStatus")
-    private AgentPoolProvisioningStatusOperationStatus operationStatus;
+    private String errorMessage;
 
     /*
      * The readyReplicas property.
      */
-    @JsonProperty(value = "readyReplicas")
     private List<AgentPoolUpdateProfile> readyReplicas;
 
     /**
@@ -38,7 +39,16 @@ public final class AgentPoolProvisioningStatusStatus {
     }
 
     /**
-     * Get the errorMessage property: ErrorMessage - Error messages during creation of agent pool.
+     * Get the currentState property: The current state of the agent pool.
+     * 
+     * @return the currentState value.
+     */
+    public ResourceProvisioningState currentState() {
+        return this.currentState;
+    }
+
+    /**
+     * Get the errorMessage property: Error messages during an agent pool operation or steady state.
      * 
      * @return the errorMessage value.
      */
@@ -47,34 +57,13 @@ public final class AgentPoolProvisioningStatusStatus {
     }
 
     /**
-     * Set the errorMessage property: ErrorMessage - Error messages during creation of agent pool.
+     * Set the errorMessage property: Error messages during an agent pool operation or steady state.
      * 
      * @param errorMessage the errorMessage value to set.
      * @return the AgentPoolProvisioningStatusStatus object itself.
      */
     public AgentPoolProvisioningStatusStatus withErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
-        return this;
-    }
-
-    /**
-     * Get the operationStatus property: Contains Provisioning errors.
-     * 
-     * @return the operationStatus value.
-     */
-    public AgentPoolProvisioningStatusOperationStatus operationStatus() {
-        return this.operationStatus;
-    }
-
-    /**
-     * Set the operationStatus property: Contains Provisioning errors.
-     * 
-     * @param operationStatus the operationStatus value to set.
-     * @return the AgentPoolProvisioningStatusStatus object itself.
-     */
-    public AgentPoolProvisioningStatusStatus
-        withOperationStatus(AgentPoolProvisioningStatusOperationStatus operationStatus) {
-        this.operationStatus = operationStatus;
         return this;
     }
 
@@ -104,11 +93,53 @@ public final class AgentPoolProvisioningStatusStatus {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (operationStatus() != null) {
-            operationStatus().validate();
-        }
         if (readyReplicas() != null) {
             readyReplicas().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeArrayField("readyReplicas", this.readyReplicas, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolProvisioningStatusStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolProvisioningStatusStatus if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolProvisioningStatusStatus.
+     */
+    public static AgentPoolProvisioningStatusStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolProvisioningStatusStatus deserializedAgentPoolProvisioningStatusStatus
+                = new AgentPoolProvisioningStatusStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentState".equals(fieldName)) {
+                    deserializedAgentPoolProvisioningStatusStatus.currentState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedAgentPoolProvisioningStatusStatus.errorMessage = reader.getString();
+                } else if ("readyReplicas".equals(fieldName)) {
+                    List<AgentPoolUpdateProfile> readyReplicas
+                        = reader.readArray(reader1 -> AgentPoolUpdateProfile.fromJson(reader1));
+                    deserializedAgentPoolProvisioningStatusStatus.readyReplicas = readyReplicas;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolProvisioningStatusStatus;
+        });
     }
 }

@@ -35,11 +35,9 @@ public class DiscoveryGroupsTest extends EasmClientTestBase {
 
     @Test
     public void testdiscoveryGroupsValidateWithResponse() {
-        List<DiscoSource> seeds = Arrays.asList(new DiscoSource()
-            .setKind(DiscoSourceKind.fromString(seedKind))
-            .setName(seedName));
-        DiscoGroupData discoGroupData = new DiscoGroupData()
-            .setName("validate group name")
+        List<DiscoSource> seeds
+            = Arrays.asList(new DiscoSource().setKind(DiscoSourceKind.fromString(seedKind)).setName(seedName));
+        DiscoGroupData discoGroupData = new DiscoGroupData().setName("validate group name")
             .setDescription(newGroupDescription)
             .setSeeds(seeds)
             .setFrequencyMilliseconds(604800000L)
@@ -61,13 +59,10 @@ public class DiscoveryGroupsTest extends EasmClientTestBase {
 
     @Test
     public void testdiscoveryGroupsPutWithResponse() {
-        List<DiscoSource> seeds = Arrays.asList(new DiscoSource()
-            .setKind(DiscoSourceKind.fromString(seedKind))
-            .setName(seedName));
-        DiscoGroupData discoGroupData = new DiscoGroupData()
-            .setName(newGroupName)
-            .setDescription(newGroupDescription)
-            .setSeeds(seeds);
+        List<DiscoSource> seeds
+            = Arrays.asList(new DiscoSource().setKind(DiscoSourceKind.fromString(seedKind)).setName(seedName));
+        DiscoGroupData discoGroupData
+            = new DiscoGroupData().setName(newGroupName).setDescription(newGroupDescription).setSeeds(seeds);
 
         DiscoGroup discoGroupResponse = easmClient.createOrReplaceDiscoGroup(newGroupName, discoGroupData);
 

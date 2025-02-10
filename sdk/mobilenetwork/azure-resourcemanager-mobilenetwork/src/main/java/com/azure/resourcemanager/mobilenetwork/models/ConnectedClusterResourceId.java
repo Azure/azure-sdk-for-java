@@ -6,24 +6,31 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Reference to an Azure Arc custom location resource. */
+/**
+ * Reference to an Azure Arc custom location resource.
+ */
 @Fluent
-public final class ConnectedClusterResourceId {
+public final class ConnectedClusterResourceId implements JsonSerializable<ConnectedClusterResourceId> {
     /*
      * Azure Arc connected cluster resource ID.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of ConnectedClusterResourceId class. */
+    /**
+     * Creates an instance of ConnectedClusterResourceId class.
+     */
     public ConnectedClusterResourceId() {
     }
 
     /**
      * Get the id property: Azure Arc connected cluster resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +39,7 @@ public final class ConnectedClusterResourceId {
 
     /**
      * Set the id property: Azure Arc connected cluster resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ConnectedClusterResourceId object itself.
      */
@@ -43,16 +50,52 @@ public final class ConnectedClusterResourceId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ConnectedClusterResourceId"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model ConnectedClusterResourceId"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectedClusterResourceId.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectedClusterResourceId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectedClusterResourceId if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectedClusterResourceId.
+     */
+    public static ConnectedClusterResourceId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectedClusterResourceId deserializedConnectedClusterResourceId = new ConnectedClusterResourceId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectedClusterResourceId.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectedClusterResourceId;
+        });
+    }
 }

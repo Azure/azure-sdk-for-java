@@ -6,17 +6,26 @@ package com.azure.ai.vision.imageanalysis.tests;
 import java.io.File;
 import java.util.List;
 import java.util.Map.Entry;
-import java.net.URL;
-import java.net.MalformedURLException;
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestMode;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.BinaryData;
+import com.azure.ai.vision.imageanalysis.*;
+import com.azure.ai.vision.imageanalysis.models.*;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 // See https://junit.org/junit5/docs/5.0.1/api/org/junit/jupiter/api/Assertions.html
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,67 +34,79 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.azure.ai.vision.imageanalysis.*;
-import com.azure.ai.vision.imageanalysis.models.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class ImageAnalysisClientTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ImageAnalysisClientTestBase.class);
 
     final Boolean printResults = false; // Set to true to print results to console window
 
-    // We a single image (the same one) for all error-free tests, one hosted on the web and one local
-    final String imageUrl = "https://aka.ms/azai/vision/image-analysis-sample.jpg";
+    // We use a single image (the same one) for all error-free tests, one hosted on the web and one local
+    final String imageUrl = "https://aka.ms/azsdk/image-analysis/sample.jpg";
     final String imageFile = "./src/test/java/com/azure/ai/vision/imageanalysis/sample.jpg";
 
     // The client that will be used for tests
     private ImageAnalysisClient client = null;
     private ImageAnalysisAsyncClient asyncClient = null;
 
-    // Tests that use the standard Image Analysis model must call this method first
-    protected void createClientForStandardAnalysis(Boolean sync) {
-        createClient("VISION_ENDPOINT", "VISION_KEY", sync, null);
-    }
+    protected void createClient(Boolean useKeyAuth, Boolean useRealKey, Boolean sync,
+        List<Entry<String, String>> queryParams) {
 
-    //  Tests that use the standard Image Analysis model and need to add custom query parameters must call this method first
-    protected void createClientForStandardAnalysis(Boolean sync, List<Entry<String, String>> queryParams) {
-        createClient("VISION_ENDPOINT", "VISION_KEY", sync, queryParams);
-    }
+        TestMode testMode = getTestMode();
 
-    // Tests that uses bad key to test authentication failure
-    protected void createClientForAuthenticationFailure(Boolean sync) {
-        createClient("VISION_ENDPOINT", "VISION_KEY_FAKE", sync, null);
-    }
+        // Define endpoint and auth credentials
+        String endpoint = "https://fake-resource-name.cognitiveservices.azure.com";
+        String key = "00000000000000000000000000000000";
 
-    private void createClient(String endpointEnvVar, String keyEnvVar, Boolean sync, List<Entry<String, String>> queryParams) {
+        if (testMode == TestMode.LIVE || testMode == TestMode.RECORD) {
+            endpoint = Configuration.getGlobalConfiguration().get("VISION_ENDPOINT");
+            assertTrue(endpoint != null && !endpoint.isEmpty(), "Endpoint URL is required to run live tests.");
 
-        String endpoint = Configuration.getGlobalConfiguration().get(endpointEnvVar); // Read endpoint URL from environment variable
-        if (endpoint == null) {
-            endpoint = "https://fake-resource-name.cognitiveservices.azure.com";
-        }
-
-        String key = Configuration.getGlobalConfiguration().get(keyEnvVar); // Read real key from environment variable 
-        if (key == null || keyEnvVar == "VISION_KEY_FAKE") {
-            key = "00000000000000000000000000000000";
-        }
-
-        ImageAnalysisClientBuilder imageAnalysisClientBuilder =
-                new ImageAnalysisClientBuilder()
-                        .endpoint(endpoint)
-                        .credential(new KeyCredential(key))
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-        // Apply any optional custom query parameters
-        if (queryParams != null) {
-            for (Entry<String, String> queryParam : queryParams) {
-                imageAnalysisClientBuilder.addPolicy(new ImageAnalysisAddQueryParamPolicy(queryParam.getKey(), queryParam.getValue()));
+            if (useKeyAuth && useRealKey) {
+                key = Configuration.getGlobalConfiguration().get("VISION_KEY");
+                assertTrue(endpoint != null && !endpoint.isEmpty(), "API key is required to run live tests.");
             }
         }
 
-        // Handle Test Proxy recording and playback modes
-        if (getTestMode() == TestMode.PLAYBACK) {
-            imageAnalysisClientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        // Create the client builder
+        ImageAnalysisClientBuilder imageAnalysisClientBuilder = new ImageAnalysisClientBuilder().endpoint(endpoint)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        // Update the client builder with optional custom query parameters
+        if (queryParams != null) {
+            for (Entry<String, String> queryParam : queryParams) {
+                imageAnalysisClientBuilder
+                    .addPolicy(new ImageAnalysisAddQueryParamPolicy(queryParam.getKey(), queryParam.getValue()));
+            }
+        }
+
+        // Updat the client building with credentials and recording/playback policies
+        if (getTestMode() == TestMode.LIVE) {
+            if (useKeyAuth) {
+                imageAnalysisClientBuilder.credential(new KeyCredential(key));
+            } else {
+                imageAnalysisClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+            }
         } else if (getTestMode() == TestMode.RECORD) {
             imageAnalysisClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            if (useKeyAuth) {
+                imageAnalysisClientBuilder.credential(new KeyCredential(key));
+            } else {
+                imageAnalysisClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+            }
+        } else if (getTestMode() == TestMode.PLAYBACK) {
+            imageAnalysisClientBuilder.httpClient(interceptorManager.getPlaybackClient());
+            if (useKeyAuth) {
+                imageAnalysisClientBuilder.credential(new KeyCredential(key));
+            } else {
+                imageAnalysisClientBuilder.credential(new MockTokenCredential());
+            }
+        }
+
+        // Set recording filters
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `operation-location`, `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493");
         }
 
         if (sync) {
@@ -95,35 +116,44 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         }
     }
 
-    protected void doAnalysis(
-        String testName,
-        Boolean sync,
-        String imageSource,
-        List<VisualFeatures> visualFeatures,
-        ImageAnalysisOptions options) throws MalformedURLException {
+    protected void doAnalysis(String testName, // Any label the uniquely defines the test. Used in console printout.
+        Boolean sync, // 'true' to use synchronous client. 'false' to use asynchronous client.
+        Boolean analyzeWithResponse, // 'true' to use analze()/analyzeFromUrl(). 'false' to use analyzeWithResponse()/analyzeFromUrlWithResponse().
+        String imageSource, // Image URL or image file path
+        List<VisualFeatures> visualFeatures, ImageAnalysisOptions imageAnalysisOptions, // can be null
+        RequestOptions requestOptions) { // can be null
 
-        Boolean fromUrl = imageSource.startsWith("http");
-        URL imageUrl = null;
+        boolean fromUrl = imageSource.startsWith("http");
         Boolean genderNeutralCaption = null;
         List<Double> aspectRatios = null;
 
-        if (options != null) {
-            genderNeutralCaption = options.getGenderNeutralCaption();
-            aspectRatios = options.getSmartCropsAspectRatios();
+        if (imageAnalysisOptions != null) {
+            genderNeutralCaption = imageAnalysisOptions.isGenderNeutralCaption();
+            aspectRatios = imageAnalysisOptions.getSmartCropsAspectRatios();
         }
 
         if (sync) {
             ImageAnalysisResult result = null;
             if (fromUrl) {
-                result = client.analyze(
-                    new URL(imageSource),
-                    visualFeatures,
-                    options);
+                if (!analyzeWithResponse) {
+                    result = client.analyzeFromUrl(imageSource, visualFeatures, imageAnalysisOptions);
+                } else {
+                    Response<ImageAnalysisResult> response = client.analyzeFromUrlWithResponse(imageSource,
+                        visualFeatures, imageAnalysisOptions, requestOptions);
+                    printHttpRequestAndResponse(response);
+                    result = response.getValue();
+                }
             } else {
-                result = client.analyze(
-                    BinaryData.fromFile(new File(imageSource).toPath()),
-                    visualFeatures,
-                    options);
+                if (!analyzeWithResponse) {
+                    result = client.analyze(BinaryData.fromFile(new File(imageSource).toPath()), visualFeatures,
+                        imageAnalysisOptions);
+                } else {
+                    Response<ImageAnalysisResult> response
+                        = client.analyzeWithResponse(BinaryData.fromFile(new File(imageSource).toPath()),
+                            visualFeatures, imageAnalysisOptions, requestOptions);
+                    printHttpRequestAndResponse(response);
+                    result = response.getValue();
+                }
             }
 
             // Optional: console printout of all results
@@ -137,15 +167,30 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         } else { // sync = false
             ImageAnalysisResult result = null;
             if (fromUrl) {
-                result = asyncClient.analyze(
-                    new URL(imageSource),
-                    visualFeatures,
-                    options).block();
+                if (!analyzeWithResponse) {
+                    result = asyncClient.analyzeFromUrl(imageSource, visualFeatures, imageAnalysisOptions).block();
+                } else {
+                    Response<ImageAnalysisResult> response = asyncClient
+                        .analyzeFromUrlWithResponse(imageSource, visualFeatures, imageAnalysisOptions, requestOptions)
+                        .block();
+                    printHttpRequestAndResponse(response);
+                    result = response.getValue();
+                }
             } else {
-                result = asyncClient.analyze(
-                    BinaryData.fromFile(new File(imageSource).toPath()),
-                    visualFeatures,
-                    options).block();
+                if (!analyzeWithResponse) {
+                    result
+                        = asyncClient
+                            .analyze(BinaryData.fromFile(new File(imageSource).toPath()), visualFeatures,
+                                imageAnalysisOptions)
+                            .block();
+                } else {
+                    Response<ImageAnalysisResult> response = asyncClient
+                        .analyzeWithResponse(BinaryData.fromFile(new File(imageSource).toPath()), visualFeatures,
+                            imageAnalysisOptions, requestOptions)
+                        .block();
+                    printHttpRequestAndResponse(response);
+                    result = response.getValue();
+                }
             }
 
             // Optional: console printout of all results
@@ -158,34 +203,23 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         }
     }
 
-    protected void doAnalysisWithError(
-        String testName,
-        Boolean sync,
-        String imageSource,
-        List<VisualFeatures> visualFeatures,
-        ImageAnalysisOptions options,
-        int expectedStatusCode,
-        String expectedMessageContains) throws MalformedURLException {
+    protected void doAnalysisWithError(String testName, Boolean sync, String imageSource,
+        List<VisualFeatures> visualFeatures, ImageAnalysisOptions options, int expectedStatusCode,
+        String expectedMessageContains) {
 
-        Boolean fromUrl = imageSource.startsWith("http");
+        boolean fromUrl = imageSource.startsWith("http");
         ImageAnalysisResult result = null;
-        URL imageUrl = null;
 
         if (sync) {
             try {
                 if (fromUrl) {
-                    result = client.analyze(
-                        new URL(imageSource),
-                        visualFeatures,
-                        options);
+                    result = client.analyzeFromUrl(imageSource, visualFeatures, options);
                 } else {
-                    result = client.analyze(
-                        BinaryData.fromFile(new File(imageSource).toPath()),
-                        visualFeatures,
-                        options);
+                    result
+                        = client.analyze(BinaryData.fromFile(new File(imageSource).toPath()), visualFeatures, options);
                 }
             } catch (HttpResponseException e) {
-                System.out.println("Expected exception: " + e.getMessage());
+                LOGGER.log(LogLevel.VERBOSE, () -> "Expected exception: " + e.getMessage());
                 assertEquals(expectedStatusCode, e.getResponse().getStatusCode());
                 assertTrue(e.getMessage().contains(expectedMessageContains));
                 return;
@@ -193,33 +227,26 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         } else {
             try {
                 if (fromUrl) {
-                    result = asyncClient.analyze(
-                        new URL(imageSource),
-                        visualFeatures,
-                        options).block();
+                    result = asyncClient.analyzeFromUrl(imageSource, visualFeatures, options).block();
                 } else {
-                    result = asyncClient.analyze(
-                        BinaryData.fromFile(new File(imageSource).toPath()),
-                        visualFeatures,
-                        options).block();
+                    result = asyncClient
+                        .analyze(BinaryData.fromFile(new File(imageSource).toPath()), visualFeatures, options)
+                        .block();
                 }
             } catch (HttpResponseException e) {
-                System.out.println("Expected exception: " + e.getMessage());
+                LOGGER.log(LogLevel.VERBOSE, () -> "Expected exception: " + e.getMessage());
                 assertEquals(expectedStatusCode, e.getResponse().getStatusCode());
                 assertTrue(e.getMessage().contains(expectedMessageContains));
                 return;
             }
         }
 
-        System.out.println("Test should have thrown an exception, but it did not");
-        assertTrue(false);
+        LOGGER.log(LogLevel.VERBOSE, () -> "Test should have thrown an exception, but it did not");
+        fail();
     }
 
-    private static void validateAnalysisResult(
-        ImageAnalysisResult result,
-        List<VisualFeatures> expectedFeatures,
-        Boolean genderNeutralCaption,
-        List<Double> aspectRatios) {
+    private static void validateAnalysisResult(ImageAnalysisResult result, List<VisualFeatures> expectedFeatures,
+        Boolean genderNeutralCaption, List<Double> aspectRatios) {
 
         validateMetadata(result);
         validateModelVersion(result);
@@ -319,8 +346,10 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
             assertTrue(denseCaption.getConfidence() < 1.0);
             assertTrue(denseCaption.getBoundingBox().getX() >= 0);
             assertTrue(denseCaption.getBoundingBox().getY() >= 0);
-            assertTrue(denseCaption.getBoundingBox().getHeight() <= result.getMetadata().getHeight() - denseCaption.getBoundingBox().getY());
-            assertTrue(denseCaption.getBoundingBox().getWidth() <= result.getMetadata().getWidth() - denseCaption.getBoundingBox().getX());
+            assertTrue(denseCaption.getBoundingBox().getHeight()
+                <= result.getMetadata().getHeight() - denseCaption.getBoundingBox().getY());
+            assertTrue(denseCaption.getBoundingBox().getWidth()
+                <= result.getMetadata().getWidth() - denseCaption.getBoundingBox().getX());
         }
 
         // Make sure each dense caption is unique
@@ -330,8 +359,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
                 DenseCaption otherDenseCaption = result.getDenseCaptions().getValues().get(j);
                 // Do not include the check below. It's okay to have two identical dense captions since they have different bounding boxes.
                 // assertFalse(otherDenseCaption.getText().equals(denseCaption.getText()));
-                assertFalse(
-                    otherDenseCaption.getBoundingBox().getX() == denseCaption.getBoundingBox().getX() 
+                assertFalse(otherDenseCaption.getBoundingBox().getX() == denseCaption.getBoundingBox().getX()
                     && otherDenseCaption.getBoundingBox().getY() == denseCaption.getBoundingBox().getY()
                     && otherDenseCaption.getBoundingBox().getHeight() == denseCaption.getBoundingBox().getHeight()
                     && otherDenseCaption.getBoundingBox().getWidth() == denseCaption.getBoundingBox().getWidth());
@@ -348,7 +376,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         assertNotNull(objectsResult);
         assertTrue(objectsResult.getValues().size() > 1);
 
-        Boolean found1 = false;
+        boolean found1 = false;
         for (DetectedObject object : objectsResult.getValues()) {
             assertNotNull(object);
             assertNotNull(object.getTags());
@@ -360,7 +388,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
             assertTrue(tag.getConfidence() > 0.0);
             assertTrue(tag.getConfidence() < 1.0);
             // We expect to see this in the list of objects
-            if (tag.getName().toLowerCase().equals("person")) {
+            if (tag.getName().equalsIgnoreCase("person")) {
                 found1 = true;
             }
         }
@@ -371,8 +399,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
             for (int j = i + 1; j < objectsResult.getValues().size(); j++) {
                 ImageBoundingBox boxI = objectsResult.getValues().get(i).getBoundingBox();
                 ImageBoundingBox boxJ = objectsResult.getValues().get(j).getBoundingBox();
-                assertFalse(
-                    boxI.getX() == boxJ.getX()
+                assertFalse(boxI.getX() == boxJ.getX()
                     && boxI.getY() == boxJ.getY()
                     && boxI.getHeight() == boxJ.getHeight()
                     && boxI.getWidth() == boxJ.getWidth());
@@ -390,17 +417,17 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         assertNotNull(tagsResult.getValues());
         assertTrue(tagsResult.getValues().size() > 1);
 
-        Boolean found1 = false, found2 = false;
+        boolean found1 = false, found2 = false;
         for (DetectedTag tag : tagsResult.getValues()) {
             assertNotNull(tag.getName());
             assertFalse(tag.getName().isEmpty());
             assertTrue(tag.getConfidence() > 0.0);
             assertTrue(tag.getConfidence() < 1.0);
             // We expect to see both of these in the list of tags
-            if (tag.getName().toLowerCase().equals("person")) {
+            if (tag.getName().equalsIgnoreCase("person")) {
                 found1 = true;
             }
-            if (tag.getName().toLowerCase().equals("laptop")) {
+            if (tag.getName().equalsIgnoreCase("laptop")) {
                 found2 = true;
             }
         }
@@ -417,15 +444,17 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
 
     private static void validatePeople(ImageAnalysisResult result) {
         assertNotNull(result.getPeople());
-        assertTrue(result.getPeople().getValues().size() > 0);
+        assertFalse(result.getPeople().getValues().isEmpty());
 
         for (DetectedPerson person : result.getPeople().getValues()) {
             assertTrue(person.getConfidence() > 0.0);
             assertTrue(person.getConfidence() < 1.0);
             assertTrue(person.getBoundingBox().getX() >= 0);
             assertTrue(person.getBoundingBox().getY() >= 0);
-            assertTrue(person.getBoundingBox().getHeight() <= result.getMetadata().getHeight() - person.getBoundingBox().getY());
-            assertTrue(person.getBoundingBox().getWidth() <= result.getMetadata().getWidth() - person.getBoundingBox().getX());
+            assertTrue(person.getBoundingBox().getHeight()
+                <= result.getMetadata().getHeight() - person.getBoundingBox().getY());
+            assertTrue(
+                person.getBoundingBox().getWidth() <= result.getMetadata().getWidth() - person.getBoundingBox().getX());
         }
 
         // Make sure each person is unique
@@ -433,8 +462,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
             DetectedPerson person = result.getPeople().getValues().get(i);
             for (int j = i + 1; j < result.getPeople().getValues().size(); j++) {
                 DetectedPerson otherPerson = result.getPeople().getValues().get(j);
-                assertFalse(
-                    otherPerson.getBoundingBox().getX() == person.getBoundingBox().getX()
+                assertFalse(otherPerson.getBoundingBox().getX() == person.getBoundingBox().getX()
                     && otherPerson.getBoundingBox().getY() == person.getBoundingBox().getY()
                     && otherPerson.getBoundingBox().getHeight() == person.getBoundingBox().getHeight()
                     && otherPerson.getBoundingBox().getWidth() == person.getBoundingBox().getWidth());
@@ -446,13 +474,13 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         assertNotNull(result.getSmartCrops());
         List<CropRegion> listCropRegions = result.getSmartCrops().getValues();
         if (aspectRatios == null) {
-            assertTrue(listCropRegions.size() == 1);
+            assertEquals(1, listCropRegions.size());
             assertTrue(listCropRegions.get(0).getAspectRatio() >= 0.5);
             assertTrue(listCropRegions.get(0).getAspectRatio() <= 2.0);
         } else {
-            assertTrue(listCropRegions.size() == aspectRatios.size());
+            assertEquals(listCropRegions.size(), aspectRatios.size());
             for (int i = 0; i < listCropRegions.size(); i++) {
-                assertTrue(listCropRegions.get(i).getAspectRatio() == aspectRatios.get(i));
+                assertEquals(listCropRegions.get(i).getAspectRatio(), aspectRatios.get(i));
                 assertTrue(listCropRegions.get(0).getAspectRatio() >= 0.75);
                 assertTrue(listCropRegions.get(0).getAspectRatio() <= 1.8);
             }
@@ -461,8 +489,10 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         for (CropRegion region : listCropRegions) {
             assertTrue(region.getBoundingBox().getX() >= 0);
             assertTrue(region.getBoundingBox().getY() >= 0);
-            assertTrue(region.getBoundingBox().getHeight() <= result.getMetadata().getHeight() - region.getBoundingBox().getY());
-            assertTrue(region.getBoundingBox().getWidth() <= result.getMetadata().getWidth() - region.getBoundingBox().getX());
+            assertTrue(region.getBoundingBox().getHeight()
+                <= result.getMetadata().getHeight() - region.getBoundingBox().getY());
+            assertTrue(
+                region.getBoundingBox().getWidth() <= result.getMetadata().getWidth() - region.getBoundingBox().getX());
         }
 
         // Make sure each bounding box is unique
@@ -470,8 +500,7 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
             CropRegion region = listCropRegions.get(i);
             for (int j = i + 1; j < listCropRegions.size(); j++) {
                 CropRegion otherRegion = listCropRegions.get(j);
-                assertFalse(
-                    otherRegion.getBoundingBox().getX() == region.getBoundingBox().getX()
+                assertFalse(otherRegion.getBoundingBox().getX() == region.getBoundingBox().getX()
                     && otherRegion.getBoundingBox().getY() == region.getBoundingBox().getY()
                     && otherRegion.getBoundingBox().getHeight() == region.getBoundingBox().getHeight()
                     && otherRegion.getBoundingBox().getWidth() == region.getBoundingBox().getWidth());
@@ -496,20 +525,20 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
         // Do some validations on the first line
         DetectedTextLine line = lines.get(0);
         assertNotNull(line);
-        assertTrue(line.getText().equals("Sample text"));
+        assertEquals("Sample text", line.getText());
 
         List<ImagePoint> polygon = line.getBoundingPolygon();
         assertNotNull(polygon);
         assertEquals(4, polygon.size());
-        for (int i = 0; i < polygon.size(); i++) {
-            assertTrue(polygon.get(i).getX() > 0);
-            assertTrue(polygon.get(i).getY() > 0);
+        for (ImagePoint imagePoint : polygon) {
+            assertTrue(imagePoint.getX() > 0);
+            assertTrue(imagePoint.getY() > 0);
         }
 
         // Do some verifications on the 3rd line
         line = lines.get(2);
         assertNotNull(line);
-        assertTrue(line.getText().equals("123 456"));
+        assertEquals("123 456", line.getText());
 
         List<DetectedTextWord> words = line.getWords();
         assertNotNull(words);
@@ -517,90 +546,112 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
 
         DetectedTextWord word = words.get(1);
         assertNotNull(word);
-        assertTrue(word.getText().equals("456"));
+        assertEquals("456", word.getText());
         assertTrue(word.getConfidence() > 0.0);
         assertTrue(word.getConfidence() < 1.0);
 
         polygon = word.getBoundingPolygon();
         assertNotNull(polygon);
         assertEquals(4, polygon.size());
-        for (int i = 0; i < polygon.size(); i++) {
-            assertTrue(polygon.get(i).getX() > 0);
-            assertTrue(polygon.get(i).getY() > 0);
+        for (ImagePoint imagePoint : polygon) {
+            assertTrue(imagePoint.getX() > 0);
+            assertTrue(imagePoint.getY() > 0);
         }
+    }
+
+    private static void printHttpRequestAndResponse(Response<ImageAnalysisResult> response) {
+        // Print HTTP request details to console
+        HttpRequest request = response.getRequest();
+        LOGGER.log(LogLevel.VERBOSE, () -> " HTTP request method: " + request.getHttpMethod());
+        LOGGER.log(LogLevel.VERBOSE, () -> " HTTP request URL: " + request.getUrl());
+        LOGGER.log(LogLevel.VERBOSE, () -> " HTTP request headers: ");
+        request.getHeaders().forEach(header -> {
+            LOGGER.log(LogLevel.VERBOSE, () -> "   " + header.getName() + ": " + header.getValue());
+        });
+        if (request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE).contains("application/json")) {
+            LOGGER.log(LogLevel.VERBOSE, () -> " HTTP request body: " + request.getBodyAsBinaryData().toString());
+        }
+
+        // Print HTTP response details to console
+        LOGGER.log(LogLevel.VERBOSE, () -> " HTTP response status code: " + response.getStatusCode());
+        LOGGER.log(LogLevel.VERBOSE, () -> " HTTP response headers: ");
+        response.getHeaders().forEach(header -> {
+            LOGGER.log(LogLevel.VERBOSE, () -> "   " + header.getName() + ": " + header.getValue());
+        });
     }
 
     private static void printAnalysisResults(String testName, ImageAnalysisResult result) {
 
-        System.out.println(" ******************** TEST NAME: " + testName + " ******************** ");
+        LOGGER.log(LogLevel.VERBOSE, () -> " ******************** TEST NAME: " + testName + " ******************** ");
 
         try {
-            System.out.println(" Image height: " + result.getMetadata().getHeight());
-            System.out.println(" Image width: " + result.getMetadata().getWidth());
-            System.out.println(" Model version: " + result.getModelVersion());
+            LOGGER.log(LogLevel.VERBOSE, () -> " Image height: " + result.getMetadata().getHeight());
+            LOGGER.log(LogLevel.VERBOSE, () -> " Image width: " + result.getMetadata().getWidth());
+            LOGGER.log(LogLevel.VERBOSE, () -> " Model version: " + result.getModelVersion());
 
             if (result.getCaption() != null) {
-                System.out.println(" Caption:");
-                System.out.println("   \"" + result.getCaption().getText() + "\", Confidence "
+                LOGGER.log(LogLevel.VERBOSE, () -> " Caption:");
+                LOGGER.log(LogLevel.VERBOSE, () -> "   \"" + result.getCaption().getText() + "\", Confidence "
                     + String.format("%.4f", result.getCaption().getConfidence()));
             }
 
             if (result.getDenseCaptions() != null) {
-                System.out.println(" Dense Captions:");
+                LOGGER.log(LogLevel.VERBOSE, () -> " Dense Captions:");
                 for (DenseCaption denseCaption : result.getDenseCaptions().getValues()) {
-                    System.out.println("   \"" + denseCaption.getText() + "\", Bounding box "
-                        + denseCaption.getBoundingBox()
-                        + ", Confidence " + String.format("%.4f", denseCaption.getConfidence()));
+                    LOGGER.log(LogLevel.VERBOSE,
+                        () -> "   \"" + denseCaption.getText() + "\", Bounding box " + denseCaption.getBoundingBox()
+                            + ", Confidence " + String.format("%.4f", denseCaption.getConfidence()));
                 }
             }
 
             if (result.getObjects() != null) {
-                System.out.println(" Objects:");
+                LOGGER.log(LogLevel.VERBOSE, () -> " Objects:");
                 for (DetectedObject detectedObject : result.getObjects().getValues()) {
-                    System.out.println("   \"" + detectedObject.getTags().get(0).getName() + "\", Bounding box "
-                        + detectedObject.getBoundingBox()
-                        + ", Confidence " + String.format("%.4f", detectedObject.getTags().get(0).getConfidence()));
+                    LOGGER.log(LogLevel.VERBOSE,
+                        () -> "   \"" + detectedObject.getTags().get(0).getName() + "\", Bounding box "
+                            + detectedObject.getBoundingBox() + ", Confidence "
+                            + String.format("%.4f", detectedObject.getTags().get(0).getConfidence()));
                 }
             }
 
             if (result.getTags() != null) {
-                System.out.println(" Tags:");
+                LOGGER.log(LogLevel.VERBOSE, () -> " Tags:");
                 for (DetectedTag tag : result.getTags().getValues()) {
-                    System.out.println("   \"" + tag.getName() + "\", Confidence "
-                        + String.format("%.4f", tag.getConfidence()));
+                    LOGGER.log(LogLevel.VERBOSE,
+                        () -> "   \"" + tag.getName() + "\", Confidence " + String.format("%.4f", tag.getConfidence()));
                 }
             }
 
             if (result.getPeople() != null) {
-                System.out.println(" People:");
+                LOGGER.log(LogLevel.VERBOSE, () -> " People:");
                 for (DetectedPerson person : result.getPeople().getValues()) {
-                    System.out.println("   Bounding box " + person.getBoundingBox()
-                        + ", Confidence " + String.format("%.4f", person.getConfidence()));
+                    LOGGER.log(LogLevel.VERBOSE, () -> "   Bounding box " + person.getBoundingBox() + ", Confidence "
+                        + String.format("%.4f", person.getConfidence()));
                 }
             }
 
             if (result.getSmartCrops() != null) {
-                System.out.println(" Crop Suggestions:");
+                LOGGER.log(LogLevel.VERBOSE, () -> " Crop Suggestions:");
                 for (CropRegion cropRegion : result.getSmartCrops().getValues()) {
-                    System.out.println("   Aspect ratio " + cropRegion.getAspectRatio()
+                    LOGGER.log(LogLevel.VERBOSE, () -> "   Aspect ratio " + cropRegion.getAspectRatio()
                         + ": Bounding box " + cropRegion.getBoundingBox());
                 }
             }
 
             if (result.getRead() != null) {
-                System.out.println(" Read:");
+                LOGGER.log(LogLevel.VERBOSE, () -> " Read:");
                 for (DetectedTextLine line : result.getRead().getBlocks().get(0).getLines()) {
-                    System.out.println("   Line: '" + line.getText()
-                        + "', Bounding polygon " + line.getBoundingPolygon());
+                    LOGGER.log(LogLevel.VERBOSE,
+                        () -> "   Line: '" + line.getText() + "', Bounding polygon " + line.getBoundingPolygon());
                     for (DetectedTextWord word : line.getWords()) {
-                        System.out.println("     Word: '" + word.getText()
-                            + "', Bounding polygon " + word.getBoundingPolygon()
-                            + ", Confidence " + String.format("%.4f", word.getConfidence()));
+                        LOGGER.log(LogLevel.VERBOSE,
+                            () -> "     Word: '" + word.getText() + "', Bounding polygon " + word.getBoundingPolygon()
+                                + ", Confidence " + String.format("%.4f", word.getConfidence()));
                     }
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(LogLevel.VERBOSE, () -> "Error printing analysis results", e);
         }
     }
 }

@@ -19,11 +19,13 @@ import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDomai
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DomainsDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DomainsDomainsClient.
+ */
 public interface DomainsDomainsClient {
     /**
      * Get entities from domains.
-     *
+     * 
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
      * @param search Search items by search phrases.
@@ -34,26 +36,19 @@ public interface DomainsDomainsClient {
      * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDomainInner> listDomainAsync(
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<Get5ItemsItem> orderby,
-        List<Get6ItemsItem> select,
-        List<Get7ItemsItem> expand);
+    PagedFlux<MicrosoftGraphDomainInner> listDomainAsync(Integer top, Integer skip, String search, String filter,
+        Boolean count, List<Get5ItemsItem> orderby, List<Get6ItemsItem> select, List<Get7ItemsItem> expand);
 
     /**
      * Get entities from domains.
-     *
+     * 
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from domains as paginated response with {@link PagedFlux}.
      */
@@ -62,9 +57,9 @@ public interface DomainsDomainsClient {
 
     /**
      * Get entities from domains.
-     *
+     * 
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from domains as paginated response with {@link PagedIterable}.
      */
@@ -73,7 +68,7 @@ public interface DomainsDomainsClient {
 
     /**
      * Get entities from domains.
-     *
+     * 
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
      * @param search Search items by search phrases.
@@ -85,29 +80,22 @@ public interface DomainsDomainsClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDomainInner> listDomain(
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<Get5ItemsItem> orderby,
-        List<Get6ItemsItem> select,
-        List<Get7ItemsItem> expand,
+    PagedIterable<MicrosoftGraphDomainInner> listDomain(Integer top, Integer skip, String search, String filter,
+        Boolean count, List<Get5ItemsItem> orderby, List<Get6ItemsItem> select, List<Get7ItemsItem> expand,
         Context context);
 
     /**
      * Add new entity to domains.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -116,11 +104,11 @@ public interface DomainsDomainsClient {
 
     /**
      * Add new entity to domains.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain on successful completion of {@link Mono}.
      */
@@ -129,12 +117,12 @@ public interface DomainsDomainsClient {
 
     /**
      * Add new entity to domains.
-     *
+     * 
      * @param body New entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain along with {@link Response}.
      */
@@ -143,11 +131,11 @@ public interface DomainsDomainsClient {
 
     /**
      * Add new entity to domains.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain.
      */
@@ -156,27 +144,27 @@ public interface DomainsDomainsClient {
 
     /**
      * Get entity from domains by key.
-     *
+     * 
      * @param domainId key: id of domain.
      * @param select Select properties to be returned.
      * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity from domains by key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphDomainInner>> getDomainWithResponseAsync(
-        String domainId, List<Get1ItemsItem> select, List<Get2ItemsItem> expand);
+    Mono<Response<MicrosoftGraphDomainInner>> getDomainWithResponseAsync(String domainId, List<Get1ItemsItem> select,
+        List<Get2ItemsItem> expand);
 
     /**
      * Get entity from domains by key.
-     *
+     * 
      * @param domainId key: id of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity from domains by key on successful completion of {@link Mono}.
      */
@@ -185,28 +173,28 @@ public interface DomainsDomainsClient {
 
     /**
      * Get entity from domains by key.
-     *
+     * 
      * @param domainId key: id of domain.
      * @param select Select properties to be returned.
      * @param expand Expand related entities.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity from domains by key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphDomainInner> getDomainWithResponse(
-        String domainId, List<Get1ItemsItem> select, List<Get2ItemsItem> expand, Context context);
+    Response<MicrosoftGraphDomainInner> getDomainWithResponse(String domainId, List<Get1ItemsItem> select,
+        List<Get2ItemsItem> expand, Context context);
 
     /**
      * Get entity from domains by key.
-     *
+     * 
      * @param domainId key: id of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity from domains by key.
      */
@@ -215,12 +203,12 @@ public interface DomainsDomainsClient {
 
     /**
      * Update entity in domains.
-     *
+     * 
      * @param domainId key: id of domain.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -229,12 +217,12 @@ public interface DomainsDomainsClient {
 
     /**
      * Update entity in domains.
-     *
+     * 
      * @param domainId key: id of domain.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -243,13 +231,13 @@ public interface DomainsDomainsClient {
 
     /**
      * Update entity in domains.
-     *
+     * 
      * @param domainId key: id of domain.
      * @param body New property values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -258,12 +246,12 @@ public interface DomainsDomainsClient {
 
     /**
      * Update entity in domains.
-     *
+     * 
      * @param domainId key: id of domain.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -271,12 +259,12 @@ public interface DomainsDomainsClient {
 
     /**
      * Delete entity from domains.
-     *
+     * 
      * @param domainId key: id of domain.
      * @param ifMatch ETag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -285,11 +273,11 @@ public interface DomainsDomainsClient {
 
     /**
      * Delete entity from domains.
-     *
+     * 
      * @param domainId key: id of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -298,13 +286,13 @@ public interface DomainsDomainsClient {
 
     /**
      * Delete entity from domains.
-     *
+     * 
      * @param domainId key: id of domain.
      * @param ifMatch ETag.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -313,11 +301,11 @@ public interface DomainsDomainsClient {
 
     /**
      * Delete entity from domains.
-     *
+     * 
      * @param domainId key: id of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -46,7 +46,7 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
 
     /**
      * Initializes an instance of TrustedAccessRolesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TrustedAccessRolesClientImpl(ContainerServiceManagementClientImpl client) {
@@ -81,7 +81,7 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
 
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -101,7 +101,7 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -113,7 +113,7 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
 
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +134,7 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -145,7 +145,7 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
 
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -159,7 +159,7 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
 
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -175,7 +175,7 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
 
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -189,7 +189,7 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
 
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,10 +204,8 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -231,10 +229,8 @@ public final class TrustedAccessRolesClientImpl implements TrustedAccessRolesCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

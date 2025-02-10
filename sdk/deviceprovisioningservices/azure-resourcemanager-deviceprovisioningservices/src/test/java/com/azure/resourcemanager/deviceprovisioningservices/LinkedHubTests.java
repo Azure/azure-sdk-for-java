@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotHubDefinitionDescription;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LinkedHubTests extends DeviceProvisioningTestBase {
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void linkedHubsCRUD() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
@@ -32,47 +32,43 @@ public class LinkedHubTests extends DeviceProvisioningTestBase {
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {
-            ProvisioningServiceDescriptionInner provisioningServiceDescription =
-                createProvisioningService(iotDpsManager, resourceGroup);
+            ProvisioningServiceDescriptionInner provisioningServiceDescription
+                = createProvisioningService(iotDpsManager, resourceGroup);
 
             // Create an Iot Hub in the same resource group as the DPS instance
             String hubName = "JavaDpsControlPlaneSDKTestHub" + createRandomSuffix();
-            IotHubDescriptionInner iotHubDescriptionInner =
-                new IotHubDescriptionInner()
-                    .withLocation(DEFAULT_LOCATION)
-                    .withSku(new IotHubSkuInfo().withCapacity(1L).withName(IotHubSku.B1));
+            IotHubDescriptionInner iotHubDescriptionInner = new IotHubDescriptionInner().withLocation(DEFAULT_LOCATION)
+                .withSku(new IotHubSkuInfo().withCapacity(1L).withName(IotHubSku.B1));
 
-            iotHubDescriptionInner = iotHubManager
-                .serviceClient()
+            iotHubDescriptionInner = iotHubManager.serviceClient()
                 .getIotHubResources()
                 .createOrUpdate(resourceGroup.name(), hubName, iotHubDescriptionInner);
 
             // Link that Iot Hub to the DPS instance
             List<IotHubDefinitionDescription> linkedHubs = new ArrayList<>();
-            String hubKey = iotHubManager.iotHubResources().getKeysForKeyName(resourceGroup.name(), iotHubDescriptionInner.name(), IOTHUB_OWNER_ACCESS_KEY_NAME).primaryKey();
-            String hubConnectionString = "HostName=" + hubName + ".azure-devices.net;SharedAccessKeyName=" + IOTHUB_OWNER_ACCESS_KEY_NAME + ";SharedAccessKey=" + hubKey;
+            String hubKey = iotHubManager.iotHubResources()
+                .getKeysForKeyName(resourceGroup.name(), iotHubDescriptionInner.name(), IOTHUB_OWNER_ACCESS_KEY_NAME)
+                .primaryKey();
+            String hubConnectionString = "HostName=" + hubName + ".azure-devices.net;SharedAccessKeyName="
+                + IOTHUB_OWNER_ACCESS_KEY_NAME + ";SharedAccessKey=" + hubKey;
 
-            linkedHubs.add(
-                new IotHubDefinitionDescription()
-                    .withConnectionString(hubConnectionString)
-                    .withLocation(iotHubDescriptionInner.location())
-                    .withAllocationWeight(1)
-                    .withApplyAllocationPolicy(true));
+            linkedHubs.add(new IotHubDefinitionDescription().withConnectionString(hubConnectionString)
+                .withLocation(iotHubDescriptionInner.location())
+                .withAllocationWeight(1)
+                .withApplyAllocationPolicy(true));
 
             IotDpsPropertiesDescription propertiesDescription = new IotDpsPropertiesDescription();
             propertiesDescription.withIotHubs(linkedHubs);
 
-            provisioningServiceDescription = iotDpsManager
-                .serviceClient()
+            provisioningServiceDescription = iotDpsManager.serviceClient()
                 .getIotDpsResources()
-                .createOrUpdate(
-                    resourceGroup.name(),
-                    provisioningServiceDescription.name(),
+                .createOrUpdate(resourceGroup.name(), provisioningServiceDescription.name(),
                     provisioningServiceDescription.withProperties(propertiesDescription));
 
             // verify that the service returned view of the DPS instance has the right linked hubs
             assertEquals(1, provisioningServiceDescription.properties().iotHubs().size());
-            assertEquals(hubName + ".azure-devices.net", provisioningServiceDescription.properties().iotHubs().iterator().next().name());
+            assertEquals(hubName + ".azure-devices.net",
+                provisioningServiceDescription.properties().iotHubs().iterator().next().name());
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
             deleteResourceGroup(resourceManager, resourceGroup);

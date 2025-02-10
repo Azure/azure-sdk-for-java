@@ -6,92 +6,95 @@ package com.azure.resourcemanager.imagebuilder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplateAutoRun;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateCustomizer;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateDistributor;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateLastRunStatus;
+import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesErrorHandling;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesOptimize;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplatePropertiesValidate;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateSource;
 import com.azure.resourcemanager.imagebuilder.models.ImageTemplateVmProfile;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningError;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-/** Describes the properties of an image template. */
+/**
+ * Describes the properties of an image template.
+ */
 @Fluent
-public final class ImageTemplateProperties {
+public final class ImageTemplateProperties implements JsonSerializable<ImageTemplateProperties> {
     /*
      * Specifies the properties used to describe the source image.
      */
-    @JsonProperty(value = "source", required = true)
     private ImageTemplateSource source;
 
     /*
      * Specifies the properties used to describe the customization steps of the image, like Image source etc
      */
-    @JsonProperty(value = "customize")
     private List<ImageTemplateCustomizer> customize;
 
     /*
      * Specifies optimization to be performed on image.
      */
-    @JsonProperty(value = "optimize")
     private ImageTemplatePropertiesOptimize optimize;
 
     /*
      * Configuration options and list of validations to be performed on the resulting image.
      */
-    @JsonProperty(value = "validate")
     private ImageTemplatePropertiesValidate validation;
 
     /*
      * The distribution targets where the image output needs to go to.
      */
-    @JsonProperty(value = "distribute", required = true)
     private List<ImageTemplateDistributor> distribute;
+
+    /*
+     * Error handling options upon a build failure
+     */
+    private ImageTemplatePropertiesErrorHandling errorHandling;
 
     /*
      * Provisioning state of the resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Provisioning error, if any
      */
-    @JsonProperty(value = "provisioningError", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningError provisioningError;
 
     /*
      * State of 'run' that is currently executing or was last executed.
      */
-    @JsonProperty(value = "lastRunStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ImageTemplateLastRunStatus lastRunStatus;
 
     /*
      * Maximum duration to wait while building the image template (includes all customizations, optimization,
      * validations, and distributions). Omit or specify 0 to use the default (4 hours).
      */
-    @JsonProperty(value = "buildTimeoutInMinutes")
     private Integer buildTimeoutInMinutes;
 
     /*
      * Describes how virtual machine is set up to build images
      */
-    @JsonProperty(value = "vmProfile")
     private ImageTemplateVmProfile vmProfile;
 
     /*
      * The staging resource group id in the same subscription as the image template that will be used to build the
      * image. If this field is empty, a resource group with a random name will be created. If the resource group
      * specified in this field doesn't exist, it will be created with the same name. If the resource group specified
-     * exists, it must be empty and in the same region as the image template. The resource group created will be
-     * deleted during template deletion if this field is empty or the resource group specified doesn't exist, but if
-     * the resource group specified exists the resources created in the resource group will be deleted during template
+     * exists, it must be empty and in the same region as the image template. The resource group created will be deleted
+     * during template deletion if this field is empty or the resource group specified doesn't exist, but if the
+     * resource group specified exists the resources created in the resource group will be deleted during template
      * deletion and the resource group itself will remain.
      */
-    @JsonProperty(value = "stagingResourceGroup")
     private String stagingResourceGroup;
 
     /*
@@ -99,16 +102,27 @@ public final class ImageTemplateProperties {
      * image. This read-only field differs from 'stagingResourceGroup' only if the value specified in the
      * 'stagingResourceGroup' field is empty.
      */
-    @JsonProperty(value = "exactStagingResourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String exactStagingResourceGroup;
 
-    /** Creates an instance of ImageTemplateProperties class. */
+    /*
+     * Indicates whether or not to automatically run the image template build on template creation or update.
+     */
+    private ImageTemplateAutoRun autoRun;
+
+    /*
+     * Tags that will be applied to the resource group and/or resources created by the service.
+     */
+    private Map<String, String> managedResourceTags;
+
+    /**
+     * Creates an instance of ImageTemplateProperties class.
+     */
     public ImageTemplateProperties() {
     }
 
     /**
      * Get the source property: Specifies the properties used to describe the source image.
-     *
+     * 
      * @return the source value.
      */
     public ImageTemplateSource source() {
@@ -117,7 +131,7 @@ public final class ImageTemplateProperties {
 
     /**
      * Set the source property: Specifies the properties used to describe the source image.
-     *
+     * 
      * @param source the source value to set.
      * @return the ImageTemplateProperties object itself.
      */
@@ -129,7 +143,7 @@ public final class ImageTemplateProperties {
     /**
      * Get the customize property: Specifies the properties used to describe the customization steps of the image, like
      * Image source etc.
-     *
+     * 
      * @return the customize value.
      */
     public List<ImageTemplateCustomizer> customize() {
@@ -139,7 +153,7 @@ public final class ImageTemplateProperties {
     /**
      * Set the customize property: Specifies the properties used to describe the customization steps of the image, like
      * Image source etc.
-     *
+     * 
      * @param customize the customize value to set.
      * @return the ImageTemplateProperties object itself.
      */
@@ -150,7 +164,7 @@ public final class ImageTemplateProperties {
 
     /**
      * Get the optimize property: Specifies optimization to be performed on image.
-     *
+     * 
      * @return the optimize value.
      */
     public ImageTemplatePropertiesOptimize optimize() {
@@ -159,7 +173,7 @@ public final class ImageTemplateProperties {
 
     /**
      * Set the optimize property: Specifies optimization to be performed on image.
-     *
+     * 
      * @param optimize the optimize value to set.
      * @return the ImageTemplateProperties object itself.
      */
@@ -171,7 +185,7 @@ public final class ImageTemplateProperties {
     /**
      * Get the validation property: Configuration options and list of validations to be performed on the resulting
      * image.
-     *
+     * 
      * @return the validation value.
      */
     public ImageTemplatePropertiesValidate validation() {
@@ -181,7 +195,7 @@ public final class ImageTemplateProperties {
     /**
      * Set the validation property: Configuration options and list of validations to be performed on the resulting
      * image.
-     *
+     * 
      * @param validation the validation value to set.
      * @return the ImageTemplateProperties object itself.
      */
@@ -192,7 +206,7 @@ public final class ImageTemplateProperties {
 
     /**
      * Get the distribute property: The distribution targets where the image output needs to go to.
-     *
+     * 
      * @return the distribute value.
      */
     public List<ImageTemplateDistributor> distribute() {
@@ -201,7 +215,7 @@ public final class ImageTemplateProperties {
 
     /**
      * Set the distribute property: The distribution targets where the image output needs to go to.
-     *
+     * 
      * @param distribute the distribute value to set.
      * @return the ImageTemplateProperties object itself.
      */
@@ -211,8 +225,28 @@ public final class ImageTemplateProperties {
     }
 
     /**
+     * Get the errorHandling property: Error handling options upon a build failure.
+     * 
+     * @return the errorHandling value.
+     */
+    public ImageTemplatePropertiesErrorHandling errorHandling() {
+        return this.errorHandling;
+    }
+
+    /**
+     * Set the errorHandling property: Error handling options upon a build failure.
+     * 
+     * @param errorHandling the errorHandling value to set.
+     * @return the ImageTemplateProperties object itself.
+     */
+    public ImageTemplateProperties withErrorHandling(ImageTemplatePropertiesErrorHandling errorHandling) {
+        this.errorHandling = errorHandling;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -221,7 +255,7 @@ public final class ImageTemplateProperties {
 
     /**
      * Get the provisioningError property: Provisioning error, if any.
-     *
+     * 
      * @return the provisioningError value.
      */
     public ProvisioningError provisioningError() {
@@ -230,7 +264,7 @@ public final class ImageTemplateProperties {
 
     /**
      * Get the lastRunStatus property: State of 'run' that is currently executing or was last executed.
-     *
+     * 
      * @return the lastRunStatus value.
      */
     public ImageTemplateLastRunStatus lastRunStatus() {
@@ -240,7 +274,7 @@ public final class ImageTemplateProperties {
     /**
      * Get the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
      * customizations, optimization, validations, and distributions). Omit or specify 0 to use the default (4 hours).
-     *
+     * 
      * @return the buildTimeoutInMinutes value.
      */
     public Integer buildTimeoutInMinutes() {
@@ -250,7 +284,7 @@ public final class ImageTemplateProperties {
     /**
      * Set the buildTimeoutInMinutes property: Maximum duration to wait while building the image template (includes all
      * customizations, optimization, validations, and distributions). Omit or specify 0 to use the default (4 hours).
-     *
+     * 
      * @param buildTimeoutInMinutes the buildTimeoutInMinutes value to set.
      * @return the ImageTemplateProperties object itself.
      */
@@ -261,7 +295,7 @@ public final class ImageTemplateProperties {
 
     /**
      * Get the vmProfile property: Describes how virtual machine is set up to build images.
-     *
+     * 
      * @return the vmProfile value.
      */
     public ImageTemplateVmProfile vmProfile() {
@@ -270,7 +304,7 @@ public final class ImageTemplateProperties {
 
     /**
      * Set the vmProfile property: Describes how virtual machine is set up to build images.
-     *
+     * 
      * @param vmProfile the vmProfile value to set.
      * @return the ImageTemplateProperties object itself.
      */
@@ -287,7 +321,7 @@ public final class ImageTemplateProperties {
      * resource group created will be deleted during template deletion if this field is empty or the resource group
      * specified doesn't exist, but if the resource group specified exists the resources created in the resource group
      * will be deleted during template deletion and the resource group itself will remain.
-     *
+     * 
      * @return the stagingResourceGroup value.
      */
     public String stagingResourceGroup() {
@@ -302,7 +336,7 @@ public final class ImageTemplateProperties {
      * resource group created will be deleted during template deletion if this field is empty or the resource group
      * specified doesn't exist, but if the resource group specified exists the resources created in the resource group
      * will be deleted during template deletion and the resource group itself will remain.
-     *
+     * 
      * @param stagingResourceGroup the stagingResourceGroup value to set.
      * @return the ImageTemplateProperties object itself.
      */
@@ -315,7 +349,7 @@ public final class ImageTemplateProperties {
      * Get the exactStagingResourceGroup property: The staging resource group id in the same subscription as the image
      * template that will be used to build the image. This read-only field differs from 'stagingResourceGroup' only if
      * the value specified in the 'stagingResourceGroup' field is empty.
-     *
+     * 
      * @return the exactStagingResourceGroup value.
      */
     public String exactStagingResourceGroup() {
@@ -323,15 +357,58 @@ public final class ImageTemplateProperties {
     }
 
     /**
+     * Get the autoRun property: Indicates whether or not to automatically run the image template build on template
+     * creation or update.
+     * 
+     * @return the autoRun value.
+     */
+    public ImageTemplateAutoRun autoRun() {
+        return this.autoRun;
+    }
+
+    /**
+     * Set the autoRun property: Indicates whether or not to automatically run the image template build on template
+     * creation or update.
+     * 
+     * @param autoRun the autoRun value to set.
+     * @return the ImageTemplateProperties object itself.
+     */
+    public ImageTemplateProperties withAutoRun(ImageTemplateAutoRun autoRun) {
+        this.autoRun = autoRun;
+        return this;
+    }
+
+    /**
+     * Get the managedResourceTags property: Tags that will be applied to the resource group and/or resources created by
+     * the service.
+     * 
+     * @return the managedResourceTags value.
+     */
+    public Map<String, String> managedResourceTags() {
+        return this.managedResourceTags;
+    }
+
+    /**
+     * Set the managedResourceTags property: Tags that will be applied to the resource group and/or resources created by
+     * the service.
+     * 
+     * @param managedResourceTags the managedResourceTags value to set.
+     * @return the ImageTemplateProperties object itself.
+     */
+    public ImageTemplateProperties withManagedResourceTags(Map<String, String> managedResourceTags) {
+        this.managedResourceTags = managedResourceTags;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model ImageTemplateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property source in model ImageTemplateProperties"));
         } else {
             source().validate();
         }
@@ -345,12 +422,14 @@ public final class ImageTemplateProperties {
             validation().validate();
         }
         if (distribute() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property distribute in model ImageTemplateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property distribute in model ImageTemplateProperties"));
         } else {
             distribute().forEach(e -> e.validate());
+        }
+        if (errorHandling() != null) {
+            errorHandling().validate();
         }
         if (provisioningError() != null) {
             provisioningError().validate();
@@ -361,7 +440,93 @@ public final class ImageTemplateProperties {
         if (vmProfile() != null) {
             vmProfile().validate();
         }
+        if (autoRun() != null) {
+            autoRun().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeArrayField("distribute", this.distribute, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customize", this.customize, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("optimize", this.optimize);
+        jsonWriter.writeJsonField("validate", this.validation);
+        jsonWriter.writeJsonField("errorHandling", this.errorHandling);
+        jsonWriter.writeNumberField("buildTimeoutInMinutes", this.buildTimeoutInMinutes);
+        jsonWriter.writeJsonField("vmProfile", this.vmProfile);
+        jsonWriter.writeStringField("stagingResourceGroup", this.stagingResourceGroup);
+        jsonWriter.writeJsonField("autoRun", this.autoRun);
+        jsonWriter.writeMapField("managedResourceTags", this.managedResourceTags,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageTemplateProperties.
+     */
+    public static ImageTemplateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateProperties deserializedImageTemplateProperties = new ImageTemplateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedImageTemplateProperties.source = ImageTemplateSource.fromJson(reader);
+                } else if ("distribute".equals(fieldName)) {
+                    List<ImageTemplateDistributor> distribute
+                        = reader.readArray(reader1 -> ImageTemplateDistributor.fromJson(reader1));
+                    deserializedImageTemplateProperties.distribute = distribute;
+                } else if ("customize".equals(fieldName)) {
+                    List<ImageTemplateCustomizer> customize
+                        = reader.readArray(reader1 -> ImageTemplateCustomizer.fromJson(reader1));
+                    deserializedImageTemplateProperties.customize = customize;
+                } else if ("optimize".equals(fieldName)) {
+                    deserializedImageTemplateProperties.optimize = ImageTemplatePropertiesOptimize.fromJson(reader);
+                } else if ("validate".equals(fieldName)) {
+                    deserializedImageTemplateProperties.validation = ImageTemplatePropertiesValidate.fromJson(reader);
+                } else if ("errorHandling".equals(fieldName)) {
+                    deserializedImageTemplateProperties.errorHandling
+                        = ImageTemplatePropertiesErrorHandling.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedImageTemplateProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("provisioningError".equals(fieldName)) {
+                    deserializedImageTemplateProperties.provisioningError = ProvisioningError.fromJson(reader);
+                } else if ("lastRunStatus".equals(fieldName)) {
+                    deserializedImageTemplateProperties.lastRunStatus = ImageTemplateLastRunStatus.fromJson(reader);
+                } else if ("buildTimeoutInMinutes".equals(fieldName)) {
+                    deserializedImageTemplateProperties.buildTimeoutInMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("vmProfile".equals(fieldName)) {
+                    deserializedImageTemplateProperties.vmProfile = ImageTemplateVmProfile.fromJson(reader);
+                } else if ("stagingResourceGroup".equals(fieldName)) {
+                    deserializedImageTemplateProperties.stagingResourceGroup = reader.getString();
+                } else if ("exactStagingResourceGroup".equals(fieldName)) {
+                    deserializedImageTemplateProperties.exactStagingResourceGroup = reader.getString();
+                } else if ("autoRun".equals(fieldName)) {
+                    deserializedImageTemplateProperties.autoRun = ImageTemplateAutoRun.fromJson(reader);
+                } else if ("managedResourceTags".equals(fieldName)) {
+                    Map<String, String> managedResourceTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedImageTemplateProperties.managedResourceTags = managedResourceTags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateProperties;
+        });
+    }
 }

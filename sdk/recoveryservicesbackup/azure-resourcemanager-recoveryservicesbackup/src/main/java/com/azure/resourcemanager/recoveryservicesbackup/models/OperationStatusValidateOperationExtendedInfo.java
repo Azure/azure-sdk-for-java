@@ -5,28 +5,47 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Operation status extended info for ValidateOperation action. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("OperationStatusValidateOperationExtendedInfo")
+/**
+ * Operation status extended info for ValidateOperation action.
+ */
 @Fluent
 public final class OperationStatusValidateOperationExtendedInfo extends OperationStatusExtendedInfo {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "OperationStatusValidateOperationExtendedInfo";
+
+    /*
      * Gets the validation operation response
      */
-    @JsonProperty(value = "validateOperationResponse")
     private ValidateOperationResponse validateOperationResponse;
 
-    /** Creates an instance of OperationStatusValidateOperationExtendedInfo class. */
+    /**
+     * Creates an instance of OperationStatusValidateOperationExtendedInfo class.
+     */
     public OperationStatusValidateOperationExtendedInfo() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the validateOperationResponse property: Gets the validation operation response.
-     *
+     * 
      * @return the validateOperationResponse value.
      */
     public ValidateOperationResponse validateOperationResponse() {
@@ -35,26 +54,66 @@ public final class OperationStatusValidateOperationExtendedInfo extends Operatio
 
     /**
      * Set the validateOperationResponse property: Gets the validation operation response.
-     *
+     * 
      * @param validateOperationResponse the validateOperationResponse value to set.
      * @return the OperationStatusValidateOperationExtendedInfo object itself.
      */
-    public OperationStatusValidateOperationExtendedInfo withValidateOperationResponse(
-        ValidateOperationResponse validateOperationResponse) {
+    public OperationStatusValidateOperationExtendedInfo
+        withValidateOperationResponse(ValidateOperationResponse validateOperationResponse) {
         this.validateOperationResponse = validateOperationResponse;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (validateOperationResponse() != null) {
             validateOperationResponse().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeJsonField("validateOperationResponse", this.validateOperationResponse);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatusValidateOperationExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatusValidateOperationExtendedInfo if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationStatusValidateOperationExtendedInfo.
+     */
+    public static OperationStatusValidateOperationExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatusValidateOperationExtendedInfo deserializedOperationStatusValidateOperationExtendedInfo
+                = new OperationStatusValidateOperationExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedOperationStatusValidateOperationExtendedInfo.objectType = reader.getString();
+                } else if ("validateOperationResponse".equals(fieldName)) {
+                    deserializedOperationStatusValidateOperationExtendedInfo.validateOperationResponse
+                        = ValidateOperationResponse.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatusValidateOperationExtendedInfo;
+        });
     }
 }

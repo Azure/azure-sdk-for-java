@@ -6,31 +6,33 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters to get network configuration diagnostic.
  */
 @Fluent
-public final class NetworkConfigurationDiagnosticParameters {
+public final class NetworkConfigurationDiagnosticParameters
+    implements JsonSerializable<NetworkConfigurationDiagnosticParameters> {
     /*
      * The ID of the target resource to perform network configuration diagnostic. Valid options are VM,
      * NetworkInterface, VMSS/NetworkInterface and Application Gateway.
      */
-    @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
     /*
      * Verbosity level.
      */
-    @JsonProperty(value = "verbosityLevel")
     private VerbosityLevel verbosityLevel;
 
     /*
      * List of network configuration diagnostic profiles.
      */
-    @JsonProperty(value = "profiles", required = true)
     private List<NetworkConfigurationDiagnosticProfile> profiles;
 
     /**
@@ -108,16 +110,66 @@ public final class NetworkConfigurationDiagnosticParameters {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetResourceId in model NetworkConfigurationDiagnosticParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceId in model NetworkConfigurationDiagnosticParameters"));
         }
         if (profiles() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property profiles in model NetworkConfigurationDiagnosticParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property profiles in model NetworkConfigurationDiagnosticParameters"));
         } else {
             profiles().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkConfigurationDiagnosticParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        jsonWriter.writeArrayField("profiles", this.profiles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("verbosityLevel",
+            this.verbosityLevel == null ? null : this.verbosityLevel.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkConfigurationDiagnosticParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkConfigurationDiagnosticParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkConfigurationDiagnosticParameters.
+     */
+    public static NetworkConfigurationDiagnosticParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkConfigurationDiagnosticParameters deserializedNetworkConfigurationDiagnosticParameters
+                = new NetworkConfigurationDiagnosticParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceId".equals(fieldName)) {
+                    deserializedNetworkConfigurationDiagnosticParameters.targetResourceId = reader.getString();
+                } else if ("profiles".equals(fieldName)) {
+                    List<NetworkConfigurationDiagnosticProfile> profiles
+                        = reader.readArray(reader1 -> NetworkConfigurationDiagnosticProfile.fromJson(reader1));
+                    deserializedNetworkConfigurationDiagnosticParameters.profiles = profiles;
+                } else if ("verbosityLevel".equals(fieldName)) {
+                    deserializedNetworkConfigurationDiagnosticParameters.verbosityLevel
+                        = VerbosityLevel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkConfigurationDiagnosticParameters;
+        });
+    }
 }

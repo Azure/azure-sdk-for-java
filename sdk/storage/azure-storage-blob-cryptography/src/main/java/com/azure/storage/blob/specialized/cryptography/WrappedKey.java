@@ -3,29 +3,31 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * Represents the envelope key details stored on the service.
  */
-final class WrappedKey {
+final class WrappedKey implements JsonSerializable<WrappedKey> {
 
     /**
      * The key identifier string.
      */
-    @JsonProperty(value = "KeyId", required = true)
     private String keyId;
 
     /**
      * The encrypted content encryption key.
      */
-    @JsonProperty(value = "EncryptedKey", required = true)
     private byte[] encryptedKey;
 
     /**
      * The algorithm used for wrapping.
      */
-    @JsonProperty(value = "Algorithm", required = true)
     private String algorithm;
 
     /**
@@ -111,5 +113,43 @@ final class WrappedKey {
     WrappedKey setAlgorithm(String algorithm) {
         this.algorithm = algorithm;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("KeyId", keyId)
+            .writeBinaryField("EncryptedKey", encryptedKey)
+            .writeStringField("Algorithm", algorithm)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WrappedKey from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return The WrappedKey read from the JsonReader.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static WrappedKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WrappedKey wrappedKey = new WrappedKey();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("KeyId".equals(fieldName)) {
+                    wrappedKey.keyId = reader.getString();
+                } else if ("EncryptedKey".equals(fieldName)) {
+                    wrappedKey.encryptedKey = reader.getBinary();
+                } else if ("Algorithm".equals(fieldName)) {
+                    wrappedKey.algorithm = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return wrappedKey;
+        });
     }
 }

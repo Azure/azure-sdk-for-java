@@ -6,34 +6,52 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.ReportedSeverity;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** IoT Security solution recommendation information. */
+/**
+ * IoT Security solution recommendation information.
+ */
 @Fluent
 public final class IoTSecurityAggregatedRecommendationInner extends ProxyResource {
     /*
      * Security Solution data
      */
-    @JsonProperty(value = "properties")
     private IoTSecurityAggregatedRecommendationProperties innerProperties;
 
     /*
      * Resource tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of IoTSecurityAggregatedRecommendationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IoTSecurityAggregatedRecommendationInner class.
+     */
     public IoTSecurityAggregatedRecommendationInner() {
     }
 
     /**
      * Get the innerProperties property: Security Solution data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IoTSecurityAggregatedRecommendationProperties innerProperties() {
@@ -42,7 +60,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -51,7 +69,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the IoTSecurityAggregatedRecommendationInner object itself.
      */
@@ -61,8 +79,38 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the recommendationName property: Name of the recommendation.
-     *
+     * 
      * @return the recommendationName value.
      */
     public String recommendationName() {
@@ -71,7 +119,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Set the recommendationName property: Name of the recommendation.
-     *
+     * 
      * @param recommendationName the recommendationName value to set.
      * @return the IoTSecurityAggregatedRecommendationInner object itself.
      */
@@ -85,7 +133,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the recommendationDisplayName property: Display name of the recommendation type.
-     *
+     * 
      * @return the recommendationDisplayName value.
      */
     public String recommendationDisplayName() {
@@ -94,7 +142,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the description property: Description of the suspected vulnerability and meaning.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -103,7 +151,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the recommendationTypeId property: Recommendation-type GUID.
-     *
+     * 
      * @return the recommendationTypeId value.
      */
     public String recommendationTypeId() {
@@ -112,7 +160,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the detectedBy property: Name of the organization that made the recommendation.
-     *
+     * 
      * @return the detectedBy value.
      */
     public String detectedBy() {
@@ -121,7 +169,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the remediationSteps property: Recommended steps for remediation.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public String remediationSteps() {
@@ -130,7 +178,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the reportedSeverity property: Assessed recommendation severity.
-     *
+     * 
      * @return the reportedSeverity value.
      */
     public ReportedSeverity reportedSeverity() {
@@ -139,7 +187,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the healthyDevices property: Number of healthy devices within the IoT Security solution.
-     *
+     * 
      * @return the healthyDevices value.
      */
     public Long healthyDevices() {
@@ -148,7 +196,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the unhealthyDeviceCount property: Number of unhealthy devices within the IoT Security solution.
-     *
+     * 
      * @return the unhealthyDeviceCount value.
      */
     public Long unhealthyDeviceCount() {
@@ -157,7 +205,7 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Get the logAnalyticsQuery property: Log analytics query for getting the list of affected devices/alerts.
-     *
+     * 
      * @return the logAnalyticsQuery value.
      */
     public String logAnalyticsQuery() {
@@ -166,12 +214,61 @@ public final class IoTSecurityAggregatedRecommendationInner extends ProxyResourc
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTSecurityAggregatedRecommendationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTSecurityAggregatedRecommendationInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IoTSecurityAggregatedRecommendationInner.
+     */
+    public static IoTSecurityAggregatedRecommendationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTSecurityAggregatedRecommendationInner deserializedIoTSecurityAggregatedRecommendationInner
+                = new IoTSecurityAggregatedRecommendationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedRecommendationInner.innerProperties
+                        = IoTSecurityAggregatedRecommendationProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIoTSecurityAggregatedRecommendationInner.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTSecurityAggregatedRecommendationInner;
+        });
     }
 }

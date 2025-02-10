@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.LogicalNetworkInner;
 
-/** An instance of this class provides access to all the operations defined in ReplicationLogicalNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationLogicalNetworksClient.
+ */
 public interface ReplicationLogicalNetworksClient {
     /**
      * Gets the list of logical networks under a fabric.
-     *
-     * <p>Lists all the logical networks of the Azure Site Recovery fabric.
-     *
+     * 
+     * Lists all the logical networks of the Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Server Id.
@@ -27,14 +29,14 @@ public interface ReplicationLogicalNetworksClient {
      * @return list of logical networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LogicalNetworkInner> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName);
+    PagedIterable<LogicalNetworkInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName);
 
     /**
      * Gets the list of logical networks under a fabric.
-     *
-     * <p>Lists all the logical networks of the Azure Site Recovery fabric.
-     *
+     * 
+     * Lists all the logical networks of the Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Server Id.
@@ -45,14 +47,14 @@ public interface ReplicationLogicalNetworksClient {
      * @return list of logical networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LogicalNetworkInner> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName, Context context);
+    PagedIterable<LogicalNetworkInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName, Context context);
 
     /**
      * Gets a logical network with specified server id and logical network name.
-     *
-     * <p>Gets the details of a logical network.
-     *
+     * 
+     * Gets the details of a logical network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Server Id.
@@ -64,14 +66,14 @@ public interface ReplicationLogicalNetworksClient {
      * @return the details of a logical network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogicalNetworkInner> getWithResponse(
-        String resourceName, String resourceGroupName, String fabricName, String logicalNetworkName, Context context);
+    Response<LogicalNetworkInner> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+        String logicalNetworkName, Context context);
 
     /**
      * Gets a logical network with specified server id and logical network name.
-     *
-     * <p>Gets the details of a logical network.
-     *
+     * 
+     * Gets the details of a logical network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Server Id.
@@ -82,6 +84,6 @@ public interface ReplicationLogicalNetworksClient {
      * @return the details of a logical network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogicalNetworkInner get(
-        String resourceName, String resourceGroupName, String fabricName, String logicalNetworkName);
+    LogicalNetworkInner get(String resourceName, String resourceGroupName, String fabricName,
+        String logicalNetworkName);
 }

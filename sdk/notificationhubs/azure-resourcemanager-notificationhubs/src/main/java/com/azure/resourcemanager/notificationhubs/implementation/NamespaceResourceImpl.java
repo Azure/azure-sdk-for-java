@@ -107,6 +107,10 @@ public final class NamespaceResourceImpl
         return this.innerModel().namespaceType();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NamespaceResourceInner innerModel() {
         return this.innerObject;
     }
@@ -129,27 +133,23 @@ public final class NamespaceResourceImpl
     }
 
     public NamespaceResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .createOrUpdateWithResponse(resourceGroupName, namespaceName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .createOrUpdateWithResponse(resourceGroupName, namespaceName, createParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NamespaceResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .createOrUpdateWithResponse(resourceGroupName, namespaceName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .createOrUpdateWithResponse(resourceGroupName, namespaceName, createParameters, context)
+            .getValue();
         return this;
     }
 
-    NamespaceResourceImpl(
-        String name, com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
+    NamespaceResourceImpl(String name,
+        com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = new NamespaceResourceInner();
         this.serviceManager = serviceManager;
         this.namespaceName = name;
@@ -162,51 +162,42 @@ public final class NamespaceResourceImpl
     }
 
     public NamespaceResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .patchWithResponse(resourceGroupName, namespaceName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .patchWithResponse(resourceGroupName, namespaceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NamespaceResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .patchWithResponse(resourceGroupName, namespaceName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .patchWithResponse(resourceGroupName, namespaceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    NamespaceResourceImpl(
-        NamespaceResourceInner innerObject,
+    NamespaceResourceImpl(NamespaceResourceInner innerObject,
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.namespaceName = Utils.getValueFromIdByName(innerObject.id(), "namespaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.namespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "namespaces");
     }
 
     public NamespaceResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NamespaceResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .getByResourceGroupWithResponse(resourceGroupName, namespaceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, context)
+            .getValue();
         return this;
     }
 

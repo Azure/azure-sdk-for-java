@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ClusterJobInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of streaming jobs. Populated by a List operation. */
+/**
+ * A list of streaming jobs. Populated by a List operation.
+ */
 @Immutable
-public final class ClusterJobListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterJobListResult.class);
-
+public final class ClusterJobListResult implements JsonSerializable<ClusterJobListResult> {
     /*
      * A list of streaming jobs.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ClusterJobInner> value;
 
     /*
      * The URL to fetch the next set of streaming jobs.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of ClusterJobListResult class.
+     */
+    public ClusterJobListResult() {
+    }
+
+    /**
      * Get the value property: A list of streaming jobs.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterJobInner> value() {
@@ -39,7 +45,7 @@ public final class ClusterJobListResult {
 
     /**
      * Get the nextLink property: The URL to fetch the next set of streaming jobs.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,50 @@ public final class ClusterJobListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterJobListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterJobListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterJobListResult.
+     */
+    public static ClusterJobListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterJobListResult deserializedClusterJobListResult = new ClusterJobListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ClusterJobInner> value = reader.readArray(reader1 -> ClusterJobInner.fromJson(reader1));
+                    deserializedClusterJobListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedClusterJobListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterJobListResult;
+        });
     }
 }

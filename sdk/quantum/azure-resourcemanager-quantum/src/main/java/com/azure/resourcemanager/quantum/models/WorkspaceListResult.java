@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.quantum.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quantum.fluent.models.QuantumWorkspaceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of a list Workspaces operation. */
+/**
+ * The response of a list Workspaces operation.
+ */
 @Fluent
-public final class WorkspaceListResult {
+public final class WorkspaceListResult implements JsonSerializable<WorkspaceListResult> {
     /*
      * Result of a list Workspaces operation.
      */
-    @JsonProperty(value = "value")
     private List<QuantumWorkspaceInner> value;
 
     /*
      * Link to the next set of results. Not empty if Value contains incomplete list of Workspaces.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of WorkspaceListResult class. */
+    /**
+     * Creates an instance of WorkspaceListResult class.
+     */
     public WorkspaceListResult() {
     }
 
     /**
      * Get the value property: Result of a list Workspaces operation.
-     *
+     * 
      * @return the value value.
      */
     public List<QuantumWorkspaceInner> value() {
@@ -39,7 +45,7 @@ public final class WorkspaceListResult {
 
     /**
      * Set the value property: Result of a list Workspaces operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkspaceListResult object itself.
      */
@@ -51,7 +57,7 @@ public final class WorkspaceListResult {
     /**
      * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * Workspaces.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,7 +67,7 @@ public final class WorkspaceListResult {
     /**
      * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * Workspaces.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WorkspaceListResult object itself.
      */
@@ -72,12 +78,53 @@ public final class WorkspaceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceListResult.
+     */
+    public static WorkspaceListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceListResult deserializedWorkspaceListResult = new WorkspaceListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<QuantumWorkspaceInner> value
+                        = reader.readArray(reader1 -> QuantumWorkspaceInner.fromJson(reader1));
+                    deserializedWorkspaceListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWorkspaceListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceListResult;
+        });
     }
 }

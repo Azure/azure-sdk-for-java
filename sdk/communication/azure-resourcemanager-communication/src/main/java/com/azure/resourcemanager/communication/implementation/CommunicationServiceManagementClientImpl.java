@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.communication.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -28,8 +29,6 @@ import com.azure.resourcemanager.communication.fluent.DomainsClient;
 import com.azure.resourcemanager.communication.fluent.EmailServicesClient;
 import com.azure.resourcemanager.communication.fluent.OperationsClient;
 import com.azure.resourcemanager.communication.fluent.SenderUsernamesClient;
-import com.azure.resourcemanager.communication.fluent.SuppressionListAddressesClient;
-import com.azure.resourcemanager.communication.fluent.SuppressionListsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -199,34 +198,6 @@ public final class CommunicationServiceManagementClientImpl implements Communica
     }
 
     /**
-     * The SuppressionListsClient object to access its operations.
-     */
-    private final SuppressionListsClient suppressionLists;
-
-    /**
-     * Gets the SuppressionListsClient object to access its operations.
-     * 
-     * @return the SuppressionListsClient object.
-     */
-    public SuppressionListsClient getSuppressionLists() {
-        return this.suppressionLists;
-    }
-
-    /**
-     * The SuppressionListAddressesClient object to access its operations.
-     */
-    private final SuppressionListAddressesClient suppressionListAddresses;
-
-    /**
-     * Gets the SuppressionListAddressesClient object to access its operations.
-     * 
-     * @return the SuppressionListAddressesClient object.
-     */
-    public SuppressionListAddressesClient getSuppressionListAddresses() {
-        return this.suppressionListAddresses;
-    }
-
-    /**
      * Initializes an instance of CommunicationServiceManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -243,14 +214,12 @@ public final class CommunicationServiceManagementClientImpl implements Communica
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-06-01-preview";
+        this.apiVersion = "2023-04-01";
         this.operations = new OperationsClientImpl(this);
         this.communicationServices = new CommunicationServicesClientImpl(this);
         this.domains = new DomainsClientImpl(this);
         this.emailServices = new EmailServicesClientImpl(this);
         this.senderUsernames = new SenderUsernamesClientImpl(this);
-        this.suppressionLists = new SuppressionListsClientImpl(this);
-        this.suppressionListAddresses = new SuppressionListAddressesClientImpl(this);
     }
 
     /**
@@ -313,8 +282,8 @@ public final class CommunicationServiceManagementClientImpl implements Communica
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -355,7 +324,7 @@ public final class CommunicationServiceManagementClientImpl implements Communica
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.sphere.fluent.models.ProofOfPossessionNonceResp
 public final class ProofOfPossessionNonceResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProofOfPossessionNonceResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"certificate\":\"xbnjbiksq\",\"status\":\"Inactive\",\"subject\":\"sainqpjwnzl\",\"thumbprint\":\"fmppe\",\"expiryUtc\":\"2021-03-28T22:28:31Z\",\"notBeforeUtc\":\"2021-11-23T16:03:48Z\",\"provisioningState\":\"Provisioning\"}")
-                .toObject(ProofOfPossessionNonceResponseInner.class);
+        ProofOfPossessionNonceResponseInner model = BinaryData.fromString(
+            "{\"certificate\":\"qgoulznd\",\"status\":\"Active\",\"subject\":\"yqkgfg\",\"thumbprint\":\"madgakeqsrxyb\",\"expiryUtc\":\"2021-03-26T22:16:08Z\",\"notBeforeUtc\":\"2021-02-21T09:55:36Z\",\"provisioningState\":\"Deleting\"}")
+            .toObject(ProofOfPossessionNonceResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test

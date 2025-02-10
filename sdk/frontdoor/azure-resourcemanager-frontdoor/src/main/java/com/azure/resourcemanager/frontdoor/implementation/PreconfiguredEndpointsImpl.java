@@ -19,21 +19,21 @@ public final class PreconfiguredEndpointsImpl implements PreconfiguredEndpoints 
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
 
-    public PreconfiguredEndpointsImpl(
-        PreconfiguredEndpointsClient innerClient, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
+    public PreconfiguredEndpointsImpl(PreconfiguredEndpointsClient innerClient,
+        com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PreconfiguredEndpoint> list(String resourceGroupName, String profileName) {
         PagedIterable<PreconfiguredEndpointInner> inner = this.serviceClient().list(resourceGroupName, profileName);
-        return Utils.mapPage(inner, inner1 -> new PreconfiguredEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PreconfiguredEndpointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PreconfiguredEndpoint> list(String resourceGroupName, String profileName, Context context) {
-        PagedIterable<PreconfiguredEndpointInner> inner =
-            this.serviceClient().list(resourceGroupName, profileName, context);
-        return Utils.mapPage(inner, inner1 -> new PreconfiguredEndpointImpl(inner1, this.manager()));
+        PagedIterable<PreconfiguredEndpointInner> inner
+            = this.serviceClient().list(resourceGroupName, profileName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PreconfiguredEndpointImpl(inner1, this.manager()));
     }
 
     private PreconfiguredEndpointsClient serviceClient() {

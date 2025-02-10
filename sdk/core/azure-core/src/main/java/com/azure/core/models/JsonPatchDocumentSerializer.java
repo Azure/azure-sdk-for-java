@@ -13,7 +13,20 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Handles serialization of a {@link JsonPatchDocument}.
+ * <p>Handles the serialization of a {@link JsonPatchDocument}.</p>
+ *
+ * <p>This class is responsible for converting a {@link JsonPatchDocument} into a JSON representation. It extends the
+ * {@link JsonSerializer} class from the Jackson library and overrides the
+ * {@link #serialize(JsonPatchDocument, JsonGenerator, SerializerProvider)} method to perform the serialization.</p>
+ *
+ * <p>This class is useful when you want to serialize a {@link JsonPatchDocument} to JSON. For example, you can use
+ * it when you want to send a JSON Patch document as part of an HTTP request.</p>
+ *
+ * @see JsonPatchDocument
+ * @see JsonSerializer
+ * @see JsonGenerator
+ * @see SerializerProvider
+ * @see SimpleModule
  */
 final class JsonPatchDocumentSerializer extends JsonSerializer<JsonPatchDocument> {
     private static final SimpleModule MODULE;

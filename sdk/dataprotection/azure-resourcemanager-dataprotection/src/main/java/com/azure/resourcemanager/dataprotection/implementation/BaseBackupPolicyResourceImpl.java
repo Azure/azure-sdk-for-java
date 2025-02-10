@@ -61,14 +61,16 @@ public final class BaseBackupPolicyResourceImpl
     }
 
     public BaseBackupPolicyResource create() {
-        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupPolicies()
             .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public BaseBackupPolicyResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupPolicies()
             .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), context)
             .getValue();
         return this;
@@ -86,14 +88,16 @@ public final class BaseBackupPolicyResourceImpl
     }
 
     public BaseBackupPolicyResource apply() {
-        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupPolicies()
             .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public BaseBackupPolicyResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupPolicies()
             .createOrUpdateWithResponse(resourceGroupName, vaultName, backupPolicyName, this.innerModel(), context)
             .getValue();
         return this;
@@ -103,20 +107,24 @@ public final class BaseBackupPolicyResourceImpl
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "backupVaults");
-        this.backupPolicyName = Utils.getValueFromIdByName(innerObject.id(), "backupPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupVaults");
+        this.backupPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupPolicies");
     }
 
     public BaseBackupPolicyResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
-            .getWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupPolicies()
+            .getWithResponse(resourceGroupName, vaultName, backupPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public BaseBackupPolicyResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
-            .getWithResponse(resourceGroupName, vaultName, backupPolicyName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupPolicies()
+            .getWithResponse(resourceGroupName, vaultName, backupPolicyName, context)
+            .getValue();
         return this;
     }
 

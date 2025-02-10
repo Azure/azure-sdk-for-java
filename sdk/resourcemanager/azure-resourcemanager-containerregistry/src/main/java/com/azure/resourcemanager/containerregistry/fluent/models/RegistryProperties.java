@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.EncryptionProperty;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
@@ -13,104 +18,94 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Status;
 import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The properties of a container registry. */
+/**
+ * The properties of a container registry.
+ */
 @Fluent
-public final class RegistryProperties {
+public final class RegistryProperties implements JsonSerializable<RegistryProperties> {
     /*
      * The URL that can be used to log into the container registry.
      */
-    @JsonProperty(value = "loginServer", access = JsonProperty.Access.WRITE_ONLY)
     private String loginServer;
 
     /*
      * The creation date of the container registry in ISO8601 format.
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * The provisioning state of the container registry at the time the operation was called.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The status of the container registry at the time the operation was called.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private Status status;
 
     /*
      * The value that indicates whether the admin user is enabled.
      */
-    @JsonProperty(value = "adminUserEnabled")
     private Boolean adminUserEnabled;
 
     /*
      * The network rule set for a container registry.
      */
-    @JsonProperty(value = "networkRuleSet")
     private NetworkRuleSet networkRuleSet;
 
     /*
      * The policies for a container registry.
      */
-    @JsonProperty(value = "policies")
     private Policies policies;
 
     /*
      * The encryption settings of container registry.
      */
-    @JsonProperty(value = "encryption")
     private EncryptionProperty encryption;
 
     /*
      * Enable a single data endpoint per region for serving data.
      */
-    @JsonProperty(value = "dataEndpointEnabled")
     private Boolean dataEndpointEnabled;
 
     /*
      * List of host names that will serve data when dataEndpointEnabled is true.
      */
-    @JsonProperty(value = "dataEndpointHostNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> dataEndpointHostNames;
 
     /*
      * List of private endpoint connections for a container registry.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Whether or not public network access is allowed for the container registry.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * Whether to allow trusted Azure services to access a network restricted registry.
      */
-    @JsonProperty(value = "networkRuleBypassOptions")
     private NetworkRuleBypassOptions networkRuleBypassOptions;
 
     /*
      * Whether or not zone redundancy is enabled for this container registry
      */
-    @JsonProperty(value = "zoneRedundancy")
     private ZoneRedundancy zoneRedundancy;
 
-    /** Creates an instance of RegistryProperties class. */
+    /**
+     * Creates an instance of RegistryProperties class.
+     */
     public RegistryProperties() {
     }
 
     /**
      * Get the loginServer property: The URL that can be used to log into the container registry.
-     *
+     * 
      * @return the loginServer value.
      */
     public String loginServer() {
@@ -119,7 +114,7 @@ public final class RegistryProperties {
 
     /**
      * Get the creationDate property: The creation date of the container registry in ISO8601 format.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -129,7 +124,7 @@ public final class RegistryProperties {
     /**
      * Get the provisioningState property: The provisioning state of the container registry at the time the operation
      * was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -138,7 +133,7 @@ public final class RegistryProperties {
 
     /**
      * Get the status property: The status of the container registry at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -147,7 +142,7 @@ public final class RegistryProperties {
 
     /**
      * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
@@ -156,7 +151,7 @@ public final class RegistryProperties {
 
     /**
      * Set the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @param adminUserEnabled the adminUserEnabled value to set.
      * @return the RegistryProperties object itself.
      */
@@ -167,7 +162,7 @@ public final class RegistryProperties {
 
     /**
      * Get the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -176,7 +171,7 @@ public final class RegistryProperties {
 
     /**
      * Set the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the RegistryProperties object itself.
      */
@@ -187,7 +182,7 @@ public final class RegistryProperties {
 
     /**
      * Get the policies property: The policies for a container registry.
-     *
+     * 
      * @return the policies value.
      */
     public Policies policies() {
@@ -196,7 +191,7 @@ public final class RegistryProperties {
 
     /**
      * Set the policies property: The policies for a container registry.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the RegistryProperties object itself.
      */
@@ -207,7 +202,7 @@ public final class RegistryProperties {
 
     /**
      * Get the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperty encryption() {
@@ -216,7 +211,7 @@ public final class RegistryProperties {
 
     /**
      * Set the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the RegistryProperties object itself.
      */
@@ -227,7 +222,7 @@ public final class RegistryProperties {
 
     /**
      * Get the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @return the dataEndpointEnabled value.
      */
     public Boolean dataEndpointEnabled() {
@@ -236,7 +231,7 @@ public final class RegistryProperties {
 
     /**
      * Set the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @param dataEndpointEnabled the dataEndpointEnabled value to set.
      * @return the RegistryProperties object itself.
      */
@@ -247,7 +242,7 @@ public final class RegistryProperties {
 
     /**
      * Get the dataEndpointHostNames property: List of host names that will serve data when dataEndpointEnabled is true.
-     *
+     * 
      * @return the dataEndpointHostNames value.
      */
     public List<String> dataEndpointHostNames() {
@@ -256,7 +251,7 @@ public final class RegistryProperties {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections for a container registry.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -265,7 +260,7 @@ public final class RegistryProperties {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -274,7 +269,7 @@ public final class RegistryProperties {
 
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RegistryProperties object itself.
      */
@@ -286,7 +281,7 @@ public final class RegistryProperties {
     /**
      * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
      * registry.
-     *
+     * 
      * @return the networkRuleBypassOptions value.
      */
     public NetworkRuleBypassOptions networkRuleBypassOptions() {
@@ -296,7 +291,7 @@ public final class RegistryProperties {
     /**
      * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
      * registry.
-     *
+     * 
      * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
      * @return the RegistryProperties object itself.
      */
@@ -307,7 +302,7 @@ public final class RegistryProperties {
 
     /**
      * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
-     *
+     * 
      * @return the zoneRedundancy value.
      */
     public ZoneRedundancy zoneRedundancy() {
@@ -316,7 +311,7 @@ public final class RegistryProperties {
 
     /**
      * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
-     *
+     * 
      * @param zoneRedundancy the zoneRedundancy value to set.
      * @return the RegistryProperties object itself.
      */
@@ -327,7 +322,7 @@ public final class RegistryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -346,5 +341,83 @@ public final class RegistryProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("adminUserEnabled", this.adminUserEnabled);
+        jsonWriter.writeJsonField("networkRuleSet", this.networkRuleSet);
+        jsonWriter.writeJsonField("policies", this.policies);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeBooleanField("dataEndpointEnabled", this.dataEndpointEnabled);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeStringField("networkRuleBypassOptions",
+            this.networkRuleBypassOptions == null ? null : this.networkRuleBypassOptions.toString());
+        jsonWriter.writeStringField("zoneRedundancy",
+            this.zoneRedundancy == null ? null : this.zoneRedundancy.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryProperties.
+     */
+    public static RegistryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryProperties deserializedRegistryProperties = new RegistryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loginServer".equals(fieldName)) {
+                    deserializedRegistryProperties.loginServer = reader.getString();
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedRegistryProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRegistryProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedRegistryProperties.status = Status.fromJson(reader);
+                } else if ("adminUserEnabled".equals(fieldName)) {
+                    deserializedRegistryProperties.adminUserEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("networkRuleSet".equals(fieldName)) {
+                    deserializedRegistryProperties.networkRuleSet = NetworkRuleSet.fromJson(reader);
+                } else if ("policies".equals(fieldName)) {
+                    deserializedRegistryProperties.policies = Policies.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedRegistryProperties.encryption = EncryptionProperty.fromJson(reader);
+                } else if ("dataEndpointEnabled".equals(fieldName)) {
+                    deserializedRegistryProperties.dataEndpointEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dataEndpointHostNames".equals(fieldName)) {
+                    List<String> dataEndpointHostNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRegistryProperties.dataEndpointHostNames = dataEndpointHostNames;
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedRegistryProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedRegistryProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("networkRuleBypassOptions".equals(fieldName)) {
+                    deserializedRegistryProperties.networkRuleBypassOptions
+                        = NetworkRuleBypassOptions.fromString(reader.getString());
+                } else if ("zoneRedundancy".equals(fieldName)) {
+                    deserializedRegistryProperties.zoneRedundancy = ZoneRedundancy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryProperties;
+        });
     }
 }

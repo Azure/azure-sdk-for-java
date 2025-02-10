@@ -5,45 +5,47 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * deviceManagementTroubleshootingEvent
- *
- * <p>Event representing an general failure.
+ * 
+ * Event representing an general failure.
  */
 @Fluent
 public final class MicrosoftGraphDeviceManagementTroubleshootingEvent extends MicrosoftGraphEntity {
     /*
      * Id used for tracing the failure in the service.
      */
-    @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
      * Time when the event occurred .
      */
-    @JsonProperty(value = "eventDateTime")
     private OffsetDateTime eventDateTime;
 
     /*
      * Event representing an general failure.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDeviceManagementTroubleshootingEvent class. */
+    /**
+     * Creates an instance of MicrosoftGraphDeviceManagementTroubleshootingEvent class.
+     */
     public MicrosoftGraphDeviceManagementTroubleshootingEvent() {
     }
 
     /**
      * Get the correlationId property: Id used for tracing the failure in the service.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -52,7 +54,7 @@ public final class MicrosoftGraphDeviceManagementTroubleshootingEvent extends Mi
 
     /**
      * Set the correlationId property: Id used for tracing the failure in the service.
-     *
+     * 
      * @param correlationId the correlationId value to set.
      * @return the MicrosoftGraphDeviceManagementTroubleshootingEvent object itself.
      */
@@ -63,7 +65,7 @@ public final class MicrosoftGraphDeviceManagementTroubleshootingEvent extends Mi
 
     /**
      * Get the eventDateTime property: Time when the event occurred .
-     *
+     * 
      * @return the eventDateTime value.
      */
     public OffsetDateTime eventDateTime() {
@@ -72,7 +74,7 @@ public final class MicrosoftGraphDeviceManagementTroubleshootingEvent extends Mi
 
     /**
      * Set the eventDateTime property: Time when the event occurred .
-     *
+     * 
      * @param eventDateTime the eventDateTime value to set.
      * @return the MicrosoftGraphDeviceManagementTroubleshootingEvent object itself.
      */
@@ -83,35 +85,28 @@ public final class MicrosoftGraphDeviceManagementTroubleshootingEvent extends Mi
 
     /**
      * Get the additionalProperties property: Event representing an general failure.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Event representing an general failure.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDeviceManagementTroubleshootingEvent object itself.
      */
-    public MicrosoftGraphDeviceManagementTroubleshootingEvent withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphDeviceManagementTroubleshootingEvent
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDeviceManagementTroubleshootingEvent withId(String id) {
         super.withId(id);
@@ -120,11 +115,68 @@ public final class MicrosoftGraphDeviceManagementTroubleshootingEvent extends Mi
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("correlationId", this.correlationId);
+        jsonWriter.writeStringField("eventDateTime",
+            this.eventDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.eventDateTime));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDeviceManagementTroubleshootingEvent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDeviceManagementTroubleshootingEvent if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDeviceManagementTroubleshootingEvent.
+     */
+    public static MicrosoftGraphDeviceManagementTroubleshootingEvent fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDeviceManagementTroubleshootingEvent deserializedMicrosoftGraphDeviceManagementTroubleshootingEvent
+                = new MicrosoftGraphDeviceManagementTroubleshootingEvent();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceManagementTroubleshootingEvent.withId(reader.getString());
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceManagementTroubleshootingEvent.correlationId = reader.getString();
+                } else if ("eventDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDeviceManagementTroubleshootingEvent.eventDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDeviceManagementTroubleshootingEvent.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDeviceManagementTroubleshootingEvent;
+        });
     }
 }

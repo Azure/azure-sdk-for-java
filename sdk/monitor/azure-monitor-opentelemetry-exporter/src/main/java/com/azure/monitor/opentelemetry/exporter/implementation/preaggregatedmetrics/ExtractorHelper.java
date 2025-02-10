@@ -35,8 +35,7 @@ public final class ExtractorHelper {
             }
         }
 
-        metricBuilder.addProperty(
-            OPERATION_SYNTHETIC, isSynthetic != null && isSynthetic ? TRUE : FALSE);
+        metricBuilder.addProperty(OPERATION_SYNTHETIC, isSynthetic != null && isSynthetic ? TRUE : FALSE);
     }
 
     private ExtractorHelper() {

@@ -16,6 +16,9 @@ public class ServiceBusClientCommonTestProperties extends AzureAmqpSdkProperties
     private String connectionString;
     private String entityName;
     private ServiceBusEntityType entityType;
+    private String customEndpointAddress;
+
+    private boolean shareServiceBusClientBuilder;
 
     private String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
@@ -70,7 +73,24 @@ public class ServiceBusClientCommonTestProperties extends AzureAmqpSdkProperties
         return entityType;
     }
 
+    public void setCustomEndpointAddress(String customEndpointAddress) {
+        this.customEndpointAddress = customEndpointAddress;
+    }
+
+    @Override
+    public String getCustomEndpointAddress() {
+        return customEndpointAddress;
+    }
+
     public void setEntityType(ServiceBusEntityType entityType) {
         this.entityType = entityType;
+    }
+
+    public boolean isShareServiceBusClientBuilder() {
+        return shareServiceBusClientBuilder;
+    }
+
+    public void setShareServiceBusClientBuilder(boolean shareServiceBusClientBuilder) {
+        this.shareServiceBusClientBuilder = shareServiceBusClientBuilder;
     }
 }

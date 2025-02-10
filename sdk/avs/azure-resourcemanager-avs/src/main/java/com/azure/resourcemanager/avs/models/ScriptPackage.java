@@ -4,62 +4,79 @@
 
 package com.azure.resourcemanager.avs.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.fluent.models.ScriptPackageInner;
 
-/** An immutable client-side representation of ScriptPackage. */
+/**
+ * An immutable client-side representation of ScriptPackage.
+ */
 public interface ScriptPackage {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    ScriptPackageProvisioningState provisioningState();
+
+    /**
      * Gets the description property: User friendly description of the package.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the version property: Module version.
-     *
+     * 
      * @return the version value.
      */
     String version();
 
     /**
      * Gets the company property: Company that created and supports the package.
-     *
+     * 
      * @return the company value.
      */
     String company();
 
     /**
      * Gets the uri property: Link to support by the package vendor.
-     *
+     * 
      * @return the uri value.
      */
     String uri();
 
     /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.ScriptPackageInner object.
-     *
+     * 
      * @return the inner object.
      */
     ScriptPackageInner innerModel();

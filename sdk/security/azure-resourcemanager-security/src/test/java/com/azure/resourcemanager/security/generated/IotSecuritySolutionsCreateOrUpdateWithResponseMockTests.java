@@ -6,19 +6,22 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
+import com.azure.resourcemanager.security.models.AdditionalWorkspaceDataType;
+import com.azure.resourcemanager.security.models.AdditionalWorkspaceType;
+import com.azure.resourcemanager.security.models.AdditionalWorkspacesProperties;
 import com.azure.resourcemanager.security.models.DataSource;
 import com.azure.resourcemanager.security.models.ExportData;
 import com.azure.resourcemanager.security.models.IoTSecuritySolutionModel;
+import com.azure.resourcemanager.security.models.RecommendationConfigStatus;
+import com.azure.resourcemanager.security.models.RecommendationConfigurationProperties;
+import com.azure.resourcemanager.security.models.RecommendationType;
 import com.azure.resourcemanager.security.models.SecuritySolutionStatus;
 import com.azure.resourcemanager.security.models.UnmaskedIpLoggingStatus;
 import com.azure.resourcemanager.security.models.UserDefinedResourcesProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -26,84 +29,75 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IotSecuritySolutionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"location\":\"khufmpqumqyjgydz\",\"properties\":{\"workspace\":\"dsaeuzanhsfnh\",\"displayName\":\"enwphpzfngq\",\"status\":\"Disabled\",\"export\":[\"RawEvents\",\"RawEvents\",\"RawEvents\",\"RawEvents\"],\"disabledDataSources\":[\"TwinData\"],\"iotHubs\":[\"fwbeqrkuorh\",\"ssruqnmdvhazcvj\",\"tiq\"],\"userDefinedResources\":{\"query\":\"bqerzwx\",\"querySubscriptions\":[\"txtd\",\"ukvlb\"]},\"autoDiscoveredResources\":[\"gdstyouam\",\"ewres\",\"moweg\"],\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_IPFilter_PermissiveRule\",\"name\":\"yxey\",\"status\":\"Disabled\"},{\"recommendationType\":\"IoT_VulnerableTLSCipherSuite\",\"name\":\"gijiitnspxlzd\",\"status\":\"Disabled\"},{\"recommendationType\":\"IoT_Baseline\",\"name\":\"rijwai\",\"status\":\"Enabled\"}],\"unmaskedIpLoggingStatus\":\"Disabled\",\"additionalWorkspaces\":[{\"workspace\":\"bfu\",\"type\":\"Sentinel\",\"dataTypes\":[\"RawEvents\"]},{\"workspace\":\"ydgr\",\"type\":\"Sentinel\",\"dataTypes\":[\"RawEvents\",\"RawEvents\"]}]},\"tags\":{\"ygzmxieqvdsmak\":\"skieca\"},\"id\":\"ixqcahyhxalybxaw\",\"name\":\"ijpodtblxpkkwj\",\"type\":\"jodqhykincn\"}";
 
-        String responseStr =
-            "{\"location\":\"vmtumxpym\",\"properties\":{\"workspace\":\"uaxroqvqpilrgu\",\"displayName\":\"canlduwzorxs\",\"status\":\"Enabled\",\"export\":[\"RawEvents\"],\"disabledDataSources\":[\"TwinData\"],\"iotHubs\":[\"x\",\"qvfqepdxc\"],\"userDefinedResources\":{\"query\":\"uubwyvpjb\",\"querySubscriptions\":[]},\"autoDiscoveredResources\":[\"pjqduqgix\"],\"recommendationsConfiguration\":[],\"unmaskedIpLoggingStatus\":\"Disabled\",\"additionalWorkspaces\":[]},\"tags\":{\"ftcvbii\":\"avhuerkjddvrglie\"},\"id\":\"tksdwgdnkefgmw\",\"name\":\"hcebuvczldbglzo\",\"type\":\"t\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        IoTSecuritySolutionModel response = manager.iotSecuritySolutions()
+            .define("r")
+            .withExistingResourceGroup("vaknokzwjj")
+            .withRegion("ixldzyyfy")
+            .withTags(mapOf("lhkalehpavawugi", "zhddubbnqf", "iogqgdminictte", "j"))
+            .withWorkspace("s")
+            .withDisplayName("x")
+            .withStatus(SecuritySolutionStatus.ENABLED)
+            .withExport(Arrays.asList(ExportData.RAW_EVENTS, ExportData.RAW_EVENTS, ExportData.RAW_EVENTS,
+                ExportData.RAW_EVENTS))
+            .withDisabledDataSources(
+                Arrays.asList(DataSource.TWIN_DATA, DataSource.TWIN_DATA, DataSource.TWIN_DATA, DataSource.TWIN_DATA))
+            .withIotHubs(Arrays.asList("mbmslzoyov", "zdbpqv", "befgvmxn"))
+            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("cvtlubseskvc")
+                .withQuerySubscriptions(Arrays.asList("rtrh")))
+            .withRecommendationsConfiguration(Arrays.asList(new RecommendationConfigurationProperties()
+                .withRecommendationType(RecommendationType.IO_T_INSTALL_AGENT)
+                .withStatus(RecommendationConfigStatus.ENABLED)))
+            .withUnmaskedIpLoggingStatus(UnmaskedIpLoggingStatus.ENABLED)
+            .withAdditionalWorkspaces(
+                Arrays
+                    .asList(
+                        new AdditionalWorkspacesProperties().withWorkspace("xoe")
+                            .withType(AdditionalWorkspaceType.SENTINEL)
+                            .withDataTypes(Arrays.asList(AdditionalWorkspaceDataType.RAW_EVENTS)),
+                        new AdditionalWorkspacesProperties().withWorkspace("wmyymvqdbpbhf")
+                            .withType(AdditionalWorkspaceType.SENTINEL)
+                            .withDataTypes(Arrays.asList(AdditionalWorkspaceDataType.RAW_EVENTS,
+                                AdditionalWorkspaceDataType.ALERTS, AdditionalWorkspaceDataType.RAW_EVENTS,
+                                AdditionalWorkspaceDataType.RAW_EVENTS))))
+            .create();
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IoTSecuritySolutionModel response =
-            manager
-                .iotSecuritySolutions()
-                .define("rulfuct")
-                .withExistingResourceGroup("aqgvto")
-                .withRegion("rthcfjzh")
-                .withTags(mapOf("iibelwcerw", "quwzp", "pjxljtxb", "w", "sdzhgbdgzpagsec", "sqtbxxniu"))
-                .withWorkspace("ubqjro")
-                .withDisplayName("tvrjeqmtz")
-                .withStatus(SecuritySolutionStatus.DISABLED)
-                .withExport(
-                    Arrays
-                        .asList(
-                            ExportData.RAW_EVENTS, ExportData.RAW_EVENTS, ExportData.RAW_EVENTS, ExportData.RAW_EVENTS))
-                .withDisabledDataSources(
-                    Arrays
-                        .asList(DataSource.TWIN_DATA, DataSource.TWIN_DATA, DataSource.TWIN_DATA, DataSource.TWIN_DATA))
-                .withIotHubs(Arrays.asList("bsrwrsnrhpqat"))
-                .withUserDefinedResources(
-                    new UserDefinedResourcesProperties().withQuery("kkvyanxk").withQuerySubscriptions(Arrays.asList()))
-                .withRecommendationsConfiguration(Arrays.asList())
-                .withUnmaskedIpLoggingStatus(UnmaskedIpLoggingStatus.DISABLED)
-                .withAdditionalWorkspaces(Arrays.asList())
-                .create();
-
-        Assertions.assertEquals("vmtumxpym", response.location());
-        Assertions.assertEquals("avhuerkjddvrglie", response.tags().get("ftcvbii"));
-        Assertions.assertEquals("uaxroqvqpilrgu", response.workspace());
-        Assertions.assertEquals("canlduwzorxs", response.displayName());
-        Assertions.assertEquals(SecuritySolutionStatus.ENABLED, response.status());
+        Assertions.assertEquals("khufmpqumqyjgydz", response.location());
+        Assertions.assertEquals("skieca", response.tags().get("ygzmxieqvdsmak"));
+        Assertions.assertEquals("dsaeuzanhsfnh", response.workspace());
+        Assertions.assertEquals("enwphpzfngq", response.displayName());
+        Assertions.assertEquals(SecuritySolutionStatus.DISABLED, response.status());
         Assertions.assertEquals(ExportData.RAW_EVENTS, response.export().get(0));
         Assertions.assertEquals(DataSource.TWIN_DATA, response.disabledDataSources().get(0));
-        Assertions.assertEquals("x", response.iotHubs().get(0));
-        Assertions.assertEquals("uubwyvpjb", response.userDefinedResources().query());
+        Assertions.assertEquals("fwbeqrkuorh", response.iotHubs().get(0));
+        Assertions.assertEquals("bqerzwx", response.userDefinedResources().query());
+        Assertions.assertEquals("txtd", response.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_IPFILTER_PERMISSIVE_RULE,
+            response.recommendationsConfiguration().get(0).recommendationType());
+        Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
+            response.recommendationsConfiguration().get(0).status());
         Assertions.assertEquals(UnmaskedIpLoggingStatus.DISABLED, response.unmaskedIpLoggingStatus());
+        Assertions.assertEquals("bfu", response.additionalWorkspaces().get(0).workspace());
+        Assertions.assertEquals(AdditionalWorkspaceType.SENTINEL, response.additionalWorkspaces().get(0).type());
+        Assertions.assertEquals(AdditionalWorkspaceDataType.RAW_EVENTS,
+            response.additionalWorkspaces().get(0).dataTypes().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

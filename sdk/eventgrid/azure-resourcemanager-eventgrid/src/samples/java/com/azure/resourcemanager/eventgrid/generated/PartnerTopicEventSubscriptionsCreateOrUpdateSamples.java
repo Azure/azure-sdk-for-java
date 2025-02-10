@@ -14,7 +14,7 @@ import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestin
 public final class PartnerTopicEventSubscriptionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * PartnerTopicEventSubscriptions_CreateOrUpdate.json
      */
     /**
@@ -24,13 +24,14 @@ public final class PartnerTopicEventSubscriptionsCreateOrUpdateSamples {
      */
     public static void
         partnerTopicEventSubscriptionsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerTopicEventSubscriptions().createOrUpdate("examplerg", "examplePartnerTopic1",
-            "exampleEventSubscriptionName1",
-            new EventSubscriptionInner()
-                .withDestination(
-                    new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
-                .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ExamplePrefix")
-                    .withSubjectEndsWith("ExampleSuffix").withIsSubjectCaseSensitive(false)),
-            com.azure.core.util.Context.NONE);
+        manager.partnerTopicEventSubscriptions()
+            .createOrUpdate("examplerg", "examplePartnerTopic1", "exampleEventSubscriptionName1",
+                new EventSubscriptionInner()
+                    .withDestination(
+                        new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+                    .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("ExamplePrefix")
+                        .withSubjectEndsWith("ExampleSuffix")
+                        .withIsSubjectCaseSensitive(false)),
+                com.azure.core.util.Context.NONE);
     }
 }

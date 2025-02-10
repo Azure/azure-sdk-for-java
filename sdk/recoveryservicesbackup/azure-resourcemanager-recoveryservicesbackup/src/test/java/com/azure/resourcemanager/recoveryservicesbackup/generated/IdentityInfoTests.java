@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityInfo model =
-            BinaryData
-                .fromString("{\"isSystemAssignedIdentity\":false,\"managedIdentityResourceId\":\"kqbh\"}")
-                .toObject(IdentityInfo.class);
+        IdentityInfo model = BinaryData
+            .fromString("{\"isSystemAssignedIdentity\":false,\"managedIdentityResourceId\":\"rsnewmozqvbubqma\"}")
+            .toObject(IdentityInfo.class);
         Assertions.assertEquals(false, model.isSystemAssignedIdentity());
-        Assertions.assertEquals("kqbh", model.managedIdentityResourceId());
+        Assertions.assertEquals("rsnewmozqvbubqma", model.managedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityInfo model =
-            new IdentityInfo().withIsSystemAssignedIdentity(false).withManagedIdentityResourceId("kqbh");
+        IdentityInfo model
+            = new IdentityInfo().withIsSystemAssignedIdentity(false).withManagedIdentityResourceId("rsnewmozqvbubqma");
         model = BinaryData.fromObject(model).toObject(IdentityInfo.class);
         Assertions.assertEquals(false, model.isSystemAssignedIdentity());
-        Assertions.assertEquals("kqbh", model.managedIdentityResourceId());
+        Assertions.assertEquals("rsnewmozqvbubqma", model.managedIdentityResourceId());
     }
 }

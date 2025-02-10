@@ -3,18 +3,29 @@
 package com.azure.storage.common.test.shared;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
+import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.implementation.Constants;
-import okhttp3.ConnectionPool;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,7 +42,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.zip.CRC32;
 
@@ -42,10 +52,48 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public final class StorageCommonTestUtils {
     public static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
-    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
-    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
-        .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
-        .build();
+    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientProvider().createInstance();
+    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncClientProvider().createInstance();
+    private static final HttpClient VERTX_HTTP_CLIENT;
+    private static final HttpClient JDK_HTTP_HTTP_CLIENT;
+
+    static {
+        HttpClient jdkHttpHttpClient;
+        try {
+            jdkHttpHttpClient = createJdkHttpClient();
+        } catch (LinkageError | ReflectiveOperationException e) {
+            jdkHttpHttpClient = null;
+        }
+
+        JDK_HTTP_HTTP_CLIENT = jdkHttpHttpClient;
+
+        HttpClient vertxHttpClient;
+        try {
+            vertxHttpClient = createVertxHttpClient();
+        } catch (LinkageError | ReflectiveOperationException e) {
+            vertxHttpClient = null;
+        }
+
+        VERTX_HTTP_CLIENT = vertxHttpClient;
+    }
+
+    private static HttpClient createJdkHttpClient() throws ReflectiveOperationException {
+        Class<?> clazz = Class.forName("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider");
+        return (HttpClient) clazz.getDeclaredMethod("createInstance")
+            .invoke(clazz.getDeclaredConstructor().newInstance());
+    }
+
+    private static HttpClient createVertxHttpClient() throws ReflectiveOperationException {
+        Class<?> clazz;
+        try {
+            clazz = Class.forName("com.azure.core.http.vertx.VertxHttpClientProvider");
+        } catch (ReflectiveOperationException e) {
+            clazz = Class.forName("com.azure.core.http.vertx.VertxAsyncHttpClientProvider");
+        }
+
+        return (HttpClient) clazz.getDeclaredMethod("createInstance")
+            .invoke(clazz.getDeclaredConstructor().newInstance());
+    }
 
     /**
      * Gets the CRC32 for the given string.
@@ -72,6 +120,10 @@ public final class StorageCommonTestUtils {
                     return NETTY_HTTP_CLIENT;
                 case OK_HTTP:
                     return OK_HTTP_CLIENT;
+                case VERTX:
+                    return VERTX_HTTP_CLIENT;
+                case JDK_HTTP:
+                    return JDK_HTTP_HTTP_CLIENT;
                 default:
                     throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());
             }
@@ -166,8 +218,8 @@ public final class StorageCommonTestUtils {
      * @return The instrumented builder.
      */
     @SuppressWarnings("unchecked")
-    public static <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder,
-        HttpLogOptions logOptions, InterceptorManager interceptorManager) {
+    public static <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder, HttpLogOptions logOptions,
+        InterceptorManager interceptorManager) {
         // Groovy style reflection. All our builders follow this pattern.
         builder.httpClient(getHttpClient(interceptorManager));
 
@@ -178,12 +230,11 @@ public final class StorageCommonTestUtils {
         if (ENVIRONMENT.getServiceVersion() != null) {
             try {
                 Method serviceVersionMethod = Arrays.stream(builder.getClass().getDeclaredMethods())
-                    .filter(method -> "serviceVersion".equals(method.getName())
-                        && method.getParameterCount() == 1
+                    .filter(method -> "serviceVersion".equals(method.getName()) && method.getParameterCount() == 1
                         && ServiceVersion.class.isAssignableFrom(method.getParameterTypes()[0]))
                     .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Unable to find serviceVersion method for builder: "
-                        + builder.getClass()));
+                    .orElseThrow(() -> new RuntimeException(
+                        "Unable to find serviceVersion method for builder: " + builder.getClass()));
                 Class<E> serviceVersionClass = (Class<E>) serviceVersionMethod.getParameterTypes()[0];
                 ServiceVersion serviceVersion = (ServiceVersion) Enum.valueOf(serviceVersionClass,
                     ENVIRONMENT.getServiceVersion());
@@ -218,7 +269,33 @@ public final class StorageCommonTestUtils {
         long seed = UUID.fromString(testResourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE;
         Random rand = new Random(seed);
         byte[] data = new byte[size];
-        rand.nextBytes(data);
+
+        // A pseudo-random byte array will be used to fill the data array.
+        //
+        // A pseudo-random set of data is being used to help shrink the git pack files sizes for session records in the
+        // .assets folder. Before this change data used in testing was truly random, which prevented git pack files from
+        // being able to compress the data effectively. Truly random data isn't necessary in testing and the logic used
+        // here is sufficient to prevent any oddities that would cause tests to pass/fail unexpectedly, as the data is
+        // still somewhat random and is replicated using a prime chunk, meaning the normal code flow won't align with
+        // the pseudo-random data.
+        //
+        // As a result of this change git pack file sizes for Storage tests were able to shrink significantly. This
+        // should result in smaller download sizes when checking out new or updated session records, which happens
+        // infrequently locally but every time in CI.
+        byte[] pseudoRandom = new byte[31];
+        rand.nextBytes(pseudoRandom);
+
+        int count = data.length / pseudoRandom.length;
+        int remaining = data.length % pseudoRandom.length;
+
+        for (int i = 0; i < count; i++) {
+            System.arraycopy(pseudoRandom, 0, data, i * pseudoRandom.length, pseudoRandom.length);
+        }
+
+        if (remaining > 0) {
+            System.arraycopy(pseudoRandom, 0, data, count * pseudoRandom.length, remaining);
+        }
+
         return data;
     }
 
@@ -266,6 +343,50 @@ public final class StorageCommonTestUtils {
             return file;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    /**
+     * Gets token credentials for a test.
+     *
+     * @param interceptorManager The interceptor manager to use.
+     * @return The TokenCredential to use.
+     */
+    public static TokenCredential getTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else { //live
+            Configuration config = Configuration.getGlobalConfiguration();
+
+            ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder().addLast(
+                    new EnvironmentCredentialBuilder().build())
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+            if (!CoreUtils.isNullOrEmpty(serviceConnectionId) && !CoreUtils.isNullOrEmpty(clientId)
+                && !CoreUtils.isNullOrEmpty(tenantId) && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+                AzurePipelinesCredential pipelinesCredential = new AzurePipelinesCredentialBuilder().systemAccessToken(
+                        systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build();
+
+                builder.addLast(
+                    request -> pipelinesCredential.getToken(request).subscribeOn(Schedulers.boundedElastic()));
+            }
+
+            builder.addLast(new AzurePowerShellCredentialBuilder().build());
+
+            return builder.build();
         }
     }
 }

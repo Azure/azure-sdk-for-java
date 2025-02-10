@@ -1,29 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-//
-// DESCRIPTION:
-//     This sample demonstrates how to detect physical objects in an image file sample.jpg, using a synchronous client.
-//
-//     The synchronous (blocking) `analyze` method call returns an `ImageAnalysisResult` object.
-//     A call to `getObjects()` on the result will return a `ObjectsResult` object. It contains a list 
-//     of `DetectedObject` objects. Each has:
-//     - The object name, for example: "chair", "laptop". 
-//     - A confidence score in the range [0, 1], with higher values indicating greater confidences in the detection.
-//     - A `BoundingBox` coordinates in pixels, for a rectangular surrounding the object in the image.
-//
-//     Object names are only supported in English at the moment.
-//
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleObjectsImageFile.java -cp target\dependency\*
-//     Run the sample:
-//         java -cp ".;target\dependency\*" SampleObjectsImageFile
-//
-//     Set these two environment variables before running the sample:
-//     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
-//                          where `your-resource-name` is your unique Azure Computer Vision resource name.
-//     2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
@@ -35,6 +11,23 @@ import com.azure.core.util.BinaryData;
 import java.io.File;
 import java.util.Arrays;
 
+/**
+ *  This sample demonstrates how to detect physical objects in an image file sample.jpg, using a synchronous client.
+ *
+ *  The synchronous (blocking) `analyze` method call returns an `ImageAnalysisResult` object.
+ *  A call to `getObjects()` on the result will return a `ObjectsResult` object. It contains a list 
+ *  of `DetectedObject` objects. Each has:
+ *  - The object name, for example: "chair", "laptop". 
+ *  - A confidence score in the range [0, 1], with higher values indicating greater confidences in the detection.
+ *  - A `BoundingBox` coordinates in pixels, for a rectangular surrounding the object in the image.
+ *
+ *  Object names are only supported in English at the moment.
+ *
+ *  Set these two environment variables before running the sample:
+ *  1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
+ *                       where `your-resource-name` is your unique Azure Computer Vision resource name.
+ *  2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
+ */
 public class SampleObjectsImageFile {
 
     public static void main(String[] args) {

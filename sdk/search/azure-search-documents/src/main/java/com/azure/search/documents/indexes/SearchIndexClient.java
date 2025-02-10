@@ -24,7 +24,6 @@ import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
-import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
@@ -40,9 +39,317 @@ import static com.azure.search.documents.indexes.SearchIndexAsyncClient.getSearc
 
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting
- * indexes or synonym map and analyzing text in an Azure Cognitive Search service.
+ * indexes or synonym map and analyzing text in an Azure AI Search service.
  *
+ * <h2>
+ *     Overview
+ * </h2>
+ *
+ * <p>
+ *     An index is stored on your search service and populated with JSON documents that are indexed and tokenized for
+ *     information retrieval. The fields collection of an index defines the structure of the search document. Fields
+ *     have a name, data types, and attributes that determine how it's used. For example, searchable fields are used in
+ *     full text search, and thus tokenized during indexing. An index also defines other constructs, such as scoring
+ *     profiles for relevance tuning, suggesters, semantic configurations, and custom analyzers.
+ * </p>
+ *
+ * <p>
+ *     A synonym map is service-level object that contains user-defined synonyms. This object is maintained
+ *     independently from search indexes. Once uploaded, you can point any searchable field to the synonym map (one per field).
+ * </p>
+ *
+ * <p>
+ *     This client provides a synchronous API for accessing indexes. This client allows you to create, delete, update,
+ *     and configure search indexes. The client also allows you to declare custom synonym maps to expand or rewrite
+ *     queries.
+ * </p>
+ *
+ * <h2>
+ *     Getting Started
+ * </h2>
+ *
+ * <p>
+ *     Authenticating and building instances of this client are handled by {@link SearchIndexClientBuilder}. This
+ *     sample shows you how to create an instance of the client:
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.instantiation -->
+ * <pre>
+ * SearchIndexClient searchIndexClient = new SearchIndexClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.instantiation -->
+ * <p>
+ *     For more information on authentication and building, see the documentation for {@link SearchIndexClientBuilder}.
+ * </p>
+ *
+ * <hr/>
+ *
+ * <h2>
+ *     Examples
+ * </h2>
+ *
+ * <p>
+ *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
+ *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
+ *         import into your own index from the Azure portal.</a>
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ * </p>
+ *
+ * <h3>
+ *     Create an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample creates an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createIndex#SearchIndex -->
+ * <pre>
+ * SearchIndex searchIndex = new SearchIndex&#40;&quot;indexName&quot;, Arrays.asList&#40;
+ *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;
+ *         .setKey&#40;true&#41;
+ *         .setFilterable&#40;true&#41;
+ *         .setSortable&#40;true&#41;,
+ *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setFilterable&#40;true&#41;
+ *         .setSortable&#40;true&#41;,
+ *     new SearchField&#40;&quot;description&quot;, SearchFieldDataType.STRING&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setAnalyzerName&#40;LexicalAnalyzerName.EN_LUCENE&#41;,
+ *     new SearchField&#40;&quot;descriptionFr&quot;, SearchFieldDataType.STRING&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setAnalyzerName&#40;LexicalAnalyzerName.FR_LUCENE&#41;,
+ *     new SearchField&#40;&quot;tags&quot;, SearchFieldDataType.collection&#40;SearchFieldDataType.STRING&#41;&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setFilterable&#40;true&#41;
+ *         .setFacetable&#40;true&#41;,
+ *     new SearchField&#40;&quot;address&quot;, SearchFieldDataType.COMPLEX&#41;
+ *         .setFields&#40;
+ *             new SearchField&#40;&quot;streetAddress&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;,
+ *             new SearchField&#40;&quot;city&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;,
+ *             new SearchField&#40;&quot;stateProvince&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;,
+ *             new SearchField&#40;&quot;country&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;
+ *                 .setSynonymMapNames&#40;&quot;synonymMapName&quot;&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;,
+ *             new SearchField&#40;&quot;postalCode&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;&#41;
+ * &#41;&#41;;
+ *
+ * searchIndexClient.createIndex&#40;searchIndex&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createIndex#SearchIndex -->
+ * <em>
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#createIndex(SearchIndex)}.
+ * </em>
+ *
+ * <h3>
+ *     List indexes
+ * </h3>
+ *
+ * <p>
+ *     The following sample lists all indexes.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listIndexes -->
+ * <pre>
+ * searchIndexClient.listIndexes&#40;&#41;.forEach&#40;index -&gt; System.out.println&#40;index.getName&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listIndexes -->
+ * <em>
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#listIndexes()}.
+ * </em>
+ *
+ * <h3>
+ *     Retrieve an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample retrieves an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getIndex#String -->
+ * <pre>
+ * SearchIndex searchIndex = searchIndexClient.getIndex&#40;&quot;indexName&quot;&#41;;
+ * if &#40;searchIndex != null&#41; &#123;
+ *     System.out.println&#40;&quot;The ETag of the index is &quot; + searchIndex.getETag&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getIndex#String -->
+ *
+ * <em>
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#getIndex(String)}.
+ * </em>
+ *
+ *
+ *
+ * <h3>
+ *     Update an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample updates an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateIndex#SearchIndex -->
+ * <pre>
+ * SearchIndex searchIndex = searchIndexClient.getIndex&#40;&quot;indexName&quot;&#41;;
+ * if &#40;searchIndex != null&#41; &#123;
+ *     searchIndex.setFields&#40;new SearchField&#40;&quot;newField&quot;, SearchFieldDataType.STRING&#41;&#41;;
+ *     searchIndexClient.createOrUpdateIndex&#40;searchIndex&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateIndex#SearchIndex -->
+ *
+ * <em>
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#createOrUpdateIndex(SearchIndex)}.
+ * </em>
+ *
+ *
+ *
+ * <h3>
+ *     Delete an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes an index.
+ * </p>
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteIndex#String -->
+ * <pre>
+ * String indexName = &quot;indexName&quot;;
+ * searchIndexClient.deleteIndex&#40;indexName&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteIndex#String -->
+ * <em>
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#deleteIndex(String)}.
+ * </em>
+ *
+ *
+ *
+ * <h3>
+ *     Create a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample creates a synonym map.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
+ * <pre>
+ * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMapName&quot;, &quot;hotel, motel, &#92;&quot;motor inn&#92;&quot;&quot;&#41;;
+ * searchIndexClient.createSynonymMap&#40;synonymMap&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
+ *
+ * <em>
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#createSynonymMap(SynonymMap)}.
+ * </em>
+ *
+ *
+ *
+ * <h3>
+ *     List Synonym Maps
+ * </h3>
+ *
+ * <p>
+ *     The following sample lists all synonym maps.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listSynonymMaps -->
+ * <pre>
+ * searchIndexClient.listSynonymMaps&#40;&#41;.forEach&#40;synonymMap -&gt; System.out.println&#40;synonymMap.getName&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.listSynonymMaps -->
+ *
+ * <em>
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#listSynonymMaps()}.
+ * </em>
+ *
+ *
+ *
+ * <h3>
+ *     Retrieve a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample retrieves a synonym map.
+ * </p>
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getSynonymMap#String -->
+ * <pre>
+ * SynonymMap synonymMap = searchIndexClient.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;;
+ * if &#40;synonymMap != null&#41; &#123;
+ *     System.out.println&#40;&quot;The ETag of the synonymMap is &quot; + synonymMap.getETag&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.getSynonymMap#String -->
+ * <em>
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#getSynonymMap(String)}.
+ * </em>
+ *
+ *
+ *
+ * <h3>
+ *     Update a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample updates a synonym map.
+ * </p>
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
+ * <pre>
+ * SynonymMap synonymMap = searchIndexClient.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;;
+ * if &#40;synonymMap != null&#41; &#123;
+ *     synonymMap.setSynonyms&#40;&quot;inn,hotel,motel&quot;&#41;;
+ *     searchIndexClient.createOrUpdateSynonymMap&#40;synonymMap&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
+ * <em>
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#createOrUpdateSynonymMap(SynonymMap)}.
+ * </em>
+ *
+ *
+ *
+ * <h3>
+ *     Delete a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes a synonym map.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteSynonymMap#String -->
+ * <pre>
+ * String synonymMapName = &quot;synonymMapName&quot;;
+ * searchIndexClient.deleteSynonymMap&#40;synonymMapName&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient-classLevelJavaDoc.deleteSynonymMap#String -->
+ *
+ * <em>
+ *     For an asynchronous sample see {@link SearchIndexAsyncClient#deleteSynonymMap(String)}.
+ * </em>
+ *
+ *
+ * @see SearchIndexAsyncClient
  * @see SearchIndexClientBuilder
+ * @see com.azure.search.documents.indexes
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class)
 public final class SearchIndexClient {
@@ -54,7 +361,7 @@ public final class SearchIndexClient {
     private final SearchServiceVersion serviceVersion;
 
     /**
-     * The endpoint for the Azure Cognitive Search service.
+     * The endpoint for the Azure AI Search service.
      */
     private final String endpoint;
 
@@ -71,13 +378,14 @@ public final class SearchIndexClient {
     private final HttpPipeline httpPipeline;
 
     SearchIndexClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline,
-                           JsonSerializer serializer) {
+        JsonSerializer serializer) {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.restClient = new SearchServiceClientImpl(httpPipeline, endpoint, serviceVersion.getVersion());
     }
+
     /**
      * Gets the {@link HttpPipeline} powering this client.
      *
@@ -88,7 +396,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Gets the endpoint for the Azure Cognitive Search service.
+     * Gets the endpoint for the Azure AI Search service.
      *
      * @return the endpoint value.
      */
@@ -108,7 +416,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search index
+     * Creates a new Azure AI Search index
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -136,7 +444,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search index
+     * Creates a new Azure AI Search index
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -170,7 +478,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Retrieves an index definition from the Azure Cognitive Search.
+     * Retrieves an index definition from the Azure AI Search.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -194,7 +502,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Retrieves an index definition from the Azure Cognitive Search.
+     * Retrieves an index definition from the Azure AI Search.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -216,11 +524,9 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndex> getIndexWithResponse(String indexName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
-            .getWithResponse(indexName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexes().getWithResponse(indexName, null, context), LOGGER);
     }
-
-
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
@@ -269,12 +575,12 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexStatistics> getIndexStatisticsWithResponse(String indexName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
-            .getStatisticsWithResponse(indexName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexes().getStatisticsWithResponse(indexName, null, context), LOGGER);
     }
 
     /**
-     * Lists all indexes available for an Azure Cognitive Search service.
+     * Lists all indexes available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -298,7 +604,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all indexes available for an Azure Cognitive Search service.
+     * Lists all indexes available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -328,12 +634,12 @@ public final class SearchIndexClient {
     }
 
     private PagedResponse<SearchIndex> listIndexesWithResponse(String select, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
-            .listSinglePage(select, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexes().listSinglePage(select, null, context), LOGGER);
     }
 
     /**
-     * Lists all index names for an Azure Cognitive Search service.
+     * Lists all index names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -356,7 +662,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all indexes names for an Azure Cognitive Search service.
+     * Lists all indexes names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -379,15 +685,15 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listIndexNames(Context context) {
         try {
-            return new PagedIterable<>(() ->
-                MappingUtils.mappingPagingSearchIndexNames(this.listIndexesWithResponse("name", context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingSearchIndexNames(this.listIndexesWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
     }
 
     /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * Creates a new Azure AI Search index or updates an index if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -413,7 +719,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * Creates a new Azure AI Search index or updates an index if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -448,13 +754,13 @@ public final class SearchIndexClient {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             Objects.requireNonNull(index, "'Index' cannot null.");
             String ifMatch = onlyIfUnchanged ? index.getETag() : null;
-            return restClient.getIndexes().createOrUpdateWithResponse(index.getName(), index, allowIndexDowntime,
-                ifMatch, null, null, context);
+            return restClient.getIndexes()
+                .createOrUpdateWithResponse(index.getName(), index, allowIndexDowntime, ifMatch, null, null, context);
         }, LOGGER);
     }
 
     /**
-     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     * Deletes an Azure AI Search index and all the documents it contains.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -470,12 +776,12 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIndex(String indexName) {
-        Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexes()
-            .deleteWithResponse(indexName, null, null, null, Context.NONE), LOGGER);
+        Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexes().deleteWithResponse(indexName, null, null, null, Context.NONE), LOGGER);
     }
 
     /**
-     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     * Deletes an Azure AI Search index and all the documents it contains.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -500,8 +806,7 @@ public final class SearchIndexClient {
     public Response<Void> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             String etag = onlyIfUnchanged ? index.getETag() : null;
-            return restClient.getIndexes()
-                .deleteWithResponse(index.getName(), etag, null, null, context);
+            return restClient.getIndexes().deleteWithResponse(index.getName(), etag, null, null, context);
         }, LOGGER);
     }
 
@@ -569,13 +874,14 @@ public final class SearchIndexClient {
 
     private PagedResponse<AnalyzedTokenInfo> analyzeTextWithResponse(String indexName,
         AnalyzeTextOptions analyzeTextOptions, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> MappingUtils.mappingTokenInfo(restClient.getIndexes()
-            .analyzeWithResponse(indexName, AnalyzeRequestConverter.map(analyzeTextOptions), null,
-                context)), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> MappingUtils.mappingTokenInfo(restClient.getIndexes()
+                .analyzeWithResponse(indexName, AnalyzeRequestConverter.map(analyzeTextOptions), null, context)),
+            LOGGER);
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map.
+     * Creates a new Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -600,7 +906,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map.
+     * Creates a new Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -626,8 +932,7 @@ public final class SearchIndexClient {
     public Response<SynonymMap> createSynonymMapWithResponse(SynonymMap synonymMap, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             Objects.requireNonNull(synonymMap, "'synonymMap' cannot be null.");
-            return restClient.getSynonymMaps()
-                .createWithResponse(synonymMap, null, context);
+            return restClient.getSynonymMaps().createWithResponse(synonymMap, null, context);
         }, LOGGER);
     }
 
@@ -678,12 +983,12 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> getSynonymMapWithResponse(String synonymMapName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
-            .getWithResponse(synonymMapName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSynonymMaps().getWithResponse(synonymMapName, null, context), LOGGER);
     }
 
     /**
-     * Lists all synonym maps available for an Azure Cognitive Search service.
+     * Lists all synonym maps available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -707,7 +1012,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all synonym maps available for an Azure Cognitive Search service.
+     * Lists all synonym maps available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -730,20 +1035,20 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SynonymMap> listSynonymMaps(Context context) {
         try {
-            return new PagedIterable<>(() ->
-                MappingUtils.mappingPagingSynonymMap(listSynonymMapsWithResponse(null, context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingSynonymMap(listSynonymMapsWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
     }
 
     private Response<ListSynonymMapsResult> listSynonymMapsWithResponse(String select, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
-            .listWithResponse(select, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSynonymMaps().listWithResponse(select, null, context), LOGGER);
     }
 
     /**
-     * Lists all synonym maps names for an Azure Cognitive Search service.
+     * Lists all synonym maps names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -766,7 +1071,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Lists all synonym maps names for an Azure Cognitive Search service.
+     * Lists all synonym maps names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -789,15 +1094,15 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSynonymMapNames(Context context) {
         try {
-            return new PagedIterable<>(() ->
-                MappingUtils.mappingPagingSynonymMapNames(listSynonymMapsWithResponse("name", context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingSynonymMapNames(listSynonymMapsWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     * Creates a new Azure AI Search synonym map or updates a synonym map if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -805,7 +1110,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMap#SynonymMap -->
      * <pre>
-     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;searchIndex&quot;&#41;;
+     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;;
      * synonymMap.setSynonyms&#40;&quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
      * SynonymMap updatedSynonymMap = SEARCH_INDEX_CLIENT.createOrUpdateSynonymMap&#40;synonymMap&#41;;
      * System.out.printf&#40;&quot;The synonym map name is %s. The synonyms are %s.%n&quot;, updatedSynonymMap.getName&#40;&#41;,
@@ -822,7 +1127,7 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     * Creates a new Azure AI Search synonym map or updates a synonym map if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -830,7 +1135,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context -->
      * <pre>
-     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;searchIndex&quot;&#41;;
+     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;synonymMap&quot;&#41;;
      * synonymMap.setSynonyms&#40;&quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
      * Response&lt;SynonymMap&gt; updatedSynonymMap =
      *     SEARCH_INDEX_CLIENT.createOrUpdateSynonymMapWithResponse&#40;synonymMap, true,
@@ -848,18 +1153,18 @@ public final class SearchIndexClient {
      * @return a response containing the synonym map that was created or updated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        boolean onlyIfUnchanged, Context context) {
+    public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
+        Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             Objects.requireNonNull(synonymMap, "'synonymMap' cannot be null.");
             String ifMatch = onlyIfUnchanged ? synonymMap.getETag() : null;
-            return restClient.getSynonymMaps().createOrUpdateWithResponse(synonymMap.getName(), synonymMap, ifMatch,
-                null, null, context);
+            return restClient.getSynonymMaps()
+                .createOrUpdateWithResponse(synonymMap.getName(), synonymMap, ifMatch, null, null, context);
         }, LOGGER);
     }
 
     /**
-     * Deletes an Azure Cognitive Search synonym map.
+     * Deletes an Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -875,12 +1180,13 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSynonymMap(String synonymMapName) {
-        Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
-            .deleteWithResponse(synonymMapName, null, null, null, Context.NONE), LOGGER);
+        Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSynonymMaps().deleteWithResponse(synonymMapName, null, null, null, Context.NONE),
+            LOGGER);
     }
 
     /**
-     * Deletes an Azure Cognitive Search synonym map.
+     * Deletes an Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -905,8 +1211,9 @@ public final class SearchIndexClient {
     public Response<Void> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
         Context context) {
         String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSynonymMaps()
-            .deleteWithResponse(synonymMap.getName(), etag, null, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSynonymMaps().deleteWithResponse(synonymMap.getName(), etag, null, null, context),
+            LOGGER);
     }
 
     /**
@@ -953,8 +1260,8 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getServiceStatisticsWithResponse(null,
-            context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getServiceStatisticsWithResponse(null, context), LOGGER);
     }
 
     /**
@@ -968,272 +1275,5 @@ public final class SearchIndexClient {
      */
     public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
         return SearchIndexAsyncClient.buildSearchFields(model, options);
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search alias.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create the search alias named "my-alias". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias -->
-     * <pre>
-     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createAlias&#40;new SearchAlias&#40;&quot;my-alias&quot;,
-     *     Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;;
-     * System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
-     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchClient.createAlias#SearchAlias -->
-     *
-     * @param alias definition of the alias to create.
-     * @return the created alias.
-     */
-    public SearchAlias createAlias(SearchAlias alias) {
-        return createAliasWithResponse(alias, Context.NONE).getValue();
-    }
-
-    /**
-     * Creates a new Azure Cognitive Search alias.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create the search alias named "my-alias". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context -->
-     * <pre>
-     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
-     *     Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
-     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchClient.createAliasWithResponse#SearchAlias-Context -->
-     *
-     * @param alias definition of the alias to create.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the created alias.
-     */
-    public Response<SearchAlias> createAliasWithResponse(SearchAlias alias, Context context) {
-        try {
-            return restClient.getAliases().createWithResponse(alias, null, context);
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
-        }
-    }
-
-    /**
-     * Creates or updates an Azure Cognitive Search alias.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create then update the search alias named "my-alias". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias -->
-     * <pre>
-     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias&#40;
-     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
-     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
-     *
-     * searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias&#40;new SearchAlias&#40;searchAlias.getName&#40;&#41;,
-     *     Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Updated alias '%s' to aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
-     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias -->
-     *
-     * @param alias definition of the alias to create or update.
-     * @return the created or updated alias.
-     */
-    public SearchAlias createOrUpdateAlias(SearchAlias alias) {
-        return createOrUpdateAliasWithResponse(alias, false, Context.NONE).getValue();
-    }
-
-    /**
-     * Creates or updates an Azure Cognitive Search alias.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Create then update the search alias named "my-alias". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context -->
-     * <pre>
-     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse&#40;
-     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, false, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
-     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
-     *
-     * response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse&#40;
-     *     new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;
-     *         .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Response status code %d. Updated alias '%s' that aliases index '%s'.&quot;,
-     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context -->
-     *
-     * @param alias definition of the alias to create or update.
-     * @param onlyIfUnchanged only update the alias if the eTag matches the alias on the service.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the created or updated alias.
-     */
-    public Response<SearchAlias> createOrUpdateAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged,
-        Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getAliases()
-            .createOrUpdateWithResponse(alias.getName(), alias, onlyIfUnchanged ? alias.getETag() : null, null, null,
-                context), LOGGER);
-    }
-
-    /**
-     * Gets the Azure Cognitive Search alias.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Get the search alias named "my-alias". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAlias#String -->
-     * <pre>
-     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;;
-     *
-     * System.out.printf&#40;&quot;Retrieved alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
-     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.getAlias#String -->
-     *
-     * @param aliasName name of the alias to get.
-     * @return the retrieved alias.
-     */
-    public SearchAlias getAlias(String aliasName) {
-        return getAliasWithResponse(aliasName, Context.NONE).getValue();
-    }
-
-    /**
-     * Gets the Azure Cognitive Search alias.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Get the search alias named "my-alias". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context -->
-     * <pre>
-     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.getAliasWithResponse&#40;&quot;my-alias&quot;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Response status code %d. Retrieved alias '%s' that aliases index '%s'.&quot;,
-     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context -->
-     *
-     * @param aliasName name of the alias to get.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return the retrieved alias.
-     */
-    public Response<SearchAlias> getAliasWithResponse(String aliasName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getAliases()
-            .getWithResponse(aliasName, null, context), LOGGER);
-    }
-
-    /**
-     * Deletes the Azure Cognitive Search alias.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Delete the search alias named "my-alias". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String -->
-     * <pre>
-     * SEARCH_INDEX_CLIENT.deleteAlias&#40;&quot;my-alias&quot;&#41;;
-     *
-     * System.out.println&#40;&quot;Deleted alias 'my-alias'.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String -->
-     *
-     * @param aliasName name of the alias to delete.
-     */
-    public void deleteAlias(String aliasName) {
-        deleteAliasWithResponse(aliasName, null, Context.NONE);
-    }
-
-    /**
-     * Deletes the Azure Cognitive Search alias.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> Delete the search alias named "my-alias". </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context -->
-     * <pre>
-     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;;
-     *
-     * Response&lt;Void&gt; response = SEARCH_INDEX_CLIENT.deleteAliasWithResponse&#40;searchAlias, true,
-     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Response status code %d. Deleted alias 'my-alias'.&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context -->
-     *
-     * @param alias the alias to delete.
-     * @param onlyIfUnchanged only delete the alias if the eTag matches the alias on the service.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a response indicating the alias has been deleted.
-     */
-    public Response<Void> deleteAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged, Context context) {
-        return deleteAliasWithResponse(alias.getName(), onlyIfUnchanged ? alias.getETag() : null, context);
-    }
-
-    Response<Void> deleteAliasWithResponse(String aliasName, String eTag, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getAliases()
-            .deleteWithResponse(aliasName, eTag, null, null, context), LOGGER);
-    }
-
-    /**
-     * Lists all aliases in the Azure Cognitive Search service.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> List aliases </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listAliases -->
-     * <pre>
-     * SEARCH_INDEX_CLIENT.listAliases&#40;&#41;
-     *     .forEach&#40;searchAlias -&gt; System.out.printf&#40;&quot;Listed alias '%s' that aliases index '%s'.&quot;,
-     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.listAliases -->
-     *
-     * @return a list of aliases in the service.
-     */
-    public PagedIterable<SearchAlias> listAliases() {
-        return listAliases(Context.NONE);
-    }
-
-    /**
-     * Lists all aliases in the Azure Cognitive Search service.
-     *
-     * <p><strong>Code Sample</strong></p>
-     *
-     * <p> List aliases </p>
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context -->
-     * <pre>
-     * SEARCH_INDEX_CLIENT.listAliases&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;
-     *     .forEach&#40;searchAlias -&gt; System.out.printf&#40;&quot;Listed alias '%s' that aliases index '%s'.&quot;,
-     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context -->
-     *
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return a list of aliases in the service.
-     */
-    public PagedIterable<SearchAlias> listAliases(Context context) {
-        try {
-            return new PagedIterable<>(() -> restClient.getAliases()
-                .listSinglePage(null, context));
-        } catch (RuntimeException ex) {
-            throw LOGGER.logExceptionAsError(ex);
-        }
     }
 }

@@ -68,32 +68,38 @@ public class ReactorHandlerProvider {
      *
      * @param connectionId Identifier associated with this connection.
      * @param options Options for the connection.
+     *
      * @return A new {@link ConnectionHandler}.
      *
      * @throws NullPointerException If {@code connectionId}, {@code productName}, {@code clientVersion},
      *      {@code options} is {@code null}.
      */
     public ConnectionHandler createConnectionHandler(String connectionId, ConnectionOptions options) {
+
         Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        AmqpMetricsProvider metricsProvider = getMetricProvider(options.getFullyQualifiedNamespace(), null);
-        if (options.getTransportType() == AmqpTransportType.AMQP) {
-            final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
+        final AmqpMetricsProvider metricsProvider = getMetricProvider(options.getFullyQualifiedNamespace(), null);
 
-            return new ConnectionHandler(connectionId, options, peerDetails, metricsProvider);
+        if (options.getTransportType() == AmqpTransportType.AMQP) {
+            if (options.isEnableSsl()) {
+                final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
+                return new ConnectionHandler(connectionId, options, peerDetails, metricsProvider);
+            } else {
+                return new ConnectionHandler(connectionId, options, metricsProvider);
+            }
         }
 
         if (options.getTransportType() != AmqpTransportType.AMQP_WEB_SOCKETS) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
-                "This transport type '%s' is not supported.", options.getTransportType())));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
+                String.format(Locale.US, "This transport type '%s' is not supported.", options.getTransportType())));
         }
 
         final boolean isCustomEndpointConfigured = !options.getFullyQualifiedNamespace().equals(options.getHostname());
-        final boolean isUserProxyConfigured = options.getProxyOptions() != null
-            && options.getProxyOptions().isProxyAddressConfigured();
-        final boolean isSystemProxyConfigured = WebSocketsProxyConnectionHandler.shouldUseProxy(
-            options.getFullyQualifiedNamespace(), options.getPort());
+        final boolean isUserProxyConfigured
+            = options.getProxyOptions() != null && options.getProxyOptions().isProxyAddressConfigured();
+        final boolean isSystemProxyConfigured
+            = WebSocketsProxyConnectionHandler.shouldUseProxy(options.getFullyQualifiedNamespace(), options.getPort());
 
         if (isUserProxyConfigured) {
             LOGGER.info("Using user configured proxy to connect to: '{}:{}'. Proxy: {}",
@@ -101,7 +107,8 @@ public class ReactorHandlerProvider {
 
             final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
 
-            return new WebSocketsProxyConnectionHandler(connectionId, options, options.getProxyOptions(), peerDetails, metricsProvider);
+            return new WebSocketsProxyConnectionHandler(connectionId, options, options.getProxyOptions(), peerDetails,
+                metricsProvider);
         } else if (isSystemProxyConfigured) {
             LOGGER.info("System default proxy configured for hostname:port '{}:{}'. Using proxy.",
                 options.getFullyQualifiedNamespace(), options.getPort());
@@ -131,8 +138,8 @@ public class ReactorHandlerProvider {
     public SessionHandler createSessionHandler(String connectionId, String hostname, String sessionName,
         Duration openTimeout) {
 
-        return new SessionHandler(connectionId, hostname, sessionName, provider.getReactorDispatcher(),
-            openTimeout, getMetricProvider(hostname, sessionName));
+        return new SessionHandler(connectionId, hostname, sessionName, provider.getReactorDispatcher(), openTimeout,
+            getMetricProvider(hostname, sessionName));
     }
 
     /**
@@ -144,9 +151,10 @@ public class ReactorHandlerProvider {
      * @param entityPath The relative path to the messaging entity streaming the messages.
      * @return A new {@link SendLinkHandler}.
      */
-    public SendLinkHandler createSendLinkHandler(String connectionId, String hostname,
-        String senderName, String entityPath) {
-        return new SendLinkHandler(connectionId, hostname, senderName, entityPath, getMetricProvider(hostname, entityPath));
+    public SendLinkHandler createSendLinkHandler(String connectionId, String hostname, String senderName,
+        String entityPath) {
+        return new SendLinkHandler(connectionId, hostname, senderName, entityPath,
+            getMetricProvider(hostname, entityPath));
     }
 
     /**
@@ -158,10 +166,11 @@ public class ReactorHandlerProvider {
      * @param entityPath The relative path to the messaging entity streaming the messages.
      * @return A new {@link ReceiveLinkHandler}.
      */
-    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname,
-        String receiverName, String entityPath) {
+    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname, String receiverName,
+        String entityPath) {
 
-        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath, getMetricProvider(hostname, entityPath));
+        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath,
+            getMetricProvider(hostname, entityPath));
     }
 
     /**
@@ -177,11 +186,11 @@ public class ReactorHandlerProvider {
      * @param retryOptions The retry option user set while building the client.
      * @return A new {@link ReceiveLinkHandler2}.
      */
-    public ReceiveLinkHandler2 createReceiveLinkHandler(String connectionId, String hostname, String receiverName, String entityPath,
-                                                        DeliverySettleMode deliverySettleMode, boolean includeDeliveryTagInMessage, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions) {
-        return new ReceiveLinkHandler2(connectionId, hostname, receiverName, entityPath,
-            deliverySettleMode, dispatcher, retryOptions, includeDeliveryTagInMessage,
-            getMetricProvider(hostname, entityPath));
+    public ReceiveLinkHandler2 createReceiveLinkHandler(String connectionId, String hostname, String receiverName,
+        String entityPath, DeliverySettleMode deliverySettleMode, boolean includeDeliveryTagInMessage,
+        ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions) {
+        return new ReceiveLinkHandler2(connectionId, hostname, receiverName, entityPath, deliverySettleMode, dispatcher,
+            retryOptions, includeDeliveryTagInMessage, getMetricProvider(hostname, entityPath));
     }
 
     /**
@@ -194,8 +203,7 @@ public class ReactorHandlerProvider {
             return AmqpMetricsProvider.noop();
         }
 
-        return metricsCache.computeIfAbsent(
-            namespace + (entityPath == null ? "" : "/" + entityPath),
+        return metricsCache.computeIfAbsent(namespace + (entityPath == null ? "" : "/" + entityPath),
             ignored -> new AmqpMetricsProvider(meter, namespace, entityPath));
     }
 }

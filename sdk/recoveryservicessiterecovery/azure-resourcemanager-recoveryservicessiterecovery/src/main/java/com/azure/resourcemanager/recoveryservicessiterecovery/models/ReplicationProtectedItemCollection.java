@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.ReplicationProtectedItemInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Replication protected item collection. */
+/**
+ * Replication protected item collection.
+ */
 @Fluent
-public final class ReplicationProtectedItemCollection {
+public final class ReplicationProtectedItemCollection implements JsonSerializable<ReplicationProtectedItemCollection> {
     /*
      * The Replication protected item details.
      */
-    @JsonProperty(value = "value")
     private List<ReplicationProtectedItemInner> value;
 
     /*
      * The value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ReplicationProtectedItemCollection class. */
+    /**
+     * Creates an instance of ReplicationProtectedItemCollection class.
+     */
     public ReplicationProtectedItemCollection() {
     }
 
     /**
      * Get the value property: The Replication protected item details.
-     *
+     * 
      * @return the value value.
      */
     public List<ReplicationProtectedItemInner> value() {
@@ -39,7 +45,7 @@ public final class ReplicationProtectedItemCollection {
 
     /**
      * Set the value property: The Replication protected item details.
-     *
+     * 
      * @param value the value value to set.
      * @return the ReplicationProtectedItemCollection object itself.
      */
@@ -50,7 +56,7 @@ public final class ReplicationProtectedItemCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ReplicationProtectedItemCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ReplicationProtectedItemCollection object itself.
      */
@@ -70,12 +76,54 @@ public final class ReplicationProtectedItemCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationProtectedItemCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationProtectedItemCollection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationProtectedItemCollection.
+     */
+    public static ReplicationProtectedItemCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationProtectedItemCollection deserializedReplicationProtectedItemCollection
+                = new ReplicationProtectedItemCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ReplicationProtectedItemInner> value
+                        = reader.readArray(reader1 -> ReplicationProtectedItemInner.fromJson(reader1));
+                    deserializedReplicationProtectedItemCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedReplicationProtectedItemCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationProtectedItemCollection;
+        });
     }
 }

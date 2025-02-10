@@ -5,47 +5,70 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** messageActionFlag. */
+/**
+ * messageActionFlag.
+ */
 public final class MicrosoftGraphMessageActionFlag extends ExpandableStringEnum<MicrosoftGraphMessageActionFlag> {
-    /** Static value any for MicrosoftGraphMessageActionFlag. */
+    /**
+     * Static value any for MicrosoftGraphMessageActionFlag.
+     */
     public static final MicrosoftGraphMessageActionFlag ANY = fromString("any");
 
-    /** Static value call for MicrosoftGraphMessageActionFlag. */
+    /**
+     * Static value call for MicrosoftGraphMessageActionFlag.
+     */
     public static final MicrosoftGraphMessageActionFlag CALL = fromString("call");
 
-    /** Static value doNotForward for MicrosoftGraphMessageActionFlag. */
+    /**
+     * Static value doNotForward for MicrosoftGraphMessageActionFlag.
+     */
     public static final MicrosoftGraphMessageActionFlag DO_NOT_FORWARD = fromString("doNotForward");
 
-    /** Static value followUp for MicrosoftGraphMessageActionFlag. */
+    /**
+     * Static value followUp for MicrosoftGraphMessageActionFlag.
+     */
     public static final MicrosoftGraphMessageActionFlag FOLLOW_UP = fromString("followUp");
 
-    /** Static value fyi for MicrosoftGraphMessageActionFlag. */
+    /**
+     * Static value fyi for MicrosoftGraphMessageActionFlag.
+     */
     public static final MicrosoftGraphMessageActionFlag FYI = fromString("fyi");
 
-    /** Static value forward for MicrosoftGraphMessageActionFlag. */
+    /**
+     * Static value forward for MicrosoftGraphMessageActionFlag.
+     */
     public static final MicrosoftGraphMessageActionFlag FORWARD = fromString("forward");
 
-    /** Static value noResponseNecessary for MicrosoftGraphMessageActionFlag. */
+    /**
+     * Static value noResponseNecessary for MicrosoftGraphMessageActionFlag.
+     */
     public static final MicrosoftGraphMessageActionFlag NO_RESPONSE_NECESSARY = fromString("noResponseNecessary");
 
-    /** Static value read for MicrosoftGraphMessageActionFlag. */
+    /**
+     * Static value read for MicrosoftGraphMessageActionFlag.
+     */
     public static final MicrosoftGraphMessageActionFlag READ = fromString("read");
 
-    /** Static value reply for MicrosoftGraphMessageActionFlag. */
+    /**
+     * Static value reply for MicrosoftGraphMessageActionFlag.
+     */
     public static final MicrosoftGraphMessageActionFlag REPLY = fromString("reply");
 
-    /** Static value replyToAll for MicrosoftGraphMessageActionFlag. */
+    /**
+     * Static value replyToAll for MicrosoftGraphMessageActionFlag.
+     */
     public static final MicrosoftGraphMessageActionFlag REPLY_TO_ALL = fromString("replyToAll");
 
-    /** Static value review for MicrosoftGraphMessageActionFlag. */
+    /**
+     * Static value review for MicrosoftGraphMessageActionFlag.
+     */
     public static final MicrosoftGraphMessageActionFlag REVIEW = fromString("review");
 
     /**
      * Creates a new instance of MicrosoftGraphMessageActionFlag value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -54,18 +77,17 @@ public final class MicrosoftGraphMessageActionFlag extends ExpandableStringEnum<
 
     /**
      * Creates or finds a MicrosoftGraphMessageActionFlag from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphMessageActionFlag.
      */
-    @JsonCreator
     public static MicrosoftGraphMessageActionFlag fromString(String name) {
         return fromString(name, MicrosoftGraphMessageActionFlag.class);
     }
 
     /**
      * Gets known MicrosoftGraphMessageActionFlag values.
-     *
+     * 
      * @return known MicrosoftGraphMessageActionFlag values.
      */
     public static Collection<MicrosoftGraphMessageActionFlag> values() {

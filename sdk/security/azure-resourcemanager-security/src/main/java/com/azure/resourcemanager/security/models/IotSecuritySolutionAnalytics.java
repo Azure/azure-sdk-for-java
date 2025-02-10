@@ -7,13 +7,15 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IotSecuritySolutionAnalytics. */
+/**
+ * Resource collection API of IotSecuritySolutionAnalytics.
+ */
 public interface IotSecuritySolutionAnalytics {
     /**
      * Use this method to get IoT security Analytics metrics in an array.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -21,14 +23,14 @@ public interface IotSecuritySolutionAnalytics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Security analytics of your IoT Security solution along with {@link Response}.
      */
-    Response<IoTSecuritySolutionAnalyticsModelList> listWithResponse(
-        String resourceGroupName, String solutionName, Context context);
+    Response<IoTSecuritySolutionAnalyticsModelList> listWithResponse(String resourceGroupName, String solutionName,
+        Context context);
 
     /**
      * Use this method to get IoT security Analytics metrics in an array.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,9 +41,9 @@ public interface IotSecuritySolutionAnalytics {
 
     /**
      * Use this method to get IoT Security Analytics metrics.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,14 +51,14 @@ public interface IotSecuritySolutionAnalytics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security analytics of your IoT Security solution along with {@link Response}.
      */
-    Response<IoTSecuritySolutionAnalyticsModel> getWithResponse(
-        String resourceGroupName, String solutionName, Context context);
+    Response<IoTSecuritySolutionAnalyticsModel> getWithResponse(String resourceGroupName, String solutionName,
+        Context context);
 
     /**
      * Use this method to get IoT Security Analytics metrics.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

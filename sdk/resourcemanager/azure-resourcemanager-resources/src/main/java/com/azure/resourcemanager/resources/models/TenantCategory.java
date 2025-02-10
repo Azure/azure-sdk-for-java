@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Category of the tenant. */
+/**
+ * Category of the tenant.
+ */
 public enum TenantCategory {
-    /** Enum value Home. */
+    /**
+     * Enum value Home.
+     */
     HOME("Home"),
 
-    /** Enum value ProjectedBy. */
+    /**
+     * Enum value ProjectedBy.
+     */
     PROJECTED_BY("ProjectedBy"),
 
-    /** Enum value ManagedBy. */
+    /**
+     * Enum value ManagedBy.
+     */
     MANAGED_BY("ManagedBy");
 
-    /** The actual serialized value for a TenantCategory instance. */
+    /**
+     * The actual serialized value for a TenantCategory instance.
+     */
     private final String value;
 
     TenantCategory(String value) {
@@ -27,11 +34,10 @@ public enum TenantCategory {
 
     /**
      * Parses a serialized value to a TenantCategory instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed TenantCategory object, or null if unable to parse.
      */
-    @JsonCreator
     public static TenantCategory fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum TenantCategory {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

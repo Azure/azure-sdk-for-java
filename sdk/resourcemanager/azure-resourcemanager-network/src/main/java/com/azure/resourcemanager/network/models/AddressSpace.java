@@ -5,19 +5,27 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * AddressSpace contains an array of IP address ranges that can be used by subnets of the virtual network.
  */
 @Fluent
-public final class AddressSpace {
+public final class AddressSpace implements JsonSerializable<AddressSpace> {
     /*
      * A list of address blocks reserved for this virtual network in CIDR notation.
      */
-    @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;
+
+    /*
+     * A list of IPAM Pools allocating IP address prefixes.
+     */
+    private List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations;
 
     /**
      * Creates an instance of AddressSpace class.
@@ -46,10 +54,77 @@ public final class AddressSpace {
     }
 
     /**
+     * Get the ipamPoolPrefixAllocations property: A list of IPAM Pools allocating IP address prefixes.
+     * 
+     * @return the ipamPoolPrefixAllocations value.
+     */
+    public List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations() {
+        return this.ipamPoolPrefixAllocations;
+    }
+
+    /**
+     * Set the ipamPoolPrefixAllocations property: A list of IPAM Pools allocating IP address prefixes.
+     * 
+     * @param ipamPoolPrefixAllocations the ipamPoolPrefixAllocations value to set.
+     * @return the AddressSpace object itself.
+     */
+    public AddressSpace withIpamPoolPrefixAllocations(List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations) {
+        this.ipamPoolPrefixAllocations = ipamPoolPrefixAllocations;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (ipamPoolPrefixAllocations() != null) {
+            ipamPoolPrefixAllocations().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("addressPrefixes", this.addressPrefixes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ipamPoolPrefixAllocations", this.ipamPoolPrefixAllocations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddressSpace from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddressSpace if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddressSpace.
+     */
+    public static AddressSpace fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddressSpace deserializedAddressSpace = new AddressSpace();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("addressPrefixes".equals(fieldName)) {
+                    List<String> addressPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAddressSpace.addressPrefixes = addressPrefixes;
+                } else if ("ipamPoolPrefixAllocations".equals(fieldName)) {
+                    List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations
+                        = reader.readArray(reader1 -> IpamPoolPrefixAllocation.fromJson(reader1));
+                    deserializedAddressSpace.ipamPoolPrefixAllocations = ipamPoolPrefixAllocations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddressSpace;
+        });
     }
 }

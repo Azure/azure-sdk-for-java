@@ -5,28 +5,41 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.StorageBlobDeadLetterDestinationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Information about the storage blob based dead letter destination.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
-@JsonTypeName("StorageBlob")
 @Fluent
 public final class StorageBlobDeadLetterDestination extends DeadLetterDestination {
     /*
+     * Type of the endpoint for the dead letter destination
+     */
+    private DeadLetterEndPointType endpointType = DeadLetterEndPointType.STORAGE_BLOB;
+
+    /*
      * The properties of the Storage Blob based deadletter destination
      */
-    @JsonProperty(value = "properties")
     private StorageBlobDeadLetterDestinationProperties innerProperties;
 
     /**
      * Creates an instance of StorageBlobDeadLetterDestination class.
      */
     public StorageBlobDeadLetterDestination() {
+    }
+
+    /**
+     * Get the endpointType property: Type of the endpoint for the dead letter destination.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public DeadLetterEndPointType endpointType() {
+        return this.endpointType;
     }
 
     /**
@@ -95,9 +108,50 @@ public final class StorageBlobDeadLetterDestination extends DeadLetterDestinatio
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageBlobDeadLetterDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageBlobDeadLetterDestination if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageBlobDeadLetterDestination.
+     */
+    public static StorageBlobDeadLetterDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageBlobDeadLetterDestination deserializedStorageBlobDeadLetterDestination
+                = new StorageBlobDeadLetterDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedStorageBlobDeadLetterDestination.endpointType
+                        = DeadLetterEndPointType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageBlobDeadLetterDestination.innerProperties
+                        = StorageBlobDeadLetterDestinationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageBlobDeadLetterDestination;
+        });
     }
 }

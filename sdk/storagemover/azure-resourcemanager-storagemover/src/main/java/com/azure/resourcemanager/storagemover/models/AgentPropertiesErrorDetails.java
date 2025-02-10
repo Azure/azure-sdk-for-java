@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AgentPropertiesErrorDetails model. */
+/**
+ * The AgentPropertiesErrorDetails model.
+ */
 @Fluent
-public final class AgentPropertiesErrorDetails {
+public final class AgentPropertiesErrorDetails implements JsonSerializable<AgentPropertiesErrorDetails> {
     /*
      * Error code reported by Agent
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Expanded description of reported error code
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of AgentPropertiesErrorDetails class. */
+    /**
+     * Creates an instance of AgentPropertiesErrorDetails class.
+     */
     public AgentPropertiesErrorDetails() {
     }
 
     /**
      * Get the code property: Error code reported by Agent.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +43,7 @@ public final class AgentPropertiesErrorDetails {
 
     /**
      * Set the code property: Error code reported by Agent.
-     *
+     * 
      * @param code the code value to set.
      * @return the AgentPropertiesErrorDetails object itself.
      */
@@ -48,7 +54,7 @@ public final class AgentPropertiesErrorDetails {
 
     /**
      * Get the message property: Expanded description of reported error code.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +63,7 @@ public final class AgentPropertiesErrorDetails {
 
     /**
      * Set the message property: Expanded description of reported error code.
-     *
+     * 
      * @param message the message value to set.
      * @return the AgentPropertiesErrorDetails object itself.
      */
@@ -68,9 +74,48 @@ public final class AgentPropertiesErrorDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPropertiesErrorDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPropertiesErrorDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPropertiesErrorDetails.
+     */
+    public static AgentPropertiesErrorDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPropertiesErrorDetails deserializedAgentPropertiesErrorDetails = new AgentPropertiesErrorDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedAgentPropertiesErrorDetails.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedAgentPropertiesErrorDetails.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPropertiesErrorDetails;
+        });
     }
 }

@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The ContainerCpuUsage model.
  */
 @Fluent
-public final class ContainerCpuUsage {
+public final class ContainerCpuUsage implements JsonSerializable<ContainerCpuUsage> {
     /*
      * The totalUsage property.
      */
-    @JsonProperty(value = "totalUsage")
     private Long totalUsage;
 
     /*
      * The perCpuUsage property.
      */
-    @JsonProperty(value = "perCpuUsage")
     private List<Long> perCpuUsage;
 
     /*
      * The kernelModeUsage property.
      */
-    @JsonProperty(value = "kernelModeUsage")
     private Long kernelModeUsage;
 
     /*
      * The userModeUsage property.
      */
-    @JsonProperty(value = "userModeUsage")
     private Long userModeUsage;
 
     /**
@@ -129,5 +129,51 @@ public final class ContainerCpuUsage {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("totalUsage", this.totalUsage);
+        jsonWriter.writeArrayField("perCpuUsage", this.perCpuUsage, (writer, element) -> writer.writeLong(element));
+        jsonWriter.writeNumberField("kernelModeUsage", this.kernelModeUsage);
+        jsonWriter.writeNumberField("userModeUsage", this.userModeUsage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerCpuUsage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerCpuUsage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerCpuUsage.
+     */
+    public static ContainerCpuUsage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerCpuUsage deserializedContainerCpuUsage = new ContainerCpuUsage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("totalUsage".equals(fieldName)) {
+                    deserializedContainerCpuUsage.totalUsage = reader.getNullable(JsonReader::getLong);
+                } else if ("perCpuUsage".equals(fieldName)) {
+                    List<Long> perCpuUsage = reader.readArray(reader1 -> reader1.getLong());
+                    deserializedContainerCpuUsage.perCpuUsage = perCpuUsage;
+                } else if ("kernelModeUsage".equals(fieldName)) {
+                    deserializedContainerCpuUsage.kernelModeUsage = reader.getNullable(JsonReader::getLong);
+                } else if ("userModeUsage".equals(fieldName)) {
+                    deserializedContainerCpuUsage.userModeUsage = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerCpuUsage;
+        });
     }
 }

@@ -11,17 +11,23 @@ public final class TextFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TextFormat model = BinaryData.fromString(
-            "{\"type\":\"TextFormat\",\"columnDelimiter\":\"datazwgsoriobije\",\"rowDelimiter\":\"datadye\",\"escapeChar\":\"datanhbokayrgwybrio\",\"quoteChar\":\"dataweoftnorw\",\"nullValue\":\"datagsioc\",\"encodingName\":\"datakmv\",\"treatEmptyAsNull\":\"datanx\",\"skipLineCount\":\"datafffhtjnwos\",\"firstRowAsHeader\":\"datafjxtvlxxzqfc\",\"serializer\":\"datariomxeezwyhj\",\"deserializer\":\"datajiqegmxdbs\",\"\":{\"detsz\":\"datawhpyvdk\",\"ekwuyckyvn\":\"datacanzb\"}}")
+            "{\"type\":\"TextFormat\",\"columnDelimiter\":\"datamgsdaluyckhefrbh\",\"rowDelimiter\":\"datauerbgpxebjl\",\"escapeChar\":\"datacaytujraxdtpryj\",\"quoteChar\":\"datatnsewou\",\"nullValue\":\"datayms\",\"encodingName\":\"datayljurkeposehqqyl\",\"treatEmptyAsNull\":\"datactwjwdsdlzm\",\"skipLineCount\":\"dataerxxxoteehkhowgo\",\"firstRowAsHeader\":\"datavhxowpcbapnpxra\",\"serializer\":\"datawbmpspfeylqloc\",\"deserializer\":\"dataujexayglxrk\",\"\":{\"jfiuofpi\":\"datamzpaslav\",\"kyhydvikmf\":\"dataidzlvssqywjopa\"}}")
             .toObject(TextFormat.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TextFormat model = new TextFormat().withSerializer("datariomxeezwyhj").withDeserializer("datajiqegmxdbs")
-            .withColumnDelimiter("datazwgsoriobije").withRowDelimiter("datadye").withEscapeChar("datanhbokayrgwybrio")
-            .withQuoteChar("dataweoftnorw").withNullValue("datagsioc").withEncodingName("datakmv")
-            .withTreatEmptyAsNull("datanx").withSkipLineCount("datafffhtjnwos")
-            .withFirstRowAsHeader("datafjxtvlxxzqfc");
+        TextFormat model = new TextFormat().withSerializer("datawbmpspfeylqloc")
+            .withDeserializer("dataujexayglxrk")
+            .withColumnDelimiter("datamgsdaluyckhefrbh")
+            .withRowDelimiter("datauerbgpxebjl")
+            .withEscapeChar("datacaytujraxdtpryj")
+            .withQuoteChar("datatnsewou")
+            .withNullValue("datayms")
+            .withEncodingName("datayljurkeposehqqyl")
+            .withTreatEmptyAsNull("datactwjwdsdlzm")
+            .withSkipLineCount("dataerxxxoteehkhowgo")
+            .withFirstRowAsHeader("datavhxowpcbapnpxra");
         model = BinaryData.fromObject(model).toObject(TextFormat.class);
     }
 }

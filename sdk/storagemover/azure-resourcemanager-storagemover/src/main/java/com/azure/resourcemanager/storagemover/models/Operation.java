@@ -6,12 +6,14 @@ package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.resourcemanager.storagemover.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
      * Gets the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
      * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
-     *
+     * 
      * @return the name value.
      */
     String name();
@@ -19,14 +21,14 @@ public interface Operation {
     /**
      * Gets the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
      * operations and "false" for ARM/control-plane operations.
-     *
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
      * Gets the display property: Localized display information for this particular operation.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
@@ -34,7 +36,7 @@ public interface Operation {
     /**
      * Gets the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
      * audit logs UX. Default value is "user,system".
-     *
+     * 
      * @return the origin value.
      */
     Origin origin();
@@ -42,14 +44,14 @@ public interface Operation {
     /**
      * Gets the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
      * only APIs.
-     *
+     * 
      * @return the actionType value.
      */
     ActionType actionType();
 
     /**
      * Gets the inner com.azure.resourcemanager.storagemover.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

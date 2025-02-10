@@ -3,7 +3,7 @@
 
 package com.azure.storage.common.policy;
 
-
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -39,6 +39,8 @@ import java.util.concurrent.TimeoutException;
 public final class RequestRetryPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RequestRetryPolicy.class);
     private final RequestRetryOptions requestRetryOptions;
+    private static final HttpHeaderName X_MS_COPY_SOURCE_ERROR_CODE
+        = HttpHeaderName.fromString("x-ms-copy-source-error-code");
 
     /**
      * Constructs the policy using the retry options.
@@ -53,32 +55,35 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         boolean considerSecondary = (this.requestRetryOptions.getSecondaryHost() != null)
             && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod())
-            || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
+                || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
 
         // Create a buffered version of the request that will be used each retry.
         // The buffering is done here as once the request body has been buffered once it doesn't need to be buffered
         // again as it will be buffered as a read-only buffer.
         HttpRequest originalHttpRequest = context.getHttpRequest();
         BinaryData originalRequestBody = originalHttpRequest.getBodyAsBinaryData();
-        if (requestRetryOptions.getMaxTries() > 1 && originalRequestBody != null
+        if (requestRetryOptions.getMaxTries() > 1
+            && originalRequestBody != null
             && !originalRequestBody.isReplayable()) {
             context.getHttpRequest().setBody(context.getHttpRequest().getBodyAsBinaryData().toReplayableBinaryData());
         }
 
         return this.attemptSync(context, next, originalHttpRequest, considerSecondary, 1, 1, null);
     }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         boolean considerSecondary = (this.requestRetryOptions.getSecondaryHost() != null)
             && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod())
-            || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
+                || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
 
         // Create a buffered version of the request that will be used each retry.
         // The buffering is done here as once the request body has been buffered once it doesn't need to be buffered
         // again as it will be buffered as a read-only buffer.
         HttpRequest originalHttpRequest = context.getHttpRequest();
         BinaryData originalRequestBody = originalHttpRequest.getBodyAsBinaryData();
-        if (requestRetryOptions.getMaxTries() > 1 && originalRequestBody != null
+        if (requestRetryOptions.getMaxTries() > 1
+            && originalRequestBody != null
             && !originalRequestBody.isReplayable()) {
             // Replayable bodies don't require this transformation.
             // TODO (kasobol-msft) Remove this transformation in favor of
@@ -151,6 +156,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             boolean newConsiderSecondary = considerSecondary;
             int statusCode = response.getStatusCode();
 
+            //boolean retry = shouldResponseBeRetried(statusCode, tryingPrimary, response);
             boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary);
             if (!tryingPrimary && statusCode == 404) {
                 newConsiderSecondary = false;
@@ -172,8 +178,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
                         attempt + 1, suppressed);
                 } else {
-                    return responseBody
-                        .ignoreElements()
+                    return responseBody.ignoreElements()
                         .then(attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
                             attempt + 1, suppressed));
                 }
@@ -199,8 +204,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
              * better to optimistically retry instead of failing too soon. A Timeout Exception is a client-side timeout
              * coming from Rx.
              */
-            ExceptionRetryStatus exceptionRetryStatus = shouldErrorBeRetried(throwable, attempt,
-                requestRetryOptions.getMaxTries());
+            ExceptionRetryStatus exceptionRetryStatus
+                = shouldErrorBeRetried(throwable, attempt, requestRetryOptions.getMaxTries());
 
             if (exceptionRetryStatus.canBeRetried) {
                 /*
@@ -253,22 +258,21 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
              * We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound
              * operation until after the retry backoff delay, so we call delaySubscription.
              */
-            HttpResponse response = next.clone().processSync();
+            Mono<HttpResponse> httpResponseMono = Mono.fromCallable(() -> next.clone().processSync());
 
             // Default try timeout is Integer.MAX_VALUE seconds, if it's that don't set a timeout as that's about 68 years
             // and would likely never complete.
             // TODO (alzimmer): Think about not adding this if it's over a certain length, like 1 year.
             if (this.requestRetryOptions.getTryTimeoutDuration().getSeconds() != Integer.MAX_VALUE) {
-                try {
-                    Thread.sleep(this.requestRetryOptions.getTryTimeoutDuration().toMillis());
-                } catch (InterruptedException ie) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(ie));
-                }
+                httpResponseMono = httpResponseMono.timeout(this.requestRetryOptions.getTryTimeoutDuration());
             }
+
+            HttpResponse response = httpResponseMono.block();
 
             boolean newConsiderSecondary = considerSecondary;
             int statusCode = response.getStatusCode();
             boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary);
+            //boolean retry = shouldResponseBeRetried(statusCode, tryingPrimary, response);
             if (!tryingPrimary && statusCode == 404) {
                 newConsiderSecondary = false;
             }
@@ -280,8 +284,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     response.getBodyAsBinaryData().toByteBuffer();
                 }
                 response.close();
-                return attemptSync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
-                        attempt + 1, suppressed);
+                return attemptSync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry, attempt + 1,
+                    suppressed);
 
             }
             return response;
@@ -292,14 +296,15 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
              * desired Flux behavior, so we provide a hint when this is likely the root cause.
              */
             if (throwable instanceof IllegalStateException && attempt > 1) {
-                throw LOGGER.logExceptionAsError((new IllegalStateException("The request failed because the size of the contents of "
-                    + "the provided data did not match the provided data size upon attempting to retry. This is likely "
-                    + "caused by the data not being replayable. To support retries, all Fluxes must produce the same "
-                    + "data for each subscriber. Please ensure this behavior.", throwable)));
+                throw LOGGER.logExceptionAsError(
+                    (new IllegalStateException("The request failed because the size of the contents of "
+                        + "the provided data did not match the provided data size upon attempting to retry. This is likely "
+                        + "caused by the data not being replayable. To support retries, all Fluxes must produce the same "
+                        + "data for each subscriber. Please ensure this behavior.", throwable)));
             }
 
-            ExceptionRetryStatus exceptionRetryStatus = shouldErrorBeRetried(throwable, attempt,
-                requestRetryOptions.getMaxTries());
+            ExceptionRetryStatus exceptionRetryStatus
+                = shouldErrorBeRetried(throwable, attempt, requestRetryOptions.getMaxTries());
 
             if (exceptionRetryStatus.canBeRetried) {
                 /*
@@ -340,7 +345,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     /*
      * Update secondary host on request URL if not trying primary URL.
      */
-    private static void updateUrlToSecondaryHost(boolean tryingPrimary, String secondaryHost, HttpPipelineCallContext context) {
+    private static void updateUrlToSecondaryHost(boolean tryingPrimary, String secondaryHost,
+        HttpPipelineCallContext context) {
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             builder.setHost(secondaryHost);
@@ -379,14 +385,27 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         return new ExceptionRetryStatus(false, unwrappedThrowable);
     }
 
+    //static boolean shouldResponseBeRetried(int statusCode, boolean isPrimary, HttpResponse response) {
+    /*
+     * Retry the request if the server had an error (500), was unavailable (503), or requested a backoff (429),
+     * or if the secondary was being tried and the resources didn't exist there (404). Only the secondary can retry
+     * if the resource wasn't found as there may be a delay in replication from the primary.
+     */
+    //boolean headerRetry = false;
+    //boolean statusCodeRetry = (statusCode == 429 || statusCode == 500 || statusCode == 503) || (!isPrimary && statusCode == 404);
+    //if (response != null && response.getHeaders() != null) {
+    //String headerValue = response.getHeaders().getValue(X_MS_COPY_SOURCE_ERROR_CODE);
+    //if (headerValue != null) {
+    //headerRetry = ("429".equals(headerValue) || "500".equals(headerValue) || "503".equals(headerValue))
+    //|| (!isPrimary && "404".equals(headerValue));
+    //}
+
+    //}
+    //return statusCodeRetry || headerRetry;
+    //}
+
     static boolean shouldStatusCodeBeRetried(int statusCode, boolean isPrimary) {
-        /*
-         * Retry the request if the server had an error (500), was unavailable (503), or requested a backoff (429),
-         * or if the secondary was being tried and the resources didn't exist there (404). Only the secondary can retry
-         * if the resource wasn't found as there may be a delay in replication from the primary.
-         */
-        return (statusCode == 429 || statusCode == 500 || statusCode == 503)
-            || (!isPrimary && statusCode == 404);
+        return (statusCode == 429 || statusCode == 500 || statusCode == 503) || (!isPrimary && statusCode == 404);
     }
 
     static final class ExceptionRetryStatus {

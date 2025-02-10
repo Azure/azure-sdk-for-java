@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.VirtualNetwor
 public final class VirtualNetworkSubnetUsageResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkSubnetUsageResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"ev\",\"subscriptionId\":\"ggzfbu\",\"delegatedSubnetsUsage\":[{\"subnetName\":\"faxkffeii\",\"usage\":8222423909788566095},{\"subnetName\":\"ez\",\"usage\":9115490458846755949},{\"subnetName\":\"mzsb\",\"usage\":3522178877698458456},{\"subnetName\":\"igrxwburvjxxjn\",\"usage\":8439639335334985317}]}")
-                .toObject(VirtualNetworkSubnetUsageResultInner.class);
+        VirtualNetworkSubnetUsageResultInner model = BinaryData.fromString(
+            "{\"location\":\"fyexfwhy\",\"subscriptionId\":\"i\",\"delegatedSubnetsUsage\":[{\"subnetName\":\"dcsi\",\"usage\":8188348657353643150},{\"subnetName\":\"amdecte\",\"usage\":485478669807006997},{\"subnetName\":\"cj\",\"usage\":5437486908155623563}]}")
+            .toObject(VirtualNetworkSubnetUsageResultInner.class);
     }
 
     @org.junit.jupiter.api.Test

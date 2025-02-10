@@ -5,13 +5,14 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -20,14 +21,54 @@ import java.util.UUID;
 @Fluent
 public final class PostgreSqlDataFeed extends DataFeedDetail {
     /*
+     * data source type
+     */
+    private DataSourceType dataSourceType = DataSourceType.POSTGRE_SQL;
+
+    /*
      * The dataSourceParameter property.
      */
     private SqlSourceParameter dataSourceParameter;
+
+    /*
+     * data feed created time
+     */
+    private OffsetDateTime createdTime;
+
+    /*
+     * data feed status
+     */
+    private EntityStatus status;
+
+    /*
+     * data feed creator
+     */
+    private String creator;
+
+    /*
+     * the query user is one of data feed administrator or not
+     */
+    private Boolean isAdmin;
+
+    /*
+     * data feed unique id
+     */
+    private UUID dataFeedId;
 
     /**
      * Creates an instance of PostgreSqlDataFeed class.
      */
     public PostgreSqlDataFeed() {
+    }
+
+    /**
+     * Get the dataSourceType property: data source type.
+     * 
+     * @return the dataSourceType value.
+     */
+    @Override
+    public DataSourceType getDataSourceType() {
+        return this.dataSourceType;
     }
 
     /**
@@ -48,6 +89,56 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
     public PostgreSqlDataFeed setDataSourceParameter(SqlSourceParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
+    }
+
+    /**
+     * Get the createdTime property: data feed created time.
+     * 
+     * @return the createdTime value.
+     */
+    @Override
+    public OffsetDateTime getCreatedTime() {
+        return this.createdTime;
+    }
+
+    /**
+     * Get the status property: data feed status.
+     * 
+     * @return the status value.
+     */
+    @Override
+    public EntityStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Get the creator property: data feed creator.
+     * 
+     * @return the creator value.
+     */
+    @Override
+    public String getCreator() {
+        return this.creator;
+    }
+
+    /**
+     * Get the isAdmin property: the query user is one of data feed administrator or not.
+     * 
+     * @return the isAdmin value.
+     */
+    @Override
+    public Boolean isAdmin() {
+        return this.isAdmin;
+    }
+
+    /**
+     * Get the dataFeedId property: data feed unique id.
+     * 
+     * @return the dataFeedId value.
+     */
+    @Override
+    public UUID getDataFeedId() {
+        return this.dataFeedId;
     }
 
     /**
@@ -266,14 +357,18 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType", Objects.toString(DataSourceType.POSTGRE_SQL, null));
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
-        jsonWriter.writeStringField("granularityName", Objects.toString(getGranularityName(), null));
+        jsonWriter.writeStringField("granularityName",
+            getGranularityName() == null ? null : getGranularityName().toString());
         jsonWriter.writeArrayField("metrics", getMetrics(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("dataStartFrom", Objects.toString(getDataStartFrom(), null));
+        jsonWriter.writeStringField("dataStartFrom",
+            getDataStartFrom() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getDataStartFrom()));
         jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
         jsonWriter.writeNumberField("granularityAmount", getGranularityAmount());
         jsonWriter.writeArrayField("dimension", getDimension(), (writer, element) -> writer.writeJson(element));
@@ -282,20 +377,24 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
         jsonWriter.writeNumberField("maxConcurrency", getMaxConcurrency());
         jsonWriter.writeNumberField("minRetryIntervalInSeconds", getMinRetryIntervalInSeconds());
         jsonWriter.writeNumberField("stopRetryAfterInSeconds", getStopRetryAfterInSeconds());
-        jsonWriter.writeStringField("needRollup", Objects.toString(getNeedRollup(), null));
-        jsonWriter.writeStringField("rollUpMethod", Objects.toString(getRollUpMethod(), null));
+        jsonWriter.writeStringField("needRollup", getNeedRollup() == null ? null : getNeedRollup().toString());
+        jsonWriter.writeStringField("rollUpMethod", getRollUpMethod() == null ? null : getRollUpMethod().toString());
         jsonWriter.writeArrayField("rollUpColumns", getRollUpColumns(),
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("allUpIdentification", getAllUpIdentification());
-        jsonWriter.writeStringField("fillMissingPointType", Objects.toString(getFillMissingPointType(), null));
+        jsonWriter.writeStringField("fillMissingPointType",
+            getFillMissingPointType() == null ? null : getFillMissingPointType().toString());
         jsonWriter.writeNumberField("fillMissingPointValue", getFillMissingPointValue());
-        jsonWriter.writeStringField("viewMode", Objects.toString(getViewMode(), null));
+        jsonWriter.writeStringField("viewMode", getViewMode() == null ? null : getViewMode().toString());
         jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("viewers", getViewers(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("actionLinkTemplate", getActionLinkTemplate());
-        jsonWriter.writeStringField("authenticationType", Objects.toString(getAuthenticationType(), null));
+        jsonWriter.writeStringField("authenticationType",
+            getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
+        jsonWriter.writeStringField("dataSourceType",
+            this.dataSourceType == null ? null : this.dataSourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -305,8 +404,7 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
      * @param jsonReader The JsonReader being read.
      * @return An instance of PostgreSqlDataFeed if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PostgreSqlDataFeed.
      */
     public static PostgreSqlDataFeed fromJson(JsonReader jsonReader) throws IOException {
@@ -316,14 +414,7 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceType".equals(fieldName)) {
-                    String dataSourceType = reader.getString();
-                    if (!"PostgreSql".equals(dataSourceType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceType' was expected to be non-null and equal to 'PostgreSql'. The found 'dataSourceType' was '"
-                                + dataSourceType + "'.");
-                    }
-                } else if ("dataFeedName".equals(fieldName)) {
+                if ("dataFeedName".equals(fieldName)) {
                     deserializedPostgreSqlDataFeed.setDataFeedName(reader.getString());
                 } else if ("granularityName".equals(fieldName)) {
                     deserializedPostgreSqlDataFeed.setGranularityName(Granularity.fromString(reader.getString()));
@@ -331,11 +422,11 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
                     List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
                     deserializedPostgreSqlDataFeed.setMetrics(metrics);
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedPostgreSqlDataFeed.setDataStartFrom(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedPostgreSqlDataFeed.setDataStartFrom(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("dataFeedId".equals(fieldName)) {
-                    deserializedPostgreSqlDataFeed
-                        .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedPostgreSqlDataFeed.dataFeedId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedPostgreSqlDataFeed.setDataFeedDescription(reader.getString());
                 } else if ("granularityAmount".equals(fieldName)) {
@@ -378,14 +469,14 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
                     List<String> viewers = reader.readArray(reader1 -> reader1.getString());
                     deserializedPostgreSqlDataFeed.setViewers(viewers);
                 } else if ("isAdmin".equals(fieldName)) {
-                    deserializedPostgreSqlDataFeed.setIsAdmin(reader.getNullable(JsonReader::getBoolean));
+                    deserializedPostgreSqlDataFeed.isAdmin = reader.getNullable(JsonReader::getBoolean);
                 } else if ("creator".equals(fieldName)) {
-                    deserializedPostgreSqlDataFeed.setCreator(reader.getString());
+                    deserializedPostgreSqlDataFeed.creator = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedPostgreSqlDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
+                    deserializedPostgreSqlDataFeed.status = EntityStatus.fromString(reader.getString());
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedPostgreSqlDataFeed.setCreatedTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedPostgreSqlDataFeed.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedPostgreSqlDataFeed.setActionLinkTemplate(reader.getString());
                 } else if ("authenticationType".equals(fieldName)) {
@@ -395,6 +486,8 @@ public final class PostgreSqlDataFeed extends DataFeedDetail {
                     deserializedPostgreSqlDataFeed.setCredentialId(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedPostgreSqlDataFeed.dataSourceParameter = SqlSourceParameter.fromJson(reader);
+                } else if ("dataSourceType".equals(fieldName)) {
+                    deserializedPostgreSqlDataFeed.dataSourceType = DataSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

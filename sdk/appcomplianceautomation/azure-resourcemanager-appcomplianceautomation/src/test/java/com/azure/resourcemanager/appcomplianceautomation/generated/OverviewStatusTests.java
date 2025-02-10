@@ -6,28 +6,18 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.OverviewStatus;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OverviewStatusTests {
-    @Test
-    public void testDeserialize() {
-        OverviewStatus model =
-            BinaryData
-                .fromString("{\"passedCount\":1951665736,\"failedCount\":542784283,\"manualCount\":2110455897}")
-                .toObject(OverviewStatus.class);
-        Assertions.assertEquals(1951665736, model.passedCount());
-        Assertions.assertEquals(542784283, model.failedCount());
-        Assertions.assertEquals(2110455897, model.manualCount());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OverviewStatus model = BinaryData.fromString(
+            "{\"passedCount\":1547255739,\"failedCount\":153812125,\"manualCount\":68819251,\"notApplicableCount\":301752241,\"pendingCount\":1451837179}")
+            .toObject(OverviewStatus.class);
     }
 
-    @Test
-    public void testSerialize() {
-        OverviewStatus model =
-            new OverviewStatus().withPassedCount(1951665736).withFailedCount(542784283).withManualCount(2110455897);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OverviewStatus model = new OverviewStatus();
         model = BinaryData.fromObject(model).toObject(OverviewStatus.class);
-        Assertions.assertEquals(1951665736, model.passedCount());
-        Assertions.assertEquals(542784283, model.failedCount());
-        Assertions.assertEquals(2110455897, model.manualCount());
     }
 }

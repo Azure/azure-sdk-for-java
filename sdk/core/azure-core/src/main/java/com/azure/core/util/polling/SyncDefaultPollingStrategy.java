@@ -78,10 +78,10 @@ public final class SyncDefaultPollingStrategy<T, U> implements SyncPollingStrate
      */
     public SyncDefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer,
         Context context) {
-        this.chainedPollingStrategy = new SyncChainedPollingStrategy<>(Arrays.asList(
-            new SyncOperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, context),
-            new SyncLocationPollingStrategy<>(httpPipeline, endpoint, serializer, context),
-            new SyncStatusCheckPollingStrategy<>(serializer)));
+        this.chainedPollingStrategy = new SyncChainedPollingStrategy<>(
+            Arrays.asList(new SyncOperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, context),
+                new SyncLocationPollingStrategy<>(httpPipeline, endpoint, serializer, context),
+                new SyncStatusCheckPollingStrategy<>(serializer)));
     }
 
     /**
@@ -94,10 +94,10 @@ public final class SyncDefaultPollingStrategy<T, U> implements SyncPollingStrate
      */
     public SyncDefaultPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
         Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
-        this.chainedPollingStrategy = new SyncChainedPollingStrategy<>(Arrays.asList(
-            new SyncOperationResourcePollingStrategy<>(null, pollingStrategyOptions),
-            new SyncLocationPollingStrategy<>(pollingStrategyOptions),
-            new SyncStatusCheckPollingStrategy<>(pollingStrategyOptions.getSerializer())));
+        this.chainedPollingStrategy = new SyncChainedPollingStrategy<>(
+            Arrays.asList(new SyncOperationResourcePollingStrategy<>(null, pollingStrategyOptions),
+                new SyncLocationPollingStrategy<>(pollingStrategyOptions),
+                new SyncStatusCheckPollingStrategy<>(pollingStrategyOptions.getSerializer())));
     }
 
     @Override

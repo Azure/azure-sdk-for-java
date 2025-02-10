@@ -4,10 +4,12 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.CustomMatcher;
@@ -18,6 +20,8 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingLabel;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -36,10 +40,11 @@ import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -53,11 +58,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     private ConfigurationAsyncClient client;
 
     @Override
-    protected String getTestName() {
-        return "";
-    }
-
-    @Override
     protected void beforeTest() {
         beforeTestSetup();
     }
@@ -66,21 +66,24 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
         client.listConfigurationSettings(new SettingSelector().setKeyFilter(keyPrefix + "*"))
-                .flatMap(configurationSetting -> {
-                    logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
-                    Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.setReadOnlyWithResponse(configurationSetting, false) : Mono.empty();
-                    return unlock.then(client.deleteConfigurationSettingWithResponse(configurationSetting, false));
-                })
-                .blockLast();
+            .flatMap(configurationSetting -> {
+                logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(),
+                    configurationSetting.getLabel(), configurationSetting.isReadOnly());
+                Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly()
+                    ? client.setReadOnlyWithResponse(configurationSetting, false)
+                    : Mono.empty();
+                return unlock.then(client.deleteConfigurationSettingWithResponse(configurationSetting, false));
+            })
+            .blockLast();
 
         logger.info("Finished cleaning up values.");
     }
 
     private ConfigurationAsyncClient getConfigurationAsyncClient(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion) {
-        return clientSetup(credentials -> {
-            ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
+        return clientSetup((credentials, endpoint) -> {
+            ConfigurationClientBuilder builder = new ConfigurationClientBuilder().credential(credentials)
+                .endpoint(endpoint)
                 .serviceVersion(serviceVersion);
 
             builder = setHttpClient(httpClient, builder);
@@ -88,7 +91,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             if (interceptorManager.isRecordMode()) {
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             } else if (interceptorManager.isPlaybackMode()) {
-                interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
+                interceptorManager.addMatchers(Collections.singletonList(
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token", "If-Match"))));
+            }
+
+            // Disable `$.key` snanitizer
+            if (!interceptorManager.isLiveMode()) {
+                interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
             }
             return builder.buildAsyncClient();
         });
@@ -102,9 +111,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertAsync().build();
     }
 
     /**
@@ -115,8 +122,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        addConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
+        addConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
     }
@@ -125,11 +132,9 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addConfigurationSettingConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        addConfigurationSettingRunner(
-            (expected) ->
-                StepVerifier.create(client.addConfigurationSetting(expected))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete());
+        addConfigurationSettingRunner((expected) -> StepVerifier.create(client.addConfigurationSetting(expected))
+            .assertNext(response -> assertConfigurationEquals(expected, response))
+            .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -138,11 +143,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         addFeatureFlagConfigurationSettingRunner(
-            (expected) ->
-                StepVerifier.create(client.addConfigurationSetting(expected))
-                    .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
-                        (FeatureFlagConfigurationSetting) response))
-                    .verifyComplete());
+            (expected) -> StepVerifier.create(client.addConfigurationSetting(expected))
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -151,11 +155,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         addSecretReferenceConfigurationSettingRunner(
-            (expected) ->
-                StepVerifier.create(client.addConfigurationSetting(expected))
-                    .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
-                        (SecretReferenceConfigurationSetting) response))
-                    .verifyComplete());
+            (expected) -> StepVerifier.create(client.addConfigurationSetting(expected))
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
+                .verifyComplete());
     }
 
     /**
@@ -177,7 +180,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void addConfigurationSettingEmptyValue(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         addConfigurationSettingEmptyValueRunner((setting) -> {
-            StepVerifier.create(client.addConfigurationSetting(setting.getKey(), setting.getLabel(), setting.getValue()))
+            StepVerifier
+                .create(client.addConfigurationSetting(setting.getKey(), setting.getLabel(), setting.getValue()))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
                 .verifyComplete();
 
@@ -210,13 +214,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addExistingSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        addExistingSettingRunner((expected) ->
-            StepVerifier.create(
-                client.addConfigurationSettingWithResponse(expected)
-                    .then(
-                        client.addConfigurationSettingWithResponse(expected)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex,
-                    HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED)));
+        addExistingSettingRunner((expected) -> StepVerifier
+            .create(client.addConfigurationSettingWithResponse(expected)
+                .then(client.addConfigurationSettingWithResponse(expected)))
+            .verifyErrorSatisfies(
+                ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED)));
     }
 
     /**
@@ -227,21 +229,20 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void setConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        setConfigurationSettingRunner((expected, update) ->
-            StepVerifier.create(client.setConfigurationSettingWithResponse(expected, false))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete());
+        setConfigurationSettingRunner(
+            (expected, update) -> StepVerifier.create(client.setConfigurationSettingWithResponse(expected, false))
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void setConfigurationSettingConvenience(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion) {
+    public void setConfigurationSettingConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         setConfigurationSettingRunner(
             (expected, update) -> StepVerifier.create(client.setConfigurationSetting(expected))
-                                      .assertNext(response -> assertConfigurationEquals(expected, response))
-                                      .verifyComplete());
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -251,10 +252,9 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         setFeatureFlagConfigurationSettingRunner(
             (expected, update) -> StepVerifier.create(client.setConfigurationSetting(expected))
-                                      .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(
-                                          expected,
-                                          (FeatureFlagConfigurationSetting) response))
-                                      .verifyComplete());
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -262,31 +262,27 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void featureFlagConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        featureFlagConfigurationSettingUnknownAttributesArePreservedRunner(
-            (expected) -> {
-                StepVerifier.create(client.addConfigurationSetting(expected))
-                    .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(
-                        expected,
-                        (FeatureFlagConfigurationSetting) response))
-                    .verifyComplete();
-                StepVerifier.create(client.setConfigurationSetting(expected))
-                    .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(
-                        expected,
-                        (FeatureFlagConfigurationSetting) response))
-                    .verifyComplete();
-                StepVerifier.create(client.getConfigurationSetting(expected))
-                    .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(
-                        expected,
-                        (FeatureFlagConfigurationSetting) response))
-                    .verifyComplete();
-                StepVerifier.create(client.deleteConfigurationSetting(expected))
-                    .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
-                        (FeatureFlagConfigurationSetting) response))
-                    .verifyComplete();
-                StepVerifier.create(client.getConfigurationSetting(expected))
-                    .verifyErrorSatisfies(
-                        ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
-            });
+        featureFlagConfigurationSettingUnknownAttributesArePreservedRunner((expected) -> {
+            StepVerifier.create(client.addConfigurationSetting(expected))
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete();
+            StepVerifier.create(client.setConfigurationSetting(expected))
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete();
+            StepVerifier.create(client.getConfigurationSetting(expected))
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete();
+            StepVerifier.create(client.deleteConfigurationSetting(expected))
+                .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                    (FeatureFlagConfigurationSetting) response))
+                .verifyComplete();
+            StepVerifier.create(client.getConfigurationSetting(expected))
+                .verifyErrorSatisfies(
+                    ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -296,10 +292,9 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         setSecretReferenceConfigurationSettingRunner(
             (expected, update) -> StepVerifier.create(client.setConfigurationSetting(expected))
-                                      .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(
-                                          expected,
-                                          (SecretReferenceConfigurationSetting) response))
-                                      .verifyComplete());
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
+                .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -307,31 +302,27 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void secretReferenceConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        secretReferenceConfigurationSettingUnknownAttributesArePreservedRunner(
-            (expected) -> {
-                StepVerifier.create(client.addConfigurationSetting(expected))
-                    .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(
-                        expected,
-                        (SecretReferenceConfigurationSetting) response))
-                    .verifyComplete();
-                StepVerifier.create(client.setConfigurationSetting(expected))
-                    .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(
-                        expected,
-                        (SecretReferenceConfigurationSetting) response))
-                    .verifyComplete();
-                StepVerifier.create(client.getConfigurationSetting(expected))
-                    .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(
-                        expected,
-                        (SecretReferenceConfigurationSetting) response))
-                    .verifyComplete();
-                StepVerifier.create(client.deleteConfigurationSetting(expected))
-                    .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
-                        (SecretReferenceConfigurationSetting) response))
-                    .verifyComplete();
-                StepVerifier.create(client.getConfigurationSetting(expected))
-                    .verifyErrorSatisfies(
-                        ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
-            });
+        secretReferenceConfigurationSettingUnknownAttributesArePreservedRunner((expected) -> {
+            StepVerifier.create(client.addConfigurationSetting(expected))
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
+                .verifyComplete();
+            StepVerifier.create(client.setConfigurationSetting(expected))
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
+                .verifyComplete();
+            StepVerifier.create(client.getConfigurationSetting(expected))
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
+                .verifyComplete();
+            StepVerifier.create(client.deleteConfigurationSetting(expected))
+                .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) response))
+                .verifyComplete();
+            StepVerifier.create(client.getConfigurationSetting(expected))
+                .verifyErrorSatisfies(
+                    ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
+        });
     }
 
     /**
@@ -346,20 +337,23 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         setConfigurationSettingIfETagRunner((initial, update) -> {
             // This ETag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial.setETag("badEtag"), true))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(
+                    ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
-            final String etag = client.addConfigurationSettingWithResponse(initial).block().getValue().getETag();
-
-            StepVerifier.create(client.setConfigurationSettingWithResponse(update.setETag(etag), true))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
-                    .verifyComplete();
+            StepVerifier
+                .create(client.addConfigurationSettingWithResponse(initial)
+                    .map(Response::getValue)
+                    .flatMap(val -> client.setConfigurationSettingWithResponse(update.setETag(val.getETag()), true)))
+                .assertNext(response -> assertConfigurationEquals(update, response))
+                .verifyComplete();
 
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial, true))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(
+                    ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(update, null, false))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
-                    .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(update, response))
+                .verifyComplete();
         });
     }
 
@@ -414,24 +408,21 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void getConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        getConfigurationSettingRunner((expected) ->
-            StepVerifier.create(
-                client.addConfigurationSettingWithResponse(expected)
-                    .then(client.getConfigurationSettingWithResponse(expected, null, false)))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete());
+        getConfigurationSettingRunner((expected) -> StepVerifier
+            .create(client.addConfigurationSettingWithResponse(expected)
+                .then(client.getConfigurationSettingWithResponse(expected, null, false)))
+            .assertNext(response -> assertConfigurationEquals(expected, response))
+            .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void getConfigurationSettingConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        getConfigurationSettingRunner(
-            (expected) -> StepVerifier.create(
-                client.addConfigurationSetting(expected).then(
-                    client.getConfigurationSetting(expected)))
-                              .assertNext(response -> assertConfigurationEquals(expected, response))
-                              .verifyComplete());
+        getConfigurationSettingRunner((expected) -> StepVerifier
+            .create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
+            .assertNext(response -> assertConfigurationEquals(expected, response))
+            .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -439,13 +430,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void getFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        getFeatureFlagConfigurationSettingRunner(
-            (expected) -> StepVerifier.create(
-                client.addConfigurationSetting(expected).then(
-                    client.getConfigurationSetting(expected)))
-                              .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
-                                  (FeatureFlagConfigurationSetting) response))
-                              .verifyComplete());
+        getFeatureFlagConfigurationSettingRunner((expected) -> StepVerifier
+            .create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
+            .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                (FeatureFlagConfigurationSetting) response))
+            .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -453,13 +442,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void getSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        getSecretReferenceConfigurationSettingRunner(
-            (expected) -> StepVerifier.create(
-                client.addConfigurationSetting(expected).then(
-                    client.getConfigurationSetting(expected)))
-                              .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
-                                  (SecretReferenceConfigurationSetting) response))
-                              .verifyComplete());
+        getSecretReferenceConfigurationSettingRunner((expected) -> StepVerifier
+            .create(client.addConfigurationSetting(expected).then(client.getConfigurationSetting(expected)))
+            .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                (SecretReferenceConfigurationSetting) response))
+            .verifyComplete());
     }
 
     /**
@@ -470,19 +457,22 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void getConfigurationSettingNotFound(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String key = getKey();
-        final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().setKey(key).setValue("myNeverRetreivedValue");
-        final ConfigurationSetting nonExistentLabel = new ConfigurationSetting().setKey(key).setLabel("myNonExistentLabel");
+        final ConfigurationSetting neverRetrievedConfiguration
+            = new ConfigurationSetting().setKey(key).setValue("myNeverRetreivedValue");
+        final ConfigurationSetting nonExistentLabel
+            = new ConfigurationSetting().setKey(key).setLabel("myNonExistentLabel");
 
         StepVerifier.create(client.addConfigurationSettingWithResponse(neverRetrievedConfiguration))
             .assertNext(response -> assertConfigurationEquals(neverRetrievedConfiguration, response))
             .verifyComplete();
 
         StepVerifier.create(client.getConfigurationSetting("myNonExistentKey", null, null))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
-
+            .verifyErrorSatisfies(
+                ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
 
         StepVerifier.create(client.getConfigurationSettingWithResponse(nonExistentLabel, null, false))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
+            .verifyErrorSatisfies(
+                ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
@@ -495,7 +485,9 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void deleteConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         deleteConfigurationSettingRunner((expected) -> {
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected).then(client.getConfigurationSettingWithResponse(expected, null, false)))
+            StepVerifier
+                .create(client.addConfigurationSettingWithResponse(expected)
+                    .then(client.getConfigurationSettingWithResponse(expected, null, false)))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete();
 
@@ -504,7 +496,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(expected, null, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
+                .verifyErrorSatisfies(
+                    ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -580,21 +573,29 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void deleteConfigurationSettingNotFound(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String key = getKey();
-        final ConfigurationSetting neverDeletedConfiguration = new ConfigurationSetting().setKey(key).setValue("myNeverDeletedValue");
+        final ConfigurationSetting neverDeletedConfiguration
+            = new ConfigurationSetting().setKey(key).setValue("myNeverDeletedValue");
 
         StepVerifier.create(client.addConfigurationSettingWithResponse(neverDeletedConfiguration))
             .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguration, response))
             .verifyComplete();
 
-        StepVerifier.create(client.deleteConfigurationSettingWithResponse(new ConfigurationSetting().setKey("myNonExistentKey"), false))
+        StepVerifier
+            .create(client.deleteConfigurationSettingWithResponse(new ConfigurationSetting().setKey("myNonExistentKey"),
+                false))
             .assertNext(response -> assertConfigurationEquals(null, response, HttpURLConnection.HTTP_NO_CONTENT))
             .verifyComplete();
 
-        StepVerifier.create(client.deleteConfigurationSettingWithResponse(new ConfigurationSetting().setKey(neverDeletedConfiguration.getKey()).setLabel("myNonExistentLabel"), false))
+        StepVerifier
+            .create(client.deleteConfigurationSettingWithResponse(
+                new ConfigurationSetting().setKey(neverDeletedConfiguration.getKey()).setLabel("myNonExistentLabel"),
+                false))
             .assertNext(response -> assertConfigurationEquals(null, response, HttpURLConnection.HTTP_NO_CONTENT))
             .verifyComplete();
 
-        StepVerifier.create(client.getConfigurationSetting(neverDeletedConfiguration.getKey(), neverDeletedConfiguration.getLabel(), null))
+        StepVerifier
+            .create(client.getConfigurationSetting(neverDeletedConfiguration.getKey(),
+                neverDeletedConfiguration.getLabel(), null))
             .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguration, response))
             .verifyComplete();
     }
@@ -608,22 +609,26 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void deleteConfigurationSettingWithETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         deleteConfigurationSettingWithETagRunner((initial, update) -> {
-            final ConfigurationSetting initiallyAddedConfig = client.addConfigurationSettingWithResponse(initial).block().getValue();
-            final ConfigurationSetting updatedConfig = client.setConfigurationSettingWithResponse(update, true).block().getValue();
+            final ConfigurationSetting initiallyAddedConfig
+                = client.addConfigurationSettingWithResponse(initial).block().getValue();
+            final ConfigurationSetting updatedConfig
+                = client.setConfigurationSettingWithResponse(update, true).block().getValue();
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(initial, null, false))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
             StepVerifier.create(client.deleteConfigurationSettingWithResponse(initiallyAddedConfig, true))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(
+                    ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.deleteConfigurationSettingWithResponse(updatedConfig, true))
                 .assertNext(response -> assertConfigurationEquals(update, response))
                 .verifyComplete();
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(initial, null, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
+                .verifyErrorSatisfies(
+                    ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -634,8 +639,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void deleteConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.deleteConfigurationSetting(null, null))
-            .verifyError(IllegalArgumentException.class);
+        StepVerifier.create(client.deleteConfigurationSetting(null, null)).verifyError(IllegalArgumentException.class);
         StepVerifier.create(client.deleteConfigurationSettingWithResponse(null, false))
             .verifyError(NullPointerException.class);
     }
@@ -679,7 +683,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void clearReadOnlyWithConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void clearReadOnlyWithConfigurationSetting(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         lockUnlockRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -825,7 +830,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(expected, response))
             .verifyComplete();
 
-        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeyFilter(key).setLabelFilter(label)))
+        StepVerifier
+            .create(client.listConfigurationSettings(new SettingSelector().setKeyFilter(key).setLabelFilter(label)))
             .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
             .verifyComplete();
 
@@ -867,17 +873,16 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listConfigurationSettingsWithNullSelector(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listConfigurationSettingsWithNullSelector(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String key = getKey();
         final String key2 = getKey();
 
         // Delete all existing settings in the resource
-        StepVerifier.create(
-            client.listConfigurationSettings(null)
-                .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
-                .then())
-            .verifyComplete();
+        StepVerifier.create(client.listConfigurationSettings(null)
+            .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+            .then()).verifyComplete();
 
         listWithMultipleKeysRunner(key, key2, (setting, setting2) -> {
             List<ConfigurationSetting> selected = new ArrayList<>();
@@ -921,7 +926,9 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setKeyFilter(key).setLabelFilter(label + "," + label2)))
+            StepVerifier
+                .create(client.listConfigurationSettings(
+                    new SettingSelector().setKeyFilter(key).setLabelFilter(label + "," + label2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
@@ -935,7 +942,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listConfigurationSettingsSelectFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listConfigurationSettingsSelectFields(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         listConfigurationSettingsSelectFieldsRunner((settings, selector) -> {
             final List<Mono<Response<ConfigurationSetting>>> settingsBeingAdded = new ArrayList<>();
@@ -961,7 +969,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         filterValueTest("*" + getKey(), getLabel());
     }
@@ -971,7 +980,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         filterValueTest("*" + getKey() + "*", getLabel());
     }
@@ -981,7 +991,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         filterValueTest(getKey(), "*" + getLabel());
     }
@@ -991,7 +1002,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         filterValueTest(getKey(), "*" + getLabel() + "*");
     }
@@ -1001,35 +1013,41 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listConfigurationSettingsAcceptDateTime(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listConfigurationSettingsAcceptDateTime(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
+        final ConfigurationSetting updated
+            = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
+        final ConfigurationSetting updated2
+            = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setConfigurationSettingWithResponse(original, false))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
-        StepVerifier.create(client.setConfigurationSettingWithResponse(updated, false).delayElement(Duration.ofSeconds(2)))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
+        StepVerifier
+            .create(client.setConfigurationSettingWithResponse(updated, false).delayElement(Duration.ofSeconds(2)))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated2, false))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Gets all versions of this value so we can get the one we want at that particular date.
-        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).collectList().block();
+        List<ConfigurationSetting> revisions
+            = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).collectList().block();
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
 
         // We want to fetch the configuration setting when we first updated its value.
-        SettingSelector options = new SettingSelector().setKeyFilter(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
+        SettingSelector options
+            = new SettingSelector().setKeyFilter(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
         StepVerifier.create(client.listConfigurationSettings(options))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
     }
 
     /**
@@ -1042,36 +1060,42 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
+        final ConfigurationSetting updated
+            = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
+        final ConfigurationSetting updated2
+            = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setConfigurationSettingWithResponse(original, false))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated, false))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated2, false))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Get all revisions for a key, they are listed in descending order.
         StepVerifier.create(client.listRevisions(new SettingSelector().setKeyFilter(keyName)))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
 
         // Verifies that we can select specific fields.
-        StepVerifier.create(client.listRevisions(new SettingSelector().setKeyFilter(keyName).setFields(SettingFields.KEY, SettingFields.ETAG)))
-                .assertNext(response -> validateListRevisions(updated2, response))
-                .assertNext(response -> validateListRevisions(updated, response))
-                .assertNext(response -> validateListRevisions(original, response))
-                .verifyComplete();
+        StepVerifier
+            .create(client.listRevisions(
+                new SettingSelector().setKeyFilter(keyName).setFields(SettingFields.KEY, SettingFields.ETAG)))
+            .assertNext(response -> validateListRevisions(updated2, response))
+            .assertNext(response -> validateListRevisions(updated, response))
+            .assertNext(response -> validateListRevisions(original, response))
+            .verifyComplete();
 
         // Verifies that we have revision list size greater than 0. The count number of revision changes.
-        assertTrue(client.listRevisions(null).toStream().collect(Collectors.toList()).size() > 0);
+        StepVerifier.create(client.listRevisions(null).count())
+            .assertNext(count -> assertTrue(count > 0))
+            .verifyComplete();
     }
 
     /**
@@ -1144,7 +1168,9 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertConfigurationEquals(testInput.get(3), response))
                 .verifyComplete();
 
-            StepVerifier.create(client.listRevisions(new SettingSelector().setKeyFilter(key).setLabelFilter(label + "," + label2)))
+            StepVerifier
+                .create(
+                    client.listRevisions(new SettingSelector().setKeyFilter(key).setLabelFilter(label + "," + label2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
@@ -1164,34 +1190,38 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
-        final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
+        final ConfigurationSetting updated
+            = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
+        final ConfigurationSetting updated2
+            = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setConfigurationSettingWithResponse(original, false))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
-        StepVerifier.create(client.setConfigurationSettingWithResponse(updated, false).delayElement(Duration.ofSeconds(2)))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
+        StepVerifier
+            .create(client.setConfigurationSettingWithResponse(updated, false).delayElement(Duration.ofSeconds(2)))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated2, false))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Gets all versions of this value.
-        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).collectList().block();
+        List<ConfigurationSetting> revisions
+            = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).collectList().block();
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
 
         // We want to fetch all the revisions that existed up and including when the first revision was created.
         // Revisions are returned in descending order from creation date.
-        SettingSelector options = new SettingSelector().setKeyFilter(keyName)
-                                      .setAcceptDatetime(revisions.get(1).getLastModified());
+        SettingSelector options
+            = new SettingSelector().setKeyFilter(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
         StepVerifier.create(client.listRevisions(options))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
     }
 
     /**
@@ -1205,18 +1235,45 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
-            settings.add(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix));
+            settings
+                .add(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix));
         }
 
         for (ConfigurationSetting setting : settings) {
-            StepVerifier.create(client.setConfigurationSetting(setting))
-                .expectNextCount(1)
-                .verifyComplete();
+            StepVerifier.create(client.setConfigurationSetting(setting)).expectNextCount(1).verifyComplete();
         }
 
         SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
-        StepVerifier.create(client.listRevisions(filter))
-            .expectNextCount(numberExpected)
+        StepVerifier.create(client.listRevisions(filter)).expectNextCount(numberExpected).verifyComplete();
+    }
+
+    /**
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
+     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisionsWithPaginationAndRepeatStream(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        final int numberExpected = 50;
+        List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
+        for (int value = 0; value < numberExpected; value++) {
+            ConfigurationSetting setting
+                = new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix);
+            settings.add(setting);
+            StepVerifier.create(client.setConfigurationSetting(setting)).expectNextCount(1).verifyComplete();
+        }
+
+        SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
+
+        PagedFlux<ConfigurationSetting> configurationSettingPagedFlux = client.listRevisions(filter);
+        StepVerifier.create(configurationSettingPagedFlux.count())
+            .assertNext(count -> assertEquals(numberExpected, count))
+            .verifyComplete();
+
+        StepVerifier.create(configurationSettingPagedFlux.count())
+            .assertNext(count -> assertEquals(numberExpected, count))
             .verifyComplete();
     }
 
@@ -1226,58 +1283,28 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listRevisionsWithPaginationAndRepeatStream(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listRevisionsWithPaginationAndRepeatIterator(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
-            ConfigurationSetting setting = new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix);
-            settings.add(setting);
-            StepVerifier.create(client.setConfigurationSetting(setting))
-                .expectNextCount(1)
-                .verifyComplete();
-        }
-
-        SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
-
-        List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
-        List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
-
-        PagedFlux<ConfigurationSetting> configurationSettingPagedFlux = client.listRevisions(filter);
-        configurationSettingPagedFlux.toStream().forEach(configurationSetting -> configurationSettingList1.add(configurationSetting));
-        assertEquals(numberExpected, configurationSettingList1.size());
-
-        configurationSettingPagedFlux.toStream().forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
-        assertEquals(numberExpected, configurationSettingList2.size());
-    }
-
-    /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listRevisionsWithPaginationAndRepeatIterator(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        final int numberExpected = 50;
-        List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
-        for (int value = 0; value < numberExpected; value++) {
-            ConfigurationSetting setting = new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix);
+            ConfigurationSetting setting
+                = new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix);
             settings.add(setting);
             StepVerifier.create(client.setConfigurationSetting(setting)).expectNextCount(1).verifyComplete();
         }
 
         SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
 
-        List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
-        List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
-
         PagedFlux<ConfigurationSetting> configurationSettingPagedFlux = client.listRevisions(filter);
-        configurationSettingPagedFlux.toIterable().forEach(configurationSetting -> configurationSettingList1.add(configurationSetting));
-        assertEquals(numberExpected, configurationSettingList1.size());
+        StepVerifier.create(configurationSettingPagedFlux.count())
+            .assertNext(count -> assertEquals(numberExpected, count))
+            .verifyComplete();
 
-        configurationSettingPagedFlux.toIterable().forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
-        assertEquals(numberExpected, configurationSettingList2.size());
+        StepVerifier.create(configurationSettingPagedFlux.count())
+            .assertNext(count -> assertEquals(numberExpected, count))
+            .verifyComplete();
     }
 
     /**
@@ -1287,12 +1314,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @Disabled("Error code 403 TOO_MANY_REQUESTS https://github.com/Azure/azure-sdk-for-java/issues/36602")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listConfigurationSettingsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listConfigurationSettingsWithPagination(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
-            settings.add(new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix));
+            settings.add(
+                new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix));
         }
 
         for (ConfigurationSetting setting : settings) {
@@ -1301,9 +1330,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix + "-*").setLabelFilter(labelPrefix);
 
-        StepVerifier.create(client.listConfigurationSettings(filter))
-            .expectNextCount(numberExpected)
-            .verifyComplete();
+        StepVerifier.create(client.listConfigurationSettings(filter)).expectNextCount(numberExpected).verifyComplete();
     }
 
     /**
@@ -1312,7 +1339,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void getConfigurationSettingWhenValueNotUpdated(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void getConfigurationSettingWhenValueNotUpdated(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String key = getKey();
         final ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue("myValue");
@@ -1341,11 +1369,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void deleteAllSettings(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        client.listConfigurationSettings(new SettingSelector().setKeyFilter("*"))
-            .flatMap(configurationSetting -> {
-                logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
-                return client.deleteConfigurationSettingWithResponse(configurationSetting, false);
-            }).blockLast();
+        client.listConfigurationSettings(new SettingSelector().setKeyFilter("*")).flatMap(configurationSetting -> {
+            logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(),
+                configurationSetting.getLabel(), configurationSetting.isReadOnly());
+            return client.deleteConfigurationSettingWithResponse(configurationSetting, false);
+        }).blockLast();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1353,14 +1381,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void addHeadersFromContextPolicyTest(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final HttpHeaders headers = getCustomizedHeaders();
-        addHeadersFromContextPolicyRunner(expected ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected)
+        addHeadersFromContextPolicyRunner(expected -> StepVerifier
+            .create(client.addConfigurationSettingWithResponse(expected)
                 .contextWrite(Context.of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)))
-                .assertNext(response -> {
-                    final HttpHeaders requestHeaders = response.getRequest().getHeaders();
-                    assertContainsHeaders(headers, requestHeaders);
-                })
-                .verifyComplete());
+            .assertNext(response -> {
+                final HttpHeaders requestHeaders = response.getRequest().getHeaders();
+                assertContainsHeaders(headers, requestHeaders);
+            })
+            .verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1368,24 +1396,23 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void createSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
+        addConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
 
         createSnapshotRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
 
-            assertEqualsConfigurationSnapshot(name,
-                ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+            assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
+                MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, snapshotResult);
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
@@ -1393,31 +1420,33 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
         });
     }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
+        addConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
 
         createSnapshotRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
 
             assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+                MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, snapshotResult);
 
             // Retrieve a snapshot after creation
-            StepVerifier.create(client.getSnapshotWithResponse(name,
+            StepVerifier
+                .create(client.getSnapshotWithResponse(name,
                     Arrays.asList(SnapshotFields.NAME, SnapshotFields.STATUS, SnapshotFields.FILTERS)))
                 .assertNext(getSnapshot -> {
                     assertEquals(200, getSnapshot.getStatusCode());
@@ -1447,29 +1476,28 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void getSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
+        addConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
 
         createSnapshotRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
 
             assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+                MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, snapshotResult);
 
             // Retrieve a snapshot after creation
             StepVerifier.create(client.getSnapshot(name))
-                .assertNext(getSnapshot -> assertEqualsConfigurationSnapshot(name,
-                    ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, getSnapshot))
+                .assertNext(getSnapshot -> assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY,
+                    filters, SnapshotComposition.KEY, MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, getSnapshot))
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
@@ -1484,31 +1512,31 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void archiveSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
+        addConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
 
         createSnapshotRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
 
-            assertEqualsConfigurationSnapshot(name,
-                ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+            assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
+                MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, snapshotResult);
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            StepVerifier.create(client.archiveSnapshotWithResponse(snapshotResult.getName(),
-                new MatchConditions().setIfMatch(snapshotResult.getETag())))
-                .assertNext(response -> assertConfigurationSnapshotWithResponse(200, name,
-                    ConfigurationSnapshotStatus.ARCHIVED, filters, SnapshotComposition.KEY,
-                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
+            StepVerifier
+                .create(client.archiveSnapshotWithResponse(snapshotResult.getName(),
+                    new MatchConditions().setIfMatch(snapshotResult.getETag())))
+                .assertNext(
+                    response -> assertConfigurationSnapshotWithResponse(200, name, ConfigurationSnapshotStatus.ARCHIVED,
+                        filters, SnapshotComposition.KEY, MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, response))
                 .verifyComplete();
         });
     }
@@ -1518,30 +1546,28 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void archiveSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
+        addConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
 
         createSnapshotRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
 
-            assertEqualsConfigurationSnapshot(name,
-                ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+            assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
+                MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, snapshotResult);
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response -> assertEqualsConfigurationSnapshot(name,
-                    ConfigurationSnapshotStatus.ARCHIVED, filters, SnapshotComposition.KEY,
-                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
+                .assertNext(response -> assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.ARCHIVED,
+                    filters, SnapshotComposition.KEY, MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, response))
                 .verifyComplete();
         });
     }
@@ -1551,24 +1577,23 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void recoverSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
+        addConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
 
         createSnapshotRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
 
-            assertEqualsConfigurationSnapshot(name,
-                ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+            assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
+                MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, snapshotResult);
 
             // Archived the snapshot
             StepVerifier.create(client.archiveSnapshot(name))
@@ -1576,11 +1601,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // Recover the snapshot, it will be deleted automatically when retention period expires.
-            StepVerifier.create(client.recoverSnapshotWithResponse(snapshotResult.getName(),
+            StepVerifier
+                .create(client.recoverSnapshotWithResponse(snapshotResult.getName(),
                     new MatchConditions().setIfMatch(snapshotResult.getETag())))
-                .assertNext(response -> assertConfigurationSnapshotWithResponse(200, name,
-                    ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
+                .assertNext(
+                    response -> assertConfigurationSnapshotWithResponse(200, name, ConfigurationSnapshotStatus.READY,
+                        filters, SnapshotComposition.KEY, MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, response))
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
@@ -1595,23 +1621,23 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void recoverSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
+        addConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
 
         createSnapshotRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
 
             assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+                MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, snapshotResult);
 
             // Archived the snapshot
             StepVerifier.create(client.archiveSnapshot(name))
@@ -1620,9 +1646,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Recover the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.recoverSnapshot(name))
-                .assertNext(response -> assertEqualsConfigurationSnapshot(name,
-                    ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
+                .assertNext(response -> assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY,
+                    filters, SnapshotComposition.KEY, MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, response))
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
@@ -1637,19 +1662,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void listSnapshots(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
 
-        List<ConfigurationSnapshot> allExistingSnapshots = new ArrayList<>();
         client.listSnapshots(new SnapshotSelector().setStatus(ConfigurationSnapshotStatus.READY))
-            .map(snapshot -> allExistingSnapshots.add(snapshot))
+            .flatMap(existSnapshot -> client.archiveSnapshot(existSnapshot.getName()))
             .blockLast();
 
-        // Clean all ready snapshots
-        for (ConfigurationSnapshot existSnapshot : allExistingSnapshots) {
-            client.archiveSnapshot(existSnapshot.getName()).block();
-        }
-
         // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
+        addConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
 
@@ -1657,32 +1676,31 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // Create first snapshot
         createSnapshotRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
             readySnapshots.add(snapshotResult);
 
             assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+                MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, snapshotResult);
         });
         // Create second snapshot
         createSnapshotRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
 
-            assertEqualsConfigurationSnapshot(name,
-                ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+            assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
+                MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, snapshotResult);
 
             // Archived the snapshot
             StepVerifier.create(client.archiveSnapshot(name))
@@ -1693,8 +1711,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // readySnapshots contains only 1 snapshot
         ConfigurationSnapshot readySnapshot = readySnapshots.get(0);
         // List only the snapshot with a specific name
-        StepVerifier.create(client.listSnapshots(
-                new SnapshotSelector().setNameFilter(readySnapshot.getName())))
+        StepVerifier.create(client.listSnapshots(new SnapshotSelector().setNameFilter(readySnapshot.getName())))
             .assertNext(snapshotWithName -> {
                 assertEquals(readySnapshot.getName(), snapshotWithName.getName());
                 assertEquals(readySnapshot.getStatus(), snapshotWithName.getStatus());
@@ -1713,19 +1730,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void listSnapshotsWithFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
 
-        List<ConfigurationSnapshot> allExistingSnapshots = new ArrayList<>();
         client.listSnapshots(new SnapshotSelector().setStatus(ConfigurationSnapshotStatus.READY))
-            .map(snapshot -> allExistingSnapshots.add(snapshot))
+            .flatMap(existSnapshot -> client.archiveSnapshot(existSnapshot.getName()))
             .blockLast();
 
-        // Clean all ready snapshots
-        for (ConfigurationSnapshot existSnapshot : allExistingSnapshots) {
-            client.archiveSnapshot(existSnapshot.getName()).block();
-        }
-
         // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
+        addConfigurationSettingRunner(
+            (expected) -> StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
 
@@ -1733,32 +1744,31 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // Create first snapshot
         createSnapshotRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
             readySnapshots.add(snapshotResult);
 
             assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+                MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, snapshotResult);
         });
         // Create second snapshot
         createSnapshotRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
 
-            assertEqualsConfigurationSnapshot(name,
-                ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+            assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
+                MINIMUM_RETENTION_PERIOD, 1000L, 0L, null, snapshotResult);
 
             // Archived the snapshot
             StepVerifier.create(client.archiveSnapshot(name))
@@ -1769,11 +1779,9 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // readySnapshots contains only 1 snapshot
         ConfigurationSnapshot readySnapshot = readySnapshots.get(0);
         // List only the snapshot with a specific name
-        StepVerifier.create(client.listSnapshots(
-                new SnapshotSelector()
-                    .setNameFilter(readySnapshot.getName())
-                    .setFields(SnapshotFields.NAME, SnapshotFields.FILTERS, SnapshotFields.STATUS)
-            ))
+        StepVerifier
+            .create(client.listSnapshots(new SnapshotSelector().setNameFilter(readySnapshot.getName())
+                .setFields(SnapshotFields.NAME, SnapshotFields.FILTERS, SnapshotFields.STATUS)))
             .assertNext(snapshotFieldFiltered -> {
                 assertEquals(readySnapshot.getName(), snapshotFieldFiltered.getName());
                 assertNotNull(snapshotFieldFiltered.getFilters());
@@ -1817,16 +1825,16 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
 
             assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(15000), Long.valueOf(numberExpected), null, snapshotResult);
+                MINIMUM_RETENTION_PERIOD, 15000L, (long) numberExpected, null, snapshotResult);
 
             StepVerifier.create(client.listConfigurationSettingsForSnapshot(name))
                 .expectNextCount(numberExpected)
@@ -1860,20 +1868,19 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
-            poller.setPollInterval(Duration.ofSeconds(10));
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
 
             assertEqualsConfigurationSnapshot(name, ConfigurationSnapshotStatus.READY, filters, SnapshotComposition.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(15000), Long.valueOf(numberExpected), null, snapshotResult);
+                MINIMUM_RETENTION_PERIOD, 15000L, (long) numberExpected, null, snapshotResult);
 
             StepVerifier.create(client.listConfigurationSettingsForSnapshot(name,
-                    Arrays.asList(SettingFields.KEY, SettingFields.VALUE)))
-                .assertNext(setting -> {
+                Arrays.asList(SettingFields.KEY, SettingFields.VALUE))).assertNext(setting -> {
                     assertNotNull(setting.getKey());
                     assertNotNull(setting.getValue());
                     assertNull(setting.getLabel());
@@ -1882,10 +1889,196 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     assertNull(setting.getETag());
                     assertFalse(setting.isReadOnly());
                     assertTrue(setting.getTags().isEmpty());
-                })
-                .expectNextCount(numberExpected - 1)
-                .verifyComplete();
+                }).expectNextCount(numberExpected - 1).verifyComplete();
 
+            // Archived the snapshot, it will be deleted automatically when retention period expires.
+            StepVerifier.create(client.archiveSnapshot(name))
+                .assertNext(response -> assertEquals(ConfigurationSnapshotStatus.ARCHIVED, response.getStatus()))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSettingsWithPageETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Step 1: Prepare testing data.
+        // Clean all existing settings before this test purpose
+        client.listConfigurationSettings(null)
+            .flatMap(configurationSetting -> client.deleteConfigurationSetting(configurationSetting))
+            .blockLast();
+
+        // Add a few setting to form a page of settings
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(getKey()).setValue("value");
+        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(getKey()).setValue("value");
+        client.setConfigurationSetting(setting).block();
+        client.setConfigurationSetting(setting2).block();
+        // Get all page ETags
+        List<MatchConditions> matchConditionsList = new ArrayList<>();
+        PagedResponse<ConfigurationSetting> pagedResponse = client.listConfigurationSettings(null).byPage().blockLast();
+        matchConditionsList
+            .add(new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
+
+        // Step 2: Test list settings with page ETag
+        // Validation 1: Validate all pages are not modified and return empty list of settings in each page response.
+        // List settings with page ETag
+        StepVerifier
+            .create(client.listConfigurationSettings(new SettingSelector().setMatchConditions(matchConditionsList))
+                .byPage())
+            .assertNext(response -> {
+                // No changes on the server side, so the response should be empty list
+                assertEquals(0, response.getValue().size());
+            })
+            .verifyComplete();
+        // Validation 2: validate the page has the updated setting should be returned
+        // Update a setting
+        final ConfigurationSetting updatedSetting
+            = new ConfigurationSetting().setKey(setting.getKey()).setValue("new value");
+        client.setConfigurationSetting(updatedSetting).block();
+        // List settings with expired page ETag
+        StepVerifier
+            .create(client.listConfigurationSettings(new SettingSelector().setMatchConditions(matchConditionsList))
+                .byPage())
+            .assertNext(response -> {
+                // The page has the updated setting should be returned, so the response should not be empty list
+                assertFalse(response.getValue().isEmpty());
+                // find the updated setting in the list
+                ConfigurationSetting updatedSettingFromResponse = response.getValue()
+                    .stream()
+                    .filter(s -> s.getKey().equals(updatedSetting.getKey()))
+                    .findAny()
+                    .get();
+                assertConfigurationEquals(updatedSetting, updatedSettingFromResponse);
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Clean all existing settings before this test purpose
+        StepVerifier.create(client.listConfigurationSettings(null)
+            .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+            .then()).verifyComplete();
+        // Prepare two settings with different labels
+        List<ConfigurationSetting> preparedSettings
+            = listLabelsRunner(setting -> StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete());
+        ConfigurationSetting setting = preparedSettings.get(0);
+        ConfigurationSetting setting2 = preparedSettings.get(1);
+        // List only the first label var, 'label'
+        String label = setting.getLabel();
+        StepVerifier.create(client.listLabels(new SettingLabelSelector().setNameFilter(label)))
+            .assertNext(actual -> assertEquals(label, actual.getName()))
+            .verifyComplete();
+        // List labels with wildcard label filter
+        String label2 = setting2.getLabel();
+        StepVerifier.create(client.listLabels(new SettingLabelSelector().setNameFilter("label*"))
+            .map(SettingLabel::getName)
+            .collectList()).assertNext(actualLabels -> {
+                assertTrue(actualLabels.contains(label));
+                assertTrue(actualLabels.contains(label2));
+            }).verifyComplete();
+        // List all labels
+        List<SettingLabel> selected = new ArrayList<>();
+        StepVerifier.create(client.listLabels())
+            .consumeNextWith(selected::add)
+            .consumeNextWith(selected::add)
+            .verifyComplete();
+        assertTrue(selected.size() >= 2);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSettingByTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Clean all existing settings before this test purpose
+        StepVerifier.create(client.listConfigurationSettings(null)
+            .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+            .then()).verifyComplete();
+
+        // Prepare two settings with different tags
+        List<ConfigurationSetting> preparedSettings = listSettingByTagsFilterRunner(setting -> {
+            StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+        });
+        ConfigurationSetting setting = preparedSettings.get(0);
+        ConfigurationSetting setting2 = preparedSettings.get(1);
+
+        // List setting by first tags filter, it should return all settings
+        StepVerifier
+            .create(client.listConfigurationSettings(
+                new SettingSelector().setTagsFilter(getTagsFilterInString(setting.getTags()))))
+            .assertNext(response -> assertConfigurationEquals(setting, response))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
+        // List setting by second tags filter, it should return only one setting
+        StepVerifier
+            .create(client.listConfigurationSettings(
+                new SettingSelector().setTagsFilter(getTagsFilterInString(setting2.getTags()))))
+            .assertNext(response -> assertConfigurationEquals(setting2, response))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisionsWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Create 3 revisions of the same key.
+        List<ConfigurationSetting> configurationSettings = listRevisionsWithTagsFilterRunner(setting -> {
+            StepVerifier.create(client.setConfigurationSettingWithResponse(setting, false))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+        });
+
+        ConfigurationSetting original = configurationSettings.get(0);
+
+        // Get all revisions for a key with tags filter, they are listed in descending order.
+        StepVerifier
+            .create(client.listRevisions(new SettingSelector().setKeyFilter(original.getKey())
+                .setTagsFilter(getTagsFilterInString(original.getTags()))))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void createSnapshotWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Clean all existing settings before this test purpose
+        StepVerifier.create(client.listConfigurationSettings(null)
+            .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+            .then()).verifyComplete();
+
+        // Prepare settings before creating a snapshot
+        List<ConfigurationSetting> settings = createSnapshotWithTagsFilterPrepareRunner(setting -> {
+            StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+        });
+        ConfigurationSetting setting = settings.get(0);
+        ConfigurationSetting settingWithTag = settings.get(1);
+        assertTrue(setting.getTags().isEmpty());
+        assertFalse(settingWithTag.getTags().isEmpty());
+
+        createSnapshotWithTagsFilterRunner((name, filters) -> {
+            // Retention period can be setup when creating a snapshot and cannot edit.
+            ConfigurationSnapshot snapshot
+                = new ConfigurationSnapshot(filters).setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller
+                = client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
+            poller.waitForCompletion();
+            ConfigurationSnapshot snapshotResult = poller.getFinalResult();
+            assertEquals(name, snapshotResult.getName());
+
+            // The snapshot should only contain the setting with tags
+            StepVerifier.create(client.listConfigurationSettingsForSnapshot(name))
+                .assertNext(actual -> assertEquals(settingWithTag.getTags(), actual.getTags()))
+                .verifyComplete();
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
                 .assertNext(response -> assertEquals(ConfigurationSnapshotStatus.ARCHIVED, response.getStatus()))
@@ -1900,8 +2093,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * @param labelFilter label filter expression
      */
     private void filterValueTest(String keyFilter, String labelFilter) {
-        listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner(keyFilter, labelFilter, selector ->
-            StepVerifier.create(client.listConfigurationSettings(selector))
+        listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner(keyFilter, labelFilter,
+            selector -> StepVerifier.create(client.listConfigurationSettings(selector))
                 .verifyError(HttpResponseException.class));
     }
 }

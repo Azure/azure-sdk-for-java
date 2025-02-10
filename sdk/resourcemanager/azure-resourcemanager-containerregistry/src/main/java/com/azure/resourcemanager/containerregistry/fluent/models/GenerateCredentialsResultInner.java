@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.TokenPassword;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response from the GenerateCredentials operation. */
+/**
+ * The response from the GenerateCredentials operation.
+ */
 @Fluent
-public final class GenerateCredentialsResultInner {
+public final class GenerateCredentialsResultInner implements JsonSerializable<GenerateCredentialsResultInner> {
     /*
      * The username for a container registry.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * The list of passwords for a container registry.
      */
-    @JsonProperty(value = "passwords")
     private List<TokenPassword> passwords;
 
-    /** Creates an instance of GenerateCredentialsResultInner class. */
+    /**
+     * Creates an instance of GenerateCredentialsResultInner class.
+     */
     public GenerateCredentialsResultInner() {
     }
 
     /**
      * Get the username property: The username for a container registry.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -39,7 +45,7 @@ public final class GenerateCredentialsResultInner {
 
     /**
      * Set the username property: The username for a container registry.
-     *
+     * 
      * @param username the username value to set.
      * @return the GenerateCredentialsResultInner object itself.
      */
@@ -50,7 +56,7 @@ public final class GenerateCredentialsResultInner {
 
     /**
      * Get the passwords property: The list of passwords for a container registry.
-     *
+     * 
      * @return the passwords value.
      */
     public List<TokenPassword> passwords() {
@@ -59,7 +65,7 @@ public final class GenerateCredentialsResultInner {
 
     /**
      * Set the passwords property: The list of passwords for a container registry.
-     *
+     * 
      * @param passwords the passwords value to set.
      * @return the GenerateCredentialsResultInner object itself.
      */
@@ -70,12 +76,53 @@ public final class GenerateCredentialsResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (passwords() != null) {
             passwords().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeArrayField("passwords", this.passwords, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateCredentialsResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateCredentialsResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenerateCredentialsResultInner.
+     */
+    public static GenerateCredentialsResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateCredentialsResultInner deserializedGenerateCredentialsResultInner
+                = new GenerateCredentialsResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedGenerateCredentialsResultInner.username = reader.getString();
+                } else if ("passwords".equals(fieldName)) {
+                    List<TokenPassword> passwords = reader.readArray(reader1 -> TokenPassword.fromJson(reader1));
+                    deserializedGenerateCredentialsResultInner.passwords = passwords;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateCredentialsResultInner;
+        });
     }
 }

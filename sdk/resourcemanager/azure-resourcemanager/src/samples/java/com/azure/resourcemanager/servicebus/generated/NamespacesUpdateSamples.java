@@ -4,36 +4,36 @@
 
 package com.azure.resourcemanager.servicebus.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicebus.models.SBNamespaceUpdateParameters;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Namespaces Update. */
+/**
+ * Samples for Namespaces Update.
+ */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceUpdate.json
+     * x-ms-original-file:
+     * specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/
+     * SBNameSpaceUpdate.json
      */
     /**
      * Sample code: NameSpaceUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void nameSpaceUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .serviceBusNamespaces()
+        azure.serviceBusNamespaces()
             .manager()
             .serviceClient()
             .getNamespaces()
-            .updateWithResponse(
-                "ArunMonocle",
-                "sdk-Namespace-3285",
-                new SBNamespaceUpdateParameters()
-                    .withLocation("South Central US")
+            .updateWithResponse("ArunMonocle", "sdk-Namespace-3285",
+                new SBNamespaceUpdateParameters().withLocation("South Central US")
                     .withTags(mapOf("tag3", "value3", "tag4", "value4")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

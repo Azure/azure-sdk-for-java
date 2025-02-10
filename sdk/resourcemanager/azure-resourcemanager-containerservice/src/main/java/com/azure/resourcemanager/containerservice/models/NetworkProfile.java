@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents the OpenShift networking configuration.
  */
 @Fluent
-public final class NetworkProfile {
+public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
     /*
      * CIDR for the OpenShift Vnet.
      */
-    @JsonProperty(value = "vnetCidr")
     private String vnetCidr;
 
     /*
      * CIDR of the Vnet to peer.
      */
-    @JsonProperty(value = "peerVnetId")
     private String peerVnetId;
 
     /*
      * ID of the Vnet created for OSA cluster.
      */
-    @JsonProperty(value = "vnetId")
     private String vnetId;
 
     /**
@@ -38,7 +39,7 @@ public final class NetworkProfile {
 
     /**
      * Get the vnetCidr property: CIDR for the OpenShift Vnet.
-     *
+     * 
      * @return the vnetCidr value.
      */
     public String vnetCidr() {
@@ -47,7 +48,7 @@ public final class NetworkProfile {
 
     /**
      * Set the vnetCidr property: CIDR for the OpenShift Vnet.
-     *
+     * 
      * @param vnetCidr the vnetCidr value to set.
      * @return the NetworkProfile object itself.
      */
@@ -58,7 +59,7 @@ public final class NetworkProfile {
 
     /**
      * Get the peerVnetId property: CIDR of the Vnet to peer.
-     *
+     * 
      * @return the peerVnetId value.
      */
     public String peerVnetId() {
@@ -67,7 +68,7 @@ public final class NetworkProfile {
 
     /**
      * Set the peerVnetId property: CIDR of the Vnet to peer.
-     *
+     * 
      * @param peerVnetId the peerVnetId value to set.
      * @return the NetworkProfile object itself.
      */
@@ -78,7 +79,7 @@ public final class NetworkProfile {
 
     /**
      * Get the vnetId property: ID of the Vnet created for OSA cluster.
-     *
+     * 
      * @return the vnetId value.
      */
     public String vnetId() {
@@ -87,7 +88,7 @@ public final class NetworkProfile {
 
     /**
      * Set the vnetId property: ID of the Vnet created for OSA cluster.
-     *
+     * 
      * @param vnetId the vnetId value to set.
      * @return the NetworkProfile object itself.
      */
@@ -98,9 +99,51 @@ public final class NetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vnetCidr", this.vnetCidr);
+        jsonWriter.writeStringField("peerVnetId", this.peerVnetId);
+        jsonWriter.writeStringField("vnetId", this.vnetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkProfile.
+     */
+    public static NetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProfile deserializedNetworkProfile = new NetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vnetCidr".equals(fieldName)) {
+                    deserializedNetworkProfile.vnetCidr = reader.getString();
+                } else if ("peerVnetId".equals(fieldName)) {
+                    deserializedNetworkProfile.peerVnetId = reader.getString();
+                } else if ("vnetId".equals(fieldName)) {
+                    deserializedNetworkProfile.vnetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProfile;
+        });
     }
 }

@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.NewRelicMonitorResourceUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The type used for update operations of the NewRelicMonitorResource. */
+/**
+ * The type used for update operations of the NewRelicMonitorResource.
+ */
 @Fluent
-public final class NewRelicMonitorResourceUpdate {
+public final class NewRelicMonitorResourceUpdate implements JsonSerializable<NewRelicMonitorResourceUpdate> {
     /*
      * The managed service identities assigned to this resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The updatable properties of the NewRelicMonitorResource.
      */
-    @JsonProperty(value = "properties")
     private NewRelicMonitorResourceUpdateProperties innerProperties;
 
-    /** Creates an instance of NewRelicMonitorResourceUpdate class. */
+    /**
+     * Creates an instance of NewRelicMonitorResourceUpdate class.
+     */
     public NewRelicMonitorResourceUpdate() {
     }
 
     /**
      * Get the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -47,7 +50,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Set the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the NewRelicMonitorResourceUpdate object itself.
      */
@@ -58,7 +61,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -67,7 +70,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the NewRelicMonitorResourceUpdate object itself.
      */
@@ -78,7 +81,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Get the innerProperties property: The updatable properties of the NewRelicMonitorResource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NewRelicMonitorResourceUpdateProperties innerProperties() {
@@ -87,7 +90,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Get the newRelicAccountProperties property: MarketplaceSubscriptionStatus of the resource.
-     *
+     * 
      * @return the newRelicAccountProperties value.
      */
     public NewRelicAccountProperties newRelicAccountProperties() {
@@ -96,12 +99,12 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Set the newRelicAccountProperties property: MarketplaceSubscriptionStatus of the resource.
-     *
+     * 
      * @param newRelicAccountProperties the newRelicAccountProperties value to set.
      * @return the NewRelicMonitorResourceUpdate object itself.
      */
-    public NewRelicMonitorResourceUpdate withNewRelicAccountProperties(
-        NewRelicAccountProperties newRelicAccountProperties) {
+    public NewRelicMonitorResourceUpdate
+        withNewRelicAccountProperties(NewRelicAccountProperties newRelicAccountProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NewRelicMonitorResourceUpdateProperties();
         }
@@ -111,7 +114,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Get the userInfo property: User Info.
-     *
+     * 
      * @return the userInfo value.
      */
     public UserInfo userInfo() {
@@ -120,7 +123,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Set the userInfo property: User Info.
-     *
+     * 
      * @param userInfo the userInfo value to set.
      * @return the NewRelicMonitorResourceUpdate object itself.
      */
@@ -134,7 +137,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Get the planData property: Plan details.
-     *
+     * 
      * @return the planData value.
      */
     public PlanData planData() {
@@ -143,7 +146,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Set the planData property: Plan details.
-     *
+     * 
      * @param planData the planData value to set.
      * @return the NewRelicMonitorResourceUpdate object itself.
      */
@@ -157,7 +160,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Get the orgCreationSource property: Source of org creation.
-     *
+     * 
      * @return the orgCreationSource value.
      */
     public OrgCreationSource orgCreationSource() {
@@ -166,7 +169,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Set the orgCreationSource property: Source of org creation.
-     *
+     * 
      * @param orgCreationSource the orgCreationSource value to set.
      * @return the NewRelicMonitorResourceUpdate object itself.
      */
@@ -180,7 +183,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Get the accountCreationSource property: Source of account creation.
-     *
+     * 
      * @return the accountCreationSource value.
      */
     public AccountCreationSource accountCreationSource() {
@@ -189,7 +192,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Set the accountCreationSource property: Source of account creation.
-     *
+     * 
      * @param accountCreationSource the accountCreationSource value to set.
      * @return the NewRelicMonitorResourceUpdate object itself.
      */
@@ -203,7 +206,7 @@ public final class NewRelicMonitorResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -213,5 +216,50 @@ public final class NewRelicMonitorResourceUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NewRelicMonitorResourceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NewRelicMonitorResourceUpdate if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NewRelicMonitorResourceUpdate.
+     */
+    public static NewRelicMonitorResourceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NewRelicMonitorResourceUpdate deserializedNewRelicMonitorResourceUpdate
+                = new NewRelicMonitorResourceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedNewRelicMonitorResourceUpdate.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNewRelicMonitorResourceUpdate.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNewRelicMonitorResourceUpdate.innerProperties
+                        = NewRelicMonitorResourceUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNewRelicMonitorResourceUpdate;
+        });
     }
 }

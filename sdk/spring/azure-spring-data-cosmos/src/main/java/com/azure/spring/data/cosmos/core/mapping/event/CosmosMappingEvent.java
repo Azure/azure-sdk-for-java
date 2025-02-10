@@ -11,6 +11,8 @@ import org.springframework.lang.Nullable;
  *
  * Ported to cosmos from spring-data-mongo
  * https://github.com/spring-projects/spring-data-mongodb/blob/main/spring-data-mongodb/src/main/java/org/springframework/data/mongodb/core/mapping/event/MongoMappingEvent.java
+ *
+ * @param <T> the type of the event.
  */
 public class CosmosMappingEvent<T> extends ApplicationEvent {
 
@@ -41,6 +43,7 @@ public class CosmosMappingEvent<T> extends ApplicationEvent {
     }
 
     /**
+     * Return {@literal null} if not set.
      * @return {@literal null} if not set.
      */
     public @Nullable JsonNode getDocument() {

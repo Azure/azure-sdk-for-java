@@ -5,52 +5,52 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** thumbnailSet. */
+/**
+ * thumbnailSet.
+ */
 @Fluent
 public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
     /*
      * thumbnail
      */
-    @JsonProperty(value = "large")
     private MicrosoftGraphThumbnail large;
 
     /*
      * thumbnail
      */
-    @JsonProperty(value = "medium")
     private MicrosoftGraphThumbnail medium;
 
     /*
      * thumbnail
      */
-    @JsonProperty(value = "small")
     private MicrosoftGraphThumbnail small;
 
     /*
      * thumbnail
      */
-    @JsonProperty(value = "source")
     private MicrosoftGraphThumbnail source;
 
     /*
      * thumbnailSet
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphThumbnailSet class. */
+    /**
+     * Creates an instance of MicrosoftGraphThumbnailSet class.
+     */
     public MicrosoftGraphThumbnailSet() {
     }
 
     /**
      * Get the large property: thumbnail.
-     *
+     * 
      * @return the large value.
      */
     public MicrosoftGraphThumbnail large() {
@@ -59,7 +59,7 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
 
     /**
      * Set the large property: thumbnail.
-     *
+     * 
      * @param large the large value to set.
      * @return the MicrosoftGraphThumbnailSet object itself.
      */
@@ -70,7 +70,7 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
 
     /**
      * Get the medium property: thumbnail.
-     *
+     * 
      * @return the medium value.
      */
     public MicrosoftGraphThumbnail medium() {
@@ -79,7 +79,7 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
 
     /**
      * Set the medium property: thumbnail.
-     *
+     * 
      * @param medium the medium value to set.
      * @return the MicrosoftGraphThumbnailSet object itself.
      */
@@ -90,7 +90,7 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
 
     /**
      * Get the small property: thumbnail.
-     *
+     * 
      * @return the small value.
      */
     public MicrosoftGraphThumbnail small() {
@@ -99,7 +99,7 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
 
     /**
      * Set the small property: thumbnail.
-     *
+     * 
      * @param small the small value to set.
      * @return the MicrosoftGraphThumbnailSet object itself.
      */
@@ -110,7 +110,7 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
 
     /**
      * Get the source property: thumbnail.
-     *
+     * 
      * @return the source value.
      */
     public MicrosoftGraphThumbnail source() {
@@ -119,7 +119,7 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
 
     /**
      * Set the source property: thumbnail.
-     *
+     * 
      * @param source the source value to set.
      * @return the MicrosoftGraphThumbnailSet object itself.
      */
@@ -130,17 +130,16 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: thumbnailSet.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: thumbnailSet.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphThumbnailSet object itself.
      */
@@ -149,15 +148,9 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphThumbnailSet withId(String id) {
         super.withId(id);
@@ -166,7 +159,7 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -184,5 +177,64 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
         if (source() != null) {
             source().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("large", this.large);
+        jsonWriter.writeJsonField("medium", this.medium);
+        jsonWriter.writeJsonField("small", this.small);
+        jsonWriter.writeJsonField("source", this.source);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphThumbnailSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphThumbnailSet if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphThumbnailSet.
+     */
+    public static MicrosoftGraphThumbnailSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphThumbnailSet deserializedMicrosoftGraphThumbnailSet = new MicrosoftGraphThumbnailSet();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphThumbnailSet.withId(reader.getString());
+                } else if ("large".equals(fieldName)) {
+                    deserializedMicrosoftGraphThumbnailSet.large = MicrosoftGraphThumbnail.fromJson(reader);
+                } else if ("medium".equals(fieldName)) {
+                    deserializedMicrosoftGraphThumbnailSet.medium = MicrosoftGraphThumbnail.fromJson(reader);
+                } else if ("small".equals(fieldName)) {
+                    deserializedMicrosoftGraphThumbnailSet.small = MicrosoftGraphThumbnail.fromJson(reader);
+                } else if ("source".equals(fieldName)) {
+                    deserializedMicrosoftGraphThumbnailSet.source = MicrosoftGraphThumbnail.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphThumbnailSet.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphThumbnailSet;
+        });
     }
 }

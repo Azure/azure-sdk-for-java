@@ -11,7 +11,13 @@ import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 public final class AmqpProxyProperties extends ProxyProperties implements ProxyOptionsProvider.AmqpProxyOptions {
 
     /**
-     * Authentication type used against the proxy. For instance, 'none', 'basic', 'digest'. The default value is 'none'.
+     * Creates an instance of {@link AmqpProxyProperties}.
+     */
+    public AmqpProxyProperties() {
+    }
+
+    /**
+     * Authentication type used against the proxy. For instance, 'none', 'basic', 'digest'. The default value is `'none'`.
      */
     private String authenticationType;
 

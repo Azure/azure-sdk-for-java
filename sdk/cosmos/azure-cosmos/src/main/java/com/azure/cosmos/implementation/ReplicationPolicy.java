@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -57,7 +56,7 @@ public class ReplicationPolicy extends JsonSerializable {
     }
 
     public void setMaxReplicaSetSize(int value) {
-        BridgeInternal.setProperty(this, Constants.Properties.MAX_REPLICA_SET_SIZE, value);
+        this.set(Constants.Properties.MAX_REPLICA_SET_SIZE, value);
         this.maxReplicaSetSize = value;
     }
 

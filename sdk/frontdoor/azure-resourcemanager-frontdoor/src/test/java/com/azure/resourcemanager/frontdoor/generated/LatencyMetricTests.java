@@ -10,11 +10,9 @@ import com.azure.resourcemanager.frontdoor.models.LatencyMetric;
 public final class LatencyMetricTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LatencyMetric model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"hbxvvyhgsopbyrqu\",\"endDateTimeUTC\":\"g\",\"aValue\":15.345794,\"bValue\":22.12206,\"delta\":32.447994,\"deltaPercent\":93.44803,\"aCLower95CI\":62.546974,\"aHUpper95CI\":29.160892,\"bCLower95CI\":0.5899191,\"bUpper95CI\":92.239586}")
-                .toObject(LatencyMetric.class);
+        LatencyMetric model = BinaryData.fromString(
+            "{\"name\":\"bzefezr\",\"endDateTimeUTC\":\"czurtlei\",\"aValue\":30.662357,\"bValue\":18.551361,\"delta\":9.448862,\"deltaPercent\":79.282104,\"aCLower95CI\":17.816608,\"aHUpper95CI\":60.011448,\"bCLower95CI\":48.05835,\"bUpper95CI\":4.7126713}")
+            .toObject(LatencyMetric.class);
     }
 
     @org.junit.jupiter.api.Test

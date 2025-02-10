@@ -30,20 +30,20 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     public PagedIterable<PrivateEndpointConnection> listByBatchAccount(String resourceGroupName, String accountName) {
         PagedIterable<PrivateEndpointConnectionInner> inner
             = this.serviceClient().listByBatchAccount(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateEndpointConnection> listByBatchAccount(String resourceGroupName, String accountName,
         Integer maxresults, Context context) {
         PagedIterable<PrivateEndpointConnectionInner> inner
             = this.serviceClient().listByBatchAccount(resourceGroupName, accountName, maxresults, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     public Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, Context context) {
-        Response<PrivateEndpointConnectionInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            accountName, privateEndpointConnectionName, context);
+        Response<PrivateEndpointConnectionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, accountName, privateEndpointConnectionName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
@@ -77,8 +77,8 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
     public PrivateEndpointConnection update(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, String ifMatch,
         Context context) {
-        PrivateEndpointConnectionInner inner = this.serviceClient().update(resourceGroupName, accountName,
-            privateEndpointConnectionName, parameters, ifMatch, context);
+        PrivateEndpointConnectionInner inner = this.serviceClient()
+            .update(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch, context);
         if (inner != null) {
             return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {

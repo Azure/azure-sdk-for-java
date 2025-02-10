@@ -6,46 +6,45 @@ package com.azure.resourcemanager.storage.generated;
 
 import com.azure.resourcemanager.storage.models.StorageAccountRegenerateKeyParameters;
 
-/** Samples for StorageAccounts RegenerateKey. */
+/**
+ * Samples for StorageAccounts RegenerateKey.
+ */
 public final class StorageAccountsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountRegenerateKey.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountRegenerateKey.
+     * json
      */
     /**
      * Sample code: StorageAccountRegenerateKey.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountRegenerateKey(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .regenerateKeyWithResponse(
-                "res4167",
-                "sto3539",
+            .regenerateKeyWithResponse("res4167", "sto3539",
                 new StorageAccountRegenerateKeyParameters().withKeyName("fakeTokenPlaceholder"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountRegenerateKerbKey.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountRegenerateKerbKey.json
      */
     /**
      * Sample code: StorageAccountRegenerateKerbKey.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountRegenerateKerbKey(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .regenerateKeyWithResponse(
-                "res4167",
-                "sto3539",
+            .regenerateKeyWithResponse("res4167", "sto3539",
                 new StorageAccountRegenerateKeyParameters().withKeyName("fakeTokenPlaceholder"),
                 com.azure.core.util.Context.NONE);
     }

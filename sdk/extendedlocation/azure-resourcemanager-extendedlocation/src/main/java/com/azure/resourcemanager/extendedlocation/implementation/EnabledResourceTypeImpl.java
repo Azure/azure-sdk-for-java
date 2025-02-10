@@ -16,8 +16,7 @@ public final class EnabledResourceTypeImpl implements EnabledResourceType {
 
     private final com.azure.resourcemanager.extendedlocation.CustomLocationsManager serviceManager;
 
-    EnabledResourceTypeImpl(
-        EnabledResourceTypeInner innerObject,
+    EnabledResourceTypeImpl(EnabledResourceTypeInner innerObject,
         com.azure.resourcemanager.extendedlocation.CustomLocationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

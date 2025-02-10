@@ -5,88 +5,139 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KnownSyslogDataSourceFacilityNames. */
+/**
+ * Defines values for KnownSyslogDataSourceFacilityNames.
+ */
 public final class KnownSyslogDataSourceFacilityNames extends ExpandableStringEnum<KnownSyslogDataSourceFacilityNames> {
-    /** Static value auth for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value auth for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames AUTH = fromString("auth");
 
-    /** Static value authpriv for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value authpriv for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames AUTHPRIV = fromString("authpriv");
 
-    /** Static value cron for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value cron for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames CRON = fromString("cron");
 
-    /** Static value daemon for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value daemon for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames DAEMON = fromString("daemon");
 
-    /** Static value kern for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value kern for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames KERN = fromString("kern");
 
-    /** Static value lpr for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value lpr for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames LPR = fromString("lpr");
 
-    /** Static value mail for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value mail for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames MAIL = fromString("mail");
 
-    /** Static value mark for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value mark for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames MARK = fromString("mark");
 
-    /** Static value news for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value news for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames NEWS = fromString("news");
 
-    /** Static value syslog for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value syslog for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames SYSLOG = fromString("syslog");
 
-    /** Static value user for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value user for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames USER = fromString("user");
 
-    /** Static value uucp for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value uucp for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames UUCP = fromString("uucp");
 
-    /** Static value local0 for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value local0 for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames LOCAL0 = fromString("local0");
 
-    /** Static value local1 for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value local1 for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames LOCAL1 = fromString("local1");
 
-    /** Static value local2 for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value local2 for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames LOCAL2 = fromString("local2");
 
-    /** Static value local3 for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value local3 for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames LOCAL3 = fromString("local3");
 
-    /** Static value local4 for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value local4 for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames LOCAL4 = fromString("local4");
 
-    /** Static value local5 for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value local5 for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames LOCAL5 = fromString("local5");
 
-    /** Static value local6 for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value local6 for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames LOCAL6 = fromString("local6");
 
-    /** Static value local7 for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value local7 for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames LOCAL7 = fromString("local7");
 
-    /** Static value * for KnownSyslogDataSourceFacilityNames. */
+    /**
+     * Static value * for KnownSyslogDataSourceFacilityNames.
+     */
     public static final KnownSyslogDataSourceFacilityNames ASTERISK = fromString("*");
 
     /**
+     * Creates a new instance of KnownSyslogDataSourceFacilityNames value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KnownSyslogDataSourceFacilityNames() {
+    }
+
+    /**
      * Creates or finds a KnownSyslogDataSourceFacilityNames from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KnownSyslogDataSourceFacilityNames.
      */
-    @JsonCreator
     public static KnownSyslogDataSourceFacilityNames fromString(String name) {
         return fromString(name, KnownSyslogDataSourceFacilityNames.class);
     }
 
     /**
      * Gets known KnownSyslogDataSourceFacilityNames values.
-     *
+     * 
      * @return known KnownSyslogDataSourceFacilityNames values.
      */
     public static Collection<KnownSyslogDataSourceFacilityNames> values() {

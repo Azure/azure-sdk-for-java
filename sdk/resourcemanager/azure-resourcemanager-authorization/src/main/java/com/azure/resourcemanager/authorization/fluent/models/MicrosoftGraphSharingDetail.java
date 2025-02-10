@@ -5,21 +5,25 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** sharingDetail. */
+/**
+ * sharingDetail.
+ */
 @Fluent
-public final class MicrosoftGraphSharingDetail {
+public final class MicrosoftGraphSharingDetail implements JsonSerializable<MicrosoftGraphSharingDetail> {
     /*
      * insightIdentity
      */
-    @JsonProperty(value = "sharedBy")
     private MicrosoftGraphInsightIdentity sharedBy;
 
     /*
@@ -27,39 +31,37 @@ public final class MicrosoftGraphSharingDetail {
      * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * 2014-01-01T00:00:00Z. Read-only.
      */
-    @JsonProperty(value = "sharedDateTime")
     private OffsetDateTime sharedDateTime;
 
     /*
      * resourceReference
      */
-    @JsonProperty(value = "sharingReference")
     private MicrosoftGraphResourceReference sharingReference;
 
     /*
      * The subject with which the document was shared.
      */
-    @JsonProperty(value = "sharingSubject")
     private String sharingSubject;
 
     /*
      * Determines the way the document was shared, can be by a 'Link', 'Attachment', 'Group', 'Site'.
      */
-    @JsonProperty(value = "sharingType")
     private String sharingType;
 
     /*
      * sharingDetail
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSharingDetail class. */
+    /**
+     * Creates an instance of MicrosoftGraphSharingDetail class.
+     */
     public MicrosoftGraphSharingDetail() {
     }
 
     /**
      * Get the sharedBy property: insightIdentity.
-     *
+     * 
      * @return the sharedBy value.
      */
     public MicrosoftGraphInsightIdentity sharedBy() {
@@ -68,7 +70,7 @@ public final class MicrosoftGraphSharingDetail {
 
     /**
      * Set the sharedBy property: insightIdentity.
-     *
+     * 
      * @param sharedBy the sharedBy value to set.
      * @return the MicrosoftGraphSharingDetail object itself.
      */
@@ -81,7 +83,7 @@ public final class MicrosoftGraphSharingDetail {
      * Get the sharedDateTime property: The date and time the file was last shared. The timestamp represents date and
      * time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would
      * look like this: 2014-01-01T00:00:00Z. Read-only.
-     *
+     * 
      * @return the sharedDateTime value.
      */
     public OffsetDateTime sharedDateTime() {
@@ -92,7 +94,7 @@ public final class MicrosoftGraphSharingDetail {
      * Set the sharedDateTime property: The date and time the file was last shared. The timestamp represents date and
      * time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would
      * look like this: 2014-01-01T00:00:00Z. Read-only.
-     *
+     * 
      * @param sharedDateTime the sharedDateTime value to set.
      * @return the MicrosoftGraphSharingDetail object itself.
      */
@@ -103,7 +105,7 @@ public final class MicrosoftGraphSharingDetail {
 
     /**
      * Get the sharingReference property: resourceReference.
-     *
+     * 
      * @return the sharingReference value.
      */
     public MicrosoftGraphResourceReference sharingReference() {
@@ -112,7 +114,7 @@ public final class MicrosoftGraphSharingDetail {
 
     /**
      * Set the sharingReference property: resourceReference.
-     *
+     * 
      * @param sharingReference the sharingReference value to set.
      * @return the MicrosoftGraphSharingDetail object itself.
      */
@@ -123,7 +125,7 @@ public final class MicrosoftGraphSharingDetail {
 
     /**
      * Get the sharingSubject property: The subject with which the document was shared.
-     *
+     * 
      * @return the sharingSubject value.
      */
     public String sharingSubject() {
@@ -132,7 +134,7 @@ public final class MicrosoftGraphSharingDetail {
 
     /**
      * Set the sharingSubject property: The subject with which the document was shared.
-     *
+     * 
      * @param sharingSubject the sharingSubject value to set.
      * @return the MicrosoftGraphSharingDetail object itself.
      */
@@ -144,7 +146,7 @@ public final class MicrosoftGraphSharingDetail {
     /**
      * Get the sharingType property: Determines the way the document was shared, can be by a 'Link', 'Attachment',
      * 'Group', 'Site'.
-     *
+     * 
      * @return the sharingType value.
      */
     public String sharingType() {
@@ -154,7 +156,7 @@ public final class MicrosoftGraphSharingDetail {
     /**
      * Set the sharingType property: Determines the way the document was shared, can be by a 'Link', 'Attachment',
      * 'Group', 'Site'.
-     *
+     * 
      * @param sharingType the sharingType value to set.
      * @return the MicrosoftGraphSharingDetail object itself.
      */
@@ -165,17 +167,16 @@ public final class MicrosoftGraphSharingDetail {
 
     /**
      * Get the additionalProperties property: sharingDetail.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: sharingDetail.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSharingDetail object itself.
      */
@@ -184,17 +185,9 @@ public final class MicrosoftGraphSharingDetail {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -204,5 +197,67 @@ public final class MicrosoftGraphSharingDetail {
         if (sharingReference() != null) {
             sharingReference().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sharedBy", this.sharedBy);
+        jsonWriter.writeStringField("sharedDateTime",
+            this.sharedDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.sharedDateTime));
+        jsonWriter.writeJsonField("sharingReference", this.sharingReference);
+        jsonWriter.writeStringField("sharingSubject", this.sharingSubject);
+        jsonWriter.writeStringField("sharingType", this.sharingType);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSharingDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSharingDetail if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSharingDetail.
+     */
+    public static MicrosoftGraphSharingDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSharingDetail deserializedMicrosoftGraphSharingDetail = new MicrosoftGraphSharingDetail();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sharedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharingDetail.sharedBy = MicrosoftGraphInsightIdentity.fromJson(reader);
+                } else if ("sharedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharingDetail.sharedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sharingReference".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharingDetail.sharingReference
+                        = MicrosoftGraphResourceReference.fromJson(reader);
+                } else if ("sharingSubject".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharingDetail.sharingSubject = reader.getString();
+                } else if ("sharingType".equals(fieldName)) {
+                    deserializedMicrosoftGraphSharingDetail.sharingType = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSharingDetail.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSharingDetail;
+        });
     }
 }

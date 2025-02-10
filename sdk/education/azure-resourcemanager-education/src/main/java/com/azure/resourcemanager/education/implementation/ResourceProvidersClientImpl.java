@@ -25,22 +25,28 @@ import com.azure.resourcemanager.education.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.education.models.RedeemRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EducationManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(EducationManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,22 +56,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "EducationManagementC")
-    private interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
+    public interface ResourceProvidersService {
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Education/redeemInvitationCode")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> redeemInvitationCode(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RedeemRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> redeemInvitationCode(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") RedeemRequest parameters,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Redeem invite code to join a redeemable lab.
-     *
+     * 
      * @param parameters Request parameters to provide redeem code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -75,10 +78,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> redeemInvitationCodeWithResponseAsync(RedeemRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -87,17 +88,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .redeemInvitationCode(
-                            this.client.getEndpoint(), this.client.getApiVersion(), parameters, accept, context))
+            .withContext(context -> service.redeemInvitationCode(this.client.getEndpoint(), this.client.getApiVersion(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Redeem invite code to join a redeemable lab.
-     *
+     * 
      * @param parameters Request parameters to provide redeem code.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,10 +106,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> redeemInvitationCodeWithResponseAsync(RedeemRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -120,13 +116,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .redeemInvitationCode(this.client.getEndpoint(), this.client.getApiVersion(), parameters, accept, context);
+        return service.redeemInvitationCode(this.client.getEndpoint(), this.client.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
      * Redeem invite code to join a redeemable lab.
-     *
+     * 
      * @param parameters Request parameters to provide redeem code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -140,7 +136,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Redeem invite code to join a redeemable lab.
-     *
+     * 
      * @param parameters Request parameters to provide redeem code.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -155,7 +151,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Redeem invite code to join a redeemable lab.
-     *
+     * 
      * @param parameters Request parameters to provide redeem code.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

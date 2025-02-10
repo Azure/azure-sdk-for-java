@@ -14,22 +14,21 @@ public final class HybridConnectionEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HybridConnectionEventSubscriptionDestination model = BinaryData.fromString(
-            "{\"endpointType\":\"HybridConnection\",\"properties\":{\"resourceId\":\"fcmkr\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"cwjjxsgmbawvif\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"kecifhocjxwklo\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"rvtxvcmufunlc\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"xvi\"}]}}")
+            "{\"endpointType\":\"HybridConnection\",\"properties\":{\"resourceId\":\"qecroodl\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"rdaasaxxo\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"mfkwiyjvzuk\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"r\"}]}}")
             .toObject(HybridConnectionEventSubscriptionDestination.class);
-        Assertions.assertEquals("fcmkr", model.resourceId());
-        Assertions.assertEquals("cwjjxsgmbawvif", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("qecroodl", model.resourceId());
+        Assertions.assertEquals("rdaasaxxo", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HybridConnectionEventSubscriptionDestination model
-            = new HybridConnectionEventSubscriptionDestination().withResourceId("fcmkr")
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("cwjjxsgmbawvif"),
-                    new DeliveryAttributeMapping().withName("kecifhocjxwklo"),
-                    new DeliveryAttributeMapping().withName("rvtxvcmufunlc"),
-                    new DeliveryAttributeMapping().withName("xvi")));
+            = new HybridConnectionEventSubscriptionDestination().withResourceId("qecroodl")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("rdaasaxxo"),
+                    new DeliveryAttributeMapping().withName("mfkwiyjvzuk"),
+                    new DeliveryAttributeMapping().withName("r")));
         model = BinaryData.fromObject(model).toObject(HybridConnectionEventSubscriptionDestination.class);
-        Assertions.assertEquals("fcmkr", model.resourceId());
-        Assertions.assertEquals("cwjjxsgmbawvif", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("qecroodl", model.resourceId());
+        Assertions.assertEquals("rdaasaxxo", model.deliveryAttributeMappings().get(0).name());
     }
 }

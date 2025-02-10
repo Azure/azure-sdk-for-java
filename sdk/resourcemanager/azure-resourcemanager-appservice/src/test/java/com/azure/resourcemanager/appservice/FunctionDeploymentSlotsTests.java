@@ -14,6 +14,7 @@ import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlotBasic;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appservice.models.PythonVersion;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
@@ -43,19 +44,17 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
     @Test
     public void canCRUDFunctionSwapSlots() throws Exception {
         // Create with consumption
-        FunctionApp functionApp1 =
-            appServiceManager
-                .functionApps()
-                .define(webappName1)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .withNewAppServicePlan(PricingTier.STANDARD_S1)
-                .withAppSetting("appkey", "appvalue")
-                .withStickyAppSetting("stickykey", "stickyvalue")
-                .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)
-                .withStickyConnectionString("stickyName", "stickyValue", ConnectionStringType.CUSTOM)
-                .withPythonVersion(PythonVersion.PYTHON_27)
-                .create();
+        FunctionApp functionApp1 = appServiceManager.functionApps()
+            .define(webappName1)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .withNewAppServicePlan(PricingTier.STANDARD_S1)
+            .withAppSetting("appkey", "appvalue")
+            .withStickyAppSetting("stickykey", "stickyvalue")
+            .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)
+            .withStickyConnectionString("stickyName", "stickyValue", ConnectionStringType.CUSTOM)
+            .withPythonVersion(PythonVersion.PYTHON_27)
+            .create();
         Assertions.assertNotNull(functionApp1);
         Assertions.assertEquals(Region.US_WEST, functionApp1.region());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
@@ -69,25 +68,23 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
          */
 
         // Create a deployment slot with empty config
-        FunctionDeploymentSlot slot1 =
-            functionApp1
-                .deploymentSlots()
-                .define(slotName1)
-                .withBrandNewConfiguration()
-                .withPythonVersion(PythonVersion.PYTHON_34)
-                .create();
+        FunctionDeploymentSlot slot1 = functionApp1.deploymentSlots()
+            .define(slotName1)
+            .withBrandNewConfiguration()
+            .withPythonVersion(PythonVersion.PYTHON_34)
+            .create();
         Assertions.assertNotNull(slot1);
         Assertions.assertEquals(PythonVersion.PYTHON_34, slot1.pythonVersion());
-//        Map<String, AppSetting> appSettingMap = slot1.getAppSettings();
-//        Assertions.assertFalse(appSettingMap.containsKey("appkey"));
-//        Assertions.assertFalse(appSettingMap.containsKey("stickykey"));
-//        Map<String, ConnectionString> connectionStringMap = slot1.getConnectionStrings();
-//        Assertions.assertFalse(connectionStringMap.containsKey("connectionName"));
-//        Assertions.assertFalse(connectionStringMap.containsKey("stickyName"));
+        //        Map<String, AppSetting> appSettingMap = slot1.getAppSettings();
+        //        Assertions.assertFalse(appSettingMap.containsKey("appkey"));
+        //        Assertions.assertFalse(appSettingMap.containsKey("stickykey"));
+        //        Map<String, ConnectionString> connectionStringMap = slot1.getConnectionStrings();
+        //        Assertions.assertFalse(connectionStringMap.containsKey("connectionName"));
+        //        Assertions.assertFalse(connectionStringMap.containsKey("stickyName"));
 
         // Create a deployment slot with web app's config
-        FunctionDeploymentSlot slot2 =
-            functionApp1.deploymentSlots().define(slotName2).withConfigurationFromParent().create();
+        FunctionDeploymentSlot slot2
+            = functionApp1.deploymentSlots().define(slotName2).withConfigurationFromParent().create();
         Assertions.assertNotNull(slot2);
         Assertions.assertEquals(PythonVersion.PYTHON_27, slot2.pythonVersion());
         Map<String, AppSetting> appSettingMap = slot2.getAppSettings();
@@ -102,8 +99,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         Assertions.assertEquals(true, connectionStringMap.get("stickyName").sticky());
 
         // Update deployment slot
-        slot2
-            .update()
+        slot2.update()
             .withPythonVersion(PythonVersion.PYTHON_34)
             .withAppSetting("slot2key", "slot2value")
             .withStickyAppSetting("sticky2key", "sticky2value")
@@ -114,17 +110,14 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         Assertions.assertEquals("slot2value", appSettingMap.get("slot2key").value());
 
         // Create 3rd deployment slot with configuration from slot 2
-        FunctionDeploymentSlot slot3 =
-            functionApp1.deploymentSlots().define(slotName3).withConfigurationFromDeploymentSlot(slot2).create();
+        FunctionDeploymentSlot slot3
+            = functionApp1.deploymentSlots().define(slotName3).withConfigurationFromDeploymentSlot(slot2).create();
         Assertions.assertNotNull(slot3);
         Assertions.assertEquals(PythonVersion.PYTHON_34, slot3.pythonVersion());
         appSettingMap = slot3.getAppSettings();
         Assertions.assertEquals("slot2value", appSettingMap.get("slot2key").value());
 
-        slot3
-            .update()
-            .withPythonVersion(PythonVersion.PYTHON_27)
-            .apply();
+        slot3.update().withPythonVersion(PythonVersion.PYTHON_27).apply();
 
         // Get
         FunctionDeploymentSlot deploymentSlot = functionApp1.deploymentSlots().getByName(slotName3);
@@ -147,12 +140,13 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         Assertions.assertEquals("stickyvalue", slot3AppSettings.get("stickykey").value());
     }
 
-    private static final String FUNCTION_APP_PACKAGE_URL =
-        "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
+    private static final String FUNCTION_APP_PACKAGE_URL
+        = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
 
     @Test
     public void canCRUDFunctionSlots() {
-        FunctionApp functionApp1 = appServiceManager.functionApps().define(webappName1)
+        FunctionApp functionApp1 = appServiceManager.functionApps()
+            .define(webappName1)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
             .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
@@ -162,12 +156,39 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
             .create();
         Assertions.assertNotNull(functionApp1);
 
-        FunctionDeploymentSlot slot1 = functionApp1.deploymentSlots().define("slot1")
-            .withConfigurationFromParent()
+        FunctionDeploymentSlot slot1
+            = functionApp1.deploymentSlots().define("slot1").withConfigurationFromParent().create();
+
+        slot1.update().withPublicDockerHubImage("wordpress").apply();
+    }
+
+    @Test
+    public void canCreateAndUpdatePublicNetworkAccess() {
+        FunctionApp functionApp = appServiceManager.functionApps()
+            .define(webappName1)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
+            .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
+            .withHttpsOnly(true)
+            .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
             .create();
 
-        slot1.update()
-            .withPublicDockerHubImage("wordpress")
-            .apply();
+        FunctionDeploymentSlot slot = functionApp.deploymentSlots()
+            .define("slot1")
+            .withConfigurationFromParent()
+            .disablePublicNetworkAccess()
+            .create();
+
+        slot.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, slot.publicNetworkAccess());
+
+        slot.update().enablePublicNetworkAccess().apply();
+        slot.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, slot.publicNetworkAccess());
+
+        slot.update().disablePublicNetworkAccess().apply();
+        slot.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, slot.publicNetworkAccess());
     }
 }

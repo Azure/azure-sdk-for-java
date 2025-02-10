@@ -20,8 +20,7 @@ public final class GetPrivateDnsZoneSuffixesImpl implements GetPrivateDnsZoneSuf
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    public GetPrivateDnsZoneSuffixesImpl(
-        GetPrivateDnsZoneSuffixesClient innerClient,
+    public GetPrivateDnsZoneSuffixesImpl(GetPrivateDnsZoneSuffixesClient innerClient,
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,10 +29,7 @@ public final class GetPrivateDnsZoneSuffixesImpl implements GetPrivateDnsZoneSuf
     public Response<GetPrivateDnsZoneSuffixResponse> executeWithResponse(Context context) {
         Response<GetPrivateDnsZoneSuffixResponseInner> inner = this.serviceClient().executeWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GetPrivateDnsZoneSuffixResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

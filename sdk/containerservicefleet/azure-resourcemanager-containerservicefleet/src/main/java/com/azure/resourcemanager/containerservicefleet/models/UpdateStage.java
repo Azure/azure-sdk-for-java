@@ -6,7 +6,11 @@ package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,33 +18,32 @@ import java.util.List;
  * starting the next stage.
  */
 @Fluent
-public final class UpdateStage {
+public final class UpdateStage implements JsonSerializable<UpdateStage> {
     /*
      * The name of the stage. Must be unique within the UpdateRun.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Defines the groups to be executed in parallel in this stage. Duplicate groups are not allowed. Min size: 1.
      */
-    @JsonProperty(value = "groups")
     private List<UpdateGroup> groups;
 
     /*
      * The time in seconds to wait at the end of this stage before starting the next one. Defaults to 0 seconds if
      * unspecified.
      */
-    @JsonProperty(value = "afterStageWaitInSeconds")
     private Integer afterStageWaitInSeconds;
 
-    /** Creates an instance of UpdateStage class. */
+    /**
+     * Creates an instance of UpdateStage class.
+     */
     public UpdateStage() {
     }
 
     /**
      * Get the name property: The name of the stage. Must be unique within the UpdateRun.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +52,7 @@ public final class UpdateStage {
 
     /**
      * Set the name property: The name of the stage. Must be unique within the UpdateRun.
-     *
+     * 
      * @param name the name value to set.
      * @return the UpdateStage object itself.
      */
@@ -61,7 +64,7 @@ public final class UpdateStage {
     /**
      * Get the groups property: Defines the groups to be executed in parallel in this stage. Duplicate groups are not
      * allowed. Min size: 1.
-     *
+     * 
      * @return the groups value.
      */
     public List<UpdateGroup> groups() {
@@ -71,7 +74,7 @@ public final class UpdateStage {
     /**
      * Set the groups property: Defines the groups to be executed in parallel in this stage. Duplicate groups are not
      * allowed. Min size: 1.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the UpdateStage object itself.
      */
@@ -83,7 +86,7 @@ public final class UpdateStage {
     /**
      * Get the afterStageWaitInSeconds property: The time in seconds to wait at the end of this stage before starting
      * the next one. Defaults to 0 seconds if unspecified.
-     *
+     * 
      * @return the afterStageWaitInSeconds value.
      */
     public Integer afterStageWaitInSeconds() {
@@ -93,7 +96,7 @@ public final class UpdateStage {
     /**
      * Set the afterStageWaitInSeconds property: The time in seconds to wait at the end of this stage before starting
      * the next one. Defaults to 0 seconds if unspecified.
-     *
+     * 
      * @param afterStageWaitInSeconds the afterStageWaitInSeconds value to set.
      * @return the UpdateStage object itself.
      */
@@ -104,14 +107,13 @@ public final class UpdateStage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model UpdateStage"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model UpdateStage"));
         }
         if (groups() != null) {
             groups().forEach(e -> e.validate());
@@ -119,4 +121,48 @@ public final class UpdateStage {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpdateStage.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("afterStageWaitInSeconds", this.afterStageWaitInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateStage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateStage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateStage.
+     */
+    public static UpdateStage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateStage deserializedUpdateStage = new UpdateStage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedUpdateStage.name = reader.getString();
+                } else if ("groups".equals(fieldName)) {
+                    List<UpdateGroup> groups = reader.readArray(reader1 -> UpdateGroup.fromJson(reader1));
+                    deserializedUpdateStage.groups = groups;
+                } else if ("afterStageWaitInSeconds".equals(fieldName)) {
+                    deserializedUpdateStage.afterStageWaitInSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateStage;
+        });
+    }
 }

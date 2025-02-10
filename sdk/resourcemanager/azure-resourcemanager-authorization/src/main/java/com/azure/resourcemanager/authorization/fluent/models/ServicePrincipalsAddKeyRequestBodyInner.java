@@ -5,46 +5,49 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** The ServicePrincipalsAddKeyRequestBody model. */
+/**
+ * The ServicePrincipalsAddKeyRequestBody model.
+ */
 @Fluent
-public final class ServicePrincipalsAddKeyRequestBodyInner {
+public final class ServicePrincipalsAddKeyRequestBodyInner
+    implements JsonSerializable<ServicePrincipalsAddKeyRequestBodyInner> {
     /*
      * keyCredential
      */
-    @JsonProperty(value = "keyCredential")
     private MicrosoftGraphKeyCredentialInner keyCredential;
 
     /*
      * passwordCredential
      */
-    @JsonProperty(value = "passwordCredential")
     private MicrosoftGraphPasswordCredentialInner passwordCredential;
 
     /*
      * The proof property.
      */
-    @JsonProperty(value = "proof")
     private String proof;
 
     /*
      * Dictionary of <AnyObject>
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ServicePrincipalsAddKeyRequestBodyInner class. */
+    /**
+     * Creates an instance of ServicePrincipalsAddKeyRequestBodyInner class.
+     */
     public ServicePrincipalsAddKeyRequestBodyInner() {
     }
 
     /**
      * Get the keyCredential property: keyCredential.
-     *
+     * 
      * @return the keyCredential value.
      */
     public MicrosoftGraphKeyCredentialInner keyCredential() {
@@ -53,7 +56,7 @@ public final class ServicePrincipalsAddKeyRequestBodyInner {
 
     /**
      * Set the keyCredential property: keyCredential.
-     *
+     * 
      * @param keyCredential the keyCredential value to set.
      * @return the ServicePrincipalsAddKeyRequestBodyInner object itself.
      */
@@ -64,7 +67,7 @@ public final class ServicePrincipalsAddKeyRequestBodyInner {
 
     /**
      * Get the passwordCredential property: passwordCredential.
-     *
+     * 
      * @return the passwordCredential value.
      */
     public MicrosoftGraphPasswordCredentialInner passwordCredential() {
@@ -73,19 +76,19 @@ public final class ServicePrincipalsAddKeyRequestBodyInner {
 
     /**
      * Set the passwordCredential property: passwordCredential.
-     *
+     * 
      * @param passwordCredential the passwordCredential value to set.
      * @return the ServicePrincipalsAddKeyRequestBodyInner object itself.
      */
-    public ServicePrincipalsAddKeyRequestBodyInner withPasswordCredential(
-        MicrosoftGraphPasswordCredentialInner passwordCredential) {
+    public ServicePrincipalsAddKeyRequestBodyInner
+        withPasswordCredential(MicrosoftGraphPasswordCredentialInner passwordCredential) {
         this.passwordCredential = passwordCredential;
         return this;
     }
 
     /**
      * Get the proof property: The proof property.
-     *
+     * 
      * @return the proof value.
      */
     public String proof() {
@@ -94,7 +97,7 @@ public final class ServicePrincipalsAddKeyRequestBodyInner {
 
     /**
      * Set the proof property: The proof property.
-     *
+     * 
      * @param proof the proof value to set.
      * @return the ServicePrincipalsAddKeyRequestBodyInner object itself.
      */
@@ -105,17 +108,16 @@ public final class ServicePrincipalsAddKeyRequestBodyInner {
 
     /**
      * Get the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ServicePrincipalsAddKeyRequestBodyInner object itself.
      */
@@ -124,17 +126,9 @@ public final class ServicePrincipalsAddKeyRequestBodyInner {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -144,5 +138,61 @@ public final class ServicePrincipalsAddKeyRequestBodyInner {
         if (passwordCredential() != null) {
             passwordCredential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("keyCredential", this.keyCredential);
+        jsonWriter.writeJsonField("passwordCredential", this.passwordCredential);
+        jsonWriter.writeStringField("proof", this.proof);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicePrincipalsAddKeyRequestBodyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicePrincipalsAddKeyRequestBodyInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServicePrincipalsAddKeyRequestBodyInner.
+     */
+    public static ServicePrincipalsAddKeyRequestBodyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicePrincipalsAddKeyRequestBodyInner deserializedServicePrincipalsAddKeyRequestBodyInner
+                = new ServicePrincipalsAddKeyRequestBodyInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyCredential".equals(fieldName)) {
+                    deserializedServicePrincipalsAddKeyRequestBodyInner.keyCredential
+                        = MicrosoftGraphKeyCredentialInner.fromJson(reader);
+                } else if ("passwordCredential".equals(fieldName)) {
+                    deserializedServicePrincipalsAddKeyRequestBodyInner.passwordCredential
+                        = MicrosoftGraphPasswordCredentialInner.fromJson(reader);
+                } else if ("proof".equals(fieldName)) {
+                    deserializedServicePrincipalsAddKeyRequestBodyInner.proof = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedServicePrincipalsAddKeyRequestBodyInner.additionalProperties = additionalProperties;
+
+            return deserializedServicePrincipalsAddKeyRequestBodyInner;
+        });
     }
 }

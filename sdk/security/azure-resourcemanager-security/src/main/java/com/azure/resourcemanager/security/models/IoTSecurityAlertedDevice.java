@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Statistical information about the number of alerts per device during last set number of days. */
+/**
+ * Statistical information about the number of alerts per device during last set number of days.
+ */
 @Immutable
-public final class IoTSecurityAlertedDevice {
+public final class IoTSecurityAlertedDevice implements JsonSerializable<IoTSecurityAlertedDevice> {
     /*
      * Device identifier.
      */
-    @JsonProperty(value = "deviceId", access = JsonProperty.Access.WRITE_ONLY)
     private String deviceId;
 
     /*
      * Number of alerts raised for this device.
      */
-    @JsonProperty(value = "alertsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long alertsCount;
 
-    /** Creates an instance of IoTSecurityAlertedDevice class. */
+    /**
+     * Creates an instance of IoTSecurityAlertedDevice class.
+     */
     public IoTSecurityAlertedDevice() {
     }
 
     /**
      * Get the deviceId property: Device identifier.
-     *
+     * 
      * @return the deviceId value.
      */
     public String deviceId() {
@@ -37,7 +43,7 @@ public final class IoTSecurityAlertedDevice {
 
     /**
      * Get the alertsCount property: Number of alerts raised for this device.
-     *
+     * 
      * @return the alertsCount value.
      */
     public Long alertsCount() {
@@ -46,9 +52,46 @@ public final class IoTSecurityAlertedDevice {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTSecurityAlertedDevice from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTSecurityAlertedDevice if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IoTSecurityAlertedDevice.
+     */
+    public static IoTSecurityAlertedDevice fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTSecurityAlertedDevice deserializedIoTSecurityAlertedDevice = new IoTSecurityAlertedDevice();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deserializedIoTSecurityAlertedDevice.deviceId = reader.getString();
+                } else if ("alertsCount".equals(fieldName)) {
+                    deserializedIoTSecurityAlertedDevice.alertsCount = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTSecurityAlertedDevice;
+        });
     }
 }

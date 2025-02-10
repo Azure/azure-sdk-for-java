@@ -12,40 +12,34 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplatePlatformImageSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplatePlatformImageSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"PlatformImage\",\"publisher\":\"xlzevgbmqjqabcy\",\"offer\":\"ivkwlzuvccfwnfnb\",\"sku\":\"fionl\",\"version\":\"x\",\"exactVersion\":\"qgtz\",\"planInfo\":{\"planName\":\"pnqbqqwxrjfe\",\"planProduct\":\"llnwsubi\",\"planPublisher\":\"njampm\"}}")
-                .toObject(ImageTemplatePlatformImageSource.class);
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.publisher());
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.offer());
-        Assertions.assertEquals("fionl", model.sku());
-        Assertions.assertEquals("x", model.version());
-        Assertions.assertEquals("pnqbqqwxrjfe", model.planInfo().planName());
-        Assertions.assertEquals("llnwsubi", model.planInfo().planProduct());
-        Assertions.assertEquals("njampm", model.planInfo().planPublisher());
+        ImageTemplatePlatformImageSource model = BinaryData.fromString(
+            "{\"type\":\"PlatformImage\",\"publisher\":\"xdn\",\"offer\":\"vo\",\"sku\":\"ujjugwdkcglh\",\"version\":\"azjdyggd\",\"exactVersion\":\"ixhbkuofqweykhm\",\"planInfo\":{\"planName\":\"evfyexfwhybcib\",\"planProduct\":\"yvdcsitynnaa\",\"planPublisher\":\"dectehfiqsc\"}}")
+            .toObject(ImageTemplatePlatformImageSource.class);
+        Assertions.assertEquals("xdn", model.publisher());
+        Assertions.assertEquals("vo", model.offer());
+        Assertions.assertEquals("ujjugwdkcglh", model.sku());
+        Assertions.assertEquals("azjdyggd", model.version());
+        Assertions.assertEquals("evfyexfwhybcib", model.planInfo().planName());
+        Assertions.assertEquals("yvdcsitynnaa", model.planInfo().planProduct());
+        Assertions.assertEquals("dectehfiqsc", model.planInfo().planPublisher());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplatePlatformImageSource model =
-            new ImageTemplatePlatformImageSource()
-                .withPublisher("xlzevgbmqjqabcy")
-                .withOffer("ivkwlzuvccfwnfnb")
-                .withSku("fionl")
-                .withVersion("x")
-                .withPlanInfo(
-                    new PlatformImagePurchasePlan()
-                        .withPlanName("pnqbqqwxrjfe")
-                        .withPlanProduct("llnwsubi")
-                        .withPlanPublisher("njampm"));
+        ImageTemplatePlatformImageSource model = new ImageTemplatePlatformImageSource().withPublisher("xdn")
+            .withOffer("vo")
+            .withSku("ujjugwdkcglh")
+            .withVersion("azjdyggd")
+            .withPlanInfo(new PlatformImagePurchasePlan().withPlanName("evfyexfwhybcib")
+                .withPlanProduct("yvdcsitynnaa")
+                .withPlanPublisher("dectehfiqsc"));
         model = BinaryData.fromObject(model).toObject(ImageTemplatePlatformImageSource.class);
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.publisher());
-        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.offer());
-        Assertions.assertEquals("fionl", model.sku());
-        Assertions.assertEquals("x", model.version());
-        Assertions.assertEquals("pnqbqqwxrjfe", model.planInfo().planName());
-        Assertions.assertEquals("llnwsubi", model.planInfo().planProduct());
-        Assertions.assertEquals("njampm", model.planInfo().planPublisher());
+        Assertions.assertEquals("xdn", model.publisher());
+        Assertions.assertEquals("vo", model.offer());
+        Assertions.assertEquals("ujjugwdkcglh", model.sku());
+        Assertions.assertEquals("azjdyggd", model.version());
+        Assertions.assertEquals("evfyexfwhybcib", model.planInfo().planName());
+        Assertions.assertEquals("yvdcsitynnaa", model.planInfo().planProduct());
+        Assertions.assertEquals("dectehfiqsc", model.planInfo().planPublisher());
     }
 }

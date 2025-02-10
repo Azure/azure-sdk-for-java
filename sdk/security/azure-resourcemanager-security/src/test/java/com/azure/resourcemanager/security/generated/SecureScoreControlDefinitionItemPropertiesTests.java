@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.SecureScoreControlDefini
 public final class SecureScoreControlDefinitionItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecureScoreControlDefinitionItemProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"qtj\",\"description\":\"dt\",\"maxScore\":695049640,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"jtcvuwkasizies\"},{\"id\":\"ughtuqfecjxeygtu\"}]}")
-                .toObject(SecureScoreControlDefinitionItemProperties.class);
+        SecureScoreControlDefinitionItemProperties model = BinaryData.fromString(
+            "{\"displayName\":\"ieknl\",\"description\":\"riaa\",\"maxScore\":1541326221,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"fbylyrfg\"},{\"id\":\"gtcojocqwo\"},{\"id\":\"nzjvusfzldm\"},{\"id\":\"uxylfsbtkadpy\"}]}")
+            .toObject(SecureScoreControlDefinitionItemProperties.class);
     }
 
     @org.junit.jupiter.api.Test

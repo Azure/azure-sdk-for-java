@@ -6,43 +6,98 @@ package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.AggregationInterval;
 import com.azure.resourcemanager.frontdoor.models.TimeseriesDataPoint;
 import com.azure.resourcemanager.frontdoor.models.TimeseriesType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Defines the Timeseries. */
+/**
+ * Defines the Timeseries.
+ */
 @Fluent
 public final class TimeseriesInner extends Resource {
     /*
      * The properties of a Timeseries
      */
-    @JsonProperty(value = "properties")
     private TimeseriesProperties innerProperties;
 
-    /** Creates an instance of TimeseriesInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of TimeseriesInner class.
+     */
     public TimeseriesInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a Timeseries.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TimeseriesProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TimeseriesInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TimeseriesInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -51,7 +106,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the endpoint property: The endpoint associated with the Timeseries data point.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -60,7 +115,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the endpoint property: The endpoint associated with the Timeseries data point.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -74,7 +129,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the startDateTimeUtc property: The start DateTime of the Timeseries in UTC.
-     *
+     * 
      * @return the startDateTimeUtc value.
      */
     public String startDateTimeUtc() {
@@ -83,7 +138,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the startDateTimeUtc property: The start DateTime of the Timeseries in UTC.
-     *
+     * 
      * @param startDateTimeUtc the startDateTimeUtc value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -97,7 +152,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the endDateTimeUtc property: The end DateTime of the Timeseries in UTC.
-     *
+     * 
      * @return the endDateTimeUtc value.
      */
     public String endDateTimeUtc() {
@@ -106,7 +161,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the endDateTimeUtc property: The end DateTime of the Timeseries in UTC.
-     *
+     * 
      * @param endDateTimeUtc the endDateTimeUtc value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -120,7 +175,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the aggregationInterval property: The aggregation interval of the Timeseries.
-     *
+     * 
      * @return the aggregationInterval value.
      */
     public AggregationInterval aggregationInterval() {
@@ -129,7 +184,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the aggregationInterval property: The aggregation interval of the Timeseries.
-     *
+     * 
      * @param aggregationInterval the aggregationInterval value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -143,7 +198,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the timeseriesType property: The type of Timeseries.
-     *
+     * 
      * @return the timeseriesType value.
      */
     public TimeseriesType timeseriesType() {
@@ -152,7 +207,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the timeseriesType property: The type of Timeseries.
-     *
+     * 
      * @param timeseriesType the timeseriesType value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -167,7 +222,7 @@ public final class TimeseriesInner extends Resource {
     /**
      * Get the country property: The country associated with the Timeseries. Values are country ISO codes as specified
      * here- https://www.iso.org/iso-3166-country-codes.html.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -177,7 +232,7 @@ public final class TimeseriesInner extends Resource {
     /**
      * Set the country property: The country associated with the Timeseries. Values are country ISO codes as specified
      * here- https://www.iso.org/iso-3166-country-codes.html.
-     *
+     * 
      * @param country the country value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -191,7 +246,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Get the timeseriesData property: The set of data points for the timeseries.
-     *
+     * 
      * @return the timeseriesData value.
      */
     public List<TimeseriesDataPoint> timeseriesData() {
@@ -200,7 +255,7 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Set the timeseriesData property: The set of data points for the timeseries.
-     *
+     * 
      * @param timeseriesData the timeseriesData value to set.
      * @return the TimeseriesInner object itself.
      */
@@ -214,12 +269,62 @@ public final class TimeseriesInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeseriesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeseriesInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TimeseriesInner.
+     */
+    public static TimeseriesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeseriesInner deserializedTimeseriesInner = new TimeseriesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTimeseriesInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTimeseriesInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTimeseriesInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedTimeseriesInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTimeseriesInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTimeseriesInner.innerProperties = TimeseriesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeseriesInner;
+        });
     }
 }

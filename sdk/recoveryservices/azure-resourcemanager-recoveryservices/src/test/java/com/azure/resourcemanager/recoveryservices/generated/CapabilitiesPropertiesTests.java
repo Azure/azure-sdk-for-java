@@ -14,23 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class CapabilitiesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilitiesProperties model =
-            BinaryData
-                .fromString(
-                    "{\"dnsZones\":[{\"subResource\":\"AzureSiteRecovery\"},{\"subResource\":\"AzureSiteRecovery\"}]}")
-                .toObject(CapabilitiesProperties.class);
+        CapabilitiesProperties model = BinaryData
+            .fromString(
+                "{\"dnsZones\":[{\"subResource\":\"AzureSiteRecovery\"},{\"subResource\":\"AzureSiteRecovery\"}]}")
+            .toObject(CapabilitiesProperties.class);
         Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.dnsZones().get(0).subResource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapabilitiesProperties model =
-            new CapabilitiesProperties()
-                .withDnsZones(
-                    Arrays
-                        .asList(
-                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY),
-                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY)));
+        CapabilitiesProperties model = new CapabilitiesProperties()
+            .withDnsZones(Arrays.asList(new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY),
+                new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY)));
         model = BinaryData.fromObject(model).toObject(CapabilitiesProperties.class);
         Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.dnsZones().get(0).subResource());
     }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class SecurityRuleDirection extends ExpandableStringEnum<SecurityRu
      * @param name a name to look for.
      * @return the corresponding SecurityRuleDirection.
      */
-    @JsonCreator
     public static SecurityRuleDirection fromString(String name) {
         return fromString(name, SecurityRuleDirection.class);
     }

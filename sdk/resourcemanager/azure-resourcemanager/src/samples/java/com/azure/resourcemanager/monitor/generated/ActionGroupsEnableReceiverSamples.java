@@ -4,29 +4,27 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.EnableRequest;
 
-/** Samples for ActionGroups EnableReceiver. */
+/**
+ * Samples for ActionGroups EnableReceiver.
+ */
 public final class ActionGroupsEnableReceiverSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/enableReceiver.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/enableReceiver.json
      */
     /**
      * Sample code: Enable the receiver.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void enableTheReceiver(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getActionGroups()
-            .enableReceiverWithResponse(
-                "Default-NotificationRules",
-                "SampleActionGroup",
-                new EnableRequest().withReceiverName("John Doe's mobile"),
-                Context.NONE);
+            .enableReceiverWithResponse("Default-NotificationRules", "SampleActionGroup",
+                new EnableRequest().withReceiverName("John Doe's mobile"), com.azure.core.util.Context.NONE);
     }
 }

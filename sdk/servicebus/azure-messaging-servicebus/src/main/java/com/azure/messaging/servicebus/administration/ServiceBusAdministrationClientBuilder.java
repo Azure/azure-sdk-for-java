@@ -39,7 +39,6 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImplBuilder;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
@@ -140,15 +139,13 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * @see ServiceBusAdministrationClient
  * @see ServiceBusAdministrationAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {ServiceBusAdministrationClient.class,
-    ServiceBusAdministrationAsyncClient.class})
-public final class ServiceBusAdministrationClientBuilder implements
-    TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
+@ServiceClientBuilder(
+    serviceClients = { ServiceBusAdministrationClient.class, ServiceBusAdministrationAsyncClient.class })
+public final class ServiceBusAdministrationClientBuilder
+    implements TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
     AzureSasCredentialTrait<ServiceBusAdministrationClientBuilder>,
-    ConnectionStringTrait<ServiceBusAdministrationClientBuilder>,
-    HttpTrait<ServiceBusAdministrationClientBuilder>,
-    ConfigurationTrait<ServiceBusAdministrationClientBuilder>,
-    EndpointTrait<ServiceBusAdministrationClientBuilder> {
+    ConnectionStringTrait<ServiceBusAdministrationClientBuilder>, HttpTrait<ServiceBusAdministrationClientBuilder>,
+    ConfigurationTrait<ServiceBusAdministrationClientBuilder>, EndpointTrait<ServiceBusAdministrationClientBuilder> {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
 
@@ -160,7 +157,7 @@ public final class ServiceBusAdministrationClientBuilder implements
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationClientBuilder.class);
-    private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
+    private static final ServiceBusManagementSerializer SERIALIZER = new ServiceBusManagementSerializer();
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -202,9 +199,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
-        final ServiceBusManagementClientImpl client = getServiceBusManagementClient();
-
-        return new ServiceBusAdministrationAsyncClient(client, serializer);
+        return new ServiceBusAdministrationAsyncClient(getServiceBusManagementClient());
     }
 
     private ServiceBusManagementClientImpl getServiceBusManagementClient() {
@@ -212,17 +207,10 @@ public final class ServiceBusAdministrationClientBuilder implements
             throw LOGGER.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
         }
 
-        final ServiceBusServiceVersion apiVersion = serviceVersion == null
-            ? ServiceBusServiceVersion.getLatest()
-            : serviceVersion;
+        final ServiceBusServiceVersion apiVersion
+            = serviceVersion == null ? ServiceBusServiceVersion.getLatest() : serviceVersion;
         final HttpPipeline httpPipeline = createPipeline();
-        final ServiceBusManagementClientImpl client = new ServiceBusManagementClientImplBuilder()
-            .pipeline(httpPipeline)
-            .serializerAdapter(serializer)
-            .endpoint(endpoint)
-            .apiVersion(apiVersion.getVersion())
-            .buildClient();
-        return client;
+        return new ServiceBusManagementClientImpl(httpPipeline, SERIALIZER, endpoint, apiVersion.getVersion());
     }
 
     /**
@@ -243,7 +231,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationClient buildClient() {
-        return new ServiceBusAdministrationClient(getServiceBusManagementClient(), serializer);
+        return new ServiceBusAdministrationClient(getServiceBusManagementClient());
     }
 
     /**
@@ -330,8 +318,8 @@ public final class ServiceBusAdministrationClientBuilder implements
             tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
                 properties.getSharedAccessKey(), ServiceBusConstants.TOKEN_VALIDITY);
         } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(
-                new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
+            throw LOGGER
+                .logExceptionAsError(new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
         }
 
         this.endpoint = properties.getEndpoint().getHost();
@@ -353,8 +341,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      */
     public ServiceBusAdministrationClientBuilder credential(String fullyQualifiedNamespace,
         TokenCredential credential) {
-        this.endpoint = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
+        this.endpoint = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
@@ -551,9 +538,8 @@ public final class ServiceBusAdministrationClientBuilder implements
             return pipeline;
         }
 
-        final Configuration buildConfiguration = configuration == null
-            ? Configuration.getGlobalConfiguration().clone()
-            : configuration;
+        final Configuration buildConfiguration
+            = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPolicies = new ArrayList<>();
@@ -586,15 +572,16 @@ public final class ServiceBusAdministrationClientBuilder implements
 
         HttpPolicyProviders.addAfterRetryPolicies(httpPolicies);
 
-        return new HttpPipelineBuilder()
-            .policies(httpPolicies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(httpPolicies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(clientOptions)
             .tracer(createTracer())
             .build();
     }
+
     private Tracer createTracer() {
-        return TracerProvider.getDefaultProvider().createTracer(CLIENT_NAME, CLIENT_VERSION,
-            AZ_TRACING_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
+        return TracerProvider.getDefaultProvider()
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, AZ_TRACING_NAMESPACE_VALUE,
+                clientOptions == null ? null : clientOptions.getTracingOptions());
     }
 }

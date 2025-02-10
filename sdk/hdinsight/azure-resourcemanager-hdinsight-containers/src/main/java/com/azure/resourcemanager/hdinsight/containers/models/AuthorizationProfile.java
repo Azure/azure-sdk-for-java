@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Authorization profile with details of AAD user Ids and group Ids authorized for data plane access. */
+/**
+ * Authorization profile with details of AAD user Ids and group Ids authorized for data plane access.
+ */
 @Fluent
-public final class AuthorizationProfile {
+public final class AuthorizationProfile implements JsonSerializable<AuthorizationProfile> {
     /*
      * AAD user Ids authorized for data plane access.
      */
-    @JsonProperty(value = "userIds")
     private List<String> userIds;
 
     /*
      * AAD group Ids authorized for data plane access.
      */
-    @JsonProperty(value = "groupIds")
     private List<String> groupIds;
 
-    /** Creates an instance of AuthorizationProfile class. */
+    /**
+     * Creates an instance of AuthorizationProfile class.
+     */
     public AuthorizationProfile() {
     }
 
     /**
      * Get the userIds property: AAD user Ids authorized for data plane access.
-     *
+     * 
      * @return the userIds value.
      */
     public List<String> userIds() {
@@ -38,7 +44,7 @@ public final class AuthorizationProfile {
 
     /**
      * Set the userIds property: AAD user Ids authorized for data plane access.
-     *
+     * 
      * @param userIds the userIds value to set.
      * @return the AuthorizationProfile object itself.
      */
@@ -49,7 +55,7 @@ public final class AuthorizationProfile {
 
     /**
      * Get the groupIds property: AAD group Ids authorized for data plane access.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -58,7 +64,7 @@ public final class AuthorizationProfile {
 
     /**
      * Set the groupIds property: AAD group Ids authorized for data plane access.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the AuthorizationProfile object itself.
      */
@@ -69,9 +75,50 @@ public final class AuthorizationProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("userIds", this.userIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("groupIds", this.groupIds, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthorizationProfile.
+     */
+    public static AuthorizationProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationProfile deserializedAuthorizationProfile = new AuthorizationProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userIds".equals(fieldName)) {
+                    List<String> userIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAuthorizationProfile.userIds = userIds;
+                } else if ("groupIds".equals(fieldName)) {
+                    List<String> groupIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAuthorizationProfile.groupIds = groupIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationProfile;
+        });
     }
 }

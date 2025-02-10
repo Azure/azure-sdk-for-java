@@ -13,47 +13,43 @@ import org.junit.jupiter.api.Assertions;
 public final class AS2ValidationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AS2ValidationSettings model =
-            BinaryData
-                .fromString(
-                    "{\"overrideMessageProperties\":true,\"encryptMessage\":false,\"signMessage\":true,\"compressMessage\":true,\"checkDuplicateMessage\":false,\"interchangeDuplicatesValidityDays\":1349191527,\"checkCertificateRevocationListOnSend\":true,\"checkCertificateRevocationListOnReceive\":true,\"encryptionAlgorithm\":\"RC2\",\"signingAlgorithm\":\"Default\"}")
-                .toObject(AS2ValidationSettings.class);
-        Assertions.assertEquals(true, model.overrideMessageProperties());
-        Assertions.assertEquals(false, model.encryptMessage());
-        Assertions.assertEquals(true, model.signMessage());
-        Assertions.assertEquals(true, model.compressMessage());
-        Assertions.assertEquals(false, model.checkDuplicateMessage());
-        Assertions.assertEquals(1349191527, model.interchangeDuplicatesValidityDays());
-        Assertions.assertEquals(true, model.checkCertificateRevocationListOnSend());
-        Assertions.assertEquals(true, model.checkCertificateRevocationListOnReceive());
-        Assertions.assertEquals(EncryptionAlgorithm.RC2, model.encryptionAlgorithm());
-        Assertions.assertEquals(SigningAlgorithm.DEFAULT, model.signingAlgorithm());
+        AS2ValidationSettings model = BinaryData.fromString(
+            "{\"overrideMessageProperties\":false,\"encryptMessage\":true,\"signMessage\":false,\"compressMessage\":false,\"checkDuplicateMessage\":true,\"interchangeDuplicatesValidityDays\":539540216,\"checkCertificateRevocationListOnSend\":false,\"checkCertificateRevocationListOnReceive\":false,\"encryptionAlgorithm\":\"NotSpecified\",\"signingAlgorithm\":\"NotSpecified\"}")
+            .toObject(AS2ValidationSettings.class);
+        Assertions.assertEquals(false, model.overrideMessageProperties());
+        Assertions.assertEquals(true, model.encryptMessage());
+        Assertions.assertEquals(false, model.signMessage());
+        Assertions.assertEquals(false, model.compressMessage());
+        Assertions.assertEquals(true, model.checkDuplicateMessage());
+        Assertions.assertEquals(539540216, model.interchangeDuplicatesValidityDays());
+        Assertions.assertEquals(false, model.checkCertificateRevocationListOnSend());
+        Assertions.assertEquals(false, model.checkCertificateRevocationListOnReceive());
+        Assertions.assertEquals(EncryptionAlgorithm.NOT_SPECIFIED, model.encryptionAlgorithm());
+        Assertions.assertEquals(SigningAlgorithm.NOT_SPECIFIED, model.signingAlgorithm());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AS2ValidationSettings model =
-            new AS2ValidationSettings()
-                .withOverrideMessageProperties(true)
-                .withEncryptMessage(false)
-                .withSignMessage(true)
-                .withCompressMessage(true)
-                .withCheckDuplicateMessage(false)
-                .withInterchangeDuplicatesValidityDays(1349191527)
-                .withCheckCertificateRevocationListOnSend(true)
-                .withCheckCertificateRevocationListOnReceive(true)
-                .withEncryptionAlgorithm(EncryptionAlgorithm.RC2)
-                .withSigningAlgorithm(SigningAlgorithm.DEFAULT);
+        AS2ValidationSettings model = new AS2ValidationSettings().withOverrideMessageProperties(false)
+            .withEncryptMessage(true)
+            .withSignMessage(false)
+            .withCompressMessage(false)
+            .withCheckDuplicateMessage(true)
+            .withInterchangeDuplicatesValidityDays(539540216)
+            .withCheckCertificateRevocationListOnSend(false)
+            .withCheckCertificateRevocationListOnReceive(false)
+            .withEncryptionAlgorithm(EncryptionAlgorithm.NOT_SPECIFIED)
+            .withSigningAlgorithm(SigningAlgorithm.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(AS2ValidationSettings.class);
-        Assertions.assertEquals(true, model.overrideMessageProperties());
-        Assertions.assertEquals(false, model.encryptMessage());
-        Assertions.assertEquals(true, model.signMessage());
-        Assertions.assertEquals(true, model.compressMessage());
-        Assertions.assertEquals(false, model.checkDuplicateMessage());
-        Assertions.assertEquals(1349191527, model.interchangeDuplicatesValidityDays());
-        Assertions.assertEquals(true, model.checkCertificateRevocationListOnSend());
-        Assertions.assertEquals(true, model.checkCertificateRevocationListOnReceive());
-        Assertions.assertEquals(EncryptionAlgorithm.RC2, model.encryptionAlgorithm());
-        Assertions.assertEquals(SigningAlgorithm.DEFAULT, model.signingAlgorithm());
+        Assertions.assertEquals(false, model.overrideMessageProperties());
+        Assertions.assertEquals(true, model.encryptMessage());
+        Assertions.assertEquals(false, model.signMessage());
+        Assertions.assertEquals(false, model.compressMessage());
+        Assertions.assertEquals(true, model.checkDuplicateMessage());
+        Assertions.assertEquals(539540216, model.interchangeDuplicatesValidityDays());
+        Assertions.assertEquals(false, model.checkCertificateRevocationListOnSend());
+        Assertions.assertEquals(false, model.checkCertificateRevocationListOnReceive());
+        Assertions.assertEquals(EncryptionAlgorithm.NOT_SPECIFIED, model.encryptionAlgorithm());
+        Assertions.assertEquals(SigningAlgorithm.NOT_SPECIFIED, model.signingAlgorithm());
     }
 }

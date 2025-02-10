@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption
  */
 public final class TopLevelDomainsListAgreementsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-04-01/examples/
      * ListTopLevelDomainAgreements.json
      */
     /**
@@ -20,8 +20,11 @@ public final class TopLevelDomainsListAgreementsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listTopLevelDomainAgreements(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getTopLevelDomains().listAgreements("in",
-            new TopLevelDomainAgreementOption().withIncludePrivacy(true).withForTransfer(false),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getTopLevelDomains()
+            .listAgreements("in", new TopLevelDomainAgreementOption().withIncludePrivacy(true).withForTransfer(false),
+                com.azure.core.util.Context.NONE);
     }
 }

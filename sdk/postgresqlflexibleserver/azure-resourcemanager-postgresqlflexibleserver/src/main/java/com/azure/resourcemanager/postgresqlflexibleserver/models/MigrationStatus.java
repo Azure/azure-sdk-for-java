@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Migration status. */
+/**
+ * Migration status.
+ */
 @Immutable
-public final class MigrationStatus {
+public final class MigrationStatus implements JsonSerializable<MigrationStatus> {
     /*
      * State of migration
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState state;
 
     /*
      * Error message, if any, for the migration state
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private String error;
 
     /*
      * Current Migration sub state details.
      */
-    @JsonProperty(value = "currentSubStateDetails", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationSubStateDetails currentSubStateDetails;
 
-    /** Creates an instance of MigrationStatus class. */
+    /**
+     * Creates an instance of MigrationStatus class.
+     */
     public MigrationStatus() {
     }
 
     /**
      * Get the state property: State of migration.
-     *
+     * 
      * @return the state value.
      */
     public MigrationState state() {
@@ -43,7 +48,7 @@ public final class MigrationStatus {
 
     /**
      * Get the error property: Error message, if any, for the migration state.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -52,7 +57,7 @@ public final class MigrationStatus {
 
     /**
      * Get the currentSubStateDetails property: Current Migration sub state details.
-     *
+     * 
      * @return the currentSubStateDetails value.
      */
     public MigrationSubStateDetails currentSubStateDetails() {
@@ -61,12 +66,51 @@ public final class MigrationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (currentSubStateDetails() != null) {
             currentSubStateDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrationStatus.
+     */
+    public static MigrationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationStatus deserializedMigrationStatus = new MigrationStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedMigrationStatus.state = MigrationState.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedMigrationStatus.error = reader.getString();
+                } else if ("currentSubStateDetails".equals(fieldName)) {
+                    deserializedMigrationStatus.currentSubStateDetails = MigrationSubStateDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationStatus;
+        });
     }
 }

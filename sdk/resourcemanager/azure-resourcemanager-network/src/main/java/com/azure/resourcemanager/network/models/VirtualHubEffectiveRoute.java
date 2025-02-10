@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The effective route configured on the virtual hub or specified resource.
  */
 @Fluent
-public final class VirtualHubEffectiveRoute {
+public final class VirtualHubEffectiveRoute implements JsonSerializable<VirtualHubEffectiveRoute> {
     /*
      * The list of address prefixes.
      */
-    @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;
 
     /*
      * The list of next hops.
      */
-    @JsonProperty(value = "nextHops")
     private List<String> nextHops;
 
     /*
      * The type of the next hop.
      */
-    @JsonProperty(value = "nextHopType")
     private String nextHopType;
 
     /*
      * The ASPath of this route.
      */
-    @JsonProperty(value = "asPath")
     private String asPath;
 
     /*
      * The origin of this route.
      */
-    @JsonProperty(value = "routeOrigin")
     private String routeOrigin;
 
     /**
@@ -155,5 +154,56 @@ public final class VirtualHubEffectiveRoute {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("addressPrefixes", this.addressPrefixes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("nextHops", this.nextHops, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("nextHopType", this.nextHopType);
+        jsonWriter.writeStringField("asPath", this.asPath);
+        jsonWriter.writeStringField("routeOrigin", this.routeOrigin);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualHubEffectiveRoute from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualHubEffectiveRoute if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualHubEffectiveRoute.
+     */
+    public static VirtualHubEffectiveRoute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualHubEffectiveRoute deserializedVirtualHubEffectiveRoute = new VirtualHubEffectiveRoute();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("addressPrefixes".equals(fieldName)) {
+                    List<String> addressPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualHubEffectiveRoute.addressPrefixes = addressPrefixes;
+                } else if ("nextHops".equals(fieldName)) {
+                    List<String> nextHops = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualHubEffectiveRoute.nextHops = nextHops;
+                } else if ("nextHopType".equals(fieldName)) {
+                    deserializedVirtualHubEffectiveRoute.nextHopType = reader.getString();
+                } else if ("asPath".equals(fieldName)) {
+                    deserializedVirtualHubEffectiveRoute.asPath = reader.getString();
+                } else if ("routeOrigin".equals(fieldName)) {
+                    deserializedVirtualHubEffectiveRoute.routeOrigin = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualHubEffectiveRoute;
+        });
     }
 }

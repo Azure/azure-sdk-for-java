@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.fluent.models.CacheInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Result of the request to list caches. It contains a list of caches and a URL link to get the next set of results. */
+/**
+ * Result of the request to list caches. It contains a list of caches and a URL link to get the next set of results.
+ */
 @Fluent
-public final class CachesListResult {
+public final class CachesListResult implements JsonSerializable<CachesListResult> {
     /*
      * URL to get the next set of cache list results, if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * List of Caches.
      */
-    @JsonProperty(value = "value")
     private List<CacheInner> value;
 
-    /** Creates an instance of CachesListResult class. */
+    /**
+     * Creates an instance of CachesListResult class.
+     */
     public CachesListResult() {
     }
 
     /**
      * Get the nextLink property: URL to get the next set of cache list results, if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class CachesListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of cache list results, if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CachesListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class CachesListResult {
 
     /**
      * Get the value property: List of Caches.
-     *
+     * 
      * @return the value value.
      */
     public List<CacheInner> value() {
@@ -59,7 +65,7 @@ public final class CachesListResult {
 
     /**
      * Set the value property: List of Caches.
-     *
+     * 
      * @param value the value value to set.
      * @return the CachesListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class CachesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CachesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CachesListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CachesListResult.
+     */
+    public static CachesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CachesListResult deserializedCachesListResult = new CachesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedCachesListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<CacheInner> value = reader.readArray(reader1 -> CacheInner.fromJson(reader1));
+                    deserializedCachesListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCachesListResult;
+        });
     }
 }

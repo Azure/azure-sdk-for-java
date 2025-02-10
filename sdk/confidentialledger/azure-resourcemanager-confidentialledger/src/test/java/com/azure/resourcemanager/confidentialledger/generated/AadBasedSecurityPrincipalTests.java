@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AadBasedSecurityPrincipalTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AadBasedSecurityPrincipal model =
-            BinaryData
-                .fromString("{\"principalId\":\"vamih\",\"tenantId\":\"gnarxzxtheo\",\"ledgerRoleName\":\"Reader\"}")
-                .toObject(AadBasedSecurityPrincipal.class);
-        Assertions.assertEquals("vamih", model.principalId());
-        Assertions.assertEquals("gnarxzxtheo", model.tenantId());
-        Assertions.assertEquals(LedgerRoleName.READER, model.ledgerRoleName());
+        AadBasedSecurityPrincipal model = BinaryData
+            .fromString("{\"principalId\":\"qi\",\"tenantId\":\"hungbwjzrnf\",\"ledgerRoleName\":\"Administrator\"}")
+            .toObject(AadBasedSecurityPrincipal.class);
+        Assertions.assertEquals("qi", model.principalId());
+        Assertions.assertEquals("hungbwjzrnf", model.tenantId());
+        Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR, model.ledgerRoleName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AadBasedSecurityPrincipal model =
-            new AadBasedSecurityPrincipal()
-                .withPrincipalId("vamih")
-                .withTenantId("gnarxzxtheo")
-                .withLedgerRoleName(LedgerRoleName.READER);
+        AadBasedSecurityPrincipal model = new AadBasedSecurityPrincipal().withPrincipalId("qi")
+            .withTenantId("hungbwjzrnf")
+            .withLedgerRoleName(LedgerRoleName.ADMINISTRATOR);
         model = BinaryData.fromObject(model).toObject(AadBasedSecurityPrincipal.class);
-        Assertions.assertEquals("vamih", model.principalId());
-        Assertions.assertEquals("gnarxzxtheo", model.tenantId());
-        Assertions.assertEquals(LedgerRoleName.READER, model.ledgerRoleName());
+        Assertions.assertEquals("qi", model.principalId());
+        Assertions.assertEquals("hungbwjzrnf", model.tenantId());
+        Assertions.assertEquals(LedgerRoleName.ADMINISTRATOR, model.ledgerRoleName());
     }
 }

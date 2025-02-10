@@ -5,36 +5,117 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Task details based on specific task type. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = TaskTypeDetails.class)
-@JsonTypeName("TaskTypeDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AutomationRunbookTaskDetails", value = AutomationRunbookTaskDetails.class),
-    @JsonSubTypes.Type(name = "ConsistencyCheckTaskDetails", value = ConsistencyCheckTaskDetails.class),
-    @JsonSubTypes.Type(name = "JobTaskDetails", value = JobTaskDetails.class),
-    @JsonSubTypes.Type(name = "ManualActionTaskDetails", value = ManualActionTaskDetails.class),
-    @JsonSubTypes.Type(name = "ScriptActionTaskDetails", value = ScriptActionTaskDetails.class),
-    @JsonSubTypes.Type(name = "VmNicUpdatesTaskDetails", value = VmNicUpdatesTaskDetails.class)
-})
+/**
+ * Task details based on specific task type.
+ */
 @Immutable
-public class TaskTypeDetails {
-    /** Creates an instance of TaskTypeDetails class. */
+public class TaskTypeDetails implements JsonSerializable<TaskTypeDetails> {
+    /*
+     * The type of task details.
+     */
+    private String instanceType = "TaskTypeDetails";
+
+    /**
+     * Creates an instance of TaskTypeDetails class.
+     */
     public TaskTypeDetails() {
     }
 
     /**
+     * Get the instanceType property: The type of task details.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskTypeDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskTypeDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskTypeDetails.
+     */
+    public static TaskTypeDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AutomationRunbookTaskDetails".equals(discriminatorValue)) {
+                    return AutomationRunbookTaskDetails.fromJson(readerToUse.reset());
+                } else if ("ConsistencyCheckTaskDetails".equals(discriminatorValue)) {
+                    return ConsistencyCheckTaskDetails.fromJson(readerToUse.reset());
+                } else if ("JobTaskDetails".equals(discriminatorValue)) {
+                    return JobTaskDetails.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("FabricReplicationGroupTaskDetails".equals(discriminatorValue)) {
+                    return FabricReplicationGroupTaskDetails.fromJson(readerToUse.reset());
+                } else if ("VirtualMachineTaskDetails".equals(discriminatorValue)) {
+                    return VirtualMachineTaskDetails.fromJson(readerToUse.reset());
+                } else if ("ManualActionTaskDetails".equals(discriminatorValue)) {
+                    return ManualActionTaskDetails.fromJson(readerToUse.reset());
+                } else if ("ScriptActionTaskDetails".equals(discriminatorValue)) {
+                    return ScriptActionTaskDetails.fromJson(readerToUse.reset());
+                } else if ("VmNicUpdatesTaskDetails".equals(discriminatorValue)) {
+                    return VmNicUpdatesTaskDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TaskTypeDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskTypeDetails deserializedTaskTypeDetails = new TaskTypeDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedTaskTypeDetails.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskTypeDetails;
+        });
     }
 }

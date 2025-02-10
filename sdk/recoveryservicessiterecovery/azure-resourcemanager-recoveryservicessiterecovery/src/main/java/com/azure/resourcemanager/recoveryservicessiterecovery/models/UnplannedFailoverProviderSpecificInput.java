@@ -5,35 +5,113 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Provider specific unplanned failover input. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = UnplannedFailoverProviderSpecificInput.class)
-@JsonTypeName("UnplannedFailoverProviderSpecificInput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "A2A", value = A2AUnplannedFailoverInput.class),
-    @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzureUnplannedFailoverInput.class),
-    @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2UnplannedFailoverInput.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmUnplannedFailoverInput.class),
-    @JsonSubTypes.Type(name = "InMage", value = InMageUnplannedFailoverInput.class)
-})
+/**
+ * Provider specific unplanned failover input.
+ */
 @Immutable
-public class UnplannedFailoverProviderSpecificInput {
-    /** Creates an instance of UnplannedFailoverProviderSpecificInput class. */
+public class UnplannedFailoverProviderSpecificInput
+    implements JsonSerializable<UnplannedFailoverProviderSpecificInput> {
+    /*
+     * The class type.
+     */
+    private String instanceType = "UnplannedFailoverProviderSpecificInput";
+
+    /**
+     * Creates an instance of UnplannedFailoverProviderSpecificInput class.
+     */
     public UnplannedFailoverProviderSpecificInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UnplannedFailoverProviderSpecificInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UnplannedFailoverProviderSpecificInput if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UnplannedFailoverProviderSpecificInput.
+     */
+    public static UnplannedFailoverProviderSpecificInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("A2A".equals(discriminatorValue)) {
+                    return A2AUnplannedFailoverInput.fromJson(readerToUse.reset());
+                } else if ("HyperVReplicaAzure".equals(discriminatorValue)) {
+                    return HyperVReplicaAzureUnplannedFailoverInput.fromJson(readerToUse.reset());
+                } else if ("InMageAzureV2".equals(discriminatorValue)) {
+                    return InMageAzureV2UnplannedFailoverInput.fromJson(readerToUse.reset());
+                } else if ("InMageRcm".equals(discriminatorValue)) {
+                    return InMageRcmUnplannedFailoverInput.fromJson(readerToUse.reset());
+                } else if ("InMage".equals(discriminatorValue)) {
+                    return InMageUnplannedFailoverInput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static UnplannedFailoverProviderSpecificInput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UnplannedFailoverProviderSpecificInput deserializedUnplannedFailoverProviderSpecificInput
+                = new UnplannedFailoverProviderSpecificInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedUnplannedFailoverProviderSpecificInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUnplannedFailoverProviderSpecificInput;
+        });
     }
 }

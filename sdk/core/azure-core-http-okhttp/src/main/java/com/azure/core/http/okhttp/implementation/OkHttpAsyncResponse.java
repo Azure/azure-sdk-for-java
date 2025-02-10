@@ -58,8 +58,8 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
 
         // Use Flux.using to close the stream after complete emission
         return Flux.using(this.responseBody::byteStream,
-            bodyStream -> FluxUtil.toFluxByteBuffer(bodyStream, BYTE_BUFFER_CHUNK_SIZE),
-            bodyStream -> this.close(), false);
+            bodyStream -> FluxUtil.toFluxByteBuffer(bodyStream, BYTE_BUFFER_CHUNK_SIZE), bodyStream -> this.close(),
+            false);
     }
 
     @Override
@@ -87,7 +87,7 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
             return Mono.empty();
         }
 
-        return Mono.using(responseBody::byteStream, Mono::just, ignored -> this.close(), false);
+        return Mono.fromSupplier(responseBody::byteStream);
     }
 
     @Override

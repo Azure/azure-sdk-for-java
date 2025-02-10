@@ -5,32 +5,42 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The storage location for a packet capture session.
  */
 @Fluent
-public final class PacketCaptureStorageLocation {
+public final class PacketCaptureStorageLocation implements JsonSerializable<PacketCaptureStorageLocation> {
     /*
-     * The ID of the storage account to save the packet capture session. Required if no local file path is provided.
+     * The ID of the storage account to save the packet capture session. Required if no localPath or filePath is
+     * provided.
      */
-    @JsonProperty(value = "storageId")
     private String storageId;
 
     /*
-     * The URI of the storage path to save the packet capture. Must be a well-formed URI describing the location to
-     * save the packet capture.
+     * The URI of the storage path to save the packet capture. Must be a well-formed URI describing the location to save
+     * the packet capture.
      */
-    @JsonProperty(value = "storagePath")
     private String storagePath;
 
     /*
-     * A valid local path on the targeting VM. Must include the name of the capture file (*.cap). For linux virtual
-     * machine it must start with /var/captures. Required if no storage ID is provided, otherwise optional.
+     * This path is invalid if 'Continuous Capture' is provided with 'true' or 'false'. A valid local path on the
+     * targeting VM. Must include the name of the capture file (*.cap). For linux virtual machine it must start with
+     * /var/captures. Required if no storage ID is provided, otherwise optional.
      */
-    @JsonProperty(value = "filePath")
     private String filePath;
+
+    /*
+     * This path is valid if 'Continuous Capture' is provided with 'true' or 'false' and required if no storage ID is
+     * provided, otherwise optional. Must include the name of the capture file (*.cap). For linux virtual machine it
+     * must start with /var/captures.
+     */
+    private String localPath;
 
     /**
      * Creates an instance of PacketCaptureStorageLocation class.
@@ -40,7 +50,7 @@ public final class PacketCaptureStorageLocation {
 
     /**
      * Get the storageId property: The ID of the storage account to save the packet capture session. Required if no
-     * local file path is provided.
+     * localPath or filePath is provided.
      * 
      * @return the storageId value.
      */
@@ -50,7 +60,7 @@ public final class PacketCaptureStorageLocation {
 
     /**
      * Set the storageId property: The ID of the storage account to save the packet capture session. Required if no
-     * local file path is provided.
+     * localPath or filePath is provided.
      * 
      * @param storageId the storageId value to set.
      * @return the PacketCaptureStorageLocation object itself.
@@ -83,9 +93,9 @@ public final class PacketCaptureStorageLocation {
     }
 
     /**
-     * Get the filePath property: A valid local path on the targeting VM. Must include the name of the capture file
-     * (*.cap). For linux virtual machine it must start with /var/captures. Required if no storage ID is provided,
-     * otherwise optional.
+     * Get the filePath property: This path is invalid if 'Continuous Capture' is provided with 'true' or 'false'. A
+     * valid local path on the targeting VM. Must include the name of the capture file (*.cap). For linux virtual
+     * machine it must start with /var/captures. Required if no storage ID is provided, otherwise optional.
      * 
      * @return the filePath value.
      */
@@ -94,9 +104,9 @@ public final class PacketCaptureStorageLocation {
     }
 
     /**
-     * Set the filePath property: A valid local path on the targeting VM. Must include the name of the capture file
-     * (*.cap). For linux virtual machine it must start with /var/captures. Required if no storage ID is provided,
-     * otherwise optional.
+     * Set the filePath property: This path is invalid if 'Continuous Capture' is provided with 'true' or 'false'. A
+     * valid local path on the targeting VM. Must include the name of the capture file (*.cap). For linux virtual
+     * machine it must start with /var/captures. Required if no storage ID is provided, otherwise optional.
      * 
      * @param filePath the filePath value to set.
      * @return the PacketCaptureStorageLocation object itself.
@@ -107,10 +117,79 @@ public final class PacketCaptureStorageLocation {
     }
 
     /**
+     * Get the localPath property: This path is valid if 'Continuous Capture' is provided with 'true' or 'false' and
+     * required if no storage ID is provided, otherwise optional. Must include the name of the capture file (*.cap). For
+     * linux virtual machine it must start with /var/captures.
+     * 
+     * @return the localPath value.
+     */
+    public String localPath() {
+        return this.localPath;
+    }
+
+    /**
+     * Set the localPath property: This path is valid if 'Continuous Capture' is provided with 'true' or 'false' and
+     * required if no storage ID is provided, otherwise optional. Must include the name of the capture file (*.cap). For
+     * linux virtual machine it must start with /var/captures.
+     * 
+     * @param localPath the localPath value to set.
+     * @return the PacketCaptureStorageLocation object itself.
+     */
+    public PacketCaptureStorageLocation withLocalPath(String localPath) {
+        this.localPath = localPath;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageId", this.storageId);
+        jsonWriter.writeStringField("storagePath", this.storagePath);
+        jsonWriter.writeStringField("filePath", this.filePath);
+        jsonWriter.writeStringField("localPath", this.localPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCaptureStorageLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCaptureStorageLocation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PacketCaptureStorageLocation.
+     */
+    public static PacketCaptureStorageLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCaptureStorageLocation deserializedPacketCaptureStorageLocation = new PacketCaptureStorageLocation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageId".equals(fieldName)) {
+                    deserializedPacketCaptureStorageLocation.storageId = reader.getString();
+                } else if ("storagePath".equals(fieldName)) {
+                    deserializedPacketCaptureStorageLocation.storagePath = reader.getString();
+                } else if ("filePath".equals(fieldName)) {
+                    deserializedPacketCaptureStorageLocation.filePath = reader.getString();
+                } else if ("localPath".equals(fieldName)) {
+                    deserializedPacketCaptureStorageLocation.localPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCaptureStorageLocation;
+        });
     }
 }

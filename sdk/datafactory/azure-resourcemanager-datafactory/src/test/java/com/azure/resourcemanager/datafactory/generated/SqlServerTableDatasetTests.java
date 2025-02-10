@@ -19,29 +19,35 @@ public final class SqlServerTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlServerTableDataset model = BinaryData.fromString(
-            "{\"type\":\"SqlServerTable\",\"typeProperties\":{\"tableName\":\"datazcq\",\"schema\":\"datavnkyakck\",\"table\":\"datah\"},\"description\":\"nsddjkkd\",\"structure\":\"dataesu\",\"schema\":\"dataogfcnxcxgxum\",\"linkedServiceName\":{\"referenceName\":\"cqxmyvkxixy\",\"parameters\":{\"g\":\"dataifjc\"}},\"parameters\":{\"chmxczbyfkoc\":{\"type\":\"Bool\",\"defaultValue\":\"datauw\"}},\"annotations\":[\"datadctsnlwscrngt\"],\"folder\":{\"name\":\"rolwv\"},\"\":{\"cucti\":\"datasdksut\",\"ux\":\"dataavishbvjhxvpmqqu\",\"lexoweorocr\":\"dataphngr\",\"gbq\":\"dataicgym\"}}")
+            "{\"type\":\"SqlServerTable\",\"typeProperties\":{\"tableName\":\"datav\",\"schema\":\"datadfkhttuobrxz\",\"table\":\"dataytebjkjge\"},\"description\":\"wtfma\",\"structure\":\"databmnhtwofx\",\"schema\":\"datahlvyqns\",\"linkedServiceName\":{\"referenceName\":\"bq\",\"parameters\":{\"hj\":\"dataqkie\",\"spt\":\"dataqqrugwespscvs\",\"supcvqgxcvw\":\"datauwozfvz\",\"cmcgmlmpnvq\":\"dataoq\"}},\"parameters\":{\"dqseypdlmajpuy\":{\"type\":\"Bool\",\"defaultValue\":\"datarzn\"},\"mzgccy\":{\"type\":\"String\",\"defaultValue\":\"dataf\"}},\"annotations\":[\"datavmsiehedm\",\"datavoneey\"],\"folder\":{\"name\":\"a\"},\"\":{\"qwddigebls\":\"dataza\",\"wveeozbjkj\":\"datalzdssi\"}}")
             .toObject(SqlServerTableDataset.class);
-        Assertions.assertEquals("nsddjkkd", model.description());
-        Assertions.assertEquals("cqxmyvkxixy", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("chmxczbyfkoc").type());
-        Assertions.assertEquals("rolwv", model.folder().name());
+        Assertions.assertEquals("wtfma", model.description());
+        Assertions.assertEquals("bq", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("dqseypdlmajpuy").type());
+        Assertions.assertEquals("a", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerTableDataset model = new SqlServerTableDataset().withDescription("nsddjkkd").withStructure("dataesu")
-            .withSchema("dataogfcnxcxgxum")
-            .withLinkedServiceName(
-                new LinkedServiceReference().withReferenceName("cqxmyvkxixy").withParameters(mapOf("g", "dataifjc")))
-            .withParameters(mapOf("chmxczbyfkoc",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datauw")))
-            .withAnnotations(Arrays.asList("datadctsnlwscrngt")).withFolder(new DatasetFolder().withName("rolwv"))
-            .withTableName("datazcq").withSchemaTypePropertiesSchema("datavnkyakck").withTable("datah");
+        SqlServerTableDataset model = new SqlServerTableDataset().withDescription("wtfma")
+            .withStructure("databmnhtwofx")
+            .withSchema("datahlvyqns")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bq")
+                .withParameters(mapOf("hj", "dataqkie", "spt", "dataqqrugwespscvs", "supcvqgxcvw", "datauwozfvz",
+                    "cmcgmlmpnvq", "dataoq")))
+            .withParameters(mapOf("dqseypdlmajpuy",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datarzn"), "mzgccy",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataf")))
+            .withAnnotations(Arrays.asList("datavmsiehedm", "datavoneey"))
+            .withFolder(new DatasetFolder().withName("a"))
+            .withTableName("datav")
+            .withSchemaTypePropertiesSchema("datadfkhttuobrxz")
+            .withTable("dataytebjkjge");
         model = BinaryData.fromObject(model).toObject(SqlServerTableDataset.class);
-        Assertions.assertEquals("nsddjkkd", model.description());
-        Assertions.assertEquals("cqxmyvkxixy", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("chmxczbyfkoc").type());
-        Assertions.assertEquals("rolwv", model.folder().name());
+        Assertions.assertEquals("wtfma", model.description());
+        Assertions.assertEquals("bq", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("dqseypdlmajpuy").type());
+        Assertions.assertEquals("a", model.folder().name());
     }
 
     // Use "Map.of" if available

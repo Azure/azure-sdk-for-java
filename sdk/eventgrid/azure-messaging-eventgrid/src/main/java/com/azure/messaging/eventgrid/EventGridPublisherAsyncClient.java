@@ -18,7 +18,6 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventgrid.implementation.Constants;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
-import com.fasterxml.jackson.databind.util.RawValue;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -170,8 +169,7 @@ public final class EventGridPublisherAsyncClient<T> {
 
     EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion,
         Class<T> eventClass) {
-        this.impl = new EventGridPublisherClientImplBuilder()
-            .pipeline(pipeline)
+        this.impl = new EventGridPublisherClientImplBuilder().pipeline(pipeline)
             .apiVersion(serviceVersion.getVersion())
             .buildClient();
         this.hostname = hostname;
@@ -229,17 +227,15 @@ public final class EventGridPublisherAsyncClient<T> {
             Charset charset = StandardCharsets.UTF_8;
             endpoint = String.format("%s?%s=%s", endpoint, API_VERSION, apiVersion.getVersion());
             String encodedResource = URLEncoder.encode(endpoint, charset.name());
-            String encodedExpiration = URLEncoder.encode(expirationTime.atZoneSameInstant(ZoneOffset.UTC).format(
-                SAS_DATE_TIME_FORMATER),
-                charset.name());
+            String encodedExpiration = URLEncoder.encode(
+                expirationTime.atZoneSameInstant(ZoneOffset.UTC).format(SAS_DATE_TIME_FORMATER), charset.name());
 
             String unsignedSas = String.format("%s=%s&%s=%s", resKey, encodedResource, expKey, encodedExpiration);
 
             Mac hmac = Mac.getInstance(HMAC_SHA256);
             hmac.init(new SecretKeySpec(Base64.getDecoder().decode(keyCredential.getKey()), HMAC_SHA256));
-            String signature = new String(Base64.getEncoder().encode(
-                hmac.doFinal(unsignedSas.getBytes(charset))),
-                charset);
+            String signature
+                = new String(Base64.getEncoder().encode(hmac.doFinal(unsignedSas.getBytes(charset))), charset);
 
             String encodedSignature = URLEncoder.encode(signature, charset.name());
 
@@ -360,7 +356,7 @@ public final class EventGridPublisherAsyncClient<T> {
         }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
-            .map(event -> (Object) new RawValue(event.toString()))
+            .map(event -> (Object) event)
             .collectList()
             .flatMap(list -> this.impl.publishCustomEventEventsAsync(this.hostname, list, finalContext));
     }
@@ -384,7 +380,8 @@ public final class EventGridPublisherAsyncClient<T> {
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
             .collectList()
-            .flatMap(list -> this.impl.publishCloudEventEventsWithResponseAsync(this.hostname, list, channelName, finalContext));
+            .flatMap(list -> this.impl.publishCloudEventEventsWithResponseAsync(this.hostname, list, channelName,
+                finalContext));
     }
 
     Mono<Response<Void>> sendCustomEventsWithResponse(Iterable<BinaryData> events, Context context) {
@@ -393,7 +390,7 @@ public final class EventGridPublisherAsyncClient<T> {
         }
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
-            .map(event -> (Object) new RawValue(event.toString()))
+            .map(event -> (Object) event)
             .collectList()
             .flatMap(list -> this.impl.publishCustomEventEventsWithResponseAsync(this.hostname, list, finalContext));
     }
@@ -403,7 +400,7 @@ public final class EventGridPublisherAsyncClient<T> {
             for (CloudEvent event : events) {
                 if (event.getExtensionAttributes() == null
                     || (event.getExtensionAttributes().get(Constants.TRACE_PARENT) == null
-                    && event.getExtensionAttributes().get(Constants.TRACE_STATE) == null)) {
+                        && event.getExtensionAttributes().get(Constants.TRACE_STATE) == null)) {
 
                     event.addExtensionAttribute(Constants.TRACE_PARENT, Constants.TRACE_PARENT_PLACEHOLDER_UUID);
                     event.addExtensionAttribute(Constants.TRACE_STATE, Constants.TRACE_STATE_PLACEHOLDER_UUID);

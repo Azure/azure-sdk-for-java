@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SSL-enabled hostname.
  */
 @Fluent
-public final class HostnameSslState {
+public final class HostnameSslState implements JsonSerializable<HostnameSslState> {
     /*
      * Hostname.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * SSL type.
      */
-    @JsonProperty(value = "sslState")
     private SslState sslState;
 
     /*
      * Virtual IP address assigned to the hostname if IP based SSL is enabled.
      */
-    @JsonProperty(value = "virtualIP")
     private String virtualIp;
 
     /*
      * SSL certificate thumbprint.
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
      * Set to <code>true</code> to update existing hostname.
      */
-    @JsonProperty(value = "toUpdate")
     private Boolean toUpdate;
 
     /*
      * Indicates whether the hostname is a standard or repository hostname.
      */
-    @JsonProperty(value = "hostType")
     private HostType hostType;
 
     /**
@@ -180,5 +178,56 @@ public final class HostnameSslState {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("sslState", this.sslState == null ? null : this.sslState.toString());
+        jsonWriter.writeStringField("virtualIP", this.virtualIp);
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeBooleanField("toUpdate", this.toUpdate);
+        jsonWriter.writeStringField("hostType", this.hostType == null ? null : this.hostType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostnameSslState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostnameSslState if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HostnameSslState.
+     */
+    public static HostnameSslState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostnameSslState deserializedHostnameSslState = new HostnameSslState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedHostnameSslState.name = reader.getString();
+                } else if ("sslState".equals(fieldName)) {
+                    deserializedHostnameSslState.sslState = SslState.fromString(reader.getString());
+                } else if ("virtualIP".equals(fieldName)) {
+                    deserializedHostnameSslState.virtualIp = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedHostnameSslState.thumbprint = reader.getString();
+                } else if ("toUpdate".equals(fieldName)) {
+                    deserializedHostnameSslState.toUpdate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hostType".equals(fieldName)) {
+                    deserializedHostnameSslState.hostType = HostType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHostnameSslState;
+        });
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class AppServiceEnvironmentsListUsagesSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/AppServiceEnvironments_ListUsages.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/AppServiceEnvironments_ListUsages.
      * json
      */
     /**
@@ -20,7 +20,10 @@ public final class AppServiceEnvironmentsListUsagesSamples {
      */
     public static void
         getGlobalUsageMetricsOfAnAppServiceEnvironment(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().listUsages("test-rg", "test-ase", null,
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .listUsages("test-rg", "test-ase", null, com.azure.core.util.Context.NONE);
     }
 }

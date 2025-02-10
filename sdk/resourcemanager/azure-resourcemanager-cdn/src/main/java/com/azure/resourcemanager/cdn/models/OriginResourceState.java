@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resource status of the origin. */
+/**
+ * Resource status of the origin.
+ */
 public final class OriginResourceState extends ExpandableStringEnum<OriginResourceState> {
-    /** Static value Creating for OriginResourceState. */
+    /**
+     * Static value Creating for OriginResourceState.
+     */
     public static final OriginResourceState CREATING = fromString("Creating");
 
-    /** Static value Active for OriginResourceState. */
+    /**
+     * Static value Active for OriginResourceState.
+     */
     public static final OriginResourceState ACTIVE = fromString("Active");
 
-    /** Static value Deleting for OriginResourceState. */
+    /**
+     * Static value Deleting for OriginResourceState.
+     */
     public static final OriginResourceState DELETING = fromString("Deleting");
 
     /**
      * Creates a new instance of OriginResourceState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class OriginResourceState extends ExpandableStringEnum<OriginResour
 
     /**
      * Creates or finds a OriginResourceState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OriginResourceState.
      */
-    @JsonCreator
     public static OriginResourceState fromString(String name) {
         return fromString(name, OriginResourceState.class);
     }
 
     /**
      * Gets known OriginResourceState values.
-     *
+     * 
      * @return known OriginResourceState values.
      */
     public static Collection<OriginResourceState> values() {

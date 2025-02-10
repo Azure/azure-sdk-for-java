@@ -19,8 +19,7 @@ public final class BackupPoliciesImpl implements BackupPolicies {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BackupPoliciesImpl(
-        BackupPoliciesClient innerClient,
+    public BackupPoliciesImpl(BackupPoliciesClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,14 +27,14 @@ public final class BackupPoliciesImpl implements BackupPolicies {
 
     public PagedIterable<ProtectionPolicyResource> list(String vaultName, String resourceGroupName) {
         PagedIterable<ProtectionPolicyResourceInner> inner = this.serviceClient().list(vaultName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ProtectionPolicyResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProtectionPolicyResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ProtectionPolicyResource> list(
-        String vaultName, String resourceGroupName, String filter, Context context) {
-        PagedIterable<ProtectionPolicyResourceInner> inner =
-            this.serviceClient().list(vaultName, resourceGroupName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new ProtectionPolicyResourceImpl(inner1, this.manager()));
+    public PagedIterable<ProtectionPolicyResource> list(String vaultName, String resourceGroupName, String filter,
+        Context context) {
+        PagedIterable<ProtectionPolicyResourceInner> inner
+            = this.serviceClient().list(vaultName, resourceGroupName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProtectionPolicyResourceImpl(inner1, this.manager()));
     }
 
     private BackupPoliciesClient serviceClient() {

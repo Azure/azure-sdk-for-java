@@ -19,11 +19,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AdministratorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AdministratorsClient.
+ */
 public interface AdministratorsClient {
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -32,15 +34,15 @@ public interface AdministratorsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an Active Directory administrator along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String serverName,
+        String objectId, ActiveDirectoryAdministratorAdd parameters);
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -56,7 +58,7 @@ public interface AdministratorsClient {
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -72,7 +74,7 @@ public interface AdministratorsClient {
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -85,15 +87,12 @@ public interface AdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ActiveDirectoryAdministratorInner>, ActiveDirectoryAdministratorInner> beginCreate(
-        String resourceGroupName,
-        String serverName,
-        String objectId,
-        ActiveDirectoryAdministratorAdd parameters,
+        String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters,
         Context context);
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -104,12 +103,12 @@ public interface AdministratorsClient {
      * @return represents an Active Directory administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ActiveDirectoryAdministratorInner> createAsync(
-        String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters);
+    Mono<ActiveDirectoryAdministratorInner> createAsync(String resourceGroupName, String serverName, String objectId,
+        ActiveDirectoryAdministratorAdd parameters);
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -120,12 +119,12 @@ public interface AdministratorsClient {
      * @return represents an Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ActiveDirectoryAdministratorInner create(
-        String resourceGroupName, String serverName, String objectId, ActiveDirectoryAdministratorAdd parameters);
+    ActiveDirectoryAdministratorInner create(String resourceGroupName, String serverName, String objectId,
+        ActiveDirectoryAdministratorAdd parameters);
 
     /**
      * Creates a new server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -137,16 +136,12 @@ public interface AdministratorsClient {
      * @return represents an Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ActiveDirectoryAdministratorInner create(
-        String resourceGroupName,
-        String serverName,
-        String objectId,
-        ActiveDirectoryAdministratorAdd parameters,
-        Context context);
+    ActiveDirectoryAdministratorInner create(String resourceGroupName, String serverName, String objectId,
+        ActiveDirectoryAdministratorAdd parameters, Context context);
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -156,12 +151,12 @@ public interface AdministratorsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String objectId);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String objectId);
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -175,7 +170,7 @@ public interface AdministratorsClient {
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -189,7 +184,7 @@ public interface AdministratorsClient {
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -200,12 +195,12 @@ public interface AdministratorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String objectId, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String objectId,
+        Context context);
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -219,7 +214,7 @@ public interface AdministratorsClient {
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -232,7 +227,7 @@ public interface AdministratorsClient {
 
     /**
      * Deletes an Active Directory Administrator associated with the server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -246,7 +241,7 @@ public interface AdministratorsClient {
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -256,12 +251,12 @@ public interface AdministratorsClient {
      * @return information about a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ActiveDirectoryAdministratorInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String objectId);
+    Mono<Response<ActiveDirectoryAdministratorInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String objectId);
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -275,7 +270,7 @@ public interface AdministratorsClient {
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -286,12 +281,12 @@ public interface AdministratorsClient {
      * @return information about a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ActiveDirectoryAdministratorInner> getWithResponse(
-        String resourceGroupName, String serverName, String objectId, Context context);
+    Response<ActiveDirectoryAdministratorInner> getWithResponse(String resourceGroupName, String serverName,
+        String objectId, Context context);
 
     /**
      * Gets information about a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param objectId Guid of the objectId for the administrator.
@@ -305,7 +300,7 @@ public interface AdministratorsClient {
 
     /**
      * List all the AAD administrators for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -318,7 +313,7 @@ public interface AdministratorsClient {
 
     /**
      * List all the AAD administrators for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -331,7 +326,7 @@ public interface AdministratorsClient {
 
     /**
      * List all the AAD administrators for a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -341,6 +336,6 @@ public interface AdministratorsClient {
      * @return a list of active directory administrators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ActiveDirectoryAdministratorInner> listByServer(
-        String resourceGroupName, String serverName, Context context);
+    PagedIterable<ActiveDirectoryAdministratorInner> listByServer(String resourceGroupName, String serverName,
+        Context context);
 }

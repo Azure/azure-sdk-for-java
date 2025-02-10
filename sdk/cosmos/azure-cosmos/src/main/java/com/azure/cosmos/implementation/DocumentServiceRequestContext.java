@@ -7,10 +7,12 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
@@ -19,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean forceAddressRefresh;
@@ -32,6 +35,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile StoreResponse globalStrongWriteResponse;
     public volatile ConsistencyLevel originalRequestConsistencyLevel;
     public volatile PartitionKeyRange resolvedPartitionKeyRange;
+    public volatile PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker;
     public volatile Integer regionIndex;
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
@@ -49,9 +53,20 @@ public class DocumentServiceRequestContext implements Cloneable {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
     private AtomicBoolean isRequestCancelledOnTimeout = null;
     private volatile List<String> excludeRegions;
+    private volatile Set<String> keywordIdentifiers;
+    private volatile long approximateBloomFilterInsertionCount;
+    private final Set<String> sessionTokenEvaluationResults = ConcurrentHashMap.newKeySet();
+    private volatile List<String> unavailableRegionsForPartition;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
+
+    private PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker;
+
+    private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
+    private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
+    private volatile Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> regionToLocationSpecificHealthContext
+        = new Utils.ValueHolder<>();
 
     public DocumentServiceRequestContext() {}
 
@@ -122,6 +137,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.globalStrongWriteResponse = this.globalStrongWriteResponse;
         context.originalRequestConsistencyLevel = this.originalRequestConsistencyLevel;
         context.resolvedPartitionKeyRange = this.resolvedPartitionKeyRange;
+        context.resolvedPartitionKeyRangeForCircuitBreaker = this.resolvedPartitionKeyRangeForCircuitBreaker;
         context.regionIndex = this.regionIndex;
         context.usePreferredLocations = this.usePreferredLocations;
         context.locationIndexToRoute = this.locationIndexToRoute;
@@ -134,6 +150,9 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.throughputControlCycleId = this.throughputControlCycleId;
         context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
         context.endToEndOperationLatencyPolicyConfig = this.endToEndOperationLatencyPolicyConfig;
+        context.unavailableRegionsForPartition = this.unavailableRegionsForPartition;
+        context.feedOperationContextForCircuitBreaker = this.feedOperationContextForCircuitBreaker;
+        context.pointOperationContextForCircuitBreaker = this.pointOperationContextForCircuitBreaker;
         return context;
     }
 
@@ -159,6 +178,66 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setExcludeRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
+    }
+
+    public List<String> getUnavailableRegionsForPartition() {
+        return unavailableRegionsForPartition;
+    }
+
+    public void setUnavailableRegionsForPartition(List<String> unavailableRegionsForPartition) {
+        this.unavailableRegionsForPartition = unavailableRegionsForPartition;
+    }
+
+    public PointOperationContextForCircuitBreaker getPointOperationContextForCircuitBreaker() {
+        return pointOperationContextForCircuitBreaker;
+    }
+
+    public void setPointOperationContext(PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        this.pointOperationContextForCircuitBreaker = pointOperationContextForCircuitBreaker;
+    }
+
+    public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
+        return feedOperationContextForCircuitBreaker;
+    }
+
+    public void setFeedOperationContext(FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker) {
+        this.feedOperationContextForCircuitBreaker = feedOperationContextForCircuitBreaker;
+    }
+
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
+    }
+
+    public Set<String> getKeywordIdentifiers() {
+        return keywordIdentifiers;
+    }
+
+    public long getApproximateBloomFilterInsertionCount() {
+        return approximateBloomFilterInsertionCount;
+    }
+
+    public void setApproximateBloomFilterInsertionCount(long approximateBloomFilterInsertionCount) {
+        this.approximateBloomFilterInsertionCount = approximateBloomFilterInsertionCount;
+    }
+
+    public Set<String> getSessionTokenEvaluationResults() {
+        return sessionTokenEvaluationResults;
+    }
+
+    public Supplier<DocumentClientRetryPolicy> getClientRetryPolicySupplier() {
+        return clientRetryPolicySupplier;
+    }
+
+    public void setClientRetryPolicySupplier(Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier) {
+        this.clientRetryPolicySupplier = clientRetryPolicySupplier;
+    }
+
+    public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
+        return regionToLocationSpecificHealthContext;
+    }
+
+    public void setLocationToLocationSpecificHealthContext(Map<String, LocationSpecificHealthContext> regionToLocationSpecificHealthContext) {
+        this.regionToLocationSpecificHealthContext.v = regionToLocationSpecificHealthContext;
     }
 }
 

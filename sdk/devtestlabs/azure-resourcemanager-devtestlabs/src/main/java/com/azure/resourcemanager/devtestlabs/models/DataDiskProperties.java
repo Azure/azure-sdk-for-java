@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request body for adding a new or existing data disk to a virtual machine. */
+/**
+ * Request body for adding a new or existing data disk to a virtual machine.
+ */
 @Fluent
-public final class DataDiskProperties {
+public final class DataDiskProperties implements JsonSerializable<DataDiskProperties> {
     /*
      * Specifies options to attach a new disk to the virtual machine.
      */
-    @JsonProperty(value = "attachNewDataDiskOptions")
     private AttachNewDataDiskOptions attachNewDataDiskOptions;
 
     /*
      * Specifies the existing lab disk id to attach to virtual machine.
      */
-    @JsonProperty(value = "existingLabDiskId")
     private String existingLabDiskId;
 
     /*
      * Caching option for a data disk (i.e. None, ReadOnly, ReadWrite).
      */
-    @JsonProperty(value = "hostCaching")
     private HostCachingOptions hostCaching;
 
-    /** Creates an instance of DataDiskProperties class. */
+    /**
+     * Creates an instance of DataDiskProperties class.
+     */
     public DataDiskProperties() {
     }
 
     /**
      * Get the attachNewDataDiskOptions property: Specifies options to attach a new disk to the virtual machine.
-     *
+     * 
      * @return the attachNewDataDiskOptions value.
      */
     public AttachNewDataDiskOptions attachNewDataDiskOptions() {
@@ -43,7 +48,7 @@ public final class DataDiskProperties {
 
     /**
      * Set the attachNewDataDiskOptions property: Specifies options to attach a new disk to the virtual machine.
-     *
+     * 
      * @param attachNewDataDiskOptions the attachNewDataDiskOptions value to set.
      * @return the DataDiskProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class DataDiskProperties {
 
     /**
      * Get the existingLabDiskId property: Specifies the existing lab disk id to attach to virtual machine.
-     *
+     * 
      * @return the existingLabDiskId value.
      */
     public String existingLabDiskId() {
@@ -63,7 +68,7 @@ public final class DataDiskProperties {
 
     /**
      * Set the existingLabDiskId property: Specifies the existing lab disk id to attach to virtual machine.
-     *
+     * 
      * @param existingLabDiskId the existingLabDiskId value to set.
      * @return the DataDiskProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class DataDiskProperties {
 
     /**
      * Get the hostCaching property: Caching option for a data disk (i.e. None, ReadOnly, ReadWrite).
-     *
+     * 
      * @return the hostCaching value.
      */
     public HostCachingOptions hostCaching() {
@@ -83,7 +88,7 @@ public final class DataDiskProperties {
 
     /**
      * Set the hostCaching property: Caching option for a data disk (i.e. None, ReadOnly, ReadWrite).
-     *
+     * 
      * @param hostCaching the hostCaching value to set.
      * @return the DataDiskProperties object itself.
      */
@@ -94,12 +99,54 @@ public final class DataDiskProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (attachNewDataDiskOptions() != null) {
             attachNewDataDiskOptions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("attachNewDataDiskOptions", this.attachNewDataDiskOptions);
+        jsonWriter.writeStringField("existingLabDiskId", this.existingLabDiskId);
+        jsonWriter.writeStringField("hostCaching", this.hostCaching == null ? null : this.hostCaching.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataDiskProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataDiskProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataDiskProperties.
+     */
+    public static DataDiskProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataDiskProperties deserializedDataDiskProperties = new DataDiskProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("attachNewDataDiskOptions".equals(fieldName)) {
+                    deserializedDataDiskProperties.attachNewDataDiskOptions = AttachNewDataDiskOptions.fromJson(reader);
+                } else if ("existingLabDiskId".equals(fieldName)) {
+                    deserializedDataDiskProperties.existingLabDiskId = reader.getString();
+                } else if ("hostCaching".equals(fieldName)) {
+                    deserializedDataDiskProperties.hostCaching = HostCachingOptions.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataDiskProperties;
+        });
     }
 }

@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class A2AUnprotectedDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2AUnprotectedDiskDetails model =
-            BinaryData
-                .fromString("{\"diskLunId\":86261319,\"diskAutoProtectionStatus\":\"Disabled\"}")
+        A2AUnprotectedDiskDetails model
+            = BinaryData.fromString("{\"diskLunId\":86261319,\"diskAutoProtectionStatus\":\"Disabled\"}")
                 .toObject(A2AUnprotectedDiskDetails.class);
         Assertions.assertEquals(86261319, model.diskLunId());
         Assertions.assertEquals(AutoProtectionOfDataDisk.DISABLED, model.diskAutoProtectionStatus());
@@ -22,10 +21,8 @@ public final class A2AUnprotectedDiskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AUnprotectedDiskDetails model =
-            new A2AUnprotectedDiskDetails()
-                .withDiskLunId(86261319)
-                .withDiskAutoProtectionStatus(AutoProtectionOfDataDisk.DISABLED);
+        A2AUnprotectedDiskDetails model = new A2AUnprotectedDiskDetails().withDiskLunId(86261319)
+            .withDiskAutoProtectionStatus(AutoProtectionOfDataDisk.DISABLED);
         model = BinaryData.fromObject(model).toObject(A2AUnprotectedDiskDetails.class);
         Assertions.assertEquals(86261319, model.diskLunId());
         Assertions.assertEquals(AutoProtectionOfDataDisk.DISABLED, model.diskAutoProtectionStatus());

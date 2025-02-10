@@ -11,18 +11,23 @@ public final class RestSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestSink model = BinaryData.fromString(
-            "{\"type\":\"RestSink\",\"requestMethod\":\"datax\",\"additionalHeaders\":\"datamnqrbyqhywxb\",\"httpRequestTimeout\":\"datacjkarggvyuewg\",\"requestInterval\":\"dataolvxw\",\"httpCompressionType\":\"datalug\",\"writeBatchSize\":\"datau\",\"writeBatchTimeout\":\"dataypliotgtlan\",\"sinkRetryCount\":\"datakvlxsycqqdoxooxu\",\"sinkRetryWait\":\"datafqoobwxctkveq\",\"maxConcurrentConnections\":\"dataedw\",\"disableMetricsCollection\":\"dataqcjreryp\",\"\":{\"ovssibnvqqvicqdb\":\"dataqxeyzqnupsipclxv\",\"lrixzdbntopbab\":\"datazwlejiiyoonbu\",\"boysquygokh\":\"datadwcfmzmqmgdlgsxk\"}}")
+            "{\"type\":\"RestSink\",\"requestMethod\":\"datao\",\"additionalHeaders\":\"datarhlyhgii\",\"httpRequestTimeout\":\"datafa\",\"requestInterval\":\"dataobo\",\"httpCompressionType\":\"datapyilojwcza\",\"writeBatchSize\":\"datawtausk\",\"writeBatchTimeout\":\"datahhmtypgrkdmezaun\",\"sinkRetryCount\":\"datacqtigav\",\"sinkRetryWait\":\"datasnrjhjlploaeppl\",\"maxConcurrentConnections\":\"datakcazuj\",\"disableMetricsCollection\":\"datauuzbsxhivncue\",\"\":{\"rtlnzdk\":\"dataexcn\"}}")
             .toObject(RestSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestSink model = new RestSink().withWriteBatchSize("datau").withWriteBatchTimeout("dataypliotgtlan")
-            .withSinkRetryCount("datakvlxsycqqdoxooxu").withSinkRetryWait("datafqoobwxctkveq")
-            .withMaxConcurrentConnections("dataedw").withDisableMetricsCollection("dataqcjreryp")
-            .withRequestMethod("datax").withAdditionalHeaders("datamnqrbyqhywxb")
-            .withHttpRequestTimeout("datacjkarggvyuewg").withRequestInterval("dataolvxw")
-            .withHttpCompressionType("datalug");
+        RestSink model = new RestSink().withWriteBatchSize("datawtausk")
+            .withWriteBatchTimeout("datahhmtypgrkdmezaun")
+            .withSinkRetryCount("datacqtigav")
+            .withSinkRetryWait("datasnrjhjlploaeppl")
+            .withMaxConcurrentConnections("datakcazuj")
+            .withDisableMetricsCollection("datauuzbsxhivncue")
+            .withRequestMethod("datao")
+            .withAdditionalHeaders("datarhlyhgii")
+            .withHttpRequestTimeout("datafa")
+            .withRequestInterval("dataobo")
+            .withHttpCompressionType("datapyilojwcza");
         model = BinaryData.fromObject(model).toObject(RestSink.class);
     }
 }

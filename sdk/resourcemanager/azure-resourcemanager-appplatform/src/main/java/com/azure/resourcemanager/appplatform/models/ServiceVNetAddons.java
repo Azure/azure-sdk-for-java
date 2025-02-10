@@ -5,22 +5,38 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Additional Service settings in vnet injection instance. */
+/**
+ * Additional Service settings in vnet injection instance.
+ */
 @Fluent
-public final class ServiceVNetAddons {
+public final class ServiceVNetAddons implements JsonSerializable<ServiceVNetAddons> {
     /*
-     * Indicates whether the log stream in vnet injection instance could be
-     * accessed from internet.
+     * Indicates whether the log stream in vnet injection instance could be accessed from internet.
      */
-    @JsonProperty(value = "logStreamPublicEndpoint")
     private Boolean logStreamPublicEndpoint;
+
+    /*
+     * Indicates whether the data plane components(log stream, app connect, remote debugging) in vnet injection instance
+     * could be accessed from internet.
+     */
+    private Boolean dataPlanePublicEndpoint;
+
+    /**
+     * Creates an instance of ServiceVNetAddons class.
+     */
+    public ServiceVNetAddons() {
+    }
 
     /**
      * Get the logStreamPublicEndpoint property: Indicates whether the log stream in vnet injection instance could be
      * accessed from internet.
-     *
+     * 
      * @return the logStreamPublicEndpoint value.
      */
     public Boolean logStreamPublicEndpoint() {
@@ -30,7 +46,7 @@ public final class ServiceVNetAddons {
     /**
      * Set the logStreamPublicEndpoint property: Indicates whether the log stream in vnet injection instance could be
      * accessed from internet.
-     *
+     * 
      * @param logStreamPublicEndpoint the logStreamPublicEndpoint value to set.
      * @return the ServiceVNetAddons object itself.
      */
@@ -40,10 +56,71 @@ public final class ServiceVNetAddons {
     }
 
     /**
+     * Get the dataPlanePublicEndpoint property: Indicates whether the data plane components(log stream, app connect,
+     * remote debugging) in vnet injection instance could be accessed from internet.
+     * 
+     * @return the dataPlanePublicEndpoint value.
+     */
+    public Boolean dataPlanePublicEndpoint() {
+        return this.dataPlanePublicEndpoint;
+    }
+
+    /**
+     * Set the dataPlanePublicEndpoint property: Indicates whether the data plane components(log stream, app connect,
+     * remote debugging) in vnet injection instance could be accessed from internet.
+     * 
+     * @param dataPlanePublicEndpoint the dataPlanePublicEndpoint value to set.
+     * @return the ServiceVNetAddons object itself.
+     */
+    public ServiceVNetAddons withDataPlanePublicEndpoint(Boolean dataPlanePublicEndpoint) {
+        this.dataPlanePublicEndpoint = dataPlanePublicEndpoint;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("logStreamPublicEndpoint", this.logStreamPublicEndpoint);
+        jsonWriter.writeBooleanField("dataPlanePublicEndpoint", this.dataPlanePublicEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceVNetAddons from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceVNetAddons if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceVNetAddons.
+     */
+    public static ServiceVNetAddons fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceVNetAddons deserializedServiceVNetAddons = new ServiceVNetAddons();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logStreamPublicEndpoint".equals(fieldName)) {
+                    deserializedServiceVNetAddons.logStreamPublicEndpoint = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dataPlanePublicEndpoint".equals(fieldName)) {
+                    deserializedServiceVNetAddons.dataPlanePublicEndpoint = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceVNetAddons;
+        });
     }
 }

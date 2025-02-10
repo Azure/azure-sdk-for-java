@@ -19,31 +19,37 @@ public final class AzureMySqlTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMySqlTableDataset model = BinaryData.fromString(
-            "{\"type\":\"AzureMySqlTable\",\"typeProperties\":{\"tableName\":\"dataw\",\"table\":\"datazyjj\"},\"description\":\"t\",\"structure\":\"datazql\",\"schema\":\"dataagwiijc\",\"linkedServiceName\":{\"referenceName\":\"qiywhxpsbapial\",\"parameters\":{\"zudegefxlieg\":\"dataydp\",\"smhssfnwh\":\"dataot\",\"nfmkcuft\":\"datakahhec\",\"dvhzfkdn\":\"datadgwuzron\"}},\"parameters\":{\"zfzdjekeb\":{\"type\":\"Object\",\"defaultValue\":\"datacikgxkk\"},\"jwyfi\":{\"type\":\"Array\",\"defaultValue\":\"dataxz\"}},\"annotations\":[\"datagcjf\",\"dataiwu\",\"datapjkakrxifqnf\"],\"folder\":{\"name\":\"xsqtzngxbs\"},\"\":{\"ly\":\"datawguxcmmhipbvskci\"}}")
+            "{\"type\":\"AzureMySqlTable\",\"typeProperties\":{\"tableName\":\"datapqokhdyncra\",\"table\":\"datasewbempfapmqnm\"},\"description\":\"yksygih\",\"structure\":\"datalmslnunkqvzlbbb\",\"schema\":\"datadexquaw\",\"linkedServiceName\":{\"referenceName\":\"xizbfzet\",\"parameters\":{\"pnbmajvvyxt\":\"dataw\",\"nakzixbkaybfmln\":\"datav\",\"nrzblxna\":\"datafwhrmvlaknujmw\"}},\"parameters\":{\"hl\":{\"type\":\"Int\",\"defaultValue\":\"datandcbs\"},\"dvt\":{\"type\":\"SecureString\",\"defaultValue\":\"datajkkovohwvprj\"},\"ffhvqii\":{\"type\":\"Array\",\"defaultValue\":\"datamdtacntjn\"},\"sxjbjkewrigl\":{\"type\":\"String\",\"defaultValue\":\"datatwskkfkuyikmxhh\"}},\"annotations\":[\"datarefeclflxcjf\",\"datazwncvdefxonz\",\"datapcjptnnt\"],\"folder\":{\"name\":\"jqpzj\"},\"\":{\"h\":\"datajr\",\"agwviqehmdqvaoli\":\"datagsjbi\",\"m\":\"dataxdfsfvkjc\",\"rkd\":\"datarsvxphtjnhptj\"}}")
             .toObject(AzureMySqlTableDataset.class);
-        Assertions.assertEquals("t", model.description());
-        Assertions.assertEquals("qiywhxpsbapial", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("zfzdjekeb").type());
-        Assertions.assertEquals("xsqtzngxbs", model.folder().name());
+        Assertions.assertEquals("yksygih", model.description());
+        Assertions.assertEquals("xizbfzet", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("hl").type());
+        Assertions.assertEquals("jqpzj", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMySqlTableDataset model
-            = new AzureMySqlTableDataset().withDescription("t").withStructure("datazql").withSchema("dataagwiijc")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("qiywhxpsbapial")
-                    .withParameters(mapOf("zudegefxlieg", "dataydp", "smhssfnwh", "dataot", "nfmkcuft", "datakahhec",
-                        "dvhzfkdn", "datadgwuzron")))
-                .withParameters(mapOf("zfzdjekeb",
-                    new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datacikgxkk"),
-                    "jwyfi", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataxz")))
-                .withAnnotations(Arrays.asList("datagcjf", "dataiwu", "datapjkakrxifqnf"))
-                .withFolder(new DatasetFolder().withName("xsqtzngxbs")).withTableName("dataw").withTable("datazyjj");
+        AzureMySqlTableDataset model = new AzureMySqlTableDataset().withDescription("yksygih")
+            .withStructure("datalmslnunkqvzlbbb")
+            .withSchema("datadexquaw")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("xizbfzet")
+                .withParameters(
+                    mapOf("pnbmajvvyxt", "dataw", "nakzixbkaybfmln", "datav", "nrzblxna", "datafwhrmvlaknujmw")))
+            .withParameters(mapOf("hl",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datandcbs"), "dvt",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datajkkovohwvprj"),
+                "ffhvqii", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datamdtacntjn"),
+                "sxjbjkewrigl",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datatwskkfkuyikmxhh")))
+            .withAnnotations(Arrays.asList("datarefeclflxcjf", "datazwncvdefxonz", "datapcjptnnt"))
+            .withFolder(new DatasetFolder().withName("jqpzj"))
+            .withTableName("datapqokhdyncra")
+            .withTable("datasewbempfapmqnm");
         model = BinaryData.fromObject(model).toObject(AzureMySqlTableDataset.class);
-        Assertions.assertEquals("t", model.description());
-        Assertions.assertEquals("qiywhxpsbapial", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("zfzdjekeb").type());
-        Assertions.assertEquals("xsqtzngxbs", model.folder().name());
+        Assertions.assertEquals("yksygih", model.description());
+        Assertions.assertEquals("xizbfzet", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("hl").type());
+        Assertions.assertEquals("jqpzj", model.folder().name());
     }
 
     // Use "Map.of" if available

@@ -6,72 +6,50 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardOperationDetail;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardProxyBase;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardProxyBaseResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DppResourceGuardProxiesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"resourceGuardResourceId\":\"oe\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"nkltytmh\",\"defaultResourceRequest\":\"oznnhdrlktgj\"},{\"vaultCriticalOperation\":\"gguxhemlwyw\",\"defaultResourceRequest\":\"eczgfb\"},{\"vaultCriticalOperation\":\"klelssxb\",\"defaultResourceRequest\":\"c\"},{\"vaultCriticalOperation\":\"zujksrlsmdes\",\"defaultResourceRequest\":\"lpvmjcdoewbidy\"}],\"lastUpdatedTime\":\"eowxvgpi\",\"description\":\"eu\"},\"id\":\"sxze\",\"name\":\"paxwkufyk\",\"type\":\"vuhx\"}";
+            = "{\"properties\":{\"resourceGuardResourceId\":\"mcp\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"hqepvufhbzehewh\",\"defaultResourceRequest\":\"hnl\"},{\"vaultCriticalOperation\":\"nbldxeaclgschori\",\"defaultResourceRequest\":\"rsrrmoucsofldp\"},{\"vaultCriticalOperation\":\"iyfc\",\"defaultResourceRequest\":\"beolh\"}],\"lastUpdatedTime\":\"lvbmxuqibsxtkcu\",\"description\":\"b\"},\"id\":\"arfsi\",\"name\":\"wlkjxn\",\"type\":\"pvwgfstmhqykizmd\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataProtectionManager manager = DataProtectionManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ResourceGuardProxyBaseResource response = manager.dppResourceGuardProxies().define("bbmpxdlvykfre")
-            .withExistingBackupVault("tljqobbpih", "hcecybmrqbr")
-            .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("s")
-                .withResourceGuardOperationDetails(Arrays.asList(
-                    new ResourceGuardOperationDetail().withVaultCriticalOperation("ksghudgzhxogjgg")
-                        .withDefaultResourceRequest("oujkxibdafh"),
-                    new ResourceGuardOperationDetail().withVaultCriticalOperation("mdyomkxfbvfbh")
-                        .withDefaultResourceRequest("i"),
-                    new ResourceGuardOperationDetail().withVaultCriticalOperation("pwpgddei")
-                        .withDefaultResourceRequest("wzovgk"),
-                    new ResourceGuardOperationDetail().withVaultCriticalOperation("muikjcjcaztbws")
-                        .withDefaultResourceRequest("qowxwcom")))
-                .withLastUpdatedTime("kytwvcz").withDescription("wka"))
+        ResourceGuardProxyBaseResource response = manager.dppResourceGuardProxies()
+            .define("d")
+            .withExistingBackupVault("bd", "bwwg")
+            .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("idmhmwf")
+                .withResourceGuardOperationDetails(
+                    Arrays.asList(new ResourceGuardOperationDetail().withVaultCriticalOperation("muvapc")
+                        .withDefaultResourceRequest("crrvweyo")))
+                .withLastUpdatedTime("yyukphaimmo")
+                .withDescription("oqboshbragapyyr"))
             .create();
 
-        Assertions.assertEquals("oe", response.properties().resourceGuardResourceId());
-        Assertions.assertEquals("nkltytmh",
+        Assertions.assertEquals("mcp", response.properties().resourceGuardResourceId());
+        Assertions.assertEquals("hqepvufhbzehewh",
             response.properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("oznnhdrlktgj",
+        Assertions.assertEquals("hnl",
             response.properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("eowxvgpi", response.properties().lastUpdatedTime());
-        Assertions.assertEquals("eu", response.properties().description());
+        Assertions.assertEquals("lvbmxuqibsxtkcu", response.properties().lastUpdatedTime());
+        Assertions.assertEquals("b", response.properties().description());
     }
 }

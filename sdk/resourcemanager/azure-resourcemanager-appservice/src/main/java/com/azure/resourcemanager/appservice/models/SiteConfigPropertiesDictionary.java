@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Site config properties dictionary.
  */
 @Immutable
-public final class SiteConfigPropertiesDictionary {
+public final class SiteConfigPropertiesDictionary implements JsonSerializable<SiteConfigPropertiesDictionary> {
     /*
      * <code>true</code> if use32BitWorkerProcess should be set to true for the stack; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "use32BitWorkerProcess", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean use32BitWorkerProcess;
 
     /*
      * LinuxFxVersion configuration setting.
      */
-    @JsonProperty(value = "linuxFxVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String linuxFxVersion;
 
     /*
      * JavaVersion configuration setting.
      */
-    @JsonProperty(value = "javaVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String javaVersion;
 
     /*
      * PowerShellVersion configuration setting.
      */
-    @JsonProperty(value = "powerShellVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String powerShellVersion;
 
     /**
@@ -85,5 +85,48 @@ public final class SiteConfigPropertiesDictionary {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteConfigPropertiesDictionary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteConfigPropertiesDictionary if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteConfigPropertiesDictionary.
+     */
+    public static SiteConfigPropertiesDictionary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteConfigPropertiesDictionary deserializedSiteConfigPropertiesDictionary
+                = new SiteConfigPropertiesDictionary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("use32BitWorkerProcess".equals(fieldName)) {
+                    deserializedSiteConfigPropertiesDictionary.use32BitWorkerProcess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("linuxFxVersion".equals(fieldName)) {
+                    deserializedSiteConfigPropertiesDictionary.linuxFxVersion = reader.getString();
+                } else if ("javaVersion".equals(fieldName)) {
+                    deserializedSiteConfigPropertiesDictionary.javaVersion = reader.getString();
+                } else if ("powerShellVersion".equals(fieldName)) {
+                    deserializedSiteConfigPropertiesDictionary.powerShellVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteConfigPropertiesDictionary;
+        });
     }
 }

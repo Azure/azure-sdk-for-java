@@ -5,34 +5,37 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookFilter. */
+/**
+ * workbookFilter.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookFilter extends MicrosoftGraphEntity {
     /*
      * workbookFilterCriteria
      */
-    @JsonProperty(value = "criteria")
     private MicrosoftGraphWorkbookFilterCriteria criteria;
 
     /*
      * workbookFilter
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookFilter class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookFilter class.
+     */
     public MicrosoftGraphWorkbookFilter() {
     }
 
     /**
      * Get the criteria property: workbookFilterCriteria.
-     *
+     * 
      * @return the criteria value.
      */
     public MicrosoftGraphWorkbookFilterCriteria criteria() {
@@ -41,7 +44,7 @@ public final class MicrosoftGraphWorkbookFilter extends MicrosoftGraphEntity {
 
     /**
      * Set the criteria property: workbookFilterCriteria.
-     *
+     * 
      * @param criteria the criteria value to set.
      * @return the MicrosoftGraphWorkbookFilter object itself.
      */
@@ -52,17 +55,16 @@ public final class MicrosoftGraphWorkbookFilter extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: workbookFilter.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookFilter.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookFilter object itself.
      */
@@ -71,15 +73,9 @@ public final class MicrosoftGraphWorkbookFilter extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookFilter withId(String id) {
         super.withId(id);
@@ -88,7 +84,7 @@ public final class MicrosoftGraphWorkbookFilter extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -97,5 +93,56 @@ public final class MicrosoftGraphWorkbookFilter extends MicrosoftGraphEntity {
         if (criteria() != null) {
             criteria().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("criteria", this.criteria);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookFilter if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookFilter.
+     */
+    public static MicrosoftGraphWorkbookFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookFilter deserializedMicrosoftGraphWorkbookFilter = new MicrosoftGraphWorkbookFilter();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookFilter.withId(reader.getString());
+                } else if ("criteria".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookFilter.criteria
+                        = MicrosoftGraphWorkbookFilterCriteria.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookFilter.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookFilter;
+        });
     }
 }

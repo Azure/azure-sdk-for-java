@@ -19,7 +19,8 @@ public final class ManagedPrivateEndpointsListByFactorySamples {
      */
     public static void
         managedPrivateEndpointsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedPrivateEndpoints().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedVirtualNetworkName", com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName",
+                com.azure.core.util.Context.NONE);
     }
 }

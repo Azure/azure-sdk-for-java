@@ -6,43 +6,46 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the parameters for the cache expiration action. */
+/**
+ * Defines the parameters for the cache expiration action.
+ */
 @Fluent
-public final class CacheExpirationActionParameters {
+public final class CacheExpirationActionParameters implements JsonSerializable<CacheExpirationActionParameters> {
     /*
      * The typeName property.
      */
-    @JsonProperty(value = "typeName", required = true)
     private String typeName = "DeliveryRuleCacheExpirationActionParameters";
 
     /*
      * Caching behavior for the requests
      */
-    @JsonProperty(value = "cacheBehavior", required = true)
     private CacheBehavior cacheBehavior;
 
     /*
      * The level at which the content needs to be cached.
      */
-    @JsonProperty(value = "cacheType", required = true)
     private CacheType cacheType;
 
     /*
      * The duration for which the content needs to be cached. Allowed format is [d.]hh:mm:ss
      */
-    @JsonProperty(value = "cacheDuration")
     private String cacheDuration;
 
-    /** Creates an instance of CacheExpirationActionParameters class. */
+    /**
+     * Creates an instance of CacheExpirationActionParameters class.
+     */
     public CacheExpirationActionParameters() {
-        typeName = "DeliveryRuleCacheExpirationActionParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -51,7 +54,7 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the CacheExpirationActionParameters object itself.
      */
@@ -62,7 +65,7 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Get the cacheBehavior property: Caching behavior for the requests.
-     *
+     * 
      * @return the cacheBehavior value.
      */
     public CacheBehavior cacheBehavior() {
@@ -71,7 +74,7 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Set the cacheBehavior property: Caching behavior for the requests.
-     *
+     * 
      * @param cacheBehavior the cacheBehavior value to set.
      * @return the CacheExpirationActionParameters object itself.
      */
@@ -82,7 +85,7 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Get the cacheType property: The level at which the content needs to be cached.
-     *
+     * 
      * @return the cacheType value.
      */
     public CacheType cacheType() {
@@ -91,7 +94,7 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Set the cacheType property: The level at which the content needs to be cached.
-     *
+     * 
      * @param cacheType the cacheType value to set.
      * @return the CacheExpirationActionParameters object itself.
      */
@@ -103,7 +106,7 @@ public final class CacheExpirationActionParameters {
     /**
      * Get the cacheDuration property: The duration for which the content needs to be cached. Allowed format is
      * [d.]hh:mm:ss.
-     *
+     * 
      * @return the cacheDuration value.
      */
     public String cacheDuration() {
@@ -113,7 +116,7 @@ public final class CacheExpirationActionParameters {
     /**
      * Set the cacheDuration property: The duration for which the content needs to be cached. Allowed format is
      * [d.]hh:mm:ss.
-     *
+     * 
      * @param cacheDuration the cacheDuration value to set.
      * @return the CacheExpirationActionParameters object itself.
      */
@@ -124,23 +127,67 @@ public final class CacheExpirationActionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (cacheBehavior() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cacheBehavior in model CacheExpirationActionParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cacheBehavior in model CacheExpirationActionParameters"));
         }
         if (cacheType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cacheType in model CacheExpirationActionParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cacheType in model CacheExpirationActionParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CacheExpirationActionParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeStringField("cacheBehavior", this.cacheBehavior == null ? null : this.cacheBehavior.toString());
+        jsonWriter.writeStringField("cacheType", this.cacheType == null ? null : this.cacheType.toString());
+        jsonWriter.writeStringField("cacheDuration", this.cacheDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheExpirationActionParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheExpirationActionParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CacheExpirationActionParameters.
+     */
+    public static CacheExpirationActionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheExpirationActionParameters deserializedCacheExpirationActionParameters
+                = new CacheExpirationActionParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cacheBehavior".equals(fieldName)) {
+                    deserializedCacheExpirationActionParameters.cacheBehavior
+                        = CacheBehavior.fromString(reader.getString());
+                } else if ("cacheType".equals(fieldName)) {
+                    deserializedCacheExpirationActionParameters.cacheType = CacheType.fromString(reader.getString());
+                } else if ("cacheDuration".equals(fieldName)) {
+                    deserializedCacheExpirationActionParameters.cacheDuration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheExpirationActionParameters;
+        });
+    }
 }

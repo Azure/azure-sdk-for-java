@@ -5,11 +5,12 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,47 +18,40 @@ import java.util.Map;
  * SSIS properties for managed integration runtime.
  */
 @Fluent
-public final class IntegrationRuntimeSsisProperties {
+public final class IntegrationRuntimeSsisProperties implements JsonSerializable<IntegrationRuntimeSsisProperties> {
     /*
      * Catalog information for managed dedicated integration runtime.
      */
-    @JsonProperty(value = "catalogInfo")
     private IntegrationRuntimeSsisCatalogInfo catalogInfo;
 
     /*
      * License type for bringing your own license scenario.
      */
-    @JsonProperty(value = "licenseType")
     private IntegrationRuntimeLicenseType licenseType;
 
     /*
      * Custom setup script properties for a managed dedicated integration runtime.
      */
-    @JsonProperty(value = "customSetupScriptProperties")
     private IntegrationRuntimeCustomSetupScriptProperties customSetupScriptProperties;
 
     /*
      * Data proxy properties for a managed dedicated integration runtime.
      */
-    @JsonProperty(value = "dataProxyProperties")
     private IntegrationRuntimeDataProxyProperties dataProxyProperties;
 
     /*
      * The edition for the SSIS Integration Runtime
      */
-    @JsonProperty(value = "edition")
     private IntegrationRuntimeEdition edition;
 
     /*
      * Custom setup without script properties for a SSIS integration runtime.
      */
-    @JsonProperty(value = "expressCustomSetupProperties")
     private List<CustomSetupBase> expressCustomSetupProperties;
 
     /*
      * SSIS properties for managed integration runtime.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -198,7 +192,6 @@ public final class IntegrationRuntimeSsisProperties {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -214,11 +207,75 @@ public final class IntegrationRuntimeSsisProperties {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("catalogInfo", this.catalogInfo);
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeJsonField("customSetupScriptProperties", this.customSetupScriptProperties);
+        jsonWriter.writeJsonField("dataProxyProperties", this.dataProxyProperties);
+        jsonWriter.writeStringField("edition", this.edition == null ? null : this.edition.toString());
+        jsonWriter.writeArrayField("expressCustomSetupProperties", this.expressCustomSetupProperties,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeSsisProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeSsisProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeSsisProperties.
+     */
+    public static IntegrationRuntimeSsisProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeSsisProperties deserializedIntegrationRuntimeSsisProperties
+                = new IntegrationRuntimeSsisProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("catalogInfo".equals(fieldName)) {
+                    deserializedIntegrationRuntimeSsisProperties.catalogInfo
+                        = IntegrationRuntimeSsisCatalogInfo.fromJson(reader);
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedIntegrationRuntimeSsisProperties.licenseType
+                        = IntegrationRuntimeLicenseType.fromString(reader.getString());
+                } else if ("customSetupScriptProperties".equals(fieldName)) {
+                    deserializedIntegrationRuntimeSsisProperties.customSetupScriptProperties
+                        = IntegrationRuntimeCustomSetupScriptProperties.fromJson(reader);
+                } else if ("dataProxyProperties".equals(fieldName)) {
+                    deserializedIntegrationRuntimeSsisProperties.dataProxyProperties
+                        = IntegrationRuntimeDataProxyProperties.fromJson(reader);
+                } else if ("edition".equals(fieldName)) {
+                    deserializedIntegrationRuntimeSsisProperties.edition
+                        = IntegrationRuntimeEdition.fromString(reader.getString());
+                } else if ("expressCustomSetupProperties".equals(fieldName)) {
+                    List<CustomSetupBase> expressCustomSetupProperties
+                        = reader.readArray(reader1 -> CustomSetupBase.fromJson(reader1));
+                    deserializedIntegrationRuntimeSsisProperties.expressCustomSetupProperties
+                        = expressCustomSetupProperties;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedIntegrationRuntimeSsisProperties.additionalProperties = additionalProperties;
+
+            return deserializedIntegrationRuntimeSsisProperties;
+        });
     }
 }

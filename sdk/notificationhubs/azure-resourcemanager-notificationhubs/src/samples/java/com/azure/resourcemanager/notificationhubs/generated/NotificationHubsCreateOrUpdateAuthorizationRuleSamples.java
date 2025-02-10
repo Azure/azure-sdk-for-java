@@ -4,35 +4,33 @@
 
 package com.azure.resourcemanager.notificationhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
 import com.azure.resourcemanager.notificationhubs.models.AccessRights;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
 import java.util.Arrays;
 
-/** Samples for NotificationHubs CreateOrUpdateAuthorizationRule. */
+/**
+ * Samples for NotificationHubs CreateOrUpdateAuthorizationRule.
+ */
 public final class NotificationHubsCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubAuthorizationRuleCreate.json
+     * x-ms-original-file:
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/
+     * NotificationHubs/NotificationHubAuthorizationRuleCreate.json
      */
     /**
      * Sample code: NotificationHubAuthorizationRuleCreate.
-     *
+     * 
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void notificationHubAuthorizationRuleCreate(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager
-            .notificationHubs()
-            .createOrUpdateAuthorizationRuleWithResponse(
-                "5ktrial",
-                "nh-sdk-ns",
-                "nh-sdk-hub",
+        manager.notificationHubs()
+            .createOrUpdateAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
                 "DefaultListenSharedAccessSignature",
                 new SharedAccessAuthorizationRuleCreateOrUpdateParameters()
-                    .withProperties(
-                        new SharedAccessAuthorizationRuleProperties()
-                            .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND))),
-                Context.NONE);
+                    .withProperties(new SharedAccessAuthorizationRuleProperties()
+                        .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND))),
+                com.azure.core.util.Context.NONE);
     }
 }

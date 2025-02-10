@@ -18,7 +18,8 @@ public final class CredentialOperationsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void credentialsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.credentialOperations().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleCredential", null, com.azure.core.util.Context.NONE);
+        manager.credentialOperations()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleCredential", null,
+                com.azure.core.util.Context.NONE);
     }
 }

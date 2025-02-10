@@ -10,7 +10,7 @@ package com.azure.resourcemanager.communication.generated;
 public final class CommunicationServicesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
      * communicationServices/delete.json
      */
     /**
@@ -19,7 +19,7 @@ public final class CommunicationServicesDeleteSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void deleteResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().delete("MyResourceGroup", "MyCommunicationResource",
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .delete("MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE);
     }
 }

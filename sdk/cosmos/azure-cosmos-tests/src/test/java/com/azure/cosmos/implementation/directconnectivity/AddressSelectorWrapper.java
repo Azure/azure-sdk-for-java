@@ -15,6 +15,7 @@ import org.mockito.invocation.InvocationOnMock;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -258,7 +259,7 @@ public class AddressSelectorWrapper {
     }
 
     public AddressSelectorWrapper verifyVesolvePrimaryUriAsyncCount(int count) {
-        Mockito.verify(addressSelector, Mockito.times(count)).resolvePrimaryUriAsync(Mockito.any(), Mockito.anyBoolean());
+        Mockito.verify(addressSelector, Mockito.times(count)).resolvePrimaryUriAsync(Mockito.any(), Mockito.anyBoolean(), Mockito.any());
         return this;
     }
 
@@ -268,7 +269,7 @@ public class AddressSelectorWrapper {
     }
 
     public AddressSelectorWrapper verifyResolveAllUriAsync(int count) {
-        Mockito.verify(addressSelector, Mockito.times(count)).resolveAllUriAsync(Mockito.any(), Mockito.anyBoolean(), Mockito.anyBoolean());
+        Mockito.verify(addressSelector, Mockito.times(count)).resolveAllUriAsync(Mockito.any(), Mockito.anyBoolean(), Mockito.anyBoolean(), Mockito.anyList());
         return this;
     }
 
@@ -314,7 +315,7 @@ public class AddressSelectorWrapper {
                     }
 
                     return Mono.just(primaryURIBeforeForceRefresh);
-                }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
+                }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean(), Mockito.any());
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
@@ -424,6 +425,41 @@ public class AddressSelectorWrapper {
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
                     RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean includePrimary = invocation.getArgument(1, Boolean.class);
+                    boolean forceRefresh = invocation.getArgument(2, Boolean.class);
+                    List allReplicas = invocation.getArgument(3, List.class);
+                    ImmutableList.Builder<Uri> b = ImmutableList.builder();
+
+                    if (forceRefresh || refreshed.get()) {
+                        if (partitionKeyRangeFunction != null) {
+                            request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeFunction.apply(request);
+                        }
+                        refreshed.set(true);
+                        if (includePrimary) {
+                            b.add(primary.getRight());
+                        }
+                        allReplicas = ImmutableList.builder().addAll(secondary.stream().map(s -> s.getRight()).collect(Collectors.toList()))
+                            .add(primary.getRight()).build();
+                        b.addAll(secondary.stream().map(s -> s.getRight()).collect(Collectors.toList()));
+                        return Mono.just(b.build());
+                    } else {
+                        // old
+                        if (includePrimary) {
+                            b.add(primary.getLeft());
+                        }
+
+                        allReplicas = ImmutableList.builder().addAll(secondary.stream().map(s -> s.getLeft()).collect(Collectors.toList()))
+                            .add(primary.getLeft()).build();
+                        b.addAll(secondary.stream().map(s -> s.getLeft()).collect(Collectors.toList()));
+                        return Mono.just(b.build());
+                    }
+
+                })).when(addressSelector).resolveAllUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean(),
+                    Mockito.anyBoolean(), Mockito.anyList());
+
+                Mockito.doAnswer((invocation -> {
+                    capture(invocation);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
                     boolean forceRefresh = invocation.getArgument(1, Boolean.class);
 
                     ImmutableList.Builder<AddressInformation> b = ImmutableList.builder();
@@ -482,7 +518,7 @@ public class AddressSelectorWrapper {
                 Mockito.doAnswer((invocation) -> {
                     capture(invocation);
                     return Mono.just(primaryAddress);
-                }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
+                }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean(), Mockito.any());
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
@@ -496,6 +532,21 @@ public class AddressSelectorWrapper {
                         return Mono.just(secondaryAddresses);
                     }
                 })).when(addressSelector).resolveAllUriAsync(Mockito.any(), Mockito.anyBoolean(), Mockito.anyBoolean());
+
+                Mockito.doAnswer((invocation -> {
+                    capture(invocation);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean includePrimary = invocation.getArgument(1, Boolean.class);
+                    boolean forceRefresh = invocation.getArgument(2, Boolean.class);
+                    List allReplicas = invocation.getArgument(3, List.class);
+
+                    allReplicas = ImmutableList.builder().addAll(secondaryAddresses).add(primaryAddress).build();
+                    if (includePrimary) {
+                        return Mono.just(ImmutableList.builder().addAll(secondaryAddresses).add(primaryAddress).build());
+                    } else {
+                        return Mono.just(secondaryAddresses);
+                    }
+                })).when(addressSelector).resolveAllUriAsync(Mockito.any(), Mockito.anyBoolean(), Mockito.anyBoolean(), Mockito.anyList());
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);

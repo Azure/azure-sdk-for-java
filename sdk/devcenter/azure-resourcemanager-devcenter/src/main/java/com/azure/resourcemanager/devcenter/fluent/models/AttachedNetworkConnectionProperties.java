@@ -6,51 +6,55 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.DomainJoinType;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of an attached NetworkConnection. */
+/**
+ * Properties of an attached NetworkConnection.
+ */
 @Fluent
-public final class AttachedNetworkConnectionProperties {
+public final class AttachedNetworkConnectionProperties
+    implements JsonSerializable<AttachedNetworkConnectionProperties> {
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The resource ID of the NetworkConnection you want to attach.
      */
-    @JsonProperty(value = "networkConnectionId", required = true)
     private String networkConnectionId;
 
     /*
      * The geo-location where the NetworkConnection resource specified in 'networkConnectionResourceId' property lives.
      */
-    @JsonProperty(value = "networkConnectionLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String networkConnectionLocation;
 
     /*
      * Health check status values
      */
-    @JsonProperty(value = "healthCheckStatus", access = JsonProperty.Access.WRITE_ONLY)
     private HealthCheckStatus healthCheckStatus;
 
     /*
      * AAD Join type of the network. This is populated based on the referenced Network Connection.
      */
-    @JsonProperty(value = "domainJoinType", access = JsonProperty.Access.WRITE_ONLY)
     private DomainJoinType domainJoinType;
 
-    /** Creates an instance of AttachedNetworkConnectionProperties class. */
+    /**
+     * Creates an instance of AttachedNetworkConnectionProperties class.
+     */
     public AttachedNetworkConnectionProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -59,7 +63,7 @@ public final class AttachedNetworkConnectionProperties {
 
     /**
      * Get the networkConnectionId property: The resource ID of the NetworkConnection you want to attach.
-     *
+     * 
      * @return the networkConnectionId value.
      */
     public String networkConnectionId() {
@@ -68,7 +72,7 @@ public final class AttachedNetworkConnectionProperties {
 
     /**
      * Set the networkConnectionId property: The resource ID of the NetworkConnection you want to attach.
-     *
+     * 
      * @param networkConnectionId the networkConnectionId value to set.
      * @return the AttachedNetworkConnectionProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class AttachedNetworkConnectionProperties {
     /**
      * Get the networkConnectionLocation property: The geo-location where the NetworkConnection resource specified in
      * 'networkConnectionResourceId' property lives.
-     *
+     * 
      * @return the networkConnectionLocation value.
      */
     public String networkConnectionLocation() {
@@ -89,7 +93,7 @@ public final class AttachedNetworkConnectionProperties {
 
     /**
      * Get the healthCheckStatus property: Health check status values.
-     *
+     * 
      * @return the healthCheckStatus value.
      */
     public HealthCheckStatus healthCheckStatus() {
@@ -99,7 +103,7 @@ public final class AttachedNetworkConnectionProperties {
     /**
      * Get the domainJoinType property: AAD Join type of the network. This is populated based on the referenced Network
      * Connection.
-     *
+     * 
      * @return the domainJoinType value.
      */
     public DomainJoinType domainJoinType() {
@@ -108,17 +112,65 @@ public final class AttachedNetworkConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkConnectionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkConnectionId in model AttachedNetworkConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkConnectionId in model AttachedNetworkConnectionProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AttachedNetworkConnectionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkConnectionId", this.networkConnectionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttachedNetworkConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttachedNetworkConnectionProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AttachedNetworkConnectionProperties.
+     */
+    public static AttachedNetworkConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttachedNetworkConnectionProperties deserializedAttachedNetworkConnectionProperties
+                = new AttachedNetworkConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkConnectionId".equals(fieldName)) {
+                    deserializedAttachedNetworkConnectionProperties.networkConnectionId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAttachedNetworkConnectionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("networkConnectionLocation".equals(fieldName)) {
+                    deserializedAttachedNetworkConnectionProperties.networkConnectionLocation = reader.getString();
+                } else if ("healthCheckStatus".equals(fieldName)) {
+                    deserializedAttachedNetworkConnectionProperties.healthCheckStatus
+                        = HealthCheckStatus.fromString(reader.getString());
+                } else if ("domainJoinType".equals(fieldName)) {
+                    deserializedAttachedNetworkConnectionProperties.domainJoinType
+                        = DomainJoinType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttachedNetworkConnectionProperties;
+        });
+    }
 }

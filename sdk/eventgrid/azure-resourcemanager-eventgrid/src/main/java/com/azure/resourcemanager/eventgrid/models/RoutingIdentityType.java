@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for RoutingIdentityType.
+ * Routing identity type for topic spaces configuration.
  */
 public final class RoutingIdentityType extends ExpandableStringEnum<RoutingIdentityType> {
     /**
@@ -42,7 +41,6 @@ public final class RoutingIdentityType extends ExpandableStringEnum<RoutingIdent
      * @param name a name to look for.
      * @return the corresponding RoutingIdentityType.
      */
-    @JsonCreator
     public static RoutingIdentityType fromString(String name) {
         return fromString(name, RoutingIdentityType.class);
     }

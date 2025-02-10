@@ -21,8 +21,7 @@ public final class ServersImpl implements Servers {
 
     private final com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager;
 
-    public ServersImpl(
-        ServersClient innerClient,
+    public ServersImpl(ServersClient innerClient,
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,24 +29,21 @@ public final class ServersImpl implements Servers {
 
     public PagedIterable<ClusterServer> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<ClusterServerInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new ClusterServerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterServerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ClusterServer> listByCluster(String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<ClusterServerInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new ClusterServerImpl(inner1, this.manager()));
+        PagedIterable<ClusterServerInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterServerImpl(inner1, this.manager()));
     }
 
-    public Response<ClusterServer> getWithResponse(
-        String resourceGroupName, String clusterName, String serverName, Context context) {
-        Response<ClusterServerInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, clusterName, serverName, context);
+    public Response<ClusterServer> getWithResponse(String resourceGroupName, String clusterName, String serverName,
+        Context context) {
+        Response<ClusterServerInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, clusterName, serverName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterServerImpl(inner.getValue(), this.manager()));
         } else {
             return null;

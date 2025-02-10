@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** HyperVSite fabric specific details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVSite")
+/**
+ * HyperVSite fabric specific details.
+ */
 @Fluent
 public final class HyperVSiteDetails extends FabricSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "HyperVSite";
+
+    /*
      * The list of Hyper-V hosts associated with the fabric.
      */
-    @JsonProperty(value = "hyperVHosts")
     private List<HyperVHostDetails> hyperVHosts;
 
-    /** Creates an instance of HyperVSiteDetails class. */
+    /**
+     * Creates an instance of HyperVSiteDetails class.
+     */
     public HyperVSiteDetails() {
     }
 
     /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the hyperVHosts property: The list of Hyper-V hosts associated with the fabric.
-     *
+     * 
      * @return the hyperVHosts value.
      */
     public List<HyperVHostDetails> hyperVHosts() {
@@ -36,7 +53,7 @@ public final class HyperVSiteDetails extends FabricSpecificDetails {
 
     /**
      * Set the hyperVHosts property: The list of Hyper-V hosts associated with the fabric.
-     *
+     * 
      * @param hyperVHosts the hyperVHosts value to set.
      * @return the HyperVSiteDetails object itself.
      */
@@ -47,14 +64,54 @@ public final class HyperVSiteDetails extends FabricSpecificDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (hyperVHosts() != null) {
             hyperVHosts().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeArrayField("hyperVHosts", this.hyperVHosts, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVSiteDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVSiteDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVSiteDetails.
+     */
+    public static HyperVSiteDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVSiteDetails deserializedHyperVSiteDetails = new HyperVSiteDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVSiteDetails.instanceType = reader.getString();
+                } else if ("hyperVHosts".equals(fieldName)) {
+                    List<HyperVHostDetails> hyperVHosts
+                        = reader.readArray(reader1 -> HyperVHostDetails.fromJson(reader1));
+                    deserializedHyperVSiteDetails.hyperVHosts = hyperVHosts;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVSiteDetails;
+        });
     }
 }

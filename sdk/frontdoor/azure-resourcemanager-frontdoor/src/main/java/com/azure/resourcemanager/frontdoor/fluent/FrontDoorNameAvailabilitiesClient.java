@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.frontdoor.fluent.models.CheckNameAvailabilityOutputInner;
 import com.azure.resourcemanager.frontdoor.models.CheckNameAvailabilityInput;
 
-/** An instance of this class provides access to all the operations defined in FrontDoorNameAvailabilitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FrontDoorNameAvailabilitiesClient.
+ */
 public interface FrontDoorNameAvailabilitiesClient {
     /**
      * Check the availability of a Front Door resource name.
-     *
+     * 
      * @param checkFrontDoorNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,12 +26,12 @@ public interface FrontDoorNameAvailabilitiesClient {
      * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityOutputInner> checkWithResponse(
-        CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput, Context context);
+    Response<CheckNameAvailabilityOutputInner>
+        checkWithResponse(CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput, Context context);
 
     /**
      * Check the availability of a Front Door resource name.
-     *
+     * 
      * @param checkFrontDoorNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

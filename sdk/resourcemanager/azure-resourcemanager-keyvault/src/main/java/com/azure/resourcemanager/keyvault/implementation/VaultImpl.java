@@ -25,6 +25,7 @@ import com.azure.resourcemanager.keyvault.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleSet;
 import com.azure.resourcemanager.keyvault.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.keyvault.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.keyvault.models.PublicNetworkAccess;
 import com.azure.resourcemanager.keyvault.models.Secrets;
 import com.azure.resourcemanager.keyvault.models.Sku;
 import com.azure.resourcemanager.keyvault.models.SkuFamily;
@@ -87,18 +88,14 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     private void init() {
         if (innerModel().properties().vaultUri() != null) {
             final String vaultUrl = vaultUri();
-            this.secretClient =
-                new SecretClientBuilder()
-                    .vaultUrl(vaultUrl)
-                    .pipeline(vaultHttpPipeline)
-                    .serviceVersion(SecretServiceVersion.V7_2)
-                    .buildAsyncClient();
-            this.keyClient =
-                new KeyClientBuilder()
-                    .vaultUrl(vaultUrl)
-                    .pipeline(vaultHttpPipeline)
-                    .serviceVersion(KeyServiceVersion.V7_2)
-                    .buildAsyncClient();
+            this.secretClient = new SecretClientBuilder().vaultUrl(vaultUrl)
+                .pipeline(vaultHttpPipeline)
+                .serviceVersion(SecretServiceVersion.V7_2)
+                .buildAsyncClient();
+            this.keyClient = new KeyClientBuilder().vaultUrl(vaultUrl)
+                .pipeline(vaultHttpPipeline)
+                .serviceVersion(KeyServiceVersion.V7_2)
+                .buildAsyncClient();
         }
     }
 
@@ -171,6 +168,13 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
             return false;
         }
         return ResourceManagerUtils.toPrimitiveBoolean(innerModel().properties().enableRbacAuthorization());
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return (innerModel().properties() == null || innerModel().properties().publicNetworkAccess() == null)
+            ? null
+            : PublicNetworkAccess.fromString(innerModel().properties().publicNetworkAccess());
     }
 
     @Override
@@ -328,42 +332,30 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                 if (accessPolicy.userPrincipalName() != null) {
                     observables
                         .add(
-                            authorizationManager
-                                .users()
+                            authorizationManager.users()
                                 .getByNameAsync(accessPolicy.userPrincipalName())
                                 .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                                 .doOnNext(user -> accessPolicy.forObjectId(user.id()))
                                 .switchIfEmpty(
-                                    Mono
-                                        .error(
-                                            new ManagementException(
-                                                String
-                                                    .format(
-                                                        "User principal name %s is not found in tenant %s",
-                                                        accessPolicy.userPrincipalName(),
-                                                        authorizationManager.tenantId()),
-                                                null))));
+                                    Mono.error(new ManagementException(
+                                        String.format("User principal name %s is not found in tenant %s",
+                                            accessPolicy.userPrincipalName(), authorizationManager.tenantId()),
+                                        null))));
                 } else if (accessPolicy.servicePrincipalName() != null) {
                     observables
                         .add(
-                            authorizationManager
-                                .servicePrincipals()
+                            authorizationManager.servicePrincipals()
                                 .getByNameAsync(accessPolicy.servicePrincipalName())
                                 .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                                 .doOnNext(sp -> accessPolicy.forObjectId(sp.id()))
                                 .switchIfEmpty(
-                                    Mono
-                                        .error(
-                                            new ManagementException(
-                                                String
-                                                    .format(
-                                                        "Service principal name %s is not found in tenant %s",
-                                                        accessPolicy.servicePrincipalName(),
-                                                        authorizationManager.tenantId()),
-                                                null))));
+                                    Mono.error(new ManagementException(
+                                        String.format("Service principal name %s is not found in tenant %s",
+                                            accessPolicy.servicePrincipalName(), authorizationManager.tenantId()),
+                                        null))));
                 } else {
-                    throw logger.logExceptionAsError(
-                        new IllegalArgumentException("Access policy must specify object ID."));
+                    throw logger
+                        .logExceptionAsError(new IllegalArgumentException("Access policy must specify object ID."));
                 }
             }
         }
@@ -377,27 +369,21 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     @Override
     public Mono<Vault> createResourceAsync() {
         final VaultsClient client = this.manager().serviceClient().getVaults();
-        return populateAccessPolicies()
-            .then(
-                Mono
-                    .defer(
-                        () -> {
-                            VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
-                            parameters.withLocation(regionName());
-                            parameters.withProperties(innerModel().properties());
-                            parameters.withTags(innerModel().tags());
-                            parameters.properties().withAccessPolicies(new ArrayList<>());
-                            for (AccessPolicy accessPolicy : accessPolicies) {
-                                parameters.properties().accessPolicies().add(accessPolicy.innerModel());
-                            }
-                            return client.createOrUpdateAsync(resourceGroupName(), this.name(), parameters);
-                        }))
-            .map(
-                inner -> {
-                    this.setInner(inner);
-                    init();
-                    return this;
-                });
+        return populateAccessPolicies().then(Mono.defer(() -> {
+            VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
+            parameters.withLocation(regionName());
+            parameters.withProperties(innerModel().properties());
+            parameters.withTags(innerModel().tags());
+            parameters.properties().withAccessPolicies(new ArrayList<>());
+            for (AccessPolicy accessPolicy : accessPolicies) {
+                parameters.properties().accessPolicies().add(accessPolicy.innerModel());
+            }
+            return client.createOrUpdateAsync(resourceGroupName(), this.name(), parameters);
+        })).map(inner -> {
+            this.setInner(inner);
+            init();
+            return this;
+        });
     }
 
     @Override
@@ -413,6 +399,24 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     @Override
     public NetworkRuleSet networkRuleSet() {
         return innerModel().properties().networkAcls();
+    }
+
+    @Override
+    public VaultImpl enablePublicNetworkAccess() {
+        if (innerModel().properties() == null) {
+            innerModel().withProperties(new VaultProperties());
+        }
+        this.innerModel().properties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED.toString());
+        return this;
+    }
+
+    @Override
+    public VaultImpl disablePublicNetworkAccess() {
+        if (innerModel().properties() == null) {
+            innerModel().withProperties(new VaultProperties());
+        }
+        this.innerModel().properties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED.toString());
+        return this;
     }
 
     @Override
@@ -510,11 +514,12 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
 
     @Override
     public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
-        Mono<Response<List<PrivateLinkResource>>> retList = this.manager().serviceClient().getPrivateLinkResources()
+        Mono<Response<List<PrivateLinkResource>>> retList = this.manager()
+            .serviceClient()
+            .getPrivateLinkResources()
             .listByVaultWithResponseAsync(this.resourceGroupName(), this.name())
-            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
-                .map(PrivateLinkResourceImpl::new)
-                .collect(Collectors.toList())));
+            .map(response -> new SimpleResponse<>(response,
+                response.getValue().value().stream().map(PrivateLinkResourceImpl::new).collect(Collectors.toList())));
 
         return PagedConverter.convertListToPagedFlux(retList);
     }
@@ -526,10 +531,12 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
 
     @Override
     public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return manager().serviceClient().getPrivateEndpointConnections().putAsync(
-            this.resourceGroupName(), this.name(), privateEndpointConnectionName,
-            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)))
+        return manager().serviceClient()
+            .getPrivateEndpointConnections()
+            .putAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                new PrivateEndpointConnectionInner()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)))
             .then();
     }
 
@@ -540,10 +547,12 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
 
     @Override
     public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return manager().serviceClient().getPrivateEndpointConnections().putAsync(
-            this.resourceGroupName(), this.name(), privateEndpointConnectionName,
-            new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)))
+        return manager().serviceClient()
+            .getPrivateEndpointConnections()
+            .putAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                new PrivateEndpointConnectionInner()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)))
             .then();
     }
 

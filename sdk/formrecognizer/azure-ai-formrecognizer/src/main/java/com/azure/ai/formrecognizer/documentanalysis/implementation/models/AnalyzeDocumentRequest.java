@@ -54,8 +54,8 @@ public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Get the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source
-     * must be specified.
+     * Get the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source must
+     * be specified.
      * 
      * @return the base64Source value.
      */
@@ -64,8 +64,8 @@ public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Set the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source
-     * must be specified.
+     * Set the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source must
+     * be specified.
      * 
      * @param base64Source the base64Source value to set.
      * @return the AnalyzeDocumentRequest object itself.
@@ -75,6 +75,9 @@ public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDoc
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -5,43 +5,49 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This defines account-level immutability policy properties. */
+/**
+ * This defines account-level immutability policy properties.
+ */
 @Fluent
-public final class AccountImmutabilityPolicyProperties {
+public final class AccountImmutabilityPolicyProperties
+    implements JsonSerializable<AccountImmutabilityPolicyProperties> {
     /*
      * The immutability period for the blobs in the container since the policy creation, in days.
      */
-    @JsonProperty(value = "immutabilityPeriodSinceCreationInDays")
     private Integer immutabilityPeriodSinceCreationInDays;
 
     /*
      * The ImmutabilityPolicy state defines the mode of the policy. Disabled state disables the policy, Unlocked state
      * allows increase and decrease of immutability retention time and also allows toggling allowProtectedAppendWrites
      * property, Locked state only allows the increase of the immutability retention time. A policy can only be created
-     * in a Disabled or Unlocked state and can be toggled between the two states. Only a policy in an Unlocked state
-     * can transition to a Locked state which cannot be reverted.
+     * in a Disabled or Unlocked state and can be toggled between the two states. Only a policy in an Unlocked state can
+     * transition to a Locked state which cannot be reverted.
      */
-    @JsonProperty(value = "state")
     private AccountImmutabilityPolicyState state;
 
     /*
      * This property can only be changed for disabled and unlocked time-based retention policies. When enabled, new
-     * blocks can be written to an append blob while maintaining immutability protection and compliance. Only new
-     * blocks can be added and any existing blocks cannot be modified or deleted.
+     * blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks
+     * can be added and any existing blocks cannot be modified or deleted.
      */
-    @JsonProperty(value = "allowProtectedAppendWrites")
     private Boolean allowProtectedAppendWrites;
 
-    /** Creates an instance of AccountImmutabilityPolicyProperties class. */
+    /**
+     * Creates an instance of AccountImmutabilityPolicyProperties class.
+     */
     public AccountImmutabilityPolicyProperties() {
     }
 
     /**
      * Get the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
      * since the policy creation, in days.
-     *
+     * 
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
     public Integer immutabilityPeriodSinceCreationInDays() {
@@ -51,12 +57,12 @@ public final class AccountImmutabilityPolicyProperties {
     /**
      * Set the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
      * since the policy creation, in days.
-     *
+     * 
      * @param immutabilityPeriodSinceCreationInDays the immutabilityPeriodSinceCreationInDays value to set.
      * @return the AccountImmutabilityPolicyProperties object itself.
      */
-    public AccountImmutabilityPolicyProperties withImmutabilityPeriodSinceCreationInDays(
-        Integer immutabilityPeriodSinceCreationInDays) {
+    public AccountImmutabilityPolicyProperties
+        withImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays) {
         this.immutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
         return this;
     }
@@ -67,7 +73,7 @@ public final class AccountImmutabilityPolicyProperties {
      * allowProtectedAppendWrites property, Locked state only allows the increase of the immutability retention time. A
      * policy can only be created in a Disabled or Unlocked state and can be toggled between the two states. Only a
      * policy in an Unlocked state can transition to a Locked state which cannot be reverted.
-     *
+     * 
      * @return the state value.
      */
     public AccountImmutabilityPolicyState state() {
@@ -80,7 +86,7 @@ public final class AccountImmutabilityPolicyProperties {
      * allowProtectedAppendWrites property, Locked state only allows the increase of the immutability retention time. A
      * policy can only be created in a Disabled or Unlocked state and can be toggled between the two states. Only a
      * policy in an Unlocked state can transition to a Locked state which cannot be reverted.
-     *
+     * 
      * @param state the state value to set.
      * @return the AccountImmutabilityPolicyProperties object itself.
      */
@@ -94,7 +100,7 @@ public final class AccountImmutabilityPolicyProperties {
      * time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining
      * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
      * or deleted.
-     *
+     * 
      * @return the allowProtectedAppendWrites value.
      */
     public Boolean allowProtectedAppendWrites() {
@@ -106,7 +112,7 @@ public final class AccountImmutabilityPolicyProperties {
      * time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining
      * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
      * or deleted.
-     *
+     * 
      * @param allowProtectedAppendWrites the allowProtectedAppendWrites value to set.
      * @return the AccountImmutabilityPolicyProperties object itself.
      */
@@ -117,9 +123,56 @@ public final class AccountImmutabilityPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("immutabilityPeriodSinceCreationInDays",
+            this.immutabilityPeriodSinceCreationInDays);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeBooleanField("allowProtectedAppendWrites", this.allowProtectedAppendWrites);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountImmutabilityPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountImmutabilityPolicyProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountImmutabilityPolicyProperties.
+     */
+    public static AccountImmutabilityPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountImmutabilityPolicyProperties deserializedAccountImmutabilityPolicyProperties
+                = new AccountImmutabilityPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("immutabilityPeriodSinceCreationInDays".equals(fieldName)) {
+                    deserializedAccountImmutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("state".equals(fieldName)) {
+                    deserializedAccountImmutabilityPolicyProperties.state
+                        = AccountImmutabilityPolicyState.fromString(reader.getString());
+                } else if ("allowProtectedAppendWrites".equals(fieldName)) {
+                    deserializedAccountImmutabilityPolicyProperties.allowProtectedAppendWrites
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountImmutabilityPolicyProperties;
+        });
     }
 }

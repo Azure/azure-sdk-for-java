@@ -24,8 +24,7 @@ public final class SavingsPlanModelImpl implements SavingsPlanModel {
 
     private final com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager;
 
-    SavingsPlanModelImpl(
-        SavingsPlanModelInner innerObject,
+    SavingsPlanModelImpl(SavingsPlanModelInner innerObject,
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

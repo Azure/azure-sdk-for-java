@@ -6,70 +6,67 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Service config response. */
+/**
+ * Service config response.
+ */
 @Fluent
-public class ServiceConfigListResultProperties {
+public class ServiceConfigListResultProperties implements JsonSerializable<ServiceConfigListResultProperties> {
     /*
      * Service Config Name.
      */
-    @JsonProperty(value = "serviceName", required = true)
     private String serviceName;
 
     /*
      * File Name.
      */
-    @JsonProperty(value = "fileName", required = true)
     private String fileName;
 
     /*
      * Content in the service config file.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * Component Name.
      */
-    @JsonProperty(value = "componentName", required = true)
     private String componentName;
 
     /*
      * Config type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Config file path.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * The custom keys.
      */
-    @JsonProperty(value = "customKeys")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customKeys;
 
     /*
      * The default keys.
      */
-    @JsonProperty(value = "defaultKeys")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ServiceConfigListResultValueEntity> defaultKeys;
 
-    /** Creates an instance of ServiceConfigListResultProperties class. */
+    /**
+     * Creates an instance of ServiceConfigListResultProperties class.
+     */
     public ServiceConfigListResultProperties() {
     }
 
     /**
      * Get the serviceName property: Service Config Name.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -78,7 +75,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the serviceName property: Service Config Name.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -89,7 +86,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the fileName property: File Name.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -98,7 +95,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the fileName property: File Name.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -109,7 +106,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the content property: Content in the service config file.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -118,7 +115,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the content property: Content in the service config file.
-     *
+     * 
      * @param content the content value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -129,7 +126,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the componentName property: Component Name.
-     *
+     * 
      * @return the componentName value.
      */
     public String componentName() {
@@ -138,7 +135,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the componentName property: Component Name.
-     *
+     * 
      * @param componentName the componentName value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -149,7 +146,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the type property: Config type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -158,7 +155,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the type property: Config type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -169,7 +166,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the path property: Config file path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -178,7 +175,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the path property: Config file path.
-     *
+     * 
      * @param path the path value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -189,7 +186,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the customKeys property: The custom keys.
-     *
+     * 
      * @return the customKeys value.
      */
     public Map<String, String> customKeys() {
@@ -198,7 +195,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the customKeys property: The custom keys.
-     *
+     * 
      * @param customKeys the customKeys value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
@@ -209,7 +206,7 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Get the defaultKeys property: The default keys.
-     *
+     * 
      * @return the defaultKeys value.
      */
     public Map<String, ServiceConfigListResultValueEntity> defaultKeys() {
@@ -218,51 +215,107 @@ public class ServiceConfigListResultProperties {
 
     /**
      * Set the defaultKeys property: The default keys.
-     *
+     * 
      * @param defaultKeys the defaultKeys value to set.
      * @return the ServiceConfigListResultProperties object itself.
      */
-    public ServiceConfigListResultProperties withDefaultKeys(
-        Map<String, ServiceConfigListResultValueEntity> defaultKeys) {
+    public ServiceConfigListResultProperties
+        withDefaultKeys(Map<String, ServiceConfigListResultValueEntity> defaultKeys) {
         this.defaultKeys = defaultKeys;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceName in model ServiceConfigListResultProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceName in model ServiceConfigListResultProperties"));
         }
         if (fileName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fileName in model ServiceConfigListResultProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fileName in model ServiceConfigListResultProperties"));
         }
         if (componentName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property componentName in model ServiceConfigListResultProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property componentName in model ServiceConfigListResultProperties"));
         }
         if (defaultKeys() != null) {
-            defaultKeys()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            defaultKeys().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceConfigListResultProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceName", this.serviceName);
+        jsonWriter.writeStringField("fileName", this.fileName);
+        jsonWriter.writeStringField("componentName", this.componentName);
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeMapField("customKeys", this.customKeys, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("defaultKeys", this.defaultKeys, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceConfigListResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceConfigListResultProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceConfigListResultProperties.
+     */
+    public static ServiceConfigListResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceConfigListResultProperties deserializedServiceConfigListResultProperties
+                = new ServiceConfigListResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceName".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.serviceName = reader.getString();
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.fileName = reader.getString();
+                } else if ("componentName".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.componentName = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.content = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.type = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedServiceConfigListResultProperties.path = reader.getString();
+                } else if ("customKeys".equals(fieldName)) {
+                    Map<String, String> customKeys = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceConfigListResultProperties.customKeys = customKeys;
+                } else if ("defaultKeys".equals(fieldName)) {
+                    Map<String, ServiceConfigListResultValueEntity> defaultKeys
+                        = reader.readMap(reader1 -> ServiceConfigListResultValueEntity.fromJson(reader1));
+                    deserializedServiceConfigListResultProperties.defaultKeys = defaultKeys;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceConfigListResultProperties;
+        });
+    }
 }

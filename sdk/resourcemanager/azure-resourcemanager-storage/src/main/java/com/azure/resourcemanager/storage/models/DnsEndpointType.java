@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,15 +13,19 @@ import java.util.Collection;
  * identifier.
  */
 public final class DnsEndpointType extends ExpandableStringEnum<DnsEndpointType> {
-    /** Static value Standard for DnsEndpointType. */
+    /**
+     * Static value Standard for DnsEndpointType.
+     */
     public static final DnsEndpointType STANDARD = fromString("Standard");
 
-    /** Static value AzureDnsZone for DnsEndpointType. */
+    /**
+     * Static value AzureDnsZone for DnsEndpointType.
+     */
     public static final DnsEndpointType AZURE_DNS_ZONE = fromString("AzureDnsZone");
 
     /**
      * Creates a new instance of DnsEndpointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +34,17 @@ public final class DnsEndpointType extends ExpandableStringEnum<DnsEndpointType>
 
     /**
      * Creates or finds a DnsEndpointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DnsEndpointType.
      */
-    @JsonCreator
     public static DnsEndpointType fromString(String name) {
         return fromString(name, DnsEndpointType.class);
     }
 
     /**
      * Gets known DnsEndpointType values.
-     *
+     * 
      * @return known DnsEndpointType values.
      */
     public static Collection<DnsEndpointType> values() {

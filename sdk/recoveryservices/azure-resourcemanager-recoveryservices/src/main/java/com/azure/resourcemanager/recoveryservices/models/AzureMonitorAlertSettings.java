@@ -5,24 +5,41 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Settings for Azure Monitor based alerts. */
+/**
+ * Settings for Azure Monitor based alerts.
+ */
 @Fluent
-public final class AzureMonitorAlertSettings {
+public final class AzureMonitorAlertSettings implements JsonSerializable<AzureMonitorAlertSettings> {
     /*
      * The alertsForAllJobFailures property.
      */
-    @JsonProperty(value = "alertsForAllJobFailures")
     private AlertsState alertsForAllJobFailures;
 
-    /** Creates an instance of AzureMonitorAlertSettings class. */
+    /*
+     * The alertsForAllReplicationIssues property.
+     */
+    private AlertsState alertsForAllReplicationIssues;
+
+    /*
+     * The alertsForAllFailoverIssues property.
+     */
+    private AlertsState alertsForAllFailoverIssues;
+
+    /**
+     * Creates an instance of AzureMonitorAlertSettings class.
+     */
     public AzureMonitorAlertSettings() {
     }
 
     /**
      * Get the alertsForAllJobFailures property: The alertsForAllJobFailures property.
-     *
+     * 
      * @return the alertsForAllJobFailures value.
      */
     public AlertsState alertsForAllJobFailures() {
@@ -31,7 +48,7 @@ public final class AzureMonitorAlertSettings {
 
     /**
      * Set the alertsForAllJobFailures property: The alertsForAllJobFailures property.
-     *
+     * 
      * @param alertsForAllJobFailures the alertsForAllJobFailures value to set.
      * @return the AzureMonitorAlertSettings object itself.
      */
@@ -41,10 +58,98 @@ public final class AzureMonitorAlertSettings {
     }
 
     /**
+     * Get the alertsForAllReplicationIssues property: The alertsForAllReplicationIssues property.
+     * 
+     * @return the alertsForAllReplicationIssues value.
+     */
+    public AlertsState alertsForAllReplicationIssues() {
+        return this.alertsForAllReplicationIssues;
+    }
+
+    /**
+     * Set the alertsForAllReplicationIssues property: The alertsForAllReplicationIssues property.
+     * 
+     * @param alertsForAllReplicationIssues the alertsForAllReplicationIssues value to set.
+     * @return the AzureMonitorAlertSettings object itself.
+     */
+    public AzureMonitorAlertSettings withAlertsForAllReplicationIssues(AlertsState alertsForAllReplicationIssues) {
+        this.alertsForAllReplicationIssues = alertsForAllReplicationIssues;
+        return this;
+    }
+
+    /**
+     * Get the alertsForAllFailoverIssues property: The alertsForAllFailoverIssues property.
+     * 
+     * @return the alertsForAllFailoverIssues value.
+     */
+    public AlertsState alertsForAllFailoverIssues() {
+        return this.alertsForAllFailoverIssues;
+    }
+
+    /**
+     * Set the alertsForAllFailoverIssues property: The alertsForAllFailoverIssues property.
+     * 
+     * @param alertsForAllFailoverIssues the alertsForAllFailoverIssues value to set.
+     * @return the AzureMonitorAlertSettings object itself.
+     */
+    public AzureMonitorAlertSettings withAlertsForAllFailoverIssues(AlertsState alertsForAllFailoverIssues) {
+        this.alertsForAllFailoverIssues = alertsForAllFailoverIssues;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("alertsForAllJobFailures",
+            this.alertsForAllJobFailures == null ? null : this.alertsForAllJobFailures.toString());
+        jsonWriter.writeStringField("alertsForAllReplicationIssues",
+            this.alertsForAllReplicationIssues == null ? null : this.alertsForAllReplicationIssues.toString());
+        jsonWriter.writeStringField("alertsForAllFailoverIssues",
+            this.alertsForAllFailoverIssues == null ? null : this.alertsForAllFailoverIssues.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMonitorAlertSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMonitorAlertSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureMonitorAlertSettings.
+     */
+    public static AzureMonitorAlertSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMonitorAlertSettings deserializedAzureMonitorAlertSettings = new AzureMonitorAlertSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertsForAllJobFailures".equals(fieldName)) {
+                    deserializedAzureMonitorAlertSettings.alertsForAllJobFailures
+                        = AlertsState.fromString(reader.getString());
+                } else if ("alertsForAllReplicationIssues".equals(fieldName)) {
+                    deserializedAzureMonitorAlertSettings.alertsForAllReplicationIssues
+                        = AlertsState.fromString(reader.getString());
+                } else if ("alertsForAllFailoverIssues".equals(fieldName)) {
+                    deserializedAzureMonitorAlertSettings.alertsForAllFailoverIssues
+                        = AlertsState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMonitorAlertSettings;
+        });
     }
 }

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.devcenter.fluent.models.AllowedEnvironmentTypeP
 public final class AllowedEnvironmentTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllowedEnvironmentTypeProperties model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Succeeded\",\"displayName\":\"yaxuconuqszfkb\"}")
+        AllowedEnvironmentTypeProperties model
+            = BinaryData.fromString("{\"provisioningState\":\"Updated\",\"displayName\":\"xxjyngudivkrtsw\"}")
                 .toObject(AllowedEnvironmentTypeProperties.class);
     }
 

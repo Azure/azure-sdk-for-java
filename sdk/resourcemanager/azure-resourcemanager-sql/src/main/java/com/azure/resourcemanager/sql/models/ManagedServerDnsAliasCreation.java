@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A managed server dns alias creation request. */
+/**
+ * A managed server dns alias creation request.
+ */
 @Fluent
-public final class ManagedServerDnsAliasCreation {
+public final class ManagedServerDnsAliasCreation implements JsonSerializable<ManagedServerDnsAliasCreation> {
     /*
      * Whether or not DNS record should be created for this alias.
      */
-    @JsonProperty(value = "createDnsRecord")
     private Boolean createDnsRecord;
 
-    /** Creates an instance of ManagedServerDnsAliasCreation class. */
+    /**
+     * Creates an instance of ManagedServerDnsAliasCreation class.
+     */
     public ManagedServerDnsAliasCreation() {
     }
 
     /**
      * Get the createDnsRecord property: Whether or not DNS record should be created for this alias.
-     *
+     * 
      * @return the createDnsRecord value.
      */
     public Boolean createDnsRecord() {
@@ -31,7 +38,7 @@ public final class ManagedServerDnsAliasCreation {
 
     /**
      * Set the createDnsRecord property: Whether or not DNS record should be created for this alias.
-     *
+     * 
      * @param createDnsRecord the createDnsRecord value to set.
      * @return the ManagedServerDnsAliasCreation object itself.
      */
@@ -42,9 +49,47 @@ public final class ManagedServerDnsAliasCreation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("createDnsRecord", this.createDnsRecord);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedServerDnsAliasCreation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedServerDnsAliasCreation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedServerDnsAliasCreation.
+     */
+    public static ManagedServerDnsAliasCreation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedServerDnsAliasCreation deserializedManagedServerDnsAliasCreation
+                = new ManagedServerDnsAliasCreation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createDnsRecord".equals(fieldName)) {
+                    deserializedManagedServerDnsAliasCreation.createDnsRecord
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedServerDnsAliasCreation;
+        });
     }
 }

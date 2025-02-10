@@ -5,29 +5,31 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The LinkConnectionTargetDatabaseTypeProperties model.
  */
 @Fluent
-public final class LinkConnectionTargetDatabaseTypeProperties {
+public final class LinkConnectionTargetDatabaseTypeProperties
+    implements JsonSerializable<LinkConnectionTargetDatabaseTypeProperties> {
     /*
      * Enable cross table transaction consistency on target database
      */
-    @JsonProperty(value = "crossTableTransaction")
     private Boolean crossTableTransaction;
 
     /*
      * Drop and recreate same existing target table on link connection target database
      */
-    @JsonProperty(value = "dropExistingTargetTableOnStart")
     private Boolean dropExistingTargetTableOnStart;
 
     /*
      * Action on existing target table. If not specified, 'FailOnNonEmptyTable' action is used.
      */
-    @JsonProperty(value = "actionOnExistingTargetTable")
     private ActionOnExistingTargetTable actionOnExistingTargetTable;
 
     /**
@@ -100,5 +102,52 @@ public final class LinkConnectionTargetDatabaseTypeProperties {
         setActionOnExistingTargetTable(ActionOnExistingTargetTable actionOnExistingTargetTable) {
         this.actionOnExistingTargetTable = actionOnExistingTargetTable;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("crossTableTransaction", this.crossTableTransaction);
+        jsonWriter.writeBooleanField("dropExistingTargetTableOnStart", this.dropExistingTargetTableOnStart);
+        jsonWriter.writeStringField("actionOnExistingTargetTable",
+            this.actionOnExistingTargetTable == null ? null : this.actionOnExistingTargetTable.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkConnectionTargetDatabaseTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkConnectionTargetDatabaseTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkConnectionTargetDatabaseTypeProperties.
+     */
+    public static LinkConnectionTargetDatabaseTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkConnectionTargetDatabaseTypeProperties deserializedLinkConnectionTargetDatabaseTypeProperties
+                = new LinkConnectionTargetDatabaseTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("crossTableTransaction".equals(fieldName)) {
+                    deserializedLinkConnectionTargetDatabaseTypeProperties.crossTableTransaction
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dropExistingTargetTableOnStart".equals(fieldName)) {
+                    deserializedLinkConnectionTargetDatabaseTypeProperties.dropExistingTargetTableOnStart
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("actionOnExistingTargetTable".equals(fieldName)) {
+                    deserializedLinkConnectionTargetDatabaseTypeProperties.actionOnExistingTargetTable
+                        = ActionOnExistingTargetTable.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkConnectionTargetDatabaseTypeProperties;
+        });
     }
 }

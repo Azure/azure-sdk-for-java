@@ -102,20 +102,16 @@ public final class DataMigrationServiceImpl
     }
 
     public DataMigrationService create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .createOrUpdate(groupName, serviceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdate(groupName, serviceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DataMigrationService create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .createOrUpdate(groupName, serviceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdate(groupName, serviceName, this.innerModel(), context);
         return this;
     }
 
@@ -130,46 +126,39 @@ public final class DataMigrationServiceImpl
     }
 
     public DataMigrationService apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .update(groupName, serviceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .update(groupName, serviceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DataMigrationService apply(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getServices().update(groupName, serviceName, this.innerModel(), context);
+        this.innerObject
+            = serviceManager.serviceClient().getServices().update(groupName, serviceName, this.innerModel(), context);
         return this;
     }
 
-    DataMigrationServiceImpl(
-        DataMigrationServiceInner innerObject,
+    DataMigrationServiceImpl(DataMigrationServiceInner innerObject,
         com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.groupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "services");
+        this.groupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "services");
     }
 
     public DataMigrationService refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .getByResourceGroupWithResponse(groupName, serviceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getByResourceGroupWithResponse(groupName, serviceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataMigrationService refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .getByResourceGroupWithResponse(groupName, serviceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getByResourceGroupWithResponse(groupName, serviceName, context)
+            .getValue();
         return this;
     }
 
@@ -197,10 +186,9 @@ public final class DataMigrationServiceImpl
         serviceManager.services().stop(groupName, serviceName, context);
     }
 
-    public Response<NameAvailabilityResponse> nestedCheckNameAvailabilityWithResponse(
-        NameAvailabilityRequest parameters, Context context) {
-        return serviceManager
-            .services()
+    public Response<NameAvailabilityResponse>
+        nestedCheckNameAvailabilityWithResponse(NameAvailabilityRequest parameters, Context context) {
+        return serviceManager.services()
             .nestedCheckNameAvailabilityWithResponse(groupName, serviceName, parameters, context);
     }
 

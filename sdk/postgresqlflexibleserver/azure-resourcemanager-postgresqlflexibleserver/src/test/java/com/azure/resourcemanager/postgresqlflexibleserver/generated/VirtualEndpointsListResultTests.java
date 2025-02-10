@@ -14,30 +14,25 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualEndpointsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualEndpointsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"xmaehvbbxu\",\"name\":\"pltfnhtba\",\"type\":\"gx\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"kl\",\"hpluodpvruudlg\",\"ibthostgktstvd\",\"eclze\"],\"virtualEndpoints\":[\"cvhzlhp\",\"odqkdlwwqfb\",\"mlkxtrqjfs\"]}}],\"nextLink\":\"mbtxhwgf\"}")
-                .toObject(VirtualEndpointsListResult.class);
+        VirtualEndpointsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"pqjlihhyusps\",\"name\":\"sdvlmfwdgzxulucv\",\"type\":\"mrsreuzvxurisjnh\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"jzgxmrhublwp\",\"esutrgjupauutpw\",\"qhih\"],\"virtualEndpoints\":[\"g\"]}}],\"nextLink\":\"pnfqntcyp\"}")
+            .toObject(VirtualEndpointsListResult.class);
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, model.value().get(0).endpointType());
-        Assertions.assertEquals("kl", model.value().get(0).members().get(0));
-        Assertions.assertEquals("mbtxhwgf", model.nextLink());
+        Assertions.assertEquals("jzgxmrhublwp", model.value().get(0).members().get(0));
+        Assertions.assertEquals("pnfqntcyp", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualEndpointsListResult model =
-            new VirtualEndpointsListResult()
+        VirtualEndpointsListResult model
+            = new VirtualEndpointsListResult()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new VirtualEndpointResourceInner()
-                                .withEndpointType(VirtualEndpointType.READ_WRITE)
-                                .withMembers(Arrays.asList("kl", "hpluodpvruudlg", "ibthostgktstvd", "eclze"))))
-                .withNextLink("mbtxhwgf");
+                    Arrays.asList(new VirtualEndpointResourceInner().withEndpointType(VirtualEndpointType.READ_WRITE)
+                        .withMembers(Arrays.asList("jzgxmrhublwp", "esutrgjupauutpw", "qhih"))))
+                .withNextLink("pnfqntcyp");
         model = BinaryData.fromObject(model).toObject(VirtualEndpointsListResult.class);
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, model.value().get(0).endpointType());
-        Assertions.assertEquals("kl", model.value().get(0).members().get(0));
-        Assertions.assertEquals("mbtxhwgf", model.nextLink());
+        Assertions.assertEquals("jzgxmrhublwp", model.value().get(0).members().get(0));
+        Assertions.assertEquals("pnfqntcyp", model.nextLink());
     }
 }

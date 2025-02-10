@@ -4,26 +4,28 @@
 
 package com.azure.resourcemanager.servicebus.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicebus.models.MigrationConfigurationName;
 
-/** Samples for MigrationConfigs CompleteMigration. */
+/**
+ * Samples for MigrationConfigs CompleteMigration.
+ */
 public final class MigrationConfigsCompleteMigrationSamples {
     /*
-     * x-ms-original-file: specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Migrationconfigurations/SBMigrationconfigurationCompleteMigration.json
+     * x-ms-original-file:
+     * specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Migrationconfigurations
+     * /SBMigrationconfigurationCompleteMigration.json
      */
     /**
      * Sample code: MigrationConfigurationsCompleteMigration.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void migrationConfigurationsCompleteMigration(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .serviceBusNamespaces()
+        azure.serviceBusNamespaces()
             .manager()
             .serviceClient()
             .getMigrationConfigs()
-            .completeMigrationWithResponse(
-                "ResourceGroup", "sdk-Namespace-41", MigrationConfigurationName.DEFAULT, Context.NONE);
+            .completeMigrationWithResponse("ResourceGroup", "sdk-Namespace-41", MigrationConfigurationName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

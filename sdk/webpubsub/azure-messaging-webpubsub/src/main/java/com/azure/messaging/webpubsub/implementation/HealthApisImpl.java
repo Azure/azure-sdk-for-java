@@ -22,56 +22,72 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.messaging.webpubsub.WebPubSubServiceVersion;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in HealthApis. */
+/**
+ * An instance of this class provides access to all the operations defined in HealthApis.
+ */
 public final class HealthApisImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final HealthApisService service;
 
-    /** The service client containing this operation class. */
-    private final AzureWebPubSubServiceRestApiImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final WebPubSubServiceClientImpl client;
 
     /**
      * Initializes an instance of HealthApisImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    HealthApisImpl(AzureWebPubSubServiceRestApiImpl client) {
-        this.service =
-                RestProxy.create(HealthApisService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    HealthApisImpl(WebPubSubServiceClientImpl client) {
+        this.service
+            = RestProxy.create(HealthApisService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public WebPubSubServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
      * The interface defining all the services for AzureWebPubSubServiceRestApiHealthApis to be used by the proxy
      * service to perform REST calls.
      */
-    @Host("{Endpoint}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "AzureWebPubSubServic")
     public interface HealthApisService {
         @Head("/api/health")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> getServiceStatus(
-                @HostParam("Endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> getServiceStatus(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+
+        @Head("/api/health")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> getServiceStatusSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
     }
 
     /**
      * Get service health status.
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -81,18 +97,13 @@ public final class HealthApisImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getServiceStatusWithResponseAsync(RequestOptions requestOptions) {
-        return FluxUtil.withContext(
-                context ->
-                        service.getServiceStatus(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getServiceStatus(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
      * Get service health status.
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -102,6 +113,7 @@ public final class HealthApisImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getServiceStatusWithResponse(RequestOptions requestOptions) {
-        return getServiceStatusWithResponseAsync(requestOptions).block();
+        return service.getServiceStatusSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            requestOptions, Context.NONE);
     }
 }

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Resume job params. */
+/**
+ * Resume job params.
+ */
 @Fluent
-public final class ResumeJobParams {
+public final class ResumeJobParams implements JsonSerializable<ResumeJobParams> {
     /*
      * Resume job properties.
      */
-    @JsonProperty(value = "properties")
     private ResumeJobParamsProperties properties;
 
-    /** Creates an instance of ResumeJobParams class. */
+    /**
+     * Creates an instance of ResumeJobParams class.
+     */
     public ResumeJobParams() {
     }
 
     /**
      * Get the properties property: Resume job properties.
-     *
+     * 
      * @return the properties value.
      */
     public ResumeJobParamsProperties properties() {
@@ -31,7 +38,7 @@ public final class ResumeJobParams {
 
     /**
      * Set the properties property: Resume job properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResumeJobParams object itself.
      */
@@ -42,12 +49,48 @@ public final class ResumeJobParams {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResumeJobParams from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResumeJobParams if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResumeJobParams.
+     */
+    public static ResumeJobParams fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResumeJobParams deserializedResumeJobParams = new ResumeJobParams();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedResumeJobParams.properties = ResumeJobParamsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResumeJobParams;
+        });
     }
 }

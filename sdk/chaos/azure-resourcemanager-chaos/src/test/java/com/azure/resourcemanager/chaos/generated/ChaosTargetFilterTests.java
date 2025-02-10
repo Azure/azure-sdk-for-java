@@ -10,8 +10,8 @@ import com.azure.resourcemanager.chaos.models.ChaosTargetFilter;
 public final class ChaosTargetFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChaosTargetFilter model =
-            BinaryData.fromString("{\"type\":\"ChaosTargetFilter\"}").toObject(ChaosTargetFilter.class);
+        ChaosTargetFilter model
+            = BinaryData.fromString("{\"type\":\"ChaosTargetFilter\"}").toObject(ChaosTargetFilter.class);
     }
 
     @org.junit.jupiter.api.Test

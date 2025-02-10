@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the target splits for Spot and Regular priority VMs within a scale set with flexible orchestration mode.
@@ -13,18 +17,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * instance scales out and the split between Spot and Regular priority VMs after this base target has been reached.
  */
 @Fluent
-public final class PriorityMixPolicy {
+public final class PriorityMixPolicy implements JsonSerializable<PriorityMixPolicy> {
     /*
      * The base number of regular priority VMs that will be created in this scale set as it scales out.
      */
-    @JsonProperty(value = "baseRegularPriorityCount")
     private Integer baseRegularPriorityCount;
 
     /*
      * The percentage of VM instances, after the base regular priority count has been reached, that are expected to use
      * regular priority.
      */
-    @JsonProperty(value = "regularPriorityPercentageAboveBase")
     private Integer regularPriorityPercentageAboveBase;
 
     /**
@@ -83,5 +85,45 @@ public final class PriorityMixPolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("baseRegularPriorityCount", this.baseRegularPriorityCount);
+        jsonWriter.writeNumberField("regularPriorityPercentageAboveBase", this.regularPriorityPercentageAboveBase);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PriorityMixPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PriorityMixPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PriorityMixPolicy.
+     */
+    public static PriorityMixPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PriorityMixPolicy deserializedPriorityMixPolicy = new PriorityMixPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("baseRegularPriorityCount".equals(fieldName)) {
+                    deserializedPriorityMixPolicy.baseRegularPriorityCount = reader.getNullable(JsonReader::getInt);
+                } else if ("regularPriorityPercentageAboveBase".equals(fieldName)) {
+                    deserializedPriorityMixPolicy.regularPriorityPercentageAboveBase
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPriorityMixPolicy;
+        });
     }
 }

@@ -28,14 +28,16 @@ public class ShareResourceClientTest extends PurviewShareTestBase {
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         SentShare sentShare = super.createSentShare(sentShareId);
 
-        PagedIterable<BinaryData> shareResources = super.shareResourcesClient
-                .listShareResources(new RequestOptions());
+        PagedIterable<BinaryData> shareResources = super.shareResourcesClient.listShareResources(new RequestOptions());
 
-        String sentShareResource = ((InPlaceSentShare) sentShare).getArtifact().getStoreReference().getReferenceName();
+        String sentShareResource
+            = ((InPlaceSentShare) sentShare).getProperties().getArtifact().getStoreReference().getReferenceName();
 
         assertTrue(shareResources.stream().findAny().isPresent());
-        assertTrue(shareResources.stream().map(binaryData -> binaryData.toObject(ShareResource.class))
-                .anyMatch(shareResource -> shareResource.getStoreReference().getReferenceName()
-                        .equalsIgnoreCase(sentShareResource)));
+        assertTrue(shareResources.stream()
+            .map(binaryData -> binaryData.toObject(ShareResource.class))
+            .anyMatch(shareResource -> shareResource.getStoreReference()
+                .getReferenceName()
+                .equalsIgnoreCase(sentShareResource)));
     }
 }

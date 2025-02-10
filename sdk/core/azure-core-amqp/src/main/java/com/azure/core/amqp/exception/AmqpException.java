@@ -13,9 +13,9 @@ import java.util.Locale;
  *
  * @see AmqpErrorCondition
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error">Amqp
- *     Error</a>
+ * Error</a>
  * @see <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions">Azure Messaging
- *     Exceptions</a>
+ * Exceptions</a>
  */
 public class AmqpException extends AzureException {
     private static final long serialVersionUID = -3654294093967132325L;
@@ -58,7 +58,7 @@ public class AmqpException extends AzureException {
      * @param errorContext The context that caused this AMQP error.
      */
     public AmqpException(boolean isTransient, AmqpErrorCondition errorCondition, String message,
-                         AmqpErrorContext errorContext) {
+        AmqpErrorContext errorContext) {
         super(message);
         this.errorCondition = errorCondition;
         this.isTransient = isTransient;
@@ -77,7 +77,7 @@ public class AmqpException extends AzureException {
      * @param errorContext The context that caused this AMQP error.
      */
     public AmqpException(boolean isTransient, AmqpErrorCondition errorCondition, String message, Throwable cause,
-                         AmqpErrorContext errorContext) {
+        AmqpErrorContext errorContext) {
         super(message, cause);
         this.errorCondition = errorCondition;
         this.isTransient = isTransient;
@@ -94,7 +94,7 @@ public class AmqpException extends AzureException {
      * @param errorContext The context that caused this AMQP error.
      */
     public AmqpException(boolean isTransient, AmqpErrorCondition errorCondition, Throwable cause,
-                         AmqpErrorContext errorContext) {
+        AmqpErrorContext errorContext) {
         super(cause.getMessage(), cause);
         this.errorCondition = errorCondition;
         this.isTransient = isTransient;

@@ -6,39 +6,41 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.SupportedOperatingSystemsInner;
 
-/** An immutable client-side representation of SupportedOperatingSystems. */
+/**
+ * An immutable client-side representation of SupportedOperatingSystems.
+ */
 public interface SupportedOperatingSystems {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: The supported operating systems properties.
-     *
+     * 
      * @return the properties value.
      */
     SupportedOSProperties properties();
 
     /**
      * Gets the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     String location();
@@ -46,7 +48,7 @@ public interface SupportedOperatingSystems {
     /**
      * Gets the inner
      * com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.SupportedOperatingSystemsInner object.
-     *
+     * 
      * @return the inner object.
      */
     SupportedOperatingSystemsInner innerModel();

@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A region in which the Azure Cosmos DB database account is deployed.
  */
 @Fluent
-public final class Location {
+public final class Location implements JsonSerializable<Location> {
     /*
      * The unique identifier of the region within the database account. Example:
      * &lt;accountName&gt;-&lt;locationName&gt;.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the region.
      */
-    @JsonProperty(value = "locationName")
     private String locationName;
 
     /*
      * The connection endpoint for the specific region. Example:
      * https://&lt;accountName&gt;-&lt;locationName&gt;.documents.azure.com:443/
      */
-    @JsonProperty(value = "documentEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String documentEndpoint;
 
     /*
@@ -40,7 +41,6 @@ public final class Location {
      * account is being deleted. 'Failed' – the Cosmos DB account failed creation. 'DeletionFailed' – the Cosmos DB
      * account deletion failed.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
@@ -48,13 +48,11 @@ public final class Location {
      * failover priority = (total number of regions - 1). Failover priority values must be unique for each of the
      * regions in which the database account exists.
      */
-    @JsonProperty(value = "failoverPriority")
     private Integer failoverPriority;
 
     /*
      * Flag to indicate whether or not this region is an AvailabilityZone region
      */
-    @JsonProperty(value = "isZoneRedundant")
     private Boolean isZoneRedundant;
 
     /**
@@ -104,8 +102,8 @@ public final class Location {
     }
 
     /**
-     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called.
-     * The status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
+     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called. The
+     * status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
      * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
      * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
      * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.
@@ -119,8 +117,8 @@ public final class Location {
 
     /**
      * Get the failoverPriority property: The failover priority of the region. A failover priority of 0 indicates a
-     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority
-     * values must be unique for each of the regions in which the database account exists.
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      * 
      * @return the failoverPriority value.
      */
@@ -130,8 +128,8 @@ public final class Location {
 
     /**
      * Set the failoverPriority property: The failover priority of the region. A failover priority of 0 indicates a
-     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority
-     * values must be unique for each of the regions in which the database account exists.
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      * 
      * @param failoverPriority the failoverPriority value to set.
      * @return the Location object itself.
@@ -167,5 +165,53 @@ public final class Location {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("locationName", this.locationName);
+        jsonWriter.writeNumberField("failoverPriority", this.failoverPriority);
+        jsonWriter.writeBooleanField("isZoneRedundant", this.isZoneRedundant);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Location from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Location if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Location.
+     */
+    public static Location fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Location deserializedLocation = new Location();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLocation.id = reader.getString();
+                } else if ("locationName".equals(fieldName)) {
+                    deserializedLocation.locationName = reader.getString();
+                } else if ("documentEndpoint".equals(fieldName)) {
+                    deserializedLocation.documentEndpoint = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLocation.provisioningState = reader.getString();
+                } else if ("failoverPriority".equals(fieldName)) {
+                    deserializedLocation.failoverPriority = reader.getNullable(JsonReader::getInt);
+                } else if ("isZoneRedundant".equals(fieldName)) {
+                    deserializedLocation.isZoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocation;
+        });
     }
 }

@@ -5,46 +5,52 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.WafMetricsGranularity;
 import com.azure.resourcemanager.cdn.models.WafMetricsResponseSeriesItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Waf Metrics Response. */
+/**
+ * Waf Metrics Response.
+ */
 @Fluent
-public final class WafMetricsResponseInner {
+public final class WafMetricsResponseInner implements JsonSerializable<WafMetricsResponseInner> {
     /*
      * The dateTimeBegin property.
      */
-    @JsonProperty(value = "dateTimeBegin")
     private OffsetDateTime dateTimeBegin;
 
     /*
      * The dateTimeEnd property.
      */
-    @JsonProperty(value = "dateTimeEnd")
     private OffsetDateTime dateTimeEnd;
 
     /*
      * The granularity property.
      */
-    @JsonProperty(value = "granularity")
     private WafMetricsGranularity granularity;
 
     /*
      * The series property.
      */
-    @JsonProperty(value = "series")
     private List<WafMetricsResponseSeriesItem> series;
 
-    /** Creates an instance of WafMetricsResponseInner class. */
+    /**
+     * Creates an instance of WafMetricsResponseInner class.
+     */
     public WafMetricsResponseInner() {
     }
 
     /**
      * Get the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @return the dateTimeBegin value.
      */
     public OffsetDateTime dateTimeBegin() {
@@ -53,7 +59,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Set the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @param dateTimeBegin the dateTimeBegin value to set.
      * @return the WafMetricsResponseInner object itself.
      */
@@ -64,7 +70,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Get the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @return the dateTimeEnd value.
      */
     public OffsetDateTime dateTimeEnd() {
@@ -73,7 +79,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Set the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @param dateTimeEnd the dateTimeEnd value to set.
      * @return the WafMetricsResponseInner object itself.
      */
@@ -84,7 +90,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Get the granularity property: The granularity property.
-     *
+     * 
      * @return the granularity value.
      */
     public WafMetricsGranularity granularity() {
@@ -93,7 +99,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Set the granularity property: The granularity property.
-     *
+     * 
      * @param granularity the granularity value to set.
      * @return the WafMetricsResponseInner object itself.
      */
@@ -104,7 +110,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Get the series property: The series property.
-     *
+     * 
      * @return the series value.
      */
     public List<WafMetricsResponseSeriesItem> series() {
@@ -113,7 +119,7 @@ public final class WafMetricsResponseInner {
 
     /**
      * Set the series property: The series property.
-     *
+     * 
      * @param series the series value to set.
      * @return the WafMetricsResponseInner object itself.
      */
@@ -124,12 +130,64 @@ public final class WafMetricsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (series() != null) {
             series().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dateTimeBegin",
+            this.dateTimeBegin == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dateTimeBegin));
+        jsonWriter.writeStringField("dateTimeEnd",
+            this.dateTimeEnd == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dateTimeEnd));
+        jsonWriter.writeStringField("granularity", this.granularity == null ? null : this.granularity.toString());
+        jsonWriter.writeArrayField("series", this.series, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WafMetricsResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WafMetricsResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WafMetricsResponseInner.
+     */
+    public static WafMetricsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WafMetricsResponseInner deserializedWafMetricsResponseInner = new WafMetricsResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dateTimeBegin".equals(fieldName)) {
+                    deserializedWafMetricsResponseInner.dateTimeBegin = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dateTimeEnd".equals(fieldName)) {
+                    deserializedWafMetricsResponseInner.dateTimeEnd = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("granularity".equals(fieldName)) {
+                    deserializedWafMetricsResponseInner.granularity
+                        = WafMetricsGranularity.fromString(reader.getString());
+                } else if ("series".equals(fieldName)) {
+                    List<WafMetricsResponseSeriesItem> series
+                        = reader.readArray(reader1 -> WafMetricsResponseSeriesItem.fromJson(reader1));
+                    deserializedWafMetricsResponseInner.series = series;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWafMetricsResponseInner;
+        });
     }
 }

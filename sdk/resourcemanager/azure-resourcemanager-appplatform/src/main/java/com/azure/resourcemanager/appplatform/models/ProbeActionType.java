@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProbeActionType. */
+/**
+ * The type of the action to take to perform the health check.
+ */
 public final class ProbeActionType extends ExpandableStringEnum<ProbeActionType> {
-    /** Static value HTTPGetAction for ProbeActionType. */
+    /**
+     * Static value HTTPGetAction for ProbeActionType.
+     */
     public static final ProbeActionType HTTPGET_ACTION = fromString("HTTPGetAction");
 
-    /** Static value TCPSocketAction for ProbeActionType. */
+    /**
+     * Static value TCPSocketAction for ProbeActionType.
+     */
     public static final ProbeActionType TCPSOCKET_ACTION = fromString("TCPSocketAction");
 
-    /** Static value ExecAction for ProbeActionType. */
+    /**
+     * Static value ExecAction for ProbeActionType.
+     */
     public static final ProbeActionType EXEC_ACTION = fromString("ExecAction");
 
     /**
+     * Creates a new instance of ProbeActionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProbeActionType() {
+    }
+
+    /**
      * Creates or finds a ProbeActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProbeActionType.
      */
-    @JsonCreator
     public static ProbeActionType fromString(String name) {
         return fromString(name, ProbeActionType.class);
     }
 
     /**
      * Gets known ProbeActionType values.
-     *
+     * 
      * @return known ProbeActionType values.
      */
     public static Collection<ProbeActionType> values() {

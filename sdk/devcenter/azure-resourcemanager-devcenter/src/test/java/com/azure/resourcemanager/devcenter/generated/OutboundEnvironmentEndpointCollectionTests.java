@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class OutboundEnvironmentEndpointCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OutboundEnvironmentEndpointCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"category\":\"kyrk\",\"endpoints\":[{\"domainName\":\"iogsjkmnwq\",\"description\":\"obaiyhddviaceg\",\"endpointDetails\":[{}]}]},{\"category\":\"tfpmvmemfnczdw\",\"endpoints\":[{\"domainName\":\"lxlllchpo\",\"description\":\"zevwrdnhfukuv\",\"endpointDetails\":[{},{},{}]}]},{\"category\":\"wsmystuluqypf\",\"endpoints\":[{\"domainName\":\"rchpqbmfpjbabwid\",\"description\":\"xsspuunnoxyhk\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"drihpfhoqcaaewda\",\"description\":\"djvlpj\",\"endpointDetails\":[{},{},{},{}]}]},{\"category\":\"brm\",\"endpoints\":[{\"domainName\":\"vsiykzkdncjdxon\",\"description\":\"oggculapz\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"gogtqxepnylbf\",\"description\":\"jlyjtlvofq\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"cib\",\"description\":\"mowuxrk\",\"endpointDetails\":[{},{}]}]}],\"nextLink\":\"w\"}")
-                .toObject(OutboundEnvironmentEndpointCollection.class);
-        Assertions.assertEquals("w", model.nextLink());
+        OutboundEnvironmentEndpointCollection model = BinaryData.fromString(
+            "{\"value\":[{\"category\":\"ijf\",\"endpoints\":[{\"domainName\":\"o\",\"description\":\"rsg\",\"endpointDetails\":[{}]}]},{\"category\":\"huzqgn\",\"endpoints\":[{\"domainName\":\"ynscl\",\"description\":\"hzvhxnkomtkubo\",\"endpointDetails\":[{},{}]},{\"domainName\":\"vdxzxhihfrbbc\",\"description\":\"qagt\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"lfkqojpy\",\"description\":\"gtrd\",\"endpointDetails\":[{},{}]}]},{\"category\":\"mzzs\",\"endpoints\":[{\"domainName\":\"rnysux\",\"description\":\"rafwgckhocxvdf\",\"endpointDetails\":[{},{}]}]},{\"category\":\"fqroudas\",\"endpoints\":[{\"domainName\":\"h\",\"description\":\"vkbunzozudh\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"moy\",\"description\":\"dyuib\",\"endpointDetails\":[{}]},{\"domainName\":\"nbzydvfvfcj\",\"description\":\"eoisrvhmgor\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"is\",\"description\":\"w\",\"endpointDetails\":[{},{},{}]}]}],\"nextLink\":\"plef\"}")
+            .toObject(OutboundEnvironmentEndpointCollection.class);
+        Assertions.assertEquals("plef", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OutboundEnvironmentEndpointCollection model = new OutboundEnvironmentEndpointCollection().withNextLink("w");
+        OutboundEnvironmentEndpointCollection model = new OutboundEnvironmentEndpointCollection().withNextLink("plef");
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointCollection.class);
-        Assertions.assertEquals("w", model.nextLink());
+        Assertions.assertEquals("plef", model.nextLink());
     }
 }

@@ -5,44 +5,49 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object. */
+/**
+ * Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object.
+ */
 @Fluent
-public final class CacheConfiguration {
+public final class CacheConfiguration implements JsonSerializable<CacheConfiguration> {
     /*
      * Treatment of URL query terms when forming the cache key.
      */
-    @JsonProperty(value = "queryParameterStripDirective")
     private FrontDoorQuery queryParameterStripDirective;
 
     /*
      * query parameters to include or exclude (comma separated).
      */
-    @JsonProperty(value = "queryParameters")
     private String queryParameters;
 
     /*
      * Whether to use dynamic compression for cached content
      */
-    @JsonProperty(value = "dynamicCompression")
     private DynamicCompressionEnabled dynamicCompression;
 
     /*
      * The duration for which the content needs to be cached. Allowed format is in ISO 8601 format
      * (http://en.wikipedia.org/wiki/ISO_8601#Durations). HTTP requires the value to be no more than a year
      */
-    @JsonProperty(value = "cacheDuration")
     private Duration cacheDuration;
 
-    /** Creates an instance of CacheConfiguration class. */
+    /**
+     * Creates an instance of CacheConfiguration class.
+     */
     public CacheConfiguration() {
     }
 
     /**
      * Get the queryParameterStripDirective property: Treatment of URL query terms when forming the cache key.
-     *
+     * 
      * @return the queryParameterStripDirective value.
      */
     public FrontDoorQuery queryParameterStripDirective() {
@@ -51,7 +56,7 @@ public final class CacheConfiguration {
 
     /**
      * Set the queryParameterStripDirective property: Treatment of URL query terms when forming the cache key.
-     *
+     * 
      * @param queryParameterStripDirective the queryParameterStripDirective value to set.
      * @return the CacheConfiguration object itself.
      */
@@ -62,7 +67,7 @@ public final class CacheConfiguration {
 
     /**
      * Get the queryParameters property: query parameters to include or exclude (comma separated).
-     *
+     * 
      * @return the queryParameters value.
      */
     public String queryParameters() {
@@ -71,7 +76,7 @@ public final class CacheConfiguration {
 
     /**
      * Set the queryParameters property: query parameters to include or exclude (comma separated).
-     *
+     * 
      * @param queryParameters the queryParameters value to set.
      * @return the CacheConfiguration object itself.
      */
@@ -82,7 +87,7 @@ public final class CacheConfiguration {
 
     /**
      * Get the dynamicCompression property: Whether to use dynamic compression for cached content.
-     *
+     * 
      * @return the dynamicCompression value.
      */
     public DynamicCompressionEnabled dynamicCompression() {
@@ -91,7 +96,7 @@ public final class CacheConfiguration {
 
     /**
      * Set the dynamicCompression property: Whether to use dynamic compression for cached content.
-     *
+     * 
      * @param dynamicCompression the dynamicCompression value to set.
      * @return the CacheConfiguration object itself.
      */
@@ -103,7 +108,7 @@ public final class CacheConfiguration {
     /**
      * Get the cacheDuration property: The duration for which the content needs to be cached. Allowed format is in ISO
      * 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations). HTTP requires the value to be no more than a year.
-     *
+     * 
      * @return the cacheDuration value.
      */
     public Duration cacheDuration() {
@@ -113,7 +118,7 @@ public final class CacheConfiguration {
     /**
      * Set the cacheDuration property: The duration for which the content needs to be cached. Allowed format is in ISO
      * 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations). HTTP requires the value to be no more than a year.
-     *
+     * 
      * @param cacheDuration the cacheDuration value to set.
      * @return the CacheConfiguration object itself.
      */
@@ -124,9 +129,59 @@ public final class CacheConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("queryParameterStripDirective",
+            this.queryParameterStripDirective == null ? null : this.queryParameterStripDirective.toString());
+        jsonWriter.writeStringField("queryParameters", this.queryParameters);
+        jsonWriter.writeStringField("dynamicCompression",
+            this.dynamicCompression == null ? null : this.dynamicCompression.toString());
+        jsonWriter.writeStringField("cacheDuration", CoreUtils.durationToStringWithDays(this.cacheDuration));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CacheConfiguration.
+     */
+    public static CacheConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheConfiguration deserializedCacheConfiguration = new CacheConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("queryParameterStripDirective".equals(fieldName)) {
+                    deserializedCacheConfiguration.queryParameterStripDirective
+                        = FrontDoorQuery.fromString(reader.getString());
+                } else if ("queryParameters".equals(fieldName)) {
+                    deserializedCacheConfiguration.queryParameters = reader.getString();
+                } else if ("dynamicCompression".equals(fieldName)) {
+                    deserializedCacheConfiguration.dynamicCompression
+                        = DynamicCompressionEnabled.fromString(reader.getString());
+                } else if ("cacheDuration".equals(fieldName)) {
+                    deserializedCacheConfiguration.cacheDuration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheConfiguration;
+        });
     }
 }

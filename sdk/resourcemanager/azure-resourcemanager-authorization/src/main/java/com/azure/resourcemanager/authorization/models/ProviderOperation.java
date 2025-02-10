@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Operation. */
+/**
+ * Operation.
+ */
 @Fluent
-public final class ProviderOperation {
+public final class ProviderOperation implements JsonSerializable<ProviderOperation> {
     /*
      * The operation name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The operation display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The operation description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The operation origin.
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
     /*
      * The operation properties.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * The dataAction flag to specify the operation type.
      */
-    @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
-    /** Creates an instance of ProviderOperation class. */
+    /**
+     * Creates an instance of ProviderOperation class.
+     */
     public ProviderOperation() {
     }
 
     /**
      * Get the name property: The operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +63,7 @@ public final class ProviderOperation {
 
     /**
      * Set the name property: The operation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ProviderOperation object itself.
      */
@@ -72,7 +74,7 @@ public final class ProviderOperation {
 
     /**
      * Get the displayName property: The operation display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -81,7 +83,7 @@ public final class ProviderOperation {
 
     /**
      * Set the displayName property: The operation display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ProviderOperation object itself.
      */
@@ -92,7 +94,7 @@ public final class ProviderOperation {
 
     /**
      * Get the description property: The operation description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -101,7 +103,7 @@ public final class ProviderOperation {
 
     /**
      * Set the description property: The operation description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ProviderOperation object itself.
      */
@@ -112,7 +114,7 @@ public final class ProviderOperation {
 
     /**
      * Get the origin property: The operation origin.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -121,7 +123,7 @@ public final class ProviderOperation {
 
     /**
      * Set the origin property: The operation origin.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the ProviderOperation object itself.
      */
@@ -132,7 +134,7 @@ public final class ProviderOperation {
 
     /**
      * Get the properties property: The operation properties.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -141,7 +143,7 @@ public final class ProviderOperation {
 
     /**
      * Set the properties property: The operation properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ProviderOperation object itself.
      */
@@ -152,7 +154,7 @@ public final class ProviderOperation {
 
     /**
      * Get the isDataAction property: The dataAction flag to specify the operation type.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -161,7 +163,7 @@ public final class ProviderOperation {
 
     /**
      * Set the isDataAction property: The dataAction flag to specify the operation type.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the ProviderOperation object itself.
      */
@@ -172,9 +174,60 @@ public final class ProviderOperation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("origin", this.origin);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderOperation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderOperation.
+     */
+    public static ProviderOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderOperation deserializedProviderOperation = new ProviderOperation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedProviderOperation.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedProviderOperation.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedProviderOperation.description = reader.getString();
+                } else if ("origin".equals(fieldName)) {
+                    deserializedProviderOperation.origin = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProviderOperation.properties = reader.readUntyped();
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedProviderOperation.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderOperation;
+        });
     }
 }

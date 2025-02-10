@@ -26,70 +26,146 @@ import reactor.core.publisher.Mono;
  * multiple versions of the same image.
  */
 @Fluent
-public interface GalleryImage
-    extends HasInnerModel<GalleryImageInner>,
-        Indexable,
-        Refreshable<GalleryImage>,
-        Updatable<GalleryImage.Update>,
-        HasManager<ComputeManager> {
-    /** @return the description of the image. */
+public interface GalleryImage extends HasInnerModel<GalleryImageInner>, Indexable, Refreshable<GalleryImage>,
+    Updatable<GalleryImage.Update>, HasManager<ComputeManager> {
+    /**
+     * Gets the description of the image.
+     *
+     * @return the description of the image.
+     */
     String description();
 
-    /** @return the disk types not supported by the image. */
+    /**
+     * Gets the disk types not supported by the image.
+     *
+     * @return the disk types not supported by the image.
+     */
     List<DiskSkuTypes> unsupportedDiskTypes();
 
-    /** @return a description of features not supported by the image. */
+    /**
+     * Gets a description of features not supported by the image.
+     *
+     * @return a description of features not supported by the image.
+     */
     Disallowed disallowed();
 
-    /** @return the date indicating image's end of life. */
+    /**
+     * Gets the date indicating image's end of life.
+     *
+     * @return the date indicating image's end of life.
+     */
     OffsetDateTime endOfLifeDate();
 
-    /** @return the image eula. */
+    /**
+     * Gets the image EULA.
+     *
+     * @return the image EULA.
+     */
     String eula();
 
-    /** @return the ARM id of the image. */
+    /**
+     * Gets the ARM id of the image.
+     *
+     * @return the ARM id of the image.
+     */
     String id();
 
-    /** @return an identifier describing publisher, offer and sku of the image. */
+    /**
+     * Gets an identifier describing publisher, offer and sku of the image.
+     *
+     * @return an identifier describing publisher, offer and sku of the image.
+     */
     GalleryImageIdentifier identifier();
 
-    /** @return the location of the image. */
+    /**
+     * Gets the location of the image.
+     *
+     * @return the location of the image.
+     */
     String location();
 
-    /** @return the image name. */
+    /**
+     * Gets the image name.
+     *
+     * @return the image name.
+     */
     String name();
 
-    /** @return the OS state of the image. */
+    /**
+     * Gets the OS state of the image.
+     *
+     * @return the OS state of the image.
+     */
     OperatingSystemStateTypes osState();
 
-    /** @return the image OS type. */
+    /**
+     * Gets the image OS type.
+     *
+     * @return the image OS type.
+     */
     OperatingSystemTypes osType();
 
-    /** @return the uri to image privacy statement. */
+    /**
+     * Gets the URI to image privacy statement.
+     *
+     * @return the URI to image privacy statement.
+     */
     String privacyStatementUri();
 
-    /** @return the provisioningState of image resource. */
+    /**
+     * Gets the provisioningState of image resource.
+     *
+     * @return the provisioningState of image resource.
+     */
     String provisioningState();
 
-    /** @return the purchasePlan of the image. */
+    /**
+     * Gets the purchase plan of the image.
+     *
+     * @return the purchase plan of the image.
+     */
     ImagePurchasePlan purchasePlan();
 
-    /** @return the value describing recommended configuration for a virtual machine based on this image. */
+    /**
+     * Gets the value describing recommended configuration for a virtual machine based on this image.
+     *
+     * @return the value describing recommended configuration for a virtual machine based on this image.
+     */
     RecommendedMachineConfiguration recommendedVirtualMachineConfiguration();
 
-    /** @return the uri to the image release note. */
+    /**
+     * Gets the URI to the image release note.
+     *
+     * @return the URI to the image release note.
+     */
     String releaseNoteUri();
 
-    /** @return the hypervisor generation. */
+    /**
+     * Gets the hypervisor generation.
+     *
+     * @return the hypervisor generation.
+     */
     HyperVGeneration hyperVGeneration();
 
-    /** @return the security type, whether trusted launch or confidential VM. */
+    /**
+     * Gets the security type, whether trusted launch or confidential VM.
+     *
+     * @return the security type, whether trusted launch or confidential VM.
+     */
     SecurityTypes securityType();
 
-    /** @return the tags associated with the image. */
+    /**
+     * Gets the tags associated with the image.
+     *
+     * @return the tags associated with the image.
+     */
     Map<String, String> tags();
 
-    /** @return the type value. */
+    /**
+     * Gets the type value.
+     *
+     * @return the type value.
+     */
     String type();
 
     /**
@@ -125,13 +201,8 @@ public interface GalleryImage
     PagedIterable<GalleryImageVersion> listVersions();
 
     /** The entirety of the gallery image definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGallery,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithIdentifier,
-            DefinitionStages.WithOsTypeAndState,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGallery, DefinitionStages.WithLocation,
+        DefinitionStages.WithIdentifier, DefinitionStages.WithOsTypeAndState, DefinitionStages.WithCreate {
     }
 
     /** Grouping of gallery image definition stages. */
@@ -446,33 +517,19 @@ public interface GalleryImage
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<GalleryImage>,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithDisallowed,
-                DefinitionStages.WithEndOfLifeDate,
-                DefinitionStages.WithEula,
-                DefinitionStages.WithPrivacyStatementUri,
-                DefinitionStages.WithPurchasePlan,
-                DefinitionStages.WithRecommendedVMConfiguration,
-                DefinitionStages.WithReleaseNoteUri,
-                DefinitionStages.WithHyperVGeneration,
-                DefinitionStages.WithSecurityTypes,
-                DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<GalleryImage>, DefinitionStages.WithDescription,
+            DefinitionStages.WithDisallowed, DefinitionStages.WithEndOfLifeDate, DefinitionStages.WithEula,
+            DefinitionStages.WithPrivacyStatementUri, DefinitionStages.WithPurchasePlan,
+            DefinitionStages.WithRecommendedVMConfiguration, DefinitionStages.WithReleaseNoteUri,
+            DefinitionStages.WithHyperVGeneration, DefinitionStages.WithSecurityTypes, DefinitionStages.WithTags {
         }
     }
+
     /** The template for a gallery image update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<GalleryImage>,
-            UpdateStages.WithDescription,
-            UpdateStages.WithDisallowed,
-            UpdateStages.WithEndOfLifeDate,
-            UpdateStages.WithEula,
-            UpdateStages.WithOsState,
-            UpdateStages.WithPrivacyStatementUri,
-            UpdateStages.WithRecommendedVMConfiguration,
-            UpdateStages.WithReleaseNoteUri,
-            UpdateStages.WithTags {
+    interface Update extends Appliable<GalleryImage>, UpdateStages.WithDescription, UpdateStages.WithDisallowed,
+        UpdateStages.WithEndOfLifeDate, UpdateStages.WithEula, UpdateStages.WithOsState,
+        UpdateStages.WithPrivacyStatementUri, UpdateStages.WithRecommendedVMConfiguration,
+        UpdateStages.WithReleaseNoteUri, UpdateStages.WithTags {
     }
 
     /** Grouping of gallery image update stages. */

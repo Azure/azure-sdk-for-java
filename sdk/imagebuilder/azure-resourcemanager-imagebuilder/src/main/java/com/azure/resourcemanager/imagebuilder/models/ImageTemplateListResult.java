@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.imagebuilder.fluent.models.ImageTemplateInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The result of List image templates operation. */
+/**
+ * The result of List image templates operation.
+ */
 @Fluent
-public final class ImageTemplateListResult {
+public final class ImageTemplateListResult implements JsonSerializable<ImageTemplateListResult> {
     /*
      * An array of image templates
      */
-    @JsonProperty(value = "value")
     private List<ImageTemplateInner> value;
 
     /*
      * The continuation token.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ImageTemplateListResult class. */
+    /**
+     * Creates an instance of ImageTemplateListResult class.
+     */
     public ImageTemplateListResult() {
     }
 
     /**
      * Get the value property: An array of image templates.
-     *
+     * 
      * @return the value value.
      */
     public List<ImageTemplateInner> value() {
@@ -39,7 +45,7 @@ public final class ImageTemplateListResult {
 
     /**
      * Set the value property: An array of image templates.
-     *
+     * 
      * @param value the value value to set.
      * @return the ImageTemplateListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ImageTemplateListResult {
 
     /**
      * Get the nextLink property: The continuation token.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ImageTemplateListResult {
 
     /**
      * Set the nextLink property: The continuation token.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ImageTemplateListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class ImageTemplateListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateListResult.
+     */
+    public static ImageTemplateListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateListResult deserializedImageTemplateListResult = new ImageTemplateListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ImageTemplateInner> value = reader.readArray(reader1 -> ImageTemplateInner.fromJson(reader1));
+                    deserializedImageTemplateListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedImageTemplateListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateListResult;
+        });
     }
 }

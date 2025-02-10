@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Suggested utterances where the detector can be applicable.
  */
 @Fluent
-public final class QueryUtterancesResults {
+public final class QueryUtterancesResults implements JsonSerializable<QueryUtterancesResults> {
     /*
      * Search Query.
      */
-    @JsonProperty(value = "query")
     private String query;
 
     /*
      * Array of utterance results for search query.
      */
-    @JsonProperty(value = "results")
     private List<QueryUtterancesResult> results;
 
     /**
@@ -80,5 +82,46 @@ public final class QueryUtterancesResults {
         if (results() != null) {
             results().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeArrayField("results", this.results, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryUtterancesResults from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryUtterancesResults if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryUtterancesResults.
+     */
+    public static QueryUtterancesResults fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryUtterancesResults deserializedQueryUtterancesResults = new QueryUtterancesResults();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("query".equals(fieldName)) {
+                    deserializedQueryUtterancesResults.query = reader.getString();
+                } else if ("results".equals(fieldName)) {
+                    List<QueryUtterancesResult> results
+                        = reader.readArray(reader1 -> QueryUtterancesResult.fromJson(reader1));
+                    deserializedQueryUtterancesResults.results = results;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryUtterancesResults;
+        });
     }
 }

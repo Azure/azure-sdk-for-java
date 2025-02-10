@@ -6,36 +6,41 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VMwareCbt disk input for update. */
+/**
+ * VMwareCbt disk input for update.
+ */
 @Fluent
-public final class VMwareCbtUpdateDiskInput {
+public final class VMwareCbtUpdateDiskInput implements JsonSerializable<VMwareCbtUpdateDiskInput> {
     /*
      * The disk Id.
      */
-    @JsonProperty(value = "diskId", required = true)
     private String diskId;
 
     /*
      * The target disk name.
      */
-    @JsonProperty(value = "targetDiskName")
     private String targetDiskName;
 
     /*
      * A value indicating whether the disk is the OS disk.
      */
-    @JsonProperty(value = "isOSDisk")
     private String isOSDisk;
 
-    /** Creates an instance of VMwareCbtUpdateDiskInput class. */
+    /**
+     * Creates an instance of VMwareCbtUpdateDiskInput class.
+     */
     public VMwareCbtUpdateDiskInput() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -44,7 +49,7 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the VMwareCbtUpdateDiskInput object itself.
      */
@@ -55,7 +60,7 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Get the targetDiskName property: The target disk name.
-     *
+     * 
      * @return the targetDiskName value.
      */
     public String targetDiskName() {
@@ -64,7 +69,7 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Set the targetDiskName property: The target disk name.
-     *
+     * 
      * @param targetDiskName the targetDiskName value to set.
      * @return the VMwareCbtUpdateDiskInput object itself.
      */
@@ -75,7 +80,7 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Get the isOSDisk property: A value indicating whether the disk is the OS disk.
-     *
+     * 
      * @return the isOSDisk value.
      */
     public String isOSDisk() {
@@ -84,7 +89,7 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Set the isOSDisk property: A value indicating whether the disk is the OS disk.
-     *
+     * 
      * @param isOSDisk the isOSDisk value to set.
      * @return the VMwareCbtUpdateDiskInput object itself.
      */
@@ -95,16 +100,59 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property diskId in model VMwareCbtUpdateDiskInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMwareCbtUpdateDiskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("targetDiskName", this.targetDiskName);
+        jsonWriter.writeStringField("isOSDisk", this.isOSDisk);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtUpdateDiskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtUpdateDiskInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMwareCbtUpdateDiskInput.
+     */
+    public static VMwareCbtUpdateDiskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtUpdateDiskInput deserializedVMwareCbtUpdateDiskInput = new VMwareCbtUpdateDiskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateDiskInput.diskId = reader.getString();
+                } else if ("targetDiskName".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateDiskInput.targetDiskName = reader.getString();
+                } else if ("isOSDisk".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateDiskInput.isOSDisk = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtUpdateDiskInput;
+        });
+    }
 }

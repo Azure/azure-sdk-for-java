@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.SecurityAdminConfigurationInner;
+import com.azure.resourcemanager.network.models.AddressSpaceAggregationOption;
 import com.azure.resourcemanager.network.models.NetworkIntentPolicyBasedService;
 import java.util.Arrays;
 
@@ -13,7 +14,30 @@ import java.util.Arrays;
  */
 public final class SecurityAdminConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * NetworkManagerSecurityAdminConfigurationPut_ManualAggregation.json
+     */
+    /**
+     * Sample code: Create manual-mode security admin configuration.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createManualModeSecurityAdminConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSecurityAdminConfigurations()
+            .createOrUpdateWithResponse("rg1", "testNetworkManager", "myTestSecurityConfig",
+                new SecurityAdminConfigurationInner()
+                    .withDescription(
+                        "A configuration which will update any network groups ip addresses at commit times.")
+                    .withNetworkGroupAddressSpaceAggregationOption(AddressSpaceAggregationOption.MANUAL),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
      * NetworkManagerSecurityAdminConfigurationPut.json
      */
     /**
@@ -23,10 +47,13 @@ public final class SecurityAdminConfigurationsCreateOrUpdateSamples {
      */
     public static void
         createNetworkManagerSecurityAdminConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSecurityAdminConfigurations().createOrUpdateWithResponse("rg1",
-            "testNetworkManager", "myTestSecurityConfig",
-            new SecurityAdminConfigurationInner().withDescription("A sample policy")
-                .withApplyOnNetworkIntentPolicyBasedServices(Arrays.asList(NetworkIntentPolicyBasedService.NONE)),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSecurityAdminConfigurations()
+            .createOrUpdateWithResponse("rg1", "testNetworkManager", "myTestSecurityConfig",
+                new SecurityAdminConfigurationInner().withDescription("A sample policy")
+                    .withApplyOnNetworkIntentPolicyBasedServices(Arrays.asList(NetworkIntentPolicyBasedService.NONE)),
+                com.azure.core.util.Context.NONE);
     }
 }

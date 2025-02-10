@@ -6,156 +6,133 @@ package com.azure.resourcemanager.privatedns.generated;
 
 import com.azure.resourcemanager.privatedns.models.RecordType;
 
-/** Samples for RecordSets Delete. */
+/**
+ * Samples for RecordSets Delete.
+ */
 public final class RecordSetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetTXTDelete.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetTXTDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone TXT Record Set.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dELETEPrivateDNSZoneTXTRecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse(
-                "resourceGroup1",
-                "privatezone1.com",
-                RecordType.TXT,
-                "recordTXT",
-                null,
+            .deleteWithResponse("resourceGroup1", "privatezone1.com", RecordType.TXT, "recordTXT", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetMXDelete.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetMXDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone MX Record Set.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dELETEPrivateDNSZoneMXRecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse(
-                "resourceGroup1",
-                "privatezone1.com",
-                RecordType.MX,
-                "recordMX",
-                null,
+            .deleteWithResponse("resourceGroup1", "privatezone1.com", RecordType.MX, "recordMX", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetCNAMEDelete.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetCNAMEDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone CNAME Record Set.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dELETEPrivateDNSZoneCNAMERecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse(
-                "resourceGroup1",
-                "privatezone1.com",
-                RecordType.CNAME,
-                "recordCNAME",
-                null,
+            .deleteWithResponse("resourceGroup1", "privatezone1.com", RecordType.CNAME, "recordCNAME", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAAAADelete.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetAAAADelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone AAAA Record Set.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dELETEPrivateDNSZoneAAAARecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse(
-                "resourceGroup1",
-                "privatezone1.com",
-                RecordType.AAAA,
-                "recordAAAA",
-                null,
+            .deleteWithResponse("resourceGroup1", "privatezone1.com", RecordType.AAAA, "recordAAAA", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSRVDelete.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetSRVDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone SRV Record Set.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dELETEPrivateDNSZoneSRVRecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse(
-                "resourceGroup1",
-                "privatezone1.com",
-                RecordType.SRV,
-                "recordSRV",
-                null,
+            .deleteWithResponse("resourceGroup1", "privatezone1.com", RecordType.SRV, "recordSRV", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetADelete.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetADelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone A Record Set.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dELETEPrivateDNSZoneARecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse(
-                "resourceGroup1", "privatezone1.com", RecordType.A, "recordA", null, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("resourceGroup1", "privatezone1.com", RecordType.A, "recordA", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetPTRDelete.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetPTRDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone PTR Record Set.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dELETEPrivateDNSZonePTRRecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse(
-                "resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, "1", null, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, "1", null,
+                com.azure.core.util.Context.NONE);
     }
 }

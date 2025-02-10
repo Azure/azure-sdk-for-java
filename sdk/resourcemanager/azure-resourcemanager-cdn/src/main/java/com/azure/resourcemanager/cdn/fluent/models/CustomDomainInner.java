@@ -6,11 +6,15 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.CustomDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.CustomDomainResourceState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningSubstate;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes, e.g.
@@ -21,16 +25,37 @@ public final class CustomDomainInner extends ProxyResource {
     /*
      * The JSON object that contains the properties of the custom domain to create.
      */
-    @JsonProperty(value = "properties")
     private CustomDomainProperties innerProperties;
 
-    /** Creates an instance of CustomDomainInner class. */
+    /*
+     * Read only system data
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CustomDomainInner class.
+     */
     public CustomDomainInner() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the custom domain to create.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CustomDomainProperties innerProperties() {
@@ -38,8 +63,47 @@ public final class CustomDomainInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -48,7 +112,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Set the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the CustomDomainInner object itself.
      */
@@ -62,7 +126,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Get the resourceState property: Resource status of the custom domain.
-     *
+     * 
      * @return the resourceState value.
      */
     public CustomDomainResourceState resourceState() {
@@ -71,7 +135,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Get the customHttpsProvisioningState property: Provisioning status of the custom domain.
-     *
+     * 
      * @return the customHttpsProvisioningState value.
      */
     public CustomHttpsProvisioningState customHttpsProvisioningState() {
@@ -81,7 +145,7 @@ public final class CustomDomainInner extends ProxyResource {
     /**
      * Get the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
      * enabling/disabling process step by step.
-     *
+     * 
      * @return the customHttpsProvisioningSubstate value.
      */
     public CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate() {
@@ -90,7 +154,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Get the customHttpsParameters property: Certificate parameters for securing custom HTTPS.
-     *
+     * 
      * @return the customHttpsParameters value.
      */
     public CustomDomainHttpsParameters customHttpsParameters() {
@@ -99,7 +163,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Set the customHttpsParameters property: Certificate parameters for securing custom HTTPS.
-     *
+     * 
      * @param customHttpsParameters the customHttpsParameters value to set.
      * @return the CustomDomainInner object itself.
      */
@@ -115,7 +179,7 @@ public final class CustomDomainInner extends ProxyResource {
      * Get the validationData property: Special validation or data may be required when delivering CDN to some regions
      * due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in
      * China.
-     *
+     * 
      * @return the validationData value.
      */
     public String validationData() {
@@ -126,7 +190,7 @@ public final class CustomDomainInner extends ProxyResource {
      * Set the validationData property: Special validation or data may be required when delivering CDN to some regions
      * due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in
      * China.
-     *
+     * 
      * @param validationData the validationData value to set.
      * @return the CustomDomainInner object itself.
      */
@@ -140,7 +204,7 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning status of Custom Https of the custom domain.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CustomHttpsProvisioningState provisioningState() {
@@ -149,12 +213,57 @@ public final class CustomDomainInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDomainInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDomainInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomDomainInner.
+     */
+    public static CustomDomainInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDomainInner deserializedCustomDomainInner = new CustomDomainInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCustomDomainInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCustomDomainInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomDomainInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCustomDomainInner.innerProperties = CustomDomainProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCustomDomainInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDomainInner;
+        });
     }
 }

@@ -7,29 +7,41 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisCredentials;
 import io.lettuce.core.RedisCredentialsProvider;
 import io.lettuce.core.RedisException;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.SocketOptions;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.protocol.ProtocolVersion;
-import io.lettuce.core.ClientOptions;
-import io.lettuce.core.SocketOptions;
-import io.lettuce.core.RedisCredentials;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Objects;
 
+/**
+ * A sample where reauthentication is handled.
+ */
 public class HandleReauthentication {
 
+    /**
+     * The runnable sample.
+     *
+     * @param args Ignored.
+     */
     public static void main(String[] args) {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-        // Host Name, Port, Username, and Microsoft Entra token are required here.
+        // Host Name, Port, and Microsoft Entra token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-        RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, "<USERNAME>", defaultAzureCredential);
+        RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, defaultAzureCredential);
         StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
         int maxTries = 3;
@@ -60,13 +72,13 @@ public class HandleReauthentication {
     }
 
     // Helper Code
-    private static RedisClient createLettuceRedisClient(String hostName, int port, String username, TokenCredential tokenCredential) {
+    private static RedisClient createLettuceRedisClient(String hostName, int port, TokenCredential tokenCredential) {
 
         // Build Redis URI with host and authentication details.
         RedisURI redisURI = RedisURI.Builder.redis(hostName)
             .withPort(port)
             .withSsl(true) // Targeting SSL Based 6380 port.
-            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials(username, tokenCredential)))
+            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials(tokenCredential)))
             .withClientName("LettuceClient")
             .build();
 
@@ -88,9 +100,9 @@ public class HandleReauthentication {
      * Redis Credential Implementation for Azure Redis for Cache
      */
     public static class AzureRedisCredentials implements RedisCredentials {
-        private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-            .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
-        private TokenCredential tokenCredential;
+        private final TokenRequestContext tokenRequestContext = new TokenRequestContext()
+            .addScopes("https://redis.azure.com/.default");
+        private final TokenCredential tokenCredential;
         private final String username;
 
         /**
@@ -103,6 +115,16 @@ public class HandleReauthentication {
             Objects.requireNonNull(tokenCredential, "Token Credential is required");
             this.username = username;
             this.tokenCredential = tokenCredential;
+        }
+
+        /**
+         * Create instance of Azure Redis Credentials
+         * @param tokenCredential the token credential to be used to fetch requests.
+         */
+        public AzureRedisCredentials(TokenCredential tokenCredential) {
+            Objects.requireNonNull(tokenCredential, "Token Credential is required");
+            this.tokenCredential = tokenCredential;
+            this.username = extractUsernameFromToken(tokenCredential.getToken(tokenRequestContext).block().getToken());
         }
 
         @Override
@@ -126,5 +148,23 @@ public class HandleReauthentication {
         public boolean hasPassword() {
             return tokenCredential != null;
         }
+    }
+
+    private static String extractUsernameFromToken(String token) {
+        String[] parts = token.split("\\.");
+        String base64 = parts[1];
+
+        int modulo = base64.length() % 4;
+        if (modulo == 2) {
+            base64 += "==";
+        } else if (modulo == 3) {
+            base64 += "=";
+        }
+
+        byte[] jsonBytes = Base64.getDecoder().decode(base64);
+        String json = new String(jsonBytes, StandardCharsets.UTF_8);
+        JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+        return jwt.get("oid").getAsString();
     }
 }

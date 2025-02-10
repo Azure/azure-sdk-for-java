@@ -14,7 +14,7 @@ import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
 public final class BackupInstancesAdhocBackupSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
      * BackupInstanceOperations/TriggerBackup.json
      */
     /**
@@ -23,9 +23,11 @@ public final class BackupInstancesAdhocBackupSamples {
      * @param manager Entry point to DataProtectionManager.
      */
     public static void triggerAdhocBackup(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.backupInstances().adhocBackup("000pikumar", "PratikPrivatePreviewVault1", "testInstance1",
-            new TriggerBackupRequest().withBackupRuleOptions(new AdHocBackupRuleOptions().withRuleName("BackupWeekly")
-                .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("yearly"))),
-            com.azure.core.util.Context.NONE);
+        manager.backupInstances()
+            .adhocBackup("000pikumar", "PratikPrivatePreviewVault1", "testInstance1",
+                new TriggerBackupRequest()
+                    .withBackupRuleOptions(new AdHocBackupRuleOptions().withRuleName("BackupWeekly")
+                        .withTriggerOption(new AdhocBackupTriggerOption().withRetentionTagOverride("yearly"))),
+                com.azure.core.util.Context.NONE);
     }
 }

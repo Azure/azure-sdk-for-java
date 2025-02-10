@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.PerfMonSet;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Performance monitor API response.
  */
 @Fluent
-public final class PerfMonResponseInner {
+public final class PerfMonResponseInner implements JsonSerializable<PerfMonResponseInner> {
     /*
      * The response code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The performance monitor counters.
      */
-    @JsonProperty(value = "data")
     private PerfMonSet data;
 
     /**
@@ -106,5 +107,47 @@ public final class PerfMonResponseInner {
         if (data() != null) {
             data().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeJsonField("data", this.data);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PerfMonResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PerfMonResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PerfMonResponseInner.
+     */
+    public static PerfMonResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PerfMonResponseInner deserializedPerfMonResponseInner = new PerfMonResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedPerfMonResponseInner.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedPerfMonResponseInner.message = reader.getString();
+                } else if ("data".equals(fieldName)) {
+                    deserializedPerfMonResponseInner.data = PerfMonSet.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPerfMonResponseInner;
+        });
     }
 }

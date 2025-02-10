@@ -6,62 +6,32 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.IoTSecuritySolutionAnalyticsModel;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IotSecuritySolutionAnalyticsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"metrics\":{\"high\":7945221107231399468,\"medium\":1995643486642698573,\"low\":6891818754930311505},\"unhealthyDeviceCount\":4780612743957022237,\"devicesMetrics\":[{\"date\":\"2021-11-18T21:51:26Z\",\"devicesMetrics\":{\"high\":4044553896394286857,\"medium\":9083058962428432511,\"low\":4767424202811368786}},{\"date\":\"2021-02-27T05:30:59Z\",\"devicesMetrics\":{\"high\":5001625744497314043,\"medium\":5896712095838922637,\"low\":4944956474794643269}}],\"topAlertedDevices\":[{\"deviceId\":\"gtywatmqaqkue\",\"alertsCount\":613662911197986789},{\"deviceId\":\"eshoygzcb\",\"alertsCount\":3549520226761287980},{\"deviceId\":\"faoytehqpuv\",\"alertsCount\":7880839636412810847}],\"mostPrevalentDeviceAlerts\":[{\"alertDisplayName\":\"wckygr\",\"reportedSeverity\":\"Informational\",\"alertsCount\":3395907540745395486},{\"alertDisplayName\":\"jdjusk\",\"reportedSeverity\":\"Informational\",\"alertsCount\":2733265290302359177}],\"mostPrevalentDeviceRecommendations\":[{\"recommendationDisplayName\":\"eysfaqegplw\",\"reportedSeverity\":\"Medium\",\"devicesCount\":793460064744287089},{\"recommendationDisplayName\":\"kvb\",\"reportedSeverity\":\"Medium\",\"devicesCount\":2378508704408169484},{\"recommendationDisplayName\":\"bwptdacarvvlf\",\"reportedSeverity\":\"Low\",\"devicesCount\":3040876119303595918},{\"recommendationDisplayName\":\"iwenazero\",\"reportedSeverity\":\"Informational\",\"devicesCount\":7630406084567818544}]},\"id\":\"lsxkd\",\"name\":\"wqapfgsdp\",\"type\":\"vessm\"}";
 
-        String responseStr =
-            "{\"properties\":{\"metrics\":{\"high\":5542611774329052681,\"medium\":6661372100363486743,\"low\":3710990785713505162},\"unhealthyDeviceCount\":7761016592414796563,\"devicesMetrics\":[],\"topAlertedDevices\":[],\"mostPrevalentDeviceAlerts\":[],\"mostPrevalentDeviceRecommendations\":[]},\"id\":\"tjoxztfw\",\"name\":\"qchvczevjn\",\"type\":\"cta\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        IoTSecuritySolutionAnalyticsModel response = manager.iotSecuritySolutionAnalytics()
+            .getWithResponse("qyhleseyq", "hvyeldotj", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IoTSecuritySolutionAnalyticsModel response =
-            manager
-                .iotSecuritySolutionAnalytics()
-                .getWithResponse("u", "t", com.azure.core.util.Context.NONE)
-                .getValue();
     }
 }

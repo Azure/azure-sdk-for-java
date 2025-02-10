@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Vpn Client Parameters for package generation.
  */
 @Fluent
-public final class P2SVpnProfileParameters {
+public final class P2SVpnProfileParameters implements JsonSerializable<P2SVpnProfileParameters> {
     /*
      * VPN client authentication method.
      */
-    @JsonProperty(value = "authenticationMethod")
     private AuthenticationMethod authenticationMethod;
 
     /**
@@ -50,5 +53,43 @@ public final class P2SVpnProfileParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authenticationMethod",
+            this.authenticationMethod == null ? null : this.authenticationMethod.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of P2SVpnProfileParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of P2SVpnProfileParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the P2SVpnProfileParameters.
+     */
+    public static P2SVpnProfileParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            P2SVpnProfileParameters deserializedP2SVpnProfileParameters = new P2SVpnProfileParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authenticationMethod".equals(fieldName)) {
+                    deserializedP2SVpnProfileParameters.authenticationMethod
+                        = AuthenticationMethod.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedP2SVpnProfileParameters;
+        });
     }
 }

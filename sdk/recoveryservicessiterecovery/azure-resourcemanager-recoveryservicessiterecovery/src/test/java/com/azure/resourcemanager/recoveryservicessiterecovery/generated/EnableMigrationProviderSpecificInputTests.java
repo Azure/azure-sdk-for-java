@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.EnableMigra
 public final class EnableMigrationProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnableMigrationProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"EnableMigrationProviderSpecificInput\"}")
+        EnableMigrationProviderSpecificInput model
+            = BinaryData.fromString("{\"instanceType\":\"EnableMigrationProviderSpecificInput\"}")
                 .toObject(EnableMigrationProviderSpecificInput.class);
     }
 

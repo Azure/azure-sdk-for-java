@@ -20,20 +20,17 @@ public final class OperationStatusesImpl implements OperationStatuses {
 
     private final com.azure.resourcemanager.chaos.ChaosManager serviceManager;
 
-    public OperationStatusesImpl(
-        OperationStatusesClient innerClient, com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
+    public OperationStatusesImpl(OperationStatusesClient innerClient,
+        com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<OperationStatus> getWithResponse(String location, String asyncOperationId, Context context) {
-        Response<OperationStatusInner> inner =
-            this.serviceClient().getWithResponse(location, asyncOperationId, context);
+        Response<OperationStatusInner> inner
+            = this.serviceClient().getWithResponse(location, asyncOperationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

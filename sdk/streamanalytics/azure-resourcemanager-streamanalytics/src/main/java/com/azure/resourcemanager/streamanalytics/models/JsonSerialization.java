@@ -5,43 +5,58 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.JsonSerializationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Describes how data from an input is serialized or how data is serialized when written to an output in JSON format.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Json")
 @Fluent
 public final class JsonSerialization extends Serialization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonSerialization.class);
+    /*
+     * Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
+     */
+    private EventSerializationType type = EventSerializationType.JSON;
 
     /*
-     * The properties that are associated with the JSON serialization type.
-     * Required on PUT (CreateOrReplace) requests.
+     * The properties that are associated with the JSON serialization type. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private JsonSerializationProperties innerProperties;
+
+    /**
+     * Creates an instance of JsonSerialization class.
+     */
+    public JsonSerialization() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of serialization that the input or output uses. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public EventSerializationType type() {
+        return this.type;
+    }
 
     /**
      * Get the innerProperties property: The properties that are associated with the JSON serialization type. Required
      * on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the innerProperties value.
      */
-    private JsonSerializationProperties innerProperties() {
+    JsonSerializationProperties innerProperties() {
         return this.innerProperties;
     }
 
     /**
      * Get the encoding property: Specifies the encoding of the incoming data in the case of input and the encoding of
      * outgoing data in the case of output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the encoding value.
      */
     public Encoding encoding() {
@@ -51,7 +66,7 @@ public final class JsonSerialization extends Serialization {
     /**
      * Set the encoding property: Specifies the encoding of the incoming data in the case of input and the encoding of
      * outgoing data in the case of output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param encoding the encoding value to set.
      * @return the JsonSerialization object itself.
      */
@@ -69,7 +84,7 @@ public final class JsonSerialization extends Serialization {
      * values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new
      * line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is
      * 'lineSeparated' if left null.
-     *
+     * 
      * @return the format value.
      */
     public JsonOutputSerializationFormat format() {
@@ -82,7 +97,7 @@ public final class JsonSerialization extends Serialization {
      * values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new
      * line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is
      * 'lineSeparated' if left null.
-     *
+     * 
      * @param format the format value to set.
      * @return the JsonSerialization object itself.
      */
@@ -96,14 +111,52 @@ public final class JsonSerialization extends Serialization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JsonSerialization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JsonSerialization if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JsonSerialization.
+     */
+    public static JsonSerialization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonSerialization deserializedJsonSerialization = new JsonSerialization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedJsonSerialization.type = EventSerializationType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJsonSerialization.innerProperties = JsonSerializationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJsonSerialization;
+        });
     }
 }

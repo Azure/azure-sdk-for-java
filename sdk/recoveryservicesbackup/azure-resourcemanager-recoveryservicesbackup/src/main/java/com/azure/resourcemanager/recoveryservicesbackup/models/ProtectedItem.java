@@ -5,140 +5,134 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Base class for backup items. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "protectedItemType",
-    defaultImpl = ProtectedItem.class)
-@JsonTypeName("ProtectedItem")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureFileShareProtectedItem", value = AzureFileshareProtectedItem.class),
-    @JsonSubTypes.Type(name = "AzureIaaSVMProtectedItem", value = AzureIaaSvmProtectedItem.class),
-    @JsonSubTypes.Type(name = "Microsoft.Sql/servers/databases", value = AzureSqlProtectedItem.class),
-    @JsonSubTypes.Type(name = "AzureVmWorkloadProtectedItem", value = AzureVmWorkloadProtectedItem.class),
-    @JsonSubTypes.Type(name = "DPMProtectedItem", value = DpmProtectedItem.class),
-    @JsonSubTypes.Type(name = "GenericProtectedItem", value = GenericProtectedItem.class),
-    @JsonSubTypes.Type(name = "MabFileFolderProtectedItem", value = MabFileFolderProtectedItem.class)
-})
+/**
+ * Base class for backup items.
+ */
 @Fluent
-public class ProtectedItem {
+public class ProtectedItem implements JsonSerializable<ProtectedItem> {
+    /*
+     * backup item type.
+     */
+    private String protectedItemType = "ProtectedItem";
+
     /*
      * Type of backup management for the backed up item.
      */
-    @JsonProperty(value = "backupManagementType", access = JsonProperty.Access.WRITE_ONLY)
     private BackupManagementType backupManagementType;
 
     /*
      * Type of workload this item represents.
      */
-    @JsonProperty(value = "workloadType", access = JsonProperty.Access.WRITE_ONLY)
     private DataSourceType workloadType;
 
     /*
      * Unique name of container
      */
-    @JsonProperty(value = "containerName")
     private String containerName;
 
     /*
      * ARM ID of the resource to be backed up.
      */
-    @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
     /*
      * ID of the backup policy with which this item is backed up.
      */
-    @JsonProperty(value = "policyId")
     private String policyId;
 
     /*
      * Timestamp when the last (latest) backup copy was created for this backup item.
      */
-    @JsonProperty(value = "lastRecoveryPoint")
     private OffsetDateTime lastRecoveryPoint;
 
     /*
      * Name of the backup set the backup item belongs to
      */
-    @JsonProperty(value = "backupSetName")
     private String backupSetName;
 
     /*
      * Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
      */
-    @JsonProperty(value = "createMode")
     private CreateMode createMode;
 
     /*
      * Time for deferred deletion in UTC
      */
-    @JsonProperty(value = "deferredDeleteTimeInUTC")
     private OffsetDateTime deferredDeleteTimeInUtc;
 
     /*
      * Flag to identify whether the DS is scheduled for deferred delete
      */
-    @JsonProperty(value = "isScheduledForDeferredDelete")
     private Boolean isScheduledForDeferredDelete;
 
     /*
      * Time remaining before the DS marked for deferred delete is permanently deleted
      */
-    @JsonProperty(value = "deferredDeleteTimeRemaining")
     private String deferredDeleteTimeRemaining;
 
     /*
      * Flag to identify whether the deferred deleted DS is to be purged soon
      */
-    @JsonProperty(value = "isDeferredDeleteScheduleUpcoming")
     private Boolean isDeferredDeleteScheduleUpcoming;
 
     /*
      * Flag to identify that deferred deleted DS is to be moved into Pause state
      */
-    @JsonProperty(value = "isRehydrate")
     private Boolean isRehydrate;
 
     /*
      * ResourceGuardOperationRequests on which LAC check will be performed
      */
-    @JsonProperty(value = "resourceGuardOperationRequests")
     private List<String> resourceGuardOperationRequests;
 
     /*
      * Flag to identify whether datasource is protected in archive
      */
-    @JsonProperty(value = "isArchiveEnabled")
     private Boolean isArchiveEnabled;
 
     /*
      * Name of the policy used for protection
      */
-    @JsonProperty(value = "policyName")
     private String policyName;
 
     /*
      * Soft delete retention period in days
      */
-    @JsonProperty(value = "softDeleteRetentionPeriodInDays")
     private Integer softDeleteRetentionPeriod;
 
-    /** Creates an instance of ProtectedItem class. */
+    /*
+     * ID of the vault which protects this item
+     */
+    private String vaultId;
+
+    /**
+     * Creates an instance of ProtectedItem class.
+     */
     public ProtectedItem() {
     }
 
     /**
+     * Get the protectedItemType property: backup item type.
+     * 
+     * @return the protectedItemType value.
+     */
+    public String protectedItemType() {
+        return this.protectedItemType;
+    }
+
+    /**
      * Get the backupManagementType property: Type of backup management for the backed up item.
-     *
+     * 
      * @return the backupManagementType value.
      */
     public BackupManagementType backupManagementType() {
@@ -146,8 +140,19 @@ public class ProtectedItem {
     }
 
     /**
+     * Set the backupManagementType property: Type of backup management for the backed up item.
+     * 
+     * @param backupManagementType the backupManagementType value to set.
+     * @return the ProtectedItem object itself.
+     */
+    ProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
+        this.backupManagementType = backupManagementType;
+        return this;
+    }
+
+    /**
      * Get the workloadType property: Type of workload this item represents.
-     *
+     * 
      * @return the workloadType value.
      */
     public DataSourceType workloadType() {
@@ -155,8 +160,19 @@ public class ProtectedItem {
     }
 
     /**
+     * Set the workloadType property: Type of workload this item represents.
+     * 
+     * @param workloadType the workloadType value to set.
+     * @return the ProtectedItem object itself.
+     */
+    ProtectedItem withWorkloadType(DataSourceType workloadType) {
+        this.workloadType = workloadType;
+        return this;
+    }
+
+    /**
      * Get the containerName property: Unique name of container.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -165,7 +181,7 @@ public class ProtectedItem {
 
     /**
      * Set the containerName property: Unique name of container.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the ProtectedItem object itself.
      */
@@ -176,7 +192,7 @@ public class ProtectedItem {
 
     /**
      * Get the sourceResourceId property: ARM ID of the resource to be backed up.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -185,7 +201,7 @@ public class ProtectedItem {
 
     /**
      * Set the sourceResourceId property: ARM ID of the resource to be backed up.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the ProtectedItem object itself.
      */
@@ -196,7 +212,7 @@ public class ProtectedItem {
 
     /**
      * Get the policyId property: ID of the backup policy with which this item is backed up.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -205,7 +221,7 @@ public class ProtectedItem {
 
     /**
      * Set the policyId property: ID of the backup policy with which this item is backed up.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the ProtectedItem object itself.
      */
@@ -217,7 +233,7 @@ public class ProtectedItem {
     /**
      * Get the lastRecoveryPoint property: Timestamp when the last (latest) backup copy was created for this backup
      * item.
-     *
+     * 
      * @return the lastRecoveryPoint value.
      */
     public OffsetDateTime lastRecoveryPoint() {
@@ -227,7 +243,7 @@ public class ProtectedItem {
     /**
      * Set the lastRecoveryPoint property: Timestamp when the last (latest) backup copy was created for this backup
      * item.
-     *
+     * 
      * @param lastRecoveryPoint the lastRecoveryPoint value to set.
      * @return the ProtectedItem object itself.
      */
@@ -238,7 +254,7 @@ public class ProtectedItem {
 
     /**
      * Get the backupSetName property: Name of the backup set the backup item belongs to.
-     *
+     * 
      * @return the backupSetName value.
      */
     public String backupSetName() {
@@ -247,7 +263,7 @@ public class ProtectedItem {
 
     /**
      * Set the backupSetName property: Name of the backup set the backup item belongs to.
-     *
+     * 
      * @param backupSetName the backupSetName value to set.
      * @return the ProtectedItem object itself.
      */
@@ -259,7 +275,7 @@ public class ProtectedItem {
     /**
      * Get the createMode property: Create mode to indicate recovery of existing soft deleted data source or creation of
      * new data source.
-     *
+     * 
      * @return the createMode value.
      */
     public CreateMode createMode() {
@@ -269,7 +285,7 @@ public class ProtectedItem {
     /**
      * Set the createMode property: Create mode to indicate recovery of existing soft deleted data source or creation of
      * new data source.
-     *
+     * 
      * @param createMode the createMode value to set.
      * @return the ProtectedItem object itself.
      */
@@ -280,7 +296,7 @@ public class ProtectedItem {
 
     /**
      * Get the deferredDeleteTimeInUtc property: Time for deferred deletion in UTC.
-     *
+     * 
      * @return the deferredDeleteTimeInUtc value.
      */
     public OffsetDateTime deferredDeleteTimeInUtc() {
@@ -289,7 +305,7 @@ public class ProtectedItem {
 
     /**
      * Set the deferredDeleteTimeInUtc property: Time for deferred deletion in UTC.
-     *
+     * 
      * @param deferredDeleteTimeInUtc the deferredDeleteTimeInUtc value to set.
      * @return the ProtectedItem object itself.
      */
@@ -300,7 +316,7 @@ public class ProtectedItem {
 
     /**
      * Get the isScheduledForDeferredDelete property: Flag to identify whether the DS is scheduled for deferred delete.
-     *
+     * 
      * @return the isScheduledForDeferredDelete value.
      */
     public Boolean isScheduledForDeferredDelete() {
@@ -309,7 +325,7 @@ public class ProtectedItem {
 
     /**
      * Set the isScheduledForDeferredDelete property: Flag to identify whether the DS is scheduled for deferred delete.
-     *
+     * 
      * @param isScheduledForDeferredDelete the isScheduledForDeferredDelete value to set.
      * @return the ProtectedItem object itself.
      */
@@ -321,7 +337,7 @@ public class ProtectedItem {
     /**
      * Get the deferredDeleteTimeRemaining property: Time remaining before the DS marked for deferred delete is
      * permanently deleted.
-     *
+     * 
      * @return the deferredDeleteTimeRemaining value.
      */
     public String deferredDeleteTimeRemaining() {
@@ -331,7 +347,7 @@ public class ProtectedItem {
     /**
      * Set the deferredDeleteTimeRemaining property: Time remaining before the DS marked for deferred delete is
      * permanently deleted.
-     *
+     * 
      * @param deferredDeleteTimeRemaining the deferredDeleteTimeRemaining value to set.
      * @return the ProtectedItem object itself.
      */
@@ -343,7 +359,7 @@ public class ProtectedItem {
     /**
      * Get the isDeferredDeleteScheduleUpcoming property: Flag to identify whether the deferred deleted DS is to be
      * purged soon.
-     *
+     * 
      * @return the isDeferredDeleteScheduleUpcoming value.
      */
     public Boolean isDeferredDeleteScheduleUpcoming() {
@@ -353,7 +369,7 @@ public class ProtectedItem {
     /**
      * Set the isDeferredDeleteScheduleUpcoming property: Flag to identify whether the deferred deleted DS is to be
      * purged soon.
-     *
+     * 
      * @param isDeferredDeleteScheduleUpcoming the isDeferredDeleteScheduleUpcoming value to set.
      * @return the ProtectedItem object itself.
      */
@@ -364,7 +380,7 @@ public class ProtectedItem {
 
     /**
      * Get the isRehydrate property: Flag to identify that deferred deleted DS is to be moved into Pause state.
-     *
+     * 
      * @return the isRehydrate value.
      */
     public Boolean isRehydrate() {
@@ -373,7 +389,7 @@ public class ProtectedItem {
 
     /**
      * Set the isRehydrate property: Flag to identify that deferred deleted DS is to be moved into Pause state.
-     *
+     * 
      * @param isRehydrate the isRehydrate value to set.
      * @return the ProtectedItem object itself.
      */
@@ -385,7 +401,7 @@ public class ProtectedItem {
     /**
      * Get the resourceGuardOperationRequests property: ResourceGuardOperationRequests on which LAC check will be
      * performed.
-     *
+     * 
      * @return the resourceGuardOperationRequests value.
      */
     public List<String> resourceGuardOperationRequests() {
@@ -395,7 +411,7 @@ public class ProtectedItem {
     /**
      * Set the resourceGuardOperationRequests property: ResourceGuardOperationRequests on which LAC check will be
      * performed.
-     *
+     * 
      * @param resourceGuardOperationRequests the resourceGuardOperationRequests value to set.
      * @return the ProtectedItem object itself.
      */
@@ -406,7 +422,7 @@ public class ProtectedItem {
 
     /**
      * Get the isArchiveEnabled property: Flag to identify whether datasource is protected in archive.
-     *
+     * 
      * @return the isArchiveEnabled value.
      */
     public Boolean isArchiveEnabled() {
@@ -415,7 +431,7 @@ public class ProtectedItem {
 
     /**
      * Set the isArchiveEnabled property: Flag to identify whether datasource is protected in archive.
-     *
+     * 
      * @param isArchiveEnabled the isArchiveEnabled value to set.
      * @return the ProtectedItem object itself.
      */
@@ -426,7 +442,7 @@ public class ProtectedItem {
 
     /**
      * Get the policyName property: Name of the policy used for protection.
-     *
+     * 
      * @return the policyName value.
      */
     public String policyName() {
@@ -435,7 +451,7 @@ public class ProtectedItem {
 
     /**
      * Set the policyName property: Name of the policy used for protection.
-     *
+     * 
      * @param policyName the policyName value to set.
      * @return the ProtectedItem object itself.
      */
@@ -446,7 +462,7 @@ public class ProtectedItem {
 
     /**
      * Get the softDeleteRetentionPeriod property: Soft delete retention period in days.
-     *
+     * 
      * @return the softDeleteRetentionPeriod value.
      */
     public Integer softDeleteRetentionPeriod() {
@@ -455,7 +471,7 @@ public class ProtectedItem {
 
     /**
      * Set the softDeleteRetentionPeriod property: Soft delete retention period in days.
-     *
+     * 
      * @param softDeleteRetentionPeriod the softDeleteRetentionPeriod value to set.
      * @return the ProtectedItem object itself.
      */
@@ -465,10 +481,178 @@ public class ProtectedItem {
     }
 
     /**
+     * Get the vaultId property: ID of the vault which protects this item.
+     * 
+     * @return the vaultId value.
+     */
+    public String vaultId() {
+        return this.vaultId;
+    }
+
+    /**
+     * Set the vaultId property: ID of the vault which protects this item.
+     * 
+     * @param vaultId the vaultId value to set.
+     * @return the ProtectedItem object itself.
+     */
+    ProtectedItem withVaultId(String vaultId) {
+        this.vaultId = vaultId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        jsonWriter.writeStringField("policyId", this.policyId);
+        jsonWriter.writeStringField("lastRecoveryPoint",
+            this.lastRecoveryPoint == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRecoveryPoint));
+        jsonWriter.writeStringField("backupSetName", this.backupSetName);
+        jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        jsonWriter.writeStringField("deferredDeleteTimeInUTC",
+            this.deferredDeleteTimeInUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deferredDeleteTimeInUtc));
+        jsonWriter.writeBooleanField("isScheduledForDeferredDelete", this.isScheduledForDeferredDelete);
+        jsonWriter.writeStringField("deferredDeleteTimeRemaining", this.deferredDeleteTimeRemaining);
+        jsonWriter.writeBooleanField("isDeferredDeleteScheduleUpcoming", this.isDeferredDeleteScheduleUpcoming);
+        jsonWriter.writeBooleanField("isRehydrate", this.isRehydrate);
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", this.resourceGuardOperationRequests,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchiveEnabled", this.isArchiveEnabled);
+        jsonWriter.writeStringField("policyName", this.policyName);
+        jsonWriter.writeNumberField("softDeleteRetentionPeriodInDays", this.softDeleteRetentionPeriod);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectedItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectedItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtectedItem.
+     */
+    public static ProtectedItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("protectedItemType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureFileShareProtectedItem".equals(discriminatorValue)) {
+                    return AzureFileshareProtectedItem.fromJson(readerToUse.reset());
+                } else if ("AzureIaaSVMProtectedItem".equals(discriminatorValue)) {
+                    return AzureIaaSvmProtectedItem.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("Microsoft.ClassicCompute/virtualMachines".equals(discriminatorValue)) {
+                    return AzureIaaSClassicComputeVMProtectedItem.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Compute/virtualMachines".equals(discriminatorValue)) {
+                    return AzureIaaSComputeVMProtectedItem.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Sql/servers/databases".equals(discriminatorValue)) {
+                    return AzureSqlProtectedItem.fromJson(readerToUse.reset());
+                } else if ("AzureVmWorkloadProtectedItem".equals(discriminatorValue)) {
+                    return AzureVmWorkloadProtectedItem.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureVmWorkloadSAPAseDatabase".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapAseDatabaseProtectedItem.fromJson(readerToUse.reset());
+                } else if ("AzureVmWorkloadSAPHanaDatabase".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapHanaDatabaseProtectedItem.fromJson(readerToUse.reset());
+                } else if ("AzureVmWorkloadSAPHanaDBInstance".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapHanaDBInstanceProtectedItem.fromJson(readerToUse.reset());
+                } else if ("AzureVmWorkloadSQLDatabase".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSqlDatabaseProtectedItem.fromJson(readerToUse.reset());
+                } else if ("DPMProtectedItem".equals(discriminatorValue)) {
+                    return DpmProtectedItem.fromJson(readerToUse.reset());
+                } else if ("GenericProtectedItem".equals(discriminatorValue)) {
+                    return GenericProtectedItem.fromJson(readerToUse.reset());
+                } else if ("MabFileFolderProtectedItem".equals(discriminatorValue)) {
+                    return MabFileFolderProtectedItem.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ProtectedItem fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectedItem deserializedProtectedItem = new ProtectedItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectedItemType".equals(fieldName)) {
+                    deserializedProtectedItem.protectedItemType = reader.getString();
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedProtectedItem.backupManagementType
+                        = BackupManagementType.fromString(reader.getString());
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedProtectedItem.workloadType = DataSourceType.fromString(reader.getString());
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedProtectedItem.containerName = reader.getString();
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedProtectedItem.sourceResourceId = reader.getString();
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedProtectedItem.policyId = reader.getString();
+                } else if ("lastRecoveryPoint".equals(fieldName)) {
+                    deserializedProtectedItem.lastRecoveryPoint = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("backupSetName".equals(fieldName)) {
+                    deserializedProtectedItem.backupSetName = reader.getString();
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedProtectedItem.createMode = CreateMode.fromString(reader.getString());
+                } else if ("deferredDeleteTimeInUTC".equals(fieldName)) {
+                    deserializedProtectedItem.deferredDeleteTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isScheduledForDeferredDelete".equals(fieldName)) {
+                    deserializedProtectedItem.isScheduledForDeferredDelete = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deferredDeleteTimeRemaining".equals(fieldName)) {
+                    deserializedProtectedItem.deferredDeleteTimeRemaining = reader.getString();
+                } else if ("isDeferredDeleteScheduleUpcoming".equals(fieldName)) {
+                    deserializedProtectedItem.isDeferredDeleteScheduleUpcoming
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isRehydrate".equals(fieldName)) {
+                    deserializedProtectedItem.isRehydrate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProtectedItem.resourceGuardOperationRequests = resourceGuardOperationRequests;
+                } else if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedProtectedItem.isArchiveEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedProtectedItem.policyName = reader.getString();
+                } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedProtectedItem.softDeleteRetentionPeriod = reader.getNullable(JsonReader::getInt);
+                } else if ("vaultId".equals(fieldName)) {
+                    deserializedProtectedItem.vaultId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectedItem;
+        });
     }
 }

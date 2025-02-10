@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class GlobalGetSubscriptionOperationWithAsyncResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
      * GetSubscriptionOperationWithAsyncResponse.json
      */
     /**
@@ -19,7 +19,11 @@ public final class GlobalGetSubscriptionOperationWithAsyncResponseSamples {
      */
     public static void
         getsAnOperationInASubscriptionAndGivenRegion(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getGlobals().getSubscriptionOperationWithAsyncResponseWithResponse(
-            "West US", "34adfa4f-cedf-4dc0-ba29-b6d1a69ab5d5", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getGlobals()
+            .getSubscriptionOperationWithAsyncResponseWithResponse("West US", "34adfa4f-cedf-4dc0-ba29-b6d1a69ab5d5",
+                com.azure.core.util.Context.NONE);
     }
 }

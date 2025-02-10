@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The maintenance configuration capability. */
+/**
+ * The maintenance configuration capability.
+ */
 @Fluent
-public final class MaintenanceConfigurationCapability {
+public final class MaintenanceConfigurationCapability implements JsonSerializable<MaintenanceConfigurationCapability> {
     /*
      * Maintenance configuration name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Whether or not zone redundancy is supported for the maintenance configuration.
      */
-    @JsonProperty(value = "zoneRedundant", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean zoneRedundant;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of MaintenanceConfigurationCapability class. */
+    /**
+     * Creates an instance of MaintenanceConfigurationCapability class.
+     */
     public MaintenanceConfigurationCapability() {
     }
 
     /**
      * Get the name property: Maintenance configuration name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class MaintenanceConfigurationCapability {
 
     /**
      * Get the zoneRedundant property: Whether or not zone redundancy is supported for the maintenance configuration.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -58,7 +62,7 @@ public final class MaintenanceConfigurationCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -67,7 +71,7 @@ public final class MaintenanceConfigurationCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -76,7 +80,7 @@ public final class MaintenanceConfigurationCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the MaintenanceConfigurationCapability object itself.
      */
@@ -87,9 +91,54 @@ public final class MaintenanceConfigurationCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceConfigurationCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceConfigurationCapability if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceConfigurationCapability.
+     */
+    public static MaintenanceConfigurationCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceConfigurationCapability deserializedMaintenanceConfigurationCapability
+                = new MaintenanceConfigurationCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationCapability.name = reader.getString();
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationCapability.zoneRedundant
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("status".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationCapability.status
+                        = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceConfigurationCapability;
+        });
     }
 }

@@ -5,27 +5,36 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** onenoteSourceService. */
+/**
+ * onenoteSourceService.
+ */
 public final class MicrosoftGraphOnenoteSourceService extends ExpandableStringEnum<MicrosoftGraphOnenoteSourceService> {
-    /** Static value Unknown for MicrosoftGraphOnenoteSourceService. */
+    /**
+     * Static value Unknown for MicrosoftGraphOnenoteSourceService.
+     */
     public static final MicrosoftGraphOnenoteSourceService UNKNOWN = fromString("Unknown");
 
-    /** Static value OneDrive for MicrosoftGraphOnenoteSourceService. */
+    /**
+     * Static value OneDrive for MicrosoftGraphOnenoteSourceService.
+     */
     public static final MicrosoftGraphOnenoteSourceService ONE_DRIVE = fromString("OneDrive");
 
-    /** Static value OneDriveForBusiness for MicrosoftGraphOnenoteSourceService. */
+    /**
+     * Static value OneDriveForBusiness for MicrosoftGraphOnenoteSourceService.
+     */
     public static final MicrosoftGraphOnenoteSourceService ONE_DRIVE_FOR_BUSINESS = fromString("OneDriveForBusiness");
 
-    /** Static value OnPremOneDriveForBusiness for MicrosoftGraphOnenoteSourceService. */
-    public static final MicrosoftGraphOnenoteSourceService ON_PREM_ONE_DRIVE_FOR_BUSINESS =
-        fromString("OnPremOneDriveForBusiness");
+    /**
+     * Static value OnPremOneDriveForBusiness for MicrosoftGraphOnenoteSourceService.
+     */
+    public static final MicrosoftGraphOnenoteSourceService ON_PREM_ONE_DRIVE_FOR_BUSINESS
+        = fromString("OnPremOneDriveForBusiness");
 
     /**
      * Creates a new instance of MicrosoftGraphOnenoteSourceService value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +43,17 @@ public final class MicrosoftGraphOnenoteSourceService extends ExpandableStringEn
 
     /**
      * Creates or finds a MicrosoftGraphOnenoteSourceService from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphOnenoteSourceService.
      */
-    @JsonCreator
     public static MicrosoftGraphOnenoteSourceService fromString(String name) {
         return fromString(name, MicrosoftGraphOnenoteSourceService.class);
     }
 
     /**
      * Gets known MicrosoftGraphOnenoteSourceService values.
-     *
+     * 
      * @return known MicrosoftGraphOnenoteSourceService values.
      */
     public static Collection<MicrosoftGraphOnenoteSourceService> values() {

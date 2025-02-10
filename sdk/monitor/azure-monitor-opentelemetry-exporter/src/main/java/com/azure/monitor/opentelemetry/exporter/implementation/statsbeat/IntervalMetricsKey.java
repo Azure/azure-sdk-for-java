@@ -15,16 +15,12 @@ public final class IntervalMetricsKey {
 
     private final Object causeValue;
 
-    static IntervalMetricsKey create(
-        String ikey, String host, @Nullable String causeFieldName, @Nullable Object causeValue) {
+    static IntervalMetricsKey create(String ikey, String host, @Nullable String causeFieldName,
+        @Nullable Object causeValue) {
         return new IntervalMetricsKey(ikey, host, causeFieldName, causeValue);
     }
 
-    private IntervalMetricsKey(
-        String ikey,
-        String host,
-        @Nullable String causeFieldName,
-        @Nullable Object causeValue) {
+    private IntervalMetricsKey(String ikey, String host, @Nullable String causeFieldName, @Nullable Object causeValue) {
         if (ikey == null) {
             throw new NullPointerException("Null ikey");
         }
@@ -57,12 +53,8 @@ public final class IntervalMetricsKey {
 
     @Override
     public String toString() {
-        return "IntervalMetricsKey{"
-            + "ikey=" + ikey + ", "
-            + "host=" + host + ", "
-            + "causeFieldName=" + causeFieldName + ", "
-            + "causeValue=" + causeValue
-            + "}";
+        return "IntervalMetricsKey{" + "ikey=" + ikey + ", " + "host=" + host + ", " + "causeFieldName="
+            + causeFieldName + ", " + "causeValue=" + causeValue + "}";
     }
 
     @Override
@@ -74,8 +66,12 @@ public final class IntervalMetricsKey {
             IntervalMetricsKey that = (IntervalMetricsKey) o;
             return this.ikey.equals(that.getIkey())
                 && this.host.equals(that.getHost())
-                && (this.causeFieldName == null ? that.getCauseFieldName() == null : this.causeFieldName.equals(that.getCauseFieldName()))
-                && (this.causeValue == null ? that.getCauseValue() == null : this.causeValue.equals(that.getCauseValue()));
+                && (this.causeFieldName == null
+                    ? that.getCauseFieldName() == null
+                    : this.causeFieldName.equals(that.getCauseFieldName()))
+                && (this.causeValue == null
+                    ? that.getCauseValue() == null
+                    : this.causeValue.equals(that.getCauseValue()));
         }
         return false;
     }

@@ -5,119 +5,109 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Replication protected item custom data details. */
+/**
+ * Replication protected item custom data details.
+ */
 @Fluent
-public final class ReplicationProtectedItemProperties {
+public final class ReplicationProtectedItemProperties implements JsonSerializable<ReplicationProtectedItemProperties> {
     /*
      * The name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The type of protected item type.
      */
-    @JsonProperty(value = "protectedItemType")
     private String protectedItemType;
 
     /*
      * The protected item ARM Id.
      */
-    @JsonProperty(value = "protectableItemId")
     private String protectableItemId;
 
     /*
      * The recovery provider ARM Id.
      */
-    @JsonProperty(value = "recoveryServicesProviderId")
     private String recoveryServicesProviderId;
 
     /*
      * The friendly name of the primary fabric.
      */
-    @JsonProperty(value = "primaryFabricFriendlyName")
     private String primaryFabricFriendlyName;
 
     /*
      * The fabric provider of the primary fabric.
      */
-    @JsonProperty(value = "primaryFabricProvider")
     private String primaryFabricProvider;
 
     /*
      * The friendly name of recovery fabric.
      */
-    @JsonProperty(value = "recoveryFabricFriendlyName")
     private String recoveryFabricFriendlyName;
 
     /*
      * The Arm Id of recovery fabric.
      */
-    @JsonProperty(value = "recoveryFabricId")
     private String recoveryFabricId;
 
     /*
      * The name of primary protection container friendly name.
      */
-    @JsonProperty(value = "primaryProtectionContainerFriendlyName")
     private String primaryProtectionContainerFriendlyName;
 
     /*
      * The name of recovery container friendly name.
      */
-    @JsonProperty(value = "recoveryProtectionContainerFriendlyName")
     private String recoveryProtectionContainerFriendlyName;
 
     /*
      * The protection status.
      */
-    @JsonProperty(value = "protectionState")
     private String protectionState;
 
     /*
      * The protection state description.
      */
-    @JsonProperty(value = "protectionStateDescription")
     private String protectionStateDescription;
 
     /*
      * The Current active location of the PE.
      */
-    @JsonProperty(value = "activeLocation")
     private String activeLocation;
 
     /*
      * The Test failover state.
      */
-    @JsonProperty(value = "testFailoverState")
     private String testFailoverState;
 
     /*
      * The Test failover state description.
      */
-    @JsonProperty(value = "testFailoverStateDescription")
     private String testFailoverStateDescription;
 
     /*
      * The switch provider state.
      */
-    @JsonProperty(value = "switchProviderState")
     private String switchProviderState;
 
     /*
      * The switch provider state description.
      */
-    @JsonProperty(value = "switchProviderStateDescription")
     private String switchProviderStateDescription;
 
     /*
      * The allowed operations on the Replication protected item.
      */
-    @JsonProperty(value = "allowedOperations")
     private List<String> allowedOperations;
 
     /*
@@ -125,82 +115,72 @@ public final class ReplicationProtectedItemProperties {
      * associated with the VM's replication group into account. This is a string representation of the ProtectionHealth
      * enumeration.
      */
-    @JsonProperty(value = "replicationHealth")
     private String replicationHealth;
 
     /*
      * The consolidated failover health for the VM.
      */
-    @JsonProperty(value = "failoverHealth")
     private String failoverHealth;
 
     /*
      * List of health errors.
      */
-    @JsonProperty(value = "healthErrors")
     private List<HealthError> healthErrors;
 
     /*
      * The ID of Policy governing this PE.
      */
-    @JsonProperty(value = "policyId")
     private String policyId;
 
     /*
      * The name of Policy governing this PE.
      */
-    @JsonProperty(value = "policyFriendlyName")
     private String policyFriendlyName;
 
     /*
      * The Last successful failover time.
      */
-    @JsonProperty(value = "lastSuccessfulFailoverTime")
     private OffsetDateTime lastSuccessfulFailoverTime;
 
     /*
      * The Last successful test failover time.
      */
-    @JsonProperty(value = "lastSuccessfulTestFailoverTime")
     private OffsetDateTime lastSuccessfulTestFailoverTime;
 
     /*
      * The current scenario.
      */
-    @JsonProperty(value = "currentScenario")
     private CurrentScenarioDetails currentScenario;
 
     /*
      * The recovery point ARM Id to which the Vm was failed over.
      */
-    @JsonProperty(value = "failoverRecoveryPointId")
     private String failoverRecoveryPointId;
 
     /*
      * The Replication provider custom settings.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private ReplicationProviderSpecificSettings providerSpecificDetails;
 
     /*
      * The recovery container Id.
      */
-    @JsonProperty(value = "recoveryContainerId")
     private String recoveryContainerId;
 
     /*
      * The correlation Id for events associated with this protected item.
      */
-    @JsonProperty(value = "eventCorrelationId")
     private String eventCorrelationId;
 
-    /** Creates an instance of ReplicationProtectedItemProperties class. */
+    /**
+     * Creates an instance of ReplicationProtectedItemProperties class.
+     */
     public ReplicationProtectedItemProperties() {
     }
 
     /**
      * Get the friendlyName property: The name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -209,7 +189,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the friendlyName property: The name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -220,7 +200,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the protectedItemType property: The type of protected item type.
-     *
+     * 
      * @return the protectedItemType value.
      */
     public String protectedItemType() {
@@ -229,7 +209,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the protectedItemType property: The type of protected item type.
-     *
+     * 
      * @param protectedItemType the protectedItemType value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -240,7 +220,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the protectableItemId property: The protected item ARM Id.
-     *
+     * 
      * @return the protectableItemId value.
      */
     public String protectableItemId() {
@@ -249,7 +229,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the protectableItemId property: The protected item ARM Id.
-     *
+     * 
      * @param protectableItemId the protectableItemId value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -260,7 +240,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the recoveryServicesProviderId property: The recovery provider ARM Id.
-     *
+     * 
      * @return the recoveryServicesProviderId value.
      */
     public String recoveryServicesProviderId() {
@@ -269,7 +249,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the recoveryServicesProviderId property: The recovery provider ARM Id.
-     *
+     * 
      * @param recoveryServicesProviderId the recoveryServicesProviderId value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -280,7 +260,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the primaryFabricFriendlyName property: The friendly name of the primary fabric.
-     *
+     * 
      * @return the primaryFabricFriendlyName value.
      */
     public String primaryFabricFriendlyName() {
@@ -289,7 +269,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the primaryFabricFriendlyName property: The friendly name of the primary fabric.
-     *
+     * 
      * @param primaryFabricFriendlyName the primaryFabricFriendlyName value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -300,7 +280,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the primaryFabricProvider property: The fabric provider of the primary fabric.
-     *
+     * 
      * @return the primaryFabricProvider value.
      */
     public String primaryFabricProvider() {
@@ -309,7 +289,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the primaryFabricProvider property: The fabric provider of the primary fabric.
-     *
+     * 
      * @param primaryFabricProvider the primaryFabricProvider value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -320,7 +300,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the recoveryFabricFriendlyName property: The friendly name of recovery fabric.
-     *
+     * 
      * @return the recoveryFabricFriendlyName value.
      */
     public String recoveryFabricFriendlyName() {
@@ -329,7 +309,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the recoveryFabricFriendlyName property: The friendly name of recovery fabric.
-     *
+     * 
      * @param recoveryFabricFriendlyName the recoveryFabricFriendlyName value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -340,7 +320,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the recoveryFabricId property: The Arm Id of recovery fabric.
-     *
+     * 
      * @return the recoveryFabricId value.
      */
     public String recoveryFabricId() {
@@ -349,7 +329,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the recoveryFabricId property: The Arm Id of recovery fabric.
-     *
+     * 
      * @param recoveryFabricId the recoveryFabricId value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -360,7 +340,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the primaryProtectionContainerFriendlyName property: The name of primary protection container friendly name.
-     *
+     * 
      * @return the primaryProtectionContainerFriendlyName value.
      */
     public String primaryProtectionContainerFriendlyName() {
@@ -369,19 +349,19 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the primaryProtectionContainerFriendlyName property: The name of primary protection container friendly name.
-     *
+     * 
      * @param primaryProtectionContainerFriendlyName the primaryProtectionContainerFriendlyName value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
-    public ReplicationProtectedItemProperties withPrimaryProtectionContainerFriendlyName(
-        String primaryProtectionContainerFriendlyName) {
+    public ReplicationProtectedItemProperties
+        withPrimaryProtectionContainerFriendlyName(String primaryProtectionContainerFriendlyName) {
         this.primaryProtectionContainerFriendlyName = primaryProtectionContainerFriendlyName;
         return this;
     }
 
     /**
      * Get the recoveryProtectionContainerFriendlyName property: The name of recovery container friendly name.
-     *
+     * 
      * @return the recoveryProtectionContainerFriendlyName value.
      */
     public String recoveryProtectionContainerFriendlyName() {
@@ -390,19 +370,19 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the recoveryProtectionContainerFriendlyName property: The name of recovery container friendly name.
-     *
+     * 
      * @param recoveryProtectionContainerFriendlyName the recoveryProtectionContainerFriendlyName value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
-    public ReplicationProtectedItemProperties withRecoveryProtectionContainerFriendlyName(
-        String recoveryProtectionContainerFriendlyName) {
+    public ReplicationProtectedItemProperties
+        withRecoveryProtectionContainerFriendlyName(String recoveryProtectionContainerFriendlyName) {
         this.recoveryProtectionContainerFriendlyName = recoveryProtectionContainerFriendlyName;
         return this;
     }
 
     /**
      * Get the protectionState property: The protection status.
-     *
+     * 
      * @return the protectionState value.
      */
     public String protectionState() {
@@ -411,7 +391,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the protectionState property: The protection status.
-     *
+     * 
      * @param protectionState the protectionState value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -422,7 +402,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the protectionStateDescription property: The protection state description.
-     *
+     * 
      * @return the protectionStateDescription value.
      */
     public String protectionStateDescription() {
@@ -431,7 +411,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the protectionStateDescription property: The protection state description.
-     *
+     * 
      * @param protectionStateDescription the protectionStateDescription value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -442,7 +422,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the activeLocation property: The Current active location of the PE.
-     *
+     * 
      * @return the activeLocation value.
      */
     public String activeLocation() {
@@ -451,7 +431,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the activeLocation property: The Current active location of the PE.
-     *
+     * 
      * @param activeLocation the activeLocation value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -462,7 +442,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the testFailoverState property: The Test failover state.
-     *
+     * 
      * @return the testFailoverState value.
      */
     public String testFailoverState() {
@@ -471,7 +451,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the testFailoverState property: The Test failover state.
-     *
+     * 
      * @param testFailoverState the testFailoverState value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -482,7 +462,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the testFailoverStateDescription property: The Test failover state description.
-     *
+     * 
      * @return the testFailoverStateDescription value.
      */
     public String testFailoverStateDescription() {
@@ -491,7 +471,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the testFailoverStateDescription property: The Test failover state description.
-     *
+     * 
      * @param testFailoverStateDescription the testFailoverStateDescription value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -502,7 +482,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the switchProviderState property: The switch provider state.
-     *
+     * 
      * @return the switchProviderState value.
      */
     public String switchProviderState() {
@@ -511,7 +491,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the switchProviderState property: The switch provider state.
-     *
+     * 
      * @param switchProviderState the switchProviderState value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -522,7 +502,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the switchProviderStateDescription property: The switch provider state description.
-     *
+     * 
      * @return the switchProviderStateDescription value.
      */
     public String switchProviderStateDescription() {
@@ -531,19 +511,19 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the switchProviderStateDescription property: The switch provider state description.
-     *
+     * 
      * @param switchProviderStateDescription the switchProviderStateDescription value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
-    public ReplicationProtectedItemProperties withSwitchProviderStateDescription(
-        String switchProviderStateDescription) {
+    public ReplicationProtectedItemProperties
+        withSwitchProviderStateDescription(String switchProviderStateDescription) {
         this.switchProviderStateDescription = switchProviderStateDescription;
         return this;
     }
 
     /**
      * Get the allowedOperations property: The allowed operations on the Replication protected item.
-     *
+     * 
      * @return the allowedOperations value.
      */
     public List<String> allowedOperations() {
@@ -552,7 +532,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the allowedOperations property: The allowed operations on the Replication protected item.
-     *
+     * 
      * @param allowedOperations the allowedOperations value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -565,7 +545,7 @@ public final class ReplicationProtectedItemProperties {
      * Get the replicationHealth property: The consolidated protection health for the VM taking any issues with SRS as
      * well as all the replication units associated with the VM's replication group into account. This is a string
      * representation of the ProtectionHealth enumeration.
-     *
+     * 
      * @return the replicationHealth value.
      */
     public String replicationHealth() {
@@ -576,7 +556,7 @@ public final class ReplicationProtectedItemProperties {
      * Set the replicationHealth property: The consolidated protection health for the VM taking any issues with SRS as
      * well as all the replication units associated with the VM's replication group into account. This is a string
      * representation of the ProtectionHealth enumeration.
-     *
+     * 
      * @param replicationHealth the replicationHealth value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -587,7 +567,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the failoverHealth property: The consolidated failover health for the VM.
-     *
+     * 
      * @return the failoverHealth value.
      */
     public String failoverHealth() {
@@ -596,7 +576,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the failoverHealth property: The consolidated failover health for the VM.
-     *
+     * 
      * @param failoverHealth the failoverHealth value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -607,7 +587,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the healthErrors property: List of health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -616,7 +596,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the healthErrors property: List of health errors.
-     *
+     * 
      * @param healthErrors the healthErrors value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -627,7 +607,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the policyId property: The ID of Policy governing this PE.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -636,7 +616,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the policyId property: The ID of Policy governing this PE.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -647,7 +627,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the policyFriendlyName property: The name of Policy governing this PE.
-     *
+     * 
      * @return the policyFriendlyName value.
      */
     public String policyFriendlyName() {
@@ -656,7 +636,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the policyFriendlyName property: The name of Policy governing this PE.
-     *
+     * 
      * @param policyFriendlyName the policyFriendlyName value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -667,7 +647,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the lastSuccessfulFailoverTime property: The Last successful failover time.
-     *
+     * 
      * @return the lastSuccessfulFailoverTime value.
      */
     public OffsetDateTime lastSuccessfulFailoverTime() {
@@ -676,19 +656,19 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the lastSuccessfulFailoverTime property: The Last successful failover time.
-     *
+     * 
      * @param lastSuccessfulFailoverTime the lastSuccessfulFailoverTime value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
-    public ReplicationProtectedItemProperties withLastSuccessfulFailoverTime(
-        OffsetDateTime lastSuccessfulFailoverTime) {
+    public ReplicationProtectedItemProperties
+        withLastSuccessfulFailoverTime(OffsetDateTime lastSuccessfulFailoverTime) {
         this.lastSuccessfulFailoverTime = lastSuccessfulFailoverTime;
         return this;
     }
 
     /**
      * Get the lastSuccessfulTestFailoverTime property: The Last successful test failover time.
-     *
+     * 
      * @return the lastSuccessfulTestFailoverTime value.
      */
     public OffsetDateTime lastSuccessfulTestFailoverTime() {
@@ -697,19 +677,19 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the lastSuccessfulTestFailoverTime property: The Last successful test failover time.
-     *
+     * 
      * @param lastSuccessfulTestFailoverTime the lastSuccessfulTestFailoverTime value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
-    public ReplicationProtectedItemProperties withLastSuccessfulTestFailoverTime(
-        OffsetDateTime lastSuccessfulTestFailoverTime) {
+    public ReplicationProtectedItemProperties
+        withLastSuccessfulTestFailoverTime(OffsetDateTime lastSuccessfulTestFailoverTime) {
         this.lastSuccessfulTestFailoverTime = lastSuccessfulTestFailoverTime;
         return this;
     }
 
     /**
      * Get the currentScenario property: The current scenario.
-     *
+     * 
      * @return the currentScenario value.
      */
     public CurrentScenarioDetails currentScenario() {
@@ -718,7 +698,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the currentScenario property: The current scenario.
-     *
+     * 
      * @param currentScenario the currentScenario value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -729,7 +709,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the failoverRecoveryPointId property: The recovery point ARM Id to which the Vm was failed over.
-     *
+     * 
      * @return the failoverRecoveryPointId value.
      */
     public String failoverRecoveryPointId() {
@@ -738,7 +718,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the failoverRecoveryPointId property: The recovery point ARM Id to which the Vm was failed over.
-     *
+     * 
      * @param failoverRecoveryPointId the failoverRecoveryPointId value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -749,7 +729,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the providerSpecificDetails property: The Replication provider custom settings.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ReplicationProviderSpecificSettings providerSpecificDetails() {
@@ -758,19 +738,19 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the providerSpecificDetails property: The Replication provider custom settings.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
-    public ReplicationProtectedItemProperties withProviderSpecificDetails(
-        ReplicationProviderSpecificSettings providerSpecificDetails) {
+    public ReplicationProtectedItemProperties
+        withProviderSpecificDetails(ReplicationProviderSpecificSettings providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Get the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @return the recoveryContainerId value.
      */
     public String recoveryContainerId() {
@@ -779,7 +759,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @param recoveryContainerId the recoveryContainerId value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -790,7 +770,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Get the eventCorrelationId property: The correlation Id for events associated with this protected item.
-     *
+     * 
      * @return the eventCorrelationId value.
      */
     public String eventCorrelationId() {
@@ -799,7 +779,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Set the eventCorrelationId property: The correlation Id for events associated with this protected item.
-     *
+     * 
      * @param eventCorrelationId the eventCorrelationId value to set.
      * @return the ReplicationProtectedItemProperties object itself.
      */
@@ -810,7 +790,7 @@ public final class ReplicationProtectedItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -823,5 +803,146 @@ public final class ReplicationProtectedItemProperties {
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
+        jsonWriter.writeStringField("protectableItemId", this.protectableItemId);
+        jsonWriter.writeStringField("recoveryServicesProviderId", this.recoveryServicesProviderId);
+        jsonWriter.writeStringField("primaryFabricFriendlyName", this.primaryFabricFriendlyName);
+        jsonWriter.writeStringField("primaryFabricProvider", this.primaryFabricProvider);
+        jsonWriter.writeStringField("recoveryFabricFriendlyName", this.recoveryFabricFriendlyName);
+        jsonWriter.writeStringField("recoveryFabricId", this.recoveryFabricId);
+        jsonWriter.writeStringField("primaryProtectionContainerFriendlyName",
+            this.primaryProtectionContainerFriendlyName);
+        jsonWriter.writeStringField("recoveryProtectionContainerFriendlyName",
+            this.recoveryProtectionContainerFriendlyName);
+        jsonWriter.writeStringField("protectionState", this.protectionState);
+        jsonWriter.writeStringField("protectionStateDescription", this.protectionStateDescription);
+        jsonWriter.writeStringField("activeLocation", this.activeLocation);
+        jsonWriter.writeStringField("testFailoverState", this.testFailoverState);
+        jsonWriter.writeStringField("testFailoverStateDescription", this.testFailoverStateDescription);
+        jsonWriter.writeStringField("switchProviderState", this.switchProviderState);
+        jsonWriter.writeStringField("switchProviderStateDescription", this.switchProviderStateDescription);
+        jsonWriter.writeArrayField("allowedOperations", this.allowedOperations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("replicationHealth", this.replicationHealth);
+        jsonWriter.writeStringField("failoverHealth", this.failoverHealth);
+        jsonWriter.writeArrayField("healthErrors", this.healthErrors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("policyId", this.policyId);
+        jsonWriter.writeStringField("policyFriendlyName", this.policyFriendlyName);
+        jsonWriter.writeStringField("lastSuccessfulFailoverTime",
+            this.lastSuccessfulFailoverTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSuccessfulFailoverTime));
+        jsonWriter.writeStringField("lastSuccessfulTestFailoverTime",
+            this.lastSuccessfulTestFailoverTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSuccessfulTestFailoverTime));
+        jsonWriter.writeJsonField("currentScenario", this.currentScenario);
+        jsonWriter.writeStringField("failoverRecoveryPointId", this.failoverRecoveryPointId);
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        jsonWriter.writeStringField("recoveryContainerId", this.recoveryContainerId);
+        jsonWriter.writeStringField("eventCorrelationId", this.eventCorrelationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationProtectedItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationProtectedItemProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationProtectedItemProperties.
+     */
+    public static ReplicationProtectedItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationProtectedItemProperties deserializedReplicationProtectedItemProperties
+                = new ReplicationProtectedItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.friendlyName = reader.getString();
+                } else if ("protectedItemType".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.protectedItemType = reader.getString();
+                } else if ("protectableItemId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.protectableItemId = reader.getString();
+                } else if ("recoveryServicesProviderId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.recoveryServicesProviderId = reader.getString();
+                } else if ("primaryFabricFriendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.primaryFabricFriendlyName = reader.getString();
+                } else if ("primaryFabricProvider".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.primaryFabricProvider = reader.getString();
+                } else if ("recoveryFabricFriendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.recoveryFabricFriendlyName = reader.getString();
+                } else if ("recoveryFabricId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.recoveryFabricId = reader.getString();
+                } else if ("primaryProtectionContainerFriendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.primaryProtectionContainerFriendlyName
+                        = reader.getString();
+                } else if ("recoveryProtectionContainerFriendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.recoveryProtectionContainerFriendlyName
+                        = reader.getString();
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.protectionState = reader.getString();
+                } else if ("protectionStateDescription".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.protectionStateDescription = reader.getString();
+                } else if ("activeLocation".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.activeLocation = reader.getString();
+                } else if ("testFailoverState".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.testFailoverState = reader.getString();
+                } else if ("testFailoverStateDescription".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.testFailoverStateDescription = reader.getString();
+                } else if ("switchProviderState".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.switchProviderState = reader.getString();
+                } else if ("switchProviderStateDescription".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.switchProviderStateDescription = reader.getString();
+                } else if ("allowedOperations".equals(fieldName)) {
+                    List<String> allowedOperations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedReplicationProtectedItemProperties.allowedOperations = allowedOperations;
+                } else if ("replicationHealth".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.replicationHealth = reader.getString();
+                } else if ("failoverHealth".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.failoverHealth = reader.getString();
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthError> healthErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedReplicationProtectedItemProperties.healthErrors = healthErrors;
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.policyId = reader.getString();
+                } else if ("policyFriendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.policyFriendlyName = reader.getString();
+                } else if ("lastSuccessfulFailoverTime".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.lastSuccessfulFailoverTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSuccessfulTestFailoverTime".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.lastSuccessfulTestFailoverTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentScenario".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.currentScenario
+                        = CurrentScenarioDetails.fromJson(reader);
+                } else if ("failoverRecoveryPointId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.failoverRecoveryPointId = reader.getString();
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.providerSpecificDetails
+                        = ReplicationProviderSpecificSettings.fromJson(reader);
+                } else if ("recoveryContainerId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.recoveryContainerId = reader.getString();
+                } else if ("eventCorrelationId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.eventCorrelationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationProtectedItemProperties;
+        });
     }
 }

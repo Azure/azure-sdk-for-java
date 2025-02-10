@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of policy assignments. */
+/**
+ * List of policy assignments.
+ */
 @Fluent
-public final class PolicyAssignmentListResult {
+public final class PolicyAssignmentListResult implements JsonSerializable<PolicyAssignmentListResult> {
     /*
      * An array of policy assignments.
      */
-    @JsonProperty(value = "value")
     private List<PolicyAssignmentInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PolicyAssignmentListResult class. */
+    /**
+     * Creates an instance of PolicyAssignmentListResult class.
+     */
     public PolicyAssignmentListResult() {
     }
 
     /**
      * Get the value property: An array of policy assignments.
-     *
+     * 
      * @return the value value.
      */
     public List<PolicyAssignmentInner> value() {
@@ -39,7 +45,7 @@ public final class PolicyAssignmentListResult {
 
     /**
      * Set the value property: An array of policy assignments.
-     *
+     * 
      * @param value the value value to set.
      * @return the PolicyAssignmentListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class PolicyAssignmentListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class PolicyAssignmentListResult {
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PolicyAssignmentListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class PolicyAssignmentListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyAssignmentListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyAssignmentListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyAssignmentListResult.
+     */
+    public static PolicyAssignmentListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyAssignmentListResult deserializedPolicyAssignmentListResult = new PolicyAssignmentListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PolicyAssignmentInner> value
+                        = reader.readArray(reader1 -> PolicyAssignmentInner.fromJson(reader1));
+                    deserializedPolicyAssignmentListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPolicyAssignmentListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyAssignmentListResult;
+        });
     }
 }

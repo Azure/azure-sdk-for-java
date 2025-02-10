@@ -5,32 +5,35 @@
 package com.azure.resourcemanager.maintenance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of a MaintenanceWindow. */
+/**
+ * Definition of a MaintenanceWindow.
+ */
 @Fluent
-public final class MaintenanceWindow {
+public final class MaintenanceWindow implements JsonSerializable<MaintenanceWindow> {
     /*
      * Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The start date can be set to either
      * the current date or future date. The window will be created in the time zone provided and adjusted to daylight
      * savings according to that time zone.
      */
-    @JsonProperty(value = "startDateTime")
     private String startDateTime;
 
     /*
-     * Effective expiration date of the maintenance window in YYYY-MM-DD hh:mm format. The window will be created in
-     * the time zone provided and adjusted to daylight savings according to that time zone. Expiration date must be set
-     * to a future date. If not provided, it will be set to the maximum datetime 9999-12-31 23:59:59.
+     * Effective expiration date of the maintenance window in YYYY-MM-DD hh:mm format. The window will be created in the
+     * time zone provided and adjusted to daylight savings according to that time zone. Expiration date must be set to a
+     * future date. If not provided, it will be set to the maximum datetime 9999-12-31 23:59:59.
      */
-    @JsonProperty(value = "expirationDateTime")
     private String expirationDateTime;
 
     /*
      * Duration of the maintenance window in HH:mm format. If not provided, default value will be used based on
      * maintenance scope provided. Example: 05:00.
      */
-    @JsonProperty(value = "duration")
     private String duration;
 
     /*
@@ -38,25 +41,25 @@ public final class MaintenanceWindow {
      * in PowerShell. Example: Pacific Standard Time, UTC, W. Europe Standard Time, Korea Standard Time, Cen. Australia
      * Standard Time.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * Rate at which a Maintenance window is expected to recur. The rate can be expressed as daily, weekly, or monthly
      * schedules. Daily schedule are formatted as recurEvery: [Frequency as integer]['Day(s)']. If no frequency is
-     * provided, the default frequency is 1. Daily schedule examples are recurEvery: Day, recurEvery: 3Days.  Weekly
+     * provided, the default frequency is 1. Daily schedule examples are recurEvery: Day, recurEvery: 3Days. Weekly
      * schedule are formatted as recurEvery: [Frequency as integer]['Week(s)'] [Optional comma separated list of
      * weekdays Monday-Sunday]. Weekly schedule examples are recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday.
      * Monthly schedules are formatted as [Frequency as integer]['Month(s)'] [Comma separated list of month days] or
      * [Frequency as integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]
      * [Optional Offset(No. of days)]. Offset value must be between -6 to 6 inclusive. Monthly schedule examples are
-     * recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday,
-     * recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday Offset-3, recurEvery: Month Third Sunday Offset6.
+     * recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery:
+     * Month Fourth Monday, recurEvery: Month Last Sunday Offset-3, recurEvery: Month Third Sunday Offset6.
      */
-    @JsonProperty(value = "recurEvery")
     private String recurEvery;
 
-    /** Creates an instance of MaintenanceWindow class. */
+    /**
+     * Creates an instance of MaintenanceWindow class.
+     */
     public MaintenanceWindow() {
     }
 
@@ -64,7 +67,7 @@ public final class MaintenanceWindow {
      * Get the startDateTime property: Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The
      * start date can be set to either the current date or future date. The window will be created in the time zone
      * provided and adjusted to daylight savings according to that time zone.
-     *
+     * 
      * @return the startDateTime value.
      */
     public String startDateTime() {
@@ -75,7 +78,7 @@ public final class MaintenanceWindow {
      * Set the startDateTime property: Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The
      * start date can be set to either the current date or future date. The window will be created in the time zone
      * provided and adjusted to daylight savings according to that time zone.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -89,7 +92,7 @@ public final class MaintenanceWindow {
      * format. The window will be created in the time zone provided and adjusted to daylight savings according to that
      * time zone. Expiration date must be set to a future date. If not provided, it will be set to the maximum datetime
      * 9999-12-31 23:59:59.
-     *
+     * 
      * @return the expirationDateTime value.
      */
     public String expirationDateTime() {
@@ -101,7 +104,7 @@ public final class MaintenanceWindow {
      * format. The window will be created in the time zone provided and adjusted to daylight savings according to that
      * time zone. Expiration date must be set to a future date. If not provided, it will be set to the maximum datetime
      * 9999-12-31 23:59:59.
-     *
+     * 
      * @param expirationDateTime the expirationDateTime value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -113,7 +116,7 @@ public final class MaintenanceWindow {
     /**
      * Get the duration property: Duration of the maintenance window in HH:mm format. If not provided, default value
      * will be used based on maintenance scope provided. Example: 05:00.
-     *
+     * 
      * @return the duration value.
      */
     public String duration() {
@@ -123,7 +126,7 @@ public final class MaintenanceWindow {
     /**
      * Set the duration property: Duration of the maintenance window in HH:mm format. If not provided, default value
      * will be used based on maintenance scope provided. Example: 05:00.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -136,7 +139,7 @@ public final class MaintenanceWindow {
      * Get the timeZone property: Name of the timezone. List of timezones can be obtained by executing
      * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard Time, UTC, W. Europe
      * Standard Time, Korea Standard Time, Cen. Australia Standard Time.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -147,7 +150,7 @@ public final class MaintenanceWindow {
      * Set the timeZone property: Name of the timezone. List of timezones can be obtained by executing
      * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. Example: Pacific Standard Time, UTC, W. Europe
      * Standard Time, Korea Standard Time, Cen. Australia Standard Time.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -168,7 +171,7 @@ public final class MaintenanceWindow {
      * be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery:
      * Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday
      * Offset-3, recurEvery: Month Third Sunday Offset6.
-     *
+     * 
      * @return the recurEvery value.
      */
     public String recurEvery() {
@@ -187,7 +190,7 @@ public final class MaintenanceWindow {
      * be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery:
      * Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday
      * Offset-3, recurEvery: Month Third Sunday Offset6.
-     *
+     * 
      * @param recurEvery the recurEvery value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -198,9 +201,57 @@ public final class MaintenanceWindow {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startDateTime", this.startDateTime);
+        jsonWriter.writeStringField("expirationDateTime", this.expirationDateTime);
+        jsonWriter.writeStringField("duration", this.duration);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("recurEvery", this.recurEvery);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceWindow from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceWindow if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceWindow.
+     */
+    public static MaintenanceWindow fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceWindow deserializedMaintenanceWindow = new MaintenanceWindow();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startDateTime".equals(fieldName)) {
+                    deserializedMaintenanceWindow.startDateTime = reader.getString();
+                } else if ("expirationDateTime".equals(fieldName)) {
+                    deserializedMaintenanceWindow.expirationDateTime = reader.getString();
+                } else if ("duration".equals(fieldName)) {
+                    deserializedMaintenanceWindow.duration = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedMaintenanceWindow.timeZone = reader.getString();
+                } else if ("recurEvery".equals(fieldName)) {
+                    deserializedMaintenanceWindow.recurEvery = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceWindow;
+        });
     }
 }

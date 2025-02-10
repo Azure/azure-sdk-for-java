@@ -2,23 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecutionContextBase<T> {
 
@@ -28,10 +28,12 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
     private final IDocumentQueryExecutionComponent<T> component;
 
     private PipelinedQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int actualPageSize,
-                                             QueryInfo queryInfo,
-                                             Function<JsonNode, T> factoryMethod) {
+                                           QueryInfo queryInfo,
+                                           HybridSearchQueryInfo hybridSearchQueryInfo,
+                                           CosmosItemSerializer itemSerializer,
+                                           Class<T> classOfT) {
 
-        super(actualPageSize, queryInfo, factoryMethod);
+        super(actualPageSize, queryInfo, hybridSearchQueryInfo, itemSerializer, classOfT);
 
         this.component = component;
     }
@@ -76,7 +78,8 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<T> initParams,
         int pageSize,
-        Function<JsonNode, T> factoryMethod,
+        CosmosItemSerializer itemSerializer,
+        Class<T> classOfT,
         DocumentCollection collection) {
 
         // Use nested callback pattern to unwrap the continuation token and query params at each level.
@@ -94,13 +97,15 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
                         c,
                         pageSize,
                         queryInfo,
-                        factoryMethod));
+                        null,
+                        itemSerializer,
+                        classOfT));
     }
 
     public static <T> Flux<PipelinedQueryExecutionContextBase<T>> createReadManyAsync(
         DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient queryClient, SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
-        String resourceId, String collectionLink, UUID activityId, Class<T> klass,
+        DocumentCollection collection, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum,
         final AtomicBoolean isQueryCancelledOnTimeout) {
 
@@ -108,20 +113,24 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
             ParallelDocumentQueryExecutionContext.createReadManyQueryAsync(diagnosticsClientContext, queryClient,
                 sqlQuery,
                 rangeQueryMap,
-                cosmosQueryRequestOptions, resourceId,
+                cosmosQueryRequestOptions, collection,
                 collectionLink, activityId, klass,
                 resourceTypeEnum,
                 isQueryCancelledOnTimeout);
 
-        final Function<JsonNode, T> factoryMethod = DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
-            cosmosQueryRequestOptions, false, klass);
+        CosmosItemSerializer candidateSerializer = queryClient.getEffectiveItemSerializer(cosmosQueryRequestOptions);
+        final CosmosItemSerializer itemSerializer  = candidateSerializer != CosmosItemSerializer.DEFAULT_SERIALIZER
+            ? candidateSerializer
+            : ValueUnwrapCosmosItemSerializer.create(false);
 
         return documentQueryExecutionComponentFlux
             .map(c -> new PipelinedQueryExecutionContext<>(
                 c,
                 -1,
                 null,
-                factoryMethod));
+                null,
+                itemSerializer,
+                klass));
     }
 
     @Override
@@ -132,7 +141,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
     }
 
     private static QueryInfo validateQueryInfo(QueryInfo queryInfo) {
-        if (queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy()) {
+        if (queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy() || queryInfo.hasNonStreamingOrderBy()) {
             // Any query with order by, aggregates or group by needs to go through the Document query pipeline
             throw new IllegalStateException("This query must not use the simple query pipeline.");
         }

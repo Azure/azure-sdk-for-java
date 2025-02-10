@@ -62,14 +62,14 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
     public PagedIterable<DataFlowDebugSessionInfo> queryByFactory(String resourceGroupName, String factoryName) {
         PagedIterable<DataFlowDebugSessionInfoInner> inner
             = this.serviceClient().queryByFactory(resourceGroupName, factoryName);
-        return Utils.mapPage(inner, inner1 -> new DataFlowDebugSessionInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataFlowDebugSessionInfoImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataFlowDebugSessionInfo> queryByFactory(String resourceGroupName, String factoryName,
         Context context) {
         PagedIterable<DataFlowDebugSessionInfoInner> inner
             = this.serviceClient().queryByFactory(resourceGroupName, factoryName, context);
-        return Utils.mapPage(inner, inner1 -> new DataFlowDebugSessionInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DataFlowDebugSessionInfoImpl(inner1, this.manager()));
     }
 
     public Response<AddDataFlowToDebugSessionResponse> addDataFlowWithResponse(String resourceGroupName,

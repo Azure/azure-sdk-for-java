@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** class to define the health summary of the Vault. */
+/**
+ * class to define the health summary of the Vault.
+ */
 @Fluent
-public final class VaultHealthProperties {
+public final class VaultHealthProperties implements JsonSerializable<VaultHealthProperties> {
     /*
      * The list of errors on the vault.
      */
-    @JsonProperty(value = "vaultErrors")
     private List<HealthError> vaultErrors;
 
     /*
      * The list of the health detail of the protected items in the vault.
      */
-    @JsonProperty(value = "protectedItemsHealth")
     private ResourceHealthSummary protectedItemsHealth;
 
     /*
      * The list of the health detail of the fabrics in the vault.
      */
-    @JsonProperty(value = "fabricsHealth")
     private ResourceHealthSummary fabricsHealth;
 
     /*
      * The list of the health detail of the containers in the vault.
      */
-    @JsonProperty(value = "containersHealth")
     private ResourceHealthSummary containersHealth;
 
-    /** Creates an instance of VaultHealthProperties class. */
+    /**
+     * Creates an instance of VaultHealthProperties class.
+     */
     public VaultHealthProperties() {
     }
 
     /**
      * Get the vaultErrors property: The list of errors on the vault.
-     *
+     * 
      * @return the vaultErrors value.
      */
     public List<HealthError> vaultErrors() {
@@ -50,7 +54,7 @@ public final class VaultHealthProperties {
 
     /**
      * Set the vaultErrors property: The list of errors on the vault.
-     *
+     * 
      * @param vaultErrors the vaultErrors value to set.
      * @return the VaultHealthProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class VaultHealthProperties {
 
     /**
      * Get the protectedItemsHealth property: The list of the health detail of the protected items in the vault.
-     *
+     * 
      * @return the protectedItemsHealth value.
      */
     public ResourceHealthSummary protectedItemsHealth() {
@@ -70,7 +74,7 @@ public final class VaultHealthProperties {
 
     /**
      * Set the protectedItemsHealth property: The list of the health detail of the protected items in the vault.
-     *
+     * 
      * @param protectedItemsHealth the protectedItemsHealth value to set.
      * @return the VaultHealthProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class VaultHealthProperties {
 
     /**
      * Get the fabricsHealth property: The list of the health detail of the fabrics in the vault.
-     *
+     * 
      * @return the fabricsHealth value.
      */
     public ResourceHealthSummary fabricsHealth() {
@@ -90,7 +94,7 @@ public final class VaultHealthProperties {
 
     /**
      * Set the fabricsHealth property: The list of the health detail of the fabrics in the vault.
-     *
+     * 
      * @param fabricsHealth the fabricsHealth value to set.
      * @return the VaultHealthProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class VaultHealthProperties {
 
     /**
      * Get the containersHealth property: The list of the health detail of the containers in the vault.
-     *
+     * 
      * @return the containersHealth value.
      */
     public ResourceHealthSummary containersHealth() {
@@ -110,7 +114,7 @@ public final class VaultHealthProperties {
 
     /**
      * Set the containersHealth property: The list of the health detail of the containers in the vault.
-     *
+     * 
      * @param containersHealth the containersHealth value to set.
      * @return the VaultHealthProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class VaultHealthProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -137,5 +141,51 @@ public final class VaultHealthProperties {
         if (containersHealth() != null) {
             containersHealth().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("vaultErrors", this.vaultErrors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("protectedItemsHealth", this.protectedItemsHealth);
+        jsonWriter.writeJsonField("fabricsHealth", this.fabricsHealth);
+        jsonWriter.writeJsonField("containersHealth", this.containersHealth);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultHealthProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultHealthProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VaultHealthProperties.
+     */
+    public static VaultHealthProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultHealthProperties deserializedVaultHealthProperties = new VaultHealthProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vaultErrors".equals(fieldName)) {
+                    List<HealthError> vaultErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedVaultHealthProperties.vaultErrors = vaultErrors;
+                } else if ("protectedItemsHealth".equals(fieldName)) {
+                    deserializedVaultHealthProperties.protectedItemsHealth = ResourceHealthSummary.fromJson(reader);
+                } else if ("fabricsHealth".equals(fieldName)) {
+                    deserializedVaultHealthProperties.fabricsHealth = ResourceHealthSummary.fromJson(reader);
+                } else if ("containersHealth".equals(fieldName)) {
+                    deserializedVaultHealthProperties.containersHealth = ResourceHealthSummary.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultHealthProperties;
+        });
     }
 }

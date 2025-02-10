@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Model that represents the a list of branches and branch statuses. */
+/**
+ * Model that represents the a list of branches and branch statuses.
+ */
 @Immutable
-public final class StepStatus {
+public final class StepStatus implements JsonSerializable<StepStatus> {
     /*
      * The name of the step.
      */
-    @JsonProperty(value = "stepName", access = JsonProperty.Access.WRITE_ONLY)
     private String stepName;
 
     /*
      * The id of the step.
      */
-    @JsonProperty(value = "stepId", access = JsonProperty.Access.WRITE_ONLY)
     private String stepId;
 
     /*
      * The value of the status of the step.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * The array of branches.
      */
-    @JsonProperty(value = "branches", access = JsonProperty.Access.WRITE_ONLY)
     private List<BranchStatus> branches;
 
-    /** Creates an instance of StepStatus class. */
+    /**
+     * Creates an instance of StepStatus class.
+     */
     public StepStatus() {
     }
 
     /**
      * Get the stepName property: The name of the step.
-     *
+     * 
      * @return the stepName value.
      */
     public String stepName() {
@@ -50,7 +54,7 @@ public final class StepStatus {
 
     /**
      * Get the stepId property: The id of the step.
-     *
+     * 
      * @return the stepId value.
      */
     public String stepId() {
@@ -59,7 +63,7 @@ public final class StepStatus {
 
     /**
      * Get the status property: The value of the status of the step.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -68,7 +72,7 @@ public final class StepStatus {
 
     /**
      * Get the branches property: The array of branches.
-     *
+     * 
      * @return the branches value.
      */
     public List<BranchStatus> branches() {
@@ -77,12 +81,54 @@ public final class StepStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (branches() != null) {
             branches().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StepStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StepStatus if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the StepStatus.
+     */
+    public static StepStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StepStatus deserializedStepStatus = new StepStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("stepName".equals(fieldName)) {
+                    deserializedStepStatus.stepName = reader.getString();
+                } else if ("stepId".equals(fieldName)) {
+                    deserializedStepStatus.stepId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedStepStatus.status = reader.getString();
+                } else if ("branches".equals(fieldName)) {
+                    List<BranchStatus> branches = reader.readArray(reader1 -> BranchStatus.fromJson(reader1));
+                    deserializedStepStatus.branches = branches;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStepStatus;
+        });
     }
 }

@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ExistingProtectionProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExistingProtectionProfile model =
-            BinaryData
-                .fromString("{\"resourceType\":\"Existing\",\"protectionProfileId\":\"zi\"}")
+        ExistingProtectionProfile model
+            = BinaryData.fromString("{\"resourceType\":\"Existing\",\"protectionProfileId\":\"zi\"}")
                 .toObject(ExistingProtectionProfile.class);
         Assertions.assertEquals("zi", model.protectionProfileId());
     }

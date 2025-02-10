@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Reference to a public IP address.
  */
 @Fluent
-public final class ReferencedPublicIpAddress {
+public final class ReferencedPublicIpAddress implements JsonSerializable<ReferencedPublicIpAddress> {
     /*
      * The PublicIPAddress Reference.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /**
@@ -50,5 +53,41 @@ public final class ReferencedPublicIpAddress {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReferencedPublicIpAddress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReferencedPublicIpAddress if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReferencedPublicIpAddress.
+     */
+    public static ReferencedPublicIpAddress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReferencedPublicIpAddress deserializedReferencedPublicIpAddress = new ReferencedPublicIpAddress();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedReferencedPublicIpAddress.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReferencedPublicIpAddress;
+        });
     }
 }

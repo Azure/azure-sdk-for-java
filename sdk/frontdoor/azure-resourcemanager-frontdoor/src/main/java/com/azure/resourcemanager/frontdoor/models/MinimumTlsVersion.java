@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The minimum TLS version required from the clients to establish an SSL handshake with Front Door. */
+/**
+ * The minimum TLS version required from the clients to establish an SSL handshake with Front Door.
+ */
 public final class MinimumTlsVersion extends ExpandableStringEnum<MinimumTlsVersion> {
-    /** Static value 1.0 for MinimumTlsVersion. */
+    /**
+     * Static value 1.0 for MinimumTlsVersion.
+     */
     public static final MinimumTlsVersion ONE_ZERO = fromString("1.0");
 
-    /** Static value 1.2 for MinimumTlsVersion. */
+    /**
+     * Static value 1.2 for MinimumTlsVersion.
+     */
     public static final MinimumTlsVersion ONE_TWO = fromString("1.2");
 
     /**
      * Creates a new instance of MinimumTlsVersion value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class MinimumTlsVersion extends ExpandableStringEnum<MinimumTlsVers
 
     /**
      * Creates or finds a MinimumTlsVersion from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MinimumTlsVersion.
      */
-    @JsonCreator
     public static MinimumTlsVersion fromString(String name) {
         return fromString(name, MinimumTlsVersion.class);
     }
 
     /**
      * Gets known MinimumTlsVersion values.
-     *
+     * 
      * @return known MinimumTlsVersion values.
      */
     public static Collection<MinimumTlsVersion> values() {

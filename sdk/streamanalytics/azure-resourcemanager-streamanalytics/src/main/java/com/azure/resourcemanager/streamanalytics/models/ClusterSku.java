@@ -5,35 +5,37 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT (CreateOrUpdate) requests.
  */
 @Fluent
-public final class ClusterSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterSku.class);
-
+public final class ClusterSku implements JsonSerializable<ClusterSku> {
     /*
-     * Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate)
-     * requests.
+     * Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate) requests.
      */
-    @JsonProperty(value = "name")
     private ClusterSkuName name;
 
     /*
-     * Denotes the number of streaming units the cluster can support. Valid
-     * values for this property are multiples of 36 with a minimum value of 36
-     * and maximum value of 216. Required on PUT (CreateOrUpdate) requests.
+     * Denotes the number of streaming units the cluster can support. Valid values for this property are multiples of 36
+     * with a minimum value of 36 and maximum value of 216. Required on PUT (CreateOrUpdate) requests.
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /**
+     * Creates an instance of ClusterSku class.
+     */
+    public ClusterSku() {
+    }
+
+    /**
      * Get the name property: Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate) requests.
-     *
+     * 
      * @return the name value.
      */
     public ClusterSkuName name() {
@@ -42,7 +44,7 @@ public final class ClusterSku {
 
     /**
      * Set the name property: Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate) requests.
-     *
+     * 
      * @param name the name value to set.
      * @return the ClusterSku object itself.
      */
@@ -55,7 +57,7 @@ public final class ClusterSku {
      * Get the capacity property: Denotes the number of streaming units the cluster can support. Valid values for this
      * property are multiples of 36 with a minimum value of 36 and maximum value of 216. Required on PUT
      * (CreateOrUpdate) requests.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -66,7 +68,7 @@ public final class ClusterSku {
      * Set the capacity property: Denotes the number of streaming units the cluster can support. Valid values for this
      * property are multiples of 36 with a minimum value of 36 and maximum value of 216. Required on PUT
      * (CreateOrUpdate) requests.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the ClusterSku object itself.
      */
@@ -77,9 +79,48 @@ public final class ClusterSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterSku if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterSku.
+     */
+    public static ClusterSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterSku deserializedClusterSku = new ClusterSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedClusterSku.name = ClusterSkuName.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedClusterSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterSku;
+        });
     }
 }

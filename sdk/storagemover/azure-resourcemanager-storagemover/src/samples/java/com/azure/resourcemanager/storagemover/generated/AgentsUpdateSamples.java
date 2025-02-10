@@ -5,24 +5,38 @@
 package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.resourcemanager.storagemover.models.Agent;
+import com.azure.resourcemanager.storagemover.models.DayOfWeek;
+import com.azure.resourcemanager.storagemover.models.Minute;
+import com.azure.resourcemanager.storagemover.models.Time;
+import com.azure.resourcemanager.storagemover.models.UploadLimitSchedule;
+import com.azure.resourcemanager.storagemover.models.UploadLimitWeeklyRecurrence;
+import java.util.Arrays;
 
-/** Samples for Agents Update. */
+/**
+ * Samples for Agents Update.
+ */
 public final class AgentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/Agents_Update.json
+     * x-ms-original-file:
+     * specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2024-07-01/examples/Agents_Update.json
      */
     /**
      * Sample code: Agents_Update.
-     *
+     * 
      * @param manager Entry point to StorageMoverManager.
      */
     public static void agentsUpdate(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
-        Agent resource =
-            manager
-                .agents()
-                .getWithResponse(
-                    "examples-rg", "examples-storageMoverName", "examples-agentName", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withDescription("Updated Agent Description").apply();
+        Agent resource = manager.agents()
+            .getWithResponse("examples-rg", "examples-storageMoverName", "examples-agentName",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withDescription("Example Agent Description")
+            .withUploadLimitSchedule(new UploadLimitSchedule().withWeeklyRecurrences(Arrays
+                .asList(new UploadLimitWeeklyRecurrence().withStartTime(new Time().withHour(9).withMinute(Minute.ZERO))
+                    .withEndTime(new Time().withHour(18).withMinute(Minute.THREE_ZERO))
+                    .withDays(Arrays.asList(DayOfWeek.MONDAY))
+                    .withLimitInMbps(2000))))
+            .apply();
     }
 }

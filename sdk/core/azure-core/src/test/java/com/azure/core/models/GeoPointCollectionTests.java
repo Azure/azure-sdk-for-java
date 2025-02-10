@@ -30,10 +30,7 @@ public class GeoPointCollectionTests {
 
     @Test
     public void simpleConstructor() {
-        List<GeoPoint> points = Arrays.asList(
-            new GeoPoint(new GeoPosition(0, 0)),
-            new GeoPoint(new GeoPosition(1, 1))
-        );
+        List<GeoPoint> points = Arrays.asList(new GeoPoint(new GeoPosition(0, 0)), new GeoPoint(new GeoPosition(1, 1)));
 
         GeoPointCollection multiPoint = new GeoPointCollection(points);
 
@@ -45,10 +42,7 @@ public class GeoPointCollectionTests {
 
     @Test
     public void complexConstructor() {
-        List<GeoPoint> points = Arrays.asList(
-            new GeoPoint(new GeoPosition(0, 0)),
-            new GeoPoint(new GeoPosition(1, 1))
-        );
+        List<GeoPoint> points = Arrays.asList(new GeoPoint(new GeoPosition(0, 0)), new GeoPoint(new GeoPosition(1, 1)));
 
         GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
@@ -80,15 +74,10 @@ public class GeoPointCollectionTests {
     }
 
     private static Stream<Arguments> equalsSupplier() {
-        List<GeoPoint> points = Arrays.asList(
-            new GeoPoint(new GeoPosition(0, 0)),
-            new GeoPoint(new GeoPosition(1, 1))
-        );
+        List<GeoPoint> points = Arrays.asList(new GeoPoint(new GeoPosition(0, 0)), new GeoPoint(new GeoPosition(1, 1)));
 
-        List<GeoPoint> points1 = Arrays.asList(
-            new GeoPoint(new GeoPosition(0, 0)),
-            new GeoPoint(new GeoPosition(0, 1))
-        );
+        List<GeoPoint> points1
+            = Arrays.asList(new GeoPoint(new GeoPosition(0, 0)), new GeoPoint(new GeoPosition(0, 1)));
 
         GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
@@ -104,16 +93,13 @@ public class GeoPointCollectionTests {
             Arguments.of(multiPoint, 1, false),
 
             // Other is itself.
-            Arguments.of(multiPoint, multiPoint, true),
-            Arguments.of(multiPoint1, multiPoint1, true),
+            Arguments.of(multiPoint, multiPoint, true), Arguments.of(multiPoint1, multiPoint1, true),
 
             // Other is a different value.
-            Arguments.of(multiPoint, multiPoint1, false),
-            Arguments.of(multiPoint1, multiPoint, false),
+            Arguments.of(multiPoint, multiPoint1, false), Arguments.of(multiPoint1, multiPoint, false),
 
             // Other is the same value.
             Arguments.of(multiPoint, new GeoPointCollection(points), true),
-            Arguments.of(multiPoint1, new GeoPointCollection(points1, boundingBox, properties), true)
-        );
+            Arguments.of(multiPoint1, new GeoPointCollection(points1, boundingBox, properties), true));
     }
 }

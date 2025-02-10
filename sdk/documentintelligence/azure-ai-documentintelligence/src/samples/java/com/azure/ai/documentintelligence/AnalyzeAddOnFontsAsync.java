@@ -3,13 +3,12 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentStyle;
-import com.azure.ai.documentintelligence.models.FontStyle;
-import com.azure.ai.documentintelligence.models.FontWeight;
+import com.azure.ai.documentintelligence.models.DocumentFontStyle;
+import com.azure.ai.documentintelligence.models.DocumentFontWeight;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -20,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,15 +48,9 @@ public class AnalyzeAddOnFontsAsync {
         File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/fonts_and_languages.png");
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
-                null,
-                null,
-                null,
-                Arrays.asList(DocumentAnalysisFeature.STYLE_FONT),
-                null,
-                null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                    new AnalyzeDocumentOptions(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
             analyzeLayoutPoller
@@ -72,13 +64,13 @@ public class AnalyzeAddOnFontsAsync {
                             new RuntimeException(
                                 "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                     }
-                }).map(AnalyzeResultOperation::getAnalyzeResult);
+                });
 
         analyzeLayoutResultMono.subscribe(analyzeLayoutResult -> {
             // DocumentStyle has the following font related attributes:
             Map<String, List<DocumentStyle>> similarFontFamilies = new HashMap<>(); // e.g., 'Arial, sans-serif
-            Map<FontStyle, List<DocumentStyle>> fontStyles = new HashMap<>(); // e.g, 'italic'
-            Map<FontWeight, List<DocumentStyle>> fontWeights = new HashMap<>(); // e.g., 'bold'
+            Map<DocumentFontStyle, List<DocumentStyle>> fontStyles = new HashMap<>(); // e.g, 'italic'
+            Map<DocumentFontWeight, List<DocumentStyle>> fontWeights = new HashMap<>(); // e.g., 'bold'
             Map<String, List<DocumentStyle>> fontColors = new HashMap<>(); // in '#rrggbb' hexadecimal format
             Map<String, List<DocumentStyle>> fontBackgroundColors = new HashMap<>(); // in '#rrggbb' hexadecimal format
 
@@ -94,9 +86,9 @@ public class AnalyzeAddOnFontsAsync {
             });
 
             if (isDocumentContainsHandwritten) {
-                System.out.println("Document contains handwritten content");
+                System.out.println("AnalyzedDocument contains handwritten content");
             } else {
-                System.out.println("Document does not contains handwritten content");
+                System.out.println("AnalyzedDocument does not contains handwritten content");
             }
 
             System.out.println("----Fonts styles detected in the document----");
@@ -111,7 +103,7 @@ public class AnalyzeAddOnFontsAsync {
                     similarFontFamilies.get(similarFontFamily).add(documentStyle);
                 }
 
-                FontStyle fontStyle = documentStyle.getFontStyle();
+                DocumentFontStyle fontStyle = documentStyle.getFontStyle();
                 if (fontStyle != null) {
                     if (!fontStyles.containsKey(fontStyle)) {
                         fontStyles.put(fontStyle, new ArrayList<>());
@@ -119,7 +111,7 @@ public class AnalyzeAddOnFontsAsync {
                     fontStyles.get(fontStyle).add(documentStyle);
                 }
 
-                FontWeight fontWeight = documentStyle.getFontWeight();
+                DocumentFontWeight fontWeight = documentStyle.getFontWeight();
                 if (fontWeight != null) {
                     if (!fontWeights.containsKey(fontWeight)) {
                         fontWeights.put(fontWeight, new ArrayList<>());

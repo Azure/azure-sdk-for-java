@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.TopologyList;
 public final class TopologyListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TopologyList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-03-01T23:44:24Z\",\"topologyResources\":[]},\"location\":\"tuodxeszabbelaw\",\"id\":\"muaslzkw\",\"name\":\"rwoycqucwyh\",\"type\":\"hnomdrkywuh\"},{\"properties\":{\"calculatedDateTime\":\"2021-05-02T07:59:23Z\",\"topologyResources\":[]},\"location\":\"rutlwexxwlalniex\",\"id\":\"srzpgepqtybbww\",\"name\":\"gdakchz\",\"type\":\"vl\"},{\"properties\":{\"calculatedDateTime\":\"2021-05-06T06:22:36Z\",\"topologyResources\":[]},\"location\":\"cxkjibnxmysuxswq\",\"id\":\"ntvlwijpsttexo\",\"name\":\"qpwcyyufmh\",\"type\":\"uncuw\"},{\"properties\":{\"calculatedDateTime\":\"2021-11-18T23:48:24Z\",\"topologyResources\":[]},\"location\":\"dqzh\",\"id\":\"ctddun\",\"name\":\"ndy\",\"type\":\"pchrqbn\"}],\"nextLink\":\"rcgegydcwboxjum\"}")
-                .toObject(TopologyList.class);
+        TopologyList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-06-18T16:21:32Z\",\"topologyResources\":[{\"resourceId\":\"nenlsvxeizzg\",\"severity\":\"lnsrmffe\",\"recommendationsExist\":true,\"networkZones\":\"ktp\",\"topologyScore\":1424863309,\"location\":\"rteeamm\",\"parents\":[{},{},{},{}],\"children\":[{}]},{\"resourceId\":\"kzddrtkgdojbmxva\",\"severity\":\"efdeesve\",\"recommendationsExist\":false,\"networkZones\":\"pxtxsuwp\",\"topologyScore\":2079646623,\"location\":\"wsawddjibabxvi\",\"parents\":[{},{},{},{}],\"children\":[{},{}]}]},\"location\":\"eexavo\",\"id\":\"tfgle\",\"name\":\"dmdqb\",\"type\":\"pypqtgsfj\"}],\"nextLink\":\"b\"}")
+            .toObject(TopologyList.class);
     }
 
     @org.junit.jupiter.api.Test

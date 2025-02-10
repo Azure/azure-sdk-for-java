@@ -6,31 +6,37 @@ package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Request of a Hosts get Operation. */
+/**
+ * Request of a Hosts get Operation.
+ */
 @Fluent
-public final class HostsGetRequest {
+public final class HostsGetRequest implements JsonSerializable<HostsGetRequest> {
     /*
      * VM resource IDs
      */
-    @JsonProperty(value = "vmIds")
     private List<String> vmIds;
 
     /*
      * User Email
      */
-    @JsonProperty(value = "userEmail", required = true)
     private String userEmail;
 
-    /** Creates an instance of HostsGetRequest class. */
+    /**
+     * Creates an instance of HostsGetRequest class.
+     */
     public HostsGetRequest() {
     }
 
     /**
      * Get the vmIds property: VM resource IDs.
-     *
+     * 
      * @return the vmIds value.
      */
     public List<String> vmIds() {
@@ -39,7 +45,7 @@ public final class HostsGetRequest {
 
     /**
      * Set the vmIds property: VM resource IDs.
-     *
+     * 
      * @param vmIds the vmIds value to set.
      * @return the HostsGetRequest object itself.
      */
@@ -50,7 +56,7 @@ public final class HostsGetRequest {
 
     /**
      * Get the userEmail property: User Email.
-     *
+     * 
      * @return the userEmail value.
      */
     public String userEmail() {
@@ -59,7 +65,7 @@ public final class HostsGetRequest {
 
     /**
      * Set the userEmail property: User Email.
-     *
+     * 
      * @param userEmail the userEmail value to set.
      * @return the HostsGetRequest object itself.
      */
@@ -70,16 +76,56 @@ public final class HostsGetRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userEmail() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property userEmail in model HostsGetRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property userEmail in model HostsGetRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HostsGetRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userEmail", this.userEmail);
+        jsonWriter.writeArrayField("vmIds", this.vmIds, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostsGetRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostsGetRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HostsGetRequest.
+     */
+    public static HostsGetRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostsGetRequest deserializedHostsGetRequest = new HostsGetRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userEmail".equals(fieldName)) {
+                    deserializedHostsGetRequest.userEmail = reader.getString();
+                } else if ("vmIds".equals(fieldName)) {
+                    List<String> vmIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHostsGetRequest.vmIds = vmIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHostsGetRequest;
+        });
+    }
 }

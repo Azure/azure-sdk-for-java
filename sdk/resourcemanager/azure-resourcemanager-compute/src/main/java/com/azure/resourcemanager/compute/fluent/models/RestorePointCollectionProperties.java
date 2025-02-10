@@ -5,37 +5,37 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.RestorePointCollectionSourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The restore point collection properties.
  */
 @Fluent
-public final class RestorePointCollectionProperties {
+public final class RestorePointCollectionProperties implements JsonSerializable<RestorePointCollectionProperties> {
     /*
      * The properties of the source resource that this restore point collection is created from.
      */
-    @JsonProperty(value = "source")
     private RestorePointCollectionSourceProperties source;
 
     /*
      * The provisioning state of the restore point collection.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The unique id of the restore point collection.
      */
-    @JsonProperty(value = "restorePointCollectionId", access = JsonProperty.Access.WRITE_ONLY)
     private String restorePointCollectionId;
 
     /*
      * A list containing all restore points created under this restore point collection.
      */
-    @JsonProperty(value = "restorePoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorePointInner> restorePoints;
 
     /**
@@ -85,8 +85,7 @@ public final class RestorePointCollectionProperties {
     }
 
     /**
-     * Get the restorePoints property: A list containing all restore points created under this restore point
-     * collection.
+     * Get the restorePoints property: A list containing all restore points created under this restore point collection.
      * 
      * @return the restorePoints value.
      */
@@ -106,5 +105,51 @@ public final class RestorePointCollectionProperties {
         if (restorePoints() != null) {
             restorePoints().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePointCollectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePointCollectionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorePointCollectionProperties.
+     */
+    public static RestorePointCollectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePointCollectionProperties deserializedRestorePointCollectionProperties
+                = new RestorePointCollectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedRestorePointCollectionProperties.source
+                        = RestorePointCollectionSourceProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRestorePointCollectionProperties.provisioningState = reader.getString();
+                } else if ("restorePointCollectionId".equals(fieldName)) {
+                    deserializedRestorePointCollectionProperties.restorePointCollectionId = reader.getString();
+                } else if ("restorePoints".equals(fieldName)) {
+                    List<RestorePointInner> restorePoints
+                        = reader.readArray(reader1 -> RestorePointInner.fromJson(reader1));
+                    deserializedRestorePointCollectionProperties.restorePoints = restorePoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePointCollectionProperties;
+        });
     }
 }

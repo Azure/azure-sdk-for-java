@@ -20,7 +20,7 @@ public class JobScheduleListOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -46,7 +46,8 @@ public class JobScheduleListOptions {
 
     /**
      * The maximum time that the server can spend processing the request, in
-     * seconds. The default is 30 seconds.
+     * seconds. The default is 30 seconds. If the value is larger than 30, the
+     * default will be used instead.
      */
     @JsonProperty(value = "")
     private Integer timeout;
@@ -74,7 +75,7 @@ public class JobScheduleListOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
      *
      * @return the filter value
      */
@@ -83,7 +84,7 @@ public class JobScheduleListOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
      *
      * @param filter the filter value to set
      * @return the JobScheduleListOptions object itself.
@@ -154,7 +155,7 @@ public class JobScheduleListOptions {
     }
 
     /**
-     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @return the timeout value
      */
@@ -163,7 +164,7 @@ public class JobScheduleListOptions {
     }
 
     /**
-     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @param timeout the timeout value to set
      * @return the JobScheduleListOptions object itself.

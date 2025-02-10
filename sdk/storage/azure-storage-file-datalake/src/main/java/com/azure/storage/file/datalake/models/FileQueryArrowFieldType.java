@@ -3,9 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Defines values for FileQueryArrowFieldType.
  */
@@ -56,7 +53,6 @@ public enum FileQueryArrowFieldType {
      * @param value the serialized value to parse.
      * @return the parsed FileQueryArrowFieldType object, or null if unable to parse.
      */
-    @JsonCreator
     public static FileQueryArrowFieldType fromString(String value) {
         FileQueryArrowFieldType[] items = FileQueryArrowFieldType.values();
         for (FileQueryArrowFieldType item : items) {
@@ -67,7 +63,6 @@ public enum FileQueryArrowFieldType {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

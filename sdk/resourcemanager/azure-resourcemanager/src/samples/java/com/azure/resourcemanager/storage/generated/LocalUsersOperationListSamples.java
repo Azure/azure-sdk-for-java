@@ -4,22 +4,44 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-/** Samples for LocalUsersOperation List. */
+import com.azure.resourcemanager.storage.models.ListLocalUserIncludeParam;
+
+/**
+ * Samples for LocalUsersOperation List.
+ */
 public final class LocalUsersOperationListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/LocalUsersList.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/LocalUsersListNFSv3Enabled.
+     * json
      */
     /**
-     * Sample code: ListLocalUsers.
-     *
+     * Sample code: ListNFSv3EnabledLocalUsers.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listLocalUsers(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+    public static void listNFSv3EnabledLocalUsers(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getLocalUsersOperations()
-            .list("res6977", "sto2527", com.azure.core.util.Context.NONE);
+            .list("res6977", "sto2527", null, null, ListLocalUserIncludeParam.NFSV3, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/LocalUsersList.json
+     */
+    /**
+     * Sample code: ListLocalUsers.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void listLocalUsers(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
+            .manager()
+            .serviceClient()
+            .getLocalUsersOperations()
+            .list("res6977", "sto2527", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

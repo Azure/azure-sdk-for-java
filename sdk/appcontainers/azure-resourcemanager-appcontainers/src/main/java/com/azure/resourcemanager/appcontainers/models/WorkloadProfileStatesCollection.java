@@ -6,32 +6,38 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.fluent.models.WorkloadProfileStatesInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection of workloadProfileStates. */
+/**
+ * Collection of workloadProfileStates.
+ */
 @Fluent
-public final class WorkloadProfileStatesCollection {
+public final class WorkloadProfileStatesCollection implements JsonSerializable<WorkloadProfileStatesCollection> {
     /*
      * Collection of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<WorkloadProfileStatesInner> value;
 
     /*
      * Link to next page of resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of WorkloadProfileStatesCollection class. */
+    /**
+     * Creates an instance of WorkloadProfileStatesCollection class.
+     */
     public WorkloadProfileStatesCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkloadProfileStatesInner> value() {
@@ -40,7 +46,7 @@ public final class WorkloadProfileStatesCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkloadProfileStatesCollection object itself.
      */
@@ -51,7 +57,7 @@ public final class WorkloadProfileStatesCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,19 +66,60 @@ public final class WorkloadProfileStatesCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model WorkloadProfileStatesCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model WorkloadProfileStatesCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadProfileStatesCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadProfileStatesCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadProfileStatesCollection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkloadProfileStatesCollection.
+     */
+    public static WorkloadProfileStatesCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadProfileStatesCollection deserializedWorkloadProfileStatesCollection
+                = new WorkloadProfileStatesCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<WorkloadProfileStatesInner> value
+                        = reader.readArray(reader1 -> WorkloadProfileStatesInner.fromJson(reader1));
+                    deserializedWorkloadProfileStatesCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWorkloadProfileStatesCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadProfileStatesCollection;
+        });
+    }
 }

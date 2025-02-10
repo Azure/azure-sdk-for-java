@@ -6,28 +6,45 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Provider specific input for InMageRcmFailback failover. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcmFailback")
+/**
+ * Provider specific input for InMageRcmFailback failover.
+ */
 @Fluent
 public final class InMageRcmFailbackPlannedFailoverProviderInput extends PlannedFailoverProviderSpecificFailoverInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMageRcmFailback";
+
+    /*
      * The recovery point type.
      */
-    @JsonProperty(value = "recoveryPointType", required = true)
     private InMageRcmFailbackRecoveryPointType recoveryPointType;
 
-    /** Creates an instance of InMageRcmFailbackPlannedFailoverProviderInput class. */
+    /**
+     * Creates an instance of InMageRcmFailbackPlannedFailoverProviderInput class.
+     */
     public InMageRcmFailbackPlannedFailoverProviderInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public InMageRcmFailbackRecoveryPointType recoveryPointType() {
@@ -36,32 +53,72 @@ public final class InMageRcmFailbackPlannedFailoverProviderInput extends Planned
 
     /**
      * Set the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the InMageRcmFailbackPlannedFailoverProviderInput object itself.
      */
-    public InMageRcmFailbackPlannedFailoverProviderInput withRecoveryPointType(
-        InMageRcmFailbackRecoveryPointType recoveryPointType) {
+    public InMageRcmFailbackPlannedFailoverProviderInput
+        withRecoveryPointType(InMageRcmFailbackRecoveryPointType recoveryPointType) {
         this.recoveryPointType = recoveryPointType;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryPointType in model"
-                            + " InMageRcmFailbackPlannedFailoverProviderInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryPointType in model InMageRcmFailbackPlannedFailoverProviderInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InMageRcmFailbackPlannedFailoverProviderInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryPointType",
+            this.recoveryPointType == null ? null : this.recoveryPointType.toString());
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmFailbackPlannedFailoverProviderInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmFailbackPlannedFailoverProviderInput if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InMageRcmFailbackPlannedFailoverProviderInput.
+     */
+    public static InMageRcmFailbackPlannedFailoverProviderInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmFailbackPlannedFailoverProviderInput deserializedInMageRcmFailbackPlannedFailoverProviderInput
+                = new InMageRcmFailbackPlannedFailoverProviderInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryPointType".equals(fieldName)) {
+                    deserializedInMageRcmFailbackPlannedFailoverProviderInput.recoveryPointType
+                        = InMageRcmFailbackRecoveryPointType.fromString(reader.getString());
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmFailbackPlannedFailoverProviderInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmFailbackPlannedFailoverProviderInput;
+        });
+    }
 }

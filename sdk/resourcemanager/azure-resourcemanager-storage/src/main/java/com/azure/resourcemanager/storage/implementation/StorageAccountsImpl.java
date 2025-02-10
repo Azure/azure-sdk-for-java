@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.storage.implementation;
 
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
@@ -18,13 +19,14 @@ import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of StorageAccounts and its parent interfaces. */
-public class StorageAccountsImpl
-    extends TopLevelModifiableResourcesImpl<
-        StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsClient, StorageManager>
+public class StorageAccountsImpl extends
+    TopLevelModifiableResourcesImpl<StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsClient, StorageManager>
     implements StorageAccounts {
+    private final AuthorizationManager authorizationManager;
 
-    public StorageAccountsImpl(final StorageManager storageManager) {
+    public StorageAccountsImpl(final StorageManager storageManager, AuthorizationManager authorizationManager) {
         super(storageManager.serviceClient().getStorageAccounts(), storageManager);
+        this.authorizationManager = authorizationManager;
     }
 
     @Override
@@ -34,16 +36,14 @@ public class StorageAccountsImpl
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
-        return this
-            .inner()
+        return this.inner()
             .checkNameAvailabilityAsync(new StorageAccountCheckNameAvailabilityParameters().withName(name))
             .map(CheckNameAvailabilityResult::new);
     }
 
     @Override
     public StorageAccountImpl define(String name) {
-        return wrapModel(name)
-            .withSku(StorageAccountSkuType.STANDARD_RAGRS)
+        return wrapModel(name).withSku(StorageAccountSkuType.STANDARD_RAGRS)
             .withGeneralPurposeAccountKindV2()
             .withOnlyHttpsTraffic()
             .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
@@ -53,7 +53,7 @@ public class StorageAccountsImpl
 
     @Override
     protected StorageAccountImpl wrapModel(String name) {
-        return new StorageAccountImpl(name, new StorageAccountInner(), this.manager());
+        return new StorageAccountImpl(name, new StorageAccountInner(), this.manager(), this.authorizationManager);
     }
 
     @Override
@@ -61,7 +61,8 @@ public class StorageAccountsImpl
         if (storageAccountInner == null) {
             return null;
         }
-        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.manager());
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.manager(),
+            this.authorizationManager);
     }
 
     @Override
@@ -70,10 +71,9 @@ public class StorageAccountsImpl
     }
 
     @Override
-    public Mono<String> createSasTokenAsync(
-        String resourceGroupName, String accountName, ServiceSasParameters parameters) {
-        return this
-            .inner()
+    public Mono<String> createSasTokenAsync(String resourceGroupName, String accountName,
+        ServiceSasParameters parameters) {
+        return this.inner()
             .listServiceSasAsync(resourceGroupName, accountName, parameters)
             .map(ListServiceSasResponseInner::serviceSasToken);
     }

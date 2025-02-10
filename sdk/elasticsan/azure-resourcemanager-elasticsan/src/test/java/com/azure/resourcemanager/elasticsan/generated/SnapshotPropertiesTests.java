@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SnapshotPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SnapshotProperties model =
-            BinaryData
-                .fromString(
-                    "{\"creationData\":{\"sourceId\":\"t\"},\"provisioningState\":\"Failed\",\"sourceVolumeSizeGiB\":3754440623270645775,\"volumeName\":\"exilzznfqqnvwpmq\"}")
-                .toObject(SnapshotProperties.class);
-        Assertions.assertEquals("t", model.creationData().sourceId());
+        SnapshotProperties model = BinaryData.fromString(
+            "{\"creationData\":{\"sourceId\":\"eilpjzuaejxdu\"},\"provisioningState\":\"Failed\",\"sourceVolumeSizeGiB\":4414820611584016622,\"volumeName\":\"tdzumveekgpw\"}")
+            .toObject(SnapshotProperties.class);
+        Assertions.assertEquals("eilpjzuaejxdu", model.creationData().sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnapshotProperties model =
-            new SnapshotProperties().withCreationData(new SnapshotCreationData().withSourceId("t"));
+        SnapshotProperties model
+            = new SnapshotProperties().withCreationData(new SnapshotCreationData().withSourceId("eilpjzuaejxdu"));
         model = BinaryData.fromObject(model).toObject(SnapshotProperties.class);
-        Assertions.assertEquals("t", model.creationData().sourceId());
+        Assertions.assertEquals("eilpjzuaejxdu", model.creationData().sourceId());
     }
 }

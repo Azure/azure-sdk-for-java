@@ -11,22 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterInstanceViewPropertiesStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterInstanceViewPropertiesStatus model =
-            BinaryData
-                .fromString("{\"ready\":\"jervtia\",\"reason\":\"sdszue\",\"message\":\"sbzkf\"}")
+        ClusterInstanceViewPropertiesStatus model
+            = BinaryData.fromString("{\"ready\":\"thrrgh\",\"reason\":\"bdhqxvcxgf\",\"message\":\"dsofbshrns\"}")
                 .toObject(ClusterInstanceViewPropertiesStatus.class);
-        Assertions.assertEquals("jervtia", model.ready());
-        Assertions.assertEquals("sdszue", model.reason());
-        Assertions.assertEquals("sbzkf", model.message());
+        Assertions.assertEquals("thrrgh", model.ready());
+        Assertions.assertEquals("bdhqxvcxgf", model.reason());
+        Assertions.assertEquals("dsofbshrns", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterInstanceViewPropertiesStatus model =
-            new ClusterInstanceViewPropertiesStatus().withReady("jervtia").withReason("sdszue").withMessage("sbzkf");
+        ClusterInstanceViewPropertiesStatus model = new ClusterInstanceViewPropertiesStatus().withReady("thrrgh")
+            .withReason("bdhqxvcxgf")
+            .withMessage("dsofbshrns");
         model = BinaryData.fromObject(model).toObject(ClusterInstanceViewPropertiesStatus.class);
-        Assertions.assertEquals("jervtia", model.ready());
-        Assertions.assertEquals("sdszue", model.reason());
-        Assertions.assertEquals("sbzkf", model.message());
+        Assertions.assertEquals("thrrgh", model.ready());
+        Assertions.assertEquals("bdhqxvcxgf", model.reason());
+        Assertions.assertEquals("dsofbshrns", model.message());
     }
 }

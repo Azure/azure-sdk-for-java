@@ -15,23 +15,25 @@ public final class UsagesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsagesProperties model = BinaryData.fromString(
-            "{\"usages\":{\"value\":1715873571,\"usagesType\":\"Combined\"},\"unit\":\"zlobcufpd\",\"name\":{\"value\":\"btcqq\",\"localizedValue\":\"qglhq\"},\"resourceType\":\"ufo\",\"quotaPeriod\":\"jywif\",\"isQuotaApplicable\":false,\"properties\":\"dataaagdfmg\"}")
+            "{\"usages\":{\"value\":1010959661,\"usagesType\":\"Combined\"},\"unit\":\"fksymddystki\",\"name\":{\"value\":\"hqyudxorrqnbpoc\",\"localizedValue\":\"yifqrvkdvjsllrmv\"},\"resourceType\":\"f\",\"quotaPeriod\":\"t\",\"isQuotaApplicable\":false,\"properties\":\"dataulexxbczwtr\"}")
             .toObject(UsagesProperties.class);
-        Assertions.assertEquals(1715873571, model.usages().value());
+        Assertions.assertEquals(1010959661, model.usages().value());
         Assertions.assertEquals(UsagesTypes.COMBINED, model.usages().usagesType());
-        Assertions.assertEquals("btcqq", model.name().value());
-        Assertions.assertEquals("ufo", model.resourceType());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.name().value());
+        Assertions.assertEquals("f", model.resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UsagesProperties model = new UsagesProperties()
-            .withUsages(new UsagesObject().withValue(1715873571).withUsagesType(UsagesTypes.COMBINED))
-            .withName(new ResourceName().withValue("btcqq")).withResourceType("ufo").withProperties("dataaagdfmg");
+            .withUsages(new UsagesObject().withValue(1010959661).withUsagesType(UsagesTypes.COMBINED))
+            .withName(new ResourceName().withValue("hqyudxorrqnbpoc"))
+            .withResourceType("f")
+            .withProperties("dataulexxbczwtr");
         model = BinaryData.fromObject(model).toObject(UsagesProperties.class);
-        Assertions.assertEquals(1715873571, model.usages().value());
+        Assertions.assertEquals(1010959661, model.usages().value());
         Assertions.assertEquals(UsagesTypes.COMBINED, model.usages().usagesType());
-        Assertions.assertEquals("btcqq", model.name().value());
-        Assertions.assertEquals("ufo", model.resourceType());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.name().value());
+        Assertions.assertEquals("f", model.resourceType());
     }
 }

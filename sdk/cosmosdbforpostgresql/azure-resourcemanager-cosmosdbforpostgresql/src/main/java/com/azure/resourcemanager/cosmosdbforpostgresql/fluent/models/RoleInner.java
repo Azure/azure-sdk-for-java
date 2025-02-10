@@ -8,31 +8,53 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrincipalType;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.RoleType;
+import java.io.IOException;
 
-/** Represents a cluster role. */
+/**
+ * Represents a cluster role.
+ */
 @Fluent
 public final class RoleInner extends ProxyResource {
     /*
      * The properties of a role.
      */
-    @JsonProperty(value = "properties", required = true)
     private RoleProperties innerProperties = new RoleProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of RoleInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RoleInner class.
+     */
     public RoleInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a role.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoleProperties innerProperties() {
@@ -41,7 +63,7 @@ public final class RoleInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,8 +71,62 @@ public final class RoleInner extends ProxyResource {
     }
 
     /**
-     * Get the password property: The password of the cluster role.
-     *
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the roleType property: The roleType property.
+     * 
+     * @return the roleType value.
+     */
+    public RoleType roleType() {
+        return this.innerProperties() == null ? null : this.innerProperties().roleType();
+    }
+
+    /**
+     * Set the roleType property: The roleType property.
+     * 
+     * @param roleType the roleType value to set.
+     * @return the RoleInner object itself.
+     */
+    public RoleInner withRoleType(RoleType roleType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleProperties();
+        }
+        this.innerProperties().withRoleType(roleType);
+        return this;
+    }
+
+    /**
+     * Get the password property: The password of the cluster role. If an identity is used, password will not be
+     * required.
+     * 
      * @return the password value.
      */
     public String password() {
@@ -58,8 +134,9 @@ public final class RoleInner extends ProxyResource {
     }
 
     /**
-     * Set the password property: The password of the cluster role.
-     *
+     * Set the password property: The password of the cluster role. If an identity is used, password will not be
+     * required.
+     * 
      * @param password the password value to set.
      * @return the RoleInner object itself.
      */
@@ -73,7 +150,7 @@ public final class RoleInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the role.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -81,19 +158,132 @@ public final class RoleInner extends ProxyResource {
     }
 
     /**
+     * Get the objectId property: The objectId property.
+     * 
+     * @return the objectId value.
+     */
+    public String objectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().objectId();
+    }
+
+    /**
+     * Set the objectId property: The objectId property.
+     * 
+     * @param objectId the objectId value to set.
+     * @return the RoleInner object itself.
+     */
+    public RoleInner withObjectId(String objectId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleProperties();
+        }
+        this.innerProperties().withObjectId(objectId);
+        return this;
+    }
+
+    /**
+     * Get the principalType property: The principalType property.
+     * 
+     * @return the principalType value.
+     */
+    public PrincipalType principalType() {
+        return this.innerProperties() == null ? null : this.innerProperties().principalType();
+    }
+
+    /**
+     * Set the principalType property: The principalType property.
+     * 
+     * @param principalType the principalType value to set.
+     * @return the RoleInner object itself.
+     */
+    public RoleInner withPrincipalType(PrincipalType principalType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleProperties();
+        }
+        this.innerProperties().withPrincipalType(principalType);
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: The tenantId property.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
+    }
+
+    /**
+     * Set the tenantId property: The tenantId property.
+     * 
+     * @param tenantId the tenantId value to set.
+     * @return the RoleInner object itself.
+     */
+    public RoleInner withTenantId(String tenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleProperties();
+        }
+        this.innerProperties().withTenantId(tenantId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model RoleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model RoleInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoleInner.
+     */
+    public static RoleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleInner deserializedRoleInner = new RoleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRoleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRoleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRoleInner.innerProperties = RoleProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRoleInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleInner;
+        });
+    }
 }

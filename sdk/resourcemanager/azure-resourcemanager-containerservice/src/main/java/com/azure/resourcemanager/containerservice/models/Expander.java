@@ -5,12 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * The expander to use when scaling up
- *
+ * 
  * If not specified, the default is 'random'. See
  * [expanders](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders) for
  * more information.
@@ -38,7 +37,7 @@ public final class Expander extends ExpandableStringEnum<Expander> {
 
     /**
      * Creates a new instance of Expander value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -47,18 +46,17 @@ public final class Expander extends ExpandableStringEnum<Expander> {
 
     /**
      * Creates or finds a Expander from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Expander.
      */
-    @JsonCreator
     public static Expander fromString(String name) {
         return fromString(name, Expander.class);
     }
 
     /**
      * Gets known Expander values.
-     *
+     * 
      * @return known Expander values.
      */
     public static Collection<Expander> values() {

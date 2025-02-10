@@ -12,7 +12,7 @@ import com.azure.resourcemanager.communication.models.NameAvailabilityParameters
 public final class CommunicationServicesCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
      * communicationServices/checkNameAvailabilityAvailable.json
      */
     /**
@@ -22,14 +22,14 @@ public final class CommunicationServicesCheckNameAvailabilitySamples {
      */
     public static void
         checkNameAvailabilityAvailable(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().checkNameAvailabilityWithResponse(new NameAvailabilityParameters()
-            .withName("MyCommunicationService").withType("Microsoft.Communication/CommunicationServices"),
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .checkNameAvailabilityWithResponse(new NameAvailabilityParameters().withName("MyCommunicationService")
+                .withType("Microsoft.Communication/CommunicationServices"), com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
      * communicationServices/checkNameAvailabilityUnavailable.json
      */
     /**
@@ -39,8 +39,8 @@ public final class CommunicationServicesCheckNameAvailabilitySamples {
      */
     public static void
         checkNameAvailabilityUnavailable(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().checkNameAvailabilityWithResponse(new NameAvailabilityParameters()
-            .withName("MyCommunicationService").withType("Microsoft.Communication/CommunicationServices"),
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .checkNameAvailabilityWithResponse(new NameAvailabilityParameters().withName("MyCommunicationService")
+                .withType("Microsoft.Communication/CommunicationServices"), com.azure.core.util.Context.NONE);
     }
 }

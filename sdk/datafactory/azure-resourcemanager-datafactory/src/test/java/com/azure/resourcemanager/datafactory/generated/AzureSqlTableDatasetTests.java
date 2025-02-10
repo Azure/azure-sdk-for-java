@@ -19,35 +19,40 @@ public final class AzureSqlTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSqlTableDataset model = BinaryData.fromString(
-            "{\"type\":\"AzureSqlTable\",\"typeProperties\":{\"tableName\":\"databs\",\"schema\":\"datalonbzaowcahdkmb\",\"table\":\"datamihrijezbfsj\"},\"description\":\"czglkvbgukbsvb\",\"structure\":\"dataotygnbknhjg\",\"schema\":\"dataxaxw\",\"linkedServiceName\":{\"referenceName\":\"ffaspsdzkucsz\",\"parameters\":{\"zrn\":\"dataoaqipmnxclfrs\",\"wvpu\":\"datau\",\"n\":\"datafddtbfmekjcng\",\"aoy\":\"datadv\"}},\"parameters\":{\"nofxlttxoqx\":{\"type\":\"SecureString\",\"defaultValue\":\"datayxzmx\"},\"kcjhmmofbnivd\":{\"type\":\"Float\",\"defaultValue\":\"datazujsjirkrp\"},\"caccptbzetxyg\":{\"type\":\"SecureString\",\"defaultValue\":\"dataykpaxnlsfgny\"},\"eoxmpzzw\":{\"type\":\"Int\",\"defaultValue\":\"dataceecvjwyu\"}},\"annotations\":[\"datardvhaztkxbi\",\"datazfgxmbry\"],\"folder\":{\"name\":\"ibio\"},\"\":{\"wdrtxtfdaglmrco\":\"datasykqfd\",\"hubymfp\":\"datazzertkounzsiy\"}}")
+            "{\"type\":\"AzureSqlTable\",\"typeProperties\":{\"tableName\":\"datazwahdrdvhaztkxb\",\"schema\":\"datazfgxmbry\",\"table\":\"datawibios\"},\"description\":\"sykqfd\",\"structure\":\"datadrtx\",\"schema\":\"datadaglmrcok\",\"linkedServiceName\":{\"referenceName\":\"zertkounz\",\"parameters\":{\"fpopikzeb\":\"datawhuby\",\"wt\":\"datannf\",\"jculojhhylx\":\"dataqowsdlkhczygpmg\",\"bybwjmtftcvelnir\":\"dataevfiyymotu\"}},\"parameters\":{\"hfxrt\":{\"type\":\"String\",\"defaultValue\":\"datastpaqpibjgbvswm\"},\"ectcxsfmbzdx\":{\"type\":\"Object\",\"defaultValue\":\"datamsennqfabqcama\"},\"fxuzmsvzyqrbrn\":{\"type\":\"Object\",\"defaultValue\":\"datanbkdnny\"},\"uasnjeglhtrxb\":{\"type\":\"Object\",\"defaultValue\":\"datatlxfikjkxaravw\"}},\"annotations\":[\"datacjcnwjzb\",\"databl\",\"datarnwv\"],\"folder\":{\"name\":\"oq\"},\"\":{\"ooauffhxfqkmwzr\":\"datawwsdsorgfhjxsa\"}}")
             .toObject(AzureSqlTableDataset.class);
-        Assertions.assertEquals("czglkvbgukbsvb", model.description());
-        Assertions.assertEquals("ffaspsdzkucsz", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("nofxlttxoqx").type());
-        Assertions.assertEquals("ibio", model.folder().name());
+        Assertions.assertEquals("sykqfd", model.description());
+        Assertions.assertEquals("zertkounz", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("hfxrt").type());
+        Assertions.assertEquals("oq", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSqlTableDataset model = new AzureSqlTableDataset().withDescription("czglkvbgukbsvb")
-            .withStructure("dataotygnbknhjg").withSchema("dataxaxw")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ffaspsdzkucsz").withParameters(
-                mapOf("zrn", "dataoaqipmnxclfrs", "wvpu", "datau", "n", "datafddtbfmekjcng", "aoy", "datadv")))
-            .withParameters(mapOf("nofxlttxoqx",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datayxzmx"),
-                "kcjhmmofbnivd",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datazujsjirkrp"),
-                "caccptbzetxyg",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataykpaxnlsfgny"),
-                "eoxmpzzw", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataceecvjwyu")))
-            .withAnnotations(Arrays.asList("datardvhaztkxbi", "datazfgxmbry"))
-            .withFolder(new DatasetFolder().withName("ibio")).withTableName("databs")
-            .withSchemaTypePropertiesSchema("datalonbzaowcahdkmb").withTable("datamihrijezbfsj");
+        AzureSqlTableDataset model = new AzureSqlTableDataset().withDescription("sykqfd")
+            .withStructure("datadrtx")
+            .withSchema("datadaglmrcok")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("zertkounz")
+                .withParameters(mapOf("fpopikzeb", "datawhuby", "wt", "datannf", "jculojhhylx", "dataqowsdlkhczygpmg",
+                    "bybwjmtftcvelnir", "dataevfiyymotu")))
+            .withParameters(mapOf("hfxrt",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datastpaqpibjgbvswm"),
+                "ectcxsfmbzdx",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datamsennqfabqcama"),
+                "fxuzmsvzyqrbrn",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datanbkdnny"),
+                "uasnjeglhtrxb",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datatlxfikjkxaravw")))
+            .withAnnotations(Arrays.asList("datacjcnwjzb", "databl", "datarnwv"))
+            .withFolder(new DatasetFolder().withName("oq"))
+            .withTableName("datazwahdrdvhaztkxb")
+            .withSchemaTypePropertiesSchema("datazfgxmbry")
+            .withTable("datawibios");
         model = BinaryData.fromObject(model).toObject(AzureSqlTableDataset.class);
-        Assertions.assertEquals("czglkvbgukbsvb", model.description());
-        Assertions.assertEquals("ffaspsdzkucsz", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("nofxlttxoqx").type());
-        Assertions.assertEquals("ibio", model.folder().name());
+        Assertions.assertEquals("sykqfd", model.description());
+        Assertions.assertEquals("zertkounz", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("hfxrt").type());
+        Assertions.assertEquals("oq", model.folder().name());
     }
 
     // Use "Map.of" if available

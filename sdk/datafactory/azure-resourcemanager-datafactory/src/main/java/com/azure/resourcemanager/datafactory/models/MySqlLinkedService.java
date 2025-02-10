@@ -6,24 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.MySqlLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Linked service for MySQL data source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("MySql")
 @Fluent
 public final class MySqlLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "MySql";
+
+    /*
      * MySQL linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private MySqlLinkedServiceTypeProperties innerTypeProperties = new MySqlLinkedServiceTypeProperties();
 
     /**
@@ -33,12 +37,31 @@ public final class MySqlLinkedService extends LinkedService {
     }
 
     /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: MySQL linked service properties.
      * 
      * @return the innerTypeProperties value.
      */
     private MySqlLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MySqlLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -78,6 +101,31 @@ public final class MySqlLinkedService extends LinkedService {
     }
 
     /**
+     * Get the driverVersion property: The version of the MySQL driver. Type: string. V1 or empty for legacy driver, V2
+     * for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * 
+     * @return the driverVersion value.
+     */
+    public Object driverVersion() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().driverVersion();
+    }
+
+    /**
+     * Set the driverVersion property: The version of the MySQL driver. Type: string. V1 or empty for legacy driver, V2
+     * for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * 
+     * @param driverVersion the driverVersion value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withDriverVersion(Object driverVersion) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDriverVersion(driverVersion);
+        return this;
+    }
+
+    /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
      * 
@@ -99,6 +147,148 @@ public final class MySqlLinkedService extends LinkedService {
             this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the server property: Server name for connection. Type: string.
+     * 
+     * @return the server value.
+     */
+    public Object server() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().server();
+    }
+
+    /**
+     * Set the server property: Server name for connection. Type: string.
+     * 
+     * @param server the server value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withServer(Object server) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the port property: The port for the connection. Type: integer.
+     * 
+     * @return the port value.
+     */
+    public Object port() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().port();
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer.
+     * 
+     * @param port the port value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withPort(Object port) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPort(port);
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. Type: string.
+     * 
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: Username for authentication. Type: string.
+     * 
+     * @param username the username value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string.
+     * 
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string.
+     * 
+     * @param database the database value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
+     * Get the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1: prefer, 2: require, 3:
+     * verify-ca, 4: verify-full.
+     * 
+     * @return the sslMode value.
+     */
+    public Object sslMode() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sslMode();
+    }
+
+    /**
+     * Set the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1: prefer, 2: require, 3:
+     * verify-ca, 4: verify-full.
+     * 
+     * @param sslMode the sslMode value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withSslMode(Object sslMode) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSslMode(sslMode);
+        return this;
+    }
+
+    /**
+     * Get the useSystemTrustStore property: Use system trust store for connection. Type: integer. 0: enable, 1:
+     * disable.
+     * 
+     * @return the useSystemTrustStore value.
+     */
+    public Object useSystemTrustStore() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useSystemTrustStore();
+    }
+
+    /**
+     * Set the useSystemTrustStore property: Use system trust store for connection. Type: integer. 0: enable, 1:
+     * disable.
+     * 
+     * @param useSystemTrustStore the useSystemTrustStore value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withUseSystemTrustStore(Object useSystemTrustStore) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseSystemTrustStore(useSystemTrustStore);
         return this;
     }
 
@@ -126,8 +316,8 @@ public final class MySqlLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -136,8 +326,8 @@ public final class MySqlLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MySqlLinkedService object itself.
@@ -151,20 +341,275 @@ public final class MySqlLinkedService extends LinkedService {
     }
 
     /**
+     * Get the allowZeroDateTime property: This allows the special “zero” date value 0000-00-00 to be retrieved from the
+     * database. Type: boolean.
+     * 
+     * @return the allowZeroDateTime value.
+     */
+    public Object allowZeroDateTime() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().allowZeroDateTime();
+    }
+
+    /**
+     * Set the allowZeroDateTime property: This allows the special “zero” date value 0000-00-00 to be retrieved from the
+     * database. Type: boolean.
+     * 
+     * @param allowZeroDateTime the allowZeroDateTime value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withAllowZeroDateTime(Object allowZeroDateTime) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAllowZeroDateTime(allowZeroDateTime);
+        return this;
+    }
+
+    /**
+     * Get the connectionTimeout property: The length of time (in seconds) to wait for a connection to the server before
+     * terminating the attempt and generating an error. Type: integer.
+     * 
+     * @return the connectionTimeout value.
+     */
+    public Object connectionTimeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionTimeout();
+    }
+
+    /**
+     * Set the connectionTimeout property: The length of time (in seconds) to wait for a connection to the server before
+     * terminating the attempt and generating an error. Type: integer.
+     * 
+     * @param connectionTimeout the connectionTimeout value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withConnectionTimeout(Object connectionTimeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionTimeout(connectionTimeout);
+        return this;
+    }
+
+    /**
+     * Get the convertZeroDateTime property: True to return DateTime.MinValue for date or datetime columns that have
+     * disallowed values. Type: boolean.
+     * 
+     * @return the convertZeroDateTime value.
+     */
+    public Object convertZeroDateTime() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().convertZeroDateTime();
+    }
+
+    /**
+     * Set the convertZeroDateTime property: True to return DateTime.MinValue for date or datetime columns that have
+     * disallowed values. Type: boolean.
+     * 
+     * @param convertZeroDateTime the convertZeroDateTime value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withConvertZeroDateTime(Object convertZeroDateTime) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConvertZeroDateTime(convertZeroDateTime);
+        return this;
+    }
+
+    /**
+     * Get the guidFormat property: Determines which column type (if any) should be read as a GUID. Type: string. None:
+     * No column types are automatically read as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using
+     * lowercase hex with hyphens, which matches UUID.
+     * 
+     * @return the guidFormat value.
+     */
+    public Object guidFormat() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().guidFormat();
+    }
+
+    /**
+     * Set the guidFormat property: Determines which column type (if any) should be read as a GUID. Type: string. None:
+     * No column types are automatically read as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using
+     * lowercase hex with hyphens, which matches UUID.
+     * 
+     * @param guidFormat the guidFormat value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withGuidFormat(Object guidFormat) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withGuidFormat(guidFormat);
+        return this;
+    }
+
+    /**
+     * Get the sslCert property: The path to the client’s SSL certificate file in PEM format. SslKey must also be
+     * specified. Type: string.
+     * 
+     * @return the sslCert value.
+     */
+    public Object sslCert() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sslCert();
+    }
+
+    /**
+     * Set the sslCert property: The path to the client’s SSL certificate file in PEM format. SslKey must also be
+     * specified. Type: string.
+     * 
+     * @param sslCert the sslCert value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withSslCert(Object sslCert) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSslCert(sslCert);
+        return this;
+    }
+
+    /**
+     * Get the sslKey property: The path to the client’s SSL private key in PEM format. SslCert must also be specified.
+     * Type: string.
+     * 
+     * @return the sslKey value.
+     */
+    public Object sslKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sslKey();
+    }
+
+    /**
+     * Set the sslKey property: The path to the client’s SSL private key in PEM format. SslCert must also be specified.
+     * Type: string.
+     * 
+     * @param sslKey the sslKey value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withSslKey(Object sslKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSslKey(sslKey);
+        return this;
+    }
+
+    /**
+     * Get the treatTinyAsBoolean property: When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+     * 
+     * @return the treatTinyAsBoolean value.
+     */
+    public Object treatTinyAsBoolean() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().treatTinyAsBoolean();
+    }
+
+    /**
+     * Set the treatTinyAsBoolean property: When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+     * 
+     * @param treatTinyAsBoolean the treatTinyAsBoolean value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService withTreatTinyAsBoolean(Object treatTinyAsBoolean) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTreatTinyAsBoolean(treatTinyAsBoolean);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model MySqlLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model MySqlLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MySqlLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MySqlLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MySqlLinkedService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MySqlLinkedService.
+     */
+    public static MySqlLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MySqlLinkedService deserializedMySqlLinkedService = new MySqlLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedMySqlLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedMySqlLinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMySqlLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedMySqlLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedMySqlLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedMySqlLinkedService.innerTypeProperties
+                        = MySqlLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedMySqlLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMySqlLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedMySqlLinkedService;
+        });
+    }
 }

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.RunRequest;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a task run update parameters. */
+/**
+ * The properties of a task run update parameters.
+ */
 @Fluent
-public final class TaskRunPropertiesUpdateParameters {
+public final class TaskRunPropertiesUpdateParameters implements JsonSerializable<TaskRunPropertiesUpdateParameters> {
     /*
      * The request (parameters) for the new run
      */
-    @JsonProperty(value = "runRequest")
     private RunRequest runRequest;
 
     /*
      * How the run should be forced to rerun even if the run request configuration has not changed
      */
-    @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
 
-    /** Creates an instance of TaskRunPropertiesUpdateParameters class. */
+    /**
+     * Creates an instance of TaskRunPropertiesUpdateParameters class.
+     */
     public TaskRunPropertiesUpdateParameters() {
     }
 
     /**
      * Get the runRequest property: The request (parameters) for the new run.
-     *
+     * 
      * @return the runRequest value.
      */
     public RunRequest runRequest() {
@@ -38,7 +44,7 @@ public final class TaskRunPropertiesUpdateParameters {
 
     /**
      * Set the runRequest property: The request (parameters) for the new run.
-     *
+     * 
      * @param runRequest the runRequest value to set.
      * @return the TaskRunPropertiesUpdateParameters object itself.
      */
@@ -50,7 +56,7 @@ public final class TaskRunPropertiesUpdateParameters {
     /**
      * Get the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -60,7 +66,7 @@ public final class TaskRunPropertiesUpdateParameters {
     /**
      * Set the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the TaskRunPropertiesUpdateParameters object itself.
      */
@@ -71,12 +77,52 @@ public final class TaskRunPropertiesUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (runRequest() != null) {
             runRequest().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("runRequest", this.runRequest);
+        jsonWriter.writeStringField("forceUpdateTag", this.forceUpdateTag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskRunPropertiesUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskRunPropertiesUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskRunPropertiesUpdateParameters.
+     */
+    public static TaskRunPropertiesUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskRunPropertiesUpdateParameters deserializedTaskRunPropertiesUpdateParameters
+                = new TaskRunPropertiesUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runRequest".equals(fieldName)) {
+                    deserializedTaskRunPropertiesUpdateParameters.runRequest = RunRequest.fromJson(reader);
+                } else if ("forceUpdateTag".equals(fieldName)) {
+                    deserializedTaskRunPropertiesUpdateParameters.forceUpdateTag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskRunPropertiesUpdateParameters;
+        });
     }
 }

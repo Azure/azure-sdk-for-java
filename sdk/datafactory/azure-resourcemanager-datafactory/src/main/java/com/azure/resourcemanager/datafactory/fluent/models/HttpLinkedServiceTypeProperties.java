@@ -6,53 +6,51 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.HttpAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties specific to this linked service type.
  */
 @Fluent
-public final class HttpLinkedServiceTypeProperties {
+public final class HttpLinkedServiceTypeProperties implements JsonSerializable<HttpLinkedServiceTypeProperties> {
     /*
      * The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
      * The authentication type to be used to connect to the HTTP server.
      */
-    @JsonProperty(value = "authenticationType")
     private HttpAuthenticationType authenticationType;
 
     /*
      * User name for Basic, Digest, or Windows authentication. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName")
     private Object username;
 
     /*
      * Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData authentication.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
-     * The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression
-     * with resultType object).
+     * The additional HTTP headers in the request to RESTful API used for authorization. Type: key value pairs (value
+     * should be string type).
      */
-    @JsonProperty(value = "authHeaders")
     private Object authHeaders;
 
     /*
-     * Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with
-     * ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type:
-     * string (or Expression with resultType string).
+     * Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with ClientCertificate
+     * authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type: string (or
+     * Expression with resultType string).
      */
-    @JsonProperty(value = "embeddedCertData")
     private Object embeddedCertData;
 
     /*
@@ -60,21 +58,18 @@ public final class HttpLinkedServiceTypeProperties {
      * copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be
      * specified. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "certThumbprint")
     private Object certThumbprint;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * If true, validate the HTTPS server SSL certificate. Default value is true. Type: boolean (or Expression with
      * resultType boolean).
      */
-    @JsonProperty(value = "enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
 
     /**
@@ -171,7 +166,7 @@ public final class HttpLinkedServiceTypeProperties {
 
     /**
      * Get the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
+     * Type: key value pairs (value should be string type).
      * 
      * @return the authHeaders value.
      */
@@ -181,7 +176,7 @@ public final class HttpLinkedServiceTypeProperties {
 
     /**
      * Set the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
+     * Type: key value pairs (value should be string type).
      * 
      * @param authHeaders the authHeaders value to set.
      * @return the HttpLinkedServiceTypeProperties object itself.
@@ -193,8 +188,8 @@ public final class HttpLinkedServiceTypeProperties {
 
     /**
      * Get the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType string).
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
      * 
      * @return the embeddedCertData value.
      */
@@ -204,8 +199,8 @@ public final class HttpLinkedServiceTypeProperties {
 
     /**
      * Set the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType string).
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
      * 
      * @param embeddedCertData the embeddedCertData value to set.
      * @return the HttpLinkedServiceTypeProperties object itself.
@@ -240,8 +235,8 @@ public final class HttpLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -250,8 +245,8 @@ public final class HttpLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HttpLinkedServiceTypeProperties object itself.
@@ -291,8 +286,9 @@ public final class HttpLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model HttpLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model HttpLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();
@@ -300,4 +296,69 @@ public final class HttpLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("url", this.url);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("authHeaders", this.authHeaders);
+        jsonWriter.writeUntypedField("embeddedCertData", this.embeddedCertData);
+        jsonWriter.writeUntypedField("certThumbprint", this.certThumbprint);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HttpLinkedServiceTypeProperties.
+     */
+    public static HttpLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpLinkedServiceTypeProperties deserializedHttpLinkedServiceTypeProperties
+                = new HttpLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedHttpLinkedServiceTypeProperties.url = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedHttpLinkedServiceTypeProperties.authenticationType
+                        = HttpAuthenticationType.fromString(reader.getString());
+                } else if ("userName".equals(fieldName)) {
+                    deserializedHttpLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedHttpLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("authHeaders".equals(fieldName)) {
+                    deserializedHttpLinkedServiceTypeProperties.authHeaders = reader.readUntyped();
+                } else if ("embeddedCertData".equals(fieldName)) {
+                    deserializedHttpLinkedServiceTypeProperties.embeddedCertData = reader.readUntyped();
+                } else if ("certThumbprint".equals(fieldName)) {
+                    deserializedHttpLinkedServiceTypeProperties.certThumbprint = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedHttpLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("enableServerCertificateValidation".equals(fieldName)) {
+                    deserializedHttpLinkedServiceTypeProperties.enableServerCertificateValidation
+                        = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpLinkedServiceTypeProperties;
+        });
+    }
 }

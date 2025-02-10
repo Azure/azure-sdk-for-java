@@ -425,21 +425,72 @@ public interface NetAppAccount {
     void renewCredentials(Context context);
 
     /**
-     * Migrate volumes encryption key source.
+     * Transition volumes encryption from PMK to CMK.
      * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void migrateEncryptionKey();
+    void transitionToCmk();
 
     /**
-     * Migrate volumes encryption key source.
+     * Transition volumes encryption from PMK to CMK.
      * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param body The required parameters to perform encryption transition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void transitionToCmk(EncryptionTransitionRequest body, Context context);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void getChangeKeyVaultInformation();
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void getChangeKeyVaultInformation(Context context);
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void changeKeyVault();
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
      * 
      * @param body The required parameters to perform encryption migration.
      * @param context The context to associate with this operation.
@@ -447,5 +498,5 @@ public interface NetAppAccount {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void migrateEncryptionKey(EncryptionMigrationRequest body, Context context);
+    void changeKeyVault(ChangeKeyVault body, Context context);
 }

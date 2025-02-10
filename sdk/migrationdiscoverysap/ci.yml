@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/migrationdiscoverysap/ci.yml
+      - sdk/migrationdiscoverysap/azure-resourcemanager-migrationdiscoverysap/
+    exclude:
+      - sdk/migrationdiscoverysap/pom.xml
+      - sdk/migrationdiscoverysap/azure-resourcemanager-migrationdiscoverysap/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/migrationdiscoverysap/ci.yml
+      - sdk/migrationdiscoverysap/azure-resourcemanager-migrationdiscoverysap/
+    exclude:
+      - sdk/migrationdiscoverysap/pom.xml
+      - sdk/migrationdiscoverysap/azure-resourcemanager-migrationdiscoverysap/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagermigrationdiscoverysap
+    displayName: azure-resourcemanager-migrationdiscoverysap
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: migrationdiscoverysap
+    Artifacts:
+      - name: azure-resourcemanager-migrationdiscoverysap
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermigrationdiscoverysap
+        releaseInBatch: ${{ parameters.release_azureresourcemanagermigrationdiscoverysap }}

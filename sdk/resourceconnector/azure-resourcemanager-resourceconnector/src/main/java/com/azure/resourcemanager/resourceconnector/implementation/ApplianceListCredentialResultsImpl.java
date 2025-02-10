@@ -16,8 +16,7 @@ public final class ApplianceListCredentialResultsImpl implements ApplianceListCr
 
     private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
-    ApplianceListCredentialResultsImpl(
-        ApplianceListCredentialResultsInner innerObject,
+    ApplianceListCredentialResultsImpl(ApplianceListCredentialResultsInner innerObject,
         com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

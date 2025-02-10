@@ -18,8 +18,12 @@ import java.util.stream.Collectors;
  * and individual items in such pages. When processing the response by page each response will contain the items in the
  * page as well as the REST response details such as status code and headers.
  *
- * <p>To process one item at a time, simply subscribe to this flux as shown below </p>
- * <p><strong>Code sample</strong></p>
+ * <p>
+ * To process one item at a time, simply subscribe to this flux as shown below
+ * </p>
+ * <p>
+ * <strong>Code sample</strong>
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedflux.items -->
  * <pre>
  * &#47;&#47; Subscribe to process one item at a time
@@ -31,8 +35,12 @@ import java.util.stream.Collectors;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedflux.items -->
  *
- * <p>To process one page at a time, use {@link #byPage()} method as shown below </p>
- * <p><strong>Code sample</strong></p>
+ * <p>
+ * To process one page at a time, use {@link #byPage()} method as shown below
+ * </p>
+ * <p>
+ * <strong>Code sample</strong>
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedflux.pages -->
  * <pre>
  * &#47;&#47; Subscribe to process one page at a time from the beginning
@@ -46,9 +54,13 @@ import java.util.stream.Collectors;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedflux.pages -->
  *
- * <p>To process items one page at a time starting from any page associated with a continuation token,
- * use {@link #byPage(String)} as shown below</p>
- * <p><strong>Code sample</strong></p>
+ * <p>
+ * To process items one page at a time starting from any page associated with a continuation token,
+ * use {@link #byPage(String)} as shown below
+ * </p>
+ * <p>
+ * <strong>Code sample</strong>
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedflux.pagesWithContinuationToken -->
  * <pre>
  * &#47;&#47; Subscribe to process one page at a time starting from a page associated with
@@ -226,14 +238,14 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      *
      * &#47;&#47; Create a PagedFlux from a PagedFlux with all exceptions mapped to a specific exception.
      * final PagedFlux&lt;Integer&gt; pagedFlux = createAnInstance&#40;&#41;;
-     * final Supplier&lt;PageRetriever&lt;String, PagedResponse&lt;Integer&gt;&gt;&gt; eprovider = &#40;&#41; -&gt;
+     * final Supplier&lt;PageRetriever&lt;String, PagedResponse&lt;Integer&gt;&gt;&gt; exceptionProvider = &#40;&#41; -&gt;
      *     &#40;continuationToken, pageSize&#41; -&gt; &#123;
      *         Flux&lt;PagedResponse&lt;Integer&gt;&gt; flux = &#40;continuationToken == null&#41;
      *             ? pagedFlux.byPage&#40;&#41;
      *             : pagedFlux.byPage&#40;continuationToken&#41;;
      *         return flux.onErrorMap&#40;Exception.class, PaginationException::new&#41;;
      *     &#125;;
-     * final PagedFlux&lt;Integer&gt; exceptionMappedPagedFlux = PagedFlux.create&#40;eprovider&#41;;
+     * final PagedFlux&lt;Integer&gt; exceptionMappedPagedFlux = PagedFlux.create&#40;exceptionProvider&#41;;
      * </pre>
      * <!-- end com.azure.core.http.rest.pagedflux.create.decoration -->
      *
@@ -256,9 +268,7 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     @Deprecated
     public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<T>> flux = (continuationToken == null)
-                ? byPage()
-                : byPage(continuationToken);
+            Flux<PagedResponse<T>> flux = (continuationToken == null) ? byPage() : byPage(continuationToken);
             return flux.map(mapPagedResponse(mapper));
         };
         return PagedFlux.create(provider);
@@ -266,10 +276,8 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
 
     private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
         return pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
-            pagedResponse.getStatusCode(),
-            pagedResponse.getHeaders(),
+            pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
             pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
-            pagedResponse.getContinuationToken(),
-            null);
+            pagedResponse.getContinuationToken(), null);
     }
 }

@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The instance view of a dedicated host.
  */
 @Fluent
-public class DedicatedHostInstanceView {
+public class DedicatedHostInstanceView implements JsonSerializable<DedicatedHostInstanceView> {
     /*
      * Specifies the unique id of the dedicated physical machine on which the dedicated host resides.
      */
-    @JsonProperty(value = "assetId", access = JsonProperty.Access.WRITE_ONLY)
     private String assetId;
 
     /*
      * Unutilized capacity of the dedicated host.
      */
-    @JsonProperty(value = "availableCapacity")
     private DedicatedHostAvailableCapacity availableCapacity;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /**
@@ -45,6 +46,18 @@ public class DedicatedHostInstanceView {
      */
     public String assetId() {
         return this.assetId;
+    }
+
+    /**
+     * Set the assetId property: Specifies the unique id of the dedicated physical machine on which the dedicated host
+     * resides.
+     * 
+     * @param assetId the assetId value to set.
+     * @return the DedicatedHostInstanceView object itself.
+     */
+    DedicatedHostInstanceView withAssetId(String assetId) {
+        this.assetId = assetId;
+        return this;
     }
 
     /**
@@ -99,5 +112,49 @@ public class DedicatedHostInstanceView {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("availableCapacity", this.availableCapacity);
+        jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHostInstanceView from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHostInstanceView if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedHostInstanceView.
+     */
+    public static DedicatedHostInstanceView fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHostInstanceView deserializedDedicatedHostInstanceView = new DedicatedHostInstanceView();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("assetId".equals(fieldName)) {
+                    deserializedDedicatedHostInstanceView.assetId = reader.getString();
+                } else if ("availableCapacity".equals(fieldName)) {
+                    deserializedDedicatedHostInstanceView.availableCapacity
+                        = DedicatedHostAvailableCapacity.fromJson(reader);
+                } else if ("statuses".equals(fieldName)) {
+                    List<InstanceViewStatus> statuses
+                        = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
+                    deserializedDedicatedHostInstanceView.statuses = statuses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHostInstanceView;
+        });
     }
 }

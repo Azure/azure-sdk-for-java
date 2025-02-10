@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Specification of destinations that can be used in data flows. */
+/**
+ * Specification of destinations that can be used in data flows.
+ */
 @Fluent
-public class DestinationsSpec {
+public class DestinationsSpec implements JsonSerializable<DestinationsSpec> {
     /*
      * List of Log Analytics destinations.
      */
-    @JsonProperty(value = "logAnalytics")
     private List<LogAnalyticsDestination> logAnalytics;
 
     /*
      * Azure Monitor Metrics destination.
      */
-    @JsonProperty(value = "azureMonitorMetrics")
     private DestinationsSpecAzureMonitorMetrics azureMonitorMetrics;
 
-    /** Creates an instance of DestinationsSpec class. */
+    /**
+     * Creates an instance of DestinationsSpec class.
+     */
     public DestinationsSpec() {
     }
 
     /**
      * Get the logAnalytics property: List of Log Analytics destinations.
-     *
+     * 
      * @return the logAnalytics value.
      */
     public List<LogAnalyticsDestination> logAnalytics() {
@@ -38,7 +44,7 @@ public class DestinationsSpec {
 
     /**
      * Set the logAnalytics property: List of Log Analytics destinations.
-     *
+     * 
      * @param logAnalytics the logAnalytics value to set.
      * @return the DestinationsSpec object itself.
      */
@@ -49,7 +55,7 @@ public class DestinationsSpec {
 
     /**
      * Get the azureMonitorMetrics property: Azure Monitor Metrics destination.
-     *
+     * 
      * @return the azureMonitorMetrics value.
      */
     public DestinationsSpecAzureMonitorMetrics azureMonitorMetrics() {
@@ -58,7 +64,7 @@ public class DestinationsSpec {
 
     /**
      * Set the azureMonitorMetrics property: Azure Monitor Metrics destination.
-     *
+     * 
      * @param azureMonitorMetrics the azureMonitorMetrics value to set.
      * @return the DestinationsSpec object itself.
      */
@@ -69,7 +75,7 @@ public class DestinationsSpec {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,5 +85,47 @@ public class DestinationsSpec {
         if (azureMonitorMetrics() != null) {
             azureMonitorMetrics().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("logAnalytics", this.logAnalytics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("azureMonitorMetrics", this.azureMonitorMetrics);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DestinationsSpec from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DestinationsSpec if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DestinationsSpec.
+     */
+    public static DestinationsSpec fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DestinationsSpec deserializedDestinationsSpec = new DestinationsSpec();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logAnalytics".equals(fieldName)) {
+                    List<LogAnalyticsDestination> logAnalytics
+                        = reader.readArray(reader1 -> LogAnalyticsDestination.fromJson(reader1));
+                    deserializedDestinationsSpec.logAnalytics = logAnalytics;
+                } else if ("azureMonitorMetrics".equals(fieldName)) {
+                    deserializedDestinationsSpec.azureMonitorMetrics
+                        = DestinationsSpecAzureMonitorMetrics.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDestinationsSpec;
+        });
     }
 }

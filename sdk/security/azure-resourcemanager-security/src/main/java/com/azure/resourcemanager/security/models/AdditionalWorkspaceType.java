@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Workspace type. */
+/**
+ * Workspace type.
+ */
 public final class AdditionalWorkspaceType extends ExpandableStringEnum<AdditionalWorkspaceType> {
-    /** Static value Sentinel for AdditionalWorkspaceType. */
+    /**
+     * Static value Sentinel for AdditionalWorkspaceType.
+     */
     public static final AdditionalWorkspaceType SENTINEL = fromString("Sentinel");
 
     /**
      * Creates a new instance of AdditionalWorkspaceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class AdditionalWorkspaceType extends ExpandableStringEnum<Addition
 
     /**
      * Creates or finds a AdditionalWorkspaceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AdditionalWorkspaceType.
      */
-    @JsonCreator
     public static AdditionalWorkspaceType fromString(String name) {
         return fromString(name, AdditionalWorkspaceType.class);
     }
 
     /**
      * Gets known AdditionalWorkspaceType values.
-     *
+     * 
      * @return known AdditionalWorkspaceType values.
      */
     public static Collection<AdditionalWorkspaceType> values() {

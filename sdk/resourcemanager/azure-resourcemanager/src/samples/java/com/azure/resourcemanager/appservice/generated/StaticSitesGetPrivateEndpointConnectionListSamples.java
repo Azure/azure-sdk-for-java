@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class StaticSitesGetPrivateEndpointConnectionListSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSitePrivateEndpointConnectionList.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetSitePrivateEndpointConnectionList.
      * json
      */
     /**
@@ -20,7 +20,10 @@ public final class StaticSitesGetPrivateEndpointConnectionListSamples {
      */
     public static void
         getAListOfPrivateEndpointConnectionsAssociatedWithASite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().getPrivateEndpointConnectionList("rg",
-            "testStaticSite0", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .getPrivateEndpointConnectionList("rg", "testStaticSite0", com.azure.core.util.Context.NONE);
     }
 }

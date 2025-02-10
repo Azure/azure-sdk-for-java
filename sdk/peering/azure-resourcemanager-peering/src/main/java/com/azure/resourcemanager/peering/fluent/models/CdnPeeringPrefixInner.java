@@ -6,24 +6,45 @@ package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The CDN peering prefix. */
+/**
+ * The CDN peering prefix.
+ */
 @Immutable
 public final class CdnPeeringPrefixInner extends ProxyResource {
     /*
      * The properties that define a cdn peering prefix.
      */
-    @JsonProperty(value = "properties")
     private CdnPeeringPrefixProperties innerProperties;
 
-    /** Creates an instance of CdnPeeringPrefixInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CdnPeeringPrefixInner class.
+     */
     public CdnPeeringPrefixInner() {
     }
 
     /**
      * Get the innerProperties property: The properties that define a cdn peering prefix.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CdnPeeringPrefixProperties innerProperties() {
@@ -31,8 +52,38 @@ public final class CdnPeeringPrefixInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the prefix property: The prefix.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
@@ -41,7 +92,7 @@ public final class CdnPeeringPrefixInner extends ProxyResource {
 
     /**
      * Get the azureRegion property: The Azure region.
-     *
+     * 
      * @return the azureRegion value.
      */
     public String azureRegion() {
@@ -50,7 +101,7 @@ public final class CdnPeeringPrefixInner extends ProxyResource {
 
     /**
      * Get the azureService property: The Azure service.
-     *
+     * 
      * @return the azureService value.
      */
     public String azureService() {
@@ -59,7 +110,7 @@ public final class CdnPeeringPrefixInner extends ProxyResource {
 
     /**
      * Get the isPrimaryRegion property: The flag that indicates whether or not this is the primary region.
-     *
+     * 
      * @return the isPrimaryRegion value.
      */
     public Boolean isPrimaryRegion() {
@@ -68,7 +119,7 @@ public final class CdnPeeringPrefixInner extends ProxyResource {
 
     /**
      * Get the bgpCommunity property: The BGP Community.
-     *
+     * 
      * @return the bgpCommunity value.
      */
     public String bgpCommunity() {
@@ -77,12 +128,55 @@ public final class CdnPeeringPrefixInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CdnPeeringPrefixInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CdnPeeringPrefixInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CdnPeeringPrefixInner.
+     */
+    public static CdnPeeringPrefixInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CdnPeeringPrefixInner deserializedCdnPeeringPrefixInner = new CdnPeeringPrefixInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCdnPeeringPrefixInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCdnPeeringPrefixInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCdnPeeringPrefixInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCdnPeeringPrefixInner.innerProperties = CdnPeeringPrefixProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCdnPeeringPrefixInner;
+        });
     }
 }

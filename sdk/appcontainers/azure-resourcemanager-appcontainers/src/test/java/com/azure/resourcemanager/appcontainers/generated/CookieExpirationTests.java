@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class CookieExpirationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CookieExpiration model =
-            BinaryData
-                .fromString("{\"convention\":\"FixedTime\",\"timeToExpiration\":\"y\"}")
+        CookieExpiration model
+            = BinaryData.fromString("{\"convention\":\"FixedTime\",\"timeToExpiration\":\"wxrjfeallnwsub\"}")
                 .toObject(CookieExpiration.class);
         Assertions.assertEquals(CookieExpirationConvention.FIXED_TIME, model.convention());
-        Assertions.assertEquals("y", model.timeToExpiration());
+        Assertions.assertEquals("wxrjfeallnwsub", model.timeToExpiration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CookieExpiration model =
-            new CookieExpiration().withConvention(CookieExpirationConvention.FIXED_TIME).withTimeToExpiration("y");
+        CookieExpiration model = new CookieExpiration().withConvention(CookieExpirationConvention.FIXED_TIME)
+            .withTimeToExpiration("wxrjfeallnwsub");
         model = BinaryData.fromObject(model).toObject(CookieExpiration.class);
         Assertions.assertEquals(CookieExpirationConvention.FIXED_TIME, model.convention());
-        Assertions.assertEquals("y", model.timeToExpiration());
+        Assertions.assertEquals("wxrjfeallnwsub", model.timeToExpiration());
     }
 }

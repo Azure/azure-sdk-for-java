@@ -6,73 +6,56 @@ package com.azure.resourcemanager.advisor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.advisor.AdvisorManager;
+import com.azure.resourcemanager.advisor.models.Category;
 import com.azure.resourcemanager.advisor.models.ConfigData;
 import com.azure.resourcemanager.advisor.models.ConfigurationName;
 import com.azure.resourcemanager.advisor.models.CpuThreshold;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.advisor.models.DigestConfig;
+import com.azure.resourcemanager.advisor.models.DigestConfigState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ConfigurationsCreateInResourceGroupWithResponseMockTests {
     @Test
     public void testCreateInResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"exclude\":true,\"lowCpuThreshold\":\"5\",\"digests\":[{\"name\":\"mifthnzdnd\",\"actionGroupResourceId\":\"gnayqigynduh\",\"frequency\":690810711,\"categories\":[\"OperationalExcellence\",\"Cost\"],\"language\":\"umaq\",\"state\":\"Disabled\"}]},\"id\":\"gycdu\",\"name\":\"ertgccymva\",\"type\":\"l\"}";
 
-        String responseStr =
-            "{\"properties\":{\"exclude\":true,\"lowCpuThreshold\":\"20\",\"digests\":[]},\"id\":\"vwhheunmmqhgyx\",\"name\":\"konocu\",\"type\":\"oklyaxuconuq\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AdvisorManager manager = AdvisorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        AdvisorManager manager =
-            AdvisorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ConfigData response =
-            manager
-                .configurations()
-                .define(ConfigurationName.DEFAULT)
-                .withExistingResourceGroup("zbinjeputtm")
-                .withExclude(false)
-                .withLowCpuThreshold(CpuThreshold.TWO_ZERO)
-                .withDigests(Arrays.asList())
-                .create();
+        ConfigData response = manager.configurations()
+            .define(ConfigurationName.DEFAULT)
+            .withExistingResourceGroup("irx")
+            .withExclude(false)
+            .withLowCpuThreshold(CpuThreshold.ONE_ZERO)
+            .withDigests(Arrays.asList(new DigestConfig().withName("fdtwssotft")
+                .withActionGroupResourceId("jzbexilzznfq")
+                .withFrequency(956114198)
+                .withCategories(Arrays.asList(Category.SECURITY, Category.SECURITY))
+                .withLanguage("aruoujmkcjhwqyt")
+                .withState(DigestConfigState.ACTIVE)))
+            .create();
 
         Assertions.assertEquals(true, response.exclude());
-        Assertions.assertEquals(CpuThreshold.TWO_ZERO, response.lowCpuThreshold());
+        Assertions.assertEquals(CpuThreshold.FIVE, response.lowCpuThreshold());
+        Assertions.assertEquals("mifthnzdnd", response.digests().get(0).name());
+        Assertions.assertEquals("gnayqigynduh", response.digests().get(0).actionGroupResourceId());
+        Assertions.assertEquals(690810711, response.digests().get(0).frequency());
+        Assertions.assertEquals(Category.OPERATIONAL_EXCELLENCE, response.digests().get(0).categories().get(0));
+        Assertions.assertEquals("umaq", response.digests().get(0).language());
+        Assertions.assertEquals(DigestConfigState.DISABLED, response.digests().get(0).state());
     }
 }

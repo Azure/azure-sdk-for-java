@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Settings for Cross Subscription Restore Settings. */
+/**
+ * Settings for Cross Subscription Restore Settings.
+ */
 @Fluent
-public final class CrossSubscriptionRestoreSettings {
+public final class CrossSubscriptionRestoreSettings implements JsonSerializable<CrossSubscriptionRestoreSettings> {
     /*
      * The crossSubscriptionRestoreState property.
      */
-    @JsonProperty(value = "crossSubscriptionRestoreState")
     private CrossSubscriptionRestoreState crossSubscriptionRestoreState;
 
-    /** Creates an instance of CrossSubscriptionRestoreSettings class. */
+    /**
+     * Creates an instance of CrossSubscriptionRestoreSettings class.
+     */
     public CrossSubscriptionRestoreSettings() {
     }
 
     /**
      * Get the crossSubscriptionRestoreState property: The crossSubscriptionRestoreState property.
-     *
+     * 
      * @return the crossSubscriptionRestoreState value.
      */
     public CrossSubscriptionRestoreState crossSubscriptionRestoreState() {
@@ -31,21 +38,60 @@ public final class CrossSubscriptionRestoreSettings {
 
     /**
      * Set the crossSubscriptionRestoreState property: The crossSubscriptionRestoreState property.
-     *
+     * 
      * @param crossSubscriptionRestoreState the crossSubscriptionRestoreState value to set.
      * @return the CrossSubscriptionRestoreSettings object itself.
      */
-    public CrossSubscriptionRestoreSettings withCrossSubscriptionRestoreState(
-        CrossSubscriptionRestoreState crossSubscriptionRestoreState) {
+    public CrossSubscriptionRestoreSettings
+        withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState crossSubscriptionRestoreState) {
         this.crossSubscriptionRestoreState = crossSubscriptionRestoreState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("crossSubscriptionRestoreState",
+            this.crossSubscriptionRestoreState == null ? null : this.crossSubscriptionRestoreState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CrossSubscriptionRestoreSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CrossSubscriptionRestoreSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CrossSubscriptionRestoreSettings.
+     */
+    public static CrossSubscriptionRestoreSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CrossSubscriptionRestoreSettings deserializedCrossSubscriptionRestoreSettings
+                = new CrossSubscriptionRestoreSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("crossSubscriptionRestoreState".equals(fieldName)) {
+                    deserializedCrossSubscriptionRestoreSettings.crossSubscriptionRestoreState
+                        = CrossSubscriptionRestoreState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCrossSubscriptionRestoreSettings;
+        });
     }
 }

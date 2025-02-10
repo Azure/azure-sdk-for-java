@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,7 @@ public final class GpuInstanceProfile extends ExpandableStringEnum<GpuInstancePr
 
     /**
      * Creates a new instance of GpuInstanceProfile value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,18 +47,17 @@ public final class GpuInstanceProfile extends ExpandableStringEnum<GpuInstancePr
 
     /**
      * Creates or finds a GpuInstanceProfile from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GpuInstanceProfile.
      */
-    @JsonCreator
     public static GpuInstanceProfile fromString(String name) {
         return fromString(name, GpuInstanceProfile.class);
     }
 
     /**
      * Gets known GpuInstanceProfile values.
-     *
+     * 
      * @return known GpuInstanceProfile values.
      */
     public static Collection<GpuInstanceProfile> values() {

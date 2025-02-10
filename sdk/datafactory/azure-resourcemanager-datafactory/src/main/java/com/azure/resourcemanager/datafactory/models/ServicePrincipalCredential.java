@@ -6,23 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.ServicePrincipalCredentialTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service principal credential.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ServicePrincipal")
 @Fluent
 public final class ServicePrincipalCredential extends Credential {
     /*
+     * Type of credential.
+     */
+    private String type = "ServicePrincipal";
+
+    /*
      * Service Principal credential properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private ServicePrincipalCredentialTypeProperties innerTypeProperties
         = new ServicePrincipalCredentialTypeProperties();
 
@@ -30,6 +35,16 @@ public final class ServicePrincipalCredential extends Credential {
      * Creates an instance of ServicePrincipalCredential class.
      */
     public ServicePrincipalCredential() {
+    }
+
+    /**
+     * Get the type property: Type of credential.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -135,14 +150,73 @@ public final class ServicePrincipalCredential extends Credential {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model ServicePrincipalCredential"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ServicePrincipalCredential"));
         } else {
             innerTypeProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServicePrincipalCredential.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicePrincipalCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicePrincipalCredential if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServicePrincipalCredential.
+     */
+    public static ServicePrincipalCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicePrincipalCredential deserializedServicePrincipalCredential = new ServicePrincipalCredential();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedServicePrincipalCredential.withDescription(reader.getString());
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedServicePrincipalCredential.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedServicePrincipalCredential.innerTypeProperties
+                        = ServicePrincipalCredentialTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedServicePrincipalCredential.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedServicePrincipalCredential.withAdditionalProperties(additionalProperties);
+
+            return deserializedServicePrincipalCredential;
+        });
+    }
 }

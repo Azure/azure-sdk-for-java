@@ -4,6 +4,6 @@
 
 /**
  * Package containing the data models for AzureQuotaExtensionApi.
- * Microsoft Azure Quota Resource Provider.
+ * Microsoft Azure Quota Resource Provider. This Swagger is for Azure Group Quota using GroupQuota Entity.
  */
 package com.azure.resourcemanager.quota.models;

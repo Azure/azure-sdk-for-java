@@ -5,60 +5,57 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * AseV3NetworkingConfiguration resource specific properties.
  */
 @Fluent
-public final class AseV3NetworkingConfigurationProperties {
+public final class AseV3NetworkingConfigurationProperties
+    implements JsonSerializable<AseV3NetworkingConfigurationProperties> {
     /*
      * The windowsOutboundIpAddresses property.
      */
-    @JsonProperty(value = "windowsOutboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> windowsOutboundIpAddresses;
 
     /*
      * The linuxOutboundIpAddresses property.
      */
-    @JsonProperty(value = "linuxOutboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> linuxOutboundIpAddresses;
 
     /*
      * The externalInboundIpAddresses property.
      */
-    @JsonProperty(value = "externalInboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> externalInboundIpAddresses;
 
     /*
      * The internalInboundIpAddresses property.
      */
-    @JsonProperty(value = "internalInboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> internalInboundIpAddresses;
 
     /*
      * Property to enable and disable new private endpoint connection creation on ASE
      */
-    @JsonProperty(value = "allowNewPrivateEndpointConnections")
     private Boolean allowNewPrivateEndpointConnections;
 
     /*
      * Property to enable and disable FTP on ASEV3
      */
-    @JsonProperty(value = "ftpEnabled")
     private Boolean ftpEnabled;
 
     /*
      * Property to enable and disable Remote Debug on ASEV3
      */
-    @JsonProperty(value = "remoteDebugEnabled")
     private Boolean remoteDebugEnabled;
 
     /*
      * Customer provided Inbound IP Address. Only able to be set on Ase create.
      */
-    @JsonProperty(value = "inboundIpAddressOverride")
     private String inboundIpAddressOverride;
 
     /**
@@ -194,5 +191,70 @@ public final class AseV3NetworkingConfigurationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowNewPrivateEndpointConnections", this.allowNewPrivateEndpointConnections);
+        jsonWriter.writeBooleanField("ftpEnabled", this.ftpEnabled);
+        jsonWriter.writeBooleanField("remoteDebugEnabled", this.remoteDebugEnabled);
+        jsonWriter.writeStringField("inboundIpAddressOverride", this.inboundIpAddressOverride);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AseV3NetworkingConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AseV3NetworkingConfigurationProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AseV3NetworkingConfigurationProperties.
+     */
+    public static AseV3NetworkingConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AseV3NetworkingConfigurationProperties deserializedAseV3NetworkingConfigurationProperties
+                = new AseV3NetworkingConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("windowsOutboundIpAddresses".equals(fieldName)) {
+                    List<String> windowsOutboundIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAseV3NetworkingConfigurationProperties.windowsOutboundIpAddresses
+                        = windowsOutboundIpAddresses;
+                } else if ("linuxOutboundIpAddresses".equals(fieldName)) {
+                    List<String> linuxOutboundIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAseV3NetworkingConfigurationProperties.linuxOutboundIpAddresses
+                        = linuxOutboundIpAddresses;
+                } else if ("externalInboundIpAddresses".equals(fieldName)) {
+                    List<String> externalInboundIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAseV3NetworkingConfigurationProperties.externalInboundIpAddresses
+                        = externalInboundIpAddresses;
+                } else if ("internalInboundIpAddresses".equals(fieldName)) {
+                    List<String> internalInboundIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAseV3NetworkingConfigurationProperties.internalInboundIpAddresses
+                        = internalInboundIpAddresses;
+                } else if ("allowNewPrivateEndpointConnections".equals(fieldName)) {
+                    deserializedAseV3NetworkingConfigurationProperties.allowNewPrivateEndpointConnections
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ftpEnabled".equals(fieldName)) {
+                    deserializedAseV3NetworkingConfigurationProperties.ftpEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("remoteDebugEnabled".equals(fieldName)) {
+                    deserializedAseV3NetworkingConfigurationProperties.remoteDebugEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("inboundIpAddressOverride".equals(fieldName)) {
+                    deserializedAseV3NetworkingConfigurationProperties.inboundIpAddressOverride = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAseV3NetworkingConfigurationProperties;
+        });
     }
 }

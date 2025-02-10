@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.WorkspaceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Firmware analysis workspace. */
+/**
+ * Firmware analysis workspace.
+ */
 @Immutable
-public final class WorkspaceUpdateDefinition {
+public final class WorkspaceUpdateDefinition implements JsonSerializable<WorkspaceUpdateDefinition> {
     /*
      * The editable workspace properties.
      */
-    @JsonProperty(value = "properties")
     private WorkspaceProperties innerProperties;
 
-    /** Creates an instance of WorkspaceUpdateDefinition class. */
+    /**
+     * Creates an instance of WorkspaceUpdateDefinition class.
+     */
     public WorkspaceUpdateDefinition() {
     }
 
     /**
      * Get the innerProperties property: The editable workspace properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkspaceProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class WorkspaceUpdateDefinition {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -41,12 +48,48 @@ public final class WorkspaceUpdateDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceUpdateDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceUpdateDefinition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceUpdateDefinition.
+     */
+    public static WorkspaceUpdateDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceUpdateDefinition deserializedWorkspaceUpdateDefinition = new WorkspaceUpdateDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedWorkspaceUpdateDefinition.innerProperties = WorkspaceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceUpdateDefinition;
+        });
     }
 }

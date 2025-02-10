@@ -82,7 +82,8 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
             // Create a service bus subscription in the topic with session and dead-letter enabled.
 
             System.out.println("Creating subscription " + subscription1Name + " in topic " + topic1Name + "...");
-            ServiceBusSubscription firstSubscription = firstTopic.subscriptions().define(subscription1Name)
+            ServiceBusSubscription firstSubscription = firstTopic.subscriptions()
+                .define(subscription1Name)
                 .withSession()
                 .withDefaultMessageTTL(Duration.ofMinutes(20))
                 .withMessageMovedToDeadLetterSubscriptionOnMaxDeliveryCount(20)
@@ -95,9 +96,11 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
 
             //============================================================
             // Create another subscription in the topic with auto deletion of idle entities.
-            System.out.println("Creating another subscription " + subscription2Name + " in topic " + topic1Name + "...");
+            System.out
+                .println("Creating another subscription " + subscription2Name + " in topic " + topic1Name + "...");
 
-            ServiceBusSubscription secondSubscription = firstTopic.subscriptions().define(subscription2Name)
+            ServiceBusSubscription secondSubscription = firstTopic.subscriptions()
+                .define(subscription2Name)
                 .withSession()
                 .withDeleteOnIdleDurationInMinutes(20)
                 .create();
@@ -108,9 +111,11 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
             //============================================================
             // Create second topic with new Send Authorization rule, partitioning enabled and a new Service bus Subscription.
 
-            System.out.println("Creating second topic " + topic2Name + ", with De-duplication and AutoDeleteOnIdle features...");
+            System.out.println(
+                "Creating second topic " + topic2Name + ", with De-duplication and AutoDeleteOnIdle features...");
 
-            Topic secondTopic = serviceBusNamespace.topics().define(topic2Name)
+            Topic secondTopic = serviceBusNamespace.topics()
+                .define(topic2Name)
                 .withNewSendRule(sendRuleName)
                 .withPartitioning()
                 .withNewSubscription(subscription3Name)
@@ -123,7 +128,7 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
             System.out.println("Creating following authorization rules in second topic ");
 
             PagedIterable<TopicAuthorizationRule> authorizationRules = secondTopic.authorizationRules().list();
-            for (TopicAuthorizationRule authorizationRule: authorizationRules) {
+            for (TopicAuthorizationRule authorizationRule : authorizationRules) {
                 Utils.print(authorizationRule);
             }
 
@@ -140,21 +145,23 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
             System.out.println("Updated second topic to change its auto deletion time");
 
             Utils.print(secondTopic);
-            System.out.println("Updated  following authorization rules in second topic, new list of authorization rules are ");
+            System.out.println(
+                "Updated  following authorization rules in second topic, new list of authorization rules are ");
 
             authorizationRules = secondTopic.authorizationRules().list();
-            for (TopicAuthorizationRule authorizationRule: authorizationRules) {
+            for (TopicAuthorizationRule authorizationRule : authorizationRules) {
                 Utils.print(authorizationRule);
             }
 
             //=============================================================
             // Get connection string for default authorization rule of namespace
 
-            PagedIterable<NamespaceAuthorizationRule> namespaceAuthorizationRules = serviceBusNamespace.authorizationRules().list();
-            System.out.println("Number of authorization rule for namespace :" + Utils.getSize(namespaceAuthorizationRules));
+            PagedIterable<NamespaceAuthorizationRule> namespaceAuthorizationRules
+                = serviceBusNamespace.authorizationRules().list();
+            System.out
+                .println("Number of authorization rule for namespace :" + Utils.getSize(namespaceAuthorizationRules));
 
-
-            for (NamespaceAuthorizationRule namespaceAuthorizationRule: namespaceAuthorizationRules) {
+            for (NamespaceAuthorizationRule namespaceAuthorizationRule : namespaceAuthorizationRules) {
                 Utils.print(namespaceAuthorizationRule);
             }
 
@@ -165,11 +172,11 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
 
             //=============================================================
             // Send a message to topic.
-            ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-                .connectionString(keys.primaryConnectionString())
-                .sender()
-                .topicName(topic1Name)
-                .buildClient();
+            ServiceBusSenderClient sender
+                = new ServiceBusClientBuilder().connectionString(keys.primaryConnectionString())
+                    .sender()
+                    .topicName(topic1Name)
+                    .buildClient();
             sender.sendMessage(new ServiceBusMessage("Hello World").setMessageId("1"));
             sender.close();
 
@@ -210,8 +217,7 @@ public final class ServiceBusPublishSubscribeAdvanceFeatures {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -6,7 +6,9 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.BinarySink;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
 import com.azure.resourcemanager.datafactory.models.StoreWriteSettings;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,17 +16,23 @@ public final class BinarySinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BinarySink model = BinaryData.fromString(
-            "{\"type\":\"BinarySink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datamobnehbbchtc\",\"disableMetricsCollection\":\"datalxrfnpxumg\",\"copyBehavior\":\"datamskuve\",\"\":{\"ow\":\"dataj\",\"m\":\"datandefmebpalzpyptg\"}},\"writeBatchSize\":\"datarhc\",\"writeBatchTimeout\":\"datasvmp\",\"sinkRetryCount\":\"datarzilvcncdazw\",\"sinkRetryWait\":\"datagoravovqpn\",\"maxConcurrentConnections\":\"dataufvggv\",\"disableMetricsCollection\":\"datamezfyelf\",\"\":{\"jzgyzjtmakhgat\":\"datakbhjdkq\",\"zoopzaenlzjx\":\"datankihbfixybtow\",\"wva\":\"datatgduwun\"}}")
+            "{\"type\":\"BinarySink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datanyciss\",\"disableMetricsCollection\":\"datapxftyhfc\",\"copyBehavior\":\"dataqsd\",\"metadata\":[{\"name\":\"dataaawry\",\"value\":\"datazs\"},{\"name\":\"datarzt\",\"value\":\"datarysxxa\"}],\"\":{\"ddvnobesowbtnfq\":\"datacighl\",\"hteho\":\"datawcaxj\",\"xofqjninrskq\":\"datacmeuuuajiotl\"}},\"writeBatchSize\":\"dataqtiuve\",\"writeBatchTimeout\":\"datauciwbiwygwpwqu\",\"sinkRetryCount\":\"dataqgslspihuxgvvio\",\"sinkRetryWait\":\"dataoolkmfi\",\"maxConcurrentConnections\":\"datafbbrndaquxvufr\",\"disableMetricsCollection\":\"dataaehssosowav\",\"\":{\"sjxf\":\"dataieyeblkgupgnst\",\"jff\":\"datahioartvkhufktqg\",\"gkokfzt\":\"datatreot\",\"kegyskmh\":\"datavonbtnnwa\"}}")
             .toObject(BinarySink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BinarySink model = new BinarySink().withWriteBatchSize("datarhc").withWriteBatchTimeout("datasvmp")
-            .withSinkRetryCount("datarzilvcncdazw").withSinkRetryWait("datagoravovqpn")
-            .withMaxConcurrentConnections("dataufvggv").withDisableMetricsCollection("datamezfyelf")
-            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datamobnehbbchtc")
-                .withDisableMetricsCollection("datalxrfnpxumg").withCopyBehavior("datamskuve")
+        BinarySink model = new BinarySink().withWriteBatchSize("dataqtiuve")
+            .withWriteBatchTimeout("datauciwbiwygwpwqu")
+            .withSinkRetryCount("dataqgslspihuxgvvio")
+            .withSinkRetryWait("dataoolkmfi")
+            .withMaxConcurrentConnections("datafbbrndaquxvufr")
+            .withDisableMetricsCollection("dataaehssosowav")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datanyciss")
+                .withDisableMetricsCollection("datapxftyhfc")
+                .withCopyBehavior("dataqsd")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("dataaawry").withValue("datazs"),
+                    new MetadataItem().withName("datarzt").withValue("datarysxxa")))
                 .withAdditionalProperties(mapOf("type", "StoreWriteSettings")));
         model = BinaryData.fromObject(model).toObject(BinarySink.class);
     }

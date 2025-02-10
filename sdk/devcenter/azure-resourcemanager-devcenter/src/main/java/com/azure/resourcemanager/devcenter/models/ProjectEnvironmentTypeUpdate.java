@@ -5,42 +5,43 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectEnvironmentTypeUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The project environment type for partial update. Properties not provided in the update request will not be changed.
  */
 @Fluent
-public final class ProjectEnvironmentTypeUpdate {
+public final class ProjectEnvironmentTypeUpdate implements JsonSerializable<ProjectEnvironmentTypeUpdate> {
     /*
      * Properties to configure an environment type.
      */
-    @JsonProperty(value = "properties")
     private ProjectEnvironmentTypeUpdateProperties innerProperties;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Managed identity properties
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
-    /** Creates an instance of ProjectEnvironmentTypeUpdate class. */
+    /**
+     * Creates an instance of ProjectEnvironmentTypeUpdate class.
+     */
     public ProjectEnvironmentTypeUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties to configure an environment type.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProjectEnvironmentTypeUpdateProperties innerProperties() {
@@ -49,7 +50,7 @@ public final class ProjectEnvironmentTypeUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -58,7 +59,7 @@ public final class ProjectEnvironmentTypeUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ProjectEnvironmentTypeUpdate object itself.
      */
@@ -69,7 +70,7 @@ public final class ProjectEnvironmentTypeUpdate {
 
     /**
      * Get the identity property: Managed identity properties.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -78,7 +79,7 @@ public final class ProjectEnvironmentTypeUpdate {
 
     /**
      * Set the identity property: Managed identity properties.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ProjectEnvironmentTypeUpdate object itself.
      */
@@ -90,7 +91,7 @@ public final class ProjectEnvironmentTypeUpdate {
     /**
      * Get the deploymentTargetId property: Id of a subscription that the environment type will be mapped to. The
      * environment's resources will be deployed into this subscription.
-     *
+     * 
      * @return the deploymentTargetId value.
      */
     public String deploymentTargetId() {
@@ -100,7 +101,7 @@ public final class ProjectEnvironmentTypeUpdate {
     /**
      * Set the deploymentTargetId property: Id of a subscription that the environment type will be mapped to. The
      * environment's resources will be deployed into this subscription.
-     *
+     * 
      * @param deploymentTargetId the deploymentTargetId value to set.
      * @return the ProjectEnvironmentTypeUpdate object itself.
      */
@@ -113,8 +114,31 @@ public final class ProjectEnvironmentTypeUpdate {
     }
 
     /**
+     * Get the displayName property: The display name of the project environment type.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The display name of the project environment type.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the ProjectEnvironmentTypeUpdate object itself.
+     */
+    public ProjectEnvironmentTypeUpdate withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProjectEnvironmentTypeUpdateProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
      * Get the status property: Defines whether this Environment Type can be used in this Project.
-     *
+     * 
      * @return the status value.
      */
     public EnvironmentTypeEnableStatus status() {
@@ -123,7 +147,7 @@ public final class ProjectEnvironmentTypeUpdate {
 
     /**
      * Set the status property: Defines whether this Environment Type can be used in this Project.
-     *
+     * 
      * @param status the status value to set.
      * @return the ProjectEnvironmentTypeUpdate object itself.
      */
@@ -138,7 +162,7 @@ public final class ProjectEnvironmentTypeUpdate {
     /**
      * Get the creatorRoleAssignment property: The role definition assigned to the environment creator on backing
      * resources.
-     *
+     * 
      * @return the creatorRoleAssignment value.
      */
     public ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment() {
@@ -148,12 +172,12 @@ public final class ProjectEnvironmentTypeUpdate {
     /**
      * Set the creatorRoleAssignment property: The role definition assigned to the environment creator on backing
      * resources.
-     *
+     * 
      * @param creatorRoleAssignment the creatorRoleAssignment value to set.
      * @return the ProjectEnvironmentTypeUpdate object itself.
      */
-    public ProjectEnvironmentTypeUpdate withCreatorRoleAssignment(
-        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment) {
+    public ProjectEnvironmentTypeUpdate
+        withCreatorRoleAssignment(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ProjectEnvironmentTypeUpdateProperties();
         }
@@ -164,7 +188,7 @@ public final class ProjectEnvironmentTypeUpdate {
     /**
      * Get the userRoleAssignments property: Role Assignments created on environment backing resources. This is a
      * mapping from a user object ID to an object of role definition IDs.
-     *
+     * 
      * @return the userRoleAssignments value.
      */
     public Map<String, UserRoleAssignmentValue> userRoleAssignments() {
@@ -174,12 +198,12 @@ public final class ProjectEnvironmentTypeUpdate {
     /**
      * Set the userRoleAssignments property: Role Assignments created on environment backing resources. This is a
      * mapping from a user object ID to an object of role definition IDs.
-     *
+     * 
      * @param userRoleAssignments the userRoleAssignments value to set.
      * @return the ProjectEnvironmentTypeUpdate object itself.
      */
-    public ProjectEnvironmentTypeUpdate withUserRoleAssignments(
-        Map<String, UserRoleAssignmentValue> userRoleAssignments) {
+    public ProjectEnvironmentTypeUpdate
+        withUserRoleAssignments(Map<String, UserRoleAssignmentValue> userRoleAssignments) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ProjectEnvironmentTypeUpdateProperties();
         }
@@ -189,7 +213,7 @@ public final class ProjectEnvironmentTypeUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -199,5 +223,49 @@ public final class ProjectEnvironmentTypeUpdate {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProjectEnvironmentTypeUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProjectEnvironmentTypeUpdate if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProjectEnvironmentTypeUpdate.
+     */
+    public static ProjectEnvironmentTypeUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProjectEnvironmentTypeUpdate deserializedProjectEnvironmentTypeUpdate = new ProjectEnvironmentTypeUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeUpdate.innerProperties
+                        = ProjectEnvironmentTypeUpdateProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProjectEnvironmentTypeUpdate.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedProjectEnvironmentTypeUpdate.identity = ManagedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProjectEnvironmentTypeUpdate;
+        });
     }
 }

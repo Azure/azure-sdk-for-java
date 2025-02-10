@@ -5,51 +5,54 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDisk;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDiskController;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Virtual machine template model. */
+/**
+ * Virtual machine template model.
+ */
 @Fluent
-public final class VirtualMachineTemplateInner {
+public final class VirtualMachineTemplateInner implements JsonSerializable<VirtualMachineTemplateInner> {
     /*
      * virtual machine template id (privateCloudId:vsphereId)
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Azure region
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * {virtualMachineTemplateName}
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The Virtual Machine Template properties
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineTemplateProperties innerProperties;
 
     /*
      * {resourceProviderNamespace}/{resourceType}
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of VirtualMachineTemplateInner class. */
+    /**
+     * Creates an instance of VirtualMachineTemplateInner class.
+     */
     public VirtualMachineTemplateInner() {
     }
 
     /**
      * Get the id property: virtual machine template id (privateCloudId:vsphereId).
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -58,7 +61,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the location property: Azure region.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -67,7 +70,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the location property: Azure region.
-     *
+     * 
      * @param location the location value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -78,7 +81,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the name property: {virtualMachineTemplateName}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -87,7 +90,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the innerProperties property: The Virtual Machine Template properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineTemplateProperties innerProperties() {
@@ -96,7 +99,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the type property: {resourceProviderNamespace}/{resourceType}.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -105,7 +108,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the amountOfRam property: The amount of memory.
-     *
+     * 
      * @return the amountOfRam value.
      */
     public Integer amountOfRam() {
@@ -114,7 +117,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the amountOfRam property: The amount of memory.
-     *
+     * 
      * @param amountOfRam the amountOfRam value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -128,7 +131,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the controllers property: The list of Virtual Disk Controllers.
-     *
+     * 
      * @return the controllers value.
      */
     public List<VirtualDiskController> controllers() {
@@ -137,7 +140,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the controllers property: The list of Virtual Disk Controllers.
-     *
+     * 
      * @param controllers the controllers value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -151,7 +154,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the description property: The description of Virtual Machine Template.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -160,7 +163,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the description property: The description of Virtual Machine Template.
-     *
+     * 
      * @param description the description value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -174,7 +177,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the disks property: The list of Virtual Disks.
-     *
+     * 
      * @return the disks value.
      */
     public List<VirtualDisk> disks() {
@@ -183,7 +186,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the disks property: The list of Virtual Disks.
-     *
+     * 
      * @param disks the disks value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -197,7 +200,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the exposeToGuestVM property: Expose Guest OS or not.
-     *
+     * 
      * @return the exposeToGuestVM value.
      */
     public Boolean exposeToGuestVM() {
@@ -206,7 +209,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the exposeToGuestVM property: Expose Guest OS or not.
-     *
+     * 
      * @param exposeToGuestVM the exposeToGuestVM value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -220,7 +223,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the guestOS property: The Guest OS.
-     *
+     * 
      * @return the guestOS value.
      */
     public String guestOS() {
@@ -229,7 +232,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the guestOSType property: The Guest OS types.
-     *
+     * 
      * @return the guestOSType value.
      */
     public String guestOSType() {
@@ -238,7 +241,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the nics property: The list of Virtual NICs.
-     *
+     * 
      * @return the nics value.
      */
     public List<VirtualNicInner> nics() {
@@ -247,7 +250,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the nics property: The list of Virtual NICs.
-     *
+     * 
      * @param nics the nics value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -261,7 +264,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the numberOfCores property: The number of CPU cores.
-     *
+     * 
      * @return the numberOfCores value.
      */
     public Integer numberOfCores() {
@@ -270,7 +273,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the numberOfCores property: The number of CPU cores.
-     *
+     * 
      * @param numberOfCores the numberOfCores value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -284,7 +287,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the path property: path to folder.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -293,7 +296,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the path property: path to folder.
-     *
+     * 
      * @param path the path value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -307,7 +310,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the privateCloudId property: The Private Cloud Id.
-     *
+     * 
      * @return the privateCloudId value.
      */
     public String privateCloudId() {
@@ -316,7 +319,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the privateCloudId property: The Private Cloud Id.
-     *
+     * 
      * @param privateCloudId the privateCloudId value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -330,7 +333,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the vSphereNetworks property: The list of VSphere networks.
-     *
+     * 
      * @return the vSphereNetworks value.
      */
     public List<String> vSphereNetworks() {
@@ -339,7 +342,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the vSphereNetworks property: The list of VSphere networks.
-     *
+     * 
      * @param vSphereNetworks the vSphereNetworks value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -353,7 +356,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the vSphereTags property: The tags from VSphere.
-     *
+     * 
      * @return the vSphereTags value.
      */
     public List<String> vSphereTags() {
@@ -362,7 +365,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Set the vSphereTags property: The tags from VSphere.
-     *
+     * 
      * @param vSphereTags the vSphereTags value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -376,7 +379,7 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Get the vmwaretools property: The VMware tools version.
-     *
+     * 
      * @return the vmwaretools value.
      */
     public String vmwaretools() {
@@ -385,12 +388,58 @@ public final class VirtualMachineTemplateInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineTemplateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineTemplateInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineTemplateInner.
+     */
+    public static VirtualMachineTemplateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineTemplateInner deserializedVirtualMachineTemplateInner = new VirtualMachineTemplateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.id = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.location = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.innerProperties
+                        = VirtualMachineTemplateProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineTemplateInner;
+        });
     }
 }

@@ -5,37 +5,38 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes an image source from [Azure Gallery
  * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("PlatformImage")
 @Fluent
 public final class ImageTemplatePlatformImageSource extends ImageTemplateSource {
+    /*
+     * Specifies the type of source image you want to start with.
+     */
+    private String type = "PlatformImage";
+
     /*
      * Image Publisher in [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * Image offer from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
      */
-    @JsonProperty(value = "offer")
     private String offer;
 
     /*
      * Image sku from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
@@ -43,31 +44,40 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). If 'latest' is specified here,
      * the version is evaluated when the image build takes place, not when the template is submitted.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Image version from the [Azure Gallery
-     * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). This readonly field differs
-     * from 'version', only if the value specified in 'version' field is 'latest'.
+     * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). This readonly field differs from
+     * 'version', only if the value specified in 'version' field is 'latest'.
      */
-    @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String exactVersion;
 
     /*
      * Optional configuration of purchase plan for platform image.
      */
-    @JsonProperty(value = "planInfo")
     private PlatformImagePurchasePlan planInfo;
 
-    /** Creates an instance of ImageTemplatePlatformImageSource class. */
+    /**
+     * Creates an instance of ImageTemplatePlatformImageSource class.
+     */
     public ImageTemplatePlatformImageSource() {
+    }
+
+    /**
+     * Get the type property: Specifies the type of source image you want to start with.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the publisher property: Image Publisher in [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -77,7 +87,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
     /**
      * Set the publisher property: Image Publisher in [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the ImageTemplatePlatformImageSource object itself.
      */
@@ -89,7 +99,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
     /**
      * Get the offer property: Image offer from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -99,7 +109,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
     /**
      * Set the offer property: Image offer from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
-     *
+     * 
      * @param offer the offer value to set.
      * @return the ImageTemplatePlatformImageSource object itself.
      */
@@ -111,7 +121,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
     /**
      * Get the sku property: Image sku from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -121,7 +131,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
     /**
      * Set the sku property: Image sku from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages).
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ImageTemplatePlatformImageSource object itself.
      */
@@ -134,7 +144,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
      * Get the version property: Image version from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). If 'latest' is specified here,
      * the version is evaluated when the image build takes place, not when the template is submitted.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -145,7 +155,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
      * Set the version property: Image version from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). If 'latest' is specified here,
      * the version is evaluated when the image build takes place, not when the template is submitted.
-     *
+     * 
      * @param version the version value to set.
      * @return the ImageTemplatePlatformImageSource object itself.
      */
@@ -158,7 +168,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
      * Get the exactVersion property: Image version from the [Azure Gallery
      * Images](https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages). This readonly field differs from
      * 'version', only if the value specified in 'version' field is 'latest'.
-     *
+     * 
      * @return the exactVersion value.
      */
     public String exactVersion() {
@@ -167,7 +177,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
 
     /**
      * Get the planInfo property: Optional configuration of purchase plan for platform image.
-     *
+     * 
      * @return the planInfo value.
      */
     public PlatformImagePurchasePlan planInfo() {
@@ -176,7 +186,7 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
 
     /**
      * Set the planInfo property: Optional configuration of purchase plan for platform image.
-     *
+     * 
      * @param planInfo the planInfo value to set.
      * @return the ImageTemplatePlatformImageSource object itself.
      */
@@ -187,14 +197,67 @@ public final class ImageTemplatePlatformImageSource extends ImageTemplateSource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (planInfo() != null) {
             planInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("offer", this.offer);
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeJsonField("planInfo", this.planInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplatePlatformImageSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplatePlatformImageSource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplatePlatformImageSource.
+     */
+    public static ImageTemplatePlatformImageSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplatePlatformImageSource deserializedImageTemplatePlatformImageSource
+                = new ImageTemplatePlatformImageSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedImageTemplatePlatformImageSource.type = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedImageTemplatePlatformImageSource.publisher = reader.getString();
+                } else if ("offer".equals(fieldName)) {
+                    deserializedImageTemplatePlatformImageSource.offer = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedImageTemplatePlatformImageSource.sku = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedImageTemplatePlatformImageSource.version = reader.getString();
+                } else if ("exactVersion".equals(fieldName)) {
+                    deserializedImageTemplatePlatformImageSource.exactVersion = reader.getString();
+                } else if ("planInfo".equals(fieldName)) {
+                    deserializedImageTemplatePlatformImageSource.planInfo = PlatformImagePurchasePlan.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplatePlatformImageSource;
+        });
     }
 }

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MigrationConfigurationName. */
+/**
+ * Defines values for MigrationConfigurationName.
+ */
 public final class MigrationConfigurationName extends ExpandableStringEnum<MigrationConfigurationName> {
-    /** Static value $default for MigrationConfigurationName. */
+    /**
+     * Static value $default for MigrationConfigurationName.
+     */
     public static final MigrationConfigurationName DEFAULT = fromString("$default");
 
     /**
+     * Creates a new instance of MigrationConfigurationName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MigrationConfigurationName() {
+    }
+
+    /**
      * Creates or finds a MigrationConfigurationName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationConfigurationName.
      */
-    @JsonCreator
     public static MigrationConfigurationName fromString(String name) {
         return fromString(name, MigrationConfigurationName.class);
     }
 
     /**
      * Gets known MigrationConfigurationName values.
-     *
+     * 
      * @return known MigrationConfigurationName values.
      */
     public static Collection<MigrationConfigurationName> values() {

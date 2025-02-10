@@ -41,8 +41,8 @@ public interface QueryTextsClient {
      * @return represents a Query Text along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QueryTextInner> getWithResponse(
-        String resourceGroupName, String serverName, String queryId, Context context);
+    Response<QueryTextInner> getWithResponse(String resourceGroupName, String serverName, String queryId,
+        Context context);
 
     /**
      * Retrieve the Query-Store query texts for specified queryIds.
@@ -71,6 +71,6 @@ public interface QueryTextsClient {
      * @return a list of query texts.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QueryTextInner> listByServer(
-        String resourceGroupName, String serverName, List<String> queryIds, Context context);
+    PagedIterable<QueryTextInner> listByServer(String resourceGroupName, String serverName, List<String> queryIds,
+        Context context);
 }

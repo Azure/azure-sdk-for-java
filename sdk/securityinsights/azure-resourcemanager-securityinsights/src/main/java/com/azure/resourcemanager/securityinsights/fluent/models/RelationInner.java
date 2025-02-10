@@ -5,28 +5,101 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents a relation between two resources. */
+/**
+ * Represents a relation between two resources.
+ */
 @Fluent
 public final class RelationInner extends ResourceWithEtag {
     /*
      * Relation properties
      */
-    @JsonProperty(value = "properties")
     private RelationProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RelationInner class.
+     */
+    public RelationInner() {
+    }
 
     /**
      * Get the innerProperties property: Relation properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RelationProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RelationInner withEtag(String etag) {
         super.withEtag(etag);
@@ -35,7 +108,7 @@ public final class RelationInner extends ResourceWithEtag {
 
     /**
      * Get the relatedResourceId property: The resource ID of the related resource.
-     *
+     * 
      * @return the relatedResourceId value.
      */
     public String relatedResourceId() {
@@ -44,7 +117,7 @@ public final class RelationInner extends ResourceWithEtag {
 
     /**
      * Set the relatedResourceId property: The resource ID of the related resource.
-     *
+     * 
      * @param relatedResourceId the relatedResourceId value to set.
      * @return the RelationInner object itself.
      */
@@ -58,7 +131,7 @@ public final class RelationInner extends ResourceWithEtag {
 
     /**
      * Get the relatedResourceName property: The name of the related resource.
-     *
+     * 
      * @return the relatedResourceName value.
      */
     public String relatedResourceName() {
@@ -67,7 +140,7 @@ public final class RelationInner extends ResourceWithEtag {
 
     /**
      * Get the relatedResourceType property: The resource type of the related resource.
-     *
+     * 
      * @return the relatedResourceType value.
      */
     public String relatedResourceType() {
@@ -76,7 +149,7 @@ public final class RelationInner extends ResourceWithEtag {
 
     /**
      * Get the relatedResourceKind property: The resource kind of the related resource.
-     *
+     * 
      * @return the relatedResourceKind value.
      */
     public String relatedResourceKind() {
@@ -85,14 +158,61 @@ public final class RelationInner extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelationInner.
+     */
+    public static RelationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelationInner deserializedRelationInner = new RelationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRelationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRelationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRelationInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedRelationInner.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRelationInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRelationInner.innerProperties = RelationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelationInner;
+        });
     }
 }

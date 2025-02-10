@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Programmatic code for the status of the assessment. */
+/**
+ * Programmatic code for the status of the assessment.
+ */
 public final class AssessmentStatusCode extends ExpandableStringEnum<AssessmentStatusCode> {
-    /** Static value Healthy for AssessmentStatusCode. */
+    /**
+     * Static value Healthy for AssessmentStatusCode.
+     */
     public static final AssessmentStatusCode HEALTHY = fromString("Healthy");
 
-    /** Static value Unhealthy for AssessmentStatusCode. */
+    /**
+     * Static value Unhealthy for AssessmentStatusCode.
+     */
     public static final AssessmentStatusCode UNHEALTHY = fromString("Unhealthy");
 
-    /** Static value NotApplicable for AssessmentStatusCode. */
+    /**
+     * Static value NotApplicable for AssessmentStatusCode.
+     */
     public static final AssessmentStatusCode NOT_APPLICABLE = fromString("NotApplicable");
 
     /**
      * Creates a new instance of AssessmentStatusCode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class AssessmentStatusCode extends ExpandableStringEnum<AssessmentS
 
     /**
      * Creates or finds a AssessmentStatusCode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AssessmentStatusCode.
      */
-    @JsonCreator
     public static AssessmentStatusCode fromString(String name) {
         return fromString(name, AssessmentStatusCode.class);
     }
 
     /**
      * Gets known AssessmentStatusCode values.
-     *
+     * 
      * @return known AssessmentStatusCode values.
      */
     public static Collection<AssessmentStatusCode> values() {

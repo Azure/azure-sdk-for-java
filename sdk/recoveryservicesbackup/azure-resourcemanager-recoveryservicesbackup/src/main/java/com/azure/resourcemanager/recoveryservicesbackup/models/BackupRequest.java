@@ -5,33 +5,109 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for backup request. Workload-specific backup requests are derived from this class. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = BackupRequest.class)
-@JsonTypeName("BackupRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureFileShareBackupRequest", value = AzureFileShareBackupRequest.class),
-    @JsonSubTypes.Type(name = "AzureWorkloadBackupRequest", value = AzureWorkloadBackupRequest.class),
-    @JsonSubTypes.Type(name = "IaasVMBackupRequest", value = IaasVMBackupRequest.class)
-})
+/**
+ * Base class for backup request. Workload-specific backup requests are derived from this class.
+ */
 @Immutable
-public class BackupRequest {
-    /** Creates an instance of BackupRequest class. */
+public class BackupRequest implements JsonSerializable<BackupRequest> {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "BackupRequest";
+
+    /**
+     * Creates an instance of BackupRequest class.
+     */
     public BackupRequest() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupRequest.
+     */
+    public static BackupRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureFileShareBackupRequest".equals(discriminatorValue)) {
+                    return AzureFileShareBackupRequest.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadBackupRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadBackupRequest.fromJson(readerToUse.reset());
+                } else if ("IaasVMBackupRequest".equals(discriminatorValue)) {
+                    return IaasVMBackupRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static BackupRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupRequest deserializedBackupRequest = new BackupRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedBackupRequest.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupRequest;
+        });
     }
 }

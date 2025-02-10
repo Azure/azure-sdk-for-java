@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.chaos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Model that represents the execution of a Experiment. */
+/**
+ * Model that represents the execution of a Experiment.
+ */
 @Immutable
-public final class ExperimentExecutionInner {
+public final class ExperimentExecutionInner implements JsonSerializable<ExperimentExecutionInner> {
     /*
      * String of the resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * String of the fully qualified resource ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * String of the resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The properties of experiment execution status.
      */
-    @JsonProperty(value = "properties")
     private ExperimentExecutionProperties innerProperties;
 
-    /** Creates an instance of ExperimentExecutionInner class. */
+    /**
+     * Creates an instance of ExperimentExecutionInner class.
+     */
     public ExperimentExecutionInner() {
     }
 
     /**
      * Get the type property: String of the resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -50,7 +54,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the id property: String of the fully qualified resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -59,7 +63,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the name property: String of the resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +72,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the innerProperties property: The properties of experiment execution status.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExperimentExecutionProperties innerProperties() {
@@ -77,7 +81,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the status property: The status of the execution.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -86,7 +90,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the startedAt property: String that represents the start date time.
-     *
+     * 
      * @return the startedAt value.
      */
     public OffsetDateTime startedAt() {
@@ -95,7 +99,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the stoppedAt property: String that represents the stop date time.
-     *
+     * 
      * @return the stoppedAt value.
      */
     public OffsetDateTime stoppedAt() {
@@ -104,12 +108,55 @@ public final class ExperimentExecutionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExperimentExecutionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExperimentExecutionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExperimentExecutionInner.
+     */
+    public static ExperimentExecutionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExperimentExecutionInner deserializedExperimentExecutionInner = new ExperimentExecutionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedExperimentExecutionInner.type = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedExperimentExecutionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedExperimentExecutionInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExperimentExecutionInner.innerProperties
+                        = ExperimentExecutionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExperimentExecutionInner;
+        });
     }
 }

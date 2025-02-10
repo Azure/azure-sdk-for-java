@@ -63,13 +63,12 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
     @ServiceInterface(name = "HelpRPDiscoverySolut")
     public interface DiscoverySolutionsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/{scope}/providers/Microsoft.Help/discoverySolutions")
+        @Get("/providers/Microsoft.Help/discoverySolutions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DiscoveryResponse>> list(@HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
-            @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("$skiptoken") String skiptoken,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam(value = "$filter", encoded = true) String filter,
+            @QueryParam("$skiptoken") String skiptoken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -80,7 +79,7 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
     }
 
     /**
-     * Lists the relevant Azure diagnostics and solutions using [problemClassification
+     * Lists the relevant Azure Diagnostics, Solutions and Troubleshooters using [problemClassification
      * API](https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP)) AND resourceUri or
      * resourceType.&lt;br/&gt; Discovery Solutions is the initial entry point within Help API, which identifies
      * relevant Azure diagnostics and solutions. &lt;br/&gt;&lt;br/&gt; Required Input : problemClassificationId (Use
@@ -90,8 +89,6 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics and Solutions
      * API.
      * 
-     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
-     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param filter 'ProblemClassificationId' is a mandatory filter to get solutions ids. It also supports optional
      * 'ResourceType' and 'SolutionType' filters. The
      * [$filter](https://learn.microsoft.com/en-us/odata/webapi/first-odata-api#filter) supports only 'and', 'or' and
@@ -103,18 +100,14 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * @return discovery response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SolutionMetadataResourceInner>> listSinglePageAsync(String scope, String filter,
-        String skiptoken) {
+    private Mono<PagedResponse<SolutionMetadataResourceInner>> listSinglePageAsync(String filter, String skiptoken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), scope, this.client.getApiVersion(), filter,
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), filter,
                 skiptoken, accept, context))
             .<PagedResponse<SolutionMetadataResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -122,7 +115,7 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
     }
 
     /**
-     * Lists the relevant Azure diagnostics and solutions using [problemClassification
+     * Lists the relevant Azure Diagnostics, Solutions and Troubleshooters using [problemClassification
      * API](https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP)) AND resourceUri or
      * resourceType.&lt;br/&gt; Discovery Solutions is the initial entry point within Help API, which identifies
      * relevant Azure diagnostics and solutions. &lt;br/&gt;&lt;br/&gt; Required Input : problemClassificationId (Use
@@ -132,8 +125,6 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics and Solutions
      * API.
      * 
-     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
-     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param filter 'ProblemClassificationId' is a mandatory filter to get solutions ids. It also supports optional
      * 'ResourceType' and 'SolutionType' filters. The
      * [$filter](https://learn.microsoft.com/en-us/odata/webapi/first-odata-api#filter) supports only 'and', 'or' and
@@ -146,25 +137,21 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * @return discovery response along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SolutionMetadataResourceInner>> listSinglePageAsync(String scope, String filter,
-        String skiptoken, Context context) {
+    private Mono<PagedResponse<SolutionMetadataResourceInner>> listSinglePageAsync(String filter, String skiptoken,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), scope, this.client.getApiVersion(), filter, skiptoken, accept, context)
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), filter, skiptoken, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Lists the relevant Azure diagnostics and solutions using [problemClassification
+     * Lists the relevant Azure Diagnostics, Solutions and Troubleshooters using [problemClassification
      * API](https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP)) AND resourceUri or
      * resourceType.&lt;br/&gt; Discovery Solutions is the initial entry point within Help API, which identifies
      * relevant Azure diagnostics and solutions. &lt;br/&gt;&lt;br/&gt; Required Input : problemClassificationId (Use
@@ -174,8 +161,6 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics and Solutions
      * API.
      * 
-     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
-     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param filter 'ProblemClassificationId' is a mandatory filter to get solutions ids. It also supports optional
      * 'ResourceType' and 'SolutionType' filters. The
      * [$filter](https://learn.microsoft.com/en-us/odata/webapi/first-odata-api#filter) supports only 'and', 'or' and
@@ -187,13 +172,13 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * @return discovery response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SolutionMetadataResourceInner> listAsync(String scope, String filter, String skiptoken) {
-        return new PagedFlux<>(() -> listSinglePageAsync(scope, filter, skiptoken),
+    private PagedFlux<SolutionMetadataResourceInner> listAsync(String filter, String skiptoken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists the relevant Azure diagnostics and solutions using [problemClassification
+     * Lists the relevant Azure Diagnostics, Solutions and Troubleshooters using [problemClassification
      * API](https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP)) AND resourceUri or
      * resourceType.&lt;br/&gt; Discovery Solutions is the initial entry point within Help API, which identifies
      * relevant Azure diagnostics and solutions. &lt;br/&gt;&lt;br/&gt; Required Input : problemClassificationId (Use
@@ -203,23 +188,20 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics and Solutions
      * API.
      * 
-     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
-     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return discovery response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SolutionMetadataResourceInner> listAsync(String scope) {
+    private PagedFlux<SolutionMetadataResourceInner> listAsync() {
         final String filter = null;
         final String skiptoken = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(scope, filter, skiptoken),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Lists the relevant Azure diagnostics and solutions using [problemClassification
+     * Lists the relevant Azure Diagnostics, Solutions and Troubleshooters using [problemClassification
      * API](https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP)) AND resourceUri or
      * resourceType.&lt;br/&gt; Discovery Solutions is the initial entry point within Help API, which identifies
      * relevant Azure diagnostics and solutions. &lt;br/&gt;&lt;br/&gt; Required Input : problemClassificationId (Use
@@ -229,8 +211,6 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics and Solutions
      * API.
      * 
-     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
-     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param filter 'ProblemClassificationId' is a mandatory filter to get solutions ids. It also supports optional
      * 'ResourceType' and 'SolutionType' filters. The
      * [$filter](https://learn.microsoft.com/en-us/odata/webapi/first-odata-api#filter) supports only 'and', 'or' and
@@ -243,14 +223,13 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * @return discovery response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SolutionMetadataResourceInner> listAsync(String scope, String filter, String skiptoken,
-        Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(scope, filter, skiptoken, context),
+    private PagedFlux<SolutionMetadataResourceInner> listAsync(String filter, String skiptoken, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, skiptoken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists the relevant Azure diagnostics and solutions using [problemClassification
+     * Lists the relevant Azure Diagnostics, Solutions and Troubleshooters using [problemClassification
      * API](https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP)) AND resourceUri or
      * resourceType.&lt;br/&gt; Discovery Solutions is the initial entry point within Help API, which identifies
      * relevant Azure diagnostics and solutions. &lt;br/&gt;&lt;br/&gt; Required Input : problemClassificationId (Use
@@ -260,22 +239,19 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics and Solutions
      * API.
      * 
-     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
-     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return discovery response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SolutionMetadataResourceInner> list(String scope) {
+    public PagedIterable<SolutionMetadataResourceInner> list() {
         final String filter = null;
         final String skiptoken = null;
-        return new PagedIterable<>(listAsync(scope, filter, skiptoken));
+        return new PagedIterable<>(listAsync(filter, skiptoken));
     }
 
     /**
-     * Lists the relevant Azure diagnostics and solutions using [problemClassification
+     * Lists the relevant Azure Diagnostics, Solutions and Troubleshooters using [problemClassification
      * API](https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP)) AND resourceUri or
      * resourceType.&lt;br/&gt; Discovery Solutions is the initial entry point within Help API, which identifies
      * relevant Azure diagnostics and solutions. &lt;br/&gt;&lt;br/&gt; Required Input : problemClassificationId (Use
@@ -285,8 +261,6 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * Discovery solutions response must be passed via ‘additionalParameters’ as an input to Diagnostics and Solutions
      * API.
      * 
-     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
-     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param filter 'ProblemClassificationId' is a mandatory filter to get solutions ids. It also supports optional
      * 'ResourceType' and 'SolutionType' filters. The
      * [$filter](https://learn.microsoft.com/en-us/odata/webapi/first-odata-api#filter) supports only 'and', 'or' and
@@ -299,17 +273,14 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
      * @return discovery response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SolutionMetadataResourceInner> list(String scope, String filter, String skiptoken,
-        Context context) {
-        return new PagedIterable<>(listAsync(scope, filter, skiptoken, context));
+    public PagedIterable<SolutionMetadataResourceInner> list(String filter, String skiptoken, Context context) {
+        return new PagedIterable<>(listAsync(filter, skiptoken, context));
     }
 
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -334,9 +305,7 @@ public final class DiscoverySolutionsClientImpl implements DiscoverySolutionsCli
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

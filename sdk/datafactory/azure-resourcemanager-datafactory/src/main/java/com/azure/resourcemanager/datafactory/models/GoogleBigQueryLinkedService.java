@@ -6,24 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.GoogleBigQueryLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Google BigQuery service linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("GoogleBigQuery")
 @Fluent
 public final class GoogleBigQueryLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "GoogleBigQuery";
+
+    /*
      * Google BigQuery service linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private GoogleBigQueryLinkedServiceTypeProperties innerTypeProperties
         = new GoogleBigQueryLinkedServiceTypeProperties();
 
@@ -34,12 +38,31 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Google BigQuery service linked service properties.
      * 
      * @return the innerTypeProperties value.
      */
     private GoogleBigQueryLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GoogleBigQueryLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -129,9 +152,9 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Get the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive
-     * access enables support for federated tables that combine BigQuery data with data from Google Drive. The default
-     * value is false. Type: string (or Expression with resultType string).
+     * Get the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive access
+     * enables support for federated tables that combine BigQuery data with data from Google Drive. The default value is
+     * false. Type: string (or Expression with resultType string).
      * 
      * @return the requestGoogleDriveScope value.
      */
@@ -140,9 +163,9 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Set the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive
-     * access enables support for federated tables that combine BigQuery data with data from Google Drive. The default
-     * value is false. Type: string (or Expression with resultType string).
+     * Set the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive access
+     * enables support for federated tables that combine BigQuery data with data from Google Drive. The default value is
+     * false. Type: string (or Expression with resultType string).
      * 
      * @param requestGoogleDriveScope the requestGoogleDriveScope value to set.
      * @return the GoogleBigQueryLinkedService object itself.
@@ -279,9 +302,8 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Get the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service
-     * account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType
-     * string).
+     * Get the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
+     * email address and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
      * 
      * @return the keyFilePath value.
      */
@@ -290,9 +312,8 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Set the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service
-     * account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType
-     * string).
+     * Set the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
+     * email address and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
      * 
      * @param keyFilePath the keyFilePath value to set.
      * @return the GoogleBigQueryLinkedService object itself.
@@ -306,10 +327,9 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType
-     * string).
+     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType string).
      * 
      * @return the trustedCertPath value.
      */
@@ -318,10 +338,9 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType
-     * string).
+     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType string).
      * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the GoogleBigQueryLinkedService object itself.
@@ -360,8 +379,8 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -370,8 +389,8 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleBigQueryLinkedService object itself.
@@ -391,14 +410,95 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model GoogleBigQueryLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model GoogleBigQueryLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GoogleBigQueryLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GoogleBigQueryLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GoogleBigQueryLinkedService if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GoogleBigQueryLinkedService.
+     */
+    public static GoogleBigQueryLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GoogleBigQueryLinkedService deserializedGoogleBigQueryLinkedService = new GoogleBigQueryLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedGoogleBigQueryLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedGoogleBigQueryLinkedService
+                        .withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedGoogleBigQueryLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedGoogleBigQueryLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedGoogleBigQueryLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedGoogleBigQueryLinkedService.innerTypeProperties
+                        = GoogleBigQueryLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedGoogleBigQueryLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedGoogleBigQueryLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedGoogleBigQueryLinkedService;
+        });
+    }
 }

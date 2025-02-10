@@ -6,44 +6,48 @@ package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Parameters for Redis import operation. */
+/**
+ * Parameters for Redis import operation.
+ */
 @Fluent
-public final class ImportRdbParameters {
+public final class ImportRdbParameters implements JsonSerializable<ImportRdbParameters> {
     /*
      * File format.
      */
-    @JsonProperty(value = "format")
     private String format;
 
     /*
      * files to import.
      */
-    @JsonProperty(value = "files", required = true)
     private List<String> files;
 
     /*
      * Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity,
      * default value is SAS
      */
-    @JsonProperty(value = "preferred-data-archive-auth-method")
     private String preferredDataArchiveAuthMethod;
 
     /*
      * Subscription id of the storage container containing files to import using Managed Identity.
      */
-    @JsonProperty(value = "storage-subscription-id")
     private String storageSubscriptionId;
 
-    /** Creates an instance of ImportRdbParameters class. */
+    /**
+     * Creates an instance of ImportRdbParameters class.
+     */
     public ImportRdbParameters() {
     }
 
     /**
      * Get the format property: File format.
-     *
+     * 
      * @return the format value.
      */
     public String format() {
@@ -52,7 +56,7 @@ public final class ImportRdbParameters {
 
     /**
      * Set the format property: File format.
-     *
+     * 
      * @param format the format value to set.
      * @return the ImportRdbParameters object itself.
      */
@@ -63,7 +67,7 @@ public final class ImportRdbParameters {
 
     /**
      * Get the files property: files to import.
-     *
+     * 
      * @return the files value.
      */
     public List<String> files() {
@@ -72,7 +76,7 @@ public final class ImportRdbParameters {
 
     /**
      * Set the files property: files to import.
-     *
+     * 
      * @param files the files value to set.
      * @return the ImportRdbParameters object itself.
      */
@@ -84,7 +88,7 @@ public final class ImportRdbParameters {
     /**
      * Get the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
      * data archive, specify SAS or ManagedIdentity, default value is SAS.
-     *
+     * 
      * @return the preferredDataArchiveAuthMethod value.
      */
     public String preferredDataArchiveAuthMethod() {
@@ -94,7 +98,7 @@ public final class ImportRdbParameters {
     /**
      * Set the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
      * data archive, specify SAS or ManagedIdentity, default value is SAS.
-     *
+     * 
      * @param preferredDataArchiveAuthMethod the preferredDataArchiveAuthMethod value to set.
      * @return the ImportRdbParameters object itself.
      */
@@ -106,7 +110,7 @@ public final class ImportRdbParameters {
     /**
      * Get the storageSubscriptionId property: Subscription id of the storage container containing files to import using
      * Managed Identity.
-     *
+     * 
      * @return the storageSubscriptionId value.
      */
     public String storageSubscriptionId() {
@@ -116,7 +120,7 @@ public final class ImportRdbParameters {
     /**
      * Set the storageSubscriptionId property: Subscription id of the storage container containing files to import using
      * Managed Identity.
-     *
+     * 
      * @param storageSubscriptionId the storageSubscriptionId value to set.
      * @return the ImportRdbParameters object itself.
      */
@@ -127,16 +131,62 @@ public final class ImportRdbParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (files() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property files in model ImportRdbParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property files in model ImportRdbParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImportRdbParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("files", this.files, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("format", this.format);
+        jsonWriter.writeStringField("preferred-data-archive-auth-method", this.preferredDataArchiveAuthMethod);
+        jsonWriter.writeStringField("storage-subscription-id", this.storageSubscriptionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportRdbParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportRdbParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImportRdbParameters.
+     */
+    public static ImportRdbParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportRdbParameters deserializedImportRdbParameters = new ImportRdbParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("files".equals(fieldName)) {
+                    List<String> files = reader.readArray(reader1 -> reader1.getString());
+                    deserializedImportRdbParameters.files = files;
+                } else if ("format".equals(fieldName)) {
+                    deserializedImportRdbParameters.format = reader.getString();
+                } else if ("preferred-data-archive-auth-method".equals(fieldName)) {
+                    deserializedImportRdbParameters.preferredDataArchiveAuthMethod = reader.getString();
+                } else if ("storage-subscription-id".equals(fieldName)) {
+                    deserializedImportRdbParameters.storageSubscriptionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportRdbParameters;
+        });
+    }
 }

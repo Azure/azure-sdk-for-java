@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -19,7 +18,7 @@ public final class NetworkPluginMode extends ExpandableStringEnum<NetworkPluginM
 
     /**
      * Creates a new instance of NetworkPluginMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,18 +27,17 @@ public final class NetworkPluginMode extends ExpandableStringEnum<NetworkPluginM
 
     /**
      * Creates or finds a NetworkPluginMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkPluginMode.
      */
-    @JsonCreator
     public static NetworkPluginMode fromString(String name) {
         return fromString(name, NetworkPluginMode.class);
     }
 
     /**
      * Gets known NetworkPluginMode values.
-     *
+     * 
      * @return known NetworkPluginMode values.
      */
     public static Collection<NetworkPluginMode> values() {

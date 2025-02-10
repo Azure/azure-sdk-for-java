@@ -85,7 +85,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
     /**
      * Organization Validate proxy resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,7 +127,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
     /**
      * Organization Validate proxy resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @param context The context to associate with this operation.
@@ -169,7 +169,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
     /**
      * Organization Validate proxy resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,7 +187,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
     /**
      * Organization Validate proxy resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @param context The context to associate with this operation.
@@ -205,7 +205,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
     /**
      * Organization Validate proxy resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,7 +222,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
     /**
      * Organization Validate proxy resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,7 +265,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
     /**
      * Organization Validate proxy resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @param context The context to associate with this operation.
@@ -307,7 +307,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
     /**
      * Organization Validate proxy resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,7 +325,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
     /**
      * Organization Validate proxy resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @param context The context to associate with this operation.
@@ -343,7 +343,7 @@ public final class ValidationsClientImpl implements ValidationsClient {
     /**
      * Organization Validate proxy resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Organization resource model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

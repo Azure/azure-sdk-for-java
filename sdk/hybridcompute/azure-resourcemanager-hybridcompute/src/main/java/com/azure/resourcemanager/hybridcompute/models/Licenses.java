@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseInner;
 
-/** Resource collection API of Licenses. */
+/**
+ * Resource collection API of Licenses.
+ */
 public interface Licenses {
     /**
      * The operation to validate a license.
-     *
+     * 
      * @param parameters Parameters supplied to the license validation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -24,7 +26,7 @@ public interface Licenses {
 
     /**
      * The operation to validate a license.
-     *
+     * 
      * @param parameters Parameters supplied to the license validation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +38,7 @@ public interface Licenses {
 
     /**
      * Retrieves information about the view of a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -49,7 +51,7 @@ public interface Licenses {
 
     /**
      * Retrieves information about the view of a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,7 +63,7 @@ public interface Licenses {
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,7 +74,7 @@ public interface Licenses {
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param licenseName The name of the license.
      * @param context The context to associate with this operation.
@@ -84,7 +86,7 @@ public interface Licenses {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -95,7 +97,7 @@ public interface Licenses {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,7 +109,7 @@ public interface Licenses {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List license operation response as paginated response with {@link PagedIterable}.
@@ -116,7 +118,7 @@ public interface Licenses {
 
     /**
      * The operation to get all licenses of a non-Azure machine.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -127,7 +129,7 @@ public interface Licenses {
 
     /**
      * Retrieves information about the view of a license.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -138,7 +140,7 @@ public interface Licenses {
 
     /**
      * Retrieves information about the view of a license.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,7 +152,7 @@ public interface Licenses {
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -160,7 +162,7 @@ public interface Licenses {
 
     /**
      * The operation to delete a license.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,7 +173,7 @@ public interface Licenses {
 
     /**
      * Begins definition for a new License resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new License definition.
      */

@@ -13,30 +13,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputeProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeProfile model =
-            BinaryData
-                .fromString(
-                    "{\"nodes\":[{\"type\":\"azjdyggd\",\"vmSize\":\"jixhbk\",\"count\":2140516005},{\"type\":\"fqweykhmene\",\"vmSize\":\"fyexfwhy\",\"count\":1506978127},{\"type\":\"i\",\"vmSize\":\"vyvdcs\",\"count\":1668619152},{\"type\":\"ynnaam\",\"vmSize\":\"ectehf\",\"count\":736113941}]}")
-                .toObject(ComputeProfile.class);
-        Assertions.assertEquals("azjdyggd", model.nodes().get(0).type());
-        Assertions.assertEquals("jixhbk", model.nodes().get(0).vmSize());
-        Assertions.assertEquals(2140516005, model.nodes().get(0).count());
+        ComputeProfile model = BinaryData.fromString(
+            "{\"nodes\":[{\"type\":\"dnfyhxdeoejzicwi\",\"vmSize\":\"sjttgzfbish\",\"count\":643021552},{\"type\":\"khaj\",\"vmSize\":\"eyeam\",\"count\":128550194},{\"type\":\"hagalpbuxwgipwh\",\"vmSize\":\"nowkgshw\",\"count\":248274393},{\"type\":\"kix\",\"vmSize\":\"bin\",\"count\":1868038426}],\"availabilityZones\":[\"ttmrywnuzoqf\",\"iyqzrnk\",\"qvyxlwhzlsicoho\",\"qnwvlrya\"]}")
+            .toObject(ComputeProfile.class);
+        Assertions.assertEquals("dnfyhxdeoejzicwi", model.nodes().get(0).type());
+        Assertions.assertEquals("sjttgzfbish", model.nodes().get(0).vmSize());
+        Assertions.assertEquals(643021552, model.nodes().get(0).count());
+        Assertions.assertEquals("ttmrywnuzoqf", model.availabilityZones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputeProfile model =
-            new ComputeProfile()
-                .withNodes(
-                    Arrays
-                        .asList(
-                            new NodeProfile().withType("azjdyggd").withVmSize("jixhbk").withCount(2140516005),
-                            new NodeProfile().withType("fqweykhmene").withVmSize("fyexfwhy").withCount(1506978127),
-                            new NodeProfile().withType("i").withVmSize("vyvdcs").withCount(1668619152),
-                            new NodeProfile().withType("ynnaam").withVmSize("ectehf").withCount(736113941)));
+        ComputeProfile model = new ComputeProfile()
+            .withNodes(Arrays.asList(
+                new NodeProfile().withType("dnfyhxdeoejzicwi").withVmSize("sjttgzfbish").withCount(643021552),
+                new NodeProfile().withType("khaj").withVmSize("eyeam").withCount(128550194),
+                new NodeProfile().withType("hagalpbuxwgipwh").withVmSize("nowkgshw").withCount(248274393),
+                new NodeProfile().withType("kix").withVmSize("bin").withCount(1868038426)))
+            .withAvailabilityZones(Arrays.asList("ttmrywnuzoqf", "iyqzrnk", "qvyxlwhzlsicoho", "qnwvlrya"));
         model = BinaryData.fromObject(model).toObject(ComputeProfile.class);
-        Assertions.assertEquals("azjdyggd", model.nodes().get(0).type());
-        Assertions.assertEquals("jixhbk", model.nodes().get(0).vmSize());
-        Assertions.assertEquals(2140516005, model.nodes().get(0).count());
+        Assertions.assertEquals("dnfyhxdeoejzicwi", model.nodes().get(0).type());
+        Assertions.assertEquals("sjttgzfbish", model.nodes().get(0).vmSize());
+        Assertions.assertEquals(643021552, model.nodes().get(0).count());
+        Assertions.assertEquals("ttmrywnuzoqf", model.availabilityZones().get(0));
     }
 }

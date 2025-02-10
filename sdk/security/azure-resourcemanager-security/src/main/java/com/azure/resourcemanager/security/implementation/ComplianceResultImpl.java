@@ -13,8 +13,8 @@ public final class ComplianceResultImpl implements ComplianceResult {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    ComplianceResultImpl(
-        ComplianceResultInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    ComplianceResultImpl(ComplianceResultInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

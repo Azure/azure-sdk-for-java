@@ -133,6 +133,28 @@ public class ReactiveRoleRepositoryIT {
     }
 
     @Test
+    public void testAnnotatedFindAllWithSortAsc() {
+        final Flux<Role> roleAscFlux = repository.annotatedFindAllWithSort(Sort.by(Sort.Direction.ASC, "id"));
+        StepVerifier.create(roleAscFlux)
+            .expectNext(TEST_ROLE_1)
+            .expectNext(TEST_ROLE_2)
+            .expectNext(TEST_ROLE_3)
+            .expectNext(TEST_ROLE_4)
+            .verifyComplete();
+    }
+
+    @Test
+    public void testAnnotatedFindAllWithSortDesc() {
+        final Flux<Role> roleAscFlux = repository.annotatedFindAllWithSort(Sort.by(Sort.Direction.DESC, "id"));
+        StepVerifier.create(roleAscFlux)
+            .expectNext(TEST_ROLE_4)
+            .expectNext(TEST_ROLE_3)
+            .expectNext(TEST_ROLE_2)
+            .expectNext(TEST_ROLE_1)
+            .verifyComplete();
+    }
+
+    @Test
     public void testAnnotatedQueryWithMultipleLevels() {
         List<String> levels = new ArrayList<>();
         levels.add(TestConstants.LEVEL);

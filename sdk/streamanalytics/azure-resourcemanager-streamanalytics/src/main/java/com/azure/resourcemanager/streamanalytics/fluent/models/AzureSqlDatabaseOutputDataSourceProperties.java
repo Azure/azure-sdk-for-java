@@ -5,66 +5,90 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.AzureSqlDatabaseDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.IOException;
 
-/** The properties that are associated with an Azure SQL database output. */
+/**
+ * The properties that are associated with an Azure SQL database output.
+ */
 @Fluent
 public final class AzureSqlDatabaseOutputDataSourceProperties extends AzureSqlDatabaseDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlDatabaseOutputDataSourceProperties.class);
+    /**
+     * Creates an instance of AzureSqlDatabaseOutputDataSourceProperties class.
+     */
+    public AzureSqlDatabaseOutputDataSourceProperties() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withServer(String server) {
         super.withServer(server);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withDatabase(String database) {
         super.withDatabase(database);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withUser(String user) {
         super.withUser(user);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withPassword(String password) {
         super.withPassword(password);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withTable(String table) {
         super.withTable(table);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withMaxBatchCount(Float maxBatchCount) {
         super.withMaxBatchCount(maxBatchCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withMaxWriterCount(Float maxWriterCount) {
         super.withMaxWriterCount(maxWriterCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlDatabaseOutputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
         super.withAuthenticationMode(authenticationMode);
@@ -73,11 +97,72 @@ public final class AzureSqlDatabaseOutputDataSourceProperties extends AzureSqlDa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", server());
+        jsonWriter.writeStringField("database", database());
+        jsonWriter.writeStringField("user", user());
+        jsonWriter.writeStringField("password", password());
+        jsonWriter.writeStringField("table", table());
+        jsonWriter.writeNumberField("maxBatchCount", maxBatchCount());
+        jsonWriter.writeNumberField("maxWriterCount", maxWriterCount());
+        jsonWriter.writeStringField("authenticationMode",
+            authenticationMode() == null ? null : authenticationMode().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlDatabaseOutputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlDatabaseOutputDataSourceProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlDatabaseOutputDataSourceProperties.
+     */
+    public static AzureSqlDatabaseOutputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlDatabaseOutputDataSourceProperties deserializedAzureSqlDatabaseOutputDataSourceProperties
+                = new AzureSqlDatabaseOutputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties.withServer(reader.getString());
+                } else if ("database".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties.withDatabase(reader.getString());
+                } else if ("user".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties.withUser(reader.getString());
+                } else if ("password".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties.withPassword(reader.getString());
+                } else if ("table".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties.withTable(reader.getString());
+                } else if ("maxBatchCount".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties
+                        .withMaxBatchCount(reader.getNullable(JsonReader::getFloat));
+                } else if ("maxWriterCount".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties
+                        .withMaxWriterCount(reader.getNullable(JsonReader::getFloat));
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedAzureSqlDatabaseOutputDataSourceProperties
+                        .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlDatabaseOutputDataSourceProperties;
+        });
     }
 }

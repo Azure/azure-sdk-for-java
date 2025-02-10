@@ -14,38 +14,35 @@ import org.junit.jupiter.api.Assertions;
 public final class PreconfiguredEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PreconfiguredEndpointInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"iuiefozbhdmsm\",\"endpoint\":\"zqhof\",\"endpointType\":\"ATM\",\"backend\":\"equi\"},\"location\":\"hxicslfaoqz\",\"tags\":{\"ph\":\"ylhalnswhcc\",\"gwol\":\"aivwitqscywu\",\"zbwemh\":\"h\",\"sbrgz\":\"i\"},\"id\":\"wmsweypqwd\",\"name\":\"ggicccnxqhue\",\"type\":\"mkttlstvlzywem\"}")
-                .toObject(PreconfiguredEndpointInner.class);
-        Assertions.assertEquals("hxicslfaoqz", model.location());
-        Assertions.assertEquals("ylhalnswhcc", model.tags().get("ph"));
-        Assertions.assertEquals("iuiefozbhdmsm", model.description());
-        Assertions.assertEquals("zqhof", model.endpoint());
-        Assertions.assertEquals(EndpointType.ATM, model.endpointType());
-        Assertions.assertEquals("equi", model.backend());
+        PreconfiguredEndpointInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"zrcxfailcfxwmdbo\",\"endpoint\":\"fgsftufqob\",\"endpointType\":\"AzureRegion\",\"backend\":\"acgcckknhx\"},\"location\":\"izvy\",\"tags\":{\"aaeranokqgukk\":\"zvulj\",\"oylaxxul\":\"qnvb\"},\"id\":\"disdosfjbjsvgj\",\"name\":\"whryvycytdcl\",\"type\":\"gc\"}")
+            .toObject(PreconfiguredEndpointInner.class);
+        Assertions.assertEquals("izvy", model.location());
+        Assertions.assertEquals("zvulj", model.tags().get("aaeranokqgukk"));
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.description());
+        Assertions.assertEquals("fgsftufqob", model.endpoint());
+        Assertions.assertEquals(EndpointType.AZURE_REGION, model.endpointType());
+        Assertions.assertEquals("acgcckknhx", model.backend());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PreconfiguredEndpointInner model =
-            new PreconfiguredEndpointInner()
-                .withLocation("hxicslfaoqz")
-                .withTags(mapOf("ph", "ylhalnswhcc", "gwol", "aivwitqscywu", "zbwemh", "h", "sbrgz", "i"))
-                .withDescription("iuiefozbhdmsm")
-                .withEndpoint("zqhof")
-                .withEndpointType(EndpointType.ATM)
-                .withBackend("equi");
+        PreconfiguredEndpointInner model = new PreconfiguredEndpointInner().withLocation("izvy")
+            .withTags(mapOf("aaeranokqgukk", "zvulj", "oylaxxul", "qnvb"))
+            .withDescription("zrcxfailcfxwmdbo")
+            .withEndpoint("fgsftufqob")
+            .withEndpointType(EndpointType.AZURE_REGION)
+            .withBackend("acgcckknhx");
         model = BinaryData.fromObject(model).toObject(PreconfiguredEndpointInner.class);
-        Assertions.assertEquals("hxicslfaoqz", model.location());
-        Assertions.assertEquals("ylhalnswhcc", model.tags().get("ph"));
-        Assertions.assertEquals("iuiefozbhdmsm", model.description());
-        Assertions.assertEquals("zqhof", model.endpoint());
-        Assertions.assertEquals(EndpointType.ATM, model.endpointType());
-        Assertions.assertEquals("equi", model.backend());
+        Assertions.assertEquals("izvy", model.location());
+        Assertions.assertEquals("zvulj", model.tags().get("aaeranokqgukk"));
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.description());
+        Assertions.assertEquals("fgsftufqob", model.endpoint());
+        Assertions.assertEquals(EndpointType.AZURE_REGION, model.endpointType());
+        Assertions.assertEquals("acgcckknhx", model.backend());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

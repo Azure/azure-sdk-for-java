@@ -4,7 +4,10 @@
 
 package com.azure.resourcemanager.elasticsan.generated;
 
+import com.azure.resourcemanager.elasticsan.models.AutoScalePolicyEnforcement;
+import com.azure.resourcemanager.elasticsan.models.AutoScaleProperties;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
+import com.azure.resourcemanager.elasticsan.models.ScaleUpProperties;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
@@ -12,48 +15,57 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ElasticSans Create. */
+/**
+ * Samples for ElasticSans Create.
+ */
 public final class ElasticSansCreateSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/ElasticSans_Create_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
+     * ElasticSans_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: ElasticSans_Create_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ElasticSanManager.
      */
     public static void elasticSansCreateMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager
-            .elasticSans()
+        manager.elasticSans()
             .define("elasticsanname")
             .withRegion("France Central")
             .withExistingResourceGroup("resourcegroupname")
             .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
-            .withBaseSizeTiB(5L)
-            .withExtendedCapacitySizeTiB(25L)
-            .withTags(mapOf("key9316", "fakeTokenPlaceholder"))
-            .withAvailabilityZones(Arrays.asList("1"))
+            .withBaseSizeTiB(1L)
+            .withExtendedCapacitySizeTiB(3L)
+            .withTags(mapOf("key9706", "fakeTokenPlaceholder"))
+            .withAvailabilityZones(Arrays.asList("xoz"))
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .withAutoScaleProperties(
+                new AutoScaleProperties().withScaleUpProperties(new ScaleUpProperties().withUnusedSizeTiB(24L)
+                    .withIncreaseCapacityUnitByTiB(4L)
+                    .withCapacityUnitScaleUpLimitTiB(17L)
+                    .withAutoScalePolicyEnforcement(AutoScalePolicyEnforcement.NONE)))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/ElasticSans_Create_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
+     * ElasticSans_Create_MinimumSet_Gen.json
      */
     /**
      * Sample code: ElasticSans_Create_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ElasticSanManager.
      */
     public static void elasticSansCreateMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager
-            .elasticSans()
+        manager.elasticSans()
             .define("elasticsanname")
             .withRegion("France Central")
             .withExistingResourceGroup("resourcegroupname")
             .withSku(new Sku().withName(SkuName.PREMIUM_LRS))
-            .withBaseSizeTiB(15L)
-            .withExtendedCapacitySizeTiB(27L)
+            .withBaseSizeTiB(1L)
+            .withExtendedCapacitySizeTiB(3L)
             .create();
     }
 

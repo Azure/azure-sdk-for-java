@@ -5,66 +5,79 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** HyperV replica 2012 R2 (Blue) replication details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVReplica2012R2")
+/**
+ * HyperV replica 2012 R2 (Blue) replication details.
+ */
 @Fluent
 public final class HyperVReplicaBlueReplicationDetails extends ReplicationProviderSpecificSettings {
     /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "HyperVReplica2012R2";
+
+    /*
      * The Last replication time.
      */
-    @JsonProperty(value = "lastReplicatedTime")
     private OffsetDateTime lastReplicatedTime;
 
     /*
      * The PE Network details.
      */
-    @JsonProperty(value = "vmNics")
     private List<VMNicDetails> vmNics;
 
     /*
      * The virtual machine Id.
      */
-    @JsonProperty(value = "vmId")
     private String vmId;
 
     /*
      * The protection state for the vm.
      */
-    @JsonProperty(value = "vmProtectionState")
     private String vmProtectionState;
 
     /*
      * The protection state description for the vm.
      */
-    @JsonProperty(value = "vmProtectionStateDescription")
     private String vmProtectionStateDescription;
 
     /*
      * Initial replication details.
      */
-    @JsonProperty(value = "initialReplicationDetails")
     private InitialReplicationDetails initialReplicationDetails;
 
     /*
      * VM disk details.
      */
-    @JsonProperty(value = "vMDiskDetails")
     private List<DiskDetails> vMDiskDetails;
 
-    /** Creates an instance of HyperVReplicaBlueReplicationDetails class. */
+    /**
+     * Creates an instance of HyperVReplicaBlueReplicationDetails class.
+     */
     public HyperVReplicaBlueReplicationDetails() {
     }
 
     /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the lastReplicatedTime property: The Last replication time.
-     *
+     * 
      * @return the lastReplicatedTime value.
      */
     public OffsetDateTime lastReplicatedTime() {
@@ -73,7 +86,7 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Set the lastReplicatedTime property: The Last replication time.
-     *
+     * 
      * @param lastReplicatedTime the lastReplicatedTime value to set.
      * @return the HyperVReplicaBlueReplicationDetails object itself.
      */
@@ -84,7 +97,7 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Get the vmNics property: The PE Network details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<VMNicDetails> vmNics() {
@@ -93,7 +106,7 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Set the vmNics property: The PE Network details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the HyperVReplicaBlueReplicationDetails object itself.
      */
@@ -104,7 +117,7 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Get the vmId property: The virtual machine Id.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -113,7 +126,7 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Set the vmId property: The virtual machine Id.
-     *
+     * 
      * @param vmId the vmId value to set.
      * @return the HyperVReplicaBlueReplicationDetails object itself.
      */
@@ -124,7 +137,7 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Get the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @return the vmProtectionState value.
      */
     public String vmProtectionState() {
@@ -133,7 +146,7 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Set the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @param vmProtectionState the vmProtectionState value to set.
      * @return the HyperVReplicaBlueReplicationDetails object itself.
      */
@@ -144,7 +157,7 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Get the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @return the vmProtectionStateDescription value.
      */
     public String vmProtectionStateDescription() {
@@ -153,7 +166,7 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Set the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @param vmProtectionStateDescription the vmProtectionStateDescription value to set.
      * @return the HyperVReplicaBlueReplicationDetails object itself.
      */
@@ -164,7 +177,7 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Get the initialReplicationDetails property: Initial replication details.
-     *
+     * 
      * @return the initialReplicationDetails value.
      */
     public InitialReplicationDetails initialReplicationDetails() {
@@ -173,19 +186,19 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Set the initialReplicationDetails property: Initial replication details.
-     *
+     * 
      * @param initialReplicationDetails the initialReplicationDetails value to set.
      * @return the HyperVReplicaBlueReplicationDetails object itself.
      */
-    public HyperVReplicaBlueReplicationDetails withInitialReplicationDetails(
-        InitialReplicationDetails initialReplicationDetails) {
+    public HyperVReplicaBlueReplicationDetails
+        withInitialReplicationDetails(InitialReplicationDetails initialReplicationDetails) {
         this.initialReplicationDetails = initialReplicationDetails;
         return this;
     }
 
     /**
      * Get the vMDiskDetails property: VM disk details.
-     *
+     * 
      * @return the vMDiskDetails value.
      */
     public List<DiskDetails> vMDiskDetails() {
@@ -194,7 +207,7 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Set the vMDiskDetails property: VM disk details.
-     *
+     * 
      * @param vMDiskDetails the vMDiskDetails value to set.
      * @return the HyperVReplicaBlueReplicationDetails object itself.
      */
@@ -205,12 +218,11 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmNics() != null) {
             vmNics().forEach(e -> e.validate());
         }
@@ -220,5 +232,70 @@ public final class HyperVReplicaBlueReplicationDetails extends ReplicationProvid
         if (vMDiskDetails() != null) {
             vMDiskDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("lastReplicatedTime",
+            this.lastReplicatedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastReplicatedTime));
+        jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("vmId", this.vmId);
+        jsonWriter.writeStringField("vmProtectionState", this.vmProtectionState);
+        jsonWriter.writeStringField("vmProtectionStateDescription", this.vmProtectionStateDescription);
+        jsonWriter.writeJsonField("initialReplicationDetails", this.initialReplicationDetails);
+        jsonWriter.writeArrayField("vMDiskDetails", this.vMDiskDetails, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVReplicaBlueReplicationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVReplicaBlueReplicationDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVReplicaBlueReplicationDetails.
+     */
+    public static HyperVReplicaBlueReplicationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVReplicaBlueReplicationDetails deserializedHyperVReplicaBlueReplicationDetails
+                = new HyperVReplicaBlueReplicationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVReplicaBlueReplicationDetails.instanceType = reader.getString();
+                } else if ("lastReplicatedTime".equals(fieldName)) {
+                    deserializedHyperVReplicaBlueReplicationDetails.lastReplicatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("vmNics".equals(fieldName)) {
+                    List<VMNicDetails> vmNics = reader.readArray(reader1 -> VMNicDetails.fromJson(reader1));
+                    deserializedHyperVReplicaBlueReplicationDetails.vmNics = vmNics;
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedHyperVReplicaBlueReplicationDetails.vmId = reader.getString();
+                } else if ("vmProtectionState".equals(fieldName)) {
+                    deserializedHyperVReplicaBlueReplicationDetails.vmProtectionState = reader.getString();
+                } else if ("vmProtectionStateDescription".equals(fieldName)) {
+                    deserializedHyperVReplicaBlueReplicationDetails.vmProtectionStateDescription = reader.getString();
+                } else if ("initialReplicationDetails".equals(fieldName)) {
+                    deserializedHyperVReplicaBlueReplicationDetails.initialReplicationDetails
+                        = InitialReplicationDetails.fromJson(reader);
+                } else if ("vMDiskDetails".equals(fieldName)) {
+                    List<DiskDetails> vMDiskDetails = reader.readArray(reader1 -> DiskDetails.fromJson(reader1));
+                    deserializedHyperVReplicaBlueReplicationDetails.vMDiskDetails = vMDiskDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVReplicaBlueReplicationDetails;
+        });
     }
 }

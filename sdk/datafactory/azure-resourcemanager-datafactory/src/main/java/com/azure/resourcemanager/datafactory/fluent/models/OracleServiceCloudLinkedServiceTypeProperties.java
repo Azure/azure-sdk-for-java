@@ -6,58 +6,56 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Oracle Service Cloud linked service properties.
  */
 @Fluent
-public final class OracleServiceCloudLinkedServiceTypeProperties {
+public final class OracleServiceCloudLinkedServiceTypeProperties
+    implements JsonSerializable<OracleServiceCloudLinkedServiceTypeProperties> {
     /*
      * The URL of the Oracle Service Cloud instance.
      */
-    @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
      * The user name that you use to access Oracle Service Cloud server.
      */
-    @JsonProperty(value = "username", required = true)
     private Object username;
 
     /*
      * The password corresponding to the user name that you provided in the username key.
      */
-    @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean
      * (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -173,8 +171,8 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the usePeerVerification value.
      */
@@ -183,8 +181,8 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the OracleServiceCloudLinkedServiceTypeProperties object itself.
@@ -195,8 +193,8 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -205,8 +203,8 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the OracleServiceCloudLinkedServiceTypeProperties object itself.
@@ -223,20 +221,82 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property host in model OracleServiceCloudLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property host in model OracleServiceCloudLinkedServiceTypeProperties"));
         }
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property username in model OracleServiceCloudLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model OracleServiceCloudLinkedServiceTypeProperties"));
         }
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property password in model OracleServiceCloudLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model OracleServiceCloudLinkedServiceTypeProperties"));
         } else {
             password().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OracleServiceCloudLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("host", this.host);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OracleServiceCloudLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OracleServiceCloudLinkedServiceTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OracleServiceCloudLinkedServiceTypeProperties.
+     */
+    public static OracleServiceCloudLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OracleServiceCloudLinkedServiceTypeProperties deserializedOracleServiceCloudLinkedServiceTypeProperties
+                = new OracleServiceCloudLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("host".equals(fieldName)) {
+                    deserializedOracleServiceCloudLinkedServiceTypeProperties.host = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedOracleServiceCloudLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedOracleServiceCloudLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                    deserializedOracleServiceCloudLinkedServiceTypeProperties.useEncryptedEndpoints
+                        = reader.readUntyped();
+                } else if ("useHostVerification".equals(fieldName)) {
+                    deserializedOracleServiceCloudLinkedServiceTypeProperties.useHostVerification
+                        = reader.readUntyped();
+                } else if ("usePeerVerification".equals(fieldName)) {
+                    deserializedOracleServiceCloudLinkedServiceTypeProperties.usePeerVerification
+                        = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedOracleServiceCloudLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOracleServiceCloudLinkedServiceTypeProperties;
+        });
+    }
 }

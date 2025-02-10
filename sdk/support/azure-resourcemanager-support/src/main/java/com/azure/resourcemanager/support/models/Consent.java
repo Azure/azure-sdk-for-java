@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Advanced diagnostic consent to be updated on the support ticket. */
+/**
+ * Advanced diagnostic consent to be updated on the support ticket.
+ */
 public final class Consent extends ExpandableStringEnum<Consent> {
-    /** Static value Yes for Consent. */
+    /**
+     * Static value Yes for Consent.
+     */
     public static final Consent YES = fromString("Yes");
 
-    /** Static value No for Consent. */
+    /**
+     * Static value No for Consent.
+     */
     public static final Consent NO = fromString("No");
 
     /**
      * Creates a new instance of Consent value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class Consent extends ExpandableStringEnum<Consent> {
 
     /**
      * Creates or finds a Consent from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Consent.
      */
-    @JsonCreator
     public static Consent fromString(String name) {
         return fromString(name, Consent.class);
     }
 
     /**
      * Gets known Consent values.
-     *
+     * 
      * @return known Consent values.
      */
     public static Collection<Consent> values() {

@@ -13,24 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DataLakeAnalyticsAccountBasicInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataLakeAnalyticsAccountBasicInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"accountId\":\"42648593-0a65-46e4-a64a-1a1df3d65d4d\",\"provisioningState\":\"Patching\",\"state\":\"Active\",\"creationTime\":\"2021-04-18T20:42:54Z\",\"lastModifiedTime\":\"2021-01-26T06:35:32Z\",\"endpoint\":\"xqhabi\"},\"location\":\"pikxwczbyscnpqxu\",\"tags\":{\"n\":\"y\"},\"id\":\"wby\",\"name\":\"rkxvdum\",\"type\":\"grtfwvu\"}")
-                .toObject(DataLakeAnalyticsAccountBasicInner.class);
+        DataLakeAnalyticsAccountBasicInner model = BinaryData.fromString(
+            "{\"properties\":{\"accountId\":\"466c7186-3429-4985-8e7d-c7604c5a7a79\",\"provisioningState\":\"Patching\",\"state\":\"Active\",\"creationTime\":\"2021-04-18T20:42:54Z\",\"lastModifiedTime\":\"2021-01-26T06:35:32Z\",\"endpoint\":\"xqhabi\"},\"location\":\"pikxwczbyscnpqxu\",\"tags\":{\"n\":\"y\"},\"id\":\"wby\",\"name\":\"rkxvdum\",\"type\":\"grtfwvu\"}")
+            .toObject(DataLakeAnalyticsAccountBasicInner.class);
         Assertions.assertEquals("pikxwczbyscnpqxu", model.location());
         Assertions.assertEquals("y", model.tags().get("n"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataLakeAnalyticsAccountBasicInner model =
-            new DataLakeAnalyticsAccountBasicInner().withLocation("pikxwczbyscnpqxu").withTags(mapOf("n", "y"));
+        DataLakeAnalyticsAccountBasicInner model
+            = new DataLakeAnalyticsAccountBasicInner().withLocation("pikxwczbyscnpqxu").withTags(mapOf("n", "y"));
         model = BinaryData.fromObject(model).toObject(DataLakeAnalyticsAccountBasicInner.class);
         Assertions.assertEquals("pikxwczbyscnpqxu", model.location());
         Assertions.assertEquals("y", model.tags().get("n"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

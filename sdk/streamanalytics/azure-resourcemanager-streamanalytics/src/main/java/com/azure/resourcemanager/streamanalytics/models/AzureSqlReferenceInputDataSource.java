@@ -5,41 +5,59 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.AzureSqlReferenceInputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Describes an Azure SQL database reference input data source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.Sql/Server/Database")
+/**
+ * Describes an Azure SQL database reference input data source.
+ */
 @Fluent
 public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlReferenceInputDataSource.class);
+    /*
+     * Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests.
+     */
+    private String type = "Microsoft.Sql/Server/Database";
 
     /*
-     * The properties that are associated with SQL DB input containing
-     * reference data. Required on PUT (CreateOrReplace) requests.
+     * The properties that are associated with SQL DB input containing reference data. Required on PUT (CreateOrReplace)
+     * requests.
      */
-    @JsonProperty(value = "properties")
     private AzureSqlReferenceInputDataSourceProperties innerProperties;
+
+    /**
+     * Creates an instance of AzureSqlReferenceInputDataSource class.
+     */
+    public AzureSqlReferenceInputDataSource() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of input data source containing reference data. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
 
     /**
      * Get the innerProperties property: The properties that are associated with SQL DB input containing reference data.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the innerProperties value.
      */
-    private AzureSqlReferenceInputDataSourceProperties innerProperties() {
+    AzureSqlReferenceInputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
     /**
      * Get the server property: This element is associated with the datasource element. This is the name of the server
      * that contains the database that will be written to.
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -49,7 +67,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Set the server property: This element is associated with the datasource element. This is the name of the server
      * that contains the database that will be written to.
-     *
+     * 
      * @param server the server value to set.
      * @return the AzureSqlReferenceInputDataSource object itself.
      */
@@ -64,7 +82,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Get the database property: This element is associated with the datasource element. This is the name of the
      * database that output will be written to.
-     *
+     * 
      * @return the database value.
      */
     public String database() {
@@ -74,7 +92,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Set the database property: This element is associated with the datasource element. This is the name of the
      * database that output will be written to.
-     *
+     * 
      * @param database the database value to set.
      * @return the AzureSqlReferenceInputDataSource object itself.
      */
@@ -89,7 +107,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Get the user property: This element is associated with the datasource element. This is the user name that will be
      * used to connect to the SQL Database instance.
-     *
+     * 
      * @return the user value.
      */
     public String user() {
@@ -99,7 +117,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Set the user property: This element is associated with the datasource element. This is the user name that will be
      * used to connect to the SQL Database instance.
-     *
+     * 
      * @param user the user value to set.
      * @return the AzureSqlReferenceInputDataSource object itself.
      */
@@ -114,7 +132,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Get the password property: This element is associated with the datasource element. This is the password that will
      * be used to connect to the SQL Database instance.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -124,7 +142,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Set the password property: This element is associated with the datasource element. This is the password that will
      * be used to connect to the SQL Database instance.
-     *
+     * 
      * @param password the password value to set.
      * @return the AzureSqlReferenceInputDataSource object itself.
      */
@@ -139,7 +157,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Get the table property: This element is associated with the datasource element. The name of the table in the
      * Azure SQL database..
-     *
+     * 
      * @return the table value.
      */
     public String table() {
@@ -149,7 +167,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Set the table property: This element is associated with the datasource element. The name of the table in the
      * Azure SQL database..
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureSqlReferenceInputDataSource object itself.
      */
@@ -163,7 +181,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
 
     /**
      * Get the refreshType property: Indicates the type of data refresh option.
-     *
+     * 
      * @return the refreshType value.
      */
     public RefreshType refreshType() {
@@ -172,7 +190,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
 
     /**
      * Set the refreshType property: Indicates the type of data refresh option.
-     *
+     * 
      * @param refreshType the refreshType value to set.
      * @return the AzureSqlReferenceInputDataSource object itself.
      */
@@ -187,7 +205,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Get the refreshRate property: This element is associated with the datasource element. This indicates how
      * frequently the data will be fetched from the database. It is of DateTime format.
-     *
+     * 
      * @return the refreshRate value.
      */
     public String refreshRate() {
@@ -197,7 +215,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Set the refreshRate property: This element is associated with the datasource element. This indicates how
      * frequently the data will be fetched from the database. It is of DateTime format.
-     *
+     * 
      * @param refreshRate the refreshRate value to set.
      * @return the AzureSqlReferenceInputDataSource object itself.
      */
@@ -212,7 +230,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Get the fullSnapshotQuery property: This element is associated with the datasource element. This query is used to
      * fetch data from the sql database.
-     *
+     * 
      * @return the fullSnapshotQuery value.
      */
     public String fullSnapshotQuery() {
@@ -222,7 +240,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     /**
      * Set the fullSnapshotQuery property: This element is associated with the datasource element. This query is used to
      * fetch data from the sql database.
-     *
+     * 
      * @param fullSnapshotQuery the fullSnapshotQuery value to set.
      * @return the AzureSqlReferenceInputDataSource object itself.
      */
@@ -238,7 +256,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
      * Get the deltaSnapshotQuery property: This element is associated with the datasource element. This query is used
      * to fetch incremental changes from the SQL database. To use this option, we recommend using temporal tables in
      * Azure SQL Database.
-     *
+     * 
      * @return the deltaSnapshotQuery value.
      */
     public String deltaSnapshotQuery() {
@@ -249,7 +267,7 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
      * Set the deltaSnapshotQuery property: This element is associated with the datasource element. This query is used
      * to fetch incremental changes from the SQL database. To use this option, we recommend using temporal tables in
      * Azure SQL Database.
-     *
+     * 
      * @param deltaSnapshotQuery the deltaSnapshotQuery value to set.
      * @return the AzureSqlReferenceInputDataSource object itself.
      */
@@ -263,14 +281,54 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlReferenceInputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlReferenceInputDataSource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlReferenceInputDataSource.
+     */
+    public static AzureSqlReferenceInputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlReferenceInputDataSource deserializedAzureSqlReferenceInputDataSource
+                = new AzureSqlReferenceInputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureSqlReferenceInputDataSource.innerProperties
+                        = AzureSqlReferenceInputDataSourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlReferenceInputDataSource;
+        });
     }
 }

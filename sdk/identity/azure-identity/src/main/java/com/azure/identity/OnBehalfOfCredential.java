@@ -14,6 +14,8 @@ import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
+import java.util.function.Supplier;
+
 /**
  * <p>On Behalf of authentication in Azure is a way for a user or application to authenticate to a service or resource
  * using credentials from another identity provider. This type of authentication is typically used when a user or
@@ -35,8 +37,7 @@ import reactor.core.publisher.Mono;
  *
  * <!-- src_embed com.azure.identity.credential.obocredential.construct -->
  * <pre>
- * TokenCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder&#40;&#41;
- *     .clientId&#40;&quot;&lt;app-client-ID&gt;&quot;&#41;
+ * TokenCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder&#40;&#41;.clientId&#40;&quot;&lt;app-client-ID&gt;&quot;&#41;
  *     .clientSecret&#40;&quot;&lt;app-Client-Secret&gt;&quot;&#41;
  *     .tenantId&#40;&quot;&lt;app-tenant-ID&gt;&quot;&#41;
  *     .userAssertion&#40;&quot;&lt;user-assertion&gt;&quot;&#41;
@@ -64,12 +65,13 @@ public class OnBehalfOfCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     OnBehalfOfCredential(String clientId, String tenantId, String clientSecret, String certificatePath,
-                                String certificatePassword, IdentityClientOptions identityClientOptions) {
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
+        String certificatePassword, Supplier<String> clientAssertionSupplier,
+        IdentityClientOptions identityClientOptions) {
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .clientSecret(clientSecret)
             .certificatePath(certificatePath)
+            .clientAssertionSupplier(clientAssertionSupplier)
             .certificatePassword(certificatePassword)
             .identityClientOptions(identityClientOptions);
 
@@ -84,17 +86,20 @@ public class OnBehalfOfCredential implements TokenCredential {
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithOBO(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error)));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error)));
     }
 
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClientCache(request);
-            LoggingUtil.logTokenSuccess(LOGGER, request);
-            return token;
-        } catch (Exception e) { }
+            if (token != null) {
+                LoggingUtil.logTokenSuccess(LOGGER, request);
+                return token;
+            }
+        } catch (Exception e) {
+        }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithOBO(request);

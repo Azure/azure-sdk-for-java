@@ -10,10 +10,6 @@ module com.azure.resourcemanager.redisenterprise {
     exports com.azure.resourcemanager.redisenterprise.fluent.models;
     exports com.azure.resourcemanager.redisenterprise.models;
 
-    opens com.azure.resourcemanager.redisenterprise.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.redisenterprise.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.redisenterprise.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.redisenterprise.models to com.azure.core;
 }

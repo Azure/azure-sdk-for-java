@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Direction of communication. */
+/**
+ * Direction of communication.
+ */
 public final class CommunicationDirection extends ExpandableStringEnum<CommunicationDirection> {
-    /** Static value inbound for CommunicationDirection. */
+    /**
+     * Static value inbound for CommunicationDirection.
+     */
     public static final CommunicationDirection INBOUND = fromString("inbound");
 
-    /** Static value outbound for CommunicationDirection. */
+    /**
+     * Static value outbound for CommunicationDirection.
+     */
     public static final CommunicationDirection OUTBOUND = fromString("outbound");
 
     /**
      * Creates a new instance of CommunicationDirection value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class CommunicationDirection extends ExpandableStringEnum<Communica
 
     /**
      * Creates or finds a CommunicationDirection from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CommunicationDirection.
      */
-    @JsonCreator
     public static CommunicationDirection fromString(String name) {
         return fromString(name, CommunicationDirection.class);
     }
 
     /**
      * Gets known CommunicationDirection values.
-     *
+     * 
      * @return known CommunicationDirection values.
      */
     public static Collection<CommunicationDirection> values() {

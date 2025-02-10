@@ -43,35 +43,39 @@ public class OpenTelemetryMetricsBenchmark {
     private static final InMemoryMetricReader SDK_METER_READER = InMemoryMetricReader.create();
     private static final MeterProvider AZURE_METER_PROVIDER = MeterProvider.getDefaultProvider();
 
-    private static final SdkMeterProvider SDK_METER_PROVIDER = SdkMeterProvider.builder()
-        .registerMetricReader(SDK_METER_READER)
-        .build();
+    private static final SdkMeterProvider SDK_METER_PROVIDER
+        = SdkMeterProvider.builder().registerMetricReader(SDK_METER_READER).build();
 
-    private static final OpenTelemetry OPEN_TELEMETRY = OpenTelemetrySdk.builder().setMeterProvider(SDK_METER_PROVIDER).build();
-    private static final TelemetryAttributes COMMON_ATTRIBUTES = new OpenTelemetryAttributes(new HashMap<String, Object>() {{
-            put("az.messaging.destination", "fqdn");
-            put("az.messaging.entity", "entityName");
-        }});
+    private static final OpenTelemetry OPEN_TELEMETRY
+        = OpenTelemetrySdk.builder().setMeterProvider(SDK_METER_PROVIDER).build();
+    private static final TelemetryAttributes COMMON_ATTRIBUTES
+        = new OpenTelemetryAttributes(new HashMap<String, Object>() {
+            {
+                put("az.messaging.destination", "fqdn");
+                put("az.messaging.entity", "entityName");
+            }
+        });
 
-    private static final Meter METER = AZURE_METER_PROVIDER
-        .createMeter("bench", null, new OpenTelemetryMetricsOptions().setOpenTelemetry(OPEN_TELEMETRY));
+    private static final Meter METER = AZURE_METER_PROVIDER.createMeter("bench", null,
+        new OpenTelemetryMetricsOptions().setOpenTelemetry(OPEN_TELEMETRY));
 
-    private static final DynamicAttributeCache DYNAMIC_ATTRIBUTE_CACHE = new DynamicAttributeCache(AZURE_METER_PROVIDER, "fqdn", "entityName");
+    private static final DynamicAttributeCache DYNAMIC_ATTRIBUTE_CACHE
+        = new DynamicAttributeCache(AZURE_METER_PROVIDER, "fqdn", "entityName");
 
-    private static final DoubleHistogram HISTOGRAM = METER
-        .createDoubleHistogram("test", "description", "unit");
+    private static final DoubleHistogram HISTOGRAM = METER.createDoubleHistogram("test", "description", "unit");
 
     private static final DoubleHistogram NOOP_HISTOGRAM = AZURE_METER_PROVIDER
         .createMeter("bench", null, new OpenTelemetryMetricsOptions().setOpenTelemetry(OpenTelemetry.noop()))
         .createDoubleHistogram("test", "description", "unit");
 
-    private static final Meter DISABLED_METER = AZURE_METER_PROVIDER
-        .createMeter("bench", null, new OpenTelemetryMetricsOptions().setOpenTelemetry(OpenTelemetry.noop()));
+    private static final Meter DISABLED_METER = AZURE_METER_PROVIDER.createMeter("bench", null,
+        new OpenTelemetryMetricsOptions().setOpenTelemetry(OpenTelemetry.noop()));
 
-    private static final DoubleHistogram DISABLED_METRICS_HISTOGRAM = DISABLED_METER
-        .createDoubleHistogram("test", "description", "unit");
+    private static final DoubleHistogram DISABLED_METRICS_HISTOGRAM
+        = DISABLED_METER.createDoubleHistogram("test", "description", "unit");
 
-    private static final Context AZ_CONTEXT_WITH_OTEL_CONTEXT = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root());
+    private static final Context AZ_CONTEXT_WITH_OTEL_CONTEXT
+        = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root());
 
     @Benchmark
     public void disabledOptimizedMetrics() {
@@ -83,20 +87,23 @@ public class OpenTelemetryMetricsBenchmark {
         // do stuff
 
         if (DISABLED_METRICS_HISTOGRAM.isEnabled()) {
-            DISABLED_METRICS_HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), COMMON_ATTRIBUTES, AZ_CONTEXT_WITH_OTEL_CONTEXT);
+            DISABLED_METRICS_HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(),
+                COMMON_ATTRIBUTES, AZ_CONTEXT_WITH_OTEL_CONTEXT);
         }
     }
 
     @Benchmark
     public void disabledNotOptimizedMetrics() {
         Instant startTime = Instant.now();
-        DISABLED_METRICS_HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), COMMON_ATTRIBUTES,  AZ_CONTEXT_WITH_OTEL_CONTEXT);
+        DISABLED_METRICS_HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), COMMON_ATTRIBUTES,
+            AZ_CONTEXT_WITH_OTEL_CONTEXT);
     }
 
     @Benchmark
     public void noopMeterProviderNotOptimized() {
         long startTime = Instant.now().toEpochMilli();
-        NOOP_HISTOGRAM.record(Instant.now().toEpochMilli() - startTime, COMMON_ATTRIBUTES, AZ_CONTEXT_WITH_OTEL_CONTEXT);
+        NOOP_HISTOGRAM.record(Instant.now().toEpochMilli() - startTime, COMMON_ATTRIBUTES,
+            AZ_CONTEXT_WITH_OTEL_CONTEXT);
     }
 
     @Benchmark
@@ -108,7 +115,8 @@ public class OpenTelemetryMetricsBenchmark {
 
         // do stuff
         if (HISTOGRAM.isEnabled()) {
-            HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), null, AZ_CONTEXT_WITH_OTEL_CONTEXT);
+            HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), null,
+                AZ_CONTEXT_WITH_OTEL_CONTEXT);
         }
     }
 
@@ -121,7 +129,8 @@ public class OpenTelemetryMetricsBenchmark {
 
         // do stuff
         if (HISTOGRAM.isEnabled()) {
-            HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), COMMON_ATTRIBUTES, AZ_CONTEXT_WITH_OTEL_CONTEXT);
+            HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), COMMON_ATTRIBUTES,
+                AZ_CONTEXT_WITH_OTEL_CONTEXT);
         }
     }
 
@@ -133,7 +142,8 @@ public class OpenTelemetryMetricsBenchmark {
         }
 
         if (HISTOGRAM.isEnabled()) {
-            HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(), DYNAMIC_ATTRIBUTE_CACHE.getOrCreate("pId", false, null), AZ_CONTEXT_WITH_OTEL_CONTEXT);
+            HISTOGRAM.record(Instant.now().toEpochMilli() - startTime.toEpochMilli(),
+                DYNAMIC_ATTRIBUTE_CACHE.getOrCreate("pId", false, null), AZ_CONTEXT_WITH_OTEL_CONTEXT);
         }
     }
 
@@ -142,8 +152,7 @@ public class OpenTelemetryMetricsBenchmark {
     }
 
     enum ErrorCode {
-        ERR1,
-        ERR2
+        ERR1, ERR2
     }
 
     static class DynamicAttributeCache {
@@ -170,10 +179,10 @@ public class OpenTelemetryMetricsBenchmark {
             return attributes[index];
         }
 
-        private TelemetryAttributes[]  createAttributes(String partitionId) {
+        private TelemetryAttributes[] createAttributes(String partitionId) {
             TelemetryAttributes[] attributes = new TelemetryAttributes[ERROR_DIMENSIONS_LENGTH];
             for (int i = 0; i < ERROR_DIMENSIONS_LENGTH - 2; i++) {
-                attributes[i] =  getAttributes(partitionId, ErrorCode.values()[i].name());
+                attributes[i] = getAttributes(partitionId, ErrorCode.values()[i].name());
             }
 
             attributes[ERROR_DIMENSIONS_LENGTH - 2] = getAttributes(partitionId, "unknown");
@@ -182,12 +191,14 @@ public class OpenTelemetryMetricsBenchmark {
         }
 
         private TelemetryAttributes getAttributes(String partitionId, String errorCode) {
-            return METER.createAttributes(new HashMap<String, Object>() {{
+            return METER.createAttributes(new HashMap<String, Object>() {
+                {
                     put("az.messaging.destination", fullyQualifiedNamespace);
                     put("az.messaging.entity", eventHubName);
                     put("az.messaging.partition_id", partitionId);
                     put("az.messaging.status_code", errorCode);
-                }});
+                }
+            });
         }
     }
 }

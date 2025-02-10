@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.models.Encryption;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAcrConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAuthenticationConfiguration;
@@ -17,84 +21,72 @@ import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.healthcareapis.models.ResourceVersionPolicyConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.ServiceEventState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Fhir Service properties.
  */
 @Fluent
-public final class FhirServiceProperties {
+public final class FhirServiceProperties implements JsonSerializable<FhirServiceProperties> {
     /*
      * The provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Fhir Service Azure container registry configuration.
      */
-    @JsonProperty(value = "acrConfiguration")
     private FhirServiceAcrConfiguration acrConfiguration;
 
     /*
      * Fhir Service authentication configuration.
      */
-    @JsonProperty(value = "authenticationConfiguration")
     private FhirServiceAuthenticationConfiguration authenticationConfiguration;
 
     /*
      * Fhir Service Cors configuration.
      */
-    @JsonProperty(value = "corsConfiguration")
     private FhirServiceCorsConfiguration corsConfiguration;
 
     /*
      * Fhir Service export configuration.
      */
-    @JsonProperty(value = "exportConfiguration")
     private FhirServiceExportConfiguration exportConfiguration;
 
     /*
      * The list of private endpoint connections that are set up for this resource.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /*
      * Control permission for data plane traffic coming from public networks while private endpoint is enabled.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * Fhir Service event support status.
      */
-    @JsonProperty(value = "eventState", access = JsonProperty.Access.WRITE_ONLY)
     private ServiceEventState eventState;
 
     /*
      * Determines tracking of history for resources.
      */
-    @JsonProperty(value = "resourceVersionPolicyConfiguration")
     private ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration;
 
     /*
      * Fhir Service import configuration.
      */
-    @JsonProperty(value = "importConfiguration")
     private FhirServiceImportConfiguration importConfiguration;
 
     /*
      * Implementation Guides configuration.
      */
-    @JsonProperty(value = "implementationGuidesConfiguration")
     private ImplementationGuidesConfiguration implementationGuidesConfiguration;
 
     /*
      * The encryption settings of the FHIR service
      */
-    @JsonProperty(value = "encryption")
     private Encryption encryption;
 
     /**
@@ -204,8 +196,8 @@ public final class FhirServiceProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
+     * private endpoint is enabled.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -214,8 +206,8 @@ public final class FhirServiceProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
+     * private endpoint is enabled.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the FhirServiceProperties object itself.
@@ -349,5 +341,81 @@ public final class FhirServiceProperties {
         if (encryption() != null) {
             encryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("acrConfiguration", this.acrConfiguration);
+        jsonWriter.writeJsonField("authenticationConfiguration", this.authenticationConfiguration);
+        jsonWriter.writeJsonField("corsConfiguration", this.corsConfiguration);
+        jsonWriter.writeJsonField("exportConfiguration", this.exportConfiguration);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("resourceVersionPolicyConfiguration", this.resourceVersionPolicyConfiguration);
+        jsonWriter.writeJsonField("importConfiguration", this.importConfiguration);
+        jsonWriter.writeJsonField("implementationGuidesConfiguration", this.implementationGuidesConfiguration);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirServiceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FhirServiceProperties.
+     */
+    public static FhirServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirServiceProperties deserializedFhirServiceProperties = new FhirServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedFhirServiceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("acrConfiguration".equals(fieldName)) {
+                    deserializedFhirServiceProperties.acrConfiguration = FhirServiceAcrConfiguration.fromJson(reader);
+                } else if ("authenticationConfiguration".equals(fieldName)) {
+                    deserializedFhirServiceProperties.authenticationConfiguration
+                        = FhirServiceAuthenticationConfiguration.fromJson(reader);
+                } else if ("corsConfiguration".equals(fieldName)) {
+                    deserializedFhirServiceProperties.corsConfiguration = FhirServiceCorsConfiguration.fromJson(reader);
+                } else if ("exportConfiguration".equals(fieldName)) {
+                    deserializedFhirServiceProperties.exportConfiguration
+                        = FhirServiceExportConfiguration.fromJson(reader);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnection> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnection.fromJson(reader1));
+                    deserializedFhirServiceProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedFhirServiceProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("eventState".equals(fieldName)) {
+                    deserializedFhirServiceProperties.eventState = ServiceEventState.fromString(reader.getString());
+                } else if ("resourceVersionPolicyConfiguration".equals(fieldName)) {
+                    deserializedFhirServiceProperties.resourceVersionPolicyConfiguration
+                        = ResourceVersionPolicyConfiguration.fromJson(reader);
+                } else if ("importConfiguration".equals(fieldName)) {
+                    deserializedFhirServiceProperties.importConfiguration
+                        = FhirServiceImportConfiguration.fromJson(reader);
+                } else if ("implementationGuidesConfiguration".equals(fieldName)) {
+                    deserializedFhirServiceProperties.implementationGuidesConfiguration
+                        = ImplementationGuidesConfiguration.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedFhirServiceProperties.encryption = Encryption.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFhirServiceProperties;
+        });
     }
 }

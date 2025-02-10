@@ -20,22 +20,46 @@ import java.time.Duration;
 @Fluent
 public interface Snapshot
     extends GroupableResource<ComputeManager, SnapshotInner>, Refreshable<Snapshot>, Updatable<Snapshot.Update> {
-    /** @return the snapshot SKU type. */
+    /**
+     * Gets the snapshot SKU type.
+     *
+     * @return the snapshot SKU type.
+     */
     SnapshotSkuType skuType();
 
-    /** @return whether a snapshot is incremental */
+    /**
+     * Checks whether a snapshot id incremental.
+     *
+     * @return whether a snapshot is incremental
+     */
     boolean incremental();
 
-    /** @return the snapshot creation method */
+    /**
+     * Gets the snapshot creation method.
+     *
+     * @return the snapshot creation method
+     */
     DiskCreateOption creationMethod();
 
-    /** @return disk size in GB */
+    /**
+     * Gets disk size in GB.
+     *
+     * @return disk size in GB
+     */
     int sizeInGB();
 
-    /** @return the type of operating system in the snapshot */
+    /**
+     * Gets the type of operating system in the snapshot.
+     *
+     * @return the type of operating system in the snapshot
+     */
     OperatingSystemTypes osType();
 
-    /** @return the details of the source from which snapshot is created */
+    /**
+     * Gets the details of the source from which snapshot is created.
+     *
+     * @return the details of the source from which snapshot is created
+     */
     CreationSource source();
 
     /**
@@ -96,6 +120,13 @@ public interface Snapshot
     Boolean awaitCopyStartCompletion(Duration maxWaitTime);
 
     /**
+     * Checks whether the snapshot can be accessed from public network.
+     *
+     * @return whether the snapshot can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
      * Await CopyStart completion in async manner.
      *
      * @return a representation of the deferred computation of this call
@@ -103,17 +134,11 @@ public interface Snapshot
     Mono<Void> awaitCopyStartCompletionAsync();
 
     /** The entirety of the managed snapshot definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithSnapshotSource,
-            DefinitionStages.WithWindowsSnapshotSource,
-            DefinitionStages.WithLinuxSnapshotSource,
-            DefinitionStages.WithDataSnapshotSource,
-            DefinitionStages.WithDataSnapshotFromVhd,
-            DefinitionStages.WithDataSnapshotFromDisk,
-            DefinitionStages.WithDataSnapshotFromSnapshot,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup,
+        DefinitionStages.WithSnapshotSource, DefinitionStages.WithWindowsSnapshotSource,
+        DefinitionStages.WithLinuxSnapshotSource, DefinitionStages.WithDataSnapshotSource,
+        DefinitionStages.WithDataSnapshotFromVhd, DefinitionStages.WithDataSnapshotFromDisk,
+        DefinitionStages.WithDataSnapshotFromSnapshot, DefinitionStages.WithCreate {
     }
 
     /** Grouping of managed snapshot definition stages. */
@@ -343,6 +368,7 @@ public interface Snapshot
              */
             WithCreate fromImage(VirtualMachineCustomImage image);
         }
+
         /** The stage of the managed disk definition allowing to choose source data disk image. */
         interface WithDataSnapshotFromImage {
             /**
@@ -406,17 +432,23 @@ public interface Snapshot
             WithCreate withSku(SnapshotSkuType sku);
         }
 
+        /** The stage of snapshot definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Disables public network access for the snapshot.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
         interface WithCreate
-            extends Creatable<Snapshot>,
-                Resource.DefinitionWithTags<Snapshot.DefinitionStages.WithCreate>,
-                WithSize,
-                WithSku,
-                WithIncremental,
-                WithCopyStart {
+            extends Creatable<Snapshot>, Resource.DefinitionWithTags<Snapshot.DefinitionStages.WithCreate>, WithSize,
+            WithSku, WithIncremental, WithCopyStart, WithPublicNetworkAccess {
         }
     }
 
@@ -443,13 +475,27 @@ public interface Snapshot
              */
             Update withOSType(OperatingSystemTypes osType);
         }
+
+        /** The stage of snapshot update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the snapshot.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+
+            /**
+             * Disables public network access for the snapshot.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<Snapshot>,
-            Resource.UpdateWithTags<Snapshot.Update>,
-            UpdateStages.WithSku,
-            UpdateStages.WithOSSettings {
+    interface Update extends Appliable<Snapshot>, Resource.UpdateWithTags<Snapshot.Update>, UpdateStages.WithSku,
+        UpdateStages.WithOSSettings, UpdateStages.WithPublicNetworkAccess {
     }
 }

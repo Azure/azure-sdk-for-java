@@ -258,7 +258,10 @@ public final class ConflictResolutionPolicy {
      * That path is a rooted path of the property in the item, such as "/name/first".
      */
     ConflictResolutionPolicy setConflictResolutionPath(String value) {
-        this.jsonSerializable.set(Constants.Properties.CONFLICT_RESOLUTION_PATH, value);
+        this.jsonSerializable.set(
+            Constants.Properties.CONFLICT_RESOLUTION_PATH,
+            value
+        );
         return this;
     }
 
@@ -282,7 +285,10 @@ public final class ConflictResolutionPolicy {
     }
 
     ConflictResolutionPolicy setConflictResolutionProcedure(String value) {
-        this.jsonSerializable.set(Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE, value);
+        this.jsonSerializable.set(
+            Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE,
+            value
+        );
         return this;
     }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class MongoDBResourcesGetMongoDBCollectionThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBMongoDBCollectionThroughputGet.json
      */
     /**
@@ -18,7 +18,10 @@ public final class MongoDBResourcesGetMongoDBCollectionThroughputSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBCollectionThroughputGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getMongoDBResources()
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getMongoDBResources()
             .getMongoDBCollectionThroughputWithResponse("rg1", "ddb1", "databaseName", "collectionName",
                 com.azure.core.util.Context.NONE);
     }

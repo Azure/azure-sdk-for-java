@@ -15,8 +15,7 @@ public final class IoTSecurityAggregatedRecommendationImpl implements IoTSecurit
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    IoTSecurityAggregatedRecommendationImpl(
-        IoTSecurityAggregatedRecommendationInner innerObject,
+    IoTSecurityAggregatedRecommendationImpl(IoTSecurityAggregatedRecommendationInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: chaos
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-chaos
         groupId: com.azure.resourcemanager

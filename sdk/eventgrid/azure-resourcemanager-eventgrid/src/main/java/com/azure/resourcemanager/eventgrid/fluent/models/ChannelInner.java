@@ -7,12 +7,15 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.ChannelProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.ChannelType;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestinationInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicInfo;
 import com.azure.resourcemanager.eventgrid.models.ReadinessState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
@@ -23,14 +26,27 @@ public final class ChannelInner extends ProxyResource {
     /*
      * Properties of the Channel.
      */
-    @JsonProperty(value = "properties")
     private ChannelProperties innerProperties;
 
     /*
      * The system metadata relating to Channel resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of ChannelInner class.
@@ -54,6 +70,36 @@ public final class ChannelInner extends ProxyResource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -105,9 +151,8 @@ public final class ChannelInner extends ProxyResource {
     }
 
     /**
-     * Get the partnerDestinationInfo property: This property should be populated when channelType is
-     * PartnerDestination and represents information about the partner destination resource corresponding to the
-     * channel.
+     * Get the partnerDestinationInfo property: This property should be populated when channelType is PartnerDestination
+     * and represents information about the partner destination resource corresponding to the channel.
      * 
      * @return the partnerDestinationInfo value.
      */
@@ -116,9 +161,8 @@ public final class ChannelInner extends ProxyResource {
     }
 
     /**
-     * Set the partnerDestinationInfo property: This property should be populated when channelType is
-     * PartnerDestination and represents information about the partner destination resource corresponding to the
-     * channel.
+     * Set the partnerDestinationInfo property: This property should be populated when channelType is PartnerDestination
+     * and represents information about the partner destination resource corresponding to the channel.
      * 
      * @param partnerDestinationInfo the partnerDestinationInfo value to set.
      * @return the ChannelInner object itself.
@@ -132,8 +176,8 @@ public final class ChannelInner extends ProxyResource {
     }
 
     /**
-     * Get the messageForActivation property: Context or helpful message that can be used during the approval process
-     * by the subscriber.
+     * Get the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
      * 
      * @return the messageForActivation value.
      */
@@ -142,8 +186,8 @@ public final class ChannelInner extends ProxyResource {
     }
 
     /**
-     * Set the messageForActivation property: Context or helpful message that can be used during the approval process
-     * by the subscriber.
+     * Set the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
      * 
      * @param messageForActivation the messageForActivation value to set.
      * @return the ChannelInner object itself.
@@ -203,8 +247,8 @@ public final class ChannelInner extends ProxyResource {
     }
 
     /**
-     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while
-     * the corresponding partner topic is never activated,
+     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
+     * corresponding partner topic is never activated,
      * the channel and corresponding partner topic are deleted.
      * 
      * @return the expirationTimeIfNotActivatedUtc value.
@@ -214,8 +258,8 @@ public final class ChannelInner extends ProxyResource {
     }
 
     /**
-     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while
-     * the corresponding partner topic is never activated,
+     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
+     * corresponding partner topic is never activated,
      * the channel and corresponding partner topic are deleted.
      * 
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
@@ -238,5 +282,50 @@ public final class ChannelInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChannelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChannelInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChannelInner.
+     */
+    public static ChannelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChannelInner deserializedChannelInner = new ChannelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedChannelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedChannelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedChannelInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedChannelInner.innerProperties = ChannelProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedChannelInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChannelInner;
+        });
     }
 }

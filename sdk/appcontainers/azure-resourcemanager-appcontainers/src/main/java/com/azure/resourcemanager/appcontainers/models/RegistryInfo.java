@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Container App registry information. */
+/**
+ * Container App registry information.
+ */
 @Fluent
-public final class RegistryInfo {
+public final class RegistryInfo implements JsonSerializable<RegistryInfo> {
     /*
      * registry server Url.
      */
-    @JsonProperty(value = "registryUrl")
     private String registryUrl;
 
     /*
      * registry username.
      */
-    @JsonProperty(value = "registryUserName")
     private String registryUsername;
 
     /*
      * registry secret.
      */
-    @JsonProperty(value = "registryPassword")
     private String registryPassword;
 
-    /** Creates an instance of RegistryInfo class. */
+    /**
+     * Creates an instance of RegistryInfo class.
+     */
     public RegistryInfo() {
     }
 
     /**
      * Get the registryUrl property: registry server Url.
-     *
+     * 
      * @return the registryUrl value.
      */
     public String registryUrl() {
@@ -43,7 +48,7 @@ public final class RegistryInfo {
 
     /**
      * Set the registryUrl property: registry server Url.
-     *
+     * 
      * @param registryUrl the registryUrl value to set.
      * @return the RegistryInfo object itself.
      */
@@ -54,7 +59,7 @@ public final class RegistryInfo {
 
     /**
      * Get the registryUsername property: registry username.
-     *
+     * 
      * @return the registryUsername value.
      */
     public String registryUsername() {
@@ -63,7 +68,7 @@ public final class RegistryInfo {
 
     /**
      * Set the registryUsername property: registry username.
-     *
+     * 
      * @param registryUsername the registryUsername value to set.
      * @return the RegistryInfo object itself.
      */
@@ -74,7 +79,7 @@ public final class RegistryInfo {
 
     /**
      * Get the registryPassword property: registry secret.
-     *
+     * 
      * @return the registryPassword value.
      */
     public String registryPassword() {
@@ -83,7 +88,7 @@ public final class RegistryInfo {
 
     /**
      * Set the registryPassword property: registry secret.
-     *
+     * 
      * @param registryPassword the registryPassword value to set.
      * @return the RegistryInfo object itself.
      */
@@ -94,9 +99,51 @@ public final class RegistryInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("registryUrl", this.registryUrl);
+        jsonWriter.writeStringField("registryUserName", this.registryUsername);
+        jsonWriter.writeStringField("registryPassword", this.registryPassword);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryInfo.
+     */
+    public static RegistryInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryInfo deserializedRegistryInfo = new RegistryInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("registryUrl".equals(fieldName)) {
+                    deserializedRegistryInfo.registryUrl = reader.getString();
+                } else if ("registryUserName".equals(fieldName)) {
+                    deserializedRegistryInfo.registryUsername = reader.getString();
+                } else if ("registryPassword".equals(fieldName)) {
+                    deserializedRegistryInfo.registryPassword = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryInfo;
+        });
     }
 }

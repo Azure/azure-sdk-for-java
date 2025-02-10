@@ -7,33 +7,53 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.DomainJoinType;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents an attached NetworkConnection. */
+/**
+ * Represents an attached NetworkConnection.
+ */
 @Fluent
 public final class AttachedNetworkConnectionInner extends ProxyResource {
     /*
      * Attached NetworkConnection properties.
      */
-    @JsonProperty(value = "properties")
     private AttachedNetworkConnectionProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AttachedNetworkConnectionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AttachedNetworkConnectionInner class.
+     */
     public AttachedNetworkConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Attached NetworkConnection properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AttachedNetworkConnectionProperties innerProperties() {
@@ -42,7 +62,7 @@ public final class AttachedNetworkConnectionInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,8 +70,38 @@ public final class AttachedNetworkConnectionInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -60,7 +110,7 @@ public final class AttachedNetworkConnectionInner extends ProxyResource {
 
     /**
      * Get the networkConnectionId property: The resource ID of the NetworkConnection you want to attach.
-     *
+     * 
      * @return the networkConnectionId value.
      */
     public String networkConnectionId() {
@@ -69,7 +119,7 @@ public final class AttachedNetworkConnectionInner extends ProxyResource {
 
     /**
      * Set the networkConnectionId property: The resource ID of the NetworkConnection you want to attach.
-     *
+     * 
      * @param networkConnectionId the networkConnectionId value to set.
      * @return the AttachedNetworkConnectionInner object itself.
      */
@@ -84,7 +134,7 @@ public final class AttachedNetworkConnectionInner extends ProxyResource {
     /**
      * Get the networkConnectionLocation property: The geo-location where the NetworkConnection resource specified in
      * 'networkConnectionResourceId' property lives.
-     *
+     * 
      * @return the networkConnectionLocation value.
      */
     public String networkConnectionLocation() {
@@ -93,7 +143,7 @@ public final class AttachedNetworkConnectionInner extends ProxyResource {
 
     /**
      * Get the healthCheckStatus property: Health check status values.
-     *
+     * 
      * @return the healthCheckStatus value.
      */
     public HealthCheckStatus healthCheckStatus() {
@@ -103,7 +153,7 @@ public final class AttachedNetworkConnectionInner extends ProxyResource {
     /**
      * Get the domainJoinType property: AAD Join type of the network. This is populated based on the referenced Network
      * Connection.
-     *
+     * 
      * @return the domainJoinType value.
      */
     public DomainJoinType domainJoinType() {
@@ -112,12 +162,59 @@ public final class AttachedNetworkConnectionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttachedNetworkConnectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttachedNetworkConnectionInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AttachedNetworkConnectionInner.
+     */
+    public static AttachedNetworkConnectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttachedNetworkConnectionInner deserializedAttachedNetworkConnectionInner
+                = new AttachedNetworkConnectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAttachedNetworkConnectionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAttachedNetworkConnectionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAttachedNetworkConnectionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAttachedNetworkConnectionInner.innerProperties
+                        = AttachedNetworkConnectionProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAttachedNetworkConnectionInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttachedNetworkConnectionInner;
+        });
     }
 }

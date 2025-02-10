@@ -5,36 +5,32 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * The list of available upgrade versions.
+ * The list of available kubernetes versions for upgrade.
  */
 @Fluent
-public final class ProvisionedClusterPoolUpgradeProfile {
+public final class ProvisionedClusterPoolUpgradeProfile
+    implements JsonSerializable<ProvisionedClusterPoolUpgradeProfile> {
     /*
      * The Kubernetes version (major.minor.patch).
      */
-    @JsonProperty(value = "kubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kubernetesVersion;
 
     /*
-     * The Agent Pool name.
+     * The particular KubernetesVersion Image OS Type (Linux, Windows)
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /*
-     * The particular KubernetesVersion's Image's OS Type (Linux, Windows)
-     */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OsType osType;
 
     /*
-     * List of orchestrator types and versions available for upgrade.
+     * List of available kubernetes versions for upgrade.
      */
-    @JsonProperty(value = "upgrades")
     private List<ProvisionedClusterPoolUpgradeProfileProperties> upgrades;
 
     /**
@@ -53,16 +49,7 @@ public final class ProvisionedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Get the name property: The Agent Pool name.
-     * 
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the osType property: The particular KubernetesVersion's Image's OS Type (Linux, Windows).
+     * Get the osType property: The particular KubernetesVersion Image OS Type (Linux, Windows).
      * 
      * @return the osType value.
      */
@@ -71,7 +58,7 @@ public final class ProvisionedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Get the upgrades property: List of orchestrator types and versions available for upgrade.
+     * Get the upgrades property: List of available kubernetes versions for upgrade.
      * 
      * @return the upgrades value.
      */
@@ -80,7 +67,7 @@ public final class ProvisionedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Set the upgrades property: List of orchestrator types and versions available for upgrade.
+     * Set the upgrades property: List of available kubernetes versions for upgrade.
      * 
      * @param upgrades the upgrades value to set.
      * @return the ProvisionedClusterPoolUpgradeProfile object itself.
@@ -100,5 +87,48 @@ public final class ProvisionedClusterPoolUpgradeProfile {
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("upgrades", this.upgrades, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProvisionedClusterPoolUpgradeProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProvisionedClusterPoolUpgradeProfile if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProvisionedClusterPoolUpgradeProfile.
+     */
+    public static ProvisionedClusterPoolUpgradeProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProvisionedClusterPoolUpgradeProfile deserializedProvisionedClusterPoolUpgradeProfile
+                = new ProvisionedClusterPoolUpgradeProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedProvisionedClusterPoolUpgradeProfile.kubernetesVersion = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedProvisionedClusterPoolUpgradeProfile.osType = OsType.fromString(reader.getString());
+                } else if ("upgrades".equals(fieldName)) {
+                    List<ProvisionedClusterPoolUpgradeProfileProperties> upgrades
+                        = reader.readArray(reader1 -> ProvisionedClusterPoolUpgradeProfileProperties.fromJson(reader1));
+                    deserializedProvisionedClusterPoolUpgradeProfile.upgrades = upgrades;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProvisionedClusterPoolUpgradeProfile;
+        });
     }
 }

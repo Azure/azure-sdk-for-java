@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the appliance resource. */
+/**
+ * Details of the appliance resource.
+ */
 @Immutable
-public final class ApplianceResourceDetails {
+public final class ApplianceResourceDetails implements JsonSerializable<ApplianceResourceDetails> {
     /*
      * A value indicating the total capacity of appliance resource.
      */
-    @JsonProperty(value = "capacity", access = JsonProperty.Access.WRITE_ONLY)
     private Long capacity;
 
     /*
      * A value indicating the utilization percentage by gateway agent on appliance.
      */
-    @JsonProperty(value = "processUtilization", access = JsonProperty.Access.WRITE_ONLY)
     private Double processUtilization;
 
     /*
      * A value indicating the total utilization percentage for all processes on the appliance.
      */
-    @JsonProperty(value = "totalUtilization", access = JsonProperty.Access.WRITE_ONLY)
     private Double totalUtilization;
 
     /*
      * A value indicating the status of appliance resource.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
-    /** Creates an instance of ApplianceResourceDetails class. */
+    /**
+     * Creates an instance of ApplianceResourceDetails class.
+     */
     public ApplianceResourceDetails() {
     }
 
     /**
      * Get the capacity property: A value indicating the total capacity of appliance resource.
-     *
+     * 
      * @return the capacity value.
      */
     public Long capacity() {
@@ -49,7 +53,7 @@ public final class ApplianceResourceDetails {
 
     /**
      * Get the processUtilization property: A value indicating the utilization percentage by gateway agent on appliance.
-     *
+     * 
      * @return the processUtilization value.
      */
     public Double processUtilization() {
@@ -59,7 +63,7 @@ public final class ApplianceResourceDetails {
     /**
      * Get the totalUtilization property: A value indicating the total utilization percentage for all processes on the
      * appliance.
-     *
+     * 
      * @return the totalUtilization value.
      */
     public Double totalUtilization() {
@@ -68,7 +72,7 @@ public final class ApplianceResourceDetails {
 
     /**
      * Get the status property: A value indicating the status of appliance resource.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -77,9 +81,50 @@ public final class ApplianceResourceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplianceResourceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplianceResourceDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplianceResourceDetails.
+     */
+    public static ApplianceResourceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplianceResourceDetails deserializedApplianceResourceDetails = new ApplianceResourceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("capacity".equals(fieldName)) {
+                    deserializedApplianceResourceDetails.capacity = reader.getNullable(JsonReader::getLong);
+                } else if ("processUtilization".equals(fieldName)) {
+                    deserializedApplianceResourceDetails.processUtilization = reader.getNullable(JsonReader::getDouble);
+                } else if ("totalUtilization".equals(fieldName)) {
+                    deserializedApplianceResourceDetails.totalUtilization = reader.getNullable(JsonReader::getDouble);
+                } else if ("status".equals(fieldName)) {
+                    deserializedApplianceResourceDetails.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplianceResourceDetails;
+        });
     }
 }

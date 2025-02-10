@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.fluent.models.RuntimeScriptActionDetailInner;
 
-/** An instance of this class provides access to all the operations defined in ScriptExecutionHistoriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ScriptExecutionHistoriesClient.
+ */
 public interface ScriptExecutionHistoriesClient {
     /**
      * Lists all scripts' execution history for the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface ScriptExecutionHistoriesClient {
 
     /**
      * Lists all scripts' execution history for the specified cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -38,12 +40,12 @@ public interface ScriptExecutionHistoriesClient {
      * @return the list script execution history response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RuntimeScriptActionDetailInner> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<RuntimeScriptActionDetailInner> listByCluster(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Promotes the specified ad-hoc script execution to a persisted script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param scriptExecutionId The script execution Id.
@@ -54,12 +56,12 @@ public interface ScriptExecutionHistoriesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> promoteWithResponse(
-        String resourceGroupName, String clusterName, String scriptExecutionId, Context context);
+    Response<Void> promoteWithResponse(String resourceGroupName, String clusterName, String scriptExecutionId,
+        Context context);
 
     /**
      * Promotes the specified ad-hoc script execution to a persisted script.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param scriptExecutionId The script execution Id.

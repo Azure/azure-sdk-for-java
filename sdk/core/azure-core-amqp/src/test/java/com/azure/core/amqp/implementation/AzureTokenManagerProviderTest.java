@@ -56,12 +56,14 @@ class AzureTokenManagerProviderTest {
 
     @Test
     void constructorNullHost() {
-        assertThrows(NullPointerException.class, () -> new AzureTokenManagerProvider(CbsAuthorizationType.JSON_WEB_TOKEN, null, "some-scope"));
+        assertThrows(NullPointerException.class,
+            () -> new AzureTokenManagerProvider(CbsAuthorizationType.JSON_WEB_TOKEN, null, "some-scope"));
     }
 
     @Test
     void constructorNullScope() {
-        assertThrows(NullPointerException.class, () -> new AzureTokenManagerProvider(CbsAuthorizationType.JSON_WEB_TOKEN, HOST_NAME, null));
+        assertThrows(NullPointerException.class,
+            () -> new AzureTokenManagerProvider(CbsAuthorizationType.JSON_WEB_TOKEN, HOST_NAME, null));
     }
 
     public static Stream<CbsAuthorizationType> getResourceString() {
@@ -101,13 +103,14 @@ class AzureTokenManagerProviderTest {
     void getCorrectTokenManagerSasToken() {
         // Arrange
         final String aadScope = "some-active-directory-scope";
-        final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST_NAME, aadScope);
+        final AzureTokenManagerProvider provider
+            = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST_NAME, aadScope);
         final String entityPath = "event-hub-test-2/partition/2";
         final AccessToken token = new AccessToken("a-new-access-token", OffsetDateTime.now().plusMinutes(10));
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, HOST_NAME, entityPath);
 
-        when(cbsNode.authorize(argThat(audience -> audience.equals(tokenAudience)), argThat(scope -> scope.equals(tokenAudience))))
-            .thenReturn(Mono.just(token.getExpiresAt()));
+        when(cbsNode.authorize(argThat(audience -> audience.equals(tokenAudience)),
+            argThat(scope -> scope.equals(tokenAudience)))).thenReturn(Mono.just(token.getExpiresAt()));
 
         // Act
         final TokenManager tokenManager = provider.getTokenManager(Mono.just(cbsNode), entityPath);
@@ -126,13 +129,14 @@ class AzureTokenManagerProviderTest {
     void getCorrectTokenManagerJwt() {
         // Arrange
         final String aadScope = "some-active-directory-scope";
-        final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(CbsAuthorizationType.JSON_WEB_TOKEN, HOST_NAME, aadScope);
+        final AzureTokenManagerProvider provider
+            = new AzureTokenManagerProvider(CbsAuthorizationType.JSON_WEB_TOKEN, HOST_NAME, aadScope);
         final String entityPath = "event-hub-test-2/partition/2";
         final AccessToken token = new AccessToken("a-new-access-token", OffsetDateTime.now().plusMinutes(10));
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, HOST_NAME, entityPath);
 
-        when(cbsNode.authorize(argThat(audience -> audience.equals(tokenAudience)), argThat(scope -> scope.equals(aadScope))))
-            .thenReturn(Mono.just(token.getExpiresAt()));
+        when(cbsNode.authorize(argThat(audience -> audience.equals(tokenAudience)),
+            argThat(scope -> scope.equals(aadScope)))).thenReturn(Mono.just(token.getExpiresAt()));
 
         // Act
         final TokenManager tokenManager = provider.getTokenManager(Mono.just(cbsNode), entityPath);
@@ -152,14 +156,15 @@ class AzureTokenManagerProviderTest {
     void differentInstanceReturned() {
         // Arrange
         final String aadScope = "some-active-directory-scope";
-        final AzureTokenManagerProvider provider = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST_NAME, aadScope);
+        final AzureTokenManagerProvider provider
+            = new AzureTokenManagerProvider(CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, HOST_NAME, aadScope);
         final String entityPath = "event-hub-test-2/partition/2";
         final String entityPath2 = "event-hub-test-2/partition/2";
         final AccessToken token = new AccessToken("a-new-access-token", OffsetDateTime.now().plusMinutes(10));
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, HOST_NAME, entityPath);
 
-        when(cbsNode.authorize(argThat(audience -> audience.equals(tokenAudience)), argThat(scope -> scope.equals(tokenAudience))))
-            .thenReturn(Mono.just(token.getExpiresAt()));
+        when(cbsNode.authorize(argThat(audience -> audience.equals(tokenAudience)),
+            argThat(scope -> scope.equals(tokenAudience)))).thenReturn(Mono.just(token.getExpiresAt()));
 
         // Act
         final TokenManager tokenManager = provider.getTokenManager(Mono.just(cbsNode), entityPath);

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -24,7 +23,7 @@ public final class ScaleSetPriority extends ExpandableStringEnum<ScaleSetPriorit
 
     /**
      * Creates a new instance of ScaleSetPriority value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +32,17 @@ public final class ScaleSetPriority extends ExpandableStringEnum<ScaleSetPriorit
 
     /**
      * Creates or finds a ScaleSetPriority from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScaleSetPriority.
      */
-    @JsonCreator
     public static ScaleSetPriority fromString(String name) {
         return fromString(name, ScaleSetPriority.class);
     }
 
     /**
      * Gets known ScaleSetPriority values.
-     *
+     * 
      * @return known ScaleSetPriority values.
      */
     public static Collection<ScaleSetPriority> values() {

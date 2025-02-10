@@ -29,24 +29,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ProtectionPolicyOperationResultsClient.
  */
 public final class ProtectionPolicyOperationResultsClientImpl implements ProtectionPolicyOperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProtectionPolicyOperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of ProtectionPolicyOperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProtectionPolicyOperationResultsClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ProtectionPolicyOperationResultsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ProtectionPolicyOperationResultsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,26 +57,20 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface ProtectionPolicyOperationResultsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}/operationResults/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupPolicies/{policyName}/operationResults/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectionPolicyResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<ProtectionPolicyResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("policyName") String policyName,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("policyName") String policyName,
+            @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Provides the result of an operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's result needs to be fetched.
@@ -87,13 +81,11 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String policyName, String operationId) {
+    private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, String policyName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -103,10 +95,8 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
@@ -116,25 +106,14 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            policyName,
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), policyName, operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Provides the result of an operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's result needs to be fetched.
@@ -146,13 +125,11 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      * @return base class for backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String policyName, String operationId, Context context) {
+    private Mono<Response<ProtectionPolicyResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, String policyName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -162,10 +139,8 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (policyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
@@ -175,22 +150,13 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                policyName,
-                operationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), policyName, operationId, accept, context);
     }
 
     /**
      * Provides the result of an operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's result needs to be fetched.
@@ -201,15 +167,15 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      * @return base class for backup policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionPolicyResourceInner> getAsync(
-        String vaultName, String resourceGroupName, String policyName, String operationId) {
+    private Mono<ProtectionPolicyResourceInner> getAsync(String vaultName, String resourceGroupName, String policyName,
+        String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, policyName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Provides the result of an operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's result needs to be fetched.
@@ -221,14 +187,14 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      * @return base class for backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectionPolicyResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String policyName, String operationId, Context context) {
+    public Response<ProtectionPolicyResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String policyName, String operationId, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, policyName, operationId, context).block();
     }
 
     /**
      * Provides the result of an operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's result needs to be fetched.
@@ -239,8 +205,8 @@ public final class ProtectionPolicyOperationResultsClientImpl implements Protect
      * @return base class for backup policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionPolicyResourceInner get(
-        String vaultName, String resourceGroupName, String policyName, String operationId) {
+    public ProtectionPolicyResourceInner get(String vaultName, String resourceGroupName, String policyName,
+        String operationId) {
         return getWithResponse(vaultName, resourceGroupName, policyName, operationId, Context.NONE).getValue();
     }
 }

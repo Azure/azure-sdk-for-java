@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties that describe a base image dependency. */
+/**
+ * Properties that describe a base image dependency.
+ */
 @Fluent
-public final class BaseImageDependency {
+public final class BaseImageDependency implements JsonSerializable<BaseImageDependency> {
     /*
      * The type of the base image dependency.
      */
-    @JsonProperty(value = "type")
     private BaseImageDependencyType type;
 
     /*
      * The registry login server.
      */
-    @JsonProperty(value = "registry")
     private String registry;
 
     /*
      * The repository name.
      */
-    @JsonProperty(value = "repository")
     private String repository;
 
     /*
      * The tag name.
      */
-    @JsonProperty(value = "tag")
     private String tag;
 
     /*
      * The sha256-based digest of the image manifest.
      */
-    @JsonProperty(value = "digest")
     private String digest;
 
-    /** Creates an instance of BaseImageDependency class. */
+    /**
+     * Creates an instance of BaseImageDependency class.
+     */
     public BaseImageDependency() {
     }
 
     /**
      * Get the type property: The type of the base image dependency.
-     *
+     * 
      * @return the type value.
      */
     public BaseImageDependencyType type() {
@@ -55,7 +58,7 @@ public final class BaseImageDependency {
 
     /**
      * Set the type property: The type of the base image dependency.
-     *
+     * 
      * @param type the type value to set.
      * @return the BaseImageDependency object itself.
      */
@@ -66,7 +69,7 @@ public final class BaseImageDependency {
 
     /**
      * Get the registry property: The registry login server.
-     *
+     * 
      * @return the registry value.
      */
     public String registry() {
@@ -75,7 +78,7 @@ public final class BaseImageDependency {
 
     /**
      * Set the registry property: The registry login server.
-     *
+     * 
      * @param registry the registry value to set.
      * @return the BaseImageDependency object itself.
      */
@@ -86,7 +89,7 @@ public final class BaseImageDependency {
 
     /**
      * Get the repository property: The repository name.
-     *
+     * 
      * @return the repository value.
      */
     public String repository() {
@@ -95,7 +98,7 @@ public final class BaseImageDependency {
 
     /**
      * Set the repository property: The repository name.
-     *
+     * 
      * @param repository the repository value to set.
      * @return the BaseImageDependency object itself.
      */
@@ -106,7 +109,7 @@ public final class BaseImageDependency {
 
     /**
      * Get the tag property: The tag name.
-     *
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -115,7 +118,7 @@ public final class BaseImageDependency {
 
     /**
      * Set the tag property: The tag name.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the BaseImageDependency object itself.
      */
@@ -126,7 +129,7 @@ public final class BaseImageDependency {
 
     /**
      * Get the digest property: The sha256-based digest of the image manifest.
-     *
+     * 
      * @return the digest value.
      */
     public String digest() {
@@ -135,7 +138,7 @@ public final class BaseImageDependency {
 
     /**
      * Set the digest property: The sha256-based digest of the image manifest.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the BaseImageDependency object itself.
      */
@@ -146,9 +149,57 @@ public final class BaseImageDependency {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("registry", this.registry);
+        jsonWriter.writeStringField("repository", this.repository);
+        jsonWriter.writeStringField("tag", this.tag);
+        jsonWriter.writeStringField("digest", this.digest);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BaseImageDependency from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BaseImageDependency if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BaseImageDependency.
+     */
+    public static BaseImageDependency fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BaseImageDependency deserializedBaseImageDependency = new BaseImageDependency();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedBaseImageDependency.type = BaseImageDependencyType.fromString(reader.getString());
+                } else if ("registry".equals(fieldName)) {
+                    deserializedBaseImageDependency.registry = reader.getString();
+                } else if ("repository".equals(fieldName)) {
+                    deserializedBaseImageDependency.repository = reader.getString();
+                } else if ("tag".equals(fieldName)) {
+                    deserializedBaseImageDependency.tag = reader.getString();
+                } else if ("digest".equals(fieldName)) {
+                    deserializedBaseImageDependency.digest = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBaseImageDependency;
+        });
     }
 }

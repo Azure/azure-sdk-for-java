@@ -5,22 +5,29 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The resource names object for network interface and related resources. */
+/**
+ * The resource names object for network interface and related resources.
+ */
 @Fluent
-public final class NetworkInterfaceResourceNames {
+public final class NetworkInterfaceResourceNames implements JsonSerializable<NetworkInterfaceResourceNames> {
     /*
-     * The full name for network interface. If name is not provided, service uses a default name based on the
-     * deployment type. For SingleServer, default name is {SID}-Nic. In case of HA-AvZone systems, default name will be
+     * The full name for network interface. If name is not provided, service uses a default name based on the deployment
+     * type. For SingleServer, default name is {SID}-Nic. In case of HA-AvZone systems, default name will be
      * {SID}-{App/ASCS/DB}-Zone{A/B}-Nic with an incrementor at the end in case of more than 1 instance per layer. For
      * distributed and HA-AvSet systems, default name will be {SID}-{App/ASCS/DB}-Nic with an incrementor at the end in
      * case of more than 1 instance per layer.
      */
-    @JsonProperty(value = "networkInterfaceName")
     private String networkInterfaceName;
 
-    /** Creates an instance of NetworkInterfaceResourceNames class. */
+    /**
+     * Creates an instance of NetworkInterfaceResourceNames class.
+     */
     public NetworkInterfaceResourceNames() {
     }
 
@@ -30,7 +37,7 @@ public final class NetworkInterfaceResourceNames {
      * systems, default name will be {SID}-{App/ASCS/DB}-Zone{A/B}-Nic with an incrementor at the end in case of more
      * than 1 instance per layer. For distributed and HA-AvSet systems, default name will be {SID}-{App/ASCS/DB}-Nic
      * with an incrementor at the end in case of more than 1 instance per layer.
-     *
+     * 
      * @return the networkInterfaceName value.
      */
     public String networkInterfaceName() {
@@ -43,7 +50,7 @@ public final class NetworkInterfaceResourceNames {
      * systems, default name will be {SID}-{App/ASCS/DB}-Zone{A/B}-Nic with an incrementor at the end in case of more
      * than 1 instance per layer. For distributed and HA-AvSet systems, default name will be {SID}-{App/ASCS/DB}-Nic
      * with an incrementor at the end in case of more than 1 instance per layer.
-     *
+     * 
      * @param networkInterfaceName the networkInterfaceName value to set.
      * @return the NetworkInterfaceResourceNames object itself.
      */
@@ -54,9 +61,46 @@ public final class NetworkInterfaceResourceNames {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkInterfaceName", this.networkInterfaceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfaceResourceNames from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfaceResourceNames if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceResourceNames.
+     */
+    public static NetworkInterfaceResourceNames fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfaceResourceNames deserializedNetworkInterfaceResourceNames
+                = new NetworkInterfaceResourceNames();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkInterfaceName".equals(fieldName)) {
+                    deserializedNetworkInterfaceResourceNames.networkInterfaceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfaceResourceNames;
+        });
     }
 }

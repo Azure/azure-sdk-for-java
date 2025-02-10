@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class OrderStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrderStatus model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"AwaitingPreparation\",\"updateDateTime\":\"2021-02-28T22:24:22Z\",\"comments\":\"joya\",\"additionalOrderDetails\":{\"idzyexznelixhnr\":\"lyjpk\",\"nalaulppg\":\"tfolhbnx\",\"gvpgy\":\"dtpnapnyiropuhp\"}}")
-                .toObject(OrderStatus.class);
-        Assertions.assertEquals(OrderState.AWAITING_PREPARATION, model.status());
-        Assertions.assertEquals("joya", model.comments());
+        OrderStatus model = BinaryData.fromString(
+            "{\"status\":\"Declined\",\"updateDateTime\":\"2021-05-05T05:49:54Z\",\"comments\":\"wtmwerio\",\"additionalOrderDetails\":{\"n\":\"yqsemwa\"}}")
+            .toObject(OrderStatus.class);
+        Assertions.assertEquals(OrderState.DECLINED, model.status());
+        Assertions.assertEquals("wtmwerio", model.comments());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrderStatus model = new OrderStatus().withStatus(OrderState.AWAITING_PREPARATION).withComments("joya");
+        OrderStatus model = new OrderStatus().withStatus(OrderState.DECLINED).withComments("wtmwerio");
         model = BinaryData.fromObject(model).toObject(OrderStatus.class);
-        Assertions.assertEquals(OrderState.AWAITING_PREPARATION, model.status());
-        Assertions.assertEquals("joya", model.comments());
+        Assertions.assertEquals(OrderState.DECLINED, model.status());
+        Assertions.assertEquals("wtmwerio", model.comments());
     }
 }

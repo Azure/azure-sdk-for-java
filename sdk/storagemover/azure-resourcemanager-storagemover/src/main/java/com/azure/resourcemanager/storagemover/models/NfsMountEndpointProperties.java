@@ -6,40 +6,55 @@ package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of NFS share endpoint. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
-@JsonTypeName("NfsMount")
+/**
+ * The properties of NFS share endpoint.
+ */
 @Fluent
 public final class NfsMountEndpointProperties extends EndpointBaseProperties {
     /*
+     * The Endpoint resource type.
+     */
+    private EndpointType endpointType = EndpointType.NFS_MOUNT;
+
+    /*
      * The host name or IP address of the server exporting the file system.
      */
-    @JsonProperty(value = "host", required = true)
     private String host;
 
     /*
      * The NFS protocol version.
      */
-    @JsonProperty(value = "nfsVersion")
     private NfsVersion nfsVersion;
 
     /*
      * The directory being exported from the server.
      */
-    @JsonProperty(value = "export", required = true)
     private String export;
 
-    /** Creates an instance of NfsMountEndpointProperties class. */
+    /**
+     * Creates an instance of NfsMountEndpointProperties class.
+     */
     public NfsMountEndpointProperties() {
     }
 
     /**
+     * Get the endpointType property: The Endpoint resource type.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
      * Get the host property: The host name or IP address of the server exporting the file system.
-     *
+     * 
      * @return the host value.
      */
     public String host() {
@@ -48,7 +63,7 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
 
     /**
      * Set the host property: The host name or IP address of the server exporting the file system.
-     *
+     * 
      * @param host the host value to set.
      * @return the NfsMountEndpointProperties object itself.
      */
@@ -59,7 +74,7 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
 
     /**
      * Get the nfsVersion property: The NFS protocol version.
-     *
+     * 
      * @return the nfsVersion value.
      */
     public NfsVersion nfsVersion() {
@@ -68,7 +83,7 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
 
     /**
      * Set the nfsVersion property: The NFS protocol version.
-     *
+     * 
      * @param nfsVersion the nfsVersion value to set.
      * @return the NfsMountEndpointProperties object itself.
      */
@@ -79,7 +94,7 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
 
     /**
      * Get the export property: The directory being exported from the server.
-     *
+     * 
      * @return the export value.
      */
     public String export() {
@@ -88,7 +103,7 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
 
     /**
      * Set the export property: The directory being exported from the server.
-     *
+     * 
      * @param export the export value to set.
      * @return the NfsMountEndpointProperties object itself.
      */
@@ -97,7 +112,9 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NfsMountEndpointProperties withDescription(String description) {
         super.withDescription(description);
@@ -106,24 +123,74 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (host() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property host in model NfsMountEndpointProperties"));
         }
         if (export() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property export in model NfsMountEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property export in model NfsMountEndpointProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NfsMountEndpointProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("host", this.host);
+        jsonWriter.writeStringField("export", this.export);
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeStringField("nfsVersion", this.nfsVersion == null ? null : this.nfsVersion.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NfsMountEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NfsMountEndpointProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NfsMountEndpointProperties.
+     */
+    public static NfsMountEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NfsMountEndpointProperties deserializedNfsMountEndpointProperties = new NfsMountEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedNfsMountEndpointProperties.withDescription(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNfsMountEndpointProperties
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("host".equals(fieldName)) {
+                    deserializedNfsMountEndpointProperties.host = reader.getString();
+                } else if ("export".equals(fieldName)) {
+                    deserializedNfsMountEndpointProperties.export = reader.getString();
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedNfsMountEndpointProperties.endpointType = EndpointType.fromString(reader.getString());
+                } else if ("nfsVersion".equals(fieldName)) {
+                    deserializedNfsMountEndpointProperties.nfsVersion = NfsVersion.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNfsMountEndpointProperties;
+        });
+    }
 }

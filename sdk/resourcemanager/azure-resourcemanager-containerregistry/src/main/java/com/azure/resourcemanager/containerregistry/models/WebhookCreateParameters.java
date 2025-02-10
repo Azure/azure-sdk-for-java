@@ -6,41 +6,44 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.WebhookPropertiesCreateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The parameters for creating a webhook. */
+/**
+ * The parameters for creating a webhook.
+ */
 @Fluent
-public final class WebhookCreateParameters {
+public final class WebhookCreateParameters implements JsonSerializable<WebhookCreateParameters> {
     /*
      * The tags for the webhook.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The location of the webhook. This cannot be changed after the resource is created.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * The properties that the webhook will be created with.
      */
-    @JsonProperty(value = "properties")
     private WebhookPropertiesCreateParameters innerProperties;
 
-    /** Creates an instance of WebhookCreateParameters class. */
+    /**
+     * Creates an instance of WebhookCreateParameters class.
+     */
     public WebhookCreateParameters() {
     }
 
     /**
      * Get the tags property: The tags for the webhook.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -49,7 +52,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the tags property: The tags for the webhook.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -60,7 +63,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the location property: The location of the webhook. This cannot be changed after the resource is created.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -69,7 +72,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the location property: The location of the webhook. This cannot be changed after the resource is created.
-     *
+     * 
      * @param location the location value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -80,7 +83,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the innerProperties property: The properties that the webhook will be created with.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebhookPropertiesCreateParameters innerProperties() {
@@ -89,7 +92,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the serviceUri property: The service URI for the webhook to post notifications.
-     *
+     * 
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -98,7 +101,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the serviceUri property: The service URI for the webhook to post notifications.
-     *
+     * 
      * @param serviceUri the serviceUri value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -112,7 +115,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the customHeaders property: Custom headers that will be added to the webhook notifications.
-     *
+     * 
      * @return the customHeaders value.
      */
     public Map<String, String> customHeaders() {
@@ -121,7 +124,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the customHeaders property: Custom headers that will be added to the webhook notifications.
-     *
+     * 
      * @param customHeaders the customHeaders value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -135,7 +138,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public WebhookStatus status() {
@@ -144,7 +147,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @param status the status value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -160,7 +163,7 @@ public final class WebhookCreateParameters {
      * Get the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -171,7 +174,7 @@ public final class WebhookCreateParameters {
      * Set the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -185,7 +188,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @return the actions value.
      */
     public List<WebhookAction> actions() {
@@ -194,7 +197,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -208,15 +211,14 @@ public final class WebhookCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model WebhookCreateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model WebhookCreateParameters"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -224,4 +226,49 @@ public final class WebhookCreateParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebhookCreateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookCreateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebhookCreateParameters.
+     */
+    public static WebhookCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookCreateParameters deserializedWebhookCreateParameters = new WebhookCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedWebhookCreateParameters.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebhookCreateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebhookCreateParameters.innerProperties
+                        = WebhookPropertiesCreateParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookCreateParameters;
+        });
+    }
 }

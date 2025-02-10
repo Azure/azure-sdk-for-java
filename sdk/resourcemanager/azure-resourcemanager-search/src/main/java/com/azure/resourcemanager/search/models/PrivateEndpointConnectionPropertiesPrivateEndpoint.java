@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The private endpoint resource from Microsoft.Network provider. */
+/**
+ * The private endpoint resource from Microsoft.Network provider.
+ */
 @Fluent
-public final class PrivateEndpointConnectionPropertiesPrivateEndpoint {
+public final class PrivateEndpointConnectionPropertiesPrivateEndpoint
+    implements JsonSerializable<PrivateEndpointConnectionPropertiesPrivateEndpoint> {
     /*
      * The resource id of the private endpoint resource from Microsoft.Network provider.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of PrivateEndpointConnectionPropertiesPrivateEndpoint class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionPropertiesPrivateEndpoint class.
+     */
     public PrivateEndpointConnectionPropertiesPrivateEndpoint() {
     }
 
     /**
      * Get the id property: The resource id of the private endpoint resource from Microsoft.Network provider.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +39,7 @@ public final class PrivateEndpointConnectionPropertiesPrivateEndpoint {
 
     /**
      * Set the id property: The resource id of the private endpoint resource from Microsoft.Network provider.
-     *
+     * 
      * @param id the id value to set.
      * @return the PrivateEndpointConnectionPropertiesPrivateEndpoint object itself.
      */
@@ -42,9 +50,47 @@ public final class PrivateEndpointConnectionPropertiesPrivateEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionPropertiesPrivateEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionPropertiesPrivateEndpoint if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionPropertiesPrivateEndpoint.
+     */
+    public static PrivateEndpointConnectionPropertiesPrivateEndpoint fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionPropertiesPrivateEndpoint deserializedPrivateEndpointConnectionPropertiesPrivateEndpoint
+                = new PrivateEndpointConnectionPropertiesPrivateEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionPropertiesPrivateEndpoint.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionPropertiesPrivateEndpoint;
+        });
     }
 }

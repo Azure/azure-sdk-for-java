@@ -5,6 +5,8 @@ package com.azure.spring.cloud.core.provider.connectionstring;
 
 /**
  * Service connection string provider to provide the connection string for a service type.
+ *
+ * @param <T> The service type.
  */
 public interface ServiceConnectionStringProvider<T> extends ConnectionStringProvider {
 

@@ -4,9 +4,11 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
+import com.azure.resourcemanager.redisenterprise.models.AccessKeysAuthentication;
 import com.azure.resourcemanager.redisenterprise.models.AofFrequency;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
+import com.azure.resourcemanager.redisenterprise.models.DeferUpgradeSetting;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
 import com.azure.resourcemanager.redisenterprise.models.LinkedDatabase;
 import com.azure.resourcemanager.redisenterprise.models.Module;
@@ -14,20 +16,23 @@ import com.azure.resourcemanager.redisenterprise.models.Persistence;
 import com.azure.resourcemanager.redisenterprise.models.Protocol;
 import java.util.Arrays;
 
-/** Samples for Databases Create. */
+/**
+ * Samples for Databases Create.
+ */
 public final class DatabasesCreateSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseDatabasesCreate.json
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
+     * RedisEnterpriseDatabasesCreate.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesCreate.
-     *
+     * 
      * @param manager Entry point to RedisEnterpriseManager.
      */
-    public static void redisEnterpriseDatabasesCreate(
-        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager
-            .databases()
+    public static void
+        redisEnterpriseDatabasesCreate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
+        manager.databases()
             .define("default")
             .withExistingRedisEnterprise("rg1", "cache1")
             .withClientProtocol(Protocol.ENCRYPTED)
@@ -35,45 +40,39 @@ public final class DatabasesCreateSamples {
             .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
             .withEvictionPolicy(EvictionPolicy.ALL_KEYS_LRU)
             .withPersistence(new Persistence().withAofEnabled(true).withAofFrequency(AofFrequency.ONES))
-            .withModules(
-                Arrays
-                    .asList(
-                        new Module().withName("RedisBloom").withArgs("ERROR_RATE 0.00 INITIAL_SIZE 400"),
-                        new Module().withName("RedisTimeSeries").withArgs("RETENTION_POLICY 20"),
-                        new Module().withName("RediSearch")))
+            .withModules(Arrays.asList(new Module().withName("RedisBloom").withArgs("ERROR_RATE 0.00 INITIAL_SIZE 400"),
+                new Module().withName("RedisTimeSeries").withArgs("RETENTION_POLICY 20"),
+                new Module().withName("RediSearch")))
+            .withDeferUpgrade(DeferUpgradeSetting.NOT_DEFERRED)
+            .withAccessKeysAuthentication(AccessKeysAuthentication.ENABLED)
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseDatabasesCreateWithGeoReplication.json
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
+     * RedisEnterpriseDatabasesCreateWithGeoReplication.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesCreate With Active Geo Replication.
-     *
+     * 
      * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseDatabasesCreateWithActiveGeoReplication(
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager
-            .databases()
+        manager.databases()
             .define("default")
             .withExistingRedisEnterprise("rg1", "cache1")
             .withClientProtocol(Protocol.ENCRYPTED)
             .withPort(10000)
             .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
             .withEvictionPolicy(EvictionPolicy.NO_EVICTION)
-            .withGeoReplication(
-                new DatabasePropertiesGeoReplication()
-                    .withGroupNickname("groupName")
-                    .withLinkedDatabases(
-                        Arrays
-                            .asList(
-                                new LinkedDatabase()
-                                    .withId(
-                                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
-                                new LinkedDatabase()
-                                    .withId(
-                                        "/subscriptions/subid2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default"))))
+            .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("groupName")
+                .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId(
+                    "/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
+                    new LinkedDatabase().withId(
+                        "/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8e/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default"))))
+            .withAccessKeysAuthentication(AccessKeysAuthentication.ENABLED)
             .create();
     }
 }

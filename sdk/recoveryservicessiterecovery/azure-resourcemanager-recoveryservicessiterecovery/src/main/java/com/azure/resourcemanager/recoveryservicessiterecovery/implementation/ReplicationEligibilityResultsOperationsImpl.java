@@ -22,22 +22,18 @@ public final class ReplicationEligibilityResultsOperationsImpl implements Replic
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    public ReplicationEligibilityResultsOperationsImpl(
-        ReplicationEligibilityResultsOperationsClient innerClient,
+    public ReplicationEligibilityResultsOperationsImpl(ReplicationEligibilityResultsOperationsClient innerClient,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ReplicationEligibilityResultsCollection> listWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context) {
-        Response<ReplicationEligibilityResultsCollectionInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, virtualMachineName, context);
+    public Response<ReplicationEligibilityResultsCollection> listWithResponse(String resourceGroupName,
+        String virtualMachineName, Context context) {
+        Response<ReplicationEligibilityResultsCollectionInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, virtualMachineName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReplicationEligibilityResultsCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -45,8 +41,8 @@ public final class ReplicationEligibilityResultsOperationsImpl implements Replic
     }
 
     public ReplicationEligibilityResultsCollection list(String resourceGroupName, String virtualMachineName) {
-        ReplicationEligibilityResultsCollectionInner inner =
-            this.serviceClient().list(resourceGroupName, virtualMachineName);
+        ReplicationEligibilityResultsCollectionInner inner
+            = this.serviceClient().list(resourceGroupName, virtualMachineName);
         if (inner != null) {
             return new ReplicationEligibilityResultsCollectionImpl(inner, this.manager());
         } else {
@@ -54,15 +50,12 @@ public final class ReplicationEligibilityResultsOperationsImpl implements Replic
         }
     }
 
-    public Response<ReplicationEligibilityResults> getWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context) {
-        Response<ReplicationEligibilityResultsInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, virtualMachineName, context);
+    public Response<ReplicationEligibilityResults> getWithResponse(String resourceGroupName, String virtualMachineName,
+        Context context) {
+        Response<ReplicationEligibilityResultsInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, virtualMachineName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReplicationEligibilityResultsImpl(inner.getValue(), this.manager()));
         } else {
             return null;

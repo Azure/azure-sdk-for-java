@@ -18,7 +18,8 @@ public final class DatasetsDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void datasetsDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.datasets().deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset",
-            com.azure.core.util.Context.NONE);
+        manager.datasets()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset",
+                com.azure.core.util.Context.NONE);
     }
 }

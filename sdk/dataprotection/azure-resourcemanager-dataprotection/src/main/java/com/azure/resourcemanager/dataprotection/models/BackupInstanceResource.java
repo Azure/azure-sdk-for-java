@@ -335,12 +335,13 @@ public interface BackupInstanceResource {
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
      * 
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void stopProtection(Context context);
+    void stopProtection(StopProtectionRequest parameters, Context context);
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
@@ -355,12 +356,13 @@ public interface BackupInstanceResource {
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
      * 
+     * @param parameters Request body for operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void suspendBackups(Context context);
+    void suspendBackups(SuspendBackupRequest parameters, Context context);
 
     /**
      * Sync backup instance again in case of failure

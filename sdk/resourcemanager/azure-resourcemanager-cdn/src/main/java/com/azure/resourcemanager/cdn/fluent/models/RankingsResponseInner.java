@@ -5,39 +5,46 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.RankingsResponseTablesItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Rankings Response. */
+/**
+ * Rankings Response.
+ */
 @Fluent
-public final class RankingsResponseInner {
+public final class RankingsResponseInner implements JsonSerializable<RankingsResponseInner> {
     /*
      * The dateTimeBegin property.
      */
-    @JsonProperty(value = "dateTimeBegin")
     private OffsetDateTime dateTimeBegin;
 
     /*
      * The dateTimeEnd property.
      */
-    @JsonProperty(value = "dateTimeEnd")
     private OffsetDateTime dateTimeEnd;
 
     /*
      * The tables property.
      */
-    @JsonProperty(value = "tables")
     private List<RankingsResponseTablesItem> tables;
 
-    /** Creates an instance of RankingsResponseInner class. */
+    /**
+     * Creates an instance of RankingsResponseInner class.
+     */
     public RankingsResponseInner() {
     }
 
     /**
      * Get the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @return the dateTimeBegin value.
      */
     public OffsetDateTime dateTimeBegin() {
@@ -46,7 +53,7 @@ public final class RankingsResponseInner {
 
     /**
      * Set the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @param dateTimeBegin the dateTimeBegin value to set.
      * @return the RankingsResponseInner object itself.
      */
@@ -57,7 +64,7 @@ public final class RankingsResponseInner {
 
     /**
      * Get the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @return the dateTimeEnd value.
      */
     public OffsetDateTime dateTimeEnd() {
@@ -66,7 +73,7 @@ public final class RankingsResponseInner {
 
     /**
      * Set the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @param dateTimeEnd the dateTimeEnd value to set.
      * @return the RankingsResponseInner object itself.
      */
@@ -77,7 +84,7 @@ public final class RankingsResponseInner {
 
     /**
      * Get the tables property: The tables property.
-     *
+     * 
      * @return the tables value.
      */
     public List<RankingsResponseTablesItem> tables() {
@@ -86,7 +93,7 @@ public final class RankingsResponseInner {
 
     /**
      * Set the tables property: The tables property.
-     *
+     * 
      * @param tables the tables value to set.
      * @return the RankingsResponseInner object itself.
      */
@@ -97,12 +104,60 @@ public final class RankingsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tables() != null) {
             tables().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dateTimeBegin",
+            this.dateTimeBegin == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dateTimeBegin));
+        jsonWriter.writeStringField("dateTimeEnd",
+            this.dateTimeEnd == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dateTimeEnd));
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RankingsResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RankingsResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RankingsResponseInner.
+     */
+    public static RankingsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RankingsResponseInner deserializedRankingsResponseInner = new RankingsResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dateTimeBegin".equals(fieldName)) {
+                    deserializedRankingsResponseInner.dateTimeBegin = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dateTimeEnd".equals(fieldName)) {
+                    deserializedRankingsResponseInner.dateTimeEnd = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("tables".equals(fieldName)) {
+                    List<RankingsResponseTablesItem> tables
+                        = reader.readArray(reader1 -> RankingsResponseTablesItem.fromJson(reader1));
+                    deserializedRankingsResponseInner.tables = tables;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRankingsResponseInner;
+        });
     }
 }

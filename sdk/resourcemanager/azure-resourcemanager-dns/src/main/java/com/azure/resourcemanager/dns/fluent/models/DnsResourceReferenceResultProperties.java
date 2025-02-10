@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.dns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dns.models.DnsResourceReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,22 +18,24 @@ import java.util.List;
  * resource in the request.
  */
 @Fluent
-public final class DnsResourceReferenceResultProperties {
+public final class DnsResourceReferenceResultProperties
+    implements JsonSerializable<DnsResourceReferenceResultProperties> {
     /*
-     * The result of dns resource reference request. A list of dns resource references for each of the azure resource
-     * in the request
+     * The result of dns resource reference request. A list of dns resource references for each of the azure resource in
+     * the request
      */
-    @JsonProperty(value = "dnsResourceReferences")
     private List<DnsResourceReference> dnsResourceReferences;
 
-    /** Creates an instance of DnsResourceReferenceResultProperties class. */
+    /**
+     * Creates an instance of DnsResourceReferenceResultProperties class.
+     */
     public DnsResourceReferenceResultProperties() {
     }
 
     /**
      * Get the dnsResourceReferences property: The result of dns resource reference request. A list of dns resource
      * references for each of the azure resource in the request.
-     *
+     * 
      * @return the dnsResourceReferences value.
      */
     public List<DnsResourceReference> dnsResourceReferences() {
@@ -39,24 +45,64 @@ public final class DnsResourceReferenceResultProperties {
     /**
      * Set the dnsResourceReferences property: The result of dns resource reference request. A list of dns resource
      * references for each of the azure resource in the request.
-     *
+     * 
      * @param dnsResourceReferences the dnsResourceReferences value to set.
      * @return the DnsResourceReferenceResultProperties object itself.
      */
-    public DnsResourceReferenceResultProperties withDnsResourceReferences(
-        List<DnsResourceReference> dnsResourceReferences) {
+    public DnsResourceReferenceResultProperties
+        withDnsResourceReferences(List<DnsResourceReference> dnsResourceReferences) {
         this.dnsResourceReferences = dnsResourceReferences;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dnsResourceReferences() != null) {
             dnsResourceReferences().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dnsResourceReferences", this.dnsResourceReferences,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsResourceReferenceResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsResourceReferenceResultProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DnsResourceReferenceResultProperties.
+     */
+    public static DnsResourceReferenceResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsResourceReferenceResultProperties deserializedDnsResourceReferenceResultProperties
+                = new DnsResourceReferenceResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dnsResourceReferences".equals(fieldName)) {
+                    List<DnsResourceReference> dnsResourceReferences
+                        = reader.readArray(reader1 -> DnsResourceReference.fromJson(reader1));
+                    deserializedDnsResourceReferenceResultProperties.dnsResourceReferences = dnsResourceReferences;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsResourceReferenceResultProperties;
+        });
     }
 }

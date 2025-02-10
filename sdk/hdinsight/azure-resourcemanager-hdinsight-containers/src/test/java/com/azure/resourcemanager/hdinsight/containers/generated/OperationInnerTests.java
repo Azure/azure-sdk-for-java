@@ -11,11 +11,9 @@ import com.azure.resourcemanager.hdinsight.containers.models.OperationDisplay;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"jmqlgkfb\",\"isDataAction\":false,\"display\":{\"provider\":\"ongbjcnt\",\"resource\":\"i\",\"operation\":\"jed\",\"description\":\"wwa\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"mvzzbtdcqvp\",\"isDataAction\":true,\"display\":{\"provider\":\"viylwdshfssnrbgy\",\"resource\":\"rymsgaojfmw\",\"operation\":\"otmrfhir\",\"description\":\"ymoxoftpipiwyczu\"},\"origin\":\"user\",\"actionType\":\"Internal\"}")
+            .toObject(OperationInner.class);
     }
 
     @org.junit.jupiter.api.Test

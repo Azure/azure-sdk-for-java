@@ -6,30 +6,36 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters required for profile upgrade. */
+/**
+ * Parameters required for profile upgrade.
+ */
 @Fluent
-public final class ProfileChangeSkuWafMapping {
+public final class ProfileChangeSkuWafMapping implements JsonSerializable<ProfileChangeSkuWafMapping> {
     /*
      * The security policy name.
      */
-    @JsonProperty(value = "securityPolicyName", required = true)
     private String securityPolicyName;
 
     /*
      * The new waf resource for the security policy to use.
      */
-    @JsonProperty(value = "changeToWafPolicy", required = true)
     private ResourceReference changeToWafPolicy;
 
-    /** Creates an instance of ProfileChangeSkuWafMapping class. */
+    /**
+     * Creates an instance of ProfileChangeSkuWafMapping class.
+     */
     public ProfileChangeSkuWafMapping() {
     }
 
     /**
      * Get the securityPolicyName property: The security policy name.
-     *
+     * 
      * @return the securityPolicyName value.
      */
     public String securityPolicyName() {
@@ -38,7 +44,7 @@ public final class ProfileChangeSkuWafMapping {
 
     /**
      * Set the securityPolicyName property: The security policy name.
-     *
+     * 
      * @param securityPolicyName the securityPolicyName value to set.
      * @return the ProfileChangeSkuWafMapping object itself.
      */
@@ -49,7 +55,7 @@ public final class ProfileChangeSkuWafMapping {
 
     /**
      * Get the changeToWafPolicy property: The new waf resource for the security policy to use.
-     *
+     * 
      * @return the changeToWafPolicy value.
      */
     public ResourceReference changeToWafPolicy() {
@@ -58,7 +64,7 @@ public final class ProfileChangeSkuWafMapping {
 
     /**
      * Set the changeToWafPolicy property: The new waf resource for the security policy to use.
-     *
+     * 
      * @param changeToWafPolicy the changeToWafPolicy value to set.
      * @return the ProfileChangeSkuWafMapping object itself.
      */
@@ -69,25 +75,63 @@ public final class ProfileChangeSkuWafMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (securityPolicyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property securityPolicyName in model ProfileChangeSkuWafMapping"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property securityPolicyName in model ProfileChangeSkuWafMapping"));
         }
         if (changeToWafPolicy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property changeToWafPolicy in model ProfileChangeSkuWafMapping"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property changeToWafPolicy in model ProfileChangeSkuWafMapping"));
         } else {
             changeToWafPolicy().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ProfileChangeSkuWafMapping.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("securityPolicyName", this.securityPolicyName);
+        jsonWriter.writeJsonField("changeToWafPolicy", this.changeToWafPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileChangeSkuWafMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileChangeSkuWafMapping if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProfileChangeSkuWafMapping.
+     */
+    public static ProfileChangeSkuWafMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileChangeSkuWafMapping deserializedProfileChangeSkuWafMapping = new ProfileChangeSkuWafMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("securityPolicyName".equals(fieldName)) {
+                    deserializedProfileChangeSkuWafMapping.securityPolicyName = reader.getString();
+                } else if ("changeToWafPolicy".equals(fieldName)) {
+                    deserializedProfileChangeSkuWafMapping.changeToWafPolicy = ResourceReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileChangeSkuWafMapping;
+        });
+    }
 }

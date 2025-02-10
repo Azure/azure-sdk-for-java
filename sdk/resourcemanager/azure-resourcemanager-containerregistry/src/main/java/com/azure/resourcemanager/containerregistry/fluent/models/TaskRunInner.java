@@ -7,48 +7,64 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.RunRequest;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
- * The task run that has the ARM resource and properties. The task run will have the information of request and result
- * of a run.
+ * The task run that has the ARM resource and properties.
+ * The task run will have the information of request and result of a run.
  */
 @Fluent
 public final class TaskRunInner extends ProxyResource {
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
     /*
      * The properties associated with the task run, i.e., request and result of the run
      */
-    @JsonProperty(value = "properties")
     private TaskRunPropertiesInner innerProperties;
 
     /*
      * The location of the resource
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of TaskRunInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of TaskRunInner class.
+     */
     public TaskRunInner() {
     }
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -57,7 +73,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the TaskRunInner object itself.
      */
@@ -69,7 +85,7 @@ public final class TaskRunInner extends ProxyResource {
     /**
      * Get the innerProperties property: The properties associated with the task run, i.e., request and result of the
      * run.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TaskRunPropertiesInner innerProperties() {
@@ -78,7 +94,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Get the location property: The location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -87,7 +103,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Set the location property: The location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the TaskRunInner object itself.
      */
@@ -98,7 +114,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -106,8 +122,38 @@ public final class TaskRunInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of this task run.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -116,7 +162,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Get the runRequest property: The request (parameters) for the run.
-     *
+     * 
      * @return the runRequest value.
      */
     public RunRequest runRequest() {
@@ -125,7 +171,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Set the runRequest property: The request (parameters) for the run.
-     *
+     * 
      * @param runRequest the runRequest value to set.
      * @return the TaskRunInner object itself.
      */
@@ -139,7 +185,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Get the runResult property: The result of this task run.
-     *
+     * 
      * @return the runResult value.
      */
     public RunInner runResult() {
@@ -149,7 +195,7 @@ public final class TaskRunInner extends ProxyResource {
     /**
      * Get the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -159,7 +205,7 @@ public final class TaskRunInner extends ProxyResource {
     /**
      * Set the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the TaskRunInner object itself.
      */
@@ -173,7 +219,7 @@ public final class TaskRunInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -183,5 +229,56 @@ public final class TaskRunInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskRunInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskRunInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TaskRunInner.
+     */
+    public static TaskRunInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskRunInner deserializedTaskRunInner = new TaskRunInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTaskRunInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTaskRunInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTaskRunInner.type = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedTaskRunInner.identity = IdentityProperties.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTaskRunInner.innerProperties = TaskRunPropertiesInner.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedTaskRunInner.location = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedTaskRunInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskRunInner;
+        });
     }
 }

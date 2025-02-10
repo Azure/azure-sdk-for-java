@@ -19,6 +19,7 @@ import com.azure.core.util.serializer.JsonSerializerProvider;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -70,17 +71,21 @@ import static com.azure.core.util.FluxUtil.monoError;
  * {@link BinaryData} can be created from an {@link InputStream}, a {@link Flux} of {@link ByteBuffer}, a
  * {@link String}, an {@link Object}, a {@link Path file}, or a byte array.
  *
- * <p><strong>A note on data mutability</strong></p>
+ * <p>
+ * <strong>A note on data mutability</strong>
+ * </p>
  *
  * {@link BinaryData} does not copy data on construction. BinaryData keeps a reference to the source content and is
  * accessed when a read request is made. So, any modifications to the underlying source before the content is read can
  * result in undefined behavior.
  * <p>
- * To create an instance of  {@link BinaryData}, use the various static factory methods available. They all start with
+ * To create an instance of {@link BinaryData}, use the various static factory methods available. They all start with
  * {@code 'from'} prefix, for example {@link BinaryData#fromBytes(byte[])}.
  * </p>
  *
- * <p><strong>Create an instance from a byte array</strong></p>
+ * <p>
+ * <strong>Create an instance from a byte array</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.BinaryData.fromBytes#byte -->
  * <pre>
@@ -90,7 +95,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </pre>
  * <!-- end com.azure.core.util.BinaryData.fromBytes#byte -->
  *
- * <p><strong>Create an instance from a String</strong></p>
+ * <p>
+ * <strong>Create an instance from a String</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.BinaryData.fromString#String -->
  * <pre>
@@ -101,7 +108,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </pre>
  * <!-- end com.azure.core.util.BinaryData.fromString#String -->
  *
- * <p><strong>Create an instance from an InputStream</strong></p>
+ * <p>
+ * <strong>Create an instance from an InputStream</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream -->
  * <pre>
@@ -111,7 +120,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </pre>
  * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream -->
  *
- * <p><strong>Create an instance from an Object</strong></p>
+ * <p>
+ * <strong>Create an instance from an Object</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
  * <pre>
@@ -126,7 +137,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </pre>
  * <!-- end com.azure.core.util.BinaryData.fromObject#Object -->
  *
- * <p><strong>Create an instance from {@code Flux<ByteBuffer>}</strong></p>
+ * <p>
+ * <strong>Create an instance from {@code Flux<ByteBuffer>}</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
  * <pre>
@@ -148,7 +161,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </pre>
  * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux -->
  *
- * <p><strong>Create an instance from a file</strong></p>
+ * <p>
+ * <strong>Create an instance from a file</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
  * <pre>
@@ -441,8 +456,8 @@ public final class BinaryData {
         //
         // 1. The content is limited in size as it collects into a byte array which is limited to ~2GB in size.
         // 2. This could lead to a very large chunk of data existing which can cause pauses when allocating large
-        //    arrays.
-        long[] trueLength = new long[]{0};
+        // arrays.
+        long[] trueLength = new long[] { 0 };
         return data.map(buffer -> {
             int bufferSize = buffer.remaining();
             ByteBuffer copy = ByteBuffer.allocate(bufferSize);
@@ -451,11 +466,9 @@ public final class BinaryData {
             copy.flip();
 
             return copy;
-        })
-        .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
-        .map(buffers -> {
+        }).collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add).map(buffers -> {
             // TODO (alzimmer): What should be done when length != null but it differs from the true length
-            //  seen when doing the buffering.
+            // seen when doing the buffering.
             return new BinaryData(new FluxByteBufferContent(Flux.fromIterable(buffers).map(ByteBuffer::duplicate),
                 (length != null) ? length : trueLength[0], true));
         });
@@ -1462,6 +1475,23 @@ public final class BinaryData {
      */
     public Mono<Void> writeTo(AsynchronousByteChannel channel) {
         return content.writeTo(channel);
+    }
+
+    /**
+     * Writes the contents of this {@link BinaryData} to the given {@link JsonWriter}.
+     * <p>
+     * This method does not close or flush the {@link JsonWriter}.
+     * <p>
+     * The contents of this {@link BinaryData} will be written without buffering. If the underlying data source isn't
+     * {@link #isReplayable()}, after this method is called the {@link BinaryData} will be consumed and can't be read
+     * again. If it needs to be read again, use {@link #toReplayableBinaryData()} to create a replayable copy.
+     *
+     * @param jsonWriter The {@link JsonWriter} to write the contents of this {@link BinaryData} to.
+     * @throws NullPointerException If {@code jsonWriter} is null.
+     * @throws IOException If an I/O error occurs during writing.
+     */
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        content.writeTo(jsonWriter);
     }
 
     /**

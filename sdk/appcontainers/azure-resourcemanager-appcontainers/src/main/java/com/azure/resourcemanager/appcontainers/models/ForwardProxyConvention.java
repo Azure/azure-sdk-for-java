@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The convention used to determine the url of the request made. */
+/**
+ * The convention used to determine the url of the request made.
+ */
 public enum ForwardProxyConvention {
-    /** Enum value NoProxy. */
+    /**
+     * Enum value NoProxy.
+     */
     NO_PROXY("NoProxy"),
 
-    /** Enum value Standard. */
+    /**
+     * Enum value Standard.
+     */
     STANDARD("Standard"),
 
-    /** Enum value Custom. */
+    /**
+     * Enum value Custom.
+     */
     CUSTOM("Custom");
 
-    /** The actual serialized value for a ForwardProxyConvention instance. */
+    /**
+     * The actual serialized value for a ForwardProxyConvention instance.
+     */
     private final String value;
 
     ForwardProxyConvention(String value) {
@@ -27,11 +34,10 @@ public enum ForwardProxyConvention {
 
     /**
      * Parses a serialized value to a ForwardProxyConvention instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ForwardProxyConvention object, or null if unable to parse.
      */
-    @JsonCreator
     public static ForwardProxyConvention fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum ForwardProxyConvention {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

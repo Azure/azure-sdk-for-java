@@ -21,39 +21,29 @@ public final class NamespacesImpl implements Namespaces {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public NamespacesImpl(
-        NamespacesClient innerClient, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
+    public NamespacesImpl(NamespacesClient innerClient,
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest,
-        Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this
-                .serviceClient()
-                .checkNameAvailabilityWithResponse(
-                    resourceGroupName, environmentName, checkNameAvailabilityRequest, context);
+    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
+        Response<CheckNameAvailabilityResponseInner> inner = this.serviceClient()
+            .checkNameAvailabilityWithResponse(resourceGroupName, environmentName, checkNameAvailabilityRequest,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckNameAvailabilityResponse checkNameAvailability(
-        String resourceGroupName, String environmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
-        CheckNameAvailabilityResponseInner inner =
-            this
-                .serviceClient()
-                .checkNameAvailability(resourceGroupName, environmentName, checkNameAvailabilityRequest);
+    public CheckNameAvailabilityResponse checkNameAvailability(String resourceGroupName, String environmentName,
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+        CheckNameAvailabilityResponseInner inner = this.serviceClient()
+            .checkNameAvailability(resourceGroupName, environmentName, checkNameAvailabilityRequest);
         if (inner != null) {
             return new CheckNameAvailabilityResponseImpl(inner, this.manager());
         } else {

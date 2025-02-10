@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -32,8 +30,7 @@ public class Offer extends Resource {
         this.setOfferType("");
         ObjectNode content = Utils.getSimpleObjectMapper().createObjectNode();
 //        content.put(Constants.Properties.OFFER_THROUGHPUT, null);
-        content.replace(Constants.Properties.AUTOPILOT_SETTINGS, ModelBridgeInternal
-                                                                     .getPropertyBagFromJsonSerializable(offerAutoscaleSettings));
+        content.replace(Constants.Properties.AUTOPILOT_SETTINGS, offerAutoscaleSettings.getPropertyBag());
         this.setContent(content);
     }
 
@@ -135,7 +132,7 @@ public class Offer extends Resource {
      * @param resourceLink the resource link.
      */
     void setResourceLink(String resourceLink) {
-        BridgeInternal.setProperty(this, Constants.Properties.RESOURCE_LINK, resourceLink);
+        this.set(Constants.Properties.RESOURCE_LINK, resourceLink);
     }
 
     /**
@@ -153,7 +150,7 @@ public class Offer extends Resource {
      * @param resourceId the resource id.
      */
     void setOfferResourceId(String resourceId) {
-        BridgeInternal.setProperty(this, Constants.Properties.OFFER_RESOURCE_ID, resourceId);
+        this.set(Constants.Properties.OFFER_RESOURCE_ID, resourceId);
     }
 
     /**
@@ -171,7 +168,7 @@ public class Offer extends Resource {
      * @param offerType the offer type.
      */
     public void setOfferType(String offerType) {
-        BridgeInternal.setProperty(this, Constants.Properties.OFFER_TYPE, offerType);
+        this.set(Constants.Properties.OFFER_TYPE, offerType);
     }
 
     /**
@@ -189,7 +186,7 @@ public class Offer extends Resource {
      * @param offerVersion the version of the offer.
      */
     public void setOfferVersion(String offerVersion) {
-        BridgeInternal.setProperty(this, Constants.Properties.OFFER_VERSION, offerVersion);
+        this.set(Constants.Properties.OFFER_VERSION, offerVersion);
     }
 
     /**
@@ -220,11 +217,11 @@ public class Offer extends Resource {
     }
 
     private ObjectNode getContent() {
-        return BridgeInternal.getObject(this, Constants.Properties.OFFER_CONTENT);
+        return this.getObject(Constants.Properties.OFFER_CONTENT);
     }
 
     private void setContent(ObjectNode offerContent) {
-        BridgeInternal.setProperty(this, Constants.Properties.OFFER_CONTENT, offerContent);
+        this.set(Constants.Properties.OFFER_CONTENT, offerContent);
     }
 
     @Override

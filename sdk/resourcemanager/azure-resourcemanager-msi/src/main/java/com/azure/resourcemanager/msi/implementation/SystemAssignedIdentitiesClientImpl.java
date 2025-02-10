@@ -25,23 +25,28 @@ import com.azure.resourcemanager.msi.fluent.SystemAssignedIdentitiesClient;
 import com.azure.resourcemanager.msi.fluent.models.SystemAssignedIdentityInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SystemAssignedIdentitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SystemAssignedIdentitiesClient.
+ */
 public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedIdentitiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SystemAssignedIdentitiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ManagedServiceIdentityClientImpl client;
 
     /**
      * Initializes an instance of SystemAssignedIdentitiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SystemAssignedIdentitiesClientImpl(ManagedServiceIdentityClientImpl client) {
-        this.service =
-            RestProxy
-                .create(SystemAssignedIdentitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SystemAssignedIdentitiesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,65 +57,57 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
     @Host("{$host}")
     @ServiceInterface(name = "ManagedServiceIdenti")
     public interface SystemAssignedIdentitiesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.ManagedIdentity/identities/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SystemAssignedIdentityInner>> getByScope(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SystemAssignedIdentityInner>> getByScope(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the systemAssignedIdentity available under the specified RP scope.
-     *
+     * 
      * @param scope The resource provider scope of the resource. Parent resource being extended by Managed Identities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the systemAssignedIdentity available under the specified RP scope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SystemAssignedIdentityInner>> getByScopeWithResponseAsync(String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.getByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.getByScope(this.client.getEndpoint(), scope, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the systemAssignedIdentity available under the specified RP scope.
-     *
+     * 
      * @param scope The resource provider scope of the resource. Parent resource being extended by Managed Identities.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the systemAssignedIdentity available under the specified RP scope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SystemAssignedIdentityInner>> getByScopeWithResponseAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -122,13 +119,13 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
 
     /**
      * Gets the systemAssignedIdentity available under the specified RP scope.
-     *
+     * 
      * @param scope The resource provider scope of the resource. Parent resource being extended by Managed Identities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the systemAssignedIdentity available under the specified RP scope on successful completion of {@link
-     *     Mono}.
+     * @return the systemAssignedIdentity available under the specified RP scope on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SystemAssignedIdentityInner> getByScopeAsync(String scope) {
@@ -137,7 +134,7 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
 
     /**
      * Gets the systemAssignedIdentity available under the specified RP scope.
-     *
+     * 
      * @param scope The resource provider scope of the resource. Parent resource being extended by Managed Identities.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +149,7 @@ public final class SystemAssignedIdentitiesClientImpl implements SystemAssignedI
 
     /**
      * Gets the systemAssignedIdentity available under the specified RP scope.
-     *
+     * 
      * @param scope The resource provider scope of the resource. Parent resource being extended by Managed Identities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

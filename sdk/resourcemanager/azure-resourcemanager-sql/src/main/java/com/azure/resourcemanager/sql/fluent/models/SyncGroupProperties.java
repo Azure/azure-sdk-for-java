@@ -5,94 +5,91 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SyncConflictResolutionPolicy;
 import com.azure.resourcemanager.sql.models.SyncGroupSchema;
 import com.azure.resourcemanager.sql.models.SyncGroupState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of a sync group. */
+/**
+ * Properties of a sync group.
+ */
 @Fluent
-public final class SyncGroupProperties {
+public final class SyncGroupProperties implements JsonSerializable<SyncGroupProperties> {
     /*
      * Sync interval of the sync group.
      */
-    @JsonProperty(value = "interval")
     private Integer interval;
 
     /*
      * Last sync time of the sync group.
      */
-    @JsonProperty(value = "lastSyncTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSyncTime;
 
     /*
      * Conflict resolution policy of the sync group.
      */
-    @JsonProperty(value = "conflictResolutionPolicy")
     private SyncConflictResolutionPolicy conflictResolutionPolicy;
 
     /*
      * ARM resource id of the sync database in the sync group.
      */
-    @JsonProperty(value = "syncDatabaseId")
     private String syncDatabaseId;
 
     /*
      * User name for the sync group hub database credential.
      */
-    @JsonProperty(value = "hubDatabaseUserName")
     private String hubDatabaseUsername;
 
     /*
      * Password for the sync group hub database credential.
      */
-    @JsonProperty(value = "hubDatabasePassword")
     private String hubDatabasePassword;
 
     /*
      * Sync state of the sync group.
      */
-    @JsonProperty(value = "syncState", access = JsonProperty.Access.WRITE_ONLY)
     private SyncGroupState syncState;
 
     /*
      * Sync schema of the sync group.
      */
-    @JsonProperty(value = "schema")
     private SyncGroupSchema schema;
 
     /*
      * If conflict logging is enabled.
      */
-    @JsonProperty(value = "enableConflictLogging")
     private Boolean enableConflictLogging;
 
     /*
      * Conflict logging retention period.
      */
-    @JsonProperty(value = "conflictLoggingRetentionInDays")
     private Integer conflictLoggingRetentionInDays;
 
     /*
      * If use private link connection is enabled.
      */
-    @JsonProperty(value = "usePrivateLinkConnection")
     private Boolean usePrivateLinkConnection;
 
     /*
      * Private endpoint name of the sync group if use private link connection is enabled.
      */
-    @JsonProperty(value = "privateEndpointName", access = JsonProperty.Access.WRITE_ONLY)
     private String privateEndpointName;
 
-    /** Creates an instance of SyncGroupProperties class. */
+    /**
+     * Creates an instance of SyncGroupProperties class.
+     */
     public SyncGroupProperties() {
     }
 
     /**
      * Get the interval property: Sync interval of the sync group.
-     *
+     * 
      * @return the interval value.
      */
     public Integer interval() {
@@ -101,7 +98,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the interval property: Sync interval of the sync group.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -112,7 +109,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the lastSyncTime property: Last sync time of the sync group.
-     *
+     * 
      * @return the lastSyncTime value.
      */
     public OffsetDateTime lastSyncTime() {
@@ -121,7 +118,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the conflictResolutionPolicy property: Conflict resolution policy of the sync group.
-     *
+     * 
      * @return the conflictResolutionPolicy value.
      */
     public SyncConflictResolutionPolicy conflictResolutionPolicy() {
@@ -130,7 +127,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the conflictResolutionPolicy property: Conflict resolution policy of the sync group.
-     *
+     * 
      * @param conflictResolutionPolicy the conflictResolutionPolicy value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -141,7 +138,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the syncDatabaseId property: ARM resource id of the sync database in the sync group.
-     *
+     * 
      * @return the syncDatabaseId value.
      */
     public String syncDatabaseId() {
@@ -150,7 +147,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the syncDatabaseId property: ARM resource id of the sync database in the sync group.
-     *
+     * 
      * @param syncDatabaseId the syncDatabaseId value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -161,7 +158,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the hubDatabaseUsername property: User name for the sync group hub database credential.
-     *
+     * 
      * @return the hubDatabaseUsername value.
      */
     public String hubDatabaseUsername() {
@@ -170,7 +167,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the hubDatabaseUsername property: User name for the sync group hub database credential.
-     *
+     * 
      * @param hubDatabaseUsername the hubDatabaseUsername value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -181,7 +178,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the hubDatabasePassword property: Password for the sync group hub database credential.
-     *
+     * 
      * @return the hubDatabasePassword value.
      */
     public String hubDatabasePassword() {
@@ -190,7 +187,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the hubDatabasePassword property: Password for the sync group hub database credential.
-     *
+     * 
      * @param hubDatabasePassword the hubDatabasePassword value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -201,7 +198,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the syncState property: Sync state of the sync group.
-     *
+     * 
      * @return the syncState value.
      */
     public SyncGroupState syncState() {
@@ -210,7 +207,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the schema property: Sync schema of the sync group.
-     *
+     * 
      * @return the schema value.
      */
     public SyncGroupSchema schema() {
@@ -219,7 +216,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the schema property: Sync schema of the sync group.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -230,7 +227,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the enableConflictLogging property: If conflict logging is enabled.
-     *
+     * 
      * @return the enableConflictLogging value.
      */
     public Boolean enableConflictLogging() {
@@ -239,7 +236,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the enableConflictLogging property: If conflict logging is enabled.
-     *
+     * 
      * @param enableConflictLogging the enableConflictLogging value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -250,7 +247,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the conflictLoggingRetentionInDays property: Conflict logging retention period.
-     *
+     * 
      * @return the conflictLoggingRetentionInDays value.
      */
     public Integer conflictLoggingRetentionInDays() {
@@ -259,7 +256,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the conflictLoggingRetentionInDays property: Conflict logging retention period.
-     *
+     * 
      * @param conflictLoggingRetentionInDays the conflictLoggingRetentionInDays value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -270,7 +267,7 @@ public final class SyncGroupProperties {
 
     /**
      * Get the usePrivateLinkConnection property: If use private link connection is enabled.
-     *
+     * 
      * @return the usePrivateLinkConnection value.
      */
     public Boolean usePrivateLinkConnection() {
@@ -279,7 +276,7 @@ public final class SyncGroupProperties {
 
     /**
      * Set the usePrivateLinkConnection property: If use private link connection is enabled.
-     *
+     * 
      * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
      * @return the SyncGroupProperties object itself.
      */
@@ -291,7 +288,7 @@ public final class SyncGroupProperties {
     /**
      * Get the privateEndpointName property: Private endpoint name of the sync group if use private link connection is
      * enabled.
-     *
+     * 
      * @return the privateEndpointName value.
      */
     public String privateEndpointName() {
@@ -300,12 +297,83 @@ public final class SyncGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (schema() != null) {
             schema().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("interval", this.interval);
+        jsonWriter.writeStringField("conflictResolutionPolicy",
+            this.conflictResolutionPolicy == null ? null : this.conflictResolutionPolicy.toString());
+        jsonWriter.writeStringField("syncDatabaseId", this.syncDatabaseId);
+        jsonWriter.writeStringField("hubDatabaseUserName", this.hubDatabaseUsername);
+        jsonWriter.writeStringField("hubDatabasePassword", this.hubDatabasePassword);
+        jsonWriter.writeJsonField("schema", this.schema);
+        jsonWriter.writeBooleanField("enableConflictLogging", this.enableConflictLogging);
+        jsonWriter.writeNumberField("conflictLoggingRetentionInDays", this.conflictLoggingRetentionInDays);
+        jsonWriter.writeBooleanField("usePrivateLinkConnection", this.usePrivateLinkConnection);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncGroupProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncGroupProperties.
+     */
+    public static SyncGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncGroupProperties deserializedSyncGroupProperties = new SyncGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("interval".equals(fieldName)) {
+                    deserializedSyncGroupProperties.interval = reader.getNullable(JsonReader::getInt);
+                } else if ("lastSyncTime".equals(fieldName)) {
+                    deserializedSyncGroupProperties.lastSyncTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("conflictResolutionPolicy".equals(fieldName)) {
+                    deserializedSyncGroupProperties.conflictResolutionPolicy
+                        = SyncConflictResolutionPolicy.fromString(reader.getString());
+                } else if ("syncDatabaseId".equals(fieldName)) {
+                    deserializedSyncGroupProperties.syncDatabaseId = reader.getString();
+                } else if ("hubDatabaseUserName".equals(fieldName)) {
+                    deserializedSyncGroupProperties.hubDatabaseUsername = reader.getString();
+                } else if ("hubDatabasePassword".equals(fieldName)) {
+                    deserializedSyncGroupProperties.hubDatabasePassword = reader.getString();
+                } else if ("syncState".equals(fieldName)) {
+                    deserializedSyncGroupProperties.syncState = SyncGroupState.fromString(reader.getString());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedSyncGroupProperties.schema = SyncGroupSchema.fromJson(reader);
+                } else if ("enableConflictLogging".equals(fieldName)) {
+                    deserializedSyncGroupProperties.enableConflictLogging = reader.getNullable(JsonReader::getBoolean);
+                } else if ("conflictLoggingRetentionInDays".equals(fieldName)) {
+                    deserializedSyncGroupProperties.conflictLoggingRetentionInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("usePrivateLinkConnection".equals(fieldName)) {
+                    deserializedSyncGroupProperties.usePrivateLinkConnection
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("privateEndpointName".equals(fieldName)) {
+                    deserializedSyncGroupProperties.privateEndpointName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncGroupProperties;
+        });
     }
 }

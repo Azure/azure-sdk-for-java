@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Disk information. */
+/**
+ * Disk information.
+ */
 @Fluent
-public final class DiskInformation {
+public final class DiskInformation implements JsonSerializable<DiskInformation> {
     /*
      * The lun property.
      */
-    @JsonProperty(value = "lun")
     private Integer lun;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of DiskInformation class. */
+    /**
+     * Creates an instance of DiskInformation class.
+     */
     public DiskInformation() {
     }
 
     /**
      * Get the lun property: The lun property.
-     *
+     * 
      * @return the lun value.
      */
     public Integer lun() {
@@ -37,7 +43,7 @@ public final class DiskInformation {
 
     /**
      * Set the lun property: The lun property.
-     *
+     * 
      * @param lun the lun value to set.
      * @return the DiskInformation object itself.
      */
@@ -48,7 +54,7 @@ public final class DiskInformation {
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +63,7 @@ public final class DiskInformation {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the DiskInformation object itself.
      */
@@ -68,9 +74,48 @@ public final class DiskInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("lun", this.lun);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskInformation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskInformation.
+     */
+    public static DiskInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskInformation deserializedDiskInformation = new DiskInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lun".equals(fieldName)) {
+                    deserializedDiskInformation.lun = reader.getNullable(JsonReader::getInt);
+                } else if ("name".equals(fieldName)) {
+                    deserializedDiskInformation.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskInformation;
+        });
     }
 }

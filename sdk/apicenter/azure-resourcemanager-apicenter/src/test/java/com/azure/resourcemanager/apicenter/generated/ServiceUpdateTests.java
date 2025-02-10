@@ -5,18 +5,45 @@
 package com.azure.resourcemanager.apicenter.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.apicenter.models.ServiceUpdate;
+import com.azure.resourcemanager.apicenter.models.UserAssignedIdentity;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 
 public final class ServiceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceUpdate model =
-            BinaryData.fromString("{\"properties\":{\"provisioningState\":\"Failed\"}}").toObject(ServiceUpdate.class);
+        ServiceUpdate model = BinaryData.fromString(
+            "{\"identity\":{\"principalId\":\"f6e41e0c-a573-4c4c-b4f0-71d513833bf5\",\"tenantId\":\"8c940a9e-a8b7-40ce-b71f-e5e8ebd44bda\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ygxgispemvtz\":{\"principalId\":\"91582c6e-7d9f-4302-8199-02ed34ed9bb0\",\"clientId\":\"ec3d6ac1-2dd2-45c3-a247-e61d644428d1\"},\"fublj\":{\"principalId\":\"e8b32a6b-e067-4831-b3cd-433afb85429b\",\"clientId\":\"69ca93f4-b52c-453b-bcd4-8f9f61b57bad\"},\"qeof\":{\"principalId\":\"0fd18af9-a4b6-41cf-8dfb-578fe0e7d155\",\"clientId\":\"ea031080-de0a-4694-9636-64418fa57fc4\"}}},\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"}}")
+            .toObject(ServiceUpdate.class);
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qjhqjbas", model.tags().get("msmjqulngsntn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceUpdate model = new ServiceUpdate();
+        ServiceUpdate model = new ServiceUpdate()
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ygxgispemvtz", new UserAssignedIdentity(), "fublj",
+                    new UserAssignedIdentity(), "qeof", new UserAssignedIdentity())))
+            .withTags(mapOf("msmjqulngsntn", "qjhqjbas"));
         model = BinaryData.fromObject(model).toObject(ServiceUpdate.class);
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qjhqjbas", model.tags().get("msmjqulngsntn"));
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

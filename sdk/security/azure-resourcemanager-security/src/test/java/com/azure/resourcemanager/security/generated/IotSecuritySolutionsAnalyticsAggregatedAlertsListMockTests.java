@@ -6,65 +6,34 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.IoTSecurityAggregatedAlert;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IotSecuritySolutionsAnalyticsAggregatedAlertsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"alertType\":\"valblhtjqv\",\"alertDisplayName\":\"vweht\",\"vendorName\":\"xhzzyse\",\"reportedSeverity\":\"Medium\",\"remediationSteps\":\"ivzrrryveimipsk\",\"description\":\"zatvfuzka\",\"count\":5392653388256869187,\"effectedResourceType\":\"ru\",\"systemSource\":\"igsyeipqdsmjt\",\"actionTaken\":\"qgdgkkile\",\"logAnalyticsQuery\":\"kcsmk\",\"topDevicesList\":[{\"deviceId\":\"bbaedorvvm\",\"alertsCount\":4509163906635599934,\"lastOccurrence\":\"gbdg\"},{\"deviceId\":\"mgxdgdhpabgd\",\"alertsCount\":487078818297817911,\"lastOccurrence\":\"vjsaqwotm\"},{\"deviceId\":\"llcolsrsxapte\",\"alertsCount\":6440980028700974745,\"lastOccurrence\":\"gjokjljnhvlqjbek\"},{\"deviceId\":\"eksnbksdqhjvyk\",\"alertsCount\":3845965226340462865,\"lastOccurrence\":\"khh\"}]},\"tags\":{\"avnwqj\":\"cpoq\",\"knlejjjkxybwfd\":\"g\"},\"id\":\"kjbztensvkzykj\",\"name\":\"jknsxfwu\",\"type\":\"hcdpkupnqrmgj\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"alertType\":\"xqabckmzeoxi\",\"alertDisplayName\":\"greohtwhlpuzjp\",\"vendorName\":\"znzangprbfaxy\",\"reportedSeverity\":\"Medium\",\"remediationSteps\":\"ciphmsexr\",\"description\":\"rndktx\",\"count\":8107112782048178404,\"effectedResourceType\":\"eeqgpkri\",\"systemSource\":\"bgnixxoww\",\"actionTaken\":\"yfwnw\",\"logAnalyticsQuery\":\"wxeiicrmpepk\",\"topDevicesList\":[]},\"tags\":{\"rasek\":\"xijvskwsdgkjgyac\"},\"id\":\"efcvo\",\"name\":\"nwoqartwy\",\"type\":\"qicladv\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<IoTSecurityAggregatedAlert> response = manager.iotSecuritySolutionsAnalyticsAggregatedAlerts()
+            .list("hhkuuip", "dqq", 1276247393, com.azure.core.util.Context.NONE);
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<IoTSecurityAggregatedAlert> response =
-            manager
-                .iotSecuritySolutionsAnalyticsAggregatedAlerts()
-                .list("fyvrtpqpemhzcgk", "epdqhqyhwq", 252630032, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("xijvskwsdgkjgyac", response.iterator().next().tags().get("rasek"));
+        Assertions.assertEquals("cpoq", response.iterator().next().tags().get("avnwqj"));
     }
 }

@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.SecurityPolicyUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The JSON object containing security policy update parameters. */
+/**
+ * The JSON object containing security policy update parameters.
+ */
 @Fluent
-public final class SecurityPolicyUpdateParameters {
+public final class SecurityPolicyUpdateParameters implements JsonSerializable<SecurityPolicyUpdateParameters> {
     /*
      * The json object that contains properties required to update a security policy
      */
-    @JsonProperty(value = "properties")
     private SecurityPolicyUpdateProperties innerProperties;
 
-    /** Creates an instance of SecurityPolicyUpdateParameters class. */
+    /**
+     * Creates an instance of SecurityPolicyUpdateParameters class.
+     */
     public SecurityPolicyUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The json object that contains properties required to update a security policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityPolicyUpdateProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class SecurityPolicyUpdateParameters {
 
     /**
      * Get the parameters property: object which contains security policy parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public SecurityPolicyPropertiesParameters parameters() {
@@ -41,7 +48,7 @@ public final class SecurityPolicyUpdateParameters {
 
     /**
      * Set the parameters property: object which contains security policy parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SecurityPolicyUpdateParameters object itself.
      */
@@ -55,12 +62,50 @@ public final class SecurityPolicyUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityPolicyUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityPolicyUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityPolicyUpdateParameters.
+     */
+    public static SecurityPolicyUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityPolicyUpdateParameters deserializedSecurityPolicyUpdateParameters
+                = new SecurityPolicyUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSecurityPolicyUpdateParameters.innerProperties
+                        = SecurityPolicyUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityPolicyUpdateParameters;
+        });
     }
 }

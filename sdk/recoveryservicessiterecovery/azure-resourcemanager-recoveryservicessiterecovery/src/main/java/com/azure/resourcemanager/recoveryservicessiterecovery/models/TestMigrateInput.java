@@ -6,24 +6,31 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input for test migrate. */
+/**
+ * Input for test migrate.
+ */
 @Fluent
-public final class TestMigrateInput {
+public final class TestMigrateInput implements JsonSerializable<TestMigrateInput> {
     /*
      * Test migrate input properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private TestMigrateInputProperties properties;
 
-    /** Creates an instance of TestMigrateInput class. */
+    /**
+     * Creates an instance of TestMigrateInput class.
+     */
     public TestMigrateInput() {
     }
 
     /**
      * Get the properties property: Test migrate input properties.
-     *
+     * 
      * @return the properties value.
      */
     public TestMigrateInputProperties properties() {
@@ -32,7 +39,7 @@ public final class TestMigrateInput {
 
     /**
      * Set the properties property: Test migrate input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the TestMigrateInput object itself.
      */
@@ -43,18 +50,54 @@ public final class TestMigrateInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model TestMigrateInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model TestMigrateInput"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TestMigrateInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestMigrateInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestMigrateInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TestMigrateInput.
+     */
+    public static TestMigrateInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestMigrateInput deserializedTestMigrateInput = new TestMigrateInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedTestMigrateInput.properties = TestMigrateInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestMigrateInput;
+        });
+    }
 }

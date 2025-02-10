@@ -12,23 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class OpenIdConnectLoginTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OpenIdConnectLogin model =
-            BinaryData
-                .fromString(
-                    "{\"nameClaimType\":\"otkftutqxlngx\",\"scopes\":[\"gug\",\"xkrxdqmi\",\"tthzrvqd\",\"abhjybi\"]}")
-                .toObject(OpenIdConnectLogin.class);
-        Assertions.assertEquals("otkftutqxlngx", model.nameClaimType());
-        Assertions.assertEquals("gug", model.scopes().get(0));
+        OpenIdConnectLogin model = BinaryData.fromString("{\"nameClaimType\":\"evgbmqjq\",\"scopes\":[\"y\"]}")
+            .toObject(OpenIdConnectLogin.class);
+        Assertions.assertEquals("evgbmqjq", model.nameClaimType());
+        Assertions.assertEquals("y", model.scopes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OpenIdConnectLogin model =
-            new OpenIdConnectLogin()
-                .withNameClaimType("otkftutqxlngx")
-                .withScopes(Arrays.asList("gug", "xkrxdqmi", "tthzrvqd", "abhjybi"));
+        OpenIdConnectLogin model
+            = new OpenIdConnectLogin().withNameClaimType("evgbmqjq").withScopes(Arrays.asList("y"));
         model = BinaryData.fromObject(model).toObject(OpenIdConnectLogin.class);
-        Assertions.assertEquals("otkftutqxlngx", model.nameClaimType());
-        Assertions.assertEquals("gug", model.scopes().get(0));
+        Assertions.assertEquals("evgbmqjq", model.nameClaimType());
+        Assertions.assertEquals("y", model.scopes().get(0));
     }
 }

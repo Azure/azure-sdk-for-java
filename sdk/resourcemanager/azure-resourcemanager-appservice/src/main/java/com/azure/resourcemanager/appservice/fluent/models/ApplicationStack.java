@@ -5,49 +5,47 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.StackMajorVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Application stack.
  */
 @Fluent
-public final class ApplicationStack {
+public final class ApplicationStack implements JsonSerializable<ApplicationStack> {
     /*
      * Application stack name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Application stack display name.
      */
-    @JsonProperty(value = "display")
     private String display;
 
     /*
      * Application stack dependency.
      */
-    @JsonProperty(value = "dependency")
     private String dependency;
 
     /*
      * List of major versions available.
      */
-    @JsonProperty(value = "majorVersions")
     private List<StackMajorVersion> majorVersions;
 
     /*
      * List of frameworks associated with application stack.
      */
-    @JsonProperty(value = "frameworks")
     private List<ApplicationStack> frameworks;
 
     /*
      * <code>true</code> if this is the stack is deprecated; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isDeprecated")
     private List<ApplicationStack> isDeprecated;
 
     /**
@@ -193,5 +191,61 @@ public final class ApplicationStack {
         if (isDeprecated() != null) {
             isDeprecated().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("display", this.display);
+        jsonWriter.writeStringField("dependency", this.dependency);
+        jsonWriter.writeArrayField("majorVersions", this.majorVersions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("frameworks", this.frameworks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("isDeprecated", this.isDeprecated, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationStack from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationStack if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationStack.
+     */
+    public static ApplicationStack fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationStack deserializedApplicationStack = new ApplicationStack();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplicationStack.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedApplicationStack.display = reader.getString();
+                } else if ("dependency".equals(fieldName)) {
+                    deserializedApplicationStack.dependency = reader.getString();
+                } else if ("majorVersions".equals(fieldName)) {
+                    List<StackMajorVersion> majorVersions
+                        = reader.readArray(reader1 -> StackMajorVersion.fromJson(reader1));
+                    deserializedApplicationStack.majorVersions = majorVersions;
+                } else if ("frameworks".equals(fieldName)) {
+                    List<ApplicationStack> frameworks = reader.readArray(reader1 -> ApplicationStack.fromJson(reader1));
+                    deserializedApplicationStack.frameworks = frameworks;
+                } else if ("isDeprecated".equals(fieldName)) {
+                    List<ApplicationStack> isDeprecated
+                        = reader.readArray(reader1 -> ApplicationStack.fromJson(reader1));
+                    deserializedApplicationStack.isDeprecated = isDeprecated;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationStack;
+        });
     }
 }

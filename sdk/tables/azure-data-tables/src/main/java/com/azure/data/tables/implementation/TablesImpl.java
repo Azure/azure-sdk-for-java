@@ -20,7 +20,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -28,12 +28,13 @@ import com.azure.core.util.FluxUtil;
 import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
-import com.azure.data.tables.implementation.models.SignedIdentifier;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponse;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
+import com.azure.data.tables.implementation.models.TableServiceJsonErrorException;
+import com.azure.data.tables.implementation.models.TableSignedIdentifierWrapper;
 import com.azure.data.tables.implementation.models.TablesCreateHeaders;
 import com.azure.data.tables.implementation.models.TablesDeleteEntityHeaders;
 import com.azure.data.tables.implementation.models.TablesDeleteHeaders;
@@ -45,21 +46,28 @@ import com.azure.data.tables.implementation.models.TablesQueryEntityWithPartitio
 import com.azure.data.tables.implementation.models.TablesQueryHeaders;
 import com.azure.data.tables.implementation.models.TablesSetAccessPolicyHeaders;
 import com.azure.data.tables.implementation.models.TablesUpdateEntityHeaders;
+import com.azure.data.tables.models.TableSignedIdentifier;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Tables. */
+/**
+ * An instance of this class provides access to all the operations defined in Tables.
+ */
 public final class TablesImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TablesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureTableImpl client;
 
     /**
      * Initializes an instance of TablesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TablesImpl(AzureTableImpl client) {
@@ -75,427 +83,512 @@ public final class TablesImpl {
     @ServiceInterface(name = "AzureTableTables")
     public interface TablesService {
         @Get("/Tables")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<TablesQueryHeaders, TableQueryResponse>> query(
-                @HostParam("url") String url,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @QueryParam("$top") Integer top,
-                @QueryParam("$select") String select,
-                @QueryParam("$filter") String filter,
-                @QueryParam("NextTableName") String nextTableName,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<ResponseBase<TablesQueryHeaders, TableQueryResponse>> query(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$top") Integer top,
+            @QueryParam("$select") String select, @QueryParam("$filter") String filter,
+            @QueryParam("NextTableName") String nextTableName, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/Tables")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<TablesQueryHeaders, TableQueryResponse> querySync(
-                @HostParam("url") String url,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @QueryParam("$top") Integer top,
-                @QueryParam("$select") String select,
-                @QueryParam("$filter") String filter,
-                @QueryParam("NextTableName") String nextTableName,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<Response<TableQueryResponse>> queryNoCustomHeaders(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$top") Integer top,
+            @QueryParam("$select") String select, @QueryParam("$filter") String filter,
+            @QueryParam("NextTableName") String nextTableName, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/Tables")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        ResponseBase<TablesQueryHeaders, TableQueryResponse> querySync(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$top") Integer top,
+            @QueryParam("$select") String select, @QueryParam("$filter") String filter,
+            @QueryParam("NextTableName") String nextTableName, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/Tables")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Response<TableQueryResponse> queryNoCustomHeadersSync(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$top") Integer top,
+            @QueryParam("$select") String select, @QueryParam("$filter") String filter,
+            @QueryParam("NextTableName") String nextTableName, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/Tables")
-        @ExpectedResponses({201, 204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ResponseBase<TablesCreateHeaders, TableResponse>> create(
-                @HostParam("url") String url,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @HeaderParam("Prefer") ResponseFormat responsePreference,
-                @BodyParam("application/json;odata=nometadata") TableProperties tableProperties,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 201, 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<ResponseBase<TablesCreateHeaders, TableResponse>> create(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @HeaderParam("Prefer") ResponseFormat responsePreference,
+            @BodyParam("application/json;odata=nometadata") TableProperties tableProperties,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/Tables")
-        @ExpectedResponses({201, 204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        ResponseBase<TablesCreateHeaders, TableResponse> createSync(
-                @HostParam("url") String url,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @HeaderParam("Prefer") ResponseFormat responsePreference,
-                @BodyParam("application/json;odata=nometadata") TableProperties tableProperties,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 201, 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<Response<TableResponse>> createNoCustomHeaders(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @HeaderParam("Prefer") ResponseFormat responsePreference,
+            @BodyParam("application/json;odata=nometadata") TableProperties tableProperties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/Tables")
+        @ExpectedResponses({ 201, 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        ResponseBase<TablesCreateHeaders, TableResponse> createSync(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @HeaderParam("Prefer") ResponseFormat responsePreference,
+            @BodyParam("application/json;odata=nometadata") TableProperties tableProperties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/Tables")
+        @ExpectedResponses({ 201, 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Response<TableResponse> createNoCustomHeadersSync(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @HeaderParam("Prefer") ResponseFormat responsePreference,
+            @BodyParam("application/json;odata=nometadata") TableProperties tableProperties,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/Tables('{table}')")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ResponseBase<TablesDeleteHeaders, Void>> delete(
-                @HostParam("url") String url,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @PathParam("table") String table,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<ResponseBase<TablesDeleteHeaders, Void>> delete(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @PathParam("table") String table, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/Tables('{table}')")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        ResponseBase<TablesDeleteHeaders, Void> deleteSync(
-                @HostParam("url") String url,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @PathParam("table") String table,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<Response<Void>> deleteNoCustomHeaders(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @PathParam("table") String table, @HeaderParam("Accept") String accept, Context context);
+
+        @Delete("/Tables('{table}')")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        ResponseBase<TablesDeleteHeaders, Void> deleteSync(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @PathParam("table") String table, @HeaderParam("Accept") String accept, Context context);
+
+        @Delete("/Tables('{table}')")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Response<Void> deleteNoCustomHeadersSync(@HostParam("url") String url,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @PathParam("table") String table, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{table}()")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse>> queryEntities(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @QueryParam("$top") Integer top,
-                @QueryParam("$select") String select,
-                @QueryParam("$filter") String filter,
-                @PathParam("table") String table,
-                @QueryParam("NextPartitionKey") String nextPartitionKey,
-                @QueryParam("NextRowKey") String nextRowKey,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("url") String url, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$top") Integer top,
+            @QueryParam("$select") String select, @QueryParam("$filter") String filter,
+            @PathParam("table") String table, @QueryParam("NextPartitionKey") String nextPartitionKey,
+            @QueryParam("NextRowKey") String nextRowKey, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{table}()")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<Response<TableEntityQueryResponse>> queryEntitiesNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$top") Integer top,
+            @QueryParam("$select") String select, @QueryParam("$filter") String filter,
+            @PathParam("table") String table, @QueryParam("NextPartitionKey") String nextPartitionKey,
+            @QueryParam("NextRowKey") String nextRowKey, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{table}()")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse> queryEntitiesSync(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @QueryParam("$top") Integer top,
-                @QueryParam("$select") String select,
-                @QueryParam("$filter") String filter,
-                @PathParam("table") String table,
-                @QueryParam("NextPartitionKey") String nextPartitionKey,
-                @QueryParam("NextRowKey") String nextRowKey,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("url") String url, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$top") Integer top,
+            @QueryParam("$select") String select, @QueryParam("$filter") String filter,
+            @PathParam("table") String table, @QueryParam("NextPartitionKey") String nextPartitionKey,
+            @QueryParam("NextRowKey") String nextRowKey, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{table}()")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Response<TableEntityQueryResponse> queryEntitiesNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$top") Integer top,
+            @QueryParam("$select") String select, @QueryParam("$filter") String filter,
+            @PathParam("table") String table, @QueryParam("NextPartitionKey") String nextPartitionKey,
+            @QueryParam("NextRowKey") String nextRowKey, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>>>
-                queryEntityWithPartitionAndRowKey(
-                        @HostParam("url") String url,
-                        @QueryParam("timeout") Integer timeout,
-                        @HeaderParam("x-ms-version") String version,
-                        @HeaderParam("x-ms-client-request-id") String requestId,
-                        @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                        @QueryParam("$format") OdataMetadataFormat format,
-                        @QueryParam("$select") String select,
-                        @QueryParam("$filter") String filter,
-                        @PathParam("table") String table,
-                        @PathParam("partitionKey") String partitionKey,
-                        @PathParam("rowKey") String rowKey,
-                        @HeaderParam("Accept") String accept,
-                        Context context);
+            queryEntityWithPartitionAndRowKey(@HostParam("url") String url, @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("DataServiceVersion") String dataServiceVersion,
+                @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$select") String select,
+                @QueryParam("$filter") String filter, @PathParam("table") String table,
+                @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+                @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<Response<Map<String, Object>>> queryEntityWithPartitionAndRowKeyNoCustomHeaders(
+            @HostParam("url") String url, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$select") String select,
+            @QueryParam("$filter") String filter, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>>
-                queryEntityWithPartitionAndRowKeySync(
-                        @HostParam("url") String url,
-                        @QueryParam("timeout") Integer timeout,
-                        @HeaderParam("x-ms-version") String version,
-                        @HeaderParam("x-ms-client-request-id") String requestId,
-                        @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                        @QueryParam("$format") OdataMetadataFormat format,
-                        @QueryParam("$select") String select,
-                        @QueryParam("$filter") String filter,
-                        @PathParam("table") String table,
-                        @PathParam("partitionKey") String partitionKey,
-                        @PathParam("rowKey") String rowKey,
-                        @HeaderParam("Accept") String accept,
-                        Context context);
+            queryEntityWithPartitionAndRowKeySync(@HostParam("url") String url, @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("DataServiceVersion") String dataServiceVersion,
+                @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$select") String select,
+                @QueryParam("$filter") String filter, @PathParam("table") String table,
+                @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+                @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Response<Map<String, Object>> queryEntityWithPartitionAndRowKeyNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @QueryParam("$select") String select,
+            @QueryParam("$filter") String filter, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ResponseBase<TablesUpdateEntityHeaders, Void>> updateEntity(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @PathParam("table") String table,
-                @PathParam("partitionKey") String partitionKey,
-                @PathParam("rowKey") String rowKey,
-                @HeaderParam("If-Match") String ifMatch,
-                @BodyParam("application/json") Map<String, Object> tableEntityProperties,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<ResponseBase<TablesUpdateEntityHeaders, Void>> updateEntity(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        ResponseBase<TablesUpdateEntityHeaders, Void> updateEntitySync(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @PathParam("table") String table,
-                @PathParam("partitionKey") String partitionKey,
-                @PathParam("rowKey") String rowKey,
-                @HeaderParam("If-Match") String ifMatch,
-                @BodyParam("application/json") Map<String, Object> tableEntityProperties,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<Response<Void>> updateEntityNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        ResponseBase<TablesUpdateEntityHeaders, Void> updateEntitySync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Response<Void> updateEntityNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ResponseBase<TablesMergeEntityHeaders, Void>> mergeEntity(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @PathParam("table") String table,
-                @PathParam("partitionKey") String partitionKey,
-                @PathParam("rowKey") String rowKey,
-                @HeaderParam("If-Match") String ifMatch,
-                @BodyParam("application/json") Map<String, Object> tableEntityProperties,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<ResponseBase<TablesMergeEntityHeaders, Void>> mergeEntity(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        ResponseBase<TablesMergeEntityHeaders, Void> mergeEntitySync(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @PathParam("table") String table,
-                @PathParam("partitionKey") String partitionKey,
-                @PathParam("rowKey") String rowKey,
-                @HeaderParam("If-Match") String ifMatch,
-                @BodyParam("application/json") Map<String, Object> tableEntityProperties,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<Response<Void>> mergeEntityNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        ResponseBase<TablesMergeEntityHeaders, Void> mergeEntitySync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Response<Void> mergeEntityNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ResponseBase<TablesDeleteEntityHeaders, Void>> deleteEntity(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @PathParam("table") String table,
-                @PathParam("partitionKey") String partitionKey,
-                @PathParam("rowKey") String rowKey,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<ResponseBase<TablesDeleteEntityHeaders, Void>> deleteEntity(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        ResponseBase<TablesDeleteEntityHeaders, Void> deleteEntitySync(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @PathParam("table") String table,
-                @PathParam("partitionKey") String partitionKey,
-                @PathParam("rowKey") String rowKey,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<Response<Void>> deleteEntityNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept, Context context);
+
+        @Delete("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        ResponseBase<TablesDeleteEntityHeaders, Void> deleteEntitySync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept, Context context);
+
+        @Delete("/{table}(PartitionKey='{partitionKey}',RowKey='{rowKey}')")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Response<Void> deleteEntityNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @PathParam("partitionKey") String partitionKey, @PathParam("rowKey") String rowKey,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/{table}")
-        @ExpectedResponses({201, 204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ResponseBase<TablesInsertEntityHeaders, Map<String, Object>>> insertEntity(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @PathParam("table") String table,
-                @HeaderParam("Prefer") ResponseFormat responsePreference,
-                @BodyParam("application/json;odata=nometadata") Map<String, Object> tableEntityProperties,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 201, 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<ResponseBase<TablesInsertEntityHeaders, Map<String, Object>>> insertEntity(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @HeaderParam("Prefer") ResponseFormat responsePreference,
+            @BodyParam("application/json;odata=nometadata") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/{table}")
-        @ExpectedResponses({201, 204})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        ResponseBase<TablesInsertEntityHeaders, Map<String, Object>> insertEntitySync(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("DataServiceVersion") String dataServiceVersion,
-                @QueryParam("$format") OdataMetadataFormat format,
-                @PathParam("table") String table,
-                @HeaderParam("Prefer") ResponseFormat responsePreference,
-                @BodyParam("application/json;odata=nometadata") Map<String, Object> tableEntityProperties,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        @ExpectedResponses({ 201, 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Mono<Response<Map<String, Object>>> insertEntityNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @HeaderParam("Prefer") ResponseFormat responsePreference,
+            @BodyParam("application/json;odata=nometadata") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/{table}")
+        @ExpectedResponses({ 201, 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        ResponseBase<TablesInsertEntityHeaders, Map<String, Object>> insertEntitySync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @HeaderParam("Prefer") ResponseFormat responsePreference,
+            @BodyParam("application/json;odata=nometadata") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/{table}")
+        @ExpectedResponses({ 201, 204 })
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
+        Response<Map<String, Object>> insertEntityNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @QueryParam("$format") OdataMetadataFormat format, @PathParam("table") String table,
+            @HeaderParam("Prefer") ResponseFormat responsePreference,
+            @BodyParam("application/json;odata=nometadata") Map<String, Object> tableEntityProperties,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{table}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>>> getAccessPolicy(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @PathParam("table") String table,
-                @QueryParam("comp") String comp,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<TablesGetAccessPolicyHeaders, TableSignedIdentifierWrapper>> getAccessPolicy(
+            @HostParam("url") String url, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @PathParam("table") String table, @QueryParam("comp") String comp, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{table}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>> getAccessPolicySync(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @PathParam("table") String table,
-                @QueryParam("comp") String comp,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<TableSignedIdentifierWrapper>> getAccessPolicyNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @PathParam("table") String table,
+            @QueryParam("comp") String comp, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{table}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        ResponseBase<TablesGetAccessPolicyHeaders, TableSignedIdentifierWrapper> getAccessPolicySync(
+            @HostParam("url") String url, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @PathParam("table") String table, @QueryParam("comp") String comp, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Get("/{table}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        Response<TableSignedIdentifierWrapper> getAccessPolicyNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @PathParam("table") String table,
+            @QueryParam("comp") String comp, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{table}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ResponseBase<TablesSetAccessPolicyHeaders, Void>> setAccessPolicy(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @PathParam("table") String table,
-                @QueryParam("comp") String comp,
-                @BodyParam("application/xml") SignedIdentifiersWrapper tableAcl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<TablesSetAccessPolicyHeaders, Void>> setAccessPolicy(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @PathParam("table") String table,
+            @QueryParam("comp") String comp, @BodyParam("application/xml") TableSignedIdentifierWrapper tableAcl,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{table}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        ResponseBase<TablesSetAccessPolicyHeaders, Void> setAccessPolicySync(
-                @HostParam("url") String url,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @PathParam("table") String table,
-                @QueryParam("comp") String comp,
-                @BodyParam("application/xml") SignedIdentifiersWrapper tableAcl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> setAccessPolicyNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @PathParam("table") String table,
+            @QueryParam("comp") String comp, @BodyParam("application/xml") TableSignedIdentifierWrapper tableAcl,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/{table}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        ResponseBase<TablesSetAccessPolicyHeaders, Void> setAccessPolicySync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @PathParam("table") String table,
+            @QueryParam("comp") String comp, @BodyParam("application/xml") TableSignedIdentifierWrapper tableAcl,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/{table}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        Response<Void> setAccessPolicyNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @PathParam("table") String table,
+            @QueryParam("comp") String comp, @BodyParam("application/xml") TableSignedIdentifierWrapper tableAcl,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Queries tables under the given account.
-     *
+     * 
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param nextTableName A table query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table query response along with {@link ResponseBase} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesQueryHeaders, TableQueryResponse>> queryWithResponseAsync(
-            String requestId, String nextTableName, QueryOptions queryOptions) {
-        final String dataServiceVersion = "3.0";
-        final String accept = "application/json;odata=minimalmetadata";
-        OdataMetadataFormat formatInternal = null;
-        if (queryOptions != null) {
-            formatInternal = queryOptions.getFormat();
-        }
-        OdataMetadataFormat format = formatInternal;
-        Integer topInternal = null;
-        if (queryOptions != null) {
-            topInternal = queryOptions.getTop();
-        }
-        Integer top = topInternal;
-        String selectInternal = null;
-        if (queryOptions != null) {
-            selectInternal = queryOptions.getSelect();
-        }
-        String select = selectInternal;
-        String filterInternal = null;
-        if (queryOptions != null) {
-            filterInternal = queryOptions.getFilter();
-        }
-        String filter = filterInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.query(
-                                this.client.getUrl(),
-                                this.client.getVersion(),
-                                requestId,
-                                dataServiceVersion,
-                                format,
-                                top,
-                                select,
-                                filter,
-                                nextTableName,
-                                accept,
-                                context));
+    public Mono<ResponseBase<TablesQueryHeaders, TableQueryResponse>> queryWithResponseAsync(String requestId,
+        String nextTableName, QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> queryWithResponseAsync(requestId, nextTableName, queryOptions, context));
     }
 
     /**
      * Queries tables under the given account.
-     *
+     * 
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param nextTableName A table query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table query response along with {@link ResponseBase} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesQueryHeaders, TableQueryResponse>> queryWithResponseAsync(
-            String requestId, String nextTableName, QueryOptions queryOptions, Context context) {
+    public Mono<ResponseBase<TablesQueryHeaders, TableQueryResponse>> queryWithResponseAsync(String requestId,
+        String nextTableName, QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -518,74 +611,85 @@ public final class TablesImpl {
             filterInternal = queryOptions.getFilter();
         }
         String filter = filterInternal;
-        return service.query(
-                this.client.getUrl(),
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                top,
-                select,
-                filter,
-                nextTableName,
-                accept,
-                context);
+        return service.query(this.client.getUrl(), this.client.getVersion(), requestId, dataServiceVersion, format, top,
+            select, filter, nextTableName, accept, context);
     }
 
     /**
      * Queries tables under the given account.
-     *
+     * 
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param nextTableName A table query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table query response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableQueryResponse> queryAsync(String requestId, String nextTableName, QueryOptions queryOptions) {
         return queryWithResponseAsync(requestId, nextTableName, queryOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Queries tables under the given account.
-     *
+     * 
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param nextTableName A table query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table query response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableQueryResponse> queryAsync(
-            String requestId, String nextTableName, QueryOptions queryOptions, Context context) {
+    public Mono<TableQueryResponse> queryAsync(String requestId, String nextTableName, QueryOptions queryOptions,
+        Context context) {
         return queryWithResponseAsync(requestId, nextTableName, queryOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Queries tables under the given account.
-     *
+     * 
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param nextTableName A table query continuation token from a previous call.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties for the table query response along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableQueryResponse>> queryNoCustomHeadersWithResponseAsync(String requestId,
+        String nextTableName, QueryOptions queryOptions) {
+        return FluxUtil.withContext(
+            context -> queryNoCustomHeadersWithResponseAsync(requestId, nextTableName, queryOptions, context));
+    }
+
+    /**
+     * Queries tables under the given account.
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param nextTableName A table query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties for the table query response along with {@link ResponseBase}.
+     * @return the properties for the table query response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TablesQueryHeaders, TableQueryResponse> queryWithResponse(
-            String requestId, String nextTableName, QueryOptions queryOptions, Context context) {
+    public Mono<Response<TableQueryResponse>> queryNoCustomHeadersWithResponseAsync(String requestId,
+        String nextTableName, QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -608,29 +712,61 @@ public final class TablesImpl {
             filterInternal = queryOptions.getFilter();
         }
         String filter = filterInternal;
-        return service.querySync(
-                this.client.getUrl(),
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                top,
-                select,
-                filter,
-                nextTableName,
-                accept,
-                context);
+        return service.queryNoCustomHeaders(this.client.getUrl(), this.client.getVersion(), requestId,
+            dataServiceVersion, format, top, select, filter, nextTableName, accept, context);
     }
 
     /**
      * Queries tables under the given account.
-     *
+     * 
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param nextTableName A table query continuation token from a previous call.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties for the table query response along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<TablesQueryHeaders, TableQueryResponse> queryWithResponse(String requestId,
+        String nextTableName, QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        Integer topInternal = null;
+        if (queryOptions != null) {
+            topInternal = queryOptions.getTop();
+        }
+        Integer top = topInternal;
+        String selectInternal = null;
+        if (queryOptions != null) {
+            selectInternal = queryOptions.getSelect();
+        }
+        String select = selectInternal;
+        String filterInternal = null;
+        if (queryOptions != null) {
+            filterInternal = queryOptions.getFilter();
+        }
+        String filter = filterInternal;
+        return service.querySync(this.client.getUrl(), this.client.getVersion(), requestId, dataServiceVersion, format,
+            top, select, filter, nextTableName, accept, context);
+    }
+
+    /**
+     * Queries tables under the given account.
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param nextTableName A table query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table query response.
      */
@@ -640,25 +776,21 @@ public final class TablesImpl {
     }
 
     /**
-     * Creates a new table under the given account.
-     *
-     * @param tableProperties The Table properties.
+     * Queries tables under the given account.
+     * 
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
+     * analytics logs when analytics logging is enabled.
+     * @param nextTableName A table query continuation token from a previous call.
      * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response for a single table along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the properties for the table query response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesCreateHeaders, TableResponse>> createWithResponseAsync(
-            TableProperties tableProperties,
-            String requestId,
-            ResponseFormat responsePreference,
-            QueryOptions queryOptions) {
+    public Response<TableQueryResponse> queryNoCustomHeadersWithResponse(String requestId, String nextTableName,
+        QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -666,42 +798,66 @@ public final class TablesImpl {
             formatInternal = queryOptions.getFormat();
         }
         OdataMetadataFormat format = formatInternal;
+        Integer topInternal = null;
+        if (queryOptions != null) {
+            topInternal = queryOptions.getTop();
+        }
+        Integer top = topInternal;
+        String selectInternal = null;
+        if (queryOptions != null) {
+            selectInternal = queryOptions.getSelect();
+        }
+        String select = selectInternal;
+        String filterInternal = null;
+        if (queryOptions != null) {
+            filterInternal = queryOptions.getFilter();
+        }
+        String filter = filterInternal;
+        return service.queryNoCustomHeadersSync(this.client.getUrl(), this.client.getVersion(), requestId,
+            dataServiceVersion, format, top, select, filter, nextTableName, accept, context);
+    }
+
+    /**
+     * Creates a new table under the given account.
+     * 
+     * @param tableProperties The Table properties.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
+     * Possible values are return-no-content and return-content.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a single table along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TablesCreateHeaders, TableResponse>> createWithResponseAsync(
+        TableProperties tableProperties, String requestId, ResponseFormat responsePreference,
+        QueryOptions queryOptions) {
         return FluxUtil.withContext(
-                context ->
-                        service.create(
-                                this.client.getUrl(),
-                                this.client.getVersion(),
-                                requestId,
-                                dataServiceVersion,
-                                format,
-                                responsePreference,
-                                tableProperties,
-                                accept,
-                                context));
+            context -> createWithResponseAsync(tableProperties, requestId, responsePreference, queryOptions, context));
     }
 
     /**
      * Creates a new table under the given account.
-     *
+     * 
      * @param tableProperties The Table properties.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
+     * Possible values are return-no-content and return-content.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a single table along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<TablesCreateHeaders, TableResponse>> createWithResponseAsync(
-            TableProperties tableProperties,
-            String requestId,
-            ResponseFormat responsePreference,
-            QueryOptions queryOptions,
-            Context context) {
+        TableProperties tableProperties, String requestId, ResponseFormat responsePreference, QueryOptions queryOptions,
+        Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -709,90 +865,121 @@ public final class TablesImpl {
             formatInternal = queryOptions.getFormat();
         }
         OdataMetadataFormat format = formatInternal;
-        return service.create(
-                this.client.getUrl(),
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                responsePreference,
-                tableProperties,
-                accept,
-                context);
+        return service.create(this.client.getUrl(), this.client.getVersion(), requestId, dataServiceVersion, format,
+            responsePreference, tableProperties, accept, context);
     }
 
     /**
      * Creates a new table under the given account.
-     *
+     * 
      * @param tableProperties The Table properties.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
+     * Possible values are return-no-content and return-content.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a single table on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableResponse> createAsync(
-            TableProperties tableProperties,
-            String requestId,
-            ResponseFormat responsePreference,
-            QueryOptions queryOptions) {
+    public Mono<TableResponse> createAsync(TableProperties tableProperties, String requestId,
+        ResponseFormat responsePreference, QueryOptions queryOptions) {
         return createWithResponseAsync(tableProperties, requestId, responsePreference, queryOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new table under the given account.
-     *
+     * 
      * @param tableProperties The Table properties.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
+     * Possible values are return-no-content and return-content.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a single table on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableResponse> createAsync(
-            TableProperties tableProperties,
-            String requestId,
-            ResponseFormat responsePreference,
-            QueryOptions queryOptions,
-            Context context) {
+    public Mono<TableResponse> createAsync(TableProperties tableProperties, String requestId,
+        ResponseFormat responsePreference, QueryOptions queryOptions, Context context) {
         return createWithResponseAsync(tableProperties, requestId, responsePreference, queryOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new table under the given account.
-     *
+     * 
      * @param tableProperties The Table properties.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
+     * Possible values are return-no-content and return-content.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a single table along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableResponse>> createNoCustomHeadersWithResponseAsync(TableProperties tableProperties,
+        String requestId, ResponseFormat responsePreference, QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> createNoCustomHeadersWithResponseAsync(tableProperties, requestId,
+            responsePreference, queryOptions, context));
+    }
+
+    /**
+     * Creates a new table under the given account.
+     * 
+     * @param tableProperties The Table properties.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
+     * Possible values are return-no-content and return-content.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a single table along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableResponse>> createNoCustomHeadersWithResponseAsync(TableProperties tableProperties,
+        String requestId, ResponseFormat responsePreference, QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.createNoCustomHeaders(this.client.getUrl(), this.client.getVersion(), requestId,
+            dataServiceVersion, format, responsePreference, tableProperties, accept, context);
+    }
+
+    /**
+     * Creates a new table under the given account.
+     * 
+     * @param tableProperties The Table properties.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
+     * Possible values are return-no-content and return-content.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a single table along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TablesCreateHeaders, TableResponse> createWithResponse(
-            TableProperties tableProperties,
-            String requestId,
-            ResponseFormat responsePreference,
-            QueryOptions queryOptions,
-            Context context) {
+    public ResponseBase<TablesCreateHeaders, TableResponse> createWithResponse(TableProperties tableProperties,
+        String requestId, ResponseFormat responsePreference, QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -800,89 +987,103 @@ public final class TablesImpl {
             formatInternal = queryOptions.getFormat();
         }
         OdataMetadataFormat format = formatInternal;
-        return service.createSync(
-                this.client.getUrl(),
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                responsePreference,
-                tableProperties,
-                accept,
-                context);
+        return service.createSync(this.client.getUrl(), this.client.getVersion(), requestId, dataServiceVersion, format,
+            responsePreference, tableProperties, accept, context);
     }
 
     /**
      * Creates a new table under the given account.
-     *
+     * 
      * @param tableProperties The Table properties.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
+     * Possible values are return-no-content and return-content.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response for a single table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableResponse create(
-            TableProperties tableProperties,
-            String requestId,
-            ResponseFormat responsePreference,
-            QueryOptions queryOptions) {
+    public TableResponse create(TableProperties tableProperties, String requestId, ResponseFormat responsePreference,
+        QueryOptions queryOptions) {
         return createWithResponse(tableProperties, requestId, responsePreference, queryOptions, Context.NONE)
-                .getValue();
+            .getValue();
+    }
+
+    /**
+     * Creates a new table under the given account.
+     * 
+     * @param tableProperties The Table properties.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
+     * Possible values are return-no-content and return-content.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a single table along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableResponse> createNoCustomHeadersWithResponse(TableProperties tableProperties, String requestId,
+        ResponseFormat responsePreference, QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.createNoCustomHeadersSync(this.client.getUrl(), this.client.getVersion(), requestId,
+            dataServiceVersion, format, responsePreference, tableProperties, accept, context);
     }
 
     /**
      * Operation permanently deletes the specified table.
-     *
+     * 
      * @param table The name of the table.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<TablesDeleteHeaders, Void>> deleteWithResponseAsync(String table, String requestId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getUrl(), this.client.getVersion(), requestId, table, accept, context));
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(table, requestId, context));
     }
 
     /**
      * Operation permanently deletes the specified table.
-     *
+     * 
      * @param table The name of the table.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesDeleteHeaders, Void>> deleteWithResponseAsync(
-            String table, String requestId, Context context) {
+    public Mono<ResponseBase<TablesDeleteHeaders, Void>> deleteWithResponseAsync(String table, String requestId,
+        Context context) {
         final String accept = "application/json";
         return service.delete(this.client.getUrl(), this.client.getVersion(), requestId, table, accept, context);
     }
 
     /**
      * Operation permanently deletes the specified table.
-     *
+     * 
      * @param table The name of the table.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -893,13 +1094,13 @@ public final class TablesImpl {
 
     /**
      * Operation permanently deletes the specified table.
-     *
+     * 
      * @param table The name of the table.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -910,13 +1111,49 @@ public final class TablesImpl {
 
     /**
      * Operation permanently deletes the specified table.
-     *
+     * 
      * @param table The name of the table.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(String table, String requestId) {
+        return FluxUtil.withContext(context -> deleteNoCustomHeadersWithResponseAsync(table, requestId, context));
+    }
+
+    /**
+     * Operation permanently deletes the specified table.
+     * 
+     * @param table The name of the table.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(String table, String requestId,
+        Context context) {
+        final String accept = "application/json";
+        return service.deleteNoCustomHeaders(this.client.getUrl(), this.client.getVersion(), requestId, table, accept,
+            context);
+    }
+
+    /**
+     * Operation permanently deletes the specified table.
+     * 
+     * @param table The name of the table.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase}.
      */
@@ -928,12 +1165,12 @@ public final class TablesImpl {
 
     /**
      * Operation permanently deletes the specified table.
-     *
+     * 
      * @param table The name of the table.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -942,96 +1179,69 @@ public final class TablesImpl {
     }
 
     /**
-     * Queries entities in a table.
-     *
+     * Operation permanently deletes the specified table.
+     * 
      * @param table The name of the table.
-     * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param nextPartitionKey An entity query continuation token from a previous call.
-     * @param nextRowKey An entity query continuation token from a previous call.
-     * @param queryOptions Parameter group.
+     * analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties for the table entity query response along with {@link ResponseBase} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse>> queryEntitiesWithResponseAsync(
-            String table,
-            Integer timeout,
-            String requestId,
-            String nextPartitionKey,
-            String nextRowKey,
-            QueryOptions queryOptions) {
-        final String dataServiceVersion = "3.0";
-        final String accept = "application/json;odata=minimalmetadata";
-        OdataMetadataFormat formatInternal = null;
-        if (queryOptions != null) {
-            formatInternal = queryOptions.getFormat();
-        }
-        OdataMetadataFormat format = formatInternal;
-        Integer topInternal = null;
-        if (queryOptions != null) {
-            topInternal = queryOptions.getTop();
-        }
-        Integer top = topInternal;
-        String selectInternal = null;
-        if (queryOptions != null) {
-            selectInternal = queryOptions.getSelect();
-        }
-        String select = selectInternal;
-        String filterInternal = null;
-        if (queryOptions != null) {
-            filterInternal = queryOptions.getFilter();
-        }
-        String filter = filterInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.queryEntities(
-                                this.client.getUrl(),
-                                timeout,
-                                this.client.getVersion(),
-                                requestId,
-                                dataServiceVersion,
-                                format,
-                                top,
-                                select,
-                                filter,
-                                table,
-                                nextPartitionKey,
-                                nextRowKey,
-                                accept,
-                                context));
+    public Response<Void> deleteNoCustomHeadersWithResponse(String table, String requestId, Context context) {
+        final String accept = "application/json";
+        return service.deleteNoCustomHeadersSync(this.client.getUrl(), this.client.getVersion(), requestId, table,
+            accept, context);
     }
 
     /**
      * Queries entities in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param nextPartitionKey An entity query continuation token from a previous call.
+     * @param nextRowKey An entity query continuation token from a previous call.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties for the table entity query response along with {@link ResponseBase} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse>> queryEntitiesWithResponseAsync(
+        String table, Integer timeout, String requestId, String nextPartitionKey, String nextRowKey,
+        QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> queryEntitiesWithResponseAsync(table, timeout, requestId,
+            nextPartitionKey, nextRowKey, queryOptions, context));
+    }
+
+    /**
+     * Queries entities in a table.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param nextPartitionKey An entity query continuation token from a previous call.
      * @param nextRowKey An entity query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table entity query response along with {@link ResponseBase} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse>> queryEntitiesWithResponseAsync(
-            String table,
-            Integer timeout,
-            String requestId,
-            String nextPartitionKey,
-            String nextRowKey,
-            QueryOptions queryOptions,
-            Context context) {
+        String table, Integer timeout, String requestId, String nextPartitionKey, String nextRowKey,
+        QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -1054,105 +1264,145 @@ public final class TablesImpl {
             filterInternal = queryOptions.getFilter();
         }
         String filter = filterInternal;
-        return service.queryEntities(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                top,
-                select,
-                filter,
-                table,
-                nextPartitionKey,
-                nextRowKey,
-                accept,
-                context);
+        return service.queryEntities(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, top, select, filter, table, nextPartitionKey, nextRowKey, accept, context);
     }
 
     /**
      * Queries entities in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param nextPartitionKey An entity query continuation token from a previous call.
      * @param nextRowKey An entity query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table entity query response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableEntityQueryResponse> queryEntitiesAsync(
-            String table,
-            Integer timeout,
-            String requestId,
-            String nextPartitionKey,
-            String nextRowKey,
-            QueryOptions queryOptions) {
+    public Mono<TableEntityQueryResponse> queryEntitiesAsync(String table, Integer timeout, String requestId,
+        String nextPartitionKey, String nextRowKey, QueryOptions queryOptions) {
         return queryEntitiesWithResponseAsync(table, timeout, requestId, nextPartitionKey, nextRowKey, queryOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Queries entities in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param nextPartitionKey An entity query continuation token from a previous call.
      * @param nextRowKey An entity query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table entity query response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableEntityQueryResponse> queryEntitiesAsync(
-            String table,
-            Integer timeout,
-            String requestId,
-            String nextPartitionKey,
-            String nextRowKey,
-            QueryOptions queryOptions,
-            Context context) {
-        return queryEntitiesWithResponseAsync(
-                        table, timeout, requestId, nextPartitionKey, nextRowKey, queryOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<TableEntityQueryResponse> queryEntitiesAsync(String table, Integer timeout, String requestId,
+        String nextPartitionKey, String nextRowKey, QueryOptions queryOptions, Context context) {
+        return queryEntitiesWithResponseAsync(table, timeout, requestId, nextPartitionKey, nextRowKey, queryOptions,
+            context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Queries entities in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param nextPartitionKey An entity query continuation token from a previous call.
+     * @param nextRowKey An entity query continuation token from a previous call.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties for the table entity query response along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableEntityQueryResponse>> queryEntitiesNoCustomHeadersWithResponseAsync(String table,
+        Integer timeout, String requestId, String nextPartitionKey, String nextRowKey, QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> queryEntitiesNoCustomHeadersWithResponseAsync(table, timeout, requestId,
+            nextPartitionKey, nextRowKey, queryOptions, context));
+    }
+
+    /**
+     * Queries entities in a table.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param nextPartitionKey An entity query continuation token from a previous call.
      * @param nextRowKey An entity query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties for the table entity query response along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableEntityQueryResponse>> queryEntitiesNoCustomHeadersWithResponseAsync(String table,
+        Integer timeout, String requestId, String nextPartitionKey, String nextRowKey, QueryOptions queryOptions,
+        Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        Integer topInternal = null;
+        if (queryOptions != null) {
+            topInternal = queryOptions.getTop();
+        }
+        Integer top = topInternal;
+        String selectInternal = null;
+        if (queryOptions != null) {
+            selectInternal = queryOptions.getSelect();
+        }
+        String select = selectInternal;
+        String filterInternal = null;
+        if (queryOptions != null) {
+            filterInternal = queryOptions.getFilter();
+        }
+        String filter = filterInternal;
+        return service.queryEntitiesNoCustomHeaders(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, top, select, filter, table, nextPartitionKey, nextRowKey, accept, context);
+    }
+
+    /**
+     * Queries entities in a table.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param nextPartitionKey An entity query continuation token from a previous call.
+     * @param nextRowKey An entity query continuation token from a previous call.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table entity query response along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse> queryEntitiesWithResponse(
-            String table,
-            Integer timeout,
-            String requestId,
-            String nextPartitionKey,
-            String nextRowKey,
-            QueryOptions queryOptions,
-            Context context) {
+    public ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse> queryEntitiesWithResponse(String table,
+        Integer timeout, String requestId, String nextPartitionKey, String nextRowKey, QueryOptions queryOptions,
+        Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -1175,76 +1425,123 @@ public final class TablesImpl {
             filterInternal = queryOptions.getFilter();
         }
         String filter = filterInternal;
-        return service.queryEntitiesSync(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                top,
-                select,
-                filter,
-                table,
-                nextPartitionKey,
-                nextRowKey,
-                accept,
-                context);
+        return service.queryEntitiesSync(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, top, select, filter, table, nextPartitionKey, nextRowKey, accept, context);
     }
 
     /**
      * Queries entities in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param nextPartitionKey An entity query continuation token from a previous call.
      * @param nextRowKey An entity query continuation token from a previous call.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties for the table entity query response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableEntityQueryResponse queryEntities(
-            String table,
-            Integer timeout,
-            String requestId,
-            String nextPartitionKey,
-            String nextRowKey,
-            QueryOptions queryOptions) {
-        return queryEntitiesWithResponse(
-                        table, timeout, requestId, nextPartitionKey, nextRowKey, queryOptions, Context.NONE)
-                .getValue();
+    public TableEntityQueryResponse queryEntities(String table, Integer timeout, String requestId,
+        String nextPartitionKey, String nextRowKey, QueryOptions queryOptions) {
+        return queryEntitiesWithResponse(table, timeout, requestId, nextPartitionKey, nextRowKey, queryOptions,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Queries entities in a table.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param nextPartitionKey An entity query continuation token from a previous call.
+     * @param nextRowKey An entity query continuation token from a previous call.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties for the table entity query response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableEntityQueryResponse> queryEntitiesNoCustomHeadersWithResponse(String table, Integer timeout,
+        String requestId, String nextPartitionKey, String nextRowKey, QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        Integer topInternal = null;
+        if (queryOptions != null) {
+            topInternal = queryOptions.getTop();
+        }
+        Integer top = topInternal;
+        String selectInternal = null;
+        if (queryOptions != null) {
+            selectInternal = queryOptions.getSelect();
+        }
+        String select = selectInternal;
+        String filterInternal = null;
+        if (queryOptions != null) {
+            filterInternal = queryOptions.getFilter();
+        }
+        String filter = filterInternal;
+        return service.queryEntitiesNoCustomHeadersSync(this.client.getUrl(), timeout, this.client.getVersion(),
+            requestId, dataServiceVersion, format, top, select, filter, table, nextPartitionKey, nextRowKey, accept,
+            context);
     }
 
     /**
      * Queries a single entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>>>
-            queryEntityWithPartitionAndRowKeyWithResponseAsync(
-                    String table,
-                    String partitionKey,
-                    String rowKey,
-                    Integer timeout,
-                    String requestId,
-                    QueryOptions queryOptions) {
+        queryEntityWithPartitionAndRowKeyWithResponseAsync(String table, String partitionKey, String rowKey,
+            Integer timeout, String requestId, QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> queryEntityWithPartitionAndRowKeyWithResponseAsync(table, partitionKey,
+            rowKey, timeout, requestId, queryOptions, context));
+    }
+
+    /**
+     * Queries a single entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>>>
+        queryEntityWithPartitionAndRowKeyWithResponseAsync(String table, String partitionKey, String rowKey,
+            Integer timeout, String requestId, QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -1262,51 +1559,100 @@ public final class TablesImpl {
             filterInternal = queryOptions.getFilter();
         }
         String filter = filterInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.queryEntityWithPartitionAndRowKey(
-                                this.client.getUrl(),
-                                timeout,
-                                this.client.getVersion(),
-                                requestId,
-                                dataServiceVersion,
-                                format,
-                                select,
-                                filter,
-                                table,
-                                partitionKey,
-                                rowKey,
-                                accept,
-                                context));
+        return service.queryEntityWithPartitionAndRowKey(this.client.getUrl(), timeout, this.client.getVersion(),
+            requestId, dataServiceVersion, format, select, filter, table, partitionKey, rowKey, accept, context);
     }
 
     /**
      * Queries a single entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the other properties of the table entity on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Map<String, Object>> queryEntityWithPartitionAndRowKeyAsync(String table, String partitionKey,
+        String rowKey, Integer timeout, String requestId, QueryOptions queryOptions) {
+        return queryEntityWithPartitionAndRowKeyWithResponseAsync(table, partitionKey, rowKey, timeout, requestId,
+            queryOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Queries a single entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
-     *     {@link Mono}.
+     * @return the other properties of the table entity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>>>
-            queryEntityWithPartitionAndRowKeyWithResponseAsync(
-                    String table,
-                    String partitionKey,
-                    String rowKey,
-                    Integer timeout,
-                    String requestId,
-                    QueryOptions queryOptions,
-                    Context context) {
+    public Mono<Map<String, Object>> queryEntityWithPartitionAndRowKeyAsync(String table, String partitionKey,
+        String rowKey, Integer timeout, String requestId, QueryOptions queryOptions, Context context) {
+        return queryEntityWithPartitionAndRowKeyWithResponseAsync(table, partitionKey, rowKey, timeout, requestId,
+            queryOptions, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Queries a single entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the other properties of the table entity along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Map<String, Object>>> queryEntityWithPartitionAndRowKeyNoCustomHeadersWithResponseAsync(
+        String table, String partitionKey, String rowKey, Integer timeout, String requestId,
+        QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> queryEntityWithPartitionAndRowKeyNoCustomHeadersWithResponseAsync(table,
+            partitionKey, rowKey, timeout, requestId, queryOptions, context));
+    }
+
+    /**
+     * Queries a single entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the other properties of the table entity along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Map<String, Object>>> queryEntityWithPartitionAndRowKeyNoCustomHeadersWithResponseAsync(
+        String table, String partitionKey, String rowKey, Integer timeout, String requestId, QueryOptions queryOptions,
+        Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -1324,106 +1670,31 @@ public final class TablesImpl {
             filterInternal = queryOptions.getFilter();
         }
         String filter = filterInternal;
-        return service.queryEntityWithPartitionAndRowKey(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                select,
-                filter,
-                table,
-                partitionKey,
-                rowKey,
-                accept,
-                context);
+        return service.queryEntityWithPartitionAndRowKeyNoCustomHeaders(this.client.getUrl(), timeout,
+            this.client.getVersion(), requestId, dataServiceVersion, format, select, filter, table, partitionKey,
+            rowKey, accept, context);
     }
 
     /**
      * Queries a single entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param queryOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the other properties of the table entity on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> queryEntityWithPartitionAndRowKeyAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            QueryOptions queryOptions) {
-        return queryEntityWithPartitionAndRowKeyWithResponseAsync(
-                        table, partitionKey, rowKey, timeout, requestId, queryOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Queries a single entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the other properties of the table entity on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> queryEntityWithPartitionAndRowKeyAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            QueryOptions queryOptions,
-            Context context) {
-        return queryEntityWithPartitionAndRowKeyWithResponseAsync(
-                        table, partitionKey, rowKey, timeout, requestId, queryOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Queries a single entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param queryOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>>
-            queryEntityWithPartitionAndRowKeyWithResponse(
-                    String table,
-                    String partitionKey,
-                    String rowKey,
-                    Integer timeout,
-                    String requestId,
-                    QueryOptions queryOptions,
-                    Context context) {
+        queryEntityWithPartitionAndRowKeyWithResponse(String table, String partitionKey, String rowKey, Integer timeout,
+            String requestId, QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -1441,648 +1712,52 @@ public final class TablesImpl {
             filterInternal = queryOptions.getFilter();
         }
         String filter = filterInternal;
-        return service.queryEntityWithPartitionAndRowKeySync(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                select,
-                filter,
-                table,
-                partitionKey,
-                rowKey,
-                accept,
-                context);
+        return service.queryEntityWithPartitionAndRowKeySync(this.client.getUrl(), timeout, this.client.getVersion(),
+            requestId, dataServiceVersion, format, select, filter, table, partitionKey, rowKey, accept, context);
     }
 
     /**
      * Queries a single entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> queryEntityWithPartitionAndRowKey(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            QueryOptions queryOptions) {
-        return queryEntityWithPartitionAndRowKeyWithResponse(
-                        table, partitionKey, rowKey, timeout, requestId, queryOptions, Context.NONE)
-                .getValue();
+    public Map<String, Object> queryEntityWithPartitionAndRowKey(String table, String partitionKey, String rowKey,
+        Integer timeout, String requestId, QueryOptions queryOptions) {
+        return queryEntityWithPartitionAndRowKeyWithResponse(table, partitionKey, rowKey, timeout, requestId,
+            queryOptions, Context.NONE).getValue();
     }
 
     /**
-     * Update entity in a table.
-     *
+     * Queries a single entity in a table.
+     * 
      * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
-     * @param queryOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesUpdateEntityHeaders, Void>> updateEntityWithResponseAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions) {
-        final String dataServiceVersion = "3.0";
-        final String accept = "application/json";
-        OdataMetadataFormat formatInternal = null;
-        if (queryOptions != null) {
-            formatInternal = queryOptions.getFormat();
-        }
-        OdataMetadataFormat format = formatInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.updateEntity(
-                                this.client.getUrl(),
-                                timeout,
-                                this.client.getVersion(),
-                                requestId,
-                                dataServiceVersion,
-                                format,
-                                table,
-                                partitionKey,
-                                rowKey,
-                                ifMatch,
-                                tableEntityProperties,
-                                accept,
-                                context));
-    }
-
-    /**
-     * Update entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
+     * analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the other properties of the table entity along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesUpdateEntityHeaders, Void>> updateEntityWithResponseAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions,
-            Context context) {
-        final String dataServiceVersion = "3.0";
-        final String accept = "application/json";
-        OdataMetadataFormat formatInternal = null;
-        if (queryOptions != null) {
-            formatInternal = queryOptions.getFormat();
-        }
-        OdataMetadataFormat format = formatInternal;
-        return service.updateEntity(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                table,
-                partitionKey,
-                rowKey,
-                ifMatch,
-                tableEntityProperties,
-                accept,
-                context);
-    }
-
-    /**
-     * Update entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
-     * @param queryOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateEntityAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions) {
-        return updateEntityWithResponseAsync(
-                        table, partitionKey, rowKey, timeout, requestId, ifMatch, tableEntityProperties, queryOptions)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Update entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
-     * @param queryOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateEntityAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions,
-            Context context) {
-        return updateEntityWithResponseAsync(
-                        table,
-                        partitionKey,
-                        rowKey,
-                        timeout,
-                        requestId,
-                        ifMatch,
-                        tableEntityProperties,
-                        queryOptions,
-                        context)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Update entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
-     * @param queryOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TablesUpdateEntityHeaders, Void> updateEntityWithResponse(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions,
-            Context context) {
-        final String dataServiceVersion = "3.0";
-        final String accept = "application/json";
-        OdataMetadataFormat formatInternal = null;
-        if (queryOptions != null) {
-            formatInternal = queryOptions.getFormat();
-        }
-        OdataMetadataFormat format = formatInternal;
-        return service.updateEntitySync(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                table,
-                partitionKey,
-                rowKey,
-                ifMatch,
-                tableEntityProperties,
-                accept,
-                context);
-    }
-
-    /**
-     * Update entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
-     * @param queryOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions) {
-        updateEntityWithResponse(
-                table,
-                partitionKey,
-                rowKey,
-                timeout,
-                requestId,
-                ifMatch,
-                tableEntityProperties,
-                queryOptions,
-                Context.NONE);
-    }
-
-    /**
-     * Merge entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a merge will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
-     * @param queryOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesMergeEntityHeaders, Void>> mergeEntityWithResponseAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions) {
-        final String dataServiceVersion = "3.0";
-        final String accept = "application/json";
-        OdataMetadataFormat formatInternal = null;
-        if (queryOptions != null) {
-            formatInternal = queryOptions.getFormat();
-        }
-        OdataMetadataFormat format = formatInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.mergeEntity(
-                                this.client.getUrl(),
-                                timeout,
-                                this.client.getVersion(),
-                                requestId,
-                                dataServiceVersion,
-                                format,
-                                table,
-                                partitionKey,
-                                rowKey,
-                                ifMatch,
-                                tableEntityProperties,
-                                accept,
-                                context));
-    }
-
-    /**
-     * Merge entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a merge will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
-     * @param queryOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesMergeEntityHeaders, Void>> mergeEntityWithResponseAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions,
-            Context context) {
-        final String dataServiceVersion = "3.0";
-        final String accept = "application/json";
-        OdataMetadataFormat formatInternal = null;
-        if (queryOptions != null) {
-            formatInternal = queryOptions.getFormat();
-        }
-        OdataMetadataFormat format = formatInternal;
-        return service.mergeEntity(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                table,
-                partitionKey,
-                rowKey,
-                ifMatch,
-                tableEntityProperties,
-                accept,
-                context);
-    }
-
-    /**
-     * Merge entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a merge will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
-     * @param queryOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> mergeEntityAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions) {
-        return mergeEntityWithResponseAsync(
-                        table, partitionKey, rowKey, timeout, requestId, ifMatch, tableEntityProperties, queryOptions)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Merge entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a merge will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
-     * @param queryOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> mergeEntityAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions,
-            Context context) {
-        return mergeEntityWithResponseAsync(
-                        table,
-                        partitionKey,
-                        rowKey,
-                        timeout,
-                        requestId,
-                        ifMatch,
-                        tableEntityProperties,
-                        queryOptions,
-                        context)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Merge entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a merge will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
-     * @param queryOptions Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TablesMergeEntityHeaders, Void> mergeEntityWithResponse(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions,
-            Context context) {
-        final String dataServiceVersion = "3.0";
-        final String accept = "application/json";
-        OdataMetadataFormat formatInternal = null;
-        if (queryOptions != null) {
-            formatInternal = queryOptions.getFormat();
-        }
-        OdataMetadataFormat format = formatInternal;
-        return service.mergeEntitySync(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                table,
-                partitionKey,
-                rowKey,
-                ifMatch,
-                tableEntityProperties,
-                accept,
-                context);
-    }
-
-    /**
-     * Merge entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a merge will be performed if an
-     *     existing entity is found.
-     * @param tableEntityProperties The properties for the table entity.
-     * @param queryOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void mergeEntity(
-            String table,
-            String partitionKey,
-            String rowKey,
-            Integer timeout,
-            String requestId,
-            String ifMatch,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions) {
-        mergeEntityWithResponse(
-                table,
-                partitionKey,
-                rowKey,
-                timeout,
-                requestId,
-                ifMatch,
-                tableEntityProperties,
-                queryOptions,
-                Context.NONE);
-    }
-
-    /**
-     * Deletes the specified entity in a table.
-     *
-     * @param table The name of the table.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional delete, set to the wildcard character (*).
-     * @param timeout The timeout parameter is expressed in seconds.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param queryOptions Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesDeleteEntityHeaders, Void>> deleteEntityWithResponseAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            String ifMatch,
-            Integer timeout,
-            String requestId,
-            QueryOptions queryOptions) {
+    public Response<Map<String, Object>> queryEntityWithPartitionAndRowKeyNoCustomHeadersWithResponse(String table,
+        String partitionKey, String rowKey, Integer timeout, String requestId, QueryOptions queryOptions,
+        Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -2090,51 +1765,634 @@ public final class TablesImpl {
             formatInternal = queryOptions.getFormat();
         }
         OdataMetadataFormat format = formatInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteEntity(
-                                this.client.getUrl(),
-                                timeout,
-                                this.client.getVersion(),
-                                requestId,
-                                dataServiceVersion,
-                                format,
-                                table,
-                                partitionKey,
-                                rowKey,
-                                ifMatch,
-                                accept,
-                                context));
+        String selectInternal = null;
+        if (queryOptions != null) {
+            selectInternal = queryOptions.getSelect();
+        }
+        String select = selectInternal;
+        String filterInternal = null;
+        if (queryOptions != null) {
+            filterInternal = queryOptions.getFilter();
+        }
+        String filter = filterInternal;
+        return service.queryEntityWithPartitionAndRowKeyNoCustomHeadersSync(this.client.getUrl(), timeout,
+            this.client.getVersion(), requestId, dataServiceVersion, format, select, filter, table, partitionKey,
+            rowKey, accept, context);
     }
 
     /**
-     * Deletes the specified entity in a table.
-     *
+     * Update entity in a table.
+     * 
      * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
-     * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional delete, set to the wildcard character (*).
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
+     * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesDeleteEntityHeaders, Void>> deleteEntityWithResponseAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            String ifMatch,
-            Integer timeout,
-            String requestId,
-            QueryOptions queryOptions,
-            Context context) {
+    public Mono<ResponseBase<TablesUpdateEntityHeaders, Void>> updateEntityWithResponseAsync(String table,
+        String partitionKey, String rowKey, Integer timeout, String requestId, String ifMatch,
+        Map<String, Object> tableEntityProperties, QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> updateEntityWithResponseAsync(table, partitionKey, rowKey, timeout,
+            requestId, ifMatch, tableEntityProperties, queryOptions, context));
+    }
+
+    /**
+     * Update entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TablesUpdateEntityHeaders, Void>> updateEntityWithResponseAsync(String table,
+        String partitionKey, String rowKey, Integer timeout, String requestId, String ifMatch,
+        Map<String, Object> tableEntityProperties, QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.updateEntity(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, tableEntityProperties, accept, context);
+    }
+
+    /**
+     * Update entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateEntityAsync(String table, String partitionKey, String rowKey, Integer timeout,
+        String requestId, String ifMatch, Map<String, Object> tableEntityProperties, QueryOptions queryOptions) {
+        return updateEntityWithResponseAsync(table, partitionKey, rowKey, timeout, requestId, ifMatch,
+            tableEntityProperties, queryOptions).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Update entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateEntityAsync(String table, String partitionKey, String rowKey, Integer timeout,
+        String requestId, String ifMatch, Map<String, Object> tableEntityProperties, QueryOptions queryOptions,
+        Context context) {
+        return updateEntityWithResponseAsync(table, partitionKey, rowKey, timeout, requestId, ifMatch,
+            tableEntityProperties, queryOptions, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Update entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateEntityNoCustomHeadersWithResponseAsync(String table, String partitionKey,
+        String rowKey, Integer timeout, String requestId, String ifMatch, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> updateEntityNoCustomHeadersWithResponseAsync(table, partitionKey, rowKey,
+            timeout, requestId, ifMatch, tableEntityProperties, queryOptions, context));
+    }
+
+    /**
+     * Update entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateEntityNoCustomHeadersWithResponseAsync(String table, String partitionKey,
+        String rowKey, Integer timeout, String requestId, String ifMatch, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.updateEntityNoCustomHeaders(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, tableEntityProperties, accept, context);
+    }
+
+    /**
+     * Update entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<TablesUpdateEntityHeaders, Void> updateEntityWithResponse(String table, String partitionKey,
+        String rowKey, Integer timeout, String requestId, String ifMatch, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.updateEntitySync(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, tableEntityProperties, accept, context);
+    }
+
+    /**
+     * Update entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateEntity(String table, String partitionKey, String rowKey, Integer timeout, String requestId,
+        String ifMatch, Map<String, Object> tableEntityProperties, QueryOptions queryOptions) {
+        updateEntityWithResponse(table, partitionKey, rowKey, timeout, requestId, ifMatch, tableEntityProperties,
+            queryOptions, Context.NONE);
+    }
+
+    /**
+     * Update entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateEntityNoCustomHeadersWithResponse(String table, String partitionKey, String rowKey,
+        Integer timeout, String requestId, String ifMatch, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.updateEntityNoCustomHeadersSync(this.client.getUrl(), timeout, this.client.getVersion(),
+            requestId, dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, tableEntityProperties, accept,
+            context);
+    }
+
+    /**
+     * Merge entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a merge will be performed if an existing
+     * entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TablesMergeEntityHeaders, Void>> mergeEntityWithResponseAsync(String table,
+        String partitionKey, String rowKey, Integer timeout, String requestId, String ifMatch,
+        Map<String, Object> tableEntityProperties, QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> mergeEntityWithResponseAsync(table, partitionKey, rowKey, timeout,
+            requestId, ifMatch, tableEntityProperties, queryOptions, context));
+    }
+
+    /**
+     * Merge entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a merge will be performed if an existing
+     * entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TablesMergeEntityHeaders, Void>> mergeEntityWithResponseAsync(String table,
+        String partitionKey, String rowKey, Integer timeout, String requestId, String ifMatch,
+        Map<String, Object> tableEntityProperties, QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.mergeEntity(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, tableEntityProperties, accept, context);
+    }
+
+    /**
+     * Merge entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a merge will be performed if an existing
+     * entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> mergeEntityAsync(String table, String partitionKey, String rowKey, Integer timeout,
+        String requestId, String ifMatch, Map<String, Object> tableEntityProperties, QueryOptions queryOptions) {
+        return mergeEntityWithResponseAsync(table, partitionKey, rowKey, timeout, requestId, ifMatch,
+            tableEntityProperties, queryOptions).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Merge entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a merge will be performed if an existing
+     * entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> mergeEntityAsync(String table, String partitionKey, String rowKey, Integer timeout,
+        String requestId, String ifMatch, Map<String, Object> tableEntityProperties, QueryOptions queryOptions,
+        Context context) {
+        return mergeEntityWithResponseAsync(table, partitionKey, rowKey, timeout, requestId, ifMatch,
+            tableEntityProperties, queryOptions, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Merge entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a merge will be performed if an existing
+     * entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> mergeEntityNoCustomHeadersWithResponseAsync(String table, String partitionKey,
+        String rowKey, Integer timeout, String requestId, String ifMatch, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> mergeEntityNoCustomHeadersWithResponseAsync(table, partitionKey, rowKey,
+            timeout, requestId, ifMatch, tableEntityProperties, queryOptions, context));
+    }
+
+    /**
+     * Merge entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a merge will be performed if an existing
+     * entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> mergeEntityNoCustomHeadersWithResponseAsync(String table, String partitionKey,
+        String rowKey, Integer timeout, String requestId, String ifMatch, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.mergeEntityNoCustomHeaders(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, tableEntityProperties, accept, context);
+    }
+
+    /**
+     * Merge entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a merge will be performed if an existing
+     * entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<TablesMergeEntityHeaders, Void> mergeEntityWithResponse(String table, String partitionKey,
+        String rowKey, Integer timeout, String requestId, String ifMatch, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.mergeEntitySync(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, tableEntityProperties, accept, context);
+    }
+
+    /**
+     * Merge entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a merge will be performed if an existing
+     * entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void mergeEntity(String table, String partitionKey, String rowKey, Integer timeout, String requestId,
+        String ifMatch, Map<String, Object> tableEntityProperties, QueryOptions queryOptions) {
+        mergeEntityWithResponse(table, partitionKey, rowKey, timeout, requestId, ifMatch, tableEntityProperties,
+            queryOptions, Context.NONE);
+    }
+
+    /**
+     * Merge entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a merge will be performed if an existing
+     * entity is found.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> mergeEntityNoCustomHeadersWithResponse(String table, String partitionKey, String rowKey,
+        Integer timeout, String requestId, String ifMatch, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.mergeEntityNoCustomHeadersSync(this.client.getUrl(), timeout, this.client.getVersion(),
+            requestId, dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, tableEntityProperties, accept,
+            context);
+    }
+
+    /**
+     * Deletes the specified entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional delete, set to the wildcard character (*).
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TablesDeleteEntityHeaders, Void>> deleteEntityWithResponseAsync(String table,
+        String partitionKey, String rowKey, String ifMatch, Integer timeout, String requestId,
+        QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> deleteEntityWithResponseAsync(table, partitionKey, rowKey, ifMatch,
+            timeout, requestId, queryOptions, context));
+    }
+
+    /**
+     * Deletes the specified entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional delete, set to the wildcard character (*).
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TablesDeleteEntityHeaders, Void>> deleteEntityWithResponseAsync(String table,
+        String partitionKey, String rowKey, String ifMatch, Integer timeout, String requestId,
+        QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -2142,112 +2400,104 @@ public final class TablesImpl {
             formatInternal = queryOptions.getFormat();
         }
         OdataMetadataFormat format = formatInternal;
-        return service.deleteEntity(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                table,
-                partitionKey,
-                rowKey,
-                ifMatch,
-                accept,
-                context);
+        return service.deleteEntity(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, accept, context);
     }
 
     /**
      * Deletes the specified entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
      * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional delete, set to the wildcard character (*).
+     * error will be raised. To force an unconditional delete, set to the wildcard character (*).
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteEntityAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            String ifMatch,
-            Integer timeout,
-            String requestId,
-            QueryOptions queryOptions) {
+    public Mono<Void> deleteEntityAsync(String table, String partitionKey, String rowKey, String ifMatch,
+        Integer timeout, String requestId, QueryOptions queryOptions) {
         return deleteEntityWithResponseAsync(table, partitionKey, rowKey, ifMatch, timeout, requestId, queryOptions)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the specified entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
      * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional delete, set to the wildcard character (*).
+     * error will be raised. To force an unconditional delete, set to the wildcard character (*).
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteEntityAsync(
-            String table,
-            String partitionKey,
-            String rowKey,
-            String ifMatch,
-            Integer timeout,
-            String requestId,
-            QueryOptions queryOptions,
-            Context context) {
-        return deleteEntityWithResponseAsync(
-                        table, partitionKey, rowKey, ifMatch, timeout, requestId, queryOptions, context)
-                .flatMap(ignored -> Mono.empty());
+    public Mono<Void> deleteEntityAsync(String table, String partitionKey, String rowKey, String ifMatch,
+        Integer timeout, String requestId, QueryOptions queryOptions, Context context) {
+        return deleteEntityWithResponseAsync(table, partitionKey, rowKey, ifMatch, timeout, requestId, queryOptions,
+            context).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the specified entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
      * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional delete, set to the wildcard character (*).
+     * error will be raised. To force an unconditional delete, set to the wildcard character (*).
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteEntityNoCustomHeadersWithResponseAsync(String table, String partitionKey,
+        String rowKey, String ifMatch, Integer timeout, String requestId, QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> deleteEntityNoCustomHeadersWithResponseAsync(table, partitionKey, rowKey,
+            ifMatch, timeout, requestId, queryOptions, context));
+    }
+
+    /**
+     * Deletes the specified entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional delete, set to the wildcard character (*).
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ResponseBase}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TablesDeleteEntityHeaders, Void> deleteEntityWithResponse(
-            String table,
-            String partitionKey,
-            String rowKey,
-            String ifMatch,
-            Integer timeout,
-            String requestId,
-            QueryOptions queryOptions,
-            Context context) {
+    public Mono<Response<Void>> deleteEntityNoCustomHeadersWithResponseAsync(String table, String partitionKey,
+        String rowKey, String ifMatch, Integer timeout, String requestId, QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -2255,74 +2505,85 @@ public final class TablesImpl {
             formatInternal = queryOptions.getFormat();
         }
         OdataMetadataFormat format = formatInternal;
-        return service.deleteEntitySync(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                table,
-                partitionKey,
-                rowKey,
-                ifMatch,
-                accept,
-                context);
+        return service.deleteEntityNoCustomHeaders(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, accept, context);
     }
 
     /**
      * Deletes the specified entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param partitionKey The partition key of the entity.
      * @param rowKey The row key of the entity.
      * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional delete, set to the wildcard character (*).
+     * error will be raised. To force an unconditional delete, set to the wildcard character (*).
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<TablesDeleteEntityHeaders, Void> deleteEntityWithResponse(String table, String partitionKey,
+        String rowKey, String ifMatch, Integer timeout, String requestId, QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.deleteEntitySync(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, accept, context);
+    }
+
+    /**
+     * Deletes the specified entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional delete, set to the wildcard character (*).
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(
-            String table,
-            String partitionKey,
-            String rowKey,
-            String ifMatch,
-            Integer timeout,
-            String requestId,
-            QueryOptions queryOptions) {
+    public void deleteEntity(String table, String partitionKey, String rowKey, String ifMatch, Integer timeout,
+        String requestId, QueryOptions queryOptions) {
         deleteEntityWithResponse(table, partitionKey, rowKey, ifMatch, timeout, requestId, queryOptions, Context.NONE);
     }
 
     /**
-     * Insert entity in a table.
-     *
+     * Deletes the specified entity in a table.
+     * 
      * @param table The name of the table.
+     * @param partitionKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
+     * @param ifMatch Match condition for an entity to be deleted. If specified and a matching entity is not found, an
+     * error will be raised. To force an unconditional delete, set to the wildcard character (*).
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
-     * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
-     * @param tableEntityProperties The properties for the table entity.
+     * analytics logs when analytics logging is enabled.
      * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesInsertEntityHeaders, Map<String, Object>>> insertEntityWithResponseAsync(
-            String table,
-            Integer timeout,
-            String requestId,
-            ResponseFormat responsePreference,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions) {
+    public Response<Void> deleteEntityNoCustomHeadersWithResponse(String table, String partitionKey, String rowKey,
+        String ifMatch, Integer timeout, String requestId, QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -2330,49 +2591,57 @@ public final class TablesImpl {
             formatInternal = queryOptions.getFormat();
         }
         OdataMetadataFormat format = formatInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.insertEntity(
-                                this.client.getUrl(),
-                                timeout,
-                                this.client.getVersion(),
-                                requestId,
-                                dataServiceVersion,
-                                format,
-                                table,
-                                responsePreference,
-                                tableEntityProperties,
-                                accept,
-                                context));
+        return service.deleteEntityNoCustomHeadersSync(this.client.getUrl(), timeout, this.client.getVersion(),
+            requestId, dataServiceVersion, format, table, partitionKey, rowKey, ifMatch, accept, context);
     }
 
     /**
      * Insert entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
+     * Possible values are return-no-content and return-content.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TablesInsertEntityHeaders, Map<String, Object>>> insertEntityWithResponseAsync(
+        String table, Integer timeout, String requestId, ResponseFormat responsePreference,
+        Map<String, Object> tableEntityProperties, QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> insertEntityWithResponseAsync(table, timeout, requestId,
+            responsePreference, tableEntityProperties, queryOptions, context));
+    }
+
+    /**
+     * Insert entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
+     * Possible values are return-no-content and return-content.
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity along with {@link ResponseBase} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<TablesInsertEntityHeaders, Map<String, Object>>> insertEntityWithResponseAsync(
-            String table,
-            Integer timeout,
-            String requestId,
-            ResponseFormat responsePreference,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions,
-            Context context) {
+        String table, Integer timeout, String requestId, ResponseFormat responsePreference,
+        Map<String, Object> tableEntityProperties, QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -2380,106 +2649,137 @@ public final class TablesImpl {
             formatInternal = queryOptions.getFormat();
         }
         OdataMetadataFormat format = formatInternal;
-        return service.insertEntity(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                table,
-                responsePreference,
-                tableEntityProperties,
-                accept,
-                context);
+        return service.insertEntity(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, responsePreference, tableEntityProperties, accept, context);
     }
 
     /**
      * Insert entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
+     * Possible values are return-no-content and return-content.
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> insertEntityAsync(
-            String table,
-            Integer timeout,
-            String requestId,
-            ResponseFormat responsePreference,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions) {
-        return insertEntityWithResponseAsync(
-                        table, timeout, requestId, responsePreference, tableEntityProperties, queryOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Map<String, Object>> insertEntityAsync(String table, Integer timeout, String requestId,
+        ResponseFormat responsePreference, Map<String, Object> tableEntityProperties, QueryOptions queryOptions) {
+        return insertEntityWithResponseAsync(table, timeout, requestId, responsePreference, tableEntityProperties,
+            queryOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Insert entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
+     * Possible values are return-no-content and return-content.
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> insertEntityAsync(
-            String table,
-            Integer timeout,
-            String requestId,
-            ResponseFormat responsePreference,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions,
-            Context context) {
-        return insertEntityWithResponseAsync(
-                        table, timeout, requestId, responsePreference, tableEntityProperties, queryOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Map<String, Object>> insertEntityAsync(String table, Integer timeout, String requestId,
+        ResponseFormat responsePreference, Map<String, Object> tableEntityProperties, QueryOptions queryOptions,
+        Context context) {
+        return insertEntityWithResponseAsync(table, timeout, requestId, responsePreference, tableEntityProperties,
+            queryOptions, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Insert entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
+     * Possible values are return-no-content and return-content.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the other properties of the table entity along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Map<String, Object>>> insertEntityNoCustomHeadersWithResponseAsync(String table,
+        Integer timeout, String requestId, ResponseFormat responsePreference, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions) {
+        return FluxUtil.withContext(context -> insertEntityNoCustomHeadersWithResponseAsync(table, timeout, requestId,
+            responsePreference, tableEntityProperties, queryOptions, context));
+    }
+
+    /**
+     * Insert entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
+     * Possible values are return-no-content and return-content.
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the other properties of the table entity along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Map<String, Object>>> insertEntityNoCustomHeadersWithResponseAsync(String table,
+        Integer timeout, String requestId, ResponseFormat responsePreference, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.insertEntityNoCustomHeaders(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, responsePreference, tableEntityProperties, accept, context);
+    }
+
+    /**
+     * Insert entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
+     * Possible values are return-no-content and return-content.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TablesInsertEntityHeaders, Map<String, Object>> insertEntityWithResponse(
-            String table,
-            Integer timeout,
-            String requestId,
-            ResponseFormat responsePreference,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions,
-            Context context) {
+    public ResponseBase<TablesInsertEntityHeaders, Map<String, Object>> insertEntityWithResponse(String table,
+        Integer timeout, String requestId, ResponseFormat responsePreference, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions, Context context) {
         final String dataServiceVersion = "3.0";
         final String accept = "application/json;odata=minimalmetadata";
         OdataMetadataFormat formatInternal = null;
@@ -2487,138 +2787,136 @@ public final class TablesImpl {
             formatInternal = queryOptions.getFormat();
         }
         OdataMetadataFormat format = formatInternal;
-        return service.insertEntitySync(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                dataServiceVersion,
-                format,
-                table,
-                responsePreference,
-                tableEntityProperties,
-                accept,
-                context);
+        return service.insertEntitySync(this.client.getUrl(), timeout, this.client.getVersion(), requestId,
+            dataServiceVersion, format, table, responsePreference, tableEntityProperties, accept, context);
     }
 
     /**
      * Insert entity in a table.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
-     *     Possible values are return-no-content and return-content.
+     * Possible values are return-no-content and return-content.
      * @param tableEntityProperties The properties for the table entity.
      * @param queryOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the other properties of the table entity.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> insertEntity(
-            String table,
-            Integer timeout,
-            String requestId,
-            ResponseFormat responsePreference,
-            Map<String, Object> tableEntityProperties,
-            QueryOptions queryOptions) {
-        return insertEntityWithResponse(
-                        table,
-                        timeout,
-                        requestId,
-                        responsePreference,
-                        tableEntityProperties,
-                        queryOptions,
-                        Context.NONE)
-                .getValue();
+    public Map<String, Object> insertEntity(String table, Integer timeout, String requestId,
+        ResponseFormat responsePreference, Map<String, Object> tableEntityProperties, QueryOptions queryOptions) {
+        return insertEntityWithResponse(table, timeout, requestId, responsePreference, tableEntityProperties,
+            queryOptions, Context.NONE).getValue();
+    }
+
+    /**
+     * Insert entity in a table.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param responsePreference Specifies whether the response should include the inserted entity in the payload.
+     * Possible values are return-no-content and return-content.
+     * @param tableEntityProperties The properties for the table entity.
+     * @param queryOptions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceJsonErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the other properties of the table entity along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Map<String, Object>> insertEntityNoCustomHeadersWithResponse(String table, Integer timeout,
+        String requestId, ResponseFormat responsePreference, Map<String, Object> tableEntityProperties,
+        QueryOptions queryOptions, Context context) {
+        final String dataServiceVersion = "3.0";
+        final String accept = "application/json;odata=minimalmetadata";
+        OdataMetadataFormat formatInternal = null;
+        if (queryOptions != null) {
+            formatInternal = queryOptions.getFormat();
+        }
+        OdataMetadataFormat format = formatInternal;
+        return service.insertEntityNoCustomHeadersSync(this.client.getUrl(), timeout, this.client.getVersion(),
+            requestId, dataServiceVersion, format, table, responsePreference, tableEntityProperties, accept, context);
     }
 
     /**
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of signed identifiers along with {@link ResponseBase} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of signed identifiers along with {@link ResponseBase} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>>> getAccessPolicyWithResponseAsync(
-            String table, Integer timeout, String requestId) {
-        final String comp = "acl";
-        final String accept = "application/xml";
-        return FluxUtil.withContext(
-                context ->
-                        service.getAccessPolicy(
-                                this.client.getUrl(),
-                                timeout,
-                                this.client.getVersion(),
-                                requestId,
-                                table,
-                                comp,
-                                accept,
-                                context));
+    public Mono<ResponseBase<TablesGetAccessPolicyHeaders, TableSignedIdentifierWrapper>>
+        getAccessPolicyWithResponseAsync(String table, Integer timeout, String requestId) {
+        return FluxUtil.withContext(context -> getAccessPolicyWithResponseAsync(table, timeout, requestId, context));
     }
 
     /**
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of signed identifiers along with {@link ResponseBase} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of signed identifiers along with {@link ResponseBase} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>>> getAccessPolicyWithResponseAsync(
-            String table, Integer timeout, String requestId, Context context) {
+    public Mono<ResponseBase<TablesGetAccessPolicyHeaders, TableSignedIdentifierWrapper>>
+        getAccessPolicyWithResponseAsync(String table, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
-        return service.getAccessPolicy(
-                this.client.getUrl(), timeout, this.client.getVersion(), requestId, table, comp, accept, context);
+        return service.getAccessPolicy(this.client.getUrl(), timeout, this.client.getVersion(), requestId, table, comp,
+            accept, context);
     }
 
     /**
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<SignedIdentifier>> getAccessPolicyAsync(String table, Integer timeout, String requestId) {
+    public Mono<TableSignedIdentifierWrapper> getAccessPolicyAsync(String table, Integer timeout, String requestId) {
         return getAccessPolicyWithResponseAsync(table, timeout, requestId)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
@@ -2626,20 +2924,63 @@ public final class TablesImpl {
      * @return a collection of signed identifiers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<SignedIdentifier>> getAccessPolicyAsync(
-            String table, Integer timeout, String requestId, Context context) {
+    public Mono<TableSignedIdentifierWrapper> getAccessPolicyAsync(String table, Integer timeout, String requestId,
+        Context context) {
         return getAccessPolicyWithResponseAsync(table, timeout, requestId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of signed identifiers along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableSignedIdentifierWrapper>> getAccessPolicyNoCustomHeadersWithResponseAsync(String table,
+        Integer timeout, String requestId) {
+        return FluxUtil.withContext(
+            context -> getAccessPolicyNoCustomHeadersWithResponseAsync(table, timeout, requestId, context));
+    }
+
+    /**
+     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
+     * Signatures.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of signed identifiers along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableSignedIdentifierWrapper>> getAccessPolicyNoCustomHeadersWithResponseAsync(String table,
+        Integer timeout, String requestId, Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
+        return service.getAccessPolicyNoCustomHeaders(this.client.getUrl(), timeout, this.client.getVersion(),
+            requestId, table, comp, accept, context);
+    }
+
+    /**
+     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
+     * Signatures.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
@@ -2647,39 +2988,62 @@ public final class TablesImpl {
      * @return a collection of signed identifiers along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>> getAccessPolicyWithResponse(
-            String table, Integer timeout, String requestId, Context context) {
+    public ResponseBase<TablesGetAccessPolicyHeaders, TableSignedIdentifierWrapper>
+        getAccessPolicyWithResponse(String table, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
-        return service.getAccessPolicySync(
-                this.client.getUrl(), timeout, this.client.getVersion(), requestId, table, comp, accept, context);
+        return service.getAccessPolicySync(this.client.getUrl(), timeout, this.client.getVersion(), requestId, table,
+            comp, accept, context);
     }
 
     /**
      * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
      * Signatures.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of signed identifiers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<SignedIdentifier> getAccessPolicy(String table, Integer timeout, String requestId) {
+    public TableSignedIdentifierWrapper getAccessPolicy(String table, Integer timeout, String requestId) {
         return getAccessPolicyWithResponse(table, timeout, requestId, Context.NONE).getValue();
     }
 
     /**
-     * Sets stored access policies for the table that may be used with Shared Access Signatures.
-     *
+     * Retrieves details about any stored access policies specified on the table that may be used with Shared Access
+     * Signatures.
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of signed identifiers along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableSignedIdentifierWrapper> getAccessPolicyNoCustomHeadersWithResponse(String table,
+        Integer timeout, String requestId, Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
+        return service.getAccessPolicyNoCustomHeadersSync(this.client.getUrl(), timeout, this.client.getVersion(),
+            requestId, table, comp, accept, context);
+    }
+
+    /**
+     * Sets stored access policies for the table that may be used with Shared Access Signatures.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param tableAcl The acls for the table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
@@ -2687,32 +3051,19 @@ public final class TablesImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesSetAccessPolicyHeaders, Void>> setAccessPolicyWithResponseAsync(
-            String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl) {
-        final String comp = "acl";
-        final String accept = "application/xml";
-        SignedIdentifiersWrapper tableAclConverted = new SignedIdentifiersWrapper(tableAcl);
-        return FluxUtil.withContext(
-                context ->
-                        service.setAccessPolicy(
-                                this.client.getUrl(),
-                                timeout,
-                                this.client.getVersion(),
-                                requestId,
-                                table,
-                                comp,
-                                tableAclConverted,
-                                accept,
-                                context));
+    public Mono<ResponseBase<TablesSetAccessPolicyHeaders, Void>> setAccessPolicyWithResponseAsync(String table,
+        Integer timeout, String requestId, List<TableSignedIdentifier> tableAcl) {
+        return FluxUtil
+            .withContext(context -> setAccessPolicyWithResponseAsync(table, timeout, requestId, tableAcl, context));
     }
 
     /**
      * Sets stored access policies for the table that may be used with Shared Access Signatures.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param tableAcl The acls for the table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2721,30 +3072,22 @@ public final class TablesImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<TablesSetAccessPolicyHeaders, Void>> setAccessPolicyWithResponseAsync(
-            String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl, Context context) {
+    public Mono<ResponseBase<TablesSetAccessPolicyHeaders, Void>> setAccessPolicyWithResponseAsync(String table,
+        Integer timeout, String requestId, List<TableSignedIdentifier> tableAcl, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
-        SignedIdentifiersWrapper tableAclConverted = new SignedIdentifiersWrapper(tableAcl);
-        return service.setAccessPolicy(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                table,
-                comp,
-                tableAclConverted,
-                accept,
-                context);
+        TableSignedIdentifierWrapper tableAclConverted = new TableSignedIdentifierWrapper(tableAcl);
+        return service.setAccessPolicy(this.client.getUrl(), timeout, this.client.getVersion(), requestId, table, comp,
+            tableAclConverted, accept, context);
     }
 
     /**
      * Sets stored access policies for the table that may be used with Shared Access Signatures.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param tableAcl The acls for the table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
@@ -2752,18 +3095,18 @@ public final class TablesImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setAccessPolicyAsync(
-            String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl) {
+    public Mono<Void> setAccessPolicyAsync(String table, Integer timeout, String requestId,
+        List<TableSignedIdentifier> tableAcl) {
         return setAccessPolicyWithResponseAsync(table, timeout, requestId, tableAcl).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Sets stored access policies for the table that may be used with Shared Access Signatures.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param tableAcl The acls for the table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2772,19 +3115,63 @@ public final class TablesImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setAccessPolicyAsync(
-            String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl, Context context) {
+    public Mono<Void> setAccessPolicyAsync(String table, Integer timeout, String requestId,
+        List<TableSignedIdentifier> tableAcl, Context context) {
         return setAccessPolicyWithResponseAsync(table, timeout, requestId, tableAcl, context)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Sets stored access policies for the table that may be used with Shared Access Signatures.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param tableAcl The acls for the table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setAccessPolicyNoCustomHeadersWithResponseAsync(String table, Integer timeout,
+        String requestId, List<TableSignedIdentifier> tableAcl) {
+        return FluxUtil.withContext(
+            context -> setAccessPolicyNoCustomHeadersWithResponseAsync(table, timeout, requestId, tableAcl, context));
+    }
+
+    /**
+     * Sets stored access policies for the table that may be used with Shared Access Signatures.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param tableAcl The acls for the table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setAccessPolicyNoCustomHeadersWithResponseAsync(String table, Integer timeout,
+        String requestId, List<TableSignedIdentifier> tableAcl, Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
+        TableSignedIdentifierWrapper tableAclConverted = new TableSignedIdentifierWrapper(tableAcl);
+        return service.setAccessPolicyNoCustomHeaders(this.client.getUrl(), timeout, this.client.getVersion(),
+            requestId, table, comp, tableAclConverted, accept, context);
+    }
+
+    /**
+     * Sets stored access policies for the table that may be used with Shared Access Signatures.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param tableAcl The acls for the table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2793,37 +3180,53 @@ public final class TablesImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<TablesSetAccessPolicyHeaders, Void> setAccessPolicyWithResponse(
-            String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl, Context context) {
+    public ResponseBase<TablesSetAccessPolicyHeaders, Void> setAccessPolicyWithResponse(String table, Integer timeout,
+        String requestId, List<TableSignedIdentifier> tableAcl, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
-        SignedIdentifiersWrapper tableAclConverted = new SignedIdentifiersWrapper(tableAcl);
-        return service.setAccessPolicySync(
-                this.client.getUrl(),
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                table,
-                comp,
-                tableAclConverted,
-                accept,
-                context);
+        TableSignedIdentifierWrapper tableAclConverted = new TableSignedIdentifierWrapper(tableAcl);
+        return service.setAccessPolicySync(this.client.getUrl(), timeout, this.client.getVersion(), requestId, table,
+            comp, tableAclConverted, accept, context);
     }
 
     /**
      * Sets stored access policies for the table that may be used with Shared Access Signatures.
-     *
+     * 
      * @param table The name of the table.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param tableAcl The acls for the table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setAccessPolicy(String table, Integer timeout, String requestId, List<SignedIdentifier> tableAcl) {
+    public void setAccessPolicy(String table, Integer timeout, String requestId, List<TableSignedIdentifier> tableAcl) {
         setAccessPolicyWithResponse(table, timeout, requestId, tableAcl, Context.NONE);
+    }
+
+    /**
+     * Sets stored access policies for the table that may be used with Shared Access Signatures.
+     * 
+     * @param table The name of the table.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param tableAcl The acls for the table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setAccessPolicyNoCustomHeadersWithResponse(String table, Integer timeout, String requestId,
+        List<TableSignedIdentifier> tableAcl, Context context) {
+        final String comp = "acl";
+        final String accept = "application/xml";
+        TableSignedIdentifierWrapper tableAclConverted = new TableSignedIdentifierWrapper(tableAcl);
+        return service.setAccessPolicyNoCustomHeadersSync(this.client.getUrl(), timeout, this.client.getVersion(),
+            requestId, table, comp, tableAclConverted, accept, context);
     }
 }

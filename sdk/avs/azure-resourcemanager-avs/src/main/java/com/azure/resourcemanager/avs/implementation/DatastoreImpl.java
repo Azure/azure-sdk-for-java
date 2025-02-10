@@ -4,12 +4,14 @@
 
 package com.azure.resourcemanager.avs.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.DatastoreInner;
 import com.azure.resourcemanager.avs.models.Datastore;
 import com.azure.resourcemanager.avs.models.DatastoreProvisioningState;
 import com.azure.resourcemanager.avs.models.DatastoreStatus;
 import com.azure.resourcemanager.avs.models.DiskPoolVolume;
+import com.azure.resourcemanager.avs.models.ElasticSanVolume;
 import com.azure.resourcemanager.avs.models.NetAppVolume;
 
 public final class DatastoreImpl implements Datastore, Datastore.Definition, Datastore.Update {
@@ -29,6 +31,10 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
         return this.innerModel().type();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public DatastoreProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -39,6 +45,10 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
 
     public DiskPoolVolume diskPoolVolume() {
         return this.innerModel().diskPoolVolume();
+    }
+
+    public ElasticSanVolume elasticSanVolume() {
+        return this.innerModel().elasticSanVolume();
     }
 
     public DatastoreStatus status() {
@@ -73,22 +83,18 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     }
 
     public Datastore create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .createOrUpdate(
-                    resourceGroupName, privateCloudName, clusterName, datastoreName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .createOrUpdate(resourceGroupName, privateCloudName, clusterName, datastoreName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public Datastore create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .createOrUpdate(
-                    resourceGroupName, privateCloudName, clusterName, datastoreName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .createOrUpdate(resourceGroupName, privateCloudName, clusterName, datastoreName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -103,51 +109,43 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
     }
 
     public Datastore apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .createOrUpdate(
-                    resourceGroupName, privateCloudName, clusterName, datastoreName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .createOrUpdate(resourceGroupName, privateCloudName, clusterName, datastoreName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public Datastore apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .createOrUpdate(
-                    resourceGroupName, privateCloudName, clusterName, datastoreName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .createOrUpdate(resourceGroupName, privateCloudName, clusterName, datastoreName, this.innerModel(),
+                context);
         return this;
     }
 
     DatastoreImpl(DatastoreInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = Utils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.datastoreName = Utils.getValueFromIdByName(innerObject.id(), "datastores");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.datastoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "datastores");
     }
 
     public Datastore refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .getWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .getWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Datastore refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatastores()
-                .getWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatastores()
+            .getWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, context)
+            .getValue();
         return this;
     }
 
@@ -158,6 +156,11 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
 
     public DatastoreImpl withDiskPoolVolume(DiskPoolVolume diskPoolVolume) {
         this.innerModel().withDiskPoolVolume(diskPoolVolume);
+        return this;
+    }
+
+    public DatastoreImpl withElasticSanVolume(ElasticSanVolume elasticSanVolume) {
+        this.innerModel().withElasticSanVolume(elasticSanVolume);
         return this;
     }
 }

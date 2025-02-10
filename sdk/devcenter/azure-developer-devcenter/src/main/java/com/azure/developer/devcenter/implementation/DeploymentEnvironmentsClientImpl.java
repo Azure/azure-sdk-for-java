@@ -45,6 +45,8 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.developer.devcenter.DevCenterServiceVersion;
+import com.azure.developer.devcenter.models.DevCenterEnvironment;
+import com.azure.developer.devcenter.models.DevCenterOperationDetails;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -172,7 +174,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllEnvironments(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/environments")
         @ExpectedResponses({ 200 })
@@ -182,7 +184,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAllEnvironmentsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/environments")
         @ExpectedResponses({ 200 })
@@ -192,7 +194,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironments(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("userId") String userId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("userId") String userId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/projects/{projectName}/users/{userId}/environments")
@@ -203,7 +205,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("userId") String userId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("userId") String userId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/projects/{projectName}/users/{userId}/environments/{environmentName}")
@@ -215,7 +217,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Mono<Response<BinaryData>> getEnvironment(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({ 200 })
@@ -226,7 +228,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Response<BinaryData> getEnvironmentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({ 201 })
@@ -237,8 +239,8 @@ public final class DeploymentEnvironmentsClientImpl {
         Mono<Response<BinaryData>> createOrUpdateEnvironment(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({ 201 })
@@ -249,8 +251,8 @@ public final class DeploymentEnvironmentsClientImpl {
         Response<BinaryData> createOrUpdateEnvironmentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData body,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Delete("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({ 202, 204 })
@@ -261,7 +263,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Mono<Response<BinaryData>> deleteEnvironment(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/projects/{projectName}/users/{userId}/environments/{environmentName}")
         @ExpectedResponses({ 202, 204 })
@@ -272,7 +274,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Response<BinaryData> deleteEnvironmentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("userId") String userId, @PathParam("environmentName") String environmentName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs")
         @ExpectedResponses({ 200 })
@@ -282,7 +284,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCatalogs(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs")
         @ExpectedResponses({ 200 })
@@ -292,7 +294,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listCatalogsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}")
         @ExpectedResponses({ 200 })
@@ -302,7 +304,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getCatalog(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("catalogName") String catalogName, @HeaderParam("accept") String accept,
+            @PathParam("catalogName") String catalogName, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}")
@@ -313,7 +315,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getCatalogSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("catalogName") String catalogName, @HeaderParam("accept") String accept,
+            @PathParam("catalogName") String catalogName, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/environmentDefinitions")
@@ -324,7 +326,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentDefinitions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/environmentDefinitions")
         @ExpectedResponses({ 200 })
@@ -334,7 +336,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentDefinitionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions")
         @ExpectedResponses({ 200 })
@@ -344,7 +346,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentDefinitionsByCatalog(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("catalogName") String catalogName, @HeaderParam("accept") String accept,
+            @PathParam("catalogName") String catalogName, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions")
@@ -355,7 +357,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentDefinitionsByCatalogSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @PathParam("catalogName") String catalogName, @HeaderParam("accept") String accept,
+            @PathParam("catalogName") String catalogName, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions/{definitionName}")
@@ -367,7 +369,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Mono<Response<BinaryData>> getEnvironmentDefinition(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("catalogName") String catalogName, @PathParam("definitionName") String definitionName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions/{definitionName}")
         @ExpectedResponses({ 200 })
@@ -378,7 +380,7 @@ public final class DeploymentEnvironmentsClientImpl {
         Response<BinaryData> getEnvironmentDefinitionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("catalogName") String catalogName, @PathParam("definitionName") String definitionName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/environmentTypes")
         @ExpectedResponses({ 200 })
@@ -388,7 +390,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentTypes(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/projects/{projectName}/environmentTypes")
         @ExpectedResponses({ 200 })
@@ -398,7 +400,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentTypesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -408,7 +410,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAllEnvironmentsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -417,7 +419,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAllEnvironmentsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -427,7 +429,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -437,7 +439,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -447,7 +449,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listCatalogsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -457,7 +459,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listCatalogsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -468,7 +470,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentDefinitionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -478,7 +480,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentDefinitionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -488,7 +490,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentDefinitionsByCatalogNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -498,7 +500,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentDefinitionsByCatalogNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -508,7 +510,7 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listEnvironmentTypesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -518,40 +520,23 @@ public final class DeploymentEnvironmentsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listEnvironmentTypesNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
      * Lists the environments for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -568,7 +553,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -576,7 +562,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of
+     * @return paged collection of Environment items along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -592,35 +578,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists the environments for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -637,7 +606,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -645,7 +615,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of Environment items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAllEnvironmentsAsync(String projectName, RequestOptions requestOptions) {
@@ -658,35 +628,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists the environments for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -703,7 +656,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -711,7 +665,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse}.
+     * @return paged collection of Environment items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listAllEnvironmentsSinglePage(String projectName, RequestOptions requestOptions) {
@@ -724,35 +678,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists the environments for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -769,7 +706,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -777,7 +715,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation as paginated response with {@link PagedIterable}.
+     * @return paged collection of Environment items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAllEnvironments(String projectName, RequestOptions requestOptions) {
@@ -790,35 +728,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists the environments for a project and user.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -835,7 +756,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -845,7 +767,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of
+     * @return paged collection of Environment items along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -861,35 +783,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists the environments for a project and user.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -906,7 +811,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -916,7 +822,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of Environment items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listEnvironmentsAsync(String projectName, String userId,
@@ -930,35 +836,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists the environments for a project and user.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -975,7 +864,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -985,7 +875,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse}.
+     * @return paged collection of Environment items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEnvironmentsSinglePage(String projectName, String userId,
@@ -999,35 +889,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists the environments for a project and user.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -1044,7 +917,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1054,7 +928,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation as paginated response with {@link PagedIterable}.
+     * @return paged collection of Environment items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironments(String projectName, String userId,
@@ -1068,16 +942,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Gets an environment.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -1094,12 +970,13 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
-     * @param environmentName The name of the environment.
+     * @param environmentName Environment name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1118,16 +995,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Gets an environment.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -1144,12 +1023,13 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
-     * @param environmentName The name of the environment.
+     * @param environmentName Environment name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1167,16 +1047,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Creates or updates an environment.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -1193,17 +1075,21 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -1220,7 +1106,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1237,24 +1124,27 @@ public final class DeploymentEnvironmentsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> createOrUpdateEnvironmentWithResponseAsync(String projectName, String userId,
         String environmentName, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.createOrUpdateEnvironment(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                projectName, userId, environmentName, accept, body, requestOptions, context));
+                projectName, userId, environmentName, contentType, accept, body, requestOptions, context));
     }
 
     /**
      * Creates or updates an environment.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -1271,17 +1161,21 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -1298,7 +1192,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1315,23 +1210,26 @@ public final class DeploymentEnvironmentsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateEnvironmentWithResponse(String projectName, String userId,
         String environmentName, BinaryData body, RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateEnvironmentSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            projectName, userId, environmentName, accept, body, requestOptions, Context.NONE);
+            projectName, userId, environmentName, contentType, accept, body, requestOptions, Context.NONE);
     }
 
     /**
      * Creates or updates an environment.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -1348,17 +1246,21 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -1375,7 +1277,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1397,7 +1300,8 @@ public final class DeploymentEnvironmentsClientImpl {
                 requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
@@ -1405,16 +1309,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Creates or updates an environment.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -1431,17 +1337,21 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -1458,7 +1368,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1480,33 +1391,227 @@ public final class DeploymentEnvironmentsClientImpl {
                 requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
-     * Deletes an environment and all its associated resources.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * Creates or updates an environment.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     status: String(Running/Completed/Canceled/Failed) (Required)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
+     *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
+     *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param environmentName The name of the environment.
+     * @param body Represents an environment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of properties of an environment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<DevCenterOperationDetails, DevCenterEnvironment> beginCreateOrUpdateEnvironmentWithModelAsync(
+        String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createOrUpdateEnvironmentWithResponseAsync(projectName, userId, environmentName, body,
+                requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DevCenterOperationDetails.class),
+            TypeReference.createInstance(DevCenterEnvironment.class));
+    }
+
+    /**
+     * Creates or updates an environment.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
+     *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
+     *     environmentType: String (Required)
+     *     user: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
+     *     resourceGroupId: String (Optional)
+     *     catalogName: String (Required)
+     *     environmentDefinitionName: String (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param environmentName The name of the environment.
+     * @param body Represents an environment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of properties of an environment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> beginCreateOrUpdateEnvironmentWithModel(
+        String projectName, String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.createOrUpdateEnvironmentWithResponse(projectName, userId, environmentName, body,
+                requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DevCenterOperationDetails.class),
+            TypeReference.createInstance(DevCenterEnvironment.class));
+    }
+
+    /**
+     * Deletes an environment and all its associated resources.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1531,25 +1636,34 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Deletes an environment and all its associated resources.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     status: String(Running/Completed/Canceled/Failed) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1572,25 +1686,34 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Deletes an environment and all its associated resources.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     status: String(Running/Completed/Canceled/Failed) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1610,7 +1733,8 @@ public final class DeploymentEnvironmentsClientImpl {
             () -> this.deleteEnvironmentWithResponseAsync(projectName, userId, environmentName, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
@@ -1618,25 +1742,34 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Deletes an environment and all its associated resources.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     id: String (Optional)
-     *     name: String (Optional)
-     *     status: String(Running/Completed/Canceled/Failed) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -1656,49 +1789,144 @@ public final class DeploymentEnvironmentsClientImpl {
             () -> this.deleteEnvironmentWithResponse(projectName, userId, environmentName, requestOptions),
             new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(Void.class));
     }
 
     /**
-     * Lists all of the catalogs available for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * Deletes an environment and all its associated resources.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     id: String (Required)
      *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param environmentName The name of the environment.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the catalog list operation along with {@link PagedResponse} on successful completion of
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<DevCenterOperationDetails, Void> beginDeleteEnvironmentWithModelAsync(String projectName,
+        String userId, String environmentName, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.deleteEnvironmentWithResponseAsync(projectName, userId, environmentName, requestOptions),
+            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DevCenterOperationDetails.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Deletes an environment and all its associated resources.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     resourceId: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     endTime: OffsetDateTime (Optional)
+     *     percentComplete: Double (Optional)
+     *     properties: Object (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
+     * context.
+     * @param environmentName The name of the environment.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<DevCenterOperationDetails, Void> beginDeleteEnvironmentWithModel(String projectName,
+        String userId, String environmentName, RequestOptions requestOptions) {
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            () -> this.deleteEnvironmentWithResponse(projectName, userId, environmentName, requestOptions),
+            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+                .setEndpoint("{endpoint}".replace("{endpoint}", this.getEndpoint()))
+                .setContext(requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE)
+                .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(DevCenterOperationDetails.class), TypeReference.createInstance(Void.class));
+    }
+
+    /**
+     * Lists all of the catalogs available for a project.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param projectName Name of the project.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of Catalog items along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1714,41 +1942,23 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all of the catalogs available for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the catalog list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of Catalog items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listCatalogsAsync(String projectName, RequestOptions requestOptions) {
@@ -1761,41 +1971,23 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all of the catalogs available for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the catalog list operation along with {@link PagedResponse}.
+     * @return paged collection of Catalog items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listCatalogsSinglePage(String projectName, RequestOptions requestOptions) {
@@ -1808,41 +2000,23 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all of the catalogs available for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the catalog list operation as paginated response with {@link PagedIterable}.
+     * @return paged collection of Catalog items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listCatalogs(String projectName, RequestOptions requestOptions) {
@@ -1855,17 +2029,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Gets the specified catalog within the project.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogName The name of the catalog.
+     * @param projectName Name of the project.
+     * @param catalogName Name of the catalog.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1884,17 +2059,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Gets the specified catalog within the project.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogName The name of the catalog.
+     * @param projectName Name of the project.
+     * @param catalogName Name of the catalog.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1912,29 +2088,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment definitions available for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -1957,7 +2114,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1965,8 +2123,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return paged collection of EnvironmentDefinition items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentDefinitionsSinglePageAsync(String projectName,
@@ -1981,29 +2139,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment definitions available for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2026,7 +2165,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2034,7 +2174,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of EnvironmentDefinition items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listEnvironmentDefinitionsAsync(String projectName, RequestOptions requestOptions) {
@@ -2047,29 +2187,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment definitions available for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2092,7 +2213,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2100,7 +2222,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse}.
+     * @return paged collection of EnvironmentDefinition items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEnvironmentDefinitionsSinglePage(String projectName,
@@ -2114,29 +2236,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment definitions available for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2159,7 +2262,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2167,7 +2271,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
+     * @return paged collection of EnvironmentDefinition items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironmentDefinitions(String projectName, RequestOptions requestOptions) {
@@ -2180,29 +2284,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment definitions available within a catalog.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2225,7 +2310,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
@@ -2234,8 +2320,8 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return paged collection of EnvironmentDefinition items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentDefinitionsByCatalogSinglePageAsync(String projectName,
@@ -2250,29 +2336,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment definitions available within a catalog.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2295,7 +2362,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
@@ -2304,7 +2372,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of EnvironmentDefinition items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listEnvironmentDefinitionsByCatalogAsync(String projectName, String catalogName,
@@ -2319,29 +2387,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment definitions available within a catalog.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2364,7 +2413,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
@@ -2373,7 +2423,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse}.
+     * @return paged collection of EnvironmentDefinition items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEnvironmentDefinitionsByCatalogSinglePage(String projectName,
@@ -2387,29 +2437,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment definitions available within a catalog.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2432,7 +2463,8 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
@@ -2441,7 +2473,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation as paginated response with {@link PagedIterable}.
+     * @return paged collection of EnvironmentDefinition items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironmentDefinitionsByCatalog(String projectName, String catalogName,
@@ -2456,10 +2488,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get an environment definition from a catalog.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2482,11 +2514,12 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogName The name of the catalog.
-     * @param definitionName The name of the environment definition.
+     * @param projectName Name of the project.
+     * @param catalogName Name of the catalog.
+     * @param definitionName Name of the environment definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2506,10 +2539,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get an environment definition from a catalog.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -2532,11 +2565,12 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogName The name of the catalog.
-     * @param definitionName The name of the environment definition.
+     * @param projectName Name of the project.
+     * @param catalogName Name of the catalog.
+     * @param definitionName Name of the environment definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2554,44 +2588,26 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment types configured for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result of the environment type list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return paged collection of EnvironmentType items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentTypesSinglePageAsync(String projectName,
@@ -2606,43 +2622,25 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment types configured for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result of the environment type list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of EnvironmentType items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listEnvironmentTypesAsync(String projectName, RequestOptions requestOptions) {
@@ -2655,43 +2653,25 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment types configured for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result of the environment type list operation along with {@link PagedResponse}.
+     * @return paged collection of EnvironmentType items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEnvironmentTypesSinglePage(String projectName,
@@ -2705,43 +2685,25 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Lists all environment types configured for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result of the environment type list operation as paginated response with {@link PagedIterable}.
+     * @return paged collection of EnvironmentType items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listEnvironmentTypes(String projectName, RequestOptions requestOptions) {
@@ -2754,16 +2716,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -2780,17 +2744,16 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of
+     * @return paged collection of Environment items along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2805,16 +2768,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -2831,17 +2796,16 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse}.
+     * @return paged collection of Environment items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listAllEnvironmentsNextSinglePage(String nextLink,
@@ -2855,16 +2819,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -2881,17 +2847,16 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse} on successful completion of
+     * @return paged collection of Environment items along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2907,16 +2872,18 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -2933,17 +2900,16 @@ public final class DeploymentEnvironmentsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment list operation along with {@link PagedResponse}.
+     * @return paged collection of Environment items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEnvironmentsNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -2956,24 +2922,23 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the catalog list operation along with {@link PagedResponse} on successful completion of
+     * @return paged collection of Catalog items along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2989,24 +2954,23 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the catalog list operation along with {@link PagedResponse}.
+     * @return paged collection of Catalog items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listCatalogsNextSinglePage(String nextLink, RequestOptions requestOptions) {
@@ -3019,10 +2983,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3045,18 +3009,17 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return paged collection of EnvironmentDefinition items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentDefinitionsNextSinglePageAsync(String nextLink,
@@ -3071,10 +3034,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3097,17 +3060,16 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse}.
+     * @return paged collection of EnvironmentDefinition items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEnvironmentDefinitionsNextSinglePage(String nextLink,
@@ -3121,10 +3083,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3147,18 +3109,17 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return paged collection of EnvironmentDefinition items along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentDefinitionsByCatalogNextSinglePageAsync(String nextLink,
@@ -3173,10 +3134,10 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -3199,17 +3160,16 @@ public final class DeploymentEnvironmentsClientImpl {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the environment definition list operation along with {@link PagedResponse}.
+     * @return paged collection of EnvironmentDefinition items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEnvironmentDefinitionsByCatalogNextSinglePage(String nextLink,
@@ -3223,27 +3183,26 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result of the environment type list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return paged collection of EnvironmentType items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listEnvironmentTypesNextSinglePageAsync(String nextLink,
@@ -3257,26 +3216,25 @@ public final class DeploymentEnvironmentsClientImpl {
 
     /**
      * Get the next page of items.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result of the environment type list operation along with {@link PagedResponse}.
+     * @return paged collection of EnvironmentType items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listEnvironmentTypesNextSinglePage(String nextLink,

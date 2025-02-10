@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RecipientEmailCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecipientEmailCollectionInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"email\":\"tibhlennt\"},\"id\":\"vrkpsa\",\"name\":\"d\",\"type\":\"xvzmlghny\"}],\"count\":4684665514852234763,\"nextLink\":\"euukppdi\"}")
-                .toObject(RecipientEmailCollectionInner.class);
+        RecipientEmailCollectionInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"email\":\"tibhlennt\"},\"id\":\"vrkpsa\",\"name\":\"d\",\"type\":\"xvzmlghny\"}],\"count\":4684665514852234763,\"nextLink\":\"euukppdi\"}")
+            .toObject(RecipientEmailCollectionInner.class);
         Assertions.assertEquals("tibhlennt", model.value().get(0).email());
         Assertions.assertEquals(4684665514852234763L, model.count());
         Assertions.assertEquals("euukppdi", model.nextLink());
@@ -25,11 +23,10 @@ public final class RecipientEmailCollectionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecipientEmailCollectionInner model =
-            new RecipientEmailCollectionInner()
-                .withValue(Arrays.asList(new RecipientEmailContractInner().withEmail("tibhlennt")))
-                .withCount(4684665514852234763L)
-                .withNextLink("euukppdi");
+        RecipientEmailCollectionInner model = new RecipientEmailCollectionInner()
+            .withValue(Arrays.asList(new RecipientEmailContractInner().withEmail("tibhlennt")))
+            .withCount(4684665514852234763L)
+            .withNextLink("euukppdi");
         model = BinaryData.fromObject(model).toObject(RecipientEmailCollectionInner.class);
         Assertions.assertEquals("tibhlennt", model.value().get(0).email());
         Assertions.assertEquals(4684665514852234763L, model.count());

@@ -6,67 +6,72 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines contents of a web application rule. */
+/**
+ * Defines contents of a web application rule.
+ */
 @Fluent
-public final class CustomRule {
+public final class CustomRule implements JsonSerializable<CustomRule> {
     /*
      * Describes the name of the rule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value.
      */
-    @JsonProperty(value = "priority", required = true)
     private int priority;
 
     /*
      * Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
      */
-    @JsonProperty(value = "enabledState")
     private CustomRuleEnabledState enabledState;
 
     /*
      * Describes type of rule.
      */
-    @JsonProperty(value = "ruleType", required = true)
     private RuleType ruleType;
 
     /*
      * Time window for resetting the rate limit count. Default is 1 minute.
      */
-    @JsonProperty(value = "rateLimitDurationInMinutes")
     private Integer rateLimitDurationInMinutes;
 
     /*
      * Number of allowed requests per client within the time window.
      */
-    @JsonProperty(value = "rateLimitThreshold")
     private Integer rateLimitThreshold;
+
+    /*
+     * Describes the list of variables to group the rate limit requests
+     */
+    private List<GroupByVariable> groupBy;
 
     /*
      * List of match conditions.
      */
-    @JsonProperty(value = "matchConditions", required = true)
     private List<MatchCondition> matchConditions;
 
     /*
      * Describes what action to be applied when rule matches.
      */
-    @JsonProperty(value = "action", required = true)
     private ActionType action;
 
-    /** Creates an instance of CustomRule class. */
+    /**
+     * Creates an instance of CustomRule class.
+     */
     public CustomRule() {
     }
 
     /**
      * Get the name property: Describes the name of the rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -75,7 +80,7 @@ public final class CustomRule {
 
     /**
      * Set the name property: Describes the name of the rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the CustomRule object itself.
      */
@@ -87,7 +92,7 @@ public final class CustomRule {
     /**
      * Get the priority property: Describes priority of the rule. Rules with a lower value will be evaluated before
      * rules with a higher value.
-     *
+     * 
      * @return the priority value.
      */
     public int priority() {
@@ -97,7 +102,7 @@ public final class CustomRule {
     /**
      * Set the priority property: Describes priority of the rule. Rules with a lower value will be evaluated before
      * rules with a higher value.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the CustomRule object itself.
      */
@@ -109,7 +114,7 @@ public final class CustomRule {
     /**
      * Get the enabledState property: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled
      * if not specified.
-     *
+     * 
      * @return the enabledState value.
      */
     public CustomRuleEnabledState enabledState() {
@@ -119,7 +124,7 @@ public final class CustomRule {
     /**
      * Set the enabledState property: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled
      * if not specified.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the CustomRule object itself.
      */
@@ -130,7 +135,7 @@ public final class CustomRule {
 
     /**
      * Get the ruleType property: Describes type of rule.
-     *
+     * 
      * @return the ruleType value.
      */
     public RuleType ruleType() {
@@ -139,7 +144,7 @@ public final class CustomRule {
 
     /**
      * Set the ruleType property: Describes type of rule.
-     *
+     * 
      * @param ruleType the ruleType value to set.
      * @return the CustomRule object itself.
      */
@@ -150,7 +155,7 @@ public final class CustomRule {
 
     /**
      * Get the rateLimitDurationInMinutes property: Time window for resetting the rate limit count. Default is 1 minute.
-     *
+     * 
      * @return the rateLimitDurationInMinutes value.
      */
     public Integer rateLimitDurationInMinutes() {
@@ -159,7 +164,7 @@ public final class CustomRule {
 
     /**
      * Set the rateLimitDurationInMinutes property: Time window for resetting the rate limit count. Default is 1 minute.
-     *
+     * 
      * @param rateLimitDurationInMinutes the rateLimitDurationInMinutes value to set.
      * @return the CustomRule object itself.
      */
@@ -170,7 +175,7 @@ public final class CustomRule {
 
     /**
      * Get the rateLimitThreshold property: Number of allowed requests per client within the time window.
-     *
+     * 
      * @return the rateLimitThreshold value.
      */
     public Integer rateLimitThreshold() {
@@ -179,7 +184,7 @@ public final class CustomRule {
 
     /**
      * Set the rateLimitThreshold property: Number of allowed requests per client within the time window.
-     *
+     * 
      * @param rateLimitThreshold the rateLimitThreshold value to set.
      * @return the CustomRule object itself.
      */
@@ -189,8 +194,28 @@ public final class CustomRule {
     }
 
     /**
+     * Get the groupBy property: Describes the list of variables to group the rate limit requests.
+     * 
+     * @return the groupBy value.
+     */
+    public List<GroupByVariable> groupBy() {
+        return this.groupBy;
+    }
+
+    /**
+     * Set the groupBy property: Describes the list of variables to group the rate limit requests.
+     * 
+     * @param groupBy the groupBy value to set.
+     * @return the CustomRule object itself.
+     */
+    public CustomRule withGroupBy(List<GroupByVariable> groupBy) {
+        this.groupBy = groupBy;
+        return this;
+    }
+
+    /**
      * Get the matchConditions property: List of match conditions.
-     *
+     * 
      * @return the matchConditions value.
      */
     public List<MatchCondition> matchConditions() {
@@ -199,7 +224,7 @@ public final class CustomRule {
 
     /**
      * Set the matchConditions property: List of match conditions.
-     *
+     * 
      * @param matchConditions the matchConditions value to set.
      * @return the CustomRule object itself.
      */
@@ -210,7 +235,7 @@ public final class CustomRule {
 
     /**
      * Get the action property: Describes what action to be applied when rule matches.
-     *
+     * 
      * @return the action value.
      */
     public ActionType action() {
@@ -219,7 +244,7 @@ public final class CustomRule {
 
     /**
      * Set the action property: Describes what action to be applied when rule matches.
-     *
+     * 
      * @param action the action value to set.
      * @return the CustomRule object itself.
      */
@@ -230,28 +255,93 @@ public final class CustomRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleType in model CustomRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ruleType in model CustomRule"));
+        }
+        if (groupBy() != null) {
+            groupBy().forEach(e -> e.validate());
         }
         if (matchConditions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property matchConditions in model CustomRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property matchConditions in model CustomRule"));
         } else {
             matchConditions().forEach(e -> e.validate());
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model CustomRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model CustomRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("priority", this.priority);
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeArrayField("matchConditions", this.matchConditions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
+        jsonWriter.writeNumberField("rateLimitDurationInMinutes", this.rateLimitDurationInMinutes);
+        jsonWriter.writeNumberField("rateLimitThreshold", this.rateLimitThreshold);
+        jsonWriter.writeArrayField("groupBy", this.groupBy, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomRule if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomRule.
+     */
+    public static CustomRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomRule deserializedCustomRule = new CustomRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("priority".equals(fieldName)) {
+                    deserializedCustomRule.priority = reader.getInt();
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedCustomRule.ruleType = RuleType.fromString(reader.getString());
+                } else if ("matchConditions".equals(fieldName)) {
+                    List<MatchCondition> matchConditions
+                        = reader.readArray(reader1 -> MatchCondition.fromJson(reader1));
+                    deserializedCustomRule.matchConditions = matchConditions;
+                } else if ("action".equals(fieldName)) {
+                    deserializedCustomRule.action = ActionType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedCustomRule.name = reader.getString();
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedCustomRule.enabledState = CustomRuleEnabledState.fromString(reader.getString());
+                } else if ("rateLimitDurationInMinutes".equals(fieldName)) {
+                    deserializedCustomRule.rateLimitDurationInMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("rateLimitThreshold".equals(fieldName)) {
+                    deserializedCustomRule.rateLimitThreshold = reader.getNullable(JsonReader::getInt);
+                } else if ("groupBy".equals(fieldName)) {
+                    List<GroupByVariable> groupBy = reader.readArray(reader1 -> GroupByVariable.fromJson(reader1));
+                    deserializedCustomRule.groupBy = groupBy;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomRule;
+        });
+    }
 }

@@ -5,26 +5,46 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The build stage (init-container and container) resources in build pod. */
+/**
+ * The build stage (init-container and container) resources in build pod.
+ */
 @Immutable
-public final class BuildStageProperties {
+public final class BuildStageProperties implements JsonSerializable<BuildStageProperties> {
     /*
      * The name of this build stage resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The provisioning state of this build stage resource.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private KPackBuildStageProvisioningState status;
+
+    /*
+     * The exit code of this build init container.
+     */
+    private String exitCode;
+
+    /*
+     * The reason of this build init container.
+     */
+    private String reason;
+
+    /**
+     * Creates an instance of BuildStageProperties class.
+     */
+    public BuildStageProperties() {
+    }
 
     /**
      * Get the name property: The name of this build stage resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +53,7 @@ public final class BuildStageProperties {
 
     /**
      * Get the status property: The provisioning state of this build stage resource.
-     *
+     * 
      * @return the status value.
      */
     public KPackBuildStageProvisioningState status() {
@@ -41,10 +61,70 @@ public final class BuildStageProperties {
     }
 
     /**
+     * Get the exitCode property: The exit code of this build init container.
+     * 
+     * @return the exitCode value.
+     */
+    public String exitCode() {
+        return this.exitCode;
+    }
+
+    /**
+     * Get the reason property: The reason of this build init container.
+     * 
+     * @return the reason value.
+     */
+    public String reason() {
+        return this.reason;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildStageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildStageProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildStageProperties.
+     */
+    public static BuildStageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildStageProperties deserializedBuildStageProperties = new BuildStageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedBuildStageProperties.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedBuildStageProperties.status
+                        = KPackBuildStageProvisioningState.fromString(reader.getString());
+                } else if ("exitCode".equals(fieldName)) {
+                    deserializedBuildStageProperties.exitCode = reader.getString();
+                } else if ("reason".equals(fieldName)) {
+                    deserializedBuildStageProperties.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildStageProperties;
+        });
     }
 }

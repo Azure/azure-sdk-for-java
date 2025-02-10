@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of virtual network. */
+/**
+ * Properties of virtual network.
+ */
 @Immutable
-public final class VirtualNetworkProperties {
+public final class VirtualNetworkProperties implements JsonSerializable<VirtualNetworkProperties> {
     /*
      * The Private Cloud id
      */
-    @JsonProperty(value = "privateCloudId", access = JsonProperty.Access.WRITE_ONLY)
     private String privateCloudId;
 
-    /** Creates an instance of VirtualNetworkProperties class. */
+    /**
+     * Creates an instance of VirtualNetworkProperties class.
+     */
     public VirtualNetworkProperties() {
     }
 
     /**
      * Get the privateCloudId property: The Private Cloud id.
-     *
+     * 
      * @return the privateCloudId value.
      */
     public String privateCloudId() {
@@ -31,9 +38,44 @@ public final class VirtualNetworkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkProperties.
+     */
+    public static VirtualNetworkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkProperties deserializedVirtualNetworkProperties = new VirtualNetworkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateCloudId".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.privateCloudId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkProperties;
+        });
     }
 }

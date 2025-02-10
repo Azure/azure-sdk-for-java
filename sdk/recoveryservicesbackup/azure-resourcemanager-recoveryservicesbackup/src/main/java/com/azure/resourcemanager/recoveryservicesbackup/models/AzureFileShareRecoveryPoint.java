@@ -5,54 +5,71 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Azure File Share workload specific backup copy. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureFileShareRecoveryPoint")
+/**
+ * Azure File Share workload specific backup copy.
+ */
 @Fluent
 public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "AzureFileShareRecoveryPoint";
+
+    /*
      * Type of the backup copy. Specifies whether it is a crash consistent backup or app consistent.
      */
-    @JsonProperty(value = "recoveryPointType")
     private String recoveryPointType;
 
     /*
      * Time at which this backup copy was created.
      */
-    @JsonProperty(value = "recoveryPointTime")
     private OffsetDateTime recoveryPointTime;
 
     /*
      * Contains Url to the snapshot of fileshare, if applicable
      */
-    @JsonProperty(value = "fileShareSnapshotUri")
     private String fileShareSnapshotUri;
 
     /*
      * Contains recovery point size
      */
-    @JsonProperty(value = "recoveryPointSizeInGB")
     private Integer recoveryPointSizeInGB;
 
     /*
      * Properties of Recovery Point
      */
-    @JsonProperty(value = "recoveryPointProperties")
     private RecoveryPointProperties recoveryPointProperties;
 
-    /** Creates an instance of AzureFileShareRecoveryPoint class. */
+    /**
+     * Creates an instance of AzureFileShareRecoveryPoint class.
+     */
     public AzureFileShareRecoveryPoint() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
      * Get the recoveryPointType property: Type of the backup copy. Specifies whether it is a crash consistent backup or
      * app consistent.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public String recoveryPointType() {
@@ -62,7 +79,7 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
     /**
      * Set the recoveryPointType property: Type of the backup copy. Specifies whether it is a crash consistent backup or
      * app consistent.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the AzureFileShareRecoveryPoint object itself.
      */
@@ -73,7 +90,7 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the recoveryPointTime property: Time at which this backup copy was created.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public OffsetDateTime recoveryPointTime() {
@@ -82,7 +99,7 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the recoveryPointTime property: Time at which this backup copy was created.
-     *
+     * 
      * @param recoveryPointTime the recoveryPointTime value to set.
      * @return the AzureFileShareRecoveryPoint object itself.
      */
@@ -93,7 +110,7 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the fileShareSnapshotUri property: Contains Url to the snapshot of fileshare, if applicable.
-     *
+     * 
      * @return the fileShareSnapshotUri value.
      */
     public String fileShareSnapshotUri() {
@@ -102,7 +119,7 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the fileShareSnapshotUri property: Contains Url to the snapshot of fileshare, if applicable.
-     *
+     * 
      * @param fileShareSnapshotUri the fileShareSnapshotUri value to set.
      * @return the AzureFileShareRecoveryPoint object itself.
      */
@@ -113,7 +130,7 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the recoveryPointSizeInGB property: Contains recovery point size.
-     *
+     * 
      * @return the recoveryPointSizeInGB value.
      */
     public Integer recoveryPointSizeInGB() {
@@ -122,7 +139,7 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the recoveryPointSizeInGB property: Contains recovery point size.
-     *
+     * 
      * @param recoveryPointSizeInGB the recoveryPointSizeInGB value to set.
      * @return the AzureFileShareRecoveryPoint object itself.
      */
@@ -133,7 +150,7 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
 
     /**
      * Get the recoveryPointProperties property: Properties of Recovery Point.
-     *
+     * 
      * @return the recoveryPointProperties value.
      */
     public RecoveryPointProperties recoveryPointProperties() {
@@ -142,7 +159,7 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
 
     /**
      * Set the recoveryPointProperties property: Properties of Recovery Point.
-     *
+     * 
      * @param recoveryPointProperties the recoveryPointProperties value to set.
      * @return the AzureFileShareRecoveryPoint object itself.
      */
@@ -153,14 +170,70 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointProperties() != null) {
             recoveryPointProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("recoveryPointType", this.recoveryPointType);
+        jsonWriter.writeStringField("recoveryPointTime",
+            this.recoveryPointTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recoveryPointTime));
+        jsonWriter.writeStringField("fileShareSnapshotUri", this.fileShareSnapshotUri);
+        jsonWriter.writeNumberField("recoveryPointSizeInGB", this.recoveryPointSizeInGB);
+        jsonWriter.writeJsonField("recoveryPointProperties", this.recoveryPointProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileShareRecoveryPoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileShareRecoveryPoint if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileShareRecoveryPoint.
+     */
+    public static AzureFileShareRecoveryPoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileShareRecoveryPoint deserializedAzureFileShareRecoveryPoint = new AzureFileShareRecoveryPoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedAzureFileShareRecoveryPoint.objectType = reader.getString();
+                } else if ("recoveryPointType".equals(fieldName)) {
+                    deserializedAzureFileShareRecoveryPoint.recoveryPointType = reader.getString();
+                } else if ("recoveryPointTime".equals(fieldName)) {
+                    deserializedAzureFileShareRecoveryPoint.recoveryPointTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fileShareSnapshotUri".equals(fieldName)) {
+                    deserializedAzureFileShareRecoveryPoint.fileShareSnapshotUri = reader.getString();
+                } else if ("recoveryPointSizeInGB".equals(fieldName)) {
+                    deserializedAzureFileShareRecoveryPoint.recoveryPointSizeInGB
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("recoveryPointProperties".equals(fieldName)) {
+                    deserializedAzureFileShareRecoveryPoint.recoveryPointProperties
+                        = RecoveryPointProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileShareRecoveryPoint;
+        });
     }
 }

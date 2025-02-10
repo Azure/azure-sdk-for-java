@@ -5,21 +5,23 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Image analysis result.
  */
 @Immutable
-public final class ImageCategoriesAnalysis {
+public final class ImageCategoriesAnalysis implements JsonSerializable<ImageCategoriesAnalysis> {
 
     /*
      * The image analysis category.
      */
     @Generated
-    @JsonProperty(value = "category")
-    private ImageCategory category;
+    private final ImageCategory category;
 
     /*
      * The value increases with the severity of the input content. The value of this field is determined by the output
@@ -27,7 +29,6 @@ public final class ImageCategoriesAnalysis {
      * 4, 6.
      */
     @Generated
-    @JsonProperty(value = "severity")
     private Integer severity;
 
     /**
@@ -36,8 +37,7 @@ public final class ImageCategoriesAnalysis {
      * @param category the category value to set.
      */
     @Generated
-    @JsonCreator
-    private ImageCategoriesAnalysis(@JsonProperty(value = "category") ImageCategory category) {
+    private ImageCategoriesAnalysis(ImageCategory category) {
         this.category = category;
     }
 
@@ -52,14 +52,57 @@ public final class ImageCategoriesAnalysis {
     }
 
     /**
-     * Get the severity property: The value increases with the severity of the input content. The value of this field
-     * is determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’, and
-     * the output value can be 0, 2, 4, 6.
+     * Get the severity property: The value increases with the severity of the input content. The value of this field is
+     * determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’, and the
+     * output value can be 0, 2, 4, 6.
      *
      * @return the severity value.
      */
     @Generated
     public Integer getSeverity() {
         return this.severity;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeNumberField("severity", this.severity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageCategoriesAnalysis from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageCategoriesAnalysis if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageCategoriesAnalysis.
+     */
+    @Generated
+    public static ImageCategoriesAnalysis fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageCategory category = null;
+            Integer severity = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("category".equals(fieldName)) {
+                    category = ImageCategory.fromString(reader.getString());
+                } else if ("severity".equals(fieldName)) {
+                    severity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ImageCategoriesAnalysis deserializedImageCategoriesAnalysis = new ImageCategoriesAnalysis(category);
+            deserializedImageCategoriesAnalysis.severity = severity;
+            return deserializedImageCategoriesAnalysis;
+        });
     }
 }

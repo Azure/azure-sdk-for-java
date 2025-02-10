@@ -15,9 +15,9 @@ import java.lang.annotation.Target;
  * useful in situations where a property definition doesn't cleanly map to a {@link SearchField} object, but its values
  * still need to be converted to and from JSON. In that case, ignore annotation in json serializer library can't be used
  * since it would disable JSON conversion. An example of a scenario where this is useful is when mapping between a
- * string field in Azure Cognitive Search and an enum property.
+ * string field in Azure AI Search and an enum property.
  */
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FieldBuilderIgnore {
 }

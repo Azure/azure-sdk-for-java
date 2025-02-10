@@ -12,15 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Implementation for Ipv6PeeringConfig. */
-class Ipv6PeeringConfigImpl extends IndexableWrapperImpl<Ipv6ExpressRouteCircuitPeeringConfig>
-    implements Ipv6PeeringConfig,
-        Ipv6PeeringConfig.Definition<ExpressRouteCrossConnectionPeering.DefinitionStages.WithCreate>,
-        Ipv6PeeringConfig.UpdateDefinition<ExpressRouteCrossConnectionPeering.Update>,
-        Ipv6PeeringConfig.Update {
+class Ipv6PeeringConfigImpl extends IndexableWrapperImpl<Ipv6ExpressRouteCircuitPeeringConfig> implements
+    Ipv6PeeringConfig, Ipv6PeeringConfig.Definition<ExpressRouteCrossConnectionPeering.DefinitionStages.WithCreate>,
+    Ipv6PeeringConfig.UpdateDefinition<ExpressRouteCrossConnectionPeering.Update>, Ipv6PeeringConfig.Update {
     private final ExpressRouteCrossConnectionPeeringImpl parent;
 
-    Ipv6PeeringConfigImpl(
-        Ipv6ExpressRouteCircuitPeeringConfig innerObject, ExpressRouteCrossConnectionPeeringImpl parent) {
+    Ipv6PeeringConfigImpl(Ipv6ExpressRouteCircuitPeeringConfig innerObject,
+        ExpressRouteCrossConnectionPeeringImpl parent) {
         super(innerObject);
         this.parent = parent;
     }

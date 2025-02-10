@@ -14,21 +14,19 @@ public final class EventHubEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHubEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"vesk\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"qphr\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"nzhctmjtsgh\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"c\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"pzarpzeqacdld\"}]}")
+            "{\"resourceId\":\"kraokq\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"btwa\"}]}")
             .toObject(EventHubEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("vesk", model.resourceId());
-        Assertions.assertEquals("qphr", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("kraokq", model.resourceId());
+        Assertions.assertEquals("btwa", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubEventSubscriptionDestinationProperties model = new EventHubEventSubscriptionDestinationProperties()
-            .withResourceId("vesk")
-            .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("qphr"),
-                new DeliveryAttributeMapping().withName("nzhctmjtsgh"), new DeliveryAttributeMapping().withName("c"),
-                new DeliveryAttributeMapping().withName("pzarpzeqacdld")));
+        EventHubEventSubscriptionDestinationProperties model
+            = new EventHubEventSubscriptionDestinationProperties().withResourceId("kraokq")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("btwa")));
         model = BinaryData.fromObject(model).toObject(EventHubEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("vesk", model.resourceId());
-        Assertions.assertEquals("qphr", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("kraokq", model.resourceId());
+        Assertions.assertEquals("btwa", model.deliveryAttributeMappings().get(0).name());
     }
 }

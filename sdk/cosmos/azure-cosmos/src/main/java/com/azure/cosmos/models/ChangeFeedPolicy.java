@@ -238,12 +238,14 @@ public final class ChangeFeedPolicy {
         if (retentionDurationInMinutes == null || retentionDurationInMinutes <= 0) {
             this.jsonSerializable.set(
                 Constants.Properties.LOG_RETENTION_DURATION,
-                0);
+                0
+            );
         }
         else {
             this.jsonSerializable.set(
                 Constants.Properties.LOG_RETENTION_DURATION,
-                retentionDurationInMinutes);
+                retentionDurationInMinutes
+            );
         }
 
         return this;

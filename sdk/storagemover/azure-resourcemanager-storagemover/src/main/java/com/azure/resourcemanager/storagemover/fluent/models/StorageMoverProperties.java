@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The resource specific properties for the Storage Mover resource. */
+/**
+ * The resource specific properties for the Storage Mover resource.
+ */
 @Fluent
-public final class StorageMoverProperties {
+public final class StorageMoverProperties implements JsonSerializable<StorageMoverProperties> {
     /*
      * A description for the Storage Mover.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The provisioning state of this resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of StorageMoverProperties class. */
+    /**
+     * Creates an instance of StorageMoverProperties class.
+     */
     public StorageMoverProperties() {
     }
 
     /**
      * Get the description property: A description for the Storage Mover.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -38,7 +44,7 @@ public final class StorageMoverProperties {
 
     /**
      * Set the description property: A description for the Storage Mover.
-     *
+     * 
      * @param description the description value to set.
      * @return the StorageMoverProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class StorageMoverProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of this resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,9 +64,48 @@ public final class StorageMoverProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageMoverProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageMoverProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageMoverProperties.
+     */
+    public static StorageMoverProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageMoverProperties deserializedStorageMoverProperties = new StorageMoverProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedStorageMoverProperties.description = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedStorageMoverProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageMoverProperties;
+        });
     }
 }

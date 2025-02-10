@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/storageactions/ci.yml
+      - sdk/storageactions/azure-resourcemanager-storageactions/
+    exclude:
+      - sdk/storageactions/pom.xml
+      - sdk/storageactions/azure-resourcemanager-storageactions/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/storageactions/ci.yml
+      - sdk/storageactions/azure-resourcemanager-storageactions/
+    exclude:
+      - sdk/storageactions/pom.xml
+      - sdk/storageactions/azure-resourcemanager-storageactions/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerstorageactions
+    displayName: azure-resourcemanager-storageactions
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: storageactions
+    Artifacts:
+      - name: azure-resourcemanager-storageactions
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerstorageactions
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerstorageactions }}

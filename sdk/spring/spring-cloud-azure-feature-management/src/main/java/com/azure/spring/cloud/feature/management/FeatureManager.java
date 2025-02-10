@@ -38,7 +38,7 @@ public class FeatureManager {
 
     /**
      * Can be called to check if a feature is enabled or disabled.
-     * 
+     *
      * @param context ApplicationContext
      * @param featureManagementConfigurations Configuration Properties for Feature Flags
      * @param properties FeatureManagementConfigProperties
@@ -51,9 +51,9 @@ public class FeatureManager {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
-     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
-     * isn't found it returns false.
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter
+     * returns true it returns true. If no filter returns true, it returns false. If there are no
+     * filters, it returns true. If feature isn't found it returns false.
      *
      * @param feature Feature being checked.
      * @return state of the feature
@@ -64,9 +64,9 @@ public class FeatureManager {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
-     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
-     * isn't found it returns false.
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter
+     * returns true it returns true. If no filter returns true, it returns false. If there are no
+     * filters, it returns true. If feature isn't found it returns false.
      *
      * @param feature Feature being checked.
      * @return state of the feature

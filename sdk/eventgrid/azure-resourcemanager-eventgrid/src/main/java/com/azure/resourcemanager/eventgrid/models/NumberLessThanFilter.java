@@ -5,27 +5,41 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * NumberLessThan Filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
-@JsonTypeName("NumberLessThan")
 @Fluent
 public final class NumberLessThanFilter extends Filter {
     /*
+     * The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+     */
+    private FilterOperatorType operatorType = FilterOperatorType.NUMBER_LESS_THAN;
+
+    /*
      * The filter value.
      */
-    @JsonProperty(value = "value")
     private Double value;
 
     /**
      * Creates an instance of NumberLessThanFilter class.
      */
     public NumberLessThanFilter() {
+    }
+
+    /**
+     * Get the operatorType property: The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals
+     * and others.
+     * 
+     * @return the operatorType value.
+     */
+    @Override
+    public FilterOperatorType operatorType() {
+        return this.operatorType;
     }
 
     /**
@@ -64,6 +78,47 @@ public final class NumberLessThanFilter extends Filter {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", key());
+        jsonWriter.writeStringField("operatorType", this.operatorType == null ? null : this.operatorType.toString());
+        jsonWriter.writeNumberField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NumberLessThanFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NumberLessThanFilter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NumberLessThanFilter.
+     */
+    public static NumberLessThanFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NumberLessThanFilter deserializedNumberLessThanFilter = new NumberLessThanFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedNumberLessThanFilter.withKey(reader.getString());
+                } else if ("operatorType".equals(fieldName)) {
+                    deserializedNumberLessThanFilter.operatorType = FilterOperatorType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedNumberLessThanFilter.value = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNumberLessThanFilter;
+        });
     }
 }

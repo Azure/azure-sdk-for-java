@@ -8,12 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Deployments. */
+/**
+ * Resource collection API of Deployments.
+ */
 public interface Deployments {
     /**
      * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
      * used for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -23,13 +25,13 @@ public interface Deployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Deployment list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Deployment> listByDeviceGroup(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName);
+    PagedIterable<Deployment> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName);
 
     /**
      * List Deployment resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be
      * used for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -44,111 +46,85 @@ public interface Deployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Deployment list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Deployment> listByDeviceGroup(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context);
+    PagedIterable<Deployment> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String filter, Integer top, Integer skip, Integer maxpagesize, Context context);
 
     /**
      * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
      * group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deployment along with {@link Response}.
      */
-    Response<Deployment> getWithResponse(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context);
+    Response<Deployment> getWithResponse(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deploymentName, Context context);
 
     /**
      * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
      * group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Deployment.
      */
-    Deployment get(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    Deployment get(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName);
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName);
 
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
      * @param deviceGroupName Name of device group.
      * @param deploymentName Deployment name. Use .default for deployment creation and to get the current deployment for
-     *     the associated device group.
+     * the associated device group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deploymentName,
-        Context context);
+    void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deploymentName, Context context);
 
     /**
      * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
      * group name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -160,7 +136,7 @@ public interface Deployments {
     /**
      * Get a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or device
      * group name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +149,7 @@ public interface Deployments {
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -184,7 +160,7 @@ public interface Deployments {
     /**
      * Delete a Deployment. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,7 +171,7 @@ public interface Deployments {
 
     /**
      * Begins definition for a new Deployment resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Deployment definition.
      */

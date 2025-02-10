@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for Clusters Get. */
+/**
+ * Samples for Clusters Get.
+ */
 public final class ClustersGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Clusters_Get.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Clusters_Get.json
      */
     /**
      * Sample code: Clusters_Get.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void clustersGet(com.azure.resourcemanager.avs.AvsManager manager) {

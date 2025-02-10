@@ -5,56 +5,58 @@
 package com.azure.resourcemanager.recoveryservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservices.models.JobsSummary;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSummary;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Replication usages of a vault. */
+/**
+ * Replication usages of a vault.
+ */
 @Fluent
-public final class ReplicationUsageInner {
+public final class ReplicationUsageInner implements JsonSerializable<ReplicationUsageInner> {
     /*
      * Summary of the replication monitoring data for this vault.
      */
-    @JsonProperty(value = "monitoringSummary")
     private MonitoringSummary monitoringSummary;
 
     /*
      * Summary of the replication jobs data for this vault.
      */
-    @JsonProperty(value = "jobsSummary")
     private JobsSummary jobsSummary;
 
     /*
      * Number of replication protected items for this vault.
      */
-    @JsonProperty(value = "protectedItemCount")
     private Integer protectedItemCount;
 
     /*
      * Number of replication recovery plans for this vault.
      */
-    @JsonProperty(value = "recoveryPlanCount")
     private Integer recoveryPlanCount;
 
     /*
      * Number of servers registered to this vault.
      */
-    @JsonProperty(value = "registeredServersCount")
     private Integer registeredServersCount;
 
     /*
      * The authentication type of recovery service providers in the vault.
      */
-    @JsonProperty(value = "recoveryServicesProviderAuthType")
     private Integer recoveryServicesProviderAuthType;
 
-    /** Creates an instance of ReplicationUsageInner class. */
+    /**
+     * Creates an instance of ReplicationUsageInner class.
+     */
     public ReplicationUsageInner() {
     }
 
     /**
      * Get the monitoringSummary property: Summary of the replication monitoring data for this vault.
-     *
+     * 
      * @return the monitoringSummary value.
      */
     public MonitoringSummary monitoringSummary() {
@@ -63,7 +65,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Set the monitoringSummary property: Summary of the replication monitoring data for this vault.
-     *
+     * 
      * @param monitoringSummary the monitoringSummary value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -74,7 +76,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Get the jobsSummary property: Summary of the replication jobs data for this vault.
-     *
+     * 
      * @return the jobsSummary value.
      */
     public JobsSummary jobsSummary() {
@@ -83,7 +85,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Set the jobsSummary property: Summary of the replication jobs data for this vault.
-     *
+     * 
      * @param jobsSummary the jobsSummary value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -94,7 +96,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Get the protectedItemCount property: Number of replication protected items for this vault.
-     *
+     * 
      * @return the protectedItemCount value.
      */
     public Integer protectedItemCount() {
@@ -103,7 +105,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Set the protectedItemCount property: Number of replication protected items for this vault.
-     *
+     * 
      * @param protectedItemCount the protectedItemCount value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -114,7 +116,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Get the recoveryPlanCount property: Number of replication recovery plans for this vault.
-     *
+     * 
      * @return the recoveryPlanCount value.
      */
     public Integer recoveryPlanCount() {
@@ -123,7 +125,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Set the recoveryPlanCount property: Number of replication recovery plans for this vault.
-     *
+     * 
      * @param recoveryPlanCount the recoveryPlanCount value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -134,7 +136,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Get the registeredServersCount property: Number of servers registered to this vault.
-     *
+     * 
      * @return the registeredServersCount value.
      */
     public Integer registeredServersCount() {
@@ -143,7 +145,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Set the registeredServersCount property: Number of servers registered to this vault.
-     *
+     * 
      * @param registeredServersCount the registeredServersCount value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -155,7 +157,7 @@ public final class ReplicationUsageInner {
     /**
      * Get the recoveryServicesProviderAuthType property: The authentication type of recovery service providers in the
      * vault.
-     *
+     * 
      * @return the recoveryServicesProviderAuthType value.
      */
     public Integer recoveryServicesProviderAuthType() {
@@ -165,7 +167,7 @@ public final class ReplicationUsageInner {
     /**
      * Set the recoveryServicesProviderAuthType property: The authentication type of recovery service providers in the
      * vault.
-     *
+     * 
      * @param recoveryServicesProviderAuthType the recoveryServicesProviderAuthType value to set.
      * @return the ReplicationUsageInner object itself.
      */
@@ -176,7 +178,7 @@ public final class ReplicationUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -186,5 +188,57 @@ public final class ReplicationUsageInner {
         if (jobsSummary() != null) {
             jobsSummary().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("monitoringSummary", this.monitoringSummary);
+        jsonWriter.writeJsonField("jobsSummary", this.jobsSummary);
+        jsonWriter.writeNumberField("protectedItemCount", this.protectedItemCount);
+        jsonWriter.writeNumberField("recoveryPlanCount", this.recoveryPlanCount);
+        jsonWriter.writeNumberField("registeredServersCount", this.registeredServersCount);
+        jsonWriter.writeNumberField("recoveryServicesProviderAuthType", this.recoveryServicesProviderAuthType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationUsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationUsageInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationUsageInner.
+     */
+    public static ReplicationUsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationUsageInner deserializedReplicationUsageInner = new ReplicationUsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("monitoringSummary".equals(fieldName)) {
+                    deserializedReplicationUsageInner.monitoringSummary = MonitoringSummary.fromJson(reader);
+                } else if ("jobsSummary".equals(fieldName)) {
+                    deserializedReplicationUsageInner.jobsSummary = JobsSummary.fromJson(reader);
+                } else if ("protectedItemCount".equals(fieldName)) {
+                    deserializedReplicationUsageInner.protectedItemCount = reader.getNullable(JsonReader::getInt);
+                } else if ("recoveryPlanCount".equals(fieldName)) {
+                    deserializedReplicationUsageInner.recoveryPlanCount = reader.getNullable(JsonReader::getInt);
+                } else if ("registeredServersCount".equals(fieldName)) {
+                    deserializedReplicationUsageInner.registeredServersCount = reader.getNullable(JsonReader::getInt);
+                } else if ("recoveryServicesProviderAuthType".equals(fieldName)) {
+                    deserializedReplicationUsageInner.recoveryServicesProviderAuthType
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationUsageInner;
+        });
     }
 }

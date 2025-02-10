@@ -105,13 +105,10 @@ import java.util.Objects;
  * @see TextAnalyticsAsyncClient
  * @see TextAnalyticsClient
  */
-@ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
-public final class TextAnalyticsClientBuilder implements
-    AzureKeyCredentialTrait<TextAnalyticsClientBuilder>,
-    ConfigurationTrait<TextAnalyticsClientBuilder>,
-    EndpointTrait<TextAnalyticsClientBuilder>,
-    HttpTrait<TextAnalyticsClientBuilder>,
-    TokenCredentialTrait<TextAnalyticsClientBuilder> {
+@ServiceClientBuilder(serviceClients = { TextAnalyticsAsyncClient.class, TextAnalyticsClient.class })
+public final class TextAnalyticsClientBuilder implements AzureKeyCredentialTrait<TextAnalyticsClientBuilder>,
+    ConfigurationTrait<TextAnalyticsClientBuilder>, EndpointTrait<TextAnalyticsClientBuilder>,
+    HttpTrait<TextAnalyticsClientBuilder>, TokenCredentialTrait<TextAnalyticsClientBuilder> {
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final String NAME = "name";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
@@ -195,11 +192,11 @@ public final class TextAnalyticsClientBuilder implements
      */
     public TextAnalyticsAsyncClient buildAsyncClient() {
         // Global Env configuration store
-        final Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         // Service Version
-        final TextAnalyticsServiceVersion serviceVersion =
-            version != null ? version : TextAnalyticsServiceVersion.getLatest();
+        final TextAnalyticsServiceVersion serviceVersion
+            = version != null ? version : TextAnalyticsServiceVersion.getLatest();
 
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
@@ -260,8 +257,7 @@ public final class TextAnalyticsClientBuilder implements
             Tracer tracer = TracerProvider.getDefaultProvider()
                 .createTracer(CLIENT_NAME, CLIENT_VERSION, COGNITIVE_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-            pipeline = new HttpPipelineBuilder()
-                .clientOptions(buildClientOptions)
+            pipeline = new HttpPipelineBuilder().clientOptions(buildClientOptions)
                 .httpClient(httpClient)
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .tracer(tracer)
@@ -269,23 +265,21 @@ public final class TextAnalyticsClientBuilder implements
         }
 
         if (!isConsolidatedServiceVersion(version)) {
-            final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
-                                                                 .endpoint(endpoint)
-                                                                 .apiVersion(serviceVersion.getVersion())
-                                                                 .pipeline(pipeline)
-                                                                 .buildClient();
+            final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder().endpoint(endpoint)
+                .apiVersion(serviceVersion.getVersion())
+                .pipeline(pipeline)
+                .buildClient();
 
             return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
         } else {
-            final MicrosoftCognitiveLanguageServiceTextAnalysisImpl batchApiTextAnalyticsClient =
-                new MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder()
-                    .endpoint(endpoint)
+            final MicrosoftCognitiveLanguageServiceTextAnalysisImpl batchApiTextAnalyticsClient
+                = new MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder().endpoint(endpoint)
                     .apiVersion(serviceVersion.getVersion())
                     .pipeline(pipeline)
                     .buildClient();
 
-            return new TextAnalyticsAsyncClient(batchApiTextAnalyticsClient, serviceVersion,
-                defaultCountryHint, defaultLanguage);
+            return new TextAnalyticsAsyncClient(batchApiTextAnalyticsClient, serviceVersion, defaultCountryHint,
+                defaultLanguage);
         }
     }
 
@@ -570,6 +564,6 @@ public final class TextAnalyticsClientBuilder implements
             serviceVersion = TextAnalyticsServiceVersion.V2022_05_01;
         }
         return !(TextAnalyticsServiceVersion.V3_0 == serviceVersion
-                     || TextAnalyticsServiceVersion.V3_1 == serviceVersion);
+            || TextAnalyticsServiceVersion.V3_1 == serviceVersion);
     }
 }

@@ -34,27 +34,29 @@ import com.azure.resourcemanager.authorization.models.RoleManagementPolicyAssign
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RoleManagementPolicyAssignmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoleManagementPolicyAssignmentsClient.
+ */
 public final class RoleManagementPolicyAssignmentsClientImpl
     implements InnerSupportsDelete<Void>, RoleManagementPolicyAssignmentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RoleManagementPolicyAssignmentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AuthorizationManagementClientImpl client;
 
     /**
      * Initializes an instance of RoleManagementPolicyAssignmentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RoleManagementPolicyAssignmentsClientImpl(AuthorizationManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    RoleManagementPolicyAssignmentsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(RoleManagementPolicyAssignmentsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,163 +67,131 @@ public final class RoleManagementPolicyAssignmentsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
     public interface RoleManagementPolicyAssignmentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleManagementPolicyAssignmentInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RoleManagementPolicyAssignmentInner>> get(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleManagementPolicyAssignmentName") String roleManagementPolicyAssignmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleManagementPolicyAssignmentInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RoleManagementPolicyAssignmentInner>> create(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleManagementPolicyAssignmentName") String roleManagementPolicyAssignmentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RoleManagementPolicyAssignmentInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleManagementPolicyAssignmentName") String roleManagementPolicyAssignmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleManagementPolicyAssignmentListResult>> listForScope(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RoleManagementPolicyAssignmentListResult>> listForScope(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleManagementPolicyAssignmentListResult>> listForScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the specified role management policy assignment for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     get.
+     * get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified role management policy assignment for a resource scope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleManagementPolicyAssignmentInner>> getWithResponseAsync(
-        String scope, String roleManagementPolicyAssignmentName) {
+    public Mono<Response<RoleManagementPolicyAssignmentInner>> getWithResponseAsync(String scope,
+        String roleManagementPolicyAssignmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleManagementPolicyAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
         }
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            scope,
-                            roleManagementPolicyAssignmentName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), scope, roleManagementPolicyAssignmentName,
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the specified role management policy assignment for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     get.
+     * get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified role management policy assignment for a resource scope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleManagementPolicyAssignmentInner>> getWithResponseAsync(
-        String scope, String roleManagementPolicyAssignmentName, Context context) {
+    private Mono<Response<RoleManagementPolicyAssignmentInner>> getWithResponseAsync(String scope,
+        String roleManagementPolicyAssignmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleManagementPolicyAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
         }
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), scope, roleManagementPolicyAssignmentName, apiVersion, accept, context);
+        return service.get(this.client.getEndpoint(), scope, roleManagementPolicyAssignmentName, apiVersion, accept,
+            context);
     }
 
     /**
      * Get the specified role management policy assignment for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     get.
+     * get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role management policy assignment for a resource scope on successful completion of {@link
-     *     Mono}.
+     * @return the specified role management policy assignment for a resource scope on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleManagementPolicyAssignmentInner> getAsync(String scope, String roleManagementPolicyAssignmentName) {
@@ -231,10 +201,10 @@ public final class RoleManagementPolicyAssignmentsClientImpl
 
     /**
      * Get the specified role management policy assignment for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     get.
+     * get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -242,17 +212,17 @@ public final class RoleManagementPolicyAssignmentsClientImpl
      * @return the specified role management policy assignment for a resource scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleManagementPolicyAssignmentInner> getWithResponse(
-        String scope, String roleManagementPolicyAssignmentName, Context context) {
+    public Response<RoleManagementPolicyAssignmentInner> getWithResponse(String scope,
+        String roleManagementPolicyAssignmentName, Context context) {
         return getWithResponseAsync(scope, roleManagementPolicyAssignmentName, context).block();
     }
 
     /**
      * Get the specified role management policy assignment for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     get.
+     * get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -265,10 +235,10 @@ public final class RoleManagementPolicyAssignmentsClientImpl
 
     /**
      * Create a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to upsert.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     upsert.
+     * upsert.
      * @param parameters Parameters for the role management policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -276,22 +246,18 @@ public final class RoleManagementPolicyAssignmentsClientImpl
      * @return role management policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleManagementPolicyAssignmentInner>> createWithResponseAsync(
-        String scope, String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters) {
+    public Mono<Response<RoleManagementPolicyAssignmentInner>> createWithResponseAsync(String scope,
+        String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleManagementPolicyAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -301,26 +267,17 @@ public final class RoleManagementPolicyAssignmentsClientImpl
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            scope,
-                            roleManagementPolicyAssignmentName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), scope, roleManagementPolicyAssignmentName,
+                apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to upsert.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     upsert.
+     * upsert.
      * @param parameters Parameters for the role management policy assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -329,25 +286,18 @@ public final class RoleManagementPolicyAssignmentsClientImpl
      * @return role management policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleManagementPolicyAssignmentInner>> createWithResponseAsync(
-        String scope,
-        String roleManagementPolicyAssignmentName,
-        RoleManagementPolicyAssignmentInner parameters,
-        Context context) {
+    private Mono<Response<RoleManagementPolicyAssignmentInner>> createWithResponseAsync(String scope,
+        String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleManagementPolicyAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -357,23 +307,16 @@ public final class RoleManagementPolicyAssignmentsClientImpl
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                scope,
-                roleManagementPolicyAssignmentName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), scope, roleManagementPolicyAssignmentName, apiVersion,
+            parameters, accept, context);
     }
 
     /**
      * Create a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to upsert.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     upsert.
+     * upsert.
      * @param parameters Parameters for the role management policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -381,18 +324,18 @@ public final class RoleManagementPolicyAssignmentsClientImpl
      * @return role management policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleManagementPolicyAssignmentInner> createAsync(
-        String scope, String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters) {
+    public Mono<RoleManagementPolicyAssignmentInner> createAsync(String scope,
+        String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters) {
         return createWithResponseAsync(scope, roleManagementPolicyAssignmentName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to upsert.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     upsert.
+     * upsert.
      * @param parameters Parameters for the role management policy assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -401,20 +344,17 @@ public final class RoleManagementPolicyAssignmentsClientImpl
      * @return role management policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleManagementPolicyAssignmentInner> createWithResponse(
-        String scope,
-        String roleManagementPolicyAssignmentName,
-        RoleManagementPolicyAssignmentInner parameters,
-        Context context) {
+    public Response<RoleManagementPolicyAssignmentInner> createWithResponse(String scope,
+        String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters, Context context) {
         return createWithResponseAsync(scope, roleManagementPolicyAssignmentName, parameters, context).block();
     }
 
     /**
      * Create a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to upsert.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     upsert.
+     * upsert.
      * @param parameters Parameters for the role management policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -422,17 +362,17 @@ public final class RoleManagementPolicyAssignmentsClientImpl
      * @return role management policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleManagementPolicyAssignmentInner create(
-        String scope, String roleManagementPolicyAssignmentName, RoleManagementPolicyAssignmentInner parameters) {
+    public RoleManagementPolicyAssignmentInner create(String scope, String roleManagementPolicyAssignmentName,
+        RoleManagementPolicyAssignmentInner parameters) {
         return createWithResponse(scope, roleManagementPolicyAssignmentName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Delete a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to delete.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     delete.
+     * delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -441,42 +381,30 @@ public final class RoleManagementPolicyAssignmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String scope, String roleManagementPolicyAssignmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleManagementPolicyAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
         }
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            scope,
-                            roleManagementPolicyAssignmentName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), scope, roleManagementPolicyAssignmentName,
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to delete.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     delete.
+     * delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -484,36 +412,32 @@ public final class RoleManagementPolicyAssignmentsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String scope, String roleManagementPolicyAssignmentName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String scope, String roleManagementPolicyAssignmentName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleManagementPolicyAssignmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleManagementPolicyAssignmentName is required and cannot be null."));
         }
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(this.client.getEndpoint(), scope, roleManagementPolicyAssignmentName, apiVersion, accept, context);
+        return service.delete(this.client.getEndpoint(), scope, roleManagementPolicyAssignmentName, apiVersion, accept,
+            context);
     }
 
     /**
      * Delete a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to delete.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     delete.
+     * delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -526,10 +450,10 @@ public final class RoleManagementPolicyAssignmentsClientImpl
 
     /**
      * Delete a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to delete.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     delete.
+     * delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -543,10 +467,10 @@ public final class RoleManagementPolicyAssignmentsClientImpl
 
     /**
      * Delete a role management policy assignment.
-     *
+     * 
      * @param scope The scope of the role management policy assignment to delete.
      * @param roleManagementPolicyAssignmentName The name of format {guid_guid} the role management policy assignment to
-     *     delete.
+     * delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -558,21 +482,19 @@ public final class RoleManagementPolicyAssignmentsClientImpl
 
     /**
      * Gets role management assignment policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role management assignment policies for a resource scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleManagementPolicyAssignmentInner>> listForScopeSinglePageAsync(String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -581,37 +503,28 @@ public final class RoleManagementPolicyAssignmentsClientImpl
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForScope(this.client.getEndpoint(), scope, apiVersion, accept, context))
-            .<PagedResponse<RoleManagementPolicyAssignmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RoleManagementPolicyAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets role management assignment policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role management assignment policies for a resource scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleManagementPolicyAssignmentInner>> listForScopeSinglePageAsync(
-        String scope, Context context) {
+    private Mono<PagedResponse<RoleManagementPolicyAssignmentInner>> listForScopeSinglePageAsync(String scope,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -619,22 +532,14 @@ public final class RoleManagementPolicyAssignmentsClientImpl
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listForScope(this.client.getEndpoint(), scope, apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listForScope(this.client.getEndpoint(), scope, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets role management assignment policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -643,13 +548,13 @@ public final class RoleManagementPolicyAssignmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleManagementPolicyAssignmentInner> listForScopeAsync(String scope) {
-        return new PagedFlux<>(
-            () -> listForScopeSinglePageAsync(scope), nextLink -> listForScopeNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope),
+            nextLink -> listForScopeNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets role management assignment policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -659,20 +564,19 @@ public final class RoleManagementPolicyAssignmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleManagementPolicyAssignmentInner> listForScopeAsync(String scope, Context context) {
-        return new PagedFlux<>(
-            () -> listForScopeSinglePageAsync(scope, context),
+        return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope, context),
             nextLink -> listForScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets role management assignment policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role management assignment policies for a resource scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return role management assignment policies for a resource scope as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleManagementPolicyAssignmentInner> listForScope(String scope) {
@@ -681,14 +585,14 @@ public final class RoleManagementPolicyAssignmentsClientImpl
 
     /**
      * Gets role management assignment policies for a resource scope.
-     *
+     * 
      * @param scope The scope of the role management policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role management assignment policies for a resource scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return role management assignment policies for a resource scope as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleManagementPolicyAssignmentInner> listForScope(String scope, Context context) {
@@ -697,14 +601,13 @@ public final class RoleManagementPolicyAssignmentsClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role management policy assignment list operation result along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleManagementPolicyAssignmentInner>> listForScopeNextSinglePageAsync(String nextLink) {
@@ -712,62 +615,42 @@ public final class RoleManagementPolicyAssignmentsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForScopeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RoleManagementPolicyAssignmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RoleManagementPolicyAssignmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role management policy assignment list operation result along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleManagementPolicyAssignmentInner>> listForScopeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<RoleManagementPolicyAssignmentInner>> listForScopeNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listForScopeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listForScopeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

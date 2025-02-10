@@ -12,7 +12,7 @@ trigger:
     exclude:
       - sdk/purview/pom.xml
       - sdk/purview/azure-analytics-purview-administration/pom.xml
-      - sdk/purview/azure-analytics-purview-catalog/pom.xml
+      - sdk/purview/azure-analytics-purview-datamap/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
       - sdk/purview/azure-analytics-purview-sharing/pom.xml
       - sdk/purview/azure-analytics-purview-workflow/pom.xml
@@ -31,7 +31,7 @@ pr:
     exclude:
       - sdk/purview/pom.xml
       - sdk/purview/azure-analytics-purview-administration/pom.xml
-      - sdk/purview/azure-analytics-purview-catalog/pom.xml
+      - sdk/purview/azure-analytics-purview-datamap/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
       - sdk/purview/azure-analytics-purview-sharing/pom.xml
       - sdk/purview/azure-analytics-purview-workflow/pom.xml
@@ -43,8 +43,8 @@ parameters:
     displayName: azure-analytics-purview-administration
     type: boolean
     default: true
-  - name: release_azureanalyticspurviewcatalog
-    displayName: azure-analytics-purview-catalog
+  - name: release_azureanalyticspurviewdatamap
+    displayName: azure-analytics-purview-datamap
     type: boolean
     default: true
   - name: release_azureanalyticspurviewscanning
@@ -68,16 +68,15 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: purview
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-analytics-purview-administration
         groupId: com.azure
         safeName: azureanalyticspurviewadministration
         releaseInBatch: ${{ parameters.release_azureanalyticspurviewadministration }}
-      - name: azure-analytics-purview-catalog
+      - name: azure-analytics-purview-datamap
         groupId: com.azure
-        safeName: azureanalyticspurviewcatalog
-        releaseInBatch: ${{ parameters.release_azureanalyticspurviewcatalog }}
+        safeName: azureanalyticspurviewdatamap
+        releaseInBatch: ${{ parameters.release_azureanalyticspurviewdatamap }}
       - name: azure-analytics-purview-scanning
         groupId: com.azure
         safeName: azureanalyticspurviewscanning

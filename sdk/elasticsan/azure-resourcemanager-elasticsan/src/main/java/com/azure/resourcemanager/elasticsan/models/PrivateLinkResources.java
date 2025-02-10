@@ -7,11 +7,13 @@ package com.azure.resourcemanager.elasticsan.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateLinkResources. */
+/**
+ * Resource collection API of PrivateLinkResources.
+ */
 public interface PrivateLinkResources {
     /**
      * Gets the private link resources that need to be created for a elastic San.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param context The context to associate with this operation.
@@ -20,12 +22,12 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources that need to be created for a elastic San along with {@link Response}.
      */
-    Response<PrivateLinkResourceListResult> listByElasticSanWithResponse(
-        String resourceGroupName, String elasticSanName, Context context);
+    Response<PrivateLinkResourceListResult> listByElasticSanWithResponse(String resourceGroupName,
+        String elasticSanName, Context context);
 
     /**
      * Gets the private link resources that need to be created for a elastic San.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

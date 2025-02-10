@@ -10,13 +10,15 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.maps.geolocation.implementation.GeolocationsImpl;
 import com.azure.maps.geolocation.implementation.models.ErrorResponseException;
-import com.azure.maps.geolocation.models.IpAddressToLocationResult;
 import com.azure.maps.geolocation.implementation.models.JsonFormat;
+import com.azure.maps.geolocation.models.IpAddressToLocationResult;
 import reactor.core.publisher.Mono;
+import java.net.InetAddress;
 
-/** Initializes a new instance of the asynchronous GeolocationClient type. 
+/** Initializes a new instance of the asynchronous GeolocationClient type.
 * Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
 * <!-- src_embed com.azure.maps.geolocation.async.builder.key.instantiation -->
 * <pre>
@@ -58,13 +60,13 @@ public final class GeolocationAsyncClient {
 
     /**
      * Get Location
-     * 
+     *
      * <!-- src_embed com.azure.maps.geolocation.async.get_ip_to_location -->
      * <pre>
-     * asyncClient.getLocation&#40;&quot;131.107.0.89&quot;&#41;;
+     * asyncClient.getLocation&#40;InetAddress.getByName&#40;&quot;131.107.0.89&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.geolocation.async.get_ip_to_location -->
-     * 
+     *
      * **Applies to**: S0 and S1 pricing tiers.
      *
      * <p>This service will return the ISO country code for the provided IP address. Developers can use this information
@@ -77,22 +79,20 @@ public final class GeolocationAsyncClient {
      * @return this object is returned from a successful call to IP Address to country/region API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpAddressToLocationResult> getLocation(String ipAddress) {
+    public Mono<IpAddressToLocationResult> getLocation(InetAddress ipAddress) {
         Mono<Response<IpAddressToLocationResult>> result = this.getLocationWithResponse(ipAddress);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return result.flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get Location
-     *  
+     *
      * <!-- src_embed com.azure.maps.geolocation.async.get_ip_to_location -->
      * <pre>
-     * asyncClient.getLocation&#40;&quot;131.107.0.89&quot;&#41;;
+     * asyncClient.getLocation&#40;InetAddress.getByName&#40;&quot;131.107.0.89&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.geolocation.async.get_ip_to_location -->
-     * 
+     *
      * **Applies to**: S0 and S1 pricing tiers.
      *
      * <p>This service will return the ISO country code for the provided IP address. Developers can use this information
@@ -105,19 +105,19 @@ public final class GeolocationAsyncClient {
      * @return this object is returned from a successful call to IP Address to country/region API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IpAddressToLocationResult>> getLocationWithResponse(String ipAddress) {
-        return this.getLocationWithResponse(ipAddress, null);
+    public Mono<Response<IpAddressToLocationResult>> getLocationWithResponse(InetAddress ipAddress) {
+        return this.getLocationWithResponse(ipAddress.getHostAddress(), null);
     }
 
     /**
      * Get Location
-     * 
+     *
      * <!-- src_embed com.azure.maps.geolocation.async.get_ip_to_location -->
      * <pre>
-     * asyncClient.getLocation&#40;&quot;131.107.0.89&quot;&#41;;
+     * asyncClient.getLocation&#40;InetAddress.getByName&#40;&quot;131.107.0.89&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.geolocation.async.get_ip_to_location -->
-     * 
+     *
      * **Applies to**: S0 and S1 pricing tiers.
      *
      * <p>This service will return the ISO country code for the provided IP address. Developers can use this information
@@ -131,12 +131,13 @@ public final class GeolocationAsyncClient {
      * @return this object is returned from a successful call to IP Address to country/region API.
      */
     Mono<Response<IpAddressToLocationResult>> getLocationWithResponse(String ipAddress, Context context) {
-        return this.serviceClient.getLocationWithResponseAsync(JsonFormat.JSON, ipAddress, context).onErrorMap(throwable -> {
-            if (!(throwable instanceof ErrorResponseException)) {
-                return throwable;
-            }
-            ErrorResponseException exception = (ErrorResponseException) throwable;
-            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-        });
+        return this.serviceClient.getLocationWithResponseAsync(JsonFormat.JSON, ipAddress, context)
+            .onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 }

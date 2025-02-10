@@ -6,49 +6,53 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationNameAvailabilityReason;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents a migration name's availability. */
+/**
+ * Represents a migration name's availability.
+ */
 @Fluent
-public final class MigrationNameAvailabilityResourceInner {
+public final class MigrationNameAvailabilityResourceInner
+    implements JsonSerializable<MigrationNameAvailabilityResourceInner> {
     /*
      * The resource name to verify.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The type of the resource.
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
      * Indicates whether the resource name is available.
      */
-    @JsonProperty(value = "nameAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;
 
     /*
      * Migration name availability reason
      */
-    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationNameAvailabilityReason reason;
 
     /*
      * Migration name availability message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of MigrationNameAvailabilityResourceInner class. */
+    /**
+     * Creates an instance of MigrationNameAvailabilityResourceInner class.
+     */
     public MigrationNameAvailabilityResourceInner() {
     }
 
     /**
      * Get the name property: The resource name to verify.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +61,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Set the name property: The resource name to verify.
-     *
+     * 
      * @param name the name value to set.
      * @return the MigrationNameAvailabilityResourceInner object itself.
      */
@@ -68,7 +72,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Get the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -77,7 +81,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Set the type property: The type of the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the MigrationNameAvailabilityResourceInner object itself.
      */
@@ -88,7 +92,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Get the nameAvailable property: Indicates whether the resource name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -97,7 +101,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Get the reason property: Migration name availability reason.
-     *
+     * 
      * @return the reason value.
      */
     public MigrationNameAvailabilityReason reason() {
@@ -106,7 +110,7 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Get the message property: Migration name availability message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -115,23 +119,70 @@ public final class MigrationNameAvailabilityResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model MigrationNameAvailabilityResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model MigrationNameAvailabilityResourceInner"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model MigrationNameAvailabilityResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property type in model MigrationNameAvailabilityResourceInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MigrationNameAvailabilityResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationNameAvailabilityResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationNameAvailabilityResourceInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MigrationNameAvailabilityResourceInner.
+     */
+    public static MigrationNameAvailabilityResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationNameAvailabilityResourceInner deserializedMigrationNameAvailabilityResourceInner
+                = new MigrationNameAvailabilityResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMigrationNameAvailabilityResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMigrationNameAvailabilityResourceInner.type = reader.getString();
+                } else if ("nameAvailable".equals(fieldName)) {
+                    deserializedMigrationNameAvailabilityResourceInner.nameAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedMigrationNameAvailabilityResourceInner.reason
+                        = MigrationNameAvailabilityReason.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedMigrationNameAvailabilityResourceInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationNameAvailabilityResourceInner;
+        });
+    }
 }

@@ -6,72 +6,53 @@ package com.azure.resourcemanager.confluent.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confluent.ConfluentManager;
 import com.azure.resourcemanager.confluent.models.AccessListEnvironmentsSuccessResponse;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessListEnvironmentsWithResponseMockTests {
     @Test
     public void testListEnvironmentsWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"kind\":\"havgrvk\",\"metadata\":{\"first\":\"vjzhpjbib\",\"last\":\"mfxumvfcluyovw\",\"prev\":\"bkfezzxscyhwzdgi\",\"next\":\"jbzbomvzzbtdcq\",\"total_size\":1359383511},\"data\":[{\"kind\":\"jviylwdshfs\",\"id\":\"rbgyefry\",\"metadata\":{\"self\":\"aojfm\",\"resource_name\":\"cotmr\",\"created_at\":\"irctymoxoftpipiw\",\"updated_at\":\"zuhx\",\"deleted_at\":\"pqjlihhyusps\"},\"display_name\":\"sdvlmfwdgzxulucv\"},{\"kind\":\"mrsreuzvxurisjnh\",\"id\":\"txifqj\",\"metadata\":{\"self\":\"mrhublwpc\",\"resource_name\":\"utr\",\"created_at\":\"upauut\",\"updated_at\":\"oqh\",\"deleted_at\":\"ejqgw\"},\"display_name\":\"nfqn\"},{\"kind\":\"ypsxjvfoim\",\"id\":\"slirciz\",\"metadata\":{\"self\":\"ydfce\",\"resource_name\":\"vlhv\",\"created_at\":\"dyftumrtwna\",\"updated_at\":\"slbi\",\"deleted_at\":\"ojgcyzt\"},\"display_name\":\"mznbaeqphch\"},{\"kind\":\"rn\",\"id\":\"x\",\"metadata\":{\"self\":\"wrykqgai\",\"resource_name\":\"viklb\",\"created_at\":\"vkhbejdznx\",\"updated_at\":\"dsrhnjiv\",\"deleted_at\":\"v\"},\"display_name\":\"ovqfzge\"}]}";
+            = "{\"kind\":\"tkvnlvxbcuiiznkt\",\"metadata\":{\"first\":\"nsnvpd\",\"last\":\"mik\",\"prev\":\"tbzbkiwbuqnyophz\",\"next\":\"l\",\"total_size\":348954725},\"data\":[{\"kind\":\"bcunezzceze\",\"id\":\"w\",\"metadata\":{\"self\":\"lwxjwetn\",\"resource_name\":\"ihclafzv\",\"created_at\":\"lpt\",\"updated_at\":\"qqwzt\",\"deleted_at\":\"w\"},\"display_name\":\"chcxwaxfewzj\"},{\"kind\":\"exfdeqvhpsylk\",\"id\":\"hkbffmbm\",\"metadata\":{\"self\":\"rgywwp\",\"resource_name\":\"xs\",\"created_at\":\"tf\",\"updated_at\":\"gicgaaoepttaq\",\"deleted_at\":\"dewemxswv\"},\"display_name\":\"unzzjgehk\"},{\"kind\":\"imrt\",\"id\":\"okffqyinljqepqwh\",\"metadata\":{\"self\":\"onsts\",\"resource_name\":\"yxgvelfcld\",\"created_at\":\"cb\",\"updated_at\":\"ds\",\"deleted_at\":\"wcobie\"},\"display_name\":\"tmninw\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ConfluentManager manager = ConfluentManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ConfluentManager manager = ConfluentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AccessListEnvironmentsSuccessResponse response = manager.access()
-            .listEnvironmentsWithResponse("rtkfawnopq", "ikyzirtxdy",
-                new ListAccessRequestModel().withSearchFilters(
-                    mapOf("sewgioilqukr", "ejnt", "ggufhyaomtb", "dxtqmieoxo")),
+            .listEnvironmentsWithResponse("igkxkbsazga", "gacyrcmjdmspo",
+                new ListAccessRequestModel().withSearchFilters(mapOf("frzgbzjed", "vuhrylni")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("havgrvk", response.kind());
-        Assertions.assertEquals("vjzhpjbib", response.metadata().first());
-        Assertions.assertEquals("mfxumvfcluyovw", response.metadata().last());
-        Assertions.assertEquals("bkfezzxscyhwzdgi", response.metadata().prev());
-        Assertions.assertEquals("jbzbomvzzbtdcq", response.metadata().next());
-        Assertions.assertEquals(1359383511, response.metadata().totalSize());
-        Assertions.assertEquals("jviylwdshfs", response.data().get(0).kind());
-        Assertions.assertEquals("rbgyefry", response.data().get(0).id());
-        Assertions.assertEquals("aojfm", response.data().get(0).metadata().self());
-        Assertions.assertEquals("cotmr", response.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("irctymoxoftpipiw", response.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("zuhx", response.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("pqjlihhyusps", response.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("sdvlmfwdgzxulucv", response.data().get(0).displayName());
+        Assertions.assertEquals("tkvnlvxbcuiiznkt", response.kind());
+        Assertions.assertEquals("nsnvpd", response.metadata().first());
+        Assertions.assertEquals("mik", response.metadata().last());
+        Assertions.assertEquals("tbzbkiwbuqnyophz", response.metadata().prev());
+        Assertions.assertEquals("l", response.metadata().next());
+        Assertions.assertEquals(348954725, response.metadata().totalSize());
+        Assertions.assertEquals("bcunezzceze", response.data().get(0).kind());
+        Assertions.assertEquals("w", response.data().get(0).id());
+        Assertions.assertEquals("lwxjwetn", response.data().get(0).metadata().self());
+        Assertions.assertEquals("ihclafzv", response.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("lpt", response.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("qqwzt", response.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("w", response.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("chcxwaxfewzj", response.data().get(0).displayName());
     }
 
     // Use "Map.of" if available

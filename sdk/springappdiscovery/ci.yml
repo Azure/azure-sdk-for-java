@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/springappdiscovery/ci.yml
+      - sdk/springappdiscovery/azure-resourcemanager-springappdiscovery/
+    exclude:
+      - sdk/springappdiscovery/pom.xml
+      - sdk/springappdiscovery/azure-resourcemanager-springappdiscovery/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/springappdiscovery/ci.yml
+      - sdk/springappdiscovery/azure-resourcemanager-springappdiscovery/
+    exclude:
+      - sdk/springappdiscovery/pom.xml
+      - sdk/springappdiscovery/azure-resourcemanager-springappdiscovery/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerspringappdiscovery
+    displayName: azure-resourcemanager-springappdiscovery
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: springappdiscovery
+    Artifacts:
+      - name: azure-resourcemanager-springappdiscovery
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerspringappdiscovery
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerspringappdiscovery }}

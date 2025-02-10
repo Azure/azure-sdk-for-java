@@ -5,8 +5,13 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
@@ -14,22 +19,23 @@ import java.time.Duration;
  * environment's data available for faster query.
  */
 @Fluent
-public final class WarmStoreConfigurationProperties {
+public final class WarmStoreConfigurationProperties implements JsonSerializable<WarmStoreConfigurationProperties> {
     /*
-     * ISO8601 timespan specifying the number of days the environment's events will be available for query from the
-     * warm store.
+     * ISO8601 timespan specifying the number of days the environment's events will be available for query from the warm
+     * store.
      */
-    @JsonProperty(value = "dataRetention", required = true)
     private Duration dataRetention;
 
-    /** Creates an instance of WarmStoreConfigurationProperties class. */
+    /**
+     * Creates an instance of WarmStoreConfigurationProperties class.
+     */
     public WarmStoreConfigurationProperties() {
     }
 
     /**
      * Get the dataRetention property: ISO8601 timespan specifying the number of days the environment's events will be
      * available for query from the warm store.
-     *
+     * 
      * @return the dataRetention value.
      */
     public Duration dataRetention() {
@@ -39,7 +45,7 @@ public final class WarmStoreConfigurationProperties {
     /**
      * Set the dataRetention property: ISO8601 timespan specifying the number of days the environment's events will be
      * available for query from the warm store.
-     *
+     * 
      * @param dataRetention the dataRetention value to set.
      * @return the WarmStoreConfigurationProperties object itself.
      */
@@ -50,17 +56,55 @@ public final class WarmStoreConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataRetention() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataRetention in model WarmStoreConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataRetention in model WarmStoreConfigurationProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WarmStoreConfigurationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataRetention", CoreUtils.durationToStringWithDays(this.dataRetention));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WarmStoreConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WarmStoreConfigurationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WarmStoreConfigurationProperties.
+     */
+    public static WarmStoreConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WarmStoreConfigurationProperties deserializedWarmStoreConfigurationProperties
+                = new WarmStoreConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataRetention".equals(fieldName)) {
+                    deserializedWarmStoreConfigurationProperties.dataRetention
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWarmStoreConfigurationProperties;
+        });
+    }
 }

@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.fluent.models.ResourceUsageInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,26 +18,26 @@ import java.util.List;
  * get the next set of results.
  */
 @Immutable
-public final class ResourceUsagesListResult {
+public final class ResourceUsagesListResult implements JsonSerializable<ResourceUsagesListResult> {
     /*
      * URL to get the next set of resource usage list results if there are any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * List of usages and limits for resources controlled by the Microsoft.StorageCache resource provider.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceUsageInner> value;
 
-    /** Creates an instance of ResourceUsagesListResult class. */
+    /**
+     * Creates an instance of ResourceUsagesListResult class.
+     */
     public ResourceUsagesListResult() {
     }
 
     /**
      * Get the nextLink property: URL to get the next set of resource usage list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -43,7 +47,7 @@ public final class ResourceUsagesListResult {
     /**
      * Get the value property: List of usages and limits for resources controlled by the Microsoft.StorageCache resource
      * provider.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceUsageInner> value() {
@@ -52,12 +56,50 @@ public final class ResourceUsagesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceUsagesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceUsagesListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceUsagesListResult.
+     */
+    public static ResourceUsagesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceUsagesListResult deserializedResourceUsagesListResult = new ResourceUsagesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedResourceUsagesListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<ResourceUsageInner> value = reader.readArray(reader1 -> ResourceUsageInner.fromJson(reader1));
+                    deserializedResourceUsagesListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceUsagesListResult;
+        });
     }
 }

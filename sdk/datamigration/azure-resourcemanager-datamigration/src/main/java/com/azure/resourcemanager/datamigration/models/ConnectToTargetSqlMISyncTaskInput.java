@@ -6,31 +6,37 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input for the task that validates connection to Azure SQL Database Managed Instance online scenario. */
+/**
+ * Input for the task that validates connection to Azure SQL Database Managed Instance online scenario.
+ */
 @Fluent
-public final class ConnectToTargetSqlMISyncTaskInput {
+public final class ConnectToTargetSqlMISyncTaskInput implements JsonSerializable<ConnectToTargetSqlMISyncTaskInput> {
     /*
      * Connection information for Azure SQL Database Managed Instance
      */
-    @JsonProperty(value = "targetConnectionInfo", required = true)
     private MiSqlConnectionInfo targetConnectionInfo;
 
     /*
      * Azure Active Directory Application the DMS instance will use to connect to the target instance of Azure SQL
      * Database Managed Instance and the Azure Storage Account
      */
-    @JsonProperty(value = "azureApp", required = true)
     private AzureActiveDirectoryApp azureApp;
 
-    /** Creates an instance of ConnectToTargetSqlMISyncTaskInput class. */
+    /**
+     * Creates an instance of ConnectToTargetSqlMISyncTaskInput class.
+     */
     public ConnectToTargetSqlMISyncTaskInput() {
     }
 
     /**
      * Get the targetConnectionInfo property: Connection information for Azure SQL Database Managed Instance.
-     *
+     * 
      * @return the targetConnectionInfo value.
      */
     public MiSqlConnectionInfo targetConnectionInfo() {
@@ -39,7 +45,7 @@ public final class ConnectToTargetSqlMISyncTaskInput {
 
     /**
      * Set the targetConnectionInfo property: Connection information for Azure SQL Database Managed Instance.
-     *
+     * 
      * @param targetConnectionInfo the targetConnectionInfo value to set.
      * @return the ConnectToTargetSqlMISyncTaskInput object itself.
      */
@@ -51,7 +57,7 @@ public final class ConnectToTargetSqlMISyncTaskInput {
     /**
      * Get the azureApp property: Azure Active Directory Application the DMS instance will use to connect to the target
      * instance of Azure SQL Database Managed Instance and the Azure Storage Account.
-     *
+     * 
      * @return the azureApp value.
      */
     public AzureActiveDirectoryApp azureApp() {
@@ -61,7 +67,7 @@ public final class ConnectToTargetSqlMISyncTaskInput {
     /**
      * Set the azureApp property: Azure Active Directory Application the DMS instance will use to connect to the target
      * instance of Azure SQL Database Managed Instance and the Azure Storage Account.
-     *
+     * 
      * @param azureApp the azureApp value to set.
      * @return the ConnectToTargetSqlMISyncTaskInput object itself.
      */
@@ -72,27 +78,67 @@ public final class ConnectToTargetSqlMISyncTaskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetConnectionInfo in model ConnectToTargetSqlMISyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetConnectionInfo in model ConnectToTargetSqlMISyncTaskInput"));
         } else {
             targetConnectionInfo().validate();
         }
         if (azureApp() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azureApp in model ConnectToTargetSqlMISyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property azureApp in model ConnectToTargetSqlMISyncTaskInput"));
         } else {
             azureApp().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectToTargetSqlMISyncTaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
+        jsonWriter.writeJsonField("azureApp", this.azureApp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectToTargetSqlMISyncTaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectToTargetSqlMISyncTaskInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectToTargetSqlMISyncTaskInput.
+     */
+    public static ConnectToTargetSqlMISyncTaskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectToTargetSqlMISyncTaskInput deserializedConnectToTargetSqlMISyncTaskInput
+                = new ConnectToTargetSqlMISyncTaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetConnectionInfo".equals(fieldName)) {
+                    deserializedConnectToTargetSqlMISyncTaskInput.targetConnectionInfo
+                        = MiSqlConnectionInfo.fromJson(reader);
+                } else if ("azureApp".equals(fieldName)) {
+                    deserializedConnectToTargetSqlMISyncTaskInput.azureApp = AzureActiveDirectoryApp.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectToTargetSqlMISyncTaskInput;
+        });
+    }
 }

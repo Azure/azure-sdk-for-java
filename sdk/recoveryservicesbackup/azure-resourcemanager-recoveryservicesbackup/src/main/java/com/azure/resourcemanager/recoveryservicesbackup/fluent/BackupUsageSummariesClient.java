@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupManagementUsageInner;
 
-/** An instance of this class provides access to all the operations defined in BackupUsageSummariesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupUsageSummariesClient.
+ */
 public interface BackupUsageSummariesClient {
     /**
      * Fetches the backup management usage summaries of the vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface BackupUsageSummariesClient {
 
     /**
      * Fetches the backup management usage summaries of the vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -39,6 +41,6 @@ public interface BackupUsageSummariesClient {
      * @return backup management usage for vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BackupManagementUsageInner> list(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context);
+    PagedIterable<BackupManagementUsageInner> list(String vaultName, String resourceGroupName, String filter,
+        String skipToken, Context context);
 }

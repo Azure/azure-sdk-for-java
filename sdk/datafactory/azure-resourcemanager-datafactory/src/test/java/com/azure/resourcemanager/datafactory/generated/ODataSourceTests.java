@@ -11,16 +11,19 @@ public final class ODataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ODataSource model = BinaryData.fromString(
-            "{\"type\":\"ODataSource\",\"query\":\"datavhjkwfolpj\",\"httpRequestTimeout\":\"datapahvoiranxqnz\",\"additionalColumns\":\"datavnldtqykz\",\"sourceRetryCount\":\"datadoqrejl\",\"sourceRetryWait\":\"datan\",\"maxConcurrentConnections\":\"dataicyozryoxmfrxf\",\"disableMetricsCollection\":\"datacjialvchfumlfgm\",\"\":{\"ipklfwn\":\"dataxko\",\"dkvljitbnhg\":\"datafkbqlrtffsw\",\"abgsdxtwqqukgo\":\"datarvlarozswmucr\",\"ksltunrwxsqvx\":\"datalvjgsk\"}}")
+            "{\"type\":\"ODataSource\",\"query\":\"datahuboqozx\",\"httpRequestTimeout\":\"dataxamxi\",\"additionalColumns\":\"datar\",\"sourceRetryCount\":\"datakglynbqpeoj\",\"sourceRetryWait\":\"databoggw\",\"maxConcurrentConnections\":\"datahtnywgtsodnxeir\",\"disableMetricsCollection\":\"datawjimcfrhtzgduvoa\",\"\":{\"zyqbggxcyram\":\"datacalptfp\",\"nyurxlpuwxsl\":\"datazuaxtbr\",\"bj\":\"dataqlgxxbnrurtn\",\"fbmdemohls\":\"dataysupck\"}}")
             .toObject(ODataSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ODataSource model = new ODataSource().withSourceRetryCount("datadoqrejl").withSourceRetryWait("datan")
-            .withMaxConcurrentConnections("dataicyozryoxmfrxf").withDisableMetricsCollection("datacjialvchfumlfgm")
-            .withQuery("datavhjkwfolpj").withHttpRequestTimeout("datapahvoiranxqnz")
-            .withAdditionalColumns("datavnldtqykz");
+        ODataSource model = new ODataSource().withSourceRetryCount("datakglynbqpeoj")
+            .withSourceRetryWait("databoggw")
+            .withMaxConcurrentConnections("datahtnywgtsodnxeir")
+            .withDisableMetricsCollection("datawjimcfrhtzgduvoa")
+            .withQuery("datahuboqozx")
+            .withHttpRequestTimeout("dataxamxi")
+            .withAdditionalColumns("datar");
         model = BinaryData.fromObject(model).toObject(ODataSource.class);
     }
 }

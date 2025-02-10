@@ -6,13 +6,23 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStorageConfigOperationResultResponseInner;
 
-/** An immutable client-side representation of VaultStorageConfigOperationResultResponse. */
+/**
+ * An immutable client-side representation of VaultStorageConfigOperationResultResponse.
+ */
 public interface VaultStorageConfigOperationResultResponse {
+    /**
+     * Gets the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    String objectType();
+
     /**
      * Gets the inner
      * com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStorageConfigOperationResultResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     VaultStorageConfigOperationResultResponseInner innerModel();

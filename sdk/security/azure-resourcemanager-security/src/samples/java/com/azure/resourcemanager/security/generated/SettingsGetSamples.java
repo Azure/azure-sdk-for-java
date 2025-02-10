@@ -6,14 +6,18 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.resourcemanager.security.models.SettingName;
 
-/** Samples for Settings Get. */
+/**
+ * Samples for Settings Get.
+ */
 public final class SettingsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/GetSetting_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2022-05-01/examples/Settings/GetSetting_example
+     * .json
      */
     /**
      * Sample code: Get a setting on subscription.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getASettingOnSubscription(com.azure.resourcemanager.security.SecurityManager manager) {

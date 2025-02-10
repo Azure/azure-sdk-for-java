@@ -5,108 +5,92 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.hdinsight.containers.fluent.models.TrinoDebugConfig;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Trino worker. */
+/**
+ * Trino worker.
+ */
 @Fluent
-public final class TrinoWorker {
+public final class TrinoWorker implements JsonSerializable<TrinoWorker> {
     /*
      * Trino debug configuration.
      */
-    @JsonProperty(value = "debug")
-    private TrinoDebugConfig innerDebug;
+    private TrinoDebugConfig debug;
 
-    /** Creates an instance of TrinoWorker class. */
+    /**
+     * Creates an instance of TrinoWorker class.
+     */
     public TrinoWorker() {
     }
 
     /**
-     * Get the innerDebug property: Trino debug configuration.
-     *
-     * @return the innerDebug value.
+     * Get the debug property: Trino debug configuration.
+     * 
+     * @return the debug value.
      */
-    private TrinoDebugConfig innerDebug() {
-        return this.innerDebug;
+    public TrinoDebugConfig debug() {
+        return this.debug;
     }
 
     /**
-     * Get the enable property: The flag that if enable debug or not.
-     *
-     * @return the enable value.
-     */
-    public Boolean enable() {
-        return this.innerDebug() == null ? null : this.innerDebug().enable();
-    }
-
-    /**
-     * Set the enable property: The flag that if enable debug or not.
-     *
-     * @param enable the enable value to set.
+     * Set the debug property: Trino debug configuration.
+     * 
+     * @param debug the debug value to set.
      * @return the TrinoWorker object itself.
      */
-    public TrinoWorker withEnable(Boolean enable) {
-        if (this.innerDebug() == null) {
-            this.innerDebug = new TrinoDebugConfig();
-        }
-        this.innerDebug().withEnable(enable);
-        return this;
-    }
-
-    /**
-     * Get the port property: The debug port.
-     *
-     * @return the port value.
-     */
-    public Integer port() {
-        return this.innerDebug() == null ? null : this.innerDebug().port();
-    }
-
-    /**
-     * Set the port property: The debug port.
-     *
-     * @param port the port value to set.
-     * @return the TrinoWorker object itself.
-     */
-    public TrinoWorker withPort(Integer port) {
-        if (this.innerDebug() == null) {
-            this.innerDebug = new TrinoDebugConfig();
-        }
-        this.innerDebug().withPort(port);
-        return this;
-    }
-
-    /**
-     * Get the suspend property: The flag that if suspend debug or not.
-     *
-     * @return the suspend value.
-     */
-    public Boolean suspend() {
-        return this.innerDebug() == null ? null : this.innerDebug().suspend();
-    }
-
-    /**
-     * Set the suspend property: The flag that if suspend debug or not.
-     *
-     * @param suspend the suspend value to set.
-     * @return the TrinoWorker object itself.
-     */
-    public TrinoWorker withSuspend(Boolean suspend) {
-        if (this.innerDebug() == null) {
-            this.innerDebug = new TrinoDebugConfig();
-        }
-        this.innerDebug().withSuspend(suspend);
+    public TrinoWorker withDebug(TrinoDebugConfig debug) {
+        this.debug = debug;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerDebug() != null) {
-            innerDebug().validate();
+        if (debug() != null) {
+            debug().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("debug", this.debug);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrinoWorker from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrinoWorker if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrinoWorker.
+     */
+    public static TrinoWorker fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrinoWorker deserializedTrinoWorker = new TrinoWorker();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("debug".equals(fieldName)) {
+                    deserializedTrinoWorker.debug = TrinoDebugConfig.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrinoWorker;
+        });
     }
 }

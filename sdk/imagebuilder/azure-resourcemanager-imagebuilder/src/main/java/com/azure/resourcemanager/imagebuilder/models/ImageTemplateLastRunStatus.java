@@ -5,49 +5,54 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Describes the latest status of running an image template. */
+/**
+ * Describes the latest status of running an image template.
+ */
 @Fluent
-public final class ImageTemplateLastRunStatus {
+public final class ImageTemplateLastRunStatus implements JsonSerializable<ImageTemplateLastRunStatus> {
     /*
      * Start time of the last run (UTC)
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * End time of the last run (UTC)
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * State of the last run
      */
-    @JsonProperty(value = "runState")
     private RunState runState;
 
     /*
      * Sub-state of the last run
      */
-    @JsonProperty(value = "runSubState")
     private RunSubState runSubState;
 
     /*
      * Verbose information about the last run state
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of ImageTemplateLastRunStatus class. */
+    /**
+     * Creates an instance of ImageTemplateLastRunStatus class.
+     */
     public ImageTemplateLastRunStatus() {
     }
 
     /**
      * Get the startTime property: Start time of the last run (UTC).
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -56,7 +61,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Set the startTime property: Start time of the last run (UTC).
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ImageTemplateLastRunStatus object itself.
      */
@@ -67,7 +72,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Get the endTime property: End time of the last run (UTC).
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -76,7 +81,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Set the endTime property: End time of the last run (UTC).
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the ImageTemplateLastRunStatus object itself.
      */
@@ -87,7 +92,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Get the runState property: State of the last run.
-     *
+     * 
      * @return the runState value.
      */
     public RunState runState() {
@@ -96,7 +101,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Set the runState property: State of the last run.
-     *
+     * 
      * @param runState the runState value to set.
      * @return the ImageTemplateLastRunStatus object itself.
      */
@@ -107,7 +112,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Get the runSubState property: Sub-state of the last run.
-     *
+     * 
      * @return the runSubState value.
      */
     public RunSubState runSubState() {
@@ -116,7 +121,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Set the runSubState property: Sub-state of the last run.
-     *
+     * 
      * @param runSubState the runSubState value to set.
      * @return the ImageTemplateLastRunStatus object itself.
      */
@@ -127,7 +132,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Get the message property: Verbose information about the last run state.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -136,7 +141,7 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Set the message property: Verbose information about the last run state.
-     *
+     * 
      * @param message the message value to set.
      * @return the ImageTemplateLastRunStatus object itself.
      */
@@ -147,9 +152,61 @@ public final class ImageTemplateLastRunStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("runState", this.runState == null ? null : this.runState.toString());
+        jsonWriter.writeStringField("runSubState", this.runSubState == null ? null : this.runSubState.toString());
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateLastRunStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateLastRunStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateLastRunStatus.
+     */
+    public static ImageTemplateLastRunStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateLastRunStatus deserializedImageTemplateLastRunStatus = new ImageTemplateLastRunStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedImageTemplateLastRunStatus.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedImageTemplateLastRunStatus.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("runState".equals(fieldName)) {
+                    deserializedImageTemplateLastRunStatus.runState = RunState.fromString(reader.getString());
+                } else if ("runSubState".equals(fieldName)) {
+                    deserializedImageTemplateLastRunStatus.runSubState = RunSubState.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedImageTemplateLastRunStatus.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateLastRunStatus;
+        });
     }
 }

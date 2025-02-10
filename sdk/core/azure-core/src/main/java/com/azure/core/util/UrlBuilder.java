@@ -18,8 +18,11 @@ import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
 /**
  * A builder class that is used to create URLs.
  */
+@SuppressWarnings("deprecation")
 public final class UrlBuilder {
     private static final Map<String, UrlBuilder> PARSED_URLS = new ConcurrentHashMap<>();
+    private static final URL HTTP;
+    private static final URL HTTPS;
 
     private String scheme;
     private String host;
@@ -28,6 +31,18 @@ public final class UrlBuilder {
 
     private Map<String, QueryParameter> queryToCopy;
     private Map<String, QueryParameter> query;
+
+    static {
+        try {
+            // Instantiate two URLs, one with HTTP scheme and one with HTTPS scheme.
+            // These will be used when creating HTTP and HTTPS URLs respectively when calling 'toUrl' to improve
+            // performance in highly threaded situations.
+            HTTP = new URL("http://azure.com");
+            HTTPS = new URL("https://azure.com");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Creates a new instance of {@link UrlBuilder}.
@@ -220,7 +235,8 @@ public final class UrlBuilder {
         // This contains a map of key=value query parameters, replacing
         // multiple values for a single key with a list of values under the same name,
         // joined together with a comma. As discussed in https://github.com/Azure/azure-sdk-for-java/pull/21203.
-        return query.entrySet().stream()
+        return query.entrySet()
+            .stream()
             // get all parameters joined by a comma.
             // name=a&name=b&name=c becomes name=a,b,c
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue()));
@@ -309,8 +325,8 @@ public final class UrlBuilder {
                     break;
 
                 case QUERY:
-                    CoreUtils.parseQueryParameters(tokenText).forEachRemaining(queryParam ->
-                        addQueryParameter(queryParam.getKey(), queryParam.getValue()));
+                    CoreUtils.parseQueryParameters(tokenText)
+                        .forEachRemaining(queryParam -> addQueryParameter(queryParam.getKey(), queryParam.getValue()));
                     break;
 
                 default:
@@ -329,7 +345,22 @@ public final class UrlBuilder {
     public URL toUrl() throws MalformedURLException {
         // Continue using new URL constructor here as URI either cannot accept certain characters in the path or
         // escapes '/', depending on the API used to create the URI.
-        return ImplUtils.createUrl(toString());
+        if ("http".equals(scheme)) {
+            // Performance enhancement. Using "new URL(URL context, String spec)" circumvents a lookup for the
+            // URLStreamHandler when creating the URL instance. In highly threaded environments this can cause slowdown
+            // as this lookup uses a HashTable which is synchronized, resulting in many threads waiting on the same
+            // lock.
+            // Select the URL constant that matches the scheme as it is possible that the URLStreamHandler may be needed
+            // in downstream scenarios.
+            // Using this performance enhancement should be safe as the "String spec" will override any URL pieces from
+            // "URL context" when it is parsed, and the "context" URL we're using here only has scheme and hostname
+            // which should always be configured in UrlBuilder.
+            return new URL(HTTP, toString());
+        } else if ("https".equals(scheme)) {
+            return new URL(HTTPS, toString());
+        } else {
+            return ImplUtils.createUrl(toString());
+        }
     }
 
     /**
@@ -403,8 +434,9 @@ public final class UrlBuilder {
         if (PARSED_URLS.size() >= MAX_CACHE_SIZE) {
             PARSED_URLS.clear();
         }
-        return PARSED_URLS.computeIfAbsent(concurrentSafeUrl, u ->
-            new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST)).copy();
+        return PARSED_URLS
+            .computeIfAbsent(concurrentSafeUrl, u -> new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST))
+            .copy();
     }
 
     /**

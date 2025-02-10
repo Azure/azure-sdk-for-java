@@ -5,51 +5,54 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This is the Autoscale profile for the cluster. This will allow customer to create cluster enabled with Autoscale. */
+/**
+ * This is the Autoscale profile for the cluster. This will allow customer to create cluster enabled with Autoscale.
+ */
 @Fluent
-public final class AutoscaleProfile {
+public final class AutoscaleProfile implements JsonSerializable<AutoscaleProfile> {
     /*
      * This indicates whether auto scale is enabled on HDInsight on AKS cluster.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * This property is for graceful decommission timeout; It has a default setting of 3600 seconds before forced
-     * shutdown takes place. This is the maximal time to wait for running containers and applications to complete
-     * before transition a DECOMMISSIONING node into DECOMMISSIONED. The default value is 3600 seconds. Negative value
-     * (like -1) is handled as infinite timeout.
+     * shutdown takes place. This is the maximal time to wait for running containers and applications to complete before
+     * transition a DECOMMISSIONING node into DECOMMISSIONED. The default value is 3600 seconds. Negative value (like
+     * -1) is handled as infinite timeout.
      */
-    @JsonProperty(value = "gracefulDecommissionTimeout")
     private Integer gracefulDecommissionTimeout;
 
     /*
      * User to specify which type of Autoscale to be implemented - Scheduled Based or Load Based.
      */
-    @JsonProperty(value = "autoscaleType")
     private AutoscaleType autoscaleType;
 
     /*
      * Profiles of schedule based Autoscale.
      */
-    @JsonProperty(value = "scheduleBasedConfig")
     private ScheduleBasedConfig scheduleBasedConfig;
 
     /*
      * Profiles of load based Autoscale.
      */
-    @JsonProperty(value = "loadBasedConfig")
     private LoadBasedConfig loadBasedConfig;
 
-    /** Creates an instance of AutoscaleProfile class. */
+    /**
+     * Creates an instance of AutoscaleProfile class.
+     */
     public AutoscaleProfile() {
     }
 
     /**
      * Get the enabled property: This indicates whether auto scale is enabled on HDInsight on AKS cluster.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -58,7 +61,7 @@ public final class AutoscaleProfile {
 
     /**
      * Set the enabled property: This indicates whether auto scale is enabled on HDInsight on AKS cluster.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AutoscaleProfile object itself.
      */
@@ -72,7 +75,7 @@ public final class AutoscaleProfile {
      * default setting of 3600 seconds before forced shutdown takes place. This is the maximal time to wait for running
      * containers and applications to complete before transition a DECOMMISSIONING node into DECOMMISSIONED. The default
      * value is 3600 seconds. Negative value (like -1) is handled as infinite timeout.
-     *
+     * 
      * @return the gracefulDecommissionTimeout value.
      */
     public Integer gracefulDecommissionTimeout() {
@@ -84,7 +87,7 @@ public final class AutoscaleProfile {
      * default setting of 3600 seconds before forced shutdown takes place. This is the maximal time to wait for running
      * containers and applications to complete before transition a DECOMMISSIONING node into DECOMMISSIONED. The default
      * value is 3600 seconds. Negative value (like -1) is handled as infinite timeout.
-     *
+     * 
      * @param gracefulDecommissionTimeout the gracefulDecommissionTimeout value to set.
      * @return the AutoscaleProfile object itself.
      */
@@ -96,7 +99,7 @@ public final class AutoscaleProfile {
     /**
      * Get the autoscaleType property: User to specify which type of Autoscale to be implemented - Scheduled Based or
      * Load Based.
-     *
+     * 
      * @return the autoscaleType value.
      */
     public AutoscaleType autoscaleType() {
@@ -106,7 +109,7 @@ public final class AutoscaleProfile {
     /**
      * Set the autoscaleType property: User to specify which type of Autoscale to be implemented - Scheduled Based or
      * Load Based.
-     *
+     * 
      * @param autoscaleType the autoscaleType value to set.
      * @return the AutoscaleProfile object itself.
      */
@@ -117,7 +120,7 @@ public final class AutoscaleProfile {
 
     /**
      * Get the scheduleBasedConfig property: Profiles of schedule based Autoscale.
-     *
+     * 
      * @return the scheduleBasedConfig value.
      */
     public ScheduleBasedConfig scheduleBasedConfig() {
@@ -126,7 +129,7 @@ public final class AutoscaleProfile {
 
     /**
      * Set the scheduleBasedConfig property: Profiles of schedule based Autoscale.
-     *
+     * 
      * @param scheduleBasedConfig the scheduleBasedConfig value to set.
      * @return the AutoscaleProfile object itself.
      */
@@ -137,7 +140,7 @@ public final class AutoscaleProfile {
 
     /**
      * Get the loadBasedConfig property: Profiles of load based Autoscale.
-     *
+     * 
      * @return the loadBasedConfig value.
      */
     public LoadBasedConfig loadBasedConfig() {
@@ -146,7 +149,7 @@ public final class AutoscaleProfile {
 
     /**
      * Set the loadBasedConfig property: Profiles of load based Autoscale.
-     *
+     * 
      * @param loadBasedConfig the loadBasedConfig value to set.
      * @return the AutoscaleProfile object itself.
      */
@@ -157,7 +160,7 @@ public final class AutoscaleProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -167,5 +170,54 @@ public final class AutoscaleProfile {
         if (loadBasedConfig() != null) {
             loadBasedConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeNumberField("gracefulDecommissionTimeout", this.gracefulDecommissionTimeout);
+        jsonWriter.writeStringField("autoscaleType", this.autoscaleType == null ? null : this.autoscaleType.toString());
+        jsonWriter.writeJsonField("scheduleBasedConfig", this.scheduleBasedConfig);
+        jsonWriter.writeJsonField("loadBasedConfig", this.loadBasedConfig);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoscaleProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoscaleProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoscaleProfile.
+     */
+    public static AutoscaleProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoscaleProfile deserializedAutoscaleProfile = new AutoscaleProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedAutoscaleProfile.enabled = reader.getBoolean();
+                } else if ("gracefulDecommissionTimeout".equals(fieldName)) {
+                    deserializedAutoscaleProfile.gracefulDecommissionTimeout = reader.getNullable(JsonReader::getInt);
+                } else if ("autoscaleType".equals(fieldName)) {
+                    deserializedAutoscaleProfile.autoscaleType = AutoscaleType.fromString(reader.getString());
+                } else if ("scheduleBasedConfig".equals(fieldName)) {
+                    deserializedAutoscaleProfile.scheduleBasedConfig = ScheduleBasedConfig.fromJson(reader);
+                } else if ("loadBasedConfig".equals(fieldName)) {
+                    deserializedAutoscaleProfile.loadBasedConfig = LoadBasedConfig.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoscaleProfile;
+        });
     }
 }

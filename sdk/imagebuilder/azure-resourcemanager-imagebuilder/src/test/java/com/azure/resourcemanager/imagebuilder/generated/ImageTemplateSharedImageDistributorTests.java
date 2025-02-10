@@ -17,73 +17,48 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateSharedImageDistributorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateSharedImageDistributor model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SharedImage\",\"galleryImageId\":\"byao\",\"replicationRegions\":[\"xc\"],\"excludeFromLatest\":false,\"storageAccountType\":\"Standard_LRS\",\"targetRegions\":[{\"name\":\"ocohslkevleg\",\"replicaCount\":1396926466,\"storageAccountType\":\"Standard_LRS\"},{\"name\":\"hfmvfaxkffe\",\"replicaCount\":517393984,\"storageAccountType\":\"Standard_LRS\"},{\"name\":\"vmezy\",\"replicaCount\":1090911341,\"storageAccountType\":\"Standard_LRS\"}],\"versioning\":{\"scheme\":\"DistributeVersioner\"},\"runOutputName\":\"sbbzo\",\"artifactTags\":{\"vjxxjnsp\":\"grxwbu\",\"vudwtiukbldng\":\"dptkoenkouk\",\"g\":\"pocipazyxoegu\",\"mrbpizcdrqj\":\"npiucgygevqznty\"}}")
-                .toObject(ImageTemplateSharedImageDistributor.class);
-        Assertions.assertEquals("sbbzo", model.runOutputName());
-        Assertions.assertEquals("grxwbu", model.artifactTags().get("vjxxjnsp"));
-        Assertions.assertEquals("byao", model.galleryImageId());
-        Assertions.assertEquals("xc", model.replicationRegions().get(0));
+        ImageTemplateSharedImageDistributor model = BinaryData.fromString(
+            "{\"type\":\"SharedImage\",\"galleryImageId\":\"qnwvlrya\",\"replicationRegions\":[\"heun\",\"mqhgyxzkonocuk\",\"klyaxuconu\"],\"excludeFromLatest\":false,\"storageAccountType\":\"Standard_ZRS\",\"targetRegions\":[{\"name\":\"ypewrmjmwvvjekt\",\"replicaCount\":2107215650,\"storageAccountType\":\"Standard_ZRS\"}],\"versioning\":{\"scheme\":\"DistributeVersioner\"},\"runOutputName\":\"wlrsffrzpwv\",\"artifactTags\":{\"biqylihkaet\":\"q\",\"fcivfsnkym\":\"kt\",\"jf\":\"ctq\",\"fuwutttxf\":\"ebrjcxe\"}}")
+            .toObject(ImageTemplateSharedImageDistributor.class);
+        Assertions.assertEquals("wlrsffrzpwv", model.runOutputName());
+        Assertions.assertEquals("q", model.artifactTags().get("biqylihkaet"));
+        Assertions.assertEquals("qnwvlrya", model.galleryImageId());
+        Assertions.assertEquals("heun", model.replicationRegions().get(0));
         Assertions.assertEquals(false, model.excludeFromLatest());
-        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_LRS, model.storageAccountType());
-        Assertions.assertEquals("ocohslkevleg", model.targetRegions().get(0).name());
-        Assertions.assertEquals(1396926466, model.targetRegions().get(0).replicaCount());
-        Assertions
-            .assertEquals(
-                SharedImageStorageAccountType.STANDARD_LRS, model.targetRegions().get(0).storageAccountType());
+        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_ZRS, model.storageAccountType());
+        Assertions.assertEquals("ypewrmjmwvvjekt", model.targetRegions().get(0).name());
+        Assertions.assertEquals(2107215650, model.targetRegions().get(0).replicaCount());
+        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_ZRS,
+            model.targetRegions().get(0).storageAccountType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateSharedImageDistributor model =
-            new ImageTemplateSharedImageDistributor()
-                .withRunOutputName("sbbzo")
-                .withArtifactTags(
-                    mapOf(
-                        "vjxxjnsp",
-                        "grxwbu",
-                        "vudwtiukbldng",
-                        "dptkoenkouk",
-                        "g",
-                        "pocipazyxoegu",
-                        "mrbpizcdrqj",
-                        "npiucgygevqznty"))
-                .withGalleryImageId("byao")
-                .withReplicationRegions(Arrays.asList("xc"))
+        ImageTemplateSharedImageDistributor model
+            = new ImageTemplateSharedImageDistributor().withRunOutputName("wlrsffrzpwv")
+                .withArtifactTags(mapOf("biqylihkaet", "q", "fcivfsnkym", "kt", "jf", "ctq", "fuwutttxf", "ebrjcxe"))
+                .withGalleryImageId("qnwvlrya")
+                .withReplicationRegions(Arrays.asList("heun", "mqhgyxzkonocuk", "klyaxuconu"))
                 .withExcludeFromLatest(false)
-                .withStorageAccountType(SharedImageStorageAccountType.STANDARD_LRS)
-                .withTargetRegions(
-                    Arrays
-                        .asList(
-                            new TargetRegion()
-                                .withName("ocohslkevleg")
-                                .withReplicaCount(1396926466)
-                                .withStorageAccountType(SharedImageStorageAccountType.STANDARD_LRS),
-                            new TargetRegion()
-                                .withName("hfmvfaxkffe")
-                                .withReplicaCount(517393984)
-                                .withStorageAccountType(SharedImageStorageAccountType.STANDARD_LRS),
-                            new TargetRegion()
-                                .withName("vmezy")
-                                .withReplicaCount(1090911341)
-                                .withStorageAccountType(SharedImageStorageAccountType.STANDARD_LRS)))
+                .withStorageAccountType(SharedImageStorageAccountType.STANDARD_ZRS)
+                .withTargetRegions(Arrays.asList(new TargetRegion().withName("ypewrmjmwvvjekt")
+                    .withReplicaCount(2107215650)
+                    .withStorageAccountType(SharedImageStorageAccountType.STANDARD_ZRS)))
                 .withVersioning(new DistributeVersioner());
         model = BinaryData.fromObject(model).toObject(ImageTemplateSharedImageDistributor.class);
-        Assertions.assertEquals("sbbzo", model.runOutputName());
-        Assertions.assertEquals("grxwbu", model.artifactTags().get("vjxxjnsp"));
-        Assertions.assertEquals("byao", model.galleryImageId());
-        Assertions.assertEquals("xc", model.replicationRegions().get(0));
+        Assertions.assertEquals("wlrsffrzpwv", model.runOutputName());
+        Assertions.assertEquals("q", model.artifactTags().get("biqylihkaet"));
+        Assertions.assertEquals("qnwvlrya", model.galleryImageId());
+        Assertions.assertEquals("heun", model.replicationRegions().get(0));
         Assertions.assertEquals(false, model.excludeFromLatest());
-        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_LRS, model.storageAccountType());
-        Assertions.assertEquals("ocohslkevleg", model.targetRegions().get(0).name());
-        Assertions.assertEquals(1396926466, model.targetRegions().get(0).replicaCount());
-        Assertions
-            .assertEquals(
-                SharedImageStorageAccountType.STANDARD_LRS, model.targetRegions().get(0).storageAccountType());
+        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_ZRS, model.storageAccountType());
+        Assertions.assertEquals("ypewrmjmwvvjekt", model.targetRegions().get(0).name());
+        Assertions.assertEquals(2107215650, model.targetRegions().get(0).replicaCount());
+        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_ZRS,
+            model.targetRegions().get(0).storageAccountType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

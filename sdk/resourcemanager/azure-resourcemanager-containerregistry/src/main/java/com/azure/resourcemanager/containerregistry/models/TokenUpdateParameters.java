@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.TokenUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters for updating a token. */
+/**
+ * The parameters for updating a token.
+ */
 @Fluent
-public final class TokenUpdateParameters {
+public final class TokenUpdateParameters implements JsonSerializable<TokenUpdateParameters> {
     /*
      * The properties of the token update parameters.
      */
-    @JsonProperty(value = "properties")
     private TokenUpdateProperties innerProperties;
 
-    /** Creates an instance of TokenUpdateParameters class. */
+    /**
+     * Creates an instance of TokenUpdateParameters class.
+     */
     public TokenUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The properties of the token update parameters.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TokenUpdateProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Get the scopeMapId property: The resource ID of the scope map to which the token will be associated with.
-     *
+     * 
      * @return the scopeMapId value.
      */
     public String scopeMapId() {
@@ -41,7 +48,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Set the scopeMapId property: The resource ID of the scope map to which the token will be associated with.
-     *
+     * 
      * @param scopeMapId the scopeMapId value to set.
      * @return the TokenUpdateParameters object itself.
      */
@@ -55,7 +62,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Get the status property: The status of the token example enabled or disabled.
-     *
+     * 
      * @return the status value.
      */
     public TokenStatus status() {
@@ -64,7 +71,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Set the status property: The status of the token example enabled or disabled.
-     *
+     * 
      * @param status the status value to set.
      * @return the TokenUpdateParameters object itself.
      */
@@ -78,7 +85,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Get the credentials property: The credentials that can be used for authenticating the token.
-     *
+     * 
      * @return the credentials value.
      */
     public TokenCredentialsProperties credentials() {
@@ -87,7 +94,7 @@ public final class TokenUpdateParameters {
 
     /**
      * Set the credentials property: The credentials that can be used for authenticating the token.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the TokenUpdateParameters object itself.
      */
@@ -101,12 +108,48 @@ public final class TokenUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TokenUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TokenUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TokenUpdateParameters.
+     */
+    public static TokenUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TokenUpdateParameters deserializedTokenUpdateParameters = new TokenUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedTokenUpdateParameters.innerProperties = TokenUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTokenUpdateParameters;
+        });
     }
 }

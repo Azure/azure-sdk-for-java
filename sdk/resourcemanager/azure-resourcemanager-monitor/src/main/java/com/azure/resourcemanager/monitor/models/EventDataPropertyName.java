@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for EventDataPropertyName. */
@@ -67,17 +66,29 @@ public final class EventDataPropertyName extends ExpandableStringEnum<EventDataP
     public static final EventDataPropertyName SUBSCRIPTIONID = fromString("subscriptionId");
 
     /**
+     * Creates a new instance of EventDataPropertyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventDataPropertyName() {
+    }
+
+    /**
      * Creates or finds a EventDataPropertyName from its string representation.
      *
      * @param name a name to look for
      * @return the corresponding WebhookAction
      */
-    @JsonCreator
     public static EventDataPropertyName fromString(String name) {
         return fromString(name, EventDataPropertyName.class);
     }
 
-    /** @return known WebhookAction values */
+    /**
+     * Gets known WebhookAction values.
+     *
+     * @return known WebhookAction values
+     */
     public static Collection<EventDataPropertyName> values() {
         return values(EventDataPropertyName.class);
     }

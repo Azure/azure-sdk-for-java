@@ -6,27 +6,37 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.VariableCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters supplied to the create or update variable operation. */
+/**
+ * The parameters supplied to the create or update variable operation.
+ */
 @Fluent
-public final class VariableCreateOrUpdateParameters {
+public final class VariableCreateOrUpdateParameters implements JsonSerializable<VariableCreateOrUpdateParameters> {
     /*
      * Gets or sets the name of the variable.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Gets or sets the properties of the variable.
      */
-    @JsonProperty(value = "properties", required = true)
     private VariableCreateOrUpdateProperties innerProperties = new VariableCreateOrUpdateProperties();
 
     /**
+     * Creates an instance of VariableCreateOrUpdateParameters class.
+     */
+    public VariableCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the variable.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -35,7 +45,7 @@ public final class VariableCreateOrUpdateParameters {
 
     /**
      * Set the name property: Gets or sets the name of the variable.
-     *
+     * 
      * @param name the name value to set.
      * @return the VariableCreateOrUpdateParameters object itself.
      */
@@ -46,7 +56,7 @@ public final class VariableCreateOrUpdateParameters {
 
     /**
      * Get the innerProperties property: Gets or sets the properties of the variable.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VariableCreateOrUpdateProperties innerProperties() {
@@ -55,7 +65,7 @@ public final class VariableCreateOrUpdateParameters {
 
     /**
      * Get the value property: Gets or sets the value of the variable.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -64,7 +74,7 @@ public final class VariableCreateOrUpdateParameters {
 
     /**
      * Set the value property: Gets or sets the value of the variable.
-     *
+     * 
      * @param value the value value to set.
      * @return the VariableCreateOrUpdateParameters object itself.
      */
@@ -78,7 +88,7 @@ public final class VariableCreateOrUpdateParameters {
 
     /**
      * Get the description property: Gets or sets the description of the variable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -87,7 +97,7 @@ public final class VariableCreateOrUpdateParameters {
 
     /**
      * Set the description property: Gets or sets the description of the variable.
-     *
+     * 
      * @param description the description value to set.
      * @return the VariableCreateOrUpdateParameters object itself.
      */
@@ -101,7 +111,7 @@ public final class VariableCreateOrUpdateParameters {
 
     /**
      * Get the isEncrypted property: Gets or sets the encrypted flag of the variable.
-     *
+     * 
      * @return the isEncrypted value.
      */
     public Boolean isEncrypted() {
@@ -110,7 +120,7 @@ public final class VariableCreateOrUpdateParameters {
 
     /**
      * Set the isEncrypted property: Gets or sets the encrypted flag of the variable.
-     *
+     * 
      * @param isEncrypted the isEncrypted value to set.
      * @return the VariableCreateOrUpdateParameters object itself.
      */
@@ -124,25 +134,65 @@ public final class VariableCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model VariableCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model VariableCreateOrUpdateParameters"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model VariableCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model VariableCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VariableCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VariableCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VariableCreateOrUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VariableCreateOrUpdateParameters.
+     */
+    public static VariableCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VariableCreateOrUpdateParameters deserializedVariableCreateOrUpdateParameters
+                = new VariableCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVariableCreateOrUpdateParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVariableCreateOrUpdateParameters.innerProperties
+                        = VariableCreateOrUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVariableCreateOrUpdateParameters;
+        });
+    }
 }

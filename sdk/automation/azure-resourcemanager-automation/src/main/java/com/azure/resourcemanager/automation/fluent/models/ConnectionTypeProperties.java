@@ -5,49 +5,56 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.FieldDefinition;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-/** Properties of the connection type. */
+/**
+ * Properties of the connection type.
+ */
 @Fluent
-public final class ConnectionTypeProperties {
+public final class ConnectionTypeProperties implements JsonSerializable<ConnectionTypeProperties> {
     /*
      * Gets or sets a Boolean value to indicate if the connection type is global.
      */
-    @JsonProperty(value = "isGlobal")
     private Boolean isGlobal;
 
     /*
      * Gets the field definitions of the connection type.
      */
-    @JsonProperty(value = "fieldDefinitions", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, FieldDefinition> fieldDefinitions;
 
     /*
      * Gets the creation time.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of ConnectionTypeProperties class.
+     */
+    public ConnectionTypeProperties() {
+    }
+
+    /**
      * Get the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
-     *
+     * 
      * @return the isGlobal value.
      */
     public Boolean isGlobal() {
@@ -56,7 +63,7 @@ public final class ConnectionTypeProperties {
 
     /**
      * Set the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
-     *
+     * 
      * @param isGlobal the isGlobal value to set.
      * @return the ConnectionTypeProperties object itself.
      */
@@ -67,7 +74,7 @@ public final class ConnectionTypeProperties {
 
     /**
      * Get the fieldDefinitions property: Gets the field definitions of the connection type.
-     *
+     * 
      * @return the fieldDefinitions value.
      */
     public Map<String, FieldDefinition> fieldDefinitions() {
@@ -76,7 +83,7 @@ public final class ConnectionTypeProperties {
 
     /**
      * Get the creationTime property: Gets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -85,7 +92,7 @@ public final class ConnectionTypeProperties {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -94,7 +101,7 @@ public final class ConnectionTypeProperties {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the ConnectionTypeProperties object itself.
      */
@@ -105,7 +112,7 @@ public final class ConnectionTypeProperties {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -114,7 +121,7 @@ public final class ConnectionTypeProperties {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ConnectionTypeProperties object itself.
      */
@@ -125,19 +132,69 @@ public final class ConnectionTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fieldDefinitions() != null) {
-            fieldDefinitions()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            fieldDefinitions().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isGlobal", this.isGlobal);
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionTypeProperties.
+     */
+    public static ConnectionTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionTypeProperties deserializedConnectionTypeProperties = new ConnectionTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isGlobal".equals(fieldName)) {
+                    deserializedConnectionTypeProperties.isGlobal = reader.getNullable(JsonReader::getBoolean);
+                } else if ("fieldDefinitions".equals(fieldName)) {
+                    Map<String, FieldDefinition> fieldDefinitions
+                        = reader.readMap(reader1 -> FieldDefinition.fromJson(reader1));
+                    deserializedConnectionTypeProperties.fieldDefinitions = fieldDefinitions;
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedConnectionTypeProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedConnectionTypeProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedConnectionTypeProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionTypeProperties;
+        });
     }
 }

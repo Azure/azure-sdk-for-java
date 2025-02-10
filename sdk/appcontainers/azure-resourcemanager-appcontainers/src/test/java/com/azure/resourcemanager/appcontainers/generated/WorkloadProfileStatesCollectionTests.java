@@ -14,38 +14,32 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadProfileStatesCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadProfileStatesCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"minimumCount\":1486999564,\"maximumCount\":2052287318,\"currentCount\":426763582},\"id\":\"uo\",\"name\":\"xprimrsop\",\"type\":\"eecjmeis\"},{\"properties\":{\"minimumCount\":749085962,\"maximumCount\":1672946681,\"currentCount\":2018313749},\"id\":\"wxdzaumweoohgu\",\"name\":\"fuzboyjathwtzolb\",\"type\":\"emwmdxmebwjs\"}],\"nextLink\":\"p\"}")
-                .toObject(WorkloadProfileStatesCollection.class);
-        Assertions.assertEquals(1486999564, model.value().get(0).properties().minimumCount());
-        Assertions.assertEquals(2052287318, model.value().get(0).properties().maximumCount());
-        Assertions.assertEquals(426763582, model.value().get(0).properties().currentCount());
+        WorkloadProfileStatesCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"minimumCount\":395266959,\"maximumCount\":280610276,\"currentCount\":1048039893},\"id\":\"cunnuzdqumoenodn\",\"name\":\"ienhqhskndnelq\",\"type\":\"aadl\"},{\"properties\":{\"minimumCount\":911130448,\"maximumCount\":1742378408,\"currentCount\":125911630},\"id\":\"yopetxivc\",\"name\":\"rl\",\"type\":\"xnucaephblkwqp\"},{\"properties\":{\"minimumCount\":877535846,\"maximumCount\":1982955476,\"currentCount\":876148319},\"id\":\"jbc\",\"name\":\"vivuzqymtuowo\",\"type\":\"tgitsqhzvbrzc\"}],\"nextLink\":\"anfzndscxmxeatk\"}")
+            .toObject(WorkloadProfileStatesCollection.class);
+        Assertions.assertEquals(395266959, model.value().get(0).properties().minimumCount());
+        Assertions.assertEquals(280610276, model.value().get(0).properties().maximumCount());
+        Assertions.assertEquals(1048039893, model.value().get(0).properties().currentCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadProfileStatesCollection model =
-            new WorkloadProfileStatesCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new WorkloadProfileStatesInner()
-                                .withProperties(
-                                    new WorkloadProfileStatesProperties()
-                                        .withMinimumCount(1486999564)
-                                        .withMaximumCount(2052287318)
-                                        .withCurrentCount(426763582)),
-                            new WorkloadProfileStatesInner()
-                                .withProperties(
-                                    new WorkloadProfileStatesProperties()
-                                        .withMinimumCount(749085962)
-                                        .withMaximumCount(1672946681)
-                                        .withCurrentCount(2018313749))));
+        WorkloadProfileStatesCollection model = new WorkloadProfileStatesCollection().withValue(Arrays.asList(
+            new WorkloadProfileStatesInner()
+                .withProperties(new WorkloadProfileStatesProperties().withMinimumCount(395266959)
+                    .withMaximumCount(280610276)
+                    .withCurrentCount(1048039893)),
+            new WorkloadProfileStatesInner()
+                .withProperties(new WorkloadProfileStatesProperties().withMinimumCount(911130448)
+                    .withMaximumCount(1742378408)
+                    .withCurrentCount(125911630)),
+            new WorkloadProfileStatesInner()
+                .withProperties(new WorkloadProfileStatesProperties().withMinimumCount(877535846)
+                    .withMaximumCount(1982955476)
+                    .withCurrentCount(876148319))));
         model = BinaryData.fromObject(model).toObject(WorkloadProfileStatesCollection.class);
-        Assertions.assertEquals(1486999564, model.value().get(0).properties().minimumCount());
-        Assertions.assertEquals(2052287318, model.value().get(0).properties().maximumCount());
-        Assertions.assertEquals(426763582, model.value().get(0).properties().currentCount());
+        Assertions.assertEquals(395266959, model.value().get(0).properties().minimumCount());
+        Assertions.assertEquals(280610276, model.value().get(0).properties().maximumCount());
+        Assertions.assertEquals(1048039893, model.value().get(0).properties().currentCount());
     }
 }

@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * GeoRegion resource specific properties.
  */
 @Immutable
-public final class GeoRegionProperties {
+public final class GeoRegionProperties implements JsonSerializable<GeoRegionProperties> {
     /*
      * Region description.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Display name for region.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Display name for region.
      */
-    @JsonProperty(value = "orgDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String orgDomain;
 
     /**
@@ -69,5 +70,44 @@ public final class GeoRegionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GeoRegionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GeoRegionProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GeoRegionProperties.
+     */
+    public static GeoRegionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GeoRegionProperties deserializedGeoRegionProperties = new GeoRegionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedGeoRegionProperties.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedGeoRegionProperties.displayName = reader.getString();
+                } else if ("orgDomain".equals(fieldName)) {
+                    deserializedGeoRegionProperties.orgDomain = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGeoRegionProperties;
+        });
     }
 }

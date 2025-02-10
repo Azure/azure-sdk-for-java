@@ -249,6 +249,18 @@ public class AnnotatedQueryIT {
     }
 
     @Test
+    public void testAnnotatedQueryWithSum() {
+        Address.TEST_ADDRESS1_PARTITION1.setLongId(1L);
+        Address.TEST_ADDRESS2_PARTITION1.setLongId(2L);
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
+        addressRepository.saveAll(addresses);
+
+        final Long sumResult = addressRepository.annotatedSumLongIdValuesByCity(TestConstants.CITY);
+
+        assertThat(sumResult).isEqualTo(3);
+    }
+
+    @Test
     public void testAnnotatedQueryWithJsonNodeAsPage() {
         final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
         addressRepository.saveAll(addresses);
@@ -418,5 +430,25 @@ public class AnnotatedQueryIT {
         cities2.add(TestConstants.CITY_0);
         final List<Address> resultsAsc2 = addressRepository.annotatedFindByCitiesWithSort(cities2, Sort.by(Sort.Direction.ASC, "postalCode"));
         assertAddressOrder(resultsAsc2, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2, Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testAnnotatedFindAllWithSortAsc() {
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1,
+            Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2);
+        addressRepository.saveAll(addresses);
+
+        final List<Address> resultsAsc = addressRepository.annotatedFindAllWithSort(Sort.by(Sort.Direction.ASC, "postalCode"));
+        assertAddressOrder(resultsAsc, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2, Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testAnnotatedFindAllWithSortDesc() {
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1,
+            Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2);
+        addressRepository.saveAll(addresses);
+
+        final List<Address> resultsAsc = addressRepository.annotatedFindAllWithSort(Sort.by(Sort.Direction.DESC, "postalCode"));
+        assertAddressOrder(resultsAsc, Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS1_PARTITION2, Address.TEST_ADDRESS2_PARTITION1);
     }
 }

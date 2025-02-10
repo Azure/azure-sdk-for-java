@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class DiagnosticsGetSiteAnalysisSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteAnalysisSlot.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteAnalysisSlot.json
      */
     /**
      * Sample code: Get App Slot Analysis.
@@ -18,13 +18,17 @@ public final class DiagnosticsGetSiteAnalysisSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAppSlotAnalysis(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDiagnostics().getSiteAnalysisWithResponse(
-            "Sample-WestUSResourceGroup", "SampleApp", "availability", "appanalysis", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDiagnostics()
+            .getSiteAnalysisWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability", "appanalysis",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteAnalysis.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteAnalysis.json
      */
     /**
      * Sample code: Get App Analysis.
@@ -32,7 +36,11 @@ public final class DiagnosticsGetSiteAnalysisSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAppAnalysis(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDiagnostics().getSiteAnalysisWithResponse(
-            "Sample-WestUSResourceGroup", "SampleApp", "availability", "appanalysis", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDiagnostics()
+            .getSiteAnalysisWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability", "appanalysis",
+                com.azure.core.util.Context.NONE);
     }
 }

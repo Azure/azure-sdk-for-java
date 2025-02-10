@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -27,6 +28,8 @@ import java.util.concurrent.TimeUnit;
 
 @Tag(TestUtils.INTEGRATION)
 class ProxySelectorTest extends IntegrationTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ProxySelectorTest.class);
+
     private static final int PROXY_PORT = 8899;
     private static final InetSocketAddress SIMPLE_PROXY_ADDRESS = new InetSocketAddress("localhost", PROXY_PORT);
     private ProxySelector defaultProxySelector;
@@ -62,18 +65,17 @@ class ProxySelectorTest extends IntegrationTestBase {
             }
         });
 
-        final EventHubConsumerAsyncClient consumer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .retry(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildAsyncConsumerClient());
+        final EventHubConsumerAsyncClient consumer
+            = toClose(createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+                .buildAsyncConsumerClient());
 
         StepVerifier.create(consumer.receiveFromPartition("1", EventPosition.earliest()).take(1))
             .expectErrorSatisfies(error -> {
                 // The message can vary because it is returned from proton-j, so we don't want to compare against that.
                 // This is a transient error from ExceptionUtil.java: line 67.
-                System.out.println("Error: " + error);
+                LOGGER.log(LogLevel.VERBOSE, () -> "Error", error);
             })
             .verify(TIMEOUT);
 

@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Description of VirtualNetworkRules - NetworkRules resource. */
+/**
+ * Description of VirtualNetworkRules - NetworkRules resource.
+ */
 @Fluent
-public final class NWRuleSetVirtualNetworkRules {
+public final class NWRuleSetVirtualNetworkRules implements JsonSerializable<NWRuleSetVirtualNetworkRules> {
     /*
      * Subnet properties
      */
-    @JsonProperty(value = "subnet")
     private Subnet subnet;
 
     /*
      * Value that indicates whether to ignore missing VNet Service Endpoint
      */
-    @JsonProperty(value = "ignoreMissingVnetServiceEndpoint")
     private Boolean ignoreMissingVnetServiceEndpoint;
 
     /**
+     * Creates an instance of NWRuleSetVirtualNetworkRules class.
+     */
+    public NWRuleSetVirtualNetworkRules() {
+    }
+
+    /**
      * Get the subnet property: Subnet properties.
-     *
+     * 
      * @return the subnet value.
      */
     public Subnet subnet() {
@@ -33,7 +43,7 @@ public final class NWRuleSetVirtualNetworkRules {
 
     /**
      * Set the subnet property: Subnet properties.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the NWRuleSetVirtualNetworkRules object itself.
      */
@@ -45,7 +55,7 @@ public final class NWRuleSetVirtualNetworkRules {
     /**
      * Get the ignoreMissingVnetServiceEndpoint property: Value that indicates whether to ignore missing VNet Service
      * Endpoint.
-     *
+     * 
      * @return the ignoreMissingVnetServiceEndpoint value.
      */
     public Boolean ignoreMissingVnetServiceEndpoint() {
@@ -55,7 +65,7 @@ public final class NWRuleSetVirtualNetworkRules {
     /**
      * Set the ignoreMissingVnetServiceEndpoint property: Value that indicates whether to ignore missing VNet Service
      * Endpoint.
-     *
+     * 
      * @param ignoreMissingVnetServiceEndpoint the ignoreMissingVnetServiceEndpoint value to set.
      * @return the NWRuleSetVirtualNetworkRules object itself.
      */
@@ -66,12 +76,52 @@ public final class NWRuleSetVirtualNetworkRules {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnet() != null) {
             subnet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeBooleanField("ignoreMissingVnetServiceEndpoint", this.ignoreMissingVnetServiceEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NWRuleSetVirtualNetworkRules from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NWRuleSetVirtualNetworkRules if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NWRuleSetVirtualNetworkRules.
+     */
+    public static NWRuleSetVirtualNetworkRules fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NWRuleSetVirtualNetworkRules deserializedNWRuleSetVirtualNetworkRules = new NWRuleSetVirtualNetworkRules();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnet".equals(fieldName)) {
+                    deserializedNWRuleSetVirtualNetworkRules.subnet = Subnet.fromJson(reader);
+                } else if ("ignoreMissingVnetServiceEndpoint".equals(fieldName)) {
+                    deserializedNWRuleSetVirtualNetworkRules.ignoreMissingVnetServiceEndpoint
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNWRuleSetVirtualNetworkRules;
+        });
     }
 }

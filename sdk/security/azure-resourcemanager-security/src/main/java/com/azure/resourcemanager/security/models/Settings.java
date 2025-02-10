@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
 
-/** Resource collection API of Settings. */
+/**
+ * Resource collection API of Settings.
+ */
 public interface Settings {
     /**
      * Settings about different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subscription settings list as paginated response with {@link PagedIterable}.
@@ -22,7 +24,7 @@ public interface Settings {
 
     /**
      * Settings about different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,7 +35,7 @@ public interface Settings {
 
     /**
      * Settings of different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @param settingName The name of the setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface Settings {
 
     /**
      * Settings of different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @param settingName The name of the setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,7 +58,7 @@ public interface Settings {
 
     /**
      * updating settings about different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @param settingName The name of the setting.
      * @param setting Setting object.
      * @param context The context to associate with this operation.
@@ -69,7 +71,7 @@ public interface Settings {
 
     /**
      * updating settings about different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @param settingName The name of the setting.
      * @param setting Setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -5,8 +5,11 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -18,14 +21,13 @@ import java.util.List;
  * provided prompt data.
  */
 @Immutable
-public final class ChatCompletions {
+public final class ChatCompletions implements JsonSerializable<ChatCompletions> {
 
     /*
      * A unique identifier associated with this chat completions response.
      */
     @Generated
-    @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * The collection of completions choices associated with this completions response.
@@ -33,15 +35,13 @@ public final class ChatCompletions {
      * Token limits and other settings may limit the number of choices generated.
      */
     @Generated
-    @JsonProperty(value = "choices")
-    private List<ChatChoice> choices;
+    private final List<ChatChoice> choices;
 
     /*
      * Usage information for tokens processed and generated as part of this completions operation.
      */
     @Generated
-    @JsonProperty(value = "usage")
-    private CompletionsUsage usage;
+    private final CompletionsUsage usage;
 
     /**
      * Get the id property: A unique identifier associated with this chat completions response.
@@ -81,8 +81,7 @@ public final class ChatCompletions {
      * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
      */
     @Generated
-    @JsonProperty(value = "created")
-    private long createdAt;
+    private final long createdAt;
 
     /**
      * Get the createdAt property: The first timestamp associated with generation activity for this completions
@@ -101,18 +100,7 @@ public final class ChatCompletions {
      * results for different prompts may arrive at different times or in different orders.
      */
     @Generated
-    @JsonProperty(value = "prompt_filter_results")
     private List<ContentFilterResultsForPrompt> promptFilterResults;
-
-    /**
-     * Backing member for the prompt filtering result during the rename transition. More details <a
-     * href="https://github.com/Azure/azure-rest-api-specs/pull/25880">here</a>
-     *
-     * @deprecated This field is only used for deserialization.
-     */
-    @Deprecated
-    @JsonProperty(value = "prompt_annotations")
-    private List<ContentFilterResultsForPrompt> promptAnnotations;
 
     /**
      * Get the promptFilterResults property: Content filtering results for zero or more prompts in the request. In a
@@ -121,11 +109,9 @@ public final class ChatCompletions {
      *
      * @return the promptFilterResults value.
      */
+    @Generated
     public List<ContentFilterResultsForPrompt> getPromptFilterResults() {
-        if (this.promptFilterResults != null) {
-            return this.promptFilterResults;
-        }
-        return this.promptAnnotations;
+        return this.promptFilterResults;
     }
 
     /*
@@ -134,7 +120,6 @@ public final class ChatCompletions {
      * might impact determinism.
      */
     @Generated
-    @JsonProperty(value = "system_fingerprint")
     private String systemFingerprint;
 
     /**
@@ -160,16 +145,94 @@ public final class ChatCompletions {
     @Generated
     private ChatCompletions(String id, OffsetDateTime createdAt, List<ChatChoice> choices, CompletionsUsage usage) {
         this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
         this.choices = choices;
         this.usage = usage;
     }
 
+    /*
+     * The model name used for this completions request.
+     */
     @Generated
-    @JsonCreator
-    private ChatCompletions(@JsonProperty(value = "id") String id, @JsonProperty(value = "created") long createdAt,
-        @JsonProperty(value = "choices") List<ChatChoice> choices,
-        @JsonProperty(value = "usage") CompletionsUsage usage) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
+    private String model;
+
+    /**
+     * Get the model property: The model name used for this completions request.
+     *
+     * @return the model value.
+     */
+    @Generated
+    public String getModel() {
+        return this.model;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeLongField("created", this.createdAt);
+        jsonWriter.writeArrayField("choices", this.choices, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("usage", this.usage);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeArrayField("prompt_filter_results", this.promptFilterResults,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("system_fingerprint", this.systemFingerprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatCompletions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatCompletions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatCompletions.
+     */
+    @Generated
+    public static ChatCompletions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            OffsetDateTime createdAt = null;
+            List<ChatChoice> choices = null;
+            CompletionsUsage usage = null;
+            String model = null;
+            List<ContentFilterResultsForPrompt> promptFilterResults = null;
+            String systemFingerprint = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("created".equals(fieldName)) {
+                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                } else if ("choices".equals(fieldName)) {
+                    choices = reader.readArray(reader1 -> ChatChoice.fromJson(reader1));
+                } else if ("usage".equals(fieldName)) {
+                    usage = CompletionsUsage.fromJson(reader);
+                } else if ("model".equals(fieldName)) {
+                    model = reader.getString();
+                } else if ("prompt_filter_results".equals(fieldName)) {
+                    promptFilterResults = reader.readArray(reader1 -> ContentFilterResultsForPrompt.fromJson(reader1));
+                } else if ("system_fingerprint".equals(fieldName)) {
+                    systemFingerprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ChatCompletions deserializedChatCompletions = new ChatCompletions(id, createdAt, choices, usage);
+            deserializedChatCompletions.model = model;
+            deserializedChatCompletions.promptFilterResults = promptFilterResults;
+            deserializedChatCompletions.systemFingerprint = systemFingerprint;
+            return deserializedChatCompletions;
+        });
     }
 }

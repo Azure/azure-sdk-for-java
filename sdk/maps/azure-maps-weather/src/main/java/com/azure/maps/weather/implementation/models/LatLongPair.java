@@ -5,29 +5,36 @@
 package com.azure.maps.weather.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A location represented as a latitude and longitude. */
+/**
+ * A location represented as a latitude and longitude.
+ */
 @Fluent
-public final class LatLongPair {
+public final class LatLongPair implements JsonSerializable<LatLongPair> {
     /*
      * Latitude property
      */
-    @JsonProperty(value = "latitude")
     private Double latitude;
 
     /*
      * Longitude property
      */
-    @JsonProperty(value = "longitude")
     private Double longitude;
 
-    /** Creates an instance of LatLongPair class. */
-    public LatLongPair() {}
+    /**
+     * Creates an instance of LatLongPair class.
+     */
+    public LatLongPair() {
+    }
 
     /**
      * Get the latitude property: Latitude property.
-     *
+     * 
      * @return the latitude value.
      */
     public Double getLatitude() {
@@ -36,7 +43,7 @@ public final class LatLongPair {
 
     /**
      * Set the latitude property: Latitude property.
-     *
+     * 
      * @param latitude the latitude value to set.
      * @return the LatLongPair object itself.
      */
@@ -47,7 +54,7 @@ public final class LatLongPair {
 
     /**
      * Get the longitude property: Longitude property.
-     *
+     * 
      * @return the longitude value.
      */
     public Double getLongitude() {
@@ -56,12 +63,51 @@ public final class LatLongPair {
 
     /**
      * Set the longitude property: Longitude property.
-     *
+     * 
      * @param longitude the longitude value to set.
      * @return the LatLongPair object itself.
      */
     public LatLongPair setLongitude(Double longitude) {
         this.longitude = longitude;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("latitude", this.latitude);
+        jsonWriter.writeNumberField("longitude", this.longitude);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LatLongPair from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LatLongPair if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LatLongPair.
+     */
+    public static LatLongPair fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LatLongPair deserializedLatLongPair = new LatLongPair();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("latitude".equals(fieldName)) {
+                    deserializedLatLongPair.latitude = reader.getNullable(JsonReader::getDouble);
+                } else if ("longitude".equals(fieldName)) {
+                    deserializedLatLongPair.longitude = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLatLongPair;
+        });
     }
 }

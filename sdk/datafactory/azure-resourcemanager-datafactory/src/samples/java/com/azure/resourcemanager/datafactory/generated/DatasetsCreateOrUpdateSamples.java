@@ -31,17 +31,19 @@ public final class DatasetsCreateOrUpdateSamples {
      */
     public static void datasetsCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager.datasets().define("exampleDataset").withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+        manager.datasets()
+            .define("exampleDataset")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(new AzureBlobDataset()
                 .withLinkedServiceName(new LinkedServiceReference().withReferenceName("exampleLinkedService"))
                 .withParameters(mapOf("MyFileName", new ParameterSpecification().withType(ParameterType.STRING),
                     "MyFolderPath", new ParameterSpecification().withType(ParameterType.STRING)))
-                .withFolderPath(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                    "{\"type\":\"Expression\",\"value\":\"@dataset().MyFolderPath\"}", Object.class,
-                    SerializerEncoding.JSON))
-                .withFileName(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                    "{\"type\":\"Expression\",\"value\":\"@dataset().MyFileName\"}", Object.class,
-                    SerializerEncoding.JSON))
+                .withFolderPath(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"type\":\"Expression\",\"value\":\"@dataset().MyFolderPath\"}", Object.class,
+                        SerializerEncoding.JSON))
+                .withFileName(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"type\":\"Expression\",\"value\":\"@dataset().MyFileName\"}", Object.class,
+                        SerializerEncoding.JSON))
                 .withFormat(new TextFormat()))
             .create();
     }
@@ -57,18 +59,23 @@ public final class DatasetsCreateOrUpdateSamples {
      */
     public static void datasetsUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        DatasetResource resource = manager.datasets().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleDataset", null, com.azure.core.util.Context.NONE).getValue();
-        resource.update().withProperties(new AzureBlobDataset().withDescription("Example description")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("exampleLinkedService"))
-            .withParameters(mapOf("MyFileName", new ParameterSpecification().withType(ParameterType.STRING),
-                "MyFolderPath", new ParameterSpecification().withType(ParameterType.STRING)))
-            .withFolderPath(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                "{\"type\":\"Expression\",\"value\":\"@dataset().MyFolderPath\"}", Object.class,
-                SerializerEncoding.JSON))
-            .withFileName(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                "{\"type\":\"Expression\",\"value\":\"@dataset().MyFileName\"}", Object.class, SerializerEncoding.JSON))
-            .withFormat(new TextFormat())).apply();
+        DatasetResource resource = manager.datasets()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new AzureBlobDataset().withDescription("Example description")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("exampleLinkedService"))
+                .withParameters(mapOf("MyFileName", new ParameterSpecification().withType(ParameterType.STRING),
+                    "MyFolderPath", new ParameterSpecification().withType(ParameterType.STRING)))
+                .withFolderPath(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"type\":\"Expression\",\"value\":\"@dataset().MyFolderPath\"}", Object.class,
+                        SerializerEncoding.JSON))
+                .withFileName(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"type\":\"Expression\",\"value\":\"@dataset().MyFileName\"}", Object.class,
+                        SerializerEncoding.JSON))
+                .withFormat(new TextFormat()))
+            .apply();
     }
 
     // Use "Map.of" if available

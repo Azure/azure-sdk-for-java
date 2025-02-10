@@ -13,9 +13,10 @@ import com.azure.security.keyvault.administration.models.KeyVaultSettingType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-/** The Setting model. */
+/**
+ * The Setting model.
+ */
 @Fluent
 public final class Setting implements JsonSerializable<Setting> {
     /*
@@ -35,7 +36,7 @@ public final class Setting implements JsonSerializable<Setting> {
 
     /**
      * Creates an instance of Setting class.
-     *
+     * 
      * @param name the name value to set.
      * @param value the value value to set.
      */
@@ -46,7 +47,7 @@ public final class Setting implements JsonSerializable<Setting> {
 
     /**
      * Get the name property: The account setting to be updated.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -55,7 +56,7 @@ public final class Setting implements JsonSerializable<Setting> {
 
     /**
      * Get the value property: The value of the pool setting.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {
@@ -64,7 +65,7 @@ public final class Setting implements JsonSerializable<Setting> {
 
     /**
      * Get the type property: The type specifier of the value.
-     *
+     * 
      * @return the type value.
      */
     public KeyVaultSettingType getType() {
@@ -73,7 +74,7 @@ public final class Setting implements JsonSerializable<Setting> {
 
     /**
      * Set the type property: The type specifier of the value.
-     *
+     * 
      * @param type the type value to set.
      * @return the Setting object itself.
      */
@@ -82,64 +83,66 @@ public final class Setting implements JsonSerializable<Setting> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("value", this.value);
-        jsonWriter.writeStringField("type", Objects.toString(this.type, null));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of Setting from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of Setting if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
+     * JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Setting.
      */
     public static Setting fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    boolean valueFound = false;
-                    String value = null;
-                    KeyVaultSettingType type = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean valueFound = false;
+            String value = null;
+            KeyVaultSettingType type = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("value".equals(fieldName)) {
-                            value = reader.getString();
-                            valueFound = true;
-                        } else if ("type".equals(fieldName)) {
-                            type = KeyVaultSettingType.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (nameFound && valueFound) {
-                        Setting deserializedSetting = new Setting(name, value);
-                        deserializedSetting.type = type;
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("value".equals(fieldName)) {
+                    value = reader.getString();
+                    valueFound = true;
+                } else if ("type".equals(fieldName)) {
+                    type = KeyVaultSettingType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && valueFound) {
+                Setting deserializedSetting = new Setting(name, value);
+                deserializedSetting.type = type;
 
-                        return deserializedSetting;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-                    if (!valueFound) {
-                        missingProperties.add("value");
-                    }
+                return deserializedSetting;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!valueFound) {
+                missingProperties.add("value");
+            }
 
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

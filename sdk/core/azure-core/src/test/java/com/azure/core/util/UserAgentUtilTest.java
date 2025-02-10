@@ -20,9 +20,12 @@ public class UserAgentUtilTest {
         String osName = System.getProperty("os.name");
         String osVersion = System.getProperty("os.version");
         String platform = new StringBuilder().append("(")
-            .append(javaVersion).append("; ")
-            .append(osName).append("; ")
-            .append(osVersion).append(")")
+            .append(javaVersion)
+            .append("; ")
+            .append(osName)
+            .append("; ")
+            .append(osVersion)
+            .append(")")
             .toString();
 
         // with platform info
@@ -33,17 +36,22 @@ public class UserAgentUtilTest {
 
         // without platform info
         assertEquals("azsdk-java-azure-storage-blob/12.0.0",
-            UserAgentUtil.toUserAgentString(null, "azure-storage-blob", "12.0.0",
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put("AZURE_TELEMETRY_DISABLED", "true")).build()));
+            UserAgentUtil.toUserAgentString(null, "azure-storage-blob", "12.0.0", new ConfigurationBuilder(EMPTY_SOURCE,
+                EMPTY_SOURCE, new TestConfigurationSource().put("AZURE_TELEMETRY_DISABLED", "true")).build()));
         assertEquals("myapp azsdk-java-azure-storage-blob/12.0.0",
             UserAgentUtil.toUserAgentString("myapp", "azure-storage-blob", "12.0.0",
-                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put("AZURE_TELEMETRY_DISABLED", "true")).build()));
+                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+                    new TestConfigurationSource().put("AZURE_TELEMETRY_DISABLED", "true")).build()));
 
-        // long app id should be truncated
-        assertThrows(IllegalArgumentException.class, () ->
-            UserAgentUtil.toUserAgentString("ReallyLongApplicationIdentity", "azure-storage-blob", "12.0.0", null));
+        // long app id
+        assertEquals("LongApplicationIdIsAllowedIfItContainsNoSpaces azsdk-java-azure-storage-blob/12.0.0",
+            UserAgentUtil.toUserAgentString("LongApplicationIdIsAllowedIfItContainsNoSpaces", "azure-storage-blob",
+                "12.0.0", new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+                    new TestConfigurationSource().put("AZURE_TELEMETRY_DISABLED", "true")).build()));
+
+        // app id with spaces should not be allowed
+        assertThrows(IllegalArgumentException.class,
+            () -> UserAgentUtil.toUserAgentString("appid with spaces", "azure-storage-blob", "12.0.0", null));
 
         // null sdk name and version
         assertEquals("myapp azsdk-java-null/null " + platform,

@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatRequestAssistantMessage;
@@ -10,7 +11,10 @@ import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestSystemMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.ChatResponseMessage;
+import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 
 import java.util.ArrayList;
@@ -31,9 +35,9 @@ public class StreamingChatSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
-        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
+        String deploymentOrModelId = "gpt-4o";
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
@@ -47,7 +51,7 @@ public class StreamingChatSample {
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
         IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId,
-            new ChatCompletionsOptions(chatMessages));
+            new ChatCompletionsOptions(chatMessages), new ChatCompletionStreamOptions().setIncludeUsage(true));
 
         // The delta is the message content for a streaming response.
         // Subsequence of streaming delta will be like:
@@ -64,19 +68,27 @@ public class StreamingChatSample {
         //     "content": "'t"
         //  }
         chatCompletionsStream
-            .stream()
-            // Remove .skip(1) when using Non-Azure OpenAI API
-            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-            // TODO: remove .skip(1) when service fix the issue.
-            .skip(1)
-            .forEach(chatCompletions -> {
-                ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
-                if (delta.getRole() != null) {
-                    System.out.println("Role = " + delta.getRole());
-                }
-                if (delta.getContent() != null) {
-                    System.out.print(delta.getContent());
-                }
-            });
+                .stream()
+                .forEach(chatCompletions -> {
+                    CompletionsUsage usage = chatCompletions.getUsage();
+                    if (usage != null) {
+                        System.out.println("\nTotal token count: " + usage.getTotalTokens());
+                    }
+
+                    if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
+                        return;
+                    }
+
+                    ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
+
+                    if (delta.getRole() != null) {
+                        System.out.println("Role = " + delta.getRole());
+                    }
+
+                    String content = delta.getContent();
+                    if (content != null) {
+                        System.out.print(content);
+                    }
+                });
     }
 }

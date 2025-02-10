@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The managed server capability. */
+/**
+ * The managed server capability.
+ */
 @Fluent
-public final class ManagedInstanceEditionCapability {
+public final class ManagedInstanceEditionCapability implements JsonSerializable<ManagedInstanceEditionCapability> {
     /*
      * The managed server version name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The supported families.
      */
-    @JsonProperty(value = "supportedFamilies", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedInstanceFamilyCapability> supportedFamilies;
 
     /*
      * The list of supported storage capabilities for this edition
      */
-    @JsonProperty(value = "supportedStorageCapabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageCapability> supportedStorageCapabilities;
 
     /*
      * Whether or not zone redundancy is supported for the edition.
      */
-    @JsonProperty(value = "zoneRedundant", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean zoneRedundant;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ManagedInstanceEditionCapability class. */
+    /**
+     * Creates an instance of ManagedInstanceEditionCapability class.
+     */
     public ManagedInstanceEditionCapability() {
     }
 
     /**
      * Get the name property: The managed server version name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +64,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Get the supportedFamilies property: The supported families.
-     *
+     * 
      * @return the supportedFamilies value.
      */
     public List<ManagedInstanceFamilyCapability> supportedFamilies() {
@@ -71,7 +73,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Get the supportedStorageCapabilities property: The list of supported storage capabilities for this edition.
-     *
+     * 
      * @return the supportedStorageCapabilities value.
      */
     public List<StorageCapability> supportedStorageCapabilities() {
@@ -80,7 +82,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Get the zoneRedundant property: Whether or not zone redundancy is supported for the edition.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -89,7 +91,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -98,7 +100,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -107,7 +109,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ManagedInstanceEditionCapability object itself.
      */
@@ -118,7 +120,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -128,5 +130,59 @@ public final class ManagedInstanceEditionCapability {
         if (supportedStorageCapabilities() != null) {
             supportedStorageCapabilities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceEditionCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceEditionCapability if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedInstanceEditionCapability.
+     */
+    public static ManagedInstanceEditionCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceEditionCapability deserializedManagedInstanceEditionCapability
+                = new ManagedInstanceEditionCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedManagedInstanceEditionCapability.name = reader.getString();
+                } else if ("supportedFamilies".equals(fieldName)) {
+                    List<ManagedInstanceFamilyCapability> supportedFamilies
+                        = reader.readArray(reader1 -> ManagedInstanceFamilyCapability.fromJson(reader1));
+                    deserializedManagedInstanceEditionCapability.supportedFamilies = supportedFamilies;
+                } else if ("supportedStorageCapabilities".equals(fieldName)) {
+                    List<StorageCapability> supportedStorageCapabilities
+                        = reader.readArray(reader1 -> StorageCapability.fromJson(reader1));
+                    deserializedManagedInstanceEditionCapability.supportedStorageCapabilities
+                        = supportedStorageCapabilities;
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedManagedInstanceEditionCapability.zoneRedundant
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("status".equals(fieldName)) {
+                    deserializedManagedInstanceEditionCapability.status
+                        = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedManagedInstanceEditionCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceEditionCapability;
+        });
     }
 }

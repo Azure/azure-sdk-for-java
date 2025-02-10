@@ -6,65 +6,66 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.CustomDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.CustomDomainResourceState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningSubstate;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The JSON object that contains the properties of the custom domain to create. */
+/**
+ * The JSON object that contains the properties of the custom domain to create.
+ */
 @Fluent
-public final class CustomDomainProperties {
+public final class CustomDomainProperties implements JsonSerializable<CustomDomainProperties> {
     /*
      * The host name of the custom domain. Must be a domain name.
      */
-    @JsonProperty(value = "hostName", required = true)
     private String hostname;
 
     /*
      * Resource status of the custom domain.
      */
-    @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private CustomDomainResourceState resourceState;
 
     /*
      * Provisioning status of the custom domain.
      */
-    @JsonProperty(value = "customHttpsProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CustomHttpsProvisioningState customHttpsProvisioningState;
 
     /*
      * Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step.
      */
-    @JsonProperty(value = "customHttpsProvisioningSubstate", access = JsonProperty.Access.WRITE_ONLY)
     private CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate;
 
     /*
      * Certificate parameters for securing custom HTTPS
      */
-    @JsonProperty(value = "customHttpsParameters")
     private CustomDomainHttpsParameters customHttpsParameters;
 
     /*
      * Special validation or data may be required when delivering CDN to some regions due to local compliance reasons.
      * E.g. ICP license number of a custom domain is required to deliver content in China.
      */
-    @JsonProperty(value = "validationData")
     private String validationData;
 
     /*
      * Provisioning status of Custom Https of the custom domain.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CustomHttpsProvisioningState provisioningState;
 
-    /** Creates an instance of CustomDomainProperties class. */
+    /**
+     * Creates an instance of CustomDomainProperties class.
+     */
     public CustomDomainProperties() {
     }
 
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -73,7 +74,7 @@ public final class CustomDomainProperties {
 
     /**
      * Set the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the CustomDomainProperties object itself.
      */
@@ -84,7 +85,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the resourceState property: Resource status of the custom domain.
-     *
+     * 
      * @return the resourceState value.
      */
     public CustomDomainResourceState resourceState() {
@@ -93,7 +94,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the customHttpsProvisioningState property: Provisioning status of the custom domain.
-     *
+     * 
      * @return the customHttpsProvisioningState value.
      */
     public CustomHttpsProvisioningState customHttpsProvisioningState() {
@@ -103,7 +104,7 @@ public final class CustomDomainProperties {
     /**
      * Get the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
      * enabling/disabling process step by step.
-     *
+     * 
      * @return the customHttpsProvisioningSubstate value.
      */
     public CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate() {
@@ -112,7 +113,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the customHttpsParameters property: Certificate parameters for securing custom HTTPS.
-     *
+     * 
      * @return the customHttpsParameters value.
      */
     public CustomDomainHttpsParameters customHttpsParameters() {
@@ -121,7 +122,7 @@ public final class CustomDomainProperties {
 
     /**
      * Set the customHttpsParameters property: Certificate parameters for securing custom HTTPS.
-     *
+     * 
      * @param customHttpsParameters the customHttpsParameters value to set.
      * @return the CustomDomainProperties object itself.
      */
@@ -134,7 +135,7 @@ public final class CustomDomainProperties {
      * Get the validationData property: Special validation or data may be required when delivering CDN to some regions
      * due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in
      * China.
-     *
+     * 
      * @return the validationData value.
      */
     public String validationData() {
@@ -145,7 +146,7 @@ public final class CustomDomainProperties {
      * Set the validationData property: Special validation or data may be required when delivering CDN to some regions
      * due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in
      * China.
-     *
+     * 
      * @param validationData the validationData value to set.
      * @return the CustomDomainProperties object itself.
      */
@@ -156,7 +157,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the provisioningState property: Provisioning status of Custom Https of the custom domain.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CustomHttpsProvisioningState provisioningState() {
@@ -165,13 +166,13 @@ public final class CustomDomainProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hostname() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property hostname in model CustomDomainProperties"));
         }
         if (customHttpsParameters() != null) {
@@ -180,4 +181,60 @@ public final class CustomDomainProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomDomainProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeJsonField("customHttpsParameters", this.customHttpsParameters);
+        jsonWriter.writeStringField("validationData", this.validationData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDomainProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDomainProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomDomainProperties.
+     */
+    public static CustomDomainProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDomainProperties deserializedCustomDomainProperties = new CustomDomainProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostName".equals(fieldName)) {
+                    deserializedCustomDomainProperties.hostname = reader.getString();
+                } else if ("resourceState".equals(fieldName)) {
+                    deserializedCustomDomainProperties.resourceState
+                        = CustomDomainResourceState.fromString(reader.getString());
+                } else if ("customHttpsProvisioningState".equals(fieldName)) {
+                    deserializedCustomDomainProperties.customHttpsProvisioningState
+                        = CustomHttpsProvisioningState.fromString(reader.getString());
+                } else if ("customHttpsProvisioningSubstate".equals(fieldName)) {
+                    deserializedCustomDomainProperties.customHttpsProvisioningSubstate
+                        = CustomHttpsProvisioningSubstate.fromString(reader.getString());
+                } else if ("customHttpsParameters".equals(fieldName)) {
+                    deserializedCustomDomainProperties.customHttpsParameters
+                        = CustomDomainHttpsParameters.fromJson(reader);
+                } else if ("validationData".equals(fieldName)) {
+                    deserializedCustomDomainProperties.validationData = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCustomDomainProperties.provisioningState
+                        = CustomHttpsProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDomainProperties;
+        });
+    }
 }

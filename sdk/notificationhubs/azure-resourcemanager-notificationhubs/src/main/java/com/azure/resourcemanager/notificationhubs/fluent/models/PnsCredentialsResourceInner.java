@@ -6,7 +6,9 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
 import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
@@ -14,30 +16,48 @@ import com.azure.resourcemanager.notificationhubs.models.GcmCredential;
 import com.azure.resourcemanager.notificationhubs.models.MpnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
 import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Description of a NotificationHub PNS Credentials. */
+/**
+ * Description of a NotificationHub PNS Credentials.
+ */
 @Fluent
 public final class PnsCredentialsResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PnsCredentialsResourceInner.class);
-
     /*
      * NotificationHub PNS Credentials.
      */
-    @JsonProperty(value = "properties")
     private PnsCredentialsProperties innerProperties;
 
     /*
      * The sku of the created namespace
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PnsCredentialsResourceInner class.
+     */
+    public PnsCredentialsResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: NotificationHub PNS Credentials.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PnsCredentialsProperties innerProperties() {
@@ -46,7 +66,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Get the sku property: The sku of the created namespace.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -55,7 +75,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Set the sku property: The sku of the created namespace.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
@@ -64,14 +84,48 @@ public final class PnsCredentialsResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PnsCredentialsResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PnsCredentialsResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -80,7 +134,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Get the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the apnsCredential value.
      */
     public ApnsCredential apnsCredential() {
@@ -89,7 +143,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Set the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
+     * 
      * @param apnsCredential the apnsCredential value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
@@ -103,7 +157,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Get the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the wnsCredential value.
      */
     public WnsCredential wnsCredential() {
@@ -112,7 +166,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Set the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
+     * 
      * @param wnsCredential the wnsCredential value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
@@ -126,7 +180,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Get the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
+     * 
      * @return the gcmCredential value.
      */
     public GcmCredential gcmCredential() {
@@ -135,7 +189,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Set the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
+     * 
      * @param gcmCredential the gcmCredential value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
@@ -149,7 +203,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Get the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the mpnsCredential value.
      */
     public MpnsCredential mpnsCredential() {
@@ -158,7 +212,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Set the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
+     * 
      * @param mpnsCredential the mpnsCredential value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
@@ -172,7 +226,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Get the admCredential property: The AdmCredential of the created NotificationHub.
-     *
+     * 
      * @return the admCredential value.
      */
     public AdmCredential admCredential() {
@@ -181,7 +235,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Set the admCredential property: The AdmCredential of the created NotificationHub.
-     *
+     * 
      * @param admCredential the admCredential value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
@@ -195,7 +249,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Get the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
+     * 
      * @return the baiduCredential value.
      */
     public BaiduCredential baiduCredential() {
@@ -204,7 +258,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Set the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
+     * 
      * @param baiduCredential the baiduCredential value to set.
      * @return the PnsCredentialsResourceInner object itself.
      */
@@ -218,7 +272,7 @@ public final class PnsCredentialsResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -228,5 +282,58 @@ public final class PnsCredentialsResourceInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PnsCredentialsResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PnsCredentialsResourceInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PnsCredentialsResourceInner.
+     */
+    public static PnsCredentialsResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PnsCredentialsResourceInner deserializedPnsCredentialsResourceInner = new PnsCredentialsResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPnsCredentialsResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.innerProperties = PnsCredentialsProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedPnsCredentialsResourceInner.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPnsCredentialsResourceInner;
+        });
     }
 }

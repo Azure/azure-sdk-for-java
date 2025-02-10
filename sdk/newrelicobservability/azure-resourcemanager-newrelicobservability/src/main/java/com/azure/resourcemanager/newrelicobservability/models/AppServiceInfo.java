@@ -6,32 +6,34 @@ package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.resourcemanager.newrelicobservability.fluent.models.AppServiceInfoInner;
 
-/** An immutable client-side representation of AppServiceInfo. */
+/**
+ * An immutable client-side representation of AppServiceInfo.
+ */
 public interface AppServiceInfo {
     /**
      * Gets the azureResourceId property: Azure App service resource ID.
-     *
+     * 
      * @return the azureResourceId value.
      */
     String azureResourceId();
 
     /**
      * Gets the agentVersion property: Version of the NewRelic agent installed on the App service.
-     *
+     * 
      * @return the agentVersion value.
      */
     String agentVersion();
 
     /**
      * Gets the agentStatus property: Status of the NewRelic agent installed on the App service.
-     *
+     * 
      * @return the agentStatus value.
      */
     String agentStatus();
 
     /**
      * Gets the inner com.azure.resourcemanager.newrelicobservability.fluent.models.AppServiceInfoInner object.
-     *
+     * 
      * @return the inner object.
      */
     AppServiceInfoInner innerModel();

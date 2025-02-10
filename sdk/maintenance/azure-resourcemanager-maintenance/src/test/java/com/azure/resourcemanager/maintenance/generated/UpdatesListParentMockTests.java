@@ -6,80 +6,43 @@ package com.azure.resourcemanager.maintenance.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.maintenance.MaintenanceManager;
 import com.azure.resourcemanager.maintenance.models.ImpactType;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
 import com.azure.resourcemanager.maintenance.models.Update;
 import com.azure.resourcemanager.maintenance.models.UpdateStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class UpdatesListParentMockTests {
     @Test
     public void testListParent() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"maintenanceScope\":\"Extension\",\"impactType\":\"Freeze\",\"status\":\"InProgress\",\"impactDurationInSec\":2001173638,\"notBefore\":\"2021-01-30T14:11:32Z\",\"properties\":{\"resourceId\":\"n\"}}]}";
 
-        String responseStr =
-            "{\"value\":[{\"maintenanceScope\":\"Host\",\"impactType\":\"Restart\",\"status\":\"RetryLater\",\"impactDurationInSec\":554486012,\"notBefore\":\"2021-02-10T15:07:23Z\",\"properties\":{\"resourceId\":\"zob\"}}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MaintenanceManager manager = MaintenanceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Update> response = manager.updates()
+            .listParent("xlhslnel", "ieixynllxe", "wcrojphslhcaw", "u", "i", "dwfmvigorqjb",
+                com.azure.core.util.Context.NONE);
 
-        MaintenanceManager manager =
-            MaintenanceManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Update> response =
-            manager
-                .updates()
-                .listParent(
-                    "ryxynqnzrd",
-                    "sovwxznptgoeiyb",
-                    "abpfhvfs",
-                    "kvntjlrigjkskyri",
-                    "ovzidsx",
-                    "aabzmif",
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(MaintenanceScope.HOST, response.iterator().next().maintenanceScope());
-        Assertions.assertEquals(ImpactType.RESTART, response.iterator().next().impactType());
-        Assertions.assertEquals(UpdateStatus.RETRY_LATER, response.iterator().next().status());
-        Assertions.assertEquals(554486012, response.iterator().next().impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-10T15:07:23Z"), response.iterator().next().notBefore());
-        Assertions.assertEquals("zob", response.iterator().next().resourceId());
+        Assertions.assertEquals(MaintenanceScope.EXTENSION, response.iterator().next().maintenanceScope());
+        Assertions.assertEquals(ImpactType.FREEZE, response.iterator().next().impactType());
+        Assertions.assertEquals(UpdateStatus.IN_PROGRESS, response.iterator().next().status());
+        Assertions.assertEquals(2001173638, response.iterator().next().impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-30T14:11:32Z"), response.iterator().next().notBefore());
+        Assertions.assertEquals("n", response.iterator().next().resourceId());
     }
 }

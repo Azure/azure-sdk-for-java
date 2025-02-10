@@ -16,8 +16,7 @@ public final class MetricRulesImpl implements MetricRules {
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    MetricRulesImpl(
-        MetricRulesInner innerObject,
+    MetricRulesImpl(MetricRulesInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

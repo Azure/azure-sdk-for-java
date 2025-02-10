@@ -5,73 +5,87 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** DPM workload-specific job object. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
-@JsonTypeName("DpmJob")
+/**
+ * DPM workload-specific job object.
+ */
 @Fluent
 public final class DpmJob extends Job {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String jobType = "DpmJob";
+
+    /*
      * Time elapsed for job.
      */
-    @JsonProperty(value = "duration")
     private Duration duration;
 
     /*
      * DPM server name managing the backup item or backup job.
      */
-    @JsonProperty(value = "dpmServerName")
     private String dpmServerName;
 
     /*
      * Name of cluster/server protecting current backup item, if any.
      */
-    @JsonProperty(value = "containerName")
     private String containerName;
 
     /*
      * Type of container.
      */
-    @JsonProperty(value = "containerType")
     private String containerType;
 
     /*
      * Type of backup item.
      */
-    @JsonProperty(value = "workloadType")
     private String workloadType;
 
     /*
      * The state/actions applicable on this job like cancel/retry.
      */
-    @JsonProperty(value = "actionsInfo")
     private List<JobSupportedAction> actionsInfo;
 
     /*
      * The errors.
      */
-    @JsonProperty(value = "errorDetails")
     private List<DpmErrorInfo> errorDetails;
 
     /*
      * Additional information for this job.
      */
-    @JsonProperty(value = "extendedInfo")
     private DpmJobExtendedInfo extendedInfo;
 
-    /** Creates an instance of DpmJob class. */
+    /**
+     * Creates an instance of DpmJob class.
+     */
     public DpmJob() {
     }
 
     /**
+     * Get the jobType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the jobType value.
+     */
+    @Override
+    public String jobType() {
+        return this.jobType;
+    }
+
+    /**
      * Get the duration property: Time elapsed for job.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -80,7 +94,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the duration property: Time elapsed for job.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the DpmJob object itself.
      */
@@ -91,7 +105,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the dpmServerName property: DPM server name managing the backup item or backup job.
-     *
+     * 
      * @return the dpmServerName value.
      */
     public String dpmServerName() {
@@ -100,7 +114,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the dpmServerName property: DPM server name managing the backup item or backup job.
-     *
+     * 
      * @param dpmServerName the dpmServerName value to set.
      * @return the DpmJob object itself.
      */
@@ -111,7 +125,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the containerName property: Name of cluster/server protecting current backup item, if any.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -120,7 +134,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the containerName property: Name of cluster/server protecting current backup item, if any.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the DpmJob object itself.
      */
@@ -131,7 +145,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the containerType property: Type of container.
-     *
+     * 
      * @return the containerType value.
      */
     public String containerType() {
@@ -140,7 +154,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the containerType property: Type of container.
-     *
+     * 
      * @param containerType the containerType value to set.
      * @return the DpmJob object itself.
      */
@@ -151,7 +165,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the workloadType property: Type of backup item.
-     *
+     * 
      * @return the workloadType value.
      */
     public String workloadType() {
@@ -160,7 +174,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the workloadType property: Type of backup item.
-     *
+     * 
      * @param workloadType the workloadType value to set.
      * @return the DpmJob object itself.
      */
@@ -171,7 +185,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the actionsInfo property: The state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @return the actionsInfo value.
      */
     public List<JobSupportedAction> actionsInfo() {
@@ -180,7 +194,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the actionsInfo property: The state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @param actionsInfo the actionsInfo value to set.
      * @return the DpmJob object itself.
      */
@@ -191,7 +205,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the errorDetails property: The errors.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<DpmErrorInfo> errorDetails() {
@@ -200,7 +214,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the errorDetails property: The errors.
-     *
+     * 
      * @param errorDetails the errorDetails value to set.
      * @return the DpmJob object itself.
      */
@@ -211,7 +225,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the extendedInfo property: Additional information for this job.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public DpmJobExtendedInfo extendedInfo() {
@@ -220,7 +234,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the extendedInfo property: Additional information for this job.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the DpmJob object itself.
      */
@@ -229,49 +243,63 @@ public final class DpmJob extends Job {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withEntityFriendlyName(String entityFriendlyName) {
         super.withEntityFriendlyName(entityFriendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withOperation(String operation) {
         super.withOperation(operation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withStatus(String status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withActivityId(String activityId) {
         super.withActivityId(activityId);
@@ -280,17 +308,107 @@ public final class DpmJob extends Job {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (errorDetails() != null) {
             errorDetails().forEach(e -> e.validate());
         }
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entityFriendlyName", entityFriendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("operation", operation());
+        jsonWriter.writeStringField("status", status());
+        jsonWriter.writeStringField("startTime",
+            startTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startTime()));
+        jsonWriter.writeStringField("endTime",
+            endTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(endTime()));
+        jsonWriter.writeStringField("activityId", activityId());
+        jsonWriter.writeStringField("jobType", this.jobType);
+        jsonWriter.writeStringField("duration", CoreUtils.durationToStringWithDays(this.duration));
+        jsonWriter.writeStringField("dpmServerName", this.dpmServerName);
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("containerType", this.containerType);
+        jsonWriter.writeStringField("workloadType", this.workloadType);
+        jsonWriter.writeArrayField("actionsInfo", this.actionsInfo,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("errorDetails", this.errorDetails, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DpmJob from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DpmJob if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the DpmJob.
+     */
+    public static DpmJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DpmJob deserializedDpmJob = new DpmJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityFriendlyName".equals(fieldName)) {
+                    deserializedDpmJob.withEntityFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedDpmJob.withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("operation".equals(fieldName)) {
+                    deserializedDpmJob.withOperation(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedDpmJob.withStatus(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedDpmJob.withStartTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedDpmJob.withEndTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("activityId".equals(fieldName)) {
+                    deserializedDpmJob.withActivityId(reader.getString());
+                } else if ("jobType".equals(fieldName)) {
+                    deserializedDpmJob.jobType = reader.getString();
+                } else if ("duration".equals(fieldName)) {
+                    deserializedDpmJob.duration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("dpmServerName".equals(fieldName)) {
+                    deserializedDpmJob.dpmServerName = reader.getString();
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedDpmJob.containerName = reader.getString();
+                } else if ("containerType".equals(fieldName)) {
+                    deserializedDpmJob.containerType = reader.getString();
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedDpmJob.workloadType = reader.getString();
+                } else if ("actionsInfo".equals(fieldName)) {
+                    List<JobSupportedAction> actionsInfo
+                        = reader.readArray(reader1 -> JobSupportedAction.fromString(reader1.getString()));
+                    deserializedDpmJob.actionsInfo = actionsInfo;
+                } else if ("errorDetails".equals(fieldName)) {
+                    List<DpmErrorInfo> errorDetails = reader.readArray(reader1 -> DpmErrorInfo.fromJson(reader1));
+                    deserializedDpmJob.errorDetails = errorDetails;
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedDpmJob.extendedInfo = DpmJobExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDpmJob;
+        });
     }
 }

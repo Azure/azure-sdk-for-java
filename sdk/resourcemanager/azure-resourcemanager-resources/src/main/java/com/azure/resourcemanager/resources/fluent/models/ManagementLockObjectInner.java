@@ -7,27 +7,48 @@ package com.azure.resourcemanager.resources.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.LockLevel;
 import com.azure.resourcemanager.resources.models.ManagementLockOwner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The lock information. */
+/**
+ * The lock information.
+ */
 @Fluent
 public final class ManagementLockObjectInner extends ProxyResource {
     /*
      * The properties of the lock.
      */
-    @JsonProperty(value = "properties", required = true)
     private ManagementLockProperties innerProperties = new ManagementLockProperties();
 
-    /** Creates an instance of ManagementLockObjectInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ManagementLockObjectInner class.
+     */
     public ManagementLockObjectInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the lock.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagementLockProperties innerProperties() {
@@ -35,10 +56,40 @@ public final class ManagementLockObjectInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the level property: The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly.
      * CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means
      * authorized users can only read from a resource, but they can't modify or delete it.
-     *
+     * 
      * @return the level value.
      */
     public LockLevel level() {
@@ -49,7 +100,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
      * Set the level property: The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly.
      * CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means
      * authorized users can only read from a resource, but they can't modify or delete it.
-     *
+     * 
      * @param level the level value to set.
      * @return the ManagementLockObjectInner object itself.
      */
@@ -63,7 +114,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
 
     /**
      * Get the notes property: Notes about the lock. Maximum of 512 characters.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -72,7 +123,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
 
     /**
      * Set the notes property: Notes about the lock. Maximum of 512 characters.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the ManagementLockObjectInner object itself.
      */
@@ -86,7 +137,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
 
     /**
      * Get the owners property: The owners of the lock.
-     *
+     * 
      * @return the owners value.
      */
     public List<ManagementLockOwner> owners() {
@@ -95,7 +146,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
 
     /**
      * Set the owners property: The owners of the lock.
-     *
+     * 
      * @param owners the owners value to set.
      * @return the ManagementLockObjectInner object itself.
      */
@@ -109,19 +160,61 @@ public final class ManagementLockObjectInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ManagementLockObjectInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ManagementLockObjectInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagementLockObjectInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementLockObjectInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementLockObjectInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagementLockObjectInner.
+     */
+    public static ManagementLockObjectInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementLockObjectInner deserializedManagementLockObjectInner = new ManagementLockObjectInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagementLockObjectInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagementLockObjectInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagementLockObjectInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagementLockObjectInner.innerProperties = ManagementLockProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementLockObjectInner;
+        });
+    }
 }

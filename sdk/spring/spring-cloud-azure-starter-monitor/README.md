@@ -25,19 +25,18 @@ Import the OpenTelemetry Bills of Materials (BOM)
 by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/#dependency-management).
 
 #### Add monitoring dependency
-[//]: # ({x-version-update-start;com.azure:azure-monitor-azure-monitor-spring-native;current})
-```xml
-<dependency>
-  <groupId>com.azure.spring</groupId>
-  <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-  <version>1.0.0-beta.2</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
+
+Add the [Spring Cloud Azure Starter Monitor](https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-monitor) dependency.
 
 #### Required native image build configuration
 
 [Instruction][azure_native] for Spring Boot native image applications.
+
+### Enable OpenTelemetry features
+
+All the features described in the [OpenTelemetry Spring Boot starter][otel_spring_starter] documentation work with Azure Monitor OpenTelemetry Distro / Application Insights in Spring Boot native image Java application.
+
+You have just to replace the `opentelemetry-spring-boot-starter` dependency by the `spring-cloud-azure-starter-monitor` one.
 
 ### Azure Monitor configuration
 
@@ -56,12 +55,8 @@ You can then configure the connection string in two different ways:
 
 The [Application Map](https://learn.microsoft.com/azure/azure-monitor/app/app-map?tabs=net#set-or-override-cloud-role-name) uses the cloud role name to identify components on the map.
 
-You can set the cloud role name with the `spring.application.name` or `otel.springboot.resource.attributes.service.name` property.
+You can set the cloud role name with the `spring.application.name` property. You have other options to set the cloud role role: see how to set the service name in the [OpenTelemetry documentation](https://opentelemetry.io/docs/languages/java/automatic/spring-boot/).
 
-### Configure the instrumentation
-
-The Spring starter will capture HTTP requests by default. You can find on [this page][otel_spring_starter_instrumentation] how to configure additional instrumentations (JDBC, logging, ...).
-    
 ### Build your Spring native application
 At this step, you can build your Spring Boot native image application and start it:
 
@@ -75,33 +70,10 @@ where you have to replace `{CONNECTION_STRING}` and `{image-name}` by your conne
 
 You can disable the monitoring by setting the `otel.sdk.disabled` property or the `OTEL_SDK_DISABLED` environment variable to true.
 
-### Troubleshooting
-
-#### Debug
-
-If something does not work as expected, you can enable self-diagnostics features at DEBUG level to get some insights.
-
-You can configure the self-diagnostics level by using the APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL environment variable. You can configure the level with ERROR, WARN, INFO, DEBUG, or TRACE.
-
-_The APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL environment variable only works for Logback today._
-
-The following line shows you how to add self-diagnostics at the DEBUG level when running a docker container:
-```
-docker run -e APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL=DEBUG {image-name}
-```
-
-You have to replace `{image-name}` by your docker image name.
-
-#### OpenTelemetry version issue
-
-You may notice the following message during the application start-up:
-```
-WARN  c.a.m.a.s.OpenTelemetryVersionCheckRunner - The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be
-```
-
-In this case, you have to import the OpenTelemetry Bills of Materials
-by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/#dependency-management).
-
+## Learn more
+* [Enable Azure Monitor OpenTelemetry][azure_monitor_enable_opentelemetry]
+* [Configure Azure Monitor OpenTelemetry][azure_monitor_configure_opentelemetry]
+* [Add, modify, and filter OpenTelemetry][azure_monitor_add_modify_opentelemetry]
 
 ## Contributing
 
@@ -120,18 +92,21 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [otel_spring_starter]: https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/
 [otel_spring_starter_instrumentation]: https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/#additional-instrumentations
 [spring_boot_native]: https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html
-[azure_native]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/README.md#spring-aot-and-spring-native-images
+[azure_native]: https://learn.microsoft.com/azure/developer/java/spring-framework/developer-guide-overview#configuring-spring-boot-3
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-monitor/src
 [package_mvn]: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-monitor
 [api_reference_doc]: https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/
-[product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
+[product_documentation]: https://learn.microsoft.com/azure/azure-monitor/overview
 [azure_subscription]: https://azure.microsoft.com/free/
-[application_insights_resource]: https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource
-[application_insights_intro]: https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview
+[application_insights_resource]: https://learn.microsoft.com/azure/azure-monitor/app/create-new-resource
+[application_insights_intro]: https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview
 [application_insights_java_agent_spring_boot]: https://learn.microsoft.com/azure/azure-monitor/app/java-spring-boot
+[azure_monitor_enable_opentelemetry]: https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-enable?tabs=java-native
+[azure_monitor_configure_opentelemetry]: https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-configuration?tabs=java-native
+[azure_monitor_add_modify_opentelemetry]: https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-add-modify?tabs=java-native
 [azure_portal]: https://portal.azure.com
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%monitor%2Fazure-monitor-spring-native%2FREADME.png)
+

@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the resource. */
+/**
+ * The kind of the resource.
+ */
 public final class KnownDataCollectionEndpointResourceKind
     extends ExpandableStringEnum<KnownDataCollectionEndpointResourceKind> {
-    /** Static value Linux for KnownDataCollectionEndpointResourceKind. */
+    /**
+     * Static value Linux for KnownDataCollectionEndpointResourceKind.
+     */
     public static final KnownDataCollectionEndpointResourceKind LINUX = fromString("Linux");
 
-    /** Static value Windows for KnownDataCollectionEndpointResourceKind. */
+    /**
+     * Static value Windows for KnownDataCollectionEndpointResourceKind.
+     */
     public static final KnownDataCollectionEndpointResourceKind WINDOWS = fromString("Windows");
 
     /**
+     * Creates a new instance of KnownDataCollectionEndpointResourceKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KnownDataCollectionEndpointResourceKind() {
+    }
+
+    /**
      * Creates or finds a KnownDataCollectionEndpointResourceKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KnownDataCollectionEndpointResourceKind.
      */
-    @JsonCreator
     public static KnownDataCollectionEndpointResourceKind fromString(String name) {
         return fromString(name, KnownDataCollectionEndpointResourceKind.class);
     }
 
     /**
      * Gets known KnownDataCollectionEndpointResourceKind values.
-     *
+     * 
      * @return known KnownDataCollectionEndpointResourceKind values.
      */
     public static Collection<KnownDataCollectionEndpointResourceKind> values() {

@@ -3,8 +3,6 @@
 package com.azure.search.documents.models;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Parameters for performing vector searches.
@@ -31,12 +29,15 @@ public final class SemanticSearchOptions {
      * This parameter is only valid if the query type is 'semantic'. If set,
      * the query returns answers extracted from key passages in the highest
      * ranked documents. The number of answers returned can be configured by
-     * appending the pipe character '|' followed by the 'count-<number of
-     * answers>' option after the answers parameter value, such as
+     * appending the pipe character '|' followed by the 'count-&lt;number of
+     * answers&gt;' option after the answers parameter value, such as
      * 'extractive|count-3'. Default count is 1. The confidence threshold can
      * be configured by appending the pipe character '|' followed by the
-     * 'threshold-<confidence threshold>' option after the answers parameter
+     * 'threshold-&lt;confidence threshold&gt;' option after the answers parameter
      * value, such as 'extractive|threshold-0.9'. Default threshold is 0.7.
+     * The maximum character length of answers can be configured by appending
+     * the pipe character '|' followed by the 'count-&lt;number of maximum character length&gt;',
+     * such as 'extractive|maxcharlength-600'.
      */
     private QueryAnswer queryAnswer;
 
@@ -45,8 +46,10 @@ public final class SemanticSearchOptions {
      * the query returns captions extracted from key passages in the highest
      * ranked documents. When Captions is set to 'extractive', highlighting is
      * enabled by default, and can be configured by appending the pipe
-     * character '|' followed by the 'highlight-<true/false>' option, such as
-     * 'extractive|highlight-true'. Defaults to 'None'.
+     * character '|' followed by the 'highlight-&lt;true/false&gt;' option, such as
+     * 'extractive|highlight-true'. Defaults to 'None'. The maximum character length
+     * of captions can be configured by appending the pipe character '|' followed by
+     * the 'count-&lt;number of maximum character length&gt;', such as 'extractive|maxcharlength-600'.
      */
     private QueryCaption queryCaption;
 
@@ -58,14 +61,12 @@ public final class SemanticSearchOptions {
     private String semanticQuery;
 
     /*
-     * The comma-separated list of field names used for semantic ranking.
+     * When QueryRewrites is set to `generative`, the query terms are sent to a generate model which will produce 10
+     * (default) rewrites to help increase the recall of the request. The requested count can be configured by appending
+     * the pipe character `|` followed by the `count-&lt;number of rewrites&gt;` option, such as `generative|count-3`.
+     * Defaults to `None`. This parameter is only valid if the query type is `semantic`.
      */
-    private List<String> semanticFields;
-
-    /*
-     * Enables a debugging tool that can be used to further explore your reranked results.
-     */
-    private QueryDebugMode debug;
+    private QueryRewrites queryRewrites;
 
     /**
      * Creates a new instance of {@link SemanticSearchOptions}.
@@ -220,53 +221,28 @@ public final class SemanticSearchOptions {
     }
 
     /**
-     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
+     * Get the queryRewrites property: When QueryRewrites is set to `generative`, the query terms are sent to a generate
+     * model which will produce 10 (default) rewrites to help increase the recall of the request. The requested count
+     * can be configured by appending the pipe character `|` followed by the `count-&lt;number of rewrites&gt;` option, such
+     * as `generative|count-3`. Defaults to `None`. This parameter is only valid if the query type is `semantic`.
      *
-     * @return the semanticFields value.
+     * @return the queryRewrites value.
      */
-    public List<String> getSemanticFields() {
-        return this.semanticFields;
+    public QueryRewrites getQueryRewrites() {
+        return this.queryRewrites;
     }
 
     /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
+     * Set the queryRewrites property: When QueryRewrites is set to `generative`, the query terms are sent to a generate
+     * model which will produce 10 (default) rewrites to help increase the recall of the request. The requested count
+     * can be configured by appending the pipe character `|` followed by the `count-&lt;number of rewrites&gt;` option, such
+     * as `generative|count-3`. Defaults to `None`. This parameter is only valid if the query type is `semantic`.
      *
-     * @param semanticFields the semanticFields value to set.
+     * @param queryRewrites the queryRewrites value to set.
      * @return the SemanticSearchOptions object itself.
      */
-    public SemanticSearchOptions setSemanticFields(List<String> semanticFields) {
-        this.semanticFields = semanticFields;
-        return this;
-    }
-
-    /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     *
-     * @param semanticFields the semanticFields value to set.
-     * @return the SemanticSearchOptions object itself.
-     */
-    public SemanticSearchOptions setSemanticFields(String... semanticFields) {
-        this.semanticFields = semanticFields == null ? null : Arrays.asList(semanticFields);
-        return this;
-    }
-
-    /**
-     * Get the debug property: Enables a debugging tool that can be used to further explore your reranked results.
-     *
-     * @return the debug value.
-     */
-    public QueryDebugMode getDebug() {
-        return this.debug;
-    }
-
-    /**
-     * Set the debug property: Enables a debugging tool that can be used to further explore your reranked results.
-     *
-     * @param debug the debug value to set.
-     * @return the SemanticSearchOptions object itself.
-     */
-    public SemanticSearchOptions setDebug(QueryDebugMode debug) {
-        this.debug = debug;
+    public SemanticSearchOptions setQueryRewrites(QueryRewrites queryRewrites) {
+        this.queryRewrites = queryRewrites;
         return this;
     }
 }

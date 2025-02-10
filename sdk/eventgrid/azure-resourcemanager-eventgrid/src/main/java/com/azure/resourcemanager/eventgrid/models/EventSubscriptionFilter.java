@@ -5,53 +5,51 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Filter for the Event Subscription.
  */
 @Fluent
-public final class EventSubscriptionFilter {
+public final class EventSubscriptionFilter implements JsonSerializable<EventSubscriptionFilter> {
     /*
      * An optional string to filter events for an event subscription based on a resource path prefix.
      * The format of this depends on the publisher of the events.
      * Wildcard characters are not supported in this path.
      */
-    @JsonProperty(value = "subjectBeginsWith")
     private String subjectBeginsWith;
 
     /*
      * An optional string to filter events for an event subscription based on a resource path suffix.
      * Wildcard characters are not supported in this path.
      */
-    @JsonProperty(value = "subjectEndsWith")
     private String subjectEndsWith;
 
     /*
-     * A list of applicable event types that need to be part of the event subscription. If it is desired to subscribe
-     * to all default event types, set the IncludedEventTypes to null.
+     * A list of applicable event types that need to be part of the event subscription. If it is desired to subscribe to
+     * all default event types, set the IncludedEventTypes to null.
      */
-    @JsonProperty(value = "includedEventTypes")
     private List<String> includedEventTypes;
 
     /*
      * Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the filter
      * should be compared in a case sensitive manner.
      */
-    @JsonProperty(value = "isSubjectCaseSensitive")
     private Boolean isSubjectCaseSensitive;
 
     /*
      * Allows advanced filters to be evaluated against an array of values instead of expecting a singular value.
      */
-    @JsonProperty(value = "enableAdvancedFilteringOnArrays")
     private Boolean enableAdvancedFilteringOnArrays;
 
     /*
      * An array of advanced filters that are used for filtering event subscriptions.
      */
-    @JsonProperty(value = "advancedFilters")
     private List<AdvancedFilter> advancedFilters;
 
     /**
@@ -133,8 +131,8 @@ public final class EventSubscriptionFilter {
     }
 
     /**
-     * Get the isSubjectCaseSensitive property: Specifies if the SubjectBeginsWith and SubjectEndsWith properties of
-     * the filter
+     * Get the isSubjectCaseSensitive property: Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the
+     * filter
      * should be compared in a case sensitive manner.
      * 
      * @return the isSubjectCaseSensitive value.
@@ -144,8 +142,8 @@ public final class EventSubscriptionFilter {
     }
 
     /**
-     * Set the isSubjectCaseSensitive property: Specifies if the SubjectBeginsWith and SubjectEndsWith properties of
-     * the filter
+     * Set the isSubjectCaseSensitive property: Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the
+     * filter
      * should be compared in a case sensitive manner.
      * 
      * @param isSubjectCaseSensitive the isSubjectCaseSensitive value to set.
@@ -207,5 +205,63 @@ public final class EventSubscriptionFilter {
         if (advancedFilters() != null) {
             advancedFilters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subjectBeginsWith", this.subjectBeginsWith);
+        jsonWriter.writeStringField("subjectEndsWith", this.subjectEndsWith);
+        jsonWriter.writeArrayField("includedEventTypes", this.includedEventTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isSubjectCaseSensitive", this.isSubjectCaseSensitive);
+        jsonWriter.writeBooleanField("enableAdvancedFilteringOnArrays", this.enableAdvancedFilteringOnArrays);
+        jsonWriter.writeArrayField("advancedFilters", this.advancedFilters,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventSubscriptionFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventSubscriptionFilter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventSubscriptionFilter.
+     */
+    public static EventSubscriptionFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventSubscriptionFilter deserializedEventSubscriptionFilter = new EventSubscriptionFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subjectBeginsWith".equals(fieldName)) {
+                    deserializedEventSubscriptionFilter.subjectBeginsWith = reader.getString();
+                } else if ("subjectEndsWith".equals(fieldName)) {
+                    deserializedEventSubscriptionFilter.subjectEndsWith = reader.getString();
+                } else if ("includedEventTypes".equals(fieldName)) {
+                    List<String> includedEventTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEventSubscriptionFilter.includedEventTypes = includedEventTypes;
+                } else if ("isSubjectCaseSensitive".equals(fieldName)) {
+                    deserializedEventSubscriptionFilter.isSubjectCaseSensitive
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAdvancedFilteringOnArrays".equals(fieldName)) {
+                    deserializedEventSubscriptionFilter.enableAdvancedFilteringOnArrays
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("advancedFilters".equals(fieldName)) {
+                    List<AdvancedFilter> advancedFilters
+                        = reader.readArray(reader1 -> AdvancedFilter.fromJson(reader1));
+                    deserializedEventSubscriptionFilter.advancedFilters = advancedFilters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventSubscriptionFilter;
+        });
     }
 }

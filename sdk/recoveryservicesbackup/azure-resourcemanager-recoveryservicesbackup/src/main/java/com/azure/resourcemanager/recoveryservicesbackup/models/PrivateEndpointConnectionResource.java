@@ -9,74 +9,76 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.PrivateEndpointConnectionResourceInner;
 import java.util.Map;
 
-/** An immutable client-side representation of PrivateEndpointConnectionResource. */
+/**
+ * An immutable client-side representation of PrivateEndpointConnectionResource.
+ */
 public interface PrivateEndpointConnectionResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the properties property: PrivateEndpointConnectionResource properties.
-     *
+     * 
      * @return the properties value.
      */
     PrivateEndpointConnection properties();
 
     /**
      * Gets the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
@@ -84,30 +86,35 @@ public interface PrivateEndpointConnectionResource {
     /**
      * Gets the inner
      * com.azure.resourcemanager.recoveryservicesbackup.fluent.models.PrivateEndpointConnectionResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateEndpointConnectionResourceInner innerModel();
 
-    /** The entirety of the PrivateEndpointConnectionResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the PrivateEndpointConnectionResource definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The PrivateEndpointConnectionResource definition stages. */
+    /**
+     * The PrivateEndpointConnectionResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the PrivateEndpointConnectionResource definition. */
+        /**
+         * The first stage of the PrivateEndpointConnectionResource definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the PrivateEndpointConnectionResource definition allowing to specify location. */
+        /**
+         * The stage of the PrivateEndpointConnectionResource definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -115,18 +122,20 @@ public interface PrivateEndpointConnectionResource {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
 
-        /** The stage of the PrivateEndpointConnectionResource definition allowing to specify parent resource. */
+        /**
+         * The stage of the PrivateEndpointConnectionResource definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies vaultName, resourceGroupName.
-             *
+             * 
              * @param vaultName The name of the recovery services vault.
              * @param resourceGroupName The name of the resource group where the recovery services vault is present.
              * @return the next definition stage.
@@ -142,47 +151,53 @@ public interface PrivateEndpointConnectionResource {
             extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithEtag {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             PrivateEndpointConnectionResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             PrivateEndpointConnectionResource create(Context context);
         }
 
-        /** The stage of the PrivateEndpointConnectionResource definition allowing to specify tags. */
+        /**
+         * The stage of the PrivateEndpointConnectionResource definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the PrivateEndpointConnectionResource definition allowing to specify properties. */
+        /**
+         * The stage of the PrivateEndpointConnectionResource definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: PrivateEndpointConnectionResource properties.
-             *
+             * 
              * @param properties PrivateEndpointConnectionResource properties.
              * @return the next definition stage.
              */
             WithCreate withProperties(PrivateEndpointConnection properties);
         }
 
-        /** The stage of the PrivateEndpointConnectionResource definition allowing to specify etag. */
+        /**
+         * The stage of the PrivateEndpointConnectionResource definition allowing to specify etag.
+         */
         interface WithEtag {
             /**
              * Specifies the etag property: Optional ETag..
-             *
+             * 
              * @param etag Optional ETag.
              * @return the next definition stage.
              */
@@ -192,58 +207,68 @@ public interface PrivateEndpointConnectionResource {
 
     /**
      * Begins update for the PrivateEndpointConnectionResource resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     PrivateEndpointConnectionResource.Update update();
 
-    /** The template for PrivateEndpointConnectionResource update. */
+    /**
+     * The template for PrivateEndpointConnectionResource update.
+     */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithEtag {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         PrivateEndpointConnectionResource apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         PrivateEndpointConnectionResource apply(Context context);
     }
 
-    /** The PrivateEndpointConnectionResource update stages. */
+    /**
+     * The PrivateEndpointConnectionResource update stages.
+     */
     interface UpdateStages {
-        /** The stage of the PrivateEndpointConnectionResource update allowing to specify tags. */
+        /**
+         * The stage of the PrivateEndpointConnectionResource update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the PrivateEndpointConnectionResource update allowing to specify properties. */
+        /**
+         * The stage of the PrivateEndpointConnectionResource update allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: PrivateEndpointConnectionResource properties.
-             *
+             * 
              * @param properties PrivateEndpointConnectionResource properties.
              * @return the next definition stage.
              */
             Update withProperties(PrivateEndpointConnection properties);
         }
 
-        /** The stage of the PrivateEndpointConnectionResource update allowing to specify etag. */
+        /**
+         * The stage of the PrivateEndpointConnectionResource update allowing to specify etag.
+         */
         interface WithEtag {
             /**
              * Specifies the etag property: Optional ETag..
-             *
+             * 
              * @param etag Optional ETag.
              * @return the next definition stage.
              */
@@ -253,14 +278,14 @@ public interface PrivateEndpointConnectionResource {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     PrivateEndpointConnectionResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

@@ -5,65 +5,63 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** todoTaskList. */
+/**
+ * todoTaskList.
+ */
 @Fluent
 public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
     /*
      * The name of the task list.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * True if the user is owner of the given task list.
      */
-    @JsonProperty(value = "isOwner")
     private Boolean isOwner;
 
     /*
      * True if the task list is shared with other users
      */
-    @JsonProperty(value = "isShared")
     private Boolean isShared;
 
     /*
      * wellknownListName
      */
-    @JsonProperty(value = "wellknownListName")
     private MicrosoftGraphWellknownListName wellknownListName;
 
     /*
      * The collection of open extensions defined for the task list. Nullable.
      */
-    @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
      * The tasks in this task list. Read-only. Nullable.
      */
-    @JsonProperty(value = "tasks")
     private List<MicrosoftGraphTodoTask> tasks;
 
     /*
      * todoTaskList
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTodoTaskList class. */
+    /**
+     * Creates an instance of MicrosoftGraphTodoTaskList class.
+     */
     public MicrosoftGraphTodoTaskList() {
     }
 
     /**
      * Get the displayName property: The name of the task list.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -72,7 +70,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Set the displayName property: The name of the task list.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphTodoTaskList object itself.
      */
@@ -83,7 +81,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Get the isOwner property: True if the user is owner of the given task list.
-     *
+     * 
      * @return the isOwner value.
      */
     public Boolean isOwner() {
@@ -92,7 +90,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Set the isOwner property: True if the user is owner of the given task list.
-     *
+     * 
      * @param isOwner the isOwner value to set.
      * @return the MicrosoftGraphTodoTaskList object itself.
      */
@@ -103,7 +101,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Get the isShared property: True if the task list is shared with other users.
-     *
+     * 
      * @return the isShared value.
      */
     public Boolean isShared() {
@@ -112,7 +110,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Set the isShared property: True if the task list is shared with other users.
-     *
+     * 
      * @param isShared the isShared value to set.
      * @return the MicrosoftGraphTodoTaskList object itself.
      */
@@ -123,7 +121,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Get the wellknownListName property: wellknownListName.
-     *
+     * 
      * @return the wellknownListName value.
      */
     public MicrosoftGraphWellknownListName wellknownListName() {
@@ -132,7 +130,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Set the wellknownListName property: wellknownListName.
-     *
+     * 
      * @param wellknownListName the wellknownListName value to set.
      * @return the MicrosoftGraphTodoTaskList object itself.
      */
@@ -143,7 +141,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Get the extensions property: The collection of open extensions defined for the task list. Nullable.
-     *
+     * 
      * @return the extensions value.
      */
     public List<MicrosoftGraphExtension> extensions() {
@@ -152,7 +150,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Set the extensions property: The collection of open extensions defined for the task list. Nullable.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphTodoTaskList object itself.
      */
@@ -163,7 +161,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Get the tasks property: The tasks in this task list. Read-only. Nullable.
-     *
+     * 
      * @return the tasks value.
      */
     public List<MicrosoftGraphTodoTask> tasks() {
@@ -172,7 +170,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Set the tasks property: The tasks in this task list. Read-only. Nullable.
-     *
+     * 
      * @param tasks the tasks value to set.
      * @return the MicrosoftGraphTodoTaskList object itself.
      */
@@ -183,17 +181,16 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: todoTaskList.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: todoTaskList.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTodoTaskList object itself.
      */
@@ -202,15 +199,9 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTodoTaskList withId(String id) {
         super.withId(id);
@@ -219,7 +210,7 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -231,5 +222,76 @@ public final class MicrosoftGraphTodoTaskList extends MicrosoftGraphEntity {
         if (tasks() != null) {
             tasks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("isOwner", this.isOwner);
+        jsonWriter.writeBooleanField("isShared", this.isShared);
+        jsonWriter.writeStringField("wellknownListName",
+            this.wellknownListName == null ? null : this.wellknownListName.toString());
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tasks", this.tasks, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTodoTaskList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTodoTaskList if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTodoTaskList.
+     */
+    public static MicrosoftGraphTodoTaskList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTodoTaskList deserializedMicrosoftGraphTodoTaskList = new MicrosoftGraphTodoTaskList();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTaskList.withId(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTaskList.displayName = reader.getString();
+                } else if ("isOwner".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTaskList.isOwner = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isShared".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTaskList.isShared = reader.getNullable(JsonReader::getBoolean);
+                } else if ("wellknownListName".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodoTaskList.wellknownListName
+                        = MicrosoftGraphWellknownListName.fromString(reader.getString());
+                } else if ("extensions".equals(fieldName)) {
+                    List<MicrosoftGraphExtension> extensions
+                        = reader.readArray(reader1 -> MicrosoftGraphExtension.fromJson(reader1));
+                    deserializedMicrosoftGraphTodoTaskList.extensions = extensions;
+                } else if ("tasks".equals(fieldName)) {
+                    List<MicrosoftGraphTodoTask> tasks
+                        = reader.readArray(reader1 -> MicrosoftGraphTodoTask.fromJson(reader1));
+                    deserializedMicrosoftGraphTodoTaskList.tasks = tasks;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTodoTaskList.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTodoTaskList;
+        });
     }
 }

@@ -78,8 +78,8 @@ public class StreamResponseTest {
     @Test
     public void closeDisposesFlux() {
         AtomicBoolean wasRead = new AtomicBoolean(false);
-        Flux<ByteBuffer> value = Flux.using(() -> wasRead, ignored -> Flux.just(ByteBuffer.wrap(responseValue)),
-            read -> read.set(true));
+        Flux<ByteBuffer> value
+            = Flux.using(() -> wasRead, ignored -> Flux.just(ByteBuffer.wrap(responseValue)), read -> read.set(true));
         StreamResponse streamResponse = new StreamResponse(request, RESPONSE_CODE, headers, value);
 
         streamResponse.close();
@@ -151,17 +151,16 @@ public class StreamResponseTest {
                 Path tempFile = Files.createTempFile("streamresponsetest", null);
                 tempFile.toFile().deleteOnExit();
 
-                StepVerifier.create(Mono.using(() ->
-                        IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                        streamResponse::writeValueToAsync,
-                        channel -> {
-                            try {
-                                channel.close();
-                            } catch (IOException e) {
-                                throw Exceptions.propagate(e);
-                            }
-                        })
-                ).verifyComplete();
+                StepVerifier.create(Mono.using(
+                    () -> IOUtils
+                        .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+                    streamResponse::writeValueToAsync, channel -> {
+                        try {
+                            channel.close();
+                        } catch (IOException e) {
+                            throw Exceptions.propagate(e);
+                        }
+                    })).verifyComplete();
 
                 assertArraysEqual(responseValue, Files.readAllBytes(tempFile));
             } catch (IOException e) {
@@ -183,8 +182,7 @@ public class StreamResponseTest {
 
     @SuppressWarnings("deprecation")
     public Stream<StreamResponse> createStreamResponses() {
-        return Stream.of(
-            new StreamResponse(request, RESPONSE_CODE, headers, Flux.just(ByteBuffer.wrap(responseValue))),
+        return Stream.of(new StreamResponse(request, RESPONSE_CODE, headers, Flux.just(ByteBuffer.wrap(responseValue))),
             new StreamResponse(response));
     }
 }

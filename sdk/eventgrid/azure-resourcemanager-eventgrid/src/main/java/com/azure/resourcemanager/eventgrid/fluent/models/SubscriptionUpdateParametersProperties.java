@@ -5,33 +5,43 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.DeliveryConfiguration;
 import com.azure.resourcemanager.eventgrid.models.DeliverySchema;
 import com.azure.resourcemanager.eventgrid.models.FiltersConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Properties of the Event Subscription update parameters.
  */
 @Fluent
-public final class SubscriptionUpdateParametersProperties {
+public final class SubscriptionUpdateParametersProperties
+    implements JsonSerializable<SubscriptionUpdateParametersProperties> {
     /*
      * Information about the delivery configuration of the event subscription.
      */
-    @JsonProperty(value = "deliveryConfiguration")
     private DeliveryConfiguration deliveryConfiguration;
 
     /*
      * The event delivery schema for the event subscription.
      */
-    @JsonProperty(value = "eventDeliverySchema")
     private DeliverySchema eventDeliverySchema;
 
     /*
      * Information about the filter for the event subscription.
      */
-    @JsonProperty(value = "filtersConfiguration")
     private FiltersConfiguration filtersConfiguration;
+
+    /*
+     * Expiration time of the event subscription.
+     */
+    private OffsetDateTime expirationTimeUtc;
 
     /**
      * Creates an instance of SubscriptionUpdateParametersProperties class.
@@ -101,6 +111,26 @@ public final class SubscriptionUpdateParametersProperties {
     }
 
     /**
+     * Get the expirationTimeUtc property: Expiration time of the event subscription.
+     * 
+     * @return the expirationTimeUtc value.
+     */
+    public OffsetDateTime expirationTimeUtc() {
+        return this.expirationTimeUtc;
+    }
+
+    /**
+     * Set the expirationTimeUtc property: Expiration time of the event subscription.
+     * 
+     * @param expirationTimeUtc the expirationTimeUtc value to set.
+     * @return the SubscriptionUpdateParametersProperties object itself.
+     */
+    public SubscriptionUpdateParametersProperties withExpirationTimeUtc(OffsetDateTime expirationTimeUtc) {
+        this.expirationTimeUtc = expirationTimeUtc;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -112,5 +142,59 @@ public final class SubscriptionUpdateParametersProperties {
         if (filtersConfiguration() != null) {
             filtersConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("deliveryConfiguration", this.deliveryConfiguration);
+        jsonWriter.writeStringField("eventDeliverySchema",
+            this.eventDeliverySchema == null ? null : this.eventDeliverySchema.toString());
+        jsonWriter.writeJsonField("filtersConfiguration", this.filtersConfiguration);
+        jsonWriter.writeStringField("expirationTimeUtc",
+            this.expirationTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTimeUtc));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionUpdateParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionUpdateParametersProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionUpdateParametersProperties.
+     */
+    public static SubscriptionUpdateParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionUpdateParametersProperties deserializedSubscriptionUpdateParametersProperties
+                = new SubscriptionUpdateParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deliveryConfiguration".equals(fieldName)) {
+                    deserializedSubscriptionUpdateParametersProperties.deliveryConfiguration
+                        = DeliveryConfiguration.fromJson(reader);
+                } else if ("eventDeliverySchema".equals(fieldName)) {
+                    deserializedSubscriptionUpdateParametersProperties.eventDeliverySchema
+                        = DeliverySchema.fromString(reader.getString());
+                } else if ("filtersConfiguration".equals(fieldName)) {
+                    deserializedSubscriptionUpdateParametersProperties.filtersConfiguration
+                        = FiltersConfiguration.fromJson(reader);
+                } else if ("expirationTimeUtc".equals(fieldName)) {
+                    deserializedSubscriptionUpdateParametersProperties.expirationTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionUpdateParametersProperties;
+        });
     }
 }

@@ -20,13 +20,13 @@ import java.util.List;
 public class CreateSkillsetExample {
 
     /**
-     * From the Azure portal, get your Azure Cognitive Search service URL and API key,
+     * From the Azure portal, get your Azure AI Search service URL and API key,
      * and set the values of these environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
     private static final String OCR_SKILLSET_NAME = "ocr-skillset";
-    private static final String CUSTOME_SKILLSET_NAME = "custom-skillset";
+    private static final String CUSTOM_SKILLSET_NAME = "custom-skillset";
 
     public static void main(String[] args) {
         SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
@@ -98,7 +98,7 @@ public class CreateSkillsetExample {
             .setName("webapi-skill")
             .setDescription("A WebApiSkill that can be used to call a custom web api function");
 
-        SearchIndexerSkillset skillset = new SearchIndexerSkillset(CUSTOME_SKILLSET_NAME,
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset(CUSTOM_SKILLSET_NAME,
             Collections.singletonList(webApiSkill))
             .setDescription("Skillset for testing custom skillsets");
 
@@ -113,6 +113,6 @@ public class CreateSkillsetExample {
 
     private static void cleanupSkillset(SearchIndexerClient searchIndexerClient) {
         searchIndexerClient.deleteSkillset(OCR_SKILLSET_NAME);
-        searchIndexerClient.deleteSkillset(CUSTOME_SKILLSET_NAME);
+        searchIndexerClient.deleteSkillset(CUSTOM_SKILLSET_NAME);
     }
 }

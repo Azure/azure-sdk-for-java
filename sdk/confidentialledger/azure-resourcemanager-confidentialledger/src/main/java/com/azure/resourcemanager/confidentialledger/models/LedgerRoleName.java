@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.confidentialledger.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** LedgerRole associated with the Security Principal of Ledger. */
+/**
+ * LedgerRole associated with the Security Principal of Ledger.
+ */
 public final class LedgerRoleName extends ExpandableStringEnum<LedgerRoleName> {
-    /** Static value Reader for LedgerRoleName. */
+    /**
+     * Static value Reader for LedgerRoleName.
+     */
     public static final LedgerRoleName READER = fromString("Reader");
 
-    /** Static value Contributor for LedgerRoleName. */
+    /**
+     * Static value Contributor for LedgerRoleName.
+     */
     public static final LedgerRoleName CONTRIBUTOR = fromString("Contributor");
 
-    /** Static value Administrator for LedgerRoleName. */
+    /**
+     * Static value Administrator for LedgerRoleName.
+     */
     public static final LedgerRoleName ADMINISTRATOR = fromString("Administrator");
 
     /**
      * Creates a new instance of LedgerRoleName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class LedgerRoleName extends ExpandableStringEnum<LedgerRoleName> {
 
     /**
      * Creates or finds a LedgerRoleName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LedgerRoleName.
      */
-    @JsonCreator
     public static LedgerRoleName fromString(String name) {
         return fromString(name, LedgerRoleName.class);
     }
 
     /**
      * Gets known LedgerRoleName values.
-     *
+     * 
      * @return known LedgerRoleName values.
      */
     public static Collection<LedgerRoleName> values() {

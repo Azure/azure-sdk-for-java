@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
@@ -20,6 +21,7 @@ import com.azure.search.documents.options.OnActionAddedOptions;
 import com.azure.search.documents.options.OnActionErrorOptions;
 import com.azure.search.documents.options.OnActionSentOptions;
 import com.azure.search.documents.options.OnActionSucceededOptions;
+import reactor.util.function.Tuple2;
 
 import java.net.HttpURLConnection;
 import java.time.Duration;
@@ -28,14 +30,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -54,13 +53,12 @@ import static com.azure.search.documents.implementation.batching.SearchBatchingU
  */
 public final class SearchIndexingPublisher<T> {
     private static final ClientLogger LOGGER = new ClientLogger(SearchIndexingPublisher.class);
-    private static final ExecutorService EXECUTOR =  getThreadPoolWithShutdownHook();
 
     private final SearchIndexClientImpl restClient;
     private final JsonSerializer serializer;
 
     private final boolean autoFlush;
-    private int batchActionCount;
+    private int batchSize;
     private final int maxRetries;
     private final long throttlingDelayNanos;
     private final long maxThrottlingDelayNanos;
@@ -74,7 +72,7 @@ public final class SearchIndexingPublisher<T> {
     private final Function<Integer, Integer> scaleDownFunction = size -> size / 2;
     private final IndexingDocumentManager<T> documentManager;
 
-    private final Semaphore processingSemaphore = new Semaphore(1, true);
+    private final ReentrantLock lock = new ReentrantLock(true);
 
     volatile AtomicInteger backoffCount = new AtomicInteger();
     volatile Duration currentRetryDelay = Duration.ZERO;
@@ -84,15 +82,15 @@ public final class SearchIndexingPublisher<T> {
         int maxRetriesPerAction, Duration throttlingDelay, Duration maxThrottlingDelay,
         Consumer<OnActionAddedOptions<T>> onActionAdded, Consumer<OnActionSucceededOptions<T>> onActionSucceeded,
         Consumer<OnActionErrorOptions<T>> onActionError, Consumer<OnActionSentOptions<T>> onActionSent) {
-        this.documentKeyRetriever = Objects.requireNonNull(documentKeyRetriever,
-            "'documentKeyRetriever' cannot be null");
+        this.documentKeyRetriever
+            = Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
 
         this.restClient = restClient;
         this.serializer = serializer;
-        this.documentManager = new IndexingDocumentManager<>(LOGGER);
+        this.documentManager = new IndexingDocumentManager<>();
 
         this.autoFlush = autoFlush;
-        this.batchActionCount = initialBatchActionCount;
+        this.batchSize = initialBatchActionCount;
         this.maxRetries = maxRetriesPerAction;
         this.throttlingDelayNanos = throttlingDelay.toNanos();
         this.maxThrottlingDelayNanos = (maxThrottlingDelay.compareTo(throttlingDelay) < 0)
@@ -109,8 +107,8 @@ public final class SearchIndexingPublisher<T> {
         return documentManager.getActions();
     }
 
-    public int getBatchActionCount() {
-        return batchActionCount;
+    public int getBatchSize() {
+        return batchSize;
     }
 
     public Duration getCurrentRetryDelay() {
@@ -119,11 +117,12 @@ public final class SearchIndexingPublisher<T> {
 
     public void addActions(Collection<IndexAction<T>> actions, Duration timeout, Context context,
         Runnable rescheduleFlush) {
-        int actionCount = documentManager.add(actions, documentKeyRetriever, onActionAdded);
+        Tuple2<Integer, Boolean> batchSizeAndAvailable
+            = documentManager.addAndCheckForBatch(actions, documentKeyRetriever, onActionAdded, batchSize);
 
-        LOGGER.verbose("Actions added, new pending queue size: {}.", actionCount);
+        LOGGER.verbose("Actions added, new pending queue size: {}.", batchSizeAndAvailable.getT1());
 
-        if (autoFlush && documentManager.batchAvailableForProcessing(batchActionCount)) {
+        if (autoFlush && batchSizeAndAvailable.getT2()) {
             rescheduleFlush.run();
             LOGGER.verbose("Adding documents triggered batch size limit, sending documents for indexing.");
             flush(false, false, timeout, context);
@@ -132,23 +131,18 @@ public final class SearchIndexingPublisher<T> {
 
     public void flush(boolean awaitLock, boolean isClose, Duration timeout, Context context) {
         if (awaitLock) {
-            try {
-                processingSemaphore.acquire();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
+            lock.lock();
 
             try {
                 flushLoop(isClose, timeout, context);
             } finally {
-                processingSemaphore.release();
+                lock.unlock();
             }
-        } else if (processingSemaphore.tryAcquire()) {
+        } else if (lock.tryLock()) {
             try {
                 flushLoop(isClose, timeout, context);
             } finally {
-                processingSemaphore.release();
+                lock.unlock();
             }
         } else {
             LOGGER.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
@@ -158,10 +152,11 @@ public final class SearchIndexingPublisher<T> {
     private void flushLoop(boolean isClosed, Duration timeout, Context context) {
         if (timeout != null && !timeout.isNegative() && !timeout.isZero()) {
             final AtomicReference<List<TryTrackingIndexAction<T>>> batchActions = new AtomicReference<>();
-            Future<?> future = EXECUTOR.submit(() -> flushLoopHelper(isClosed, context, batchActions));
+            Future<?> future
+                = SharedExecutorService.getInstance().submit(() -> flushLoopHelper(isClosed, context, batchActions));
 
             try {
-                future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
+                CoreUtils.getResultWithTimeout(future, timeout);
             } catch (ExecutionException e) {
                 Throwable realCause = e.getCause();
                 if (realCause instanceof Error) {
@@ -171,11 +166,10 @@ public final class SearchIndexingPublisher<T> {
                 } else {
                     throw LOGGER.logExceptionAsError(new RuntimeException(realCause));
                 }
-            } catch (InterruptedException | TimeoutException e) {
-                if (e instanceof TimeoutException) {
-                    future.cancel(true);
-                    documentManager.reinsertCancelledActions(batchActions.get());
-                }
+            } catch (InterruptedException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            } catch (TimeoutException e) {
+                documentManager.reinsertCancelledActions(batchActions.get());
 
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
@@ -186,7 +180,7 @@ public final class SearchIndexingPublisher<T> {
 
     private void flushLoopHelper(boolean isClosed, Context context,
         AtomicReference<List<TryTrackingIndexAction<T>>> batchActions) {
-        List<TryTrackingIndexAction<T>> batch = documentManager.createBatch(batchActionCount);
+        List<TryTrackingIndexAction<T>> batch = documentManager.tryCreateBatch(batchSize, true);
         if (batchActions != null) {
             batchActions.set(batch);
         }
@@ -195,8 +189,7 @@ public final class SearchIndexingPublisher<T> {
         IndexBatchResponse response = processBatch(batch, context);
 
         // Then while a batch has been processed and there are still documents to index, keep processing batches.
-        while (response != null && (documentManager.batchAvailableForProcessing(batchActionCount) || isClosed)) {
-            batch = documentManager.createBatch(batchActionCount);
+        while (response != null && (batch = documentManager.tryCreateBatch(batchSize, isClosed)) != null) {
             if (batchActions != null) {
                 batchActions.set(batch);
             }
@@ -226,7 +219,7 @@ public final class SearchIndexingPublisher<T> {
      * split it.
      */
     private IndexBatchResponse sendBatch(List<com.azure.search.documents.implementation.models.IndexAction> actions,
-                                         List<TryTrackingIndexAction<T>> batchActions, Context context) {
+        List<TryTrackingIndexAction<T>> batchActions, Context context) {
         LOGGER.verbose("Sending a batch of size {}.", batchActions.size());
 
         if (onActionSent != null) {
@@ -238,8 +231,8 @@ public final class SearchIndexingPublisher<T> {
         }
 
         try {
-            Response<IndexDocumentsResult> batchCall = Utility.indexDocumentsWithResponse(restClient, actions, true,
-                context, LOGGER);
+            Response<IndexDocumentsResult> batchCall
+                = Utility.indexDocumentsWithResponse(restClient, actions, true, context, LOGGER);
             return new IndexBatchResponse(batchCall.getStatusCode(), batchCall.getValue().getResults(), actions.size(),
                 false);
         } catch (IndexBatchException exception) {
@@ -260,19 +253,19 @@ public final class SearchIndexingPublisher<T> {
                  * and trigger 413, if we only halved 512 we'd send the same batch again and 413 a second time.
                  * Instead in this scenario we should halve 200 to 100.
                  */
-                int previousBatchSize = Math.min(batchActionCount, actions.size());
-                this.batchActionCount = Math.max(1, scaleDownFunction.apply(previousBatchSize));
+                int previousBatchSize = Math.min(batchSize, actions.size());
+                this.batchSize = Math.max(1, scaleDownFunction.apply(previousBatchSize));
 
-                LOGGER.verbose(BATCH_SIZE_SCALED_DOWN, System.lineSeparator(), previousBatchSize, batchActionCount);
+                LOGGER.verbose(BATCH_SIZE_SCALED_DOWN, System.lineSeparator(), previousBatchSize, batchSize);
 
                 int actionCount = actions.size();
                 if (actionCount == 1) {
                     return new IndexBatchResponse(statusCode, null, actionCount, true);
                 }
 
-                int splitOffset = Math.min(actions.size(), batchActionCount);
-                List<TryTrackingIndexAction<T>> batchActionsToRemove = batchActions.subList(splitOffset,
-                    batchActions.size());
+                int splitOffset = Math.min(actions.size(), batchSize);
+                List<TryTrackingIndexAction<T>> batchActionsToRemove
+                    = batchActions.subList(splitOffset, batchActions.size());
                 documentManager.reinsertFailedActions(batchActionsToRemove);
                 batchActionsToRemove.clear();
 
@@ -293,8 +286,8 @@ public final class SearchIndexingPublisher<T> {
         if (batchResponse.getStatusCode() == HttpURLConnection.HTTP_ENTITY_TOO_LARGE && batchResponse.getCount() == 1) {
             IndexAction<T> action = actions.get(0).getAction();
             if (onActionError != null) {
-                onActionError.accept(new OnActionErrorOptions<>(action)
-                    .setThrowable(createDocumentTooLargeException()));
+                onActionError
+                    .accept(new OnActionErrorOptions<>(action).setThrowable(createDocumentTooLargeException()));
             }
             return;
         }
@@ -313,10 +306,8 @@ public final class SearchIndexingPublisher<T> {
              */
             for (IndexingResult result : batchResponse.getResults()) {
                 String key = result.getKey();
-                TryTrackingIndexAction<T> action = actions.stream()
-                    .filter(a -> key.equals(a.getKey()))
-                    .findFirst()
-                    .orElse(null);
+                TryTrackingIndexAction<T> action
+                    = actions.stream().filter(a -> key.equals(a.getKey())).findFirst().orElse(null);
 
                 if (action == null) {
                     LOGGER.warning("Unable to correlate result key {} to initial document.", key);
@@ -341,16 +332,15 @@ public final class SearchIndexingPublisher<T> {
                     }
                 } else {
                     if (onActionError != null) {
-                        onActionError.accept(new OnActionErrorOptions<>(action.getAction())
-                            .setIndexingResult(result));
+                        onActionError.accept(new OnActionErrorOptions<>(action.getAction()).setIndexingResult(result));
                     }
                 }
             }
         }
 
         if (has503) {
-            currentRetryDelay = calculateRetryDelay(backoffCount.getAndIncrement(), throttlingDelayNanos,
-                maxThrottlingDelayNanos);
+            currentRetryDelay
+                = calculateRetryDelay(backoffCount.getAndIncrement(), throttlingDelayNanos, maxThrottlingDelayNanos);
         } else {
             backoffCount.set(0);
             currentRetryDelay = Duration.ZERO;
@@ -365,28 +355,6 @@ public final class SearchIndexingPublisher<T> {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ignored) {
-            Thread.currentThread().interrupt();
         }
-    }
-
-    private static ExecutorService getThreadPoolWithShutdownHook() {
-        ExecutorService threadPool = Executors.newCachedThreadPool();
-
-        long halfTimeout = TimeUnit.SECONDS.toNanos(5) / 2;
-        Thread hook = new Thread(() -> {
-            try {
-                threadPool.shutdown();
-                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
-                    threadPool.shutdownNow();
-                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                threadPool.shutdown();
-            }
-        });
-        Runtime.getRuntime().addShutdownHook(hook);
-
-        return threadPool;
     }
 }

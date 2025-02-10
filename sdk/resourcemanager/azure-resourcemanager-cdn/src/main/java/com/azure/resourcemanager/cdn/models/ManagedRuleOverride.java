@@ -6,36 +6,41 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines a managed rule group override setting. */
+/**
+ * Defines a managed rule group override setting.
+ */
 @Fluent
-public final class ManagedRuleOverride {
+public final class ManagedRuleOverride implements JsonSerializable<ManagedRuleOverride> {
     /*
      * Identifier for the managed rule.
      */
-    @JsonProperty(value = "ruleId", required = true)
     private String ruleId;
 
     /*
      * Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified.
      */
-    @JsonProperty(value = "enabledState")
     private ManagedRuleEnabledState enabledState;
 
     /*
      * Describes the override action to be applied when rule matches.
      */
-    @JsonProperty(value = "action")
     private ActionType action;
 
-    /** Creates an instance of ManagedRuleOverride class. */
+    /**
+     * Creates an instance of ManagedRuleOverride class.
+     */
     public ManagedRuleOverride() {
     }
 
     /**
      * Get the ruleId property: Identifier for the managed rule.
-     *
+     * 
      * @return the ruleId value.
      */
     public String ruleId() {
@@ -44,7 +49,7 @@ public final class ManagedRuleOverride {
 
     /**
      * Set the ruleId property: Identifier for the managed rule.
-     *
+     * 
      * @param ruleId the ruleId value to set.
      * @return the ManagedRuleOverride object itself.
      */
@@ -56,7 +61,7 @@ public final class ManagedRuleOverride {
     /**
      * Get the enabledState property: Describes if the managed rule is in enabled or disabled state. Defaults to
      * Disabled if not specified.
-     *
+     * 
      * @return the enabledState value.
      */
     public ManagedRuleEnabledState enabledState() {
@@ -66,7 +71,7 @@ public final class ManagedRuleOverride {
     /**
      * Set the enabledState property: Describes if the managed rule is in enabled or disabled state. Defaults to
      * Disabled if not specified.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the ManagedRuleOverride object itself.
      */
@@ -77,7 +82,7 @@ public final class ManagedRuleOverride {
 
     /**
      * Get the action property: Describes the override action to be applied when rule matches.
-     *
+     * 
      * @return the action value.
      */
     public ActionType action() {
@@ -86,7 +91,7 @@ public final class ManagedRuleOverride {
 
     /**
      * Set the action property: Describes the override action to be applied when rule matches.
-     *
+     * 
      * @param action the action value to set.
      * @return the ManagedRuleOverride object itself.
      */
@@ -97,16 +102,59 @@ public final class ManagedRuleOverride {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleId in model ManagedRuleOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ruleId in model ManagedRuleOverride"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedRuleOverride.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleId", this.ruleId);
+        jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedRuleOverride from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedRuleOverride if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedRuleOverride.
+     */
+    public static ManagedRuleOverride fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedRuleOverride deserializedManagedRuleOverride = new ManagedRuleOverride();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleId".equals(fieldName)) {
+                    deserializedManagedRuleOverride.ruleId = reader.getString();
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedManagedRuleOverride.enabledState
+                        = ManagedRuleEnabledState.fromString(reader.getString());
+                } else if ("action".equals(fieldName)) {
+                    deserializedManagedRuleOverride.action = ActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedRuleOverride;
+        });
+    }
 }

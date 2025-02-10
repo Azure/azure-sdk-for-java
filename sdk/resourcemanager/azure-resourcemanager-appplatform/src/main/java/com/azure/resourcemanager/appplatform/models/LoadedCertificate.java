@@ -6,27 +6,36 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Loaded certificate payload. */
+/**
+ * Loaded certificate payload.
+ */
 @Fluent
-public final class LoadedCertificate {
+public final class LoadedCertificate implements JsonSerializable<LoadedCertificate> {
     /*
      * Resource Id of loaded certificate
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /*
-     * Indicate whether the certificate will be loaded into default trust
-     * store, only work for Java runtime.
+     * Indicate whether the certificate will be loaded into default trust store, only work for Java runtime.
      */
-    @JsonProperty(value = "loadTrustStore")
     private Boolean loadTrustStore;
 
     /**
+     * Creates an instance of LoadedCertificate class.
+     */
+    public LoadedCertificate() {
+    }
+
+    /**
      * Get the resourceId property: Resource Id of loaded certificate.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -35,7 +44,7 @@ public final class LoadedCertificate {
 
     /**
      * Set the resourceId property: Resource Id of loaded certificate.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the LoadedCertificate object itself.
      */
@@ -47,7 +56,7 @@ public final class LoadedCertificate {
     /**
      * Get the loadTrustStore property: Indicate whether the certificate will be loaded into default trust store, only
      * work for Java runtime.
-     *
+     * 
      * @return the loadTrustStore value.
      */
     public Boolean loadTrustStore() {
@@ -57,7 +66,7 @@ public final class LoadedCertificate {
     /**
      * Set the loadTrustStore property: Indicate whether the certificate will be loaded into default trust store, only
      * work for Java runtime.
-     *
+     * 
      * @param loadTrustStore the loadTrustStore value to set.
      * @return the LoadedCertificate object itself.
      */
@@ -68,16 +77,55 @@ public final class LoadedCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model LoadedCertificate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resourceId in model LoadedCertificate"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LoadedCertificate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeBooleanField("loadTrustStore", this.loadTrustStore);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadedCertificate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadedCertificate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LoadedCertificate.
+     */
+    public static LoadedCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadedCertificate deserializedLoadedCertificate = new LoadedCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedLoadedCertificate.resourceId = reader.getString();
+                } else if ("loadTrustStore".equals(fieldName)) {
+                    deserializedLoadedCertificate.loadTrustStore = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadedCertificate;
+        });
+    }
 }

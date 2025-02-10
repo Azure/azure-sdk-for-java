@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** VMware/Physical specific Disk Details. */
+/**
+ * VMware/Physical specific Disk Details.
+ */
 @Fluent
-public final class InMageDiskDetails {
+public final class InMageDiskDetails implements JsonSerializable<InMageDiskDetails> {
     /*
      * The disk Id.
      */
-    @JsonProperty(value = "diskId")
     private String diskId;
 
     /*
      * The disk name.
      */
-    @JsonProperty(value = "diskName")
     private String diskName;
 
     /*
      * The disk size in MB.
      */
-    @JsonProperty(value = "diskSizeInMB")
     private String diskSizeInMB;
 
     /*
      * Whether disk is system disk or data disk.
      */
-    @JsonProperty(value = "diskType")
     private String diskType;
 
     /*
      * Whether disk is dynamic disk or basic disk.
      */
-    @JsonProperty(value = "diskConfiguration")
     private String diskConfiguration;
 
     /*
      * Volumes of the disk.
      */
-    @JsonProperty(value = "volumeList")
     private List<DiskVolumeDetails> volumeList;
 
-    /** Creates an instance of InMageDiskDetails class. */
+    /**
+     * Creates an instance of InMageDiskDetails class.
+     */
     public InMageDiskDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -62,7 +64,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -73,7 +75,7 @@ public final class InMageDiskDetails {
 
     /**
      * Get the diskName property: The disk name.
-     *
+     * 
      * @return the diskName value.
      */
     public String diskName() {
@@ -82,7 +84,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the diskName property: The disk name.
-     *
+     * 
      * @param diskName the diskName value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -93,7 +95,7 @@ public final class InMageDiskDetails {
 
     /**
      * Get the diskSizeInMB property: The disk size in MB.
-     *
+     * 
      * @return the diskSizeInMB value.
      */
     public String diskSizeInMB() {
@@ -102,7 +104,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the diskSizeInMB property: The disk size in MB.
-     *
+     * 
      * @param diskSizeInMB the diskSizeInMB value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -113,7 +115,7 @@ public final class InMageDiskDetails {
 
     /**
      * Get the diskType property: Whether disk is system disk or data disk.
-     *
+     * 
      * @return the diskType value.
      */
     public String diskType() {
@@ -122,7 +124,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the diskType property: Whether disk is system disk or data disk.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -133,7 +135,7 @@ public final class InMageDiskDetails {
 
     /**
      * Get the diskConfiguration property: Whether disk is dynamic disk or basic disk.
-     *
+     * 
      * @return the diskConfiguration value.
      */
     public String diskConfiguration() {
@@ -142,7 +144,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the diskConfiguration property: Whether disk is dynamic disk or basic disk.
-     *
+     * 
      * @param diskConfiguration the diskConfiguration value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -153,7 +155,7 @@ public final class InMageDiskDetails {
 
     /**
      * Get the volumeList property: Volumes of the disk.
-     *
+     * 
      * @return the volumeList value.
      */
     public List<DiskVolumeDetails> volumeList() {
@@ -162,7 +164,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the volumeList property: Volumes of the disk.
-     *
+     * 
      * @param volumeList the volumeList value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -173,12 +175,65 @@ public final class InMageDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (volumeList() != null) {
             volumeList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("diskName", this.diskName);
+        jsonWriter.writeStringField("diskSizeInMB", this.diskSizeInMB);
+        jsonWriter.writeStringField("diskType", this.diskType);
+        jsonWriter.writeStringField("diskConfiguration", this.diskConfiguration);
+        jsonWriter.writeArrayField("volumeList", this.volumeList, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageDiskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageDiskDetails.
+     */
+    public static InMageDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageDiskDetails deserializedInMageDiskDetails = new InMageDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedInMageDiskDetails.diskId = reader.getString();
+                } else if ("diskName".equals(fieldName)) {
+                    deserializedInMageDiskDetails.diskName = reader.getString();
+                } else if ("diskSizeInMB".equals(fieldName)) {
+                    deserializedInMageDiskDetails.diskSizeInMB = reader.getString();
+                } else if ("diskType".equals(fieldName)) {
+                    deserializedInMageDiskDetails.diskType = reader.getString();
+                } else if ("diskConfiguration".equals(fieldName)) {
+                    deserializedInMageDiskDetails.diskConfiguration = reader.getString();
+                } else if ("volumeList".equals(fieldName)) {
+                    List<DiskVolumeDetails> volumeList
+                        = reader.readArray(reader1 -> DiskVolumeDetails.fromJson(reader1));
+                    deserializedInMageDiskDetails.volumeList = volumeList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageDiskDetails;
+        });
     }
 }

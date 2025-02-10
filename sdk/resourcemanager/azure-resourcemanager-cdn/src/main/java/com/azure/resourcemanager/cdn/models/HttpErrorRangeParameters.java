@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The JSON object that represents the range for http status codes. */
+/**
+ * The JSON object that represents the range for http status codes.
+ */
 @Fluent
-public final class HttpErrorRangeParameters {
+public final class HttpErrorRangeParameters implements JsonSerializable<HttpErrorRangeParameters> {
     /*
      * The inclusive start of the http status code range.
      */
-    @JsonProperty(value = "begin")
     private Integer begin;
 
     /*
      * The inclusive end of the http status code range.
      */
-    @JsonProperty(value = "end")
     private Integer end;
 
-    /** Creates an instance of HttpErrorRangeParameters class. */
+    /**
+     * Creates an instance of HttpErrorRangeParameters class.
+     */
     public HttpErrorRangeParameters() {
     }
 
     /**
      * Get the begin property: The inclusive start of the http status code range.
-     *
+     * 
      * @return the begin value.
      */
     public Integer begin() {
@@ -37,7 +43,7 @@ public final class HttpErrorRangeParameters {
 
     /**
      * Set the begin property: The inclusive start of the http status code range.
-     *
+     * 
      * @param begin the begin value to set.
      * @return the HttpErrorRangeParameters object itself.
      */
@@ -48,7 +54,7 @@ public final class HttpErrorRangeParameters {
 
     /**
      * Get the end property: The inclusive end of the http status code range.
-     *
+     * 
      * @return the end value.
      */
     public Integer end() {
@@ -57,7 +63,7 @@ public final class HttpErrorRangeParameters {
 
     /**
      * Set the end property: The inclusive end of the http status code range.
-     *
+     * 
      * @param end the end value to set.
      * @return the HttpErrorRangeParameters object itself.
      */
@@ -68,9 +74,48 @@ public final class HttpErrorRangeParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("begin", this.begin);
+        jsonWriter.writeNumberField("end", this.end);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpErrorRangeParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpErrorRangeParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpErrorRangeParameters.
+     */
+    public static HttpErrorRangeParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpErrorRangeParameters deserializedHttpErrorRangeParameters = new HttpErrorRangeParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("begin".equals(fieldName)) {
+                    deserializedHttpErrorRangeParameters.begin = reader.getNullable(JsonReader::getInt);
+                } else if ("end".equals(fieldName)) {
+                    deserializedHttpErrorRangeParameters.end = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpErrorRangeParameters;
+        });
     }
 }

@@ -5,28 +5,41 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.StaticDeliveryAttributeMappingProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Static delivery attribute mapping details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Static")
 @Fluent
 public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMapping {
     /*
+     * Type of the delivery attribute or header name.
+     */
+    private DeliveryAttributeMappingType type = DeliveryAttributeMappingType.STATIC;
+
+    /*
      * Properties of static delivery attribute mapping.
      */
-    @JsonProperty(value = "properties")
     private StaticDeliveryAttributeMappingProperties innerProperties;
 
     /**
      * Creates an instance of StaticDeliveryAttributeMapping class.
      */
     public StaticDeliveryAttributeMapping() {
+    }
+
+    /**
+     * Get the type property: Type of the delivery attribute or header name.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public DeliveryAttributeMappingType type() {
+        return this.type;
     }
 
     /**
@@ -100,9 +113,53 @@ public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMappi
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticDeliveryAttributeMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticDeliveryAttributeMapping if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StaticDeliveryAttributeMapping.
+     */
+    public static StaticDeliveryAttributeMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticDeliveryAttributeMapping deserializedStaticDeliveryAttributeMapping
+                = new StaticDeliveryAttributeMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedStaticDeliveryAttributeMapping.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedStaticDeliveryAttributeMapping.type
+                        = DeliveryAttributeMappingType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStaticDeliveryAttributeMapping.innerProperties
+                        = StaticDeliveryAttributeMappingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticDeliveryAttributeMapping;
+        });
     }
 }

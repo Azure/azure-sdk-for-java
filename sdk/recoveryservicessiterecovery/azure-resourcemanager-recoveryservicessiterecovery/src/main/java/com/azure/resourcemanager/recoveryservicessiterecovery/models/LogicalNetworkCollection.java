@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.LogicalNetworkInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of logical networks. */
+/**
+ * List of logical networks.
+ */
 @Fluent
-public final class LogicalNetworkCollection {
+public final class LogicalNetworkCollection implements JsonSerializable<LogicalNetworkCollection> {
     /*
      * The Logical Networks list details.
      */
-    @JsonProperty(value = "value")
     private List<LogicalNetworkInner> value;
 
     /*
      * The value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LogicalNetworkCollection class. */
+    /**
+     * Creates an instance of LogicalNetworkCollection class.
+     */
     public LogicalNetworkCollection() {
     }
 
     /**
      * Get the value property: The Logical Networks list details.
-     *
+     * 
      * @return the value value.
      */
     public List<LogicalNetworkInner> value() {
@@ -39,7 +45,7 @@ public final class LogicalNetworkCollection {
 
     /**
      * Set the value property: The Logical Networks list details.
-     *
+     * 
      * @param value the value value to set.
      * @return the LogicalNetworkCollection object itself.
      */
@@ -50,7 +56,7 @@ public final class LogicalNetworkCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class LogicalNetworkCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LogicalNetworkCollection object itself.
      */
@@ -70,12 +76,53 @@ public final class LogicalNetworkCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogicalNetworkCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogicalNetworkCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogicalNetworkCollection.
+     */
+    public static LogicalNetworkCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogicalNetworkCollection deserializedLogicalNetworkCollection = new LogicalNetworkCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LogicalNetworkInner> value
+                        = reader.readArray(reader1 -> LogicalNetworkInner.fromJson(reader1));
+                    deserializedLogicalNetworkCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLogicalNetworkCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogicalNetworkCollection;
+        });
     }
 }

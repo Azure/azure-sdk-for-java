@@ -11,16 +11,19 @@ public final class MarketoSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MarketoSource model = BinaryData.fromString(
-            "{\"type\":\"MarketoSource\",\"query\":\"datawdrvkb\",\"queryTimeout\":\"datavnnvk\",\"additionalColumns\":\"datazldzzjj\",\"sourceRetryCount\":\"datahjqengopdvnzn\",\"sourceRetryWait\":\"dataiodaj\",\"maxConcurrentConnections\":\"dataszdyv\",\"disableMetricsCollection\":\"dataiufbw\",\"\":{\"edbhnkl\":\"datawhnzhsmu\"}}")
+            "{\"type\":\"MarketoSource\",\"query\":\"datagw\",\"queryTimeout\":\"dataujshcsnk\",\"additionalColumns\":\"datagpqxqevt\",\"sourceRetryCount\":\"datavyy\",\"sourceRetryWait\":\"datakjirvjogsalvjl\",\"maxConcurrentConnections\":\"dataimua\",\"disableMetricsCollection\":\"datakympwquu\",\"\":{\"iqeftgunropdpuf\":\"dataofuzthszjyanhs\"}}")
             .toObject(MarketoSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarketoSource model
-            = new MarketoSource().withSourceRetryCount("datahjqengopdvnzn").withSourceRetryWait("dataiodaj")
-                .withMaxConcurrentConnections("dataszdyv").withDisableMetricsCollection("dataiufbw")
-                .withQueryTimeout("datavnnvk").withAdditionalColumns("datazldzzjj").withQuery("datawdrvkb");
+        MarketoSource model = new MarketoSource().withSourceRetryCount("datavyy")
+            .withSourceRetryWait("datakjirvjogsalvjl")
+            .withMaxConcurrentConnections("dataimua")
+            .withDisableMetricsCollection("datakympwquu")
+            .withQueryTimeout("dataujshcsnk")
+            .withAdditionalColumns("datagpqxqevt")
+            .withQuery("datagw");
         model = BinaryData.fromObject(model).toObject(MarketoSource.class);
     }
 }

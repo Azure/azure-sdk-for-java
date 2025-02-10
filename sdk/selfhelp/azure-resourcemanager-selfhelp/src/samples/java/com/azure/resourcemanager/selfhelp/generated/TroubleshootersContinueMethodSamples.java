@@ -15,7 +15,7 @@ import java.util.Arrays;
 public final class TroubleshootersContinueMethodSamples {
     /*
      * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Troubleshooter_Continue.
+     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Continue.
      * json
      */
     /**
@@ -24,12 +24,14 @@ public final class TroubleshootersContinueMethodSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void troubleshooterContinue(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.troubleshooters().continueMethodWithResponse(
-            "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
-            "abf168ed-1b54-454a-86f6-e4b62253d3b1",
-            new ContinueRequestBody().withStepId("SampleStepId")
-                .withResponses(Arrays.asList(new TroubleshooterResponse().withQuestionId("SampleQuestionId")
-                    .withQuestionType(QuestionType.fromString("Text")).withResponse("Connection exception"))),
-            com.azure.core.util.Context.NONE);
+        manager.troubleshooters()
+            .continueMethodWithResponse(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
+                "abf168ed-1b54-454a-86f6-e4b62253d3b1",
+                new ContinueRequestBody().withStepId("SampleStepId")
+                    .withResponses(Arrays.asList(new TroubleshooterResponse().withQuestionId("SampleQuestionId")
+                        .withQuestionType(QuestionType.fromString("Text"))
+                        .withResponse("Connection exception"))),
+                com.azure.core.util.Context.NONE);
     }
 }

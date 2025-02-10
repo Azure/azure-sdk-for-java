@@ -5,200 +5,190 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** InMageRcmFailback provider specific details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcmFailback")
+/**
+ * InMageRcmFailback provider specific details.
+ */
 @Fluent
 public final class InMageRcmFailbackReplicationDetails extends ReplicationProviderSpecificSettings {
     /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "InMageRcmFailback";
+
+    /*
      * The virtual machine internal identifier.
      */
-    @JsonProperty(value = "internalIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String internalIdentifier;
 
     /*
      * The ARM Id of the azure VM.
      */
-    @JsonProperty(value = "azureVirtualMachineId", access = JsonProperty.Access.WRITE_ONLY)
     private String azureVirtualMachineId;
 
     /*
      * The multi VM group name.
      */
-    @JsonProperty(value = "multiVmGroupName", access = JsonProperty.Access.WRITE_ONLY)
     private String multiVmGroupName;
 
     /*
      * The reprotect agent Id.
      */
-    @JsonProperty(value = "reprotectAgentId", access = JsonProperty.Access.WRITE_ONLY)
     private String reprotectAgentId;
 
     /*
      * The reprotect agent name.
      */
-    @JsonProperty(value = "reprotectAgentName", access = JsonProperty.Access.WRITE_ONLY)
     private String reprotectAgentName;
 
     /*
      * The type of the OS on the VM.
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private String osType;
 
     /*
      * The log storage account ARM Id.
      */
-    @JsonProperty(value = "logStorageAccountId", access = JsonProperty.Access.WRITE_ONLY)
     private String logStorageAccountId;
 
     /*
      * The target vCenter Id.
      */
-    @JsonProperty(value = "targetvCenterId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetvCenterId;
 
     /*
      * The target datastore name.
      */
-    @JsonProperty(value = "targetDataStoreName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetDataStoreName;
 
     /*
      * The target VM name.
      */
-    @JsonProperty(value = "targetVmName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetVmName;
 
     /*
      * The initial replication progress percentage.
      */
-    @JsonProperty(value = "initialReplicationProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer initialReplicationProgressPercentage;
 
     /*
      * The initial replication processed bytes. This includes sum of total bytes transferred and matched bytes on all
      * selected disks in source VM.
      */
-    @JsonProperty(value = "initialReplicationProcessedBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long initialReplicationProcessedBytes;
 
     /*
      * The initial replication transferred bytes from source VM to target for all selected disks on source VM.
      */
-    @JsonProperty(value = "initialReplicationTransferredBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long initialReplicationTransferredBytes;
 
     /*
      * The initial replication progress health.
      */
-    @JsonProperty(value = "initialReplicationProgressHealth", access = JsonProperty.Access.WRITE_ONLY)
     private VmReplicationProgressHealth initialReplicationProgressHealth;
 
     /*
      * The resync progress percentage.
      */
-    @JsonProperty(value = "resyncProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer resyncProgressPercentage;
 
     /*
      * The resync processed bytes. This includes sum of total bytes transferred and matched bytes on all selected disks
      * in source VM.
      */
-    @JsonProperty(value = "resyncProcessedBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long resyncProcessedBytes;
 
     /*
      * The resync transferred bytes from source VM to target for all selected disks on source VM.
      */
-    @JsonProperty(value = "resyncTransferredBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long resyncTransferredBytes;
 
     /*
      * The resync progress health.
      */
-    @JsonProperty(value = "resyncProgressHealth", access = JsonProperty.Access.WRITE_ONLY)
     private VmReplicationProgressHealth resyncProgressHealth;
 
     /*
      * A value indicating whether resync is required.
      */
-    @JsonProperty(value = "resyncRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String resyncRequired;
 
     /*
      * The resync state.
      */
-    @JsonProperty(value = "resyncState", access = JsonProperty.Access.WRITE_ONLY)
     private ResyncState resyncState;
 
     /*
      * The list of protected disks.
      */
-    @JsonProperty(value = "protectedDisks")
     private List<InMageRcmFailbackProtectedDiskDetails> protectedDisks;
 
     /*
      * The mobility agent information.
      */
-    @JsonProperty(value = "mobilityAgentDetails")
     private InMageRcmFailbackMobilityAgentDetails mobilityAgentDetails;
 
     /*
      * The network details.
      */
-    @JsonProperty(value = "vmNics")
     private List<InMageRcmFailbackNicDetails> vmNics;
 
     /*
      * The last planned failover start time.
      */
-    @JsonProperty(value = "lastPlannedFailoverStartTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastPlannedFailoverStartTime;
 
     /*
      * The last planned failover status.
      */
-    @JsonProperty(value = "lastPlannedFailoverStatus", access = JsonProperty.Access.WRITE_ONLY)
     private PlannedFailoverStatus lastPlannedFailoverStatus;
 
     /*
      * The discovered VM information.
      */
-    @JsonProperty(value = "discoveredVmDetails")
     private InMageRcmFailbackDiscoveredProtectedVmDetails discoveredVmDetails;
 
     /*
      * The policy Id used by the forward replication.
      */
-    @JsonProperty(value = "lastUsedPolicyId", access = JsonProperty.Access.WRITE_ONLY)
     private String lastUsedPolicyId;
 
     /*
      * The policy friendly name used by the forward replication.
      */
-    @JsonProperty(value = "lastUsedPolicyFriendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String lastUsedPolicyFriendlyName;
 
     /*
      * A value indicating whether agent registration was successful after failover.
      */
-    @JsonProperty(value = "isAgentRegistrationSuccessfulAfterFailover", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isAgentRegistrationSuccessfulAfterFailover;
 
-    /** Creates an instance of InMageRcmFailbackReplicationDetails class. */
+    /**
+     * Creates an instance of InMageRcmFailbackReplicationDetails class.
+     */
     public InMageRcmFailbackReplicationDetails() {
     }
 
     /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the internalIdentifier property: The virtual machine internal identifier.
-     *
+     * 
      * @return the internalIdentifier value.
      */
     public String internalIdentifier() {
@@ -207,7 +197,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the azureVirtualMachineId property: The ARM Id of the azure VM.
-     *
+     * 
      * @return the azureVirtualMachineId value.
      */
     public String azureVirtualMachineId() {
@@ -216,7 +206,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the multiVmGroupName property: The multi VM group name.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -225,7 +215,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the reprotectAgentId property: The reprotect agent Id.
-     *
+     * 
      * @return the reprotectAgentId value.
      */
     public String reprotectAgentId() {
@@ -234,7 +224,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the reprotectAgentName property: The reprotect agent name.
-     *
+     * 
      * @return the reprotectAgentName value.
      */
     public String reprotectAgentName() {
@@ -243,7 +233,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the osType property: The type of the OS on the VM.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -252,7 +242,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -261,7 +251,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the targetvCenterId property: The target vCenter Id.
-     *
+     * 
      * @return the targetvCenterId value.
      */
     public String targetvCenterId() {
@@ -270,7 +260,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the targetDataStoreName property: The target datastore name.
-     *
+     * 
      * @return the targetDataStoreName value.
      */
     public String targetDataStoreName() {
@@ -279,7 +269,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the targetVmName property: The target VM name.
-     *
+     * 
      * @return the targetVmName value.
      */
     public String targetVmName() {
@@ -288,7 +278,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the initialReplicationProgressPercentage property: The initial replication progress percentage.
-     *
+     * 
      * @return the initialReplicationProgressPercentage value.
      */
     public Integer initialReplicationProgressPercentage() {
@@ -298,7 +288,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
     /**
      * Get the initialReplicationProcessedBytes property: The initial replication processed bytes. This includes sum of
      * total bytes transferred and matched bytes on all selected disks in source VM.
-     *
+     * 
      * @return the initialReplicationProcessedBytes value.
      */
     public Long initialReplicationProcessedBytes() {
@@ -308,7 +298,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
     /**
      * Get the initialReplicationTransferredBytes property: The initial replication transferred bytes from source VM to
      * target for all selected disks on source VM.
-     *
+     * 
      * @return the initialReplicationTransferredBytes value.
      */
     public Long initialReplicationTransferredBytes() {
@@ -317,7 +307,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the initialReplicationProgressHealth property: The initial replication progress health.
-     *
+     * 
      * @return the initialReplicationProgressHealth value.
      */
     public VmReplicationProgressHealth initialReplicationProgressHealth() {
@@ -326,7 +316,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the resyncProgressPercentage property: The resync progress percentage.
-     *
+     * 
      * @return the resyncProgressPercentage value.
      */
     public Integer resyncProgressPercentage() {
@@ -336,7 +326,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
     /**
      * Get the resyncProcessedBytes property: The resync processed bytes. This includes sum of total bytes transferred
      * and matched bytes on all selected disks in source VM.
-     *
+     * 
      * @return the resyncProcessedBytes value.
      */
     public Long resyncProcessedBytes() {
@@ -346,7 +336,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
     /**
      * Get the resyncTransferredBytes property: The resync transferred bytes from source VM to target for all selected
      * disks on source VM.
-     *
+     * 
      * @return the resyncTransferredBytes value.
      */
     public Long resyncTransferredBytes() {
@@ -355,7 +345,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the resyncProgressHealth property: The resync progress health.
-     *
+     * 
      * @return the resyncProgressHealth value.
      */
     public VmReplicationProgressHealth resyncProgressHealth() {
@@ -364,7 +354,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the resyncRequired property: A value indicating whether resync is required.
-     *
+     * 
      * @return the resyncRequired value.
      */
     public String resyncRequired() {
@@ -373,7 +363,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the resyncState property: The resync state.
-     *
+     * 
      * @return the resyncState value.
      */
     public ResyncState resyncState() {
@@ -382,7 +372,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @return the protectedDisks value.
      */
     public List<InMageRcmFailbackProtectedDiskDetails> protectedDisks() {
@@ -391,19 +381,19 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Set the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @param protectedDisks the protectedDisks value to set.
      * @return the InMageRcmFailbackReplicationDetails object itself.
      */
-    public InMageRcmFailbackReplicationDetails withProtectedDisks(
-        List<InMageRcmFailbackProtectedDiskDetails> protectedDisks) {
+    public InMageRcmFailbackReplicationDetails
+        withProtectedDisks(List<InMageRcmFailbackProtectedDiskDetails> protectedDisks) {
         this.protectedDisks = protectedDisks;
         return this;
     }
 
     /**
      * Get the mobilityAgentDetails property: The mobility agent information.
-     *
+     * 
      * @return the mobilityAgentDetails value.
      */
     public InMageRcmFailbackMobilityAgentDetails mobilityAgentDetails() {
@@ -412,19 +402,19 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Set the mobilityAgentDetails property: The mobility agent information.
-     *
+     * 
      * @param mobilityAgentDetails the mobilityAgentDetails value to set.
      * @return the InMageRcmFailbackReplicationDetails object itself.
      */
-    public InMageRcmFailbackReplicationDetails withMobilityAgentDetails(
-        InMageRcmFailbackMobilityAgentDetails mobilityAgentDetails) {
+    public InMageRcmFailbackReplicationDetails
+        withMobilityAgentDetails(InMageRcmFailbackMobilityAgentDetails mobilityAgentDetails) {
         this.mobilityAgentDetails = mobilityAgentDetails;
         return this;
     }
 
     /**
      * Get the vmNics property: The network details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<InMageRcmFailbackNicDetails> vmNics() {
@@ -433,7 +423,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Set the vmNics property: The network details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the InMageRcmFailbackReplicationDetails object itself.
      */
@@ -444,7 +434,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the lastPlannedFailoverStartTime property: The last planned failover start time.
-     *
+     * 
      * @return the lastPlannedFailoverStartTime value.
      */
     public OffsetDateTime lastPlannedFailoverStartTime() {
@@ -453,7 +443,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the lastPlannedFailoverStatus property: The last planned failover status.
-     *
+     * 
      * @return the lastPlannedFailoverStatus value.
      */
     public PlannedFailoverStatus lastPlannedFailoverStatus() {
@@ -462,7 +452,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the discoveredVmDetails property: The discovered VM information.
-     *
+     * 
      * @return the discoveredVmDetails value.
      */
     public InMageRcmFailbackDiscoveredProtectedVmDetails discoveredVmDetails() {
@@ -471,19 +461,19 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Set the discoveredVmDetails property: The discovered VM information.
-     *
+     * 
      * @param discoveredVmDetails the discoveredVmDetails value to set.
      * @return the InMageRcmFailbackReplicationDetails object itself.
      */
-    public InMageRcmFailbackReplicationDetails withDiscoveredVmDetails(
-        InMageRcmFailbackDiscoveredProtectedVmDetails discoveredVmDetails) {
+    public InMageRcmFailbackReplicationDetails
+        withDiscoveredVmDetails(InMageRcmFailbackDiscoveredProtectedVmDetails discoveredVmDetails) {
         this.discoveredVmDetails = discoveredVmDetails;
         return this;
     }
 
     /**
      * Get the lastUsedPolicyId property: The policy Id used by the forward replication.
-     *
+     * 
      * @return the lastUsedPolicyId value.
      */
     public String lastUsedPolicyId() {
@@ -492,7 +482,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the lastUsedPolicyFriendlyName property: The policy friendly name used by the forward replication.
-     *
+     * 
      * @return the lastUsedPolicyFriendlyName value.
      */
     public String lastUsedPolicyFriendlyName() {
@@ -502,7 +492,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
     /**
      * Get the isAgentRegistrationSuccessfulAfterFailover property: A value indicating whether agent registration was
      * successful after failover.
-     *
+     * 
      * @return the isAgentRegistrationSuccessfulAfterFailover value.
      */
     public Boolean isAgentRegistrationSuccessfulAfterFailover() {
@@ -511,12 +501,11 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (protectedDisks() != null) {
             protectedDisks().forEach(e -> e.validate());
         }
@@ -529,5 +518,123 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
         if (discoveredVmDetails() != null) {
             discoveredVmDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeArrayField("protectedDisks", this.protectedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("mobilityAgentDetails", this.mobilityAgentDetails);
+        jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("discoveredVmDetails", this.discoveredVmDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmFailbackReplicationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmFailbackReplicationDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmFailbackReplicationDetails.
+     */
+    public static InMageRcmFailbackReplicationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmFailbackReplicationDetails deserializedInMageRcmFailbackReplicationDetails
+                = new InMageRcmFailbackReplicationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.instanceType = reader.getString();
+                } else if ("internalIdentifier".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.internalIdentifier = reader.getString();
+                } else if ("azureVirtualMachineId".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.azureVirtualMachineId = reader.getString();
+                } else if ("multiVmGroupName".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.multiVmGroupName = reader.getString();
+                } else if ("reprotectAgentId".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.reprotectAgentId = reader.getString();
+                } else if ("reprotectAgentName".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.reprotectAgentName = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.osType = reader.getString();
+                } else if ("logStorageAccountId".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.logStorageAccountId = reader.getString();
+                } else if ("targetvCenterId".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.targetvCenterId = reader.getString();
+                } else if ("targetDataStoreName".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.targetDataStoreName = reader.getString();
+                } else if ("targetVmName".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.targetVmName = reader.getString();
+                } else if ("initialReplicationProgressPercentage".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.initialReplicationProgressPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("initialReplicationProcessedBytes".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.initialReplicationProcessedBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("initialReplicationTransferredBytes".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.initialReplicationTransferredBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("initialReplicationProgressHealth".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.initialReplicationProgressHealth
+                        = VmReplicationProgressHealth.fromString(reader.getString());
+                } else if ("resyncProgressPercentage".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.resyncProgressPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("resyncProcessedBytes".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.resyncProcessedBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncTransferredBytes".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.resyncTransferredBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncProgressHealth".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.resyncProgressHealth
+                        = VmReplicationProgressHealth.fromString(reader.getString());
+                } else if ("resyncRequired".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.resyncRequired = reader.getString();
+                } else if ("resyncState".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.resyncState
+                        = ResyncState.fromString(reader.getString());
+                } else if ("protectedDisks".equals(fieldName)) {
+                    List<InMageRcmFailbackProtectedDiskDetails> protectedDisks
+                        = reader.readArray(reader1 -> InMageRcmFailbackProtectedDiskDetails.fromJson(reader1));
+                    deserializedInMageRcmFailbackReplicationDetails.protectedDisks = protectedDisks;
+                } else if ("mobilityAgentDetails".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.mobilityAgentDetails
+                        = InMageRcmFailbackMobilityAgentDetails.fromJson(reader);
+                } else if ("vmNics".equals(fieldName)) {
+                    List<InMageRcmFailbackNicDetails> vmNics
+                        = reader.readArray(reader1 -> InMageRcmFailbackNicDetails.fromJson(reader1));
+                    deserializedInMageRcmFailbackReplicationDetails.vmNics = vmNics;
+                } else if ("lastPlannedFailoverStartTime".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.lastPlannedFailoverStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastPlannedFailoverStatus".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.lastPlannedFailoverStatus
+                        = PlannedFailoverStatus.fromString(reader.getString());
+                } else if ("discoveredVmDetails".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.discoveredVmDetails
+                        = InMageRcmFailbackDiscoveredProtectedVmDetails.fromJson(reader);
+                } else if ("lastUsedPolicyId".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.lastUsedPolicyId = reader.getString();
+                } else if ("lastUsedPolicyFriendlyName".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.lastUsedPolicyFriendlyName = reader.getString();
+                } else if ("isAgentRegistrationSuccessfulAfterFailover".equals(fieldName)) {
+                    deserializedInMageRcmFailbackReplicationDetails.isAgentRegistrationSuccessfulAfterFailover
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmFailbackReplicationDetails;
+        });
     }
 }

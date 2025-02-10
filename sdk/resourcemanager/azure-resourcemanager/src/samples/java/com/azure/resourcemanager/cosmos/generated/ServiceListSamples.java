@@ -10,7 +10,7 @@ package com.azure.resourcemanager.cosmos.generated;
 public final class ServiceListSamples {
     /*
      * x-ms-original-file:
-     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/CosmosDBServicesList.
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/CosmosDBServicesList.
      * json
      */
     /**
@@ -19,7 +19,10 @@ public final class ServiceListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBServicesList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getServices().list("rg1", "ddb1",
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .list("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

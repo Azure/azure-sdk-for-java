@@ -5,156 +5,140 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.StatusOptions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * AppServicePlanPatchResource resource specific properties.
  */
 @Fluent
-public final class AppServicePlanPatchResourceProperties {
+public final class AppServicePlanPatchResourceProperties
+    implements JsonSerializable<AppServicePlanPatchResourceProperties> {
     /*
      * Target worker tier assigned to the App Service plan.
      */
-    @JsonProperty(value = "workerTierName")
     private String workerTierName;
 
     /*
      * App Service plan status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private StatusOptions status;
 
     /*
      * App Service plan subscription.
      */
-    @JsonProperty(value = "subscription", access = JsonProperty.Access.WRITE_ONLY)
     private String subscription;
 
     /*
      * Specification for the App Service Environment to use for the App Service plan.
      */
-    @JsonProperty(value = "hostingEnvironmentProfile")
     private HostingEnvironmentProfile hostingEnvironmentProfile;
 
     /*
      * Maximum number of instances that can be assigned to this App Service plan.
      */
-    @JsonProperty(value = "maximumNumberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maximumNumberOfWorkers;
 
     /*
      * The number of instances that are assigned to this App Service plan.
      */
-    @JsonProperty(value = "numberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
     private Integer numberOfWorkers;
 
     /*
      * Geographical location for the App Service plan.
      */
-    @JsonProperty(value = "geoRegion", access = JsonProperty.Access.WRITE_ONLY)
     private String geoRegion;
 
     /*
      * If <code>true</code>, apps assigned to this App Service plan can be scaled independently.
      * If <code>false</code>, apps assigned to this App Service plan will scale to all instances of the plan.
      */
-    @JsonProperty(value = "perSiteScaling")
     private Boolean perSiteScaling;
 
     /*
      * ServerFarm supports ElasticScale. Apps in this plan will scale as if the ServerFarm was ElasticPremium sku
      */
-    @JsonProperty(value = "elasticScaleEnabled")
     private Boolean elasticScaleEnabled;
 
     /*
      * Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
      */
-    @JsonProperty(value = "maximumElasticWorkerCount")
     private Integer maximumElasticWorkerCount;
 
     /*
      * Number of apps assigned to this App Service plan.
      */
-    @JsonProperty(value = "numberOfSites", access = JsonProperty.Access.WRITE_ONLY)
     private Integer numberOfSites;
 
     /*
      * If <code>true</code>, this App Service Plan owns spot instances.
      */
-    @JsonProperty(value = "isSpot")
     private Boolean isSpot;
 
     /*
      * The time when the server farm expires. Valid only if it is a spot server farm.
      */
-    @JsonProperty(value = "spotExpirationTime")
     private OffsetDateTime spotExpirationTime;
 
     /*
      * The time when the server farm free offer expires.
      */
-    @JsonProperty(value = "freeOfferExpirationTime")
     private OffsetDateTime freeOfferExpirationTime;
 
     /*
      * Resource group of the App Service plan.
      */
-    @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
     /*
      * If Linux app service plan <code>true</code>, <code>false</code> otherwise.
      */
-    @JsonProperty(value = "reserved")
     private Boolean reserved;
 
     /*
      * Obsolete: If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
      */
-    @JsonProperty(value = "isXenon")
     private Boolean isXenon;
 
     /*
      * If Hyper-V container app service plan <code>true</code>, <code>false</code> otherwise.
      */
-    @JsonProperty(value = "hyperV")
     private Boolean hyperV;
 
     /*
      * Scaling worker count.
      */
-    @JsonProperty(value = "targetWorkerCount")
     private Integer targetWorkerCount;
 
     /*
      * Scaling worker size ID.
      */
-    @JsonProperty(value = "targetWorkerSizeId")
     private Integer targetWorkerSizeId;
 
     /*
      * Provisioning state of the App Service Plan.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Specification for the Kubernetes Environment to use for the App Service plan.
      */
-    @JsonProperty(value = "kubeEnvironmentProfile")
     private KubeEnvironmentProfile kubeEnvironmentProfile;
 
     /*
      * If <code>true</code>, this App Service Plan will perform availability zone balancing.
      * If <code>false</code>, this App Service Plan will not perform availability zone balancing.
      */
-    @JsonProperty(value = "zoneRedundant")
     private Boolean zoneRedundant;
 
     /**
@@ -541,8 +525,8 @@ public final class AppServicePlanPatchResourceProperties {
     }
 
     /**
-     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform
-     * availability zone balancing.
+     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
+     * zone balancing.
      * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone balancing.
      * 
      * @return the zoneRedundant value.
@@ -552,8 +536,8 @@ public final class AppServicePlanPatchResourceProperties {
     }
 
     /**
-     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform
-     * availability zone balancing.
+     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
+     * zone balancing.
      * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone balancing.
      * 
      * @param zoneRedundant the zoneRedundant value to set.
@@ -576,5 +560,125 @@ public final class AppServicePlanPatchResourceProperties {
         if (kubeEnvironmentProfile() != null) {
             kubeEnvironmentProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workerTierName", this.workerTierName);
+        jsonWriter.writeJsonField("hostingEnvironmentProfile", this.hostingEnvironmentProfile);
+        jsonWriter.writeBooleanField("perSiteScaling", this.perSiteScaling);
+        jsonWriter.writeBooleanField("elasticScaleEnabled", this.elasticScaleEnabled);
+        jsonWriter.writeNumberField("maximumElasticWorkerCount", this.maximumElasticWorkerCount);
+        jsonWriter.writeBooleanField("isSpot", this.isSpot);
+        jsonWriter.writeStringField("spotExpirationTime",
+            this.spotExpirationTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.spotExpirationTime));
+        jsonWriter.writeStringField("freeOfferExpirationTime",
+            this.freeOfferExpirationTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.freeOfferExpirationTime));
+        jsonWriter.writeBooleanField("reserved", this.reserved);
+        jsonWriter.writeBooleanField("isXenon", this.isXenon);
+        jsonWriter.writeBooleanField("hyperV", this.hyperV);
+        jsonWriter.writeNumberField("targetWorkerCount", this.targetWorkerCount);
+        jsonWriter.writeNumberField("targetWorkerSizeId", this.targetWorkerSizeId);
+        jsonWriter.writeJsonField("kubeEnvironmentProfile", this.kubeEnvironmentProfile);
+        jsonWriter.writeBooleanField("zoneRedundant", this.zoneRedundant);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServicePlanPatchResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServicePlanPatchResourceProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppServicePlanPatchResourceProperties.
+     */
+    public static AppServicePlanPatchResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServicePlanPatchResourceProperties deserializedAppServicePlanPatchResourceProperties
+                = new AppServicePlanPatchResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workerTierName".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.workerTierName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.status
+                        = StatusOptions.fromString(reader.getString());
+                } else if ("subscription".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.subscription = reader.getString();
+                } else if ("hostingEnvironmentProfile".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.hostingEnvironmentProfile
+                        = HostingEnvironmentProfile.fromJson(reader);
+                } else if ("maximumNumberOfWorkers".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.maximumNumberOfWorkers
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfWorkers".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.numberOfWorkers
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("geoRegion".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.geoRegion = reader.getString();
+                } else if ("perSiteScaling".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.perSiteScaling
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("elasticScaleEnabled".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.elasticScaleEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maximumElasticWorkerCount".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.maximumElasticWorkerCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfSites".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.numberOfSites
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("isSpot".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.isSpot
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("spotExpirationTime".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.spotExpirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("freeOfferExpirationTime".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.freeOfferExpirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.resourceGroup = reader.getString();
+                } else if ("reserved".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.reserved
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isXenon".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.isXenon
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hyperV".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.hyperV
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("targetWorkerCount".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.targetWorkerCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("targetWorkerSizeId".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.targetWorkerSizeId
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("kubeEnvironmentProfile".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.kubeEnvironmentProfile
+                        = KubeEnvironmentProfile.fromJson(reader);
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedAppServicePlanPatchResourceProperties.zoneRedundant
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServicePlanPatchResourceProperties;
+        });
     }
 }

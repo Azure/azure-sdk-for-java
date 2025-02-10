@@ -14,31 +14,30 @@ import com.azure.resourcemanager.datalakestore.models.UpdateKeyVaultMetaInfo;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Accounts Update. */
+/**
+ * Samples for Accounts Update.
+ */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/Accounts_Update.json
+     * x-ms-original-file:
+     * specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/Accounts_Update.
+     * json
      */
     /**
      * Sample code: Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param manager Entry point to DataLakeStoreManager.
      */
     public static void updatesTheSpecifiedDataLakeStoreAccountInformation(
         com.azure.resourcemanager.datalakestore.DataLakeStoreManager manager) {
-        DataLakeStoreAccount resource =
-            manager
-                .accounts()
-                .getByResourceGroupWithResponse("contosorg", "contosoadla", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withTags(mapOf("test_key", "test_value"))
+        DataLakeStoreAccount resource = manager.accounts()
+            .getByResourceGroupWithResponse("contosorg", "contosoadla", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("test_key", "fakeTokenPlaceholder"))
             .withDefaultGroup("test_default_group")
-            .withEncryptionConfig(
-                new UpdateEncryptionConfig()
-                    .withKeyVaultMetaInfo(
-                        new UpdateKeyVaultMetaInfo().withEncryptionKeyVersion("fakeTokenPlaceholder")))
+            .withEncryptionConfig(new UpdateEncryptionConfig()
+                .withKeyVaultMetaInfo(new UpdateKeyVaultMetaInfo().withEncryptionKeyVersion("fakeTokenPlaceholder")))
             .withFirewallState(FirewallState.ENABLED)
             .withFirewallAllowAzureIps(FirewallAllowAzureIpsState.ENABLED)
             .withTrustedIdProviderState(TrustedIdProviderState.ENABLED)
@@ -46,6 +45,7 @@ public final class AccountsUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

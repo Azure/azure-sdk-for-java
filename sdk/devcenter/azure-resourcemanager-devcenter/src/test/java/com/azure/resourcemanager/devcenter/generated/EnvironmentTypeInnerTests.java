@@ -13,24 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class EnvironmentTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentTypeInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Created\",\"displayName\":\"vleggzfbuhfmvfax\"},\"tags\":{\"v\":\"eiithlvmez\",\"xwburvjxxjns\":\"hxmzsbbzoggig\",\"ou\":\"ydptkoen\"},\"id\":\"vudwtiukbldng\",\"name\":\"pocipazyxoegu\",\"type\":\"g\"}")
-                .toObject(EnvironmentTypeInner.class);
-        Assertions.assertEquals("eiithlvmez", model.tags().get("v"));
-        Assertions.assertEquals("vleggzfbuhfmvfax", model.displayName());
+        EnvironmentTypeInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"TransientFailure\",\"displayName\":\"nojvknmefqsg\"},\"tags\":{\"j\":\"hapjyzhpvgqz\"},\"id\":\"xdjzlmwlxk\",\"name\":\"ug\",\"type\":\"hzovawjvzunlut\"}")
+            .toObject(EnvironmentTypeInner.class);
+        Assertions.assertEquals("hapjyzhpvgqz", model.tags().get("j"));
+        Assertions.assertEquals("nojvknmefqsg", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentTypeInner model =
-            new EnvironmentTypeInner()
-                .withTags(mapOf("v", "eiithlvmez", "xwburvjxxjns", "hxmzsbbzoggig", "ou", "ydptkoen"))
-                .withDisplayName("vleggzfbuhfmvfax");
+        EnvironmentTypeInner model
+            = new EnvironmentTypeInner().withTags(mapOf("j", "hapjyzhpvgqz")).withDisplayName("nojvknmefqsg");
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeInner.class);
-        Assertions.assertEquals("eiithlvmez", model.tags().get("v"));
-        Assertions.assertEquals("vleggzfbuhfmvfax", model.displayName());
+        Assertions.assertEquals("hapjyzhpvgqz", model.tags().get("j"));
+        Assertions.assertEquals("nojvknmefqsg", model.displayName());
     }
 
     // Use "Map.of" if available

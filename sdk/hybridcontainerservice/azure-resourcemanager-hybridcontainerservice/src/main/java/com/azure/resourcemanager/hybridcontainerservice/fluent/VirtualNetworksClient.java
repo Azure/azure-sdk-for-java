@@ -19,9 +19,7 @@ import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksPa
  */
 public interface VirtualNetworksClient {
     /**
-     * Gets the virtual network
-     * 
-     * Gets the Hybrid AKS virtual network.
+     * Gets the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -29,101 +27,89 @@ public interface VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS virtual network along with {@link Response}.
+     * @return the specified virtual network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualNetworkInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualNetworkName,
         Context context);
 
     /**
-     * Gets the virtual network
-     * 
-     * Gets the Hybrid AKS virtual network.
+     * Gets the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS virtual network.
+     * @return the specified virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualNetworkInner getByResourceGroup(String resourceGroupName, String virtualNetworkName);
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtualNetworks resource definition.
+     * @return the {@link SyncPoller} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualNetworkName, VirtualNetworkInner virtualNetworks);
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtualNetworks resource definition.
+     * @return the {@link SyncPoller} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualNetworkName, VirtualNetworkInner virtualNetworks, Context context);
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition.
+     * @return the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
         VirtualNetworkInner virtualNetworks);
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition.
+     * @return the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
         VirtualNetworkInner virtualNetworks, Context context);
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -136,9 +122,7 @@ public interface VirtualNetworksClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName);
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -153,9 +137,7 @@ public interface VirtualNetworksClient {
         Context context);
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -167,9 +149,7 @@ public interface VirtualNetworksClient {
     void delete(String resourceGroupName, String virtualNetworkName);
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -182,126 +162,110 @@ public interface VirtualNetworksClient {
     void delete(String resourceGroupName, String virtualNetworkName, Context context);
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtualNetworks resource definition.
+     * @return the {@link SyncPoller} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginUpdate(String resourceGroupName,
         String virtualNetworkName, VirtualNetworksPatch virtualNetworks);
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtualNetworks resource definition.
+     * @return the {@link SyncPoller} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginUpdate(String resourceGroupName,
         String virtualNetworkName, VirtualNetworksPatch virtualNetworks, Context context);
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition.
+     * @return the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualNetworkInner update(String resourceGroupName, String virtualNetworkName,
         VirtualNetworksPatch virtualNetworks);
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition.
+     * @return the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualNetworkInner update(String resourceGroupName, String virtualNetworkName,
         VirtualNetworksPatch virtualNetworks, Context context);
 
     /**
-     * List virtual networks by resource group
-     * 
-     * Lists the Hybrid AKS virtual networks by resource group.
+     * Lists the virtual networks in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List virtual networks by resource group
-     * 
-     * Lists the Hybrid AKS virtual networks by resource group.
+     * Lists the virtual networks in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List virtual networks by subscription
-     * 
-     * Lists the Hybrid AKS virtual networks by subscription.
+     * Lists the virtual networks in the specified subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkInner> list();
 
     /**
-     * List virtual networks by subscription
-     * 
-     * Lists the Hybrid AKS virtual networks by subscription.
+     * Lists the virtual networks in the specified subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkInner> list(Context context);

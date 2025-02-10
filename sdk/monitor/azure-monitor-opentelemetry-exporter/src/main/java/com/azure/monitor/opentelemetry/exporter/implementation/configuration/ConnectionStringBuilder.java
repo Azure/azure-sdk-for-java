@@ -42,16 +42,14 @@ class ConnectionStringBuilder {
     }
 
     ConnectionString build() {
-        return new ConnectionString(
-            instrumentationKey, ingestionEndpoint, liveEndpoint, profilerEndpoint, originalString);
+        return new ConnectionString(instrumentationKey, ingestionEndpoint, liveEndpoint, profilerEndpoint,
+            originalString);
     }
 
     private static Map<String, String> getKeyValuePairs(String connectionString) {
         if (connectionString.length() > CONNECTION_STRING_MAX_LENGTH) { // guard against malicious input
-            throw new IllegalArgumentException(
-                "ConnectionString values with more than "
-                    + CONNECTION_STRING_MAX_LENGTH
-                    + " characters are not allowed.");
+            throw new IllegalArgumentException("ConnectionString values with more than " + CONNECTION_STRING_MAX_LENGTH
+                + " characters are not allowed.");
         }
         // parse key value pairs
         Map<String, String> kvps;
@@ -135,7 +133,8 @@ class ConnectionStringBuilder {
             String scheme = result.getProtocol();
             if (!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
                 throw new IllegalArgumentException(
-                    field + " must specify supported protocol, either 'http' or 'https': \"" + url + "\"");
+                    field + " of the connection string must specify supported protocol, either 'http' or 'https': \""
+                        + url + "\"");
             }
             return result;
         } catch (MalformedURLException e) {

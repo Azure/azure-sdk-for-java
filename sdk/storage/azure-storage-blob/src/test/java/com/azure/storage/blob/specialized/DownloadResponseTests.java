@@ -65,7 +65,7 @@ public class DownloadResponseTests extends BlobTestBase {
         HttpPipelinePolicy removeETagPolicy = (context, next) -> next.process().flatMap(response -> {
             HttpHeader eTagHeader = response.getHeaders().get(HttpHeaderName.ETAG);
             if (eTagHeader == null) {
-                return  Mono.just(response);
+                return Mono.just(response);
             }
             HttpHeaders headers = response.getHeaders();
             headers.remove(HttpHeaderName.ETAG);
@@ -92,15 +92,15 @@ public class DownloadResponseTests extends BlobTestBase {
             primaryBlobServiceClient.getAccountUrl(), flux.asPolicy()).buildAsyncClient();
         BlobContainerAsyncClient cc = bsc.getBlobContainerAsyncClient(containerName);
         BlockBlobAsyncClient blockBlobAsyncClient = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient();
-        BlobRange range = setCount ? new BlobRange(0L, (long) flux.getScenarioData().remaining())
-            : new BlobRange(0);
+        BlobRange range = setCount ? new BlobRange(0L, (long) flux.getScenarioData().remaining()) : new BlobRange(0);
 
         StepVerifier.create(blockBlobAsyncClient.downloadStreamWithResponse(range, options, null, false))
             .assertNext(response -> {
                 TestUtils.assertArraysEqual(FluxUtil.collectBytesInByteBufferStream(response.getValue()).block(),
                     flux.getScenarioData().array());
                 assertEquals(tryNumber, flux.getTryNumber());
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     private static Stream<Arguments> successfulSupplier() {
@@ -125,32 +125,30 @@ public class DownloadResponseTests extends BlobTestBase {
         BlobContainerAsyncClient cc = bsc.getBlobContainerAsyncClient(containerName);
         BlockBlobAsyncClient blockBlobAsyncClient = cc.getBlobAsyncClient(bu.getBlobName()).getBlockBlobAsyncClient();
 
-        BlobDownloadAsyncResponse response = blockBlobAsyncClient.downloadStreamWithResponse(null, options, null, false)
-            .block();
+        BlobDownloadAsyncResponse response
+            = blockBlobAsyncClient.downloadStreamWithResponse(null, options, null, false).block();
         assertNotNull(response);
 
-        StepVerifier.create(response.getValue())
-            .verifyErrorSatisfies(e -> {
-                Throwable cause = Exceptions.unwrap(e);
-                assertInstanceOf(exceptionType, cause);
-                assertEquals(tryNumber, flux.getTryNumber());
-            });
+        StepVerifier.create(response.getValue()).verifyErrorSatisfies(e -> {
+            Throwable cause = Exceptions.unwrap(e);
+            assertInstanceOf(exceptionType, cause);
+            assertEquals(tryNumber, flux.getTryNumber());
+        });
     }
 
     private static Stream<Arguments> failureSupplier() {
         return Stream.of(
             Arguments.of(DownloadResponseMockFlux.DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED, IOException.class, 6),
             Arguments.of(DownloadResponseMockFlux.DR_TEST_SCENARIO_NON_RETRYABLE_ERROR, Exception.class, 1),
-            Arguments.of(DownloadResponseMockFlux.DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE, BlobStorageException.class, 2)
-        );
+            Arguments.of(DownloadResponseMockFlux.DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE, BlobStorageException.class, 2));
     }
 
     @ParameterizedTest
     // We test retry count elsewhere. Just using small numbers to speed up the test.
-    @CsvSource(value = {"0,1"})
+    @CsvSource(value = { "0,1" })
     public void timeout(int retryCount) {
-        DownloadResponseMockFlux flux =
-            new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_TIMEOUT, this);
+        DownloadResponseMockFlux flux
+            = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_TIMEOUT, this);
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(retryCount);
 
         BlobServiceAsyncClient bsc = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),

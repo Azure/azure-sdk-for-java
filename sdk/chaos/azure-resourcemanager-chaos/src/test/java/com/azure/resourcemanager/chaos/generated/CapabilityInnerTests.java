@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.fluent.models.CapabilityInner;
 public final class CapabilityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilityInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"publisher\":\"mparcryuanzw\",\"targetType\":\"zdxtayrlhmwhf\",\"description\":\"rqobmtuk\",\"parametersSchema\":\"ryrtihfxtijbpzv\",\"urn\":\"wzsymglzufcy\"},\"id\":\"kohdbiha\",\"name\":\"ufhfcbjysa\",\"type\":\"ithxqhabifpi\"}")
-                .toObject(CapabilityInner.class);
+        CapabilityInner model = BinaryData.fromString(
+            "{\"properties\":{\"publisher\":\"mparcryuanzw\",\"targetType\":\"zdxtayrlhmwhf\",\"description\":\"rqobmtuk\",\"parametersSchema\":\"ryrtihfxtijbpzv\",\"urn\":\"wzsymglzufcy\"},\"id\":\"kohdbiha\",\"name\":\"ufhfcbjysa\",\"type\":\"ithxqhabifpi\"}")
+            .toObject(CapabilityInner.class);
     }
 
     @org.junit.jupiter.api.Test

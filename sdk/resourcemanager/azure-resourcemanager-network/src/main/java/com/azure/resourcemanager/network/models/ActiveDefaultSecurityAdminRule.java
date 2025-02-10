@@ -5,30 +5,45 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.DefaultAdminPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Network default admin rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Default")
 @Fluent
 public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdminRule {
     /*
+     * Whether the rule is custom or default.
+     */
+    private EffectiveAdminRuleKind kind = EffectiveAdminRuleKind.DEFAULT;
+
+    /*
      * Indicates the properties of the default security admin rule
      */
-    @JsonProperty(value = "properties")
     private DefaultAdminPropertiesFormat innerProperties;
 
     /**
      * Creates an instance of ActiveDefaultSecurityAdminRule class.
      */
     public ActiveDefaultSecurityAdminRule() {
+    }
+
+    /**
+     * Get the kind property: Whether the rule is custom or default.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EffectiveAdminRuleKind kind() {
+        return this.kind;
     }
 
     /**
@@ -235,9 +250,85 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (ruleCollectionAppliesToGroups() != null) {
+            ruleCollectionAppliesToGroups().forEach(e -> e.validate());
+        }
+        if (ruleGroups() != null) {
+            ruleGroups().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("commitTime",
+            commitTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(commitTime()));
+        jsonWriter.writeStringField("region", region());
+        jsonWriter.writeStringField("configurationDescription", configurationDescription());
+        jsonWriter.writeStringField("ruleCollectionDescription", ruleCollectionDescription());
+        jsonWriter.writeArrayField("ruleCollectionAppliesToGroups", ruleCollectionAppliesToGroups(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ruleGroups", ruleGroups(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActiveDefaultSecurityAdminRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActiveDefaultSecurityAdminRule if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActiveDefaultSecurityAdminRule.
+     */
+    public static ActiveDefaultSecurityAdminRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActiveDefaultSecurityAdminRule deserializedActiveDefaultSecurityAdminRule
+                = new ActiveDefaultSecurityAdminRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedActiveDefaultSecurityAdminRule.withId(reader.getString());
+                } else if ("commitTime".equals(fieldName)) {
+                    deserializedActiveDefaultSecurityAdminRule.withCommitTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("region".equals(fieldName)) {
+                    deserializedActiveDefaultSecurityAdminRule.withRegion(reader.getString());
+                } else if ("configurationDescription".equals(fieldName)) {
+                    deserializedActiveDefaultSecurityAdminRule.withConfigurationDescription(reader.getString());
+                } else if ("ruleCollectionDescription".equals(fieldName)) {
+                    deserializedActiveDefaultSecurityAdminRule.withRuleCollectionDescription(reader.getString());
+                } else if ("ruleCollectionAppliesToGroups".equals(fieldName)) {
+                    List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups
+                        = reader.readArray(reader1 -> NetworkManagerSecurityGroupItem.fromJson(reader1));
+                    deserializedActiveDefaultSecurityAdminRule
+                        .withRuleCollectionAppliesToGroups(ruleCollectionAppliesToGroups);
+                } else if ("ruleGroups".equals(fieldName)) {
+                    List<ConfigurationGroup> ruleGroups
+                        = reader.readArray(reader1 -> ConfigurationGroup.fromJson(reader1));
+                    deserializedActiveDefaultSecurityAdminRule.withRuleGroups(ruleGroups);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedActiveDefaultSecurityAdminRule.kind
+                        = EffectiveAdminRuleKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedActiveDefaultSecurityAdminRule.innerProperties
+                        = DefaultAdminPropertiesFormat.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActiveDefaultSecurityAdminRule;
+        });
     }
 }

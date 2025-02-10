@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.fluent.models.ExperimentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,26 +18,26 @@ import java.util.List;
  * results.
  */
 @Fluent
-public final class ExperimentList {
+public final class ExperimentList implements JsonSerializable<ExperimentList> {
     /*
      * List of Experiments within a resource group.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ExperimentInner> value;
 
     /*
      * URL to get the next set of Experiment objects if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ExperimentList class. */
+    /**
+     * Creates an instance of ExperimentList class.
+     */
     public ExperimentList() {
     }
 
     /**
      * Get the value property: List of Experiments within a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<ExperimentInner> value() {
@@ -42,7 +46,7 @@ public final class ExperimentList {
 
     /**
      * Get the nextLink property: URL to get the next set of Experiment objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -51,7 +55,7 @@ public final class ExperimentList {
 
     /**
      * Set the nextLink property: URL to get the next set of Experiment objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExperimentList object itself.
      */
@@ -62,12 +66,51 @@ public final class ExperimentList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExperimentList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExperimentList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExperimentList.
+     */
+    public static ExperimentList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExperimentList deserializedExperimentList = new ExperimentList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ExperimentInner> value = reader.readArray(reader1 -> ExperimentInner.fromJson(reader1));
+                    deserializedExperimentList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedExperimentList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExperimentList;
+        });
     }
 }

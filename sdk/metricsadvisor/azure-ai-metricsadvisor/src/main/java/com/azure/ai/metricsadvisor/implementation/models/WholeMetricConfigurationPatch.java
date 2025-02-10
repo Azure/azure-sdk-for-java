@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The WholeMetricConfigurationPatch model.
@@ -132,10 +131,14 @@ public final class WholeMetricConfigurationPatch implements JsonSerializable<Who
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("conditionOperator", Objects.toString(this.conditionOperator, null));
+        jsonWriter.writeStringField("conditionOperator",
+            this.conditionOperator == null ? null : this.conditionOperator.toString());
         jsonWriter.writeJsonField("smartDetectionCondition", this.smartDetectionCondition);
         jsonWriter.writeJsonField("hardThresholdCondition", this.hardThresholdCondition);
         jsonWriter.writeJsonField("changeThresholdCondition", this.changeThresholdCondition);

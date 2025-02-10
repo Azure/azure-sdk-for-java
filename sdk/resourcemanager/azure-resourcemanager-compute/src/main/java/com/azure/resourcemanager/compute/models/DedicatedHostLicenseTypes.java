@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the software license type that will be applied to the VMs deployed on the dedicated host. Possible values
  * are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The default value is: **None.**.
@@ -42,7 +39,6 @@ public enum DedicatedHostLicenseTypes {
      * @param value the serialized value to parse.
      * @return the parsed DedicatedHostLicenseTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static DedicatedHostLicenseTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -59,7 +55,6 @@ public enum DedicatedHostLicenseTypes {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

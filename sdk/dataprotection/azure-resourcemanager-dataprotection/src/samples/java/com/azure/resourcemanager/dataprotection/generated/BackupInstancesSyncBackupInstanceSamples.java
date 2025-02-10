@@ -13,7 +13,7 @@ import com.azure.resourcemanager.dataprotection.models.SyncType;
 public final class BackupInstancesSyncBackupInstanceSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
      * BackupInstanceOperations/SyncBackupInstance.json
      */
     /**
@@ -22,7 +22,8 @@ public final class BackupInstancesSyncBackupInstanceSamples {
      * @param manager Entry point to DataProtectionManager.
      */
     public static void syncBackupInstance(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.backupInstances().syncBackupInstance("testrg", "testvault", "testbi",
-            new SyncBackupInstanceRequest().withSyncType(SyncType.DEFAULT), com.azure.core.util.Context.NONE);
+        manager.backupInstances()
+            .syncBackupInstance("testrg", "testvault", "testbi",
+                new SyncBackupInstanceRequest().withSyncType(SyncType.DEFAULT), com.azure.core.util.Context.NONE);
     }
 }

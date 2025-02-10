@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Placement policy hosts opt-in Azure Hybrid Benefit type. */
+/**
+ * Azure Hybrid Benefit type.
+ */
 public final class AzureHybridBenefitType extends ExpandableStringEnum<AzureHybridBenefitType> {
-    /** Static value SqlHost for AzureHybridBenefitType. */
+    /**
+     * Static value SqlHost for AzureHybridBenefitType.
+     */
     public static final AzureHybridBenefitType SQL_HOST = fromString("SqlHost");
 
-    /** Static value None for AzureHybridBenefitType. */
+    /**
+     * Static value None for AzureHybridBenefitType.
+     */
     public static final AzureHybridBenefitType NONE = fromString("None");
 
     /**
      * Creates a new instance of AzureHybridBenefitType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AzureHybridBenefitType extends ExpandableStringEnum<AzureHybr
 
     /**
      * Creates or finds a AzureHybridBenefitType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureHybridBenefitType.
      */
-    @JsonCreator
     public static AzureHybridBenefitType fromString(String name) {
         return fromString(name, AzureHybridBenefitType.class);
     }
 
     /**
      * Gets known AzureHybridBenefitType values.
-     *
+     * 
      * @return known AzureHybridBenefitType values.
      */
     public static Collection<AzureHybridBenefitType> values() {

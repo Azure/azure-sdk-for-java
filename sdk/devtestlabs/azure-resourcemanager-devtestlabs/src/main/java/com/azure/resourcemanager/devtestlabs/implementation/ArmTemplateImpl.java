@@ -17,8 +17,8 @@ public final class ArmTemplateImpl implements ArmTemplate {
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    ArmTemplateImpl(
-        ArmTemplateInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    ArmTemplateImpl(ArmTemplateInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

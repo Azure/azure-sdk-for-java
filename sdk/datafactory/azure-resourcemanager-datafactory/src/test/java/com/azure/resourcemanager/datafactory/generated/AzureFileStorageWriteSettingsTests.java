@@ -6,20 +6,24 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.AzureFileStorageWriteSettings;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
+import java.util.Arrays;
 
 public final class AzureFileStorageWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileStorageWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureFileStorageWriteSettings\",\"maxConcurrentConnections\":\"datascmcegyiwzou\",\"disableMetricsCollection\":\"dataamdgff\",\"copyBehavior\":\"datanisoorwfdtjpsjwl\",\"\":{\"oouocafaxvhjrpb\":\"dataljzzcdrgtu\"}}")
+            "{\"type\":\"AzureFileStorageWriteSettings\",\"maxConcurrentConnections\":\"dataduttqjtszqexc\",\"disableMetricsCollection\":\"datawbxx\",\"copyBehavior\":\"datavekqjdrumlvk\",\"metadata\":[{\"name\":\"datahhlfvmw\",\"value\":\"dataarswsvtzotmwxq\"}],\"\":{\"wrtmjskb\":\"datadanfexlawkeqjhz\",\"mvounbyvsfqu\":\"dataenjnady\",\"xqbknoxjhedwh\":\"datar\",\"rpajbiig\":\"datamwb\"}}")
             .toObject(AzureFileStorageWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileStorageWriteSettings model
-            = new AzureFileStorageWriteSettings().withMaxConcurrentConnections("datascmcegyiwzou")
-                .withDisableMetricsCollection("dataamdgff").withCopyBehavior("datanisoorwfdtjpsjwl");
+        AzureFileStorageWriteSettings model = new AzureFileStorageWriteSettings()
+            .withMaxConcurrentConnections("dataduttqjtszqexc")
+            .withDisableMetricsCollection("datawbxx")
+            .withCopyBehavior("datavekqjdrumlvk")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datahhlfvmw").withValue("dataarswsvtzotmwxq")));
         model = BinaryData.fromObject(model).toObject(AzureFileStorageWriteSettings.class);
     }
 }

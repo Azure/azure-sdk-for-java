@@ -18,8 +18,7 @@ public final class IoTSecurityAggregatedAlertImpl implements IoTSecurityAggregat
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    IoTSecurityAggregatedAlertImpl(
-        IoTSecurityAggregatedAlertInner innerObject,
+    IoTSecurityAggregatedAlertImpl(IoTSecurityAggregatedAlertInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

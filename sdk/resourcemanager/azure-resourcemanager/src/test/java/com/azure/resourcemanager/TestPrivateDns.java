@@ -3,6 +3,8 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.privatedns.models.ARecordSet;
 import com.azure.resourcemanager.privatedns.models.AaaaRecordSet;
 import com.azure.resourcemanager.privatedns.models.CnameRecordSet;
@@ -32,6 +34,8 @@ import static com.azure.resourcemanager.privatedns.models.RecordType.SRV;
 import static com.azure.resourcemanager.privatedns.models.RecordType.TXT;
 
 public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones> {
+    private static final ClientLogger LOGGER = new ClientLogger(TestPrivateDns.class);
+
     @Override
     public PrivateDnsZone createResource(PrivateDnsZones resources) throws Exception {
         final Region region = Region.US_EAST;
@@ -84,7 +88,7 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
 
         // Check Dns zone properties
         Assertions.assertTrue(resource.name().startsWith(topLevelDomain));
-        Assertions.assertTrue(resource.tags().size() == 2);
+        Assertions.assertEquals(2, resource.tags().size());
 
         // Check SOA record - external child resource (created by default)
         SoaRecordSet soaRecordSet = resource.getSoaRecordSet();
@@ -97,45 +101,44 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
 
         // Check A records
         PagedIterable<ARecordSet> aRecordSets = resource.aRecordSets().list();
-        Assertions.assertTrue(aRecordSets.stream().count() == 1);
-        Assertions.assertTrue(aRecordSets.iterator().next().timeToLive() == 7200);
+        Assertions.assertEquals(1, aRecordSets.stream().count());
+        Assertions.assertEquals(7200, aRecordSets.iterator().next().timeToLive());
 
         // Check AAAA records
         PagedIterable<AaaaRecordSet> aaaaRecordSets = resource.aaaaRecordSets().list();
-        Assertions.assertTrue(aaaaRecordSets.stream().count() == 1);
+        Assertions.assertEquals(1, aaaaRecordSets.stream().count());
         Assertions.assertTrue(aaaaRecordSets.iterator().next().name().startsWith("www"));
-        Assertions.assertTrue(aaaaRecordSets.iterator().next().ipv6Addresses().size() == 2);
+        Assertions.assertEquals(2, aaaaRecordSets.iterator().next().ipv6Addresses().size());
 
         // Check MX records
         PagedIterable<MxRecordSet> mxRecordSets = resource.mxRecordSets().list();
-        Assertions.assertTrue(mxRecordSets.stream().count() == 1);
+        Assertions.assertEquals(1, mxRecordSets.stream().count());
         MxRecordSet mxRecordSet = mxRecordSets.iterator().next();
         Assertions.assertNotNull(mxRecordSet);
         Assertions.assertTrue(mxRecordSet.name().startsWith("email"));
-        Assertions.assertTrue(mxRecordSet.metadata().size() == 2);
-        Assertions.assertTrue(mxRecordSet.records().size() == 2);
+        Assertions.assertEquals(2, mxRecordSet.metadata().size());
+        Assertions.assertEquals(2, mxRecordSet.records().size());
         for (MxRecord mxRecord : mxRecordSet.records()) {
             Assertions.assertTrue(mxRecord.exchange().startsWith("mail.contoso-mail-exchange1.com")
                 || mxRecord.exchange().startsWith("mail.contoso-mail-exchange2.com"));
-            Assertions.assertTrue(mxRecord.preference() == 1
-                || mxRecord.preference() == 2);
+            Assertions.assertTrue(mxRecord.preference() == 1 || mxRecord.preference() == 2);
         }
 
         // Check TXT records
         PagedIterable<TxtRecordSet> txtRecordSets = resource.txtRecordSets().list();
-        Assertions.assertTrue(txtRecordSets.stream().count() == 2);
+        Assertions.assertEquals(2, txtRecordSets.stream().count());
 
         // Check SRV records
         PagedIterable<SrvRecordSet> srvRecordSets = resource.srvRecordSets().list();
-        Assertions.assertTrue(srvRecordSets.stream().count() == 1);
+        Assertions.assertEquals(1, srvRecordSets.stream().count());
 
         // Check PTR records
         PagedIterable<PtrRecordSet> ptrRecordSets = resource.ptrRecordSets().list();
-        Assertions.assertTrue(ptrRecordSets.stream().count() == 2);
+        Assertions.assertEquals(2, ptrRecordSets.stream().count());
 
         // Check CNAME records
         PagedIterable<CnameRecordSet> cnameRecordSets = resource.cnameRecordSets().list();
-        Assertions.assertTrue(cnameRecordSets.stream().count() == 2);
+        Assertions.assertEquals(2, cnameRecordSets.stream().count());
 
         // Check Generic record set listing
         PagedIterable<PrivateDnsRecordSet> recordSets = resource.listRecordSets();
@@ -156,53 +159,61 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
                     Assertions.assertNotNull(txtRS);
                     typeToCount.put(TXT, typeToCount.get(TXT) + 1);
                     break;
+
                 case SRV:
                     SrvRecordSet srvRS = (SrvRecordSet) recordSet;
                     Assertions.assertNotNull(srvRS);
                     typeToCount.put(SRV, typeToCount.get(SRV) + 1);
                     break;
+
                 case SOA:
                     SoaRecordSet soaRS = (SoaRecordSet) recordSet;
                     Assertions.assertNotNull(soaRS);
                     typeToCount.put(SOA, typeToCount.get(SOA) + 1);
                     break;
+
                 case PTR:
                     PtrRecordSet ptrRS = (PtrRecordSet) recordSet;
                     Assertions.assertNotNull(ptrRS);
                     typeToCount.put(PTR, typeToCount.get(PTR) + 1);
                     break;
+
                 case A:
                     ARecordSet aRS = (ARecordSet) recordSet;
                     Assertions.assertNotNull(aRS);
                     typeToCount.put(RecordType.A, typeToCount.get(RecordType.A) + 1);
                     break;
+
                 case AAAA:
                     AaaaRecordSet aaaaRS = (AaaaRecordSet) recordSet;
                     Assertions.assertNotNull(aaaaRS);
                     typeToCount.put(AAAA, typeToCount.get(AAAA) + 1);
                     break;
+
                 case CNAME:
                     CnameRecordSet cnameRS = (CnameRecordSet) recordSet;
                     Assertions.assertNotNull(cnameRS);
                     typeToCount.put(RecordType.CNAME, typeToCount.get(RecordType.CNAME) + 1);
                     break;
+
                 case MX:
                     MxRecordSet mxRS = (MxRecordSet) recordSet;
                     Assertions.assertNotNull(mxRS);
                     typeToCount.put(MX, typeToCount.get(MX) + 1);
                     break;
+
                 default:
                     Assertions.assertNotNull(recordSet);
             }
         }
-        Assertions.assertTrue(typeToCount.get(SOA) == 1);
-        Assertions.assertTrue(typeToCount.get(RecordType.A) == 1);
-        Assertions.assertTrue(typeToCount.get(AAAA) == 1);
-        Assertions.assertTrue(typeToCount.get(MX) == 1);
-        Assertions.assertTrue(typeToCount.get(TXT) == 2);
-        Assertions.assertTrue(typeToCount.get(SRV) == 1);
-        Assertions.assertTrue(typeToCount.get(PTR) == 2);
-        Assertions.assertTrue(typeToCount.get(RecordType.CNAME) == 2);
+        Assertions.assertEquals(1, (int) typeToCount.get(SOA));
+        Assertions.assertEquals(1, (int) typeToCount.get(RecordType.A));
+        Assertions.assertEquals(1, (int) typeToCount.get(AAAA));
+        Assertions.assertEquals(1, (int) typeToCount.get(MX));
+        Assertions.assertEquals(2, (int) typeToCount.get(TXT));
+        Assertions.assertEquals(1, (int) typeToCount.get(SRV));
+        Assertions.assertEquals(2, (int) typeToCount.get(PTR));
+        Assertions.assertEquals(2, (int) typeToCount.get(RecordType.CNAME));
         return resource;
     }
 
@@ -239,8 +250,8 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
         Assertions.assertEquals(cnameRecordSets.stream().count(), 2);
         for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
             Assertions.assertTrue(cnameRecordSet.canonicalName().startsWith("doc.contoso.com"));
-            Assertions.assertTrue(cnameRecordSet.name().startsWith("documents")
-                || cnameRecordSet.name().startsWith("help"));
+            Assertions
+                .assertTrue(cnameRecordSet.name().startsWith("documents") || cnameRecordSet.name().startsWith("help"));
         }
 
         // Check A records
@@ -254,9 +265,9 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
 
         // Check SRV records
         PagedIterable<SrvRecordSet> srvRecordSets = resource.srvRecordSets().list();
-        Assertions.assertTrue(srvRecordSets.stream().count() == 1);
+        Assertions.assertEquals(1, srvRecordSets.stream().count());
         SrvRecordSet srvRecordSet = srvRecordSets.iterator().next();
-        Assertions.assertTrue(srvRecordSet.records().size() == 4);
+        Assertions.assertEquals(4, srvRecordSet.records().size());
         for (SrvRecord srvRecord : srvRecordSet.records()) {
             Assertions.assertFalse(srvRecord.target().startsWith("bigbox.contoso-service.com"));
         }
@@ -267,11 +278,11 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
         SoaRecord soaRecord = soaRecordSet.record();
         Assertions.assertNotNull(soaRecord);
         Assertions.assertEquals(soaRecord.minimumTtl(), Long.valueOf(600));
-        Assertions.assertTrue(soaRecordSet.timeToLive() == 7200);
+        Assertions.assertEquals(7200, soaRecordSet.timeToLive());
 
         // Check MX records
         PagedIterable<MxRecordSet> mxRecordSets = resource.mxRecordSets().list();
-        Assertions.assertTrue(mxRecordSets.stream().count() == 2);
+        Assertions.assertEquals(2, mxRecordSets.stream().count());
 
         resource.update()
             .updateMxRecordSet("email")
@@ -283,11 +294,11 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
             .withTag("d", "dd")
             .apply();
 
-        Assertions.assertTrue(resource.tags().size() == 3);
+        Assertions.assertEquals(3, resource.tags().size());
         // Check "mail" MX record
         MxRecordSet mxRecordSet = resource.mxRecordSets().getByName("email");
-        Assertions.assertTrue(mxRecordSet.records().size() == 1);
-        Assertions.assertTrue(mxRecordSet.metadata().size() == 3);
+        Assertions.assertEquals(1, mxRecordSet.records().size());
+        Assertions.assertEquals(3, mxRecordSet.metadata().size());
         Assertions.assertTrue(mxRecordSet.records().get(0).exchange().startsWith("mail.contoso-mail-exchange1.com"));
 
         return resource;
@@ -296,28 +307,43 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
     @Override
     public void print(PrivateDnsZone resource) {
         StringBuilder info = new StringBuilder();
-        info.append("Dns Zone: ").append(resource.id())
-            .append("\n\tName (Top level domain): ").append(resource.name())
-            .append("\n\tResource group: ").append(resource.resourceGroupName())
-            .append("\n\tRegion: ").append(resource.regionName())
-            .append("\n\tTags: ").append(resource.tags());
+        info.append("Dns Zone: ")
+            .append(resource.id())
+            .append("\n\tName (Top level domain): ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.regionName())
+            .append("\n\tTags: ")
+            .append(resource.tags());
         SoaRecordSet soaRecordSet = resource.getSoaRecordSet();
         SoaRecord soaRecord = soaRecordSet.record();
         info.append("\n\tSOA Record:")
-            .append("\n\t\tHost:").append(soaRecord.host())
-            .append("\n\t\tEmail:").append(soaRecord.email())
-            .append("\n\t\tExpire time (seconds):").append(soaRecord.expireTime())
-            .append("\n\t\tRefresh time (seconds):").append(soaRecord.refreshTime())
-            .append("\n\t\tRetry time (seconds):").append(soaRecord.retryTime())
-            .append("\n\t\tNegative response cache ttl (seconds):").append(soaRecord.minimumTtl())
-            .append("\n\t\tTTL (seconds):").append(soaRecordSet.timeToLive());
+            .append("\n\t\tHost:")
+            .append(soaRecord.host())
+            .append("\n\t\tEmail:")
+            .append(soaRecord.email())
+            .append("\n\t\tExpire time (seconds):")
+            .append(soaRecord.expireTime())
+            .append("\n\t\tRefresh time (seconds):")
+            .append(soaRecord.refreshTime())
+            .append("\n\t\tRetry time (seconds):")
+            .append(soaRecord.retryTime())
+            .append("\n\t\tNegative response cache ttl (seconds):")
+            .append(soaRecord.minimumTtl())
+            .append("\n\t\tTTL (seconds):")
+            .append(soaRecordSet.timeToLive());
 
         PagedIterable<ARecordSet> aRecordSets = resource.aRecordSets().list();
         info.append("\n\tA Record sets:");
         for (ARecordSet aRecordSet : aRecordSets) {
-            info.append("\n\t\tId: ").append(aRecordSet.id())
-                .append("\n\t\tName: ").append(aRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(aRecordSet.timeToLive())
+            info.append("\n\t\tId: ")
+                .append(aRecordSet.id())
+                .append("\n\t\tName: ")
+                .append(aRecordSet.name())
+                .append("\n\t\tTTL (seconds): ")
+                .append(aRecordSet.timeToLive())
                 .append("\n\t\tIP v4 addresses: ");
             for (String ipAddress : aRecordSet.ipv4Addresses()) {
                 info.append("\n\t\t\t").append(ipAddress);
@@ -327,9 +353,12 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
         PagedIterable<AaaaRecordSet> aaaaRecordSets = resource.aaaaRecordSets().list();
         info.append("\n\tAAAA Record sets:");
         for (AaaaRecordSet aaaaRecordSet : aaaaRecordSets) {
-            info.append("\n\t\tId: ").append(aaaaRecordSet.id())
-                .append("\n\t\tName: ").append(aaaaRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(aaaaRecordSet.timeToLive())
+            info.append("\n\t\tId: ")
+                .append(aaaaRecordSet.id())
+                .append("\n\t\tName: ")
+                .append(aaaaRecordSet.name())
+                .append("\n\t\tTTL (seconds): ")
+                .append(aaaaRecordSet.timeToLive())
                 .append("\n\t\tIP v6 addresses: ");
             for (String ipAddress : aaaaRecordSet.ipv6Addresses()) {
                 info.append("\n\t\t\t").append(ipAddress);
@@ -339,18 +368,25 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
         PagedIterable<CnameRecordSet> cnameRecordSets = resource.cnameRecordSets().list();
         info.append("\n\tCNAME Record sets:");
         for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
-            info.append("\n\t\tId: ").append(cnameRecordSet.id())
-                .append("\n\t\tName: ").append(cnameRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
-                .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
+            info.append("\n\t\tId: ")
+                .append(cnameRecordSet.id())
+                .append("\n\t\tName: ")
+                .append(cnameRecordSet.name())
+                .append("\n\t\tTTL (seconds): ")
+                .append(cnameRecordSet.timeToLive())
+                .append("\n\t\tCanonical name: ")
+                .append(cnameRecordSet.canonicalName());
         }
 
         PagedIterable<MxRecordSet> mxRecordSets = resource.mxRecordSets().list();
         info.append("\n\tMX Record sets:");
         for (MxRecordSet mxRecordSet : mxRecordSets) {
-            info.append("\n\t\tId: ").append(mxRecordSet.id())
-                .append("\n\t\tName: ").append(mxRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
+            info.append("\n\t\tId: ")
+                .append(mxRecordSet.id())
+                .append("\n\t\tName: ")
+                .append(mxRecordSet.name())
+                .append("\n\t\tTTL (seconds): ")
+                .append(mxRecordSet.timeToLive())
                 .append("\n\t\tRecords: ");
             for (MxRecord mxRecord : mxRecordSet.records()) {
                 info.append("\n\t\t\tExchange server, Preference: ")
@@ -363,9 +399,12 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
         PagedIterable<PtrRecordSet> ptrRecordSets = resource.ptrRecordSets().list();
         info.append("\n\tPTR Record sets:");
         for (PtrRecordSet ptrRecordSet : ptrRecordSets) {
-            info.append("\n\t\tId: ").append(ptrRecordSet.id())
-                .append("\n\t\tName: ").append(ptrRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(ptrRecordSet.timeToLive())
+            info.append("\n\t\tId: ")
+                .append(ptrRecordSet.id())
+                .append("\n\t\tName: ")
+                .append(ptrRecordSet.name())
+                .append("\n\t\tTTL (seconds): ")
+                .append(ptrRecordSet.timeToLive())
                 .append("\n\t\tTarget domain names: ");
             for (String domainNames : ptrRecordSet.targetDomainNames()) {
                 info.append("\n\t\t\t").append(domainNames);
@@ -375,9 +414,12 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
         PagedIterable<SrvRecordSet> srvRecordSets = resource.srvRecordSets().list();
         info.append("\n\tSRV Record sets:");
         for (SrvRecordSet srvRecordSet : srvRecordSets) {
-            info.append("\n\t\tId: ").append(srvRecordSet.id())
-                .append("\n\t\tName: ").append(srvRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(srvRecordSet.timeToLive())
+            info.append("\n\t\tId: ")
+                .append(srvRecordSet.id())
+                .append("\n\t\tName: ")
+                .append(srvRecordSet.name())
+                .append("\n\t\tTTL (seconds): ")
+                .append(srvRecordSet.timeToLive())
                 .append("\n\t\tRecords: ");
             for (SrvRecord srvRecord : srvRecordSet.records()) {
                 info.append("\n\t\t\tTarget, Port, Priority, Weight: ")
@@ -394,16 +436,19 @@ public class TestPrivateDns extends TestTemplate<PrivateDnsZone, PrivateDnsZones
         PagedIterable<TxtRecordSet> txtRecordSets = resource.txtRecordSets().list();
         info.append("\n\tTXT Record sets:");
         for (TxtRecordSet txtRecordSet : txtRecordSets) {
-            info.append("\n\t\tId: ").append(txtRecordSet.id())
-                .append("\n\t\tName: ").append(txtRecordSet.name())
-                .append("\n\t\tTTL (seconds): ").append(txtRecordSet.timeToLive())
+            info.append("\n\t\tId: ")
+                .append(txtRecordSet.id())
+                .append("\n\t\tName: ")
+                .append(txtRecordSet.name())
+                .append("\n\t\tTTL (seconds): ")
+                .append(txtRecordSet.timeToLive())
                 .append("\n\t\tRecords: ");
             for (TxtRecord txtRecord : txtRecordSet.records()) {
-                if (txtRecord.value().size() > 0) {
+                if (!txtRecord.value().isEmpty()) {
                     info.append("\n\t\t\tValue: ").append(txtRecord.value().get(0));
                 }
             }
         }
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 }

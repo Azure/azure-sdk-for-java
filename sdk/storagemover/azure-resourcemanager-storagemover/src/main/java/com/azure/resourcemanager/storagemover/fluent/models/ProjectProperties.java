@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Project properties. */
+/**
+ * Project properties.
+ */
 @Fluent
-public final class ProjectProperties {
+public final class ProjectProperties implements JsonSerializable<ProjectProperties> {
     /*
      * A description for the Project.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The provisioning state of this resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ProjectProperties class. */
+    /**
+     * Creates an instance of ProjectProperties class.
+     */
     public ProjectProperties() {
     }
 
     /**
      * Get the description property: A description for the Project.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -38,7 +44,7 @@ public final class ProjectProperties {
 
     /**
      * Set the description property: A description for the Project.
-     *
+     * 
      * @param description the description value to set.
      * @return the ProjectProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class ProjectProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of this resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,9 +64,47 @@ public final class ProjectProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProjectProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProjectProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProjectProperties.
+     */
+    public static ProjectProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProjectProperties deserializedProjectProperties = new ProjectProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedProjectProperties.description = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedProjectProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProjectProperties;
+        });
     }
 }

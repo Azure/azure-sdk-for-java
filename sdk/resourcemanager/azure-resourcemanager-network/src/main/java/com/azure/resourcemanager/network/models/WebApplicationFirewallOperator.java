@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -87,7 +86,6 @@ public final class WebApplicationFirewallOperator extends ExpandableStringEnum<W
      * @param name a name to look for.
      * @return the corresponding WebApplicationFirewallOperator.
      */
-    @JsonCreator
     public static WebApplicationFirewallOperator fromString(String name) {
         return fromString(name, WebApplicationFirewallOperator.class);
     }

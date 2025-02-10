@@ -5,26 +5,26 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Defines a health policy used to evaluate the health of an application or one of its children entities.
  */
 @Fluent
-public final class ApplicationHealthPolicy {
+public final class ApplicationHealthPolicy implements JsonSerializable<ApplicationHealthPolicy> {
     /*
      * The health policy used by default to evaluate the health of a service type.
      */
-    @JsonProperty(value = "defaultServiceTypeHealthPolicy")
     private ServiceTypeHealthPolicy defaultServiceTypeHealthPolicy;
 
     /*
      * The map with service type health policy per service type name. The map is empty by default.
      */
-    @JsonProperty(value = "serviceTypeHealthPolicies")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ServiceTypeHealthPolicy> serviceTypeHealthPolicies;
 
     /**
@@ -95,5 +95,48 @@ public final class ApplicationHealthPolicy {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("defaultServiceTypeHealthPolicy", this.defaultServiceTypeHealthPolicy);
+        jsonWriter.writeMapField("serviceTypeHealthPolicies", this.serviceTypeHealthPolicies,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationHealthPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationHealthPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationHealthPolicy.
+     */
+    public static ApplicationHealthPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationHealthPolicy deserializedApplicationHealthPolicy = new ApplicationHealthPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultServiceTypeHealthPolicy".equals(fieldName)) {
+                    deserializedApplicationHealthPolicy.defaultServiceTypeHealthPolicy
+                        = ServiceTypeHealthPolicy.fromJson(reader);
+                } else if ("serviceTypeHealthPolicies".equals(fieldName)) {
+                    Map<String, ServiceTypeHealthPolicy> serviceTypeHealthPolicies
+                        = reader.readMap(reader1 -> ServiceTypeHealthPolicy.fromJson(reader1));
+                    deserializedApplicationHealthPolicy.serviceTypeHealthPolicies = serviceTypeHealthPolicies;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationHealthPolicy;
+        });
     }
 }

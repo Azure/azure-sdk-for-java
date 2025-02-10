@@ -29,7 +29,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.datafactory.fluent.CredentialOperationsClient;
-import com.azure.resourcemanager.datafactory.fluent.models.ManagedIdentityCredentialResourceInner;
+import com.azure.resourcemanager.datafactory.fluent.models.CredentialResourceInner;
 import com.azure.resourcemanager.datafactory.models.CredentialListResponse;
 import reactor.core.publisher.Mono;
 
@@ -78,19 +78,18 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/credentials/{credentialName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedIdentityCredentialResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
+        Mono<Response<CredentialResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("credentialName") String credentialName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @BodyParam("application/json") ManagedIdentityCredentialResourceInner credential,
+            @HeaderParam("If-Match") String ifMatch, @BodyParam("application/json") CredentialResourceInner credential,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/credentials/{credentialName}")
         @ExpectedResponses({ 200, 304 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedIdentityCredentialResourceInner>> get(@HostParam("$host") String endpoint,
+        Mono<Response<CredentialResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("credentialName") String credentialName, @QueryParam("api-version") String apiVersion,
@@ -126,8 +125,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a list of credential resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedIdentityCredentialResourceInner>>
-        listByFactorySinglePageAsync(String resourceGroupName, String factoryName) {
+    private Mono<PagedResponse<CredentialResourceInner>> listByFactorySinglePageAsync(String resourceGroupName,
+        String factoryName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -147,7 +146,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
         return FluxUtil
             .withContext(context -> service.listByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(),
                 resourceGroupName, factoryName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<ManagedIdentityCredentialResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<CredentialResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -164,8 +163,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a list of credential resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedIdentityCredentialResourceInner>>
-        listByFactorySinglePageAsync(String resourceGroupName, String factoryName, Context context) {
+    private Mono<PagedResponse<CredentialResourceInner>> listByFactorySinglePageAsync(String resourceGroupName,
+        String factoryName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -201,8 +200,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a list of credential resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedIdentityCredentialResourceInner> listByFactoryAsync(String resourceGroupName,
-        String factoryName) {
+    private PagedFlux<CredentialResourceInner> listByFactoryAsync(String resourceGroupName, String factoryName) {
         return new PagedFlux<>(() -> listByFactorySinglePageAsync(resourceGroupName, factoryName),
             nextLink -> listByFactoryNextSinglePageAsync(nextLink));
     }
@@ -219,8 +217,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a list of credential resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedIdentityCredentialResourceInner> listByFactoryAsync(String resourceGroupName,
-        String factoryName, Context context) {
+    private PagedFlux<CredentialResourceInner> listByFactoryAsync(String resourceGroupName, String factoryName,
+        Context context) {
         return new PagedFlux<>(() -> listByFactorySinglePageAsync(resourceGroupName, factoryName, context),
             nextLink -> listByFactoryNextSinglePageAsync(nextLink, context));
     }
@@ -236,8 +234,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a list of credential resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedIdentityCredentialResourceInner> listByFactory(String resourceGroupName,
-        String factoryName) {
+    public PagedIterable<CredentialResourceInner> listByFactory(String resourceGroupName, String factoryName) {
         return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName));
     }
 
@@ -253,8 +250,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a list of credential resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedIdentityCredentialResourceInner> listByFactory(String resourceGroupName,
-        String factoryName, Context context) {
+    public PagedIterable<CredentialResourceInner> listByFactory(String resourceGroupName, String factoryName,
+        Context context) {
         return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName, context));
     }
 
@@ -273,9 +270,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return credential resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedIdentityCredentialResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String factoryName, String credentialName,
-        ManagedIdentityCredentialResourceInner credential, String ifMatch) {
+    private Mono<Response<CredentialResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String factoryName, String credentialName, CredentialResourceInner credential, String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -323,9 +319,9 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return credential resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedIdentityCredentialResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String factoryName, String credentialName,
-        ManagedIdentityCredentialResourceInner credential, String ifMatch, Context context) {
+    private Mono<Response<CredentialResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String factoryName, String credentialName, CredentialResourceInner credential, String ifMatch,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -368,8 +364,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return credential resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedIdentityCredentialResourceInner> createOrUpdateAsync(String resourceGroupName,
-        String factoryName, String credentialName, ManagedIdentityCredentialResourceInner credential) {
+    private Mono<CredentialResourceInner> createOrUpdateAsync(String resourceGroupName, String factoryName,
+        String credentialName, CredentialResourceInner credential) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, credentialName, credential, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -391,9 +387,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return credential resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedIdentityCredentialResourceInner> createOrUpdateWithResponse(String resourceGroupName,
-        String factoryName, String credentialName, ManagedIdentityCredentialResourceInner credential, String ifMatch,
-        Context context) {
+    public Response<CredentialResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
+        String credentialName, CredentialResourceInner credential, String ifMatch, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, credentialName, credential, ifMatch,
             context).block();
     }
@@ -411,8 +406,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return credential resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedIdentityCredentialResourceInner createOrUpdate(String resourceGroupName, String factoryName,
-        String credentialName, ManagedIdentityCredentialResourceInner credential) {
+    public CredentialResourceInner createOrUpdate(String resourceGroupName, String factoryName, String credentialName,
+        CredentialResourceInner credential) {
         final String ifMatch = null;
         return createOrUpdateWithResponse(resourceGroupName, factoryName, credentialName, credential, ifMatch,
             Context.NONE).getValue();
@@ -432,8 +427,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a credential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedIdentityCredentialResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String factoryName, String credentialName, String ifNoneMatch) {
+    private Mono<Response<CredentialResourceInner>> getWithResponseAsync(String resourceGroupName, String factoryName,
+        String credentialName, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -475,8 +470,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a credential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedIdentityCredentialResourceInner>> getWithResponseAsync(String resourceGroupName,
-        String factoryName, String credentialName, String ifNoneMatch, Context context) {
+    private Mono<Response<CredentialResourceInner>> getWithResponseAsync(String resourceGroupName, String factoryName,
+        String credentialName, String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -513,7 +508,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a credential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedIdentityCredentialResourceInner> getAsync(String resourceGroupName, String factoryName,
+    private Mono<CredentialResourceInner> getAsync(String resourceGroupName, String factoryName,
         String credentialName) {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, credentialName, ifNoneMatch)
@@ -535,8 +530,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a credential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedIdentityCredentialResourceInner> getWithResponse(String resourceGroupName,
-        String factoryName, String credentialName, String ifNoneMatch, Context context) {
+    public Response<CredentialResourceInner> getWithResponse(String resourceGroupName, String factoryName,
+        String credentialName, String ifNoneMatch, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, credentialName, ifNoneMatch, context).block();
     }
 
@@ -552,8 +547,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedIdentityCredentialResourceInner get(String resourceGroupName, String factoryName,
-        String credentialName) {
+    public CredentialResourceInner get(String resourceGroupName, String factoryName, String credentialName) {
         final String ifNoneMatch = null;
         return getWithResponse(resourceGroupName, factoryName, credentialName, ifNoneMatch, Context.NONE).getValue();
     }
@@ -688,17 +682,14 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of credential resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedIdentityCredentialResourceInner>>
-        listByFactoryNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<CredentialResourceInner>> listByFactoryNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -709,7 +700,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedIdentityCredentialResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<CredentialResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -717,9 +708,7 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -727,8 +716,8 @@ public final class CredentialOperationsClientImpl implements CredentialOperation
      * @return a list of credential resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedIdentityCredentialResourceInner>>
-        listByFactoryNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<CredentialResourceInner>> listByFactoryNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

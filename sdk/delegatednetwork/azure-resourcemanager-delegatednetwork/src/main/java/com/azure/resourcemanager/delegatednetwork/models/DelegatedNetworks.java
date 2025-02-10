@@ -7,11 +7,13 @@ package com.azure.resourcemanager.delegatednetwork.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DelegatedNetworks. */
+/**
+ * Resource collection API of DelegatedNetworks.
+ */
 public interface DelegatedNetworks {
     /**
      * Get all the delegatedController resources in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the delegatedController resources in a subscription as paginated response with {@link PagedIterable}.
@@ -20,7 +22,7 @@ public interface DelegatedNetworks {
 
     /**
      * Get all the delegatedController resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,26 +33,26 @@ public interface DelegatedNetworks {
 
     /**
      * Get all the delegatedController resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the delegatedController resources in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DelegatedController> listByResourceGroup(String resourceGroupName);
 
     /**
      * Get all the delegatedController resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the delegatedController resources in a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the delegatedController resources in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DelegatedController> listByResourceGroup(String resourceGroupName, Context context);
 }

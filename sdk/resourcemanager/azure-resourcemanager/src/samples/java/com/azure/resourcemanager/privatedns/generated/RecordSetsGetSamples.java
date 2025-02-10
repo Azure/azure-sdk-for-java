@@ -6,153 +6,151 @@ package com.azure.resourcemanager.privatedns.generated;
 
 import com.azure.resourcemanager.privatedns.models.RecordType;
 
-/** Samples for RecordSets Get. */
+/**
+ * Samples for RecordSets Get.
+ */
 public final class RecordSetsGetSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetPTRGet.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetPTRGet.json
      */
     /**
      * Sample code: GET Private DNS Zone PTR Record Set.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gETPrivateDNSZonePTRRecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse(
-                "resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, "1", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetMXGet.json
-     */
-    /**
-     * Sample code: GET Private DNS Zone MX Record Set.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void gETPrivateDNSZoneMXRecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
-            .manager()
-            .serviceClient()
-            .getRecordSets()
-            .getWithResponse(
-                "resourceGroup1", "privatezone1.com", RecordType.MX, "recordMX", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAAAAGet.json
-     */
-    /**
-     * Sample code: GET Private DNS Zone AAAA Record Set.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void gETPrivateDNSZoneAAAARecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
-            .manager()
-            .serviceClient()
-            .getRecordSets()
-            .getWithResponse(
-                "resourceGroup1", "privatezone1.com", RecordType.AAAA, "recordAAAA", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSOAGet.json
-     */
-    /**
-     * Sample code: GET Private DNS Zone SOA Record Set.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void gETPrivateDNSZoneSOARecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
-            .manager()
-            .serviceClient()
-            .getRecordSets()
-            .getWithResponse(
-                "resourceGroup1", "privatezone1.com", RecordType.SOA, "@", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSRVGet.json
-     */
-    /**
-     * Sample code: GET Private DNS Zone SRV Record Set.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void gETPrivateDNSZoneSRVRecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
-            .manager()
-            .serviceClient()
-            .getRecordSets()
-            .getWithResponse(
-                "resourceGroup1", "privatezone1.com", RecordType.SRV, "recordSRV", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAGet.json
-     */
-    /**
-     * Sample code: GET Private DNS Zone A Record Set.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void gETPrivateDNSZoneARecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
-            .manager()
-            .serviceClient()
-            .getRecordSets()
-            .getWithResponse(
-                "resourceGroup1", "privatezone1.com", RecordType.A, "recordA", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetCNAMEGet.json
-     */
-    /**
-     * Sample code: GET Private DNS Zone CNAME Record Set.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void gETPrivateDNSZoneCNAMERecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
-            .manager()
-            .serviceClient()
-            .getRecordSets()
-            .getWithResponse(
-                "resourceGroup1",
-                "privatezone1.com",
-                RecordType.CNAME,
-                "recordCNAME",
+            .getWithResponse("resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, "1",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetTXTGet.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetMXGet.json
      */
     /**
-     * Sample code: GET Private DNS Zone TXT Record Set.
-     *
+     * Sample code: GET Private DNS Zone MX Record Set.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void gETPrivateDNSZoneTXTRecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+    public static void gETPrivateDNSZoneMXRecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse(
-                "resourceGroup1", "privatezone1.com", RecordType.TXT, "recordTXT", com.azure.core.util.Context.NONE);
+            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.MX, "recordMX",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetAAAAGet.json
+     */
+    /**
+     * Sample code: GET Private DNS Zone AAAA Record Set.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void gETPrivateDNSZoneAAAARecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.privateDnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.AAAA, "recordAAAA",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetSOAGet.json
+     */
+    /**
+     * Sample code: GET Private DNS Zone SOA Record Set.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void gETPrivateDNSZoneSOARecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.privateDnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.SOA, "@",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetSRVGet.json
+     */
+    /**
+     * Sample code: GET Private DNS Zone SRV Record Set.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void gETPrivateDNSZoneSRVRecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.privateDnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.SRV, "recordSRV",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetAGet.json
+     */
+    /**
+     * Sample code: GET Private DNS Zone A Record Set.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void gETPrivateDNSZoneARecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.privateDnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.A, "recordA",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetCNAMEGet.json
+     */
+    /**
+     * Sample code: GET Private DNS Zone CNAME Record Set.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void gETPrivateDNSZoneCNAMERecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.privateDnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.CNAME, "recordCNAME",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetTXTGet.json
+     */
+    /**
+     * Sample code: GET Private DNS Zone TXT Record Set.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void gETPrivateDNSZoneTXTRecordSet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.privateDnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("resourceGroup1", "privatezone1.com", RecordType.TXT, "recordTXT",
+                com.azure.core.util.Context.NONE);
     }
 }

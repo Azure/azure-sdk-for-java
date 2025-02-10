@@ -5,43 +5,59 @@
 package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** Model that represents a continuous action. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("continuous")
+/**
+ * Model that represents a continuous action.
+ */
 @Fluent
 public final class ContinuousAction extends ChaosExperimentAction {
     /*
+     * Enum that discriminates between action models.
+     */
+    private String type = "continuous";
+
+    /*
      * ISO8601 formatted string that represents a duration.
      */
-    @JsonProperty(value = "duration", required = true)
     private Duration duration;
 
     /*
      * List of key value pairs.
      */
-    @JsonProperty(value = "parameters", required = true)
     private List<KeyValuePair> parameters;
 
     /*
      * String that represents a selector.
      */
-    @JsonProperty(value = "selectorId", required = true)
     private String selectorId;
 
-    /** Creates an instance of ContinuousAction class. */
+    /**
+     * Creates an instance of ContinuousAction class.
+     */
     public ContinuousAction() {
     }
 
     /**
+     * Get the type property: Enum that discriminates between action models.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the duration property: ISO8601 formatted string that represents a duration.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -50,7 +66,7 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Set the duration property: ISO8601 formatted string that represents a duration.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the ContinuousAction object itself.
      */
@@ -61,7 +77,7 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Get the parameters property: List of key value pairs.
-     *
+     * 
      * @return the parameters value.
      */
     public List<KeyValuePair> parameters() {
@@ -70,7 +86,7 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Set the parameters property: List of key value pairs.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ContinuousAction object itself.
      */
@@ -81,7 +97,7 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Get the selectorId property: String that represents a selector.
-     *
+     * 
      * @return the selectorId value.
      */
     public String selectorId() {
@@ -90,7 +106,7 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Set the selectorId property: String that represents a selector.
-     *
+     * 
      * @param selectorId the selectorId value to set.
      * @return the ContinuousAction object itself.
      */
@@ -99,7 +115,9 @@ public final class ContinuousAction extends ChaosExperimentAction {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContinuousAction withName(String name) {
         super.withName(name);
@@ -108,30 +126,81 @@ public final class ContinuousAction extends ChaosExperimentAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (duration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property duration in model ContinuousAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property duration in model ContinuousAction"));
         }
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property parameters in model ContinuousAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property parameters in model ContinuousAction"));
         } else {
             parameters().forEach(e -> e.validate());
         }
         if (selectorId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property selectorId in model ContinuousAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property selectorId in model ContinuousAction"));
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ContinuousAction"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContinuousAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("duration", CoreUtils.durationToStringWithDays(this.duration));
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("selectorId", this.selectorId);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContinuousAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContinuousAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContinuousAction.
+     */
+    public static ContinuousAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContinuousAction deserializedContinuousAction = new ContinuousAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedContinuousAction.withName(reader.getString());
+                } else if ("duration".equals(fieldName)) {
+                    deserializedContinuousAction.duration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("parameters".equals(fieldName)) {
+                    List<KeyValuePair> parameters = reader.readArray(reader1 -> KeyValuePair.fromJson(reader1));
+                    deserializedContinuousAction.parameters = parameters;
+                } else if ("selectorId".equals(fieldName)) {
+                    deserializedContinuousAction.selectorId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedContinuousAction.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContinuousAction;
+        });
+    }
 }

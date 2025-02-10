@@ -6,23 +6,26 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about a service principal identity for the cluster to use for manipulating Azure APIs.
  */
 @Fluent
-public final class ManagedClusterServicePrincipalProfile {
+public final class ManagedClusterServicePrincipalProfile
+    implements JsonSerializable<ManagedClusterServicePrincipalProfile> {
     /*
      * The ID for the service principal.
      */
-    @JsonProperty(value = "clientId", required = true)
     private String clientId;
 
     /*
      * The secret password associated with the service principal in plain text.
      */
-    @JsonProperty(value = "secret")
     private String secret;
 
     /**
@@ -33,7 +36,7 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Get the clientId property: The ID for the service principal.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -42,7 +45,7 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Set the clientId property: The ID for the service principal.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ManagedClusterServicePrincipalProfile object itself.
      */
@@ -53,7 +56,7 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Get the secret property: The secret password associated with the service principal in plain text.
-     *
+     * 
      * @return the secret value.
      */
     public String secret() {
@@ -62,7 +65,7 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Set the secret property: The secret password associated with the service principal in plain text.
-     *
+     * 
      * @param secret the secret value to set.
      * @return the ManagedClusterServicePrincipalProfile object itself.
      */
@@ -73,15 +76,57 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clientId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clientId in model ManagedClusterServicePrincipalProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientId in model ManagedClusterServicePrincipalProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterServicePrincipalProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("secret", this.secret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterServicePrincipalProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterServicePrincipalProfile if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedClusterServicePrincipalProfile.
+     */
+    public static ManagedClusterServicePrincipalProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterServicePrincipalProfile deserializedManagedClusterServicePrincipalProfile
+                = new ManagedClusterServicePrincipalProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientId".equals(fieldName)) {
+                    deserializedManagedClusterServicePrincipalProfile.clientId = reader.getString();
+                } else if ("secret".equals(fieldName)) {
+                    deserializedManagedClusterServicePrincipalProfile.secret = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterServicePrincipalProfile;
+        });
+    }
 }

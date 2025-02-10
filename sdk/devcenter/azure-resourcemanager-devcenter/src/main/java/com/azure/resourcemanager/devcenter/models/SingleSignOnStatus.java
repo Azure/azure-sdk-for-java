@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * disabled.
  */
 public final class SingleSignOnStatus extends ExpandableStringEnum<SingleSignOnStatus> {
-    /** Static value Disabled for SingleSignOnStatus. */
+    /**
+     * Static value Disabled for SingleSignOnStatus.
+     */
     public static final SingleSignOnStatus DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for SingleSignOnStatus. */
+    /**
+     * Static value Enabled for SingleSignOnStatus.
+     */
     public static final SingleSignOnStatus ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of SingleSignOnStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class SingleSignOnStatus extends ExpandableStringEnum<SingleSignOnS
 
     /**
      * Creates or finds a SingleSignOnStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SingleSignOnStatus.
      */
-    @JsonCreator
     public static SingleSignOnStatus fromString(String name) {
         return fromString(name, SingleSignOnStatus.class);
     }
 
     /**
      * Gets known SingleSignOnStatus values.
-     *
+     * 
      * @return known SingleSignOnStatus values.
      */
     public static Collection<SingleSignOnStatus> values() {

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hybridcompute.models.ConnectionDetail;
 public final class ConnectionDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectionDetail model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"qhl\",\"privateIpAddress\":\"riiiojnalghfkv\",\"linkIdentifier\":\"sexso\",\"groupId\":\"el\",\"memberName\":\"hhahhxvrhmzkwpjg\"}")
-                .toObject(ConnectionDetail.class);
+        ConnectionDetail model = BinaryData.fromString(
+            "{\"id\":\"zjb\",\"privateIpAddress\":\"zsxjrkambtrneg\",\"linkIdentifier\":\"nvuqeqvldspa\",\"groupId\":\"jbkkdmflvestmjl\",\"memberName\":\"ril\"}")
+            .toObject(ConnectionDetail.class);
     }
 
     @org.junit.jupiter.api.Test

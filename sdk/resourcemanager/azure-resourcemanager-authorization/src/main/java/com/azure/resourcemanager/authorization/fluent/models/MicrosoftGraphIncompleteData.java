@@ -5,41 +5,46 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** incompleteData. */
+/**
+ * incompleteData.
+ */
 @Fluent
-public final class MicrosoftGraphIncompleteData {
+public final class MicrosoftGraphIncompleteData implements JsonSerializable<MicrosoftGraphIncompleteData> {
     /*
      * The service does not have source data before the specified time.
      */
-    @JsonProperty(value = "missingDataBeforeDateTime")
     private OffsetDateTime missingDataBeforeDateTime;
 
     /*
      * Some data was not recorded due to excessive activity.
      */
-    @JsonProperty(value = "wasThrottled")
     private Boolean wasThrottled;
 
     /*
      * incompleteData
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphIncompleteData class. */
+    /**
+     * Creates an instance of MicrosoftGraphIncompleteData class.
+     */
     public MicrosoftGraphIncompleteData() {
     }
 
     /**
      * Get the missingDataBeforeDateTime property: The service does not have source data before the specified time.
-     *
+     * 
      * @return the missingDataBeforeDateTime value.
      */
     public OffsetDateTime missingDataBeforeDateTime() {
@@ -48,7 +53,7 @@ public final class MicrosoftGraphIncompleteData {
 
     /**
      * Set the missingDataBeforeDateTime property: The service does not have source data before the specified time.
-     *
+     * 
      * @param missingDataBeforeDateTime the missingDataBeforeDateTime value to set.
      * @return the MicrosoftGraphIncompleteData object itself.
      */
@@ -59,7 +64,7 @@ public final class MicrosoftGraphIncompleteData {
 
     /**
      * Get the wasThrottled property: Some data was not recorded due to excessive activity.
-     *
+     * 
      * @return the wasThrottled value.
      */
     public Boolean wasThrottled() {
@@ -68,7 +73,7 @@ public final class MicrosoftGraphIncompleteData {
 
     /**
      * Set the wasThrottled property: Some data was not recorded due to excessive activity.
-     *
+     * 
      * @param wasThrottled the wasThrottled value to set.
      * @return the MicrosoftGraphIncompleteData object itself.
      */
@@ -79,17 +84,16 @@ public final class MicrosoftGraphIncompleteData {
 
     /**
      * Get the additionalProperties property: incompleteData.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: incompleteData.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphIncompleteData object itself.
      */
@@ -98,19 +102,65 @@ public final class MicrosoftGraphIncompleteData {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("missingDataBeforeDateTime",
+            this.missingDataBeforeDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.missingDataBeforeDateTime));
+        jsonWriter.writeBooleanField("wasThrottled", this.wasThrottled);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphIncompleteData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphIncompleteData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphIncompleteData.
+     */
+    public static MicrosoftGraphIncompleteData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphIncompleteData deserializedMicrosoftGraphIncompleteData = new MicrosoftGraphIncompleteData();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("missingDataBeforeDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphIncompleteData.missingDataBeforeDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("wasThrottled".equals(fieldName)) {
+                    deserializedMicrosoftGraphIncompleteData.wasThrottled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphIncompleteData.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphIncompleteData;
+        });
     }
 }

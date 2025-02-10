@@ -34,8 +34,8 @@ class ServiceFabricMsiCredential extends ManagedIdentityServiceCredential {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         this.identityEndpoint = configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT);
         this.identityHeader = configuration.get(Configuration.PROPERTY_IDENTITY_HEADER);
-        this.identityServerThumbprint = configuration
-                                            .get(ManagedIdentityCredential.PROPERTY_IDENTITY_SERVER_THUMBPRINT);
+        this.identityServerThumbprint
+            = configuration.get(ManagedIdentityCredential.PROPERTY_IDENTITY_SERVER_THUMBPRINT);
         this.identityClient = identityClient;
         if (identityEndpoint != null) {
             validateEndpointProtocol(this.identityEndpoint, "Identity", LOGGER);
@@ -49,6 +49,6 @@ class ServiceFabricMsiCredential extends ManagedIdentityServiceCredential {
      * @return A publisher that emits an {@link AccessToken}.
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
-        return identityClient.authenticateWithManagedIdentityConfidentialClient(request);
+        return identityClient.authenticateWithManagedIdentityMsalClient(request);
     }
 }

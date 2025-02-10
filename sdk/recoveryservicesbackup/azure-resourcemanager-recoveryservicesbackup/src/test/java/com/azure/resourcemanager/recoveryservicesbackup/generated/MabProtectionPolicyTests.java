@@ -14,26 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class MabProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MabProtectionPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"backupManagementType\":\"MAB\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":1711028317,\"resourceGuardOperationRequests\":[\"kewvnqv\",\"dlguaucmfdjwn\",\"axpunjqikczvv\",\"tacgxmfc\"]}")
-                .toObject(MabProtectionPolicy.class);
-        Assertions.assertEquals(1711028317, model.protectedItemsCount());
-        Assertions.assertEquals("kewvnqv", model.resourceGuardOperationRequests().get(0));
+        MabProtectionPolicy model = BinaryData.fromString(
+            "{\"backupManagementType\":\"MAB\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":1896459173,\"resourceGuardOperationRequests\":[\"qyki\",\"mdksaoa\",\"cluqvo\"]}")
+            .toObject(MabProtectionPolicy.class);
+        Assertions.assertEquals(1896459173, model.protectedItemsCount());
+        Assertions.assertEquals("qyki", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MabProtectionPolicy model =
-            new MabProtectionPolicy()
-                .withProtectedItemsCount(1711028317)
-                .withResourceGuardOperationRequests(
-                    Arrays.asList("kewvnqv", "dlguaucmfdjwn", "axpunjqikczvv", "tacgxmfc"))
-                .withSchedulePolicy(new SchedulePolicy())
-                .withRetentionPolicy(new RetentionPolicy());
+        MabProtectionPolicy model = new MabProtectionPolicy().withProtectedItemsCount(1896459173)
+            .withResourceGuardOperationRequests(Arrays.asList("qyki", "mdksaoa", "cluqvo"))
+            .withSchedulePolicy(new SchedulePolicy())
+            .withRetentionPolicy(new RetentionPolicy());
         model = BinaryData.fromObject(model).toObject(MabProtectionPolicy.class);
-        Assertions.assertEquals(1711028317, model.protectedItemsCount());
-        Assertions.assertEquals("kewvnqv", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(1896459173, model.protectedItemsCount());
+        Assertions.assertEquals("qyki", model.resourceGuardOperationRequests().get(0));
     }
 }

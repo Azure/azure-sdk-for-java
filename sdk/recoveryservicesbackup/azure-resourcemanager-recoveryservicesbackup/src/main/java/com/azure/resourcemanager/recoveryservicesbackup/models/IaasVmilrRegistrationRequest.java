@@ -5,46 +5,62 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Restore files/folders from a backup copy of IaaS VM. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("IaasVMILRRegistrationRequest")
+/**
+ * Restore files/folders from a backup copy of IaaS VM.
+ */
 @Fluent
 public final class IaasVmilrRegistrationRequest extends IlrRequest {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "IaasVMILRRegistrationRequest";
+
+    /*
      * ID of the IaaS VM backup copy from where the files/folders have to be restored.
      */
-    @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
     /*
      * Fully qualified ARM ID of the virtual machine whose the files / folders have to be restored.
      */
-    @JsonProperty(value = "virtualMachineId")
     private String virtualMachineId;
 
     /*
      * iSCSI initiator name.
      */
-    @JsonProperty(value = "initiatorName")
     private String initiatorName;
 
     /*
      * Whether to renew existing registration with the iSCSI server.
      */
-    @JsonProperty(value = "renewExistingRegistration")
     private Boolean renewExistingRegistration;
 
-    /** Creates an instance of IaasVmilrRegistrationRequest class. */
+    /**
+     * Creates an instance of IaasVmilrRegistrationRequest class.
+     */
     public IaasVmilrRegistrationRequest() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the recoveryPointId property: ID of the IaaS VM backup copy from where the files/folders have to be restored.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -53,7 +69,7 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
 
     /**
      * Set the recoveryPointId property: ID of the IaaS VM backup copy from where the files/folders have to be restored.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the IaasVmilrRegistrationRequest object itself.
      */
@@ -65,7 +81,7 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
     /**
      * Get the virtualMachineId property: Fully qualified ARM ID of the virtual machine whose the files / folders have
      * to be restored.
-     *
+     * 
      * @return the virtualMachineId value.
      */
     public String virtualMachineId() {
@@ -75,7 +91,7 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
     /**
      * Set the virtualMachineId property: Fully qualified ARM ID of the virtual machine whose the files / folders have
      * to be restored.
-     *
+     * 
      * @param virtualMachineId the virtualMachineId value to set.
      * @return the IaasVmilrRegistrationRequest object itself.
      */
@@ -86,7 +102,7 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
 
     /**
      * Get the initiatorName property: iSCSI initiator name.
-     *
+     * 
      * @return the initiatorName value.
      */
     public String initiatorName() {
@@ -95,7 +111,7 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
 
     /**
      * Set the initiatorName property: iSCSI initiator name.
-     *
+     * 
      * @param initiatorName the initiatorName value to set.
      * @return the IaasVmilrRegistrationRequest object itself.
      */
@@ -106,7 +122,7 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
 
     /**
      * Get the renewExistingRegistration property: Whether to renew existing registration with the iSCSI server.
-     *
+     * 
      * @return the renewExistingRegistration value.
      */
     public Boolean renewExistingRegistration() {
@@ -115,7 +131,7 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
 
     /**
      * Set the renewExistingRegistration property: Whether to renew existing registration with the iSCSI server.
-     *
+     * 
      * @param renewExistingRegistration the renewExistingRegistration value to set.
      * @return the IaasVmilrRegistrationRequest object itself.
      */
@@ -126,11 +142,59 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("virtualMachineId", this.virtualMachineId);
+        jsonWriter.writeStringField("initiatorName", this.initiatorName);
+        jsonWriter.writeBooleanField("renewExistingRegistration", this.renewExistingRegistration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IaasVmilrRegistrationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IaasVmilrRegistrationRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IaasVmilrRegistrationRequest.
+     */
+    public static IaasVmilrRegistrationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IaasVmilrRegistrationRequest deserializedIaasVmilrRegistrationRequest = new IaasVmilrRegistrationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedIaasVmilrRegistrationRequest.objectType = reader.getString();
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedIaasVmilrRegistrationRequest.recoveryPointId = reader.getString();
+                } else if ("virtualMachineId".equals(fieldName)) {
+                    deserializedIaasVmilrRegistrationRequest.virtualMachineId = reader.getString();
+                } else if ("initiatorName".equals(fieldName)) {
+                    deserializedIaasVmilrRegistrationRequest.initiatorName = reader.getString();
+                } else if ("renewExistingRegistration".equals(fieldName)) {
+                    deserializedIaasVmilrRegistrationRequest.renewExistingRegistration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIaasVmilrRegistrationRequest;
+        });
     }
 }

@@ -9,7 +9,19 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Represents the information used to make a single HTTP request.
+ * <p>Represents the context for a single HTTP request in the HTTP pipeline.</p>
+ *
+ * <p>This class encapsulates the HTTP request and the associated context data. The context data is a key-value store
+ * that can be used to pass additional information along with the HTTP request.</p>
+ *
+ * <p>It provides methods to get and set the HTTP request, get the context data, and get and set data in the context
+ * using a key.</p>
+ *
+ * <p>This class is useful when you want to send an HTTP request through the HTTP pipeline and need to associate
+ * additional data with the request.</p>
+ *
+ * @see HttpRequest
+ * @see Context
  */
 public final class HttpPipelineCallContext {
     private HttpRequest httpRequest;

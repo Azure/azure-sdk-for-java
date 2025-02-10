@@ -7,14 +7,17 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
-/** onenoteResource. */
+/**
+ * onenoteResource.
+ */
 @Fluent
 public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEntityBaseModel {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
@@ -22,27 +25,27 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
     /*
      * The content stream
      */
-    @JsonProperty(value = "content")
     private Base64Url content;
 
     /*
      * The URL for downloading the content
      */
-    @JsonProperty(value = "contentUrl")
     private String contentUrl;
 
     /*
      * onenoteResource
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOnenoteResource class. */
+    /**
+     * Creates an instance of MicrosoftGraphOnenoteResource class.
+     */
     public MicrosoftGraphOnenoteResource() {
     }
 
     /**
      * Get the content property: The content stream.
-     *
+     * 
      * @return the content value.
      */
     public byte[] content() {
@@ -54,7 +57,7 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
 
     /**
      * Set the content property: The content stream.
-     *
+     * 
      * @param content the content value to set.
      * @return the MicrosoftGraphOnenoteResource object itself.
      */
@@ -69,7 +72,7 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
 
     /**
      * Get the contentUrl property: The URL for downloading the content.
-     *
+     * 
      * @return the contentUrl value.
      */
     public String contentUrl() {
@@ -78,7 +81,7 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
 
     /**
      * Set the contentUrl property: The URL for downloading the content.
-     *
+     * 
      * @param contentUrl the contentUrl value to set.
      * @return the MicrosoftGraphOnenoteResource object itself.
      */
@@ -89,17 +92,16 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
 
     /**
      * Get the additionalProperties property: onenoteResource.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: onenoteResource.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOnenoteResource object itself.
      */
@@ -108,22 +110,18 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOnenoteResource withSelf(String self) {
         super.withSelf(self);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOnenoteResource withId(String id) {
         super.withId(id);
@@ -132,11 +130,69 @@ public final class MicrosoftGraphOnenoteResource extends MicrosoftGraphOnenoteEn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("self", self());
+        jsonWriter.writeStringField("content", Objects.toString(this.content, null));
+        jsonWriter.writeStringField("contentUrl", this.contentUrl);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOnenoteResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOnenoteResource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOnenoteResource.
+     */
+    public static MicrosoftGraphOnenoteResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOnenoteResource deserializedMicrosoftGraphOnenoteResource
+                = new MicrosoftGraphOnenoteResource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteResource.withId(reader.getString());
+                } else if ("self".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteResource.withSelf(reader.getString());
+                } else if ("content".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteResource.content
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("contentUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteResource.contentUrl = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOnenoteResource.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOnenoteResource;
+        });
     }
 }

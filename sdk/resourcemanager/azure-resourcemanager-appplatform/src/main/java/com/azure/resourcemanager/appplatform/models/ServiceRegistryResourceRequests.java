@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Resource request payload of Service Registry. */
+/**
+ * Resource request payload of Service Registry.
+ */
 @Immutable
-public final class ServiceRegistryResourceRequests {
+public final class ServiceRegistryResourceRequests implements JsonSerializable<ServiceRegistryResourceRequests> {
     /*
      * Cpu allocated to each Service Registry instance
      */
-    @JsonProperty(value = "cpu", access = JsonProperty.Access.WRITE_ONLY)
     private String cpu;
 
     /*
      * Memory allocated to each Service Registry instance
      */
-    @JsonProperty(value = "memory", access = JsonProperty.Access.WRITE_ONLY)
     private String memory;
 
     /*
      * Instance count of the Service Registry
      */
-    @JsonProperty(value = "instanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer instanceCount;
 
     /**
+     * Creates an instance of ServiceRegistryResourceRequests class.
+     */
+    public ServiceRegistryResourceRequests() {
+    }
+
+    /**
      * Get the cpu property: Cpu allocated to each Service Registry instance.
-     *
+     * 
      * @return the cpu value.
      */
     public String cpu() {
@@ -39,7 +48,7 @@ public final class ServiceRegistryResourceRequests {
 
     /**
      * Get the memory property: Memory allocated to each Service Registry instance.
-     *
+     * 
      * @return the memory value.
      */
     public String memory() {
@@ -48,7 +57,7 @@ public final class ServiceRegistryResourceRequests {
 
     /**
      * Get the instanceCount property: Instance count of the Service Registry.
-     *
+     * 
      * @return the instanceCount value.
      */
     public Integer instanceCount() {
@@ -57,9 +66,49 @@ public final class ServiceRegistryResourceRequests {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceRegistryResourceRequests from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceRegistryResourceRequests if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceRegistryResourceRequests.
+     */
+    public static ServiceRegistryResourceRequests fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceRegistryResourceRequests deserializedServiceRegistryResourceRequests
+                = new ServiceRegistryResourceRequests();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cpu".equals(fieldName)) {
+                    deserializedServiceRegistryResourceRequests.cpu = reader.getString();
+                } else if ("memory".equals(fieldName)) {
+                    deserializedServiceRegistryResourceRequests.memory = reader.getString();
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedServiceRegistryResourceRequests.instanceCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceRegistryResourceRequests;
+        });
     }
 }

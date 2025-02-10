@@ -12,8 +12,7 @@ public final class ResourceListKeysImpl implements ResourceListKeys {
 
     private final com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager;
 
-    ResourceListKeysImpl(
-        ResourceListKeysInner innerObject,
+    ResourceListKeysImpl(ResourceListKeysInner innerObject,
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

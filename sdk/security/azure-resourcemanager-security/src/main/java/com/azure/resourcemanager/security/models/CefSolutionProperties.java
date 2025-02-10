@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** The external security solution properties for CEF solutions. */
+/**
+ * The external security solution properties for CEF solutions.
+ */
 @Fluent
 public final class CefSolutionProperties extends ExternalSecuritySolutionProperties {
     /*
      * The hostname property.
      */
-    @JsonProperty(value = "hostname")
     private String hostname;
 
     /*
      * The agent property.
      */
-    @JsonProperty(value = "agent")
     private String agent;
 
     /*
      * The lastEventReceived property.
      */
-    @JsonProperty(value = "lastEventReceived")
     private String lastEventReceived;
 
-    /** Creates an instance of CefSolutionProperties class. */
+    /**
+     * Creates an instance of CefSolutionProperties class.
+     */
     public CefSolutionProperties() {
     }
 
     /**
      * Get the hostname property: The hostname property.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -43,7 +49,7 @@ public final class CefSolutionProperties extends ExternalSecuritySolutionPropert
 
     /**
      * Set the hostname property: The hostname property.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the CefSolutionProperties object itself.
      */
@@ -54,7 +60,7 @@ public final class CefSolutionProperties extends ExternalSecuritySolutionPropert
 
     /**
      * Get the agent property: The agent property.
-     *
+     * 
      * @return the agent value.
      */
     public String agent() {
@@ -63,7 +69,7 @@ public final class CefSolutionProperties extends ExternalSecuritySolutionPropert
 
     /**
      * Set the agent property: The agent property.
-     *
+     * 
      * @param agent the agent value to set.
      * @return the CefSolutionProperties object itself.
      */
@@ -74,7 +80,7 @@ public final class CefSolutionProperties extends ExternalSecuritySolutionPropert
 
     /**
      * Get the lastEventReceived property: The lastEventReceived property.
-     *
+     * 
      * @return the lastEventReceived value.
      */
     public String lastEventReceived() {
@@ -83,7 +89,7 @@ public final class CefSolutionProperties extends ExternalSecuritySolutionPropert
 
     /**
      * Set the lastEventReceived property: The lastEventReceived property.
-     *
+     * 
      * @param lastEventReceived the lastEventReceived value to set.
      * @return the CefSolutionProperties object itself.
      */
@@ -92,21 +98,27 @@ public final class CefSolutionProperties extends ExternalSecuritySolutionPropert
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CefSolutionProperties withDeviceVendor(String deviceVendor) {
         super.withDeviceVendor(deviceVendor);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CefSolutionProperties withDeviceType(String deviceType) {
         super.withDeviceType(deviceType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CefSolutionProperties withWorkspace(ConnectedWorkspace workspace) {
         super.withWorkspace(workspace);
@@ -115,11 +127,75 @@ public final class CefSolutionProperties extends ExternalSecuritySolutionPropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (workspace() != null) {
+            workspace().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceVendor", deviceVendor());
+        jsonWriter.writeStringField("deviceType", deviceType());
+        jsonWriter.writeJsonField("workspace", workspace());
+        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeStringField("agent", this.agent);
+        jsonWriter.writeStringField("lastEventReceived", this.lastEventReceived);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CefSolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CefSolutionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CefSolutionProperties.
+     */
+    public static CefSolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CefSolutionProperties deserializedCefSolutionProperties = new CefSolutionProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceVendor".equals(fieldName)) {
+                    deserializedCefSolutionProperties.withDeviceVendor(reader.getString());
+                } else if ("deviceType".equals(fieldName)) {
+                    deserializedCefSolutionProperties.withDeviceType(reader.getString());
+                } else if ("workspace".equals(fieldName)) {
+                    deserializedCefSolutionProperties.withWorkspace(ConnectedWorkspace.fromJson(reader));
+                } else if ("hostname".equals(fieldName)) {
+                    deserializedCefSolutionProperties.hostname = reader.getString();
+                } else if ("agent".equals(fieldName)) {
+                    deserializedCefSolutionProperties.agent = reader.getString();
+                } else if ("lastEventReceived".equals(fieldName)) {
+                    deserializedCefSolutionProperties.lastEventReceived = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCefSolutionProperties.withAdditionalProperties(additionalProperties);
+
+            return deserializedCefSolutionProperties;
+        });
     }
 }

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeering;
 import com.azure.resourcemanager.network.models.NetworkPeeringGatewayUse;
@@ -23,6 +25,8 @@ import org.junit.jupiter.api.Assertions;
 
 /** Test of virtual network management. */
 public class TestNetwork {
+    private static final ClientLogger LOGGER = new ClientLogger(TestNetwork.class);
+
     /** Test of network with subnets. */
     public class WithSubnets extends TestTemplate<Network, Networks> {
         @Override
@@ -34,29 +38,25 @@ public class TestNetwork {
             String groupName = "rg" + postFix;
 
             // Create an NSG
-            NetworkSecurityGroup nsg =
-                networks
-                    .manager()
-                    .networkSecurityGroups()
-                    .define("nsg" + postFix)
-                    .withRegion(region)
-                    .withNewResourceGroup(groupName)
-                    .create();
+            NetworkSecurityGroup nsg = networks.manager()
+                .networkSecurityGroups()
+                .define("nsg" + postFix)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .create();
 
             // Create a network
-            final Network network =
-                networks
-                    .define(newName)
-                    .withRegion(region)
-                    .withNewResourceGroup(groupName)
-                    .withAddressSpace("10.0.0.0/28")
-                    .withAddressSpace("10.1.0.0/28")
-                    .withSubnet("subnetA", "10.0.0.0/29")
-                    .defineSubnet("subnetB")
-                    .withAddressPrefix("10.0.0.8/29")
-                    .withExistingNetworkSecurityGroup(nsg)
-                    .attach()
-                    .create();
+            final Network network = networks.define(newName)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withAddressSpace("10.0.0.0/28")
+                .withAddressSpace("10.1.0.0/28")
+                .withSubnet("subnetA", "10.0.0.0/29")
+                .defineSubnet("subnetB")
+                .withAddressPrefix("10.0.0.8/29")
+                .withExistingNetworkSecurityGroup(nsg)
+                .attach()
+                .create();
 
             // Verify address spaces
             Assertions.assertEquals(2, network.addressSpaces().size());
@@ -87,33 +87,29 @@ public class TestNetwork {
 
         @Override
         public Network updateResource(Network resource) throws Exception {
-            NetworkSecurityGroup nsg =
-                resource
-                    .manager()
-                    .networkSecurityGroups()
-                    .define(resource.manager().resourceManager().internalContext().randomResourceName("nsgB", 10))
-                    .withRegion(resource.region())
-                    .withExistingResourceGroup(resource.resourceGroupName())
-                    .create();
+            NetworkSecurityGroup nsg = resource.manager()
+                .networkSecurityGroups()
+                .define(resource.manager().resourceManager().internalContext().randomResourceName("nsgB", 10))
+                .withRegion(resource.region())
+                .withExistingResourceGroup(resource.resourceGroupName())
+                .create();
 
-            resource =
-                resource
-                    .update()
-                    .withTag("tag1", "value1")
-                    .withTag("tag2", "value2")
-                    .withAddressSpace("141.25.0.0/16")
-                    .withoutAddressSpace("10.1.0.0/28")
-                    .withSubnet("subnetC", "141.25.0.0/29")
-                    .withoutSubnet("subnetA")
-                    .updateSubnet("subnetB")
-                    .withAddressPrefix("141.25.0.8/29")
-                    .withoutNetworkSecurityGroup()
-                    .parent()
-                    .defineSubnet("subnetD")
-                    .withAddressPrefix("141.25.0.16/29")
-                    .withExistingNetworkSecurityGroup(nsg)
-                    .attach()
-                    .apply();
+            resource = resource.update()
+                .withTag("tag1", "value1")
+                .withTag("tag2", "value2")
+                .withAddressSpace("141.25.0.0/16")
+                .withoutAddressSpace("10.1.0.0/28")
+                .withSubnet("subnetC", "141.25.0.0/29")
+                .withoutSubnet("subnetA")
+                .updateSubnet("subnetB")
+                .withAddressPrefix("141.25.0.8/29")
+                .withoutNetworkSecurityGroup()
+                .parent()
+                .defineSubnet("subnetD")
+                .withAddressPrefix("141.25.0.16/29")
+                .withExistingNetworkSecurityGroup(nsg)
+                .attach()
+                .apply();
             Assertions.assertTrue(resource.tags().containsKey("tag1"));
 
             // Verify address spaces
@@ -159,18 +155,16 @@ public class TestNetwork {
             String groupName = "rg" + postfix;
 
             // Create a network
-            final Network network =
-                networks
-                    .define(newName)
-                    .withRegion(region)
-                    .withNewResourceGroup(groupName)
-                    .withAddressSpace("10.0.0.0/28")
-                    .withSubnet("subnetA", "10.0.0.0/29")
-                    .defineSubnet("subnetB")
-                    .withAddressPrefix("10.0.0.8/29")
-                    .withAccessFromService(ServiceEndpointType.MICROSOFT_STORAGE)
-                    .attach()
-                    .create();
+            final Network network = networks.define(newName)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnetA", "10.0.0.0/29")
+                .defineSubnet("subnetB")
+                .withAddressPrefix("10.0.0.8/29")
+                .withAccessFromService(ServiceEndpointType.MICROSOFT_STORAGE)
+                .attach()
+                .create();
 
             // Verify address spaces
             Assertions.assertEquals(1, network.addressSpaces().size());
@@ -191,24 +185,22 @@ public class TestNetwork {
 
         @Override
         public Network updateResource(Network resource) throws Exception {
-            resource =
-                resource
-                    .update()
-                    .withTag("tag1", "value1")
-                    .withTag("tag2", "value2")
-                    .withAddressSpace("141.25.0.0/16")
-                    .withoutAddressSpace("10.1.0.0/28")
-                    .withSubnet("subnetC", "141.25.0.0/29")
-                    .withoutSubnet("subnetA")
-                    .updateSubnet("subnetB")
-                    .withAddressPrefix("141.25.0.8/29")
-                    .withoutAccessFromService(ServiceEndpointType.MICROSOFT_STORAGE)
-                    .parent()
-                    .defineSubnet("subnetD")
-                    .withAddressPrefix("141.25.0.16/29")
-                    .withAccessFromService(ServiceEndpointType.MICROSOFT_STORAGE)
-                    .attach()
-                    .apply();
+            resource = resource.update()
+                .withTag("tag1", "value1")
+                .withTag("tag2", "value2")
+                .withAddressSpace("141.25.0.0/16")
+                .withoutAddressSpace("10.1.0.0/28")
+                .withSubnet("subnetC", "141.25.0.0/29")
+                .withoutSubnet("subnetA")
+                .updateSubnet("subnetB")
+                .withAddressPrefix("141.25.0.8/29")
+                .withoutAccessFromService(ServiceEndpointType.MICROSOFT_STORAGE)
+                .parent()
+                .defineSubnet("subnetD")
+                .withAddressPrefix("141.25.0.16/29")
+                .withAccessFromService(ServiceEndpointType.MICROSOFT_STORAGE)
+                .attach()
+                .apply();
 
             Assertions.assertTrue(resource.tags().containsKey("tag1"));
 
@@ -255,42 +247,36 @@ public class TestNetwork {
             String networkName = networks.manager().resourceManager().internalContext().randomResourceName("net", 15);
             String networkName2 = networks.manager().resourceManager().internalContext().randomResourceName("net", 15);
 
-            Creatable<Network> remoteNetworkDefinition =
-                networks
-                    .define(networkName2)
-                    .withRegion(region)
-                    .withNewResourceGroup(groupName)
-                    .withAddressSpace("10.1.0.0/27")
-                    .withSubnet("subnet3", "10.1.0.0/27");
+            Creatable<Network> remoteNetworkDefinition = networks.define(networkName2)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withAddressSpace("10.1.0.0/27")
+                .withSubnet("subnet3", "10.1.0.0/27");
 
-            Creatable<Network> localNetworkDefinition =
-                networks
-                    .define(networkName)
-                    .withRegion(region)
-                    .withNewResourceGroup(groupName)
-                    .withAddressSpace("10.0.0.0/27")
-                    .withSubnet("subnet1", "10.0.0.0/28")
-                    .withSubnet("subnet2", "10.0.0.16/28");
+            Creatable<Network> localNetworkDefinition = networks.define(networkName)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withAddressSpace("10.0.0.0/27")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .withSubnet("subnet2", "10.0.0.16/28");
 
-            CreatedResources<Network> createdNetworks =
-                networks.create(Arrays.asList(remoteNetworkDefinition, localNetworkDefinition));
+            CreatedResources<Network> createdNetworks
+                = networks.create(Arrays.asList(remoteNetworkDefinition, localNetworkDefinition));
             Network localNetwork = createdNetworks.get(localNetworkDefinition.key());
             Network remoteNetwork = createdNetworks.get(remoteNetworkDefinition.key());
             Assertions.assertNotNull(localNetwork);
             Assertions.assertNotNull(remoteNetwork);
 
             // Create peering
-            NetworkPeering localPeering =
-                localNetwork
-                    .peerings()
-                    .define("peer0")
-                    .withRemoteNetwork(remoteNetwork)
+            NetworkPeering localPeering = localNetwork.peerings()
+                .define("peer0")
+                .withRemoteNetwork(remoteNetwork)
 
-                    // Optionals
-                    .withTrafficForwardingBetweenBothNetworks()
-                    .withoutAccessFromEitherNetwork()
-                    .withGatewayUseByRemoteNetworkAllowed()
-                    .create();
+                // Optionals
+                .withTrafficForwardingBetweenBothNetworks()
+                .withoutAccessFromEitherNetwork()
+                .withGatewayUseByRemoteNetworkAllowed()
+                .create();
 
             // Verify local peering
             Assertions.assertNotNull(localNetwork.peerings());
@@ -334,8 +320,7 @@ public class TestNetwork {
             String remoteTestIP = remoteAvailableIPs.iterator().next();
             Assertions.assertFalse(resource.isPrivateIPAddressAvailable(remoteTestIP));
 
-            localPeering
-                .update()
+            localPeering.update()
                 .withoutTrafficForwardingFromEitherNetwork()
                 .withAccessBetweenBothNetworks()
                 .withoutAnyGatewayUse()
@@ -378,13 +363,11 @@ public class TestNetwork {
 
             String networkName = networks.manager().resourceManager().internalContext().randomResourceName("net", 15);
 
-            Network network =
-                networks
-                    .define(networkName)
-                    .withRegion(region)
-                    .withNewResourceGroup(groupName)
-                    .withNewDdosProtectionPlan()
-                    .create();
+            Network network = networks.define(networkName)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withNewDdosProtectionPlan()
+                .create();
             Assertions.assertTrue(network.isDdosProtectionEnabled());
             Assertions.assertNotNull(network.ddosProtectionPlanId());
 
@@ -414,13 +397,11 @@ public class TestNetwork {
 
             String networkName = networks.manager().resourceManager().internalContext().randomResourceName("net", 15);
 
-            Network network =
-                networks
-                    .define(networkName)
-                    .withRegion(region)
-                    .withNewResourceGroup(groupName)
-                    .withTag("tag1", "value1")
-                    .create();
+            Network network = networks.define(networkName)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
+                .withTag("tag1", "value1")
+                .create();
             Assertions.assertEquals("value1", network.tags().get("tag1"));
             return network;
         }
@@ -446,8 +427,7 @@ public class TestNetwork {
      */
     public static void printNetwork(Network resource) {
         StringBuilder info = new StringBuilder();
-        info
-            .append("Network: ")
+        info.append("Network: ")
             .append(resource.id())
             .append("Name: ")
             .append(resource.name())
@@ -464,8 +444,7 @@ public class TestNetwork {
 
         // Output subnets
         for (Subnet subnet : resource.subnets().values()) {
-            info
-                .append("\n\tSubnet: ")
+            info.append("\n\tSubnet: ")
                 .append(subnet.name())
                 .append("\n\t\tAddress prefix: ")
                 .append(subnet.addressPrefix());
@@ -484,21 +463,20 @@ public class TestNetwork {
 
             // Output services with access
             Map<ServiceEndpointType, List<Region>> services = subnet.servicesWithAccess();
-            if (services.size() > 0) {
+            if (!services.isEmpty()) {
                 info.append("\n\tServices with access");
                 for (Map.Entry<ServiceEndpointType, List<Region>> service : services.entrySet()) {
-                    info
-                        .append("\n\t\tService: ")
+                    info.append("\n\t\tService: ")
                         .append(service.getKey())
-                        .append(" Regions: " + service.getValue() + "");
+                        .append(" Regions: ")
+                        .append(service.getValue());
                 }
             }
         }
 
         // Output peerings
         for (NetworkPeering peering : resource.peerings().list()) {
-            info
-                .append("\n\tPeering: ")
+            info.append("\n\tPeering: ")
                 .append(peering.name())
                 .append("\n\t\tRemote network ID: ")
                 .append(peering.remoteNetworkId())
@@ -512,6 +490,6 @@ public class TestNetwork {
                 .append(peering.gatewayUse());
         }
 
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 }

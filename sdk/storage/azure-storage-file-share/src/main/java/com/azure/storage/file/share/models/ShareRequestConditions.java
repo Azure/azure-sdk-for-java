@@ -16,6 +16,12 @@ public class ShareRequestConditions {
     private String leaseId;
 
     /**
+     * Creates a new instance of {@link ShareRequestConditions}.
+     */
+    public ShareRequestConditions() {
+    }
+
+    /**
      * Gets the lease ID that files and shares must match.
      *
      * @return The lease ID that files and shares must match.

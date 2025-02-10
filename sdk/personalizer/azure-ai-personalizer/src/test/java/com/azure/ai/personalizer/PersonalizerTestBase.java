@@ -41,11 +41,16 @@ public abstract class PersonalizerTestBase extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            // Removes `Location` and `id` sanitizer from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK3430");
+        }
+
         return setCredential(builder, getTestMode(), isSingleSlot, isStatic);
     }
 
-    public PersonalizerClientBuilder setBuilderProperties(PersonalizerClientBuilder builder,
-        HttpClient httpClient, PersonalizerServiceVersion serviceVersion, boolean isSingleSlot) {
+    public PersonalizerClientBuilder setBuilderProperties(PersonalizerClientBuilder builder, HttpClient httpClient,
+        PersonalizerServiceVersion serviceVersion, boolean isSingleSlot) {
         String endpoint = getEndpoint(getTestMode(), isSingleSlot, false);
         PersonalizerAudience audience = TestUtils.getAudience(endpoint);
 
@@ -70,16 +75,14 @@ public abstract class PersonalizerTestBase extends TestProxyTestBase {
 
     protected PersonalizerClient getClient(HttpClient httpClient, PersonalizerServiceVersion serviceVersion,
         boolean isSingleSlot) {
-        PersonalizerAdministrationClient adminClient = getAdministrationClientBuilder(httpClient, serviceVersion,
-            isSingleSlot)
-            .buildClient();
+        PersonalizerAdministrationClient adminClient
+            = getAdministrationClientBuilder(httpClient, serviceVersion, isSingleSlot).buildClient();
 
         if (!isSingleSlot) {
             enableMultiSlot(adminClient);
         }
 
-        return getPersonalizerClientBuilder(httpClient, serviceVersion, isSingleSlot)
-            .buildClient();
+        return getPersonalizerClientBuilder(httpClient, serviceVersion, isSingleSlot).buildClient();
     }
 
     protected PersonalizerAdministrationClientBuilder getAdministrationClientBuilder(HttpClient httpClient,

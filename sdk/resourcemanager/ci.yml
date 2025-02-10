@@ -181,7 +181,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: resourcemanager
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager
         groupId: com.azure.resourcemanager
@@ -284,6 +283,8 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagersamples
       - name: azure-resourcemanager-perf
+        groupId: com.azure.resourcemanager
+      - name: azure-resourcemanager-test
         groupId: com.azure.resourcemanager
         # required by the above perf library
       - name: perf-test-core

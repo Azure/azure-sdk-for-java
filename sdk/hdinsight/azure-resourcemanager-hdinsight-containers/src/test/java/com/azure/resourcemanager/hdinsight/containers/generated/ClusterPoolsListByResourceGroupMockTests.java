@@ -6,70 +6,55 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPool;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.hdinsight.containers.models.OutboundType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ClusterPoolsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"deploymentId\":\"ytnrzvuljraae\",\"managedResourceGroupName\":\"nok\",\"aksManagedResourceGroupName\":\"ukkjqnvbroyla\",\"clusterPoolProfile\":{\"clusterPoolVersion\":\"ulcdisdosf\",\"publicIpTag\":{\"ipTagType\":\"jsvg\",\"tag\":\"rwhryvycytd\"}},\"computeProfile\":{\"vmSize\":\"lxgccknfnwmbtm\",\"count\":166285139,\"availabilityZones\":[\"dhttzaefedxihchr\",\"hk\",\"crjdqnsdfzpbgtg\",\"ylkdghrje\"]},\"aksClusterProfile\":{\"aksClusterResourceId\":\"lwxezwzhokvbwnh\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"qlgehg\",\"msiClientId\":\"pipifh\",\"msiObjectId\":\"f\"},\"aksVersion\":\"ajvgcxtxjcsheafi\"},\"networkProfile\":{\"subnetId\":\"tugsresmkssjh\",\"outboundType\":\"loadBalancer\",\"enablePrivateApiServer\":true,\"apiServerAuthorizedIpRanges\":[\"fwegprhptillu\",\"biqtgdq\",\"hm\",\"wsldrizetpwbr\"]},\"logAnalyticsProfile\":{\"enabled\":true,\"workspaceId\":\"ibph\"},\"status\":\"zmizakakan\"},\"location\":\"p\",\"tags\":{\"xprimrsop\":\"zhajoylhjlmuo\",\"stvasylwxdzaumw\":\"eecjmeis\"},\"id\":\"oohgu\",\"name\":\"fuzboyjathwtzolb\",\"type\":\"emwmdxmebwjs\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"deploymentId\":\"nqfiufxqknpi\",\"managedResourceGroupName\":\"nepttwqmsni\",\"aksManagedResourceGroupName\":\"cdm\",\"clusterPoolProfile\":{\"clusterPoolVersion\":\"r\"},\"computeProfile\":{\"vmSize\":\"jlpijnkrx\",\"count\":621511915},\"aksClusterProfile\":{\"aksClusterResourceId\":\"c\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"tizzronasxif\",\"msiClientId\":\"ozqyzh\",\"msiObjectId\":\"tw\"},\"aksVersion\":\"gogczhonnxkrlgny\"},\"networkProfile\":{\"subnetId\":\"ossxk\"},\"logAnalyticsProfile\":{\"enabled\":false,\"workspaceId\":\"rrghxjbdhqxvcxgf\"},\"status\":\"dsofbshrns\"},\"location\":\"uswdv\",\"tags\":{\"wnopqgikyzirtx\":\"bycnunvjsrtkf\",\"ilqu\":\"yuxzejntpsewgi\",\"eoxorggufhyao\":\"rydxtqm\"},\"id\":\"tbghhavgrvkf\",\"name\":\"ovjzhpjbibgjmfx\",\"type\":\"mv\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HDInsightContainersManager manager = HDInsightContainersManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ClusterPool> response
+            = manager.clusterPools().listByResourceGroup("knh", com.azure.core.util.Context.NONE);
 
-        HDInsightContainersManager manager =
-            HDInsightContainersManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ClusterPool> response =
-            manager.clusterPools().listByResourceGroup("ytsbwtovv", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("uswdv", response.iterator().next().location());
-        Assertions.assertEquals("bycnunvjsrtkf", response.iterator().next().tags().get("wnopqgikyzirtx"));
-        Assertions.assertEquals("nepttwqmsni", response.iterator().next().managedResourceGroupName());
-        Assertions.assertEquals("r", response.iterator().next().clusterPoolProfile().clusterPoolVersion());
-        Assertions.assertEquals("jlpijnkrx", response.iterator().next().computeProfile().vmSize());
-        Assertions.assertEquals("ossxk", response.iterator().next().networkProfile().subnetId());
-        Assertions.assertEquals(false, response.iterator().next().logAnalyticsProfile().enabled());
-        Assertions.assertEquals("rrghxjbdhqxvcxgf", response.iterator().next().logAnalyticsProfile().workspaceId());
+        Assertions.assertEquals("p", response.iterator().next().location());
+        Assertions.assertEquals("zhajoylhjlmuo", response.iterator().next().tags().get("xprimrsop"));
+        Assertions.assertEquals("nok", response.iterator().next().properties().managedResourceGroupName());
+        Assertions.assertEquals("ulcdisdosf",
+            response.iterator().next().properties().clusterPoolProfile().clusterPoolVersion());
+        Assertions.assertEquals("jsvg",
+            response.iterator().next().properties().clusterPoolProfile().publicIpTag().ipTagType());
+        Assertions.assertEquals("rwhryvycytd",
+            response.iterator().next().properties().clusterPoolProfile().publicIpTag().tag());
+        Assertions.assertEquals("lxgccknfnwmbtm", response.iterator().next().properties().computeProfile().vmSize());
+        Assertions.assertEquals("dhttzaefedxihchr",
+            response.iterator().next().properties().computeProfile().availabilityZones().get(0));
+        Assertions.assertEquals("tugsresmkssjh", response.iterator().next().properties().networkProfile().subnetId());
+        Assertions.assertEquals(OutboundType.LOAD_BALANCER,
+            response.iterator().next().properties().networkProfile().outboundType());
+        Assertions.assertEquals(true,
+            response.iterator().next().properties().networkProfile().enablePrivateApiServer());
+        Assertions.assertEquals("fwegprhptillu",
+            response.iterator().next().properties().networkProfile().apiServerAuthorizedIpRanges().get(0));
+        Assertions.assertEquals(true, response.iterator().next().properties().logAnalyticsProfile().enabled());
+        Assertions.assertEquals("ibph", response.iterator().next().properties().logAnalyticsProfile().workspaceId());
     }
 }

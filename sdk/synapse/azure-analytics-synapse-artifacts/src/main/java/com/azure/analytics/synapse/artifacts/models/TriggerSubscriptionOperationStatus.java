@@ -5,23 +5,25 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the response of a trigger subscription operation.
  */
 @Immutable
-public final class TriggerSubscriptionOperationStatus {
+public final class TriggerSubscriptionOperationStatus implements JsonSerializable<TriggerSubscriptionOperationStatus> {
     /*
      * Trigger name.
      */
-    @JsonProperty(value = "triggerName", access = JsonProperty.Access.WRITE_ONLY)
     private String triggerName;
 
     /*
      * Event Subscription Status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private EventSubscriptionStatus status;
 
     /**
@@ -46,5 +48,44 @@ public final class TriggerSubscriptionOperationStatus {
      */
     public EventSubscriptionStatus getStatus() {
         return this.status;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerSubscriptionOperationStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerSubscriptionOperationStatus if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggerSubscriptionOperationStatus.
+     */
+    public static TriggerSubscriptionOperationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerSubscriptionOperationStatus deserializedTriggerSubscriptionOperationStatus
+                = new TriggerSubscriptionOperationStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("triggerName".equals(fieldName)) {
+                    deserializedTriggerSubscriptionOperationStatus.triggerName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedTriggerSubscriptionOperationStatus.status
+                        = EventSubscriptionStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerSubscriptionOperationStatus;
+        });
     }
 }

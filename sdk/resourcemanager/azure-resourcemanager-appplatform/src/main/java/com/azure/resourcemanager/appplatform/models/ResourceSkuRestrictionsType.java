@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceSkuRestrictionsType. */
+/**
+ * Gets the type of restrictions. Possible values include: 'Location', 'Zone'.
+ */
 public final class ResourceSkuRestrictionsType extends ExpandableStringEnum<ResourceSkuRestrictionsType> {
-    /** Static value Location for ResourceSkuRestrictionsType. */
+    /**
+     * Static value Location for ResourceSkuRestrictionsType.
+     */
     public static final ResourceSkuRestrictionsType LOCATION = fromString("Location");
 
-    /** Static value Zone for ResourceSkuRestrictionsType. */
+    /**
+     * Static value Zone for ResourceSkuRestrictionsType.
+     */
     public static final ResourceSkuRestrictionsType ZONE = fromString("Zone");
 
     /**
+     * Creates a new instance of ResourceSkuRestrictionsType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceSkuRestrictionsType() {
+    }
+
+    /**
      * Creates or finds a ResourceSkuRestrictionsType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceSkuRestrictionsType.
      */
-    @JsonCreator
     public static ResourceSkuRestrictionsType fromString(String name) {
         return fromString(name, ResourceSkuRestrictionsType.class);
     }
 
     /**
      * Gets known ResourceSkuRestrictionsType values.
-     *
+     * 
      * @return known ResourceSkuRestrictionsType values.
      */
     public static Collection<ResourceSkuRestrictionsType> values() {

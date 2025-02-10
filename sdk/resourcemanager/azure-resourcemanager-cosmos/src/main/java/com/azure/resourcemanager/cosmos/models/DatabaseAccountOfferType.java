@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The offer type for the Cosmos DB database account.
  */
@@ -31,7 +28,6 @@ public enum DatabaseAccountOfferType {
      * @param value the serialized value to parse.
      * @return the parsed DatabaseAccountOfferType object, or null if unable to parse.
      */
-    @JsonCreator
     public static DatabaseAccountOfferType fromString(String value) {
         if (value == null) {
             return null;
@@ -48,7 +44,6 @@ public enum DatabaseAccountOfferType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

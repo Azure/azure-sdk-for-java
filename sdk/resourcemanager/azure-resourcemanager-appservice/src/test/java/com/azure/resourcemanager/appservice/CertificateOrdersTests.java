@@ -19,27 +19,24 @@ public class CertificateOrdersTests extends AppServiceTest {
     }
 
     @Test
-    @Disabled(
-        "Test is failing fix it. we may not intent to create a resource here but just to fetch existing resource.")
+    @Disabled("Test is failing fix it. we may not intent to create a resource here but just to fetch existing resource.")
     public void canCRUDCertificateOrder() throws Exception {
         // CREATE
-        AppServiceCertificateOrder certificateOrder =
-            appServiceManager
-                .certificateOrders()
-                .define(certificateName)
-                .withExistingResourceGroup(rgName)
-                .withHostName("*.graph-webapp-319.com")
-                .withWildcardSku()
-                .withDomainVerification(appServiceManager.domains().getByResourceGroup(rgName, "graph-webapp-319.com"))
-                .withNewKeyVault("graphvault", Region.US_WEST)
-                .withValidYears(1)
-                .create();
+        AppServiceCertificateOrder certificateOrder = appServiceManager.certificateOrders()
+            .define(certificateName)
+            .withExistingResourceGroup(rgName)
+            .withHostName("*.graph-webapp-319.com")
+            .withWildcardSku()
+            .withDomainVerification(appServiceManager.domains().getByResourceGroup(rgName, "graph-webapp-319.com"))
+            .withNewKeyVault("graphvault", Region.US_WEST)
+            .withValidYears(1)
+            .create();
         Assertions.assertNotNull(certificateOrder);
         // GET
         Assertions.assertNotNull(appServiceManager.certificateOrders().getByResourceGroup(rgName, certificateName));
         // LIST
-        PagedIterable<AppServiceCertificateOrder> certificateOrders =
-            appServiceManager.certificateOrders().listByResourceGroup(rgName);
+        PagedIterable<AppServiceCertificateOrder> certificateOrders
+            = appServiceManager.certificateOrders().listByResourceGroup(rgName);
         boolean found = false;
         for (AppServiceCertificateOrder co : certificateOrders) {
             if (certificateName.equals(co.name())) {

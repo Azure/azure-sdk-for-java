@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.cosmos.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
@@ -45,29 +44,30 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
             // Create a virtual network with two subnets.
             System.out.println("Create a virtual network with two subnets: subnet1 and subnet2");
 
-            Network virtualNetwork = azureResourceManager.networks().define(vnetName)
+            Network virtualNetwork = azureResourceManager.networks()
+                .define(vnetName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAddressSpace("192.168.0.0/16")
                 .defineSubnet("subnet1")
-                    .withAddressPrefix("192.168.1.0/24")
-                    .withAccessFromService(ServiceEndpointType.MICROSOFT_AZURECOSMOSDB)
-                    .attach()
+                .withAddressPrefix("192.168.1.0/24")
+                .withAccessFromService(ServiceEndpointType.MICROSOFT_AZURECOSMOSDB)
+                .attach()
                 .defineSubnet("subnet2")
-                    .withAddressPrefix("192.168.2.0/24")
-                    .withAccessFromService(ServiceEndpointType.MICROSOFT_AZURECOSMOSDB)
-                    .attach()
+                .withAddressPrefix("192.168.2.0/24")
+                .withAccessFromService(ServiceEndpointType.MICROSOFT_AZURECOSMOSDB)
+                .attach()
                 .create();
 
             System.out.println("Created a virtual network");
             // Print the virtual network details
             Utils.print(virtualNetwork);
 
-
             //============================================================
             // Create a CosmosDB
             System.out.println("Creating a CosmosDB...");
-            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(docDBName)
+            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts()
+                .define(docDBName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withDataModelAzureTable()
@@ -79,7 +79,6 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
             System.out.println("Created CosmosDB");
             Utils.print(cosmosDBAccount);
 
-
             // ============================================================
             // Get the virtual network rule created above.
             List<VirtualNetworkRule> vnetRules = cosmosDBAccount.virtualNetworkRules();
@@ -89,13 +88,9 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
                 System.out.println("\t" + vnetRule.id());
             }
 
-
             // ============================================================
             // Add new virtual network rules.
-            cosmosDBAccount.update()
-                .withVirtualNetwork(virtualNetwork.id(), "subnet2")
-                .apply();
-
+            cosmosDBAccount.update().withVirtualNetwork(virtualNetwork.id(), "subnet2").apply();
 
             // ============================================================
             // List then remove all virtual network rules.
@@ -108,12 +103,9 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
                 System.out.println("\t" + vnetRule.id());
             }
 
-            cosmosDBAccount.update()
-                .withVirtualNetworkRules(null)
-                .apply();
+            cosmosDBAccount.update().withVirtualNetworkRules(null).apply();
 
             azureResourceManager.networks().deleteById(virtualNetwork.id());
-
 
             //============================================================
             // Delete CosmosDB
@@ -154,8 +146,7 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

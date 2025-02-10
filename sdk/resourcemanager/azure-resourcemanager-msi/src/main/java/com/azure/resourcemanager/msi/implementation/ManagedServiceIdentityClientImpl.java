@@ -16,123 +16,145 @@ import com.azure.resourcemanager.msi.fluent.UserAssignedIdentitiesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the ManagedServiceIdentityClientImpl type. */
+/**
+ * Initializes a new instance of the ManagedServiceIdentityClientImpl type.
+ */
 @ServiceClient(builder = ManagedServiceIdentityClientBuilder.class)
 public final class ManagedServiceIdentityClientImpl extends AzureServiceClient implements ManagedServiceIdentityClient {
-    /** The Id of the Subscription to which the identity belongs. */
+    /**
+     * The Id of the Subscription to which the identity belongs.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The Id of the Subscription to which the identity belongs.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The SystemAssignedIdentitiesClient object to access its operations. */
+    /**
+     * The SystemAssignedIdentitiesClient object to access its operations.
+     */
     private final SystemAssignedIdentitiesClient systemAssignedIdentities;
 
     /**
      * Gets the SystemAssignedIdentitiesClient object to access its operations.
-     *
+     * 
      * @return the SystemAssignedIdentitiesClient object.
      */
     public SystemAssignedIdentitiesClient getSystemAssignedIdentities() {
         return this.systemAssignedIdentities;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The UserAssignedIdentitiesClient object to access its operations. */
+    /**
+     * The UserAssignedIdentitiesClient object to access its operations.
+     */
     private final UserAssignedIdentitiesClient userAssignedIdentities;
 
     /**
      * Gets the UserAssignedIdentitiesClient object to access its operations.
-     *
+     * 
      * @return the UserAssignedIdentitiesClient object.
      */
     public UserAssignedIdentitiesClient getUserAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
-    /** The FederatedIdentityCredentialsClient object to access its operations. */
+    /**
+     * The FederatedIdentityCredentialsClient object to access its operations.
+     */
     private final FederatedIdentityCredentialsClient federatedIdentityCredentials;
 
     /**
      * Gets the FederatedIdentityCredentialsClient object to access its operations.
-     *
+     * 
      * @return the FederatedIdentityCredentialsClient object.
      */
     public FederatedIdentityCredentialsClient getFederatedIdentityCredentials() {
@@ -141,7 +163,7 @@ public final class ManagedServiceIdentityClientImpl extends AzureServiceClient i
 
     /**
      * Initializes an instance of ManagedServiceIdentityClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -149,13 +171,8 @@ public final class ManagedServiceIdentityClientImpl extends AzureServiceClient i
      * @param subscriptionId The Id of the Subscription to which the identity belongs.
      * @param endpoint server parameter.
      */
-    ManagedServiceIdentityClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ManagedServiceIdentityClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

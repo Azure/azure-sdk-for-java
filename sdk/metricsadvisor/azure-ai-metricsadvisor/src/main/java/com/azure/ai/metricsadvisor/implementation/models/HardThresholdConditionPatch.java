@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The HardThresholdConditionPatch model.
@@ -135,12 +134,16 @@ public final class HardThresholdConditionPatch implements JsonSerializable<HardT
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("lowerBound", this.lowerBound);
         jsonWriter.writeNumberField("upperBound", this.upperBound);
-        jsonWriter.writeStringField("anomalyDetectorDirection", Objects.toString(this.anomalyDetectorDirection, null));
+        jsonWriter.writeStringField("anomalyDetectorDirection",
+            this.anomalyDetectorDirection == null ? null : this.anomalyDetectorDirection.toString());
         jsonWriter.writeJsonField("suppressCondition", this.suppressCondition);
         return jsonWriter.writeEndObject();
     }

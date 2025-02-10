@@ -20,22 +20,18 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient,
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PrivateLinkResourceListResult> listWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        Response<PrivateLinkResourceListResultInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, accountName, context);
+    public Response<PrivateLinkResourceListResult> listWithResponse(String resourceGroupName, String accountName,
+        Context context) {
+        Response<PrivateLinkResourceListResultInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, accountName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkResourceListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

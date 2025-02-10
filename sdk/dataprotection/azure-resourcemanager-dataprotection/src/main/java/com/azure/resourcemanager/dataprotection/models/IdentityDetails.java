@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The IdentityDetails model.
  */
 @Fluent
-public final class IdentityDetails {
+public final class IdentityDetails implements JsonSerializable<IdentityDetails> {
     /*
      * Specifies if the BI is protected by System Identity.
      */
-    @JsonProperty(value = "useSystemAssignedIdentity")
     private Boolean useSystemAssignedIdentity;
 
     /*
      * ARM URL for User Assigned Identity.
      */
-    @JsonProperty(value = "userAssignedIdentityArmUrl")
     private String userAssignedIdentityArmUrl;
 
     /**
@@ -76,5 +78,44 @@ public final class IdentityDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("useSystemAssignedIdentity", this.useSystemAssignedIdentity);
+        jsonWriter.writeStringField("userAssignedIdentityArmUrl", this.userAssignedIdentityArmUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentityDetails.
+     */
+    public static IdentityDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityDetails deserializedIdentityDetails = new IdentityDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("useSystemAssignedIdentity".equals(fieldName)) {
+                    deserializedIdentityDetails.useSystemAssignedIdentity = reader.getNullable(JsonReader::getBoolean);
+                } else if ("userAssignedIdentityArmUrl".equals(fieldName)) {
+                    deserializedIdentityDetails.userAssignedIdentityArmUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityDetails;
+        });
     }
 }

@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the current state of an existing Private Link Service connection to the Azure Private Endpoint. */
+/**
+ * Describes the current state of an existing Private Link Service connection to the Azure Private Endpoint.
+ */
 @Fluent
-public final class PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState {
+public final class PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState
+    implements JsonSerializable<PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState> {
     /*
-     * Status of the the private link service connection. Valid values are Pending, Approved, Rejected, or
-     * Disconnected.
+     * Status of the the private link service connection. Valid values are Pending, Approved, Rejected, or Disconnected.
      */
-    @JsonProperty(value = "status")
     private PrivateLinkServiceConnectionStatus status;
 
     /*
      * The description for the private link service connection state.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * A description of any extra actions that may be required.
      */
-    @JsonProperty(value = "actionsRequired")
     private String actionsRequired;
 
-    /** Creates an instance of PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState class.
+     */
     public PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState() {
     }
 
     /**
      * Get the status property: Status of the the private link service connection. Valid values are Pending, Approved,
      * Rejected, or Disconnected.
-     *
+     * 
      * @return the status value.
      */
     public PrivateLinkServiceConnectionStatus status() {
@@ -46,19 +51,19 @@ public final class PrivateEndpointConnectionPropertiesPrivateLinkServiceConnecti
     /**
      * Set the status property: Status of the the private link service connection. Valid values are Pending, Approved,
      * Rejected, or Disconnected.
-     *
+     * 
      * @param status the status value to set.
      * @return the PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState object itself.
      */
-    public PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState withStatus(
-        PrivateLinkServiceConnectionStatus status) {
+    public PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState
+        withStatus(PrivateLinkServiceConnectionStatus status) {
         this.status = status;
         return this;
     }
 
     /**
      * Get the description property: The description for the private link service connection state.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -67,7 +72,7 @@ public final class PrivateEndpointConnectionPropertiesPrivateLinkServiceConnecti
 
     /**
      * Set the description property: The description for the private link service connection state.
-     *
+     * 
      * @param description the description value to set.
      * @return the PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState object itself.
      */
@@ -78,7 +83,7 @@ public final class PrivateEndpointConnectionPropertiesPrivateLinkServiceConnecti
 
     /**
      * Get the actionsRequired property: A description of any extra actions that may be required.
-     *
+     * 
      * @return the actionsRequired value.
      */
     public String actionsRequired() {
@@ -87,21 +92,69 @@ public final class PrivateEndpointConnectionPropertiesPrivateLinkServiceConnecti
 
     /**
      * Set the actionsRequired property: A description of any extra actions that may be required.
-     *
+     * 
      * @param actionsRequired the actionsRequired value to set.
      * @return the PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState object itself.
      */
-    public PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState withActionsRequired(
-        String actionsRequired) {
+    public PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState
+        withActionsRequired(String actionsRequired) {
         this.actionsRequired = actionsRequired;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("actionsRequired", this.actionsRequired);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState.
+     */
+    public static PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState deserializedPrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState
+                = new PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState.status
+                        = PrivateLinkServiceConnectionStatus.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState.description
+                        = reader.getString();
+                } else if ("actionsRequired".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState.actionsRequired
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState;
+        });
     }
 }

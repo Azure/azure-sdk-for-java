@@ -6,14 +6,33 @@ package com.azure.maps.search.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the SearchClient type. */
+/**
+ * Initializes a new instance of the SearchClient type.
+ */
 public final class SearchClientImpl {
+    /**
+     * Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
+     */
+    private final String acceptLanguage;
+
+    /**
+     * Gets Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
+     * 
+     * @return the acceptLanguage value.
+     */
+    public String getAcceptLanguage() {
+        return this.acceptLanguage;
+    }
+
     /**
      * Specifies which account is intended for usage in conjunction with the Azure AD security model. It represents a
      * unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. To
@@ -25,67 +44,77 @@ public final class SearchClientImpl {
      * Gets Specifies which account is intended for usage in conjunction with the Azure AD security model. It represents
      * a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. To
      * use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
-     *
+     * 
      * @return the clientId value.
      */
     public String getClientId() {
         return this.clientId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String host;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the host value.
      */
     public String getHost() {
         return this.host;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The SearchesImpl object to access its operations. */
+    /**
+     * The SearchesImpl object to access its operations.
+     */
     private final SearchesImpl searches;
 
     /**
      * Gets the SearchesImpl object to access its operations.
-     *
+     * 
      * @return the SearchesImpl object.
      */
     public SearchesImpl getSearches() {
@@ -94,60 +123,61 @@ public final class SearchClientImpl {
 
     /**
      * Initializes an instance of SearchClient client.
-     *
+     * 
+     * @param acceptLanguage Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
      * @param clientId Specifies which account is intended for usage in conjunction with the Azure AD security model. It
-     *     represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
-     *     Account API. To use Azure AD security in Azure Maps see the following
-     *     [articles](https://aka.ms/amauthdetails) for guidance.
+     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
+     * Account API. To use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails)
+     * for guidance.
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    SearchClientImpl(String clientId, String host, String apiVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                clientId,
-                host,
-                apiVersion);
+    SearchClientImpl(String acceptLanguage, String clientId, String host, String apiVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), acceptLanguage, clientId, host, apiVersion);
     }
 
     /**
      * Initializes an instance of SearchClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param acceptLanguage Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
      * @param clientId Specifies which account is intended for usage in conjunction with the Azure AD security model. It
-     *     represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
-     *     Account API. To use Azure AD security in Azure Maps see the following
-     *     [articles](https://aka.ms/amauthdetails) for guidance.
+     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
+     * Account API. To use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails)
+     * for guidance.
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    SearchClientImpl(HttpPipeline httpPipeline, String clientId, String host, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), clientId, host, apiVersion);
+    SearchClientImpl(HttpPipeline httpPipeline, String acceptLanguage, String clientId, String host,
+        String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), acceptLanguage, clientId, host, apiVersion);
     }
 
     /**
      * Initializes an instance of SearchClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param acceptLanguage Language in which search results should be returned.
+     * 
+     * Please refer to [Supported Languages](/azure/azure-maps/supported-languages) for details.
      * @param clientId Specifies which account is intended for usage in conjunction with the Azure AD security model. It
-     *     represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
-     *     Account API. To use Azure AD security in Azure Maps see the following
-     *     [articles](https://aka.ms/amauthdetails) for guidance.
+     * represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane
+     * Account API. To use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails)
+     * for guidance.
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    SearchClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String clientId,
-            String host,
-            String apiVersion) {
+    SearchClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String acceptLanguage,
+        String clientId, String host, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
+        this.acceptLanguage = acceptLanguage;
         this.clientId = clientId;
         this.host = host;
         this.apiVersion = apiVersion;

@@ -5,335 +5,286 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * managedDevice
- *
- * <p>Devices that are managed or pre-enrolled through Intune.
+ * 
+ * Devices that are managed or pre-enrolled through Intune.
  */
 @Fluent
 public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /*
      * Code that allows the Activation Lock on a device to be bypassed.
      */
-    @JsonProperty(value = "activationLockBypassCode")
     private String activationLockBypassCode;
 
     /*
      * Android security patch level
      */
-    @JsonProperty(value = "androidSecurityPatchLevel")
     private String androidSecurityPatchLevel;
 
     /*
      * The unique identifier for the Azure Active Directory device. Read only.
      */
-    @JsonProperty(value = "azureADDeviceId")
     private String azureADDeviceId;
 
     /*
      * Whether the device is Azure Active Directory registered.
      */
-    @JsonProperty(value = "azureADRegistered")
     private Boolean azureADRegistered;
 
     /*
      * The DateTime when device compliance grace period expires
      */
-    @JsonProperty(value = "complianceGracePeriodExpirationDateTime")
     private OffsetDateTime complianceGracePeriodExpirationDateTime;
 
     /*
      * complianceState
      */
-    @JsonProperty(value = "complianceState")
     private MicrosoftGraphComplianceState complianceState;
 
     /*
-     * configurationManagerClientEnabledFeatures
-     *
      * configuration Manager client enabled features
      */
-    @JsonProperty(value = "configurationManagerClientEnabledFeatures")
     private MicrosoftGraphConfigurationManagerClientEnabledFeatures configurationManagerClientEnabledFeatures;
 
     /*
      * List of ComplexType deviceActionResult objects.
      */
-    @JsonProperty(value = "deviceActionResults")
     private List<MicrosoftGraphDeviceActionResult> deviceActionResults;
 
     /*
      * Device category display name
      */
-    @JsonProperty(value = "deviceCategoryDisplayName")
     private String deviceCategoryDisplayName;
 
     /*
      * deviceEnrollmentType
      */
-    @JsonProperty(value = "deviceEnrollmentType")
     private MicrosoftGraphDeviceEnrollmentType deviceEnrollmentType;
 
     /*
      * deviceHealthAttestationState
      */
-    @JsonProperty(value = "deviceHealthAttestationState")
     private MicrosoftGraphDeviceHealthAttestationState deviceHealthAttestationState;
 
     /*
      * Name of the device
      */
-    @JsonProperty(value = "deviceName")
     private String deviceName;
 
     /*
      * deviceRegistrationState
      */
-    @JsonProperty(value = "deviceRegistrationState")
     private MicrosoftGraphDeviceRegistrationState deviceRegistrationState;
 
     /*
      * Whether the device is Exchange ActiveSync activated.
      */
-    @JsonProperty(value = "easActivated")
     private Boolean easActivated;
 
     /*
      * Exchange ActivationSync activation time of the device.
      */
-    @JsonProperty(value = "easActivationDateTime")
     private OffsetDateTime easActivationDateTime;
 
     /*
      * Exchange ActiveSync Id of the device.
      */
-    @JsonProperty(value = "easDeviceId")
     private String easDeviceId;
 
     /*
      * Email(s) for the user associated with the device
      */
-    @JsonProperty(value = "emailAddress")
     private String emailAddress;
 
     /*
      * Enrollment time of the device.
      */
-    @JsonProperty(value = "enrolledDateTime")
     private OffsetDateTime enrolledDateTime;
 
     /*
      * deviceManagementExchangeAccessState
      */
-    @JsonProperty(value = "exchangeAccessState")
     private MicrosoftGraphDeviceManagementExchangeAccessState exchangeAccessState;
 
     /*
      * deviceManagementExchangeAccessStateReason
      */
-    @JsonProperty(value = "exchangeAccessStateReason")
     private MicrosoftGraphDeviceManagementExchangeAccessStateReason exchangeAccessStateReason;
 
     /*
      * Last time the device contacted Exchange.
      */
-    @JsonProperty(value = "exchangeLastSuccessfulSyncDateTime")
     private OffsetDateTime exchangeLastSuccessfulSyncDateTime;
 
     /*
      * Free Storage in Bytes
      */
-    @JsonProperty(value = "freeStorageSpaceInBytes")
     private Long freeStorageSpaceInBytes;
 
     /*
      * IMEI
      */
-    @JsonProperty(value = "imei")
     private String imei;
 
     /*
      * Device encryption status
      */
-    @JsonProperty(value = "isEncrypted")
     private Boolean isEncrypted;
 
     /*
      * Device supervised status
      */
-    @JsonProperty(value = "isSupervised")
     private Boolean isSupervised;
 
     /*
      * whether the device is jail broken or rooted.
      */
-    @JsonProperty(value = "jailBroken")
     private String jailBroken;
 
     /*
      * The date and time that the device last completed a successful sync with Intune.
      */
-    @JsonProperty(value = "lastSyncDateTime")
     private OffsetDateTime lastSyncDateTime;
 
     /*
      * Automatically generated name to identify a device. Can be overwritten to a user friendly name.
      */
-    @JsonProperty(value = "managedDeviceName")
     private String managedDeviceName;
 
     /*
      * managedDeviceOwnerType
      */
-    @JsonProperty(value = "managedDeviceOwnerType")
     private MicrosoftGraphManagedDeviceOwnerType managedDeviceOwnerType;
 
     /*
      * managementAgentType
      */
-    @JsonProperty(value = "managementAgent")
     private MicrosoftGraphManagementAgentType managementAgent;
 
     /*
      * Manufacturer of the device
      */
-    @JsonProperty(value = "manufacturer")
     private String manufacturer;
 
     /*
      * MEID
      */
-    @JsonProperty(value = "meid")
     private String meid;
 
     /*
      * Model of the device
      */
-    @JsonProperty(value = "model")
     private String model;
 
     /*
      * Operating system of the device. Windows, iOS, etc.
      */
-    @JsonProperty(value = "operatingSystem")
     private String operatingSystem;
 
     /*
      * Operating system version of the device.
      */
-    @JsonProperty(value = "osVersion")
     private String osVersion;
 
     /*
      * managedDevicePartnerReportedHealthState
      */
-    @JsonProperty(value = "partnerReportedThreatState")
     private MicrosoftGraphManagedDevicePartnerReportedHealthState partnerReportedThreatState;
 
     /*
      * Phone number of the device
      */
-    @JsonProperty(value = "phoneNumber")
     private String phoneNumber;
 
     /*
      * An error string that identifies issues when creating Remote Assistance session objects.
      */
-    @JsonProperty(value = "remoteAssistanceSessionErrorDetails")
     private String remoteAssistanceSessionErrorDetails;
 
     /*
      * Url that allows a Remote Assistance session to be established with the device.
      */
-    @JsonProperty(value = "remoteAssistanceSessionUrl")
     private String remoteAssistanceSessionUrl;
 
     /*
      * SerialNumber
      */
-    @JsonProperty(value = "serialNumber")
     private String serialNumber;
 
     /*
      * Subscriber Carrier
      */
-    @JsonProperty(value = "subscriberCarrier")
     private String subscriberCarrier;
 
     /*
      * Total Storage in Bytes
      */
-    @JsonProperty(value = "totalStorageSpaceInBytes")
     private Long totalStorageSpaceInBytes;
 
     /*
      * User display name
      */
-    @JsonProperty(value = "userDisplayName")
     private String userDisplayName;
 
     /*
      * Unique Identifier for the user associated with the device
      */
-    @JsonProperty(value = "userId")
     private String userId;
 
     /*
      * Device user principal name
      */
-    @JsonProperty(value = "userPrincipalName")
     private String userPrincipalName;
 
     /*
      * Wi-Fi MAC
      */
-    @JsonProperty(value = "wiFiMacAddress")
     private String wiFiMacAddress;
 
     /*
      * Device compliance policy states for this device.
      */
-    @JsonProperty(value = "deviceCompliancePolicyStates")
     private List<MicrosoftGraphDeviceCompliancePolicyState> deviceCompliancePolicyStates;
 
     /*
      * Device configuration states for this device.
      */
-    @JsonProperty(value = "deviceConfigurationStates")
     private List<MicrosoftGraphDeviceConfigurationState> deviceConfigurationStates;
 
     /*
-     * deviceCategory
-     *
      * Device categories provides a way to organize your devices. Using device categories, company administrators can
-     * define their own categories that make sense to their company. These categories can then be applied to a device
-     * in the Intune Azure console or selected by a user during device enrollment. You can filter reports and create
+     * define their own categories that make sense to their company. These categories can then be applied to a device in
+     * the Intune Azure console or selected by a user during device enrollment. You can filter reports and create
      * dynamic Azure Active Directory device groups based on device categories.
      */
-    @JsonProperty(value = "deviceCategory")
     private MicrosoftGraphDeviceCategory deviceCategory;
 
     /*
      * Devices that are managed or pre-enrolled through Intune
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphManagedDevice class. */
+    /**
+     * Creates an instance of MicrosoftGraphManagedDevice class.
+     */
     public MicrosoftGraphManagedDevice() {
     }
 
     /**
      * Get the activationLockBypassCode property: Code that allows the Activation Lock on a device to be bypassed.
-     *
+     * 
      * @return the activationLockBypassCode value.
      */
     public String activationLockBypassCode() {
@@ -342,7 +293,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the activationLockBypassCode property: Code that allows the Activation Lock on a device to be bypassed.
-     *
+     * 
      * @param activationLockBypassCode the activationLockBypassCode value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -353,7 +304,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the androidSecurityPatchLevel property: Android security patch level.
-     *
+     * 
      * @return the androidSecurityPatchLevel value.
      */
     public String androidSecurityPatchLevel() {
@@ -362,7 +313,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the androidSecurityPatchLevel property: Android security patch level.
-     *
+     * 
      * @param androidSecurityPatchLevel the androidSecurityPatchLevel value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -373,7 +324,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the azureADDeviceId property: The unique identifier for the Azure Active Directory device. Read only.
-     *
+     * 
      * @return the azureADDeviceId value.
      */
     public String azureADDeviceId() {
@@ -382,7 +333,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the azureADDeviceId property: The unique identifier for the Azure Active Directory device. Read only.
-     *
+     * 
      * @param azureADDeviceId the azureADDeviceId value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -393,7 +344,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the azureADRegistered property: Whether the device is Azure Active Directory registered.
-     *
+     * 
      * @return the azureADRegistered value.
      */
     public Boolean azureADRegistered() {
@@ -402,7 +353,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the azureADRegistered property: Whether the device is Azure Active Directory registered.
-     *
+     * 
      * @param azureADRegistered the azureADRegistered value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -414,7 +365,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /**
      * Get the complianceGracePeriodExpirationDateTime property: The DateTime when device compliance grace period
      * expires.
-     *
+     * 
      * @return the complianceGracePeriodExpirationDateTime value.
      */
     public OffsetDateTime complianceGracePeriodExpirationDateTime() {
@@ -424,19 +375,19 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /**
      * Set the complianceGracePeriodExpirationDateTime property: The DateTime when device compliance grace period
      * expires.
-     *
+     * 
      * @param complianceGracePeriodExpirationDateTime the complianceGracePeriodExpirationDateTime value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
-    public MicrosoftGraphManagedDevice withComplianceGracePeriodExpirationDateTime(
-        OffsetDateTime complianceGracePeriodExpirationDateTime) {
+    public MicrosoftGraphManagedDevice
+        withComplianceGracePeriodExpirationDateTime(OffsetDateTime complianceGracePeriodExpirationDateTime) {
         this.complianceGracePeriodExpirationDateTime = complianceGracePeriodExpirationDateTime;
         return this;
     }
 
     /**
      * Get the complianceState property: complianceState.
-     *
+     * 
      * @return the complianceState value.
      */
     public MicrosoftGraphComplianceState complianceState() {
@@ -445,7 +396,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the complianceState property: complianceState.
-     *
+     * 
      * @param complianceState the complianceState value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -455,10 +406,8 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the configurationManagerClientEnabledFeatures property: configurationManagerClientEnabledFeatures
-     *
-     * <p>configuration Manager client enabled features.
-     *
+     * Get the configurationManagerClientEnabledFeatures property: configuration Manager client enabled features.
+     * 
      * @return the configurationManagerClientEnabledFeatures value.
      */
     public MicrosoftGraphConfigurationManagerClientEnabledFeatures configurationManagerClientEnabledFeatures() {
@@ -466,10 +415,8 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the configurationManagerClientEnabledFeatures property: configurationManagerClientEnabledFeatures
-     *
-     * <p>configuration Manager client enabled features.
-     *
+     * Set the configurationManagerClientEnabledFeatures property: configuration Manager client enabled features.
+     * 
      * @param configurationManagerClientEnabledFeatures the configurationManagerClientEnabledFeatures value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -481,7 +428,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the deviceActionResults property: List of ComplexType deviceActionResult objects.
-     *
+     * 
      * @return the deviceActionResults value.
      */
     public List<MicrosoftGraphDeviceActionResult> deviceActionResults() {
@@ -490,19 +437,19 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the deviceActionResults property: List of ComplexType deviceActionResult objects.
-     *
+     * 
      * @param deviceActionResults the deviceActionResults value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
-    public MicrosoftGraphManagedDevice withDeviceActionResults(
-        List<MicrosoftGraphDeviceActionResult> deviceActionResults) {
+    public MicrosoftGraphManagedDevice
+        withDeviceActionResults(List<MicrosoftGraphDeviceActionResult> deviceActionResults) {
         this.deviceActionResults = deviceActionResults;
         return this;
     }
 
     /**
      * Get the deviceCategoryDisplayName property: Device category display name.
-     *
+     * 
      * @return the deviceCategoryDisplayName value.
      */
     public String deviceCategoryDisplayName() {
@@ -511,7 +458,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the deviceCategoryDisplayName property: Device category display name.
-     *
+     * 
      * @param deviceCategoryDisplayName the deviceCategoryDisplayName value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -522,7 +469,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the deviceEnrollmentType property: deviceEnrollmentType.
-     *
+     * 
      * @return the deviceEnrollmentType value.
      */
     public MicrosoftGraphDeviceEnrollmentType deviceEnrollmentType() {
@@ -531,19 +478,19 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the deviceEnrollmentType property: deviceEnrollmentType.
-     *
+     * 
      * @param deviceEnrollmentType the deviceEnrollmentType value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
-    public MicrosoftGraphManagedDevice withDeviceEnrollmentType(
-        MicrosoftGraphDeviceEnrollmentType deviceEnrollmentType) {
+    public MicrosoftGraphManagedDevice
+        withDeviceEnrollmentType(MicrosoftGraphDeviceEnrollmentType deviceEnrollmentType) {
         this.deviceEnrollmentType = deviceEnrollmentType;
         return this;
     }
 
     /**
      * Get the deviceHealthAttestationState property: deviceHealthAttestationState.
-     *
+     * 
      * @return the deviceHealthAttestationState value.
      */
     public MicrosoftGraphDeviceHealthAttestationState deviceHealthAttestationState() {
@@ -552,19 +499,19 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the deviceHealthAttestationState property: deviceHealthAttestationState.
-     *
+     * 
      * @param deviceHealthAttestationState the deviceHealthAttestationState value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
-    public MicrosoftGraphManagedDevice withDeviceHealthAttestationState(
-        MicrosoftGraphDeviceHealthAttestationState deviceHealthAttestationState) {
+    public MicrosoftGraphManagedDevice
+        withDeviceHealthAttestationState(MicrosoftGraphDeviceHealthAttestationState deviceHealthAttestationState) {
         this.deviceHealthAttestationState = deviceHealthAttestationState;
         return this;
     }
 
     /**
      * Get the deviceName property: Name of the device.
-     *
+     * 
      * @return the deviceName value.
      */
     public String deviceName() {
@@ -573,7 +520,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the deviceName property: Name of the device.
-     *
+     * 
      * @param deviceName the deviceName value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -584,7 +531,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the deviceRegistrationState property: deviceRegistrationState.
-     *
+     * 
      * @return the deviceRegistrationState value.
      */
     public MicrosoftGraphDeviceRegistrationState deviceRegistrationState() {
@@ -593,19 +540,19 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the deviceRegistrationState property: deviceRegistrationState.
-     *
+     * 
      * @param deviceRegistrationState the deviceRegistrationState value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
-    public MicrosoftGraphManagedDevice withDeviceRegistrationState(
-        MicrosoftGraphDeviceRegistrationState deviceRegistrationState) {
+    public MicrosoftGraphManagedDevice
+        withDeviceRegistrationState(MicrosoftGraphDeviceRegistrationState deviceRegistrationState) {
         this.deviceRegistrationState = deviceRegistrationState;
         return this;
     }
 
     /**
      * Get the easActivated property: Whether the device is Exchange ActiveSync activated.
-     *
+     * 
      * @return the easActivated value.
      */
     public Boolean easActivated() {
@@ -614,7 +561,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the easActivated property: Whether the device is Exchange ActiveSync activated.
-     *
+     * 
      * @param easActivated the easActivated value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -625,7 +572,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the easActivationDateTime property: Exchange ActivationSync activation time of the device.
-     *
+     * 
      * @return the easActivationDateTime value.
      */
     public OffsetDateTime easActivationDateTime() {
@@ -634,7 +581,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the easActivationDateTime property: Exchange ActivationSync activation time of the device.
-     *
+     * 
      * @param easActivationDateTime the easActivationDateTime value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -645,7 +592,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the easDeviceId property: Exchange ActiveSync Id of the device.
-     *
+     * 
      * @return the easDeviceId value.
      */
     public String easDeviceId() {
@@ -654,7 +601,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the easDeviceId property: Exchange ActiveSync Id of the device.
-     *
+     * 
      * @param easDeviceId the easDeviceId value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -665,7 +612,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the emailAddress property: Email(s) for the user associated with the device.
-     *
+     * 
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -674,7 +621,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the emailAddress property: Email(s) for the user associated with the device.
-     *
+     * 
      * @param emailAddress the emailAddress value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -685,7 +632,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the enrolledDateTime property: Enrollment time of the device.
-     *
+     * 
      * @return the enrolledDateTime value.
      */
     public OffsetDateTime enrolledDateTime() {
@@ -694,7 +641,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the enrolledDateTime property: Enrollment time of the device.
-     *
+     * 
      * @param enrolledDateTime the enrolledDateTime value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -705,7 +652,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the exchangeAccessState property: deviceManagementExchangeAccessState.
-     *
+     * 
      * @return the exchangeAccessState value.
      */
     public MicrosoftGraphDeviceManagementExchangeAccessState exchangeAccessState() {
@@ -714,19 +661,19 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the exchangeAccessState property: deviceManagementExchangeAccessState.
-     *
+     * 
      * @param exchangeAccessState the exchangeAccessState value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
-    public MicrosoftGraphManagedDevice withExchangeAccessState(
-        MicrosoftGraphDeviceManagementExchangeAccessState exchangeAccessState) {
+    public MicrosoftGraphManagedDevice
+        withExchangeAccessState(MicrosoftGraphDeviceManagementExchangeAccessState exchangeAccessState) {
         this.exchangeAccessState = exchangeAccessState;
         return this;
     }
 
     /**
      * Get the exchangeAccessStateReason property: deviceManagementExchangeAccessStateReason.
-     *
+     * 
      * @return the exchangeAccessStateReason value.
      */
     public MicrosoftGraphDeviceManagementExchangeAccessStateReason exchangeAccessStateReason() {
@@ -735,7 +682,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the exchangeAccessStateReason property: deviceManagementExchangeAccessStateReason.
-     *
+     * 
      * @param exchangeAccessStateReason the exchangeAccessStateReason value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -747,7 +694,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the exchangeLastSuccessfulSyncDateTime property: Last time the device contacted Exchange.
-     *
+     * 
      * @return the exchangeLastSuccessfulSyncDateTime value.
      */
     public OffsetDateTime exchangeLastSuccessfulSyncDateTime() {
@@ -756,19 +703,19 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the exchangeLastSuccessfulSyncDateTime property: Last time the device contacted Exchange.
-     *
+     * 
      * @param exchangeLastSuccessfulSyncDateTime the exchangeLastSuccessfulSyncDateTime value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
-    public MicrosoftGraphManagedDevice withExchangeLastSuccessfulSyncDateTime(
-        OffsetDateTime exchangeLastSuccessfulSyncDateTime) {
+    public MicrosoftGraphManagedDevice
+        withExchangeLastSuccessfulSyncDateTime(OffsetDateTime exchangeLastSuccessfulSyncDateTime) {
         this.exchangeLastSuccessfulSyncDateTime = exchangeLastSuccessfulSyncDateTime;
         return this;
     }
 
     /**
      * Get the freeStorageSpaceInBytes property: Free Storage in Bytes.
-     *
+     * 
      * @return the freeStorageSpaceInBytes value.
      */
     public Long freeStorageSpaceInBytes() {
@@ -777,7 +724,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the freeStorageSpaceInBytes property: Free Storage in Bytes.
-     *
+     * 
      * @param freeStorageSpaceInBytes the freeStorageSpaceInBytes value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -788,7 +735,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the imei property: IMEI.
-     *
+     * 
      * @return the imei value.
      */
     public String imei() {
@@ -797,7 +744,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the imei property: IMEI.
-     *
+     * 
      * @param imei the imei value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -808,7 +755,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the isEncrypted property: Device encryption status.
-     *
+     * 
      * @return the isEncrypted value.
      */
     public Boolean isEncrypted() {
@@ -817,7 +764,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the isEncrypted property: Device encryption status.
-     *
+     * 
      * @param isEncrypted the isEncrypted value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -828,7 +775,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the isSupervised property: Device supervised status.
-     *
+     * 
      * @return the isSupervised value.
      */
     public Boolean isSupervised() {
@@ -837,7 +784,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the isSupervised property: Device supervised status.
-     *
+     * 
      * @param isSupervised the isSupervised value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -848,7 +795,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the jailBroken property: whether the device is jail broken or rooted.
-     *
+     * 
      * @return the jailBroken value.
      */
     public String jailBroken() {
@@ -857,7 +804,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the jailBroken property: whether the device is jail broken or rooted.
-     *
+     * 
      * @param jailBroken the jailBroken value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -869,7 +816,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /**
      * Get the lastSyncDateTime property: The date and time that the device last completed a successful sync with
      * Intune.
-     *
+     * 
      * @return the lastSyncDateTime value.
      */
     public OffsetDateTime lastSyncDateTime() {
@@ -879,7 +826,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /**
      * Set the lastSyncDateTime property: The date and time that the device last completed a successful sync with
      * Intune.
-     *
+     * 
      * @param lastSyncDateTime the lastSyncDateTime value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -891,7 +838,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /**
      * Get the managedDeviceName property: Automatically generated name to identify a device. Can be overwritten to a
      * user friendly name.
-     *
+     * 
      * @return the managedDeviceName value.
      */
     public String managedDeviceName() {
@@ -901,7 +848,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /**
      * Set the managedDeviceName property: Automatically generated name to identify a device. Can be overwritten to a
      * user friendly name.
-     *
+     * 
      * @param managedDeviceName the managedDeviceName value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -912,7 +859,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the managedDeviceOwnerType property: managedDeviceOwnerType.
-     *
+     * 
      * @return the managedDeviceOwnerType value.
      */
     public MicrosoftGraphManagedDeviceOwnerType managedDeviceOwnerType() {
@@ -921,19 +868,19 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the managedDeviceOwnerType property: managedDeviceOwnerType.
-     *
+     * 
      * @param managedDeviceOwnerType the managedDeviceOwnerType value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
-    public MicrosoftGraphManagedDevice withManagedDeviceOwnerType(
-        MicrosoftGraphManagedDeviceOwnerType managedDeviceOwnerType) {
+    public MicrosoftGraphManagedDevice
+        withManagedDeviceOwnerType(MicrosoftGraphManagedDeviceOwnerType managedDeviceOwnerType) {
         this.managedDeviceOwnerType = managedDeviceOwnerType;
         return this;
     }
 
     /**
      * Get the managementAgent property: managementAgentType.
-     *
+     * 
      * @return the managementAgent value.
      */
     public MicrosoftGraphManagementAgentType managementAgent() {
@@ -942,7 +889,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the managementAgent property: managementAgentType.
-     *
+     * 
      * @param managementAgent the managementAgent value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -953,7 +900,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the manufacturer property: Manufacturer of the device.
-     *
+     * 
      * @return the manufacturer value.
      */
     public String manufacturer() {
@@ -962,7 +909,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the manufacturer property: Manufacturer of the device.
-     *
+     * 
      * @param manufacturer the manufacturer value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -973,7 +920,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the meid property: MEID.
-     *
+     * 
      * @return the meid value.
      */
     public String meid() {
@@ -982,7 +929,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the meid property: MEID.
-     *
+     * 
      * @param meid the meid value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -993,7 +940,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the model property: Model of the device.
-     *
+     * 
      * @return the model value.
      */
     public String model() {
@@ -1002,7 +949,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the model property: Model of the device.
-     *
+     * 
      * @param model the model value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1013,7 +960,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the operatingSystem property: Operating system of the device. Windows, iOS, etc.
-     *
+     * 
      * @return the operatingSystem value.
      */
     public String operatingSystem() {
@@ -1022,7 +969,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the operatingSystem property: Operating system of the device. Windows, iOS, etc.
-     *
+     * 
      * @param operatingSystem the operatingSystem value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1033,7 +980,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the osVersion property: Operating system version of the device.
-     *
+     * 
      * @return the osVersion value.
      */
     public String osVersion() {
@@ -1042,7 +989,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the osVersion property: Operating system version of the device.
-     *
+     * 
      * @param osVersion the osVersion value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1053,7 +1000,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the partnerReportedThreatState property: managedDevicePartnerReportedHealthState.
-     *
+     * 
      * @return the partnerReportedThreatState value.
      */
     public MicrosoftGraphManagedDevicePartnerReportedHealthState partnerReportedThreatState() {
@@ -1062,7 +1009,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the partnerReportedThreatState property: managedDevicePartnerReportedHealthState.
-     *
+     * 
      * @param partnerReportedThreatState the partnerReportedThreatState value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1074,7 +1021,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the phoneNumber property: Phone number of the device.
-     *
+     * 
      * @return the phoneNumber value.
      */
     public String phoneNumber() {
@@ -1083,7 +1030,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the phoneNumber property: Phone number of the device.
-     *
+     * 
      * @param phoneNumber the phoneNumber value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1095,7 +1042,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /**
      * Get the remoteAssistanceSessionErrorDetails property: An error string that identifies issues when creating Remote
      * Assistance session objects.
-     *
+     * 
      * @return the remoteAssistanceSessionErrorDetails value.
      */
     public String remoteAssistanceSessionErrorDetails() {
@@ -1105,12 +1052,12 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /**
      * Set the remoteAssistanceSessionErrorDetails property: An error string that identifies issues when creating Remote
      * Assistance session objects.
-     *
+     * 
      * @param remoteAssistanceSessionErrorDetails the remoteAssistanceSessionErrorDetails value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
-    public MicrosoftGraphManagedDevice withRemoteAssistanceSessionErrorDetails(
-        String remoteAssistanceSessionErrorDetails) {
+    public MicrosoftGraphManagedDevice
+        withRemoteAssistanceSessionErrorDetails(String remoteAssistanceSessionErrorDetails) {
         this.remoteAssistanceSessionErrorDetails = remoteAssistanceSessionErrorDetails;
         return this;
     }
@@ -1118,7 +1065,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /**
      * Get the remoteAssistanceSessionUrl property: Url that allows a Remote Assistance session to be established with
      * the device.
-     *
+     * 
      * @return the remoteAssistanceSessionUrl value.
      */
     public String remoteAssistanceSessionUrl() {
@@ -1128,7 +1075,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     /**
      * Set the remoteAssistanceSessionUrl property: Url that allows a Remote Assistance session to be established with
      * the device.
-     *
+     * 
      * @param remoteAssistanceSessionUrl the remoteAssistanceSessionUrl value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1139,7 +1086,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the serialNumber property: SerialNumber.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -1148,7 +1095,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the serialNumber property: SerialNumber.
-     *
+     * 
      * @param serialNumber the serialNumber value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1159,7 +1106,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the subscriberCarrier property: Subscriber Carrier.
-     *
+     * 
      * @return the subscriberCarrier value.
      */
     public String subscriberCarrier() {
@@ -1168,7 +1115,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the subscriberCarrier property: Subscriber Carrier.
-     *
+     * 
      * @param subscriberCarrier the subscriberCarrier value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1179,7 +1126,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the totalStorageSpaceInBytes property: Total Storage in Bytes.
-     *
+     * 
      * @return the totalStorageSpaceInBytes value.
      */
     public Long totalStorageSpaceInBytes() {
@@ -1188,7 +1135,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the totalStorageSpaceInBytes property: Total Storage in Bytes.
-     *
+     * 
      * @param totalStorageSpaceInBytes the totalStorageSpaceInBytes value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1199,7 +1146,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the userDisplayName property: User display name.
-     *
+     * 
      * @return the userDisplayName value.
      */
     public String userDisplayName() {
@@ -1208,7 +1155,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the userDisplayName property: User display name.
-     *
+     * 
      * @param userDisplayName the userDisplayName value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1219,7 +1166,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the userId property: Unique Identifier for the user associated with the device.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -1228,7 +1175,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the userId property: Unique Identifier for the user associated with the device.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1239,7 +1186,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the userPrincipalName property: Device user principal name.
-     *
+     * 
      * @return the userPrincipalName value.
      */
     public String userPrincipalName() {
@@ -1248,7 +1195,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the userPrincipalName property: Device user principal name.
-     *
+     * 
      * @param userPrincipalName the userPrincipalName value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1259,7 +1206,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the wiFiMacAddress property: Wi-Fi MAC.
-     *
+     * 
      * @return the wiFiMacAddress value.
      */
     public String wiFiMacAddress() {
@@ -1268,7 +1215,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the wiFiMacAddress property: Wi-Fi MAC.
-     *
+     * 
      * @param wiFiMacAddress the wiFiMacAddress value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1279,7 +1226,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the deviceCompliancePolicyStates property: Device compliance policy states for this device.
-     *
+     * 
      * @return the deviceCompliancePolicyStates value.
      */
     public List<MicrosoftGraphDeviceCompliancePolicyState> deviceCompliancePolicyStates() {
@@ -1288,19 +1235,19 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the deviceCompliancePolicyStates property: Device compliance policy states for this device.
-     *
+     * 
      * @param deviceCompliancePolicyStates the deviceCompliancePolicyStates value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
-    public MicrosoftGraphManagedDevice withDeviceCompliancePolicyStates(
-        List<MicrosoftGraphDeviceCompliancePolicyState> deviceCompliancePolicyStates) {
+    public MicrosoftGraphManagedDevice
+        withDeviceCompliancePolicyStates(List<MicrosoftGraphDeviceCompliancePolicyState> deviceCompliancePolicyStates) {
         this.deviceCompliancePolicyStates = deviceCompliancePolicyStates;
         return this;
     }
 
     /**
      * Get the deviceConfigurationStates property: Device configuration states for this device.
-     *
+     * 
      * @return the deviceConfigurationStates value.
      */
     public List<MicrosoftGraphDeviceConfigurationState> deviceConfigurationStates() {
@@ -1309,24 +1256,23 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Set the deviceConfigurationStates property: Device configuration states for this device.
-     *
+     * 
      * @param deviceConfigurationStates the deviceConfigurationStates value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
-    public MicrosoftGraphManagedDevice withDeviceConfigurationStates(
-        List<MicrosoftGraphDeviceConfigurationState> deviceConfigurationStates) {
+    public MicrosoftGraphManagedDevice
+        withDeviceConfigurationStates(List<MicrosoftGraphDeviceConfigurationState> deviceConfigurationStates) {
         this.deviceConfigurationStates = deviceConfigurationStates;
         return this;
     }
 
     /**
-     * Get the deviceCategory property: deviceCategory
-     *
-     * <p>Device categories provides a way to organize your devices. Using device categories, company administrators can
-     * define their own categories that make sense to their company. These categories can then be applied to a device in
-     * the Intune Azure console or selected by a user during device enrollment. You can filter reports and create
-     * dynamic Azure Active Directory device groups based on device categories.
-     *
+     * Get the deviceCategory property: Device categories provides a way to organize your devices. Using device
+     * categories, company administrators can define their own categories that make sense to their company. These
+     * categories can then be applied to a device in the Intune Azure console or selected by a user during device
+     * enrollment. You can filter reports and create dynamic Azure Active Directory device groups based on device
+     * categories.
+     * 
      * @return the deviceCategory value.
      */
     public MicrosoftGraphDeviceCategory deviceCategory() {
@@ -1334,13 +1280,12 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the deviceCategory property: deviceCategory
-     *
-     * <p>Device categories provides a way to organize your devices. Using device categories, company administrators can
-     * define their own categories that make sense to their company. These categories can then be applied to a device in
-     * the Intune Azure console or selected by a user during device enrollment. You can filter reports and create
-     * dynamic Azure Active Directory device groups based on device categories.
-     *
+     * Set the deviceCategory property: Device categories provides a way to organize your devices. Using device
+     * categories, company administrators can define their own categories that make sense to their company. These
+     * categories can then be applied to a device in the Intune Azure console or selected by a user during device
+     * enrollment. You can filter reports and create dynamic Azure Active Directory device groups based on device
+     * categories.
+     * 
      * @param deviceCategory the deviceCategory value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1351,17 +1296,16 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: Devices that are managed or pre-enrolled through Intune.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Devices that are managed or pre-enrolled through Intune.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
      */
@@ -1370,15 +1314,9 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphManagedDevice withId(String id) {
         super.withId(id);
@@ -1387,7 +1325,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -1411,5 +1349,251 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
         if (deviceCategory() != null) {
             deviceCategory().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("activationLockBypassCode", this.activationLockBypassCode);
+        jsonWriter.writeStringField("androidSecurityPatchLevel", this.androidSecurityPatchLevel);
+        jsonWriter.writeStringField("azureADDeviceId", this.azureADDeviceId);
+        jsonWriter.writeBooleanField("azureADRegistered", this.azureADRegistered);
+        jsonWriter.writeStringField("complianceGracePeriodExpirationDateTime",
+            this.complianceGracePeriodExpirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.complianceGracePeriodExpirationDateTime));
+        jsonWriter.writeStringField("complianceState",
+            this.complianceState == null ? null : this.complianceState.toString());
+        jsonWriter.writeJsonField("configurationManagerClientEnabledFeatures",
+            this.configurationManagerClientEnabledFeatures);
+        jsonWriter.writeArrayField("deviceActionResults", this.deviceActionResults,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("deviceCategoryDisplayName", this.deviceCategoryDisplayName);
+        jsonWriter.writeStringField("deviceEnrollmentType",
+            this.deviceEnrollmentType == null ? null : this.deviceEnrollmentType.toString());
+        jsonWriter.writeJsonField("deviceHealthAttestationState", this.deviceHealthAttestationState);
+        jsonWriter.writeStringField("deviceName", this.deviceName);
+        jsonWriter.writeStringField("deviceRegistrationState",
+            this.deviceRegistrationState == null ? null : this.deviceRegistrationState.toString());
+        jsonWriter.writeBooleanField("easActivated", this.easActivated);
+        jsonWriter.writeStringField("easActivationDateTime",
+            this.easActivationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.easActivationDateTime));
+        jsonWriter.writeStringField("easDeviceId", this.easDeviceId);
+        jsonWriter.writeStringField("emailAddress", this.emailAddress);
+        jsonWriter.writeStringField("enrolledDateTime",
+            this.enrolledDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.enrolledDateTime));
+        jsonWriter.writeStringField("exchangeAccessState",
+            this.exchangeAccessState == null ? null : this.exchangeAccessState.toString());
+        jsonWriter.writeStringField("exchangeAccessStateReason",
+            this.exchangeAccessStateReason == null ? null : this.exchangeAccessStateReason.toString());
+        jsonWriter.writeStringField("exchangeLastSuccessfulSyncDateTime",
+            this.exchangeLastSuccessfulSyncDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.exchangeLastSuccessfulSyncDateTime));
+        jsonWriter.writeNumberField("freeStorageSpaceInBytes", this.freeStorageSpaceInBytes);
+        jsonWriter.writeStringField("imei", this.imei);
+        jsonWriter.writeBooleanField("isEncrypted", this.isEncrypted);
+        jsonWriter.writeBooleanField("isSupervised", this.isSupervised);
+        jsonWriter.writeStringField("jailBroken", this.jailBroken);
+        jsonWriter.writeStringField("lastSyncDateTime",
+            this.lastSyncDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSyncDateTime));
+        jsonWriter.writeStringField("managedDeviceName", this.managedDeviceName);
+        jsonWriter.writeStringField("managedDeviceOwnerType",
+            this.managedDeviceOwnerType == null ? null : this.managedDeviceOwnerType.toString());
+        jsonWriter.writeStringField("managementAgent",
+            this.managementAgent == null ? null : this.managementAgent.toString());
+        jsonWriter.writeStringField("manufacturer", this.manufacturer);
+        jsonWriter.writeStringField("meid", this.meid);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("operatingSystem", this.operatingSystem);
+        jsonWriter.writeStringField("osVersion", this.osVersion);
+        jsonWriter.writeStringField("partnerReportedThreatState",
+            this.partnerReportedThreatState == null ? null : this.partnerReportedThreatState.toString());
+        jsonWriter.writeStringField("phoneNumber", this.phoneNumber);
+        jsonWriter.writeStringField("remoteAssistanceSessionErrorDetails", this.remoteAssistanceSessionErrorDetails);
+        jsonWriter.writeStringField("remoteAssistanceSessionUrl", this.remoteAssistanceSessionUrl);
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeStringField("subscriberCarrier", this.subscriberCarrier);
+        jsonWriter.writeNumberField("totalStorageSpaceInBytes", this.totalStorageSpaceInBytes);
+        jsonWriter.writeStringField("userDisplayName", this.userDisplayName);
+        jsonWriter.writeStringField("userId", this.userId);
+        jsonWriter.writeStringField("userPrincipalName", this.userPrincipalName);
+        jsonWriter.writeStringField("wiFiMacAddress", this.wiFiMacAddress);
+        jsonWriter.writeArrayField("deviceCompliancePolicyStates", this.deviceCompliancePolicyStates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("deviceConfigurationStates", this.deviceConfigurationStates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("deviceCategory", this.deviceCategory);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphManagedDevice from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphManagedDevice if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphManagedDevice.
+     */
+    public static MicrosoftGraphManagedDevice fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphManagedDevice deserializedMicrosoftGraphManagedDevice = new MicrosoftGraphManagedDevice();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.withId(reader.getString());
+                } else if ("activationLockBypassCode".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.activationLockBypassCode = reader.getString();
+                } else if ("androidSecurityPatchLevel".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.androidSecurityPatchLevel = reader.getString();
+                } else if ("azureADDeviceId".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.azureADDeviceId = reader.getString();
+                } else if ("azureADRegistered".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.azureADRegistered
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("complianceGracePeriodExpirationDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.complianceGracePeriodExpirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("complianceState".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.complianceState
+                        = MicrosoftGraphComplianceState.fromString(reader.getString());
+                } else if ("configurationManagerClientEnabledFeatures".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.configurationManagerClientEnabledFeatures
+                        = MicrosoftGraphConfigurationManagerClientEnabledFeatures.fromJson(reader);
+                } else if ("deviceActionResults".equals(fieldName)) {
+                    List<MicrosoftGraphDeviceActionResult> deviceActionResults
+                        = reader.readArray(reader1 -> MicrosoftGraphDeviceActionResult.fromJson(reader1));
+                    deserializedMicrosoftGraphManagedDevice.deviceActionResults = deviceActionResults;
+                } else if ("deviceCategoryDisplayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.deviceCategoryDisplayName = reader.getString();
+                } else if ("deviceEnrollmentType".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.deviceEnrollmentType
+                        = MicrosoftGraphDeviceEnrollmentType.fromString(reader.getString());
+                } else if ("deviceHealthAttestationState".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.deviceHealthAttestationState
+                        = MicrosoftGraphDeviceHealthAttestationState.fromJson(reader);
+                } else if ("deviceName".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.deviceName = reader.getString();
+                } else if ("deviceRegistrationState".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.deviceRegistrationState
+                        = MicrosoftGraphDeviceRegistrationState.fromString(reader.getString());
+                } else if ("easActivated".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.easActivated = reader.getNullable(JsonReader::getBoolean);
+                } else if ("easActivationDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.easActivationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("easDeviceId".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.easDeviceId = reader.getString();
+                } else if ("emailAddress".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.emailAddress = reader.getString();
+                } else if ("enrolledDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.enrolledDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("exchangeAccessState".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.exchangeAccessState
+                        = MicrosoftGraphDeviceManagementExchangeAccessState.fromString(reader.getString());
+                } else if ("exchangeAccessStateReason".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.exchangeAccessStateReason
+                        = MicrosoftGraphDeviceManagementExchangeAccessStateReason.fromString(reader.getString());
+                } else if ("exchangeLastSuccessfulSyncDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.exchangeLastSuccessfulSyncDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("freeStorageSpaceInBytes".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.freeStorageSpaceInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("imei".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.imei = reader.getString();
+                } else if ("isEncrypted".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.isEncrypted = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isSupervised".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.isSupervised = reader.getNullable(JsonReader::getBoolean);
+                } else if ("jailBroken".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.jailBroken = reader.getString();
+                } else if ("lastSyncDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.lastSyncDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("managedDeviceName".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.managedDeviceName = reader.getString();
+                } else if ("managedDeviceOwnerType".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.managedDeviceOwnerType
+                        = MicrosoftGraphManagedDeviceOwnerType.fromString(reader.getString());
+                } else if ("managementAgent".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.managementAgent
+                        = MicrosoftGraphManagementAgentType.fromString(reader.getString());
+                } else if ("manufacturer".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.manufacturer = reader.getString();
+                } else if ("meid".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.meid = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.model = reader.getString();
+                } else if ("operatingSystem".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.operatingSystem = reader.getString();
+                } else if ("osVersion".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.osVersion = reader.getString();
+                } else if ("partnerReportedThreatState".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.partnerReportedThreatState
+                        = MicrosoftGraphManagedDevicePartnerReportedHealthState.fromString(reader.getString());
+                } else if ("phoneNumber".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.phoneNumber = reader.getString();
+                } else if ("remoteAssistanceSessionErrorDetails".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.remoteAssistanceSessionErrorDetails = reader.getString();
+                } else if ("remoteAssistanceSessionUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.remoteAssistanceSessionUrl = reader.getString();
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.serialNumber = reader.getString();
+                } else if ("subscriberCarrier".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.subscriberCarrier = reader.getString();
+                } else if ("totalStorageSpaceInBytes".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.totalStorageSpaceInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("userDisplayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.userDisplayName = reader.getString();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.userId = reader.getString();
+                } else if ("userPrincipalName".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.userPrincipalName = reader.getString();
+                } else if ("wiFiMacAddress".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.wiFiMacAddress = reader.getString();
+                } else if ("deviceCompliancePolicyStates".equals(fieldName)) {
+                    List<MicrosoftGraphDeviceCompliancePolicyState> deviceCompliancePolicyStates
+                        = reader.readArray(reader1 -> MicrosoftGraphDeviceCompliancePolicyState.fromJson(reader1));
+                    deserializedMicrosoftGraphManagedDevice.deviceCompliancePolicyStates = deviceCompliancePolicyStates;
+                } else if ("deviceConfigurationStates".equals(fieldName)) {
+                    List<MicrosoftGraphDeviceConfigurationState> deviceConfigurationStates
+                        = reader.readArray(reader1 -> MicrosoftGraphDeviceConfigurationState.fromJson(reader1));
+                    deserializedMicrosoftGraphManagedDevice.deviceConfigurationStates = deviceConfigurationStates;
+                } else if ("deviceCategory".equals(fieldName)) {
+                    deserializedMicrosoftGraphManagedDevice.deviceCategory
+                        = MicrosoftGraphDeviceCategory.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphManagedDevice.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphManagedDevice;
+        });
     }
 }

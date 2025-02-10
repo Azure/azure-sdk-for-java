@@ -12,8 +12,8 @@ public final class ApiKeysImpl implements ApiKeys {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    ApiKeysImpl(
-        ApiKeysInner innerObject, com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
+    ApiKeysImpl(ApiKeysInner innerObject,
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

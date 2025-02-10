@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Describes the properties of a Message Details resource. */
+/**
+ * Describes the properties of a Message Details resource.
+ */
 @Fluent
-public final class MessageProperties {
+public final class MessageProperties implements JsonSerializable<MessageProperties> {
     /*
      * Content type.
      */
-    @JsonProperty(value = "contentType", access = JsonProperty.Access.WRITE_ONLY)
     private TranscriptContentType contentType;
 
     /*
      * Direction of communication.
      */
-    @JsonProperty(value = "communicationDirection", access = JsonProperty.Access.WRITE_ONLY)
     private CommunicationDirection communicationDirection;
 
     /*
      * Name of the sender.
      */
-    @JsonProperty(value = "sender")
     private String sender;
 
     /*
      * Body of the communication.
      */
-    @JsonProperty(value = "body", required = true)
     private String body;
 
     /*
      * Time in UTC (ISO 8601 format) when the communication was created.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
-    /** Creates an instance of MessageProperties class. */
+    /**
+     * Creates an instance of MessageProperties class.
+     */
     public MessageProperties() {
     }
 
     /**
      * Get the contentType property: Content type.
-     *
+     * 
      * @return the contentType value.
      */
     public TranscriptContentType contentType() {
@@ -57,7 +60,7 @@ public final class MessageProperties {
 
     /**
      * Get the communicationDirection property: Direction of communication.
-     *
+     * 
      * @return the communicationDirection value.
      */
     public CommunicationDirection communicationDirection() {
@@ -66,7 +69,7 @@ public final class MessageProperties {
 
     /**
      * Get the sender property: Name of the sender.
-     *
+     * 
      * @return the sender value.
      */
     public String sender() {
@@ -75,7 +78,7 @@ public final class MessageProperties {
 
     /**
      * Set the sender property: Name of the sender.
-     *
+     * 
      * @param sender the sender value to set.
      * @return the MessageProperties object itself.
      */
@@ -86,7 +89,7 @@ public final class MessageProperties {
 
     /**
      * Get the body property: Body of the communication.
-     *
+     * 
      * @return the body value.
      */
     public String body() {
@@ -95,7 +98,7 @@ public final class MessageProperties {
 
     /**
      * Set the body property: Body of the communication.
-     *
+     * 
      * @param body the body value to set.
      * @return the MessageProperties object itself.
      */
@@ -106,7 +109,7 @@ public final class MessageProperties {
 
     /**
      * Get the createdDate property: Time in UTC (ISO 8601 format) when the communication was created.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -115,16 +118,56 @@ public final class MessageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (body() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property body in model MessageProperties"));
-        }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(MessageProperties.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sender", this.sender);
+        jsonWriter.writeStringField("body", this.body);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MessageProperties.
+     */
+    public static MessageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MessageProperties deserializedMessageProperties = new MessageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contentType".equals(fieldName)) {
+                    deserializedMessageProperties.contentType = TranscriptContentType.fromString(reader.getString());
+                } else if ("communicationDirection".equals(fieldName)) {
+                    deserializedMessageProperties.communicationDirection
+                        = CommunicationDirection.fromString(reader.getString());
+                } else if ("sender".equals(fieldName)) {
+                    deserializedMessageProperties.sender = reader.getString();
+                } else if ("body".equals(fieldName)) {
+                    deserializedMessageProperties.body = reader.getString();
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedMessageProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMessageProperties;
+        });
+    }
 }

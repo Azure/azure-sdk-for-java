@@ -8,67 +8,69 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of CloudLinks. */
+/**
+ * Resource collection API of CloudLinks.
+ */
 public interface CloudLinks {
     /**
-     * List cloud link in a private cloud.
-     *
+     * List CloudLink resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of cloud links as paginated response with {@link PagedIterable}.
+     * @return the response of a CloudLink list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CloudLink> list(String resourceGroupName, String privateCloudName);
 
     /**
-     * List cloud link in a private cloud.
-     *
+     * List CloudLink resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of cloud links as paginated response with {@link PagedIterable}.
+     * @return the response of a CloudLink list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CloudLink> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
-     * Get an cloud link by name in a private cloud.
-     *
+     * Get a CloudLink.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param cloudLinkName Name of the cloud link resource.
+     * @param cloudLinkName Name of the cloud link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an cloud link by name in a private cloud along with {@link Response}.
+     * @return a CloudLink along with {@link Response}.
      */
-    Response<CloudLink> getWithResponse(
-        String resourceGroupName, String privateCloudName, String cloudLinkName, Context context);
+    Response<CloudLink> getWithResponse(String resourceGroupName, String privateCloudName, String cloudLinkName,
+        Context context);
 
     /**
-     * Get an cloud link by name in a private cloud.
-     *
+     * Get a CloudLink.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param cloudLinkName Name of the cloud link resource.
+     * @param cloudLinkName Name of the cloud link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an cloud link by name in a private cloud.
+     * @return a CloudLink.
      */
     CloudLink get(String resourceGroupName, String privateCloudName, String cloudLinkName);
 
     /**
-     * Delete a cloud link in a private cloud.
-     *
+     * Delete a CloudLink.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param cloudLinkName Name of the cloud link resource.
+     * @param cloudLinkName Name of the cloud link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -76,11 +78,11 @@ public interface CloudLinks {
     void delete(String resourceGroupName, String privateCloudName, String cloudLinkName);
 
     /**
-     * Delete a cloud link in a private cloud.
-     *
+     * Delete a CloudLink.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param cloudLinkName Name of the cloud link resource.
+     * @param cloudLinkName Name of the cloud link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -89,31 +91,31 @@ public interface CloudLinks {
     void delete(String resourceGroupName, String privateCloudName, String cloudLinkName, Context context);
 
     /**
-     * Get an cloud link by name in a private cloud.
-     *
+     * Get a CloudLink.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an cloud link by name in a private cloud along with {@link Response}.
+     * @return a CloudLink along with {@link Response}.
      */
     CloudLink getById(String id);
 
     /**
-     * Get an cloud link by name in a private cloud.
-     *
+     * Get a CloudLink.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an cloud link by name in a private cloud along with {@link Response}.
+     * @return a CloudLink along with {@link Response}.
      */
     Response<CloudLink> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete a cloud link in a private cloud.
-     *
+     * Delete a CloudLink.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,8 +124,8 @@ public interface CloudLinks {
     void deleteById(String id);
 
     /**
-     * Delete a cloud link in a private cloud.
-     *
+     * Delete a CloudLink.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +136,7 @@ public interface CloudLinks {
 
     /**
      * Begins definition for a new CloudLink resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new CloudLink definition.
      */

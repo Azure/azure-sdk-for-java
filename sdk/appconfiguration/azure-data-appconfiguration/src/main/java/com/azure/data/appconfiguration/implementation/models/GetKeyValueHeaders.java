@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The GetKeyValueHeaders model. */
+/**
+ * The GetKeyValueHeaders model.
+ */
 @Fluent
 public final class GetKeyValueHeaders {
     /*
@@ -26,7 +28,7 @@ public final class GetKeyValueHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of GetKeyValueHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public GetKeyValueHeaders(HttpHeaders rawHeaders) {
@@ -36,7 +38,7 @@ public final class GetKeyValueHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -45,7 +47,7 @@ public final class GetKeyValueHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the GetKeyValueHeaders object itself.
      */
@@ -56,7 +58,7 @@ public final class GetKeyValueHeaders {
 
     /**
      * Get the syncToken property: The Sync-Token property.
-     *
+     * 
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -65,7 +67,7 @@ public final class GetKeyValueHeaders {
 
     /**
      * Set the syncToken property: The Sync-Token property.
-     *
+     * 
      * @param syncToken the syncToken value to set.
      * @return the GetKeyValueHeaders object itself.
      */

@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Streaming protocol. */
+/**
+ * Streaming protocol.
+ */
 public final class StreamingPolicyStreamingProtocol extends ExpandableStringEnum<StreamingPolicyStreamingProtocol> {
-    /** Static value Hls for StreamingPolicyStreamingProtocol. */
+    /**
+     * Static value Hls for StreamingPolicyStreamingProtocol.
+     */
     public static final StreamingPolicyStreamingProtocol HLS = fromString("Hls");
 
-    /** Static value Dash for StreamingPolicyStreamingProtocol. */
+    /**
+     * Static value Dash for StreamingPolicyStreamingProtocol.
+     */
     public static final StreamingPolicyStreamingProtocol DASH = fromString("Dash");
 
-    /** Static value SmoothStreaming for StreamingPolicyStreamingProtocol. */
+    /**
+     * Static value SmoothStreaming for StreamingPolicyStreamingProtocol.
+     */
     public static final StreamingPolicyStreamingProtocol SMOOTH_STREAMING = fromString("SmoothStreaming");
 
-    /** Static value Download for StreamingPolicyStreamingProtocol. */
+    /**
+     * Static value Download for StreamingPolicyStreamingProtocol.
+     */
     public static final StreamingPolicyStreamingProtocol DOWNLOAD = fromString("Download");
 
     /**
      * Creates a new instance of StreamingPolicyStreamingProtocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class StreamingPolicyStreamingProtocol extends ExpandableStringEnum
 
     /**
      * Creates or finds a StreamingPolicyStreamingProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StreamingPolicyStreamingProtocol.
      */
-    @JsonCreator
     public static StreamingPolicyStreamingProtocol fromString(String name) {
         return fromString(name, StreamingPolicyStreamingProtocol.class);
     }
 
     /**
      * Gets known StreamingPolicyStreamingProtocol values.
-     *
+     * 
      * @return known StreamingPolicyStreamingProtocol values.
      */
     public static Collection<StreamingPolicyStreamingProtocol> values() {

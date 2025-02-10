@@ -6,33 +6,37 @@ package com.azure.resourcemanager.hdinsight.containers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewPropertiesStatus;
-import com.azure.resourcemanager.hdinsight.containers.models.ServiceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewResultProperties;
+import java.io.IOException;
 
-/** Cluster Instance View. */
+/**
+ * Cluster Instance View.
+ */
 @Fluent
-public final class ClusterInstanceViewResultInner {
+public final class ClusterInstanceViewResultInner implements JsonSerializable<ClusterInstanceViewResultInner> {
     /*
      * Name of the instance view.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Properties of the instance view.
      */
-    @JsonProperty(value = "properties", required = true)
-    private ClusterInstanceViewResultProperties innerProperties = new ClusterInstanceViewResultProperties();
+    private ClusterInstanceViewResultProperties properties;
 
-    /** Creates an instance of ClusterInstanceViewResultInner class. */
+    /**
+     * Creates an instance of ClusterInstanceViewResultInner class.
+     */
     public ClusterInstanceViewResultInner() {
     }
 
     /**
      * Get the name property: Name of the instance view.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +45,7 @@ public final class ClusterInstanceViewResultInner {
 
     /**
      * Set the name property: Name of the instance view.
-     *
+     * 
      * @param name the name value to set.
      * @return the ClusterInstanceViewResultInner object itself.
      */
@@ -51,83 +55,86 @@ public final class ClusterInstanceViewResultInner {
     }
 
     /**
-     * Get the innerProperties property: Properties of the instance view.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: Properties of the instance view.
+     * 
+     * @return the properties value.
      */
-    private ClusterInstanceViewResultProperties innerProperties() {
-        return this.innerProperties;
+    public ClusterInstanceViewResultProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the status property: Status of the instance view.
-     *
-     * @return the status value.
-     */
-    public ClusterInstanceViewPropertiesStatus status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
-    }
-
-    /**
-     * Set the status property: Status of the instance view.
-     *
-     * @param status the status value to set.
+     * Set the properties property: Properties of the instance view.
+     * 
+     * @param properties the properties value to set.
      * @return the ClusterInstanceViewResultInner object itself.
      */
-    public ClusterInstanceViewResultInner withStatus(ClusterInstanceViewPropertiesStatus status) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterInstanceViewResultProperties();
-        }
-        this.innerProperties().withStatus(status);
-        return this;
-    }
-
-    /**
-     * Get the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on aks cluster
-     * to surface to the customer.
-     *
-     * @return the serviceStatuses value.
-     */
-    public List<ServiceStatus> serviceStatuses() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceStatuses();
-    }
-
-    /**
-     * Set the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on aks cluster
-     * to surface to the customer.
-     *
-     * @param serviceStatuses the serviceStatuses value to set.
-     * @return the ClusterInstanceViewResultInner object itself.
-     */
-    public ClusterInstanceViewResultInner withServiceStatuses(List<ServiceStatus> serviceStatuses) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterInstanceViewResultProperties();
-        }
-        this.innerProperties().withServiceStatuses(serviceStatuses);
+    public ClusterInstanceViewResultInner withProperties(ClusterInstanceViewResultProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ClusterInstanceViewResultInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ClusterInstanceViewResultInner"));
         }
-        if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ClusterInstanceViewResultInner"));
+        if (properties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model ClusterInstanceViewResultInner"));
         } else {
-            innerProperties().validate();
+            properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterInstanceViewResultInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInstanceViewResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInstanceViewResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInstanceViewResultInner.
+     */
+    public static ClusterInstanceViewResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInstanceViewResultInner deserializedClusterInstanceViewResultInner
+                = new ClusterInstanceViewResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedClusterInstanceViewResultInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterInstanceViewResultInner.properties
+                        = ClusterInstanceViewResultProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInstanceViewResultInner;
+        });
+    }
 }

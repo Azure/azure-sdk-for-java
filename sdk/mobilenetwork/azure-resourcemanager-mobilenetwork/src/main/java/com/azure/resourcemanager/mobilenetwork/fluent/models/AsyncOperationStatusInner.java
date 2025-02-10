@@ -6,74 +6,75 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The current status of an async operation. */
+/**
+ * The current status of an async operation.
+ */
 @Fluent
-public final class AsyncOperationStatusInner {
+public final class AsyncOperationStatusInner implements JsonSerializable<AsyncOperationStatusInner> {
     /*
      * Fully qualified ID for the async operation.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Name of the async operation.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The operation status.
      */
-    @JsonProperty(value = "status", required = true)
     private String status;
 
     /*
      * Fully qualified ID for the resource that this async operation status relates to.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The start time of the operation.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time of the operation.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Percentage of the operation that is complete.
      */
-    @JsonProperty(value = "percentComplete")
     private Double percentComplete;
 
     /*
      * Properties returned by the resource provider on a successful operation
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * If present, details of the operation error.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of AsyncOperationStatusInner class. */
+    /**
+     * Creates an instance of AsyncOperationStatusInner class.
+     */
     public AsyncOperationStatusInner() {
     }
 
     /**
      * Get the id property: Fully qualified ID for the async operation.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -82,7 +83,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Set the id property: Fully qualified ID for the async operation.
-     *
+     * 
      * @param id the id value to set.
      * @return the AsyncOperationStatusInner object itself.
      */
@@ -93,7 +94,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Get the name property: Name of the async operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -102,7 +103,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Set the name property: Name of the async operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the AsyncOperationStatusInner object itself.
      */
@@ -113,7 +114,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Get the status property: The operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -122,7 +123,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Set the status property: The operation status.
-     *
+     * 
      * @param status the status value to set.
      * @return the AsyncOperationStatusInner object itself.
      */
@@ -133,7 +134,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Get the resourceId property: Fully qualified ID for the resource that this async operation status relates to.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -142,7 +143,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Set the resourceId property: Fully qualified ID for the resource that this async operation status relates to.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the AsyncOperationStatusInner object itself.
      */
@@ -153,7 +154,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Get the startTime property: The start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -162,7 +163,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Set the startTime property: The start time of the operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the AsyncOperationStatusInner object itself.
      */
@@ -173,7 +174,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Get the endTime property: The end time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -182,7 +183,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Set the endTime property: The end time of the operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the AsyncOperationStatusInner object itself.
      */
@@ -193,7 +194,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Get the percentComplete property: Percentage of the operation that is complete.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Double percentComplete() {
@@ -202,7 +203,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Set the percentComplete property: Percentage of the operation that is complete.
-     *
+     * 
      * @param percentComplete the percentComplete value to set.
      * @return the AsyncOperationStatusInner object itself.
      */
@@ -213,7 +214,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Get the properties property: Properties returned by the resource provider on a successful operation.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -222,7 +223,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Set the properties property: Properties returned by the resource provider on a successful operation.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AsyncOperationStatusInner object itself.
      */
@@ -233,7 +234,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Get the error property: If present, details of the operation error.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -242,7 +243,7 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Set the error property: If present, details of the operation error.
-     *
+     * 
      * @param error the error value to set.
      * @return the AsyncOperationStatusInner object itself.
      */
@@ -253,17 +254,81 @@ public final class AsyncOperationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model AsyncOperationStatusInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model AsyncOperationStatusInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AsyncOperationStatusInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeNumberField("percentComplete", this.percentComplete);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AsyncOperationStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AsyncOperationStatusInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AsyncOperationStatusInner.
+     */
+    public static AsyncOperationStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AsyncOperationStatusInner deserializedAsyncOperationStatusInner = new AsyncOperationStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedAsyncOperationStatusInner.status = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedAsyncOperationStatusInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAsyncOperationStatusInner.name = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedAsyncOperationStatusInner.resourceId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedAsyncOperationStatusInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedAsyncOperationStatusInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedAsyncOperationStatusInner.percentComplete = reader.getNullable(JsonReader::getDouble);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAsyncOperationStatusInner.properties = reader.readUntyped();
+                } else if ("error".equals(fieldName)) {
+                    deserializedAsyncOperationStatusInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAsyncOperationStatusInner;
+        });
+    }
 }

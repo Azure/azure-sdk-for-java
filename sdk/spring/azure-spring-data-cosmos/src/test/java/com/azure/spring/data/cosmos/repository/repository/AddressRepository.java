@@ -59,6 +59,9 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
     @Query("select DISTINCT value a.postalCode from a where a.city = @city")
     List<String> annotatedFindPostalCodeValuesByCity(@Param("city") String city);
 
+    @Query("SELECT VALUE SUM(a.longId) from a where a.city = @city")
+    Long annotatedSumLongIdValuesByCity(@Param("city") String city);
+
     @Query(value = "select * from a where a.city IN (@cities)")
     List<Address> annotatedFindByCityIn(@Param("cities") List<String> cities, Sort sort);
 
@@ -85,4 +88,25 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
 
     @Query(value = "SELECT * FROM a WHERE ARRAY_CONTAINS(@cities, a.city) ")
     List<Address> annotatedFindByCitiesWithSort(@Param("cities") List<String> cities, Sort sort);
+
+    @Query(value = "SELECT * FROM C")
+
+    List<Address> annotatedFindAllWithSort(Sort sort);
+
+    Address findFirstByOrderByStreetAsc();
+
+    Address findFirstByOrderByStreetDesc();
+
+    Address findTopByOrderByStreetAsc();
+
+    Address findTopByOrderByStreetDesc();
+
+    List<Address> findAllByStreetNotNull();
+
+    List<Address> findFirst2ByOrderByStreetAsc();
+
+    List<Address> findTop3ByOrderByStreetDesc();
+
+    Long countByStreetNotNull();
+
 }

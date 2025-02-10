@@ -5,24 +5,26 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Pipeline that needs to be triggered with the given parameters.
  */
 @Fluent
-public final class TriggerPipelineReference {
+public final class TriggerPipelineReference implements JsonSerializable<TriggerPipelineReference> {
     /*
      * Pipeline reference.
      */
-    @JsonProperty(value = "pipelineReference")
     private PipelineReference pipelineReference;
 
     /*
      * Pipeline parameters.
      */
-    @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
     /**
@@ -69,5 +71,45 @@ public final class TriggerPipelineReference {
     public TriggerPipelineReference setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("pipelineReference", this.pipelineReference);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerPipelineReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerPipelineReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggerPipelineReference.
+     */
+    public static TriggerPipelineReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerPipelineReference deserializedTriggerPipelineReference = new TriggerPipelineReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pipelineReference".equals(fieldName)) {
+                    deserializedTriggerPipelineReference.pipelineReference = PipelineReference.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, Object> parameters = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedTriggerPipelineReference.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerPipelineReference;
+        });
     }
 }

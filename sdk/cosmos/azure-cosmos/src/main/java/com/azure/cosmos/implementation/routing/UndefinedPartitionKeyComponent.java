@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
+import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonGenerator;
 
@@ -68,5 +69,10 @@ class UndefinedPartitionKeyComponent implements IPartitionKeyComponent {
     @Override
     public IPartitionKeyComponent truncate() {
         return this;
+    }
+
+    @Override
+    public Object toObject() {
+        return Undefined.value();
     }
 }

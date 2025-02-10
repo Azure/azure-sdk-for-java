@@ -5,38 +5,55 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Metric units. */
+/**
+ * Metric units.
+ */
 public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
-    /** Static value NotSpecified for MetricUnit. */
+    /**
+     * Static value NotSpecified for MetricUnit.
+     */
     public static final MetricUnit NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Percent for MetricUnit. */
+    /**
+     * Static value Percent for MetricUnit.
+     */
     public static final MetricUnit PERCENT = fromString("Percent");
 
-    /** Static value Count for MetricUnit. */
+    /**
+     * Static value Count for MetricUnit.
+     */
     public static final MetricUnit COUNT = fromString("Count");
 
-    /** Static value Seconds for MetricUnit. */
+    /**
+     * Static value Seconds for MetricUnit.
+     */
     public static final MetricUnit SECONDS = fromString("Seconds");
 
-    /** Static value Milliseconds for MetricUnit. */
+    /**
+     * Static value Milliseconds for MetricUnit.
+     */
     public static final MetricUnit MILLISECONDS = fromString("Milliseconds");
 
-    /** Static value Bytes for MetricUnit. */
+    /**
+     * Static value Bytes for MetricUnit.
+     */
     public static final MetricUnit BYTES = fromString("Bytes");
 
-    /** Static value BytesPerSecond for MetricUnit. */
+    /**
+     * Static value BytesPerSecond for MetricUnit.
+     */
     public static final MetricUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
-    /** Static value CountPerSecond for MetricUnit. */
+    /**
+     * Static value CountPerSecond for MetricUnit.
+     */
     public static final MetricUnit COUNT_PER_SECOND = fromString("CountPerSecond");
 
     /**
      * Creates a new instance of MetricUnit value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +62,17 @@ public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
 
     /**
      * Creates or finds a MetricUnit from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MetricUnit.
      */
-    @JsonCreator
     public static MetricUnit fromString(String name) {
         return fromString(name, MetricUnit.class);
     }
 
     /**
      * Gets known MetricUnit values.
-     *
+     * 
      * @return known MetricUnit values.
      */
     public static Collection<MetricUnit> values() {

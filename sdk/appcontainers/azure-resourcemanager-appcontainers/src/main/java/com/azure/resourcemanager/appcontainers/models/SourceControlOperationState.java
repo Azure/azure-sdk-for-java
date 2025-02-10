@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Current provisioning State of the operation. */
+/**
+ * Current provisioning State of the operation.
+ */
 public final class SourceControlOperationState extends ExpandableStringEnum<SourceControlOperationState> {
-    /** Static value InProgress for SourceControlOperationState. */
+    /**
+     * Static value InProgress for SourceControlOperationState.
+     */
     public static final SourceControlOperationState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Succeeded for SourceControlOperationState. */
+    /**
+     * Static value Succeeded for SourceControlOperationState.
+     */
     public static final SourceControlOperationState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for SourceControlOperationState. */
+    /**
+     * Static value Failed for SourceControlOperationState.
+     */
     public static final SourceControlOperationState FAILED = fromString("Failed");
 
-    /** Static value Canceled for SourceControlOperationState. */
+    /**
+     * Static value Canceled for SourceControlOperationState.
+     */
     public static final SourceControlOperationState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of SourceControlOperationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class SourceControlOperationState extends ExpandableStringEnum<Sour
 
     /**
      * Creates or finds a SourceControlOperationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SourceControlOperationState.
      */
-    @JsonCreator
     public static SourceControlOperationState fromString(String name) {
         return fromString(name, SourceControlOperationState.class);
     }
 
     /**
      * Gets known SourceControlOperationState values.
-     *
+     * 
      * @return known SourceControlOperationState values.
      */
     public static Collection<SourceControlOperationState> values() {

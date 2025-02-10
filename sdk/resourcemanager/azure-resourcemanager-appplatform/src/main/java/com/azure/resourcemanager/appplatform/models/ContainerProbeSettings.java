@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Container liveness and readiness probe settings. */
+/**
+ * Container liveness and readiness probe settings.
+ */
 @Fluent
-public final class ContainerProbeSettings {
+public final class ContainerProbeSettings implements JsonSerializable<ContainerProbeSettings> {
     /*
      * Indicates whether disable the liveness and readiness probe
      */
-    @JsonProperty(value = "disableProbe")
     private Boolean disableProbe;
 
     /**
+     * Creates an instance of ContainerProbeSettings class.
+     */
+    public ContainerProbeSettings() {
+    }
+
+    /**
      * Get the disableProbe property: Indicates whether disable the liveness and readiness probe.
-     *
+     * 
      * @return the disableProbe value.
      */
     public Boolean disableProbe() {
@@ -27,7 +38,7 @@ public final class ContainerProbeSettings {
 
     /**
      * Set the disableProbe property: Indicates whether disable the liveness and readiness probe.
-     *
+     * 
      * @param disableProbe the disableProbe value to set.
      * @return the ContainerProbeSettings object itself.
      */
@@ -38,9 +49,45 @@ public final class ContainerProbeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("disableProbe", this.disableProbe);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerProbeSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerProbeSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerProbeSettings.
+     */
+    public static ContainerProbeSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerProbeSettings deserializedContainerProbeSettings = new ContainerProbeSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disableProbe".equals(fieldName)) {
+                    deserializedContainerProbeSettings.disableProbe = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerProbeSettings;
+        });
     }
 }

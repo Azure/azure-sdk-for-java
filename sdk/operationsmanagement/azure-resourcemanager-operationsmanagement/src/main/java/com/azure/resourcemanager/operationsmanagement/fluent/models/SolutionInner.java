@@ -6,33 +6,53 @@ package com.azure.resourcemanager.operationsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.operationsmanagement.models.SolutionPlan;
 import com.azure.resourcemanager.operationsmanagement.models.SolutionProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The container for solution. */
+/**
+ * The container for solution.
+ */
 @Fluent
 public final class SolutionInner extends Resource {
     /*
      * Plan for solution object supported by the OperationsManagement resource provider.
      */
-    @JsonProperty(value = "plan")
     private SolutionPlan plan;
 
     /*
      * Properties for solution object supported by the OperationsManagement resource provider.
      */
-    @JsonProperty(value = "properties")
     private SolutionProperties properties;
 
-    /** Creates an instance of SolutionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SolutionInner class.
+     */
     public SolutionInner() {
     }
 
     /**
      * Get the plan property: Plan for solution object supported by the OperationsManagement resource provider.
-     *
+     * 
      * @return the plan value.
      */
     public SolutionPlan plan() {
@@ -41,7 +61,7 @@ public final class SolutionInner extends Resource {
 
     /**
      * Set the plan property: Plan for solution object supported by the OperationsManagement resource provider.
-     *
+     * 
      * @param plan the plan value to set.
      * @return the SolutionInner object itself.
      */
@@ -53,7 +73,7 @@ public final class SolutionInner extends Resource {
     /**
      * Get the properties property: Properties for solution object supported by the OperationsManagement resource
      * provider.
-     *
+     * 
      * @return the properties value.
      */
     public SolutionProperties properties() {
@@ -63,7 +83,7 @@ public final class SolutionInner extends Resource {
     /**
      * Set the properties property: Properties for solution object supported by the OperationsManagement resource
      * provider.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SolutionInner object itself.
      */
@@ -72,14 +92,48 @@ public final class SolutionInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SolutionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SolutionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -88,7 +142,7 @@ public final class SolutionInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -98,5 +152,58 @@ public final class SolutionInner extends Resource {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("plan", this.plan);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SolutionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SolutionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SolutionInner.
+     */
+    public static SolutionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SolutionInner deserializedSolutionInner = new SolutionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSolutionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSolutionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSolutionInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSolutionInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSolutionInner.withTags(tags);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedSolutionInner.plan = SolutionPlan.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSolutionInner.properties = SolutionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSolutionInner;
+        });
     }
 }

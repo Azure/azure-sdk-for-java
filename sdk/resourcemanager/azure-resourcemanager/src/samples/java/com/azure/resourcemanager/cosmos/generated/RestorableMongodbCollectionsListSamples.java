@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class RestorableMongodbCollectionsListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBRestorableMongodbCollectionList.json
      */
     /**
@@ -18,7 +18,11 @@ public final class RestorableMongodbCollectionsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBRestorableMongodbCollectionList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getRestorableMongodbCollections().list("WestUS",
-            "98a570f2-63db-4117-91f0-366327b7b353", "PD5DALigDgw=", null, null, com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getRestorableMongodbCollections()
+            .list("WestUS", "98a570f2-63db-4117-91f0-366327b7b353", "PD5DALigDgw=", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -11,14 +11,15 @@ public final class MongoDbV2LinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbV2LinkedServiceTypeProperties model
-            = BinaryData.fromString("{\"connectionString\":\"dataueefrxzwvcvtjd\",\"database\":\"datadagwxjafbdvpcd\"}")
+            = BinaryData.fromString("{\"connectionString\":\"dataqmisoiqge\",\"database\":\"datazgwywyxbwuam\"}")
                 .toObject(MongoDbV2LinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbV2LinkedServiceTypeProperties model = new MongoDbV2LinkedServiceTypeProperties()
-            .withConnectionString("dataueefrxzwvcvtjd").withDatabase("datadagwxjafbdvpcd");
+        MongoDbV2LinkedServiceTypeProperties model
+            = new MongoDbV2LinkedServiceTypeProperties().withConnectionString("dataqmisoiqge")
+                .withDatabase("datazgwywyxbwuam");
         model = BinaryData.fromObject(model).toObject(MongoDbV2LinkedServiceTypeProperties.class);
     }
 }

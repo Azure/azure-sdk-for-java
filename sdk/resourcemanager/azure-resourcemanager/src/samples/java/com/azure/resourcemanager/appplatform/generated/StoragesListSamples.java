@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Storages List. */
+/**
+ * Samples for Storages List.
+ */
 public final class StoragesListSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Storages_List.json
+     * x-ms-original-file:
+     * specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Storages_List.json
      */
     /**
      * Sample code: Storages_List.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storagesList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
+        azure.springServices()
             .manager()
             .serviceClient()
             .getStorages()
-            .list("myResourceGroup", "myservice", Context.NONE);
+            .list("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,26 +6,53 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.IpAddressGroup;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Edgenode is a global Point of Presence (POP) location used to deliver CDN content to end users. */
+/**
+ * Edgenode is a global Point of Presence (POP) location used to deliver CDN content to end users.
+ */
 @Fluent
 public final class EdgeNodeInner extends ProxyResource {
     /*
      * The JSON object that contains the properties required to create an edgenode.
      */
-    @JsonProperty(value = "properties")
     private EdgeNodeProperties innerProperties;
 
-    /** Creates an instance of EdgeNodeInner class. */
+    /*
+     * Read only system data
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EdgeNodeInner class.
+     */
     public EdgeNodeInner() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties required to create an edgenode.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EdgeNodeProperties innerProperties() {
@@ -33,8 +60,47 @@ public final class EdgeNodeInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the ipAddressGroups property: List of ip address groups.
-     *
+     * 
      * @return the ipAddressGroups value.
      */
     public List<IpAddressGroup> ipAddressGroups() {
@@ -43,7 +109,7 @@ public final class EdgeNodeInner extends ProxyResource {
 
     /**
      * Set the ipAddressGroups property: List of ip address groups.
-     *
+     * 
      * @param ipAddressGroups the ipAddressGroups value to set.
      * @return the EdgeNodeInner object itself.
      */
@@ -57,12 +123,57 @@ public final class EdgeNodeInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdgeNodeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdgeNodeInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdgeNodeInner.
+     */
+    public static EdgeNodeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdgeNodeInner deserializedEdgeNodeInner = new EdgeNodeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEdgeNodeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEdgeNodeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEdgeNodeInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEdgeNodeInner.innerProperties = EdgeNodeProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedEdgeNodeInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdgeNodeInner;
+        });
     }
 }

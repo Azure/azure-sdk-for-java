@@ -6,6 +6,10 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AdditionalWorkspacesProperties;
 import com.azure.resourcemanager.security.models.DataSource;
 import com.azure.resourcemanager.security.models.ExportData;
@@ -13,85 +17,78 @@ import com.azure.resourcemanager.security.models.RecommendationConfigurationProp
 import com.azure.resourcemanager.security.models.SecuritySolutionStatus;
 import com.azure.resourcemanager.security.models.UnmaskedIpLoggingStatus;
 import com.azure.resourcemanager.security.models.UserDefinedResourcesProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Security Solution setting data. */
+/**
+ * Security Solution setting data.
+ */
 @Fluent
-public final class IoTSecuritySolutionProperties {
+public final class IoTSecuritySolutionProperties implements JsonSerializable<IoTSecuritySolutionProperties> {
     /*
      * Workspace resource ID
      */
-    @JsonProperty(value = "workspace")
     private String workspace;
 
     /*
      * Resource display name.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Status of the IoT Security solution.
      */
-    @JsonProperty(value = "status")
     private SecuritySolutionStatus status;
 
     /*
      * List of additional options for exporting to workspace data.
      */
-    @JsonProperty(value = "export")
     private List<ExportData> export;
 
     /*
      * Disabled data sources. Disabling these data sources compromises the system.
      */
-    @JsonProperty(value = "disabledDataSources")
     private List<DataSource> disabledDataSources;
 
     /*
      * IoT Hub resource IDs
      */
-    @JsonProperty(value = "iotHubs", required = true)
     private List<String> iotHubs;
 
     /*
      * Properties of the IoT Security solution's user defined resources.
      */
-    @JsonProperty(value = "userDefinedResources")
     private UserDefinedResourcesProperties userDefinedResources;
 
     /*
      * List of resources that were automatically discovered as relevant to the security solution.
      */
-    @JsonProperty(value = "autoDiscoveredResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> autoDiscoveredResources;
 
     /*
      * List of the configuration status for each recommendation type.
      */
-    @JsonProperty(value = "recommendationsConfiguration")
     private List<RecommendationConfigurationProperties> recommendationsConfiguration;
 
     /*
      * Unmasked IP address logging status
      */
-    @JsonProperty(value = "unmaskedIpLoggingStatus")
     private UnmaskedIpLoggingStatus unmaskedIpLoggingStatus;
 
     /*
      * List of additional workspaces
      */
-    @JsonProperty(value = "additionalWorkspaces")
     private List<AdditionalWorkspacesProperties> additionalWorkspaces;
 
-    /** Creates an instance of IoTSecuritySolutionProperties class. */
+    /**
+     * Creates an instance of IoTSecuritySolutionProperties class.
+     */
     public IoTSecuritySolutionProperties() {
     }
 
     /**
      * Get the workspace property: Workspace resource ID.
-     *
+     * 
      * @return the workspace value.
      */
     public String workspace() {
@@ -100,7 +97,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Set the workspace property: Workspace resource ID.
-     *
+     * 
      * @param workspace the workspace value to set.
      * @return the IoTSecuritySolutionProperties object itself.
      */
@@ -111,7 +108,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Get the displayName property: Resource display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -120,7 +117,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Set the displayName property: Resource display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the IoTSecuritySolutionProperties object itself.
      */
@@ -131,7 +128,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Get the status property: Status of the IoT Security solution.
-     *
+     * 
      * @return the status value.
      */
     public SecuritySolutionStatus status() {
@@ -140,7 +137,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Set the status property: Status of the IoT Security solution.
-     *
+     * 
      * @param status the status value to set.
      * @return the IoTSecuritySolutionProperties object itself.
      */
@@ -151,7 +148,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Get the export property: List of additional options for exporting to workspace data.
-     *
+     * 
      * @return the export value.
      */
     public List<ExportData> export() {
@@ -160,7 +157,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Set the export property: List of additional options for exporting to workspace data.
-     *
+     * 
      * @param export the export value to set.
      * @return the IoTSecuritySolutionProperties object itself.
      */
@@ -171,7 +168,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Get the disabledDataSources property: Disabled data sources. Disabling these data sources compromises the system.
-     *
+     * 
      * @return the disabledDataSources value.
      */
     public List<DataSource> disabledDataSources() {
@@ -180,7 +177,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Set the disabledDataSources property: Disabled data sources. Disabling these data sources compromises the system.
-     *
+     * 
      * @param disabledDataSources the disabledDataSources value to set.
      * @return the IoTSecuritySolutionProperties object itself.
      */
@@ -191,7 +188,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Get the iotHubs property: IoT Hub resource IDs.
-     *
+     * 
      * @return the iotHubs value.
      */
     public List<String> iotHubs() {
@@ -200,7 +197,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Set the iotHubs property: IoT Hub resource IDs.
-     *
+     * 
      * @param iotHubs the iotHubs value to set.
      * @return the IoTSecuritySolutionProperties object itself.
      */
@@ -211,7 +208,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Get the userDefinedResources property: Properties of the IoT Security solution's user defined resources.
-     *
+     * 
      * @return the userDefinedResources value.
      */
     public UserDefinedResourcesProperties userDefinedResources() {
@@ -220,7 +217,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Set the userDefinedResources property: Properties of the IoT Security solution's user defined resources.
-     *
+     * 
      * @param userDefinedResources the userDefinedResources value to set.
      * @return the IoTSecuritySolutionProperties object itself.
      */
@@ -232,7 +229,7 @@ public final class IoTSecuritySolutionProperties {
     /**
      * Get the autoDiscoveredResources property: List of resources that were automatically discovered as relevant to the
      * security solution.
-     *
+     * 
      * @return the autoDiscoveredResources value.
      */
     public List<String> autoDiscoveredResources() {
@@ -241,7 +238,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Get the recommendationsConfiguration property: List of the configuration status for each recommendation type.
-     *
+     * 
      * @return the recommendationsConfiguration value.
      */
     public List<RecommendationConfigurationProperties> recommendationsConfiguration() {
@@ -250,19 +247,19 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Set the recommendationsConfiguration property: List of the configuration status for each recommendation type.
-     *
+     * 
      * @param recommendationsConfiguration the recommendationsConfiguration value to set.
      * @return the IoTSecuritySolutionProperties object itself.
      */
-    public IoTSecuritySolutionProperties withRecommendationsConfiguration(
-        List<RecommendationConfigurationProperties> recommendationsConfiguration) {
+    public IoTSecuritySolutionProperties
+        withRecommendationsConfiguration(List<RecommendationConfigurationProperties> recommendationsConfiguration) {
         this.recommendationsConfiguration = recommendationsConfiguration;
         return this;
     }
 
     /**
      * Get the unmaskedIpLoggingStatus property: Unmasked IP address logging status.
-     *
+     * 
      * @return the unmaskedIpLoggingStatus value.
      */
     public UnmaskedIpLoggingStatus unmaskedIpLoggingStatus() {
@@ -271,7 +268,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Set the unmaskedIpLoggingStatus property: Unmasked IP address logging status.
-     *
+     * 
      * @param unmaskedIpLoggingStatus the unmaskedIpLoggingStatus value to set.
      * @return the IoTSecuritySolutionProperties object itself.
      */
@@ -282,7 +279,7 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Get the additionalWorkspaces property: List of additional workspaces.
-     *
+     * 
      * @return the additionalWorkspaces value.
      */
     public List<AdditionalWorkspacesProperties> additionalWorkspaces() {
@@ -291,33 +288,31 @@ public final class IoTSecuritySolutionProperties {
 
     /**
      * Set the additionalWorkspaces property: List of additional workspaces.
-     *
+     * 
      * @param additionalWorkspaces the additionalWorkspaces value to set.
      * @return the IoTSecuritySolutionProperties object itself.
      */
-    public IoTSecuritySolutionProperties withAdditionalWorkspaces(
-        List<AdditionalWorkspacesProperties> additionalWorkspaces) {
+    public IoTSecuritySolutionProperties
+        withAdditionalWorkspaces(List<AdditionalWorkspacesProperties> additionalWorkspaces) {
         this.additionalWorkspaces = additionalWorkspaces;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model IoTSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model IoTSecuritySolutionProperties"));
         }
         if (iotHubs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property iotHubs in model IoTSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property iotHubs in model IoTSecuritySolutionProperties"));
         }
         if (userDefinedResources() != null) {
             userDefinedResources().validate();
@@ -331,4 +326,89 @@ public final class IoTSecuritySolutionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IoTSecuritySolutionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("iotHubs", this.iotHubs, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("workspace", this.workspace);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeArrayField("export", this.export,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("disabledDataSources", this.disabledDataSources,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("userDefinedResources", this.userDefinedResources);
+        jsonWriter.writeArrayField("recommendationsConfiguration", this.recommendationsConfiguration,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("unmaskedIpLoggingStatus",
+            this.unmaskedIpLoggingStatus == null ? null : this.unmaskedIpLoggingStatus.toString());
+        jsonWriter.writeArrayField("additionalWorkspaces", this.additionalWorkspaces,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTSecuritySolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTSecuritySolutionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IoTSecuritySolutionProperties.
+     */
+    public static IoTSecuritySolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTSecuritySolutionProperties deserializedIoTSecuritySolutionProperties
+                = new IoTSecuritySolutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedIoTSecuritySolutionProperties.displayName = reader.getString();
+                } else if ("iotHubs".equals(fieldName)) {
+                    List<String> iotHubs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIoTSecuritySolutionProperties.iotHubs = iotHubs;
+                } else if ("workspace".equals(fieldName)) {
+                    deserializedIoTSecuritySolutionProperties.workspace = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedIoTSecuritySolutionProperties.status
+                        = SecuritySolutionStatus.fromString(reader.getString());
+                } else if ("export".equals(fieldName)) {
+                    List<ExportData> export = reader.readArray(reader1 -> ExportData.fromString(reader1.getString()));
+                    deserializedIoTSecuritySolutionProperties.export = export;
+                } else if ("disabledDataSources".equals(fieldName)) {
+                    List<DataSource> disabledDataSources
+                        = reader.readArray(reader1 -> DataSource.fromString(reader1.getString()));
+                    deserializedIoTSecuritySolutionProperties.disabledDataSources = disabledDataSources;
+                } else if ("userDefinedResources".equals(fieldName)) {
+                    deserializedIoTSecuritySolutionProperties.userDefinedResources
+                        = UserDefinedResourcesProperties.fromJson(reader);
+                } else if ("autoDiscoveredResources".equals(fieldName)) {
+                    List<String> autoDiscoveredResources = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIoTSecuritySolutionProperties.autoDiscoveredResources = autoDiscoveredResources;
+                } else if ("recommendationsConfiguration".equals(fieldName)) {
+                    List<RecommendationConfigurationProperties> recommendationsConfiguration
+                        = reader.readArray(reader1 -> RecommendationConfigurationProperties.fromJson(reader1));
+                    deserializedIoTSecuritySolutionProperties.recommendationsConfiguration
+                        = recommendationsConfiguration;
+                } else if ("unmaskedIpLoggingStatus".equals(fieldName)) {
+                    deserializedIoTSecuritySolutionProperties.unmaskedIpLoggingStatus
+                        = UnmaskedIpLoggingStatus.fromString(reader.getString());
+                } else if ("additionalWorkspaces".equals(fieldName)) {
+                    List<AdditionalWorkspacesProperties> additionalWorkspaces
+                        = reader.readArray(reader1 -> AdditionalWorkspacesProperties.fromJson(reader1));
+                    deserializedIoTSecuritySolutionProperties.additionalWorkspaces = additionalWorkspaces;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTSecuritySolutionProperties;
+        });
+    }
 }

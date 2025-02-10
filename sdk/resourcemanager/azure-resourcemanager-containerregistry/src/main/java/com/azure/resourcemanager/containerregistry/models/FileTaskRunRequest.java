@@ -6,72 +6,82 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The request parameters for a scheduling run against a task file. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("FileTaskRunRequest")
+/**
+ * The request parameters for a scheduling run against a task file.
+ */
 @Fluent
 public final class FileTaskRunRequest extends RunRequest {
     /*
+     * The type of the run request.
+     */
+    private String type = "FileTaskRunRequest";
+
+    /*
      * The template/definition file path relative to the source.
      */
-    @JsonProperty(value = "taskFilePath", required = true)
     private String taskFilePath;
 
     /*
      * The values/parameters file path relative to the source.
      */
-    @JsonProperty(value = "valuesFilePath")
     private String valuesFilePath;
 
     /*
      * The collection of overridable values that can be passed when running a task.
      */
-    @JsonProperty(value = "values")
     private List<SetValue> values;
 
     /*
      * Run timeout in seconds.
      */
-    @JsonProperty(value = "timeout")
     private Integer timeout;
 
     /*
      * The platform properties against which the run has to happen.
      */
-    @JsonProperty(value = "platform", required = true)
     private PlatformProperties platform;
 
     /*
      * The machine configuration of the run agent.
      */
-    @JsonProperty(value = "agentConfiguration")
     private AgentProperties agentConfiguration;
 
     /*
      * The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
      * If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
      */
-    @JsonProperty(value = "sourceLocation")
     private String sourceLocation;
 
     /*
      * The properties that describes a set of credentials that will be used when this run is invoked.
      */
-    @JsonProperty(value = "credentials")
     private Credentials credentials;
 
-    /** Creates an instance of FileTaskRunRequest class. */
+    /**
+     * Creates an instance of FileTaskRunRequest class.
+     */
     public FileTaskRunRequest() {
     }
 
     /**
+     * Get the type property: The type of the run request.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the taskFilePath property: The template/definition file path relative to the source.
-     *
+     * 
      * @return the taskFilePath value.
      */
     public String taskFilePath() {
@@ -80,7 +90,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Set the taskFilePath property: The template/definition file path relative to the source.
-     *
+     * 
      * @param taskFilePath the taskFilePath value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -91,7 +101,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Get the valuesFilePath property: The values/parameters file path relative to the source.
-     *
+     * 
      * @return the valuesFilePath value.
      */
     public String valuesFilePath() {
@@ -100,7 +110,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Set the valuesFilePath property: The values/parameters file path relative to the source.
-     *
+     * 
      * @param valuesFilePath the valuesFilePath value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -111,7 +121,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Get the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @return the values value.
      */
     public List<SetValue> values() {
@@ -120,7 +130,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Set the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @param values the values value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -131,7 +141,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Get the timeout property: Run timeout in seconds.
-     *
+     * 
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -140,7 +150,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Set the timeout property: Run timeout in seconds.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -151,7 +161,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Get the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @return the platform value.
      */
     public PlatformProperties platform() {
@@ -160,7 +170,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Set the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @param platform the platform value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -171,7 +181,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Get the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -180,7 +190,7 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Set the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -191,9 +201,9 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Get the sourceLocation property: The URL(absolute or relative) of the source context. It can be an URL to a tar
-     * or git repository. If it is relative URL, the relative path should be obtained from calling
-     * listBuildSourceUploadUrl API.
-     *
+     * or git repository.
+     * If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+     * 
      * @return the sourceLocation value.
      */
     public String sourceLocation() {
@@ -202,9 +212,9 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Set the sourceLocation property: The URL(absolute or relative) of the source context. It can be an URL to a tar
-     * or git repository. If it is relative URL, the relative path should be obtained from calling
-     * listBuildSourceUploadUrl API.
-     *
+     * or git repository.
+     * If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+     * 
      * @param sourceLocation the sourceLocation value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -216,7 +226,7 @@ public final class FileTaskRunRequest extends RunRequest {
     /**
      * Get the credentials property: The properties that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @return the credentials value.
      */
     public Credentials credentials() {
@@ -226,7 +236,7 @@ public final class FileTaskRunRequest extends RunRequest {
     /**
      * Set the credentials property: The properties that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the FileTaskRunRequest object itself.
      */
@@ -235,21 +245,27 @@ public final class FileTaskRunRequest extends RunRequest {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileTaskRunRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
         super.withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileTaskRunRequest withAgentPoolName(String agentPoolName) {
         super.withAgentPoolName(agentPoolName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileTaskRunRequest withLogTemplate(String logTemplate) {
         super.withLogTemplate(logTemplate);
@@ -258,24 +274,23 @@ public final class FileTaskRunRequest extends RunRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (taskFilePath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property taskFilePath in model FileTaskRunRequest"));
         }
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
         if (platform() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property platform in model FileTaskRunRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property platform in model FileTaskRunRequest"));
         } else {
             platform().validate();
         }
@@ -288,4 +303,75 @@ public final class FileTaskRunRequest extends RunRequest {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FileTaskRunRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isArchiveEnabled", isArchiveEnabled());
+        jsonWriter.writeStringField("agentPoolName", agentPoolName());
+        jsonWriter.writeStringField("logTemplate", logTemplate());
+        jsonWriter.writeStringField("taskFilePath", this.taskFilePath);
+        jsonWriter.writeJsonField("platform", this.platform);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("valuesFilePath", this.valuesFilePath);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("timeout", this.timeout);
+        jsonWriter.writeJsonField("agentConfiguration", this.agentConfiguration);
+        jsonWriter.writeStringField("sourceLocation", this.sourceLocation);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileTaskRunRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileTaskRunRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileTaskRunRequest.
+     */
+    public static FileTaskRunRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileTaskRunRequest deserializedFileTaskRunRequest = new FileTaskRunRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedFileTaskRunRequest.withIsArchiveEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("agentPoolName".equals(fieldName)) {
+                    deserializedFileTaskRunRequest.withAgentPoolName(reader.getString());
+                } else if ("logTemplate".equals(fieldName)) {
+                    deserializedFileTaskRunRequest.withLogTemplate(reader.getString());
+                } else if ("taskFilePath".equals(fieldName)) {
+                    deserializedFileTaskRunRequest.taskFilePath = reader.getString();
+                } else if ("platform".equals(fieldName)) {
+                    deserializedFileTaskRunRequest.platform = PlatformProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedFileTaskRunRequest.type = reader.getString();
+                } else if ("valuesFilePath".equals(fieldName)) {
+                    deserializedFileTaskRunRequest.valuesFilePath = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<SetValue> values = reader.readArray(reader1 -> SetValue.fromJson(reader1));
+                    deserializedFileTaskRunRequest.values = values;
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedFileTaskRunRequest.timeout = reader.getNullable(JsonReader::getInt);
+                } else if ("agentConfiguration".equals(fieldName)) {
+                    deserializedFileTaskRunRequest.agentConfiguration = AgentProperties.fromJson(reader);
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedFileTaskRunRequest.sourceLocation = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedFileTaskRunRequest.credentials = Credentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileTaskRunRequest;
+        });
+    }
 }

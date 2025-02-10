@@ -6,79 +6,66 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Schedule;
 import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SchedulesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"pxycphdr\",\"timeZone\":\"jkhvyomacluzvxnq\",\"state\":\"Enabled\",\"tags\":{\"wmkoisq\":\"pd\"},\"location\":\"sffxui\"},\"id\":\"csypobkdqzrdzsyl\",\"name\":\"llg\",\"type\":\"rc\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"hp\",\"timeZone\":\"neizjcpe\",\"state\":\"Disabled\"},\"id\":\"nmg\",\"name\":\"ro\",\"type\":\"xddbhfhpfpaz\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Schedule response =
-            manager
-                .schedules()
-                .define("wahzjmucftbyr")
-                .withExistingPool("uuybnchrsz", "zoyuelyetndnbf", "yggagflnlgmt")
-                .withTypePropertiesType(ScheduledType.STOP_DEV_BOX)
-                .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("qfusuckzm")
-                .withTimeZone("klsnoxaxmqeqa")
-                .withState(ScheduleEnableStatus.DISABLED)
-                .withTop(1465661889)
-                .create();
+        Schedule response = manager.schedules()
+            .define("fkvcisi")
+            .withExistingPool("pomyqwcabvnuile", "yaswlpaugmr", "fjlrxwtoauk")
+            .withRegion("msplzgaufcshhvn")
+            .withTags(mapOf("l", "omguamlj"))
+            .withTypePropertiesType(ScheduledType.STOP_DEV_BOX)
+            .withFrequency(ScheduledFrequency.DAILY)
+            .withTime("wuived")
+            .withTimeZone("gyeewxeiq")
+            .withState(ScheduleEnableStatus.DISABLED)
+            .withTop(288574233)
+            .create();
 
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, response.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, response.frequency());
-        Assertions.assertEquals("hp", response.time());
-        Assertions.assertEquals("neizjcpe", response.timeZone());
-        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, response.state());
+        Assertions.assertEquals("pxycphdr", response.time());
+        Assertions.assertEquals("jkhvyomacluzvxnq", response.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.ENABLED, response.state());
+        Assertions.assertEquals("pd", response.tags().get("wmkoisq"));
+        Assertions.assertEquals("sffxui", response.location());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

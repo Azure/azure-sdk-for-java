@@ -6,25 +6,33 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters supplied to the CreateOrUpdate Namespace AuthorizationRules. */
+/**
+ * Parameters supplied to the CreateOrUpdate Namespace AuthorizationRules.
+ */
 @Fluent
-public final class SharedAccessAuthorizationRuleCreateOrUpdateParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SharedAccessAuthorizationRuleCreateOrUpdateParameters.class);
-
+public final class SharedAccessAuthorizationRuleCreateOrUpdateParameters
+    implements JsonSerializable<SharedAccessAuthorizationRuleCreateOrUpdateParameters> {
     /*
      * Properties of the Namespace AuthorizationRules.
      */
-    @JsonProperty(value = "properties", required = true)
     private SharedAccessAuthorizationRuleProperties properties;
 
     /**
+     * Creates an instance of SharedAccessAuthorizationRuleCreateOrUpdateParameters class.
+     */
+    public SharedAccessAuthorizationRuleCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the properties property: Properties of the Namespace AuthorizationRules.
-     *
+     * 
      * @return the properties value.
      */
     public SharedAccessAuthorizationRuleProperties properties() {
@@ -33,30 +41,71 @@ public final class SharedAccessAuthorizationRuleCreateOrUpdateParameters {
 
     /**
      * Set the properties property: Properties of the Namespace AuthorizationRules.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SharedAccessAuthorizationRuleCreateOrUpdateParameters object itself.
      */
-    public SharedAccessAuthorizationRuleCreateOrUpdateParameters withProperties(
-        SharedAccessAuthorizationRuleProperties properties) {
+    public SharedAccessAuthorizationRuleCreateOrUpdateParameters
+        withProperties(SharedAccessAuthorizationRuleProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model"
-                            + " SharedAccessAuthorizationRuleCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model SharedAccessAuthorizationRuleCreateOrUpdateParameters"));
         } else {
             properties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER
+        = new ClientLogger(SharedAccessAuthorizationRuleCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharedAccessAuthorizationRuleCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharedAccessAuthorizationRuleCreateOrUpdateParameters if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SharedAccessAuthorizationRuleCreateOrUpdateParameters.
+     */
+    public static SharedAccessAuthorizationRuleCreateOrUpdateParameters fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharedAccessAuthorizationRuleCreateOrUpdateParameters deserializedSharedAccessAuthorizationRuleCreateOrUpdateParameters
+                = new SharedAccessAuthorizationRuleCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleCreateOrUpdateParameters.properties
+                        = SharedAccessAuthorizationRuleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharedAccessAuthorizationRuleCreateOrUpdateParameters;
+        });
     }
 }

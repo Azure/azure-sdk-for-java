@@ -12,9 +12,9 @@ import java.util.Map;
 public final class CompressionReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CompressionReadSettings model
-            = BinaryData.fromString("{\"type\":\"CompressionReadSettings\",\"\":{\"qlyputawdmd\":\"datanjkcolo\"}}")
-                .toObject(CompressionReadSettings.class);
+        CompressionReadSettings model = BinaryData.fromString(
+            "{\"type\":\"CompressionReadSettings\",\"\":{\"eqjnouuujli\":\"datastwaa\",\"hop\":\"dataicshmqxgjzs\",\"vkcnggoc\":\"dataqxipbxs\",\"lk\":\"datawnjmiitlamfb\"}}")
+            .toObject(CompressionReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test

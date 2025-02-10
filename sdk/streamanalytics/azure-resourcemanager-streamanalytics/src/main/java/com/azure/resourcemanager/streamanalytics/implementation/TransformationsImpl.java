@@ -13,20 +13,30 @@ import com.azure.resourcemanager.streamanalytics.fluent.models.TransformationInn
 import com.azure.resourcemanager.streamanalytics.models.Transformation;
 import com.azure.resourcemanager.streamanalytics.models.Transformations;
 import com.azure.resourcemanager.streamanalytics.models.TransformationsGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TransformationsImpl implements Transformations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransformationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TransformationsImpl.class);
 
     private final TransformationsClient innerClient;
 
     private final com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager;
 
-    public TransformationsImpl(
-        TransformationsClient innerClient,
+    public TransformationsImpl(TransformationsClient innerClient,
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Transformation> getWithResponse(String resourceGroupName, String jobName, String transformationName,
+        Context context) {
+        TransformationsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, jobName, transformationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TransformationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Transformation get(String resourceGroupName, String jobName, String transformationName) {
@@ -38,71 +48,40 @@ public final class TransformationsImpl implements Transformations {
         }
     }
 
-    public Response<Transformation> getWithResponse(
-        String resourceGroupName, String jobName, String transformationName, Context context) {
-        TransformationsGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, jobName, transformationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new TransformationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public Transformation getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String jobName = Utils.getValueFromIdByName(id, "streamingjobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "streamingjobs");
         if (jobName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
         }
-        String transformationName = Utils.getValueFromIdByName(id, "transformations");
+        String transformationName = ResourceManagerUtils.getValueFromIdByName(id, "transformations");
         if (transformationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'transformations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'transformations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, jobName, transformationName, Context.NONE).getValue();
     }
 
     public Response<Transformation> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String jobName = Utils.getValueFromIdByName(id, "streamingjobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "streamingjobs");
         if (jobName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
         }
-        String transformationName = Utils.getValueFromIdByName(id, "transformations");
+        String transformationName = ResourceManagerUtils.getValueFromIdByName(id, "transformations");
         if (transformationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'transformations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'transformations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, jobName, transformationName, context);
     }

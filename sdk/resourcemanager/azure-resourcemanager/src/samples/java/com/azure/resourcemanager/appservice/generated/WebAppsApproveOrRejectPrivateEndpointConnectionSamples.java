@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
+import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
 
 /**
@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
  */
 public final class WebAppsApproveOrRejectPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
      * ApproveRejectSitePrivateEndpointConnection.json
      */
     /**
@@ -22,11 +22,15 @@ public final class WebAppsApproveOrRejectPrivateEndpointConnectionSamples {
      */
     public static void
         approvesOrRejectsAPrivateEndpointConnectionForASite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().approveOrRejectPrivateEndpointConnection("rg",
-            "testSite", "connection",
-            new PrivateLinkConnectionApprovalRequestResource()
-                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("Approved")
-                    .withDescription("Approved by admin.").withActionsRequired("")),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .approveOrRejectPrivateEndpointConnection("rg", "testSite", "connection",
+                new RemotePrivateEndpointConnectionArmResourceInner()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("Approved")
+                        .withDescription("Approved by admin.")
+                        .withActionsRequired("")),
+                com.azure.core.util.Context.NONE);
     }
 }

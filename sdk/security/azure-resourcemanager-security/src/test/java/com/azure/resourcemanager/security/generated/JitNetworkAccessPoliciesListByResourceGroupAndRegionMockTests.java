@@ -6,65 +6,49 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicy;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.security.models.Protocol;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class JitNetworkAccessPoliciesListByResourceGroupAndRegionMockTests {
     @Test
     public void testListByResourceGroupAndRegion() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"virtualMachines\":[{\"id\":\"akckywym\",\"ports\":[{\"number\":1308483372,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"bjkdtfohf\"},{\"number\":1240250337,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"zvkiwrsiwdy\"},{\"number\":1132634691,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"rykcrraueekcsue\"}],\"publicIpAddress\":\"gdda\"}],\"requests\":[{\"virtualMachines\":[{\"id\":\"gydlqidywm\",\"ports\":[]},{\"id\":\"mptyrilkfbnrqqxv\",\"ports\":[]},{\"id\":\"tpbnfnqtxjtoma\",\"ports\":[]}],\"startTimeUtc\":\"2021-11-19T14:40:41Z\",\"requestor\":\"wbnfddepl\",\"justification\":\"qjn\"},{\"virtualMachines\":[{\"id\":\"zygleexahvm\",\"ports\":[]}],\"startTimeUtc\":\"2021-09-17T20:33:22Z\",\"requestor\":\"hsbrcary\",\"justification\":\"jjzyvoaqajuve\"}],\"provisioningState\":\"ptdmkrrbhmpful\"},\"kind\":\"efgybpmfbfununmp\",\"location\":\"rvfyifkdsch\",\"id\":\"zvfictnk\",\"name\":\"jwg\",\"type\":\"wnphbkgfyrto\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"o\"},\"kind\":\"dvrgptqmawzjdrp\",\"location\":\"fu\",\"id\":\"gyc\",\"name\":\"sd\",\"type\":\"tqgkujd\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<JitNetworkAccessPolicy> response = manager.jitNetworkAccessPolicies()
+            .listByResourceGroupAndRegion("dyz", "yckzex", com.azure.core.util.Context.NONE);
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<JitNetworkAccessPolicy> response =
-            manager
-                .jitNetworkAccessPolicies()
-                .listByResourceGroupAndRegion("pimyndnoxax", "rqaqotn", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("dvrgptqmawzjdrp", response.iterator().next().kind());
+        Assertions.assertEquals("efgybpmfbfununmp", response.iterator().next().kind());
+        Assertions.assertEquals("akckywym", response.iterator().next().virtualMachines().get(0).id());
+        Assertions.assertEquals(1308483372,
+            response.iterator().next().virtualMachines().get(0).ports().get(0).number());
+        Assertions.assertEquals(Protocol.UDP,
+            response.iterator().next().virtualMachines().get(0).ports().get(0).protocol());
+        Assertions.assertEquals("bjkdtfohf",
+            response.iterator().next().virtualMachines().get(0).ports().get(0).maxRequestAccessDuration());
+        Assertions.assertEquals("gdda", response.iterator().next().virtualMachines().get(0).publicIpAddress());
+        Assertions.assertEquals("gydlqidywm",
+            response.iterator().next().requests().get(0).virtualMachines().get(0).id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T14:40:41Z"),
+            response.iterator().next().requests().get(0).startTimeUtc());
+        Assertions.assertEquals("wbnfddepl", response.iterator().next().requests().get(0).requestor());
+        Assertions.assertEquals("qjn", response.iterator().next().requests().get(0).justification());
     }
 }

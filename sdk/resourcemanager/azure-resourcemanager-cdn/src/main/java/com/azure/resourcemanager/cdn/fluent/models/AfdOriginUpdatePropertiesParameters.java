@@ -5,43 +5,44 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The JSON object that contains the properties of the origin. */
+/**
+ * The JSON object that contains the properties of the origin.
+ */
 @Fluent
-public class AfdOriginUpdatePropertiesParameters {
+public class AfdOriginUpdatePropertiesParameters implements JsonSerializable<AfdOriginUpdatePropertiesParameters> {
     /*
      * The name of the origin group which contains this origin.
      */
-    @JsonProperty(value = "originGroupName", access = JsonProperty.Access.WRITE_ONLY)
     private String originGroupName;
 
     /*
      * Resource reference to the Azure origin resource.
      */
-    @JsonProperty(value = "azureOrigin")
     private ResourceReference azureOrigin;
 
     /*
      * The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.This should be unique
      * across all origins in an endpoint.
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
      * The value of the HTTP port. Must be between 1 and 65535.
      */
-    @JsonProperty(value = "httpPort")
     private Integer httpPort;
 
     /*
      * The value of the HTTPS port. Must be between 1 and 65535.
      */
-    @JsonProperty(value = "httpsPort")
     private Integer httpsPort;
 
     /*
@@ -49,48 +50,44 @@ public class AfdOriginUpdatePropertiesParameters {
      * determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and Cloud Services require this
      * host header value to match the origin hostname by default. This overrides the host header defined at Endpoint
      */
-    @JsonProperty(value = "originHostHeader")
     private String originHostHeader;
 
     /*
      * Priority of origin in given origin group for load balancing. Higher priorities will not be used for load
      * balancing if any lower priority origin is healthy.Must be between 1 and 5
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
      */
-    @JsonProperty(value = "weight")
     private Integer weight;
 
     /*
      * The properties of the private link resource for private origin.
      */
-    @JsonProperty(value = "sharedPrivateLinkResource")
     private SharedPrivateLinkResourceProperties sharedPrivateLinkResource;
 
     /*
-     * Whether to enable health probes to be made against backends defined under backendPools. Health probes can only
-     * be disabled if there is a single enabled backend in single enabled backend pool.
+     * Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be
+     * disabled if there is a single enabled backend in single enabled backend pool.
      */
-    @JsonProperty(value = "enabledState")
     private EnabledState enabledState;
 
     /*
      * Whether to enable certificate name check at origin level
      */
-    @JsonProperty(value = "enforceCertificateNameCheck")
     private Boolean enforceCertificateNameCheck;
 
-    /** Creates an instance of AfdOriginUpdatePropertiesParameters class. */
+    /**
+     * Creates an instance of AfdOriginUpdatePropertiesParameters class.
+     */
     public AfdOriginUpdatePropertiesParameters() {
     }
 
     /**
      * Get the originGroupName property: The name of the origin group which contains this origin.
-     *
+     * 
      * @return the originGroupName value.
      */
     public String originGroupName() {
@@ -98,8 +95,19 @@ public class AfdOriginUpdatePropertiesParameters {
     }
 
     /**
+     * Set the originGroupName property: The name of the origin group which contains this origin.
+     * 
+     * @param originGroupName the originGroupName value to set.
+     * @return the AfdOriginUpdatePropertiesParameters object itself.
+     */
+    AfdOriginUpdatePropertiesParameters withOriginGroupName(String originGroupName) {
+        this.originGroupName = originGroupName;
+        return this;
+    }
+
+    /**
      * Get the azureOrigin property: Resource reference to the Azure origin resource.
-     *
+     * 
      * @return the azureOrigin value.
      */
     public ResourceReference azureOrigin() {
@@ -108,7 +116,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Set the azureOrigin property: Resource reference to the Azure origin resource.
-     *
+     * 
      * @param azureOrigin the azureOrigin value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -120,7 +128,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Get the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
      * supported.This should be unique across all origins in an endpoint.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -130,7 +138,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Set the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
      * supported.This should be unique across all origins in an endpoint.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -141,7 +149,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Get the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpPort value.
      */
     public Integer httpPort() {
@@ -150,7 +158,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Set the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpPort the httpPort value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -161,7 +169,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Get the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
@@ -170,7 +178,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Set the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpsPort the httpsPort value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -184,7 +192,7 @@ public class AfdOriginUpdatePropertiesParameters {
      * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
      * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
      * header defined at Endpoint.
-     *
+     * 
      * @return the originHostHeader value.
      */
     public String originHostHeader() {
@@ -196,7 +204,7 @@ public class AfdOriginUpdatePropertiesParameters {
      * blank, the request hostname determines this value. Azure Front Door origins, such as Web Apps, Blob Storage, and
      * Cloud Services require this host header value to match the origin hostname by default. This overrides the host
      * header defined at Endpoint.
-     *
+     * 
      * @param originHostHeader the originHostHeader value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -208,7 +216,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Get the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -218,7 +226,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Set the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -230,7 +238,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Get the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -240,7 +248,7 @@ public class AfdOriginUpdatePropertiesParameters {
     /**
      * Set the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -251,7 +259,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Get the sharedPrivateLinkResource property: The properties of the private link resource for private origin.
-     *
+     * 
      * @return the sharedPrivateLinkResource value.
      */
     public SharedPrivateLinkResourceProperties sharedPrivateLinkResource() {
@@ -260,12 +268,12 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Set the sharedPrivateLinkResource property: The properties of the private link resource for private origin.
-     *
+     * 
      * @param sharedPrivateLinkResource the sharedPrivateLinkResource value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
-    public AfdOriginUpdatePropertiesParameters withSharedPrivateLinkResource(
-        SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
+    public AfdOriginUpdatePropertiesParameters
+        withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         this.sharedPrivateLinkResource = sharedPrivateLinkResource;
         return this;
     }
@@ -274,7 +282,7 @@ public class AfdOriginUpdatePropertiesParameters {
      * Get the enabledState property: Whether to enable health probes to be made against backends defined under
      * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
      * pool.
-     *
+     * 
      * @return the enabledState value.
      */
     public EnabledState enabledState() {
@@ -285,7 +293,7 @@ public class AfdOriginUpdatePropertiesParameters {
      * Set the enabledState property: Whether to enable health probes to be made against backends defined under
      * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
      * pool.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -296,7 +304,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Get the enforceCertificateNameCheck property: Whether to enable certificate name check at origin level.
-     *
+     * 
      * @return the enforceCertificateNameCheck value.
      */
     public Boolean enforceCertificateNameCheck() {
@@ -305,7 +313,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Set the enforceCertificateNameCheck property: Whether to enable certificate name check at origin level.
-     *
+     * 
      * @param enforceCertificateNameCheck the enforceCertificateNameCheck value to set.
      * @return the AfdOriginUpdatePropertiesParameters object itself.
      */
@@ -316,7 +324,7 @@ public class AfdOriginUpdatePropertiesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -326,5 +334,74 @@ public class AfdOriginUpdatePropertiesParameters {
         if (sharedPrivateLinkResource() != null) {
             sharedPrivateLinkResource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("azureOrigin", this.azureOrigin);
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeNumberField("httpPort", this.httpPort);
+        jsonWriter.writeNumberField("httpsPort", this.httpsPort);
+        jsonWriter.writeStringField("originHostHeader", this.originHostHeader);
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeJsonField("sharedPrivateLinkResource", this.sharedPrivateLinkResource);
+        jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
+        jsonWriter.writeBooleanField("enforceCertificateNameCheck", this.enforceCertificateNameCheck);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdOriginUpdatePropertiesParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdOriginUpdatePropertiesParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AfdOriginUpdatePropertiesParameters.
+     */
+    public static AfdOriginUpdatePropertiesParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdOriginUpdatePropertiesParameters deserializedAfdOriginUpdatePropertiesParameters
+                = new AfdOriginUpdatePropertiesParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("originGroupName".equals(fieldName)) {
+                    deserializedAfdOriginUpdatePropertiesParameters.originGroupName = reader.getString();
+                } else if ("azureOrigin".equals(fieldName)) {
+                    deserializedAfdOriginUpdatePropertiesParameters.azureOrigin = ResourceReference.fromJson(reader);
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedAfdOriginUpdatePropertiesParameters.hostname = reader.getString();
+                } else if ("httpPort".equals(fieldName)) {
+                    deserializedAfdOriginUpdatePropertiesParameters.httpPort = reader.getNullable(JsonReader::getInt);
+                } else if ("httpsPort".equals(fieldName)) {
+                    deserializedAfdOriginUpdatePropertiesParameters.httpsPort = reader.getNullable(JsonReader::getInt);
+                } else if ("originHostHeader".equals(fieldName)) {
+                    deserializedAfdOriginUpdatePropertiesParameters.originHostHeader = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedAfdOriginUpdatePropertiesParameters.priority = reader.getNullable(JsonReader::getInt);
+                } else if ("weight".equals(fieldName)) {
+                    deserializedAfdOriginUpdatePropertiesParameters.weight = reader.getNullable(JsonReader::getInt);
+                } else if ("sharedPrivateLinkResource".equals(fieldName)) {
+                    deserializedAfdOriginUpdatePropertiesParameters.sharedPrivateLinkResource
+                        = SharedPrivateLinkResourceProperties.fromJson(reader);
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedAfdOriginUpdatePropertiesParameters.enabledState
+                        = EnabledState.fromString(reader.getString());
+                } else if ("enforceCertificateNameCheck".equals(fieldName)) {
+                    deserializedAfdOriginUpdatePropertiesParameters.enforceCertificateNameCheck
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdOriginUpdatePropertiesParameters;
+        });
     }
 }

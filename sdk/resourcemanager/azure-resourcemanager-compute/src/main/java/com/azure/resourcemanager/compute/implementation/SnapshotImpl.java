@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.SnapshotSku;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
@@ -90,8 +91,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     public Mono<String> grantAccessAsync(int accessDurationInSeconds) {
         GrantAccessData grantAccessDataInner = new GrantAccessData();
         grantAccessDataInner.withAccess(AccessLevel.READ).withDurationInSeconds(accessDurationInSeconds);
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getSnapshots()
             .grantAccessAsync(resourceGroupName(), name(), grantAccessDataInner)
             .map(accessUriInner -> accessUriInner.accessSas());
@@ -116,7 +116,8 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     public Boolean awaitCopyStartCompletion(Duration maxWaitTime) {
         Objects.requireNonNull(maxWaitTime);
         if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
-            throw new IllegalArgumentException(String.format("Max wait time is non-positive: %dms", maxWaitTime.toMillis()));
+            throw new IllegalArgumentException(
+                String.format("Max wait time is non-positive: %dms", maxWaitTime.toMillis()));
         }
         return this.awaitCopyStartCompletionAsync()
             .then(Mono.just(Boolean.TRUE))
@@ -125,14 +126,22 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     }
 
     @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    @Override
     public Mono<Void> awaitCopyStartCompletionAsync() {
         if (creationMethod() != DiskCreateOption.COPY_START) {
-            return Mono.error(logger.logThrowableAsError(new IllegalStateException(
-                String.format(
-                    "\"awaitCopyStartCompletionAsync\" cannot be called on snapshot \"%s\" when \"creationMethod\" is not \"CopyStart\"", this.name()))));
+            return Mono.error(logger.logThrowableAsError(new IllegalStateException(String.format(
+                "\"awaitCopyStartCompletionAsync\" cannot be called on snapshot \"%s\" when \"creationMethod\" is not \"CopyStart\"",
+                this.name()))));
         }
 
-        return Flux.interval(Duration.ZERO, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval()))
+        return Flux
+            .interval(Duration.ZERO,
+                ResourceManagerUtils.InternalRuntimeContext
+                    .getDelayDuration(manager().serviceClient().getDefaultPollInterval()))
             .flatMap(ignored -> getInnerAsync())
             .flatMap(inner -> {
                 setInner(inner);
@@ -146,8 +155,8 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
                 if (Float.valueOf(100).equals(inner.completionPercent())) {
                     return true;
                 } else { // in progress
-                    logger.info("Wait for CopyStart complete for snapshot: {}. Complete percent: {}.",
-                        inner.name(), inner.completionPercent());
+                    logger.info("Wait for CopyStart complete for snapshot: {}. Complete percent: {}.", inner.name(),
+                        inner.completionPercent());
                     return false;
                 }
             })
@@ -161,8 +170,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withLinuxFromVhd(String vhdUrl, String storageAccountId) {
-        this
-            .innerModel()
+        this.innerModel()
             .withOsType(OperatingSystemTypes.LINUX)
             .withCreationData(new CreationData())
             .creationData()
@@ -174,8 +182,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withLinuxFromDisk(String sourceDiskId) {
-        this
-            .innerModel()
+        this.innerModel()
             .withOsType(OperatingSystemTypes.LINUX)
             .withCreationData(new CreationData())
             .creationData()
@@ -195,8 +202,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withLinuxFromSnapshot(String sourceSnapshotId) {
-        this
-            .innerModel()
+        this.innerModel()
             .withOsType(OperatingSystemTypes.LINUX)
             .withCreationData(new CreationData())
             .creationData()
@@ -222,8 +228,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withWindowsFromVhd(String vhdUrl, String storageAccountId) {
-        this
-            .innerModel()
+        this.innerModel()
             .withOsType(OperatingSystemTypes.WINDOWS)
             .withCreationData(new CreationData())
             .creationData()
@@ -235,8 +240,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withWindowsFromDisk(String sourceDiskId) {
-        this
-            .innerModel()
+        this.innerModel()
             .withOsType(OperatingSystemTypes.WINDOWS)
             .withCreationData(new CreationData())
             .creationData()
@@ -256,8 +260,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withWindowsFromSnapshot(String sourceSnapshotId) {
-        this
-            .innerModel()
+        this.innerModel()
             .withOsType(OperatingSystemTypes.WINDOWS)
             .withCreationData(new CreationData())
             .creationData()
@@ -283,8 +286,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withDataFromVhd(String vhdUrl, String storageAccountId) {
-        this
-            .innerModel()
+        this.innerModel()
             .withCreationData(new CreationData())
             .creationData()
             .withCreateOption(DiskCreateOption.IMPORT)
@@ -295,8 +297,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withDataFromSnapshot(String snapshotId) {
-        this
-            .innerModel()
+        this.innerModel()
             .withCreationData(new CreationData())
             .creationData()
             .withCreateOption(DiskCreateOption.COPY)
@@ -311,16 +312,13 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withCopyStart() {
-        this.innerModel()
-            .creationData()
-            .withCreateOption(DiskCreateOption.COPY_START);
+        this.innerModel().creationData().withCreateOption(DiskCreateOption.COPY_START);
         return this;
     }
 
     @Override
     public SnapshotImpl withDataFromDisk(String managedDiskId) {
-        this
-            .innerModel()
+        this.innerModel()
             .withCreationData(new CreationData())
             .creationData()
             .withCreateOption(DiskCreateOption.COPY)
@@ -359,8 +357,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public Mono<Snapshot> createResourceAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getSnapshots()
             .createOrUpdateAsync(resourceGroupName(), name(), this.innerModel())
@@ -369,8 +366,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     protected Mono<SnapshotInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getSnapshots()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -378,18 +374,23 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     private String constructStorageAccountId(String vhdUrl) {
         try {
-            return ResourceUtils
-                .constructResourceId(
-                    this.manager().subscriptionId(),
-                    resourceGroupName(),
-                    "Microsoft.Storage",
-                    "storageAccounts",
-                    vhdUrl.split("\\.")[0].replace("https://", ""),
-                    "");
+            return ResourceUtils.constructResourceId(this.manager().subscriptionId(), resourceGroupName(),
+                "Microsoft.Storage", "storageAccounts", vhdUrl.split("\\.")[0].replace("https://", ""), "");
         } catch (RuntimeException ex) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(String.format("%s is not valid URI of a blob to import.", vhdUrl)));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(String.format("%s is not valid URI of a blob to import.", vhdUrl)));
         }
+    }
+
+    @Override
+    public SnapshotImpl enablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl disablePublicNetworkAccess() {
+        this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        return this;
     }
 }

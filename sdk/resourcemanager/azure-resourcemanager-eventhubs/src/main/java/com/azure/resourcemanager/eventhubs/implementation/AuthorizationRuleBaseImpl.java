@@ -24,8 +24,7 @@ import java.util.List;
  * @param <RuleT> rule fluent model
  * @param <RuleImpl> implementation of rule fluent model
  */
-abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
-    RuleImpl extends IndexableRefreshableWrapperImpl<RuleT, AuthorizationRuleInner>>
+abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>, RuleImpl extends IndexableRefreshableWrapperImpl<RuleT, AuthorizationRuleInner>>
     extends NestedResourceImpl<RuleT, AuthorizationRuleInner, RuleImpl> implements AuthorizationRule<RuleT> {
 
     protected AuthorizationRuleBaseImpl(String name, AuthorizationRuleInner inner, EventHubsManager manager) {
@@ -34,8 +33,7 @@ abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
 
     @Override
     public Mono<EventHubAuthorizationKey> getKeysAsync() {
-        return this.getKeysInnerAsync()
-            .map(EventHubAuthorizationKeyImpl::new);
+        return this.getKeysInnerAsync().map(EventHubAuthorizationKeyImpl::new);
     }
 
     @Override
@@ -45,8 +43,7 @@ abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
 
     @Override
     public Mono<EventHubAuthorizationKey> regenerateKeyAsync(KeyType keyType) {
-        return this.regenerateKeysInnerAsync(keyType)
-            .map(EventHubAuthorizationKeyImpl::new);
+        return this.regenerateKeysInnerAsync(keyType).map(EventHubAuthorizationKeyImpl::new);
     }
 
     @Override
@@ -61,7 +58,6 @@ abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
         }
         return Collections.unmodifiableList(this.innerModel().rights());
     }
-
 
     @SuppressWarnings("unchecked")
     public RuleImpl withListenAccess() {
@@ -103,7 +99,10 @@ abstract class AuthorizationRuleBaseImpl<RuleT extends AuthorizationRule<RuleT>,
     }
 
     protected abstract Mono<AccessKeysInner> getKeysInnerAsync();
+
     protected abstract Mono<AccessKeysInner> regenerateKeysInnerAsync(KeyType keyType);
+
     protected abstract Mono<AuthorizationRuleInner> getInnerAsync();
+
     public abstract Mono<RuleT> createResourceAsync();
 }

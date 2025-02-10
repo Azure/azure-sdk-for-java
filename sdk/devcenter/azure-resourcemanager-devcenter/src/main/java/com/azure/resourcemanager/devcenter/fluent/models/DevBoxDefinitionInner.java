@@ -7,6 +7,9 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.CatalogResourceValidationStatus;
 import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
@@ -14,31 +17,48 @@ import com.azure.resourcemanager.devcenter.models.ImageValidationErrorDetails;
 import com.azure.resourcemanager.devcenter.models.ImageValidationStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents a definition for a Developer Machine. */
+/**
+ * Represents a definition for a Developer Machine.
+ */
 @Fluent
 public final class DevBoxDefinitionInner extends Resource {
     /*
      * Dev Box definition properties
      */
-    @JsonProperty(value = "properties")
     private DevBoxDefinitionProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DevBoxDefinitionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DevBoxDefinitionInner class.
+     */
     public DevBoxDefinitionInner() {
     }
 
     /**
      * Get the innerProperties property: Dev Box definition properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DevBoxDefinitionProperties innerProperties() {
@@ -47,21 +67,55 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevBoxDefinitionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevBoxDefinitionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -70,7 +124,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -79,7 +133,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the imageValidationStatus property: Validation status of the configured image.
-     *
+     * 
      * @return the imageValidationStatus value.
      */
     public ImageValidationStatus imageValidationStatus() {
@@ -89,7 +143,7 @@ public final class DevBoxDefinitionInner extends Resource {
     /**
      * Get the imageValidationErrorDetails property: Details for image validator error. Populated when the image
      * validation is not successful.
-     *
+     * 
      * @return the imageValidationErrorDetails value.
      */
     public ImageValidationErrorDetails imageValidationErrorDetails() {
@@ -98,7 +152,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the validationStatus property: Validation status for the Dev Box Definition.
-     *
+     * 
      * @return the validationStatus value.
      */
     public CatalogResourceValidationStatus validationStatus() {
@@ -108,7 +162,7 @@ public final class DevBoxDefinitionInner extends Resource {
     /**
      * Get the activeImageReference property: Image reference information for the currently active image (only populated
      * during updates).
-     *
+     * 
      * @return the activeImageReference value.
      */
     public ImageReference activeImageReference() {
@@ -117,7 +171,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the imageReference property: Image reference information.
-     *
+     * 
      * @return the imageReference value.
      */
     public ImageReference imageReference() {
@@ -126,7 +180,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Set the imageReference property: Image reference information.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the DevBoxDefinitionInner object itself.
      */
@@ -140,7 +194,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the sku property: The SKU for Dev Boxes created using this definition.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -149,7 +203,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Set the sku property: The SKU for Dev Boxes created using this definition.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DevBoxDefinitionInner object itself.
      */
@@ -164,7 +218,7 @@ public final class DevBoxDefinitionInner extends Resource {
     /**
      * Get the osStorageType property: The storage type used for the Operating System disk of Dev Boxes created using
      * this definition.
-     *
+     * 
      * @return the osStorageType value.
      */
     public String osStorageType() {
@@ -174,7 +228,7 @@ public final class DevBoxDefinitionInner extends Resource {
     /**
      * Set the osStorageType property: The storage type used for the Operating System disk of Dev Boxes created using
      * this definition.
-     *
+     * 
      * @param osStorageType the osStorageType value to set.
      * @return the DevBoxDefinitionInner object itself.
      */
@@ -190,7 +244,7 @@ public final class DevBoxDefinitionInner extends Resource {
      * Get the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
      * hibernation. Not all images are capable of supporting hibernation. To find out more see
      * https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @return the hibernateSupport value.
      */
     public HibernateSupport hibernateSupport() {
@@ -201,7 +255,7 @@ public final class DevBoxDefinitionInner extends Resource {
      * Set the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
      * hibernation. Not all images are capable of supporting hibernation. To find out more see
      * https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @param hibernateSupport the hibernateSupport value to set.
      * @return the DevBoxDefinitionInner object itself.
      */
@@ -215,12 +269,64 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBoxDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBoxDefinitionInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DevBoxDefinitionInner.
+     */
+    public static DevBoxDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevBoxDefinitionInner deserializedDevBoxDefinitionInner = new DevBoxDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDevBoxDefinitionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDevBoxDefinitionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDevBoxDefinitionInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDevBoxDefinitionInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDevBoxDefinitionInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDevBoxDefinitionInner.innerProperties = DevBoxDefinitionProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDevBoxDefinitionInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevBoxDefinitionInner;
+        });
     }
 }

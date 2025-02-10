@@ -15,17 +15,20 @@ public final class JsonDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JsonDatasetTypeProperties model = BinaryData.fromString(
-            "{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datafr\",\"fileName\":\"datagbmxldjmz\",\"\":{\"lurb\":\"datajesyl\",\"uqs\":\"datafygpnyhgd\",\"qyvoupr\":\"dataa\"}},\"encodingName\":\"datatqzsslhmgwfnivr\",\"compression\":{\"type\":\"datafduiolhgyqvpb\",\"level\":\"datapoqzucfz\",\"\":{\"mvhvz\":\"datazdquurbo\",\"ujywzcqyggmn\":\"dataelbprn\",\"drrp\":\"datasvhbngqiwyejto\"}}}")
+            "{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datalfnisyxg\",\"fileName\":\"databmtredscnns\",\"\":{\"wtzqzcloyhy\":\"datayyuvtzrxzhclec\",\"wbyorjplbchych\":\"datapgidhzgyresgzsdt\",\"fbqvumkxqj\":\"datakvy\",\"t\":\"dataiuepmaxfnzlpqmp\"}},\"encodingName\":\"datafvulb\",\"compression\":{\"type\":\"datartux\",\"level\":\"datarhfcaeooifqdyw\",\"\":{\"corkfrocgbmxl\":\"dataobhahqmomf\",\"zezbjes\":\"dataj\"}}}")
             .toObject(JsonDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JsonDatasetTypeProperties model = new JsonDatasetTypeProperties()
-            .withLocation(new DatasetLocation().withFolderPath("datafr").withFileName("datagbmxldjmz")
+            .withLocation(new DatasetLocation().withFolderPath("datalfnisyxg")
+                .withFileName("databmtredscnns")
                 .withAdditionalProperties(mapOf("type", "DatasetLocation")))
-            .withEncodingName("datatqzsslhmgwfnivr").withCompression(new DatasetCompression()
-                .withType("datafduiolhgyqvpb").withLevel("datapoqzucfz").withAdditionalProperties(mapOf()));
+            .withEncodingName("datafvulb")
+            .withCompression(new DatasetCompression().withType("datartux")
+                .withLevel("datarhfcaeooifqdyw")
+                .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(JsonDatasetTypeProperties.class);
     }
 

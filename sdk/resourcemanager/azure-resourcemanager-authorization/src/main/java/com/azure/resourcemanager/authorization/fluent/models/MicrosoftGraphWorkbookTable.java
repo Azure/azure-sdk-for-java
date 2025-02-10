@@ -5,27 +5,27 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** workbookTable. */
+/**
+ * workbookTable.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
     /*
      * Indicates whether the first column contains special formatting.
      */
-    @JsonProperty(value = "highlightFirstColumn")
     private Boolean highlightFirstColumn;
 
     /*
      * Indicates whether the last column contains special formatting.
      */
-    @JsonProperty(value = "highlightLastColumn")
     private Boolean highlightLastColumn;
 
     /*
@@ -33,92 +33,82 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
      * renamed. This property should be interpreted as an opaque string value and should not be parsed to any other
      * type. Read-only.
      */
-    @JsonProperty(value = "legacyId")
     private String legacyId;
 
     /*
      * Name of the table.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Indicates whether the columns show banded formatting in which odd columns are highlighted differently from even
      * ones to make reading the table easier.
      */
-    @JsonProperty(value = "showBandedColumns")
     private Boolean showBandedColumns;
 
     /*
-     * Indicates whether the rows show banded formatting in which odd rows are highlighted differently from even ones
-     * to make reading the table easier.
+     * Indicates whether the rows show banded formatting in which odd rows are highlighted differently from even ones to
+     * make reading the table easier.
      */
-    @JsonProperty(value = "showBandedRows")
     private Boolean showBandedRows;
 
     /*
      * Indicates whether the filter buttons are visible at the top of each column header. Setting this is only allowed
      * if the table contains a header row.
      */
-    @JsonProperty(value = "showFilterButton")
     private Boolean showFilterButton;
 
     /*
      * Indicates whether the header row is visible or not. This value can be set to show or remove the header row.
      */
-    @JsonProperty(value = "showHeaders")
     private Boolean showHeaders;
 
     /*
      * Indicates whether the total row is visible or not. This value can be set to show or remove the total row.
      */
-    @JsonProperty(value = "showTotals")
     private Boolean showTotals;
 
     /*
-     * Constant value that represents the Table style. The possible values are: TableStyleLight1 thru
-     * TableStyleLight21, TableStyleMedium1 thru TableStyleMedium28, TableStyleStyleDark1 thru TableStyleStyleDark11. A
-     * custom user-defined style present in the workbook can also be specified.
+     * Constant value that represents the Table style. The possible values are: TableStyleLight1 thru TableStyleLight21,
+     * TableStyleMedium1 thru TableStyleMedium28, TableStyleStyleDark1 thru TableStyleStyleDark11. A custom user-defined
+     * style present in the workbook can also be specified.
      */
-    @JsonProperty(value = "style")
     private String style;
 
     /*
      * Represents a collection of all the columns in the table. Read-only.
      */
-    @JsonProperty(value = "columns")
     private List<MicrosoftGraphWorkbookTableColumn> columns;
 
     /*
      * Represents a collection of all the rows in the table. Read-only.
      */
-    @JsonProperty(value = "rows")
     private List<MicrosoftGraphWorkbookTableRow> rows;
 
     /*
      * workbookTableSort
      */
-    @JsonProperty(value = "sort")
     private MicrosoftGraphWorkbookTableSort sort;
 
     /*
      * workbookWorksheet
      */
-    @JsonProperty(value = "worksheet")
     private MicrosoftGraphWorkbookWorksheet worksheet;
 
     /*
      * workbookTable
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookTable class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookTable class.
+     */
     public MicrosoftGraphWorkbookTable() {
     }
 
     /**
      * Get the highlightFirstColumn property: Indicates whether the first column contains special formatting.
-     *
+     * 
      * @return the highlightFirstColumn value.
      */
     public Boolean highlightFirstColumn() {
@@ -127,7 +117,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Set the highlightFirstColumn property: Indicates whether the first column contains special formatting.
-     *
+     * 
      * @param highlightFirstColumn the highlightFirstColumn value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -138,7 +128,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Get the highlightLastColumn property: Indicates whether the last column contains special formatting.
-     *
+     * 
      * @return the highlightLastColumn value.
      */
     public Boolean highlightLastColumn() {
@@ -147,7 +137,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Set the highlightLastColumn property: Indicates whether the last column contains special formatting.
-     *
+     * 
      * @param highlightLastColumn the highlightLastColumn value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -160,7 +150,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
      * Get the legacyId property: Legacy Id used in older Excle clients. The value of the identifier remains the same
      * even when the table is renamed. This property should be interpreted as an opaque string value and should not be
      * parsed to any other type. Read-only.
-     *
+     * 
      * @return the legacyId value.
      */
     public String legacyId() {
@@ -171,7 +161,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
      * Set the legacyId property: Legacy Id used in older Excle clients. The value of the identifier remains the same
      * even when the table is renamed. This property should be interpreted as an opaque string value and should not be
      * parsed to any other type. Read-only.
-     *
+     * 
      * @param legacyId the legacyId value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -182,7 +172,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Get the name property: Name of the table.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -191,7 +181,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Set the name property: Name of the table.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -203,7 +193,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
     /**
      * Get the showBandedColumns property: Indicates whether the columns show banded formatting in which odd columns are
      * highlighted differently from even ones to make reading the table easier.
-     *
+     * 
      * @return the showBandedColumns value.
      */
     public Boolean showBandedColumns() {
@@ -213,7 +203,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
     /**
      * Set the showBandedColumns property: Indicates whether the columns show banded formatting in which odd columns are
      * highlighted differently from even ones to make reading the table easier.
-     *
+     * 
      * @param showBandedColumns the showBandedColumns value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -225,7 +215,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
     /**
      * Get the showBandedRows property: Indicates whether the rows show banded formatting in which odd rows are
      * highlighted differently from even ones to make reading the table easier.
-     *
+     * 
      * @return the showBandedRows value.
      */
     public Boolean showBandedRows() {
@@ -235,7 +225,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
     /**
      * Set the showBandedRows property: Indicates whether the rows show banded formatting in which odd rows are
      * highlighted differently from even ones to make reading the table easier.
-     *
+     * 
      * @param showBandedRows the showBandedRows value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -247,7 +237,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
     /**
      * Get the showFilterButton property: Indicates whether the filter buttons are visible at the top of each column
      * header. Setting this is only allowed if the table contains a header row.
-     *
+     * 
      * @return the showFilterButton value.
      */
     public Boolean showFilterButton() {
@@ -257,7 +247,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
     /**
      * Set the showFilterButton property: Indicates whether the filter buttons are visible at the top of each column
      * header. Setting this is only allowed if the table contains a header row.
-     *
+     * 
      * @param showFilterButton the showFilterButton value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -269,7 +259,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
     /**
      * Get the showHeaders property: Indicates whether the header row is visible or not. This value can be set to show
      * or remove the header row.
-     *
+     * 
      * @return the showHeaders value.
      */
     public Boolean showHeaders() {
@@ -279,7 +269,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
     /**
      * Set the showHeaders property: Indicates whether the header row is visible or not. This value can be set to show
      * or remove the header row.
-     *
+     * 
      * @param showHeaders the showHeaders value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -291,7 +281,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
     /**
      * Get the showTotals property: Indicates whether the total row is visible or not. This value can be set to show or
      * remove the total row.
-     *
+     * 
      * @return the showTotals value.
      */
     public Boolean showTotals() {
@@ -301,7 +291,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
     /**
      * Set the showTotals property: Indicates whether the total row is visible or not. This value can be set to show or
      * remove the total row.
-     *
+     * 
      * @param showTotals the showTotals value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -314,7 +304,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
      * Get the style property: Constant value that represents the Table style. The possible values are: TableStyleLight1
      * thru TableStyleLight21, TableStyleMedium1 thru TableStyleMedium28, TableStyleStyleDark1 thru
      * TableStyleStyleDark11. A custom user-defined style present in the workbook can also be specified.
-     *
+     * 
      * @return the style value.
      */
     public String style() {
@@ -325,7 +315,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
      * Set the style property: Constant value that represents the Table style. The possible values are: TableStyleLight1
      * thru TableStyleLight21, TableStyleMedium1 thru TableStyleMedium28, TableStyleStyleDark1 thru
      * TableStyleStyleDark11. A custom user-defined style present in the workbook can also be specified.
-     *
+     * 
      * @param style the style value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -336,7 +326,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Get the columns property: Represents a collection of all the columns in the table. Read-only.
-     *
+     * 
      * @return the columns value.
      */
     public List<MicrosoftGraphWorkbookTableColumn> columns() {
@@ -345,7 +335,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Set the columns property: Represents a collection of all the columns in the table. Read-only.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -356,7 +346,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Get the rows property: Represents a collection of all the rows in the table. Read-only.
-     *
+     * 
      * @return the rows value.
      */
     public List<MicrosoftGraphWorkbookTableRow> rows() {
@@ -365,7 +355,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Set the rows property: Represents a collection of all the rows in the table. Read-only.
-     *
+     * 
      * @param rows the rows value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -376,7 +366,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Get the sort property: workbookTableSort.
-     *
+     * 
      * @return the sort value.
      */
     public MicrosoftGraphWorkbookTableSort sort() {
@@ -385,7 +375,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Set the sort property: workbookTableSort.
-     *
+     * 
      * @param sort the sort value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -396,7 +386,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Get the worksheet property: workbookWorksheet.
-     *
+     * 
      * @return the worksheet value.
      */
     public MicrosoftGraphWorkbookWorksheet worksheet() {
@@ -405,7 +395,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Set the worksheet property: workbookWorksheet.
-     *
+     * 
      * @param worksheet the worksheet value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -416,17 +406,16 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: workbookTable.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookTable.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookTable object itself.
      */
@@ -435,15 +424,9 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookTable withId(String id) {
         super.withId(id);
@@ -452,7 +435,7 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -470,5 +453,103 @@ public final class MicrosoftGraphWorkbookTable extends MicrosoftGraphEntity {
         if (worksheet() != null) {
             worksheet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeBooleanField("highlightFirstColumn", this.highlightFirstColumn);
+        jsonWriter.writeBooleanField("highlightLastColumn", this.highlightLastColumn);
+        jsonWriter.writeStringField("legacyId", this.legacyId);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("showBandedColumns", this.showBandedColumns);
+        jsonWriter.writeBooleanField("showBandedRows", this.showBandedRows);
+        jsonWriter.writeBooleanField("showFilterButton", this.showFilterButton);
+        jsonWriter.writeBooleanField("showHeaders", this.showHeaders);
+        jsonWriter.writeBooleanField("showTotals", this.showTotals);
+        jsonWriter.writeStringField("style", this.style);
+        jsonWriter.writeArrayField("columns", this.columns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("rows", this.rows, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("sort", this.sort);
+        jsonWriter.writeJsonField("worksheet", this.worksheet);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookTable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookTable if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookTable.
+     */
+    public static MicrosoftGraphWorkbookTable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookTable deserializedMicrosoftGraphWorkbookTable = new MicrosoftGraphWorkbookTable();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.withId(reader.getString());
+                } else if ("highlightFirstColumn".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.highlightFirstColumn
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("highlightLastColumn".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.highlightLastColumn
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("legacyId".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.legacyId = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.name = reader.getString();
+                } else if ("showBandedColumns".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.showBandedColumns
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("showBandedRows".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.showBandedRows = reader.getNullable(JsonReader::getBoolean);
+                } else if ("showFilterButton".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.showFilterButton
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("showHeaders".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.showHeaders = reader.getNullable(JsonReader::getBoolean);
+                } else if ("showTotals".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.showTotals = reader.getNullable(JsonReader::getBoolean);
+                } else if ("style".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.style = reader.getString();
+                } else if ("columns".equals(fieldName)) {
+                    List<MicrosoftGraphWorkbookTableColumn> columns
+                        = reader.readArray(reader1 -> MicrosoftGraphWorkbookTableColumn.fromJson(reader1));
+                    deserializedMicrosoftGraphWorkbookTable.columns = columns;
+                } else if ("rows".equals(fieldName)) {
+                    List<MicrosoftGraphWorkbookTableRow> rows
+                        = reader.readArray(reader1 -> MicrosoftGraphWorkbookTableRow.fromJson(reader1));
+                    deserializedMicrosoftGraphWorkbookTable.rows = rows;
+                } else if ("sort".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.sort = MicrosoftGraphWorkbookTableSort.fromJson(reader);
+                } else if ("worksheet".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookTable.worksheet
+                        = MicrosoftGraphWorkbookWorksheet.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookTable.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookTable;
+        });
     }
 }

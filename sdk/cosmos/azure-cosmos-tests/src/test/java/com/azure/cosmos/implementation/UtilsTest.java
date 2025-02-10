@@ -3,10 +3,17 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
+import com.fasterxml.jackson.module.blackbird.BlackbirdModule;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.testng.annotations.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -19,14 +26,14 @@ public class UtilsTest {
     @Test(groups = {"unit"})
     public void parsingByteArrayAsObjectNode() {
         byte[] source = "{ 'a' : 'b' }".getBytes(StandardCharsets.UTF_8);
-        ObjectNode objectNode = Utils.parse(source, ObjectNode.class);
+        ObjectNode objectNode = Utils.parse(source, ObjectNode.class, CosmosItemSerializer.DEFAULT_SERIALIZER);
         assertThat(objectNode.get("a").asText()).isEqualTo("b");
     }
 
     @Test(groups = {"unit"})
     public void parsingByteArrayAsJsonNode() {
         byte[] source = "5".getBytes(StandardCharsets.UTF_8);
-        JsonNode jsonNode = Utils.parse(source, JsonNode.class);
+        JsonNode jsonNode = Utils.parse(source, JsonNode.class, CosmosItemSerializer.DEFAULT_SERIALIZER);
         assertThat(jsonNode.asInt()).isEqualTo(5);
     }
 
@@ -37,7 +44,7 @@ public class UtilsTest {
         System.arraycopy(source, 0, data, 0, data.length);
 
         try {
-            Utils.parse(data, ObjectNode.class);
+            Utils.parse(data, ObjectNode.class, CosmosItemSerializer.DEFAULT_SERIALIZER);
             fail("expected to fail");
         } catch (Exception e) {
             assertThat(e.getMessage()).isEqualTo("Failed to parse byte-array " + new String(data, StandardCharsets.UTF_8) + " to POJO.");
@@ -58,15 +65,27 @@ public class UtilsTest {
     }
 
     @Test(groups = {"unit"})
-    public void afterBurnerChanges() {
+    public void afterburnerBlackbirdChanges() {
         ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
-        for (Object moduleName : objectMapper.getRegisteredModuleIds()) {
-            if (moduleName.toString().contains("AfterburnerModule")) {
-                int javaVersion = getJavaVersion();
-                if (javaVersion == -1 || javaVersion >= 16) {
-                    fail("AfterBurner should not be register for java " + javaVersion);
-                }
-            }
+
+        List<String> moduleNames = objectMapper.getRegisteredModuleIds().stream()
+            .map(Object::toString)
+            .collect(Collectors.toList());
+
+        int javaVersion = getJavaVersion();
+        if (javaVersion == -1) {
+            assertThat(moduleNames)
+                .doesNotContain(AfterburnerModule.class.getName(), BlackbirdModule.class.getName());
+        }
+        else if (javaVersion < 11) {
+            assertThat(moduleNames)
+                .contains(AfterburnerModule.class.getName())
+                .doesNotContain(BlackbirdModule.class.getName());
+        }
+        else {
+            assertThat(moduleNames)
+                .contains(BlackbirdModule.class.getName())
+                .doesNotContain(AfterburnerModule.class.getName());
         }
     }
 
@@ -89,5 +108,61 @@ public class UtilsTest {
             // For unknown version we wil mark it as -1
             return version;
         }
+    }
+
+    @Test(groups = { "unit" })
+    public void allowUnquotedControlChars() {
+        assertThat(Utils.shouldAllowUnquotedControlChars()).isTrue();
+
+        System.setProperty("COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS", "false");
+        assertThat(Utils.shouldAllowUnquotedControlChars()).isFalse();
+        System.clearProperty("COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS");
+    }
+
+    @Test(groups = { "unit" })
+    public void serializationInclusionMode() {
+        assertThat(
+            Utils
+            .getDocumentObjectMapper(null)
+            .getSerializationConfig()
+            .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.USE_DEFAULTS, JsonInclude.Include.USE_DEFAULTS));
+
+        assertThat(
+            Utils
+                .getDocumentObjectMapper("")
+                .getSerializationConfig()
+                .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.USE_DEFAULTS, JsonInclude.Include.USE_DEFAULTS));
+        assertThat(
+            Utils
+                .getDocumentObjectMapper("aLWayS")
+                .getSerializationConfig()
+                .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.ALWAYS, JsonInclude.Include.ALWAYS));
+        assertThat(
+            Utils
+                .getDocumentObjectMapper("nONnull")
+                .getSerializationConfig()
+                .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL));
+        assertThat(
+            Utils
+                .getDocumentObjectMapper("nONEMPTY")
+                .getSerializationConfig()
+                .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.NON_EMPTY, JsonInclude.Include.NON_EMPTY));
+        assertThat(
+            Utils
+                .getDocumentObjectMapper("NonDefault")
+                .getSerializationConfig()
+                .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.NON_DEFAULT, JsonInclude.Include.NON_DEFAULT));
     }
 }

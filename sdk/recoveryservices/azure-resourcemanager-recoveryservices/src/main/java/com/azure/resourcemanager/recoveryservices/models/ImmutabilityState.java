@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImmutabilityState. */
+/**
+ * Defines values for ImmutabilityState.
+ */
 public final class ImmutabilityState extends ExpandableStringEnum<ImmutabilityState> {
-    /** Static value Disabled for ImmutabilityState. */
+    /**
+     * Static value Disabled for ImmutabilityState.
+     */
     public static final ImmutabilityState DISABLED = fromString("Disabled");
 
-    /** Static value Unlocked for ImmutabilityState. */
+    /**
+     * Static value Unlocked for ImmutabilityState.
+     */
     public static final ImmutabilityState UNLOCKED = fromString("Unlocked");
 
-    /** Static value Locked for ImmutabilityState. */
+    /**
+     * Static value Locked for ImmutabilityState.
+     */
     public static final ImmutabilityState LOCKED = fromString("Locked");
 
     /**
      * Creates a new instance of ImmutabilityState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ImmutabilityState extends ExpandableStringEnum<ImmutabilitySt
 
     /**
      * Creates or finds a ImmutabilityState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImmutabilityState.
      */
-    @JsonCreator
     public static ImmutabilityState fromString(String name) {
         return fromString(name, ImmutabilityState.class);
     }
 
     /**
      * Gets known ImmutabilityState values.
-     *
+     * 
      * @return known ImmutabilityState values.
      */
     public static Collection<ImmutabilityState> values() {

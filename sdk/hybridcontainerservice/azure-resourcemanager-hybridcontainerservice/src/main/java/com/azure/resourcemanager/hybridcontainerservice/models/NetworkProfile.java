@@ -5,30 +5,30 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * NetworkProfile - Profile of network configuration.
+ * The network configuration profile for the provisioned cluster.
  */
 @Fluent
-public final class NetworkProfile {
+public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
     /*
-     * LoadBalancerProfile - Profile of the cluster load balancer.
+     * Profile of the HA Proxy load balancer.
      */
-    @JsonProperty(value = "loadBalancerProfile")
     private NetworkProfileLoadBalancerProfile loadBalancerProfile;
 
     /*
-     * NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'calico',
-     * 'flannel'. Default is 'calico'
+     * Network policy used for building Kubernetes network. Possible values include: 'calico'.
      */
-    @JsonProperty(value = "networkPolicy")
     private NetworkPolicy networkPolicy;
 
     /*
-     * PodCidr - A CIDR notation IP range from which to assign pod IPs when kubenet is used.
+     * A CIDR notation IP Address range from which to assign pod IPs.
      */
-    @JsonProperty(value = "podCidr")
     private String podCidr;
 
     /**
@@ -38,7 +38,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the loadBalancerProfile property: LoadBalancerProfile - Profile of the cluster load balancer.
+     * Get the loadBalancerProfile property: Profile of the HA Proxy load balancer.
      * 
      * @return the loadBalancerProfile value.
      */
@@ -47,7 +47,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the loadBalancerProfile property: LoadBalancerProfile - Profile of the cluster load balancer.
+     * Set the loadBalancerProfile property: Profile of the HA Proxy load balancer.
      * 
      * @param loadBalancerProfile the loadBalancerProfile value to set.
      * @return the NetworkProfile object itself.
@@ -58,8 +58,8 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the networkPolicy property: NetworkPolicy - Network policy used for building Kubernetes network. Possible
-     * values include: 'calico', 'flannel'. Default is 'calico'.
+     * Get the networkPolicy property: Network policy used for building Kubernetes network. Possible values include:
+     * 'calico'.
      * 
      * @return the networkPolicy value.
      */
@@ -68,8 +68,8 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the networkPolicy property: NetworkPolicy - Network policy used for building Kubernetes network. Possible
-     * values include: 'calico', 'flannel'. Default is 'calico'.
+     * Set the networkPolicy property: Network policy used for building Kubernetes network. Possible values include:
+     * 'calico'.
      * 
      * @param networkPolicy the networkPolicy value to set.
      * @return the NetworkProfile object itself.
@@ -80,7 +80,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the podCidr property: PodCidr - A CIDR notation IP range from which to assign pod IPs when kubenet is used.
+     * Get the podCidr property: A CIDR notation IP Address range from which to assign pod IPs.
      * 
      * @return the podCidr value.
      */
@@ -89,7 +89,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the podCidr property: PodCidr - A CIDR notation IP range from which to assign pod IPs when kubenet is used.
+     * Set the podCidr property: A CIDR notation IP Address range from which to assign pod IPs.
      * 
      * @param podCidr the podCidr value to set.
      * @return the NetworkProfile object itself.
@@ -108,5 +108,47 @@ public final class NetworkProfile {
         if (loadBalancerProfile() != null) {
             loadBalancerProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("loadBalancerProfile", this.loadBalancerProfile);
+        jsonWriter.writeStringField("networkPolicy", this.networkPolicy == null ? null : this.networkPolicy.toString());
+        jsonWriter.writeStringField("podCidr", this.podCidr);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkProfile.
+     */
+    public static NetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProfile deserializedNetworkProfile = new NetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loadBalancerProfile".equals(fieldName)) {
+                    deserializedNetworkProfile.loadBalancerProfile = NetworkProfileLoadBalancerProfile.fromJson(reader);
+                } else if ("networkPolicy".equals(fieldName)) {
+                    deserializedNetworkProfile.networkPolicy = NetworkPolicy.fromString(reader.getString());
+                } else if ("podCidr".equals(fieldName)) {
+                    deserializedNetworkProfile.podCidr = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProfile;
+        });
     }
 }

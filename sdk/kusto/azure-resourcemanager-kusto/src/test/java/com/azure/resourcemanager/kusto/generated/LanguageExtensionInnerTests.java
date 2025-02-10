@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LanguageExtensionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LanguageExtensionInner model =
-            BinaryData
-                .fromString(
-                    "{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"R\",\"languageExtensionCustomImageName\":\"zitonpeqfpjkjl\"}")
-                .toObject(LanguageExtensionInner.class);
+        LanguageExtensionInner model = BinaryData.fromString(
+            "{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"R\",\"languageExtensionCustomImageName\":\"zitonpeqfpjkjl\"}")
+            .toObject(LanguageExtensionInner.class);
         Assertions.assertEquals(LanguageExtensionName.R, model.languageExtensionName());
         Assertions.assertEquals(LanguageExtensionImageName.R, model.languageExtensionImageName());
         Assertions.assertEquals("zitonpeqfpjkjl", model.languageExtensionCustomImageName());
@@ -25,11 +23,9 @@ public final class LanguageExtensionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LanguageExtensionInner model =
-            new LanguageExtensionInner()
-                .withLanguageExtensionName(LanguageExtensionName.R)
-                .withLanguageExtensionImageName(LanguageExtensionImageName.R)
-                .withLanguageExtensionCustomImageName("zitonpeqfpjkjl");
+        LanguageExtensionInner model = new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R)
+            .withLanguageExtensionImageName(LanguageExtensionImageName.R)
+            .withLanguageExtensionCustomImageName("zitonpeqfpjkjl");
         model = BinaryData.fromObject(model).toObject(LanguageExtensionInner.class);
         Assertions.assertEquals(LanguageExtensionName.R, model.languageExtensionName());
         Assertions.assertEquals(LanguageExtensionImageName.R, model.languageExtensionImageName());

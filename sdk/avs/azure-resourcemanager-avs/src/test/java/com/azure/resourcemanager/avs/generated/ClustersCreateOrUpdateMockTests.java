@@ -6,73 +6,53 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.Cluster;
 import com.azure.resourcemanager.avs.models.Sku;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.avs.models.SkuTier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ClustersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"clusterSize\":312575916,\"provisioningState\":\"Succeeded\",\"clusterId\":1231243109,\"hosts\":[\"nbixxrti\"],\"vsanDatastoreName\":\"cpwpg\"},\"sku\":{\"name\":\"lrcivtsoxfrke\",\"tier\":\"Premium\",\"size\":\"yyefrpmpdnqqs\",\"family\":\"waoqvmmb\",\"capacity\":538705263},\"id\":\"rtql\",\"name\":\"zmegnitgvk\",\"type\":\"lzyqd\"}";
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"thwtzol\"},\"properties\":{\"clusterSize\":1713502373,\"provisioningState\":\"Succeeded\",\"clusterId\":989403174,\"hosts\":[\"bwjscjpahlxveab\",\"qxnmwmqt\",\"bxyijddtvq\",\"ttadijae\"]},\"id\":\"kmr\",\"name\":\"ieekpndzaa\",\"type\":\"mudqmeq\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AvsManager manager = AvsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Cluster response = manager.clusters()
+            .define("vetnwsdtutn")
+            .withExistingPrivateCloud("a", "cqusr")
+            .withSku(new Sku().withName("udypohyuems")
+                .withTier(SkuTier.PREMIUM)
+                .withSize("qyrp")
+                .withFamily("obrltt")
+                .withCapacity(2105592893))
+            .withClusterSize(1517277198)
+            .withHosts(Arrays.asList("yrmewipmvekdx", "kuqgsjjxundxgket", "zhhzjhfjmhvvmu", "gpmuneqsxvmhfbuz"))
+            .withVsanDatastoreName("ihsasb")
+            .create();
 
-        AvsManager manager =
-            AvsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Cluster response =
-            manager
-                .clusters()
-                .define("bphbqzmizakakank")
-                .withExistingPrivateCloud("cwsldri", "etpwbralll")
-                .withSku(new Sku().withName("p"))
-                .withClusterSize(1316748102)
-                .withHosts(Arrays.asList("hjlmu", "y", "primr", "opteecj"))
-                .create();
-
-        Assertions.assertEquals("thwtzol", response.sku().name());
-        Assertions.assertEquals(1713502373, response.clusterSize());
-        Assertions.assertEquals("bwjscjpahlxveab", response.hosts().get(0));
+        Assertions.assertEquals("lrcivtsoxfrke", response.sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, response.sku().tier());
+        Assertions.assertEquals("yyefrpmpdnqqs", response.sku().size());
+        Assertions.assertEquals("waoqvmmb", response.sku().family());
+        Assertions.assertEquals(538705263, response.sku().capacity());
+        Assertions.assertEquals(312575916, response.clusterSize());
+        Assertions.assertEquals("nbixxrti", response.hosts().get(0));
+        Assertions.assertEquals("cpwpg", response.vsanDatastoreName());
     }
 }

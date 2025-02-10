@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity-broker</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.1.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -54,6 +54,7 @@ To take dependency on a particular version of the library that isn't present in 
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - An [Azure subscription][azure_sub].
 - The Azure CLI can also be useful for authenticating in a development environment, creating accounts, and managing account roles.
 
@@ -86,6 +87,18 @@ ms-appx-web://Microsoft.AAD.BrokerPlugin/{client_id}
 long windowHandle = getWindowHandle(); // Samples below
 InteractiveBrowserCredential cred = new InteractiveBrowserBrokerCredentialBuilder()
     .setWindowHandle(windowHandle)
+    .build();
+```
+
+#### Use the default account for sign-in
+
+When this option is enabled, the credential will attempt to silently use the default broker account. If using the default account fails, the credential will fall back to interactive authentication.
+
+```java com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.useinteractivebrowserbroker.defaultaccount
+long windowHandle = getWindowHandle(); // Samples below
+InteractiveBrowserCredential cred = new InteractiveBrowserBrokerCredentialBuilder()
+    .setWindowHandle(windowHandle)
+    .useDefaultBrokerAccount()
     .build();
 ```
 
@@ -139,6 +152,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity.broker?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity-broker

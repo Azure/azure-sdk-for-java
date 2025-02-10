@@ -14,32 +14,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ScalingRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScalingRule model =
-            BinaryData
-                .fromString(
-                    "{\"actionType\":\"scaleup\",\"evaluationCount\":1628145340,\"scalingMetric\":\"jgjrwjueiotwm\",\"comparisonRule\":{\"operator\":\"lessThan\",\"threshold\":43.039276}}")
-                .toObject(ScalingRule.class);
+        ScalingRule model = BinaryData.fromString(
+            "{\"actionType\":\"scaleup\",\"evaluationCount\":962281735,\"scalingMetric\":\"nayqi\",\"comparisonRule\":{\"operator\":\"greaterThanOrEqual\",\"threshold\":83.24161}}")
+            .toObject(ScalingRule.class);
         Assertions.assertEquals(ScaleActionType.SCALEUP, model.actionType());
-        Assertions.assertEquals(1628145340, model.evaluationCount());
-        Assertions.assertEquals("jgjrwjueiotwm", model.scalingMetric());
-        Assertions.assertEquals(ComparisonOperator.LESS_THAN, model.comparisonRule().operator());
-        Assertions.assertEquals(43.039276f, model.comparisonRule().threshold());
+        Assertions.assertEquals(962281735, model.evaluationCount());
+        Assertions.assertEquals("nayqi", model.scalingMetric());
+        Assertions.assertEquals(ComparisonOperator.GREATER_THAN_OR_EQUAL, model.comparisonRule().operator());
+        Assertions.assertEquals(83.24161f, model.comparisonRule().threshold());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScalingRule model =
-            new ScalingRule()
-                .withActionType(ScaleActionType.SCALEUP)
-                .withEvaluationCount(1628145340)
-                .withScalingMetric("jgjrwjueiotwm")
-                .withComparisonRule(
-                    new ComparisonRule().withOperator(ComparisonOperator.LESS_THAN).withThreshold(43.039276f));
+        ScalingRule model = new ScalingRule().withActionType(ScaleActionType.SCALEUP)
+            .withEvaluationCount(962281735)
+            .withScalingMetric("nayqi")
+            .withComparisonRule(
+                new ComparisonRule().withOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL).withThreshold(83.24161f));
         model = BinaryData.fromObject(model).toObject(ScalingRule.class);
         Assertions.assertEquals(ScaleActionType.SCALEUP, model.actionType());
-        Assertions.assertEquals(1628145340, model.evaluationCount());
-        Assertions.assertEquals("jgjrwjueiotwm", model.scalingMetric());
-        Assertions.assertEquals(ComparisonOperator.LESS_THAN, model.comparisonRule().operator());
-        Assertions.assertEquals(43.039276f, model.comparisonRule().threshold());
+        Assertions.assertEquals(962281735, model.evaluationCount());
+        Assertions.assertEquals("nayqi", model.scalingMetric());
+        Assertions.assertEquals(ComparisonOperator.GREATER_THAN_OR_EQUAL, model.comparisonRule().operator());
+        Assertions.assertEquals(83.24161f, model.comparisonRule().threshold());
     }
 }

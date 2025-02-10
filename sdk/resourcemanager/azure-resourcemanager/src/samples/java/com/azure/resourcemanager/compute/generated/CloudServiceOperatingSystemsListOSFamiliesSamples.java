@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class CloudServiceOperatingSystemsListOSFamiliesSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
      * CloudServiceOSFamilies_List.json
      */
     /**
@@ -19,7 +19,10 @@ public final class CloudServiceOperatingSystemsListOSFamiliesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listCloudServiceOSFamiliesInASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServiceOperatingSystems().listOSFamilies("westus2",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServiceOperatingSystems()
+            .listOSFamilies("westus2", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** websiteType. */
+/**
+ * websiteType.
+ */
 public final class MicrosoftGraphWebsiteType extends ExpandableStringEnum<MicrosoftGraphWebsiteType> {
-    /** Static value other for MicrosoftGraphWebsiteType. */
+    /**
+     * Static value other for MicrosoftGraphWebsiteType.
+     */
     public static final MicrosoftGraphWebsiteType OTHER = fromString("other");
 
-    /** Static value home for MicrosoftGraphWebsiteType. */
+    /**
+     * Static value home for MicrosoftGraphWebsiteType.
+     */
     public static final MicrosoftGraphWebsiteType HOME = fromString("home");
 
-    /** Static value work for MicrosoftGraphWebsiteType. */
+    /**
+     * Static value work for MicrosoftGraphWebsiteType.
+     */
     public static final MicrosoftGraphWebsiteType WORK = fromString("work");
 
-    /** Static value blog for MicrosoftGraphWebsiteType. */
+    /**
+     * Static value blog for MicrosoftGraphWebsiteType.
+     */
     public static final MicrosoftGraphWebsiteType BLOG = fromString("blog");
 
-    /** Static value profile for MicrosoftGraphWebsiteType. */
+    /**
+     * Static value profile for MicrosoftGraphWebsiteType.
+     */
     public static final MicrosoftGraphWebsiteType PROFILE = fromString("profile");
 
     /**
      * Creates a new instance of MicrosoftGraphWebsiteType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class MicrosoftGraphWebsiteType extends ExpandableStringEnum<Micros
 
     /**
      * Creates or finds a MicrosoftGraphWebsiteType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphWebsiteType.
      */
-    @JsonCreator
     public static MicrosoftGraphWebsiteType fromString(String name) {
         return fromString(name, MicrosoftGraphWebsiteType.class);
     }
 
     /**
      * Gets known MicrosoftGraphWebsiteType values.
-     *
+     * 
      * @return known MicrosoftGraphWebsiteType values.
      */
     public static Collection<MicrosoftGraphWebsiteType> values() {

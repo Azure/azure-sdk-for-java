@@ -5,29 +5,50 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** AzureFileShare workload-specific backup request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureFileShareBackupRequest")
+/**
+ * AzureFileShare workload-specific backup request.
+ */
 @Fluent
 public final class AzureFileShareBackupRequest extends BackupRequest {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "AzureFileShareBackupRequest";
+
+    /*
      * Backup copy will expire after the time specified (UTC).
      */
-    @JsonProperty(value = "recoveryPointExpiryTimeInUTC")
     private OffsetDateTime recoveryPointExpiryTimeInUtc;
 
-    /** Creates an instance of AzureFileShareBackupRequest class. */
+    /**
+     * Creates an instance of AzureFileShareBackupRequest class.
+     */
     public AzureFileShareBackupRequest() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the recoveryPointExpiryTimeInUtc property: Backup copy will expire after the time specified (UTC).
-     *
+     * 
      * @return the recoveryPointExpiryTimeInUtc value.
      */
     public OffsetDateTime recoveryPointExpiryTimeInUtc() {
@@ -36,7 +57,7 @@ public final class AzureFileShareBackupRequest extends BackupRequest {
 
     /**
      * Set the recoveryPointExpiryTimeInUtc property: Backup copy will expire after the time specified (UTC).
-     *
+     * 
      * @param recoveryPointExpiryTimeInUtc the recoveryPointExpiryTimeInUtc value to set.
      * @return the AzureFileShareBackupRequest object itself.
      */
@@ -47,11 +68,53 @@ public final class AzureFileShareBackupRequest extends BackupRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("recoveryPointExpiryTimeInUTC",
+            this.recoveryPointExpiryTimeInUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recoveryPointExpiryTimeInUtc));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileShareBackupRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileShareBackupRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileShareBackupRequest.
+     */
+    public static AzureFileShareBackupRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileShareBackupRequest deserializedAzureFileShareBackupRequest = new AzureFileShareBackupRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedAzureFileShareBackupRequest.objectType = reader.getString();
+                } else if ("recoveryPointExpiryTimeInUTC".equals(fieldName)) {
+                    deserializedAzureFileShareBackupRequest.recoveryPointExpiryTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileShareBackupRequest;
+        });
     }
 }

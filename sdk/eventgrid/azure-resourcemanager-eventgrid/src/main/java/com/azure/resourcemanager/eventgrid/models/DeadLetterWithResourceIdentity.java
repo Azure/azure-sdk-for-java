@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about the deadletter destination with resource identity.
  */
 @Fluent
-public final class DeadLetterWithResourceIdentity {
+public final class DeadLetterWithResourceIdentity implements JsonSerializable<DeadLetterWithResourceIdentity> {
     /*
      * The identity to use when dead-lettering events.
      */
-    @JsonProperty(value = "identity")
     private EventSubscriptionIdentity identity;
 
     /*
      * Information about the destination where events have to be delivered for the event subscription.
      * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication
-     * tokens being used during delivery / dead-lettering.
+     * tokens being used during dead-lettering.
      */
-    @JsonProperty(value = "deadLetterDestination")
     private DeadLetterDestination deadLetterDestination;
 
     /**
@@ -56,7 +58,7 @@ public final class DeadLetterWithResourceIdentity {
      * Get the deadLetterDestination property: Information about the destination where events have to be delivered for
      * the event subscription.
      * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication
-     * tokens being used during delivery / dead-lettering.
+     * tokens being used during dead-lettering.
      * 
      * @return the deadLetterDestination value.
      */
@@ -68,7 +70,7 @@ public final class DeadLetterWithResourceIdentity {
      * Set the deadLetterDestination property: Information about the destination where events have to be delivered for
      * the event subscription.
      * Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication
-     * tokens being used during delivery / dead-lettering.
+     * tokens being used during dead-lettering.
      * 
      * @param deadLetterDestination the deadLetterDestination value to set.
      * @return the DeadLetterWithResourceIdentity object itself.
@@ -90,5 +92,46 @@ public final class DeadLetterWithResourceIdentity {
         if (deadLetterDestination() != null) {
             deadLetterDestination().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("deadLetterDestination", this.deadLetterDestination);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeadLetterWithResourceIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeadLetterWithResourceIdentity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeadLetterWithResourceIdentity.
+     */
+    public static DeadLetterWithResourceIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeadLetterWithResourceIdentity deserializedDeadLetterWithResourceIdentity
+                = new DeadLetterWithResourceIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedDeadLetterWithResourceIdentity.identity = EventSubscriptionIdentity.fromJson(reader);
+                } else if ("deadLetterDestination".equals(fieldName)) {
+                    deserializedDeadLetterWithResourceIdentity.deadLetterDestination
+                        = DeadLetterDestination.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeadLetterWithResourceIdentity;
+        });
     }
 }

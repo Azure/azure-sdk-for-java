@@ -6,8 +6,11 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.SignaturesOverridesProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Contains all specific policy signatures overrides for the IDPS.
@@ -17,25 +20,21 @@ public final class SignaturesOverridesInner extends ProxyResource {
     /*
      * Contains the name of the resource (default)
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Will contain the resource id of the signature override resource
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Will contain the type of the resource: Microsoft.Network/firewallPolicies/intrusionDetectionSignaturesOverrides
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Will contain the properties of the resource (the actual signature overrides)
      */
-    @JsonProperty(value = "properties")
     private SignaturesOverridesProperties properties;
 
     /**
@@ -135,5 +134,51 @@ public final class SignaturesOverridesInner extends ProxyResource {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SignaturesOverridesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SignaturesOverridesInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SignaturesOverridesInner.
+     */
+    public static SignaturesOverridesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SignaturesOverridesInner deserializedSignaturesOverridesInner = new SignaturesOverridesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSignaturesOverridesInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSignaturesOverridesInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSignaturesOverridesInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSignaturesOverridesInner.properties = SignaturesOverridesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSignaturesOverridesInner;
+        });
     }
 }

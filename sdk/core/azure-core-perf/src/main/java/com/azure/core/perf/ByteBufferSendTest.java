@@ -17,8 +17,8 @@ public class ByteBufferSendTest extends RestProxyTestBase<CorePerfStressOptions>
 
     public ByteBufferSendTest(CorePerfStressOptions options) {
         super(options);
-        //Creates Flux of ByteBuffer with blockSize of 1MB by default.
-        //TODO: parametrize the block size
+        // Creates Flux of ByteBuffer with blockSize of 1MB by default.
+        // TODO: parametrize the block size
         length = options.getSize();
         dataToSend = TestDataCreationHelper.createRandomByteBufferFlux(options.getSize());
     }
@@ -30,7 +30,6 @@ public class ByteBufferSendTest extends RestProxyTestBase<CorePerfStressOptions>
 
     @Override
     public Mono<Void> runAsync() {
-        return service.setRawData(endpoint, id, dataToSend, length)
-            .then();
+        return service.setRawData(endpoint, id, dataToSend, length).then();
     }
 }

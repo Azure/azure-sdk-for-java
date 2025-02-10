@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.sql.models.CreateMode;
@@ -12,376 +11,323 @@ import com.azure.resourcemanager.sql.models.SecondaryType;
 import com.azure.resourcemanager.sql.models.Sku;
 import java.time.OffsetDateTime;
 
-/** Samples for Databases CreateOrUpdate. */
+/**
+ * Samples for Databases CreateOrUpdate.
+ */
 public final class DatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseConfiguredBackupStorageRedundancy.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * CreateDatabaseConfiguredBackupStorageRedundancy.json
      */
     /**
      * Sample code: Creates a database with specified backup storage redundancy.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createsADatabaseWithSpecifiedBackupStorageRedundancy(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        createsADatabaseWithSpecifiedBackupStorageRedundancy(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdb",
-                new DatabaseInner()
-                    .withLocation("southeastasia")
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "testdb",
+                new DatabaseInner().withLocation("southeastasia")
                     .withRequestedBackupStorageRedundancy(BackupStorageRedundancy.ZONE),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseDefaultMode.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseDefaultMode.json
      */
     /**
      * Sample code: Creates a database with default mode.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsADatabaseWithDefaultMode(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdb",
-                new DatabaseInner()
-                    .withLocation("southeastasia")
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "testdb",
+                new DatabaseInner().withLocation("southeastasia")
                     .withSku(new Sku().withName("S0").withTier("Standard"))
                     .withCreateMode(CreateMode.DEFAULT)
                     .withCollation("SQL_Latin1_General_CP1_CI_AS")
                     .withMaxSizeBytes(1073741824L),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateVCoreDatabaseByServiceObjective.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateVCoreDatabaseByServiceObjective
+     * .json
      */
     /**
      * Sample code: Creates a VCore database by specifying service objective name.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createsAVCoreDatabaseBySpecifyingServiceObjectiveName(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        createsAVCoreDatabaseBySpecifyingServiceObjectiveName(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdb",
-                new DatabaseInner()
-                    .withLocation("southeastasia")
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "testdb",
+                new DatabaseInner().withLocation("southeastasia")
                     .withSku(new Sku().withName("BC").withFamily("Gen4").withCapacity(2)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseMin.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseMin.json
      */
     /**
      * Sample code: Creates a database with minimum number of parameters.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createsADatabaseWithMinimumNumberOfParameters(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        createsADatabaseWithMinimumNumberOfParameters(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdb",
-                new DatabaseInner().withLocation("southeastasia"),
-                Context.NONE);
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "testdb",
+                new DatabaseInner().withLocation("southeastasia"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDwDatabaseCrossSubscriptionRecovery.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * CreateDwDatabaseCrossSubscriptionRecovery.json
      */
     /**
      * Sample code: Creates a data warehouse database as a cross-subscription restore from a geo-backup.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromAGeoBackup(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-WestUS",
-                "testsvr",
-                "testdw",
-                new DatabaseInner()
-                    .withLocation("westus")
-                    .withCreateMode(CreateMode.RECOVERY)
-                    .withSourceResourceId(
-                        "/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-SQL-EastUS/providers/Microsoft.Sql/servers/srcsvr/recoverabledatabases/srcdw"),
-                Context.NONE);
+            .createOrUpdate("Default-SQL-WestUS", "testsvr", "testdw", new DatabaseInner().withLocation("westus")
+                .withCreateMode(CreateMode.RECOVERY)
+                .withSourceResourceId(
+                    "/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-SQL-EastUS/providers/Microsoft.Sql/servers/srcsvr/recoverabledatabases/srcdw"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseMaintenanceConfiguration.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * CreateDatabaseMaintenanceConfiguration.json
      */
     /**
      * Sample code: Creates a database with preferred maintenance window.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createsADatabaseWithPreferredMaintenanceWindow(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        createsADatabaseWithPreferredMaintenanceWindow(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdb",
-                new DatabaseInner()
-                    .withLocation("southeastasia")
-                    .withSku(new Sku().withName("S2").withTier("Standard"))
-                    .withCreateMode(CreateMode.DEFAULT)
-                    .withCollation("SQL_Latin1_General_CP1_CI_AS")
-                    .withMaxSizeBytes(1073741824L)
-                    .withMaintenanceConfigurationId(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
-                Context.NONE);
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "testdb", new DatabaseInner()
+                .withLocation("southeastasia")
+                .withSku(new Sku().withName("S2").withTier("Standard"))
+                .withCreateMode(CreateMode.DEFAULT)
+                .withCollation("SQL_Latin1_General_CP1_CI_AS")
+                .withMaxSizeBytes(1073741824L)
+                .withMaintenanceConfigurationId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseCopyMode.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseCopyMode.json
      */
     /**
      * Sample code: Creates a database as a copy.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsADatabaseAsACopy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "dbcopy",
-                new DatabaseInner()
-                    .withLocation("southeastasia")
-                    .withSku(new Sku().withName("S0").withTier("Standard"))
-                    .withCreateMode(CreateMode.COPY)
-                    .withSourceDatabaseId(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
-                Context.NONE);
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "dbcopy", new DatabaseInner()
+                .withLocation("southeastasia")
+                .withSku(new Sku().withName("S0").withTier("Standard"))
+                .withCreateMode(CreateMode.COPY)
+                .withSourceDatabaseId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabasePITRMode.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabasePITRMode.json
      */
     /**
      * Sample code: Creates a database from PointInTimeRestore.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsADatabaseFromPointInTimeRestore(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "dbpitr",
-                new DatabaseInner()
-                    .withLocation("southeastasia")
-                    .withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
-                    .withSourceDatabaseId(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SoutheastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb")
-                    .withRestorePointInTime(OffsetDateTime.parse("2020-10-22T05:35:31.503Z")),
-                Context.NONE);
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "dbpitr", new DatabaseInner()
+                .withLocation("southeastasia")
+                .withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
+                .withSourceDatabaseId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SoutheastAsia/providers/Microsoft.Sql/servers/testsvr/databases/testdb")
+                .withRestorePointInTime(OffsetDateTime.parse("2020-10-22T05:35:31.503Z")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseLedger.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseLedger.json
      */
     /**
      * Sample code: Creates a database with ledger on.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsADatabaseWithLedgerOn(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdb",
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "testdb",
                 new DatabaseInner().withLocation("southeastasia").withIsLedgerOn(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDwDatabaseCrossSubscriptionPITR.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDwDatabaseCrossSubscriptionPITR
+     * .json
      */
     /**
      * Sample code: Creates a data warehouse database as a cross-subscription restore from a restore point of an
      * existing database.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromARestorePointOfAnExistingDatabase(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdw",
-                new DatabaseInner()
-                    .withLocation("southeastasia")
-                    .withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
-                    .withRestorePointInTime(OffsetDateTime.parse("2022-01-22T05:35:31.503Z"))
-                    .withSourceResourceId(
-                        "/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/srcsvr/databases/srcdw"),
-                Context.NONE);
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "testdw", new DatabaseInner()
+                .withLocation("southeastasia")
+                .withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
+                .withRestorePointInTime(OffsetDateTime.parse("2022-01-22T05:35:31.503Z"))
+                .withSourceResourceId(
+                    "/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/srcsvr/databases/srcdw"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateVCoreDatabaseBySkuNameCapacity.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateVCoreDatabaseBySkuNameCapacity.
+     * json
      */
     /**
      * Sample code: Creates a VCore database by specifying sku name and capacity.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createsAVCoreDatabaseBySpecifyingSkuNameAndCapacity(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        createsAVCoreDatabaseBySpecifyingSkuNameAndCapacity(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdb",
-                new DatabaseInner()
-                    .withLocation("southeastasia")
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "testdb",
+                new DatabaseInner().withLocation("southeastasia")
                     .withSku(new Sku().withName("BC_Gen4").withCapacity(2)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDwDatabaseCrossSubscriptionRestore.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * CreateDwDatabaseCrossSubscriptionRestore.json
      */
     /**
      * Sample code: Creates a data warehouse database as a cross-subscription restore from a backup of a dropped
      * database.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromABackupOfADroppedDatabase(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdw",
-                new DatabaseInner()
-                    .withLocation("southeastasia")
-                    .withCreateMode(CreateMode.RESTORE)
-                    .withSourceResourceId(
-                        "/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/srcsvr/restorableDroppedDatabases/srcdw,131403269876900000"),
-                Context.NONE);
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "testdw", new DatabaseInner()
+                .withLocation("southeastasia")
+                .withCreateMode(CreateMode.RESTORE)
+                .withSourceResourceId(
+                    "/subscriptions/55555555-6666-7777-8888-999999999999/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/srcsvr/restorableDroppedDatabases/srcdw,131403269876900000"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseNamedReplica.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseNamedReplica.json
      */
     /**
      * Sample code: Creates a database as named replica secondary.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsADatabaseAsNamedReplicaSecondary(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdb",
-                new DatabaseInner()
-                    .withLocation("southeastasia")
-                    .withSku(new Sku().withName("HS_Gen4").withTier("Hyperscale").withCapacity(2))
-                    .withCreateMode(CreateMode.SECONDARY)
-                    .withSourceDatabaseId(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-NorthEurope/providers/Microsoft.Sql/servers/testsvr1/databases/primarydb")
-                    .withSecondaryType(SecondaryType.NAMED),
-                Context.NONE);
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "testdb", new DatabaseInner()
+                .withLocation("southeastasia")
+                .withSku(new Sku().withName("HS_Gen4").withTier("Hyperscale").withCapacity(2))
+                .withCreateMode(CreateMode.SECONDARY)
+                .withSourceDatabaseId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-NorthEurope/providers/Microsoft.Sql/servers/testsvr1/databases/primarydb")
+                .withSecondaryType(SecondaryType.NAMED), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseSecondaryMode.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateDatabaseSecondaryMode.json
      */
     /**
      * Sample code: Creates a database as an on-line secondary.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createsADatabaseAsAnOnLineSecondary(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabases()
-            .createOrUpdate(
-                "Default-SQL-SouthEastAsia",
-                "testsvr",
-                "testdb",
-                new DatabaseInner()
-                    .withLocation("southeastasia")
-                    .withSku(new Sku().withName("S0").withTier("Standard"))
-                    .withCreateMode(CreateMode.SECONDARY)
-                    .withSourceDatabaseId(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-NorthEurope/providers/Microsoft.Sql/servers/testsvr1/databases/testdb")
-                    .withSecondaryType(SecondaryType.GEO),
-                Context.NONE);
+            .createOrUpdate("Default-SQL-SouthEastAsia", "testsvr", "testdb", new DatabaseInner()
+                .withLocation("southeastasia")
+                .withSku(new Sku().withName("S0").withTier("Standard"))
+                .withCreateMode(CreateMode.SECONDARY)
+                .withSourceDatabaseId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-NorthEurope/providers/Microsoft.Sql/servers/testsvr1/databases/testdb")
+                .withSecondaryType(SecondaryType.GEO), com.azure.core.util.Context.NONE);
     }
 }

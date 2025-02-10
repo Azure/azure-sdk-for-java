@@ -28,8 +28,7 @@ pr:
 extends:
   template: ../../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: communication
-    EnableBatchRelease: true
+    ServiceDirectory: communication/azure-communication-email
     Artifacts:
       - name: azure-communication-email
         groupId: com.azure

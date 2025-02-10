@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanProtectedItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanProtectedItem model =
-            BinaryData
-                .fromString("{\"id\":\"blydyvkf\",\"virtualMachineId\":\"rocxnehvs\"}")
+        RecoveryPlanProtectedItem model
+            = BinaryData.fromString("{\"id\":\"blydyvkf\",\"virtualMachineId\":\"rocxnehvs\"}")
                 .toObject(RecoveryPlanProtectedItem.class);
         Assertions.assertEquals("blydyvkf", model.id());
         Assertions.assertEquals("rocxnehvs", model.virtualMachineId());
@@ -21,8 +20,8 @@ public final class RecoveryPlanProtectedItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanProtectedItem model =
-            new RecoveryPlanProtectedItem().withId("blydyvkf").withVirtualMachineId("rocxnehvs");
+        RecoveryPlanProtectedItem model
+            = new RecoveryPlanProtectedItem().withId("blydyvkf").withVirtualMachineId("rocxnehvs");
         model = BinaryData.fromObject(model).toObject(RecoveryPlanProtectedItem.class);
         Assertions.assertEquals("blydyvkf", model.id());
         Assertions.assertEquals("rocxnehvs", model.virtualMachineId());

@@ -5,34 +5,33 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** domainDnsRecord. */
+/**
+ * domainDnsRecord.
+ */
 @Fluent
 public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
     /*
-     * If false, this record must be configured by the customer at the DNS host for Microsoft Online Services to
-     * operate correctly with the domain.
+     * If false, this record must be configured by the customer at the DNS host for Microsoft Online Services to operate
+     * correctly with the domain.
      */
-    @JsonProperty(value = "isOptional")
     private Boolean isOptional;
 
     /*
      * Value used when configuring the name of the DNS record at the DNS host.
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /*
      * Indicates what type of DNS record this entity represents.The value can be one of the following: CName, Mx, Srv,
      * TxtKey
      */
-    @JsonProperty(value = "recordType")
     private String recordType;
 
     /*
@@ -40,28 +39,28 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
      * null, Email, Sharepoint, EmailInternalRelayOnly, OfficeCommunicationsOnline, SharePointDefaultDomain,
      * FullRedelegation, SharePointPublic, OrgIdAuthentication, Yammer, Intune
      */
-    @JsonProperty(value = "supportedService")
     private String supportedService;
 
     /*
      * Value to use when configuring the time-to-live (ttl) property of the DNS record at the DNS host. Not nullable
      */
-    @JsonProperty(value = "ttl")
     private Integer ttl;
 
     /*
      * domainDnsRecord
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDomainDnsRecord class. */
+    /**
+     * Creates an instance of MicrosoftGraphDomainDnsRecord class.
+     */
     public MicrosoftGraphDomainDnsRecord() {
     }
 
     /**
      * Get the isOptional property: If false, this record must be configured by the customer at the DNS host for
      * Microsoft Online Services to operate correctly with the domain.
-     *
+     * 
      * @return the isOptional value.
      */
     public Boolean isOptional() {
@@ -71,7 +70,7 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
     /**
      * Set the isOptional property: If false, this record must be configured by the customer at the DNS host for
      * Microsoft Online Services to operate correctly with the domain.
-     *
+     * 
      * @param isOptional the isOptional value to set.
      * @return the MicrosoftGraphDomainDnsRecord object itself.
      */
@@ -82,7 +81,7 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
 
     /**
      * Get the label property: Value used when configuring the name of the DNS record at the DNS host.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -91,7 +90,7 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
 
     /**
      * Set the label property: Value used when configuring the name of the DNS record at the DNS host.
-     *
+     * 
      * @param label the label value to set.
      * @return the MicrosoftGraphDomainDnsRecord object itself.
      */
@@ -103,7 +102,7 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
     /**
      * Get the recordType property: Indicates what type of DNS record this entity represents.The value can be one of the
      * following: CName, Mx, Srv, TxtKey.
-     *
+     * 
      * @return the recordType value.
      */
     public String recordType() {
@@ -113,7 +112,7 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
     /**
      * Set the recordType property: Indicates what type of DNS record this entity represents.The value can be one of the
      * following: CName, Mx, Srv, TxtKey.
-     *
+     * 
      * @param recordType the recordType value to set.
      * @return the MicrosoftGraphDomainDnsRecord object itself.
      */
@@ -127,7 +126,7 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
      * record.Can be one of the following values: null, Email, Sharepoint, EmailInternalRelayOnly,
      * OfficeCommunicationsOnline, SharePointDefaultDomain, FullRedelegation, SharePointPublic, OrgIdAuthentication,
      * Yammer, Intune.
-     *
+     * 
      * @return the supportedService value.
      */
     public String supportedService() {
@@ -139,7 +138,7 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
      * record.Can be one of the following values: null, Email, Sharepoint, EmailInternalRelayOnly,
      * OfficeCommunicationsOnline, SharePointDefaultDomain, FullRedelegation, SharePointPublic, OrgIdAuthentication,
      * Yammer, Intune.
-     *
+     * 
      * @param supportedService the supportedService value to set.
      * @return the MicrosoftGraphDomainDnsRecord object itself.
      */
@@ -151,7 +150,7 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
     /**
      * Get the ttl property: Value to use when configuring the time-to-live (ttl) property of the DNS record at the DNS
      * host. Not nullable.
-     *
+     * 
      * @return the ttl value.
      */
     public Integer ttl() {
@@ -161,7 +160,7 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
     /**
      * Set the ttl property: Value to use when configuring the time-to-live (ttl) property of the DNS record at the DNS
      * host. Not nullable.
-     *
+     * 
      * @param ttl the ttl value to set.
      * @return the MicrosoftGraphDomainDnsRecord object itself.
      */
@@ -172,17 +171,16 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: domainDnsRecord.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: domainDnsRecord.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDomainDnsRecord object itself.
      */
@@ -191,15 +189,9 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDomainDnsRecord withId(String id) {
         super.withId(id);
@@ -208,11 +200,74 @@ public final class MicrosoftGraphDomainDnsRecord extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeBooleanField("isOptional", this.isOptional);
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeStringField("recordType", this.recordType);
+        jsonWriter.writeStringField("supportedService", this.supportedService);
+        jsonWriter.writeNumberField("ttl", this.ttl);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDomainDnsRecord from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDomainDnsRecord if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDomainDnsRecord.
+     */
+    public static MicrosoftGraphDomainDnsRecord fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDomainDnsRecord deserializedMicrosoftGraphDomainDnsRecord
+                = new MicrosoftGraphDomainDnsRecord();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainDnsRecord.withId(reader.getString());
+                } else if ("isOptional".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainDnsRecord.isOptional = reader.getNullable(JsonReader::getBoolean);
+                } else if ("label".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainDnsRecord.label = reader.getString();
+                } else if ("recordType".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainDnsRecord.recordType = reader.getString();
+                } else if ("supportedService".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainDnsRecord.supportedService = reader.getString();
+                } else if ("ttl".equals(fieldName)) {
+                    deserializedMicrosoftGraphDomainDnsRecord.ttl = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDomainDnsRecord.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDomainDnsRecord;
+        });
     }
 }

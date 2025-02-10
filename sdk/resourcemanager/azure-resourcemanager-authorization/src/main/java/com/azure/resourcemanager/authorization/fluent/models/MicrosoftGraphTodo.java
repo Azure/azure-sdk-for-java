@@ -5,35 +5,38 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** todo. */
+/**
+ * todo.
+ */
 @Fluent
 public final class MicrosoftGraphTodo extends MicrosoftGraphEntity {
     /*
      * The task lists in the users mailbox.
      */
-    @JsonProperty(value = "lists")
     private List<MicrosoftGraphTodoTaskList> lists;
 
     /*
      * todo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTodo class. */
+    /**
+     * Creates an instance of MicrosoftGraphTodo class.
+     */
     public MicrosoftGraphTodo() {
     }
 
     /**
      * Get the lists property: The task lists in the users mailbox.
-     *
+     * 
      * @return the lists value.
      */
     public List<MicrosoftGraphTodoTaskList> lists() {
@@ -42,7 +45,7 @@ public final class MicrosoftGraphTodo extends MicrosoftGraphEntity {
 
     /**
      * Set the lists property: The task lists in the users mailbox.
-     *
+     * 
      * @param lists the lists value to set.
      * @return the MicrosoftGraphTodo object itself.
      */
@@ -53,17 +56,16 @@ public final class MicrosoftGraphTodo extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: todo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: todo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTodo object itself.
      */
@@ -72,15 +74,9 @@ public final class MicrosoftGraphTodo extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTodo withId(String id) {
         super.withId(id);
@@ -89,7 +85,7 @@ public final class MicrosoftGraphTodo extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -98,5 +94,57 @@ public final class MicrosoftGraphTodo extends MicrosoftGraphEntity {
         if (lists() != null) {
             lists().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("lists", this.lists, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTodo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTodo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTodo.
+     */
+    public static MicrosoftGraphTodo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTodo deserializedMicrosoftGraphTodo = new MicrosoftGraphTodo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphTodo.withId(reader.getString());
+                } else if ("lists".equals(fieldName)) {
+                    List<MicrosoftGraphTodoTaskList> lists
+                        = reader.readArray(reader1 -> MicrosoftGraphTodoTaskList.fromJson(reader1));
+                    deserializedMicrosoftGraphTodo.lists = lists;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTodo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTodo;
+        });
     }
 }

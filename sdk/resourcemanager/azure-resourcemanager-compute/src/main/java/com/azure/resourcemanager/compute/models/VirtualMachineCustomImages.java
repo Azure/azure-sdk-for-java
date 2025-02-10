@@ -18,15 +18,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point to custom virtual machine image management. */
 @Fluent
-public interface VirtualMachineCustomImages
-    extends SupportsListing<VirtualMachineCustomImage>,
-        SupportsCreating<VirtualMachineCustomImage.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsListingByResourceGroup<VirtualMachineCustomImage>,
-        SupportsGettingByResourceGroup<VirtualMachineCustomImage>,
-        SupportsGettingById<VirtualMachineCustomImage>,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<VirtualMachineCustomImage>,
-        SupportsBatchDeletion,
-        HasManager<ComputeManager> {
+public interface VirtualMachineCustomImages extends SupportsListing<VirtualMachineCustomImage>,
+    SupportsCreating<VirtualMachineCustomImage.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsListingByResourceGroup<VirtualMachineCustomImage>,
+    SupportsGettingByResourceGroup<VirtualMachineCustomImage>, SupportsGettingById<VirtualMachineCustomImage>,
+    SupportsDeletingByResourceGroup, SupportsBatchCreation<VirtualMachineCustomImage>, SupportsBatchDeletion,
+    HasManager<ComputeManager> {
 }

@@ -15,13 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
 /** Implementation for LocalNetworkGateways. */
-public class LocalNetworkGatewaysImpl
-    extends GroupableResourcesImpl<
-        LocalNetworkGateway,
-        LocalNetworkGatewayImpl,
-        LocalNetworkGatewayInner,
-        LocalNetworkGatewaysClient,
-        NetworkManager>
+public class LocalNetworkGatewaysImpl extends
+    GroupableResourcesImpl<LocalNetworkGateway, LocalNetworkGatewayImpl, LocalNetworkGatewayInner, LocalNetworkGatewaysClient, NetworkManager>
     implements LocalNetworkGateways {
 
     public LocalNetworkGatewaysImpl(final NetworkManager networkManager) {
@@ -40,8 +35,9 @@ public class LocalNetworkGatewaysImpl
 
     @Override
     public PagedFlux<LocalNetworkGateway> listAsync() {
-        return PagedConverter.mapPage(PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
-            rg -> inner().listByResourceGroupAsync(rg.name())), this::wrapModel);
+        return PagedConverter
+            .mapPage(PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
+                rg -> inner().listByResourceGroupAsync(rg.name())), this::wrapModel);
     }
 
     @Override
@@ -52,8 +48,8 @@ public class LocalNetworkGatewaysImpl
     @Override
     public PagedFlux<LocalNetworkGateway> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }

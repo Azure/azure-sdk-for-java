@@ -6,42 +6,46 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Metadata pertaining to the geographic location of the resource. */
+/**
+ * Metadata pertaining to the geographic location of the resource.
+ */
 @Fluent
-public final class LocationData {
+public final class LocationData implements JsonSerializable<LocationData> {
     /*
      * A canonical name for the geographic or physical location.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The city or locality where the resource is located.
      */
-    @JsonProperty(value = "city")
     private String city;
 
     /*
      * The district, state, or province where the resource is located.
      */
-    @JsonProperty(value = "district")
     private String district;
 
     /*
      * The country or region where the resource is located
      */
-    @JsonProperty(value = "countryOrRegion")
     private String countryOrRegion;
 
-    /** Creates an instance of LocationData class. */
+    /**
+     * Creates an instance of LocationData class.
+     */
     public LocationData() {
     }
 
     /**
      * Get the name property: A canonical name for the geographic or physical location.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class LocationData {
 
     /**
      * Set the name property: A canonical name for the geographic or physical location.
-     *
+     * 
      * @param name the name value to set.
      * @return the LocationData object itself.
      */
@@ -61,7 +65,7 @@ public final class LocationData {
 
     /**
      * Get the city property: The city or locality where the resource is located.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -70,7 +74,7 @@ public final class LocationData {
 
     /**
      * Set the city property: The city or locality where the resource is located.
-     *
+     * 
      * @param city the city value to set.
      * @return the LocationData object itself.
      */
@@ -81,7 +85,7 @@ public final class LocationData {
 
     /**
      * Get the district property: The district, state, or province where the resource is located.
-     *
+     * 
      * @return the district value.
      */
     public String district() {
@@ -90,7 +94,7 @@ public final class LocationData {
 
     /**
      * Set the district property: The district, state, or province where the resource is located.
-     *
+     * 
      * @param district the district value to set.
      * @return the LocationData object itself.
      */
@@ -101,7 +105,7 @@ public final class LocationData {
 
     /**
      * Get the countryOrRegion property: The country or region where the resource is located.
-     *
+     * 
      * @return the countryOrRegion value.
      */
     public String countryOrRegion() {
@@ -110,7 +114,7 @@ public final class LocationData {
 
     /**
      * Set the countryOrRegion property: The country or region where the resource is located.
-     *
+     * 
      * @param countryOrRegion the countryOrRegion value to set.
      * @return the LocationData object itself.
      */
@@ -121,16 +125,61 @@ public final class LocationData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model LocationData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model LocationData"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LocationData.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("city", this.city);
+        jsonWriter.writeStringField("district", this.district);
+        jsonWriter.writeStringField("countryOrRegion", this.countryOrRegion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocationData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocationData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LocationData.
+     */
+    public static LocationData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocationData deserializedLocationData = new LocationData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLocationData.name = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedLocationData.city = reader.getString();
+                } else if ("district".equals(fieldName)) {
+                    deserializedLocationData.district = reader.getString();
+                } else if ("countryOrRegion".equals(fieldName)) {
+                    deserializedLocationData.countryOrRegion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocationData;
+        });
+    }
 }

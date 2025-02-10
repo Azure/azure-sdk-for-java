@@ -4,17 +4,20 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for VirtualMachines List. */
+/**
+ * Samples for VirtualMachines List.
+ */
 public final class VirtualMachinesListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/VirtualMachines_List.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/VirtualMachines_List.json
      */
     /**
-     * Sample code: ListClusterVirtualMachines.
-     *
+     * Sample code: VirtualMachines_List.
+     * 
      * @param manager Entry point to AvsManager.
      */
-    public static void listClusterVirtualMachines(com.azure.resourcemanager.avs.AvsManager manager) {
+    public static void virtualMachinesList(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.virtualMachines().list("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }

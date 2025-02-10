@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraResourcesMigrateCassandraTableToManualThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBCassandraTableMigrateToManualThroughput.json
      */
     /**
@@ -19,7 +19,10 @@ public final class CassandraResourcesMigrateCassandraTableToManualThroughputSamp
      */
     public static void
         cosmosDBCassandraTableMigrateToManualThroughput(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getCassandraResources()
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraResources()
             .migrateCassandraTableToManualThroughput("rg1", "ddb1", "keyspaceName", "tableName",
                 com.azure.core.util.Context.NONE);
     }

@@ -36,6 +36,7 @@ public final class QueryInfo extends JsonSerializable {
     private DistinctQueryType distinctQueryType;
     private QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
     private DCountInfo dCountInfo;
+    private boolean nonStreamingOrderBy;
 
     public QueryInfo() {
     }
@@ -160,6 +161,11 @@ public final class QueryInfo extends JsonSerializable {
         return groupByExpressions != null && !groupByExpressions.isEmpty();
     }
 
+    public boolean hasNonStreamingOrderBy() {
+        this.nonStreamingOrderBy = Boolean.TRUE.equals(super.getBoolean("hasNonStreamingOrderBy"));
+        return this.nonStreamingOrderBy;
+    }
+
     public Map<String, AggregateOperator> getGroupByAliasToAggregateType(){
             Map<String, AggregateOperator>  groupByAliasToAggregateMap;
             groupByAliasToAggregateMap = super.getMap("groupByAliasToAggregateType");
@@ -234,6 +240,21 @@ public final class QueryInfo extends JsonSerializable {
         public RequestTimeline getRequestTimeline() {
             return requestTimeline;
         }
+    }
+
+    public void setOrderByExpressions(List<String> orderByExpressions) {
+        this.orderByExpressions = orderByExpressions;
+        super.set("orderByExpressions", orderByExpressions);
+    }
+
+    public void setRewrittenQuery(String rewrittenQuery) {
+        this.rewrittenQuery = rewrittenQuery;
+        super.set("rewrittenQuery", rewrittenQuery);
+    }
+
+    public void setOrderBy(List<SortOrder> orderBy) {
+        this.orderBy = orderBy;
+        super.set("orderBy", orderBy);
     }
 
     @Override

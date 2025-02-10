@@ -15,8 +15,7 @@ public final class WorkloadProtectableItemResourceImpl implements WorkloadProtec
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    WorkloadProtectableItemResourceImpl(
-        WorkloadProtectableItemResourceInner innerObject,
+    WorkloadProtectableItemResourceImpl(WorkloadProtectableItemResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

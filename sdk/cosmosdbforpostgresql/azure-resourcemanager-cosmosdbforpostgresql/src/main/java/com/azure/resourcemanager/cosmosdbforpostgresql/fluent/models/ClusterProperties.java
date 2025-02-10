@@ -5,107 +5,114 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.AadEnabledEnum;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.AuthConfig;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.DataEncryption;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.MaintenanceWindow;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PasswordEnabledEnum;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerNameItem;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.SimplePrivateEndpointConnection;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Properties of the cluster. */
+/**
+ * Properties of the cluster.
+ */
 @Fluent
-public final class ClusterProperties {
+public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
+    /*
+     * Indicates whether the cluster was created using AAD authentication.
+     */
+    private AadEnabledEnum aadAuthEnabled;
+
     /*
      * The administrator's login name of the servers in the cluster.
      */
-    @JsonProperty(value = "administratorLogin", access = JsonProperty.Access.WRITE_ONLY)
     private String administratorLogin;
 
     /*
      * The password of the administrator login. Required for creation.
      */
-    @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
+
+    /*
+     * The data encryption properties of a cluster.
+     */
+    private DataEncryption dataEncryption;
 
     /*
      * Provisioning state of the cluster
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * A state of a cluster/server that is visible to user.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
     /*
      * The major PostgreSQL version on all cluster servers.
      */
-    @JsonProperty(value = "postgresqlVersion")
     private String postgresqlVersion;
 
     /*
      * The Citus extension version on all cluster servers.
      */
-    @JsonProperty(value = "citusVersion")
     private String citusVersion;
 
     /*
      * Maintenance window of a cluster.
      */
-    @JsonProperty(value = "maintenanceWindow")
     private MaintenanceWindow maintenanceWindow;
 
     /*
      * Preferred primary availability zone (AZ) for all cluster servers.
      */
-    @JsonProperty(value = "preferredPrimaryZone")
     private String preferredPrimaryZone;
 
     /*
-     * If distributed tables are placed on coordinator or not. Should be set to 'true' on single node clusters.
-     * Requires shard rebalancing after value is changed.
+     * If distributed tables are placed on coordinator or not. Should be set to 'true' on single node clusters. Requires
+     * shard rebalancing after value is changed.
      */
-    @JsonProperty(value = "enableShardsOnCoordinator")
     private Boolean enableShardsOnCoordinator;
 
     /*
      * If high availability (HA) is enabled or not for the cluster.
      */
-    @JsonProperty(value = "enableHa")
     private Boolean enableHa;
 
     /*
      * The edition of a coordinator server (default: GeneralPurpose). Required for creation.
      */
-    @JsonProperty(value = "coordinatorServerEdition")
     private String coordinatorServerEdition;
 
     /*
      * The storage of a server in MB. Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
      */
-    @JsonProperty(value = "coordinatorStorageQuotaInMb")
     private Integer coordinatorStorageQuotaInMb;
 
     /*
      * The vCores count of a server (max: 96). Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
      */
-    @JsonProperty(value = "coordinatorVCores")
     private Integer coordinatorVCores;
 
     /*
      * If public access is enabled on coordinator.
      */
-    @JsonProperty(value = "coordinatorEnablePublicIpAccess")
     private Boolean coordinatorEnablePublicIpAccess;
 
     /*
      * The edition of a node server (default: MemoryOptimized).
      */
-    @JsonProperty(value = "nodeServerEdition")
     private String nodeServerEdition;
 
     /*
@@ -113,78 +120,99 @@ public final class ClusterProperties {
      * ability to create distributed tables on that node. 2 or more worker nodes represent multi-node configuration.
      * Node count value cannot be 1. Required for creation.
      */
-    @JsonProperty(value = "nodeCount")
     private Integer nodeCount;
 
     /*
      * The storage in MB on each worker node. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
      */
-    @JsonProperty(value = "nodeStorageQuotaInMb")
     private Integer nodeStorageQuotaInMb;
 
     /*
      * The compute in vCores on each worker node (max: 104). See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
      */
-    @JsonProperty(value = "nodeVCores")
     private Integer nodeVCores;
 
     /*
      * If public access is enabled on worker nodes.
      */
-    @JsonProperty(value = "nodeEnablePublicIpAccess")
     private Boolean nodeEnablePublicIpAccess;
 
     /*
      * The list of server names in the cluster
      */
-    @JsonProperty(value = "serverNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerNameItem> serverNames;
 
     /*
      * The resource id of source cluster for read replica clusters.
      */
-    @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
     /*
      * The Azure region of source cluster for read replica clusters.
      */
-    @JsonProperty(value = "sourceLocation")
     private String sourceLocation;
+
+    /*
+     * Indicates whether the cluster was created with a password or using AAD authentication.
+     */
+    private PasswordEnabledEnum passwordEnabled;
 
     /*
      * Date and time in UTC (ISO8601 format) for cluster restore.
      */
-    @JsonProperty(value = "pointInTimeUTC")
     private OffsetDateTime pointInTimeUtc;
 
     /*
      * The array of read replica clusters.
      */
-    @JsonProperty(value = "readReplicas", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> readReplicas;
 
     /*
      * The earliest restore point time (ISO8601 format) for the cluster.
      */
-    @JsonProperty(value = "earliestRestoreTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreTime;
 
     /*
      * The private endpoint connections for a cluster.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SimplePrivateEndpointConnection> privateEndpointConnections;
 
-    /** Creates an instance of ClusterProperties class. */
+    /*
+     * The database name of the cluster. Only one database per cluster is supported.
+     */
+    private String databaseName;
+
+    /*
+     * If cluster backup is stored in another Azure region in addition to the copy of the backup stored in the cluster's
+     * region. Enabled only at the time of cluster creation.
+     */
+    private Boolean enableGeoBackup;
+
+    /*
+     * Authentication configuration of a cluster.
+     */
+    private AuthConfig authConfig;
+
+    /**
+     * Creates an instance of ClusterProperties class.
+     */
     public ClusterProperties() {
     }
 
     /**
+     * Get the aadAuthEnabled property: Indicates whether the cluster was created using AAD authentication.
+     * 
+     * @return the aadAuthEnabled value.
+     */
+    public AadEnabledEnum aadAuthEnabled() {
+        return this.aadAuthEnabled;
+    }
+
+    /**
      * Get the administratorLogin property: The administrator's login name of the servers in the cluster.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -193,7 +221,7 @@ public final class ClusterProperties {
 
     /**
      * Get the administratorLoginPassword property: The password of the administrator login. Required for creation.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -202,7 +230,7 @@ public final class ClusterProperties {
 
     /**
      * Set the administratorLoginPassword property: The password of the administrator login. Required for creation.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ClusterProperties object itself.
      */
@@ -212,8 +240,28 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the dataEncryption property: The data encryption properties of a cluster.
+     * 
+     * @return the dataEncryption value.
+     */
+    public DataEncryption dataEncryption() {
+        return this.dataEncryption;
+    }
+
+    /**
+     * Set the dataEncryption property: The data encryption properties of a cluster.
+     * 
+     * @param dataEncryption the dataEncryption value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withDataEncryption(DataEncryption dataEncryption) {
+        this.dataEncryption = dataEncryption;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the cluster.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -222,7 +270,7 @@ public final class ClusterProperties {
 
     /**
      * Get the state property: A state of a cluster/server that is visible to user.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -231,7 +279,7 @@ public final class ClusterProperties {
 
     /**
      * Get the postgresqlVersion property: The major PostgreSQL version on all cluster servers.
-     *
+     * 
      * @return the postgresqlVersion value.
      */
     public String postgresqlVersion() {
@@ -240,7 +288,7 @@ public final class ClusterProperties {
 
     /**
      * Set the postgresqlVersion property: The major PostgreSQL version on all cluster servers.
-     *
+     * 
      * @param postgresqlVersion the postgresqlVersion value to set.
      * @return the ClusterProperties object itself.
      */
@@ -251,7 +299,7 @@ public final class ClusterProperties {
 
     /**
      * Get the citusVersion property: The Citus extension version on all cluster servers.
-     *
+     * 
      * @return the citusVersion value.
      */
     public String citusVersion() {
@@ -260,7 +308,7 @@ public final class ClusterProperties {
 
     /**
      * Set the citusVersion property: The Citus extension version on all cluster servers.
-     *
+     * 
      * @param citusVersion the citusVersion value to set.
      * @return the ClusterProperties object itself.
      */
@@ -271,7 +319,7 @@ public final class ClusterProperties {
 
     /**
      * Get the maintenanceWindow property: Maintenance window of a cluster.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public MaintenanceWindow maintenanceWindow() {
@@ -280,7 +328,7 @@ public final class ClusterProperties {
 
     /**
      * Set the maintenanceWindow property: Maintenance window of a cluster.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the ClusterProperties object itself.
      */
@@ -291,7 +339,7 @@ public final class ClusterProperties {
 
     /**
      * Get the preferredPrimaryZone property: Preferred primary availability zone (AZ) for all cluster servers.
-     *
+     * 
      * @return the preferredPrimaryZone value.
      */
     public String preferredPrimaryZone() {
@@ -300,7 +348,7 @@ public final class ClusterProperties {
 
     /**
      * Set the preferredPrimaryZone property: Preferred primary availability zone (AZ) for all cluster servers.
-     *
+     * 
      * @param preferredPrimaryZone the preferredPrimaryZone value to set.
      * @return the ClusterProperties object itself.
      */
@@ -312,7 +360,7 @@ public final class ClusterProperties {
     /**
      * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
      * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
-     *
+     * 
      * @return the enableShardsOnCoordinator value.
      */
     public Boolean enableShardsOnCoordinator() {
@@ -322,7 +370,7 @@ public final class ClusterProperties {
     /**
      * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
      * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
-     *
+     * 
      * @param enableShardsOnCoordinator the enableShardsOnCoordinator value to set.
      * @return the ClusterProperties object itself.
      */
@@ -333,7 +381,7 @@ public final class ClusterProperties {
 
     /**
      * Get the enableHa property: If high availability (HA) is enabled or not for the cluster.
-     *
+     * 
      * @return the enableHa value.
      */
     public Boolean enableHa() {
@@ -342,7 +390,7 @@ public final class ClusterProperties {
 
     /**
      * Set the enableHa property: If high availability (HA) is enabled or not for the cluster.
-     *
+     * 
      * @param enableHa the enableHa value to set.
      * @return the ClusterProperties object itself.
      */
@@ -354,7 +402,7 @@ public final class ClusterProperties {
     /**
      * Get the coordinatorServerEdition property: The edition of a coordinator server (default: GeneralPurpose).
      * Required for creation.
-     *
+     * 
      * @return the coordinatorServerEdition value.
      */
     public String coordinatorServerEdition() {
@@ -364,7 +412,7 @@ public final class ClusterProperties {
     /**
      * Set the coordinatorServerEdition property: The edition of a coordinator server (default: GeneralPurpose).
      * Required for creation.
-     *
+     * 
      * @param coordinatorServerEdition the coordinatorServerEdition value to set.
      * @return the ClusterProperties object itself.
      */
@@ -376,7 +424,7 @@ public final class ClusterProperties {
     /**
      * Get the coordinatorStorageQuotaInMb property: The storage of a server in MB. Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the coordinatorStorageQuotaInMb value.
      */
     public Integer coordinatorStorageQuotaInMb() {
@@ -386,7 +434,7 @@ public final class ClusterProperties {
     /**
      * Set the coordinatorStorageQuotaInMb property: The storage of a server in MB. Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param coordinatorStorageQuotaInMb the coordinatorStorageQuotaInMb value to set.
      * @return the ClusterProperties object itself.
      */
@@ -398,7 +446,7 @@ public final class ClusterProperties {
     /**
      * Get the coordinatorVCores property: The vCores count of a server (max: 96). Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the coordinatorVCores value.
      */
     public Integer coordinatorVCores() {
@@ -408,7 +456,7 @@ public final class ClusterProperties {
     /**
      * Set the coordinatorVCores property: The vCores count of a server (max: 96). Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param coordinatorVCores the coordinatorVCores value to set.
      * @return the ClusterProperties object itself.
      */
@@ -419,7 +467,7 @@ public final class ClusterProperties {
 
     /**
      * Get the coordinatorEnablePublicIpAccess property: If public access is enabled on coordinator.
-     *
+     * 
      * @return the coordinatorEnablePublicIpAccess value.
      */
     public Boolean coordinatorEnablePublicIpAccess() {
@@ -428,7 +476,7 @@ public final class ClusterProperties {
 
     /**
      * Set the coordinatorEnablePublicIpAccess property: If public access is enabled on coordinator.
-     *
+     * 
      * @param coordinatorEnablePublicIpAccess the coordinatorEnablePublicIpAccess value to set.
      * @return the ClusterProperties object itself.
      */
@@ -439,7 +487,7 @@ public final class ClusterProperties {
 
     /**
      * Get the nodeServerEdition property: The edition of a node server (default: MemoryOptimized).
-     *
+     * 
      * @return the nodeServerEdition value.
      */
     public String nodeServerEdition() {
@@ -448,7 +496,7 @@ public final class ClusterProperties {
 
     /**
      * Set the nodeServerEdition property: The edition of a node server (default: MemoryOptimized).
-     *
+     * 
      * @param nodeServerEdition the nodeServerEdition value to set.
      * @return the ClusterProperties object itself.
      */
@@ -461,7 +509,7 @@ public final class ClusterProperties {
      * Get the nodeCount property: Worker node count of the cluster. When node count is 0, it represents a single node
      * configuration with the ability to create distributed tables on that node. 2 or more worker nodes represent
      * multi-node configuration. Node count value cannot be 1. Required for creation.
-     *
+     * 
      * @return the nodeCount value.
      */
     public Integer nodeCount() {
@@ -472,7 +520,7 @@ public final class ClusterProperties {
      * Set the nodeCount property: Worker node count of the cluster. When node count is 0, it represents a single node
      * configuration with the ability to create distributed tables on that node. 2 or more worker nodes represent
      * multi-node configuration. Node count value cannot be 1. Required for creation.
-     *
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the ClusterProperties object itself.
      */
@@ -484,7 +532,7 @@ public final class ClusterProperties {
     /**
      * Get the nodeStorageQuotaInMb property: The storage in MB on each worker node. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the nodeStorageQuotaInMb value.
      */
     public Integer nodeStorageQuotaInMb() {
@@ -494,7 +542,7 @@ public final class ClusterProperties {
     /**
      * Set the nodeStorageQuotaInMb property: The storage in MB on each worker node. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param nodeStorageQuotaInMb the nodeStorageQuotaInMb value to set.
      * @return the ClusterProperties object itself.
      */
@@ -506,7 +554,7 @@ public final class ClusterProperties {
     /**
      * Get the nodeVCores property: The compute in vCores on each worker node (max: 104). See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the nodeVCores value.
      */
     public Integer nodeVCores() {
@@ -516,7 +564,7 @@ public final class ClusterProperties {
     /**
      * Set the nodeVCores property: The compute in vCores on each worker node (max: 104). See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param nodeVCores the nodeVCores value to set.
      * @return the ClusterProperties object itself.
      */
@@ -527,7 +575,7 @@ public final class ClusterProperties {
 
     /**
      * Get the nodeEnablePublicIpAccess property: If public access is enabled on worker nodes.
-     *
+     * 
      * @return the nodeEnablePublicIpAccess value.
      */
     public Boolean nodeEnablePublicIpAccess() {
@@ -536,7 +584,7 @@ public final class ClusterProperties {
 
     /**
      * Set the nodeEnablePublicIpAccess property: If public access is enabled on worker nodes.
-     *
+     * 
      * @param nodeEnablePublicIpAccess the nodeEnablePublicIpAccess value to set.
      * @return the ClusterProperties object itself.
      */
@@ -547,7 +595,7 @@ public final class ClusterProperties {
 
     /**
      * Get the serverNames property: The list of server names in the cluster.
-     *
+     * 
      * @return the serverNames value.
      */
     public List<ServerNameItem> serverNames() {
@@ -556,7 +604,7 @@ public final class ClusterProperties {
 
     /**
      * Get the sourceResourceId property: The resource id of source cluster for read replica clusters.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -565,7 +613,7 @@ public final class ClusterProperties {
 
     /**
      * Set the sourceResourceId property: The resource id of source cluster for read replica clusters.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the ClusterProperties object itself.
      */
@@ -576,7 +624,7 @@ public final class ClusterProperties {
 
     /**
      * Get the sourceLocation property: The Azure region of source cluster for read replica clusters.
-     *
+     * 
      * @return the sourceLocation value.
      */
     public String sourceLocation() {
@@ -585,7 +633,7 @@ public final class ClusterProperties {
 
     /**
      * Set the sourceLocation property: The Azure region of source cluster for read replica clusters.
-     *
+     * 
      * @param sourceLocation the sourceLocation value to set.
      * @return the ClusterProperties object itself.
      */
@@ -595,8 +643,18 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the passwordEnabled property: Indicates whether the cluster was created with a password or using AAD
+     * authentication.
+     * 
+     * @return the passwordEnabled value.
+     */
+    public PasswordEnabledEnum passwordEnabled() {
+        return this.passwordEnabled;
+    }
+
+    /**
      * Get the pointInTimeUtc property: Date and time in UTC (ISO8601 format) for cluster restore.
-     *
+     * 
      * @return the pointInTimeUtc value.
      */
     public OffsetDateTime pointInTimeUtc() {
@@ -605,7 +663,7 @@ public final class ClusterProperties {
 
     /**
      * Set the pointInTimeUtc property: Date and time in UTC (ISO8601 format) for cluster restore.
-     *
+     * 
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ClusterProperties object itself.
      */
@@ -616,7 +674,7 @@ public final class ClusterProperties {
 
     /**
      * Get the readReplicas property: The array of read replica clusters.
-     *
+     * 
      * @return the readReplicas value.
      */
     public List<String> readReplicas() {
@@ -625,7 +683,7 @@ public final class ClusterProperties {
 
     /**
      * Get the earliestRestoreTime property: The earliest restore point time (ISO8601 format) for the cluster.
-     *
+     * 
      * @return the earliestRestoreTime value.
      */
     public OffsetDateTime earliestRestoreTime() {
@@ -634,7 +692,7 @@ public final class ClusterProperties {
 
     /**
      * Get the privateEndpointConnections property: The private endpoint connections for a cluster.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<SimplePrivateEndpointConnection> privateEndpointConnections() {
@@ -642,11 +700,76 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the databaseName property: The database name of the cluster. Only one database per cluster is supported.
+     * 
+     * @return the databaseName value.
+     */
+    public String databaseName() {
+        return this.databaseName;
+    }
+
+    /**
+     * Set the databaseName property: The database name of the cluster. Only one database per cluster is supported.
+     * 
+     * @param databaseName the databaseName value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
+        return this;
+    }
+
+    /**
+     * Get the enableGeoBackup property: If cluster backup is stored in another Azure region in addition to the copy of
+     * the backup stored in the cluster's region. Enabled only at the time of cluster creation.
+     * 
+     * @return the enableGeoBackup value.
+     */
+    public Boolean enableGeoBackup() {
+        return this.enableGeoBackup;
+    }
+
+    /**
+     * Set the enableGeoBackup property: If cluster backup is stored in another Azure region in addition to the copy of
+     * the backup stored in the cluster's region. Enabled only at the time of cluster creation.
+     * 
+     * @param enableGeoBackup the enableGeoBackup value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withEnableGeoBackup(Boolean enableGeoBackup) {
+        this.enableGeoBackup = enableGeoBackup;
+        return this;
+    }
+
+    /**
+     * Get the authConfig property: Authentication configuration of a cluster.
+     * 
+     * @return the authConfig value.
+     */
+    public AuthConfig authConfig() {
+        return this.authConfig;
+    }
+
+    /**
+     * Set the authConfig property: Authentication configuration of a cluster.
+     * 
+     * @param authConfig the authConfig value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withAuthConfig(AuthConfig authConfig) {
+        this.authConfig = authConfig;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (dataEncryption() != null) {
+            dataEncryption().validate();
+        }
         if (maintenanceWindow() != null) {
             maintenanceWindow().validate();
         }
@@ -656,5 +779,137 @@ public final class ClusterProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+        if (authConfig() != null) {
+            authConfig().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
+        jsonWriter.writeJsonField("dataEncryption", this.dataEncryption);
+        jsonWriter.writeStringField("postgresqlVersion", this.postgresqlVersion);
+        jsonWriter.writeStringField("citusVersion", this.citusVersion);
+        jsonWriter.writeJsonField("maintenanceWindow", this.maintenanceWindow);
+        jsonWriter.writeStringField("preferredPrimaryZone", this.preferredPrimaryZone);
+        jsonWriter.writeBooleanField("enableShardsOnCoordinator", this.enableShardsOnCoordinator);
+        jsonWriter.writeBooleanField("enableHa", this.enableHa);
+        jsonWriter.writeStringField("coordinatorServerEdition", this.coordinatorServerEdition);
+        jsonWriter.writeNumberField("coordinatorStorageQuotaInMb", this.coordinatorStorageQuotaInMb);
+        jsonWriter.writeNumberField("coordinatorVCores", this.coordinatorVCores);
+        jsonWriter.writeBooleanField("coordinatorEnablePublicIpAccess", this.coordinatorEnablePublicIpAccess);
+        jsonWriter.writeStringField("nodeServerEdition", this.nodeServerEdition);
+        jsonWriter.writeNumberField("nodeCount", this.nodeCount);
+        jsonWriter.writeNumberField("nodeStorageQuotaInMb", this.nodeStorageQuotaInMb);
+        jsonWriter.writeNumberField("nodeVCores", this.nodeVCores);
+        jsonWriter.writeBooleanField("nodeEnablePublicIpAccess", this.nodeEnablePublicIpAccess);
+        jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        jsonWriter.writeStringField("sourceLocation", this.sourceLocation);
+        jsonWriter.writeStringField("pointInTimeUTC",
+            this.pointInTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.pointInTimeUtc));
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeBooleanField("enableGeoBackup", this.enableGeoBackup);
+        jsonWriter.writeJsonField("authConfig", this.authConfig);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
+     */
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aadAuthEnabled".equals(fieldName)) {
+                    deserializedClusterProperties.aadAuthEnabled = AadEnabledEnum.fromString(reader.getString());
+                } else if ("administratorLogin".equals(fieldName)) {
+                    deserializedClusterProperties.administratorLogin = reader.getString();
+                } else if ("administratorLoginPassword".equals(fieldName)) {
+                    deserializedClusterProperties.administratorLoginPassword = reader.getString();
+                } else if ("dataEncryption".equals(fieldName)) {
+                    deserializedClusterProperties.dataEncryption = DataEncryption.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterProperties.provisioningState = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedClusterProperties.state = reader.getString();
+                } else if ("postgresqlVersion".equals(fieldName)) {
+                    deserializedClusterProperties.postgresqlVersion = reader.getString();
+                } else if ("citusVersion".equals(fieldName)) {
+                    deserializedClusterProperties.citusVersion = reader.getString();
+                } else if ("maintenanceWindow".equals(fieldName)) {
+                    deserializedClusterProperties.maintenanceWindow = MaintenanceWindow.fromJson(reader);
+                } else if ("preferredPrimaryZone".equals(fieldName)) {
+                    deserializedClusterProperties.preferredPrimaryZone = reader.getString();
+                } else if ("enableShardsOnCoordinator".equals(fieldName)) {
+                    deserializedClusterProperties.enableShardsOnCoordinator
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableHa".equals(fieldName)) {
+                    deserializedClusterProperties.enableHa = reader.getNullable(JsonReader::getBoolean);
+                } else if ("coordinatorServerEdition".equals(fieldName)) {
+                    deserializedClusterProperties.coordinatorServerEdition = reader.getString();
+                } else if ("coordinatorStorageQuotaInMb".equals(fieldName)) {
+                    deserializedClusterProperties.coordinatorStorageQuotaInMb = reader.getNullable(JsonReader::getInt);
+                } else if ("coordinatorVCores".equals(fieldName)) {
+                    deserializedClusterProperties.coordinatorVCores = reader.getNullable(JsonReader::getInt);
+                } else if ("coordinatorEnablePublicIpAccess".equals(fieldName)) {
+                    deserializedClusterProperties.coordinatorEnablePublicIpAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("nodeServerEdition".equals(fieldName)) {
+                    deserializedClusterProperties.nodeServerEdition = reader.getString();
+                } else if ("nodeCount".equals(fieldName)) {
+                    deserializedClusterProperties.nodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeStorageQuotaInMb".equals(fieldName)) {
+                    deserializedClusterProperties.nodeStorageQuotaInMb = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeVCores".equals(fieldName)) {
+                    deserializedClusterProperties.nodeVCores = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeEnablePublicIpAccess".equals(fieldName)) {
+                    deserializedClusterProperties.nodeEnablePublicIpAccess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("serverNames".equals(fieldName)) {
+                    List<ServerNameItem> serverNames = reader.readArray(reader1 -> ServerNameItem.fromJson(reader1));
+                    deserializedClusterProperties.serverNames = serverNames;
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedClusterProperties.sourceResourceId = reader.getString();
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedClusterProperties.sourceLocation = reader.getString();
+                } else if ("passwordEnabled".equals(fieldName)) {
+                    deserializedClusterProperties.passwordEnabled = PasswordEnabledEnum.fromString(reader.getString());
+                } else if ("pointInTimeUTC".equals(fieldName)) {
+                    deserializedClusterProperties.pointInTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("readReplicas".equals(fieldName)) {
+                    List<String> readReplicas = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterProperties.readReplicas = readReplicas;
+                } else if ("earliestRestoreTime".equals(fieldName)) {
+                    deserializedClusterProperties.earliestRestoreTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<SimplePrivateEndpointConnection> privateEndpointConnections
+                        = reader.readArray(reader1 -> SimplePrivateEndpointConnection.fromJson(reader1));
+                    deserializedClusterProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedClusterProperties.databaseName = reader.getString();
+                } else if ("enableGeoBackup".equals(fieldName)) {
+                    deserializedClusterProperties.enableGeoBackup = reader.getNullable(JsonReader::getBoolean);
+                } else if ("authConfig".equals(fieldName)) {
+                    deserializedClusterProperties.authConfig = AuthConfig.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProperties;
+        });
     }
 }

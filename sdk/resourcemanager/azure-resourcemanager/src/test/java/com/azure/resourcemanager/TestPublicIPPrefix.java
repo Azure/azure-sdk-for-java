@@ -3,6 +3,8 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.PublicIpPrefix;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
@@ -13,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 
 /** Tests public Prefixes. */
 public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPrefixes> {
+    private static final ClientLogger LOGGER = new ClientLogger(TestPublicIPPrefix.class);
+
     @Override
     public PublicIpPrefix createResource(PublicIpPrefixes pips) throws Exception {
         final String newPipName = pips.manager().resourceManager().internalContext().randomResourceName("pip", 10);
@@ -26,16 +30,13 @@ public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPre
 
         Assertions.assertEquals(pip.prefixLength(), (Integer) 28);
         Assertions.assertEquals(pip.sku().name().toString(), "Standard");
-        Assertions.assertTrue(pip.publicIpAddressVersion() == IpVersion.IPV4);
+        Assertions.assertSame(pip.publicIpAddressVersion(), IpVersion.IPV4);
         return pip;
     }
 
     @Override
     public PublicIpPrefix updateResource(PublicIpPrefix resource) throws Exception {
-        resource = resource.update()
-            .withTag("tag1", "value1")
-            .withTag("tag2", "value2")
-            .apply();
+        resource = resource.update().withTag("tag1", "value1").withTag("tag2", "value2").apply();
         Assertions.assertEquals("value1", resource.tags().get("tag1"));
         Assertions.assertEquals("value2", resource.tags().get("tag2"));
 
@@ -48,15 +49,24 @@ public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPre
     }
 
     public static void printPIP(PublicIpPrefix resource) {
-        StringBuilder info = new StringBuilder().append("Public IP Address: ").append(resource.id())
-            .append("\n\tName: ").append(resource.name())
-            .append("\n\tResource group: ").append(resource.resourceGroupName())
-            .append("\n\tRegion: ").append(resource.region())
-            .append("\n\tTags: ").append(resource.tags())
-            .append("\n\tAvailability Zones: ").append(resource.availabilityZones())
-            .append("\n\tLeaf domain label: ").append(resource.sku())
-            .append("\n\tFQDN: ").append(resource.publicIpAddresses())
-            .append("\n\tReverse FQDN: ").append(resource.publicIpAddressVersion());
+        StringBuilder info = new StringBuilder().append("Public IP Address: ")
+            .append(resource.id())
+            .append("\n\tName: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .append("\n\tAvailability Zones: ")
+            .append(resource.availabilityZones())
+            .append("\n\tLeaf domain label: ")
+            .append(resource.sku())
+            .append("\n\tFQDN: ")
+            .append(resource.publicIpAddresses())
+            .append("\n\tReverse FQDN: ")
+            .append(resource.publicIpAddressVersion());
 
         // Show the associated load balancer if any
         info.append("\n\tLoad balancer association: ");
@@ -67,6 +77,6 @@ public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPre
             info.append("(None)");
         }
 
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 }

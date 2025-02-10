@@ -3,9 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-
+import com.azure.core.implementation.AccessControllerUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -33,8 +31,8 @@ final class ObjectMapperFactory {
     private static final boolean USE_ACCESS_HELPER;
 
     static {
-        USE_ACCESS_HELPER = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
-            .get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
+        USE_ACCESS_HELPER = Boolean
+            .parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
     }
 
     ObjectMapperFactory() {
@@ -42,13 +40,13 @@ final class ObjectMapperFactory {
             && com.fasterxml.jackson.core.json.PackageVersion.VERSION.getMinorVersion() >= 15;
     }
 
-    public  static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
+    public static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
 
     public ObjectMapper createJsonMapper(ObjectMapper innerMapper) {
-        ObjectMapper flatteningMapper = attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
-            .addModule(FlatteningSerializer.getModule(innerMapper))
-            .addModule(FlatteningDeserializer.getModule(innerMapper))
-            .build());
+        ObjectMapper flatteningMapper = attemptJackson215Mutation(
+            initializeMapperBuilder(JsonMapper.builder()).addModule(FlatteningSerializer.getModule(innerMapper))
+                .addModule(FlatteningDeserializer.getModule(innerMapper))
+                .build());
 
         return attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
             // Order matters: must register in reverse order of hierarchy
@@ -79,22 +77,21 @@ final class ObjectMapperFactory {
     }
 
     public ObjectMapper createHeaderMapper() {
-        return attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
-            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-            .addModule(JsonSerializableSerializer.getModule())
-            .addModule(JsonSerializableDeserializer.getModule())
-            .build());
+        return attemptJackson215Mutation(
+            initializeMapperBuilder(JsonMapper.builder()).enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+                .addModule(JsonSerializableSerializer.getModule())
+                .addModule(JsonSerializableDeserializer.getModule())
+                .build());
     }
 
-    @SuppressWarnings("removal")
     private ObjectMapper attemptJackson215Mutation(ObjectMapper objectMapper) {
         if (useJackson215 && jackson215IsSafe) {
             try {
                 if (USE_ACCESS_HELPER) {
                     try {
-                        return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<ObjectMapper>)
-                            () -> JacksonDatabind215.mutateStreamReadConstraints(objectMapper));
-                    } catch (PrivilegedActionException ex) {
+                        return AccessControllerUtils
+                            .doPrivilegedException(() -> JacksonDatabind215.mutateStreamReadConstraints(objectMapper));
+                    } catch (Exception ex) {
                         final Throwable cause = ex.getCause();
                         if (cause instanceof Error) {
                             throw LOGGER.logThrowableAsError((Error) cause);

@@ -14,7 +14,7 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.resources.LoopResources;
 
 import java.time.Duration;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Executors;
 
 /**
  * Code samples for the THREAD_POOL_AND_CONNECTION_POOL.md
@@ -57,12 +57,12 @@ public class ThreadPoolGuideSamples {
         HttpClient singletonHttpClient = singletonHttpClientBuilder.build();
 
         // BEGIN: readme-sample-azureIdentityThreadpool
-        // Use the singleton httpClient for Azure Identity
+        // Use the singleton httpClient and a dedicated ExecutorService for Azure Identity
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
         final TokenCredential credential = new DefaultAzureCredentialBuilder()
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
-            .executorService(ForkJoinPool.commonPool()) // thread pool for executing token acquisition, usually we leave it default
-            .httpClient(singletonHttpClient)
+            .executorService(Executors.newCachedThreadPool()) // use a dedicated `ExecutorService` for the `TokenCredential`
+            .httpClient(singletonHttpClient) // use the singleton HttpClient
             .build();
         // END: readme-sample-azureIdentityThreadpool
 

@@ -6,63 +6,62 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters supplied to the Check Name Availability for Namespace and NotificationHubs. */
+/**
+ * Parameters supplied to the Check Name Availability for Namespace and NotificationHubs.
+ */
 @Fluent
-public final class CheckAvailabilityParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckAvailabilityParameters.class);
-
+public final class CheckAvailabilityParameters implements JsonSerializable<CheckAvailabilityParameters> {
     /*
      * Resource Id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Resource location
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Resource tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The sku of the created namespace
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
-     * True if the name is available and can be used to create new
-     * Namespace/NotificationHub. Otherwise false.
+     * True if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
      */
-    @JsonProperty(value = "isAvailiable")
     private Boolean isAvailiable;
 
     /**
+     * Creates an instance of CheckAvailabilityParameters class.
+     */
+    public CheckAvailabilityParameters() {
+    }
+
+    /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -71,7 +70,7 @@ public final class CheckAvailabilityParameters {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -80,7 +79,7 @@ public final class CheckAvailabilityParameters {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckAvailabilityParameters object itself.
      */
@@ -91,7 +90,7 @@ public final class CheckAvailabilityParameters {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -100,7 +99,7 @@ public final class CheckAvailabilityParameters {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -109,7 +108,7 @@ public final class CheckAvailabilityParameters {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the CheckAvailabilityParameters object itself.
      */
@@ -120,7 +119,7 @@ public final class CheckAvailabilityParameters {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -129,7 +128,7 @@ public final class CheckAvailabilityParameters {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the CheckAvailabilityParameters object itself.
      */
@@ -140,7 +139,7 @@ public final class CheckAvailabilityParameters {
 
     /**
      * Get the sku property: The sku of the created namespace.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -149,7 +148,7 @@ public final class CheckAvailabilityParameters {
 
     /**
      * Set the sku property: The sku of the created namespace.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the CheckAvailabilityParameters object itself.
      */
@@ -161,7 +160,7 @@ public final class CheckAvailabilityParameters {
     /**
      * Get the isAvailiable property: True if the name is available and can be used to create new
      * Namespace/NotificationHub. Otherwise false.
-     *
+     * 
      * @return the isAvailiable value.
      */
     public Boolean isAvailiable() {
@@ -171,7 +170,7 @@ public final class CheckAvailabilityParameters {
     /**
      * Set the isAvailiable property: True if the name is available and can be used to create new
      * Namespace/NotificationHub. Otherwise false.
-     *
+     * 
      * @param isAvailiable the isAvailiable value to set.
      * @return the CheckAvailabilityParameters object itself.
      */
@@ -182,18 +181,73 @@ public final class CheckAvailabilityParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model CheckAvailabilityParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model CheckAvailabilityParameters"));
         }
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckAvailabilityParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeBooleanField("isAvailiable", this.isAvailiable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckAvailabilityParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckAvailabilityParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CheckAvailabilityParameters.
+     */
+    public static CheckAvailabilityParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckAvailabilityParameters deserializedCheckAvailabilityParameters = new CheckAvailabilityParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCheckAvailabilityParameters.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedCheckAvailabilityParameters.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCheckAvailabilityParameters.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCheckAvailabilityParameters.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCheckAvailabilityParameters.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedCheckAvailabilityParameters.sku = Sku.fromJson(reader);
+                } else if ("isAvailiable".equals(fieldName)) {
+                    deserializedCheckAvailabilityParameters.isAvailiable = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckAvailabilityParameters;
+        });
     }
 }

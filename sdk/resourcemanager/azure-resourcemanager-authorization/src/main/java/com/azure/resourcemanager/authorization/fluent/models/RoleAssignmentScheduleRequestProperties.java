@@ -5,136 +5,128 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.models.ExpandedProperties;
 import com.azure.resourcemanager.authorization.models.PrincipalType;
 import com.azure.resourcemanager.authorization.models.RequestType;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentScheduleRequestPropertiesScheduleInfo;
 import com.azure.resourcemanager.authorization.models.RoleAssignmentScheduleRequestPropertiesTicketInfo;
 import com.azure.resourcemanager.authorization.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Role assignment schedule request properties with scope. */
+/**
+ * Role assignment schedule request properties with scope.
+ */
 @Fluent
-public final class RoleAssignmentScheduleRequestProperties {
+public final class RoleAssignmentScheduleRequestProperties
+    implements JsonSerializable<RoleAssignmentScheduleRequestProperties> {
     /*
      * The role assignment schedule request scope.
      */
-    @JsonProperty(value = "scope", access = JsonProperty.Access.WRITE_ONLY)
     private String scope;
 
     /*
      * The role definition ID.
      */
-    @JsonProperty(value = "roleDefinitionId", required = true)
     private String roleDefinitionId;
 
     /*
      * The principal ID.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
      * The principal type of the assigned principal ID.
      */
-    @JsonProperty(value = "principalType", access = JsonProperty.Access.WRITE_ONLY)
     private PrincipalType principalType;
 
     /*
      * The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc
      */
-    @JsonProperty(value = "requestType", required = true)
     private RequestType requestType;
 
     /*
      * The status of the role assignment schedule request.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private Status status;
 
     /*
      * The approvalId of the role assignment schedule request.
      */
-    @JsonProperty(value = "approvalId", access = JsonProperty.Access.WRITE_ONLY)
     private String approvalId;
 
     /*
      * The resultant role assignment schedule id or the role assignment schedule id being updated
      */
-    @JsonProperty(value = "targetRoleAssignmentScheduleId")
     private String targetRoleAssignmentScheduleId;
 
     /*
      * The role assignment schedule instance id being updated
      */
-    @JsonProperty(value = "targetRoleAssignmentScheduleInstanceId")
     private String targetRoleAssignmentScheduleInstanceId;
 
     /*
      * Schedule info of the role assignment schedule
      */
-    @JsonProperty(value = "scheduleInfo")
     private RoleAssignmentScheduleRequestPropertiesScheduleInfo scheduleInfo;
 
     /*
      * The linked role eligibility schedule id - to activate an eligibility.
      */
-    @JsonProperty(value = "linkedRoleEligibilityScheduleId")
     private String linkedRoleEligibilityScheduleId;
 
     /*
      * Justification for the role assignment
      */
-    @JsonProperty(value = "justification")
     private String justification;
 
     /*
      * Ticket Info of the role assignment
      */
-    @JsonProperty(value = "ticketInfo")
     private RoleAssignmentScheduleRequestPropertiesTicketInfo ticketInfo;
 
     /*
-     * The conditions on the role assignment. This limits the resources it can be assigned to. e.g.:
-     * @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
+     * The conditions on the role assignment. This limits the resources it can be assigned to.
+     * e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase
      * 'foo_storage_container'
      */
-    @JsonProperty(value = "condition")
     private String condition;
 
     /*
      * Version of the condition. Currently accepted value is '2.0'
      */
-    @JsonProperty(value = "conditionVersion")
     private String conditionVersion;
 
     /*
      * DateTime when role assignment schedule request was created
      */
-    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Id of the user who created this request
      */
-    @JsonProperty(value = "requestorId", access = JsonProperty.Access.WRITE_ONLY)
     private String requestorId;
 
     /*
      * Additional properties of principal, scope and role definition
      */
-    @JsonProperty(value = "expandedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private ExpandedProperties expandedProperties;
 
-    /** Creates an instance of RoleAssignmentScheduleRequestProperties class. */
+    /**
+     * Creates an instance of RoleAssignmentScheduleRequestProperties class.
+     */
     public RoleAssignmentScheduleRequestProperties() {
     }
 
     /**
      * Get the scope property: The role assignment schedule request scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -143,7 +135,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Get the roleDefinitionId property: The role definition ID.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -152,7 +144,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Set the roleDefinitionId property: The role definition ID.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentScheduleRequestProperties object itself.
      */
@@ -163,7 +155,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Get the principalId property: The principal ID.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -172,7 +164,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Set the principalId property: The principal ID.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentScheduleRequestProperties object itself.
      */
@@ -183,7 +175,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Get the principalType property: The principal type of the assigned principal ID.
-     *
+     * 
      * @return the principalType value.
      */
     public PrincipalType principalType() {
@@ -193,7 +185,7 @@ public final class RoleAssignmentScheduleRequestProperties {
     /**
      * Get the requestType property: The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign
      * etc.
-     *
+     * 
      * @return the requestType value.
      */
     public RequestType requestType() {
@@ -203,7 +195,7 @@ public final class RoleAssignmentScheduleRequestProperties {
     /**
      * Set the requestType property: The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign
      * etc.
-     *
+     * 
      * @param requestType the requestType value to set.
      * @return the RoleAssignmentScheduleRequestProperties object itself.
      */
@@ -214,7 +206,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Get the status property: The status of the role assignment schedule request.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -223,7 +215,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Get the approvalId property: The approvalId of the role assignment schedule request.
-     *
+     * 
      * @return the approvalId value.
      */
     public String approvalId() {
@@ -233,7 +225,7 @@ public final class RoleAssignmentScheduleRequestProperties {
     /**
      * Get the targetRoleAssignmentScheduleId property: The resultant role assignment schedule id or the role assignment
      * schedule id being updated.
-     *
+     * 
      * @return the targetRoleAssignmentScheduleId value.
      */
     public String targetRoleAssignmentScheduleId() {
@@ -243,19 +235,19 @@ public final class RoleAssignmentScheduleRequestProperties {
     /**
      * Set the targetRoleAssignmentScheduleId property: The resultant role assignment schedule id or the role assignment
      * schedule id being updated.
-     *
+     * 
      * @param targetRoleAssignmentScheduleId the targetRoleAssignmentScheduleId value to set.
      * @return the RoleAssignmentScheduleRequestProperties object itself.
      */
-    public RoleAssignmentScheduleRequestProperties withTargetRoleAssignmentScheduleId(
-        String targetRoleAssignmentScheduleId) {
+    public RoleAssignmentScheduleRequestProperties
+        withTargetRoleAssignmentScheduleId(String targetRoleAssignmentScheduleId) {
         this.targetRoleAssignmentScheduleId = targetRoleAssignmentScheduleId;
         return this;
     }
 
     /**
      * Get the targetRoleAssignmentScheduleInstanceId property: The role assignment schedule instance id being updated.
-     *
+     * 
      * @return the targetRoleAssignmentScheduleInstanceId value.
      */
     public String targetRoleAssignmentScheduleInstanceId() {
@@ -264,19 +256,19 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Set the targetRoleAssignmentScheduleInstanceId property: The role assignment schedule instance id being updated.
-     *
+     * 
      * @param targetRoleAssignmentScheduleInstanceId the targetRoleAssignmentScheduleInstanceId value to set.
      * @return the RoleAssignmentScheduleRequestProperties object itself.
      */
-    public RoleAssignmentScheduleRequestProperties withTargetRoleAssignmentScheduleInstanceId(
-        String targetRoleAssignmentScheduleInstanceId) {
+    public RoleAssignmentScheduleRequestProperties
+        withTargetRoleAssignmentScheduleInstanceId(String targetRoleAssignmentScheduleInstanceId) {
         this.targetRoleAssignmentScheduleInstanceId = targetRoleAssignmentScheduleInstanceId;
         return this;
     }
 
     /**
      * Get the scheduleInfo property: Schedule info of the role assignment schedule.
-     *
+     * 
      * @return the scheduleInfo value.
      */
     public RoleAssignmentScheduleRequestPropertiesScheduleInfo scheduleInfo() {
@@ -285,12 +277,12 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Set the scheduleInfo property: Schedule info of the role assignment schedule.
-     *
+     * 
      * @param scheduleInfo the scheduleInfo value to set.
      * @return the RoleAssignmentScheduleRequestProperties object itself.
      */
-    public RoleAssignmentScheduleRequestProperties withScheduleInfo(
-        RoleAssignmentScheduleRequestPropertiesScheduleInfo scheduleInfo) {
+    public RoleAssignmentScheduleRequestProperties
+        withScheduleInfo(RoleAssignmentScheduleRequestPropertiesScheduleInfo scheduleInfo) {
         this.scheduleInfo = scheduleInfo;
         return this;
     }
@@ -298,7 +290,7 @@ public final class RoleAssignmentScheduleRequestProperties {
     /**
      * Get the linkedRoleEligibilityScheduleId property: The linked role eligibility schedule id - to activate an
      * eligibility.
-     *
+     * 
      * @return the linkedRoleEligibilityScheduleId value.
      */
     public String linkedRoleEligibilityScheduleId() {
@@ -308,19 +300,19 @@ public final class RoleAssignmentScheduleRequestProperties {
     /**
      * Set the linkedRoleEligibilityScheduleId property: The linked role eligibility schedule id - to activate an
      * eligibility.
-     *
+     * 
      * @param linkedRoleEligibilityScheduleId the linkedRoleEligibilityScheduleId value to set.
      * @return the RoleAssignmentScheduleRequestProperties object itself.
      */
-    public RoleAssignmentScheduleRequestProperties withLinkedRoleEligibilityScheduleId(
-        String linkedRoleEligibilityScheduleId) {
+    public RoleAssignmentScheduleRequestProperties
+        withLinkedRoleEligibilityScheduleId(String linkedRoleEligibilityScheduleId) {
         this.linkedRoleEligibilityScheduleId = linkedRoleEligibilityScheduleId;
         return this;
     }
 
     /**
      * Get the justification property: Justification for the role assignment.
-     *
+     * 
      * @return the justification value.
      */
     public String justification() {
@@ -329,7 +321,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Set the justification property: Justification for the role assignment.
-     *
+     * 
      * @param justification the justification value to set.
      * @return the RoleAssignmentScheduleRequestProperties object itself.
      */
@@ -340,7 +332,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Get the ticketInfo property: Ticket Info of the role assignment.
-     *
+     * 
      * @return the ticketInfo value.
      */
     public RoleAssignmentScheduleRequestPropertiesTicketInfo ticketInfo() {
@@ -349,21 +341,21 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Set the ticketInfo property: Ticket Info of the role assignment.
-     *
+     * 
      * @param ticketInfo the ticketInfo value to set.
      * @return the RoleAssignmentScheduleRequestProperties object itself.
      */
-    public RoleAssignmentScheduleRequestProperties withTicketInfo(
-        RoleAssignmentScheduleRequestPropertiesTicketInfo ticketInfo) {
+    public RoleAssignmentScheduleRequestProperties
+        withTicketInfo(RoleAssignmentScheduleRequestPropertiesTicketInfo ticketInfo) {
         this.ticketInfo = ticketInfo;
         return this;
     }
 
     /**
      * Get the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @return the condition value.
      */
     public String condition() {
@@ -372,9 +364,9 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Set the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the RoleAssignmentScheduleRequestProperties object itself.
      */
@@ -385,7 +377,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Get the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
+     * 
      * @return the conditionVersion value.
      */
     public String conditionVersion() {
@@ -394,7 +386,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Set the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
+     * 
      * @param conditionVersion the conditionVersion value to set.
      * @return the RoleAssignmentScheduleRequestProperties object itself.
      */
@@ -405,7 +397,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Get the createdOn property: DateTime when role assignment schedule request was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -414,7 +406,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Get the requestorId property: Id of the user who created this request.
-     *
+     * 
      * @return the requestorId value.
      */
     public String requestorId() {
@@ -423,7 +415,7 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Get the expandedProperties property: Additional properties of principal, scope and role definition.
-     *
+     * 
      * @return the expandedProperties value.
      */
     public ExpandedProperties expandedProperties() {
@@ -432,27 +424,24 @@ public final class RoleAssignmentScheduleRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (roleDefinitionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property roleDefinitionId in model RoleAssignmentScheduleRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roleDefinitionId in model RoleAssignmentScheduleRequestProperties"));
         }
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model RoleAssignmentScheduleRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model RoleAssignmentScheduleRequestProperties"));
         }
         if (requestType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property requestType in model RoleAssignmentScheduleRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property requestType in model RoleAssignmentScheduleRequestProperties"));
         }
         if (scheduleInfo() != null) {
             scheduleInfo().validate();
@@ -466,4 +455,96 @@ public final class RoleAssignmentScheduleRequestProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoleAssignmentScheduleRequestProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("requestType", this.requestType == null ? null : this.requestType.toString());
+        jsonWriter.writeStringField("targetRoleAssignmentScheduleId", this.targetRoleAssignmentScheduleId);
+        jsonWriter.writeStringField("targetRoleAssignmentScheduleInstanceId",
+            this.targetRoleAssignmentScheduleInstanceId);
+        jsonWriter.writeJsonField("scheduleInfo", this.scheduleInfo);
+        jsonWriter.writeStringField("linkedRoleEligibilityScheduleId", this.linkedRoleEligibilityScheduleId);
+        jsonWriter.writeStringField("justification", this.justification);
+        jsonWriter.writeJsonField("ticketInfo", this.ticketInfo);
+        jsonWriter.writeStringField("condition", this.condition);
+        jsonWriter.writeStringField("conditionVersion", this.conditionVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignmentScheduleRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentScheduleRequestProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoleAssignmentScheduleRequestProperties.
+     */
+    public static RoleAssignmentScheduleRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignmentScheduleRequestProperties deserializedRoleAssignmentScheduleRequestProperties
+                = new RoleAssignmentScheduleRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("roleDefinitionId".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.roleDefinitionId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.principalId = reader.getString();
+                } else if ("requestType".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.requestType
+                        = RequestType.fromString(reader.getString());
+                } else if ("scope".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.scope = reader.getString();
+                } else if ("principalType".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.principalType
+                        = PrincipalType.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.status = Status.fromString(reader.getString());
+                } else if ("approvalId".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.approvalId = reader.getString();
+                } else if ("targetRoleAssignmentScheduleId".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.targetRoleAssignmentScheduleId
+                        = reader.getString();
+                } else if ("targetRoleAssignmentScheduleInstanceId".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.targetRoleAssignmentScheduleInstanceId
+                        = reader.getString();
+                } else if ("scheduleInfo".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.scheduleInfo
+                        = RoleAssignmentScheduleRequestPropertiesScheduleInfo.fromJson(reader);
+                } else if ("linkedRoleEligibilityScheduleId".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.linkedRoleEligibilityScheduleId
+                        = reader.getString();
+                } else if ("justification".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.justification = reader.getString();
+                } else if ("ticketInfo".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.ticketInfo
+                        = RoleAssignmentScheduleRequestPropertiesTicketInfo.fromJson(reader);
+                } else if ("condition".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.condition = reader.getString();
+                } else if ("conditionVersion".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.conditionVersion = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("requestorId".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.requestorId = reader.getString();
+                } else if ("expandedProperties".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleRequestProperties.expandedProperties
+                        = ExpandedProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignmentScheduleRequestProperties;
+        });
+    }
 }

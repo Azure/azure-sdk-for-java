@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.models.OperationListResult;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"d\",\"isDataAction\":false,\"display\":{\"provider\":\"ocogj\",\"resource\":\"dtbnnha\",\"operation\":\"ocrkvcikh\",\"description\":\"p\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"queziky\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"wuipiccjzkzivg\",\"isDataAction\":false,\"display\":{\"provider\":\"y\",\"resource\":\"yrnxxmueedn\",\"operation\":\"dvstkw\",\"description\":\"tchealmf\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"gdv\",\"isDataAction\":true,\"display\":{\"provider\":\"ohgwxrtfudxepxg\",\"resource\":\"agvrvmnpkuk\",\"operation\":\"i\",\"description\":\"blxgwimf\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"wmszkk\"}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

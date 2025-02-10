@@ -5,85 +5,82 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Metric specification of operation. */
+/**
+ * Metric specification of operation.
+ */
 @Fluent
-public final class MetricSpecification {
+public final class MetricSpecification implements JsonSerializable<MetricSpecification> {
     /*
      * Name of metric specification.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Display name of metric specification.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Display description of metric specification.
      */
-    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * The metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * The metric aggregation type. Possible values include: 'Average', 'Count', 'Total'.
      */
-    @JsonProperty(value = "aggregationType")
     private String aggregationType;
 
     /*
      * Retention policies of a resource metric.
      */
-    @JsonProperty(value = "availabilities")
     private List<MetricAvailability> availabilities;
 
     /*
      * The supported time grain types for the metrics.
      */
-    @JsonProperty(value = "supportedTimeGrainTypes")
     private List<String> supportedTimeGrainTypes;
 
     /*
      * The dimensions of metric
      */
-    @JsonProperty(value = "dimensions")
     private List<DimensionProperties> dimensions;
 
     /*
      * Property to specify whether to fill gap with zero.
      */
-    @JsonProperty(value = "fillGapWithZero")
     private Boolean fillGapWithZero;
 
     /*
      * Pattern to filter based on name
      */
-    @JsonProperty(value = "metricFilterPattern")
     private String metricFilterPattern;
 
     /*
      * Property to specify metric is internal or not.
      */
-    @JsonProperty(value = "isInternal")
     private Boolean isInternal;
 
-    /** Creates an instance of MetricSpecification class. */
+    /**
+     * Creates an instance of MetricSpecification class.
+     */
     public MetricSpecification() {
     }
 
     /**
      * Get the name property: Name of metric specification.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -92,7 +89,7 @@ public final class MetricSpecification {
 
     /**
      * Set the name property: Name of metric specification.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricSpecification object itself.
      */
@@ -103,7 +100,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayName property: Display name of metric specification.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -112,7 +109,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayName property: Display name of metric specification.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetricSpecification object itself.
      */
@@ -123,7 +120,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayDescription property: Display description of metric specification.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -132,7 +129,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayDescription property: Display description of metric specification.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the MetricSpecification object itself.
      */
@@ -143,7 +140,7 @@ public final class MetricSpecification {
 
     /**
      * Get the unit property: The metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -152,7 +149,7 @@ public final class MetricSpecification {
 
     /**
      * Set the unit property: The metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the MetricSpecification object itself.
      */
@@ -164,7 +161,7 @@ public final class MetricSpecification {
     /**
      * Get the aggregationType property: The metric aggregation type. Possible values include: 'Average', 'Count',
      * 'Total'.
-     *
+     * 
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -174,7 +171,7 @@ public final class MetricSpecification {
     /**
      * Set the aggregationType property: The metric aggregation type. Possible values include: 'Average', 'Count',
      * 'Total'.
-     *
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the MetricSpecification object itself.
      */
@@ -185,7 +182,7 @@ public final class MetricSpecification {
 
     /**
      * Get the availabilities property: Retention policies of a resource metric.
-     *
+     * 
      * @return the availabilities value.
      */
     public List<MetricAvailability> availabilities() {
@@ -194,7 +191,7 @@ public final class MetricSpecification {
 
     /**
      * Set the availabilities property: Retention policies of a resource metric.
-     *
+     * 
      * @param availabilities the availabilities value to set.
      * @return the MetricSpecification object itself.
      */
@@ -205,7 +202,7 @@ public final class MetricSpecification {
 
     /**
      * Get the supportedTimeGrainTypes property: The supported time grain types for the metrics.
-     *
+     * 
      * @return the supportedTimeGrainTypes value.
      */
     public List<String> supportedTimeGrainTypes() {
@@ -214,7 +211,7 @@ public final class MetricSpecification {
 
     /**
      * Set the supportedTimeGrainTypes property: The supported time grain types for the metrics.
-     *
+     * 
      * @param supportedTimeGrainTypes the supportedTimeGrainTypes value to set.
      * @return the MetricSpecification object itself.
      */
@@ -225,7 +222,7 @@ public final class MetricSpecification {
 
     /**
      * Get the dimensions property: The dimensions of metric.
-     *
+     * 
      * @return the dimensions value.
      */
     public List<DimensionProperties> dimensions() {
@@ -234,7 +231,7 @@ public final class MetricSpecification {
 
     /**
      * Set the dimensions property: The dimensions of metric.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the MetricSpecification object itself.
      */
@@ -245,7 +242,7 @@ public final class MetricSpecification {
 
     /**
      * Get the fillGapWithZero property: Property to specify whether to fill gap with zero.
-     *
+     * 
      * @return the fillGapWithZero value.
      */
     public Boolean fillGapWithZero() {
@@ -254,7 +251,7 @@ public final class MetricSpecification {
 
     /**
      * Set the fillGapWithZero property: Property to specify whether to fill gap with zero.
-     *
+     * 
      * @param fillGapWithZero the fillGapWithZero value to set.
      * @return the MetricSpecification object itself.
      */
@@ -265,7 +262,7 @@ public final class MetricSpecification {
 
     /**
      * Get the metricFilterPattern property: Pattern to filter based on name.
-     *
+     * 
      * @return the metricFilterPattern value.
      */
     public String metricFilterPattern() {
@@ -274,7 +271,7 @@ public final class MetricSpecification {
 
     /**
      * Set the metricFilterPattern property: Pattern to filter based on name.
-     *
+     * 
      * @param metricFilterPattern the metricFilterPattern value to set.
      * @return the MetricSpecification object itself.
      */
@@ -285,7 +282,7 @@ public final class MetricSpecification {
 
     /**
      * Get the isInternal property: Property to specify metric is internal or not.
-     *
+     * 
      * @return the isInternal value.
      */
     public Boolean isInternal() {
@@ -294,7 +291,7 @@ public final class MetricSpecification {
 
     /**
      * Set the isInternal property: Property to specify metric is internal or not.
-     *
+     * 
      * @param isInternal the isInternal value to set.
      * @return the MetricSpecification object itself.
      */
@@ -305,7 +302,7 @@ public final class MetricSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -315,5 +312,78 @@ public final class MetricSpecification {
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("aggregationType", this.aggregationType);
+        jsonWriter.writeArrayField("availabilities", this.availabilities,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("supportedTimeGrainTypes", this.supportedTimeGrainTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("fillGapWithZero", this.fillGapWithZero);
+        jsonWriter.writeStringField("metricFilterPattern", this.metricFilterPattern);
+        jsonWriter.writeBooleanField("isInternal", this.isInternal);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricSpecification if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricSpecification.
+     */
+    public static MetricSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricSpecification deserializedMetricSpecification = new MetricSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMetricSpecification.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMetricSpecification.displayName = reader.getString();
+                } else if ("displayDescription".equals(fieldName)) {
+                    deserializedMetricSpecification.displayDescription = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedMetricSpecification.unit = reader.getString();
+                } else if ("aggregationType".equals(fieldName)) {
+                    deserializedMetricSpecification.aggregationType = reader.getString();
+                } else if ("availabilities".equals(fieldName)) {
+                    List<MetricAvailability> availabilities
+                        = reader.readArray(reader1 -> MetricAvailability.fromJson(reader1));
+                    deserializedMetricSpecification.availabilities = availabilities;
+                } else if ("supportedTimeGrainTypes".equals(fieldName)) {
+                    List<String> supportedTimeGrainTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetricSpecification.supportedTimeGrainTypes = supportedTimeGrainTypes;
+                } else if ("dimensions".equals(fieldName)) {
+                    List<DimensionProperties> dimensions
+                        = reader.readArray(reader1 -> DimensionProperties.fromJson(reader1));
+                    deserializedMetricSpecification.dimensions = dimensions;
+                } else if ("fillGapWithZero".equals(fieldName)) {
+                    deserializedMetricSpecification.fillGapWithZero = reader.getNullable(JsonReader::getBoolean);
+                } else if ("metricFilterPattern".equals(fieldName)) {
+                    deserializedMetricSpecification.metricFilterPattern = reader.getString();
+                } else if ("isInternal".equals(fieldName)) {
+                    deserializedMetricSpecification.isInternal = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricSpecification;
+        });
     }
 }

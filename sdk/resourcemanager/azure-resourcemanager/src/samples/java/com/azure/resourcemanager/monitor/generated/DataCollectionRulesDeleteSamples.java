@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DataCollectionRules Delete. */
+/**
+ * Samples for DataCollectionRules Delete.
+ */
 public final class DataCollectionRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionRulesDelete.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/
+     * DataCollectionRulesDelete.json
      */
     /**
      * Sample code: Delete data collection rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteDataCollectionRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getDataCollectionRules()
-            .deleteWithResponse("myResourceGroup", "myCollectionRule", Context.NONE);
+            .deleteWithResponse("myResourceGroup", "myCollectionRule", com.azure.core.util.Context.NONE);
     }
 }

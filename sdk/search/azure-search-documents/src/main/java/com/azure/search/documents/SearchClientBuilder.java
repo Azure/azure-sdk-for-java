@@ -49,31 +49,60 @@ import static com.azure.search.documents.implementation.util.Utility.buildRestCl
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchClient
- * SearchClients} and {@link SearchAsyncClient SearchAsyncClients}. Call {@link #buildClient() buildClient} and {@link
- * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
+ * SearchClients} and {@link SearchAsyncClient SearchAsyncClients}.
+ *
+ * <h2>
+ *     Overview
+ * </h2>
+ *
  * <p>
- * The following must be provided to construct a client instance.
+ *     This client allows you to create instances of {@link SearchClient} and {@link SearchAsyncClient} to
+ *     utilize synchronous and asynchronous APIs respectively to interact with Azure AI Search.
+ * </p>
+ *
+ * <h2>
+ *     Getting Started
+ * </h2>
+ *
+ * <h3>
+ *     Authentication
+ * </h3>
+ *
+ * <p>
+ *     Azure AI Search supports <a href="https://learn.microsoft.com/azure/search/search-security-rbac?tabs=config-svc-portal%2Croles-portal%2Ctest-portal%2Ccustom-role-portal%2Cdisable-keys-portal">
+ *         Microsoft Entra ID (role-based) authentication </a> and <a href="https://learn.microsoft.com/azure/search/search-security-api-keys?tabs=portal-use%2Cportal-find%2Cportal-query">API keys</a> for authentication.
+ * </p>
+ *
+ * <p>
+ *     For more information about the scopes of authorization, see the <a href="https://learn.microsoft.com/azure/search/search-security-overview#authentication">Azure AI Search Security Overview</a> documentation.
+ * </p>
+ *
+ * <h4>
+ *     Building and Authenticating a {@link SearchClient} or {@link SearchAsyncClient} using API keys
+ * </h4>
+ *
+ * <p>
+ *     To build an instance of {@link SearchClient} or {@link SearchAsyncClient} using API keys, call
+ *     {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively from the
+ *     {@link SearchClientBuilder}.
+ * </p>
+ *
+ * <p>
+ *     The following must be provided to construct a client instance.
+ * </p>
+ *
  * <ul>
- * <li>The Azure Cognitive Search service URL.</li>
- * <li>An {@link AzureKeyCredential} that grants access to the Azure Cognitive Search service.</li>
- * <li>The search index name.</li>
+ *     <li>
+ *         The Azure AI Search service URL.
+ *     </li>
+ *     <li>
+ *         An {@link AzureKeyCredential API Key} that grants access to the Azure AI Search service.
+ *     </li>
  * </ul>
- *
- * <p><strong>Instantiating an asynchronous Search Client</strong></p>
- *
- * <!-- src_embed com.azure.search.documents.SearchAsyncClient.instantiation -->
- * <pre>
- * SearchAsyncClient searchAsyncClient = new SearchClientBuilder&#40;&#41;
- *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
- *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *     .indexName&#40;&quot;&#123;indexName&#125;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.search.documents.SearchAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Search Client</strong></p>
  *
- * <!-- src_embed com.azure.search.documents.SearchClient.instantiation -->
+ * <!-- src_embed com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.instantiation.SearchClient -->
  * <pre>
  * SearchClient searchClient = new SearchClientBuilder&#40;&#41;
  *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
@@ -81,18 +110,95 @@ import static com.azure.search.documents.implementation.util.Utility.buildRestCl
  *     .indexName&#40;&quot;&#123;indexName&#125;&quot;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.search.documents.SearchClient.instantiation -->
+ * <!-- end com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.instantiation.SearchClient -->
+ *
+ * <p><strong>Instantiating an asynchronous Search Client</strong></p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.instantiation.SearchAsyncClient -->
+ * <pre>
+ * SearchAsyncClient searchAsyncClient = new SearchClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .indexName&#40;&quot;&#123;indexName&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.instantiation.SearchAsyncClient -->
+ *
+ * <h4>
+ *     Building and Authenticating a {@link SearchClient} or {@link SearchAsyncClient} using Microsoft Entra ID
+ * </h4>
+ *
+ * <p>
+ *   You can also create a {@link SearchClient} or {@link SearchAsyncClient} using Microsoft Entra ID
+ *   authentication. Your user or service principal must be assigned the "Search Index Data Reader" role. Using the
+ *   DefaultAzureCredential you can authenticate a service using Managed Identity or a service principal, authenticate
+ *   as a developer working on an application, and more all without changing code. Please refer the <a href="https://learn.microsoft.com/azure/search/search-security-rbac?tabs=config-svc-portal,roles-portal,test-portal,custom-role-portal,disable-keys-portal">documentation</a> for
+ *   instructions on how to connect to Azure AI Search using Azure role-based access control (Azure RBAC).
+ * </p>
+ *
+ * <p>
+ *     Before you can use the `DefaultAzureCredential`, or any credential type from Azure.Identity, you'll first need to install the Azure.Identity package.
+ * </p>
+ *
+ * <p>
+ *     To use DefaultAzureCredential with a client ID and secret, you'll need to set the `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`,
+ *     and `AZURE_CLIENT_SECRET` environment variables; alternatively, you can pass those values to the
+ *     `ClientSecretCredential` also in azure-identity.
+ * </p>
+ *
+ * <p>
+ *     Make sure you use the right namespace for DefaultAzureCredential at the top of your source file:
+ * </p>
+ *
+ * <!-- src_embed DefaultAzureCredentialImports -->
+ * <pre>
+ * import com.azure.identity.DefaultAzureCredential;
+ * import com.azure.identity.DefaultAzureCredentialBuilder;
+ * </pre>
+ * <!-- end DefaultAzureCredentialImports -->
+ *
+ * <p>
+ *     Then you can create an instance of DefaultAzureCredential and pass it to a new instance of your client:
+ * </p>
+ *
+ * <p>The following sample builds a SearchClient using DefaultAzureCredential.</p>
+ *
+ * <p><strong>Instantiating a synchronous Search Client</strong></p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.credential -->
+ * <pre>
+ * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * SearchClient searchClient = new SearchClientBuilder&#40;&#41;
+ *     .credential&#40;credential&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .indexName&#40;&quot;&#123;indexName&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.credential -->
+ *
+ * <p><strong>Instantiating an asynchronous Search Client</strong></p>
+ *
+ * <!-- src_embed com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.async.credential -->
+ * <pre>
+ * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * SearchAsyncClient searchAsyncClient = new SearchClientBuilder&#40;&#41;
+ *     .credential&#40;credential&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .indexName&#40;&quot;&#123;indexName&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.SearchClientBuilder-classLevelJavaDoc.async.credential -->
  *
  * @see SearchClient
  * @see SearchAsyncClient
+ * @see com.azure.search.documents
  */
-@ServiceClientBuilder(serviceClients = {SearchClient.class, SearchAsyncClient.class})
-public final class SearchClientBuilder implements
-    AzureKeyCredentialTrait<SearchClientBuilder>,
-    ConfigurationTrait<SearchClientBuilder>,
-    EndpointTrait<SearchClientBuilder>,
-    HttpTrait<SearchClientBuilder>,
-    TokenCredentialTrait<SearchClientBuilder> {
+@ServiceClientBuilder(serviceClients = { SearchClient.class, SearchAsyncClient.class })
+public final class SearchClientBuilder
+    implements AzureKeyCredentialTrait<SearchClientBuilder>, ConfigurationTrait<SearchClientBuilder>,
+    EndpointTrait<SearchClientBuilder>, HttpTrait<SearchClientBuilder>, TokenCredentialTrait<SearchClientBuilder> {
     private static final boolean DEFAULT_AUTO_FLUSH = true;
     private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
     private static final Duration DEFAULT_FLUSH_INTERVAL = Duration.ofSeconds(60);
@@ -100,13 +206,13 @@ public final class SearchClientBuilder implements
     private static final Duration DEFAULT_THROTTLING_DELAY = Duration.ofMillis(800);
     private static final Duration DEFAULT_MAX_THROTTLING_DELAY = Duration.ofMinutes(1);
     // Retaining this commented out code as it may be added back in a future release.
-//    private static final Function<Integer, Integer> DEFAULT_SCALE_DOWN_FUNCTION = oldBatchCount -> {
-//        if (oldBatchCount == 1) {
-//            return 1;
-//        } else {
-//            return Math.max(1, oldBatchCount / 2);
-//        }
-//    };
+    //    private static final Function<Integer, Integer> DEFAULT_SCALE_DOWN_FUNCTION = oldBatchCount -> {
+    //        if (oldBatchCount == 1) {
+    //            return 1;
+    //        } else {
+    //            return Math.max(1, oldBatchCount / 2);
+    //        }
+    //    };
 
     private static final ClientLogger LOGGER = new ClientLogger(SearchClientBuilder.class);
 
@@ -151,14 +257,12 @@ public final class SearchClientBuilder implements
      */
     public SearchClient buildClient() {
         validateIndexNameAndEndpoint();
-        SearchServiceVersion buildVersion = (serviceVersion == null)
-            ? SearchServiceVersion.getLatest()
-            : serviceVersion;
+        SearchServiceVersion buildVersion
+            = (serviceVersion == null) ? SearchServiceVersion.getLatest() : serviceVersion;
 
         HttpPipeline pipeline = getHttpPipeline();
-        JsonSerializer serializer = (jsonSerializer == null)
-            ? JsonSerializerProviders.createInstance(true)
-            : jsonSerializer;
+        JsonSerializer serializer
+            = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
         return new SearchClient(endpoint, indexName, buildVersion, pipeline, serializer,
             Utility.buildRestClient(buildVersion, endpoint, indexName, pipeline));
     }
@@ -178,14 +282,12 @@ public final class SearchClientBuilder implements
      */
     public SearchAsyncClient buildAsyncClient() {
         validateIndexNameAndEndpoint();
-        SearchServiceVersion buildVersion = (serviceVersion == null)
-            ? SearchServiceVersion.getLatest()
-            : serviceVersion;
+        SearchServiceVersion buildVersion
+            = (serviceVersion == null) ? SearchServiceVersion.getLatest() : serviceVersion;
 
         HttpPipeline pipeline = getHttpPipeline();
-        JsonSerializer serializer = (jsonSerializer == null)
-            ? JsonSerializerProviders.createInstance(true)
-            : jsonSerializer;
+        JsonSerializer serializer
+            = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
         return new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, serializer,
             Utility.buildRestClient(buildVersion, endpoint, indexName, pipeline));
     }
@@ -218,11 +320,10 @@ public final class SearchClientBuilder implements
     }
 
     /**
-     * Sets the service endpoint for the Azure Cognitive Search instance.
+     * Sets the service endpoint for the Azure AI Search instance.
      *
-     * @param endpoint The URL of the Azure Cognitive Search instance.
-     * @return The updated SearchClientBuilder object.
-     * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @param endpoint The URL of the Azure AI Search instance.
+     * @return The updated SearchClientBuilder object.0ed into a valid URL.
      */
     @Override
     public SearchClientBuilder endpoint(String endpoint) {
@@ -262,13 +363,13 @@ public final class SearchClientBuilder implements
     }
 
     /**
-     * Sets the Audience to use for authentication with Azure Active Directory (AAD).
+     * Sets the Audience to use for authentication with Microsoft Entra ID.
      * <p>
      * The audience is not considered when using a {@link #credential(AzureKeyCredential) shared key}.
      * <p>
      * If {@code audience} is null the public cloud audience will be assumed.
      *
-     * @param audience The Audience to use for authentication with Azure Active Directory (AAD).
+     * @param audience The Audience to use for authentication with Microsoft Entra ID.
      * @return The updated SearchClientBuilder object.
      */
     public SearchClientBuilder audience(SearchAudience audience) {
@@ -508,9 +609,8 @@ public final class SearchClientBuilder implements
      * @see SearchIndexingBufferedSender
      * @see SearchIndexingBufferedAsyncSender
      */
-    @ServiceClientBuilder(serviceClients = {
-        SearchIndexingBufferedSender.class, SearchIndexingBufferedAsyncSender.class
-    })
+    @ServiceClientBuilder(
+        serviceClients = { SearchIndexingBufferedSender.class, SearchIndexingBufferedAsyncSender.class })
     public final class SearchIndexingBufferedSenderBuilder<T> {
         private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedSenderBuilder.class);
 
@@ -546,17 +646,16 @@ public final class SearchClientBuilder implements
             validateIndexNameAndEndpoint();
             Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
 
-            SearchServiceVersion buildVersion = (serviceVersion == null)
-                ? SearchServiceVersion.getLatest()
-                : serviceVersion;
+            SearchServiceVersion buildVersion
+                = (serviceVersion == null) ? SearchServiceVersion.getLatest() : serviceVersion;
 
-            JsonSerializer serializer = (jsonSerializer == null)
-                ? JsonSerializerProviders.createInstance(true)
-                : jsonSerializer;
-            return new SearchIndexingBufferedSender<>(buildRestClient(buildVersion, endpoint, indexName,
-                getHttpPipeline()), serializer, documentKeyRetriever, autoFlush, autoFlushInterval,
-                initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
-                onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
+            JsonSerializer serializer
+                = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
+            return new SearchIndexingBufferedSender<>(
+                buildRestClient(buildVersion, endpoint, indexName, getHttpPipeline()), serializer, documentKeyRetriever,
+                autoFlush, autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay,
+                maxThrottlingDelay, onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer,
+                onActionSentConsumer);
         }
 
         /**
@@ -573,17 +672,16 @@ public final class SearchClientBuilder implements
             validateIndexNameAndEndpoint();
             Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
 
-            SearchServiceVersion buildVersion = (serviceVersion == null)
-                ? SearchServiceVersion.getLatest()
-                : serviceVersion;
+            SearchServiceVersion buildVersion
+                = (serviceVersion == null) ? SearchServiceVersion.getLatest() : serviceVersion;
 
-            JsonSerializer serializer = (jsonSerializer == null)
-                ? JsonSerializerProviders.createInstance(true)
-                : jsonSerializer;
-            return new SearchIndexingBufferedAsyncSender<>(buildRestClient(buildVersion, endpoint, indexName,
-                getHttpPipeline()), serializer, documentKeyRetriever, autoFlush, autoFlushInterval,
-                initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
-                onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
+            JsonSerializer serializer
+                = (jsonSerializer == null) ? JsonSerializerProviders.createInstance(true) : jsonSerializer;
+            return new SearchIndexingBufferedAsyncSender<>(
+                buildRestClient(buildVersion, endpoint, indexName, getHttpPipeline()), serializer, documentKeyRetriever,
+                autoFlush, autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay,
+                maxThrottlingDelay, onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer,
+                onActionSentConsumer);
         }
 
         /**
@@ -638,34 +736,34 @@ public final class SearchClientBuilder implements
         }
 
         // Retaining this commented out code as it may be added back in a future release.
-//    /**
-//     * Sets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
-//     * by the service.
-//     * <p>
-//     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
-//     *
-//     * @param scaleDownFunction The batch size scale down function.
-//     * @return The updated SearchIndexingBufferedSenderOptions object.
-//     * @throws NullPointerException If {@code scaleDownFunction} is null.
-//     */
-//    public SearchIndexingBufferedSenderOptions<T> setPayloadTooLargeScaleDown(
-//        Function<Integer, Integer> scaleDownFunction) {
-//        this.scaleDownFunction = Objects.requireNonNull(scaleDownFunction, "'scaleDownFunction' cannot be null.");
-//        return this;
-//    }
+        //    /**
+        //     * Sets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
+        //     * by the service.
+        //     * <p>
+        //     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
+        //     *
+        //     * @param scaleDownFunction The batch size scale down function.
+        //     * @return The updated SearchIndexingBufferedSenderOptions object.
+        //     * @throws NullPointerException If {@code scaleDownFunction} is null.
+        //     */
+        //    public SearchIndexingBufferedSenderOptions<T> setPayloadTooLargeScaleDown(
+        //        Function<Integer, Integer> scaleDownFunction) {
+        //        this.scaleDownFunction = Objects.requireNonNull(scaleDownFunction, "'scaleDownFunction' cannot be null.");
+        //        return this;
+        //    }
 
         // Retaining this commented out code as it may be added back in a future release.
-//    /**
-//     * Gets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
-//     * by the service.
-//     * <p>
-//     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
-//     *
-//     * @return The batch size scale down function.
-//     */
-//    public Function<Integer, Integer> getPayloadTooLargeScaleDown() {
-//        return scaleDownFunction;
-//    }
+        //    /**
+        //     * Gets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
+        //     * by the service.
+        //     * <p>
+        //     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
+        //     *
+        //     * @return The batch size scale down function.
+        //     */
+        //    public Function<Integer, Integer> getPayloadTooLargeScaleDown() {
+        //        return scaleDownFunction;
+        //    }
 
         /**
          * Sets the number of times an action will retry indexing before it is considered failed.
@@ -681,8 +779,7 @@ public final class SearchClientBuilder implements
          */
         public SearchIndexingBufferedSenderBuilder<T> maxRetriesPerAction(int maxRetriesPerAction) {
             if (maxRetriesPerAction < 1) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("'maxRetries' cannot be less than one."));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'maxRetries' cannot be less than one."));
             }
 
             this.maxRetriesPerAction = maxRetriesPerAction;
@@ -704,8 +801,8 @@ public final class SearchClientBuilder implements
             Objects.requireNonNull(throttlingDelay, "'throttlingDelay' cannot be null.");
 
             if (throttlingDelay.isNegative() || throttlingDelay.isZero()) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("'throttlingDelay' cannot be negative or zero."));
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("'throttlingDelay' cannot be negative or zero."));
             }
 
             this.throttlingDelay = throttlingDelay;
@@ -745,8 +842,8 @@ public final class SearchClientBuilder implements
          * queue.
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          */
-        public SearchIndexingBufferedSenderBuilder<T> onActionAdded(
-            Consumer<OnActionAddedOptions<T>> onActionAddedConsumer) {
+        public SearchIndexingBufferedSenderBuilder<T>
+            onActionAdded(Consumer<OnActionAddedOptions<T>> onActionAddedConsumer) {
             this.onActionAddedConsumer = onActionAddedConsumer;
             return this;
         }
@@ -758,8 +855,8 @@ public final class SearchClientBuilder implements
          * indexing.
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          */
-        public SearchIndexingBufferedSenderBuilder<T> onActionSucceeded(
-            Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer) {
+        public SearchIndexingBufferedSenderBuilder<T>
+            onActionSucceeded(Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer) {
             this.onActionSucceededConsumer = onActionSucceededConsumer;
             return this;
         }
@@ -771,8 +868,8 @@ public final class SearchClientBuilder implements
          * isn't retryable.
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          */
-        public SearchIndexingBufferedSenderBuilder<T> onActionError(
-            Consumer<OnActionErrorOptions<T>> onActionErrorConsumer) {
+        public SearchIndexingBufferedSenderBuilder<T>
+            onActionError(Consumer<OnActionErrorOptions<T>> onActionErrorConsumer) {
             this.onActionErrorConsumer = onActionErrorConsumer;
             return this;
         }
@@ -784,8 +881,8 @@ public final class SearchClientBuilder implements
          * request.
          * @return The updated SearchIndexingBufferedSenderBuilder object.
          */
-        public SearchIndexingBufferedSenderBuilder<T> onActionSent(
-            Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
+        public SearchIndexingBufferedSenderBuilder<T>
+            onActionSent(Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
             this.onActionSentConsumer = onActionSentConsumer;
             return this;
         }
@@ -798,8 +895,8 @@ public final class SearchClientBuilder implements
          * @throws NullPointerException If {@code documentKeyRetriever} is null.
          */
         public SearchIndexingBufferedSenderBuilder<T> documentKeyRetriever(Function<T, String> documentKeyRetriever) {
-            this.documentKeyRetriever = Objects.requireNonNull(documentKeyRetriever,
-                "'documentKeyRetriever' cannot be null");
+            this.documentKeyRetriever
+                = Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
             return this;
         }
     }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WebAppsGetAppSettingKeyVaultReferenceSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetKeyVaultReferencesForAppSetting.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetKeyVaultReferencesForAppSetting.
      * json
      */
     /**
@@ -19,7 +19,11 @@ public final class WebAppsGetAppSettingKeyVaultReferenceSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAzureKeyVaultAppSettingReference(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().getAppSettingKeyVaultReferenceWithResponse("testrg123",
-            "testc6282", "setting", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .getAppSettingKeyVaultReferenceWithResponse("testrg123", "testc6282", "setting",
+                com.azure.core.util.Context.NONE);
     }
 }

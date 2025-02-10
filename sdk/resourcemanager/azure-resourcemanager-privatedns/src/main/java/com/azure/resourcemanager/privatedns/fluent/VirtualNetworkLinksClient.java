@@ -18,47 +18,44 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworkLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualNetworkLinksClient.
+ */
 public interface VirtualNetworkLinksClient {
     /**
      * Creates or updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     *     the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     *     concurrent changes.
+     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
+     * concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to
-     *     prevent updating an existing link. Other values will be ignored.
+     * prevent updating an existing link. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a link to virtual network for a Private DNS zone along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch);
 
     /**
      * Creates or updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     *     the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     *     concurrent changes.
+     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
+     * concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to
-     *     prevent updating an existing link. Other values will be ignored.
+     * prevent updating an existing link. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -66,16 +63,12 @@ public interface VirtualNetworkLinksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
+        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
+        VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch);
 
     /**
      * Creates or updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -87,14 +80,12 @@ public interface VirtualNetworkLinksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
+        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
         VirtualNetworkLinkInner parameters);
 
     /**
      * Creates or updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -106,23 +97,21 @@ public interface VirtualNetworkLinksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
+        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
         VirtualNetworkLinkInner parameters);
 
     /**
      * Creates or updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     *     the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     *     concurrent changes.
+     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
+     * concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to
-     *     prevent updating an existing link. Other values will be ignored.
+     * prevent updating an existing link. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,43 +120,33 @@ public interface VirtualNetworkLinksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
+        VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Creates or updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     *     the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     *     concurrent changes.
+     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
+     * concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to
-     *     prevent updating an existing link. Other values will be ignored.
+     * prevent updating an existing link. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkLinkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
+    Mono<VirtualNetworkLinkInner> createOrUpdateAsync(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch);
 
     /**
      * Creates or updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -178,15 +157,12 @@ public interface VirtualNetworkLinksClient {
      * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkLinkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters);
+    Mono<VirtualNetworkLinkInner> createOrUpdateAsync(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters);
 
     /**
      * Creates or updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -197,24 +173,21 @@ public interface VirtualNetworkLinksClient {
      * @return describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkLinkInner createOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters);
+    VirtualNetworkLinkInner createOrUpdate(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters);
 
     /**
      * Creates or updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     *     the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     *     concurrent changes.
+     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
+     * concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to
-     *     prevent updating an existing link. Other values will be ignored.
+     * prevent updating an existing link. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -222,65 +195,52 @@ public interface VirtualNetworkLinksClient {
      * @return describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkLinkInner createOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
+    VirtualNetworkLinkInner createOrUpdate(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch,
         Context context);
 
     /**
      * Updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     *     the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     *     concurrent changes.
+     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
+     * concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a link to virtual network for a Private DNS zone along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch);
 
     /**
      * Updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     *     the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     *     concurrent changes.
+     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
+     * concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch);
+    PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(String resourceGroupName,
+        String privateZoneName, String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch);
 
     /**
      * Updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -291,15 +251,12 @@ public interface VirtualNetworkLinksClient {
      * @return the {@link PollerFlux} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters);
+    PollerFlux<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdateAsync(String resourceGroupName,
+        String privateZoneName, String virtualNetworkLinkName, VirtualNetworkLinkInner parameters);
 
     /**
      * Updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -310,22 +267,19 @@ public interface VirtualNetworkLinksClient {
      * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters);
+    SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(String resourceGroupName,
+        String privateZoneName, String virtualNetworkLinkName, VirtualNetworkLinkInner parameters);
 
     /**
      * Updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     *     the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     *     concurrent changes.
+     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
+     * concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -333,40 +287,32 @@ public interface VirtualNetworkLinksClient {
      * @return the {@link SyncPoller} for polling of describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
+    SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(String resourceGroupName,
+        String privateZoneName, String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch,
         Context context);
 
     /**
      * Updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     *     the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     *     concurrent changes.
+     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
+     * concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkLinkInner> updateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch);
+    Mono<VirtualNetworkLinkInner> updateAsync(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters, String ifMatch);
 
     /**
      * Updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -377,15 +323,12 @@ public interface VirtualNetworkLinksClient {
      * @return describes a link to virtual network for a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkLinkInner> updateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters);
+    Mono<VirtualNetworkLinkInner> updateAsync(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, VirtualNetworkLinkInner parameters);
 
     /**
      * Updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -396,22 +339,19 @@ public interface VirtualNetworkLinksClient {
      * @return describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkLinkInner update(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
+    VirtualNetworkLinkInner update(String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
         VirtualNetworkLinkInner parameters);
 
     /**
      * Updates a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite
-     *     the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
-     *     concurrent changes.
+     * the current virtual network link. Specify the last-seen ETag value to prevent accidentally overwriting any
+     * concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -419,57 +359,52 @@ public interface VirtualNetworkLinksClient {
      * @return describes a link to virtual network for a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkLinkInner update(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        VirtualNetworkLinkInner parameters,
-        String ifMatch,
-        Context context);
+    VirtualNetworkLinkInner update(String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
+        VirtualNetworkLinkInner parameters, String ifMatch, Context context);
 
     /**
      * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
      * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
      * cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the
-     *     current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName, String ifMatch);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, String ifMatch);
 
     /**
      * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
      * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
      * cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the
-     *     current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName, String ifMatch);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, String ifMatch);
 
     /**
      * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
      * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
      * cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -479,14 +414,14 @@ public interface VirtualNetworkLinksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName);
 
     /**
      * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
      * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
      * cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -496,19 +431,19 @@ public interface VirtualNetworkLinksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName);
 
     /**
      * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
      * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
      * cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the
-     *     current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -516,37 +451,33 @@ public interface VirtualNetworkLinksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        String ifMatch,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, String ifMatch, Context context);
 
     /**
      * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
      * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
      * cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the
-     *     current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(
-        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName, String ifMatch);
+    Mono<Void> deleteAsync(String resourceGroupName, String privateZoneName, String virtualNetworkLinkName,
+        String ifMatch);
 
     /**
      * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
      * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
      * cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -562,7 +493,7 @@ public interface VirtualNetworkLinksClient {
      * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
      * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
      * cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -577,28 +508,24 @@ public interface VirtualNetworkLinksClient {
      * Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual
      * network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation
      * cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
      * @param ifMatch The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the
-     *     current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * current zone. Specify the last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String privateZoneName,
-        String virtualNetworkLinkName,
-        String ifMatch,
+    void delete(String resourceGroupName, String privateZoneName, String virtualNetworkLinkName, String ifMatch,
         Context context);
 
     /**
      * Gets a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -606,15 +533,15 @@ public interface VirtualNetworkLinksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a virtual network link to the specified Private DNS zone along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualNetworkLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName);
+    Mono<Response<VirtualNetworkLinkInner>> getWithResponseAsync(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName);
 
     /**
      * Gets a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -624,12 +551,12 @@ public interface VirtualNetworkLinksClient {
      * @return a virtual network link to the specified Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkLinkInner> getAsync(
-        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName);
+    Mono<VirtualNetworkLinkInner> getAsync(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName);
 
     /**
      * Gets a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -640,12 +567,12 @@ public interface VirtualNetworkLinksClient {
      * @return a virtual network link to the specified Private DNS zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkLinkInner> getWithResponse(
-        String resourceGroupName, String privateZoneName, String virtualNetworkLinkName, Context context);
+    Response<VirtualNetworkLinkInner> getWithResponse(String resourceGroupName, String privateZoneName,
+        String virtualNetworkLinkName, Context context);
 
     /**
      * Gets a virtual network link to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param virtualNetworkLinkName The name of the virtual network link.
@@ -659,63 +586,63 @@ public interface VirtualNetworkLinksClient {
 
     /**
      * Lists the virtual network links to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param top The maximum number of virtual network links to return. If not specified, returns up to 100 virtual
-     *     network links.
+     * network links.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<VirtualNetworkLinkInner> listAsync(String resourceGroupName, String privateZoneName, Integer top);
 
     /**
      * Lists the virtual network links to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<VirtualNetworkLinkInner> listAsync(String resourceGroupName, String privateZoneName);
 
     /**
      * Lists the virtual network links to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkLinkInner> list(String resourceGroupName, String privateZoneName);
 
     /**
      * Lists the virtual network links to the specified Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param top The maximum number of virtual network links to return. If not specified, returns up to 100 virtual
-     *     network links.
+     * network links.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list virtual network link to Private DNS zone operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualNetworkLinkInner> list(
-        String resourceGroupName, String privateZoneName, Integer top, Context context);
+    PagedIterable<VirtualNetworkLinkInner> list(String resourceGroupName, String privateZoneName, Integer top,
+        Context context);
 }

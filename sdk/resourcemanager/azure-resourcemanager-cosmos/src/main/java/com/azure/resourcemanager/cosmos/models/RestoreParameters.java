@@ -5,8 +5,13 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -17,25 +22,21 @@ public final class RestoreParameters extends RestoreParametersBase {
     /*
      * Describes the mode of the restore.
      */
-    @JsonProperty(value = "restoreMode")
     private RestoreMode restoreMode;
 
     /*
      * List of specific databases available for restore.
      */
-    @JsonProperty(value = "databasesToRestore")
     private List<DatabaseRestoreResource> databasesToRestore;
 
     /*
      * List of specific gremlin databases available for restore.
      */
-    @JsonProperty(value = "gremlinDatabasesToRestore")
     private List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore;
 
     /*
      * List of specific tables available for restore.
      */
-    @JsonProperty(value = "tablesToRestore")
     private List<String> tablesToRestore;
 
     /**
@@ -144,18 +145,93 @@ public final class RestoreParameters extends RestoreParametersBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RestoreParameters withRestoreWithTtlDisabled(Boolean restoreWithTtlDisabled) {
+        super.withRestoreWithTtlDisabled(restoreWithTtlDisabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (databasesToRestore() != null) {
             databasesToRestore().forEach(e -> e.validate());
         }
         if (gremlinDatabasesToRestore() != null) {
             gremlinDatabasesToRestore().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("restoreSource", restoreSource());
+        jsonWriter.writeStringField("restoreTimestampInUtc",
+            restoreTimestampInUtc() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(restoreTimestampInUtc()));
+        jsonWriter.writeBooleanField("restoreWithTtlDisabled", restoreWithTtlDisabled());
+        jsonWriter.writeStringField("restoreMode", this.restoreMode == null ? null : this.restoreMode.toString());
+        jsonWriter.writeArrayField("databasesToRestore", this.databasesToRestore,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("gremlinDatabasesToRestore", this.gremlinDatabasesToRestore,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tablesToRestore", this.tablesToRestore,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestoreParameters.
+     */
+    public static RestoreParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoreParameters deserializedRestoreParameters = new RestoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("restoreSource".equals(fieldName)) {
+                    deserializedRestoreParameters.withRestoreSource(reader.getString());
+                } else if ("restoreTimestampInUtc".equals(fieldName)) {
+                    deserializedRestoreParameters.withRestoreTimestampInUtc(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("restoreWithTtlDisabled".equals(fieldName)) {
+                    deserializedRestoreParameters
+                        .withRestoreWithTtlDisabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("restoreMode".equals(fieldName)) {
+                    deserializedRestoreParameters.restoreMode = RestoreMode.fromString(reader.getString());
+                } else if ("databasesToRestore".equals(fieldName)) {
+                    List<DatabaseRestoreResource> databasesToRestore
+                        = reader.readArray(reader1 -> DatabaseRestoreResource.fromJson(reader1));
+                    deserializedRestoreParameters.databasesToRestore = databasesToRestore;
+                } else if ("gremlinDatabasesToRestore".equals(fieldName)) {
+                    List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore
+                        = reader.readArray(reader1 -> GremlinDatabaseRestoreResource.fromJson(reader1));
+                    deserializedRestoreParameters.gremlinDatabasesToRestore = gremlinDatabasesToRestore;
+                } else if ("tablesToRestore".equals(fieldName)) {
+                    List<String> tablesToRestore = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRestoreParameters.tablesToRestore = tablesToRestore;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoreParameters;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DataAccessAuthMode extends ExpandableStringEnum<DataAccessAut
      * @param name a name to look for.
      * @return the corresponding DataAccessAuthMode.
      */
-    @JsonCreator
     public static DataAccessAuthMode fromString(String name) {
         return fromString(name, DataAccessAuthMode.class);
     }

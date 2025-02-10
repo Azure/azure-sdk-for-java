@@ -5,12 +5,10 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
- * identity and a set of user-assigned identities. The type 'None' will remove any identity.
+ * The type of managed identity used. Can be either 'SystemAssigned' or 'UserAssigned'.
  */
 public final class EventSubscriptionIdentityType extends ExpandableStringEnum<EventSubscriptionIdentityType> {
     /**
@@ -38,7 +36,6 @@ public final class EventSubscriptionIdentityType extends ExpandableStringEnum<Ev
      * @param name a name to look for.
      * @return the corresponding EventSubscriptionIdentityType.
      */
-    @JsonCreator
     public static EventSubscriptionIdentityType fromString(String name) {
         return fromString(name, EventSubscriptionIdentityType.class);
     }

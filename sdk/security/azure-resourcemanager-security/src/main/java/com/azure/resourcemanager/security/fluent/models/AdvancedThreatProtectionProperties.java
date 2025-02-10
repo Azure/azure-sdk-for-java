@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Advanced Threat Protection settings. */
+/**
+ * The Advanced Threat Protection settings.
+ */
 @Fluent
-public final class AdvancedThreatProtectionProperties {
+public final class AdvancedThreatProtectionProperties implements JsonSerializable<AdvancedThreatProtectionProperties> {
     /*
      * Indicates whether Advanced Threat Protection is enabled.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
-    /** Creates an instance of AdvancedThreatProtectionProperties class. */
+    /**
+     * Creates an instance of AdvancedThreatProtectionProperties class.
+     */
     public AdvancedThreatProtectionProperties() {
     }
 
     /**
      * Get the isEnabled property: Indicates whether Advanced Threat Protection is enabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -31,7 +38,7 @@ public final class AdvancedThreatProtectionProperties {
 
     /**
      * Set the isEnabled property: Indicates whether Advanced Threat Protection is enabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the AdvancedThreatProtectionProperties object itself.
      */
@@ -42,9 +49,47 @@ public final class AdvancedThreatProtectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdvancedThreatProtectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdvancedThreatProtectionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdvancedThreatProtectionProperties.
+     */
+    public static AdvancedThreatProtectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdvancedThreatProtectionProperties deserializedAdvancedThreatProtectionProperties
+                = new AdvancedThreatProtectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedAdvancedThreatProtectionProperties.isEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdvancedThreatProtectionProperties;
+        });
     }
 }

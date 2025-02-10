@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
@@ -388,7 +387,7 @@ public class SessionTest extends TestSuiteBase {
     public void sessionTokenInDocumentRead(boolean isNameBased) throws UnsupportedEncodingException {
         Document document = new Document();
         document.setId(UUID.randomUUID().toString());
-        BridgeInternal.setProperty(document, "pk", "pk");
+        document.set("pk", "pk");
         document = spyClient.createDocument(getCollectionLink(isNameBased), document, null, false)
                 .block()
                 .getResource();

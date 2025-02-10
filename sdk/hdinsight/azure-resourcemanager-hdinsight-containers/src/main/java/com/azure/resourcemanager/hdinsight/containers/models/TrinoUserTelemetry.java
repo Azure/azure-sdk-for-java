@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** User telemetry. */
+/**
+ * User telemetry.
+ */
 @Fluent
-public final class TrinoUserTelemetry {
+public final class TrinoUserTelemetry implements JsonSerializable<TrinoUserTelemetry> {
     /*
      * Trino user telemetry definition.
      */
-    @JsonProperty(value = "storage")
     private TrinoTelemetryConfig storage;
 
-    /** Creates an instance of TrinoUserTelemetry class. */
+    /**
+     * Creates an instance of TrinoUserTelemetry class.
+     */
     public TrinoUserTelemetry() {
     }
 
     /**
      * Get the storage property: Trino user telemetry definition.
-     *
+     * 
      * @return the storage value.
      */
     public TrinoTelemetryConfig storage() {
@@ -31,7 +38,7 @@ public final class TrinoUserTelemetry {
 
     /**
      * Set the storage property: Trino user telemetry definition.
-     *
+     * 
      * @param storage the storage value to set.
      * @return the TrinoUserTelemetry object itself.
      */
@@ -42,12 +49,48 @@ public final class TrinoUserTelemetry {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storage() != null) {
             storage().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storage", this.storage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrinoUserTelemetry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrinoUserTelemetry if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrinoUserTelemetry.
+     */
+    public static TrinoUserTelemetry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrinoUserTelemetry deserializedTrinoUserTelemetry = new TrinoUserTelemetry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storage".equals(fieldName)) {
+                    deserializedTrinoUserTelemetry.storage = TrinoTelemetryConfig.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrinoUserTelemetry;
+        });
     }
 }

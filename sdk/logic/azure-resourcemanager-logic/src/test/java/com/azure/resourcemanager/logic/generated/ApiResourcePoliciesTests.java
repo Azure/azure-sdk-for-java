@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiResourcePoliciesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiResourcePolicies model =
-            BinaryData
-                .fromString("{\"content\":\"ojphslhc\",\"contentLink\":\"jutifdwfmvigorqj\"}")
+        ApiResourcePolicies model
+            = BinaryData.fromString("{\"content\":\"jewlpxuzzjg\",\"contentLink\":\"efqyhqotoihiqaky\"}")
                 .toObject(ApiResourcePolicies.class);
-        Assertions.assertEquals("ojphslhc", model.content());
-        Assertions.assertEquals("jutifdwfmvigorqj", model.contentLink());
+        Assertions.assertEquals("jewlpxuzzjg", model.content());
+        Assertions.assertEquals("efqyhqotoihiqaky", model.contentLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiResourcePolicies model =
-            new ApiResourcePolicies().withContent("ojphslhc").withContentLink("jutifdwfmvigorqj");
+        ApiResourcePolicies model
+            = new ApiResourcePolicies().withContent("jewlpxuzzjg").withContentLink("efqyhqotoihiqaky");
         model = BinaryData.fromObject(model).toObject(ApiResourcePolicies.class);
-        Assertions.assertEquals("ojphslhc", model.content());
-        Assertions.assertEquals("jutifdwfmvigorqj", model.contentLink());
+        Assertions.assertEquals("jewlpxuzzjg", model.content());
+        Assertions.assertEquals("efqyhqotoihiqaky", model.contentLink());
     }
 }

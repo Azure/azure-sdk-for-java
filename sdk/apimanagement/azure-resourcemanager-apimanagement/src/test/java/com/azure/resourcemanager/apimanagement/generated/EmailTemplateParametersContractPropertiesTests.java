@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EmailTemplateParametersContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EmailTemplateParametersContractProperties model =
-            BinaryData
-                .fromString("{\"name\":\"gftrqrejdaahuqim\",\"title\":\"ahlfxlmuifmuadj\",\"description\":\"snc\"}")
-                .toObject(EmailTemplateParametersContractProperties.class);
+        EmailTemplateParametersContractProperties model = BinaryData
+            .fromString("{\"name\":\"gftrqrejdaahuqim\",\"title\":\"ahlfxlmuifmuadj\",\"description\":\"snc\"}")
+            .toObject(EmailTemplateParametersContractProperties.class);
         Assertions.assertEquals("gftrqrejdaahuqim", model.name());
         Assertions.assertEquals("ahlfxlmuifmuadj", model.title());
         Assertions.assertEquals("snc", model.description());
@@ -22,9 +21,8 @@ public final class EmailTemplateParametersContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EmailTemplateParametersContractProperties model =
-            new EmailTemplateParametersContractProperties()
-                .withName("gftrqrejdaahuqim")
+        EmailTemplateParametersContractProperties model
+            = new EmailTemplateParametersContractProperties().withName("gftrqrejdaahuqim")
                 .withTitle("ahlfxlmuifmuadj")
                 .withDescription("snc");
         model = BinaryData.fromObject(model).toObject(EmailTemplateParametersContractProperties.class);

@@ -13,23 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class TagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagsUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"jjukyrdnqodxah\":\"emeluclv\",\"qnvzoqgyipemch\":\"xhqf\",\"lghwzhome\":\"avsczuejdtxp\"}}")
-                .toObject(TagsUpdate.class);
-        Assertions.assertEquals("emeluclv", model.tags().get("jjukyrdnqodxah"));
+        TagsUpdate model
+            = BinaryData.fromString("{\"tags\":{\"nszonwpngaj\":\"bauiropi\"}}").toObject(TagsUpdate.class);
+        Assertions.assertEquals("bauiropi", model.tags().get("nszonwpngaj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagsUpdate model =
-            new TagsUpdate()
-                .withTags(mapOf("jjukyrdnqodxah", "emeluclv", "qnvzoqgyipemch", "xhqf", "lghwzhome", "avsczuejdtxp"));
+        TagsUpdate model = new TagsUpdate().withTags(mapOf("nszonwpngaj", "bauiropi"));
         model = BinaryData.fromObject(model).toObject(TagsUpdate.class);
-        Assertions.assertEquals("emeluclv", model.tags().get("jjukyrdnqodxah"));
+        Assertions.assertEquals("bauiropi", model.tags().get("nszonwpngaj"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

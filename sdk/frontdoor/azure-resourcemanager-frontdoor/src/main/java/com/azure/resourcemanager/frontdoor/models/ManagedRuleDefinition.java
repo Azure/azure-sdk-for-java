@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes a managed rule definition. */
+/**
+ * Describes a managed rule definition.
+ */
 @Immutable
-public final class ManagedRuleDefinition {
+public final class ManagedRuleDefinition implements JsonSerializable<ManagedRuleDefinition> {
     /*
      * Identifier for the managed rule.
      */
-    @JsonProperty(value = "ruleId", access = JsonProperty.Access.WRITE_ONLY)
     private String ruleId;
 
     /*
      * Describes the default state for the managed rule.
      */
-    @JsonProperty(value = "defaultState", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedRuleEnabledState defaultState;
 
     /*
      * Describes the default action to be applied when the managed rule matches.
      */
-    @JsonProperty(value = "defaultAction", access = JsonProperty.Access.WRITE_ONLY)
     private ActionType defaultAction;
 
     /*
      * Describes the functionality of the managed rule.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of ManagedRuleDefinition class. */
+    /**
+     * Creates an instance of ManagedRuleDefinition class.
+     */
     public ManagedRuleDefinition() {
     }
 
     /**
      * Get the ruleId property: Identifier for the managed rule.
-     *
+     * 
      * @return the ruleId value.
      */
     public String ruleId() {
@@ -49,7 +53,7 @@ public final class ManagedRuleDefinition {
 
     /**
      * Get the defaultState property: Describes the default state for the managed rule.
-     *
+     * 
      * @return the defaultState value.
      */
     public ManagedRuleEnabledState defaultState() {
@@ -58,7 +62,7 @@ public final class ManagedRuleDefinition {
 
     /**
      * Get the defaultAction property: Describes the default action to be applied when the managed rule matches.
-     *
+     * 
      * @return the defaultAction value.
      */
     public ActionType defaultAction() {
@@ -67,7 +71,7 @@ public final class ManagedRuleDefinition {
 
     /**
      * Get the description property: Describes the functionality of the managed rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -76,9 +80,51 @@ public final class ManagedRuleDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedRuleDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedRuleDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedRuleDefinition.
+     */
+    public static ManagedRuleDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedRuleDefinition deserializedManagedRuleDefinition = new ManagedRuleDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleId".equals(fieldName)) {
+                    deserializedManagedRuleDefinition.ruleId = reader.getString();
+                } else if ("defaultState".equals(fieldName)) {
+                    deserializedManagedRuleDefinition.defaultState
+                        = ManagedRuleEnabledState.fromString(reader.getString());
+                } else if ("defaultAction".equals(fieldName)) {
+                    deserializedManagedRuleDefinition.defaultAction = ActionType.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedManagedRuleDefinition.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedRuleDefinition;
+        });
     }
 }

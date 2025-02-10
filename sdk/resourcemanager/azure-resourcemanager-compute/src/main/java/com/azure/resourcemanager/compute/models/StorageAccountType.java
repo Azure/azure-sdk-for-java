@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -28,6 +27,11 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
     public static final StorageAccountType PREMIUM_LRS = fromString("Premium_LRS");
 
     /**
+     * Static value PremiumV2_LRS for StorageAccountType.
+     */
+    public static final StorageAccountType PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
+
+    /**
      * Static value StandardSSD_LRS for StorageAccountType.
      */
     public static final StorageAccountType STANDARD_SSD_LRS = fromString("StandardSSD_LRS");
@@ -47,7 +51,6 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
      * @param name a name to look for.
      * @return the corresponding StorageAccountType.
      */
-    @JsonCreator
     public static StorageAccountType fromString(String name) {
         return fromString(name, StorageAccountType.class);
     }

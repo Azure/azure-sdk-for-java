@@ -5,27 +5,32 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Mapping of user object ID to role assignments. */
+/**
+ * Mapping of user object ID to role assignments.
+ */
 @Fluent
-public final class UserRoleAssignmentValue {
+public final class UserRoleAssignmentValue implements JsonSerializable<UserRoleAssignmentValue> {
     /*
      * A map of roles to assign to the parent user.
      */
-    @JsonProperty(value = "roles")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, EnvironmentRole> roles;
 
-    /** Creates an instance of UserRoleAssignmentValue class. */
+    /**
+     * Creates an instance of UserRoleAssignmentValue class.
+     */
     public UserRoleAssignmentValue() {
     }
 
     /**
      * Get the roles property: A map of roles to assign to the parent user.
-     *
+     * 
      * @return the roles value.
      */
     public Map<String, EnvironmentRole> roles() {
@@ -34,7 +39,7 @@ public final class UserRoleAssignmentValue {
 
     /**
      * Set the roles property: A map of roles to assign to the parent user.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the UserRoleAssignmentValue object itself.
      */
@@ -45,19 +50,53 @@ public final class UserRoleAssignmentValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (roles() != null) {
-            roles()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            roles().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("roles", this.roles, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserRoleAssignmentValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserRoleAssignmentValue if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserRoleAssignmentValue.
+     */
+    public static UserRoleAssignmentValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserRoleAssignmentValue deserializedUserRoleAssignmentValue = new UserRoleAssignmentValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("roles".equals(fieldName)) {
+                    Map<String, EnvironmentRole> roles = reader.readMap(reader1 -> EnvironmentRole.fromJson(reader1));
+                    deserializedUserRoleAssignmentValue.roles = roles;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserRoleAssignmentValue;
+        });
     }
 }

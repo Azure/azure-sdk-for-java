@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.DiscoveredSecuritySolutionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The DiscoveredSecuritySolutionList model. */
+/**
+ * The DiscoveredSecuritySolutionList model.
+ */
 @Fluent
-public final class DiscoveredSecuritySolutionList {
+public final class DiscoveredSecuritySolutionList implements JsonSerializable<DiscoveredSecuritySolutionList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<DiscoveredSecuritySolutionInner> value;
 
     /*
      * The URI to fetch the next page.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DiscoveredSecuritySolutionList class. */
+    /**
+     * Creates an instance of DiscoveredSecuritySolutionList class.
+     */
     public DiscoveredSecuritySolutionList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<DiscoveredSecuritySolutionInner> value() {
@@ -39,7 +45,7 @@ public final class DiscoveredSecuritySolutionList {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the DiscoveredSecuritySolutionList object itself.
      */
@@ -50,7 +56,7 @@ public final class DiscoveredSecuritySolutionList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,53 @@ public final class DiscoveredSecuritySolutionList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiscoveredSecuritySolutionList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiscoveredSecuritySolutionList if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiscoveredSecuritySolutionList.
+     */
+    public static DiscoveredSecuritySolutionList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiscoveredSecuritySolutionList deserializedDiscoveredSecuritySolutionList
+                = new DiscoveredSecuritySolutionList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DiscoveredSecuritySolutionInner> value
+                        = reader.readArray(reader1 -> DiscoveredSecuritySolutionInner.fromJson(reader1));
+                    deserializedDiscoveredSecuritySolutionList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDiscoveredSecuritySolutionList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiscoveredSecuritySolutionList;
+        });
     }
 }

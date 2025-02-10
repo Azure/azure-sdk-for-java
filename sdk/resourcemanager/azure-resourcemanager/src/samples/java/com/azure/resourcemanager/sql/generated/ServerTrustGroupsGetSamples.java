@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ServerTrustGroups Get. */
+/**
+ * Samples for ServerTrustGroups Get.
+ */
 public final class ServerTrustGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerTrustGroupGet.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerTrustGroupGet.json
      */
     /**
      * Sample code: Get server trust group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getServerTrustGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getServerTrustGroups()
-            .getWithResponse("Default", "Japan East", "server-trust-group-test", Context.NONE);
+            .getWithResponse("Default", "Japan East", "server-trust-group-test", com.azure.core.util.Context.NONE);
     }
 }

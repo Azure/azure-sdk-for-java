@@ -7,26 +7,23 @@ package com.azure.resourcemanager.loadtesting.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.loadtesting.fluent.models.CheckQuotaAvailabilityResponseInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckQuotaAvailabilityResponseInnerTests {
-    @Test
+    @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckQuotaAvailabilityResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"isAvailable\":true,\"availabilityStatus\":\"jpslwejd\"},\"id\":\"wryoqpsoacc\",\"name\":\"azakl\",\"type\":\"lahbcryff\"}")
-                .toObject(CheckQuotaAvailabilityResponseInner.class);
-        Assertions.assertEquals(true, model.isAvailable());
-        Assertions.assertEquals("jpslwejd", model.availabilityStatus());
+        CheckQuotaAvailabilityResponseInner model = BinaryData.fromString(
+            "{\"id\":\"hkr\",\"type\":\"pdappds\",\"name\":\"vwrwj\",\"properties\":{\"isAvailable\":false,\"availabilityStatus\":\"hutje\"}}")
+            .toObject(CheckQuotaAvailabilityResponseInner.class);
+        Assertions.assertEquals(false, model.isAvailable());
+        Assertions.assertEquals("hutje", model.availabilityStatus());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckQuotaAvailabilityResponseInner model =
-            new CheckQuotaAvailabilityResponseInner().withIsAvailable(true).withAvailabilityStatus("jpslwejd");
+        CheckQuotaAvailabilityResponseInner model
+            = new CheckQuotaAvailabilityResponseInner().withIsAvailable(false).withAvailabilityStatus("hutje");
         model = BinaryData.fromObject(model).toObject(CheckQuotaAvailabilityResponseInner.class);
-        Assertions.assertEquals(true, model.isAvailable());
-        Assertions.assertEquals("jpslwejd", model.availabilityStatus());
+        Assertions.assertEquals(false, model.isAvailable());
+        Assertions.assertEquals("hutje", model.availabilityStatus());
     }
 }

@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.providerhub.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for OperationOrigins. */
+/**
+ * Defines values for OperationOrigins.
+ */
 public enum OperationOrigins {
-    /** Enum value NotSpecified. */
+    /**
+     * Enum value NotSpecified.
+     */
     NOT_SPECIFIED("NotSpecified"),
 
-    /** Enum value User. */
+    /**
+     * Enum value User.
+     */
     USER("User"),
 
-    /** Enum value System. */
+    /**
+     * Enum value System.
+     */
     SYSTEM("System");
 
-    /** The actual serialized value for a OperationOrigins instance. */
+    /**
+     * The actual serialized value for a OperationOrigins instance.
+     */
     private final String value;
 
     OperationOrigins(String value) {
@@ -27,11 +34,10 @@ public enum OperationOrigins {
 
     /**
      * Parses a serialized value to a OperationOrigins instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed OperationOrigins object, or null if unable to parse.
      */
-    @JsonCreator
     public static OperationOrigins fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum OperationOrigins {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

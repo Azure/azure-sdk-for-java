@@ -24,8 +24,12 @@ public final class FactoryRepoConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FactoryRepoConfiguration model = new FactoryRepoConfiguration().withAccountName("o").withRepositoryName("rq")
-            .withCollaborationBranch("b").withRootFolder("oczvy").withLastCommitId("qrvkdv").withDisablePublish(false);
+        FactoryRepoConfiguration model = new FactoryRepoConfiguration().withAccountName("o")
+            .withRepositoryName("rq")
+            .withCollaborationBranch("b")
+            .withRootFolder("oczvy")
+            .withLastCommitId("qrvkdv")
+            .withDisablePublish(false);
         model = BinaryData.fromObject(model).toObject(FactoryRepoConfiguration.class);
         Assertions.assertEquals("o", model.accountName());
         Assertions.assertEquals("rq", model.repositoryName());

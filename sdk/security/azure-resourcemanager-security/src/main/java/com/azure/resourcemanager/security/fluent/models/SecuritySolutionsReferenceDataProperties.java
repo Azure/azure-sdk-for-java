@@ -6,61 +6,63 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.SecurityFamily;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The SecuritySolutionsReferenceDataProperties model. */
+/**
+ * The SecuritySolutionsReferenceDataProperties model.
+ */
 @Fluent
-public final class SecuritySolutionsReferenceDataProperties {
+public final class SecuritySolutionsReferenceDataProperties
+    implements JsonSerializable<SecuritySolutionsReferenceDataProperties> {
     /*
      * The security family of the security solution
      */
-    @JsonProperty(value = "securityFamily", required = true)
     private SecurityFamily securityFamily;
 
     /*
      * The security solutions' vendor name
      */
-    @JsonProperty(value = "alertVendorName", required = true)
     private String alertVendorName;
 
     /*
      * The security solutions' package info url
      */
-    @JsonProperty(value = "packageInfoUrl", required = true)
     private String packageInfoUrl;
 
     /*
      * The security solutions' product name
      */
-    @JsonProperty(value = "productName", required = true)
     private String productName;
 
     /*
      * The security solutions' publisher
      */
-    @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /*
      * The security solutions' publisher display name
      */
-    @JsonProperty(value = "publisherDisplayName", required = true)
     private String publisherDisplayName;
 
     /*
      * The security solutions' template
      */
-    @JsonProperty(value = "template", required = true)
     private String template;
 
-    /** Creates an instance of SecuritySolutionsReferenceDataProperties class. */
+    /**
+     * Creates an instance of SecuritySolutionsReferenceDataProperties class.
+     */
     public SecuritySolutionsReferenceDataProperties() {
     }
 
     /**
      * Get the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @return the securityFamily value.
      */
     public SecurityFamily securityFamily() {
@@ -69,7 +71,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @param securityFamily the securityFamily value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -80,7 +82,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the alertVendorName property: The security solutions' vendor name.
-     *
+     * 
      * @return the alertVendorName value.
      */
     public String alertVendorName() {
@@ -89,7 +91,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the alertVendorName property: The security solutions' vendor name.
-     *
+     * 
      * @param alertVendorName the alertVendorName value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -100,7 +102,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the packageInfoUrl property: The security solutions' package info url.
-     *
+     * 
      * @return the packageInfoUrl value.
      */
     public String packageInfoUrl() {
@@ -109,7 +111,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the packageInfoUrl property: The security solutions' package info url.
-     *
+     * 
      * @param packageInfoUrl the packageInfoUrl value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -120,7 +122,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the productName property: The security solutions' product name.
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -129,7 +131,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the productName property: The security solutions' product name.
-     *
+     * 
      * @param productName the productName value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -140,7 +142,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the publisher property: The security solutions' publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -149,7 +151,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the publisher property: The security solutions' publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -160,7 +162,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the publisherDisplayName property: The security solutions' publisher display name.
-     *
+     * 
      * @return the publisherDisplayName value.
      */
     public String publisherDisplayName() {
@@ -169,7 +171,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the publisherDisplayName property: The security solutions' publisher display name.
-     *
+     * 
      * @param publisherDisplayName the publisherDisplayName value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -180,7 +182,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Get the template property: The security solutions' template.
-     *
+     * 
      * @return the template value.
      */
     public String template() {
@@ -189,7 +191,7 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Set the template property: The security solutions' template.
-     *
+     * 
      * @param template the template value to set.
      * @return the SecuritySolutionsReferenceDataProperties object itself.
      */
@@ -200,54 +202,104 @@ public final class SecuritySolutionsReferenceDataProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (securityFamily() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property securityFamily in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property securityFamily in model SecuritySolutionsReferenceDataProperties"));
         }
         if (alertVendorName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alertVendorName in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property alertVendorName in model SecuritySolutionsReferenceDataProperties"));
         }
         if (packageInfoUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property packageInfoUrl in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property packageInfoUrl in model SecuritySolutionsReferenceDataProperties"));
         }
         if (productName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property productName in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property productName in model SecuritySolutionsReferenceDataProperties"));
         }
         if (publisher() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publisher in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publisher in model SecuritySolutionsReferenceDataProperties"));
         }
         if (publisherDisplayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publisherDisplayName in model"
-                            + " SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publisherDisplayName in model SecuritySolutionsReferenceDataProperties"));
         }
         if (template() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property template in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property template in model SecuritySolutionsReferenceDataProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecuritySolutionsReferenceDataProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("securityFamily",
+            this.securityFamily == null ? null : this.securityFamily.toString());
+        jsonWriter.writeStringField("alertVendorName", this.alertVendorName);
+        jsonWriter.writeStringField("packageInfoUrl", this.packageInfoUrl);
+        jsonWriter.writeStringField("productName", this.productName);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("publisherDisplayName", this.publisherDisplayName);
+        jsonWriter.writeStringField("template", this.template);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecuritySolutionsReferenceDataProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecuritySolutionsReferenceDataProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecuritySolutionsReferenceDataProperties.
+     */
+    public static SecuritySolutionsReferenceDataProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecuritySolutionsReferenceDataProperties deserializedSecuritySolutionsReferenceDataProperties
+                = new SecuritySolutionsReferenceDataProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("securityFamily".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.securityFamily
+                        = SecurityFamily.fromString(reader.getString());
+                } else if ("alertVendorName".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.alertVendorName = reader.getString();
+                } else if ("packageInfoUrl".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.packageInfoUrl = reader.getString();
+                } else if ("productName".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.productName = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.publisher = reader.getString();
+                } else if ("publisherDisplayName".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.publisherDisplayName = reader.getString();
+                } else if ("template".equals(fieldName)) {
+                    deserializedSecuritySolutionsReferenceDataProperties.template = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecuritySolutionsReferenceDataProperties;
+        });
+    }
 }

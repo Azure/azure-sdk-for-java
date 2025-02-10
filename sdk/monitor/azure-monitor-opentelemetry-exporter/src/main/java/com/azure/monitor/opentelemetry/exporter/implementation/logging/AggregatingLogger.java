@@ -19,9 +19,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 class AggregatingLogger {
 
-    static final ScheduledExecutorService scheduledExecutor =
-        Executors.newSingleThreadScheduledExecutor(
-            ThreadPoolUtils.createDaemonThreadFactory(AggregatingLogger.class, "aggregating logger"));
+    static final ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor(
+        ThreadPoolUtils.createDaemonThreadFactory(AggregatingLogger.class, "aggregating logger"));
 
     private final Logger logger;
     private final String grouping;
@@ -48,8 +47,7 @@ class AggregatingLogger {
     }
 
     // visible for testing
-    AggregatingLogger(
-        Class<?> source, String operation, boolean trackingOperations, int intervalSeconds) {
+    AggregatingLogger(Class<?> source, String operation, boolean trackingOperations, int intervalSeconds) {
         logger = LoggerFactory.getLogger(source);
         this.grouping = operation;
         this.trackingOperations = trackingOperations;
@@ -71,14 +69,10 @@ class AggregatingLogger {
     void recordWarning(String warningMessage, @Nullable Throwable exception) {
         if (!firstFailure.getAndSet(true)) {
             // log the first time we see an exception as soon as it occurs, along with full stack trace
-            logger.warn(
-                "{}: {} (future warnings will be aggregated and logged once every {} minutes)",
-                grouping,
-                warningMessage,
-                intervalSeconds / 60,
-                exception);
-            scheduledExecutor.scheduleWithFixedDelay(
-                new ExceptionStatsLogger(), intervalSeconds, intervalSeconds, TimeUnit.SECONDS);
+            logger.warn("{}: {} (future warnings will be aggregated and logged once every {} minutes)", grouping,
+                warningMessage, intervalSeconds / 60, exception);
+            scheduledExecutor.scheduleWithFixedDelay(new ExceptionStatsLogger(), intervalSeconds, intervalSeconds,
+                TimeUnit.SECONDS);
             return;
         }
 
@@ -165,17 +159,17 @@ class AggregatingLogger {
                 }
                 message.append(grouping);
                 message.append(":");
-                failureMessages.entrySet().stream()
+                failureMessages.entrySet()
+                    .stream()
                     .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                    .forEach(
-                        entry -> {
-                            message.append(System.lineSeparator());
-                            message.append(" * ");
-                            message.append(entry.getKey());
-                            message.append(" (");
-                            message.append(entry.getValue().value);
-                            message.append(" times)");
-                        });
+                    .forEach(entry -> {
+                        message.append(System.lineSeparator());
+                        message.append(" * ");
+                        message.append(entry.getKey());
+                        message.append(" (");
+                        message.append(entry.getValue().value);
+                        message.append(" times)");
+                    });
                 logger.warn(message.toString());
             }
         }

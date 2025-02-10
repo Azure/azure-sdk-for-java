@@ -10,10 +10,8 @@ import com.azure.resourcemanager.iotfirmwaredefense.models.WorkspaceUpdateDefini
 public final class WorkspaceUpdateDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceUpdateDefinition model =
-            BinaryData
-                .fromString("{\"properties\":{\"provisioningState\":\"Failed\"}}")
-                .toObject(WorkspaceUpdateDefinition.class);
+        WorkspaceUpdateDefinition model = BinaryData.fromString("{\"properties\":{\"provisioningState\":\"Accepted\"}}")
+            .toObject(WorkspaceUpdateDefinition.class);
     }
 
     @org.junit.jupiter.api.Test

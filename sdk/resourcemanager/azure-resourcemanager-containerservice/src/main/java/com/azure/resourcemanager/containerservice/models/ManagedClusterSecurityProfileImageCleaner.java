@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Image Cleaner removes unused images from nodes, freeing up disk space and helping to reduce attack surface area.
- * Here are settings for the security profile.
+ * Image Cleaner removes unused images from nodes, freeing up disk space and helping to reduce attack surface area. Here
+ * are settings for the security profile.
  */
 @Fluent
-public final class ManagedClusterSecurityProfileImageCleaner {
+public final class ManagedClusterSecurityProfileImageCleaner
+    implements JsonSerializable<ManagedClusterSecurityProfileImageCleaner> {
     /*
      * Whether to enable Image Cleaner on AKS cluster.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Image Cleaner scanning interval in hours.
      */
-    @JsonProperty(value = "intervalHours")
     private Integer intervalHours;
 
     /**
@@ -33,7 +36,7 @@ public final class ManagedClusterSecurityProfileImageCleaner {
 
     /**
      * Get the enabled property: Whether to enable Image Cleaner on AKS cluster.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -42,7 +45,7 @@ public final class ManagedClusterSecurityProfileImageCleaner {
 
     /**
      * Set the enabled property: Whether to enable Image Cleaner on AKS cluster.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterSecurityProfileImageCleaner object itself.
      */
@@ -53,7 +56,7 @@ public final class ManagedClusterSecurityProfileImageCleaner {
 
     /**
      * Get the intervalHours property: Image Cleaner scanning interval in hours.
-     *
+     * 
      * @return the intervalHours value.
      */
     public Integer intervalHours() {
@@ -62,7 +65,7 @@ public final class ManagedClusterSecurityProfileImageCleaner {
 
     /**
      * Set the intervalHours property: Image Cleaner scanning interval in hours.
-     *
+     * 
      * @param intervalHours the intervalHours value to set.
      * @return the ManagedClusterSecurityProfileImageCleaner object itself.
      */
@@ -73,9 +76,51 @@ public final class ManagedClusterSecurityProfileImageCleaner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeNumberField("intervalHours", this.intervalHours);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterSecurityProfileImageCleaner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterSecurityProfileImageCleaner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterSecurityProfileImageCleaner.
+     */
+    public static ManagedClusterSecurityProfileImageCleaner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterSecurityProfileImageCleaner deserializedManagedClusterSecurityProfileImageCleaner
+                = new ManagedClusterSecurityProfileImageCleaner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfileImageCleaner.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("intervalHours".equals(fieldName)) {
+                    deserializedManagedClusterSecurityProfileImageCleaner.intervalHours
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterSecurityProfileImageCleaner;
+        });
     }
 }

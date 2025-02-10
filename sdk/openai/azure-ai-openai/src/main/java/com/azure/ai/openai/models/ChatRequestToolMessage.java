@@ -5,16 +5,16 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.BinaryData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * A request chat message representing requested output from a configured tool.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role")
-@JsonTypeName("tool")
 @Immutable
 public final class ChatRequestToolMessage extends ChatRequestMessage {
 
@@ -22,29 +22,17 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      * The content of the message.
      */
     @Generated
-    @JsonProperty(value = "content")
-    private String content;
+    private final BinaryData content;
+
+    private final String stringContent;
+
+    private final List<ChatMessageContentItem> chatMessageContentItem;
 
     /*
      * The ID of the tool call resolved by the provided content.
      */
     @Generated
-    @JsonProperty(value = "tool_call_id")
-    private String toolCallId;
-
-    /**
-     * Creates an instance of ChatRequestToolMessage class.
-     *
-     * @param content the content value to set.
-     * @param toolCallId the toolCallId value to set.
-     */
-    @Generated
-    @JsonCreator
-    public ChatRequestToolMessage(@JsonProperty(value = "content") String content,
-        @JsonProperty(value = "tool_call_id") String toolCallId) {
-        this.content = content;
-        this.toolCallId = toolCallId;
-    }
+    private final String toolCallId;
 
     /**
      * Get the content property: The content of the message.
@@ -52,7 +40,7 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      * @return the content value.
      */
     @Generated
-    public String getContent() {
+    public BinaryData getContent() {
         return this.content;
     }
 
@@ -64,5 +52,118 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     @Generated
     public String getToolCallId() {
         return this.toolCallId;
+    }
+
+    /*
+     * The chat role associated with this message.
+     */
+    @Generated
+    private ChatRole role = ChatRole.TOOL;
+
+    /**
+     * Get the role property: The chat role associated with this message.
+     *
+     * @return the role value.
+     */
+    @Generated
+    @Override
+    public ChatRole getRole() {
+        return this.role;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        if (stringContent != null) {
+            jsonWriter.writeStringField("content", stringContent);
+        } else if (chatMessageContentItem != null) {
+            jsonWriter.writeArrayField("content", chatMessageContentItem, JsonWriter::writeJson);
+        }
+        jsonWriter.writeStringField("tool_call_id", this.toolCallId);
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatRequestToolMessage from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatRequestToolMessage if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatRequestToolMessage.
+     */
+    public static ChatRequestToolMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BinaryData content = null;
+            String toolCallId = null;
+            ChatRole role = ChatRole.TOOL;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("content".equals(fieldName)) {
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        content = BinaryData.fromString(reader.getString());
+                    } else if (reader.currentToken() == JsonToken.START_ARRAY) {
+                        content = BinaryData.fromObject(
+                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
+                    } else {
+                        throw new IllegalStateException("Unexpected 'content' type found when deserializing"
+                            + " ChatRequestToolMessage JSON object: " + reader.currentToken());
+                    }
+                } else if ("tool_call_id".equals(fieldName)) {
+                    toolCallId = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    role = ChatRole.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ChatRequestToolMessage deserializedChatRequestToolMessage = new ChatRequestToolMessage(content, toolCallId);
+            deserializedChatRequestToolMessage.role = role;
+            return deserializedChatRequestToolMessage;
+        });
+    }
+
+    /**
+     * Creates an instance of ChatRequestToolMessage class.
+     *
+     * @param content the BinaryData content value to set.
+     * @param toolCallId the toolCallId value to set.
+     */
+    private ChatRequestToolMessage(BinaryData content, String toolCallId) {
+        this.content = content;
+        this.toolCallId = toolCallId;
+        this.stringContent = null;
+        this.chatMessageContentItem = null;
+    }
+
+    /**
+     * Creates an instance of ChatRequestToolMessage class.
+     *
+     * @param content the String content value to set.
+     * @param toolCallId the toolCallId value to set.
+     */
+    public ChatRequestToolMessage(String content, String toolCallId) {
+        this.content = BinaryData.fromString(content);
+        this.toolCallId = toolCallId;
+        this.stringContent = content;
+        this.chatMessageContentItem = null;
+    }
+
+    /**
+     * Creates an instance of ChatRequestToolMessage class.
+     *
+     * @param content the List of ChatMessageContentItem content value to set.
+     * @param toolCallId the toolCallId value to set.
+     */
+    public ChatRequestToolMessage(List<ChatMessageContentItem> content, String toolCallId) {
+        this.content = BinaryData.fromObject(content);
+        this.toolCallId = toolCallId;
+        this.stringContent = null;
+        this.chatMessageContentItem = content;
     }
 }

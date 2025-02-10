@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -24,7 +23,7 @@ public final class ServiceMeshMode extends ExpandableStringEnum<ServiceMeshMode>
 
     /**
      * Creates a new instance of ServiceMeshMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +32,17 @@ public final class ServiceMeshMode extends ExpandableStringEnum<ServiceMeshMode>
 
     /**
      * Creates or finds a ServiceMeshMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServiceMeshMode.
      */
-    @JsonCreator
     public static ServiceMeshMode fromString(String name) {
         return fromString(name, ServiceMeshMode.class);
     }
 
     /**
      * Gets known ServiceMeshMode values.
-     *
+     * 
      * @return known ServiceMeshMode values.
      */
     public static Collection<ServiceMeshMode> values() {

@@ -6,37 +6,42 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The baseline values for a single sensitivity value. */
+/**
+ * The baseline values for a single sensitivity value.
+ */
 @Fluent
-public final class SingleBaseline {
+public final class SingleBaseline implements JsonSerializable<SingleBaseline> {
     /*
      * the sensitivity of the baseline.
      */
-    @JsonProperty(value = "sensitivity", required = true)
     private BaselineSensitivity sensitivity;
 
     /*
      * The low thresholds of the baseline.
      */
-    @JsonProperty(value = "lowThresholds", required = true)
     private List<Double> lowThresholds;
 
     /*
      * The high thresholds of the baseline.
      */
-    @JsonProperty(value = "highThresholds", required = true)
     private List<Double> highThresholds;
 
-    /** Creates an instance of SingleBaseline class. */
+    /**
+     * Creates an instance of SingleBaseline class.
+     */
     public SingleBaseline() {
     }
 
     /**
      * Get the sensitivity property: the sensitivity of the baseline.
-     *
+     * 
      * @return the sensitivity value.
      */
     public BaselineSensitivity sensitivity() {
@@ -45,7 +50,7 @@ public final class SingleBaseline {
 
     /**
      * Set the sensitivity property: the sensitivity of the baseline.
-     *
+     * 
      * @param sensitivity the sensitivity value to set.
      * @return the SingleBaseline object itself.
      */
@@ -56,7 +61,7 @@ public final class SingleBaseline {
 
     /**
      * Get the lowThresholds property: The low thresholds of the baseline.
-     *
+     * 
      * @return the lowThresholds value.
      */
     public List<Double> lowThresholds() {
@@ -65,7 +70,7 @@ public final class SingleBaseline {
 
     /**
      * Set the lowThresholds property: The low thresholds of the baseline.
-     *
+     * 
      * @param lowThresholds the lowThresholds value to set.
      * @return the SingleBaseline object itself.
      */
@@ -76,7 +81,7 @@ public final class SingleBaseline {
 
     /**
      * Get the highThresholds property: The high thresholds of the baseline.
-     *
+     * 
      * @return the highThresholds value.
      */
     public List<Double> highThresholds() {
@@ -85,7 +90,7 @@ public final class SingleBaseline {
 
     /**
      * Set the highThresholds property: The high thresholds of the baseline.
-     *
+     * 
      * @param highThresholds the highThresholds value to set.
      * @return the SingleBaseline object itself.
      */
@@ -96,26 +101,70 @@ public final class SingleBaseline {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sensitivity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sensitivity in model SingleBaseline"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sensitivity in model SingleBaseline"));
         }
         if (lowThresholds() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property lowThresholds in model SingleBaseline"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property lowThresholds in model SingleBaseline"));
         }
         if (highThresholds() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property highThresholds in model SingleBaseline"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property highThresholds in model SingleBaseline"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SingleBaseline.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sensitivity", this.sensitivity == null ? null : this.sensitivity.toString());
+        jsonWriter.writeArrayField("lowThresholds", this.lowThresholds,
+            (writer, element) -> writer.writeDouble(element));
+        jsonWriter.writeArrayField("highThresholds", this.highThresholds,
+            (writer, element) -> writer.writeDouble(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SingleBaseline from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SingleBaseline if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SingleBaseline.
+     */
+    public static SingleBaseline fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SingleBaseline deserializedSingleBaseline = new SingleBaseline();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sensitivity".equals(fieldName)) {
+                    deserializedSingleBaseline.sensitivity = BaselineSensitivity.fromString(reader.getString());
+                } else if ("lowThresholds".equals(fieldName)) {
+                    List<Double> lowThresholds = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedSingleBaseline.lowThresholds = lowThresholds;
+                } else if ("highThresholds".equals(fieldName)) {
+                    List<Double> highThresholds = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedSingleBaseline.highThresholds = highThresholds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSingleBaseline;
+        });
+    }
 }

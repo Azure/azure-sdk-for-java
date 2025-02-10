@@ -6,36 +6,42 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the partner that created the assessment. */
+/**
+ * Describes the partner that created the assessment.
+ */
 @Fluent
-public final class SecurityAssessmentMetadataPartnerData {
+public final class SecurityAssessmentMetadataPartnerData
+    implements JsonSerializable<SecurityAssessmentMetadataPartnerData> {
     /*
      * Name of the company of the partner
      */
-    @JsonProperty(value = "partnerName", required = true)
     private String partnerName;
 
     /*
      * Name of the product of the partner that created the assessment
      */
-    @JsonProperty(value = "productName")
     private String productName;
 
     /*
      * Secret to authenticate the partner and verify it created the assessment - write only
      */
-    @JsonProperty(value = "secret", required = true)
     private String secret;
 
-    /** Creates an instance of SecurityAssessmentMetadataPartnerData class. */
+    /**
+     * Creates an instance of SecurityAssessmentMetadataPartnerData class.
+     */
     public SecurityAssessmentMetadataPartnerData() {
     }
 
     /**
      * Get the partnerName property: Name of the company of the partner.
-     *
+     * 
      * @return the partnerName value.
      */
     public String partnerName() {
@@ -44,7 +50,7 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Set the partnerName property: Name of the company of the partner.
-     *
+     * 
      * @param partnerName the partnerName value to set.
      * @return the SecurityAssessmentMetadataPartnerData object itself.
      */
@@ -55,7 +61,7 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Get the productName property: Name of the product of the partner that created the assessment.
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -64,7 +70,7 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Set the productName property: Name of the product of the partner that created the assessment.
-     *
+     * 
      * @param productName the productName value to set.
      * @return the SecurityAssessmentMetadataPartnerData object itself.
      */
@@ -75,7 +81,7 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Get the secret property: Secret to authenticate the partner and verify it created the assessment - write only.
-     *
+     * 
      * @return the secret value.
      */
     public String secret() {
@@ -84,7 +90,7 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Set the secret property: Secret to authenticate the partner and verify it created the assessment - write only.
-     *
+     * 
      * @param secret the secret value to set.
      * @return the SecurityAssessmentMetadataPartnerData object itself.
      */
@@ -95,23 +101,65 @@ public final class SecurityAssessmentMetadataPartnerData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (partnerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property partnerName in model SecurityAssessmentMetadataPartnerData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property partnerName in model SecurityAssessmentMetadataPartnerData"));
         }
         if (secret() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secret in model SecurityAssessmentMetadataPartnerData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secret in model SecurityAssessmentMetadataPartnerData"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecurityAssessmentMetadataPartnerData.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("partnerName", this.partnerName);
+        jsonWriter.writeStringField("secret", this.secret);
+        jsonWriter.writeStringField("productName", this.productName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAssessmentMetadataPartnerData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAssessmentMetadataPartnerData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityAssessmentMetadataPartnerData.
+     */
+    public static SecurityAssessmentMetadataPartnerData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAssessmentMetadataPartnerData deserializedSecurityAssessmentMetadataPartnerData
+                = new SecurityAssessmentMetadataPartnerData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partnerName".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPartnerData.partnerName = reader.getString();
+                } else if ("secret".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPartnerData.secret = reader.getString();
+                } else if ("productName".equals(fieldName)) {
+                    deserializedSecurityAssessmentMetadataPartnerData.productName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAssessmentMetadataPartnerData;
+        });
+    }
 }

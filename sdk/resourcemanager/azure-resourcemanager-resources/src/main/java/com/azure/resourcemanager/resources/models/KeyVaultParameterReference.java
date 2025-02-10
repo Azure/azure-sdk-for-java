@@ -6,36 +6,41 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure Key Vault parameter reference. */
+/**
+ * Azure Key Vault parameter reference.
+ */
 @Fluent
-public final class KeyVaultParameterReference {
+public final class KeyVaultParameterReference implements JsonSerializable<KeyVaultParameterReference> {
     /*
      * Azure Key Vault reference.
      */
-    @JsonProperty(value = "keyVault", required = true)
     private KeyVaultReference keyVault;
 
     /*
      * Azure Key Vault secret name.
      */
-    @JsonProperty(value = "secretName", required = true)
     private String secretName;
 
     /*
      * Azure Key Vault secret version.
      */
-    @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
-    /** Creates an instance of KeyVaultParameterReference class. */
+    /**
+     * Creates an instance of KeyVaultParameterReference class.
+     */
     public KeyVaultParameterReference() {
     }
 
     /**
      * Get the keyVault property: Azure Key Vault reference.
-     *
+     * 
      * @return the keyVault value.
      */
     public KeyVaultReference keyVault() {
@@ -44,7 +49,7 @@ public final class KeyVaultParameterReference {
 
     /**
      * Set the keyVault property: Azure Key Vault reference.
-     *
+     * 
      * @param keyVault the keyVault value to set.
      * @return the KeyVaultParameterReference object itself.
      */
@@ -55,7 +60,7 @@ public final class KeyVaultParameterReference {
 
     /**
      * Get the secretName property: Azure Key Vault secret name.
-     *
+     * 
      * @return the secretName value.
      */
     public String secretName() {
@@ -64,7 +69,7 @@ public final class KeyVaultParameterReference {
 
     /**
      * Set the secretName property: Azure Key Vault secret name.
-     *
+     * 
      * @param secretName the secretName value to set.
      * @return the KeyVaultParameterReference object itself.
      */
@@ -75,7 +80,7 @@ public final class KeyVaultParameterReference {
 
     /**
      * Get the secretVersion property: Azure Key Vault secret version.
-     *
+     * 
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -84,7 +89,7 @@ public final class KeyVaultParameterReference {
 
     /**
      * Set the secretVersion property: Azure Key Vault secret version.
-     *
+     * 
      * @param secretVersion the secretVersion value to set.
      * @return the KeyVaultParameterReference object itself.
      */
@@ -95,25 +100,66 @@ public final class KeyVaultParameterReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyVault() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVault in model KeyVaultParameterReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVault in model KeyVaultParameterReference"));
         } else {
             keyVault().validate();
         }
         if (secretName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secretName in model KeyVaultParameterReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secretName in model KeyVaultParameterReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultParameterReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("keyVault", this.keyVault);
+        jsonWriter.writeStringField("secretName", this.secretName);
+        jsonWriter.writeStringField("secretVersion", this.secretVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultParameterReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultParameterReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyVaultParameterReference.
+     */
+    public static KeyVaultParameterReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultParameterReference deserializedKeyVaultParameterReference = new KeyVaultParameterReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVault".equals(fieldName)) {
+                    deserializedKeyVaultParameterReference.keyVault = KeyVaultReference.fromJson(reader);
+                } else if ("secretName".equals(fieldName)) {
+                    deserializedKeyVaultParameterReference.secretName = reader.getString();
+                } else if ("secretVersion".equals(fieldName)) {
+                    deserializedKeyVaultParameterReference.secretVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultParameterReference;
+        });
+    }
 }

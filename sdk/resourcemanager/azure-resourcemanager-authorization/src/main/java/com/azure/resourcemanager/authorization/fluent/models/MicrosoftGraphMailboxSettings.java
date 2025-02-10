@@ -5,76 +5,73 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** mailboxSettings. */
+/**
+ * mailboxSettings.
+ */
 @Fluent
-public final class MicrosoftGraphMailboxSettings {
+public final class MicrosoftGraphMailboxSettings implements JsonSerializable<MicrosoftGraphMailboxSettings> {
     /*
      * Folder ID of an archive folder for the user.
      */
-    @JsonProperty(value = "archiveFolder")
     private String archiveFolder;
 
     /*
      * automaticRepliesSetting
      */
-    @JsonProperty(value = "automaticRepliesSetting")
     private MicrosoftGraphAutomaticRepliesSetting automaticRepliesSetting;
 
     /*
      * The date format for the user's mailbox.
      */
-    @JsonProperty(value = "dateFormat")
     private String dateFormat;
 
     /*
      * delegateMeetingMessageDeliveryOptions
      */
-    @JsonProperty(value = "delegateMeetingMessageDeliveryOptions")
     private MicrosoftGraphDelegateMeetingMessageDeliveryOptions delegateMeetingMessageDeliveryOptions;
 
     /*
      * localeInfo
      */
-    @JsonProperty(value = "language")
     private MicrosoftGraphLocaleInfo language;
 
     /*
      * The time format for the user's mailbox.
      */
-    @JsonProperty(value = "timeFormat")
     private String timeFormat;
 
     /*
      * The default time zone for the user's mailbox.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * workingHours
      */
-    @JsonProperty(value = "workingHours")
     private MicrosoftGraphWorkingHours workingHours;
 
     /*
      * mailboxSettings
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphMailboxSettings class. */
+    /**
+     * Creates an instance of MicrosoftGraphMailboxSettings class.
+     */
     public MicrosoftGraphMailboxSettings() {
     }
 
     /**
      * Get the archiveFolder property: Folder ID of an archive folder for the user.
-     *
+     * 
      * @return the archiveFolder value.
      */
     public String archiveFolder() {
@@ -83,7 +80,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Set the archiveFolder property: Folder ID of an archive folder for the user.
-     *
+     * 
      * @param archiveFolder the archiveFolder value to set.
      * @return the MicrosoftGraphMailboxSettings object itself.
      */
@@ -94,7 +91,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Get the automaticRepliesSetting property: automaticRepliesSetting.
-     *
+     * 
      * @return the automaticRepliesSetting value.
      */
     public MicrosoftGraphAutomaticRepliesSetting automaticRepliesSetting() {
@@ -103,19 +100,19 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Set the automaticRepliesSetting property: automaticRepliesSetting.
-     *
+     * 
      * @param automaticRepliesSetting the automaticRepliesSetting value to set.
      * @return the MicrosoftGraphMailboxSettings object itself.
      */
-    public MicrosoftGraphMailboxSettings withAutomaticRepliesSetting(
-        MicrosoftGraphAutomaticRepliesSetting automaticRepliesSetting) {
+    public MicrosoftGraphMailboxSettings
+        withAutomaticRepliesSetting(MicrosoftGraphAutomaticRepliesSetting automaticRepliesSetting) {
         this.automaticRepliesSetting = automaticRepliesSetting;
         return this;
     }
 
     /**
      * Get the dateFormat property: The date format for the user's mailbox.
-     *
+     * 
      * @return the dateFormat value.
      */
     public String dateFormat() {
@@ -124,7 +121,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Set the dateFormat property: The date format for the user's mailbox.
-     *
+     * 
      * @param dateFormat the dateFormat value to set.
      * @return the MicrosoftGraphMailboxSettings object itself.
      */
@@ -135,7 +132,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Get the delegateMeetingMessageDeliveryOptions property: delegateMeetingMessageDeliveryOptions.
-     *
+     * 
      * @return the delegateMeetingMessageDeliveryOptions value.
      */
     public MicrosoftGraphDelegateMeetingMessageDeliveryOptions delegateMeetingMessageDeliveryOptions() {
@@ -144,7 +141,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Set the delegateMeetingMessageDeliveryOptions property: delegateMeetingMessageDeliveryOptions.
-     *
+     * 
      * @param delegateMeetingMessageDeliveryOptions the delegateMeetingMessageDeliveryOptions value to set.
      * @return the MicrosoftGraphMailboxSettings object itself.
      */
@@ -156,7 +153,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Get the language property: localeInfo.
-     *
+     * 
      * @return the language value.
      */
     public MicrosoftGraphLocaleInfo language() {
@@ -165,7 +162,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Set the language property: localeInfo.
-     *
+     * 
      * @param language the language value to set.
      * @return the MicrosoftGraphMailboxSettings object itself.
      */
@@ -176,7 +173,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Get the timeFormat property: The time format for the user's mailbox.
-     *
+     * 
      * @return the timeFormat value.
      */
     public String timeFormat() {
@@ -185,7 +182,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Set the timeFormat property: The time format for the user's mailbox.
-     *
+     * 
      * @param timeFormat the timeFormat value to set.
      * @return the MicrosoftGraphMailboxSettings object itself.
      */
@@ -196,7 +193,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Get the timeZone property: The default time zone for the user's mailbox.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -205,7 +202,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Set the timeZone property: The default time zone for the user's mailbox.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the MicrosoftGraphMailboxSettings object itself.
      */
@@ -216,7 +213,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Get the workingHours property: workingHours.
-     *
+     * 
      * @return the workingHours value.
      */
     public MicrosoftGraphWorkingHours workingHours() {
@@ -225,7 +222,7 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Set the workingHours property: workingHours.
-     *
+     * 
      * @param workingHours the workingHours value to set.
      * @return the MicrosoftGraphMailboxSettings object itself.
      */
@@ -236,17 +233,16 @@ public final class MicrosoftGraphMailboxSettings {
 
     /**
      * Get the additionalProperties property: mailboxSettings.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: mailboxSettings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphMailboxSettings object itself.
      */
@@ -255,17 +251,9 @@ public final class MicrosoftGraphMailboxSettings {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -278,5 +266,80 @@ public final class MicrosoftGraphMailboxSettings {
         if (workingHours() != null) {
             workingHours().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("archiveFolder", this.archiveFolder);
+        jsonWriter.writeJsonField("automaticRepliesSetting", this.automaticRepliesSetting);
+        jsonWriter.writeStringField("dateFormat", this.dateFormat);
+        jsonWriter.writeStringField("delegateMeetingMessageDeliveryOptions",
+            this.delegateMeetingMessageDeliveryOptions == null
+                ? null
+                : this.delegateMeetingMessageDeliveryOptions.toString());
+        jsonWriter.writeJsonField("language", this.language);
+        jsonWriter.writeStringField("timeFormat", this.timeFormat);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeJsonField("workingHours", this.workingHours);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphMailboxSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphMailboxSettings if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphMailboxSettings.
+     */
+    public static MicrosoftGraphMailboxSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphMailboxSettings deserializedMicrosoftGraphMailboxSettings
+                = new MicrosoftGraphMailboxSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("archiveFolder".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailboxSettings.archiveFolder = reader.getString();
+                } else if ("automaticRepliesSetting".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailboxSettings.automaticRepliesSetting
+                        = MicrosoftGraphAutomaticRepliesSetting.fromJson(reader);
+                } else if ("dateFormat".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailboxSettings.dateFormat = reader.getString();
+                } else if ("delegateMeetingMessageDeliveryOptions".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailboxSettings.delegateMeetingMessageDeliveryOptions
+                        = MicrosoftGraphDelegateMeetingMessageDeliveryOptions.fromString(reader.getString());
+                } else if ("language".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailboxSettings.language = MicrosoftGraphLocaleInfo.fromJson(reader);
+                } else if ("timeFormat".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailboxSettings.timeFormat = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailboxSettings.timeZone = reader.getString();
+                } else if ("workingHours".equals(fieldName)) {
+                    deserializedMicrosoftGraphMailboxSettings.workingHours
+                        = MicrosoftGraphWorkingHours.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphMailboxSettings.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphMailboxSettings;
+        });
     }
 }

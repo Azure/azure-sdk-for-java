@@ -6,6 +6,8 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +21,7 @@ import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RetryTests {
+    private static final ClientLogger LOGGER = new ClientLogger(RetryTests.class);
 
     @Test
     public void testRetryForGraph() {
@@ -33,9 +36,8 @@ public class RetryTests {
 
         RetryBackoffSpec retry = RetryUtils.backoffRetryFor404ResourceNotFound();
         AtomicInteger retryCount = new AtomicInteger(0);
-        retry = retry.doAfterRetry(ignored -> {
-            System.out.println("retry " + retryCount.incrementAndGet() + ", at " + OffsetDateTime.now());
-        });
+        retry = retry.doAfterRetry(ignored -> LOGGER.log(LogLevel.VERBOSE,
+            () -> "retry " + retryCount.incrementAndGet() + ", at " + OffsetDateTime.now()));
 
         // pass without retry
         Mono<String> monoSuccess = Mono.just("foo");
@@ -52,17 +54,20 @@ public class RetryTests {
         retryCount.set(0);
         StepVerifier.create(monoError400.retryWhen(retry))
             .expectSubscription()
-            .expectErrorMatches(e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 400)
+            .expectErrorMatches(
+                e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 400)
             .verify();
         Assertions.assertEquals(0, retryCount.get());
 
         // 404 but not expected error code, no retry
-        Mono<String> monoError404WrongErrorCode = Mono.error(new ManagementException("error", mockedResponse404, new ManagementError("WrongErrorCode", "")));
+        Mono<String> monoError404WrongErrorCode = Mono
+            .error(new ManagementException("error", mockedResponse404, new ManagementError("WrongErrorCode", "")));
 
         retryCount.set(0);
         StepVerifier.create(monoError404WrongErrorCode.retryWhen(retry))
             .expectSubscription()
-            .expectErrorMatches(e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 404)
+            .expectErrorMatches(
+                e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 404)
             .verify();
         Assertions.assertEquals(0, retryCount.get());
 
@@ -72,7 +77,8 @@ public class RetryTests {
         retryCount.set(0);
         StepVerifier.create(monoError404.retryWhen(retry))
             .expectSubscription()
-            .expectErrorMatches(e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 404)
+            .expectErrorMatches(
+                e -> e instanceof ManagementException && ((ManagementException) e).getResponse().getStatusCode() == 404)
             .verify();
         Assertions.assertEquals(3, retryCount.get());
 
@@ -106,9 +112,8 @@ public class RetryTests {
 
         RetryBackoffSpec retry = RetryUtils.backoffRetryFor400PrincipalNotFound();
         AtomicInteger retryCount = new AtomicInteger(0);
-        retry = retry.doAfterRetry(ignored -> {
-            System.out.println("retry " + retryCount.incrementAndGet() + ", at " + OffsetDateTime.now());
-        });
+        retry = retry.doAfterRetry(ignored -> LOGGER.log(LogLevel.VERBOSE,
+            () -> "retry " + retryCount.incrementAndGet() + ", at " + OffsetDateTime.now()));
 
         // 400 with PrincipalNotFound, retry till pass
         AtomicInteger errorCount = new AtomicInteger(0);

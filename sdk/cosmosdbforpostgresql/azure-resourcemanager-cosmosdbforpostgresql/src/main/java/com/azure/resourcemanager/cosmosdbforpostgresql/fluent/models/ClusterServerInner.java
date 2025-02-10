@@ -7,31 +7,51 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents a server in a cluster. */
+/**
+ * Represents a server in a cluster.
+ */
 @Fluent
 public final class ClusterServerInner extends ProxyResource {
     /*
      * The properties of a server in a cluster.
      */
-    @JsonProperty(value = "properties")
     private ClusterServerProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ClusterServerInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ClusterServerInner class.
+     */
     public ClusterServerInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a server in a cluster.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClusterServerProperties innerProperties() {
@@ -40,7 +60,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,8 +68,38 @@ public final class ClusterServerInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of a server.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -58,7 +108,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the role property: The role of server in the cluster.
-     *
+     * 
      * @return the role value.
      */
     public ServerRole role() {
@@ -67,7 +117,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Set the role property: The role of server in the cluster.
-     *
+     * 
      * @param role the role value to set.
      * @return the ClusterServerInner object itself.
      */
@@ -81,7 +131,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the state property: A state of a cluster/server that is visible to user.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -90,7 +140,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the haState property: A state of HA feature for the cluster.
-     *
+     * 
      * @return the haState value.
      */
     public String haState() {
@@ -99,7 +149,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the availabilityZone property: Availability Zone information of the server.
-     *
+     * 
      * @return the availabilityZone value.
      */
     public String availabilityZone() {
@@ -108,7 +158,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Set the availabilityZone property: Availability Zone information of the server.
-     *
+     * 
      * @param availabilityZone the availabilityZone value to set.
      * @return the ClusterServerInner object itself.
      */
@@ -122,7 +172,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the postgresqlVersion property: The major PostgreSQL version of server.
-     *
+     * 
      * @return the postgresqlVersion value.
      */
     public String postgresqlVersion() {
@@ -131,7 +181,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Set the postgresqlVersion property: The major PostgreSQL version of server.
-     *
+     * 
      * @param postgresqlVersion the postgresqlVersion value to set.
      * @return the ClusterServerInner object itself.
      */
@@ -145,7 +195,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the citusVersion property: The Citus extension version of server.
-     *
+     * 
      * @return the citusVersion value.
      */
     public String citusVersion() {
@@ -154,7 +204,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Set the citusVersion property: The Citus extension version of server.
-     *
+     * 
      * @param citusVersion the citusVersion value to set.
      * @return the ClusterServerInner object itself.
      */
@@ -168,7 +218,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the serverEdition property: The edition of a server.
-     *
+     * 
      * @return the serverEdition value.
      */
     public String serverEdition() {
@@ -177,7 +227,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Set the serverEdition property: The edition of a server.
-     *
+     * 
      * @param serverEdition the serverEdition value to set.
      * @return the ClusterServerInner object itself.
      */
@@ -191,7 +241,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the storageQuotaInMb property: The storage of a server in MB.
-     *
+     * 
      * @return the storageQuotaInMb value.
      */
     public Integer storageQuotaInMb() {
@@ -200,7 +250,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Set the storageQuotaInMb property: The storage of a server in MB.
-     *
+     * 
      * @param storageQuotaInMb the storageQuotaInMb value to set.
      * @return the ClusterServerInner object itself.
      */
@@ -214,7 +264,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the vCores property: The vCores count of a server.
-     *
+     * 
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -223,7 +273,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Set the vCores property: The vCores count of a server.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the ClusterServerInner object itself.
      */
@@ -237,7 +287,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the enableHa property: If high availability (HA) is enabled or not for the server.
-     *
+     * 
      * @return the enableHa value.
      */
     public Boolean enableHa() {
@@ -246,7 +296,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Set the enableHa property: If high availability (HA) is enabled or not for the server.
-     *
+     * 
      * @param enableHa the enableHa value to set.
      * @return the ClusterServerInner object itself.
      */
@@ -260,7 +310,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the enablePublicIpAccess property: If public access is enabled on server.
-     *
+     * 
      * @return the enablePublicIpAccess value.
      */
     public Boolean enablePublicIpAccess() {
@@ -270,7 +320,7 @@ public final class ClusterServerInner extends ProxyResource {
     /**
      * Get the isReadOnly property: If server database is set to read-only by system maintenance depending on high disk
      * space usage.
-     *
+     * 
      * @return the isReadOnly value.
      */
     public Boolean isReadOnly() {
@@ -279,7 +329,7 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Get the administratorLogin property: The administrator's login name of the servers in the cluster.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -288,12 +338,57 @@ public final class ClusterServerInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterServerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterServerInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterServerInner.
+     */
+    public static ClusterServerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterServerInner deserializedClusterServerInner = new ClusterServerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterServerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedClusterServerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedClusterServerInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterServerInner.innerProperties = ClusterServerProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedClusterServerInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterServerInner;
+        });
     }
 }

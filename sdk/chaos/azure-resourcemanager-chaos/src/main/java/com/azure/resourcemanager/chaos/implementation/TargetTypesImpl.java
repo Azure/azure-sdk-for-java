@@ -28,21 +28,18 @@ public final class TargetTypesImpl implements TargetTypes {
 
     public PagedIterable<TargetType> list(String locationName) {
         PagedIterable<TargetTypeInner> inner = this.serviceClient().list(locationName);
-        return Utils.mapPage(inner, inner1 -> new TargetTypeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetTypeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TargetType> list(String locationName, String continuationToken, Context context) {
         PagedIterable<TargetTypeInner> inner = this.serviceClient().list(locationName, continuationToken, context);
-        return Utils.mapPage(inner, inner1 -> new TargetTypeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetTypeImpl(inner1, this.manager()));
     }
 
     public Response<TargetType> getWithResponse(String locationName, String targetTypeName, Context context) {
         Response<TargetTypeInner> inner = this.serviceClient().getWithResponse(locationName, targetTypeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TargetTypeImpl(inner.getValue(), this.manager()));
         } else {
             return null;

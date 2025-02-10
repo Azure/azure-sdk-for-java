@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Jobs. */
+/**
+ * Resource collection API of Jobs.
+ */
 public interface Jobs {
     /**
      * Triggers export of jobs specified by filters and returns an OperationID to track.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -25,7 +27,7 @@ public interface Jobs {
 
     /**
      * Triggers export of jobs specified by filters and returns an OperationID to track.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

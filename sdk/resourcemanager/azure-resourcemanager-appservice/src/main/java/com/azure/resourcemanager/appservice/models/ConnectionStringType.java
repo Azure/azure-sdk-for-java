@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Type of database.
  */
@@ -81,7 +78,6 @@ public enum ConnectionStringType {
      * @param value the serialized value to parse.
      * @return the parsed ConnectionStringType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ConnectionStringType fromString(String value) {
         if (value == null) {
             return null;
@@ -98,7 +94,6 @@ public enum ConnectionStringType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

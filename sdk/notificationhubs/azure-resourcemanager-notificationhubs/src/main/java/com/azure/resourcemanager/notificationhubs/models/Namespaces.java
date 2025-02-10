@@ -8,12 +8,28 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Namespaces. */
+/**
+ * Resource collection API of Namespaces.
+ */
 public interface Namespaces {
     /**
      * Checks the availability of the given service namespace across all Azure subscriptions. This is useful because the
      * domain name is created based on the service namespace name.
-     *
+     * 
+     * @param parameters The namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a CheckAvailability resource along with {@link Response}.
+     */
+    Response<CheckAvailabilityResult> checkAvailabilityWithResponse(CheckAvailabilityParameters parameters,
+        Context context);
+
+    /**
+     * Checks the availability of the given service namespace across all Azure subscriptions. This is useful because the
+     * domain name is created based on the service namespace name.
+     * 
      * @param parameters The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -23,22 +39,8 @@ public interface Namespaces {
     CheckAvailabilityResult checkAvailability(CheckAvailabilityParameters parameters);
 
     /**
-     * Checks the availability of the given service namespace across all Azure subscriptions. This is useful because the
-     * domain name is created based on the service namespace name.
-     *
-     * @param parameters The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a CheckAvailability resource.
-     */
-    Response<CheckAvailabilityResult> checkAvailabilityWithResponse(
-        CheckAvailabilityParameters parameters, Context context);
-
-    /**
      * Deletes an existing namespace. This operation also removes all associated notificationHubs under the namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +51,7 @@ public interface Namespaces {
 
     /**
      * Deletes an existing namespace. This operation also removes all associated notificationHubs under the namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
      * @param context The context to associate with this operation.
@@ -61,7 +63,21 @@ public interface Namespaces {
 
     /**
      * Returns the description for the specified namespace.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a Namespace resource along with {@link Response}.
+     */
+    Response<NamespaceResource> getByResourceGroupWithResponse(String resourceGroupName, String namespaceName,
+        Context context);
+
+    /**
+     * Returns the description for the specified namespace.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,22 +88,23 @@ public interface Namespaces {
     NamespaceResource getByResourceGroup(String resourceGroupName, String namespaceName);
 
     /**
-     * Returns the description for the specified namespace.
-     *
+     * Deletes a namespace authorization rule.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
+     * @param authorizationRuleName Authorization Rule Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Namespace resource.
+     * @return the {@link Response}.
      */
-    Response<NamespaceResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String namespaceName, Context context);
+    Response<Void> deleteAuthorizationRuleWithResponse(String resourceGroupName, String namespaceName,
+        String authorizationRuleName, Context context);
 
     /**
      * Deletes a namespace authorization rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
      * @param authorizationRuleName Authorization Rule Name.
@@ -98,23 +115,23 @@ public interface Namespaces {
     void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String authorizationRuleName);
 
     /**
-     * Deletes a namespace authorization rule.
-     *
+     * Gets an authorization rule for a namespace by name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
-     * @param authorizationRuleName Authorization Rule Name.
+     * @param authorizationRuleName Authorization rule name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an authorization rule for a namespace by name along with {@link Response}.
      */
-    Response<Void> deleteAuthorizationRuleWithResponse(
-        String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
+    Response<SharedAccessAuthorizationRuleResource> getAuthorizationRuleWithResponse(String resourceGroupName,
+        String namespaceName, String authorizationRuleName, Context context);
 
     /**
      * Gets an authorization rule for a namespace by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
      * @param authorizationRuleName Authorization rule name.
@@ -123,99 +140,99 @@ public interface Namespaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an authorization rule for a namespace by name.
      */
-    SharedAccessAuthorizationRuleResource getAuthorizationRule(
-        String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Gets an authorization rule for a namespace by name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName Authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by name.
-     */
-    Response<SharedAccessAuthorizationRuleResource> getAuthorizationRuleWithResponse(
-        String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
+    SharedAccessAuthorizationRuleResource getAuthorizationRule(String resourceGroupName, String namespaceName,
+        String authorizationRuleName);
 
     /**
      * Lists the available namespaces within a resourceGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. If resourceGroupName value is null the method lists all
-     *     the namespaces within subscription.
+     * the namespaces within subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Namespace operation.
+     * @return the response of the List Namespace operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NamespaceResource> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists the available namespaces within a resourceGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. If resourceGroupName value is null the method lists all
-     *     the namespaces within subscription.
+     * the namespaces within subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Namespace operation.
+     * @return the response of the List Namespace operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NamespaceResource> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Lists all the available namespaces within the subscription irrespective of the resourceGroups.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Namespace operation.
+     * @return the response of the List Namespace operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NamespaceResource> list();
 
     /**
      * Lists all the available namespaces within the subscription irrespective of the resourceGroups.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Namespace operation.
+     * @return the response of the List Namespace operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NamespaceResource> list(Context context);
 
     /**
      * Gets the authorization rules for a namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace.
+     * @return the authorization rules for a namespace as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SharedAccessAuthorizationRuleResource> listAuthorizationRules(
-        String resourceGroupName, String namespaceName);
+    PagedIterable<SharedAccessAuthorizationRuleResource> listAuthorizationRules(String resourceGroupName,
+        String namespaceName);
 
     /**
      * Gets the authorization rules for a namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace.
+     * @return the authorization rules for a namespace as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SharedAccessAuthorizationRuleResource> listAuthorizationRules(
-        String resourceGroupName, String namespaceName, Context context);
+    PagedIterable<SharedAccessAuthorizationRuleResource> listAuthorizationRules(String resourceGroupName,
+        String namespaceName, Context context);
 
     /**
      * Gets the Primary and Secondary ConnectionStrings to the namespace.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The connection string of the namespace for the specified authorizationRule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Primary and Secondary ConnectionStrings to the namespace along with {@link Response}.
+     */
+    Response<ResourceListKeys> listKeysWithResponse(String resourceGroupName, String namespaceName,
+        String authorizationRuleName, Context context);
+
+    /**
+     * Gets the Primary and Secondary ConnectionStrings to the namespace.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
      * @param authorizationRuleName The connection string of the namespace for the specified authorizationRule.
@@ -227,23 +244,24 @@ public interface Namespaces {
     ResourceListKeys listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName);
 
     /**
-     * Gets the Primary and Secondary ConnectionStrings to the namespace.
-     *
+     * Regenerates the Primary/Secondary Keys to the Namespace Authorization Rule.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
      * @param authorizationRuleName The connection string of the namespace for the specified authorizationRule.
+     * @param parameters Parameters supplied to regenerate the Namespace Authorization Rule Key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Primary and Secondary ConnectionStrings to the namespace.
+     * @return namespace/NotificationHub Connection String along with {@link Response}.
      */
-    Response<ResourceListKeys> listKeysWithResponse(
-        String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
+    Response<ResourceListKeys> regenerateKeysWithResponse(String resourceGroupName, String namespaceName,
+        String authorizationRuleName, PolicykeyResource parameters, Context context);
 
     /**
      * Regenerates the Primary/Secondary Keys to the Namespace Authorization Rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param namespaceName The namespace name.
      * @param authorizationRuleName The connection string of the namespace for the specified authorizationRule.
@@ -253,78 +271,58 @@ public interface Namespaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namespace/NotificationHub Connection String.
      */
-    ResourceListKeys regenerateKeys(
-        String resourceGroupName, String namespaceName, String authorizationRuleName, PolicykeyResource parameters);
-
-    /**
-     * Regenerates the Primary/Secondary Keys to the Namespace Authorization Rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The connection string of the namespace for the specified authorizationRule.
-     * @param parameters Parameters supplied to regenerate the Namespace Authorization Rule Key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/NotificationHub Connection String.
-     */
-    Response<ResourceListKeys> regenerateKeysWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String authorizationRuleName,
-        PolicykeyResource parameters,
-        Context context);
+    ResourceListKeys regenerateKeys(String resourceGroupName, String namespaceName, String authorizationRuleName,
+        PolicykeyResource parameters);
 
     /**
      * Returns the description for the specified namespace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Namespace resource.
+     * @return description of a Namespace resource along with {@link Response}.
      */
     NamespaceResource getById(String id);
 
     /**
      * Returns the description for the specified namespace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a Namespace resource.
+     * @return description of a Namespace resource along with {@link Response}.
      */
     Response<NamespaceResource> getByIdWithResponse(String id, Context context);
 
     /**
      * Gets an authorization rule for a namespace by name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by name.
+     * @return an authorization rule for a namespace by name along with {@link Response}.
      */
     SharedAccessAuthorizationRuleResource getAuthorizationRuleById(String id);
 
     /**
      * Gets an authorization rule for a namespace by name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by name.
+     * @return an authorization rule for a namespace by name along with {@link Response}.
      */
     Response<SharedAccessAuthorizationRuleResource> getAuthorizationRuleByIdWithResponse(String id, Context context);
 
     /**
      * Deletes an existing namespace. This operation also removes all associated notificationHubs under the namespace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -334,7 +332,7 @@ public interface Namespaces {
 
     /**
      * Deletes an existing namespace. This operation also removes all associated notificationHubs under the namespace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,7 +343,7 @@ public interface Namespaces {
 
     /**
      * Deletes a namespace authorization rule.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -355,19 +353,19 @@ public interface Namespaces {
 
     /**
      * Deletes a namespace authorization rule.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteAuthorizationRuleByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new NamespaceResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NamespaceResource definition.
      */
@@ -375,7 +373,7 @@ public interface Namespaces {
 
     /**
      * Begins definition for a new SharedAccessAuthorizationRuleResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SharedAccessAuthorizationRuleResource definition.
      */

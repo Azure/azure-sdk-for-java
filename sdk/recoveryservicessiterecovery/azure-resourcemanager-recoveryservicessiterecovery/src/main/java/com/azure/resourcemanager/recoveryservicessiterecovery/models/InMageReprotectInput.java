@@ -6,71 +6,81 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** InMageAzureV2 specific provider input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMage")
+/**
+ * InMageAzureV2 specific provider input.
+ */
 @Fluent
 public final class InMageReprotectInput extends ReverseReplicationProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMage";
+
+    /*
      * The Master Target Id.
      */
-    @JsonProperty(value = "masterTargetId", required = true)
     private String masterTargetId;
 
     /*
      * The Process Server Id.
      */
-    @JsonProperty(value = "processServerId", required = true)
     private String processServerId;
 
     /*
      * The retention drive to use on the MT.
      */
-    @JsonProperty(value = "retentionDrive", required = true)
     private String retentionDrive;
 
     /*
      * The CS account Id.
      */
-    @JsonProperty(value = "runAsAccountId")
     private String runAsAccountId;
 
     /*
      * The target datastore name.
      */
-    @JsonProperty(value = "datastoreName")
     private String datastoreName;
 
     /*
      * The enable disk exclusion input.
      */
-    @JsonProperty(value = "diskExclusionInput")
     private InMageDiskExclusionInput diskExclusionInput;
 
     /*
      * The Policy Id.
      */
-    @JsonProperty(value = "profileId", required = true)
     private String profileId;
 
     /*
      * The disks to include list.
      */
-    @JsonProperty(value = "disksToInclude")
     private List<String> disksToInclude;
 
-    /** Creates an instance of InMageReprotectInput class. */
+    /**
+     * Creates an instance of InMageReprotectInput class.
+     */
     public InMageReprotectInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the masterTargetId property: The Master Target Id.
-     *
+     * 
      * @return the masterTargetId value.
      */
     public String masterTargetId() {
@@ -79,7 +89,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Set the masterTargetId property: The Master Target Id.
-     *
+     * 
      * @param masterTargetId the masterTargetId value to set.
      * @return the InMageReprotectInput object itself.
      */
@@ -90,7 +100,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Get the processServerId property: The Process Server Id.
-     *
+     * 
      * @return the processServerId value.
      */
     public String processServerId() {
@@ -99,7 +109,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Set the processServerId property: The Process Server Id.
-     *
+     * 
      * @param processServerId the processServerId value to set.
      * @return the InMageReprotectInput object itself.
      */
@@ -110,7 +120,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Get the retentionDrive property: The retention drive to use on the MT.
-     *
+     * 
      * @return the retentionDrive value.
      */
     public String retentionDrive() {
@@ -119,7 +129,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Set the retentionDrive property: The retention drive to use on the MT.
-     *
+     * 
      * @param retentionDrive the retentionDrive value to set.
      * @return the InMageReprotectInput object itself.
      */
@@ -130,7 +140,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Get the runAsAccountId property: The CS account Id.
-     *
+     * 
      * @return the runAsAccountId value.
      */
     public String runAsAccountId() {
@@ -139,7 +149,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Set the runAsAccountId property: The CS account Id.
-     *
+     * 
      * @param runAsAccountId the runAsAccountId value to set.
      * @return the InMageReprotectInput object itself.
      */
@@ -150,7 +160,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Get the datastoreName property: The target datastore name.
-     *
+     * 
      * @return the datastoreName value.
      */
     public String datastoreName() {
@@ -159,7 +169,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Set the datastoreName property: The target datastore name.
-     *
+     * 
      * @param datastoreName the datastoreName value to set.
      * @return the InMageReprotectInput object itself.
      */
@@ -170,7 +180,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Get the diskExclusionInput property: The enable disk exclusion input.
-     *
+     * 
      * @return the diskExclusionInput value.
      */
     public InMageDiskExclusionInput diskExclusionInput() {
@@ -179,7 +189,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Set the diskExclusionInput property: The enable disk exclusion input.
-     *
+     * 
      * @param diskExclusionInput the diskExclusionInput value to set.
      * @return the InMageReprotectInput object itself.
      */
@@ -190,7 +200,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Get the profileId property: The Policy Id.
-     *
+     * 
      * @return the profileId value.
      */
     public String profileId() {
@@ -199,7 +209,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Set the profileId property: The Policy Id.
-     *
+     * 
      * @param profileId the profileId value to set.
      * @return the InMageReprotectInput object itself.
      */
@@ -210,7 +220,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Get the disksToInclude property: The disks to include list.
-     *
+     * 
      * @return the disksToInclude value.
      */
     public List<String> disksToInclude() {
@@ -219,7 +229,7 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Set the disksToInclude property: The disks to include list.
-     *
+     * 
      * @param disksToInclude the disksToInclude value to set.
      * @return the InMageReprotectInput object itself.
      */
@@ -230,39 +240,97 @@ public final class InMageReprotectInput extends ReverseReplicationProviderSpecif
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (masterTargetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property masterTargetId in model InMageReprotectInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property masterTargetId in model InMageReprotectInput"));
         }
         if (processServerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property processServerId in model InMageReprotectInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property processServerId in model InMageReprotectInput"));
         }
         if (retentionDrive() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property retentionDrive in model InMageReprotectInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property retentionDrive in model InMageReprotectInput"));
         }
         if (diskExclusionInput() != null) {
             diskExclusionInput().validate();
         }
         if (profileId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property profileId in model InMageReprotectInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property profileId in model InMageReprotectInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InMageReprotectInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("masterTargetId", this.masterTargetId);
+        jsonWriter.writeStringField("processServerId", this.processServerId);
+        jsonWriter.writeStringField("retentionDrive", this.retentionDrive);
+        jsonWriter.writeStringField("profileId", this.profileId);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("runAsAccountId", this.runAsAccountId);
+        jsonWriter.writeStringField("datastoreName", this.datastoreName);
+        jsonWriter.writeJsonField("diskExclusionInput", this.diskExclusionInput);
+        jsonWriter.writeArrayField("disksToInclude", this.disksToInclude,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageReprotectInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageReprotectInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InMageReprotectInput.
+     */
+    public static InMageReprotectInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageReprotectInput deserializedInMageReprotectInput = new InMageReprotectInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("masterTargetId".equals(fieldName)) {
+                    deserializedInMageReprotectInput.masterTargetId = reader.getString();
+                } else if ("processServerId".equals(fieldName)) {
+                    deserializedInMageReprotectInput.processServerId = reader.getString();
+                } else if ("retentionDrive".equals(fieldName)) {
+                    deserializedInMageReprotectInput.retentionDrive = reader.getString();
+                } else if ("profileId".equals(fieldName)) {
+                    deserializedInMageReprotectInput.profileId = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedInMageReprotectInput.instanceType = reader.getString();
+                } else if ("runAsAccountId".equals(fieldName)) {
+                    deserializedInMageReprotectInput.runAsAccountId = reader.getString();
+                } else if ("datastoreName".equals(fieldName)) {
+                    deserializedInMageReprotectInput.datastoreName = reader.getString();
+                } else if ("diskExclusionInput".equals(fieldName)) {
+                    deserializedInMageReprotectInput.diskExclusionInput = InMageDiskExclusionInput.fromJson(reader);
+                } else if ("disksToInclude".equals(fieldName)) {
+                    List<String> disksToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInMageReprotectInput.disksToInclude = disksToInclude;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageReprotectInput;
+        });
+    }
 }

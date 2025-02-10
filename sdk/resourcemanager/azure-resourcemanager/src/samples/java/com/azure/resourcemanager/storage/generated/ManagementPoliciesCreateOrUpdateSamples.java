@@ -20,544 +20,367 @@ import com.azure.resourcemanager.storage.models.RuleType;
 import com.azure.resourcemanager.storage.models.TagFilter;
 import java.util.Arrays;
 
-/** Samples for ManagementPolicies CreateOrUpdate. */
+/**
+ * Samples for ManagementPolicies CreateOrUpdate.
+ */
 public final class ManagementPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicyColdTierActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountSetManagementPolicyColdTierActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyColdTierActions.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void storageAccountSetManagementPolicyColdTierActions(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+    public static void
+        storageAccountSetManagementPolicyColdTierActions(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getManagementPolicies()
-            .createOrUpdateWithResponse(
-                "res7687",
-                "sto9699",
-                ManagementPolicyName.DEFAULT,
+            .createOrUpdateWithResponse("res7687", "sto9699", ManagementPolicyName.DEFAULT,
                 new ManagementPolicyInner()
                     .withPolicy(
                         new ManagementPolicySchema()
                             .withRules(
-                                Arrays
-                                    .asList(
-                                        new ManagementPolicyRule()
-                                            .withEnabled(true)
-                                            .withName("olcmtest1")
-                                            .withType(RuleType.LIFECYCLE)
-                                            .withDefinition(
-                                                new ManagementPolicyDefinition()
-                                                    .withActions(
-                                                        new ManagementPolicyAction()
-                                                            .withBaseBlob(
-                                                                new ManagementPolicyBaseBlob()
-                                                                    .withTierToCool(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                30.0F))
-                                                                    .withTierToArchive(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                90.0F))
-                                                                    .withTierToCold(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                30.0F))
-                                                                    .withDelete(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                1000.0F)))
-                                                            .withSnapshot(
-                                                                new ManagementPolicySnapShot()
-                                                                    .withTierToCold(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f))
-                                                                    .withDelete(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f)))
-                                                            .withVersion(
-                                                                new ManagementPolicyVersion()
-                                                                    .withTierToCold(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f))
-                                                                    .withDelete(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f))))
-                                                    .withFilters(
-                                                        new ManagementPolicyFilter()
-                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
-                                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
+                                Arrays.asList(new ManagementPolicyRule().withEnabled(true)
+                                    .withName("olcmtest1")
+                                    .withType(RuleType.LIFECYCLE)
+                                    .withDefinition(new ManagementPolicyDefinition()
+                                        .withActions(new ManagementPolicyAction()
+                                            .withBaseBlob(new ManagementPolicyBaseBlob()
+                                                .withTierToCool(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(30.0F))
+                                                .withTierToArchive(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(90.0F))
+                                                .withTierToCold(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(30.0F))
+                                                .withDelete(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(1000.0F)))
+                                            .withSnapshot(new ManagementPolicySnapShot()
+                                                .withTierToCold(
+                                                    new DateAfterCreation().withDaysAfterCreationGreaterThan(30f))
+                                                .withDelete(
+                                                    new DateAfterCreation().withDaysAfterCreationGreaterThan(30f)))
+                                            .withVersion(new ManagementPolicyVersion()
+                                                .withTierToCold(
+                                                    new DateAfterCreation().withDaysAfterCreationGreaterThan(30f))
+                                                .withDelete(
+                                                    new DateAfterCreation().withDaysAfterCreationGreaterThan(30f))))
+                                        .withFilters(new ManagementPolicyFilter()
+                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
+                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyWithSnapshotAndVersion.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void storageAccountSetManagementPolicyWithSnapshotAndVersion(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+    public static void
+        storageAccountSetManagementPolicyWithSnapshotAndVersion(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getManagementPolicies()
-            .createOrUpdateWithResponse(
-                "res7687",
-                "sto9699",
-                ManagementPolicyName.DEFAULT,
+            .createOrUpdateWithResponse("res7687", "sto9699", ManagementPolicyName.DEFAULT,
                 new ManagementPolicyInner()
                     .withPolicy(
                         new ManagementPolicySchema()
                             .withRules(
-                                Arrays
-                                    .asList(
-                                        new ManagementPolicyRule()
-                                            .withEnabled(true)
-                                            .withName("olcmtest1")
-                                            .withType(RuleType.LIFECYCLE)
-                                            .withDefinition(
-                                                new ManagementPolicyDefinition()
-                                                    .withActions(
-                                                        new ManagementPolicyAction()
-                                                            .withBaseBlob(
-                                                                new ManagementPolicyBaseBlob()
-                                                                    .withTierToCool(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                30.0F))
-                                                                    .withTierToArchive(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                90.0F))
-                                                                    .withDelete(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                1000.0F)))
-                                                            .withSnapshot(
-                                                                new ManagementPolicySnapShot()
-                                                                    .withTierToCool(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f))
-                                                                    .withTierToArchive(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(90f))
-                                                                    .withDelete(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(1000f)))
-                                                            .withVersion(
-                                                                new ManagementPolicyVersion()
-                                                                    .withTierToCool(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f))
-                                                                    .withTierToArchive(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(90f))
-                                                                    .withDelete(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(1000f))))
-                                                    .withFilters(
-                                                        new ManagementPolicyFilter()
-                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
-                                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
+                                Arrays.asList(new ManagementPolicyRule().withEnabled(true)
+                                    .withName("olcmtest1")
+                                    .withType(RuleType.LIFECYCLE)
+                                    .withDefinition(new ManagementPolicyDefinition()
+                                        .withActions(new ManagementPolicyAction()
+                                            .withBaseBlob(new ManagementPolicyBaseBlob()
+                                                .withTierToCool(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(30.0F))
+                                                .withTierToArchive(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(90.0F))
+                                                .withDelete(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(1000.0F)))
+                                            .withSnapshot(new ManagementPolicySnapShot()
+                                                .withTierToCool(
+                                                    new DateAfterCreation().withDaysAfterCreationGreaterThan(30f))
+                                                .withTierToArchive(
+                                                    new DateAfterCreation().withDaysAfterCreationGreaterThan(90f))
+                                                .withDelete(
+                                                    new DateAfterCreation().withDaysAfterCreationGreaterThan(1000f)))
+                                            .withVersion(new ManagementPolicyVersion()
+                                                .withTierToCool(
+                                                    new DateAfterCreation().withDaysAfterCreationGreaterThan(30f))
+                                                .withTierToArchive(
+                                                    new DateAfterCreation().withDaysAfterCreationGreaterThan(90f))
+                                                .withDelete(
+                                                    new DateAfterCreation().withDaysAfterCreationGreaterThan(1000f))))
+                                        .withFilters(new ManagementPolicyFilter()
+                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
+                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyForBlockAndAppendBlobs.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void storageAccountSetManagementPolicyForBlockAndAppendBlobs(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+    public static void
+        storageAccountSetManagementPolicyForBlockAndAppendBlobs(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getManagementPolicies()
-            .createOrUpdateWithResponse(
-                "res7687",
-                "sto9699",
-                ManagementPolicyName.DEFAULT,
+            .createOrUpdateWithResponse("res7687", "sto9699", ManagementPolicyName.DEFAULT,
                 new ManagementPolicyInner()
                     .withPolicy(
                         new ManagementPolicySchema()
                             .withRules(
-                                Arrays
-                                    .asList(
-                                        new ManagementPolicyRule()
-                                            .withEnabled(true)
-                                            .withName("olcmtest1")
-                                            .withType(RuleType.LIFECYCLE)
-                                            .withDefinition(
-                                                new ManagementPolicyDefinition()
-                                                    .withActions(
-                                                        new ManagementPolicyAction()
-                                                            .withBaseBlob(
-                                                                new ManagementPolicyBaseBlob()
-                                                                    .withDelete(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                90.0F)))
-                                                            .withSnapshot(
-                                                                new ManagementPolicySnapShot()
-                                                                    .withDelete(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(90f)))
-                                                            .withVersion(
-                                                                new ManagementPolicyVersion()
-                                                                    .withDelete(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(90f))))
-                                                    .withFilters(
-                                                        new ManagementPolicyFilter()
-                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
-                                                            .withBlobTypes(
-                                                                Arrays.asList("blockBlob", "appendBlob"))))))),
+                                Arrays.asList(new ManagementPolicyRule().withEnabled(true)
+                                    .withName("olcmtest1")
+                                    .withType(RuleType.LIFECYCLE)
+                                    .withDefinition(new ManagementPolicyDefinition()
+                                        .withActions(new ManagementPolicyAction()
+                                            .withBaseBlob(
+                                                new ManagementPolicyBaseBlob().withDelete(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(90.0F)))
+                                            .withSnapshot(new ManagementPolicySnapShot().withDelete(
+                                                new DateAfterCreation().withDaysAfterCreationGreaterThan(90f)))
+                                            .withVersion(new ManagementPolicyVersion().withDelete(
+                                                new DateAfterCreation().withDaysAfterCreationGreaterThan(90f))))
+                                        .withFilters(new ManagementPolicyFilter()
+                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
+                                            .withBlobTypes(Arrays.asList("blockBlob", "appendBlob"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicyHotTierActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountSetManagementPolicyHotTierActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyHotTierActions.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void storageAccountSetManagementPolicyHotTierActions(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+    public static void
+        storageAccountSetManagementPolicyHotTierActions(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getManagementPolicies()
-            .createOrUpdateWithResponse(
-                "res7687",
-                "sto9699",
-                ManagementPolicyName.DEFAULT,
+            .createOrUpdateWithResponse("res7687", "sto9699", ManagementPolicyName.DEFAULT,
                 new ManagementPolicyInner()
                     .withPolicy(
                         new ManagementPolicySchema()
                             .withRules(
-                                Arrays
-                                    .asList(
-                                        new ManagementPolicyRule()
-                                            .withEnabled(true)
-                                            .withName("olcmtest1")
-                                            .withType(RuleType.LIFECYCLE)
-                                            .withDefinition(
-                                                new ManagementPolicyDefinition()
-                                                    .withActions(
-                                                        new ManagementPolicyAction()
-                                                            .withBaseBlob(
-                                                                new ManagementPolicyBaseBlob()
-                                                                    .withTierToHot(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                30.0F)))
-                                                            .withSnapshot(
-                                                                new ManagementPolicySnapShot()
-                                                                    .withTierToHot(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f)))
-                                                            .withVersion(
-                                                                new ManagementPolicyVersion()
-                                                                    .withTierToHot(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f))))
-                                                    .withFilters(
-                                                        new ManagementPolicyFilter()
-                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
-                                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
+                                Arrays.asList(new ManagementPolicyRule().withEnabled(true)
+                                    .withName("olcmtest1")
+                                    .withType(RuleType.LIFECYCLE)
+                                    .withDefinition(new ManagementPolicyDefinition()
+                                        .withActions(new ManagementPolicyAction()
+                                            .withBaseBlob(
+                                                new ManagementPolicyBaseBlob().withTierToHot(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(30.0F)))
+                                            .withSnapshot(new ManagementPolicySnapShot().withTierToHot(
+                                                new DateAfterCreation().withDaysAfterCreationGreaterThan(30f)))
+                                            .withVersion(new ManagementPolicyVersion().withTierToHot(
+                                                new DateAfterCreation().withDaysAfterCreationGreaterThan(30f))))
+                                        .withFilters(new ManagementPolicyFilter()
+                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
+                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountSetManagementPolicyLastAccessTimeBasedBlobActions(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getManagementPolicies()
-            .createOrUpdateWithResponse(
-                "res7687",
-                "sto9699",
-                ManagementPolicyName.DEFAULT,
+            .createOrUpdateWithResponse("res7687", "sto9699", ManagementPolicyName.DEFAULT,
                 new ManagementPolicyInner()
                     .withPolicy(
                         new ManagementPolicySchema()
-                            .withRules(
-                                Arrays
-                                    .asList(
-                                        new ManagementPolicyRule()
-                                            .withEnabled(true)
-                                            .withName("olcmtest")
-                                            .withType(RuleType.LIFECYCLE)
-                                            .withDefinition(
-                                                new ManagementPolicyDefinition()
-                                                    .withActions(
-                                                        new ManagementPolicyAction()
-                                                            .withBaseBlob(
-                                                                new ManagementPolicyBaseBlob()
-                                                                    .withTierToCool(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterLastAccessTimeGreaterThan(
-                                                                                30.0F))
-                                                                    .withTierToArchive(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterLastAccessTimeGreaterThan(
-                                                                                90.0F))
-                                                                    .withDelete(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterLastAccessTimeGreaterThan(
-                                                                                1000.0F))
-                                                                    .withEnableAutoTierToHotFromCool(true))
-                                                            .withSnapshot(
-                                                                new ManagementPolicySnapShot()
-                                                                    .withDelete(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f))))
-                                                    .withFilters(
-                                                        new ManagementPolicyFilter()
-                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer"))
-                                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
+                            .withRules(Arrays.asList(new ManagementPolicyRule().withEnabled(true)
+                                .withName("olcmtest")
+                                .withType(RuleType.LIFECYCLE)
+                                .withDefinition(new ManagementPolicyDefinition()
+                                    .withActions(new ManagementPolicyAction()
+                                        .withBaseBlob(new ManagementPolicyBaseBlob()
+                                            .withTierToCool(new DateAfterModification()
+                                                .withDaysAfterLastAccessTimeGreaterThan(30.0F))
+                                            .withTierToArchive(new DateAfterModification()
+                                                .withDaysAfterLastAccessTimeGreaterThan(90.0F))
+                                            .withDelete(new DateAfterModification()
+                                                .withDaysAfterLastAccessTimeGreaterThan(1000.0F))
+                                            .withEnableAutoTierToHotFromCool(true))
+                                        .withSnapshot(new ManagementPolicySnapShot()
+                                            .withDelete(new DateAfterCreation().withDaysAfterCreationGreaterThan(30f))))
+                                    .withFilters(
+                                        new ManagementPolicyFilter().withPrefixMatch(Arrays.asList("olcmtestcontainer"))
+                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountSetManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicies.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountSetManagementPolicies(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getManagementPolicies()
-            .createOrUpdateWithResponse(
-                "res7687",
-                "sto9699",
-                ManagementPolicyName.DEFAULT,
+            .createOrUpdateWithResponse("res7687", "sto9699", ManagementPolicyName.DEFAULT,
                 new ManagementPolicyInner()
                     .withPolicy(
-                        new ManagementPolicySchema()
-                            .withRules(
-                                Arrays
-                                    .asList(
-                                        new ManagementPolicyRule()
-                                            .withEnabled(true)
-                                            .withName("olcmtest1")
-                                            .withType(RuleType.LIFECYCLE)
-                                            .withDefinition(
-                                                new ManagementPolicyDefinition()
-                                                    .withActions(
-                                                        new ManagementPolicyAction()
-                                                            .withBaseBlob(
-                                                                new ManagementPolicyBaseBlob()
-                                                                    .withTierToCool(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                30.0F))
-                                                                    .withTierToArchive(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                90.0F))
-                                                                    .withDelete(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                1000.0F)))
-                                                            .withSnapshot(
-                                                                new ManagementPolicySnapShot()
-                                                                    .withDelete(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f))))
-                                                    .withFilters(
-                                                        new ManagementPolicyFilter()
-                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
-                                                            .withBlobTypes(Arrays.asList("blockBlob")))),
-                                        new ManagementPolicyRule()
-                                            .withEnabled(true)
-                                            .withName("olcmtest2")
-                                            .withType(RuleType.LIFECYCLE)
-                                            .withDefinition(
-                                                new ManagementPolicyDefinition()
-                                                    .withActions(
-                                                        new ManagementPolicyAction()
-                                                            .withBaseBlob(
-                                                                new ManagementPolicyBaseBlob()
-                                                                    .withTierToCool(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                30.0F))
-                                                                    .withTierToArchive(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                90.0F))
-                                                                    .withDelete(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                1000.0F))))
-                                                    .withFilters(
-                                                        new ManagementPolicyFilter()
-                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer2"))
-                                                            .withBlobTypes(Arrays.asList("blockBlob"))
-                                                            .withBlobIndexMatch(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new TagFilter()
-                                                                            .withName("tag1")
-                                                                            .withOp("==")
-                                                                            .withValue("val1"),
-                                                                        new TagFilter()
-                                                                            .withName("tag2")
-                                                                            .withOp("==")
-                                                                            .withValue("val2")))))))),
+                        new ManagementPolicySchema().withRules(Arrays
+                            .asList(
+                                new ManagementPolicyRule().withEnabled(true)
+                                    .withName("olcmtest1")
+                                    .withType(RuleType.LIFECYCLE)
+                                    .withDefinition(new ManagementPolicyDefinition()
+                                        .withActions(new ManagementPolicyAction()
+                                            .withBaseBlob(new ManagementPolicyBaseBlob()
+                                                .withTierToCool(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(30.0F))
+                                                .withTierToArchive(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(90.0F))
+                                                .withDelete(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(1000.0F)))
+                                            .withSnapshot(new ManagementPolicySnapShot().withDelete(
+                                                new DateAfterCreation().withDaysAfterCreationGreaterThan(30f))))
+                                        .withFilters(
+                                            new ManagementPolicyFilter()
+                                                .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
+                                                .withBlobTypes(Arrays.asList("blockBlob")))),
+                                new ManagementPolicyRule().withEnabled(true)
+                                    .withName("olcmtest2")
+                                    .withType(RuleType.LIFECYCLE)
+                                    .withDefinition(new ManagementPolicyDefinition()
+                                        .withActions(new ManagementPolicyAction()
+                                            .withBaseBlob(new ManagementPolicyBaseBlob()
+                                                .withTierToCool(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(30.0F))
+                                                .withTierToArchive(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(90.0F))
+                                                .withDelete(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(1000.0F))))
+                                        .withFilters(new ManagementPolicyFilter()
+                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer2"))
+                                            .withBlobTypes(Arrays.asList("blockBlob"))
+                                            .withBlobIndexMatch(Arrays.asList(
+                                                new TagFilter().withName("tag1").withOp("==").withValue("val1"),
+                                                new TagFilter().withName("tag2").withOp("==").withValue("val2")))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountSetManagementPolicyBaseBlobDaysAfterCreationActions(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getManagementPolicies()
-            .createOrUpdateWithResponse(
-                "res7687",
-                "sto9699",
-                ManagementPolicyName.DEFAULT,
+            .createOrUpdateWithResponse("res7687", "sto9699", ManagementPolicyName.DEFAULT,
                 new ManagementPolicyInner()
                     .withPolicy(
                         new ManagementPolicySchema()
                             .withRules(
                                 Arrays
-                                    .asList(
-                                        new ManagementPolicyRule()
-                                            .withEnabled(true)
-                                            .withName("olcmtest1")
-                                            .withType(RuleType.LIFECYCLE)
-                                            .withDefinition(
-                                                new ManagementPolicyDefinition()
-                                                    .withActions(
-                                                        new ManagementPolicyAction()
-                                                            .withBaseBlob(
-                                                                new ManagementPolicyBaseBlob()
-                                                                    .withTierToCool(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterCreationGreaterThan(30.0F))
-                                                                    .withTierToArchive(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterCreationGreaterThan(90.0F))
-                                                                    .withDelete(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterCreationGreaterThan(
-                                                                                1000.0F))))
-                                                    .withFilters(
-                                                        new ManagementPolicyFilter()
-                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
-                                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
+                                    .asList(new ManagementPolicyRule().withEnabled(true)
+                                        .withName("olcmtest1")
+                                        .withType(RuleType.LIFECYCLE)
+                                        .withDefinition(new ManagementPolicyDefinition()
+                                            .withActions(
+                                                new ManagementPolicyAction().withBaseBlob(new ManagementPolicyBaseBlob()
+                                                    .withTierToCool(new DateAfterModification()
+                                                        .withDaysAfterCreationGreaterThan(30.0F))
+                                                    .withTierToArchive(new DateAfterModification()
+                                                        .withDaysAfterCreationGreaterThan(90.0F))
+                                                    .withDelete(new DateAfterModification()
+                                                        .withDaysAfterCreationGreaterThan(1000.0F))))
+                                            .withFilters(new ManagementPolicyFilter()
+                                                .withPrefixMatch(Arrays.asList("olcmtestcontainer1"))
+                                                .withBlobTypes(Arrays.asList("blockBlob"))))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_LastTierChangeTimeActions.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountSetManagementPolicyLastTierChangeTimeActions(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getManagementPolicies()
-            .createOrUpdateWithResponse(
-                "res7687",
-                "sto9699",
-                ManagementPolicyName.DEFAULT,
+            .createOrUpdateWithResponse("res7687", "sto9699", ManagementPolicyName.DEFAULT,
                 new ManagementPolicyInner()
                     .withPolicy(
                         new ManagementPolicySchema()
                             .withRules(
-                                Arrays
-                                    .asList(
-                                        new ManagementPolicyRule()
-                                            .withEnabled(true)
-                                            .withName("olcmtest")
-                                            .withType(RuleType.LIFECYCLE)
-                                            .withDefinition(
-                                                new ManagementPolicyDefinition()
-                                                    .withActions(
-                                                        new ManagementPolicyAction()
-                                                            .withBaseBlob(
-                                                                new ManagementPolicyBaseBlob()
-                                                                    .withTierToCool(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                30.0F))
-                                                                    .withTierToArchive(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(90.0F)
-                                                                            .withDaysAfterLastTierChangeGreaterThan(
-                                                                                120.0F))
-                                                                    .withDelete(
-                                                                        new DateAfterModification()
-                                                                            .withDaysAfterModificationGreaterThan(
-                                                                                1000.0F)))
-                                                            .withSnapshot(
-                                                                new ManagementPolicySnapShot()
-                                                                    .withTierToArchive(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f)
-                                                                            .withDaysAfterLastTierChangeGreaterThan(
-                                                                                90.0F)))
-                                                            .withVersion(
-                                                                new ManagementPolicyVersion()
-                                                                    .withTierToArchive(
-                                                                        new DateAfterCreation()
-                                                                            .withDaysAfterCreationGreaterThan(30f)
-                                                                            .withDaysAfterLastTierChangeGreaterThan(
-                                                                                90.0F))))
-                                                    .withFilters(
-                                                        new ManagementPolicyFilter()
-                                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer"))
-                                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
+                                Arrays.asList(new ManagementPolicyRule().withEnabled(true)
+                                    .withName("olcmtest")
+                                    .withType(RuleType.LIFECYCLE)
+                                    .withDefinition(new ManagementPolicyDefinition()
+                                        .withActions(new ManagementPolicyAction()
+                                            .withBaseBlob(new ManagementPolicyBaseBlob()
+                                                .withTierToCool(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(30.0F))
+                                                .withTierToArchive(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(90.0F)
+                                                    .withDaysAfterLastTierChangeGreaterThan(120.0F))
+                                                .withDelete(new DateAfterModification()
+                                                    .withDaysAfterModificationGreaterThan(1000.0F)))
+                                            .withSnapshot(new ManagementPolicySnapShot().withTierToArchive(
+                                                new DateAfterCreation().withDaysAfterCreationGreaterThan(30f)
+                                                    .withDaysAfterLastTierChangeGreaterThan(90.0F)))
+                                            .withVersion(new ManagementPolicyVersion().withTierToArchive(
+                                                new DateAfterCreation().withDaysAfterCreationGreaterThan(30f)
+                                                    .withDaysAfterLastTierChangeGreaterThan(90.0F))))
+                                        .withFilters(new ManagementPolicyFilter()
+                                            .withPrefixMatch(Arrays.asList("olcmtestcontainer"))
+                                            .withBlobTypes(Arrays.asList("blockBlob"))))))),
                 com.azure.core.util.Context.NONE);
     }
 }

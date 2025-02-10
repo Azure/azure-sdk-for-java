@@ -7,6 +7,9 @@ package com.azure.resourcemanager.monitor.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleDataSources;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleDestinations;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleMetadata;
@@ -14,44 +17,59 @@ import com.azure.resourcemanager.monitor.models.DataFlow;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleProvisioningState;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleResourceKind;
 import com.azure.resourcemanager.monitor.models.StreamDeclaration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Definition of ARM tracked top level resource. */
+/**
+ * Definition of ARM tracked top level resource.
+ */
 @Fluent
 public final class DataCollectionRuleResourceInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private DataCollectionRuleResourceProperties innerProperties;
 
     /*
      * The kind of the resource.
      */
-    @JsonProperty(value = "kind")
     private KnownDataCollectionRuleResourceKind kind;
 
     /*
      * Resource entity tag (ETag).
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DataCollectionRuleResourceInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of DataCollectionRuleResourceInner class.
+     */
     public DataCollectionRuleResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DataCollectionRuleResourceProperties innerProperties() {
@@ -60,7 +78,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Get the kind property: The kind of the resource.
-     *
+     * 
      * @return the kind value.
      */
     public KnownDataCollectionRuleResourceKind kind() {
@@ -69,7 +87,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Set the kind property: The kind of the resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the DataCollectionRuleResourceInner object itself.
      */
@@ -80,7 +98,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Get the etag property: Resource entity tag (ETag).
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -89,21 +107,55 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionRuleResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionRuleResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -112,7 +164,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Get the description property: Description of the data collection rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -121,7 +173,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Set the description property: Description of the data collection rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the DataCollectionRuleResourceInner object itself.
      */
@@ -135,7 +187,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Get the immutableId property: The immutable ID of this data collection rule. This property is READ-ONLY.
-     *
+     * 
      * @return the immutableId value.
      */
     public String immutableId() {
@@ -145,7 +197,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
     /**
      * Get the dataCollectionEndpointId property: The resource ID of the data collection endpoint that this rule can be
      * used with.
-     *
+     * 
      * @return the dataCollectionEndpointId value.
      */
     public String dataCollectionEndpointId() {
@@ -155,7 +207,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
     /**
      * Set the dataCollectionEndpointId property: The resource ID of the data collection endpoint that this rule can be
      * used with.
-     *
+     * 
      * @param dataCollectionEndpointId the dataCollectionEndpointId value to set.
      * @return the DataCollectionRuleResourceInner object itself.
      */
@@ -169,7 +221,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Get the metadata property: Metadata about the resource.
-     *
+     * 
      * @return the metadata value.
      */
     public DataCollectionRuleMetadata metadata() {
@@ -178,7 +230,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Get the streamDeclarations property: Declaration of custom streams used in this rule.
-     *
+     * 
      * @return the streamDeclarations value.
      */
     public Map<String, StreamDeclaration> streamDeclarations() {
@@ -187,7 +239,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Set the streamDeclarations property: Declaration of custom streams used in this rule.
-     *
+     * 
      * @param streamDeclarations the streamDeclarations value to set.
      * @return the DataCollectionRuleResourceInner object itself.
      */
@@ -200,9 +252,10 @@ public final class DataCollectionRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the dataSources property: The specification of data sources. This property is optional and can be omitted if
-     * the rule is meant to be used via direct calls to the provisioned endpoint.
-     *
+     * Get the dataSources property: The specification of data sources.
+     * This property is optional and can be omitted if the rule is meant to be used via direct calls to the provisioned
+     * endpoint.
+     * 
      * @return the dataSources value.
      */
     public DataCollectionRuleDataSources dataSources() {
@@ -210,9 +263,10 @@ public final class DataCollectionRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the dataSources property: The specification of data sources. This property is optional and can be omitted if
-     * the rule is meant to be used via direct calls to the provisioned endpoint.
-     *
+     * Set the dataSources property: The specification of data sources.
+     * This property is optional and can be omitted if the rule is meant to be used via direct calls to the provisioned
+     * endpoint.
+     * 
      * @param dataSources the dataSources value to set.
      * @return the DataCollectionRuleResourceInner object itself.
      */
@@ -226,7 +280,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Get the destinations property: The specification of destinations.
-     *
+     * 
      * @return the destinations value.
      */
     public DataCollectionRuleDestinations destinations() {
@@ -235,7 +289,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Set the destinations property: The specification of destinations.
-     *
+     * 
      * @param destinations the destinations value to set.
      * @return the DataCollectionRuleResourceInner object itself.
      */
@@ -249,7 +303,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Get the dataFlows property: The specification of data flows.
-     *
+     * 
      * @return the dataFlows value.
      */
     public List<DataFlow> dataFlows() {
@@ -258,7 +312,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Set the dataFlows property: The specification of data flows.
-     *
+     * 
      * @param dataFlows the dataFlows value to set.
      * @return the DataCollectionRuleResourceInner object itself.
      */
@@ -272,7 +326,7 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: The resource provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public KnownDataCollectionRuleProvisioningState provisioningState() {
@@ -281,12 +335,72 @@ public final class DataCollectionRuleResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataCollectionRuleResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataCollectionRuleResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataCollectionRuleResourceInner.
+     */
+    public static DataCollectionRuleResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataCollectionRuleResourceInner deserializedDataCollectionRuleResourceInner
+                = new DataCollectionRuleResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDataCollectionRuleResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataCollectionRuleResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataCollectionRuleResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDataCollectionRuleResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDataCollectionRuleResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataCollectionRuleResourceInner.innerProperties
+                        = DataCollectionRuleResourceProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDataCollectionRuleResourceInner.kind
+                        = KnownDataCollectionRuleResourceKind.fromString(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDataCollectionRuleResourceInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDataCollectionRuleResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataCollectionRuleResourceInner;
+        });
     }
 }

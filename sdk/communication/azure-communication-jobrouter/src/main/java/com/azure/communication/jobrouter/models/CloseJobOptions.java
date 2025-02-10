@@ -5,21 +5,25 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Request payload for closing jobs.
  */
 @Fluent
-public final class CloseJobOptions {
+public final class CloseJobOptions implements JsonSerializable<CloseJobOptions> {
 
     /*
      * Indicates the outcome of a job, populate this field with your own custom values.
      */
     @Generated
-    @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
     /*
@@ -27,18 +31,16 @@ public final class CloseJobOptions {
      * worker capacity is released along with a JobClosedEvent notification at a future time in UTC.
      */
     @Generated
-    @JsonProperty(value = "closeAt")
     private OffsetDateTime closeAt;
 
     /*
      * A note that will be appended to a job's Notes collection with the current timestamp.
      */
     @Generated
-    @JsonProperty(value = "note")
     private String note;
 
     /**
-     * Creates an instance of CloseJobOptionsInternal class.
+     * Creates an instance of CloseJobOptions class.
      */
     @Generated
     public CloseJobOptions() {
@@ -60,7 +62,7 @@ public final class CloseJobOptions {
      * values.
      *
      * @param dispositionCode the dispositionCode value to set.
-     * @return the CloseJobOptionsInternal object itself.
+     * @return the CloseJobOptions object itself.
      */
     @Generated
     public CloseJobOptions setDispositionCode(String dispositionCode) {
@@ -86,7 +88,7 @@ public final class CloseJobOptions {
      * in UTC.
      *
      * @param closeAt the closeAt value to set.
-     * @return the CloseJobOptionsInternal object itself.
+     * @return the CloseJobOptions object itself.
      */
     @Generated
     public CloseJobOptions setCloseAt(OffsetDateTime closeAt) {
@@ -108,11 +110,55 @@ public final class CloseJobOptions {
      * Set the note property: A note that will be appended to a job's Notes collection with the current timestamp.
      *
      * @param note the note value to set.
-     * @return the CloseJobOptionsInternal object itself.
+     * @return the CloseJobOptions object itself.
      */
     @Generated
     public CloseJobOptions setNote(String note) {
         this.note = note;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dispositionCode", this.dispositionCode);
+        jsonWriter.writeStringField("closeAt",
+            this.closeAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.closeAt));
+        jsonWriter.writeStringField("note", this.note);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloseJobOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloseJobOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloseJobOptions.
+     */
+    @Generated
+    public static CloseJobOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloseJobOptions deserializedCloseJobOptions = new CloseJobOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("dispositionCode".equals(fieldName)) {
+                    deserializedCloseJobOptions.dispositionCode = reader.getString();
+                } else if ("closeAt".equals(fieldName)) {
+                    deserializedCloseJobOptions.closeAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("note".equals(fieldName)) {
+                    deserializedCloseJobOptions.note = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedCloseJobOptions;
+        });
     }
 }

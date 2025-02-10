@@ -9,29 +9,27 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagContractInner;
 
-/** Contains all response data for the getByApi operation. */
+/**
+ * Contains all response data for the getByApi operation.
+ */
 public final class TagsGetByApiResponse extends ResponseBase<TagsGetByApiHeaders, TagContractInner> {
     /**
      * Creates an instance of TagsGetByApiResponse.
-     *
+     * 
      * @param request the request which resulted in this TagsGetByApiResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public TagsGetByApiResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        TagContractInner value,
+    public TagsGetByApiResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, TagContractInner value,
         TagsGetByApiHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

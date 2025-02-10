@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.scvmm.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LimitCpuForMigration. */
+/**
+ * Limit CPU for migration.
+ */
 public final class LimitCpuForMigration extends ExpandableStringEnum<LimitCpuForMigration> {
-    /** Static value false for LimitCpuForMigration. */
-    public static final LimitCpuForMigration FALSE = fromString("false");
-
-    /** Static value true for LimitCpuForMigration. */
+    /**
+     * Static value true for LimitCpuForMigration.
+     */
     public static final LimitCpuForMigration TRUE = fromString("true");
 
     /**
+     * Static value false for LimitCpuForMigration.
+     */
+    public static final LimitCpuForMigration FALSE = fromString("false");
+
+    /**
+     * Creates a new instance of LimitCpuForMigration value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LimitCpuForMigration() {
+    }
+
+    /**
      * Creates or finds a LimitCpuForMigration from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LimitCpuForMigration.
      */
-    @JsonCreator
     public static LimitCpuForMigration fromString(String name) {
         return fromString(name, LimitCpuForMigration.class);
     }
 
     /**
      * Gets known LimitCpuForMigration values.
-     *
+     * 
      * @return known LimitCpuForMigration values.
      */
     public static Collection<LimitCpuForMigration> values() {

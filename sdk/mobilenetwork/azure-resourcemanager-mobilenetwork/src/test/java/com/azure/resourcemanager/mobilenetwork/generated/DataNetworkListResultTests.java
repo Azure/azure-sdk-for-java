@@ -15,35 +15,24 @@ import org.junit.jupiter.api.Assertions;
 public final class DataNetworkListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataNetworkListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"description\":\"fqpte\"},\"location\":\"zzvypyqrimzinp\",\"tags\":{\"crmnohjtckwhds\":\"jdkirsoodqx\"},\"id\":\"ifiyipjxsqwpgrj\",\"name\":\"znorcj\",\"type\":\"vsnb\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"nmoc\"},\"location\":\"ysh\",\"tags\":{\"javbqidtqajz\":\"afbljjgpbtoqcjmk\"},\"id\":\"ulpkudjkrl\",\"name\":\"hbzhfepg\",\"type\":\"gqexzlocxs\"}],\"nextLink\":\"aierhhb\"}")
-                .toObject(DataNetworkListResult.class);
-        Assertions.assertEquals("zzvypyqrimzinp", model.value().get(0).location());
-        Assertions.assertEquals("jdkirsoodqx", model.value().get(0).tags().get("crmnohjtckwhds"));
-        Assertions.assertEquals("fqpte", model.value().get(0).description());
+        DataNetworkListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"a\"},\"location\":\"uhrzayvvt\",\"tags\":{\"ftutqxlngxlefgu\":\"dfgiot\",\"qmi\":\"nxkrx\"},\"id\":\"tthzrvqd\",\"name\":\"abhjybi\",\"type\":\"ehoqfbowskan\"}],\"nextLink\":\"tzlcuiywgqywgn\"}")
+            .toObject(DataNetworkListResult.class);
+        Assertions.assertEquals("uhrzayvvt", model.value().get(0).location());
+        Assertions.assertEquals("dfgiot", model.value().get(0).tags().get("ftutqxlngxlefgu"));
+        Assertions.assertEquals("a", model.value().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataNetworkListResult model =
-            new DataNetworkListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DataNetworkInner()
-                                .withLocation("zzvypyqrimzinp")
-                                .withTags(mapOf("crmnohjtckwhds", "jdkirsoodqx"))
-                                .withDescription("fqpte"),
-                            new DataNetworkInner()
-                                .withLocation("ysh")
-                                .withTags(mapOf("javbqidtqajz", "afbljjgpbtoqcjmk"))
-                                .withDescription("nmoc")));
+        DataNetworkListResult model
+            = new DataNetworkListResult().withValue(Arrays.asList(new DataNetworkInner().withLocation("uhrzayvvt")
+                .withTags(mapOf("ftutqxlngxlefgu", "dfgiot", "qmi", "nxkrx"))
+                .withDescription("a")));
         model = BinaryData.fromObject(model).toObject(DataNetworkListResult.class);
-        Assertions.assertEquals("zzvypyqrimzinp", model.value().get(0).location());
-        Assertions.assertEquals("jdkirsoodqx", model.value().get(0).tags().get("crmnohjtckwhds"));
-        Assertions.assertEquals("fqpte", model.value().get(0).description());
+        Assertions.assertEquals("uhrzayvvt", model.value().get(0).location());
+        Assertions.assertEquals("dfgiot", model.value().get(0).tags().get("ftutqxlngxlefgu"));
+        Assertions.assertEquals("a", model.value().get(0).description());
     }
 
     // Use "Map.of" if available

@@ -4,7 +4,7 @@
 
 # Microsoft Azure Service Bus Client for Java
 
-> Please note, a newer package [com.azure:azure-messaging-servicebus](https://central.sonatype.com/artifact/com.azure/azure-messaging-servicebus) for [Azure Service Bus](https://azure.microsoft.com/services/service-bus/) is available as of December 2020. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the [migration guide](https://aka.ms/azsdk/java/migrate&name=sb) for more details.
+> Please note, a newer package [com.azure:azure-messaging-servicebus](https://central.sonatype.com/artifact/com.azure/azure-messaging-servicebus) for [Azure Service Bus](https://azure.microsoft.com/services/service-bus/) is available as of December 2020. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the [migration guide](https://aka.ms/azsdk/java/migrate/sb) for more details.
 
 This is the Java client library for Azure Service Bus that focuses on Queues & Topics. If you are looking for Event Hubs and Relay clients, follow the below links:
 * [Event Hubs](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/microsoft-azure-eventhubs)
@@ -51,7 +51,7 @@ If you send messages from a client any other than the Java client itself in any 
 ## FAQ
 
 ### Where is the API document?
-Click [here](https://docs.microsoft.com/java/api/overview/azure/servicebus?view=azure-java-legacy).
+Click [here](https://learn.microsoft.com/java/api/overview/azure/servicebus?view=azure-java-legacy).
 
 ### Where can I find examples that use this library?
 
@@ -85,4 +85,4 @@ To use a proxy for unit tests, set an environment variable `RUN_WITH_PROXY` to `
 9. Click "Apply" and then "Run"
 10. You should have a new view next to the package explorer called JUnit showing the running tests and see Console outputs depending on which test currently runs. If you do not see the JUnit tab go to Window > Show view > Other... > Java > JUnit
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2FREADME.png)
+

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.confidentialledger.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** AAD based security principal with associated Ledger RoleName. */
+/**
+ * AAD based security principal with associated Ledger RoleName.
+ */
 @Fluent
-public final class AadBasedSecurityPrincipal {
+public final class AadBasedSecurityPrincipal implements JsonSerializable<AadBasedSecurityPrincipal> {
     /*
      * UUID/GUID based Principal Id of the Security Principal
      */
-    @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
      * UUID/GUID based Tenant Id of the Security Principal
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * LedgerRole associated with the Security Principal of Ledger
      */
-    @JsonProperty(value = "ledgerRoleName")
     private LedgerRoleName ledgerRoleName;
 
-    /** Creates an instance of AadBasedSecurityPrincipal class. */
+    /**
+     * Creates an instance of AadBasedSecurityPrincipal class.
+     */
     public AadBasedSecurityPrincipal() {
     }
 
     /**
      * Get the principalId property: UUID/GUID based Principal Id of the Security Principal.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -43,7 +48,7 @@ public final class AadBasedSecurityPrincipal {
 
     /**
      * Set the principalId property: UUID/GUID based Principal Id of the Security Principal.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the AadBasedSecurityPrincipal object itself.
      */
@@ -54,7 +59,7 @@ public final class AadBasedSecurityPrincipal {
 
     /**
      * Get the tenantId property: UUID/GUID based Tenant Id of the Security Principal.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -63,7 +68,7 @@ public final class AadBasedSecurityPrincipal {
 
     /**
      * Set the tenantId property: UUID/GUID based Tenant Id of the Security Principal.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AadBasedSecurityPrincipal object itself.
      */
@@ -74,7 +79,7 @@ public final class AadBasedSecurityPrincipal {
 
     /**
      * Get the ledgerRoleName property: LedgerRole associated with the Security Principal of Ledger.
-     *
+     * 
      * @return the ledgerRoleName value.
      */
     public LedgerRoleName ledgerRoleName() {
@@ -83,7 +88,7 @@ public final class AadBasedSecurityPrincipal {
 
     /**
      * Set the ledgerRoleName property: LedgerRole associated with the Security Principal of Ledger.
-     *
+     * 
      * @param ledgerRoleName the ledgerRoleName value to set.
      * @return the AadBasedSecurityPrincipal object itself.
      */
@@ -94,9 +99,53 @@ public final class AadBasedSecurityPrincipal {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("ledgerRoleName",
+            this.ledgerRoleName == null ? null : this.ledgerRoleName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AadBasedSecurityPrincipal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AadBasedSecurityPrincipal if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AadBasedSecurityPrincipal.
+     */
+    public static AadBasedSecurityPrincipal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AadBasedSecurityPrincipal deserializedAadBasedSecurityPrincipal = new AadBasedSecurityPrincipal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedAadBasedSecurityPrincipal.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedAadBasedSecurityPrincipal.tenantId = reader.getString();
+                } else if ("ledgerRoleName".equals(fieldName)) {
+                    deserializedAadBasedSecurityPrincipal.ledgerRoleName
+                        = LedgerRoleName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAadBasedSecurityPrincipal;
+        });
     }
 }

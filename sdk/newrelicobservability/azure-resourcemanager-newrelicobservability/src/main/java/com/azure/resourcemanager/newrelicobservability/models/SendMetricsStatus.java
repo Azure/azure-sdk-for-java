@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether metrics are being sent. */
+/**
+ * Indicates whether metrics are being sent.
+ */
 public final class SendMetricsStatus extends ExpandableStringEnum<SendMetricsStatus> {
-    /** Static value Enabled for SendMetricsStatus. */
+    /**
+     * Static value Enabled for SendMetricsStatus.
+     */
     public static final SendMetricsStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for SendMetricsStatus. */
+    /**
+     * Static value Disabled for SendMetricsStatus.
+     */
     public static final SendMetricsStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of SendMetricsStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class SendMetricsStatus extends ExpandableStringEnum<SendMetricsSta
 
     /**
      * Creates or finds a SendMetricsStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SendMetricsStatus.
      */
-    @JsonCreator
     public static SendMetricsStatus fromString(String name) {
         return fromString(name, SendMetricsStatus.class);
     }
 
     /**
      * Gets known SendMetricsStatus values.
-     *
+     * 
      * @return known SendMetricsStatus values.
      */
     public static Collection<SendMetricsStatus> values() {

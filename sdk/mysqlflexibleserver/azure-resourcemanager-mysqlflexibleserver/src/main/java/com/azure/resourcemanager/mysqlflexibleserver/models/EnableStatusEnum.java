@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum to indicate whether value is 'Enabled' or 'Disabled'. */
+/**
+ * Enum to indicate whether value is 'Enabled' or 'Disabled'.
+ */
 public final class EnableStatusEnum extends ExpandableStringEnum<EnableStatusEnum> {
-    /** Static value Enabled for EnableStatusEnum. */
+    /**
+     * Static value Enabled for EnableStatusEnum.
+     */
     public static final EnableStatusEnum ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for EnableStatusEnum. */
+    /**
+     * Static value Disabled for EnableStatusEnum.
+     */
     public static final EnableStatusEnum DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of EnableStatusEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class EnableStatusEnum extends ExpandableStringEnum<EnableStatusEnu
 
     /**
      * Creates or finds a EnableStatusEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnableStatusEnum.
      */
-    @JsonCreator
     public static EnableStatusEnum fromString(String name) {
         return fromString(name, EnableStatusEnum.class);
     }
 
     /**
      * Gets known EnableStatusEnum values.
-     *
+     * 
      * @return known EnableStatusEnum values.
      */
     public static Collection<EnableStatusEnum> values() {

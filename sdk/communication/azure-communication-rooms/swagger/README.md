@@ -21,8 +21,8 @@ To update generated files for rooms service, run the following command
 ### Code generation settings
 ``` yaml
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/16f827b7e3392f4f5bc407a626b292cab29abdf9/specification/communication/data-plane/Rooms/readme.md
-use: '@autorest/java@4.1.17'
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/91813ca7a287fe944262e992413ce4d51d987276/specification/communication/data-plane/Rooms/readme.md
+use: '@autorest/java@4.1.27'
 java: true
 title: AzureCommunicationRoomService
 output-folder: ..\
@@ -43,6 +43,7 @@ required-parameter-client-methods: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
 enable-sync-stack: true
+stream-style-serialization: true
 ```
 
 ### Rename Role to ParticipantRole

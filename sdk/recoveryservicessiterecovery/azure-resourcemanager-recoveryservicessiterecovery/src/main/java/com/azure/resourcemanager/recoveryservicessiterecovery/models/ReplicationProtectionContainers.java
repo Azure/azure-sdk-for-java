@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationProtectionContainers. */
+/**
+ * Resource collection API of ReplicationProtectionContainers.
+ */
 public interface ReplicationProtectionContainers {
     /**
      * Gets the list of protection container for a fabric.
-     *
-     * <p>Lists the protection containers in the specified fabric.
-     *
+     * 
+     * Lists the protection containers in the specified fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -23,14 +25,14 @@ public interface ReplicationProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection Container collection as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ProtectionContainer> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName);
+    PagedIterable<ProtectionContainer> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName);
 
     /**
      * Gets the list of protection container for a fabric.
-     *
-     * <p>Lists the protection containers in the specified fabric.
-     *
+     * 
+     * Lists the protection containers in the specified fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -40,14 +42,14 @@ public interface ReplicationProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection Container collection as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ProtectionContainer> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName, Context context);
+    PagedIterable<ProtectionContainer> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName, Context context);
 
     /**
      * Gets the protection container details.
-     *
-     * <p>Gets the details of a protection container.
-     *
+     * 
+     * Gets the details of a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -58,18 +60,14 @@ public interface ReplicationProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a protection container along with {@link Response}.
      */
-    Response<ProtectionContainer> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        Context context);
+    Response<ProtectionContainer> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, Context context);
 
     /**
      * Gets the protection container details.
-     *
-     * <p>Gets the details of a protection container.
-     *
+     * 
+     * Gets the details of a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -79,14 +77,14 @@ public interface ReplicationProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a protection container.
      */
-    ProtectionContainer get(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName);
+    ProtectionContainer get(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName);
 
     /**
      * Adds a protectable item to the replication protection container.
-     *
-     * <p>The operation to a add a protectable item to a protection container(Add physical server).
-     *
+     * 
+     * The operation to a add a protectable item to a protection container(Add physical server).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric.
@@ -97,18 +95,14 @@ public interface ReplicationProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container details.
      */
-    ProtectionContainer discoverProtectableItem(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        DiscoverProtectableItemRequest discoverProtectableItemRequest);
+    ProtectionContainer discoverProtectableItem(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, DiscoverProtectableItemRequest discoverProtectableItemRequest);
 
     /**
      * Adds a protectable item to the replication protection container.
-     *
-     * <p>The operation to a add a protectable item to a protection container(Add physical server).
-     *
+     * 
+     * The operation to a add a protectable item to a protection container(Add physical server).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric.
@@ -120,19 +114,14 @@ public interface ReplicationProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container details.
      */
-    ProtectionContainer discoverProtectableItem(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        DiscoverProtectableItemRequest discoverProtectableItemRequest,
-        Context context);
+    ProtectionContainer discoverProtectableItem(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, DiscoverProtectableItemRequest discoverProtectableItemRequest, Context context);
 
     /**
      * Removes a protection container.
-     *
-     * <p>Operation to remove a protection container.
-     *
+     * 
+     * Operation to remove a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric ARM name.
@@ -145,9 +134,9 @@ public interface ReplicationProtectionContainers {
 
     /**
      * Removes a protection container.
-     *
-     * <p>Operation to remove a protection container.
-     *
+     * 
+     * Operation to remove a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric ARM name.
@@ -157,18 +146,14 @@ public interface ReplicationProtectionContainers {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
+    void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         Context context);
 
     /**
      * Switches protection from one container to another or one replication provider to another.
-     *
-     * <p>Operation to switch protection from one container to another or one replication provider to another.
-     *
+     * 
+     * Operation to switch protection from one container to another or one replication provider to another.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -179,18 +164,14 @@ public interface ReplicationProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container details.
      */
-    ProtectionContainer switchProtection(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        SwitchProtectionInput switchInput);
+    ProtectionContainer switchProtection(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, SwitchProtectionInput switchInput);
 
     /**
      * Switches protection from one container to another or one replication provider to another.
-     *
-     * <p>Operation to switch protection from one container to another or one replication provider to another.
-     *
+     * 
+     * Operation to switch protection from one container to another or one replication provider to another.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -202,19 +183,14 @@ public interface ReplicationProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container details.
      */
-    ProtectionContainer switchProtection(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        SwitchProtectionInput switchInput,
-        Context context);
+    ProtectionContainer switchProtection(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, SwitchProtectionInput switchInput, Context context);
 
     /**
      * Gets the list of all protection containers in a vault.
-     *
-     * <p>Lists the protection containers in a vault.
-     *
+     * 
+     * Lists the protection containers in a vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,9 +202,9 @@ public interface ReplicationProtectionContainers {
 
     /**
      * Gets the list of all protection containers in a vault.
-     *
-     * <p>Lists the protection containers in a vault.
-     *
+     * 
+     * Lists the protection containers in a vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -241,9 +217,9 @@ public interface ReplicationProtectionContainers {
 
     /**
      * Gets the protection container details.
-     *
-     * <p>Gets the details of a protection container.
-     *
+     * 
+     * Gets the details of a protection container.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -254,9 +230,9 @@ public interface ReplicationProtectionContainers {
 
     /**
      * Gets the protection container details.
-     *
-     * <p>Gets the details of a protection container.
-     *
+     * 
+     * Gets the details of a protection container.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,7 +244,7 @@ public interface ReplicationProtectionContainers {
 
     /**
      * Begins definition for a new ProtectionContainer resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ProtectionContainer definition.
      */

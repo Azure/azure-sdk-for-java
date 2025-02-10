@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TargetComputeSizeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents applicable recovery vm sizes. */
+/**
+ * Represents applicable recovery vm sizes.
+ */
 @Fluent
-public final class TargetComputeSizeInner {
+public final class TargetComputeSizeInner implements JsonSerializable<TargetComputeSizeInner> {
     /*
      * The Id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The Type of the object.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The custom data.
      */
-    @JsonProperty(value = "properties")
     private TargetComputeSizeProperties properties;
 
-    /** Creates an instance of TargetComputeSizeInner class. */
+    /**
+     * Creates an instance of TargetComputeSizeInner class.
+     */
     public TargetComputeSizeInner() {
     }
 
     /**
      * Get the id property: The Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Set the id property: The Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the TargetComputeSizeInner object itself.
      */
@@ -61,7 +65,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Get the name property: The name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +74,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Set the name property: The name.
-     *
+     * 
      * @param name the name value to set.
      * @return the TargetComputeSizeInner object itself.
      */
@@ -81,7 +85,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Get the type property: The Type of the object.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -90,7 +94,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Set the type property: The Type of the object.
-     *
+     * 
      * @param type the type value to set.
      * @return the TargetComputeSizeInner object itself.
      */
@@ -101,7 +105,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Get the properties property: The custom data.
-     *
+     * 
      * @return the properties value.
      */
     public TargetComputeSizeProperties properties() {
@@ -110,7 +114,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Set the properties property: The custom data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the TargetComputeSizeInner object itself.
      */
@@ -121,12 +125,57 @@ public final class TargetComputeSizeInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetComputeSizeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetComputeSizeInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TargetComputeSizeInner.
+     */
+    public static TargetComputeSizeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetComputeSizeInner deserializedTargetComputeSizeInner = new TargetComputeSizeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTargetComputeSizeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTargetComputeSizeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTargetComputeSizeInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTargetComputeSizeInner.properties = TargetComputeSizeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetComputeSizeInner;
+        });
     }
 }

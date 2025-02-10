@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AllowedAudiencesValidationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllowedAudiencesValidation model =
-            BinaryData
-                .fromString("{\"allowedAudiences\":[\"wzrlovmclwhij\",\"oejctbzaqsqsy\"]}")
-                .toObject(AllowedAudiencesValidation.class);
-        Assertions.assertEquals("wzrlovmclwhij", model.allowedAudiences().get(0));
+        AllowedAudiencesValidation model = BinaryData
+            .fromString("{\"allowedAudiences\":[\"eojnxqbzvddn\",\"wndeicbtwnp\",\"aoqvuh\",\"hcffcyddglmjthjq\"]}")
+            .toObject(AllowedAudiencesValidation.class);
+        Assertions.assertEquals("eojnxqbzvddn", model.allowedAudiences().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AllowedAudiencesValidation model =
-            new AllowedAudiencesValidation().withAllowedAudiences(Arrays.asList("wzrlovmclwhij", "oejctbzaqsqsy"));
+        AllowedAudiencesValidation model = new AllowedAudiencesValidation()
+            .withAllowedAudiences(Arrays.asList("eojnxqbzvddn", "wndeicbtwnp", "aoqvuh", "hcffcyddglmjthjq"));
         model = BinaryData.fromObject(model).toObject(AllowedAudiencesValidation.class);
-        Assertions.assertEquals("wzrlovmclwhij", model.allowedAudiences().get(0));
+        Assertions.assertEquals("eojnxqbzvddn", model.allowedAudiences().get(0));
     }
 }

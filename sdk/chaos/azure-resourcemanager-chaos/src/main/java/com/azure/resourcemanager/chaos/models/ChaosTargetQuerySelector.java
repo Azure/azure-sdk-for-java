@@ -6,35 +6,53 @@ package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Model that represents a query selector. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Query")
+/**
+ * Model that represents a query selector.
+ */
 @Fluent
 public final class ChaosTargetQuerySelector extends ChaosTargetSelector {
     /*
+     * Enum of the selector type.
+     */
+    private SelectorType type = SelectorType.QUERY;
+
+    /*
      * Azure Resource Graph (ARG) Query Language query for target resources.
      */
-    @JsonProperty(value = "queryString", required = true)
     private String queryString;
 
     /*
      * Subscription id list to scope resource query.
      */
-    @JsonProperty(value = "subscriptionIds", required = true)
     private List<String> subscriptionIds;
 
-    /** Creates an instance of ChaosTargetQuerySelector class. */
+    /**
+     * Creates an instance of ChaosTargetQuerySelector class.
+     */
     public ChaosTargetQuerySelector() {
     }
 
     /**
+     * Get the type property: Enum of the selector type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public SelectorType type() {
+        return this.type;
+    }
+
+    /**
      * Get the queryString property: Azure Resource Graph (ARG) Query Language query for target resources.
-     *
+     * 
      * @return the queryString value.
      */
     public String queryString() {
@@ -43,7 +61,7 @@ public final class ChaosTargetQuerySelector extends ChaosTargetSelector {
 
     /**
      * Set the queryString property: Azure Resource Graph (ARG) Query Language query for target resources.
-     *
+     * 
      * @param queryString the queryString value to set.
      * @return the ChaosTargetQuerySelector object itself.
      */
@@ -54,7 +72,7 @@ public final class ChaosTargetQuerySelector extends ChaosTargetSelector {
 
     /**
      * Get the subscriptionIds property: Subscription id list to scope resource query.
-     *
+     * 
      * @return the subscriptionIds value.
      */
     public List<String> subscriptionIds() {
@@ -63,7 +81,7 @@ public final class ChaosTargetQuerySelector extends ChaosTargetSelector {
 
     /**
      * Set the subscriptionIds property: Subscription id list to scope resource query.
-     *
+     * 
      * @param subscriptionIds the subscriptionIds value to set.
      * @return the ChaosTargetQuerySelector object itself.
      */
@@ -72,14 +90,18 @@ public final class ChaosTargetQuerySelector extends ChaosTargetSelector {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChaosTargetQuerySelector withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChaosTargetQuerySelector withFilter(ChaosTargetFilter filter) {
         super.withFilter(filter);
@@ -88,25 +110,91 @@ public final class ChaosTargetQuerySelector extends ChaosTargetSelector {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (queryString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property queryString in model ChaosTargetQuerySelector"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property queryString in model ChaosTargetQuerySelector"));
         }
         if (subscriptionIds() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subscriptionIds in model ChaosTargetQuerySelector"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subscriptionIds in model ChaosTargetQuerySelector"));
+        }
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model ChaosTargetQuerySelector"));
+        }
+        if (filter() != null) {
+            filter().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ChaosTargetQuerySelector.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("filter", filter());
+        jsonWriter.writeStringField("queryString", this.queryString);
+        jsonWriter.writeArrayField("subscriptionIds", this.subscriptionIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChaosTargetQuerySelector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChaosTargetQuerySelector if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChaosTargetQuerySelector.
+     */
+    public static ChaosTargetQuerySelector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChaosTargetQuerySelector deserializedChaosTargetQuerySelector = new ChaosTargetQuerySelector();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedChaosTargetQuerySelector.withId(reader.getString());
+                } else if ("filter".equals(fieldName)) {
+                    deserializedChaosTargetQuerySelector.withFilter(ChaosTargetFilter.fromJson(reader));
+                } else if ("queryString".equals(fieldName)) {
+                    deserializedChaosTargetQuerySelector.queryString = reader.getString();
+                } else if ("subscriptionIds".equals(fieldName)) {
+                    List<String> subscriptionIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedChaosTargetQuerySelector.subscriptionIds = subscriptionIds;
+                } else if ("type".equals(fieldName)) {
+                    deserializedChaosTargetQuerySelector.type = SelectorType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedChaosTargetQuerySelector.withAdditionalProperties(additionalProperties);
+
+            return deserializedChaosTargetQuerySelector;
+        });
+    }
 }

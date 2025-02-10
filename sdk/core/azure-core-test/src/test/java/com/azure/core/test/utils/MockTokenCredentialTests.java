@@ -18,6 +18,6 @@ public class MockTokenCredentialTests {
     public void basicRetrieveToken() {
         MockTokenCredential credential = new MockTokenCredential();
         AccessToken credentialToken = credential.getTokenSync(new TokenRequestContext());
-        assertEquals(credentialToken.getToken(), "mockToken");
+        assertEquals("mockToken", credentialToken.getToken());
     }
 }

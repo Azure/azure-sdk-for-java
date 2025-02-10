@@ -6,19 +6,21 @@ package com.azure.resourcemanager.storage.generated;
 
 import com.azure.resourcemanager.storage.models.ManagementPolicyName;
 
-/** Samples for ManagementPolicies Get. */
+/**
+ * Samples for ManagementPolicies Get.
+ */
 public final class ManagementPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetManagementPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountGetManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountGetManagementPolicies.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void storageAccountGetManagementPolicies(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getManagementPolicies()

@@ -107,14 +107,18 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
     }
 
     public VolumeQuotaRule create() {
-        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules().create(resourceGroupName, accountName,
-            poolName, volumeName, volumeQuotaRuleName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeQuotaRules()
+            .create(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public VolumeQuotaRule create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules().create(resourceGroupName, accountName,
-            poolName, volumeName, volumeQuotaRuleName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeQuotaRules()
+            .create(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -130,14 +134,17 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
     }
 
     public VolumeQuotaRule apply() {
-        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules().update(resourceGroupName, accountName,
-            poolName, volumeName, volumeQuotaRuleName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeQuotaRules()
+            .update(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, updateBody,
+                Context.NONE);
         return this;
     }
 
     public VolumeQuotaRule apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules().update(resourceGroupName, accountName,
-            poolName, volumeName, volumeQuotaRuleName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeQuotaRules()
+            .update(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, updateBody, context);
         return this;
     }
 
@@ -145,22 +152,24 @@ public final class VolumeQuotaRuleImpl implements VolumeQuotaRule, VolumeQuotaRu
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = Utils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.volumeName = Utils.getValueFromIdByName(innerObject.id(), "volumes");
-        this.volumeQuotaRuleName = Utils.getValueFromIdByName(innerObject.id(), "volumeQuotaRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
+        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
+        this.volumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumes");
+        this.volumeQuotaRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumeQuotaRules");
     }
 
     public VolumeQuotaRule refresh() {
-        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules()
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeQuotaRules()
             .getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, Context.NONE)
             .getValue();
         return this;
     }
 
     public VolumeQuotaRule refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVolumeQuotaRules()
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeQuotaRules()
             .getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
             .getValue();
         return this;

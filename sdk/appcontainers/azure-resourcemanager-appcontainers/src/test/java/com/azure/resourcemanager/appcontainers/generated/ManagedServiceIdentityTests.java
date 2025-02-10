@@ -15,21 +15,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedServiceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"d073bf54-c2cd-4b62-9f3b-090a75b5196b\",\"tenantId\":\"635985ec-52b2-47ea-99d6-f20863ffe688\",\"type\":\"None\",\"userAssignedIdentities\":{\"meue\":{\"principalId\":\"4f4bbb93-ec01-481a-aec4-7b4a443e6ae6\",\"clientId\":\"d092a881-698b-4ef0-9294-c894ef9f35bf\"},\"yhz\":{\"principalId\":\"5657ddc3-3e07-41e8-aaab-9381cc5eced8\",\"clientId\":\"a7b371f6-e488-41c8-848c-3924ddba6d58\"}}}")
-                .toObject(ManagedServiceIdentity.class);
+        ManagedServiceIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"230c3431-b6d5-45e1-ad60-982d38be0cc6\",\"tenantId\":\"3608a43e-8e31-482c-be6d-7870288cda0c\",\"type\":\"None\",\"userAssignedIdentities\":{\"kphywpnvjto\":{\"principalId\":\"66b8cf76-f18a-4c22-b85f-11e970ce403d\",\"clientId\":\"de3ffd42-35fa-4062-b784-aaa4baefabd1\"}}}")
+            .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model =
-            new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf("meue", new UserAssignedIdentity(), "yhz", new UserAssignedIdentity()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("kphywpnvjto", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }

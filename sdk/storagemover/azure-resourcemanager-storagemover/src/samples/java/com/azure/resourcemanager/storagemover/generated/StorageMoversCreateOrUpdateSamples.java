@@ -7,19 +7,22 @@ package com.azure.resourcemanager.storagemover.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for StorageMovers CreateOrUpdate. */
+/**
+ * Samples for StorageMovers CreateOrUpdate.
+ */
 public final class StorageMoversCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/StorageMovers_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2024-07-01/examples/
+     * StorageMovers_CreateOrUpdate.json
      */
     /**
      * Sample code: StorageMovers_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to StorageMoverManager.
      */
     public static void storageMoversCreateOrUpdate(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
-        manager
-            .storageMovers()
+        manager.storageMovers()
             .define("examples-storageMoverName")
             .withRegion("eastus2")
             .withExistingResourceGroup("examples-rg")

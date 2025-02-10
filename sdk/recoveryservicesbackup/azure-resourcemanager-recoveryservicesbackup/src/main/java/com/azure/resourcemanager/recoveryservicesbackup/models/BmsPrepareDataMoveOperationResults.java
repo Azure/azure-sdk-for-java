@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BmsPrepareDataMoveOperationResults. */
+/**
+ * Resource collection API of BmsPrepareDataMoveOperationResults.
+ */
 public interface BmsPrepareDataMoveOperationResults {
     /**
      * Fetches Operation Result for Prepare Data Move.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.
@@ -21,12 +23,12 @@ public interface BmsPrepareDataMoveOperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation result response for Vault Storage Config along with {@link Response}.
      */
-    Response<VaultStorageConfigOperationResultResponse> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context);
+    Response<VaultStorageConfigOperationResultResponse> getWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context);
 
     /**
      * Fetches Operation Result for Prepare Data Move.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.

@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Current DNS type.
  */
@@ -36,7 +33,6 @@ public enum DnsType {
      * @param value the serialized value to parse.
      * @return the parsed DnsType object, or null if unable to parse.
      */
-    @JsonCreator
     public static DnsType fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum DnsType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

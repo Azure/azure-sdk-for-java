@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The port exposed on the container group. */
+/**
+ * The port exposed on the container group.
+ */
 @Fluent
-public final class Port {
+public final class Port implements JsonSerializable<Port> {
     /*
      * The protocol associated with the port.
      */
-    @JsonProperty(value = "protocol")
     private ContainerGroupNetworkProtocol protocol;
 
     /*
      * The port number.
      */
-    @JsonProperty(value = "port", required = true)
     private int port;
 
-    /** Creates an instance of Port class. */
+    /**
+     * Creates an instance of Port class.
+     */
     public Port() {
     }
 
     /**
      * Get the protocol property: The protocol associated with the port.
-     *
+     * 
      * @return the protocol value.
      */
     public ContainerGroupNetworkProtocol protocol() {
@@ -37,7 +43,7 @@ public final class Port {
 
     /**
      * Set the protocol property: The protocol associated with the port.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the Port object itself.
      */
@@ -48,7 +54,7 @@ public final class Port {
 
     /**
      * Get the port property: The port number.
-     *
+     * 
      * @return the port value.
      */
     public int port() {
@@ -57,7 +63,7 @@ public final class Port {
 
     /**
      * Set the port property: The port number.
-     *
+     * 
      * @param port the port value to set.
      * @return the Port object itself.
      */
@@ -68,9 +74,49 @@ public final class Port {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("port", this.port);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Port from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Port if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Port.
+     */
+    public static Port fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Port deserializedPort = new Port();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("port".equals(fieldName)) {
+                    deserializedPort.port = reader.getInt();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedPort.protocol = ContainerGroupNetworkProtocol.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPort;
+        });
     }
 }

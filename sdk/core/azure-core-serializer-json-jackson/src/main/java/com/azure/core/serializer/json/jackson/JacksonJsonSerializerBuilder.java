@@ -17,11 +17,10 @@ public final class JacksonJsonSerializerBuilder {
      * Jackson uses. This configuration is reset here by mutating the inclusion scope and null handling to use the
      * default Jackson values so that JacksonJsonSerializer has less friction when this default is used.
      */
-    private static final ObjectMapperShim DEFAULT_MAPPER = ObjectMapperShim
-        .createJsonMapper(ObjectMapperShim.createSimpleMapper(),
-                  (mapper, innerMapper) -> mapper
-                    .setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS)
-                    .setDefaultVisibility(JsonAutoDetect.Value.defaultVisibility()));
+    private static final ObjectMapperShim DEFAULT_MAPPER
+        = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
+            (mapper, innerMapper) -> mapper.setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS)
+                .setDefaultVisibility(JsonAutoDetect.Value.defaultVisibility()));
 
     private ObjectMapperShim objectMapper;
 

@@ -5,49 +5,54 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The properties of a logFile. */
+/**
+ * The properties of a logFile.
+ */
 @Fluent
-public final class LogFileProperties {
+public final class LogFileProperties implements JsonSerializable<LogFileProperties> {
     /*
      * Creation timestamp of the log file.
      */
-    @JsonProperty(value = "createdTime")
     private OffsetDateTime createdTime;
 
     /*
      * Last modified timestamp of the log file.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * The size in kb of the logFile.
      */
-    @JsonProperty(value = "sizeInKb")
     private Long sizeInKb;
 
     /*
      * Type of the log file.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The url to download the log file from.
      */
-    @JsonProperty(value = "url")
     private String url;
 
-    /** Creates an instance of LogFileProperties class. */
+    /**
+     * Creates an instance of LogFileProperties class.
+     */
     public LogFileProperties() {
     }
 
     /**
      * Get the createdTime property: Creation timestamp of the log file.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -56,7 +61,7 @@ public final class LogFileProperties {
 
     /**
      * Set the createdTime property: Creation timestamp of the log file.
-     *
+     * 
      * @param createdTime the createdTime value to set.
      * @return the LogFileProperties object itself.
      */
@@ -67,7 +72,7 @@ public final class LogFileProperties {
 
     /**
      * Get the lastModifiedTime property: Last modified timestamp of the log file.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -76,7 +81,7 @@ public final class LogFileProperties {
 
     /**
      * Set the lastModifiedTime property: Last modified timestamp of the log file.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the LogFileProperties object itself.
      */
@@ -87,7 +92,7 @@ public final class LogFileProperties {
 
     /**
      * Get the sizeInKb property: The size in kb of the logFile.
-     *
+     * 
      * @return the sizeInKb value.
      */
     public Long sizeInKb() {
@@ -96,7 +101,7 @@ public final class LogFileProperties {
 
     /**
      * Set the sizeInKb property: The size in kb of the logFile.
-     *
+     * 
      * @param sizeInKb the sizeInKb value to set.
      * @return the LogFileProperties object itself.
      */
@@ -107,7 +112,7 @@ public final class LogFileProperties {
 
     /**
      * Get the type property: Type of the log file.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -116,7 +121,7 @@ public final class LogFileProperties {
 
     /**
      * Set the type property: Type of the log file.
-     *
+     * 
      * @param type the type value to set.
      * @return the LogFileProperties object itself.
      */
@@ -127,7 +132,7 @@ public final class LogFileProperties {
 
     /**
      * Get the url property: The url to download the log file from.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -136,7 +141,7 @@ public final class LogFileProperties {
 
     /**
      * Set the url property: The url to download the log file from.
-     *
+     * 
      * @param url the url value to set.
      * @return the LogFileProperties object itself.
      */
@@ -147,9 +152,63 @@ public final class LogFileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdTime",
+            this.createdTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeNumberField("sizeInKb", this.sizeInKb);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("url", this.url);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogFileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogFileProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogFileProperties.
+     */
+    public static LogFileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogFileProperties deserializedLogFileProperties = new LogFileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdTime".equals(fieldName)) {
+                    deserializedLogFileProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedLogFileProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sizeInKb".equals(fieldName)) {
+                    deserializedLogFileProperties.sizeInKb = reader.getNullable(JsonReader::getLong);
+                } else if ("type".equals(fieldName)) {
+                    deserializedLogFileProperties.type = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedLogFileProperties.url = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogFileProperties;
+        });
     }
 }

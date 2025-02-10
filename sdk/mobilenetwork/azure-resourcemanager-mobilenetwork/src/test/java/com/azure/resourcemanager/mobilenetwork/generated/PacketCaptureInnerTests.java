@@ -12,29 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class PacketCaptureInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PacketCaptureInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"Running\",\"reason\":\"exfwhy\",\"captureStartTime\":\"2021-05-17T05:51:50Z\",\"networkInterfaces\":[\"yvdcsitynnaa\",\"dectehfiqsc\"],\"bytesToCapturePerPacket\":991412043845588361,\"totalBytesPerSession\":7720678337601187559,\"timeLimitInSeconds\":732207919,\"outputFiles\":[\"q\",\"c\",\"refovgmkqsleyyvx\"]},\"id\":\"jpkcattpng\",\"name\":\"cr\",\"type\":\"czsqpjhvm\"}")
-                .toObject(PacketCaptureInner.class);
-        Assertions.assertEquals("yvdcsitynnaa", model.networkInterfaces().get(0));
-        Assertions.assertEquals(991412043845588361L, model.bytesToCapturePerPacket());
-        Assertions.assertEquals(7720678337601187559L, model.totalBytesPerSession());
-        Assertions.assertEquals(732207919, model.timeLimitInSeconds());
+        PacketCaptureInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Stopped\",\"reason\":\"kpoc\",\"captureStartTime\":\"2021-05-19T00:57:25Z\",\"networkInterfaces\":[\"xoegukgjnpiucgy\",\"evqzntypmrbp\",\"zcdrqjsdpydnfyhx\"],\"bytesToCapturePerPacket\":5446401731314405625,\"totalBytesPerSession\":1641594420313598643,\"timeLimitInSeconds\":170373532,\"outputFiles\":[\"sjttgzfbish\"]},\"id\":\"khaj\",\"name\":\"eyeam\",\"type\":\"p\"}")
+            .toObject(PacketCaptureInner.class);
+        Assertions.assertEquals("xoegukgjnpiucgy", model.networkInterfaces().get(0));
+        Assertions.assertEquals(5446401731314405625L, model.bytesToCapturePerPacket());
+        Assertions.assertEquals(1641594420313598643L, model.totalBytesPerSession());
+        Assertions.assertEquals(170373532, model.timeLimitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PacketCaptureInner model =
-            new PacketCaptureInner()
-                .withNetworkInterfaces(Arrays.asList("yvdcsitynnaa", "dectehfiqsc"))
-                .withBytesToCapturePerPacket(991412043845588361L)
-                .withTotalBytesPerSession(7720678337601187559L)
-                .withTimeLimitInSeconds(732207919);
+        PacketCaptureInner model = new PacketCaptureInner()
+            .withNetworkInterfaces(Arrays.asList("xoegukgjnpiucgy", "evqzntypmrbp", "zcdrqjsdpydnfyhx"))
+            .withBytesToCapturePerPacket(5446401731314405625L)
+            .withTotalBytesPerSession(1641594420313598643L)
+            .withTimeLimitInSeconds(170373532);
         model = BinaryData.fromObject(model).toObject(PacketCaptureInner.class);
-        Assertions.assertEquals("yvdcsitynnaa", model.networkInterfaces().get(0));
-        Assertions.assertEquals(991412043845588361L, model.bytesToCapturePerPacket());
-        Assertions.assertEquals(7720678337601187559L, model.totalBytesPerSession());
-        Assertions.assertEquals(732207919, model.timeLimitInSeconds());
+        Assertions.assertEquals("xoegukgjnpiucgy", model.networkInterfaces().get(0));
+        Assertions.assertEquals(5446401731314405625L, model.bytesToCapturePerPacket());
+        Assertions.assertEquals(1641594420313598643L, model.totalBytesPerSession());
+        Assertions.assertEquals(170373532, model.timeLimitInSeconds());
     }
 }

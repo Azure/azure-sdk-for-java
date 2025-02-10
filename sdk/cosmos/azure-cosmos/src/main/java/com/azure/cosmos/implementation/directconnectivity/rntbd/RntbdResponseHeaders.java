@@ -144,7 +144,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     private RntbdResponseHeaders(ByteBuf in) {
 
-        super(RntbdResponseHeader.set, RntbdResponseHeader.map, in);
+        super(RntbdResponseHeader.set, RntbdResponseHeader.map, in, RntbdResponseHeader.class);
 
         this.LSN = this.get(RntbdResponseHeader.LSN);
         this.collectionLazyIndexProgress = this.get(RntbdResponseHeader.CollectionLazyIndexProgress);

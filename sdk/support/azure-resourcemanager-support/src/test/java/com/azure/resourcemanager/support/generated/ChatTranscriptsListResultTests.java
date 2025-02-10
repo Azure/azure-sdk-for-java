@@ -14,56 +14,27 @@ import org.junit.jupiter.api.Assertions;
 public final class ChatTranscriptsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChatTranscriptsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"messages\":[{\"communicationDirection\":\"inbound\",\"sender\":\"aejxd\",\"body\":\"ltskzbbtd\",\"createdDate\":\"2020-12-20T17:44:54Z\"},{\"communicationDirection\":\"inbound\",\"sender\":\"gpw\",\"body\":\"zuhkfpbsjyof\",\"createdDate\":\"2021-03-14T10:54:45Z\"},{\"communicationDirection\":\"inbound\",\"sender\":\"ttouwaboekqvkel\",\"body\":\"smv\",\"createdDate\":\"2021-08-06T12:01:01Z\"}],\"startTime\":\"2021-08-14T03:50:42Z\"},\"id\":\"flhhcaal\",\"name\":\"jixisxyawjoyaqcs\",\"type\":\"yjpkiidzyexz\"},{\"properties\":{\"messages\":[{\"communicationDirection\":\"inbound\",\"sender\":\"ztfolhbnxk\",\"body\":\"alaulppggdtpnapn\",\"createdDate\":\"2021-04-06T21:45:28Z\"},{\"communicationDirection\":\"inbound\",\"sender\":\"pigvpgylgqgitx\",\"body\":\"edjvcslynqw\",\"createdDate\":\"2021-06-18T01:03:59Z\"}],\"startTime\":\"2021-02-16T11:10:06Z\"},\"id\":\"hxg\",\"name\":\"trmgucnapkte\",\"type\":\"ellwptfdy\"},{\"properties\":{\"messages\":[{\"communicationDirection\":\"inbound\",\"sender\":\"eopzfqrhhuaopp\",\"body\":\"cq\",\"createdDate\":\"2021-08-17T00:04:54Z\"},{\"communicationDirection\":\"inbound\",\"sender\":\"ahzxctobgbk\",\"body\":\"moizpos\",\"createdDate\":\"2021-02-03T18:27:02Z\"},{\"communicationDirection\":\"outbound\",\"sender\":\"unrmfqjhhkxb\",\"body\":\"vjymjhxxjyngud\",\"createdDate\":\"2021-05-19T20:27:55Z\"}],\"startTime\":\"2021-04-07T12:52:17Z\"},\"id\":\"wbxqzvszjfau\",\"name\":\"j\",\"type\":\"dxxiv\"},{\"properties\":{\"messages\":[{\"communicationDirection\":\"outbound\",\"sender\":\"tdo\",\"body\":\"mcbxvwvxysl\",\"createdDate\":\"2021-11-03T16:17:43Z\"}],\"startTime\":\"2021-05-16T19:49:18Z\"},\"id\":\"obl\",\"name\":\"tkblmpewww\",\"type\":\"bkrvrnsvshqj\"}],\"nextLink\":\"xc\"}")
-                .toObject(ChatTranscriptsListResult.class);
-        Assertions.assertEquals("aejxd", model.value().get(0).messages().get(0).sender());
-        Assertions.assertEquals("ltskzbbtd", model.value().get(0).messages().get(0).body());
-        Assertions.assertEquals("xc", model.nextLink());
+        ChatTranscriptsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"messages\":[{\"communicationDirection\":\"inbound\",\"sender\":\"ppcqeqxolz\",\"body\":\"hzxct\",\"createdDate\":\"2021-10-01T04:47:29Z\"},{\"communicationDirection\":\"outbound\",\"sender\":\"oizpostmgrcfbun\",\"body\":\"fqjhhkxbpvjymj\",\"createdDate\":\"2021-07-29T03:03:57Z\"}],\"startTime\":\"2021-12-01T23:11:57Z\"},\"id\":\"gudivkrtswbxqz\",\"name\":\"szjfauvjfdxxivet\",\"type\":\"t\"},{\"properties\":{\"messages\":[{\"communicationDirection\":\"outbound\",\"sender\":\"mcbxvwvxysl\",\"body\":\"hsfxoblytkb\",\"createdDate\":\"2021-09-21T19:24:42Z\"}],\"startTime\":\"2021-02-10T08:31:36Z\"},\"id\":\"wfbkrvrns\",\"name\":\"shqjohxcrsbf\",\"type\":\"vasrruvwb\"}],\"nextLink\":\"qfsubcgjbirx\"}")
+            .toObject(ChatTranscriptsListResult.class);
+        Assertions.assertEquals("ppcqeqxolz", model.value().get(0).messages().get(0).sender());
+        Assertions.assertEquals("hzxct", model.value().get(0).messages().get(0).body());
+        Assertions.assertEquals("qfsubcgjbirx", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChatTranscriptsListResult model =
-            new ChatTranscriptsListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ChatTranscriptDetailsInner()
-                                .withMessages(
-                                    Arrays
-                                        .asList(
-                                            new MessageProperties().withSender("aejxd").withBody("ltskzbbtd"),
-                                            new MessageProperties().withSender("gpw").withBody("zuhkfpbsjyof"),
-                                            new MessageProperties().withSender("ttouwaboekqvkel").withBody("smv"))),
-                            new ChatTranscriptDetailsInner()
-                                .withMessages(
-                                    Arrays
-                                        .asList(
-                                            new MessageProperties()
-                                                .withSender("ztfolhbnxk")
-                                                .withBody("alaulppggdtpnapn"),
-                                            new MessageProperties()
-                                                .withSender("pigvpgylgqgitx")
-                                                .withBody("edjvcslynqw"))),
-                            new ChatTranscriptDetailsInner()
-                                .withMessages(
-                                    Arrays
-                                        .asList(
-                                            new MessageProperties().withSender("eopzfqrhhuaopp").withBody("cq"),
-                                            new MessageProperties().withSender("ahzxctobgbk").withBody("moizpos"),
-                                            new MessageProperties()
-                                                .withSender("unrmfqjhhkxb")
-                                                .withBody("vjymjhxxjyngud"))),
-                            new ChatTranscriptDetailsInner()
-                                .withMessages(
-                                    Arrays.asList(new MessageProperties().withSender("tdo").withBody("mcbxvwvxysl")))))
-                .withNextLink("xc");
+        ChatTranscriptsListResult model = new ChatTranscriptsListResult()
+            .withValue(Arrays.asList(
+                new ChatTranscriptDetailsInner()
+                    .withMessages(Arrays.asList(new MessageProperties().withSender("ppcqeqxolz").withBody("hzxct"),
+                        new MessageProperties().withSender("oizpostmgrcfbun").withBody("fqjhhkxbpvjymj"))),
+                new ChatTranscriptDetailsInner().withMessages(
+                    Arrays.asList(new MessageProperties().withSender("mcbxvwvxysl").withBody("hsfxoblytkb")))))
+            .withNextLink("qfsubcgjbirx");
         model = BinaryData.fromObject(model).toObject(ChatTranscriptsListResult.class);
-        Assertions.assertEquals("aejxd", model.value().get(0).messages().get(0).sender());
-        Assertions.assertEquals("ltskzbbtd", model.value().get(0).messages().get(0).body());
-        Assertions.assertEquals("xc", model.nextLink());
+        Assertions.assertEquals("ppcqeqxolz", model.value().get(0).messages().get(0).sender());
+        Assertions.assertEquals("hzxct", model.value().get(0).messages().get(0).body());
+        Assertions.assertEquals("qfsubcgjbirx", model.nextLink());
     }
 }

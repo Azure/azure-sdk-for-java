@@ -5,32 +5,34 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.ConfluentListMetadata;
 import com.azure.resourcemanager.confluent.models.EnvironmentRecord;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * List environments success response.
+ * Details of the environments returned on successful response.
  */
 @Fluent
-public final class AccessListEnvironmentsSuccessResponseInner {
+public final class AccessListEnvironmentsSuccessResponseInner
+    implements JsonSerializable<AccessListEnvironmentsSuccessResponseInner> {
     /*
      * Type of response
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
-     * Metadata of the list
+     * Metadata of the environment list
      */
-    @JsonProperty(value = "metadata")
     private ConfluentListMetadata metadata;
 
     /*
-     * Data of the environments list
+     * Environment list data
      */
-    @JsonProperty(value = "data")
     private List<EnvironmentRecord> data;
 
     /**
@@ -60,7 +62,7 @@ public final class AccessListEnvironmentsSuccessResponseInner {
     }
 
     /**
-     * Get the metadata property: Metadata of the list.
+     * Get the metadata property: Metadata of the environment list.
      * 
      * @return the metadata value.
      */
@@ -69,7 +71,7 @@ public final class AccessListEnvironmentsSuccessResponseInner {
     }
 
     /**
-     * Set the metadata property: Metadata of the list.
+     * Set the metadata property: Metadata of the environment list.
      * 
      * @param metadata the metadata value to set.
      * @return the AccessListEnvironmentsSuccessResponseInner object itself.
@@ -80,7 +82,7 @@ public final class AccessListEnvironmentsSuccessResponseInner {
     }
 
     /**
-     * Get the data property: Data of the environments list.
+     * Get the data property: Environment list data.
      * 
      * @return the data value.
      */
@@ -89,7 +91,7 @@ public final class AccessListEnvironmentsSuccessResponseInner {
     }
 
     /**
-     * Set the data property: Data of the environments list.
+     * Set the data property: Environment list data.
      * 
      * @param data the data value to set.
      * @return the AccessListEnvironmentsSuccessResponseInner object itself.
@@ -111,5 +113,50 @@ public final class AccessListEnvironmentsSuccessResponseInner {
         if (data() != null) {
             data().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessListEnvironmentsSuccessResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessListEnvironmentsSuccessResponseInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessListEnvironmentsSuccessResponseInner.
+     */
+    public static AccessListEnvironmentsSuccessResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessListEnvironmentsSuccessResponseInner deserializedAccessListEnvironmentsSuccessResponseInner
+                = new AccessListEnvironmentsSuccessResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedAccessListEnvironmentsSuccessResponseInner.kind = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedAccessListEnvironmentsSuccessResponseInner.metadata
+                        = ConfluentListMetadata.fromJson(reader);
+                } else if ("data".equals(fieldName)) {
+                    List<EnvironmentRecord> data = reader.readArray(reader1 -> EnvironmentRecord.fromJson(reader1));
+                    deserializedAccessListEnvironmentsSuccessResponseInner.data = data;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessListEnvironmentsSuccessResponseInner;
+        });
     }
 }

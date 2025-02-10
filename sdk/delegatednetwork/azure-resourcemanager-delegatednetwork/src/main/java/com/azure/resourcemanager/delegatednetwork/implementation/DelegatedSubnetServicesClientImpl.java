@@ -40,23 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DelegatedSubnetServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DelegatedSubnetServicesClient.
+ */
 public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetServicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DelegatedSubnetServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DncImpl client;
 
     /**
      * Initializes an instance of DelegatedSubnetServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DelegatedSubnetServicesClientImpl(DncImpl client) {
-        this.service =
-            RestProxy
-                .create(DelegatedSubnetServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DelegatedSubnetServicesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,134 +72,94 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
     @Host("{$host}")
     @ServiceInterface(name = "DncDelegatedSubnetSe")
     public interface DelegatedSubnetServicesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DelegatedNetwork"
-                + "/delegatedSubnets/{resourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DelegatedNetwork/delegatedSubnets/{resourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DelegatedSubnetInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<DelegatedSubnetInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DelegatedNetwork/delegatedSubnets/{resourceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> putDetails(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") DelegatedSubnetInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DelegatedNetwork"
-                + "/delegatedSubnets/{resourceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DelegatedNetwork/delegatedSubnets/{resourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> putDetails(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DelegatedSubnetInner parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> patchDetails(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ResourceUpdateParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DelegatedNetwork"
-                + "/delegatedSubnets/{resourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DelegatedNetwork/delegatedSubnets/{resourceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> patchDetails(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ResourceUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("forceDelete") Boolean forceDelete, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DelegatedNetwork"
-                + "/delegatedSubnets/{resourceName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("forceDelete") Boolean forceDelete,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DelegatedNetwork/delegatedSubnets")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DelegatedSubnets>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DelegatedSubnets>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DelegatedNetwork"
-                + "/delegatedSubnets")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DelegatedNetwork/delegatedSubnets")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DelegatedSubnets>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DelegatedSubnets>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DelegatedSubnets>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DelegatedSubnets>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets details about the specified dnc DelegatedSubnet Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified dnc DelegatedSubnet Link along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DelegatedSubnetInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<Response<DelegatedSubnetInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -204,30 +169,19 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                resourceName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets details about the specified dnc DelegatedSubnet Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
@@ -235,16 +189,14 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about the specified dnc DelegatedSubnet Link along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DelegatedSubnetInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<DelegatedSubnetInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -254,27 +206,18 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, resourceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets details about the specified dnc DelegatedSubnet Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,7 +233,7 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
 
     /**
      * Gets details about the specified dnc DelegatedSubnet Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param context The context to associate with this operation.
@@ -300,14 +243,14 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return details about the specified dnc DelegatedSubnet Link along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DelegatedSubnetInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<DelegatedSubnetInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Gets details about the specified dnc DelegatedSubnet Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -322,24 +265,22 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> putDetailsWithResponseAsync(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> putDetailsWithResponseAsync(String resourceGroupName, String resourceName,
+        DelegatedSubnetInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -349,10 +290,8 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -361,24 +300,14 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .putDetails(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.putDetails(this.client.getEndpoint(), resourceGroupName, resourceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -386,17 +315,15 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> putDetailsWithResponseAsync(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> putDetailsWithResponseAsync(String resourceGroupName, String resourceName,
+        DelegatedSubnetInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -406,10 +333,8 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -418,21 +343,13 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .putDetails(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.putDetails(this.client.getEndpoint(), resourceGroupName, resourceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -442,23 +359,17 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return the {@link PollerFlux} for polling of represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetailsAsync(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            putDetailsWithResponseAsync(resourceGroupName, resourceName, parameters);
-        return this
-            .client
-            .<DelegatedSubnetInner, DelegatedSubnetInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DelegatedSubnetInner.class,
-                DelegatedSubnetInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner>
+        beginPutDetailsAsync(String resourceGroupName, String resourceName, DelegatedSubnetInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = putDetailsWithResponseAsync(resourceGroupName, resourceName, parameters);
+        return this.client.<DelegatedSubnetInner, DelegatedSubnetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DelegatedSubnetInner.class, DelegatedSubnetInner.class, this.client.getContext());
     }
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -472,17 +383,15 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
     private PollerFlux<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetailsAsync(
         String resourceGroupName, String resourceName, DelegatedSubnetInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            putDetailsWithResponseAsync(resourceGroupName, resourceName, parameters, context);
-        return this
-            .client
-            .<DelegatedSubnetInner, DelegatedSubnetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DelegatedSubnetInner.class, DelegatedSubnetInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = putDetailsWithResponseAsync(resourceGroupName, resourceName, parameters, context);
+        return this.client.<DelegatedSubnetInner, DelegatedSubnetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DelegatedSubnetInner.class, DelegatedSubnetInner.class, context);
     }
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -492,14 +401,14 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetails(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters) {
+    public SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetails(String resourceGroupName,
+        String resourceName, DelegatedSubnetInner parameters) {
         return this.beginPutDetailsAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -510,14 +419,14 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetails(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters, Context context) {
+    public SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPutDetails(String resourceGroupName,
+        String resourceName, DelegatedSubnetInner parameters, Context context) {
         return this.beginPutDetailsAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -527,16 +436,15 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return represents an instance of a orchestrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DelegatedSubnetInner> putDetailsAsync(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters) {
-        return beginPutDetailsAsync(resourceGroupName, resourceName, parameters)
-            .last()
+    private Mono<DelegatedSubnetInner> putDetailsAsync(String resourceGroupName, String resourceName,
+        DelegatedSubnetInner parameters) {
+        return beginPutDetailsAsync(resourceGroupName, resourceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -547,16 +455,15 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return represents an instance of a orchestrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DelegatedSubnetInner> putDetailsAsync(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters, Context context) {
-        return beginPutDetailsAsync(resourceGroupName, resourceName, parameters, context)
-            .last()
+    private Mono<DelegatedSubnetInner> putDetailsAsync(String resourceGroupName, String resourceName,
+        DelegatedSubnetInner parameters, Context context) {
+        return beginPutDetailsAsync(resourceGroupName, resourceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -566,14 +473,14 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DelegatedSubnetInner putDetails(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters) {
+    public DelegatedSubnetInner putDetails(String resourceGroupName, String resourceName,
+        DelegatedSubnetInner parameters) {
         return putDetailsAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Put delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -584,31 +491,29 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DelegatedSubnetInner putDetails(
-        String resourceGroupName, String resourceName, DelegatedSubnetInner parameters, Context context) {
+    public DelegatedSubnetInner putDetails(String resourceGroupName, String resourceName,
+        DelegatedSubnetInner parameters, Context context) {
         return putDetailsAsync(resourceGroupName, resourceName, parameters, context).block();
     }
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> patchDetailsWithResponseAsync(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> patchDetailsWithResponseAsync(String resourceGroupName,
+        String resourceName, ResourceUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -618,10 +523,8 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -630,24 +533,14 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .patchDetails(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.patchDetails(this.client.getEndpoint(), resourceGroupName, resourceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -655,17 +548,15 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents an instance of a orchestrator along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> patchDetailsWithResponseAsync(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> patchDetailsWithResponseAsync(String resourceGroupName,
+        String resourceName, ResourceUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -675,10 +566,8 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -687,21 +576,13 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .patchDetails(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.patchDetails(this.client.getEndpoint(), resourceGroupName, resourceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -711,23 +592,17 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return the {@link PollerFlux} for polling of represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPatchDetailsAsync(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            patchDetailsWithResponseAsync(resourceGroupName, resourceName, parameters);
-        return this
-            .client
-            .<DelegatedSubnetInner, DelegatedSubnetInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DelegatedSubnetInner.class,
-                DelegatedSubnetInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner>
+        beginPatchDetailsAsync(String resourceGroupName, String resourceName, ResourceUpdateParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = patchDetailsWithResponseAsync(resourceGroupName, resourceName, parameters);
+        return this.client.<DelegatedSubnetInner, DelegatedSubnetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DelegatedSubnetInner.class, DelegatedSubnetInner.class, this.client.getContext());
     }
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -741,17 +616,15 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
     private PollerFlux<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPatchDetailsAsync(
         String resourceGroupName, String resourceName, ResourceUpdateParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            patchDetailsWithResponseAsync(resourceGroupName, resourceName, parameters, context);
-        return this
-            .client
-            .<DelegatedSubnetInner, DelegatedSubnetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DelegatedSubnetInner.class, DelegatedSubnetInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = patchDetailsWithResponseAsync(resourceGroupName, resourceName, parameters, context);
+        return this.client.<DelegatedSubnetInner, DelegatedSubnetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DelegatedSubnetInner.class, DelegatedSubnetInner.class, context);
     }
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -761,14 +634,14 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner> beginPatchDetails(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters) {
+    public SyncPoller<PollResult<DelegatedSubnetInner>, DelegatedSubnetInner>
+        beginPatchDetails(String resourceGroupName, String resourceName, ResourceUpdateParameters parameters) {
         return this.beginPatchDetailsAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -786,7 +659,7 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -796,16 +669,15 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return represents an instance of a orchestrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DelegatedSubnetInner> patchDetailsAsync(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters) {
-        return beginPatchDetailsAsync(resourceGroupName, resourceName, parameters)
-            .last()
+    private Mono<DelegatedSubnetInner> patchDetailsAsync(String resourceGroupName, String resourceName,
+        ResourceUpdateParameters parameters) {
+        return beginPatchDetailsAsync(resourceGroupName, resourceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -816,16 +688,15 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return represents an instance of a orchestrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DelegatedSubnetInner> patchDetailsAsync(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters, Context context) {
-        return beginPatchDetailsAsync(resourceGroupName, resourceName, parameters, context)
-            .last()
+    private Mono<DelegatedSubnetInner> patchDetailsAsync(String resourceGroupName, String resourceName,
+        ResourceUpdateParameters parameters, Context context) {
+        return beginPatchDetailsAsync(resourceGroupName, resourceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -835,14 +706,14 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DelegatedSubnetInner patchDetails(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters) {
+    public DelegatedSubnetInner patchDetails(String resourceGroupName, String resourceName,
+        ResourceUpdateParameters parameters) {
         return patchDetailsAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Patch delegated subnet resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters Delegated subnet details.
@@ -853,14 +724,14 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DelegatedSubnetInner patchDetails(
-        String resourceGroupName, String resourceName, ResourceUpdateParameters parameters, Context context) {
+    public DelegatedSubnetInner patchDetails(String resourceGroupName, String resourceName,
+        ResourceUpdateParameters parameters, Context context) {
         return patchDetailsAsync(resourceGroupName, resourceName, parameters, context).block();
     }
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param forceDelete Force delete resource.
@@ -870,13 +741,11 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, Boolean forceDelete) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        Boolean forceDelete) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -886,31 +755,19 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            forceDelete,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, resourceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), forceDelete, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param forceDelete Force delete resource.
@@ -921,13 +778,11 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        Boolean forceDelete, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -937,28 +792,18 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                forceDelete,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, resourceName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), forceDelete, accept, context);
     }
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param forceDelete Force delete resource.
@@ -968,18 +813,16 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, Boolean forceDelete) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
+        Boolean forceDelete) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, forceDelete);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -991,15 +834,13 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName) {
         final Boolean forceDelete = null;
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, forceDelete);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param forceDelete Force delete resource.
@@ -1010,19 +851,18 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
+        Boolean forceDelete, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, resourceName, forceDelete, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, resourceName, forceDelete, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1038,7 +878,7 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param forceDelete Force delete resource.
@@ -1049,14 +889,14 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
+        Boolean forceDelete, Context context) {
         return this.beginDeleteAsync(resourceGroupName, resourceName, forceDelete, context).getSyncPoller();
     }
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param forceDelete Force delete resource.
@@ -1067,14 +907,13 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, Boolean forceDelete) {
-        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete)
-            .last()
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1085,14 +924,13 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
         final Boolean forceDelete = null;
-        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete)
-            .last()
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param forceDelete Force delete resource.
@@ -1103,16 +941,15 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String resourceName, Boolean forceDelete, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, Boolean forceDelete,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, forceDelete, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1127,7 +964,7 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
 
     /**
      * Delete dnc DelegatedSubnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param forceDelete Force delete resource.
@@ -1143,109 +980,76 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
 
     /**
      * Get all the DelegatedSubnets resources in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DelegatedSubnets resources in a subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedSubnetInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DelegatedSubnetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DelegatedSubnetInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all the DelegatedSubnets resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DelegatedSubnets resources in a subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedSubnetInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get all the DelegatedSubnets resources in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DelegatedSubnets resources in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DelegatedSubnetInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all the DelegatedSubnets resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1254,13 +1058,13 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DelegatedSubnetInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all the DelegatedSubnets resources in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DelegatedSubnets resources in a subscription as paginated response with {@link PagedIterable}.
@@ -1272,7 +1076,7 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
 
     /**
      * Get all the DelegatedSubnets resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1286,110 +1090,75 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
 
     /**
      * Get all the DelegatedSubnets resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DelegatedSubnets resources in a resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedSubnetInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DelegatedSubnetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DelegatedSubnetInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all the DelegatedSubnets resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the DelegatedSubnets resources in a resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DelegatedSubnetInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<DelegatedSubnetInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get all the DelegatedSubnets resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1398,14 +1167,13 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DelegatedSubnetInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all the DelegatedSubnets resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1415,14 +1183,13 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DelegatedSubnetInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all the DelegatedSubnets resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1436,7 +1203,7 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
 
     /**
      * Get all the DelegatedSubnets resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1451,14 +1218,13 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of DelegatedSubnet resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return an array of DelegatedSubnet resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedSubnetInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1466,76 +1232,55 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DelegatedSubnetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DelegatedSubnetInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of DelegatedSubnet resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return an array of DelegatedSubnet resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DelegatedSubnetInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DelegatedSubnetInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of DelegatedSubnet resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return an array of DelegatedSubnet resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DelegatedSubnetInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1543,63 +1288,43 @@ public final class DelegatedSubnetServicesClientImpl implements DelegatedSubnetS
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DelegatedSubnetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DelegatedSubnetInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of DelegatedSubnet resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return an array of DelegatedSubnet resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DelegatedSubnetInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DelegatedSubnetInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

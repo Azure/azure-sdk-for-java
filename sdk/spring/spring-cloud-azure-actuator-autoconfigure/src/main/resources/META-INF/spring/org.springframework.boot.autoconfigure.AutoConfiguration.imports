@@ -1,0 +1,8 @@
+com.azure.spring.cloud.actuator.autoconfigure.implementation.appconfiguration.AppConfigurationHealthConfiguration
+com.azure.spring.cloud.actuator.autoconfigure.implementation.cosmos.CosmosHealthConfiguration
+com.azure.spring.cloud.actuator.autoconfigure.implementation.eventhubs.EventHubsHealthConfiguration
+com.azure.spring.cloud.actuator.autoconfigure.implementation.keyvault.KeyVaultSecretHealthConfiguration
+com.azure.spring.cloud.actuator.autoconfigure.implementation.keyvault.KeyVaultCertificateHealthConfiguration
+com.azure.spring.cloud.actuator.autoconfigure.implementation.storage.StorageBlobHealthConfiguration
+com.azure.spring.cloud.actuator.autoconfigure.implementation.storage.StorageFileShareHealthConfiguration
+com.azure.spring.cloud.actuator.autoconfigure.implementation.storage.StorageQueueHealthConfiguration

@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.azurestack.generated;
 
-/** Samples for Registrations GetActivationKey. */
+/**
+ * Samples for Registrations GetActivationKey.
+ */
 public final class RegistrationsGetActivationKeySamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Post.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/Post.json
      */
     /**
      * Sample code: Returns Azure Stack Activation Key.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsAzureStackActivationKey(com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .registrations()
+        manager.registrations()
             .getActivationKeyWithResponse("azurestack", "testregistration", com.azure.core.util.Context.NONE);
     }
 }

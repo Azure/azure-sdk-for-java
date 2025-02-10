@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.OperationStatusEx
 public final class OperationStatusExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusExtendedInfo model =
-            BinaryData
-                .fromString("{\"objectType\":\"OperationStatusExtendedInfo\"}")
-                .toObject(OperationStatusExtendedInfo.class);
+        OperationStatusExtendedInfo model = BinaryData.fromString("{\"objectType\":\"OperationStatusExtendedInfo\"}")
+            .toObject(OperationStatusExtendedInfo.class);
     }
 
     @org.junit.jupiter.api.Test

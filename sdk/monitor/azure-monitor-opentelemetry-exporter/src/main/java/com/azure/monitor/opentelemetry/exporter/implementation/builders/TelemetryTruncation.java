@@ -28,16 +28,11 @@ final class TelemetryTruncation {
             // this can be expected, so don't want to flood the logs with a lot of these
             // (and don't want to log the full value, e.g. sql text > 8192 characters)
             try (MDC.MDCCloseable ignored = TELEMETRY_TRUNCATION_ERROR.makeActive()) {
-                logger.warning(
-                    "truncated {} attribute value to {} characters (this message will only be logged once"
-                        + " per attribute name): {}",
-                    attributeName,
-                    maxLength,
-                    trimTo80(value));
+                logger.warning("truncated {} attribute value to {} characters (this message will only be logged once"
+                    + " per attribute name): {}", attributeName, maxLength, trimTo80(value));
             }
         }
-        logger.verbose(
-            "truncated {} attribute value to {} characters: {}", attributeName, maxLength, value);
+        logger.verbose("truncated {} attribute value to {} characters: {}", attributeName, maxLength, value);
         return value.substring(0, maxLength);
     }
 
@@ -52,13 +47,10 @@ final class TelemetryTruncation {
                 logger.warning(
                     "truncated {} property value to {} characters (this message will only be logged once"
                         + " per property key, and only for at most 10 different property keys): {}",
-                    propertyKey,
-                    maxLength,
-                    trimTo80(value));
+                    propertyKey, maxLength, trimTo80(value));
             }
         }
-        logger.verbose(
-            "truncated {} property value to {} characters: {}", propertyKey, maxLength, value);
+        logger.verbose("truncated {} property value to {} characters: {}", propertyKey, maxLength, value);
         return value.substring(0, maxLength);
     }
 

@@ -23,11 +23,13 @@ public final class PrivateEndpointConnectionOperationCreateOrUpdateSamples {
      */
     public static void approvesOrRejectsAPrivateEndpointConnectionForAFactory(
         com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.privateEndpointConnectionOperations().define("connection")
+        manager.privateEndpointConnectionOperations()
+            .define("connection")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(new PrivateLinkConnectionApprovalRequest()
                 .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("Approved")
-                    .withDescription("Approved by admin.").withActionsRequired(""))
+                    .withDescription("Approved by admin.")
+                    .withActionsRequired(""))
                 .withPrivateEndpoint(new PrivateEndpoint().withId(
                     "/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName/privateEndpoints/myPrivateEndpoint")))
             .create();

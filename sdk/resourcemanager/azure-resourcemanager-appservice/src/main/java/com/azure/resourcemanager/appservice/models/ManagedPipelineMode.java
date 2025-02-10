@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Managed pipeline mode.
  */
@@ -36,7 +33,6 @@ public enum ManagedPipelineMode {
      * @param value the serialized value to parse.
      * @return the parsed ManagedPipelineMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static ManagedPipelineMode fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum ManagedPipelineMode {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

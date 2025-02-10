@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of a virtual endpoint. */
+/**
+ * The properties of a virtual endpoint.
+ */
 @Fluent
-public final class VirtualEndpointResourceProperties {
+public final class VirtualEndpointResourceProperties implements JsonSerializable<VirtualEndpointResourceProperties> {
     /*
      * The endpoint type for the virtual endpoint.
      */
-    @JsonProperty(value = "endpointType")
     private VirtualEndpointType endpointType;
 
     /*
      * List of members for a virtual endpoint
      */
-    @JsonProperty(value = "members")
     private List<String> members;
 
     /*
      * List of virtual endpoints for a server
      */
-    @JsonProperty(value = "virtualEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> virtualEndpoints;
 
-    /** Creates an instance of VirtualEndpointResourceProperties class. */
+    /**
+     * Creates an instance of VirtualEndpointResourceProperties class.
+     */
     public VirtualEndpointResourceProperties() {
     }
 
     /**
      * Get the endpointType property: The endpoint type for the virtual endpoint.
-     *
+     * 
      * @return the endpointType value.
      */
     public VirtualEndpointType endpointType() {
@@ -45,7 +50,7 @@ public final class VirtualEndpointResourceProperties {
 
     /**
      * Set the endpointType property: The endpoint type for the virtual endpoint.
-     *
+     * 
      * @param endpointType the endpointType value to set.
      * @return the VirtualEndpointResourceProperties object itself.
      */
@@ -56,7 +61,7 @@ public final class VirtualEndpointResourceProperties {
 
     /**
      * Get the members property: List of members for a virtual endpoint.
-     *
+     * 
      * @return the members value.
      */
     public List<String> members() {
@@ -65,7 +70,7 @@ public final class VirtualEndpointResourceProperties {
 
     /**
      * Set the members property: List of members for a virtual endpoint.
-     *
+     * 
      * @param members the members value to set.
      * @return the VirtualEndpointResourceProperties object itself.
      */
@@ -76,7 +81,7 @@ public final class VirtualEndpointResourceProperties {
 
     /**
      * Get the virtualEndpoints property: List of virtual endpoints for a server.
-     *
+     * 
      * @return the virtualEndpoints value.
      */
     public List<String> virtualEndpoints() {
@@ -85,9 +90,54 @@ public final class VirtualEndpointResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeArrayField("members", this.members, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualEndpointResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualEndpointResourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualEndpointResourceProperties.
+     */
+    public static VirtualEndpointResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualEndpointResourceProperties deserializedVirtualEndpointResourceProperties
+                = new VirtualEndpointResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedVirtualEndpointResourceProperties.endpointType
+                        = VirtualEndpointType.fromString(reader.getString());
+                } else if ("members".equals(fieldName)) {
+                    List<String> members = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualEndpointResourceProperties.members = members;
+                } else if ("virtualEndpoints".equals(fieldName)) {
+                    List<String> virtualEndpoints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualEndpointResourceProperties.virtualEndpoints = virtualEndpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualEndpointResourceProperties;
+        });
     }
 }

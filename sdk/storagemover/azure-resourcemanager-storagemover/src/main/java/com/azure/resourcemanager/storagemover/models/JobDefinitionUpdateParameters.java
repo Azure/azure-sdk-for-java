@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.fluent.models.JobDefinitionUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The Job Definition resource. */
+/**
+ * The Job Definition resource.
+ */
 @Fluent
-public final class JobDefinitionUpdateParameters {
+public final class JobDefinitionUpdateParameters implements JsonSerializable<JobDefinitionUpdateParameters> {
     /*
      * Job definition properties.
      */
-    @JsonProperty(value = "properties")
     private JobDefinitionUpdateProperties innerProperties;
 
-    /** Creates an instance of JobDefinitionUpdateParameters class. */
+    /**
+     * Creates an instance of JobDefinitionUpdateParameters class.
+     */
     public JobDefinitionUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Job definition properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobDefinitionUpdateProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class JobDefinitionUpdateParameters {
 
     /**
      * Get the description property: A description for the Job Definition.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -41,7 +48,7 @@ public final class JobDefinitionUpdateParameters {
 
     /**
      * Set the description property: A description for the Job Definition.
-     *
+     * 
      * @param description the description value to set.
      * @return the JobDefinitionUpdateParameters object itself.
      */
@@ -55,7 +62,7 @@ public final class JobDefinitionUpdateParameters {
 
     /**
      * Get the copyMode property: Strategy to use for copy.
-     *
+     * 
      * @return the copyMode value.
      */
     public CopyMode copyMode() {
@@ -64,7 +71,7 @@ public final class JobDefinitionUpdateParameters {
 
     /**
      * Set the copyMode property: Strategy to use for copy.
-     *
+     * 
      * @param copyMode the copyMode value to set.
      * @return the JobDefinitionUpdateParameters object itself.
      */
@@ -78,7 +85,7 @@ public final class JobDefinitionUpdateParameters {
 
     /**
      * Get the agentName property: Name of the Agent to assign for new Job Runs of this Job Definition.
-     *
+     * 
      * @return the agentName value.
      */
     public String agentName() {
@@ -87,7 +94,7 @@ public final class JobDefinitionUpdateParameters {
 
     /**
      * Set the agentName property: Name of the Agent to assign for new Job Runs of this Job Definition.
-     *
+     * 
      * @param agentName the agentName value to set.
      * @return the JobDefinitionUpdateParameters object itself.
      */
@@ -101,12 +108,50 @@ public final class JobDefinitionUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobDefinitionUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobDefinitionUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobDefinitionUpdateParameters.
+     */
+    public static JobDefinitionUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobDefinitionUpdateParameters deserializedJobDefinitionUpdateParameters
+                = new JobDefinitionUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedJobDefinitionUpdateParameters.innerProperties
+                        = JobDefinitionUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobDefinitionUpdateParameters;
+        });
     }
 }

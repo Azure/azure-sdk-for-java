@@ -6,30 +6,36 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Default config details. */
+/**
+ * Default config details.
+ */
 @Fluent
-public final class ServiceConfigListResultValueEntity {
+public final class ServiceConfigListResultValueEntity implements JsonSerializable<ServiceConfigListResultValueEntity> {
     /*
      * Config value.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
      * Config description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ServiceConfigListResultValueEntity class. */
+    /**
+     * Creates an instance of ServiceConfigListResultValueEntity class.
+     */
     public ServiceConfigListResultValueEntity() {
     }
 
     /**
      * Get the value property: Config value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -38,7 +44,7 @@ public final class ServiceConfigListResultValueEntity {
 
     /**
      * Set the value property: Config value.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServiceConfigListResultValueEntity object itself.
      */
@@ -49,7 +55,7 @@ public final class ServiceConfigListResultValueEntity {
 
     /**
      * Get the description property: Config description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -58,7 +64,7 @@ public final class ServiceConfigListResultValueEntity {
 
     /**
      * Set the description property: Config description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ServiceConfigListResultValueEntity object itself.
      */
@@ -69,17 +75,57 @@ public final class ServiceConfigListResultValueEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ServiceConfigListResultValueEntity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model ServiceConfigListResultValueEntity"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceConfigListResultValueEntity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceConfigListResultValueEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceConfigListResultValueEntity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceConfigListResultValueEntity.
+     */
+    public static ServiceConfigListResultValueEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceConfigListResultValueEntity deserializedServiceConfigListResultValueEntity
+                = new ServiceConfigListResultValueEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedServiceConfigListResultValueEntity.value = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedServiceConfigListResultValueEntity.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceConfigListResultValueEntity;
+        });
+    }
 }

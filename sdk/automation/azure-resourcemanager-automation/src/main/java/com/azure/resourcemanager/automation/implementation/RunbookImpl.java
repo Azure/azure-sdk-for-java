@@ -168,24 +168,20 @@ public final class RunbookImpl implements Runbook, Runbook.Definition, Runbook.U
     }
 
     public Runbook create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRunbooks()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, runbookName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRunbooks()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, runbookName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Runbook create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRunbooks()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, runbookName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRunbooks()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, runbookName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -202,51 +198,42 @@ public final class RunbookImpl implements Runbook, Runbook.Definition, Runbook.U
     }
 
     public Runbook apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRunbooks()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, runbookName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRunbooks()
+            .updateWithResponse(resourceGroupName, automationAccountName, runbookName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Runbook apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRunbooks()
-                .updateWithResponse(resourceGroupName, automationAccountName, runbookName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRunbooks()
+            .updateWithResponse(resourceGroupName, automationAccountName, runbookName, updateParameters, context)
+            .getValue();
         return this;
     }
 
     RunbookImpl(RunbookInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.runbookName = Utils.getValueFromIdByName(innerObject.id(), "runbooks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.runbookName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "runbooks");
     }
 
     public Runbook refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRunbooks()
-                .getWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRunbooks()
+            .getWithResponse(resourceGroupName, automationAccountName, runbookName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Runbook refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRunbooks()
-                .getWithResponse(resourceGroupName, automationAccountName, runbookName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRunbooks()
+            .getWithResponse(resourceGroupName, automationAccountName, runbookName, context)
+            .getValue();
         return this;
     }
 

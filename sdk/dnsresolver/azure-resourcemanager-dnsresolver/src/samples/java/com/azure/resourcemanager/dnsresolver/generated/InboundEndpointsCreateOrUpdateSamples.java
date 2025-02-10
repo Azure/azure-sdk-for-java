@@ -11,36 +11,33 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for InboundEndpoints CreateOrUpdate. */
+/**
+ * Samples for InboundEndpoints CreateOrUpdate.
+ */
 public final class InboundEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Put.json
+     * x-ms-original-file:
+     * specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundEndpoint_Put.json
      */
     /**
      * Sample code: Upsert inbound endpoint for DNS resolver.
-     *
+     * 
      * @param manager Entry point to DnsResolverManager.
      */
-    public static void upsertInboundEndpointForDNSResolver(
-        com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
-        manager
-            .inboundEndpoints()
+    public static void
+        upsertInboundEndpointForDNSResolver(com.azure.resourcemanager.dnsresolver.DnsResolverManager manager) {
+        manager.inboundEndpoints()
             .define("sampleInboundEndpoint")
             .withRegion("westus2")
             .withExistingDnsResolver("sampleResourceGroup", "sampleDnsResolver")
-            .withIpConfigurations(
-                Arrays
-                    .asList(
-                        new IpConfiguration()
-                            .withSubnet(
-                                new SubResource()
-                                    .withId(
-                                        "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"))
-                            .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)))
-            .withTags(mapOf("key1", "value1"))
+            .withIpConfigurations(Arrays.asList(new IpConfiguration().withSubnet(new SubResource().withId(
+                "/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"))
+                .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

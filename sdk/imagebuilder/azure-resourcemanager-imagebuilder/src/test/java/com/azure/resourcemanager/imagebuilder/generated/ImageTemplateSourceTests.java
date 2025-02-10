@@ -10,8 +10,8 @@ import com.azure.resourcemanager.imagebuilder.models.ImageTemplateSource;
 public final class ImageTemplateSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateSource model =
-            BinaryData.fromString("{\"type\":\"ImageTemplateSource\"}").toObject(ImageTemplateSource.class);
+        ImageTemplateSource model
+            = BinaryData.fromString("{\"type\":\"ImageTemplateSource\"}").toObject(ImageTemplateSource.class);
     }
 
     @org.junit.jupiter.api.Test

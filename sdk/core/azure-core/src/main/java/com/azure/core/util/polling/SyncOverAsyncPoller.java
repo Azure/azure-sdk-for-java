@@ -66,8 +66,8 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
         Objects.requireNonNull(syncActivationOperation, "'syncActivationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
-        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
-            "'fetchResultOperation' cannot be null.");
+        this.fetchResultOperation
+            = Objects.requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
         this.activationResponse = syncActivationOperation.apply(this.pollingContext);
         //
         this.pollingContext.setOnetimeActivationResponse(this.activationResponse);
@@ -79,16 +79,14 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
 
     @Override
     public PollResponse<T> poll() {
-        return this.pollOperation.apply(this.pollingContext)
-            .map(response -> {
-                this.pollingContext.setLatestResponse(response);
-                if (response.getStatus().isComplete()) {
-                    this.terminalPollContext = this.pollingContext.copy();
-                }
+        return this.pollOperation.apply(this.pollingContext).map(response -> {
+            this.pollingContext.setLatestResponse(response);
+            if (response.getStatus().isComplete()) {
+                this.terminalPollContext = this.pollingContext.copy();
+            }
 
-                return response;
-            })
-            .block();
+            return response;
+        }).block();
     }
 
     @Override
@@ -236,8 +234,8 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
             this.cancelOperation.apply(null, this.activationResponse)
                 .onErrorResume(PollContextRequiredException.class, crp -> {
                     PollingContext<T> context2 = this.pollingContext.copy();
-                    return PollingUtil.pollingLoopAsync(context2, pollOperation, cancelOperation,
-                        fetchResultOperation, pollInterval)
+                    return PollingUtil
+                        .pollingLoopAsync(context2, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
                         .next()
                         .then(this.cancelOperation.apply(context2, this.activationResponse));
                 })

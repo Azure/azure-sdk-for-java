@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -202,6 +203,9 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -249,8 +253,8 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
                 } else if ("senderDisplayName".equals(fieldName)) {
                     deserializedAcsChatMessageEventBaseProperties.senderDisplayName = reader.getString();
                 } else if ("composeTime".equals(fieldName)) {
-                    deserializedAcsChatMessageEventBaseProperties.composeTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsChatMessageEventBaseProperties.composeTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("type".equals(fieldName)) {
                     deserializedAcsChatMessageEventBaseProperties.type = reader.getString();
                 } else if ("version".equals(fieldName)) {

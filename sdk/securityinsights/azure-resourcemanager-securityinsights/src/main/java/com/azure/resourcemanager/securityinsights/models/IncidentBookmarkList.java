@@ -7,18 +7,20 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.resourcemanager.securityinsights.fluent.models.IncidentBookmarkListInner;
 import java.util.List;
 
-/** An immutable client-side representation of IncidentBookmarkList. */
+/**
+ * An immutable client-side representation of IncidentBookmarkList.
+ */
 public interface IncidentBookmarkList {
     /**
      * Gets the value property: Array of incident bookmarks.
-     *
+     * 
      * @return the value value.
      */
     List<HuntingBookmark> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.IncidentBookmarkListInner object.
-     *
+     * 
      * @return the inner object.
      */
     IncidentBookmarkListInner innerModel();

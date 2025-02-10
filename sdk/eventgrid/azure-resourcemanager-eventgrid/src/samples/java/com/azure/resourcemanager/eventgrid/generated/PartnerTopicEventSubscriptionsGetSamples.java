@@ -10,7 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class PartnerTopicEventSubscriptionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * PartnerTopicEventSubscriptions_Get.json
      */
     /**
@@ -19,7 +19,8 @@ public final class PartnerTopicEventSubscriptionsGetSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerTopicEventSubscriptionsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerTopicEventSubscriptions().getWithResponse("examplerg", "examplePartnerTopic1",
-            "examplesubscription1", com.azure.core.util.Context.NONE);
+        manager.partnerTopicEventSubscriptions()
+            .getWithResponse("examplerg", "examplePartnerTopic1", "examplesubscription1",
+                com.azure.core.util.Context.NONE);
     }
 }

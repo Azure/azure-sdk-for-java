@@ -5,7 +5,6 @@ package com.azure.ai.openai.implementation.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -45,7 +44,6 @@ public final class FunctionCallPreset extends ExpandableStringEnum<FunctionCallP
      * @return the corresponding FunctionCallPreset.
      */
     @Generated
-    @JsonCreator
     public static FunctionCallPreset fromString(String name) {
         return fromString(name, FunctionCallPreset.class);
     }

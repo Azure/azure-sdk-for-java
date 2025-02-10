@@ -5,28 +5,31 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The JSON object that contains the properties of the origin. */
+/**
+ * The JSON object that contains the properties of the origin.
+ */
 @Fluent
-public class OriginUpdatePropertiesParameters {
+public class OriginUpdatePropertiesParameters implements JsonSerializable<OriginUpdatePropertiesParameters> {
     /*
      * The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.This should be unique
      * across all origins in an endpoint.
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
      * The value of the HTTP port. Must be between 1 and 65535.
      */
-    @JsonProperty(value = "httpPort")
     private Integer httpPort;
 
     /*
      * The value of the HTTPS port. Must be between 1 and 65535.
      */
-    @JsonProperty(value = "httpsPort")
     private Integer httpsPort;
 
     /*
@@ -34,61 +37,55 @@ public class OriginUpdatePropertiesParameters {
      * determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services require this host
      * header value to match the origin hostname by default. This overrides the host header defined at Endpoint
      */
-    @JsonProperty(value = "originHostHeader")
     private String originHostHeader;
 
     /*
      * Priority of origin in given origin group for load balancing. Higher priorities will not be used for load
      * balancing if any lower priority origin is healthy.Must be between 1 and 5
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
      */
-    @JsonProperty(value = "weight")
     private Integer weight;
 
     /*
      * Origin is enabled for load balancing or not
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The Alias of the Private Link resource. Populating this optional field indicates that this origin is 'Private'
      */
-    @JsonProperty(value = "privateLinkAlias")
     private String privateLinkAlias;
 
     /*
      * The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is
      * 'Private'
      */
-    @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
 
     /*
      * The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
      */
-    @JsonProperty(value = "privateLinkLocation")
     private String privateLinkLocation;
 
     /*
      * A custom message to be included in the approval request to connect to the Private Link.
      */
-    @JsonProperty(value = "privateLinkApprovalMessage")
     private String privateLinkApprovalMessage;
 
-    /** Creates an instance of OriginUpdatePropertiesParameters class. */
+    /**
+     * Creates an instance of OriginUpdatePropertiesParameters class.
+     */
     public OriginUpdatePropertiesParameters() {
     }
 
     /**
      * Get the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
      * supported.This should be unique across all origins in an endpoint.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -98,7 +95,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Set the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
      * supported.This should be unique across all origins in an endpoint.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the OriginUpdatePropertiesParameters object itself.
      */
@@ -109,7 +106,7 @@ public class OriginUpdatePropertiesParameters {
 
     /**
      * Get the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpPort value.
      */
     public Integer httpPort() {
@@ -118,7 +115,7 @@ public class OriginUpdatePropertiesParameters {
 
     /**
      * Set the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpPort the httpPort value to set.
      * @return the OriginUpdatePropertiesParameters object itself.
      */
@@ -129,7 +126,7 @@ public class OriginUpdatePropertiesParameters {
 
     /**
      * Get the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
@@ -138,7 +135,7 @@ public class OriginUpdatePropertiesParameters {
 
     /**
      * Set the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpsPort the httpsPort value to set.
      * @return the OriginUpdatePropertiesParameters object itself.
      */
@@ -152,7 +149,7 @@ public class OriginUpdatePropertiesParameters {
      * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
      * Services require this host header value to match the origin hostname by default. This overrides the host header
      * defined at Endpoint.
-     *
+     * 
      * @return the originHostHeader value.
      */
     public String originHostHeader() {
@@ -164,7 +161,7 @@ public class OriginUpdatePropertiesParameters {
      * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
      * Services require this host header value to match the origin hostname by default. This overrides the host header
      * defined at Endpoint.
-     *
+     * 
      * @param originHostHeader the originHostHeader value to set.
      * @return the OriginUpdatePropertiesParameters object itself.
      */
@@ -176,7 +173,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Get the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -186,7 +183,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Set the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the OriginUpdatePropertiesParameters object itself.
      */
@@ -198,7 +195,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Get the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -208,7 +205,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Set the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the OriginUpdatePropertiesParameters object itself.
      */
@@ -219,7 +216,7 @@ public class OriginUpdatePropertiesParameters {
 
     /**
      * Get the enabled property: Origin is enabled for load balancing or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -228,7 +225,7 @@ public class OriginUpdatePropertiesParameters {
 
     /**
      * Set the enabled property: Origin is enabled for load balancing or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the OriginUpdatePropertiesParameters object itself.
      */
@@ -240,7 +237,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Get the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this origin is 'Private'.
-     *
+     * 
      * @return the privateLinkAlias value.
      */
     public String privateLinkAlias() {
@@ -250,7 +247,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Set the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this origin is 'Private'.
-     *
+     * 
      * @param privateLinkAlias the privateLinkAlias value to set.
      * @return the OriginUpdatePropertiesParameters object itself.
      */
@@ -262,7 +259,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Get the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
@@ -272,7 +269,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Set the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the OriginUpdatePropertiesParameters object itself.
      */
@@ -284,7 +281,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Get the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @return the privateLinkLocation value.
      */
     public String privateLinkLocation() {
@@ -294,7 +291,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Set the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @param privateLinkLocation the privateLinkLocation value to set.
      * @return the OriginUpdatePropertiesParameters object itself.
      */
@@ -306,7 +303,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Get the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @return the privateLinkApprovalMessage value.
      */
     public String privateLinkApprovalMessage() {
@@ -316,7 +313,7 @@ public class OriginUpdatePropertiesParameters {
     /**
      * Set the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @param privateLinkApprovalMessage the privateLinkApprovalMessage value to set.
      * @return the OriginUpdatePropertiesParameters object itself.
      */
@@ -327,9 +324,76 @@ public class OriginUpdatePropertiesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeNumberField("httpPort", this.httpPort);
+        jsonWriter.writeNumberField("httpsPort", this.httpsPort);
+        jsonWriter.writeStringField("originHostHeader", this.originHostHeader);
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("privateLinkAlias", this.privateLinkAlias);
+        jsonWriter.writeStringField("privateLinkResourceId", this.privateLinkResourceId);
+        jsonWriter.writeStringField("privateLinkLocation", this.privateLinkLocation);
+        jsonWriter.writeStringField("privateLinkApprovalMessage", this.privateLinkApprovalMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OriginUpdatePropertiesParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OriginUpdatePropertiesParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OriginUpdatePropertiesParameters.
+     */
+    public static OriginUpdatePropertiesParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OriginUpdatePropertiesParameters deserializedOriginUpdatePropertiesParameters
+                = new OriginUpdatePropertiesParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostName".equals(fieldName)) {
+                    deserializedOriginUpdatePropertiesParameters.hostname = reader.getString();
+                } else if ("httpPort".equals(fieldName)) {
+                    deserializedOriginUpdatePropertiesParameters.httpPort = reader.getNullable(JsonReader::getInt);
+                } else if ("httpsPort".equals(fieldName)) {
+                    deserializedOriginUpdatePropertiesParameters.httpsPort = reader.getNullable(JsonReader::getInt);
+                } else if ("originHostHeader".equals(fieldName)) {
+                    deserializedOriginUpdatePropertiesParameters.originHostHeader = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedOriginUpdatePropertiesParameters.priority = reader.getNullable(JsonReader::getInt);
+                } else if ("weight".equals(fieldName)) {
+                    deserializedOriginUpdatePropertiesParameters.weight = reader.getNullable(JsonReader::getInt);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedOriginUpdatePropertiesParameters.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("privateLinkAlias".equals(fieldName)) {
+                    deserializedOriginUpdatePropertiesParameters.privateLinkAlias = reader.getString();
+                } else if ("privateLinkResourceId".equals(fieldName)) {
+                    deserializedOriginUpdatePropertiesParameters.privateLinkResourceId = reader.getString();
+                } else if ("privateLinkLocation".equals(fieldName)) {
+                    deserializedOriginUpdatePropertiesParameters.privateLinkLocation = reader.getString();
+                } else if ("privateLinkApprovalMessage".equals(fieldName)) {
+                    deserializedOriginUpdatePropertiesParameters.privateLinkApprovalMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOriginUpdatePropertiesParameters;
+        });
     }
 }

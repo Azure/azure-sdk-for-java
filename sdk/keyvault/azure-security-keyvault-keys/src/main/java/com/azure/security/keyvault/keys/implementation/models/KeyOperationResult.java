@@ -12,7 +12,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The key operation result. */
+/**
+ * The key operation result.
+ */
 @Immutable
 public final class KeyOperationResult implements JsonSerializable<KeyOperationResult> {
     /*
@@ -40,12 +42,15 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
      */
     private Base64Url additionalAuthenticatedData;
 
-    /** Creates an instance of KeyOperationResult class. */
-    public KeyOperationResult() {}
+    /**
+     * Creates an instance of KeyOperationResult class.
+     */
+    public KeyOperationResult() {
+    }
 
     /**
      * Get the kid property: Key identifier.
-     *
+     * 
      * @return the kid value.
      */
     public String getKid() {
@@ -54,7 +59,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
 
     /**
      * Get the result property: The value property.
-     *
+     * 
      * @return the result value.
      */
     public byte[] getResult() {
@@ -66,7 +71,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
 
     /**
      * Get the iv property: The iv property.
-     *
+     * 
      * @return the iv value.
      */
     public byte[] getIv() {
@@ -78,7 +83,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
 
     /**
      * Get the authenticationTag property: The tag property.
-     *
+     * 
      * @return the authenticationTag value.
      */
     public byte[] getAuthenticationTag() {
@@ -90,7 +95,7 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
 
     /**
      * Get the additionalAuthenticatedData property: The aad property.
-     *
+     * 
      * @return the additionalAuthenticatedData value.
      */
     public byte[] getAdditionalAuthenticatedData() {
@@ -100,6 +105,9 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
         return this.additionalAuthenticatedData.decodedBytes();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -108,40 +116,39 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
 
     /**
      * Reads an instance of KeyOperationResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyOperationResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the KeyOperationResult.
      */
     public static KeyOperationResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyOperationResult deserializedKeyOperationResult = new KeyOperationResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyOperationResult deserializedKeyOperationResult = new KeyOperationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kid".equals(fieldName)) {
-                            deserializedKeyOperationResult.kid = reader.getString();
-                        } else if ("value".equals(fieldName)) {
-                            deserializedKeyOperationResult.result =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("iv".equals(fieldName)) {
-                            deserializedKeyOperationResult.iv =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("tag".equals(fieldName)) {
-                            deserializedKeyOperationResult.authenticationTag =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("aad".equals(fieldName)) {
-                            deserializedKeyOperationResult.additionalAuthenticatedData =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("kid".equals(fieldName)) {
+                    deserializedKeyOperationResult.kid = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedKeyOperationResult.result
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("iv".equals(fieldName)) {
+                    deserializedKeyOperationResult.iv
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("tag".equals(fieldName)) {
+                    deserializedKeyOperationResult.authenticationTag
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("aad".equals(fieldName)) {
+                    deserializedKeyOperationResult.additionalAuthenticatedData
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyOperationResult;
-                });
+            return deserializedKeyOperationResult;
+        });
     }
 }

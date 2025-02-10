@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DiagnosticsUploadConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticsUploadConfiguration model =
-            BinaryData
-                .fromString("{\"storageAccountContainerUrl\":\"dhbt\"}")
-                .toObject(DiagnosticsUploadConfiguration.class);
-        Assertions.assertEquals("dhbt", model.storageAccountContainerUrl());
+        DiagnosticsUploadConfiguration model = BinaryData.fromString("{\"storageAccountContainerUrl\":\"cg\"}")
+            .toObject(DiagnosticsUploadConfiguration.class);
+        Assertions.assertEquals("cg", model.storageAccountContainerUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticsUploadConfiguration model =
-            new DiagnosticsUploadConfiguration().withStorageAccountContainerUrl("dhbt");
+        DiagnosticsUploadConfiguration model
+            = new DiagnosticsUploadConfiguration().withStorageAccountContainerUrl("cg");
         model = BinaryData.fromObject(model).toObject(DiagnosticsUploadConfiguration.class);
-        Assertions.assertEquals("dhbt", model.storageAccountContainerUrl());
+        Assertions.assertEquals("cg", model.storageAccountContainerUrl());
     }
 }

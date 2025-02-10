@@ -91,6 +91,8 @@ public final class QueueServiceAsyncClient {
     }
 
     /**
+     * Gets the URL of the storage queue.
+     *
      * @return the URL of the storage queue
      */
     public String getQueueServiceUrl() {
@@ -187,18 +189,12 @@ public final class QueueServiceAsyncClient {
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
         try {
             Objects.requireNonNull(queueName, "'queueName' cannot be null.");
-            return withContext(context -> createQueueWithResponse(queueName, metadata, context));
+            QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
+            return queueAsyncClient.createWithResponse(metadata)
+                .map(response -> new SimpleResponse<>(response, queueAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-    }
-
-    Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
-        Context context) {
-        QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
-
-        return queueAsyncClient.createWithResponse(metadata, context)
-            .map(response -> new SimpleResponse<>(response, queueAsyncClient));
     }
 
     /**
@@ -247,15 +243,10 @@ public final class QueueServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponse(String queueName) {
         try {
-            return withContext(context -> deleteQueueWithResponse(queueName, context));
+            return getQueueAsyncClient(queueName).deleteWithResponse();
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
-    }
-
-    Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
-        QueueAsyncClient queueAsyncClient = getQueueAsyncClient(queueName);
-        return queueAsyncClient.deleteWithResponse(context);
     }
 
     /**
@@ -350,11 +341,11 @@ public final class QueueServiceAsyncClient {
             }
         }
 
-        BiFunction<String, Integer, Mono<PagedResponse<QueueItem>>> retriever =
-            (nextMarker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
-                .listQueuesSegmentSinglePageAsync(prefix, nextMarker,
-                    pageSize == null ? maxResultsPerPage : pageSize, include,
-                    null, null, context), timeout);
+        BiFunction<String, Integer, Mono<PagedResponse<QueueItem>>> retriever = (nextMarker,
+            pageSize) -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
+                .listQueuesSegmentSinglePageAsync(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
+                    include, null, null, context),
+                timeout);
 
         return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
@@ -424,7 +415,8 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getServices().getPropertiesWithResponseAsync(null, null, context)
+        return client.getServices()
+            .getPropertiesWithResponseAsync(null, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -548,8 +540,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getServices().setPropertiesWithResponseAsync(properties, null, null, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return client.getServices().setPropertiesNoCustomHeadersWithResponseAsync(properties, null, null, context);
     }
 
     /**
@@ -613,10 +604,10 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getServices().getStatisticsWithResponseAsync(null, null, context)
+        return client.getServices()
+            .getStatisticsWithResponseAsync(null, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
-
 
     /**
      * Get associated account name.
@@ -698,12 +689,24 @@ public final class QueueServiceAsyncClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return generateAccountSas(accountSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new AccountSasImplUtil(accountSasSignatureValues, null)
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
-
-    AzureQueueStorageImpl getAzureQueueStorage() {
-        return client;
-    }
-
 }

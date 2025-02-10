@@ -5,29 +5,55 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status. */
+/**
+ * The status.
+ */
 public final class UpdateStatus extends ExpandableStringEnum<UpdateStatus> {
-    /** Static value Pending for UpdateStatus. */
+    /**
+     * Static value Pending for UpdateStatus.
+     */
     public static final UpdateStatus PENDING = fromString("Pending");
 
-    /** Static value InProgress for UpdateStatus. */
+    /**
+     * Static value InProgress for UpdateStatus.
+     */
     public static final UpdateStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Completed for UpdateStatus. */
+    /**
+     * Static value Completed for UpdateStatus.
+     */
     public static final UpdateStatus COMPLETED = fromString("Completed");
 
-    /** Static value RetryNow for UpdateStatus. */
+    /**
+     * Static value RetryNow for UpdateStatus.
+     */
     public static final UpdateStatus RETRY_NOW = fromString("RetryNow");
 
-    /** Static value RetryLater for UpdateStatus. */
+    /**
+     * Static value RetryLater for UpdateStatus.
+     */
     public static final UpdateStatus RETRY_LATER = fromString("RetryLater");
 
     /**
+     * Static value NoUpdatesPending for UpdateStatus.
+     */
+    public static final UpdateStatus NO_UPDATES_PENDING = fromString("NoUpdatesPending");
+
+    /**
+     * Static value Cancel for UpdateStatus.
+     */
+    public static final UpdateStatus CANCEL = fromString("Cancel");
+
+    /**
+     * Static value Cancelled for UpdateStatus.
+     */
+    public static final UpdateStatus CANCELLED = fromString("Cancelled");
+
+    /**
      * Creates a new instance of UpdateStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +62,17 @@ public final class UpdateStatus extends ExpandableStringEnum<UpdateStatus> {
 
     /**
      * Creates or finds a UpdateStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UpdateStatus.
      */
-    @JsonCreator
     public static UpdateStatus fromString(String name) {
         return fromString(name, UpdateStatus.class);
     }
 
     /**
      * Gets known UpdateStatus values.
-     *
+     * 
      * @return known UpdateStatus values.
      */
     public static Collection<UpdateStatus> values() {

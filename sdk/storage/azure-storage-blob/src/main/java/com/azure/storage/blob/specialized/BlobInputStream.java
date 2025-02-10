@@ -3,12 +3,12 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageInputStream;
+import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -20,7 +20,7 @@ public final class BlobInputStream extends StorageInputStream {
     /**
      * Holds the reference to the blob this stream is associated with.
      */
-    private final BlobAsyncClientBase blobClient;
+    private final BlobClientBase blobClient;
 
     /**
      * Holds the {@link BlobRequestConditions} object that represents the access conditions for the blob.
@@ -52,10 +52,12 @@ public final class BlobInputStream extends StorageInputStream {
      * @param context The {@link Context}
      * @throws BlobStorageException An exception representing any error which occurred during the operation.
      */
-    BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
-        final ByteBuffer initialBuffer, final BlobRequestConditions accessCondition,
-        final BlobProperties blobProperties, Context context) throws BlobStorageException {
-        super(blobRangeOffset, blobRangeLength, chunkSize, blobProperties.getBlobSize(), initialBuffer);
+    BlobInputStream(BlobClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
+        ByteBuffer initialBuffer, BlobRequestConditions accessCondition, BlobProperties blobProperties, Context context)
+        throws BlobStorageException {
+
+        super(blobRangeOffset, blobRangeLength, chunkSize, adjustBlobLength(blobProperties.getBlobSize(), context),
+            initialBuffer);
 
         this.blobClient = blobClient;
         this.accessCondition = accessCondition;
@@ -73,10 +75,11 @@ public final class BlobInputStream extends StorageInputStream {
     @Override
     protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) throws IOException {
         try {
-            ByteBuffer currentBuffer = this.blobClient.downloadStreamWithResponse(
-                new BlobRange(offset, (long) readLength), null, this.accessCondition, false, this.context)
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
-                .block();
+            ByteBuffer currentBuffer = this.blobClient
+                .downloadContentWithResponse(null, accessCondition, new BlobRange(offset, (long) readLength), false,
+                    null, context)
+                .getValue()
+                .toByteBuffer();
 
             this.bufferSize = readLength;
             this.bufferStartOffset = offset;
@@ -96,6 +99,16 @@ public final class BlobInputStream extends StorageInputStream {
      */
     public BlobProperties getProperties() {
         return this.properties;
+    }
+
+    /**
+     * Allows for encrypted blobs to use BlobInputStream correctly by using the non-encrypted blob length
+     */
+    private static long adjustBlobLength(long initialLength, Context context) {
+        if (context != null && context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY).isPresent()) {
+            return (long) context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY).get();
+        }
+        return initialLength;
     }
 
 }

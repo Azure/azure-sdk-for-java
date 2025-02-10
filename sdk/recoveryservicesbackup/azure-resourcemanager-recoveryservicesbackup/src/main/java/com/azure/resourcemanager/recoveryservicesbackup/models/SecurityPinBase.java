@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Base class for get security pin request body. */
+/**
+ * Base class for get security pin request body.
+ */
 @Fluent
-public final class SecurityPinBase {
+public final class SecurityPinBase implements JsonSerializable<SecurityPinBase> {
     /*
      * ResourceGuard Operation Requests
      */
-    @JsonProperty(value = "resourceGuardOperationRequests")
     private List<String> resourceGuardOperationRequests;
 
-    /** Creates an instance of SecurityPinBase class. */
+    /**
+     * Creates an instance of SecurityPinBase class.
+     */
     public SecurityPinBase() {
     }
 
     /**
      * Get the resourceGuardOperationRequests property: ResourceGuard Operation Requests.
-     *
+     * 
      * @return the resourceGuardOperationRequests value.
      */
     public List<String> resourceGuardOperationRequests() {
@@ -32,7 +39,7 @@ public final class SecurityPinBase {
 
     /**
      * Set the resourceGuardOperationRequests property: ResourceGuard Operation Requests.
-     *
+     * 
      * @param resourceGuardOperationRequests the resourceGuardOperationRequests value to set.
      * @return the SecurityPinBase object itself.
      */
@@ -43,9 +50,47 @@ public final class SecurityPinBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", this.resourceGuardOperationRequests,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityPinBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityPinBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityPinBase.
+     */
+    public static SecurityPinBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityPinBase deserializedSecurityPinBase = new SecurityPinBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecurityPinBase.resourceGuardOperationRequests = resourceGuardOperationRequests;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityPinBase;
+        });
     }
 }

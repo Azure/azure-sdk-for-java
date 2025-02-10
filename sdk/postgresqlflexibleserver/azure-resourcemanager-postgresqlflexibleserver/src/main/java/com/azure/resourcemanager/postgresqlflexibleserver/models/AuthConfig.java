@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Authentication configuration properties of a server. */
+/**
+ * Authentication configuration properties of a server.
+ */
 @Fluent
-public final class AuthConfig {
+public final class AuthConfig implements JsonSerializable<AuthConfig> {
     /*
      * If Enabled, Azure Active Directory authentication is enabled.
      */
-    @JsonProperty(value = "activeDirectoryAuth")
     private ActiveDirectoryAuthEnum activeDirectoryAuth;
 
     /*
      * If Enabled, Password authentication is enabled.
      */
-    @JsonProperty(value = "passwordAuth")
     private PasswordAuthEnum passwordAuth;
 
     /*
      * Tenant id of the server.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
-    /** Creates an instance of AuthConfig class. */
+    /**
+     * Creates an instance of AuthConfig class.
+     */
     public AuthConfig() {
     }
 
     /**
      * Get the activeDirectoryAuth property: If Enabled, Azure Active Directory authentication is enabled.
-     *
+     * 
      * @return the activeDirectoryAuth value.
      */
     public ActiveDirectoryAuthEnum activeDirectoryAuth() {
@@ -43,7 +48,7 @@ public final class AuthConfig {
 
     /**
      * Set the activeDirectoryAuth property: If Enabled, Azure Active Directory authentication is enabled.
-     *
+     * 
      * @param activeDirectoryAuth the activeDirectoryAuth value to set.
      * @return the AuthConfig object itself.
      */
@@ -54,7 +59,7 @@ public final class AuthConfig {
 
     /**
      * Get the passwordAuth property: If Enabled, Password authentication is enabled.
-     *
+     * 
      * @return the passwordAuth value.
      */
     public PasswordAuthEnum passwordAuth() {
@@ -63,7 +68,7 @@ public final class AuthConfig {
 
     /**
      * Set the passwordAuth property: If Enabled, Password authentication is enabled.
-     *
+     * 
      * @param passwordAuth the passwordAuth value to set.
      * @return the AuthConfig object itself.
      */
@@ -74,7 +79,7 @@ public final class AuthConfig {
 
     /**
      * Get the tenantId property: Tenant id of the server.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -83,7 +88,7 @@ public final class AuthConfig {
 
     /**
      * Set the tenantId property: Tenant id of the server.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AuthConfig object itself.
      */
@@ -94,9 +99,52 @@ public final class AuthConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("activeDirectoryAuth",
+            this.activeDirectoryAuth == null ? null : this.activeDirectoryAuth.toString());
+        jsonWriter.writeStringField("passwordAuth", this.passwordAuth == null ? null : this.passwordAuth.toString());
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthConfig if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the AuthConfig.
+     */
+    public static AuthConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthConfig deserializedAuthConfig = new AuthConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("activeDirectoryAuth".equals(fieldName)) {
+                    deserializedAuthConfig.activeDirectoryAuth = ActiveDirectoryAuthEnum.fromString(reader.getString());
+                } else if ("passwordAuth".equals(fieldName)) {
+                    deserializedAuthConfig.passwordAuth = PasswordAuthEnum.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedAuthConfig.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthConfig;
+        });
     }
 }

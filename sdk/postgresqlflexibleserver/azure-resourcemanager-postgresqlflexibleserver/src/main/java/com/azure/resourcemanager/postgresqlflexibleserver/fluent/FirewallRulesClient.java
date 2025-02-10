@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FirewallRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FirewallRulesClient.
+ */
 public interface FirewallRulesClient {
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -33,12 +35,12 @@ public interface FirewallRulesClient {
      * @return represents a server firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String firewallRuleName, FirewallRuleInner parameters);
 
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -49,12 +51,12 @@ public interface FirewallRulesClient {
      * @return the {@link PollerFlux} for polling of represents a server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters);
+    PollerFlux<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serverName, String firewallRuleName, FirewallRuleInner parameters);
 
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -65,12 +67,12 @@ public interface FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of represents a server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters);
+    SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String firewallRuleName, FirewallRuleInner parameters);
 
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -82,16 +84,12 @@ public interface FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of represents a server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String firewallRuleName,
-        FirewallRuleInner parameters,
-        Context context);
+    SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String firewallRuleName, FirewallRuleInner parameters, Context context);
 
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -102,12 +100,12 @@ public interface FirewallRulesClient {
      * @return represents a server firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FirewallRuleInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters);
+    Mono<FirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String serverName, String firewallRuleName,
+        FirewallRuleInner parameters);
 
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -118,12 +116,12 @@ public interface FirewallRulesClient {
      * @return represents a server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FirewallRuleInner createOrUpdate(
-        String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters);
+    FirewallRuleInner createOrUpdate(String resourceGroupName, String serverName, String firewallRuleName,
+        FirewallRuleInner parameters);
 
     /**
      * Creates a new firewall rule or updates an existing firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -135,16 +133,12 @@ public interface FirewallRulesClient {
      * @return represents a server firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FirewallRuleInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String firewallRuleName,
-        FirewallRuleInner parameters,
-        Context context);
+    FirewallRuleInner createOrUpdate(String resourceGroupName, String serverName, String firewallRuleName,
+        FirewallRuleInner parameters, Context context);
 
     /**
      * Deletes a PostgreSQL server firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -154,12 +148,12 @@ public interface FirewallRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String firewallRuleName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String firewallRuleName);
 
     /**
      * Deletes a PostgreSQL server firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -169,12 +163,12 @@ public interface FirewallRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String firewallRuleName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String firewallRuleName);
 
     /**
      * Deletes a PostgreSQL server firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -184,12 +178,12 @@ public interface FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String firewallRuleName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String firewallRuleName);
 
     /**
      * Deletes a PostgreSQL server firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -200,12 +194,12 @@ public interface FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String firewallRuleName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String firewallRuleName,
+        Context context);
 
     /**
      * Deletes a PostgreSQL server firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -219,7 +213,7 @@ public interface FirewallRulesClient {
 
     /**
      * Deletes a PostgreSQL server firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -232,7 +226,7 @@ public interface FirewallRulesClient {
 
     /**
      * Deletes a PostgreSQL server firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -246,7 +240,7 @@ public interface FirewallRulesClient {
 
     /**
      * List all the firewall rules in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -256,12 +250,12 @@ public interface FirewallRulesClient {
      * @return represents a server firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<FirewallRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String firewallRuleName);
+    Mono<Response<FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String firewallRuleName);
 
     /**
      * List all the firewall rules in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -275,7 +269,7 @@ public interface FirewallRulesClient {
 
     /**
      * List all the firewall rules in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -286,12 +280,12 @@ public interface FirewallRulesClient {
      * @return represents a server firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FirewallRuleInner> getWithResponse(
-        String resourceGroupName, String serverName, String firewallRuleName, Context context);
+    Response<FirewallRuleInner> getWithResponse(String resourceGroupName, String serverName, String firewallRuleName,
+        Context context);
 
     /**
      * List all the firewall rules in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param firewallRuleName The name of the server firewall rule.
@@ -305,7 +299,7 @@ public interface FirewallRulesClient {
 
     /**
      * List all the firewall rules in a given PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -318,7 +312,7 @@ public interface FirewallRulesClient {
 
     /**
      * List all the firewall rules in a given PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -331,7 +325,7 @@ public interface FirewallRulesClient {
 
     /**
      * List all the firewall rules in a given PostgreSQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.

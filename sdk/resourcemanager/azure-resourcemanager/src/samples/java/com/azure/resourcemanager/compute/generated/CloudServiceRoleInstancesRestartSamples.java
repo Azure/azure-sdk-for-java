@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class CloudServiceRoleInstancesRestartSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
      * CloudServiceRoleInstance_Restart.json
      */
     /**
@@ -19,7 +19,10 @@ public final class CloudServiceRoleInstancesRestartSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restartCloudServiceRoleInstance(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServiceRoleInstances().restart("{roleInstance-name}",
-            "ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServiceRoleInstances()
+            .restart("{roleInstance-name}", "ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

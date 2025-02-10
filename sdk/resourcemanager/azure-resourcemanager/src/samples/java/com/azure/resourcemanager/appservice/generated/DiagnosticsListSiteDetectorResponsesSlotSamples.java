@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsListSiteDetectorResponsesSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
      * Diagnostics_ListSiteDetectorResponsesSlot.json
      */
     /**
@@ -18,13 +18,17 @@ public final class DiagnosticsListSiteDetectorResponsesSlotSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAppSlotDetectorResponses(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDiagnostics().listSiteDetectorResponsesSlot(
-            "Sample-WestUSResourceGroup", "SampleApp", "staging", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDiagnostics()
+            .listSiteDetectorResponsesSlot("Sample-WestUSResourceGroup", "SampleApp", "staging",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ListSiteDetectorResponses
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ListSiteDetectorResponses
      * .json
      */
     /**
@@ -33,7 +37,11 @@ public final class DiagnosticsListSiteDetectorResponsesSlotSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAppDetectorResponses(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDiagnostics().listSiteDetectorResponsesSlot(
-            "Sample-WestUSResourceGroup", "SampleApp", "staging", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDiagnostics()
+            .listSiteDetectorResponsesSlot("Sample-WestUSResourceGroup", "SampleApp", "staging",
+                com.azure.core.util.Context.NONE);
     }
 }

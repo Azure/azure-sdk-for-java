@@ -10,20 +10,16 @@ import com.azure.resourcemanager.datamigration.models.MigratePostgreSqlAzureDbFo
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-08-16T09:13:32Z\",\"endedOn\":\"2021-04-06T04:39:54Z\",\"sourceServerVersion\":\"avvwxqi\",\"sourceServer\":\"qunyowxwlmdjr\",\"targetServerVersion\":\"fgbvfvpdbo\",\"targetServer\":\"cizsjqlhkrribdei\",\"id\":\"ipqkghvxndzwm\"}")
-                .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.class);
+        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel model = BinaryData.fromString(
+            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-03-01T11:30:13Z\",\"endedOn\":\"2020-12-20T18:42:28Z\",\"sourceServerVersion\":\"efozbhdms\",\"sourceServer\":\"mzqhoftrmaequi\",\"targetServerVersion\":\"xicslfao\",\"targetServer\":\"piyylhalnswhccsp\",\"id\":\"aivwitqscywu\"}")
+            .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel model =
-            new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel();
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.class);
+        MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel model
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel();
+        model = BinaryData.fromObject(model)
+            .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputMigrationLevel.class);
     }
 }

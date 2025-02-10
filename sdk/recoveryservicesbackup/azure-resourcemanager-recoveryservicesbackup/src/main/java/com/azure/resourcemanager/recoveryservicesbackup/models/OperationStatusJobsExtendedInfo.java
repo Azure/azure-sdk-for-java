@@ -5,38 +5,54 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Operation status extended info for list of jobs. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("OperationStatusJobsExtendedInfo")
+/**
+ * Operation status extended info for list of jobs.
+ */
 @Fluent
 public final class OperationStatusJobsExtendedInfo extends OperationStatusExtendedInfo {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "OperationStatusJobsExtendedInfo";
+
+    /*
      * IDs of the jobs created for the protected item.
      */
-    @JsonProperty(value = "jobIds")
     private List<String> jobIds;
 
     /*
      * Stores all the failed jobs along with the corresponding error codes.
      */
-    @JsonProperty(value = "failedJobsError")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> failedJobsError;
 
-    /** Creates an instance of OperationStatusJobsExtendedInfo class. */
+    /**
+     * Creates an instance of OperationStatusJobsExtendedInfo class.
+     */
     public OperationStatusJobsExtendedInfo() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the jobIds property: IDs of the jobs created for the protected item.
-     *
+     * 
      * @return the jobIds value.
      */
     public List<String> jobIds() {
@@ -45,7 +61,7 @@ public final class OperationStatusJobsExtendedInfo extends OperationStatusExtend
 
     /**
      * Set the jobIds property: IDs of the jobs created for the protected item.
-     *
+     * 
      * @param jobIds the jobIds value to set.
      * @return the OperationStatusJobsExtendedInfo object itself.
      */
@@ -56,7 +72,7 @@ public final class OperationStatusJobsExtendedInfo extends OperationStatusExtend
 
     /**
      * Get the failedJobsError property: Stores all the failed jobs along with the corresponding error codes.
-     *
+     * 
      * @return the failedJobsError value.
      */
     public Map<String, String> failedJobsError() {
@@ -65,7 +81,7 @@ public final class OperationStatusJobsExtendedInfo extends OperationStatusExtend
 
     /**
      * Set the failedJobsError property: Stores all the failed jobs along with the corresponding error codes.
-     *
+     * 
      * @param failedJobsError the failedJobsError value to set.
      * @return the OperationStatusJobsExtendedInfo object itself.
      */
@@ -76,11 +92,56 @@ public final class OperationStatusJobsExtendedInfo extends OperationStatusExtend
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeArrayField("jobIds", this.jobIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("failedJobsError", this.failedJobsError,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatusJobsExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatusJobsExtendedInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationStatusJobsExtendedInfo.
+     */
+    public static OperationStatusJobsExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatusJobsExtendedInfo deserializedOperationStatusJobsExtendedInfo
+                = new OperationStatusJobsExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedOperationStatusJobsExtendedInfo.objectType = reader.getString();
+                } else if ("jobIds".equals(fieldName)) {
+                    List<String> jobIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOperationStatusJobsExtendedInfo.jobIds = jobIds;
+                } else if ("failedJobsError".equals(fieldName)) {
+                    Map<String, String> failedJobsError = reader.readMap(reader1 -> reader1.getString());
+                    deserializedOperationStatusJobsExtendedInfo.failedJobsError = failedJobsError;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatusJobsExtendedInfo;
+        });
     }
 }

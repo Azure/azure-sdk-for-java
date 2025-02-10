@@ -5,24 +5,22 @@
 package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sphere.fluent.models.DeviceProperties;
+import com.azure.resourcemanager.sphere.models.DeviceProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class DevicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"deviceId\":\"pvecxgodeb\",\"chipSku\":\"kk\",\"lastAvailableOsVersion\":\"mpukgriw\",\"lastInstalledOsVersion\":\"zlfbxzpuzycispnq\",\"lastOsUpdateUtc\":\"2021-11-25T03:44:38Z\",\"lastUpdateRequestUtc\":\"2021-01-22T12:22:34Z\",\"provisioningState\":\"Succeeded\"}")
-                .toObject(DeviceProperties.class);
-        Assertions.assertEquals("pvecxgodeb", model.deviceId());
+        DeviceProperties model = BinaryData.fromString(
+            "{\"deviceId\":\"kcxywnyt\",\"chipSku\":\"synlqidybyxczfc\",\"lastAvailableOsVersion\":\"aaxdbabphlwrq\",\"lastInstalledOsVersion\":\"ktsthsucocmny\",\"lastOsUpdateUtc\":\"2021-08-16T03:52:30Z\",\"lastUpdateRequestUtc\":\"2021-08-27T13:10:53Z\",\"provisioningState\":\"Accepted\"}")
+            .toObject(DeviceProperties.class);
+        Assertions.assertEquals("kcxywnyt", model.deviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceProperties model = new DeviceProperties().withDeviceId("pvecxgodeb");
+        DeviceProperties model = new DeviceProperties().withDeviceId("kcxywnyt");
         model = BinaryData.fromObject(model).toObject(DeviceProperties.class);
-        Assertions.assertEquals("pvecxgodeb", model.deviceId());
+        Assertions.assertEquals("kcxywnyt", model.deviceId());
     }
 }

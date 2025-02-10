@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.43 (Unreleased)
+## 1.0.0-beta.54 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,130 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.53 (2025-02-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
+- Upgraded OpenTelemetry from `1.43.0` to `1.46.0`.
+
+## 1.0.0-beta.52 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+
+## 1.0.0-beta.51 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+- Upgraded `opentelemetry-api` from `1.42.1` to `1.43.0`.
+
+## 1.0.0-beta.50 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+- Upgraded `opentelemetry-api` from `1.41.0` to `1.42.1`.
+
+## 1.0.0-beta.49 (2024-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+- Upgraded `opentelemetry-api` from `1.40.0` to `1.41.0`.
+
+## 1.0.0-beta.48 (2024-07-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.51.0`.
+- Upgraded `opentelemetry-api` from `1.38.0` to `1.40.0`.
+
+## 1.0.0-beta.47 (2024-06-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+- Upgraded OpenTelemetry from `1.37.0` to `1.38.0`.
+
+## 1.0.0-beta.46 (2024-05-01)
+
+### Breaking Changes
+
+- Added default query params sanitization for HTTP spans.
+
+### Bugs Fixed
+
+- Fixed explicit context propagation when running in javaagent. ([#39602](https://github.com/Azure/azure-sdk-for-java/pull/39602))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+- Upgraded OpenTelemetry from `1.36.0` to `1.37.0`.
+
+## 1.0.0-beta.45 (2024-04-05)
+
+### Bugs Fixed
+
+- Fixed unreliable HTTP span reporting when response is not closed.
+ 
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+- Upgraded OpenTelemetry from `1.35.0` to `1.36.0`.
+
+## 1.0.0-beta.44 (2024-03-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to `1.47.0`.
+- Upgraded OpenTelemetry from `1.34.1` to `1.35.0`.
+
+## 1.0.0-beta.43 (2024-02-02)
+
+### Features Added
+
+- Updated HTTP and messaging instrumentation to OpenTelemetry Semantic Conventions version 1.23.1.
+
+### Breaking Changes
+
+- Renamed attributes according to OpenTelemetry semantic conventions changes:
+    - `net.peer.name` -> `server.address`
+    - `http.method` -> `http.request.method`
+    - `http.status_code` -> `http.response.status_code`
+    - `http.url` -> `url.full`
+- Removed `http.user_agent` optional attribute since the same information is reported in the instrumentation scope via library name and version.  
+- Removed `OpenTelemetrySchemaVersion` and it's setter method on `OpenTelemetryTracingOptions` since we're not allowing to change the schema version for now.
+- Removed exception event reporting - exceptions are reported as logs already.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
 
 ## 1.0.0-beta.42 (2023-11-03)
 
@@ -159,7 +283,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.30.0` to `1.31.0`.
-- Upgraded `opentelemtry-api` from `1.11.0` to `1.14.0`.
+- Upgraded `opentelemetry-api` from `1.11.0` to `1.14.0`.
 
 ## 1.0.0-beta.26 (2022-06-30)
 
@@ -368,7 +492,6 @@ and
 
 ## 1.0.0-beta.1 (2019-11-26)
 
-For details on the Azure SDK for Java (Decemeber 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
 Version 1.0.0-beta.1 is the first preview of our efforts to provide low level interfaces and helper methods to support tracing for Java client libraries.
 This library includes [OpenTelemetry](https://opentelemetry.io/) implementation of the interface.
 This library added tracing instrumentation for AMQP and HTTP Java SDK client libraries across different languages and platforms.

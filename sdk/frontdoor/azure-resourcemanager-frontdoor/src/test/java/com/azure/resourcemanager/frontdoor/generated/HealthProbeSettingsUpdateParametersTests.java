@@ -14,32 +14,28 @@ import org.junit.jupiter.api.Assertions;
 public final class HealthProbeSettingsUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HealthProbeSettingsUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"path\":\"n\",\"protocol\":\"Https\",\"intervalInSeconds\":242994282,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Disabled\"}")
-                .toObject(HealthProbeSettingsUpdateParameters.class);
-        Assertions.assertEquals("n", model.path());
-        Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.protocol());
-        Assertions.assertEquals(242994282, model.intervalInSeconds());
+        HealthProbeSettingsUpdateParameters model = BinaryData.fromString(
+            "{\"path\":\"t\",\"protocol\":\"Http\",\"intervalInSeconds\":989782858,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Enabled\"}")
+            .toObject(HealthProbeSettingsUpdateParameters.class);
+        Assertions.assertEquals("t", model.path());
+        Assertions.assertEquals(FrontDoorProtocol.HTTP, model.protocol());
+        Assertions.assertEquals(989782858, model.intervalInSeconds());
         Assertions.assertEquals(FrontDoorHealthProbeMethod.HEAD, model.healthProbeMethod());
-        Assertions.assertEquals(HealthProbeEnabled.DISABLED, model.enabledState());
+        Assertions.assertEquals(HealthProbeEnabled.ENABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HealthProbeSettingsUpdateParameters model =
-            new HealthProbeSettingsUpdateParameters()
-                .withPath("n")
-                .withProtocol(FrontDoorProtocol.HTTPS)
-                .withIntervalInSeconds(242994282)
-                .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
-                .withEnabledState(HealthProbeEnabled.DISABLED);
+        HealthProbeSettingsUpdateParameters model = new HealthProbeSettingsUpdateParameters().withPath("t")
+            .withProtocol(FrontDoorProtocol.HTTP)
+            .withIntervalInSeconds(989782858)
+            .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
+            .withEnabledState(HealthProbeEnabled.ENABLED);
         model = BinaryData.fromObject(model).toObject(HealthProbeSettingsUpdateParameters.class);
-        Assertions.assertEquals("n", model.path());
-        Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.protocol());
-        Assertions.assertEquals(242994282, model.intervalInSeconds());
+        Assertions.assertEquals("t", model.path());
+        Assertions.assertEquals(FrontDoorProtocol.HTTP, model.protocol());
+        Assertions.assertEquals(989782858, model.intervalInSeconds());
         Assertions.assertEquals(FrontDoorHealthProbeMethod.HEAD, model.healthProbeMethod());
-        Assertions.assertEquals(HealthProbeEnabled.DISABLED, model.enabledState());
+        Assertions.assertEquals(HealthProbeEnabled.ENABLED, model.enabledState());
     }
 }

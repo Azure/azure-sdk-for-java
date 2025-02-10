@@ -16,6 +16,7 @@ public class CosmosPagedFluxOptions {
     private FeedOperationState operationState;
     private String requestContinuation;
     private Integer maxItemCount;
+    private String queryText;
 
     public CosmosPagedFluxOptions() {}
 
@@ -102,9 +103,18 @@ public class CosmosPagedFluxOptions {
         return samplingRateSnapshot;
     }
 
-    public void setSamplingRateSnapshot(double samplingRateSnapshot) {
+    public void setSamplingRateSnapshot(double samplingRateSnapshot, boolean isSampledOut) {
         if (this.operationState != null) {
-            this.operationState.setSamplingRateSnapshot(samplingRateSnapshot);
+            this.operationState.setSamplingRateSnapshot(samplingRateSnapshot, isSampledOut);
         }
     }
+
+    public String getQueryText() {
+        return queryText;
+    }
+
+    public void setQueryText(String queryText) {
+        this.queryText = queryText;
+    }
+
 }

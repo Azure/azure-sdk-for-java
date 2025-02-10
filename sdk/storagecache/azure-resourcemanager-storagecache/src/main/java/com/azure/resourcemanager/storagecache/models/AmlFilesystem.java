@@ -12,53 +12,55 @@ import com.azure.resourcemanager.storagecache.fluent.models.AmlFilesystemInner;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of AmlFilesystem. */
+/**
+ * An immutable client-side representation of AmlFilesystem.
+ */
 public interface AmlFilesystem {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the identity property: The managed identity used by the AML file system, if configured.
-     *
+     * 
      * @return the identity value.
      */
     AmlFilesystemIdentity identity();
 
     /**
      * Gets the sku property: SKU for the resource.
-     *
+     * 
      * @return the sku value.
      */
     SkuName sku();
@@ -66,35 +68,35 @@ public interface AmlFilesystem {
     /**
      * Gets the zones property: Availability zones for resources. This field should only contain a single element in the
      * array.
-     *
+     * 
      * @return the zones value.
      */
     List<String> zones();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the storageCapacityTiB property: The size of the AML file system, in TiB. This might be rounded up.
-     *
+     * 
      * @return the storageCapacityTiB value.
      */
     float storageCapacityTiB();
 
     /**
      * Gets the health property: Health of the AML file system.
-     *
+     * 
      * @return the health value.
      */
     AmlFilesystemHealth health();
 
     /**
      * Gets the provisioningState property: ARM provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     AmlFilesystemProvisioningStateType provisioningState();
@@ -102,14 +104,14 @@ public interface AmlFilesystem {
     /**
      * Gets the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing
      * operations. This subnet should have at least a /24 subnet mask within the VNET's address space.
-     *
+     * 
      * @return the filesystemSubnet value.
      */
     String filesystemSubnet();
 
     /**
      * Gets the clientInfo property: Client information for the AML file system.
-     *
+     * 
      * @return the clientInfo value.
      */
     AmlFilesystemClientInfo clientInfo();
@@ -117,77 +119,91 @@ public interface AmlFilesystem {
     /**
      * Gets the throughputProvisionedMBps property: Throughput provisioned in MB per sec, calculated as
      * storageCapacityTiB * per-unit storage throughput.
-     *
+     * 
      * @return the throughputProvisionedMBps value.
      */
     Integer throughputProvisionedMBps();
 
     /**
      * Gets the encryptionSettings property: Specifies encryption settings of the AML file system.
-     *
+     * 
      * @return the encryptionSettings value.
      */
     AmlFilesystemEncryptionSettings encryptionSettings();
 
     /**
      * Gets the maintenanceWindow property: Start time of a 30-minute weekly maintenance window.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     AmlFilesystemPropertiesMaintenanceWindow maintenanceWindow();
 
     /**
      * Gets the hsm property: Hydration and archive settings and status.
-     *
+     * 
      * @return the hsm value.
      */
     AmlFilesystemPropertiesHsm hsm();
 
     /**
+     * Gets the rootSquashSettings property: Specifies root squash settings of the AML file system.
+     * 
+     * @return the rootSquashSettings value.
+     */
+    AmlFilesystemRootSquashSettings rootSquashSettings();
+
+    /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.storagecache.fluent.models.AmlFilesystemInner object.
-     *
+     * 
      * @return the inner object.
      */
     AmlFilesystemInner innerModel();
 
-    /** The entirety of the AmlFilesystem definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the AmlFilesystem definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
-    /** The AmlFilesystem definition stages. */
+
+    /**
+     * The AmlFilesystem definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the AmlFilesystem definition. */
+        /**
+         * The first stage of the AmlFilesystem definition.
+         */
         interface Blank extends WithLocation {
         }
-        /** The stage of the AmlFilesystem definition allowing to specify location. */
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -195,216 +211,282 @@ public interface AmlFilesystem {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
-        /** The stage of the AmlFilesystem definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the AmlFilesystem definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithZones,
-                DefinitionStages.WithStorageCapacityTiB,
-                DefinitionStages.WithFilesystemSubnet,
-                DefinitionStages.WithEncryptionSettings,
-                DefinitionStages.WithMaintenanceWindow,
-                DefinitionStages.WithHsm {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithSku,
+            DefinitionStages.WithZones, DefinitionStages.WithStorageCapacityTiB, DefinitionStages.WithFilesystemSubnet,
+            DefinitionStages.WithEncryptionSettings, DefinitionStages.WithMaintenanceWindow, DefinitionStages.WithHsm,
+            DefinitionStages.WithRootSquashSettings {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             AmlFilesystem create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             AmlFilesystem create(Context context);
         }
-        /** The stage of the AmlFilesystem definition allowing to specify tags. */
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the AmlFilesystem definition allowing to specify identity. */
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: The managed identity used by the AML file system, if configured..
-             *
+             * 
              * @param identity The managed identity used by the AML file system, if configured.
              * @return the next definition stage.
              */
             WithCreate withIdentity(AmlFilesystemIdentity identity);
         }
-        /** The stage of the AmlFilesystem definition allowing to specify sku. */
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: SKU for the resource..
-             *
+             * 
              * @param sku SKU for the resource.
              * @return the next definition stage.
              */
             WithCreate withSku(SkuName sku);
         }
-        /** The stage of the AmlFilesystem definition allowing to specify zones. */
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify zones.
+         */
         interface WithZones {
             /**
              * Specifies the zones property: Availability zones for resources. This field should only contain a single
              * element in the array..
-             *
+             * 
              * @param zones Availability zones for resources. This field should only contain a single element in the
-             *     array.
+             * array.
              * @return the next definition stage.
              */
             WithCreate withZones(List<String> zones);
         }
-        /** The stage of the AmlFilesystem definition allowing to specify storageCapacityTiB. */
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify storageCapacityTiB.
+         */
         interface WithStorageCapacityTiB {
             /**
              * Specifies the storageCapacityTiB property: The size of the AML file system, in TiB. This might be rounded
              * up..
-             *
+             * 
              * @param storageCapacityTiB The size of the AML file system, in TiB. This might be rounded up.
              * @return the next definition stage.
              */
             WithCreate withStorageCapacityTiB(float storageCapacityTiB);
         }
-        /** The stage of the AmlFilesystem definition allowing to specify filesystemSubnet. */
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify filesystemSubnet.
+         */
         interface WithFilesystemSubnet {
             /**
              * Specifies the filesystemSubnet property: Subnet used for managing the AML file system and for
              * client-facing operations. This subnet should have at least a /24 subnet mask within the VNET's address
              * space..
-             *
+             * 
              * @param filesystemSubnet Subnet used for managing the AML file system and for client-facing operations.
-             *     This subnet should have at least a /24 subnet mask within the VNET's address space.
+             * This subnet should have at least a /24 subnet mask within the VNET's address space.
              * @return the next definition stage.
              */
             WithCreate withFilesystemSubnet(String filesystemSubnet);
         }
-        /** The stage of the AmlFilesystem definition allowing to specify encryptionSettings. */
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify encryptionSettings.
+         */
         interface WithEncryptionSettings {
             /**
              * Specifies the encryptionSettings property: Specifies encryption settings of the AML file system..
-             *
+             * 
              * @param encryptionSettings Specifies encryption settings of the AML file system.
              * @return the next definition stage.
              */
             WithCreate withEncryptionSettings(AmlFilesystemEncryptionSettings encryptionSettings);
         }
-        /** The stage of the AmlFilesystem definition allowing to specify maintenanceWindow. */
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify maintenanceWindow.
+         */
         interface WithMaintenanceWindow {
             /**
              * Specifies the maintenanceWindow property: Start time of a 30-minute weekly maintenance window..
-             *
+             * 
              * @param maintenanceWindow Start time of a 30-minute weekly maintenance window.
              * @return the next definition stage.
              */
             WithCreate withMaintenanceWindow(AmlFilesystemPropertiesMaintenanceWindow maintenanceWindow);
         }
-        /** The stage of the AmlFilesystem definition allowing to specify hsm. */
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify hsm.
+         */
         interface WithHsm {
             /**
              * Specifies the hsm property: Hydration and archive settings and status.
-             *
+             * 
              * @param hsm Hydration and archive settings and status.
              * @return the next definition stage.
              */
             WithCreate withHsm(AmlFilesystemPropertiesHsm hsm);
         }
+
+        /**
+         * The stage of the AmlFilesystem definition allowing to specify rootSquashSettings.
+         */
+        interface WithRootSquashSettings {
+            /**
+             * Specifies the rootSquashSettings property: Specifies root squash settings of the AML file system..
+             * 
+             * @param rootSquashSettings Specifies root squash settings of the AML file system.
+             * @return the next definition stage.
+             */
+            WithCreate withRootSquashSettings(AmlFilesystemRootSquashSettings rootSquashSettings);
+        }
     }
+
     /**
      * Begins update for the AmlFilesystem resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     AmlFilesystem.Update update();
 
-    /** The template for AmlFilesystem update. */
-    interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithEncryptionSettings, UpdateStages.WithMaintenanceWindow {
+    /**
+     * The template for AmlFilesystem update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithEncryptionSettings,
+        UpdateStages.WithMaintenanceWindow, UpdateStages.WithRootSquashSettings {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         AmlFilesystem apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         AmlFilesystem apply(Context context);
     }
-    /** The AmlFilesystem update stages. */
+
+    /**
+     * The AmlFilesystem update stages.
+     */
     interface UpdateStages {
-        /** The stage of the AmlFilesystem update allowing to specify tags. */
+        /**
+         * The stage of the AmlFilesystem update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
-        /** The stage of the AmlFilesystem update allowing to specify encryptionSettings. */
+
+        /**
+         * The stage of the AmlFilesystem update allowing to specify encryptionSettings.
+         */
         interface WithEncryptionSettings {
             /**
              * Specifies the encryptionSettings property: Specifies encryption settings of the AML file system..
-             *
+             * 
              * @param encryptionSettings Specifies encryption settings of the AML file system.
              * @return the next definition stage.
              */
             Update withEncryptionSettings(AmlFilesystemEncryptionSettings encryptionSettings);
         }
-        /** The stage of the AmlFilesystem update allowing to specify maintenanceWindow. */
+
+        /**
+         * The stage of the AmlFilesystem update allowing to specify maintenanceWindow.
+         */
         interface WithMaintenanceWindow {
             /**
              * Specifies the maintenanceWindow property: Start time of a 30-minute weekly maintenance window..
-             *
+             * 
              * @param maintenanceWindow Start time of a 30-minute weekly maintenance window.
              * @return the next definition stage.
              */
             Update withMaintenanceWindow(AmlFilesystemUpdatePropertiesMaintenanceWindow maintenanceWindow);
         }
+
+        /**
+         * The stage of the AmlFilesystem update allowing to specify rootSquashSettings.
+         */
+        interface WithRootSquashSettings {
+            /**
+             * Specifies the rootSquashSettings property: Specifies root squash settings of the AML file system..
+             * 
+             * @param rootSquashSettings Specifies root squash settings of the AML file system.
+             * @return the next definition stage.
+             */
+            Update withRootSquashSettings(AmlFilesystemRootSquashSettings rootSquashSettings);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     AmlFilesystem refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -412,7 +494,7 @@ public interface AmlFilesystem {
 
     /**
      * Archive data from the AML file system.
-     *
+     * 
      * @param archiveInfo Information about the archive operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,7 +506,7 @@ public interface AmlFilesystem {
 
     /**
      * Archive data from the AML file system.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -432,7 +514,7 @@ public interface AmlFilesystem {
 
     /**
      * Cancel archiving data from the AML file system.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -443,7 +525,7 @@ public interface AmlFilesystem {
 
     /**
      * Cancel archiving data from the AML file system.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */

@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ObjectiveTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Objective model =
-            BinaryData
-                .fromString("{\"goal\":\"Minimize\",\"primaryMetric\":\"qxjoshohtotryeg\"}")
-                .toObject(Objective.class);
+        Objective model = BinaryData.fromString("{\"primaryMetric\":\"hjxncqzahg\",\"goal\":\"Minimize\"}")
+            .toObject(Objective.class);
+        Assertions.assertEquals("hjxncqzahg", model.primaryMetric());
         Assertions.assertEquals(Goal.MINIMIZE, model.goal());
-        Assertions.assertEquals("qxjoshohtotryeg", model.primaryMetric());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Objective model = new Objective().withGoal(Goal.MINIMIZE).withPrimaryMetric("qxjoshohtotryeg");
+        Objective model = new Objective().withPrimaryMetric("hjxncqzahg").withGoal(Goal.MINIMIZE);
         model = BinaryData.fromObject(model).toObject(Objective.class);
+        Assertions.assertEquals("hjxncqzahg", model.primaryMetric());
         Assertions.assertEquals(Goal.MINIMIZE, model.goal());
-        Assertions.assertEquals("qxjoshohtotryeg", model.primaryMetric());
     }
 }

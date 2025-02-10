@@ -13,29 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"charset\":\"dkfthwxmnt\",\"collation\":\"waopvkmijcmmxd\"},\"id\":\"fufsrpymzi\",\"name\":\"nsez\",\"type\":\"xtbzsgfyccsne\"},{\"properties\":{\"charset\":\"wzjeiach\",\"collation\":\"osfln\"},\"id\":\"sfqpteehz\",\"name\":\"vypyqrimzinpv\",\"type\":\"wjdk\"}],\"nextLink\":\"soodqxhcrmnoh\"}")
-                .toObject(DatabaseListResult.class);
-        Assertions.assertEquals("dkfthwxmnt", model.value().get(0).charset());
-        Assertions.assertEquals("waopvkmijcmmxd", model.value().get(0).collation());
-        Assertions.assertEquals("soodqxhcrmnoh", model.nextLink());
+        DatabaseListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"charset\":\"ddgmb\",\"collation\":\"ex\"},\"id\":\"bhtqqrolfpfpsa\",\"name\":\"gbquxigj\",\"type\":\"jgzjaoyfhrtx\"}],\"nextLink\":\"n\"}")
+            .toObject(DatabaseListResult.class);
+        Assertions.assertEquals("ddgmb", model.value().get(0).charset());
+        Assertions.assertEquals("ex", model.value().get(0).collation());
+        Assertions.assertEquals("n", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseListResult model =
-            new DatabaseListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DatabaseInner().withCharset("dkfthwxmnt").withCollation("waopvkmijcmmxd"),
-                            new DatabaseInner().withCharset("wzjeiach").withCollation("osfln")))
-                .withNextLink("soodqxhcrmnoh");
+        DatabaseListResult model = new DatabaseListResult()
+            .withValue(Arrays.asList(new DatabaseInner().withCharset("ddgmb").withCollation("ex")))
+            .withNextLink("n");
         model = BinaryData.fromObject(model).toObject(DatabaseListResult.class);
-        Assertions.assertEquals("dkfthwxmnt", model.value().get(0).charset());
-        Assertions.assertEquals("waopvkmijcmmxd", model.value().get(0).collation());
-        Assertions.assertEquals("soodqxhcrmnoh", model.nextLink());
+        Assertions.assertEquals("ddgmb", model.value().get(0).charset());
+        Assertions.assertEquals("ex", model.value().get(0).collation());
+        Assertions.assertEquals("n", model.nextLink());
     }
 }

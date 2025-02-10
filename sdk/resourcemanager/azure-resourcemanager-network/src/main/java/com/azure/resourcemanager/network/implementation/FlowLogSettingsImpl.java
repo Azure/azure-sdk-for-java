@@ -41,16 +41,14 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     public Mono<FlowLogSettings> applyAsync(Context context) {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getNetworkWatchers()
             .setFlowLogConfigurationAsync(parent().resourceGroupName(), parent().name(), this.innerModel())
             .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
-            .map(
-                flowLogInformationInner ->
-                    new FlowLogSettingsImpl(FlowLogSettingsImpl.this.parent, flowLogInformationInner, nsgId));
+            .map(flowLogInformationInner -> new FlowLogSettingsImpl(FlowLogSettingsImpl.this.parent,
+                flowLogInformationInner, nsgId));
     }
 
     @Override
@@ -111,8 +109,7 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     protected Mono<FlowLogInformationInner> getInnerAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getNetworkWatchers()

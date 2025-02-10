@@ -5,41 +5,70 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Number of rejected cloud to device messages (AMQP protocol) is not in allowed range. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
-@JsonTypeName("AmqpC2DRejectedMessagesNotInAllowedRange")
+/**
+ * Number of rejected cloud to device messages (AMQP protocol) is not in allowed range.
+ */
 @Fluent
 public final class AmqpC2DRejectedMessagesNotInAllowedRange extends TimeWindowCustomAlertRule {
-    /** Creates an instance of AmqpC2DRejectedMessagesNotInAllowedRange class. */
+    /*
+     * The type of the custom alert rule.
+     */
+    private String ruleType = "AmqpC2DRejectedMessagesNotInAllowedRange";
+
+    /**
+     * Creates an instance of AmqpC2DRejectedMessagesNotInAllowedRange class.
+     */
     public AmqpC2DRejectedMessagesNotInAllowedRange() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmqpC2DRejectedMessagesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {
         super.withTimeWindowSize(timeWindowSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmqpC2DRejectedMessagesNotInAllowedRange withMinThreshold(int minThreshold) {
         super.withMinThreshold(minThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmqpC2DRejectedMessagesNotInAllowedRange withMaxThreshold(int maxThreshold) {
         super.withMaxThreshold(maxThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmqpC2DRejectedMessagesNotInAllowedRange withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -48,11 +77,72 @@ public final class AmqpC2DRejectedMessagesNotInAllowedRange extends TimeWindowCu
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (timeWindowSize() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeWindowSize in model AmqpC2DRejectedMessagesNotInAllowedRange"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AmqpC2DRejectedMessagesNotInAllowedRange.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeIntField("minThreshold", minThreshold());
+        jsonWriter.writeIntField("maxThreshold", maxThreshold());
+        jsonWriter.writeStringField("timeWindowSize", CoreUtils.durationToStringWithDays(timeWindowSize()));
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmqpC2DRejectedMessagesNotInAllowedRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmqpC2DRejectedMessagesNotInAllowedRange if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AmqpC2DRejectedMessagesNotInAllowedRange.
+     */
+    public static AmqpC2DRejectedMessagesNotInAllowedRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmqpC2DRejectedMessagesNotInAllowedRange deserializedAmqpC2DRejectedMessagesNotInAllowedRange
+                = new AmqpC2DRejectedMessagesNotInAllowedRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedAmqpC2DRejectedMessagesNotInAllowedRange.withIsEnabled(reader.getBoolean());
+                } else if ("minThreshold".equals(fieldName)) {
+                    deserializedAmqpC2DRejectedMessagesNotInAllowedRange.withMinThreshold(reader.getInt());
+                } else if ("maxThreshold".equals(fieldName)) {
+                    deserializedAmqpC2DRejectedMessagesNotInAllowedRange.withMaxThreshold(reader.getInt());
+                } else if ("timeWindowSize".equals(fieldName)) {
+                    deserializedAmqpC2DRejectedMessagesNotInAllowedRange.withTimeWindowSize(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAmqpC2DRejectedMessagesNotInAllowedRange.withDisplayName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedAmqpC2DRejectedMessagesNotInAllowedRange.withDescription(reader.getString());
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedAmqpC2DRejectedMessagesNotInAllowedRange.ruleType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmqpC2DRejectedMessagesNotInAllowedRange;
+        });
     }
 }

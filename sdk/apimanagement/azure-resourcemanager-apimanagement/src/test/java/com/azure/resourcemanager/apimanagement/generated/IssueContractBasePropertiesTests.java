@@ -13,10 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IssueContractBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IssueContractBaseProperties model =
-            BinaryData
-                .fromString("{\"createdDate\":\"2021-11-22T10:53:48Z\",\"state\":\"closed\",\"apiId\":\"blhtjq\"}")
-                .toObject(IssueContractBaseProperties.class);
+        IssueContractBaseProperties model = BinaryData
+            .fromString("{\"createdDate\":\"2021-11-22T10:53:48Z\",\"state\":\"closed\",\"apiId\":\"blhtjq\"}")
+            .toObject(IssueContractBaseProperties.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-22T10:53:48Z"), model.createdDate());
         Assertions.assertEquals(State.CLOSED, model.state());
         Assertions.assertEquals("blhtjq", model.apiId());
@@ -24,9 +23,8 @@ public final class IssueContractBasePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueContractBaseProperties model =
-            new IssueContractBaseProperties()
-                .withCreatedDate(OffsetDateTime.parse("2021-11-22T10:53:48Z"))
+        IssueContractBaseProperties model
+            = new IssueContractBaseProperties().withCreatedDate(OffsetDateTime.parse("2021-11-22T10:53:48Z"))
                 .withState(State.CLOSED)
                 .withApiId("blhtjq");
         model = BinaryData.fromObject(model).toObject(IssueContractBaseProperties.class);

@@ -99,20 +99,16 @@ public final class SimGroupImpl implements SimGroup, SimGroup.Definition, SimGro
     }
 
     public SimGroup create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimGroups()
-                .createOrUpdate(resourceGroupName, simGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSimGroups()
+            .createOrUpdate(resourceGroupName, simGroupName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SimGroup create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimGroups()
-                .createOrUpdate(resourceGroupName, simGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSimGroups()
+            .createOrUpdate(resourceGroupName, simGroupName, this.innerModel(), context);
         return this;
     }
 
@@ -128,50 +124,42 @@ public final class SimGroupImpl implements SimGroup, SimGroup.Definition, SimGro
     }
 
     public SimGroup apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimGroups()
-                .updateTagsWithResponse(resourceGroupName, simGroupName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSimGroups()
+            .updateTagsWithResponse(resourceGroupName, simGroupName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SimGroup apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimGroups()
-                .updateTagsWithResponse(resourceGroupName, simGroupName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSimGroups()
+            .updateTagsWithResponse(resourceGroupName, simGroupName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    SimGroupImpl(
-        SimGroupInner innerObject, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
+    SimGroupImpl(SimGroupInner innerObject,
+        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.simGroupName = Utils.getValueFromIdByName(innerObject.id(), "simGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.simGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "simGroups");
     }
 
     public SimGroup refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimGroups()
-                .getByResourceGroupWithResponse(resourceGroupName, simGroupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSimGroups()
+            .getByResourceGroupWithResponse(resourceGroupName, simGroupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SimGroup refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimGroups()
-                .getByResourceGroupWithResponse(resourceGroupName, simGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSimGroups()
+            .getByResourceGroupWithResponse(resourceGroupName, simGroupName, context)
+            .getValue();
         return this;
     }
 

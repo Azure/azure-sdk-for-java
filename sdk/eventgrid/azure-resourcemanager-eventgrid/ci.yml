@@ -1,0 +1,42 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/eventgrid/azure-resourcemanager-eventgrid/
+    exclude:
+      - sdk/eventgrid/azure-resourcemanager-eventgrid/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/eventgrid/azure-resourcemanager-eventgrid/
+    exclude:
+      - sdk/eventgrid/azure-resourcemanager-eventgrid/pom.xml
+
+parameters:
+- name: release_azureresourcemanagereventgrid
+  displayName: 'azure-resourcemanager-eventgrid'
+  type: boolean
+  default: true
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: eventgrid/azure-resourcemanager-eventgrid
+    Artifacts:
+      - name: azure-resourcemanager-eventgrid
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagereventgrid
+        releaseInBatch: ${{ parameters.release_azureresourcemanagereventgrid }}

@@ -15,27 +15,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zabglcuhxwt\":{\"principalId\":\"636e32c1-82cf-4032-bd14-59f4ad3d0032\",\"clientId\":\"3ee8071b-e657-4e3d-831a-4027e711a01e\"},\"qik\":{\"principalId\":\"ab6859fb-fab8-4827-96a8-801d4dda4ca9\",\"clientId\":\"f450bb8c-9e9e-431f-958e-f49dfe1d5a5f\"},\"ovplw\":{\"principalId\":\"28a08b74-30ee-4366-891c-399d804b0e21\",\"clientId\":\"2613cf04-8f03-4160-978d-493ebae52a11\"}},\"principalId\":\"hvgyuguosvmk\",\"tenantId\":\"sxqu\"}")
-                .toObject(ResourceIdentity.class);
+        ResourceIdentity model = BinaryData.fromString(
+            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zabglcuhxwt\":{\"principalId\":\"23b4e7ab-bed4-48d5-b835-33db915ab81c\",\"clientId\":\"93ab5b70-2990-4fdc-8f04-1ad6db474dea\"},\"qik\":{\"principalId\":\"a4be7bfb-e769-4665-9b64-2c3ffd045676\",\"clientId\":\"dce9e292-c0f6-46a8-b565-0da60edeeadd\"},\"ovplw\":{\"principalId\":\"c6576fa6-c26f-4f66-92a6-7fed8fc5128b\",\"clientId\":\"4f733958-d169-4fb6-8848-8cca54998b91\"}},\"principalId\":\"hvgyuguosvmk\",\"tenantId\":\"sxqu\"}")
+            .toObject(ResourceIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceIdentity model =
-            new ResourceIdentity()
-                .withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "zabglcuhxwt",
-                        new UserAssignedIdentity(),
-                        "qik",
-                        new UserAssignedIdentity(),
-                        "ovplw",
-                        new UserAssignedIdentity()));
+        ResourceIdentity model = new ResourceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("zabglcuhxwt", new UserAssignedIdentity(), "qik",
+                new UserAssignedIdentity(), "ovplw", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }

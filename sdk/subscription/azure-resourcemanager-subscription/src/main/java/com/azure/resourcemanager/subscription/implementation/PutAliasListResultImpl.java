@@ -17,8 +17,7 @@ public final class PutAliasListResultImpl implements PutAliasListResult {
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    PutAliasListResultImpl(
-        PutAliasListResultInner innerObject,
+    PutAliasListResultImpl(PutAliasListResultInner innerObject,
         com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class PutAliasListResultImpl implements PutAliasListResult {
     public List<PutAliasResponse> value() {
         List<PutAliasResponseInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PutAliasResponseImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PutAliasResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

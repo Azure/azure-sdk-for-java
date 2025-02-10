@@ -14,30 +14,31 @@ public final class BackupPolicyPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicyPatch model = BinaryData.fromString(
-            "{\"properties\":{\"backupPolicyId\":\"kqjjlwuenvrkp\",\"provisioningState\":\"uaibrebqaaysj\",\"dailyBackupsToKeep\":1330578772,\"weeklyBackupsToKeep\":1662544736,\"monthlyBackupsToKeep\":2018222858,\"volumesAssigned\":1782265251,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"ffiakp\",\"backupsCount\":882438810,\"policyEnabled\":false}]},\"location\":\"tedltmmj\",\"tags\":{\"auyqncygupkv\":\"eozphv\",\"dscwxqupevzhf\":\"p\",\"pelmcuvhixbjxyf\":\"totxhojujb\",\"lrcoolsttpki\":\"n\"},\"id\":\"kkbnu\",\"name\":\"rywvtylbfpn\",\"type\":\"urdoi\"}")
+            "{\"properties\":{\"backupPolicyId\":\"llqwjygvjayvblmh\",\"provisioningState\":\"zuhbxvvyhgsopb\",\"dailyBackupsToKeep\":1164866415,\"weeklyBackupsToKeep\":338245093,\"monthlyBackupsToKeep\":175567556,\"volumesAssigned\":2128318759,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"nhlmctlpdng\",\"volumeResourceId\":\"vgbmhr\",\"backupsCount\":283160638,\"policyEnabled\":true}]},\"location\":\"yijejvegrhbpnaix\",\"tags\":{\"rvqahqkghtpwi\":\"cbdreaxhcexd\",\"ycxzbfvoo\":\"nhyjsv\"},\"id\":\"vrvmtgjqppyost\",\"name\":\"on\",\"type\":\"myhgfipnsxkmc\"}")
             .toObject(BackupPolicyPatch.class);
-        Assertions.assertEquals("tedltmmj", model.location());
-        Assertions.assertEquals("eozphv", model.tags().get("auyqncygupkv"));
-        Assertions.assertEquals(1330578772, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1662544736, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(2018222858, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("yijejvegrhbpnaix", model.location());
+        Assertions.assertEquals("cbdreaxhcexd", model.tags().get("rvqahqkghtpwi"));
+        Assertions.assertEquals(1164866415, model.dailyBackupsToKeep());
+        Assertions.assertEquals(338245093, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(175567556, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(false, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicyPatch model = new BackupPolicyPatch().withLocation("tedltmmj")
-            .withTags(mapOf("auyqncygupkv", "eozphv", "dscwxqupevzhf", "p", "pelmcuvhixbjxyf", "totxhojujb",
-                "lrcoolsttpki", "n"))
-            .withDailyBackupsToKeep(1330578772).withWeeklyBackupsToKeep(1662544736).withMonthlyBackupsToKeep(2018222858)
-            .withEnabled(true);
+        BackupPolicyPatch model = new BackupPolicyPatch().withLocation("yijejvegrhbpnaix")
+            .withTags(mapOf("rvqahqkghtpwi", "cbdreaxhcexd", "ycxzbfvoo", "nhyjsv"))
+            .withDailyBackupsToKeep(1164866415)
+            .withWeeklyBackupsToKeep(338245093)
+            .withMonthlyBackupsToKeep(175567556)
+            .withEnabled(false);
         model = BinaryData.fromObject(model).toObject(BackupPolicyPatch.class);
-        Assertions.assertEquals("tedltmmj", model.location());
-        Assertions.assertEquals("eozphv", model.tags().get("auyqncygupkv"));
-        Assertions.assertEquals(1330578772, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1662544736, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(2018222858, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("yijejvegrhbpnaix", model.location());
+        Assertions.assertEquals("cbdreaxhcexd", model.tags().get("rvqahqkghtpwi"));
+        Assertions.assertEquals(1164866415, model.dailyBackupsToKeep());
+        Assertions.assertEquals(338245093, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(175567556, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(false, model.enabled());
     }
 
     // Use "Map.of" if available

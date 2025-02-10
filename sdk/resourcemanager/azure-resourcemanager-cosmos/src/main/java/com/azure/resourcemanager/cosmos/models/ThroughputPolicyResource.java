@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cosmos DB resource throughput policy.
  */
 @Fluent
-public final class ThroughputPolicyResource {
+public final class ThroughputPolicyResource implements JsonSerializable<ThroughputPolicyResource> {
     /*
      * Determines whether the ThroughputPolicy is active or not
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * Represents the percentage by which throughput can increase every time throughput policy kicks in.
      */
-    @JsonProperty(value = "incrementPercent")
     private Integer incrementPercent;
 
     /**
@@ -78,5 +80,44 @@ public final class ThroughputPolicyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeNumberField("incrementPercent", this.incrementPercent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThroughputPolicyResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThroughputPolicyResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThroughputPolicyResource.
+     */
+    public static ThroughputPolicyResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThroughputPolicyResource deserializedThroughputPolicyResource = new ThroughputPolicyResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedThroughputPolicyResource.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("incrementPercent".equals(fieldName)) {
+                    deserializedThroughputPolicyResource.incrementPercent = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThroughputPolicyResource;
+        });
     }
 }

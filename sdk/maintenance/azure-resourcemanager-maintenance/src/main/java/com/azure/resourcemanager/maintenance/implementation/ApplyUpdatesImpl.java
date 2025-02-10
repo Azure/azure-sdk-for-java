@@ -21,63 +21,31 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
 
-    public ApplyUpdatesImpl(
-        ApplyUpdatesClient innerClient, com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
+    public ApplyUpdatesImpl(ApplyUpdatesClient innerClient,
+        com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ApplyUpdate> getParentWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
-        String applyUpdateName,
-        Context context) {
-        Response<ApplyUpdateInner> inner =
-            this
-                .serviceClient()
-                .getParentWithResponse(
-                    resourceGroupName,
-                    providerName,
-                    resourceParentType,
-                    resourceParentName,
-                    resourceType,
-                    resourceName,
-                    applyUpdateName,
-                    context);
+    public Response<ApplyUpdate> getParentWithResponse(String resourceGroupName, String providerName,
+        String resourceParentType, String resourceParentName, String resourceType, String resourceName,
+        String applyUpdateName, Context context) {
+        Response<ApplyUpdateInner> inner = this.serviceClient()
+            .getParentWithResponse(resourceGroupName, providerName, resourceParentType, resourceParentName,
+                resourceType, resourceName, applyUpdateName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplyUpdateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ApplyUpdate getParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
-        String applyUpdateName) {
-        ApplyUpdateInner inner =
-            this
-                .serviceClient()
-                .getParent(
-                    resourceGroupName,
-                    providerName,
-                    resourceParentType,
-                    resourceParentName,
-                    resourceType,
-                    resourceName,
-                    applyUpdateName);
+    public ApplyUpdate getParent(String resourceGroupName, String providerName, String resourceParentType,
+        String resourceParentName, String resourceType, String resourceName, String applyUpdateName) {
+        ApplyUpdateInner inner = this.serviceClient()
+            .getParent(resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType,
+                resourceName, applyUpdateName);
         if (inner != null) {
             return new ApplyUpdateImpl(inner, this.manager());
         } else {
@@ -85,36 +53,22 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
         }
     }
 
-    public Response<ApplyUpdate> getWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String applyUpdateName,
-        Context context) {
-        Response<ApplyUpdateInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, providerName, resourceType, resourceName, applyUpdateName, context);
+    public Response<ApplyUpdate> getWithResponse(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String applyUpdateName, Context context) {
+        Response<ApplyUpdateInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, providerName, resourceType, resourceName, applyUpdateName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplyUpdateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ApplyUpdate get(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
+    public ApplyUpdate get(String resourceGroupName, String providerName, String resourceType, String resourceName,
         String applyUpdateName) {
-        ApplyUpdateInner inner =
-            this.serviceClient().get(resourceGroupName, providerName, resourceType, resourceName, applyUpdateName);
+        ApplyUpdateInner inner
+            = this.serviceClient().get(resourceGroupName, providerName, resourceType, resourceName, applyUpdateName);
         if (inner != null) {
             return new ApplyUpdateImpl(inner, this.manager());
         } else {
@@ -122,81 +76,74 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
         }
     }
 
-    public Response<ApplyUpdate> createOrUpdateParentWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
+    public Response<ApplyUpdate> createOrUpdateOrCancelWithResponse(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String applyUpdateName, ApplyUpdateInner applyUpdate,
         Context context) {
-        Response<ApplyUpdateInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateParentWithResponse(
-                    resourceGroupName,
-                    providerName,
-                    resourceParentType,
-                    resourceParentName,
-                    resourceType,
-                    resourceName,
-                    context);
+        Response<ApplyUpdateInner> inner = this.serviceClient()
+            .createOrUpdateOrCancelWithResponse(resourceGroupName, providerName, resourceType, resourceName,
+                applyUpdateName, applyUpdate, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplyUpdateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ApplyUpdate createOrUpdateParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
+    public ApplyUpdate createOrUpdateOrCancel(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String applyUpdateName, ApplyUpdateInner applyUpdate) {
+        ApplyUpdateInner inner = this.serviceClient()
+            .createOrUpdateOrCancel(resourceGroupName, providerName, resourceType, resourceName, applyUpdateName,
+                applyUpdate);
+        if (inner != null) {
+            return new ApplyUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<ApplyUpdate> createOrUpdateParentWithResponse(String resourceGroupName, String providerName,
+        String resourceParentType, String resourceParentName, String resourceType, String resourceName,
+        Context context) {
+        Response<ApplyUpdateInner> inner = this.serviceClient()
+            .createOrUpdateParentWithResponse(resourceGroupName, providerName, resourceParentType, resourceParentName,
+                resourceType, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplyUpdateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplyUpdate createOrUpdateParent(String resourceGroupName, String providerName, String resourceParentType,
+        String resourceParentName, String resourceType, String resourceName) {
+        ApplyUpdateInner inner = this.serviceClient()
+            .createOrUpdateParent(resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType,
+                resourceName);
+        if (inner != null) {
+            return new ApplyUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<ApplyUpdate> createOrUpdateWithResponse(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, Context context) {
+        Response<ApplyUpdateInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, providerName, resourceType, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplyUpdateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplyUpdate createOrUpdate(String resourceGroupName, String providerName, String resourceType,
         String resourceName) {
-        ApplyUpdateInner inner =
-            this
-                .serviceClient()
-                .createOrUpdateParent(
-                    resourceGroupName,
-                    providerName,
-                    resourceParentType,
-                    resourceParentName,
-                    resourceType,
-                    resourceName);
-        if (inner != null) {
-            return new ApplyUpdateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ApplyUpdate> createOrUpdateWithResponse(
-        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context) {
-        Response<ApplyUpdateInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(resourceGroupName, providerName, resourceType, resourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ApplyUpdateImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public ApplyUpdate createOrUpdate(
-        String resourceGroupName, String providerName, String resourceType, String resourceName) {
-        ApplyUpdateInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, providerName, resourceType, resourceName);
+        ApplyUpdateInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, providerName, resourceType, resourceName);
         if (inner != null) {
             return new ApplyUpdateImpl(inner, this.manager());
         } else {
@@ -206,12 +153,12 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
 
     public PagedIterable<ApplyUpdate> list() {
         PagedIterable<ApplyUpdateInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApplyUpdate> list(Context context) {
         PagedIterable<ApplyUpdateInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
     }
 
     private ApplyUpdatesClient serviceClient() {

@@ -93,6 +93,24 @@ public class NodeCounts {
     private int waitingForStartTask;
 
     /**
+     * The number of Compute Nodes in the upgradingOS state.
+     */
+    @JsonProperty(value = "upgradingOS", required = true)
+    private int upgradingOS;
+
+    /**
+     * The number of Compute Nodes in the deallocated state.
+     */
+    @JsonProperty(value = "deallocated", required = true)
+    private int deallocated;
+
+    /**
+     * The number of Compute Nodes in the deallocating state.
+     */
+    @JsonProperty(value = "deallocating", required = true)
+    private int deallocating;
+
+    /**
      * The total number of Compute Nodes.
      */
     @JsonProperty(value = "total", required = true)
@@ -355,6 +373,66 @@ public class NodeCounts {
      */
     public NodeCounts withWaitingForStartTask(int waitingForStartTask) {
         this.waitingForStartTask = waitingForStartTask;
+        return this;
+    }
+
+    /**
+     * Get the upgradingOS value.
+     *
+     * @return the upgradingOS value
+     */
+    public int upgradingOS() {
+        return this.upgradingOS;
+    }
+
+    /**
+     * Set the upgradingOS value.
+     *
+     * @param upgradingOS the upgradingOS value to set
+     * @return the NodeCounts object itself.
+     */
+    public NodeCounts withUpgradingOS(int upgradingOS) {
+        this.upgradingOS = upgradingOS;
+        return this;
+    }
+
+    /**
+     * Get the deallocated value.
+     *
+     * @return the deallocated value
+     */
+    public int deallocated() {
+        return this.deallocated;
+    }
+
+    /**
+     * Set the deallocated value.
+     *
+     * @param deallocated the deallocated value to set
+     * @return the NodeCounts object itself.
+     */
+    public NodeCounts withDeallocated(int deallocated) {
+        this.deallocated = deallocated;
+        return this;
+    }
+
+    /**
+     * Get the deallocating value.
+     *
+     * @return the deallocating value
+     */
+    public int deallocating() {
+        return this.deallocating;
+    }
+
+    /**
+     * Set the deallocating value.
+     *
+     * @param deallocating the deallocating value to set
+     * @return the NodeCounts object itself.
+     */
+    public NodeCounts withDeallocating(int deallocating) {
+        this.deallocating = deallocating;
         return this;
     }
 

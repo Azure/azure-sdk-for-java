@@ -4,11 +4,13 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * A set of options for selecting configuration settings from App Configuration service.
@@ -34,8 +36,11 @@ import java.time.format.DateTimeFormatter;
 public class SettingSelector {
     private String keyFilter;
     private String labelFilter;
+    private List<String> tagsFilter;
     private SettingFields[] fields;
     private String acceptDatetime;
+
+    private List<MatchConditions> matchConditions;
 
     /**
      * Creates a setting selector that will populate responses with all of the {@link ConfigurationSetting
@@ -117,8 +122,8 @@ public class SettingSelector {
      * @return The updated SettingSelector object.
      */
     public SettingSelector setAcceptDatetime(OffsetDateTime datetime) {
-        this.acceptDatetime = datetime == null ? null
-                                  : DateTimeFormatter.RFC_1123_DATE_TIME.toFormat().format(datetime);
+        this.acceptDatetime
+            = datetime == null ? null : DateTimeFormatter.RFC_1123_DATE_TIME.toFormat().format(datetime);
         return this;
     }
 
@@ -143,6 +148,54 @@ public class SettingSelector {
      */
     public SettingSelector setFields(SettingFields... fields) {
         this.fields = fields;
+        return this;
+    }
+
+    /**
+     * Gets the tags used to filter settings based on their {@link ConfigurationSetting#getTags() tags} in the
+     * service.
+     *
+     * <p>See <a href="https://docs.microsoft.com/azure/azure-app-configuration/rest-api-key-value#supported-filters">Filtering</a>
+     * for more information about these supported filters.</p>
+     *
+     * @return tagsFilter The tags used to filter GET requests from the service.
+     */
+    public List<String> getTagsFilter() {
+        return tagsFilter;
+    }
+
+    /**
+     * Sets the expression to filter {@link ConfigurationSetting#getTags() tags} on for the request.
+     *
+     * <p>See <a href="https://docs.microsoft.com/azure/azure-app-configuration/rest-api-key-value#supported-filters">Filtering</a>
+     * for more information about these supported filters.</p>
+     *
+     * @param tagsFilter The expressions to filter ConfigurationSetting tags on.
+     *
+     * @return SettingSelector The updated SettingSelector object.
+     */
+    public SettingSelector setTagsFilter(List<String> tagsFilter) {
+        this.tagsFilter = tagsFilter;
+        return this;
+    }
+
+    /**
+     * Get the match conditions
+     *
+     * @return The match conditions
+     */
+    public List<MatchConditions> getMatchConditions() {
+        return matchConditions;
+    }
+
+    /**
+     * Set the match conditions
+     *
+     * @param matchConditions The match conditions
+     * @return The updated SettingSelector object.
+     */
+    public SettingSelector setMatchConditions(List<MatchConditions> matchConditions) {
+        this.matchConditions = matchConditions;
         return this;
     }
 

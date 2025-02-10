@@ -5,46 +5,61 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a Log Analytics workspace scope identifier. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("LogAnalytics")
+/**
+ * Represents a Log Analytics workspace scope identifier.
+ */
 @Immutable
 public final class LogAnalyticsIdentifier extends ResourceIdentifier {
     /*
+     * There can be multiple identifiers of different type per alert, this field specify the identifier type.
+     */
+    private ResourceIdentifierType type = ResourceIdentifierType.LOG_ANALYTICS;
+
+    /*
      * The LogAnalytics workspace id that stores this alert.
      */
-    @JsonProperty(value = "workspaceId", access = JsonProperty.Access.WRITE_ONLY)
     private String workspaceId;
 
     /*
      * The azure subscription id for the LogAnalytics workspace storing this alert.
      */
-    @JsonProperty(value = "workspaceSubscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String workspaceSubscriptionId;
 
     /*
      * The azure resource group for the LogAnalytics workspace storing this alert
      */
-    @JsonProperty(value = "workspaceResourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String workspaceResourceGroup;
 
     /*
      * (optional) The LogAnalytics agent id reporting the event that this alert is based on.
      */
-    @JsonProperty(value = "agentId", access = JsonProperty.Access.WRITE_ONLY)
     private String agentId;
 
-    /** Creates an instance of LogAnalyticsIdentifier class. */
+    /**
+     * Creates an instance of LogAnalyticsIdentifier class.
+     */
     public LogAnalyticsIdentifier() {
     }
 
     /**
+     * Get the type property: There can be multiple identifiers of different type per alert, this field specify the
+     * identifier type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public ResourceIdentifierType type() {
+        return this.type;
+    }
+
+    /**
      * Get the workspaceId property: The LogAnalytics workspace id that stores this alert.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -54,7 +69,7 @@ public final class LogAnalyticsIdentifier extends ResourceIdentifier {
     /**
      * Get the workspaceSubscriptionId property: The azure subscription id for the LogAnalytics workspace storing this
      * alert.
-     *
+     * 
      * @return the workspaceSubscriptionId value.
      */
     public String workspaceSubscriptionId() {
@@ -64,7 +79,7 @@ public final class LogAnalyticsIdentifier extends ResourceIdentifier {
     /**
      * Get the workspaceResourceGroup property: The azure resource group for the LogAnalytics workspace storing this
      * alert.
-     *
+     * 
      * @return the workspaceResourceGroup value.
      */
     public String workspaceResourceGroup() {
@@ -73,7 +88,7 @@ public final class LogAnalyticsIdentifier extends ResourceIdentifier {
 
     /**
      * Get the agentId property: (optional) The LogAnalytics agent id reporting the event that this alert is based on.
-     *
+     * 
      * @return the agentId value.
      */
     public String agentId() {
@@ -82,11 +97,54 @@ public final class LogAnalyticsIdentifier extends ResourceIdentifier {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogAnalyticsIdentifier from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogAnalyticsIdentifier if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogAnalyticsIdentifier.
+     */
+    public static LogAnalyticsIdentifier fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogAnalyticsIdentifier deserializedLogAnalyticsIdentifier = new LogAnalyticsIdentifier();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedLogAnalyticsIdentifier.type = ResourceIdentifierType.fromString(reader.getString());
+                } else if ("workspaceId".equals(fieldName)) {
+                    deserializedLogAnalyticsIdentifier.workspaceId = reader.getString();
+                } else if ("workspaceSubscriptionId".equals(fieldName)) {
+                    deserializedLogAnalyticsIdentifier.workspaceSubscriptionId = reader.getString();
+                } else if ("workspaceResourceGroup".equals(fieldName)) {
+                    deserializedLogAnalyticsIdentifier.workspaceResourceGroup = reader.getString();
+                } else if ("agentId".equals(fieldName)) {
+                    deserializedLogAnalyticsIdentifier.agentId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogAnalyticsIdentifier;
+        });
     }
 }

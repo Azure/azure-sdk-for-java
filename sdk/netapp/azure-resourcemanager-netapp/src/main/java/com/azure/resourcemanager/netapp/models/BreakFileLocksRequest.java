@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Break file locks request.
  */
 @Fluent
-public final class BreakFileLocksRequest {
+public final class BreakFileLocksRequest implements JsonSerializable<BreakFileLocksRequest> {
     /*
      * To clear file locks on a volume for a particular client
      */
-    @JsonProperty(value = "clientIp")
     private String clientIp;
 
     /*
      * Break File locks could be a disruptive operation for application as locks on the volume will be broken, if want
      * to process, set to true.
      */
-    @JsonProperty(value = "confirmRunningDisruptiveOperation")
     private Boolean confirmRunningDisruptiveOperation;
 
     /**
@@ -79,5 +81,45 @@ public final class BreakFileLocksRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientIp", this.clientIp);
+        jsonWriter.writeBooleanField("confirmRunningDisruptiveOperation", this.confirmRunningDisruptiveOperation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BreakFileLocksRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BreakFileLocksRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BreakFileLocksRequest.
+     */
+    public static BreakFileLocksRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BreakFileLocksRequest deserializedBreakFileLocksRequest = new BreakFileLocksRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientIp".equals(fieldName)) {
+                    deserializedBreakFileLocksRequest.clientIp = reader.getString();
+                } else if ("confirmRunningDisruptiveOperation".equals(fieldName)) {
+                    deserializedBreakFileLocksRequest.confirmRunningDisruptiveOperation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBreakFileLocksRequest;
+        });
     }
 }

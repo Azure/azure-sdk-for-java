@@ -18,32 +18,35 @@ public final class CosmosDbMongoDbApiLinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbMongoDbApiLinkedService model = BinaryData.fromString(
-            "{\"type\":\"CosmosDbMongoDbApi\",\"typeProperties\":{\"isServerVersionAbove32\":\"databjzxrpxji\",\"connectionString\":\"dataaup\",\"database\":\"datarvdo\"},\"connectVia\":{\"referenceName\":\"aqng\",\"parameters\":{\"highnxhgmfrnk\":\"datagcwwuusjjhtcyzn\",\"arjteqlujmmknia\":\"datasvwq\"}},\"description\":\"sttximeztasflgme\",\"parameters\":{\"wvzapybdeea\":{\"type\":\"Bool\",\"defaultValue\":\"datalerpt\"},\"bacpleirjrkakm\":{\"type\":\"SecureString\",\"defaultValue\":\"databp\"},\"azlxlbdukidgqeyq\":{\"type\":\"String\",\"defaultValue\":\"dataub\"},\"e\":{\"type\":\"Array\",\"defaultValue\":\"datapkypbekpardoad\"}},\"annotations\":[\"datagyhbzmgzsyt\",\"datapfslrx\"],\"\":{\"bpiqfstkdl\":\"datasbqr\",\"fkzlch\":\"datajzijxefydck\",\"lxnnit\":\"datakiwpadnh\",\"tfrdlfewexbrvb\":\"dataug\"}}")
+            "{\"type\":\"CosmosDbMongoDbApi\",\"typeProperties\":{\"isServerVersionAbove32\":\"dataopqqiyjrehe\",\"connectionString\":\"datachengmxpjkuq\",\"database\":\"datangromlxsqdzyyalr\"},\"version\":\"gq\",\"connectVia\":{\"referenceName\":\"fwuplfjkbax\",\"parameters\":{\"hxbfhbip\":\"dataeimuipggt\",\"fefznxcleyamv\":\"datadziphe\",\"vbtkafcnfitpu\":\"dataitjjhqvypqgncgw\"}},\"description\":\"ykdwyjd\",\"parameters\":{\"yngoudclri\":{\"type\":\"Bool\",\"defaultValue\":\"dataawj\"},\"chgjonrhdib\":{\"type\":\"Object\",\"defaultValue\":\"dataynxbdisjeovgcf\"},\"y\":{\"type\":\"Int\",\"defaultValue\":\"datad\"},\"njbbhwsfllzy\":{\"type\":\"SecureString\",\"defaultValue\":\"dataouiuvkcnq\"}},\"annotations\":[\"dataj\"],\"\":{\"jsgbpj\":\"datalpby\",\"vwbd\":\"datanblbkakn\",\"qilsbabqtjch\":\"datanddctkjcqhxdirt\",\"eiyem\":\"datasfwey\"}}")
             .toObject(CosmosDbMongoDbApiLinkedService.class);
-        Assertions.assertEquals("aqng", model.connectVia().referenceName());
-        Assertions.assertEquals("sttximeztasflgme", model.description());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("wvzapybdeea").type());
+        Assertions.assertEquals("gq", model.version());
+        Assertions.assertEquals("fwuplfjkbax", model.connectVia().referenceName());
+        Assertions.assertEquals("ykdwyjd", model.description());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("yngoudclri").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbMongoDbApiLinkedService model = new CosmosDbMongoDbApiLinkedService()
-            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("aqng")
-                .withParameters(mapOf("highnxhgmfrnk", "datagcwwuusjjhtcyzn", "arjteqlujmmknia", "datasvwq")))
-            .withDescription("sttximeztasflgme")
-            .withParameters(mapOf("wvzapybdeea",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datalerpt"),
-                "bacpleirjrkakm",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("databp"),
-                "azlxlbdukidgqeyq",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataub"), "e",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datapkypbekpardoad")))
-            .withAnnotations(Arrays.asList("datagyhbzmgzsyt", "datapfslrx")).withIsServerVersionAbove32("databjzxrpxji")
-            .withConnectionString("dataaup").withDatabase("datarvdo");
+        CosmosDbMongoDbApiLinkedService model = new CosmosDbMongoDbApiLinkedService().withVersion("gq")
+            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("fwuplfjkbax")
+                .withParameters(mapOf("hxbfhbip", "dataeimuipggt", "fefznxcleyamv", "datadziphe", "vbtkafcnfitpu",
+                    "dataitjjhqvypqgncgw")))
+            .withDescription("ykdwyjd")
+            .withParameters(mapOf("yngoudclri",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataawj"), "chgjonrhdib",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataynxbdisjeovgcf"), "y",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datad"), "njbbhwsfllzy",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataouiuvkcnq")))
+            .withAnnotations(Arrays.asList("dataj"))
+            .withIsServerVersionAbove32("dataopqqiyjrehe")
+            .withConnectionString("datachengmxpjkuq")
+            .withDatabase("datangromlxsqdzyyalr");
         model = BinaryData.fromObject(model).toObject(CosmosDbMongoDbApiLinkedService.class);
-        Assertions.assertEquals("aqng", model.connectVia().referenceName());
-        Assertions.assertEquals("sttximeztasflgme", model.description());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("wvzapybdeea").type());
+        Assertions.assertEquals("gq", model.version());
+        Assertions.assertEquals("fwuplfjkbax", model.connectVia().referenceName());
+        Assertions.assertEquals("ykdwyjd", model.description());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("yngoudclri").type());
     }
 
     // Use "Map.of" if available

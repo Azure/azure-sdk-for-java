@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ThreatProtectionName. */
+/**
+ * Defines values for ThreatProtectionName.
+ */
 public final class ThreatProtectionName extends ExpandableStringEnum<ThreatProtectionName> {
-    /** Static value Default for ThreatProtectionName. */
+    /**
+     * Static value Default for ThreatProtectionName.
+     */
     public static final ThreatProtectionName DEFAULT = fromString("Default");
 
     /**
      * Creates a new instance of ThreatProtectionName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class ThreatProtectionName extends ExpandableStringEnum<ThreatProte
 
     /**
      * Creates or finds a ThreatProtectionName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ThreatProtectionName.
      */
-    @JsonCreator
     public static ThreatProtectionName fromString(String name) {
         return fromString(name, ThreatProtectionName.class);
     }
 
     /**
      * Gets known ThreatProtectionName values.
-     *
+     * 
      * @return known ThreatProtectionName values.
      */
     public static Collection<ThreatProtectionName> values() {

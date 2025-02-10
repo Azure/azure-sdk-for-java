@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.selfhelp.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.selfhelp.fluent.models.SolutionResourceInner;
@@ -255,4 +256,24 @@ public interface SolutionResource {
      * @return the refreshed resource.
      */
     SolutionResource refresh(Context context);
+
+    /**
+     * Warm up the solution resource by preloading asynchronous diagnostics results into cache.
+     * 
+     * @param solutionWarmUpRequestBody The required request body for warming up a solution resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> warmUpWithResponse(SolutionWarmUpRequestBody solutionWarmUpRequestBody, Context context);
+
+    /**
+     * Warm up the solution resource by preloading asynchronous diagnostics results into cache.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void warmUp();
 }

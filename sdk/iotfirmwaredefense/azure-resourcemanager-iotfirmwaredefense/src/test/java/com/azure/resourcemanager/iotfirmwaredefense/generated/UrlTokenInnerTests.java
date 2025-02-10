@@ -10,8 +10,7 @@ import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.UrlTokenInner;
 public final class UrlTokenInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UrlTokenInner model =
-            BinaryData.fromString("{\"url\":\"sy\",\"uploadUrl\":\"xpaojakhmsbz\"}").toObject(UrlTokenInner.class);
+        UrlTokenInner model = BinaryData.fromString("{\"url\":\"zntypmrb\"}").toObject(UrlTokenInner.class);
     }
 
     @org.junit.jupiter.api.Test

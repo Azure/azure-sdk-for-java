@@ -5,26 +5,40 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines an early termination policy based on running averages of the primary metric of all runs. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "policyType")
-@JsonTypeName("MedianStopping")
+/**
+ * Defines an early termination policy based on running averages of the primary metric of all runs.
+ */
 @Fluent
 public final class MedianStoppingPolicy extends EarlyTerminationPolicy {
-    /** Creates an instance of MedianStoppingPolicy class. */
+    /*
+     * [Required] Name of policy configuration
+     */
+    private EarlyTerminationPolicyType policyType = EarlyTerminationPolicyType.MEDIAN_STOPPING;
+
+    /**
+     * Creates an instance of MedianStoppingPolicy class.
+     */
     public MedianStoppingPolicy() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the policyType property: [Required] Name of policy configuration.
+     * 
+     * @return the policyType value.
+     */
     @Override
-    public MedianStoppingPolicy withDelayEvaluation(Integer delayEvaluation) {
-        super.withDelayEvaluation(delayEvaluation);
-        return this;
+    public EarlyTerminationPolicyType policyType() {
+        return this.policyType;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MedianStoppingPolicy withEvaluationInterval(Integer evaluationInterval) {
         super.withEvaluationInterval(evaluationInterval);
@@ -32,12 +46,64 @@ public final class MedianStoppingPolicy extends EarlyTerminationPolicy {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MedianStoppingPolicy withDelayEvaluation(Integer delayEvaluation) {
+        super.withDelayEvaluation(delayEvaluation);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("evaluationInterval", evaluationInterval());
+        jsonWriter.writeNumberField("delayEvaluation", delayEvaluation());
+        jsonWriter.writeStringField("policyType", this.policyType == null ? null : this.policyType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MedianStoppingPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MedianStoppingPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MedianStoppingPolicy.
+     */
+    public static MedianStoppingPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MedianStoppingPolicy deserializedMedianStoppingPolicy = new MedianStoppingPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("evaluationInterval".equals(fieldName)) {
+                    deserializedMedianStoppingPolicy.withEvaluationInterval(reader.getNullable(JsonReader::getInt));
+                } else if ("delayEvaluation".equals(fieldName)) {
+                    deserializedMedianStoppingPolicy.withDelayEvaluation(reader.getNullable(JsonReader::getInt));
+                } else if ("policyType".equals(fieldName)) {
+                    deserializedMedianStoppingPolicy.policyType
+                        = EarlyTerminationPolicyType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMedianStoppingPolicy;
+        });
     }
 }

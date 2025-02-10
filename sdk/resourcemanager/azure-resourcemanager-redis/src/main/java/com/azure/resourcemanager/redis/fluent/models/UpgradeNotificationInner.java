@@ -5,40 +5,44 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Properties of upgrade notification. */
+/**
+ * Properties of upgrade notification.
+ */
 @Immutable
-public final class UpgradeNotificationInner {
+public final class UpgradeNotificationInner implements JsonSerializable<UpgradeNotificationInner> {
     /*
      * Name of upgrade notification.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Timestamp when upgrade notification occurred.
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * Details about this upgrade notification
      */
-    @JsonProperty(value = "upsellNotification", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> upsellNotification;
 
-    /** Creates an instance of UpgradeNotificationInner class. */
+    /**
+     * Creates an instance of UpgradeNotificationInner class.
+     */
     public UpgradeNotificationInner() {
     }
 
     /**
      * Get the name property: Name of upgrade notification.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -47,7 +51,7 @@ public final class UpgradeNotificationInner {
 
     /**
      * Get the timestamp property: Timestamp when upgrade notification occurred.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -56,7 +60,7 @@ public final class UpgradeNotificationInner {
 
     /**
      * Get the upsellNotification property: Details about this upgrade notification.
-     *
+     * 
      * @return the upsellNotification value.
      */
     public Map<String, String> upsellNotification() {
@@ -65,9 +69,50 @@ public final class UpgradeNotificationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpgradeNotificationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpgradeNotificationInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpgradeNotificationInner.
+     */
+    public static UpgradeNotificationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpgradeNotificationInner deserializedUpgradeNotificationInner = new UpgradeNotificationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedUpgradeNotificationInner.name = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedUpgradeNotificationInner.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("upsellNotification".equals(fieldName)) {
+                    Map<String, String> upsellNotification = reader.readMap(reader1 -> reader1.getString());
+                    deserializedUpgradeNotificationInner.upsellNotification = upsellNotification;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpgradeNotificationInner;
+        });
     }
 }

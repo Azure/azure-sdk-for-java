@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Trigger based on range of status codes.
  */
 @Fluent
-public final class StatusCodesRangeBasedTrigger {
+public final class StatusCodesRangeBasedTrigger implements JsonSerializable<StatusCodesRangeBasedTrigger> {
     /*
      * HTTP status code.
      */
-    @JsonProperty(value = "statusCodes")
     private String statusCodes;
 
     /*
      * The path property.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * Request Count.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * Time interval.
      */
-    @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
     /**
@@ -128,5 +128,50 @@ public final class StatusCodesRangeBasedTrigger {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("statusCodes", this.statusCodes);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("timeInterval", this.timeInterval);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatusCodesRangeBasedTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatusCodesRangeBasedTrigger if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatusCodesRangeBasedTrigger.
+     */
+    public static StatusCodesRangeBasedTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatusCodesRangeBasedTrigger deserializedStatusCodesRangeBasedTrigger = new StatusCodesRangeBasedTrigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("statusCodes".equals(fieldName)) {
+                    deserializedStatusCodesRangeBasedTrigger.statusCodes = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedStatusCodesRangeBasedTrigger.path = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedStatusCodesRangeBasedTrigger.count = reader.getNullable(JsonReader::getInt);
+                } else if ("timeInterval".equals(fieldName)) {
+                    deserializedStatusCodesRangeBasedTrigger.timeInterval = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatusCodesRangeBasedTrigger;
+        });
     }
 }

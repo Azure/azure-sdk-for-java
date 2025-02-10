@@ -7,43 +7,62 @@ package com.azure.resourcemanager.elasticsan.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.Identity;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response for Volume Group request. */
+/**
+ * Response for Volume Group request.
+ */
 @Fluent
 public final class VolumeGroupInner extends ProxyResource {
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * Properties of VolumeGroup.
      */
-    @JsonProperty(value = "properties")
     private VolumeGroupProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of VolumeGroupInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VolumeGroupInner class.
+     */
     public VolumeGroupInner() {
     }
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -52,7 +71,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the VolumeGroupInner object itself.
      */
@@ -63,7 +82,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Properties of VolumeGroup.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VolumeGroupProperties innerProperties() {
@@ -72,7 +91,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -80,8 +99,38 @@ public final class VolumeGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -90,7 +139,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Get the protocolType property: Type of storage target.
-     *
+     * 
      * @return the protocolType value.
      */
     public StorageTargetType protocolType() {
@@ -99,7 +148,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Set the protocolType property: Type of storage target.
-     *
+     * 
      * @param protocolType the protocolType value to set.
      * @return the VolumeGroupInner object itself.
      */
@@ -113,7 +162,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Get the encryption property: Type of encryption.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionType encryption() {
@@ -122,7 +171,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Set the encryption property: Type of encryption.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the VolumeGroupInner object itself.
      */
@@ -136,7 +185,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Get the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
-     *
+     * 
      * @return the encryptionProperties value.
      */
     public EncryptionProperties encryptionProperties() {
@@ -145,7 +194,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Set the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
-     *
+     * 
      * @param encryptionProperties the encryptionProperties value to set.
      * @return the VolumeGroupInner object itself.
      */
@@ -159,7 +208,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Get the networkAcls property: A collection of rules governing the accessibility from specific network locations.
-     *
+     * 
      * @return the networkAcls value.
      */
     public NetworkRuleSet networkAcls() {
@@ -168,7 +217,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Set the networkAcls property: A collection of rules governing the accessibility from specific network locations.
-     *
+     * 
      * @param networkAcls the networkAcls value to set.
      * @return the VolumeGroupInner object itself.
      */
@@ -182,7 +231,7 @@ public final class VolumeGroupInner extends ProxyResource {
 
     /**
      * Get the privateEndpointConnections property: The list of Private Endpoint Connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -190,8 +239,33 @@ public final class VolumeGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the enforceDataIntegrityCheckForIscsi property: A boolean indicating whether or not Data Integrity Check is
+     * enabled.
+     * 
+     * @return the enforceDataIntegrityCheckForIscsi value.
+     */
+    public Boolean enforceDataIntegrityCheckForIscsi() {
+        return this.innerProperties() == null ? null : this.innerProperties().enforceDataIntegrityCheckForIscsi();
+    }
+
+    /**
+     * Set the enforceDataIntegrityCheckForIscsi property: A boolean indicating whether or not Data Integrity Check is
+     * enabled.
+     * 
+     * @param enforceDataIntegrityCheckForIscsi the enforceDataIntegrityCheckForIscsi value to set.
+     * @return the VolumeGroupInner object itself.
+     */
+    public VolumeGroupInner withEnforceDataIntegrityCheckForIscsi(Boolean enforceDataIntegrityCheckForIscsi) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupProperties();
+        }
+        this.innerProperties().withEnforceDataIntegrityCheckForIscsi(enforceDataIntegrityCheckForIscsi);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -201,5 +275,53 @@ public final class VolumeGroupInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeGroupInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VolumeGroupInner.
+     */
+    public static VolumeGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeGroupInner deserializedVolumeGroupInner = new VolumeGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVolumeGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVolumeGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVolumeGroupInner.type = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedVolumeGroupInner.identity = Identity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVolumeGroupInner.innerProperties = VolumeGroupProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVolumeGroupInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeGroupInner;
+        });
     }
 }

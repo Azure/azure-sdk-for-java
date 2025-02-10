@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FileContent;
@@ -20,6 +21,8 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -53,8 +56,11 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -100,8 +106,8 @@ public class BinaryDataTest {
         final BinaryData data = BinaryData.fromObject(actualValue, CUSTOM_SERIALIZER);
 
         // Assert
-        assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass()),
-            CUSTOM_SERIALIZER));
+        assertEquals(expectedValue,
+            data.toObject(TypeReference.createInstance(expectedValue.getClass()), CUSTOM_SERIALIZER));
     }
 
     @Test
@@ -114,8 +120,8 @@ public class BinaryDataTest {
         final BinaryData data = BinaryData.fromObject(actualValue, CUSTOM_SERIALIZER);
 
         // Assert
-        assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass()),
-            CUSTOM_SERIALIZER));
+        assertEquals(expectedValue,
+            data.toObject(TypeReference.createInstance(expectedValue.getClass()), CUSTOM_SERIALIZER));
     }
 
     @Test
@@ -180,8 +186,7 @@ public class BinaryDataTest {
 
     @Test
     public void createFromNullFlux() {
-        StepVerifier.create(BinaryData.fromFlux(null))
-            .verifyError(NullPointerException.class);
+        StepVerifier.create(BinaryData.fromFlux(null)).verifyError(NullPointerException.class);
     }
 
     @Test
@@ -200,7 +205,8 @@ public class BinaryDataTest {
     public void createFromLargeStreamAndReadAsFlux() {
         // Arrange
         final byte[] expected = String.join("", Collections.nCopies(STREAM_READ_SIZE * 100, "A"))
-            .concat("A").getBytes(StandardCharsets.UTF_8);
+            .concat("A")
+            .getBytes(StandardCharsets.UTF_8);
 
         // Act
         BinaryData data = BinaryData.fromStream(new ByteArrayInputStream(expected));
@@ -233,12 +239,10 @@ public class BinaryDataTest {
     @ParameterizedTest
     @MethodSource("createFromFluxEagerlySupplier")
     public void createFromFluxEagerly(Mono<BinaryData> binaryDataMono, byte[] expectedBytes, int expectedCount) {
-        StepVerifier.create(binaryDataMono)
-            .assertNext(actual -> {
-                assertArraysEqual(expectedBytes, actual.toBytes());
-                assertEquals(expectedBytes.length, actual.getLength());
-            })
-            .verifyComplete();
+        StepVerifier.create(binaryDataMono).assertNext(actual -> {
+            assertArraysEqual(expectedBytes, actual.toBytes());
+            assertEquals(expectedBytes.length, actual.getLength());
+        }).verifyComplete();
 
         // Verify that the data got buffered.
         StepVerifier.create(binaryDataMono.flatMapMany(BinaryData::toFluxByteBuffer).count())
@@ -252,13 +256,11 @@ public class BinaryDataTest {
         final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
         final long length = expected.length;
 
-        return Stream.of(
-            Arguments.of(BinaryData.fromFlux(dataFlux), expected, 2),
+        return Stream.of(Arguments.of(BinaryData.fromFlux(dataFlux), expected, 2),
             Arguments.of(BinaryData.fromFlux(dataFlux, null), expected, 2),
             Arguments.of(BinaryData.fromFlux(dataFlux, length), expected, 2),
             Arguments.of(BinaryData.fromFlux(dataFlux, null, true), expected, 2),
-            Arguments.of(BinaryData.fromFlux(dataFlux, length, true), expected, 2)
-        );
+            Arguments.of(BinaryData.fromFlux(dataFlux, length, true), expected, 2));
     }
 
     @Test
@@ -268,31 +270,24 @@ public class BinaryDataTest {
         final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
 
         // Act & Assert
-        Arrays.asList((long) expected.length, null).forEach(
-            providedLength -> {
-                StepVerifier.create(BinaryData.fromFlux(dataFlux, providedLength, false))
-                    .assertNext(actual -> {
-                        assertArraysEqual(expected, actual.toBytes());
-                        // toBytes buffers and reveals length
-                        assertEquals(expected.length, actual.getLength());
-                    })
-                    .verifyComplete();
+        Arrays.asList((long) expected.length, null).forEach(providedLength -> {
+            StepVerifier.create(BinaryData.fromFlux(dataFlux, providedLength, false)).assertNext(actual -> {
+                assertArraysEqual(expected, actual.toBytes());
+                // toBytes buffers and reveals length
+                assertEquals(expected.length, actual.getLength());
+            }).verifyComplete();
 
-                StepVerifier.create(BinaryData.fromFlux(dataFlux, providedLength, false))
-                    .assertNext(actual -> {
-                        // Assert that length isn't computed eagerly.
-                        assertEquals(providedLength, actual.getLength());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(BinaryData.fromFlux(dataFlux, providedLength, false)).assertNext(actual -> {
+                // Assert that length isn't computed eagerly.
+                assertEquals(providedLength, actual.getLength());
+            }).verifyComplete();
 
-                // Verify that data isn't buffered
-                StepVerifier.create(BinaryData.fromFlux(dataFlux, providedLength, false)
-                        .flatMapMany(BinaryData::toFluxByteBuffer)
-                        .count())
-                    .assertNext(actual -> assertEquals(2, actual))
-                    .verifyComplete();
-            }
-        );
+            // Verify that data isn't buffered
+            StepVerifier.create(
+                BinaryData.fromFlux(dataFlux, providedLength, false).flatMapMany(BinaryData::toFluxByteBuffer).count())
+                .assertNext(actual -> assertEquals(2, actual))
+                .verifyComplete();
+        });
     }
 
     @ParameterizedTest
@@ -300,30 +295,22 @@ public class BinaryDataTest {
     public void createFromFluxValidations(Flux<ByteBuffer> flux, Long length, Boolean buffer,
         Class<? extends Throwable> expectedException) {
         if (length == null && buffer == null) {
-            StepVerifier.create(BinaryData.fromFlux(flux))
-                .expectError(expectedException)
-                .verify();
+            StepVerifier.create(BinaryData.fromFlux(flux)).expectError(expectedException).verify();
         } else if (buffer == null) {
-            StepVerifier.create(BinaryData.fromFlux(flux, length))
-                .expectError(expectedException)
-                .verify();
+            StepVerifier.create(BinaryData.fromFlux(flux, length)).expectError(expectedException).verify();
         } else {
-            StepVerifier.create(BinaryData.fromFlux(flux, length, buffer))
-                .expectError(expectedException)
-                .verify();
+            StepVerifier.create(BinaryData.fromFlux(flux, length, buffer)).expectError(expectedException).verify();
         }
     }
 
     private static Stream<Arguments> createFromFluxValidationsSupplier() {
-        return Stream.of(
-            Arguments.of(null, null, null, RuntimeException.class),
+        return Stream.of(Arguments.of(null, null, null, RuntimeException.class),
             Arguments.of(null, null, false, RuntimeException.class),
             Arguments.of(null, null, true, RuntimeException.class),
 
             Arguments.of(Flux.empty(), -1L, null, IllegalArgumentException.class),
             Arguments.of(Flux.empty(), -1L, false, IllegalArgumentException.class),
-            Arguments.of(Flux.empty(), -1L, true, IllegalArgumentException.class)
-        );
+            Arguments.of(Flux.empty(), -1L, true, IllegalArgumentException.class));
     }
 
     @Test
@@ -344,7 +331,8 @@ public class BinaryDataTest {
         final TypeReference<Person> personTypeReference = TypeReference.createInstance(Person.class);
 
         // Act & Assert
-        StepVerifier.create(BinaryData.fromObjectAsync(expected, CUSTOM_SERIALIZER)
+        StepVerifier
+            .create(BinaryData.fromObjectAsync(expected, CUSTOM_SERIALIZER)
                 .flatMap(binaryData -> binaryData.toObjectAsync(personTypeReference, CUSTOM_SERIALIZER)))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
@@ -358,10 +346,12 @@ public class BinaryDataTest {
         List<Person> personList = new ArrayList<>();
         personList.add(person1);
         personList.add(person2);
-        final TypeReference<List<Person>> personListTypeReference = new TypeReference<List<Person>>() { };
+        final TypeReference<List<Person>> personListTypeReference = new TypeReference<List<Person>>() {
+        };
 
         // Act & Assert
-        StepVerifier.create(BinaryData.fromObjectAsync(personList, CUSTOM_SERIALIZER)
+        StepVerifier
+            .create(BinaryData.fromObjectAsync(personList, CUSTOM_SERIALIZER)
                 .flatMap(binaryData -> binaryData.toObjectAsync(personListTypeReference, CUSTOM_SERIALIZER)))
             .assertNext(persons -> {
                 assertEquals(2, persons.size());
@@ -470,7 +460,8 @@ public class BinaryDataTest {
         final Person expected = new Person().setName("Jon").setAge(50);
 
         // Act & Assert
-        StepVerifier.create(BinaryData.fromObjectAsync(expected)
+        StepVerifier
+            .create(BinaryData.fromObjectAsync(expected)
                 .flatMap(binaryData -> binaryData.toObjectAsync(TypeReference.createInstance(Person.class))))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
@@ -487,15 +478,14 @@ public class BinaryDataTest {
 
         // Act & Assert
         StepVerifier.create(BinaryData.fromObjectAsync(personList)
-                .flatMap(binaryData -> binaryData.toObjectAsync(new TypeReference<List<Person>>() { })))
-            .assertNext(persons -> {
+            .flatMap(binaryData -> binaryData.toObjectAsync(new TypeReference<List<Person>>() {
+            }))).assertNext(persons -> {
                 assertEquals(2, persons.size());
                 assertEquals("Jon", persons.get(0).getName());
                 assertEquals("Jack", persons.get(1).getName());
                 assertEquals(50, persons.get(0).getAge());
                 assertEquals(25, persons.get(1).getAge());
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     @Test
@@ -569,8 +559,8 @@ public class BinaryDataTest {
 
     @Test
     public void fluxContent() {
-        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(Flux
-            .just(ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8))).delayElements(Duration.ofMillis(10)));
+        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(
+            Flux.just(ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8))).delayElements(Duration.ofMillis(10)));
 
         StepVerifier.create(binaryDataMono)
             .assertNext(binaryData -> assertEquals("Hello", new String(binaryData.toBytes())))
@@ -592,24 +582,23 @@ public class BinaryDataTest {
         int chunkSize = 1024 * 1024; // 1 MB
         long numberOfChunks = 2200L; // 2200 MB total;
 
-        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", RANDOM_DATA,
-            numberOfChunks * chunkSize);
+        MockFile mockFile
+            = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", RANDOM_DATA, numberOfChunks * chunkSize);
         FileContent fileContent = new MockFileContent(new MockPath(mockFile), 32768, null, null);
 
         AtomicInteger index = new AtomicInteger();
         AtomicLong totalRead = new AtomicLong();
 
-        StepVerifier.create(fileContent.toFluxByteBuffer())
-            .thenConsumeWhile(byteBuffer -> {
-                totalRead.addAndGet(byteBuffer.remaining());
-                int idx = index.getAndUpdate(operand -> (operand + byteBuffer.remaining()) % chunkSize);
+        StepVerifier.create(fileContent.toFluxByteBuffer()).thenConsumeWhile(byteBuffer -> {
+            totalRead.addAndGet(byteBuffer.remaining());
+            int idx = index.getAndUpdate(operand -> (operand + byteBuffer.remaining()) % chunkSize);
 
-                // This may look a bit odd but ByteBuffer has array-based comparison optimizations that aren't available
-                // in Arrays until Java 9+. Wrapping the bytes chunk that was expected to be read and the read range
-                // will allow for many bytes to be validated at once instead of byte-by-byte.
-                assertEquals(ByteBuffer.wrap(RANDOM_DATA, idx, byteBuffer.remaining()), byteBuffer);
-                return true;
-            }).verifyComplete();
+            // This may look a bit odd but ByteBuffer has array-based comparison optimizations that aren't available
+            // in Arrays until Java 9+. Wrapping the bytes chunk that was expected to be read and the read range
+            // will allow for many bytes to be validated at once instead of byte-by-byte.
+            assertEquals(ByteBuffer.wrap(RANDOM_DATA, idx, byteBuffer.remaining()), byteBuffer);
+            return true;
+        }).verifyComplete();
 
         assertEquals((long) chunkSize * numberOfChunks, totalRead.get());
     }
@@ -619,8 +608,8 @@ public class BinaryDataTest {
         int chunkSize = 1024 * 1024; // 1 MB
         long numberOfChunks = 2200L; // 2200 MB total
 
-        MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", RANDOM_DATA,
-            numberOfChunks * chunkSize);
+        MockFile mockFile
+            = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", RANDOM_DATA, numberOfChunks * chunkSize);
         FileContent fileContent = new MockFileContent(new MockPath(mockFile), 32768, null, null);
 
         try (InputStream is = fileContent.toStream()) {
@@ -665,8 +654,8 @@ public class BinaryDataTest {
         byte[] fullFile = new byte[size + leftPadding + rightPadding];
         fillArray(fullFile);
 
-        MockFile mockFile = new MockFile("binaryDataFromFileSegment" + UUID.randomUUID() + ".txt", fullFile,
-            fullFile.length);
+        MockFile mockFile
+            = new MockFile("binaryDataFromFileSegment" + UUID.randomUUID() + ".txt", fullFile, fullFile.length);
         FileContent fileContent = new MockFileContent(new MockPath(mockFile), 8192, (long) leftPadding, (long) size);
 
         assertEquals(size, fileContent.getLength());
@@ -707,32 +696,27 @@ public class BinaryDataTest {
         byte[] secondStreamConsumption = readStream(data.toStream());
 
         // Either flux or stream consumption is not replayable.
-        assertFalse(
-            Arrays.equals(firstFluxConsumption, secondFluxConsumption)
-                && Arrays.equals(firstStreamConsumption, secondStreamConsumption)
-        );
+        assertFalse(Arrays.equals(firstFluxConsumption, secondFluxConsumption)
+            && Arrays.equals(firstStreamConsumption, secondStreamConsumption));
     }
 
     public static Stream<Arguments> createNonRetryableBinaryData() {
         byte[] bytes = new byte[1024];
         fillArray(bytes);
         return Stream.of(
-            Arguments.of(
-                Named.named("stream",
-                    (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)))),
-            Arguments.of(
-                Named.named("unbuffered flux",
-                    (Supplier<BinaryData>) () -> BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), null, false).block())),
-            Arguments.of(
-                Named.named("byte array stream",
-                    (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), null))
-            )
-        );
+            Arguments.of(Named.named("stream",
+                (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)))),
+            Arguments.of(Named.named("unbuffered flux",
+                (Supplier<BinaryData>) () -> BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), null, false)
+                    .block())),
+            Arguments.of(Named.named("byte array stream",
+                (Supplier<BinaryData>) () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), null))));
     }
 
     @ParameterizedTest
     @MethodSource("createRetryableBinaryData")
-    public void testReplayableContentTypes(Supplier<BinaryData> binaryDataSupplier, byte[] expectedBytes) throws IOException {
+    public void testReplayableContentTypes(Supplier<BinaryData> binaryDataSupplier, byte[] expectedBytes)
+        throws IOException {
 
         assertTrue(binaryDataSupplier.get().isReplayable());
 
@@ -781,34 +765,24 @@ public class BinaryDataTest {
         MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", bytes, 1024);
 
         return Stream.of(
-            Arguments.of(
-                Named.named("bytes", (Supplier<BinaryData>) () -> BinaryData.fromBytes(bytes)),
-                Named.named("expected bytes", bytes)
-            ),
-            Arguments.of(
-                Named.named("string", (Supplier<BinaryData>) () -> BinaryData.fromString("test string")),
-                Named.named("expected bytes", "test string".getBytes(StandardCharsets.UTF_8))
-            ),
-            Arguments.of(
-                Named.named("object", (Supplier<BinaryData>) () -> BinaryData.fromObject("\"test string\"")),
-                Named.named("expected bytes", BinaryData.SERIALIZER.serializeToBytes("\"test string\""))
-            ),
+            Arguments.of(Named.named("bytes", (Supplier<BinaryData>) () -> BinaryData.fromBytes(bytes)),
+                Named.named("expected bytes", bytes)),
+            Arguments.of(Named.named("string", (Supplier<BinaryData>) () -> BinaryData.fromString("test string")),
+                Named.named("expected bytes", "test string".getBytes(StandardCharsets.UTF_8))),
+            Arguments.of(Named.named("object", (Supplier<BinaryData>) () -> BinaryData.fromObject("\"test string\"")),
+                Named.named("expected bytes", BinaryData.SERIALIZER.serializeToBytes("\"test string\""))),
             Arguments.of(
                 Named.named("file",
                     (Supplier<BinaryData>) () -> new BinaryData(new MockFileContent(new MockPath(mockFile)))),
-                Named.named("expected bytes", bytes)
-            ),
+                Named.named("expected bytes", bytes)),
             Arguments.of(
                 Named.named("buffered flux",
                     (Supplier<BinaryData>) () -> BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()),
-                Named.named("expected bytes", bytes)
-            ),
+                Named.named("expected bytes", bytes)),
             Arguments.of(
-                Named.named("byte array stream", (Supplier<BinaryData>) () -> BinaryData.fromStream(
-                    new ByteArrayInputStream(bytes), (long) bytes.length)),
-                Named.named("expected bytes", bytes)
-            )
-        );
+                Named.named("byte array stream", (Supplier<BinaryData>) () -> BinaryData
+                    .fromStream(new ByteArrayInputStream(bytes), (long) bytes.length)),
+                Named.named("expected bytes", bytes)));
     }
 
     @Test
@@ -820,20 +794,19 @@ public class BinaryDataTest {
         testReplayableContentTypes(
             () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length).toReplayableBinaryData(),
             bytes);
-        testReplayableContentTypes(
-            () -> BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length).toReplayableBinaryDataAsync().block(),
-            bytes);
+        testReplayableContentTypes(() -> BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length)
+            .toReplayableBinaryDataAsync()
+            .block(), bytes);
 
         // When using markable stream
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-        assertSame(
-            byteArrayInputStream,
-            BinaryData.fromStream(byteArrayInputStream, (long) bytes.length).toReplayableBinaryData().toStream()
-        );
-        assertSame(
-            byteArrayInputStream,
-            BinaryData.fromStream(byteArrayInputStream, (long) bytes.length).toReplayableBinaryDataAsync().block().toStream()
-        );
+        assertSame(byteArrayInputStream,
+            BinaryData.fromStream(byteArrayInputStream, (long) bytes.length).toReplayableBinaryData().toStream());
+        assertSame(byteArrayInputStream,
+            BinaryData.fromStream(byteArrayInputStream, (long) bytes.length)
+                .toReplayableBinaryDataAsync()
+                .block()
+                .toStream());
     }
 
     @Test
@@ -843,22 +816,16 @@ public class BinaryDataTest {
 
         // Delegate to testReplayableContentTypes to assert accessors replayability
         testReplayableContentTypes(
-            () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)).toReplayableBinaryData(),
-            bytes);
+            () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)).toReplayableBinaryData(), bytes);
         testReplayableContentTypes(
-            () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)).toReplayableBinaryDataAsync().block(),
-            bytes);
+            () -> BinaryData.fromStream(new ByteArrayInputStream(bytes)).toReplayableBinaryDataAsync().block(), bytes);
 
         // When using markable stream
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-        assertNotSame(
-            byteArrayInputStream,
-            BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryData().toStream()
-        );
-        assertNotSame(
-            byteArrayInputStream,
-            BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryDataAsync().block().toStream()
-        );
+        assertNotSame(byteArrayInputStream,
+            BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryData().toStream());
+        assertNotSame(byteArrayInputStream,
+            BinaryData.fromStream(byteArrayInputStream).toReplayableBinaryDataAsync().block().toStream());
 
         // Check that buffering happened. This is part assumes implementation.
         assertInstanceOf(IterableOfByteBuffersInputStream.class,
@@ -869,8 +836,16 @@ public class BinaryDataTest {
 
     @ParameterizedTest
     // Try various sizes. That hit MIN and MAX buffers size in the InputStreamContent
-    @ValueSource(ints = { 10, 1024, 8 * 1024 - 1, 8 * 1024 + 113, 4 * 1024 * 1024 + 117,
-        8 * 1024 * 1024, 8 * 1024 * 1024 + 117, 64 * 1024 * 1024 + 117})
+    @ValueSource(
+        ints = {
+            10,
+            1024,
+            8 * 1024 - 1,
+            8 * 1024 + 113,
+            4 * 1024 * 1024 + 117,
+            8 * 1024 * 1024,
+            8 * 1024 * 1024 + 117,
+            64 * 1024 * 1024 + 117 })
     public void testCanBufferNotMarkableStreams(int size) throws IOException {
         byte[] bytes = new byte[size];
         fillArray(bytes);
@@ -879,23 +854,29 @@ public class BinaryDataTest {
 
         // Delegate to testReplayableContentTypes to assert accessors replayability
         // with unknown length
-        testReplayableContentTypes(() -> new BinaryData(new MockFileContent(new MockPath(mockFile)))
-            .toReplayableBinaryData(), bytes);
-        testReplayableContentTypes(() -> new BinaryData(new MockFileContent(new MockPath(mockFile)))
-            .toReplayableBinaryDataAsync().block(), bytes);
+        testReplayableContentTypes(
+            () -> new BinaryData(new MockFileContent(new MockPath(mockFile))).toReplayableBinaryData(), bytes);
+        testReplayableContentTypes(
+            () -> new BinaryData(new MockFileContent(new MockPath(mockFile))).toReplayableBinaryDataAsync().block(),
+            bytes);
 
         // with known length
-        testReplayableContentTypes(() -> new BinaryData(new MockFileContent(new MockPath(mockFile), 8192, null,
-            (long) bytes.length)).toReplayableBinaryData(), bytes);
-        testReplayableContentTypes(() -> new BinaryData(new MockFileContent(new MockPath(mockFile), 8192, null,
-            (long) bytes.length)).toReplayableBinaryDataAsync().block(), bytes);
+        testReplayableContentTypes(
+            () -> new BinaryData(new MockFileContent(new MockPath(mockFile), 8192, null, (long) bytes.length))
+                .toReplayableBinaryData(),
+            bytes);
+        testReplayableContentTypes(
+            () -> new BinaryData(new MockFileContent(new MockPath(mockFile), 8192, null, (long) bytes.length))
+                .toReplayableBinaryDataAsync()
+                .block(),
+            bytes);
 
         // When using markable stream
         FileInputStream fileInputStream = new MockFileInputStream(mockFile);
         assertFalse(fileInputStream.markSupported());
         assertNotSame(fileInputStream, BinaryData.fromStream(fileInputStream).toReplayableBinaryData().toStream());
-        assertNotSame(fileInputStream, BinaryData.fromStream(fileInputStream).toReplayableBinaryDataAsync().block()
-            .toStream());
+        assertNotSame(fileInputStream,
+            BinaryData.fromStream(fileInputStream).toReplayableBinaryDataAsync().block().toStream());
 
         // Check that buffering happened. This is part assumes implementation.
         assertInstanceOf(IterableOfByteBuffersInputStream.class,
@@ -912,10 +893,12 @@ public class BinaryDataTest {
         Supplier<Flux<ByteBuffer>> coldFluxSupplier = createColdFluxSupplier(bytes, 1024);
 
         testReplayableContentTypes(() -> BinaryData.fromFlux(coldFluxSupplier.get(), null, false)
-                .map(BinaryData::toReplayableBinaryData).block(), bytes);
+            .map(BinaryData::toReplayableBinaryData)
+            .block(), bytes);
 
         testReplayableContentTypes(() -> BinaryData.fromFlux(coldFluxSupplier.get(), null, false)
-                .flatMap(BinaryData::toReplayableBinaryDataAsync).block(), bytes);
+            .flatMap(BinaryData::toReplayableBinaryDataAsync)
+            .block(), bytes);
     }
 
     @Test
@@ -939,15 +922,14 @@ public class BinaryDataTest {
         FluxByteBufferContent content = new FluxByteBufferContent(coldFluxSupplier.get());
 
         StepVerifier.create(Flux.range(0, 100)
-                .parallel()
-                .flatMap(ignored -> FluxUtil.collectBytesInByteBufferStream(content.toReplayableContent()
-                    .toFluxByteBuffer()))
-                .map(actualBytes -> {
-                    assertArraysEqual(bytes, actualBytes);
-                    return bytes;
-                })
-                .then())
-            .verifyComplete();
+            .parallel()
+            .flatMap(
+                ignored -> FluxUtil.collectBytesInByteBufferStream(content.toReplayableContent().toFluxByteBuffer()))
+            .map(actualBytes -> {
+                assertArraysEqual(bytes, actualBytes);
+                return bytes;
+            })
+            .then()).verifyComplete();
     }
 
     /**
@@ -1033,8 +1015,8 @@ public class BinaryDataTest {
             .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
         String expectedJson = "{\"property\":{\"test\":\"test\"}}";
 
-        String actualJson = JacksonAdapter.createDefaultSerializerAdapter().serialize(binaryDataAsProperty,
-            SerializerEncoding.JSON);
+        String actualJson
+            = JacksonAdapter.createDefaultSerializerAdapter().serialize(binaryDataAsProperty, SerializerEncoding.JSON);
 
         assertEquals(expectedJson, actualJson);
     }
@@ -1045,8 +1027,8 @@ public class BinaryDataTest {
             .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
         String json = "{\"property\":{\"test\":\"test\"}}";
 
-        BinaryDataAsProperty actual = JacksonAdapter.createDefaultSerializerAdapter().deserialize(json,
-            BinaryDataAsProperty.class, SerializerEncoding.JSON);
+        BinaryDataAsProperty actual = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(json, BinaryDataAsProperty.class, SerializerEncoding.JSON);
 
         assertEquals(expected.getProperty().toString(), actual.getProperty().toString());
     }
@@ -1061,8 +1043,7 @@ public class BinaryDataTest {
 
     @Test
     public void emptyFluxByteBufferToReplayableAsync() {
-        StepVerifier.create(BinaryData.fromFlux(Flux.empty())
-            .flatMap(BinaryData::toReplayableBinaryDataAsync))
+        StepVerifier.create(BinaryData.fromFlux(Flux.empty()).flatMap(BinaryData::toReplayableBinaryDataAsync))
             .assertNext(replayable -> assertEquals("", replayable.toString()))
             .verifyComplete();
     }
@@ -1079,8 +1060,8 @@ public class BinaryDataTest {
         ThreadLocalRandom.current().nextBytes(data);
         byte[] expectedData = CoreUtils.clone(data);
 
-        BinaryDataContent binaryDataContent = new FluxByteBufferContent(Flux.just(ByteBuffer.wrap(data)))
-            .toReplayableContent();
+        BinaryDataContent binaryDataContent
+            = new FluxByteBufferContent(Flux.just(ByteBuffer.wrap(data))).toReplayableContent();
 
         Arrays.fill(data, (byte) 0);
 
@@ -1099,8 +1080,8 @@ public class BinaryDataTest {
         ThreadLocalRandom.current().nextBytes(data);
         byte[] expectedData = CoreUtils.clone(data);
 
-        Mono<BinaryDataContent> binaryDataContentMono = new FluxByteBufferContent(Flux.just(ByteBuffer.wrap(data)))
-            .toReplayableContentAsync();
+        Mono<BinaryDataContent> binaryDataContentMono
+            = new FluxByteBufferContent(Flux.just(ByteBuffer.wrap(data))).toReplayableContentAsync();
 
         StepVerifier.create(binaryDataContentMono)
             .assertNext(binaryDataContent -> assertArraysEqual(expectedData, binaryDataContent.toBytes()))
@@ -1111,6 +1092,73 @@ public class BinaryDataTest {
         StepVerifier.create(binaryDataContentMono)
             .assertNext(binaryDataContent -> assertArraysEqual(expectedData, binaryDataContent.toBytes()))
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryDataOfEachKindSupplier")
+    public void writeToJsonWriterNullPointer(BinaryData binaryData, String ignored) {
+        assertThrows(NullPointerException.class, () -> binaryData.writeTo((JsonWriter) null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryDataOfEachKindSupplier")
+    public void writeToJsonWriterExpectedJson(BinaryData binaryData, String expectedJson) {
+        assertEquals(expectedJson, binaryDataToJson(binaryData));
+    }
+
+    private static Stream<Arguments> binaryDataOfEachKindSupplier() throws Exception {
+        String helloWorld = "hello world";
+        byte[] helloWorldBytes = helloWorld.getBytes(StandardCharsets.UTF_8);
+        Path file = Paths.get(BinaryDataTest.class.getClassLoader().getResource("helloworld.txt").toURI());
+
+        String binaryJson = "\"" + Base64.getEncoder().encodeToString(helloWorldBytes) + "\"";
+        // File needs its own JSON as git adds a newline character to the end.
+        String fileJson = "\"" + Base64.getEncoder().encodeToString(Files.readAllBytes(file)) + "\"";
+        String objectJson = "{\"hello\":\"world\"}";
+        String stringJson = "\"" + helloWorld + "\"";
+
+        return Stream.of(Arguments.of(BinaryData.fromBytes(helloWorldBytes), binaryJson),
+            Arguments.of(BinaryData.fromByteBuffer(ByteBuffer.wrap(helloWorldBytes)), binaryJson),
+            Arguments.of(BinaryData.fromFile(file), fileJson),
+            Arguments.of(BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(helloWorldBytes))).block(), binaryJson),
+            Arguments.of(BinaryData.fromListByteBuffer(Collections.singletonList(ByteBuffer.wrap(helloWorldBytes))),
+                binaryJson),
+            Arguments.of(BinaryData.fromObject(Collections.singletonMap("hello", "world")), objectJson),
+            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(helloWorldBytes)), binaryJson),
+            Arguments.of(BinaryData.fromString(helloWorld), stringJson));
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryDataObjectWriteToJsonWriterSupplier")
+    public void binaryDataObjectWriteToJsonWriter(BinaryData binaryData, String expectedJson) {
+        assertEquals(expectedJson, binaryDataToJson(binaryData));
+    }
+
+    private static Stream<Arguments> binaryDataObjectWriteToJsonWriterSupplier() {
+        String helloWorld = "hello world";
+        byte[] helloWorldBytes = helloWorld.getBytes(StandardCharsets.UTF_8);
+
+        String binaryJson = "\"" + Base64.getEncoder().encodeToString(helloWorldBytes) + "\"";
+        String stringJson = "\"" + helloWorld + "\"";
+
+        List<Object> jsonList = Arrays.asList(null, 42L, 42.0D, true);
+        String listJson = "[null,42,42.0,true]";
+
+        Map<String, Object> jsonMap = new LinkedHashMap<>();
+        jsonMap.put("long", 42L);
+        jsonMap.put("double", 42.0D);
+        jsonMap.put("boolean", true);
+        jsonMap.put("list", jsonList);
+        String mapJson = "{\"long\":42,\"double\":42.0,\"boolean\":true,\"list\":" + listJson + "}";
+
+        return Stream.of(Arguments.of(BinaryData.fromObject(null), "null"),
+            Arguments.of(BinaryData.fromObject(42), "42"), Arguments.of(BinaryData.fromObject(42L), "42"),
+            Arguments.of(BinaryData.fromObject(42.0F), "42.0"), Arguments.of(BinaryData.fromObject(42.0D), "42.0"),
+            Arguments.of(BinaryData.fromObject(true), "true"),
+            Arguments.of(BinaryData.fromObject(helloWorldBytes), binaryJson),
+            Arguments.of(BinaryData.fromObject(helloWorld), stringJson),
+            Arguments.of(BinaryData.fromObject(jsonList), listJson),
+            Arguments.of(BinaryData.fromObject(jsonMap), mapJson));
     }
 
     public static final class BinaryDataAsProperty {
@@ -1176,7 +1224,6 @@ public class BinaryDataTest {
             return Mono.fromCallable(() -> deserialize(stream, typeReference));
         }
 
-
         @Override
         public void serialize(OutputStream stream, Object value) {
             try {
@@ -1189,6 +1236,17 @@ public class BinaryDataTest {
         @Override
         public Mono<Void> serializeAsync(OutputStream stream, Object value) {
             return Mono.fromRunnable(() -> serialize(stream, value));
+        }
+    }
+
+    private static String binaryDataToJson(BinaryData binaryData) {
+        try (AccessibleByteArrayOutputStream accessibleByteArrayOutputStream = new AccessibleByteArrayOutputStream();
+            JsonWriter jsonWriter = JsonProviders.createWriter(accessibleByteArrayOutputStream)) {
+            binaryData.writeTo(jsonWriter);
+            jsonWriter.flush();
+            return accessibleByteArrayOutputStream.toString(StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 }

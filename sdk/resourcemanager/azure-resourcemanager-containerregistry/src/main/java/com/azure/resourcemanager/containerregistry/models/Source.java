@@ -5,35 +5,39 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The registry node that generated the event. Put differently, while the actor initiates the event, the source
  * generates it.
  */
 @Fluent
-public final class Source {
+public final class Source implements JsonSerializable<Source> {
     /*
      * The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved
      * by os.Hostname() along with the running port.
      */
-    @JsonProperty(value = "addr")
     private String addr;
 
     /*
      * The running instance of an application. Changes after each restart.
      */
-    @JsonProperty(value = "instanceID")
     private String instanceId;
 
-    /** Creates an instance of Source class. */
+    /**
+     * Creates an instance of Source class.
+     */
     public Source() {
     }
 
     /**
      * Get the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
      * this will be resolved by os.Hostname() along with the running port.
-     *
+     * 
      * @return the addr value.
      */
     public String addr() {
@@ -43,7 +47,7 @@ public final class Source {
     /**
      * Set the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
      * this will be resolved by os.Hostname() along with the running port.
-     *
+     * 
      * @param addr the addr value to set.
      * @return the Source object itself.
      */
@@ -54,7 +58,7 @@ public final class Source {
 
     /**
      * Get the instanceId property: The running instance of an application. Changes after each restart.
-     *
+     * 
      * @return the instanceId value.
      */
     public String instanceId() {
@@ -63,7 +67,7 @@ public final class Source {
 
     /**
      * Set the instanceId property: The running instance of an application. Changes after each restart.
-     *
+     * 
      * @param instanceId the instanceId value to set.
      * @return the Source object itself.
      */
@@ -74,9 +78,48 @@ public final class Source {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("addr", this.addr);
+        jsonWriter.writeStringField("instanceID", this.instanceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Source from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Source if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Source.
+     */
+    public static Source fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Source deserializedSource = new Source();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("addr".equals(fieldName)) {
+                    deserializedSource.addr = reader.getString();
+                } else if ("instanceID".equals(fieldName)) {
+                    deserializedSource.instanceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSource;
+        });
     }
 }

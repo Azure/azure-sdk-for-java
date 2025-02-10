@@ -5,38 +5,41 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Kubernetes version profile for given major.minor release.
  */
 @Fluent
-public final class KubernetesVersion {
+public final class KubernetesVersion implements JsonSerializable<KubernetesVersion> {
     /*
      * major.minor version of Kubernetes release
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Capabilities on this Kubernetes version.
      */
-    @JsonProperty(value = "capabilities")
     private KubernetesVersionCapabilities capabilities;
+
+    /*
+     * Whether this version is default.
+     */
+    private Boolean isDefault;
 
     /*
      * Whether this version is in preview mode.
      */
-    @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
     /*
      * Patch versions of Kubernetes release
      */
-    @JsonProperty(value = "patchVersions")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, KubernetesPatchVersion> patchVersions;
 
     /**
@@ -47,7 +50,7 @@ public final class KubernetesVersion {
 
     /**
      * Get the version property: major.minor version of Kubernetes release.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -56,7 +59,7 @@ public final class KubernetesVersion {
 
     /**
      * Set the version property: major.minor version of Kubernetes release.
-     *
+     * 
      * @param version the version value to set.
      * @return the KubernetesVersion object itself.
      */
@@ -67,7 +70,7 @@ public final class KubernetesVersion {
 
     /**
      * Get the capabilities property: Capabilities on this Kubernetes version.
-     *
+     * 
      * @return the capabilities value.
      */
     public KubernetesVersionCapabilities capabilities() {
@@ -76,7 +79,7 @@ public final class KubernetesVersion {
 
     /**
      * Set the capabilities property: Capabilities on this Kubernetes version.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the KubernetesVersion object itself.
      */
@@ -86,8 +89,28 @@ public final class KubernetesVersion {
     }
 
     /**
+     * Get the isDefault property: Whether this version is default.
+     * 
+     * @return the isDefault value.
+     */
+    public Boolean isDefault() {
+        return this.isDefault;
+    }
+
+    /**
+     * Set the isDefault property: Whether this version is default.
+     * 
+     * @param isDefault the isDefault value to set.
+     * @return the KubernetesVersion object itself.
+     */
+    public KubernetesVersion withIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
+        return this;
+    }
+
+    /**
      * Get the isPreview property: Whether this version is in preview mode.
-     *
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -96,7 +119,7 @@ public final class KubernetesVersion {
 
     /**
      * Set the isPreview property: Whether this version is in preview mode.
-     *
+     * 
      * @param isPreview the isPreview value to set.
      * @return the KubernetesVersion object itself.
      */
@@ -107,7 +130,7 @@ public final class KubernetesVersion {
 
     /**
      * Get the patchVersions property: Patch versions of Kubernetes release.
-     *
+     * 
      * @return the patchVersions value.
      */
     public Map<String, KubernetesPatchVersion> patchVersions() {
@@ -116,7 +139,7 @@ public final class KubernetesVersion {
 
     /**
      * Set the patchVersions property: Patch versions of Kubernetes release.
-     *
+     * 
      * @param patchVersions the patchVersions value to set.
      * @return the KubernetesVersion object itself.
      */
@@ -127,7 +150,7 @@ public final class KubernetesVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -141,5 +164,55 @@ public final class KubernetesVersion {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeJsonField("capabilities", this.capabilities);
+        jsonWriter.writeBooleanField("isDefault", this.isDefault);
+        jsonWriter.writeBooleanField("isPreview", this.isPreview);
+        jsonWriter.writeMapField("patchVersions", this.patchVersions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesVersion if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesVersion.
+     */
+    public static KubernetesVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesVersion deserializedKubernetesVersion = new KubernetesVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedKubernetesVersion.version = reader.getString();
+                } else if ("capabilities".equals(fieldName)) {
+                    deserializedKubernetesVersion.capabilities = KubernetesVersionCapabilities.fromJson(reader);
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedKubernetesVersion.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isPreview".equals(fieldName)) {
+                    deserializedKubernetesVersion.isPreview = reader.getNullable(JsonReader::getBoolean);
+                } else if ("patchVersions".equals(fieldName)) {
+                    Map<String, KubernetesPatchVersion> patchVersions
+                        = reader.readMap(reader1 -> KubernetesPatchVersion.fromJson(reader1));
+                    deserializedKubernetesVersion.patchVersions = patchVersions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesVersion;
+        });
     }
 }

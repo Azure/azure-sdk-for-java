@@ -8,9 +8,6 @@ import static com.azure.spring.cloud.appconfiguration.config.web.implementation.
 import java.io.IOException;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
@@ -26,11 +23,15 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 import com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationEndpoint;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
  * Endpoint for requesting new configurations to be loaded.
  */
+@SuppressWarnings("removal")
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH)
-public final class AppConfigurationRefreshEndpoint implements ApplicationEventPublisherAware {
+public class AppConfigurationRefreshEndpoint implements ApplicationEventPublisherAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshEndpoint.class);
 

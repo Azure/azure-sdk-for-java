@@ -4,10 +4,7 @@
 
 package com.azure.resourcemanager.selfhelp.generated;
 
-import com.azure.resourcemanager.selfhelp.models.Name;
 import com.azure.resourcemanager.selfhelp.models.SolutionResource;
-import com.azure.resourcemanager.selfhelp.models.TriggerCriterion;
-import java.util.Arrays;
 
 /**
  * Samples for SolutionOperation Update.
@@ -15,7 +12,7 @@ import java.util.Arrays;
 public final class SolutionOperationUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Solution_Update.json
+     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_Update.json
      */
     /**
      * Sample code: Solution_Update.
@@ -23,10 +20,11 @@ public final class SolutionOperationUpdateSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void solutionUpdate(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        SolutionResource resource = manager.solutionOperations().getWithResponse(
-            "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
-            "SolutionResourceName1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTriggerCriteria(Arrays.asList(new TriggerCriterion().withName(Name.REPLACEMENT_KEY)
-            .withValue("<!--12345678-BBBb-cCCCC-0000-123456789012-->"))).apply();
+        SolutionResource resource = manager.solutionOperations()
+            .getWithResponse(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
+                "SolutionResourceName1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
     }
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of a list-all operation. */
+/**
+ * The response of a list-all operation.
+ */
 @Fluent
-public final class ClusterList {
+public final class ClusterList implements JsonSerializable<ClusterList> {
     /*
      * List of clusters.
      */
-    @JsonProperty(value = "value")
     private List<ClusterInner> value;
 
     /*
      * The URI to fetch the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ClusterList class. */
+    /**
+     * Creates an instance of ClusterList class.
+     */
     public ClusterList() {
     }
 
     /**
      * Get the value property: List of clusters.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterInner> value() {
@@ -39,7 +45,7 @@ public final class ClusterList {
 
     /**
      * Set the value property: List of clusters.
-     *
+     * 
      * @param value the value value to set.
      * @return the ClusterList object itself.
      */
@@ -50,7 +56,7 @@ public final class ClusterList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,51 @@ public final class ClusterList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterList.
+     */
+    public static ClusterList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterList deserializedClusterList = new ClusterList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ClusterInner> value = reader.readArray(reader1 -> ClusterInner.fromJson(reader1));
+                    deserializedClusterList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedClusterList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterList;
+        });
     }
 }

@@ -6,36 +6,42 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Common input details for network mapping operation. */
+/**
+ * Common input details for network mapping operation.
+ */
 @Fluent
-public final class CreateNetworkMappingInputProperties {
+public final class CreateNetworkMappingInputProperties
+    implements JsonSerializable<CreateNetworkMappingInputProperties> {
     /*
      * Recovery fabric Name.
      */
-    @JsonProperty(value = "recoveryFabricName")
     private String recoveryFabricName;
 
     /*
      * Recovery network Id.
      */
-    @JsonProperty(value = "recoveryNetworkId", required = true)
     private String recoveryNetworkId;
 
     /*
      * Fabric specific input properties.
      */
-    @JsonProperty(value = "fabricSpecificDetails")
     private FabricSpecificCreateNetworkMappingInput fabricSpecificDetails;
 
-    /** Creates an instance of CreateNetworkMappingInputProperties class. */
+    /**
+     * Creates an instance of CreateNetworkMappingInputProperties class.
+     */
     public CreateNetworkMappingInputProperties() {
     }
 
     /**
      * Get the recoveryFabricName property: Recovery fabric Name.
-     *
+     * 
      * @return the recoveryFabricName value.
      */
     public String recoveryFabricName() {
@@ -44,7 +50,7 @@ public final class CreateNetworkMappingInputProperties {
 
     /**
      * Set the recoveryFabricName property: Recovery fabric Name.
-     *
+     * 
      * @param recoveryFabricName the recoveryFabricName value to set.
      * @return the CreateNetworkMappingInputProperties object itself.
      */
@@ -55,7 +61,7 @@ public final class CreateNetworkMappingInputProperties {
 
     /**
      * Get the recoveryNetworkId property: Recovery network Id.
-     *
+     * 
      * @return the recoveryNetworkId value.
      */
     public String recoveryNetworkId() {
@@ -64,7 +70,7 @@ public final class CreateNetworkMappingInputProperties {
 
     /**
      * Set the recoveryNetworkId property: Recovery network Id.
-     *
+     * 
      * @param recoveryNetworkId the recoveryNetworkId value to set.
      * @return the CreateNetworkMappingInputProperties object itself.
      */
@@ -75,7 +81,7 @@ public final class CreateNetworkMappingInputProperties {
 
     /**
      * Get the fabricSpecificDetails property: Fabric specific input properties.
-     *
+     * 
      * @return the fabricSpecificDetails value.
      */
     public FabricSpecificCreateNetworkMappingInput fabricSpecificDetails() {
@@ -84,27 +90,26 @@ public final class CreateNetworkMappingInputProperties {
 
     /**
      * Set the fabricSpecificDetails property: Fabric specific input properties.
-     *
+     * 
      * @param fabricSpecificDetails the fabricSpecificDetails value to set.
      * @return the CreateNetworkMappingInputProperties object itself.
      */
-    public CreateNetworkMappingInputProperties withFabricSpecificDetails(
-        FabricSpecificCreateNetworkMappingInput fabricSpecificDetails) {
+    public CreateNetworkMappingInputProperties
+        withFabricSpecificDetails(FabricSpecificCreateNetworkMappingInput fabricSpecificDetails) {
         this.fabricSpecificDetails = fabricSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recoveryNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryNetworkId in model CreateNetworkMappingInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryNetworkId in model CreateNetworkMappingInputProperties"));
         }
         if (fabricSpecificDetails() != null) {
             fabricSpecificDetails().validate();
@@ -112,4 +117,49 @@ public final class CreateNetworkMappingInputProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CreateNetworkMappingInputProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryNetworkId", this.recoveryNetworkId);
+        jsonWriter.writeStringField("recoveryFabricName", this.recoveryFabricName);
+        jsonWriter.writeJsonField("fabricSpecificDetails", this.fabricSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateNetworkMappingInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateNetworkMappingInputProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateNetworkMappingInputProperties.
+     */
+    public static CreateNetworkMappingInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateNetworkMappingInputProperties deserializedCreateNetworkMappingInputProperties
+                = new CreateNetworkMappingInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryNetworkId".equals(fieldName)) {
+                    deserializedCreateNetworkMappingInputProperties.recoveryNetworkId = reader.getString();
+                } else if ("recoveryFabricName".equals(fieldName)) {
+                    deserializedCreateNetworkMappingInputProperties.recoveryFabricName = reader.getString();
+                } else if ("fabricSpecificDetails".equals(fieldName)) {
+                    deserializedCreateNetworkMappingInputProperties.fabricSpecificDetails
+                        = FabricSpecificCreateNetworkMappingInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateNetworkMappingInputProperties;
+        });
+    }
 }

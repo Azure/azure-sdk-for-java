@@ -6,24 +6,31 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Update migration item input properties. */
+/**
+ * Update migration item input properties.
+ */
 @Fluent
-public final class UpdateMigrationItemInputProperties {
+public final class UpdateMigrationItemInputProperties implements JsonSerializable<UpdateMigrationItemInputProperties> {
     /*
      * The provider specific input to update migration item.
      */
-    @JsonProperty(value = "providerSpecificDetails", required = true)
     private UpdateMigrationItemProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of UpdateMigrationItemInputProperties class. */
+    /**
+     * Creates an instance of UpdateMigrationItemInputProperties class.
+     */
     public UpdateMigrationItemInputProperties() {
     }
 
     /**
      * Get the providerSpecificDetails property: The provider specific input to update migration item.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public UpdateMigrationItemProviderSpecificInput providerSpecificDetails() {
@@ -32,32 +39,69 @@ public final class UpdateMigrationItemInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific input to update migration item.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the UpdateMigrationItemInputProperties object itself.
      */
-    public UpdateMigrationItemInputProperties withProviderSpecificDetails(
-        UpdateMigrationItemProviderSpecificInput providerSpecificDetails) {
+    public UpdateMigrationItemInputProperties
+        withProviderSpecificDetails(UpdateMigrationItemProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model"
-                            + " UpdateMigrationItemInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property providerSpecificDetails in model UpdateMigrationItemInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpdateMigrationItemInputProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateMigrationItemInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateMigrationItemInputProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateMigrationItemInputProperties.
+     */
+    public static UpdateMigrationItemInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateMigrationItemInputProperties deserializedUpdateMigrationItemInputProperties
+                = new UpdateMigrationItemInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedUpdateMigrationItemInputProperties.providerSpecificDetails
+                        = UpdateMigrationItemProviderSpecificInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateMigrationItemInputProperties;
+        });
+    }
 }

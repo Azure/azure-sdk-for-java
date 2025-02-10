@@ -6,24 +6,31 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input to apply recovery point. */
+/**
+ * Input to apply recovery point.
+ */
 @Fluent
-public final class ApplyRecoveryPointInput {
+public final class ApplyRecoveryPointInput implements JsonSerializable<ApplyRecoveryPointInput> {
     /*
      * The input properties to apply recovery point.
      */
-    @JsonProperty(value = "properties", required = true)
     private ApplyRecoveryPointInputProperties properties;
 
-    /** Creates an instance of ApplyRecoveryPointInput class. */
+    /**
+     * Creates an instance of ApplyRecoveryPointInput class.
+     */
     public ApplyRecoveryPointInput() {
     }
 
     /**
      * Get the properties property: The input properties to apply recovery point.
-     *
+     * 
      * @return the properties value.
      */
     public ApplyRecoveryPointInputProperties properties() {
@@ -32,7 +39,7 @@ public final class ApplyRecoveryPointInput {
 
     /**
      * Set the properties property: The input properties to apply recovery point.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ApplyRecoveryPointInput object itself.
      */
@@ -43,19 +50,55 @@ public final class ApplyRecoveryPointInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model ApplyRecoveryPointInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model ApplyRecoveryPointInput"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplyRecoveryPointInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplyRecoveryPointInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplyRecoveryPointInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplyRecoveryPointInput.
+     */
+    public static ApplyRecoveryPointInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplyRecoveryPointInput deserializedApplyRecoveryPointInput = new ApplyRecoveryPointInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedApplyRecoveryPointInput.properties = ApplyRecoveryPointInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplyRecoveryPointInput;
+        });
+    }
 }

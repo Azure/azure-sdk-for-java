@@ -6,58 +6,41 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
+import com.azure.resourcemanager.security.models.Enforce;
+import com.azure.resourcemanager.security.models.IsEnabled;
 import com.azure.resourcemanager.security.models.PricingList;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.security.models.PricingTier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PricingsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"knq\",\"freeTrialRemainingTime\":\"PT21H22M16S\",\"enablementTime\":\"2021-01-07T17:31:02Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"oqueqihkkyowltj\",\"resourcesCoverageStatus\":\"FullyCovered\",\"extensions\":[{\"name\":\"dxwhieproqksmfx\",\"isEnabled\":\"True\"},{\"name\":\"vprstv\",\"isEnabled\":\"True\"},{\"name\":\"tbfjtdyotnplf\",\"isEnabled\":\"True\"},{\"name\":\"qoccqrqxwetjt\",\"isEnabled\":\"True\"}],\"deprecated\":false,\"replacedBy\":[\"doad\",\"xopgehpadkmd\",\"gssz\"]},\"id\":\"vctkbbx\",\"name\":\"harls\",\"type\":\"rncclabv\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"suxxc\",\"freeTrialRemainingTime\":\"PT216H51M1S\",\"enablementTime\":\"2021-05-04T17:23:56Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"saidjan\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"dxxurn\",\"isEnabled\":\"True\"},{\"name\":\"jmoilunwe\",\"isEnabled\":\"False\"},{\"name\":\"deel\",\"isEnabled\":\"True\"},{\"name\":\"lkyozdsfzj\",\"isEnabled\":\"True\"}],\"deprecated\":false,\"replacedBy\":[\"htslejtvxj\",\"xvgjbfi\",\"bpnjodf\",\"bj\"]},\"id\":\"qwm\",\"name\":\"q\",\"type\":\"moxsa\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"jgwecywnfyszzacz\",\"freeTrialRemainingTime\":\"PT2H3M22S\",\"enablementTime\":\"2021-12-04T14:42:52Z\",\"enforce\":\"True\",\"inherited\":\"True\",\"inheritedFrom\":\"bozsyvr\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"it\",\"isEnabled\":\"False\"},{\"name\":\"hwudlxeei\",\"isEnabled\":\"True\"},{\"name\":\"pmnoejhqlf\",\"isEnabled\":\"True\"}],\"deprecated\":false,\"replacedBy\":[\"yrfgxkyd\",\"mypgfqvmty\"]},\"id\":\"hl\",\"name\":\"kxp\",\"type\":\"jpewpyjlfx\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"crzge\",\"freeTrialRemainingTime\":\"PT128H31M34S\",\"enablementTime\":\"2021-10-07T02:31:37Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"aujegqdtadra\",\"resourcesCoverageStatus\":\"NotCovered\",\"extensions\":[{\"name\":\"jkrukizyhgsqtnqs\",\"isEnabled\":\"True\"},{\"name\":\"xqfpj\",\"isEnabled\":\"False\"},{\"name\":\"ggweeiwdhdmncgb\",\"isEnabled\":\"False\"}],\"deprecated\":true,\"replacedBy\":[\"tunmlhxd\",\"bkl\"]},\"id\":\"iichgjsysmvxodgw\",\"name\":\"f\",\"type\":\"zsifcuvbdujgcwx\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"bafo\",\"name\":\"to\",\"type\":\"zhaquvwsxb\"},{\"id\":\"vkervqchoadhrsxq\",\"name\":\"z\",\"type\":\"spabdsrgfa\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PricingList response = manager.pricings()
+            .listWithResponse("knpwirfljf", "wxqouoxudnmc", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PricingList response = manager.pricings().listWithResponse(com.azure.core.util.Context.NONE).getValue();
+        Assertions.assertEquals(PricingTier.STANDARD, response.value().get(0).pricingTier());
+        Assertions.assertEquals("knq", response.value().get(0).subPlan());
+        Assertions.assertEquals(Enforce.FALSE, response.value().get(0).enforce());
+        Assertions.assertEquals("dxwhieproqksmfx", response.value().get(0).extensions().get(0).name());
+        Assertions.assertEquals(IsEnabled.TRUE, response.value().get(0).extensions().get(0).isEnabled());
     }
 }

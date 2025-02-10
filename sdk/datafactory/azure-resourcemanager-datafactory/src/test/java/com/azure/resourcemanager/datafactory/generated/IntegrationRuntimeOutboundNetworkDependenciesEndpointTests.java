@@ -23,8 +23,9 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IntegrationRuntimeOutboundNetworkDependenciesEndpoint model
-            = new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("vfadmws").withEndpointDetails(
-                Arrays.asList(new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(1913869945)));
+            = new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("vfadmws")
+                .withEndpointDetails(Arrays
+                    .asList(new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(1913869945)));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpoint.class);
         Assertions.assertEquals("vfadmws", model.domainName());
         Assertions.assertEquals(1913869945, model.endpointDetails().get(0).port());

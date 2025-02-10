@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ContainerIdentityInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContainerIdentityInfo model =
-            BinaryData
-                .fromString(
-                    "{\"uniqueName\":\"atzuuv\",\"aadTenantId\":\"ngrebwg\",\"servicePrincipalClientId\":\"httzlswvajqfutlx\",\"audience\":\"qzasunwqrjzfrgqh\"}")
-                .toObject(ContainerIdentityInfo.class);
-        Assertions.assertEquals("atzuuv", model.uniqueName());
-        Assertions.assertEquals("ngrebwg", model.aadTenantId());
-        Assertions.assertEquals("httzlswvajqfutlx", model.servicePrincipalClientId());
-        Assertions.assertEquals("qzasunwqrjzfrgqh", model.audience());
+        ContainerIdentityInfo model = BinaryData.fromString(
+            "{\"uniqueName\":\"qllizstac\",\"aadTenantId\":\"vhrweftkwqejpmv\",\"servicePrincipalClientId\":\"ehaepwamcxtc\",\"audience\":\"upeuknijduyye\"}")
+            .toObject(ContainerIdentityInfo.class);
+        Assertions.assertEquals("qllizstac", model.uniqueName());
+        Assertions.assertEquals("vhrweftkwqejpmv", model.aadTenantId());
+        Assertions.assertEquals("ehaepwamcxtc", model.servicePrincipalClientId());
+        Assertions.assertEquals("upeuknijduyye", model.audience());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContainerIdentityInfo model =
-            new ContainerIdentityInfo()
-                .withUniqueName("atzuuv")
-                .withAadTenantId("ngrebwg")
-                .withServicePrincipalClientId("httzlswvajqfutlx")
-                .withAudience("qzasunwqrjzfrgqh");
+        ContainerIdentityInfo model = new ContainerIdentityInfo().withUniqueName("qllizstac")
+            .withAadTenantId("vhrweftkwqejpmv")
+            .withServicePrincipalClientId("ehaepwamcxtc")
+            .withAudience("upeuknijduyye");
         model = BinaryData.fromObject(model).toObject(ContainerIdentityInfo.class);
-        Assertions.assertEquals("atzuuv", model.uniqueName());
-        Assertions.assertEquals("ngrebwg", model.aadTenantId());
-        Assertions.assertEquals("httzlswvajqfutlx", model.servicePrincipalClientId());
-        Assertions.assertEquals("qzasunwqrjzfrgqh", model.audience());
+        Assertions.assertEquals("qllizstac", model.uniqueName());
+        Assertions.assertEquals("vhrweftkwqejpmv", model.aadTenantId());
+        Assertions.assertEquals("ehaepwamcxtc", model.servicePrincipalClientId());
+        Assertions.assertEquals("upeuknijduyye", model.audience());
     }
 }

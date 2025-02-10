@@ -22,21 +22,18 @@ public final class DefaultAccountsImpl implements DefaultAccounts {
 
     private final com.azure.resourcemanager.purview.PurviewManager serviceManager;
 
-    public DefaultAccountsImpl(
-        DefaultAccountsClient innerClient, com.azure.resourcemanager.purview.PurviewManager serviceManager) {
+    public DefaultAccountsImpl(DefaultAccountsClient innerClient,
+        com.azure.resourcemanager.purview.PurviewManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<DefaultAccountPayload> getWithResponse(
-        UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
-        Response<DefaultAccountPayloadInner> inner =
-            this.serviceClient().getWithResponse(scopeTenantId, scopeType, scope, context);
+    public Response<DefaultAccountPayload> getWithResponse(UUID scopeTenantId, ScopeType scopeType, String scope,
+        Context context) {
+        Response<DefaultAccountPayloadInner> inner
+            = this.serviceClient().getWithResponse(scopeTenantId, scopeType, scope, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DefaultAccountPayloadImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,15 +49,12 @@ public final class DefaultAccountsImpl implements DefaultAccounts {
         }
     }
 
-    public Response<DefaultAccountPayload> setWithResponse(
-        DefaultAccountPayloadInner defaultAccountPayload, Context context) {
-        Response<DefaultAccountPayloadInner> inner =
-            this.serviceClient().setWithResponse(defaultAccountPayload, context);
+    public Response<DefaultAccountPayload> setWithResponse(DefaultAccountPayloadInner defaultAccountPayload,
+        Context context) {
+        Response<DefaultAccountPayloadInner> inner
+            = this.serviceClient().setWithResponse(defaultAccountPayload, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DefaultAccountPayloadImpl(inner.getValue(), this.manager()));
         } else {
             return null;

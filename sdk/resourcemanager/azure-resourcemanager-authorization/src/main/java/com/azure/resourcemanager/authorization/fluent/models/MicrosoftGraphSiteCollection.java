@@ -5,48 +5,48 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** siteCollection. */
+/**
+ * siteCollection.
+ */
 @Fluent
-public final class MicrosoftGraphSiteCollection {
+public final class MicrosoftGraphSiteCollection implements JsonSerializable<MicrosoftGraphSiteCollection> {
     /*
      * The geographic region code for where this site collection resides. Read-only.
      */
-    @JsonProperty(value = "dataLocationCode")
     private String dataLocationCode;
 
     /*
      * The hostname for the site collection. Read-only.
      */
-    @JsonProperty(value = "hostname")
     private String hostname;
 
     /*
      * root
      */
-    @JsonProperty(value = "root")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> root;
 
     /*
      * siteCollection
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphSiteCollection class. */
+    /**
+     * Creates an instance of MicrosoftGraphSiteCollection class.
+     */
     public MicrosoftGraphSiteCollection() {
     }
 
     /**
      * Get the dataLocationCode property: The geographic region code for where this site collection resides. Read-only.
-     *
+     * 
      * @return the dataLocationCode value.
      */
     public String dataLocationCode() {
@@ -55,7 +55,7 @@ public final class MicrosoftGraphSiteCollection {
 
     /**
      * Set the dataLocationCode property: The geographic region code for where this site collection resides. Read-only.
-     *
+     * 
      * @param dataLocationCode the dataLocationCode value to set.
      * @return the MicrosoftGraphSiteCollection object itself.
      */
@@ -66,7 +66,7 @@ public final class MicrosoftGraphSiteCollection {
 
     /**
      * Get the hostname property: The hostname for the site collection. Read-only.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -75,7 +75,7 @@ public final class MicrosoftGraphSiteCollection {
 
     /**
      * Set the hostname property: The hostname for the site collection. Read-only.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the MicrosoftGraphSiteCollection object itself.
      */
@@ -86,7 +86,7 @@ public final class MicrosoftGraphSiteCollection {
 
     /**
      * Get the root property: root.
-     *
+     * 
      * @return the root value.
      */
     public Map<String, Object> root() {
@@ -95,7 +95,7 @@ public final class MicrosoftGraphSiteCollection {
 
     /**
      * Set the root property: root.
-     *
+     * 
      * @param root the root value to set.
      * @return the MicrosoftGraphSiteCollection object itself.
      */
@@ -106,17 +106,16 @@ public final class MicrosoftGraphSiteCollection {
 
     /**
      * Get the additionalProperties property: siteCollection.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: siteCollection.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphSiteCollection object itself.
      */
@@ -125,19 +124,65 @@ public final class MicrosoftGraphSiteCollection {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataLocationCode", this.dataLocationCode);
+        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeMapField("root", this.root, (writer, element) -> writer.writeUntyped(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphSiteCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphSiteCollection if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphSiteCollection.
+     */
+    public static MicrosoftGraphSiteCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphSiteCollection deserializedMicrosoftGraphSiteCollection = new MicrosoftGraphSiteCollection();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataLocationCode".equals(fieldName)) {
+                    deserializedMicrosoftGraphSiteCollection.dataLocationCode = reader.getString();
+                } else if ("hostname".equals(fieldName)) {
+                    deserializedMicrosoftGraphSiteCollection.hostname = reader.getString();
+                } else if ("root".equals(fieldName)) {
+                    Map<String, Object> root = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphSiteCollection.root = root;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphSiteCollection.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphSiteCollection;
+        });
     }
 }

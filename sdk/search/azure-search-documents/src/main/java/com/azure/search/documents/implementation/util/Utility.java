@@ -34,8 +34,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
+import com.azure.search.documents.implementation.models.ErrorResponseException;
 import com.azure.search.documents.implementation.models.IndexBatch;
-import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.SearchAudience;
@@ -82,20 +82,13 @@ public final class Utility {
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
 
-    public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions,
-        HttpLogOptions logOptions,
-        Configuration configuration,
-        RetryPolicy retryPolicy,
-        RetryOptions retryOptions,
-        AzureKeyCredential azureKeyCredential,
-        TokenCredential tokenCredential,
-        SearchAudience audience,
-        List<HttpPipelinePolicy> perCallPolicies,
-        List<HttpPipelinePolicy> perRetryPolicies,
-        HttpClient httpClient,
+    public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
+        Configuration configuration, RetryPolicy retryPolicy, RetryOptions retryOptions,
+        AzureKeyCredential azureKeyCredential, TokenCredential tokenCredential, SearchAudience audience,
+        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient,
         ClientLogger logger) {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         ClientOptions buildClientOptions = (clientOptions == null) ? DEFAULT_CLIENT_OPTIONS : clientOptions;
         HttpLogOptions buildLogOptions = (logOptions == null) ? DEFAULT_LOG_OPTIONS : logOptions;
@@ -125,7 +118,7 @@ public final class Utility {
             httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audienceUrl + "/.default"));
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException("Builder doesn't have a credential "
-                                                                          + "configured. Supply either an AzureKeyCredential or TokenCredential."));
+                + "configured. Supply either an AzureKeyCredential or TokenCredential."));
         }
 
         httpPipelinePolicies.addAll(perRetryPolicies);
@@ -138,25 +131,22 @@ public final class Utility {
 
         httpPipelinePolicies.add(new HttpLoggingPolicy(buildLogOptions));
 
-        return new HttpPipelineBuilder()
-            .clientOptions(buildClientOptions)
+        return new HttpPipelineBuilder().clientOptions(buildClientOptions)
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
     }
 
     public static Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponseAsync(SearchIndexClientImpl restClient,
-        List<com.azure.search.documents.implementation.models.IndexAction> actions,
-        boolean throwOnAnyError,
-        Context context,
-        ClientLogger logger) {
+        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
+        Context context, ClientLogger logger) {
         try {
-            return restClient
-                .getDocuments()
+            return restClient.getDocuments()
                 .indexWithResponseAsync(new IndexBatch(actions), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) ? Mono.error(
-                    new IndexBatchException(response.getValue())) : Mono.just(response));
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError)
+                    ? Mono.error(new IndexBatchException(response.getValue()))
+                    : Mono.just(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -166,8 +156,8 @@ public final class Utility {
         List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
         Context context, ClientLogger logger) {
         return executeRestCallWithExceptionHandling(() -> {
-            Response<IndexDocumentsResult> response = restClient.getDocuments()
-                .indexWithResponse(new IndexBatch(actions), null, context);
+            Response<IndexDocumentsResult> response
+                = restClient.getDocuments().indexWithResponse(new IndexBatch(actions), null, context);
             if (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) {
                 throw logger.logExceptionAsError(new IndexBatchException(response.getValue()));
             }
@@ -175,10 +165,8 @@ public final class Utility {
         }, logger);
     }
 
-    public static SearchIndexClientImpl buildRestClient(SearchServiceVersion serviceVersion,
-        String endpoint,
-        String indexName,
-        HttpPipeline httpPipeline) {
+    public static SearchIndexClientImpl buildRestClient(SearchServiceVersion serviceVersion, String endpoint,
+        String indexName, HttpPipeline httpPipeline) {
         return new SearchIndexClientImpl(httpPipeline, endpoint, indexName, serviceVersion.getVersion());
     }
 
@@ -197,12 +185,12 @@ public final class Utility {
     public static <T> T executeRestCallWithExceptionHandling(Supplier<T> supplier, ClientLogger logger) {
         try {
             return supplier.get();
-        } catch (com.azure.search.documents.indexes.implementation.models.SearchErrorException exception) {
-            throw logger.logExceptionAsError(new HttpResponseException(exception.getMessage(),
-                exception.getResponse()));
-        } catch (com.azure.search.documents.implementation.models.SearchErrorException exception) {
-            throw logger.logExceptionAsError(new HttpResponseException(exception.getMessage(),
-                exception.getResponse()));
+        } catch (com.azure.search.documents.indexes.implementation.models.ErrorResponseException exception) {
+            throw logger
+                .logExceptionAsError(new HttpResponseException(exception.getMessage(), exception.getResponse()));
+        } catch (com.azure.search.documents.implementation.models.ErrorResponseException exception) {
+            throw logger
+                .logExceptionAsError(new HttpResponseException(exception.getMessage(), exception.getResponse()));
         } catch (RuntimeException ex) {
             throw logger.logExceptionAsError(ex);
         }
@@ -231,14 +219,14 @@ public final class Utility {
      * isn't found, otherwise the passed {@link Throwable} unmodified.
      */
     public static Throwable exceptionMapper(Throwable throwable) {
-        if (!(throwable instanceof SearchErrorException)) {
+        if (!(throwable instanceof ErrorResponseException)) {
             return throwable;
         }
 
-        return mapSearchErrorException((SearchErrorException) throwable);
+        return mapErrorResponseException((ErrorResponseException) throwable);
     }
 
-    public static HttpResponseException mapSearchErrorException(SearchErrorException exception) {
+    public static HttpResponseException mapErrorResponseException(ErrorResponseException exception) {
         if (exception.getResponse().getStatusCode() == 404) {
             return new ResourceNotFoundException(DOCUMENT_NOT_FOUND, exception.getResponse());
         }

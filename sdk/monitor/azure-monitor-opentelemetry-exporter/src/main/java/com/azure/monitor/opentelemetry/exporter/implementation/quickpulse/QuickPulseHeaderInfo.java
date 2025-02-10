@@ -12,9 +12,7 @@ class QuickPulseHeaderInfo {
     private final String qpsServiceEndpointRedirect;
     private final long qpsServicePollingInterval;
 
-    QuickPulseHeaderInfo(
-        QuickPulseStatus quickPulseStatus,
-        @Nullable String qpsServiceEndpointRedirect,
+    QuickPulseHeaderInfo(QuickPulseStatus quickPulseStatus, @Nullable String qpsServiceEndpointRedirect,
         long qpsServicePollingIntervalHint) {
 
         this.quickPulseStatus = quickPulseStatus;

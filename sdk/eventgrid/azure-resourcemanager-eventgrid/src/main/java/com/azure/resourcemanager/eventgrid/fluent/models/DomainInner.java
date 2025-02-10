@@ -7,6 +7,9 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
 import com.azure.resourcemanager.eventgrid.models.DomainProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
@@ -17,7 +20,7 @@ import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.ResourceSku;
 import com.azure.resourcemanager.eventgrid.models.TlsVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,26 +32,37 @@ public final class DomainInner extends Resource {
     /*
      * Properties of the Event Grid Domain resource.
      */
-    @JsonProperty(value = "properties")
     private DomainProperties innerProperties;
 
     /*
      * The Sku pricing tier for the Event Grid Domain resource.
      */
-    @JsonProperty(value = "sku")
     private ResourceSku sku;
 
     /*
      * Identity information for the Event Grid Domain resource.
      */
-    @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
     /*
      * The system metadata relating to the Event Grid Domain resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of DomainInner class.
@@ -115,6 +129,36 @@ public final class DomainInner extends Resource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -133,7 +177,7 @@ public final class DomainInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: The privateEndpointConnections property.
+     * Get the privateEndpointConnections property: List of private endpoint connections.
      * 
      * @return the privateEndpointConnections value.
      */
@@ -271,8 +315,8 @@ public final class DomainInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainProperties.InboundIpRules" /&gt;.
      * 
@@ -283,8 +327,8 @@ public final class DomainInner extends Resource {
     }
 
     /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainProperties.InboundIpRules" /&gt;.
      * 
@@ -300,8 +344,8 @@ public final class DomainInner extends Resource {
     }
 
     /**
-     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @return the inboundIpRules value.
      */
@@ -310,8 +354,8 @@ public final class DomainInner extends Resource {
     }
 
     /**
-     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the DomainInner object itself.
@@ -352,8 +396,8 @@ public final class DomainInner extends Resource {
     }
 
     /**
-     * Get the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism
-     * for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+     * Get the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
      * In this context, creation of domain topic can be auto-managed (when true) or self-managed (when false). The
      * default value for this property is true.
      * When this property is null or set to true, Event Grid is responsible of automatically creating the domain topic
@@ -373,8 +417,8 @@ public final class DomainInner extends Resource {
     }
 
     /**
-     * Set the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism
-     * for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+     * Set the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism for
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
      * In this context, creation of domain topic can be auto-managed (when true) or self-managed (when false). The
      * default value for this property is true.
      * When this property is null or set to true, Event Grid is responsible of automatically creating the domain topic
@@ -407,10 +451,10 @@ public final class DomainInner extends Resource {
      * last event subscription at the scope
      * of the domain topic is deleted. If this property is set to false, then the user needs to manually delete the
      * domain topic when it is no longer needed
-     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management
-     * mode can be used if the user wants full
-     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to
-     * perform less operations and manage fewer
+     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode
+     * can be used if the user wants full
+     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to perform
+     * less operations and manage fewer
      * resources by the user.
      * 
      * @return the autoDeleteTopicWithLastSubscription value.
@@ -428,10 +472,10 @@ public final class DomainInner extends Resource {
      * last event subscription at the scope
      * of the domain topic is deleted. If this property is set to false, then the user needs to manually delete the
      * domain topic when it is no longer needed
-     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management
-     * mode can be used if the user wants full
-     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to
-     * perform less operations and manage fewer
+     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode
+     * can be used if the user wants full
+     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to perform
+     * less operations and manage fewer
      * resources by the user.
      * 
      * @param autoDeleteTopicWithLastSubscription the autoDeleteTopicWithLastSubscription value to set.
@@ -483,5 +527,63 @@ public final class DomainInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DomainInner.
+     */
+    public static DomainInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainInner deserializedDomainInner = new DomainInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDomainInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDomainInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDomainInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDomainInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDomainInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDomainInner.innerProperties = DomainProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDomainInner.sku = ResourceSku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDomainInner.identity = IdentityInfo.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDomainInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainInner;
+        });
     }
 }

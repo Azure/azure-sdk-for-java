@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class IpSecurityRestrictionRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpSecurityRestrictionRule model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"eqx\",\"description\":\"z\",\"ipAddressRange\":\"ahzxctobgbk\",\"action\":\"Allow\"}")
-                .toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("eqx", model.name());
-        Assertions.assertEquals("z", model.description());
-        Assertions.assertEquals("ahzxctobgbk", model.ipAddressRange());
+        IpSecurityRestrictionRule model = BinaryData.fromString(
+            "{\"name\":\"oftrmaequia\",\"description\":\"icslfaoq\",\"ipAddressRange\":\"piyylhalnswhccsp\",\"action\":\"Allow\"}")
+            .toObject(IpSecurityRestrictionRule.class);
+        Assertions.assertEquals("oftrmaequia", model.name());
+        Assertions.assertEquals("icslfaoq", model.description());
+        Assertions.assertEquals("piyylhalnswhccsp", model.ipAddressRange());
         Assertions.assertEquals(Action.ALLOW, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpSecurityRestrictionRule model =
-            new IpSecurityRestrictionRule()
-                .withName("eqx")
-                .withDescription("z")
-                .withIpAddressRange("ahzxctobgbk")
-                .withAction(Action.ALLOW);
+        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("oftrmaequia")
+            .withDescription("icslfaoq")
+            .withIpAddressRange("piyylhalnswhccsp")
+            .withAction(Action.ALLOW);
         model = BinaryData.fromObject(model).toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("eqx", model.name());
-        Assertions.assertEquals("z", model.description());
-        Assertions.assertEquals("ahzxctobgbk", model.ipAddressRange());
+        Assertions.assertEquals("oftrmaequia", model.name());
+        Assertions.assertEquals("icslfaoq", model.description());
+        Assertions.assertEquals("piyylhalnswhccsp", model.ipAddressRange());
         Assertions.assertEquals(Action.ALLOW, model.action());
     }
 }

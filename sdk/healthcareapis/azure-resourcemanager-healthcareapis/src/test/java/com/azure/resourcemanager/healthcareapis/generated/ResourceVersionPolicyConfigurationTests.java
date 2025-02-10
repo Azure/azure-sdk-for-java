@@ -14,21 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceVersionPolicyConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceVersionPolicyConfiguration model = BinaryData.fromString(
-            "{\"default\":\"versioned\",\"resourceTypeOverrides\":{\"whhmhykojo\":\"versioned\",\"fnndl\":\"versioned\"}}")
-            .toObject(ResourceVersionPolicyConfiguration.class);
-        Assertions.assertEquals(FhirResourceVersionPolicy.VERSIONED, model.defaultProperty());
-        Assertions.assertEquals(FhirResourceVersionPolicy.VERSIONED, model.resourceTypeOverrides().get("whhmhykojo"));
+        ResourceVersionPolicyConfiguration model
+            = BinaryData.fromString("{\"default\":\"no-version\",\"resourceTypeOverrides\":{\"yuq\":\"no-version\"}}")
+                .toObject(ResourceVersionPolicyConfiguration.class);
+        Assertions.assertEquals(FhirResourceVersionPolicy.NO_VERSION, model.defaultProperty());
+        Assertions.assertEquals(FhirResourceVersionPolicy.NO_VERSION, model.resourceTypeOverrides().get("yuq"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceVersionPolicyConfiguration model = new ResourceVersionPolicyConfiguration()
-            .withDefaultProperty(FhirResourceVersionPolicy.VERSIONED).withResourceTypeOverrides(
-                mapOf("whhmhykojo", FhirResourceVersionPolicy.VERSIONED, "fnndl", FhirResourceVersionPolicy.VERSIONED));
+        ResourceVersionPolicyConfiguration model
+            = new ResourceVersionPolicyConfiguration().withDefaultProperty(FhirResourceVersionPolicy.NO_VERSION)
+                .withResourceTypeOverrides(mapOf("yuq", FhirResourceVersionPolicy.NO_VERSION));
         model = BinaryData.fromObject(model).toObject(ResourceVersionPolicyConfiguration.class);
-        Assertions.assertEquals(FhirResourceVersionPolicy.VERSIONED, model.defaultProperty());
-        Assertions.assertEquals(FhirResourceVersionPolicy.VERSIONED, model.resourceTypeOverrides().get("whhmhykojo"));
+        Assertions.assertEquals(FhirResourceVersionPolicy.NO_VERSION, model.defaultProperty());
+        Assertions.assertEquals(FhirResourceVersionPolicy.NO_VERSION, model.resourceTypeOverrides().get("yuq"));
     }
 
     // Use "Map.of" if available

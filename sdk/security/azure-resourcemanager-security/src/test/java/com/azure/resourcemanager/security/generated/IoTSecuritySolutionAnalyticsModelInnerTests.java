@@ -14,31 +14,18 @@ import java.util.Arrays;
 public final class IoTSecuritySolutionAnalyticsModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IoTSecuritySolutionAnalyticsModelInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"metrics\":{\"high\":4021445942662392747,\"medium\":4294667967107007677,\"low\":7036117632331754318},\"unhealthyDeviceCount\":2795086805451114111,\"devicesMetrics\":[{\"date\":\"2021-06-07T11:11Z\"}],\"topAlertedDevices\":[{\"deviceId\":\"lbbovplw\",\"alertsCount\":3734794049628665607},{\"deviceId\":\"yuguosvmkfssx\",\"alertsCount\":5126500575476383860},{\"deviceId\":\"plgmgsxnk\",\"alertsCount\":2541322280404196409}],\"mostPrevalentDeviceAlerts\":[{\"alertDisplayName\":\"pvlopwiyighxpkd\",\"reportedSeverity\":\"Medium\",\"alertsCount\":1775218219583343661},{\"alertDisplayName\":\"bbaumnyquped\",\"reportedSeverity\":\"Informational\",\"alertsCount\":533974290165093237}],\"mostPrevalentDeviceRecommendations\":[{\"recommendationDisplayName\":\"smtxpsieb\",\"reportedSeverity\":\"High\",\"devicesCount\":6627631118472357246},{\"recommendationDisplayName\":\"apskrdqm\",\"reportedSeverity\":\"Medium\",\"devicesCount\":6206046747227637327},{\"recommendationDisplayName\":\"dwkyzxuu\",\"reportedSeverity\":\"High\",\"devicesCount\":1186103723197260996}]},\"id\":\"cwsvlxotog\",\"name\":\"wrupqsxvnmicykvc\",\"type\":\"o\"}")
-                .toObject(IoTSecuritySolutionAnalyticsModelInner.class);
+        IoTSecuritySolutionAnalyticsModelInner model = BinaryData.fromString(
+            "{\"properties\":{\"metrics\":{\"high\":4306854274094965404,\"medium\":7299297905990520554,\"low\":5923268141734612582},\"unhealthyDeviceCount\":8177677748180983191,\"devicesMetrics\":[{\"date\":\"2020-12-24T00:10:53Z\",\"devicesMetrics\":{\"high\":6368933305994050362,\"medium\":4737448863799070126,\"low\":6463705926594653414}}],\"topAlertedDevices\":[{\"deviceId\":\"yq\",\"alertsCount\":5320944384466972483}],\"mostPrevalentDeviceAlerts\":[{\"alertDisplayName\":\"gidokgjljyoxgvcl\",\"reportedSeverity\":\"Medium\",\"alertsCount\":7497073347562685414}],\"mostPrevalentDeviceRecommendations\":[{\"recommendationDisplayName\":\"jeszzhbijhtxfv\",\"reportedSeverity\":\"Informational\",\"devicesCount\":2392745858850272013},{\"recommendationDisplayName\":\"nehmpvecx\",\"reportedSeverity\":\"High\",\"devicesCount\":6839529764170404203},{\"recommendationDisplayName\":\"kk\",\"reportedSeverity\":\"Low\",\"devicesCount\":5030393591391141924}]},\"id\":\"gr\",\"name\":\"wflzlfbxzpuzy\",\"type\":\"ispnqzahmgkbrp\"}")
+            .toObject(IoTSecuritySolutionAnalyticsModelInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSecuritySolutionAnalyticsModelInner model =
-            new IoTSecuritySolutionAnalyticsModelInner()
-                .withTopAlertedDevices(
-                    Arrays
-                        .asList(
-                            new IoTSecurityAlertedDevice(),
-                            new IoTSecurityAlertedDevice(),
-                            new IoTSecurityAlertedDevice()))
-                .withMostPrevalentDeviceAlerts(
-                    Arrays.asList(new IoTSecurityDeviceAlert(), new IoTSecurityDeviceAlert()))
-                .withMostPrevalentDeviceRecommendations(
-                    Arrays
-                        .asList(
-                            new IoTSecurityDeviceRecommendation(),
-                            new IoTSecurityDeviceRecommendation(),
-                            new IoTSecurityDeviceRecommendation()));
+        IoTSecuritySolutionAnalyticsModelInner model = new IoTSecuritySolutionAnalyticsModelInner()
+            .withTopAlertedDevices(Arrays.asList(new IoTSecurityAlertedDevice()))
+            .withMostPrevalentDeviceAlerts(Arrays.asList(new IoTSecurityDeviceAlert()))
+            .withMostPrevalentDeviceRecommendations(Arrays.asList(new IoTSecurityDeviceRecommendation(),
+                new IoTSecurityDeviceRecommendation(), new IoTSecurityDeviceRecommendation()));
         model = BinaryData.fromObject(model).toObject(IoTSecuritySolutionAnalyticsModelInner.class);
     }
 }

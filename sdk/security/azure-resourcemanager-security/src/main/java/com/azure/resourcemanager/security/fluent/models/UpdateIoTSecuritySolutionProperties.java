@@ -5,33 +5,40 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.RecommendationConfigurationProperties;
 import com.azure.resourcemanager.security.models.UserDefinedResourcesProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Update Security Solution setting data. */
+/**
+ * Update Security Solution setting data.
+ */
 @Fluent
-public final class UpdateIoTSecuritySolutionProperties {
+public final class UpdateIoTSecuritySolutionProperties
+    implements JsonSerializable<UpdateIoTSecuritySolutionProperties> {
     /*
      * Properties of the IoT Security solution's user defined resources.
      */
-    @JsonProperty(value = "userDefinedResources")
     private UserDefinedResourcesProperties userDefinedResources;
 
     /*
      * List of the configuration status for each recommendation type.
      */
-    @JsonProperty(value = "recommendationsConfiguration")
     private List<RecommendationConfigurationProperties> recommendationsConfiguration;
 
-    /** Creates an instance of UpdateIoTSecuritySolutionProperties class. */
+    /**
+     * Creates an instance of UpdateIoTSecuritySolutionProperties class.
+     */
     public UpdateIoTSecuritySolutionProperties() {
     }
 
     /**
      * Get the userDefinedResources property: Properties of the IoT Security solution's user defined resources.
-     *
+     * 
      * @return the userDefinedResources value.
      */
     public UserDefinedResourcesProperties userDefinedResources() {
@@ -40,19 +47,19 @@ public final class UpdateIoTSecuritySolutionProperties {
 
     /**
      * Set the userDefinedResources property: Properties of the IoT Security solution's user defined resources.
-     *
+     * 
      * @param userDefinedResources the userDefinedResources value to set.
      * @return the UpdateIoTSecuritySolutionProperties object itself.
      */
-    public UpdateIoTSecuritySolutionProperties withUserDefinedResources(
-        UserDefinedResourcesProperties userDefinedResources) {
+    public UpdateIoTSecuritySolutionProperties
+        withUserDefinedResources(UserDefinedResourcesProperties userDefinedResources) {
         this.userDefinedResources = userDefinedResources;
         return this;
     }
 
     /**
      * Get the recommendationsConfiguration property: List of the configuration status for each recommendation type.
-     *
+     * 
      * @return the recommendationsConfiguration value.
      */
     public List<RecommendationConfigurationProperties> recommendationsConfiguration() {
@@ -61,19 +68,19 @@ public final class UpdateIoTSecuritySolutionProperties {
 
     /**
      * Set the recommendationsConfiguration property: List of the configuration status for each recommendation type.
-     *
+     * 
      * @param recommendationsConfiguration the recommendationsConfiguration value to set.
      * @return the UpdateIoTSecuritySolutionProperties object itself.
      */
-    public UpdateIoTSecuritySolutionProperties withRecommendationsConfiguration(
-        List<RecommendationConfigurationProperties> recommendationsConfiguration) {
+    public UpdateIoTSecuritySolutionProperties
+        withRecommendationsConfiguration(List<RecommendationConfigurationProperties> recommendationsConfiguration) {
         this.recommendationsConfiguration = recommendationsConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -83,5 +90,50 @@ public final class UpdateIoTSecuritySolutionProperties {
         if (recommendationsConfiguration() != null) {
             recommendationsConfiguration().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("userDefinedResources", this.userDefinedResources);
+        jsonWriter.writeArrayField("recommendationsConfiguration", this.recommendationsConfiguration,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateIoTSecuritySolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateIoTSecuritySolutionProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateIoTSecuritySolutionProperties.
+     */
+    public static UpdateIoTSecuritySolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateIoTSecuritySolutionProperties deserializedUpdateIoTSecuritySolutionProperties
+                = new UpdateIoTSecuritySolutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userDefinedResources".equals(fieldName)) {
+                    deserializedUpdateIoTSecuritySolutionProperties.userDefinedResources
+                        = UserDefinedResourcesProperties.fromJson(reader);
+                } else if ("recommendationsConfiguration".equals(fieldName)) {
+                    List<RecommendationConfigurationProperties> recommendationsConfiguration
+                        = reader.readArray(reader1 -> RecommendationConfigurationProperties.fromJson(reader1));
+                    deserializedUpdateIoTSecuritySolutionProperties.recommendationsConfiguration
+                        = recommendationsConfiguration;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateIoTSecuritySolutionProperties;
+        });
     }
 }

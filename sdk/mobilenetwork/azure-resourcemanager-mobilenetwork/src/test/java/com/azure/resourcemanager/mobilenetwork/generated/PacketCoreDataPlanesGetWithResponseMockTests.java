@@ -6,71 +6,43 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreDataPlane;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PacketCoreDataPlanesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"userPlaneAccessInterface\":{\"name\":\"dawlpjfelqerpp\",\"ipv4Address\":\"bgqnz\",\"ipv4Subnet\":\"h\",\"ipv4Gateway\":\"lialwcjgckbbcccg\",\"vlanId\":183837166,\"ipv4AddressList\":[\"xnyuffatsgftipwc\",\"byubhiqdxyurnpn\",\"hza\"],\"bfdIpv4Endpoints\":[\"nuhiig\",\"yl\",\"ui\",\"vxva\"]},\"userPlaneAccessVirtualIpv4Addresses\":[\"rkdlb\",\"bqxvhcsyhzlwxae\"]},\"location\":\"vurex\",\"tags\":{\"pag\":\"sbdweaderzmwnt\"},\"id\":\"tmvmmagoaqylkjz\",\"name\":\"jiuazjc\",\"type\":\"mxitpfinzcpd\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"userPlaneAccessInterface\":{\"name\":\"dbwdpyqyybxubmdn\",\"ipv4Address\":\"cbq\",\"ipv4Subnet\":\"e\",\"ipv4Gateway\":\"ela\"},\"userPlaneAccessVirtualIpv4Addresses\":[\"igeleohd\",\"vqvwzkjopwbe\",\"nrlkwzdqy\",\"x\"]},\"location\":\"akxcptsoqfyiaseq\",\"tags\":{\"mvanbwzo\":\"rttzrazisgykiu\"},\"id\":\"mnrxxbsojkl\",\"name\":\"nhmdptysprqs\",\"type\":\"nzxojpslsvjgpli\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PacketCoreDataPlane response = manager.packetCoreDataPlanes()
+            .getWithResponse("vjufycsjmlbe", "yeji", "iuxegth", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PacketCoreDataPlane response =
-            manager
-                .packetCoreDataPlanes()
-                .getWithResponse("mbscbbx", "gdhxi", "d", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("akxcptsoqfyiaseq", response.location());
-        Assertions.assertEquals("rttzrazisgykiu", response.tags().get("mvanbwzo"));
-        Assertions.assertEquals("dbwdpyqyybxubmdn", response.userPlaneAccessInterface().name());
-        Assertions.assertEquals("cbq", response.userPlaneAccessInterface().ipv4Address());
-        Assertions.assertEquals("e", response.userPlaneAccessInterface().ipv4Subnet());
-        Assertions.assertEquals("ela", response.userPlaneAccessInterface().ipv4Gateway());
-        Assertions.assertEquals("igeleohd", response.userPlaneAccessVirtualIpv4Addresses().get(0));
+        Assertions.assertEquals("vurex", response.location());
+        Assertions.assertEquals("sbdweaderzmwnt", response.tags().get("pag"));
+        Assertions.assertEquals("dawlpjfelqerpp", response.userPlaneAccessInterface().name());
+        Assertions.assertEquals("bgqnz", response.userPlaneAccessInterface().ipv4Address());
+        Assertions.assertEquals("h", response.userPlaneAccessInterface().ipv4Subnet());
+        Assertions.assertEquals("lialwcjgckbbcccg", response.userPlaneAccessInterface().ipv4Gateway());
+        Assertions.assertEquals(183837166, response.userPlaneAccessInterface().vlanId());
+        Assertions.assertEquals("xnyuffatsgftipwc", response.userPlaneAccessInterface().ipv4AddressList().get(0));
+        Assertions.assertEquals("nuhiig", response.userPlaneAccessInterface().bfdIpv4Endpoints().get(0));
+        Assertions.assertEquals("rkdlb", response.userPlaneAccessVirtualIpv4Addresses().get(0));
     }
 }

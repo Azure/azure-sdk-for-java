@@ -7,47 +7,75 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.PricingInner;
 import com.azure.resourcemanager.security.fluent.models.PricingListInner;
+import com.azure.resourcemanager.security.models.Enforce;
+import com.azure.resourcemanager.security.models.Extension;
+import com.azure.resourcemanager.security.models.IsEnabled;
 import com.azure.resourcemanager.security.models.PricingTier;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class PricingListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PricingListInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"nqpjwnzlljfmpp\",\"freeTrialRemainingTime\":\"PT46H48M36S\",\"enablementTime\":\"2021-10-30T03:41:11Z\",\"deprecated\":true,\"replacedBy\":[],\"extensions\":[]},\"id\":\"bkyqduu\",\"name\":\"itcjczdz\",\"type\":\"vndhkrwpdapp\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"kvwrwjfeu\",\"freeTrialRemainingTime\":\"PT36H39M29S\",\"enablementTime\":\"2021-01-02T14:30:26Z\",\"deprecated\":true,\"replacedBy\":[],\"extensions\":[]},\"id\":\"mrldhu\",\"name\":\"jzzd\",\"type\":\"tqxhocdgeab\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"uticndvkaozwyif\",\"freeTrialRemainingTime\":\"PT23H12M54S\",\"enablementTime\":\"2021-10-09T12:18:53Z\",\"deprecated\":false,\"replacedBy\":[],\"extensions\":[]},\"id\":\"ftyxolniw\",\"name\":\"wcukjfkgiawxk\",\"type\":\"ryplwckbasyypn\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"gcbacphejkot\",\"freeTrialRemainingTime\":\"PT157H5M51S\",\"enablementTime\":\"2021-02-05T05:14:14Z\",\"deprecated\":false,\"replacedBy\":[],\"extensions\":[]},\"id\":\"dlikwyqkgfgibma\",\"name\":\"gakeqsr\",\"type\":\"yb\"}]}")
-                .toObject(PricingListInner.class);
+        PricingListInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"ozqvbubqmam\",\"freeTrialRemainingTime\":\"PT184H5M28S\",\"enablementTime\":\"2021-03-29T14:41:16Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"zttaboidvmf\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"bowsepd\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"tobkauxofshfph\":\"datatdherngbtcjuahok\",\"whslwkoj\":\"datapnulaiywzej\",\"rpqaf\":\"datallndnpd\"},\"operationStatus\":{}},{\"name\":\"ug\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"fypococtfjgti\":\"datahyet\",\"rmlmuowo\":\"datarjvzuyt\"},\"operationStatus\":{}},{\"name\":\"au\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"gajinnixjawrtmj\":\"dataionszonwp\"},\"operationStatus\":{}}],\"deprecated\":true,\"replacedBy\":[\"xlzhcoxovnekh\",\"nlusfnrd\",\"jxtxrdc\",\"tjvidt\"]},\"id\":\"gepuslvyjtc\",\"name\":\"uwkasiz\",\"type\":\"esfuught\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"cjxeygt\",\"freeTrialRemainingTime\":\"PT43H18M51S\",\"enablementTime\":\"2021-09-26T16:06:28Z\",\"enforce\":\"False\",\"inherited\":\"False\",\"inheritedFrom\":\"mr\",\"resourcesCoverageStatus\":\"NotCovered\",\"extensions\":[{\"name\":\"xuzrhwpusxjba\",\"isEnabled\":\"False\",\"additionalExtensionProperties\":{\"zjqatucoig\":\"datapdo\",\"fmxjg\":\"databxncnwfepbnw\"},\"operationStatus\":{}}],\"deprecated\":true,\"replacedBy\":[\"dlfgtdysnaq\",\"flq\"]},\"id\":\"ctqhamzjrwdk\",\"name\":\"zeqyjleziun\",\"type\":\"xdfzantkw\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"amlbnseqacjjvpil\",\"freeTrialRemainingTime\":\"PT23H5M32S\",\"enablementTime\":\"2021-12-03T16:31Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"itgueiookjbs\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"tpdelqa\",\"isEnabled\":\"True\",\"additionalExtensionProperties\":{\"jkgd\":\"dataotoebnfxofv\"},\"operationStatus\":{}}],\"deprecated\":false,\"replacedBy\":[\"xejw\",\"bmdujtmvcopexc\"]},\"id\":\"jurbuhhlkyqltqsr\",\"name\":\"gtuwkff\",\"type\":\"jk\"}]}")
+            .toObject(PricingListInner.class);
         Assertions.assertEquals(PricingTier.STANDARD, model.value().get(0).pricingTier());
-        Assertions.assertEquals("nqpjwnzlljfmpp", model.value().get(0).subPlan());
+        Assertions.assertEquals("ozqvbubqmam", model.value().get(0).subPlan());
+        Assertions.assertEquals(Enforce.FALSE, model.value().get(0).enforce());
+        Assertions.assertEquals("bowsepd", model.value().get(0).extensions().get(0).name());
+        Assertions.assertEquals(IsEnabled.TRUE, model.value().get(0).extensions().get(0).isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PricingListInner model =
-            new PricingListInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PricingInner()
-                                .withPricingTier(PricingTier.STANDARD)
-                                .withSubPlan("nqpjwnzlljfmpp")
-                                .withExtensions(Arrays.asList()),
-                            new PricingInner()
-                                .withPricingTier(PricingTier.STANDARD)
-                                .withSubPlan("kvwrwjfeu")
-                                .withExtensions(Arrays.asList()),
-                            new PricingInner()
-                                .withPricingTier(PricingTier.FREE)
-                                .withSubPlan("uticndvkaozwyif")
-                                .withExtensions(Arrays.asList()),
-                            new PricingInner()
-                                .withPricingTier(PricingTier.STANDARD)
-                                .withSubPlan("gcbacphejkot")
-                                .withExtensions(Arrays.asList())));
+        PricingListInner model = new PricingListInner().withValue(Arrays.asList(
+            new PricingInner().withPricingTier(PricingTier.STANDARD)
+                .withSubPlan("ozqvbubqmam")
+                .withEnforce(Enforce.FALSE)
+                .withExtensions(Arrays.asList(
+                    new Extension().withName("bowsepd")
+                        .withIsEnabled(IsEnabled.TRUE)
+                        .withAdditionalExtensionProperties(mapOf("tobkauxofshfph", "datatdherngbtcjuahok", "whslwkoj",
+                            "datapnulaiywzej", "rpqaf", "datallndnpd")),
+                    new Extension().withName("ug")
+                        .withIsEnabled(IsEnabled.FALSE)
+                        .withAdditionalExtensionProperties(
+                            mapOf("fypococtfjgti", "datahyet", "rmlmuowo", "datarjvzuyt")),
+                    new Extension().withName("au")
+                        .withIsEnabled(IsEnabled.TRUE)
+                        .withAdditionalExtensionProperties(mapOf("gajinnixjawrtmj", "dataionszonwp")))),
+            new PricingInner().withPricingTier(PricingTier.STANDARD)
+                .withSubPlan("cjxeygt")
+                .withEnforce(Enforce.FALSE)
+                .withExtensions(Arrays.asList(new Extension().withName("xuzrhwpusxjba")
+                    .withIsEnabled(IsEnabled.FALSE)
+                    .withAdditionalExtensionProperties(mapOf("zjqatucoig", "datapdo", "fmxjg", "databxncnwfepbnw")))),
+            new PricingInner().withPricingTier(PricingTier.STANDARD)
+                .withSubPlan("amlbnseqacjjvpil")
+                .withEnforce(Enforce.FALSE)
+                .withExtensions(Arrays.asList(new Extension().withName("tpdelqa")
+                    .withIsEnabled(IsEnabled.TRUE)
+                    .withAdditionalExtensionProperties(mapOf("jkgd", "dataotoebnfxofv"))))));
         model = BinaryData.fromObject(model).toObject(PricingListInner.class);
         Assertions.assertEquals(PricingTier.STANDARD, model.value().get(0).pricingTier());
-        Assertions.assertEquals("nqpjwnzlljfmpp", model.value().get(0).subPlan());
+        Assertions.assertEquals("ozqvbubqmam", model.value().get(0).subPlan());
+        Assertions.assertEquals(Enforce.FALSE, model.value().get(0).enforce());
+        Assertions.assertEquals("bowsepd", model.value().get(0).extensions().get(0).name());
+        Assertions.assertEquals(IsEnabled.TRUE, model.value().get(0).extensions().get(0).isEnabled());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

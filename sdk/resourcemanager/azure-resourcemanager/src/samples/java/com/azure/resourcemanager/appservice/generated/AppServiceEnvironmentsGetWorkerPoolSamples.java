@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class AppServiceEnvironmentsGetWorkerPoolSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/AppServiceEnvironments_GetWorkerPool.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/AppServiceEnvironments_GetWorkerPool.
      * json
      */
     /**
@@ -19,7 +19,10 @@ public final class AppServiceEnvironmentsGetWorkerPoolSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPropertiesOfAWorkerPool(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().getWorkerPoolWithResponse("test-rg",
-            "test-ase", "workerPool1", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .getWorkerPoolWithResponse("test-rg", "test-ase", "workerPool1", com.azure.core.util.Context.NONE);
     }
 }

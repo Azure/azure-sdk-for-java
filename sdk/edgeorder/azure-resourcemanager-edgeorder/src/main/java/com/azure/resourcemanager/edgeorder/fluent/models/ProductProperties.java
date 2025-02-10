@@ -5,26 +5,73 @@
 package com.azure.resourcemanager.edgeorder.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.edgeorder.models.AvailabilityInformation;
 import com.azure.resourcemanager.edgeorder.models.CommonProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.edgeorder.models.CostInformation;
+import com.azure.resourcemanager.edgeorder.models.Description;
+import com.azure.resourcemanager.edgeorder.models.FilterableProperty;
+import com.azure.resourcemanager.edgeorder.models.HierarchyInformation;
+import com.azure.resourcemanager.edgeorder.models.ImageInformation;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of products. */
+/**
+ * Properties of products.
+ */
 @Immutable
 public final class ProductProperties extends CommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductProperties.class);
-
     /*
      * List of configurations for the product
      */
-    @JsonProperty(value = "configurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConfigurationInner> configurations;
+
+    /*
+     * list of filters supported for a product
+     */
+    private List<FilterableProperty> filterableProperties;
+
+    /*
+     * Hierarchy information of a product.
+     */
+    private HierarchyInformation hierarchyInformation;
+
+    /*
+     * Availability information of the product system.
+     */
+    private AvailabilityInformation availabilityInformation;
+
+    /*
+     * Cost information for the product system.
+     */
+    private CostInformation costInformation;
+
+    /*
+     * Image information for the product system.
+     */
+    private List<ImageInformation> imageInformation;
+
+    /*
+     * Description related to the product system.
+     */
+    private Description description;
+
+    /*
+     * Display Name for the product system.
+     */
+    private String displayName;
+
+    /**
+     * Creates an instance of ProductProperties class.
+     */
+    public ProductProperties() {
+    }
 
     /**
      * Get the configurations property: List of configurations for the product.
-     *
+     * 
      * @return the configurations value.
      */
     public List<ConfigurationInner> configurations() {
@@ -32,15 +79,157 @@ public final class ProductProperties extends CommonProperties {
     }
 
     /**
+     * Get the filterableProperties property: list of filters supported for a product.
+     * 
+     * @return the filterableProperties value.
+     */
+    @Override
+    public List<FilterableProperty> filterableProperties() {
+        return this.filterableProperties;
+    }
+
+    /**
+     * Get the hierarchyInformation property: Hierarchy information of a product.
+     * 
+     * @return the hierarchyInformation value.
+     */
+    @Override
+    public HierarchyInformation hierarchyInformation() {
+        return this.hierarchyInformation;
+    }
+
+    /**
+     * Get the availabilityInformation property: Availability information of the product system.
+     * 
+     * @return the availabilityInformation value.
+     */
+    @Override
+    public AvailabilityInformation availabilityInformation() {
+        return this.availabilityInformation;
+    }
+
+    /**
+     * Get the costInformation property: Cost information for the product system.
+     * 
+     * @return the costInformation value.
+     */
+    @Override
+    public CostInformation costInformation() {
+        return this.costInformation;
+    }
+
+    /**
+     * Get the imageInformation property: Image information for the product system.
+     * 
+     * @return the imageInformation value.
+     */
+    @Override
+    public List<ImageInformation> imageInformation() {
+        return this.imageInformation;
+    }
+
+    /**
+     * Get the description property: Description related to the product system.
+     * 
+     * @return the description value.
+     */
+    @Override
+    public Description description() {
+        return this.description;
+    }
+
+    /**
+     * Get the displayName property: Display Name for the product system.
+     * 
+     * @return the displayName value.
+     */
+    @Override
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (configurations() != null) {
             configurations().forEach(e -> e.validate());
         }
+        if (description() != null) {
+            description().validate();
+        }
+        if (imageInformation() != null) {
+            imageInformation().forEach(e -> e.validate());
+        }
+        if (costInformation() != null) {
+            costInformation().validate();
+        }
+        if (availabilityInformation() != null) {
+            availabilityInformation().validate();
+        }
+        if (hierarchyInformation() != null) {
+            hierarchyInformation().validate();
+        }
+        if (filterableProperties() != null) {
+            filterableProperties().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProductProperties.
+     */
+    public static ProductProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductProperties deserializedProductProperties = new ProductProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedProductProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedProductProperties.description = Description.fromJson(reader);
+                } else if ("imageInformation".equals(fieldName)) {
+                    List<ImageInformation> imageInformation
+                        = reader.readArray(reader1 -> ImageInformation.fromJson(reader1));
+                    deserializedProductProperties.imageInformation = imageInformation;
+                } else if ("costInformation".equals(fieldName)) {
+                    deserializedProductProperties.costInformation = CostInformation.fromJson(reader);
+                } else if ("availabilityInformation".equals(fieldName)) {
+                    deserializedProductProperties.availabilityInformation = AvailabilityInformation.fromJson(reader);
+                } else if ("hierarchyInformation".equals(fieldName)) {
+                    deserializedProductProperties.hierarchyInformation = HierarchyInformation.fromJson(reader);
+                } else if ("filterableProperties".equals(fieldName)) {
+                    List<FilterableProperty> filterableProperties
+                        = reader.readArray(reader1 -> FilterableProperty.fromJson(reader1));
+                    deserializedProductProperties.filterableProperties = filterableProperties;
+                } else if ("configurations".equals(fieldName)) {
+                    List<ConfigurationInner> configurations
+                        = reader.readArray(reader1 -> ConfigurationInner.fromJson(reader1));
+                    deserializedProductProperties.configurations = configurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductProperties;
+        });
     }
 }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.SkuCapability;
 public final class SkuCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuCapability model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"duugidyjr\",\"vCores\":3682891038702940178,\"supportedIops\":7621842593771814376,\"supportedMemoryPerVCoreMB\":122532505466115624}")
-                .toObject(SkuCapability.class);
+        SkuCapability model = BinaryData.fromString(
+            "{\"name\":\"jixhbk\",\"vCores\":2989333129531555970,\"supportedIops\":833770082997190597,\"supportedMemoryPerVCoreMB\":8440294910944943050}")
+            .toObject(SkuCapability.class);
     }
 
     @org.junit.jupiter.api.Test

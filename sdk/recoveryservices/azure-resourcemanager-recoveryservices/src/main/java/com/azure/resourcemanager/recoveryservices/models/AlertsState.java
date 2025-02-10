@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlertsState. */
+/**
+ * Defines values for AlertsState.
+ */
 public final class AlertsState extends ExpandableStringEnum<AlertsState> {
-    /** Static value Enabled for AlertsState. */
+    /**
+     * Static value Enabled for AlertsState.
+     */
     public static final AlertsState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for AlertsState. */
+    /**
+     * Static value Disabled for AlertsState.
+     */
     public static final AlertsState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of AlertsState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AlertsState extends ExpandableStringEnum<AlertsState> {
 
     /**
      * Creates or finds a AlertsState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlertsState.
      */
-    @JsonCreator
     public static AlertsState fromString(String name) {
         return fromString(name, AlertsState.class);
     }
 
     /**
      * Gets known AlertsState values.
-     *
+     * 
      * @return known AlertsState values.
      */
     public static Collection<AlertsState> values() {

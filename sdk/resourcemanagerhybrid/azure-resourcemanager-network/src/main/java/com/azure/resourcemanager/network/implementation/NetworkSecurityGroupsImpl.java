@@ -6,10 +6,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupsClient;
 import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
-import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Implementation for NetworkSecurityGroups. */
@@ -37,21 +38,20 @@ public class NetworkSecurityGroupsImpl
                 new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
         // Clear NIC references if any
-        NetworkSecurityGroupImpl nsg = (NetworkSecurityGroupImpl) getByResourceGroup(resourceGroupName, name);
-        if (nsg != null) {
-            for (String nicRef : nsg.networkInterfaceIds()) {
-                NetworkInterface nic = this.manager().networkInterfaces().getById(nicRef);
-                if (nic == null) {
-                    continue;
-                } else if (!nsg.id().equalsIgnoreCase(nic.networkSecurityGroupId())) {
-                    continue;
-                } else {
-                    nic.update().withoutNetworkSecurityGroup().apply();
-                }
-            }
-        }
-
-        return this.deleteInnerAsync(resourceGroupName, name);
+        return getByResourceGroupAsync(resourceGroupName, name)
+            .flatMapMany(nsg -> Flux.fromIterable(nsg.networkInterfaceIds())
+                .flatMap(nicRef -> this.manager().networkInterfaces().getByIdAsync(nicRef))
+                .flatMap(nic -> {
+                    if (nic == null) {
+                        return Mono.empty();
+                    } else if (!nsg.id().equalsIgnoreCase(nic.networkSecurityGroupId())) {
+                        return Mono.empty();
+                    } else {
+                        return nic.update().withoutNetworkSecurityGroup().applyAsync();
+                    }
+                }))
+            .then(this.deleteInnerAsync(resourceGroupName, name))
+            .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
     }
 
     @Override

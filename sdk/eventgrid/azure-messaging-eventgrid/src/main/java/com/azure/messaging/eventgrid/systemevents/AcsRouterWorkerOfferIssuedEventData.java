@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -285,6 +286,9 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -341,11 +345,11 @@ public final class AcsRouterWorkerOfferIssuedEventData extends AcsRouterWorkerEv
                     Map<String, String> workerLabels = reader.readMap(reader1 -> reader1.getString());
                     deserializedAcsRouterWorkerOfferIssuedEventData.workerLabels = workerLabels;
                 } else if ("offeredOn".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferIssuedEventData.offeredOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsRouterWorkerOfferIssuedEventData.offeredOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("expiresOn".equals(fieldName)) {
-                    deserializedAcsRouterWorkerOfferIssuedEventData.expiresOn
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsRouterWorkerOfferIssuedEventData.expiresOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("workerTags".equals(fieldName)) {
                     Map<String, String> workerTags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAcsRouterWorkerOfferIssuedEventData.workerTags = workerTags;

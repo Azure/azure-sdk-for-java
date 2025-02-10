@@ -68,22 +68,18 @@ public final class ConfigurationAssignmentImpl
     private String configurationAssignmentName;
 
     public ConfigurationAssignment create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationAssignmentsForSubscriptions()
-                .createOrUpdateWithResponse(configurationAssignmentName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationAssignmentsForSubscriptions()
+            .createOrUpdateWithResponse(configurationAssignmentName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfigurationAssignment create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationAssignmentsForSubscriptions()
-                .createOrUpdateWithResponse(configurationAssignmentName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationAssignmentsForSubscriptions()
+            .createOrUpdateWithResponse(configurationAssignmentName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -98,50 +94,42 @@ public final class ConfigurationAssignmentImpl
     }
 
     public ConfigurationAssignment apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationAssignmentsForSubscriptions()
-                .updateWithResponse(configurationAssignmentName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationAssignmentsForSubscriptions()
+            .updateWithResponse(configurationAssignmentName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfigurationAssignment apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationAssignmentsForSubscriptions()
-                .updateWithResponse(configurationAssignmentName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationAssignmentsForSubscriptions()
+            .updateWithResponse(configurationAssignmentName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ConfigurationAssignmentImpl(
-        ConfigurationAssignmentInner innerObject,
+    ConfigurationAssignmentImpl(ConfigurationAssignmentInner innerObject,
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.configurationAssignmentName = Utils.getValueFromIdByName(innerObject.id(), "configurationAssignments");
+        this.configurationAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurationAssignments");
     }
 
     public ConfigurationAssignment refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationAssignmentsForSubscriptions()
-                .getWithResponse(configurationAssignmentName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationAssignmentsForSubscriptions()
+            .getWithResponse(configurationAssignmentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfigurationAssignment refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationAssignmentsForSubscriptions()
-                .getWithResponse(configurationAssignmentName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationAssignmentsForSubscriptions()
+            .getWithResponse(configurationAssignmentName, context)
+            .getValue();
         return this;
     }
 

@@ -6,20 +6,23 @@ package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.resourcemanager.storagemover.models.CopyMode;
 
-/** Samples for JobDefinitions CreateOrUpdate. */
+/**
+ * Samples for JobDefinitions CreateOrUpdate.
+ */
 public final class JobDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/JobDefinitions_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2024-07-01/examples/
+     * JobDefinitions_CreateOrUpdate.json
      */
     /**
      * Sample code: JobDefinitions_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to StorageMoverManager.
      */
-    public static void jobDefinitionsCreateOrUpdate(
-        com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
-        manager
-            .jobDefinitions()
+    public static void
+        jobDefinitionsCreateOrUpdate(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.jobDefinitions()
             .define("examples-jobDefinitionName")
             .withExistingProject("examples-rg", "examples-storageMoverName", "examples-projectName")
             .withCopyMode(CopyMode.ADDITIVE)

@@ -6,24 +6,28 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Settings controlling data network use. */
+/**
+ * Settings controlling data network use.
+ */
 @Fluent
-public final class DataNetworkConfiguration {
+public final class DataNetworkConfiguration implements JsonSerializable<DataNetworkConfiguration> {
     /*
      * A reference to the data network that these settings apply to. The data network must be in the same location as
      * the SIM policy.
      */
-    @JsonProperty(value = "dataNetwork", required = true)
     private DataNetworkResourceId dataNetwork;
 
     /*
-     * Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See 3GPP TS23.501 section
-     * 5.7.2.6 for a full description of the Session-AMBR.
+     * Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See 3GPP TS23.501 section 5.7.2.6
+     * for a full description of the Session-AMBR.
      */
-    @JsonProperty(value = "sessionAmbr", required = true)
     private Ambr sessionAmbr;
 
     /*
@@ -31,7 +35,6 @@ public final class DataNetworkConfiguration {
      * flow. See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the
      * definition the 5QI values.
      */
-    @JsonProperty(value = "5qi")
     private Integer fiveQi;
 
     /*
@@ -40,42 +43,36 @@ public final class DataNetworkConfiguration {
      * highest level of priority. If this field is not specified then `5qi` is used to derive the ARP value. See 3GPP
      * TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
      */
-    @JsonProperty(value = "allocationAndRetentionPriorityLevel")
     private Integer allocationAndRetentionPriorityLevel;
 
     /*
      * Default QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt
-     * another QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the
-     * ARP parameters.
+     * another QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP
+     * parameters.
      */
-    @JsonProperty(value = "preemptionCapability")
     private PreemptionCapability preemptionCapability;
 
     /*
      * Default QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be
-     * preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description
-     * of the ARP parameters.
+     * preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of
+     * the ARP parameters.
      */
-    @JsonProperty(value = "preemptionVulnerability")
     private PreemptionVulnerability preemptionVulnerability;
 
     /*
      * The default PDU session type, which is used if the UE does not request a specific session type.
      */
-    @JsonProperty(value = "defaultSessionType")
     private PduSessionType defaultSessionType;
 
     /*
      * Allowed session types in addition to the default session type. Must not duplicate the default session type.
      */
-    @JsonProperty(value = "additionalAllowedSessionTypes")
     private List<PduSessionType> additionalAllowedSessionTypes;
 
     /*
      * List of services that can be used as part of this SIM policy. The list must not contain duplicate items and must
      * contain at least one item. The services must be in the same location as the SIM policy.
      */
-    @JsonProperty(value = "allowedServices", required = true)
     private List<ServiceResourceId> allowedServices;
 
     /*
@@ -83,17 +80,18 @@ public final class DataNetworkConfiguration {
      * Buffering. See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full description. This maximum is not guaranteed
      * because there is a internal limit on buffered packets across all PDU sessions.
      */
-    @JsonProperty(value = "maximumNumberOfBufferedPackets")
     private Integer maximumNumberOfBufferedPackets;
 
-    /** Creates an instance of DataNetworkConfiguration class. */
+    /**
+     * Creates an instance of DataNetworkConfiguration class.
+     */
     public DataNetworkConfiguration() {
     }
 
     /**
      * Get the dataNetwork property: A reference to the data network that these settings apply to. The data network must
      * be in the same location as the SIM policy.
-     *
+     * 
      * @return the dataNetwork value.
      */
     public DataNetworkResourceId dataNetwork() {
@@ -103,7 +101,7 @@ public final class DataNetworkConfiguration {
     /**
      * Set the dataNetwork property: A reference to the data network that these settings apply to. The data network must
      * be in the same location as the SIM policy.
-     *
+     * 
      * @param dataNetwork the dataNetwork value to set.
      * @return the DataNetworkConfiguration object itself.
      */
@@ -115,7 +113,7 @@ public final class DataNetworkConfiguration {
     /**
      * Get the sessionAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See
      * 3GPP TS23.501 section 5.7.2.6 for a full description of the Session-AMBR.
-     *
+     * 
      * @return the sessionAmbr value.
      */
     public Ambr sessionAmbr() {
@@ -125,7 +123,7 @@ public final class DataNetworkConfiguration {
     /**
      * Set the sessionAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See
      * 3GPP TS23.501 section 5.7.2.6 for a full description of the Session-AMBR.
-     *
+     * 
      * @param sessionAmbr the sessionAmbr value to set.
      * @return the DataNetworkConfiguration object itself.
      */
@@ -138,7 +136,7 @@ public final class DataNetworkConfiguration {
      * Get the fiveQi property: Default 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding
      * treatment to be provided to a flow. See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI
      * parameter, and table 5.7.4-1 for the definition the 5QI values.
-     *
+     * 
      * @return the fiveQi value.
      */
     public Integer fiveQi() {
@@ -149,7 +147,7 @@ public final class DataNetworkConfiguration {
      * Set the fiveQi property: Default 5G QoS Flow Indicator value. The 5QI identifies a specific QoS forwarding
      * treatment to be provided to a flow. See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI
      * parameter, and table 5.7.4-1 for the definition the 5QI values.
-     *
+     * 
      * @param fiveQi the fiveQi value to set.
      * @return the DataNetworkConfiguration object itself.
      */
@@ -164,7 +162,7 @@ public final class DataNetworkConfiguration {
      * and `preemptionVulnerability` allow it. 1 is the highest level of priority. If this field is not specified then
      * `5qi` is used to derive the ARP value. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP
      * parameters.
-     *
+     * 
      * @return the allocationAndRetentionPriorityLevel value.
      */
     public Integer allocationAndRetentionPriorityLevel() {
@@ -177,12 +175,12 @@ public final class DataNetworkConfiguration {
      * and `preemptionVulnerability` allow it. 1 is the highest level of priority. If this field is not specified then
      * `5qi` is used to derive the ARP value. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP
      * parameters.
-     *
+     * 
      * @param allocationAndRetentionPriorityLevel the allocationAndRetentionPriorityLevel value to set.
      * @return the DataNetworkConfiguration object itself.
      */
-    public DataNetworkConfiguration withAllocationAndRetentionPriorityLevel(
-        Integer allocationAndRetentionPriorityLevel) {
+    public DataNetworkConfiguration
+        withAllocationAndRetentionPriorityLevel(Integer allocationAndRetentionPriorityLevel) {
         this.allocationAndRetentionPriorityLevel = allocationAndRetentionPriorityLevel;
         return this;
     }
@@ -191,7 +189,7 @@ public final class DataNetworkConfiguration {
      * Get the preemptionCapability property: Default QoS Flow preemption capability. The preemption capability of a QoS
      * Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section
      * 5.7.2.2 for a full description of the ARP parameters.
-     *
+     * 
      * @return the preemptionCapability value.
      */
     public PreemptionCapability preemptionCapability() {
@@ -202,7 +200,7 @@ public final class DataNetworkConfiguration {
      * Set the preemptionCapability property: Default QoS Flow preemption capability. The preemption capability of a QoS
      * Flow controls whether it can preempt another QoS Flow with a lower priority level. See 3GPP TS23.501 section
      * 5.7.2.2 for a full description of the ARP parameters.
-     *
+     * 
      * @param preemptionCapability the preemptionCapability value to set.
      * @return the DataNetworkConfiguration object itself.
      */
@@ -215,7 +213,7 @@ public final class DataNetworkConfiguration {
      * Get the preemptionVulnerability property: Default QoS Flow preemption vulnerability. The preemption vulnerability
      * of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501
      * section 5.7.2.2 for a full description of the ARP parameters.
-     *
+     * 
      * @return the preemptionVulnerability value.
      */
     public PreemptionVulnerability preemptionVulnerability() {
@@ -226,7 +224,7 @@ public final class DataNetworkConfiguration {
      * Set the preemptionVulnerability property: Default QoS Flow preemption vulnerability. The preemption vulnerability
      * of a QoS Flow controls whether it can be preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501
      * section 5.7.2.2 for a full description of the ARP parameters.
-     *
+     * 
      * @param preemptionVulnerability the preemptionVulnerability value to set.
      * @return the DataNetworkConfiguration object itself.
      */
@@ -238,7 +236,7 @@ public final class DataNetworkConfiguration {
     /**
      * Get the defaultSessionType property: The default PDU session type, which is used if the UE does not request a
      * specific session type.
-     *
+     * 
      * @return the defaultSessionType value.
      */
     public PduSessionType defaultSessionType() {
@@ -248,7 +246,7 @@ public final class DataNetworkConfiguration {
     /**
      * Set the defaultSessionType property: The default PDU session type, which is used if the UE does not request a
      * specific session type.
-     *
+     * 
      * @param defaultSessionType the defaultSessionType value to set.
      * @return the DataNetworkConfiguration object itself.
      */
@@ -260,7 +258,7 @@ public final class DataNetworkConfiguration {
     /**
      * Get the additionalAllowedSessionTypes property: Allowed session types in addition to the default session type.
      * Must not duplicate the default session type.
-     *
+     * 
      * @return the additionalAllowedSessionTypes value.
      */
     public List<PduSessionType> additionalAllowedSessionTypes() {
@@ -270,12 +268,12 @@ public final class DataNetworkConfiguration {
     /**
      * Set the additionalAllowedSessionTypes property: Allowed session types in addition to the default session type.
      * Must not duplicate the default session type.
-     *
+     * 
      * @param additionalAllowedSessionTypes the additionalAllowedSessionTypes value to set.
      * @return the DataNetworkConfiguration object itself.
      */
-    public DataNetworkConfiguration withAdditionalAllowedSessionTypes(
-        List<PduSessionType> additionalAllowedSessionTypes) {
+    public DataNetworkConfiguration
+        withAdditionalAllowedSessionTypes(List<PduSessionType> additionalAllowedSessionTypes) {
         this.additionalAllowedSessionTypes = additionalAllowedSessionTypes;
         return this;
     }
@@ -284,7 +282,7 @@ public final class DataNetworkConfiguration {
      * Get the allowedServices property: List of services that can be used as part of this SIM policy. The list must not
      * contain duplicate items and must contain at least one item. The services must be in the same location as the SIM
      * policy.
-     *
+     * 
      * @return the allowedServices value.
      */
     public List<ServiceResourceId> allowedServices() {
@@ -295,7 +293,7 @@ public final class DataNetworkConfiguration {
      * Set the allowedServices property: List of services that can be used as part of this SIM policy. The list must not
      * contain duplicate items and must contain at least one item. The services must be in the same location as the SIM
      * policy.
-     *
+     * 
      * @param allowedServices the allowedServices value to set.
      * @return the DataNetworkConfiguration object itself.
      */
@@ -309,7 +307,7 @@ public final class DataNetworkConfiguration {
      * plane for High Latency Communication - Extended Buffering. See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full
      * description. This maximum is not guaranteed because there is a internal limit on buffered packets across all PDU
      * sessions.
-     *
+     * 
      * @return the maximumNumberOfBufferedPackets value.
      */
     public Integer maximumNumberOfBufferedPackets() {
@@ -321,7 +319,7 @@ public final class DataNetworkConfiguration {
      * plane for High Latency Communication - Extended Buffering. See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full
      * description. This maximum is not guaranteed because there is a internal limit on buffered packets across all PDU
      * sessions.
-     *
+     * 
      * @param maximumNumberOfBufferedPackets the maximumNumberOfBufferedPackets value to set.
      * @return the DataNetworkConfiguration object itself.
      */
@@ -332,35 +330,110 @@ public final class DataNetworkConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataNetwork() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataNetwork in model DataNetworkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataNetwork in model DataNetworkConfiguration"));
         } else {
             dataNetwork().validate();
         }
         if (sessionAmbr() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sessionAmbr in model DataNetworkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sessionAmbr in model DataNetworkConfiguration"));
         } else {
             sessionAmbr().validate();
         }
         if (allowedServices() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property allowedServices in model DataNetworkConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property allowedServices in model DataNetworkConfiguration"));
         } else {
             allowedServices().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataNetworkConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dataNetwork", this.dataNetwork);
+        jsonWriter.writeJsonField("sessionAmbr", this.sessionAmbr);
+        jsonWriter.writeArrayField("allowedServices", this.allowedServices,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("5qi", this.fiveQi);
+        jsonWriter.writeNumberField("allocationAndRetentionPriorityLevel", this.allocationAndRetentionPriorityLevel);
+        jsonWriter.writeStringField("preemptionCapability",
+            this.preemptionCapability == null ? null : this.preemptionCapability.toString());
+        jsonWriter.writeStringField("preemptionVulnerability",
+            this.preemptionVulnerability == null ? null : this.preemptionVulnerability.toString());
+        jsonWriter.writeStringField("defaultSessionType",
+            this.defaultSessionType == null ? null : this.defaultSessionType.toString());
+        jsonWriter.writeArrayField("additionalAllowedSessionTypes", this.additionalAllowedSessionTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeNumberField("maximumNumberOfBufferedPackets", this.maximumNumberOfBufferedPackets);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataNetworkConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataNetworkConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataNetworkConfiguration.
+     */
+    public static DataNetworkConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataNetworkConfiguration deserializedDataNetworkConfiguration = new DataNetworkConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataNetwork".equals(fieldName)) {
+                    deserializedDataNetworkConfiguration.dataNetwork = DataNetworkResourceId.fromJson(reader);
+                } else if ("sessionAmbr".equals(fieldName)) {
+                    deserializedDataNetworkConfiguration.sessionAmbr = Ambr.fromJson(reader);
+                } else if ("allowedServices".equals(fieldName)) {
+                    List<ServiceResourceId> allowedServices
+                        = reader.readArray(reader1 -> ServiceResourceId.fromJson(reader1));
+                    deserializedDataNetworkConfiguration.allowedServices = allowedServices;
+                } else if ("5qi".equals(fieldName)) {
+                    deserializedDataNetworkConfiguration.fiveQi = reader.getNullable(JsonReader::getInt);
+                } else if ("allocationAndRetentionPriorityLevel".equals(fieldName)) {
+                    deserializedDataNetworkConfiguration.allocationAndRetentionPriorityLevel
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("preemptionCapability".equals(fieldName)) {
+                    deserializedDataNetworkConfiguration.preemptionCapability
+                        = PreemptionCapability.fromString(reader.getString());
+                } else if ("preemptionVulnerability".equals(fieldName)) {
+                    deserializedDataNetworkConfiguration.preemptionVulnerability
+                        = PreemptionVulnerability.fromString(reader.getString());
+                } else if ("defaultSessionType".equals(fieldName)) {
+                    deserializedDataNetworkConfiguration.defaultSessionType
+                        = PduSessionType.fromString(reader.getString());
+                } else if ("additionalAllowedSessionTypes".equals(fieldName)) {
+                    List<PduSessionType> additionalAllowedSessionTypes
+                        = reader.readArray(reader1 -> PduSessionType.fromString(reader1.getString()));
+                    deserializedDataNetworkConfiguration.additionalAllowedSessionTypes = additionalAllowedSessionTypes;
+                } else if ("maximumNumberOfBufferedPackets".equals(fieldName)) {
+                    deserializedDataNetworkConfiguration.maximumNumberOfBufferedPackets
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataNetworkConfiguration;
+        });
+    }
 }

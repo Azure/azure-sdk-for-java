@@ -11,26 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class LoadBalancingSettingsUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoadBalancingSettingsUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"sampleSize\":1092081926,\"successfulSamplesRequired\":2033787842,\"additionalLatencyMilliseconds\":294736838}")
-                .toObject(LoadBalancingSettingsUpdateParameters.class);
-        Assertions.assertEquals(1092081926, model.sampleSize());
-        Assertions.assertEquals(2033787842, model.successfulSamplesRequired());
-        Assertions.assertEquals(294736838, model.additionalLatencyMilliseconds());
+        LoadBalancingSettingsUpdateParameters model = BinaryData.fromString(
+            "{\"sampleSize\":646254417,\"successfulSamplesRequired\":848547164,\"additionalLatencyMilliseconds\":469550193}")
+            .toObject(LoadBalancingSettingsUpdateParameters.class);
+        Assertions.assertEquals(646254417, model.sampleSize());
+        Assertions.assertEquals(848547164, model.successfulSamplesRequired());
+        Assertions.assertEquals(469550193, model.additionalLatencyMilliseconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoadBalancingSettingsUpdateParameters model =
-            new LoadBalancingSettingsUpdateParameters()
-                .withSampleSize(1092081926)
-                .withSuccessfulSamplesRequired(2033787842)
-                .withAdditionalLatencyMilliseconds(294736838);
+        LoadBalancingSettingsUpdateParameters model
+            = new LoadBalancingSettingsUpdateParameters().withSampleSize(646254417)
+                .withSuccessfulSamplesRequired(848547164)
+                .withAdditionalLatencyMilliseconds(469550193);
         model = BinaryData.fromObject(model).toObject(LoadBalancingSettingsUpdateParameters.class);
-        Assertions.assertEquals(1092081926, model.sampleSize());
-        Assertions.assertEquals(2033787842, model.successfulSamplesRequired());
-        Assertions.assertEquals(294736838, model.additionalLatencyMilliseconds());
+        Assertions.assertEquals(646254417, model.sampleSize());
+        Assertions.assertEquals(848547164, model.successfulSamplesRequired());
+        Assertions.assertEquals(469550193, model.additionalLatencyMilliseconds());
     }
 }

@@ -3,39 +3,45 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The base event interface. */
-public abstract class CallAutomationEventBase {
+public abstract class CallAutomationEventBase implements JsonSerializable<CallAutomationEventBase> {
     /*
      * Call connection ID.
      */
-    @JsonProperty(value = "callConnectionId")
-    private final String callConnectionId;
+    private String callConnectionId;
+
+    /*
+     * Contains the resulting SIP code, sub-code and message.
+     */
+    private ResultInformation resultInformation;
 
     /*
      * Server call ID.
      */
-    @JsonProperty(value = "serverCallId")
-    private final String serverCallId;
+    private String serverCallId;
 
     /*
      * Correlation ID for event to call correlation.
      */
-    @JsonProperty(value = "correlationId")
-    private final String correlationId;
+    private String correlationId;
 
     /*
      * Operation context
      */
-    @JsonProperty(value = "operationContext")
-    private final String operationContext;
+    private String operationContext;
 
     CallAutomationEventBase() {
         this.serverCallId = null;
         this.callConnectionId = null;
         this.correlationId = null;
         this.operationContext = null;
+        this.resultInformation = null;
     }
 
     /**
@@ -72,5 +78,46 @@ public abstract class CallAutomationEventBase {
      */
     public String getOperationContext() {
         return this.operationContext;
+    }
+
+    /**
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     *
+     * @return the resultInformation value.
+     */
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
+    }
+
+    void writeFields(JsonWriter writer) throws IOException {
+        writer.writeStringField("callConnectionId", this.callConnectionId);
+        writer.writeStringField("serverCallId", this.serverCallId);
+        writer.writeStringField("correlationId", this.correlationId);
+        writer.writeStringField("operationContext", this.operationContext);
+        writer.writeJsonField("resultInformation", this.resultInformation);
+    }
+
+    boolean readField(String fieldName, JsonReader reader) throws IOException {
+        if ("callConnectionId".equals(fieldName)) {
+            this.callConnectionId = reader.getString();
+            return true;
+        }
+        if ("serverCallId".equals(fieldName)) {
+            this.serverCallId = reader.getString();
+            return true;
+        }
+        if ("correlationId".equals(fieldName)) {
+            this.correlationId = reader.getString();
+            return true;
+        }
+        if ("resultInformation".equals(fieldName)) {
+            this.resultInformation = ResultInformation.fromJson(reader);
+            return true;
+        }
+        if ("operationContext".equals(fieldName)) {
+            this.operationContext = reader.getString();
+            return true;
+        }
+        return false;
     }
 }

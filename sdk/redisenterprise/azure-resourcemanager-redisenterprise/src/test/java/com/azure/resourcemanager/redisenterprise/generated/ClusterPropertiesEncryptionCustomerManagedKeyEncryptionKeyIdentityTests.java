@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"userAssignedIdentityResourceId\":\"ininmay\",\"identityType\":\"systemAssignedIdentity\"}")
-                .toObject(ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.class);
-        Assertions.assertEquals("ininmay", model.userAssignedIdentityResourceId());
-        Assertions.assertEquals(CmkIdentityType.SYSTEM_ASSIGNED_IDENTITY, model.identityType());
+        ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity model = BinaryData
+            .fromString("{\"userAssignedIdentityResourceId\":\"mdvpjhulsu\",\"identityType\":\"userAssignedIdentity\"}")
+            .toObject(ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.class);
+        Assertions.assertEquals("mdvpjhulsu", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals(CmkIdentityType.USER_ASSIGNED_IDENTITY, model.identityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity model =
-            new ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity()
-                .withUserAssignedIdentityResourceId("ininmay")
-                .withIdentityType(CmkIdentityType.SYSTEM_ASSIGNED_IDENTITY);
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.class);
-        Assertions.assertEquals("ininmay", model.userAssignedIdentityResourceId());
-        Assertions.assertEquals(CmkIdentityType.SYSTEM_ASSIGNED_IDENTITY, model.identityType());
+        ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity model
+            = new ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity()
+                .withUserAssignedIdentityResourceId("mdvpjhulsu")
+                .withIdentityType(CmkIdentityType.USER_ASSIGNED_IDENTITY);
+        model = BinaryData.fromObject(model)
+            .toObject(ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.class);
+        Assertions.assertEquals("mdvpjhulsu", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals(CmkIdentityType.USER_ASSIGNED_IDENTITY, model.identityType());
     }
 }

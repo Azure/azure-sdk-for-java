@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The DailySchedule model. */
+/**
+ * The DailySchedule model.
+ */
 @Fluent
-public final class DailySchedule {
+public final class DailySchedule implements JsonSerializable<DailySchedule> {
     /*
      * List of times of day this schedule has to be run.
      */
-    @JsonProperty(value = "scheduleRunTimes")
     private List<OffsetDateTime> scheduleRunTimes;
 
-    /** Creates an instance of DailySchedule class. */
+    /**
+     * Creates an instance of DailySchedule class.
+     */
     public DailySchedule() {
     }
 
     /**
      * Get the scheduleRunTimes property: List of times of day this schedule has to be run.
-     *
+     * 
      * @return the scheduleRunTimes value.
      */
     public List<OffsetDateTime> scheduleRunTimes() {
@@ -33,7 +42,7 @@ public final class DailySchedule {
 
     /**
      * Set the scheduleRunTimes property: List of times of day this schedule has to be run.
-     *
+     * 
      * @param scheduleRunTimes the scheduleRunTimes value to set.
      * @return the DailySchedule object itself.
      */
@@ -44,9 +53,48 @@ public final class DailySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("scheduleRunTimes", this.scheduleRunTimes, (writer, element) -> writer
+            .writeString(element == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(element)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DailySchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DailySchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DailySchedule.
+     */
+    public static DailySchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DailySchedule deserializedDailySchedule = new DailySchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scheduleRunTimes".equals(fieldName)) {
+                    List<OffsetDateTime> scheduleRunTimes = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedDailySchedule.scheduleRunTimes = scheduleRunTimes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDailySchedule;
+        });
     }
 }

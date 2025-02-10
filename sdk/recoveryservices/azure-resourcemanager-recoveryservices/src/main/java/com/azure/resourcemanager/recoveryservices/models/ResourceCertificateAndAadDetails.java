@@ -5,66 +5,81 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Certificate details representing the Vault credentials for AAD. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType")
-@JsonTypeName("AzureActiveDirectory")
+/**
+ * Certificate details representing the Vault credentials for AAD.
+ */
 @Fluent
 public final class ResourceCertificateAndAadDetails extends ResourceCertificateDetails {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String authType = "AzureActiveDirectory";
+
+    /*
      * AAD tenant authority.
      */
-    @JsonProperty(value = "aadAuthority", required = true)
     private String aadAuthority;
 
     /*
      * AAD tenant Id.
      */
-    @JsonProperty(value = "aadTenantId", required = true)
     private String aadTenantId;
 
     /*
      * AAD service principal clientId.
      */
-    @JsonProperty(value = "servicePrincipalClientId", required = true)
     private String servicePrincipalClientId;
 
     /*
      * AAD service principal ObjectId.
      */
-    @JsonProperty(value = "servicePrincipalObjectId", required = true)
     private String servicePrincipalObjectId;
 
     /*
      * Azure Management Endpoint Audience.
      */
-    @JsonProperty(value = "azureManagementEndpointAudience", required = true)
     private String azureManagementEndpointAudience;
 
     /*
      * Service Resource Id.
      */
-    @JsonProperty(value = "serviceResourceId")
     private String serviceResourceId;
 
     /*
      * AAD audience for the resource
      */
-    @JsonProperty(value = "aadAudience")
     private String aadAudience;
 
-    /** Creates an instance of ResourceCertificateAndAadDetails class. */
+    /**
+     * Creates an instance of ResourceCertificateAndAadDetails class.
+     */
     public ResourceCertificateAndAadDetails() {
     }
 
     /**
+     * Get the authType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the authType value.
+     */
+    @Override
+    public String authType() {
+        return this.authType;
+    }
+
+    /**
      * Get the aadAuthority property: AAD tenant authority.
-     *
+     * 
      * @return the aadAuthority value.
      */
     public String aadAuthority() {
@@ -73,7 +88,7 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Set the aadAuthority property: AAD tenant authority.
-     *
+     * 
      * @param aadAuthority the aadAuthority value to set.
      * @return the ResourceCertificateAndAadDetails object itself.
      */
@@ -84,7 +99,7 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Get the aadTenantId property: AAD tenant Id.
-     *
+     * 
      * @return the aadTenantId value.
      */
     public String aadTenantId() {
@@ -93,7 +108,7 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Set the aadTenantId property: AAD tenant Id.
-     *
+     * 
      * @param aadTenantId the aadTenantId value to set.
      * @return the ResourceCertificateAndAadDetails object itself.
      */
@@ -104,7 +119,7 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Get the servicePrincipalClientId property: AAD service principal clientId.
-     *
+     * 
      * @return the servicePrincipalClientId value.
      */
     public String servicePrincipalClientId() {
@@ -113,7 +128,7 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Set the servicePrincipalClientId property: AAD service principal clientId.
-     *
+     * 
      * @param servicePrincipalClientId the servicePrincipalClientId value to set.
      * @return the ResourceCertificateAndAadDetails object itself.
      */
@@ -124,7 +139,7 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Get the servicePrincipalObjectId property: AAD service principal ObjectId.
-     *
+     * 
      * @return the servicePrincipalObjectId value.
      */
     public String servicePrincipalObjectId() {
@@ -133,7 +148,7 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Set the servicePrincipalObjectId property: AAD service principal ObjectId.
-     *
+     * 
      * @param servicePrincipalObjectId the servicePrincipalObjectId value to set.
      * @return the ResourceCertificateAndAadDetails object itself.
      */
@@ -144,7 +159,7 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Get the azureManagementEndpointAudience property: Azure Management Endpoint Audience.
-     *
+     * 
      * @return the azureManagementEndpointAudience value.
      */
     public String azureManagementEndpointAudience() {
@@ -153,19 +168,19 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Set the azureManagementEndpointAudience property: Azure Management Endpoint Audience.
-     *
+     * 
      * @param azureManagementEndpointAudience the azureManagementEndpointAudience value to set.
      * @return the ResourceCertificateAndAadDetails object itself.
      */
-    public ResourceCertificateAndAadDetails withAzureManagementEndpointAudience(
-        String azureManagementEndpointAudience) {
+    public ResourceCertificateAndAadDetails
+        withAzureManagementEndpointAudience(String azureManagementEndpointAudience) {
         this.azureManagementEndpointAudience = azureManagementEndpointAudience;
         return this;
     }
 
     /**
      * Get the serviceResourceId property: Service Resource Id.
-     *
+     * 
      * @return the serviceResourceId value.
      */
     public String serviceResourceId() {
@@ -174,7 +189,7 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Set the serviceResourceId property: Service Resource Id.
-     *
+     * 
      * @param serviceResourceId the serviceResourceId value to set.
      * @return the ResourceCertificateAndAadDetails object itself.
      */
@@ -185,7 +200,7 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Get the aadAudience property: AAD audience for the resource.
-     *
+     * 
      * @return the aadAudience value.
      */
     public String aadAudience() {
@@ -194,7 +209,7 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Set the aadAudience property: AAD audience for the resource.
-     *
+     * 
      * @param aadAudience the aadAudience value to set.
      * @return the ResourceCertificateAndAadDetails object itself.
      */
@@ -203,56 +218,72 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAadDetails withCertificate(byte[] certificate) {
         super.withCertificate(certificate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAadDetails withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAadDetails withIssuer(String issuer) {
         super.withIssuer(issuer);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAadDetails withResourceId(Long resourceId) {
         super.withResourceId(resourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAadDetails withSubject(String subject) {
         super.withSubject(subject);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAadDetails withThumbprint(String thumbprint) {
         super.withThumbprint(thumbprint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAadDetails withValidFrom(OffsetDateTime validFrom) {
         super.withValidFrom(validFrom);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAadDetails withValidTo(OffsetDateTime validTo) {
         super.withValidTo(validTo);
@@ -261,46 +292,125 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (aadAuthority() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aadAuthority in model ResourceCertificateAndAadDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property aadAuthority in model ResourceCertificateAndAadDetails"));
         }
         if (aadTenantId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aadTenantId in model ResourceCertificateAndAadDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property aadTenantId in model ResourceCertificateAndAadDetails"));
         }
         if (servicePrincipalClientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property servicePrincipalClientId in model"
-                            + " ResourceCertificateAndAadDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property servicePrincipalClientId in model ResourceCertificateAndAadDetails"));
         }
         if (servicePrincipalObjectId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property servicePrincipalObjectId in model"
-                            + " ResourceCertificateAndAadDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property servicePrincipalObjectId in model ResourceCertificateAndAadDetails"));
         }
         if (azureManagementEndpointAudience() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azureManagementEndpointAudience in model"
-                            + " ResourceCertificateAndAadDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property azureManagementEndpointAudience in model ResourceCertificateAndAadDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceCertificateAndAadDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBinaryField("certificate", certificate());
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("issuer", issuer());
+        jsonWriter.writeNumberField("resourceId", resourceId());
+        jsonWriter.writeStringField("subject", subject());
+        jsonWriter.writeStringField("thumbprint", thumbprint());
+        jsonWriter.writeStringField("validFrom",
+            validFrom() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(validFrom()));
+        jsonWriter.writeStringField("validTo",
+            validTo() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(validTo()));
+        jsonWriter.writeStringField("aadAuthority", this.aadAuthority);
+        jsonWriter.writeStringField("aadTenantId", this.aadTenantId);
+        jsonWriter.writeStringField("servicePrincipalClientId", this.servicePrincipalClientId);
+        jsonWriter.writeStringField("servicePrincipalObjectId", this.servicePrincipalObjectId);
+        jsonWriter.writeStringField("azureManagementEndpointAudience", this.azureManagementEndpointAudience);
+        jsonWriter.writeStringField("authType", this.authType);
+        jsonWriter.writeStringField("serviceResourceId", this.serviceResourceId);
+        jsonWriter.writeStringField("aadAudience", this.aadAudience);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceCertificateAndAadDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceCertificateAndAadDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceCertificateAndAadDetails.
+     */
+    public static ResourceCertificateAndAadDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceCertificateAndAadDetails deserializedResourceCertificateAndAadDetails
+                = new ResourceCertificateAndAadDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificate".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withCertificate(reader.getBinary());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withFriendlyName(reader.getString());
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withIssuer(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails
+                        .withResourceId(reader.getNullable(JsonReader::getLong));
+                } else if ("subject".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withSubject(reader.getString());
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withThumbprint(reader.getString());
+                } else if ("validFrom".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withValidFrom(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("validTo".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.withValidTo(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("aadAuthority".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.aadAuthority = reader.getString();
+                } else if ("aadTenantId".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.aadTenantId = reader.getString();
+                } else if ("servicePrincipalClientId".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.servicePrincipalClientId = reader.getString();
+                } else if ("servicePrincipalObjectId".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.servicePrincipalObjectId = reader.getString();
+                } else if ("azureManagementEndpointAudience".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.azureManagementEndpointAudience = reader.getString();
+                } else if ("authType".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.authType = reader.getString();
+                } else if ("serviceResourceId".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.serviceResourceId = reader.getString();
+                } else if ("aadAudience".equals(fieldName)) {
+                    deserializedResourceCertificateAndAadDetails.aadAudience = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceCertificateAndAadDetails;
+        });
+    }
 }

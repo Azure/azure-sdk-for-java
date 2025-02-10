@@ -5,47 +5,49 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** calculatedColumn. */
+/**
+ * calculatedColumn.
+ */
 @Fluent
-public final class MicrosoftGraphCalculatedColumn {
+public final class MicrosoftGraphCalculatedColumn implements JsonSerializable<MicrosoftGraphCalculatedColumn> {
     /*
      * For dateTime output types, the format of the value. Must be one of dateOnly or dateTime.
      */
-    @JsonProperty(value = "format")
     private String format;
 
     /*
      * The formula used to compute the value for this column.
      */
-    @JsonProperty(value = "formula")
     private String formula;
 
     /*
      * The output type used to format values in this column. Must be one of boolean, currency, dateTime, number, or
      * text.
      */
-    @JsonProperty(value = "outputType")
     private String outputType;
 
     /*
      * calculatedColumn
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphCalculatedColumn class. */
+    /**
+     * Creates an instance of MicrosoftGraphCalculatedColumn class.
+     */
     public MicrosoftGraphCalculatedColumn() {
     }
 
     /**
      * Get the format property: For dateTime output types, the format of the value. Must be one of dateOnly or dateTime.
-     *
+     * 
      * @return the format value.
      */
     public String format() {
@@ -54,7 +56,7 @@ public final class MicrosoftGraphCalculatedColumn {
 
     /**
      * Set the format property: For dateTime output types, the format of the value. Must be one of dateOnly or dateTime.
-     *
+     * 
      * @param format the format value to set.
      * @return the MicrosoftGraphCalculatedColumn object itself.
      */
@@ -65,7 +67,7 @@ public final class MicrosoftGraphCalculatedColumn {
 
     /**
      * Get the formula property: The formula used to compute the value for this column.
-     *
+     * 
      * @return the formula value.
      */
     public String formula() {
@@ -74,7 +76,7 @@ public final class MicrosoftGraphCalculatedColumn {
 
     /**
      * Set the formula property: The formula used to compute the value for this column.
-     *
+     * 
      * @param formula the formula value to set.
      * @return the MicrosoftGraphCalculatedColumn object itself.
      */
@@ -86,7 +88,7 @@ public final class MicrosoftGraphCalculatedColumn {
     /**
      * Get the outputType property: The output type used to format values in this column. Must be one of boolean,
      * currency, dateTime, number, or text.
-     *
+     * 
      * @return the outputType value.
      */
     public String outputType() {
@@ -96,7 +98,7 @@ public final class MicrosoftGraphCalculatedColumn {
     /**
      * Set the outputType property: The output type used to format values in this column. Must be one of boolean,
      * currency, dateTime, number, or text.
-     *
+     * 
      * @param outputType the outputType value to set.
      * @return the MicrosoftGraphCalculatedColumn object itself.
      */
@@ -107,17 +109,16 @@ public final class MicrosoftGraphCalculatedColumn {
 
     /**
      * Get the additionalProperties property: calculatedColumn.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: calculatedColumn.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphCalculatedColumn object itself.
      */
@@ -126,19 +127,65 @@ public final class MicrosoftGraphCalculatedColumn {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("format", this.format);
+        jsonWriter.writeStringField("formula", this.formula);
+        jsonWriter.writeStringField("outputType", this.outputType);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphCalculatedColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphCalculatedColumn if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphCalculatedColumn.
+     */
+    public static MicrosoftGraphCalculatedColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphCalculatedColumn deserializedMicrosoftGraphCalculatedColumn
+                = new MicrosoftGraphCalculatedColumn();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("format".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalculatedColumn.format = reader.getString();
+                } else if ("formula".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalculatedColumn.formula = reader.getString();
+                } else if ("outputType".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalculatedColumn.outputType = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphCalculatedColumn.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphCalculatedColumn;
+        });
     }
 }

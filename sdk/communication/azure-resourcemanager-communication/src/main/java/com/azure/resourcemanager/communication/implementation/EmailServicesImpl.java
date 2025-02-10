@@ -60,23 +60,23 @@ public final class EmailServicesImpl implements EmailServices {
 
     public PagedIterable<EmailServiceResource> list() {
         PagedIterable<EmailServiceResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EmailServiceResource> list(Context context) {
         PagedIterable<EmailServiceResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EmailServiceResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<EmailServiceResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EmailServiceResource> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<EmailServiceResourceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
     }
 
     public Response<List<String>> listVerifiedExchangeOnlineDomainsWithResponse(Context context) {
@@ -93,12 +93,12 @@ public final class EmailServicesImpl implements EmailServices {
     }
 
     public EmailServiceResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
@@ -107,12 +107,12 @@ public final class EmailServicesImpl implements EmailServices {
     }
 
     public Response<EmailServiceResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
@@ -121,12 +121,12 @@ public final class EmailServicesImpl implements EmailServices {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
@@ -135,12 +135,12 @@ public final class EmailServicesImpl implements EmailServices {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));

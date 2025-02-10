@@ -15,9 +15,9 @@ public enum RoomsServiceVersion implements ServiceVersion {
     V2023_06_14("2023-06-14"),
 
     /**
-     * Service version {@code 2023-10-30-preview}
+     * Service version {@code 2024-04-15}
      */
-    V2023_10_30_PREVIEW("2023-10-30-preview");
+    V2024_04_15("2024-04-15");
 
     private final String version;
 
@@ -39,6 +39,6 @@ public enum RoomsServiceVersion implements ServiceVersion {
      * @return the latest {@link RoomsServiceVersion}
      */
     public static RoomsServiceVersion getLatest() {
-        return V2023_10_30_PREVIEW;
+        return V2024_04_15;
     }
 }

@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
@@ -13,62 +17,54 @@ import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the Topic.
  */
 @Fluent
-public final class TopicProperties {
+public final class TopicProperties implements JsonSerializable<TopicProperties> {
     /*
-     * The privateEndpointConnections property.
+     * List of private endpoint connections.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Provisioning state of the topic.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private TopicProvisioningState provisioningState;
 
     /*
      * Endpoint for the topic.
      */
-    @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
     /*
      * Event Type Information for the user topic. This information is provided by the publisher and can be used by the
      * subscriber to view different types of events that are published.
      */
-    @JsonProperty(value = "eventTypeInfo")
     private EventTypeInfo eventTypeInfo;
 
     /*
      * Minimum TLS version of the publisher allowed to publish to this topic
      */
-    @JsonProperty(value = "minimumTlsVersionAllowed")
     private TlsVersion minimumTlsVersionAllowed;
 
     /*
      * This determines the format that Event Grid should expect for incoming events published to the topic.
      */
-    @JsonProperty(value = "inputSchema")
     private InputSchema inputSchema;
 
     /*
      * This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various
      * properties of a source schema to various required properties of the EventGridEvent schema.
      */
-    @JsonProperty(value = "inputSchemaMapping")
     private InputSchemaMapping inputSchemaMapping;
 
     /*
      * Metric resource id for the topic.
      */
-    @JsonProperty(value = "metricResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricResourceId;
 
     /*
@@ -76,27 +72,23 @@ public final class TopicProperties {
      * You can further restrict to specific IPs by configuring <seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" />
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if
      * PublicNetworkAccess is enabled.
      */
-    @JsonProperty(value = "inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
     /*
      * This boolean is used to enable or disable local auth. Default value is false. When the property is set to true,
      * only AAD token will be used to authenticate if user is allowed to publish to the topic.
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
      * Data Residency Boundary of the resource.
      */
-    @JsonProperty(value = "dataResidencyBoundary")
     private DataResidencyBoundary dataResidencyBoundary;
 
     /**
@@ -106,7 +98,7 @@ public final class TopicProperties {
     }
 
     /**
-     * Get the privateEndpointConnections property: The privateEndpointConnections property.
+     * Get the privateEndpointConnections property: List of private endpoint connections.
      * 
      * @return the privateEndpointConnections value.
      */
@@ -157,8 +149,7 @@ public final class TopicProperties {
     }
 
     /**
-     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
-     * topic.
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this topic.
      * 
      * @return the minimumTlsVersionAllowed value.
      */
@@ -167,8 +158,7 @@ public final class TopicProperties {
     }
 
     /**
-     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
-     * topic.
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this topic.
      * 
      * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
      * @return the TopicProperties object itself.
@@ -234,8 +224,8 @@ public final class TopicProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" /&gt;.
      * 
@@ -246,8 +236,8 @@ public final class TopicProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" /&gt;.
      * 
@@ -260,8 +250,8 @@ public final class TopicProperties {
     }
 
     /**
-     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @return the inboundIpRules value.
      */
@@ -270,8 +260,8 @@ public final class TopicProperties {
     }
 
     /**
-     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the TopicProperties object itself.
@@ -343,5 +333,80 @@ public final class TopicProperties {
         if (inboundIpRules() != null) {
             inboundIpRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("eventTypeInfo", this.eventTypeInfo);
+        jsonWriter.writeStringField("minimumTlsVersionAllowed",
+            this.minimumTlsVersionAllowed == null ? null : this.minimumTlsVersionAllowed.toString());
+        jsonWriter.writeStringField("inputSchema", this.inputSchema == null ? null : this.inputSchema.toString());
+        jsonWriter.writeJsonField("inputSchemaMapping", this.inputSchemaMapping);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeArrayField("inboundIpRules", this.inboundIpRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeStringField("dataResidencyBoundary",
+            this.dataResidencyBoundary == null ? null : this.dataResidencyBoundary.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopicProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopicProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopicProperties.
+     */
+    public static TopicProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopicProperties deserializedTopicProperties = new TopicProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedTopicProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedTopicProperties.provisioningState
+                        = TopicProvisioningState.fromString(reader.getString());
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedTopicProperties.endpoint = reader.getString();
+                } else if ("eventTypeInfo".equals(fieldName)) {
+                    deserializedTopicProperties.eventTypeInfo = EventTypeInfo.fromJson(reader);
+                } else if ("minimumTlsVersionAllowed".equals(fieldName)) {
+                    deserializedTopicProperties.minimumTlsVersionAllowed = TlsVersion.fromString(reader.getString());
+                } else if ("inputSchema".equals(fieldName)) {
+                    deserializedTopicProperties.inputSchema = InputSchema.fromString(reader.getString());
+                } else if ("inputSchemaMapping".equals(fieldName)) {
+                    deserializedTopicProperties.inputSchemaMapping = InputSchemaMapping.fromJson(reader);
+                } else if ("metricResourceId".equals(fieldName)) {
+                    deserializedTopicProperties.metricResourceId = reader.getString();
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedTopicProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("inboundIpRules".equals(fieldName)) {
+                    List<InboundIpRule> inboundIpRules = reader.readArray(reader1 -> InboundIpRule.fromJson(reader1));
+                    deserializedTopicProperties.inboundIpRules = inboundIpRules;
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedTopicProperties.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dataResidencyBoundary".equals(fieldName)) {
+                    deserializedTopicProperties.dataResidencyBoundary
+                        = DataResidencyBoundary.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopicProperties;
+        });
     }
 }

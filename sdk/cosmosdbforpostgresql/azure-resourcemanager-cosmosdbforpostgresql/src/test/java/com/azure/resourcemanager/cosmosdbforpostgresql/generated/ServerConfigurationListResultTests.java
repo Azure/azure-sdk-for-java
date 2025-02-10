@@ -13,26 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerConfigurationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerConfigurationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"ispe\",\"source\":\"tzfkufubl\",\"description\":\"fxqeof\",\"defaultValue\":\"e\",\"dataType\":\"Integer\",\"allowedValues\":\"jbasvmsmjqulngs\",\"requiresRestart\":true,\"provisioningState\":\"Canceled\"},\"id\":\"kzgcwrwcl\",\"name\":\"xwrljdouskcqvkoc\",\"type\":\"cjdkwtnhxbnjbi\"},{\"properties\":{\"value\":\"qrglssainqpjwn\",\"source\":\"ljfmppee\",\"description\":\"mgxsab\",\"defaultValue\":\"qduujitcjczdz\",\"dataType\":\"Numeric\",\"allowedValues\":\"hkr\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"dsbdkvwrwjf\",\"name\":\"usnhutje\",\"type\":\"tmrldhugjzzdatq\"},{\"properties\":{\"value\":\"oc\",\"source\":\"eablg\",\"description\":\"uticndvkaozwyif\",\"defaultValue\":\"hxh\",\"dataType\":\"Enumeration\",\"allowedValues\":\"ftyxolniw\",\"requiresRestart\":false,\"provisioningState\":\"Canceled\"},\"id\":\"fkgiawxk\",\"name\":\"ryplwckbasyypn\",\"type\":\"dhsgcba\"},{\"properties\":{\"value\":\"hejkotynqgou\",\"source\":\"ndlik\",\"description\":\"qkgfgibma\",\"defaultValue\":\"akeqs\",\"dataType\":\"Boolean\",\"allowedValues\":\"zqqedq\",\"requiresRestart\":true,\"provisioningState\":\"InProgress\"},\"id\":\"fouflmmnkzsmo\",\"name\":\"mglougpbkw\",\"type\":\"mutduqktaps\"}],\"nextLink\":\"gcue\"}")
-                .toObject(ServerConfigurationListResult.class);
-        Assertions.assertEquals("ispe", model.value().get(0).value());
+        ServerConfigurationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"value\":\"ckbasyypndd\",\"source\":\"gcbacphejkot\",\"description\":\"qgoulznd\",\"defaultValue\":\"kwy\",\"dataType\":\"Numeric\",\"allowedValues\":\"gibma\",\"requiresRestart\":false,\"provisioningState\":\"Failed\"},\"id\":\"s\",\"name\":\"xybz\",\"type\":\"qedqytbciqfoufl\"},{\"properties\":{\"value\":\"nkzsmodmglou\",\"source\":\"b\",\"description\":\"tmut\",\"defaultValue\":\"qktapspwgcuert\",\"dataType\":\"Numeric\",\"allowedValues\":\"o\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"mdgbbjfdd\",\"name\":\"mbmbexppbh\",\"type\":\"q\"},{\"properties\":{\"value\":\"ol\",\"source\":\"fpsalgbqu\",\"description\":\"gjyjgzjaoyfhrtxi\",\"defaultValue\":\"erkujys\",\"dataType\":\"Boolean\",\"allowedValues\":\"uvfqawrlyxwj\",\"requiresRestart\":true,\"provisioningState\":\"Failed\"},\"id\":\"wbxgjvt\",\"name\":\"vpys\",\"type\":\"zdn\"},{\"properties\":{\"value\":\"jq\",\"source\":\"hmuouqfprwzwbn\",\"description\":\"itnwuizgazxufi\",\"defaultValue\":\"ckyfih\",\"dataType\":\"Boolean\",\"allowedValues\":\"fvzwdzuhty\",\"requiresRestart\":true,\"provisioningState\":\"InProgress\"},\"id\":\"fthwxmnteiwa\",\"name\":\"pvkmijcmmxdcuf\",\"type\":\"fsrpymzidnse\"}],\"nextLink\":\"xtbzsgfyccsne\"}")
+            .toObject(ServerConfigurationListResult.class);
+        Assertions.assertEquals("ckbasyypndd", model.value().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerConfigurationListResult model =
-            new ServerConfigurationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ServerConfigurationInner().withValue("ispe"),
-                            new ServerConfigurationInner().withValue("qrglssainqpjwn"),
-                            new ServerConfigurationInner().withValue("oc"),
-                            new ServerConfigurationInner().withValue("hejkotynqgou")));
+        ServerConfigurationListResult model = new ServerConfigurationListResult()
+            .withValue(Arrays.asList(new ServerConfigurationInner().withValue("ckbasyypndd"),
+                new ServerConfigurationInner().withValue("nkzsmodmglou"),
+                new ServerConfigurationInner().withValue("ol"), new ServerConfigurationInner().withValue("jq")));
         model = BinaryData.fromObject(model).toObject(ServerConfigurationListResult.class);
-        Assertions.assertEquals("ispe", model.value().get(0).value());
+        Assertions.assertEquals("ckbasyypndd", model.value().get(0).value());
     }
 }

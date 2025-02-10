@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** channelMembershipType. */
+/**
+ * channelMembershipType.
+ */
 public final class MicrosoftGraphChannelMembershipType
     extends ExpandableStringEnum<MicrosoftGraphChannelMembershipType> {
-    /** Static value standard for MicrosoftGraphChannelMembershipType. */
+    /**
+     * Static value standard for MicrosoftGraphChannelMembershipType.
+     */
     public static final MicrosoftGraphChannelMembershipType STANDARD = fromString("standard");
 
-    /** Static value private for MicrosoftGraphChannelMembershipType. */
+    /**
+     * Static value private for MicrosoftGraphChannelMembershipType.
+     */
     public static final MicrosoftGraphChannelMembershipType PRIVATE = fromString("private");
 
-    /** Static value unknownFutureValue for MicrosoftGraphChannelMembershipType. */
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphChannelMembershipType.
+     */
     public static final MicrosoftGraphChannelMembershipType UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphChannelMembershipType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +38,17 @@ public final class MicrosoftGraphChannelMembershipType
 
     /**
      * Creates or finds a MicrosoftGraphChannelMembershipType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphChannelMembershipType.
      */
-    @JsonCreator
     public static MicrosoftGraphChannelMembershipType fromString(String name) {
         return fromString(name, MicrosoftGraphChannelMembershipType.class);
     }
 
     /**
      * Gets known MicrosoftGraphChannelMembershipType values.
-     *
+     * 
      * @return known MicrosoftGraphChannelMembershipType values.
      */
     public static Collection<MicrosoftGraphChannelMembershipType> values() {

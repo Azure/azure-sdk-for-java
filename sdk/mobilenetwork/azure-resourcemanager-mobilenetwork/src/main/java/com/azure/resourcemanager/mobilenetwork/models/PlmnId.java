@@ -6,30 +6,38 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Public land mobile network (PLMN) ID. */
+/**
+ * Public land mobile network (PLMN) ID. This is made up of the mobile country code and mobile network code, as defined
+ * in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99
+ * and 999-999 can be used on internal private networks.
+ */
 @Fluent
-public final class PlmnId {
+public class PlmnId implements JsonSerializable<PlmnId> {
     /*
      * Mobile country code (MCC).
      */
-    @JsonProperty(value = "mcc", required = true)
     private String mcc;
 
     /*
      * Mobile network code (MNC).
      */
-    @JsonProperty(value = "mnc", required = true)
     private String mnc;
 
-    /** Creates an instance of PlmnId class. */
+    /**
+     * Creates an instance of PlmnId class.
+     */
     public PlmnId() {
     }
 
     /**
      * Get the mcc property: Mobile country code (MCC).
-     *
+     * 
      * @return the mcc value.
      */
     public String mcc() {
@@ -38,7 +46,7 @@ public final class PlmnId {
 
     /**
      * Set the mcc property: Mobile country code (MCC).
-     *
+     * 
      * @param mcc the mcc value to set.
      * @return the PlmnId object itself.
      */
@@ -49,7 +57,7 @@ public final class PlmnId {
 
     /**
      * Get the mnc property: Mobile network code (MNC).
-     *
+     * 
      * @return the mnc value.
      */
     public String mnc() {
@@ -58,7 +66,7 @@ public final class PlmnId {
 
     /**
      * Set the mnc property: Mobile network code (MNC).
-     *
+     * 
      * @param mnc the mnc value to set.
      * @return the PlmnId object itself.
      */
@@ -69,19 +77,57 @@ public final class PlmnId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (mcc() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property mcc in model PlmnId"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property mcc in model PlmnId"));
         }
         if (mnc() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property mnc in model PlmnId"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property mnc in model PlmnId"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PlmnId.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mcc", this.mcc);
+        jsonWriter.writeStringField("mnc", this.mnc);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlmnId from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlmnId if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PlmnId.
+     */
+    public static PlmnId fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlmnId deserializedPlmnId = new PlmnId();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mcc".equals(fieldName)) {
+                    deserializedPlmnId.mcc = reader.getString();
+                } else if ("mnc".equals(fieldName)) {
+                    deserializedPlmnId.mnc = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlmnId;
+        });
+    }
 }

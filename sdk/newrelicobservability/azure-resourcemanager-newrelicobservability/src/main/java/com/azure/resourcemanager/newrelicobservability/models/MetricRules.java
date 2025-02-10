@@ -7,32 +7,34 @@ package com.azure.resourcemanager.newrelicobservability.models;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.MetricRulesInner;
 import java.util.List;
 
-/** An immutable client-side representation of MetricRules. */
+/**
+ * An immutable client-side representation of MetricRules.
+ */
 public interface MetricRules {
     /**
      * Gets the sendMetrics property: Flag specifying if metrics should be sent for the Monitor resource.
-     *
+     * 
      * @return the sendMetrics value.
      */
     SendMetricsStatus sendMetrics();
 
     /**
      * Gets the filteringTags property: List of filtering tags to be used for capturing metrics.
-     *
+     * 
      * @return the filteringTags value.
      */
     List<FilteringTag> filteringTags();
 
     /**
      * Gets the userEmail property: User Email.
-     *
+     * 
      * @return the userEmail value.
      */
     String userEmail();
 
     /**
      * Gets the inner com.azure.resourcemanager.newrelicobservability.fluent.models.MetricRulesInner object.
-     *
+     * 
      * @return the inner object.
      */
     MetricRulesInner innerModel();

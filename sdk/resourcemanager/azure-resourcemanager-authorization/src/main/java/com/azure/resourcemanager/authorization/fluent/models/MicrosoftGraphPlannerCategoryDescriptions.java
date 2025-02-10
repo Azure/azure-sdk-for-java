@@ -5,64 +5,64 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** plannerCategoryDescriptions. */
+/**
+ * plannerCategoryDescriptions.
+ */
 @Fluent
-public final class MicrosoftGraphPlannerCategoryDescriptions {
+public final class MicrosoftGraphPlannerCategoryDescriptions
+    implements JsonSerializable<MicrosoftGraphPlannerCategoryDescriptions> {
     /*
      * The label associated with Category 1
      */
-    @JsonProperty(value = "category1")
     private String category1;
 
     /*
      * The label associated with Category 2
      */
-    @JsonProperty(value = "category2")
     private String category2;
 
     /*
      * The label associated with Category 3
      */
-    @JsonProperty(value = "category3")
     private String category3;
 
     /*
      * The label associated with Category 4
      */
-    @JsonProperty(value = "category4")
     private String category4;
 
     /*
      * The label associated with Category 5
      */
-    @JsonProperty(value = "category5")
     private String category5;
 
     /*
      * The label associated with Category 6
      */
-    @JsonProperty(value = "category6")
     private String category6;
 
     /*
      * plannerCategoryDescriptions
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPlannerCategoryDescriptions class. */
+    /**
+     * Creates an instance of MicrosoftGraphPlannerCategoryDescriptions class.
+     */
     public MicrosoftGraphPlannerCategoryDescriptions() {
     }
 
     /**
      * Get the category1 property: The label associated with Category 1.
-     *
+     * 
      * @return the category1 value.
      */
     public String category1() {
@@ -71,7 +71,7 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Set the category1 property: The label associated with Category 1.
-     *
+     * 
      * @param category1 the category1 value to set.
      * @return the MicrosoftGraphPlannerCategoryDescriptions object itself.
      */
@@ -82,7 +82,7 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Get the category2 property: The label associated with Category 2.
-     *
+     * 
      * @return the category2 value.
      */
     public String category2() {
@@ -91,7 +91,7 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Set the category2 property: The label associated with Category 2.
-     *
+     * 
      * @param category2 the category2 value to set.
      * @return the MicrosoftGraphPlannerCategoryDescriptions object itself.
      */
@@ -102,7 +102,7 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Get the category3 property: The label associated with Category 3.
-     *
+     * 
      * @return the category3 value.
      */
     public String category3() {
@@ -111,7 +111,7 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Set the category3 property: The label associated with Category 3.
-     *
+     * 
      * @param category3 the category3 value to set.
      * @return the MicrosoftGraphPlannerCategoryDescriptions object itself.
      */
@@ -122,7 +122,7 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Get the category4 property: The label associated with Category 4.
-     *
+     * 
      * @return the category4 value.
      */
     public String category4() {
@@ -131,7 +131,7 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Set the category4 property: The label associated with Category 4.
-     *
+     * 
      * @param category4 the category4 value to set.
      * @return the MicrosoftGraphPlannerCategoryDescriptions object itself.
      */
@@ -142,7 +142,7 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Get the category5 property: The label associated with Category 5.
-     *
+     * 
      * @return the category5 value.
      */
     public String category5() {
@@ -151,7 +151,7 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Set the category5 property: The label associated with Category 5.
-     *
+     * 
      * @param category5 the category5 value to set.
      * @return the MicrosoftGraphPlannerCategoryDescriptions object itself.
      */
@@ -162,7 +162,7 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Get the category6 property: The label associated with Category 6.
-     *
+     * 
      * @return the category6 value.
      */
     public String category6() {
@@ -171,7 +171,7 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Set the category6 property: The label associated with Category 6.
-     *
+     * 
      * @param category6 the category6 value to set.
      * @return the MicrosoftGraphPlannerCategoryDescriptions object itself.
      */
@@ -182,39 +182,93 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
 
     /**
      * Get the additionalProperties property: plannerCategoryDescriptions.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: plannerCategoryDescriptions.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPlannerCategoryDescriptions object itself.
      */
-    public MicrosoftGraphPlannerCategoryDescriptions withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphPlannerCategoryDescriptions
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category1", this.category1);
+        jsonWriter.writeStringField("category2", this.category2);
+        jsonWriter.writeStringField("category3", this.category3);
+        jsonWriter.writeStringField("category4", this.category4);
+        jsonWriter.writeStringField("category5", this.category5);
+        jsonWriter.writeStringField("category6", this.category6);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPlannerCategoryDescriptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPlannerCategoryDescriptions if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPlannerCategoryDescriptions.
+     */
+    public static MicrosoftGraphPlannerCategoryDescriptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPlannerCategoryDescriptions deserializedMicrosoftGraphPlannerCategoryDescriptions
+                = new MicrosoftGraphPlannerCategoryDescriptions();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category1".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerCategoryDescriptions.category1 = reader.getString();
+                } else if ("category2".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerCategoryDescriptions.category2 = reader.getString();
+                } else if ("category3".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerCategoryDescriptions.category3 = reader.getString();
+                } else if ("category4".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerCategoryDescriptions.category4 = reader.getString();
+                } else if ("category5".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerCategoryDescriptions.category5 = reader.getString();
+                } else if ("category6".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerCategoryDescriptions.category6 = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPlannerCategoryDescriptions.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPlannerCategoryDescriptions;
+        });
     }
 }

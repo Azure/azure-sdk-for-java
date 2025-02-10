@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input definition for test failover cleanup input properties. */
+/**
+ * Input definition for test failover cleanup input properties.
+ */
 @Fluent
-public final class TestFailoverCleanupInputProperties {
+public final class TestFailoverCleanupInputProperties implements JsonSerializable<TestFailoverCleanupInputProperties> {
     /*
      * Test failover cleanup comments.
      */
-    @JsonProperty(value = "comments")
     private String comments;
 
-    /** Creates an instance of TestFailoverCleanupInputProperties class. */
+    /**
+     * Creates an instance of TestFailoverCleanupInputProperties class.
+     */
     public TestFailoverCleanupInputProperties() {
     }
 
     /**
      * Get the comments property: Test failover cleanup comments.
-     *
+     * 
      * @return the comments value.
      */
     public String comments() {
@@ -31,7 +38,7 @@ public final class TestFailoverCleanupInputProperties {
 
     /**
      * Set the comments property: Test failover cleanup comments.
-     *
+     * 
      * @param comments the comments value to set.
      * @return the TestFailoverCleanupInputProperties object itself.
      */
@@ -42,9 +49,46 @@ public final class TestFailoverCleanupInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("comments", this.comments);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestFailoverCleanupInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestFailoverCleanupInputProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TestFailoverCleanupInputProperties.
+     */
+    public static TestFailoverCleanupInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestFailoverCleanupInputProperties deserializedTestFailoverCleanupInputProperties
+                = new TestFailoverCleanupInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("comments".equals(fieldName)) {
+                    deserializedTestFailoverCleanupInputProperties.comments = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestFailoverCleanupInputProperties;
+        });
     }
 }

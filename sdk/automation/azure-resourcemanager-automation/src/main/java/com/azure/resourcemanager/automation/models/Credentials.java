@@ -8,11 +8,28 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Credentials. */
+/**
+ * Resource collection API of Credentials.
+ */
 public interface Credentials {
     /**
      * Delete the credential.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param credentialName The name of credential.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String credentialName,
+        Context context);
+
+    /**
+     * Delete the credential.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param credentialName The name of credential.
@@ -23,8 +40,8 @@ public interface Credentials {
     void delete(String resourceGroupName, String automationAccountName, String credentialName);
 
     /**
-     * Delete the credential.
-     *
+     * Retrieve the credential identified by credential name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param credentialName The name of credential.
@@ -32,14 +49,14 @@ public interface Credentials {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return definition of the credential along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String credentialName, Context context);
+    Response<Credential> getWithResponse(String resourceGroupName, String automationAccountName, String credentialName,
+        Context context);
 
     /**
      * Retrieve the credential identified by credential name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param credentialName The name of credential.
@@ -51,23 +68,8 @@ public interface Credentials {
     Credential get(String resourceGroupName, String automationAccountName, String credentialName);
 
     /**
-     * Retrieve the credential identified by credential name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param credentialName The name of credential.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the credential along with {@link Response}.
-     */
-    Response<Credential> getWithResponse(
-        String resourceGroupName, String automationAccountName, String credentialName, Context context);
-
-    /**
      * Retrieve a list of credentials.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,7 +81,7 @@ public interface Credentials {
 
     /**
      * Retrieve a list of credentials.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -88,12 +90,12 @@ public interface Credentials {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list credential operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Credential> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context);
+    PagedIterable<Credential> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context);
 
     /**
      * Retrieve the credential identified by credential name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,7 +106,7 @@ public interface Credentials {
 
     /**
      * Retrieve the credential identified by credential name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,7 +118,7 @@ public interface Credentials {
 
     /**
      * Delete the credential.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -126,7 +128,7 @@ public interface Credentials {
 
     /**
      * Delete the credential.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +140,7 @@ public interface Credentials {
 
     /**
      * Begins definition for a new Credential resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Credential definition.
      */

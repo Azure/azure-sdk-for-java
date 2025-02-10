@@ -5,50 +5,47 @@ package com.azure.ai.vision.imageanalysis.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Represents a single line of text in the image.
  */
 @Immutable
-public final class DetectedTextLine {
+public final class DetectedTextLine implements JsonSerializable<DetectedTextLine> {
 
     /*
      * Text content of the detected text line.
      */
     @Generated
-    @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * A bounding polygon around the text line. At the moment only quadrilaterals are supported (represented by 4 image
      * points).
      */
     @Generated
-    @JsonProperty(value = "boundingPolygon")
-    private List<ImagePoint> boundingPolygon;
+    private final List<ImagePoint> boundingPolygon;
 
     /*
      * A list of words in this line.
      */
     @Generated
-    @JsonProperty(value = "words")
-    private List<DetectedTextWord> words;
+    private final List<DetectedTextWord> words;
 
     /**
      * Creates an instance of DetectedTextLine class.
-     * 
+     *
      * @param text the text value to set.
      * @param boundingPolygon the boundingPolygon value to set.
      * @param words the words value to set.
      */
     @Generated
-    @JsonCreator
-    private DetectedTextLine(@JsonProperty(value = "text") String text,
-        @JsonProperty(value = "boundingPolygon") List<ImagePoint> boundingPolygon,
-        @JsonProperty(value = "words") List<DetectedTextWord> words) {
+    private DetectedTextLine(String text, List<ImagePoint> boundingPolygon, List<DetectedTextWord> words) {
         this.text = text;
         this.boundingPolygon = boundingPolygon;
         this.words = words;
@@ -56,7 +53,7 @@ public final class DetectedTextLine {
 
     /**
      * Get the text property: Text content of the detected text line.
-     * 
+     *
      * @return the text value.
      */
     @Generated
@@ -67,7 +64,7 @@ public final class DetectedTextLine {
     /**
      * Get the boundingPolygon property: A bounding polygon around the text line. At the moment only quadrilaterals are
      * supported (represented by 4 image points).
-     * 
+     *
      * @return the boundingPolygon value.
      */
     @Generated
@@ -77,11 +74,57 @@ public final class DetectedTextLine {
 
     /**
      * Get the words property: A list of words in this line.
-     * 
+     *
      * @return the words value.
      */
     @Generated
     public List<DetectedTextWord> getWords() {
         return this.words;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeArrayField("boundingPolygon", this.boundingPolygon,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("words", this.words, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetectedTextLine from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetectedTextLine if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DetectedTextLine.
+     */
+    @Generated
+    public static DetectedTextLine fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String text = null;
+            List<ImagePoint> boundingPolygon = null;
+            List<DetectedTextWord> words = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else if ("boundingPolygon".equals(fieldName)) {
+                    boundingPolygon = reader.readArray(reader1 -> ImagePoint.fromJson(reader1));
+                } else if ("words".equals(fieldName)) {
+                    words = reader.readArray(reader1 -> DetectedTextWord.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new DetectedTextLine(text, boundingPolygon, words);
+        });
     }
 }

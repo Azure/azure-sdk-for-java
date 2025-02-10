@@ -294,20 +294,20 @@ public interface FeedResponseListValidator<T> {
                         paths.add(compositeIndexIterator.next().getPath().replace("/", ""));
                     }
                     for (int i = 0; i < resultOrderedList.size(); i ++) {
-                        ArrayNode resultValues = (ArrayNode) ModelBridgeInternal.getObjectFromJsonSerializable(resultOrderedList.get(i), "$1");
+                        ArrayNode resultValues = (ArrayNode) resultOrderedList.get(i).get("$1");
                         assertThat(resultValues.size()).isEqualTo(paths.size());
                         for (int j = 0; j < paths.size(); j++) {
                             if (paths.get(j).contains("number")) {
-                                assertThat(ModelBridgeInternal.getIntFromJsonSerializable(expectedOrderedList.get(i), paths.get(j)))
+                                assertThat(expectedOrderedList.get(i).get(paths.get(j)))
                                     .isEqualTo(resultValues.get(j).intValue());
                             } else if (paths.get(j).toLowerCase().contains("string")) {
-                                assertThat(ModelBridgeInternal.getStringFromJsonSerializable(expectedOrderedList.get(i), paths.get(j)))
+                                assertThat(expectedOrderedList.get(i).getString(paths.get(j)))
                                     .isEqualTo(resultValues.get(j).asText());
                             } else if (paths.get(j).contains("bool")) {
-                                assertThat(ModelBridgeInternal.getBooleanFromJsonSerializable(expectedOrderedList.get(i), paths.get(j))).isEqualTo(resultValues.get(j).asBoolean());
+                                assertThat(expectedOrderedList.get(i).getBoolean(paths.get(j))).isEqualTo(resultValues.get(j).asBoolean());
                             } else {
                                 assertThat(resultValues.get(j).isNull()).isTrue();
-                                assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(expectedOrderedList.get(i), "nullField")).isNull();
+                                assertThat(expectedOrderedList.get(i).getObject("nullField")).isNull();
                             }
                         }
                     }

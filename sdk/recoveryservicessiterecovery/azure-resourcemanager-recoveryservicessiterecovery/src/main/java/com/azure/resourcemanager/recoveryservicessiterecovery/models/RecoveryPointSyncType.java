@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A value indicating whether the recovery point is multi VM consistent. */
+/**
+ * A value indicating whether the recovery point is multi VM consistent.
+ */
 public final class RecoveryPointSyncType extends ExpandableStringEnum<RecoveryPointSyncType> {
-    /** Static value MultiVmSyncRecoveryPoint for RecoveryPointSyncType. */
+    /**
+     * Static value MultiVmSyncRecoveryPoint for RecoveryPointSyncType.
+     */
     public static final RecoveryPointSyncType MULTI_VM_SYNC_RECOVERY_POINT = fromString("MultiVmSyncRecoveryPoint");
 
-    /** Static value PerVmRecoveryPoint for RecoveryPointSyncType. */
+    /**
+     * Static value PerVmRecoveryPoint for RecoveryPointSyncType.
+     */
     public static final RecoveryPointSyncType PER_VM_RECOVERY_POINT = fromString("PerVmRecoveryPoint");
 
     /**
      * Creates a new instance of RecoveryPointSyncType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class RecoveryPointSyncType extends ExpandableStringEnum<RecoveryPo
 
     /**
      * Creates or finds a RecoveryPointSyncType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecoveryPointSyncType.
      */
-    @JsonCreator
     public static RecoveryPointSyncType fromString(String name) {
         return fromString(name, RecoveryPointSyncType.class);
     }
 
     /**
      * Gets known RecoveryPointSyncType values.
-     *
+     * 
      * @return known RecoveryPointSyncType values.
      */
     public static Collection<RecoveryPointSyncType> values() {

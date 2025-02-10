@@ -35,7 +35,8 @@ public final class ArtifactStoreInnerTests {
                 "auyqncygupkv", "mjihyeozphv"))
             .withProperties(
                 new ArtifactStorePropertiesFormat().withStoreType(ArtifactStoreType.AZURE_CONTAINER_REGISTRY)
-                    .withReplicationStrategy(ArtifactReplicationStrategy.UNKNOWN).withManagedResourceGroupConfiguration(
+                    .withReplicationStrategy(ArtifactReplicationStrategy.UNKNOWN)
+                    .withManagedResourceGroupConfiguration(
                         new ArtifactStorePropertiesFormatManagedResourceGroupConfiguration().withName("elfk")
                             .withLocation("plcrpwjxeznoig")));
         model = BinaryData.fromObject(model).toObject(ArtifactStoreInner.class);

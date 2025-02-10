@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.redisenterprise.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Which access key to regenerate. */
+/**
+ * Which access key to regenerate.
+ */
 public enum AccessKeyType {
-    /** Enum value Primary. */
+    /**
+     * Enum value Primary.
+     */
     PRIMARY("Primary"),
 
-    /** Enum value Secondary. */
+    /**
+     * Enum value Secondary.
+     */
     SECONDARY("Secondary");
 
-    /** The actual serialized value for a AccessKeyType instance. */
+    /**
+     * The actual serialized value for a AccessKeyType instance.
+     */
     private final String value;
 
     AccessKeyType(String value) {
@@ -24,11 +29,10 @@ public enum AccessKeyType {
 
     /**
      * Parses a serialized value to a AccessKeyType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AccessKeyType object, or null if unable to parse.
      */
-    @JsonCreator
     public static AccessKeyType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum AccessKeyType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

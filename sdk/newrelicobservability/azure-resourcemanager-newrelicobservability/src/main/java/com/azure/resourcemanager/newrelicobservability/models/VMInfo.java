@@ -6,32 +6,34 @@ package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.resourcemanager.newrelicobservability.fluent.models.VMInfoInner;
 
-/** An immutable client-side representation of VMInfo. */
+/**
+ * An immutable client-side representation of VMInfo.
+ */
 public interface VMInfo {
     /**
      * Gets the vmId property: Azure VM resource ID.
-     *
+     * 
      * @return the vmId value.
      */
     String vmId();
 
     /**
      * Gets the agentVersion property: Version of the NewRelic agent installed on the VM.
-     *
+     * 
      * @return the agentVersion value.
      */
     String agentVersion();
 
     /**
      * Gets the agentStatus property: Status of the NewRelic agent installed on the VM.
-     *
+     * 
      * @return the agentStatus value.
      */
     String agentStatus();
 
     /**
      * Gets the inner com.azure.resourcemanager.newrelicobservability.fluent.models.VMInfoInner object.
-     *
+     * 
      * @return the inner object.
      */
     VMInfoInner innerModel();

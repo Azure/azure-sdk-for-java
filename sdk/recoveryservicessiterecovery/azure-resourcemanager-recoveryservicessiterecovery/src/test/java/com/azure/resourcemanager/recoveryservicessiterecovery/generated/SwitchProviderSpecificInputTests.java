@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProvi
 public final class SwitchProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwitchProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"SwitchProviderSpecificInput\"}")
-                .toObject(SwitchProviderSpecificInput.class);
+        SwitchProviderSpecificInput model = BinaryData.fromString("{\"instanceType\":\"SwitchProviderSpecificInput\"}")
+            .toObject(SwitchProviderSpecificInput.class);
     }
 
     @org.junit.jupiter.api.Test

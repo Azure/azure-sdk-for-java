@@ -7,8 +7,11 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.TransformOutput;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -22,22 +25,37 @@ public final class TransformInner extends ProxyResource {
     /*
      * The resource properties.
      */
-    @JsonProperty(value = "properties")
     private TransformProperties innerProperties;
 
     /*
      * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of TransformInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of TransformInner class.
+     */
     public TransformInner() {
     }
 
     /**
      * Get the innerProperties property: The resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TransformProperties innerProperties() {
@@ -46,7 +64,7 @@ public final class TransformInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -54,8 +72,38 @@ public final class TransformInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the created property: The UTC date and time when the Transform was created, in 'YYYY-MM-DDThh:mm:ssZ' format.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -64,7 +112,7 @@ public final class TransformInner extends ProxyResource {
 
     /**
      * Get the description property: An optional verbose description of the Transform.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -73,7 +121,7 @@ public final class TransformInner extends ProxyResource {
 
     /**
      * Set the description property: An optional verbose description of the Transform.
-     *
+     * 
      * @param description the description value to set.
      * @return the TransformInner object itself.
      */
@@ -88,7 +136,7 @@ public final class TransformInner extends ProxyResource {
     /**
      * Get the lastModified property: The UTC date and time when the Transform was last updated, in
      * 'YYYY-MM-DDThh:mm:ssZ' format.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -97,7 +145,7 @@ public final class TransformInner extends ProxyResource {
 
     /**
      * Get the outputs property: An array of one or more TransformOutputs that the Transform should generate.
-     *
+     * 
      * @return the outputs value.
      */
     public List<TransformOutput> outputs() {
@@ -106,7 +154,7 @@ public final class TransformInner extends ProxyResource {
 
     /**
      * Set the outputs property: An array of one or more TransformOutputs that the Transform should generate.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the TransformInner object itself.
      */
@@ -120,12 +168,57 @@ public final class TransformInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransformInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransformInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TransformInner.
+     */
+    public static TransformInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransformInner deserializedTransformInner = new TransformInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTransformInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTransformInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTransformInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTransformInner.innerProperties = TransformProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedTransformInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransformInner;
+        });
     }
 }

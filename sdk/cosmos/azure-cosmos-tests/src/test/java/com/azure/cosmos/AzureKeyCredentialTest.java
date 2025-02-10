@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.FailureValidator;
@@ -59,7 +61,7 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
             { UUID.randomUUID().toString()} ,
 
             // with special characters in the name.
-            {"+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~"} ,
+            {"+ -_,:.|~" + UUID.randomUUID() + " +-_,:.|~"} ,
         };
     }
 
@@ -205,9 +207,9 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(docDefinition.get("mypk")));
         Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.readItem(docDefinition.getId(),
-                                                                                                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
+                                                                                                new PartitionKey(docDefinition.get("mypk")),
                                                                                                 options,
                                                                                                 InternalObjectNode.class);
 
@@ -234,9 +236,9 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(docDefinition.get("mypk")));
         Mono<CosmosItemResponse<Object>> deleteObservable = container.deleteItem(docDefinition.getId(),
-                                                                              new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")), options);
+                                                                              new PartitionKey(docDefinition.get("mypk")), options);
 
         CosmosItemResponseValidator validator =
             new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
@@ -248,7 +250,7 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.readItem(documentId,
-                                                                          new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
+                                                                          new PartitionKey(docDefinition.get("mypk")),
                                                                           options, InternalObjectNode.class);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateItemFailure(readObservable, notFoundValidator);

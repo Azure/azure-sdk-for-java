@@ -224,12 +224,16 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("anomalyDetectionConfigurationId",
             Objects.toString(this.anomalyDetectionConfigurationId, null));
-        jsonWriter.writeStringField("anomalyScopeType", Objects.toString(this.anomalyScopeType, null));
+        jsonWriter.writeStringField("anomalyScopeType",
+            this.anomalyScopeType == null ? null : this.anomalyScopeType.toString());
         jsonWriter.writeBooleanField("negationOperation", this.negationOperation);
         jsonWriter.writeJsonField("dimensionAnomalyScope", this.dimensionAnomalyScope);
         jsonWriter.writeJsonField("topNAnomalyScope", this.topNAnomalyScope);

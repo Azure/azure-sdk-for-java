@@ -72,4 +72,8 @@ public interface ReactiveCourseRepository extends ReactiveCosmosRepository<Cours
     @Query(value = "select value count(1) from c where c.name = @name")
     Mono<Long> countByQuery(@Param("name") String name);
 
+    Flux<Course> findAllByNameNotNull();
+
+    Mono<Long> countByNameNotNull();
+
 }

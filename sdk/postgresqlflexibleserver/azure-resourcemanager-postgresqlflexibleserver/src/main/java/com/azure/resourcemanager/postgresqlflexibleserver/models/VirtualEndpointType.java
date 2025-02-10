@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The endpoint type for the virtual endpoint. */
+/**
+ * The endpoint type for the virtual endpoint.
+ */
 public final class VirtualEndpointType extends ExpandableStringEnum<VirtualEndpointType> {
-    /** Static value ReadWrite for VirtualEndpointType. */
+    /**
+     * Static value ReadWrite for VirtualEndpointType.
+     */
     public static final VirtualEndpointType READ_WRITE = fromString("ReadWrite");
 
     /**
      * Creates a new instance of VirtualEndpointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class VirtualEndpointType extends ExpandableStringEnum<VirtualEndpo
 
     /**
      * Creates or finds a VirtualEndpointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VirtualEndpointType.
      */
-    @JsonCreator
     public static VirtualEndpointType fromString(String name) {
         return fromString(name, VirtualEndpointType.class);
     }
 
     /**
      * Gets known VirtualEndpointType values.
-     *
+     * 
      * @return known VirtualEndpointType values.
      */
     public static Collection<VirtualEndpointType> values() {

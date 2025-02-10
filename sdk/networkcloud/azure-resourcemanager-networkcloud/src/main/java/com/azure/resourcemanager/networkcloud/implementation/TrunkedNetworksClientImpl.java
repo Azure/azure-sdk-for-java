@@ -33,6 +33,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.TrunkedNetworksClient;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.TrunkedNetworkInner;
 import com.azure.resourcemanager.networkcloud.models.TrunkedNetworkList;
 import com.azure.resourcemanager.networkcloud.models.TrunkedNetworkPatchParameters;
@@ -40,22 +41,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TrunkedNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TrunkedNetworksClient.
+ */
 public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TrunkedNetworksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of TrunkedNetworksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TrunkedNetworksClientImpl(NetworkCloudImpl client) {
-        this.service =
-            RestProxy.create(TrunkedNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TrunkedNetworksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,222 +73,162 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetworkCloudTrunkedN")
     public interface TrunkedNetworksService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/trunkedNetworks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TrunkedNetworkList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<TrunkedNetworkList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TrunkedNetworkList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TrunkedNetworkList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<TrunkedNetworkInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("trunkedNetworkName") String trunkedNetworkName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TrunkedNetworkInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("trunkedNetworkName") String trunkedNetworkName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trunkedNetworkName") String trunkedNetworkName,
             @BodyParam("application/json") TrunkedNetworkInner trunkedNetworkParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("trunkedNetworkName") String trunkedNetworkName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("trunkedNetworkName") String trunkedNetworkName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/trunkedNetworks/{trunkedNetworkName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TrunkedNetworkInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<TrunkedNetworkInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trunkedNetworkName") String trunkedNetworkName,
             @BodyParam("application/json") TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TrunkedNetworkList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TrunkedNetworkList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List trunked networks in the subscription.
-     *
-     * <p>Get a list of trunked networks in the provided subscription.
-     *
+     * 
+     * Get a list of trunked networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trunked networks in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrunkedNetworkInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<TrunkedNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<TrunkedNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List trunked networks in the subscription.
-     *
-     * <p>Get a list of trunked networks in the provided subscription.
-     *
+     * 
+     * Get a list of trunked networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trunked networks in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrunkedNetworkInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List trunked networks in the subscription.
-     *
-     * <p>Get a list of trunked networks in the provided subscription.
-     *
+     * 
+     * Get a list of trunked networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trunked networks in the provided subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TrunkedNetworkInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List trunked networks in the subscription.
-     *
-     * <p>Get a list of trunked networks in the provided subscription.
-     *
+     * 
+     * Get a list of trunked networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -290,15 +237,15 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TrunkedNetworkInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List trunked networks in the subscription.
-     *
-     * <p>Get a list of trunked networks in the provided subscription.
-     *
+     * 
+     * Get a list of trunked networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trunked networks in the provided subscription as paginated response with {@link PagedIterable}.
@@ -310,9 +257,9 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
 
     /**
      * List trunked networks in the subscription.
-     *
-     * <p>Get a list of trunked networks in the provided subscription.
-     *
+     * 
+     * Get a list of trunked networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -326,29 +273,25 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
 
     /**
      * List trunked networks in the resource group.
-     *
-     * <p>Get a list of trunked networks in the provided resource group.
-     *
+     * 
+     * Get a list of trunked networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trunked networks in the provided resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrunkedNetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -356,55 +299,36 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<TrunkedNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<TrunkedNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List trunked networks in the resource group.
-     *
-     * <p>Get a list of trunked networks in the provided resource group.
-     *
+     * 
+     * Get a list of trunked networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trunked networks in the provided resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TrunkedNetworkInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<TrunkedNetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -413,29 +337,17 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List trunked networks in the resource group.
-     *
-     * <p>Get a list of trunked networks in the provided resource group.
-     *
+     * 
+     * Get a list of trunked networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -444,16 +356,15 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TrunkedNetworkInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List trunked networks in the resource group.
-     *
-     * <p>Get a list of trunked networks in the provided resource group.
-     *
+     * 
+     * Get a list of trunked networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,22 +374,21 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TrunkedNetworkInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List trunked networks in the resource group.
-     *
-     * <p>Get a list of trunked networks in the provided resource group.
-     *
+     * 
+     * Get a list of trunked networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trunked networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of trunked networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrunkedNetworkInner> listByResourceGroup(String resourceGroupName) {
@@ -487,16 +397,16 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
 
     /**
      * List trunked networks in the resource group.
-     *
-     * <p>Get a list of trunked networks in the provided resource group.
-     *
+     * 
+     * Get a list of trunked networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trunked networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of trunked networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TrunkedNetworkInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -505,31 +415,27 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
 
     /**
      * Retrieve the trunked network.
-     *
-     * <p>Get properties of the provided trunked network.
-     *
+     * 
+     * Get properties of the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided trunked network along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return properties of the provided trunked network along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TrunkedNetworkInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String trunkedNetworkName) {
+    private Mono<Response<TrunkedNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String trunkedNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -541,48 +447,35 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trunkedNetworkName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trunkedNetworkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the trunked network.
-     *
-     * <p>Get properties of the provided trunked network.
-     *
+     * 
+     * Get properties of the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided trunked network along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return properties of the provided trunked network along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TrunkedNetworkInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String trunkedNetworkName, Context context) {
+    private Mono<Response<TrunkedNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String trunkedNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -594,22 +487,15 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trunkedNetworkName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trunkedNetworkName, accept, context);
     }
 
     /**
      * Retrieve the trunked network.
-     *
-     * <p>Get properties of the provided trunked network.
-     *
+     * 
+     * Get properties of the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -625,9 +511,9 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
 
     /**
      * Retrieve the trunked network.
-     *
-     * <p>Get properties of the provided trunked network.
-     *
+     * 
+     * Get properties of the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param context The context to associate with this operation.
@@ -637,16 +523,16 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @return properties of the provided trunked network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrunkedNetworkInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String trunkedNetworkName, Context context) {
+    public Response<TrunkedNetworkInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String trunkedNetworkName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, trunkedNetworkName, context).block();
     }
 
     /**
      * Retrieve the trunked network.
-     *
-     * <p>Get properties of the provided trunked network.
-     *
+     * 
+     * Get properties of the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -661,9 +547,9 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -671,22 +557,18 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network along with {@link Response} on successful completion of {@link Mono}.
+     * create a trunked network along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -697,34 +579,24 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
                 .error(new IllegalArgumentException("Parameter trunkedNetworkName is required and cannot be null."));
         }
         if (trunkedNetworkParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter trunkedNetworkParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter trunkedNetworkParameters is required and cannot be null."));
         } else {
             trunkedNetworkParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trunkedNetworkName,
-                            trunkedNetworkParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trunkedNetworkName, trunkedNetworkParameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -733,25 +605,18 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network along with {@link Response} on successful completion of {@link Mono}.
+     * create a trunked network along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String trunkedNetworkName,
-        TrunkedNetworkInner trunkedNetworkParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -762,31 +627,23 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
                 .error(new IllegalArgumentException("Parameter trunkedNetworkName is required and cannot be null."));
         }
         if (trunkedNetworkParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter trunkedNetworkParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter trunkedNetworkParameters is required and cannot be null."));
         } else {
             trunkedNetworkParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trunkedNetworkName,
-                trunkedNetworkParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, accept,
+            context);
     }
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -794,28 +651,22 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of trunkedNetwork represents a network that utilizes multiple
-     *     isolation domains and specified VLANs to create a trunked network.
+     * isolation domains and specified VLANs to create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters);
-        return this
-            .client
-            .<TrunkedNetworkInner, TrunkedNetworkInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                TrunkedNetworkInner.class,
-                TrunkedNetworkInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters);
+        return this.client.<TrunkedNetworkInner, TrunkedNetworkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TrunkedNetworkInner.class, TrunkedNetworkInner.class, this.client.getContext());
     }
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -824,28 +675,24 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of trunkedNetwork represents a network that utilizes multiple
-     *     isolation domains and specified VLANs to create a trunked network.
+     * isolation domains and specified VLANs to create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String trunkedNetworkName,
-        TrunkedNetworkInner trunkedNetworkParameters,
+        String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, context);
-        return this
-            .client
-            .<TrunkedNetworkInner, TrunkedNetworkInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TrunkedNetworkInner.class, TrunkedNetworkInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, context);
+        return this.client.<TrunkedNetworkInner, TrunkedNetworkInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TrunkedNetworkInner.class, TrunkedNetworkInner.class, context);
     }
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -853,21 +700,20 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of trunkedNetwork represents a network that utilizes multiple
-     *     isolation domains and specified VLANs to create a trunked network.
+     * isolation domains and specified VLANs to create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters)
             .getSyncPoller();
     }
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -876,24 +722,21 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of trunkedNetwork represents a network that utilizes multiple
-     *     isolation domains and specified VLANs to create a trunked network.
+     * isolation domains and specified VLANs to create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TrunkedNetworkInner>, TrunkedNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String trunkedNetworkName,
-        TrunkedNetworkInner trunkedNetworkParameters,
+        String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -901,21 +744,20 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network on successful completion of {@link Mono}.
+     * create a trunked network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TrunkedNetworkInner> createOrUpdateAsync(
-        String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters)
-            .last()
+    private Mono<TrunkedNetworkInner> createOrUpdateAsync(String resourceGroupName, String trunkedNetworkName,
+        TrunkedNetworkInner trunkedNetworkParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -924,24 +766,20 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network on successful completion of {@link Mono}.
+     * create a trunked network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TrunkedNetworkInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String trunkedNetworkName,
-        TrunkedNetworkInner trunkedNetworkParameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, context)
-            .last()
+    private Mono<TrunkedNetworkInner> createOrUpdateAsync(String resourceGroupName, String trunkedNetworkName,
+        TrunkedNetworkInner trunkedNetworkParameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -949,19 +787,19 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network.
+     * create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TrunkedNetworkInner createOrUpdate(
-        String resourceGroupName, String trunkedNetworkName, TrunkedNetworkInner trunkedNetworkParameters) {
+    public TrunkedNetworkInner createOrUpdate(String resourceGroupName, String trunkedNetworkName,
+        TrunkedNetworkInner trunkedNetworkParameters) {
         return createOrUpdateAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters).block();
     }
 
     /**
      * Create or update the trunked network.
-     *
-     * <p>Create a new trunked network or update the properties of the existing trunked network.
-     *
+     * 
+     * Create a new trunked network or update the properties of the existing trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkParameters The request body.
@@ -970,43 +808,37 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network.
+     * create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TrunkedNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String trunkedNetworkName,
-        TrunkedNetworkInner trunkedNetworkParameters,
-        Context context) {
+    public TrunkedNetworkInner createOrUpdate(String resourceGroupName, String trunkedNetworkName,
+        TrunkedNetworkInner trunkedNetworkParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkParameters, context).block();
     }
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String trunkedNetworkName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String trunkedNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1018,47 +850,35 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trunkedNetworkName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trunkedNetworkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String trunkedNetworkName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String trunkedNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1070,174 +890,168 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trunkedNetworkName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, trunkedNetworkName, accept, context);
     }
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String trunkedNetworkName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String trunkedNetworkName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, trunkedNetworkName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
     }
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String trunkedNetworkName, Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String trunkedNetworkName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, trunkedNetworkName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trunkedNetworkName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String trunkedNetworkName) {
         return this.beginDeleteAsync(resourceGroupName, trunkedNetworkName).getSyncPoller();
     }
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String trunkedNetworkName, Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String trunkedNetworkName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, trunkedNetworkName, context).getSyncPoller();
     }
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String trunkedNetworkName) {
-        return beginDeleteAsync(resourceGroupName, trunkedNetworkName)
-            .last()
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String trunkedNetworkName) {
+        return beginDeleteAsync(resourceGroupName, trunkedNetworkName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String trunkedNetworkName, Context context) {
-        return beginDeleteAsync(resourceGroupName, trunkedNetworkName, context)
-            .last()
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String trunkedNetworkName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, trunkedNetworkName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String trunkedNetworkName) {
-        deleteAsync(resourceGroupName, trunkedNetworkName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String trunkedNetworkName) {
+        return deleteAsync(resourceGroupName, trunkedNetworkName).block();
     }
 
     /**
      * Delete the trunked network.
-     *
-     * <p>Delete the provided trunked network.
-     *
+     * 
+     * Delete the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String trunkedNetworkName, Context context) {
-        deleteAsync(resourceGroupName, trunkedNetworkName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String trunkedNetworkName, Context context) {
+        return deleteAsync(resourceGroupName, trunkedNetworkName, context).block();
     }
 
     /**
      * Patch the trunked network.
-     *
-     * <p>Update tags associated with the provided trunked network.
-     *
+     * 
+     * Update tags associated with the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkUpdateParameters The request body.
@@ -1245,24 +1059,18 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network along with {@link Response} on successful completion of {@link Mono}.
+     * create a trunked network along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TrunkedNetworkInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String trunkedNetworkName,
-        TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters) {
+    private Mono<Response<TrunkedNetworkInner>> updateWithResponseAsync(String resourceGroupName,
+        String trunkedNetworkName, TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1277,26 +1085,17 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trunkedNetworkName,
-                            trunkedNetworkUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trunkedNetworkName, trunkedNetworkUpdateParameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch the trunked network.
-     *
-     * <p>Update tags associated with the provided trunked network.
-     *
+     * 
+     * Update tags associated with the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkUpdateParameters The request body.
@@ -1305,25 +1104,18 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network along with {@link Response} on successful completion of {@link Mono}.
+     * create a trunked network along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TrunkedNetworkInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String trunkedNetworkName,
-        TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters,
-        Context context) {
+    private Mono<Response<TrunkedNetworkInner>> updateWithResponseAsync(String resourceGroupName,
+        String trunkedNetworkName, TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1338,30 +1130,22 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trunkedNetworkName,
-                trunkedNetworkUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, trunkedNetworkName, trunkedNetworkUpdateParameters, accept, context);
     }
 
     /**
      * Patch the trunked network.
-     *
-     * <p>Update tags associated with the provided trunked network.
-     *
+     * 
+     * Update tags associated with the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network on successful completion of {@link Mono}.
+     * create a trunked network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TrunkedNetworkInner> updateAsync(String resourceGroupName, String trunkedNetworkName) {
@@ -1372,9 +1156,9 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
 
     /**
      * Patch the trunked network.
-     *
-     * <p>Update tags associated with the provided trunked network.
-     *
+     * 
+     * Update tags associated with the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @param trunkedNetworkUpdateParameters The request body.
@@ -1383,30 +1167,27 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network along with {@link Response}.
+     * create a trunked network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrunkedNetworkInner> updateWithResponse(
-        String resourceGroupName,
-        String trunkedNetworkName,
-        TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters,
-        Context context) {
+    public Response<TrunkedNetworkInner> updateWithResponse(String resourceGroupName, String trunkedNetworkName,
+        TrunkedNetworkPatchParameters trunkedNetworkUpdateParameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, trunkedNetworkName, trunkedNetworkUpdateParameters, context)
             .block();
     }
 
     /**
      * Patch the trunked network.
-     *
-     * <p>Update tags associated with the provided trunked network.
-     *
+     * 
+     * Update tags associated with the provided trunked network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trunkedNetworkName The name of the trunked network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to
-     *     create a trunked network.
+     * create a trunked network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrunkedNetworkInner update(String resourceGroupName, String trunkedNetworkName) {
@@ -1417,14 +1198,13 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetworkList represents a list of trunked networks along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrunkedNetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1432,76 +1212,55 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TrunkedNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<TrunkedNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetworkList represents a list of trunked networks along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TrunkedNetworkInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<TrunkedNetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetworkList represents a list of trunked networks along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TrunkedNetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1509,63 +1268,43 @@ public final class TrunkedNetworksClientImpl implements TrunkedNetworksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TrunkedNetworkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<TrunkedNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trunkedNetworkList represents a list of trunked networks along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TrunkedNetworkInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<TrunkedNetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -73,7 +73,7 @@ Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 ## Troubleshooting
 
 ### Default HTTP client
-All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the [HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an Uber JAR containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
@@ -95,17 +95,17 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/synapse/azure-analytics-synapse-accesscontrol/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
-[azsynapse_docs]: https://docs.microsoft.com/azure/synapse-analytics/
-[jdk]: https://docs.microsoft.com/azure/developer/java/fundamentals/?view=azure-java-stable
+[azsynapse_docs]: https://learn.microsoft.com/azure/synapse-analytics/
+[jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/?view=azure-java-stable
 [azure_sub]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
-[azure_synapse]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[rest_api]: https://docs.microsoft.com/rest/api/synapse/
-[azsynapse_rest]: https://docs.microsoft.com/rest/api/synapse/
-[azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
-[azure_synapse_cli_full]: https://docs.microsoft.com/cli/azure/synapse?view=azure-cli-latest
+[azure_synapse]: https://learn.microsoft.com/azure/synapse-analytics/quickstart-create-workspace
+[azure_cli]: https://learn.microsoft.com/cli/azure
+[rest_api]: https://learn.microsoft.com/rest/api/synapse/
+[azsynapse_rest]: https://learn.microsoft.com/rest/api/synapse/
+[azure_create_application_in_portal]: https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
+[azure_synapse_cli_full]: https://learn.microsoft.com/cli/azure/synapse?view=azure-cli-latest
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 

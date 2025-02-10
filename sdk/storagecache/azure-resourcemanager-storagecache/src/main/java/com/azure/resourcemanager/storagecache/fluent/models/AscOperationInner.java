@@ -5,62 +5,63 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.storagecache.models.ErrorResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.storagecache.models.AscOperationErrorResponse;
+import java.io.IOException;
 import java.util.Map;
 
-/** The status of operation. */
+/**
+ * The status of operation.
+ */
 @Fluent
-public final class AscOperationInner {
+public final class AscOperationInner implements JsonSerializable<AscOperationInner> {
     /*
      * The operation Id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The operation name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The start time of the operation.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * The end time of the operation.
      */
-    @JsonProperty(value = "endTime")
     private String endTime;
 
     /*
      * The status of the operation.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The error detail of the operation if any.
      */
-    @JsonProperty(value = "error")
-    private ErrorResponse error;
+    private AscOperationErrorResponse error;
 
     /*
      * Additional operation-specific properties
      */
-    @JsonProperty(value = "properties")
     private AscOperationProperties innerProperties;
 
-    /** Creates an instance of AscOperationInner class. */
+    /**
+     * Creates an instance of AscOperationInner class.
+     */
     public AscOperationInner() {
     }
 
     /**
      * Get the id property: The operation Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -69,7 +70,7 @@ public final class AscOperationInner {
 
     /**
      * Set the id property: The operation Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the AscOperationInner object itself.
      */
@@ -80,7 +81,7 @@ public final class AscOperationInner {
 
     /**
      * Get the name property: The operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +90,7 @@ public final class AscOperationInner {
 
     /**
      * Set the name property: The operation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the AscOperationInner object itself.
      */
@@ -100,7 +101,7 @@ public final class AscOperationInner {
 
     /**
      * Get the startTime property: The start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -109,7 +110,7 @@ public final class AscOperationInner {
 
     /**
      * Set the startTime property: The start time of the operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the AscOperationInner object itself.
      */
@@ -120,7 +121,7 @@ public final class AscOperationInner {
 
     /**
      * Get the endTime property: The end time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -129,7 +130,7 @@ public final class AscOperationInner {
 
     /**
      * Set the endTime property: The end time of the operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the AscOperationInner object itself.
      */
@@ -140,7 +141,7 @@ public final class AscOperationInner {
 
     /**
      * Get the status property: The status of the operation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -149,7 +150,7 @@ public final class AscOperationInner {
 
     /**
      * Set the status property: The status of the operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the AscOperationInner object itself.
      */
@@ -160,27 +161,27 @@ public final class AscOperationInner {
 
     /**
      * Get the error property: The error detail of the operation if any.
-     *
+     * 
      * @return the error value.
      */
-    public ErrorResponse error() {
+    public AscOperationErrorResponse error() {
         return this.error;
     }
 
     /**
      * Set the error property: The error detail of the operation if any.
-     *
+     * 
      * @param error the error value to set.
      * @return the AscOperationInner object itself.
      */
-    public AscOperationInner withError(ErrorResponse error) {
+    public AscOperationInner withError(AscOperationErrorResponse error) {
         this.error = error;
         return this;
     }
 
     /**
      * Get the innerProperties property: Additional operation-specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AscOperationProperties innerProperties() {
@@ -189,7 +190,7 @@ public final class AscOperationInner {
 
     /**
      * Get the output property: Additional operation-specific output.
-     *
+     * 
      * @return the output value.
      */
     public Map<String, Object> output() {
@@ -198,7 +199,7 @@ public final class AscOperationInner {
 
     /**
      * Set the output property: Additional operation-specific output.
-     *
+     * 
      * @param output the output value to set.
      * @return the AscOperationInner object itself.
      */
@@ -212,7 +213,7 @@ public final class AscOperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -222,5 +223,59 @@ public final class AscOperationInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AscOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AscOperationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AscOperationInner.
+     */
+    public static AscOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AscOperationInner deserializedAscOperationInner = new AscOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAscOperationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAscOperationInner.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedAscOperationInner.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedAscOperationInner.endTime = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAscOperationInner.status = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedAscOperationInner.error = AscOperationErrorResponse.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAscOperationInner.innerProperties = AscOperationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAscOperationInner;
+        });
     }
 }

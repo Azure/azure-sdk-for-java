@@ -9,12 +9,13 @@ import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookRequest;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookResponse;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookSnapshotResponse;
-import com.azure.analytics.synapse.artifacts.models.RunNotebooksCreateRunResponse;
+import com.azure.analytics.synapse.artifacts.models.RunNotebooksCreateRunHeaders;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 
 /**
@@ -44,12 +45,12 @@ public final class RunNotebookClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run notebook response.
+     * @return run notebook response along with {@link ResponseBase}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunNotebooksCreateRunResponse createRunWithResponse(String runId, RunNotebookRequest runNotebookRequest,
-        Context context) {
+    public ResponseBase<RunNotebooksCreateRunHeaders, RunNotebookResponse> createRunWithResponse(String runId,
+        RunNotebookRequest runNotebookRequest, Context context) {
         return this.serviceClient.createRunWithResponse(runId, runNotebookRequest, context);
     }
 
@@ -67,6 +68,24 @@ public final class RunNotebookClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunNotebookResponse createRun(String runId, RunNotebookRequest runNotebookRequest) {
         return this.serviceClient.createRun(runId, runNotebookRequest);
+    }
+
+    /**
+     * Run notebook.
+     * 
+     * @param runId Notebook run id.
+     * @param runNotebookRequest Run notebook request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run notebook response along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RunNotebookResponse> createRunNoCustomHeadersWithResponse(String runId,
+        RunNotebookRequest runNotebookRequest, Context context) {
+        return this.serviceClient.createRunNoCustomHeadersWithResponse(runId, runNotebookRequest, context);
     }
 
     /**

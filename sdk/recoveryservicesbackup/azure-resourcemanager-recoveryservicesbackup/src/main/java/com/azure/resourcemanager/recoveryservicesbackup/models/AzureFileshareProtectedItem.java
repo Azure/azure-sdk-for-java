@@ -5,69 +5,80 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** Azure File Share workload-specific backup item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
-@JsonTypeName("AzureFileShareProtectedItem")
+/**
+ * Azure File Share workload-specific backup item.
+ */
 @Fluent
 public final class AzureFileshareProtectedItem extends ProtectedItem {
     /*
+     * backup item type.
+     */
+    private String protectedItemType = "AzureFileShareProtectedItem";
+
+    /*
      * Friendly name of the fileshare represented by this backup item.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Backup status of this backup item.
      */
-    @JsonProperty(value = "protectionStatus")
     private String protectionStatus;
 
     /*
      * Backup state of this backup item.
      */
-    @JsonProperty(value = "protectionState")
     private ProtectionState protectionState;
 
     /*
      * Last backup operation status. Possible values: Healthy, Unhealthy.
      */
-    @JsonProperty(value = "lastBackupStatus")
     private String lastBackupStatus;
 
     /*
      * Timestamp of the last backup operation on this backup item.
      */
-    @JsonProperty(value = "lastBackupTime")
     private OffsetDateTime lastBackupTime;
 
     /*
      * Health details of different KPIs
      */
-    @JsonProperty(value = "kpisHealths")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, KpiResourceHealthDetails> kpisHealths;
 
     /*
      * Additional information with this backup item.
      */
-    @JsonProperty(value = "extendedInfo")
     private AzureFileshareProtectedItemExtendedInfo extendedInfo;
 
-    /** Creates an instance of AzureFileshareProtectedItem class. */
+    /**
+     * Creates an instance of AzureFileshareProtectedItem class.
+     */
     public AzureFileshareProtectedItem() {
     }
 
     /**
+     * Get the protectedItemType property: backup item type.
+     * 
+     * @return the protectedItemType value.
+     */
+    @Override
+    public String protectedItemType() {
+        return this.protectedItemType;
+    }
+
+    /**
      * Get the friendlyName property: Friendly name of the fileshare represented by this backup item.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -76,7 +87,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Set the friendlyName property: Friendly name of the fileshare represented by this backup item.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the AzureFileshareProtectedItem object itself.
      */
@@ -87,7 +98,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Get the protectionStatus property: Backup status of this backup item.
-     *
+     * 
      * @return the protectionStatus value.
      */
     public String protectionStatus() {
@@ -96,7 +107,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Set the protectionStatus property: Backup status of this backup item.
-     *
+     * 
      * @param protectionStatus the protectionStatus value to set.
      * @return the AzureFileshareProtectedItem object itself.
      */
@@ -107,7 +118,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Get the protectionState property: Backup state of this backup item.
-     *
+     * 
      * @return the protectionState value.
      */
     public ProtectionState protectionState() {
@@ -116,7 +127,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Set the protectionState property: Backup state of this backup item.
-     *
+     * 
      * @param protectionState the protectionState value to set.
      * @return the AzureFileshareProtectedItem object itself.
      */
@@ -127,7 +138,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Get the lastBackupStatus property: Last backup operation status. Possible values: Healthy, Unhealthy.
-     *
+     * 
      * @return the lastBackupStatus value.
      */
     public String lastBackupStatus() {
@@ -136,7 +147,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Set the lastBackupStatus property: Last backup operation status. Possible values: Healthy, Unhealthy.
-     *
+     * 
      * @param lastBackupStatus the lastBackupStatus value to set.
      * @return the AzureFileshareProtectedItem object itself.
      */
@@ -147,7 +158,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Get the lastBackupTime property: Timestamp of the last backup operation on this backup item.
-     *
+     * 
      * @return the lastBackupTime value.
      */
     public OffsetDateTime lastBackupTime() {
@@ -156,7 +167,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Set the lastBackupTime property: Timestamp of the last backup operation on this backup item.
-     *
+     * 
      * @param lastBackupTime the lastBackupTime value to set.
      * @return the AzureFileshareProtectedItem object itself.
      */
@@ -167,7 +178,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Get the kpisHealths property: Health details of different KPIs.
-     *
+     * 
      * @return the kpisHealths value.
      */
     public Map<String, KpiResourceHealthDetails> kpisHealths() {
@@ -176,7 +187,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Set the kpisHealths property: Health details of different KPIs.
-     *
+     * 
      * @param kpisHealths the kpisHealths value to set.
      * @return the AzureFileshareProtectedItem object itself.
      */
@@ -187,7 +198,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Get the extendedInfo property: Additional information with this backup item.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public AzureFileshareProtectedItemExtendedInfo extendedInfo() {
@@ -196,7 +207,7 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Set the extendedInfo property: Additional information with this backup item.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the AzureFileshareProtectedItem object itself.
      */
@@ -205,105 +216,135 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withLastRecoveryPoint(OffsetDateTime lastRecoveryPoint) {
         super.withLastRecoveryPoint(lastRecoveryPoint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withBackupSetName(String backupSetName) {
         super.withBackupSetName(backupSetName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withCreateMode(CreateMode createMode) {
         super.withCreateMode(createMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withDeferredDeleteTimeInUtc(OffsetDateTime deferredDeleteTimeInUtc) {
         super.withDeferredDeleteTimeInUtc(deferredDeleteTimeInUtc);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withIsScheduledForDeferredDelete(Boolean isScheduledForDeferredDelete) {
         super.withIsScheduledForDeferredDelete(isScheduledForDeferredDelete);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withDeferredDeleteTimeRemaining(String deferredDeleteTimeRemaining) {
         super.withDeferredDeleteTimeRemaining(deferredDeleteTimeRemaining);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withIsDeferredDeleteScheduleUpcoming(Boolean isDeferredDeleteScheduleUpcoming) {
         super.withIsDeferredDeleteScheduleUpcoming(isDeferredDeleteScheduleUpcoming);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
         super.withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileshareProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
         super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
@@ -312,24 +353,150 @@ public final class AzureFileshareProtectedItem extends ProtectedItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (kpisHealths() != null) {
-            kpisHealths()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            kpisHealths().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerName", containerName());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("policyId", policyId());
+        jsonWriter.writeStringField("lastRecoveryPoint",
+            lastRecoveryPoint() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastRecoveryPoint()));
+        jsonWriter.writeStringField("backupSetName", backupSetName());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeStringField("deferredDeleteTimeInUTC",
+            deferredDeleteTimeInUtc() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deferredDeleteTimeInUtc()));
+        jsonWriter.writeBooleanField("isScheduledForDeferredDelete", isScheduledForDeferredDelete());
+        jsonWriter.writeStringField("deferredDeleteTimeRemaining", deferredDeleteTimeRemaining());
+        jsonWriter.writeBooleanField("isDeferredDeleteScheduleUpcoming", isDeferredDeleteScheduleUpcoming());
+        jsonWriter.writeBooleanField("isRehydrate", isRehydrate());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchiveEnabled", isArchiveEnabled());
+        jsonWriter.writeStringField("policyName", policyName());
+        jsonWriter.writeNumberField("softDeleteRetentionPeriodInDays", softDeleteRetentionPeriod());
+        jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("protectionStatus", this.protectionStatus);
+        jsonWriter.writeStringField("protectionState",
+            this.protectionState == null ? null : this.protectionState.toString());
+        jsonWriter.writeStringField("lastBackupStatus", this.lastBackupStatus);
+        jsonWriter.writeStringField("lastBackupTime",
+            this.lastBackupTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastBackupTime));
+        jsonWriter.writeMapField("kpisHealths", this.kpisHealths, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileshareProtectedItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileshareProtectedItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileshareProtectedItem.
+     */
+    public static AzureFileshareProtectedItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileshareProtectedItem deserializedAzureFileshareProtectedItem = new AzureFileshareProtectedItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem
+                        .withWorkloadType(DataSourceType.fromString(reader.getString()));
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withContainerName(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withSourceResourceId(reader.getString());
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withPolicyId(reader.getString());
+                } else if ("lastRecoveryPoint".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withLastRecoveryPoint(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("backupSetName".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withBackupSetName(reader.getString());
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("deferredDeleteTimeInUTC".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withDeferredDeleteTimeInUtc(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("isScheduledForDeferredDelete".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem
+                        .withIsScheduledForDeferredDelete(reader.getNullable(JsonReader::getBoolean));
+                } else if ("deferredDeleteTimeRemaining".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withDeferredDeleteTimeRemaining(reader.getString());
+                } else if ("isDeferredDeleteScheduleUpcoming".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem
+                        .withIsDeferredDeleteScheduleUpcoming(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isRehydrate".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withIsRehydrate(reader.getNullable(JsonReader::getBoolean));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFileshareProtectedItem
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem
+                        .withIsArchiveEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withPolicyName(reader.getString());
+                } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem
+                        .withSoftDeleteRetentionPeriod(reader.getNullable(JsonReader::getInt));
+                } else if ("vaultId".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.withVaultId(reader.getString());
+                } else if ("protectedItemType".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.protectedItemType = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.friendlyName = reader.getString();
+                } else if ("protectionStatus".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.protectionStatus = reader.getString();
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.protectionState
+                        = ProtectionState.fromString(reader.getString());
+                } else if ("lastBackupStatus".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.lastBackupStatus = reader.getString();
+                } else if ("lastBackupTime".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.lastBackupTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("kpisHealths".equals(fieldName)) {
+                    Map<String, KpiResourceHealthDetails> kpisHealths
+                        = reader.readMap(reader1 -> KpiResourceHealthDetails.fromJson(reader1));
+                    deserializedAzureFileshareProtectedItem.kpisHealths = kpisHealths;
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItem.extendedInfo
+                        = AzureFileshareProtectedItemExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileshareProtectedItem;
+        });
     }
 }

@@ -6,6 +6,7 @@ package com.azure.search.documents.indexes;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkillVersion;
 import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
@@ -29,11 +30,11 @@ import java.util.List;
 
 /**
  * This scenario assumes an existing search solution and uses a pre-population data source with sample data set For more
- * information visit Azure Cognitive Search Sample Data: https://docs.microsoft.com/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
+ * information visit Azure AI Search Sample Data: https://docs.microsoft.com/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
  */
 public class LifecycleSetupExample {
     /**
-     * From the Azure portal, get your Azure Cognitive Search service URL and API admin key, and set the values of these
+     * From the Azure portal, get your Azure AI Search service URL and API admin key, and set the values of these
      * environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration()
@@ -123,7 +124,7 @@ public class LifecycleSetupExample {
         );
 
 
-        SearchIndexerSkill skill = new EntityRecognitionSkill(inputs, outputs)
+        SearchIndexerSkill skill = new EntityRecognitionSkill(inputs, outputs, EntityRecognitionSkillVersion.V3)
             .setName("#1")
             .setDescription("Entity Recognition Skill")
             .setContext("/document/Description");

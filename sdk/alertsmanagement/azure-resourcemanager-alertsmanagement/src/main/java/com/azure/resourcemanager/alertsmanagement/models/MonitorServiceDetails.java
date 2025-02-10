@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of a monitor service. */
+/**
+ * Details of a monitor service.
+ */
 @Fluent
-public final class MonitorServiceDetails {
+public final class MonitorServiceDetails implements JsonSerializable<MonitorServiceDetails> {
     /*
      * Monitor service name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Monitor service display name
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
+     * Creates an instance of MonitorServiceDetails class.
+     */
+    public MonitorServiceDetails() {
+    }
+
+    /**
      * Get the name property: Monitor service name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +43,7 @@ public final class MonitorServiceDetails {
 
     /**
      * Set the name property: Monitor service name.
-     *
+     * 
      * @param name the name value to set.
      * @return the MonitorServiceDetails object itself.
      */
@@ -44,7 +54,7 @@ public final class MonitorServiceDetails {
 
     /**
      * Get the displayName property: Monitor service display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -53,7 +63,7 @@ public final class MonitorServiceDetails {
 
     /**
      * Set the displayName property: Monitor service display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MonitorServiceDetails object itself.
      */
@@ -64,9 +74,48 @@ public final class MonitorServiceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitorServiceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitorServiceDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitorServiceDetails.
+     */
+    public static MonitorServiceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitorServiceDetails deserializedMonitorServiceDetails = new MonitorServiceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMonitorServiceDetails.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMonitorServiceDetails.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitorServiceDetails;
+        });
     }
 }

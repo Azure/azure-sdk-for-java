@@ -18,6 +18,13 @@ public final class LogsUploadOptions {
     private Consumer<LogsUploadError> logsUploadErrorConsumer;
 
     /**
+     * Creates an instance of {@link LogsUploadOptions}.
+     */
+    public LogsUploadOptions() {
+
+    }
+
+    /**
      * Returns the serializer to use to convert the log objects to JSON.
      * @return the serializer to use to convert the log objects to JSON.
      */
@@ -63,7 +70,8 @@ public final class LogsUploadOptions {
 
     /**
      * Sets  the error handler that is called when a request to the Azure Monitor service to upload logs fails.
-     * @param logsUploadErrorConsumer the error handler that is called when a request to the Azure Monitor service to upload logs fails.
+     * @param logsUploadErrorConsumer the error handler that is called when a request to the Azure Monitor service to
+     * upload logs fails.
      * @return the updated {@link LogsUploadOptions} instance.
      */
     public LogsUploadOptions setLogsUploadErrorConsumer(Consumer<LogsUploadError> logsUploadErrorConsumer) {

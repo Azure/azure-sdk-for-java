@@ -5,35 +5,38 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** outlookUser. */
+/**
+ * outlookUser.
+ */
 @Fluent
 public final class MicrosoftGraphOutlookUser extends MicrosoftGraphEntity {
     /*
      * A list of categories defined for the user.
      */
-    @JsonProperty(value = "masterCategories")
     private List<MicrosoftGraphOutlookCategory> masterCategories;
 
     /*
      * outlookUser
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOutlookUser class. */
+    /**
+     * Creates an instance of MicrosoftGraphOutlookUser class.
+     */
     public MicrosoftGraphOutlookUser() {
     }
 
     /**
      * Get the masterCategories property: A list of categories defined for the user.
-     *
+     * 
      * @return the masterCategories value.
      */
     public List<MicrosoftGraphOutlookCategory> masterCategories() {
@@ -42,7 +45,7 @@ public final class MicrosoftGraphOutlookUser extends MicrosoftGraphEntity {
 
     /**
      * Set the masterCategories property: A list of categories defined for the user.
-     *
+     * 
      * @param masterCategories the masterCategories value to set.
      * @return the MicrosoftGraphOutlookUser object itself.
      */
@@ -53,17 +56,16 @@ public final class MicrosoftGraphOutlookUser extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: outlookUser.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: outlookUser.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOutlookUser object itself.
      */
@@ -72,15 +74,9 @@ public final class MicrosoftGraphOutlookUser extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOutlookUser withId(String id) {
         super.withId(id);
@@ -89,7 +85,7 @@ public final class MicrosoftGraphOutlookUser extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -98,5 +94,58 @@ public final class MicrosoftGraphOutlookUser extends MicrosoftGraphEntity {
         if (masterCategories() != null) {
             masterCategories().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("masterCategories", this.masterCategories,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOutlookUser from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOutlookUser if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOutlookUser.
+     */
+    public static MicrosoftGraphOutlookUser fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOutlookUser deserializedMicrosoftGraphOutlookUser = new MicrosoftGraphOutlookUser();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphOutlookUser.withId(reader.getString());
+                } else if ("masterCategories".equals(fieldName)) {
+                    List<MicrosoftGraphOutlookCategory> masterCategories
+                        = reader.readArray(reader1 -> MicrosoftGraphOutlookCategory.fromJson(reader1));
+                    deserializedMicrosoftGraphOutlookUser.masterCategories = masterCategories;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOutlookUser.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOutlookUser;
+        });
     }
 }

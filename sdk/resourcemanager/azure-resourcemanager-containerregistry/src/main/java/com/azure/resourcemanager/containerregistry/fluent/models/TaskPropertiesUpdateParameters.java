@@ -5,78 +5,77 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Credentials;
 import com.azure.resourcemanager.containerregistry.models.PlatformUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.TaskStatus;
 import com.azure.resourcemanager.containerregistry.models.TaskStepUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.TriggerUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties for updating a task. */
+/**
+ * The properties for updating a task.
+ */
 @Fluent
-public final class TaskPropertiesUpdateParameters {
+public final class TaskPropertiesUpdateParameters implements JsonSerializable<TaskPropertiesUpdateParameters> {
     /*
      * The current status of task.
      */
-    @JsonProperty(value = "status")
     private TaskStatus status;
 
     /*
      * The platform properties against which the run has to happen.
      */
-    @JsonProperty(value = "platform")
     private PlatformUpdateParameters platform;
 
     /*
      * The machine configuration of the run agent.
      */
-    @JsonProperty(value = "agentConfiguration")
     private AgentProperties agentConfiguration;
 
     /*
      * The dedicated agent pool for the task.
      */
-    @JsonProperty(value = "agentPoolName")
     private String agentPoolName;
 
     /*
      * Run timeout in seconds.
      */
-    @JsonProperty(value = "timeout")
     private Integer timeout;
 
     /*
      * The properties for updating a task step.
      */
-    @JsonProperty(value = "step")
     private TaskStepUpdateParameters step;
 
     /*
      * The properties for updating trigger properties.
      */
-    @JsonProperty(value = "trigger")
     private TriggerUpdateParameters trigger;
 
     /*
      * The parameters that describes a set of credentials that will be used when this run is invoked.
      */
-    @JsonProperty(value = "credentials")
     private Credentials credentials;
 
     /*
      * The template that describes the repository and tag information for run log artifact.
      */
-    @JsonProperty(value = "logTemplate")
     private String logTemplate;
 
-    /** Creates an instance of TaskPropertiesUpdateParameters class. */
+    /**
+     * Creates an instance of TaskPropertiesUpdateParameters class.
+     */
     public TaskPropertiesUpdateParameters() {
     }
 
     /**
      * Get the status property: The current status of task.
-     *
+     * 
      * @return the status value.
      */
     public TaskStatus status() {
@@ -85,7 +84,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the status property: The current status of task.
-     *
+     * 
      * @param status the status value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -96,7 +95,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @return the platform value.
      */
     public PlatformUpdateParameters platform() {
@@ -105,7 +104,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @param platform the platform value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -116,7 +115,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -125,7 +124,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -136,7 +135,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the agentPoolName property: The dedicated agent pool for the task.
-     *
+     * 
      * @return the agentPoolName value.
      */
     public String agentPoolName() {
@@ -145,7 +144,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the agentPoolName property: The dedicated agent pool for the task.
-     *
+     * 
      * @param agentPoolName the agentPoolName value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -156,7 +155,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the timeout property: Run timeout in seconds.
-     *
+     * 
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -165,7 +164,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the timeout property: Run timeout in seconds.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -176,7 +175,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the step property: The properties for updating a task step.
-     *
+     * 
      * @return the step value.
      */
     public TaskStepUpdateParameters step() {
@@ -185,7 +184,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the step property: The properties for updating a task step.
-     *
+     * 
      * @param step the step value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -196,7 +195,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Get the trigger property: The properties for updating trigger properties.
-     *
+     * 
      * @return the trigger value.
      */
     public TriggerUpdateParameters trigger() {
@@ -205,7 +204,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Set the trigger property: The properties for updating trigger properties.
-     *
+     * 
      * @param trigger the trigger value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -217,7 +216,7 @@ public final class TaskPropertiesUpdateParameters {
     /**
      * Get the credentials property: The parameters that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @return the credentials value.
      */
     public Credentials credentials() {
@@ -227,7 +226,7 @@ public final class TaskPropertiesUpdateParameters {
     /**
      * Set the credentials property: The parameters that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -239,7 +238,7 @@ public final class TaskPropertiesUpdateParameters {
     /**
      * Get the logTemplate property: The template that describes the repository and tag information for run log
      * artifact.
-     *
+     * 
      * @return the logTemplate value.
      */
     public String logTemplate() {
@@ -249,7 +248,7 @@ public final class TaskPropertiesUpdateParameters {
     /**
      * Set the logTemplate property: The template that describes the repository and tag information for run log
      * artifact.
-     *
+     * 
      * @param logTemplate the logTemplate value to set.
      * @return the TaskPropertiesUpdateParameters object itself.
      */
@@ -260,7 +259,7 @@ public final class TaskPropertiesUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -279,5 +278,66 @@ public final class TaskPropertiesUpdateParameters {
         if (credentials() != null) {
             credentials().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("platform", this.platform);
+        jsonWriter.writeJsonField("agentConfiguration", this.agentConfiguration);
+        jsonWriter.writeStringField("agentPoolName", this.agentPoolName);
+        jsonWriter.writeNumberField("timeout", this.timeout);
+        jsonWriter.writeJsonField("step", this.step);
+        jsonWriter.writeJsonField("trigger", this.trigger);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        jsonWriter.writeStringField("logTemplate", this.logTemplate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskPropertiesUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskPropertiesUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskPropertiesUpdateParameters.
+     */
+    public static TaskPropertiesUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskPropertiesUpdateParameters deserializedTaskPropertiesUpdateParameters
+                = new TaskPropertiesUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedTaskPropertiesUpdateParameters.status = TaskStatus.fromString(reader.getString());
+                } else if ("platform".equals(fieldName)) {
+                    deserializedTaskPropertiesUpdateParameters.platform = PlatformUpdateParameters.fromJson(reader);
+                } else if ("agentConfiguration".equals(fieldName)) {
+                    deserializedTaskPropertiesUpdateParameters.agentConfiguration = AgentProperties.fromJson(reader);
+                } else if ("agentPoolName".equals(fieldName)) {
+                    deserializedTaskPropertiesUpdateParameters.agentPoolName = reader.getString();
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedTaskPropertiesUpdateParameters.timeout = reader.getNullable(JsonReader::getInt);
+                } else if ("step".equals(fieldName)) {
+                    deserializedTaskPropertiesUpdateParameters.step = TaskStepUpdateParameters.fromJson(reader);
+                } else if ("trigger".equals(fieldName)) {
+                    deserializedTaskPropertiesUpdateParameters.trigger = TriggerUpdateParameters.fromJson(reader);
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedTaskPropertiesUpdateParameters.credentials = Credentials.fromJson(reader);
+                } else if ("logTemplate".equals(fieldName)) {
+                    deserializedTaskPropertiesUpdateParameters.logTemplate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskPropertiesUpdateParameters;
+        });
     }
 }

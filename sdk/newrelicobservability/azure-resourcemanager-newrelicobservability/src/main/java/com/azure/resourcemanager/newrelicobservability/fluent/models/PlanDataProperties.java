@@ -5,39 +5,44 @@
 package com.azure.resourcemanager.newrelicobservability.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Plan details. */
+/**
+ * Plan details.
+ */
 @Fluent
-public final class PlanDataProperties {
+public final class PlanDataProperties implements JsonSerializable<PlanDataProperties> {
     /*
      * Plan details
      */
-    @JsonProperty(value = "planData")
     private PlanData planData;
 
     /*
      * Source of org creation
      */
-    @JsonProperty(value = "orgCreationSource")
     private OrgCreationSource orgCreationSource;
 
     /*
      * Source of account creation
      */
-    @JsonProperty(value = "accountCreationSource")
     private AccountCreationSource accountCreationSource;
 
-    /** Creates an instance of PlanDataProperties class. */
+    /**
+     * Creates an instance of PlanDataProperties class.
+     */
     public PlanDataProperties() {
     }
 
     /**
      * Get the planData property: Plan details.
-     *
+     * 
      * @return the planData value.
      */
     public PlanData planData() {
@@ -46,7 +51,7 @@ public final class PlanDataProperties {
 
     /**
      * Set the planData property: Plan details.
-     *
+     * 
      * @param planData the planData value to set.
      * @return the PlanDataProperties object itself.
      */
@@ -57,7 +62,7 @@ public final class PlanDataProperties {
 
     /**
      * Get the orgCreationSource property: Source of org creation.
-     *
+     * 
      * @return the orgCreationSource value.
      */
     public OrgCreationSource orgCreationSource() {
@@ -66,7 +71,7 @@ public final class PlanDataProperties {
 
     /**
      * Set the orgCreationSource property: Source of org creation.
-     *
+     * 
      * @param orgCreationSource the orgCreationSource value to set.
      * @return the PlanDataProperties object itself.
      */
@@ -77,7 +82,7 @@ public final class PlanDataProperties {
 
     /**
      * Get the accountCreationSource property: Source of account creation.
-     *
+     * 
      * @return the accountCreationSource value.
      */
     public AccountCreationSource accountCreationSource() {
@@ -86,7 +91,7 @@ public final class PlanDataProperties {
 
     /**
      * Set the accountCreationSource property: Source of account creation.
-     *
+     * 
      * @param accountCreationSource the accountCreationSource value to set.
      * @return the PlanDataProperties object itself.
      */
@@ -97,12 +102,57 @@ public final class PlanDataProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (planData() != null) {
             planData().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("planData", this.planData);
+        jsonWriter.writeStringField("orgCreationSource",
+            this.orgCreationSource == null ? null : this.orgCreationSource.toString());
+        jsonWriter.writeStringField("accountCreationSource",
+            this.accountCreationSource == null ? null : this.accountCreationSource.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlanDataProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlanDataProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PlanDataProperties.
+     */
+    public static PlanDataProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlanDataProperties deserializedPlanDataProperties = new PlanDataProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("planData".equals(fieldName)) {
+                    deserializedPlanDataProperties.planData = PlanData.fromJson(reader);
+                } else if ("orgCreationSource".equals(fieldName)) {
+                    deserializedPlanDataProperties.orgCreationSource = OrgCreationSource.fromString(reader.getString());
+                } else if ("accountCreationSource".equals(fieldName)) {
+                    deserializedPlanDataProperties.accountCreationSource
+                        = AccountCreationSource.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlanDataProperties;
+        });
     }
 }

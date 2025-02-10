@@ -6,166 +6,161 @@ package com.azure.resourcemanager.sphere.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.sphere.models.ImageType;
-import com.azure.resourcemanager.sphere.models.ProvisioningState;
-import com.azure.resourcemanager.sphere.models.RegionalDataBoundary;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sphere.models.ImageProperties;
+import java.io.IOException;
 
-/** An image resource belonging to a catalog resource. */
+/**
+ * An image resource belonging to a catalog resource.
+ */
 @Fluent
 public final class ImageInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties")
-    private ImageProperties innerProperties;
+    private ImageProperties properties;
 
-    /** Creates an instance of ImageInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ImageInner class.
+     */
     public ImageInner() {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    private ImageProperties innerProperties() {
-        return this.innerProperties;
+    public ImageProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the image property: Image as a UTF-8 encoded base 64 string on image create. This field contains the image
-     * URI on image reads.
-     *
-     * @return the image value.
-     */
-    public String image() {
-        return this.innerProperties() == null ? null : this.innerProperties().image();
-    }
-
-    /**
-     * Set the image property: Image as a UTF-8 encoded base 64 string on image create. This field contains the image
-     * URI on image reads.
-     *
-     * @param image the image value to set.
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
      * @return the ImageInner object itself.
      */
-    public ImageInner withImage(String image) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ImageProperties();
-        }
-        this.innerProperties().withImage(image);
+    public ImageInner withProperties(ImageProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the imageId property: Image ID.
-     *
-     * @return the imageId value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String imageId() {
-        return this.innerProperties() == null ? null : this.innerProperties().imageId();
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Set the imageId property: Image ID.
-     *
-     * @param imageId the imageId value to set.
-     * @return the ImageInner object itself.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public ImageInner withImageId(String imageId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ImageProperties();
-        }
-        this.innerProperties().withImageId(imageId);
-        return this;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the imageName property: Image name.
-     *
-     * @return the imageName value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public String imageName() {
-        return this.innerProperties() == null ? null : this.innerProperties().imageName();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the regionalDataBoundary property: Regional data boundary for an image.
-     *
-     * @return the regionalDataBoundary value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public RegionalDataBoundary regionalDataBoundary() {
-        return this.innerProperties() == null ? null : this.innerProperties().regionalDataBoundary();
-    }
-
-    /**
-     * Set the regionalDataBoundary property: Regional data boundary for an image.
-     *
-     * @param regionalDataBoundary the regionalDataBoundary value to set.
-     * @return the ImageInner object itself.
-     */
-    public ImageInner withRegionalDataBoundary(RegionalDataBoundary regionalDataBoundary) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ImageProperties();
-        }
-        this.innerProperties().withRegionalDataBoundary(regionalDataBoundary);
-        return this;
-    }
-
-    /**
-     * Get the uri property: Location the image.
-     *
-     * @return the uri value.
-     */
-    public String uri() {
-        return this.innerProperties() == null ? null : this.innerProperties().uri();
-    }
-
-    /**
-     * Get the description property: The image description.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Get the componentId property: The image component id.
-     *
-     * @return the componentId value.
-     */
-    public String componentId() {
-        return this.innerProperties() == null ? null : this.innerProperties().componentId();
-    }
-
-    /**
-     * Get the imageType property: The image type.
-     *
-     * @return the imageType value.
-     */
-    public ImageType imageType() {
-        return this.innerProperties() == null ? null : this.innerProperties().imageType();
-    }
-
-    /**
-     * Get the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageInner.
+     */
+    public static ImageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageInner deserializedImageInner = new ImageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedImageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedImageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedImageInner.properties = ImageProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedImageInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageInner;
+        });
     }
 }

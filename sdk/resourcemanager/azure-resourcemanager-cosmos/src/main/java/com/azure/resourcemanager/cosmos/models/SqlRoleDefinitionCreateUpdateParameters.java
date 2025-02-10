@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleDefinitionResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters to create and update an Azure Cosmos DB SQL Role Definition.
  */
 @Fluent
-public final class SqlRoleDefinitionCreateUpdateParameters {
+public final class SqlRoleDefinitionCreateUpdateParameters
+    implements JsonSerializable<SqlRoleDefinitionCreateUpdateParameters> {
     /*
      * Properties to create and update an Azure Cosmos DB SQL Role Definition.
      */
-    @JsonProperty(value = "properties")
     private SqlRoleDefinitionResource innerProperties;
 
     /**
@@ -36,8 +40,7 @@ public final class SqlRoleDefinitionCreateUpdateParameters {
     }
 
     /**
-     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      * 
      * @return the roleName value.
      */
@@ -46,8 +49,7 @@ public final class SqlRoleDefinitionCreateUpdateParameters {
     }
 
     /**
-     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      * 
      * @param roleName the roleName value to set.
      * @return the SqlRoleDefinitionCreateUpdateParameters object itself.
@@ -146,5 +148,43 @@ public final class SqlRoleDefinitionCreateUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlRoleDefinitionCreateUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlRoleDefinitionCreateUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlRoleDefinitionCreateUpdateParameters.
+     */
+    public static SqlRoleDefinitionCreateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlRoleDefinitionCreateUpdateParameters deserializedSqlRoleDefinitionCreateUpdateParameters
+                = new SqlRoleDefinitionCreateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSqlRoleDefinitionCreateUpdateParameters.innerProperties
+                        = SqlRoleDefinitionResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlRoleDefinitionCreateUpdateParameters;
+        });
     }
 }

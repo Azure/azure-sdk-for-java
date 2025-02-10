@@ -7,16 +7,17 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.models.EHNamespaceInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.dag.VoidIndexable;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceSkuType;
 import com.azure.resourcemanager.eventhubs.models.Sku;
 import com.azure.resourcemanager.eventhubs.models.SkuName;
+import com.azure.resourcemanager.eventhubs.models.TlsVersion;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.dag.VoidIndexable;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,11 +28,8 @@ import java.util.UUID;
  * Implementation for {@link EventHubNamespace}.
  */
 class EventHubNamespaceImpl
-        extends GroupableResourceImpl<EventHubNamespace, EHNamespaceInner, EventHubNamespaceImpl, EventHubsManager>
-        implements
-        EventHubNamespace,
-        EventHubNamespace.Definition,
-        EventHubNamespace.Update {
+    extends GroupableResourceImpl<EventHubNamespace, EHNamespaceInner, EventHubNamespaceImpl, EventHubsManager>
+    implements EventHubNamespace, EventHubNamespace.Definition, EventHubNamespace.Update {
 
     private Flux<Indexable> postRunTasks;
 
@@ -106,8 +104,8 @@ class EventHubNamespaceImpl
     }
 
     @Override
-    public EventHubNamespaceImpl withNewEventHub(
-        final String eventHubName, final int partitionCount, final int retentionPeriodInDays) {
+    public EventHubNamespaceImpl withNewEventHub(final String eventHubName, final int partitionCount,
+        final int retentionPeriodInDays) {
         concatPostRunTask(manager().eventHubs()
             .define(eventHubName)
             .withExistingNamespace(resourceGroupName(), name())
@@ -181,10 +179,7 @@ class EventHubNamespaceImpl
 
     @Override
     public EventHubNamespaceImpl withSku(EventHubNamespaceSkuType namespaceSku) {
-        Sku newSkuInner = new Sku()
-                .withName(namespaceSku.name())
-                .withTier(namespaceSku.tier())
-                .withCapacity(null);
+        Sku newSkuInner = new Sku().withName(namespaceSku.name()).withTier(namespaceSku.tier()).withCapacity(null);
         Sku currentSkuInner = this.innerModel().sku();
 
         boolean isDifferent = currentSkuInner == null || !currentSkuInner.name().equals(newSkuInner.name());
@@ -219,9 +214,11 @@ class EventHubNamespaceImpl
 
     @Override
     public Mono<EventHubNamespace> createResourceAsync() {
-        return this.manager().serviceClient().getNamespaces()
-                .createOrUpdateAsync(resourceGroupName(), name(), this.innerModel())
-                .map(innerToFluentMap(this));
+        return this.manager()
+            .serviceClient()
+            .getNamespaces()
+            .createOrUpdateAsync(resourceGroupName(), name(), this.innerModel())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -237,8 +234,7 @@ class EventHubNamespaceImpl
 
     @Override
     public PagedFlux<EventHubNamespaceAuthorizationRule> listAuthorizationRulesAsync() {
-        return this.manager().namespaceAuthorizationRules()
-            .listByNamespaceAsync(this.resourceGroupName(), this.name());
+        return this.manager().namespaceAuthorizationRules().listByNamespaceAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -248,13 +244,24 @@ class EventHubNamespaceImpl
 
     @Override
     public PagedIterable<EventHubNamespaceAuthorizationRule> listAuthorizationRules() {
-        return this.manager().namespaceAuthorizationRules()
-                .listByNamespace(this.resourceGroupName(), this.name());
+        return this.manager().namespaceAuthorizationRules().listByNamespace(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public TlsVersion minimumTlsVersion() {
+        return this.innerModel().minimumTlsVersion();
+    }
+
+    @Override
+    public boolean zoneRedundant() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().zoneRedundant());
     }
 
     @Override
     protected Mono<EHNamespaceInner> getInnerAsync() {
-        return this.manager().serviceClient().getNamespaces()
+        return this.manager()
+            .serviceClient()
+            .getNamespaces()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -269,5 +276,17 @@ class EventHubNamespaceImpl
             postRunTasks = Flux.empty();
         }
         postRunTasks = postRunTasks.concatWith(task);
+    }
+
+    @Override
+    public EventHubNamespaceImpl withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+        this.innerModel().withMinimumTlsVersion(minimumTlsVersion);
+        return this;
+    }
+
+    @Override
+    public EventHubNamespaceImpl enableZoneRedundant() {
+        this.innerModel().withZoneRedundant(true);
+        return this;
     }
 }

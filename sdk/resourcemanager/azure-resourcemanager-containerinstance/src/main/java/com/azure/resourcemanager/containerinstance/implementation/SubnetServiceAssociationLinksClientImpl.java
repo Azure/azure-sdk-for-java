@@ -29,26 +29,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SubnetServiceAssociationLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SubnetServiceAssociationLinksClient.
+ */
 public final class SubnetServiceAssociationLinksClientImpl implements SubnetServiceAssociationLinksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SubnetServiceAssociationLinksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerInstanceManagementClientImpl client;
 
     /**
      * Initializes an instance of SubnetServiceAssociationLinksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SubnetServiceAssociationLinksClientImpl(ContainerInstanceManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SubnetServiceAssociationLinksService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(SubnetServiceAssociationLinksService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,28 +61,23 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
     @Host("{$host}")
     @ServiceInterface(name = "ContainerInstanceMan")
     public interface SubnetServiceAssociationLinksService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/providers/Microsoft.ContainerInstance/serviceAssociationLinks/default")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/providers/Microsoft.ContainerInstance/serviceAssociationLinks/default")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkName") String virtualNetworkName,
-            @PathParam("subnetName") String subnetName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("virtualNetworkName") String virtualNetworkName, @PathParam("subnetName") String subnetName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Delete container group virtual network association links.
-     *
-     * <p>Delete container group virtual network association links. The operation does not delete other resources
-     * provided by the user.
-     *
+     * 
+     * Delete container group virtual network association links. The operation does not delete other resources provided
+     * by the user.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -90,19 +87,15 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualNetworkName,
+        String subnetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -117,27 +110,17 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            subnetName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, virtualNetworkName, subnetName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete container group virtual network association links.
-     *
-     * <p>Delete container group virtual network association links. The operation does not delete other resources
-     * provided by the user.
-     *
+     * 
+     * Delete container group virtual network association links. The operation does not delete other resources provided
+     * by the user.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -148,19 +131,15 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String virtualNetworkName, String subnetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -175,24 +154,16 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                virtualNetworkName,
-                subnetName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, virtualNetworkName, subnetName, accept, context);
     }
 
     /**
      * Delete container group virtual network association links.
-     *
-     * <p>Delete container group virtual network association links. The operation does not delete other resources
-     * provided by the user.
-     *
+     * 
+     * Delete container group virtual network association links. The operation does not delete other resources provided
+     * by the user.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -202,22 +173,20 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName,
+        String subnetName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete container group virtual network association links.
-     *
-     * <p>Delete container group virtual network association links. The operation does not delete other resources
-     * provided by the user.
-     *
+     * 
+     * Delete container group virtual network association links. The operation does not delete other resources provided
+     * by the user.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -228,22 +197,21 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName,
+        String subnetName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete container group virtual network association links.
-     *
-     * <p>Delete container group virtual network association links. The operation does not delete other resources
-     * provided by the user.
-     *
+     * 
+     * Delete container group virtual network association links. The operation does not delete other resources provided
+     * by the user.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -253,17 +221,17 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualNetworkName, String subnetName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName,
+        String subnetName) {
         return this.beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName).getSyncPoller();
     }
 
     /**
      * Delete container group virtual network association links.
-     *
-     * <p>Delete container group virtual network association links. The operation does not delete other resources
-     * provided by the user.
-     *
+     * 
+     * Delete container group virtual network association links. The operation does not delete other resources provided
+     * by the user.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -274,17 +242,17 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName,
+        String subnetName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName, context).getSyncPoller();
     }
 
     /**
      * Delete container group virtual network association links.
-     *
-     * <p>Delete container group virtual network association links. The operation does not delete other resources
-     * provided by the user.
-     *
+     * 
+     * Delete container group virtual network association links. The operation does not delete other resources provided
+     * by the user.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -295,17 +263,16 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete container group virtual network association links.
-     *
-     * <p>Delete container group virtual network association links. The operation does not delete other resources
-     * provided by the user.
-     *
+     * 
+     * Delete container group virtual network association links. The operation does not delete other resources provided
+     * by the user.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -316,19 +283,18 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete container group virtual network association links.
-     *
-     * <p>Delete container group virtual network association links. The operation does not delete other resources
-     * provided by the user.
-     *
+     * 
+     * Delete container group virtual network association links. The operation does not delete other resources provided
+     * by the user.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -343,10 +309,10 @@ public final class SubnetServiceAssociationLinksClientImpl implements SubnetServ
 
     /**
      * Delete container group virtual network association links.
-     *
-     * <p>Delete container group virtual network association links. The operation does not delete other resources
-     * provided by the user.
-     *
+     * 
+     * Delete container group virtual network association links. The operation does not delete other resources provided
+     * by the user.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.

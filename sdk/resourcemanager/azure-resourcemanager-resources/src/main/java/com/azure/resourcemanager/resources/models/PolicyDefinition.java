@@ -20,45 +20,63 @@ import java.util.Map;
  * An immutable client-side representation of an Azure policy.
  */
 @Fluent
-public interface PolicyDefinition extends
-        HasName,
-        HasId,
-        Indexable,
-        Refreshable<PolicyDefinition>,
-        Updatable<PolicyDefinition.Update>,
-        HasInnerModel<PolicyDefinitionInner> {
+public interface PolicyDefinition extends HasName, HasId, Indexable, Refreshable<PolicyDefinition>,
+    Updatable<PolicyDefinition.Update>, HasInnerModel<PolicyDefinitionInner> {
 
     /**
+     * Gets the type of the policy definition.
+     *
      * @return the type of the policy definition
      */
     PolicyType policyType();
 
     /**
+     * Gets display name of the policy definition.
+     *
      * @return the policy definition display name
      */
     String displayName();
 
     /**
+     * Gets the policy definition description.
+     *
      * @return the policy definition description
      */
     String description();
 
     /**
+     * Gets the policy rule.
+     *
      * @return the policy rule
      */
     Object policyRule();
 
     /**
+     * Gets the parameters of the policy definition.
+     *
      * @return the parameters of the policy definition
      */
     Map<String, ParameterDefinitionsValue> parameters();
 
     /**
+     * Gets the policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
+     *
+     * @return the policy definition mode.
+     */
+    String mode();
+
+    /**
+     * Gets the policy definition metadata. Metadata is an open-ended object and is typically a
+     * collection of key value pairs.
+     *
+     * @return the policy definition metadata.
+     */
+    Object metadata();
+
+    /**
      * Container interface for all the definitions that need to be implemented.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate {
     }
 
     /**
@@ -156,16 +174,43 @@ public interface PolicyDefinition extends
         }
 
         /**
+         * A policy definition allowing policy definition mode to be set.
+         */
+        interface WithMode {
+            /**
+             * Specifies the policy definition mode.
+             * <p>
+             * Some examples are All, Indexed, Microsoft.KeyVault.Data.
+             *
+             * @param mode the policy definition mode
+             * @return the next stage of policy definition
+             */
+            WithCreate withMode(String mode);
+        }
+
+        /**
+         * A policy definition allowing policy definition metadata to be set.
+         */
+        interface WithMetadata {
+            /**
+             * Specifies the policy definition metadata.
+             * <p>
+             * Metadata is an open-ended object and is typically a collection of key value pairs.
+             *
+             * @param metadata the policy definition metadata
+             * @return the next stage of policy definition
+             */
+            WithCreate withMetadata(Object metadata);
+        }
+
+        /**
          * A policy definition with sufficient inputs to create a new
          * policy in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends
-                Creatable<PolicyDefinition>,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithPolicyType,
-                DefinitionStages.WithParameters {
+        interface WithCreate extends Creatable<PolicyDefinition>, DefinitionStages.WithDescription,
+            DefinitionStages.WithDisplayName, DefinitionStages.WithPolicyType, DefinitionStages.WithParameters,
+            DefinitionStages.WithMode, DefinitionStages.WithMetadata {
         }
     }
 
@@ -224,16 +269,42 @@ public interface PolicyDefinition extends
              */
             Update withDescription(String description);
         }
+
+        /**
+         * A policy definition allowing policy definition mode to be set.
+         */
+        interface WithMode {
+            /**
+             * Specifies the policy definition mode.
+             * <p>
+             * Some examples are All, Indexed, Microsoft.KeyVault.Data.
+             *
+             * @param mode the policy definition mode
+             * @return the next stage of policy update
+             */
+            Update withMode(String mode);
+        }
+
+        /**
+         * A policy definition allowing policy definition metadata to be set.
+         */
+        interface WithMetadata {
+            /**
+             * Specifies the policy definition metadata.
+             * <p>
+             * Metadata is an open-ended object and is typically a collection of key value pairs.
+             *
+             * @param metadata the policy definition metadata
+             * @return the next stage of policy update
+             */
+            Update withMetadata(Object metadata);
+        }
     }
 
     /**
      * The template for a policy update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-            Appliable<PolicyDefinition>,
-            UpdateStages.WithDescription,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithPolicyRule,
-            UpdateStages.WithPolicyType {
+    interface Update extends Appliable<PolicyDefinition>, UpdateStages.WithDescription, UpdateStages.WithDisplayName,
+        UpdateStages.WithPolicyRule, UpdateStages.WithPolicyType, UpdateStages.WithMode, UpdateStages.WithMetadata {
     }
 }

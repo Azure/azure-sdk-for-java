@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of an environment type. These properties can be updated after the resource has been created. */
+/**
+ * Properties of an environment type. These properties can be updated after the resource has been created.
+ */
 @Fluent
-public class EnvironmentTypeUpdateProperties {
+public class EnvironmentTypeUpdateProperties implements JsonSerializable<EnvironmentTypeUpdateProperties> {
     /*
      * The display name of the environment type.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of EnvironmentTypeUpdateProperties class. */
+    /**
+     * Creates an instance of EnvironmentTypeUpdateProperties class.
+     */
     public EnvironmentTypeUpdateProperties() {
     }
 
     /**
      * Get the displayName property: The display name of the environment type.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -31,7 +38,7 @@ public class EnvironmentTypeUpdateProperties {
 
     /**
      * Set the displayName property: The display name of the environment type.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the EnvironmentTypeUpdateProperties object itself.
      */
@@ -42,9 +49,46 @@ public class EnvironmentTypeUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentTypeUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentTypeUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentTypeUpdateProperties.
+     */
+    public static EnvironmentTypeUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentTypeUpdateProperties deserializedEnvironmentTypeUpdateProperties
+                = new EnvironmentTypeUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedEnvironmentTypeUpdateProperties.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentTypeUpdateProperties;
+        });
     }
 }

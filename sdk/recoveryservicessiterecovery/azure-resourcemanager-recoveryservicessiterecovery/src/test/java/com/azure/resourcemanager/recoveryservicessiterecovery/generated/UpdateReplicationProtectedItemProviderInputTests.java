@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateRepli
 public final class UpdateReplicationProtectedItemProviderInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateReplicationProtectedItemProviderInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"UpdateReplicationProtectedItemProviderInput\"}")
+        UpdateReplicationProtectedItemProviderInput model
+            = BinaryData.fromString("{\"instanceType\":\"UpdateReplicationProtectedItemProviderInput\"}")
                 .toObject(UpdateReplicationProtectedItemProviderInput.class);
     }
 

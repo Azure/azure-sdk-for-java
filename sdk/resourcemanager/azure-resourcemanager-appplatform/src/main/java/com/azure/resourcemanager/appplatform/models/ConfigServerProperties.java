@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Config server git properties payload. */
+/**
+ * Config server git properties payload.
+ */
 @Fluent
-public final class ConfigServerProperties {
+public final class ConfigServerProperties implements JsonSerializable<ConfigServerProperties> {
     /*
      * State of the config server.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigServerState provisioningState;
 
     /*
      * Error when apply config server settings.
      */
-    @JsonProperty(value = "error")
     private Error error;
 
     /*
      * Settings of config server.
      */
-    @JsonProperty(value = "configServer")
     private ConfigServerSettings configServer;
 
     /**
+     * Creates an instance of ConfigServerProperties class.
+     */
+    public ConfigServerProperties() {
+    }
+
+    /**
      * Get the provisioningState property: State of the config server.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ConfigServerState provisioningState() {
@@ -39,7 +48,7 @@ public final class ConfigServerProperties {
 
     /**
      * Get the error property: Error when apply config server settings.
-     *
+     * 
      * @return the error value.
      */
     public Error error() {
@@ -48,7 +57,7 @@ public final class ConfigServerProperties {
 
     /**
      * Set the error property: Error when apply config server settings.
-     *
+     * 
      * @param error the error value to set.
      * @return the ConfigServerProperties object itself.
      */
@@ -59,7 +68,7 @@ public final class ConfigServerProperties {
 
     /**
      * Get the configServer property: Settings of config server.
-     *
+     * 
      * @return the configServer value.
      */
     public ConfigServerSettings configServer() {
@@ -68,7 +77,7 @@ public final class ConfigServerProperties {
 
     /**
      * Set the configServer property: Settings of config server.
-     *
+     * 
      * @param configServer the configServer value to set.
      * @return the ConfigServerProperties object itself.
      */
@@ -79,7 +88,7 @@ public final class ConfigServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -89,5 +98,47 @@ public final class ConfigServerProperties {
         if (configServer() != null) {
             configServer().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeJsonField("configServer", this.configServer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigServerProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigServerProperties.
+     */
+    public static ConfigServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigServerProperties deserializedConfigServerProperties = new ConfigServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedConfigServerProperties.provisioningState
+                        = ConfigServerState.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedConfigServerProperties.error = Error.fromJson(reader);
+                } else if ("configServer".equals(fieldName)) {
+                    deserializedConfigServerProperties.configServer = ConfigServerSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigServerProperties;
+        });
     }
 }

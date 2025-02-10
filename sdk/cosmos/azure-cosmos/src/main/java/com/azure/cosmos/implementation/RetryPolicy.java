@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -15,15 +16,22 @@ import com.azure.cosmos.implementation.caches.RxCollectionCache;
 public class RetryPolicy implements IRetryPolicyFactory {
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final GlobalEndpointManager globalEndpointManager;
+    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager;
     private final boolean enableEndpointDiscovery;
     private final ThrottlingRetryOptions throttlingRetryOptions;
     private RxCollectionCache rxCollectionCache;
 
-    public RetryPolicy(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager, ConnectionPolicy connectionPolicy) {
+    public RetryPolicy(
+        DiagnosticsClientContext diagnosticsClientContext,
+        GlobalEndpointManager globalEndpointManager,
+        ConnectionPolicy connectionPolicy,
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager) {
+
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.enableEndpointDiscovery = connectionPolicy.isEndpointDiscoveryEnabled();
         this.globalEndpointManager = globalEndpointManager;
         this.throttlingRetryOptions = connectionPolicy.getThrottlingRetryOptions();
+        this.globalPartitionEndpointManager = globalPartitionEndpointManager;
     }
 
     @Override
@@ -32,8 +40,13 @@ public class RetryPolicy implements IRetryPolicyFactory {
         if (clientContextOverride != null) {
             effectiveClientContext = clientContextOverride;
         }
-        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(effectiveClientContext,
-            this.globalEndpointManager, this.enableEndpointDiscovery, this.throttlingRetryOptions, this.rxCollectionCache);
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(
+            effectiveClientContext,
+            this.globalEndpointManager,
+            this.enableEndpointDiscovery,
+            this.throttlingRetryOptions,
+            this.rxCollectionCache,
+            this.globalPartitionEndpointManager);
 
         return clientRetryPolicy;
     }

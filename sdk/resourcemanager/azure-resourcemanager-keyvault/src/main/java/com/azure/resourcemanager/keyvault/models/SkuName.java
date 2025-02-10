@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.keyvault.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** SKU name to specify whether the key vault is a standard vault or a premium vault. */
+/**
+ * SKU name to specify whether the key vault is a standard vault or a premium vault.
+ */
 public enum SkuName {
-    /** Enum value standard. */
+    /**
+     * Enum value standard.
+     */
     STANDARD("standard"),
 
-    /** Enum value premium. */
+    /**
+     * Enum value premium.
+     */
     PREMIUM("premium");
 
-    /** The actual serialized value for a SkuName instance. */
+    /**
+     * The actual serialized value for a SkuName instance.
+     */
     private final String value;
 
     SkuName(String value) {
@@ -24,11 +29,10 @@ public enum SkuName {
 
     /**
      * Parses a serialized value to a SkuName instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SkuName object, or null if unable to parse.
      */
-    @JsonCreator
     public static SkuName fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum SkuName {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

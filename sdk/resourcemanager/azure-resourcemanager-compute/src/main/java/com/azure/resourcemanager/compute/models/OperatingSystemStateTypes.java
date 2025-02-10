@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * This property allows the user to specify whether the virtual machines created under this image are 'Generalized' or
  * 'Specialized'.
@@ -37,7 +34,6 @@ public enum OperatingSystemStateTypes {
      * @param value the serialized value to parse.
      * @return the parsed OperatingSystemStateTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static OperatingSystemStateTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -54,7 +50,6 @@ public enum OperatingSystemStateTypes {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

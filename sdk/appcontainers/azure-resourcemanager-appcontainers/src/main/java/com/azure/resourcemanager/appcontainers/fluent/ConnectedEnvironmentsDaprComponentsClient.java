@@ -18,12 +18,12 @@ import com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollecti
 public interface ConnectedEnvironmentsDaprComponentsClient {
     /**
      * Get the Dapr Components for a connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connected environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Dapr Components for a connected environment as paginated response with {@link PagedIterable}.
      */
@@ -32,13 +32,13 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
 
     /**
      * Get the Dapr Components for a connected environment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connected environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Dapr Components for a connected environment as paginated response with {@link PagedIterable}.
      */
@@ -47,30 +47,30 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
 
     /**
      * Get a dapr component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connected environment.
      * @param componentName Name of the Dapr Component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dapr component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DaprComponentInner> getWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, String componentName, Context context);
+    Response<DaprComponentInner> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String componentName, Context context);
 
     /**
      * Get a dapr component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connected environment.
      * @param componentName Name of the Dapr Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dapr component.
      */
@@ -79,9 +79,9 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
 
     /**
      * Creates or updates a Dapr Component.
-     *
-     * <p>Creates or updates a Dapr Component in a connected environment.
-     *
+     * 
+     * Creates or updates a Dapr Component in a connected environment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connected environment.
      * @param componentName Name of the Dapr Component.
@@ -89,70 +89,63 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dapr Component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DaprComponentInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String componentName,
-        DaprComponentInner daprComponentEnvelope,
-        Context context);
+    Response<DaprComponentInner> createOrUpdateWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String componentName, DaprComponentInner daprComponentEnvelope, Context context);
 
     /**
      * Creates or updates a Dapr Component.
-     *
-     * <p>Creates or updates a Dapr Component in a connected environment.
-     *
+     * 
+     * Creates or updates a Dapr Component in a connected environment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connected environment.
      * @param componentName Name of the Dapr Component.
      * @param daprComponentEnvelope Configuration details of the Dapr Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dapr Component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DaprComponentInner createOrUpdate(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String componentName,
+    DaprComponentInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName, String componentName,
         DaprComponentInner daprComponentEnvelope);
 
     /**
      * Delete a Dapr Component.
-     *
-     * <p>Delete a Dapr Component from a connected environment.
-     *
+     * 
+     * Delete a Dapr Component from a connected environment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connected environment.
      * @param componentName Name of the Dapr Component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, String componentName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName, String componentName,
+        Context context);
 
     /**
      * Delete a Dapr Component.
-     *
-     * <p>Delete a Dapr Component from a connected environment.
-     *
+     * 
+     * Delete a Dapr Component from a connected environment.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connected environment.
      * @param componentName Name of the Dapr Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -160,34 +153,34 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
 
     /**
      * List secrets for a dapr component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connected environment.
      * @param componentName Name of the Dapr Component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dapr component Secrets Collection for ListSecrets Action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DaprSecretsCollectionInner> listSecretsWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, String componentName, Context context);
+    Response<DaprSecretsCollectionInner> listSecretsWithResponse(String resourceGroupName,
+        String connectedEnvironmentName, String componentName, Context context);
 
     /**
      * List secrets for a dapr component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectedEnvironmentName Name of the connected environment.
      * @param componentName Name of the Dapr Component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dapr component Secrets Collection for ListSecrets Action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DaprSecretsCollectionInner listSecrets(
-        String resourceGroupName, String connectedEnvironmentName, String componentName);
+    DaprSecretsCollectionInner listSecrets(String resourceGroupName, String connectedEnvironmentName,
+        String componentName);
 }

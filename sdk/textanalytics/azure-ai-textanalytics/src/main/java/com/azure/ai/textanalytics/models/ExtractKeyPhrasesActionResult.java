@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics.models;
 
-
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.core.annotation.Immutable;
@@ -16,8 +15,8 @@ public final class ExtractKeyPhrasesActionResult extends TextAnalyticsActionResu
     private ExtractKeyPhrasesResultCollection documentsResults;
 
     static {
-        ExtractKeyPhrasesActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        ExtractKeyPhrasesActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
     /**

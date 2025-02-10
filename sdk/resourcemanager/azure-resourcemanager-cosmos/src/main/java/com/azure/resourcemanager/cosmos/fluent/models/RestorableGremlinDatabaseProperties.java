@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.RestorableGremlinDatabasePropertiesResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties of an Azure Cosmos DB Gremlin database event.
  */
 @Fluent
-public final class RestorableGremlinDatabaseProperties {
+public final class RestorableGremlinDatabaseProperties
+    implements JsonSerializable<RestorableGremlinDatabaseProperties> {
     /*
      * The resource of an Azure Cosmos DB Gremlin database event
      */
-    @JsonProperty(value = "resource")
     private RestorableGremlinDatabasePropertiesResource resource;
 
     /**
@@ -54,5 +58,43 @@ public final class RestorableGremlinDatabaseProperties {
         if (resource() != null) {
             resource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resource", this.resource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableGremlinDatabaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableGremlinDatabaseProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableGremlinDatabaseProperties.
+     */
+    public static RestorableGremlinDatabaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableGremlinDatabaseProperties deserializedRestorableGremlinDatabaseProperties
+                = new RestorableGremlinDatabaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resource".equals(fieldName)) {
+                    deserializedRestorableGremlinDatabaseProperties.resource
+                        = RestorableGremlinDatabasePropertiesResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableGremlinDatabaseProperties;
+        });
     }
 }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** VM Group status. */
+/**
+ * VM group status.
+ */
 public final class VMGroupStatusEnum extends ExpandableStringEnum<VMGroupStatusEnum> {
-    /** Static value SUCCESS for VMGroupStatusEnum. */
+    /**
+     * Static value SUCCESS for VMGroupStatusEnum.
+     */
     public static final VMGroupStatusEnum SUCCESS = fromString("SUCCESS");
 
-    /** Static value FAILURE for VMGroupStatusEnum. */
+    /**
+     * Static value FAILURE for VMGroupStatusEnum.
+     */
     public static final VMGroupStatusEnum FAILURE = fromString("FAILURE");
 
     /**
      * Creates a new instance of VMGroupStatusEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class VMGroupStatusEnum extends ExpandableStringEnum<VMGroupStatusE
 
     /**
      * Creates or finds a VMGroupStatusEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VMGroupStatusEnum.
      */
-    @JsonCreator
     public static VMGroupStatusEnum fromString(String name) {
         return fromString(name, VMGroupStatusEnum.class);
     }
 
     /**
      * Gets known VMGroupStatusEnum values.
-     *
+     * 
      * @return known VMGroupStatusEnum values.
      */
     public static Collection<VMGroupStatusEnum> values() {

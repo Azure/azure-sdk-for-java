@@ -6,80 +6,80 @@ package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.AvailablePatchCountByClassification;
 import com.azure.resourcemanager.hybridcompute.models.OsType;
 import com.azure.resourcemanager.hybridcompute.models.PatchOperationStartedBy;
 import com.azure.resourcemanager.hybridcompute.models.PatchOperationStatus;
 import com.azure.resourcemanager.hybridcompute.models.PatchServiceUsed;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
-/** Describes the properties of an AssessPatches result. */
+/**
+ * Describes the properties of an AssessPatches result.
+ */
 @Fluent
-public final class MachineAssessPatchesResultInner {
+public final class MachineAssessPatchesResultInner implements JsonSerializable<MachineAssessPatchesResultInner> {
     /*
-     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-     * At that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
+     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At
+     * that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
 
     /*
      * The activity ID of the operation that produced this result.
      */
-    @JsonProperty(value = "assessmentActivityId", access = JsonProperty.Access.WRITE_ONLY)
-    private String assessmentActivityId;
+    private UUID assessmentActivityId;
 
     /*
      * The overall reboot status of the VM. It will be true when partially installed patches require a reboot to
      * complete installation but the reboot has not yet occurred.
      */
-    @JsonProperty(value = "rebootPending", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean rebootPending;
 
     /*
      * Summarization of patches available for installation on the machine by classification.
      */
-    @JsonProperty(value = "availablePatchCountByClassification")
     private AvailablePatchCountByClassification availablePatchCountByClassification;
 
     /*
      * The UTC timestamp when the operation began.
      */
-    @JsonProperty(value = "startDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startDateTime;
 
     /*
      * The UTC timestamp when the operation finished.
      */
-    @JsonProperty(value = "lastModifiedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * Indicates if operation was triggered by user or by platform.
      */
-    @JsonProperty(value = "startedBy", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStartedBy startedBy;
 
     /*
      * Specifies the patch service used for the operation.
      */
-    @JsonProperty(value = "patchServiceUsed", access = JsonProperty.Access.WRITE_ONLY)
     private PatchServiceUsed patchServiceUsed;
 
     /*
      * The operating system type of the machine.
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OsType osType;
 
     /*
      * The errors that were encountered during execution of the operation. The details array contains the list of them.
      */
-    @JsonProperty(value = "errorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError errorDetails;
 
-    /** Creates an instance of MachineAssessPatchesResultInner class. */
+    /**
+     * Creates an instance of MachineAssessPatchesResultInner class.
+     */
     public MachineAssessPatchesResultInner() {
     }
 
@@ -87,7 +87,7 @@ public final class MachineAssessPatchesResultInner {
      * Get the status property: The overall success or failure status of the operation. It remains "InProgress" until
      * the operation completes. At that point it will become "Unknown", "Failed", "Succeeded", or
      * "CompletedWithWarnings.".
-     *
+     * 
      * @return the status value.
      */
     public PatchOperationStatus status() {
@@ -96,17 +96,17 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the assessmentActivityId property: The activity ID of the operation that produced this result.
-     *
+     * 
      * @return the assessmentActivityId value.
      */
-    public String assessmentActivityId() {
+    public UUID assessmentActivityId() {
         return this.assessmentActivityId;
     }
 
     /**
      * Get the rebootPending property: The overall reboot status of the VM. It will be true when partially installed
      * patches require a reboot to complete installation but the reboot has not yet occurred.
-     *
+     * 
      * @return the rebootPending value.
      */
     public Boolean rebootPending() {
@@ -116,7 +116,7 @@ public final class MachineAssessPatchesResultInner {
     /**
      * Get the availablePatchCountByClassification property: Summarization of patches available for installation on the
      * machine by classification.
-     *
+     * 
      * @return the availablePatchCountByClassification value.
      */
     public AvailablePatchCountByClassification availablePatchCountByClassification() {
@@ -126,7 +126,7 @@ public final class MachineAssessPatchesResultInner {
     /**
      * Set the availablePatchCountByClassification property: Summarization of patches available for installation on the
      * machine by classification.
-     *
+     * 
      * @param availablePatchCountByClassification the availablePatchCountByClassification value to set.
      * @return the MachineAssessPatchesResultInner object itself.
      */
@@ -138,7 +138,7 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the startDateTime property: The UTC timestamp when the operation began.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -147,7 +147,7 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the lastModifiedDateTime property: The UTC timestamp when the operation finished.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -156,7 +156,7 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the startedBy property: Indicates if operation was triggered by user or by platform.
-     *
+     * 
      * @return the startedBy value.
      */
     public PatchOperationStartedBy startedBy() {
@@ -165,7 +165,7 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the patchServiceUsed property: Specifies the patch service used for the operation.
-     *
+     * 
      * @return the patchServiceUsed value.
      */
     public PatchServiceUsed patchServiceUsed() {
@@ -174,7 +174,7 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the osType property: The operating system type of the machine.
-     *
+     * 
      * @return the osType value.
      */
     public OsType osType() {
@@ -184,7 +184,7 @@ public final class MachineAssessPatchesResultInner {
     /**
      * Get the errorDetails property: The errors that were encountered during execution of the operation. The details
      * array contains the list of them.
-     *
+     * 
      * @return the errorDetails value.
      */
     public ManagementError errorDetails() {
@@ -193,12 +193,75 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (availablePatchCountByClassification() != null) {
             availablePatchCountByClassification().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("availablePatchCountByClassification", this.availablePatchCountByClassification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineAssessPatchesResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineAssessPatchesResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineAssessPatchesResultInner.
+     */
+    public static MachineAssessPatchesResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineAssessPatchesResultInner deserializedMachineAssessPatchesResultInner
+                = new MachineAssessPatchesResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedMachineAssessPatchesResultInner.status
+                        = PatchOperationStatus.fromString(reader.getString());
+                } else if ("assessmentActivityId".equals(fieldName)) {
+                    deserializedMachineAssessPatchesResultInner.assessmentActivityId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("rebootPending".equals(fieldName)) {
+                    deserializedMachineAssessPatchesResultInner.rebootPending
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("availablePatchCountByClassification".equals(fieldName)) {
+                    deserializedMachineAssessPatchesResultInner.availablePatchCountByClassification
+                        = AvailablePatchCountByClassification.fromJson(reader);
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedMachineAssessPatchesResultInner.startDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMachineAssessPatchesResultInner.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startedBy".equals(fieldName)) {
+                    deserializedMachineAssessPatchesResultInner.startedBy
+                        = PatchOperationStartedBy.fromString(reader.getString());
+                } else if ("patchServiceUsed".equals(fieldName)) {
+                    deserializedMachineAssessPatchesResultInner.patchServiceUsed
+                        = PatchServiceUsed.fromString(reader.getString());
+                } else if ("osType".equals(fieldName)) {
+                    deserializedMachineAssessPatchesResultInner.osType = OsType.fromString(reader.getString());
+                } else if ("errorDetails".equals(fieldName)) {
+                    deserializedMachineAssessPatchesResultInner.errorDetails = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineAssessPatchesResultInner;
+        });
     }
 }

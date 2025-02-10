@@ -47,22 +47,28 @@ import com.azure.core.util.FluxUtil;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ChatThreads. */
+/**
+ * An instance of this class provides access to all the operations defined in ChatThreads.
+ */
 public final class ChatThreadsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ChatThreadsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureCommunicationChatServiceImpl client;
 
     /**
      * Initializes an instance of ChatThreadsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ChatThreadsImpl(AzureCommunicationChatServiceImpl client) {
-        this.service =
-                RestProxy.create(ChatThreadsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ChatThreadsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -74,332 +80,356 @@ public final class ChatThreadsImpl {
     @ServiceInterface(name = "AzureCommunicationCh")
     public interface ChatThreadsService {
         @Get("/chat/threads/{chatThreadId}/readReceipts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ChatMessageReadReceiptsCollection>> listChatReadReceipts(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @QueryParam("maxPageSize") Integer maxPageSize,
-                @QueryParam("skip") Integer skip,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ChatMessageReadReceiptsCollection>> listChatReadReceipts(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @QueryParam("maxPageSize") Integer maxPageSize,
+            @QueryParam("skip") Integer skip, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/chat/threads/{chatThreadId}/readReceipts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> sendChatReadReceipt(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SendReadReceiptRequest sendReadReceiptRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> sendChatReadReceipt(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SendReadReceiptRequest sendReadReceiptRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/chat/threads/{chatThreadId}/messages")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<SendChatMessageResult>> sendChatMessage(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SendChatMessageOptions sendChatMessageRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SendChatMessageResult>> sendChatMessage(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SendChatMessageOptions sendChatMessageRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/chat/threads/{chatThreadId}/messages")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ChatMessagesCollection>> listChatMessages(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @QueryParam("maxPageSize") Integer maxPageSize,
-                @QueryParam("startTime") OffsetDateTime startTime,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ChatMessagesCollection>> listChatMessages(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @QueryParam("maxPageSize") Integer maxPageSize,
+            @QueryParam("startTime") OffsetDateTime startTime, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/chat/threads/{chatThreadId}/messages/{chatMessageId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ChatMessage>> getChatMessage(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @PathParam("chatMessageId") String chatMessageId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ChatMessage>> getChatMessage(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @PathParam("chatMessageId") String chatMessageId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/chat/threads/{chatThreadId}/messages/{chatMessageId}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> updateChatMessage(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @PathParam("chatMessageId") String chatMessageId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") UpdateChatMessageOptions updateChatMessageRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> updateChatMessage(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @PathParam("chatMessageId") String chatMessageId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") UpdateChatMessageOptions updateChatMessageRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/chat/threads/{chatThreadId}/messages/{chatMessageId}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> deleteChatMessage(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @PathParam("chatMessageId") String chatMessageId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> deleteChatMessage(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @PathParam("chatMessageId") String chatMessageId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/chat/threads/{chatThreadId}/participants")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ChatParticipantsCollection>> listChatParticipants(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @QueryParam("maxPageSize") Integer maxPageSize,
-                @QueryParam("skip") Integer skip,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ChatParticipantsCollection>> listChatParticipants(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @QueryParam("maxPageSize") Integer maxPageSize,
+            @QueryParam("skip") Integer skip, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/chat/threads/{chatThreadId}/participants/:remove")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> removeChatParticipant(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CommunicationIdentifierModel participantCommunicationIdentifier,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> removeChatParticipant(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CommunicationIdentifierModel participantCommunicationIdentifier,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/chat/threads/{chatThreadId}/participants/:add")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AddChatParticipantsResult>> addChatParticipants(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AddChatParticipantsOptions addChatParticipantsRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<AddChatParticipantsResult>> addChatParticipants(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AddChatParticipantsOptions addChatParticipantsRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/chat/threads/{chatThreadId}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> updateChatThreadProperties(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") UpdateChatThreadOptions updateChatThreadRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> updateChatThreadProperties(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") UpdateChatThreadOptions updateChatThreadRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/chat/threads/{chatThreadId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ChatThreadProperties>> getChatThreadProperties(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ChatThreadProperties>> getChatThreadProperties(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/chat/threads/{chatThreadId}/typing")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> sendTypingNotification(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("chatThreadId") String chatThreadId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") TypingNotificationOptions sendTypingNotificationRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> sendTypingNotification(@HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TypingNotificationOptions sendTypingNotificationRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatMessageReadReceiptsCollection>> listChatReadReceiptsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatMessagesCollection>> listChatMessagesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(
+            value = CommunicationErrorResponseException.class,
+            code = { 401, 403, 429, 503 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatParticipantsCollection>> listChatParticipantsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets chat message read receipts for a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get the chat message read receipts for.
      * @param maxPageSize The maximum number of chat message read receipts to be returned per page.
      * @param skip Skips chat message read receipts up to a specified position in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat message read receipts for a thread.
+     * @return chat message read receipts for a thread along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsSinglePageAsync(
-            String chatThreadId, Integer maxPageSize, Integer skip) {
+    public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsSinglePageAsync(String chatThreadId,
+        Integer maxPageSize, Integer skip) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listChatReadReceipts(
-                                        this.client.getEndpoint(),
-                                        chatThreadId,
-                                        maxPageSize,
-                                        skip,
-                                        this.client.getApiVersion(),
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listChatReadReceipts(this.client.getEndpoint(), chatThreadId, maxPageSize,
+                skip, this.client.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Gets chat message read receipts for a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get the chat message read receipts for.
      * @param maxPageSize The maximum number of chat message read receipts to be returned per page.
      * @param skip Skips chat message read receipts up to a specified position in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat message read receipts for a thread.
+     * @return chat message read receipts for a thread along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsSinglePageAsync(
-            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
+    public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsSinglePageAsync(String chatThreadId,
+        Integer maxPageSize, Integer skip, Context context) {
         final String accept = "application/json";
-        return service.listChatReadReceipts(
-                        this.client.getEndpoint(),
-                        chatThreadId,
-                        maxPageSize,
-                        skip,
-                        this.client.getApiVersion(),
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return service
+            .listChatReadReceipts(this.client.getEndpoint(), chatThreadId, maxPageSize, skip,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Gets chat message read receipts for a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get the chat message read receipts for.
      * @param maxPageSize The maximum number of chat message read receipts to be returned per page.
      * @param skip Skips chat message read receipts up to a specified position in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat message read receipts for a thread.
+     * @return chat message read receipts for a thread as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ChatMessageReadReceipt> listChatReadReceiptsAsync(
-            String chatThreadId, Integer maxPageSize, Integer skip) {
-        return new PagedFlux<>(
-                () -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip),
-                nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink));
+    public PagedFlux<ChatMessageReadReceipt> listChatReadReceiptsAsync(String chatThreadId, Integer maxPageSize,
+        Integer skip) {
+        return new PagedFlux<>(() -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip),
+            nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets chat message read receipts for a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get the chat message read receipts for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat message read receipts for a thread.
+     * @return chat message read receipts for a thread as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatMessageReadReceipt> listChatReadReceiptsAsync(String chatThreadId) {
         final Integer maxPageSize = null;
         final Integer skip = null;
-        return new PagedFlux<>(
-                () -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip),
-                nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip),
+            nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets chat message read receipts for a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get the chat message read receipts for.
      * @param maxPageSize The maximum number of chat message read receipts to be returned per page.
      * @param skip Skips chat message read receipts up to a specified position in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat message read receipts for a thread.
+     * @return chat message read receipts for a thread as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ChatMessageReadReceipt> listChatReadReceiptsAsync(
-            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
-        return new PagedFlux<>(
-                () -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip, context),
-                nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink, context));
+    public PagedFlux<ChatMessageReadReceipt> listChatReadReceiptsAsync(String chatThreadId, Integer maxPageSize,
+        Integer skip, Context context) {
+        return new PagedFlux<>(() -> listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip, context),
+            nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets chat message read receipts for a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get the chat message read receipts for.
      * @param maxPageSize The maximum number of chat message read receipts to be returned per page.
      * @param skip Skips chat message read receipts up to a specified position in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat message read receipts for a thread.
+     * @return chat message read receipts for a thread along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatMessageReadReceipt> listChatReadReceiptsSinglePage(String chatThreadId,
+        Integer maxPageSize, Integer skip) {
+        return listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip).block();
+    }
+
+    /**
+     * Gets chat message read receipts for a thread.
+     * 
+     * @param chatThreadId Thread id to get the chat message read receipts for.
+     * @param maxPageSize The maximum number of chat message read receipts to be returned per page.
+     * @param skip Skips chat message read receipts up to a specified position in response.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat message read receipts for a thread along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatMessageReadReceipt> listChatReadReceiptsSinglePage(String chatThreadId,
+        Integer maxPageSize, Integer skip, Context context) {
+        return listChatReadReceiptsSinglePageAsync(chatThreadId, maxPageSize, skip, context).block();
+    }
+
+    /**
+     * Gets chat message read receipts for a thread.
+     * 
+     * @param chatThreadId Thread id to get the chat message read receipts for.
+     * @param maxPageSize The maximum number of chat message read receipts to be returned per page.
+     * @param skip Skips chat message read receipts up to a specified position in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat message read receipts for a thread as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatMessageReadReceipt> listChatReadReceipts(
-            String chatThreadId, Integer maxPageSize, Integer skip) {
+    public PagedIterable<ChatMessageReadReceipt> listChatReadReceipts(String chatThreadId, Integer maxPageSize,
+        Integer skip) {
         return new PagedIterable<>(listChatReadReceiptsAsync(chatThreadId, maxPageSize, skip));
     }
 
     /**
      * Gets chat message read receipts for a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get the chat message read receipts for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat message read receipts for a thread.
+     * @return chat message read receipts for a thread as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatMessageReadReceipt> listChatReadReceipts(String chatThreadId) {
@@ -410,424 +440,442 @@ public final class ChatThreadsImpl {
 
     /**
      * Gets chat message read receipts for a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get the chat message read receipts for.
      * @param maxPageSize The maximum number of chat message read receipts to be returned per page.
      * @param skip Skips chat message read receipts up to a specified position in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat message read receipts for a thread.
+     * @return chat message read receipts for a thread as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatMessageReadReceipt> listChatReadReceipts(
-            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
+    public PagedIterable<ChatMessageReadReceipt> listChatReadReceipts(String chatThreadId, Integer maxPageSize,
+        Integer skip, Context context) {
         return new PagedIterable<>(listChatReadReceiptsAsync(chatThreadId, maxPageSize, skip, context));
     }
 
     /**
      * Sends a read receipt event to a thread, on behalf of a user.
-     *
+     * 
      * @param chatThreadId Thread id to send the read receipt event to.
      * @param sendReadReceiptRequest Read receipt details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendChatReadReceiptWithResponseAsync(
-            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest) {
+    public Mono<Response<Void>> sendChatReadReceiptWithResponseAsync(String chatThreadId,
+        SendReadReceiptRequest sendReadReceiptRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.sendChatReadReceipt(
-                                this.client.getEndpoint(),
-                                chatThreadId,
-                                this.client.getApiVersion(),
-                                sendReadReceiptRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.sendChatReadReceipt(this.client.getEndpoint(), chatThreadId,
+            this.client.getApiVersion(), sendReadReceiptRequest, accept, context));
     }
 
     /**
      * Sends a read receipt event to a thread, on behalf of a user.
-     *
+     * 
      * @param chatThreadId Thread id to send the read receipt event to.
      * @param sendReadReceiptRequest Read receipt details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendChatReadReceiptWithResponseAsync(
-            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
+    public Mono<Response<Void>> sendChatReadReceiptWithResponseAsync(String chatThreadId,
+        SendReadReceiptRequest sendReadReceiptRequest, Context context) {
         final String accept = "application/json";
-        return service.sendChatReadReceipt(
-                this.client.getEndpoint(),
-                chatThreadId,
-                this.client.getApiVersion(),
-                sendReadReceiptRequest,
-                accept,
-                context);
+        return service.sendChatReadReceipt(this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(),
+            sendReadReceiptRequest, accept, context);
     }
 
     /**
      * Sends a read receipt event to a thread, on behalf of a user.
-     *
+     * 
      * @param chatThreadId Thread id to send the read receipt event to.
      * @param sendReadReceiptRequest Read receipt details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendChatReadReceiptAsync(String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest) {
         return sendChatReadReceiptWithResponseAsync(chatThreadId, sendReadReceiptRequest)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Sends a read receipt event to a thread, on behalf of a user.
-     *
+     * 
      * @param chatThreadId Thread id to send the read receipt event to.
      * @param sendReadReceiptRequest Read receipt details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendChatReadReceiptAsync(
-            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
+    public Mono<Void> sendChatReadReceiptAsync(String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest,
+        Context context) {
         return sendChatReadReceiptWithResponseAsync(chatThreadId, sendReadReceiptRequest, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Sends a read receipt event to a thread, on behalf of a user.
-     *
-     * @param chatThreadId Thread id to send the read receipt event to.
-     * @param sendReadReceiptRequest Read receipt details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendChatReadReceipt(String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest) {
-        sendChatReadReceiptAsync(chatThreadId, sendReadReceiptRequest).block();
-    }
-
-    /**
-     * Sends a read receipt event to a thread, on behalf of a user.
-     *
+     * 
      * @param chatThreadId Thread id to send the read receipt event to.
      * @param sendReadReceiptRequest Read receipt details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendChatReadReceiptWithResponse(
-            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
+    public Response<Void> sendChatReadReceiptWithResponse(String chatThreadId,
+        SendReadReceiptRequest sendReadReceiptRequest, Context context) {
         return sendChatReadReceiptWithResponseAsync(chatThreadId, sendReadReceiptRequest, context).block();
     }
 
     /**
-     * Sends a message to a thread.
-     *
-     * @param chatThreadId The thread id to send the message to.
-     * @param sendChatMessageRequest Details of the message to send.
+     * Sends a read receipt event to a thread, on behalf of a user.
+     * 
+     * @param chatThreadId Thread id to send the read receipt event to.
+     * @param sendReadReceiptRequest Read receipt details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the send message operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendChatMessageResult>> sendChatMessageWithResponseAsync(
-            String chatThreadId, SendChatMessageOptions sendChatMessageRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.sendChatMessage(
-                                this.client.getEndpoint(),
-                                chatThreadId,
-                                this.client.getApiVersion(),
-                                sendChatMessageRequest,
-                                accept,
-                                context));
+    public void sendChatReadReceipt(String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest) {
+        sendChatReadReceiptWithResponse(chatThreadId, sendReadReceiptRequest, Context.NONE);
     }
 
     /**
      * Sends a message to a thread.
-     *
+     * 
+     * @param chatThreadId The thread id to send the message to.
+     * @param sendChatMessageRequest Details of the message to send.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the send message operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SendChatMessageResult>> sendChatMessageWithResponseAsync(String chatThreadId,
+        SendChatMessageOptions sendChatMessageRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.sendChatMessage(this.client.getEndpoint(), chatThreadId,
+            this.client.getApiVersion(), sendChatMessageRequest, accept, context));
+    }
+
+    /**
+     * Sends a message to a thread.
+     * 
      * @param chatThreadId The thread id to send the message to.
      * @param sendChatMessageRequest Details of the message to send.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the send message operation.
+     * @return result of the send message operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendChatMessageResult>> sendChatMessageWithResponseAsync(
-            String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
+    public Mono<Response<SendChatMessageResult>> sendChatMessageWithResponseAsync(String chatThreadId,
+        SendChatMessageOptions sendChatMessageRequest, Context context) {
         final String accept = "application/json";
-        return service.sendChatMessage(
-                this.client.getEndpoint(),
-                chatThreadId,
-                this.client.getApiVersion(),
-                sendChatMessageRequest,
-                accept,
-                context);
+        return service.sendChatMessage(this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(),
+            sendChatMessageRequest, accept, context);
     }
 
     /**
      * Sends a message to a thread.
-     *
+     * 
      * @param chatThreadId The thread id to send the message to.
      * @param sendChatMessageRequest Details of the message to send.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the send message operation.
+     * @return result of the send message operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendChatMessageResult> sendChatMessageAsync(
-            String chatThreadId, SendChatMessageOptions sendChatMessageRequest) {
+    public Mono<SendChatMessageResult> sendChatMessageAsync(String chatThreadId,
+        SendChatMessageOptions sendChatMessageRequest) {
         return sendChatMessageWithResponseAsync(chatThreadId, sendChatMessageRequest)
-                .flatMap(
-                        (Response<SendChatMessageResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Sends a message to a thread.
-     *
+     * 
      * @param chatThreadId The thread id to send the message to.
      * @param sendChatMessageRequest Details of the message to send.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the send message operation.
+     * @return result of the send message operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendChatMessageResult> sendChatMessageAsync(
-            String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
+    public Mono<SendChatMessageResult> sendChatMessageAsync(String chatThreadId,
+        SendChatMessageOptions sendChatMessageRequest, Context context) {
         return sendChatMessageWithResponseAsync(chatThreadId, sendChatMessageRequest, context)
-                .flatMap(
-                        (Response<SendChatMessageResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Sends a message to a thread.
-     *
+     * 
+     * @param chatThreadId The thread id to send the message to.
+     * @param sendChatMessageRequest Details of the message to send.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the send message operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SendChatMessageResult> sendChatMessageWithResponse(String chatThreadId,
+        SendChatMessageOptions sendChatMessageRequest, Context context) {
+        return sendChatMessageWithResponseAsync(chatThreadId, sendChatMessageRequest, context).block();
+    }
+
+    /**
+     * Sends a message to a thread.
+     * 
      * @param chatThreadId The thread id to send the message to.
      * @param sendChatMessageRequest Details of the message to send.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the send message operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SendChatMessageResult sendChatMessage(String chatThreadId, SendChatMessageOptions sendChatMessageRequest) {
-        return sendChatMessageAsync(chatThreadId, sendChatMessageRequest).block();
+        return sendChatMessageWithResponse(chatThreadId, sendChatMessageRequest, Context.NONE).getValue();
     }
 
     /**
-     * Sends a message to a thread.
-     *
-     * @param chatThreadId The thread id to send the message to.
-     * @param sendChatMessageRequest Details of the message to send.
+     * Gets a list of messages from a thread.
+     * 
+     * @param chatThreadId The thread id of the message.
+     * @param maxPageSize The maximum number of messages to be returned per page.
+     * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of messages from a thread along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ChatMessage>> listChatMessagesSinglePageAsync(String chatThreadId, Integer maxPageSize,
+        OffsetDateTime startTime) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listChatMessages(this.client.getEndpoint(), chatThreadId, maxPageSize,
+                startTime, this.client.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
+    }
+
+    /**
+     * Gets a list of messages from a thread.
+     * 
+     * @param chatThreadId The thread id of the message.
+     * @param maxPageSize The maximum number of messages to be returned per page.
+     * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the send message operation.
+     * @return a list of messages from a thread along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SendChatMessageResult> sendChatMessageWithResponse(
-            String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
-        return sendChatMessageWithResponseAsync(chatThreadId, sendChatMessageRequest, context).block();
-    }
-
-    /**
-     * Gets a list of messages from a thread.
-     *
-     * @param chatThreadId The thread id of the message.
-     * @param maxPageSize The maximum number of messages to be returned per page.
-     * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
-     *     `yyyy-MM-ddTHH:mm:ssZ`.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of messages from a thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatMessage>> listChatMessagesSinglePageAsync(
-            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime) {
+    public Mono<PagedResponse<ChatMessage>> listChatMessagesSinglePageAsync(String chatThreadId, Integer maxPageSize,
+        OffsetDateTime startTime, Context context) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listChatMessages(
-                                        this.client.getEndpoint(),
-                                        chatThreadId,
-                                        maxPageSize,
-                                        startTime,
-                                        this.client.getApiVersion(),
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return service
+            .listChatMessages(this.client.getEndpoint(), chatThreadId, maxPageSize, startTime,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Gets a list of messages from a thread.
-     *
+     * 
      * @param chatThreadId The thread id of the message.
      * @param maxPageSize The maximum number of messages to be returned per page.
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
-     *     `yyyy-MM-ddTHH:mm:ssZ`.
-     * @param context The context to associate with this operation.
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of messages from a thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatMessage>> listChatMessagesSinglePageAsync(
-            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime, Context context) {
-        final String accept = "application/json";
-        return service.listChatMessages(
-                        this.client.getEndpoint(),
-                        chatThreadId,
-                        maxPageSize,
-                        startTime,
-                        this.client.getApiVersion(),
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
-    }
-
-    /**
-     * Gets a list of messages from a thread.
-     *
-     * @param chatThreadId The thread id of the message.
-     * @param maxPageSize The maximum number of messages to be returned per page.
-     * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
-     *     `yyyy-MM-ddTHH:mm:ssZ`.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of messages from a thread.
+     * @return a list of messages from a thread as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ChatMessage> listChatMessagesAsync(
-            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime) {
-        return new PagedFlux<>(
-                () -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime),
-                nextLink -> listChatMessagesNextSinglePageAsync(nextLink));
+    public PagedFlux<ChatMessage> listChatMessagesAsync(String chatThreadId, Integer maxPageSize,
+        OffsetDateTime startTime) {
+        return new PagedFlux<>(() -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime),
+            nextLink -> listChatMessagesNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of messages from a thread.
-     *
+     * 
      * @param chatThreadId The thread id of the message.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of messages from a thread.
+     * @return a list of messages from a thread as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatMessage> listChatMessagesAsync(String chatThreadId) {
         final Integer maxPageSize = null;
         final OffsetDateTime startTime = null;
-        return new PagedFlux<>(
-                () -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime),
-                nextLink -> listChatMessagesNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime),
+            nextLink -> listChatMessagesNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of messages from a thread.
-     *
+     * 
      * @param chatThreadId The thread id of the message.
      * @param maxPageSize The maximum number of messages to be returned per page.
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
-     *     `yyyy-MM-ddTHH:mm:ssZ`.
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of messages from a thread.
+     * @return a list of messages from a thread as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ChatMessage> listChatMessagesAsync(
-            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime, Context context) {
-        return new PagedFlux<>(
-                () -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime, context),
-                nextLink -> listChatMessagesNextSinglePageAsync(nextLink, context));
+    public PagedFlux<ChatMessage> listChatMessagesAsync(String chatThreadId, Integer maxPageSize,
+        OffsetDateTime startTime, Context context) {
+        return new PagedFlux<>(() -> listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime, context),
+            nextLink -> listChatMessagesNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of messages from a thread.
-     *
+     * 
      * @param chatThreadId The thread id of the message.
      * @param maxPageSize The maximum number of messages to be returned per page.
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
-     *     `yyyy-MM-ddTHH:mm:ssZ`.
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of messages from a thread.
+     * @return a list of messages from a thread along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatMessage> listChatMessagesSinglePage(String chatThreadId, Integer maxPageSize,
+        OffsetDateTime startTime) {
+        return listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime).block();
+    }
+
+    /**
+     * Gets a list of messages from a thread.
+     * 
+     * @param chatThreadId The thread id of the message.
+     * @param maxPageSize The maximum number of messages to be returned per page.
+     * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of messages from a thread along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatMessage> listChatMessagesSinglePage(String chatThreadId, Integer maxPageSize,
+        OffsetDateTime startTime, Context context) {
+        return listChatMessagesSinglePageAsync(chatThreadId, maxPageSize, startTime, context).block();
+    }
+
+    /**
+     * Gets a list of messages from a thread.
+     * 
+     * @param chatThreadId The thread id of the message.
+     * @param maxPageSize The maximum number of messages to be returned per page.
+     * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of messages from a thread as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatMessage> listChatMessages(
-            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime) {
+    public PagedIterable<ChatMessage> listChatMessages(String chatThreadId, Integer maxPageSize,
+        OffsetDateTime startTime) {
         return new PagedIterable<>(listChatMessagesAsync(chatThreadId, maxPageSize, startTime));
     }
 
     /**
      * Gets a list of messages from a thread.
-     *
+     * 
      * @param chatThreadId The thread id of the message.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of messages from a thread.
+     * @return a list of messages from a thread as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatMessage> listChatMessages(String chatThreadId) {
@@ -838,379 +886,349 @@ public final class ChatThreadsImpl {
 
     /**
      * Gets a list of messages from a thread.
-     *
+     * 
      * @param chatThreadId The thread id of the message.
      * @param maxPageSize The maximum number of messages to be returned per page.
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
-     *     `yyyy-MM-ddTHH:mm:ssZ`.
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of messages from a thread.
+     * @return a list of messages from a thread as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatMessage> listChatMessages(
-            String chatThreadId, Integer maxPageSize, OffsetDateTime startTime, Context context) {
+    public PagedIterable<ChatMessage> listChatMessages(String chatThreadId, Integer maxPageSize,
+        OffsetDateTime startTime, Context context) {
         return new PagedIterable<>(listChatMessagesAsync(chatThreadId, maxPageSize, startTime, context));
     }
 
     /**
      * Gets a message by id.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a message by id.
+     * @return a message by id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChatMessage>> getChatMessageWithResponseAsync(String chatThreadId, String chatMessageId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getChatMessage(
-                                this.client.getEndpoint(),
-                                chatThreadId,
-                                chatMessageId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.getChatMessage(this.client.getEndpoint(), chatThreadId,
+            chatMessageId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Gets a message by id.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a message by id.
+     * @return a message by id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatMessage>> getChatMessageWithResponseAsync(
-            String chatThreadId, String chatMessageId, Context context) {
+    public Mono<Response<ChatMessage>> getChatMessageWithResponseAsync(String chatThreadId, String chatMessageId,
+        Context context) {
         final String accept = "application/json";
-        return service.getChatMessage(
-                this.client.getEndpoint(), chatThreadId, chatMessageId, this.client.getApiVersion(), accept, context);
+        return service.getChatMessage(this.client.getEndpoint(), chatThreadId, chatMessageId,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a message by id.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a message by id.
+     * @return a message by id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatMessage> getChatMessageAsync(String chatThreadId, String chatMessageId) {
         return getChatMessageWithResponseAsync(chatThreadId, chatMessageId)
-                .flatMap(
-                        (Response<ChatMessage> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a message by id.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a message by id.
+     * @return a message by id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatMessage> getChatMessageAsync(String chatThreadId, String chatMessageId, Context context) {
         return getChatMessageWithResponseAsync(chatThreadId, chatMessageId, context)
-                .flatMap(
-                        (Response<ChatMessage> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a message by id.
-     *
+     * 
+     * @param chatThreadId The thread id to which the message was sent.
+     * @param chatMessageId The message id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a message by id along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ChatMessage> getChatMessageWithResponse(String chatThreadId, String chatMessageId,
+        Context context) {
+        return getChatMessageWithResponseAsync(chatThreadId, chatMessageId, context).block();
+    }
+
+    /**
+     * Gets a message by id.
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a message by id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChatMessage getChatMessage(String chatThreadId, String chatMessageId) {
-        return getChatMessageAsync(chatThreadId, chatMessageId).block();
-    }
-
-    /**
-     * Gets a message by id.
-     *
-     * @param chatThreadId The thread id to which the message was sent.
-     * @param chatMessageId The message id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a message by id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChatMessage> getChatMessageWithResponse(
-            String chatThreadId, String chatMessageId, Context context) {
-        return getChatMessageWithResponseAsync(chatThreadId, chatMessageId, context).block();
+        return getChatMessageWithResponse(chatThreadId, chatMessageId, Context.NONE).getValue();
     }
 
     /**
      * Updates a message.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @param updateChatMessageRequest Details of the request to update the message.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateChatMessageWithResponseAsync(
-            String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
+    public Mono<Response<Void>> updateChatMessageWithResponseAsync(String chatThreadId, String chatMessageId,
+        UpdateChatMessageOptions updateChatMessageRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.updateChatMessage(
-                                this.client.getEndpoint(),
-                                chatThreadId,
-                                chatMessageId,
-                                this.client.getApiVersion(),
-                                updateChatMessageRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.updateChatMessage(this.client.getEndpoint(), chatThreadId,
+            chatMessageId, this.client.getApiVersion(), updateChatMessageRequest, accept, context));
     }
 
     /**
      * Updates a message.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @param updateChatMessageRequest Details of the request to update the message.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateChatMessageWithResponseAsync(
-            String chatThreadId,
-            String chatMessageId,
-            UpdateChatMessageOptions updateChatMessageRequest,
-            Context context) {
+    public Mono<Response<Void>> updateChatMessageWithResponseAsync(String chatThreadId, String chatMessageId,
+        UpdateChatMessageOptions updateChatMessageRequest, Context context) {
         final String accept = "application/json";
-        return service.updateChatMessage(
-                this.client.getEndpoint(),
-                chatThreadId,
-                chatMessageId,
-                this.client.getApiVersion(),
-                updateChatMessageRequest,
-                accept,
-                context);
+        return service.updateChatMessage(this.client.getEndpoint(), chatThreadId, chatMessageId,
+            this.client.getApiVersion(), updateChatMessageRequest, accept, context);
     }
 
     /**
      * Updates a message.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @param updateChatMessageRequest Details of the request to update the message.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateChatMessageAsync(
-            String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
+    public Mono<Void> updateChatMessageAsync(String chatThreadId, String chatMessageId,
+        UpdateChatMessageOptions updateChatMessageRequest) {
         return updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, updateChatMessageRequest)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Updates a message.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @param updateChatMessageRequest Details of the request to update the message.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateChatMessageAsync(
-            String chatThreadId,
-            String chatMessageId,
-            UpdateChatMessageOptions updateChatMessageRequest,
-            Context context) {
+    public Mono<Void> updateChatMessageAsync(String chatThreadId, String chatMessageId,
+        UpdateChatMessageOptions updateChatMessageRequest, Context context) {
         return updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, updateChatMessageRequest, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Updates a message.
-     *
-     * @param chatThreadId The thread id to which the message was sent.
-     * @param chatMessageId The message id.
-     * @param updateChatMessageRequest Details of the request to update the message.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateChatMessage(
-            String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
-        updateChatMessageAsync(chatThreadId, chatMessageId, updateChatMessageRequest).block();
-    }
-
-    /**
-     * Updates a message.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @param updateChatMessageRequest Details of the request to update the message.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateChatMessageWithResponse(
-            String chatThreadId,
-            String chatMessageId,
-            UpdateChatMessageOptions updateChatMessageRequest,
-            Context context) {
+    public Response<Void> updateChatMessageWithResponse(String chatThreadId, String chatMessageId,
+        UpdateChatMessageOptions updateChatMessageRequest, Context context) {
         return updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, updateChatMessageRequest, context)
-                .block();
+            .block();
+    }
+
+    /**
+     * Updates a message.
+     * 
+     * @param chatThreadId The thread id to which the message was sent.
+     * @param chatMessageId The message id.
+     * @param updateChatMessageRequest Details of the request to update the message.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateChatMessage(String chatThreadId, String chatMessageId,
+        UpdateChatMessageOptions updateChatMessageRequest) {
+        updateChatMessageWithResponse(chatThreadId, chatMessageId, updateChatMessageRequest, Context.NONE);
     }
 
     /**
      * Deletes a message.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteChatMessageWithResponseAsync(String chatThreadId, String chatMessageId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteChatMessage(
-                                this.client.getEndpoint(),
-                                chatThreadId,
-                                chatMessageId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteChatMessage(this.client.getEndpoint(), chatThreadId,
+            chatMessageId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Deletes a message.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteChatMessageWithResponseAsync(
-            String chatThreadId, String chatMessageId, Context context) {
+    public Mono<Response<Void>> deleteChatMessageWithResponseAsync(String chatThreadId, String chatMessageId,
+        Context context) {
         final String accept = "application/json";
-        return service.deleteChatMessage(
-                this.client.getEndpoint(), chatThreadId, chatMessageId, this.client.getApiVersion(), accept, context);
+        return service.deleteChatMessage(this.client.getEndpoint(), chatThreadId, chatMessageId,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a message.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteChatMessageAsync(String chatThreadId, String chatMessageId) {
-        return deleteChatMessageWithResponseAsync(chatThreadId, chatMessageId)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteChatMessageWithResponseAsync(chatThreadId, chatMessageId).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a message.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteChatMessageAsync(String chatThreadId, String chatMessageId, Context context) {
         return deleteChatMessageWithResponseAsync(chatThreadId, chatMessageId, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a message.
-     *
-     * @param chatThreadId The thread id to which the message was sent.
-     * @param chatMessageId The message id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteChatMessage(String chatThreadId, String chatMessageId) {
-        deleteChatMessageAsync(chatThreadId, chatMessageId).block();
-    }
-
-    /**
-     * Deletes a message.
-     *
+     * 
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteChatMessageWithResponse(String chatThreadId, String chatMessageId, Context context) {
@@ -1218,143 +1236,181 @@ public final class ChatThreadsImpl {
     }
 
     /**
+     * Deletes a message.
+     * 
+     * @param chatThreadId The thread id to which the message was sent.
+     * @param chatMessageId The message id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteChatMessage(String chatThreadId, String chatMessageId) {
+        deleteChatMessageWithResponse(chatThreadId, chatMessageId, Context.NONE);
+    }
+
+    /**
      * Gets the participants of a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get participants for.
      * @param maxPageSize The maximum number of participants to be returned per page.
      * @param skip Skips participants up to a specified position in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the participants of a thread.
+     * @return the participants of a thread along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatParticipant>> listChatParticipantsSinglePageAsync(
-            String chatThreadId, Integer maxPageSize, Integer skip) {
+    public Mono<PagedResponse<ChatParticipant>> listChatParticipantsSinglePageAsync(String chatThreadId,
+        Integer maxPageSize, Integer skip) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listChatParticipants(
-                                        this.client.getEndpoint(),
-                                        chatThreadId,
-                                        maxPageSize,
-                                        skip,
-                                        this.client.getApiVersion(),
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listChatParticipants(this.client.getEndpoint(), chatThreadId, maxPageSize,
+                skip, this.client.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Gets the participants of a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get participants for.
      * @param maxPageSize The maximum number of participants to be returned per page.
      * @param skip Skips participants up to a specified position in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the participants of a thread.
+     * @return the participants of a thread along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatParticipant>> listChatParticipantsSinglePageAsync(
-            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
+    public Mono<PagedResponse<ChatParticipant>> listChatParticipantsSinglePageAsync(String chatThreadId,
+        Integer maxPageSize, Integer skip, Context context) {
         final String accept = "application/json";
-        return service.listChatParticipants(
-                        this.client.getEndpoint(),
-                        chatThreadId,
-                        maxPageSize,
-                        skip,
-                        this.client.getApiVersion(),
-                        accept,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return service
+            .listChatParticipants(this.client.getEndpoint(), chatThreadId, maxPageSize, skip,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Gets the participants of a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get participants for.
      * @param maxPageSize The maximum number of participants to be returned per page.
      * @param skip Skips participants up to a specified position in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the participants of a thread.
+     * @return the participants of a thread as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ChatParticipant> listChatParticipantsAsync(
-            String chatThreadId, Integer maxPageSize, Integer skip) {
-        return new PagedFlux<>(
-                () -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip),
-                nextLink -> listChatParticipantsNextSinglePageAsync(nextLink));
+    public PagedFlux<ChatParticipant> listChatParticipantsAsync(String chatThreadId, Integer maxPageSize,
+        Integer skip) {
+        return new PagedFlux<>(() -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip),
+            nextLink -> listChatParticipantsNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the participants of a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get participants for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the participants of a thread.
+     * @return the participants of a thread as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatParticipant> listChatParticipantsAsync(String chatThreadId) {
         final Integer maxPageSize = null;
         final Integer skip = null;
-        return new PagedFlux<>(
-                () -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip),
-                nextLink -> listChatParticipantsNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip),
+            nextLink -> listChatParticipantsNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the participants of a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get participants for.
      * @param maxPageSize The maximum number of participants to be returned per page.
      * @param skip Skips participants up to a specified position in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the participants of a thread.
+     * @return the participants of a thread as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ChatParticipant> listChatParticipantsAsync(
-            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
-        return new PagedFlux<>(
-                () -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip, context),
-                nextLink -> listChatParticipantsNextSinglePageAsync(nextLink, context));
+    public PagedFlux<ChatParticipant> listChatParticipantsAsync(String chatThreadId, Integer maxPageSize, Integer skip,
+        Context context) {
+        return new PagedFlux<>(() -> listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip, context),
+            nextLink -> listChatParticipantsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the participants of a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get participants for.
      * @param maxPageSize The maximum number of participants to be returned per page.
      * @param skip Skips participants up to a specified position in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the participants of a thread.
+     * @return the participants of a thread along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatParticipant> listChatParticipantsSinglePage(String chatThreadId, Integer maxPageSize,
+        Integer skip) {
+        return listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip).block();
+    }
+
+    /**
+     * Gets the participants of a thread.
+     * 
+     * @param chatThreadId Thread id to get participants for.
+     * @param maxPageSize The maximum number of participants to be returned per page.
+     * @param skip Skips participants up to a specified position in response.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the participants of a thread along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatParticipant> listChatParticipantsSinglePage(String chatThreadId, Integer maxPageSize,
+        Integer skip, Context context) {
+        return listChatParticipantsSinglePageAsync(chatThreadId, maxPageSize, skip, context).block();
+    }
+
+    /**
+     * Gets the participants of a thread.
+     * 
+     * @param chatThreadId Thread id to get participants for.
+     * @param maxPageSize The maximum number of participants to be returned per page.
+     * @param skip Skips participants up to a specified position in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the participants of a thread as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatParticipant> listChatParticipants(String chatThreadId, Integer maxPageSize, Integer skip) {
@@ -1363,12 +1419,14 @@ public final class ChatThreadsImpl {
 
     /**
      * Gets the participants of a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get participants for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the participants of a thread.
+     * @return the participants of a thread as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatParticipant> listChatParticipants(String chatThreadId) {
@@ -1379,489 +1437,458 @@ public final class ChatThreadsImpl {
 
     /**
      * Gets the participants of a thread.
-     *
+     * 
      * @param chatThreadId Thread id to get participants for.
      * @param maxPageSize The maximum number of participants to be returned per page.
      * @param skip Skips participants up to a specified position in response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the participants of a thread.
+     * @return the participants of a thread as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatParticipant> listChatParticipants(
-            String chatThreadId, Integer maxPageSize, Integer skip, Context context) {
+    public PagedIterable<ChatParticipant> listChatParticipants(String chatThreadId, Integer maxPageSize, Integer skip,
+        Context context) {
         return new PagedIterable<>(listChatParticipantsAsync(chatThreadId, maxPageSize, skip, context));
     }
 
     /**
      * Remove a participant from a thread.
-     *
+     * 
      * @param chatThreadId Thread id to remove the participant from.
      * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeChatParticipantWithResponseAsync(
-            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
+    public Mono<Response<Void>> removeChatParticipantWithResponseAsync(String chatThreadId,
+        CommunicationIdentifierModel participantCommunicationIdentifier) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.removeChatParticipant(
-                                this.client.getEndpoint(),
-                                chatThreadId,
-                                this.client.getApiVersion(),
-                                participantCommunicationIdentifier,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.removeChatParticipant(this.client.getEndpoint(), chatThreadId,
+            this.client.getApiVersion(), participantCommunicationIdentifier, accept, context));
     }
 
     /**
      * Remove a participant from a thread.
-     *
+     * 
      * @param chatThreadId Thread id to remove the participant from.
      * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeChatParticipantWithResponseAsync(
-            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
+    public Mono<Response<Void>> removeChatParticipantWithResponseAsync(String chatThreadId,
+        CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
         final String accept = "application/json";
-        return service.removeChatParticipant(
-                this.client.getEndpoint(),
-                chatThreadId,
-                this.client.getApiVersion(),
-                participantCommunicationIdentifier,
-                accept,
-                context);
+        return service.removeChatParticipant(this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(),
+            participantCommunicationIdentifier, accept, context);
     }
 
     /**
      * Remove a participant from a thread.
-     *
+     * 
      * @param chatThreadId Thread id to remove the participant from.
      * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeChatParticipantAsync(
-            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
+    public Mono<Void> removeChatParticipantAsync(String chatThreadId,
+        CommunicationIdentifierModel participantCommunicationIdentifier) {
         return removeChatParticipantWithResponseAsync(chatThreadId, participantCommunicationIdentifier)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Remove a participant from a thread.
-     *
+     * 
      * @param chatThreadId Thread id to remove the participant from.
      * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeChatParticipantAsync(
-            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
+    public Mono<Void> removeChatParticipantAsync(String chatThreadId,
+        CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
         return removeChatParticipantWithResponseAsync(chatThreadId, participantCommunicationIdentifier, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Remove a participant from a thread.
-     *
-     * @param chatThreadId Thread id to remove the participant from.
-     * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeChatParticipant(
-            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier) {
-        removeChatParticipantAsync(chatThreadId, participantCommunicationIdentifier).block();
-    }
-
-    /**
-     * Remove a participant from a thread.
-     *
+     * 
      * @param chatThreadId Thread id to remove the participant from.
      * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeChatParticipantWithResponse(
-            String chatThreadId, CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
+    public Response<Void> removeChatParticipantWithResponse(String chatThreadId,
+        CommunicationIdentifierModel participantCommunicationIdentifier, Context context) {
         return removeChatParticipantWithResponseAsync(chatThreadId, participantCommunicationIdentifier, context)
-                .block();
+            .block();
+    }
+
+    /**
+     * Remove a participant from a thread.
+     * 
+     * @param chatThreadId Thread id to remove the participant from.
+     * @param participantCommunicationIdentifier Id of the thread participant to remove from the thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void removeChatParticipant(String chatThreadId,
+        CommunicationIdentifierModel participantCommunicationIdentifier) {
+        removeChatParticipantWithResponse(chatThreadId, participantCommunicationIdentifier, Context.NONE);
     }
 
     /**
      * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
+     * 
      * @param chatThreadId Id of the thread to add participants to.
      * @param addChatParticipantsRequest Thread participants to be added to the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the add chat participants operation.
+     * @return result of the add chat participants operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddChatParticipantsResult>> addChatParticipantsWithResponseAsync(
-            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
+    public Mono<Response<AddChatParticipantsResult>> addChatParticipantsWithResponseAsync(String chatThreadId,
+        AddChatParticipantsOptions addChatParticipantsRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.addChatParticipants(
-                                this.client.getEndpoint(),
-                                chatThreadId,
-                                this.client.getApiVersion(),
-                                addChatParticipantsRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.addChatParticipants(this.client.getEndpoint(), chatThreadId,
+            this.client.getApiVersion(), addChatParticipantsRequest, accept, context));
     }
 
     /**
      * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
+     * 
      * @param chatThreadId Id of the thread to add participants to.
      * @param addChatParticipantsRequest Thread participants to be added to the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the add chat participants operation.
+     * @return result of the add chat participants operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AddChatParticipantsResult>> addChatParticipantsWithResponseAsync(
-            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+    public Mono<Response<AddChatParticipantsResult>> addChatParticipantsWithResponseAsync(String chatThreadId,
+        AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
         final String accept = "application/json";
-        return service.addChatParticipants(
-                this.client.getEndpoint(),
-                chatThreadId,
-                this.client.getApiVersion(),
-                addChatParticipantsRequest,
-                accept,
-                context);
+        return service.addChatParticipants(this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(),
+            addChatParticipantsRequest, accept, context);
     }
 
     /**
      * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
+     * 
      * @param chatThreadId Id of the thread to add participants to.
      * @param addChatParticipantsRequest Thread participants to be added to the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the add chat participants operation.
+     * @return result of the add chat participants operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AddChatParticipantsResult> addChatParticipantsAsync(
-            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
+    public Mono<AddChatParticipantsResult> addChatParticipantsAsync(String chatThreadId,
+        AddChatParticipantsOptions addChatParticipantsRequest) {
         return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest)
-                .flatMap(
-                        (Response<AddChatParticipantsResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
+     * 
      * @param chatThreadId Id of the thread to add participants to.
      * @param addChatParticipantsRequest Thread participants to be added to the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the add chat participants operation.
+     * @return result of the add chat participants operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AddChatParticipantsResult> addChatParticipantsAsync(
-            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+    public Mono<AddChatParticipantsResult> addChatParticipantsAsync(String chatThreadId,
+        AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
         return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest, context)
-                .flatMap(
-                        (Response<AddChatParticipantsResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
-     * @param chatThreadId Id of the thread to add participants to.
-     * @param addChatParticipantsRequest Thread participants to be added to the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the add chat participants operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddChatParticipantsResult addChatParticipants(
-            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
-        return addChatParticipantsAsync(chatThreadId, addChatParticipantsRequest).block();
-    }
-
-    /**
-     * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
+     * 
      * @param chatThreadId Id of the thread to add participants to.
      * @param addChatParticipantsRequest Thread participants to be added to the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the add chat participants operation.
+     * @return result of the add chat participants operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddChatParticipantsResult> addChatParticipantsWithResponse(
-            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+    public Response<AddChatParticipantsResult> addChatParticipantsWithResponse(String chatThreadId,
+        AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
         return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest, context).block();
     }
 
     /**
-     * Updates a thread's properties.
-     *
-     * @param chatThreadId The id of the thread to update.
-     * @param updateChatThreadRequest Request payload for updating a chat thread.
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
+     * 
+     * @param chatThreadId Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Thread participants to be added to the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return result of the add chat participants operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateChatThreadPropertiesWithResponseAsync(
-            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.updateChatThreadProperties(
-                                this.client.getEndpoint(),
-                                chatThreadId,
-                                this.client.getApiVersion(),
-                                updateChatThreadRequest,
-                                accept,
-                                context));
+    public AddChatParticipantsResult addChatParticipants(String chatThreadId,
+        AddChatParticipantsOptions addChatParticipantsRequest) {
+        return addChatParticipantsWithResponse(chatThreadId, addChatParticipantsRequest, Context.NONE).getValue();
     }
 
     /**
      * Updates a thread's properties.
-     *
+     * 
+     * @param chatThreadId The id of the thread to update.
+     * @param updateChatThreadRequest Request payload for updating a chat thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateChatThreadPropertiesWithResponseAsync(String chatThreadId,
+        UpdateChatThreadOptions updateChatThreadRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.updateChatThreadProperties(this.client.getEndpoint(),
+            chatThreadId, this.client.getApiVersion(), updateChatThreadRequest, accept, context));
+    }
+
+    /**
+     * Updates a thread's properties.
+     * 
      * @param chatThreadId The id of the thread to update.
      * @param updateChatThreadRequest Request payload for updating a chat thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateChatThreadPropertiesWithResponseAsync(
-            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
+    public Mono<Response<Void>> updateChatThreadPropertiesWithResponseAsync(String chatThreadId,
+        UpdateChatThreadOptions updateChatThreadRequest, Context context) {
         final String accept = "application/json";
-        return service.updateChatThreadProperties(
-                this.client.getEndpoint(),
-                chatThreadId,
-                this.client.getApiVersion(),
-                updateChatThreadRequest,
-                accept,
-                context);
+        return service.updateChatThreadProperties(this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(),
+            updateChatThreadRequest, accept, context);
     }
 
     /**
      * Updates a thread's properties.
-     *
+     * 
      * @param chatThreadId The id of the thread to update.
      * @param updateChatThreadRequest Request payload for updating a chat thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateChatThreadPropertiesAsync(
-            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
+    public Mono<Void> updateChatThreadPropertiesAsync(String chatThreadId,
+        UpdateChatThreadOptions updateChatThreadRequest) {
         return updateChatThreadPropertiesWithResponseAsync(chatThreadId, updateChatThreadRequest)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Updates a thread's properties.
-     *
+     * 
      * @param chatThreadId The id of the thread to update.
      * @param updateChatThreadRequest Request payload for updating a chat thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateChatThreadPropertiesAsync(
-            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
+    public Mono<Void> updateChatThreadPropertiesAsync(String chatThreadId,
+        UpdateChatThreadOptions updateChatThreadRequest, Context context) {
         return updateChatThreadPropertiesWithResponseAsync(chatThreadId, updateChatThreadRequest, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Updates a thread's properties.
-     *
-     * @param chatThreadId The id of the thread to update.
-     * @param updateChatThreadRequest Request payload for updating a chat thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateChatThreadProperties(String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
-        updateChatThreadPropertiesAsync(chatThreadId, updateChatThreadRequest).block();
-    }
-
-    /**
-     * Updates a thread's properties.
-     *
+     * 
      * @param chatThreadId The id of the thread to update.
      * @param updateChatThreadRequest Request payload for updating a chat thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateChatThreadPropertiesWithResponse(
-            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
+    public Response<Void> updateChatThreadPropertiesWithResponse(String chatThreadId,
+        UpdateChatThreadOptions updateChatThreadRequest, Context context) {
         return updateChatThreadPropertiesWithResponseAsync(chatThreadId, updateChatThreadRequest, context).block();
     }
 
     /**
+     * Updates a thread's properties.
+     * 
+     * @param chatThreadId The id of the thread to update.
+     * @param updateChatThreadRequest Request payload for updating a chat thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateChatThreadProperties(String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
+        updateChatThreadPropertiesWithResponse(chatThreadId, updateChatThreadRequest, Context.NONE);
+    }
+
+    /**
      * Gets a chat thread's properties.
-     *
+     * 
      * @param chatThreadId Id of the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread's properties.
+     * @return a chat thread's properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChatThreadProperties>> getChatThreadPropertiesWithResponseAsync(String chatThreadId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getChatThreadProperties(
-                                this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.getChatThreadProperties(this.client.getEndpoint(), chatThreadId,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Gets a chat thread's properties.
-     *
+     * 
      * @param chatThreadId Id of the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread's properties.
+     * @return a chat thread's properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatThreadProperties>> getChatThreadPropertiesWithResponseAsync(
-            String chatThreadId, Context context) {
+    public Mono<Response<ChatThreadProperties>> getChatThreadPropertiesWithResponseAsync(String chatThreadId,
+        Context context) {
         final String accept = "application/json";
-        return service.getChatThreadProperties(
-                this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context);
+        return service.getChatThreadProperties(this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Gets a chat thread's properties.
-     *
+     * 
      * @param chatThreadId Id of the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread's properties.
+     * @return a chat thread's properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatThreadProperties> getChatThreadPropertiesAsync(String chatThreadId) {
-        return getChatThreadPropertiesWithResponseAsync(chatThreadId)
-                .flatMap(
-                        (Response<ChatThreadProperties> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getChatThreadPropertiesWithResponseAsync(chatThreadId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a chat thread's properties.
-     *
+     * 
      * @param chatThreadId Id of the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread's properties.
+     * @return a chat thread's properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatThreadProperties> getChatThreadPropertiesAsync(String chatThreadId, Context context) {
         return getChatThreadPropertiesWithResponseAsync(chatThreadId, context)
-                .flatMap(
-                        (Response<ChatThreadProperties> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a chat thread's properties.
-     *
-     * @param chatThreadId Id of the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread's properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChatThreadProperties getChatThreadProperties(String chatThreadId) {
-        return getChatThreadPropertiesAsync(chatThreadId).block();
-    }
-
-    /**
-     * Gets a chat thread's properties.
-     *
+     * 
      * @param chatThreadId Id of the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a chat thread's properties.
+     * @return a chat thread's properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChatThreadProperties> getChatThreadPropertiesWithResponse(String chatThreadId, Context context) {
@@ -1869,301 +1896,396 @@ public final class ChatThreadsImpl {
     }
 
     /**
-     * Posts a typing event to a thread, on behalf of a user.
-     *
+     * Gets a chat thread's properties.
+     * 
      * @param chatThreadId Id of the thread.
-     * @param sendTypingNotificationRequest Details of the typing notification request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return a chat thread's properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(
-            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.sendTypingNotification(
-                                this.client.getEndpoint(),
-                                chatThreadId,
-                                this.client.getApiVersion(),
-                                sendTypingNotificationRequest,
-                                accept,
-                                context));
+    public ChatThreadProperties getChatThreadProperties(String chatThreadId) {
+        return getChatThreadPropertiesWithResponse(chatThreadId, Context.NONE).getValue();
     }
 
     /**
      * Posts a typing event to a thread, on behalf of a user.
-     *
+     * 
+     * @param chatThreadId Id of the thread.
+     * @param sendTypingNotificationRequest Details of the typing notification request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(String chatThreadId,
+        TypingNotificationOptions sendTypingNotificationRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.sendTypingNotification(this.client.getEndpoint(), chatThreadId,
+            this.client.getApiVersion(), sendTypingNotificationRequest, accept, context));
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     * 
      * @param chatThreadId Id of the thread.
      * @param sendTypingNotificationRequest Details of the typing notification request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(
-            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest, Context context) {
+    public Mono<Response<Void>> sendTypingNotificationWithResponseAsync(String chatThreadId,
+        TypingNotificationOptions sendTypingNotificationRequest, Context context) {
         final String accept = "application/json";
-        return service.sendTypingNotification(
-                this.client.getEndpoint(),
-                chatThreadId,
-                this.client.getApiVersion(),
-                sendTypingNotificationRequest,
-                accept,
-                context);
+        return service.sendTypingNotification(this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(),
+            sendTypingNotificationRequest, accept, context);
     }
 
     /**
      * Posts a typing event to a thread, on behalf of a user.
-     *
+     * 
      * @param chatThreadId Id of the thread.
      * @param sendTypingNotificationRequest Details of the typing notification request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendTypingNotificationAsync(
-            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest) {
+    public Mono<Void> sendTypingNotificationAsync(String chatThreadId,
+        TypingNotificationOptions sendTypingNotificationRequest) {
         return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Posts a typing event to a thread, on behalf of a user.
-     *
+     * 
      * @param chatThreadId Id of the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendTypingNotificationAsync(String chatThreadId) {
         final TypingNotificationOptions sendTypingNotificationRequest = null;
         return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Posts a typing event to a thread, on behalf of a user.
-     *
+     * 
      * @param chatThreadId Id of the thread.
      * @param sendTypingNotificationRequest Details of the typing notification request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendTypingNotificationAsync(
-            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest, Context context) {
+    public Mono<Void> sendTypingNotificationAsync(String chatThreadId,
+        TypingNotificationOptions sendTypingNotificationRequest, Context context) {
         return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Posts a typing event to a thread, on behalf of a user.
-     *
+     * 
+     * @param chatThreadId Id of the thread.
+     * @param sendTypingNotificationRequest Details of the typing notification request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> sendTypingNotificationWithResponse(String chatThreadId,
+        TypingNotificationOptions sendTypingNotificationRequest, Context context) {
+        return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest, context).block();
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     * 
      * @param chatThreadId Id of the thread.
      * @param sendTypingNotificationRequest Details of the typing notification request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendTypingNotification(String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest) {
-        sendTypingNotificationAsync(chatThreadId, sendTypingNotificationRequest).block();
+        sendTypingNotificationWithResponse(chatThreadId, sendTypingNotificationRequest, Context.NONE);
     }
 
     /**
      * Posts a typing event to a thread, on behalf of a user.
-     *
+     * 
      * @param chatThreadId Id of the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendTypingNotification(String chatThreadId) {
         final TypingNotificationOptions sendTypingNotificationRequest = null;
-        sendTypingNotificationAsync(chatThreadId, sendTypingNotificationRequest).block();
-    }
-
-    /**
-     * Posts a typing event to a thread, on behalf of a user.
-     *
-     * @param chatThreadId Id of the thread.
-     * @param sendTypingNotificationRequest Details of the typing notification request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendTypingNotificationWithResponse(
-            String chatThreadId, TypingNotificationOptions sendTypingNotificationRequest, Context context) {
-        return sendTypingNotificationWithResponseAsync(chatThreadId, sendTypingNotificationRequest, context).block();
+        sendTypingNotificationWithResponse(chatThreadId, sendTypingNotificationRequest, Context.NONE);
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of chat message read receipts.
+     * @return a paged collection of chat message read receipts along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listChatReadReceiptsNext(nextLink, this.client.getEndpoint(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listChatReadReceiptsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged collection of chat message read receipts.
+     * @return a paged collection of chat message read receipts along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsNextSinglePageAsync(
-            String nextLink, Context context) {
+    public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsNextSinglePageAsync(String nextLink,
+        Context context) {
         final String accept = "application/json";
         return service.listChatReadReceiptsNext(nextLink, this.client.getEndpoint(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of chat messages for a particular chat thread.
+     * @return a paged collection of chat message read receipts along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatMessageReadReceipt> listChatReadReceiptsNextSinglePage(String nextLink) {
+        return listChatReadReceiptsNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of chat message read receipts along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatMessageReadReceipt> listChatReadReceiptsNextSinglePage(String nextLink, Context context) {
+        return listChatReadReceiptsNextSinglePageAsync(nextLink, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of chat messages for a particular chat thread along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatMessage>> listChatMessagesNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context -> service.listChatMessagesNext(nextLink, this.client.getEndpoint(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listChatMessagesNext(nextLink, this.client.getEndpoint(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of chat messages for a particular chat thread.
+     * @return collection of chat messages for a particular chat thread along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatMessage>> listChatMessagesNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
         return service.listChatMessagesNext(nextLink, this.client.getEndpoint(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of participants belong to a particular thread.
+     * @return collection of chat messages for a particular chat thread along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatMessage> listChatMessagesNextSinglePage(String nextLink) {
+        return listChatMessagesNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of chat messages for a particular chat thread along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatMessage> listChatMessagesNextSinglePage(String nextLink, Context context) {
+        return listChatMessagesNextSinglePageAsync(nextLink, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of participants belong to a particular thread along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatParticipant>> listChatParticipantsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listChatParticipantsNext(nextLink, this.client.getEndpoint(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listChatParticipantsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of participants belong to a particular thread.
+     * @return collection of participants belong to a particular thread along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatParticipant>> listChatParticipantsNextSinglePageAsync(
-            String nextLink, Context context) {
+    public Mono<PagedResponse<ChatParticipant>> listChatParticipantsNextSinglePageAsync(String nextLink,
+        Context context) {
         final String accept = "application/json";
         return service.listChatParticipantsNext(nextLink, this.client.getEndpoint(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of participants belong to a particular thread along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatParticipant> listChatParticipantsNextSinglePage(String nextLink) {
+        return listChatParticipantsNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server on status code 401, 403,
+     * 429, 503.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of participants belong to a particular thread along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ChatParticipant> listChatParticipantsNextSinglePage(String nextLink, Context context) {
+        return listChatParticipantsNextSinglePageAsync(nextLink, context).block();
     }
 }

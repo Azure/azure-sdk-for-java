@@ -6,63 +6,46 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.CreateDataFlowDebugSessionRequest;
 import com.azure.resourcemanager.datafactory.models.CreateDataFlowDebugSessionResponse;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntime;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeDebugResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DataFlowDebugSessionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr = "{\"status\":\"mpuqnvn\",\"sessionId\":\"awicou\"}";
 
-        String responseStr = "{\"status\":\"ygecly\",\"sessionId\":\"oshkzibbjbzdnkg\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        CreateDataFlowDebugSessionResponse response
-            = manager.dataFlowDebugSessions().create("acurmmbunazlivvn", "zcnqwisuh",
-                new CreateDataFlowDebugSessionRequest().withComputeType("eqyiadv").withCoreCount(1802611604)
-                    .withTimeToLive(902558442)
-                    .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("siflf")
-                        .withProperties(new IntegrationRuntime().withDescription("lpnlpnyyu")
+        CreateDataFlowDebugSessionResponse response = manager.dataFlowDebugSessions()
+            .create("ixfosrwzhm", "klocyjpmbtnv",
+                new CreateDataFlowDebugSessionRequest().withComputeType("mhkfkvdmjjiqjv")
+                    .withCoreCount(944548630)
+                    .withTimeToLive(1599364288)
+                    .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("feyhny")
+                        .withProperties(new IntegrationRuntime().withDescription("i")
                             .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ygecly", response.status());
-        Assertions.assertEquals("oshkzibbjbzdnkg", response.sessionId());
+        Assertions.assertEquals("mpuqnvn", response.status());
+        Assertions.assertEquals("awicou", response.sessionId());
     }
 
     // Use "Map.of" if available

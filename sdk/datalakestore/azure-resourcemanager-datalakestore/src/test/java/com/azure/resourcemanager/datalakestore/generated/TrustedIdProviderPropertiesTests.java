@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datalakestore.fluent.models.TrustedIdProviderPr
 public final class TrustedIdProviderPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrustedIdProviderProperties model =
-            BinaryData.fromString("{\"idProvider\":\"iy\"}").toObject(TrustedIdProviderProperties.class);
+        TrustedIdProviderProperties model
+            = BinaryData.fromString("{\"idProvider\":\"ndv\"}").toObject(TrustedIdProviderProperties.class);
     }
 
     @org.junit.jupiter.api.Test

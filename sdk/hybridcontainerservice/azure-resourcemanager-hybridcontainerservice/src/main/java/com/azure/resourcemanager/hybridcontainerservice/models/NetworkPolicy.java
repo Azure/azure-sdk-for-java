@@ -5,23 +5,16 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'calico', 'flannel'.
- * Default is 'calico'.
+ * Network policy used for building Kubernetes network. Possible values include: 'calico'.
  */
 public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
     /**
      * Static value calico for NetworkPolicy.
      */
     public static final NetworkPolicy CALICO = fromString("calico");
-
-    /**
-     * Static value flannel for NetworkPolicy.
-     */
-    public static final NetworkPolicy FLANNEL = fromString("flannel");
 
     /**
      * Creates a new instance of NetworkPolicy value.
@@ -38,7 +31,6 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
      * @param name a name to look for.
      * @return the corresponding NetworkPolicy.
      */
-    @JsonCreator
     public static NetworkPolicy fromString(String name) {
         return fromString(name, NetworkPolicy.class);
     }

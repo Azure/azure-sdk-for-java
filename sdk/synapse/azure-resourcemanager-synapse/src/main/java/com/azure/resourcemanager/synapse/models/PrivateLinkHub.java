@@ -10,102 +10,111 @@ import com.azure.resourcemanager.synapse.fluent.models.PrivateLinkHubInner;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of PrivateLinkHub. */
+/**
+ * An immutable client-side representation of PrivateLinkHub.
+ */
 public interface PrivateLinkHub {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the provisioningState property: PrivateLinkHub provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the privateEndpointConnections property: List of private endpoint connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.PrivateLinkHubInner object.
-     *
+     * 
      * @return the inner object.
      */
     PrivateLinkHubInner innerModel();
 
-    /** The entirety of the PrivateLinkHub definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the PrivateLinkHub definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
-    /** The PrivateLinkHub definition stages. */
+
+    /**
+     * The PrivateLinkHub definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the PrivateLinkHub definition. */
+        /**
+         * The first stage of the PrivateLinkHub definition.
+         */
         interface Blank extends WithLocation {
         }
-        /** The stage of the PrivateLinkHub definition allowing to specify location. */
+
+        /**
+         * The stage of the PrivateLinkHub definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -113,22 +122,26 @@ public interface PrivateLinkHub {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
-        /** The stage of the PrivateLinkHub definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the PrivateLinkHub definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the PrivateLinkHub definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -136,87 +149,102 @@ public interface PrivateLinkHub {
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProvisioningState {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             PrivateLinkHub create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             PrivateLinkHub create(Context context);
         }
-        /** The stage of the PrivateLinkHub definition allowing to specify tags. */
+
+        /**
+         * The stage of the PrivateLinkHub definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the PrivateLinkHub definition allowing to specify provisioningState. */
+
+        /**
+         * The stage of the PrivateLinkHub definition allowing to specify provisioningState.
+         */
         interface WithProvisioningState {
             /**
              * Specifies the provisioningState property: PrivateLinkHub provisioning state.
-             *
+             * 
              * @param provisioningState PrivateLinkHub provisioning state.
              * @return the next definition stage.
              */
             WithCreate withProvisioningState(String provisioningState);
         }
     }
+
     /**
      * Begins update for the PrivateLinkHub resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     PrivateLinkHub.Update update();
 
-    /** The template for PrivateLinkHub update. */
+    /**
+     * The template for PrivateLinkHub update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         PrivateLinkHub apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         PrivateLinkHub apply(Context context);
     }
-    /** The PrivateLinkHub update stages. */
+
+    /**
+     * The PrivateLinkHub update stages.
+     */
     interface UpdateStages {
-        /** The stage of the PrivateLinkHub update allowing to specify tags. */
+        /**
+         * The stage of the PrivateLinkHub update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags.
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     PrivateLinkHub refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

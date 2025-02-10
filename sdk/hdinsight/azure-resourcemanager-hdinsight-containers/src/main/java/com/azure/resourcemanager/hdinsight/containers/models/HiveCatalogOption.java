@@ -6,49 +6,59 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Hive Catalog Option. */
+/**
+ * Hive Catalog Option.
+ */
 @Fluent
-public final class HiveCatalogOption {
+public final class HiveCatalogOption implements JsonSerializable<HiveCatalogOption> {
     /*
      * Name of trino catalog which should use specified hive metastore.
      */
-    @JsonProperty(value = "catalogName", required = true)
     private String catalogName;
+
+    /*
+     * The authentication mode to connect to your Hive metastore database. More details:
+     * https://learn.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage?view=azuresql#authentication-and-
+     * authorization
+     */
+    private MetastoreDbConnectionAuthenticationMode metastoreDbConnectionAuthenticationMode;
 
     /*
      * Secret reference name from secretsProfile.secrets containing password for database connection.
      */
-    @JsonProperty(value = "metastoreDbConnectionPasswordSecret", required = true)
     private String metastoreDbConnectionPasswordSecret;
 
     /*
      * Connection string for hive metastore database.
      */
-    @JsonProperty(value = "metastoreDbConnectionURL", required = true)
     private String metastoreDbConnectionUrl;
 
     /*
      * User name for database connection.
      */
-    @JsonProperty(value = "metastoreDbConnectionUserName", required = true)
     private String metastoreDbConnectionUsername;
 
     /*
      * Metastore root directory URI, format: abfs[s]://<container>@<account_name>.dfs.core.windows.net/<path>. More
      * details: https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction-abfs-uri
      */
-    @JsonProperty(value = "metastoreWarehouseDir", required = true)
     private String metastoreWarehouseDir;
 
-    /** Creates an instance of HiveCatalogOption class. */
+    /**
+     * Creates an instance of HiveCatalogOption class.
+     */
     public HiveCatalogOption() {
     }
 
     /**
      * Get the catalogName property: Name of trino catalog which should use specified hive metastore.
-     *
+     * 
      * @return the catalogName value.
      */
     public String catalogName() {
@@ -57,7 +67,7 @@ public final class HiveCatalogOption {
 
     /**
      * Set the catalogName property: Name of trino catalog which should use specified hive metastore.
-     *
+     * 
      * @param catalogName the catalogName value to set.
      * @return the HiveCatalogOption object itself.
      */
@@ -67,9 +77,34 @@ public final class HiveCatalogOption {
     }
 
     /**
+     * Get the metastoreDbConnectionAuthenticationMode property: The authentication mode to connect to your Hive
+     * metastore database. More details:
+     * https://learn.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage?view=azuresql#authentication-and-authorization.
+     * 
+     * @return the metastoreDbConnectionAuthenticationMode value.
+     */
+    public MetastoreDbConnectionAuthenticationMode metastoreDbConnectionAuthenticationMode() {
+        return this.metastoreDbConnectionAuthenticationMode;
+    }
+
+    /**
+     * Set the metastoreDbConnectionAuthenticationMode property: The authentication mode to connect to your Hive
+     * metastore database. More details:
+     * https://learn.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage?view=azuresql#authentication-and-authorization.
+     * 
+     * @param metastoreDbConnectionAuthenticationMode the metastoreDbConnectionAuthenticationMode value to set.
+     * @return the HiveCatalogOption object itself.
+     */
+    public HiveCatalogOption withMetastoreDbConnectionAuthenticationMode(
+        MetastoreDbConnectionAuthenticationMode metastoreDbConnectionAuthenticationMode) {
+        this.metastoreDbConnectionAuthenticationMode = metastoreDbConnectionAuthenticationMode;
+        return this;
+    }
+
+    /**
      * Get the metastoreDbConnectionPasswordSecret property: Secret reference name from secretsProfile.secrets
      * containing password for database connection.
-     *
+     * 
      * @return the metastoreDbConnectionPasswordSecret value.
      */
     public String metastoreDbConnectionPasswordSecret() {
@@ -79,7 +114,7 @@ public final class HiveCatalogOption {
     /**
      * Set the metastoreDbConnectionPasswordSecret property: Secret reference name from secretsProfile.secrets
      * containing password for database connection.
-     *
+     * 
      * @param metastoreDbConnectionPasswordSecret the metastoreDbConnectionPasswordSecret value to set.
      * @return the HiveCatalogOption object itself.
      */
@@ -90,7 +125,7 @@ public final class HiveCatalogOption {
 
     /**
      * Get the metastoreDbConnectionUrl property: Connection string for hive metastore database.
-     *
+     * 
      * @return the metastoreDbConnectionUrl value.
      */
     public String metastoreDbConnectionUrl() {
@@ -99,7 +134,7 @@ public final class HiveCatalogOption {
 
     /**
      * Set the metastoreDbConnectionUrl property: Connection string for hive metastore database.
-     *
+     * 
      * @param metastoreDbConnectionUrl the metastoreDbConnectionUrl value to set.
      * @return the HiveCatalogOption object itself.
      */
@@ -110,7 +145,7 @@ public final class HiveCatalogOption {
 
     /**
      * Get the metastoreDbConnectionUsername property: User name for database connection.
-     *
+     * 
      * @return the metastoreDbConnectionUsername value.
      */
     public String metastoreDbConnectionUsername() {
@@ -119,7 +154,7 @@ public final class HiveCatalogOption {
 
     /**
      * Set the metastoreDbConnectionUsername property: User name for database connection.
-     *
+     * 
      * @param metastoreDbConnectionUsername the metastoreDbConnectionUsername value to set.
      * @return the HiveCatalogOption object itself.
      */
@@ -130,9 +165,9 @@ public final class HiveCatalogOption {
 
     /**
      * Get the metastoreWarehouseDir property: Metastore root directory URI, format:
-     * abfs[s]://&lt;container&gt;@&lt;account_name&gt;.dfs.core.windows.net/&lt;path&gt;. More details:
+     * abfs[s]://&lt;container&gt;&#064;&lt;account_name&gt;.dfs.core.windows.net/&lt;path&gt;. More details:
      * https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction-abfs-uri.
-     *
+     * 
      * @return the metastoreWarehouseDir value.
      */
     public String metastoreWarehouseDir() {
@@ -141,9 +176,9 @@ public final class HiveCatalogOption {
 
     /**
      * Set the metastoreWarehouseDir property: Metastore root directory URI, format:
-     * abfs[s]://&lt;container&gt;@&lt;account_name&gt;.dfs.core.windows.net/&lt;path&gt;. More details:
+     * abfs[s]://&lt;container&gt;&#064;&lt;account_name&gt;.dfs.core.windows.net/&lt;path&gt;. More details:
      * https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction-abfs-uri.
-     *
+     * 
      * @param metastoreWarehouseDir the metastoreWarehouseDir value to set.
      * @return the HiveCatalogOption object itself.
      */
@@ -154,40 +189,81 @@ public final class HiveCatalogOption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (catalogName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property catalogName in model HiveCatalogOption"));
-        }
-        if (metastoreDbConnectionPasswordSecret() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property metastoreDbConnectionPasswordSecret in model HiveCatalogOption"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property catalogName in model HiveCatalogOption"));
         }
         if (metastoreDbConnectionUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property metastoreDbConnectionUrl in model HiveCatalogOption"));
-        }
-        if (metastoreDbConnectionUsername() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property metastoreDbConnectionUsername in model HiveCatalogOption"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property metastoreDbConnectionUrl in model HiveCatalogOption"));
         }
         if (metastoreWarehouseDir() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property metastoreWarehouseDir in model HiveCatalogOption"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property metastoreWarehouseDir in model HiveCatalogOption"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HiveCatalogOption.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("catalogName", this.catalogName);
+        jsonWriter.writeStringField("metastoreDbConnectionURL", this.metastoreDbConnectionUrl);
+        jsonWriter.writeStringField("metastoreWarehouseDir", this.metastoreWarehouseDir);
+        jsonWriter.writeStringField("metastoreDbConnectionAuthenticationMode",
+            this.metastoreDbConnectionAuthenticationMode == null
+                ? null
+                : this.metastoreDbConnectionAuthenticationMode.toString());
+        jsonWriter.writeStringField("metastoreDbConnectionPasswordSecret", this.metastoreDbConnectionPasswordSecret);
+        jsonWriter.writeStringField("metastoreDbConnectionUserName", this.metastoreDbConnectionUsername);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HiveCatalogOption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HiveCatalogOption if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HiveCatalogOption.
+     */
+    public static HiveCatalogOption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HiveCatalogOption deserializedHiveCatalogOption = new HiveCatalogOption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("catalogName".equals(fieldName)) {
+                    deserializedHiveCatalogOption.catalogName = reader.getString();
+                } else if ("metastoreDbConnectionURL".equals(fieldName)) {
+                    deserializedHiveCatalogOption.metastoreDbConnectionUrl = reader.getString();
+                } else if ("metastoreWarehouseDir".equals(fieldName)) {
+                    deserializedHiveCatalogOption.metastoreWarehouseDir = reader.getString();
+                } else if ("metastoreDbConnectionAuthenticationMode".equals(fieldName)) {
+                    deserializedHiveCatalogOption.metastoreDbConnectionAuthenticationMode
+                        = MetastoreDbConnectionAuthenticationMode.fromString(reader.getString());
+                } else if ("metastoreDbConnectionPasswordSecret".equals(fieldName)) {
+                    deserializedHiveCatalogOption.metastoreDbConnectionPasswordSecret = reader.getString();
+                } else if ("metastoreDbConnectionUserName".equals(fieldName)) {
+                    deserializedHiveCatalogOption.metastoreDbConnectionUsername = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHiveCatalogOption;
+        });
+    }
 }

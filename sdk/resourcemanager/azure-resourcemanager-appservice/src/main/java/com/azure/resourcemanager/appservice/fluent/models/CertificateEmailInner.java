@@ -5,24 +5,28 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * SSL certificate email.
  */
 @Fluent
-public final class CertificateEmailInner {
+public final class CertificateEmailInner implements JsonSerializable<CertificateEmailInner> {
     /*
      * Email id.
      */
-    @JsonProperty(value = "emailId")
     private String emailId;
 
     /*
      * Time stamp.
      */
-    @JsonProperty(value = "timeStamp")
     private OffsetDateTime timestamp;
 
     /**
@@ -77,5 +81,46 @@ public final class CertificateEmailInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("emailId", this.emailId);
+        jsonWriter.writeStringField("timeStamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateEmailInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateEmailInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateEmailInner.
+     */
+    public static CertificateEmailInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateEmailInner deserializedCertificateEmailInner = new CertificateEmailInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("emailId".equals(fieldName)) {
+                    deserializedCertificateEmailInner.emailId = reader.getString();
+                } else if ("timeStamp".equals(fieldName)) {
+                    deserializedCertificateEmailInner.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateEmailInner;
+        });
     }
 }

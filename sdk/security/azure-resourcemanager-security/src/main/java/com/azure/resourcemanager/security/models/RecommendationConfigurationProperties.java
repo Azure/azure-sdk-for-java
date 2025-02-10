@@ -6,36 +6,42 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The type of IoT Security recommendation. */
+/**
+ * The type of IoT Security recommendation.
+ */
 @Fluent
-public final class RecommendationConfigurationProperties {
+public final class RecommendationConfigurationProperties
+    implements JsonSerializable<RecommendationConfigurationProperties> {
     /*
      * The type of IoT Security recommendation.
      */
-    @JsonProperty(value = "recommendationType", required = true)
     private RecommendationType recommendationType;
 
     /*
      * The name property.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Recommendation status. When the recommendation status is disabled recommendations are not generated.
      */
-    @JsonProperty(value = "status", required = true)
     private RecommendationConfigStatus status;
 
-    /** Creates an instance of RecommendationConfigurationProperties class. */
+    /**
+     * Creates an instance of RecommendationConfigurationProperties class.
+     */
     public RecommendationConfigurationProperties() {
     }
 
     /**
      * Get the recommendationType property: The type of IoT Security recommendation.
-     *
+     * 
      * @return the recommendationType value.
      */
     public RecommendationType recommendationType() {
@@ -44,7 +50,7 @@ public final class RecommendationConfigurationProperties {
 
     /**
      * Set the recommendationType property: The type of IoT Security recommendation.
-     *
+     * 
      * @param recommendationType the recommendationType value to set.
      * @return the RecommendationConfigurationProperties object itself.
      */
@@ -55,7 +61,7 @@ public final class RecommendationConfigurationProperties {
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +71,7 @@ public final class RecommendationConfigurationProperties {
     /**
      * Get the status property: Recommendation status. When the recommendation status is disabled recommendations are
      * not generated.
-     *
+     * 
      * @return the status value.
      */
     public RecommendationConfigStatus status() {
@@ -75,7 +81,7 @@ public final class RecommendationConfigurationProperties {
     /**
      * Set the status property: Recommendation status. When the recommendation status is disabled recommendations are
      * not generated.
-     *
+     * 
      * @param status the status value to set.
      * @return the RecommendationConfigurationProperties object itself.
      */
@@ -86,23 +92,67 @@ public final class RecommendationConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recommendationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recommendationType in model RecommendationConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recommendationType in model RecommendationConfigurationProperties"));
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model RecommendationConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model RecommendationConfigurationProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecommendationConfigurationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recommendationType",
+            this.recommendationType == null ? null : this.recommendationType.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendationConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendationConfigurationProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecommendationConfigurationProperties.
+     */
+    public static RecommendationConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendationConfigurationProperties deserializedRecommendationConfigurationProperties
+                = new RecommendationConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recommendationType".equals(fieldName)) {
+                    deserializedRecommendationConfigurationProperties.recommendationType
+                        = RecommendationType.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedRecommendationConfigurationProperties.status
+                        = RecommendationConfigStatus.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedRecommendationConfigurationProperties.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendationConfigurationProperties;
+        });
+    }
 }

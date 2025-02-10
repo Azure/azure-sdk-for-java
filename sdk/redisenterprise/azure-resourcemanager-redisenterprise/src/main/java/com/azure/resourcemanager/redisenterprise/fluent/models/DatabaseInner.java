@@ -7,43 +7,61 @@ package com.azure.resourcemanager.redisenterprise.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.redisenterprise.models.AccessKeysAuthentication;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
+import com.azure.resourcemanager.redisenterprise.models.DeferUpgradeSetting;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
 import com.azure.resourcemanager.redisenterprise.models.Module;
 import com.azure.resourcemanager.redisenterprise.models.Persistence;
 import com.azure.resourcemanager.redisenterprise.models.Protocol;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
 import com.azure.resourcemanager.redisenterprise.models.ResourceState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes a database on the RedisEnterprise cluster. */
+/**
+ * Describes a database on the Redis Enterprise cluster.
+ */
 @Fluent
 public final class DatabaseInner extends ProxyResource {
     /*
-     * RedisEnterprise database properties
-     *
      * Other properties of the database.
      */
-    @JsonProperty(value = "properties")
     private DatabaseProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DatabaseInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DatabaseInner class.
+     */
     public DatabaseInner() {
     }
 
     /**
-     * Get the innerProperties property: RedisEnterprise database properties
-     *
-     * <p>Other properties of the database.
-     *
+     * Get the innerProperties property: Other properties of the database.
+     * 
      * @return the innerProperties value.
      */
     private DatabaseProperties innerProperties() {
@@ -52,7 +70,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -60,9 +78,39 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the clientProtocol property: Specifies whether redis clients can connect using TLS-encrypted or plaintext
      * redis protocols. Default is TLS-encrypted.
-     *
+     * 
      * @return the clientProtocol value.
      */
     public Protocol clientProtocol() {
@@ -72,7 +120,7 @@ public final class DatabaseInner extends ProxyResource {
     /**
      * Set the clientProtocol property: Specifies whether redis clients can connect using TLS-encrypted or plaintext
      * redis protocols. Default is TLS-encrypted.
-     *
+     * 
      * @param clientProtocol the clientProtocol value to set.
      * @return the DatabaseInner object itself.
      */
@@ -87,7 +135,7 @@ public final class DatabaseInner extends ProxyResource {
     /**
      * Get the port property: TCP port of the database endpoint. Specified at create time. Defaults to an available
      * port.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -97,7 +145,7 @@ public final class DatabaseInner extends ProxyResource {
     /**
      * Set the port property: TCP port of the database endpoint. Specified at create time. Defaults to an available
      * port.
-     *
+     * 
      * @param port the port value to set.
      * @return the DatabaseInner object itself.
      */
@@ -111,7 +159,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Current provisioning status of the database.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -120,7 +168,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the resourceState property: Current resource status of the database.
-     *
+     * 
      * @return the resourceState value.
      */
     public ResourceState resourceState() {
@@ -128,8 +176,9 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the clusteringPolicy property: Clustering policy - default is OSSCluster. Specified at create time.
-     *
+     * Get the clusteringPolicy property: Clustering policy - default is OSSCluster. This property must be chosen at
+     * create time, and cannot be changed without deleting the database.
+     * 
      * @return the clusteringPolicy value.
      */
     public ClusteringPolicy clusteringPolicy() {
@@ -137,8 +186,9 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Set the clusteringPolicy property: Clustering policy - default is OSSCluster. Specified at create time.
-     *
+     * Set the clusteringPolicy property: Clustering policy - default is OSSCluster. This property must be chosen at
+     * create time, and cannot be changed without deleting the database.
+     * 
      * @param clusteringPolicy the clusteringPolicy value to set.
      * @return the DatabaseInner object itself.
      */
@@ -152,7 +202,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the evictionPolicy property: Redis eviction policy - default is VolatileLRU.
-     *
+     * 
      * @return the evictionPolicy value.
      */
     public EvictionPolicy evictionPolicy() {
@@ -161,7 +211,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Set the evictionPolicy property: Redis eviction policy - default is VolatileLRU.
-     *
+     * 
      * @param evictionPolicy the evictionPolicy value to set.
      * @return the DatabaseInner object itself.
      */
@@ -175,7 +225,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the persistence property: Persistence settings.
-     *
+     * 
      * @return the persistence value.
      */
     public Persistence persistence() {
@@ -184,7 +234,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Set the persistence property: Persistence settings.
-     *
+     * 
      * @param persistence the persistence value to set.
      * @return the DatabaseInner object itself.
      */
@@ -199,7 +249,7 @@ public final class DatabaseInner extends ProxyResource {
     /**
      * Get the modules property: Optional set of redis modules to enable in this database - modules can only be added at
      * creation time.
-     *
+     * 
      * @return the modules value.
      */
     public List<Module> modules() {
@@ -209,7 +259,7 @@ public final class DatabaseInner extends ProxyResource {
     /**
      * Set the modules property: Optional set of redis modules to enable in this database - modules can only be added at
      * creation time.
-     *
+     * 
      * @param modules the modules value to set.
      * @return the DatabaseInner object itself.
      */
@@ -223,7 +273,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the geoReplication property: Optional set of properties to configure geo replication for this database.
-     *
+     * 
      * @return the geoReplication value.
      */
     public DatabasePropertiesGeoReplication geoReplication() {
@@ -232,7 +282,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Set the geoReplication property: Optional set of properties to configure geo replication for this database.
-     *
+     * 
      * @param geoReplication the geoReplication value to set.
      * @return the DatabaseInner object itself.
      */
@@ -245,13 +295,117 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
+     * Get the redisVersion property: Version of Redis the database is running on, e.g. '6.0'.
+     * 
+     * @return the redisVersion value.
+     */
+    public String redisVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().redisVersion();
+    }
+
+    /**
+     * Get the deferUpgrade property: Option to defer upgrade when newest version is released - default is NotDeferred.
+     * Learn more: https://aka.ms/redisversionupgrade.
+     * 
+     * @return the deferUpgrade value.
+     */
+    public DeferUpgradeSetting deferUpgrade() {
+        return this.innerProperties() == null ? null : this.innerProperties().deferUpgrade();
+    }
+
+    /**
+     * Set the deferUpgrade property: Option to defer upgrade when newest version is released - default is NotDeferred.
+     * Learn more: https://aka.ms/redisversionupgrade.
+     * 
+     * @param deferUpgrade the deferUpgrade value to set.
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withDeferUpgrade(DeferUpgradeSetting deferUpgrade) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withDeferUpgrade(deferUpgrade);
+        return this;
+    }
+
+    /**
+     * Get the accessKeysAuthentication property: This property can be Enabled/Disabled to allow or deny access with the
+     * current access keys. Can be updated even after database is created.
+     * 
+     * @return the accessKeysAuthentication value.
+     */
+    public AccessKeysAuthentication accessKeysAuthentication() {
+        return this.innerProperties() == null ? null : this.innerProperties().accessKeysAuthentication();
+    }
+
+    /**
+     * Set the accessKeysAuthentication property: This property can be Enabled/Disabled to allow or deny access with the
+     * current access keys. Can be updated even after database is created.
+     * 
+     * @param accessKeysAuthentication the accessKeysAuthentication value to set.
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withAccessKeysAuthentication(AccessKeysAuthentication accessKeysAuthentication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withAccessKeysAuthentication(accessKeysAuthentication);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseInner.
+     */
+    public static DatabaseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseInner deserializedDatabaseInner = new DatabaseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDatabaseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDatabaseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDatabaseInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDatabaseInner.innerProperties = DatabaseProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDatabaseInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseInner;
+        });
     }
 }

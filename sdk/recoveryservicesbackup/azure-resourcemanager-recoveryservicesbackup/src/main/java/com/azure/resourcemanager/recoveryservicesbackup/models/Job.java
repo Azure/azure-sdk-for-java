@@ -5,79 +5,80 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Defines workload agnostic properties for a job. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "jobType",
-    defaultImpl = Job.class)
-@JsonTypeName("Job")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureIaaSVMJob", value = AzureIaaSvmJob.class),
-    @JsonSubTypes.Type(name = "AzureIaaSVMJobV2", value = AzureIaaSvmJobV2.class),
-    @JsonSubTypes.Type(name = "AzureStorageJob", value = AzureStorageJob.class),
-    @JsonSubTypes.Type(name = "AzureWorkloadJob", value = AzureWorkloadJob.class),
-    @JsonSubTypes.Type(name = "DpmJob", value = DpmJob.class),
-    @JsonSubTypes.Type(name = "MabJob", value = MabJob.class),
-    @JsonSubTypes.Type(name = "VaultJob", value = VaultJob.class)
-})
+/**
+ * Defines workload agnostic properties for a job.
+ */
 @Fluent
-public class Job {
+public class Job implements JsonSerializable<Job> {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String jobType = "Job";
+
     /*
      * Friendly name of the entity on which the current job is executing.
      */
-    @JsonProperty(value = "entityFriendlyName")
     private String entityFriendlyName;
 
     /*
      * Backup management type to execute the current job.
      */
-    @JsonProperty(value = "backupManagementType")
     private BackupManagementType backupManagementType;
 
     /*
      * The operation name.
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
     /*
      * Job status.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * ActivityId of job.
      */
-    @JsonProperty(value = "activityId")
     private String activityId;
 
-    /** Creates an instance of Job class. */
+    /**
+     * Creates an instance of Job class.
+     */
     public Job() {
     }
 
     /**
+     * Get the jobType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the jobType value.
+     */
+    public String jobType() {
+        return this.jobType;
+    }
+
+    /**
      * Get the entityFriendlyName property: Friendly name of the entity on which the current job is executing.
-     *
+     * 
      * @return the entityFriendlyName value.
      */
     public String entityFriendlyName() {
@@ -86,7 +87,7 @@ public class Job {
 
     /**
      * Set the entityFriendlyName property: Friendly name of the entity on which the current job is executing.
-     *
+     * 
      * @param entityFriendlyName the entityFriendlyName value to set.
      * @return the Job object itself.
      */
@@ -97,7 +98,7 @@ public class Job {
 
     /**
      * Get the backupManagementType property: Backup management type to execute the current job.
-     *
+     * 
      * @return the backupManagementType value.
      */
     public BackupManagementType backupManagementType() {
@@ -106,7 +107,7 @@ public class Job {
 
     /**
      * Set the backupManagementType property: Backup management type to execute the current job.
-     *
+     * 
      * @param backupManagementType the backupManagementType value to set.
      * @return the Job object itself.
      */
@@ -117,7 +118,7 @@ public class Job {
 
     /**
      * Get the operation property: The operation name.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -126,7 +127,7 @@ public class Job {
 
     /**
      * Set the operation property: The operation name.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the Job object itself.
      */
@@ -137,7 +138,7 @@ public class Job {
 
     /**
      * Get the status property: Job status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -146,7 +147,7 @@ public class Job {
 
     /**
      * Set the status property: Job status.
-     *
+     * 
      * @param status the status value to set.
      * @return the Job object itself.
      */
@@ -157,7 +158,7 @@ public class Job {
 
     /**
      * Get the startTime property: The start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -166,7 +167,7 @@ public class Job {
 
     /**
      * Set the startTime property: The start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the Job object itself.
      */
@@ -177,7 +178,7 @@ public class Job {
 
     /**
      * Get the endTime property: The end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -186,7 +187,7 @@ public class Job {
 
     /**
      * Set the endTime property: The end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the Job object itself.
      */
@@ -197,7 +198,7 @@ public class Job {
 
     /**
      * Get the activityId property: ActivityId of job.
-     *
+     * 
      * @return the activityId value.
      */
     public String activityId() {
@@ -206,7 +207,7 @@ public class Job {
 
     /**
      * Set the activityId property: ActivityId of job.
-     *
+     * 
      * @param activityId the activityId value to set.
      * @return the Job object itself.
      */
@@ -217,9 +218,108 @@ public class Job {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobType", this.jobType);
+        jsonWriter.writeStringField("entityFriendlyName", this.entityFriendlyName);
+        jsonWriter.writeStringField("backupManagementType",
+            this.backupManagementType == null ? null : this.backupManagementType.toString());
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("activityId", this.activityId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Job from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Job if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Job.
+     */
+    public static Job fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("jobType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureIaaSVMJob".equals(discriminatorValue)) {
+                    return AzureIaaSvmJob.fromJson(readerToUse.reset());
+                } else if ("AzureIaaSVMJobV2".equals(discriminatorValue)) {
+                    return AzureIaaSvmJobV2.fromJson(readerToUse.reset());
+                } else if ("AzureStorageJob".equals(discriminatorValue)) {
+                    return AzureStorageJob.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadJob".equals(discriminatorValue)) {
+                    return AzureWorkloadJob.fromJson(readerToUse.reset());
+                } else if ("DpmJob".equals(discriminatorValue)) {
+                    return DpmJob.fromJson(readerToUse.reset());
+                } else if ("MabJob".equals(discriminatorValue)) {
+                    return MabJob.fromJson(readerToUse.reset());
+                } else if ("VaultJob".equals(discriminatorValue)) {
+                    return VaultJob.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static Job fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Job deserializedJob = new Job();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobType".equals(fieldName)) {
+                    deserializedJob.jobType = reader.getString();
+                } else if ("entityFriendlyName".equals(fieldName)) {
+                    deserializedJob.entityFriendlyName = reader.getString();
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedJob.backupManagementType = BackupManagementType.fromString(reader.getString());
+                } else if ("operation".equals(fieldName)) {
+                    deserializedJob.operation = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedJob.status = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedJob.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedJob.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("activityId".equals(fieldName)) {
+                    deserializedJob.activityId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJob;
+        });
     }
 }

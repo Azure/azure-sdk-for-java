@@ -90,14 +90,18 @@ public final class TroubleshooterResourceImpl implements TroubleshooterResource,
     }
 
     public TroubleshooterResource create() {
-        this.innerObject = serviceManager.serviceClient().getTroubleshooters()
-            .createWithResponse(scope, troubleshooterName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTroubleshooters()
+            .createWithResponse(scope, troubleshooterName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public TroubleshooterResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getTroubleshooters()
-            .createWithResponse(scope, troubleshooterName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTroubleshooters()
+            .createWithResponse(scope, troubleshooterName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -108,21 +112,25 @@ public final class TroubleshooterResourceImpl implements TroubleshooterResource,
     }
 
     public TroubleshooterResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getTroubleshooters()
-            .getWithResponse(scope, troubleshooterName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTroubleshooters()
+            .getWithResponse(scope, troubleshooterName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TroubleshooterResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getTroubleshooters()
-            .getWithResponse(scope, troubleshooterName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTroubleshooters()
+            .getWithResponse(scope, troubleshooterName, context)
+            .getValue();
         return this;
     }
 
     public TroubleshootersContinueMethodResponse continueMethodWithResponse(ContinueRequestBody continueRequestBody,
         Context context) {
-        return serviceManager.troubleshooters().continueMethodWithResponse(scope, troubleshooterName,
-            continueRequestBody, context);
+        return serviceManager.troubleshooters()
+            .continueMethodWithResponse(scope, troubleshooterName, continueRequestBody, context);
     }
 
     public void continueMethod() {

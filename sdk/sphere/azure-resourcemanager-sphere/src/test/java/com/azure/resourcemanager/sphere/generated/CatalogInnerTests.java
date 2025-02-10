@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.fluent.models.CatalogInner;
+import com.azure.resourcemanager.sphere.models.CatalogProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,35 +14,24 @@ import org.junit.jupiter.api.Assertions;
 public final class CatalogInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CatalogInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Accepted\"},\"location\":\"lokjyemkk\",\"tags\":{\"ejspodmail\":\"pjoxzjnch\",\"yahux\":\"ydehoj\",\"vcputegj\":\"npmqnjaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\"},\"id\":\"odjpslwejd\",\"name\":\"vwryoqpso\",\"type\":\"cctazakljlahbc\"}")
-                .toObject(CatalogInner.class);
-        Assertions.assertEquals("lokjyemkk", model.location());
-        Assertions.assertEquals("pjoxzjnch", model.tags().get("ejspodmail"));
+        CatalogInner model = BinaryData.fromString(
+            "{\"properties\":{\"tenantId\":\"vpjhulsuuv\",\"provisioningState\":\"Failed\"},\"location\":\"zkrwfn\",\"tags\":{\"jdpvwryo\":\"djpslw\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"},\"id\":\"hqtrgqjbpf\",\"name\":\"fsinzgvfcjrwzoxx\",\"type\":\"tfell\"}")
+            .toObject(CatalogInner.class);
+        Assertions.assertEquals("zkrwfn", model.location());
+        Assertions.assertEquals("djpslw", model.tags().get("jdpvwryo"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CatalogInner model =
-            new CatalogInner()
-                .withLocation("lokjyemkk")
-                .withTags(
-                    mapOf(
-                        "ejspodmail",
-                        "pjoxzjnch",
-                        "yahux",
-                        "ydehoj",
-                        "vcputegj",
-                        "npmqnjaqwixjspro",
-                        "uuvmkjozkrwfnd",
-                        "wmfdatscmdvpjhul"));
+        CatalogInner model = new CatalogInner().withLocation("zkrwfn")
+            .withTags(mapOf("jdpvwryo", "djpslw", "hbcryffdfdosyge", "psoacctazakljl", "rzevdphlxaol", "paojakhmsbzjh"))
+            .withProperties(new CatalogProperties());
         model = BinaryData.fromObject(model).toObject(CatalogInner.class);
-        Assertions.assertEquals("lokjyemkk", model.location());
-        Assertions.assertEquals("pjoxzjnch", model.tags().get("ejspodmail"));
+        Assertions.assertEquals("zkrwfn", model.location());
+        Assertions.assertEquals("djpslw", model.tags().get("jdpvwryo"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

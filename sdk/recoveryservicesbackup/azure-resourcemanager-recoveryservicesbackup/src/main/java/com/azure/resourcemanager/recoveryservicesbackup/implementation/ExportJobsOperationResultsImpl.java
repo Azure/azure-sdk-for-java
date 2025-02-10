@@ -20,22 +20,18 @@ public final class ExportJobsOperationResultsImpl implements ExportJobsOperation
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ExportJobsOperationResultsImpl(
-        ExportJobsOperationResultsClient innerClient,
+    public ExportJobsOperationResultsImpl(ExportJobsOperationResultsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationResultInfoBaseResource> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
-        Response<OperationResultInfoBaseResourceInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
+    public Response<OperationResultInfoBaseResource> getWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context) {
+        Response<OperationResultInfoBaseResourceInner> inner
+            = this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationResultInfoBaseResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -43,8 +39,8 @@ public final class ExportJobsOperationResultsImpl implements ExportJobsOperation
     }
 
     public OperationResultInfoBaseResource get(String vaultName, String resourceGroupName, String operationId) {
-        OperationResultInfoBaseResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, operationId);
+        OperationResultInfoBaseResourceInner inner
+            = this.serviceClient().get(vaultName, resourceGroupName, operationId);
         if (inner != null) {
             return new OperationResultInfoBaseResourceImpl(inner, this.manager());
         } else {

@@ -15,8 +15,7 @@ public final class PolicyTrackedResourceImpl implements PolicyTrackedResource {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    PolicyTrackedResourceImpl(
-        PolicyTrackedResourceInner innerObject,
+    PolicyTrackedResourceImpl(PolicyTrackedResourceInner innerObject,
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

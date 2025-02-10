@@ -179,14 +179,23 @@ public final class PartitionKeyDefinition {
     void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         if (this.kind != null) {
-            this.jsonSerializable.set(Constants.Properties.PARTITION_KIND, kind.toString());
+            this.jsonSerializable.set(
+                Constants.Properties.PARTITION_KIND,
+                kind.toString()
+            );
         }
         if (this.paths != null) {
-            this.jsonSerializable.set(Constants.Properties.PARTITION_KEY_PATHS, paths);
+            this.jsonSerializable.set(
+                Constants.Properties.PARTITION_KEY_PATHS,
+                paths
+            );
         }
 
         if (this.versionOptional != null && versionOptional.isPresent()) {
-            this.jsonSerializable.set(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, versionOptional.get().toString());
+            this.jsonSerializable.set(
+                Constants.Properties.PARTITION_KEY_DEFINITION_VERSION,
+                versionOptional.get().toString()
+            );
         }
     }
 

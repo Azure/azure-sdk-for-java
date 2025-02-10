@@ -4,7 +4,6 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -23,17 +22,27 @@ public final class PublicAccessType extends ExpandableStringEnum<PublicAccessTyp
     public static final PublicAccessType BLOB = fromString("blob");
 
     /**
+     * Creates a new instance of {@link PublicAccessType} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of PublicAccessType.
+     */
+    @Deprecated
+    public PublicAccessType() {
+    }
+
+    /**
      * Creates or finds a PublicAccessType from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding PublicAccessType.
      */
-    @JsonCreator
     public static PublicAccessType fromString(String name) {
         return fromString(name, PublicAccessType.class);
     }
 
     /**
+     * Gets known PublicAccessType values.
+     *
      * @return known PublicAccessType values.
      */
     public static Collection<PublicAccessType> values() {

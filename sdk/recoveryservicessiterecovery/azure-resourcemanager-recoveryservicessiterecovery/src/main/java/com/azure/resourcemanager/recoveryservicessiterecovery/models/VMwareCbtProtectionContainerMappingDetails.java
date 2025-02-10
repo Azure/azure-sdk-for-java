@@ -5,75 +5,83 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** VMwareCbt provider specific container mapping details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareCbt")
+/**
+ * VMwareCbt provider specific container mapping details.
+ */
 @Fluent
 public final class VMwareCbtProtectionContainerMappingDetails
     extends ProtectionContainerMappingProviderSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "VMwareCbt";
+
+    /*
      * The target key vault ARM Id.
      */
-    @JsonProperty(value = "keyVaultId", access = JsonProperty.Access.WRITE_ONLY)
     private String keyVaultId;
 
     /*
      * The target key vault URI.
      */
-    @JsonProperty(value = "keyVaultUri", access = JsonProperty.Access.WRITE_ONLY)
     private String keyVaultUri;
 
     /*
      * The storage account ARM Id.
      */
-    @JsonProperty(value = "storageAccountId", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccountId;
 
     /*
      * The secret name of the storage account.
      */
-    @JsonProperty(value = "storageAccountSasSecretName", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccountSasSecretName;
 
     /*
      * The secret name of the service bus connection string.
      */
-    @JsonProperty(value = "serviceBusConnectionStringSecretName", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceBusConnectionStringSecretName;
 
     /*
      * The target location.
      */
-    @JsonProperty(value = "targetLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String targetLocation;
 
     /*
      * The role size to NIC count map.
      */
-    @JsonProperty(value = "roleSizeToNicCountMap", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Integer> roleSizeToNicCountMap;
 
     /*
      * The SKUs to be excluded.
      */
-    @JsonProperty(value = "excludedSkus")
     private List<String> excludedSkus;
 
-    /** Creates an instance of VMwareCbtProtectionContainerMappingDetails class. */
+    /**
+     * Creates an instance of VMwareCbtProtectionContainerMappingDetails class.
+     */
     public VMwareCbtProtectionContainerMappingDetails() {
     }
 
     /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the keyVaultId property: The target key vault ARM Id.
-     *
+     * 
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
@@ -82,7 +90,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the keyVaultUri property: The target key vault URI.
-     *
+     * 
      * @return the keyVaultUri value.
      */
     public String keyVaultUri() {
@@ -91,7 +99,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the storageAccountId property: The storage account ARM Id.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -100,7 +108,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the storageAccountSasSecretName property: The secret name of the storage account.
-     *
+     * 
      * @return the storageAccountSasSecretName value.
      */
     public String storageAccountSasSecretName() {
@@ -109,7 +117,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the serviceBusConnectionStringSecretName property: The secret name of the service bus connection string.
-     *
+     * 
      * @return the serviceBusConnectionStringSecretName value.
      */
     public String serviceBusConnectionStringSecretName() {
@@ -118,7 +126,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the targetLocation property: The target location.
-     *
+     * 
      * @return the targetLocation value.
      */
     public String targetLocation() {
@@ -127,7 +135,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the roleSizeToNicCountMap property: The role size to NIC count map.
-     *
+     * 
      * @return the roleSizeToNicCountMap value.
      */
     public Map<String, Integer> roleSizeToNicCountMap() {
@@ -136,7 +144,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Get the excludedSkus property: The SKUs to be excluded.
-     *
+     * 
      * @return the excludedSkus value.
      */
     public List<String> excludedSkus() {
@@ -145,7 +153,7 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Set the excludedSkus property: The SKUs to be excluded.
-     *
+     * 
      * @param excludedSkus the excludedSkus value to set.
      * @return the VMwareCbtProtectionContainerMappingDetails object itself.
      */
@@ -156,11 +164,69 @@ public final class VMwareCbtProtectionContainerMappingDetails
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeArrayField("excludedSkus", this.excludedSkus, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtProtectionContainerMappingDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtProtectionContainerMappingDetails if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMwareCbtProtectionContainerMappingDetails.
+     */
+    public static VMwareCbtProtectionContainerMappingDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtProtectionContainerMappingDetails deserializedVMwareCbtProtectionContainerMappingDetails
+                = new VMwareCbtProtectionContainerMappingDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareCbtProtectionContainerMappingDetails.instanceType = reader.getString();
+                } else if ("keyVaultId".equals(fieldName)) {
+                    deserializedVMwareCbtProtectionContainerMappingDetails.keyVaultId = reader.getString();
+                } else if ("keyVaultUri".equals(fieldName)) {
+                    deserializedVMwareCbtProtectionContainerMappingDetails.keyVaultUri = reader.getString();
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedVMwareCbtProtectionContainerMappingDetails.storageAccountId = reader.getString();
+                } else if ("storageAccountSasSecretName".equals(fieldName)) {
+                    deserializedVMwareCbtProtectionContainerMappingDetails.storageAccountSasSecretName
+                        = reader.getString();
+                } else if ("serviceBusConnectionStringSecretName".equals(fieldName)) {
+                    deserializedVMwareCbtProtectionContainerMappingDetails.serviceBusConnectionStringSecretName
+                        = reader.getString();
+                } else if ("targetLocation".equals(fieldName)) {
+                    deserializedVMwareCbtProtectionContainerMappingDetails.targetLocation = reader.getString();
+                } else if ("roleSizeToNicCountMap".equals(fieldName)) {
+                    Map<String, Integer> roleSizeToNicCountMap = reader.readMap(reader1 -> reader1.getInt());
+                    deserializedVMwareCbtProtectionContainerMappingDetails.roleSizeToNicCountMap
+                        = roleSizeToNicCountMap;
+                } else if ("excludedSkus".equals(fieldName)) {
+                    List<String> excludedSkus = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVMwareCbtProtectionContainerMappingDetails.excludedSkus = excludedSkus;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtProtectionContainerMappingDetails;
+        });
     }
 }

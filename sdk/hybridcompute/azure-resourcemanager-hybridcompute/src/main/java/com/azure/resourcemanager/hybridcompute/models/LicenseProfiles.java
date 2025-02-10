@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of LicenseProfiles. */
+/**
+ * Resource collection API of LicenseProfiles.
+ */
 public interface LicenseProfiles {
     /**
      * Retrieves information about the view of a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -25,7 +27,7 @@ public interface LicenseProfiles {
 
     /**
      * Retrieves information about the view of a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface LicenseProfiles {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +50,7 @@ public interface LicenseProfiles {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -60,34 +62,34 @@ public interface LicenseProfiles {
 
     /**
      * The operation to get all license profiles of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List hybrid machine license profile operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List hybrid machine license profile operation response as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<LicenseProfile> list(String resourceGroupName, String machineName);
 
     /**
      * The operation to get all license profiles of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List hybrid machine license profile operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List hybrid machine license profile operation response as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<LicenseProfile> list(String resourceGroupName, String machineName, Context context);
 
     /**
      * Retrieves information about the view of a license profile.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,7 +100,7 @@ public interface LicenseProfiles {
 
     /**
      * Retrieves information about the view of a license profile.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +112,7 @@ public interface LicenseProfiles {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,7 +122,7 @@ public interface LicenseProfiles {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +133,7 @@ public interface LicenseProfiles {
 
     /**
      * Begins definition for a new LicenseProfile resource.
-     *
+     * 
      * @return the first stage of the new LicenseProfile definition.
      */
     LicenseProfile.DefinitionStages.Blank define();

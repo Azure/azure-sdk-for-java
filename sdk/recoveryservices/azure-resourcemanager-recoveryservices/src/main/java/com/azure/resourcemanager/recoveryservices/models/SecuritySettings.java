@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Security Settings of the vault. */
+/**
+ * Security Settings of the vault.
+ */
 @Fluent
-public final class SecuritySettings {
+public final class SecuritySettings implements JsonSerializable<SecuritySettings> {
     /*
      * Immutability Settings of a vault
      */
-    @JsonProperty(value = "immutabilitySettings")
     private ImmutabilitySettings immutabilitySettings;
 
     /*
      * Soft delete Settings of a vault
      */
-    @JsonProperty(value = "softDeleteSettings")
     private SoftDeleteSettings softDeleteSettings;
 
     /*
      * MUA Settings of a vault
      */
-    @JsonProperty(value = "multiUserAuthorization", access = JsonProperty.Access.WRITE_ONLY)
     private MultiUserAuthorization multiUserAuthorization;
 
-    /** Creates an instance of SecuritySettings class. */
+    /**
+     * Creates an instance of SecuritySettings class.
+     */
     public SecuritySettings() {
     }
 
     /**
      * Get the immutabilitySettings property: Immutability Settings of a vault.
-     *
+     * 
      * @return the immutabilitySettings value.
      */
     public ImmutabilitySettings immutabilitySettings() {
@@ -43,7 +48,7 @@ public final class SecuritySettings {
 
     /**
      * Set the immutabilitySettings property: Immutability Settings of a vault.
-     *
+     * 
      * @param immutabilitySettings the immutabilitySettings value to set.
      * @return the SecuritySettings object itself.
      */
@@ -54,7 +59,7 @@ public final class SecuritySettings {
 
     /**
      * Get the softDeleteSettings property: Soft delete Settings of a vault.
-     *
+     * 
      * @return the softDeleteSettings value.
      */
     public SoftDeleteSettings softDeleteSettings() {
@@ -63,7 +68,7 @@ public final class SecuritySettings {
 
     /**
      * Set the softDeleteSettings property: Soft delete Settings of a vault.
-     *
+     * 
      * @param softDeleteSettings the softDeleteSettings value to set.
      * @return the SecuritySettings object itself.
      */
@@ -74,7 +79,7 @@ public final class SecuritySettings {
 
     /**
      * Get the multiUserAuthorization property: MUA Settings of a vault.
-     *
+     * 
      * @return the multiUserAuthorization value.
      */
     public MultiUserAuthorization multiUserAuthorization() {
@@ -83,7 +88,7 @@ public final class SecuritySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -93,5 +98,47 @@ public final class SecuritySettings {
         if (softDeleteSettings() != null) {
             softDeleteSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("immutabilitySettings", this.immutabilitySettings);
+        jsonWriter.writeJsonField("softDeleteSettings", this.softDeleteSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecuritySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecuritySettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecuritySettings.
+     */
+    public static SecuritySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecuritySettings deserializedSecuritySettings = new SecuritySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("immutabilitySettings".equals(fieldName)) {
+                    deserializedSecuritySettings.immutabilitySettings = ImmutabilitySettings.fromJson(reader);
+                } else if ("softDeleteSettings".equals(fieldName)) {
+                    deserializedSecuritySettings.softDeleteSettings = SoftDeleteSettings.fromJson(reader);
+                } else if ("multiUserAuthorization".equals(fieldName)) {
+                    deserializedSecuritySettings.multiUserAuthorization
+                        = MultiUserAuthorization.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecuritySettings;
+        });
     }
 }

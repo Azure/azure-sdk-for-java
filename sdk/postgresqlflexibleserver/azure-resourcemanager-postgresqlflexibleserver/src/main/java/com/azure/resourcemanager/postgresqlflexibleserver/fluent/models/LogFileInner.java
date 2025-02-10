@@ -7,31 +7,51 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Represents a logFile. */
+/**
+ * Represents a logFile.
+ */
 @Fluent
 public final class LogFileInner extends ProxyResource {
     /*
      * The properties of a logFile.
      */
-    @JsonProperty(value = "properties")
     private LogFileProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of LogFileInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LogFileInner class.
+     */
     public LogFileInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a logFile.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LogFileProperties innerProperties() {
@@ -40,7 +60,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,8 +68,38 @@ public final class LogFileInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the createdTime property: Creation timestamp of the log file.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -58,7 +108,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Set the createdTime property: Creation timestamp of the log file.
-     *
+     * 
      * @param createdTime the createdTime value to set.
      * @return the LogFileInner object itself.
      */
@@ -72,7 +122,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Get the lastModifiedTime property: Last modified timestamp of the log file.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -81,7 +131,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Set the lastModifiedTime property: Last modified timestamp of the log file.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the LogFileInner object itself.
      */
@@ -95,7 +145,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Get the sizeInKb property: The size in kb of the logFile.
-     *
+     * 
      * @return the sizeInKb value.
      */
     public Long sizeInKb() {
@@ -104,7 +154,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Set the sizeInKb property: The size in kb of the logFile.
-     *
+     * 
      * @param sizeInKb the sizeInKb value to set.
      * @return the LogFileInner object itself.
      */
@@ -118,7 +168,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Get the type property: Type of the log file.
-     *
+     * 
      * @return the type value.
      */
     public String typePropertiesType() {
@@ -127,7 +177,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Set the type property: Type of the log file.
-     *
+     * 
      * @param type the type value to set.
      * @return the LogFileInner object itself.
      */
@@ -141,7 +191,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Get the url property: The url to download the log file from.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -150,7 +200,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Set the url property: The url to download the log file from.
-     *
+     * 
      * @param url the url value to set.
      * @return the LogFileInner object itself.
      */
@@ -164,12 +214,57 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogFileInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogFileInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogFileInner.
+     */
+    public static LogFileInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogFileInner deserializedLogFileInner = new LogFileInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLogFileInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLogFileInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLogFileInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLogFileInner.innerProperties = LogFileProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedLogFileInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogFileInner;
+        });
     }
 }

@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Describes the properties of a file workspace. */
+/**
+ * Describes the properties of a file workspace.
+ */
 @Immutable
-public final class FileWorkspaceDetailsProperties {
+public final class FileWorkspaceDetailsProperties implements JsonSerializable<FileWorkspaceDetailsProperties> {
     /*
      * Time in UTC (ISO 8601 format) when file workspace was created.
      */
-    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Time in UTC (ISO 8601 format) when file workspace is going to expire.
      */
-    @JsonProperty(value = "expirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationTime;
 
-    /** Creates an instance of FileWorkspaceDetailsProperties class. */
+    /**
+     * Creates an instance of FileWorkspaceDetailsProperties class.
+     */
     public FileWorkspaceDetailsProperties() {
     }
 
     /**
      * Get the createdOn property: Time in UTC (ISO 8601 format) when file workspace was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -38,7 +45,7 @@ public final class FileWorkspaceDetailsProperties {
 
     /**
      * Get the expirationTime property: Time in UTC (ISO 8601 format) when file workspace is going to expire.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -47,9 +54,49 @@ public final class FileWorkspaceDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileWorkspaceDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileWorkspaceDetailsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileWorkspaceDetailsProperties.
+     */
+    public static FileWorkspaceDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileWorkspaceDetailsProperties deserializedFileWorkspaceDetailsProperties
+                = new FileWorkspaceDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdOn".equals(fieldName)) {
+                    deserializedFileWorkspaceDetailsProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationTime".equals(fieldName)) {
+                    deserializedFileWorkspaceDetailsProperties.expirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileWorkspaceDetailsProperties;
+        });
     }
 }

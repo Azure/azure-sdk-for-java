@@ -4,6 +4,7 @@
 package com.azure.core.perf.core;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -29,14 +30,11 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -69,7 +67,8 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
         this(options, mockResponseSupplier, null);
     }
 
-    public RestProxyTestBase(TOptions options, Function<HttpRequest, HttpResponse> mockResponseSupplier, Tracer tracer) {
+    public RestProxyTestBase(TOptions options, Function<HttpRequest, HttpResponse> mockResponseSupplier,
+        Tracer tracer) {
         super(options);
         if (options.getBackendType() == CorePerfStressOptions.BackendType.WIREMOCK) {
             wireMockServer = createWireMockServer(mockResponseSupplier);
@@ -80,14 +79,13 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
                 throw new IllegalStateException("Environment variable AZURE_STORAGE_CONTAINER_SAS_URL must be set");
             }
             wireMockServer = null;
-            endpoint= containerSASUrl;
+            endpoint = containerSASUrl;
         } else {
             wireMockServer = null;
             endpoint = "http://unused";
         }
         HttpClient httpClient = createHttpClient(options, mockResponseSupplier);
-        httpPipeline = new HttpPipelineBuilder()
-            .policies(createPipelinePolicies(options))
+        httpPipeline = new HttpPipelineBuilder().policies(createPipelinePolicies(options))
             .httpClient(httpClient)
             .tracer(tracer)
             .build();
@@ -97,21 +95,18 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return super.cleanupAsync()
-            .then(Mono.fromRunnable(() -> {
-                if (wireMockServer != null) {
-                    wireMockServer.shutdown();
-                }
-            }));
+        return super.cleanupAsync().then(Mono.fromRunnable(() -> {
+            if (wireMockServer != null) {
+                wireMockServer.shutdown();
+            }
+        }));
     }
 
     private HttpPipelinePolicy[] createPipelinePolicies(TOptions options) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (options.getBackendType() == CorePerfStressOptions.BackendType.BLOBS) {
             policies.add(new AddHeadersPolicy(
-                new HttpHeaders()
-                    .add("x-ms-blob-type", "BlockBlob")
-                    .add("x-ms-version", "2021-08-06")));
+                new HttpHeaders().add("x-ms-blob-type", "BlockBlob").add("x-ms-version", "2021-08-06")));
         }
 
         if (options.isIncludePipelinePolicies()) {
@@ -137,22 +132,17 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     }
 
     private static WireMockServer createWireMockServer(Function<HttpRequest, HttpResponse> mockResponseSupplier) {
-        WireMockServer server = new WireMockServer(WireMockConfiguration.options()
-            .dynamicPort()
-            .disableRequestJournal()
-            .gzipDisabled(true));
+        WireMockServer server = new WireMockServer(
+            WireMockConfiguration.options().dynamicPort().disableRequestJournal().gzipDisabled(true));
 
         if (mockResponseSupplier == null) {
             server.stubFor(any(urlPathMatching("/(RawData|UserDatabase|BinaryData).*")));
         } else {
             HttpResponse response = mockResponseSupplier.apply(null);
-            server.stubFor(
-                any(urlPathMatching("/(RawData|UserDatabase|BinaryData).*"))
-                    .willReturn(aResponse()
-                        .withBody(response.getBodyAsByteArray().block())
-                        .withStatus(response.getStatusCode())
-                        .withHeader("Content-Type", response.getHeaderValue("Content-Type"))
-                    ));
+            server.stubFor(any(urlPathMatching("/(RawData|UserDatabase|BinaryData).*"))
+                .willReturn(aResponse().withBody(response.getBodyAsByteArray().block())
+                    .withStatus(response.getStatusCode())
+                    .withHeader("Content-Type", response.getHeaderValue(HttpHeaderName.CONTENT_TYPE))));
         }
 
         server.start();
@@ -160,18 +150,8 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     }
 
     public static HttpResponse createMockResponse(HttpRequest httpRequest, String contentType, byte[] bodyBytes) {
-        HttpHeaders headers = new HttpHeaders().set("Content-Type", contentType);
-        HttpResponse res = new MockHttpResponse(httpRequest, 200, headers, bodyBytes);
-        return res;
-    }
-
-    public static byte[] serializeData(Object object, ObjectMapper objectMapper) {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            objectMapper.writeValue(outputStream, object);
-            return outputStream.toByteArray();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);
+        return new MockHttpResponse(httpRequest, 200, headers, bodyBytes);
     }
 
     public static Supplier<BinaryData> createBinaryDataSupplier(CorePerfStressOptions options) {
@@ -180,7 +160,8 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
             case BYTES:
                 byte[] bytes = new byte[(int) size];
                 ThreadLocalRandom.current().nextBytes(bytes);
-                return  () -> BinaryData.fromBytes(bytes);
+                return () -> BinaryData.fromBytes(bytes);
+
             case FILE:
                 try {
                     Path tempFile = Files.createTempFile("binarydataforperftest", null);
@@ -192,16 +173,18 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
                     throw new RuntimeException(e);
                 }
             case FLUX:
-                return () -> BinaryData.fromFlux(
-                    TestDataCreationHelper.createRandomByteBufferFlux(size), size, false).block();
+                return () -> BinaryData.fromFlux(TestDataCreationHelper.createRandomByteBufferFlux(size), size, false)
+                    .block();
+
             case STREAM:
-                RepeatingInputStream inputStream =
-                    (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(size);
+                RepeatingInputStream inputStream
+                    = (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(size);
                 inputStream.mark(Long.MAX_VALUE);
                 return () -> {
                     inputStream.reset();
                     return BinaryData.fromStream(inputStream, size);
                 };
+
             default:
                 throw new IllegalArgumentException("Unknown binary data source " + options.getBinaryDataSource());
         }

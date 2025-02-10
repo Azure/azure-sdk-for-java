@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-/** Samples for AscOperations Get. */
+/**
+ * Samples for AscOperations Get.
+ */
 public final class AscOperationsGetSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/AscOperations_Get.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/AscOperations_Get.
+     * json
      */
     /**
      * Sample code: AscOperations_Get.
-     *
+     * 
      * @param manager Entry point to StorageCacheManager.
      */
     public static void ascOperationsGet(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {

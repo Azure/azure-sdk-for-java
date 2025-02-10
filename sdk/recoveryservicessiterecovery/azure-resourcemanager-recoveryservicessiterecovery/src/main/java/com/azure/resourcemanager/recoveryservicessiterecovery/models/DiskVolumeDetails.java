@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Volume details. */
+/**
+ * Volume details.
+ */
 @Fluent
-public final class DiskVolumeDetails {
+public final class DiskVolumeDetails implements JsonSerializable<DiskVolumeDetails> {
     /*
      * The volume label.
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /*
      * The volume name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of DiskVolumeDetails class. */
+    /**
+     * Creates an instance of DiskVolumeDetails class.
+     */
     public DiskVolumeDetails() {
     }
 
     /**
      * Get the label property: The volume label.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -37,7 +43,7 @@ public final class DiskVolumeDetails {
 
     /**
      * Set the label property: The volume label.
-     *
+     * 
      * @param label the label value to set.
      * @return the DiskVolumeDetails object itself.
      */
@@ -48,7 +54,7 @@ public final class DiskVolumeDetails {
 
     /**
      * Get the name property: The volume name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +63,7 @@ public final class DiskVolumeDetails {
 
     /**
      * Set the name property: The volume name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DiskVolumeDetails object itself.
      */
@@ -68,9 +74,48 @@ public final class DiskVolumeDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskVolumeDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskVolumeDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskVolumeDetails.
+     */
+    public static DiskVolumeDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskVolumeDetails deserializedDiskVolumeDetails = new DiskVolumeDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("label".equals(fieldName)) {
+                    deserializedDiskVolumeDetails.label = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDiskVolumeDetails.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskVolumeDetails;
+        });
     }
 }

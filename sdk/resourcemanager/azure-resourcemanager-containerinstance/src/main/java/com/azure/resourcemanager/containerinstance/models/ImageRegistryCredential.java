@@ -6,48 +6,51 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Image registry credential. */
+/**
+ * Image registry credential.
+ */
 @Fluent
-public final class ImageRegistryCredential {
+public final class ImageRegistryCredential implements JsonSerializable<ImageRegistryCredential> {
     /*
      * The Docker image registry server without a protocol such as "http" and "https".
      */
-    @JsonProperty(value = "server", required = true)
     private String server;
 
     /*
      * The username for the private registry.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * The password for the private registry.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The identity for the private registry.
      */
-    @JsonProperty(value = "identity")
     private String identity;
 
     /*
      * The identity URL for the private registry.
      */
-    @JsonProperty(value = "identityUrl")
     private String identityUrl;
 
-    /** Creates an instance of ImageRegistryCredential class. */
+    /**
+     * Creates an instance of ImageRegistryCredential class.
+     */
     public ImageRegistryCredential() {
     }
 
     /**
      * Get the server property: The Docker image registry server without a protocol such as "http" and "https".
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -56,7 +59,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Set the server property: The Docker image registry server without a protocol such as "http" and "https".
-     *
+     * 
      * @param server the server value to set.
      * @return the ImageRegistryCredential object itself.
      */
@@ -67,7 +70,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Get the username property: The username for the private registry.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -76,7 +79,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Set the username property: The username for the private registry.
-     *
+     * 
      * @param username the username value to set.
      * @return the ImageRegistryCredential object itself.
      */
@@ -87,7 +90,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Get the password property: The password for the private registry.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -96,7 +99,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Set the password property: The password for the private registry.
-     *
+     * 
      * @param password the password value to set.
      * @return the ImageRegistryCredential object itself.
      */
@@ -107,7 +110,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Get the identity property: The identity for the private registry.
-     *
+     * 
      * @return the identity value.
      */
     public String identity() {
@@ -116,7 +119,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Set the identity property: The identity for the private registry.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ImageRegistryCredential object itself.
      */
@@ -127,7 +130,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Get the identityUrl property: The identity URL for the private registry.
-     *
+     * 
      * @return the identityUrl value.
      */
     public String identityUrl() {
@@ -136,7 +139,7 @@ public final class ImageRegistryCredential {
 
     /**
      * Set the identityUrl property: The identity URL for the private registry.
-     *
+     * 
      * @param identityUrl the identityUrl value to set.
      * @return the ImageRegistryCredential object itself.
      */
@@ -147,16 +150,64 @@ public final class ImageRegistryCredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (server() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property server in model ImageRegistryCredential"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property server in model ImageRegistryCredential"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageRegistryCredential.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("identity", this.identity);
+        jsonWriter.writeStringField("identityUrl", this.identityUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageRegistryCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageRegistryCredential if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageRegistryCredential.
+     */
+    public static ImageRegistryCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageRegistryCredential deserializedImageRegistryCredential = new ImageRegistryCredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedImageRegistryCredential.server = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedImageRegistryCredential.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedImageRegistryCredential.password = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedImageRegistryCredential.identity = reader.getString();
+                } else if ("identityUrl".equals(fieldName)) {
+                    deserializedImageRegistryCredential.identityUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageRegistryCredential;
+        });
+    }
 }

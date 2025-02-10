@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ThrottlingRule model. */
+/**
+ * The ThrottlingRule model.
+ */
 @Fluent
-public final class ThrottlingRule {
+public final class ThrottlingRule implements JsonSerializable<ThrottlingRule> {
     /*
      * The key property.
      */
-    @JsonProperty(value = "key")
     private String key;
 
     /*
      * The renewalPeriod property.
      */
-    @JsonProperty(value = "renewalPeriod")
     private Float renewalPeriod;
 
     /*
      * The count property.
      */
-    @JsonProperty(value = "count")
     private Float count;
 
     /*
      * The minCount property.
      */
-    @JsonProperty(value = "minCount")
     private Float minCount;
 
     /*
      * The dynamicThrottlingEnabled property.
      */
-    @JsonProperty(value = "dynamicThrottlingEnabled")
     private Boolean dynamicThrottlingEnabled;
 
     /*
      * The matchPatterns property.
      */
-    @JsonProperty(value = "matchPatterns")
     private List<RequestMatchPattern> matchPatterns;
 
-    /** Creates an instance of ThrottlingRule class. */
+    /**
+     * Creates an instance of ThrottlingRule class.
+     */
     public ThrottlingRule() {
     }
 
     /**
      * Get the key property: The key property.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -62,7 +64,7 @@ public final class ThrottlingRule {
 
     /**
      * Set the key property: The key property.
-     *
+     * 
      * @param key the key value to set.
      * @return the ThrottlingRule object itself.
      */
@@ -73,7 +75,7 @@ public final class ThrottlingRule {
 
     /**
      * Get the renewalPeriod property: The renewalPeriod property.
-     *
+     * 
      * @return the renewalPeriod value.
      */
     public Float renewalPeriod() {
@@ -82,7 +84,7 @@ public final class ThrottlingRule {
 
     /**
      * Set the renewalPeriod property: The renewalPeriod property.
-     *
+     * 
      * @param renewalPeriod the renewalPeriod value to set.
      * @return the ThrottlingRule object itself.
      */
@@ -93,7 +95,7 @@ public final class ThrottlingRule {
 
     /**
      * Get the count property: The count property.
-     *
+     * 
      * @return the count value.
      */
     public Float count() {
@@ -102,7 +104,7 @@ public final class ThrottlingRule {
 
     /**
      * Set the count property: The count property.
-     *
+     * 
      * @param count the count value to set.
      * @return the ThrottlingRule object itself.
      */
@@ -113,7 +115,7 @@ public final class ThrottlingRule {
 
     /**
      * Get the minCount property: The minCount property.
-     *
+     * 
      * @return the minCount value.
      */
     public Float minCount() {
@@ -122,7 +124,7 @@ public final class ThrottlingRule {
 
     /**
      * Set the minCount property: The minCount property.
-     *
+     * 
      * @param minCount the minCount value to set.
      * @return the ThrottlingRule object itself.
      */
@@ -133,7 +135,7 @@ public final class ThrottlingRule {
 
     /**
      * Get the dynamicThrottlingEnabled property: The dynamicThrottlingEnabled property.
-     *
+     * 
      * @return the dynamicThrottlingEnabled value.
      */
     public Boolean dynamicThrottlingEnabled() {
@@ -142,7 +144,7 @@ public final class ThrottlingRule {
 
     /**
      * Set the dynamicThrottlingEnabled property: The dynamicThrottlingEnabled property.
-     *
+     * 
      * @param dynamicThrottlingEnabled the dynamicThrottlingEnabled value to set.
      * @return the ThrottlingRule object itself.
      */
@@ -153,7 +155,7 @@ public final class ThrottlingRule {
 
     /**
      * Get the matchPatterns property: The matchPatterns property.
-     *
+     * 
      * @return the matchPatterns value.
      */
     public List<RequestMatchPattern> matchPatterns() {
@@ -162,7 +164,7 @@ public final class ThrottlingRule {
 
     /**
      * Set the matchPatterns property: The matchPatterns property.
-     *
+     * 
      * @param matchPatterns the matchPatterns value to set.
      * @return the ThrottlingRule object itself.
      */
@@ -173,12 +175,65 @@ public final class ThrottlingRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (matchPatterns() != null) {
             matchPatterns().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeNumberField("renewalPeriod", this.renewalPeriod);
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeNumberField("minCount", this.minCount);
+        jsonWriter.writeBooleanField("dynamicThrottlingEnabled", this.dynamicThrottlingEnabled);
+        jsonWriter.writeArrayField("matchPatterns", this.matchPatterns, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThrottlingRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThrottlingRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThrottlingRule.
+     */
+    public static ThrottlingRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThrottlingRule deserializedThrottlingRule = new ThrottlingRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedThrottlingRule.key = reader.getString();
+                } else if ("renewalPeriod".equals(fieldName)) {
+                    deserializedThrottlingRule.renewalPeriod = reader.getNullable(JsonReader::getFloat);
+                } else if ("count".equals(fieldName)) {
+                    deserializedThrottlingRule.count = reader.getNullable(JsonReader::getFloat);
+                } else if ("minCount".equals(fieldName)) {
+                    deserializedThrottlingRule.minCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("dynamicThrottlingEnabled".equals(fieldName)) {
+                    deserializedThrottlingRule.dynamicThrottlingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("matchPatterns".equals(fieldName)) {
+                    List<RequestMatchPattern> matchPatterns
+                        = reader.readArray(reader1 -> RequestMatchPattern.fromJson(reader1));
+                    deserializedThrottlingRule.matchPatterns = matchPatterns;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThrottlingRule;
+        });
     }
 }

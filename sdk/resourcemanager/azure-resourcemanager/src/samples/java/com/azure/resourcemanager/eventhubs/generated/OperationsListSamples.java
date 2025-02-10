@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EHOperations_List.json
+     * x-ms-original-file:
+     * specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/EHOperations_List.json
      */
     /**
      * Sample code: EHOperations_List.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void eHOperationsList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.eventHubs().manager().serviceClient().getOperations().list(Context.NONE);
+        azure.eventHubs().manager().serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
     }
 }

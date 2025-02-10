@@ -6,32 +6,38 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The cluster secret profile. */
+/**
+ * The cluster secret profile.
+ */
 @Fluent
-public final class SecretsProfile {
+public final class SecretsProfile implements JsonSerializable<SecretsProfile> {
     /*
      * Name of the user Key Vault where all the cluster specific user secrets are stored.
      */
-    @JsonProperty(value = "keyVaultResourceId", required = true)
     private String keyVaultResourceId;
 
     /*
      * Properties of Key Vault secret.
      */
-    @JsonProperty(value = "secrets")
     private List<SecretReference> secrets;
 
-    /** Creates an instance of SecretsProfile class. */
+    /**
+     * Creates an instance of SecretsProfile class.
+     */
     public SecretsProfile() {
     }
 
     /**
      * Get the keyVaultResourceId property: Name of the user Key Vault where all the cluster specific user secrets are
      * stored.
-     *
+     * 
      * @return the keyVaultResourceId value.
      */
     public String keyVaultResourceId() {
@@ -41,7 +47,7 @@ public final class SecretsProfile {
     /**
      * Set the keyVaultResourceId property: Name of the user Key Vault where all the cluster specific user secrets are
      * stored.
-     *
+     * 
      * @param keyVaultResourceId the keyVaultResourceId value to set.
      * @return the SecretsProfile object itself.
      */
@@ -52,7 +58,7 @@ public final class SecretsProfile {
 
     /**
      * Get the secrets property: Properties of Key Vault secret.
-     *
+     * 
      * @return the secrets value.
      */
     public List<SecretReference> secrets() {
@@ -61,7 +67,7 @@ public final class SecretsProfile {
 
     /**
      * Set the secrets property: Properties of Key Vault secret.
-     *
+     * 
      * @param secrets the secrets value to set.
      * @return the SecretsProfile object itself.
      */
@@ -72,15 +78,14 @@ public final class SecretsProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyVaultResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultResourceId in model SecretsProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVaultResourceId in model SecretsProfile"));
         }
         if (secrets() != null) {
             secrets().forEach(e -> e.validate());
@@ -88,4 +93,45 @@ public final class SecretsProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecretsProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyVaultResourceId", this.keyVaultResourceId);
+        jsonWriter.writeArrayField("secrets", this.secrets, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecretsProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecretsProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecretsProfile.
+     */
+    public static SecretsProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretsProfile deserializedSecretsProfile = new SecretsProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVaultResourceId".equals(fieldName)) {
+                    deserializedSecretsProfile.keyVaultResourceId = reader.getString();
+                } else if ("secrets".equals(fieldName)) {
+                    List<SecretReference> secrets = reader.readArray(reader1 -> SecretReference.fromJson(reader1));
+                    deserializedSecretsProfile.secrets = secrets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecretsProfile;
+        });
+    }
 }

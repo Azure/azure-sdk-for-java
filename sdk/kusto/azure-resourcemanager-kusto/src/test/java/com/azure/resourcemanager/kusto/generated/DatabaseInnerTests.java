@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"Database\",\"location\":\"nkww\",\"id\":\"pp\",\"name\":\"flcxoga\",\"type\":\"konzmnsik\"}")
-                .toObject(DatabaseInner.class);
-        Assertions.assertEquals("nkww", model.location());
+        DatabaseInner model = BinaryData.fromString(
+            "{\"kind\":\"Database\",\"location\":\"btkuwhh\",\"id\":\"hykojoxafnndlpic\",\"name\":\"koymkcd\",\"type\":\"h\"}")
+            .toObject(DatabaseInner.class);
+        Assertions.assertEquals("btkuwhh", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseInner model = new DatabaseInner().withLocation("nkww");
+        DatabaseInner model = new DatabaseInner().withLocation("btkuwhh");
         model = BinaryData.fromObject(model).toObject(DatabaseInner.class);
-        Assertions.assertEquals("nkww", model.location());
+        Assertions.assertEquals("btkuwhh", model.location());
     }
 }

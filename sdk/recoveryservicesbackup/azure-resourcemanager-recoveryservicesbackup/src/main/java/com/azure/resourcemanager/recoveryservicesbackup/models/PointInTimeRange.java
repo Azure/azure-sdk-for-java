@@ -5,31 +5,39 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Provides details for log ranges. */
+/**
+ * Provides details for log ranges.
+ */
 @Fluent
-public final class PointInTimeRange {
+public final class PointInTimeRange implements JsonSerializable<PointInTimeRange> {
     /*
      * Start time of the time range for log recovery.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * End time of the time range for log recovery.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
-    /** Creates an instance of PointInTimeRange class. */
+    /**
+     * Creates an instance of PointInTimeRange class.
+     */
     public PointInTimeRange() {
     }
 
     /**
      * Get the startTime property: Start time of the time range for log recovery.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -38,7 +46,7 @@ public final class PointInTimeRange {
 
     /**
      * Set the startTime property: Start time of the time range for log recovery.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the PointInTimeRange object itself.
      */
@@ -49,7 +57,7 @@ public final class PointInTimeRange {
 
     /**
      * Get the endTime property: End time of the time range for log recovery.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -58,7 +66,7 @@ public final class PointInTimeRange {
 
     /**
      * Set the endTime property: End time of the time range for log recovery.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the PointInTimeRange object itself.
      */
@@ -69,9 +77,52 @@ public final class PointInTimeRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PointInTimeRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PointInTimeRange if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PointInTimeRange.
+     */
+    public static PointInTimeRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PointInTimeRange deserializedPointInTimeRange = new PointInTimeRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedPointInTimeRange.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedPointInTimeRange.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPointInTimeRange;
+        });
     }
 }

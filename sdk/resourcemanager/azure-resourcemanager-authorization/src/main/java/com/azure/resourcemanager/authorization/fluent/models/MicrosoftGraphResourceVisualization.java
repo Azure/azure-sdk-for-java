@@ -5,81 +5,78 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** resourceVisualization. */
+/**
+ * resourceVisualization.
+ */
 @Fluent
-public final class MicrosoftGraphResourceVisualization {
+public final class MicrosoftGraphResourceVisualization
+    implements JsonSerializable<MicrosoftGraphResourceVisualization> {
     /*
      * A string describing where the item is stored. For example, the name of a SharePoint site or the user name
      * identifying the owner of the OneDrive storing the item.
      */
-    @JsonProperty(value = "containerDisplayName")
     private String containerDisplayName;
 
     /*
-     * Can be used for filtering by the type of container in which the file is stored. Such as Site or
-     * OneDriveBusiness.
+     * Can be used for filtering by the type of container in which the file is stored. Such as Site or OneDriveBusiness.
      */
-    @JsonProperty(value = "containerType")
     private String containerType;
 
     /*
      * A path leading to the folder in which the item is stored.
      */
-    @JsonProperty(value = "containerWebUrl")
     private String containerWebUrl;
 
     /*
      * The item's media type. Can be used for filtering for a specific type of file based on supported IANA Media Mime
      * Types. Note that not all Media Mime Types are supported.
      */
-    @JsonProperty(value = "mediaType")
     private String mediaType;
 
     /*
      * A URL leading to the preview image for the item.
      */
-    @JsonProperty(value = "previewImageUrl")
     private String previewImageUrl;
 
     /*
      * A preview text for the item.
      */
-    @JsonProperty(value = "previewText")
     private String previewText;
 
     /*
      * The item's title text.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The item's media type. Can be used for filtering for a specific file based on a specific type. See below for
      * supported types.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * resourceVisualization
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphResourceVisualization class. */
+    /**
+     * Creates an instance of MicrosoftGraphResourceVisualization class.
+     */
     public MicrosoftGraphResourceVisualization() {
     }
 
     /**
      * Get the containerDisplayName property: A string describing where the item is stored. For example, the name of a
      * SharePoint site or the user name identifying the owner of the OneDrive storing the item.
-     *
+     * 
      * @return the containerDisplayName value.
      */
     public String containerDisplayName() {
@@ -89,7 +86,7 @@ public final class MicrosoftGraphResourceVisualization {
     /**
      * Set the containerDisplayName property: A string describing where the item is stored. For example, the name of a
      * SharePoint site or the user name identifying the owner of the OneDrive storing the item.
-     *
+     * 
      * @param containerDisplayName the containerDisplayName value to set.
      * @return the MicrosoftGraphResourceVisualization object itself.
      */
@@ -101,7 +98,7 @@ public final class MicrosoftGraphResourceVisualization {
     /**
      * Get the containerType property: Can be used for filtering by the type of container in which the file is stored.
      * Such as Site or OneDriveBusiness.
-     *
+     * 
      * @return the containerType value.
      */
     public String containerType() {
@@ -111,7 +108,7 @@ public final class MicrosoftGraphResourceVisualization {
     /**
      * Set the containerType property: Can be used for filtering by the type of container in which the file is stored.
      * Such as Site or OneDriveBusiness.
-     *
+     * 
      * @param containerType the containerType value to set.
      * @return the MicrosoftGraphResourceVisualization object itself.
      */
@@ -122,7 +119,7 @@ public final class MicrosoftGraphResourceVisualization {
 
     /**
      * Get the containerWebUrl property: A path leading to the folder in which the item is stored.
-     *
+     * 
      * @return the containerWebUrl value.
      */
     public String containerWebUrl() {
@@ -131,7 +128,7 @@ public final class MicrosoftGraphResourceVisualization {
 
     /**
      * Set the containerWebUrl property: A path leading to the folder in which the item is stored.
-     *
+     * 
      * @param containerWebUrl the containerWebUrl value to set.
      * @return the MicrosoftGraphResourceVisualization object itself.
      */
@@ -143,7 +140,7 @@ public final class MicrosoftGraphResourceVisualization {
     /**
      * Get the mediaType property: The item's media type. Can be used for filtering for a specific type of file based on
      * supported IANA Media Mime Types. Note that not all Media Mime Types are supported.
-     *
+     * 
      * @return the mediaType value.
      */
     public String mediaType() {
@@ -153,7 +150,7 @@ public final class MicrosoftGraphResourceVisualization {
     /**
      * Set the mediaType property: The item's media type. Can be used for filtering for a specific type of file based on
      * supported IANA Media Mime Types. Note that not all Media Mime Types are supported.
-     *
+     * 
      * @param mediaType the mediaType value to set.
      * @return the MicrosoftGraphResourceVisualization object itself.
      */
@@ -164,7 +161,7 @@ public final class MicrosoftGraphResourceVisualization {
 
     /**
      * Get the previewImageUrl property: A URL leading to the preview image for the item.
-     *
+     * 
      * @return the previewImageUrl value.
      */
     public String previewImageUrl() {
@@ -173,7 +170,7 @@ public final class MicrosoftGraphResourceVisualization {
 
     /**
      * Set the previewImageUrl property: A URL leading to the preview image for the item.
-     *
+     * 
      * @param previewImageUrl the previewImageUrl value to set.
      * @return the MicrosoftGraphResourceVisualization object itself.
      */
@@ -184,7 +181,7 @@ public final class MicrosoftGraphResourceVisualization {
 
     /**
      * Get the previewText property: A preview text for the item.
-     *
+     * 
      * @return the previewText value.
      */
     public String previewText() {
@@ -193,7 +190,7 @@ public final class MicrosoftGraphResourceVisualization {
 
     /**
      * Set the previewText property: A preview text for the item.
-     *
+     * 
      * @param previewText the previewText value to set.
      * @return the MicrosoftGraphResourceVisualization object itself.
      */
@@ -204,7 +201,7 @@ public final class MicrosoftGraphResourceVisualization {
 
     /**
      * Get the title property: The item's title text.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -213,7 +210,7 @@ public final class MicrosoftGraphResourceVisualization {
 
     /**
      * Set the title property: The item's title text.
-     *
+     * 
      * @param title the title value to set.
      * @return the MicrosoftGraphResourceVisualization object itself.
      */
@@ -225,7 +222,7 @@ public final class MicrosoftGraphResourceVisualization {
     /**
      * Get the type property: The item's media type. Can be used for filtering for a specific file based on a specific
      * type. See below for supported types.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -235,7 +232,7 @@ public final class MicrosoftGraphResourceVisualization {
     /**
      * Set the type property: The item's media type. Can be used for filtering for a specific file based on a specific
      * type. See below for supported types.
-     *
+     * 
      * @param type the type value to set.
      * @return the MicrosoftGraphResourceVisualization object itself.
      */
@@ -246,17 +243,16 @@ public final class MicrosoftGraphResourceVisualization {
 
     /**
      * Get the additionalProperties property: resourceVisualization.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: resourceVisualization.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphResourceVisualization object itself.
      */
@@ -265,19 +261,80 @@ public final class MicrosoftGraphResourceVisualization {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerDisplayName", this.containerDisplayName);
+        jsonWriter.writeStringField("containerType", this.containerType);
+        jsonWriter.writeStringField("containerWebUrl", this.containerWebUrl);
+        jsonWriter.writeStringField("mediaType", this.mediaType);
+        jsonWriter.writeStringField("previewImageUrl", this.previewImageUrl);
+        jsonWriter.writeStringField("previewText", this.previewText);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphResourceVisualization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphResourceVisualization if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphResourceVisualization.
+     */
+    public static MicrosoftGraphResourceVisualization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphResourceVisualization deserializedMicrosoftGraphResourceVisualization
+                = new MicrosoftGraphResourceVisualization();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("containerDisplayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphResourceVisualization.containerDisplayName = reader.getString();
+                } else if ("containerType".equals(fieldName)) {
+                    deserializedMicrosoftGraphResourceVisualization.containerType = reader.getString();
+                } else if ("containerWebUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphResourceVisualization.containerWebUrl = reader.getString();
+                } else if ("mediaType".equals(fieldName)) {
+                    deserializedMicrosoftGraphResourceVisualization.mediaType = reader.getString();
+                } else if ("previewImageUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphResourceVisualization.previewImageUrl = reader.getString();
+                } else if ("previewText".equals(fieldName)) {
+                    deserializedMicrosoftGraphResourceVisualization.previewText = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedMicrosoftGraphResourceVisualization.title = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMicrosoftGraphResourceVisualization.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphResourceVisualization.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphResourceVisualization;
+        });
     }
 }

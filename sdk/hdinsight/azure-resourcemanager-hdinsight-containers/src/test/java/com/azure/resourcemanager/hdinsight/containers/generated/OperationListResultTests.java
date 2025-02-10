@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hdinsight.containers.models.OperationListResult
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"qztpp\",\"isDataAction\":false,\"display\":{\"provider\":\"or\",\"resource\":\"lt\",\"operation\":\"mncwsobqwcsdb\",\"description\":\"dcfhucqdpf\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"jjcanvxbvtv\",\"isDataAction\":false,\"display\":{\"provider\":\"cormr\",\"resource\":\"qtvcofudflvkgj\",\"operation\":\"gdknnqv\",\"description\":\"znqntoru\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"mkycgra\",\"isDataAction\":true,\"display\":{\"provider\":\"taeburuvdm\",\"resource\":\"s\",\"operation\":\"l\",\"description\":\"ab\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"ifrvtpu\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"ydxtqm\",\"isDataAction\":false,\"display\":{\"provider\":\"rgguf\",\"resource\":\"aomtbghhavgrvkff\",\"operation\":\"jzhpjbibgjmfx\",\"description\":\"vfcluyovwxnbkfe\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"hwzdgirujbz\"}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

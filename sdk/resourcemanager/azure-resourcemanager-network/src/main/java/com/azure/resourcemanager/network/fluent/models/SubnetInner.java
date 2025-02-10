@@ -6,14 +6,19 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.Delegation;
+import com.azure.resourcemanager.network.models.IpamPoolPrefixAllocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResourceNavigationLink;
 import com.azure.resourcemanager.network.models.ServiceAssociationLink;
 import com.azure.resourcemanager.network.models.ServiceEndpointPropertiesFormat;
+import com.azure.resourcemanager.network.models.SharingScope;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateEndpointNetworkPolicies;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateLinkServiceNetworkPolicies;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -24,25 +29,21 @@ public final class SubnetInner extends SubResource {
     /*
      * Properties of the subnet.
      */
-    @JsonProperty(value = "properties")
     private SubnetPropertiesFormatInner innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /**
@@ -393,8 +394,8 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Get the privateEndpointNetworkPolicies property: Enable or Disable apply network policies on private end point
-     * in the subnet.
+     * Get the privateEndpointNetworkPolicies property: Enable or Disable apply network policies on private end point in
+     * the subnet.
      * 
      * @return the privateEndpointNetworkPolicies value.
      */
@@ -403,8 +404,8 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Set the privateEndpointNetworkPolicies property: Enable or Disable apply network policies on private end point
-     * in the subnet.
+     * Set the privateEndpointNetworkPolicies property: Enable or Disable apply network policies on private end point in
+     * the subnet.
      * 
      * @param privateEndpointNetworkPolicies the privateEndpointNetworkPolicies value to set.
      * @return the SubnetInner object itself.
@@ -471,6 +472,33 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
+     * Get the sharingScope property: Set this property to Tenant to allow sharing subnet with other subscriptions in
+     * your AAD tenant. This property can only be set if defaultOutboundAccess is set to false, both properties can only
+     * be set if subnet is empty.
+     * 
+     * @return the sharingScope value.
+     */
+    public SharingScope sharingScope() {
+        return this.innerProperties() == null ? null : this.innerProperties().sharingScope();
+    }
+
+    /**
+     * Set the sharingScope property: Set this property to Tenant to allow sharing subnet with other subscriptions in
+     * your AAD tenant. This property can only be set if defaultOutboundAccess is set to false, both properties can only
+     * be set if subnet is empty.
+     * 
+     * @param sharingScope the sharingScope value to set.
+     * @return the SubnetInner object itself.
+     */
+    public SubnetInner withSharingScope(SharingScope sharingScope) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withSharingScope(sharingScope);
+        return this;
+    }
+
+    /**
      * Get the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
      * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
      * existing subnet.
@@ -498,6 +526,29 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
+     * Get the ipamPoolPrefixAllocations property: A list of IPAM Pools for allocating IP address prefixes.
+     * 
+     * @return the ipamPoolPrefixAllocations value.
+     */
+    public List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipamPoolPrefixAllocations();
+    }
+
+    /**
+     * Set the ipamPoolPrefixAllocations property: A list of IPAM Pools for allocating IP address prefixes.
+     * 
+     * @param ipamPoolPrefixAllocations the ipamPoolPrefixAllocations value to set.
+     * @return the SubnetInner object itself.
+     */
+    public SubnetInner withIpamPoolPrefixAllocations(List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withIpamPoolPrefixAllocations(ipamPoolPrefixAllocations);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -506,5 +557,52 @@ public final class SubnetInner extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubnetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubnetInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubnetInner.
+     */
+    public static SubnetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubnetInner deserializedSubnetInner = new SubnetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSubnetInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSubnetInner.innerProperties = SubnetPropertiesFormatInner.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSubnetInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedSubnetInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSubnetInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubnetInner;
+        });
     }
 }

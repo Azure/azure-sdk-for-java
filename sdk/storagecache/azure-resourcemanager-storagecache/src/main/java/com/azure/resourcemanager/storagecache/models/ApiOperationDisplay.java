@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The object that represents the operation. */
+/**
+ * The object that represents the operation.
+ */
 @Fluent
-public final class ApiOperationDisplay {
+public final class ApiOperationDisplay implements JsonSerializable<ApiOperationDisplay> {
     /*
      * Operation type: Read, write, delete, etc.
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
     /*
      * Service provider: Microsoft.StorageCache
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
      * Resource on which the operation is performed: Cache, etc.
      */
-    @JsonProperty(value = "resource")
     private String resource;
 
     /*
      * The description of the operation
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ApiOperationDisplay class. */
+    /**
+     * Creates an instance of ApiOperationDisplay class.
+     */
     public ApiOperationDisplay() {
     }
 
     /**
      * Get the operation property: Operation type: Read, write, delete, etc.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -49,7 +53,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Set the operation property: Operation type: Read, write, delete, etc.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the ApiOperationDisplay object itself.
      */
@@ -60,7 +64,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Get the provider property: Service provider: Microsoft.StorageCache.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -69,7 +73,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Set the provider property: Service provider: Microsoft.StorageCache.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the ApiOperationDisplay object itself.
      */
@@ -80,7 +84,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Get the resource property: Resource on which the operation is performed: Cache, etc.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -89,7 +93,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Set the resource property: Resource on which the operation is performed: Cache, etc.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ApiOperationDisplay object itself.
      */
@@ -100,7 +104,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Get the description property: The description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public final class ApiOperationDisplay {
 
     /**
      * Set the description property: The description of the operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApiOperationDisplay object itself.
      */
@@ -120,9 +124,54 @@ public final class ApiOperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("resource", this.resource);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiOperationDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiOperationDisplay if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiOperationDisplay.
+     */
+    public static ApiOperationDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiOperationDisplay deserializedApiOperationDisplay = new ApiOperationDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operation".equals(fieldName)) {
+                    deserializedApiOperationDisplay.operation = reader.getString();
+                } else if ("provider".equals(fieldName)) {
+                    deserializedApiOperationDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedApiOperationDisplay.resource = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedApiOperationDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiOperationDisplay;
+        });
     }
 }

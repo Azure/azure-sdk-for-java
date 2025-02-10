@@ -6,35 +6,51 @@ package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of Azure Storage blob container endpoint. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
-@JsonTypeName("AzureStorageBlobContainer")
+/**
+ * The properties of Azure Storage blob container endpoint.
+ */
 @Fluent
 public final class AzureStorageBlobContainerEndpointProperties extends EndpointBaseProperties {
     /*
+     * The Endpoint resource type.
+     */
+    private EndpointType endpointType = EndpointType.AZURE_STORAGE_BLOB_CONTAINER;
+
+    /*
      * The Azure Resource ID of the storage account that is the target destination.
      */
-    @JsonProperty(value = "storageAccountResourceId", required = true)
     private String storageAccountResourceId;
 
     /*
      * The name of the Storage blob container that is the target destination.
      */
-    @JsonProperty(value = "blobContainerName", required = true)
     private String blobContainerName;
 
-    /** Creates an instance of AzureStorageBlobContainerEndpointProperties class. */
+    /**
+     * Creates an instance of AzureStorageBlobContainerEndpointProperties class.
+     */
     public AzureStorageBlobContainerEndpointProperties() {
+    }
+
+    /**
+     * Get the endpointType property: The Endpoint resource type.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
     }
 
     /**
      * Get the storageAccountResourceId property: The Azure Resource ID of the storage account that is the target
      * destination.
-     *
+     * 
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -44,7 +60,7 @@ public final class AzureStorageBlobContainerEndpointProperties extends EndpointB
     /**
      * Set the storageAccountResourceId property: The Azure Resource ID of the storage account that is the target
      * destination.
-     *
+     * 
      * @param storageAccountResourceId the storageAccountResourceId value to set.
      * @return the AzureStorageBlobContainerEndpointProperties object itself.
      */
@@ -55,7 +71,7 @@ public final class AzureStorageBlobContainerEndpointProperties extends EndpointB
 
     /**
      * Get the blobContainerName property: The name of the Storage blob container that is the target destination.
-     *
+     * 
      * @return the blobContainerName value.
      */
     public String blobContainerName() {
@@ -64,7 +80,7 @@ public final class AzureStorageBlobContainerEndpointProperties extends EndpointB
 
     /**
      * Set the blobContainerName property: The name of the Storage blob container that is the target destination.
-     *
+     * 
      * @param blobContainerName the blobContainerName value to set.
      * @return the AzureStorageBlobContainerEndpointProperties object itself.
      */
@@ -73,7 +89,9 @@ public final class AzureStorageBlobContainerEndpointProperties extends EndpointB
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageBlobContainerEndpointProperties withDescription(String description) {
         super.withDescription(description);
@@ -82,27 +100,74 @@ public final class AzureStorageBlobContainerEndpointProperties extends EndpointB
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (storageAccountResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountResourceId in model"
-                            + " AzureStorageBlobContainerEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountResourceId in model AzureStorageBlobContainerEndpointProperties"));
         }
         if (blobContainerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property blobContainerName in model"
-                            + " AzureStorageBlobContainerEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property blobContainerName in model AzureStorageBlobContainerEndpointProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureStorageBlobContainerEndpointProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("storageAccountResourceId", this.storageAccountResourceId);
+        jsonWriter.writeStringField("blobContainerName", this.blobContainerName);
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureStorageBlobContainerEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureStorageBlobContainerEndpointProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureStorageBlobContainerEndpointProperties.
+     */
+    public static AzureStorageBlobContainerEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureStorageBlobContainerEndpointProperties deserializedAzureStorageBlobContainerEndpointProperties
+                = new AzureStorageBlobContainerEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedAzureStorageBlobContainerEndpointProperties.withDescription(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAzureStorageBlobContainerEndpointProperties
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("storageAccountResourceId".equals(fieldName)) {
+                    deserializedAzureStorageBlobContainerEndpointProperties.storageAccountResourceId
+                        = reader.getString();
+                } else if ("blobContainerName".equals(fieldName)) {
+                    deserializedAzureStorageBlobContainerEndpointProperties.blobContainerName = reader.getString();
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedAzureStorageBlobContainerEndpointProperties.endpointType
+                        = EndpointType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureStorageBlobContainerEndpointProperties;
+        });
+    }
 }

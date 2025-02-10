@@ -57,18 +57,18 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
         final byte[] bytes = new byte[allocationSize];
         final int encodedSize = message.encode(bytes, 0, allocationSize);
 
-        return sendLink.send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null)
-            .handle((outcome, sink) -> {
-                final DeliveryState.DeliveryStateType stateType = outcome.getType();
-                switch (stateType) {
-                    case Accepted:
-                        sink.complete();
-                        break;
-                    default:
-                        sink.error(new IllegalArgumentException("Expected a Accepted, received: " + outcome));
-                        LOGGER.warning("Unknown DeliveryState type: {}", stateType);
-                }
-            });
+        return sendLink.send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null).handle((outcome, sink) -> {
+            final DeliveryState.DeliveryStateType stateType = outcome.getType();
+            switch (stateType) {
+                case Accepted:
+                    sink.complete();
+                    break;
+
+                default:
+                    sink.error(new IllegalArgumentException("Expected a Accepted, received: " + outcome));
+                    LOGGER.warning("Unknown DeliveryState type: {}", stateType);
+            }
+        });
     }
 
     /**
@@ -88,20 +88,20 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
         final byte[] bytes = new byte[allocationSize];
         final int encodedSize = message.encode(bytes, 0, allocationSize);
 
-        return sendLink.send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null)
-            .handle((outcome, sink) -> {
-                final DeliveryState.DeliveryStateType stateType = outcome.getType();
-                switch (stateType) {
-                    case Declared:
-                        Binary transactionId;
-                        Declared declared = (Declared) outcome;
-                        transactionId = declared.getTxnId();
-                        sink.next(new AmqpTransaction(transactionId.asByteBuffer()));
-                        break;
-                    default:
-                        sink.error(new IllegalArgumentException("Expected a Declared, received: " + outcome));
-                        LOGGER.warning("Unknown DeliveryState type: {}", stateType);
-                }
-            });
+        return sendLink.send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT, null).handle((outcome, sink) -> {
+            final DeliveryState.DeliveryStateType stateType = outcome.getType();
+            switch (stateType) {
+                case Declared:
+                    Binary transactionId;
+                    Declared declared = (Declared) outcome;
+                    transactionId = declared.getTxnId();
+                    sink.next(new AmqpTransaction(transactionId.asByteBuffer()));
+                    break;
+
+                default:
+                    sink.error(new IllegalArgumentException("Expected a Declared, received: " + outcome));
+                    LOGGER.warning("Unknown DeliveryState type: {}", stateType);
+            }
+        });
     }
 }

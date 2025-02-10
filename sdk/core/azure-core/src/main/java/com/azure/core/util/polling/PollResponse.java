@@ -11,7 +11,9 @@ import java.util.Objects;
  * information such as the current {@link LongRunningOperationStatus status} of the long-running operation, any
  * {@link #getValue value} returned in the poll, as well as other useful information provided by the service.
  *
- * <p><strong>Code Sample Creating PollResponse Object</strong></p>
+ * <p>
+ * <strong>Code Sample Creating PollResponse Object</strong>
+ * </p>
  * <!-- src_embed com.azure.core.util.polling.pollresponse.status.value -->
  * <pre>
  * &#47;&#47; Lets say we want to crete poll response with status as IN_PROGRESS
@@ -22,7 +24,9 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.core.util.polling.pollresponse.status.value -->
  *
- * <p><strong>Code Sample Creating PollResponse Object with custom status</strong></p>
+ * <p>
+ * <strong>Code Sample Creating PollResponse Object with custom status</strong>
+ * </p>
  * <!-- src_embed com.azure.core.util.polling.pollresponse.custom.status.value -->
  * <pre>
  * &#47;&#47; Lets say we want to crete poll response with custom status as OTHER_CUSTOM_STATUS
@@ -51,7 +55,7 @@ public final class PollResponse<T> {
      *
      * &#47;&#47; Lets say we want to crete poll response with status as IN_PROGRESS
      * PollResponse&lt;String&gt; inProgressPollResponse
-     *     = new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.IN_PROGRESS, &quot;mycustom response&quot;,
+     *     = new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.IN_PROGRESS, &quot;my custom response&quot;,
      *     Duration.ofMillis&#40;2000&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties -->

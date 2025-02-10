@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.EndpointDependency;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Egress endpoints which AKS agent nodes connect to for common purpose.
  */
 @Fluent
-public final class OutboundEnvironmentEndpointInner {
+public final class OutboundEnvironmentEndpointInner implements JsonSerializable<OutboundEnvironmentEndpointInner> {
     /*
      * The category of endpoints accessed by the AKS agent node, e.g. azure-resource-management, apiserver, etc.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * The endpoints that AKS agent nodes connect to
      */
-    @JsonProperty(value = "endpoints")
     private List<EndpointDependency> endpoints;
 
     /**
@@ -35,7 +37,7 @@ public final class OutboundEnvironmentEndpointInner {
     /**
      * Get the category property: The category of endpoints accessed by the AKS agent node, e.g.
      * azure-resource-management, apiserver, etc.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -45,7 +47,7 @@ public final class OutboundEnvironmentEndpointInner {
     /**
      * Set the category property: The category of endpoints accessed by the AKS agent node, e.g.
      * azure-resource-management, apiserver, etc.
-     *
+     * 
      * @param category the category value to set.
      * @return the OutboundEnvironmentEndpointInner object itself.
      */
@@ -56,7 +58,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Get the endpoints property: The endpoints that AKS agent nodes connect to.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<EndpointDependency> endpoints() {
@@ -65,7 +67,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Set the endpoints property: The endpoints that AKS agent nodes connect to.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the OutboundEnvironmentEndpointInner object itself.
      */
@@ -76,12 +78,54 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (endpoints() != null) {
             endpoints().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutboundEnvironmentEndpointInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutboundEnvironmentEndpointInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OutboundEnvironmentEndpointInner.
+     */
+    public static OutboundEnvironmentEndpointInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutboundEnvironmentEndpointInner deserializedOutboundEnvironmentEndpointInner
+                = new OutboundEnvironmentEndpointInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedOutboundEnvironmentEndpointInner.category = reader.getString();
+                } else if ("endpoints".equals(fieldName)) {
+                    List<EndpointDependency> endpoints
+                        = reader.readArray(reader1 -> EndpointDependency.fromJson(reader1));
+                    deserializedOutboundEnvironmentEndpointInner.endpoints = endpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutboundEnvironmentEndpointInner;
+        });
     }
 }

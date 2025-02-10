@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The recipient type. */
+/**
+ * The recipient type.
+ */
 public final class RecipientType extends ExpandableStringEnum<RecipientType> {
-    /** Static value Requestor for RecipientType. */
+    /**
+     * Static value Requestor for RecipientType.
+     */
     public static final RecipientType REQUESTOR = fromString("Requestor");
 
-    /** Static value Approver for RecipientType. */
+    /**
+     * Static value Approver for RecipientType.
+     */
     public static final RecipientType APPROVER = fromString("Approver");
 
-    /** Static value Admin for RecipientType. */
+    /**
+     * Static value Admin for RecipientType.
+     */
     public static final RecipientType ADMIN = fromString("Admin");
 
     /**
      * Creates a new instance of RecipientType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class RecipientType extends ExpandableStringEnum<RecipientType> {
 
     /**
      * Creates or finds a RecipientType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecipientType.
      */
-    @JsonCreator
     public static RecipientType fromString(String name) {
         return fromString(name, RecipientType.class);
     }
 
     /**
      * Gets known RecipientType values.
-     *
+     * 
      * @return known RecipientType values.
      */
     public static Collection<RecipientType> values() {

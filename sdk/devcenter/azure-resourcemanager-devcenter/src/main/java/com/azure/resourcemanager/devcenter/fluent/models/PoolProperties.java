@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.HealthStatus;
 import com.azure.resourcemanager.devcenter.models.HealthStatusDetail;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
@@ -13,45 +16,45 @@ import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.SingleSignOnStatus;
 import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
 import com.azure.resourcemanager.devcenter.models.VirtualNetworkType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of a Pool. */
+/**
+ * Properties of a Pool.
+ */
 @Fluent
 public final class PoolProperties extends PoolUpdateProperties {
     /*
      * Overall health status of the Pool. Indicates whether or not the Pool is available to create Dev Boxes.
      */
-    @JsonProperty(value = "healthStatus", access = JsonProperty.Access.WRITE_ONLY)
     private HealthStatus healthStatus;
 
     /*
      * Details on the Pool health status to help diagnose issues. This is only populated when the pool status indicates
      * the pool is in a non-healthy state
      */
-    @JsonProperty(value = "healthStatusDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthStatusDetail> healthStatusDetails;
 
     /*
      * Indicates the number of provisioned Dev Boxes in this pool.
      */
-    @JsonProperty(value = "devBoxCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer devBoxCount;
 
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of PoolProperties class. */
+    /**
+     * Creates an instance of PoolProperties class.
+     */
     public PoolProperties() {
     }
 
     /**
      * Get the healthStatus property: Overall health status of the Pool. Indicates whether or not the Pool is available
      * to create Dev Boxes.
-     *
+     * 
      * @return the healthStatus value.
      */
     public HealthStatus healthStatus() {
@@ -61,7 +64,7 @@ public final class PoolProperties extends PoolUpdateProperties {
     /**
      * Get the healthStatusDetails property: Details on the Pool health status to help diagnose issues. This is only
      * populated when the pool status indicates the pool is in a non-healthy state.
-     *
+     * 
      * @return the healthStatusDetails value.
      */
     public List<HealthStatusDetail> healthStatusDetails() {
@@ -70,7 +73,7 @@ public final class PoolProperties extends PoolUpdateProperties {
 
     /**
      * Get the devBoxCount property: Indicates the number of provisioned Dev Boxes in this pool.
-     *
+     * 
      * @return the devBoxCount value.
      */
     public Integer devBoxCount() {
@@ -79,70 +82,88 @@ public final class PoolProperties extends PoolUpdateProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withDevBoxDefinitionName(String devBoxDefinitionName) {
         super.withDevBoxDefinitionName(devBoxDefinitionName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withNetworkConnectionName(String networkConnectionName) {
         super.withNetworkConnectionName(networkConnectionName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withLicenseType(LicenseType licenseType) {
         super.withLicenseType(licenseType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withLocalAdministrator(LocalAdminStatus localAdministrator) {
         super.withLocalAdministrator(localAdministrator);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect) {
         super.withStopOnDisconnect(stopOnDisconnect);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withSingleSignOnStatus(SingleSignOnStatus singleSignOnStatus) {
         super.withSingleSignOnStatus(singleSignOnStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withVirtualNetworkType(VirtualNetworkType virtualNetworkType) {
         super.withVirtualNetworkType(virtualNetworkType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PoolProperties withManagedVirtualNetworkRegions(List<String> managedVirtualNetworkRegions) {
         super.withManagedVirtualNetworkRegions(managedVirtualNetworkRegions);
@@ -151,14 +172,93 @@ public final class PoolProperties extends PoolUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (healthStatusDetails() != null) {
             healthStatusDetails().forEach(e -> e.validate());
         }
+        if (stopOnDisconnect() != null) {
+            stopOnDisconnect().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("devBoxDefinitionName", devBoxDefinitionName());
+        jsonWriter.writeStringField("networkConnectionName", networkConnectionName());
+        jsonWriter.writeStringField("licenseType", licenseType() == null ? null : licenseType().toString());
+        jsonWriter.writeStringField("localAdministrator",
+            localAdministrator() == null ? null : localAdministrator().toString());
+        jsonWriter.writeJsonField("stopOnDisconnect", stopOnDisconnect());
+        jsonWriter.writeStringField("singleSignOnStatus",
+            singleSignOnStatus() == null ? null : singleSignOnStatus().toString());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeStringField("virtualNetworkType",
+            virtualNetworkType() == null ? null : virtualNetworkType().toString());
+        jsonWriter.writeArrayField("managedVirtualNetworkRegions", managedVirtualNetworkRegions(),
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PoolProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PoolProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PoolProperties.
+     */
+    public static PoolProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PoolProperties deserializedPoolProperties = new PoolProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("devBoxDefinitionName".equals(fieldName)) {
+                    deserializedPoolProperties.withDevBoxDefinitionName(reader.getString());
+                } else if ("networkConnectionName".equals(fieldName)) {
+                    deserializedPoolProperties.withNetworkConnectionName(reader.getString());
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedPoolProperties.withLicenseType(LicenseType.fromString(reader.getString()));
+                } else if ("localAdministrator".equals(fieldName)) {
+                    deserializedPoolProperties.withLocalAdministrator(LocalAdminStatus.fromString(reader.getString()));
+                } else if ("stopOnDisconnect".equals(fieldName)) {
+                    deserializedPoolProperties.withStopOnDisconnect(StopOnDisconnectConfiguration.fromJson(reader));
+                } else if ("singleSignOnStatus".equals(fieldName)) {
+                    deserializedPoolProperties
+                        .withSingleSignOnStatus(SingleSignOnStatus.fromString(reader.getString()));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedPoolProperties.withDisplayName(reader.getString());
+                } else if ("virtualNetworkType".equals(fieldName)) {
+                    deserializedPoolProperties
+                        .withVirtualNetworkType(VirtualNetworkType.fromString(reader.getString()));
+                } else if ("managedVirtualNetworkRegions".equals(fieldName)) {
+                    List<String> managedVirtualNetworkRegions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPoolProperties.withManagedVirtualNetworkRegions(managedVirtualNetworkRegions);
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedPoolProperties.healthStatus = HealthStatus.fromString(reader.getString());
+                } else if ("healthStatusDetails".equals(fieldName)) {
+                    List<HealthStatusDetail> healthStatusDetails
+                        = reader.readArray(reader1 -> HealthStatusDetail.fromJson(reader1));
+                    deserializedPoolProperties.healthStatusDetails = healthStatusDetails;
+                } else if ("devBoxCount".equals(fieldName)) {
+                    deserializedPoolProperties.devBoxCount = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPoolProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPoolProperties;
+        });
     }
 }

@@ -5,22 +5,25 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-/** servicePlanInfo. */
+/**
+ * servicePlanInfo.
+ */
 @Fluent
-public final class MicrosoftGraphServicePlanInfo {
+public final class MicrosoftGraphServicePlanInfo implements JsonSerializable<MicrosoftGraphServicePlanInfo> {
     /*
      * The object the service plan can be assigned to. Possible values:'User' - service plan can be assigned to
      * individual users.'Company' - service plan can be assigned to the entire tenant.
      */
-    @JsonProperty(value = "appliesTo")
     private String appliesTo;
 
     /*
@@ -30,34 +33,33 @@ public final class MicrosoftGraphServicePlanInfo {
      * example, Intune_O365 service plan)'PendingProvisioning' - Microsoft has added a new service to the product SKU
      * and it has not been activated in the tenant, yet.
      */
-    @JsonProperty(value = "provisioningStatus")
     private String provisioningStatus;
 
     /*
      * The unique identifier of the service plan.
      */
-    @JsonProperty(value = "servicePlanId")
     private UUID servicePlanId;
 
     /*
      * The name of the service plan.
      */
-    @JsonProperty(value = "servicePlanName")
     private String servicePlanName;
 
     /*
      * servicePlanInfo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphServicePlanInfo class. */
+    /**
+     * Creates an instance of MicrosoftGraphServicePlanInfo class.
+     */
     public MicrosoftGraphServicePlanInfo() {
     }
 
     /**
      * Get the appliesTo property: The object the service plan can be assigned to. Possible values:'User' - service plan
      * can be assigned to individual users.'Company' - service plan can be assigned to the entire tenant.
-     *
+     * 
      * @return the appliesTo value.
      */
     public String appliesTo() {
@@ -67,7 +69,7 @@ public final class MicrosoftGraphServicePlanInfo {
     /**
      * Set the appliesTo property: The object the service plan can be assigned to. Possible values:'User' - service plan
      * can be assigned to individual users.'Company' - service plan can be assigned to the entire tenant.
-     *
+     * 
      * @param appliesTo the appliesTo value to set.
      * @return the MicrosoftGraphServicePlanInfo object itself.
      */
@@ -82,7 +84,7 @@ public final class MicrosoftGraphServicePlanInfo {
      * provisioned; awaiting service confirmation.'PendingActivation' - Service is provisioned but requires explicit
      * activation by administrator (for example, Intune_O365 service plan)'PendingProvisioning' - Microsoft has added a
      * new service to the product SKU and it has not been activated in the tenant, yet.
-     *
+     * 
      * @return the provisioningStatus value.
      */
     public String provisioningStatus() {
@@ -95,7 +97,7 @@ public final class MicrosoftGraphServicePlanInfo {
      * provisioned; awaiting service confirmation.'PendingActivation' - Service is provisioned but requires explicit
      * activation by administrator (for example, Intune_O365 service plan)'PendingProvisioning' - Microsoft has added a
      * new service to the product SKU and it has not been activated in the tenant, yet.
-     *
+     * 
      * @param provisioningStatus the provisioningStatus value to set.
      * @return the MicrosoftGraphServicePlanInfo object itself.
      */
@@ -106,7 +108,7 @@ public final class MicrosoftGraphServicePlanInfo {
 
     /**
      * Get the servicePlanId property: The unique identifier of the service plan.
-     *
+     * 
      * @return the servicePlanId value.
      */
     public UUID servicePlanId() {
@@ -115,7 +117,7 @@ public final class MicrosoftGraphServicePlanInfo {
 
     /**
      * Set the servicePlanId property: The unique identifier of the service plan.
-     *
+     * 
      * @param servicePlanId the servicePlanId value to set.
      * @return the MicrosoftGraphServicePlanInfo object itself.
      */
@@ -126,7 +128,7 @@ public final class MicrosoftGraphServicePlanInfo {
 
     /**
      * Get the servicePlanName property: The name of the service plan.
-     *
+     * 
      * @return the servicePlanName value.
      */
     public String servicePlanName() {
@@ -135,7 +137,7 @@ public final class MicrosoftGraphServicePlanInfo {
 
     /**
      * Set the servicePlanName property: The name of the service plan.
-     *
+     * 
      * @param servicePlanName the servicePlanName value to set.
      * @return the MicrosoftGraphServicePlanInfo object itself.
      */
@@ -146,17 +148,16 @@ public final class MicrosoftGraphServicePlanInfo {
 
     /**
      * Get the additionalProperties property: servicePlanInfo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: servicePlanInfo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphServicePlanInfo object itself.
      */
@@ -165,19 +166,69 @@ public final class MicrosoftGraphServicePlanInfo {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appliesTo", this.appliesTo);
+        jsonWriter.writeStringField("provisioningStatus", this.provisioningStatus);
+        jsonWriter.writeStringField("servicePlanId", Objects.toString(this.servicePlanId, null));
+        jsonWriter.writeStringField("servicePlanName", this.servicePlanName);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphServicePlanInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphServicePlanInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphServicePlanInfo.
+     */
+    public static MicrosoftGraphServicePlanInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphServicePlanInfo deserializedMicrosoftGraphServicePlanInfo
+                = new MicrosoftGraphServicePlanInfo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appliesTo".equals(fieldName)) {
+                    deserializedMicrosoftGraphServicePlanInfo.appliesTo = reader.getString();
+                } else if ("provisioningStatus".equals(fieldName)) {
+                    deserializedMicrosoftGraphServicePlanInfo.provisioningStatus = reader.getString();
+                } else if ("servicePlanId".equals(fieldName)) {
+                    deserializedMicrosoftGraphServicePlanInfo.servicePlanId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("servicePlanName".equals(fieldName)) {
+                    deserializedMicrosoftGraphServicePlanInfo.servicePlanName = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphServicePlanInfo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphServicePlanInfo;
+        });
     }
 }

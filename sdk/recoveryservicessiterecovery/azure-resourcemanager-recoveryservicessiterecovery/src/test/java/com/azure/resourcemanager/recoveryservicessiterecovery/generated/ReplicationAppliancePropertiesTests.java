@@ -11,16 +11,15 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.Replication
 public final class ReplicationAppliancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationApplianceProperties model =
-            BinaryData
-                .fromString("{\"providerSpecificDetails\":{\"instanceType\":\"ApplianceSpecificDetails\"}}")
+        ReplicationApplianceProperties model
+            = BinaryData.fromString("{\"providerSpecificDetails\":{\"instanceType\":\"ApplianceSpecificDetails\"}}")
                 .toObject(ReplicationApplianceProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationApplianceProperties model =
-            new ReplicationApplianceProperties().withProviderSpecificDetails(new ApplianceSpecificDetails());
+        ReplicationApplianceProperties model
+            = new ReplicationApplianceProperties().withProviderSpecificDetails(new ApplianceSpecificDetails());
         model = BinaryData.fromObject(model).toObject(ReplicationApplianceProperties.class);
     }
 }

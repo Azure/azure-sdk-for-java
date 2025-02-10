@@ -22,8 +22,8 @@ public final class DscCompilationJobImpl implements DscCompilationJob, DscCompil
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    DscCompilationJobImpl(
-        DscCompilationJobInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    DscCompilationJobImpl(DscCompilationJobInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -124,20 +124,16 @@ public final class DscCompilationJobImpl implements DscCompilationJob, DscCompil
     }
 
     public DscCompilationJob create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscCompilationJobs()
-                .create(resourceGroupName, automationAccountName, compilationJobName, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDscCompilationJobs()
+            .create(resourceGroupName, automationAccountName, compilationJobName, createParameters, Context.NONE);
         return this;
     }
 
     public DscCompilationJob create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscCompilationJobs()
-                .create(resourceGroupName, automationAccountName, compilationJobName, createParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDscCompilationJobs()
+            .create(resourceGroupName, automationAccountName, compilationJobName, createParameters, context);
         return this;
     }
 
@@ -149,22 +145,18 @@ public final class DscCompilationJobImpl implements DscCompilationJob, DscCompil
     }
 
     public DscCompilationJob refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscCompilationJobs()
-                .getWithResponse(resourceGroupName, automationAccountName, compilationJobName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDscCompilationJobs()
+            .getWithResponse(resourceGroupName, automationAccountName, compilationJobName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DscCompilationJob refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDscCompilationJobs()
-                .getWithResponse(resourceGroupName, automationAccountName, compilationJobName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDscCompilationJobs()
+            .getWithResponse(resourceGroupName, automationAccountName, compilationJobName, context)
+            .getValue();
         return this;
     }
 

@@ -6,49 +6,52 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The predicted change to the resource property. */
+/**
+ * The predicted change to the resource property.
+ */
 @Fluent
-public final class WhatIfPropertyChange {
+public final class WhatIfPropertyChange implements JsonSerializable<WhatIfPropertyChange> {
     /*
      * The path of the property.
      */
-    @JsonProperty(value = "path", required = true)
     private String path;
 
     /*
      * The type of property change.
      */
-    @JsonProperty(value = "propertyChangeType", required = true)
     private PropertyChangeType propertyChangeType;
 
     /*
      * The value of the property before the deployment is executed.
      */
-    @JsonProperty(value = "before")
     private Object before;
 
     /*
      * The value of the property after the deployment is executed.
      */
-    @JsonProperty(value = "after")
     private Object after;
 
     /*
      * Nested property changes.
      */
-    @JsonProperty(value = "children")
     private List<WhatIfPropertyChange> children;
 
-    /** Creates an instance of WhatIfPropertyChange class. */
+    /**
+     * Creates an instance of WhatIfPropertyChange class.
+     */
     public WhatIfPropertyChange() {
     }
 
     /**
      * Get the path property: The path of the property.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -57,7 +60,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Set the path property: The path of the property.
-     *
+     * 
      * @param path the path value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -68,7 +71,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Get the propertyChangeType property: The type of property change.
-     *
+     * 
      * @return the propertyChangeType value.
      */
     public PropertyChangeType propertyChangeType() {
@@ -77,7 +80,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Set the propertyChangeType property: The type of property change.
-     *
+     * 
      * @param propertyChangeType the propertyChangeType value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -88,7 +91,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Get the before property: The value of the property before the deployment is executed.
-     *
+     * 
      * @return the before value.
      */
     public Object before() {
@@ -97,7 +100,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Set the before property: The value of the property before the deployment is executed.
-     *
+     * 
      * @param before the before value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -108,7 +111,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Get the after property: The value of the property after the deployment is executed.
-     *
+     * 
      * @return the after value.
      */
     public Object after() {
@@ -117,7 +120,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Set the after property: The value of the property after the deployment is executed.
-     *
+     * 
      * @param after the after value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -128,7 +131,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Get the children property: Nested property changes.
-     *
+     * 
      * @return the children value.
      */
     public List<WhatIfPropertyChange> children() {
@@ -137,7 +140,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Set the children property: Nested property changes.
-     *
+     * 
      * @param children the children value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -148,20 +151,18 @@ public final class WhatIfPropertyChange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (path() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property path in model WhatIfPropertyChange"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property path in model WhatIfPropertyChange"));
         }
         if (propertyChangeType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property propertyChangeType in model WhatIfPropertyChange"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property propertyChangeType in model WhatIfPropertyChange"));
         }
         if (children() != null) {
             children().forEach(e -> e.validate());
@@ -169,4 +170,57 @@ public final class WhatIfPropertyChange {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WhatIfPropertyChange.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("propertyChangeType",
+            this.propertyChangeType == null ? null : this.propertyChangeType.toString());
+        jsonWriter.writeUntypedField("before", this.before);
+        jsonWriter.writeUntypedField("after", this.after);
+        jsonWriter.writeArrayField("children", this.children, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WhatIfPropertyChange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WhatIfPropertyChange if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WhatIfPropertyChange.
+     */
+    public static WhatIfPropertyChange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WhatIfPropertyChange deserializedWhatIfPropertyChange = new WhatIfPropertyChange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedWhatIfPropertyChange.path = reader.getString();
+                } else if ("propertyChangeType".equals(fieldName)) {
+                    deserializedWhatIfPropertyChange.propertyChangeType
+                        = PropertyChangeType.fromString(reader.getString());
+                } else if ("before".equals(fieldName)) {
+                    deserializedWhatIfPropertyChange.before = reader.readUntyped();
+                } else if ("after".equals(fieldName)) {
+                    deserializedWhatIfPropertyChange.after = reader.readUntyped();
+                } else if ("children".equals(fieldName)) {
+                    List<WhatIfPropertyChange> children
+                        = reader.readArray(reader1 -> WhatIfPropertyChange.fromJson(reader1));
+                    deserializedWhatIfPropertyChange.children = children;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWhatIfPropertyChange;
+        });
+    }
 }

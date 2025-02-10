@@ -14,35 +14,32 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureWorkloadSqlAutoProtectionIntentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureWorkloadSqlAutoProtectionIntent model =
-            BinaryData
-                .fromString(
-                    "{\"protectionIntentItemType\":\"AzureWorkloadSQLAutoProtectionIntent\",\"workloadItemType\":\"SAPHanaDBInstance\",\"backupManagementType\":\"AzureIaasVM\",\"sourceResourceId\":\"lsvjgpliu\",\"itemId\":\"qwoyxqvapco\",\"policyId\":\"oucqpqojx\",\"protectionState\":\"Invalid\"}")
-                .toObject(AzureWorkloadSqlAutoProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
-        Assertions.assertEquals("lsvjgpliu", model.sourceResourceId());
-        Assertions.assertEquals("qwoyxqvapco", model.itemId());
-        Assertions.assertEquals("oucqpqojx", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.INVALID, model.protectionState());
-        Assertions.assertEquals(WorkloadItemType.SAPHANA_DBINSTANCE, model.workloadItemType());
+        AzureWorkloadSqlAutoProtectionIntent model = BinaryData.fromString(
+            "{\"protectionIntentItemType\":\"AzureWorkloadSQLAutoProtectionIntent\",\"workloadItemType\":\"SAPAseSystem\",\"backupManagementType\":\"AzureSql\",\"sourceResourceId\":\"tbsjuscvsf\",\"itemId\":\"gctmgxuupbezq\",\"policyId\":\"ydrtc\",\"protectionState\":\"ProtectionFailed\"}")
+            .toObject(AzureWorkloadSqlAutoProtectionIntent.class);
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
+        Assertions.assertEquals("tbsjuscvsf", model.sourceResourceId());
+        Assertions.assertEquals("gctmgxuupbezq", model.itemId());
+        Assertions.assertEquals("ydrtc", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
+        Assertions.assertEquals(WorkloadItemType.SAPASE_SYSTEM, model.workloadItemType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureWorkloadSqlAutoProtectionIntent model =
-            new AzureWorkloadSqlAutoProtectionIntent()
-                .withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
-                .withSourceResourceId("lsvjgpliu")
-                .withItemId("qwoyxqvapco")
-                .withPolicyId("oucqpqojx")
-                .withProtectionState(ProtectionStatus.INVALID)
-                .withWorkloadItemType(WorkloadItemType.SAPHANA_DBINSTANCE);
+        AzureWorkloadSqlAutoProtectionIntent model
+            = new AzureWorkloadSqlAutoProtectionIntent().withBackupManagementType(BackupManagementType.AZURE_SQL)
+                .withSourceResourceId("tbsjuscvsf")
+                .withItemId("gctmgxuupbezq")
+                .withPolicyId("ydrtc")
+                .withProtectionState(ProtectionStatus.PROTECTION_FAILED)
+                .withWorkloadItemType(WorkloadItemType.SAPASE_SYSTEM);
         model = BinaryData.fromObject(model).toObject(AzureWorkloadSqlAutoProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
-        Assertions.assertEquals("lsvjgpliu", model.sourceResourceId());
-        Assertions.assertEquals("qwoyxqvapco", model.itemId());
-        Assertions.assertEquals("oucqpqojx", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.INVALID, model.protectionState());
-        Assertions.assertEquals(WorkloadItemType.SAPHANA_DBINSTANCE, model.workloadItemType());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
+        Assertions.assertEquals("tbsjuscvsf", model.sourceResourceId());
+        Assertions.assertEquals("gctmgxuupbezq", model.itemId());
+        Assertions.assertEquals("ydrtc", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
+        Assertions.assertEquals(WorkloadItemType.SAPASE_SYSTEM, model.workloadItemType());
     }
 }

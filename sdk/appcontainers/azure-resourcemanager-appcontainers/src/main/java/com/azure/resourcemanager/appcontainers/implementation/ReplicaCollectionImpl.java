@@ -17,8 +17,7 @@ public final class ReplicaCollectionImpl implements ReplicaCollection {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    ReplicaCollectionImpl(
-        ReplicaCollectionInner innerObject,
+    ReplicaCollectionImpl(ReplicaCollectionInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,9 +26,8 @@ public final class ReplicaCollectionImpl implements ReplicaCollection {
     public List<Replica> value() {
         List<ReplicaInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner.stream().map(inner1 -> new ReplicaImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new ReplicaImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

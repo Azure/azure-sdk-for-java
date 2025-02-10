@@ -12,6 +12,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -20,16 +21,21 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper;
 import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
+import com.azure.data.appconfiguration.implementation.Utility;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingLabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingLabel;
+import com.azure.data.appconfiguration.models.SettingLabelFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
@@ -38,15 +44,14 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
-import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
+import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotAsync;
@@ -286,7 +291,9 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * @see ConfigurationClientBuilder
  * @see ConfigurationSetting
  */
-@ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true,
+@ServiceClient(
+    builder = ConfigurationClientBuilder.class,
+    isAsync = true,
     serviceInterfaces = AzureAppConfigurationImpl.AzureAppConfigurationService.class)
 public final class ConfigurationAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationAsyncClient.class);
@@ -350,7 +357,7 @@ public final class ConfigurationAsyncClient {
     /**
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -387,7 +394,7 @@ public final class ConfigurationAsyncClient {
     /**
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -422,12 +429,10 @@ public final class ConfigurationAsyncClient {
         // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
         // If the service finds any existing configuration settings, then its e-tag will match and the service will
         // return an error.
-        return withContext(
-            context -> validateSettingAsync(setting).flatMap(
-                settingInternal -> serviceClient.putKeyValueWithResponseAsync(settingInternal.getKey(),
-                    settingInternal.getLabel(), null, ETAG_ANY, toKeyValue(settingInternal),
-                    addTracingNamespace(context))
-                                       .map(response -> toConfigurationSettingWithResponse(response))));
+        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
+            .putKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(), null, ETAG_ANY,
+                toKeyValue(settingInternal), context)
+            .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse)));
     }
 
     /**
@@ -467,7 +472,7 @@ public final class ConfigurationAsyncClient {
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -511,10 +516,10 @@ public final class ConfigurationAsyncClient {
     /**
      * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
      * configuration setting is updated.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
-     *
+     * <p>
      * If {@link ConfigurationSetting#getETag() ETag} is specified, the configuration value is updated if the current
      * setting's ETag matches. If the ETag's value is equal to the wildcard character ({@code "*"}), the setting will
      * always be updated.
@@ -566,12 +571,10 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged) {
-        return withContext(
-            context -> validateSettingAsync(setting).flatMap(
-                settingInternal -> serviceClient.putKeyValueWithResponseAsync(settingInternal.getKey(),
-                    settingInternal.getLabel(), getETag(ifUnchanged, settingInternal), null,
-                    toKeyValue(settingInternal), addTracingNamespace(context))
-                                       .map(response -> toConfigurationSettingWithResponse(response))));
+        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
+            .putKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
+                getETag(ifUnchanged, settingInternal), null, toKeyValue(settingInternal), context)
+            .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse)));
     }
 
     /**
@@ -588,7 +591,7 @@ public final class ConfigurationAsyncClient {
      *         response.getKey&#40;&#41;, response.getLabel&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string -->
-
+    
      * @param key The key of the setting to retrieve.
      * @param label The label of the configuration setting to retrieve. If {@code null} no label will be used.
      * @return The {@link ConfigurationSetting} stored in the service, or an empty Mono if the configuration value does
@@ -712,25 +715,21 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged) {
-        return withContext(
-            context -> validateSettingAsync(setting).flatMap(
-                settingInternal ->
-                    serviceClient.getKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
-                        acceptDateTime == null ? null : acceptDateTime.toString(), null,
-                        getETag(ifChanged, settingInternal), null, addTracingNamespace(context))
-                        .onErrorResume(
-                            HttpResponseException.class,
-                            (Function<Throwable, Mono<ResponseBase<GetKeyValueHeaders, KeyValue>>>) throwable -> {
-                                HttpResponseException e = (HttpResponseException) throwable;
-                                HttpResponse httpResponse = e.getResponse();
-                                if (httpResponse.getStatusCode() == 304) {
-                                    return Mono.just(new ResponseBase<GetKeyValueHeaders, KeyValue>(
-                                        httpResponse.getRequest(), httpResponse.getStatusCode(),
-                                        httpResponse.getHeaders(), null, null));
-                                }
-                                return Mono.error(throwable);
-                            })
-                        .map(response -> toConfigurationSettingWithResponse(response))));
+        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
+            .getKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
+                acceptDateTime == null ? null : acceptDateTime.toString(), null, getETag(ifChanged, settingInternal),
+                null, context)
+            .onErrorResume(HttpResponseException.class,
+                (Function<Throwable, Mono<ResponseBase<GetKeyValueHeaders, KeyValue>>>) throwable -> {
+                    HttpResponseException e = (HttpResponseException) throwable;
+                    HttpResponse httpResponse = e.getResponse();
+                    if (httpResponse.getStatusCode() == 304) {
+                        return Mono.just(new ResponseBase<GetKeyValueHeaders, KeyValue>(httpResponse.getRequest(),
+                            httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null));
+                    }
+                    return Mono.error(throwable);
+                })
+            .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse)));
     }
 
     /**
@@ -766,7 +765,7 @@ public final class ConfigurationAsyncClient {
      * {@link ConfigurationSetting#getLabel() label} and optional ETag combination from the service.
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
-     *
+     * <p>
      * If {@link ConfigurationSetting#getETag() ETag} is specified and is not the wildcard character ({@code "*"}), then
      * the setting is <b>only</b> deleted if the ETag matches the current ETag; this means that no one has updated the
      * ConfigurationSetting yet.
@@ -805,10 +804,10 @@ public final class ConfigurationAsyncClient {
     /**
      * Deletes the {@link ConfigurationSetting} with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label} and optional ETag combination from the service.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
-     *
+     * <p>
      * If {@link ConfigurationSetting#getETag() ETag} is specified and is not the wildcard character ({@code "*"}), then
      * the setting is <b>only</b> deleted if the ETag matches the current ETag; this means that no one has updated the
      * ConfigurationSetting yet.
@@ -849,10 +848,10 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged) {
-        return withContext(context -> validateSettingAsync(setting).flatMap(
-            settingInternal -> serviceClient.deleteKeyValueWithResponseAsync(settingInternal.getKey(),
-                settingInternal.getLabel(), getETag(ifUnchanged, settingInternal), addTracingNamespace(context))
-                                   .map(response -> toConfigurationSettingWithResponse(response))));
+        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> serviceClient
+            .deleteKeyValueWithResponseAsync(settingInternal.getKey(), settingInternal.getLabel(),
+                getETag(ifUnchanged, settingInternal), context)
+            .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse)));
     }
 
     /**
@@ -897,7 +896,7 @@ public final class ConfigurationAsyncClient {
 
     /**
      * Sets the read-only status for the {@link ConfigurationSetting}.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -945,7 +944,7 @@ public final class ConfigurationAsyncClient {
 
     /**
      * Sets the read-only status for the {@link ConfigurationSetting}.
-     *
+     * <p>
      * For more configuration setting types, see {@link FeatureFlagConfigurationSetting} and
      * {@link SecretReferenceConfigurationSetting}.
      *
@@ -996,16 +995,14 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setReadOnlyWithResponse(ConfigurationSetting setting,
         boolean isReadOnly) {
-        return withContext(context -> validateSettingAsync(setting).flatMap(
-            settingInternal -> {
-                final String key = settingInternal.getKey();
-                final String label = settingInternal.getLabel();
-                final Context contextInternal = addTracingNamespace(context);
-                return (isReadOnly
-                            ? serviceClient.putLockWithResponseAsync(key, label, null, null, contextInternal)
-                            : serviceClient.deleteLockWithResponseAsync(key, label, null, null, contextInternal))
-                           .map(response -> toConfigurationSettingWithResponse(response));
-            }));
+        return withContext(context -> validateSettingAsync(setting).flatMap(settingInternal -> {
+            final String key = settingInternal.getKey();
+            final String label = settingInternal.getLabel();
+            return (isReadOnly
+                ? serviceClient.putLockWithResponseAsync(key, label, null, null, context)
+                : serviceClient.deleteLockWithResponseAsync(key, label, null, null, context))
+                    .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithResponse);
+        }));
     }
 
     /**
@@ -1027,7 +1024,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
-     * contains all of the current settings in the service.
+     * contains all the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1036,28 +1033,21 @@ public final class ConfigurationAsyncClient {
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
-        return new PagedFlux<>(
-            () -> withContext(
-                context -> serviceClient.getKeyValuesSinglePageAsync(
-                    keyFilter,
-                    labelFilter,
-                    null,
-                    acceptDateTime,
-                    settingFields,
-                    null,
-                    null,
-                    null,
-                    addTracingNamespace(context))
-                               .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
-            nextLink -> withContext(
-                context -> serviceClient.getKeyValuesNextSinglePageAsync(
-                    nextLink,
-                    acceptDateTime,
-                    null,
-                    null,
-                    addTracingNamespace(context))
-                               .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
-        );
+        final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
+        final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
+        AtomicInteger pageETagIndex = new AtomicInteger(0);
+        return new PagedFlux<>(() -> withContext(context -> serviceClient
+            .getKeyValuesSinglePageAsync(keyFilter, labelFilter, null, acceptDateTime, settingFields, null, null,
+                getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
+            .onErrorResume(HttpResponseException.class,
+                (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>) Utility::handleNotModifiedErrorToValidResponse)
+            .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
+            nextLink -> withContext(context -> serviceClient
+                .getKeyValuesNextSinglePageAsync(nextLink, acceptDateTime, null,
+                    getPageETag(matchConditionsList, pageETagIndex), context)
+                .onErrorResume(HttpResponseException.class,
+                    (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>) Utility::handleNotModifiedErrorToValidResponse)
+                .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)));
     }
 
     /**
@@ -1079,7 +1069,7 @@ public final class ConfigurationAsyncClient {
      * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
      * be the name of the snapshot.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
-     * contains all of the current settings in the service.
+     * contains all the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1109,34 +1099,19 @@ public final class ConfigurationAsyncClient {
      * @param fields Optional. The fields to select for the query response. If none are set, the service will return the
      * ConfigurationSettings with a default set of properties.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
-     * contains all of the current settings in the service.
+     * contains all the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
-                                                                                List<SettingFields> fields) {
+        List<SettingFields> fields) {
         return new PagedFlux<>(
-            () -> withContext(
-                context -> serviceClient.getKeyValuesSinglePageAsync(
-                    null,
-                        null,
-                        null,
-                        null,
-                        fields,
-                        snapshotName,
-                        null,
-                        null,
-                        addTracingNamespace(context))
-                    .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
+            () -> withContext(context -> serviceClient
+                .getKeyValuesSinglePageAsync(null, null, null, null, fields, snapshotName, null, null, null, context)
+                .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
             nextLink -> withContext(
-                context -> serviceClient.getKeyValuesNextSinglePageAsync(
-                        nextLink,
-                        null,
-                        null,
-                        null,
-                        addTracingNamespace(context))
-                    .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
-        );
+                context -> serviceClient.getKeyValuesNextSinglePageAsync(nextLink, null, null, null, context)
+                    .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)));
     }
 
     /**
@@ -1144,7 +1119,7 @@ public final class ConfigurationAsyncClient {
      * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
      * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
      * for more information.
-     *
+     * <p>
      * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
      * in their current state. Otherwise, the results returned match the parameters given in {@code selector}.
      *
@@ -1171,21 +1146,14 @@ public final class ConfigurationAsyncClient {
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
+        List<String> tags = selector == null ? null : selector.getTagsFilter();
         return new PagedFlux<>(
-            () -> withContext(
-                context -> serviceClient.getRevisionsSinglePageAsync(
-                    keyFilter,
-                    labelFilter,
-                    null,
-                    acceptDateTime,
-                    settingFields,
-                    addTracingNamespace(context))
-                               .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
+            () -> withContext(context -> serviceClient
+                .getRevisionsSinglePageAsync(keyFilter, labelFilter, null, acceptDateTime, settingFields, tags, context)
+                .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
             nextLink -> withContext(
-                context ->
-                    serviceClient.getRevisionsNextSinglePageAsync(nextLink, acceptDateTime,
-                        addTracingNamespace(context))
-                        .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))));
+                context -> serviceClient.getRevisionsNextSinglePageAsync(nextLink, acceptDateTime, context)
+                    .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)));
     }
 
     /**
@@ -1218,8 +1186,8 @@ public final class ConfigurationAsyncClient {
      * has failed. The completed operation returns a {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollOperationDetails, ConfigurationSnapshot> beginCreateSnapshot(
-        String snapshotName, ConfigurationSnapshot snapshot) {
+    public PollerFlux<PollOperationDetails, ConfigurationSnapshot> beginCreateSnapshot(String snapshotName,
+        ConfigurationSnapshot snapshot) {
         return createSnapshotUtilClient.beginCreateSnapshot(snapshotName, snapshot);
     }
 
@@ -1403,8 +1371,8 @@ public final class ConfigurationAsyncClient {
      * @return A {@link Mono} of {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSnapshot>> recoverSnapshotWithResponse(
-        String snapshotName, MatchConditions matchConditions) {
+    public Mono<Response<ConfigurationSnapshot>> recoverSnapshotWithResponse(String snapshotName,
+        MatchConditions matchConditions) {
         return updateSnapshotAsync(snapshotName, matchConditions, ConfigurationSnapshotStatus.READY, serviceClient);
     }
 
@@ -1431,19 +1399,69 @@ public final class ConfigurationAsyncClient {
     public PagedFlux<ConfigurationSnapshot> listSnapshots(SnapshotSelector selector) {
         try {
             return new PagedFlux<>(
-                () -> withContext(
-                    context -> serviceClient.getSnapshotsSinglePageAsync(
-                        selector == null ? null : selector.getNameFilter(),
-                        null,
-                        selector == null ? null : selector.getFields(),
-                        selector == null ? null : selector.getStatus(),
-                        addTracingNamespace(context))),
-                nextLink -> withContext(
-                    context -> serviceClient.getSnapshotsNextSinglePageAsync(nextLink, addTracingNamespace(context)))
-            );
+                () -> withContext(context -> serviceClient.getSnapshotsSinglePageAsync(
+                    selector == null ? null : selector.getNameFilter(), null,
+                    selector == null ? null : selector.getFields(), selector == null ? null : selector.getStatus(),
+                    context)),
+                nextLink -> withContext(context -> serviceClient.getSnapshotsNextSinglePageAsync(nextLink, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
+    }
+
+    /**
+     * Gets all labels.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listAllLabels -->
+     * <pre>
+     * client.listLabels&#40;&#41;
+     *     .subscribe&#40;label -&gt; &#123;
+     *         System.out.println&#40;&quot;label name = &quot; + label&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listAllLabels -->
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SettingLabel> listLabels() {
+        return listLabels(null);
+    }
+
+    /**
+     * Gets a list of labels by given {@link SettingLabelSelector}
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listLabels -->
+     * <pre>
+     * String labelNameFilter = &quot;&#123;labelNamePrefix&#125;*&quot;;
+     * client.listLabels&#40;new SettingLabelSelector&#40;&#41;.setNameFilter&#40;labelNameFilter&#41;&#41;
+     *         .subscribe&#40;label -&gt; &#123;
+     *             System.out.println&#40;&quot;label name = &quot; + label&#41;;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listLabels -->
+     *
+     * @param selector Optional. Selector to filter labels from the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SettingLabel> listLabels(SettingLabelSelector selector) {
+        final String labelNameFilter = selector == null ? null : selector.getNameFilter();
+        final String acceptDatetime = selector == null
+            ? null
+            : selector.getAcceptDateTime() == null ? null : selector.getAcceptDateTime().toString();
+        final List<SettingLabelFields> labelFields = selector == null ? null : selector.getFields();
+        return serviceClient.getLabelsAsync(labelNameFilter, null, acceptDatetime, labelFields);
     }
 
     /**

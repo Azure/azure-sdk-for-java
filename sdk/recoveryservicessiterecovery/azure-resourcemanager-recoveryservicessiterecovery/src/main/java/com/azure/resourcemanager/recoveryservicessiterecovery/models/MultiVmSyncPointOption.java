@@ -5,21 +5,26 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover. */
+/**
+ * A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
+ */
 public final class MultiVmSyncPointOption extends ExpandableStringEnum<MultiVmSyncPointOption> {
-    /** Static value UseMultiVmSyncRecoveryPoint for MultiVmSyncPointOption. */
-    public static final MultiVmSyncPointOption USE_MULTI_VM_SYNC_RECOVERY_POINT =
-        fromString("UseMultiVmSyncRecoveryPoint");
+    /**
+     * Static value UseMultiVmSyncRecoveryPoint for MultiVmSyncPointOption.
+     */
+    public static final MultiVmSyncPointOption USE_MULTI_VM_SYNC_RECOVERY_POINT
+        = fromString("UseMultiVmSyncRecoveryPoint");
 
-    /** Static value UsePerVmRecoveryPoint for MultiVmSyncPointOption. */
+    /**
+     * Static value UsePerVmRecoveryPoint for MultiVmSyncPointOption.
+     */
     public static final MultiVmSyncPointOption USE_PER_VM_RECOVERY_POINT = fromString("UsePerVmRecoveryPoint");
 
     /**
      * Creates a new instance of MultiVmSyncPointOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,18 +33,17 @@ public final class MultiVmSyncPointOption extends ExpandableStringEnum<MultiVmSy
 
     /**
      * Creates or finds a MultiVmSyncPointOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MultiVmSyncPointOption.
      */
-    @JsonCreator
     public static MultiVmSyncPointOption fromString(String name) {
         return fromString(name, MultiVmSyncPointOption.class);
     }
 
     /**
      * Gets known MultiVmSyncPointOption values.
-     *
+     * 
      * @return known MultiVmSyncPointOption values.
      */
     public static Collection<MultiVmSyncPointOption> values() {

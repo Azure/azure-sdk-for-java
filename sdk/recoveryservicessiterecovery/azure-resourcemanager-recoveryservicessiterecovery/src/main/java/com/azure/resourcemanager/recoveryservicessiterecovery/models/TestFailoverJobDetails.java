@@ -5,60 +5,72 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** This class represents the details for a test failover job. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("TestFailoverJobDetails")
+/**
+ * This class represents the details for a test failover job.
+ */
 @Fluent
 public final class TestFailoverJobDetails extends JobDetails {
     /*
+     * Gets the type of job details (see JobDetailsTypes enum for possible values).
+     */
+    private String instanceType = "TestFailoverJobDetails";
+
+    /*
      * The test failover status.
      */
-    @JsonProperty(value = "testFailoverStatus")
     private String testFailoverStatus;
 
     /*
      * The test failover comments.
      */
-    @JsonProperty(value = "comments")
     private String comments;
 
     /*
      * The test network name.
      */
-    @JsonProperty(value = "networkName")
     private String networkName;
 
     /*
      * The test network friendly name.
      */
-    @JsonProperty(value = "networkFriendlyName")
     private String networkFriendlyName;
 
     /*
      * The test network type (see TestFailoverInput enum for possible values).
      */
-    @JsonProperty(value = "networkType")
     private String networkType;
 
     /*
      * The test VM details.
      */
-    @JsonProperty(value = "protectedItemDetails")
     private List<FailoverReplicationProtectedItemDetails> protectedItemDetails;
 
-    /** Creates an instance of TestFailoverJobDetails class. */
+    /**
+     * Creates an instance of TestFailoverJobDetails class.
+     */
     public TestFailoverJobDetails() {
     }
 
     /**
+     * Get the instanceType property: Gets the type of job details (see JobDetailsTypes enum for possible values).
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the testFailoverStatus property: The test failover status.
-     *
+     * 
      * @return the testFailoverStatus value.
      */
     public String testFailoverStatus() {
@@ -67,7 +79,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the testFailoverStatus property: The test failover status.
-     *
+     * 
      * @param testFailoverStatus the testFailoverStatus value to set.
      * @return the TestFailoverJobDetails object itself.
      */
@@ -78,7 +90,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Get the comments property: The test failover comments.
-     *
+     * 
      * @return the comments value.
      */
     public String comments() {
@@ -87,7 +99,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the comments property: The test failover comments.
-     *
+     * 
      * @param comments the comments value to set.
      * @return the TestFailoverJobDetails object itself.
      */
@@ -98,7 +110,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Get the networkName property: The test network name.
-     *
+     * 
      * @return the networkName value.
      */
     public String networkName() {
@@ -107,7 +119,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the networkName property: The test network name.
-     *
+     * 
      * @param networkName the networkName value to set.
      * @return the TestFailoverJobDetails object itself.
      */
@@ -118,7 +130,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Get the networkFriendlyName property: The test network friendly name.
-     *
+     * 
      * @return the networkFriendlyName value.
      */
     public String networkFriendlyName() {
@@ -127,7 +139,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the networkFriendlyName property: The test network friendly name.
-     *
+     * 
      * @param networkFriendlyName the networkFriendlyName value to set.
      * @return the TestFailoverJobDetails object itself.
      */
@@ -138,7 +150,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Get the networkType property: The test network type (see TestFailoverInput enum for possible values).
-     *
+     * 
      * @return the networkType value.
      */
     public String networkType() {
@@ -147,7 +159,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the networkType property: The test network type (see TestFailoverInput enum for possible values).
-     *
+     * 
      * @param networkType the networkType value to set.
      * @return the TestFailoverJobDetails object itself.
      */
@@ -158,7 +170,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Get the protectedItemDetails property: The test VM details.
-     *
+     * 
      * @return the protectedItemDetails value.
      */
     public List<FailoverReplicationProtectedItemDetails> protectedItemDetails() {
@@ -167,17 +179,19 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the protectedItemDetails property: The test VM details.
-     *
+     * 
      * @param protectedItemDetails the protectedItemDetails value to set.
      * @return the TestFailoverJobDetails object itself.
      */
-    public TestFailoverJobDetails withProtectedItemDetails(
-        List<FailoverReplicationProtectedItemDetails> protectedItemDetails) {
+    public TestFailoverJobDetails
+        withProtectedItemDetails(List<FailoverReplicationProtectedItemDetails> protectedItemDetails) {
         this.protectedItemDetails = protectedItemDetails;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TestFailoverJobDetails withAffectedObjectDetails(Map<String, String> affectedObjectDetails) {
         super.withAffectedObjectDetails(affectedObjectDetails);
@@ -186,14 +200,75 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (protectedItemDetails() != null) {
             protectedItemDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("affectedObjectDetails", affectedObjectDetails(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("testFailoverStatus", this.testFailoverStatus);
+        jsonWriter.writeStringField("comments", this.comments);
+        jsonWriter.writeStringField("networkName", this.networkName);
+        jsonWriter.writeStringField("networkFriendlyName", this.networkFriendlyName);
+        jsonWriter.writeStringField("networkType", this.networkType);
+        jsonWriter.writeArrayField("protectedItemDetails", this.protectedItemDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestFailoverJobDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestFailoverJobDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TestFailoverJobDetails.
+     */
+    public static TestFailoverJobDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestFailoverJobDetails deserializedTestFailoverJobDetails = new TestFailoverJobDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("affectedObjectDetails".equals(fieldName)) {
+                    Map<String, String> affectedObjectDetails = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTestFailoverJobDetails.withAffectedObjectDetails(affectedObjectDetails);
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedTestFailoverJobDetails.instanceType = reader.getString();
+                } else if ("testFailoverStatus".equals(fieldName)) {
+                    deserializedTestFailoverJobDetails.testFailoverStatus = reader.getString();
+                } else if ("comments".equals(fieldName)) {
+                    deserializedTestFailoverJobDetails.comments = reader.getString();
+                } else if ("networkName".equals(fieldName)) {
+                    deserializedTestFailoverJobDetails.networkName = reader.getString();
+                } else if ("networkFriendlyName".equals(fieldName)) {
+                    deserializedTestFailoverJobDetails.networkFriendlyName = reader.getString();
+                } else if ("networkType".equals(fieldName)) {
+                    deserializedTestFailoverJobDetails.networkType = reader.getString();
+                } else if ("protectedItemDetails".equals(fieldName)) {
+                    List<FailoverReplicationProtectedItemDetails> protectedItemDetails
+                        = reader.readArray(reader1 -> FailoverReplicationProtectedItemDetails.fromJson(reader1));
+                    deserializedTestFailoverJobDetails.protectedItemDetails = protectedItemDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestFailoverJobDetails;
+        });
     }
 }

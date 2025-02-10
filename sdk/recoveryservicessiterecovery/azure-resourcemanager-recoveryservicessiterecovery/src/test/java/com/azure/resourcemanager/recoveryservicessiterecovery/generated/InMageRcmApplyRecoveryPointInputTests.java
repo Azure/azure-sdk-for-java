@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageRcmApplyRecoveryPointInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmApplyRecoveryPointInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"InMageRcm\",\"recoveryPointId\":\"mvhzfovanyrvaprt\"}")
+        InMageRcmApplyRecoveryPointInput model
+            = BinaryData.fromString("{\"instanceType\":\"InMageRcm\",\"recoveryPointId\":\"mvhzfovanyrvaprt\"}")
                 .toObject(InMageRcmApplyRecoveryPointInput.class);
         Assertions.assertEquals("mvhzfovanyrvaprt", model.recoveryPointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmApplyRecoveryPointInput model =
-            new InMageRcmApplyRecoveryPointInput().withRecoveryPointId("mvhzfovanyrvaprt");
+        InMageRcmApplyRecoveryPointInput model
+            = new InMageRcmApplyRecoveryPointInput().withRecoveryPointId("mvhzfovanyrvaprt");
         model = BinaryData.fromObject(model).toObject(InMageRcmApplyRecoveryPointInput.class);
         Assertions.assertEquals("mvhzfovanyrvaprt", model.recoveryPointId());
     }

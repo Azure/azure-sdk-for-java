@@ -10,9 +10,8 @@ import com.azure.resourcemanager.avs.models.AddonProperties;
 public final class AddonPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddonProperties model =
-            BinaryData
-                .fromString("{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Canceled\"}")
+        AddonProperties model
+            = BinaryData.fromString("{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Deleting\"}")
                 .toObject(AddonProperties.class);
     }
 

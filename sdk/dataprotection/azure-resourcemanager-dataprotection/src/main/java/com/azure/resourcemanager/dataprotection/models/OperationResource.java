@@ -44,9 +44,7 @@ public interface OperationResource {
     String name();
 
     /**
-     * Gets the properties property: OperationExtendedInfo
-     * 
-     * End time of the operation.
+     * Gets the properties property: End time of the operation.
      * 
      * @return the properties value.
      */

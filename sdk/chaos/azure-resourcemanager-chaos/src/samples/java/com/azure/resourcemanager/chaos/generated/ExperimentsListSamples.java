@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.chaos.generated;
 
-/** Samples for Experiments List. */
+/**
+ * Samples for Experiments List.
+ */
 public final class ExperimentsListSamples {
     /*
-     * x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/ListExperimentsInASubscription.json
+     * x-ms-original-file:
+     * specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/ListExperimentsInASubscription.
+     * json
      */
     /**
      * Sample code: List all Experiments in a subscription.
-     *
+     * 
      * @param manager Entry point to ChaosManager.
      */
     public static void listAllExperimentsInASubscription(com.azure.resourcemanager.chaos.ChaosManager manager) {

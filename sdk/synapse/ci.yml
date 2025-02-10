@@ -79,7 +79,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: synapse
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-analytics-synapse-accesscontrol
         groupId: com.azure

@@ -12,17 +12,15 @@ import java.util.Arrays;
 public final class RevisionCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RevisionCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"createdTime\":\"2021-02-22T10:12:12Z\",\"lastActiveTime\":\"2021-10-17T14:02:40Z\",\"fqdn\":\"vxwc\",\"template\":{\"revisionSuffix\":\"pcirelsfeaen\",\"terminationGracePeriodSeconds\":6089881890484118319,\"initContainers\":[{}],\"containers\":[{},{},{}],\"scale\":{\"minReplicas\":1993086714,\"maxReplicas\":863801878,\"rules\":[{},{}]},\"volumes\":[{},{},{},{}],\"serviceBinds\":[{}]},\"active\":false,\"replicas\":2046993019,\"trafficWeight\":443965325,\"provisioningError\":\"youlp\",\"healthState\":\"None\",\"provisioningState\":\"Deprovisioning\",\"runningState\":\"Stopped\"},\"id\":\"rvimjwosytxitcsk\",\"name\":\"cktqumiekkezzi\",\"type\":\"hlyfjhdgqgg\"},{\"properties\":{\"createdTime\":\"2021-11-21T10:43:47Z\",\"lastActiveTime\":\"2021-04-09T06:20:49Z\",\"fqdn\":\"aeqidbqfatpxll\",\"template\":{\"revisionSuffix\":\"yjmoadsu\",\"terminationGracePeriodSeconds\":1027634010219173638,\"initContainers\":[{},{},{},{}],\"containers\":[{},{}],\"scale\":{\"minReplicas\":1651100345,\"maxReplicas\":1483853053,\"rules\":[{},{}]},\"volumes\":[{},{},{}],\"serviceBinds\":[{},{}]},\"active\":true,\"replicas\":288329779,\"trafficWeight\":1115314881,\"provisioningError\":\"uhpkxkgymar\",\"healthState\":\"Unhealthy\",\"provisioningState\":\"Deprovisioning\",\"runningState\":\"Processing\"},\"id\":\"ugjhky\",\"name\":\"ubeddg\",\"type\":\"sofwqmzqalkrmnji\"}],\"nextLink\":\"xacqqudfnbyx\"}")
-                .toObject(RevisionCollection.class);
+        RevisionCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-09-25T16:08:34Z\",\"lastActiveTime\":\"2021-05-08T04:39:02Z\",\"fqdn\":\"ipifhpfeoajvg\",\"template\":{\"revisionSuffix\":\"xjcsheafidltu\",\"terminationGracePeriodSeconds\":8187666305787624959,\"initContainers\":[{}],\"containers\":[{},{},{}],\"scale\":{\"minReplicas\":240183027,\"maxReplicas\":1632871841,\"cooldownPeriod\":1883095042,\"pollingInterval\":84921922,\"rules\":[{},{},{},{}]},\"volumes\":[{},{},{}],\"serviceBinds\":[{},{},{}]},\"active\":false,\"replicas\":592289991,\"trafficWeight\":756597053,\"provisioningError\":\"ucb\",\"healthState\":\"Unhealthy\",\"provisioningState\":\"Deprovisioned\",\"runningState\":\"Running\"},\"id\":\"mcwsldrizetpwb\",\"name\":\"a\",\"type\":\"llibphbqzmizak\"},{\"properties\":{\"createdTime\":\"2021-02-12T00:07:30Z\",\"lastActiveTime\":\"2021-02-11T14:59:40Z\",\"fqdn\":\"dnjzh\",\"template\":{\"revisionSuffix\":\"ylhjlm\",\"terminationGracePeriodSeconds\":1077522990830391189,\"initContainers\":[{},{}],\"containers\":[{},{}],\"scale\":{\"minReplicas\":1631755461,\"maxReplicas\":1003988498,\"cooldownPeriod\":596523417,\"pollingInterval\":608923593,\"rules\":[{},{},{},{}]},\"volumes\":[{},{}],\"serviceBinds\":[{},{},{},{}]},\"active\":true,\"replicas\":1672946681,\"trafficWeight\":2018313749,\"provisioningError\":\"xdza\",\"healthState\":\"Healthy\",\"provisioningState\":\"Provisioning\",\"runningState\":\"Failed\"},\"id\":\"uufuz\",\"name\":\"oyjathwtzol\",\"type\":\"a\"}],\"nextLink\":\"wm\"}")
+            .toObject(RevisionCollection.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RevisionCollection model =
-            new RevisionCollection().withValue(Arrays.asList(new RevisionInner(), new RevisionInner()));
+        RevisionCollection model
+            = new RevisionCollection().withValue(Arrays.asList(new RevisionInner(), new RevisionInner()));
         model = BinaryData.fromObject(model).toObject(RevisionCollection.class);
     }
 }

@@ -8,142 +8,120 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.quantum.fluent.models.QuantumWorkspaceInner;
-import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of QuantumWorkspace. */
+/**
+ * An immutable client-side representation of QuantumWorkspace.
+ */
 public interface QuantumWorkspace {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
+     * Gets the properties property: Gets or sets the properties. Define quantum workspace's specific properties.
+     * 
+     * @return the properties value.
+     */
+    WorkspaceResourceProperties properties();
+
+    /**
      * Gets the identity property: Managed Identity information.
-     *
+     * 
      * @return the identity value.
      */
     QuantumWorkspaceIdentity identity();
 
     /**
-     * Gets the systemData property: System metadata.
-     *
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the providers property: List of Providers selected for this Workspace.
-     *
-     * @return the providers value.
-     */
-    List<Provider> providers();
-
-    /**
-     * Gets the usable property: Whether the current workspace is ready to accept Jobs.
-     *
-     * @return the usable value.
-     */
-    UsableStatus usable();
-
-    /**
-     * Gets the provisioningState property: Provisioning status field.
-     *
-     * @return the provisioningState value.
-     */
-    ProvisioningStatus provisioningState();
-
-    /**
-     * Gets the storageAccount property: ARM Resource Id of the storage account associated with this workspace.
-     *
-     * @return the storageAccount value.
-     */
-    String storageAccount();
-
-    /**
-     * Gets the endpointUri property: The URI of the workspace endpoint.
-     *
-     * @return the endpointUri value.
-     */
-    String endpointUri();
-
-    /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.quantum.fluent.models.QuantumWorkspaceInner object.
-     *
+     * 
      * @return the inner object.
      */
     QuantumWorkspaceInner innerModel();
 
-    /** The entirety of the QuantumWorkspace definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the QuantumWorkspace definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
-    /** The QuantumWorkspace definition stages. */
+    /**
+     * The QuantumWorkspace definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the QuantumWorkspace definition. */
+        /**
+         * The first stage of the QuantumWorkspace definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the QuantumWorkspace definition allowing to specify location. */
+        /**
+         * The stage of the QuantumWorkspace definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -151,19 +129,21 @@ public interface QuantumWorkspace {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the QuantumWorkspace definition allowing to specify parent resource. */
+        /**
+         * The stage of the QuantumWorkspace definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
-             * @param resourceGroupName The name of the resource group.
+             * 
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
@@ -174,104 +154,102 @@ public interface QuantumWorkspace {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithProviders,
-                DefinitionStages.WithStorageAccount {
+            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             QuantumWorkspace create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             QuantumWorkspace create(Context context);
         }
 
-        /** The stage of the QuantumWorkspace definition allowing to specify tags. */
+        /**
+         * The stage of the QuantumWorkspace definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the QuantumWorkspace definition allowing to specify identity. */
+        /**
+         * The stage of the QuantumWorkspace definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Gets or sets the properties. Define quantum workspace's specific
+             * properties..
+             * 
+             * @param properties Gets or sets the properties. Define quantum workspace's specific properties.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(WorkspaceResourceProperties properties);
+        }
+
+        /**
+         * The stage of the QuantumWorkspace definition allowing to specify identity.
+         */
         interface WithIdentity {
             /**
              * Specifies the identity property: Managed Identity information..
-             *
+             * 
              * @param identity Managed Identity information.
              * @return the next definition stage.
              */
             WithCreate withIdentity(QuantumWorkspaceIdentity identity);
         }
-
-        /** The stage of the QuantumWorkspace definition allowing to specify providers. */
-        interface WithProviders {
-            /**
-             * Specifies the providers property: List of Providers selected for this Workspace.
-             *
-             * @param providers List of Providers selected for this Workspace.
-             * @return the next definition stage.
-             */
-            WithCreate withProviders(List<Provider> providers);
-        }
-
-        /** The stage of the QuantumWorkspace definition allowing to specify storageAccount. */
-        interface WithStorageAccount {
-            /**
-             * Specifies the storageAccount property: ARM Resource Id of the storage account associated with this
-             * workspace..
-             *
-             * @param storageAccount ARM Resource Id of the storage account associated with this workspace.
-             * @return the next definition stage.
-             */
-            WithCreate withStorageAccount(String storageAccount);
-        }
     }
 
     /**
      * Begins update for the QuantumWorkspace resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     QuantumWorkspace.Update update();
 
-    /** The template for QuantumWorkspace update. */
+    /**
+     * The template for QuantumWorkspace update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         QuantumWorkspace apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         QuantumWorkspace apply(Context context);
     }
 
-    /** The QuantumWorkspace update stages. */
+    /**
+     * The QuantumWorkspace update stages.
+     */
     interface UpdateStages {
-        /** The stage of the QuantumWorkspace update allowing to specify tags. */
+        /**
+         * The stage of the QuantumWorkspace update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -281,14 +259,14 @@ public interface QuantumWorkspace {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     QuantumWorkspace refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

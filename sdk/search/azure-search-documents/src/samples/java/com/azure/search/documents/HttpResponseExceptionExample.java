@@ -13,7 +13,7 @@ import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.util.SearchPagedFlux;
 
 /**
- * This example shows how to handle errors when the Azure Cognitive Search service
+ * This example shows how to handle errors when the Azure AI Search service
  * returns a non-successful response
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
@@ -23,7 +23,7 @@ import com.azure.search.documents.util.SearchPagedFlux;
 public class HttpResponseExceptionExample {
 
     /**
-     * From the Azure portal, get your Azure Cognitive Search service URL and API key,
+     * From the Azure portal, get your Azure AI Search service URL and API key,
      * and set the values of these environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");

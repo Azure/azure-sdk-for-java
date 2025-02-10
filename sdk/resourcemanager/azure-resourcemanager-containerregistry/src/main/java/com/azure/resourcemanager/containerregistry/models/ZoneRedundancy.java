@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Whether or not zone redundancy is enabled for this container registry. */
+/**
+ * Whether or not zone redundancy is enabled for this container registry.
+ */
 public final class ZoneRedundancy extends ExpandableStringEnum<ZoneRedundancy> {
-    /** Static value Enabled for ZoneRedundancy. */
+    /**
+     * Static value Enabled for ZoneRedundancy.
+     */
     public static final ZoneRedundancy ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for ZoneRedundancy. */
+    /**
+     * Static value Disabled for ZoneRedundancy.
+     */
     public static final ZoneRedundancy DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of ZoneRedundancy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ZoneRedundancy extends ExpandableStringEnum<ZoneRedundancy> {
 
     /**
      * Creates or finds a ZoneRedundancy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ZoneRedundancy.
      */
-    @JsonCreator
     public static ZoneRedundancy fromString(String name) {
         return fromString(name, ZoneRedundancy.class);
     }
 
     /**
      * Gets known ZoneRedundancy values.
-     *
+     * 
      * @return known ZoneRedundancy values.
      */
     public static Collection<ZoneRedundancy> values() {

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountSkuListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountSkuListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"bdlwtgrhpdjpj\",\"sku\":{\"name\":\"asxazjpqyegualhb\",\"tier\":\"Free\",\"size\":\"jj\",\"family\":\"v\",\"capacity\":303390013}}]}")
-                .toObject(AccountSkuListResultInner.class);
+        AccountSkuListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"resourceType\":\"bdlwtgrhpdjpj\",\"sku\":{\"name\":\"asxazjpqyegualhb\",\"tier\":\"Free\",\"size\":\"jj\",\"family\":\"v\",\"capacity\":303390013}}]}")
+            .toObject(AccountSkuListResultInner.class);
         Assertions.assertEquals("bdlwtgrhpdjpj", model.value().get(0).resourceType());
         Assertions.assertEquals("asxazjpqyegualhb", model.value().get(0).sku().name());
         Assertions.assertEquals(SkuTier.FREE, model.value().get(0).sku().tier());
@@ -30,20 +28,13 @@ public final class AccountSkuListResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountSkuListResultInner model =
-            new AccountSkuListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AccountSku()
-                                .withResourceType("bdlwtgrhpdjpj")
-                                .withSku(
-                                    new Sku()
-                                        .withName("asxazjpqyegualhb")
-                                        .withTier(SkuTier.FREE)
-                                        .withSize("jj")
-                                        .withFamily("v")
-                                        .withCapacity(303390013))));
+        AccountSkuListResultInner model
+            = new AccountSkuListResultInner().withValue(Arrays.asList(new AccountSku().withResourceType("bdlwtgrhpdjpj")
+                .withSku(new Sku().withName("asxazjpqyegualhb")
+                    .withTier(SkuTier.FREE)
+                    .withSize("jj")
+                    .withFamily("v")
+                    .withCapacity(303390013))));
         model = BinaryData.fromObject(model).toObject(AccountSkuListResultInner.class);
         Assertions.assertEquals("bdlwtgrhpdjpj", model.value().get(0).resourceType());
         Assertions.assertEquals("asxazjpqyegualhb", model.value().get(0).sku().name());

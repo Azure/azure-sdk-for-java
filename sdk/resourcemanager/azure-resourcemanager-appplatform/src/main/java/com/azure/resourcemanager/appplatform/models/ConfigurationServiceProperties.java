@@ -5,39 +5,52 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Application Configuration Service properties payload. */
+/**
+ * Application Configuration Service properties payload.
+ */
 @Fluent
-public final class ConfigurationServiceProperties {
+public final class ConfigurationServiceProperties implements JsonSerializable<ConfigurationServiceProperties> {
     /*
      * State of the Application Configuration Service.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationServiceProvisioningState provisioningState;
+
+    /*
+     * The generation of the Application Configuration Service.
+     */
+    private ConfigurationServiceGeneration generation;
 
     /*
      * The requested resource quantity for required CPU and Memory.
      */
-    @JsonProperty(value = "resourceRequests", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationServiceResourceRequests resourceRequests;
 
     /*
      * Collection of instances belong to Application Configuration Service.
      */
-    @JsonProperty(value = "instances", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConfigurationServiceInstance> instances;
 
     /*
      * The settings of Application Configuration Service.
      */
-    @JsonProperty(value = "settings")
     private ConfigurationServiceSettings settings;
 
     /**
+     * Creates an instance of ConfigurationServiceProperties class.
+     */
+    public ConfigurationServiceProperties() {
+    }
+
+    /**
      * Get the provisioningState property: State of the Application Configuration Service.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ConfigurationServiceProvisioningState provisioningState() {
@@ -45,8 +58,28 @@ public final class ConfigurationServiceProperties {
     }
 
     /**
+     * Get the generation property: The generation of the Application Configuration Service.
+     * 
+     * @return the generation value.
+     */
+    public ConfigurationServiceGeneration generation() {
+        return this.generation;
+    }
+
+    /**
+     * Set the generation property: The generation of the Application Configuration Service.
+     * 
+     * @param generation the generation value to set.
+     * @return the ConfigurationServiceProperties object itself.
+     */
+    public ConfigurationServiceProperties withGeneration(ConfigurationServiceGeneration generation) {
+        this.generation = generation;
+        return this;
+    }
+
+    /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory.
-     *
+     * 
      * @return the resourceRequests value.
      */
     public ConfigurationServiceResourceRequests resourceRequests() {
@@ -55,7 +88,7 @@ public final class ConfigurationServiceProperties {
 
     /**
      * Get the instances property: Collection of instances belong to Application Configuration Service.
-     *
+     * 
      * @return the instances value.
      */
     public List<ConfigurationServiceInstance> instances() {
@@ -64,7 +97,7 @@ public final class ConfigurationServiceProperties {
 
     /**
      * Get the settings property: The settings of Application Configuration Service.
-     *
+     * 
      * @return the settings value.
      */
     public ConfigurationServiceSettings settings() {
@@ -73,7 +106,7 @@ public final class ConfigurationServiceProperties {
 
     /**
      * Set the settings property: The settings of Application Configuration Service.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the ConfigurationServiceProperties object itself.
      */
@@ -84,7 +117,7 @@ public final class ConfigurationServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -97,5 +130,56 @@ public final class ConfigurationServiceProperties {
         if (settings() != null) {
             settings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("generation", this.generation == null ? null : this.generation.toString());
+        jsonWriter.writeJsonField("settings", this.settings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationServiceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationServiceProperties.
+     */
+    public static ConfigurationServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationServiceProperties deserializedConfigurationServiceProperties
+                = new ConfigurationServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedConfigurationServiceProperties.provisioningState
+                        = ConfigurationServiceProvisioningState.fromString(reader.getString());
+                } else if ("generation".equals(fieldName)) {
+                    deserializedConfigurationServiceProperties.generation
+                        = ConfigurationServiceGeneration.fromString(reader.getString());
+                } else if ("resourceRequests".equals(fieldName)) {
+                    deserializedConfigurationServiceProperties.resourceRequests
+                        = ConfigurationServiceResourceRequests.fromJson(reader);
+                } else if ("instances".equals(fieldName)) {
+                    List<ConfigurationServiceInstance> instances
+                        = reader.readArray(reader1 -> ConfigurationServiceInstance.fromJson(reader1));
+                    deserializedConfigurationServiceProperties.instances = instances;
+                } else if ("settings".equals(fieldName)) {
+                    deserializedConfigurationServiceProperties.settings = ConfigurationServiceSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationServiceProperties;
+        });
     }
 }

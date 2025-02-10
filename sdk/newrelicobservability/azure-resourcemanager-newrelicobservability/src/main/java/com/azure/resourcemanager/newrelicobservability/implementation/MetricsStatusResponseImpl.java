@@ -14,8 +14,7 @@ public final class MetricsStatusResponseImpl implements MetricsStatusResponse {
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    MetricsStatusResponseImpl(
-        MetricsStatusResponseInner innerObject,
+    MetricsStatusResponseImpl(MetricsStatusResponseInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

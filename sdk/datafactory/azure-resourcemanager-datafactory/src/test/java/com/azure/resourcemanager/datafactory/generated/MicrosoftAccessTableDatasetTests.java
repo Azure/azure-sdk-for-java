@@ -19,33 +19,32 @@ public final class MicrosoftAccessTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftAccessTableDataset model = BinaryData.fromString(
-            "{\"type\":\"MicrosoftAccessTable\",\"typeProperties\":{\"tableName\":\"dataxamqecjrzvlcivqx\"},\"description\":\"mklphxwww\",\"structure\":\"datajkbgnfbr\",\"schema\":\"datavfsunhaevla\",\"linkedServiceName\":{\"referenceName\":\"xczywywu\",\"parameters\":{\"rfgimomggewdqbxe\":\"datacorewcnnaaxqjfda\",\"sfx\":\"datafyznvussuqksl\",\"wpmohnrtlikffyd\":\"datayzqbye\",\"fwvzdteqjm\":\"datatkqrfbgyn\"}},\"parameters\":{\"jyoxxjxb\":{\"type\":\"Array\",\"defaultValue\":\"datagkaxnypr\"},\"emqom\":{\"type\":\"Int\",\"defaultValue\":\"datarrlccklyfpjmspa\"},\"hcaptkhjx\":{\"type\":\"Int\",\"defaultValue\":\"datalknuyapvibzicyvi\"}},\"annotations\":[\"databnvfccklzhznfgv\"],\"folder\":{\"name\":\"xmnctigpksywi\"},\"\":{\"efuhb\":\"dataktgkdprtqjytdc\",\"caytnpkvbpbltcws\":\"datawbvjsbgmlamoa\"}}")
+            "{\"type\":\"MicrosoftAccessTable\",\"typeProperties\":{\"tableName\":\"databydlgfaphwu\"},\"description\":\"wtsaynrtvj\",\"structure\":\"datareeoxvq\",\"schema\":\"datarnbli\",\"linkedServiceName\":{\"referenceName\":\"sdbfbmdiv\",\"parameters\":{\"jg\":\"datah\",\"aub\":\"datazmiaoaweacf\"}},\"parameters\":{\"dckhsq\":{\"type\":\"Float\",\"defaultValue\":\"datatcnxriqz\"},\"okohlsfj\":{\"type\":\"Array\",\"defaultValue\":\"datajsurnowobwxrxm\"}},\"annotations\":[\"dataqjpzhe\",\"datahuv\"],\"folder\":{\"name\":\"qkvadmjhymud\"},\"\":{\"rmclyqwwu\":\"dataajzdebhs\",\"svkb\":\"datayqkaaptb\",\"bloccu\":\"databptw\",\"uybutcdzjfjt\":\"dataplxzbnsshvqnpszb\"}}")
             .toObject(MicrosoftAccessTableDataset.class);
-        Assertions.assertEquals("mklphxwww", model.description());
-        Assertions.assertEquals("xczywywu", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("jyoxxjxb").type());
-        Assertions.assertEquals("xmnctigpksywi", model.folder().name());
+        Assertions.assertEquals("wtsaynrtvj", model.description());
+        Assertions.assertEquals("sdbfbmdiv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("dckhsq").type());
+        Assertions.assertEquals("qkvadmjhymud", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MicrosoftAccessTableDataset model = new MicrosoftAccessTableDataset().withDescription("mklphxwww")
-            .withStructure("datajkbgnfbr").withSchema("datavfsunhaevla")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("xczywywu")
-                .withParameters(mapOf("rfgimomggewdqbxe", "datacorewcnnaaxqjfda", "sfx", "datafyznvussuqksl",
-                    "wpmohnrtlikffyd", "datayzqbye", "fwvzdteqjm", "datatkqrfbgyn")))
-            .withParameters(mapOf("jyoxxjxb",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datagkaxnypr"), "emqom",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datarrlccklyfpjmspa"),
-                "hcaptkhjx",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datalknuyapvibzicyvi")))
-            .withAnnotations(Arrays.asList("databnvfccklzhznfgv"))
-            .withFolder(new DatasetFolder().withName("xmnctigpksywi")).withTableName("dataxamqecjrzvlcivqx");
+        MicrosoftAccessTableDataset model = new MicrosoftAccessTableDataset().withDescription("wtsaynrtvj")
+            .withStructure("datareeoxvq")
+            .withSchema("datarnbli")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("sdbfbmdiv")
+                .withParameters(mapOf("jg", "datah", "aub", "datazmiaoaweacf")))
+            .withParameters(mapOf("dckhsq",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datatcnxriqz"), "okohlsfj",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datajsurnowobwxrxm")))
+            .withAnnotations(Arrays.asList("dataqjpzhe", "datahuv"))
+            .withFolder(new DatasetFolder().withName("qkvadmjhymud"))
+            .withTableName("databydlgfaphwu");
         model = BinaryData.fromObject(model).toObject(MicrosoftAccessTableDataset.class);
-        Assertions.assertEquals("mklphxwww", model.description());
-        Assertions.assertEquals("xczywywu", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("jyoxxjxb").type());
-        Assertions.assertEquals("xmnctigpksywi", model.folder().name());
+        Assertions.assertEquals("wtsaynrtvj", model.description());
+        Assertions.assertEquals("sdbfbmdiv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("dckhsq").type());
+        Assertions.assertEquals("qkvadmjhymud", model.folder().name());
     }
 
     // Use "Map.of" if available

@@ -1,6 +1,6 @@
 # Release History
 
-## 5.17.0-beta.1 (Unreleased)
+## 5.21.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,223 @@
 
 ### Bugs Fixed
 
-- Removed timeout from blocking wait in `EventHubProducerClient` in `createBatch`, `getEventHubProperties`, and `getPartitionProperties`. ([#38229](https://github.com/Azure/azure-sdk-for-java/pull/38229))
+### Other Changes
+
+## 5.20.0 (2025-02-11)
+
+### Features Added
+
+- Setting the v2 stack as the default. ([43725](https://github.com/Azure/azure-sdk-for-java/pull/43725))
+
+### Breaking Changes
+
+- Do not remove `x-opt-partition-key` message annotation when publishing events. 
+  If event is received from an Event Hub, it may contain `x-opt-partition-key` message annotation. If this event is 
+  published to another Event Hub, previous version of the Event Hubs SDK did not pass this annotation to the next Event Hub.
+  Starting with this version:
+  - if the event is sent with `SendOptions` or `CreateBatchOptions` containing `null` partition key, the existing `x-opt-partition-key` 
+    message annotation will be used when publishing the event. **This is a new behavior.**
+  - if the event is sent with `SendOptions` or `CreateBatchOptions` containing non-null partition key, this partition key will be used.
+    This behavior did not change.
+  
+  If you relied on the previous behavior, make sure to clear the `x-opt-partition-key` message annotation before re-sending the event.
+  ([#43039](https://github.com/Azure/azure-sdk-for-java/pull/43039))
+
+### Bugs Fixed
+
+- Set partition key in addition to partition id when publishing events with `EventHubsBufferedProducerClient`. 
+  ([#43039](https://github.com/Azure/azure-sdk-for-java/pull/43039))
+- Do not remove `x-opt-sequence-number`, `x-opt-offset`, `x-opt-enqueued-time`, `x-opt-publisher` message annotations 
+  when re-sending events received from another Event Hub. Message annotations should not be modified by the SDK and Event Hubs 
+  will overwrite these values when the event is published.
+  ([#43039](https://github.com/Azure/azure-sdk-for-java/pull/43039))
+
+## 5.19.2 (2024-12-04)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-amqp` from `2.9.10` to version `2.9.12`.
+
+## 5.19.1 (2024-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+- Upgraded `azure-core-amqp` from `2.9.9` to version `2.9.10`.
+
+## 5.19.0 (2024-09-30)
+
+### Features Added
+
+- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, these caches are activated when V2 stack is opted-in using the configuration `com.azure.messaging.eventhubs.v2`. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107)), ([41805](https://github.com/Azure/azure-sdk-for-java/pull/41805))
+- Add `EventProcessorClient.stop(Duration timeout)` to stop the `EventProcessorClient` and await it to shut down. The `EventProcessorClient.stop()`
+  method now will wait for up to the default timeout (10 seconds) waiting for the processor to stop. ([#41878](https://github.com/Azure/azure-sdk-for-java/pull/41878))
+- Observability improvements ([#38899](https://github.com/Azure/azure-sdk-for-java/pull/38899))
+  - Added span for update checkpoint call.
+  - Added partitionId and consumer group (when available) to span and metric attributes.
+
+### Breaking Changes
+
+- Updated distributed traces and metrics to follow OpenTelemetry semantic conventions 1.27.0.
+  Please refer to [OpenTelemetry messaging semantic conventions](https://github.com/open-telemetry/semantic-conventions/tree/main/docs/messaging) for more details.
+  ([#38899](https://github.com/Azure/azure-sdk-for-java/pull/38899))
+  - Span names now follow `{operaiton name} {entity name}` pattern
+  - Updated metric names and attributes 
+
+### Bugs Fixed
+
+- Fixes the event size computation in EventHubSerializer to include size of delivery annotations. ([41605](https://github.com/Azure/azure-sdk-for-java/issues/41605))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-core-amqp` from `2.9.8` to version `2.9.9`.
+
+## 5.19.0-beta.3 (2024-09-19)
+
+### Features Added
+
+- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, these caches are activated when V2 stack is opted-in using the configuration `com.azure.messaging.eventhubs.v2`. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107)), ([41805](https://github.com/Azure/azure-sdk-for-java/pull/41805))
+- Add `EventProcessorClient.stop(Duration timeout)` to stop the `EventProcessorClient` and await it to shut down. The `EventProcessorClient.stop()`
+  method now will wait for up to the default timeout (10 seconds) waiting for the processor to stop. ([#41878](https://github.com/Azure/azure-sdk-for-java/pull/41878))
+- Observability improvements ([#38899](https://github.com/Azure/azure-sdk-for-java/pull/38899))
+  - Added span for update checkpoint call.
+  - Added partitionId and consumer group (when available) to span and metric attributes.
+
+### Breaking Changes
+
+- Updated distributed traces and metrics to follow OpenTelemetry semantic conventions 1.27.0.
+  Please refer to [OpenTelemetry messaging semantic conventions](https://github.com/open-telemetry/semantic-conventions/tree/main/docs/messaging) for more details.
+  ([#38899](https://github.com/Azure/azure-sdk-for-java/pull/38899))
+  - Span names now follow `{operaiton name} {entity name}` pattern
+  - Updated metric names and attributes 
+
+### Bugs Fixed
+
+- Fixes the event size computation in EventHubSerializer to include size of delivery annotations. ([41605](https://github.com/Azure/azure-sdk-for-java/issues/41605))
+
+## 5.19.0-beta.2 (2024-08-20)
+
+### Features Added
+
+- Enabling V2 stack support for Event Hubs, which can be opt-in using the configuration ` com.azure.messaging.eventhubs.v2`. ([40435](https://github.com/Azure/azure-sdk-for-java/pull/40435))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-amqp` from `2.9.7` to version `2.9.8`.
+
+## 5.18.6 (2024-07-26)
+
+### Bugs Fixed
+
+- Copy connection string properties when cloning the EventHubClientBuilder in EventProcessorClientBuilder, fixes ([#40938](https://github.com/Azure/azure-sdk-for-java/issues/40938))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-amqp` from `2.9.3` to version `2.9.7`.
+
+## 5.18.5 (2024-06-24)
+
+### Features Added
+
+- Add support for local emulator - [Event Hubs emulator overview](https://learn.microsoft.com/azure/event-hubs/overview-emulator).
+
+### Bugs Fixed
+
+- Use endpoint address's port when specified in connection string. ([#40415](https://github.com/Azure/azure-sdk-for-java/pull/40415))
+- Fix parsing of `customEndpointAddress` to match one used in connection string. ([#40415](https://github.com/Azure/azure-sdk-for-java/pull/40415))
+- Fixed issue where creating EventProcessorClient instances using the same EventProcessorClientBuilder instance could result in incorrect properties. ([#29875](https://github.com/Azure/azure-sdk-for-java/issues/29875))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.49.1`.
+- Upgraded `azure-core-amqp` from `2.9.2` to version `2.9.3`.
+
+## 5.18.4 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-amqp` from `2.9.3` to version `2.9.4`.
+
+## 5.19.0-beta.1 (2024-05-21)
+
+### Features Added
+
+### Breaking Changes
+
+- `EventData.getOffset()`, `CheckpointStore.getOffset()`, `EventData.getOffset()`, and `LastEnqueuedEventProperties.getOffset()` are changed from `Long` to `String`.
+
+### Bugs Fixed
+
+- Fixed issue where creating EventProcessorClient instances using the same EventProcessorClientBuilder instance could result in incorrect properties. ([#29875](https://github.com/Azure/azure-sdk-for-java/issues/29875))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-amqp` from `2.9.3` to version `2.9.4`.
+
+## 5.18.3 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-amqp` from `2.9.2` to version `2.9.3`.
+
+## 5.18.2 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-amqp` from `2.9.1` to version `2.9.2`.
+
+
+## 5.18.1 (2024-02-16)
+
+### Bugs Fixed
+
+- Fixed over-prefetching in EventProcessorClient caused by implicit prefetching in partition pump reactor pipeline ([#38572](https://github.com/Azure/azure-sdk-for-java/issues/38572))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-amqp` from `2.9.0` to version `2.9.1`.
+
+## 5.18.0 (2024-01-19)
+
+### Bugs Fixed
+
+- Removed timeout from blocking wait in `EventHubProducerClient` in `createBatch`, `getEventHubProperties`, and `getPartitionProperties`. ([#38229](https://github.com/Azure/azure-sdk-for-java/pull/38229))
+- Stopped populating status attribute on metrics when no error has happened. ([#37884](https://github.com/Azure/azure-sdk-for-java/issues/37884))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.8.14` to version `2.9.0`.
 
 ## 5.17.1 (2023-12-07)
 
@@ -586,7 +800,7 @@ by calling `EventHubPublisher.close()` or `EventHubConsumer.close()`.
 Version 5.0.0-preview.1 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
 our efforts can be found in the [Azure SDK Design Guidelines for
-.Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+.Java](https://aka.ms/azsdk/guide/java).
 
 For release notes and more information please visit https://aka.ms/azure-sdk-preview1-java
 
@@ -609,4 +823,4 @@ For release notes and more information please visit https://aka.ms/azure-sdk-pre
 - Creating more than two concurrent `EventHubClients` or `EventHubConsumers` does not work. Limit usage of concurrent
   clients and consumers to two to avoid failures.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FCHANGELOG.png)
+

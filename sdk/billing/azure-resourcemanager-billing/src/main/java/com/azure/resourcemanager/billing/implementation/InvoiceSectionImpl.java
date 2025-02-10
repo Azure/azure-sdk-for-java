@@ -4,10 +4,10 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionInner;
 import com.azure.resourcemanager.billing.models.InvoiceSection;
-import com.azure.resourcemanager.billing.models.InvoiceSectionState;
-import com.azure.resourcemanager.billing.models.TargetCloud;
+import com.azure.resourcemanager.billing.models.InvoiceSectionProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -16,8 +16,8 @@ public final class InvoiceSectionImpl implements InvoiceSection {
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    InvoiceSectionImpl(
-        InvoiceSectionInner innerObject, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    InvoiceSectionImpl(InvoiceSectionInner innerObject,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -34,27 +34,6 @@ public final class InvoiceSectionImpl implements InvoiceSection {
         return this.innerModel().type();
     }
 
-    public String displayName() {
-        return this.innerModel().displayName();
-    }
-
-    public Map<String, String> labels() {
-        Map<String, String> inner = this.innerModel().labels();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
-    public InvoiceSectionState state() {
-        return this.innerModel().state();
-    }
-
-    public String systemId() {
-        return this.innerModel().systemId();
-    }
-
     public Map<String, String> tags() {
         Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
@@ -64,8 +43,12 @@ public final class InvoiceSectionImpl implements InvoiceSection {
         }
     }
 
-    public TargetCloud targetCloud() {
-        return this.innerModel().targetCloud();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public InvoiceSectionProperties properties() {
+        return this.innerModel().properties();
     }
 
     public InvoiceSectionInner innerModel() {

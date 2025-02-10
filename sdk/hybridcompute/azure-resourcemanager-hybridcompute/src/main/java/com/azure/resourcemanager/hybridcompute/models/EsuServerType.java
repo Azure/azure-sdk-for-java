@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The server types for Esu. */
+/**
+ * The server types for Esu.
+ */
 public final class EsuServerType extends ExpandableStringEnum<EsuServerType> {
-    /** Static value Standard for EsuServerType. */
+    /**
+     * Static value Standard for EsuServerType.
+     */
     public static final EsuServerType STANDARD = fromString("Standard");
 
-    /** Static value Datacenter for EsuServerType. */
+    /**
+     * Static value Datacenter for EsuServerType.
+     */
     public static final EsuServerType DATACENTER = fromString("Datacenter");
 
     /**
      * Creates a new instance of EsuServerType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class EsuServerType extends ExpandableStringEnum<EsuServerType> {
 
     /**
      * Creates or finds a EsuServerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EsuServerType.
      */
-    @JsonCreator
     public static EsuServerType fromString(String name) {
         return fromString(name, EsuServerType.class);
     }
 
     /**
      * Gets known EsuServerType values.
-     *
+     * 
      * @return known EsuServerType values.
      */
     public static Collection<EsuServerType> values() {

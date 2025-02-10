@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -50,7 +49,6 @@ public final class ExpressRouteCircuitPeeringAdvertisedPublicPrefixState
      * @param name a name to look for.
      * @return the corresponding ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.
      */
-    @JsonCreator
     public static ExpressRouteCircuitPeeringAdvertisedPublicPrefixState fromString(String name) {
         return fromString(name, ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.class);
     }

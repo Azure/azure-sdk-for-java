@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class DiskControllerTypes extends ExpandableStringEnum<DiskControll
      * @param name a name to look for.
      * @return the corresponding DiskControllerTypes.
      */
-    @JsonCreator
     public static DiskControllerTypes fromString(String name) {
         return fromString(name, DiskControllerTypes.class);
     }

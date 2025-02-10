@@ -3,12 +3,13 @@
 The Image Analysis service provides AI algorithms for processing images and returning information about their content. In a single service call, you can extract one or more visual features from the image simultaneously, including getting a caption for the image, extracting text shown in the image (OCR) and detecting objects. For more information on the service and the supported visual features, see [Image Analysis overview][image_analysis_overview], and the [Concepts][image_analysis_concepts] page.
 
 Use the Image Analysis client library to:
+
 * Authenticate against the service
 * Set what features you would like to extract
 * Upload an image for analysis, or send an image URL
 * Get the analysis result
 
-[Product documentation][image_analysis_overview] 
+[Product documentation][image_analysis_overview]
 | [Samples][samples]
 | [Vision Studio][vision_studio]
 | [API reference documentation](https://aka.ms/azsdk/image-analysis/ref-docs/java)
@@ -19,11 +20,18 @@ Use the Image Analysis client library to:
 
 ### Prerequisites
 
-*  [Java Development Kit (JDK)](https://learn.microsoft.com/azure/developer/java/fundamentals/java-jdk-install) with version 8 or above.
+* [Java Development Kit (JDK)](https://learn.microsoft.com/azure/developer/java/fundamentals/java-jdk-install) with version 8 or above.
 * An [Azure subscription](https://azure.microsoft.com/free).
-* A [Computer Vision resource](https://portal.azure.com/#create/Microsoft.CognitiveServicesComputerVision) in your Azure subscription.
-  * You will need the key and endpoint from this resource to authenticate against the service.
-  * Note that in order to run Image Analysis with the `Caption` or `Dense Captions` features, the Azure resource needs to be from a GPU-supported region. See this [document][supported_regions] for a list of supported regions.
+* A [Computer Vision resource](https://portal.azure.com/#create/Microsoft.CognitiveServicesComputerVision) deployed to your Azure subscription. Note that in order to run Image Analysis with the `Caption` or `Dense Captions` features, the Computer Vision resource needs to be from a GPU-supported region. See this [document][supported_regions] for a list of supported regions.
+* An endpoint URL. It can be found in the "overview" tab of your Computer Vision resource in the Azure portal, and has the form `https://your-resource-name.cognitiveservices.azure.com` where `your-resource-name` is your unique Computer Vision resource name. The samples below assume the environment variable `VISION_ENDPOINT` has been set to this value.
+* For API key authentication, you will need the key. It can be found in the "overview" tab of your Computer Vision resource in the Azure portal. It's a 32-character Hexadecimal number. The samples below assume the environment variable `VISION_KEY` has been set to this value.
+* For Entra ID authentication, your application needs an object that implements the [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential) interface. Samples below use [DefaultAzureCredential](https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential). To get that working, you will need:
+  * The role `Cognitive Services User` assigned to you. Role assigned can be done via the "Access Control (IAM)" tab of your Computer Vision resource in the Azure portal.
+  * [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) installed.
+  * You are logged into your Azure account by running `az login`.
+  * Note that if you have multiple Azure subscriptions, the subscription that contains your Computer Vision resource must be your default subscription. Run `az account list --output table` to list all you subscription and see which one is the default. Run `az account set --subscription "Your Subscription ID or Name"` to change your default subscription.
+
+Also note that the client library does not directly read the `VISION_ENDPOINT` and `VISION_KEY`environment variables mentioned above at run time. The endpoint and key (for API key authentication) must be provided to the `ImageAnalysisClientBuilder` in your code. The sample code below reads environment variables to promote the practice of not hard-coding secrets in your source code.
 
 ### Adding the package to your product
 
@@ -32,24 +40,17 @@ Use the Image Analysis client library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-vision-imageanalysis</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-### Set environment variables
-
-To authenticate the `ImageAnalysisClient`, you will need the endpoint and key from your Azure Computer Vision resource in the [Azure Portal](https://portal.azure.com). The code snippet below assumes these values are stored in environment variables:
-
-* Set the environment variable `VISION_ENDPOINT` to the endpoint URL. It has the form `https://your-resource-name.cognitiveservices.azure.com`, where `your-resource-name` is your unique Azure Computer Vision resource name.
-
-* Set the environment variable `VISION_KEY` to the key. The key is a 32-character Hexadecimal number.
-
-Note that the client library does not directly read these environment variable at run time. The endpoint and key must be provided to the `ImageAnalysisClientBuilder` in your code. The code snippet below reads environment variables to promote the practice of not hard-coding secrets in your source code.
-
 ### Create and authenticate the client
 
-Once you define the environment variables, this Java code will create and authenticate a synchronous `ImageAnalysisClient`:
+#### Using API key
+
+Once you define the two environment variables, this Java code will create and authenticate
+a synchronous `ImageAnalysisClient` using API key:
 
 ```java imports-for-create-client-snippet
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
@@ -66,7 +67,7 @@ if (endpoint == null || key == null) {
     System.exit(1);
 }
 
-// Create a synchronous Image Analysis client.
+// Create a synchronous client using API key authentication
 ImageAnalysisClient client = new ImageAnalysisClientBuilder()
     .endpoint(endpoint)
     .credential(new KeyCredential(key))
@@ -77,10 +78,60 @@ A synchronous client supports synchronous analysis methods, meaning they will bl
 of `buildClient()`:
 
 ```java create-async-client-snippet
-// Create an asynchronous Image Analysis client.
+// Create an asynchronous client using API key authentication.
 ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder()
     .endpoint(endpoint)
     .credential(new KeyCredential(key))
+    .buildAsyncClient();
+```
+
+#### Using Entra ID
+
+To use the [DefaultAzureCredential](https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential)
+provider, or other credential providers, add an additional dependency on `azure-identity` in your `pom.xml`:
+
+[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.14.2</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+This Java code will create and authenticate a synchronous `ImageAnalysisClient` with Entra ID authentication:
+
+```java imports-for-create-client-entra-id-snippet
+import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
+import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+```
+
+```java create-client-entra-id-snippet
+String endpoint = System.getenv("VISION_ENDPOINT");
+
+if (endpoint == null) {
+    System.out.println("Missing environment variable 'VISION_ENDPOINT'.");
+    System.out.println("Set it before running this sample.");
+    System.exit(1);
+}
+
+// Create a synchronous client using Entra ID authentication.
+ImageAnalysisClient client = new ImageAnalysisClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+```
+
+A synchronous client supports synchronous analysis methods, meaning they will block until the service responds with analysis results. The code snippets below all use synchronous methods because it's easier for a getting-started guide. The SDK offers equivalent asynchronous APIs which are often preferred. To create an `ImageAnalysisAsyncClient`, simply  `import com.azure.ai.vision.imageanalysis.ImageAnalysisAsyncClient` and call `buildAsyncClient()` instead
+of `buildClient()`:
+
+```java create-async-client-entra-id-snippet
+// Create an asynchronous client using Entra ID authentication.
+ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 ```
 
@@ -140,7 +191,7 @@ Notes:
 * Caption is only supported in English at the moment.
 
 ```java imports-caption-file-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.util.BinaryData;
@@ -167,15 +218,14 @@ To generate captions for additional images, simply call `analyze` multiple times
 This example is similar to the above, except it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azsdk/image-analysis/sample.jpg) instead of a file name.
 
 ```java imports-caption-url-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import java.net.URL;
 import java.util.Arrays;
 ```
 ```java caption-url-snippet
-ImageAnalysisResult result = client.analyze(
-    new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
+ImageAnalysisResult result = client.analyzeFromUrl(
+    "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
     Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
     new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
@@ -233,12 +283,11 @@ import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
 import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import java.net.URL;
 import java.util.Arrays;
 ```
 ```java ocr-url-snippet
-ImageAnalysisResult result = client.analyze(
-    new URL("https://aka.ms/azsdk/image-analysis/sample.jpg"), // imageUrl: the URL of the image to analyze
+ImageAnalysisResult result = client.analyzeFromUrl(
+    "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
     Arrays.asList(VisualFeatures.READ), // visualFeatures
     null); // options: There are no options for READ visual feature
 
@@ -290,9 +339,12 @@ Message: Status code 400, "{"error":{"code":"InvalidRequest","message":"Image fo
 
 ### Enable HTTP request/response logging
 
-Reviewing the HTTP request sent or response received over the wire to the Image Analysis service can be useful in troubleshooting. The Image Analysis client library supports a built-in console logging framework for temporary debugging purposes. It also supports more advanced logging using the [SLF4J](https://www.slf4j.org/) interface. For detailed information see [Use logging in the Azure SDK for Java](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-overview#use-logging-in-the-azure-sdk-for-java).
+Reviewing the HTTP request sent or response received over the wire to the Image Analysis service can be useful in troubleshooting. This can be done in two ways:
 
-The sections below discusses enabling console logging using the built-in framework.
+1. The Image Analysis client library supports a built-in console logging framework for temporary debugging purposes. It also supports more advanced logging using the [SLF4J](https://www.slf4j.org/) interface. For detailed information see [Use logging in the Azure SDK for Java](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-overview#use-logging-in-the-azure-sdk-for-java).
+1. By getting access to the [Response](https://learn.microsoft.com/java/api/com.azure.core.http.rest.response) object, and from it the [HttpRequest](https://learn.microsoft.com/java/api/com.azure.core.http.httprequest) object, and printing information provided by these objects. See [SampleCaptionImageFileWithResponse.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFileWithResponse.java) and [SampleOcrImageUrlWithResponseAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleOcrImageUrlWithResponseAsync.java).
+
+We recommend you enable console logging (option #1). The sections below discusses enabling console logging using the built-in framework.
 
 #### By setting environment variables
 
@@ -314,7 +366,7 @@ You can enable console logging of HTTP request and response for your entire appl
  To enable console logging of HTTP request and response for a single client
 
 * Set environment variable `AZURE_LOG_LEVEL` to `debug`
-* Create the `ImageAnalysisClient` by calling `httpLogOptions` in the the builder:
+* Add a call to `httpLogOptions` when building the `ImageAnalysisClient`:
 
 ```java
 ImageAnalysisClient client = new ImageAnalysisClientBuilder()
@@ -371,7 +423,7 @@ additional questions or comments.
 <!-- LINKS -->
 [image_analysis_overview]: https://learn.microsoft.com/azure/ai-services/computer-vision/overview-image-analysis?tabs=4-0
 [image_analysis_concepts]: https://learn.microsoft.com/azure/ai-services/computer-vision/concept-tag-images-40
-[vision_studio]: https://portal.vision.cognitive.azure.com/gallery/imageanalysis
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples
+[vision_studio]: https://aka.ms/vision-studio/image-analysis
+[samples]: https://aka.ms/azsdk/image-analysis/samples/java
 [sdk_source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis/src/main/java/com/azure/ai/vision/imageanalysis
 [supported_regions]: https://learn.microsoft.com/azure/ai-services/computer-vision/concept-describe-images-40

@@ -10,7 +10,6 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
 
 /**
  * <p>The base class for credential builders that allow specifying a client ID, tenant ID, authority host, and
@@ -23,6 +22,13 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
 
     String clientId;
     String tenantId;
+
+    /**
+     * Constructs an instance of AadCredentialBuilderBase.
+     */
+    public AadCredentialBuilderBase() {
+        super();
+    }
 
     /**
      * Specifies the Microsoft Entra endpoint to acquire tokens.
@@ -66,9 +72,9 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
      * <p>
-     * If this is not configured, the {@link ForkJoinPool#commonPool() common fork join pool} will be used which is
-     * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
-     * requests might starve and setting up this executor service should be considered.
+     * If this is not configured, the {@link com.azure.core.util.SharedExecutorService} will be used which is
+     * also shared with other SDK libraries. If there are many concurrent SDK tasks occurring, authentication
+     * requests might starve and configuring a separate executor service should be considered.
      * </p>
      *
      * <p> The executor service and can be safely shutdown if the TokenCredential is no longer being used by the
@@ -92,8 +98,8 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return (T) this;
     }
 
@@ -106,7 +112,8 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return (T) this;
     }
 
@@ -129,7 +136,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
 
     /**
      * Enables additional support logging for public and confidential client applications. This enables
-     * PII logging in MSAL4J as described <a href="https://learn.microsoft.com/azure/active-directory/develop/msal-logging-java#personal-and-organization-information">here.</a>
+     * PII logging in MSAL4J as described <a href="https://learn.microsoft.com/entra/msal/java/advanced/msal-logging-java#personal-and-organization-information">here.</a>
      *
      * <p><b>This operation will log PII including tokens. It should only be used when directed by support.</b>
      *

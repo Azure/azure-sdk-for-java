@@ -5,33 +5,42 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Check access request details. */
+/**
+ * Check access request details.
+ */
 @Fluent
-public final class CheckPrincipalAccessRequest {
+public final class CheckPrincipalAccessRequest implements JsonSerializable<CheckPrincipalAccessRequest> {
     /*
      * Subject details
      */
-    @JsonProperty(value = "subject", required = true)
     private SubjectInfo subject;
 
     /*
      * List of actions.
      */
-    @JsonProperty(value = "actions", required = true)
     private List<RequiredAction> actions;
 
     /*
      * Scope at which the check access is done.
      */
-    @JsonProperty(value = "scope", required = true)
     private String scope;
 
     /**
+     * Creates an instance of CheckPrincipalAccessRequest class.
+     */
+    public CheckPrincipalAccessRequest() {
+    }
+
+    /**
      * Get the subject property: Subject details.
-     *
+     * 
      * @return the subject value.
      */
     public SubjectInfo getSubject() {
@@ -40,7 +49,7 @@ public final class CheckPrincipalAccessRequest {
 
     /**
      * Set the subject property: Subject details.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the CheckPrincipalAccessRequest object itself.
      */
@@ -51,7 +60,7 @@ public final class CheckPrincipalAccessRequest {
 
     /**
      * Get the actions property: List of actions.
-     *
+     * 
      * @return the actions value.
      */
     public List<RequiredAction> getActions() {
@@ -60,7 +69,7 @@ public final class CheckPrincipalAccessRequest {
 
     /**
      * Set the actions property: List of actions.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the CheckPrincipalAccessRequest object itself.
      */
@@ -71,7 +80,7 @@ public final class CheckPrincipalAccessRequest {
 
     /**
      * Get the scope property: Scope at which the check access is done.
-     *
+     * 
      * @return the scope value.
      */
     public String getScope() {
@@ -80,12 +89,56 @@ public final class CheckPrincipalAccessRequest {
 
     /**
      * Set the scope property: Scope at which the check access is done.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the CheckPrincipalAccessRequest object itself.
      */
     public CheckPrincipalAccessRequest setScope(String scope) {
         this.scope = scope;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subject", this.subject);
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("scope", this.scope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckPrincipalAccessRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckPrincipalAccessRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CheckPrincipalAccessRequest.
+     */
+    public static CheckPrincipalAccessRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckPrincipalAccessRequest deserializedCheckPrincipalAccessRequest = new CheckPrincipalAccessRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subject".equals(fieldName)) {
+                    deserializedCheckPrincipalAccessRequest.subject = SubjectInfo.fromJson(reader);
+                } else if ("actions".equals(fieldName)) {
+                    List<RequiredAction> actions = reader.readArray(reader1 -> RequiredAction.fromJson(reader1));
+                    deserializedCheckPrincipalAccessRequest.actions = actions;
+                } else if ("scope".equals(fieldName)) {
+                    deserializedCheckPrincipalAccessRequest.scope = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckPrincipalAccessRequest;
+        });
     }
 }

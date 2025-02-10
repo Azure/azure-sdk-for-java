@@ -5,14 +5,15 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Content type. */
+/**
+ * Content type.
+ */
 public final class TranscriptContentType extends ExpandableStringEnum<TranscriptContentType> {
     /**
      * Creates a new instance of TranscriptContentType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -21,18 +22,17 @@ public final class TranscriptContentType extends ExpandableStringEnum<Transcript
 
     /**
      * Creates or finds a TranscriptContentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TranscriptContentType.
      */
-    @JsonCreator
     public static TranscriptContentType fromString(String name) {
         return fromString(name, TranscriptContentType.class);
     }
 
     /**
      * Gets known TranscriptContentType values.
-     *
+     * 
      * @return known TranscriptContentType values.
      */
     public static Collection<TranscriptContentType> values() {

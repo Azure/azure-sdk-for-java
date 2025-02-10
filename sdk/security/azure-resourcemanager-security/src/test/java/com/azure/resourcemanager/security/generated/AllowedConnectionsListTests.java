@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.AllowedConnectionsList;
 public final class AllowedConnectionsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllowedConnectionsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-08-31T13:06:45Z\",\"connectableResources\":[]},\"location\":\"lgehg\",\"id\":\"pipifh\",\"name\":\"f\",\"type\":\"oajvgcxtxjcs\"},{\"properties\":{\"calculatedDateTime\":\"2021-01-13T18:57:24Z\",\"connectableResources\":[]},\"location\":\"ltugsresmkssjhoi\",\"id\":\"txfkfweg\",\"name\":\"rhptilluc\",\"type\":\"iqtgdqoh\"},{\"properties\":{\"calculatedDateTime\":\"2021-03-25T09:14:26Z\",\"connectableResources\":[]},\"location\":\"riz\",\"id\":\"tpwb\",\"name\":\"a\",\"type\":\"llibphbqzmizak\"},{\"properties\":{\"calculatedDateTime\":\"2021-02-12T00:07:30Z\",\"connectableResources\":[]},\"location\":\"p\",\"id\":\"n\",\"name\":\"zhajoylhjlmuo\",\"type\":\"xprimrsop\"}],\"nextLink\":\"ecj\"}")
-                .toObject(AllowedConnectionsList.class);
+        AllowedConnectionsList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-08-24T11:23:31Z\",\"connectableResources\":[{\"id\":\"xagl\",\"inboundConnectedResources\":[{},{}],\"outboundConnectedResources\":[{},{},{},{}]},{\"id\":\"osytxitcskfckt\",\"inboundConnectedResources\":[{},{},{},{}],\"outboundConnectedResources\":[{},{},{},{}]},{\"id\":\"ke\",\"inboundConnectedResources\":[{}],\"outboundConnectedResources\":[{},{},{}]},{\"id\":\"yf\",\"inboundConnectedResources\":[{},{},{}],\"outboundConnectedResources\":[{}]}]},\"location\":\"gebdunygaeq\",\"id\":\"db\",\"name\":\"fatpxllrxcyjmoa\",\"type\":\"su\"},{\"properties\":{\"calculatedDateTime\":\"2021-09-26T15:36:35Z\",\"connectableResources\":[{\"id\":\"mjsjqb\",\"inboundConnectedResources\":[{},{},{},{}],\"outboundConnectedResources\":[{}]},{\"id\":\"rw\",\"inboundConnectedResources\":[{}],\"outboundConnectedResources\":[{},{}]},{\"id\":\"hp\",\"inboundConnectedResources\":[{},{},{},{}],\"outboundConnectedResources\":[{},{},{},{}]},{\"id\":\"areqna\",\"inboundConnectedResources\":[{},{},{}],\"outboundConnectedResources\":[{},{},{}]}]},\"location\":\"hky\",\"id\":\"ubeddg\",\"name\":\"sofwqmzqalkrmnji\",\"type\":\"pxacqqudfn\"}],\"nextLink\":\"xbaaabjyv\"}")
+            .toObject(AllowedConnectionsList.class);
     }
 
     @org.junit.jupiter.api.Test

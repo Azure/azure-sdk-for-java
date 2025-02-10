@@ -5,236 +5,217 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** Hyper V Replica Azure provider specific settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVReplicaAzure")
+/**
+ * Hyper V Replica Azure provider specific settings.
+ */
 @Fluent
 public final class HyperVReplicaAzureReplicationDetails extends ReplicationProviderSpecificSettings {
     /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "HyperVReplicaAzure";
+
+    /*
      * Azure VM Disk details.
      */
-    @JsonProperty(value = "azureVmDiskDetails")
     private List<AzureVmDiskDetails> azureVmDiskDetails;
 
     /*
      * Recovery Azure given name.
      */
-    @JsonProperty(value = "recoveryAzureVmName")
     private String recoveryAzureVmName;
 
     /*
      * The Recovery Azure VM size.
      */
-    @JsonProperty(value = "recoveryAzureVMSize")
     private String recoveryAzureVMSize;
 
     /*
      * The recovery Azure storage account.
      */
-    @JsonProperty(value = "recoveryAzureStorageAccount")
     private String recoveryAzureStorageAccount;
 
     /*
      * The ARM id of the log storage account used for replication. This will be set to null if no log storage account
      * was provided during enable protection.
      */
-    @JsonProperty(value = "recoveryAzureLogStorageAccountId")
     private String recoveryAzureLogStorageAccountId;
 
     /*
      * The Last replication time.
      */
-    @JsonProperty(value = "lastReplicatedTime")
     private OffsetDateTime lastReplicatedTime;
 
     /*
      * Last RPO value.
      */
-    @JsonProperty(value = "rpoInSeconds")
     private Long rpoInSeconds;
 
     /*
      * The last RPO calculated time.
      */
-    @JsonProperty(value = "lastRpoCalculatedTime")
     private OffsetDateTime lastRpoCalculatedTime;
 
     /*
      * The virtual machine Id.
      */
-    @JsonProperty(value = "vmId")
     private String vmId;
 
     /*
      * The protection state for the vm.
      */
-    @JsonProperty(value = "vmProtectionState")
     private String vmProtectionState;
 
     /*
      * The protection state description for the vm.
      */
-    @JsonProperty(value = "vmProtectionStateDescription")
     private String vmProtectionStateDescription;
 
     /*
      * Initial replication details.
      */
-    @JsonProperty(value = "initialReplicationDetails")
     private InitialReplicationDetails initialReplicationDetails;
 
     /*
      * The PE Network details.
      */
-    @JsonProperty(value = "vmNics")
     private List<VMNicDetails> vmNics;
 
     /*
      * The selected recovery azure network Id.
      */
-    @JsonProperty(value = "selectedRecoveryAzureNetworkId")
     private String selectedRecoveryAzureNetworkId;
 
     /*
      * The selected source nic Id which will be used as the primary nic during failover.
      */
-    @JsonProperty(value = "selectedSourceNicId")
     private String selectedSourceNicId;
 
     /*
      * The encryption info.
      */
-    @JsonProperty(value = "encryption")
     private String encryption;
 
     /*
      * The operating system info.
      */
-    @JsonProperty(value = "oSDetails")
     private OSDetails oSDetails;
 
     /*
      * The RAM size of the VM on the primary side.
      */
-    @JsonProperty(value = "sourceVmRamSizeInMB")
     private Integer sourceVmRamSizeInMB;
 
     /*
      * The CPU count of the VM on the primary side.
      */
-    @JsonProperty(value = "sourceVmCpuCount")
     private Integer sourceVmCpuCount;
 
     /*
      * The selected option to enable RDP\SSH on target vm after failover. String value of
      * SrsDataContract.EnableRDPOnTargetOption enum.
      */
-    @JsonProperty(value = "enableRdpOnTargetOption")
     private String enableRdpOnTargetOption;
 
     /*
      * The target resource group Id.
      */
-    @JsonProperty(value = "recoveryAzureResourceGroupId")
     private String recoveryAzureResourceGroupId;
 
     /*
      * The recovery availability set Id.
      */
-    @JsonProperty(value = "recoveryAvailabilitySetId")
     private String recoveryAvailabilitySetId;
 
     /*
      * The target availability zone.
      */
-    @JsonProperty(value = "targetAvailabilityZone")
     private String targetAvailabilityZone;
 
     /*
      * The target proximity placement group Id.
      */
-    @JsonProperty(value = "targetProximityPlacementGroupId")
     private String targetProximityPlacementGroupId;
 
     /*
      * A value indicating whether managed disks should be used during failover.
      */
-    @JsonProperty(value = "useManagedDisks")
     private String useManagedDisks;
 
     /*
      * License Type of the VM to be used.
      */
-    @JsonProperty(value = "licenseType")
     private String licenseType;
 
     /*
      * The SQL Server license type.
      */
-    @JsonProperty(value = "sqlServerLicenseType")
     private String sqlServerLicenseType;
 
     /*
      * The last recovery point received time.
      */
-    @JsonProperty(value = "lastRecoveryPointReceived", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastRecoveryPointReceived;
 
     /*
      * The target VM tags.
      */
-    @JsonProperty(value = "targetVmTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetVmTags;
 
     /*
      * The tags for the seed managed disks.
      */
-    @JsonProperty(value = "seedManagedDiskTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> seedManagedDiskTags;
 
     /*
      * The tags for the target managed disks.
      */
-    @JsonProperty(value = "targetManagedDiskTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetManagedDiskTags;
 
     /*
      * The tags for the target NICs.
      */
-    @JsonProperty(value = "targetNicTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetNicTags;
 
     /*
      * The list of protected managed disks.
      */
-    @JsonProperty(value = "protectedManagedDisks")
     private List<HyperVReplicaAzureManagedDiskDetails> protectedManagedDisks;
 
     /*
      * A value indicating all available inplace OS Upgrade configurations.
      */
-    @JsonProperty(value = "allAvailableOSUpgradeConfigurations")
     private List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations;
 
-    /** Creates an instance of HyperVReplicaAzureReplicationDetails class. */
+    /**
+     * Creates an instance of HyperVReplicaAzureReplicationDetails class.
+     */
     public HyperVReplicaAzureReplicationDetails() {
     }
 
     /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the azureVmDiskDetails property: Azure VM Disk details.
-     *
+     * 
      * @return the azureVmDiskDetails value.
      */
     public List<AzureVmDiskDetails> azureVmDiskDetails() {
@@ -243,7 +224,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the azureVmDiskDetails property: Azure VM Disk details.
-     *
+     * 
      * @param azureVmDiskDetails the azureVmDiskDetails value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -254,7 +235,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the recoveryAzureVmName property: Recovery Azure given name.
-     *
+     * 
      * @return the recoveryAzureVmName value.
      */
     public String recoveryAzureVmName() {
@@ -263,7 +244,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the recoveryAzureVmName property: Recovery Azure given name.
-     *
+     * 
      * @param recoveryAzureVmName the recoveryAzureVmName value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -274,7 +255,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the recoveryAzureVMSize property: The Recovery Azure VM size.
-     *
+     * 
      * @return the recoveryAzureVMSize value.
      */
     public String recoveryAzureVMSize() {
@@ -283,7 +264,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the recoveryAzureVMSize property: The Recovery Azure VM size.
-     *
+     * 
      * @param recoveryAzureVMSize the recoveryAzureVMSize value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -294,7 +275,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the recoveryAzureStorageAccount property: The recovery Azure storage account.
-     *
+     * 
      * @return the recoveryAzureStorageAccount value.
      */
     public String recoveryAzureStorageAccount() {
@@ -303,7 +284,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the recoveryAzureStorageAccount property: The recovery Azure storage account.
-     *
+     * 
      * @param recoveryAzureStorageAccount the recoveryAzureStorageAccount value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -315,7 +296,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     /**
      * Get the recoveryAzureLogStorageAccountId property: The ARM id of the log storage account used for replication.
      * This will be set to null if no log storage account was provided during enable protection.
-     *
+     * 
      * @return the recoveryAzureLogStorageAccountId value.
      */
     public String recoveryAzureLogStorageAccountId() {
@@ -325,19 +306,19 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     /**
      * Set the recoveryAzureLogStorageAccountId property: The ARM id of the log storage account used for replication.
      * This will be set to null if no log storage account was provided during enable protection.
-     *
+     * 
      * @param recoveryAzureLogStorageAccountId the recoveryAzureLogStorageAccountId value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
-    public HyperVReplicaAzureReplicationDetails withRecoveryAzureLogStorageAccountId(
-        String recoveryAzureLogStorageAccountId) {
+    public HyperVReplicaAzureReplicationDetails
+        withRecoveryAzureLogStorageAccountId(String recoveryAzureLogStorageAccountId) {
         this.recoveryAzureLogStorageAccountId = recoveryAzureLogStorageAccountId;
         return this;
     }
 
     /**
      * Get the lastReplicatedTime property: The Last replication time.
-     *
+     * 
      * @return the lastReplicatedTime value.
      */
     public OffsetDateTime lastReplicatedTime() {
@@ -346,7 +327,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the lastReplicatedTime property: The Last replication time.
-     *
+     * 
      * @param lastReplicatedTime the lastReplicatedTime value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -357,7 +338,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the rpoInSeconds property: Last RPO value.
-     *
+     * 
      * @return the rpoInSeconds value.
      */
     public Long rpoInSeconds() {
@@ -366,7 +347,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the rpoInSeconds property: Last RPO value.
-     *
+     * 
      * @param rpoInSeconds the rpoInSeconds value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -377,7 +358,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the lastRpoCalculatedTime property: The last RPO calculated time.
-     *
+     * 
      * @return the lastRpoCalculatedTime value.
      */
     public OffsetDateTime lastRpoCalculatedTime() {
@@ -386,7 +367,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the lastRpoCalculatedTime property: The last RPO calculated time.
-     *
+     * 
      * @param lastRpoCalculatedTime the lastRpoCalculatedTime value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -397,7 +378,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the vmId property: The virtual machine Id.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -406,7 +387,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the vmId property: The virtual machine Id.
-     *
+     * 
      * @param vmId the vmId value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -417,7 +398,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @return the vmProtectionState value.
      */
     public String vmProtectionState() {
@@ -426,7 +407,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @param vmProtectionState the vmProtectionState value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -437,7 +418,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @return the vmProtectionStateDescription value.
      */
     public String vmProtectionStateDescription() {
@@ -446,7 +427,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @param vmProtectionStateDescription the vmProtectionStateDescription value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -457,7 +438,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the initialReplicationDetails property: Initial replication details.
-     *
+     * 
      * @return the initialReplicationDetails value.
      */
     public InitialReplicationDetails initialReplicationDetails() {
@@ -466,19 +447,19 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the initialReplicationDetails property: Initial replication details.
-     *
+     * 
      * @param initialReplicationDetails the initialReplicationDetails value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
-    public HyperVReplicaAzureReplicationDetails withInitialReplicationDetails(
-        InitialReplicationDetails initialReplicationDetails) {
+    public HyperVReplicaAzureReplicationDetails
+        withInitialReplicationDetails(InitialReplicationDetails initialReplicationDetails) {
         this.initialReplicationDetails = initialReplicationDetails;
         return this;
     }
 
     /**
      * Get the vmNics property: The PE Network details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<VMNicDetails> vmNics() {
@@ -487,7 +468,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the vmNics property: The PE Network details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -498,7 +479,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the selectedRecoveryAzureNetworkId property: The selected recovery azure network Id.
-     *
+     * 
      * @return the selectedRecoveryAzureNetworkId value.
      */
     public String selectedRecoveryAzureNetworkId() {
@@ -507,12 +488,12 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the selectedRecoveryAzureNetworkId property: The selected recovery azure network Id.
-     *
+     * 
      * @param selectedRecoveryAzureNetworkId the selectedRecoveryAzureNetworkId value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
-    public HyperVReplicaAzureReplicationDetails withSelectedRecoveryAzureNetworkId(
-        String selectedRecoveryAzureNetworkId) {
+    public HyperVReplicaAzureReplicationDetails
+        withSelectedRecoveryAzureNetworkId(String selectedRecoveryAzureNetworkId) {
         this.selectedRecoveryAzureNetworkId = selectedRecoveryAzureNetworkId;
         return this;
     }
@@ -520,7 +501,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     /**
      * Get the selectedSourceNicId property: The selected source nic Id which will be used as the primary nic during
      * failover.
-     *
+     * 
      * @return the selectedSourceNicId value.
      */
     public String selectedSourceNicId() {
@@ -530,7 +511,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     /**
      * Set the selectedSourceNicId property: The selected source nic Id which will be used as the primary nic during
      * failover.
-     *
+     * 
      * @param selectedSourceNicId the selectedSourceNicId value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -541,7 +522,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the encryption property: The encryption info.
-     *
+     * 
      * @return the encryption value.
      */
     public String encryption() {
@@ -550,7 +531,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the encryption property: The encryption info.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -561,7 +542,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the oSDetails property: The operating system info.
-     *
+     * 
      * @return the oSDetails value.
      */
     public OSDetails oSDetails() {
@@ -570,7 +551,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the oSDetails property: The operating system info.
-     *
+     * 
      * @param oSDetails the oSDetails value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -581,7 +562,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the sourceVmRamSizeInMB property: The RAM size of the VM on the primary side.
-     *
+     * 
      * @return the sourceVmRamSizeInMB value.
      */
     public Integer sourceVmRamSizeInMB() {
@@ -590,7 +571,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the sourceVmRamSizeInMB property: The RAM size of the VM on the primary side.
-     *
+     * 
      * @param sourceVmRamSizeInMB the sourceVmRamSizeInMB value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -601,7 +582,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the sourceVmCpuCount property: The CPU count of the VM on the primary side.
-     *
+     * 
      * @return the sourceVmCpuCount value.
      */
     public Integer sourceVmCpuCount() {
@@ -610,7 +591,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the sourceVmCpuCount property: The CPU count of the VM on the primary side.
-     *
+     * 
      * @param sourceVmCpuCount the sourceVmCpuCount value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -622,7 +603,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     /**
      * Get the enableRdpOnTargetOption property: The selected option to enable RDP\SSH on target vm after failover.
      * String value of SrsDataContract.EnableRDPOnTargetOption enum.
-     *
+     * 
      * @return the enableRdpOnTargetOption value.
      */
     public String enableRdpOnTargetOption() {
@@ -632,7 +613,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     /**
      * Set the enableRdpOnTargetOption property: The selected option to enable RDP\SSH on target vm after failover.
      * String value of SrsDataContract.EnableRDPOnTargetOption enum.
-     *
+     * 
      * @param enableRdpOnTargetOption the enableRdpOnTargetOption value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -643,7 +624,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the recoveryAzureResourceGroupId property: The target resource group Id.
-     *
+     * 
      * @return the recoveryAzureResourceGroupId value.
      */
     public String recoveryAzureResourceGroupId() {
@@ -652,7 +633,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the recoveryAzureResourceGroupId property: The target resource group Id.
-     *
+     * 
      * @param recoveryAzureResourceGroupId the recoveryAzureResourceGroupId value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -663,7 +644,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the recoveryAvailabilitySetId property: The recovery availability set Id.
-     *
+     * 
      * @return the recoveryAvailabilitySetId value.
      */
     public String recoveryAvailabilitySetId() {
@@ -672,7 +653,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the recoveryAvailabilitySetId property: The recovery availability set Id.
-     *
+     * 
      * @param recoveryAvailabilitySetId the recoveryAvailabilitySetId value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -683,7 +664,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @return the targetAvailabilityZone value.
      */
     public String targetAvailabilityZone() {
@@ -692,7 +673,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @param targetAvailabilityZone the targetAvailabilityZone value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -703,7 +684,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @return the targetProximityPlacementGroupId value.
      */
     public String targetProximityPlacementGroupId() {
@@ -712,19 +693,19 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @param targetProximityPlacementGroupId the targetProximityPlacementGroupId value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
-    public HyperVReplicaAzureReplicationDetails withTargetProximityPlacementGroupId(
-        String targetProximityPlacementGroupId) {
+    public HyperVReplicaAzureReplicationDetails
+        withTargetProximityPlacementGroupId(String targetProximityPlacementGroupId) {
         this.targetProximityPlacementGroupId = targetProximityPlacementGroupId;
         return this;
     }
 
     /**
      * Get the useManagedDisks property: A value indicating whether managed disks should be used during failover.
-     *
+     * 
      * @return the useManagedDisks value.
      */
     public String useManagedDisks() {
@@ -733,7 +714,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the useManagedDisks property: A value indicating whether managed disks should be used during failover.
-     *
+     * 
      * @param useManagedDisks the useManagedDisks value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -744,7 +725,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the licenseType property: License Type of the VM to be used.
-     *
+     * 
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -753,7 +734,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the licenseType property: License Type of the VM to be used.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -764,7 +745,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @return the sqlServerLicenseType value.
      */
     public String sqlServerLicenseType() {
@@ -773,7 +754,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @param sqlServerLicenseType the sqlServerLicenseType value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -784,7 +765,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the lastRecoveryPointReceived property: The last recovery point received time.
-     *
+     * 
      * @return the lastRecoveryPointReceived value.
      */
     public OffsetDateTime lastRecoveryPointReceived() {
@@ -793,7 +774,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the targetVmTags property: The target VM tags.
-     *
+     * 
      * @return the targetVmTags value.
      */
     public Map<String, String> targetVmTags() {
@@ -802,7 +783,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the targetVmTags property: The target VM tags.
-     *
+     * 
      * @param targetVmTags the targetVmTags value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -813,7 +794,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the seedManagedDiskTags property: The tags for the seed managed disks.
-     *
+     * 
      * @return the seedManagedDiskTags value.
      */
     public Map<String, String> seedManagedDiskTags() {
@@ -822,7 +803,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the seedManagedDiskTags property: The tags for the seed managed disks.
-     *
+     * 
      * @param seedManagedDiskTags the seedManagedDiskTags value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -833,7 +814,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the targetManagedDiskTags property: The tags for the target managed disks.
-     *
+     * 
      * @return the targetManagedDiskTags value.
      */
     public Map<String, String> targetManagedDiskTags() {
@@ -842,7 +823,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the targetManagedDiskTags property: The tags for the target managed disks.
-     *
+     * 
      * @param targetManagedDiskTags the targetManagedDiskTags value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -853,7 +834,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @return the targetNicTags value.
      */
     public Map<String, String> targetNicTags() {
@@ -862,7 +843,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @param targetNicTags the targetNicTags value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
@@ -873,7 +854,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Get the protectedManagedDisks property: The list of protected managed disks.
-     *
+     * 
      * @return the protectedManagedDisks value.
      */
     public List<HyperVReplicaAzureManagedDiskDetails> protectedManagedDisks() {
@@ -882,12 +863,12 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
 
     /**
      * Set the protectedManagedDisks property: The list of protected managed disks.
-     *
+     * 
      * @param protectedManagedDisks the protectedManagedDisks value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
-    public HyperVReplicaAzureReplicationDetails withProtectedManagedDisks(
-        List<HyperVReplicaAzureManagedDiskDetails> protectedManagedDisks) {
+    public HyperVReplicaAzureReplicationDetails
+        withProtectedManagedDisks(List<HyperVReplicaAzureManagedDiskDetails> protectedManagedDisks) {
         this.protectedManagedDisks = protectedManagedDisks;
         return this;
     }
@@ -895,7 +876,7 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     /**
      * Get the allAvailableOSUpgradeConfigurations property: A value indicating all available inplace OS Upgrade
      * configurations.
-     *
+     * 
      * @return the allAvailableOSUpgradeConfigurations value.
      */
     public List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations() {
@@ -905,24 +886,23 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
     /**
      * Set the allAvailableOSUpgradeConfigurations property: A value indicating all available inplace OS Upgrade
      * configurations.
-     *
+     * 
      * @param allAvailableOSUpgradeConfigurations the allAvailableOSUpgradeConfigurations value to set.
      * @return the HyperVReplicaAzureReplicationDetails object itself.
      */
-    public HyperVReplicaAzureReplicationDetails withAllAvailableOSUpgradeConfigurations(
-        List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations) {
+    public HyperVReplicaAzureReplicationDetails
+        withAllAvailableOSUpgradeConfigurations(List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations) {
         this.allAvailableOSUpgradeConfigurations = allAvailableOSUpgradeConfigurations;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (azureVmDiskDetails() != null) {
             azureVmDiskDetails().forEach(e -> e.validate());
         }
@@ -941,5 +921,176 @@ public final class HyperVReplicaAzureReplicationDetails extends ReplicationProvi
         if (allAvailableOSUpgradeConfigurations() != null) {
             allAvailableOSUpgradeConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeArrayField("azureVmDiskDetails", this.azureVmDiskDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("recoveryAzureVmName", this.recoveryAzureVmName);
+        jsonWriter.writeStringField("recoveryAzureVMSize", this.recoveryAzureVMSize);
+        jsonWriter.writeStringField("recoveryAzureStorageAccount", this.recoveryAzureStorageAccount);
+        jsonWriter.writeStringField("recoveryAzureLogStorageAccountId", this.recoveryAzureLogStorageAccountId);
+        jsonWriter.writeStringField("lastReplicatedTime",
+            this.lastReplicatedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastReplicatedTime));
+        jsonWriter.writeNumberField("rpoInSeconds", this.rpoInSeconds);
+        jsonWriter.writeStringField("lastRpoCalculatedTime",
+            this.lastRpoCalculatedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRpoCalculatedTime));
+        jsonWriter.writeStringField("vmId", this.vmId);
+        jsonWriter.writeStringField("vmProtectionState", this.vmProtectionState);
+        jsonWriter.writeStringField("vmProtectionStateDescription", this.vmProtectionStateDescription);
+        jsonWriter.writeJsonField("initialReplicationDetails", this.initialReplicationDetails);
+        jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("selectedRecoveryAzureNetworkId", this.selectedRecoveryAzureNetworkId);
+        jsonWriter.writeStringField("selectedSourceNicId", this.selectedSourceNicId);
+        jsonWriter.writeStringField("encryption", this.encryption);
+        jsonWriter.writeJsonField("oSDetails", this.oSDetails);
+        jsonWriter.writeNumberField("sourceVmRamSizeInMB", this.sourceVmRamSizeInMB);
+        jsonWriter.writeNumberField("sourceVmCpuCount", this.sourceVmCpuCount);
+        jsonWriter.writeStringField("enableRdpOnTargetOption", this.enableRdpOnTargetOption);
+        jsonWriter.writeStringField("recoveryAzureResourceGroupId", this.recoveryAzureResourceGroupId);
+        jsonWriter.writeStringField("recoveryAvailabilitySetId", this.recoveryAvailabilitySetId);
+        jsonWriter.writeStringField("targetAvailabilityZone", this.targetAvailabilityZone);
+        jsonWriter.writeStringField("targetProximityPlacementGroupId", this.targetProximityPlacementGroupId);
+        jsonWriter.writeStringField("useManagedDisks", this.useManagedDisks);
+        jsonWriter.writeStringField("licenseType", this.licenseType);
+        jsonWriter.writeStringField("sqlServerLicenseType", this.sqlServerLicenseType);
+        jsonWriter.writeMapField("targetVmTags", this.targetVmTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("seedManagedDiskTags", this.seedManagedDiskTags,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetManagedDiskTags", this.targetManagedDiskTags,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetNicTags", this.targetNicTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("protectedManagedDisks", this.protectedManagedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("allAvailableOSUpgradeConfigurations", this.allAvailableOSUpgradeConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVReplicaAzureReplicationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVReplicaAzureReplicationDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVReplicaAzureReplicationDetails.
+     */
+    public static HyperVReplicaAzureReplicationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVReplicaAzureReplicationDetails deserializedHyperVReplicaAzureReplicationDetails
+                = new HyperVReplicaAzureReplicationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.instanceType = reader.getString();
+                } else if ("azureVmDiskDetails".equals(fieldName)) {
+                    List<AzureVmDiskDetails> azureVmDiskDetails
+                        = reader.readArray(reader1 -> AzureVmDiskDetails.fromJson(reader1));
+                    deserializedHyperVReplicaAzureReplicationDetails.azureVmDiskDetails = azureVmDiskDetails;
+                } else if ("recoveryAzureVmName".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.recoveryAzureVmName = reader.getString();
+                } else if ("recoveryAzureVMSize".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.recoveryAzureVMSize = reader.getString();
+                } else if ("recoveryAzureStorageAccount".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.recoveryAzureStorageAccount = reader.getString();
+                } else if ("recoveryAzureLogStorageAccountId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.recoveryAzureLogStorageAccountId
+                        = reader.getString();
+                } else if ("lastReplicatedTime".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.lastReplicatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("rpoInSeconds".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.rpoInSeconds
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("lastRpoCalculatedTime".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.lastRpoCalculatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.vmId = reader.getString();
+                } else if ("vmProtectionState".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.vmProtectionState = reader.getString();
+                } else if ("vmProtectionStateDescription".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.vmProtectionStateDescription = reader.getString();
+                } else if ("initialReplicationDetails".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.initialReplicationDetails
+                        = InitialReplicationDetails.fromJson(reader);
+                } else if ("vmNics".equals(fieldName)) {
+                    List<VMNicDetails> vmNics = reader.readArray(reader1 -> VMNicDetails.fromJson(reader1));
+                    deserializedHyperVReplicaAzureReplicationDetails.vmNics = vmNics;
+                } else if ("selectedRecoveryAzureNetworkId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.selectedRecoveryAzureNetworkId
+                        = reader.getString();
+                } else if ("selectedSourceNicId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.selectedSourceNicId = reader.getString();
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.encryption = reader.getString();
+                } else if ("oSDetails".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.oSDetails = OSDetails.fromJson(reader);
+                } else if ("sourceVmRamSizeInMB".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.sourceVmRamSizeInMB
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("sourceVmCpuCount".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.sourceVmCpuCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("enableRdpOnTargetOption".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.enableRdpOnTargetOption = reader.getString();
+                } else if ("recoveryAzureResourceGroupId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.recoveryAzureResourceGroupId = reader.getString();
+                } else if ("recoveryAvailabilitySetId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.recoveryAvailabilitySetId = reader.getString();
+                } else if ("targetAvailabilityZone".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.targetAvailabilityZone = reader.getString();
+                } else if ("targetProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.targetProximityPlacementGroupId
+                        = reader.getString();
+                } else if ("useManagedDisks".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.useManagedDisks = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.licenseType = reader.getString();
+                } else if ("sqlServerLicenseType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.sqlServerLicenseType = reader.getString();
+                } else if ("lastRecoveryPointReceived".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureReplicationDetails.lastRecoveryPointReceived = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("targetVmTags".equals(fieldName)) {
+                    Map<String, String> targetVmTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHyperVReplicaAzureReplicationDetails.targetVmTags = targetVmTags;
+                } else if ("seedManagedDiskTags".equals(fieldName)) {
+                    Map<String, String> seedManagedDiskTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHyperVReplicaAzureReplicationDetails.seedManagedDiskTags = seedManagedDiskTags;
+                } else if ("targetManagedDiskTags".equals(fieldName)) {
+                    Map<String, String> targetManagedDiskTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHyperVReplicaAzureReplicationDetails.targetManagedDiskTags = targetManagedDiskTags;
+                } else if ("targetNicTags".equals(fieldName)) {
+                    Map<String, String> targetNicTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHyperVReplicaAzureReplicationDetails.targetNicTags = targetNicTags;
+                } else if ("protectedManagedDisks".equals(fieldName)) {
+                    List<HyperVReplicaAzureManagedDiskDetails> protectedManagedDisks
+                        = reader.readArray(reader1 -> HyperVReplicaAzureManagedDiskDetails.fromJson(reader1));
+                    deserializedHyperVReplicaAzureReplicationDetails.protectedManagedDisks = protectedManagedDisks;
+                } else if ("allAvailableOSUpgradeConfigurations".equals(fieldName)) {
+                    List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations
+                        = reader.readArray(reader1 -> OSUpgradeSupportedVersions.fromJson(reader1));
+                    deserializedHyperVReplicaAzureReplicationDetails.allAvailableOSUpgradeConfigurations
+                        = allAvailableOSUpgradeConfigurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVReplicaAzureReplicationDetails;
+        });
     }
 }

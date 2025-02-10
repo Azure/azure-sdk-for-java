@@ -13,14 +13,14 @@ import com.azure.resourcemanager.hybridcompute.models.PatchOperationStartedBy;
 import com.azure.resourcemanager.hybridcompute.models.PatchOperationStatus;
 import com.azure.resourcemanager.hybridcompute.models.PatchServiceUsed;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 public final class MachineAssessPatchesResultImpl implements MachineAssessPatchesResult {
     private MachineAssessPatchesResultInner innerObject;
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    MachineAssessPatchesResultImpl(
-        MachineAssessPatchesResultInner innerObject,
+    MachineAssessPatchesResultImpl(MachineAssessPatchesResultInner innerObject,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -30,7 +30,7 @@ public final class MachineAssessPatchesResultImpl implements MachineAssessPatche
         return this.innerModel().status();
     }
 
-    public String assessmentActivityId() {
+    public UUID assessmentActivityId() {
         return this.innerModel().assessmentActivityId();
     }
 

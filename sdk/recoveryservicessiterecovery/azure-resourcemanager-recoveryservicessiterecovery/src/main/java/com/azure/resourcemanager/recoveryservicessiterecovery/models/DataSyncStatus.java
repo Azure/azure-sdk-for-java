@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The data sync option. */
+/**
+ * The data sync option.
+ */
 public final class DataSyncStatus extends ExpandableStringEnum<DataSyncStatus> {
-    /** Static value ForDownTime for DataSyncStatus. */
+    /**
+     * Static value ForDownTime for DataSyncStatus.
+     */
     public static final DataSyncStatus FOR_DOWN_TIME = fromString("ForDownTime");
 
-    /** Static value ForSynchronization for DataSyncStatus. */
+    /**
+     * Static value ForSynchronization for DataSyncStatus.
+     */
     public static final DataSyncStatus FOR_SYNCHRONIZATION = fromString("ForSynchronization");
 
     /**
      * Creates a new instance of DataSyncStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class DataSyncStatus extends ExpandableStringEnum<DataSyncStatus> {
 
     /**
      * Creates or finds a DataSyncStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataSyncStatus.
      */
-    @JsonCreator
     public static DataSyncStatus fromString(String name) {
         return fromString(name, DataSyncStatus.class);
     }
 
     /**
      * Gets known DataSyncStatus values.
-     *
+     * 
      * @return known DataSyncStatus values.
      */
     public static Collection<DataSyncStatus> values() {

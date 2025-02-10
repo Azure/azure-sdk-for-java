@@ -6,70 +6,44 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
+import com.azure.resourcemanager.devcenter.models.CatalogItemType;
+import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.Project;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ProjectsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"MovingResources\",\"devCenterUri\":\"mewip\",\"devCenterId\":\"ekdxuku\",\"description\":\"sjjxundxgketw\",\"maxDevBoxesPerUser\":1226400983,\"displayName\":\"jhfjmhvvmuvgpm\",\"catalogSettings\":{\"catalogItemSyncTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}},\"identity\":{\"principalId\":\"4b2fad98-3016-4ce4-bb55-f509b1daf450\",\"tenantId\":\"23d3614f-c594-4764-8fe7-484fd2d118e8\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"yihsasbhudypohyu\":{\"principalId\":\"b505a655-f762-4332-9fdc-27811b212008\",\"clientId\":\"020e2658-4e3b-4b2b-aef6-6d248baf0fa0\"},\"lynsqyrpf\":{\"principalId\":\"7d51c2df-55fd-468c-b476-1f2b6718c189\",\"clientId\":\"cabdbcd3-c384-4f4f-9428-73fbf0f9ab72\"},\"rlttymsjnygqdnfw\":{\"principalId\":\"7b766ca7-ab11-4df1-9ede-4cc7c4297c3e\",\"clientId\":\"165f7104-618e-4e17-b166-111c7eb346d4\"},\"zgtila\":{\"principalId\":\"75d755fe-3f5a-4793-b410-6a655831df23\",\"clientId\":\"c53e9a1a-7dad-4792-bb01-8141affbe8df\"}}},\"location\":\"nfhqlyvijouwivk\",\"tags\":{\"ti\":\"zunbixx\",\"vtsoxf\":\"vcpwpgclrc\",\"m\":\"kenx\",\"ao\":\"yefrpmpdnqqska\"},\"id\":\"vmm\",\"name\":\"npqfrtqlkzmeg\",\"type\":\"itgvkx\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Updating\",\"devCenterUri\":\"nlrariaawiuagy\",\"devCenterId\":\"qfby\",\"description\":\"rfgi\",\"maxDevBoxesPerUser\":3097732,\"displayName\":\"ojocqwogf\"},\"location\":\"jvusfzldmozux\",\"tags\":{\"u\":\"sbtkadpysownbtgk\",\"cto\":\"rj\"},\"id\":\"cmisofie\",\"name\":\"pe\",\"type\":\"ojyqdhcuplcplcw\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Project response = manager.projects()
+            .getByResourceGroupWithResponse("vetnwsdtutn", "lduycv", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Project response =
-            manager
-                .projects()
-                .getByResourceGroupWithResponse("zqlqhyc", "vodggxdbee", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("jvusfzldmozux", response.location());
-        Assertions.assertEquals("sbtkadpysownbtgk", response.tags().get("u"));
-        Assertions.assertEquals("qfby", response.devCenterId());
-        Assertions.assertEquals("rfgi", response.description());
-        Assertions.assertEquals(3097732, response.maxDevBoxesPerUser());
-        Assertions.assertEquals("ojocqwogf", response.displayName());
+        Assertions.assertEquals("nfhqlyvijouwivk", response.location());
+        Assertions.assertEquals("zunbixx", response.tags().get("ti"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("ekdxuku", response.devCenterId());
+        Assertions.assertEquals("sjjxundxgketw", response.description());
+        Assertions.assertEquals(1226400983, response.maxDevBoxesPerUser());
+        Assertions.assertEquals("jhfjmhvvmuvgpm", response.displayName());
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION,
+            response.catalogSettings().catalogItemSyncTypes().get(0));
     }
 }

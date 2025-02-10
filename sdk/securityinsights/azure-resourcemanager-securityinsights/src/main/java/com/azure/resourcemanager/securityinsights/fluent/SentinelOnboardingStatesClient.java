@@ -11,26 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.SentinelOnboardingStateInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.SentinelOnboardingStatesListInner;
 
-/** An instance of this class provides access to all the operations defined in SentinelOnboardingStatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SentinelOnboardingStatesClient.
+ */
 public interface SentinelOnboardingStatesClient {
     /**
      * Get Sentinel onboarding state.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sentinel onboarding state.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SentinelOnboardingStateInner get(
-        String resourceGroupName, String workspaceName, String sentinelOnboardingStateName);
-
-    /**
-     * Get Sentinel onboarding state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
@@ -41,12 +28,12 @@ public interface SentinelOnboardingStatesClient {
      * @return sentinel onboarding state along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SentinelOnboardingStateInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sentinelOnboardingStateName, Context context);
+    Response<SentinelOnboardingStateInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sentinelOnboardingStateName, Context context);
 
     /**
-     * Create Sentinel onboarding state.
-     *
+     * Get Sentinel onboarding state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
@@ -56,12 +43,12 @@ public interface SentinelOnboardingStatesClient {
      * @return sentinel onboarding state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SentinelOnboardingStateInner create(
-        String resourceGroupName, String workspaceName, String sentinelOnboardingStateName);
+    SentinelOnboardingStateInner get(String resourceGroupName, String workspaceName,
+        String sentinelOnboardingStateName);
 
     /**
      * Create Sentinel onboarding state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
@@ -73,16 +60,44 @@ public interface SentinelOnboardingStatesClient {
      * @return sentinel onboarding state along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SentinelOnboardingStateInner> createWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sentinelOnboardingStateName,
-        SentinelOnboardingStateInner sentinelOnboardingStateParameter,
+    Response<SentinelOnboardingStateInner> createWithResponse(String resourceGroupName, String workspaceName,
+        String sentinelOnboardingStateName, SentinelOnboardingStateInner sentinelOnboardingStateParameter,
         Context context);
 
     /**
+     * Create Sentinel onboarding state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sentinel onboarding state.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SentinelOnboardingStateInner create(String resourceGroupName, String workspaceName,
+        String sentinelOnboardingStateName);
+
+    /**
      * Delete Sentinel onboarding state.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName,
+        String sentinelOnboardingStateName, Context context);
+
+    /**
+     * Delete Sentinel onboarding state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
@@ -94,37 +109,8 @@ public interface SentinelOnboardingStatesClient {
     void delete(String resourceGroupName, String workspaceName, String sentinelOnboardingStateName);
 
     /**
-     * Delete Sentinel onboarding state.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sentinelOnboardingStateName The Sentinel onboarding state name. Supports - default.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String sentinelOnboardingStateName, Context context);
-
-    /**
      * Gets all Sentinel onboarding states.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Sentinel onboarding states.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SentinelOnboardingStatesListInner list(String resourceGroupName, String workspaceName);
-
-    /**
-     * Gets all Sentinel onboarding states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -134,6 +120,19 @@ public interface SentinelOnboardingStatesClient {
      * @return all Sentinel onboarding states along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SentinelOnboardingStatesListInner> listWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<SentinelOnboardingStatesListInner> listWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
+
+    /**
+     * Gets all Sentinel onboarding states.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all Sentinel onboarding states.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SentinelOnboardingStatesListInner list(String resourceGroupName, String workspaceName);
 }

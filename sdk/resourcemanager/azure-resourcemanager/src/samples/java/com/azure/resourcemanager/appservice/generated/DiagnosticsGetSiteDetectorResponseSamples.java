@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DiagnosticsGetSiteDetectorResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
      * Diagnostics_GetSiteDetectorResponseSlot.json
      */
     /**
@@ -18,14 +18,17 @@ public final class DiagnosticsGetSiteDetectorResponseSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAppSlotDetectorResponse(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDiagnostics().getSiteDetectorResponseWithResponse(
-            "Sample-WestUSResourceGroup", "SampleApp", "runtimeavailability", null, null, null,
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDiagnostics()
+            .getSiteDetectorResponseWithResponse("Sample-WestUSResourceGroup", "SampleApp", "runtimeavailability", null,
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_GetSiteDetectorResponse.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteDetectorResponse.
      * json
      */
     /**
@@ -34,8 +37,11 @@ public final class DiagnosticsGetSiteDetectorResponseSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAppDetectorResponse(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDiagnostics().getSiteDetectorResponseWithResponse(
-            "Sample-WestUSResourceGroup", "SampleApp", "runtimeavailability", null, null, null,
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDiagnostics()
+            .getSiteDetectorResponseWithResponse("Sample-WestUSResourceGroup", "SampleApp", "runtimeavailability", null,
+                null, null, com.azure.core.util.Context.NONE);
     }
 }

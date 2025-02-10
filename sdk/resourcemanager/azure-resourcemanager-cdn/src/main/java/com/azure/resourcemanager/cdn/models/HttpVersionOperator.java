@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes operator to be matched. */
+/**
+ * Describes operator to be matched.
+ */
 public final class HttpVersionOperator extends ExpandableStringEnum<HttpVersionOperator> {
-    /** Static value Equal for HttpVersionOperator. */
+    /**
+     * Static value Equal for HttpVersionOperator.
+     */
     public static final HttpVersionOperator EQUAL = fromString("Equal");
 
     /**
      * Creates a new instance of HttpVersionOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class HttpVersionOperator extends ExpandableStringEnum<HttpVersionO
 
     /**
      * Creates or finds a HttpVersionOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HttpVersionOperator.
      */
-    @JsonCreator
     public static HttpVersionOperator fromString(String name) {
         return fromString(name, HttpVersionOperator.class);
     }
 
     /**
      * Gets known HttpVersionOperator values.
-     *
+     * 
      * @return known HttpVersionOperator values.
      */
     public static Collection<HttpVersionOperator> values() {

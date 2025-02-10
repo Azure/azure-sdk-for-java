@@ -4,6 +4,7 @@
 package com.azure.core.util.tracing;
 
 import com.azure.core.implementation.util.Providers;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -20,8 +21,8 @@ final class DefaultTracerProvider implements TracerProvider {
     private static final TracerProvider INSTANCE = new DefaultTracerProvider();
     private static final ClientLogger LOGGER = new ClientLogger(DefaultTracerProvider.class);
     private static final TracingOptions DEFAULT_OPTIONS = new TracingOptions();
-    private static final Providers<TracerProvider, Tracer> TRACER_PROVIDERS = new Providers<>(TracerProvider.class,
-        null, NO_DEFAULT_PROVIDER);
+    private static final Providers<TracerProvider, Tracer> TRACER_PROVIDERS
+        = new Providers<>(TracerProvider.class, null, NO_DEFAULT_PROVIDER);
     private static final Tracer FALLBACK_TRACER = createFallbackTracer();
 
     private DefaultTracerProvider() {
@@ -45,13 +46,26 @@ final class DefaultTracerProvider implements TracerProvider {
         return INSTANCE;
     }
 
-    public Tracer createTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options) {
+    @Override
+    public Tracer createTracer(String libraryName, String libraryVersion, String azNamespace,
+        TracingOptions applicationOptions) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        final TracingOptions finalOptions = options != null ? options : DEFAULT_OPTIONS;
+        final LibraryTelemetryOptions libraryOptions
+            = new LibraryTelemetryOptions(libraryName).setLibraryVersion(libraryVersion)
+                .setResourceProviderNamespace(azNamespace);
+
+        return createTracer(libraryOptions, applicationOptions);
+    }
+
+    @Override
+    public Tracer createTracer(LibraryTelemetryOptions libraryOptions, TracingOptions applicationOptions) {
+        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
+
+        final TracingOptions finalOptions = applicationOptions != null ? applicationOptions : DEFAULT_OPTIONS;
 
         if (finalOptions.isEnabled()) {
-            return TRACER_PROVIDERS.create((provider) -> provider.createTracer(libraryName, libraryVersion, azNamespace, finalOptions),
+            return TRACER_PROVIDERS.create((provider) -> provider.createTracer(libraryOptions, finalOptions),
                 FALLBACK_TRACER, finalOptions.getTracerProvider());
         }
 

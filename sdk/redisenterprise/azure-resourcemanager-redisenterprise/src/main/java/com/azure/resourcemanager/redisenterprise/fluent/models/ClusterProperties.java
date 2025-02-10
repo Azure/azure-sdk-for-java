@@ -5,69 +5,107 @@
 package com.azure.resourcemanager.redisenterprise.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
+import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
+import com.azure.resourcemanager.redisenterprise.models.RedundancyMode;
 import com.azure.resourcemanager.redisenterprise.models.ResourceState;
 import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * RedisEnterprise cluster properties
- *
- * <p>Properties of RedisEnterprise clusters, as opposed to general resource properties like location, tags.
+ * Redis Enterprise cluster properties
+ * 
+ * Properties of Redis Enterprise clusters, as opposed to general resource properties like location, tags.
  */
 @Fluent
-public final class ClusterProperties {
+public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
     /*
-     * The minimum TLS version for the cluster to support, e.g. '1.2'
+     * Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the
+     * availability SLA, and increases the risk of data loss.
      */
-    @JsonProperty(value = "minimumTlsVersion")
+    private HighAvailability highAvailability;
+
+    /*
+     * The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions can be added in the future. Note
+     * that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use them. They are mentioned only for the sake
+     * of consistency with old API versions.
+     */
     private TlsVersion minimumTlsVersion;
 
     /*
      * Encryption-at-rest configuration for the cluster.
      */
-    @JsonProperty(value = "encryption")
     private ClusterPropertiesEncryption encryption;
 
     /*
      * DNS name of the cluster endpoint
      */
-    @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * Current provisioning status of the cluster
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Explains the current redundancy strategy of the cluster, which affects the expected SLA.
+     */
+    private RedundancyMode redundancyMode;
 
     /*
      * Current resource status of the cluster
      */
-    @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceState resourceState;
 
     /*
      * Version of redis the cluster supports, e.g. '6'
      */
-    @JsonProperty(value = "redisVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String redisVersion;
 
     /*
-     * List of private endpoint connections associated with the specified RedisEnterprise cluster
+     * List of private endpoint connections associated with the specified Redis Enterprise cluster
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
-    /** Creates an instance of ClusterProperties class. */
+    /**
+     * Creates an instance of ClusterProperties class.
+     */
     public ClusterProperties() {
     }
 
     /**
-     * Get the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
-     *
+     * Get the highAvailability property: Enabled by default. If highAvailability is disabled, the data set is not
+     * replicated. This affects the availability SLA, and increases the risk of data loss.
+     * 
+     * @return the highAvailability value.
+     */
+    public HighAvailability highAvailability() {
+        return this.highAvailability;
+    }
+
+    /**
+     * Set the highAvailability property: Enabled by default. If highAvailability is disabled, the data set is not
+     * replicated. This affects the availability SLA, and increases the risk of data loss.
+     * 
+     * @param highAvailability the highAvailability value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withHighAvailability(HighAvailability highAvailability) {
+        this.highAvailability = highAvailability;
+        return this;
+    }
+
+    /**
+     * Get the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'. Newer
+     * versions can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use
+     * them. They are mentioned only for the sake of consistency with old API versions.
+     * 
      * @return the minimumTlsVersion value.
      */
     public TlsVersion minimumTlsVersion() {
@@ -75,8 +113,10 @@ public final class ClusterProperties {
     }
 
     /**
-     * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
-     *
+     * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'. Newer
+     * versions can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use
+     * them. They are mentioned only for the sake of consistency with old API versions.
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the ClusterProperties object itself.
      */
@@ -87,7 +127,7 @@ public final class ClusterProperties {
 
     /**
      * Get the encryption property: Encryption-at-rest configuration for the cluster.
-     *
+     * 
      * @return the encryption value.
      */
     public ClusterPropertiesEncryption encryption() {
@@ -96,7 +136,7 @@ public final class ClusterProperties {
 
     /**
      * Set the encryption property: Encryption-at-rest configuration for the cluster.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the ClusterProperties object itself.
      */
@@ -107,7 +147,7 @@ public final class ClusterProperties {
 
     /**
      * Get the hostname property: DNS name of the cluster endpoint.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -116,7 +156,7 @@ public final class ClusterProperties {
 
     /**
      * Get the provisioningState property: Current provisioning status of the cluster.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -124,8 +164,18 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the redundancyMode property: Explains the current redundancy strategy of the cluster, which affects the
+     * expected SLA.
+     * 
+     * @return the redundancyMode value.
+     */
+    public RedundancyMode redundancyMode() {
+        return this.redundancyMode;
+    }
+
+    /**
      * Get the resourceState property: Current resource status of the cluster.
-     *
+     * 
      * @return the resourceState value.
      */
     public ResourceState resourceState() {
@@ -134,7 +184,7 @@ public final class ClusterProperties {
 
     /**
      * Get the redisVersion property: Version of redis the cluster supports, e.g. '6'.
-     *
+     * 
      * @return the redisVersion value.
      */
     public String redisVersion() {
@@ -143,8 +193,8 @@ public final class ClusterProperties {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the specified
-     * RedisEnterprise cluster.
-     *
+     * Redis Enterprise cluster.
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -153,7 +203,7 @@ public final class ClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -163,5 +213,63 @@ public final class ClusterProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("highAvailability",
+            this.highAvailability == null ? null : this.highAvailability.toString());
+        jsonWriter.writeStringField("minimumTlsVersion",
+            this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
+     */
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("highAvailability".equals(fieldName)) {
+                    deserializedClusterProperties.highAvailability = HighAvailability.fromString(reader.getString());
+                } else if ("minimumTlsVersion".equals(fieldName)) {
+                    deserializedClusterProperties.minimumTlsVersion = TlsVersion.fromString(reader.getString());
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedClusterProperties.encryption = ClusterPropertiesEncryption.fromJson(reader);
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedClusterProperties.hostname = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("redundancyMode".equals(fieldName)) {
+                    deserializedClusterProperties.redundancyMode = RedundancyMode.fromString(reader.getString());
+                } else if ("resourceState".equals(fieldName)) {
+                    deserializedClusterProperties.resourceState = ResourceState.fromString(reader.getString());
+                } else if ("redisVersion".equals(fieldName)) {
+                    deserializedClusterProperties.redisVersion = reader.getString();
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedClusterProperties.privateEndpointConnections = privateEndpointConnections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProperties;
+        });
     }
 }

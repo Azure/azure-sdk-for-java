@@ -5,31 +5,39 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The callback url parameters. */
+/**
+ * The callback url parameters.
+ */
 @Fluent
-public final class GetCallbackUrlParameters {
+public final class GetCallbackUrlParameters implements JsonSerializable<GetCallbackUrlParameters> {
     /*
      * The expiry time.
      */
-    @JsonProperty(value = "notAfter")
     private OffsetDateTime notAfter;
 
     /*
      * The key type.
      */
-    @JsonProperty(value = "keyType")
     private KeyType keyType;
 
-    /** Creates an instance of GetCallbackUrlParameters class. */
+    /**
+     * Creates an instance of GetCallbackUrlParameters class.
+     */
     public GetCallbackUrlParameters() {
     }
 
     /**
      * Get the notAfter property: The expiry time.
-     *
+     * 
      * @return the notAfter value.
      */
     public OffsetDateTime notAfter() {
@@ -38,7 +46,7 @@ public final class GetCallbackUrlParameters {
 
     /**
      * Set the notAfter property: The expiry time.
-     *
+     * 
      * @param notAfter the notAfter value to set.
      * @return the GetCallbackUrlParameters object itself.
      */
@@ -49,7 +57,7 @@ public final class GetCallbackUrlParameters {
 
     /**
      * Get the keyType property: The key type.
-     *
+     * 
      * @return the keyType value.
      */
     public KeyType keyType() {
@@ -58,7 +66,7 @@ public final class GetCallbackUrlParameters {
 
     /**
      * Set the keyType property: The key type.
-     *
+     * 
      * @param keyType the keyType value to set.
      * @return the GetCallbackUrlParameters object itself.
      */
@@ -69,9 +77,50 @@ public final class GetCallbackUrlParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("notAfter",
+            this.notAfter == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.notAfter));
+        jsonWriter.writeStringField("keyType", this.keyType == null ? null : this.keyType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetCallbackUrlParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetCallbackUrlParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetCallbackUrlParameters.
+     */
+    public static GetCallbackUrlParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetCallbackUrlParameters deserializedGetCallbackUrlParameters = new GetCallbackUrlParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notAfter".equals(fieldName)) {
+                    deserializedGetCallbackUrlParameters.notAfter = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("keyType".equals(fieldName)) {
+                    deserializedGetCallbackUrlParameters.keyType = KeyType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetCallbackUrlParameters;
+        });
     }
 }

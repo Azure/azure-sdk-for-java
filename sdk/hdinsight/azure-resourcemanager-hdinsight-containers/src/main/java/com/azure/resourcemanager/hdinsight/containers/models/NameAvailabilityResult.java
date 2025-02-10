@@ -6,32 +6,34 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.NameAvailabilityResultInner;
 
-/** An immutable client-side representation of NameAvailabilityResult. */
+/**
+ * An immutable client-side representation of NameAvailabilityResult.
+ */
 public interface NameAvailabilityResult {
     /**
      * Gets the nameAvailable property: Indicator of availability of the Microsoft.HDInsight resource name.
-     *
+     * 
      * @return the nameAvailable value.
      */
     Boolean nameAvailable();
 
     /**
      * Gets the reason property: The reason of unavailability.
-     *
+     * 
      * @return the reason value.
      */
     String reason();
 
     /**
      * Gets the message property: The error message of unavailability.
-     *
+     * 
      * @return the message value.
      */
     String message();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.containers.fluent.models.NameAvailabilityResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     NameAvailabilityResultInner innerModel();

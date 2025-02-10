@@ -5,62 +5,66 @@
 package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The response body returned for a request to Bot Service Management to check per subscription hostSettings. */
+/**
+ * The response body returned for a request to Bot Service Management to check per subscription hostSettings.
+ */
 @Fluent
-public final class HostSettingsResponseInner {
+public final class HostSettingsResponseInner implements JsonSerializable<HostSettingsResponseInner> {
     /*
      * For in-conversation bot user authentication
      */
-    @JsonProperty(value = "OAuthUrl")
     private String oAuthUrl;
 
     /*
      * For verifying incoming tokens from the channels
      */
-    @JsonProperty(value = "ToBotFromChannelOpenIdMetadataUrl")
     private String toBotFromChannelOpenIdMetadataUrl;
 
     /*
      * For verifying incoming tokens from the channels
      */
-    @JsonProperty(value = "ToBotFromChannelTokenIssuer")
     private String toBotFromChannelTokenIssuer;
 
     /*
      * For verifying incoming tokens from bot emulator
      */
-    @JsonProperty(value = "ToBotFromEmulatorOpenIdMetadataUrl")
     private String toBotFromEmulatorOpenIdMetadataUrl;
 
     /*
      * For getting access token to channels from bot host
      */
-    @JsonProperty(value = "ToChannelFromBotLoginUrl")
     private String toChannelFromBotLoginUrl;
 
     /*
      * For getting access token to channels from bot host
      */
-    @JsonProperty(value = "ToChannelFromBotOAuthScope")
     private String toChannelFromBotOAuthScope;
 
     /*
      * Per cloud OAuth setting on whether authority is validated
      */
-    @JsonProperty(value = "ValidateAuthority")
     private Boolean validateAuthority;
 
     /*
-     * Same as toBotFromChannelOpenIdMetadataUrl, used by SDK < v4.12
+     * Same as ToBotFromChannelOpenIdMetadataUrl, used by SDK < v4.12
      */
-    @JsonProperty(value = "BotOpenIdMetadata")
     private String botOpenIdMetadata;
 
     /**
+     * Creates an instance of HostSettingsResponseInner class.
+     */
+    public HostSettingsResponseInner() {
+    }
+
+    /**
      * Get the oAuthUrl property: For in-conversation bot user authentication.
-     *
+     * 
      * @return the oAuthUrl value.
      */
     public String oAuthUrl() {
@@ -69,7 +73,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Set the oAuthUrl property: For in-conversation bot user authentication.
-     *
+     * 
      * @param oAuthUrl the oAuthUrl value to set.
      * @return the HostSettingsResponseInner object itself.
      */
@@ -80,7 +84,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Get the toBotFromChannelOpenIdMetadataUrl property: For verifying incoming tokens from the channels.
-     *
+     * 
      * @return the toBotFromChannelOpenIdMetadataUrl value.
      */
     public String toBotFromChannelOpenIdMetadataUrl() {
@@ -89,7 +93,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Set the toBotFromChannelOpenIdMetadataUrl property: For verifying incoming tokens from the channels.
-     *
+     * 
      * @param toBotFromChannelOpenIdMetadataUrl the toBotFromChannelOpenIdMetadataUrl value to set.
      * @return the HostSettingsResponseInner object itself.
      */
@@ -100,7 +104,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Get the toBotFromChannelTokenIssuer property: For verifying incoming tokens from the channels.
-     *
+     * 
      * @return the toBotFromChannelTokenIssuer value.
      */
     public String toBotFromChannelTokenIssuer() {
@@ -109,7 +113,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Set the toBotFromChannelTokenIssuer property: For verifying incoming tokens from the channels.
-     *
+     * 
      * @param toBotFromChannelTokenIssuer the toBotFromChannelTokenIssuer value to set.
      * @return the HostSettingsResponseInner object itself.
      */
@@ -120,7 +124,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Get the toBotFromEmulatorOpenIdMetadataUrl property: For verifying incoming tokens from bot emulator.
-     *
+     * 
      * @return the toBotFromEmulatorOpenIdMetadataUrl value.
      */
     public String toBotFromEmulatorOpenIdMetadataUrl() {
@@ -129,7 +133,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Set the toBotFromEmulatorOpenIdMetadataUrl property: For verifying incoming tokens from bot emulator.
-     *
+     * 
      * @param toBotFromEmulatorOpenIdMetadataUrl the toBotFromEmulatorOpenIdMetadataUrl value to set.
      * @return the HostSettingsResponseInner object itself.
      */
@@ -140,7 +144,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Get the toChannelFromBotLoginUrl property: For getting access token to channels from bot host.
-     *
+     * 
      * @return the toChannelFromBotLoginUrl value.
      */
     public String toChannelFromBotLoginUrl() {
@@ -149,7 +153,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Set the toChannelFromBotLoginUrl property: For getting access token to channels from bot host.
-     *
+     * 
      * @param toChannelFromBotLoginUrl the toChannelFromBotLoginUrl value to set.
      * @return the HostSettingsResponseInner object itself.
      */
@@ -160,7 +164,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Get the toChannelFromBotOAuthScope property: For getting access token to channels from bot host.
-     *
+     * 
      * @return the toChannelFromBotOAuthScope value.
      */
     public String toChannelFromBotOAuthScope() {
@@ -169,7 +173,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Set the toChannelFromBotOAuthScope property: For getting access token to channels from bot host.
-     *
+     * 
      * @param toChannelFromBotOAuthScope the toChannelFromBotOAuthScope value to set.
      * @return the HostSettingsResponseInner object itself.
      */
@@ -180,7 +184,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Get the validateAuthority property: Per cloud OAuth setting on whether authority is validated.
-     *
+     * 
      * @return the validateAuthority value.
      */
     public Boolean validateAuthority() {
@@ -189,7 +193,7 @@ public final class HostSettingsResponseInner {
 
     /**
      * Set the validateAuthority property: Per cloud OAuth setting on whether authority is validated.
-     *
+     * 
      * @param validateAuthority the validateAuthority value to set.
      * @return the HostSettingsResponseInner object itself.
      */
@@ -199,8 +203,8 @@ public final class HostSettingsResponseInner {
     }
 
     /**
-     * Get the botOpenIdMetadata property: Same as toBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
-     *
+     * Get the botOpenIdMetadata property: Same as ToBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
+     * 
      * @return the botOpenIdMetadata value.
      */
     public String botOpenIdMetadata() {
@@ -208,8 +212,8 @@ public final class HostSettingsResponseInner {
     }
 
     /**
-     * Set the botOpenIdMetadata property: Same as toBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
-     *
+     * Set the botOpenIdMetadata property: Same as ToBotFromChannelOpenIdMetadataUrl, used by SDK &lt; v4.12.
+     * 
      * @param botOpenIdMetadata the botOpenIdMetadata value to set.
      * @return the HostSettingsResponseInner object itself.
      */
@@ -220,9 +224,67 @@ public final class HostSettingsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("OAuthUrl", this.oAuthUrl);
+        jsonWriter.writeStringField("ToBotFromChannelOpenIdMetadataUrl", this.toBotFromChannelOpenIdMetadataUrl);
+        jsonWriter.writeStringField("ToBotFromChannelTokenIssuer", this.toBotFromChannelTokenIssuer);
+        jsonWriter.writeStringField("ToBotFromEmulatorOpenIdMetadataUrl", this.toBotFromEmulatorOpenIdMetadataUrl);
+        jsonWriter.writeStringField("ToChannelFromBotLoginUrl", this.toChannelFromBotLoginUrl);
+        jsonWriter.writeStringField("ToChannelFromBotOAuthScope", this.toChannelFromBotOAuthScope);
+        jsonWriter.writeBooleanField("ValidateAuthority", this.validateAuthority);
+        jsonWriter.writeStringField("BotOpenIdMetadata", this.botOpenIdMetadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostSettingsResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostSettingsResponseInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HostSettingsResponseInner.
+     */
+    public static HostSettingsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostSettingsResponseInner deserializedHostSettingsResponseInner = new HostSettingsResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("OAuthUrl".equals(fieldName)) {
+                    deserializedHostSettingsResponseInner.oAuthUrl = reader.getString();
+                } else if ("ToBotFromChannelOpenIdMetadataUrl".equals(fieldName)) {
+                    deserializedHostSettingsResponseInner.toBotFromChannelOpenIdMetadataUrl = reader.getString();
+                } else if ("ToBotFromChannelTokenIssuer".equals(fieldName)) {
+                    deserializedHostSettingsResponseInner.toBotFromChannelTokenIssuer = reader.getString();
+                } else if ("ToBotFromEmulatorOpenIdMetadataUrl".equals(fieldName)) {
+                    deserializedHostSettingsResponseInner.toBotFromEmulatorOpenIdMetadataUrl = reader.getString();
+                } else if ("ToChannelFromBotLoginUrl".equals(fieldName)) {
+                    deserializedHostSettingsResponseInner.toChannelFromBotLoginUrl = reader.getString();
+                } else if ("ToChannelFromBotOAuthScope".equals(fieldName)) {
+                    deserializedHostSettingsResponseInner.toChannelFromBotOAuthScope = reader.getString();
+                } else if ("ValidateAuthority".equals(fieldName)) {
+                    deserializedHostSettingsResponseInner.validateAuthority
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("BotOpenIdMetadata".equals(fieldName)) {
+                    deserializedHostSettingsResponseInner.botOpenIdMetadata = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHostSettingsResponseInner;
+        });
     }
 }

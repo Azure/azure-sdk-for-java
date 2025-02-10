@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.storagecache.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The type of identity used for the resource. */
+/**
+ * The type of identity used for the resource.
+ */
 public enum AmlFilesystemIdentityType {
-    /** Enum value UserAssigned. */
+    /**
+     * Enum value UserAssigned.
+     */
     USER_ASSIGNED("UserAssigned"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None");
 
-    /** The actual serialized value for a AmlFilesystemIdentityType instance. */
+    /**
+     * The actual serialized value for a AmlFilesystemIdentityType instance.
+     */
     private final String value;
 
     AmlFilesystemIdentityType(String value) {
@@ -24,11 +29,10 @@ public enum AmlFilesystemIdentityType {
 
     /**
      * Parses a serialized value to a AmlFilesystemIdentityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AmlFilesystemIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static AmlFilesystemIdentityType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum AmlFilesystemIdentityType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

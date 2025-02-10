@@ -18,8 +18,7 @@ public final class ManagementGroupAggregatedCostResultImpl implements Management
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    ManagementGroupAggregatedCostResultImpl(
-        ManagementGroupAggregatedCostResultInner innerObject,
+    ManagementGroupAggregatedCostResultImpl(ManagementGroupAggregatedCostResultInner innerObject,
         com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -81,12 +80,9 @@ public final class ManagementGroupAggregatedCostResultImpl implements Management
     public List<ManagementGroupAggregatedCostResult> children() {
         List<ManagementGroupAggregatedCostResultInner> inner = this.innerModel().children();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ManagementGroupAggregatedCostResultImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ManagementGroupAggregatedCostResultImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

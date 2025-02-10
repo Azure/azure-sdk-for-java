@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Zone and associated hosts info. */
+/**
+ * Zone and associated hosts info.
+ */
 @Immutable
-public final class ClusterZone {
+public final class ClusterZone implements JsonSerializable<ClusterZone> {
     /*
      * List of hosts belonging to the availability zone in a cluster
      */
-    @JsonProperty(value = "hosts", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> hosts;
 
     /*
      * Availability zone identifier
      */
-    @JsonProperty(value = "zone", access = JsonProperty.Access.WRITE_ONLY)
     private String zone;
 
-    /** Creates an instance of ClusterZone class. */
+    /**
+     * Creates an instance of ClusterZone class.
+     */
     public ClusterZone() {
     }
 
     /**
      * Get the hosts property: List of hosts belonging to the availability zone in a cluster.
-     *
+     * 
      * @return the hosts value.
      */
     public List<String> hosts() {
@@ -38,7 +44,7 @@ public final class ClusterZone {
 
     /**
      * Get the zone property: Availability zone identifier.
-     *
+     * 
      * @return the zone value.
      */
     public String zone() {
@@ -47,9 +53,47 @@ public final class ClusterZone {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterZone from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterZone if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterZone.
+     */
+    public static ClusterZone fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterZone deserializedClusterZone = new ClusterZone();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hosts".equals(fieldName)) {
+                    List<String> hosts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterZone.hosts = hosts;
+                } else if ("zone".equals(fieldName)) {
+                    deserializedClusterZone.zone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterZone;
+        });
     }
 }

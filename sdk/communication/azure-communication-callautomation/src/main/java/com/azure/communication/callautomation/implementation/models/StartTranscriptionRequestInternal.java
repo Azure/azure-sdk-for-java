@@ -5,26 +5,47 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The StartTranscriptionRequestInternal model. */
+/**
+ * The StartTranscriptionRequestInternal model.
+ */
 @Fluent
-public final class StartTranscriptionRequestInternal {
+public final class StartTranscriptionRequestInternal implements JsonSerializable<StartTranscriptionRequestInternal> {
     /*
      * Defines Locale for the transcription e,g en-US
      */
-    @JsonProperty(value = "locale")
     private String locale;
+
+    /*
+     * Endpoint where the custom model was deployed.
+     */
+    private String speechRecognitionModelEndpointId;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
+
+    /*
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     */
+    private String operationCallbackUri;
+
+    /**
+     * Creates an instance of StartTranscriptionRequestInternal class.
+     */
+    public StartTranscriptionRequestInternal() {
+    }
 
     /**
      * Get the locale property: Defines Locale for the transcription e,g en-US.
-     *
+     * 
      * @return the locale value.
      */
     public String getLocale() {
@@ -33,7 +54,7 @@ public final class StartTranscriptionRequestInternal {
 
     /**
      * Set the locale property: Defines Locale for the transcription e,g en-US.
-     *
+     * 
      * @param locale the locale value to set.
      * @return the StartTranscriptionRequestInternal object itself.
      */
@@ -43,8 +64,29 @@ public final class StartTranscriptionRequestInternal {
     }
 
     /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * 
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * 
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the StartTranscriptionRequestInternal object itself.
+     */
+    public StartTranscriptionRequestInternal
+        setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -53,12 +95,82 @@ public final class StartTranscriptionRequestInternal {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the StartTranscriptionRequestInternal object itself.
      */
     public StartTranscriptionRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
+    }
+
+    /**
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
+     * @return the operationCallbackUri value.
+     */
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
+    }
+
+    /**
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
+     * @param operationCallbackUri the operationCallbackUri value to set.
+     * @return the StartTranscriptionRequestInternal object itself.
+     */
+    public StartTranscriptionRequestInternal setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("locale", this.locale);
+        jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StartTranscriptionRequestInternal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StartTranscriptionRequestInternal if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StartTranscriptionRequestInternal.
+     */
+    public static StartTranscriptionRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StartTranscriptionRequestInternal deserializedStartTranscriptionRequestInternal
+                = new StartTranscriptionRequestInternal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("locale".equals(fieldName)) {
+                    deserializedStartTranscriptionRequestInternal.locale = reader.getString();
+                } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
+                    deserializedStartTranscriptionRequestInternal.speechRecognitionModelEndpointId = reader.getString();
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedStartTranscriptionRequestInternal.operationContext = reader.getString();
+                } else if ("operationCallbackUri".equals(fieldName)) {
+                    deserializedStartTranscriptionRequestInternal.operationCallbackUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStartTranscriptionRequestInternal;
+        });
     }
 }

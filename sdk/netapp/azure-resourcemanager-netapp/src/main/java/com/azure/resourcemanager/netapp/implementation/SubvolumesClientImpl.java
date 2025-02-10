@@ -119,7 +119,7 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
             @BodyParam("application/json") SubvolumePatchRequest body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -128,7 +128,7 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
             @PathParam("subvolumeName") String subvolumeName, @QueryParam("api-version") String apiVersion,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/subvolumes/{subvolumeName}/getMetadata")
@@ -751,7 +751,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     private Mono<SubvolumeInfoInner> createAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName, SubvolumeInfoInner body, Context context) {
         return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1055,7 +1056,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     private Mono<SubvolumeInfoInner> updateAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName, SubvolumePatchRequest body, Context context) {
         return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1145,10 +1147,11 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         if (subvolumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), context))
+                    accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1195,9 +1198,10 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
         if (subvolumeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subvolumeName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), context);
+            accountName, poolName, volumeName, subvolumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1618,7 +1622,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     private Mono<SubvolumeModelInner> getMetadataAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName, Context context) {
         return beginGetMetadataAsync(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1667,9 +1672,7 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1695,9 +1698,7 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

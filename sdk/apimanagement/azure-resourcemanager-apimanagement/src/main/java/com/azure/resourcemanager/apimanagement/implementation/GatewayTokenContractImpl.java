@@ -12,8 +12,7 @@ public final class GatewayTokenContractImpl implements GatewayTokenContract {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    GatewayTokenContractImpl(
-        GatewayTokenContractInner innerObject,
+    GatewayTokenContractImpl(GatewayTokenContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

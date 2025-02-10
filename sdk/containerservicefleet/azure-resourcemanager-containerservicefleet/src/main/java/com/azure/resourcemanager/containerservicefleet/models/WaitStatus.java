@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The status of the wait duration. */
+/**
+ * The status of the wait duration.
+ */
 @Immutable
-public final class WaitStatus {
+public final class WaitStatus implements JsonSerializable<WaitStatus> {
     /*
      * The status of the wait duration.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private UpdateStatus status;
 
     /*
      * The wait duration configured in seconds.
      */
-    @JsonProperty(value = "waitDurationInSeconds", access = JsonProperty.Access.WRITE_ONLY)
     private Integer waitDurationInSeconds;
 
-    /** Creates an instance of WaitStatus class. */
+    /**
+     * Creates an instance of WaitStatus class.
+     */
     public WaitStatus() {
     }
 
     /**
      * Get the status property: The status of the wait duration.
-     *
+     * 
      * @return the status value.
      */
     public UpdateStatus status() {
@@ -37,7 +43,7 @@ public final class WaitStatus {
 
     /**
      * Get the waitDurationInSeconds property: The wait duration configured in seconds.
-     *
+     * 
      * @return the waitDurationInSeconds value.
      */
     public Integer waitDurationInSeconds() {
@@ -46,12 +52,49 @@ public final class WaitStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WaitStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WaitStatus if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the WaitStatus.
+     */
+    public static WaitStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WaitStatus deserializedWaitStatus = new WaitStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedWaitStatus.status = UpdateStatus.fromJson(reader);
+                } else if ("waitDurationInSeconds".equals(fieldName)) {
+                    deserializedWaitStatus.waitDurationInSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWaitStatus;
+        });
     }
 }

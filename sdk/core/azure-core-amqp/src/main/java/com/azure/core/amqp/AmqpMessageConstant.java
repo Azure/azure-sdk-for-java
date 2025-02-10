@@ -128,7 +128,6 @@ public enum AmqpMessageConstant {
      */
     MESSAGE_STATE_ANNOTATION_NAME("x-opt-message-state");
 
-
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;
 

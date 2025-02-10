@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of this recovery. */
+/**
+ * Type of this recovery.
+ */
 public final class RecoveryType extends ExpandableStringEnum<RecoveryType> {
-    /** Static value Invalid for RecoveryType. */
+    /**
+     * Static value Invalid for RecoveryType.
+     */
     public static final RecoveryType INVALID = fromString("Invalid");
 
-    /** Static value OriginalLocation for RecoveryType. */
+    /**
+     * Static value OriginalLocation for RecoveryType.
+     */
     public static final RecoveryType ORIGINAL_LOCATION = fromString("OriginalLocation");
 
-    /** Static value AlternateLocation for RecoveryType. */
+    /**
+     * Static value AlternateLocation for RecoveryType.
+     */
     public static final RecoveryType ALTERNATE_LOCATION = fromString("AlternateLocation");
 
-    /** Static value RestoreDisks for RecoveryType. */
+    /**
+     * Static value RestoreDisks for RecoveryType.
+     */
     public static final RecoveryType RESTORE_DISKS = fromString("RestoreDisks");
 
-    /** Static value Offline for RecoveryType. */
+    /**
+     * Static value Offline for RecoveryType.
+     */
     public static final RecoveryType OFFLINE = fromString("Offline");
 
     /**
      * Creates a new instance of RecoveryType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class RecoveryType extends ExpandableStringEnum<RecoveryType> {
 
     /**
      * Creates or finds a RecoveryType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecoveryType.
      */
-    @JsonCreator
     public static RecoveryType fromString(String name) {
         return fromString(name, RecoveryType.class);
     }
 
     /**
      * Gets known RecoveryType values.
-     *
+     * 
      * @return known RecoveryType values.
      */
     public static Collection<RecoveryType> values() {

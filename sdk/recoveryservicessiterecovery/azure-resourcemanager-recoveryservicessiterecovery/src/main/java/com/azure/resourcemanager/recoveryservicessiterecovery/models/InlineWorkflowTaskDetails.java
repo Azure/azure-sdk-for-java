@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** This class represents the inline workflow task details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InlineWorkflowTaskDetails")
+/**
+ * This class represents the inline workflow task details.
+ */
 @Fluent
 public final class InlineWorkflowTaskDetails extends GroupTaskDetails {
     /*
+     * The type of task details.
+     */
+    private String instanceType = "InlineWorkflowTaskDetails";
+
+    /*
      * The list of child workflow ids.
      */
-    @JsonProperty(value = "workflowIds")
     private List<String> workflowIds;
 
-    /** Creates an instance of InlineWorkflowTaskDetails class. */
+    /**
+     * Creates an instance of InlineWorkflowTaskDetails class.
+     */
     public InlineWorkflowTaskDetails() {
     }
 
     /**
+     * Get the instanceType property: The type of task details.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the workflowIds property: The list of child workflow ids.
-     *
+     * 
      * @return the workflowIds value.
      */
     public List<String> workflowIds() {
@@ -36,7 +53,7 @@ public final class InlineWorkflowTaskDetails extends GroupTaskDetails {
 
     /**
      * Set the workflowIds property: The list of child workflow ids.
-     *
+     * 
      * @param workflowIds the workflowIds value to set.
      * @return the InlineWorkflowTaskDetails object itself.
      */
@@ -45,7 +62,9 @@ public final class InlineWorkflowTaskDetails extends GroupTaskDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InlineWorkflowTaskDetails withChildTasks(List<AsrTask> childTasks) {
         super.withChildTasks(childTasks);
@@ -54,11 +73,57 @@ public final class InlineWorkflowTaskDetails extends GroupTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (childTasks() != null) {
+            childTasks().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("childTasks", childTasks(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeArrayField("workflowIds", this.workflowIds, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InlineWorkflowTaskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InlineWorkflowTaskDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InlineWorkflowTaskDetails.
+     */
+    public static InlineWorkflowTaskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InlineWorkflowTaskDetails deserializedInlineWorkflowTaskDetails = new InlineWorkflowTaskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("childTasks".equals(fieldName)) {
+                    List<AsrTask> childTasks = reader.readArray(reader1 -> AsrTask.fromJson(reader1));
+                    deserializedInlineWorkflowTaskDetails.withChildTasks(childTasks);
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedInlineWorkflowTaskDetails.instanceType = reader.getString();
+                } else if ("workflowIds".equals(fieldName)) {
+                    List<String> workflowIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInlineWorkflowTaskDetails.workflowIds = workflowIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInlineWorkflowTaskDetails;
+        });
     }
 }

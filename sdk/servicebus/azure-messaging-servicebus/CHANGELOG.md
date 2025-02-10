@@ -1,6 +1,6 @@
 # Release History
 
-## 7.15.0-beta.6 (Unreleased)
+## 7.18.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,197 @@
 
 ### Bugs Fixed
 
+* Fixed issue where OffsetDateTimeDescribedType would be translated to user's system time instead of UTC. ([42995](https://github.com/Azure/azure-sdk-for-java/pull/42995))
+
+### Other Changes
+
+## 7.17.8 (2025-01-09)
+
+### Features Added
+
+- Added support for Service Bus Emulator connection string. Refer [Azure Service Bus Emulator](https://github.com/Azure/azure-service-bus-emulator-installer) for emulator installation and supported connection strings. ([38735](https://github.com/Azure/azure-sdk-for-java/issues/38735)).
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.14.1` to `1.14.2`.
+
+## 7.17.7 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to version `1.54.1`.
+- Upgraded `azure-core-amqp` from `2.9.11` to version `2.9.12`.
+- Upgraded `azure-core-http-netty` from `1.15.6` to version `1.15.7`.
+
+## 7.17.6 (2024-11-12)
+
+### Features Added
+
+- Enabled RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache by default. ([42641](https://github.com/Azure/azure-sdk-for-java/pull/42641))
+- Improves the synchronous `acceptNextSession` and `acceptSession` APIs of `ServiceBusSessionReceiverClient` to reduce the chances of the broker holding session lock for some time when client-side timeout occurs. ([42838](https://github.com/Azure/azure-sdk-for-java/pull/42838))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+- Upgraded `azure-core-amqp` from `2.9.10` to `2.9.11`.
+- Upgraded `azure-identity` from `1.14.0` to `1.14.1`.
+
+## 7.17.5 (2024-10-16)
+
+### Bugs Fixed
+
+- Fixes the thread unsafe use of javax.crypto.Mac instance in ServiceBusSharedKeyCredential. ([42353](https://github.com/Azure/azure-sdk-for-java/pull/42353))
+- Fixed issue where `SubscriptionProperties.UserMetadata` was set to `null` when updating its value. ([#42332](https://github.com/Azure/azure-sdk-for-java/pull/42332))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+- Upgraded `azure-core-amqp` from `2.9.9` to `2.9.10`.
+- Upgraded `azure-identity` from `1.13.3` to `1.14.0`.
+
+## 7.17.4 (2024-09-27)
+
+### Features Added
+
+- Added runtime inspection for cores, pool size and Processor concurrency and a log statement linking to troubleshooting guideline on resourcing. This is based on the discussion here ([41489](https://github.com/Azure/azure-sdk-for-java/issues/41489))
+- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, these caches are activated when the configuration `com.azure.core.amqp.cache` is opted-in. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
+
+### Bugs Fixed
+
+- Fixes the message size computation in ServiceBusMessageSerializer to include size of delivery annotations. ([41605](https://github.com/Azure/azure-sdk-for-java/issues/41605))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+- Upgraded `azure-core-amqp` from `2.9.8` to `2.9.9`.
+- Upgraded `azure-identity` from `1.13.2` to `1.13.3`.
+
+## 7.17.3 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.50.0` to `1.51.0`.
+- Upgraded `azure-core-amqp` from `2.9.7` to `2.9.8`.
+- Upgraded `azure-identity` from `1.13.1` to `1.13.2`.
+
+## 7.17.2 (2024-07-26)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
+- Upgraded `azure-core-amqp` from `2.9.6` to `2.9.7`.
+- Upgraded `azure-identity` from `1.13.0` to `1.13.1`.
+
+## 7.17.1 (2024-06-22)
+
+### Features Added
+
+- Setting the v2 stack as the default for "Synchronous Receiver Client".
+
+### Bugs Fixed
+
+- Fixes the sender API that takes `Iterable` to not drop messages that cannot be fit in the batch. ([#40462](https://github.com/Azure/azure-sdk-for-java/pull/40462))
+- Fixed issue where the scheduled enqueue time was not cleared when creating a new message from a received message.([#44585](https://github.com/Azure/azure-sdk-for-net/pull/44585)) 
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+- Upgraded `azure-core-amqp` from `2.9.4` to `2.9.6`.
+- Upgraded `azure-identity` from `1.12.1` to `1.13.0`.
+
+## 7.17.0 (2024-05-06)
+
+### Bugs Fixed
+
+- Fixes the session message disposition to use management node as fall back. ([#39913](https://github.com/Azure/azure-sdk-for-java/issues/39913))
+- Fixes the session processor idle timeout to fall back to RetryOptions::tryTimeout. ([#39993](https://github.com/Azure/azure-sdk-for-java/issues/39993))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+- Upgraded `azure-core-amqp` from `2.9.3` to `2.9.4`.
+- Upgraded `azure-identity` from `1.12.0` to `1.12.1`.
+
+## 7.16.0 (2024-04-22)
+
+### Features Added
+
+- Setting the v2 stack as the default for "Session Processor Client" and "Session Reactor Receiver Client". ([39750](https://github.com/Azure/azure-sdk-for-java/pull/39750))
+
+### Bugs Fixed
+
+- Fixes the ServiceBusProcessorClient to signal intermediate errors to the processor handler. ([#39669](https://github.com/Azure/azure-sdk-for-java/issues/39669))
+- Fixes the issue of not creating default rule when creating subscription. ([37856](https://github.com/Azure/azure-sdk-for-java/issues/37856))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+- Upgraded `azure-core-amqp` from `2.9.2` to `2.9.3`.
+- Upgraded `azure-identity` from `1.11.2` to `1.12.0`.
+
+## 7.16.0-beta.1 (2024-03-14)
+
+### Features Added
+
+- Replaced Jackson Dataformat XML with `azure-xml`.
+
+### Breaking Changes
+
+- Remove Jackson Dataformat XML dependency. If you were depending on this, you will need to add 
+  `com.fasterxml.jackson.dataformat:jackson-dataformat-xml` to your project.
+
+### Bugs Fixed
+
+### Other Changes
+
+## 7.15.2 (2024-03-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.46.0` to `1.47.0`.
+- Upgraded `azure-core-amqp` from `2.9.1` to `2.9.2`.
+- Upgraded `azure-identity` from `1.11.2` to `1.11.3`.
+
+## 7.15.1 (2024-02-16)
+
+### Bugs Fixed
+
+- Redesigned the synchronous to asynchronous receive layer to generalize it and fixed edge cases losing termination signals. ([38705](https://github.com/Azure/azure-sdk-for-java/pull/38705))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
+- Upgraded `azure-core-amqp` from `2.9.0` to `2.9.1`.
+- Upgraded `azure-identity` from `1.11.1` to `1.11.2`.
+
+## 7.15.0 (2024-01-18)
+
+### Features Added
+
+- The version 7.15.0 is the stable release for all the features introduced in the 7.15.0-beta.* versions.
+
+### Bugs Fixed
+
 - Removes extraneous log messages when deserializing topics or subscriptions. ([32325](https://github.com/Azure/azure-sdk-for-java/issues/32325))
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-amqp` from `2.8.14` to `2.9.0`.
 
 ## 7.14.7 (2023-12-07)
 
@@ -28,6 +216,8 @@
 - Fixes the need for byte array allocation to track the combined size of messages in the batch. ([37197](https://github.com/Azure/azure-sdk-for-java/issues/37197))
 
 ### Other Changes
+
+- Stopped populating status attribute on metrics when no error has happened. ([#37884](https://github.com/Azure/azure-sdk-for-java/issues/37884))
 
 #### Dependency Updates
 - Upgraded `azure-core` from `1.44.1` to `1.45.0`.
@@ -656,7 +846,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 Version 7.0.0-beta.1 is a beta of our efforts in creating a client library that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
 our efforts can be found in the [Azure SDK Design Guidelines for
-.Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+.Java](https://aka.ms/azsdk/guide/java).
 
 ### Features
 
@@ -666,4 +856,4 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 
 [known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FCHANGELOG.png)
+

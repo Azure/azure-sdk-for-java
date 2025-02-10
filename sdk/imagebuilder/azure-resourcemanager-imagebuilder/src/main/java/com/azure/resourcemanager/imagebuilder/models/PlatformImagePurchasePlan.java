@@ -6,36 +6,41 @@ package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Purchase plan configuration for platform image. */
+/**
+ * Purchase plan configuration for platform image.
+ */
 @Fluent
-public final class PlatformImagePurchasePlan {
+public final class PlatformImagePurchasePlan implements JsonSerializable<PlatformImagePurchasePlan> {
     /*
      * Name of the purchase plan.
      */
-    @JsonProperty(value = "planName", required = true)
     private String planName;
 
     /*
      * Product of the purchase plan.
      */
-    @JsonProperty(value = "planProduct", required = true)
     private String planProduct;
 
     /*
      * Publisher of the purchase plan.
      */
-    @JsonProperty(value = "planPublisher", required = true)
     private String planPublisher;
 
-    /** Creates an instance of PlatformImagePurchasePlan class. */
+    /**
+     * Creates an instance of PlatformImagePurchasePlan class.
+     */
     public PlatformImagePurchasePlan() {
     }
 
     /**
      * Get the planName property: Name of the purchase plan.
-     *
+     * 
      * @return the planName value.
      */
     public String planName() {
@@ -44,7 +49,7 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Set the planName property: Name of the purchase plan.
-     *
+     * 
      * @param planName the planName value to set.
      * @return the PlatformImagePurchasePlan object itself.
      */
@@ -55,7 +60,7 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Get the planProduct property: Product of the purchase plan.
-     *
+     * 
      * @return the planProduct value.
      */
     public String planProduct() {
@@ -64,7 +69,7 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Set the planProduct property: Product of the purchase plan.
-     *
+     * 
      * @param planProduct the planProduct value to set.
      * @return the PlatformImagePurchasePlan object itself.
      */
@@ -75,7 +80,7 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Get the planPublisher property: Publisher of the purchase plan.
-     *
+     * 
      * @return the planPublisher value.
      */
     public String planPublisher() {
@@ -84,7 +89,7 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Set the planPublisher property: Publisher of the purchase plan.
-     *
+     * 
      * @param planPublisher the planPublisher value to set.
      * @return the PlatformImagePurchasePlan object itself.
      */
@@ -95,29 +100,69 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (planName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property planName in model PlatformImagePurchasePlan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property planName in model PlatformImagePurchasePlan"));
         }
         if (planProduct() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property planProduct in model PlatformImagePurchasePlan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property planProduct in model PlatformImagePurchasePlan"));
         }
         if (planPublisher() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property planPublisher in model PlatformImagePurchasePlan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property planPublisher in model PlatformImagePurchasePlan"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PlatformImagePurchasePlan.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("planName", this.planName);
+        jsonWriter.writeStringField("planProduct", this.planProduct);
+        jsonWriter.writeStringField("planPublisher", this.planPublisher);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlatformImagePurchasePlan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlatformImagePurchasePlan if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PlatformImagePurchasePlan.
+     */
+    public static PlatformImagePurchasePlan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlatformImagePurchasePlan deserializedPlatformImagePurchasePlan = new PlatformImagePurchasePlan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("planName".equals(fieldName)) {
+                    deserializedPlatformImagePurchasePlan.planName = reader.getString();
+                } else if ("planProduct".equals(fieldName)) {
+                    deserializedPlatformImagePurchasePlan.planProduct = reader.getString();
+                } else if ("planPublisher".equals(fieldName)) {
+                    deserializedPlatformImagePurchasePlan.planPublisher = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlatformImagePurchasePlan;
+        });
+    }
 }

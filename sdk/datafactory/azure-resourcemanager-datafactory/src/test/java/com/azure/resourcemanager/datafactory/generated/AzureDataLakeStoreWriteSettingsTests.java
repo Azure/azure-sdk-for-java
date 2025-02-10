@@ -6,20 +6,25 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.AzureDataLakeStoreWriteSettings;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
+import java.util.Arrays;
 
 public final class AzureDataLakeStoreWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataLakeStoreWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureDataLakeStoreWriteSettings\",\"expiryDateTime\":\"datatyavvexjqdjk\",\"maxConcurrentConnections\":\"databge\",\"disableMetricsCollection\":\"dataxjgkrppm\",\"copyBehavior\":\"dataoqtwqciqawhkdkva\",\"\":{\"mj\":\"databdscotidikxm\"}}")
+            "{\"type\":\"AzureDataLakeStoreWriteSettings\",\"expiryDateTime\":\"databyul\",\"maxConcurrentConnections\":\"dataepssoqdibyg\",\"disableMetricsCollection\":\"datacidiwkxi\",\"copyBehavior\":\"dataiqxlxoksyypftrdi\",\"metadata\":[{\"name\":\"databqgatkl\",\"value\":\"datapgwp\"}],\"\":{\"nsdp\":\"dataccetyyvxkwobb\",\"lzk\":\"datairt\"}}")
             .toObject(AzureDataLakeStoreWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataLakeStoreWriteSettings model = new AzureDataLakeStoreWriteSettings()
-            .withMaxConcurrentConnections("databge").withDisableMetricsCollection("dataxjgkrppm")
-            .withCopyBehavior("dataoqtwqciqawhkdkva").withExpiryDateTime("datatyavvexjqdjk");
+        AzureDataLakeStoreWriteSettings model
+            = new AzureDataLakeStoreWriteSettings().withMaxConcurrentConnections("dataepssoqdibyg")
+                .withDisableMetricsCollection("datacidiwkxi")
+                .withCopyBehavior("dataiqxlxoksyypftrdi")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("databqgatkl").withValue("datapgwp")))
+                .withExpiryDateTime("databyul");
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreWriteSettings.class);
     }
 }

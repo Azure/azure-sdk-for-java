@@ -6,17 +6,21 @@ package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * PartnerNamespace regenerate shared access key request.
  */
 @Fluent
-public final class PartnerNamespaceRegenerateKeyRequest {
+public final class PartnerNamespaceRegenerateKeyRequest
+    implements JsonSerializable<PartnerNamespaceRegenerateKeyRequest> {
     /*
      * Key name to regenerate (key1 or key2).
      */
-    @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
     /**
@@ -52,10 +56,49 @@ public final class PartnerNamespaceRegenerateKeyRequest {
      */
     public void validate() {
         if (keyName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property keyName in model PartnerNamespaceRegenerateKeyRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyName in model PartnerNamespaceRegenerateKeyRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PartnerNamespaceRegenerateKeyRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyName", this.keyName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerNamespaceRegenerateKeyRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerNamespaceRegenerateKeyRequest if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PartnerNamespaceRegenerateKeyRequest.
+     */
+    public static PartnerNamespaceRegenerateKeyRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerNamespaceRegenerateKeyRequest deserializedPartnerNamespaceRegenerateKeyRequest
+                = new PartnerNamespaceRegenerateKeyRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyName".equals(fieldName)) {
+                    deserializedPartnerNamespaceRegenerateKeyRequest.keyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerNamespaceRegenerateKeyRequest;
+        });
+    }
 }

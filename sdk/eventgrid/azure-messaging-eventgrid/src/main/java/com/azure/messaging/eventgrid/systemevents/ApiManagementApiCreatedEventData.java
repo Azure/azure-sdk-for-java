@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiCreated event.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APICreated event.
  */
 @Fluent
 public final class ApiManagementApiCreatedEventData implements JsonSerializable<ApiManagementApiCreatedEventData> {
@@ -54,6 +54,9 @@ public final class ApiManagementApiCreatedEventData implements JsonSerializable<
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

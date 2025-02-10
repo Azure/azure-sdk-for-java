@@ -185,7 +185,7 @@ public class TableClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode
 
-        TableEntity myTableEntity = new TableEntity("paritionKey", "rowKey")
+        TableEntity myTableEntity = new TableEntity("partitionKey", "rowKey")
             .addProperty("Property", "Value");
 
         tableClient.updateEntity(myTableEntity, TableEntityUpdateMode.REPLACE);

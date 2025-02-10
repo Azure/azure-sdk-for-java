@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RunOutputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RunOutputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"artifactId\":\"flnrosfqpteehzz\",\"artifactUri\":\"pyqr\",\"provisioningState\":\"Creating\"}")
+        RunOutputProperties model
+            = BinaryData.fromString("{\"artifactId\":\"i\",\"artifactUri\":\"thz\",\"provisioningState\":\"Updating\"}")
                 .toObject(RunOutputProperties.class);
-        Assertions.assertEquals("flnrosfqpteehzz", model.artifactId());
-        Assertions.assertEquals("pyqr", model.artifactUri());
+        Assertions.assertEquals("i", model.artifactId());
+        Assertions.assertEquals("thz", model.artifactUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RunOutputProperties model = new RunOutputProperties().withArtifactId("flnrosfqpteehzz").withArtifactUri("pyqr");
+        RunOutputProperties model = new RunOutputProperties().withArtifactId("i").withArtifactUri("thz");
         model = BinaryData.fromObject(model).toObject(RunOutputProperties.class);
-        Assertions.assertEquals("flnrosfqpteehzz", model.artifactId());
-        Assertions.assertEquals("pyqr", model.artifactUri());
+        Assertions.assertEquals("i", model.artifactId());
+        Assertions.assertEquals("thz", model.artifactUri());
     }
 }

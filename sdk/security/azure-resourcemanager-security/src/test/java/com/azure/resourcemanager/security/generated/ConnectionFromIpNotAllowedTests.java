@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectionFromIpNotAllowedTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectionFromIpNotAllowed model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"ConnectionFromIpNotAllowed\",\"allowlistValues\":[\"wreswmowegm\",\"uteyxeyguq\"],\"valueType\":\"IpCidr\",\"displayName\":\"ii\",\"description\":\"spxlzde\",\"isEnabled\":false}")
-                .toObject(ConnectionFromIpNotAllowed.class);
-        Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("wreswmowegm", model.allowlistValues().get(0));
+        ConnectionFromIpNotAllowed model = BinaryData.fromString(
+            "{\"ruleType\":\"ConnectionFromIpNotAllowed\",\"allowlistValues\":[\"epvufhbzehew\",\"oqhnlb\",\"nbldxeaclgschori\"],\"valueType\":\"String\",\"displayName\":\"r\",\"description\":\"oucs\",\"isEnabled\":true}")
+            .toObject(ConnectionFromIpNotAllowed.class);
+        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals("epvufhbzehew", model.allowlistValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectionFromIpNotAllowed model =
-            new ConnectionFromIpNotAllowed()
-                .withIsEnabled(false)
-                .withAllowlistValues(Arrays.asList("wreswmowegm", "uteyxeyguq"));
+        ConnectionFromIpNotAllowed model = new ConnectionFromIpNotAllowed().withIsEnabled(true)
+            .withAllowlistValues(Arrays.asList("epvufhbzehew", "oqhnlb", "nbldxeaclgschori"));
         model = BinaryData.fromObject(model).toObject(ConnectionFromIpNotAllowed.class);
-        Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("wreswmowegm", model.allowlistValues().get(0));
+        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals("epvufhbzehew", model.allowlistValues().get(0));
     }
 }

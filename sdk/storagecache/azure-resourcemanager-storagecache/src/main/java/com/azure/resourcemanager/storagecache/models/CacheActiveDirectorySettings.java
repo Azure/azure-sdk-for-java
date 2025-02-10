@@ -6,62 +6,63 @@ package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Active Directory settings used to join a cache to a domain. */
+/**
+ * Active Directory settings used to join a cache to a domain.
+ */
 @Fluent
-public final class CacheActiveDirectorySettings {
+public final class CacheActiveDirectorySettings implements JsonSerializable<CacheActiveDirectorySettings> {
     /*
      * Primary DNS IP address used to resolve the Active Directory domain controller's fully qualified domain name.
      */
-    @JsonProperty(value = "primaryDnsIpAddress", required = true)
     private String primaryDnsIpAddress;
 
     /*
      * Secondary DNS IP address used to resolve the Active Directory domain controller's fully qualified domain name.
      */
-    @JsonProperty(value = "secondaryDnsIpAddress")
     private String secondaryDnsIpAddress;
 
     /*
      * The fully qualified domain name of the Active Directory domain controller.
      */
-    @JsonProperty(value = "domainName", required = true)
     private String domainName;
 
     /*
      * The Active Directory domain's NetBIOS name.
      */
-    @JsonProperty(value = "domainNetBiosName", required = true)
     private String domainNetBiosName;
 
     /*
      * The NetBIOS name to assign to the HPC Cache when it joins the Active Directory domain as a server. Length must
      * 1-15 characters from the class [-0-9a-zA-Z].
      */
-    @JsonProperty(value = "cacheNetBiosName", required = true)
     private String cacheNetBiosName;
 
     /*
      * True if the HPC Cache is joined to the Active Directory domain.
      */
-    @JsonProperty(value = "domainJoined", access = JsonProperty.Access.WRITE_ONLY)
     private DomainJoinedType domainJoined;
 
     /*
      * Active Directory admin credentials used to join the HPC Cache to a domain.
      */
-    @JsonProperty(value = "credentials")
     private CacheActiveDirectorySettingsCredentials credentials;
 
-    /** Creates an instance of CacheActiveDirectorySettings class. */
+    /**
+     * Creates an instance of CacheActiveDirectorySettings class.
+     */
     public CacheActiveDirectorySettings() {
     }
 
     /**
      * Get the primaryDnsIpAddress property: Primary DNS IP address used to resolve the Active Directory domain
      * controller's fully qualified domain name.
-     *
+     * 
      * @return the primaryDnsIpAddress value.
      */
     public String primaryDnsIpAddress() {
@@ -71,7 +72,7 @@ public final class CacheActiveDirectorySettings {
     /**
      * Set the primaryDnsIpAddress property: Primary DNS IP address used to resolve the Active Directory domain
      * controller's fully qualified domain name.
-     *
+     * 
      * @param primaryDnsIpAddress the primaryDnsIpAddress value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -83,7 +84,7 @@ public final class CacheActiveDirectorySettings {
     /**
      * Get the secondaryDnsIpAddress property: Secondary DNS IP address used to resolve the Active Directory domain
      * controller's fully qualified domain name.
-     *
+     * 
      * @return the secondaryDnsIpAddress value.
      */
     public String secondaryDnsIpAddress() {
@@ -93,7 +94,7 @@ public final class CacheActiveDirectorySettings {
     /**
      * Set the secondaryDnsIpAddress property: Secondary DNS IP address used to resolve the Active Directory domain
      * controller's fully qualified domain name.
-     *
+     * 
      * @param secondaryDnsIpAddress the secondaryDnsIpAddress value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -104,7 +105,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Get the domainName property: The fully qualified domain name of the Active Directory domain controller.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -113,7 +114,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Set the domainName property: The fully qualified domain name of the Active Directory domain controller.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -124,7 +125,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Get the domainNetBiosName property: The Active Directory domain's NetBIOS name.
-     *
+     * 
      * @return the domainNetBiosName value.
      */
     public String domainNetBiosName() {
@@ -133,7 +134,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Set the domainNetBiosName property: The Active Directory domain's NetBIOS name.
-     *
+     * 
      * @param domainNetBiosName the domainNetBiosName value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -145,7 +146,7 @@ public final class CacheActiveDirectorySettings {
     /**
      * Get the cacheNetBiosName property: The NetBIOS name to assign to the HPC Cache when it joins the Active Directory
      * domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
-     *
+     * 
      * @return the cacheNetBiosName value.
      */
     public String cacheNetBiosName() {
@@ -155,7 +156,7 @@ public final class CacheActiveDirectorySettings {
     /**
      * Set the cacheNetBiosName property: The NetBIOS name to assign to the HPC Cache when it joins the Active Directory
      * domain as a server. Length must 1-15 characters from the class [-0-9a-zA-Z].
-     *
+     * 
      * @param cacheNetBiosName the cacheNetBiosName value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -166,7 +167,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Get the domainJoined property: True if the HPC Cache is joined to the Active Directory domain.
-     *
+     * 
      * @return the domainJoined value.
      */
     public DomainJoinedType domainJoined() {
@@ -175,7 +176,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Get the credentials property: Active Directory admin credentials used to join the HPC Cache to a domain.
-     *
+     * 
      * @return the credentials value.
      */
     public CacheActiveDirectorySettingsCredentials credentials() {
@@ -184,7 +185,7 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Set the credentials property: Active Directory admin credentials used to join the HPC Cache to a domain.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the CacheActiveDirectorySettings object itself.
      */
@@ -195,33 +196,29 @@ public final class CacheActiveDirectorySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (primaryDnsIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property primaryDnsIpAddress in model CacheActiveDirectorySettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property primaryDnsIpAddress in model CacheActiveDirectorySettings"));
         }
         if (domainName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainName in model CacheActiveDirectorySettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainName in model CacheActiveDirectorySettings"));
         }
         if (domainNetBiosName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainNetBiosName in model CacheActiveDirectorySettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainNetBiosName in model CacheActiveDirectorySettings"));
         }
         if (cacheNetBiosName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cacheNetBiosName in model CacheActiveDirectorySettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property cacheNetBiosName in model CacheActiveDirectorySettings"));
         }
         if (credentials() != null) {
             credentials().validate();
@@ -229,4 +226,60 @@ public final class CacheActiveDirectorySettings {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CacheActiveDirectorySettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryDnsIpAddress", this.primaryDnsIpAddress);
+        jsonWriter.writeStringField("domainName", this.domainName);
+        jsonWriter.writeStringField("domainNetBiosName", this.domainNetBiosName);
+        jsonWriter.writeStringField("cacheNetBiosName", this.cacheNetBiosName);
+        jsonWriter.writeStringField("secondaryDnsIpAddress", this.secondaryDnsIpAddress);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheActiveDirectorySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheActiveDirectorySettings if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CacheActiveDirectorySettings.
+     */
+    public static CacheActiveDirectorySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheActiveDirectorySettings deserializedCacheActiveDirectorySettings = new CacheActiveDirectorySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryDnsIpAddress".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.primaryDnsIpAddress = reader.getString();
+                } else if ("domainName".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.domainName = reader.getString();
+                } else if ("domainNetBiosName".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.domainNetBiosName = reader.getString();
+                } else if ("cacheNetBiosName".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.cacheNetBiosName = reader.getString();
+                } else if ("secondaryDnsIpAddress".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.secondaryDnsIpAddress = reader.getString();
+                } else if ("domainJoined".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.domainJoined
+                        = DomainJoinedType.fromString(reader.getString());
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedCacheActiveDirectorySettings.credentials
+                        = CacheActiveDirectorySettingsCredentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheActiveDirectorySettings;
+        });
+    }
 }

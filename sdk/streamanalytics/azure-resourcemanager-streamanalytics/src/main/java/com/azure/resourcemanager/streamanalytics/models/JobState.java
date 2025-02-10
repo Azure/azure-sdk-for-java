@@ -5,53 +5,86 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobState. */
+/**
+ * The current execution state of the streaming job.
+ */
 public final class JobState extends ExpandableStringEnum<JobState> {
-    /** Static value Created for JobState. */
+    /**
+     * Static value Created for JobState.
+     */
     public static final JobState CREATED = fromString("Created");
 
-    /** Static value Starting for JobState. */
+    /**
+     * Static value Starting for JobState.
+     */
     public static final JobState STARTING = fromString("Starting");
 
-    /** Static value Running for JobState. */
+    /**
+     * Static value Running for JobState.
+     */
     public static final JobState RUNNING = fromString("Running");
 
-    /** Static value Stopping for JobState. */
+    /**
+     * Static value Stopping for JobState.
+     */
     public static final JobState STOPPING = fromString("Stopping");
 
-    /** Static value Stopped for JobState. */
+    /**
+     * Static value Stopped for JobState.
+     */
     public static final JobState STOPPED = fromString("Stopped");
 
-    /** Static value Deleting for JobState. */
+    /**
+     * Static value Deleting for JobState.
+     */
     public static final JobState DELETING = fromString("Deleting");
 
-    /** Static value Failed for JobState. */
+    /**
+     * Static value Failed for JobState.
+     */
     public static final JobState FAILED = fromString("Failed");
 
-    /** Static value Degraded for JobState. */
+    /**
+     * Static value Degraded for JobState.
+     */
     public static final JobState DEGRADED = fromString("Degraded");
 
-    /** Static value Restarting for JobState. */
+    /**
+     * Static value Restarting for JobState.
+     */
     public static final JobState RESTARTING = fromString("Restarting");
 
-    /** Static value Scaling for JobState. */
+    /**
+     * Static value Scaling for JobState.
+     */
     public static final JobState SCALING = fromString("Scaling");
 
     /**
+     * Creates a new instance of JobState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobState() {
+    }
+
+    /**
      * Creates or finds a JobState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobState.
      */
-    @JsonCreator
     public static JobState fromString(String name) {
         return fromString(name, JobState.class);
     }
 
-    /** @return known JobState values. */
+    /**
+     * Gets known JobState values.
+     * 
+     * @return known JobState values.
+     */
     public static Collection<JobState> values() {
         return values(JobState.class);
     }

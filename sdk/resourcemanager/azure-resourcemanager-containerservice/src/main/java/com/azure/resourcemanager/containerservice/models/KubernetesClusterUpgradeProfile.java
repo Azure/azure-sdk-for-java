@@ -9,12 +9,24 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 /** The result of checking for the Kubernetes cluster's upgrade profile. */
 @Fluent()
 public interface KubernetesClusterUpgradeProfile extends HasInnerModel<ManagedClusterUpgradeProfileInner> {
-    /** @return the ID of the Kubernetes cluster upgrade profile */
+    /**
+     * Gets the ID of the Kubernetes cluster upgrade profile.
+     *
+     * @return the ID of the Kubernetes cluster upgrade profile
+     */
     String id();
 
-    /** @return the name of the Kubernetes cluster upgrade profile */
+    /**
+     * Gets the name of the Kubernetes cluster upgrade profile.
+     *
+     * @return the name of the Kubernetes cluster upgrade profile
+     */
     String name();
 
-    /** @return the type of the Kubernetes cluster upgrade profile. */
+    /**
+     * Gets the type of the Kubernetes cluster upgrade profile.
+     *
+     * @return the type of the Kubernetes cluster upgrade profile.
+     */
     String type();
 }

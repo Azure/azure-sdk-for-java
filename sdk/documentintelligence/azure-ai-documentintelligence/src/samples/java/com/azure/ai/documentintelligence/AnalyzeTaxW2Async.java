@@ -3,10 +3,10 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
 import com.azure.core.credential.AzureKeyCredential;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * Async Sample for analyzing commonly found W-2 fields from a local file input stream of a tax W-2 document.
- * See fields found on a US Tax W2 document <a href=https://aka.ms/documentintelligence/taxusw2fieldschema>here</a>
+ * See fields found on a US Tax W2 document <a href=https://aka.ms/formrecognizer/taxusw2fieldschema>here</a>
  */
 public class AnalyzeTaxW2Async {
     /**
@@ -38,14 +38,9 @@ public class AnalyzeTaxW2Async {
         String w2Url =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/resources/sample-forms/w2/Sample-W2.jpg";
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeW2Poller =
-            client.beginAnalyzeDocument("prebuilt-tax.us.w2", null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                new AnalyzeDocumentRequest().setUrlSource(w2Url));
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeW2Poller =
+            client.beginAnalyzeDocument("prebuilt-tax.us.w2",
+                new AnalyzeDocumentOptions(w2Url));
 
         Mono<AnalyzeResult> w2Mono = analyzeW2Poller
             .last()
@@ -57,14 +52,14 @@ public class AnalyzeTaxW2Async {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            }).map(AnalyzeResultOperation::getAnalyzeResult);
+            });
 
         w2Mono.subscribe(analyzeTaxResult -> {
 
             for (int i = 0; i < analyzeTaxResult.getDocuments().size(); i++) {
-                Document analyzedTaxDocument = analyzeTaxResult.getDocuments().get(i);
+                AnalyzedDocument analyzedTaxDocument = analyzeTaxResult.getDocuments().get(i);
                 Map<String, DocumentField> taxFields = analyzedTaxDocument.getFields();
-                System.out.printf("----------- Analyzing Document  %d -----------%n", i);
+                System.out.printf("----------- Analyzing AnalyzedDocument  %d -----------%n", i);
                 DocumentField w2FormVariantField = taxFields.get("W2FormVariant");
                 if (w2FormVariantField != null) {
                     if (DocumentFieldType.STRING == w2FormVariantField.getType()) {
@@ -78,7 +73,7 @@ public class AnalyzeTaxW2Async {
                 if (employeeField != null) {
                     System.out.println("Employee Data: ");
                     if (DocumentFieldType.OBJECT == employeeField.getType()) {
-                        Map<String, DocumentField> employeeDataFieldMap = employeeField.getValueObject();
+                        Map<String, DocumentField> employeeDataFieldMap = employeeField.getValueMap();
                         DocumentField employeeName = employeeDataFieldMap.get("Name");
                         if (employeeName != null) {
                             if (DocumentFieldType.STRING == employeeName.getType()) {
@@ -102,7 +97,7 @@ public class AnalyzeTaxW2Async {
                 if (employerField != null) {
                     System.out.println("Employer Data: ");
                     if (DocumentFieldType.OBJECT == employerField.getType()) {
-                        Map<String, DocumentField> employerDataFieldMap = employerField.getValueObject();
+                        Map<String, DocumentField> employerDataFieldMap = employerField.getValueMap();
                         DocumentField employerNameField = employerDataFieldMap.get("Name");
                         if (employerNameField != null) {
                             if (DocumentFieldType.STRING == employerNameField.getType()) {
@@ -127,7 +122,7 @@ public class AnalyzeTaxW2Async {
                 if (localTaxInfosField != null) {
                     System.out.println("Local Tax Info data:");
                     if (DocumentFieldType.ARRAY == localTaxInfosField.getType()) {
-                        Map<String, DocumentField> localTaxInfoDataFields = localTaxInfosField.getValueObject();
+                        Map<String, DocumentField> localTaxInfoDataFields = localTaxInfosField.getValueMap();
                         DocumentField localWagesTips = localTaxInfoDataFields.get("LocalWagesTipsEtc");
                         if (DocumentFieldType.NUMBER == localTaxInfosField.getType()) {
                             System.out.printf("Local Wages Tips Value: %.2f, confidence: %.2f%n",

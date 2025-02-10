@@ -29,12 +29,14 @@ public final class PartnerDestinationInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerDestinationInfo model
-            = new PartnerDestinationInfo().withAzureSubscriptionId("ejk").withResourceGroupName("ynqgoulzndlikwyq")
-                .withName("fgibmadgakeq").withEndpointServiceContext("xybz")
-                .withResourceMoveChangeHistory(Arrays.asList(
-                    new ResourceMoveChangeHistory().withAzureSubscriptionId("qytbciq").withResourceGroupName("uflmm")
-                        .withChangedTimeUtc(OffsetDateTime.parse("2021-12-07T12:50:46Z"))));
+        PartnerDestinationInfo model = new PartnerDestinationInfo().withAzureSubscriptionId("ejk")
+            .withResourceGroupName("ynqgoulzndlikwyq")
+            .withName("fgibmadgakeq")
+            .withEndpointServiceContext("xybz")
+            .withResourceMoveChangeHistory(
+                Arrays.asList(new ResourceMoveChangeHistory().withAzureSubscriptionId("qytbciq")
+                    .withResourceGroupName("uflmm")
+                    .withChangedTimeUtc(OffsetDateTime.parse("2021-12-07T12:50:46Z"))));
         model = BinaryData.fromObject(model).toObject(PartnerDestinationInfo.class);
         Assertions.assertEquals("ejk", model.azureSubscriptionId());
         Assertions.assertEquals("ynqgoulzndlikwyq", model.resourceGroupName());

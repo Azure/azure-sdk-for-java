@@ -6,7 +6,9 @@ package com.azure.resourcemanager.vmwarecloudsimple.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.AvailableOperationInner;
+import com.azure.resourcemanager.vmwarecloudsimple.models.AggregationType;
 import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationDisplay;
+import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationDisplayPropertyServiceSpecificationMetricsItem;
 import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationDisplayPropertyServiceSpecificationMetricsList;
 import com.azure.resourcemanager.vmwarecloudsimple.models.OperationOrigin;
 import java.util.Arrays;
@@ -15,43 +17,75 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableOperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableOperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"display\":{\"description\":\"cqhsm\",\"operation\":\"rkdtmlxh\",\"provider\":\"uksjtxukcdmp\",\"resource\":\"cryuan\"},\"isDataAction\":false,\"name\":\"zdxtayrlhmwhf\",\"origin\":\"user,system\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[]}}}")
-                .toObject(AvailableOperationInner.class);
-        Assertions.assertEquals("cqhsm", model.display().description());
-        Assertions.assertEquals("rkdtmlxh", model.display().operation());
-        Assertions.assertEquals("uksjtxukcdmp", model.display().provider());
-        Assertions.assertEquals("cryuan", model.display().resource());
-        Assertions.assertEquals(false, model.isDataAction());
-        Assertions.assertEquals("zdxtayrlhmwhf", model.name());
+        AvailableOperationInner model = BinaryData.fromString(
+            "{\"display\":{\"description\":\"bpf\",\"operation\":\"s\",\"provider\":\"zgvfcjrwz\",\"resource\":\"xjtfelluwfzit\"},\"isDataAction\":true,\"name\":\"qfpjk\",\"origin\":\"user,system\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"aggregationType\":\"Total\",\"displayDescription\":\"hpf\",\"displayName\":\"xypininmayhuybbk\",\"name\":\"odepoogin\",\"unit\":\"vamih\"},{\"aggregationType\":\"Total\",\"displayDescription\":\"gnarxzxtheo\",\"displayName\":\"usivye\",\"name\":\"cciqihnhungbwjz\",\"unit\":\"nfygxgispemvtz\"},{\"aggregationType\":\"Average\",\"displayDescription\":\"ufubl\",\"displayName\":\"ofx\",\"name\":\"eofjaeqjh\",\"unit\":\"jbasvmsmjqulngs\"},{\"aggregationType\":\"Average\",\"displayDescription\":\"nbybkzgcwrwcl\",\"displayName\":\"xwrljdouskcqvkoc\",\"name\":\"cjdkwtnhxbnjbi\",\"unit\":\"sqrglssainq\"}]}}}")
+            .toObject(AvailableOperationInner.class);
+        Assertions.assertEquals("bpf", model.display().description());
+        Assertions.assertEquals("s", model.display().operation());
+        Assertions.assertEquals("zgvfcjrwz", model.display().provider());
+        Assertions.assertEquals("xjtfelluwfzit", model.display().resource());
+        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertEquals("qfpjk", model.name());
         Assertions.assertEquals(OperationOrigin.USER_SYSTEM, model.origin());
+        Assertions.assertEquals(AggregationType.TOTAL,
+            model.serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("hpf", model.serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("xypininmayhuybbk",
+            model.serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("odepoogin", model.serviceSpecification().metricSpecifications().get(0).name());
+        Assertions.assertEquals("vamih", model.serviceSpecification().metricSpecifications().get(0).unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableOperationInner model =
-            new AvailableOperationInner()
-                .withDisplay(
-                    new AvailableOperationDisplay()
-                        .withDescription("cqhsm")
-                        .withOperation("rkdtmlxh")
-                        .withProvider("uksjtxukcdmp")
-                        .withResource("cryuan"))
-                .withIsDataAction(false)
-                .withName("zdxtayrlhmwhf")
-                .withOrigin(OperationOrigin.USER_SYSTEM)
-                .withServiceSpecification(
-                    new AvailableOperationDisplayPropertyServiceSpecificationMetricsList()
-                        .withMetricSpecifications(Arrays.asList()));
+        AvailableOperationInner model = new AvailableOperationInner()
+            .withDisplay(new AvailableOperationDisplay().withDescription("bpf")
+                .withOperation("s")
+                .withProvider("zgvfcjrwz")
+                .withResource("xjtfelluwfzit"))
+            .withIsDataAction(true)
+            .withName("qfpjk")
+            .withOrigin(OperationOrigin.USER_SYSTEM)
+            .withServiceSpecification(new AvailableOperationDisplayPropertyServiceSpecificationMetricsList()
+                .withMetricSpecifications(Arrays.asList(
+                    new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                        .withAggregationType(AggregationType.TOTAL)
+                        .withDisplayDescription("hpf")
+                        .withDisplayName("xypininmayhuybbk")
+                        .withName("odepoogin")
+                        .withUnit("vamih"),
+                    new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                        .withAggregationType(AggregationType.TOTAL)
+                        .withDisplayDescription("gnarxzxtheo")
+                        .withDisplayName("usivye")
+                        .withName("cciqihnhungbwjz")
+                        .withUnit("nfygxgispemvtz"),
+                    new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                        .withAggregationType(AggregationType.AVERAGE)
+                        .withDisplayDescription("ufubl")
+                        .withDisplayName("ofx")
+                        .withName("eofjaeqjh")
+                        .withUnit("jbasvmsmjqulngs"),
+                    new AvailableOperationDisplayPropertyServiceSpecificationMetricsItem()
+                        .withAggregationType(AggregationType.AVERAGE)
+                        .withDisplayDescription("nbybkzgcwrwcl")
+                        .withDisplayName("xwrljdouskcqvkoc")
+                        .withName("cjdkwtnhxbnjbi")
+                        .withUnit("sqrglssainq"))));
         model = BinaryData.fromObject(model).toObject(AvailableOperationInner.class);
-        Assertions.assertEquals("cqhsm", model.display().description());
-        Assertions.assertEquals("rkdtmlxh", model.display().operation());
-        Assertions.assertEquals("uksjtxukcdmp", model.display().provider());
-        Assertions.assertEquals("cryuan", model.display().resource());
-        Assertions.assertEquals(false, model.isDataAction());
-        Assertions.assertEquals("zdxtayrlhmwhf", model.name());
+        Assertions.assertEquals("bpf", model.display().description());
+        Assertions.assertEquals("s", model.display().operation());
+        Assertions.assertEquals("zgvfcjrwz", model.display().provider());
+        Assertions.assertEquals("xjtfelluwfzit", model.display().resource());
+        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertEquals("qfpjk", model.name());
         Assertions.assertEquals(OperationOrigin.USER_SYSTEM, model.origin());
+        Assertions.assertEquals(AggregationType.TOTAL,
+            model.serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("hpf", model.serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("xypininmayhuybbk",
+            model.serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("odepoogin", model.serviceSpecification().metricSpecifications().get(0).name());
+        Assertions.assertEquals("vamih", model.serviceSpecification().metricSpecifications().get(0).unit());
     }
 }

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The configuration settings of the Azure Active Directory allowed principals. */
+/**
+ * The configuration settings of the Azure Active Directory allowed principals.
+ */
 @Fluent
-public final class AllowedPrincipals {
+public final class AllowedPrincipals implements JsonSerializable<AllowedPrincipals> {
     /*
      * The list of the allowed groups.
      */
-    @JsonProperty(value = "groups")
     private List<String> groups;
 
     /*
      * The list of the allowed identities.
      */
-    @JsonProperty(value = "identities")
     private List<String> identities;
 
-    /** Creates an instance of AllowedPrincipals class. */
+    /**
+     * Creates an instance of AllowedPrincipals class.
+     */
     public AllowedPrincipals() {
     }
 
     /**
      * Get the groups property: The list of the allowed groups.
-     *
+     * 
      * @return the groups value.
      */
     public List<String> groups() {
@@ -38,7 +44,7 @@ public final class AllowedPrincipals {
 
     /**
      * Set the groups property: The list of the allowed groups.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the AllowedPrincipals object itself.
      */
@@ -49,7 +55,7 @@ public final class AllowedPrincipals {
 
     /**
      * Get the identities property: The list of the allowed identities.
-     *
+     * 
      * @return the identities value.
      */
     public List<String> identities() {
@@ -58,7 +64,7 @@ public final class AllowedPrincipals {
 
     /**
      * Set the identities property: The list of the allowed identities.
-     *
+     * 
      * @param identities the identities value to set.
      * @return the AllowedPrincipals object itself.
      */
@@ -69,9 +75,50 @@ public final class AllowedPrincipals {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("identities", this.identities, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AllowedPrincipals from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AllowedPrincipals if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AllowedPrincipals.
+     */
+    public static AllowedPrincipals fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AllowedPrincipals deserializedAllowedPrincipals = new AllowedPrincipals();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groups".equals(fieldName)) {
+                    List<String> groups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAllowedPrincipals.groups = groups;
+                } else if ("identities".equals(fieldName)) {
+                    List<String> identities = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAllowedPrincipals.identities = identities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAllowedPrincipals;
+        });
     }
 }

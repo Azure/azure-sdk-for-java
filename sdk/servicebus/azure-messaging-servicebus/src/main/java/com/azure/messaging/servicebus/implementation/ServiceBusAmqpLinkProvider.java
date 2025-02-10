@@ -30,19 +30,19 @@ import org.apache.qpid.proton.engine.Receiver;
 public final class ServiceBusAmqpLinkProvider extends AmqpLinkProvider {
     @Override
     public AmqpReceiveLink createReceiveLink(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions,
-        AmqpMetricsProvider metricsProvider) {
-        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler),
-            tokenManager, dispatcher, retryOptions);
+        ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+        AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
+        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver,
+            new ReceiveLinkHandlerWrapper(handler), tokenManager, dispatcher, retryOptions);
     }
 
     // Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
     // is removed. At that point "ReceiveLinkHandlerWrapper" and this createReceiveLink method will also be removed.
     @Override
     public AmqpReceiveLink createReceiveLink(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-        ReceiveLinkHandler2 handler, TokenManager tokenManager, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions,
-        AmqpMetricsProvider metricsProvider) {
-        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler),
-            tokenManager, dispatcher, retryOptions);
+        ReceiveLinkHandler2 handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+        AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
+        return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver,
+            new ReceiveLinkHandlerWrapper(handler), tokenManager, dispatcher, retryOptions);
     }
 }

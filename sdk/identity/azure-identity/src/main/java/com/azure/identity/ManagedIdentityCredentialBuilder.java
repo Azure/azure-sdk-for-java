@@ -4,13 +4,16 @@
 package com.azure.identity;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.ValidationUtil;
+
+import java.util.concurrent.ExecutorService;
 
 /**
  * <p>Fluent credential builder for instantiating a {@link ManagedIdentityCredential}.</p>
  *
- * <p><a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">Azure
+ * <p><a href="https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/">Azure
  * Managed Identity</a> is a feature in
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>
  * that provides a way for applications running on Azure to authenticate themselves with Azure resources without
  * needing to manage or store any secrets like passwords or keys.
  * The {@link ManagedIdentityCredential} authenticates the configured managed identity (system or user assigned) of an
@@ -28,15 +31,14 @@ import com.azure.core.util.logging.ClientLogger;
  *
  * <!-- src_embed com.azure.identity.credential.managedidentitycredential.construct -->
  * <pre>
- * TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.managedidentitycredential.construct -->
  *
  * <p><strong>Sample: Construct a User Assigned ManagedIdentityCredential</strong></p>
  *
  * <p>User-Assigned Managed Identity (UAMI) in Azure is a feature that allows you to create an identity in
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>
  * that is associated with one or more Azure resources. This identity can then be used to authenticate and
  * authorize access to various Azure services and resources. The following code sample demonstrates the creation of a
  * {@link ManagedIdentityCredential} to target a user assigned managed identity, using the
@@ -45,8 +47,8 @@ import com.azure.core.util.logging.ClientLogger;
  *
  * <!-- src_embed com.azure.identity.credential.managedidentitycredential.userassigned.construct -->
  * <pre>
- * TokenCredential managedIdentityCredentialUserAssigned = new ManagedIdentityCredentialBuilder&#40;&#41;
- *     .clientId&#40;clientId&#41; &#47;&#47; specify client id of user-assigned managed identity.
+ * TokenCredential managedIdentityCredentialUserAssigned = new ManagedIdentityCredentialBuilder&#40;&#41;.clientId&#40;
+ *         clientId&#41; &#47;&#47; specify client id of user-assigned managed identity.
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.managedidentitycredential.userassigned.construct -->
@@ -58,11 +60,19 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
 
     private String clientId;
     private String resourceId;
+    private String objectId;
 
     /**
-     * Specifies the client ID of user assigned or system assigned identity.
+     * Constructs an instance of ManagedIdentityCredentialBuilder.
+     */
+    public ManagedIdentityCredentialBuilder() {
+        super();
+    }
+
+    /**
+     * Specifies the client ID of a user-assigned or system-assigned managed identity.
      *
-     * Only one of clientId and resourceId can be specified.
+     * Only one of clientId, resourceId, or objectId can be specified.
      *
      * @param clientId the client ID
      * @return the ManagedIdentityCredentialBuilder itself
@@ -73,9 +83,9 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
-     * Specifies the resource ID of a user assigned or system assigned identity.
+     * Specifies the resource ID of a user-assigned or system-assigned managed identity.
      *
-     * Only one of clientId and resourceId can be specified.
+     * Only one of clientId, resourceId, or objectId can be specified.
      *
      * @param resourceId the resource ID
      * @return the ManagedIdentityCredentialBuilder itself
@@ -86,17 +96,48 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
+     * Specifies the object ID of a user-assigned or system-assigned managed identity.
+     *
+     * Only one of clientId, resourceId, or objectId can be specified.
+     *
+     * @param objectId the object ID
+     * @return the ManagedIdentityCredentialBuilder itself
+     */
+    public ManagedIdentityCredentialBuilder objectId(String objectId) {
+        this.objectId = objectId;
+        return this;
+    }
+
+    /**
+     * Specifies the ExecutorService to be used to execute the authentication requests.
+     * Developer is responsible for maintaining the lifecycle of the ExecutorService.
+     *
+     * <p>
+     * If this is not configured, the {@link com.azure.core.util.SharedExecutorService} will be used which is
+     * also shared with other SDK libraries. If there are many concurrent SDK tasks occurring, authentication
+     * requests might starve and configuring a separate executor service should be considered.
+     * </p>
+     *
+     * <p> The executor service and can be safely shutdown if the TokenCredential is no longer being used by the
+     * Azure SDK clients and should be shutdown before the application exits. </p>
+     *
+     * @param executorService the executor service to use for executing authentication requests.
+     * @return the ManagedIdentityCredentialBuilder itself
+     */
+    public ManagedIdentityCredentialBuilder executorService(ExecutorService executorService) {
+        this.identityClientOptions.setExecutorService(executorService);
+        return this;
+    }
+
+    /**
      * Creates a new {@link ManagedIdentityCredential} with the current configurations.
      *
      * @return a {@link ManagedIdentityCredential} with the current configurations.
      * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public ManagedIdentityCredential build() {
-        if (clientId != null && resourceId != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Only one of clientId and resourceId can be specified."));
-        }
+        ValidationUtil.validateManagedIdentityIdParams(clientId, resourceId, objectId, LOGGER);
 
-        return new ManagedIdentityCredential(clientId, resourceId, identityClientOptions);
+        return new ManagedIdentityCredential(clientId, resourceId, objectId, identityClientOptions);
     }
 }

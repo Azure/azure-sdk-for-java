@@ -4,26 +4,27 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-/** Samples for RoleAssignmentScheduleRequests Cancel. */
+/**
+ * Samples for RoleAssignmentScheduleRequests Cancel.
+ */
 public final class RoleAssignmentScheduleRequestsCancelSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/CancelRoleAssignmentScheduleRequestByName.json
+     * x-ms-original-file:
+     * specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/
+     * CancelRoleAssignmentScheduleRequestByName.json
      */
     /**
      * Sample code: CancelRoleAssignmentScheduleRequestByName.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cancelRoleAssignmentScheduleRequestByName(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .accessManagement()
+        azure.accessManagement()
             .roleAssignments()
             .manager()
             .roleServiceClient()
             .getRoleAssignmentScheduleRequests()
-            .cancelWithResponse(
-                "providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f",
-                "fea7a502-9a96-4806-a26f-eee560e52045",
-                com.azure.core.util.Context.NONE);
+            .cancelWithResponse("providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f",
+                "fea7a502-9a96-4806-a26f-eee560e52045", com.azure.core.util.Context.NONE);
     }
 }

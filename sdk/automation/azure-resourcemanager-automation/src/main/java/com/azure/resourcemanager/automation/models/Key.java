@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Automation key which is used to register a DSC Node. */
+/**
+ * Automation key which is used to register a DSC Node.
+ */
 @Immutable
-public final class Key {
+public final class Key implements JsonSerializable<Key> {
     /*
      * Automation key name.
      */
-    @JsonProperty(value = "KeyName", access = JsonProperty.Access.WRITE_ONLY)
     private AutomationKeyName keyName;
 
     /*
      * Automation key permissions.
      */
-    @JsonProperty(value = "Permissions", access = JsonProperty.Access.WRITE_ONLY)
     private AutomationKeyPermissions permissions;
 
     /*
      * Value of the Automation Key used for registration.
      */
-    @JsonProperty(value = "Value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**
+     * Creates an instance of Key class.
+     */
+    public Key() {
+    }
+
+    /**
      * Get the keyName property: Automation key name.
-     *
+     * 
      * @return the keyName value.
      */
     public AutomationKeyName keyName() {
@@ -39,7 +48,7 @@ public final class Key {
 
     /**
      * Get the permissions property: Automation key permissions.
-     *
+     * 
      * @return the permissions value.
      */
     public AutomationKeyPermissions permissions() {
@@ -48,7 +57,7 @@ public final class Key {
 
     /**
      * Get the value property: Value of the Automation Key used for registration.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,9 +66,48 @@ public final class Key {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Key from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Key if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Key.
+     */
+    public static Key fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Key deserializedKey = new Key();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("KeyName".equals(fieldName)) {
+                    deserializedKey.keyName = AutomationKeyName.fromString(reader.getString());
+                } else if ("Permissions".equals(fieldName)) {
+                    deserializedKey.permissions = AutomationKeyPermissions.fromString(reader.getString());
+                } else if ("Value".equals(fieldName)) {
+                    deserializedKey.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKey;
+        });
     }
 }

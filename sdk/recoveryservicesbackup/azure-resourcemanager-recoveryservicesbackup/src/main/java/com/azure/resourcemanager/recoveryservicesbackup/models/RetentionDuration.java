@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Retention duration. */
+/**
+ * Retention duration.
+ */
 @Fluent
-public final class RetentionDuration {
+public final class RetentionDuration implements JsonSerializable<RetentionDuration> {
     /*
      * Count of duration types. Retention duration is obtained by the counting the duration type Count times.
      * For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * Retention duration type of retention policy.
      */
-    @JsonProperty(value = "durationType")
     private RetentionDurationType durationType;
 
-    /** Creates an instance of RetentionDuration class. */
+    /**
+     * Creates an instance of RetentionDuration class.
+     */
     public RetentionDuration() {
     }
 
     /**
      * Get the count property: Count of duration types. Retention duration is obtained by the counting the duration type
-     * Count times. For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
-     *
+     * Count times.
+     * For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -39,8 +46,9 @@ public final class RetentionDuration {
 
     /**
      * Set the count property: Count of duration types. Retention duration is obtained by the counting the duration type
-     * Count times. For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
-     *
+     * Count times.
+     * For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
+     * 
      * @param count the count value to set.
      * @return the RetentionDuration object itself.
      */
@@ -51,7 +59,7 @@ public final class RetentionDuration {
 
     /**
      * Get the durationType property: Retention duration type of retention policy.
-     *
+     * 
      * @return the durationType value.
      */
     public RetentionDurationType durationType() {
@@ -60,7 +68,7 @@ public final class RetentionDuration {
 
     /**
      * Set the durationType property: Retention duration type of retention policy.
-     *
+     * 
      * @param durationType the durationType value to set.
      * @return the RetentionDuration object itself.
      */
@@ -71,9 +79,48 @@ public final class RetentionDuration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("durationType", this.durationType == null ? null : this.durationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RetentionDuration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RetentionDuration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RetentionDuration.
+     */
+    public static RetentionDuration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RetentionDuration deserializedRetentionDuration = new RetentionDuration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedRetentionDuration.count = reader.getNullable(JsonReader::getInt);
+                } else if ("durationType".equals(fieldName)) {
+                    deserializedRetentionDuration.durationType = RetentionDurationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRetentionDuration;
+        });
     }
 }

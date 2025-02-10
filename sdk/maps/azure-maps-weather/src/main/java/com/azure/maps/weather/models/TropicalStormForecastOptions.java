@@ -17,6 +17,7 @@ public final class TropicalStormForecastOptions {
 
     /**
      * TropicalStormForecastOptions constructor
+     *
      * @param year Year of the cyclone(s).
      * @param basinId Basin identifier.
      * @param governmentStormId Government storm Id.
@@ -29,6 +30,7 @@ public final class TropicalStormForecastOptions {
 
     /**
      * Get year of the cyclone(s) as integer
+     *
      * @return Year of the cyclone(s).
      */
     public Integer getYear() {
@@ -37,6 +39,7 @@ public final class TropicalStormForecastOptions {
 
     /**
      * Get basin identifier
+     *
      * @return basin identifier
      */
     public BasinId getBasinId() {
@@ -45,6 +48,7 @@ public final class TropicalStormForecastOptions {
 
     /**
      * Get government storm Id.
+     *
      * @return Government storm Id.
      */
     public Integer getGovernmentStormId() {
@@ -53,6 +57,7 @@ public final class TropicalStormForecastOptions {
 
     /**
      * Get WeatherDataUnit
+     *
      * @return WeatherDataUnit - specifies to return the data in either metric units or imperial units. Default value is metric.
      */
     public WeatherDataUnit getUnit() {
@@ -61,6 +66,7 @@ public final class TropicalStormForecastOptions {
 
     /**
      * Get includeDetails
+     *
      * @return includeDetails - when true, wind radii summary data is included in the response.
      */
     public Boolean getIncludeDetails() {
@@ -69,8 +75,9 @@ public final class TropicalStormForecastOptions {
 
     /**
      * Get includeGeometricDetails
+     *
      * @return getIncludeGeometricDetails - when true, wind radii summary data and geoJSON details are included in the
-     *     response.
+     * response.
      */
     public Boolean getIncludeGeometricDetails() {
         return this.includeGeometricDetails;
@@ -78,6 +85,7 @@ public final class TropicalStormForecastOptions {
 
     /**
      * Get includeWindowsGeometry
+     *
      * @return includeWindowGeometry - When true, window geometry data (geoJSON) is included in the response.
      */
     public Boolean getIncludeWindowGeometry() {
@@ -85,6 +93,8 @@ public final class TropicalStormForecastOptions {
     }
 
     /**
+     * Set year of the cyclone(s)
+     *
      * @param year Year of the cyclone(s).
      * @return TropicalStormForecastOptions
      */
@@ -94,6 +104,8 @@ public final class TropicalStormForecastOptions {
     }
 
     /**
+     * Set basin identifier
+     *
      * @param basinId Basin identifier.
      * @return TropicalStormForecastOptions
      */
@@ -103,6 +115,8 @@ public final class TropicalStormForecastOptions {
     }
 
     /**
+     * Set government storm Id.
+     *
      * @param governmentStormId Government storm Id.
      * @return TropicalStormForecastOptions
      */
@@ -112,6 +126,8 @@ public final class TropicalStormForecastOptions {
     }
 
     /**
+     * Set WeatherDataUnit
+     *
      * @param unit Specifies to return the data in either metric units or imperial units. Default value is metric.
      * @return TropicalStormForecastOptions
      */
@@ -121,6 +137,8 @@ public final class TropicalStormForecastOptions {
     }
 
     /**
+     * Set includeDetails
+     *
      * @param includeDetails When true, wind radii summary data is included in the response.
      * @return TropicalStormForecastOptions
      */
@@ -130,8 +148,10 @@ public final class TropicalStormForecastOptions {
     }
 
     /**
+     * Set includeGeometricDetails
+     *
      * @param includeGeometricDetails When true, wind radii summary data and geoJSON details are included in the
-     *     response.
+     * response.
      * @return TropicalStormForecastOptions
      */
     public TropicalStormForecastOptions setIncludeGeometricDetails(Boolean includeGeometricDetails) {
@@ -140,6 +160,8 @@ public final class TropicalStormForecastOptions {
     }
 
     /**
+     * Set includeWindowsGeometry
+     *
      * @param includeWindowGeometry When true, window geometry data (geoJSON) is included in the response.
      * @return TropicalStormForecastOptions
      */

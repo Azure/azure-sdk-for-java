@@ -79,8 +79,7 @@ public abstract class AbstractTelemetryBuilder {
             // TODO (trask) log
             return;
         }
-        getProperties()
-            .put(key, TelemetryTruncation.truncatePropertyValue(value, MAX_PROPERTY_VALUE_LENGTH, key));
+        getProperties().put(key, TelemetryTruncation.truncatePropertyValue(value, MAX_PROPERTY_VALUE_LENGTH, key));
     }
 
     public TelemetryItem build() {

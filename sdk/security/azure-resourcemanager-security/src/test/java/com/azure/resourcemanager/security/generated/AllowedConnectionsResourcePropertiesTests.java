@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.AllowedConnectionsResour
 public final class AllowedConnectionsResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllowedConnectionsResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"calculatedDateTime\":\"2021-07-31T17:06:26Z\",\"connectableResources\":[{\"id\":\"eekpndz\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"qmeqwigpibudqwyx\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"mzznrtffyaqitmhh\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"hvseufuqyrx\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]}]}")
-                .toObject(AllowedConnectionsResourceProperties.class);
+        AllowedConnectionsResourceProperties model = BinaryData.fromString(
+            "{\"calculatedDateTime\":\"2021-03-30T12:46:09Z\",\"connectableResources\":[{\"id\":\"sdszue\",\"inboundConnectedResources\":[{\"connectedResourceId\":\"zkfzbeyv\",\"tcpPorts\":\"qi\",\"udpPorts\":\"invkjjxdxrbuu\"},{\"connectedResourceId\":\"clewyhm\",\"tcpPorts\":\"paztzpofncck\",\"udpPorts\":\"fz\"}],\"outboundConnectedResources\":[{\"connectedResourceId\":\"xbuy\",\"tcpPorts\":\"xzfe\",\"udpPorts\":\"tpp\"}]},{\"id\":\"o\",\"inboundConnectedResources\":[{\"connectedResourceId\":\"jaltolmnc\",\"tcpPorts\":\"obqwcsdbnwdcfh\",\"udpPorts\":\"qdpfuvglsbjjca\"}],\"outboundConnectedResources\":[{\"connectedResourceId\":\"vtvudutncormr\",\"tcpPorts\":\"qtvcofudflvkgj\",\"udpPorts\":\"gdknnqv\"},{\"connectedResourceId\":\"znqntoru\",\"tcpPorts\":\"gsahmkycgrauw\",\"udpPorts\":\"etaebu\"}]}]}")
+            .toObject(AllowedConnectionsResourceProperties.class);
     }
 
     @org.junit.jupiter.api.Test

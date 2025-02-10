@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The binding properties associated with a JavaScript function. */
+/**
+ * The binding properties associated with a JavaScript function.
+ */
 @Fluent
-public final class JavaScriptFunctionBindingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JavaScriptFunctionBindingProperties.class);
-
+public final class JavaScriptFunctionBindingProperties
+    implements JsonSerializable<JavaScriptFunctionBindingProperties> {
     /*
-     * The JavaScript code containing a single function definition. For
-     * example: 'function (x, y) { return x + y; }'
+     * The JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'
      */
-    @JsonProperty(value = "script")
     private String script;
+
+    /**
+     * Creates an instance of JavaScriptFunctionBindingProperties class.
+     */
+    public JavaScriptFunctionBindingProperties() {
+    }
 
     /**
      * Get the script property: The JavaScript code containing a single function definition. For example: 'function (x,
      * y) { return x + y; }'.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -34,7 +41,7 @@ public final class JavaScriptFunctionBindingProperties {
     /**
      * Set the script property: The JavaScript code containing a single function definition. For example: 'function (x,
      * y) { return x + y; }'.
-     *
+     * 
      * @param script the script value to set.
      * @return the JavaScriptFunctionBindingProperties object itself.
      */
@@ -45,9 +52,46 @@ public final class JavaScriptFunctionBindingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("script", this.script);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JavaScriptFunctionBindingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JavaScriptFunctionBindingProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JavaScriptFunctionBindingProperties.
+     */
+    public static JavaScriptFunctionBindingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JavaScriptFunctionBindingProperties deserializedJavaScriptFunctionBindingProperties
+                = new JavaScriptFunctionBindingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("script".equals(fieldName)) {
+                    deserializedJavaScriptFunctionBindingProperties.script = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJavaScriptFunctionBindingProperties;
+        });
     }
 }

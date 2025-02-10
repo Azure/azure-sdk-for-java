@@ -5,116 +5,110 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Recovery plan properties. */
+/**
+ * Recovery plan properties.
+ */
 @Fluent
-public final class RecoveryPlanProperties {
+public final class RecoveryPlanProperties implements JsonSerializable<RecoveryPlanProperties> {
     /*
      * The friendly name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The primary fabric Id.
      */
-    @JsonProperty(value = "primaryFabricId")
     private String primaryFabricId;
 
     /*
      * The primary fabric friendly name.
      */
-    @JsonProperty(value = "primaryFabricFriendlyName")
     private String primaryFabricFriendlyName;
 
     /*
      * The recovery fabric Id.
      */
-    @JsonProperty(value = "recoveryFabricId")
     private String recoveryFabricId;
 
     /*
      * The recovery fabric friendly name.
      */
-    @JsonProperty(value = "recoveryFabricFriendlyName")
     private String recoveryFabricFriendlyName;
 
     /*
      * The failover deployment model.
      */
-    @JsonProperty(value = "failoverDeploymentModel")
     private String failoverDeploymentModel;
 
     /*
      * The list of replication providers.
      */
-    @JsonProperty(value = "replicationProviders")
     private List<String> replicationProviders;
 
     /*
      * The list of allowed operations.
      */
-    @JsonProperty(value = "allowedOperations")
     private List<String> allowedOperations;
 
     /*
      * The start time of the last planned failover.
      */
-    @JsonProperty(value = "lastPlannedFailoverTime")
     private OffsetDateTime lastPlannedFailoverTime;
 
     /*
      * The start time of the last unplanned failover.
      */
-    @JsonProperty(value = "lastUnplannedFailoverTime")
     private OffsetDateTime lastUnplannedFailoverTime;
 
     /*
      * The start time of the last test failover.
      */
-    @JsonProperty(value = "lastTestFailoverTime")
     private OffsetDateTime lastTestFailoverTime;
 
     /*
      * The current scenario details.
      */
-    @JsonProperty(value = "currentScenario")
     private CurrentScenarioDetails currentScenario;
 
     /*
      * The recovery plan status.
      */
-    @JsonProperty(value = "currentScenarioStatus")
     private String currentScenarioStatus;
 
     /*
      * The recovery plan status description.
      */
-    @JsonProperty(value = "currentScenarioStatusDescription")
     private String currentScenarioStatusDescription;
 
     /*
      * The recovery plan groups.
      */
-    @JsonProperty(value = "groups")
     private List<RecoveryPlanGroup> groups;
 
     /*
      * The provider id and provider specific details.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private List<RecoveryPlanProviderSpecificDetails> providerSpecificDetails;
 
-    /** Creates an instance of RecoveryPlanProperties class. */
+    /**
+     * Creates an instance of RecoveryPlanProperties class.
+     */
     public RecoveryPlanProperties() {
     }
 
     /**
      * Get the friendlyName property: The friendly name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -123,7 +117,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the friendlyName property: The friendly name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -134,7 +128,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the primaryFabricId property: The primary fabric Id.
-     *
+     * 
      * @return the primaryFabricId value.
      */
     public String primaryFabricId() {
@@ -143,7 +137,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the primaryFabricId property: The primary fabric Id.
-     *
+     * 
      * @param primaryFabricId the primaryFabricId value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -154,7 +148,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the primaryFabricFriendlyName property: The primary fabric friendly name.
-     *
+     * 
      * @return the primaryFabricFriendlyName value.
      */
     public String primaryFabricFriendlyName() {
@@ -163,7 +157,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the primaryFabricFriendlyName property: The primary fabric friendly name.
-     *
+     * 
      * @param primaryFabricFriendlyName the primaryFabricFriendlyName value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -174,7 +168,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the recoveryFabricId property: The recovery fabric Id.
-     *
+     * 
      * @return the recoveryFabricId value.
      */
     public String recoveryFabricId() {
@@ -183,7 +177,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the recoveryFabricId property: The recovery fabric Id.
-     *
+     * 
      * @param recoveryFabricId the recoveryFabricId value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -194,7 +188,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the recoveryFabricFriendlyName property: The recovery fabric friendly name.
-     *
+     * 
      * @return the recoveryFabricFriendlyName value.
      */
     public String recoveryFabricFriendlyName() {
@@ -203,7 +197,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the recoveryFabricFriendlyName property: The recovery fabric friendly name.
-     *
+     * 
      * @param recoveryFabricFriendlyName the recoveryFabricFriendlyName value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -214,7 +208,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the failoverDeploymentModel property: The failover deployment model.
-     *
+     * 
      * @return the failoverDeploymentModel value.
      */
     public String failoverDeploymentModel() {
@@ -223,7 +217,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the failoverDeploymentModel property: The failover deployment model.
-     *
+     * 
      * @param failoverDeploymentModel the failoverDeploymentModel value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -234,7 +228,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the replicationProviders property: The list of replication providers.
-     *
+     * 
      * @return the replicationProviders value.
      */
     public List<String> replicationProviders() {
@@ -243,7 +237,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the replicationProviders property: The list of replication providers.
-     *
+     * 
      * @param replicationProviders the replicationProviders value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -254,7 +248,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the allowedOperations property: The list of allowed operations.
-     *
+     * 
      * @return the allowedOperations value.
      */
     public List<String> allowedOperations() {
@@ -263,7 +257,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the allowedOperations property: The list of allowed operations.
-     *
+     * 
      * @param allowedOperations the allowedOperations value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -274,7 +268,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the lastPlannedFailoverTime property: The start time of the last planned failover.
-     *
+     * 
      * @return the lastPlannedFailoverTime value.
      */
     public OffsetDateTime lastPlannedFailoverTime() {
@@ -283,7 +277,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the lastPlannedFailoverTime property: The start time of the last planned failover.
-     *
+     * 
      * @param lastPlannedFailoverTime the lastPlannedFailoverTime value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -294,7 +288,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the lastUnplannedFailoverTime property: The start time of the last unplanned failover.
-     *
+     * 
      * @return the lastUnplannedFailoverTime value.
      */
     public OffsetDateTime lastUnplannedFailoverTime() {
@@ -303,7 +297,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the lastUnplannedFailoverTime property: The start time of the last unplanned failover.
-     *
+     * 
      * @param lastUnplannedFailoverTime the lastUnplannedFailoverTime value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -314,7 +308,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the lastTestFailoverTime property: The start time of the last test failover.
-     *
+     * 
      * @return the lastTestFailoverTime value.
      */
     public OffsetDateTime lastTestFailoverTime() {
@@ -323,7 +317,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the lastTestFailoverTime property: The start time of the last test failover.
-     *
+     * 
      * @param lastTestFailoverTime the lastTestFailoverTime value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -334,7 +328,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the currentScenario property: The current scenario details.
-     *
+     * 
      * @return the currentScenario value.
      */
     public CurrentScenarioDetails currentScenario() {
@@ -343,7 +337,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the currentScenario property: The current scenario details.
-     *
+     * 
      * @param currentScenario the currentScenario value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -354,7 +348,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the currentScenarioStatus property: The recovery plan status.
-     *
+     * 
      * @return the currentScenarioStatus value.
      */
     public String currentScenarioStatus() {
@@ -363,7 +357,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the currentScenarioStatus property: The recovery plan status.
-     *
+     * 
      * @param currentScenarioStatus the currentScenarioStatus value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -374,7 +368,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the currentScenarioStatusDescription property: The recovery plan status description.
-     *
+     * 
      * @return the currentScenarioStatusDescription value.
      */
     public String currentScenarioStatusDescription() {
@@ -383,7 +377,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the currentScenarioStatusDescription property: The recovery plan status description.
-     *
+     * 
      * @param currentScenarioStatusDescription the currentScenarioStatusDescription value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -394,7 +388,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the groups property: The recovery plan groups.
-     *
+     * 
      * @return the groups value.
      */
     public List<RecoveryPlanGroup> groups() {
@@ -403,7 +397,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the groups property: The recovery plan groups.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the RecoveryPlanProperties object itself.
      */
@@ -414,7 +408,7 @@ public final class RecoveryPlanProperties {
 
     /**
      * Get the providerSpecificDetails property: The provider id and provider specific details.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public List<RecoveryPlanProviderSpecificDetails> providerSpecificDetails() {
@@ -423,19 +417,19 @@ public final class RecoveryPlanProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider id and provider specific details.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the RecoveryPlanProperties object itself.
      */
-    public RecoveryPlanProperties withProviderSpecificDetails(
-        List<RecoveryPlanProviderSpecificDetails> providerSpecificDetails) {
+    public RecoveryPlanProperties
+        withProviderSpecificDetails(List<RecoveryPlanProviderSpecificDetails> providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -448,5 +442,106 @@ public final class RecoveryPlanProperties {
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("primaryFabricId", this.primaryFabricId);
+        jsonWriter.writeStringField("primaryFabricFriendlyName", this.primaryFabricFriendlyName);
+        jsonWriter.writeStringField("recoveryFabricId", this.recoveryFabricId);
+        jsonWriter.writeStringField("recoveryFabricFriendlyName", this.recoveryFabricFriendlyName);
+        jsonWriter.writeStringField("failoverDeploymentModel", this.failoverDeploymentModel);
+        jsonWriter.writeArrayField("replicationProviders", this.replicationProviders,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("allowedOperations", this.allowedOperations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("lastPlannedFailoverTime",
+            this.lastPlannedFailoverTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastPlannedFailoverTime));
+        jsonWriter.writeStringField("lastUnplannedFailoverTime",
+            this.lastUnplannedFailoverTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUnplannedFailoverTime));
+        jsonWriter.writeStringField("lastTestFailoverTime",
+            this.lastTestFailoverTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastTestFailoverTime));
+        jsonWriter.writeJsonField("currentScenario", this.currentScenario);
+        jsonWriter.writeStringField("currentScenarioStatus", this.currentScenarioStatus);
+        jsonWriter.writeStringField("currentScenarioStatusDescription", this.currentScenarioStatusDescription);
+        jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("providerSpecificDetails", this.providerSpecificDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPlanProperties.
+     */
+    public static RecoveryPlanProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanProperties deserializedRecoveryPlanProperties = new RecoveryPlanProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.friendlyName = reader.getString();
+                } else if ("primaryFabricId".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.primaryFabricId = reader.getString();
+                } else if ("primaryFabricFriendlyName".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.primaryFabricFriendlyName = reader.getString();
+                } else if ("recoveryFabricId".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.recoveryFabricId = reader.getString();
+                } else if ("recoveryFabricFriendlyName".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.recoveryFabricFriendlyName = reader.getString();
+                } else if ("failoverDeploymentModel".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.failoverDeploymentModel = reader.getString();
+                } else if ("replicationProviders".equals(fieldName)) {
+                    List<String> replicationProviders = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRecoveryPlanProperties.replicationProviders = replicationProviders;
+                } else if ("allowedOperations".equals(fieldName)) {
+                    List<String> allowedOperations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRecoveryPlanProperties.allowedOperations = allowedOperations;
+                } else if ("lastPlannedFailoverTime".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.lastPlannedFailoverTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUnplannedFailoverTime".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.lastUnplannedFailoverTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastTestFailoverTime".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.lastTestFailoverTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentScenario".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.currentScenario = CurrentScenarioDetails.fromJson(reader);
+                } else if ("currentScenarioStatus".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.currentScenarioStatus = reader.getString();
+                } else if ("currentScenarioStatusDescription".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.currentScenarioStatusDescription = reader.getString();
+                } else if ("groups".equals(fieldName)) {
+                    List<RecoveryPlanGroup> groups = reader.readArray(reader1 -> RecoveryPlanGroup.fromJson(reader1));
+                    deserializedRecoveryPlanProperties.groups = groups;
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    List<RecoveryPlanProviderSpecificDetails> providerSpecificDetails
+                        = reader.readArray(reader1 -> RecoveryPlanProviderSpecificDetails.fromJson(reader1));
+                    deserializedRecoveryPlanProperties.providerSpecificDetails = providerSpecificDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanProperties;
+        });
     }
 }

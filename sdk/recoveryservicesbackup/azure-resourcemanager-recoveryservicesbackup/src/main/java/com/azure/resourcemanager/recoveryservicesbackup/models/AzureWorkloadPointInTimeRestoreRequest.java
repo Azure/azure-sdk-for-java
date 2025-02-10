@@ -5,30 +5,52 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
-/** AzureWorkload SAP Hana -specific restore. Specifically for PointInTime/Log restore. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureWorkloadPointInTimeRestoreRequest")
+/**
+ * AzureWorkload SAP Hana -specific restore. Specifically for PointInTime/Log restore.
+ */
 @Fluent
 public final class AzureWorkloadPointInTimeRestoreRequest extends AzureWorkloadRestoreRequest {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "AzureWorkloadPointInTimeRestoreRequest";
+
+    /*
      * PointInTime value
      */
-    @JsonProperty(value = "pointInTime")
     private OffsetDateTime pointInTime;
 
-    /** Creates an instance of AzureWorkloadPointInTimeRestoreRequest class. */
+    /**
+     * Creates an instance of AzureWorkloadPointInTimeRestoreRequest class.
+     */
     public AzureWorkloadPointInTimeRestoreRequest() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the pointInTime property: PointInTime value.
-     *
+     * 
      * @return the pointInTime value.
      */
     public OffsetDateTime pointInTime() {
@@ -37,7 +59,7 @@ public final class AzureWorkloadPointInTimeRestoreRequest extends AzureWorkloadR
 
     /**
      * Set the pointInTime property: PointInTime value.
-     *
+     * 
      * @param pointInTime the pointInTime value to set.
      * @return the AzureWorkloadPointInTimeRestoreRequest object itself.
      */
@@ -46,42 +68,83 @@ public final class AzureWorkloadPointInTimeRestoreRequest extends AzureWorkloadR
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withRecoveryType(RecoveryType recoveryType) {
         super.withRecoveryType(recoveryType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withPropertyBag(Map<String, String> propertyBag) {
         super.withPropertyBag(propertyBag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withTargetInfo(TargetRestoreInfo targetInfo) {
         super.withTargetInfo(targetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadPointInTimeRestoreRequest withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadPointInTimeRestoreRequest
+        withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails userAssignedManagedIdentityDetails) {
+        super.withUserAssignedManagedIdentityDetails(userAssignedManagedIdentityDetails);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadPointInTimeRestoreRequest
+        withSnapshotRestoreParameters(SnapshotRestoreParameters snapshotRestoreParameters) {
+        super.withSnapshotRestoreParameters(snapshotRestoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
@@ -89,12 +152,111 @@ public final class AzureWorkloadPointInTimeRestoreRequest extends AzureWorkloadR
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadPointInTimeRestoreRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (targetInfo() != null) {
+            targetInfo().validate();
+        }
+        if (userAssignedManagedIdentityDetails() != null) {
+            userAssignedManagedIdentityDetails().validate();
+        }
+        if (snapshotRestoreParameters() != null) {
+            snapshotRestoreParameters().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("recoveryType", recoveryType() == null ? null : recoveryType().toString());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeMapField("propertyBag", propertyBag(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("targetInfo", targetInfo());
+        jsonWriter.writeStringField("recoveryMode", recoveryMode() == null ? null : recoveryMode().toString());
+        jsonWriter.writeStringField("targetResourceGroupName", targetResourceGroupName());
+        jsonWriter.writeJsonField("userAssignedManagedIdentityDetails", userAssignedManagedIdentityDetails());
+        jsonWriter.writeJsonField("snapshotRestoreParameters", snapshotRestoreParameters());
+        jsonWriter.writeStringField("targetVirtualMachineId", targetVirtualMachineId());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("pointInTime",
+            this.pointInTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.pointInTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWorkloadPointInTimeRestoreRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWorkloadPointInTimeRestoreRequest if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWorkloadPointInTimeRestoreRequest.
+     */
+    public static AzureWorkloadPointInTimeRestoreRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWorkloadPointInTimeRestoreRequest deserializedAzureWorkloadPointInTimeRestoreRequest
+                = new AzureWorkloadPointInTimeRestoreRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureWorkloadPointInTimeRestoreRequest
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("recoveryType".equals(fieldName)) {
+                    deserializedAzureWorkloadPointInTimeRestoreRequest
+                        .withRecoveryType(RecoveryType.fromString(reader.getString()));
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureWorkloadPointInTimeRestoreRequest.withSourceResourceId(reader.getString());
+                } else if ("propertyBag".equals(fieldName)) {
+                    Map<String, String> propertyBag = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureWorkloadPointInTimeRestoreRequest.withPropertyBag(propertyBag);
+                } else if ("targetInfo".equals(fieldName)) {
+                    deserializedAzureWorkloadPointInTimeRestoreRequest
+                        .withTargetInfo(TargetRestoreInfo.fromJson(reader));
+                } else if ("recoveryMode".equals(fieldName)) {
+                    deserializedAzureWorkloadPointInTimeRestoreRequest
+                        .withRecoveryMode(RecoveryMode.fromString(reader.getString()));
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedAzureWorkloadPointInTimeRestoreRequest.withTargetResourceGroupName(reader.getString());
+                } else if ("userAssignedManagedIdentityDetails".equals(fieldName)) {
+                    deserializedAzureWorkloadPointInTimeRestoreRequest
+                        .withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails.fromJson(reader));
+                } else if ("snapshotRestoreParameters".equals(fieldName)) {
+                    deserializedAzureWorkloadPointInTimeRestoreRequest
+                        .withSnapshotRestoreParameters(SnapshotRestoreParameters.fromJson(reader));
+                } else if ("targetVirtualMachineId".equals(fieldName)) {
+                    deserializedAzureWorkloadPointInTimeRestoreRequest.withTargetVirtualMachineId(reader.getString());
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureWorkloadPointInTimeRestoreRequest.objectType = reader.getString();
+                } else if ("pointInTime".equals(fieldName)) {
+                    deserializedAzureWorkloadPointInTimeRestoreRequest.pointInTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWorkloadPointInTimeRestoreRequest;
+        });
     }
 }

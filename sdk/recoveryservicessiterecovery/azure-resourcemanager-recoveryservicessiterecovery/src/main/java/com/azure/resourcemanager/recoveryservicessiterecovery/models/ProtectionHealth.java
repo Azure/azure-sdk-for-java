@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The health. */
+/**
+ * The health.
+ */
 public final class ProtectionHealth extends ExpandableStringEnum<ProtectionHealth> {
-    /** Static value None for ProtectionHealth. */
+    /**
+     * Static value None for ProtectionHealth.
+     */
     public static final ProtectionHealth NONE = fromString("None");
 
-    /** Static value Normal for ProtectionHealth. */
+    /**
+     * Static value Normal for ProtectionHealth.
+     */
     public static final ProtectionHealth NORMAL = fromString("Normal");
 
-    /** Static value Warning for ProtectionHealth. */
+    /**
+     * Static value Warning for ProtectionHealth.
+     */
     public static final ProtectionHealth WARNING = fromString("Warning");
 
-    /** Static value Critical for ProtectionHealth. */
+    /**
+     * Static value Critical for ProtectionHealth.
+     */
     public static final ProtectionHealth CRITICAL = fromString("Critical");
 
     /**
      * Creates a new instance of ProtectionHealth value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ProtectionHealth extends ExpandableStringEnum<ProtectionHealt
 
     /**
      * Creates or finds a ProtectionHealth from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProtectionHealth.
      */
-    @JsonCreator
     public static ProtectionHealth fromString(String name) {
         return fromString(name, ProtectionHealth.class);
     }
 
     /**
      * Gets known ProtectionHealth values.
-     *
+     * 
      * @return known ProtectionHealth values.
      */
     public static Collection<ProtectionHealth> values() {

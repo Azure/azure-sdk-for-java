@@ -6,31 +6,38 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The JitNetworkAccessRequestVirtualMachine model. */
+/**
+ * The JitNetworkAccessRequestVirtualMachine model.
+ */
 @Fluent
-public final class JitNetworkAccessRequestVirtualMachine {
+public final class JitNetworkAccessRequestVirtualMachine
+    implements JsonSerializable<JitNetworkAccessRequestVirtualMachine> {
     /*
      * Resource ID of the virtual machine that is linked to this policy
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The ports that were opened for the virtual machine
      */
-    @JsonProperty(value = "ports", required = true)
     private List<JitNetworkAccessRequestPort> ports;
 
-    /** Creates an instance of JitNetworkAccessRequestVirtualMachine class. */
+    /**
+     * Creates an instance of JitNetworkAccessRequestVirtualMachine class.
+     */
     public JitNetworkAccessRequestVirtualMachine() {
     }
 
     /**
      * Get the id property: Resource ID of the virtual machine that is linked to this policy.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -39,7 +46,7 @@ public final class JitNetworkAccessRequestVirtualMachine {
 
     /**
      * Set the id property: Resource ID of the virtual machine that is linked to this policy.
-     *
+     * 
      * @param id the id value to set.
      * @return the JitNetworkAccessRequestVirtualMachine object itself.
      */
@@ -50,7 +57,7 @@ public final class JitNetworkAccessRequestVirtualMachine {
 
     /**
      * Get the ports property: The ports that were opened for the virtual machine.
-     *
+     * 
      * @return the ports value.
      */
     public List<JitNetworkAccessRequestPort> ports() {
@@ -59,7 +66,7 @@ public final class JitNetworkAccessRequestVirtualMachine {
 
     /**
      * Set the ports property: The ports that were opened for the virtual machine.
-     *
+     * 
      * @param ports the ports value to set.
      * @return the JitNetworkAccessRequestVirtualMachine object itself.
      */
@@ -70,25 +77,66 @@ public final class JitNetworkAccessRequestVirtualMachine {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property id in model JitNetworkAccessRequestVirtualMachine"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model JitNetworkAccessRequestVirtualMachine"));
         }
         if (ports() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ports in model JitNetworkAccessRequestVirtualMachine"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ports in model JitNetworkAccessRequestVirtualMachine"));
         } else {
             ports().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessRequestVirtualMachine.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeArrayField("ports", this.ports, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JitNetworkAccessRequestVirtualMachine from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JitNetworkAccessRequestVirtualMachine if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JitNetworkAccessRequestVirtualMachine.
+     */
+    public static JitNetworkAccessRequestVirtualMachine fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JitNetworkAccessRequestVirtualMachine deserializedJitNetworkAccessRequestVirtualMachine
+                = new JitNetworkAccessRequestVirtualMachine();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJitNetworkAccessRequestVirtualMachine.id = reader.getString();
+                } else if ("ports".equals(fieldName)) {
+                    List<JitNetworkAccessRequestPort> ports
+                        = reader.readArray(reader1 -> JitNetworkAccessRequestPort.fromJson(reader1));
+                    deserializedJitNetworkAccessRequestVirtualMachine.ports = ports;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJitNetworkAccessRequestVirtualMachine;
+        });
+    }
 }

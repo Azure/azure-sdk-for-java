@@ -12,13 +12,16 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterPoolInner;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolUpgrade;
 import com.azure.resourcemanager.hdinsight.containers.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in ClusterPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClusterPoolsClient.
+ */
 public interface ClusterPoolsClient {
     /**
      * Gets a cluster pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param context The context to associate with this operation.
@@ -28,12 +31,12 @@ public interface ClusterPoolsClient {
      * @return a cluster pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterPoolInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterPoolName, Context context);
+    Response<ClusterPoolInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterPoolName,
+        Context context);
 
     /**
      * Gets a cluster pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +49,7 @@ public interface ClusterPoolsClient {
 
     /**
      * Creates or updates a cluster pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterPool The Cluster Pool to create.
@@ -56,12 +59,12 @@ public interface ClusterPoolsClient {
      * @return the {@link SyncPoller} for polling of cluster pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterPoolInner>, ClusterPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterPoolName, ClusterPoolInner clusterPool);
+    SyncPoller<PollResult<ClusterPoolInner>, ClusterPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterPoolName, ClusterPoolInner clusterPool);
 
     /**
      * Creates or updates a cluster pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterPool The Cluster Pool to create.
@@ -72,12 +75,12 @@ public interface ClusterPoolsClient {
      * @return the {@link SyncPoller} for polling of cluster pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterPoolInner>, ClusterPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterPoolName, ClusterPoolInner clusterPool, Context context);
+    SyncPoller<PollResult<ClusterPoolInner>, ClusterPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterPoolName, ClusterPoolInner clusterPool, Context context);
 
     /**
      * Creates or updates a cluster pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterPool The Cluster Pool to create.
@@ -91,7 +94,7 @@ public interface ClusterPoolsClient {
 
     /**
      * Creates or updates a cluster pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterPool The Cluster Pool to create.
@@ -102,12 +105,12 @@ public interface ClusterPoolsClient {
      * @return cluster pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterPoolInner createOrUpdate(
-        String resourceGroupName, String clusterPoolName, ClusterPoolInner clusterPool, Context context);
+    ClusterPoolInner createOrUpdate(String resourceGroupName, String clusterPoolName, ClusterPoolInner clusterPool,
+        Context context);
 
     /**
      * Updates an existing Cluster Pool Tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterPoolTags Parameters supplied to update tags.
@@ -117,12 +120,12 @@ public interface ClusterPoolsClient {
      * @return the {@link SyncPoller} for polling of cluster pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterPoolInner>, ClusterPoolInner> beginUpdateTags(
-        String resourceGroupName, String clusterPoolName, TagsObject clusterPoolTags);
+    SyncPoller<PollResult<ClusterPoolInner>, ClusterPoolInner> beginUpdateTags(String resourceGroupName,
+        String clusterPoolName, TagsObject clusterPoolTags);
 
     /**
      * Updates an existing Cluster Pool Tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterPoolTags Parameters supplied to update tags.
@@ -133,12 +136,12 @@ public interface ClusterPoolsClient {
      * @return the {@link SyncPoller} for polling of cluster pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterPoolInner>, ClusterPoolInner> beginUpdateTags(
-        String resourceGroupName, String clusterPoolName, TagsObject clusterPoolTags, Context context);
+    SyncPoller<PollResult<ClusterPoolInner>, ClusterPoolInner> beginUpdateTags(String resourceGroupName,
+        String clusterPoolName, TagsObject clusterPoolTags, Context context);
 
     /**
      * Updates an existing Cluster Pool Tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterPoolTags Parameters supplied to update tags.
@@ -152,7 +155,7 @@ public interface ClusterPoolsClient {
 
     /**
      * Updates an existing Cluster Pool Tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterPoolTags Parameters supplied to update tags.
@@ -163,12 +166,12 @@ public interface ClusterPoolsClient {
      * @return cluster pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterPoolInner updateTags(
-        String resourceGroupName, String clusterPoolName, TagsObject clusterPoolTags, Context context);
+    ClusterPoolInner updateTags(String resourceGroupName, String clusterPoolName, TagsObject clusterPoolTags,
+        Context context);
 
     /**
      * Deletes a Cluster Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +184,7 @@ public interface ClusterPoolsClient {
 
     /**
      * Deletes a Cluster Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param context The context to associate with this operation.
@@ -195,7 +198,7 @@ public interface ClusterPoolsClient {
 
     /**
      * Deletes a Cluster Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,7 +210,7 @@ public interface ClusterPoolsClient {
 
     /**
      * Deletes a Cluster Pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param context The context to associate with this operation.
@@ -220,7 +223,7 @@ public interface ClusterPoolsClient {
 
     /**
      * Gets the list of Cluster Pools within a Subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Cluster Pools within a Subscription as paginated response with {@link PagedIterable}.
@@ -230,7 +233,7 @@ public interface ClusterPoolsClient {
 
     /**
      * Gets the list of Cluster Pools within a Subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -242,7 +245,7 @@ public interface ClusterPoolsClient {
 
     /**
      * Lists the HDInsight cluster pools under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -254,7 +257,7 @@ public interface ClusterPoolsClient {
 
     /**
      * Lists the HDInsight cluster pools under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,4 +267,66 @@ public interface ClusterPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ClusterPoolInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Upgrade a cluster pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterPoolUpgradeRequest Upgrade a cluster pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cluster pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterPoolInner>, ClusterPoolInner> beginUpgrade(String resourceGroupName,
+        String clusterPoolName, ClusterPoolUpgrade clusterPoolUpgradeRequest);
+
+    /**
+     * Upgrade a cluster pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterPoolUpgradeRequest Upgrade a cluster pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cluster pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterPoolInner>, ClusterPoolInner> beginUpgrade(String resourceGroupName,
+        String clusterPoolName, ClusterPoolUpgrade clusterPoolUpgradeRequest, Context context);
+
+    /**
+     * Upgrade a cluster pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterPoolUpgradeRequest Upgrade a cluster pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterPoolInner upgrade(String resourceGroupName, String clusterPoolName,
+        ClusterPoolUpgrade clusterPoolUpgradeRequest);
+
+    /**
+     * Upgrade a cluster pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterPoolUpgradeRequest Upgrade a cluster pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterPoolInner upgrade(String resourceGroupName, String clusterPoolName,
+        ClusterPoolUpgrade clusterPoolUpgradeRequest, Context context);
 }

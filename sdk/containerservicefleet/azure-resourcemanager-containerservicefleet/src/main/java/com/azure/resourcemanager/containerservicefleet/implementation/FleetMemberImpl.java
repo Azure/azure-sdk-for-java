@@ -81,39 +81,23 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
     }
 
     public FleetMember create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetMembers()
-                .create(
-                    resourceGroupName,
-                    fleetName,
-                    fleetMemberName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .create(resourceGroupName, fleetName, fleetMemberName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public FleetMember create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetMembers()
-                .create(
-                    resourceGroupName,
-                    fleetName,
-                    fleetMemberName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .create(resourceGroupName, fleetName, fleetMemberName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                context);
         return this;
     }
 
-    FleetMemberImpl(
-        String name, com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
+    FleetMemberImpl(String name,
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = new FleetMemberInner();
         this.serviceManager = serviceManager;
         this.fleetMemberName = name;
@@ -128,50 +112,41 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
     }
 
     public FleetMember apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetMembers()
-                .update(resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .update(resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, Context.NONE);
         return this;
     }
 
     public FleetMember apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetMembers()
-                .update(resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .update(resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, context);
         return this;
     }
 
-    FleetMemberImpl(
-        FleetMemberInner innerObject,
+    FleetMemberImpl(FleetMemberInner innerObject,
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fleetName = Utils.getValueFromIdByName(innerObject.id(), "fleets");
-        this.fleetMemberName = Utils.getValueFromIdByName(innerObject.id(), "members");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.fleetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fleets");
+        this.fleetMemberName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "members");
     }
 
     public FleetMember refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetMembers()
-                .getWithResponse(resourceGroupName, fleetName, fleetMemberName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .getWithResponse(resourceGroupName, fleetName, fleetMemberName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FleetMember refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetMembers()
-                .getWithResponse(resourceGroupName, fleetName, fleetMemberName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .getWithResponse(resourceGroupName, fleetName, fleetMemberName, context)
+            .getValue();
         return this;
     }
 

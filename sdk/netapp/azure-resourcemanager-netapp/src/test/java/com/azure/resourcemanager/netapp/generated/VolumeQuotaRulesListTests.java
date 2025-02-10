@@ -17,31 +17,34 @@ public final class VolumeQuotaRulesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Patching\",\"quotaSizeInKiBs\":5649279960979439308,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"bihwqknfdnt\"},\"location\":\"chrdgoihxumwcto\",\"tags\":{\"udfdlwgg\":\"jl\"},\"id\":\"tsbwtovvtgse\",\"name\":\"nqfiufxqknpi\",\"type\":\"gnepttwqmsni\"},{\"properties\":{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":8728192731821949448,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"lpijnkrxfrd\"},\"location\":\"c\",\"tags\":{\"hftwesgog\":\"izzronasxiftozqy\",\"sxkkg\":\"zhonnxkrlgnyhmo\",\"rghxjb\":\"h\"},\"id\":\"hqxvcxgfrpdsofbs\",\"name\":\"rnsvbuswd\",\"type\":\"z\"}]}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":4753379128237183611,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"tsgumhj\"},\"location\":\"ikkx\",\"tags\":{\"vuzlm\":\"olbq\"},\"id\":\"felfktg\",\"name\":\"lcrpw\",\"type\":\"xeznoi\"},{\"properties\":{\"provisioningState\":\"Patching\",\"quotaSizeInKiBs\":336408309015246228,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"nbsazejjoqkag\"},\"location\":\"sxtta\",\"tags\":{\"mkqjj\":\"xnfaazpxdtnk\",\"pyouaibrebqaays\":\"wuenvr\"},\"id\":\"kixqtnqtt\",\"name\":\"zlwfffiakp\",\"type\":\"pqqmted\"}]}")
             .toObject(VolumeQuotaRulesList.class);
-        Assertions.assertEquals("chrdgoihxumwcto", model.value().get(0).location());
-        Assertions.assertEquals("jl", model.value().get(0).tags().get("udfdlwgg"));
-        Assertions.assertEquals(5649279960979439308L, model.value().get(0).quotaSizeInKiBs());
+        Assertions.assertEquals("ikkx", model.value().get(0).location());
+        Assertions.assertEquals("olbq", model.value().get(0).tags().get("vuzlm"));
+        Assertions.assertEquals(4753379128237183611L, model.value().get(0).quotaSizeInKiBs());
         Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.value().get(0).quotaType());
-        Assertions.assertEquals("bihwqknfdnt", model.value().get(0).quotaTarget());
+        Assertions.assertEquals("tsgumhj", model.value().get(0).quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumeQuotaRulesList model = new VolumeQuotaRulesList().withValue(Arrays.asList(
-            new VolumeQuotaRuleInner().withLocation("chrdgoihxumwcto").withTags(mapOf("udfdlwgg", "jl"))
-                .withQuotaSizeInKiBs(5649279960979439308L).withQuotaType(Type.DEFAULT_GROUP_QUOTA)
-                .withQuotaTarget("bihwqknfdnt"),
-            new VolumeQuotaRuleInner().withLocation("c")
-                .withTags(mapOf("hftwesgog", "izzronasxiftozqy", "sxkkg", "zhonnxkrlgnyhmo", "rghxjb", "h"))
-                .withQuotaSizeInKiBs(8728192731821949448L).withQuotaType(Type.INDIVIDUAL_USER_QUOTA)
-                .withQuotaTarget("lpijnkrxfrd")));
+            new VolumeQuotaRuleInner().withLocation("ikkx")
+                .withTags(mapOf("vuzlm", "olbq"))
+                .withQuotaSizeInKiBs(4753379128237183611L)
+                .withQuotaType(Type.DEFAULT_GROUP_QUOTA)
+                .withQuotaTarget("tsgumhj"),
+            new VolumeQuotaRuleInner().withLocation("sxtta")
+                .withTags(mapOf("mkqjj", "xnfaazpxdtnk", "pyouaibrebqaays", "wuenvr"))
+                .withQuotaSizeInKiBs(336408309015246228L)
+                .withQuotaType(Type.DEFAULT_USER_QUOTA)
+                .withQuotaTarget("nbsazejjoqkag")));
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesList.class);
-        Assertions.assertEquals("chrdgoihxumwcto", model.value().get(0).location());
-        Assertions.assertEquals("jl", model.value().get(0).tags().get("udfdlwgg"));
-        Assertions.assertEquals(5649279960979439308L, model.value().get(0).quotaSizeInKiBs());
+        Assertions.assertEquals("ikkx", model.value().get(0).location());
+        Assertions.assertEquals("olbq", model.value().get(0).tags().get("vuzlm"));
+        Assertions.assertEquals(4753379128237183611L, model.value().get(0).quotaSizeInKiBs());
         Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.value().get(0).quotaType());
-        Assertions.assertEquals("bihwqknfdnt", model.value().get(0).quotaTarget());
+        Assertions.assertEquals("tsgumhj", model.value().get(0).quotaTarget());
     }
 
     // Use "Map.of" if available

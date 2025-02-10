@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Information about the restriction where the SKU cannot be used. */
+/**
+ * Information about the restriction where the SKU cannot be used.
+ */
 @Fluent
-public final class ResourceSkuRestrictionInfo {
+public final class ResourceSkuRestrictionInfo implements JsonSerializable<ResourceSkuRestrictionInfo> {
     /*
      * Gets locations where the SKU is restricted
      */
-    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /*
      * Gets list of availability zones where the SKU is restricted.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /**
+     * Creates an instance of ResourceSkuRestrictionInfo class.
+     */
+    public ResourceSkuRestrictionInfo() {
+    }
+
+    /**
      * Get the locations property: Gets locations where the SKU is restricted.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -34,7 +44,7 @@ public final class ResourceSkuRestrictionInfo {
 
     /**
      * Set the locations property: Gets locations where the SKU is restricted.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the ResourceSkuRestrictionInfo object itself.
      */
@@ -45,7 +55,7 @@ public final class ResourceSkuRestrictionInfo {
 
     /**
      * Get the zones property: Gets list of availability zones where the SKU is restricted.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -54,7 +64,7 @@ public final class ResourceSkuRestrictionInfo {
 
     /**
      * Set the zones property: Gets list of availability zones where the SKU is restricted.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ResourceSkuRestrictionInfo object itself.
      */
@@ -65,9 +75,50 @@ public final class ResourceSkuRestrictionInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuRestrictionInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuRestrictionInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSkuRestrictionInfo.
+     */
+    public static ResourceSkuRestrictionInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuRestrictionInfo deserializedResourceSkuRestrictionInfo = new ResourceSkuRestrictionInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceSkuRestrictionInfo.locations = locations;
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceSkuRestrictionInfo.zones = zones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuRestrictionInfo;
+        });
     }
 }

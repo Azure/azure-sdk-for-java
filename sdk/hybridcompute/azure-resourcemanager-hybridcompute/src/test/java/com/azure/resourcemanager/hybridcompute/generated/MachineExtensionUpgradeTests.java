@@ -14,30 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class MachineExtensionUpgradeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MachineExtensionUpgrade model =
-            BinaryData
-                .fromString(
-                    "{\"extensionTargets\":{\"zg\":{\"targetVersion\":\"j\"},\"xongmtsavjcbpwxq\":{\"targetVersion\":\"zmh\"},\"yvxqtayriwwroy\":{\"targetVersion\":\"rknftguvriuhprwm\"},\"mefqsgzvahapjyzh\":{\"targetVersion\":\"exrmcqibycnojvk\"}}}")
-                .toObject(MachineExtensionUpgrade.class);
-        Assertions.assertEquals("j", model.extensionTargets().get("zg").targetVersion());
+        MachineExtensionUpgrade model = BinaryData.fromString(
+            "{\"extensionTargets\":{\"e\":{\"targetVersion\":\"fqka\"},\"wwiftohqkvpuv\":{\"targetVersion\":\"ipfpubji\"},\"ynl\":{\"targetVersion\":\"gplsaknynf\"},\"zihleosjswsr\":{\"targetVersion\":\"huopxodlqiynto\"}}}")
+            .toObject(MachineExtensionUpgrade.class);
+        Assertions.assertEquals("fqka", model.extensionTargets().get("e").targetVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MachineExtensionUpgrade model =
-            new MachineExtensionUpgrade()
-                .withExtensionTargets(
-                    mapOf(
-                        "zg",
-                        new ExtensionTargetProperties().withTargetVersion("j"),
-                        "xongmtsavjcbpwxq",
-                        new ExtensionTargetProperties().withTargetVersion("zmh"),
-                        "yvxqtayriwwroy",
-                        new ExtensionTargetProperties().withTargetVersion("rknftguvriuhprwm"),
-                        "mefqsgzvahapjyzh",
-                        new ExtensionTargetProperties().withTargetVersion("exrmcqibycnojvk")));
+        MachineExtensionUpgrade model = new MachineExtensionUpgrade()
+            .withExtensionTargets(mapOf("e", new ExtensionTargetProperties().withTargetVersion("fqka"), "wwiftohqkvpuv",
+                new ExtensionTargetProperties().withTargetVersion("ipfpubji"), "ynl",
+                new ExtensionTargetProperties().withTargetVersion("gplsaknynf"), "zihleosjswsr",
+                new ExtensionTargetProperties().withTargetVersion("huopxodlqiynto")));
         model = BinaryData.fromObject(model).toObject(MachineExtensionUpgrade.class);
-        Assertions.assertEquals("j", model.extensionTargets().get("zg").targetVersion());
+        Assertions.assertEquals("fqka", model.extensionTargets().get("e").targetVersion());
     }
 
     // Use "Map.of" if available

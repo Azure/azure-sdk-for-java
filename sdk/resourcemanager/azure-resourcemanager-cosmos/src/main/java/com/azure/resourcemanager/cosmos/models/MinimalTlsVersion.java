@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class MinimalTlsVersion extends ExpandableStringEnum<MinimalTlsVers
      * @param name a name to look for.
      * @return the corresponding MinimalTlsVersion.
      */
-    @JsonCreator
     public static MinimalTlsVersion fromString(String name) {
         return fromString(name, MinimalTlsVersion.class);
     }

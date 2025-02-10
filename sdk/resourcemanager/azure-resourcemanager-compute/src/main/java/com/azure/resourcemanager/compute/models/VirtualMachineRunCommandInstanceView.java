@@ -5,61 +5,60 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The instance view of a virtual machine run command.
  */
 @Fluent
-public final class VirtualMachineRunCommandInstanceView {
+public final class VirtualMachineRunCommandInstanceView
+    implements JsonSerializable<VirtualMachineRunCommandInstanceView> {
     /*
      * Script execution status.
      */
-    @JsonProperty(value = "executionState")
     private ExecutionState executionState;
 
     /*
      * Communicate script configuration errors or execution messages.
      */
-    @JsonProperty(value = "executionMessage")
     private String executionMessage;
 
     /*
      * Exit code returned from script execution.
      */
-    @JsonProperty(value = "exitCode")
     private Integer exitCode;
 
     /*
      * Script output stream.
      */
-    @JsonProperty(value = "output")
     private String output;
 
     /*
      * Script error stream.
      */
-    @JsonProperty(value = "error")
     private String error;
 
     /*
      * Script start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Script end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /**
@@ -237,5 +236,71 @@ public final class VirtualMachineRunCommandInstanceView {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("executionState",
+            this.executionState == null ? null : this.executionState.toString());
+        jsonWriter.writeStringField("executionMessage", this.executionMessage);
+        jsonWriter.writeNumberField("exitCode", this.exitCode);
+        jsonWriter.writeStringField("output", this.output);
+        jsonWriter.writeStringField("error", this.error);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineRunCommandInstanceView from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineRunCommandInstanceView if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineRunCommandInstanceView.
+     */
+    public static VirtualMachineRunCommandInstanceView fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineRunCommandInstanceView deserializedVirtualMachineRunCommandInstanceView
+                = new VirtualMachineRunCommandInstanceView();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("executionState".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandInstanceView.executionState
+                        = ExecutionState.fromString(reader.getString());
+                } else if ("executionMessage".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandInstanceView.executionMessage = reader.getString();
+                } else if ("exitCode".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandInstanceView.exitCode = reader.getNullable(JsonReader::getInt);
+                } else if ("output".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandInstanceView.output = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandInstanceView.error = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandInstanceView.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandInstanceView.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("statuses".equals(fieldName)) {
+                    List<InstanceViewStatus> statuses
+                        = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
+                    deserializedVirtualMachineRunCommandInstanceView.statuses = statuses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineRunCommandInstanceView;
+        });
     }
 }

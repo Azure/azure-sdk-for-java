@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Unmasked IP address logging status. */
+/**
+ * Unmasked IP address logging status.
+ */
 public final class UnmaskedIpLoggingStatus extends ExpandableStringEnum<UnmaskedIpLoggingStatus> {
-    /** Static value Disabled for UnmaskedIpLoggingStatus. */
+    /**
+     * Static value Disabled for UnmaskedIpLoggingStatus.
+     */
     public static final UnmaskedIpLoggingStatus DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for UnmaskedIpLoggingStatus. */
+    /**
+     * Static value Enabled for UnmaskedIpLoggingStatus.
+     */
     public static final UnmaskedIpLoggingStatus ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of UnmaskedIpLoggingStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class UnmaskedIpLoggingStatus extends ExpandableStringEnum<Unmasked
 
     /**
      * Creates or finds a UnmaskedIpLoggingStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UnmaskedIpLoggingStatus.
      */
-    @JsonCreator
     public static UnmaskedIpLoggingStatus fromString(String name) {
         return fromString(name, UnmaskedIpLoggingStatus.class);
     }
 
     /**
      * Gets known UnmaskedIpLoggingStatus values.
-     *
+     * 
      * @return known UnmaskedIpLoggingStatus values.
      */
     public static Collection<UnmaskedIpLoggingStatus> values() {

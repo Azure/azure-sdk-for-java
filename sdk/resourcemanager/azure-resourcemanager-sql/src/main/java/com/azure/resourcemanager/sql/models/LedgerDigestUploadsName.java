@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LedgerDigestUploadsName. */
+/**
+ * Defines values for LedgerDigestUploadsName.
+ */
 public final class LedgerDigestUploadsName extends ExpandableStringEnum<LedgerDigestUploadsName> {
-    /** Static value current for LedgerDigestUploadsName. */
+    /**
+     * Static value current for LedgerDigestUploadsName.
+     */
     public static final LedgerDigestUploadsName CURRENT = fromString("current");
 
     /**
+     * Creates a new instance of LedgerDigestUploadsName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LedgerDigestUploadsName() {
+    }
+
+    /**
      * Creates or finds a LedgerDigestUploadsName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LedgerDigestUploadsName.
      */
-    @JsonCreator
     public static LedgerDigestUploadsName fromString(String name) {
         return fromString(name, LedgerDigestUploadsName.class);
     }
 
     /**
      * Gets known LedgerDigestUploadsName values.
-     *
+     * 
      * @return known LedgerDigestUploadsName values.
      */
     public static Collection<LedgerDigestUploadsName> values() {

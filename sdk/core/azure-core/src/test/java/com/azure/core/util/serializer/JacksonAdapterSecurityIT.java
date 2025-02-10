@@ -30,31 +30,27 @@ public class JacksonAdapterSecurityIT {
     private static final SimplePojo EXPECTED_SIMPLE_POJO = new SimplePojo("aValue");
 
     private boolean originalUseAccessHelper;
-    private SecurityManager originalManager;
+    private java.lang.SecurityManager originalManager;
     private java.security.Policy originalPolicy;
 
     public void captureDefaultConfigurations() {
         originalUseAccessHelper = JacksonAdapter.isUseAccessHelper();
-        originalManager = System.getSecurityManager();
+        originalManager = java.lang.System.getSecurityManager();
         originalPolicy = java.security.Policy.getPolicy();
 
         // Set the System property codebase.azure-core to the location of JacksonAdapter's codebase.
         // This gets picked up by the policy setting to prevent needing to hardcode the code base location.
-        System.setProperty("codebase.azure-core", JacksonAdapter.class.getProtectionDomain()
-            .getCodeSource()
-            .getLocation()
-            .toString());
+        System.setProperty("codebase.azure-core",
+            JacksonAdapter.class.getProtectionDomain().getCodeSource().getLocation().toString());
 
         // Same goes for Jackson Databind.
-        System.setProperty("codebase.jackson-databind", ObjectMapper.class.getProtectionDomain()
-            .getCodeSource()
-            .getLocation()
-            .toString());
+        System.setProperty("codebase.jackson-databind",
+            ObjectMapper.class.getProtectionDomain().getCodeSource().getLocation().toString());
     }
 
     public void revertDefaultConfigurations() throws NoSuchMethodException, NoSuchFieldException {
         JacksonAdapter.setUseAccessHelper(originalUseAccessHelper);
-        System.setSecurityManager(originalManager);
+        java.lang.System.setSecurityManager(originalManager);
         java.security.Policy.setPolicy(originalPolicy);
 
         // Now that the properties have been used, clear them.
@@ -62,12 +58,9 @@ public class JacksonAdapterSecurityIT {
         System.clearProperty("codebase.jackson-databind");
 
         // Reset accessibility after each test, otherwise they may pass unexpectedly.
-        SimplePojo.class.getDeclaredConstructor(String.class)
-            .setAccessible(false);
-        SimplePojo.class.getDeclaredField("aProperty")
-            .setAccessible(false);
-        SimplePojo.class.getDeclaredMethod("getAProperty")
-            .setAccessible(false);
+        SimplePojo.class.getDeclaredConstructor(String.class).setAccessible(false);
+        SimplePojo.class.getDeclaredField("aProperty").setAccessible(false);
+        SimplePojo.class.getDeclaredMethod("getAProperty").setAccessible(false);
     }
 
     /**
@@ -80,12 +73,12 @@ public class JacksonAdapterSecurityIT {
         try {
             JacksonAdapter adapter = new JacksonAdapter();
 
-            java.security.Policy.setPolicy(java.security.Policy
-                .getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
-            System.setSecurityManager(new SecurityManager());
+            java.security.Policy
+                .setPolicy(java.security.Policy.getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
+            java.lang.System.setSecurityManager(new java.lang.SecurityManager());
 
-            assertThrows(InvalidDefinitionException.class, () ->
-                adapter.deserialize(A_PROPERTY_JSON, SimplePojo.class, SerializerEncoding.JSON));
+            assertThrows(InvalidDefinitionException.class,
+                () -> adapter.deserialize(A_PROPERTY_JSON, SimplePojo.class, SerializerEncoding.JSON));
         } finally {
             revertDefaultConfigurations();
         }
@@ -102,12 +95,12 @@ public class JacksonAdapterSecurityIT {
             JacksonAdapter adapter = new JacksonAdapter();
             JacksonAdapter.setUseAccessHelper(true);
 
-            java.security.Policy.setPolicy(java.security.Policy
-                .getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
-            System.setSecurityManager(new SecurityManager());
+            java.security.Policy
+                .setPolicy(java.security.Policy.getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
+            java.lang.System.setSecurityManager(new java.lang.SecurityManager());
 
-            assertThrows(InvalidDefinitionException.class, () ->
-                adapter.deserialize(A_PROPERTY_JSON, SimplePojo.class, SerializerEncoding.JSON));
+            assertThrows(InvalidDefinitionException.class,
+                () -> adapter.deserialize(A_PROPERTY_JSON, SimplePojo.class, SerializerEncoding.JSON));
         } finally {
             revertDefaultConfigurations();
         }
@@ -124,12 +117,12 @@ public class JacksonAdapterSecurityIT {
             JacksonAdapter adapter = new JacksonAdapter();
             JacksonAdapter.setUseAccessHelper(true);
 
-            java.security.Policy.setPolicy(java.security.Policy
-                .getInstance("JavaPolicy", getUriParameter("access-helper-succeeds.policy")));
-            System.setSecurityManager(new SecurityManager());
+            java.security.Policy.setPolicy(
+                java.security.Policy.getInstance("JavaPolicy", getUriParameter("access-helper-succeeds.policy")));
+            java.lang.System.setSecurityManager(new java.lang.SecurityManager());
 
-            SimplePojo actual = assertDoesNotThrow(() ->
-                adapter.deserialize(A_PROPERTY_JSON, SimplePojo.class, SerializerEncoding.JSON));
+            SimplePojo actual = assertDoesNotThrow(
+                () -> adapter.deserialize(A_PROPERTY_JSON, SimplePojo.class, SerializerEncoding.JSON));
 
             assertEquals(EXPECTED_SIMPLE_POJO.getAProperty(), actual.getAProperty());
         } finally {
@@ -146,8 +139,8 @@ public class JacksonAdapterSecurityIT {
 
         try {
             JacksonAdapter adapter = new JacksonAdapter();
-            SimplePojo actual = assertDoesNotThrow(() ->
-                adapter.deserialize(A_PROPERTY_JSON, SimplePojo.class, SerializerEncoding.JSON));
+            SimplePojo actual = assertDoesNotThrow(
+                () -> adapter.deserialize(A_PROPERTY_JSON, SimplePojo.class, SerializerEncoding.JSON));
 
             assertEquals(EXPECTED_SIMPLE_POJO.getAProperty(), actual.getAProperty());
         } finally {
@@ -156,9 +149,8 @@ public class JacksonAdapterSecurityIT {
     }
 
     private static URIParameter getUriParameter(String policyFile) throws URISyntaxException {
-        return new URIParameter(JacksonAdapterSecurityIT.class
-            .getResource("/JacksonAdapterSecurityPolicies/" + policyFile)
-            .toURI());
+        return new URIParameter(
+            JacksonAdapterSecurityIT.class.getResource("/JacksonAdapterSecurityPolicies/" + policyFile).toURI());
     }
 
     private static final class SimplePojo {

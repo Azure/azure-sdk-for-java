@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.RunRequest;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of task run. */
+/**
+ * The properties of task run.
+ */
 @Fluent
-public final class TaskRunPropertiesInner {
+public final class TaskRunPropertiesInner implements JsonSerializable<TaskRunPropertiesInner> {
     /*
      * The provisioning state of this task run
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The request (parameters) for the run
      */
-    @JsonProperty(value = "runRequest")
     private RunRequest runRequest;
 
     /*
      * The result of this task run
      */
-    @JsonProperty(value = "runResult", access = JsonProperty.Access.WRITE_ONLY)
     private RunInner runResult;
 
     /*
      * How the run should be forced to rerun even if the run request configuration has not changed
      */
-    @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
 
-    /** Creates an instance of TaskRunPropertiesInner class. */
+    /**
+     * Creates an instance of TaskRunPropertiesInner class.
+     */
     public TaskRunPropertiesInner() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of this task run.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -51,7 +55,7 @@ public final class TaskRunPropertiesInner {
 
     /**
      * Get the runRequest property: The request (parameters) for the run.
-     *
+     * 
      * @return the runRequest value.
      */
     public RunRequest runRequest() {
@@ -60,7 +64,7 @@ public final class TaskRunPropertiesInner {
 
     /**
      * Set the runRequest property: The request (parameters) for the run.
-     *
+     * 
      * @param runRequest the runRequest value to set.
      * @return the TaskRunPropertiesInner object itself.
      */
@@ -71,7 +75,7 @@ public final class TaskRunPropertiesInner {
 
     /**
      * Get the runResult property: The result of this task run.
-     *
+     * 
      * @return the runResult value.
      */
     public RunInner runResult() {
@@ -81,7 +85,7 @@ public final class TaskRunPropertiesInner {
     /**
      * Get the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -91,7 +95,7 @@ public final class TaskRunPropertiesInner {
     /**
      * Set the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the TaskRunPropertiesInner object itself.
      */
@@ -102,7 +106,7 @@ public final class TaskRunPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -112,5 +116,49 @@ public final class TaskRunPropertiesInner {
         if (runResult() != null) {
             runResult().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("runRequest", this.runRequest);
+        jsonWriter.writeStringField("forceUpdateTag", this.forceUpdateTag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskRunPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskRunPropertiesInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskRunPropertiesInner.
+     */
+    public static TaskRunPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskRunPropertiesInner deserializedTaskRunPropertiesInner = new TaskRunPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedTaskRunPropertiesInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("runRequest".equals(fieldName)) {
+                    deserializedTaskRunPropertiesInner.runRequest = RunRequest.fromJson(reader);
+                } else if ("runResult".equals(fieldName)) {
+                    deserializedTaskRunPropertiesInner.runResult = RunInner.fromJson(reader);
+                } else if ("forceUpdateTag".equals(fieldName)) {
+                    deserializedTaskRunPropertiesInner.forceUpdateTag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskRunPropertiesInner;
+        });
     }
 }

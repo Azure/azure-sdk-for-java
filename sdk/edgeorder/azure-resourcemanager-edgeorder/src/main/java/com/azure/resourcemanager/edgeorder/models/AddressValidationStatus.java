@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AddressValidationStatus. */
+/**
+ * Status of address validation.
+ */
 public final class AddressValidationStatus extends ExpandableStringEnum<AddressValidationStatus> {
-    /** Static value Valid for AddressValidationStatus. */
+    /**
+     * Static value Valid for AddressValidationStatus.
+     */
     public static final AddressValidationStatus VALID = fromString("Valid");
 
-    /** Static value Invalid for AddressValidationStatus. */
+    /**
+     * Static value Invalid for AddressValidationStatus.
+     */
     public static final AddressValidationStatus INVALID = fromString("Invalid");
 
-    /** Static value Ambiguous for AddressValidationStatus. */
+    /**
+     * Static value Ambiguous for AddressValidationStatus.
+     */
     public static final AddressValidationStatus AMBIGUOUS = fromString("Ambiguous");
 
     /**
+     * Creates a new instance of AddressValidationStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AddressValidationStatus() {
+    }
+
+    /**
      * Creates or finds a AddressValidationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AddressValidationStatus.
      */
-    @JsonCreator
     public static AddressValidationStatus fromString(String name) {
         return fromString(name, AddressValidationStatus.class);
     }
 
-    /** @return known AddressValidationStatus values. */
+    /**
+     * Gets known AddressValidationStatus values.
+     * 
+     * @return known AddressValidationStatus values.
+     */
     public static Collection<AddressValidationStatus> values() {
         return values(AddressValidationStatus.class);
     }

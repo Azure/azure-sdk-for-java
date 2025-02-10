@@ -14,24 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationStatusJobsExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusJobsExtendedInfo model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"ocyvhhulrtywikdm\",\"lakuflgbhgauacd\",\"xmxufrsryjqgdk\"],\"failedJobsError\":{\"bvjhvefgwbmqj\":\"zoeo\"}}")
-                .toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("ocyvhhulrtywikdm", model.jobIds().get(0));
-        Assertions.assertEquals("zoeo", model.failedJobsError().get("bvjhvefgwbmqj"));
+        OperationStatusJobsExtendedInfo model = BinaryData.fromString(
+            "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"niylyly\",\"wxzut\",\"qztw\"],\"failedJobsError\":{\"tcdxabbujftaben\":\"mupgxy\",\"cafeddw\":\"bklqpxz\",\"ookrtalvnbw\":\"nlzafwxudgnh\",\"uclvdjj\":\"pbeme\"}}")
+            .toObject(OperationStatusJobsExtendedInfo.class);
+        Assertions.assertEquals("niylyly", model.jobIds().get(0));
+        Assertions.assertEquals("mupgxy", model.failedJobsError().get("tcdxabbujftaben"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationStatusJobsExtendedInfo model =
-            new OperationStatusJobsExtendedInfo()
-                .withJobIds(Arrays.asList("ocyvhhulrtywikdm", "lakuflgbhgauacd", "xmxufrsryjqgdk"))
-                .withFailedJobsError(mapOf("bvjhvefgwbmqj", "zoeo"));
+        OperationStatusJobsExtendedInfo model
+            = new OperationStatusJobsExtendedInfo().withJobIds(Arrays.asList("niylyly", "wxzut", "qztw"))
+                .withFailedJobsError(mapOf("tcdxabbujftaben", "mupgxy", "cafeddw", "bklqpxz", "ookrtalvnbw",
+                    "nlzafwxudgnh", "uclvdjj", "pbeme"));
         model = BinaryData.fromObject(model).toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("ocyvhhulrtywikdm", model.jobIds().get(0));
-        Assertions.assertEquals("zoeo", model.failedJobsError().get("bvjhvefgwbmqj"));
+        Assertions.assertEquals("niylyly", model.jobIds().get(0));
+        Assertions.assertEquals("mupgxy", model.failedJobsError().get("tcdxabbujftaben"));
     }
 
     // Use "Map.of" if available

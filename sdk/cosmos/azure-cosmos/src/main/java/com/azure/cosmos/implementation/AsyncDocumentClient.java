@@ -5,13 +5,17 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.CosmosOperationPolicy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
@@ -104,6 +108,9 @@ public interface AsyncDocumentClient {
         private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
         private SessionRetryOptions sessionRetryOptions;
         private CosmosContainerProactiveInitConfig containerProactiveInitConfig;
+        private CosmosItemSerializer defaultCustomSerializer;
+        private boolean isRegionScopedSessionCapturingEnabled;
+        private List<CosmosOperationPolicy> operationPolicies;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -111,6 +118,12 @@ public interface AsyncDocumentClient {
             } catch (URISyntaxException e) {
                 throw new IllegalArgumentException(e.getMessage());
             }
+            return this;
+        }
+
+        public Builder withDefaultSerializer( CosmosItemSerializer defaultCustomSerializer) {
+            this.defaultCustomSerializer = defaultCustomSerializer;
+
             return this;
         }
 
@@ -255,6 +268,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withRegionScopedSessionCapturingEnabled(boolean isRegionScopedSessionCapturingEnabled) {
+            this.isRegionScopedSessionCapturingEnabled = isRegionScopedSessionCapturingEnabled;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -290,7 +308,11 @@ public interface AsyncDocumentClient {
                     clientCorrelationId,
                     cosmosEndToEndOperationLatencyPolicyConfig,
                     sessionRetryOptions,
-                    containerProactiveInitConfig);
+                    containerProactiveInitConfig,
+                    defaultCustomSerializer,
+                    isRegionScopedSessionCapturingEnabled,
+                    operationPolicies
+            );
 
             client.init(state, null);
             return client;
@@ -326,6 +348,11 @@ public interface AsyncDocumentClient {
 
         public AzureKeyCredential getCredential() {
             return credential;
+        }
+
+        public Builder withOperationPolicies(List<CosmosOperationPolicy> operationPolicies) {
+            this.operationPolicies = operationPolicies;
+            return this;
         }
     }
 
@@ -1565,6 +1592,8 @@ public interface AsyncDocumentClient {
      */
     GlobalEndpointManager getGlobalEndpointManager();
 
+    GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
+
     /***
      * Get the address selector.
      * @return the address selector.
@@ -1576,7 +1605,7 @@ public interface AsyncDocumentClient {
      */
     void close();
 
-    ItemDeserializer getItemDeserializer();
+    CosmosItemSerializer getEffectiveItemSerializer(CosmosItemSerializer requestOptionsItemSerializer);
 
     /**
      * Enable throughput control group.

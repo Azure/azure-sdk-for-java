@@ -6,32 +6,39 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.fluent.models.DataCollectionEndpointResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A pageable list of resources. */
+/**
+ * A pageable list of resources.
+ */
 @Fluent
-public final class DataCollectionEndpointResourceListResult {
+public final class DataCollectionEndpointResourceListResult
+    implements JsonSerializable<DataCollectionEndpointResourceListResult> {
     /*
      * A list of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<DataCollectionEndpointResourceInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DataCollectionEndpointResourceListResult class. */
+    /**
+     * Creates an instance of DataCollectionEndpointResourceListResult class.
+     */
     public DataCollectionEndpointResourceListResult() {
     }
 
     /**
      * Get the value property: A list of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<DataCollectionEndpointResourceInner> value() {
@@ -40,7 +47,7 @@ public final class DataCollectionEndpointResourceListResult {
 
     /**
      * Set the value property: A list of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the DataCollectionEndpointResourceListResult object itself.
      */
@@ -51,7 +58,7 @@ public final class DataCollectionEndpointResourceListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +67,7 @@ public final class DataCollectionEndpointResourceListResult {
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DataCollectionEndpointResourceListResult object itself.
      */
@@ -71,19 +78,61 @@ public final class DataCollectionEndpointResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model DataCollectionEndpointResourceListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model DataCollectionEndpointResourceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataCollectionEndpointResourceListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataCollectionEndpointResourceListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataCollectionEndpointResourceListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataCollectionEndpointResourceListResult.
+     */
+    public static DataCollectionEndpointResourceListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataCollectionEndpointResourceListResult deserializedDataCollectionEndpointResourceListResult
+                = new DataCollectionEndpointResourceListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DataCollectionEndpointResourceInner> value
+                        = reader.readArray(reader1 -> DataCollectionEndpointResourceInner.fromJson(reader1));
+                    deserializedDataCollectionEndpointResourceListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataCollectionEndpointResourceListResult;
+        });
+    }
 }

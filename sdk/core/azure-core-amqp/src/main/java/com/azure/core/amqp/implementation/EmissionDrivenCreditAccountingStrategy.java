@@ -28,7 +28,8 @@ final class EmissionDrivenCreditAccountingStrategy extends CreditAccountingStrat
      * @param prefetch the prefetch configured.
      * @param logger the logger.
      */
-    EmissionDrivenCreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
+    EmissionDrivenCreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch,
+        ClientLogger logger) {
         super(receiver, subscription, validateAndGet(prefetch, logger), logger);
         // Refill the buffer once 50% of the prefetch has emitted.
         this.limit = this.prefetch - (this.prefetch >> 1);
@@ -37,7 +38,7 @@ final class EmissionDrivenCreditAccountingStrategy extends CreditAccountingStrat
     /**
      * Update the credit accounting based on the latest view of the downstream request and messages emitted by
      * the emitter-loop in the last drain-loop iteration.
-     * <br/>
+     * <br>
      * CONTRACT: Never invoke from the outside of serialized drain-loop in message-flux; the method relies on
      * the thread-safety and memory visibility the drain-loop provides.
      *

@@ -5,38 +5,64 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.avs.models.ScriptCmdletAudience;
+import com.azure.resourcemanager.avs.models.ScriptCmdletProvisioningState;
 import com.azure.resourcemanager.avs.models.ScriptParameter;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of a pre-canned script. */
+/**
+ * Properties of a pre-canned script.
+ */
 @Immutable
-public final class ScriptCmdletProperties {
+public final class ScriptCmdletProperties implements JsonSerializable<ScriptCmdletProperties> {
+    /*
+     * The provisioning state of the resource.
+     */
+    private ScriptCmdletProvisioningState provisioningState;
+
     /*
      * Description of the scripts functionality
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Recommended time limit for execution
      */
-    @JsonProperty(value = "timeout", access = JsonProperty.Access.WRITE_ONLY)
     private String timeout;
+
+    /*
+     * Specifies whether a script cmdlet is intended to be invoked only through automation or visible to customers
+     */
+    private ScriptCmdletAudience audience;
 
     /*
      * Parameters the script will accept
      */
-    @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private List<ScriptParameter> parameters;
 
-    /** Creates an instance of ScriptCmdletProperties class. */
+    /**
+     * Creates an instance of ScriptCmdletProperties class.
+     */
     public ScriptCmdletProperties() {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ScriptCmdletProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Get the description property: Description of the scripts functionality.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -45,7 +71,7 @@ public final class ScriptCmdletProperties {
 
     /**
      * Get the timeout property: Recommended time limit for execution.
-     *
+     * 
      * @return the timeout value.
      */
     public String timeout() {
@@ -53,8 +79,18 @@ public final class ScriptCmdletProperties {
     }
 
     /**
+     * Get the audience property: Specifies whether a script cmdlet is intended to be invoked only through automation or
+     * visible to customers.
+     * 
+     * @return the audience value.
+     */
+    public ScriptCmdletAudience audience() {
+        return this.audience;
+    }
+
+    /**
      * Get the parameters property: Parameters the script will accept.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ScriptParameter> parameters() {
@@ -63,12 +99,57 @@ public final class ScriptCmdletProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptCmdletProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptCmdletProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScriptCmdletProperties.
+     */
+    public static ScriptCmdletProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptCmdletProperties deserializedScriptCmdletProperties = new ScriptCmdletProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedScriptCmdletProperties.provisioningState
+                        = ScriptCmdletProvisioningState.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedScriptCmdletProperties.description = reader.getString();
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedScriptCmdletProperties.timeout = reader.getString();
+                } else if ("audience".equals(fieldName)) {
+                    deserializedScriptCmdletProperties.audience = ScriptCmdletAudience.fromString(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    List<ScriptParameter> parameters = reader.readArray(reader1 -> ScriptParameter.fromJson(reader1));
+                    deserializedScriptCmdletProperties.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptCmdletProperties;
+        });
     }
 }

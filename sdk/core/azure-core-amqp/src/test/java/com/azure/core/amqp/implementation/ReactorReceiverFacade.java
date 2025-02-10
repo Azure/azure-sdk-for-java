@@ -26,20 +26,17 @@ final class ReactorReceiverFacade {
     private final Flux<AmqpEndpointState> endpointStates;
     private final AtomicLong requested = new AtomicLong();
 
-    ReactorReceiverFacade(TestPublisher<ReactorReceiver> upstream,
-                          ReactorReceiver receiver) {
+    ReactorReceiverFacade(TestPublisher<ReactorReceiver> upstream, ReactorReceiver receiver) {
         this(upstream, receiver, TestPublisher.<Message>create());
     }
 
-    ReactorReceiverFacade(TestPublisher<ReactorReceiver> upstream,
-                          ReactorReceiver receiver,
-                          TestPublisher<Message> messagesPublisher) {
+    ReactorReceiverFacade(TestPublisher<ReactorReceiver> upstream, ReactorReceiver receiver,
+        TestPublisher<Message> messagesPublisher) {
         this.upstream = upstream;
         this.receiver = receiver;
         this.messagesPublisher = messagesPublisher;
-        this.messages = messagesPublisher.flux()
-            .doOnRequest(r -> requested.addAndGet(r))
-            .doOnNext(__ -> emittedMessages[0]++);
+        this.messages
+            = messagesPublisher.flux().doOnRequest(r -> requested.addAndGet(r)).doOnNext(__ -> emittedMessages[0]++);
         this.endpointStatesSink = Sinks.many().replay().latestOrDefault(AmqpEndpointState.UNINITIALIZED);
         this.endpointStates = this.endpointStatesSink.asFlux().cache(1);
     }

@@ -483,7 +483,7 @@ public class GatewayAddressCache implements IAddressCache {
             CosmosException dce;
             if (!(exception instanceof CosmosException)) {
                 // wrap in CosmosException
-                logger.error("Network failure", exception);
+                logger.warn("Network failure", exception);
                 int statusCode = 0;
                 if (WebExceptionUtility.isNetworkFailure(exception)) {
                     if (WebExceptionUtility.isReadTimeoutException(exception)) {
@@ -864,7 +864,7 @@ public class GatewayAddressCache implements IAddressCache {
             CosmosException dce;
             if (!(exception instanceof CosmosException)) {
                 // wrap in CosmosException
-                logger.error("Network failure", exception);
+                logger.warn("Network failure", exception);
                 int statusCode = 0;
                 if (WebExceptionUtility.isNetworkFailure(exception)) {
                     if (WebExceptionUtility.isReadTimeoutException(exception)) {
@@ -1139,6 +1139,29 @@ public class GatewayAddressCache implements IAddressCache {
                 connectionsRequiredForEndpoint);
 
         return Mono.fromFuture(openConnectionTask);
+    }
+
+    public Flux<OpenConnectionResponse> submitOpenConnectionTasks(
+        PartitionKeyRange partitionKeyRange,
+        String collectionRid) {
+
+        if (this.proactiveOpenConnectionsProcessor == null) {
+            return Flux.empty();
+        }
+
+        checkNotNull(partitionKeyRange, "Argument 'partitionKeyRange' cannot be null!");
+        checkNotNull(collectionRid, "Argument 'collectionRid' cannot be null!");
+
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRange.getId());
+
+        return this.serverPartitionAddressCache.getAsync(partitionKeyRangeIdentity, cachedAddresses -> Mono.just(cachedAddresses), cachedAddresses -> true)
+            .flatMapMany(cachedAddresses -> Flux.fromArray(cachedAddresses))
+            .flatMap(addressInformation -> Mono.fromFuture(
+                this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
+                    collectionRid,
+                    this.addressEndpoint,
+                    addressInformation.getPhysicalUri(),
+                    1)));
     }
 
     private Mono<List<Address>> getServerAddressesViaGatewayWithRetry(

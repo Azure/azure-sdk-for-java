@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for XMsForceDelete. */
+/**
+ * Defines values for XMsForceDelete.
+ */
 public final class XMsForceDelete extends ExpandableStringEnum<XMsForceDelete> {
-    /** Static value true for XMsForceDelete. */
+    /**
+     * Static value true for XMsForceDelete.
+     */
     public static final XMsForceDelete TRUE = fromString("true");
 
-    /** Static value false for XMsForceDelete. */
+    /**
+     * Static value false for XMsForceDelete.
+     */
     public static final XMsForceDelete FALSE = fromString("false");
 
     /**
      * Creates a new instance of XMsForceDelete value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class XMsForceDelete extends ExpandableStringEnum<XMsForceDelete> {
 
     /**
      * Creates or finds a XMsForceDelete from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding XMsForceDelete.
      */
-    @JsonCreator
     public static XMsForceDelete fromString(String name) {
         return fromString(name, XMsForceDelete.class);
     }
 
     /**
      * Gets known XMsForceDelete values.
-     *
+     * 
      * @return known XMsForceDelete values.
      */
     public static Collection<XMsForceDelete> values() {

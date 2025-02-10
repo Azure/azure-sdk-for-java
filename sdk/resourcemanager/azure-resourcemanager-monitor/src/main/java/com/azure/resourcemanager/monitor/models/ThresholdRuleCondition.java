@@ -5,50 +5,69 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** A rule condition based on a metric crossing a threshold. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
-@JsonTypeName("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition")
+/**
+ * A rule condition based on a metric crossing a threshold.
+ */
 @Fluent
 public final class ThresholdRuleCondition extends RuleCondition {
     /*
+     * specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of
+     * management events), LocationThresholdRuleCondition (based on the number of failures of a web test), and
+     * ThresholdRuleCondition (based on the threshold of a metric).
+     */
+    private String odataType = "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition";
+
+    /*
      * the operator used to compare the data and the threshold.
      */
-    @JsonProperty(value = "operator", required = true)
     private ConditionOperator operator;
 
     /*
      * the threshold value that activates the alert.
      */
-    @JsonProperty(value = "threshold", required = true)
     private double threshold;
 
     /*
      * the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
      * If specified then it must be between 5 minutes and 1 day.
      */
-    @JsonProperty(value = "windowSize")
     private Duration windowSize;
 
     /*
-     * the time aggregation operator. How the data that are collected should be combined over time. The default value
-     * is the PrimaryAggregationType of the Metric.
+     * the time aggregation operator. How the data that are collected should be combined over time. The default value is
+     * the PrimaryAggregationType of the Metric.
      */
-    @JsonProperty(value = "timeAggregation")
     private TimeAggregationOperator timeAggregation;
 
-    /** Creates an instance of ThresholdRuleCondition class. */
+    /**
+     * Creates an instance of ThresholdRuleCondition class.
+     */
     public ThresholdRuleCondition() {
     }
 
     /**
+     * Get the odataType property: specifies the type of condition. This can be one of three types:
+     * ManagementEventRuleCondition (occurrences of management events), LocationThresholdRuleCondition (based on the
+     * number of failures of a web test), and ThresholdRuleCondition (based on the threshold of a metric).
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the operator property: the operator used to compare the data and the threshold.
-     *
+     * 
      * @return the operator value.
      */
     public ConditionOperator operator() {
@@ -57,7 +76,7 @@ public final class ThresholdRuleCondition extends RuleCondition {
 
     /**
      * Set the operator property: the operator used to compare the data and the threshold.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the ThresholdRuleCondition object itself.
      */
@@ -68,7 +87,7 @@ public final class ThresholdRuleCondition extends RuleCondition {
 
     /**
      * Get the threshold property: the threshold value that activates the alert.
-     *
+     * 
      * @return the threshold value.
      */
     public double threshold() {
@@ -77,7 +96,7 @@ public final class ThresholdRuleCondition extends RuleCondition {
 
     /**
      * Set the threshold property: the threshold value that activates the alert.
-     *
+     * 
      * @param threshold the threshold value to set.
      * @return the ThresholdRuleCondition object itself.
      */
@@ -89,7 +108,7 @@ public final class ThresholdRuleCondition extends RuleCondition {
     /**
      * Get the windowSize property: the period of time (in ISO 8601 duration format) that is used to monitor alert
      * activity based on the threshold. If specified then it must be between 5 minutes and 1 day.
-     *
+     * 
      * @return the windowSize value.
      */
     public Duration windowSize() {
@@ -99,7 +118,7 @@ public final class ThresholdRuleCondition extends RuleCondition {
     /**
      * Set the windowSize property: the period of time (in ISO 8601 duration format) that is used to monitor alert
      * activity based on the threshold. If specified then it must be between 5 minutes and 1 day.
-     *
+     * 
      * @param windowSize the windowSize value to set.
      * @return the ThresholdRuleCondition object itself.
      */
@@ -111,7 +130,7 @@ public final class ThresholdRuleCondition extends RuleCondition {
     /**
      * Get the timeAggregation property: the time aggregation operator. How the data that are collected should be
      * combined over time. The default value is the PrimaryAggregationType of the Metric.
-     *
+     * 
      * @return the timeAggregation value.
      */
     public TimeAggregationOperator timeAggregation() {
@@ -121,7 +140,7 @@ public final class ThresholdRuleCondition extends RuleCondition {
     /**
      * Set the timeAggregation property: the time aggregation operator. How the data that are collected should be
      * combined over time. The default value is the PrimaryAggregationType of the Metric.
-     *
+     * 
      * @param timeAggregation the timeAggregation value to set.
      * @return the ThresholdRuleCondition object itself.
      */
@@ -130,7 +149,9 @@ public final class ThresholdRuleCondition extends RuleCondition {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThresholdRuleCondition withDataSource(RuleDataSource dataSource) {
         super.withDataSource(dataSource);
@@ -139,18 +160,73 @@ public final class ThresholdRuleCondition extends RuleCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property operator in model ThresholdRuleCondition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ThresholdRuleCondition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dataSource", dataSource());
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeDoubleField("threshold", this.threshold);
+        jsonWriter.writeStringField("odata.type", this.odataType);
+        jsonWriter.writeStringField("windowSize", CoreUtils.durationToStringWithDays(this.windowSize));
+        jsonWriter.writeStringField("timeAggregation",
+            this.timeAggregation == null ? null : this.timeAggregation.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThresholdRuleCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThresholdRuleCondition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ThresholdRuleCondition.
+     */
+    public static ThresholdRuleCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThresholdRuleCondition deserializedThresholdRuleCondition = new ThresholdRuleCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSource".equals(fieldName)) {
+                    deserializedThresholdRuleCondition.withDataSource(RuleDataSource.fromJson(reader));
+                } else if ("operator".equals(fieldName)) {
+                    deserializedThresholdRuleCondition.operator = ConditionOperator.fromString(reader.getString());
+                } else if ("threshold".equals(fieldName)) {
+                    deserializedThresholdRuleCondition.threshold = reader.getDouble();
+                } else if ("odata.type".equals(fieldName)) {
+                    deserializedThresholdRuleCondition.odataType = reader.getString();
+                } else if ("windowSize".equals(fieldName)) {
+                    deserializedThresholdRuleCondition.windowSize
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("timeAggregation".equals(fieldName)) {
+                    deserializedThresholdRuleCondition.timeAggregation
+                        = TimeAggregationOperator.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThresholdRuleCondition;
+        });
+    }
 }

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The min capacity capability. */
+/**
+ * The min capacity capability.
+ */
 @Fluent
-public final class MinCapacityCapability {
+public final class MinCapacityCapability implements JsonSerializable<MinCapacityCapability> {
     /*
      * Min capacity value
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private Double value;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of MinCapacityCapability class. */
+    /**
+     * Creates an instance of MinCapacityCapability class.
+     */
     public MinCapacityCapability() {
     }
 
     /**
      * Get the value property: Min capacity value.
-     *
+     * 
      * @return the value value.
      */
     public Double value() {
@@ -43,7 +48,7 @@ public final class MinCapacityCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -52,7 +57,7 @@ public final class MinCapacityCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -61,7 +66,7 @@ public final class MinCapacityCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the MinCapacityCapability object itself.
      */
@@ -72,9 +77,49 @@ public final class MinCapacityCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MinCapacityCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MinCapacityCapability if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MinCapacityCapability.
+     */
+    public static MinCapacityCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MinCapacityCapability deserializedMinCapacityCapability = new MinCapacityCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedMinCapacityCapability.value = reader.getNullable(JsonReader::getDouble);
+                } else if ("status".equals(fieldName)) {
+                    deserializedMinCapacityCapability.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedMinCapacityCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMinCapacityCapability;
+        });
     }
 }

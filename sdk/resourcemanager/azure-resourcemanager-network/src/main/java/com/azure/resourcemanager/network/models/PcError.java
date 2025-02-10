@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class PcError extends ExpandableStringEnum<PcError> {
      * @param name a name to look for.
      * @return the corresponding PcError.
      */
-    @JsonCreator
     public static PcError fromString(String name) {
         return fromString(name, PcError.class);
     }

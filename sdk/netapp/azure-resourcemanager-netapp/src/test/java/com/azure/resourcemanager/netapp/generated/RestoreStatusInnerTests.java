@@ -11,7 +11,7 @@ public final class RestoreStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestoreStatusInner model = BinaryData.fromString(
-            "{\"healthy\":false,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Mirrored\",\"unhealthyReason\":\"ae\",\"errorMessage\":\"ojvdcpzfoqo\",\"totalTransferBytes\":4892524565143747736}")
+            "{\"healthy\":false,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Broken\",\"unhealthyReason\":\"emvvhm\",\"errorMessage\":\"drjf\",\"totalTransferBytes\":6646451916229099217}")
             .toObject(RestoreStatusInner.class);
     }
 

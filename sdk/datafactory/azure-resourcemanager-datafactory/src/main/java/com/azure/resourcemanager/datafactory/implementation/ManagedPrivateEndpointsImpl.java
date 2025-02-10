@@ -31,20 +31,23 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         String managedVirtualNetworkName) {
         PagedIterable<ManagedPrivateEndpointResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName, managedVirtualNetworkName);
-        return Utils.mapPage(inner, inner1 -> new ManagedPrivateEndpointResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ManagedPrivateEndpointResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ManagedPrivateEndpointResource> listByFactory(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, Context context) {
         PagedIterable<ManagedPrivateEndpointResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName, managedVirtualNetworkName, context);
-        return Utils.mapPage(inner, inner1 -> new ManagedPrivateEndpointResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ManagedPrivateEndpointResourceImpl(inner1, this.manager()));
     }
 
     public Response<ManagedPrivateEndpointResource> getWithResponse(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, String managedPrivateEndpointName, String ifNoneMatch, Context context) {
-        Response<ManagedPrivateEndpointResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            factoryName, managedVirtualNetworkName, managedPrivateEndpointName, ifNoneMatch, context);
+        Response<ManagedPrivateEndpointResourceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
+                ifNoneMatch, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ManagedPrivateEndpointResourceImpl(inner.getValue(), this.manager()));
@@ -55,8 +58,8 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
 
     public ManagedPrivateEndpointResource get(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, String managedPrivateEndpointName) {
-        ManagedPrivateEndpointResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName,
-            managedVirtualNetworkName, managedPrivateEndpointName);
+        ManagedPrivateEndpointResourceInner inner = this.serviceClient()
+            .get(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName);
         if (inner != null) {
             return new ManagedPrivateEndpointResourceImpl(inner, this.manager());
         } else {
@@ -66,60 +69,63 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, String managedPrivateEndpointName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
-            managedPrivateEndpointName, context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
+                context);
     }
 
     public void delete(String resourceGroupName, String factoryName, String managedVirtualNetworkName,
         String managedPrivateEndpointName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, managedVirtualNetworkName,
-            managedPrivateEndpointName);
+        this.serviceClient()
+            .delete(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName);
     }
 
     public ManagedPrivateEndpointResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
+        String managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));
         }
-        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
         }
         String localIfNoneMatch = null;
-        return this.getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
-            managedPrivateEndpointName, localIfNoneMatch, Context.NONE).getValue();
+        return this
+            .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
+                localIfNoneMatch, Context.NONE)
+            .getValue();
     }
 
     public Response<ManagedPrivateEndpointResource> getByIdWithResponse(String id, String ifNoneMatch,
         Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
+        String managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));
         }
-        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
@@ -129,22 +135,22 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
+        String managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));
         }
-        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));
@@ -154,22 +160,22 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String factoryName = Utils.getValueFromIdByName(id, "factories");
+        String factoryName = ResourceManagerUtils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
-        String managedVirtualNetworkName = Utils.getValueFromIdByName(id, "managedVirtualNetworks");
+        String managedVirtualNetworkName = ResourceManagerUtils.getValueFromIdByName(id, "managedVirtualNetworks");
         if (managedVirtualNetworkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedVirtualNetworks'.", id)));
         }
-        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        String managedPrivateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "managedPrivateEndpoints");
         if (managedPrivateEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.", id)));

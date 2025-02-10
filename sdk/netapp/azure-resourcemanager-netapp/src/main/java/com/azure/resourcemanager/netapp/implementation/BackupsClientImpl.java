@@ -84,10 +84,10 @@ public final class BackupsClientImpl implements BackupsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/restoreStatus")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/latestRestoreStatus/current")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestoreStatusInner>> getVolumeRestoreStatus(@HostParam("$host") String endpoint,
+        Mono<Response<RestoreStatusInner>> getVolumeLatestRestoreStatus(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
@@ -309,9 +309,9 @@ public final class BackupsClientImpl implements BackupsClient {
     }
 
     /**
-     * Get volume's restore status
+     * Get the latest restore status of a volume
      * 
-     * Get the status of the restore for a volume.
+     * Get the latest status of the restore for a volume.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -320,11 +320,11 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume along with {@link Response} on successful completion of
+     * @return the latest status of the restore for a volume along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RestoreStatusInner>> getVolumeRestoreStatusWithResponseAsync(String resourceGroupName,
+    private Mono<Response<RestoreStatusInner>> getVolumeLatestRestoreStatusWithResponseAsync(String resourceGroupName,
         String accountName, String poolName, String volumeName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -349,16 +349,16 @@ public final class BackupsClientImpl implements BackupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.getVolumeRestoreStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.getVolumeLatestRestoreStatus(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, volumeName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get volume's restore status
+     * Get the latest restore status of a volume
      * 
-     * Get the status of the restore for a volume.
+     * Get the latest status of the restore for a volume.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -368,11 +368,11 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume along with {@link Response} on successful completion of
+     * @return the latest status of the restore for a volume along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RestoreStatusInner>> getVolumeRestoreStatusWithResponseAsync(String resourceGroupName,
+    private Mono<Response<RestoreStatusInner>> getVolumeLatestRestoreStatusWithResponseAsync(String resourceGroupName,
         String accountName, String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -397,14 +397,14 @@ public final class BackupsClientImpl implements BackupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getVolumeRestoreStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
+        return service.getVolumeLatestRestoreStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
             resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Get volume's restore status
+     * Get the latest restore status of a volume
      * 
-     * Get the status of the restore for a volume.
+     * Get the latest status of the restore for a volume.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -413,19 +413,19 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume on successful completion of {@link Mono}.
+     * @return the latest status of the restore for a volume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RestoreStatusInner> getVolumeRestoreStatusAsync(String resourceGroupName, String accountName,
+    private Mono<RestoreStatusInner> getVolumeLatestRestoreStatusAsync(String resourceGroupName, String accountName,
         String poolName, String volumeName) {
-        return getVolumeRestoreStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName)
+        return getVolumeLatestRestoreStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get volume's restore status
+     * Get the latest restore status of a volume
      * 
-     * Get the status of the restore for a volume.
+     * Get the latest status of the restore for a volume.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -435,19 +435,19 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume along with {@link Response}.
+     * @return the latest status of the restore for a volume along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RestoreStatusInner> getVolumeRestoreStatusWithResponse(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        return getVolumeRestoreStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context)
-            .block();
+    public Response<RestoreStatusInner> getVolumeLatestRestoreStatusWithResponse(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
+        return getVolumeLatestRestoreStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName,
+            context).block();
     }
 
     /**
-     * Get volume's restore status
+     * Get the latest restore status of a volume
      * 
-     * Get the status of the restore for a volume.
+     * Get the latest status of the restore for a volume.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
@@ -456,13 +456,13 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume.
+     * @return the latest status of the restore for a volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestoreStatusInner getVolumeRestoreStatus(String resourceGroupName, String accountName, String poolName,
-        String volumeName) {
-        return getVolumeRestoreStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, Context.NONE)
-            .getValue();
+    public RestoreStatusInner getVolumeLatestRestoreStatus(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        return getVolumeLatestRestoreStatusWithResponse(resourceGroupName, accountName, poolName, volumeName,
+            Context.NONE).getValue();
     }
 
     /**
@@ -1707,9 +1707,7 @@ public final class BackupsClientImpl implements BackupsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1735,9 +1733,7 @@ public final class BackupsClientImpl implements BackupsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

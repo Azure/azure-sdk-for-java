@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
@@ -17,6 +19,8 @@ import java.util.List;
 
 /** Test for network security group CRUD. */
 public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityGroups> {
+    private static final ClientLogger LOGGER = new ClientLogger(TestNSG.class);
+
     @Override
     public NetworkSecurityGroup createResource(NetworkSecurityGroups nsgs) throws Exception {
         String postFix = nsgs.manager().resourceManager().internalContext().randomResourceName("", 8);
@@ -26,100 +30,90 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         final String asgName = nsgs.manager().resourceManager().internalContext().randomResourceName("asg", 8);
         final Region region = Region.US_WEST;
 
-        ApplicationSecurityGroup asg =
-            nsgs
-                .manager()
-                .applicationSecurityGroups()
-                .define(asgName)
-                .withRegion(region)
-                .withNewResourceGroup(resourceGroupName)
-                .create();
+        ApplicationSecurityGroup asg = nsgs.manager()
+            .applicationSecurityGroups()
+            .define(asgName)
+            .withRegion(region)
+            .withNewResourceGroup(resourceGroupName)
+            .create();
         // Create
-        Mono<NetworkSecurityGroup> resourceStream =
-            nsgs
-                .define(newName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroupName)
-                .defineRule("rule1")
-                .allowOutbound()
-                .fromAnyAddress()
-                .fromPort(80)
-                .toAnyAddress()
-                .toPort(80)
-                .withProtocol(SecurityRuleProtocol.TCP)
-                .attach()
-                .defineRule("rule2")
-                .allowInbound()
-                .withSourceApplicationSecurityGroup(asg.id())
-                .fromAnyPort()
-                .toAnyAddress()
-                .toPortRange(22, 25)
-                .withAnyProtocol()
-                .withPriority(200)
-                .withDescription("foo!!")
-                .attach()
-                .createAsync();
+        Mono<NetworkSecurityGroup> resourceStream = nsgs.define(newName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroupName)
+            .defineRule("rule1")
+            .allowOutbound()
+            .fromAnyAddress()
+            .fromPort(80)
+            .toAnyAddress()
+            .toPort(80)
+            .withProtocol(SecurityRuleProtocol.TCP)
+            .attach()
+            .defineRule("rule2")
+            .allowInbound()
+            .withSourceApplicationSecurityGroup(asg.id())
+            .fromAnyPort()
+            .toAnyAddress()
+            .toPortRange(22, 25)
+            .withAnyProtocol()
+            .withPriority(200)
+            .withDescription("foo!!")
+            .attach()
+            .createAsync();
 
-        resourceStream
-            .doOnSuccess((_ignore) -> System.out.print("completed"));
+        resourceStream.doOnSuccess((_ignore) -> LOGGER.log(LogLevel.VERBOSE, () -> "completed"));
 
         NetworkSecurityGroup nsg = resourceStream.block();
 
-        NetworkInterface nic =
-            nsgs
-                .manager()
-                .networkInterfaces()
-                .define(nicName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroupName)
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withExistingNetworkSecurityGroup(nsg)
-                .create();
+        NetworkInterface nic = nsgs.manager()
+            .networkInterfaces()
+            .define(nicName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroupName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingNetworkSecurityGroup(nsg)
+            .create();
 
         nsg.refresh();
 
         // Verify
-        Assertions.assertTrue(nsg.region().equals(region));
-        Assertions.assertTrue(nsg.securityRules().size() == 2);
+        Assertions.assertEquals(nsg.region(), region);
+        Assertions.assertEquals(2, nsg.securityRules().size());
 
         // Confirm NIC association
         Assertions.assertEquals(1, nsg.networkInterfaceIds().size());
         Assertions.assertTrue(nsg.networkInterfaceIds().contains(nic.id()));
 
         Assertions.assertEquals(1, nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds().size());
-        Assertions
-            .assertEquals(
-                asg.id(), nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds().iterator().next());
+        Assertions.assertEquals(asg.id(),
+            nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds().iterator().next());
 
         return nsg;
     }
 
     @Override
     public NetworkSecurityGroup updateResource(NetworkSecurityGroup resource) throws Exception {
-        resource =
-            resource
-                .update()
-                .withoutRule("rule1")
-                .withTag("tag1", "value1")
-                .withTag("tag2", "value2")
-                .defineRule("rule3")
-                .allowInbound()
-                .fromAnyAddress()
-                .fromAnyPort()
-                .toAnyAddress()
-                .toAnyPort()
-                .withProtocol(SecurityRuleProtocol.UDP)
-                .attach()
-                .withoutRule("rule1")
-                .updateRule("rule2")
-                .denyInbound()
-                .fromAddresses("100.0.0.0/29", "100.1.0.0/29")
-                .fromPortRanges("88-90")
-                .withPriority(300)
-                .withDescription("bar!!!")
-                .parent()
-                .apply();
+        resource = resource.update()
+            .withoutRule("rule1")
+            .withTag("tag1", "value1")
+            .withTag("tag2", "value2")
+            .defineRule("rule3")
+            .allowInbound()
+            .fromAnyAddress()
+            .fromAnyPort()
+            .toAnyAddress()
+            .toAnyPort()
+            .withProtocol(SecurityRuleProtocol.UDP)
+            .attach()
+            .withoutRule("rule1")
+            .updateRule("rule2")
+            .denyInbound()
+            .fromAddresses("100.0.0.0/29", "100.1.0.0/29")
+            .fromPortRanges("88-90")
+            .withPriority(300)
+            .withDescription("bar!!!")
+            .parent()
+            .apply();
         Assertions.assertTrue(resource.tags().containsKey("tag1"));
         Assertions.assertTrue(resource.securityRules().get("rule2").sourceApplicationSecurityGroupIds().isEmpty());
         Assertions.assertNull(resource.securityRules().get("rule2").sourceAddressPrefix());
@@ -135,8 +129,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
     }
 
     private static StringBuilder printRule(NetworkSecurityRule rule, StringBuilder info) {
-        info
-            .append("\n\t\tRule: ")
+        info.append("\n\t\tRule: ")
             .append(rule.name())
             .append("\n\t\t\tAccess: ")
             .append(rule.access())
@@ -161,8 +154,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
 
     public static void printNSG(NetworkSecurityGroup resource) {
         StringBuilder info = new StringBuilder();
-        info
-            .append("NSG: ")
+        info.append("NSG: ")
             .append(resource.id())
             .append("Name: ")
             .append(resource.name())
@@ -191,19 +183,18 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         // Output associated subnets
         info.append("\n\tAssociated subnets: ");
         List<Subnet> subnets = resource.listAssociatedSubnets();
-        if (subnets == null || subnets.size() == 0) {
+        if (subnets == null || subnets.isEmpty()) {
             info.append("(None)");
         } else {
             for (Subnet subnet : subnets) {
-                info
-                    .append("\n\t\tNetwork ID: ")
+                info.append("\n\t\tNetwork ID: ")
                     .append(subnet.parent().id())
                     .append("\n\t\tSubnet name: ")
                     .append(subnet.name());
             }
         }
 
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 
     @Override

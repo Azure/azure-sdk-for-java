@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Extended info class details. */
+/**
+ * Extended info class details.
+ */
 @Fluent
-public final class AzureWorkloadSqlRecoveryPointExtendedInfo {
+public final class AzureWorkloadSqlRecoveryPointExtendedInfo
+    implements JsonSerializable<AzureWorkloadSqlRecoveryPointExtendedInfo> {
     /*
      * UTC time at which data directory info was captured
      */
-    @JsonProperty(value = "dataDirectoryTimeInUTC")
     private OffsetDateTime dataDirectoryTimeInUtc;
 
     /*
      * List of data directory paths during restore operation.
      */
-    @JsonProperty(value = "dataDirectoryPaths")
     private List<SqlDataDirectory> dataDirectoryPaths;
 
-    /** Creates an instance of AzureWorkloadSqlRecoveryPointExtendedInfo class. */
+    /**
+     * Creates an instance of AzureWorkloadSqlRecoveryPointExtendedInfo class.
+     */
     public AzureWorkloadSqlRecoveryPointExtendedInfo() {
     }
 
     /**
      * Get the dataDirectoryTimeInUtc property: UTC time at which data directory info was captured.
-     *
+     * 
      * @return the dataDirectoryTimeInUtc value.
      */
     public OffsetDateTime dataDirectoryTimeInUtc() {
@@ -39,7 +48,7 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo {
 
     /**
      * Set the dataDirectoryTimeInUtc property: UTC time at which data directory info was captured.
-     *
+     * 
      * @param dataDirectoryTimeInUtc the dataDirectoryTimeInUtc value to set.
      * @return the AzureWorkloadSqlRecoveryPointExtendedInfo object itself.
      */
@@ -50,7 +59,7 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo {
 
     /**
      * Get the dataDirectoryPaths property: List of data directory paths during restore operation.
-     *
+     * 
      * @return the dataDirectoryPaths value.
      */
     public List<SqlDataDirectory> dataDirectoryPaths() {
@@ -59,7 +68,7 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo {
 
     /**
      * Set the dataDirectoryPaths property: List of data directory paths during restore operation.
-     *
+     * 
      * @param dataDirectoryPaths the dataDirectoryPaths value to set.
      * @return the AzureWorkloadSqlRecoveryPointExtendedInfo object itself.
      */
@@ -70,12 +79,59 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataDirectoryPaths() != null) {
             dataDirectoryPaths().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataDirectoryTimeInUTC",
+            this.dataDirectoryTimeInUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dataDirectoryTimeInUtc));
+        jsonWriter.writeArrayField("dataDirectoryPaths", this.dataDirectoryPaths,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWorkloadSqlRecoveryPointExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWorkloadSqlRecoveryPointExtendedInfo if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWorkloadSqlRecoveryPointExtendedInfo.
+     */
+    public static AzureWorkloadSqlRecoveryPointExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWorkloadSqlRecoveryPointExtendedInfo deserializedAzureWorkloadSqlRecoveryPointExtendedInfo
+                = new AzureWorkloadSqlRecoveryPointExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataDirectoryTimeInUTC".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRecoveryPointExtendedInfo.dataDirectoryTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dataDirectoryPaths".equals(fieldName)) {
+                    List<SqlDataDirectory> dataDirectoryPaths
+                        = reader.readArray(reader1 -> SqlDataDirectory.fromJson(reader1));
+                    deserializedAzureWorkloadSqlRecoveryPointExtendedInfo.dataDirectoryPaths = dataDirectoryPaths;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWorkloadSqlRecoveryPointExtendedInfo;
+        });
     }
 }

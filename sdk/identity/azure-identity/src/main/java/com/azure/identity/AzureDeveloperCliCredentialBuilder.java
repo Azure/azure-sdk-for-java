@@ -18,7 +18,7 @@ import java.util.Objects;
  * <p>Azure Developer CLI is a command-line interface tool that allows developers to create, manage, and deploy
  * resources in Azure. It's built on top of the Azure CLI and provides additional functionality specific
  * to Azure developers. It allows users to authenticate as a user and/or a service principal against
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>.
  * The AzureDeveloperCliCredential authenticates in a development environment and acquires a token on behalf of
  * the logged-in user or service principal in Azure Developer CLI. It acts as the Azure Developer CLI logged in user or
  * service principal and executes an Azure CLI command underneath to authenticate the application against
@@ -33,8 +33,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.identity.credential.azuredeveloperclicredential.construct -->
  * <pre>
- * TokenCredential azureDevCliCredential = new AzureDeveloperCliCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential azureDevCliCredential = new AzureDeveloperCliCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.azuredeveloperclicredential.construct -->
  *
@@ -44,6 +43,13 @@ public class AzureDeveloperCliCredentialBuilder extends CredentialBuilderBase<Az
     private static final ClientLogger LOGGER = new ClientLogger(AzureDeveloperCliCredentialBuilder.class);
 
     private String tenantId;
+
+    /**
+     * Constructs an instance of AzureDeveloperCliCredentialBuilder.
+     */
+    public AzureDeveloperCliCredentialBuilder() {
+        super();
+    }
 
     /**
      * Sets the tenant ID of the application.
@@ -89,8 +95,8 @@ public class AzureDeveloperCliCredentialBuilder extends CredentialBuilderBase<Az
      */
     @SuppressWarnings("unchecked")
     public AzureDeveloperCliCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -105,7 +111,8 @@ public class AzureDeveloperCliCredentialBuilder extends CredentialBuilderBase<Az
      */
     @SuppressWarnings("unchecked")
     public AzureDeveloperCliCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 }

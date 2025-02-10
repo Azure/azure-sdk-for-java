@@ -5,36 +5,66 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.EsuEligibility;
 import com.azure.resourcemanager.hybridcompute.models.EsuKey;
 import com.azure.resourcemanager.hybridcompute.models.EsuKeyState;
 import com.azure.resourcemanager.hybridcompute.models.EsuServerType;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileProductType;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatus;
+import com.azure.resourcemanager.hybridcompute.models.ProductFeature;
 import com.azure.resourcemanager.hybridcompute.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Describe the properties of a license profile. */
+/**
+ * Describe the properties of a license profile.
+ */
 @Fluent
-public final class LicenseProfileProperties {
+public final class LicenseProfileProperties implements JsonSerializable<LicenseProfileProperties> {
+    /*
+     * The softwareAssurance property.
+     */
+    private LicenseProfilePropertiesSoftwareAssurance innerSoftwareAssurance;
+
     /*
      * Hybrid Compute ESU Profile properties
      */
-    @JsonProperty(value = "esuProfile")
     private LicenseProfileArmEsuProperties innerEsuProfile;
+
+    /*
+     * Hybrid Compute Product Profile properties
+     */
+    private LicenseProfileArmProductProfileProperties innerProductProfile;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of LicenseProfileProperties class. */
+    /**
+     * Creates an instance of LicenseProfileProperties class.
+     */
     public LicenseProfileProperties() {
     }
 
     /**
+     * Get the innerSoftwareAssurance property: The softwareAssurance property.
+     * 
+     * @return the innerSoftwareAssurance value.
+     */
+    private LicenseProfilePropertiesSoftwareAssurance innerSoftwareAssurance() {
+        return this.innerSoftwareAssurance;
+    }
+
+    /**
      * Get the innerEsuProfile property: Hybrid Compute ESU Profile properties.
-     *
+     * 
      * @return the innerEsuProfile value.
      */
     private LicenseProfileArmEsuProperties innerEsuProfile() {
@@ -42,8 +72,17 @@ public final class LicenseProfileProperties {
     }
 
     /**
+     * Get the innerProductProfile property: Hybrid Compute Product Profile properties.
+     * 
+     * @return the innerProductProfile value.
+     */
+    private LicenseProfileArmProductProfileProperties innerProductProfile() {
+        return this.innerProductProfile;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -51,8 +90,33 @@ public final class LicenseProfileProperties {
     }
 
     /**
+     * Get the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
+     * agreement.
+     * 
+     * @return the softwareAssuranceCustomer value.
+     */
+    public Boolean softwareAssuranceCustomer() {
+        return this.innerSoftwareAssurance() == null ? null : this.innerSoftwareAssurance().softwareAssuranceCustomer();
+    }
+
+    /**
+     * Set the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
+     * agreement.
+     * 
+     * @param softwareAssuranceCustomer the softwareAssuranceCustomer value to set.
+     * @return the LicenseProfileProperties object itself.
+     */
+    public LicenseProfileProperties withSoftwareAssuranceCustomer(Boolean softwareAssuranceCustomer) {
+        if (this.innerSoftwareAssurance() == null) {
+            this.innerSoftwareAssurance = new LicenseProfilePropertiesSoftwareAssurance();
+        }
+        this.innerSoftwareAssurance().withSoftwareAssuranceCustomer(softwareAssuranceCustomer);
+        return this;
+    }
+
+    /**
      * Get the assignedLicense property: The resource id of the license.
-     *
+     * 
      * @return the assignedLicense value.
      */
     public String assignedLicense() {
@@ -61,7 +125,7 @@ public final class LicenseProfileProperties {
 
     /**
      * Set the assignedLicense property: The resource id of the license.
-     *
+     * 
      * @param assignedLicense the assignedLicense value to set.
      * @return the LicenseProfileProperties object itself.
      */
@@ -75,7 +139,7 @@ public final class LicenseProfileProperties {
 
     /**
      * Get the serverType property: The type of the Esu servers.
-     *
+     * 
      * @return the serverType value.
      */
     public EsuServerType serverType() {
@@ -84,7 +148,7 @@ public final class LicenseProfileProperties {
 
     /**
      * Get the esuEligibility property: Indicates the eligibility state of Esu.
-     *
+     * 
      * @return the esuEligibility value.
      */
     public EsuEligibility esuEligibility() {
@@ -93,7 +157,7 @@ public final class LicenseProfileProperties {
 
     /**
      * Get the esuKeyState property: Indicates whether there is an ESU Key currently active for the machine.
-     *
+     * 
      * @return the esuKeyState value.
      */
     public EsuKeyState esuKeyState() {
@@ -102,7 +166,7 @@ public final class LicenseProfileProperties {
 
     /**
      * Get the assignedLicenseImmutableId property: The guid id of the license.
-     *
+     * 
      * @return the assignedLicenseImmutableId value.
      */
     public String assignedLicenseImmutableId() {
@@ -111,7 +175,7 @@ public final class LicenseProfileProperties {
 
     /**
      * Get the esuKeys property: The list of ESU keys.
-     *
+     * 
      * @return the esuKeys value.
      */
     public List<EsuKey> esuKeys() {
@@ -119,13 +183,181 @@ public final class LicenseProfileProperties {
     }
 
     /**
+     * Get the subscriptionStatus property: Indicates the subscription status of the product.
+     * 
+     * @return the subscriptionStatus value.
+     */
+    public LicenseProfileSubscriptionStatus subscriptionStatus() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().subscriptionStatus();
+    }
+
+    /**
+     * Set the subscriptionStatus property: Indicates the subscription status of the product.
+     * 
+     * @param subscriptionStatus the subscriptionStatus value to set.
+     * @return the LicenseProfileProperties object itself.
+     */
+    public LicenseProfileProperties withSubscriptionStatus(LicenseProfileSubscriptionStatus subscriptionStatus) {
+        if (this.innerProductProfile() == null) {
+            this.innerProductProfile = new LicenseProfileArmProductProfileProperties();
+        }
+        this.innerProductProfile().withSubscriptionStatus(subscriptionStatus);
+        return this;
+    }
+
+    /**
+     * Get the productType property: Indicates the product type of the license.
+     * 
+     * @return the productType value.
+     */
+    public LicenseProfileProductType productType() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().productType();
+    }
+
+    /**
+     * Set the productType property: Indicates the product type of the license.
+     * 
+     * @param productType the productType value to set.
+     * @return the LicenseProfileProperties object itself.
+     */
+    public LicenseProfileProperties withProductType(LicenseProfileProductType productType) {
+        if (this.innerProductProfile() == null) {
+            this.innerProductProfile = new LicenseProfileArmProductProfileProperties();
+        }
+        this.innerProductProfile().withProductType(productType);
+        return this;
+    }
+
+    /**
+     * Get the enrollmentDate property: The timestamp in UTC when the user enrolls the feature.
+     * 
+     * @return the enrollmentDate value.
+     */
+    public OffsetDateTime enrollmentDate() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().enrollmentDate();
+    }
+
+    /**
+     * Get the billingStartDate property: The timestamp in UTC when the billing starts.
+     * 
+     * @return the billingStartDate value.
+     */
+    public OffsetDateTime billingStartDate() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().billingStartDate();
+    }
+
+    /**
+     * Get the disenrollmentDate property: The timestamp in UTC when the user disenrolled the feature.
+     * 
+     * @return the disenrollmentDate value.
+     */
+    public OffsetDateTime disenrollmentDate() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().disenrollmentDate();
+    }
+
+    /**
+     * Get the billingEndDate property: The timestamp in UTC when the billing ends.
+     * 
+     * @return the billingEndDate value.
+     */
+    public OffsetDateTime billingEndDate() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().billingEndDate();
+    }
+
+    /**
+     * Get the error property: The errors that were encountered during the feature enrollment or disenrollment.
+     * 
+     * @return the error value.
+     */
+    public ManagementError error() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().error();
+    }
+
+    /**
+     * Get the productFeatures property: The list of product features.
+     * 
+     * @return the productFeatures value.
+     */
+    public List<ProductFeature> productFeatures() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().productFeatures();
+    }
+
+    /**
+     * Set the productFeatures property: The list of product features.
+     * 
+     * @param productFeatures the productFeatures value to set.
+     * @return the LicenseProfileProperties object itself.
+     */
+    public LicenseProfileProperties withProductFeatures(List<ProductFeature> productFeatures) {
+        if (this.innerProductProfile() == null) {
+            this.innerProductProfile = new LicenseProfileArmProductProfileProperties();
+        }
+        this.innerProductProfile().withProductFeatures(productFeatures);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerSoftwareAssurance() != null) {
+            innerSoftwareAssurance().validate();
+        }
         if (innerEsuProfile() != null) {
             innerEsuProfile().validate();
         }
+        if (innerProductProfile() != null) {
+            innerProductProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("softwareAssurance", this.innerSoftwareAssurance);
+        jsonWriter.writeJsonField("esuProfile", this.innerEsuProfile);
+        jsonWriter.writeJsonField("productProfile", this.innerProductProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseProfileProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseProfileProperties.
+     */
+    public static LicenseProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseProfileProperties deserializedLicenseProfileProperties = new LicenseProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("softwareAssurance".equals(fieldName)) {
+                    deserializedLicenseProfileProperties.innerSoftwareAssurance
+                        = LicenseProfilePropertiesSoftwareAssurance.fromJson(reader);
+                } else if ("esuProfile".equals(fieldName)) {
+                    deserializedLicenseProfileProperties.innerEsuProfile
+                        = LicenseProfileArmEsuProperties.fromJson(reader);
+                } else if ("productProfile".equals(fieldName)) {
+                    deserializedLicenseProfileProperties.innerProductProfile
+                        = LicenseProfileArmProductProfileProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLicenseProfileProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseProfileProperties;
+        });
     }
 }

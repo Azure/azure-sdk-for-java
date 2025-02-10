@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.SecureScoreControlDefinitionLis
 public final class SecureScoreControlDefinitionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecureScoreControlDefinitionList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"sxjb\",\"description\":\"ehgpdohzjqatu\",\"maxScore\":1160823097,\"assessmentDefinitions\":[]},\"id\":\"bxncnwfepbnw\",\"name\":\"fmxjg\",\"type\":\"g\"},{\"properties\":{\"displayName\":\"gdlfgt\",\"description\":\"snaquf\",\"maxScore\":1011075581,\"assessmentDefinitions\":[]},\"id\":\"q\",\"name\":\"amz\",\"type\":\"rwd\"},{\"properties\":{\"displayName\":\"eqyj\",\"description\":\"zi\",\"maxScore\":1622963422,\"assessmentDefinitions\":[]},\"id\":\"fza\",\"name\":\"tkw\",\"type\":\"eg\"}],\"nextLink\":\"mlbnseq\"}")
-                .toObject(SecureScoreControlDefinitionList.class);
+        SecureScoreControlDefinitionList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"fieypefojyqdhcup\",\"description\":\"plcwkhi\",\"maxScore\":1749772121,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"tzbsrgnowcjhf\"},{\"id\":\"vecactx\"}]},\"id\":\"wotey\",\"name\":\"wcluqovekqvgq\",\"type\":\"uwifzmpjwyiv\"},{\"properties\":{\"displayName\":\"f\",\"description\":\"vhrfsphuagrt\",\"maxScore\":95880088,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{\"id\":\"zkvyklx\"}]},\"id\":\"byjaffmmf\",\"name\":\"lcqcuubgqibrt\",\"type\":\"lmetttwgdslqxi\"},{\"properties\":{\"displayName\":\"moo\",\"description\":\"qseypxiutcxa\",\"maxScore\":1361435323,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"g\"},{\"id\":\"joxslhvnhla\"},{\"id\":\"q\"}]},\"id\":\"kkzjcjbtrga\",\"name\":\"hvv\",\"type\":\"brxjjsto\"},{\"properties\":{\"displayName\":\"it\",\"description\":\"xztmo\",\"maxScore\":591032834,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{\"id\":\"fc\"},{\"id\":\"mpimaqxzhemjyh\"}]},\"id\":\"hujswtwkozzwcul\",\"name\":\"bawpfajnjwltlwt\",\"type\":\"j\"}],\"nextLink\":\"ktalhsnvkcdmxz\"}")
+            .toObject(SecureScoreControlDefinitionList.class);
     }
 
     @org.junit.jupiter.api.Test

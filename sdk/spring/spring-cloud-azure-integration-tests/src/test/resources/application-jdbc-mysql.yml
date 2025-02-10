@@ -1,4 +1,8 @@
 spring:
+  cloud:
+    azure:
+      credential:
+        token-credential-bean-name: integrationTestTokenCredential
   datasource:
     url: jdbc:mysql://${AZURE_MYSQL_ENDPOINT}:3306/db
     username: passwordless-mysql-test-admin@${AZURE_MYSQL_ACCOUNT_NAME}
@@ -6,9 +10,6 @@ spring:
       maximum-pool-size: 5
       minimum-idle: 5
     azure:
-      credential:
-        client-id: ${AZURE_SPRING_CLIENT_ID}
-        client-secret: ${AZURE_SPRING_CLIENT_SECRET}
       profile:
         tenant-id: ${AZURE_SPRING_TENANT_ID}
       passwordless-enabled: true

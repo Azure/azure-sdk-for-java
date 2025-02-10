@@ -6,36 +6,41 @@ package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Snapshot's download request. */
+/**
+ * Snapshot's download request.
+ */
 @Fluent
-public final class SnapshotDownloadRequest {
+public final class SnapshotDownloadRequest implements JsonSerializable<SnapshotDownloadRequest> {
     /*
      * Tenant id.
      */
-    @JsonProperty(value = "reportCreatorTenantId")
     private String reportCreatorTenantId;
 
     /*
      * Indicates the download type.
      */
-    @JsonProperty(value = "downloadType", required = true)
     private DownloadType downloadType;
 
     /*
      * The offerGuid which mapping to the reports.
      */
-    @JsonProperty(value = "offerGuid")
     private String offerGuid;
 
-    /** Creates an instance of SnapshotDownloadRequest class. */
+    /**
+     * Creates an instance of SnapshotDownloadRequest class.
+     */
     public SnapshotDownloadRequest() {
     }
 
     /**
      * Get the reportCreatorTenantId property: Tenant id.
-     *
+     * 
      * @return the reportCreatorTenantId value.
      */
     public String reportCreatorTenantId() {
@@ -44,7 +49,7 @@ public final class SnapshotDownloadRequest {
 
     /**
      * Set the reportCreatorTenantId property: Tenant id.
-     *
+     * 
      * @param reportCreatorTenantId the reportCreatorTenantId value to set.
      * @return the SnapshotDownloadRequest object itself.
      */
@@ -55,7 +60,7 @@ public final class SnapshotDownloadRequest {
 
     /**
      * Get the downloadType property: Indicates the download type.
-     *
+     * 
      * @return the downloadType value.
      */
     public DownloadType downloadType() {
@@ -64,7 +69,7 @@ public final class SnapshotDownloadRequest {
 
     /**
      * Set the downloadType property: Indicates the download type.
-     *
+     * 
      * @param downloadType the downloadType value to set.
      * @return the SnapshotDownloadRequest object itself.
      */
@@ -75,7 +80,7 @@ public final class SnapshotDownloadRequest {
 
     /**
      * Get the offerGuid property: The offerGuid which mapping to the reports.
-     *
+     * 
      * @return the offerGuid value.
      */
     public String offerGuid() {
@@ -84,7 +89,7 @@ public final class SnapshotDownloadRequest {
 
     /**
      * Set the offerGuid property: The offerGuid which mapping to the reports.
-     *
+     * 
      * @param offerGuid the offerGuid value to set.
      * @return the SnapshotDownloadRequest object itself.
      */
@@ -95,17 +100,59 @@ public final class SnapshotDownloadRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (downloadType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property downloadType in model SnapshotDownloadRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property downloadType in model SnapshotDownloadRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SnapshotDownloadRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("downloadType", this.downloadType == null ? null : this.downloadType.toString());
+        jsonWriter.writeStringField("reportCreatorTenantId", this.reportCreatorTenantId);
+        jsonWriter.writeStringField("offerGuid", this.offerGuid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotDownloadRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotDownloadRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnapshotDownloadRequest.
+     */
+    public static SnapshotDownloadRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotDownloadRequest deserializedSnapshotDownloadRequest = new SnapshotDownloadRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("downloadType".equals(fieldName)) {
+                    deserializedSnapshotDownloadRequest.downloadType = DownloadType.fromString(reader.getString());
+                } else if ("reportCreatorTenantId".equals(fieldName)) {
+                    deserializedSnapshotDownloadRequest.reportCreatorTenantId = reader.getString();
+                } else if ("offerGuid".equals(fieldName)) {
+                    deserializedSnapshotDownloadRequest.offerGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotDownloadRequest;
+        });
+    }
 }

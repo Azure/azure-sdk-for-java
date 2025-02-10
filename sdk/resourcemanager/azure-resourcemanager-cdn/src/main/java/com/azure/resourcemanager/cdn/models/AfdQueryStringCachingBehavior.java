@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,23 +12,31 @@ import java.util.Collection;
  * ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
  */
 public final class AfdQueryStringCachingBehavior extends ExpandableStringEnum<AfdQueryStringCachingBehavior> {
-    /** Static value IgnoreQueryString for AfdQueryStringCachingBehavior. */
+    /**
+     * Static value IgnoreQueryString for AfdQueryStringCachingBehavior.
+     */
     public static final AfdQueryStringCachingBehavior IGNORE_QUERY_STRING = fromString("IgnoreQueryString");
 
-    /** Static value UseQueryString for AfdQueryStringCachingBehavior. */
+    /**
+     * Static value UseQueryString for AfdQueryStringCachingBehavior.
+     */
     public static final AfdQueryStringCachingBehavior USE_QUERY_STRING = fromString("UseQueryString");
 
-    /** Static value IgnoreSpecifiedQueryStrings for AfdQueryStringCachingBehavior. */
-    public static final AfdQueryStringCachingBehavior IGNORE_SPECIFIED_QUERY_STRINGS =
-        fromString("IgnoreSpecifiedQueryStrings");
+    /**
+     * Static value IgnoreSpecifiedQueryStrings for AfdQueryStringCachingBehavior.
+     */
+    public static final AfdQueryStringCachingBehavior IGNORE_SPECIFIED_QUERY_STRINGS
+        = fromString("IgnoreSpecifiedQueryStrings");
 
-    /** Static value IncludeSpecifiedQueryStrings for AfdQueryStringCachingBehavior. */
-    public static final AfdQueryStringCachingBehavior INCLUDE_SPECIFIED_QUERY_STRINGS =
-        fromString("IncludeSpecifiedQueryStrings");
+    /**
+     * Static value IncludeSpecifiedQueryStrings for AfdQueryStringCachingBehavior.
+     */
+    public static final AfdQueryStringCachingBehavior INCLUDE_SPECIFIED_QUERY_STRINGS
+        = fromString("IncludeSpecifiedQueryStrings");
 
     /**
      * Creates a new instance of AfdQueryStringCachingBehavior value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,18 +45,17 @@ public final class AfdQueryStringCachingBehavior extends ExpandableStringEnum<Af
 
     /**
      * Creates or finds a AfdQueryStringCachingBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AfdQueryStringCachingBehavior.
      */
-    @JsonCreator
     public static AfdQueryStringCachingBehavior fromString(String name) {
         return fromString(name, AfdQueryStringCachingBehavior.class);
     }
 
     /**
      * Gets known AfdQueryStringCachingBehavior values.
-     *
+     * 
      * @return known AfdQueryStringCachingBehavior values.
      */
     public static Collection<AfdQueryStringCachingBehavior> values() {

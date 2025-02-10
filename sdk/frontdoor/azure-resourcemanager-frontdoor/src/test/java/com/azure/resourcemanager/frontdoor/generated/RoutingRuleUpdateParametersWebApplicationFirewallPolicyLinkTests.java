@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RoutingRuleUpdateParametersWebApplicationFirewallPolicyLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink model =
-            BinaryData
-                .fromString("{\"id\":\"taruoujmkcj\"}")
+        RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink model
+            = BinaryData.fromString("{\"id\":\"vfcibyfmowux\"}")
                 .toObject(RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink.class);
-        Assertions.assertEquals("taruoujmkcj", model.id());
+        Assertions.assertEquals("vfcibyfmowux", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink model =
-            new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("taruoujmkcj");
-        model =
-            BinaryData.fromObject(model).toObject(RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink.class);
-        Assertions.assertEquals("taruoujmkcj", model.id());
+        RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink model
+            = new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("vfcibyfmowux");
+        model
+            = BinaryData.fromObject(model).toObject(RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink.class);
+        Assertions.assertEquals("vfcibyfmowux", model.id());
     }
 }

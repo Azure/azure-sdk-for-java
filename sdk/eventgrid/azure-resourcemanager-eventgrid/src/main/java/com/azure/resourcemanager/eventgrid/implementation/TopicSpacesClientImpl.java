@@ -485,7 +485,8 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
     private Mono<TopicSpaceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
         String topicSpaceName, TopicSpaceInner topicSpaceInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, topicSpaceName, topicSpaceInfo, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -988,9 +989,7 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1017,9 +1016,7 @@ public final class TopicSpacesClientImpl implements TopicSpacesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

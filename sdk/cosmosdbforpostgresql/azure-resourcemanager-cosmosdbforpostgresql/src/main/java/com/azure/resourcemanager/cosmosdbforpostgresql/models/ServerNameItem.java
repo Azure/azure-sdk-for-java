@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The name object for a server. */
+/**
+ * The name object for a server.
+ */
 @Fluent
-public final class ServerNameItem {
+public final class ServerNameItem implements JsonSerializable<ServerNameItem> {
     /*
      * The name of a server.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The fully qualified domain name of a server.
      */
-    @JsonProperty(value = "fullyQualifiedDomainName", access = JsonProperty.Access.WRITE_ONLY)
     private String fullyQualifiedDomainName;
 
-    /** Creates an instance of ServerNameItem class. */
+    /**
+     * Creates an instance of ServerNameItem class.
+     */
     public ServerNameItem() {
     }
 
     /**
      * Get the name property: The name of a server.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class ServerNameItem {
 
     /**
      * Set the name property: The name of a server.
-     *
+     * 
      * @param name the name value to set.
      * @return the ServerNameItem object itself.
      */
@@ -48,7 +54,7 @@ public final class ServerNameItem {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of a server.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -57,9 +63,47 @@ public final class ServerNameItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerNameItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerNameItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerNameItem.
+     */
+    public static ServerNameItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerNameItem deserializedServerNameItem = new ServerNameItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedServerNameItem.name = reader.getString();
+                } else if ("fullyQualifiedDomainName".equals(fieldName)) {
+                    deserializedServerNameItem.fullyQualifiedDomainName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerNameItem;
+        });
     }
 }

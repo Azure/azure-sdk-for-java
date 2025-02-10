@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Strategy to use for copy. */
+/**
+ * Strategy to use for copy.
+ */
 public final class CopyMode extends ExpandableStringEnum<CopyMode> {
-    /** Static value Additive for CopyMode. */
+    /**
+     * Static value Additive for CopyMode.
+     */
     public static final CopyMode ADDITIVE = fromString("Additive");
 
-    /** Static value Mirror for CopyMode. */
+    /**
+     * Static value Mirror for CopyMode.
+     */
     public static final CopyMode MIRROR = fromString("Mirror");
 
     /**
      * Creates a new instance of CopyMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class CopyMode extends ExpandableStringEnum<CopyMode> {
 
     /**
      * Creates or finds a CopyMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CopyMode.
      */
-    @JsonCreator
     public static CopyMode fromString(String name) {
         return fromString(name, CopyMode.class);
     }
 
     /**
      * Gets known CopyMode values.
-     *
+     * 
      * @return known CopyMode values.
      */
     public static Collection<CopyMode> values() {

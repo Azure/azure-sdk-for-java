@@ -13,11 +13,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** An IP configuration in a network interface. */
 @Fluent()
-public interface NicIpConfiguration
-    extends NicIpConfigurationBase,
-        HasInnerModel<NetworkInterfaceIpConfigurationInner>,
-        ChildResource<NetworkInterface>,
-        HasPublicIpAddress {
+public interface NicIpConfiguration extends NicIpConfigurationBase, HasInnerModel<NetworkInterfaceIpConfigurationInner>,
+    ChildResource<NetworkInterface>, HasPublicIpAddress {
 
     /**
      * The entirety of the network interface IP configuration definition.
@@ -25,12 +22,9 @@ public interface NicIpConfiguration
      * @param <ParentT> the stage of the parent network interface definition to return to after attaching this
      *     definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithNetwork<ParentT>,
-            DefinitionStages.WithSubnet<ParentT>,
-            DefinitionStages.WithPrivateIP<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithNetwork<ParentT>, DefinitionStages.WithSubnet<ParentT>,
+        DefinitionStages.WithPrivateIP<ParentT> {
     }
 
     /**
@@ -165,8 +159,8 @@ public interface NicIpConfiguration
              * @param inboundNatRuleName the name of an existing inbound NAT rule on the selected load balancer
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withExistingLoadBalancerInboundNatRule(
-                LoadBalancer loadBalancer, String inboundNatRuleName);
+            WithAttach<ParentT> withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer,
+                String inboundNatRuleName);
         }
 
         /**
@@ -184,8 +178,23 @@ public interface NicIpConfiguration
              * @param backendName the name of an existing backend on the application gateway
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withExistingApplicationGatewayBackend(
-                ApplicationGateway appGateway, String backendName);
+            WithAttach<ParentT> withExistingApplicationGatewayBackend(ApplicationGateway appGateway,
+                String backendName);
+        }
+
+        /** The stage of the definition allowing to specify delete options for the public ip address.
+         *
+         * @param <ParentT> the stage of the parent network interface definition to return to after attaching this
+         *     definition
+         * */
+        interface WithPublicIPAddressDeleteOptions<ParentT> {
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
         }
 
         /**
@@ -197,11 +206,8 @@ public interface NicIpConfiguration
          * @param <ParentT> the stage of the parent network interface definition to return to after attaching this
          *     definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                WithPublicIPAddress<ParentT>,
-                WithLoadBalancer<ParentT>,
-                WithApplicationGateway<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, WithPublicIPAddress<ParentT>,
+            WithLoadBalancer<ParentT>, WithApplicationGateway<ParentT>, WithPublicIPAddressDeleteOptions<ParentT> {
         }
     }
 
@@ -211,12 +217,9 @@ public interface NicIpConfiguration
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithNetwork<ParentT>,
-            UpdateDefinitionStages.WithPrivateIP<ParentT>,
-            UpdateDefinitionStages.WithSubnet<ParentT>,
-            UpdateDefinitionStages.WithPublicIPAddress<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithAttach<ParentT>,
+        UpdateDefinitionStages.WithNetwork<ParentT>, UpdateDefinitionStages.WithPrivateIP<ParentT>,
+        UpdateDefinitionStages.WithSubnet<ParentT>, UpdateDefinitionStages.WithPublicIPAddress<ParentT> {
     }
 
     /** Grouping of network interface IP configuration definition stages. */
@@ -349,8 +352,8 @@ public interface NicIpConfiguration
              * @param inboundNatRuleName the name of an existing inbound NAT rule on the selected load balancer
              * @return the next stage of the update
              */
-            WithAttach<ParentT> withExistingLoadBalancerInboundNatRule(
-                LoadBalancer loadBalancer, String inboundNatRuleName);
+            WithAttach<ParentT> withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer,
+                String inboundNatRuleName);
         }
 
         /**
@@ -368,8 +371,24 @@ public interface NicIpConfiguration
              * @param backendName the name of an existing backend on the application gateway
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withExistingApplicationGatewayBackend(
-                ApplicationGateway appGateway, String backendName);
+            WithAttach<ParentT> withExistingApplicationGatewayBackend(ApplicationGateway appGateway,
+                String backendName);
+        }
+
+        /**
+         * The stage of the definition allowing to specify delete options for the public ip address.
+         *
+         * @param <ParentT> the stage of the parent network interface update to return to after attaching this
+         *     definition
+         * */
+        interface WithPublicIPAddressDeleteOptions<ParentT> {
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the update
+             */
+            WithAttach<ParentT> withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
         }
 
         /**
@@ -381,22 +400,15 @@ public interface NicIpConfiguration
          * @param <ParentT> the stage of the parent network interface update to return to after attaching this
          *     definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InUpdate<ParentT>,
-                WithPublicIPAddress<ParentT>,
-                WithLoadBalancer<ParentT>,
-                WithApplicationGateway<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT>, WithPublicIPAddress<ParentT>,
+            WithLoadBalancer<ParentT>, WithApplicationGateway<ParentT>, WithPublicIPAddressDeleteOptions<ParentT> {
         }
     }
 
     /** The entirety of a network interface IP configuration update as part of a network interface update. */
-    interface Update
-        extends Settable<NetworkInterface.Update>,
-            UpdateStages.WithSubnet,
-            UpdateStages.WithPrivateIP,
-            UpdateStages.WithPublicIPAddress,
-            UpdateStages.WithLoadBalancer,
-            UpdateStages.WithApplicationGateway {
+    interface Update extends Settable<NetworkInterface.Update>, UpdateStages.WithSubnet, UpdateStages.WithPrivateIP,
+        UpdateStages.WithPublicIPAddress, UpdateStages.WithLoadBalancer, UpdateStages.WithApplicationGateway,
+        UpdateStages.WithPublicIPAddressDeleteOptions {
     }
 
     /** Grouping of network interface IP configuration update stages. */
@@ -485,6 +497,17 @@ public interface NicIpConfiguration
              * @return the next stage of the update
              */
             Update withoutApplicationGatewayBackends();
+        }
+
+        /** The stage of the network interface update allowing to specify delete options for the public ip address. */
+        interface WithPublicIPAddressDeleteOptions {
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the update
+             */
+            Update withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
         }
     }
 }

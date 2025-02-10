@@ -9,7 +9,10 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.DeploymentInner;
 import com.azure.resourcemanager.cognitiveservices.models.Deployment;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentProperties;
+import com.azure.resourcemanager.cognitiveservices.models.PatchResourceTagsAndSku;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
+import java.util.Collections;
+import java.util.Map;
 
 public final class DeploymentImpl implements Deployment, Deployment.Definition, Deployment.Update {
     private DeploymentInner innerObject;
@@ -40,6 +43,15 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
         return this.innerModel().etag();
     }
 
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public DeploymentProperties properties() {
         return this.innerModel().properties();
     }
@@ -62,6 +74,8 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
 
     private String deploymentName;
 
+    private PatchResourceTagsAndSku updateDeployment;
+
     public DeploymentImpl withExistingAccount(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
@@ -69,20 +83,16 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Deployment create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), context);
         return this;
     }
 
@@ -93,64 +103,75 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public DeploymentImpl update() {
+        this.updateDeployment = new PatchResourceTagsAndSku();
         return this;
     }
 
     public Deployment apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .update(resourceGroupName, accountName, deploymentName, updateDeployment, Context.NONE);
         return this;
     }
 
     public Deployment apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .update(resourceGroupName, accountName, deploymentName, updateDeployment, context);
         return this;
     }
 
-    DeploymentImpl(
-        DeploymentInner innerObject,
+    DeploymentImpl(DeploymentInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.deploymentName = Utils.getValueFromIdByName(innerObject.id(), "deployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.deploymentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deployments");
     }
 
     public Deployment refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .getWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .getWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Deployment refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .getWithResponse(resourceGroupName, accountName, deploymentName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeployments()
+            .getWithResponse(resourceGroupName, accountName, deploymentName, context)
+            .getValue();
         return this;
     }
 
+    public DeploymentImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateDeployment.withTags(tags);
+            return this;
+        }
+    }
+
     public DeploymentImpl withSku(Sku sku) {
-        this.innerModel().withSku(sku);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSku(sku);
+            return this;
+        } else {
+            this.updateDeployment.withSku(sku);
+            return this;
+        }
     }
 
     public DeploymentImpl withProperties(DeploymentProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

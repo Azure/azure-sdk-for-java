@@ -33,8 +33,7 @@ public final class StreamingJobPropertiesImpl implements StreamingJobProperties 
 
     private final com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager;
 
-    StreamingJobPropertiesImpl(
-        StreamingJobPropertiesInner innerObject,
+    StreamingJobPropertiesImpl(StreamingJobPropertiesInner innerObject,
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -103,9 +102,8 @@ public final class StreamingJobPropertiesImpl implements StreamingJobProperties 
     public List<Input> inputs() {
         List<InputInner> inner = this.innerModel().inputs();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner.stream().map(inner1 -> new InputImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new InputImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -123,9 +121,8 @@ public final class StreamingJobPropertiesImpl implements StreamingJobProperties 
     public List<Output> outputs() {
         List<OutputInner> inner = this.innerModel().outputs();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner.stream().map(inner1 -> new OutputImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new OutputImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -134,12 +131,8 @@ public final class StreamingJobPropertiesImpl implements StreamingJobProperties 
     public List<Function> functions() {
         List<FunctionInner> inner = this.innerModel().functions();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new FunctionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new FunctionImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

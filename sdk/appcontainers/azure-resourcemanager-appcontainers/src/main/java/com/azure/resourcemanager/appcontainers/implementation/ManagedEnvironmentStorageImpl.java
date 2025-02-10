@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentStorageInner;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentStorage;
@@ -31,6 +32,10 @@ public final class ManagedEnvironmentStorageImpl
         return this.innerModel().properties();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -49,36 +54,32 @@ public final class ManagedEnvironmentStorageImpl
 
     private String storageName;
 
-    public ManagedEnvironmentStorageImpl withExistingManagedEnvironment(
-        String resourceGroupName, String environmentName) {
+    public ManagedEnvironmentStorageImpl withExistingManagedEnvironment(String resourceGroupName,
+        String environmentName) {
         this.resourceGroupName = resourceGroupName;
         this.environmentName = environmentName;
         return this;
     }
 
     public ManagedEnvironmentStorage create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironmentsStorages()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, environmentName, storageName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, storageName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagedEnvironmentStorage create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironmentsStorages()
-                .createOrUpdateWithResponse(resourceGroupName, environmentName, storageName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, storageName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ManagedEnvironmentStorageImpl(
-        String name, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
+    ManagedEnvironmentStorageImpl(String name,
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = new ManagedEnvironmentStorageInner();
         this.serviceManager = serviceManager;
         this.storageName = name;
@@ -89,53 +90,44 @@ public final class ManagedEnvironmentStorageImpl
     }
 
     public ManagedEnvironmentStorage apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironmentsStorages()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, environmentName, storageName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, storageName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagedEnvironmentStorage apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironmentsStorages()
-                .createOrUpdateWithResponse(resourceGroupName, environmentName, storageName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironmentsStorages()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, storageName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ManagedEnvironmentStorageImpl(
-        ManagedEnvironmentStorageInner innerObject,
+    ManagedEnvironmentStorageImpl(ManagedEnvironmentStorageInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = Utils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
-        this.storageName = Utils.getValueFromIdByName(innerObject.id(), "storages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
+        this.storageName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storages");
     }
 
     public ManagedEnvironmentStorage refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironmentsStorages()
-                .getWithResponse(resourceGroupName, environmentName, storageName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironmentsStorages()
+            .getWithResponse(resourceGroupName, environmentName, storageName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagedEnvironmentStorage refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironmentsStorages()
-                .getWithResponse(resourceGroupName, environmentName, storageName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironmentsStorages()
+            .getWithResponse(resourceGroupName, environmentName, storageName, context)
+            .getValue();
         return this;
     }
 

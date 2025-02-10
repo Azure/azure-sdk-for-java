@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.ProtectionContainerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Protection Container collection. */
+/**
+ * Protection Container collection.
+ */
 @Fluent
-public final class ProtectionContainerCollection {
+public final class ProtectionContainerCollection implements JsonSerializable<ProtectionContainerCollection> {
     /*
      * The Protection Container details.
      */
-    @JsonProperty(value = "value")
     private List<ProtectionContainerInner> value;
 
     /*
      * The value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ProtectionContainerCollection class. */
+    /**
+     * Creates an instance of ProtectionContainerCollection class.
+     */
     public ProtectionContainerCollection() {
     }
 
     /**
      * Get the value property: The Protection Container details.
-     *
+     * 
      * @return the value value.
      */
     public List<ProtectionContainerInner> value() {
@@ -39,7 +45,7 @@ public final class ProtectionContainerCollection {
 
     /**
      * Set the value property: The Protection Container details.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProtectionContainerCollection object itself.
      */
@@ -50,7 +56,7 @@ public final class ProtectionContainerCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ProtectionContainerCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProtectionContainerCollection object itself.
      */
@@ -70,12 +76,54 @@ public final class ProtectionContainerCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectionContainerCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectionContainerCollection if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtectionContainerCollection.
+     */
+    public static ProtectionContainerCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectionContainerCollection deserializedProtectionContainerCollection
+                = new ProtectionContainerCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ProtectionContainerInner> value
+                        = reader.readArray(reader1 -> ProtectionContainerInner.fromJson(reader1));
+                    deserializedProtectionContainerCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedProtectionContainerCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectionContainerCollection;
+        });
     }
 }

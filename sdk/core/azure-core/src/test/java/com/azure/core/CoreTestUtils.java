@@ -3,16 +3,22 @@
 
 package com.azure.core;
 
-
 import com.azure.core.util.UrlBuilder;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -61,8 +67,8 @@ public final class CoreTestUtils {
      * @param actual Actual array.
      * @param actualLength Amount of bytes to compare in the actual array.
      */
-    public static void assertArraysEqual(byte[] expected, int expectedOffset, int expectedLength,
-        byte[] actual, int actualLength) {
+    public static void assertArraysEqual(byte[] expected, int expectedOffset, int expectedLength, byte[] actual,
+        int actualLength) {
         if (!Objects.equals(ByteBuffer.wrap(expected, expectedOffset, expectedLength),
             ByteBuffer.wrap(actual, 0, actualLength))) {
             assertArrayEquals(Arrays.copyOfRange(expected, expectedOffset, expectedOffset + expectedLength),
@@ -157,6 +163,58 @@ public final class CoreTestUtils {
      */
     public static URL createUrl(String urlString) throws MalformedURLException {
         return UrlBuilder.parse(urlString).toUrl();
+    }
+
+    /**
+     * Returns base64 encoded MD5 of bytes.
+     *
+     * @param bytes bytes.
+     * @return base64 encoded MD5 of bytes.
+     * @throws RuntimeException if md5 is not found.
+     */
+    public static String md5(byte[] bytes) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(bytes);
+            return Base64.getEncoder().encodeToString(digest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Returns base64 encoded MD5 of flux of byte buffers.
+     *
+     * @param bufferFlux flux of byte buffers.
+     * @return Mono that emits base64 encoded MD5 of bytes.
+     */
+    public static Mono<String> md5(Flux<ByteBuffer> bufferFlux) {
+        return bufferFlux.reduceWith(() -> {
+            try {
+                return MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+                throw Exceptions.propagate(e);
+            }
+        }, (digest, buffer) -> {
+            digest.update(buffer);
+            return digest;
+        }).map(digest -> Base64.getEncoder().encodeToString(digest.digest()));
+    }
+
+    /**
+     * Copies the data from the input stream to the output stream.
+     *
+     * @param source The input stream to copy from.
+     * @param destination The output stream to copy to.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static void copy(InputStream source, OutputStream destination) throws IOException {
+        byte[] buffer = new byte[8192];
+        int read;
+
+        while ((read = source.read(buffer, 0, buffer.length)) != -1) {
+            destination.write(buffer, 0, read);
+        }
     }
 
     private CoreTestUtils() {

@@ -47,14 +47,14 @@ public final class ManageStorageAccount {
 
             System.out.println("Creating a Storage Account");
 
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(storageAccountName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .create();
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define(storageAccountName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .create();
 
             System.out.println("Created a Storage Account:");
             Utils.print(storageAccount);
-
 
             // ============================================================
             // Get | regenerate storage account access keys
@@ -71,16 +71,16 @@ public final class ManageStorageAccount {
 
             Utils.print(storageAccountKeys);
 
-
             // ============================================================
             // Create another storage account
 
             System.out.println("Creating a 2nd Storage Account");
 
-            StorageAccount storageAccount2 = azureResourceManager.storageAccounts().define(storageAccountName2)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .create();
+            StorageAccount storageAccount2 = azureResourceManager.storageAccounts()
+                .define(storageAccountName2)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .create();
 
             System.out.println("Created a Storage Account:");
             Utils.print(storageAccount2);
@@ -89,7 +89,8 @@ public final class ManageStorageAccount {
 
             System.out.println("Creating a V2 Storage Account");
 
-            azureResourceManager.storageAccounts().define(storageAccountName3)
+            azureResourceManager.storageAccounts()
+                .define(storageAccountName3)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withGeneralPurposeAccountKindV2()
@@ -106,15 +107,14 @@ public final class ManageStorageAccount {
 
             PagedIterable<StorageAccount> accounts = storageAccounts.listByResourceGroup(rgName);
             for (StorageAccount sa : accounts) {
-                System.out.println("Storage Account " + sa.name()
-                        + " created @ " + sa.creationTime());
+                System.out.println("Storage Account " + sa.name() + " created @ " + sa.creationTime());
             }
 
             // ============================================================
             // Delete a storage account
 
-            System.out.println("Deleting a storage account - " + storageAccount.name()
-                    + " created @ " + storageAccount.creationTime());
+            System.out.println("Deleting a storage account - " + storageAccount.name() + " created @ "
+                + storageAccount.creationTime());
 
             azureResourceManager.storageAccounts().deleteById(storageAccount.id());
 
@@ -143,8 +143,7 @@ public final class ManageStorageAccount {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

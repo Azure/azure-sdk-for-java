@@ -6,31 +6,51 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.FabricProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Fabric definition. */
+/**
+ * Fabric definition.
+ */
 @Fluent
 public final class FabricInner extends ProxyResource {
     /*
      * Fabric related data.
      */
-    @JsonProperty(value = "properties")
     private FabricProperties properties;
 
     /*
      * Resource Location
      */
-    @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of FabricInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FabricInner class.
+     */
     public FabricInner() {
     }
 
     /**
      * Get the properties property: Fabric related data.
-     *
+     * 
      * @return the properties value.
      */
     public FabricProperties properties() {
@@ -39,7 +59,7 @@ public final class FabricInner extends ProxyResource {
 
     /**
      * Set the properties property: Fabric related data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the FabricInner object itself.
      */
@@ -50,7 +70,7 @@ public final class FabricInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +79,7 @@ public final class FabricInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the FabricInner object itself.
      */
@@ -69,13 +89,89 @@ public final class FabricInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FabricInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FabricInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FabricInner.
+     */
+    public static FabricInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FabricInner deserializedFabricInner = new FabricInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFabricInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFabricInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFabricInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFabricInner.properties = FabricProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedFabricInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFabricInner;
+        });
     }
 }

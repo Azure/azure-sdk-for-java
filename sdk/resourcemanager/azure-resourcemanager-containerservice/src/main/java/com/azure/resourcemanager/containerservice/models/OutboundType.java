@@ -5,12 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * The outbound (egress) routing method.
- *
+ * 
  * This can only be set at cluster creation time and cannot be changed later. For more information see [egress outbound
  * type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
  */
@@ -37,7 +36,7 @@ public final class OutboundType extends ExpandableStringEnum<OutboundType> {
 
     /**
      * Creates a new instance of OutboundType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -46,18 +45,17 @@ public final class OutboundType extends ExpandableStringEnum<OutboundType> {
 
     /**
      * Creates or finds a OutboundType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OutboundType.
      */
-    @JsonCreator
     public static OutboundType fromString(String name) {
         return fromString(name, OutboundType.class);
     }
 
     /**
      * Gets known OutboundType values.
-     *
+     * 
      * @return known OutboundType values.
      */
     public static Collection<OutboundType> values() {

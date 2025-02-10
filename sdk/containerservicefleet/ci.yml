@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: containerservicefleet
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-containerservicefleet
         groupId: com.azure.resourcemanager

@@ -5,157 +5,144 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** InMageAzureV2 protected disk details. */
+/**
+ * InMageAzureV2 protected disk details.
+ */
 @Fluent
-public final class InMageAzureV2ProtectedDiskDetails {
+public final class InMageAzureV2ProtectedDiskDetails implements JsonSerializable<InMageAzureV2ProtectedDiskDetails> {
     /*
      * The disk id.
      */
-    @JsonProperty(value = "diskId")
     private String diskId;
 
     /*
      * The disk name.
      */
-    @JsonProperty(value = "diskName")
     private String diskName;
 
     /*
      * The protection stage.
      */
-    @JsonProperty(value = "protectionStage")
     private String protectionStage;
 
     /*
      * The health error code for the disk.
      */
-    @JsonProperty(value = "healthErrorCode")
     private String healthErrorCode;
 
     /*
      * The RPO in seconds.
      */
-    @JsonProperty(value = "rpoInSeconds")
     private Long rpoInSeconds;
 
     /*
      * A value indicating whether resync is required for this disk.
      */
-    @JsonProperty(value = "resyncRequired")
     private String resyncRequired;
 
     /*
      * The resync progress percentage.
      */
-    @JsonProperty(value = "resyncProgressPercentage")
     private Integer resyncProgressPercentage;
 
     /*
      * The resync duration in seconds.
      */
-    @JsonProperty(value = "resyncDurationInSeconds")
     private Long resyncDurationInSeconds;
 
     /*
      * The disk capacity in bytes.
      */
-    @JsonProperty(value = "diskCapacityInBytes")
     private Long diskCapacityInBytes;
 
     /*
      * The disk file system capacity in bytes.
      */
-    @JsonProperty(value = "fileSystemCapacityInBytes")
     private Long fileSystemCapacityInBytes;
 
     /*
      * The source data transit in MB.
      */
-    @JsonProperty(value = "sourceDataInMegaBytes")
     private Double sourceDataInMegaBytes;
 
     /*
      * The PS data transit in MB.
      */
-    @JsonProperty(value = "psDataInMegaBytes")
     private Double psDataInMegaBytes;
 
     /*
      * The target data transit in MB.
      */
-    @JsonProperty(value = "targetDataInMegaBytes")
     private Double targetDataInMegaBytes;
 
     /*
      * A value indicating whether disk is resized.
      */
-    @JsonProperty(value = "diskResized")
     private String diskResized;
 
     /*
      * The last RPO calculated time.
      */
-    @JsonProperty(value = "lastRpoCalculatedTime")
     private OffsetDateTime lastRpoCalculatedTime;
 
     /*
      * The resync processed bytes.
      */
-    @JsonProperty(value = "resyncProcessedBytes")
     private Long resyncProcessedBytes;
 
     /*
      * The resync total transferred bytes.
      */
-    @JsonProperty(value = "resyncTotalTransferredBytes")
     private Long resyncTotalTransferredBytes;
 
     /*
      * The resync last 15 minutes transferred bytes.
      */
-    @JsonProperty(value = "resyncLast15MinutesTransferredBytes")
     private Long resyncLast15MinutesTransferredBytes;
 
     /*
      * The last data transfer time in UTC.
      */
-    @JsonProperty(value = "resyncLastDataTransferTimeUTC")
     private OffsetDateTime resyncLastDataTransferTimeUtc;
 
     /*
      * The resync start time.
      */
-    @JsonProperty(value = "resyncStartTime")
     private OffsetDateTime resyncStartTime;
 
     /*
      * The Progress Health.
      */
-    @JsonProperty(value = "progressHealth")
     private String progressHealth;
 
     /*
      * The Progress Status.
      */
-    @JsonProperty(value = "progressStatus")
     private String progressStatus;
 
     /*
      * The seconds to take for switch provider.
      */
-    @JsonProperty(value = "secondsToTakeSwitchProvider")
     private Long secondsToTakeSwitchProvider;
 
-    /** Creates an instance of InMageAzureV2ProtectedDiskDetails class. */
+    /**
+     * Creates an instance of InMageAzureV2ProtectedDiskDetails class.
+     */
     public InMageAzureV2ProtectedDiskDetails() {
     }
 
     /**
      * Get the diskId property: The disk id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -164,7 +151,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the diskId property: The disk id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -175,7 +162,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the diskName property: The disk name.
-     *
+     * 
      * @return the diskName value.
      */
     public String diskName() {
@@ -184,7 +171,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the diskName property: The disk name.
-     *
+     * 
      * @param diskName the diskName value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -195,7 +182,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the protectionStage property: The protection stage.
-     *
+     * 
      * @return the protectionStage value.
      */
     public String protectionStage() {
@@ -204,7 +191,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the protectionStage property: The protection stage.
-     *
+     * 
      * @param protectionStage the protectionStage value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -215,7 +202,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the healthErrorCode property: The health error code for the disk.
-     *
+     * 
      * @return the healthErrorCode value.
      */
     public String healthErrorCode() {
@@ -224,7 +211,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the healthErrorCode property: The health error code for the disk.
-     *
+     * 
      * @param healthErrorCode the healthErrorCode value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -235,7 +222,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the rpoInSeconds property: The RPO in seconds.
-     *
+     * 
      * @return the rpoInSeconds value.
      */
     public Long rpoInSeconds() {
@@ -244,7 +231,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the rpoInSeconds property: The RPO in seconds.
-     *
+     * 
      * @param rpoInSeconds the rpoInSeconds value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -255,7 +242,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the resyncRequired property: A value indicating whether resync is required for this disk.
-     *
+     * 
      * @return the resyncRequired value.
      */
     public String resyncRequired() {
@@ -264,7 +251,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the resyncRequired property: A value indicating whether resync is required for this disk.
-     *
+     * 
      * @param resyncRequired the resyncRequired value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -275,7 +262,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the resyncProgressPercentage property: The resync progress percentage.
-     *
+     * 
      * @return the resyncProgressPercentage value.
      */
     public Integer resyncProgressPercentage() {
@@ -284,7 +271,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the resyncProgressPercentage property: The resync progress percentage.
-     *
+     * 
      * @param resyncProgressPercentage the resyncProgressPercentage value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -295,7 +282,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the resyncDurationInSeconds property: The resync duration in seconds.
-     *
+     * 
      * @return the resyncDurationInSeconds value.
      */
     public Long resyncDurationInSeconds() {
@@ -304,7 +291,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the resyncDurationInSeconds property: The resync duration in seconds.
-     *
+     * 
      * @param resyncDurationInSeconds the resyncDurationInSeconds value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -315,7 +302,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the diskCapacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @return the diskCapacityInBytes value.
      */
     public Long diskCapacityInBytes() {
@@ -324,7 +311,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the diskCapacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @param diskCapacityInBytes the diskCapacityInBytes value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -335,7 +322,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the fileSystemCapacityInBytes property: The disk file system capacity in bytes.
-     *
+     * 
      * @return the fileSystemCapacityInBytes value.
      */
     public Long fileSystemCapacityInBytes() {
@@ -344,7 +331,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the fileSystemCapacityInBytes property: The disk file system capacity in bytes.
-     *
+     * 
      * @param fileSystemCapacityInBytes the fileSystemCapacityInBytes value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -355,7 +342,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the sourceDataInMegaBytes property: The source data transit in MB.
-     *
+     * 
      * @return the sourceDataInMegaBytes value.
      */
     public Double sourceDataInMegaBytes() {
@@ -364,7 +351,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the sourceDataInMegaBytes property: The source data transit in MB.
-     *
+     * 
      * @param sourceDataInMegaBytes the sourceDataInMegaBytes value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -375,7 +362,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the psDataInMegaBytes property: The PS data transit in MB.
-     *
+     * 
      * @return the psDataInMegaBytes value.
      */
     public Double psDataInMegaBytes() {
@@ -384,7 +371,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the psDataInMegaBytes property: The PS data transit in MB.
-     *
+     * 
      * @param psDataInMegaBytes the psDataInMegaBytes value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -395,7 +382,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the targetDataInMegaBytes property: The target data transit in MB.
-     *
+     * 
      * @return the targetDataInMegaBytes value.
      */
     public Double targetDataInMegaBytes() {
@@ -404,7 +391,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the targetDataInMegaBytes property: The target data transit in MB.
-     *
+     * 
      * @param targetDataInMegaBytes the targetDataInMegaBytes value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -415,7 +402,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the diskResized property: A value indicating whether disk is resized.
-     *
+     * 
      * @return the diskResized value.
      */
     public String diskResized() {
@@ -424,7 +411,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the diskResized property: A value indicating whether disk is resized.
-     *
+     * 
      * @param diskResized the diskResized value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -435,7 +422,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the lastRpoCalculatedTime property: The last RPO calculated time.
-     *
+     * 
      * @return the lastRpoCalculatedTime value.
      */
     public OffsetDateTime lastRpoCalculatedTime() {
@@ -444,7 +431,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the lastRpoCalculatedTime property: The last RPO calculated time.
-     *
+     * 
      * @param lastRpoCalculatedTime the lastRpoCalculatedTime value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -455,7 +442,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the resyncProcessedBytes property: The resync processed bytes.
-     *
+     * 
      * @return the resyncProcessedBytes value.
      */
     public Long resyncProcessedBytes() {
@@ -464,7 +451,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the resyncProcessedBytes property: The resync processed bytes.
-     *
+     * 
      * @param resyncProcessedBytes the resyncProcessedBytes value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -475,7 +462,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the resyncTotalTransferredBytes property: The resync total transferred bytes.
-     *
+     * 
      * @return the resyncTotalTransferredBytes value.
      */
     public Long resyncTotalTransferredBytes() {
@@ -484,7 +471,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the resyncTotalTransferredBytes property: The resync total transferred bytes.
-     *
+     * 
      * @param resyncTotalTransferredBytes the resyncTotalTransferredBytes value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -495,7 +482,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the resyncLast15MinutesTransferredBytes property: The resync last 15 minutes transferred bytes.
-     *
+     * 
      * @return the resyncLast15MinutesTransferredBytes value.
      */
     public Long resyncLast15MinutesTransferredBytes() {
@@ -504,19 +491,19 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the resyncLast15MinutesTransferredBytes property: The resync last 15 minutes transferred bytes.
-     *
+     * 
      * @param resyncLast15MinutesTransferredBytes the resyncLast15MinutesTransferredBytes value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
-    public InMageAzureV2ProtectedDiskDetails withResyncLast15MinutesTransferredBytes(
-        Long resyncLast15MinutesTransferredBytes) {
+    public InMageAzureV2ProtectedDiskDetails
+        withResyncLast15MinutesTransferredBytes(Long resyncLast15MinutesTransferredBytes) {
         this.resyncLast15MinutesTransferredBytes = resyncLast15MinutesTransferredBytes;
         return this;
     }
 
     /**
      * Get the resyncLastDataTransferTimeUtc property: The last data transfer time in UTC.
-     *
+     * 
      * @return the resyncLastDataTransferTimeUtc value.
      */
     public OffsetDateTime resyncLastDataTransferTimeUtc() {
@@ -525,19 +512,19 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the resyncLastDataTransferTimeUtc property: The last data transfer time in UTC.
-     *
+     * 
      * @param resyncLastDataTransferTimeUtc the resyncLastDataTransferTimeUtc value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
-    public InMageAzureV2ProtectedDiskDetails withResyncLastDataTransferTimeUtc(
-        OffsetDateTime resyncLastDataTransferTimeUtc) {
+    public InMageAzureV2ProtectedDiskDetails
+        withResyncLastDataTransferTimeUtc(OffsetDateTime resyncLastDataTransferTimeUtc) {
         this.resyncLastDataTransferTimeUtc = resyncLastDataTransferTimeUtc;
         return this;
     }
 
     /**
      * Get the resyncStartTime property: The resync start time.
-     *
+     * 
      * @return the resyncStartTime value.
      */
     public OffsetDateTime resyncStartTime() {
@@ -546,7 +533,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the resyncStartTime property: The resync start time.
-     *
+     * 
      * @param resyncStartTime the resyncStartTime value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -557,7 +544,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the progressHealth property: The Progress Health.
-     *
+     * 
      * @return the progressHealth value.
      */
     public String progressHealth() {
@@ -566,7 +553,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the progressHealth property: The Progress Health.
-     *
+     * 
      * @param progressHealth the progressHealth value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -577,7 +564,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the progressStatus property: The Progress Status.
-     *
+     * 
      * @return the progressStatus value.
      */
     public String progressStatus() {
@@ -586,7 +573,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the progressStatus property: The Progress Status.
-     *
+     * 
      * @param progressStatus the progressStatus value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -597,7 +584,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Get the secondsToTakeSwitchProvider property: The seconds to take for switch provider.
-     *
+     * 
      * @return the secondsToTakeSwitchProvider value.
      */
     public Long secondsToTakeSwitchProvider() {
@@ -606,7 +593,7 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Set the secondsToTakeSwitchProvider property: The seconds to take for switch provider.
-     *
+     * 
      * @param secondsToTakeSwitchProvider the secondsToTakeSwitchProvider value to set.
      * @return the InMageAzureV2ProtectedDiskDetails object itself.
      */
@@ -617,9 +604,134 @@ public final class InMageAzureV2ProtectedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("diskName", this.diskName);
+        jsonWriter.writeStringField("protectionStage", this.protectionStage);
+        jsonWriter.writeStringField("healthErrorCode", this.healthErrorCode);
+        jsonWriter.writeNumberField("rpoInSeconds", this.rpoInSeconds);
+        jsonWriter.writeStringField("resyncRequired", this.resyncRequired);
+        jsonWriter.writeNumberField("resyncProgressPercentage", this.resyncProgressPercentage);
+        jsonWriter.writeNumberField("resyncDurationInSeconds", this.resyncDurationInSeconds);
+        jsonWriter.writeNumberField("diskCapacityInBytes", this.diskCapacityInBytes);
+        jsonWriter.writeNumberField("fileSystemCapacityInBytes", this.fileSystemCapacityInBytes);
+        jsonWriter.writeNumberField("sourceDataInMegaBytes", this.sourceDataInMegaBytes);
+        jsonWriter.writeNumberField("psDataInMegaBytes", this.psDataInMegaBytes);
+        jsonWriter.writeNumberField("targetDataInMegaBytes", this.targetDataInMegaBytes);
+        jsonWriter.writeStringField("diskResized", this.diskResized);
+        jsonWriter.writeStringField("lastRpoCalculatedTime",
+            this.lastRpoCalculatedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRpoCalculatedTime));
+        jsonWriter.writeNumberField("resyncProcessedBytes", this.resyncProcessedBytes);
+        jsonWriter.writeNumberField("resyncTotalTransferredBytes", this.resyncTotalTransferredBytes);
+        jsonWriter.writeNumberField("resyncLast15MinutesTransferredBytes", this.resyncLast15MinutesTransferredBytes);
+        jsonWriter.writeStringField("resyncLastDataTransferTimeUTC",
+            this.resyncLastDataTransferTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resyncLastDataTransferTimeUtc));
+        jsonWriter.writeStringField("resyncStartTime",
+            this.resyncStartTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resyncStartTime));
+        jsonWriter.writeStringField("progressHealth", this.progressHealth);
+        jsonWriter.writeStringField("progressStatus", this.progressStatus);
+        jsonWriter.writeNumberField("secondsToTakeSwitchProvider", this.secondsToTakeSwitchProvider);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageAzureV2ProtectedDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageAzureV2ProtectedDiskDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageAzureV2ProtectedDiskDetails.
+     */
+    public static InMageAzureV2ProtectedDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageAzureV2ProtectedDiskDetails deserializedInMageAzureV2ProtectedDiskDetails
+                = new InMageAzureV2ProtectedDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.diskId = reader.getString();
+                } else if ("diskName".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.diskName = reader.getString();
+                } else if ("protectionStage".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.protectionStage = reader.getString();
+                } else if ("healthErrorCode".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.healthErrorCode = reader.getString();
+                } else if ("rpoInSeconds".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.rpoInSeconds
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncRequired".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.resyncRequired = reader.getString();
+                } else if ("resyncProgressPercentage".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.resyncProgressPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("resyncDurationInSeconds".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.resyncDurationInSeconds
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("diskCapacityInBytes".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.diskCapacityInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("fileSystemCapacityInBytes".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.fileSystemCapacityInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("sourceDataInMegaBytes".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.sourceDataInMegaBytes
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("psDataInMegaBytes".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.psDataInMegaBytes
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("targetDataInMegaBytes".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.targetDataInMegaBytes
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("diskResized".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.diskResized = reader.getString();
+                } else if ("lastRpoCalculatedTime".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.lastRpoCalculatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resyncProcessedBytes".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.resyncProcessedBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncTotalTransferredBytes".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.resyncTotalTransferredBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncLast15MinutesTransferredBytes".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.resyncLast15MinutesTransferredBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("resyncLastDataTransferTimeUTC".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.resyncLastDataTransferTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resyncStartTime".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.resyncStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("progressHealth".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.progressHealth = reader.getString();
+                } else if ("progressStatus".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.progressStatus = reader.getString();
+                } else if ("secondsToTakeSwitchProvider".equals(fieldName)) {
+                    deserializedInMageAzureV2ProtectedDiskDetails.secondsToTakeSwitchProvider
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageAzureV2ProtectedDiskDetails;
+        });
     }
 }

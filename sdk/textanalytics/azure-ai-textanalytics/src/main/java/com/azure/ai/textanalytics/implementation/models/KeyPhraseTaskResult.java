@@ -9,22 +9,41 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** The KeyPhraseTaskResult model. */
+/**
+ * The KeyPhraseTaskResult model.
+ */
 @Fluent
 public final class KeyPhraseTaskResult extends AnalyzeTextTaskResult {
+    /*
+     * Enumeration of supported Text Analysis task results.
+     */
+    private AnalyzeTextTaskResultsKind kind = AnalyzeTextTaskResultsKind.KEY_PHRASE_EXTRACTION_RESULTS;
+
     /*
      * The results property.
      */
     private KeyPhraseResult results;
 
-    /** Creates an instance of KeyPhraseTaskResult class. */
-    public KeyPhraseTaskResult() {}
+    /**
+     * Creates an instance of KeyPhraseTaskResult class.
+     */
+    public KeyPhraseTaskResult() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported Text Analysis task results.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AnalyzeTextTaskResultsKind getKind() {
+        return this.kind;
+    }
 
     /**
      * Get the results property: The results property.
-     *
+     * 
      * @return the results value.
      */
     public KeyPhraseResult getResults() {
@@ -33,7 +52,7 @@ public final class KeyPhraseTaskResult extends AnalyzeTextTaskResult {
 
     /**
      * Set the results property: The results property.
-     *
+     * 
      * @param results the results value to set.
      * @return the KeyPhraseTaskResult object itself.
      */
@@ -42,49 +61,43 @@ public final class KeyPhraseTaskResult extends AnalyzeTextTaskResult {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField(
-                "kind", Objects.toString(AnalyzeTextTaskResultsKind.KEY_PHRASE_EXTRACTION_RESULTS, null));
         jsonWriter.writeJsonField("results", this.results);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of KeyPhraseTaskResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyPhraseTaskResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyPhraseTaskResult.
      */
     public static KeyPhraseTaskResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyPhraseTaskResult deserializedKeyPhraseTaskResult = new KeyPhraseTaskResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyPhraseTaskResult deserializedKeyPhraseTaskResult = new KeyPhraseTaskResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"KeyPhraseExtractionResults".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'KeyPhraseExtractionResults'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("results".equals(fieldName)) {
-                            deserializedKeyPhraseTaskResult.results = KeyPhraseResult.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("results".equals(fieldName)) {
+                    deserializedKeyPhraseTaskResult.results = KeyPhraseResult.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedKeyPhraseTaskResult.kind = AnalyzeTextTaskResultsKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyPhraseTaskResult;
-                });
+            return deserializedKeyPhraseTaskResult;
+        });
     }
 }

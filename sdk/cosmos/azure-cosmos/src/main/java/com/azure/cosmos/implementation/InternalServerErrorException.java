@@ -21,7 +21,7 @@ import java.util.Map;
 public class InternalServerErrorException extends CosmosException {
 
     InternalServerErrorException() {
-        this(RMResources.InternalServerError);
+        this(RMResources.InternalServerError, HttpConstants.SubStatusCodes.UNKNOWN);
     }
 
     /**
@@ -46,17 +46,14 @@ public class InternalServerErrorException extends CosmosException {
      *
      * @param message the message
      */
-    public InternalServerErrorException(String message) {
+    public InternalServerErrorException(String message, int subStatusCode) {
         this(message, null, (Map<String, String>) null, null);
+        BridgeInternal.setSubStatusCode(this, subStatusCode);
     }
 
-
-    public InternalServerErrorException(String message, Exception innerException) {
+    public InternalServerErrorException(String message, Exception innerException, int subStatusCode) {
         this(message, innerException, (HttpHeaders) null, (String) null);
-    }
-
-    InternalServerErrorException(Exception innerException) {
-        this(RMResources.InternalServerError, innerException, (HttpHeaders) null, (String) null);
+        BridgeInternal.setSubStatusCode(this, subStatusCode);
     }
 
     /**
@@ -65,20 +62,18 @@ public class InternalServerErrorException extends CosmosException {
      * @param message the message
      * @param headers the headers
      * @param requestUri the request uri
+     * @param subStatusCode the subStatusCode
      */
-    public InternalServerErrorException(String message, HttpHeaders headers, URI requestUri) {
+    public InternalServerErrorException(String message, HttpHeaders headers, URI requestUri, int subStatusCode) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
             requestUri != null ? requestUri.toString() : null);
+        BridgeInternal.setSubStatusCode(this, subStatusCode);
     }
 
+    // used in test
     InternalServerErrorException(String message, HttpHeaders headers, String requestUriString) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
             requestUriString);
-    }
-
-    InternalServerErrorException(String message, Exception innerException, HttpHeaders headers, URI requestUri) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-            requestUri != null ? requestUri.toString() : null);
     }
 
     InternalServerErrorException(String message, Exception innerException, HttpHeaders headers,
@@ -98,5 +93,15 @@ public class InternalServerErrorException extends CosmosException {
     public InternalServerErrorException(String message, Exception innerException, Map<String, String> headers,
                                         String requestUriString) {
         super(message, innerException, headers, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUriString);
+    }
+
+    public InternalServerErrorException(
+        String message,
+        Exception innerException,
+        Map<String, String> headers,
+        String requestUriString,
+        int subStatusCode) {
+        super(message, innerException, headers, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUriString);
+        BridgeInternal.setSubStatusCode(this, subStatusCode);
     }
 }

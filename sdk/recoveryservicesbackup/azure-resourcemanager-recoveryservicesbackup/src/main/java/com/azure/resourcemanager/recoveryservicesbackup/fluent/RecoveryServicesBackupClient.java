@@ -7,390 +7,413 @@ package com.azure.resourcemanager.recoveryservicesbackup.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for RecoveryServicesBackupClient class. */
+/**
+ * The interface for RecoveryServicesBackupClient class.
+ */
 public interface RecoveryServicesBackupClient {
     /**
      * Gets The subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the BackupResourceStorageConfigsNonCrrsClient object to access its operations.
-     *
+     * 
      * @return the BackupResourceStorageConfigsNonCrrsClient object.
      */
     BackupResourceStorageConfigsNonCrrsClient getBackupResourceStorageConfigsNonCrrs();
 
     /**
      * Gets the ProtectionIntentsClient object to access its operations.
-     *
+     * 
      * @return the ProtectionIntentsClient object.
      */
     ProtectionIntentsClient getProtectionIntents();
 
     /**
      * Gets the BackupStatusClient object to access its operations.
-     *
+     * 
      * @return the BackupStatusClient object.
      */
     BackupStatusClient getBackupStatus();
 
     /**
      * Gets the FeatureSupportsClient object to access its operations.
-     *
+     * 
      * @return the FeatureSupportsClient object.
      */
     FeatureSupportsClient getFeatureSupports();
 
     /**
      * Gets the BackupProtectionIntentsClient object to access its operations.
-     *
+     * 
      * @return the BackupProtectionIntentsClient object.
      */
     BackupProtectionIntentsClient getBackupProtectionIntents();
 
     /**
      * Gets the BackupUsageSummariesClient object to access its operations.
-     *
+     * 
      * @return the BackupUsageSummariesClient object.
      */
     BackupUsageSummariesClient getBackupUsageSummaries();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the BackupResourceVaultConfigsClient object to access its operations.
-     *
+     * 
      * @return the BackupResourceVaultConfigsClient object.
      */
     BackupResourceVaultConfigsClient getBackupResourceVaultConfigs();
 
     /**
      * Gets the BackupResourceEncryptionConfigsClient object to access its operations.
-     *
+     * 
      * @return the BackupResourceEncryptionConfigsClient object.
      */
     BackupResourceEncryptionConfigsClient getBackupResourceEncryptionConfigs();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
      * Gets the PrivateEndpointsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointsClient object.
      */
     PrivateEndpointsClient getPrivateEndpoints();
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     ResourceProvidersClient getResourceProviders();
 
     /**
      * Gets the BmsPrepareDataMoveOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the BmsPrepareDataMoveOperationResultsClient object.
      */
     BmsPrepareDataMoveOperationResultsClient getBmsPrepareDataMoveOperationResults();
 
     /**
      * Gets the ProtectedItemsClient object to access its operations.
-     *
+     * 
      * @return the ProtectedItemsClient object.
      */
     ProtectedItemsClient getProtectedItems();
 
     /**
      * Gets the ProtectedItemOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ProtectedItemOperationResultsClient object.
      */
     ProtectedItemOperationResultsClient getProtectedItemOperationResults();
 
     /**
      * Gets the RecoveryPointsClient object to access its operations.
-     *
+     * 
      * @return the RecoveryPointsClient object.
      */
     RecoveryPointsClient getRecoveryPoints();
 
     /**
      * Gets the RestoresClient object to access its operations.
-     *
+     * 
      * @return the RestoresClient object.
      */
     RestoresClient getRestores();
 
     /**
      * Gets the BackupPoliciesClient object to access its operations.
-     *
+     * 
      * @return the BackupPoliciesClient object.
      */
     BackupPoliciesClient getBackupPolicies();
 
     /**
      * Gets the ProtectionPoliciesClient object to access its operations.
-     *
+     * 
      * @return the ProtectionPoliciesClient object.
      */
     ProtectionPoliciesClient getProtectionPolicies();
 
     /**
      * Gets the ProtectionPolicyOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ProtectionPolicyOperationResultsClient object.
      */
     ProtectionPolicyOperationResultsClient getProtectionPolicyOperationResults();
 
     /**
      * Gets the BackupJobsClient object to access its operations.
-     *
+     * 
      * @return the BackupJobsClient object.
      */
     BackupJobsClient getBackupJobs();
 
     /**
      * Gets the JobDetailsClient object to access its operations.
-     *
+     * 
      * @return the JobDetailsClient object.
      */
     JobDetailsClient getJobDetails();
 
     /**
      * Gets the JobCancellationsClient object to access its operations.
-     *
+     * 
      * @return the JobCancellationsClient object.
      */
     JobCancellationsClient getJobCancellations();
 
     /**
      * Gets the JobOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the JobOperationResultsClient object.
      */
     JobOperationResultsClient getJobOperationResults();
 
     /**
      * Gets the ExportJobsOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ExportJobsOperationResultsClient object.
      */
     ExportJobsOperationResultsClient getExportJobsOperationResults();
 
     /**
      * Gets the JobsClient object to access its operations.
-     *
+     * 
      * @return the JobsClient object.
      */
     JobsClient getJobs();
 
     /**
      * Gets the BackupProtectedItemsClient object to access its operations.
-     *
+     * 
      * @return the BackupProtectedItemsClient object.
      */
     BackupProtectedItemsClient getBackupProtectedItems();
 
     /**
      * Gets the OperationOperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationOperationsClient object.
      */
     OperationOperationsClient getOperationOperations();
 
     /**
      * Gets the ValidateOperationsClient object to access its operations.
-     *
+     * 
      * @return the ValidateOperationsClient object.
      */
     ValidateOperationsClient getValidateOperations();
 
     /**
      * Gets the ValidateOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ValidateOperationResultsClient object.
      */
     ValidateOperationResultsClient getValidateOperationResults();
 
     /**
      * Gets the ValidateOperationStatusesClient object to access its operations.
-     *
+     * 
      * @return the ValidateOperationStatusesClient object.
      */
     ValidateOperationStatusesClient getValidateOperationStatuses();
 
     /**
      * Gets the BackupEnginesClient object to access its operations.
-     *
+     * 
      * @return the BackupEnginesClient object.
      */
     BackupEnginesClient getBackupEngines();
 
     /**
      * Gets the ProtectionContainerRefreshOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ProtectionContainerRefreshOperationResultsClient object.
      */
     ProtectionContainerRefreshOperationResultsClient getProtectionContainerRefreshOperationResults();
 
     /**
      * Gets the ProtectableContainersClient object to access its operations.
-     *
+     * 
      * @return the ProtectableContainersClient object.
      */
     ProtectableContainersClient getProtectableContainers();
 
     /**
      * Gets the ProtectionContainersClient object to access its operations.
-     *
+     * 
      * @return the ProtectionContainersClient object.
      */
     ProtectionContainersClient getProtectionContainers();
 
     /**
      * Gets the BackupWorkloadItemsClient object to access its operations.
-     *
+     * 
      * @return the BackupWorkloadItemsClient object.
      */
     BackupWorkloadItemsClient getBackupWorkloadItems();
 
     /**
      * Gets the ProtectionContainerOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ProtectionContainerOperationResultsClient object.
      */
     ProtectionContainerOperationResultsClient getProtectionContainerOperationResults();
 
     /**
      * Gets the BackupsClient object to access its operations.
-     *
+     * 
      * @return the BackupsClient object.
      */
     BackupsClient getBackups();
 
     /**
      * Gets the ProtectedItemOperationStatusesClient object to access its operations.
-     *
+     * 
      * @return the ProtectedItemOperationStatusesClient object.
      */
     ProtectedItemOperationStatusesClient getProtectedItemOperationStatuses();
 
     /**
      * Gets the ItemLevelRecoveryConnectionsClient object to access its operations.
-     *
+     * 
      * @return the ItemLevelRecoveryConnectionsClient object.
      */
     ItemLevelRecoveryConnectionsClient getItemLevelRecoveryConnections();
 
     /**
      * Gets the BackupOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the BackupOperationResultsClient object.
      */
     BackupOperationResultsClient getBackupOperationResults();
 
     /**
      * Gets the BackupOperationStatusesClient object to access its operations.
-     *
+     * 
      * @return the BackupOperationStatusesClient object.
      */
     BackupOperationStatusesClient getBackupOperationStatuses();
 
     /**
      * Gets the ProtectionPolicyOperationStatusesClient object to access its operations.
-     *
+     * 
      * @return the ProtectionPolicyOperationStatusesClient object.
      */
     ProtectionPolicyOperationStatusesClient getProtectionPolicyOperationStatuses();
 
     /**
      * Gets the BackupProtectableItemsClient object to access its operations.
-     *
+     * 
      * @return the BackupProtectableItemsClient object.
      */
     BackupProtectableItemsClient getBackupProtectableItems();
 
     /**
      * Gets the BackupProtectionContainersClient object to access its operations.
-     *
+     * 
      * @return the BackupProtectionContainersClient object.
      */
     BackupProtectionContainersClient getBackupProtectionContainers();
 
     /**
      * Gets the DeletedProtectionContainersClient object to access its operations.
-     *
+     * 
      * @return the DeletedProtectionContainersClient object.
      */
     DeletedProtectionContainersClient getDeletedProtectionContainers();
 
     /**
      * Gets the SecurityPINsClient object to access its operations.
-     *
+     * 
      * @return the SecurityPINsClient object.
      */
     SecurityPINsClient getSecurityPINs();
 
     /**
      * Gets the RecoveryPointsRecommendedForMovesClient object to access its operations.
-     *
+     * 
      * @return the RecoveryPointsRecommendedForMovesClient object.
      */
     RecoveryPointsRecommendedForMovesClient getRecoveryPointsRecommendedForMoves();
 
     /**
      * Gets the ResourceGuardProxiesClient object to access its operations.
-     *
+     * 
      * @return the ResourceGuardProxiesClient object.
      */
     ResourceGuardProxiesClient getResourceGuardProxies();
 
     /**
      * Gets the ResourceGuardProxyOperationsClient object to access its operations.
-     *
+     * 
      * @return the ResourceGuardProxyOperationsClient object.
      */
     ResourceGuardProxyOperationsClient getResourceGuardProxyOperations();
+
+    /**
+     * Gets the FetchTieringCostsClient object to access its operations.
+     * 
+     * @return the FetchTieringCostsClient object.
+     */
+    FetchTieringCostsClient getFetchTieringCosts();
+
+    /**
+     * Gets the GetTieringCostOperationResultsClient object to access its operations.
+     * 
+     * @return the GetTieringCostOperationResultsClient object.
+     */
+    GetTieringCostOperationResultsClient getGetTieringCostOperationResults();
+
+    /**
+     * Gets the TieringCostOperationStatusClient object to access its operations.
+     * 
+     * @return the TieringCostOperationStatusClient object.
+     */
+    TieringCostOperationStatusClient getTieringCostOperationStatus();
 }

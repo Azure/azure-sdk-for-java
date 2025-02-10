@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Trigger Kind. */
+/**
+ * Trigger Kind.
+ */
 public final class TriggerEventType extends ExpandableStringEnum<TriggerEventType> {
-    /** Static value FileEvent for TriggerEventType. */
+    /**
+     * Static value FileEvent for TriggerEventType.
+     */
     public static final TriggerEventType FILE_EVENT = fromString("FileEvent");
 
-    /** Static value PeriodicTimerEvent for TriggerEventType. */
+    /**
+     * Static value PeriodicTimerEvent for TriggerEventType.
+     */
     public static final TriggerEventType PERIODIC_TIMER_EVENT = fromString("PeriodicTimerEvent");
 
     /**
      * Creates a new instance of TriggerEventType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class TriggerEventType extends ExpandableStringEnum<TriggerEventTyp
 
     /**
      * Creates or finds a TriggerEventType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TriggerEventType.
      */
-    @JsonCreator
     public static TriggerEventType fromString(String name) {
         return fromString(name, TriggerEventType.class);
     }
 
     /**
      * Gets known TriggerEventType values.
-     *
+     * 
      * @return known TriggerEventType values.
      */
     public static Collection<TriggerEventType> values() {

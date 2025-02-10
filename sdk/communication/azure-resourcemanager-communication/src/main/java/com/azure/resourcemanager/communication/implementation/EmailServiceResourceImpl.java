@@ -89,14 +89,16 @@ public final class EmailServiceResourceImpl
     }
 
     public EmailServiceResource create() {
-        this.innerObject = serviceManager.serviceClient().getEmailServices().createOrUpdate(resourceGroupName,
-            emailServiceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailServices()
+            .createOrUpdate(resourceGroupName, emailServiceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public EmailServiceResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getEmailServices().createOrUpdate(resourceGroupName,
-            emailServiceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailServices()
+            .createOrUpdate(resourceGroupName, emailServiceName, this.innerModel(), context);
         return this;
     }
 
@@ -112,14 +114,16 @@ public final class EmailServiceResourceImpl
     }
 
     public EmailServiceResource apply() {
-        this.innerObject = serviceManager.serviceClient().getEmailServices().update(resourceGroupName, emailServiceName,
-            updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailServices()
+            .update(resourceGroupName, emailServiceName, updateParameters, Context.NONE);
         return this;
     }
 
     public EmailServiceResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getEmailServices().update(resourceGroupName, emailServiceName,
-            updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailServices()
+            .update(resourceGroupName, emailServiceName, updateParameters, context);
         return this;
     }
 
@@ -127,19 +131,23 @@ public final class EmailServiceResourceImpl
         com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.emailServiceName = Utils.getValueFromIdByName(innerObject.id(), "emailServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.emailServiceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "emailServices");
     }
 
     public EmailServiceResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getEmailServices()
-            .getByResourceGroupWithResponse(resourceGroupName, emailServiceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailServices()
+            .getByResourceGroupWithResponse(resourceGroupName, emailServiceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EmailServiceResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getEmailServices()
-            .getByResourceGroupWithResponse(resourceGroupName, emailServiceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailServices()
+            .getByResourceGroupWithResponse(resourceGroupName, emailServiceName, context)
+            .getValue();
         return this;
     }
 

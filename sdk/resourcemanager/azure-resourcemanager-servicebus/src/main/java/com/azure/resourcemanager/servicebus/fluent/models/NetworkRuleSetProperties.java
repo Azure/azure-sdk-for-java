@@ -5,50 +5,57 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.DefaultAction;
 import com.azure.resourcemanager.servicebus.models.NWRuleSetIpRules;
 import com.azure.resourcemanager.servicebus.models.NWRuleSetVirtualNetworkRules;
 import com.azure.resourcemanager.servicebus.models.PublicNetworkAccessFlag;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** NetworkRuleSet properties. */
+/**
+ * NetworkRuleSet properties.
+ */
 @Fluent
-public final class NetworkRuleSetProperties {
+public final class NetworkRuleSetProperties implements JsonSerializable<NetworkRuleSetProperties> {
     /*
      * Value that indicates whether Trusted Service Access is Enabled or not.
      */
-    @JsonProperty(value = "trustedServiceAccessEnabled")
     private Boolean trustedServiceAccessEnabled;
 
     /*
      * Default Action for Network Rule Set
      */
-    @JsonProperty(value = "defaultAction")
     private DefaultAction defaultAction;
 
     /*
      * List VirtualNetwork Rules
      */
-    @JsonProperty(value = "virtualNetworkRules")
     private List<NWRuleSetVirtualNetworkRules> virtualNetworkRules;
 
     /*
      * List of IpRules
      */
-    @JsonProperty(value = "ipRules")
     private List<NWRuleSetIpRules> ipRules;
 
     /*
      * This determines if traffic is allowed over public network. By default it is enabled.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccessFlag publicNetworkAccess;
+
+    /**
+     * Creates an instance of NetworkRuleSetProperties class.
+     */
+    public NetworkRuleSetProperties() {
+    }
 
     /**
      * Get the trustedServiceAccessEnabled property: Value that indicates whether Trusted Service Access is Enabled or
      * not.
-     *
+     * 
      * @return the trustedServiceAccessEnabled value.
      */
     public Boolean trustedServiceAccessEnabled() {
@@ -58,7 +65,7 @@ public final class NetworkRuleSetProperties {
     /**
      * Set the trustedServiceAccessEnabled property: Value that indicates whether Trusted Service Access is Enabled or
      * not.
-     *
+     * 
      * @param trustedServiceAccessEnabled the trustedServiceAccessEnabled value to set.
      * @return the NetworkRuleSetProperties object itself.
      */
@@ -69,7 +76,7 @@ public final class NetworkRuleSetProperties {
 
     /**
      * Get the defaultAction property: Default Action for Network Rule Set.
-     *
+     * 
      * @return the defaultAction value.
      */
     public DefaultAction defaultAction() {
@@ -78,7 +85,7 @@ public final class NetworkRuleSetProperties {
 
     /**
      * Set the defaultAction property: Default Action for Network Rule Set.
-     *
+     * 
      * @param defaultAction the defaultAction value to set.
      * @return the NetworkRuleSetProperties object itself.
      */
@@ -89,7 +96,7 @@ public final class NetworkRuleSetProperties {
 
     /**
      * Get the virtualNetworkRules property: List VirtualNetwork Rules.
-     *
+     * 
      * @return the virtualNetworkRules value.
      */
     public List<NWRuleSetVirtualNetworkRules> virtualNetworkRules() {
@@ -98,7 +105,7 @@ public final class NetworkRuleSetProperties {
 
     /**
      * Set the virtualNetworkRules property: List VirtualNetwork Rules.
-     *
+     * 
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the NetworkRuleSetProperties object itself.
      */
@@ -109,7 +116,7 @@ public final class NetworkRuleSetProperties {
 
     /**
      * Get the ipRules property: List of IpRules.
-     *
+     * 
      * @return the ipRules value.
      */
     public List<NWRuleSetIpRules> ipRules() {
@@ -118,7 +125,7 @@ public final class NetworkRuleSetProperties {
 
     /**
      * Set the ipRules property: List of IpRules.
-     *
+     * 
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSetProperties object itself.
      */
@@ -130,7 +137,7 @@ public final class NetworkRuleSetProperties {
     /**
      * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
      * enabled.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessFlag publicNetworkAccess() {
@@ -140,7 +147,7 @@ public final class NetworkRuleSetProperties {
     /**
      * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
      * enabled.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the NetworkRuleSetProperties object itself.
      */
@@ -151,7 +158,7 @@ public final class NetworkRuleSetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -161,5 +168,60 @@ public final class NetworkRuleSetProperties {
         if (ipRules() != null) {
             ipRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("trustedServiceAccessEnabled", this.trustedServiceAccessEnabled);
+        jsonWriter.writeStringField("defaultAction", this.defaultAction == null ? null : this.defaultAction.toString());
+        jsonWriter.writeArrayField("virtualNetworkRules", this.virtualNetworkRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipRules", this.ipRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkRuleSetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkRuleSetProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkRuleSetProperties.
+     */
+    public static NetworkRuleSetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkRuleSetProperties deserializedNetworkRuleSetProperties = new NetworkRuleSetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trustedServiceAccessEnabled".equals(fieldName)) {
+                    deserializedNetworkRuleSetProperties.trustedServiceAccessEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultAction".equals(fieldName)) {
+                    deserializedNetworkRuleSetProperties.defaultAction = DefaultAction.fromString(reader.getString());
+                } else if ("virtualNetworkRules".equals(fieldName)) {
+                    List<NWRuleSetVirtualNetworkRules> virtualNetworkRules
+                        = reader.readArray(reader1 -> NWRuleSetVirtualNetworkRules.fromJson(reader1));
+                    deserializedNetworkRuleSetProperties.virtualNetworkRules = virtualNetworkRules;
+                } else if ("ipRules".equals(fieldName)) {
+                    List<NWRuleSetIpRules> ipRules = reader.readArray(reader1 -> NWRuleSetIpRules.fromJson(reader1));
+                    deserializedNetworkRuleSetProperties.ipRules = ipRules;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedNetworkRuleSetProperties.publicNetworkAccess
+                        = PublicNetworkAccessFlag.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkRuleSetProperties;
+        });
     }
 }

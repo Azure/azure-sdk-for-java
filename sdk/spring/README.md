@@ -1,3 +1,10 @@
+> [!WARNING]  
+> [Spring Cloud Azure 4.19.0](https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0) is the final release in the 4.x series. We will continue to provide support for this version until June 2025. After June 2025 we will stop all support for Spring Cloud Azure 4.x
+
+
+> [!NOTE]  
+> Spring Cloud Azure 5.x now fully supports Spring Boot 3.3.0 and later versions, we strongly encourage you to upgrade. For more information, please refer to [Which Version of Spring Cloud Azure Should I Use](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping#which-version-of-spring-cloud-azure-should-i-use).
+
 # Spring Cloud Azure
 
 Spring Cloud Azure offers a convenient way to interact with **Azure** provided services using well-known Spring idioms and APIs for Spring developers. 
@@ -139,7 +146,7 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-dependencies</artifactId>
-            <version>4.14.0</version>
+            <version>5.19.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -147,6 +154,38 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
 </dependencyManagement>
 ```
 [//]: # ({x-version-update-end})
+
+With Gradle, you can import the `spring-cloud-azure-dependencies` BOM in [two ways](https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/).
+
+You can use the Gradle’s native BOM support by adding dependencies:
+
+```kotlin
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+  id("java")
+  id("org.springframework.boot") version "3.2.O"
+}
+
+dependencies {
+    implementation(platform(SpringBootPlugin.BOM_COORDINATES))
+    implementation(platform("com.azure.spring:spring-cloud-azure-dependencies:{version}"))
+}
+```
+
+You can also use the `io.spring.dependency-management` plugin and import the BOM in `dependencyManagement`:
+
+```kotlin
+plugins {
+    id("io.spring.dependency-management") version "1.1.0"
+}
+
+dependencyManagement {
+    imports { 
+        mavenBom("com.azure.spring:spring-cloud-azure-dependencies:{version}")
+    }
+}
+```
 
 ## Spring Boot 3 Support
 

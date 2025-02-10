@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.util.HttpHeadersAccessHelper;
 import com.azure.core.util.CoreUtils;
 
 import java.util.Collections;
@@ -15,11 +16,40 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A collection of headers on an HTTP request or response.
+ * <p>Represents a collection of headers on an HTTP request or response.</p>
+ *
+ * <p>This class encapsulates the headers of an HTTP request or response. It provides methods to add, set, get, and
+ * remove headers. It also provides methods to convert the headers to a Map, and to get a Stream representation of the
+ * headers.</p>
+ *
+ * <p>Each header is represented by an {@link HttpHeader} instance, which encapsulates the name and value(s) of a header.
+ * If multiple values are associated with the same header name, they are stored in a single HttpHeader instance
+ * with values separated by commas.</p>
+ *
+ * <p>Note: Header names are case-insensitive.</p>
  */
 public class HttpHeaders implements Iterable<HttpHeader> {
     // This map is a case-insensitive key (i.e. lower-cased), but the returned HttpHeader key will be as-provided to us
     private final Map<String, HttpHeader> headers;
+
+    static {
+        HttpHeadersAccessHelper.setAccessor(new HttpHeadersAccessHelper.HttpHeadersAccessor() {
+            @Override
+            public Map<String, HttpHeader> getRawHeaderMap(HttpHeaders headers) {
+                return headers.headers;
+            }
+
+            @Override
+            public void addInternal(HttpHeaders headers, String formattedName, String name, String value) {
+                headers.addInternal(formattedName, name, value);
+            }
+
+            @Override
+            public void setInternal(HttpHeaders headers, String formattedName, String name, List<String> values) {
+                headers.setInternal(formattedName, name, values);
+            }
+        });
+    }
 
     /**
      * Create an empty HttpHeaders instance.
@@ -52,8 +82,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
 
     HttpHeaders(HttpHeaders headers) {
         this.headers = new HashMap<>((int) (headers.headers.size() / 0.75f));
-        headers.headers.forEach((key, value) ->
-            this.headers.put(key, new HttpHeader(value.getName(), value.getValuesList())));
+        headers.headers
+            .forEach((key, value) -> this.headers.put(key, new HttpHeader(value.getName(), value.getValuesList())));
     }
 
     /**
@@ -246,8 +276,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public HttpHeaders setAllHttpHeaders(HttpHeaders headers) {
         if (headers != null) {
-            headers.headers.forEach((headerName, header) ->
-                setInternal(headerName, header.getName(), header.getValuesList()));
+            headers.headers
+                .forEach((headerName, header) -> setInternal(headerName, header.getName(), header.getValuesList()));
         }
 
         return this;

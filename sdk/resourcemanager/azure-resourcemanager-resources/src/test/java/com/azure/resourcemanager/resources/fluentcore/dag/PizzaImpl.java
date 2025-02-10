@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreateUpdateTask;
@@ -16,9 +18,9 @@ import java.util.List;
 /**
  * Implementation of {@link IPizza}
  */
-class PizzaImpl
-        extends CreatableUpdatableImpl<IPizza, PizzaInner, PizzaImpl>
-        implements IPizza {
+class PizzaImpl extends CreatableUpdatableImpl<IPizza, PizzaInner, PizzaImpl> implements IPizza {
+    private static final ClientLogger LOGGER = new ClientLogger(PizzaImpl.class);
+
     final List<Creatable<IPizza>> delayedPizzas;
     boolean prepareCalled = false;
 
@@ -54,23 +56,22 @@ class PizzaImpl
 
     @Override
     public void beforeGroupCreateOrUpdate() {
-        Assertions.assertFalse(this.prepareCalled, "PizzaImpl::beforeGroupCreateOrUpdate() should not be called multiple times");
+        Assertions.assertFalse(this.prepareCalled,
+            "PizzaImpl::beforeGroupCreateOrUpdate() should not be called multiple times");
         prepareCalled = true;
         int oldCount = this.taskGroup().getNode(this.key()).dependencyKeys().size();
         for (Creatable<IPizza> pizza : this.delayedPizzas) {
             this.addDependency(pizza);
         }
         int newCount = this.taskGroup().getNode(this.key()).dependencyKeys().size();
-        System.out.println("Pizza(" + this.name() + ")::beforeGroupCreateOrUpdate() 'delayedSize':" + this.delayedPizzas.size()
-                + " 'dependency count [old, new]': [" + oldCount + "," + newCount + "]");
+        LOGGER.log(LogLevel.VERBOSE, () -> "Pizza(" + this.name() + ")::beforeGroupCreateOrUpdate() 'delayedSize':"
+            + this.delayedPizzas.size() + " 'dependency count [old, new]': [" + oldCount + "," + newCount + "]");
     }
 
     @Override
     public Mono<IPizza> createResourceAsync() {
-        System.out.println("Pizza(" + this.name() + ")::createResourceAsync()");
-        return Mono.just(this)
-                .delayElement(Duration.ofMillis(250))
-                .map(pizza -> pizza);
+        LOGGER.log(LogLevel.VERBOSE, () -> "Pizza(" + this.name() + ")::createResourceAsync()");
+        return Mono.just(this).delayElement(Duration.ofMillis(250)).map(pizza -> pizza);
     }
 
     @Override

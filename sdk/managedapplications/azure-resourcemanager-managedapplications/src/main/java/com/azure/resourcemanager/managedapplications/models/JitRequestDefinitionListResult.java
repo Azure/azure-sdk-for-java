@@ -7,18 +7,20 @@ package com.azure.resourcemanager.managedapplications.models;
 import com.azure.resourcemanager.managedapplications.fluent.models.JitRequestDefinitionListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of JitRequestDefinitionListResult. */
+/**
+ * An immutable client-side representation of JitRequestDefinitionListResult.
+ */
 public interface JitRequestDefinitionListResult {
     /**
      * Gets the value property: The array of Jit request definition.
-     *
+     * 
      * @return the value value.
      */
     List<JitRequestDefinition> value();
 
     /**
      * Gets the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
@@ -26,7 +28,7 @@ public interface JitRequestDefinitionListResult {
     /**
      * Gets the inner com.azure.resourcemanager.managedapplications.fluent.models.JitRequestDefinitionListResultInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     JitRequestDefinitionListResultInner innerModel();

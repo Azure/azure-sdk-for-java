@@ -9,6 +9,7 @@ import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -21,33 +22,25 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
 
     @BeforeEach
     public void setup() {
-        CallAutomationClient callAutomationClient = CallAutomationUnitTestBase.getCallAutomationClient(new ArrayList<>());
+        CallAutomationClient callAutomationClient
+            = CallAutomationUnitTestBase.getCallAutomationClient(new ArrayList<>());
         callRecording = callAutomationClient.getCallRecording();
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recordingOperationsTest() {
 
-        CallAutomationClient callAutomationClient = CallAutomationUnitTestBase.getCallAutomationClient(
-            recordingOperationsResponses
-        );
+        CallAutomationClient callAutomationClient
+            = CallAutomationUnitTestBase.getCallAutomationClient(recordingOperationsResponses);
         callRecording = callAutomationClient.getCallRecording();
 
-        validateRecording(
-            callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
-                .setRecordingStateCallbackUrl("https://localhost/")),
-            RecordingState.ACTIVE
-        );
+        validateRecording(callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
+            .setRecordingStateCallbackUrl("https://localhost/")), RecordingState.ACTIVE);
 
-        verifyOperationWithRecordingState(
-            () -> callRecording.pauseRecording(RECORDING_ID),
-            RecordingState.INACTIVE
-        );
+        verifyOperationWithRecordingState(() -> callRecording.pauseRecording(RECORDING_ID), RecordingState.INACTIVE);
 
-        verifyOperationWithRecordingState(
-            () -> callRecording.resumeRecording(RECORDING_ID),
-            RecordingState.ACTIVE
-        );
+        verifyOperationWithRecordingState(() -> callRecording.resumeRecording(RECORDING_ID), RecordingState.ACTIVE);
 
         callRecording.stopRecording(RECORDING_ID);
         assertThrows(CallingServerErrorException.class, () -> callRecording.getRecordingState(RECORDING_ID));

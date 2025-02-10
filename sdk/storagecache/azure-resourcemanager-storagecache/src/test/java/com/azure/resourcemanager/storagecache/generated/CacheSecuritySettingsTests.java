@@ -7,30 +7,59 @@ package com.azure.resourcemanager.storagecache.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagecache.models.CacheSecuritySettings;
 import com.azure.resourcemanager.storagecache.models.NfsAccessPolicy;
+import com.azure.resourcemanager.storagecache.models.NfsAccessRule;
+import com.azure.resourcemanager.storagecache.models.NfsAccessRuleAccess;
+import com.azure.resourcemanager.storagecache.models.NfsAccessRuleScope;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class CacheSecuritySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CacheSecuritySettings model =
-            BinaryData
-                .fromString(
-                    "{\"accessPolicies\":[{\"name\":\"cq\",\"accessRules\":[]},{\"name\":\"xolzdahzx\",\"accessRules\":[]}]}")
-                .toObject(CacheSecuritySettings.class);
-        Assertions.assertEquals("cq", model.accessPolicies().get(0).name());
+        CacheSecuritySettings model = BinaryData.fromString(
+            "{\"accessPolicies\":[{\"name\":\"tiagx\",\"accessRules\":[{\"scope\":\"host\",\"filter\":\"uem\",\"access\":\"ro\",\"suid\":false,\"submountAccess\":false,\"rootSquash\":true,\"anonymousUID\":\"yvpnqicvinvkjj\",\"anonymousGID\":\"xrbuukzclew\"},{\"scope\":\"network\",\"filter\":\"lw\",\"access\":\"rw\",\"suid\":true,\"submountAccess\":false,\"rootSquash\":false,\"anonymousUID\":\"cckwyfzqwhxxbu\",\"anonymousGID\":\"a\"}]}]}")
+            .toObject(CacheSecuritySettings.class);
+        Assertions.assertEquals("tiagx", model.accessPolicies().get(0).name());
+        Assertions.assertEquals(NfsAccessRuleScope.HOST, model.accessPolicies().get(0).accessRules().get(0).scope());
+        Assertions.assertEquals("uem", model.accessPolicies().get(0).accessRules().get(0).filter());
+        Assertions.assertEquals(NfsAccessRuleAccess.RO, model.accessPolicies().get(0).accessRules().get(0).access());
+        Assertions.assertEquals(false, model.accessPolicies().get(0).accessRules().get(0).suid());
+        Assertions.assertEquals(false, model.accessPolicies().get(0).accessRules().get(0).submountAccess());
+        Assertions.assertEquals(true, model.accessPolicies().get(0).accessRules().get(0).rootSquash());
+        Assertions.assertEquals("yvpnqicvinvkjj", model.accessPolicies().get(0).accessRules().get(0).anonymousUid());
+        Assertions.assertEquals("xrbuukzclew", model.accessPolicies().get(0).accessRules().get(0).anonymousGid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheSecuritySettings model =
-            new CacheSecuritySettings()
-                .withAccessPolicies(
-                    Arrays
-                        .asList(
-                            new NfsAccessPolicy().withName("cq").withAccessRules(Arrays.asList()),
-                            new NfsAccessPolicy().withName("xolzdahzx").withAccessRules(Arrays.asList())));
+        CacheSecuritySettings model
+            = new CacheSecuritySettings().withAccessPolicies(Arrays.asList(new NfsAccessPolicy().withName("tiagx")
+                .withAccessRules(Arrays.asList(
+                    new NfsAccessRule().withScope(NfsAccessRuleScope.HOST)
+                        .withFilter("uem")
+                        .withAccess(NfsAccessRuleAccess.RO)
+                        .withSuid(false)
+                        .withSubmountAccess(false)
+                        .withRootSquash(true)
+                        .withAnonymousUid("yvpnqicvinvkjj")
+                        .withAnonymousGid("xrbuukzclew"),
+                    new NfsAccessRule().withScope(NfsAccessRuleScope.NETWORK)
+                        .withFilter("lw")
+                        .withAccess(NfsAccessRuleAccess.RW)
+                        .withSuid(true)
+                        .withSubmountAccess(false)
+                        .withRootSquash(false)
+                        .withAnonymousUid("cckwyfzqwhxxbu")
+                        .withAnonymousGid("a")))));
         model = BinaryData.fromObject(model).toObject(CacheSecuritySettings.class);
-        Assertions.assertEquals("cq", model.accessPolicies().get(0).name());
+        Assertions.assertEquals("tiagx", model.accessPolicies().get(0).name());
+        Assertions.assertEquals(NfsAccessRuleScope.HOST, model.accessPolicies().get(0).accessRules().get(0).scope());
+        Assertions.assertEquals("uem", model.accessPolicies().get(0).accessRules().get(0).filter());
+        Assertions.assertEquals(NfsAccessRuleAccess.RO, model.accessPolicies().get(0).accessRules().get(0).access());
+        Assertions.assertEquals(false, model.accessPolicies().get(0).accessRules().get(0).suid());
+        Assertions.assertEquals(false, model.accessPolicies().get(0).accessRules().get(0).submountAccess());
+        Assertions.assertEquals(true, model.accessPolicies().get(0).accessRules().get(0).rootSquash());
+        Assertions.assertEquals("yvpnqicvinvkjj", model.accessPolicies().get(0).accessRules().get(0).anonymousUid());
+        Assertions.assertEquals("xrbuukzclew", model.accessPolicies().get(0).accessRules().get(0).anonymousGid());
     }
 }

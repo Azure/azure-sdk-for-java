@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.models.AttachedNetworkListResult;
 public final class AttachedNetworkListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttachedNetworkListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"networkConnectionId\":\"acphejkoty\",\"networkConnectionLocation\":\"gou\",\"healthCheckStatus\":\"Failed\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"kwy\",\"name\":\"kgfg\",\"type\":\"bmadgak\"},{\"properties\":{\"provisioningState\":\"Created\",\"networkConnectionId\":\"xybz\",\"networkConnectionLocation\":\"e\",\"healthCheckStatus\":\"Warning\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"iqfouflmmnkz\",\"name\":\"modmglougpb\",\"type\":\"wtmutduq\"}],\"nextLink\":\"ap\"}")
-                .toObject(AttachedNetworkListResult.class);
+        AttachedNetworkListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"networkConnectionId\":\"qfprwzwbn\",\"networkConnectionLocation\":\"itnwuizgazxufi\",\"healthCheckStatus\":\"Unknown\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"i\",\"name\":\"rfidfvzwdz\",\"type\":\"htymw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"networkConnectionId\":\"fthwxmnteiwa\",\"networkConnectionLocation\":\"vkmijcmmxdcuf\",\"healthCheckStatus\":\"Failed\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"mzidnsezcxtb\",\"name\":\"sgfyccsnew\",\"type\":\"dwzjeiach\"}],\"nextLink\":\"osfln\"}")
+            .toObject(AttachedNetworkListResult.class);
     }
 
     @org.junit.jupiter.api.Test

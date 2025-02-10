@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Round-Robin load balancing settings for a backend pool. */
+/**
+ * Round-Robin load balancing settings for a backend pool.
+ */
 @Fluent
-public final class LoadBalancingSettingsParameters {
+public final class LoadBalancingSettingsParameters implements JsonSerializable<LoadBalancingSettingsParameters> {
     /*
      * The number of samples to consider for load balancing decisions
      */
-    @JsonProperty(value = "sampleSize")
     private Integer sampleSize;
 
     /*
      * The number of samples within the sample period that must succeed
      */
-    @JsonProperty(value = "successfulSamplesRequired")
     private Integer successfulSamplesRequired;
 
     /*
      * The additional latency in milliseconds for probes to fall into the lowest latency bucket
      */
-    @JsonProperty(value = "additionalLatencyInMilliseconds")
     private Integer additionalLatencyInMilliseconds;
 
-    /** Creates an instance of LoadBalancingSettingsParameters class. */
+    /**
+     * Creates an instance of LoadBalancingSettingsParameters class.
+     */
     public LoadBalancingSettingsParameters() {
     }
 
     /**
      * Get the sampleSize property: The number of samples to consider for load balancing decisions.
-     *
+     * 
      * @return the sampleSize value.
      */
     public Integer sampleSize() {
@@ -43,7 +48,7 @@ public final class LoadBalancingSettingsParameters {
 
     /**
      * Set the sampleSize property: The number of samples to consider for load balancing decisions.
-     *
+     * 
      * @param sampleSize the sampleSize value to set.
      * @return the LoadBalancingSettingsParameters object itself.
      */
@@ -54,7 +59,7 @@ public final class LoadBalancingSettingsParameters {
 
     /**
      * Get the successfulSamplesRequired property: The number of samples within the sample period that must succeed.
-     *
+     * 
      * @return the successfulSamplesRequired value.
      */
     public Integer successfulSamplesRequired() {
@@ -63,7 +68,7 @@ public final class LoadBalancingSettingsParameters {
 
     /**
      * Set the successfulSamplesRequired property: The number of samples within the sample period that must succeed.
-     *
+     * 
      * @param successfulSamplesRequired the successfulSamplesRequired value to set.
      * @return the LoadBalancingSettingsParameters object itself.
      */
@@ -75,7 +80,7 @@ public final class LoadBalancingSettingsParameters {
     /**
      * Get the additionalLatencyInMilliseconds property: The additional latency in milliseconds for probes to fall into
      * the lowest latency bucket.
-     *
+     * 
      * @return the additionalLatencyInMilliseconds value.
      */
     public Integer additionalLatencyInMilliseconds() {
@@ -85,21 +90,66 @@ public final class LoadBalancingSettingsParameters {
     /**
      * Set the additionalLatencyInMilliseconds property: The additional latency in milliseconds for probes to fall into
      * the lowest latency bucket.
-     *
+     * 
      * @param additionalLatencyInMilliseconds the additionalLatencyInMilliseconds value to set.
      * @return the LoadBalancingSettingsParameters object itself.
      */
-    public LoadBalancingSettingsParameters withAdditionalLatencyInMilliseconds(
-        Integer additionalLatencyInMilliseconds) {
+    public LoadBalancingSettingsParameters
+        withAdditionalLatencyInMilliseconds(Integer additionalLatencyInMilliseconds) {
         this.additionalLatencyInMilliseconds = additionalLatencyInMilliseconds;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("sampleSize", this.sampleSize);
+        jsonWriter.writeNumberField("successfulSamplesRequired", this.successfulSamplesRequired);
+        jsonWriter.writeNumberField("additionalLatencyInMilliseconds", this.additionalLatencyInMilliseconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBalancingSettingsParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBalancingSettingsParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LoadBalancingSettingsParameters.
+     */
+    public static LoadBalancingSettingsParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBalancingSettingsParameters deserializedLoadBalancingSettingsParameters
+                = new LoadBalancingSettingsParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sampleSize".equals(fieldName)) {
+                    deserializedLoadBalancingSettingsParameters.sampleSize = reader.getNullable(JsonReader::getInt);
+                } else if ("successfulSamplesRequired".equals(fieldName)) {
+                    deserializedLoadBalancingSettingsParameters.successfulSamplesRequired
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("additionalLatencyInMilliseconds".equals(fieldName)) {
+                    deserializedLoadBalancingSettingsParameters.additionalLatencyInMilliseconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBalancingSettingsParameters;
+        });
     }
 }

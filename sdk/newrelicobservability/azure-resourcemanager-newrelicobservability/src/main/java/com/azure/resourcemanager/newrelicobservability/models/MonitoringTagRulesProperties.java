@@ -6,25 +6,27 @@ package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.resourcemanager.newrelicobservability.fluent.models.MonitoringTagRulesPropertiesInner;
 
-/** An immutable client-side representation of MonitoringTagRulesProperties. */
+/**
+ * An immutable client-side representation of MonitoringTagRulesProperties.
+ */
 public interface MonitoringTagRulesProperties {
     /**
      * Gets the provisioningState property: Provisioning State of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @return the logRules value.
      */
     LogRules logRules();
 
     /**
      * Gets the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @return the metricRules value.
      */
     MetricRules metricRules();
@@ -32,7 +34,7 @@ public interface MonitoringTagRulesProperties {
     /**
      * Gets the inner com.azure.resourcemanager.newrelicobservability.fluent.models.MonitoringTagRulesPropertiesInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     MonitoringTagRulesPropertiesInner innerModel();

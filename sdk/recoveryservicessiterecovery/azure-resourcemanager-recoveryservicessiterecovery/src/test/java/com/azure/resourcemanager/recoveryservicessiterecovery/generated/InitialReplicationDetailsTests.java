@@ -11,20 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class InitialReplicationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InitialReplicationDetails model =
-            BinaryData
-                .fromString("{\"initialReplicationType\":\"pqbye\",\"initialReplicationProgressPercentage\":\"wy\"}")
-                .toObject(InitialReplicationDetails.class);
+        InitialReplicationDetails model = BinaryData
+            .fromString("{\"initialReplicationType\":\"pqbye\",\"initialReplicationProgressPercentage\":\"wy\"}")
+            .toObject(InitialReplicationDetails.class);
         Assertions.assertEquals("pqbye", model.initialReplicationType());
         Assertions.assertEquals("wy", model.initialReplicationProgressPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InitialReplicationDetails model =
-            new InitialReplicationDetails()
-                .withInitialReplicationType("pqbye")
-                .withInitialReplicationProgressPercentage("wy");
+        InitialReplicationDetails model = new InitialReplicationDetails().withInitialReplicationType("pqbye")
+            .withInitialReplicationProgressPercentage("wy");
         model = BinaryData.fromObject(model).toObject(InitialReplicationDetails.class);
         Assertions.assertEquals("pqbye", model.initialReplicationType());
         Assertions.assertEquals("wy", model.initialReplicationProgressPercentage());

@@ -4,7 +4,10 @@
 package com.azure.core.http;
 
 /**
- * The different values that commonly used for Content-Type header.
+ * <p>This class provides constants for commonly used Content-Type header values in HTTP requests and responses.</p>
+ *
+ * <p>This class is useful when you need to specify the Content-Type header in an HTTP request or check the
+ * Content-Type header in an HTTP response.</p>
  */
 public final class ContentType {
     /**

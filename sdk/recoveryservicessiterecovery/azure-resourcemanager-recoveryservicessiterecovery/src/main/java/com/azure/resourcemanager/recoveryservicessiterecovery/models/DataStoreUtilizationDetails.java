@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the appliance resource. */
+/**
+ * Details of the appliance resource.
+ */
 @Immutable
-public final class DataStoreUtilizationDetails {
+public final class DataStoreUtilizationDetails implements JsonSerializable<DataStoreUtilizationDetails> {
     /*
      * The total count of snapshots supported by the datastore.
      */
-    @JsonProperty(value = "totalSnapshotsSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalSnapshotsSupported;
 
     /*
      * The total snapshots created for server migration in the datastore.
      */
-    @JsonProperty(value = "totalSnapshotsCreated", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalSnapshotsCreated;
 
     /*
      * The datastore name.
      */
-    @JsonProperty(value = "dataStoreName", access = JsonProperty.Access.WRITE_ONLY)
     private String dataStoreName;
 
-    /** Creates an instance of DataStoreUtilizationDetails class. */
+    /**
+     * Creates an instance of DataStoreUtilizationDetails class.
+     */
     public DataStoreUtilizationDetails() {
     }
 
     /**
      * Get the totalSnapshotsSupported property: The total count of snapshots supported by the datastore.
-     *
+     * 
      * @return the totalSnapshotsSupported value.
      */
     public Long totalSnapshotsSupported() {
@@ -43,7 +48,7 @@ public final class DataStoreUtilizationDetails {
 
     /**
      * Get the totalSnapshotsCreated property: The total snapshots created for server migration in the datastore.
-     *
+     * 
      * @return the totalSnapshotsCreated value.
      */
     public Long totalSnapshotsCreated() {
@@ -52,7 +57,7 @@ public final class DataStoreUtilizationDetails {
 
     /**
      * Get the dataStoreName property: The datastore name.
-     *
+     * 
      * @return the dataStoreName value.
      */
     public String dataStoreName() {
@@ -61,9 +66,50 @@ public final class DataStoreUtilizationDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataStoreUtilizationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataStoreUtilizationDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataStoreUtilizationDetails.
+     */
+    public static DataStoreUtilizationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataStoreUtilizationDetails deserializedDataStoreUtilizationDetails = new DataStoreUtilizationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("totalSnapshotsSupported".equals(fieldName)) {
+                    deserializedDataStoreUtilizationDetails.totalSnapshotsSupported
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("totalSnapshotsCreated".equals(fieldName)) {
+                    deserializedDataStoreUtilizationDetails.totalSnapshotsCreated
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("dataStoreName".equals(fieldName)) {
+                    deserializedDataStoreUtilizationDetails.dataStoreName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataStoreUtilizationDetails;
+        });
     }
 }

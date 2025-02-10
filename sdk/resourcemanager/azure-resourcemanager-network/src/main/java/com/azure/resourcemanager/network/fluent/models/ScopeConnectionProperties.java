@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ScopeConnectionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Scope connection.
  */
 @Fluent
-public final class ScopeConnectionProperties {
+public final class ScopeConnectionProperties implements JsonSerializable<ScopeConnectionProperties> {
     /*
      * Tenant ID.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Connection State
      */
-    @JsonProperty(value = "connectionState", access = JsonProperty.Access.WRITE_ONLY)
     private ScopeConnectionState connectionState;
 
     /*
      * A description of the scope connection.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -118,5 +118,50 @@ public final class ScopeConnectionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScopeConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScopeConnectionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScopeConnectionProperties.
+     */
+    public static ScopeConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScopeConnectionProperties deserializedScopeConnectionProperties = new ScopeConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedScopeConnectionProperties.tenantId = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedScopeConnectionProperties.resourceId = reader.getString();
+                } else if ("connectionState".equals(fieldName)) {
+                    deserializedScopeConnectionProperties.connectionState
+                        = ScopeConnectionState.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedScopeConnectionProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScopeConnectionProperties;
+        });
     }
 }

@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sphere.fluent.models.CatalogProperties;
+import com.azure.resourcemanager.sphere.models.CatalogProperties;
 
 public final class CatalogPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CatalogProperties model =
-            BinaryData.fromString("{\"provisioningState\":\"Provisioning\"}").toObject(CatalogProperties.class);
+        CatalogProperties model = BinaryData.fromString("{\"tenantId\":\"fziton\",\"provisioningState\":\"Failed\"}")
+            .toObject(CatalogProperties.class);
     }
 
     @org.junit.jupiter.api.Test

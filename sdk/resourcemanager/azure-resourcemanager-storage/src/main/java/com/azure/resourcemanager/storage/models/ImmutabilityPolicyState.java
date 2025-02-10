@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked. */
+/**
+ * The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked.
+ */
 public final class ImmutabilityPolicyState extends ExpandableStringEnum<ImmutabilityPolicyState> {
-    /** Static value Locked for ImmutabilityPolicyState. */
+    /**
+     * Static value Locked for ImmutabilityPolicyState.
+     */
     public static final ImmutabilityPolicyState LOCKED = fromString("Locked");
 
-    /** Static value Unlocked for ImmutabilityPolicyState. */
+    /**
+     * Static value Unlocked for ImmutabilityPolicyState.
+     */
     public static final ImmutabilityPolicyState UNLOCKED = fromString("Unlocked");
 
     /**
      * Creates a new instance of ImmutabilityPolicyState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ImmutabilityPolicyState extends ExpandableStringEnum<Immutabi
 
     /**
      * Creates or finds a ImmutabilityPolicyState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImmutabilityPolicyState.
      */
-    @JsonCreator
     public static ImmutabilityPolicyState fromString(String name) {
         return fromString(name, ImmutabilityPolicyState.class);
     }
 
     /**
      * Gets known ImmutabilityPolicyState values.
-     *
+     * 
      * @return known ImmutabilityPolicyState values.
      */
     public static Collection<ImmutabilityPolicyState> values() {

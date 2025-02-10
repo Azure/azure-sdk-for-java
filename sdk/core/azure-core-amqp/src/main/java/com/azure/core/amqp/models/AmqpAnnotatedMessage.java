@@ -10,8 +10,9 @@ import java.util.Objects;
 /**
  * The representation of message as defined by AMQP protocol.
  *
- * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
- *     Amqp Message Format</a>
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format"
+ * target="_blank">
+ * Amqp Message Format</a>
  * @see AmqpMessageBody
  */
 public final class AmqpAnnotatedMessage {

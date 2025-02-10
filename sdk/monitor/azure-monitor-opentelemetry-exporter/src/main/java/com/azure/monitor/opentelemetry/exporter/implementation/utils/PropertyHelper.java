@@ -82,8 +82,8 @@ public final class PropertyHelper {
     }
 
     public static void setSdkNamePrefix(String sdkNamePrefix) {
-        SdkPropertyValues.sdkVersionString =
-            sdkNamePrefix + VERSION_STRING_PREFIX + SdkPropertyValues.SDK_VERSION_NUMBER;
+        SdkPropertyValues.sdkVersionString
+            = sdkNamePrefix + VERSION_STRING_PREFIX + SdkPropertyValues.SDK_VERSION_NUMBER;
     }
 
     public static String getSdkVersionNumber() {
@@ -106,18 +106,29 @@ public final class PropertyHelper {
     }
 
     public static String getRpIntegrationSdkNamePrefix() {
-        StringBuilder sdkNamePrefix = new StringBuilder(3);
+        StringBuilder sdkNamePrefix = new StringBuilder(4);
         sdkNamePrefix.append(rpIntegrationChar);
         if (SystemInformation.isWindows()) {
-            sdkNamePrefix.append("w");
+            sdkNamePrefix.append('w');
         } else if (SystemInformation.isLinux()) {
-            sdkNamePrefix.append("l");
+            sdkNamePrefix.append('l');
         } else {
             logger.warn("could not detect os: {}", System.getProperty("os.name"));
-            sdkNamePrefix.append("u");
+            sdkNamePrefix.append('u');
         }
-        sdkNamePrefix.append("_");
+
+        sdkNamePrefix.append(getRpAttachTypeChar());
+        sdkNamePrefix.append('_');
         return sdkNamePrefix.toString();
+    }
+
+    private static char getRpAttachTypeChar() {
+        if (RpAttachType.getRpAttachType() == RpAttachType.INTEGRATED_AUTO) {
+            return 'i';
+        } else if (RpAttachType.getRpAttachType() == RpAttachType.STANDALONE_AUTO) {
+            return 'a';
+        }
+        return 'm'; // Manual (This is the default when RP integration is not used)
     }
 
     private static class SdkPropertyValues {

@@ -5,26 +5,42 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Encoding. */
+/**
+ * Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of
+ * output.
+ */
 public final class Encoding extends ExpandableStringEnum<Encoding> {
-    /** Static value UTF8 for Encoding. */
+    /**
+     * Static value UTF8 for Encoding.
+     */
     public static final Encoding UTF8 = fromString("UTF8");
 
     /**
+     * Creates a new instance of Encoding value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Encoding() {
+    }
+
+    /**
      * Creates or finds a Encoding from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Encoding.
      */
-    @JsonCreator
     public static Encoding fromString(String name) {
         return fromString(name, Encoding.class);
     }
 
-    /** @return known Encoding values. */
+    /**
+     * Gets known Encoding values.
+     * 
+     * @return known Encoding values.
+     */
     public static Collection<Encoding> values() {
         return values(Encoding.class);
     }

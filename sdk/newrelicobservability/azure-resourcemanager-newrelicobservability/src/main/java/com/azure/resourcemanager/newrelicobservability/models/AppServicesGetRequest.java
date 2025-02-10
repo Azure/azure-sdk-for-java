@@ -6,31 +6,37 @@ package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Request of a app services get Operation. */
+/**
+ * Request of a app services get Operation.
+ */
 @Fluent
-public final class AppServicesGetRequest {
+public final class AppServicesGetRequest implements JsonSerializable<AppServicesGetRequest> {
     /*
      * Azure resource IDs
      */
-    @JsonProperty(value = "azureResourceIds")
     private List<String> azureResourceIds;
 
     /*
      * User Email
      */
-    @JsonProperty(value = "userEmail", required = true)
     private String userEmail;
 
-    /** Creates an instance of AppServicesGetRequest class. */
+    /**
+     * Creates an instance of AppServicesGetRequest class.
+     */
     public AppServicesGetRequest() {
     }
 
     /**
      * Get the azureResourceIds property: Azure resource IDs.
-     *
+     * 
      * @return the azureResourceIds value.
      */
     public List<String> azureResourceIds() {
@@ -39,7 +45,7 @@ public final class AppServicesGetRequest {
 
     /**
      * Set the azureResourceIds property: Azure resource IDs.
-     *
+     * 
      * @param azureResourceIds the azureResourceIds value to set.
      * @return the AppServicesGetRequest object itself.
      */
@@ -50,7 +56,7 @@ public final class AppServicesGetRequest {
 
     /**
      * Get the userEmail property: User Email.
-     *
+     * 
      * @return the userEmail value.
      */
     public String userEmail() {
@@ -59,7 +65,7 @@ public final class AppServicesGetRequest {
 
     /**
      * Set the userEmail property: User Email.
-     *
+     * 
      * @param userEmail the userEmail value to set.
      * @return the AppServicesGetRequest object itself.
      */
@@ -70,16 +76,58 @@ public final class AppServicesGetRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userEmail() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property userEmail in model AppServicesGetRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AppServicesGetRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userEmail", this.userEmail);
+        jsonWriter.writeArrayField("azureResourceIds", this.azureResourceIds,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServicesGetRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServicesGetRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppServicesGetRequest.
+     */
+    public static AppServicesGetRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServicesGetRequest deserializedAppServicesGetRequest = new AppServicesGetRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userEmail".equals(fieldName)) {
+                    deserializedAppServicesGetRequest.userEmail = reader.getString();
+                } else if ("azureResourceIds".equals(fieldName)) {
+                    List<String> azureResourceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAppServicesGetRequest.azureResourceIds = azureResourceIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServicesGetRequest;
+        });
+    }
 }

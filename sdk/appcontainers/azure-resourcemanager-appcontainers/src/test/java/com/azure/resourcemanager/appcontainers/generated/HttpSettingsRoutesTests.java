@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class HttpSettingsRoutesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HttpSettingsRoutes model =
-            BinaryData.fromString("{\"apiPrefix\":\"nzscxa\"}").toObject(HttpSettingsRoutes.class);
-        Assertions.assertEquals("nzscxa", model.apiPrefix());
+        HttpSettingsRoutes model
+            = BinaryData.fromString("{\"apiPrefix\":\"enjbdlwtgrhp\"}").toObject(HttpSettingsRoutes.class);
+        Assertions.assertEquals("enjbdlwtgrhp", model.apiPrefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpSettingsRoutes model = new HttpSettingsRoutes().withApiPrefix("nzscxa");
+        HttpSettingsRoutes model = new HttpSettingsRoutes().withApiPrefix("enjbdlwtgrhp");
         model = BinaryData.fromObject(model).toObject(HttpSettingsRoutes.class);
-        Assertions.assertEquals("nzscxa", model.apiPrefix());
+        Assertions.assertEquals("enjbdlwtgrhp", model.apiPrefix());
     }
 }

@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schedule settings for regular cluster updates. */
+/**
+ * Schedule settings for regular cluster updates.
+ */
 @Fluent
-public final class MaintenanceWindow {
+public final class MaintenanceWindow implements JsonSerializable<MaintenanceWindow> {
     /*
      * Indicates whether custom maintenance window is enabled or not.
      */
-    @JsonProperty(value = "customWindow")
     private String customWindow;
 
     /*
      * Start hour within preferred day of the week for maintenance window.
      */
-    @JsonProperty(value = "startHour")
     private Integer startHour;
 
     /*
      * Start minute within the start hour for maintenance window.
      */
-    @JsonProperty(value = "startMinute")
     private Integer startMinute;
 
     /*
      * Preferred day of the week for maintenance window.
      */
-    @JsonProperty(value = "dayOfWeek")
     private Integer dayOfWeek;
 
-    /** Creates an instance of MaintenanceWindow class. */
+    /**
+     * Creates an instance of MaintenanceWindow class.
+     */
     public MaintenanceWindow() {
     }
 
     /**
      * Get the customWindow property: Indicates whether custom maintenance window is enabled or not.
-     *
+     * 
      * @return the customWindow value.
      */
     public String customWindow() {
@@ -49,7 +53,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the customWindow property: Indicates whether custom maintenance window is enabled or not.
-     *
+     * 
      * @param customWindow the customWindow value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -60,7 +64,7 @@ public final class MaintenanceWindow {
 
     /**
      * Get the startHour property: Start hour within preferred day of the week for maintenance window.
-     *
+     * 
      * @return the startHour value.
      */
     public Integer startHour() {
@@ -69,7 +73,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the startHour property: Start hour within preferred day of the week for maintenance window.
-     *
+     * 
      * @param startHour the startHour value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -80,7 +84,7 @@ public final class MaintenanceWindow {
 
     /**
      * Get the startMinute property: Start minute within the start hour for maintenance window.
-     *
+     * 
      * @return the startMinute value.
      */
     public Integer startMinute() {
@@ -89,7 +93,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the startMinute property: Start minute within the start hour for maintenance window.
-     *
+     * 
      * @param startMinute the startMinute value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -100,7 +104,7 @@ public final class MaintenanceWindow {
 
     /**
      * Get the dayOfWeek property: Preferred day of the week for maintenance window.
-     *
+     * 
      * @return the dayOfWeek value.
      */
     public Integer dayOfWeek() {
@@ -109,7 +113,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the dayOfWeek property: Preferred day of the week for maintenance window.
-     *
+     * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -120,9 +124,54 @@ public final class MaintenanceWindow {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("customWindow", this.customWindow);
+        jsonWriter.writeNumberField("startHour", this.startHour);
+        jsonWriter.writeNumberField("startMinute", this.startMinute);
+        jsonWriter.writeNumberField("dayOfWeek", this.dayOfWeek);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceWindow from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceWindow if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceWindow.
+     */
+    public static MaintenanceWindow fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceWindow deserializedMaintenanceWindow = new MaintenanceWindow();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customWindow".equals(fieldName)) {
+                    deserializedMaintenanceWindow.customWindow = reader.getString();
+                } else if ("startHour".equals(fieldName)) {
+                    deserializedMaintenanceWindow.startHour = reader.getNullable(JsonReader::getInt);
+                } else if ("startMinute".equals(fieldName)) {
+                    deserializedMaintenanceWindow.startMinute = reader.getNullable(JsonReader::getInt);
+                } else if ("dayOfWeek".equals(fieldName)) {
+                    deserializedMaintenanceWindow.dayOfWeek = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceWindow;
+        });
     }
 }

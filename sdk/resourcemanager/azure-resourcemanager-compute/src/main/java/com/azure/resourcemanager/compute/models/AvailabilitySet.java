@@ -17,21 +17,35 @@ import java.util.Set;
 
 /** An immutable client-side representation of an Azure availability set. */
 @Fluent
-public interface AvailabilitySet
-    extends GroupableResource<ComputeManager, AvailabilitySetInner>,
-        Refreshable<AvailabilitySet>,
-        Updatable<AvailabilitySet.Update> {
+public interface AvailabilitySet extends GroupableResource<ComputeManager, AvailabilitySetInner>,
+    Refreshable<AvailabilitySet>, Updatable<AvailabilitySet.Update> {
 
-    /** @return the update domain count of this availability set */
+    /**
+     * Gets the update domain count of this availability set.
+     *
+     * @return the update domain count of this availability set
+     */
     int updateDomainCount();
 
-    /** @return the fault domain count of this availability set */
+    /**
+     * Gets the fault domain count of this availability set.
+     *
+     * @return the fault domain count of this availability set
+     */
     int faultDomainCount();
 
-    /** @return the availability set SKU */
+    /**
+     * Gets the availability set SKU.
+     *
+     * @return the availability set SKU
+     */
     AvailabilitySetSkuTypes sku();
 
-    /** @return the resource IDs of the virtual machines in the availability set */
+    /**
+     * Gets the resource IDs of the virtual machines in the availability set.
+     *
+     * @return the resource IDs of the virtual machines in the availability set
+     */
     Set<String> virtualMachineIds();
 
     /**
@@ -42,10 +56,18 @@ public interface AvailabilitySet
      */
     ProximityPlacementGroup proximityPlacementGroup();
 
-    /** @return the statuses of the existing virtual machines in the availability set */
+    /**
+     * Gets the statuses of the existing virtual machines in the availability set.
+     *
+     * @return the statuses of the existing virtual machines in the availability set
+     */
     List<InstanceViewStatus> statuses();
 
-    /** @return the virtual machine sizes supported in the availability set */
+    /**
+     * Gets the virtual machine sizes supported in the availability set.
+     *
+     * @return the virtual machine sizes supported in the availability set
+     */
     PagedIterable<VirtualMachineSize> listVirtualMachineSizes();
 
     // Fluent interfaces
@@ -114,21 +136,16 @@ public interface AvailabilitySet
              * @param type the type of the group
              * @return the next stage of the definition.
              */
-            WithCreate withNewProximityPlacementGroup(
-                String proximityPlacementGroupName, ProximityPlacementGroupType type);
+            WithCreate withNewProximityPlacementGroup(String proximityPlacementGroupName,
+                ProximityPlacementGroupType type);
         }
 
         /**
          * The stage of an availability set definition which contains all the minimum required inputs for the resource
          * to be created but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<AvailabilitySet>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithUpdateDomainCount,
-                WithFaultDomainCount,
-                WithSku,
-                WithProximityPlacementGroup {
+        interface WithCreate extends Creatable<AvailabilitySet>, Resource.DefinitionWithTags<WithCreate>,
+            WithUpdateDomainCount, WithFaultDomainCount, WithSku, WithProximityPlacementGroup {
         }
     }
 
@@ -163,11 +180,9 @@ public interface AvailabilitySet
             Update withoutProximityPlacementGroup();
         }
     }
+
     /** The template for an availability set update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<AvailabilitySet>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithSku,
-            UpdateStages.WithProximityPlacementGroup {
+    interface Update extends Appliable<AvailabilitySet>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku,
+        UpdateStages.WithProximityPlacementGroup {
     }
 }

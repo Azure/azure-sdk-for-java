@@ -7,6 +7,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -80,6 +81,10 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this(results, header, true, nochanges, new ConcurrentHashMap<>());
     }
 
+    FeedResponse(List<T> results, Map<String, String> header, boolean nochanges, CosmosDiagnostics diagnostics) {
+        this(results, header, true, nochanges, new ConcurrentHashMap<>(), diagnostics);
+    }
+
     FeedResponse(List<T> results, Map<String, String> headers, CosmosDiagnostics diagnostics) {
         this(results, headers);
 
@@ -113,6 +118,23 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this.nochanges = nochanges;
         this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
         this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(queryMetricsMap);
+    }
+
+    private FeedResponse(
+        List<T> results,
+        Map<String, String> header,
+        boolean useEtagAsContinuation,
+        boolean nochanges,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+        CosmosDiagnostics diagnostics) {
+        this.results = results;
+        this.header = header;
+        this.usageHeaders = new HashMap<>();
+        this.quotaHeaders = new HashMap<>();
+        this.useEtagAsContinuation = useEtagAsContinuation;
+        this.nochanges = nochanges;
+        this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
+        this.cosmosDiagnostics = diagnostics;
     }
 
     private FeedResponse(
@@ -571,12 +593,35 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         BridgeInternal.setQueryPlanDiagnosticsContext(cosmosDiagnostics, queryPlanDiagnosticsContext);
     }
 
+    private static boolean noChanges(RxDocumentServiceResponse rsp) {
+        return rsp.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.FeedResponseHelper.setFeedResponseAccessor(
             new ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor() {
+                @Override
+                public <T> FeedResponse<T> createFeedResponse(RxDocumentServiceResponse response, CosmosItemSerializer itemSerializer, Class<T> cls) {
+                    return new FeedResponse<>(response.getQueryResponse(itemSerializer, cls), response);
+                }
+
+                @Override
+                public <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response, CosmosItemSerializer itemSerializer, Class<T> cls) {
+                    return new FeedResponse<>(
+                        noChanges(response) ? Collections.emptyList() : response.getQueryResponse(itemSerializer, cls),
+                        response.getResponseHeaders(), noChanges(response));
+                }
+
+                @Override
+                public <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response, CosmosItemSerializer itemSerializer, Class<T> cls, CosmosDiagnostics diagnostics) {
+                    return new FeedResponse<>(
+                        noChanges(response) ? Collections.emptyList() : response.getQueryResponse(itemSerializer, cls),
+                        response.getResponseHeaders(), noChanges(response), diagnostics);
+                }
+
                 @Override
                 public <T> boolean getNoChanges(FeedResponse<T> feedResponse) {
                     return feedResponse.getNoChanges();

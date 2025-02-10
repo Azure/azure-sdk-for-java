@@ -43,7 +43,8 @@ private[spark] case class CosmosInputPartition
 (
   feedRange: NormalizedRange,
   endLsn: Option[Long],
-  continuationState: Option[String] = None
+  continuationState: Option[String] = None,
+  readManyFilterOpt: Option[List[String]] = None
 ) extends InputPartition {
 
   // Intentionally leaving out the change feed state when serializing input partition to json

@@ -5,54 +5,55 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.ClusterProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The properties associated with a Stream Analytics cluster. */
+/**
+ * The properties associated with a Stream Analytics cluster.
+ */
 @Immutable
-public final class ClusterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterProperties.class);
-
+public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
     /*
      * The date this cluster was created.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
      * Unique identifier for the cluster.
      */
-    @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterId;
 
     /*
-     * The status of the cluster provisioning. The three terminal states are:
-     * Succeeded, Failed and Canceled
+     * The status of the cluster provisioning. The three terminal states are: Succeeded, Failed and Canceled
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterProvisioningState provisioningState;
 
     /*
-     * Represents the number of streaming units currently being used on the
-     * cluster.
+     * Represents the number of streaming units currently being used on the cluster.
      */
-    @JsonProperty(value = "capacityAllocated", access = JsonProperty.Access.WRITE_ONLY)
     private Integer capacityAllocated;
 
     /*
-     * Represents the sum of the SUs of all streaming jobs associated with the
-     * cluster. If all of the jobs were running, this would be the capacity
-     * allocated.
+     * Represents the sum of the SUs of all streaming jobs associated with the cluster. If all of the jobs were running,
+     * this would be the capacity allocated.
      */
-    @JsonProperty(value = "capacityAssigned", access = JsonProperty.Access.WRITE_ONLY)
     private Integer capacityAssigned;
 
     /**
+     * Creates an instance of ClusterProperties class.
+     */
+    public ClusterProperties() {
+    }
+
+    /**
      * Get the createdDate property: The date this cluster was created.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -61,7 +62,7 @@ public final class ClusterProperties {
 
     /**
      * Get the clusterId property: Unique identifier for the cluster.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -71,7 +72,7 @@ public final class ClusterProperties {
     /**
      * Get the provisioningState property: The status of the cluster provisioning. The three terminal states are:
      * Succeeded, Failed and Canceled.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ClusterProvisioningState provisioningState() {
@@ -80,7 +81,7 @@ public final class ClusterProperties {
 
     /**
      * Get the capacityAllocated property: Represents the number of streaming units currently being used on the cluster.
-     *
+     * 
      * @return the capacityAllocated value.
      */
     public Integer capacityAllocated() {
@@ -90,7 +91,7 @@ public final class ClusterProperties {
     /**
      * Get the capacityAssigned property: Represents the sum of the SUs of all streaming jobs associated with the
      * cluster. If all of the jobs were running, this would be the capacity allocated.
-     *
+     * 
      * @return the capacityAssigned value.
      */
     public Integer capacityAssigned() {
@@ -99,9 +100,54 @@ public final class ClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
+     */
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdDate".equals(fieldName)) {
+                    deserializedClusterProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("clusterId".equals(fieldName)) {
+                    deserializedClusterProperties.clusterId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterProperties.provisioningState
+                        = ClusterProvisioningState.fromString(reader.getString());
+                } else if ("capacityAllocated".equals(fieldName)) {
+                    deserializedClusterProperties.capacityAllocated = reader.getNullable(JsonReader::getInt);
+                } else if ("capacityAssigned".equals(fieldName)) {
+                    deserializedClusterProperties.capacityAssigned = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProperties;
+        });
     }
 }

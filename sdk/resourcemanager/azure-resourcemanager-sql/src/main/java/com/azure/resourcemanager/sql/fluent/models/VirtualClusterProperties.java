@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of a virtual cluster. */
+/**
+ * The properties of a virtual cluster.
+ */
 @Fluent
-public final class VirtualClusterProperties {
+public final class VirtualClusterProperties implements JsonSerializable<VirtualClusterProperties> {
     /*
      * Subnet resource ID for the virtual cluster.
      */
-    @JsonProperty(value = "subnetId", access = JsonProperty.Access.WRITE_ONLY)
     private String subnetId;
 
     /*
      * If the service has different generations of hardware, for the same SKU, then that can be captured here.
      */
-    @JsonProperty(value = "family")
     private String family;
 
     /*
      * List of resources in this virtual cluster.
      */
-    @JsonProperty(value = "childResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> childResources;
 
     /*
      * Specifies maintenance configuration id to apply to this virtual cluster.
      */
-    @JsonProperty(value = "maintenanceConfigurationId")
     private String maintenanceConfigurationId;
 
-    /** Creates an instance of VirtualClusterProperties class. */
+    /**
+     * Creates an instance of VirtualClusterProperties class.
+     */
     public VirtualClusterProperties() {
     }
 
     /**
      * Get the subnetId property: Subnet resource ID for the virtual cluster.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -51,7 +55,7 @@ public final class VirtualClusterProperties {
     /**
      * Get the family property: If the service has different generations of hardware, for the same SKU, then that can be
      * captured here.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -61,7 +65,7 @@ public final class VirtualClusterProperties {
     /**
      * Set the family property: If the service has different generations of hardware, for the same SKU, then that can be
      * captured here.
-     *
+     * 
      * @param family the family value to set.
      * @return the VirtualClusterProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class VirtualClusterProperties {
 
     /**
      * Get the childResources property: List of resources in this virtual cluster.
-     *
+     * 
      * @return the childResources value.
      */
     public List<String> childResources() {
@@ -82,7 +86,7 @@ public final class VirtualClusterProperties {
     /**
      * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
      * cluster.
-     *
+     * 
      * @return the maintenanceConfigurationId value.
      */
     public String maintenanceConfigurationId() {
@@ -92,7 +96,7 @@ public final class VirtualClusterProperties {
     /**
      * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
      * cluster.
-     *
+     * 
      * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
      * @return the VirtualClusterProperties object itself.
      */
@@ -103,9 +107,53 @@ public final class VirtualClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeStringField("maintenanceConfigurationId", this.maintenanceConfigurationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualClusterProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualClusterProperties.
+     */
+    public static VirtualClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualClusterProperties deserializedVirtualClusterProperties = new VirtualClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedVirtualClusterProperties.subnetId = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedVirtualClusterProperties.family = reader.getString();
+                } else if ("childResources".equals(fieldName)) {
+                    List<String> childResources = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualClusterProperties.childResources = childResources;
+                } else if ("maintenanceConfigurationId".equals(fieldName)) {
+                    deserializedVirtualClusterProperties.maintenanceConfigurationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualClusterProperties;
+        });
     }
 }

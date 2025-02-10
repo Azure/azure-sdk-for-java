@@ -15,36 +15,27 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureStorageJobExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureStorageJobExtendedInfo model =
-            BinaryData
-                .fromString(
-                    "{\"tasksList\":[{\"taskId\":\"dwvvba\",\"status\":\"lllchpodb\"},{\"taskId\":\"vwrdnhfukuvsj\",\"status\":\"wsmystuluqypf\"},{\"taskId\":\"lerchpq\",\"status\":\"f\"},{\"taskId\":\"babwidfcxss\",\"status\":\"unnoxyhk\"}],\"propertyBag\":{\"oqcaaewdaomdj\":\"ddrihpf\",\"jxxkzbrmsgei\":\"l\",\"ggcula\":\"siykzkdncjdxonbz\",\"y\":\"z\"},\"dynamicErrorMessage\":\"gogtqxepnylbf\"}")
-                .toObject(AzureStorageJobExtendedInfo.class);
-        Assertions.assertEquals("dwvvba", model.tasksList().get(0).taskId());
-        Assertions.assertEquals("lllchpodb", model.tasksList().get(0).status());
-        Assertions.assertEquals("ddrihpf", model.propertyBag().get("oqcaaewdaomdj"));
-        Assertions.assertEquals("gogtqxepnylbf", model.dynamicErrorMessage());
+        AzureStorageJobExtendedInfo model = BinaryData.fromString(
+            "{\"tasksList\":[{\"taskId\":\"cjdx\",\"status\":\"bzo\"}],\"propertyBag\":{\"ogtqxepnylbf\":\"ulapzwyrp\",\"cib\":\"ajlyjtlvofqzhv\",\"uxrkjp\":\"fmo\",\"wiivwzjbhyzsx\":\"dwxf\"},\"dynamicErrorMessage\":\"kambtrnegvmnvuqe\"}")
+            .toObject(AzureStorageJobExtendedInfo.class);
+        Assertions.assertEquals("cjdx", model.tasksList().get(0).taskId());
+        Assertions.assertEquals("bzo", model.tasksList().get(0).status());
+        Assertions.assertEquals("ulapzwyrp", model.propertyBag().get("ogtqxepnylbf"));
+        Assertions.assertEquals("kambtrnegvmnvuqe", model.dynamicErrorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStorageJobExtendedInfo model =
-            new AzureStorageJobExtendedInfo()
-                .withTasksList(
-                    Arrays
-                        .asList(
-                            new AzureStorageJobTaskDetails().withTaskId("dwvvba").withStatus("lllchpodb"),
-                            new AzureStorageJobTaskDetails().withTaskId("vwrdnhfukuvsj").withStatus("wsmystuluqypf"),
-                            new AzureStorageJobTaskDetails().withTaskId("lerchpq").withStatus("f"),
-                            new AzureStorageJobTaskDetails().withTaskId("babwidfcxss").withStatus("unnoxyhk")))
-                .withPropertyBag(
-                    mapOf("oqcaaewdaomdj", "ddrihpf", "jxxkzbrmsgei", "l", "ggcula", "siykzkdncjdxonbz", "y", "z"))
-                .withDynamicErrorMessage("gogtqxepnylbf");
+        AzureStorageJobExtendedInfo model = new AzureStorageJobExtendedInfo()
+            .withTasksList(Arrays.asList(new AzureStorageJobTaskDetails().withTaskId("cjdx").withStatus("bzo")))
+            .withPropertyBag(
+                mapOf("ogtqxepnylbf", "ulapzwyrp", "cib", "ajlyjtlvofqzhv", "uxrkjp", "fmo", "wiivwzjbhyzsx", "dwxf"))
+            .withDynamicErrorMessage("kambtrnegvmnvuqe");
         model = BinaryData.fromObject(model).toObject(AzureStorageJobExtendedInfo.class);
-        Assertions.assertEquals("dwvvba", model.tasksList().get(0).taskId());
-        Assertions.assertEquals("lllchpodb", model.tasksList().get(0).status());
-        Assertions.assertEquals("ddrihpf", model.propertyBag().get("oqcaaewdaomdj"));
-        Assertions.assertEquals("gogtqxepnylbf", model.dynamicErrorMessage());
+        Assertions.assertEquals("cjdx", model.tasksList().get(0).taskId());
+        Assertions.assertEquals("bzo", model.tasksList().get(0).status());
+        Assertions.assertEquals("ulapzwyrp", model.propertyBag().get("ogtqxepnylbf"));
+        Assertions.assertEquals("kambtrnegvmnvuqe", model.dynamicErrorMessage());
     }
 
     // Use "Map.of" if available

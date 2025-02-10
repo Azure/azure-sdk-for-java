@@ -10,7 +10,7 @@ package com.azure.resourcemanager.healthcareapis.generated;
 public final class WorkspacePrivateEndpointConnectionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/privatelink/
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/privatelink/
      * WorkspaceGetPrivateEndpointConnection.json
      */
     /**
@@ -20,7 +20,7 @@ public final class WorkspacePrivateEndpointConnectionsGetSamples {
      */
     public static void workspacePrivateEndpointConnectionGetConnection(
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.workspacePrivateEndpointConnections().getWithResponse("testRG", "workspace1", "myConnection",
-            com.azure.core.util.Context.NONE);
+        manager.workspacePrivateEndpointConnections()
+            .getWithResponse("testRG", "workspace1", "myConnection", com.azure.core.util.Context.NONE);
     }
 }

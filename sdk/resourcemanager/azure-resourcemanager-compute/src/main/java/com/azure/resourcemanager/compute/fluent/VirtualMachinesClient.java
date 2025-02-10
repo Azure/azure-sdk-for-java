@@ -867,7 +867,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
+     * @param hibernate Optional parameter to hibernate a virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -883,7 +883,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
+     * @param hibernate Optional parameter to hibernate a virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -926,7 +926,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
+     * @param hibernate Optional parameter to hibernate a virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -943,7 +943,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
+     * @param hibernate Optional parameter to hibernate a virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -985,7 +985,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
+     * @param hibernate Optional parameter to hibernate a virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -1229,7 +1229,8 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
+     * provisioned resources. You are still charged for this virtual machine. NOTE: This operation is not allowed on a
+     * virtual machine that is being deallocated or has already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1246,7 +1247,8 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
+     * provisioned resources. You are still charged for this virtual machine. NOTE: This operation is not allowed on a
+     * virtual machine that is being deallocated or has already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1263,7 +1265,8 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
+     * provisioned resources. You are still charged for this virtual machine. NOTE: This operation is not allowed on a
+     * virtual machine that is being deallocated or has already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1277,7 +1280,8 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
+     * provisioned resources. You are still charged for this virtual machine. NOTE: This operation is not allowed on a
+     * virtual machine that is being deallocated or has already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1291,7 +1295,8 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
+     * provisioned resources. You are still charged for this virtual machine. NOTE: This operation is not allowed on a
+     * virtual machine that is being deallocated or has already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1309,7 +1314,8 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
+     * provisioned resources. You are still charged for this virtual machine. NOTE: This operation is not allowed on a
+     * virtual machine that is being deallocated or has already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1325,7 +1331,8 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
+     * provisioned resources. You are still charged for this virtual machine. NOTE: This operation is not allowed on a
+     * virtual machine that is being deallocated or has already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1339,7 +1346,8 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
+     * provisioned resources. You are still charged for this virtual machine. NOTE: This operation is not allowed on a
+     * virtual machine that is being deallocated or has already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
@@ -1352,7 +1360,8 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
-     * provisioned resources. You are still charged for this virtual machine.
+     * provisioned resources. You are still charged for this virtual machine. NOTE: This operation is not allowed on a
+     * virtual machine that is being deallocated or has already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.

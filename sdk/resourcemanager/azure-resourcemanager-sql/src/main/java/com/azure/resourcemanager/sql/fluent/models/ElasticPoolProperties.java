@@ -5,79 +5,79 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ElasticPoolLicenseType;
 import com.azure.resourcemanager.sql.models.ElasticPoolPerDatabaseSettings;
 import com.azure.resourcemanager.sql.models.ElasticPoolState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of an elastic pool. */
+/**
+ * Properties of an elastic pool.
+ */
 @Fluent
-public final class ElasticPoolProperties {
+public final class ElasticPoolProperties implements JsonSerializable<ElasticPoolProperties> {
     /*
      * The state of the elastic pool.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private ElasticPoolState state;
 
     /*
      * The creation date of the elastic pool (ISO8601 format).
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * The storage limit for the database elastic pool in bytes.
      */
-    @JsonProperty(value = "maxSizeBytes")
     private Long maxSizeBytes;
 
     /*
      * Minimal capacity that serverless pool will not shrink below, if not paused
      */
-    @JsonProperty(value = "minCapacity")
     private Double minCapacity;
 
     /*
      * The per database settings for the elastic pool.
      */
-    @JsonProperty(value = "perDatabaseSettings")
     private ElasticPoolPerDatabaseSettings perDatabaseSettings;
 
     /*
      * Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread
      * across multiple availability zones.
      */
-    @JsonProperty(value = "zoneRedundant")
     private Boolean zoneRedundant;
 
     /*
      * The license type to apply for this elastic pool.
      */
-    @JsonProperty(value = "licenseType")
     private ElasticPoolLicenseType licenseType;
 
     /*
      * Maintenance configuration id assigned to the elastic pool. This configuration defines the period when the
      * maintenance updates will will occur.
      */
-    @JsonProperty(value = "maintenanceConfigurationId")
     private String maintenanceConfigurationId;
 
     /*
      * The number of secondary replicas associated with the elastic pool that are used to provide high availability.
      * Applicable only to Hyperscale elastic pools.
      */
-    @JsonProperty(value = "highAvailabilityReplicaCount")
     private Integer highAvailabilityReplicaCount;
 
-    /** Creates an instance of ElasticPoolProperties class. */
+    /**
+     * Creates an instance of ElasticPoolProperties class.
+     */
     public ElasticPoolProperties() {
     }
 
     /**
      * Get the state property: The state of the elastic pool.
-     *
+     * 
      * @return the state value.
      */
     public ElasticPoolState state() {
@@ -86,7 +86,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Get the creationDate property: The creation date of the elastic pool (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -95,7 +95,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Get the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -104,7 +104,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Set the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
-     *
+     * 
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -115,7 +115,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Get the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
-     *
+     * 
      * @return the minCapacity value.
      */
     public Double minCapacity() {
@@ -124,7 +124,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Set the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
-     *
+     * 
      * @param minCapacity the minCapacity value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -135,7 +135,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Get the perDatabaseSettings property: The per database settings for the elastic pool.
-     *
+     * 
      * @return the perDatabaseSettings value.
      */
     public ElasticPoolPerDatabaseSettings perDatabaseSettings() {
@@ -144,7 +144,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Set the perDatabaseSettings property: The per database settings for the elastic pool.
-     *
+     * 
      * @param perDatabaseSettings the perDatabaseSettings value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -156,7 +156,7 @@ public final class ElasticPoolProperties {
     /**
      * Get the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
      * this elastic pool will be spread across multiple availability zones.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -166,7 +166,7 @@ public final class ElasticPoolProperties {
     /**
      * Set the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
      * this elastic pool will be spread across multiple availability zones.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -177,7 +177,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Get the licenseType property: The license type to apply for this elastic pool.
-     *
+     * 
      * @return the licenseType value.
      */
     public ElasticPoolLicenseType licenseType() {
@@ -186,7 +186,7 @@ public final class ElasticPoolProperties {
 
     /**
      * Set the licenseType property: The license type to apply for this elastic pool.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -198,7 +198,7 @@ public final class ElasticPoolProperties {
     /**
      * Get the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
      * configuration defines the period when the maintenance updates will will occur.
-     *
+     * 
      * @return the maintenanceConfigurationId value.
      */
     public String maintenanceConfigurationId() {
@@ -208,7 +208,7 @@ public final class ElasticPoolProperties {
     /**
      * Set the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
      * configuration defines the period when the maintenance updates will will occur.
-     *
+     * 
      * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -220,7 +220,7 @@ public final class ElasticPoolProperties {
     /**
      * Get the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
      * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
-     *
+     * 
      * @return the highAvailabilityReplicaCount value.
      */
     public Integer highAvailabilityReplicaCount() {
@@ -230,7 +230,7 @@ public final class ElasticPoolProperties {
     /**
      * Set the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
      * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
-     *
+     * 
      * @param highAvailabilityReplicaCount the highAvailabilityReplicaCount value to set.
      * @return the ElasticPoolProperties object itself.
      */
@@ -241,12 +241,74 @@ public final class ElasticPoolProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (perDatabaseSettings() != null) {
             perDatabaseSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxSizeBytes", this.maxSizeBytes);
+        jsonWriter.writeNumberField("minCapacity", this.minCapacity);
+        jsonWriter.writeJsonField("perDatabaseSettings", this.perDatabaseSettings);
+        jsonWriter.writeBooleanField("zoneRedundant", this.zoneRedundant);
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("maintenanceConfigurationId", this.maintenanceConfigurationId);
+        jsonWriter.writeNumberField("highAvailabilityReplicaCount", this.highAvailabilityReplicaCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticPoolProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticPoolProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticPoolProperties.
+     */
+    public static ElasticPoolProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticPoolProperties deserializedElasticPoolProperties = new ElasticPoolProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedElasticPoolProperties.state = ElasticPoolState.fromString(reader.getString());
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedElasticPoolProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maxSizeBytes".equals(fieldName)) {
+                    deserializedElasticPoolProperties.maxSizeBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("minCapacity".equals(fieldName)) {
+                    deserializedElasticPoolProperties.minCapacity = reader.getNullable(JsonReader::getDouble);
+                } else if ("perDatabaseSettings".equals(fieldName)) {
+                    deserializedElasticPoolProperties.perDatabaseSettings
+                        = ElasticPoolPerDatabaseSettings.fromJson(reader);
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedElasticPoolProperties.zoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedElasticPoolProperties.licenseType
+                        = ElasticPoolLicenseType.fromString(reader.getString());
+                } else if ("maintenanceConfigurationId".equals(fieldName)) {
+                    deserializedElasticPoolProperties.maintenanceConfigurationId = reader.getString();
+                } else if ("highAvailabilityReplicaCount".equals(fieldName)) {
+                    deserializedElasticPoolProperties.highAvailabilityReplicaCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticPoolProperties;
+        });
     }
 }

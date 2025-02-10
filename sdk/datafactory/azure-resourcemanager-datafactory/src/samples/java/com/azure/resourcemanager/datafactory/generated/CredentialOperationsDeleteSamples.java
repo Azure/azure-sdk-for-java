@@ -19,7 +19,8 @@ public final class CredentialOperationsDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void credentialsDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.credentialOperations().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleCredential", com.azure.core.util.Context.NONE);
+        manager.credentialOperations()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleCredential",
+                com.azure.core.util.Context.NONE);
     }
 }

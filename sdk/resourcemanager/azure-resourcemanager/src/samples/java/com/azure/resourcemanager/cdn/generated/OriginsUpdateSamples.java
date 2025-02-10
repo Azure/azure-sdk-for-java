@@ -6,29 +6,26 @@ package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.resourcemanager.cdn.models.OriginUpdateParameters;
 
-/** Samples for Origins Update. */
+/**
+ * Samples for Origins Update.
+ */
 public final class OriginsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Origins_Update.json
+     * x-ms-original-file:
+     * specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Origins_Update.json
      */
     /**
      * Sample code: Origins_Update.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void originsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
+        azure.cdnProfiles()
             .manager()
             .serviceClient()
             .getOrigins()
-            .update(
-                "RG",
-                "profile1",
-                "endpoint1",
-                "www-someDomain-net",
-                new OriginUpdateParameters()
-                    .withHttpPort(42)
+            .update("RG", "profile1", "endpoint1", "www-someDomain-net",
+                new OriginUpdateParameters().withHttpPort(42)
                     .withHttpsPort(43)
                     .withOriginHostHeader("www.someDomain2.net")
                     .withPriority(1)

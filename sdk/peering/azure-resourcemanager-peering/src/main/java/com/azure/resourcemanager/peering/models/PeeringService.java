@@ -9,67 +9,69 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceInner;
 import java.util.Map;
 
-/** An immutable client-side representation of PeeringService. */
+/**
+ * An immutable client-side representation of PeeringService.
+ */
 public interface PeeringService {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the sku property: The SKU that defines the type of the peering service.
-     *
+     * 
      * @return the sku value.
      */
     PeeringServiceSku sku();
 
     /**
      * Gets the location property: The location of the resource.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: The resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the peeringServiceLocation property: The location (state/province) of the customer.
-     *
+     * 
      * @return the peeringServiceLocation value.
      */
     String peeringServiceLocation();
 
     /**
      * Gets the peeringServiceProvider property: The name of the service provider.
-     *
+     * 
      * @return the peeringServiceProvider value.
      */
     String peeringServiceProvider();
 
     /**
      * Gets the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -77,7 +79,7 @@ public interface PeeringService {
     /**
      * Gets the providerPrimaryPeeringLocation property: The primary peering (Microsoft/service provider) location to be
      * used for customer traffic.
-     *
+     * 
      * @return the providerPrimaryPeeringLocation value.
      */
     String providerPrimaryPeeringLocation();
@@ -85,56 +87,63 @@ public interface PeeringService {
     /**
      * Gets the providerBackupPeeringLocation property: The backup peering (Microsoft/service provider) location to be
      * used for customer traffic.
-     *
+     * 
      * @return the providerBackupPeeringLocation value.
      */
     String providerBackupPeeringLocation();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.peering.fluent.models.PeeringServiceInner object.
-     *
+     * 
      * @return the inner object.
      */
     PeeringServiceInner innerModel();
 
-    /** The entirety of the PeeringService definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the PeeringService definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
-    /** The PeeringService definition stages. */
+
+    /**
+     * The PeeringService definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the PeeringService definition. */
+        /**
+         * The first stage of the PeeringService definition.
+         */
         interface Blank extends WithLocation {
         }
-        /** The stage of the PeeringService definition allowing to specify location. */
+
+        /**
+         * The stage of the PeeringService definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The location of the resource.
              * @return the next definition stage.
              */
@@ -142,160 +151,187 @@ public interface PeeringService {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The location of the resource.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
-        /** The stage of the PeeringService definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the PeeringService definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the PeeringService definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithPeeringServiceLocation,
-                DefinitionStages.WithPeeringServiceProvider,
-                DefinitionStages.WithProviderPrimaryPeeringLocation,
-                DefinitionStages.WithProviderBackupPeeringLocation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku,
+            DefinitionStages.WithPeeringServiceLocation, DefinitionStages.WithPeeringServiceProvider,
+            DefinitionStages.WithProviderPrimaryPeeringLocation, DefinitionStages.WithProviderBackupPeeringLocation {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             PeeringService create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             PeeringService create(Context context);
         }
-        /** The stage of the PeeringService definition allowing to specify tags. */
+
+        /**
+         * The stage of the PeeringService definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: The resource tags..
-             *
+             * 
              * @param tags The resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the PeeringService definition allowing to specify sku. */
+
+        /**
+         * The stage of the PeeringService definition allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: The SKU that defines the type of the peering service..
-             *
+             * 
              * @param sku The SKU that defines the type of the peering service.
              * @return the next definition stage.
              */
             WithCreate withSku(PeeringServiceSku sku);
         }
-        /** The stage of the PeeringService definition allowing to specify peeringServiceLocation. */
+
+        /**
+         * The stage of the PeeringService definition allowing to specify peeringServiceLocation.
+         */
         interface WithPeeringServiceLocation {
             /**
              * Specifies the peeringServiceLocation property: The location (state/province) of the customer..
-             *
+             * 
              * @param peeringServiceLocation The location (state/province) of the customer.
              * @return the next definition stage.
              */
             WithCreate withPeeringServiceLocation(String peeringServiceLocation);
         }
-        /** The stage of the PeeringService definition allowing to specify peeringServiceProvider. */
+
+        /**
+         * The stage of the PeeringService definition allowing to specify peeringServiceProvider.
+         */
         interface WithPeeringServiceProvider {
             /**
              * Specifies the peeringServiceProvider property: The name of the service provider..
-             *
+             * 
              * @param peeringServiceProvider The name of the service provider.
              * @return the next definition stage.
              */
             WithCreate withPeeringServiceProvider(String peeringServiceProvider);
         }
-        /** The stage of the PeeringService definition allowing to specify providerPrimaryPeeringLocation. */
+
+        /**
+         * The stage of the PeeringService definition allowing to specify providerPrimaryPeeringLocation.
+         */
         interface WithProviderPrimaryPeeringLocation {
             /**
              * Specifies the providerPrimaryPeeringLocation property: The primary peering (Microsoft/service provider)
              * location to be used for customer traffic..
-             *
+             * 
              * @param providerPrimaryPeeringLocation The primary peering (Microsoft/service provider) location to be
-             *     used for customer traffic.
+             * used for customer traffic.
              * @return the next definition stage.
              */
             WithCreate withProviderPrimaryPeeringLocation(String providerPrimaryPeeringLocation);
         }
-        /** The stage of the PeeringService definition allowing to specify providerBackupPeeringLocation. */
+
+        /**
+         * The stage of the PeeringService definition allowing to specify providerBackupPeeringLocation.
+         */
         interface WithProviderBackupPeeringLocation {
             /**
              * Specifies the providerBackupPeeringLocation property: The backup peering (Microsoft/service provider)
              * location to be used for customer traffic..
-             *
+             * 
              * @param providerBackupPeeringLocation The backup peering (Microsoft/service provider) location to be used
-             *     for customer traffic.
+             * for customer traffic.
              * @return the next definition stage.
              */
             WithCreate withProviderBackupPeeringLocation(String providerBackupPeeringLocation);
         }
     }
+
     /**
      * Begins update for the PeeringService resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     PeeringService.Update update();
 
-    /** The template for PeeringService update. */
+    /**
+     * The template for PeeringService update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         PeeringService apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         PeeringService apply(Context context);
     }
-    /** The PeeringService update stages. */
+
+    /**
+     * The PeeringService update stages.
+     */
     interface UpdateStages {
-        /** The stage of the PeeringService update allowing to specify tags. */
+        /**
+         * The stage of the PeeringService update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Gets or sets the tags, a dictionary of descriptors arm object.
-             *
+             * 
              * @param tags Gets or sets the tags, a dictionary of descriptors arm object.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     PeeringService refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

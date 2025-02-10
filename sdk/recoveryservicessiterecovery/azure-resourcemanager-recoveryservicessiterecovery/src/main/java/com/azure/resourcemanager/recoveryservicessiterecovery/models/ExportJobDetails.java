@@ -5,35 +5,51 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** This class represents details for export jobs workflow. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("ExportJobDetails")
+/**
+ * This class represents details for export jobs workflow.
+ */
 @Fluent
 public final class ExportJobDetails extends JobDetails {
     /*
+     * Gets the type of job details (see JobDetailsTypes enum for possible values).
+     */
+    private String instanceType = "ExportJobDetails";
+
+    /*
      * BlobUri of the exported jobs.
      */
-    @JsonProperty(value = "blobUri")
     private String blobUri;
 
     /*
      * The sas token to access blob.
      */
-    @JsonProperty(value = "sasToken")
     private String sasToken;
 
-    /** Creates an instance of ExportJobDetails class. */
+    /**
+     * Creates an instance of ExportJobDetails class.
+     */
     public ExportJobDetails() {
     }
 
     /**
+     * Get the instanceType property: Gets the type of job details (see JobDetailsTypes enum for possible values).
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the blobUri property: BlobUri of the exported jobs.
-     *
+     * 
      * @return the blobUri value.
      */
     public String blobUri() {
@@ -42,7 +58,7 @@ public final class ExportJobDetails extends JobDetails {
 
     /**
      * Set the blobUri property: BlobUri of the exported jobs.
-     *
+     * 
      * @param blobUri the blobUri value to set.
      * @return the ExportJobDetails object itself.
      */
@@ -53,7 +69,7 @@ public final class ExportJobDetails extends JobDetails {
 
     /**
      * Get the sasToken property: The sas token to access blob.
-     *
+     * 
      * @return the sasToken value.
      */
     public String sasToken() {
@@ -62,7 +78,7 @@ public final class ExportJobDetails extends JobDetails {
 
     /**
      * Set the sasToken property: The sas token to access blob.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the ExportJobDetails object itself.
      */
@@ -71,7 +87,9 @@ public final class ExportJobDetails extends JobDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExportJobDetails withAffectedObjectDetails(Map<String, String> affectedObjectDetails) {
         super.withAffectedObjectDetails(affectedObjectDetails);
@@ -80,11 +98,57 @@ public final class ExportJobDetails extends JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("affectedObjectDetails", affectedObjectDetails(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("blobUri", this.blobUri);
+        jsonWriter.writeStringField("sasToken", this.sasToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportJobDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportJobDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExportJobDetails.
+     */
+    public static ExportJobDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportJobDetails deserializedExportJobDetails = new ExportJobDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("affectedObjectDetails".equals(fieldName)) {
+                    Map<String, String> affectedObjectDetails = reader.readMap(reader1 -> reader1.getString());
+                    deserializedExportJobDetails.withAffectedObjectDetails(affectedObjectDetails);
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedExportJobDetails.instanceType = reader.getString();
+                } else if ("blobUri".equals(fieldName)) {
+                    deserializedExportJobDetails.blobUri = reader.getString();
+                } else if ("sasToken".equals(fieldName)) {
+                    deserializedExportJobDetails.sasToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportJobDetails;
+        });
     }
 }

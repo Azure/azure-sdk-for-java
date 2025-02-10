@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in BackupOperationStatusesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupOperationStatusesClient.
+ */
 public interface BackupOperationStatusesClient {
     /**
      * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
      * or failed. You can refer to the OperationStatus enum for all the possible states of an operation. Some operations
      * create jobs. This method returns the list of jobs when the operation is complete.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation.
@@ -27,14 +29,14 @@ public interface BackupOperationStatusesClient {
      * @return operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusInner> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context);
+    Response<OperationStatusInner> getWithResponse(String vaultName, String resourceGroupName, String operationId,
+        Context context);
 
     /**
      * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
      * or failed. You can refer to the OperationStatus enum for all the possible states of an operation. Some operations
      * create jobs. This method returns the list of jobs when the operation is complete.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation.

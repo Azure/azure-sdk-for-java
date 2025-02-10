@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The error details for the AML file system's subnet. */
+/**
+ * The error details for the AML file system's subnet.
+ */
 @Fluent
-public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet {
+public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet
+    implements JsonSerializable<AmlFilesystemCheckSubnetErrorFilesystemSubnet> {
     /*
      * The status of the AML file system subnet check.
      */
-    @JsonProperty(value = "status")
     private FilesystemSubnetStatusType status;
 
     /*
      * The details of the AML file system subnet check.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of AmlFilesystemCheckSubnetErrorFilesystemSubnet class. */
+    /**
+     * Creates an instance of AmlFilesystemCheckSubnetErrorFilesystemSubnet class.
+     */
     public AmlFilesystemCheckSubnetErrorFilesystemSubnet() {
     }
 
     /**
      * Get the status property: The status of the AML file system subnet check.
-     *
+     * 
      * @return the status value.
      */
     public FilesystemSubnetStatusType status() {
@@ -37,7 +44,7 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet {
 
     /**
      * Set the status property: The status of the AML file system subnet check.
-     *
+     * 
      * @param status the status value to set.
      * @return the AmlFilesystemCheckSubnetErrorFilesystemSubnet object itself.
      */
@@ -48,7 +55,7 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet {
 
     /**
      * Get the message property: The details of the AML file system subnet check.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +64,7 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet {
 
     /**
      * Set the message property: The details of the AML file system subnet check.
-     *
+     * 
      * @param message the message value to set.
      * @return the AmlFilesystemCheckSubnetErrorFilesystemSubnet object itself.
      */
@@ -68,9 +75,50 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemCheckSubnetErrorFilesystemSubnet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemCheckSubnetErrorFilesystemSubnet if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemCheckSubnetErrorFilesystemSubnet.
+     */
+    public static AmlFilesystemCheckSubnetErrorFilesystemSubnet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemCheckSubnetErrorFilesystemSubnet deserializedAmlFilesystemCheckSubnetErrorFilesystemSubnet
+                = new AmlFilesystemCheckSubnetErrorFilesystemSubnet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedAmlFilesystemCheckSubnetErrorFilesystemSubnet.status
+                        = FilesystemSubnetStatusType.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedAmlFilesystemCheckSubnetErrorFilesystemSubnet.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemCheckSubnetErrorFilesystemSubnet;
+        });
     }
 }

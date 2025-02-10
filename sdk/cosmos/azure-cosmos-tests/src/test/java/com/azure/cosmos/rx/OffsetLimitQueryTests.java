@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -15,7 +14,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.OffsetContinuationToken;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
@@ -250,12 +248,12 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         // The pipeline execution sequence is Aggregrate, skip, and top/limit, hence finding the max from among the docs
         InternalObjectNode expectedDoc = docs
             .stream()
-            .max(Comparator.comparing(r -> ModelBridgeInternal.getIntFromJsonSerializable(r, field)))
+            .max(Comparator.comparing(r -> r.getInt(field)))
             .get();
 
         FeedResponseListValidator<JsonNode> validator =
             new FeedResponseListValidator.Builder<JsonNode>()
-                .withAggregateValue(ModelBridgeInternal.getIntFromJsonSerializable(expectedDoc, field))
+                .withAggregateValue(expectedDoc.getInt(field))
                 .numberOfPages(1)
                 .hasValidQueryMetrics(qmEnabled)
                 .build();
@@ -313,24 +311,24 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         for (int i = 0; i < 10; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i);
-            BridgeInternal.setProperty(d, partitionKey, firstPk);
+            d.set(field, i);
+            d.set(partitionKey, firstPk);
             docs.add(d);
         }
 
         for (int i = 10; i < 20; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i);
-            BridgeInternal.setProperty(d, partitionKey, secondPk);
+            d.set(field, i);
+            d.set(partitionKey, secondPk);
             docs.add(d);
         }
 
         for (int i = 20; i < 100; i++) {
             InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
-            BridgeInternal.setProperty(d, field, i);
-            BridgeInternal.setProperty(d, partitionKey, thirdPk);
+            d.set(field, i);
+            d.set(partitionKey, thirdPk);
             docs.add(d);
         }
     }

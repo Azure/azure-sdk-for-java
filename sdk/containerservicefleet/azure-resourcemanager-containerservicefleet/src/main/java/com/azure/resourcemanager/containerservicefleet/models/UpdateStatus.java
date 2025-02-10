@@ -6,43 +6,48 @@ package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The status for an operation or group of operations. */
+/**
+ * The status for an operation or group of operations.
+ */
 @Immutable
-public final class UpdateStatus {
+public final class UpdateStatus implements JsonSerializable<UpdateStatus> {
     /*
      * The time the operation or group was started.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The time the operation or group was completed.
      */
-    @JsonProperty(value = "completedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime completedTime;
 
     /*
      * The State of the operation or group.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private UpdateState state;
 
     /*
      * The error details when a failure is encountered.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;
 
-    /** Creates an instance of UpdateStatus class. */
+    /**
+     * Creates an instance of UpdateStatus class.
+     */
     public UpdateStatus() {
     }
 
     /**
      * Get the startTime property: The time the operation or group was started.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -51,7 +56,7 @@ public final class UpdateStatus {
 
     /**
      * Get the completedTime property: The time the operation or group was completed.
-     *
+     * 
      * @return the completedTime value.
      */
     public OffsetDateTime completedTime() {
@@ -60,7 +65,7 @@ public final class UpdateStatus {
 
     /**
      * Get the state property: The State of the operation or group.
-     *
+     * 
      * @return the state value.
      */
     public UpdateState state() {
@@ -69,7 +74,7 @@ public final class UpdateStatus {
 
     /**
      * Get the error property: The error details when a failure is encountered.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -78,9 +83,52 @@ public final class UpdateStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateStatus.
+     */
+    public static UpdateStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateStatus deserializedUpdateStatus = new UpdateStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedUpdateStatus.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completedTime".equals(fieldName)) {
+                    deserializedUpdateStatus.completedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedUpdateStatus.state = UpdateState.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedUpdateStatus.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateStatus;
+        });
     }
 }

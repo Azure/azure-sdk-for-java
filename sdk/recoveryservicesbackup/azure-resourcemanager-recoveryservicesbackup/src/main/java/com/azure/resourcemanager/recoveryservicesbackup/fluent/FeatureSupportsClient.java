@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.AzureVMResourceFeatureSupportResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FeatureSupportRequest;
 
-/** An instance of this class provides access to all the operations defined in FeatureSupportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FeatureSupportsClient.
+ */
 public interface FeatureSupportsClient {
     /**
      * It will validate if given feature with resource properties is supported in service.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Feature support request object.
      * @param context The context to associate with this operation.
@@ -25,12 +27,12 @@ public interface FeatureSupportsClient {
      * @return response for feature support requests for Azure IaasVm along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureVMResourceFeatureSupportResponseInner> validateWithResponse(
-        String azureRegion, FeatureSupportRequest parameters, Context context);
+    Response<AzureVMResourceFeatureSupportResponseInner> validateWithResponse(String azureRegion,
+        FeatureSupportRequest parameters, Context context);
 
     /**
      * It will validate if given feature with resource properties is supported in service.
-     *
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Feature support request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.models.ResourceIdentifier;
 public final class ResourceIdentifierTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceIdentifier model =
-            BinaryData.fromString("{\"type\":\"ResourceIdentifier\"}").toObject(ResourceIdentifier.class);
+        ResourceIdentifier model
+            = BinaryData.fromString("{\"type\":\"ResourceIdentifier\"}").toObject(ResourceIdentifier.class);
     }
 
     @org.junit.jupiter.api.Test

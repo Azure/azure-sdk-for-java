@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Azure VM workload-specific workload item representing SQL Instance. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "workloadItemType")
-@JsonTypeName("SQLInstance")
+/**
+ * Azure VM workload-specific workload item representing SQL Instance.
+ */
 @Fluent
 public final class AzureVmWorkloadSqlInstanceWorkloadItem extends AzureVmWorkloadItem {
     /*
+     * Type of the backup item.
+     */
+    private String workloadItemType = "SQLInstance";
+
+    /*
      * Data Directory Paths for default directories
      */
-    @JsonProperty(value = "dataDirectoryPaths")
     private List<SqlDataDirectory> dataDirectoryPaths;
 
-    /** Creates an instance of AzureVmWorkloadSqlInstanceWorkloadItem class. */
+    /**
+     * Creates an instance of AzureVmWorkloadSqlInstanceWorkloadItem class.
+     */
     public AzureVmWorkloadSqlInstanceWorkloadItem() {
     }
 
     /**
+     * Get the workloadItemType property: Type of the backup item.
+     * 
+     * @return the workloadItemType value.
+     */
+    @Override
+    public String workloadItemType() {
+        return this.workloadItemType;
+    }
+
+    /**
      * Get the dataDirectoryPaths property: Data Directory Paths for default directories.
-     *
+     * 
      * @return the dataDirectoryPaths value.
      */
     public List<SqlDataDirectory> dataDirectoryPaths() {
@@ -36,7 +53,7 @@ public final class AzureVmWorkloadSqlInstanceWorkloadItem extends AzureVmWorkloa
 
     /**
      * Set the dataDirectoryPaths property: Data Directory Paths for default directories.
-     *
+     * 
      * @param dataDirectoryPaths the dataDirectoryPaths value to set.
      * @return the AzureVmWorkloadSqlInstanceWorkloadItem object itself.
      */
@@ -45,63 +62,81 @@ public final class AzureVmWorkloadSqlInstanceWorkloadItem extends AzureVmWorkloa
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlInstanceWorkloadItem withParentName(String parentName) {
         super.withParentName(parentName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlInstanceWorkloadItem withServerName(String serverName) {
         super.withServerName(serverName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlInstanceWorkloadItem withIsAutoProtectable(Boolean isAutoProtectable) {
         super.withIsAutoProtectable(isAutoProtectable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlInstanceWorkloadItem withSubinquireditemcount(Integer subinquireditemcount) {
         super.withSubinquireditemcount(subinquireditemcount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlInstanceWorkloadItem withSubWorkloadItemCount(Integer subWorkloadItemCount) {
         super.withSubWorkloadItemCount(subWorkloadItemCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlInstanceWorkloadItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlInstanceWorkloadItem withWorkloadType(String workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlInstanceWorkloadItem withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlInstanceWorkloadItem withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -110,14 +145,87 @@ public final class AzureVmWorkloadSqlInstanceWorkloadItem extends AzureVmWorkloa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (dataDirectoryPaths() != null) {
             dataDirectoryPaths().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupManagementType", backupManagementType());
+        jsonWriter.writeStringField("workloadType", workloadType());
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("parentName", parentName());
+        jsonWriter.writeStringField("serverName", serverName());
+        jsonWriter.writeBooleanField("isAutoProtectable", isAutoProtectable());
+        jsonWriter.writeNumberField("subinquireditemcount", subinquireditemcount());
+        jsonWriter.writeNumberField("subWorkloadItemCount", subWorkloadItemCount());
+        jsonWriter.writeStringField("workloadItemType", this.workloadItemType);
+        jsonWriter.writeArrayField("dataDirectoryPaths", this.dataDirectoryPaths,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVmWorkloadSqlInstanceWorkloadItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVmWorkloadSqlInstanceWorkloadItem if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVmWorkloadSqlInstanceWorkloadItem.
+     */
+    public static AzureVmWorkloadSqlInstanceWorkloadItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVmWorkloadSqlInstanceWorkloadItem deserializedAzureVmWorkloadSqlInstanceWorkloadItem
+                = new AzureVmWorkloadSqlInstanceWorkloadItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlInstanceWorkloadItem.withBackupManagementType(reader.getString());
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlInstanceWorkloadItem.withWorkloadType(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlInstanceWorkloadItem.withFriendlyName(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlInstanceWorkloadItem
+                        .withProtectionState(ProtectionStatus.fromString(reader.getString()));
+                } else if ("parentName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlInstanceWorkloadItem.withParentName(reader.getString());
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlInstanceWorkloadItem.withServerName(reader.getString());
+                } else if ("isAutoProtectable".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlInstanceWorkloadItem
+                        .withIsAutoProtectable(reader.getNullable(JsonReader::getBoolean));
+                } else if ("subinquireditemcount".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlInstanceWorkloadItem
+                        .withSubinquireditemcount(reader.getNullable(JsonReader::getInt));
+                } else if ("subWorkloadItemCount".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlInstanceWorkloadItem
+                        .withSubWorkloadItemCount(reader.getNullable(JsonReader::getInt));
+                } else if ("workloadItemType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSqlInstanceWorkloadItem.workloadItemType = reader.getString();
+                } else if ("dataDirectoryPaths".equals(fieldName)) {
+                    List<SqlDataDirectory> dataDirectoryPaths
+                        = reader.readArray(reader1 -> SqlDataDirectory.fromJson(reader1));
+                    deserializedAzureVmWorkloadSqlInstanceWorkloadItem.dataDirectoryPaths = dataDirectoryPaths;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVmWorkloadSqlInstanceWorkloadItem;
+        });
     }
 }

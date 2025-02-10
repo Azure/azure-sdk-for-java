@@ -11,26 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityProfile model =
-            BinaryData
-                .fromString(
-                    "{\"msiResourceId\":\"vcputegj\",\"msiClientId\":\"wmfdatscmdvpjhul\",\"msiObjectId\":\"uuvmkjozkrwfnd\"}")
-                .toObject(IdentityProfile.class);
-        Assertions.assertEquals("vcputegj", model.msiResourceId());
-        Assertions.assertEquals("wmfdatscmdvpjhul", model.msiClientId());
-        Assertions.assertEquals("uuvmkjozkrwfnd", model.msiObjectId());
+        IdentityProfile model = BinaryData
+            .fromString(
+                "{\"msiResourceId\":\"yqduujit\",\"msiClientId\":\"jczdzevndh\",\"msiObjectId\":\"rwpdappdsbdkvwrw\"}")
+            .toObject(IdentityProfile.class);
+        Assertions.assertEquals("yqduujit", model.msiResourceId());
+        Assertions.assertEquals("jczdzevndh", model.msiClientId());
+        Assertions.assertEquals("rwpdappdsbdkvwrw", model.msiObjectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityProfile model =
-            new IdentityProfile()
-                .withMsiResourceId("vcputegj")
-                .withMsiClientId("wmfdatscmdvpjhul")
-                .withMsiObjectId("uuvmkjozkrwfnd");
+        IdentityProfile model = new IdentityProfile().withMsiResourceId("yqduujit")
+            .withMsiClientId("jczdzevndh")
+            .withMsiObjectId("rwpdappdsbdkvwrw");
         model = BinaryData.fromObject(model).toObject(IdentityProfile.class);
-        Assertions.assertEquals("vcputegj", model.msiResourceId());
-        Assertions.assertEquals("wmfdatscmdvpjhul", model.msiClientId());
-        Assertions.assertEquals("uuvmkjozkrwfnd", model.msiObjectId());
+        Assertions.assertEquals("yqduujit", model.msiResourceId());
+        Assertions.assertEquals("jczdzevndh", model.msiClientId());
+        Assertions.assertEquals("rwpdappdsbdkvwrw", model.msiObjectId());
     }
 }

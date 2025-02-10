@@ -13,23 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendationConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendationConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"recommendationType\":\"IoT_PermissiveFirewallPolicy\",\"name\":\"xepcyvahfn\",\"status\":\"Disabled\"}")
-                .toObject(RecommendationConfigurationProperties.class);
-        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY, model.recommendationType());
-        Assertions.assertEquals(RecommendationConfigStatus.DISABLED, model.status());
+        RecommendationConfigurationProperties model = BinaryData
+            .fromString("{\"recommendationType\":\"IoT_Baseline\",\"name\":\"kallatmel\",\"status\":\"Enabled\"}")
+            .toObject(RecommendationConfigurationProperties.class);
+        Assertions.assertEquals(RecommendationType.IO_T_BASELINE, model.recommendationType());
+        Assertions.assertEquals(RecommendationConfigStatus.ENABLED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecommendationConfigurationProperties model =
-            new RecommendationConfigurationProperties()
-                .withRecommendationType(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY)
-                .withStatus(RecommendationConfigStatus.DISABLED);
+        RecommendationConfigurationProperties model
+            = new RecommendationConfigurationProperties().withRecommendationType(RecommendationType.IO_T_BASELINE)
+                .withStatus(RecommendationConfigStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(RecommendationConfigurationProperties.class);
-        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY, model.recommendationType());
-        Assertions.assertEquals(RecommendationConfigStatus.DISABLED, model.status());
+        Assertions.assertEquals(RecommendationType.IO_T_BASELINE, model.recommendationType());
+        Assertions.assertEquals(RecommendationConfigStatus.ENABLED, model.status());
     }
 }

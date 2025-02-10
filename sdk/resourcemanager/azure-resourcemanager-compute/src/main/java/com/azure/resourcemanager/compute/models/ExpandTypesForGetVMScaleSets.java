@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class ExpandTypesForGetVMScaleSets extends ExpandableStringEnum<Exp
      * @param name a name to look for.
      * @return the corresponding ExpandTypesForGetVMScaleSets.
      */
-    @JsonCreator
     public static ExpandTypesForGetVMScaleSets fromString(String name) {
         return fromString(name, ExpandTypesForGetVMScaleSets.class);
     }

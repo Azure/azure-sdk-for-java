@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This defines the sku conversion status object for asynchronous sku conversions. */
+/**
+ * This defines the sku conversion status object for asynchronous sku conversions.
+ */
 @Fluent
-public final class StorageAccountSkuConversionStatus {
+public final class StorageAccountSkuConversionStatus implements JsonSerializable<StorageAccountSkuConversionStatus> {
     /*
      * This property indicates the current sku conversion status.
      */
-    @JsonProperty(value = "skuConversionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private SkuConversionStatus skuConversionStatus;
 
     /*
      * This property represents the target sku name to which the account sku is being converted asynchronously.
      */
-    @JsonProperty(value = "targetSkuName")
     private SkuName targetSkuName;
 
     /*
      * This property represents the sku conversion start time.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private String startTime;
 
     /*
      * This property represents the sku conversion end time.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private String endTime;
 
-    /** Creates an instance of StorageAccountSkuConversionStatus class. */
+    /**
+     * Creates an instance of StorageAccountSkuConversionStatus class.
+     */
     public StorageAccountSkuConversionStatus() {
     }
 
     /**
      * Get the skuConversionStatus property: This property indicates the current sku conversion status.
-     *
+     * 
      * @return the skuConversionStatus value.
      */
     public SkuConversionStatus skuConversionStatus() {
@@ -50,7 +54,7 @@ public final class StorageAccountSkuConversionStatus {
     /**
      * Get the targetSkuName property: This property represents the target sku name to which the account sku is being
      * converted asynchronously.
-     *
+     * 
      * @return the targetSkuName value.
      */
     public SkuName targetSkuName() {
@@ -60,7 +64,7 @@ public final class StorageAccountSkuConversionStatus {
     /**
      * Set the targetSkuName property: This property represents the target sku name to which the account sku is being
      * converted asynchronously.
-     *
+     * 
      * @param targetSkuName the targetSkuName value to set.
      * @return the StorageAccountSkuConversionStatus object itself.
      */
@@ -71,7 +75,7 @@ public final class StorageAccountSkuConversionStatus {
 
     /**
      * Get the startTime property: This property represents the sku conversion start time.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -80,7 +84,7 @@ public final class StorageAccountSkuConversionStatus {
 
     /**
      * Get the endTime property: This property represents the sku conversion end time.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -89,9 +93,54 @@ public final class StorageAccountSkuConversionStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetSkuName", this.targetSkuName == null ? null : this.targetSkuName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountSkuConversionStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountSkuConversionStatus if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageAccountSkuConversionStatus.
+     */
+    public static StorageAccountSkuConversionStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountSkuConversionStatus deserializedStorageAccountSkuConversionStatus
+                = new StorageAccountSkuConversionStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("skuConversionStatus".equals(fieldName)) {
+                    deserializedStorageAccountSkuConversionStatus.skuConversionStatus
+                        = SkuConversionStatus.fromString(reader.getString());
+                } else if ("targetSkuName".equals(fieldName)) {
+                    deserializedStorageAccountSkuConversionStatus.targetSkuName
+                        = SkuName.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedStorageAccountSkuConversionStatus.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedStorageAccountSkuConversionStatus.endTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountSkuConversionStatus;
+        });
     }
 }

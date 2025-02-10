@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The GremlinGraphGetPropertiesResource model.
@@ -15,19 +19,16 @@ public final class GremlinGraphGetPropertiesResource extends GremlinGraphResourc
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * A system generated property that denotes the last updated timestamp of the resource.
      */
-    @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
      * A system generated property representing the resource etag required for optimistic concurrency control.
      */
-    @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -153,6 +154,101 @@ public final class GremlinGraphGetPropertiesResource extends GremlinGraphResourc
      */
     @Override
     public void validate() {
-        super.validate();
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model GremlinGraphGetPropertiesResource"));
+        }
+        if (indexingPolicy() != null) {
+            indexingPolicy().validate();
+        }
+        if (partitionKey() != null) {
+            partitionKey().validate();
+        }
+        if (uniqueKeyPolicy() != null) {
+            uniqueKeyPolicy().validate();
+        }
+        if (conflictResolutionPolicy() != null) {
+            conflictResolutionPolicy().validate();
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GremlinGraphGetPropertiesResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("indexingPolicy", indexingPolicy());
+        jsonWriter.writeJsonField("partitionKey", partitionKey());
+        jsonWriter.writeNumberField("defaultTtl", defaultTtl());
+        jsonWriter.writeJsonField("uniqueKeyPolicy", uniqueKeyPolicy());
+        jsonWriter.writeJsonField("conflictResolutionPolicy", conflictResolutionPolicy());
+        jsonWriter.writeNumberField("analyticalStorageTtl", analyticalStorageTtl());
+        jsonWriter.writeJsonField("restoreParameters", restoreParameters());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GremlinGraphGetPropertiesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GremlinGraphGetPropertiesResource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GremlinGraphGetPropertiesResource.
+     */
+    public static GremlinGraphGetPropertiesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GremlinGraphGetPropertiesResource deserializedGremlinGraphGetPropertiesResource
+                = new GremlinGraphGetPropertiesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource.withId(reader.getString());
+                } else if ("indexingPolicy".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource.withIndexingPolicy(IndexingPolicy.fromJson(reader));
+                } else if ("partitionKey".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource
+                        .withPartitionKey(ContainerPartitionKey.fromJson(reader));
+                } else if ("defaultTtl".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource
+                        .withDefaultTtl(reader.getNullable(JsonReader::getInt));
+                } else if ("uniqueKeyPolicy".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource.withUniqueKeyPolicy(UniqueKeyPolicy.fromJson(reader));
+                } else if ("conflictResolutionPolicy".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource
+                        .withConflictResolutionPolicy(ConflictResolutionPolicy.fromJson(reader));
+                } else if ("analyticalStorageTtl".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource
+                        .withAnalyticalStorageTtl(reader.getNullable(JsonReader::getLong));
+                } else if ("restoreParameters".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource
+                        .withRestoreParameters(ResourceRestoreParameters.fromJson(reader));
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource
+                        .withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("_rid".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource.rid = reader.getString();
+                } else if ("_ts".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource.ts = reader.getNullable(JsonReader::getFloat);
+                } else if ("_etag".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesResource.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGremlinGraphGetPropertiesResource;
+        });
     }
 }

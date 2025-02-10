@@ -17,13 +17,8 @@ import java.util.Map;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Represents a private endpoint connection collection. */
-class PrivateEndpointConnectionsImpl
-    extends ExternalChildResourcesCachedImpl<
-        PrivateEndpointConnectionImpl,
-        PrivateEndpointConnection,
-        PrivateEndpointConnectionInner,
-        CosmosDBAccountImpl,
-        CosmosDBAccount> {
+class PrivateEndpointConnectionsImpl extends
+    ExternalChildResourcesCachedImpl<PrivateEndpointConnectionImpl, PrivateEndpointConnection, PrivateEndpointConnectionInner, CosmosDBAccountImpl, CosmosDBAccount> {
     private final PrivateEndpointConnectionsClient client;
 
     PrivateEndpointConnectionsImpl(PrivateEndpointConnectionsClient client, CosmosDBAccountImpl parent) {
@@ -54,43 +49,35 @@ class PrivateEndpointConnectionsImpl
     }
 
     public Mono<Map<String, PrivateEndpointConnection>> asMapAsync() {
-        return listAsync()
-            .collectList()
-            .map(
-                privateEndpointConnections -> {
-                    Map<String, PrivateEndpointConnection> privateEndpointConnectionMap = new HashMap<>();
-                    for (PrivateEndpointConnectionImpl privateEndpointConnection : privateEndpointConnections) {
-                        privateEndpointConnectionMap.put(privateEndpointConnection.name(), privateEndpointConnection);
-                    }
-                    return privateEndpointConnectionMap;
-                });
+        return listAsync().collectList().map(privateEndpointConnections -> {
+            Map<String, PrivateEndpointConnection> privateEndpointConnectionMap = new HashMap<>();
+            for (PrivateEndpointConnectionImpl privateEndpointConnection : privateEndpointConnections) {
+                privateEndpointConnectionMap.put(privateEndpointConnection.name(), privateEndpointConnection);
+            }
+            return privateEndpointConnectionMap;
+        });
     }
 
     public PagedFlux<PrivateEndpointConnectionImpl> listAsync() {
         final PrivateEndpointConnectionsImpl self = this;
-        return PagedConverter.mapPage(this
-            .client
-            .listByDatabaseAccountAsync(this.getParent().resourceGroupName(), this.getParent().name()),
-                inner -> {
-                    PrivateEndpointConnectionImpl childResource =
-                        new PrivateEndpointConnectionImpl(inner.name(), self.getParent(), inner, client);
-                    self.addPrivateEndpointConnection(childResource);
-                    return childResource;
-                });
+        return PagedConverter.mapPage(
+            this.client.listByDatabaseAccountAsync(this.getParent().resourceGroupName(), this.getParent().name()),
+            inner -> {
+                PrivateEndpointConnectionImpl childResource
+                    = new PrivateEndpointConnectionImpl(inner.name(), self.getParent(), inner, client);
+                self.addPrivateEndpointConnection(childResource);
+                return childResource;
+            });
     }
 
     public Mono<PrivateEndpointConnectionImpl> getImplAsync(String name) {
         final PrivateEndpointConnectionsImpl self = this;
-        return this
-            .client
-            .getAsync(getParent().resourceGroupName(), getParent().name(), name)
-            .map(
-                inner -> {
-                    PrivateEndpointConnectionImpl childResource =
-                        new PrivateEndpointConnectionImpl(inner.name(), getParent(), inner, client);
-                    self.addPrivateEndpointConnection(childResource);
-                    return childResource;
-                });
+        return this.client.getAsync(getParent().resourceGroupName(), getParent().name(), name).map(inner -> {
+            PrivateEndpointConnectionImpl childResource
+                = new PrivateEndpointConnectionImpl(inner.name(), getParent(), inner, client);
+            self.addPrivateEndpointConnection(childResource);
+            return childResource;
+        });
     }
 
     @Override

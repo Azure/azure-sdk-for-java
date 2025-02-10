@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.AzureMachineLearningWebServiceFunctionBindingProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
-/** The binding to an Azure Machine Learning web service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.MachineLearning/WebService")
+/**
+ * The binding to an Azure Machine Learning web service.
+ */
 @Fluent
 public final class AzureMachineLearningWebServiceFunctionBinding extends FunctionBinding {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureMachineLearningWebServiceFunctionBinding.class);
+    /*
+     * Indicates the function binding type.
+     */
+    private String type = "Microsoft.MachineLearning/WebService";
 
     /*
-     * The binding properties associated with an Azure Machine learning web
-     * service.
+     * The binding properties associated with an Azure Machine learning web service.
      */
-    @JsonProperty(value = "properties")
     private AzureMachineLearningWebServiceFunctionBindingProperties innerProperties;
 
     /**
+     * Creates an instance of AzureMachineLearningWebServiceFunctionBinding class.
+     */
+    public AzureMachineLearningWebServiceFunctionBinding() {
+    }
+
+    /**
+     * Get the type property: Indicates the function binding type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerProperties property: The binding properties associated with an Azure Machine learning web service.
-     *
+     * 
      * @return the innerProperties value.
      */
-    private AzureMachineLearningWebServiceFunctionBindingProperties innerProperties() {
+    AzureMachineLearningWebServiceFunctionBindingProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -41,7 +56,7 @@ public final class AzureMachineLearningWebServiceFunctionBinding extends Functio
      * Get the endpoint property: The Request-Response execute endpoint of the Azure Machine Learning web service. Find
      * out more here:
      * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -52,7 +67,7 @@ public final class AzureMachineLearningWebServiceFunctionBinding extends Functio
      * Set the endpoint property: The Request-Response execute endpoint of the Azure Machine Learning web service. Find
      * out more here:
      * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the AzureMachineLearningWebServiceFunctionBinding object itself.
      */
@@ -66,7 +81,7 @@ public final class AzureMachineLearningWebServiceFunctionBinding extends Functio
 
     /**
      * Get the apiKey property: The API key used to authenticate with Request-Response endpoint.
-     *
+     * 
      * @return the apiKey value.
      */
     public String apiKey() {
@@ -75,7 +90,7 @@ public final class AzureMachineLearningWebServiceFunctionBinding extends Functio
 
     /**
      * Set the apiKey property: The API key used to authenticate with Request-Response endpoint.
-     *
+     * 
      * @param apiKey the apiKey value to set.
      * @return the AzureMachineLearningWebServiceFunctionBinding object itself.
      */
@@ -89,7 +104,7 @@ public final class AzureMachineLearningWebServiceFunctionBinding extends Functio
 
     /**
      * Get the inputs property: The inputs for the Azure Machine Learning web service endpoint.
-     *
+     * 
      * @return the inputs value.
      */
     public AzureMachineLearningWebServiceInputs inputs() {
@@ -98,7 +113,7 @@ public final class AzureMachineLearningWebServiceFunctionBinding extends Functio
 
     /**
      * Set the inputs property: The inputs for the Azure Machine Learning web service endpoint.
-     *
+     * 
      * @param inputs the inputs value to set.
      * @return the AzureMachineLearningWebServiceFunctionBinding object itself.
      */
@@ -112,7 +127,7 @@ public final class AzureMachineLearningWebServiceFunctionBinding extends Functio
 
     /**
      * Get the outputs property: A list of outputs from the Azure Machine Learning web service endpoint execution.
-     *
+     * 
      * @return the outputs value.
      */
     public List<AzureMachineLearningWebServiceOutputColumn> outputs() {
@@ -121,12 +136,12 @@ public final class AzureMachineLearningWebServiceFunctionBinding extends Functio
 
     /**
      * Set the outputs property: A list of outputs from the Azure Machine Learning web service endpoint execution.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the AzureMachineLearningWebServiceFunctionBinding object itself.
      */
-    public AzureMachineLearningWebServiceFunctionBinding withOutputs(
-        List<AzureMachineLearningWebServiceOutputColumn> outputs) {
+    public AzureMachineLearningWebServiceFunctionBinding
+        withOutputs(List<AzureMachineLearningWebServiceOutputColumn> outputs) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AzureMachineLearningWebServiceFunctionBindingProperties();
         }
@@ -137,7 +152,7 @@ public final class AzureMachineLearningWebServiceFunctionBinding extends Functio
     /**
      * Get the batchSize property: Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS
      * execute request. Default is 1000.
-     *
+     * 
      * @return the batchSize value.
      */
     public Integer batchSize() {
@@ -147,7 +162,7 @@ public final class AzureMachineLearningWebServiceFunctionBinding extends Functio
     /**
      * Set the batchSize property: Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS
      * execute request. Default is 1000.
-     *
+     * 
      * @param batchSize the batchSize value to set.
      * @return the AzureMachineLearningWebServiceFunctionBinding object itself.
      */
@@ -161,14 +176,54 @@ public final class AzureMachineLearningWebServiceFunctionBinding extends Functio
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMachineLearningWebServiceFunctionBinding from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMachineLearningWebServiceFunctionBinding if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureMachineLearningWebServiceFunctionBinding.
+     */
+    public static AzureMachineLearningWebServiceFunctionBinding fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMachineLearningWebServiceFunctionBinding deserializedAzureMachineLearningWebServiceFunctionBinding
+                = new AzureMachineLearningWebServiceFunctionBinding();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceFunctionBinding.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceFunctionBinding.innerProperties
+                        = AzureMachineLearningWebServiceFunctionBindingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMachineLearningWebServiceFunctionBinding;
+        });
     }
 }

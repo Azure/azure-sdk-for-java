@@ -5,32 +5,49 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.AfdStateProperties;
+import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.SecretParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The JSON object that contains the properties of the Secret to create. */
+/**
+ * The JSON object that contains the properties of the Secret to create.
+ */
 @Fluent
 public final class SecretProperties extends AfdStateProperties {
     /*
      * The name of the profile which holds the secret.
      */
-    @JsonProperty(value = "profileName", access = JsonProperty.Access.WRITE_ONLY)
     private String profileName;
 
     /*
      * object which contains secret parameters
      */
-    @JsonProperty(value = "parameters")
     private SecretParameters parameters;
 
-    /** Creates an instance of SecretProperties class. */
+    /*
+     * The deploymentStatus property.
+     */
+    private DeploymentStatus deploymentStatus;
+
+    /*
+     * Provisioning status
+     */
+    private AfdProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of SecretProperties class.
+     */
     public SecretProperties() {
     }
 
     /**
      * Get the profileName property: The name of the profile which holds the secret.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -39,7 +56,7 @@ public final class SecretProperties extends AfdStateProperties {
 
     /**
      * Get the parameters property: object which contains secret parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public SecretParameters parameters() {
@@ -48,7 +65,7 @@ public final class SecretProperties extends AfdStateProperties {
 
     /**
      * Set the parameters property: object which contains secret parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SecretProperties object itself.
      */
@@ -58,8 +75,28 @@ public final class SecretProperties extends AfdStateProperties {
     }
 
     /**
+     * Get the deploymentStatus property: The deploymentStatus property.
+     * 
+     * @return the deploymentStatus value.
+     */
+    @Override
+    public DeploymentStatus deploymentStatus() {
+        return this.deploymentStatus;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning status.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public AfdProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -68,5 +105,48 @@ public final class SecretProperties extends AfdStateProperties {
         if (parameters() != null) {
             parameters().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("parameters", this.parameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecretProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecretProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecretProperties.
+     */
+    public static SecretProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretProperties deserializedSecretProperties = new SecretProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedSecretProperties.provisioningState
+                        = AfdProvisioningState.fromString(reader.getString());
+                } else if ("deploymentStatus".equals(fieldName)) {
+                    deserializedSecretProperties.deploymentStatus = DeploymentStatus.fromString(reader.getString());
+                } else if ("profileName".equals(fieldName)) {
+                    deserializedSecretProperties.profileName = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedSecretProperties.parameters = SecretParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecretProperties;
+        });
     }
 }

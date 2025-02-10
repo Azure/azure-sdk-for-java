@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * run command result.
  */
 @Immutable
-public final class RunCommandResultInner {
+public final class RunCommandResultInner implements JsonSerializable<RunCommandResultInner> {
     /*
      * The command id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Properties of command result.
      */
-    @JsonProperty(value = "properties")
     private CommandResultProperties innerProperties;
 
     /**
@@ -33,7 +35,7 @@ public final class RunCommandResultInner {
 
     /**
      * Get the id property: The command id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -42,7 +44,7 @@ public final class RunCommandResultInner {
 
     /**
      * Get the innerProperties property: Properties of command result.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CommandResultProperties innerProperties() {
@@ -51,7 +53,7 @@ public final class RunCommandResultInner {
 
     /**
      * Get the provisioningState property: provisioning State.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -60,7 +62,7 @@ public final class RunCommandResultInner {
 
     /**
      * Get the exitCode property: The exit code of the command.
-     *
+     * 
      * @return the exitCode value.
      */
     public Integer exitCode() {
@@ -69,7 +71,7 @@ public final class RunCommandResultInner {
 
     /**
      * Get the startedAt property: The time when the command started.
-     *
+     * 
      * @return the startedAt value.
      */
     public OffsetDateTime startedAt() {
@@ -78,7 +80,7 @@ public final class RunCommandResultInner {
 
     /**
      * Get the finishedAt property: The time when the command finished.
-     *
+     * 
      * @return the finishedAt value.
      */
     public OffsetDateTime finishedAt() {
@@ -87,7 +89,7 @@ public final class RunCommandResultInner {
 
     /**
      * Get the logs property: The command output.
-     *
+     * 
      * @return the logs value.
      */
     public String logs() {
@@ -96,7 +98,7 @@ public final class RunCommandResultInner {
 
     /**
      * Get the reason property: An explanation of why provisioningState is set to failed (if so).
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -105,12 +107,50 @@ public final class RunCommandResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunCommandResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunCommandResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunCommandResultInner.
+     */
+    public static RunCommandResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunCommandResultInner deserializedRunCommandResultInner = new RunCommandResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRunCommandResultInner.id = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRunCommandResultInner.innerProperties = CommandResultProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunCommandResultInner;
+        });
     }
 }

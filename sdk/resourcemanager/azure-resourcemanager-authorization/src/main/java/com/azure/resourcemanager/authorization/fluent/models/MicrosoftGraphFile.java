@@ -5,47 +5,49 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** file. */
+/**
+ * file.
+ */
 @Fluent
-public final class MicrosoftGraphFile {
+public final class MicrosoftGraphFile implements JsonSerializable<MicrosoftGraphFile> {
     /*
      * hashes
      */
-    @JsonProperty(value = "hashes")
     private MicrosoftGraphHashes hashes;
 
     /*
      * The MIME type for the file. This is determined by logic on the server and might not be the value provided when
      * the file was uploaded. Read-only.
      */
-    @JsonProperty(value = "mimeType")
     private String mimeType;
 
     /*
      * The processingMetadata property.
      */
-    @JsonProperty(value = "processingMetadata")
     private Boolean processingMetadata;
 
     /*
      * file
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphFile class. */
+    /**
+     * Creates an instance of MicrosoftGraphFile class.
+     */
     public MicrosoftGraphFile() {
     }
 
     /**
      * Get the hashes property: hashes.
-     *
+     * 
      * @return the hashes value.
      */
     public MicrosoftGraphHashes hashes() {
@@ -54,7 +56,7 @@ public final class MicrosoftGraphFile {
 
     /**
      * Set the hashes property: hashes.
-     *
+     * 
      * @param hashes the hashes value to set.
      * @return the MicrosoftGraphFile object itself.
      */
@@ -66,7 +68,7 @@ public final class MicrosoftGraphFile {
     /**
      * Get the mimeType property: The MIME type for the file. This is determined by logic on the server and might not be
      * the value provided when the file was uploaded. Read-only.
-     *
+     * 
      * @return the mimeType value.
      */
     public String mimeType() {
@@ -76,7 +78,7 @@ public final class MicrosoftGraphFile {
     /**
      * Set the mimeType property: The MIME type for the file. This is determined by logic on the server and might not be
      * the value provided when the file was uploaded. Read-only.
-     *
+     * 
      * @param mimeType the mimeType value to set.
      * @return the MicrosoftGraphFile object itself.
      */
@@ -87,7 +89,7 @@ public final class MicrosoftGraphFile {
 
     /**
      * Get the processingMetadata property: The processingMetadata property.
-     *
+     * 
      * @return the processingMetadata value.
      */
     public Boolean processingMetadata() {
@@ -96,7 +98,7 @@ public final class MicrosoftGraphFile {
 
     /**
      * Set the processingMetadata property: The processingMetadata property.
-     *
+     * 
      * @param processingMetadata the processingMetadata value to set.
      * @return the MicrosoftGraphFile object itself.
      */
@@ -107,17 +109,16 @@ public final class MicrosoftGraphFile {
 
     /**
      * Get the additionalProperties property: file.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: file.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphFile object itself.
      */
@@ -126,22 +127,67 @@ public final class MicrosoftGraphFile {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hashes() != null) {
             hashes().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hashes", this.hashes);
+        jsonWriter.writeStringField("mimeType", this.mimeType);
+        jsonWriter.writeBooleanField("processingMetadata", this.processingMetadata);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphFile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphFile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphFile.
+     */
+    public static MicrosoftGraphFile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphFile deserializedMicrosoftGraphFile = new MicrosoftGraphFile();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hashes".equals(fieldName)) {
+                    deserializedMicrosoftGraphFile.hashes = MicrosoftGraphHashes.fromJson(reader);
+                } else if ("mimeType".equals(fieldName)) {
+                    deserializedMicrosoftGraphFile.mimeType = reader.getString();
+                } else if ("processingMetadata".equals(fieldName)) {
+                    deserializedMicrosoftGraphFile.processingMetadata = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphFile.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphFile;
+        });
     }
 }

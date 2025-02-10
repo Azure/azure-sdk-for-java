@@ -33,7 +33,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: networkfunction
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-networkfunction
         groupId: com.azure.resourcemanager

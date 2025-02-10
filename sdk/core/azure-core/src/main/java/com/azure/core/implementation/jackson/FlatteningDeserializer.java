@@ -89,7 +89,8 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
                 // Else if any property is annotated with @JsonFlatten add the deserializer.
                 // Otherwise do not add the deserializer.
                 boolean hasJsonFlattenOnClass = beanDesc.getClassAnnotations().has(JsonFlatten.class);
-                boolean hasJsonFlattenOnProperty = beanDesc.findProperties().stream()
+                boolean hasJsonFlattenOnProperty = beanDesc.findProperties()
+                    .stream()
                     .filter(BeanPropertyDefinition::hasField)
                     .map(BeanPropertyDefinition::getField)
                     .anyMatch(field -> field.hasAnnotation(JsonFlatten.class));
@@ -105,8 +106,8 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
     }
 
     @Override
-    public Object deserializeWithType(JsonParser jp, DeserializationContext cxt,
-        TypeDeserializer tDeserializer) throws IOException {
+    public Object deserializeWithType(JsonParser jp, DeserializationContext cxt, TypeDeserializer tDeserializer)
+        throws IOException {
         // This method will be called from Jackson for each "Json object with TypeId" as it
         // process the input data. This enable us to pre-process then give it to the next
         // deserializer in the Jackson pipeline.
@@ -215,7 +216,8 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
                     return;
                 }
 
-                // nodePath.get(nodePath.size() - 2) == nodePath.get(nodePath.size() - (depth - (jsonNodeKeys.length - 1)
+                // nodePath.get(nodePath.size() - 2) == nodePath.get(nodePath.size() - (depth - (jsonNodeKeys.length -
+                // 1)
                 if (!nodePath.get(nodePath.size() - 2).has(jsonNodeKeys[jsonNodeKeys.length - 1])) {
                     // If some properties leading to the flattened property exists, but not all of them, set the
                     // un-flattened property to null.

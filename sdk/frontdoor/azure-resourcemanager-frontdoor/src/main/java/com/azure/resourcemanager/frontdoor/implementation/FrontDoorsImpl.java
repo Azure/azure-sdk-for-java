@@ -24,41 +24,38 @@ public final class FrontDoorsImpl implements FrontDoors {
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
 
-    public FrontDoorsImpl(
-        FrontDoorsClient innerClient, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
+    public FrontDoorsImpl(FrontDoorsClient innerClient,
+        com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<FrontDoor> list() {
         PagedIterable<FrontDoorInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new FrontDoorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FrontDoorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FrontDoor> list(Context context) {
         PagedIterable<FrontDoorInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new FrontDoorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FrontDoorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FrontDoor> listByResourceGroup(String resourceGroupName) {
         PagedIterable<FrontDoorInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new FrontDoorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FrontDoorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FrontDoor> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<FrontDoorInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new FrontDoorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FrontDoorImpl(inner1, this.manager()));
     }
 
-    public Response<FrontDoor> getByResourceGroupWithResponse(
-        String resourceGroupName, String frontDoorName, Context context) {
-        Response<FrontDoorInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, frontDoorName, context);
+    public Response<FrontDoor> getByResourceGroupWithResponse(String resourceGroupName, String frontDoorName,
+        Context context) {
+        Response<FrontDoorInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, frontDoorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FrontDoorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -82,30 +79,22 @@ public final class FrontDoorsImpl implements FrontDoors {
         this.serviceClient().delete(resourceGroupName, frontDoorName, context);
     }
 
-    public Response<ValidateCustomDomainOutput> validateCustomDomainWithResponse(
-        String resourceGroupName,
-        String frontDoorName,
-        ValidateCustomDomainInput customDomainProperties,
-        Context context) {
-        Response<ValidateCustomDomainOutputInner> inner =
-            this
-                .serviceClient()
-                .validateCustomDomainWithResponse(resourceGroupName, frontDoorName, customDomainProperties, context);
+    public Response<ValidateCustomDomainOutput> validateCustomDomainWithResponse(String resourceGroupName,
+        String frontDoorName, ValidateCustomDomainInput customDomainProperties, Context context) {
+        Response<ValidateCustomDomainOutputInner> inner = this.serviceClient()
+            .validateCustomDomainWithResponse(resourceGroupName, frontDoorName, customDomainProperties, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ValidateCustomDomainOutputImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ValidateCustomDomainOutput validateCustomDomain(
-        String resourceGroupName, String frontDoorName, ValidateCustomDomainInput customDomainProperties) {
-        ValidateCustomDomainOutputInner inner =
-            this.serviceClient().validateCustomDomain(resourceGroupName, frontDoorName, customDomainProperties);
+    public ValidateCustomDomainOutput validateCustomDomain(String resourceGroupName, String frontDoorName,
+        ValidateCustomDomainInput customDomainProperties) {
+        ValidateCustomDomainOutputInner inner
+            = this.serviceClient().validateCustomDomain(resourceGroupName, frontDoorName, customDomainProperties);
         if (inner != null) {
             return new ValidateCustomDomainOutputImpl(inner, this.manager());
         } else {
@@ -114,77 +103,57 @@ public final class FrontDoorsImpl implements FrontDoors {
     }
 
     public FrontDoor getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String frontDoorName = Utils.getValueFromIdByName(id, "frontDoors");
+        String frontDoorName = ResourceManagerUtils.getValueFromIdByName(id, "frontDoors");
         if (frontDoorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, frontDoorName, Context.NONE).getValue();
     }
 
     public Response<FrontDoor> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String frontDoorName = Utils.getValueFromIdByName(id, "frontDoors");
+        String frontDoorName = ResourceManagerUtils.getValueFromIdByName(id, "frontDoors");
         if (frontDoorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, frontDoorName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String frontDoorName = Utils.getValueFromIdByName(id, "frontDoors");
+        String frontDoorName = ResourceManagerUtils.getValueFromIdByName(id, "frontDoors");
         if (frontDoorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
         }
         this.delete(resourceGroupName, frontDoorName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String frontDoorName = Utils.getValueFromIdByName(id, "frontDoors");
+        String frontDoorName = ResourceManagerUtils.getValueFromIdByName(id, "frontDoors");
         if (frontDoorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'frontDoors'.", id)));
         }
         this.delete(resourceGroupName, frontDoorName, context);
     }

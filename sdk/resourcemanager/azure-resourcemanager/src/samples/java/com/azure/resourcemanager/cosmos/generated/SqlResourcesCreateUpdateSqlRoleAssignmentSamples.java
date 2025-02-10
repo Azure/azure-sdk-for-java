@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.SqlRoleAssignmentCreateUpdatePara
  */
 public final class SqlResourcesCreateUpdateSqlRoleAssignmentSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBSqlRoleAssignmentCreateUpdate.json
      */
     /**
@@ -20,13 +20,16 @@ public final class SqlResourcesCreateUpdateSqlRoleAssignmentSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlRoleAssignmentCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getSqlResources().createUpdateSqlRoleAssignment(
-            "myRoleAssignmentId", "myResourceGroupName", "myAccountName",
-            new SqlRoleAssignmentCreateUpdateParameters().withRoleDefinitionId(
-                "/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId")
-                .withScope(
-                    "/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases")
-                .withPrincipalId("myPrincipalId"),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .createUpdateSqlRoleAssignment("myRoleAssignmentId", "myResourceGroupName", "myAccountName",
+                new SqlRoleAssignmentCreateUpdateParameters().withRoleDefinitionId(
+                    "/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId")
+                    .withScope(
+                        "/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/dbs/purchases/colls/redmond-purchases")
+                    .withPrincipalId("myPrincipalId"),
+                com.azure.core.util.Context.NONE);
     }
 }

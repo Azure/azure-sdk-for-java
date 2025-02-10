@@ -36,10 +36,7 @@ public class AvroStringSchema extends AvroCompositeSchema {
         this.state.pushToStack(this);
 
         /* Read the byte, call onBytes. */
-        AvroBytesSchema bytesSchema = new AvroBytesSchema(
-            this.state,
-            this::onBytes
-        );
+        AvroBytesSchema bytesSchema = new AvroBytesSchema(this.state, this::onBytes);
         bytesSchema.pushToStack();
     }
 

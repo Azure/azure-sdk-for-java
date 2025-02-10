@@ -23,9 +23,11 @@ public final class ServicesPatchDescriptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServicesPatchDescription model = new ServicesPatchDescription().withTags(mapOf("rzevdphlxaol", "jakhmsbzjh",
-            "fsinzgvfcjrwzoxx", "hqtrgqjbpf", "wfzitonpeqfpjk", "tfell", "nmayhuybb", "lxofpdvhpfxxypin"))
-            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        ServicesPatchDescription model
+            = new ServicesPatchDescription()
+                .withTags(mapOf("rzevdphlxaol", "jakhmsbzjh", "fsinzgvfcjrwzoxx", "hqtrgqjbpf", "wfzitonpeqfpjk",
+                    "tfell", "nmayhuybb", "lxofpdvhpfxxypin"))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(ServicesPatchDescription.class);
         Assertions.assertEquals("jakhmsbzjh", model.tags().get("rzevdphlxaol"));
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());

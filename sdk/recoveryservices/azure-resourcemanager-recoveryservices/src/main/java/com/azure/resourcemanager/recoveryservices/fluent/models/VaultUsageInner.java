@@ -5,57 +5,61 @@
 package com.azure.resourcemanager.recoveryservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservices.models.NameInfo;
 import com.azure.resourcemanager.recoveryservices.models.UsagesUnit;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Usages of a vault. */
+/**
+ * Usages of a vault.
+ */
 @Fluent
-public final class VaultUsageInner {
+public final class VaultUsageInner implements JsonSerializable<VaultUsageInner> {
     /*
      * Unit of the usage.
      */
-    @JsonProperty(value = "unit")
     private UsagesUnit unit;
 
     /*
      * Quota period of usage.
      */
-    @JsonProperty(value = "quotaPeriod")
     private String quotaPeriod;
 
     /*
      * Next reset time of usage.
      */
-    @JsonProperty(value = "nextResetTime")
     private OffsetDateTime nextResetTime;
 
     /*
      * Current value of usage.
      */
-    @JsonProperty(value = "currentValue")
     private Long currentValue;
 
     /*
      * Limit of usage.
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
      * Name of usage.
      */
-    @JsonProperty(value = "name")
     private NameInfo name;
 
-    /** Creates an instance of VaultUsageInner class. */
+    /**
+     * Creates an instance of VaultUsageInner class.
+     */
     public VaultUsageInner() {
     }
 
     /**
      * Get the unit property: Unit of the usage.
-     *
+     * 
      * @return the unit value.
      */
     public UsagesUnit unit() {
@@ -64,7 +68,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the unit property: Unit of the usage.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -75,7 +79,7 @@ public final class VaultUsageInner {
 
     /**
      * Get the quotaPeriod property: Quota period of usage.
-     *
+     * 
      * @return the quotaPeriod value.
      */
     public String quotaPeriod() {
@@ -84,7 +88,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the quotaPeriod property: Quota period of usage.
-     *
+     * 
      * @param quotaPeriod the quotaPeriod value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -95,7 +99,7 @@ public final class VaultUsageInner {
 
     /**
      * Get the nextResetTime property: Next reset time of usage.
-     *
+     * 
      * @return the nextResetTime value.
      */
     public OffsetDateTime nextResetTime() {
@@ -104,7 +108,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the nextResetTime property: Next reset time of usage.
-     *
+     * 
      * @param nextResetTime the nextResetTime value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -115,7 +119,7 @@ public final class VaultUsageInner {
 
     /**
      * Get the currentValue property: Current value of usage.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -124,7 +128,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the currentValue property: Current value of usage.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -135,7 +139,7 @@ public final class VaultUsageInner {
 
     /**
      * Get the limit property: Limit of usage.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -144,7 +148,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the limit property: Limit of usage.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -155,7 +159,7 @@ public final class VaultUsageInner {
 
     /**
      * Get the name property: Name of usage.
-     *
+     * 
      * @return the name value.
      */
     public NameInfo name() {
@@ -164,7 +168,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the name property: Name of usage.
-     *
+     * 
      * @param name the name value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -175,12 +179,65 @@ public final class VaultUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeStringField("quotaPeriod", this.quotaPeriod);
+        jsonWriter.writeStringField("nextResetTime",
+            this.nextResetTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.nextResetTime));
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeJsonField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultUsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultUsageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VaultUsageInner.
+     */
+    public static VaultUsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultUsageInner deserializedVaultUsageInner = new VaultUsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unit".equals(fieldName)) {
+                    deserializedVaultUsageInner.unit = UsagesUnit.fromString(reader.getString());
+                } else if ("quotaPeriod".equals(fieldName)) {
+                    deserializedVaultUsageInner.quotaPeriod = reader.getString();
+                } else if ("nextResetTime".equals(fieldName)) {
+                    deserializedVaultUsageInner.nextResetTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedVaultUsageInner.currentValue = reader.getNullable(JsonReader::getLong);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedVaultUsageInner.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedVaultUsageInner.name = NameInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultUsageInner;
+        });
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The UpdateSnapshotHeaders model. */
+/**
+ * The UpdateSnapshotHeaders model.
+ */
 @Fluent
 public final class UpdateSnapshotHeaders {
     /*
@@ -31,7 +33,7 @@ public final class UpdateSnapshotHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of UpdateSnapshotHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public UpdateSnapshotHeaders(HttpHeaders rawHeaders) {
@@ -42,7 +44,7 @@ public final class UpdateSnapshotHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -51,7 +53,7 @@ public final class UpdateSnapshotHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the UpdateSnapshotHeaders object itself.
      */
@@ -62,7 +64,7 @@ public final class UpdateSnapshotHeaders {
 
     /**
      * Get the syncToken property: The Sync-Token property.
-     *
+     * 
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -71,7 +73,7 @@ public final class UpdateSnapshotHeaders {
 
     /**
      * Set the syncToken property: The Sync-Token property.
-     *
+     * 
      * @param syncToken the syncToken value to set.
      * @return the UpdateSnapshotHeaders object itself.
      */
@@ -82,7 +84,7 @@ public final class UpdateSnapshotHeaders {
 
     /**
      * Get the link property: The Link property.
-     *
+     * 
      * @return the link value.
      */
     public String getLink() {
@@ -91,7 +93,7 @@ public final class UpdateSnapshotHeaders {
 
     /**
      * Set the link property: The Link property.
-     *
+     * 
      * @param link the link value to set.
      * @return the UpdateSnapshotHeaders object itself.
      */

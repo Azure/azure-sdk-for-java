@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * This have test for {@link AmqpTransaction}.
- * */
+ */
 public class AmqpTransactionTest {
 
     private static final byte[] TRANSACTION_ID = "1".getBytes();

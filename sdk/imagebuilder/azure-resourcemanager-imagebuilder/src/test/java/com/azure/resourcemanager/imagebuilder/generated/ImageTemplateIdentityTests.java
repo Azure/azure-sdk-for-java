@@ -15,33 +15,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"p\":{\"principalId\":\"nh\",\"clientId\":\"njbiksqrglssain\"},\"bvmgxsabkyqduuji\":{\"principalId\":\"nzl\",\"clientId\":\"fmppe\"},\"rwjfe\":{\"principalId\":\"jczdzevndh\",\"clientId\":\"wpdappdsbdkv\"},\"phut\":{\"principalId\":\"nhutjeltmrldhugj\",\"clientId\":\"datqxhocdgeabl\"}}}")
-                .toObject(ImageTemplateIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
+        ImageTemplateIdentity model = BinaryData.fromString(
+            "{\"type\":\"None\",\"userAssignedIdentities\":{\"tqxhocdgeab\":{\"principalId\":\"ltmrldh\",\"clientId\":\"jzzd\"}}}")
+            .toObject(ImageTemplateIdentity.class);
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateIdentity model =
-            new ImageTemplateIdentity()
-                .withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "p",
-                        new UserAssignedIdentity(),
-                        "bvmgxsabkyqduuji",
-                        new UserAssignedIdentity(),
-                        "rwjfe",
-                        new UserAssignedIdentity(),
-                        "phut",
-                        new UserAssignedIdentity()));
+        ImageTemplateIdentity model = new ImageTemplateIdentity().withType(ResourceIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("tqxhocdgeab", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ImageTemplateIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

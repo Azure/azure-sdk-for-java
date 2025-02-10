@@ -16,7 +16,8 @@ public class ManagedIdentityParameters {
     /**
      * Creates an Instance of ManagedIdentityParameters.
      */
-    public ManagedIdentityParameters() { }
+    public ManagedIdentityParameters() {
+    }
 
     /**
      * Get the Identity Endpoint.

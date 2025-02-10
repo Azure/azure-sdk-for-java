@@ -6,7 +6,11 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,46 +19,43 @@ import java.util.List;
  * of headers manipulation.
  */
 @Fluent
-public final class RulesEngineRule {
+public final class RulesEngineRule implements JsonSerializable<RulesEngineRule> {
     /*
      * A name to refer to this specific rule.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * A priority assigned to this rule.
      */
-    @JsonProperty(value = "priority", required = true)
     private int priority;
 
     /*
      * Actions to perform on the request and response if all of the match conditions are met.
      */
-    @JsonProperty(value = "action", required = true)
     private RulesEngineAction action;
 
     /*
      * A list of match conditions that must meet in order for the actions of this rule to run. Having no match
      * conditions means the actions will always run.
      */
-    @JsonProperty(value = "matchConditions")
     private List<RulesEngineMatchCondition> matchConditions;
 
     /*
      * If this rule is a match should the rules engine continue running the remaining rules or stop. If not present,
      * defaults to Continue.
      */
-    @JsonProperty(value = "matchProcessingBehavior")
     private MatchProcessingBehavior matchProcessingBehavior;
 
-    /** Creates an instance of RulesEngineRule class. */
+    /**
+     * Creates an instance of RulesEngineRule class.
+     */
     public RulesEngineRule() {
     }
 
     /**
      * Get the name property: A name to refer to this specific rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +64,7 @@ public final class RulesEngineRule {
 
     /**
      * Set the name property: A name to refer to this specific rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the RulesEngineRule object itself.
      */
@@ -74,7 +75,7 @@ public final class RulesEngineRule {
 
     /**
      * Get the priority property: A priority assigned to this rule.
-     *
+     * 
      * @return the priority value.
      */
     public int priority() {
@@ -83,7 +84,7 @@ public final class RulesEngineRule {
 
     /**
      * Set the priority property: A priority assigned to this rule.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the RulesEngineRule object itself.
      */
@@ -94,7 +95,7 @@ public final class RulesEngineRule {
 
     /**
      * Get the action property: Actions to perform on the request and response if all of the match conditions are met.
-     *
+     * 
      * @return the action value.
      */
     public RulesEngineAction action() {
@@ -103,7 +104,7 @@ public final class RulesEngineRule {
 
     /**
      * Set the action property: Actions to perform on the request and response if all of the match conditions are met.
-     *
+     * 
      * @param action the action value to set.
      * @return the RulesEngineRule object itself.
      */
@@ -115,7 +116,7 @@ public final class RulesEngineRule {
     /**
      * Get the matchConditions property: A list of match conditions that must meet in order for the actions of this rule
      * to run. Having no match conditions means the actions will always run.
-     *
+     * 
      * @return the matchConditions value.
      */
     public List<RulesEngineMatchCondition> matchConditions() {
@@ -125,7 +126,7 @@ public final class RulesEngineRule {
     /**
      * Set the matchConditions property: A list of match conditions that must meet in order for the actions of this rule
      * to run. Having no match conditions means the actions will always run.
-     *
+     * 
      * @param matchConditions the matchConditions value to set.
      * @return the RulesEngineRule object itself.
      */
@@ -137,7 +138,7 @@ public final class RulesEngineRule {
     /**
      * Get the matchProcessingBehavior property: If this rule is a match should the rules engine continue running the
      * remaining rules or stop. If not present, defaults to Continue.
-     *
+     * 
      * @return the matchProcessingBehavior value.
      */
     public MatchProcessingBehavior matchProcessingBehavior() {
@@ -147,7 +148,7 @@ public final class RulesEngineRule {
     /**
      * Set the matchProcessingBehavior property: If this rule is a match should the rules engine continue running the
      * remaining rules or stop. If not present, defaults to Continue.
-     *
+     * 
      * @param matchProcessingBehavior the matchProcessingBehavior value to set.
      * @return the RulesEngineRule object itself.
      */
@@ -158,19 +159,17 @@ public final class RulesEngineRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model RulesEngineRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model RulesEngineRule"));
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model RulesEngineRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model RulesEngineRule"));
         } else {
             action().validate();
         }
@@ -180,4 +179,58 @@ public final class RulesEngineRule {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RulesEngineRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeIntField("priority", this.priority);
+        jsonWriter.writeJsonField("action", this.action);
+        jsonWriter.writeArrayField("matchConditions", this.matchConditions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("matchProcessingBehavior",
+            this.matchProcessingBehavior == null ? null : this.matchProcessingBehavior.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RulesEngineRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RulesEngineRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RulesEngineRule.
+     */
+    public static RulesEngineRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RulesEngineRule deserializedRulesEngineRule = new RulesEngineRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRulesEngineRule.name = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedRulesEngineRule.priority = reader.getInt();
+                } else if ("action".equals(fieldName)) {
+                    deserializedRulesEngineRule.action = RulesEngineAction.fromJson(reader);
+                } else if ("matchConditions".equals(fieldName)) {
+                    List<RulesEngineMatchCondition> matchConditions
+                        = reader.readArray(reader1 -> RulesEngineMatchCondition.fromJson(reader1));
+                    deserializedRulesEngineRule.matchConditions = matchConditions;
+                } else if ("matchProcessingBehavior".equals(fieldName)) {
+                    deserializedRulesEngineRule.matchProcessingBehavior
+                        = MatchProcessingBehavior.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRulesEngineRule;
+        });
+    }
 }

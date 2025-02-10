@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.containerservicefleet.generated;
 
-/** Samples for FleetMembers Create. */
+/**
+ * Samples for FleetMembers Create.
+ */
 public final class FleetMembersCreateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/FleetMembers_Create.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/
+     * examples/FleetMembers_Create.json
      */
     /**
      * Sample code: Creates a FleetMember resource with a long running operation.
-     *
+     * 
      * @param manager Entry point to ContainerServiceFleetManager.
      */
     public static void createsAFleetMemberResourceWithALongRunningOperation(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager
-            .fleetMembers()
+        manager.fleetMembers()
             .define("member-1")
             .withExistingFleet("rg1", "fleet1")
             .withClusterResourceId(

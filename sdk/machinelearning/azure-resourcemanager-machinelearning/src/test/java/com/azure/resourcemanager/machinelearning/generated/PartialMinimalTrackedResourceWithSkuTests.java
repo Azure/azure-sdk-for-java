@@ -15,40 +15,36 @@ import org.junit.jupiter.api.Assertions;
 public final class PartialMinimalTrackedResourceWithSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartialMinimalTrackedResourceWithSku model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"capacity\":1978421071,\"family\":\"noamldsehaohdj\",\"name\":\"flzokxco\",\"size\":\"e\",\"tier\":\"Premium\"},\"tags\":{\"ftgz\":\"agltsxoa\"}}")
-                .toObject(PartialMinimalTrackedResourceWithSku.class);
-        Assertions.assertEquals("agltsxoa", model.tags().get("ftgz"));
-        Assertions.assertEquals(1978421071, model.sku().capacity());
-        Assertions.assertEquals("noamldsehaohdj", model.sku().family());
-        Assertions.assertEquals("flzokxco", model.sku().name());
-        Assertions.assertEquals("e", model.sku().size());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
+        PartialMinimalTrackedResourceWithSku model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"rkuz\",\"tier\":\"Free\",\"size\":\"ndtsnxawqytll\",\"family\":\"yzm\",\"capacity\":1452137809},\"tags\":{\"kck\":\"xnx\"}}")
+            .toObject(PartialMinimalTrackedResourceWithSku.class);
+        Assertions.assertEquals("xnx", model.tags().get("kck"));
+        Assertions.assertEquals("rkuz", model.sku().name());
+        Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
+        Assertions.assertEquals("ndtsnxawqytll", model.sku().size());
+        Assertions.assertEquals("yzm", model.sku().family());
+        Assertions.assertEquals(1452137809, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartialMinimalTrackedResourceWithSku model =
-            new PartialMinimalTrackedResourceWithSku()
-                .withTags(mapOf("ftgz", "agltsxoa"))
-                .withSku(
-                    new PartialSku()
-                        .withCapacity(1978421071)
-                        .withFamily("noamldsehaohdj")
-                        .withName("flzokxco")
-                        .withSize("e")
-                        .withTier(SkuTier.PREMIUM));
+        PartialMinimalTrackedResourceWithSku model
+            = new PartialMinimalTrackedResourceWithSku().withTags(mapOf("kck", "xnx"))
+                .withSku(new PartialSku().withName("rkuz")
+                    .withTier(SkuTier.FREE)
+                    .withSize("ndtsnxawqytll")
+                    .withFamily("yzm")
+                    .withCapacity(1452137809));
         model = BinaryData.fromObject(model).toObject(PartialMinimalTrackedResourceWithSku.class);
-        Assertions.assertEquals("agltsxoa", model.tags().get("ftgz"));
-        Assertions.assertEquals(1978421071, model.sku().capacity());
-        Assertions.assertEquals("noamldsehaohdj", model.sku().family());
-        Assertions.assertEquals("flzokxco", model.sku().name());
-        Assertions.assertEquals("e", model.sku().size());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
+        Assertions.assertEquals("xnx", model.tags().get("kck"));
+        Assertions.assertEquals("rkuz", model.sku().name());
+        Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
+        Assertions.assertEquals("ndtsnxawqytll", model.sku().size());
+        Assertions.assertEquals("yzm", model.sku().family());
+        Assertions.assertEquals(1452137809, model.sku().capacity());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

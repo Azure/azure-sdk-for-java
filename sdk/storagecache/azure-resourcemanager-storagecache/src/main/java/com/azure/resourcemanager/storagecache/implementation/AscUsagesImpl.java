@@ -19,20 +19,20 @@ public final class AscUsagesImpl implements AscUsages {
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    public AscUsagesImpl(
-        AscUsagesClient innerClient, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
+    public AscUsagesImpl(AscUsagesClient innerClient,
+        com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ResourceUsage> list(String location) {
         PagedIterable<ResourceUsageInner> inner = this.serviceClient().list(location);
-        return Utils.mapPage(inner, inner1 -> new ResourceUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceUsageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourceUsage> list(String location, Context context) {
         PagedIterable<ResourceUsageInner> inner = this.serviceClient().list(location, context);
-        return Utils.mapPage(inner, inner1 -> new ResourceUsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceUsageImpl(inner1, this.manager()));
     }
 
     private AscUsagesClient serviceClient() {

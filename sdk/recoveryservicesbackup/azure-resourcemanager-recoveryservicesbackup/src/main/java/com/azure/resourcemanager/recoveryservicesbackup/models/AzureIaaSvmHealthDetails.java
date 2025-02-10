@@ -5,21 +5,131 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** Azure IaaS VM workload-specific Health Details. */
+/**
+ * Azure IaaS VM workload-specific Health Details.
+ */
 @Immutable
 public final class AzureIaaSvmHealthDetails extends ResourceHealthDetails {
-    /** Creates an instance of AzureIaaSvmHealthDetails class. */
+    /*
+     * Health Recommended Actions
+     */
+    private List<String> recommendations;
+
+    /*
+     * Health Message
+     */
+    private String message;
+
+    /*
+     * Health Title
+     */
+    private String title;
+
+    /*
+     * Health Code
+     */
+    private Integer code;
+
+    /**
+     * Creates an instance of AzureIaaSvmHealthDetails class.
+     */
     public AzureIaaSvmHealthDetails() {
     }
 
     /**
+     * Get the recommendations property: Health Recommended Actions.
+     * 
+     * @return the recommendations value.
+     */
+    @Override
+    public List<String> recommendations() {
+        return this.recommendations;
+    }
+
+    /**
+     * Get the message property: Health Message.
+     * 
+     * @return the message value.
+     */
+    @Override
+    public String message() {
+        return this.message;
+    }
+
+    /**
+     * Get the title property: Health Title.
+     * 
+     * @return the title value.
+     */
+    @Override
+    public String title() {
+        return this.title;
+    }
+
+    /**
+     * Get the code property: Health Code.
+     * 
+     * @return the code value.
+     */
+    @Override
+    public Integer code() {
+        return this.code;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureIaaSvmHealthDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureIaaSvmHealthDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureIaaSvmHealthDetails.
+     */
+    public static AzureIaaSvmHealthDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureIaaSvmHealthDetails deserializedAzureIaaSvmHealthDetails = new AzureIaaSvmHealthDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedAzureIaaSvmHealthDetails.code = reader.getNullable(JsonReader::getInt);
+                } else if ("title".equals(fieldName)) {
+                    deserializedAzureIaaSvmHealthDetails.title = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedAzureIaaSvmHealthDetails.message = reader.getString();
+                } else if ("recommendations".equals(fieldName)) {
+                    List<String> recommendations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureIaaSvmHealthDetails.recommendations = recommendations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureIaaSvmHealthDetails;
+        });
     }
 }

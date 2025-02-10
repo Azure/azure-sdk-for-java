@@ -5,47 +5,46 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes each OS upgrade on the Virtual Machine Scale Set.
  */
 @Immutable
-public final class UpgradeOperationHistoricalStatusInfoProperties {
+public final class UpgradeOperationHistoricalStatusInfoProperties
+    implements JsonSerializable<UpgradeOperationHistoricalStatusInfoProperties> {
     /*
      * Information about the overall status of the upgrade operation.
      */
-    @JsonProperty(value = "runningStatus", access = JsonProperty.Access.WRITE_ONLY)
     private UpgradeOperationHistoryStatus runningStatus;
 
     /*
      * Counts of the VMs in each state.
      */
-    @JsonProperty(value = "progress", access = JsonProperty.Access.WRITE_ONLY)
     private RollingUpgradeProgressInfo progress;
 
     /*
      * Error Details for this upgrade if there are any.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError error;
 
     /*
      * Invoker of the Upgrade Operation
      */
-    @JsonProperty(value = "startedBy", access = JsonProperty.Access.WRITE_ONLY)
     private UpgradeOperationInvoker startedBy;
 
     /*
      * Image Reference details
      */
-    @JsonProperty(value = "targetImageReference", access = JsonProperty.Access.WRITE_ONLY)
     private ImageReference targetImageReference;
 
     /*
      * Information about OS rollback if performed
      */
-    @JsonProperty(value = "rollbackInfo", access = JsonProperty.Access.WRITE_ONLY)
     private RollbackStatusInfo rollbackInfo;
 
     /**
@@ -129,5 +128,56 @@ public final class UpgradeOperationHistoricalStatusInfoProperties {
         if (rollbackInfo() != null) {
             rollbackInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpgradeOperationHistoricalStatusInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpgradeOperationHistoricalStatusInfoProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpgradeOperationHistoricalStatusInfoProperties.
+     */
+    public static UpgradeOperationHistoricalStatusInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpgradeOperationHistoricalStatusInfoProperties deserializedUpgradeOperationHistoricalStatusInfoProperties
+                = new UpgradeOperationHistoricalStatusInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runningStatus".equals(fieldName)) {
+                    deserializedUpgradeOperationHistoricalStatusInfoProperties.runningStatus
+                        = UpgradeOperationHistoryStatus.fromJson(reader);
+                } else if ("progress".equals(fieldName)) {
+                    deserializedUpgradeOperationHistoricalStatusInfoProperties.progress
+                        = RollingUpgradeProgressInfo.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedUpgradeOperationHistoricalStatusInfoProperties.error = ApiError.fromJson(reader);
+                } else if ("startedBy".equals(fieldName)) {
+                    deserializedUpgradeOperationHistoricalStatusInfoProperties.startedBy
+                        = UpgradeOperationInvoker.fromString(reader.getString());
+                } else if ("targetImageReference".equals(fieldName)) {
+                    deserializedUpgradeOperationHistoricalStatusInfoProperties.targetImageReference
+                        = ImageReference.fromJson(reader);
+                } else if ("rollbackInfo".equals(fieldName)) {
+                    deserializedUpgradeOperationHistoricalStatusInfoProperties.rollbackInfo
+                        = RollbackStatusInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpgradeOperationHistoricalStatusInfoProperties;
+        });
     }
 }

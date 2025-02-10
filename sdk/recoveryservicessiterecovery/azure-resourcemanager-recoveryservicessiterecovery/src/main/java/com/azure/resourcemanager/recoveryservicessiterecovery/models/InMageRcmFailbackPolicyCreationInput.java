@@ -5,34 +5,50 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** InMageRcmFailback policy creation input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcmFailback")
+/**
+ * InMageRcmFailback policy creation input.
+ */
 @Fluent
 public final class InMageRcmFailbackPolicyCreationInput extends PolicyProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMageRcmFailback";
+
+    /*
      * The crash consistent snapshot frequency (in minutes).
      */
-    @JsonProperty(value = "crashConsistentFrequencyInMinutes")
     private Integer crashConsistentFrequencyInMinutes;
 
     /*
      * The app consistent snapshot frequency (in minutes).
      */
-    @JsonProperty(value = "appConsistentFrequencyInMinutes")
     private Integer appConsistentFrequencyInMinutes;
 
-    /** Creates an instance of InMageRcmFailbackPolicyCreationInput class. */
+    /**
+     * Creates an instance of InMageRcmFailbackPolicyCreationInput class.
+     */
     public InMageRcmFailbackPolicyCreationInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the crashConsistentFrequencyInMinutes value.
      */
     public Integer crashConsistentFrequencyInMinutes() {
@@ -41,19 +57,19 @@ public final class InMageRcmFailbackPolicyCreationInput extends PolicyProviderSp
 
     /**
      * Set the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the InMageRcmFailbackPolicyCreationInput object itself.
      */
-    public InMageRcmFailbackPolicyCreationInput withCrashConsistentFrequencyInMinutes(
-        Integer crashConsistentFrequencyInMinutes) {
+    public InMageRcmFailbackPolicyCreationInput
+        withCrashConsistentFrequencyInMinutes(Integer crashConsistentFrequencyInMinutes) {
         this.crashConsistentFrequencyInMinutes = crashConsistentFrequencyInMinutes;
         return this;
     }
 
     /**
      * Get the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public Integer appConsistentFrequencyInMinutes() {
@@ -62,23 +78,67 @@ public final class InMageRcmFailbackPolicyCreationInput extends PolicyProviderSp
 
     /**
      * Set the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the InMageRcmFailbackPolicyCreationInput object itself.
      */
-    public InMageRcmFailbackPolicyCreationInput withAppConsistentFrequencyInMinutes(
-        Integer appConsistentFrequencyInMinutes) {
+    public InMageRcmFailbackPolicyCreationInput
+        withAppConsistentFrequencyInMinutes(Integer appConsistentFrequencyInMinutes) {
         this.appConsistentFrequencyInMinutes = appConsistentFrequencyInMinutes;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeNumberField("crashConsistentFrequencyInMinutes", this.crashConsistentFrequencyInMinutes);
+        jsonWriter.writeNumberField("appConsistentFrequencyInMinutes", this.appConsistentFrequencyInMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmFailbackPolicyCreationInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmFailbackPolicyCreationInput if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmFailbackPolicyCreationInput.
+     */
+    public static InMageRcmFailbackPolicyCreationInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmFailbackPolicyCreationInput deserializedInMageRcmFailbackPolicyCreationInput
+                = new InMageRcmFailbackPolicyCreationInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmFailbackPolicyCreationInput.instanceType = reader.getString();
+                } else if ("crashConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedInMageRcmFailbackPolicyCreationInput.crashConsistentFrequencyInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("appConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedInMageRcmFailbackPolicyCreationInput.appConsistentFrequencyInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmFailbackPolicyCreationInput;
+        });
     }
 }

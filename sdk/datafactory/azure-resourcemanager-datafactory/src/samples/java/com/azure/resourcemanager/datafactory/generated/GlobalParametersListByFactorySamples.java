@@ -18,7 +18,7 @@ public final class GlobalParametersListByFactorySamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void globalParametersListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.globalParameters().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            com.azure.core.util.Context.NONE);
+        manager.globalParameters()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
     }
 }

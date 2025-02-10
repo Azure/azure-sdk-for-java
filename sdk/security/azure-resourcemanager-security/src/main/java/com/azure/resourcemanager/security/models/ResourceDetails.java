@@ -5,32 +5,107 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the resource that was assessed. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "source",
-    defaultImpl = ResourceDetails.class)
-@JsonTypeName("ResourceDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Azure", value = AzureResourceDetails.class),
-    @JsonSubTypes.Type(name = "OnPremise", value = OnPremiseResourceDetails.class)
-})
+/**
+ * Details of the resource that was assessed.
+ */
 @Immutable
-public class ResourceDetails {
-    /** Creates an instance of ResourceDetails class. */
+public class ResourceDetails implements JsonSerializable<ResourceDetails> {
+    /*
+     * The platform where the assessed resource resides
+     */
+    private Source source = Source.fromString("ResourceDetails");
+
+    /**
+     * Creates an instance of ResourceDetails class.
+     */
     public ResourceDetails() {
     }
 
     /**
+     * Get the source property: The platform where the assessed resource resides.
+     * 
+     * @return the source value.
+     */
+    public Source source() {
+        return this.source;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceDetails.
+     */
+    public static ResourceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("source".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Azure".equals(discriminatorValue)) {
+                    return AzureResourceDetails.fromJson(readerToUse.reset());
+                } else if ("OnPremise".equals(discriminatorValue)) {
+                    return OnPremiseResourceDetails.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("OnPremiseSql".equals(discriminatorValue)) {
+                    return OnPremiseSqlResourceDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ResourceDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceDetails deserializedResourceDetails = new ResourceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedResourceDetails.source = Source.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceDetails;
+        });
     }
 }

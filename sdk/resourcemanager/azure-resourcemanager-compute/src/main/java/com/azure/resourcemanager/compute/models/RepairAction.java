@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class RepairAction extends ExpandableStringEnum<RepairAction> {
      * @param name a name to look for.
      * @return the corresponding RepairAction.
      */
-    @JsonCreator
     public static RepairAction fromString(String name) {
         return fromString(name, RepairAction.class);
     }

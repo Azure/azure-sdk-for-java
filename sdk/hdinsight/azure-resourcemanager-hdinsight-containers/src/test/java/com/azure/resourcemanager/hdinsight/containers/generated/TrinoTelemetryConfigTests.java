@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class TrinoTelemetryConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrinoTelemetryConfig model =
-            BinaryData
-                .fromString(
-                    "{\"hivecatalogName\":\"yqbexrmcqibycno\",\"hivecatalogSchema\":\"knme\",\"partitionRetentionInDays\":1391032405,\"path\":\"zvahapjy\"}")
-                .toObject(TrinoTelemetryConfig.class);
-        Assertions.assertEquals("yqbexrmcqibycno", model.hivecatalogName());
-        Assertions.assertEquals("knme", model.hivecatalogSchema());
-        Assertions.assertEquals(1391032405, model.partitionRetentionInDays());
-        Assertions.assertEquals("zvahapjy", model.path());
+        TrinoTelemetryConfig model = BinaryData.fromString(
+            "{\"hivecatalogName\":\"eotg\",\"hivecatalogSchema\":\"l\",\"partitionRetentionInDays\":1147743130,\"path\":\"wlauwzizxbmpg\"}")
+            .toObject(TrinoTelemetryConfig.class);
+        Assertions.assertEquals("eotg", model.hivecatalogName());
+        Assertions.assertEquals("l", model.hivecatalogSchema());
+        Assertions.assertEquals(1147743130, model.partitionRetentionInDays());
+        Assertions.assertEquals("wlauwzizxbmpg", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrinoTelemetryConfig model =
-            new TrinoTelemetryConfig()
-                .withHivecatalogName("yqbexrmcqibycno")
-                .withHivecatalogSchema("knme")
-                .withPartitionRetentionInDays(1391032405)
-                .withPath("zvahapjy");
+        TrinoTelemetryConfig model = new TrinoTelemetryConfig().withHivecatalogName("eotg")
+            .withHivecatalogSchema("l")
+            .withPartitionRetentionInDays(1147743130)
+            .withPath("wlauwzizxbmpg");
         model = BinaryData.fromObject(model).toObject(TrinoTelemetryConfig.class);
-        Assertions.assertEquals("yqbexrmcqibycno", model.hivecatalogName());
-        Assertions.assertEquals("knme", model.hivecatalogSchema());
-        Assertions.assertEquals(1391032405, model.partitionRetentionInDays());
-        Assertions.assertEquals("zvahapjy", model.path());
+        Assertions.assertEquals("eotg", model.hivecatalogName());
+        Assertions.assertEquals("l", model.hivecatalogSchema());
+        Assertions.assertEquals(1147743130, model.partitionRetentionInDays());
+        Assertions.assertEquals("wlauwzizxbmpg", model.path());
     }
 }

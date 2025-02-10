@@ -6,31 +6,37 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Cluster service configs. */
+/**
+ * Cluster service configs.
+ */
 @Fluent
-public final class ClusterServiceConfigsProfile {
+public final class ClusterServiceConfigsProfile implements JsonSerializable<ClusterServiceConfigsProfile> {
     /*
      * Name of the service the configurations should apply to.
      */
-    @JsonProperty(value = "serviceName", required = true)
     private String serviceName;
 
     /*
      * List of service configs.
      */
-    @JsonProperty(value = "configs", required = true)
     private List<ClusterServiceConfig> configs;
 
-    /** Creates an instance of ClusterServiceConfigsProfile class. */
+    /**
+     * Creates an instance of ClusterServiceConfigsProfile class.
+     */
     public ClusterServiceConfigsProfile() {
     }
 
     /**
      * Get the serviceName property: Name of the service the configurations should apply to.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -39,7 +45,7 @@ public final class ClusterServiceConfigsProfile {
 
     /**
      * Set the serviceName property: Name of the service the configurations should apply to.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the ClusterServiceConfigsProfile object itself.
      */
@@ -50,7 +56,7 @@ public final class ClusterServiceConfigsProfile {
 
     /**
      * Get the configs property: List of service configs.
-     *
+     * 
      * @return the configs value.
      */
     public List<ClusterServiceConfig> configs() {
@@ -59,7 +65,7 @@ public final class ClusterServiceConfigsProfile {
 
     /**
      * Set the configs property: List of service configs.
-     *
+     * 
      * @param configs the configs value to set.
      * @return the ClusterServiceConfigsProfile object itself.
      */
@@ -70,25 +76,65 @@ public final class ClusterServiceConfigsProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceName in model ClusterServiceConfigsProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceName in model ClusterServiceConfigsProfile"));
         }
         if (configs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property configs in model ClusterServiceConfigsProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property configs in model ClusterServiceConfigsProfile"));
         } else {
             configs().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterServiceConfigsProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceName", this.serviceName);
+        jsonWriter.writeArrayField("configs", this.configs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterServiceConfigsProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterServiceConfigsProfile if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterServiceConfigsProfile.
+     */
+    public static ClusterServiceConfigsProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterServiceConfigsProfile deserializedClusterServiceConfigsProfile = new ClusterServiceConfigsProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceName".equals(fieldName)) {
+                    deserializedClusterServiceConfigsProfile.serviceName = reader.getString();
+                } else if ("configs".equals(fieldName)) {
+                    List<ClusterServiceConfig> configs
+                        = reader.readArray(reader1 -> ClusterServiceConfig.fromJson(reader1));
+                    deserializedClusterServiceConfigsProfile.configs = configs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterServiceConfigsProfile;
+        });
+    }
 }

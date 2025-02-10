@@ -15,8 +15,7 @@ public final class VaultCertificatesImpl implements VaultCertificates {
 
     private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public VaultCertificatesImpl(
-        VaultCertificatesClient innerClient,
+    public VaultCertificatesImpl(VaultCertificatesClient innerClient,
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

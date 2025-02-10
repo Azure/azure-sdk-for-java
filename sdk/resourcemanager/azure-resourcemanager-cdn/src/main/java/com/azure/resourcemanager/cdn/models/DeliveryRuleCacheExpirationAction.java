@@ -6,28 +6,45 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the cache expiration action for the delivery rule. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
-@JsonTypeName("CacheExpiration")
+/**
+ * Defines the cache expiration action for the delivery rule.
+ */
 @Fluent
 public final class DeliveryRuleCacheExpirationAction extends DeliveryRuleAction {
     /*
+     * The name of the action for the delivery rule.
+     */
+    private DeliveryRuleActionValue name = DeliveryRuleActionValue.CACHE_EXPIRATION;
+
+    /*
      * Defines the parameters for the action.
      */
-    @JsonProperty(value = "parameters", required = true)
     private CacheExpirationActionParameters parameters;
 
-    /** Creates an instance of DeliveryRuleCacheExpirationAction class. */
+    /**
+     * Creates an instance of DeliveryRuleCacheExpirationAction class.
+     */
     public DeliveryRuleCacheExpirationAction() {
     }
 
     /**
+     * Get the name property: The name of the action for the delivery rule.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public DeliveryRuleActionValue name() {
+        return this.name;
+    }
+
+    /**
      * Get the parameters property: Defines the parameters for the action.
-     *
+     * 
      * @return the parameters value.
      */
     public CacheExpirationActionParameters parameters() {
@@ -36,7 +53,7 @@ public final class DeliveryRuleCacheExpirationAction extends DeliveryRuleAction 
 
     /**
      * Set the parameters property: Defines the parameters for the action.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRuleCacheExpirationAction object itself.
      */
@@ -47,21 +64,63 @@ public final class DeliveryRuleCacheExpirationAction extends DeliveryRuleAction 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRuleCacheExpirationAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property parameters in model DeliveryRuleCacheExpirationAction"));
         } else {
             parameters().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeliveryRuleCacheExpirationAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("parameters", this.parameters);
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeliveryRuleCacheExpirationAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeliveryRuleCacheExpirationAction if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeliveryRuleCacheExpirationAction.
+     */
+    public static DeliveryRuleCacheExpirationAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeliveryRuleCacheExpirationAction deserializedDeliveryRuleCacheExpirationAction
+                = new DeliveryRuleCacheExpirationAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("parameters".equals(fieldName)) {
+                    deserializedDeliveryRuleCacheExpirationAction.parameters
+                        = CacheExpirationActionParameters.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeliveryRuleCacheExpirationAction.name
+                        = DeliveryRuleActionValue.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeliveryRuleCacheExpirationAction;
+        });
+    }
 }

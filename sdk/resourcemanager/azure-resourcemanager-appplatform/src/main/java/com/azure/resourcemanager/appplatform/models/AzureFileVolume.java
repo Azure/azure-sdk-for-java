@@ -5,26 +5,46 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of the Azure File volume. Azure File shares are mounted as volumes. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureFileVolume")
+/**
+ * The properties of the Azure File volume. Azure File shares are mounted as volumes.
+ */
 @Fluent
 public final class AzureFileVolume extends CustomPersistentDiskProperties {
     /*
+     * The type of the underlying resource to mount as a persistent disk.
+     */
+    private Type type = Type.AZURE_FILE_VOLUME;
+
+    /*
      * The share name of the Azure File share.
      */
-    @JsonProperty(value = "shareName", required = true)
     private String shareName;
 
     /**
+     * Creates an instance of AzureFileVolume class.
+     */
+    public AzureFileVolume() {
+    }
+
+    /**
+     * Get the type property: The type of the underlying resource to mount as a persistent disk.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public Type type() {
+        return this.type;
+    }
+
+    /**
      * Get the shareName property: The share name of the Azure File share.
-     *
+     * 
      * @return the shareName value.
      */
     public String shareName() {
@@ -33,7 +53,7 @@ public final class AzureFileVolume extends CustomPersistentDiskProperties {
 
     /**
      * Set the shareName property: The share name of the Azure File share.
-     *
+     * 
      * @param shareName the shareName value to set.
      * @return the AzureFileVolume object itself.
      */
@@ -42,21 +62,36 @@ public final class AzureFileVolume extends CustomPersistentDiskProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileVolume withMountPath(String mountPath) {
         super.withMountPath(mountPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileVolume withReadOnly(Boolean readOnly) {
         super.withReadOnly(readOnly);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureFileVolume withEnableSubPath(Boolean enableSubPath) {
+        super.withEnableSubPath(enableSubPath);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileVolume withMountOptions(List<String> mountOptions) {
         super.withMountOptions(mountOptions);
@@ -65,18 +100,64 @@ public final class AzureFileVolume extends CustomPersistentDiskProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
-        if (shareName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property shareName in model AzureFileVolume"));
-        }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureFileVolume.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mountPath", mountPath());
+        jsonWriter.writeBooleanField("readOnly", readOnly());
+        jsonWriter.writeBooleanField("enableSubPath", enableSubPath());
+        jsonWriter.writeArrayField("mountOptions", mountOptions(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("shareName", this.shareName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileVolume from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileVolume if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureFileVolume.
+     */
+    public static AzureFileVolume fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileVolume deserializedAzureFileVolume = new AzureFileVolume();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mountPath".equals(fieldName)) {
+                    deserializedAzureFileVolume.withMountPath(reader.getString());
+                } else if ("readOnly".equals(fieldName)) {
+                    deserializedAzureFileVolume.withReadOnly(reader.getNullable(JsonReader::getBoolean));
+                } else if ("enableSubPath".equals(fieldName)) {
+                    deserializedAzureFileVolume.withEnableSubPath(reader.getNullable(JsonReader::getBoolean));
+                } else if ("mountOptions".equals(fieldName)) {
+                    List<String> mountOptions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFileVolume.withMountOptions(mountOptions);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureFileVolume.type = Type.fromString(reader.getString());
+                } else if ("shareName".equals(fieldName)) {
+                    deserializedAzureFileVolume.shareName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileVolume;
+        });
+    }
 }

@@ -15,36 +15,63 @@ import com.azure.resourcemanager.sql.fluent.models.EncryptionProtectorInner;
 
 /** An immutable client-side representation of an Azure SQL Encryption Protector. */
 @Fluent
-public interface SqlEncryptionProtector
-    extends HasId,
-        HasInnerModel<EncryptionProtectorInner>,
-        HasResourceGroup,
-        Indexable,
-        Refreshable<SqlEncryptionProtector>,
-        Updatable<SqlEncryptionProtector.Update> {
+public interface SqlEncryptionProtector extends HasId, HasInnerModel<EncryptionProtectorInner>, HasResourceGroup,
+    Indexable, Refreshable<SqlEncryptionProtector>, Updatable<SqlEncryptionProtector.Update> {
 
-    /** @return name of the SQL Server to which this DNS alias belongs */
+    /**
+     * Gets the name of the SQL Server to which this DNS alias belongs.
+     *
+     * @return name of the SQL Server to which this DNS alias belongs
+     */
     String sqlServerName();
 
-    /** @return the parent SQL server ID */
+    /**
+     * Gets the parent SQL server ID.
+     *
+     * @return the parent SQL server ID
+     */
     String parentId();
 
-    /** @return the kind of encryption protector; this is metadata used for the Azure Portal experience */
+    /**
+     * Gets the kind of encryption protector.
+     *
+     * @return the kind of encryption protector; this is metadata used for the Azure Portal experience
+     */
     String kind();
 
-    /** @return the resource location */
+    /**
+     * Gets the resource location.
+     *
+     * @return the resource location
+     */
     Region region();
 
-    /** @return the name of the server key */
+    /**
+     * Gets the name of the server key.
+     *
+     * @return the name of the server key
+     */
     String serverKeyName();
 
-    /** @return the encryption protector type */
+    /**
+     * Gets the encryption protector type.
+     *
+     * @return the encryption protector type
+     */
     ServerKeyType serverKeyType();
 
-    /** @return the URI of the server key */
+    /**
+     * Gets the URI of the server key.
+     *
+     * @return the URI of the server key
+     */
     String uri();
 
-    /** @return thumbprint of the server key */
+    /**
+     * Gets the thumbprint of the server key.
+     *
+     * @return thumbprint of the server key
+     */
     String thumbprint();
 
     /**

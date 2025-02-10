@@ -5,29 +5,66 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Represents an ATA security solution which sends logs to an OMS workspace. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("ATA")
+/**
+ * Represents an ATA security solution which sends logs to an OMS workspace.
+ */
 @Fluent
 public final class AtaExternalSecuritySolution extends ExternalSecuritySolutionInner {
     /*
+     * The kind of the external solution
+     */
+    private ExternalSecuritySolutionKind kind = ExternalSecuritySolutionKind.ATA;
+
+    /*
      * The external security solution properties for ATA solutions
      */
-    @JsonProperty(value = "properties")
     private AtaSolutionProperties properties;
 
-    /** Creates an instance of AtaExternalSecuritySolution class. */
+    /*
+     * Location where the resource is stored
+     */
+    private String location;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AtaExternalSecuritySolution class.
+     */
     public AtaExternalSecuritySolution() {
     }
 
     /**
+     * Get the kind property: The kind of the external solution.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public ExternalSecuritySolutionKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the properties property: The external security solution properties for ATA solutions.
-     *
+     * 
      * @return the properties value.
      */
     public AtaSolutionProperties properties() {
@@ -36,7 +73,7 @@ public final class AtaExternalSecuritySolution extends ExternalSecuritySolutionI
 
     /**
      * Set the properties property: The external security solution properties for ATA solutions.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AtaExternalSecuritySolution object itself.
      */
@@ -46,15 +83,103 @@ public final class AtaExternalSecuritySolution extends ExternalSecuritySolutionI
     }
 
     /**
+     * Get the location property: Location where the resource is stored.
+     * 
+     * @return the location value.
+     */
+    @Override
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtaExternalSecuritySolution from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtaExternalSecuritySolution if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AtaExternalSecuritySolution.
+     */
+    public static AtaExternalSecuritySolution fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtaExternalSecuritySolution deserializedAtaExternalSecuritySolution = new AtaExternalSecuritySolution();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAtaExternalSecuritySolution.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAtaExternalSecuritySolution.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAtaExternalSecuritySolution.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAtaExternalSecuritySolution.location = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAtaExternalSecuritySolution.kind
+                        = ExternalSecuritySolutionKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAtaExternalSecuritySolution.properties = AtaSolutionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtaExternalSecuritySolution;
+        });
     }
 }

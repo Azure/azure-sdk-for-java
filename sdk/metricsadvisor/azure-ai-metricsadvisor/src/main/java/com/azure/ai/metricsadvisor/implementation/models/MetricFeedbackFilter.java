@@ -7,12 +7,14 @@ package com.azure.ai.metricsadvisor.implementation.models;
 import com.azure.ai.metricsadvisor.models.FeedbackQueryTimeMode;
 import com.azure.ai.metricsadvisor.models.FeedbackType;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -177,15 +179,20 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("metricId", Objects.toString(this.metricId, null));
         jsonWriter.writeJsonField("dimensionFilter", this.dimensionFilter);
-        jsonWriter.writeStringField("feedbackType", Objects.toString(this.feedbackType, null));
-        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
-        jsonWriter.writeStringField("endTime", Objects.toString(this.endTime, null));
-        jsonWriter.writeStringField("timeMode", Objects.toString(this.timeMode, null));
+        jsonWriter.writeStringField("feedbackType", this.feedbackType == null ? null : this.feedbackType.toString());
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("timeMode", this.timeMode == null ? null : this.timeMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -213,11 +220,11 @@ public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedba
                 } else if ("feedbackType".equals(fieldName)) {
                     deserializedMetricFeedbackFilter.feedbackType = FeedbackType.fromString(reader.getString());
                 } else if ("startTime".equals(fieldName)) {
-                    deserializedMetricFeedbackFilter.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedMetricFeedbackFilter.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedMetricFeedbackFilter.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedMetricFeedbackFilter.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("timeMode".equals(fieldName)) {
                     deserializedMetricFeedbackFilter.timeMode = FeedbackQueryTimeMode.fromString(reader.getString());
                 } else {

@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Identity used to authenticate with key vault.
  */
 @Fluent
-public final class EncryptionIdentity {
+public final class EncryptionIdentity implements JsonSerializable<EncryptionIdentity> {
     /*
      * The principal ID (object ID) of the identity used to authenticate with key vault. Read-only.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The ARM resource identifier of the user assigned identity used to authenticate with key vault. Applicable if
      * identity.type has 'UserAssigned'. It should match key of identity.userAssignedIdentities.
      */
-    @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
+
+    /*
+     * ClientId of the multi-tenant AAD Application. Used to access cross-tenant KeyVaults.
+     */
+    private String federatedClientId;
 
     /**
      * Creates an instance of EncryptionIdentity class.
@@ -66,10 +73,73 @@ public final class EncryptionIdentity {
     }
 
     /**
+     * Get the federatedClientId property: ClientId of the multi-tenant AAD Application. Used to access cross-tenant
+     * KeyVaults.
+     * 
+     * @return the federatedClientId value.
+     */
+    public String federatedClientId() {
+        return this.federatedClientId;
+    }
+
+    /**
+     * Set the federatedClientId property: ClientId of the multi-tenant AAD Application. Used to access cross-tenant
+     * KeyVaults.
+     * 
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the EncryptionIdentity object itself.
+     */
+    public EncryptionIdentity withFederatedClientId(String federatedClientId) {
+        this.federatedClientId = federatedClientId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
+        jsonWriter.writeStringField("federatedClientId", this.federatedClientId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionIdentity.
+     */
+    public static EncryptionIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionIdentity deserializedEncryptionIdentity = new EncryptionIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedEncryptionIdentity.principalId = reader.getString();
+                } else if ("userAssignedIdentity".equals(fieldName)) {
+                    deserializedEncryptionIdentity.userAssignedIdentity = reader.getString();
+                } else if ("federatedClientId".equals(fieldName)) {
+                    deserializedEncryptionIdentity.federatedClientId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionIdentity;
+        });
     }
 }

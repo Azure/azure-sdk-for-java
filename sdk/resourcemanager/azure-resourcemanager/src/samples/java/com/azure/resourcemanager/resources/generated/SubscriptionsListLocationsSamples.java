@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-/** Samples for Subscriptions ListLocations. */
+/**
+ * Samples for Subscriptions ListLocations.
+ */
 public final class SubscriptionsListLocationsSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocationsWithExtendedLocations.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/
+     * GetLocationsWithExtendedLocations.json
      */
     /**
      * Sample code: GetLocationsWithExtendedLocations.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getLocationsWithExtendedLocations(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .subscriptionClient()
             .getSubscriptions()
@@ -24,16 +26,16 @@ public final class SubscriptionsListLocationsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocations.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocations.json
      */
     /**
      * Sample code: GetLocationsWithASubscriptionId.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getLocationsWithASubscriptionId(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .subscriptionClient()
             .getSubscriptions()

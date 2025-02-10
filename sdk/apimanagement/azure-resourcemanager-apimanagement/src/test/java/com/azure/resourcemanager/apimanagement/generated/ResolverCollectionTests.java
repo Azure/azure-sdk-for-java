@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResolverCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResolverCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"toaukhfkvcisiz\",\"path\":\"a\",\"description\":\"sx\"},\"id\":\"wuived\",\"name\":\"cgyee\",\"type\":\"xeiqbpsmg\"},{\"properties\":{\"displayName\":\"u\",\"path\":\"ljdlrgmspl\",\"description\":\"auf\"},\"id\":\"shhvnewgnxky\",\"name\":\"pqanxrjkix\",\"type\":\"wbtaoyp\"},{\"properties\":{\"displayName\":\"hshxcylhkgmnsghp\",\"path\":\"cphdrwjjkhvyo\",\"description\":\"c\"},\"id\":\"u\",\"name\":\"vxnqmhrpqpd\",\"type\":\"wmkoisq\"},{\"properties\":{\"displayName\":\"f\",\"path\":\"uifmc\",\"description\":\"p\"},\"id\":\"bkdq\",\"name\":\"rdzsylollgtrczzy\",\"type\":\"mxzjijpvua\"}],\"count\":1011934042865512605,\"nextLink\":\"ci\"}")
-                .toObject(ResolverCollection.class);
+        ResolverCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"toaukhfkvcisiz\",\"path\":\"a\",\"description\":\"sx\"},\"id\":\"wuived\",\"name\":\"cgyee\",\"type\":\"xeiqbpsmg\"},{\"properties\":{\"displayName\":\"u\",\"path\":\"ljdlrgmspl\",\"description\":\"auf\"},\"id\":\"shhvnewgnxky\",\"name\":\"pqanxrjkix\",\"type\":\"wbtaoyp\"},{\"properties\":{\"displayName\":\"hshxcylhkgmnsghp\",\"path\":\"cphdrwjjkhvyo\",\"description\":\"c\"},\"id\":\"u\",\"name\":\"vxnqmhrpqpd\",\"type\":\"wmkoisq\"},{\"properties\":{\"displayName\":\"f\",\"path\":\"uifmc\",\"description\":\"p\"},\"id\":\"bkdq\",\"name\":\"rdzsylollgtrczzy\",\"type\":\"mxzjijpvua\"}],\"count\":1011934042865512605,\"nextLink\":\"ci\"}")
+            .toObject(ResolverCollection.class);
         Assertions.assertEquals(1011934042865512605L, model.count());
     }
 

@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-/** Samples for PrivateZones List. */
+/**
+ * Samples for PrivateZones List.
+ */
 public final class PrivateZonesListSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/PrivateZoneListInSubscription.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/
+     * PrivateZoneListInSubscription.json
      */
     /**
      * Sample code: GET Private DNS Zone by Subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gETPrivateDNSZoneBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getPrivateZones()

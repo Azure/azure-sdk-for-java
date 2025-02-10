@@ -8,9 +8,15 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ClusterInner;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.AadEnabledEnum;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.AuthConfig;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.Cluster;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ClusterForUpdate;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.DataEncryption;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.IdentityProperties;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.MaintenanceWindow;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PasswordEnabledEnum;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PromoteRequest;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerNameItem;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.SimplePrivateEndpointConnection;
 import java.time.OffsetDateTime;
@@ -48,8 +54,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public IdentityProperties identity() {
+        return this.innerModel().identity();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public AadEnabledEnum aadAuthEnabled() {
+        return this.innerModel().aadAuthEnabled();
     }
 
     public String administratorLogin() {
@@ -58,6 +72,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public String administratorLoginPassword() {
         return this.innerModel().administratorLoginPassword();
+    }
+
+    public DataEncryption dataEncryption() {
+        return this.innerModel().dataEncryption();
     }
 
     public String provisioningState() {
@@ -145,6 +163,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().sourceLocation();
     }
 
+    public PasswordEnabledEnum passwordEnabled() {
+        return this.innerModel().passwordEnabled();
+    }
+
     public OffsetDateTime pointInTimeUtc() {
         return this.innerModel().pointInTimeUtc();
     }
@@ -169,6 +191,18 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public String databaseName() {
+        return this.innerModel().databaseName();
+    }
+
+    public Boolean enableGeoBackup() {
+        return this.innerModel().enableGeoBackup();
+    }
+
+    public AuthConfig authConfig() {
+        return this.innerModel().authConfig();
     }
 
     public Region region() {
@@ -203,25 +237,21 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .create(resourceGroupName, clusterName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .create(resourceGroupName, clusterName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Cluster create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .create(resourceGroupName, clusterName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .create(resourceGroupName, clusterName, this.innerModel(), context);
         return this;
     }
 
-    ClusterImpl(
-        String name, com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
+    ClusterImpl(String name,
+        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerObject = new ClusterInner();
         this.serviceManager = serviceManager;
         this.clusterName = name;
@@ -233,49 +263,40 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .update(resourceGroupName, clusterName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .update(resourceGroupName, clusterName, updateParameters, Context.NONE);
         return this;
     }
 
     public Cluster apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .update(resourceGroupName, clusterName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .update(resourceGroupName, clusterName, updateParameters, context);
         return this;
     }
 
-    ClusterImpl(
-        ClusterInner innerObject,
+    ClusterImpl(ClusterInner innerObject,
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "serverGroupsv2");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "serverGroupsv2");
     }
 
     public Cluster refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Cluster refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
+            .getValue();
         return this;
     }
 
@@ -307,8 +328,8 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         serviceManager.clusters().promoteReadReplica(resourceGroupName, clusterName);
     }
 
-    public void promoteReadReplica(Context context) {
-        serviceManager.clusters().promoteReadReplica(resourceGroupName, clusterName, context);
+    public void promoteReadReplica(PromoteRequest promoteRequest, Context context) {
+        serviceManager.clusters().promoteReadReplica(resourceGroupName, clusterName, promoteRequest, context);
     }
 
     public ClusterImpl withRegion(Region location) {
@@ -331,6 +352,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withIdentity(IdentityProperties identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
     public ClusterImpl withAdministratorLoginPassword(String administratorLoginPassword) {
         if (isInCreateMode()) {
             this.innerModel().withAdministratorLoginPassword(administratorLoginPassword);
@@ -339,6 +370,11 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             this.updateParameters.withAdministratorLoginPassword(administratorLoginPassword);
             return this;
         }
+    }
+
+    public ClusterImpl withDataEncryption(DataEncryption dataEncryption) {
+        this.innerModel().withDataEncryption(dataEncryption);
+        return this;
     }
 
     public ClusterImpl withPostgresqlVersion(String postgresqlVersion) {
@@ -498,6 +534,21 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public ClusterImpl withPointInTimeUtc(OffsetDateTime pointInTimeUtc) {
         this.innerModel().withPointInTimeUtc(pointInTimeUtc);
+        return this;
+    }
+
+    public ClusterImpl withDatabaseName(String databaseName) {
+        this.innerModel().withDatabaseName(databaseName);
+        return this;
+    }
+
+    public ClusterImpl withEnableGeoBackup(Boolean enableGeoBackup) {
+        this.innerModel().withEnableGeoBackup(enableGeoBackup);
+        return this;
+    }
+
+    public ClusterImpl withAuthConfig(AuthConfig authConfig) {
+        this.innerModel().withAuthConfig(authConfig);
         return this;
     }
 

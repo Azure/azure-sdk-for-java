@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hybridcompute.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileInner;
 import com.azure.resourcemanager.hybridcompute.models.EsuEligibility;
@@ -13,8 +14,14 @@ import com.azure.resourcemanager.hybridcompute.models.EsuKey;
 import com.azure.resourcemanager.hybridcompute.models.EsuKeyState;
 import com.azure.resourcemanager.hybridcompute.models.EsuServerType;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfile;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileProductType;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatus;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatusUpdate;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileUpdate;
+import com.azure.resourcemanager.hybridcompute.models.ProductFeature;
+import com.azure.resourcemanager.hybridcompute.models.ProductFeatureUpdate;
 import com.azure.resourcemanager.hybridcompute.models.ProvisioningState;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +64,10 @@ public final class LicenseProfileImpl implements LicenseProfile, LicenseProfile.
         return this.innerModel().provisioningState();
     }
 
+    public Boolean softwareAssuranceCustomer() {
+        return this.innerModel().softwareAssuranceCustomer();
+    }
+
     public String assignedLicense() {
         return this.innerModel().assignedLicense();
     }
@@ -79,6 +90,43 @@ public final class LicenseProfileImpl implements LicenseProfile, LicenseProfile.
 
     public List<EsuKey> esuKeys() {
         List<EsuKey> inner = this.innerModel().esuKeys();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public LicenseProfileSubscriptionStatus subscriptionStatus() {
+        return this.innerModel().subscriptionStatus();
+    }
+
+    public LicenseProfileProductType productType() {
+        return this.innerModel().productType();
+    }
+
+    public OffsetDateTime enrollmentDate() {
+        return this.innerModel().enrollmentDate();
+    }
+
+    public OffsetDateTime billingStartDate() {
+        return this.innerModel().billingStartDate();
+    }
+
+    public OffsetDateTime disenrollmentDate() {
+        return this.innerModel().disenrollmentDate();
+    }
+
+    public OffsetDateTime billingEndDate() {
+        return this.innerModel().billingEndDate();
+    }
+
+    public ManagementError error() {
+        return this.innerModel().error();
+    }
+
+    public List<ProductFeature> productFeatures() {
+        List<ProductFeature> inner = this.innerModel().productFeatures();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
@@ -119,20 +167,16 @@ public final class LicenseProfileImpl implements LicenseProfile, LicenseProfile.
     }
 
     public LicenseProfile create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenseProfiles()
-                .createOrUpdate(resourceGroupName, machineName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenseProfiles()
+            .createOrUpdate(resourceGroupName, machineName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public LicenseProfile create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenseProfiles()
-                .createOrUpdate(resourceGroupName, machineName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenseProfiles()
+            .createOrUpdate(resourceGroupName, machineName, this.innerModel(), context);
         return this;
     }
 
@@ -147,48 +191,40 @@ public final class LicenseProfileImpl implements LicenseProfile, LicenseProfile.
     }
 
     public LicenseProfile apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenseProfiles()
-                .update(resourceGroupName, machineName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenseProfiles()
+            .update(resourceGroupName, machineName, updateParameters, Context.NONE);
         return this;
     }
 
     public LicenseProfile apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenseProfiles()
-                .update(resourceGroupName, machineName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenseProfiles()
+            .update(resourceGroupName, machineName, updateParameters, context);
         return this;
     }
 
-    LicenseProfileImpl(
-        LicenseProfileInner innerObject, com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
+    LicenseProfileImpl(LicenseProfileInner innerObject,
+        com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.machineName = Utils.getValueFromIdByName(innerObject.id(), "machines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.machineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "machines");
     }
 
     public LicenseProfile refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenseProfiles()
-                .getWithResponse(resourceGroupName, machineName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenseProfiles()
+            .getWithResponse(resourceGroupName, machineName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LicenseProfile refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLicenseProfiles()
-                .getWithResponse(resourceGroupName, machineName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLicenseProfiles()
+            .getWithResponse(resourceGroupName, machineName, context)
+            .getValue();
         return this;
     }
 
@@ -212,6 +248,16 @@ public final class LicenseProfileImpl implements LicenseProfile, LicenseProfile.
         }
     }
 
+    public LicenseProfileImpl withSoftwareAssuranceCustomer(Boolean softwareAssuranceCustomer) {
+        if (isInCreateMode()) {
+            this.innerModel().withSoftwareAssuranceCustomer(softwareAssuranceCustomer);
+            return this;
+        } else {
+            this.updateParameters.withSoftwareAssuranceCustomer(softwareAssuranceCustomer);
+            return this;
+        }
+    }
+
     public LicenseProfileImpl withAssignedLicense(String assignedLicense) {
         if (isInCreateMode()) {
             this.innerModel().withAssignedLicense(assignedLicense);
@@ -220,6 +266,36 @@ public final class LicenseProfileImpl implements LicenseProfile, LicenseProfile.
             this.updateParameters.withAssignedLicense(assignedLicense);
             return this;
         }
+    }
+
+    public LicenseProfileImpl withSubscriptionStatus(LicenseProfileSubscriptionStatus subscriptionStatus) {
+        this.innerModel().withSubscriptionStatus(subscriptionStatus);
+        return this;
+    }
+
+    public LicenseProfileImpl withProductType(LicenseProfileProductType productType) {
+        if (isInCreateMode()) {
+            this.innerModel().withProductType(productType);
+            return this;
+        } else {
+            this.updateParameters.withProductType(productType);
+            return this;
+        }
+    }
+
+    public LicenseProfileImpl withProductFeatures(List<ProductFeature> productFeatures) {
+        this.innerModel().withProductFeatures(productFeatures);
+        return this;
+    }
+
+    public LicenseProfileImpl withSubscriptionStatus(LicenseProfileSubscriptionStatusUpdate subscriptionStatus) {
+        this.updateParameters.withSubscriptionStatus(subscriptionStatus);
+        return this;
+    }
+
+    public LicenseProfileImpl withProductFeaturesForUpdate(List<ProductFeatureUpdate> productFeatures) {
+        this.updateParameters.withProductFeatures(productFeatures);
+        return this;
     }
 
     private boolean isInCreateMode() {

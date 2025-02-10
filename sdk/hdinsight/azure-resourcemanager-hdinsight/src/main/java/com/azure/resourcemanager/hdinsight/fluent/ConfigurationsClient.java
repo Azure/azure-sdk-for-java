@@ -13,11 +13,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterConfigurationsInner;
 import java.util.Map;
 
-/** An instance of this class provides access to all the operations defined in ConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConfigurationsClient.
+ */
 public interface ConfigurationsClient {
     /**
      * Gets all configuration information for an HDI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -27,12 +29,12 @@ public interface ConfigurationsClient {
      * @return all configuration information for an HDI cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterConfigurationsInner> listWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<ClusterConfigurationsInner> listWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Gets all configuration information for an HDI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +48,7 @@ public interface ConfigurationsClient {
     /**
      * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings
      * in cluster endpoint instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -57,13 +59,13 @@ public interface ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(
-        String resourceGroupName, String clusterName, String configurationName, Map<String, String> parameters);
+    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String clusterName,
+        String configurationName, Map<String, String> parameters);
 
     /**
      * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings
      * in cluster endpoint instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -75,17 +77,13 @@ public interface ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String configurationName,
-        Map<String, String> parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String clusterName,
+        String configurationName, Map<String, String> parameters, Context context);
 
     /**
      * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings
      * in cluster endpoint instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -100,7 +98,7 @@ public interface ConfigurationsClient {
     /**
      * Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings
      * in cluster endpoint instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -111,17 +109,13 @@ public interface ConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(
-        String resourceGroupName,
-        String clusterName,
-        String configurationName,
-        Map<String, String> parameters,
+    void update(String resourceGroupName, String clusterName, String configurationName, Map<String, String> parameters,
         Context context);
 
     /**
      * The configuration object for the specified cluster. This API is not recommended and might be removed in the
      * future. Please consider using List configurations API instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -129,17 +123,17 @@ public interface ConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration object for the specified configuration for the specified cluster along with {@link
-     *     Response}.
+     * @return the configuration object for the specified configuration for the specified cluster along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, String>> getWithResponse(
-        String resourceGroupName, String clusterName, String configurationName, Context context);
+    Response<Map<String, String>> getWithResponse(String resourceGroupName, String clusterName,
+        String configurationName, Context context);
 
     /**
      * The configuration object for the specified cluster. This API is not recommended and might be removed in the
      * future. Please consider using List configurations API instead.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.

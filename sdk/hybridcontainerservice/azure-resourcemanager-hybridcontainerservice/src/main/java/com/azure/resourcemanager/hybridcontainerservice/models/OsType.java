@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The particular KubernetesVersion's Image's OS Type (Linux, Windows).
+ * The particular KubernetesVersion Image OS Type (Linux, Windows).
  */
 public final class OsType extends ExpandableStringEnum<OsType> {
     /**
@@ -37,7 +36,6 @@ public final class OsType extends ExpandableStringEnum<OsType> {
      * @param name a name to look for.
      * @return the corresponding OsType.
      */
-    @JsonCreator
     public static OsType fromString(String name) {
         return fromString(name, OsType.class);
     }

@@ -5,93 +5,89 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Backend address of a frontDoor load balancer. */
+/**
+ * Backend address of a frontDoor load balancer.
+ */
 @Fluent
-public final class Backend {
+public final class Backend implements JsonSerializable<Backend> {
     /*
      * Location of the backend (IP address or FQDN)
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * The Alias of the Private Link resource. Populating this optional field indicates that this backend is 'Private'
      */
-    @JsonProperty(value = "privateLinkAlias")
     private String privateLinkAlias;
 
     /*
      * The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is
      * 'Private'
      */
-    @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
 
     /*
      * The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
      */
-    @JsonProperty(value = "privateLinkLocation")
     private String privateLinkLocation;
 
     /*
      * The Approval status for the connection to the Private Link
      */
-    @JsonProperty(value = "privateEndpointStatus", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointStatus privateEndpointStatus;
 
     /*
      * A custom message to be included in the approval request to connect to the Private Link
      */
-    @JsonProperty(value = "privateLinkApprovalMessage")
     private String privateLinkApprovalMessage;
 
     /*
      * The HTTP TCP port number. Must be between 1 and 65535.
      */
-    @JsonProperty(value = "httpPort")
     private Integer httpPort;
 
     /*
      * The HTTPS TCP port number. Must be between 1 and 65535.
      */
-    @JsonProperty(value = "httpsPort")
     private Integer httpsPort;
 
     /*
      * Whether to enable use of this backend. Permitted values are 'Enabled' or 'Disabled'
      */
-    @JsonProperty(value = "enabledState")
     private BackendEnabledState enabledState;
 
     /*
      * Priority to use for load balancing. Higher priorities will not be used for load balancing if any lower priority
      * backend is healthy.
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
      * Weight of this endpoint for load balancing purposes.
      */
-    @JsonProperty(value = "weight")
     private Integer weight;
 
     /*
      * The value to use as the host header sent to the backend. If blank or unspecified, this defaults to the incoming
      * host.
      */
-    @JsonProperty(value = "backendHostHeader")
     private String backendHostHeader;
 
-    /** Creates an instance of Backend class. */
+    /**
+     * Creates an instance of Backend class.
+     */
     public Backend() {
     }
 
     /**
      * Get the address property: Location of the backend (IP address or FQDN).
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -100,7 +96,7 @@ public final class Backend {
 
     /**
      * Set the address property: Location of the backend (IP address or FQDN).
-     *
+     * 
      * @param address the address value to set.
      * @return the Backend object itself.
      */
@@ -112,7 +108,7 @@ public final class Backend {
     /**
      * Get the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this backend is 'Private'.
-     *
+     * 
      * @return the privateLinkAlias value.
      */
     public String privateLinkAlias() {
@@ -122,7 +118,7 @@ public final class Backend {
     /**
      * Set the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this backend is 'Private'.
-     *
+     * 
      * @param privateLinkAlias the privateLinkAlias value to set.
      * @return the Backend object itself.
      */
@@ -134,7 +130,7 @@ public final class Backend {
     /**
      * Get the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
@@ -144,7 +140,7 @@ public final class Backend {
     /**
      * Set the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the Backend object itself.
      */
@@ -156,7 +152,7 @@ public final class Backend {
     /**
      * Get the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @return the privateLinkLocation value.
      */
     public String privateLinkLocation() {
@@ -166,7 +162,7 @@ public final class Backend {
     /**
      * Set the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @param privateLinkLocation the privateLinkLocation value to set.
      * @return the Backend object itself.
      */
@@ -177,7 +173,7 @@ public final class Backend {
 
     /**
      * Get the privateEndpointStatus property: The Approval status for the connection to the Private Link.
-     *
+     * 
      * @return the privateEndpointStatus value.
      */
     public PrivateEndpointStatus privateEndpointStatus() {
@@ -187,7 +183,7 @@ public final class Backend {
     /**
      * Get the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @return the privateLinkApprovalMessage value.
      */
     public String privateLinkApprovalMessage() {
@@ -197,7 +193,7 @@ public final class Backend {
     /**
      * Set the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @param privateLinkApprovalMessage the privateLinkApprovalMessage value to set.
      * @return the Backend object itself.
      */
@@ -208,7 +204,7 @@ public final class Backend {
 
     /**
      * Get the httpPort property: The HTTP TCP port number. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpPort value.
      */
     public Integer httpPort() {
@@ -217,7 +213,7 @@ public final class Backend {
 
     /**
      * Set the httpPort property: The HTTP TCP port number. Must be between 1 and 65535.
-     *
+     * 
      * @param httpPort the httpPort value to set.
      * @return the Backend object itself.
      */
@@ -228,7 +224,7 @@ public final class Backend {
 
     /**
      * Get the httpsPort property: The HTTPS TCP port number. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
@@ -237,7 +233,7 @@ public final class Backend {
 
     /**
      * Set the httpsPort property: The HTTPS TCP port number. Must be between 1 and 65535.
-     *
+     * 
      * @param httpsPort the httpsPort value to set.
      * @return the Backend object itself.
      */
@@ -249,7 +245,7 @@ public final class Backend {
     /**
      * Get the enabledState property: Whether to enable use of this backend. Permitted values are 'Enabled' or
      * 'Disabled'.
-     *
+     * 
      * @return the enabledState value.
      */
     public BackendEnabledState enabledState() {
@@ -259,7 +255,7 @@ public final class Backend {
     /**
      * Set the enabledState property: Whether to enable use of this backend. Permitted values are 'Enabled' or
      * 'Disabled'.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the Backend object itself.
      */
@@ -271,7 +267,7 @@ public final class Backend {
     /**
      * Get the priority property: Priority to use for load balancing. Higher priorities will not be used for load
      * balancing if any lower priority backend is healthy.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -281,7 +277,7 @@ public final class Backend {
     /**
      * Set the priority property: Priority to use for load balancing. Higher priorities will not be used for load
      * balancing if any lower priority backend is healthy.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the Backend object itself.
      */
@@ -292,7 +288,7 @@ public final class Backend {
 
     /**
      * Get the weight property: Weight of this endpoint for load balancing purposes.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -301,7 +297,7 @@ public final class Backend {
 
     /**
      * Set the weight property: Weight of this endpoint for load balancing purposes.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the Backend object itself.
      */
@@ -313,7 +309,7 @@ public final class Backend {
     /**
      * Get the backendHostHeader property: The value to use as the host header sent to the backend. If blank or
      * unspecified, this defaults to the incoming host.
-     *
+     * 
      * @return the backendHostHeader value.
      */
     public String backendHostHeader() {
@@ -323,7 +319,7 @@ public final class Backend {
     /**
      * Set the backendHostHeader property: The value to use as the host header sent to the backend. If blank or
      * unspecified, this defaults to the incoming host.
-     *
+     * 
      * @param backendHostHeader the backendHostHeader value to set.
      * @return the Backend object itself.
      */
@@ -334,9 +330,77 @@ public final class Backend {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeStringField("privateLinkAlias", this.privateLinkAlias);
+        jsonWriter.writeStringField("privateLinkResourceId", this.privateLinkResourceId);
+        jsonWriter.writeStringField("privateLinkLocation", this.privateLinkLocation);
+        jsonWriter.writeStringField("privateLinkApprovalMessage", this.privateLinkApprovalMessage);
+        jsonWriter.writeNumberField("httpPort", this.httpPort);
+        jsonWriter.writeNumberField("httpsPort", this.httpsPort);
+        jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeStringField("backendHostHeader", this.backendHostHeader);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Backend from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Backend if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Backend.
+     */
+    public static Backend fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Backend deserializedBackend = new Backend();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("address".equals(fieldName)) {
+                    deserializedBackend.address = reader.getString();
+                } else if ("privateLinkAlias".equals(fieldName)) {
+                    deserializedBackend.privateLinkAlias = reader.getString();
+                } else if ("privateLinkResourceId".equals(fieldName)) {
+                    deserializedBackend.privateLinkResourceId = reader.getString();
+                } else if ("privateLinkLocation".equals(fieldName)) {
+                    deserializedBackend.privateLinkLocation = reader.getString();
+                } else if ("privateEndpointStatus".equals(fieldName)) {
+                    deserializedBackend.privateEndpointStatus = PrivateEndpointStatus.fromString(reader.getString());
+                } else if ("privateLinkApprovalMessage".equals(fieldName)) {
+                    deserializedBackend.privateLinkApprovalMessage = reader.getString();
+                } else if ("httpPort".equals(fieldName)) {
+                    deserializedBackend.httpPort = reader.getNullable(JsonReader::getInt);
+                } else if ("httpsPort".equals(fieldName)) {
+                    deserializedBackend.httpsPort = reader.getNullable(JsonReader::getInt);
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedBackend.enabledState = BackendEnabledState.fromString(reader.getString());
+                } else if ("priority".equals(fieldName)) {
+                    deserializedBackend.priority = reader.getNullable(JsonReader::getInt);
+                } else if ("weight".equals(fieldName)) {
+                    deserializedBackend.weight = reader.getNullable(JsonReader::getInt);
+                } else if ("backendHostHeader".equals(fieldName)) {
+                    deserializedBackend.backendHostHeader = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackend;
+        });
     }
 }

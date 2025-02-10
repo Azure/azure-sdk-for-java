@@ -22,6 +22,12 @@ public final class RouteMatrixQuery {
     private GeoPointCollection destinations;
 
     /**
+     * Creates a new instance of {@link RouteMatrixQuery}.
+     */
+    public RouteMatrixQuery() {
+    }
+
+    /**
      * Get the origins property: A valid `GeoJSON MultiPoint` geometry type. Please refer to [RFC
      * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.3) for details.
      *

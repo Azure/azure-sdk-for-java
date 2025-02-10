@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This is used to represent the various nodes of the distributed container. */
+/**
+ * This is used to represent the various nodes of the distributed container.
+ */
 @Fluent
-public final class DistributedNodesInfo {
+public final class DistributedNodesInfo implements JsonSerializable<DistributedNodesInfo> {
     /*
      * Name of the node under a distributed container.
      */
-    @JsonProperty(value = "nodeName")
     private String nodeName;
 
     /*
      * Status of this Node.
      * Failed | Succeeded
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Error Details if the Status is non-success.
      */
-    @JsonProperty(value = "errorDetail")
     private ErrorDetail errorDetail;
 
     /*
      * ARM resource id of the node
      */
-    @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
-    /** Creates an instance of DistributedNodesInfo class. */
+    /**
+     * Creates an instance of DistributedNodesInfo class.
+     */
     public DistributedNodesInfo() {
     }
 
     /**
      * Get the nodeName property: Name of the node under a distributed container.
-     *
+     * 
      * @return the nodeName value.
      */
     public String nodeName() {
@@ -50,7 +54,7 @@ public final class DistributedNodesInfo {
 
     /**
      * Set the nodeName property: Name of the node under a distributed container.
-     *
+     * 
      * @param nodeName the nodeName value to set.
      * @return the DistributedNodesInfo object itself.
      */
@@ -60,8 +64,9 @@ public final class DistributedNodesInfo {
     }
 
     /**
-     * Get the status property: Status of this Node. Failed | Succeeded.
-     *
+     * Get the status property: Status of this Node.
+     * Failed | Succeeded.
+     * 
      * @return the status value.
      */
     public String status() {
@@ -69,8 +74,9 @@ public final class DistributedNodesInfo {
     }
 
     /**
-     * Set the status property: Status of this Node. Failed | Succeeded.
-     *
+     * Set the status property: Status of this Node.
+     * Failed | Succeeded.
+     * 
      * @param status the status value to set.
      * @return the DistributedNodesInfo object itself.
      */
@@ -81,7 +87,7 @@ public final class DistributedNodesInfo {
 
     /**
      * Get the errorDetail property: Error Details if the Status is non-success.
-     *
+     * 
      * @return the errorDetail value.
      */
     public ErrorDetail errorDetail() {
@@ -90,7 +96,7 @@ public final class DistributedNodesInfo {
 
     /**
      * Set the errorDetail property: Error Details if the Status is non-success.
-     *
+     * 
      * @param errorDetail the errorDetail value to set.
      * @return the DistributedNodesInfo object itself.
      */
@@ -101,7 +107,7 @@ public final class DistributedNodesInfo {
 
     /**
      * Get the sourceResourceId property: ARM resource id of the node.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -110,7 +116,7 @@ public final class DistributedNodesInfo {
 
     /**
      * Set the sourceResourceId property: ARM resource id of the node.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the DistributedNodesInfo object itself.
      */
@@ -121,12 +127,57 @@ public final class DistributedNodesInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (errorDetail() != null) {
             errorDetail().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nodeName", this.nodeName);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("errorDetail", this.errorDetail);
+        jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DistributedNodesInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DistributedNodesInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DistributedNodesInfo.
+     */
+    public static DistributedNodesInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DistributedNodesInfo deserializedDistributedNodesInfo = new DistributedNodesInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nodeName".equals(fieldName)) {
+                    deserializedDistributedNodesInfo.nodeName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedDistributedNodesInfo.status = reader.getString();
+                } else if ("errorDetail".equals(fieldName)) {
+                    deserializedDistributedNodesInfo.errorDetail = ErrorDetail.fromJson(reader);
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedDistributedNodesInfo.sourceResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDistributedNodesInfo;
+        });
     }
 }

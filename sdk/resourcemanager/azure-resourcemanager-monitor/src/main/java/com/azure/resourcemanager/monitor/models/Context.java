@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The context info. */
+/**
+ * The context info.
+ */
 @Fluent
-public final class Context {
+public final class Context implements JsonSerializable<Context> {
     /*
      * The source of the notification request
      */
-    @JsonProperty(value = "notificationSource")
     private String notificationSource;
 
     /*
      * The context id type
      */
-    @JsonProperty(value = "contextType")
     private String contextType;
 
-    /** Creates an instance of Context class. */
+    /**
+     * Creates an instance of Context class.
+     */
     public Context() {
     }
 
     /**
      * Get the notificationSource property: The source of the notification request.
-     *
+     * 
      * @return the notificationSource value.
      */
     public String notificationSource() {
@@ -37,7 +43,7 @@ public final class Context {
 
     /**
      * Set the notificationSource property: The source of the notification request.
-     *
+     * 
      * @param notificationSource the notificationSource value to set.
      * @return the Context object itself.
      */
@@ -48,7 +54,7 @@ public final class Context {
 
     /**
      * Get the contextType property: The context id type.
-     *
+     * 
      * @return the contextType value.
      */
     public String contextType() {
@@ -57,7 +63,7 @@ public final class Context {
 
     /**
      * Set the contextType property: The context id type.
-     *
+     * 
      * @param contextType the contextType value to set.
      * @return the Context object itself.
      */
@@ -68,9 +74,48 @@ public final class Context {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("notificationSource", this.notificationSource);
+        jsonWriter.writeStringField("contextType", this.contextType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Context from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Context if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Context.
+     */
+    public static Context fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Context deserializedContext = new Context();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notificationSource".equals(fieldName)) {
+                    deserializedContext.notificationSource = reader.getString();
+                } else if ("contextType".equals(fieldName)) {
+                    deserializedContext.contextType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContext;
+        });
     }
 }

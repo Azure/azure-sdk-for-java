@@ -19,7 +19,8 @@ public final class PrivateEndpointConnectionOperationGetSamples {
      */
     public static void
         getAPrivateEndpointConnectionForADatafactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.privateEndpointConnectionOperations().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "connection", null, com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnectionOperations()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "connection", null,
+                com.azure.core.util.Context.NONE);
     }
 }

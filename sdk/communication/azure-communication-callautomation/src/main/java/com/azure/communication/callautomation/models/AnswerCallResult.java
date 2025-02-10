@@ -5,6 +5,7 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.CallConnection;
 import com.azure.communication.callautomation.CallConnectionAsync;
+import com.azure.communication.callautomation.models.events.AnswerFailed;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.core.annotation.Immutable;
@@ -25,7 +26,8 @@ public final class AnswerCallResult extends CallResult {
      * @param callConnection The callConnection
      * @param callConnectionAsync The callConnectionAsync
      */
-    public AnswerCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
+    public AnswerCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection,
+        CallConnectionAsync callConnectionAsync) {
         super(callConnectionProperties, callConnection, callConnectionAsync);
     }
 
@@ -68,12 +70,19 @@ public final class AnswerCallResult extends CallResult {
             return Mono.empty();
         }
 
-        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallConnected.class))
-            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallConnected.class), timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
+        return (timeout == null
+            ? eventProcessor
+                .waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                        || operationContextFromRequest == null)
+                    && (event.getClass() == CallConnected.class || event.getClass() == AnswerFailed.class))
+            : eventProcessor
+                .waitForEventProcessorAsync(
+                    event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                        && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                            || operationContextFromRequest == null)
+                        && (event.getClass() == CallConnected.class || event.getClass() == AnswerFailed.class),
+                    timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
     /**
@@ -83,6 +92,14 @@ public final class AnswerCallResult extends CallResult {
      * @return the result of the event processing
      */
     private AnswerCallEventResult getReturnedEvent(CallAutomationEventBase event) {
-        return new AnswerCallEventResult(true, (CallConnected) event);
+        if (event.getClass() == CallConnected.class) {
+            return new AnswerCallEventResult(true, (CallConnected) event, null);
+        }
+
+        if (event.getClass() == AnswerFailed.class) {
+            return new AnswerCallEventResult(false, null, (AnswerFailed) event);
+        }
+
+        return null;
     }
 }

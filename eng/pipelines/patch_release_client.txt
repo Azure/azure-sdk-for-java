@@ -19,15 +19,17 @@
 # ensuring that all tests (recorded, live, etc.) are in a good state to ensure releases maintain quality and avoid
 # performance regressions or bugs. They are also responsible for smoke testing their library after every release.
 
-com.azure:azure-ai-formrecognizer # Tests owner: samvaity
+com.azure:azure-ai-contentsafety # Tests owner: zhaiyutong
 com.azure:azure-ai-metricsadvisor # Tests owner: samvaity
 com.azure:azure-ai-textanalytics # Tests owner: mssfang
+com.azure:azure-ai-translation-text # Tests owner: MikeyMCZ
 com.azure:azure-communication-callautomation # Tests owner: minwoolee-msft, juntuchen-msft
 com.azure:azure-communication-chat # Tests owner: jiminwen
 com.azure:azure-communication-common # Tests owner: AikoBB, maximrytych-ms, mjafferi-msft
 com.azure:azure-communication-email # Tests owner: yogeshmo, kagbakpem
 com.azure:azure-communication-identity # Tests owner: AikoBB, maximrytych-ms, mjafferi-msft
 com.azure:azure-communication-jobrouter # Tests owner: cparisineti
+com.azure:azure-communication-messages # Tests owner: arifibrahim4, juancamilor
 com.azure:azure-communication-phonenumbers # Tests owner: whisper6284, miguhern, danielortega-msft
 com.azure:azure-communication-sms # Tests owner: besh2014, DimaKolomiiets
 com.azure:azure-communication-rooms # Tests owner: minnieliu, Mrayyan
@@ -36,16 +38,19 @@ com.azure:azure-data-appconfiguration # Tests owner: mssfang
 com.azure:azure-data-schemaregistry # Tests owner: conniey
 com.azure:azure-data-schemaregistry-apacheavro # Tests owner: conniey
 com.azure:azure-data-tables # Tests owner: jairmyree
+com.azure:azure-developer-devcenter # Tests owner: drielenr, leti367
 com.azure:azure-developer-loadtesting # Tests owner: Harshan01, prativen
 com.azure:azure-digitaltwins-core # Tests owner: sjiherzig
 com.azure:azure-identity-broker # Tests owner: billwert, vigera
 com.azure:azure-identity-extensions # Tests owner: saragluna, backwind1233
 com.azure:azure-iot-deviceupdate # Tests owner: leolie, ryzhan
 com.azure:azure-messaging-eventgrid # Tests owner: billwert
+com.azure:azure-messaging-eventgrid-namespaces # Tests owner: billwert
 com.azure:azure-messaging-eventhubs # Tests owner: conniey
 com.azure:azure-messaging-eventhubs-checkpointstore-blob # Tests owner: conniey
 com.azure:azure-messaging-servicebus # Tests owner: ki1729
 com.azure:azure-messaging-webpubsub # Tests owner: weidongxu-microsoft
+com.azure:azure-messaging-webpubsub-client # Tests owner: weidongxu-microsoft
 com.azure:azure-mixedreality-authentication # Tests owner: craigktreasure, RamonArguelles
 com.azure:azure-mixedreality-remoterendering # Tests owner: FlorianBorn71, MichaelZp0, jloehr
 com.azure:azure-monitor-query # Tests owner: srnagar
@@ -54,7 +59,7 @@ com.azure:azure-security-attestation # Tests owner: LarryOsterman
 com.azure:azure-security-confidentialledger # Tests owner: Xamrmo
 com.azure:azure-security-keyvault-administration # Tests owner: vcolin7
 com.azure:azure-security-keyvault-certificates # Tests owner: vcolin7
-com.azure:azure-security-keyvault-jca # Tests owner: chenrujun
+com.azure:azure-security-keyvault-jca # Tests owner: rujche
 com.azure:azure-security-keyvault-keys # Tests owner: vcolin7
 com.azure:azure-security-keyvault-secrets # Tests owner: vcolin7
 com.azure:azure-search-documents # Tests owner: jairmyree

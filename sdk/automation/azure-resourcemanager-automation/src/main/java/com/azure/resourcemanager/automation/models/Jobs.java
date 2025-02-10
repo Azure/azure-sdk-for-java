@@ -8,11 +8,29 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Jobs. */
+/**
+ * Resource collection API of Jobs.
+ */
 public interface Jobs {
     /**
      * Retrieve the job output identified by job name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The name of the job to be created.
+     * @param clientRequestId Identifies this specific client request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    Response<String> getOutputWithResponse(String resourceGroupName, String automationAccountName, String jobName,
+        String clientRequestId, Context context);
+
+    /**
+     * Retrieve the job output identified by job name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The name of the job to be created.
@@ -24,11 +42,11 @@ public interface Jobs {
     String getOutput(String resourceGroupName, String automationAccountName, String jobName);
 
     /**
-     * Retrieve the job output identified by job name.
-     *
+     * Retrieve the runbook content of the job identified by job name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
-     * @param jobName The name of the job to be created.
+     * @param jobName The job name.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,16 +54,12 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<String> getOutputWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context);
+    Response<String> getRunbookContentWithResponse(String resourceGroupName, String automationAccountName,
+        String jobName, String clientRequestId, Context context);
 
     /**
      * Retrieve the runbook content of the job identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -57,8 +71,8 @@ public interface Jobs {
     String getRunbookContent(String resourceGroupName, String automationAccountName, String jobName);
 
     /**
-     * Retrieve the runbook content of the job identified by job name.
-     *
+     * Suspend the job identified by job name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -67,18 +81,14 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the {@link Response}.
      */
-    Response<String> getRunbookContentWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context);
+    Response<Void> suspendWithResponse(String resourceGroupName, String automationAccountName, String jobName,
+        String clientRequestId, Context context);
 
     /**
      * Suspend the job identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -89,8 +99,8 @@ public interface Jobs {
     void suspend(String resourceGroupName, String automationAccountName, String jobName);
 
     /**
-     * Suspend the job identified by job name.
-     *
+     * Stop the job identified by jobName.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -101,16 +111,12 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> suspendWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context);
+    Response<Void> stopWithResponse(String resourceGroupName, String automationAccountName, String jobName,
+        String clientRequestId, Context context);
 
     /**
      * Stop the job identified by jobName.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -121,8 +127,8 @@ public interface Jobs {
     void stop(String resourceGroupName, String automationAccountName, String jobName);
 
     /**
-     * Stop the job identified by jobName.
-     *
+     * Retrieve the job identified by job name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -131,18 +137,14 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return definition of the job along with {@link Response}.
      */
-    Response<Void> stopWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context);
+    Response<Job> getWithResponse(String resourceGroupName, String automationAccountName, String jobName,
+        String clientRequestId, Context context);
 
     /**
      * Retrieve the job identified by job name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -154,28 +156,8 @@ public interface Jobs {
     Job get(String resourceGroupName, String automationAccountName, String jobName);
 
     /**
-     * Retrieve the job identified by job name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @param clientRequestId Identifies this specific client request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job along with {@link Response}.
-     */
-    Response<Job> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context);
-
-    /**
      * Retrieve a list of jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,7 +169,7 @@ public interface Jobs {
 
     /**
      * Retrieve a list of jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -198,24 +180,12 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JobCollectionItem> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, String clientRequestId, Context context);
+    PagedIterable<JobCollectionItem> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, String clientRequestId, Context context);
 
     /**
      * Resume the job identified by jobName.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobName The job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void resume(String resourceGroupName, String automationAccountName, String jobName);
-
-    /**
-     * Resume the job identified by jobName.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobName The job name.
@@ -226,16 +196,24 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> resumeWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context);
+    Response<Void> resumeWithResponse(String resourceGroupName, String automationAccountName, String jobName,
+        String clientRequestId, Context context);
+
+    /**
+     * Resume the job identified by jobName.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobName The job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void resume(String resourceGroupName, String automationAccountName, String jobName);
 
     /**
      * Retrieve the job identified by job name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -246,7 +224,7 @@ public interface Jobs {
 
     /**
      * Retrieve the job identified by job name.
-     *
+     * 
      * @param id the resource ID.
      * @param clientRequestId Identifies this specific client request.
      * @param context The context to associate with this operation.
@@ -259,7 +237,7 @@ public interface Jobs {
 
     /**
      * Begins definition for a new Job resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Job definition.
      */

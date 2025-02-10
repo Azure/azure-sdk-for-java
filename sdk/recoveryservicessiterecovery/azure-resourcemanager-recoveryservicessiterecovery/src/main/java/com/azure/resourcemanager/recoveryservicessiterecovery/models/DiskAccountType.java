@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The DiskType. */
+/**
+ * The DiskType.
+ */
 public final class DiskAccountType extends ExpandableStringEnum<DiskAccountType> {
-    /** Static value Standard_LRS for DiskAccountType. */
+    /**
+     * Static value Standard_LRS for DiskAccountType.
+     */
     public static final DiskAccountType STANDARD_LRS = fromString("Standard_LRS");
 
-    /** Static value Premium_LRS for DiskAccountType. */
+    /**
+     * Static value Premium_LRS for DiskAccountType.
+     */
     public static final DiskAccountType PREMIUM_LRS = fromString("Premium_LRS");
 
-    /** Static value StandardSSD_LRS for DiskAccountType. */
+    /**
+     * Static value StandardSSD_LRS for DiskAccountType.
+     */
     public static final DiskAccountType STANDARD_SSD_LRS = fromString("StandardSSD_LRS");
 
     /**
      * Creates a new instance of DiskAccountType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class DiskAccountType extends ExpandableStringEnum<DiskAccountType>
 
     /**
      * Creates or finds a DiskAccountType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskAccountType.
      */
-    @JsonCreator
     public static DiskAccountType fromString(String name) {
         return fromString(name, DiskAccountType.class);
     }
 
     /**
      * Gets known DiskAccountType values.
-     *
+     * 
      * @return known DiskAccountType values.
      */
     public static Collection<DiskAccountType> values() {

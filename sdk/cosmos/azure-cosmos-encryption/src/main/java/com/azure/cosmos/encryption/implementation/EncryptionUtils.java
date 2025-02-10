@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.encryption.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -21,8 +22,8 @@ public class EncryptionUtils {
         EncryptionUtils.simpleObjectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
     }
 
-    public static byte[] serializeJsonToByteArray(ObjectMapper objectMapper, Object object) {
-        return toByteArray(Utils.serializeJsonToByteBuffer(objectMapper, object));
+    public static byte[] serializeJsonToByteArray(CosmosItemSerializer itemSerializer, Object object) {
+        return toByteArray(Utils.serializeJsonToByteBuffer(itemSerializer, object, null, false));
     }
 
     public static ObjectMapper getSimpleObjectMapper() {

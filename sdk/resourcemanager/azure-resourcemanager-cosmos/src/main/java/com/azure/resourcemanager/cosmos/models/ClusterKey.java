@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cosmos DB Cassandra table cluster key.
  */
 @Fluent
-public final class ClusterKey {
+public final class ClusterKey implements JsonSerializable<ClusterKey> {
     /*
      * Name of the Cosmos DB Cassandra table cluster key
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Order of the Cosmos DB Cassandra table cluster key, only support "Asc" and "Desc"
      */
-    @JsonProperty(value = "orderBy")
     private String orderBy;
 
     /**
@@ -76,5 +78,44 @@ public final class ClusterKey {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("orderBy", this.orderBy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterKey if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterKey.
+     */
+    public static ClusterKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterKey deserializedClusterKey = new ClusterKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedClusterKey.name = reader.getString();
+                } else if ("orderBy".equals(fieldName)) {
+                    deserializedClusterKey.orderBy = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterKey;
+        });
     }
 }

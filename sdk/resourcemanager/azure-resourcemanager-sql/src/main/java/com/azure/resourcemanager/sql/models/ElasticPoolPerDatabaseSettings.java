@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Per database settings of an elastic pool. */
+/**
+ * Per database settings of an elastic pool.
+ */
 @Fluent
-public final class ElasticPoolPerDatabaseSettings {
+public final class ElasticPoolPerDatabaseSettings implements JsonSerializable<ElasticPoolPerDatabaseSettings> {
     /*
      * The minimum capacity all databases are guaranteed.
      */
-    @JsonProperty(value = "minCapacity")
     private Double minCapacity;
 
     /*
      * The maximum capacity any one database can consume.
      */
-    @JsonProperty(value = "maxCapacity")
     private Double maxCapacity;
 
-    /** Creates an instance of ElasticPoolPerDatabaseSettings class. */
+    /**
+     * Creates an instance of ElasticPoolPerDatabaseSettings class.
+     */
     public ElasticPoolPerDatabaseSettings() {
     }
 
     /**
      * Get the minCapacity property: The minimum capacity all databases are guaranteed.
-     *
+     * 
      * @return the minCapacity value.
      */
     public Double minCapacity() {
@@ -37,7 +43,7 @@ public final class ElasticPoolPerDatabaseSettings {
 
     /**
      * Set the minCapacity property: The minimum capacity all databases are guaranteed.
-     *
+     * 
      * @param minCapacity the minCapacity value to set.
      * @return the ElasticPoolPerDatabaseSettings object itself.
      */
@@ -48,7 +54,7 @@ public final class ElasticPoolPerDatabaseSettings {
 
     /**
      * Get the maxCapacity property: The maximum capacity any one database can consume.
-     *
+     * 
      * @return the maxCapacity value.
      */
     public Double maxCapacity() {
@@ -57,7 +63,7 @@ public final class ElasticPoolPerDatabaseSettings {
 
     /**
      * Set the maxCapacity property: The maximum capacity any one database can consume.
-     *
+     * 
      * @param maxCapacity the maxCapacity value to set.
      * @return the ElasticPoolPerDatabaseSettings object itself.
      */
@@ -68,9 +74,49 @@ public final class ElasticPoolPerDatabaseSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("minCapacity", this.minCapacity);
+        jsonWriter.writeNumberField("maxCapacity", this.maxCapacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticPoolPerDatabaseSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticPoolPerDatabaseSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticPoolPerDatabaseSettings.
+     */
+    public static ElasticPoolPerDatabaseSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticPoolPerDatabaseSettings deserializedElasticPoolPerDatabaseSettings
+                = new ElasticPoolPerDatabaseSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minCapacity".equals(fieldName)) {
+                    deserializedElasticPoolPerDatabaseSettings.minCapacity = reader.getNullable(JsonReader::getDouble);
+                } else if ("maxCapacity".equals(fieldName)) {
+                    deserializedElasticPoolPerDatabaseSettings.maxCapacity = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticPoolPerDatabaseSettings;
+        });
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -177,12 +178,15 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("key", this.key);
         jsonWriter.writeStringField("labelOperator", this.labelOperator == null ? null : this.labelOperator.toString());
-        jsonWriter.writeUntypedField("labelValue", this.labelValue);
+        jsonWriter.writeUntypedField("value", this.labelValue);
         jsonWriter.writeNumberField("ttlSeconds", this.ttlSeconds);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("expirationTime",
@@ -209,7 +213,7 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
                 } else if ("labelOperator".equals(fieldName)) {
                     deserializedAcsRouterWorkerSelector.labelOperator
                         = AcsRouterLabelOperator.fromString(reader.getString());
-                } else if ("labelValue".equals(fieldName)) {
+                } else if ("value".equals(fieldName)) {
                     deserializedAcsRouterWorkerSelector.labelValue = reader.readUntyped();
                 } else if ("ttlSeconds".equals(fieldName)) {
                     deserializedAcsRouterWorkerSelector.ttlSeconds = reader.getNullable(JsonReader::getFloat);
@@ -217,8 +221,8 @@ public final class AcsRouterWorkerSelector implements JsonSerializable<AcsRouter
                     deserializedAcsRouterWorkerSelector.state
                         = AcsRouterWorkerSelectorState.fromString(reader.getString());
                 } else if ("expirationTime".equals(fieldName)) {
-                    deserializedAcsRouterWorkerSelector.expirationTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsRouterWorkerSelector.expirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

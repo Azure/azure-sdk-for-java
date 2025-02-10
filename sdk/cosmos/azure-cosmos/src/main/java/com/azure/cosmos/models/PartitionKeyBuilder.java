@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
@@ -116,6 +115,6 @@ public final class PartitionKeyBuilder {
         }
 
         partitionKeyInternal = PartitionKeyInternal.fromObjectArray(valueArray, true);
-        return new PartitionKey(PartitionKeyHelper.getPartitionKeyObjectKey(valueArray), partitionKeyInternal);
+        return new PartitionKey(partitionKeyInternal);
     }
 }

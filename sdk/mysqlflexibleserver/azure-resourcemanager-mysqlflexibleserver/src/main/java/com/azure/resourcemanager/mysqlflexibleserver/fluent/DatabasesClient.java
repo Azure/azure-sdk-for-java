@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.DatabaseInner;
 
-/** An instance of this class provides access to all the operations defined in DatabasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabasesClient.
+ */
 public interface DatabasesClient {
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -28,12 +30,12 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of represents a Database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, DatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -45,12 +47,12 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of represents a Database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, DatabaseInner parameters, Context context);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -61,12 +63,12 @@ public interface DatabasesClient {
      * @return represents a Database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
+    DatabaseInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        DatabaseInner parameters);
 
     /**
      * Creates a new database or updates an existing database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -78,12 +80,12 @@ public interface DatabasesClient {
      * @return represents a Database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context);
+    DatabaseInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        DatabaseInner parameters, Context context);
 
     /**
      * Deletes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -97,7 +99,7 @@ public interface DatabasesClient {
 
     /**
      * Deletes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -108,12 +110,12 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String databaseName,
+        Context context);
 
     /**
      * Deletes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -126,7 +128,7 @@ public interface DatabasesClient {
 
     /**
      * Deletes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -140,7 +142,7 @@ public interface DatabasesClient {
 
     /**
      * Gets information about a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -151,12 +153,12 @@ public interface DatabasesClient {
      * @return information about a database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    Response<DatabaseInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
+        Context context);
 
     /**
      * Gets information about a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -170,7 +172,7 @@ public interface DatabasesClient {
 
     /**
      * List all the databases in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,7 +185,7 @@ public interface DatabasesClient {
 
     /**
      * List all the databases in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.

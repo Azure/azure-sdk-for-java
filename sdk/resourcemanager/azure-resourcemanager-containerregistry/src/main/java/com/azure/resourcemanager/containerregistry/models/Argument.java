@@ -6,36 +6,41 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of a run argument. */
+/**
+ * The properties of a run argument.
+ */
 @Fluent
-public final class Argument {
+public final class Argument implements JsonSerializable<Argument> {
     /*
      * The name of the argument.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The value of the argument.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
      * Flag to indicate whether the argument represents a secret and want to be removed from build logs.
      */
-    @JsonProperty(value = "isSecret")
     private Boolean isSecret;
 
-    /** Creates an instance of Argument class. */
+    /**
+     * Creates an instance of Argument class.
+     */
     public Argument() {
     }
 
     /**
      * Get the name property: The name of the argument.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +49,7 @@ public final class Argument {
 
     /**
      * Set the name property: The name of the argument.
-     *
+     * 
      * @param name the name value to set.
      * @return the Argument object itself.
      */
@@ -55,7 +60,7 @@ public final class Argument {
 
     /**
      * Get the value property: The value of the argument.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -64,7 +69,7 @@ public final class Argument {
 
     /**
      * Set the value property: The value of the argument.
-     *
+     * 
      * @param value the value value to set.
      * @return the Argument object itself.
      */
@@ -76,7 +81,7 @@ public final class Argument {
     /**
      * Get the isSecret property: Flag to indicate whether the argument represents a secret and want to be removed from
      * build logs.
-     *
+     * 
      * @return the isSecret value.
      */
     public Boolean isSecret() {
@@ -86,7 +91,7 @@ public final class Argument {
     /**
      * Set the isSecret property: Flag to indicate whether the argument represents a secret and want to be removed from
      * build logs.
-     *
+     * 
      * @param isSecret the isSecret value to set.
      * @return the Argument object itself.
      */
@@ -97,19 +102,62 @@ public final class Argument {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Argument"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model Argument"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property value in model Argument"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model Argument"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Argument.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeBooleanField("isSecret", this.isSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Argument from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Argument if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Argument.
+     */
+    public static Argument fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Argument deserializedArgument = new Argument();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedArgument.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedArgument.value = reader.getString();
+                } else if ("isSecret".equals(fieldName)) {
+                    deserializedArgument.isSecret = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArgument;
+        });
+    }
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.WorkspaceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Return a list of firmware analysis workspaces. */
+/**
+ * Return a list of firmware analysis workspaces.
+ */
 @Fluent
-public final class WorkspaceList {
+public final class WorkspaceList implements JsonSerializable<WorkspaceList> {
     /*
      * The list of firmware analysis workspaces.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<WorkspaceInner> value;
 
     /*
      * The uri to fetch the next page of asset.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of WorkspaceList class. */
+    /**
+     * Creates an instance of WorkspaceList class.
+     */
     public WorkspaceList() {
     }
 
     /**
      * Get the value property: The list of firmware analysis workspaces.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkspaceInner> value() {
@@ -39,7 +45,7 @@ public final class WorkspaceList {
 
     /**
      * Get the nextLink property: The uri to fetch the next page of asset.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +54,7 @@ public final class WorkspaceList {
 
     /**
      * Set the nextLink property: The uri to fetch the next page of asset.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WorkspaceList object itself.
      */
@@ -59,12 +65,51 @@ public final class WorkspaceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceList.
+     */
+    public static WorkspaceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceList deserializedWorkspaceList = new WorkspaceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<WorkspaceInner> value = reader.readArray(reader1 -> WorkspaceInner.fromJson(reader1));
+                    deserializedWorkspaceList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWorkspaceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceList;
+        });
     }
 }

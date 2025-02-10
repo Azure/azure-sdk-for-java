@@ -31,20 +31,20 @@ public final class SenderUsernamesImpl implements SenderUsernames {
         String domainName) {
         PagedIterable<SenderUsernameResourceInner> inner
             = this.serviceClient().listByDomains(resourceGroupName, emailServiceName, domainName);
-        return Utils.mapPage(inner, inner1 -> new SenderUsernameResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SenderUsernameResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SenderUsernameResource> listByDomains(String resourceGroupName, String emailServiceName,
         String domainName, Context context) {
         PagedIterable<SenderUsernameResourceInner> inner
             = this.serviceClient().listByDomains(resourceGroupName, emailServiceName, domainName, context);
-        return Utils.mapPage(inner, inner1 -> new SenderUsernameResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SenderUsernameResourceImpl(inner1, this.manager()));
     }
 
     public Response<SenderUsernameResource> getWithResponse(String resourceGroupName, String emailServiceName,
         String domainName, String senderUsername, Context context) {
-        Response<SenderUsernameResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            emailServiceName, domainName, senderUsername, context);
+        Response<SenderUsernameResourceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, emailServiceName, domainName, senderUsername, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SenderUsernameResourceImpl(inner.getValue(), this.manager()));
@@ -66,8 +66,8 @@ public final class SenderUsernamesImpl implements SenderUsernames {
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String emailServiceName, String domainName,
         String senderUsername, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, emailServiceName, domainName, senderUsername,
-            context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, emailServiceName, domainName, senderUsername, context);
     }
 
     public void delete(String resourceGroupName, String emailServiceName, String domainName, String senderUsername) {
@@ -75,22 +75,22 @@ public final class SenderUsernamesImpl implements SenderUsernames {
     }
 
     public SenderUsernameResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
-        String domainName = Utils.getValueFromIdByName(id, "domains");
+        String domainName = ResourceManagerUtils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));
         }
-        String senderUsername = Utils.getValueFromIdByName(id, "senderUsernames");
+        String senderUsername = ResourceManagerUtils.getValueFromIdByName(id, "senderUsernames");
         if (senderUsername == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'senderUsernames'.", id)));
@@ -100,22 +100,22 @@ public final class SenderUsernamesImpl implements SenderUsernames {
     }
 
     public Response<SenderUsernameResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
-        String domainName = Utils.getValueFromIdByName(id, "domains");
+        String domainName = ResourceManagerUtils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));
         }
-        String senderUsername = Utils.getValueFromIdByName(id, "senderUsernames");
+        String senderUsername = ResourceManagerUtils.getValueFromIdByName(id, "senderUsernames");
         if (senderUsername == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'senderUsernames'.", id)));
@@ -124,22 +124,22 @@ public final class SenderUsernamesImpl implements SenderUsernames {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
-        String domainName = Utils.getValueFromIdByName(id, "domains");
+        String domainName = ResourceManagerUtils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));
         }
-        String senderUsername = Utils.getValueFromIdByName(id, "senderUsernames");
+        String senderUsername = ResourceManagerUtils.getValueFromIdByName(id, "senderUsernames");
         if (senderUsername == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'senderUsernames'.", id)));
@@ -148,22 +148,22 @@ public final class SenderUsernamesImpl implements SenderUsernames {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
-        String domainName = Utils.getValueFromIdByName(id, "domains");
+        String domainName = ResourceManagerUtils.getValueFromIdByName(id, "domains");
         if (domainName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'domains'.", id)));
         }
-        String senderUsername = Utils.getValueFromIdByName(id, "senderUsernames");
+        String senderUsername = ResourceManagerUtils.getValueFromIdByName(id, "senderUsernames");
         if (senderUsername == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'senderUsernames'.", id)));

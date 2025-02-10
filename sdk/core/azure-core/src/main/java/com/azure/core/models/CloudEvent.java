@@ -17,9 +17,14 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -36,21 +41,31 @@ import java.util.Set;
  * Represents the CloudEvent conforming to the 1.0 schema defined by the
  * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">Cloud Native Computing Foundation</a>.
  *
- * <p>CloudEvents is a specification for describing event data in common formats to provide interoperability across
- * services, platforms and systems.</p>
+ * <p>
+ * CloudEvents is a specification for describing event data in common formats to provide interoperability across
+ * services, platforms and systems.
+ * </p>
  *
- * <p>Some Azure services, for instance, EventGrid, are compatible with this specification. You can use this class to
- * communicate with these Azure services.</p>
- * <p>Depending on your scenario, you can either use the constructor
+ * <p>
+ * Some Azure services, for instance, EventGrid, are compatible with this specification. You can use this class to
+ * communicate with these Azure services.
+ * </p>
+ * <p>
+ * Depending on your scenario, you can either use the constructor
  * {@link #CloudEvent(String, String, BinaryData, CloudEventDataFormat, String)} to create a CloudEvent, or use the
  * factory method {@link #fromString(String)} to deserialize CloudEvent instances from a Json String representation of
- * CloudEvents.</p>
+ * CloudEvents.
+ * </p>
  *
- * <p>If you have the data payload of a CloudEvent and want to send it out, use the constructor
+ * <p>
+ * If you have the data payload of a CloudEvent and want to send it out, use the constructor
  * {@link #CloudEvent(String, String, BinaryData, CloudEventDataFormat, String)} to create it. Then you can serialize
- * the CloudEvent into its Json String representation and send it.</p>
+ * the CloudEvent into its Json String representation and send it.
+ * </p>
  *
- * <p><strong>Create CloudEvent Samples</strong></p>
+ * <p>
+ * <strong>Create CloudEvent Samples</strong>
+ * </p>
  * <!-- src_embed com.azure.core.model.CloudEvent#constructor -->
  * <pre>
  * &#47;&#47; Use BinaryData.fromBytes&#40;&#41; to create data in format CloudEventDataFormat.BYTES
@@ -87,10 +102,14 @@ import java.util.Set;
  * </pre>
  * <!-- end com.azure.core.model.CloudEvent#constructor -->
  *
- * <p>On the contrary, if you receive CloudEvents and have the Json string representation of one or more of
- * CloudEvents, use {@link #fromString(String)} to deserialize them from the Json string.</p>
+ * <p>
+ * On the contrary, if you receive CloudEvents and have the Json string representation of one or more of
+ * CloudEvents, use {@link #fromString(String)} to deserialize them from the Json string.
+ * </p>
  *
- * <p><strong>Deserialize CloudEvent Samples</strong></p>
+ * <p>
+ * <strong>Deserialize CloudEvent Samples</strong>
+ * </p>
  * <!-- src_embed com.azure.core.model.CloudEvent.fromString -->
  * <pre>
  * List&lt;CloudEvent&gt; cloudEventList = CloudEvent.fromString&#40;cloudEventJsonString&#41;;
@@ -137,6 +156,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      */
     @JsonProperty(value = "data")
     @JsonRawValue
+    @JsonDeserialize(using = CloudEvent.AnyToStringDeserializer.class)
     private String data;
 
     /*
@@ -191,7 +211,6 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      */
     @JsonIgnore
     private BinaryData binaryData;
-
 
     /**
      * Create an instance of {@link CloudEvent}.
@@ -282,8 +301,8 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
                         this.data = jsonReader.getString();
                     }
                 } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("'data' isn't in valid Json format",
-                        e));
+                    throw LOGGER
+                        .logExceptionAsError(new IllegalArgumentException("'data' isn't in valid Json format", e));
                 }
             }
         }
@@ -292,6 +311,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
         this.id = CoreUtils.randomUuid().toString();
         this.specVersion = CloudEvent.SPEC_VERSION;
         this.binaryData = data;
+        this.time = OffsetDateTime.now(ZoneOffset.UTC);
     }
 
     private CloudEvent() {
@@ -463,6 +483,8 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     /**
      * Set the time associated with the occurrence of the event.
+     * <p>
+     * At creation, the time is set to the current UTC time. It can be unset by setting it to null.
      *
      * @param time the time to set.
      * @return the cloud event itself.
@@ -596,9 +618,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject()
-            .writeStringField("id", id)
-            .writeStringField("source", source);
+        jsonWriter.writeStartObject().writeStringField("id", id).writeStringField("source", source);
 
         if (dataBase64 != null) {
             jsonWriter.writeStringField("data_base64", dataBase64);
@@ -681,5 +701,16 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
             return cloudEvent;
         });
+    }
+
+    /*
+     * Custom Jackson JsonDeserialized used to deserialize anything into the String field 'data'.
+     * A custom serializer isn't needed as the field is used as a raw value, meaning it will be serialized as is.
+     */
+    private static final class AnyToStringDeserializer extends JsonDeserializer<String> {
+        @Override
+        public String deserialize(JsonParser p, DeserializationContext context) throws IOException {
+            return p.readValueAsTree().toString();
+        }
     }
 }

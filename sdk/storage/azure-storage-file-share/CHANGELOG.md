@@ -1,15 +1,164 @@
 # Release History
 
-## 12.22.0-beta.1 (Unreleased)
+## 12.26.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added client name field in HandleItem.
+- Added support for NFS over REST. 
 
 ### Breaking Changes
+- The following APIs no longer send the x-ms-file-permission, x-ms-file-attributes, x-ms-file-creation-time, and x-ms-file-last-write-time request headers by default. These headers have been optional in the REST API since x-ms-version 2021-06-08:
+  - ShareDirectoryClient/ShareDirectoryAsyncClient.createWithResponse()
+  - ShareDirectoryClient/ShareDirectoryAsyncClient.setPropertiesWithResponse()
+  - ShareFileClient/ShareFileAsyncClient.createWithResponse()
+  - ShareFileClient/ShareFileAsyncClient.beginCopy()
+  - ShareFileClient/ShareFileAsyncClient.setPropertiesWithResponse()
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.25.1 (2024-12-04)
+
+### Bugs Fixed
+- `ShareFileClient.downloadToFile()` now retries for a maximum of 5 times when the download fails due to a network error.
+  Previously, the maximum number of retries was unintentionally higher (maximum of 15), which could lead to writing in
+  incorrect positions in the file when retried more than 5 times.
+
+## 12.25.0 (2024-11-13)
+
+### Features Added
+- Added support for the provisioned V2 billing model.
+- Added support for specifying the binary file permission format for ShareFileClient.beginCopy and
+  ShareFileAsyncClient.beginCopy
+- Added ShareAccessTier Premium value.
+- Added support for service version 2025-01-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.52.0` to version `1.54.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.6`.
+- Upgraded `azure-storage-common` from `12.27.0` to version `12.28.0`.
+
+## 12.25.0-beta.1 (2024-10-17)
+
+### Features Added
+- Added support for the provisioned V2 billing model.
+- Added support for specifying the binary file permission format for ShareFileClient.beginCopy and
+ShareFileAsyncClient.beginCopy
+- Added ShareAccessTier Premium value.
+- Added support for service version 2025-01-05.
+
+## 12.24.0 (2024-09-17)
+
+### Features Added
+- Added support for token-based authentication for all APIs.
+- Added support for paid bursting on premium file share accounts.
+- Added support for binary format for file permissions.
+- Added ability to retrieve SAS string to sign for debugging purposes.
+- Added support for service version 2024-11-04.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.50.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.4`.
+- Upgraded `azure-storage-common` from `12.26.0` to version `12.27.0`.
+
+## 12.24.0-beta.1 (2024-08-06)
+
+### Features Added
+- Added support for token-based authentication for all APIs.
+- Added support for paid bursting on premium file share accounts.
+- Added support for binary format for file permissions.
+- Added ability to retrieve SAS string to sign for debugging purposes.
+- Added support for service version 2024-11-04.
+
+## 12.23.0 (2024-07-18)
+
+### Features Added
+- Added support for snapshot management on NFS shares.
+- Added authorization error details in responses.
+- Added support for service version 2024-08-04.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-storage-common` from `12.25.1` to version `12.26.0`.
+
+## 12.23.0-beta.1 (2024-06-11)
+
+### Features Added
+- Added support for snapshot management on NFS shares.
+- Added authorization error details in responses.
+- Added support for service version 2024-08-04.
+
+## 12.22.1 (2024-06-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+- Upgraded `azure-storage-common` from `12.25.0` to version `12.25.1`.
+
+## 12.22.0 (2024-05-15)
+
+### Features Added
+- Added support for service versions 2024-02-04 and 2024-05-04.
+- Added `clientName` property on `HandleItem` that specifies the name of the client machine where the share is being mounted.
+- Added rename support for `listRange` API via `supportRename` in `ShareFileListRangesDiffOptions`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+- Upgraded `azure-storage-common` from `12.25.0-beta.2` to version `12.25.0`.
+
+
+## 12.21.4 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+- Upgraded `azure-storage-common` from `12.24.3` to version `12.25.0-beta.2`.
+
+
+## 12.22.0-beta.1 (2024-04-15)
+
+### Features Added
+- Added support for service versions 2024-02-04 and 2024-05-04.
+- Added `clientName` property on `HandleItem` that specifies the name of the client machine where the share is being mounted.
+- Added rename support for `listRange` API via `supportRename` in `ShareFileListRangesDiffOptions`.
+
+## 12.21.3 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.24.2` to version `12.24.3`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+
+## 12.21.2 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.24.1` to version `12.24.2`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+
 
 ## 12.21.1 (2023-12-04)
 
@@ -524,7 +673,7 @@ demonstrate the new API.
 - Added file smb properties and file permission parameters to create APIs on sync and async File and Directory clients.
 
 ## 12.0.0-preview.2 (2019-08-08)
-Version 12.0.0-preview.2 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+Version 12.0.0-preview.2 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide our efforts can be found in the [Azure SDK Design Guidelines for Java](https://aka.ms/azsdk/guide/java).
 
 For details on the Azure SDK for Java (August 2019 Preview) release, you can refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html).
 

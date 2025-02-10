@@ -7,51 +7,78 @@ package com.azure.resourcemanager.quantum.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.quantum.models.Provider;
-import com.azure.resourcemanager.quantum.models.ProvisioningStatus;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quantum.models.QuantumWorkspaceIdentity;
-import com.azure.resourcemanager.quantum.models.UsableStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.resourcemanager.quantum.models.WorkspaceResourceProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** The resource proxy definition object for quantum workspace. */
+/**
+ * The resource proxy definition object for quantum workspace.
+ */
 @Fluent
 public final class QuantumWorkspaceInner extends Resource {
     /*
      * Gets or sets the properties. Define quantum workspace's specific properties.
      */
-    @JsonProperty(value = "properties")
-    private WorkspaceResourceProperties innerProperties;
+    private WorkspaceResourceProperties properties;
 
     /*
      * Managed Identity information.
      */
-    @JsonProperty(value = "identity")
     private QuantumWorkspaceIdentity identity;
 
     /*
-     * System metadata
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of QuantumWorkspaceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of QuantumWorkspaceInner class.
+     */
     public QuantumWorkspaceInner() {
     }
 
     /**
-     * Get the innerProperties property: Gets or sets the properties. Define quantum workspace's specific properties.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: Gets or sets the properties. Define quantum workspace's specific properties.
+     * 
+     * @return the properties value.
      */
-    private WorkspaceResourceProperties innerProperties() {
-        return this.innerProperties;
+    public WorkspaceResourceProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Gets or sets the properties. Define quantum workspace's specific properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the QuantumWorkspaceInner object itself.
+     */
+    public QuantumWorkspaceInner withProperties(WorkspaceResourceProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the identity property: Managed Identity information.
-     *
+     * 
      * @return the identity value.
      */
     public QuantumWorkspaceIdentity identity() {
@@ -60,7 +87,7 @@ public final class QuantumWorkspaceInner extends Resource {
 
     /**
      * Set the identity property: Managed Identity information.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the QuantumWorkspaceInner object itself.
      */
@@ -70,22 +97,56 @@ public final class QuantumWorkspaceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: System metadata.
-     *
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public QuantumWorkspaceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public QuantumWorkspaceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -93,89 +154,71 @@ public final class QuantumWorkspaceInner extends Resource {
     }
 
     /**
-     * Get the providers property: List of Providers selected for this Workspace.
-     *
-     * @return the providers value.
-     */
-    public List<Provider> providers() {
-        return this.innerProperties() == null ? null : this.innerProperties().providers();
-    }
-
-    /**
-     * Set the providers property: List of Providers selected for this Workspace.
-     *
-     * @param providers the providers value to set.
-     * @return the QuantumWorkspaceInner object itself.
-     */
-    public QuantumWorkspaceInner withProviders(List<Provider> providers) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WorkspaceResourceProperties();
-        }
-        this.innerProperties().withProviders(providers);
-        return this;
-    }
-
-    /**
-     * Get the usable property: Whether the current workspace is ready to accept Jobs.
-     *
-     * @return the usable value.
-     */
-    public UsableStatus usable() {
-        return this.innerProperties() == null ? null : this.innerProperties().usable();
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning status field.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningStatus provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the storageAccount property: ARM Resource Id of the storage account associated with this workspace.
-     *
-     * @return the storageAccount value.
-     */
-    public String storageAccount() {
-        return this.innerProperties() == null ? null : this.innerProperties().storageAccount();
-    }
-
-    /**
-     * Set the storageAccount property: ARM Resource Id of the storage account associated with this workspace.
-     *
-     * @param storageAccount the storageAccount value to set.
-     * @return the QuantumWorkspaceInner object itself.
-     */
-    public QuantumWorkspaceInner withStorageAccount(String storageAccount) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WorkspaceResourceProperties();
-        }
-        this.innerProperties().withStorageAccount(storageAccount);
-        return this;
-    }
-
-    /**
-     * Get the endpointUri property: The URI of the workspace endpoint.
-     *
-     * @return the endpointUri value.
-     */
-    public String endpointUri() {
-        return this.innerProperties() == null ? null : this.innerProperties().endpointUri();
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuantumWorkspaceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuantumWorkspaceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QuantumWorkspaceInner.
+     */
+    public static QuantumWorkspaceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuantumWorkspaceInner deserializedQuantumWorkspaceInner = new QuantumWorkspaceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedQuantumWorkspaceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedQuantumWorkspaceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedQuantumWorkspaceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedQuantumWorkspaceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedQuantumWorkspaceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedQuantumWorkspaceInner.properties = WorkspaceResourceProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedQuantumWorkspaceInner.identity = QuantumWorkspaceIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedQuantumWorkspaceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuantumWorkspaceInner;
+        });
     }
 }

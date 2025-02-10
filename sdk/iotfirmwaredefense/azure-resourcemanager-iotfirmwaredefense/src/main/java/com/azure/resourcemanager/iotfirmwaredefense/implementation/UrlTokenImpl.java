@@ -12,8 +12,7 @@ public final class UrlTokenImpl implements UrlToken {
 
     private final com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager serviceManager;
 
-    UrlTokenImpl(
-        UrlTokenInner innerObject,
+    UrlTokenImpl(UrlTokenInner innerObject,
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -21,10 +20,6 @@ public final class UrlTokenImpl implements UrlToken {
 
     public String url() {
         return this.innerModel().url();
-    }
-
-    public String uploadUrl() {
-        return this.innerModel().uploadUrl();
     }
 
     public UrlTokenInner innerModel() {

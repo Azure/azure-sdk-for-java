@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class CloudServicesDeleteInstancesSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
      * CloudServiceRoleInstance_Delete_ByCloudService.json
      */
     /**
@@ -23,8 +23,12 @@ public final class CloudServicesDeleteInstancesSamples {
      */
     public static void
         deleteCloudServiceRoleInstancesInACloudService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServices().deleteInstances("ConstosoRG", "{cs-name}",
-            new RoleInstances().withRoleInstances(Arrays.asList("ContosoFrontend_IN_0", "ContosoBackend_IN_1")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServices()
+            .deleteInstances("ConstosoRG", "{cs-name}",
+                new RoleInstances().withRoleInstances(Arrays.asList("ContosoFrontend_IN_0", "ContosoBackend_IN_1")),
+                com.azure.core.util.Context.NONE);
     }
 }

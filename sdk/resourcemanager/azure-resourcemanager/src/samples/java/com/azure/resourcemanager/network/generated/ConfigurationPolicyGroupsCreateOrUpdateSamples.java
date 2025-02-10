@@ -15,7 +15,7 @@ import java.util.Arrays;
 public final class ConfigurationPolicyGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/ConfigurationPolicyGroupPut.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/ConfigurationPolicyGroupPut.
      * json
      */
     /**
@@ -24,16 +24,20 @@ public final class ConfigurationPolicyGroupsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void configurationPolicyGroupPut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getConfigurationPolicyGroups().createOrUpdate("rg1",
-            "vpnServerConfiguration1", "policyGroup1",
-            new VpnServerConfigurationPolicyGroupInner().withIsDefault(true).withPriority(0)
-                .withPolicyMembers(Arrays.asList(
-                    new VpnServerConfigurationPolicyGroupMember().withName("policy1")
-                        .withAttributeType(VpnPolicyMemberAttributeType.RADIUS_AZURE_GROUP_ID)
-                        .withAttributeValue("6ad1bd08"),
-                    new VpnServerConfigurationPolicyGroupMember().withName("policy2")
-                        .withAttributeType(VpnPolicyMemberAttributeType.CERTIFICATE_GROUP_ID)
-                        .withAttributeValue("red.com"))),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getConfigurationPolicyGroups()
+            .createOrUpdate("rg1", "vpnServerConfiguration1", "policyGroup1",
+                new VpnServerConfigurationPolicyGroupInner().withIsDefault(true)
+                    .withPriority(0)
+                    .withPolicyMembers(Arrays.asList(
+                        new VpnServerConfigurationPolicyGroupMember().withName("policy1")
+                            .withAttributeType(VpnPolicyMemberAttributeType.RADIUS_AZURE_GROUP_ID)
+                            .withAttributeValue("6ad1bd08"),
+                        new VpnServerConfigurationPolicyGroupMember().withName("policy2")
+                            .withAttributeType(VpnPolicyMemberAttributeType.CERTIFICATE_GROUP_ID)
+                            .withAttributeValue("red.com"))),
+                com.azure.core.util.Context.NONE);
     }
 }

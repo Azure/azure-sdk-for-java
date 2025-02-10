@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayKeysContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayKeysContractInner model =
-            BinaryData
-                .fromString("{\"primary\":\"owl\",\"secondary\":\"ouwhldxwhie\"}")
-                .toObject(GatewayKeysContractInner.class);
+        GatewayKeysContractInner model = BinaryData.fromString("{\"primary\":\"owl\",\"secondary\":\"ouwhldxwhie\"}")
+            .toObject(GatewayKeysContractInner.class);
         Assertions.assertEquals("owl", model.primary());
         Assertions.assertEquals("ouwhldxwhie", model.secondary());
     }

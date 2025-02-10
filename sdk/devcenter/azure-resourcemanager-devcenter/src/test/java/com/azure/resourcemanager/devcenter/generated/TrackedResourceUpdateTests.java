@@ -13,21 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class TrackedResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrackedResourceUpdate model =
-            BinaryData
-                .fromString("{\"tags\":{\"kfo\":\"psqucmpoyf\"},\"location\":\"nygj\"}")
+        TrackedResourceUpdate model
+            = BinaryData.fromString("{\"tags\":{\"jzyflu\":\"deupewnwrei\"},\"location\":\"rh\"}")
                 .toObject(TrackedResourceUpdate.class);
-        Assertions.assertEquals("psqucmpoyf", model.tags().get("kfo"));
-        Assertions.assertEquals("nygj", model.location());
+        Assertions.assertEquals("deupewnwrei", model.tags().get("jzyflu"));
+        Assertions.assertEquals("rh", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrackedResourceUpdate model =
-            new TrackedResourceUpdate().withTags(mapOf("kfo", "psqucmpoyf")).withLocation("nygj");
+        TrackedResourceUpdate model
+            = new TrackedResourceUpdate().withTags(mapOf("jzyflu", "deupewnwrei")).withLocation("rh");
         model = BinaryData.fromObject(model).toObject(TrackedResourceUpdate.class);
-        Assertions.assertEquals("psqucmpoyf", model.tags().get("kfo"));
-        Assertions.assertEquals("nygj", model.location());
+        Assertions.assertEquals("deupewnwrei", model.tags().get("jzyflu"));
+        Assertions.assertEquals("rh", model.location());
     }
 
     // Use "Map.of" if available

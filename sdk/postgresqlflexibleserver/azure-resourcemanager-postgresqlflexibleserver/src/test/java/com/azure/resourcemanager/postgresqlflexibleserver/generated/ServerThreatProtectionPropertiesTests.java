@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerThreatProtectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerThreatProtectionProperties model =
-            BinaryData
-                .fromString("{\"state\":\"Disabled\",\"creationTime\":\"2021-06-28T20:11:56Z\"}")
+        ServerThreatProtectionProperties model
+            = BinaryData.fromString("{\"state\":\"Enabled\",\"creationTime\":\"2021-06-25T00:23:13Z\"}")
                 .toObject(ServerThreatProtectionProperties.class);
-        Assertions.assertEquals(ThreatProtectionState.DISABLED, model.state());
+        Assertions.assertEquals(ThreatProtectionState.ENABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerThreatProtectionProperties model =
-            new ServerThreatProtectionProperties().withState(ThreatProtectionState.DISABLED);
+        ServerThreatProtectionProperties model
+            = new ServerThreatProtectionProperties().withState(ThreatProtectionState.ENABLED);
         model = BinaryData.fromObject(model).toObject(ServerThreatProtectionProperties.class);
-        Assertions.assertEquals(ThreatProtectionState.DISABLED, model.state());
+        Assertions.assertEquals(ThreatProtectionState.ENABLED, model.state());
     }
 }

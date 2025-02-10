@@ -5,28 +5,30 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A representation of a single polygon point as used by the Azure grounding enhancement.
  */
 @Immutable
-public final class AzureGroundingEnhancementCoordinatePoint {
+public final class AzureGroundingEnhancementCoordinatePoint
+    implements JsonSerializable<AzureGroundingEnhancementCoordinatePoint> {
 
     /*
      * The x-coordinate (horizontal axis) of the point.
      */
     @Generated
-    @JsonProperty(value = "x")
-    private double x;
+    private final double x;
 
     /*
      * The y-coordinate (vertical axis) of the point.
      */
     @Generated
-    @JsonProperty(value = "y")
-    private double y;
+    private final double y;
 
     /**
      * Creates an instance of AzureGroundingEnhancementCoordinatePoint class.
@@ -35,9 +37,7 @@ public final class AzureGroundingEnhancementCoordinatePoint {
      * @param y the y value to set.
      */
     @Generated
-    @JsonCreator
-    private AzureGroundingEnhancementCoordinatePoint(@JsonProperty(value = "x") double x,
-        @JsonProperty(value = "y") double y) {
+    private AzureGroundingEnhancementCoordinatePoint(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -60,5 +60,46 @@ public final class AzureGroundingEnhancementCoordinatePoint {
     @Generated
     public double getY() {
         return this.y;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeDoubleField("x", this.x);
+        jsonWriter.writeDoubleField("y", this.y);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureGroundingEnhancementCoordinatePoint from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureGroundingEnhancementCoordinatePoint if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureGroundingEnhancementCoordinatePoint.
+     */
+    @Generated
+    public static AzureGroundingEnhancementCoordinatePoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            double x = 0.0;
+            double y = 0.0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("x".equals(fieldName)) {
+                    x = reader.getDouble();
+                } else if ("y".equals(fieldName)) {
+                    y = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new AzureGroundingEnhancementCoordinatePoint(x, y);
+        });
     }
 }

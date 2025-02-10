@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents an OpenShift router.
  */
 @Fluent
-public final class OpenShiftRouterProfile {
+public final class OpenShiftRouterProfile implements JsonSerializable<OpenShiftRouterProfile> {
     /*
      * Name of the router profile.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * DNS subdomain for OpenShift router.
      */
-    @JsonProperty(value = "publicSubdomain", access = JsonProperty.Access.WRITE_ONLY)
     private String publicSubdomain;
 
     /*
      * Auto-allocated FQDN for the OpenShift router.
      */
-    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /**
@@ -38,7 +39,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Get the name property: Name of the router profile.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -47,7 +48,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Set the name property: Name of the router profile.
-     *
+     * 
      * @param name the name value to set.
      * @return the OpenShiftRouterProfile object itself.
      */
@@ -58,7 +59,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Get the publicSubdomain property: DNS subdomain for OpenShift router.
-     *
+     * 
      * @return the publicSubdomain value.
      */
     public String publicSubdomain() {
@@ -67,7 +68,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Get the fqdn property: Auto-allocated FQDN for the OpenShift router.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -76,9 +77,49 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OpenShiftRouterProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OpenShiftRouterProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OpenShiftRouterProfile.
+     */
+    public static OpenShiftRouterProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OpenShiftRouterProfile deserializedOpenShiftRouterProfile = new OpenShiftRouterProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOpenShiftRouterProfile.name = reader.getString();
+                } else if ("publicSubdomain".equals(fieldName)) {
+                    deserializedOpenShiftRouterProfile.publicSubdomain = reader.getString();
+                } else if ("fqdn".equals(fieldName)) {
+                    deserializedOpenShiftRouterProfile.fqdn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOpenShiftRouterProfile;
+        });
     }
 }

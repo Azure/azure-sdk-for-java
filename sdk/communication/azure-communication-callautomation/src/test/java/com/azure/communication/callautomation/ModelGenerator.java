@@ -8,19 +8,17 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
 
-
 public class ModelGenerator {
     static CommunicationIdentifierModel generateUserIdentifierModel(String userId) {
-        return new CommunicationIdentifierModel()
-            .setRawId("rawId")
+        return new CommunicationIdentifierModel().setRawId("rawId")
             .setKind(CommunicationIdentifierModelKind.COMMUNICATION_USER)
-            .setCommunicationUser(new CommunicationUserIdentifierModel()
-                .setId(userId));
+            .setCommunicationUser(new CommunicationUserIdentifierModel().setId(userId));
     }
 
-    static CallParticipantInternal generateAcsCallParticipantInternal(String callerId, boolean isMuted) {
-        return new CallParticipantInternal()
-            .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId))
-            .setIsMuted(isMuted);
+    static CallParticipantInternal generateAcsCallParticipantInternal(String callerId, boolean isMuted,
+        boolean isHold) {
+        return new CallParticipantInternal().setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId))
+            .setIsMuted(isMuted)
+            .setIsOnHold(isHold);
     }
 }

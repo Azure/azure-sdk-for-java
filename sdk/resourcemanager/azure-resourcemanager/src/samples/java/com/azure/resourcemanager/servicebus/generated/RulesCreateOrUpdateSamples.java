@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.servicebus.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicebus.fluent.models.RuleInner;
 import com.azure.resourcemanager.servicebus.models.CorrelationFilter;
 import com.azure.resourcemanager.servicebus.models.FilterType;
@@ -12,84 +11,73 @@ import com.azure.resourcemanager.servicebus.models.SqlFilter;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Rules CreateOrUpdate. */
+/**
+ * Samples for Rules CreateOrUpdate.
+ */
 public final class RulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Rules/RuleCreate_CorrelationFilter.json
+     * x-ms-original-file:
+     * specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Rules/
+     * RuleCreate_CorrelationFilter.json
      */
     /**
      * Sample code: RulesCreateCorrelationFilter.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void rulesCreateCorrelationFilter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .serviceBusNamespaces()
+        azure.serviceBusNamespaces()
             .manager()
             .serviceClient()
             .getRules()
-            .createOrUpdateWithResponse(
-                "resourceGroupName",
-                "sdk-Namespace-1319",
-                "sdk-Topics-2081",
-                "sdk-Subscriptions-8691",
-                "sdk-Rules-6571",
-                new RuleInner()
-                    .withFilterType(FilterType.CORRELATION_FILTER)
+            .createOrUpdateWithResponse("resourceGroupName", "sdk-Namespace-1319", "sdk-Topics-2081",
+                "sdk-Subscriptions-8691", "sdk-Rules-6571",
+                new RuleInner().withFilterType(FilterType.CORRELATION_FILTER)
                     .withCorrelationFilter(new CorrelationFilter().withProperties(mapOf("topicHint", "Crop"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Rules/RuleCreate.json
+     * x-ms-original-file:
+     * specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Rules/RuleCreate.json
      */
     /**
      * Sample code: RulesCreateOrUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void rulesCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .serviceBusNamespaces()
+        azure.serviceBusNamespaces()
             .manager()
             .serviceClient()
             .getRules()
-            .createOrUpdateWithResponse(
-                "resourceGroupName",
-                "sdk-Namespace-1319",
-                "sdk-Topics-2081",
-                "sdk-Subscriptions-8691",
-                "sdk-Rules-6571",
-                new RuleInner(),
-                Context.NONE);
+            .createOrUpdateWithResponse("resourceGroupName", "sdk-Namespace-1319", "sdk-Topics-2081",
+                "sdk-Subscriptions-8691", "sdk-Rules-6571", new RuleInner(), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Rules/RuleCreate_SqlFilter.json
+     * x-ms-original-file:
+     * specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Rules/
+     * RuleCreate_SqlFilter.json
      */
     /**
      * Sample code: RulesCreateSqlFilter.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void rulesCreateSqlFilter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .serviceBusNamespaces()
+        azure.serviceBusNamespaces()
             .manager()
             .serviceClient()
             .getRules()
-            .createOrUpdateWithResponse(
-                "resourceGroupName",
-                "sdk-Namespace-1319",
-                "sdk-Topics-2081",
-                "sdk-Subscriptions-8691",
-                "sdk-Rules-6571",
-                new RuleInner()
-                    .withFilterType(FilterType.SQL_FILTER)
+            .createOrUpdateWithResponse("resourceGroupName", "sdk-Namespace-1319", "sdk-Topics-2081",
+                "sdk-Subscriptions-8691", "sdk-Rules-6571",
+                new RuleInner().withFilterType(FilterType.SQL_FILTER)
                     .withSqlFilter(new SqlFilter().withSqlExpression("myproperty=test")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -12,20 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PlannedFailoverInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlannedFailoverInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"failoverDirection\":\"qyzhf\",\"providerSpecificDetails\":{\"instanceType\":\"PlannedFailoverProviderSpecificFailoverInput\"}}")
-                .toObject(PlannedFailoverInputProperties.class);
+        PlannedFailoverInputProperties model = BinaryData.fromString(
+            "{\"failoverDirection\":\"qyzhf\",\"providerSpecificDetails\":{\"instanceType\":\"PlannedFailoverProviderSpecificFailoverInput\"}}")
+            .toObject(PlannedFailoverInputProperties.class);
         Assertions.assertEquals("qyzhf", model.failoverDirection());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlannedFailoverInputProperties model =
-            new PlannedFailoverInputProperties()
-                .withFailoverDirection("qyzhf")
-                .withProviderSpecificDetails(new PlannedFailoverProviderSpecificFailoverInput());
+        PlannedFailoverInputProperties model = new PlannedFailoverInputProperties().withFailoverDirection("qyzhf")
+            .withProviderSpecificDetails(new PlannedFailoverProviderSpecificFailoverInput());
         model = BinaryData.fromObject(model).toObject(PlannedFailoverInputProperties.class);
         Assertions.assertEquals("qyzhf", model.failoverDirection());
     }

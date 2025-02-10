@@ -10,7 +10,7 @@ package com.azure.resourcemanager.confluent.generated;
 public final class OrganizationGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Get.json
+     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Get.json
      */
     /**
      * Sample code: Organization_Get.
@@ -18,7 +18,7 @@ public final class OrganizationGetByResourceGroupSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void organizationGet(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.organizations().getByResourceGroupWithResponse("myResourceGroup", "myOrganization",
-            com.azure.core.util.Context.NONE);
+        manager.organizations()
+            .getByResourceGroupWithResponse("myResourceGroup", "myOrganization", com.azure.core.util.Context.NONE);
     }
 }

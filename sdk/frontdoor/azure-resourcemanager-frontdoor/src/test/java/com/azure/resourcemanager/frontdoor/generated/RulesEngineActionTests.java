@@ -15,56 +15,37 @@ import org.junit.jupiter.api.Assertions;
 public final class RulesEngineActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RulesEngineAction model =
-            BinaryData
-                .fromString(
-                    "{\"requestHeaderActions\":[{\"headerActionType\":\"Delete\",\"headerName\":\"beldawkzbaliourq\",\"value\":\"kauhashsfwxo\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"w\",\"value\":\"cugicjoox\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Delete\",\"headerName\":\"wpucwwfvovbv\",\"value\":\"uecivyhz\"},{\"headerActionType\":\"Append\",\"headerName\":\"uojgj\",\"value\":\"jueiotwmcdytd\"},{\"headerActionType\":\"Append\",\"headerName\":\"it\",\"value\":\"rjaw\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}}")
-                .toObject(RulesEngineAction.class);
-        Assertions.assertEquals(HeaderActionType.DELETE, model.requestHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("beldawkzbaliourq", model.requestHeaderActions().get(0).headerName());
-        Assertions.assertEquals("kauhashsfwxo", model.requestHeaderActions().get(0).value());
+        RulesEngineAction model = BinaryData.fromString(
+            "{\"requestHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"noigbrnjwmwk\",\"value\":\"bsazejjoqka\"},{\"headerActionType\":\"Delete\",\"headerName\":\"hsxttaugzxnf\",\"value\":\"zpxdt\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Delete\",\"headerName\":\"kqjjlwuenvrkp\",\"value\":\"uaibrebqaaysj\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}}")
+            .toObject(RulesEngineAction.class);
+        Assertions.assertEquals(HeaderActionType.OVERWRITE, model.requestHeaderActions().get(0).headerActionType());
+        Assertions.assertEquals("noigbrnjwmwk", model.requestHeaderActions().get(0).headerName());
+        Assertions.assertEquals("bsazejjoqka", model.requestHeaderActions().get(0).value());
         Assertions.assertEquals(HeaderActionType.DELETE, model.responseHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("wpucwwfvovbv", model.responseHeaderActions().get(0).headerName());
-        Assertions.assertEquals("uecivyhz", model.responseHeaderActions().get(0).value());
+        Assertions.assertEquals("kqjjlwuenvrkp", model.responseHeaderActions().get(0).headerName());
+        Assertions.assertEquals("uaibrebqaaysj", model.responseHeaderActions().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulesEngineAction model =
-            new RulesEngineAction()
-                .withRequestHeaderActions(
-                    Arrays
-                        .asList(
-                            new HeaderAction()
-                                .withHeaderActionType(HeaderActionType.DELETE)
-                                .withHeaderName("beldawkzbaliourq")
-                                .withValue("kauhashsfwxo"),
-                            new HeaderAction()
-                                .withHeaderActionType(HeaderActionType.OVERWRITE)
-                                .withHeaderName("w")
-                                .withValue("cugicjoox")))
-                .withResponseHeaderActions(
-                    Arrays
-                        .asList(
-                            new HeaderAction()
-                                .withHeaderActionType(HeaderActionType.DELETE)
-                                .withHeaderName("wpucwwfvovbv")
-                                .withValue("uecivyhz"),
-                            new HeaderAction()
-                                .withHeaderActionType(HeaderActionType.APPEND)
-                                .withHeaderName("uojgj")
-                                .withValue("jueiotwmcdytd"),
-                            new HeaderAction()
-                                .withHeaderActionType(HeaderActionType.APPEND)
-                                .withHeaderName("it")
-                                .withValue("rjaw")))
-                .withRouteConfigurationOverride(new RouteConfiguration());
+        RulesEngineAction model = new RulesEngineAction()
+            .withRequestHeaderActions(Arrays.asList(
+                new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE)
+                    .withHeaderName("noigbrnjwmwk")
+                    .withValue("bsazejjoqka"),
+                new HeaderAction().withHeaderActionType(HeaderActionType.DELETE)
+                    .withHeaderName("hsxttaugzxnf")
+                    .withValue("zpxdt")))
+            .withResponseHeaderActions(Arrays.asList(new HeaderAction().withHeaderActionType(HeaderActionType.DELETE)
+                .withHeaderName("kqjjlwuenvrkp")
+                .withValue("uaibrebqaaysj")))
+            .withRouteConfigurationOverride(new RouteConfiguration());
         model = BinaryData.fromObject(model).toObject(RulesEngineAction.class);
-        Assertions.assertEquals(HeaderActionType.DELETE, model.requestHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("beldawkzbaliourq", model.requestHeaderActions().get(0).headerName());
-        Assertions.assertEquals("kauhashsfwxo", model.requestHeaderActions().get(0).value());
+        Assertions.assertEquals(HeaderActionType.OVERWRITE, model.requestHeaderActions().get(0).headerActionType());
+        Assertions.assertEquals("noigbrnjwmwk", model.requestHeaderActions().get(0).headerName());
+        Assertions.assertEquals("bsazejjoqka", model.requestHeaderActions().get(0).value());
         Assertions.assertEquals(HeaderActionType.DELETE, model.responseHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("wpucwwfvovbv", model.responseHeaderActions().get(0).headerName());
-        Assertions.assertEquals("uecivyhz", model.responseHeaderActions().get(0).value());
+        Assertions.assertEquals("kqjjlwuenvrkp", model.responseHeaderActions().get(0).headerName());
+        Assertions.assertEquals("uaibrebqaaysj", model.responseHeaderActions().get(0).value());
     }
 }

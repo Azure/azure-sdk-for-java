@@ -59,7 +59,10 @@ public final class SqlParameter {
      * @return the SqlParameter.
      */
     public SqlParameter setName(String name) {
-        this.jsonSerializable.set("name", name);
+        this.jsonSerializable.set(
+            "name",
+            name
+        );
         return this;
     }
 
@@ -81,7 +84,10 @@ public final class SqlParameter {
      * @return the SqlParameter.
      */
     public SqlParameter setValue(Object value) {
-        this.jsonSerializable.set("value", value);
+        this.jsonSerializable.set(
+            "value",
+            value
+        );
         return this;
     }
 

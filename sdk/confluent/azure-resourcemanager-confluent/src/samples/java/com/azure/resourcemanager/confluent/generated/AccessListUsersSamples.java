@@ -14,7 +14,7 @@ import java.util.Map;
 public final class AccessListUsersSamples {
     /*
      * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Access_UsersList.json
+     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Access_UsersList.json
      */
     /**
      * Sample code: Access_UsersList.
@@ -22,9 +22,9 @@ public final class AccessListUsersSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void accessUsersList(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.access().listUsersWithResponse("myResourceGroup", "myOrganization", new ListAccessRequestModel()
-            .withSearchFilters(mapOf("pageSize", "10", "pageToken", "fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+        manager.access()
+            .listUsersWithResponse("myResourceGroup", "myOrganization", new ListAccessRequestModel().withSearchFilters(
+                mapOf("pageSize", "10", "pageToken", "fakeTokenPlaceholder")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

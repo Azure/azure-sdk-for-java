@@ -12,20 +12,25 @@ import com.azure.resourcemanager.resources.fluent.models.ResourceGroupExportResu
  * An immutable client-side representation of an Azure deployment template export result.
  */
 @Fluent
-public interface ResourceGroupExportResult extends
-        HasInnerModel<ResourceGroupExportResultInner> {
+public interface ResourceGroupExportResult extends HasInnerModel<ResourceGroupExportResultInner> {
 
     /**
+     * Gets the template content.
+     *
      * @return the template content
      */
     Object template();
 
     /**
+     * Gets the template content as a JSON string.
+     *
      * @return the template content as a JSON string
      */
     String templateJson();
 
     /**
+     * Gets the ManagementError.
+     *
      * @return the error, if any.
      */
     ManagementError error();

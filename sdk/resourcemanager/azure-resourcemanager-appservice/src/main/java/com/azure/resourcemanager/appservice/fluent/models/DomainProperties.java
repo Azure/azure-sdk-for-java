@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.Contact;
 import com.azure.resourcemanager.appservice.models.DnsType;
 import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
@@ -13,7 +18,7 @@ import com.azure.resourcemanager.appservice.models.DomainStatus;
 import com.azure.resourcemanager.appservice.models.Hostname;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.ResourceNotRenewableReason;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -21,77 +26,65 @@ import java.util.List;
  * Domain resource specific properties.
  */
 @Fluent
-public final class DomainProperties {
+public final class DomainProperties implements JsonSerializable<DomainProperties> {
     /*
      * Administrative contact.
      */
-    @JsonProperty(value = "contactAdmin", required = true)
     private Contact contactAdmin;
 
     /*
      * Billing contact.
      */
-    @JsonProperty(value = "contactBilling", required = true)
     private Contact contactBilling;
 
     /*
      * Registrant contact.
      */
-    @JsonProperty(value = "contactRegistrant", required = true)
     private Contact contactRegistrant;
 
     /*
      * Technical contact.
      */
-    @JsonProperty(value = "contactTech", required = true)
     private Contact contactTech;
 
     /*
      * Domain registration status.
      */
-    @JsonProperty(value = "registrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DomainStatus registrationStatus;
 
     /*
      * Domain provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Name servers.
      */
-    @JsonProperty(value = "nameServers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> nameServers;
 
     /*
      * <code>true</code> if domain privacy is enabled for this domain; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "privacy")
     private Boolean privacy;
 
     /*
      * Domain creation timestamp.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * Domain expiration timestamp.
      */
-    @JsonProperty(value = "expirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationTime;
 
     /*
      * Timestamp when the domain was renewed last time.
      */
-    @JsonProperty(value = "lastRenewedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastRenewedTime;
 
     /*
      * <code>true</code> if the domain should be automatically renewed; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "autoRenew")
     private Boolean autoRenew;
 
     /*
@@ -99,49 +92,41 @@ public final class DomainProperties {
      * will be <code>true</code> if domain registration status is active and
      * it is hosted on name servers Azure has programmatic access to.
      */
-    @JsonProperty(value = "readyForDnsRecordManagement", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean readyForDnsRecordManagement;
 
     /*
      * All hostnames derived from the domain and assigned to Azure resources.
      */
-    @JsonProperty(value = "managedHostNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<Hostname> managedHostNames;
 
     /*
      * Legal agreement consent.
      */
-    @JsonProperty(value = "consent", required = true)
     private DomainPurchaseConsent consent;
 
     /*
      * Reasons why domain is not renewable.
      */
-    @JsonProperty(value = "domainNotRenewableReasons", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceNotRenewableReason> domainNotRenewableReasons;
 
     /*
      * Current DNS type
      */
-    @JsonProperty(value = "dnsType")
     private DnsType dnsType;
 
     /*
      * Azure DNS Zone to use
      */
-    @JsonProperty(value = "dnsZoneId")
     private String dnsZoneId;
 
     /*
      * Target DNS type (would be used for migration)
      */
-    @JsonProperty(value = "targetDnsType")
     private DnsType targetDnsType;
 
     /*
      * The authCode property.
      */
-    @JsonProperty(value = "authCode")
     private String authCode;
 
     /**
@@ -465,26 +450,28 @@ public final class DomainProperties {
      */
     public void validate() {
         if (contactAdmin() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property contactAdmin in model DomainProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property contactAdmin in model DomainProperties"));
         } else {
             contactAdmin().validate();
         }
         if (contactBilling() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property contactBilling in model DomainProperties"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property contactBilling in model DomainProperties"));
         } else {
             contactBilling().validate();
         }
         if (contactRegistrant() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property contactRegistrant in model DomainProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property contactRegistrant in model DomainProperties"));
         } else {
             contactRegistrant().validate();
         }
         if (contactTech() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property contactTech in model DomainProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property contactTech in model DomainProperties"));
         } else {
             contactTech().validate();
         }
@@ -492,12 +479,105 @@ public final class DomainProperties {
             managedHostNames().forEach(e -> e.validate());
         }
         if (consent() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property consent in model DomainProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property consent in model DomainProperties"));
         } else {
             consent().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DomainProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("contactAdmin", this.contactAdmin);
+        jsonWriter.writeJsonField("contactBilling", this.contactBilling);
+        jsonWriter.writeJsonField("contactRegistrant", this.contactRegistrant);
+        jsonWriter.writeJsonField("contactTech", this.contactTech);
+        jsonWriter.writeJsonField("consent", this.consent);
+        jsonWriter.writeBooleanField("privacy", this.privacy);
+        jsonWriter.writeBooleanField("autoRenew", this.autoRenew);
+        jsonWriter.writeStringField("dnsType", this.dnsType == null ? null : this.dnsType.toString());
+        jsonWriter.writeStringField("dnsZoneId", this.dnsZoneId);
+        jsonWriter.writeStringField("targetDnsType", this.targetDnsType == null ? null : this.targetDnsType.toString());
+        jsonWriter.writeStringField("authCode", this.authCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DomainProperties.
+     */
+    public static DomainProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainProperties deserializedDomainProperties = new DomainProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactAdmin".equals(fieldName)) {
+                    deserializedDomainProperties.contactAdmin = Contact.fromJson(reader);
+                } else if ("contactBilling".equals(fieldName)) {
+                    deserializedDomainProperties.contactBilling = Contact.fromJson(reader);
+                } else if ("contactRegistrant".equals(fieldName)) {
+                    deserializedDomainProperties.contactRegistrant = Contact.fromJson(reader);
+                } else if ("contactTech".equals(fieldName)) {
+                    deserializedDomainProperties.contactTech = Contact.fromJson(reader);
+                } else if ("consent".equals(fieldName)) {
+                    deserializedDomainProperties.consent = DomainPurchaseConsent.fromJson(reader);
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedDomainProperties.registrationStatus = DomainStatus.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDomainProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("nameServers".equals(fieldName)) {
+                    List<String> nameServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDomainProperties.nameServers = nameServers;
+                } else if ("privacy".equals(fieldName)) {
+                    deserializedDomainProperties.privacy = reader.getNullable(JsonReader::getBoolean);
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedDomainProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationTime".equals(fieldName)) {
+                    deserializedDomainProperties.expirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastRenewedTime".equals(fieldName)) {
+                    deserializedDomainProperties.lastRenewedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("autoRenew".equals(fieldName)) {
+                    deserializedDomainProperties.autoRenew = reader.getNullable(JsonReader::getBoolean);
+                } else if ("readyForDnsRecordManagement".equals(fieldName)) {
+                    deserializedDomainProperties.readyForDnsRecordManagement
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("managedHostNames".equals(fieldName)) {
+                    List<Hostname> managedHostNames = reader.readArray(reader1 -> Hostname.fromJson(reader1));
+                    deserializedDomainProperties.managedHostNames = managedHostNames;
+                } else if ("domainNotRenewableReasons".equals(fieldName)) {
+                    List<ResourceNotRenewableReason> domainNotRenewableReasons
+                        = reader.readArray(reader1 -> ResourceNotRenewableReason.fromString(reader1.getString()));
+                    deserializedDomainProperties.domainNotRenewableReasons = domainNotRenewableReasons;
+                } else if ("dnsType".equals(fieldName)) {
+                    deserializedDomainProperties.dnsType = DnsType.fromString(reader.getString());
+                } else if ("dnsZoneId".equals(fieldName)) {
+                    deserializedDomainProperties.dnsZoneId = reader.getString();
+                } else if ("targetDnsType".equals(fieldName)) {
+                    deserializedDomainProperties.targetDnsType = DnsType.fromString(reader.getString());
+                } else if ("authCode".equals(fieldName)) {
+                    deserializedDomainProperties.authCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainProperties;
+        });
+    }
 }

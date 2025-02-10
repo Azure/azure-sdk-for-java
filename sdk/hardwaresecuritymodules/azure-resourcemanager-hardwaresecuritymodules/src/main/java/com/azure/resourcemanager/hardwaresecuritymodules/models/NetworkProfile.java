@@ -5,28 +5,37 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The network profile definition. */
+/**
+ * The network profile definition.
+ */
 @Fluent
-public final class NetworkProfile {
+public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
     /*
      * Specifies the identifier of the subnet.
      */
-    @JsonProperty(value = "subnet")
     private ApiEntityReference subnet;
 
     /*
-     * Specifies the list of resource Ids for the network interfaces associated
-     * with the dedicated HSM.
+     * Specifies the list of resource Ids for the network interfaces associated with the dedicated HSM.
      */
-    @JsonProperty(value = "networkInterfaces")
     private List<NetworkInterface> networkInterfaces;
 
     /**
+     * Creates an instance of NetworkProfile class.
+     */
+    public NetworkProfile() {
+    }
+
+    /**
      * Get the subnet property: Specifies the identifier of the subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public ApiEntityReference subnet() {
@@ -35,7 +44,7 @@ public final class NetworkProfile {
 
     /**
      * Set the subnet property: Specifies the identifier of the subnet.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the NetworkProfile object itself.
      */
@@ -47,7 +56,7 @@ public final class NetworkProfile {
     /**
      * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
      * the dedicated HSM.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterface> networkInterfaces() {
@@ -57,7 +66,7 @@ public final class NetworkProfile {
     /**
      * Set the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
      * the dedicated HSM.
-     *
+     * 
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the NetworkProfile object itself.
      */
@@ -68,7 +77,7 @@ public final class NetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,5 +87,47 @@ public final class NetworkProfile {
         if (networkInterfaces() != null) {
             networkInterfaces().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeArrayField("networkInterfaces", this.networkInterfaces,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkProfile.
+     */
+    public static NetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProfile deserializedNetworkProfile = new NetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnet".equals(fieldName)) {
+                    deserializedNetworkProfile.subnet = ApiEntityReference.fromJson(reader);
+                } else if ("networkInterfaces".equals(fieldName)) {
+                    List<NetworkInterface> networkInterfaces
+                        = reader.readArray(reader1 -> NetworkInterface.fromJson(reader1));
+                    deserializedNetworkProfile.networkInterfaces = networkInterfaces;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProfile;
+        });
     }
 }

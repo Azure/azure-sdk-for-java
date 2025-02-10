@@ -5,73 +5,75 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Failover details for a replication protected item. */
+/**
+ * Failover details for a replication protected item.
+ */
 @Fluent
-public final class FailoverReplicationProtectedItemDetails {
+public final class FailoverReplicationProtectedItemDetails
+    implements JsonSerializable<FailoverReplicationProtectedItemDetails> {
     /*
      * The name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The friendly name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The test Vm name.
      */
-    @JsonProperty(value = "testVmName")
     private String testVmName;
 
     /*
      * The test Vm friendly name.
      */
-    @JsonProperty(value = "testVmFriendlyName")
     private String testVmFriendlyName;
 
     /*
      * The network connection status.
      */
-    @JsonProperty(value = "networkConnectionStatus")
     private String networkConnectionStatus;
 
     /*
      * The network friendly name.
      */
-    @JsonProperty(value = "networkFriendlyName")
     private String networkFriendlyName;
 
     /*
      * The network subnet.
      */
-    @JsonProperty(value = "subnet")
     private String subnet;
 
     /*
      * The recovery point Id.
      */
-    @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
     /*
      * The recovery point time.
      */
-    @JsonProperty(value = "recoveryPointTime")
     private OffsetDateTime recoveryPointTime;
 
-    /** Creates an instance of FailoverReplicationProtectedItemDetails class. */
+    /**
+     * Creates an instance of FailoverReplicationProtectedItemDetails class.
+     */
     public FailoverReplicationProtectedItemDetails() {
     }
 
     /**
      * Get the name property: The name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -80,7 +82,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the name property: The name.
-     *
+     * 
      * @param name the name value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -91,7 +93,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the friendlyName property: The friendly name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -100,7 +102,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the friendlyName property: The friendly name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -111,7 +113,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the testVmName property: The test Vm name.
-     *
+     * 
      * @return the testVmName value.
      */
     public String testVmName() {
@@ -120,7 +122,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the testVmName property: The test Vm name.
-     *
+     * 
      * @param testVmName the testVmName value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -131,7 +133,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the testVmFriendlyName property: The test Vm friendly name.
-     *
+     * 
      * @return the testVmFriendlyName value.
      */
     public String testVmFriendlyName() {
@@ -140,7 +142,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the testVmFriendlyName property: The test Vm friendly name.
-     *
+     * 
      * @param testVmFriendlyName the testVmFriendlyName value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -151,7 +153,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the networkConnectionStatus property: The network connection status.
-     *
+     * 
      * @return the networkConnectionStatus value.
      */
     public String networkConnectionStatus() {
@@ -160,7 +162,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the networkConnectionStatus property: The network connection status.
-     *
+     * 
      * @param networkConnectionStatus the networkConnectionStatus value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -171,7 +173,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the networkFriendlyName property: The network friendly name.
-     *
+     * 
      * @return the networkFriendlyName value.
      */
     public String networkFriendlyName() {
@@ -180,7 +182,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the networkFriendlyName property: The network friendly name.
-     *
+     * 
      * @param networkFriendlyName the networkFriendlyName value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -191,7 +193,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the subnet property: The network subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -200,7 +202,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the subnet property: The network subnet.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -211,7 +213,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -220,7 +222,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -231,7 +233,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the recoveryPointTime property: The recovery point time.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public OffsetDateTime recoveryPointTime() {
@@ -240,7 +242,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the recoveryPointTime property: The recovery point time.
-     *
+     * 
      * @param recoveryPointTime the recoveryPointTime value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -251,9 +253,74 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("testVmName", this.testVmName);
+        jsonWriter.writeStringField("testVmFriendlyName", this.testVmFriendlyName);
+        jsonWriter.writeStringField("networkConnectionStatus", this.networkConnectionStatus);
+        jsonWriter.writeStringField("networkFriendlyName", this.networkFriendlyName);
+        jsonWriter.writeStringField("subnet", this.subnet);
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("recoveryPointTime",
+            this.recoveryPointTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recoveryPointTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailoverReplicationProtectedItemDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailoverReplicationProtectedItemDetails if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FailoverReplicationProtectedItemDetails.
+     */
+    public static FailoverReplicationProtectedItemDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailoverReplicationProtectedItemDetails deserializedFailoverReplicationProtectedItemDetails
+                = new FailoverReplicationProtectedItemDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.name = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.friendlyName = reader.getString();
+                } else if ("testVmName".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.testVmName = reader.getString();
+                } else if ("testVmFriendlyName".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.testVmFriendlyName = reader.getString();
+                } else if ("networkConnectionStatus".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.networkConnectionStatus = reader.getString();
+                } else if ("networkFriendlyName".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.networkFriendlyName = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.subnet = reader.getString();
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.recoveryPointId = reader.getString();
+                } else if ("recoveryPointTime".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.recoveryPointTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailoverReplicationProtectedItemDetails;
+        });
     }
 }

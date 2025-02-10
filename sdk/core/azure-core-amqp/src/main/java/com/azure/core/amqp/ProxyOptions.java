@@ -40,37 +40,40 @@ public class ProxyOptions implements AutoCloseable {
      */
     public static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
 
-    private static final ConfigurationProperty<ProxyAuthenticationType> AUTH_TYPE_PROPERTY =
-        new ConfigurationPropertyBuilder<>(ConfigurationProperties.AMQP_PROXY_AUTHENTICATION_TYPE, s -> ProxyAuthenticationType.valueOf(s))
-            .shared(true)
-            .logValue(true)
-            .defaultValue(ProxyAuthenticationType.NONE)
-            .build();
+    private static final ConfigurationProperty<ProxyAuthenticationType> AUTH_TYPE_PROPERTY
+        = new ConfigurationPropertyBuilder<>(ConfigurationProperties.AMQP_PROXY_AUTHENTICATION_TYPE,
+            s -> ProxyAuthenticationType.valueOf(s)).shared(true)
+                .logValue(true)
+                .defaultValue(ProxyAuthenticationType.NONE)
+                .build();
 
-    private static final ConfigurationProperty<Proxy.Type> TYPE_PROPERTY = new ConfigurationPropertyBuilder<>(ConfigurationProperties.AMQP_PROXY_TYPE, s -> Proxy.Type.valueOf(s))
+    private static final ConfigurationProperty<Proxy.Type> TYPE_PROPERTY
+        = new ConfigurationPropertyBuilder<>(ConfigurationProperties.AMQP_PROXY_TYPE, s -> Proxy.Type.valueOf(s))
             .shared(true)
             .logValue(true)
             .defaultValue(Proxy.Type.HTTP)
             .build();
 
-    private static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.AMQP_PROXY_HOST)
-        .shared(true)
-        .logValue(true)
-        .build();
+    private static final ConfigurationProperty<String> HOST_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.AMQP_PROXY_HOST)
+            .shared(true)
+            .logValue(true)
+            .build();
 
-    private static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.AMQP_PROXY_PORT)
-        .shared(true)
-        .required(true)
-        .build();
+    private static final ConfigurationProperty<Integer> PORT_PROPERTY
+        = ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.AMQP_PROXY_PORT)
+            .shared(true)
+            .required(true)
+            .build();
 
-    private static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.AMQP_PROXY_USER)
-        .shared(true)
-        .logValue(true)
-        .build();
+    private static final ConfigurationProperty<String> USER_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.AMQP_PROXY_USER)
+            .shared(true)
+            .logValue(true)
+            .build();
 
-    private static final ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.AMQP_PROXY_PASSWORD)
-        .shared(true)
-        .build();
+    private static final ConfigurationProperty<String> PASSWORD_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.AMQP_PROXY_PASSWORD).shared(true).build();
 
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
@@ -132,9 +135,7 @@ public class ProxyOptions implements AutoCloseable {
             return SYSTEM_DEFAULTS;
         }
 
-        configuration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         String host = configuration.get(HOST_PROPERTY);
         if (CoreUtils.isNullOrEmpty(host)) {
@@ -218,7 +219,8 @@ public class ProxyOptions implements AutoCloseable {
         }
 
         final String authTypeStr = configuration.get(PROXY_AUTHENTICATION_TYPE);
-        final ProxyAuthenticationType authentication = authTypeStr != null ? ProxyAuthenticationType.valueOf(authTypeStr) : ProxyAuthenticationType.NONE;
+        final ProxyAuthenticationType authentication
+            = authTypeStr != null ? ProxyAuthenticationType.valueOf(authTypeStr) : ProxyAuthenticationType.NONE;
 
         if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
             final String[] hostPort = proxyAddress.split(":");
@@ -231,15 +233,16 @@ public class ProxyOptions implements AutoCloseable {
         } else if (Boolean.parseBoolean(configuration.get("java.net.useSystemProxies"))) {
             // java.net.useSystemProxies needs to be set to true in this scenario.
             // If it is set to false 'ProxyOptions' in azure-core will return null.
-            com.azure.core.http.ProxyOptions httpProxyOptions = com.azure.core.http.ProxyOptions
-                .fromConfiguration(configuration);
+            com.azure.core.http.ProxyOptions httpProxyOptions
+                = com.azure.core.http.ProxyOptions.fromConfiguration(configuration);
             if (httpProxyOptions != null) {
-                return new ProxyOptions(authentication, new Proxy(httpProxyOptions.getType().toProxyType(),
-                    httpProxyOptions.getAddress()), httpProxyOptions.getUsername(), httpProxyOptions.getPassword());
+                return new ProxyOptions(authentication,
+                    new Proxy(httpProxyOptions.getType().toProxyType(), httpProxyOptions.getAddress()),
+                    httpProxyOptions.getUsername(), httpProxyOptions.getPassword());
             }
         }
-        LOGGER.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
-            + "set or was false.");
+        LOGGER.verbose(
+            "'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't " + "set or was false.");
         return ProxyOptions.SYSTEM_DEFAULTS;
     }
 

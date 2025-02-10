@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class VMwareCbtResyncInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareCbtResyncInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"VMwareCbt\",\"skipCbtReset\":\"wgsqufmjxcyoseqc\"}")
+        VMwareCbtResyncInput model
+            = BinaryData.fromString("{\"instanceType\":\"VMwareCbt\",\"skipCbtReset\":\"wgsqufmjxcyoseqc\"}")
                 .toObject(VMwareCbtResyncInput.class);
         Assertions.assertEquals("wgsqufmjxcyoseqc", model.skipCbtReset());
     }

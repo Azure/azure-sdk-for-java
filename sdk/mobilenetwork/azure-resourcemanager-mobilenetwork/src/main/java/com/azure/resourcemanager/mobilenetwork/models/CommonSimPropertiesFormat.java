@@ -6,84 +6,80 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Common SIM properties. */
+/**
+ * Common SIM properties.
+ */
 @Fluent
-public class CommonSimPropertiesFormat {
+public class CommonSimPropertiesFormat implements JsonSerializable<CommonSimPropertiesFormat> {
     /*
      * The provisioning state of the SIM resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The state of the SIM resource.
      */
-    @JsonProperty(value = "simState", access = JsonProperty.Access.WRITE_ONLY)
     private SimState simState;
 
     /*
      * A dictionary of sites to the provisioning state of this SIM on that site.
      */
-    @JsonProperty(value = "siteProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SiteProvisioningState> siteProvisioningState;
 
     /*
      * The international mobile subscriber identity (IMSI) for the SIM.
      */
-    @JsonProperty(value = "internationalMobileSubscriberIdentity", required = true)
     private String internationalMobileSubscriberIdentity;
 
     /*
      * The integrated circuit card ID (ICCID) for the SIM.
      */
-    @JsonProperty(value = "integratedCircuitCardIdentifier")
     private String integratedCircuitCardIdentifier;
 
     /*
      * An optional free-form text field that can be used to record the device type this SIM is associated with, for
      * example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on this value.
      */
-    @JsonProperty(value = "deviceType")
     private String deviceType;
 
     /*
      * The SIM policy used by this SIM. The SIM policy must be in the same location as the SIM.
      */
-    @JsonProperty(value = "simPolicy")
     private SimPolicyResourceId simPolicy;
 
     /*
      * A list of static IP addresses assigned to this SIM. Each address is assigned at a defined network scope, made up
      * of {attached data network, slice}.
      */
-    @JsonProperty(value = "staticIpConfiguration")
     private List<SimStaticIpProperties> staticIpConfiguration;
 
     /*
      * The name of the SIM vendor who provided this SIM, if any.
      */
-    @JsonProperty(value = "vendorName", access = JsonProperty.Access.WRITE_ONLY)
     private String vendorName;
 
     /*
      * The public key fingerprint of the SIM vendor who provided this SIM, if any.
      */
-    @JsonProperty(value = "vendorKeyFingerprint", access = JsonProperty.Access.WRITE_ONLY)
     private String vendorKeyFingerprint;
 
-    /** Creates an instance of CommonSimPropertiesFormat class. */
+    /**
+     * Creates an instance of CommonSimPropertiesFormat class.
+     */
     public CommonSimPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the SIM resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -91,8 +87,19 @@ public class CommonSimPropertiesFormat {
     }
 
     /**
+     * Set the provisioningState property: The provisioning state of the SIM resource.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the CommonSimPropertiesFormat object itself.
+     */
+    CommonSimPropertiesFormat withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the simState property: The state of the SIM resource.
-     *
+     * 
      * @return the simState value.
      */
     public SimState simState() {
@@ -100,8 +107,19 @@ public class CommonSimPropertiesFormat {
     }
 
     /**
+     * Set the simState property: The state of the SIM resource.
+     * 
+     * @param simState the simState value to set.
+     * @return the CommonSimPropertiesFormat object itself.
+     */
+    CommonSimPropertiesFormat withSimState(SimState simState) {
+        this.simState = simState;
+        return this;
+    }
+
+    /**
      * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that site.
-     *
+     * 
      * @return the siteProvisioningState value.
      */
     public Map<String, SiteProvisioningState> siteProvisioningState() {
@@ -109,9 +127,20 @@ public class CommonSimPropertiesFormat {
     }
 
     /**
+     * Set the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that site.
+     * 
+     * @param siteProvisioningState the siteProvisioningState value to set.
+     * @return the CommonSimPropertiesFormat object itself.
+     */
+    CommonSimPropertiesFormat withSiteProvisioningState(Map<String, SiteProvisioningState> siteProvisioningState) {
+        this.siteProvisioningState = siteProvisioningState;
+        return this;
+    }
+
+    /**
      * Get the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
      * the SIM.
-     *
+     * 
      * @return the internationalMobileSubscriberIdentity value.
      */
     public String internationalMobileSubscriberIdentity() {
@@ -121,19 +150,19 @@ public class CommonSimPropertiesFormat {
     /**
      * Set the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
      * the SIM.
-     *
+     * 
      * @param internationalMobileSubscriberIdentity the internationalMobileSubscriberIdentity value to set.
      * @return the CommonSimPropertiesFormat object itself.
      */
-    public CommonSimPropertiesFormat withInternationalMobileSubscriberIdentity(
-        String internationalMobileSubscriberIdentity) {
+    public CommonSimPropertiesFormat
+        withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity) {
         this.internationalMobileSubscriberIdentity = internationalMobileSubscriberIdentity;
         return this;
     }
 
     /**
      * Get the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the SIM.
-     *
+     * 
      * @return the integratedCircuitCardIdentifier value.
      */
     public String integratedCircuitCardIdentifier() {
@@ -142,7 +171,7 @@ public class CommonSimPropertiesFormat {
 
     /**
      * Set the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the SIM.
-     *
+     * 
      * @param integratedCircuitCardIdentifier the integratedCircuitCardIdentifier value to set.
      * @return the CommonSimPropertiesFormat object itself.
      */
@@ -155,7 +184,7 @@ public class CommonSimPropertiesFormat {
      * Get the deviceType property: An optional free-form text field that can be used to record the device type this SIM
      * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
      * this value.
-     *
+     * 
      * @return the deviceType value.
      */
     public String deviceType() {
@@ -166,7 +195,7 @@ public class CommonSimPropertiesFormat {
      * Set the deviceType property: An optional free-form text field that can be used to record the device type this SIM
      * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
      * this value.
-     *
+     * 
      * @param deviceType the deviceType value to set.
      * @return the CommonSimPropertiesFormat object itself.
      */
@@ -178,7 +207,7 @@ public class CommonSimPropertiesFormat {
     /**
      * Get the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same location as the
      * SIM.
-     *
+     * 
      * @return the simPolicy value.
      */
     public SimPolicyResourceId simPolicy() {
@@ -188,7 +217,7 @@ public class CommonSimPropertiesFormat {
     /**
      * Set the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same location as the
      * SIM.
-     *
+     * 
      * @param simPolicy the simPolicy value to set.
      * @return the CommonSimPropertiesFormat object itself.
      */
@@ -200,7 +229,7 @@ public class CommonSimPropertiesFormat {
     /**
      * Get the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each address is
      * assigned at a defined network scope, made up of {attached data network, slice}.
-     *
+     * 
      * @return the staticIpConfiguration value.
      */
     public List<SimStaticIpProperties> staticIpConfiguration() {
@@ -210,7 +239,7 @@ public class CommonSimPropertiesFormat {
     /**
      * Set the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each address is
      * assigned at a defined network scope, made up of {attached data network, slice}.
-     *
+     * 
      * @param staticIpConfiguration the staticIpConfiguration value to set.
      * @return the CommonSimPropertiesFormat object itself.
      */
@@ -221,7 +250,7 @@ public class CommonSimPropertiesFormat {
 
     /**
      * Get the vendorName property: The name of the SIM vendor who provided this SIM, if any.
-     *
+     * 
      * @return the vendorName value.
      */
     public String vendorName() {
@@ -229,9 +258,20 @@ public class CommonSimPropertiesFormat {
     }
 
     /**
+     * Set the vendorName property: The name of the SIM vendor who provided this SIM, if any.
+     * 
+     * @param vendorName the vendorName value to set.
+     * @return the CommonSimPropertiesFormat object itself.
+     */
+    CommonSimPropertiesFormat withVendorName(String vendorName) {
+        this.vendorName = vendorName;
+        return this;
+    }
+
+    /**
      * Get the vendorKeyFingerprint property: The public key fingerprint of the SIM vendor who provided this SIM, if
      * any.
-     *
+     * 
      * @return the vendorKeyFingerprint value.
      */
     public String vendorKeyFingerprint() {
@@ -239,17 +279,27 @@ public class CommonSimPropertiesFormat {
     }
 
     /**
+     * Set the vendorKeyFingerprint property: The public key fingerprint of the SIM vendor who provided this SIM, if
+     * any.
+     * 
+     * @param vendorKeyFingerprint the vendorKeyFingerprint value to set.
+     * @return the CommonSimPropertiesFormat object itself.
+     */
+    CommonSimPropertiesFormat withVendorKeyFingerprint(String vendorKeyFingerprint) {
+        this.vendorKeyFingerprint = vendorKeyFingerprint;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (internationalMobileSubscriberIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property internationalMobileSubscriberIdentity in model"
-                            + " CommonSimPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property internationalMobileSubscriberIdentity in model CommonSimPropertiesFormat"));
         }
         if (simPolicy() != null) {
             simPolicy().validate();
@@ -260,4 +310,70 @@ public class CommonSimPropertiesFormat {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CommonSimPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("internationalMobileSubscriberIdentity",
+            this.internationalMobileSubscriberIdentity);
+        jsonWriter.writeStringField("integratedCircuitCardIdentifier", this.integratedCircuitCardIdentifier);
+        jsonWriter.writeStringField("deviceType", this.deviceType);
+        jsonWriter.writeJsonField("simPolicy", this.simPolicy);
+        jsonWriter.writeArrayField("staticIpConfiguration", this.staticIpConfiguration,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonSimPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonSimPropertiesFormat if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommonSimPropertiesFormat.
+     */
+    public static CommonSimPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommonSimPropertiesFormat deserializedCommonSimPropertiesFormat = new CommonSimPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("internationalMobileSubscriberIdentity".equals(fieldName)) {
+                    deserializedCommonSimPropertiesFormat.internationalMobileSubscriberIdentity = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCommonSimPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("simState".equals(fieldName)) {
+                    deserializedCommonSimPropertiesFormat.simState = SimState.fromString(reader.getString());
+                } else if ("siteProvisioningState".equals(fieldName)) {
+                    Map<String, SiteProvisioningState> siteProvisioningState
+                        = reader.readMap(reader1 -> SiteProvisioningState.fromString(reader1.getString()));
+                    deserializedCommonSimPropertiesFormat.siteProvisioningState = siteProvisioningState;
+                } else if ("integratedCircuitCardIdentifier".equals(fieldName)) {
+                    deserializedCommonSimPropertiesFormat.integratedCircuitCardIdentifier = reader.getString();
+                } else if ("deviceType".equals(fieldName)) {
+                    deserializedCommonSimPropertiesFormat.deviceType = reader.getString();
+                } else if ("simPolicy".equals(fieldName)) {
+                    deserializedCommonSimPropertiesFormat.simPolicy = SimPolicyResourceId.fromJson(reader);
+                } else if ("staticIpConfiguration".equals(fieldName)) {
+                    List<SimStaticIpProperties> staticIpConfiguration
+                        = reader.readArray(reader1 -> SimStaticIpProperties.fromJson(reader1));
+                    deserializedCommonSimPropertiesFormat.staticIpConfiguration = staticIpConfiguration;
+                } else if ("vendorName".equals(fieldName)) {
+                    deserializedCommonSimPropertiesFormat.vendorName = reader.getString();
+                } else if ("vendorKeyFingerprint".equals(fieldName)) {
+                    deserializedCommonSimPropertiesFormat.vendorKeyFingerprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommonSimPropertiesFormat;
+        });
+    }
 }

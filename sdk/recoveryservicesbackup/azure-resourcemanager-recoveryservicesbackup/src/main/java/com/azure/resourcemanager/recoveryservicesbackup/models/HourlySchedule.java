@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The HourlySchedule model. */
+/**
+ * The HourlySchedule model.
+ */
 @Fluent
-public final class HourlySchedule {
+public final class HourlySchedule implements JsonSerializable<HourlySchedule> {
     /*
      * Interval at which backup needs to be triggered. For hourly the value
      * can be 4/6/8/12
      */
-    @JsonProperty(value = "interval")
     private Integer interval;
 
     /*
      * To specify start time of the backup window
      */
-    @JsonProperty(value = "scheduleWindowStartTime")
     private OffsetDateTime scheduleWindowStartTime;
 
     /*
      * To specify duration of the backup window
      */
-    @JsonProperty(value = "scheduleWindowDuration")
     private Integer scheduleWindowDuration;
 
-    /** Creates an instance of HourlySchedule class. */
+    /**
+     * Creates an instance of HourlySchedule class.
+     */
     public HourlySchedule() {
     }
 
     /**
-     * Get the interval property: Interval at which backup needs to be triggered. For hourly the value can be 4/6/8/12.
-     *
+     * Get the interval property: Interval at which backup needs to be triggered. For hourly the value
+     * can be 4/6/8/12.
+     * 
      * @return the interval value.
      */
     public Integer interval() {
@@ -44,8 +52,9 @@ public final class HourlySchedule {
     }
 
     /**
-     * Set the interval property: Interval at which backup needs to be triggered. For hourly the value can be 4/6/8/12.
-     *
+     * Set the interval property: Interval at which backup needs to be triggered. For hourly the value
+     * can be 4/6/8/12.
+     * 
      * @param interval the interval value to set.
      * @return the HourlySchedule object itself.
      */
@@ -56,7 +65,7 @@ public final class HourlySchedule {
 
     /**
      * Get the scheduleWindowStartTime property: To specify start time of the backup window.
-     *
+     * 
      * @return the scheduleWindowStartTime value.
      */
     public OffsetDateTime scheduleWindowStartTime() {
@@ -65,7 +74,7 @@ public final class HourlySchedule {
 
     /**
      * Set the scheduleWindowStartTime property: To specify start time of the backup window.
-     *
+     * 
      * @param scheduleWindowStartTime the scheduleWindowStartTime value to set.
      * @return the HourlySchedule object itself.
      */
@@ -76,7 +85,7 @@ public final class HourlySchedule {
 
     /**
      * Get the scheduleWindowDuration property: To specify duration of the backup window.
-     *
+     * 
      * @return the scheduleWindowDuration value.
      */
     public Integer scheduleWindowDuration() {
@@ -85,7 +94,7 @@ public final class HourlySchedule {
 
     /**
      * Set the scheduleWindowDuration property: To specify duration of the backup window.
-     *
+     * 
      * @param scheduleWindowDuration the scheduleWindowDuration value to set.
      * @return the HourlySchedule object itself.
      */
@@ -96,9 +105,55 @@ public final class HourlySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("interval", this.interval);
+        jsonWriter.writeStringField("scheduleWindowStartTime",
+            this.scheduleWindowStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduleWindowStartTime));
+        jsonWriter.writeNumberField("scheduleWindowDuration", this.scheduleWindowDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HourlySchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HourlySchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HourlySchedule.
+     */
+    public static HourlySchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HourlySchedule deserializedHourlySchedule = new HourlySchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("interval".equals(fieldName)) {
+                    deserializedHourlySchedule.interval = reader.getNullable(JsonReader::getInt);
+                } else if ("scheduleWindowStartTime".equals(fieldName)) {
+                    deserializedHourlySchedule.scheduleWindowStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("scheduleWindowDuration".equals(fieldName)) {
+                    deserializedHourlySchedule.scheduleWindowDuration = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHourlySchedule;
+        });
     }
 }

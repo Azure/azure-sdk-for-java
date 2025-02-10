@@ -5,29 +5,107 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The secret info. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "secretType",
-    defaultImpl = SecretInfoBase.class)
-@JsonTypeName("SecretInfoBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "rawValue", value = ValueSecretInfo.class),
-    @JsonSubTypes.Type(name = "keyVaultSecretReference", value = KeyVaultSecretReferenceSecretInfo.class),
-    @JsonSubTypes.Type(name = "keyVaultSecretUri", value = KeyVaultSecretUriSecretInfo.class)
-})
+/**
+ * The secret info.
+ */
 @Immutable
-public class SecretInfoBase {
+public class SecretInfoBase implements JsonSerializable<SecretInfoBase> {
+    /*
+     * The secret type.
+     */
+    private SecretType secretType = SecretType.fromString("SecretInfoBase");
+
+    /**
+     * Creates an instance of SecretInfoBase class.
+     */
+    public SecretInfoBase() {
+    }
+
+    /**
+     * Get the secretType property: The secret type.
+     * 
+     * @return the secretType value.
+     */
+    public SecretType secretType() {
+        return this.secretType;
+    }
+
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("secretType", this.secretType == null ? null : this.secretType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecretInfoBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecretInfoBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecretInfoBase.
+     */
+    public static SecretInfoBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("secretType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("rawValue".equals(discriminatorValue)) {
+                    return ValueSecretInfo.fromJson(readerToUse.reset());
+                } else if ("keyVaultSecretReference".equals(discriminatorValue)) {
+                    return KeyVaultSecretReferenceSecretInfo.fromJson(readerToUse.reset());
+                } else if ("keyVaultSecretUri".equals(discriminatorValue)) {
+                    return KeyVaultSecretUriSecretInfo.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static SecretInfoBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretInfoBase deserializedSecretInfoBase = new SecretInfoBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secretType".equals(fieldName)) {
+                    deserializedSecretInfoBase.secretType = SecretType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecretInfoBase;
+        });
     }
 }

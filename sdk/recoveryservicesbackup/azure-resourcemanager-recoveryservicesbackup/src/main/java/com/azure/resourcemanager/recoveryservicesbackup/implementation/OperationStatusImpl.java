@@ -16,8 +16,7 @@ public final class OperationStatusImpl implements OperationStatus {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    OperationStatusImpl(
-        OperationStatusInner innerObject,
+    OperationStatusImpl(OperationStatusInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

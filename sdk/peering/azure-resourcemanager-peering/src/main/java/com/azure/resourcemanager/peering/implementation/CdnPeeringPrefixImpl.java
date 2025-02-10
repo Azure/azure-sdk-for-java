@@ -12,8 +12,8 @@ public final class CdnPeeringPrefixImpl implements CdnPeeringPrefix {
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    CdnPeeringPrefixImpl(
-        CdnPeeringPrefixInner innerObject, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    CdnPeeringPrefixImpl(CdnPeeringPrefixInner innerObject,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

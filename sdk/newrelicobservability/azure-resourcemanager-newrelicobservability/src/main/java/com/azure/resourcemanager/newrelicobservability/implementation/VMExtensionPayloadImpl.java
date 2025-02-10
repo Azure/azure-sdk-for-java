@@ -12,8 +12,7 @@ public final class VMExtensionPayloadImpl implements VMExtensionPayload {
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    VMExtensionPayloadImpl(
-        VMExtensionPayloadInner innerObject,
+    VMExtensionPayloadImpl(VMExtensionPayloadInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

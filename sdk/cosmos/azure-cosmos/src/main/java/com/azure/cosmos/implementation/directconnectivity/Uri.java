@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.time.Instant;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Uri {
@@ -19,11 +18,16 @@ public class Uri {
     private static long DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS = 60 * 1000;
     private final String uriAsString;
     private final URI uri;
-    private final AtomicReference<HealthStatus> healthStatus;
+    private final AtomicReference<HealthStatusAndDiagnosticStringTuple> healthStatusTuple;
+
     private volatile Instant lastUnknownTimestamp;
     private volatile Instant lastUnhealthyPendingTimestamp;
     private volatile Instant lastTransitionToUnhealthyTimestamp;
     private volatile boolean isPrimary;
+    public static final String ATTEMPTING = "Attempting";
+    public static final String IGNORING = "Ignoring";
+    private static final String PRIMARY = "P";
+    private static final String SECONDARY = "S";
 
     public static Uri create(String uriAsString) {
         return new Uri(uriAsString);
@@ -39,7 +43,8 @@ public class Uri {
             uriValue = null;
         }
         this.uri = uriValue;
-        this.healthStatus = new AtomicReference<>(HealthStatus.Unknown);
+        this.healthStatusTuple = new AtomicReference<>(
+            new HealthStatusAndDiagnosticStringTuple(uriValue, HealthStatus.Unknown));
         this.lastUnknownTimestamp = Instant.now();
         this.lastUnhealthyPendingTimestamp = null;
         this.lastTransitionToUnhealthyTimestamp = null;
@@ -53,12 +58,12 @@ public class Uri {
         return this.uriAsString;
     }
 
-    /***
-     * Attention: This is only used for fault injection to easier decide whether the address is primary address.
-     * @param primary
-     */
     public void setPrimary(boolean primary) {
         isPrimary = primary;
+        if (primary) {
+            this.healthStatusTuple.updateAndGet(previousStatusTuple ->
+                new HealthStatusAndDiagnosticStringTuple(this.uri, previousStatusTuple.status, true));
+        }
     }
 
     /***
@@ -90,7 +95,7 @@ public class Uri {
      * Unhealthy will change into UnhealthyPending.
      */
     public void setRefreshed() {
-        if (this.healthStatus.get() == HealthStatus.Unhealthy) {
+        if (this.healthStatusTuple.get().status == HealthStatus.Unhealthy) {
             this.setHealthStatus(HealthStatus.UnhealthyPending);
         }
     }
@@ -101,26 +106,26 @@ public class Uri {
      * @param status the health status.
      */
     public void setHealthStatus(HealthStatus status) {
-        this.healthStatus.updateAndGet(previousStatus -> {
+        this.healthStatusTuple.updateAndGet(previousStatusTuple -> {
 
-            HealthStatus newStatus = previousStatus;
+            HealthStatus newStatus = previousStatusTuple.status;
             switch (status) {
                 case Unhealthy:
-                    if (previousStatus != HealthStatus.Unhealthy || this.lastTransitionToUnhealthyTimestamp == null) {
+                    if (previousStatusTuple.status != HealthStatus.Unhealthy || this.lastTransitionToUnhealthyTimestamp == null) {
                         this.lastTransitionToUnhealthyTimestamp = Instant.now();
                     }
                     newStatus = status;
                     break;
 
                 case UnhealthyPending:
-                    if (previousStatus == HealthStatus.Unhealthy || previousStatus == HealthStatus.UnhealthyPending) {
+                    if (previousStatusTuple.status == HealthStatus.Unhealthy || previousStatusTuple.status == HealthStatus.UnhealthyPending) {
                         this.lastUnhealthyPendingTimestamp = Instant.now();
                         newStatus = status;
                     }
                     break;
                 case Connected:
-                    if (previousStatus != HealthStatus.Unhealthy
-                        || (previousStatus == HealthStatus.Unhealthy &&
+                    if (previousStatusTuple.status != HealthStatus.Unhealthy
+                        || (previousStatusTuple.status == HealthStatus.Unhealthy &&
                             Instant.now().compareTo(this.lastTransitionToUnhealthyTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) > 0)) {
                         newStatus = status;
                     }
@@ -135,15 +140,15 @@ public class Uri {
             if (logger.isDebugEnabled()) {
                 logger.debug(
                         "Called setHealthStatus with status [{}]. Result: previousStatus [{}], newStatus [{}]",
-                        status, previousStatus, newStatus);
+                        status, previousStatusTuple, newStatus);
             }
 
-            return newStatus;
+            return new HealthStatusAndDiagnosticStringTuple(this.uri, newStatus, this.isPrimary);
         });
     }
 
     public HealthStatus getHealthStatus() {
-        return this.healthStatus.get();
+        return this.healthStatusTuple.get().status;
     }
 
     /***
@@ -154,7 +159,7 @@ public class Uri {
      * @return
      */
     public HealthStatus getEffectiveHealthStatus() {
-        HealthStatus snapshot = this.healthStatus.get();
+        HealthStatus snapshot = this.healthStatusTuple.get().status;
         switch (snapshot) {
             case Connected:
             case Unhealthy:
@@ -177,12 +182,12 @@ public class Uri {
     }
 
     public boolean shouldRefreshHealthStatus() {
-        return this.healthStatus.get() == HealthStatus.Unhealthy
+        return this.healthStatusTuple.get().status == HealthStatus.Unhealthy
                 && Instant.now().compareTo(this.lastTransitionToUnhealthyTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) >= 0;
     }
 
     public String getHealthStatusDiagnosticString() {
-        return this.uri.getPort() + ":" + this.healthStatus.get().toString();
+        return this.healthStatusTuple.get().diagnosticString;
     }
 
     @Override
@@ -225,6 +230,18 @@ public class Uri {
 
         public int getPriority() {
             return this.priority;
+        }
+    }
+
+    static class HealthStatusAndDiagnosticStringTuple {
+        private String diagnosticString;
+        private final HealthStatus status;
+        public HealthStatusAndDiagnosticStringTuple(URI uri, HealthStatus status) {
+            this(uri, status, false);
+        }
+        public HealthStatusAndDiagnosticStringTuple(URI uri, HealthStatus status, boolean isPrimary) {
+            this.diagnosticString = uri.getPort() + ":" + (isPrimary ? Uri.PRIMARY : Uri.SECONDARY) + ":" + status;
+            this.status = status;
         }
     }
 }

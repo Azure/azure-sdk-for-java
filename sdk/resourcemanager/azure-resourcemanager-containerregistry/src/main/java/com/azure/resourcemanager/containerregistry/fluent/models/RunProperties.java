@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.ImageDescriptor;
 import com.azure.resourcemanager.containerregistry.models.ImageUpdateTrigger;
@@ -14,153 +19,136 @@ import com.azure.resourcemanager.containerregistry.models.RunStatus;
 import com.azure.resourcemanager.containerregistry.models.RunType;
 import com.azure.resourcemanager.containerregistry.models.SourceTriggerDescriptor;
 import com.azure.resourcemanager.containerregistry.models.TimerTriggerDescriptor;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The properties for a run. */
+/**
+ * The properties for a run.
+ */
 @Fluent
-public final class RunProperties {
+public final class RunProperties implements JsonSerializable<RunProperties> {
     /*
      * The unique identifier for the run.
      */
-    @JsonProperty(value = "runId")
     private String runId;
 
     /*
      * The current status of the run.
      */
-    @JsonProperty(value = "status")
     private RunStatus status;
 
     /*
      * The last updated time for the run.
      */
-    @JsonProperty(value = "lastUpdatedTime")
     private OffsetDateTime lastUpdatedTime;
 
     /*
      * The type of run.
      */
-    @JsonProperty(value = "runType")
     private RunType runType;
 
     /*
      * The dedicated agent pool for the run.
      */
-    @JsonProperty(value = "agentPoolName")
     private String agentPoolName;
 
     /*
      * The time the run was scheduled.
      */
-    @JsonProperty(value = "createTime")
     private OffsetDateTime createTime;
 
     /*
      * The time the run started.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The time the run finished.
      */
-    @JsonProperty(value = "finishTime")
     private OffsetDateTime finishTime;
 
     /*
      * The list of all images that were generated from the run. This is applicable if the run generates base image
      * dependencies.
      */
-    @JsonProperty(value = "outputImages")
     private List<ImageDescriptor> outputImages;
 
     /*
      * The task against which run was scheduled.
      */
-    @JsonProperty(value = "task")
     private String task;
 
     /*
      * The image update trigger that caused the run. This is applicable if the task has base image trigger configured.
      */
-    @JsonProperty(value = "imageUpdateTrigger")
     private ImageUpdateTrigger imageUpdateTrigger;
 
     /*
      * The source trigger that caused the run.
      */
-    @JsonProperty(value = "sourceTrigger")
     private SourceTriggerDescriptor sourceTrigger;
 
     /*
      * The timer trigger that caused the run.
      */
-    @JsonProperty(value = "timerTrigger")
     private TimerTriggerDescriptor timerTrigger;
 
     /*
      * The platform properties against which the run will happen.
      */
-    @JsonProperty(value = "platform")
     private PlatformProperties platform;
 
     /*
      * The machine configuration of the run agent.
      */
-    @JsonProperty(value = "agentConfiguration")
     private AgentProperties agentConfiguration;
 
     /*
      * The scope of the credentials that were used to login to the source registry during this run.
      */
-    @JsonProperty(value = "sourceRegistryAuth")
     private String sourceRegistryAuth;
 
     /*
      * The list of custom registries that were logged in during this run.
      */
-    @JsonProperty(value = "customRegistries")
     private List<String> customRegistries;
 
     /*
      * The error message received from backend systems after the run is scheduled.
      */
-    @JsonProperty(value = "runErrorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String runErrorMessage;
 
     /*
      * The update trigger token passed for the Run.
      */
-    @JsonProperty(value = "updateTriggerToken")
     private String updateTriggerToken;
 
     /*
      * The image description for the log artifact.
      */
-    @JsonProperty(value = "logArtifact", access = JsonProperty.Access.WRITE_ONLY)
     private ImageDescriptor logArtifact;
 
     /*
      * The provisioning state of a run.
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /*
      * The value that indicates whether archiving is enabled or not.
      */
-    @JsonProperty(value = "isArchiveEnabled")
     private Boolean isArchiveEnabled;
 
-    /** Creates an instance of RunProperties class. */
+    /**
+     * Creates an instance of RunProperties class.
+     */
     public RunProperties() {
     }
 
     /**
      * Get the runId property: The unique identifier for the run.
-     *
+     * 
      * @return the runId value.
      */
     public String runId() {
@@ -169,7 +157,7 @@ public final class RunProperties {
 
     /**
      * Set the runId property: The unique identifier for the run.
-     *
+     * 
      * @param runId the runId value to set.
      * @return the RunProperties object itself.
      */
@@ -180,7 +168,7 @@ public final class RunProperties {
 
     /**
      * Get the status property: The current status of the run.
-     *
+     * 
      * @return the status value.
      */
     public RunStatus status() {
@@ -189,7 +177,7 @@ public final class RunProperties {
 
     /**
      * Set the status property: The current status of the run.
-     *
+     * 
      * @param status the status value to set.
      * @return the RunProperties object itself.
      */
@@ -200,7 +188,7 @@ public final class RunProperties {
 
     /**
      * Get the lastUpdatedTime property: The last updated time for the run.
-     *
+     * 
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
@@ -209,7 +197,7 @@ public final class RunProperties {
 
     /**
      * Set the lastUpdatedTime property: The last updated time for the run.
-     *
+     * 
      * @param lastUpdatedTime the lastUpdatedTime value to set.
      * @return the RunProperties object itself.
      */
@@ -220,7 +208,7 @@ public final class RunProperties {
 
     /**
      * Get the runType property: The type of run.
-     *
+     * 
      * @return the runType value.
      */
     public RunType runType() {
@@ -229,7 +217,7 @@ public final class RunProperties {
 
     /**
      * Set the runType property: The type of run.
-     *
+     * 
      * @param runType the runType value to set.
      * @return the RunProperties object itself.
      */
@@ -240,7 +228,7 @@ public final class RunProperties {
 
     /**
      * Get the agentPoolName property: The dedicated agent pool for the run.
-     *
+     * 
      * @return the agentPoolName value.
      */
     public String agentPoolName() {
@@ -249,7 +237,7 @@ public final class RunProperties {
 
     /**
      * Set the agentPoolName property: The dedicated agent pool for the run.
-     *
+     * 
      * @param agentPoolName the agentPoolName value to set.
      * @return the RunProperties object itself.
      */
@@ -260,7 +248,7 @@ public final class RunProperties {
 
     /**
      * Get the createTime property: The time the run was scheduled.
-     *
+     * 
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
@@ -269,7 +257,7 @@ public final class RunProperties {
 
     /**
      * Set the createTime property: The time the run was scheduled.
-     *
+     * 
      * @param createTime the createTime value to set.
      * @return the RunProperties object itself.
      */
@@ -280,7 +268,7 @@ public final class RunProperties {
 
     /**
      * Get the startTime property: The time the run started.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -289,7 +277,7 @@ public final class RunProperties {
 
     /**
      * Set the startTime property: The time the run started.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the RunProperties object itself.
      */
@@ -300,7 +288,7 @@ public final class RunProperties {
 
     /**
      * Get the finishTime property: The time the run finished.
-     *
+     * 
      * @return the finishTime value.
      */
     public OffsetDateTime finishTime() {
@@ -309,7 +297,7 @@ public final class RunProperties {
 
     /**
      * Set the finishTime property: The time the run finished.
-     *
+     * 
      * @param finishTime the finishTime value to set.
      * @return the RunProperties object itself.
      */
@@ -321,7 +309,7 @@ public final class RunProperties {
     /**
      * Get the outputImages property: The list of all images that were generated from the run. This is applicable if the
      * run generates base image dependencies.
-     *
+     * 
      * @return the outputImages value.
      */
     public List<ImageDescriptor> outputImages() {
@@ -331,7 +319,7 @@ public final class RunProperties {
     /**
      * Set the outputImages property: The list of all images that were generated from the run. This is applicable if the
      * run generates base image dependencies.
-     *
+     * 
      * @param outputImages the outputImages value to set.
      * @return the RunProperties object itself.
      */
@@ -342,7 +330,7 @@ public final class RunProperties {
 
     /**
      * Get the task property: The task against which run was scheduled.
-     *
+     * 
      * @return the task value.
      */
     public String task() {
@@ -351,7 +339,7 @@ public final class RunProperties {
 
     /**
      * Set the task property: The task against which run was scheduled.
-     *
+     * 
      * @param task the task value to set.
      * @return the RunProperties object itself.
      */
@@ -363,7 +351,7 @@ public final class RunProperties {
     /**
      * Get the imageUpdateTrigger property: The image update trigger that caused the run. This is applicable if the task
      * has base image trigger configured.
-     *
+     * 
      * @return the imageUpdateTrigger value.
      */
     public ImageUpdateTrigger imageUpdateTrigger() {
@@ -373,7 +361,7 @@ public final class RunProperties {
     /**
      * Set the imageUpdateTrigger property: The image update trigger that caused the run. This is applicable if the task
      * has base image trigger configured.
-     *
+     * 
      * @param imageUpdateTrigger the imageUpdateTrigger value to set.
      * @return the RunProperties object itself.
      */
@@ -384,7 +372,7 @@ public final class RunProperties {
 
     /**
      * Get the sourceTrigger property: The source trigger that caused the run.
-     *
+     * 
      * @return the sourceTrigger value.
      */
     public SourceTriggerDescriptor sourceTrigger() {
@@ -393,7 +381,7 @@ public final class RunProperties {
 
     /**
      * Set the sourceTrigger property: The source trigger that caused the run.
-     *
+     * 
      * @param sourceTrigger the sourceTrigger value to set.
      * @return the RunProperties object itself.
      */
@@ -404,7 +392,7 @@ public final class RunProperties {
 
     /**
      * Get the timerTrigger property: The timer trigger that caused the run.
-     *
+     * 
      * @return the timerTrigger value.
      */
     public TimerTriggerDescriptor timerTrigger() {
@@ -413,7 +401,7 @@ public final class RunProperties {
 
     /**
      * Set the timerTrigger property: The timer trigger that caused the run.
-     *
+     * 
      * @param timerTrigger the timerTrigger value to set.
      * @return the RunProperties object itself.
      */
@@ -424,7 +412,7 @@ public final class RunProperties {
 
     /**
      * Get the platform property: The platform properties against which the run will happen.
-     *
+     * 
      * @return the platform value.
      */
     public PlatformProperties platform() {
@@ -433,7 +421,7 @@ public final class RunProperties {
 
     /**
      * Set the platform property: The platform properties against which the run will happen.
-     *
+     * 
      * @param platform the platform value to set.
      * @return the RunProperties object itself.
      */
@@ -444,7 +432,7 @@ public final class RunProperties {
 
     /**
      * Get the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -453,7 +441,7 @@ public final class RunProperties {
 
     /**
      * Set the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the RunProperties object itself.
      */
@@ -465,7 +453,7 @@ public final class RunProperties {
     /**
      * Get the sourceRegistryAuth property: The scope of the credentials that were used to login to the source registry
      * during this run.
-     *
+     * 
      * @return the sourceRegistryAuth value.
      */
     public String sourceRegistryAuth() {
@@ -475,7 +463,7 @@ public final class RunProperties {
     /**
      * Set the sourceRegistryAuth property: The scope of the credentials that were used to login to the source registry
      * during this run.
-     *
+     * 
      * @param sourceRegistryAuth the sourceRegistryAuth value to set.
      * @return the RunProperties object itself.
      */
@@ -486,7 +474,7 @@ public final class RunProperties {
 
     /**
      * Get the customRegistries property: The list of custom registries that were logged in during this run.
-     *
+     * 
      * @return the customRegistries value.
      */
     public List<String> customRegistries() {
@@ -495,7 +483,7 @@ public final class RunProperties {
 
     /**
      * Set the customRegistries property: The list of custom registries that were logged in during this run.
-     *
+     * 
      * @param customRegistries the customRegistries value to set.
      * @return the RunProperties object itself.
      */
@@ -506,7 +494,7 @@ public final class RunProperties {
 
     /**
      * Get the runErrorMessage property: The error message received from backend systems after the run is scheduled.
-     *
+     * 
      * @return the runErrorMessage value.
      */
     public String runErrorMessage() {
@@ -515,7 +503,7 @@ public final class RunProperties {
 
     /**
      * Get the updateTriggerToken property: The update trigger token passed for the Run.
-     *
+     * 
      * @return the updateTriggerToken value.
      */
     public String updateTriggerToken() {
@@ -524,7 +512,7 @@ public final class RunProperties {
 
     /**
      * Set the updateTriggerToken property: The update trigger token passed for the Run.
-     *
+     * 
      * @param updateTriggerToken the updateTriggerToken value to set.
      * @return the RunProperties object itself.
      */
@@ -535,7 +523,7 @@ public final class RunProperties {
 
     /**
      * Get the logArtifact property: The image description for the log artifact.
-     *
+     * 
      * @return the logArtifact value.
      */
     public ImageDescriptor logArtifact() {
@@ -544,7 +532,7 @@ public final class RunProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of a run.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -553,7 +541,7 @@ public final class RunProperties {
 
     /**
      * Set the provisioningState property: The provisioning state of a run.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the RunProperties object itself.
      */
@@ -564,7 +552,7 @@ public final class RunProperties {
 
     /**
      * Get the isArchiveEnabled property: The value that indicates whether archiving is enabled or not.
-     *
+     * 
      * @return the isArchiveEnabled value.
      */
     public Boolean isArchiveEnabled() {
@@ -573,7 +561,7 @@ public final class RunProperties {
 
     /**
      * Set the isArchiveEnabled property: The value that indicates whether archiving is enabled or not.
-     *
+     * 
      * @param isArchiveEnabled the isArchiveEnabled value to set.
      * @return the RunProperties object itself.
      */
@@ -584,7 +572,7 @@ public final class RunProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -609,5 +597,114 @@ public final class RunProperties {
         if (logArtifact() != null) {
             logArtifact().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("runId", this.runId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("lastUpdatedTime",
+            this.lastUpdatedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedTime));
+        jsonWriter.writeStringField("runType", this.runType == null ? null : this.runType.toString());
+        jsonWriter.writeStringField("agentPoolName", this.agentPoolName);
+        jsonWriter.writeStringField("createTime",
+            this.createTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createTime));
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("finishTime",
+            this.finishTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.finishTime));
+        jsonWriter.writeArrayField("outputImages", this.outputImages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("task", this.task);
+        jsonWriter.writeJsonField("imageUpdateTrigger", this.imageUpdateTrigger);
+        jsonWriter.writeJsonField("sourceTrigger", this.sourceTrigger);
+        jsonWriter.writeJsonField("timerTrigger", this.timerTrigger);
+        jsonWriter.writeJsonField("platform", this.platform);
+        jsonWriter.writeJsonField("agentConfiguration", this.agentConfiguration);
+        jsonWriter.writeStringField("sourceRegistryAuth", this.sourceRegistryAuth);
+        jsonWriter.writeArrayField("customRegistries", this.customRegistries,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("updateTriggerToken", this.updateTriggerToken);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeBooleanField("isArchiveEnabled", this.isArchiveEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunProperties.
+     */
+    public static RunProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunProperties deserializedRunProperties = new RunProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runId".equals(fieldName)) {
+                    deserializedRunProperties.runId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedRunProperties.status = RunStatus.fromString(reader.getString());
+                } else if ("lastUpdatedTime".equals(fieldName)) {
+                    deserializedRunProperties.lastUpdatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("runType".equals(fieldName)) {
+                    deserializedRunProperties.runType = RunType.fromString(reader.getString());
+                } else if ("agentPoolName".equals(fieldName)) {
+                    deserializedRunProperties.agentPoolName = reader.getString();
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedRunProperties.createTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedRunProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("finishTime".equals(fieldName)) {
+                    deserializedRunProperties.finishTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("outputImages".equals(fieldName)) {
+                    List<ImageDescriptor> outputImages = reader.readArray(reader1 -> ImageDescriptor.fromJson(reader1));
+                    deserializedRunProperties.outputImages = outputImages;
+                } else if ("task".equals(fieldName)) {
+                    deserializedRunProperties.task = reader.getString();
+                } else if ("imageUpdateTrigger".equals(fieldName)) {
+                    deserializedRunProperties.imageUpdateTrigger = ImageUpdateTrigger.fromJson(reader);
+                } else if ("sourceTrigger".equals(fieldName)) {
+                    deserializedRunProperties.sourceTrigger = SourceTriggerDescriptor.fromJson(reader);
+                } else if ("timerTrigger".equals(fieldName)) {
+                    deserializedRunProperties.timerTrigger = TimerTriggerDescriptor.fromJson(reader);
+                } else if ("platform".equals(fieldName)) {
+                    deserializedRunProperties.platform = PlatformProperties.fromJson(reader);
+                } else if ("agentConfiguration".equals(fieldName)) {
+                    deserializedRunProperties.agentConfiguration = AgentProperties.fromJson(reader);
+                } else if ("sourceRegistryAuth".equals(fieldName)) {
+                    deserializedRunProperties.sourceRegistryAuth = reader.getString();
+                } else if ("customRegistries".equals(fieldName)) {
+                    List<String> customRegistries = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRunProperties.customRegistries = customRegistries;
+                } else if ("runErrorMessage".equals(fieldName)) {
+                    deserializedRunProperties.runErrorMessage = reader.getString();
+                } else if ("updateTriggerToken".equals(fieldName)) {
+                    deserializedRunProperties.updateTriggerToken = reader.getString();
+                } else if ("logArtifact".equals(fieldName)) {
+                    deserializedRunProperties.logArtifact = ImageDescriptor.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRunProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedRunProperties.isArchiveEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunProperties;
+        });
     }
 }

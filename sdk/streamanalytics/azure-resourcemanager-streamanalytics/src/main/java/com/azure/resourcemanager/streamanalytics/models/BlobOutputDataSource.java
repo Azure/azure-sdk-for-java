@@ -5,65 +5,82 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.BlobOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes a blob output data source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.Storage/Blob")
+/**
+ * Describes a blob output data source.
+ */
 @Fluent
 public final class BlobOutputDataSource extends OutputDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobOutputDataSource.class);
+    /*
+     * Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+     */
+    private String type = "Microsoft.Storage/Blob";
 
     /*
-     * The properties that are associated with a blob output. Required on PUT
-     * (CreateOrReplace) requests.
+     * The properties that are associated with a blob output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private BlobOutputDataSourceProperties innerProperties;
+
+    /**
+     * Creates an instance of BlobOutputDataSource class.
+     */
+    public BlobOutputDataSource() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of data source output will be written to. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
 
     /**
      * Get the innerProperties property: The properties that are associated with a blob output. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the innerProperties value.
      */
-    private BlobOutputDataSourceProperties innerProperties() {
+    BlobOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
     /**
-     * Get the authenticationMode property: Authentication Mode.
-     *
-     * @return the authenticationMode value.
+     * Get the blobPathPrefix property: Blob path prefix.
+     * 
+     * @return the blobPathPrefix value.
      */
-    public AuthenticationMode authenticationMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().authenticationMode();
+    public String blobPathPrefix() {
+        return this.innerProperties() == null ? null : this.innerProperties().blobPathPrefix();
     }
 
     /**
-     * Set the authenticationMode property: Authentication Mode.
-     *
-     * @param authenticationMode the authenticationMode value to set.
+     * Set the blobPathPrefix property: Blob path prefix.
+     * 
+     * @param blobPathPrefix the blobPathPrefix value to set.
      * @return the BlobOutputDataSource object itself.
      */
-    public BlobOutputDataSource withAuthenticationMode(AuthenticationMode authenticationMode) {
+    public BlobOutputDataSource withBlobPathPrefix(String blobPathPrefix) {
         if (this.innerProperties() == null) {
             this.innerProperties = new BlobOutputDataSourceProperties();
         }
-        this.innerProperties().withAuthenticationMode(authenticationMode);
+        this.innerProperties().withBlobPathPrefix(blobPathPrefix);
         return this;
     }
 
     /**
      * Get the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @return the storageAccounts value.
      */
     public List<StorageAccount> storageAccounts() {
@@ -73,7 +90,7 @@ public final class BlobOutputDataSource extends OutputDataSource {
     /**
      * Set the storageAccounts property: A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @param storageAccounts the storageAccounts value to set.
      * @return the BlobOutputDataSource object itself.
      */
@@ -88,7 +105,7 @@ public final class BlobOutputDataSource extends OutputDataSource {
     /**
      * Get the container property: The name of a container within the associated Storage account. This container
      * contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the container value.
      */
     public String container() {
@@ -98,7 +115,7 @@ public final class BlobOutputDataSource extends OutputDataSource {
     /**
      * Set the container property: The name of a container within the associated Storage account. This container
      * contains either the blob(s) to be read from or written to. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param container the container value to set.
      * @return the BlobOutputDataSource object itself.
      */
@@ -116,7 +133,7 @@ public final class BlobOutputDataSource extends OutputDataSource {
      * job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
      * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
      * and example.
-     *
+     * 
      * @return the pathPattern value.
      */
     public String pathPattern() {
@@ -129,7 +146,7 @@ public final class BlobOutputDataSource extends OutputDataSource {
      * job. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
      * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a more detailed explanation
      * and example.
-     *
+     * 
      * @param pathPattern the pathPattern value to set.
      * @return the BlobOutputDataSource object itself.
      */
@@ -144,7 +161,7 @@ public final class BlobOutputDataSource extends OutputDataSource {
     /**
      * Get the dateFormat property: The date format. Wherever {date} appears in pathPattern, the value of this property
      * is used as the date format instead.
-     *
+     * 
      * @return the dateFormat value.
      */
     public String dateFormat() {
@@ -154,7 +171,7 @@ public final class BlobOutputDataSource extends OutputDataSource {
     /**
      * Set the dateFormat property: The date format. Wherever {date} appears in pathPattern, the value of this property
      * is used as the date format instead.
-     *
+     * 
      * @param dateFormat the dateFormat value to set.
      * @return the BlobOutputDataSource object itself.
      */
@@ -169,7 +186,7 @@ public final class BlobOutputDataSource extends OutputDataSource {
     /**
      * Get the timeFormat property: The time format. Wherever {time} appears in pathPattern, the value of this property
      * is used as the time format instead.
-     *
+     * 
      * @return the timeFormat value.
      */
     public String timeFormat() {
@@ -179,7 +196,7 @@ public final class BlobOutputDataSource extends OutputDataSource {
     /**
      * Set the timeFormat property: The time format. Wherever {time} appears in pathPattern, the value of this property
      * is used as the time format instead.
-     *
+     * 
      * @param timeFormat the timeFormat value to set.
      * @return the BlobOutputDataSource object itself.
      */
@@ -192,15 +209,76 @@ public final class BlobOutputDataSource extends OutputDataSource {
     }
 
     /**
+     * Get the authenticationMode property: Authentication Mode.
+     * 
+     * @return the authenticationMode value.
+     */
+    public AuthenticationMode authenticationMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationMode();
+    }
+
+    /**
+     * Set the authenticationMode property: Authentication Mode.
+     * 
+     * @param authenticationMode the authenticationMode value to set.
+     * @return the BlobOutputDataSource object itself.
+     */
+    public BlobOutputDataSource withAuthenticationMode(AuthenticationMode authenticationMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BlobOutputDataSourceProperties();
+        }
+        this.innerProperties().withAuthenticationMode(authenticationMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobOutputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobOutputDataSource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BlobOutputDataSource.
+     */
+    public static BlobOutputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobOutputDataSource deserializedBlobOutputDataSource = new BlobOutputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedBlobOutputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBlobOutputDataSource.innerProperties = BlobOutputDataSourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobOutputDataSource;
+        });
     }
 }

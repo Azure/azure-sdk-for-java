@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-/** Samples for AfdOriginGroups ListResourceUsage. */
+/**
+ * Samples for AfdOriginGroups ListResourceUsage.
+ */
 public final class AfdOriginGroupsListResourceUsageSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDOriginGroups_ListResourceUsage.json
+     * x-ms-original-file:
+     * specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/AFDOriginGroups_ListResourceUsage.
+     * json
      */
     /**
      * Sample code: AFDOriginGroups_ListResourceUsage.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void aFDOriginGroupsListResourceUsage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
+        azure.cdnProfiles()
             .manager()
             .serviceClient()
             .getAfdOriginGroups()

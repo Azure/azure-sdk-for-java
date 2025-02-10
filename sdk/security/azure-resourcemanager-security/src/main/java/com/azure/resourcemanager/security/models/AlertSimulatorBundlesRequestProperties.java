@@ -5,29 +5,48 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Simulate alerts according to this bundles. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Bundles")
+/**
+ * Simulate alerts according to this bundles.
+ */
 @Fluent
 public final class AlertSimulatorBundlesRequestProperties extends AlertSimulatorRequestProperties {
     /*
+     * The kind of alert simulation.
+     */
+    private Kind kind = Kind.BUNDLES;
+
+    /*
      * Bundles list.
      */
-    @JsonProperty(value = "bundles")
     private List<BundleType> bundles;
 
-    /** Creates an instance of AlertSimulatorBundlesRequestProperties class. */
+    /**
+     * Creates an instance of AlertSimulatorBundlesRequestProperties class.
+     */
     public AlertSimulatorBundlesRequestProperties() {
     }
 
     /**
+     * Get the kind property: The kind of alert simulation.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public Kind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the bundles property: Bundles list.
-     *
+     * 
      * @return the bundles value.
      */
     public List<BundleType> bundles() {
@@ -36,7 +55,7 @@ public final class AlertSimulatorBundlesRequestProperties extends AlertSimulator
 
     /**
      * Set the bundles property: Bundles list.
-     *
+     * 
      * @param bundles the bundles value to set.
      * @return the AlertSimulatorBundlesRequestProperties object itself.
      */
@@ -47,11 +66,63 @@ public final class AlertSimulatorBundlesRequestProperties extends AlertSimulator
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeArrayField("bundles", this.bundles,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertSimulatorBundlesRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertSimulatorBundlesRequestProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertSimulatorBundlesRequestProperties.
+     */
+    public static AlertSimulatorBundlesRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertSimulatorBundlesRequestProperties deserializedAlertSimulatorBundlesRequestProperties
+                = new AlertSimulatorBundlesRequestProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedAlertSimulatorBundlesRequestProperties.kind = Kind.fromString(reader.getString());
+                } else if ("bundles".equals(fieldName)) {
+                    List<BundleType> bundles = reader.readArray(reader1 -> BundleType.fromString(reader1.getString()));
+                    deserializedAlertSimulatorBundlesRequestProperties.bundles = bundles;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAlertSimulatorBundlesRequestProperties.withAdditionalProperties(additionalProperties);
+
+            return deserializedAlertSimulatorBundlesRequestProperties;
+        });
     }
 }

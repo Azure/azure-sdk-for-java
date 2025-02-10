@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The default consistency level and configuration settings of the Cosmos DB account.
  */
@@ -51,7 +48,6 @@ public enum DefaultConsistencyLevel {
      * @param value the serialized value to parse.
      * @return the parsed DefaultConsistencyLevel object, or null if unable to parse.
      */
-    @JsonCreator
     public static DefaultConsistencyLevel fromString(String value) {
         if (value == null) {
             return null;
@@ -68,7 +64,6 @@ public enum DefaultConsistencyLevel {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

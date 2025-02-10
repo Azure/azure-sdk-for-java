@@ -6,24 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.AzurePostgreSqlLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Azure PostgreSQL linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzurePostgreSql")
 @Fluent
 public final class AzurePostgreSqlLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "AzurePostgreSql";
+
+    /*
      * Azure PostgreSQL linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private AzurePostgreSqlLinkedServiceTypeProperties innerTypeProperties
         = new AzurePostgreSqlLinkedServiceTypeProperties();
 
@@ -34,12 +38,31 @@ public final class AzurePostgreSqlLinkedService extends LinkedService {
     }
 
     /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Azure PostgreSQL linked service properties.
      * 
      * @return the innerTypeProperties value.
      */
     private AzurePostgreSqlLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzurePostgreSqlLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -104,6 +127,271 @@ public final class AzurePostgreSqlLinkedService extends LinkedService {
     }
 
     /**
+     * Get the server property: Server name for connection. Type: string.
+     * 
+     * @return the server value.
+     */
+    public Object server() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().server();
+    }
+
+    /**
+     * Set the server property: Server name for connection. Type: string.
+     * 
+     * @param server the server value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withServer(Object server) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the port property: The port for the connection. Type: integer.
+     * 
+     * @return the port value.
+     */
+    public Object port() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().port();
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer.
+     * 
+     * @param port the port value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withPort(Object port) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPort(port);
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. Type: string.
+     * 
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: Username for authentication. Type: string.
+     * 
+     * @param username the username value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string.
+     * 
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string.
+     * 
+     * @param database the database value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
+     * Get the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4:
+     * verify-ca, 5: verify-full. Type: integer.
+     * 
+     * @return the sslMode value.
+     */
+    public Object sslMode() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sslMode();
+    }
+
+    /**
+     * Set the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4:
+     * verify-ca, 5: verify-full. Type: integer.
+     * 
+     * @param sslMode the sslMode value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withSslMode(Object sslMode) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSslMode(sslMode);
+        return this;
+    }
+
+    /**
+     * Get the timeout property: The time to wait (in seconds) while trying to establish a connection before terminating
+     * the attempt and generating an error. Type: integer.
+     * 
+     * @return the timeout value.
+     */
+    public Object timeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().timeout();
+    }
+
+    /**
+     * Set the timeout property: The time to wait (in seconds) while trying to establish a connection before terminating
+     * the attempt and generating an error. Type: integer.
+     * 
+     * @param timeout the timeout value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withTimeout(Object timeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTimeout(timeout);
+        return this;
+    }
+
+    /**
+     * Get the commandTimeout property: The time to wait (in seconds) while trying to execute a command before
+     * terminating the attempt and generating an error. Set to zero for infinity. Type: integer.
+     * 
+     * @return the commandTimeout value.
+     */
+    public Object commandTimeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().commandTimeout();
+    }
+
+    /**
+     * Set the commandTimeout property: The time to wait (in seconds) while trying to execute a command before
+     * terminating the attempt and generating an error. Set to zero for infinity. Type: integer.
+     * 
+     * @param commandTimeout the commandTimeout value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withCommandTimeout(Object commandTimeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCommandTimeout(commandTimeout);
+        return this;
+    }
+
+    /**
+     * Get the trustServerCertificate property: Whether to trust the server certificate without validating it. Type:
+     * boolean.
+     * 
+     * @return the trustServerCertificate value.
+     */
+    public Object trustServerCertificate() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().trustServerCertificate();
+    }
+
+    /**
+     * Set the trustServerCertificate property: Whether to trust the server certificate without validating it. Type:
+     * boolean.
+     * 
+     * @param trustServerCertificate the trustServerCertificate value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withTrustServerCertificate(Object trustServerCertificate) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTrustServerCertificate(trustServerCertificate);
+        return this;
+    }
+
+    /**
+     * Get the readBufferSize property: Determines the size of the internal buffer uses when reading. Increasing may
+     * improve performance if transferring large values from the database. Type: integer.
+     * 
+     * @return the readBufferSize value.
+     */
+    public Object readBufferSize() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().readBufferSize();
+    }
+
+    /**
+     * Set the readBufferSize property: Determines the size of the internal buffer uses when reading. Increasing may
+     * improve performance if transferring large values from the database. Type: integer.
+     * 
+     * @param readBufferSize the readBufferSize value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withReadBufferSize(Object readBufferSize) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withReadBufferSize(readBufferSize);
+        return this;
+    }
+
+    /**
+     * Get the timezone property: Gets or sets the session timezone. Type: string.
+     * 
+     * @return the timezone value.
+     */
+    public Object timezone() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().timezone();
+    }
+
+    /**
+     * Set the timezone property: Gets or sets the session timezone. Type: string.
+     * 
+     * @param timezone the timezone value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withTimezone(Object timezone) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTimezone(timezone);
+        return this;
+    }
+
+    /**
+     * Get the encoding property: Gets or sets the .NET encoding that will be used to encode/decode PostgreSQL string
+     * data. Type: string.
+     * 
+     * @return the encoding value.
+     */
+    public Object encoding() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encoding();
+    }
+
+    /**
+     * Set the encoding property: Gets or sets the .NET encoding that will be used to encode/decode PostgreSQL string
+     * data. Type: string.
+     * 
+     * @param encoding the encoding value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withEncoding(Object encoding) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncoding(encoding);
+        return this;
+    }
+
+    /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
      * 
      * @return the password value.
@@ -127,8 +415,8 @@ public final class AzurePostgreSqlLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -137,8 +425,8 @@ public final class AzurePostgreSqlLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzurePostgreSqlLinkedService object itself.
@@ -158,14 +446,95 @@ public final class AzurePostgreSqlLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AzurePostgreSqlLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzurePostgreSqlLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzurePostgreSqlLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzurePostgreSqlLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzurePostgreSqlLinkedService if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzurePostgreSqlLinkedService.
+     */
+    public static AzurePostgreSqlLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzurePostgreSqlLinkedService deserializedAzurePostgreSqlLinkedService = new AzurePostgreSqlLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedAzurePostgreSqlLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedAzurePostgreSqlLinkedService
+                        .withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzurePostgreSqlLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAzurePostgreSqlLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAzurePostgreSqlLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedAzurePostgreSqlLinkedService.innerTypeProperties
+                        = AzurePostgreSqlLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzurePostgreSqlLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzurePostgreSqlLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzurePostgreSqlLinkedService;
+        });
+    }
 }

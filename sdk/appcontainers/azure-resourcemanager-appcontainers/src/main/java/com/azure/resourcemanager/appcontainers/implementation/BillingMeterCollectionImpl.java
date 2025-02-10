@@ -15,8 +15,7 @@ public final class BillingMeterCollectionImpl implements BillingMeterCollection 
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    BillingMeterCollectionImpl(
-        BillingMeterCollectionInner innerObject,
+    BillingMeterCollectionImpl(BillingMeterCollectionInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

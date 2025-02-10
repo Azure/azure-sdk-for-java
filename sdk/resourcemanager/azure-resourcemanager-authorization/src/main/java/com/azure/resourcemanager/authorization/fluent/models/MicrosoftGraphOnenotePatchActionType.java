@@ -5,30 +5,41 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** onenotePatchActionType. */
+/**
+ * onenotePatchActionType.
+ */
 public final class MicrosoftGraphOnenotePatchActionType
     extends ExpandableStringEnum<MicrosoftGraphOnenotePatchActionType> {
-    /** Static value Replace for MicrosoftGraphOnenotePatchActionType. */
+    /**
+     * Static value Replace for MicrosoftGraphOnenotePatchActionType.
+     */
     public static final MicrosoftGraphOnenotePatchActionType REPLACE = fromString("Replace");
 
-    /** Static value Append for MicrosoftGraphOnenotePatchActionType. */
+    /**
+     * Static value Append for MicrosoftGraphOnenotePatchActionType.
+     */
     public static final MicrosoftGraphOnenotePatchActionType APPEND = fromString("Append");
 
-    /** Static value Delete for MicrosoftGraphOnenotePatchActionType. */
+    /**
+     * Static value Delete for MicrosoftGraphOnenotePatchActionType.
+     */
     public static final MicrosoftGraphOnenotePatchActionType DELETE = fromString("Delete");
 
-    /** Static value Insert for MicrosoftGraphOnenotePatchActionType. */
+    /**
+     * Static value Insert for MicrosoftGraphOnenotePatchActionType.
+     */
     public static final MicrosoftGraphOnenotePatchActionType INSERT = fromString("Insert");
 
-    /** Static value Prepend for MicrosoftGraphOnenotePatchActionType. */
+    /**
+     * Static value Prepend for MicrosoftGraphOnenotePatchActionType.
+     */
     public static final MicrosoftGraphOnenotePatchActionType PREPEND = fromString("Prepend");
 
     /**
      * Creates a new instance of MicrosoftGraphOnenotePatchActionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,18 +48,17 @@ public final class MicrosoftGraphOnenotePatchActionType
 
     /**
      * Creates or finds a MicrosoftGraphOnenotePatchActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphOnenotePatchActionType.
      */
-    @JsonCreator
     public static MicrosoftGraphOnenotePatchActionType fromString(String name) {
         return fromString(name, MicrosoftGraphOnenotePatchActionType.class);
     }
 
     /**
      * Gets known MicrosoftGraphOnenotePatchActionType values.
-     *
+     * 
      * @return known MicrosoftGraphOnenotePatchActionType values.
      */
     public static Collection<MicrosoftGraphOnenotePatchActionType> values() {

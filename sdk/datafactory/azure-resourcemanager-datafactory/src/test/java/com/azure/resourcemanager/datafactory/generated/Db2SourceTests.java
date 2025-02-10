@@ -11,15 +11,19 @@ public final class Db2SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Db2Source model = BinaryData.fromString(
-            "{\"type\":\"Db2Source\",\"query\":\"dataoknvyilhoso\",\"queryTimeout\":\"dataioxgsrhxoyrg\",\"additionalColumns\":\"datatcctmzg\",\"sourceRetryCount\":\"dataplqhbra\",\"sourceRetryWait\":\"datakdep\",\"maxConcurrentConnections\":\"dataufyqcqfouhyeyxg\",\"disableMetricsCollection\":\"datagochpxpswp\",\"\":{\"ozr\":\"datai\"}}")
+            "{\"type\":\"Db2Source\",\"query\":\"dataqyllcckgfo\",\"queryTimeout\":\"datarbfyjmenq\",\"additionalColumns\":\"datajfxqtvsfsvqy\",\"sourceRetryCount\":\"dataaweixnoblazwhda\",\"sourceRetryWait\":\"dataixfdu\",\"maxConcurrentConnections\":\"datas\",\"disableMetricsCollection\":\"dataitpcsmax\",\"\":{\"a\":\"dataubhmiuxypvua\"}}")
             .toObject(Db2Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Db2Source model = new Db2Source().withSourceRetryCount("dataplqhbra").withSourceRetryWait("datakdep")
-            .withMaxConcurrentConnections("dataufyqcqfouhyeyxg").withDisableMetricsCollection("datagochpxpswp")
-            .withQueryTimeout("dataioxgsrhxoyrg").withAdditionalColumns("datatcctmzg").withQuery("dataoknvyilhoso");
+        Db2Source model = new Db2Source().withSourceRetryCount("dataaweixnoblazwhda")
+            .withSourceRetryWait("dataixfdu")
+            .withMaxConcurrentConnections("datas")
+            .withDisableMetricsCollection("dataitpcsmax")
+            .withQueryTimeout("datarbfyjmenq")
+            .withAdditionalColumns("datajfxqtvsfsvqy")
+            .withQuery("dataqyllcckgfo");
         model = BinaryData.fromObject(model).toObject(Db2Source.class);
     }
 }

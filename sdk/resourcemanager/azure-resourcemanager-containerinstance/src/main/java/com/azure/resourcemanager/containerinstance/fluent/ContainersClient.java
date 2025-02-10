@@ -14,35 +14,37 @@ import com.azure.resourcemanager.containerinstance.fluent.models.LogsInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ContainersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContainersClient.
+ */
 public interface ContainersClient {
     /**
      * Get the logs for a specified container instance.
-     *
-     * <p>Get the logs for a specified container instance in a specified resource group and container group.
-     *
+     * 
+     * Get the logs for a specified container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
-     *     available logs are shown up to 4mb.
+     * available logs are shown up to 4mb.
      * @param timestamps If true, adds a timestamp at the beginning of every line of log output. If not provided,
-     *     defaults to false.
+     * defaults to false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the logs for a specified container instance in a specified resource group and container group along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LogsInner>> listLogsWithResponseAsync(
-        String resourceGroupName, String containerGroupName, String containerName, Integer tail, Boolean timestamps);
+    Mono<Response<LogsInner>> listLogsWithResponseAsync(String resourceGroupName, String containerGroupName,
+        String containerName, Integer tail, Boolean timestamps);
 
     /**
      * Get the logs for a specified container instance.
-     *
-     * <p>Get the logs for a specified container instance in a specified resource group and container group.
-     *
+     * 
+     * Get the logs for a specified container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -50,44 +52,39 @@ public interface ContainersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the logs for a specified container instance in a specified resource group and container group on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LogsInner> listLogsAsync(String resourceGroupName, String containerGroupName, String containerName);
 
     /**
      * Get the logs for a specified container instance.
-     *
-     * <p>Get the logs for a specified container instance in a specified resource group and container group.
-     *
+     * 
+     * Get the logs for a specified container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
-     *     available logs are shown up to 4mb.
+     * available logs are shown up to 4mb.
      * @param timestamps If true, adds a timestamp at the beginning of every line of log output. If not provided,
-     *     defaults to false.
+     * defaults to false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the logs for a specified container instance in a specified resource group and container group along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogsInner> listLogsWithResponse(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
-        Integer tail,
-        Boolean timestamps,
-        Context context);
+    Response<LogsInner> listLogsWithResponse(String resourceGroupName, String containerGroupName, String containerName,
+        Integer tail, Boolean timestamps, Context context);
 
     /**
      * Get the logs for a specified container instance.
-     *
-     * <p>Get the logs for a specified container instance in a specified resource group and container group.
-     *
+     * 
+     * Get the logs for a specified container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -101,9 +98,9 @@ public interface ContainersClient {
 
     /**
      * Executes a command in a specific container instance.
-     *
-     * <p>Executes a command for a specific container instance in a specified resource group and container group.
-     *
+     * 
+     * Executes a command for a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -112,20 +109,17 @@ public interface ContainersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the information for the container exec command along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ContainerExecResponseInner>> executeCommandWithResponseAsync(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
-        ContainerExecRequest containerExecRequest);
+    Mono<Response<ContainerExecResponseInner>> executeCommandWithResponseAsync(String resourceGroupName,
+        String containerGroupName, String containerName, ContainerExecRequest containerExecRequest);
 
     /**
      * Executes a command in a specific container instance.
-     *
-     * <p>Executes a command for a specific container instance in a specified resource group and container group.
-     *
+     * 
+     * Executes a command for a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -136,17 +130,14 @@ public interface ContainersClient {
      * @return the information for the container exec command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ContainerExecResponseInner> executeCommandAsync(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
-        ContainerExecRequest containerExecRequest);
+    Mono<ContainerExecResponseInner> executeCommandAsync(String resourceGroupName, String containerGroupName,
+        String containerName, ContainerExecRequest containerExecRequest);
 
     /**
      * Executes a command in a specific container instance.
-     *
-     * <p>Executes a command for a specific container instance in a specified resource group and container group.
-     *
+     * 
+     * Executes a command for a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -158,18 +149,14 @@ public interface ContainersClient {
      * @return the information for the container exec command along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContainerExecResponseInner> executeCommandWithResponse(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
-        ContainerExecRequest containerExecRequest,
-        Context context);
+    Response<ContainerExecResponseInner> executeCommandWithResponse(String resourceGroupName, String containerGroupName,
+        String containerName, ContainerExecRequest containerExecRequest, Context context);
 
     /**
      * Executes a command in a specific container instance.
-     *
-     * <p>Executes a command for a specific container instance in a specified resource group and container group.
-     *
+     * 
+     * Executes a command for a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -180,18 +167,14 @@ public interface ContainersClient {
      * @return the information for the container exec command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerExecResponseInner executeCommand(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
+    ContainerExecResponseInner executeCommand(String resourceGroupName, String containerGroupName, String containerName,
         ContainerExecRequest containerExecRequest);
 
     /**
      * Attach to the output of a specific container instance.
-     *
-     * <p>Attach to the output stream of a specific container instance in a specified resource group and container
-     * group.
-     *
+     * 
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -199,18 +182,17 @@ public interface ContainersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the information for the output stream from container attach along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(
-        String resourceGroupName, String containerGroupName, String containerName);
+    Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(String resourceGroupName,
+        String containerGroupName, String containerName);
 
     /**
      * Attach to the output of a specific container instance.
-     *
-     * <p>Attach to the output stream of a specific container instance in a specified resource group and container
-     * group.
-     *
+     * 
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -220,15 +202,14 @@ public interface ContainersClient {
      * @return the information for the output stream from container attach on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ContainerAttachResponseInner> attachAsync(
-        String resourceGroupName, String containerGroupName, String containerName);
+    Mono<ContainerAttachResponseInner> attachAsync(String resourceGroupName, String containerGroupName,
+        String containerName);
 
     /**
      * Attach to the output of a specific container instance.
-     *
-     * <p>Attach to the output stream of a specific container instance in a specified resource group and container
-     * group.
-     *
+     * 
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -239,15 +220,14 @@ public interface ContainersClient {
      * @return the information for the output stream from container attach along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContainerAttachResponseInner> attachWithResponse(
-        String resourceGroupName, String containerGroupName, String containerName, Context context);
+    Response<ContainerAttachResponseInner> attachWithResponse(String resourceGroupName, String containerGroupName,
+        String containerName, Context context);
 
     /**
      * Attach to the output of a specific container instance.
-     *
-     * <p>Attach to the output stream of a specific container instance in a specified resource group and container
-     * group.
-     *
+     * 
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.

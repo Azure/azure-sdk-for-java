@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Summary of the replication monitoring data for this vault. */
+/**
+ * Summary of the replication monitoring data for this vault.
+ */
 @Fluent
-public final class MonitoringSummary {
+public final class MonitoringSummary implements JsonSerializable<MonitoringSummary> {
     /*
      * Count of unhealthy VMs.
      */
-    @JsonProperty(value = "unHealthyVmCount")
     private Integer unHealthyVmCount;
 
     /*
      * Count of unhealthy replication providers.
      */
-    @JsonProperty(value = "unHealthyProviderCount")
     private Integer unHealthyProviderCount;
 
     /*
      * Count of all critical warnings.
      */
-    @JsonProperty(value = "eventsCount")
     private Integer eventsCount;
 
     /*
      * Count of all deprecated recovery service providers.
      */
-    @JsonProperty(value = "deprecatedProviderCount")
     private Integer deprecatedProviderCount;
 
     /*
      * Count of all the supported recovery service providers.
      */
-    @JsonProperty(value = "supportedProviderCount")
     private Integer supportedProviderCount;
 
     /*
      * Count of all the unsupported recovery service providers.
      */
-    @JsonProperty(value = "unsupportedProviderCount")
     private Integer unsupportedProviderCount;
 
-    /** Creates an instance of MonitoringSummary class. */
+    /**
+     * Creates an instance of MonitoringSummary class.
+     */
     public MonitoringSummary() {
     }
 
     /**
      * Get the unHealthyVmCount property: Count of unhealthy VMs.
-     *
+     * 
      * @return the unHealthyVmCount value.
      */
     public Integer unHealthyVmCount() {
@@ -61,7 +63,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the unHealthyVmCount property: Count of unhealthy VMs.
-     *
+     * 
      * @param unHealthyVmCount the unHealthyVmCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -72,7 +74,7 @@ public final class MonitoringSummary {
 
     /**
      * Get the unHealthyProviderCount property: Count of unhealthy replication providers.
-     *
+     * 
      * @return the unHealthyProviderCount value.
      */
     public Integer unHealthyProviderCount() {
@@ -81,7 +83,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the unHealthyProviderCount property: Count of unhealthy replication providers.
-     *
+     * 
      * @param unHealthyProviderCount the unHealthyProviderCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -92,7 +94,7 @@ public final class MonitoringSummary {
 
     /**
      * Get the eventsCount property: Count of all critical warnings.
-     *
+     * 
      * @return the eventsCount value.
      */
     public Integer eventsCount() {
@@ -101,7 +103,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the eventsCount property: Count of all critical warnings.
-     *
+     * 
      * @param eventsCount the eventsCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -112,7 +114,7 @@ public final class MonitoringSummary {
 
     /**
      * Get the deprecatedProviderCount property: Count of all deprecated recovery service providers.
-     *
+     * 
      * @return the deprecatedProviderCount value.
      */
     public Integer deprecatedProviderCount() {
@@ -121,7 +123,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the deprecatedProviderCount property: Count of all deprecated recovery service providers.
-     *
+     * 
      * @param deprecatedProviderCount the deprecatedProviderCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -132,7 +134,7 @@ public final class MonitoringSummary {
 
     /**
      * Get the supportedProviderCount property: Count of all the supported recovery service providers.
-     *
+     * 
      * @return the supportedProviderCount value.
      */
     public Integer supportedProviderCount() {
@@ -141,7 +143,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the supportedProviderCount property: Count of all the supported recovery service providers.
-     *
+     * 
      * @param supportedProviderCount the supportedProviderCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -152,7 +154,7 @@ public final class MonitoringSummary {
 
     /**
      * Get the unsupportedProviderCount property: Count of all the unsupported recovery service providers.
-     *
+     * 
      * @return the unsupportedProviderCount value.
      */
     public Integer unsupportedProviderCount() {
@@ -161,7 +163,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the unsupportedProviderCount property: Count of all the unsupported recovery service providers.
-     *
+     * 
      * @param unsupportedProviderCount the unsupportedProviderCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -172,9 +174,60 @@ public final class MonitoringSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("unHealthyVmCount", this.unHealthyVmCount);
+        jsonWriter.writeNumberField("unHealthyProviderCount", this.unHealthyProviderCount);
+        jsonWriter.writeNumberField("eventsCount", this.eventsCount);
+        jsonWriter.writeNumberField("deprecatedProviderCount", this.deprecatedProviderCount);
+        jsonWriter.writeNumberField("supportedProviderCount", this.supportedProviderCount);
+        jsonWriter.writeNumberField("unsupportedProviderCount", this.unsupportedProviderCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitoringSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitoringSummary if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitoringSummary.
+     */
+    public static MonitoringSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitoringSummary deserializedMonitoringSummary = new MonitoringSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unHealthyVmCount".equals(fieldName)) {
+                    deserializedMonitoringSummary.unHealthyVmCount = reader.getNullable(JsonReader::getInt);
+                } else if ("unHealthyProviderCount".equals(fieldName)) {
+                    deserializedMonitoringSummary.unHealthyProviderCount = reader.getNullable(JsonReader::getInt);
+                } else if ("eventsCount".equals(fieldName)) {
+                    deserializedMonitoringSummary.eventsCount = reader.getNullable(JsonReader::getInt);
+                } else if ("deprecatedProviderCount".equals(fieldName)) {
+                    deserializedMonitoringSummary.deprecatedProviderCount = reader.getNullable(JsonReader::getInt);
+                } else if ("supportedProviderCount".equals(fieldName)) {
+                    deserializedMonitoringSummary.supportedProviderCount = reader.getNullable(JsonReader::getInt);
+                } else if ("unsupportedProviderCount".equals(fieldName)) {
+                    deserializedMonitoringSummary.unsupportedProviderCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitoringSummary;
+        });
     }
 }

@@ -6,39 +6,42 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Deployment operation parameters. */
+/**
+ * Deployment operation parameters.
+ */
 @Fluent
-public final class ScopedDeployment {
+public final class ScopedDeployment implements JsonSerializable<ScopedDeployment> {
     /*
      * The location to store the deployment data.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * The deployment properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private DeploymentProperties properties;
 
     /*
      * Deployment tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ScopedDeployment class. */
+    /**
+     * Creates an instance of ScopedDeployment class.
+     */
     public ScopedDeployment() {
     }
 
     /**
      * Get the location property: The location to store the deployment data.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -47,7 +50,7 @@ public final class ScopedDeployment {
 
     /**
      * Set the location property: The location to store the deployment data.
-     *
+     * 
      * @param location the location value to set.
      * @return the ScopedDeployment object itself.
      */
@@ -58,7 +61,7 @@ public final class ScopedDeployment {
 
     /**
      * Get the properties property: The deployment properties.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentProperties properties() {
@@ -67,7 +70,7 @@ public final class ScopedDeployment {
 
     /**
      * Set the properties property: The deployment properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ScopedDeployment object itself.
      */
@@ -78,7 +81,7 @@ public final class ScopedDeployment {
 
     /**
      * Get the tags property: Deployment tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -87,7 +90,7 @@ public final class ScopedDeployment {
 
     /**
      * Set the tags property: Deployment tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ScopedDeployment object itself.
      */
@@ -98,23 +101,65 @@ public final class ScopedDeployment {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model ScopedDeployment"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model ScopedDeployment"));
         }
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model ScopedDeployment"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model ScopedDeployment"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScopedDeployment.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScopedDeployment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScopedDeployment if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScopedDeployment.
+     */
+    public static ScopedDeployment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScopedDeployment deserializedScopedDeployment = new ScopedDeployment();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedScopedDeployment.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScopedDeployment.properties = DeploymentProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScopedDeployment.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScopedDeployment;
+        });
+    }
 }

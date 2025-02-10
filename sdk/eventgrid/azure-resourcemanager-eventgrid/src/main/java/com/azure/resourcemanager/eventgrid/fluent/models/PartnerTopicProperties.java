@@ -5,67 +5,66 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicActivationState;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Properties of the Partner Topic.
  */
 @Fluent
-public final class PartnerTopicProperties {
+public final class PartnerTopicProperties implements JsonSerializable<PartnerTopicProperties> {
     /*
      * The immutableId of the corresponding partner registration.
      */
-    @JsonProperty(value = "partnerRegistrationImmutableId")
     private UUID partnerRegistrationImmutableId;
 
     /*
      * Source associated with this partner topic. This represents a unique partner resource.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * Event Type information from the corresponding event channel.
      */
-    @JsonProperty(value = "eventTypeInfo")
     private EventTypeInfo eventTypeInfo;
 
     /*
      * Expiration time of the partner topic. If this timer expires while the partner topic is still never activated,
      * the partner topic and corresponding event channel are deleted.
      */
-    @JsonProperty(value = "expirationTimeIfNotActivatedUtc")
     private OffsetDateTime expirationTimeIfNotActivatedUtc;
 
     /*
      * Provisioning state of the partner topic.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PartnerTopicProvisioningState provisioningState;
 
     /*
      * Activation state of the partner topic.
      */
-    @JsonProperty(value = "activationState")
     private PartnerTopicActivationState activationState;
 
     /*
-     * Friendly description about the topic. This can be set by the publisher/partner to show custom description for
-     * the customer partner topic.
+     * Friendly description about the topic. This can be set by the publisher/partner to show custom description for the
+     * customer partner topic.
      * This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
      */
-    @JsonProperty(value = "partnerTopicFriendlyDescription")
     private String partnerTopicFriendlyDescription;
 
     /*
      * Context or helpful message that can be used during the approval process by the subscriber.
      */
-    @JsonProperty(value = "messageForActivation")
     private String messageForActivation;
 
     /**
@@ -212,8 +211,8 @@ public final class PartnerTopicProperties {
     }
 
     /**
-     * Get the messageForActivation property: Context or helpful message that can be used during the approval process
-     * by the subscriber.
+     * Get the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
      * 
      * @return the messageForActivation value.
      */
@@ -222,8 +221,8 @@ public final class PartnerTopicProperties {
     }
 
     /**
-     * Set the messageForActivation property: Context or helpful message that can be used during the approval process
-     * by the subscriber.
+     * Set the messageForActivation property: Context or helpful message that can be used during the approval process by
+     * the subscriber.
      * 
      * @param messageForActivation the messageForActivation value to set.
      * @return the PartnerTopicProperties object itself.
@@ -242,5 +241,70 @@ public final class PartnerTopicProperties {
         if (eventTypeInfo() != null) {
             eventTypeInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("partnerRegistrationImmutableId",
+            Objects.toString(this.partnerRegistrationImmutableId, null));
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeJsonField("eventTypeInfo", this.eventTypeInfo);
+        jsonWriter.writeStringField("expirationTimeIfNotActivatedUtc",
+            this.expirationTimeIfNotActivatedUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTimeIfNotActivatedUtc));
+        jsonWriter.writeStringField("activationState",
+            this.activationState == null ? null : this.activationState.toString());
+        jsonWriter.writeStringField("partnerTopicFriendlyDescription", this.partnerTopicFriendlyDescription);
+        jsonWriter.writeStringField("messageForActivation", this.messageForActivation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerTopicProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerTopicProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerTopicProperties.
+     */
+    public static PartnerTopicProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerTopicProperties deserializedPartnerTopicProperties = new PartnerTopicProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partnerRegistrationImmutableId".equals(fieldName)) {
+                    deserializedPartnerTopicProperties.partnerRegistrationImmutableId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("source".equals(fieldName)) {
+                    deserializedPartnerTopicProperties.source = reader.getString();
+                } else if ("eventTypeInfo".equals(fieldName)) {
+                    deserializedPartnerTopicProperties.eventTypeInfo = EventTypeInfo.fromJson(reader);
+                } else if ("expirationTimeIfNotActivatedUtc".equals(fieldName)) {
+                    deserializedPartnerTopicProperties.expirationTimeIfNotActivatedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPartnerTopicProperties.provisioningState
+                        = PartnerTopicProvisioningState.fromString(reader.getString());
+                } else if ("activationState".equals(fieldName)) {
+                    deserializedPartnerTopicProperties.activationState
+                        = PartnerTopicActivationState.fromString(reader.getString());
+                } else if ("partnerTopicFriendlyDescription".equals(fieldName)) {
+                    deserializedPartnerTopicProperties.partnerTopicFriendlyDescription = reader.getString();
+                } else if ("messageForActivation".equals(fieldName)) {
+                    deserializedPartnerTopicProperties.messageForActivation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerTopicProperties;
+        });
     }
 }

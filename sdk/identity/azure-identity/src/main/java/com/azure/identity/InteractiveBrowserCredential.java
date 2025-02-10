@@ -21,17 +21,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>Interactive browser authentication is a type of authentication flow offered by
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
- * that enables users to sign in to applications and services using a web browser. This authentication method is
- * commonly used for web applications, where users enter their credentials directly into a web page.
- * With interactive browser authentication, the user navigates to a web application and is prompted to enter their
- * username and password credentials. The application then redirects the user to the Microsoft Entra ID sign-in page, where
- * they are prompted to enter their credentials again. After the user successfully authenticates, Microsoft Entra ID issues a
- * security token that the application can use to authorize the user's access to its resources.
- * The InteractiveBrowserCredential interactively authenticates a user and acquires a token with the default system
- * browser and offers a smooth authentication experience by letting a user use their own credentials to authenticate the
- * application. When authenticated, the oauth2 flow notifies the credential of the authentication code through the
- * reply URL. For more information refer to the
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>
+ * that enables users to sign in to applications and services using a web browser.
+ * With interactive browser authentication, the user is directed to a sign-in webpage and is prompted to enter their
+ * credentials. After the user successfully authenticates, Microsoft Entra ID issues a
+ * security token that the application can use to authorize the user's access to its resources. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/interactivebrowsercredential/docs">interactive browser authentication
  * documentation</a>.</p>
 
@@ -44,7 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *     <li>Go to Microsoft Entra ID in Azure portal and find your app registration.</li>
  *     <li>Navigate to the Authentication section.</li>
  *     <li>Under Suggested Redirected URIs, check the URI that ends with /common/oauth2/nativeclient.</li>
- *     <li>Under Default Client Type, select yes for Treat application as a public client.</li>
+ *     <li>Under Authentication->Advanced settings, enable "Allow public client flows."</li>
  * </ol>
  *
  * <p>These steps will let the application authenticate, but it still won't have permission to log you into
@@ -68,9 +62,8 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <!-- src_embed com.azure.identity.credential.interactivebrowsercredential.construct -->
  * <pre>
- * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
- *     .redirectUrl&#40;&quot;http:&#47;&#47;localhost:8765&quot;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;.redirectUrl&#40;
+ *     &quot;http:&#47;&#47;localhost:8765&quot;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.interactivebrowsercredential.construct -->
  *
@@ -93,7 +86,6 @@ public class InteractiveBrowserCredential implements TokenCredential {
     private boolean isCaeDisabledRequestCached;
     private boolean isCachePopulated;
 
-
     /**
      * Creates a InteractiveBrowserCredential with the given identity client options and a listening port, for which
      * {@code http://localhost:{port}} must be registered as a valid reply URL on the application.
@@ -106,12 +98,10 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     InteractiveBrowserCredential(String clientId, String tenantId, Integer port, String redirectUrl,
-                                 boolean automaticAuthentication, String loginHint,
-                                 IdentityClientOptions identityClientOptions) {
+        boolean automaticAuthentication, String loginHint, IdentityClientOptions identityClientOptions) {
         this.port = port;
         this.redirectUrl = redirectUrl;
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .identityClientOptions(identityClientOptions);
 
@@ -140,8 +130,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
         }).switchIfEmpty(Mono.defer(() -> {
             if (!automaticAuthentication) {
                 return Mono.error(LOGGER.logExceptionAsError(new AuthenticationRequiredException("Interactive "
-                             + "authentication is needed to acquire token. Call Authenticate to initiate the device "
-                             + "code authentication.", request)));
+                    + "authentication is needed to acquire token. Call Authenticate to initiate the device "
+                    + "code authentication.", request)));
             }
             return identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl, loginHint);
         })).map(msalToken -> {
@@ -154,16 +144,21 @@ public class InteractiveBrowserCredential implements TokenCredential {
             return accessToken;
         })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error));
     }
 
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
         if (cachedToken.get() != null) {
             try {
-                return identitySyncClient.authenticateWithPublicClientCache(request, cachedToken.get());
-            } catch (Exception e) { }
+                MsalToken token = identitySyncClient.authenticateWithPublicClientCache(request, cachedToken.get());
+                if (token != null) {
+                    LoggingUtil.logTokenSuccess(LOGGER, request);
+                    return token;
+                }
+            } catch (Exception e) {
+            }
         }
         try {
             if (!automaticAuthentication) {
@@ -171,7 +166,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
                     + "authentication is needed to acquire token. Call Authenticate to initiate the device "
                     + "code authentication.", request));
             }
-            MsalToken accessToken =  identitySyncClient.authenticateWithBrowserInteraction(request, port, redirectUrl, loginHint);
+            MsalToken accessToken
+                = identitySyncClient.authenticateWithBrowserInteraction(request, port, redirectUrl, loginHint);
             updateCache(accessToken);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
@@ -182,7 +178,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
     }
 
     /**
-     * Interactively authenticates a user via the default browser.
+     * Interactively authenticates a user via the default browser. This method will always generate a challenge to the
+     * user.
      *
      * @param request The details of the authentication request.
      *
@@ -192,14 +189,15 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * when credential was instantiated.
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
-        return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(
-                request, port, redirectUrl, loginHint))
+        return Mono
+            .defer(() -> identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl, loginHint))
             .map(this::updateCache)
             .map(msalToken -> cachedToken.get().getAuthenticationRecord());
     }
 
     /**
-     * Interactively authenticates a user via the default browser.
+     * Interactively authenticates a user via the default browser. This method will always generate a challenge to the
+     * user.
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
@@ -210,23 +208,21 @@ public class InteractiveBrowserCredential implements TokenCredential {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
             return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER,
-                identityClient.getIdentityClientOptions(), new CredentialUnavailableException("Authenticating in this "
-                                                    + "environment requires specifying a TokenRequestContext.")));
+                identityClient.getIdentityClientOptions(), new CredentialUnavailableException(
+                    "Authenticating in this " + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
 
     private AccessToken updateCache(MsalToken msalToken) {
-        cachedToken.set(
-                new MsalAuthenticationAccount(
-                    new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                identityClient.getTenantId(), identityClient.getClientId()),
-                    msalToken.getAccount().getTenantProfiles()));
+        cachedToken.set(new MsalAuthenticationAccount(new AuthenticationRecord(msalToken.getAuthenticationResult(),
+            identityClient.getTenantId(), identityClient.getClientId()), msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
 
     private boolean isCachePopulated(TokenRequestContext request) {
-        return (cachedToken.get() != null) && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
+        return (cachedToken.get() != null)
+            && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
                 || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

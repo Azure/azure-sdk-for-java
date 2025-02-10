@@ -7,6 +7,9 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Credentials;
 import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
@@ -15,41 +18,55 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.TaskStatus;
 import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
 import com.azure.resourcemanager.containerregistry.models.TriggerProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * The task that has the ARM resource and task properties. The task will have all information to schedule a run against
- * it.
+ * The task that has the ARM resource and task properties.
+ * The task will have all information to schedule a run against it.
  */
 @Fluent
 public final class TaskInner extends Resource {
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
     /*
      * The properties of a task.
      */
-    @JsonProperty(value = "properties")
     private TaskProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of TaskInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of TaskInner class.
+     */
     public TaskInner() {
     }
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -58,7 +75,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the TaskInner object itself.
      */
@@ -69,7 +86,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Get the innerProperties property: The properties of a task.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TaskProperties innerProperties() {
@@ -78,21 +95,55 @@ public final class TaskInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TaskInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -101,7 +152,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the task.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -110,7 +161,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Get the creationDate property: The creation date of task.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -119,7 +170,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Get the status property: The current status of task.
-     *
+     * 
      * @return the status value.
      */
     public TaskStatus status() {
@@ -128,7 +179,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Set the status property: The current status of task.
-     *
+     * 
      * @param status the status value to set.
      * @return the TaskInner object itself.
      */
@@ -142,7 +193,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Get the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @return the platform value.
      */
     public PlatformProperties platform() {
@@ -151,7 +202,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Set the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @param platform the platform value to set.
      * @return the TaskInner object itself.
      */
@@ -165,7 +216,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Get the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -174,7 +225,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Set the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the TaskInner object itself.
      */
@@ -188,7 +239,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Get the agentPoolName property: The dedicated agent pool for the task.
-     *
+     * 
      * @return the agentPoolName value.
      */
     public String agentPoolName() {
@@ -197,7 +248,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Set the agentPoolName property: The dedicated agent pool for the task.
-     *
+     * 
      * @param agentPoolName the agentPoolName value to set.
      * @return the TaskInner object itself.
      */
@@ -211,7 +262,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Get the timeout property: Run timeout in seconds.
-     *
+     * 
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -220,7 +271,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Set the timeout property: Run timeout in seconds.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the TaskInner object itself.
      */
@@ -234,7 +285,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Get the step property: The properties of a task step.
-     *
+     * 
      * @return the step value.
      */
     public TaskStepProperties step() {
@@ -243,7 +294,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Set the step property: The properties of a task step.
-     *
+     * 
      * @param step the step value to set.
      * @return the TaskInner object itself.
      */
@@ -257,7 +308,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Get the trigger property: The properties that describe all triggers for the task.
-     *
+     * 
      * @return the trigger value.
      */
     public TriggerProperties trigger() {
@@ -266,7 +317,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Set the trigger property: The properties that describe all triggers for the task.
-     *
+     * 
      * @param trigger the trigger value to set.
      * @return the TaskInner object itself.
      */
@@ -281,7 +332,7 @@ public final class TaskInner extends Resource {
     /**
      * Get the credentials property: The properties that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @return the credentials value.
      */
     public Credentials credentials() {
@@ -291,7 +342,7 @@ public final class TaskInner extends Resource {
     /**
      * Set the credentials property: The properties that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the TaskInner object itself.
      */
@@ -306,7 +357,7 @@ public final class TaskInner extends Resource {
     /**
      * Get the logTemplate property: The template that describes the repository and tag information for run log
      * artifact.
-     *
+     * 
      * @return the logTemplate value.
      */
     public String logTemplate() {
@@ -316,7 +367,7 @@ public final class TaskInner extends Resource {
     /**
      * Set the logTemplate property: The template that describes the repository and tag information for run log
      * artifact.
-     *
+     * 
      * @param logTemplate the logTemplate value to set.
      * @return the TaskInner object itself.
      */
@@ -331,7 +382,7 @@ public final class TaskInner extends Resource {
     /**
      * Get the isSystemTask property: The value of this property indicates whether the task resource is system task or
      * not.
-     *
+     * 
      * @return the isSystemTask value.
      */
     public Boolean isSystemTask() {
@@ -341,7 +392,7 @@ public final class TaskInner extends Resource {
     /**
      * Set the isSystemTask property: The value of this property indicates whether the task resource is system task or
      * not.
-     *
+     * 
      * @param isSystemTask the isSystemTask value to set.
      * @return the TaskInner object itself.
      */
@@ -355,7 +406,7 @@ public final class TaskInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -365,5 +416,60 @@ public final class TaskInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TaskInner.
+     */
+    public static TaskInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskInner deserializedTaskInner = new TaskInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTaskInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTaskInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTaskInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedTaskInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTaskInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedTaskInner.identity = IdentityProperties.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTaskInner.innerProperties = TaskProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedTaskInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskInner;
+        });
     }
 }

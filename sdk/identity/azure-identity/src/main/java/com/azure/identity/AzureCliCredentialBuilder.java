@@ -19,7 +19,7 @@ import java.util.Objects;
  * terminal. It allows users to
  * <a href="https://learn.microsoft.com/cli/azure/authenticate-azure-cli">authenticate interactively</a> as a
  * user and/or a service principal against
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>.
  * The AzureCliCredential authenticates in a development environment and acquires a token on behalf of the
  * logged-in user or service principal in Azure CLI. It acts as the Azure CLI logged in user or service principal
  * and executes an Azure CLI command underneath to authenticate the application against Microsoft Entra ID.</p>
@@ -33,8 +33,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.identity.credential.azureclicredential.construct -->
  * <pre>
- * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.azureclicredential.construct -->
  *
@@ -44,6 +43,13 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
     private static final ClientLogger LOGGER = new ClientLogger(AzureCliCredentialBuilder.class);
 
     private String tenantId;
+
+    /**
+     * Constructs an instance of AzureCliCredentialBuilder.
+     */
+    public AzureCliCredentialBuilder() {
+        super();
+    }
 
     /**
      * Sets the tenant ID of the application.
@@ -69,11 +75,11 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
         return this;
     }
 
-     /**
-     * Creates a new {@link AzureCliCredential} with the current configurations.
-     *
-     * @return a {@link AzureCliCredential} with the current configurations.
-     */
+    /**
+    * Creates a new {@link AzureCliCredential} with the current configurations.
+    *
+    * @return a {@link AzureCliCredential} with the current configurations.
+    */
     public AzureCliCredential build() {
         return new AzureCliCredential(tenantId, identityClientOptions);
     }
@@ -89,8 +95,8 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
      */
     @SuppressWarnings("unchecked")
     public AzureCliCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -105,7 +111,8 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
      */
     @SuppressWarnings("unchecked")
     public AzureCliCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 }

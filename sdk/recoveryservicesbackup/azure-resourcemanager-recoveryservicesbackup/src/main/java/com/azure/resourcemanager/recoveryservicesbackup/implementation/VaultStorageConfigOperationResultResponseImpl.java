@@ -12,11 +12,14 @@ public final class VaultStorageConfigOperationResultResponseImpl implements Vaul
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    VaultStorageConfigOperationResultResponseImpl(
-        VaultStorageConfigOperationResultResponseInner innerObject,
+    VaultStorageConfigOperationResultResponseImpl(VaultStorageConfigOperationResultResponseInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public String objectType() {
+        return this.innerModel().objectType();
     }
 
     public VaultStorageConfigOperationResultResponseInner innerModel() {

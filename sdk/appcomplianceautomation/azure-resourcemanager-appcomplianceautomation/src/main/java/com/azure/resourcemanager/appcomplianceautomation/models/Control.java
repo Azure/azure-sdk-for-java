@@ -5,68 +5,63 @@
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A class represent the control. */
+/**
+ * A class represent the control.
+ */
 @Immutable
-public final class Control {
+public final class Control implements JsonSerializable<Control> {
     /*
-     * The Id of the control. e.g. "Operational Security#10"
+     * The Id of the control. e.g. "Operational_Security_10"
      */
-    @JsonProperty(value = "controlId", access = JsonProperty.Access.WRITE_ONLY)
     private String controlId;
 
     /*
-     * The short name of the control. e.g. "Unsupported OS and Software."
+     * The name of the control. e.g. "Unsupported OS and Software."
      */
-    @JsonProperty(value = "controlShortName", access = JsonProperty.Access.WRITE_ONLY)
-    private String controlShortName;
+    private String controlName;
 
     /*
-     * The full name of the control. e.g. "Validate that unsupported operating systems and software components are not
-     * in use."
+     * The full name of the control. e.g.
+     * "Validate that unsupported operating systems and software components are not in use."
      */
-    @JsonProperty(value = "controlFullName", access = JsonProperty.Access.WRITE_ONLY)
     private String controlFullName;
-
-    /*
-     * The control type
-     */
-    @JsonProperty(value = "controlType", access = JsonProperty.Access.WRITE_ONLY)
-    private ControlType controlType;
 
     /*
      * The control's description
      */
-    @JsonProperty(value = "controlDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String controlDescription;
 
     /*
      * The hyper link to the control's description'.
      */
-    @JsonProperty(value = "controlDescriptionHyperLink", access = JsonProperty.Access.WRITE_ONLY)
     private String controlDescriptionHyperLink;
 
     /*
      * Control status.
      */
-    @JsonProperty(value = "controlStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ControlStatus controlStatus;
 
     /*
-     * List of assessments.
+     * List of customer responsibility.
      */
-    @JsonProperty(value = "assessments", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Assessment> assessments;
+    private List<Responsibility> responsibilities;
 
-    /** Creates an instance of Control class. */
+    /**
+     * Creates an instance of Control class.
+     */
     public Control() {
     }
 
     /**
-     * Get the controlId property: The Id of the control. e.g. "Operational Security#10".
-     *
+     * Get the controlId property: The Id of the control. e.g. "Operational_Security_10".
+     * 
      * @return the controlId value.
      */
     public String controlId() {
@@ -74,18 +69,18 @@ public final class Control {
     }
 
     /**
-     * Get the controlShortName property: The short name of the control. e.g. "Unsupported OS and Software.".
-     *
-     * @return the controlShortName value.
+     * Get the controlName property: The name of the control. e.g. "Unsupported OS and Software.".
+     * 
+     * @return the controlName value.
      */
-    public String controlShortName() {
-        return this.controlShortName;
+    public String controlName() {
+        return this.controlName;
     }
 
     /**
      * Get the controlFullName property: The full name of the control. e.g. "Validate that unsupported operating systems
      * and software components are not in use.".
-     *
+     * 
      * @return the controlFullName value.
      */
     public String controlFullName() {
@@ -93,17 +88,8 @@ public final class Control {
     }
 
     /**
-     * Get the controlType property: The control type.
-     *
-     * @return the controlType value.
-     */
-    public ControlType controlType() {
-        return this.controlType;
-    }
-
-    /**
      * Get the controlDescription property: The control's description.
-     *
+     * 
      * @return the controlDescription value.
      */
     public String controlDescription() {
@@ -112,7 +98,7 @@ public final class Control {
 
     /**
      * Get the controlDescriptionHyperLink property: The hyper link to the control's description'.
-     *
+     * 
      * @return the controlDescriptionHyperLink value.
      */
     public String controlDescriptionHyperLink() {
@@ -121,7 +107,7 @@ public final class Control {
 
     /**
      * Get the controlStatus property: Control status.
-     *
+     * 
      * @return the controlStatus value.
      */
     public ControlStatus controlStatus() {
@@ -129,22 +115,71 @@ public final class Control {
     }
 
     /**
-     * Get the assessments property: List of assessments.
-     *
-     * @return the assessments value.
+     * Get the responsibilities property: List of customer responsibility.
+     * 
+     * @return the responsibilities value.
      */
-    public List<Assessment> assessments() {
-        return this.assessments;
+    public List<Responsibility> responsibilities() {
+        return this.responsibilities;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (assessments() != null) {
-            assessments().forEach(e -> e.validate());
+        if (responsibilities() != null) {
+            responsibilities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Control from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Control if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Control.
+     */
+    public static Control fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Control deserializedControl = new Control();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("controlId".equals(fieldName)) {
+                    deserializedControl.controlId = reader.getString();
+                } else if ("controlName".equals(fieldName)) {
+                    deserializedControl.controlName = reader.getString();
+                } else if ("controlFullName".equals(fieldName)) {
+                    deserializedControl.controlFullName = reader.getString();
+                } else if ("controlDescription".equals(fieldName)) {
+                    deserializedControl.controlDescription = reader.getString();
+                } else if ("controlDescriptionHyperLink".equals(fieldName)) {
+                    deserializedControl.controlDescriptionHyperLink = reader.getString();
+                } else if ("controlStatus".equals(fieldName)) {
+                    deserializedControl.controlStatus = ControlStatus.fromString(reader.getString());
+                } else if ("responsibilities".equals(fieldName)) {
+                    List<Responsibility> responsibilities
+                        = reader.readArray(reader1 -> Responsibility.fromJson(reader1));
+                    deserializedControl.responsibilities = responsibilities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControl;
+        });
     }
 }

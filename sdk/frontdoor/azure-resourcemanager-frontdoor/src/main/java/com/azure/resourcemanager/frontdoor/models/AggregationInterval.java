@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The aggregation interval of the Timeseries. */
+/**
+ * The aggregation interval of the Timeseries.
+ */
 public final class AggregationInterval extends ExpandableStringEnum<AggregationInterval> {
-    /** Static value Hourly for AggregationInterval. */
+    /**
+     * Static value Hourly for AggregationInterval.
+     */
     public static final AggregationInterval HOURLY = fromString("Hourly");
 
-    /** Static value Daily for AggregationInterval. */
+    /**
+     * Static value Daily for AggregationInterval.
+     */
     public static final AggregationInterval DAILY = fromString("Daily");
 
     /**
      * Creates a new instance of AggregationInterval value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AggregationInterval extends ExpandableStringEnum<AggregationI
 
     /**
      * Creates or finds a AggregationInterval from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AggregationInterval.
      */
-    @JsonCreator
     public static AggregationInterval fromString(String name) {
         return fromString(name, AggregationInterval.class);
     }
 
     /**
      * Gets known AggregationInterval values.
-     *
+     * 
      * @return known AggregationInterval values.
      */
     public static Collection<AggregationInterval> values() {

@@ -15,8 +15,7 @@ public final class BackupEngineBaseResourceImpl implements BackupEngineBaseResou
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    BackupEngineBaseResourceImpl(
-        BackupEngineBaseResourceInner innerObject,
+    BackupEngineBaseResourceImpl(BackupEngineBaseResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

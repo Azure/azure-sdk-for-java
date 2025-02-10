@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Routing identity info for topic spaces configuration.
  */
 @Fluent
-public final class RoutingIdentityInfo {
+public final class RoutingIdentityInfo implements JsonSerializable<RoutingIdentityInfo> {
     /*
-     * The type property.
+     * Routing identity type for topic spaces configuration.
      */
-    @JsonProperty(value = "type")
     private RoutingIdentityType type;
 
     /*
      * The userAssignedIdentity property.
      */
-    @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
     /**
@@ -31,7 +33,7 @@ public final class RoutingIdentityInfo {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: Routing identity type for topic spaces configuration.
      * 
      * @return the type value.
      */
@@ -40,7 +42,7 @@ public final class RoutingIdentityInfo {
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: Routing identity type for topic spaces configuration.
      * 
      * @param type the type value to set.
      * @return the RoutingIdentityInfo object itself.
@@ -76,5 +78,44 @@ public final class RoutingIdentityInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutingIdentityInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutingIdentityInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoutingIdentityInfo.
+     */
+    public static RoutingIdentityInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutingIdentityInfo deserializedRoutingIdentityInfo = new RoutingIdentityInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedRoutingIdentityInfo.type = RoutingIdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentity".equals(fieldName)) {
+                    deserializedRoutingIdentityInfo.userAssignedIdentity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutingIdentityInfo;
+        });
     }
 }

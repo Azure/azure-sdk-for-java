@@ -6,30 +6,36 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Edifact agreement content. */
+/**
+ * The Edifact agreement content.
+ */
 @Fluent
-public final class EdifactAgreementContent {
+public final class EdifactAgreementContent implements JsonSerializable<EdifactAgreementContent> {
     /*
      * The EDIFACT one-way receive agreement.
      */
-    @JsonProperty(value = "receiveAgreement", required = true)
     private EdifactOneWayAgreement receiveAgreement;
 
     /*
      * The EDIFACT one-way send agreement.
      */
-    @JsonProperty(value = "sendAgreement", required = true)
     private EdifactOneWayAgreement sendAgreement;
 
-    /** Creates an instance of EdifactAgreementContent class. */
+    /**
+     * Creates an instance of EdifactAgreementContent class.
+     */
     public EdifactAgreementContent() {
     }
 
     /**
      * Get the receiveAgreement property: The EDIFACT one-way receive agreement.
-     *
+     * 
      * @return the receiveAgreement value.
      */
     public EdifactOneWayAgreement receiveAgreement() {
@@ -38,7 +44,7 @@ public final class EdifactAgreementContent {
 
     /**
      * Set the receiveAgreement property: The EDIFACT one-way receive agreement.
-     *
+     * 
      * @param receiveAgreement the receiveAgreement value to set.
      * @return the EdifactAgreementContent object itself.
      */
@@ -49,7 +55,7 @@ public final class EdifactAgreementContent {
 
     /**
      * Get the sendAgreement property: The EDIFACT one-way send agreement.
-     *
+     * 
      * @return the sendAgreement value.
      */
     public EdifactOneWayAgreement sendAgreement() {
@@ -58,7 +64,7 @@ public final class EdifactAgreementContent {
 
     /**
      * Set the sendAgreement property: The EDIFACT one-way send agreement.
-     *
+     * 
      * @param sendAgreement the sendAgreement value to set.
      * @return the EdifactAgreementContent object itself.
      */
@@ -69,27 +75,65 @@ public final class EdifactAgreementContent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (receiveAgreement() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property receiveAgreement in model EdifactAgreementContent"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property receiveAgreement in model EdifactAgreementContent"));
         } else {
             receiveAgreement().validate();
         }
         if (sendAgreement() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sendAgreement in model EdifactAgreementContent"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sendAgreement in model EdifactAgreementContent"));
         } else {
             sendAgreement().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EdifactAgreementContent.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("receiveAgreement", this.receiveAgreement);
+        jsonWriter.writeJsonField("sendAgreement", this.sendAgreement);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdifactAgreementContent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdifactAgreementContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdifactAgreementContent.
+     */
+    public static EdifactAgreementContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdifactAgreementContent deserializedEdifactAgreementContent = new EdifactAgreementContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("receiveAgreement".equals(fieldName)) {
+                    deserializedEdifactAgreementContent.receiveAgreement = EdifactOneWayAgreement.fromJson(reader);
+                } else if ("sendAgreement".equals(fieldName)) {
+                    deserializedEdifactAgreementContent.sendAgreement = EdifactOneWayAgreement.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdifactAgreementContent;
+        });
+    }
 }

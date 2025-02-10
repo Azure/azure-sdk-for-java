@@ -6,52 +6,60 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the On Premise resource that was assessed. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "source",
-    defaultImpl = OnPremiseResourceDetails.class)
-@JsonTypeName("OnPremise")
-@JsonSubTypes({@JsonSubTypes.Type(name = "OnPremiseSql", value = OnPremiseSqlResourceDetails.class)})
+/**
+ * Details of the On Premise resource that was assessed.
+ */
 @Fluent
 public class OnPremiseResourceDetails extends ResourceDetails {
     /*
+     * The platform where the assessed resource resides
+     */
+    private Source source = Source.ON_PREMISE;
+
+    /*
      * Azure resource Id of the workspace the machine is attached to
      */
-    @JsonProperty(value = "workspaceId", required = true)
     private String workspaceId;
 
     /*
      * The unique Id of the machine
      */
-    @JsonProperty(value = "vmuuid", required = true)
     private String vmuuid;
 
     /*
      * The oms agent Id installed on the machine
      */
-    @JsonProperty(value = "sourceComputerId", required = true)
     private String sourceComputerId;
 
     /*
      * The name of the machine
      */
-    @JsonProperty(value = "machineName", required = true)
     private String machineName;
 
-    /** Creates an instance of OnPremiseResourceDetails class. */
+    /**
+     * Creates an instance of OnPremiseResourceDetails class.
+     */
     public OnPremiseResourceDetails() {
     }
 
     /**
+     * Get the source property: The platform where the assessed resource resides.
+     * 
+     * @return the source value.
+     */
+    @Override
+    public Source source() {
+        return this.source;
+    }
+
+    /**
      * Get the workspaceId property: Azure resource Id of the workspace the machine is attached to.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -60,7 +68,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Set the workspaceId property: Azure resource Id of the workspace the machine is attached to.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the OnPremiseResourceDetails object itself.
      */
@@ -71,7 +79,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Get the vmuuid property: The unique Id of the machine.
-     *
+     * 
      * @return the vmuuid value.
      */
     public String vmuuid() {
@@ -80,7 +88,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Set the vmuuid property: The unique Id of the machine.
-     *
+     * 
      * @param vmuuid the vmuuid value to set.
      * @return the OnPremiseResourceDetails object itself.
      */
@@ -91,7 +99,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Get the sourceComputerId property: The oms agent Id installed on the machine.
-     *
+     * 
      * @return the sourceComputerId value.
      */
     public String sourceComputerId() {
@@ -100,7 +108,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Set the sourceComputerId property: The oms agent Id installed on the machine.
-     *
+     * 
      * @param sourceComputerId the sourceComputerId value to set.
      * @return the OnPremiseResourceDetails object itself.
      */
@@ -111,7 +119,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Get the machineName property: The name of the machine.
-     *
+     * 
      * @return the machineName value.
      */
     public String machineName() {
@@ -120,7 +128,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Set the machineName property: The name of the machine.
-     *
+     * 
      * @param machineName the machineName value to set.
      * @return the OnPremiseResourceDetails object itself.
      */
@@ -131,36 +139,106 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (workspaceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property workspaceId in model OnPremiseResourceDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property workspaceId in model OnPremiseResourceDetails"));
         }
         if (vmuuid() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property vmuuid in model OnPremiseResourceDetails"));
         }
         if (sourceComputerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceComputerId in model OnPremiseResourceDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceComputerId in model OnPremiseResourceDetails"));
         }
         if (machineName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property machineName in model OnPremiseResourceDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property machineName in model OnPremiseResourceDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OnPremiseResourceDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workspaceId", this.workspaceId);
+        jsonWriter.writeStringField("vmuuid", this.vmuuid);
+        jsonWriter.writeStringField("sourceComputerId", this.sourceComputerId);
+        jsonWriter.writeStringField("machineName", this.machineName);
+        jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OnPremiseResourceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OnPremiseResourceDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OnPremiseResourceDetails.
+     */
+    public static OnPremiseResourceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("source".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("OnPremiseSql".equals(discriminatorValue)) {
+                    return OnPremiseSqlResourceDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static OnPremiseResourceDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OnPremiseResourceDetails deserializedOnPremiseResourceDetails = new OnPremiseResourceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspaceId".equals(fieldName)) {
+                    deserializedOnPremiseResourceDetails.workspaceId = reader.getString();
+                } else if ("vmuuid".equals(fieldName)) {
+                    deserializedOnPremiseResourceDetails.vmuuid = reader.getString();
+                } else if ("sourceComputerId".equals(fieldName)) {
+                    deserializedOnPremiseResourceDetails.sourceComputerId = reader.getString();
+                } else if ("machineName".equals(fieldName)) {
+                    deserializedOnPremiseResourceDetails.machineName = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedOnPremiseResourceDetails.source = Source.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOnPremiseResourceDetails;
+        });
+    }
 }

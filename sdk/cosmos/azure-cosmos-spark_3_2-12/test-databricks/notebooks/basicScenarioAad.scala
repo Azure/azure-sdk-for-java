@@ -6,6 +6,8 @@
 // val clientId = "<inserted by environment>"
 // val clientSecret = "<inserted by environment>"
 
+println("SCENARIO: basicScenarioAad")
+
 val authType = "ServicePrincipal"
 val cosmosEndpoint = dbutils.widgets.get("cosmosEndpoint")
 val subscriptionId = dbutils.widgets.get("subscriptionId")
@@ -24,7 +26,8 @@ val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
     "spark.cosmos.auth.aad.clientId" -> clientId,
     "spark.cosmos.auth.aad.clientSecret" -> clientSecret,
     "spark.cosmos.database" -> cosmosDatabaseName,
-    "spark.cosmos.container" -> cosmosContainerName
+    "spark.cosmos.container" -> cosmosContainerName,
+    "spark.cosmos.enforceNativeTransport" -> "true"
 )
 
 val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -36,30 +39,31 @@ val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEnd
     "spark.cosmos.auth.aad.clientSecret" -> clientSecret,
     "spark.cosmos.database" -> cosmosDatabaseName,
     "spark.cosmos.container" -> cosmosContainerName,
-    "spark.cosmos.read.inferSchema.enabled" -> "true"
+    "spark.cosmos.read.inferSchema.enabled" -> "true",
+    "spark.cosmos.enforceNativeTransport" -> "true"
 )
 
 // COMMAND ----------
 
 // create Cosmos Database and Cosmos Container using Catalog APIs
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.auth.type", authType)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.account.subscriptionId", subscriptionId)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.account.tenantId", tenantId)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.account.resourceGroupName", resourceGroupName)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.auth.aad.clientId", clientId)
-spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.auth.aad.clientSecret", clientSecret)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogSpn", "com.azure.cosmos.spark.CosmosCatalog")
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogSpn.spark.cosmos.accountEndpoint", cosmosEndpoint)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogSpn.spark.cosmos.auth.type", authType)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogSpn.spark.cosmos.account.subscriptionId", subscriptionId)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogSpn.spark.cosmos.account.tenantId", tenantId)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogSpn.spark.cosmos.account.resourceGroupName", resourceGroupName)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogSpn.spark.cosmos.auth.aad.clientId", clientId)
+spark.conf.set(s"spark.sql.catalog.cosmosCatalogSpn.spark.cosmos.auth.aad.clientSecret", clientSecret)
 
 // create a cosmos database
-spark.sql(s"CREATE DATABASE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName};")
+spark.sql(s"CREATE DATABASE IF NOT EXISTS cosmosCatalogSpn.${cosmosDatabaseName};")
 
 // create a cosmos container
-spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} using cosmos.oltp " +
+spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalogSpn.${cosmosDatabaseName}.${cosmosContainerName} using cosmos.oltp " +
     s"TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '400')")
 
 // update the throughput
-spark.sql(s"ALTER TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} " +
+spark.sql(s"ALTER TABLE cosmosCatalogSpn.${cosmosDatabaseName}.${cosmosContainerName} " +
   s"SET TBLPROPERTIES('manualThroughput' = '1100')")
 
 // COMMAND ----------
@@ -101,4 +105,4 @@ df.filter(col("isAlive") === true)
 // COMMAND ----------
 
 // cleanup
-spark.sql(s"DROP TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName};")
+spark.sql(s"DROP TABLE cosmosCatalogSpn.${cosmosDatabaseName}.${cosmosContainerName};")

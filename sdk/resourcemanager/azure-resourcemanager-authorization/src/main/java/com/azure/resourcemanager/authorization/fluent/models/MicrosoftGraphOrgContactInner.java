@@ -5,19 +5,21 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * orgContact
- *
- * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * 
+ * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -25,127 +27,109 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     /*
      * The addresses property.
      */
-    @JsonProperty(value = "addresses")
     private List<MicrosoftGraphPhysicalOfficeAddress> addresses;
 
     /*
      * The companyName property.
      */
-    @JsonProperty(value = "companyName")
     private String companyName;
 
     /*
      * The department property.
      */
-    @JsonProperty(value = "department")
     private String department;
 
     /*
      * The displayName property.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The givenName property.
      */
-    @JsonProperty(value = "givenName")
     private String givenName;
 
     /*
      * The jobTitle property.
      */
-    @JsonProperty(value = "jobTitle")
     private String jobTitle;
 
     /*
      * The mail property.
      */
-    @JsonProperty(value = "mail")
     private String mail;
 
     /*
      * The mailNickname property.
      */
-    @JsonProperty(value = "mailNickname")
     private String mailNickname;
 
     /*
      * The onPremisesLastSyncDateTime property.
      */
-    @JsonProperty(value = "onPremisesLastSyncDateTime")
     private OffsetDateTime onPremisesLastSyncDateTime;
 
     /*
      * The onPremisesProvisioningErrors property.
      */
-    @JsonProperty(value = "onPremisesProvisioningErrors")
     private List<MicrosoftGraphOnPremisesProvisioningError> onPremisesProvisioningErrors;
 
     /*
      * The onPremisesSyncEnabled property.
      */
-    @JsonProperty(value = "onPremisesSyncEnabled")
     private Boolean onPremisesSyncEnabled;
 
     /*
      * The phones property.
      */
-    @JsonProperty(value = "phones")
     private List<MicrosoftGraphPhone> phones;
 
     /*
      * The proxyAddresses property.
      */
-    @JsonProperty(value = "proxyAddresses")
     private List<String> proxyAddresses;
 
     /*
      * The surname property.
      */
-    @JsonProperty(value = "surname")
     private String surname;
 
     /*
      * The directReports property.
      */
-    @JsonProperty(value = "directReports")
     private List<MicrosoftGraphDirectoryObjectInner> directReports;
 
     /*
-     * directoryObject
-     *
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonProperty(value = "manager")
     private MicrosoftGraphDirectoryObjectInner manager;
 
     /*
      * The memberOf property.
      */
-    @JsonProperty(value = "memberOf")
     private List<MicrosoftGraphDirectoryObjectInner> memberOf;
 
     /*
      * The transitiveMemberOf property.
      */
-    @JsonProperty(value = "transitiveMemberOf")
     private List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf;
 
     /*
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOrgContactInner class. */
+    /**
+     * Creates an instance of MicrosoftGraphOrgContactInner class.
+     */
     public MicrosoftGraphOrgContactInner() {
     }
 
     /**
      * Get the addresses property: The addresses property.
-     *
+     * 
      * @return the addresses value.
      */
     public List<MicrosoftGraphPhysicalOfficeAddress> addresses() {
@@ -154,7 +138,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the addresses property: The addresses property.
-     *
+     * 
      * @param addresses the addresses value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -165,7 +149,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the companyName property: The companyName property.
-     *
+     * 
      * @return the companyName value.
      */
     public String companyName() {
@@ -174,7 +158,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the companyName property: The companyName property.
-     *
+     * 
      * @param companyName the companyName value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -185,7 +169,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the department property: The department property.
-     *
+     * 
      * @return the department value.
      */
     public String department() {
@@ -194,7 +178,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the department property: The department property.
-     *
+     * 
      * @param department the department value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -205,7 +189,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the displayName property: The displayName property.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -214,7 +198,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the displayName property: The displayName property.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -225,7 +209,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the givenName property: The givenName property.
-     *
+     * 
      * @return the givenName value.
      */
     public String givenName() {
@@ -234,7 +218,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the givenName property: The givenName property.
-     *
+     * 
      * @param givenName the givenName value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -245,7 +229,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the jobTitle property: The jobTitle property.
-     *
+     * 
      * @return the jobTitle value.
      */
     public String jobTitle() {
@@ -254,7 +238,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the jobTitle property: The jobTitle property.
-     *
+     * 
      * @param jobTitle the jobTitle value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -265,7 +249,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the mail property: The mail property.
-     *
+     * 
      * @return the mail value.
      */
     public String mail() {
@@ -274,7 +258,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the mail property: The mail property.
-     *
+     * 
      * @param mail the mail value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -285,7 +269,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the mailNickname property: The mailNickname property.
-     *
+     * 
      * @return the mailNickname value.
      */
     public String mailNickname() {
@@ -294,7 +278,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the mailNickname property: The mailNickname property.
-     *
+     * 
      * @param mailNickname the mailNickname value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -305,7 +289,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the onPremisesLastSyncDateTime property: The onPremisesLastSyncDateTime property.
-     *
+     * 
      * @return the onPremisesLastSyncDateTime value.
      */
     public OffsetDateTime onPremisesLastSyncDateTime() {
@@ -314,7 +298,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the onPremisesLastSyncDateTime property: The onPremisesLastSyncDateTime property.
-     *
+     * 
      * @param onPremisesLastSyncDateTime the onPremisesLastSyncDateTime value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -325,7 +309,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the onPremisesProvisioningErrors property: The onPremisesProvisioningErrors property.
-     *
+     * 
      * @return the onPremisesProvisioningErrors value.
      */
     public List<MicrosoftGraphOnPremisesProvisioningError> onPremisesProvisioningErrors() {
@@ -334,19 +318,19 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the onPremisesProvisioningErrors property: The onPremisesProvisioningErrors property.
-     *
+     * 
      * @param onPremisesProvisioningErrors the onPremisesProvisioningErrors value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
-    public MicrosoftGraphOrgContactInner withOnPremisesProvisioningErrors(
-        List<MicrosoftGraphOnPremisesProvisioningError> onPremisesProvisioningErrors) {
+    public MicrosoftGraphOrgContactInner
+        withOnPremisesProvisioningErrors(List<MicrosoftGraphOnPremisesProvisioningError> onPremisesProvisioningErrors) {
         this.onPremisesProvisioningErrors = onPremisesProvisioningErrors;
         return this;
     }
 
     /**
      * Get the onPremisesSyncEnabled property: The onPremisesSyncEnabled property.
-     *
+     * 
      * @return the onPremisesSyncEnabled value.
      */
     public Boolean onPremisesSyncEnabled() {
@@ -355,7 +339,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the onPremisesSyncEnabled property: The onPremisesSyncEnabled property.
-     *
+     * 
      * @param onPremisesSyncEnabled the onPremisesSyncEnabled value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -366,7 +350,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the phones property: The phones property.
-     *
+     * 
      * @return the phones value.
      */
     public List<MicrosoftGraphPhone> phones() {
@@ -375,7 +359,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the phones property: The phones property.
-     *
+     * 
      * @param phones the phones value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -386,7 +370,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the proxyAddresses property: The proxyAddresses property.
-     *
+     * 
      * @return the proxyAddresses value.
      */
     public List<String> proxyAddresses() {
@@ -395,7 +379,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the proxyAddresses property: The proxyAddresses property.
-     *
+     * 
      * @param proxyAddresses the proxyAddresses value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -406,7 +390,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the surname property: The surname property.
-     *
+     * 
      * @return the surname value.
      */
     public String surname() {
@@ -415,7 +399,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the surname property: The surname property.
-     *
+     * 
      * @param surname the surname value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -426,7 +410,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the directReports property: The directReports property.
-     *
+     * 
      * @return the directReports value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> directReports() {
@@ -435,7 +419,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the directReports property: The directReports property.
-     *
+     * 
      * @param directReports the directReports value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -445,11 +429,9 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     }
 
     /**
-     * Get the manager property: directoryObject
-     *
-     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
-     * directory entity types.
-     *
+     * Get the manager property: Represents an Azure Active Directory object. The directoryObject type is the base type
+     * for many other directory entity types.
+     * 
      * @return the manager value.
      */
     public MicrosoftGraphDirectoryObjectInner manager() {
@@ -457,11 +439,9 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     }
 
     /**
-     * Set the manager property: directoryObject
-     *
-     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
-     * directory entity types.
-     *
+     * Set the manager property: Represents an Azure Active Directory object. The directoryObject type is the base type
+     * for many other directory entity types.
+     * 
      * @param manager the manager value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -472,7 +452,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the memberOf property: The memberOf property.
-     *
+     * 
      * @return the memberOf value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> memberOf() {
@@ -481,7 +461,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the memberOf property: The memberOf property.
-     *
+     * 
      * @param memberOf the memberOf value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -492,7 +472,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Get the transitiveMemberOf property: The transitiveMemberOf property.
-     *
+     * 
      * @return the transitiveMemberOf value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf() {
@@ -501,12 +481,12 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Set the transitiveMemberOf property: The transitiveMemberOf property.
-     *
+     * 
      * @param transitiveMemberOf the transitiveMemberOf value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
-    public MicrosoftGraphOrgContactInner withTransitiveMemberOf(
-        List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf) {
+    public MicrosoftGraphOrgContactInner
+        withTransitiveMemberOf(List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf) {
         this.transitiveMemberOf = transitiveMemberOf;
         return this;
     }
@@ -514,10 +494,9 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -525,7 +504,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     /**
      * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.
      */
@@ -534,22 +513,18 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOrgContactInner withDeletedDateTime(OffsetDateTime deletedDateTime) {
         super.withDeletedDateTime(deletedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOrgContactInner withId(String id) {
         super.withId(id);
@@ -558,7 +533,7 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -585,5 +560,135 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
         if (transitiveMemberOf() != null) {
             transitiveMemberOf().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("deletedDateTime",
+            deletedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deletedDateTime()));
+        jsonWriter.writeArrayField("addresses", this.addresses, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("companyName", this.companyName);
+        jsonWriter.writeStringField("department", this.department);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("givenName", this.givenName);
+        jsonWriter.writeStringField("jobTitle", this.jobTitle);
+        jsonWriter.writeStringField("mail", this.mail);
+        jsonWriter.writeStringField("mailNickname", this.mailNickname);
+        jsonWriter.writeStringField("onPremisesLastSyncDateTime",
+            this.onPremisesLastSyncDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.onPremisesLastSyncDateTime));
+        jsonWriter.writeArrayField("onPremisesProvisioningErrors", this.onPremisesProvisioningErrors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("onPremisesSyncEnabled", this.onPremisesSyncEnabled);
+        jsonWriter.writeArrayField("phones", this.phones, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("proxyAddresses", this.proxyAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("surname", this.surname);
+        jsonWriter.writeArrayField("directReports", this.directReports, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("manager", this.manager);
+        jsonWriter.writeArrayField("memberOf", this.memberOf, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("transitiveMemberOf", this.transitiveMemberOf,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOrgContactInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOrgContactInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOrgContactInner.
+     */
+    public static MicrosoftGraphOrgContactInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOrgContactInner deserializedMicrosoftGraphOrgContactInner
+                = new MicrosoftGraphOrgContactInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.withId(reader.getString());
+                } else if ("deletedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.withDeletedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("addresses".equals(fieldName)) {
+                    List<MicrosoftGraphPhysicalOfficeAddress> addresses
+                        = reader.readArray(reader1 -> MicrosoftGraphPhysicalOfficeAddress.fromJson(reader1));
+                    deserializedMicrosoftGraphOrgContactInner.addresses = addresses;
+                } else if ("companyName".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.companyName = reader.getString();
+                } else if ("department".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.department = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.displayName = reader.getString();
+                } else if ("givenName".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.givenName = reader.getString();
+                } else if ("jobTitle".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.jobTitle = reader.getString();
+                } else if ("mail".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.mail = reader.getString();
+                } else if ("mailNickname".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.mailNickname = reader.getString();
+                } else if ("onPremisesLastSyncDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.onPremisesLastSyncDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("onPremisesProvisioningErrors".equals(fieldName)) {
+                    List<MicrosoftGraphOnPremisesProvisioningError> onPremisesProvisioningErrors
+                        = reader.readArray(reader1 -> MicrosoftGraphOnPremisesProvisioningError.fromJson(reader1));
+                    deserializedMicrosoftGraphOrgContactInner.onPremisesProvisioningErrors
+                        = onPremisesProvisioningErrors;
+                } else if ("onPremisesSyncEnabled".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.onPremisesSyncEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("phones".equals(fieldName)) {
+                    List<MicrosoftGraphPhone> phones
+                        = reader.readArray(reader1 -> MicrosoftGraphPhone.fromJson(reader1));
+                    deserializedMicrosoftGraphOrgContactInner.phones = phones;
+                } else if ("proxyAddresses".equals(fieldName)) {
+                    List<String> proxyAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphOrgContactInner.proxyAddresses = proxyAddresses;
+                } else if ("surname".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.surname = reader.getString();
+                } else if ("directReports".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> directReports
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphOrgContactInner.directReports = directReports;
+                } else if ("manager".equals(fieldName)) {
+                    deserializedMicrosoftGraphOrgContactInner.manager
+                        = MicrosoftGraphDirectoryObjectInner.fromJson(reader);
+                } else if ("memberOf".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> memberOf
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphOrgContactInner.memberOf = memberOf;
+                } else if ("transitiveMemberOf".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> transitiveMemberOf
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphOrgContactInner.transitiveMemberOf = transitiveMemberOf;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOrgContactInner.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOrgContactInner;
+        });
     }
 }

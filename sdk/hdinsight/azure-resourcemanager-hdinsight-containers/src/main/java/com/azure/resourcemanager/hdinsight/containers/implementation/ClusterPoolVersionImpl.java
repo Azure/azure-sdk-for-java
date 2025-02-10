@@ -4,16 +4,17 @@
 
 package com.azure.resourcemanager.hdinsight.containers.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterPoolVersionInner;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolVersion;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterPoolVersionProperties;
 
 public final class ClusterPoolVersionImpl implements ClusterPoolVersion {
     private ClusterPoolVersionInner innerObject;
 
     private final com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager;
 
-    ClusterPoolVersionImpl(
-        ClusterPoolVersionInner innerObject,
+    ClusterPoolVersionImpl(ClusterPoolVersionInner innerObject,
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -31,16 +32,12 @@ public final class ClusterPoolVersionImpl implements ClusterPoolVersion {
         return this.innerModel().type();
     }
 
-    public String clusterPoolVersion() {
-        return this.innerModel().clusterPoolVersion();
+    public ClusterPoolVersionProperties properties() {
+        return this.innerModel().properties();
     }
 
-    public String aksVersion() {
-        return this.innerModel().aksVersion();
-    }
-
-    public Boolean isPreview() {
-        return this.innerModel().isPreview();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ClusterPoolVersionInner innerModel() {

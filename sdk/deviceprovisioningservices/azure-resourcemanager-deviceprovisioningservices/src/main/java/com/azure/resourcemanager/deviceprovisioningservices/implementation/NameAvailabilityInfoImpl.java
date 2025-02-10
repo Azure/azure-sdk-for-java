@@ -13,8 +13,7 @@ public final class NameAvailabilityInfoImpl implements NameAvailabilityInfo {
 
     private final com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager;
 
-    NameAvailabilityInfoImpl(
-        NameAvailabilityInfoInner innerObject,
+    NameAvailabilityInfoImpl(NameAvailabilityInfoInner innerObject,
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

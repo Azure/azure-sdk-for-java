@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * VnetParameters resource specific properties.
  */
 @Fluent
-public final class VnetParametersProperties {
+public final class VnetParametersProperties implements JsonSerializable<VnetParametersProperties> {
     /*
      * The Resource Group of the VNET to be validated
      */
-    @JsonProperty(value = "vnetResourceGroup")
     private String vnetResourceGroup;
 
     /*
      * The name of the VNET to be validated
      */
-    @JsonProperty(value = "vnetName")
     private String vnetName;
 
     /*
      * The subnet name to be validated
      */
-    @JsonProperty(value = "vnetSubnetName")
     private String vnetSubnetName;
 
     /*
      * The ARM Resource ID of the subnet to validate
      */
-    @JsonProperty(value = "subnetResourceId")
     private String subnetResourceId;
 
     /**
@@ -128,5 +128,50 @@ public final class VnetParametersProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vnetResourceGroup", this.vnetResourceGroup);
+        jsonWriter.writeStringField("vnetName", this.vnetName);
+        jsonWriter.writeStringField("vnetSubnetName", this.vnetSubnetName);
+        jsonWriter.writeStringField("subnetResourceId", this.subnetResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VnetParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VnetParametersProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VnetParametersProperties.
+     */
+    public static VnetParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VnetParametersProperties deserializedVnetParametersProperties = new VnetParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vnetResourceGroup".equals(fieldName)) {
+                    deserializedVnetParametersProperties.vnetResourceGroup = reader.getString();
+                } else if ("vnetName".equals(fieldName)) {
+                    deserializedVnetParametersProperties.vnetName = reader.getString();
+                } else if ("vnetSubnetName".equals(fieldName)) {
+                    deserializedVnetParametersProperties.vnetSubnetName = reader.getString();
+                } else if ("subnetResourceId".equals(fieldName)) {
+                    deserializedVnetParametersProperties.subnetResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVnetParametersProperties;
+        });
     }
 }

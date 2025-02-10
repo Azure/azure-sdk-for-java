@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Naming information for this resource type. */
+/**
+ * Naming information for this resource type.
+ */
 @Fluent
-public final class ResourceUsageName {
+public final class ResourceUsageName implements JsonSerializable<ResourceUsageName> {
     /*
      * Canonical name for this resource type.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Localized name for this resource type.
      */
-    @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of ResourceUsageName class. */
+    /**
+     * Creates an instance of ResourceUsageName class.
+     */
     public ResourceUsageName() {
     }
 
     /**
      * Get the value property: Canonical name for this resource type.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +43,7 @@ public final class ResourceUsageName {
 
     /**
      * Set the value property: Canonical name for this resource type.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceUsageName object itself.
      */
@@ -48,7 +54,7 @@ public final class ResourceUsageName {
 
     /**
      * Get the localizedValue property: Localized name for this resource type.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -57,7 +63,7 @@ public final class ResourceUsageName {
 
     /**
      * Set the localizedValue property: Localized name for this resource type.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the ResourceUsageName object itself.
      */
@@ -68,9 +74,48 @@ public final class ResourceUsageName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("localizedValue", this.localizedValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceUsageName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceUsageName if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceUsageName.
+     */
+    public static ResourceUsageName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceUsageName deserializedResourceUsageName = new ResourceUsageName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedResourceUsageName.value = reader.getString();
+                } else if ("localizedValue".equals(fieldName)) {
+                    deserializedResourceUsageName.localizedValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceUsageName;
+        });
     }
 }

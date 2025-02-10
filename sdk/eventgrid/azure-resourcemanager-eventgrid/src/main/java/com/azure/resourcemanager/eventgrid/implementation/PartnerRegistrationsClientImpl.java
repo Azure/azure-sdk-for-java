@@ -66,8 +66,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     }
 
     /**
-     * The interface defining all the services for EventGridManagementClientPartnerRegistrations to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for EventGridManagementClientPartnerRegistrations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
@@ -508,7 +508,8 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     private Mono<PartnerRegistrationInner> createOrUpdateAsync(String resourceGroupName, String partnerRegistrationName,
         PartnerRegistrationInner partnerRegistrationInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, partnerRegistrationName, partnerRegistrationInfo, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1423,9 +1424,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1453,9 +1452,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1483,9 +1480,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1513,9 +1508,7 @@ public final class PartnerRegistrationsClientImpl implements PartnerRegistration
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

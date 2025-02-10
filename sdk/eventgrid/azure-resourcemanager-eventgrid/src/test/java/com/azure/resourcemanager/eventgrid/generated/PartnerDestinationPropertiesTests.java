@@ -15,32 +15,33 @@ public final class PartnerDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerDestinationProperties model = BinaryData.fromString(
-            "{\"partnerRegistrationImmutableId\":\"7fb89ac3-96be-44dc-8f12-d8db2c38eed0\",\"endpointServiceContext\":\"dmozu\",\"expirationTimeIfNotActivatedUtc\":\"2021-03-08T21:05:34Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"adpysownbt\",\"messageForActivation\":\"bugrj\"}")
+            "{\"partnerRegistrationImmutableId\":\"bcf0817e-783b-40e9-bb89-dae9f36b6b6b\",\"endpointServiceContext\":\"ltlwtjjguktalhs\",\"expirationTimeIfNotActivatedUtc\":\"2021-06-19T06:58:15Z\",\"provisioningState\":\"Deleting\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"rpoaimlnwi\",\"messageForActivation\":\"omylwea\"}")
             .toObject(PartnerDestinationProperties.class);
-        Assertions.assertEquals(UUID.fromString("7fb89ac3-96be-44dc-8f12-d8db2c38eed0"),
+        Assertions.assertEquals(UUID.fromString("bcf0817e-783b-40e9-bb89-dae9f36b6b6b"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("dmozu", model.endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T21:05:34Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals("ltlwtjjguktalhs", model.endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T06:58:15Z"), model.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerDestinationActivationState.NEVER_ACTIVATED, model.activationState());
-        Assertions.assertEquals("adpysownbt", model.endpointBaseUrl());
-        Assertions.assertEquals("bugrj", model.messageForActivation());
+        Assertions.assertEquals("rpoaimlnwi", model.endpointBaseUrl());
+        Assertions.assertEquals("omylwea", model.messageForActivation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerDestinationProperties model = new PartnerDestinationProperties()
-            .withPartnerRegistrationImmutableId(UUID.fromString("7fb89ac3-96be-44dc-8f12-d8db2c38eed0"))
-            .withEndpointServiceContext("dmozu")
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-03-08T21:05:34Z"))
-            .withActivationState(PartnerDestinationActivationState.NEVER_ACTIVATED).withEndpointBaseUrl("adpysownbt")
-            .withMessageForActivation("bugrj");
+            .withPartnerRegistrationImmutableId(UUID.fromString("bcf0817e-783b-40e9-bb89-dae9f36b6b6b"))
+            .withEndpointServiceContext("ltlwtjjguktalhs")
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-06-19T06:58:15Z"))
+            .withActivationState(PartnerDestinationActivationState.NEVER_ACTIVATED)
+            .withEndpointBaseUrl("rpoaimlnwi")
+            .withMessageForActivation("omylwea");
         model = BinaryData.fromObject(model).toObject(PartnerDestinationProperties.class);
-        Assertions.assertEquals(UUID.fromString("7fb89ac3-96be-44dc-8f12-d8db2c38eed0"),
+        Assertions.assertEquals(UUID.fromString("bcf0817e-783b-40e9-bb89-dae9f36b6b6b"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("dmozu", model.endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-08T21:05:34Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals("ltlwtjjguktalhs", model.endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T06:58:15Z"), model.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerDestinationActivationState.NEVER_ACTIVATED, model.activationState());
-        Assertions.assertEquals("adpysownbt", model.endpointBaseUrl());
-        Assertions.assertEquals("bugrj", model.messageForActivation());
+        Assertions.assertEquals("rpoaimlnwi", model.endpointBaseUrl());
+        Assertions.assertEquals("omylwea", model.messageForActivation());
     }
 }

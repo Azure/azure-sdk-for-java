@@ -5,6 +5,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+
 import java.util.Locale;
 
 /**
@@ -21,6 +22,7 @@ public final class ShareFileRange {
     /**
      * Create an instance of the range of a file. Specify the start the range
      * and the end defaults to the length of the file.
+     *
      * @param start Specifies the start of bytes to be written.
      */
     public ShareFileRange(final long start) {
@@ -29,19 +31,20 @@ public final class ShareFileRange {
 
     /**
      * Create an instance of the range of a file.  Both the start and end of the range must be specified.
+     *
      * @param start Specifies the start of bytes to be written.
      * @param end Specifies the end of bytes to be written
      */
     public ShareFileRange(final long start, final Long end) {
         if (start < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "ShareFileRange offset must be greater than or equal to 0."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("ShareFileRange offset must be greater than or equal to 0."));
         }
         this.start = start;
 
         if (end != null && end < 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(new IllegalArgumentException(
-                "ShareFileRange end must be greater than or equal to 0 if specified.")));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                new IllegalArgumentException("ShareFileRange end must be greater than or equal to 0 if specified.")));
         }
         this.end = end;
     }
@@ -57,6 +60,8 @@ public final class ShareFileRange {
     }
 
     /**
+     * Gets the start of bytes to be written.
+     *
      * @return The start of bytes to be written.
      */
     public long getStart() {
@@ -64,6 +69,8 @@ public final class ShareFileRange {
     }
 
     /**
+     * Gets the end of bytes to be written.
+     *
      * @return The end of bytes to be written.
      */
     public Long getEnd() {
@@ -71,6 +78,8 @@ public final class ShareFileRange {
     }
 
     /**
+     * Gets the string format of the ShareFileRange written into request.
+     *
      * @return The string format of the ShareFileRange written into request.
      */
     @Override
@@ -83,8 +92,9 @@ public final class ShareFileRange {
     }
 
     /**
-     * @return {@link ShareFileRange#toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0,
-     * otherwise null.
+     * Gets {@link #toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0, otherwise null.
+     *
+     * @return {@link #toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0, otherwise null.
      */
     public String toHeaderValue() {
         // The default values of a BlobRange

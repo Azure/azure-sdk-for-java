@@ -40,8 +40,8 @@ public enum LogLevel {
     private static final HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();
 
     static {
-        for (LogLevel logLevel: LogLevel.values()) {
-            for (String val: logLevel.allowedLogLevelVariables) {
+        for (LogLevel logLevel : LogLevel.values()) {
+            for (String val : logLevel.allowedLogLevelVariables) {
                 LOG_LEVEL_STRING_MAPPER.put(val, logLevel);
             }
         }
@@ -82,8 +82,8 @@ public enum LogLevel {
         }
         String caseInsensitiveLogLevel = logLevelVal.toLowerCase(Locale.ROOT);
         if (!LOG_LEVEL_STRING_MAPPER.containsKey(caseInsensitiveLogLevel)) {
-            throw new IllegalArgumentException("We currently do not support the log level you set. LogLevel: "
-                + logLevelVal);
+            throw new IllegalArgumentException(
+                "We currently do not support the log level you set. LogLevel: " + logLevelVal);
         }
         return LOG_LEVEL_STRING_MAPPER.get(caseInsensitiveLogLevel);
     }

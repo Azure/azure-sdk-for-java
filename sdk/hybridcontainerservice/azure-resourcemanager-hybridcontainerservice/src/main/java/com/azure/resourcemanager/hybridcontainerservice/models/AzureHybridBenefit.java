@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Indicates whether Azure Hybrid Benefit is opted in.
+ * Indicates whether Azure Hybrid Benefit is opted in. Default value is false.
  */
 public final class AzureHybridBenefit extends ExpandableStringEnum<AzureHybridBenefit> {
     /**
@@ -42,7 +41,6 @@ public final class AzureHybridBenefit extends ExpandableStringEnum<AzureHybridBe
      * @param name a name to look for.
      * @return the corresponding AzureHybridBenefit.
      */
-    @JsonCreator
     public static AzureHybridBenefit fromString(String name) {
         return fromString(name, AzureHybridBenefit.class);
     }

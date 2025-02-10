@@ -19,8 +19,7 @@ public final class JobsExecutionsImpl implements JobsExecutions {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public JobsExecutionsImpl(
-        JobsExecutionsClient innerClient,
+    public JobsExecutionsImpl(JobsExecutionsClient innerClient,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class JobsExecutionsImpl implements JobsExecutions {
 
     public PagedIterable<JobExecution> list(String resourceGroupName, String jobName) {
         PagedIterable<JobExecutionInner> inner = this.serviceClient().list(resourceGroupName, jobName);
-        return Utils.mapPage(inner, inner1 -> new JobExecutionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobExecutionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<JobExecution> list(String resourceGroupName, String jobName, String filter, Context context) {
         PagedIterable<JobExecutionInner> inner = this.serviceClient().list(resourceGroupName, jobName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new JobExecutionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobExecutionImpl(inner1, this.manager()));
     }
 
     private JobsExecutionsClient serviceClient() {

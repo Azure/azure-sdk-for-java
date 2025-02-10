@@ -4,42 +4,42 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Usages ListByInstancePool. */
+/**
+ * Samples for Usages ListByInstancePool.
+ */
 public final class UsagesListByInstancePoolSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListInstancePoolUsage.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListInstancePoolUsage.json
      */
     /**
      * Sample code: List instance pool usages.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listInstancePoolUsages(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getUsages()
-            .listByInstancePool("group1", "testIP", null, Context.NONE);
+            .listByInstancePool("group1", "testIP", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListInstancePoolUsageExpanded.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListInstancePoolUsageExpanded.json
      */
     /**
      * Sample code: List instance pool usages expanded with children.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listInstancePoolUsagesExpandedWithChildren(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        listInstancePoolUsagesExpandedWithChildren(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getUsages()
-            .listByInstancePool("group1", "testIP", true, Context.NONE);
+            .listByInstancePool("group1", "testIP", true, com.azure.core.util.Context.NONE);
     }
 }

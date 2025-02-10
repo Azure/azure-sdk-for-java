@@ -4,26 +4,26 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ActionGroups GetTestNotificationsAtResourceGroupLevel. */
+/**
+ * Samples for ActionGroups GetTestNotificationsAtResourceGroupLevel.
+ */
 public final class ActionGroupsGetTestNotificationsAtResourceGroupLevelSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/getTestNotificationsAtResourceGroupLevel.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/
+     * getTestNotificationsAtResourceGroupLevel.json
      */
     /**
      * Sample code: Get notification details at resource group level.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getNotificationDetailsAtResourceGroupLevel(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+    public static void
+        getNotificationDetailsAtResourceGroupLevel(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getActionGroups()
-            .getTestNotificationsAtResourceGroupLevelWithResponse(
-                "Default-TestNotifications", "11000222191287", Context.NONE);
+            .getTestNotificationsAtResourceGroupLevelWithResponse("Default-TestNotifications", "11000222191287",
+                com.azure.core.util.Context.NONE);
     }
 }

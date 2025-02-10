@@ -14,8 +14,8 @@ public final class SecuritySolutionImpl implements SecuritySolution {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    SecuritySolutionImpl(
-        SecuritySolutionInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    SecuritySolutionImpl(SecuritySolutionInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

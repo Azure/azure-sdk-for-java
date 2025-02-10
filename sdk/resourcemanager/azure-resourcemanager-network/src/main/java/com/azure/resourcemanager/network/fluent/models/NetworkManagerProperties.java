@@ -6,45 +6,44 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ConfigurationType;
 import com.azure.resourcemanager.network.models.NetworkManagerPropertiesNetworkManagerScopes;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of Managed Network.
  */
 @Fluent
-public final class NetworkManagerProperties {
+public final class NetworkManagerProperties implements JsonSerializable<NetworkManagerProperties> {
     /*
      * A description of the network manager.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Scope of Network Manager.
      */
-    @JsonProperty(value = "networkManagerScopes", required = true)
     private NetworkManagerPropertiesNetworkManagerScopes networkManagerScopes;
 
     /*
      * Scope Access.
      */
-    @JsonProperty(value = "networkManagerScopeAccesses", required = true)
     private List<ConfigurationType> networkManagerScopeAccesses;
 
     /*
      * The provisioning state of the network manager resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /**
@@ -140,16 +139,65 @@ public final class NetworkManagerProperties {
      */
     public void validate() {
         if (networkManagerScopes() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkManagerScopes in model NetworkManagerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkManagerScopes in model NetworkManagerProperties"));
         } else {
             networkManagerScopes().validate();
-        }
-        if (networkManagerScopeAccesses() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkManagerScopeAccesses in model NetworkManagerProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkManagerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("networkManagerScopes", this.networkManagerScopes);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("networkManagerScopeAccesses", this.networkManagerScopeAccesses,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkManagerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkManagerProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkManagerProperties.
+     */
+    public static NetworkManagerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkManagerProperties deserializedNetworkManagerProperties = new NetworkManagerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkManagerScopes".equals(fieldName)) {
+                    deserializedNetworkManagerProperties.networkManagerScopes
+                        = NetworkManagerPropertiesNetworkManagerScopes.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedNetworkManagerProperties.description = reader.getString();
+                } else if ("networkManagerScopeAccesses".equals(fieldName)) {
+                    List<ConfigurationType> networkManagerScopeAccesses
+                        = reader.readArray(reader1 -> ConfigurationType.fromString(reader1.getString()));
+                    deserializedNetworkManagerProperties.networkManagerScopeAccesses = networkManagerScopeAccesses;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkManagerProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedNetworkManagerProperties.resourceGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkManagerProperties;
+        });
+    }
 }

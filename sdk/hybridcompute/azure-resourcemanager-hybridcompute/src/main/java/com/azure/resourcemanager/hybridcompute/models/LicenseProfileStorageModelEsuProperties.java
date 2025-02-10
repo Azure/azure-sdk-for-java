@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** License profile storage model for ESU properties. */
+/**
+ * License profile storage model for ESU properties.
+ */
 @Immutable
-public class LicenseProfileStorageModelEsuProperties {
+public class LicenseProfileStorageModelEsuProperties
+    implements JsonSerializable<LicenseProfileStorageModelEsuProperties> {
     /*
      * The guid id of the license.
      */
-    @JsonProperty(value = "assignedLicenseImmutableId", access = JsonProperty.Access.WRITE_ONLY)
     private String assignedLicenseImmutableId;
 
     /*
      * The list of ESU keys.
      */
-    @JsonProperty(value = "esuKeys", access = JsonProperty.Access.WRITE_ONLY)
     private List<EsuKey> esuKeys;
 
-    /** Creates an instance of LicenseProfileStorageModelEsuProperties class. */
+    /**
+     * Creates an instance of LicenseProfileStorageModelEsuProperties class.
+     */
     public LicenseProfileStorageModelEsuProperties() {
     }
 
     /**
      * Get the assignedLicenseImmutableId property: The guid id of the license.
-     *
+     * 
      * @return the assignedLicenseImmutableId value.
      */
     public String assignedLicenseImmutableId() {
@@ -37,8 +44,19 @@ public class LicenseProfileStorageModelEsuProperties {
     }
 
     /**
+     * Set the assignedLicenseImmutableId property: The guid id of the license.
+     * 
+     * @param assignedLicenseImmutableId the assignedLicenseImmutableId value to set.
+     * @return the LicenseProfileStorageModelEsuProperties object itself.
+     */
+    LicenseProfileStorageModelEsuProperties withAssignedLicenseImmutableId(String assignedLicenseImmutableId) {
+        this.assignedLicenseImmutableId = assignedLicenseImmutableId;
+        return this;
+    }
+
+    /**
      * Get the esuKeys property: The list of ESU keys.
-     *
+     * 
      * @return the esuKeys value.
      */
     public List<EsuKey> esuKeys() {
@@ -46,13 +64,63 @@ public class LicenseProfileStorageModelEsuProperties {
     }
 
     /**
+     * Set the esuKeys property: The list of ESU keys.
+     * 
+     * @param esuKeys the esuKeys value to set.
+     * @return the LicenseProfileStorageModelEsuProperties object itself.
+     */
+    LicenseProfileStorageModelEsuProperties withEsuKeys(List<EsuKey> esuKeys) {
+        this.esuKeys = esuKeys;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (esuKeys() != null) {
             esuKeys().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseProfileStorageModelEsuProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseProfileStorageModelEsuProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseProfileStorageModelEsuProperties.
+     */
+    public static LicenseProfileStorageModelEsuProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseProfileStorageModelEsuProperties deserializedLicenseProfileStorageModelEsuProperties
+                = new LicenseProfileStorageModelEsuProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("assignedLicenseImmutableId".equals(fieldName)) {
+                    deserializedLicenseProfileStorageModelEsuProperties.assignedLicenseImmutableId = reader.getString();
+                } else if ("esuKeys".equals(fieldName)) {
+                    List<EsuKey> esuKeys = reader.readArray(reader1 -> EsuKey.fromJson(reader1));
+                    deserializedLicenseProfileStorageModelEsuProperties.esuKeys = esuKeys;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseProfileStorageModelEsuProperties;
+        });
     }
 }

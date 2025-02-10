@@ -5,78 +5,75 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.Actions;
 import com.azure.resourcemanager.monitor.models.AlertSeverity;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleCriteria;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** scheduled query rule Definition. */
+/**
+ * scheduled query rule Definition.
+ */
 @Fluent
-public final class ScheduledQueryRuleProperties {
+public final class ScheduledQueryRuleProperties implements JsonSerializable<ScheduledQueryRuleProperties> {
     /*
      * The api-version used when creating this alert rule
      */
-    @JsonProperty(value = "createdWithApiVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String createdWithApiVersion;
 
     /*
      * True if alert rule is legacy Log Analytic rule
      */
-    @JsonProperty(value = "isLegacyLogAnalyticsRule", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isLegacyLogAnalyticsRule;
 
     /*
      * The description of the scheduled query rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The display name of the alert rule
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only
-     * for rules of the kind LogAlert.
+     * Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for
+     * rules of the kind LogAlert.
      */
-    @JsonProperty(value = "severity")
     private AlertSeverity severity;
 
     /*
      * The flag which indicates whether this scheduled query rule is enabled. Value should be true or false
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The list of resource id's that this scheduled query rule is scoped to.
      */
-    @JsonProperty(value = "scopes")
     private List<String> scopes;
 
     /*
      * How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required
      * only for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "evaluationFrequency")
     private Duration evaluationFrequency;
 
     /*
      * The period of time (in ISO 8601 duration format) on which the Alert query will be executed (bin size). Relevant
      * and required only for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "windowSize")
     private Duration windowSize;
 
     /*
-     * If specified then overrides the query time range (default is WindowSize*NumberOfEvaluationPeriods). Relevant
-     * only for rules of the kind LogAlert.
+     * If specified then overrides the query time range (default is WindowSize*NumberOfEvaluationPeriods). Relevant only
+     * for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "overrideQueryTimeRange")
     private Duration overrideQueryTimeRange;
 
     /*
@@ -85,63 +82,57 @@ public final class ScheduledQueryRuleProperties {
      * fired for each virtual machine in the resource group which meet the alert criteria. Relevant only for rules of
      * the kind LogAlert
      */
-    @JsonProperty(value = "targetResourceTypes")
     private List<String> targetResourceTypes;
 
     /*
      * The rule criteria that defines the conditions of the scheduled query rule.
      */
-    @JsonProperty(value = "criteria")
     private ScheduledQueryRuleCriteria criteria;
 
     /*
      * Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. Relevant only
      * for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "muteActionsDuration")
     private Duration muteActionsDuration;
 
     /*
      * Actions to invoke when the alert fires.
      */
-    @JsonProperty(value = "actions")
     private Actions actions;
 
     /*
      * The flag which indicates whether this scheduled query rule has been configured to be stored in the customer's
      * storage. The default is false.
      */
-    @JsonProperty(value = "isWorkspaceAlertsStorageConfigured", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isWorkspaceAlertsStorageConfigured;
 
     /*
      * The flag which indicates whether this scheduled query rule should be stored in the customer's storage. The
      * default is false. Relevant only for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "checkWorkspaceAlertsStorageConfigured")
     private Boolean checkWorkspaceAlertsStorageConfigured;
 
     /*
      * The flag which indicates whether the provided query should be validated or not. The default is false. Relevant
      * only for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "skipQueryValidation")
     private Boolean skipQueryValidation;
 
     /*
      * The flag that indicates whether the alert should be automatically resolved or not. The default is true. Relevant
      * only for rules of the kind LogAlert.
      */
-    @JsonProperty(value = "autoMitigate")
     private Boolean autoMitigate;
 
-    /** Creates an instance of ScheduledQueryRuleProperties class. */
+    /**
+     * Creates an instance of ScheduledQueryRuleProperties class.
+     */
     public ScheduledQueryRuleProperties() {
     }
 
     /**
      * Get the createdWithApiVersion property: The api-version used when creating this alert rule.
-     *
+     * 
      * @return the createdWithApiVersion value.
      */
     public String createdWithApiVersion() {
@@ -150,7 +141,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Get the isLegacyLogAnalyticsRule property: True if alert rule is legacy Log Analytic rule.
-     *
+     * 
      * @return the isLegacyLogAnalyticsRule value.
      */
     public Boolean isLegacyLogAnalyticsRule() {
@@ -159,7 +150,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Get the description property: The description of the scheduled query rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -168,7 +159,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Set the description property: The description of the scheduled query rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -179,7 +170,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Get the displayName property: The display name of the alert rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -188,7 +179,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Set the displayName property: The display name of the alert rule.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -200,7 +191,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Get the severity property: Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest.
      * Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -210,7 +201,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Set the severity property: Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest.
      * Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -222,7 +213,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Get the enabled property: The flag which indicates whether this scheduled query rule is enabled. Value should be
      * true or false.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -232,7 +223,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Set the enabled property: The flag which indicates whether this scheduled query rule is enabled. Value should be
      * true or false.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -243,7 +234,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Get the scopes property: The list of resource id's that this scheduled query rule is scoped to.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -252,7 +243,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Set the scopes property: The list of resource id's that this scheduled query rule is scoped to.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -264,7 +255,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Get the evaluationFrequency property: How often the scheduled query rule is evaluated represented in ISO 8601
      * duration format. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the evaluationFrequency value.
      */
     public Duration evaluationFrequency() {
@@ -274,7 +265,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Set the evaluationFrequency property: How often the scheduled query rule is evaluated represented in ISO 8601
      * duration format. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param evaluationFrequency the evaluationFrequency value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -286,7 +277,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Get the windowSize property: The period of time (in ISO 8601 duration format) on which the Alert query will be
      * executed (bin size). Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the windowSize value.
      */
     public Duration windowSize() {
@@ -296,7 +287,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Set the windowSize property: The period of time (in ISO 8601 duration format) on which the Alert query will be
      * executed (bin size). Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param windowSize the windowSize value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -308,7 +299,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Get the overrideQueryTimeRange property: If specified then overrides the query time range (default is
      * WindowSize*NumberOfEvaluationPeriods). Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the overrideQueryTimeRange value.
      */
     public Duration overrideQueryTimeRange() {
@@ -318,7 +309,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Set the overrideQueryTimeRange property: If specified then overrides the query time range (default is
      * WindowSize*NumberOfEvaluationPeriods). Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param overrideQueryTimeRange the overrideQueryTimeRange value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -332,7 +323,7 @@ public final class ScheduledQueryRuleProperties {
      * created/updated. For example if the scope is a resource group and targetResourceTypes is
      * Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource
      * group which meet the alert criteria. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the targetResourceTypes value.
      */
     public List<String> targetResourceTypes() {
@@ -344,7 +335,7 @@ public final class ScheduledQueryRuleProperties {
      * created/updated. For example if the scope is a resource group and targetResourceTypes is
      * Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource
      * group which meet the alert criteria. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param targetResourceTypes the targetResourceTypes value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -355,7 +346,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Get the criteria property: The rule criteria that defines the conditions of the scheduled query rule.
-     *
+     * 
      * @return the criteria value.
      */
     public ScheduledQueryRuleCriteria criteria() {
@@ -364,7 +355,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Set the criteria property: The rule criteria that defines the conditions of the scheduled query rule.
-     *
+     * 
      * @param criteria the criteria value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -376,7 +367,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Get the muteActionsDuration property: Mute actions for the chosen period of time (in ISO 8601 duration format)
      * after the alert is fired. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the muteActionsDuration value.
      */
     public Duration muteActionsDuration() {
@@ -386,7 +377,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Set the muteActionsDuration property: Mute actions for the chosen period of time (in ISO 8601 duration format)
      * after the alert is fired. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param muteActionsDuration the muteActionsDuration value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -397,7 +388,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Get the actions property: Actions to invoke when the alert fires.
-     *
+     * 
      * @return the actions value.
      */
     public Actions actions() {
@@ -406,7 +397,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Set the actions property: Actions to invoke when the alert fires.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -418,7 +409,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Get the isWorkspaceAlertsStorageConfigured property: The flag which indicates whether this scheduled query rule
      * has been configured to be stored in the customer's storage. The default is false.
-     *
+     * 
      * @return the isWorkspaceAlertsStorageConfigured value.
      */
     public Boolean isWorkspaceAlertsStorageConfigured() {
@@ -429,7 +420,7 @@ public final class ScheduledQueryRuleProperties {
      * Get the checkWorkspaceAlertsStorageConfigured property: The flag which indicates whether this scheduled query
      * rule should be stored in the customer's storage. The default is false. Relevant only for rules of the kind
      * LogAlert.
-     *
+     * 
      * @return the checkWorkspaceAlertsStorageConfigured value.
      */
     public Boolean checkWorkspaceAlertsStorageConfigured() {
@@ -440,12 +431,12 @@ public final class ScheduledQueryRuleProperties {
      * Set the checkWorkspaceAlertsStorageConfigured property: The flag which indicates whether this scheduled query
      * rule should be stored in the customer's storage. The default is false. Relevant only for rules of the kind
      * LogAlert.
-     *
+     * 
      * @param checkWorkspaceAlertsStorageConfigured the checkWorkspaceAlertsStorageConfigured value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
-    public ScheduledQueryRuleProperties withCheckWorkspaceAlertsStorageConfigured(
-        Boolean checkWorkspaceAlertsStorageConfigured) {
+    public ScheduledQueryRuleProperties
+        withCheckWorkspaceAlertsStorageConfigured(Boolean checkWorkspaceAlertsStorageConfigured) {
         this.checkWorkspaceAlertsStorageConfigured = checkWorkspaceAlertsStorageConfigured;
         return this;
     }
@@ -453,7 +444,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Get the skipQueryValidation property: The flag which indicates whether the provided query should be validated or
      * not. The default is false. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the skipQueryValidation value.
      */
     public Boolean skipQueryValidation() {
@@ -463,7 +454,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Set the skipQueryValidation property: The flag which indicates whether the provided query should be validated or
      * not. The default is false. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param skipQueryValidation the skipQueryValidation value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -475,7 +466,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
      * The default is true. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the autoMitigate value.
      */
     public Boolean autoMitigate() {
@@ -485,7 +476,7 @@ public final class ScheduledQueryRuleProperties {
     /**
      * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
      * The default is true. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param autoMitigate the autoMitigate value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
@@ -496,7 +487,7 @@ public final class ScheduledQueryRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -506,5 +497,104 @@ public final class ScheduledQueryRuleProperties {
         if (actions() != null) {
             actions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("evaluationFrequency",
+            CoreUtils.durationToStringWithDays(this.evaluationFrequency));
+        jsonWriter.writeStringField("windowSize", CoreUtils.durationToStringWithDays(this.windowSize));
+        jsonWriter.writeStringField("overrideQueryTimeRange",
+            CoreUtils.durationToStringWithDays(this.overrideQueryTimeRange));
+        jsonWriter.writeArrayField("targetResourceTypes", this.targetResourceTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("criteria", this.criteria);
+        jsonWriter.writeStringField("muteActionsDuration",
+            CoreUtils.durationToStringWithDays(this.muteActionsDuration));
+        jsonWriter.writeJsonField("actions", this.actions);
+        jsonWriter.writeBooleanField("checkWorkspaceAlertsStorageConfigured",
+            this.checkWorkspaceAlertsStorageConfigured);
+        jsonWriter.writeBooleanField("skipQueryValidation", this.skipQueryValidation);
+        jsonWriter.writeBooleanField("autoMitigate", this.autoMitigate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledQueryRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledQueryRuleProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduledQueryRuleProperties.
+     */
+    public static ScheduledQueryRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledQueryRuleProperties deserializedScheduledQueryRuleProperties = new ScheduledQueryRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdWithApiVersion".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.createdWithApiVersion = reader.getString();
+                } else if ("isLegacyLogAnalyticsRule".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.isLegacyLogAnalyticsRule
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("description".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.displayName = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.severity = AlertSeverity.fromLong(reader.getLong());
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("scopes".equals(fieldName)) {
+                    List<String> scopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedScheduledQueryRuleProperties.scopes = scopes;
+                } else if ("evaluationFrequency".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.evaluationFrequency
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("windowSize".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.windowSize
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("overrideQueryTimeRange".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.overrideQueryTimeRange
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("targetResourceTypes".equals(fieldName)) {
+                    List<String> targetResourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedScheduledQueryRuleProperties.targetResourceTypes = targetResourceTypes;
+                } else if ("criteria".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.criteria = ScheduledQueryRuleCriteria.fromJson(reader);
+                } else if ("muteActionsDuration".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.muteActionsDuration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("actions".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.actions = Actions.fromJson(reader);
+                } else if ("isWorkspaceAlertsStorageConfigured".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.isWorkspaceAlertsStorageConfigured
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("checkWorkspaceAlertsStorageConfigured".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.checkWorkspaceAlertsStorageConfigured
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("skipQueryValidation".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.skipQueryValidation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoMitigate".equals(fieldName)) {
+                    deserializedScheduledQueryRuleProperties.autoMitigate = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledQueryRuleProperties;
+        });
     }
 }

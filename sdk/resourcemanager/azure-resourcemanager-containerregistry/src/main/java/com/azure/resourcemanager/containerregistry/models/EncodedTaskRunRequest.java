@@ -6,72 +6,82 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The parameters for a quick task run request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("EncodedTaskRunRequest")
+/**
+ * The parameters for a quick task run request.
+ */
 @Fluent
 public final class EncodedTaskRunRequest extends RunRequest {
     /*
+     * The type of the run request.
+     */
+    private String type = "EncodedTaskRunRequest";
+
+    /*
      * Base64 encoded value of the template/definition file content.
      */
-    @JsonProperty(value = "encodedTaskContent", required = true)
     private String encodedTaskContent;
 
     /*
      * Base64 encoded value of the parameters/values file content.
      */
-    @JsonProperty(value = "encodedValuesContent")
     private String encodedValuesContent;
 
     /*
      * The collection of overridable values that can be passed when running a task.
      */
-    @JsonProperty(value = "values")
     private List<SetValue> values;
 
     /*
      * Run timeout in seconds.
      */
-    @JsonProperty(value = "timeout")
     private Integer timeout;
 
     /*
      * The platform properties against which the run has to happen.
      */
-    @JsonProperty(value = "platform", required = true)
     private PlatformProperties platform;
 
     /*
      * The machine configuration of the run agent.
      */
-    @JsonProperty(value = "agentConfiguration")
     private AgentProperties agentConfiguration;
 
     /*
      * The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
      * If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
      */
-    @JsonProperty(value = "sourceLocation")
     private String sourceLocation;
 
     /*
      * The properties that describes a set of credentials that will be used when this run is invoked.
      */
-    @JsonProperty(value = "credentials")
     private Credentials credentials;
 
-    /** Creates an instance of EncodedTaskRunRequest class. */
+    /**
+     * Creates an instance of EncodedTaskRunRequest class.
+     */
     public EncodedTaskRunRequest() {
     }
 
     /**
+     * Get the type property: The type of the run request.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the encodedTaskContent property: Base64 encoded value of the template/definition file content.
-     *
+     * 
      * @return the encodedTaskContent value.
      */
     public String encodedTaskContent() {
@@ -80,7 +90,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the encodedTaskContent property: Base64 encoded value of the template/definition file content.
-     *
+     * 
      * @param encodedTaskContent the encodedTaskContent value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -91,7 +101,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the encodedValuesContent property: Base64 encoded value of the parameters/values file content.
-     *
+     * 
      * @return the encodedValuesContent value.
      */
     public String encodedValuesContent() {
@@ -100,7 +110,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the encodedValuesContent property: Base64 encoded value of the parameters/values file content.
-     *
+     * 
      * @param encodedValuesContent the encodedValuesContent value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -111,7 +121,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @return the values value.
      */
     public List<SetValue> values() {
@@ -120,7 +130,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @param values the values value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -131,7 +141,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the timeout property: Run timeout in seconds.
-     *
+     * 
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -140,7 +150,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the timeout property: Run timeout in seconds.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -151,7 +161,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @return the platform value.
      */
     public PlatformProperties platform() {
@@ -160,7 +170,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @param platform the platform value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -171,7 +181,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -180,7 +190,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -191,9 +201,9 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the sourceLocation property: The URL(absolute or relative) of the source context. It can be an URL to a tar
-     * or git repository. If it is relative URL, the relative path should be obtained from calling
-     * listBuildSourceUploadUrl API.
-     *
+     * or git repository.
+     * If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+     * 
      * @return the sourceLocation value.
      */
     public String sourceLocation() {
@@ -202,9 +212,9 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the sourceLocation property: The URL(absolute or relative) of the source context. It can be an URL to a tar
-     * or git repository. If it is relative URL, the relative path should be obtained from calling
-     * listBuildSourceUploadUrl API.
-     *
+     * or git repository.
+     * If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+     * 
      * @param sourceLocation the sourceLocation value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -216,7 +226,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
     /**
      * Get the credentials property: The properties that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @return the credentials value.
      */
     public Credentials credentials() {
@@ -226,7 +236,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
     /**
      * Set the credentials property: The properties that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -235,21 +245,27 @@ public final class EncodedTaskRunRequest extends RunRequest {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncodedTaskRunRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
         super.withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncodedTaskRunRequest withAgentPoolName(String agentPoolName) {
         super.withAgentPoolName(agentPoolName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncodedTaskRunRequest withLogTemplate(String logTemplate) {
         super.withLogTemplate(logTemplate);
@@ -258,25 +274,23 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (encodedTaskContent() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property encodedTaskContent in model EncodedTaskRunRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property encodedTaskContent in model EncodedTaskRunRequest"));
         }
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
         if (platform() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property platform in model EncodedTaskRunRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property platform in model EncodedTaskRunRequest"));
         } else {
             platform().validate();
         }
@@ -289,4 +303,75 @@ public final class EncodedTaskRunRequest extends RunRequest {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EncodedTaskRunRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isArchiveEnabled", isArchiveEnabled());
+        jsonWriter.writeStringField("agentPoolName", agentPoolName());
+        jsonWriter.writeStringField("logTemplate", logTemplate());
+        jsonWriter.writeStringField("encodedTaskContent", this.encodedTaskContent);
+        jsonWriter.writeJsonField("platform", this.platform);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("encodedValuesContent", this.encodedValuesContent);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("timeout", this.timeout);
+        jsonWriter.writeJsonField("agentConfiguration", this.agentConfiguration);
+        jsonWriter.writeStringField("sourceLocation", this.sourceLocation);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncodedTaskRunRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncodedTaskRunRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EncodedTaskRunRequest.
+     */
+    public static EncodedTaskRunRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncodedTaskRunRequest deserializedEncodedTaskRunRequest = new EncodedTaskRunRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedEncodedTaskRunRequest.withIsArchiveEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("agentPoolName".equals(fieldName)) {
+                    deserializedEncodedTaskRunRequest.withAgentPoolName(reader.getString());
+                } else if ("logTemplate".equals(fieldName)) {
+                    deserializedEncodedTaskRunRequest.withLogTemplate(reader.getString());
+                } else if ("encodedTaskContent".equals(fieldName)) {
+                    deserializedEncodedTaskRunRequest.encodedTaskContent = reader.getString();
+                } else if ("platform".equals(fieldName)) {
+                    deserializedEncodedTaskRunRequest.platform = PlatformProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedEncodedTaskRunRequest.type = reader.getString();
+                } else if ("encodedValuesContent".equals(fieldName)) {
+                    deserializedEncodedTaskRunRequest.encodedValuesContent = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<SetValue> values = reader.readArray(reader1 -> SetValue.fromJson(reader1));
+                    deserializedEncodedTaskRunRequest.values = values;
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedEncodedTaskRunRequest.timeout = reader.getNullable(JsonReader::getInt);
+                } else if ("agentConfiguration".equals(fieldName)) {
+                    deserializedEncodedTaskRunRequest.agentConfiguration = AgentProperties.fromJson(reader);
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedEncodedTaskRunRequest.sourceLocation = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedEncodedTaskRunRequest.credentials = Credentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncodedTaskRunRequest;
+        });
+    }
 }

@@ -15,6 +15,10 @@ import java.io.Serializable;
 /**
  * Adapter for Springs {@link FactoryBean} interface to allow easy setup of cosmos repository factories via Spring
  * configuration.
+ *
+ * @param <T> the type of the repository.
+ * @param <S> the domain type the repository manages.
+ * @param <ID> the type of the id of the entity the repository manages.
  */
 public class CosmosRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable>
         extends RepositoryFactoryBeanSupport<T, S, ID> {
@@ -46,6 +50,7 @@ public class CosmosRepositoryFactoryBean<T extends Repository<S, ID>, S, ID exte
     }
 
     /**
+     * Return the factory instance.
      * @return the factory instance
      */
     protected RepositoryFactorySupport getFactoryInstance() {

@@ -6,30 +6,44 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.SynapseSparkJobActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Execute spark job activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SparkJob")
 @Fluent
 public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "SparkJob";
+
+    /*
      * Execute spark job activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private SynapseSparkJobActivityTypeProperties innerTypeProperties = new SynapseSparkJobActivityTypeProperties();
 
     /**
      * Creates an instance of SynapseSparkJobDefinitionActivity class.
      */
     public SynapseSparkJobDefinitionActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -160,8 +174,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the file property: The main file used for the job, which will override the 'file' of the spark job
-     * definition you provide. Type: string (or Expression with resultType string).
+     * Get the file property: The main file used for the job, which will override the 'file' of the spark job definition
+     * you provide. Type: string (or Expression with resultType string).
      * 
      * @return the file value.
      */
@@ -170,8 +184,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the file property: The main file used for the job, which will override the 'file' of the spark job
-     * definition you provide. Type: string (or Expression with resultType string).
+     * Set the file property: The main file used for the job, which will override the 'file' of the spark job definition
+     * you provide. Type: string (or Expression with resultType string).
      * 
      * @param file the file value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
@@ -186,8 +200,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Get the scanFolder property: Scanning subfolders from the root folder of the main definition file, these files
-     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned,
-     * and the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
+     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and
+     * the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the scanFolder value.
      */
@@ -197,8 +211,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
 
     /**
      * Set the scanFolder property: Scanning subfolders from the root folder of the main definition file, these files
-     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned,
-     * and the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
+     * will be added as reference files. The folders named 'jars', 'pyFiles', 'files' or 'archives' will be scanned, and
+     * the folders name are case sensitive. Type: boolean (or Expression with resultType boolean).
      * 
      * @param scanFolder the scanFolder value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
@@ -212,9 +226,9 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the className property: The fully-qualified identifier or the main class that is in the main definition
-     * file, which will override the 'className' of the spark job definition you provide. Type: string (or Expression
-     * with resultType string).
+     * Get the className property: The fully-qualified identifier or the main class that is in the main definition file,
+     * which will override the 'className' of the spark job definition you provide. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the className value.
      */
@@ -223,9 +237,9 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the className property: The fully-qualified identifier or the main class that is in the main definition
-     * file, which will override the 'className' of the spark job definition you provide. Type: string (or Expression
-     * with resultType string).
+     * Set the className property: The fully-qualified identifier or the main class that is in the main definition file,
+     * which will override the 'className' of the spark job definition you provide. Type: string (or Expression with
+     * resultType string).
      * 
      * @param className the className value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
@@ -367,8 +381,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the conf property: Spark configuration properties, which will override the 'conf' of the spark job
-     * definition you provide.
+     * Get the conf property: Spark configuration properties, which will override the 'conf' of the spark job definition
+     * you provide.
      * 
      * @return the conf value.
      */
@@ -377,8 +391,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the conf property: Spark configuration properties, which will override the 'conf' of the spark job
-     * definition you provide.
+     * Set the conf property: Spark configuration properties, which will override the 'conf' of the spark job definition
+     * you provide.
      * 
      * @param conf the conf value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
@@ -419,8 +433,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the numExecutors property: Number of executors to launch for this job, which will override the
-     * 'numExecutors' of the spark job definition you provide. Type: integer (or Expression with resultType integer).
+     * Get the numExecutors property: Number of executors to launch for this job, which will override the 'numExecutors'
+     * of the spark job definition you provide. Type: integer (or Expression with resultType integer).
      * 
      * @return the numExecutors value.
      */
@@ -429,8 +443,8 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the numExecutors property: Number of executors to launch for this job, which will override the
-     * 'numExecutors' of the spark job definition you provide. Type: integer (or Expression with resultType integer).
+     * Set the numExecutors property: Number of executors to launch for this job, which will override the 'numExecutors'
+     * of the spark job definition you provide. Type: integer (or Expression with resultType integer).
      * 
      * @param numExecutors the numExecutors value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
@@ -520,14 +534,115 @@ public final class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SynapseSparkJobDefinitionActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SynapseSparkJobDefinitionActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model SynapseSparkJobDefinitionActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
+        }
+        if (linkedServiceName() != null) {
+            linkedServiceName().validate();
+        }
+        if (policy() != null) {
+            policy().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SynapseSparkJobDefinitionActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeJsonField("policy", policy());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SynapseSparkJobDefinitionActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SynapseSparkJobDefinitionActivity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SynapseSparkJobDefinitionActivity.
+     */
+    public static SynapseSparkJobDefinitionActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SynapseSparkJobDefinitionActivity deserializedSynapseSparkJobDefinitionActivity
+                = new SynapseSparkJobDefinitionActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSynapseSparkJobDefinitionActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSynapseSparkJobDefinitionActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedSynapseSparkJobDefinitionActivity
+                        .withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedSynapseSparkJobDefinitionActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedSynapseSparkJobDefinitionActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedSynapseSparkJobDefinitionActivity.withUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedSynapseSparkJobDefinitionActivity
+                        .withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedSynapseSparkJobDefinitionActivity.withPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedSynapseSparkJobDefinitionActivity.innerTypeProperties
+                        = SynapseSparkJobActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSynapseSparkJobDefinitionActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSynapseSparkJobDefinitionActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedSynapseSparkJobDefinitionActivity;
+        });
+    }
 }

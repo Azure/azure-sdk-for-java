@@ -5,63 +5,75 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** Base class for backup items. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
-@JsonTypeName("GenericProtectedItem")
+/**
+ * Base class for backup items.
+ */
 @Fluent
 public final class GenericProtectedItem extends ProtectedItem {
     /*
+     * backup item type.
+     */
+    private String protectedItemType = "GenericProtectedItem";
+
+    /*
      * Friendly name of the container.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Indicates consistency of policy object and policy applied to this backup item.
      */
-    @JsonProperty(value = "policyState")
     private String policyState;
 
     /*
      * Backup state of this backup item.
      */
-    @JsonProperty(value = "protectionState")
     private ProtectionState protectionState;
 
     /*
      * Data Plane Service ID of the protected item.
      */
-    @JsonProperty(value = "protectedItemId")
     private Long protectedItemId;
 
     /*
      * Loosely coupled (type, value) associations (example - parent of a protected item)
      */
-    @JsonProperty(value = "sourceAssociations")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> sourceAssociations;
 
     /*
      * Name of this backup item's fabric.
      */
-    @JsonProperty(value = "fabricName")
     private String fabricName;
 
-    /** Creates an instance of GenericProtectedItem class. */
+    /**
+     * Creates an instance of GenericProtectedItem class.
+     */
     public GenericProtectedItem() {
     }
 
     /**
+     * Get the protectedItemType property: backup item type.
+     * 
+     * @return the protectedItemType value.
+     */
+    @Override
+    public String protectedItemType() {
+        return this.protectedItemType;
+    }
+
+    /**
      * Get the friendlyName property: Friendly name of the container.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -70,7 +82,7 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /**
      * Set the friendlyName property: Friendly name of the container.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the GenericProtectedItem object itself.
      */
@@ -81,7 +93,7 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /**
      * Get the policyState property: Indicates consistency of policy object and policy applied to this backup item.
-     *
+     * 
      * @return the policyState value.
      */
     public String policyState() {
@@ -90,7 +102,7 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /**
      * Set the policyState property: Indicates consistency of policy object and policy applied to this backup item.
-     *
+     * 
      * @param policyState the policyState value to set.
      * @return the GenericProtectedItem object itself.
      */
@@ -101,7 +113,7 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /**
      * Get the protectionState property: Backup state of this backup item.
-     *
+     * 
      * @return the protectionState value.
      */
     public ProtectionState protectionState() {
@@ -110,7 +122,7 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /**
      * Set the protectionState property: Backup state of this backup item.
-     *
+     * 
      * @param protectionState the protectionState value to set.
      * @return the GenericProtectedItem object itself.
      */
@@ -121,7 +133,7 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /**
      * Get the protectedItemId property: Data Plane Service ID of the protected item.
-     *
+     * 
      * @return the protectedItemId value.
      */
     public Long protectedItemId() {
@@ -130,7 +142,7 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /**
      * Set the protectedItemId property: Data Plane Service ID of the protected item.
-     *
+     * 
      * @param protectedItemId the protectedItemId value to set.
      * @return the GenericProtectedItem object itself.
      */
@@ -142,7 +154,7 @@ public final class GenericProtectedItem extends ProtectedItem {
     /**
      * Get the sourceAssociations property: Loosely coupled (type, value) associations (example - parent of a protected
      * item).
-     *
+     * 
      * @return the sourceAssociations value.
      */
     public Map<String, String> sourceAssociations() {
@@ -152,7 +164,7 @@ public final class GenericProtectedItem extends ProtectedItem {
     /**
      * Set the sourceAssociations property: Loosely coupled (type, value) associations (example - parent of a protected
      * item).
-     *
+     * 
      * @param sourceAssociations the sourceAssociations value to set.
      * @return the GenericProtectedItem object itself.
      */
@@ -163,7 +175,7 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /**
      * Get the fabricName property: Name of this backup item's fabric.
-     *
+     * 
      * @return the fabricName value.
      */
     public String fabricName() {
@@ -172,7 +184,7 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /**
      * Set the fabricName property: Name of this backup item's fabric.
-     *
+     * 
      * @param fabricName the fabricName value to set.
      * @return the GenericProtectedItem object itself.
      */
@@ -181,105 +193,135 @@ public final class GenericProtectedItem extends ProtectedItem {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withLastRecoveryPoint(OffsetDateTime lastRecoveryPoint) {
         super.withLastRecoveryPoint(lastRecoveryPoint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withBackupSetName(String backupSetName) {
         super.withBackupSetName(backupSetName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withCreateMode(CreateMode createMode) {
         super.withCreateMode(createMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withDeferredDeleteTimeInUtc(OffsetDateTime deferredDeleteTimeInUtc) {
         super.withDeferredDeleteTimeInUtc(deferredDeleteTimeInUtc);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withIsScheduledForDeferredDelete(Boolean isScheduledForDeferredDelete) {
         super.withIsScheduledForDeferredDelete(isScheduledForDeferredDelete);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withDeferredDeleteTimeRemaining(String deferredDeleteTimeRemaining) {
         super.withDeferredDeleteTimeRemaining(deferredDeleteTimeRemaining);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withIsDeferredDeleteScheduleUpcoming(Boolean isDeferredDeleteScheduleUpcoming) {
         super.withIsDeferredDeleteScheduleUpcoming(isDeferredDeleteScheduleUpcoming);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
         super.withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
         super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
@@ -288,11 +330,130 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerName", containerName());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("policyId", policyId());
+        jsonWriter.writeStringField("lastRecoveryPoint",
+            lastRecoveryPoint() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastRecoveryPoint()));
+        jsonWriter.writeStringField("backupSetName", backupSetName());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeStringField("deferredDeleteTimeInUTC",
+            deferredDeleteTimeInUtc() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deferredDeleteTimeInUtc()));
+        jsonWriter.writeBooleanField("isScheduledForDeferredDelete", isScheduledForDeferredDelete());
+        jsonWriter.writeStringField("deferredDeleteTimeRemaining", deferredDeleteTimeRemaining());
+        jsonWriter.writeBooleanField("isDeferredDeleteScheduleUpcoming", isDeferredDeleteScheduleUpcoming());
+        jsonWriter.writeBooleanField("isRehydrate", isRehydrate());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchiveEnabled", isArchiveEnabled());
+        jsonWriter.writeStringField("policyName", policyName());
+        jsonWriter.writeNumberField("softDeleteRetentionPeriodInDays", softDeleteRetentionPeriod());
+        jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("policyState", this.policyState);
+        jsonWriter.writeStringField("protectionState",
+            this.protectionState == null ? null : this.protectionState.toString());
+        jsonWriter.writeNumberField("protectedItemId", this.protectedItemId);
+        jsonWriter.writeMapField("sourceAssociations", this.sourceAssociations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("fabricName", this.fabricName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenericProtectedItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenericProtectedItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenericProtectedItem.
+     */
+    public static GenericProtectedItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenericProtectedItem deserializedGenericProtectedItem = new GenericProtectedItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedGenericProtectedItem
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withWorkloadType(DataSourceType.fromString(reader.getString()));
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withContainerName(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withSourceResourceId(reader.getString());
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withPolicyId(reader.getString());
+                } else if ("lastRecoveryPoint".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withLastRecoveryPoint(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("backupSetName".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withBackupSetName(reader.getString());
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("deferredDeleteTimeInUTC".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withDeferredDeleteTimeInUtc(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("isScheduledForDeferredDelete".equals(fieldName)) {
+                    deserializedGenericProtectedItem
+                        .withIsScheduledForDeferredDelete(reader.getNullable(JsonReader::getBoolean));
+                } else if ("deferredDeleteTimeRemaining".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withDeferredDeleteTimeRemaining(reader.getString());
+                } else if ("isDeferredDeleteScheduleUpcoming".equals(fieldName)) {
+                    deserializedGenericProtectedItem
+                        .withIsDeferredDeleteScheduleUpcoming(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isRehydrate".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withIsRehydrate(reader.getNullable(JsonReader::getBoolean));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGenericProtectedItem.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withIsArchiveEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withPolicyName(reader.getString());
+                } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedGenericProtectedItem
+                        .withSoftDeleteRetentionPeriod(reader.getNullable(JsonReader::getInt));
+                } else if ("vaultId".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withVaultId(reader.getString());
+                } else if ("protectedItemType".equals(fieldName)) {
+                    deserializedGenericProtectedItem.protectedItemType = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedGenericProtectedItem.friendlyName = reader.getString();
+                } else if ("policyState".equals(fieldName)) {
+                    deserializedGenericProtectedItem.policyState = reader.getString();
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedGenericProtectedItem.protectionState = ProtectionState.fromString(reader.getString());
+                } else if ("protectedItemId".equals(fieldName)) {
+                    deserializedGenericProtectedItem.protectedItemId = reader.getNullable(JsonReader::getLong);
+                } else if ("sourceAssociations".equals(fieldName)) {
+                    Map<String, String> sourceAssociations = reader.readMap(reader1 -> reader1.getString());
+                    deserializedGenericProtectedItem.sourceAssociations = sourceAssociations;
+                } else if ("fabricName".equals(fieldName)) {
+                    deserializedGenericProtectedItem.fabricName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenericProtectedItem;
+        });
     }
 }

@@ -27,23 +27,28 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.NameAvai
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CheckNameAvailabilitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CheckNameAvailabilitiesClient.
+ */
 public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailabilitiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CheckNameAvailabilitiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PostgreSqlManagementClientImpl client;
 
     /**
      * Initializes an instance of CheckNameAvailabilitiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CheckNameAvailabilitiesClientImpl(PostgreSqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(CheckNameAvailabilitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CheckNameAvailabilitiesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,114 +59,87 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")
     public interface CheckNameAvailabilitiesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NameAvailabilityInner>> execute(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<NameAvailabilityInner>> execute(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CheckNameAvailabilityRequest nameAvailabilityRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Check the availability of name for resource.
-     *
+     * 
      * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a resource name availability along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a resource name availability along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(
-        CheckNameAvailabilityRequest nameAvailabilityRequest) {
+    public Mono<Response<NameAvailabilityInner>>
+        executeWithResponseAsync(CheckNameAvailabilityRequest nameAvailabilityRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (nameAvailabilityRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nameAvailabilityRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nameAvailabilityRequest is required and cannot be null."));
         } else {
             nameAvailabilityRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .execute(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            nameAvailabilityRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.execute(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), nameAvailabilityRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check the availability of name for resource.
-     *
+     * 
      * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a resource name availability along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a resource name availability along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(
-        CheckNameAvailabilityRequest nameAvailabilityRequest, Context context) {
+    private Mono<Response<NameAvailabilityInner>>
+        executeWithResponseAsync(CheckNameAvailabilityRequest nameAvailabilityRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (nameAvailabilityRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter nameAvailabilityRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter nameAvailabilityRequest is required and cannot be null."));
         } else {
             nameAvailabilityRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .execute(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                nameAvailabilityRequest,
-                accept,
-                context);
+        return service.execute(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            nameAvailabilityRequest, accept, context);
     }
 
     /**
      * Check the availability of name for resource.
-     *
+     * 
      * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -175,7 +153,7 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
 
     /**
      * Check the availability of name for resource.
-     *
+     * 
      * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,14 +162,14 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
      * @return represents a resource name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NameAvailabilityInner> executeWithResponse(
-        CheckNameAvailabilityRequest nameAvailabilityRequest, Context context) {
+    public Response<NameAvailabilityInner> executeWithResponse(CheckNameAvailabilityRequest nameAvailabilityRequest,
+        Context context) {
         return executeWithResponseAsync(nameAvailabilityRequest, context).block();
     }
 
     /**
      * Check the availability of name for resource.
-     *
+     * 
      * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

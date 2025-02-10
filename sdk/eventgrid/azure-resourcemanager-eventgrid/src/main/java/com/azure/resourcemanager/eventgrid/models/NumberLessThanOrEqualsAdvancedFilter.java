@@ -5,27 +5,41 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * NumberLessThanOrEquals Advanced Filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
-@JsonTypeName("NumberLessThanOrEquals")
 @Fluent
 public final class NumberLessThanOrEqualsAdvancedFilter extends AdvancedFilter {
     /*
+     * The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+     */
+    private AdvancedFilterOperatorType operatorType = AdvancedFilterOperatorType.NUMBER_LESS_THAN_OR_EQUALS;
+
+    /*
      * The filter value.
      */
-    @JsonProperty(value = "value")
     private Double value;
 
     /**
      * Creates an instance of NumberLessThanOrEqualsAdvancedFilter class.
      */
     public NumberLessThanOrEqualsAdvancedFilter() {
+    }
+
+    /**
+     * Get the operatorType property: The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals
+     * and others.
+     * 
+     * @return the operatorType value.
+     */
+    @Override
+    public AdvancedFilterOperatorType operatorType() {
+        return this.operatorType;
     }
 
     /**
@@ -64,6 +78,49 @@ public final class NumberLessThanOrEqualsAdvancedFilter extends AdvancedFilter {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", key());
+        jsonWriter.writeStringField("operatorType", this.operatorType == null ? null : this.operatorType.toString());
+        jsonWriter.writeNumberField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NumberLessThanOrEqualsAdvancedFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NumberLessThanOrEqualsAdvancedFilter if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NumberLessThanOrEqualsAdvancedFilter.
+     */
+    public static NumberLessThanOrEqualsAdvancedFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NumberLessThanOrEqualsAdvancedFilter deserializedNumberLessThanOrEqualsAdvancedFilter
+                = new NumberLessThanOrEqualsAdvancedFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedNumberLessThanOrEqualsAdvancedFilter.withKey(reader.getString());
+                } else if ("operatorType".equals(fieldName)) {
+                    deserializedNumberLessThanOrEqualsAdvancedFilter.operatorType
+                        = AdvancedFilterOperatorType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedNumberLessThanOrEqualsAdvancedFilter.value = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNumberLessThanOrEqualsAdvancedFilter;
+        });
     }
 }

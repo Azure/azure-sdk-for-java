@@ -1,41 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-//
-// DESCRIPTION:
-//     This sample demonstrates how to find representatives sub-regions of the image file sample.jpg,
-//     for thumbnail generation, with priority given to include faces. It uses an asynchronous client.
-//
-//     Thumbnails often need to have a certain aspect ratio, where aspect ratio is defined as the 
-//     width in pixels divided by the height in pixels. For example, 1.0 for a square image, or 1.77
-//     for a 16:9 widescreen image.
-//
-//     You can optionally request one or more aspect ratios by setting the `smartCropsAspectRatios` 
-//     argument in the call to `analyze`. Supported values are from 0.75 to 1.8 (inclusive).
-//     If you do not set this value, the service will return one result with an aspect ratio it sees
-//     fit between 0.5 and 2.0 (inclusive).
-//
-//     The synchronous (blocking ) `analyze` method call returns an `ImageAnalysisResult` object.
-//     A call to `getSmartCrops()` on the result will return a `SmartCropsResult` object. It contains 
-//     a list of `CropRegion` objects. Each one contains:
-//     - The aspect ratio of the region
-//     - A `BoundingBox` coordinates in pixels, defining the region in the image.
-//
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleSmartCropsImageFile.java -cp target\dependency\*
-//     Run the sample:
-//         java -cp ".;target\dependency\*" SampleSmartCropsImageFile
-//
-//     Set these two environment variables before running the sample:
-//     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
-//                          where `your-resource-name` is your unique Azure Computer Vision resource name.
-//     2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.CropRegion;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
@@ -43,6 +12,30 @@ import com.azure.core.util.BinaryData;
 import java.io.File;
 import java.util.Arrays;
 
+/**
+ *  This sample demonstrates how to find representatives sub-regions of the image file sample.jpg,
+ *  for thumbnail generation, with priority given to include faces. It uses an asynchronous client.
+ *
+ *  Thumbnails often need to have a certain aspect ratio, where aspect ratio is defined as the 
+ *  width in pixels divided by the height in pixels. For example, 1.0 for a square image, or 1.77
+ *  for a 16:9 widescreen image.
+ *
+ *  You can optionally request one or more aspect ratios by setting the `smartCropsAspectRatios` 
+ *  argument in the call to `analyze`. Supported values are from 0.75 to 1.8 (inclusive).
+ *  If you do not set this value, the service will return one result with an aspect ratio it sees
+ *  fit between 0.5 and 2.0 (inclusive).
+ *
+ *  The synchronous (blocking ) `analyze` method call returns an `ImageAnalysisResult` object.
+ *  A call to `getSmartCrops()` on the result will return a `SmartCropsResult` object. It contains 
+ *  a list of `CropRegion` objects. Each one contains:
+ *  - The aspect ratio of the region
+ *  - A `BoundingBox` coordinates in pixels, defining the region in the image.
+ *
+ *  Set these two environment variables before running the sample:
+ *  1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
+ *                       where `your-resource-name` is your unique Azure Computer Vision resource name.
+ *  2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
+ */
 public class SampleSmartCropsImageFile {
 
     public static void main(String[] args) {

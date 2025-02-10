@@ -6,30 +6,44 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.SapOpenHubLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * SAP Business Warehouse Open Hub Destination Linked Service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SapOpenHub")
 @Fluent
 public final class SapOpenHubLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "SapOpenHub";
+
+    /*
      * Properties specific to SAP Business Warehouse Open Hub Destination linked service type.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private SapOpenHubLinkedServiceTypeProperties innerTypeProperties = new SapOpenHubLinkedServiceTypeProperties();
 
     /**
      * Creates an instance of SapOpenHubLinkedService class.
      */
     public SapOpenHubLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -40,6 +54,15 @@ public final class SapOpenHubLinkedService extends LinkedService {
      */
     private SapOpenHubLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SapOpenHubLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -79,8 +102,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the server property: Host name of the SAP BW instance where the open hub destination is located. Type:
-     * string (or Expression with resultType string).
+     * Get the server property: Host name of the SAP BW instance where the open hub destination is located. Type: string
+     * (or Expression with resultType string).
      * 
      * @return the server value.
      */
@@ -89,8 +112,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the server property: Host name of the SAP BW instance where the open hub destination is located. Type:
-     * string (or Expression with resultType string).
+     * Set the server property: Host name of the SAP BW instance where the open hub destination is located. Type: string
+     * (or Expression with resultType string).
      * 
      * @param server the server value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -104,9 +127,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the systemNumber property: System number of the BW system where the open hub destination is located.
-     * (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType
-     * string).
+     * Get the systemNumber property: System number of the BW system where the open hub destination is located. (Usually
+     * a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
      * 
      * @return the systemNumber value.
      */
@@ -115,9 +137,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the systemNumber property: System number of the BW system where the open hub destination is located.
-     * (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType
-     * string).
+     * Set the systemNumber property: System number of the BW system where the open hub destination is located. (Usually
+     * a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
      * 
      * @param systemNumber the systemNumber value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -158,8 +179,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the language property: Language of the BW system where the open hub destination is located. The default
-     * value is EN. Type: string (or Expression with resultType string).
+     * Get the language property: Language of the BW system where the open hub destination is located. The default value
+     * is EN. Type: string (or Expression with resultType string).
      * 
      * @return the language value.
      */
@@ -168,8 +189,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the language property: Language of the BW system where the open hub destination is located. The default
-     * value is EN. Type: string (or Expression with resultType string).
+     * Set the language property: Language of the BW system where the open hub destination is located. The default value
+     * is EN. Type: string (or Expression with resultType string).
      * 
      * @param language the language value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -331,8 +352,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -341,8 +362,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -362,14 +383,94 @@ public final class SapOpenHubLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SapOpenHubLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SapOpenHubLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SapOpenHubLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapOpenHubLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapOpenHubLinkedService if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapOpenHubLinkedService.
+     */
+    public static SapOpenHubLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapOpenHubLinkedService deserializedSapOpenHubLinkedService = new SapOpenHubLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedSapOpenHubLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedSapOpenHubLinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSapOpenHubLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedSapOpenHubLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSapOpenHubLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedSapOpenHubLinkedService.innerTypeProperties
+                        = SapOpenHubLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapOpenHubLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSapOpenHubLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedSapOpenHubLinkedService;
+        });
+    }
 }

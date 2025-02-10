@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -34,7 +33,7 @@ public final class ConnectionStatus extends ExpandableStringEnum<ConnectionStatu
 
     /**
      * Creates a new instance of ConnectionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -43,18 +42,17 @@ public final class ConnectionStatus extends ExpandableStringEnum<ConnectionStatu
 
     /**
      * Creates or finds a ConnectionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectionStatus.
      */
-    @JsonCreator
     public static ConnectionStatus fromString(String name) {
         return fromString(name, ConnectionStatus.class);
     }
 
     /**
      * Gets known ConnectionStatus values.
-     *
+     * 
      * @return known ConnectionStatus values.
      */
     public static Collection<ConnectionStatus> values() {

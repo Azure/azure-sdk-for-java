@@ -5,38 +5,45 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The image update trigger that caused a build. */
+/**
+ * The image update trigger that caused a build.
+ */
 @Fluent
-public final class ImageUpdateTrigger {
+public final class ImageUpdateTrigger implements JsonSerializable<ImageUpdateTrigger> {
     /*
      * The unique ID of the trigger.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The timestamp when the image update happened.
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
      * The list of image updates that caused the build.
      */
-    @JsonProperty(value = "images")
     private List<ImageDescriptor> images;
 
-    /** Creates an instance of ImageUpdateTrigger class. */
+    /**
+     * Creates an instance of ImageUpdateTrigger class.
+     */
     public ImageUpdateTrigger() {
     }
 
     /**
      * Get the id property: The unique ID of the trigger.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -45,7 +52,7 @@ public final class ImageUpdateTrigger {
 
     /**
      * Set the id property: The unique ID of the trigger.
-     *
+     * 
      * @param id the id value to set.
      * @return the ImageUpdateTrigger object itself.
      */
@@ -56,7 +63,7 @@ public final class ImageUpdateTrigger {
 
     /**
      * Get the timestamp property: The timestamp when the image update happened.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -65,7 +72,7 @@ public final class ImageUpdateTrigger {
 
     /**
      * Set the timestamp property: The timestamp when the image update happened.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the ImageUpdateTrigger object itself.
      */
@@ -76,7 +83,7 @@ public final class ImageUpdateTrigger {
 
     /**
      * Get the images property: The list of image updates that caused the build.
-     *
+     * 
      * @return the images value.
      */
     public List<ImageDescriptor> images() {
@@ -85,7 +92,7 @@ public final class ImageUpdateTrigger {
 
     /**
      * Set the images property: The list of image updates that caused the build.
-     *
+     * 
      * @param images the images value to set.
      * @return the ImageUpdateTrigger object itself.
      */
@@ -96,12 +103,57 @@ public final class ImageUpdateTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (images() != null) {
             images().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeArrayField("images", this.images, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageUpdateTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageUpdateTrigger if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageUpdateTrigger.
+     */
+    public static ImageUpdateTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageUpdateTrigger deserializedImageUpdateTrigger = new ImageUpdateTrigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedImageUpdateTrigger.id = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedImageUpdateTrigger.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("images".equals(fieldName)) {
+                    List<ImageDescriptor> images = reader.readArray(reader1 -> ImageDescriptor.fromJson(reader1));
+                    deserializedImageUpdateTrigger.images = images;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageUpdateTrigger;
+        });
     }
 }

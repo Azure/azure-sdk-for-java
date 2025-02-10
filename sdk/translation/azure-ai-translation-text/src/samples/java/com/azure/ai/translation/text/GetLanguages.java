@@ -4,7 +4,7 @@
 package com.azure.ai.translation.text;
 
 import java.util.Map;
-import com.azure.ai.translation.text.models.GetLanguagesResult;
+import com.azure.ai.translation.text.models.GetSupportedLanguagesResult;
 import com.azure.ai.translation.text.models.SourceDictionaryLanguage;
 import com.azure.ai.translation.text.models.TranslationLanguage;
 import com.azure.ai.translation.text.models.TransliterationLanguage;
@@ -23,8 +23,8 @@ public class GetLanguages {
             .endpoint("https://api.cognitive.microsofttranslator.com")
             .buildClient();
 
-		// BEGIN: getTextTranslationLanguages
-        GetLanguagesResult languages = client.getLanguages();
+        // BEGIN: getTextTranslationLanguages
+        GetSupportedLanguagesResult languages = client.getSupportedLanguages();
 
         System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
         System.out.println("Number of supported languages for transliterate operation: " + languages.getTransliteration().size() + ".");
@@ -44,6 +44,6 @@ public class GetLanguages {
         for (Map.Entry<String, SourceDictionaryLanguage> dictionaryLanguage : languages.getDictionary().entrySet()) {
             System.out.println(dictionaryLanguage.getKey() + " -- name: " + dictionaryLanguage.getValue().getName() + ", supported target languages count: " + dictionaryLanguage.getValue().getTranslations().size());
         }
-		// END: getTextTranslationLanguages
+        // END: getTextTranslationLanguages
     }
 }

@@ -6,35 +6,51 @@ package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Model that represents a discrete action. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("discrete")
+/**
+ * Model that represents a discrete action.
+ */
 @Fluent
 public final class DiscreteAction extends ChaosExperimentAction {
     /*
+     * Enum that discriminates between action models.
+     */
+    private String type = "discrete";
+
+    /*
      * List of key value pairs.
      */
-    @JsonProperty(value = "parameters", required = true)
     private List<KeyValuePair> parameters;
 
     /*
      * String that represents a selector.
      */
-    @JsonProperty(value = "selectorId", required = true)
     private String selectorId;
 
-    /** Creates an instance of DiscreteAction class. */
+    /**
+     * Creates an instance of DiscreteAction class.
+     */
     public DiscreteAction() {
     }
 
     /**
+     * Get the type property: Enum that discriminates between action models.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the parameters property: List of key value pairs.
-     *
+     * 
      * @return the parameters value.
      */
     public List<KeyValuePair> parameters() {
@@ -43,7 +59,7 @@ public final class DiscreteAction extends ChaosExperimentAction {
 
     /**
      * Set the parameters property: List of key value pairs.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DiscreteAction object itself.
      */
@@ -54,7 +70,7 @@ public final class DiscreteAction extends ChaosExperimentAction {
 
     /**
      * Get the selectorId property: String that represents a selector.
-     *
+     * 
      * @return the selectorId value.
      */
     public String selectorId() {
@@ -63,7 +79,7 @@ public final class DiscreteAction extends ChaosExperimentAction {
 
     /**
      * Set the selectorId property: String that represents a selector.
-     *
+     * 
      * @param selectorId the selectorId value to set.
      * @return the DiscreteAction object itself.
      */
@@ -72,7 +88,9 @@ public final class DiscreteAction extends ChaosExperimentAction {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DiscreteAction withName(String name) {
         super.withName(name);
@@ -81,25 +99,73 @@ public final class DiscreteAction extends ChaosExperimentAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property parameters in model DiscreteAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property parameters in model DiscreteAction"));
         } else {
             parameters().forEach(e -> e.validate());
         }
         if (selectorId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property selectorId in model DiscreteAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property selectorId in model DiscreteAction"));
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model DiscreteAction"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DiscreteAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("selectorId", this.selectorId);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiscreteAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiscreteAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiscreteAction.
+     */
+    public static DiscreteAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiscreteAction deserializedDiscreteAction = new DiscreteAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDiscreteAction.withName(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    List<KeyValuePair> parameters = reader.readArray(reader1 -> KeyValuePair.fromJson(reader1));
+                    deserializedDiscreteAction.parameters = parameters;
+                } else if ("selectorId".equals(fieldName)) {
+                    deserializedDiscreteAction.selectorId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDiscreteAction.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiscreteAction;
+        });
+    }
 }

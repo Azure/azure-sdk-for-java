@@ -5,50 +5,55 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** DPM workload-specific job task details. */
+/**
+ * DPM workload-specific job task details.
+ */
 @Fluent
-public final class DpmJobTaskDetails {
+public final class DpmJobTaskDetails implements JsonSerializable<DpmJobTaskDetails> {
     /*
      * The task display name.
      */
-    @JsonProperty(value = "taskId")
     private String taskId;
 
     /*
      * The start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Time elapsed for task.
      */
-    @JsonProperty(value = "duration")
     private Duration duration;
 
     /*
      * The status.
      */
-    @JsonProperty(value = "status")
     private String status;
 
-    /** Creates an instance of DpmJobTaskDetails class. */
+    /**
+     * Creates an instance of DpmJobTaskDetails class.
+     */
     public DpmJobTaskDetails() {
     }
 
     /**
      * Get the taskId property: The task display name.
-     *
+     * 
      * @return the taskId value.
      */
     public String taskId() {
@@ -57,7 +62,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Set the taskId property: The task display name.
-     *
+     * 
      * @param taskId the taskId value to set.
      * @return the DpmJobTaskDetails object itself.
      */
@@ -68,7 +73,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Get the startTime property: The start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -77,7 +82,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Set the startTime property: The start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DpmJobTaskDetails object itself.
      */
@@ -88,7 +93,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Get the endTime property: The end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -97,7 +102,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Set the endTime property: The end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DpmJobTaskDetails object itself.
      */
@@ -108,7 +113,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Get the duration property: Time elapsed for task.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -117,7 +122,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Set the duration property: Time elapsed for task.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the DpmJobTaskDetails object itself.
      */
@@ -128,7 +133,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Get the status property: The status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -137,7 +142,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Set the status property: The status.
-     *
+     * 
      * @param status the status value to set.
      * @return the DpmJobTaskDetails object itself.
      */
@@ -148,9 +153,62 @@ public final class DpmJobTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("taskId", this.taskId);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("duration", CoreUtils.durationToStringWithDays(this.duration));
+        jsonWriter.writeStringField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DpmJobTaskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DpmJobTaskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DpmJobTaskDetails.
+     */
+    public static DpmJobTaskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DpmJobTaskDetails deserializedDpmJobTaskDetails = new DpmJobTaskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("taskId".equals(fieldName)) {
+                    deserializedDpmJobTaskDetails.taskId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedDpmJobTaskDetails.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedDpmJobTaskDetails.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("duration".equals(fieldName)) {
+                    deserializedDpmJobTaskDetails.duration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedDpmJobTaskDetails.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDpmJobTaskDetails;
+        });
     }
 }

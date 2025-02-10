@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/standbypool/ci.yml
+      - sdk/standbypool/azure-resourcemanager-standbypool/
+    exclude:
+      - sdk/standbypool/pom.xml
+      - sdk/standbypool/azure-resourcemanager-standbypool/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/standbypool/ci.yml
+      - sdk/standbypool/azure-resourcemanager-standbypool/
+    exclude:
+      - sdk/standbypool/pom.xml
+      - sdk/standbypool/azure-resourcemanager-standbypool/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerstandbypool
+    displayName: azure-resourcemanager-standbypool
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: standbypool
+    Artifacts:
+      - name: azure-resourcemanager-standbypool
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerstandbypool
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerstandbypool }}

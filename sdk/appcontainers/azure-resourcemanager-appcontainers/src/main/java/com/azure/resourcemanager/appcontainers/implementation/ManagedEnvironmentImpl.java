@@ -9,6 +9,8 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
+import com.azure.resourcemanager.appcontainers.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.appcontainers.models.AppInsightsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
@@ -17,11 +19,17 @@ import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningSta
 import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration;
+import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appcontainers.models.OpenTelemetryConfiguration;
+import com.azure.resourcemanager.appcontainers.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.appcontainers.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class ManagedEnvironmentImpl
     implements ManagedEnvironment, ManagedEnvironment.Definition, ManagedEnvironment.Update {
@@ -58,6 +66,10 @@ public final class ManagedEnvironmentImpl
         return this.innerModel().kind();
     }
 
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -92,6 +104,14 @@ public final class ManagedEnvironmentImpl
 
     public AppLogsConfiguration appLogsConfiguration() {
         return this.innerModel().appLogsConfiguration();
+    }
+
+    public AppInsightsConfiguration appInsightsConfiguration() {
+        return this.innerModel().appInsightsConfiguration();
+    }
+
+    public OpenTelemetryConfiguration openTelemetryConfiguration() {
+        return this.innerModel().openTelemetryConfiguration();
     }
 
     public Boolean zoneRedundant() {
@@ -131,6 +151,25 @@ public final class ManagedEnvironmentImpl
         return this.innerModel().peerAuthentication();
     }
 
+    public ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration() {
+        return this.innerModel().peerTrafficConfiguration();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -161,25 +200,21 @@ public final class ManagedEnvironmentImpl
     }
 
     public ManagedEnvironment create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironments()
-                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironments()
+            .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ManagedEnvironment create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironments()
-                .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironments()
+            .createOrUpdate(resourceGroupName, environmentName, this.innerModel(), context);
         return this;
     }
 
-    ManagedEnvironmentImpl(
-        String name, com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
+    ManagedEnvironmentImpl(String name,
+        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = new ManagedEnvironmentInner();
         this.serviceManager = serviceManager;
         this.environmentName = name;
@@ -190,55 +225,45 @@ public final class ManagedEnvironmentImpl
     }
 
     public ManagedEnvironment apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironments()
-                .update(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironments()
+            .update(resourceGroupName, environmentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ManagedEnvironment apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironments()
-                .update(resourceGroupName, environmentName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironments()
+            .update(resourceGroupName, environmentName, this.innerModel(), context);
         return this;
     }
 
-    ManagedEnvironmentImpl(
-        ManagedEnvironmentInner innerObject,
+    ManagedEnvironmentImpl(ManagedEnvironmentInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = Utils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedEnvironments");
     }
 
     public ManagedEnvironment refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironments()
-                .getByResourceGroupWithResponse(resourceGroupName, environmentName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironments()
+            .getByResourceGroupWithResponse(resourceGroupName, environmentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ManagedEnvironment refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getManagedEnvironments()
-                .getByResourceGroupWithResponse(resourceGroupName, environmentName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedEnvironments()
+            .getByResourceGroupWithResponse(resourceGroupName, environmentName, context)
+            .getValue();
         return this;
     }
 
     public Response<EnvironmentAuthToken> getAuthTokenWithResponse(Context context) {
-        return serviceManager
-            .managedEnvironments()
+        return serviceManager.managedEnvironments()
             .getAuthTokenWithResponse(resourceGroupName, environmentName, context);
     }
 
@@ -266,6 +291,11 @@ public final class ManagedEnvironmentImpl
         return this;
     }
 
+    public ManagedEnvironmentImpl withIdentity(ManagedServiceIdentity identity) {
+        this.innerModel().withIdentity(identity);
+        return this;
+    }
+
     public ManagedEnvironmentImpl withDaprAIInstrumentationKey(String daprAIInstrumentationKey) {
         this.innerModel().withDaprAIInstrumentationKey(daprAIInstrumentationKey);
         return this;
@@ -283,6 +313,17 @@ public final class ManagedEnvironmentImpl
 
     public ManagedEnvironmentImpl withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration) {
         this.innerModel().withAppLogsConfiguration(appLogsConfiguration);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withAppInsightsConfiguration(AppInsightsConfiguration appInsightsConfiguration) {
+        this.innerModel().withAppInsightsConfiguration(appInsightsConfiguration);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl
+        withOpenTelemetryConfiguration(OpenTelemetryConfiguration openTelemetryConfiguration) {
+        this.innerModel().withOpenTelemetryConfiguration(openTelemetryConfiguration);
         return this;
     }
 
@@ -316,9 +357,20 @@ public final class ManagedEnvironmentImpl
         return this;
     }
 
-    public ManagedEnvironmentImpl withPeerAuthentication(
-        ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication) {
+    public ManagedEnvironmentImpl
+        withPeerAuthentication(ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication) {
         this.innerModel().withPeerAuthentication(peerAuthentication);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl
+        withPeerTrafficConfiguration(ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration) {
+        this.innerModel().withPeerTrafficConfiguration(peerTrafficConfiguration);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 }

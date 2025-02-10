@@ -17,14 +17,14 @@ public final class TrafficFiltersImpl implements TrafficFilters {
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public TrafficFiltersImpl(
-        TrafficFiltersClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    public TrafficFiltersImpl(TrafficFiltersClient innerClient,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String monitorName, String rulesetId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String monitorName, String rulesetId,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, monitorName, rulesetId, context);
     }
 

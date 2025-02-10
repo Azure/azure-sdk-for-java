@@ -12,6 +12,7 @@ import com.azure.resourcemanager.cosmos.models.ConflictResolutionPolicy;
 import com.azure.resourcemanager.cosmos.models.ContainerPartitionKey;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.DataType;
+import com.azure.resourcemanager.cosmos.models.DistanceFunction;
 import com.azure.resourcemanager.cosmos.models.IncludedPath;
 import com.azure.resourcemanager.cosmos.models.IndexKind;
 import com.azure.resourcemanager.cosmos.models.Indexes;
@@ -22,6 +23,11 @@ import com.azure.resourcemanager.cosmos.models.SqlContainerCreateUpdateParameter
 import com.azure.resourcemanager.cosmos.models.SqlContainerResource;
 import com.azure.resourcemanager.cosmos.models.UniqueKey;
 import com.azure.resourcemanager.cosmos.models.UniqueKeyPolicy;
+import com.azure.resourcemanager.cosmos.models.VectorDataType;
+import com.azure.resourcemanager.cosmos.models.VectorEmbedding;
+import com.azure.resourcemanager.cosmos.models.VectorEmbeddingPolicy;
+import com.azure.resourcemanager.cosmos.models.VectorIndex;
+import com.azure.resourcemanager.cosmos.models.VectorIndexType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +37,7 @@ import java.util.Map;
  */
 public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBSqlContainerCreateUpdate.json
      */
     /**
@@ -40,32 +46,61 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlContainerCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getSqlResources().createUpdateSqlContainer("rg1", "ddb1",
-            "databaseName", "containerName",
-            new SqlContainerCreateUpdateParameters().withLocation("West US").withTags(mapOf())
-                .withResource(new SqlContainerResource().withId("containerName").withIndexingPolicy(new IndexingPolicy()
-                    .withAutomatic(true).withIndexingMode(IndexingMode.CONSISTENT)
-                    .withIncludedPaths(Arrays.asList(new IncludedPath().withPath("/*")
-                        .withIndexes(Arrays.asList(
-                            new Indexes().withDataType(DataType.STRING).withPrecision(-1).withKind(IndexKind.RANGE),
-                            new Indexes().withDataType(DataType.NUMBER).withPrecision(-1).withKind(IndexKind.RANGE)))))
-                    .withExcludedPaths(Arrays.asList()))
-                    .withPartitionKey(new ContainerPartitionKey().withPaths(Arrays.asList("/AccountNumber"))
-                        .withKind(PartitionKind.HASH))
-                    .withDefaultTtl(100)
-                    .withUniqueKeyPolicy(new UniqueKeyPolicy()
-                        .withUniqueKeys(Arrays.asList(new UniqueKey().withPaths(Arrays.asList("/testPath")))))
-                    .withConflictResolutionPolicy(new ConflictResolutionPolicy()
-                        .withMode(ConflictResolutionMode.LAST_WRITER_WINS).withConflictResolutionPath("/path"))
-                    .withClientEncryptionPolicy(new ClientEncryptionPolicy()
-                        .withIncludedPaths(Arrays.asList(new ClientEncryptionIncludedPath().withPath("/path")
-                            .withClientEncryptionKeyId("fakeTokenPlaceholder").withEncryptionType("Deterministic")
-                            .withEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256")))
-                        .withPolicyFormatVersion(2))
-                    .withComputedProperties(Arrays.asList(new ComputedProperty().withName("cp_lowerName")
-                        .withQuery("SELECT VALUE LOWER(c.name) FROM c"))))
-                .withOptions(new CreateUpdateOptions()),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .createUpdateSqlContainer("rg1", "ddb1", "databaseName", "containerName",
+                new SqlContainerCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(
+                        new SqlContainerResource().withId("containerName")
+                            .withIndexingPolicy(new IndexingPolicy().withAutomatic(true)
+                                .withIndexingMode(IndexingMode.CONSISTENT)
+                                .withIncludedPaths(Arrays.asList(new IncludedPath().withPath("/*")
+                                    .withIndexes(Arrays.asList(
+                                        new Indexes().withDataType(DataType.STRING)
+                                            .withPrecision(-1)
+                                            .withKind(IndexKind.RANGE),
+                                        new Indexes().withDataType(DataType.NUMBER)
+                                            .withPrecision(-1)
+                                            .withKind(IndexKind.RANGE)))))
+                                .withExcludedPaths(Arrays.asList())
+                                .withVectorIndexes(Arrays.asList(
+                                    new VectorIndex().withPath("/vectorPath1").withType(VectorIndexType.FLAT),
+                                    new VectorIndex().withPath("/vectorPath2").withType(VectorIndexType.QUANTIZED_FLAT),
+                                    new VectorIndex().withPath("/vectorPath3").withType(VectorIndexType.DISK_ANN))))
+                            .withPartitionKey(new ContainerPartitionKey().withPaths(Arrays.asList("/AccountNumber"))
+                                .withKind(PartitionKind.HASH))
+                            .withDefaultTtl(100)
+                            .withUniqueKeyPolicy(new UniqueKeyPolicy()
+                                .withUniqueKeys(Arrays.asList(new UniqueKey().withPaths(Arrays.asList("/testPath")))))
+                            .withConflictResolutionPolicy(
+                                new ConflictResolutionPolicy().withMode(ConflictResolutionMode.LAST_WRITER_WINS)
+                                    .withConflictResolutionPath("/path"))
+                            .withClientEncryptionPolicy(new ClientEncryptionPolicy()
+                                .withIncludedPaths(Arrays.asList(new ClientEncryptionIncludedPath().withPath("/path")
+                                    .withClientEncryptionKeyId("fakeTokenPlaceholder")
+                                    .withEncryptionType("Deterministic")
+                                    .withEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256")))
+                                .withPolicyFormatVersion(2))
+                            .withComputedProperties(Arrays.asList(new ComputedProperty().withName("cp_lowerName")
+                                .withQuery("SELECT VALUE LOWER(c.name) FROM c")))
+                            .withVectorEmbeddingPolicy(new VectorEmbeddingPolicy().withVectorEmbeddings(Arrays.asList(
+                                new VectorEmbedding().withPath("/vectorPath1")
+                                    .withDataType(VectorDataType.FLOAT32)
+                                    .withDistanceFunction(DistanceFunction.EUCLIDEAN)
+                                    .withDimensions(400),
+                                new VectorEmbedding().withPath("/vectorPath2")
+                                    .withDataType(VectorDataType.UINT8)
+                                    .withDistanceFunction(DistanceFunction.COSINE)
+                                    .withDimensions(512),
+                                new VectorEmbedding().withPath("/vectorPath3")
+                                    .withDataType(VectorDataType.INT8)
+                                    .withDistanceFunction(DistanceFunction.DOTPRODUCT)
+                                    .withDimensions(512)))))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

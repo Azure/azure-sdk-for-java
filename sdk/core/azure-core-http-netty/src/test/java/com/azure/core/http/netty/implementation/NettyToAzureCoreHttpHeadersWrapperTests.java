@@ -79,7 +79,6 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
         return new NettyToAzureCoreHttpHeadersWrapper(nettyHeaders);
     }
 
-
     private static Stream<Arguments> getValueSupplier() {
         return getSupplierBase(value -> value);
     }
@@ -123,39 +122,29 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
 
     private static Stream<Arguments> getSupplierBase(Function<String, Object> expectedConverter) {
         // Null
-        HttpHeaders nullValueHeader = new DefaultHttpHeaders()
-            .remove("test");
+        HttpHeaders nullValueHeader = new DefaultHttpHeaders().remove("test");
 
         // Single value
-        HttpHeaders singleValueHeader = new DefaultHttpHeaders()
-            .set("test", "value");
+        HttpHeaders singleValueHeader = new DefaultHttpHeaders().set("test", "value");
 
         // Overwritten value
-        HttpHeaders overwrittenValueHeader = new DefaultHttpHeaders()
-            .set("test", "value")
-            .set("test", "value2");
+        HttpHeaders overwrittenValueHeader = new DefaultHttpHeaders().set("test", "value").set("test", "value2");
 
         // Multi-value
-        HttpHeaders multiValueHeader = new DefaultHttpHeaders()
-            .set("test", "value")
-            .add("test", "value2");
+        HttpHeaders multiValueHeader = new DefaultHttpHeaders().set("test", "value").add("test", "value2");
 
-        return Stream.of(
-            Arguments.of(new DefaultHttpHeaders(), NOT_A_KEY, null),
+        return Stream.of(Arguments.of(new DefaultHttpHeaders(), NOT_A_KEY, null),
             Arguments.of(nullValueHeader, TEST, expectedConverter.apply(null)),
             Arguments.of(singleValueHeader, TEST, expectedConverter.apply("value")),
             Arguments.of(overwrittenValueHeader, TEST, expectedConverter.apply("value2")),
-            Arguments.of(multiValueHeader, TEST, expectedConverter.apply("value,value2"))
-        );
+            Arguments.of(multiValueHeader, TEST, expectedConverter.apply("value,value2")));
     }
 
     @ParameterizedTest
     @MethodSource("httpHeaderIteratorSupplier")
     public void httpHeaderIterator(HttpHeaders nettyHeaders, List<HttpHeader> expected) {
         List<HttpHeader> actual = new ArrayList<>();
-        createHeaderWrapper(nettyHeaders)
-            .iterator()
-            .forEachRemaining(actual::add);
+        createHeaderWrapper(nettyHeaders).iterator().forEachRemaining(actual::add);
 
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
@@ -172,9 +161,7 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
     @ParameterizedTest
     @MethodSource("httpHeaderIteratorSupplier")
     public void httpHeaderStream(HttpHeaders nettyHeaders, List<HttpHeader> expected) {
-        List<HttpHeader> actual = createHeaderWrapper(nettyHeaders)
-            .stream()
-            .collect(Collectors.toList());
+        List<HttpHeader> actual = createHeaderWrapper(nettyHeaders).stream().collect(Collectors.toList());
 
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < expected.size(); i++) {
@@ -190,55 +177,43 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
 
     private static Stream<Arguments> httpHeaderIteratorSupplier() {
         // No header
-        HttpHeaders nullValueHeader = new DefaultHttpHeaders()
-            .remove("test");
+        HttpHeaders nullValueHeader = new DefaultHttpHeaders().remove("test");
 
         // Single value header
-        HttpHeaders singleValueHeader = new DefaultHttpHeaders()
-            .set("test", "value");
+        HttpHeaders singleValueHeader = new DefaultHttpHeaders().set("test", "value");
 
         // Overwritten value header
-        HttpHeaders overwrittenValueHeader = new DefaultHttpHeaders()
-            .set("test", "value")
-            .set("test", "value2");
+        HttpHeaders overwrittenValueHeader = new DefaultHttpHeaders().set("test", "value").set("test", "value2");
 
         // Multi-value header
-        HttpHeaders multiValueHeader = new DefaultHttpHeaders()
-            .set("test", "value")
-            .add("test", "value2");
+        HttpHeaders multiValueHeader = new DefaultHttpHeaders().set("test", "value").add("test", "value2");
 
         // Single value headers
-        HttpHeaders singleValueHeaders = new DefaultHttpHeaders()
-            .set("test", "value")
-            .set("test2", "value");
+        HttpHeaders singleValueHeaders = new DefaultHttpHeaders().set("test", "value").set("test2", "value");
 
         // Overwritten value headers
-        HttpHeaders overwrittenValueHeaders = new DefaultHttpHeaders()
-            .set("test", "value")
+        HttpHeaders overwrittenValueHeaders = new DefaultHttpHeaders().set("test", "value")
             .set("test", "value2")
             .set("test2", "value")
             .set("test2", "value2");
 
         // Multi-value headers
-        HttpHeaders multiValueHeaders = new DefaultHttpHeaders()
-            .set("test", "value")
+        HttpHeaders multiValueHeaders = new DefaultHttpHeaders().set("test", "value")
             .add("test", "value2")
             .set("test2", "value")
             .add("test2", "value2");
 
-        return Stream.of(
-            Arguments.of(nullValueHeader, Collections.emptyList()),
+        return Stream.of(Arguments.of(nullValueHeader, Collections.emptyList()),
             Arguments.of(singleValueHeader, Collections.singletonList(new HttpHeader("test", "value"))),
             Arguments.of(overwrittenValueHeader, Collections.singletonList(new HttpHeader("test", "value2"))),
-            Arguments.of(multiValueHeader, Collections.singletonList(new HttpHeader("test",
-                Arrays.asList("value", "value2")))),
-            Arguments.of(singleValueHeaders, Arrays.asList(new HttpHeader("test", "value"),
-                new HttpHeader("test2", "value"))),
-            Arguments.of(overwrittenValueHeaders, Arrays.asList(new HttpHeader("test", "value2"),
-                new HttpHeader("test2", "value2"))),
+            Arguments.of(multiValueHeader,
+                Collections.singletonList(new HttpHeader("test", Arrays.asList("value", "value2")))),
+            Arguments.of(singleValueHeaders,
+                Arrays.asList(new HttpHeader("test", "value"), new HttpHeader("test2", "value"))),
+            Arguments.of(overwrittenValueHeaders,
+                Arrays.asList(new HttpHeader("test", "value2"), new HttpHeader("test2", "value2"))),
             Arguments.of(multiValueHeaders, Arrays.asList(new HttpHeader("test", Arrays.asList("value", "value2")),
-                new HttpHeader("test2", Arrays.asList("value", "value2"))))
-        );
+                new HttpHeader("test2", Arrays.asList("value", "value2")))));
     }
 
     @ParameterizedTest
@@ -262,8 +237,7 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
             Arguments.of(new DefaultHttpHeaders().set("a", "b"), Collections.singletonMap("a", "b")),
 
             // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
-            Arguments.of(new DefaultHttpHeaders().set("a", "b").add("a", "c"), Collections.singletonMap("a", "b,c"))
-        );
+            Arguments.of(new DefaultHttpHeaders().set("a", "b").add("a", "c"), Collections.singletonMap("a", "b,c")));
     }
 
     @ParameterizedTest
@@ -288,7 +262,6 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
 
             // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
             Arguments.of(new DefaultHttpHeaders().set("a", "b").add("a", "c"),
-                Collections.singletonMap("a", new String[] { "b", "c" }))
-        );
+                Collections.singletonMap("a", new String[] { "b", "c" })));
     }
 }

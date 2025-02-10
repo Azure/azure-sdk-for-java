@@ -13,42 +13,29 @@ import org.junit.jupiter.api.Assertions;
 public final class StartMenuItemListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StartMenuItemList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"appAlias\":\"pdggkzzlvm\",\"filePath\":\"paxmodfvuefywsb\",\"commandLineArguments\":\"vmwy\",\"iconPath\":\"fouyf\",\"iconIndex\":938616277},\"id\":\"kcpwiy\",\"name\":\"vqtmnub\",\"type\":\"xkp\"},{\"properties\":{\"appAlias\":\"mond\",\"filePath\":\"quxvypomgkop\",\"commandLineArguments\":\"hojvpajqgxysmocm\",\"iconPath\":\"fqvm\",\"iconIndex\":1181340997},\"id\":\"oz\",\"name\":\"pvhelxprg\",\"type\":\"yat\"}],\"nextLink\":\"ckcb\"}")
-                .toObject(StartMenuItemList.class);
-        Assertions.assertEquals("pdggkzzlvm", model.value().get(0).appAlias());
-        Assertions.assertEquals("paxmodfvuefywsb", model.value().get(0).filePath());
-        Assertions.assertEquals("vmwy", model.value().get(0).commandLineArguments());
-        Assertions.assertEquals("fouyf", model.value().get(0).iconPath());
-        Assertions.assertEquals(938616277, model.value().get(0).iconIndex());
+        StartMenuItemList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"appAlias\":\"ndsytgadg\",\"filePath\":\"aeaeneqnzarrw\",\"commandLineArguments\":\"uu\",\"iconPath\":\"fqka\",\"iconIndex\":1905366329},\"id\":\"ipfpubji\",\"name\":\"wwiftohqkvpuv\",\"type\":\"sgplsakn\"}],\"nextLink\":\"fsynljphuop\"}")
+            .toObject(StartMenuItemList.class);
+        Assertions.assertEquals("ndsytgadg", model.value().get(0).appAlias());
+        Assertions.assertEquals("aeaeneqnzarrw", model.value().get(0).filePath());
+        Assertions.assertEquals("uu", model.value().get(0).commandLineArguments());
+        Assertions.assertEquals("fqka", model.value().get(0).iconPath());
+        Assertions.assertEquals(1905366329, model.value().get(0).iconIndex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StartMenuItemList model =
-            new StartMenuItemList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new StartMenuItemInner()
-                                .withAppAlias("pdggkzzlvm")
-                                .withFilePath("paxmodfvuefywsb")
-                                .withCommandLineArguments("vmwy")
-                                .withIconPath("fouyf")
-                                .withIconIndex(938616277),
-                            new StartMenuItemInner()
-                                .withAppAlias("mond")
-                                .withFilePath("quxvypomgkop")
-                                .withCommandLineArguments("hojvpajqgxysmocm")
-                                .withIconPath("fqvm")
-                                .withIconIndex(1181340997)));
+        StartMenuItemList model
+            = new StartMenuItemList().withValue(Arrays.asList(new StartMenuItemInner().withAppAlias("ndsytgadg")
+                .withFilePath("aeaeneqnzarrw")
+                .withCommandLineArguments("uu")
+                .withIconPath("fqka")
+                .withIconIndex(1905366329)));
         model = BinaryData.fromObject(model).toObject(StartMenuItemList.class);
-        Assertions.assertEquals("pdggkzzlvm", model.value().get(0).appAlias());
-        Assertions.assertEquals("paxmodfvuefywsb", model.value().get(0).filePath());
-        Assertions.assertEquals("vmwy", model.value().get(0).commandLineArguments());
-        Assertions.assertEquals("fouyf", model.value().get(0).iconPath());
-        Assertions.assertEquals(938616277, model.value().get(0).iconIndex());
+        Assertions.assertEquals("ndsytgadg", model.value().get(0).appAlias());
+        Assertions.assertEquals("aeaeneqnzarrw", model.value().get(0).filePath());
+        Assertions.assertEquals("uu", model.value().get(0).commandLineArguments());
+        Assertions.assertEquals("fqka", model.value().get(0).iconPath());
+        Assertions.assertEquals(1905366329, model.value().get(0).iconIndex());
     }
 }

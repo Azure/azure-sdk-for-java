@@ -10,8 +10,14 @@ public class OfferAutoscaleSettings extends JsonSerializable {
     OfferAutoscaleSettings(final int maxThroughput, int maxThroughputIncrementPercentage) {
         super();
         offerAutoscaleAutoUpgradeProperties = new OfferAutoscaleAutoUpgradeProperties(maxThroughputIncrementPercentage);
-        super.set(Constants.Properties.AUTOPILOT_MAX_THROUGHPUT, maxThroughput);
-        super.set(Constants.Properties.AUTOPILOT_AUTO_UPGRADE_POLICY, offerAutoscaleAutoUpgradeProperties);
+        super.set(
+            Constants.Properties.AUTOPILOT_MAX_THROUGHPUT,
+            maxThroughput
+        );
+        super.set(
+            Constants.Properties.AUTOPILOT_AUTO_UPGRADE_POLICY,
+            offerAutoscaleAutoUpgradeProperties
+        );
     }
 
     OfferAutoscaleSettings(String json) {
@@ -32,7 +38,10 @@ public class OfferAutoscaleSettings extends JsonSerializable {
     }
 
     void setMaxThroughput(int maxAutoscaleThroughput) {
-        super.set(Constants.Properties.AUTOPILOT_MAX_THROUGHPUT, maxAutoscaleThroughput);
+        super.set(
+            Constants.Properties.AUTOPILOT_MAX_THROUGHPUT,
+            maxAutoscaleThroughput
+        );
     }
 
     /**

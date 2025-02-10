@@ -19,7 +19,8 @@ public final class TriggersGetEventSubscriptionStatusSamples {
      */
     public static void
         triggersGetEventSubscriptionStatus(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().getEventSubscriptionStatusWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleTrigger", com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .getEventSubscriptionStatusWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                com.azure.core.util.Context.NONE);
     }
 }

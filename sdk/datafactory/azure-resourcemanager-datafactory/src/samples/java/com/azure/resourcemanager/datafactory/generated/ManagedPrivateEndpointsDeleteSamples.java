@@ -18,7 +18,8 @@ public final class ManagedPrivateEndpointsDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedVirtualNetworksDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedPrivateEndpoints().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedVirtualNetworkName", "exampleManagedPrivateEndpointName", com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName",
+                "exampleManagedPrivateEndpointName", com.azure.core.util.Context.NONE);
     }
 }

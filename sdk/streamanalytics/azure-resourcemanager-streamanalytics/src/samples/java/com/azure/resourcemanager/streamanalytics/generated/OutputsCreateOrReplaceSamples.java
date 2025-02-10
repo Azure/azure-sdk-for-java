@@ -8,13 +8,16 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.streamanalytics.models.AvroSerialization;
 import com.azure.resourcemanager.streamanalytics.models.AzureDataLakeStoreOutputDataSource;
+import com.azure.resourcemanager.streamanalytics.models.AzureFunctionOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.AzureSqlDatabaseOutputDataSource;
+import com.azure.resourcemanager.streamanalytics.models.AzureSynapseOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.AzureTableOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.BlobOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.CsvSerialization;
 import com.azure.resourcemanager.streamanalytics.models.DocumentDbOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
 import com.azure.resourcemanager.streamanalytics.models.EventHubOutputDataSource;
+import com.azure.resourcemanager.streamanalytics.models.GatewayMessageBusOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.JsonOutputSerializationFormat;
 import com.azure.resourcemanager.streamanalytics.models.JsonSerialization;
 import com.azure.resourcemanager.streamanalytics.models.PowerBIOutputDataSource;
@@ -24,237 +27,295 @@ import com.azure.resourcemanager.streamanalytics.models.StorageAccount;
 import java.io.IOException;
 import java.util.Arrays;
 
-/** Samples for Outputs CreateOrReplace. */
+/**
+ * Samples for Outputs CreateOrReplace.
+ */
 public final class OutputsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_Blob_CSV.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_AzureFunction.json
+     */
+    /**
+     * Sample code: Create an Azure Function output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void
+        createAnAzureFunctionOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
+            .define("azureFunction1")
+            .withExistingStreamingjob("sjrg", "sjName")
+            .withDatasource(new AzureFunctionOutputDataSource().withFunctionAppName("functionappforasaautomation")
+                .withFunctionName("HttpTrigger2")
+                .withMaxBatchSize(256.0F)
+                .withMaxBatchCount(100.0F))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_Blob_CSV.json
      */
     /**
      * Sample code: Create a blob output with CSV serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createABlobOutputWithCSVSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .outputs()
+        manager.outputs()
             .define("output1623")
             .withExistingStreamingjob("sjrg5023", "sj900")
-            .withDatasource(
-                new BlobOutputDataSource()
-                    .withStorageAccounts(
-                        Arrays
-                            .asList(
-                                new StorageAccount().withAccountName("someAccountName").withAccountKey("accountKey==")))
-                    .withContainer("state")
-                    .withPathPattern("{date}/{time}")
-                    .withDateFormat("yyyy/MM/dd")
-                    .withTimeFormat("HH"))
+            .withDatasource(new BlobOutputDataSource()
+                .withStorageAccounts(Arrays.asList(
+                    new StorageAccount().withAccountName("someAccountName").withAccountKey("fakeTokenPlaceholder")))
+                .withContainer("state")
+                .withPathPattern("{date}/{time}")
+                .withDateFormat("yyyy/MM/dd")
+                .withTimeFormat("HH"))
             .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_ServiceBusTopic_CSV.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_ServiceBusTopic_CSV.json
      */
     /**
      * Sample code: Create a Service Bus Topic output with CSV serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createAServiceBusTopicOutputWithCSVSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .outputs()
+        manager.outputs()
             .define("output7886")
             .withExistingStreamingjob("sjrg6450", "sj7094")
-            .withDatasource(
-                new ServiceBusTopicOutputDataSource()
-                    .withTopicName("sdktopic")
-                    .withPropertyColumns(Arrays.asList("column1", "column2"))
-                    .withServiceBusNamespace("sdktest")
-                    .withSharedAccessPolicyName("RootManageSharedAccessKey")
-                    .withSharedAccessPolicyKey("sharedAccessPolicyKey="))
+            .withDatasource(new ServiceBusTopicOutputDataSource().withTopicName("sdktopic")
+                .withPropertyColumns(Arrays.asList("column1", "column2"))
+                .withServiceBusNamespace("sdktest")
+                .withSharedAccessPolicyName("RootManageSharedAccessKey")
+                .withSharedAccessPolicyKey("fakeTokenPlaceholder"))
             .withSerialization(new CsvSerialization().withFieldDelimiter(",").withEncoding(Encoding.UTF8))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_AzureSQL.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_AzureSQL.json
      */
     /**
      * Sample code: Create an Azure SQL database output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void createAnAzureSQLDatabaseOutput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .outputs()
+    public static void
+        createAnAzureSQLDatabaseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
             .define("output1755")
             .withExistingStreamingjob("sjrg2157", "sj6458")
-            .withDatasource(new AzureSqlDatabaseOutputDataSource())
+            .withDatasource(new AzureSqlDatabaseOutputDataSource().withServer("someServer")
+                .withDatabase("someDatabase")
+                .withUser("<user>")
+                .withPassword("fakeTokenPlaceholder")
+                .withTable("someTable"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_PowerBI.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_DataWarehouse.json
+     */
+    /**
+     * Sample code: Create an Azure Data Warehouse output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void
+        createAnAzureDataWarehouseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
+            .define("dwOutput")
+            .withExistingStreamingjob("sjrg", "sjName")
+            .withDatasource(new AzureSynapseOutputDataSource().withServer("asatestserver")
+                .withDatabase("zhayaSQLpool")
+                .withTable("test2")
+                .withUser("tolladmin")
+                .withPassword("fakeTokenPlaceholder"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_PowerBI.json
      */
     /**
      * Sample code: Create a Power BI output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createAPowerBIOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .outputs()
+        manager.outputs()
             .define("output3022")
             .withExistingStreamingjob("sjrg7983", "sj2331")
-            .withDatasource(
-                new PowerBIOutputDataSource()
-                    .withDataset("someDataset")
-                    .withTable("someTable")
-                    .withGroupId("ac40305e-3e8d-43ac-8161-c33799f43e95")
-                    .withGroupName("MyPowerBIGroup")
-                    .withRefreshToken("someRefreshToken==")
-                    .withTokenUserPrincipalName("bobsmith@contoso.com")
-                    .withTokenUserDisplayName("Bob Smith"))
+            .withDatasource(new PowerBIOutputDataSource().withDataset("someDataset")
+                .withTable("someTable")
+                .withGroupId("ac40305e-3e8d-43ac-8161-c33799f43e95")
+                .withGroupName("MyPowerBIGroup")
+                .withRefreshToken("fakeTokenPlaceholder")
+                .withTokenUserPrincipalName("fakeTokenPlaceholder")
+                .withTokenUserDisplayName("fakeTokenPlaceholder"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_EventHub_JSON.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_EventHub_JSON.json
      */
     /**
      * Sample code: Create an Event Hub output with JSON serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createAnEventHubOutputWithJSONSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .outputs()
+        manager.outputs()
             .define("output5195")
             .withExistingStreamingjob("sjrg6912", "sj3310")
-            .withDatasource(
-                new EventHubOutputDataSource()
-                    .withPartitionKey("partitionKey")
-                    .withEventHubName("sdkeventhub")
-                    .withServiceBusNamespace("sdktest")
-                    .withSharedAccessPolicyName("RootManageSharedAccessKey")
-                    .withSharedAccessPolicyKey("sharedAccessPolicyKey="))
+            .withDatasource(new EventHubOutputDataSource().withPartitionKey("fakeTokenPlaceholder")
+                .withEventHubName("sdkeventhub")
+                .withServiceBusNamespace("sdktest")
+                .withSharedAccessPolicyName("RootManageSharedAccessKey")
+                .withSharedAccessPolicyKey("fakeTokenPlaceholder"))
             .withSerialization(
                 new JsonSerialization().withEncoding(Encoding.UTF8).withFormat(JsonOutputSerializationFormat.ARRAY))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_ServiceBusQueue_Avro.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_ServiceBusQueue_Avro.json
      */
     /**
      * Sample code: Create a Service Bus Queue output with Avro serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createAServiceBusQueueOutputWithAvroSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) throws IOException {
-        manager
-            .outputs()
+        manager.outputs()
             .define("output3456")
             .withExistingStreamingjob("sjrg3410", "sj5095")
-            .withDatasource(
-                new ServiceBusQueueOutputDataSource()
-                    .withQueueName("sdkqueue")
-                    .withPropertyColumns(Arrays.asList("column1", "column2"))
-                    .withSystemPropertyColumns(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize(
-                                "{\"MessageId\":\"col3\",\"PartitionKey\":\"col4\"}",
-                                Object.class,
-                                SerializerEncoding.JSON))
-                    .withServiceBusNamespace("sdktest")
-                    .withSharedAccessPolicyName("RootManageSharedAccessKey")
-                    .withSharedAccessPolicyKey("sharedAccessPolicyKey="))
+            .withDatasource(new ServiceBusQueueOutputDataSource().withQueueName("sdkqueue")
+                .withPropertyColumns(Arrays.asList("column1", "column2"))
+                .withSystemPropertyColumns(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize("{\"MessageId\":\"col3\",\"PartitionKey\":\"col4\"}", Object.class,
+                        SerializerEncoding.JSON))
+                .withServiceBusNamespace("sdktest")
+                .withSharedAccessPolicyName("RootManageSharedAccessKey")
+                .withSharedAccessPolicyKey("fakeTokenPlaceholder"))
             .withSerialization(new AvroSerialization())
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_DocumentDB.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_DocumentDB.json
      */
     /**
      * Sample code: Create a DocumentDB output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void createADocumentDBOutput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .outputs()
+    public static void
+        createADocumentDBOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
             .define("output3022")
             .withExistingStreamingjob("sjrg7983", "sj2331")
-            .withDatasource(
-                new DocumentDbOutputDataSource()
-                    .withAccountId("someAccountId")
-                    .withAccountKey("accountKey==")
-                    .withDatabase("db01")
-                    .withCollectionNamePattern("collection")
-                    .withPartitionKey("key")
-                    .withDocumentId("documentId"))
+            .withDatasource(new DocumentDbOutputDataSource().withAccountId("someAccountId")
+                .withAccountKey("fakeTokenPlaceholder")
+                .withDatabase("db01")
+                .withCollectionNamePattern("collection")
+                .withPartitionKey("fakeTokenPlaceholder")
+                .withDocumentId("documentId"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_AzureTable.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_GatewayMessageBus.json
+     */
+    /**
+     * Sample code: Create a Gateway Message Bus output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void
+        createAGatewayMessageBusOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
+            .define("output3022")
+            .withExistingStreamingjob("sjrg7983", "sj2331")
+            .withDatasource(new GatewayMessageBusOutputDataSource().withTopic("EdgeTopic1"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_AzureTable.json
      */
     /**
      * Sample code: Create an Azure Table output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void createAnAzureTableOutput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .outputs()
+    public static void
+        createAnAzureTableOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        manager.outputs()
             .define("output958")
             .withExistingStreamingjob("sjrg5176", "sj2790")
-            .withDatasource(
-                new AzureTableOutputDataSource()
-                    .withAccountName("someAccountName")
-                    .withAccountKey("accountKey==")
-                    .withTable("samples")
-                    .withPartitionKey("partitionKey")
-                    .withRowKey("rowKey")
-                    .withColumnsToRemove(Arrays.asList("column1", "column2"))
-                    .withBatchSize(25))
+            .withDatasource(new AzureTableOutputDataSource().withAccountName("someAccountName")
+                .withAccountKey("fakeTokenPlaceholder")
+                .withTable("samples")
+                .withPartitionKey("fakeTokenPlaceholder")
+                .withRowKey("fakeTokenPlaceholder")
+                .withColumnsToRemove(Arrays.asList("column1", "column2"))
+                .withBatchSize(25))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Create_AzureDataLakeStore_JSON.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
+     * Output_Create_AzureDataLakeStore_JSON.json
      */
     /**
      * Sample code: Create an Azure Data Lake Store output with JSON serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createAnAzureDataLakeStoreOutputWithJSONSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .outputs()
+        manager.outputs()
             .define("output5195")
             .withExistingStreamingjob("sjrg6912", "sj3310")
-            .withDatasource(
-                new AzureDataLakeStoreOutputDataSource()
-                    .withAccountName("someaccount")
-                    .withTenantId("cea4e98b-c798-49e7-8c40-4a2b3beb47dd")
-                    .withFilePathPrefix("{date}/{time}")
-                    .withDateFormat("yyyy/MM/dd")
-                    .withTimeFormat("HH")
-                    .withRefreshToken("someRefreshToken==")
-                    .withTokenUserPrincipalName("bobsmith@contoso.com")
-                    .withTokenUserDisplayName("Bob Smith"))
+            .withDatasource(new AzureDataLakeStoreOutputDataSource().withAccountName("someaccount")
+                .withTenantId("cea4e98b-c798-49e7-8c40-4a2b3beb47dd")
+                .withFilePathPrefix("{date}/{time}")
+                .withDateFormat("yyyy/MM/dd")
+                .withTimeFormat("HH")
+                .withRefreshToken("fakeTokenPlaceholder")
+                .withTokenUserPrincipalName("fakeTokenPlaceholder")
+                .withTokenUserDisplayName("fakeTokenPlaceholder"))
             .withSerialization(
                 new JsonSerialization().withEncoding(Encoding.UTF8).withFormat(JsonOutputSerializationFormat.ARRAY))
             .create();

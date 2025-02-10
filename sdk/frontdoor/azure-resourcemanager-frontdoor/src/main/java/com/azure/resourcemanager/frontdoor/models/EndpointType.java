@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of endpoint. */
+/**
+ * The type of endpoint.
+ */
 public final class EndpointType extends ExpandableStringEnum<EndpointType> {
-    /** Static value AFD for EndpointType. */
+    /**
+     * Static value AFD for EndpointType.
+     */
     public static final EndpointType AFD = fromString("AFD");
 
-    /** Static value AzureRegion for EndpointType. */
+    /**
+     * Static value AzureRegion for EndpointType.
+     */
     public static final EndpointType AZURE_REGION = fromString("AzureRegion");
 
-    /** Static value CDN for EndpointType. */
+    /**
+     * Static value CDN for EndpointType.
+     */
     public static final EndpointType CDN = fromString("CDN");
 
-    /** Static value ATM for EndpointType. */
+    /**
+     * Static value ATM for EndpointType.
+     */
     public static final EndpointType ATM = fromString("ATM");
 
     /**
      * Creates a new instance of EndpointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
 
     /**
      * Creates or finds a EndpointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndpointType.
      */
-    @JsonCreator
     public static EndpointType fromString(String name) {
         return fromString(name, EndpointType.class);
     }
 
     /**
      * Gets known EndpointType values.
-     *
+     * 
      * @return known EndpointType values.
      */
     public static Collection<EndpointType> values() {

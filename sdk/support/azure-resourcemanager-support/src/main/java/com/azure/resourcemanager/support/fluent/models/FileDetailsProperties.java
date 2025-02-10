@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Describes the properties of a file. */
+/**
+ * Describes the properties of a file.
+ */
 @Fluent
-public final class FileDetailsProperties {
+public final class FileDetailsProperties implements JsonSerializable<FileDetailsProperties> {
     /*
      * Time in UTC (ISO 8601 format) when file workspace was created.
      */
-    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
-     * Size of each chunk
+     * Size of each chunk. The size of each chunk should be provided in bytes and must not exceed 2.5 megabytes (MB).
      */
-    @JsonProperty(value = "chunkSize")
-    private Float chunkSize;
+    private Integer chunkSize;
 
     /*
-     * Size of the file to be uploaded
+     * Size of the file to be uploaded. The file size must not exceed 5 MB and should be provided in bytes.
      */
-    @JsonProperty(value = "fileSize")
-    private Float fileSize;
+    private Integer fileSize;
 
     /*
-     * Number of chunks to be uploaded
+     * Number of chunks to be uploaded. The maximum number of allowed chunks is 2.
      */
-    @JsonProperty(value = "numberOfChunks")
-    private Float numberOfChunks;
+    private Integer numberOfChunks;
 
-    /** Creates an instance of FileDetailsProperties class. */
+    /**
+     * Creates an instance of FileDetailsProperties class.
+     */
     public FileDetailsProperties() {
     }
 
     /**
      * Get the createdOn property: Time in UTC (ISO 8601 format) when file workspace was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -49,70 +54,119 @@ public final class FileDetailsProperties {
     }
 
     /**
-     * Get the chunkSize property: Size of each chunk.
-     *
+     * Get the chunkSize property: Size of each chunk. The size of each chunk should be provided in bytes and must not
+     * exceed 2.5 megabytes (MB).
+     * 
      * @return the chunkSize value.
      */
-    public Float chunkSize() {
+    public Integer chunkSize() {
         return this.chunkSize;
     }
 
     /**
-     * Set the chunkSize property: Size of each chunk.
-     *
+     * Set the chunkSize property: Size of each chunk. The size of each chunk should be provided in bytes and must not
+     * exceed 2.5 megabytes (MB).
+     * 
      * @param chunkSize the chunkSize value to set.
      * @return the FileDetailsProperties object itself.
      */
-    public FileDetailsProperties withChunkSize(Float chunkSize) {
+    public FileDetailsProperties withChunkSize(Integer chunkSize) {
         this.chunkSize = chunkSize;
         return this;
     }
 
     /**
-     * Get the fileSize property: Size of the file to be uploaded.
-     *
+     * Get the fileSize property: Size of the file to be uploaded. The file size must not exceed 5 MB and should be
+     * provided in bytes.
+     * 
      * @return the fileSize value.
      */
-    public Float fileSize() {
+    public Integer fileSize() {
         return this.fileSize;
     }
 
     /**
-     * Set the fileSize property: Size of the file to be uploaded.
-     *
+     * Set the fileSize property: Size of the file to be uploaded. The file size must not exceed 5 MB and should be
+     * provided in bytes.
+     * 
      * @param fileSize the fileSize value to set.
      * @return the FileDetailsProperties object itself.
      */
-    public FileDetailsProperties withFileSize(Float fileSize) {
+    public FileDetailsProperties withFileSize(Integer fileSize) {
         this.fileSize = fileSize;
         return this;
     }
 
     /**
-     * Get the numberOfChunks property: Number of chunks to be uploaded.
-     *
+     * Get the numberOfChunks property: Number of chunks to be uploaded. The maximum number of allowed chunks is 2.
+     * 
      * @return the numberOfChunks value.
      */
-    public Float numberOfChunks() {
+    public Integer numberOfChunks() {
         return this.numberOfChunks;
     }
 
     /**
-     * Set the numberOfChunks property: Number of chunks to be uploaded.
-     *
+     * Set the numberOfChunks property: Number of chunks to be uploaded. The maximum number of allowed chunks is 2.
+     * 
      * @param numberOfChunks the numberOfChunks value to set.
      * @return the FileDetailsProperties object itself.
      */
-    public FileDetailsProperties withNumberOfChunks(Float numberOfChunks) {
+    public FileDetailsProperties withNumberOfChunks(Integer numberOfChunks) {
         this.numberOfChunks = numberOfChunks;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("chunkSize", this.chunkSize);
+        jsonWriter.writeNumberField("fileSize", this.fileSize);
+        jsonWriter.writeNumberField("numberOfChunks", this.numberOfChunks);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileDetailsProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileDetailsProperties.
+     */
+    public static FileDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileDetailsProperties deserializedFileDetailsProperties = new FileDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdOn".equals(fieldName)) {
+                    deserializedFileDetailsProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("chunkSize".equals(fieldName)) {
+                    deserializedFileDetailsProperties.chunkSize = reader.getNullable(JsonReader::getInt);
+                } else if ("fileSize".equals(fieldName)) {
+                    deserializedFileDetailsProperties.fileSize = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfChunks".equals(fieldName)) {
+                    deserializedFileDetailsProperties.numberOfChunks = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileDetailsProperties;
+        });
     }
 }

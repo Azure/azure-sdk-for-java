@@ -6,44 +6,48 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.MigrationStatus;
 import com.azure.resourcemanager.storage.models.SkuName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a storage account’s ongoing or enqueued migration. */
+/**
+ * The properties of a storage account’s ongoing or enqueued migration.
+ */
 @Fluent
-public final class StorageAccountMigrationProperties {
+public final class StorageAccountMigrationProperties implements JsonSerializable<StorageAccountMigrationProperties> {
     /*
      * Target sku name for the account
      */
-    @JsonProperty(value = "targetSkuName", required = true)
     private SkuName targetSkuName;
 
     /*
      * Current status of migration
      */
-    @JsonProperty(value = "migrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationStatus migrationStatus;
 
     /*
      * Error code for migration failure
      */
-    @JsonProperty(value = "migrationFailedReason", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationFailedReason;
 
     /*
      * Reason for migration failure
      */
-    @JsonProperty(value = "migrationFailedDetailedReason", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationFailedDetailedReason;
 
-    /** Creates an instance of StorageAccountMigrationProperties class. */
+    /**
+     * Creates an instance of StorageAccountMigrationProperties class.
+     */
     public StorageAccountMigrationProperties() {
     }
 
     /**
      * Get the targetSkuName property: Target sku name for the account.
-     *
+     * 
      * @return the targetSkuName value.
      */
     public SkuName targetSkuName() {
@@ -52,7 +56,7 @@ public final class StorageAccountMigrationProperties {
 
     /**
      * Set the targetSkuName property: Target sku name for the account.
-     *
+     * 
      * @param targetSkuName the targetSkuName value to set.
      * @return the StorageAccountMigrationProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class StorageAccountMigrationProperties {
 
     /**
      * Get the migrationStatus property: Current status of migration.
-     *
+     * 
      * @return the migrationStatus value.
      */
     public MigrationStatus migrationStatus() {
@@ -72,7 +76,7 @@ public final class StorageAccountMigrationProperties {
 
     /**
      * Get the migrationFailedReason property: Error code for migration failure.
-     *
+     * 
      * @return the migrationFailedReason value.
      */
     public String migrationFailedReason() {
@@ -81,7 +85,7 @@ public final class StorageAccountMigrationProperties {
 
     /**
      * Get the migrationFailedDetailedReason property: Reason for migration failure.
-     *
+     * 
      * @return the migrationFailedDetailedReason value.
      */
     public String migrationFailedDetailedReason() {
@@ -90,17 +94,62 @@ public final class StorageAccountMigrationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetSkuName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetSkuName in model StorageAccountMigrationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetSkuName in model StorageAccountMigrationProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccountMigrationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetSkuName", this.targetSkuName == null ? null : this.targetSkuName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountMigrationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountMigrationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountMigrationProperties.
+     */
+    public static StorageAccountMigrationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountMigrationProperties deserializedStorageAccountMigrationProperties
+                = new StorageAccountMigrationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetSkuName".equals(fieldName)) {
+                    deserializedStorageAccountMigrationProperties.targetSkuName
+                        = SkuName.fromString(reader.getString());
+                } else if ("migrationStatus".equals(fieldName)) {
+                    deserializedStorageAccountMigrationProperties.migrationStatus
+                        = MigrationStatus.fromString(reader.getString());
+                } else if ("migrationFailedReason".equals(fieldName)) {
+                    deserializedStorageAccountMigrationProperties.migrationFailedReason = reader.getString();
+                } else if ("migrationFailedDetailedReason".equals(fieldName)) {
+                    deserializedStorageAccountMigrationProperties.migrationFailedDetailedReason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountMigrationProperties;
+        });
+    }
 }

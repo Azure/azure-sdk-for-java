@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** IaaS VM specific backup protection intent item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectionIntentItemType")
-@JsonTypeName("AzureResourceItem")
+/**
+ * IaaS VM specific backup protection intent item.
+ */
 @Fluent
 public final class AzureResourceProtectionIntent extends ProtectionIntent {
     /*
+     * backup protectionIntent type.
+     */
+    private ProtectionIntentItemType protectionIntentItemType = ProtectionIntentItemType.AZURE_RESOURCE_ITEM;
+
+    /*
      * Friendly name of the VM represented by this backup item.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
-    /** Creates an instance of AzureResourceProtectionIntent class. */
+    /**
+     * Creates an instance of AzureResourceProtectionIntent class.
+     */
     public AzureResourceProtectionIntent() {
     }
 
     /**
+     * Get the protectionIntentItemType property: backup protectionIntent type.
+     * 
+     * @return the protectionIntentItemType value.
+     */
+    @Override
+    public ProtectionIntentItemType protectionIntentItemType() {
+        return this.protectionIntentItemType;
+    }
+
+    /**
      * Get the friendlyName property: Friendly name of the VM represented by this backup item.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -35,7 +52,7 @@ public final class AzureResourceProtectionIntent extends ProtectionIntent {
 
     /**
      * Set the friendlyName property: Friendly name of the VM represented by this backup item.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the AzureResourceProtectionIntent object itself.
      */
@@ -44,35 +61,45 @@ public final class AzureResourceProtectionIntent extends ProtectionIntent {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureResourceProtectionIntent withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureResourceProtectionIntent withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureResourceProtectionIntent withItemId(String itemId) {
         super.withItemId(itemId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureResourceProtectionIntent withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureResourceProtectionIntent withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -81,11 +108,70 @@ public final class AzureResourceProtectionIntent extends ProtectionIntent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("itemId", itemId());
+        jsonWriter.writeStringField("policyId", policyId());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("protectionIntentItemType",
+            this.protectionIntentItemType == null ? null : this.protectionIntentItemType.toString());
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureResourceProtectionIntent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureResourceProtectionIntent if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureResourceProtectionIntent.
+     */
+    public static AzureResourceProtectionIntent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureResourceProtectionIntent deserializedAzureResourceProtectionIntent
+                = new AzureResourceProtectionIntent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureResourceProtectionIntent
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureResourceProtectionIntent.withSourceResourceId(reader.getString());
+                } else if ("itemId".equals(fieldName)) {
+                    deserializedAzureResourceProtectionIntent.withItemId(reader.getString());
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedAzureResourceProtectionIntent.withPolicyId(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureResourceProtectionIntent
+                        .withProtectionState(ProtectionStatus.fromString(reader.getString()));
+                } else if ("protectionIntentItemType".equals(fieldName)) {
+                    deserializedAzureResourceProtectionIntent.protectionIntentItemType
+                        = ProtectionIntentItemType.fromString(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureResourceProtectionIntent.friendlyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureResourceProtectionIntent;
+        });
     }
 }

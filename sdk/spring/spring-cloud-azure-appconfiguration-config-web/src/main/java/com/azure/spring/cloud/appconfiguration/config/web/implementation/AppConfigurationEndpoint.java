@@ -12,19 +12,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.AccessToken;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 /**
  * Common class for authenticating refresh requests.
  */
 public class AppConfigurationEndpoint {
-    
+
     private static final String CONFIG_STORE_SUBJECT = "subject";
 
     private final URI endpoint;
@@ -151,4 +151,5 @@ public class AppConfigurationEndpoint {
     public String getEndpoint() {
         return endpoint.getScheme() + "://" + endpoint.getHost();
     }
+
 }

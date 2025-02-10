@@ -26,8 +26,15 @@ public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<Vis
     private String tenantId;
 
     /**
+     * Constructs an instance of VisualStudioCodeCredentialBuilder.
+     */
+    public VisualStudioCodeCredentialBuilder() {
+        super();
+    }
+
+    /**
      * Sets the tenant id of the user to authenticate through the {@link VisualStudioCodeCredential}. The default is
-     * the tenant the user originally authenticated to via via the Visual Studio Code Azure Account plugin.
+     * the tenant the user originally authenticated to via the Visual Studio Code Azure Account plugin.
      *
      * @param tenantId the tenant ID to set.
      * @return An updated instance of this builder with the tenant id set as specified.
@@ -48,8 +55,8 @@ public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<Vis
      * @return An updated instance of this builder with the additional tenants configured.
      */
     public VisualStudioCodeCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -63,7 +70,8 @@ public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<Vis
      * @return An updated instance of this builder with the additional tenants configured.
      */
     public VisualStudioCodeCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 

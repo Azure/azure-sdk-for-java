@@ -6,43 +6,47 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Recovery plan group details. */
+/**
+ * Recovery plan group details.
+ */
 @Fluent
-public final class RecoveryPlanGroup {
+public final class RecoveryPlanGroup implements JsonSerializable<RecoveryPlanGroup> {
     /*
      * The group type.
      */
-    @JsonProperty(value = "groupType", required = true)
     private RecoveryPlanGroupType groupType;
 
     /*
      * The list of protected items.
      */
-    @JsonProperty(value = "replicationProtectedItems")
     private List<RecoveryPlanProtectedItem> replicationProtectedItems;
 
     /*
      * The start group actions.
      */
-    @JsonProperty(value = "startGroupActions")
     private List<RecoveryPlanAction> startGroupActions;
 
     /*
      * The end group actions.
      */
-    @JsonProperty(value = "endGroupActions")
     private List<RecoveryPlanAction> endGroupActions;
 
-    /** Creates an instance of RecoveryPlanGroup class. */
+    /**
+     * Creates an instance of RecoveryPlanGroup class.
+     */
     public RecoveryPlanGroup() {
     }
 
     /**
      * Get the groupType property: The group type.
-     *
+     * 
      * @return the groupType value.
      */
     public RecoveryPlanGroupType groupType() {
@@ -51,7 +55,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Set the groupType property: The group type.
-     *
+     * 
      * @param groupType the groupType value to set.
      * @return the RecoveryPlanGroup object itself.
      */
@@ -62,7 +66,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Get the replicationProtectedItems property: The list of protected items.
-     *
+     * 
      * @return the replicationProtectedItems value.
      */
     public List<RecoveryPlanProtectedItem> replicationProtectedItems() {
@@ -71,7 +75,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Set the replicationProtectedItems property: The list of protected items.
-     *
+     * 
      * @param replicationProtectedItems the replicationProtectedItems value to set.
      * @return the RecoveryPlanGroup object itself.
      */
@@ -82,7 +86,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Get the startGroupActions property: The start group actions.
-     *
+     * 
      * @return the startGroupActions value.
      */
     public List<RecoveryPlanAction> startGroupActions() {
@@ -91,7 +95,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Set the startGroupActions property: The start group actions.
-     *
+     * 
      * @param startGroupActions the startGroupActions value to set.
      * @return the RecoveryPlanGroup object itself.
      */
@@ -102,7 +106,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Get the endGroupActions property: The end group actions.
-     *
+     * 
      * @return the endGroupActions value.
      */
     public List<RecoveryPlanAction> endGroupActions() {
@@ -111,7 +115,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Set the endGroupActions property: The end group actions.
-     *
+     * 
      * @param endGroupActions the endGroupActions value to set.
      * @return the RecoveryPlanGroup object itself.
      */
@@ -122,14 +126,13 @@ public final class RecoveryPlanGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (groupType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property groupType in model RecoveryPlanGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property groupType in model RecoveryPlanGroup"));
         }
         if (replicationProtectedItems() != null) {
             replicationProtectedItems().forEach(e -> e.validate());
@@ -143,4 +146,59 @@ public final class RecoveryPlanGroup {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPlanGroup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("groupType", this.groupType == null ? null : this.groupType.toString());
+        jsonWriter.writeArrayField("replicationProtectedItems", this.replicationProtectedItems,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("startGroupActions", this.startGroupActions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("endGroupActions", this.endGroupActions,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanGroup if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryPlanGroup.
+     */
+    public static RecoveryPlanGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanGroup deserializedRecoveryPlanGroup = new RecoveryPlanGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupType".equals(fieldName)) {
+                    deserializedRecoveryPlanGroup.groupType = RecoveryPlanGroupType.fromString(reader.getString());
+                } else if ("replicationProtectedItems".equals(fieldName)) {
+                    List<RecoveryPlanProtectedItem> replicationProtectedItems
+                        = reader.readArray(reader1 -> RecoveryPlanProtectedItem.fromJson(reader1));
+                    deserializedRecoveryPlanGroup.replicationProtectedItems = replicationProtectedItems;
+                } else if ("startGroupActions".equals(fieldName)) {
+                    List<RecoveryPlanAction> startGroupActions
+                        = reader.readArray(reader1 -> RecoveryPlanAction.fromJson(reader1));
+                    deserializedRecoveryPlanGroup.startGroupActions = startGroupActions;
+                } else if ("endGroupActions".equals(fieldName)) {
+                    List<RecoveryPlanAction> endGroupActions
+                        = reader.readArray(reader1 -> RecoveryPlanAction.fromJson(reader1));
+                    deserializedRecoveryPlanGroup.endGroupActions = endGroupActions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanGroup;
+        });
+    }
 }

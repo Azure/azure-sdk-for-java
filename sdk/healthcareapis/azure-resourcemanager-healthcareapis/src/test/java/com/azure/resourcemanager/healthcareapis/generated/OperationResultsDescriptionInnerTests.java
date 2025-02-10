@@ -11,13 +11,13 @@ public final class OperationResultsDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationResultsDescriptionInner model = BinaryData.fromString(
-            "{\"id\":\"ttaugzxnfaazp\",\"name\":\"tnkdmkqj\",\"status\":\"Running\",\"startTime\":\"envrkpyouaibrebq\",\"endTime\":\"ysjkixqtnqttez\",\"properties\":\"datafffiak\"}")
+            "{\"id\":\"qufegxuvwzfbn\",\"name\":\"mctlpdngitv\",\"status\":\"Requested\",\"startTime\":\"rixkwmyijejve\",\"endTime\":\"hbpnaixexccbd\",\"properties\":\"dataax\"}")
             .toObject(OperationResultsDescriptionInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationResultsDescriptionInner model = new OperationResultsDescriptionInner().withProperties("datafffiak");
+        OperationResultsDescriptionInner model = new OperationResultsDescriptionInner().withProperties("dataax");
         model = BinaryData.fromObject(model).toObject(OperationResultsDescriptionInner.class);
     }
 }

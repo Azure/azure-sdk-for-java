@@ -22,9 +22,9 @@ public final class IntegrationRuntimesRegenerateAuthKeySamples {
      */
     public static void
         integrationRuntimesRegenerateAuthKey(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().regenerateAuthKeyWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime",
-            new IntegrationRuntimeRegenerateKeyParameters().withKeyName(IntegrationRuntimeAuthKeyName.AUTH_KEY2),
-            com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .regenerateAuthKeyWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                new IntegrationRuntimeRegenerateKeyParameters().withKeyName(IntegrationRuntimeAuthKeyName.AUTH_KEY2),
+                com.azure.core.util.Context.NONE);
     }
 }

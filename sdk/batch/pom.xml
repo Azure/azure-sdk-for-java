@@ -12,5 +12,6 @@
   <modules>
     <module>azure-resourcemanager-batch</module>
     <module>microsoft-azure-batch</module>
+    <module>azure-compute-batch</module>
   </modules>
 </project>

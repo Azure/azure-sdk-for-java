@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Trial status. */
+/**
+ * trial status.
+ */
 public final class TrialStatus extends ExpandableStringEnum<TrialStatus> {
-    /** Static value TrialAvailable for TrialStatus. */
+    /**
+     * Static value TrialAvailable for TrialStatus.
+     */
     public static final TrialStatus TRIAL_AVAILABLE = fromString("TrialAvailable");
 
-    /** Static value TrialUsed for TrialStatus. */
+    /**
+     * Static value TrialUsed for TrialStatus.
+     */
     public static final TrialStatus TRIAL_USED = fromString("TrialUsed");
 
-    /** Static value TrialDisabled for TrialStatus. */
+    /**
+     * Static value TrialDisabled for TrialStatus.
+     */
     public static final TrialStatus TRIAL_DISABLED = fromString("TrialDisabled");
 
     /**
      * Creates a new instance of TrialStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class TrialStatus extends ExpandableStringEnum<TrialStatus> {
 
     /**
      * Creates or finds a TrialStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TrialStatus.
      */
-    @JsonCreator
     public static TrialStatus fromString(String name) {
         return fromString(name, TrialStatus.class);
     }
 
     /**
      * Gets known TrialStatus values.
-     *
+     * 
      * @return known TrialStatus values.
      */
     public static Collection<TrialStatus> values() {

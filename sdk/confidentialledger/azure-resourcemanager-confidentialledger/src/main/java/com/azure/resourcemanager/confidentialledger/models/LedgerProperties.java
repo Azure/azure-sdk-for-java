@@ -5,77 +5,69 @@
 package com.azure.resourcemanager.confidentialledger.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * LedgerProperties
- *
- * <p>Additional Confidential Ledger properties.
+ * 
+ * Additional Confidential Ledger properties.
  */
 @Fluent
-public final class LedgerProperties {
+public final class LedgerProperties implements JsonSerializable<LedgerProperties> {
     /*
      * Unique name for the Confidential Ledger.
      */
-    @JsonProperty(value = "ledgerName", access = JsonProperty.Access.WRITE_ONLY)
     private String ledgerName;
 
     /*
      * Endpoint for calling Ledger Service.
      */
-    @JsonProperty(value = "ledgerUri", access = JsonProperty.Access.WRITE_ONLY)
     private String ledgerUri;
 
     /*
      * Endpoint for accessing network identity.
      */
-    @JsonProperty(value = "identityServiceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String identityServiceUri;
 
     /*
      * Internal namespace for the Ledger
      */
-    @JsonProperty(value = "ledgerInternalNamespace", access = JsonProperty.Access.WRITE_ONLY)
     private String ledgerInternalNamespace;
-
-    /*
-     * Object representing RunningState for Ledger.
-     */
-    @JsonProperty(value = "runningState")
-    private RunningState runningState;
 
     /*
      * Type of Confidential Ledger
      */
-    @JsonProperty(value = "ledgerType")
     private LedgerType ledgerType;
 
     /*
      * Provisioning state of Ledger Resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Array of all AAD based Security Principals.
      */
-    @JsonProperty(value = "aadBasedSecurityPrincipals")
     private List<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals;
 
     /*
      * Array of all cert based Security Principals.
      */
-    @JsonProperty(value = "certBasedSecurityPrincipals")
     private List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals;
 
-    /** Creates an instance of LedgerProperties class. */
+    /**
+     * Creates an instance of LedgerProperties class.
+     */
     public LedgerProperties() {
     }
 
     /**
      * Get the ledgerName property: Unique name for the Confidential Ledger.
-     *
+     * 
      * @return the ledgerName value.
      */
     public String ledgerName() {
@@ -84,7 +76,7 @@ public final class LedgerProperties {
 
     /**
      * Get the ledgerUri property: Endpoint for calling Ledger Service.
-     *
+     * 
      * @return the ledgerUri value.
      */
     public String ledgerUri() {
@@ -93,7 +85,7 @@ public final class LedgerProperties {
 
     /**
      * Get the identityServiceUri property: Endpoint for accessing network identity.
-     *
+     * 
      * @return the identityServiceUri value.
      */
     public String identityServiceUri() {
@@ -102,7 +94,7 @@ public final class LedgerProperties {
 
     /**
      * Get the ledgerInternalNamespace property: Internal namespace for the Ledger.
-     *
+     * 
      * @return the ledgerInternalNamespace value.
      */
     public String ledgerInternalNamespace() {
@@ -110,28 +102,8 @@ public final class LedgerProperties {
     }
 
     /**
-     * Get the runningState property: Object representing RunningState for Ledger.
-     *
-     * @return the runningState value.
-     */
-    public RunningState runningState() {
-        return this.runningState;
-    }
-
-    /**
-     * Set the runningState property: Object representing RunningState for Ledger.
-     *
-     * @param runningState the runningState value to set.
-     * @return the LedgerProperties object itself.
-     */
-    public LedgerProperties withRunningState(RunningState runningState) {
-        this.runningState = runningState;
-        return this;
-    }
-
-    /**
      * Get the ledgerType property: Type of Confidential Ledger.
-     *
+     * 
      * @return the ledgerType value.
      */
     public LedgerType ledgerType() {
@@ -140,7 +112,7 @@ public final class LedgerProperties {
 
     /**
      * Set the ledgerType property: Type of Confidential Ledger.
-     *
+     * 
      * @param ledgerType the ledgerType value to set.
      * @return the LedgerProperties object itself.
      */
@@ -151,7 +123,7 @@ public final class LedgerProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of Ledger Resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -160,7 +132,7 @@ public final class LedgerProperties {
 
     /**
      * Get the aadBasedSecurityPrincipals property: Array of all AAD based Security Principals.
-     *
+     * 
      * @return the aadBasedSecurityPrincipals value.
      */
     public List<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals() {
@@ -169,7 +141,7 @@ public final class LedgerProperties {
 
     /**
      * Set the aadBasedSecurityPrincipals property: Array of all AAD based Security Principals.
-     *
+     * 
      * @param aadBasedSecurityPrincipals the aadBasedSecurityPrincipals value to set.
      * @return the LedgerProperties object itself.
      */
@@ -180,7 +152,7 @@ public final class LedgerProperties {
 
     /**
      * Get the certBasedSecurityPrincipals property: Array of all cert based Security Principals.
-     *
+     * 
      * @return the certBasedSecurityPrincipals value.
      */
     public List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals() {
@@ -189,19 +161,19 @@ public final class LedgerProperties {
 
     /**
      * Set the certBasedSecurityPrincipals property: Array of all cert based Security Principals.
-     *
+     * 
      * @param certBasedSecurityPrincipals the certBasedSecurityPrincipals value to set.
      * @return the LedgerProperties object itself.
      */
-    public LedgerProperties withCertBasedSecurityPrincipals(
-        List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals) {
+    public LedgerProperties
+        withCertBasedSecurityPrincipals(List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals) {
         this.certBasedSecurityPrincipals = certBasedSecurityPrincipals;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -211,5 +183,63 @@ public final class LedgerProperties {
         if (certBasedSecurityPrincipals() != null) {
             certBasedSecurityPrincipals().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ledgerType", this.ledgerType == null ? null : this.ledgerType.toString());
+        jsonWriter.writeArrayField("aadBasedSecurityPrincipals", this.aadBasedSecurityPrincipals,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("certBasedSecurityPrincipals", this.certBasedSecurityPrincipals,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LedgerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LedgerProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LedgerProperties.
+     */
+    public static LedgerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LedgerProperties deserializedLedgerProperties = new LedgerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ledgerName".equals(fieldName)) {
+                    deserializedLedgerProperties.ledgerName = reader.getString();
+                } else if ("ledgerUri".equals(fieldName)) {
+                    deserializedLedgerProperties.ledgerUri = reader.getString();
+                } else if ("identityServiceUri".equals(fieldName)) {
+                    deserializedLedgerProperties.identityServiceUri = reader.getString();
+                } else if ("ledgerInternalNamespace".equals(fieldName)) {
+                    deserializedLedgerProperties.ledgerInternalNamespace = reader.getString();
+                } else if ("ledgerType".equals(fieldName)) {
+                    deserializedLedgerProperties.ledgerType = LedgerType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLedgerProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("aadBasedSecurityPrincipals".equals(fieldName)) {
+                    List<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals
+                        = reader.readArray(reader1 -> AadBasedSecurityPrincipal.fromJson(reader1));
+                    deserializedLedgerProperties.aadBasedSecurityPrincipals = aadBasedSecurityPrincipals;
+                } else if ("certBasedSecurityPrincipals".equals(fieldName)) {
+                    List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals
+                        = reader.readArray(reader1 -> CertBasedSecurityPrincipal.fromJson(reader1));
+                    deserializedLedgerProperties.certBasedSecurityPrincipals = certBasedSecurityPrincipals;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLedgerProperties;
+        });
     }
 }

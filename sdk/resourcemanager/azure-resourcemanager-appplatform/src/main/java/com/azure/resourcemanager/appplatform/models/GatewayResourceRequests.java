@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Resource request payload of Spring Cloud Gateway. */
+/**
+ * Resource request payload of Spring Cloud Gateway.
+ */
 @Fluent
-public final class GatewayResourceRequests {
+public final class GatewayResourceRequests implements JsonSerializable<GatewayResourceRequests> {
     /*
      * Cpu allocated to each Spring Cloud Gateway instance.
      */
-    @JsonProperty(value = "cpu")
     private String cpu;
 
     /*
      * Memory allocated to each Spring Cloud Gateway instance.
      */
-    @JsonProperty(value = "memory")
     private String memory;
 
     /**
+     * Creates an instance of GatewayResourceRequests class.
+     */
+    public GatewayResourceRequests() {
+    }
+
+    /**
      * Get the cpu property: Cpu allocated to each Spring Cloud Gateway instance.
-     *
+     * 
      * @return the cpu value.
      */
     public String cpu() {
@@ -33,7 +43,7 @@ public final class GatewayResourceRequests {
 
     /**
      * Set the cpu property: Cpu allocated to each Spring Cloud Gateway instance.
-     *
+     * 
      * @param cpu the cpu value to set.
      * @return the GatewayResourceRequests object itself.
      */
@@ -44,7 +54,7 @@ public final class GatewayResourceRequests {
 
     /**
      * Get the memory property: Memory allocated to each Spring Cloud Gateway instance.
-     *
+     * 
      * @return the memory value.
      */
     public String memory() {
@@ -53,7 +63,7 @@ public final class GatewayResourceRequests {
 
     /**
      * Set the memory property: Memory allocated to each Spring Cloud Gateway instance.
-     *
+     * 
      * @param memory the memory value to set.
      * @return the GatewayResourceRequests object itself.
      */
@@ -64,9 +74,48 @@ public final class GatewayResourceRequests {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cpu", this.cpu);
+        jsonWriter.writeStringField("memory", this.memory);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayResourceRequests from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayResourceRequests if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayResourceRequests.
+     */
+    public static GatewayResourceRequests fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayResourceRequests deserializedGatewayResourceRequests = new GatewayResourceRequests();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cpu".equals(fieldName)) {
+                    deserializedGatewayResourceRequests.cpu = reader.getString();
+                } else if ("memory".equals(fieldName)) {
+                    deserializedGatewayResourceRequests.memory = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayResourceRequests;
+        });
     }
 }

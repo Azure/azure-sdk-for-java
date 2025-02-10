@@ -24,7 +24,7 @@ import java.util.Map;
 public final class ServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/legacy/
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/
      * ServiceCreate.json
      */
     /**
@@ -34,10 +34,12 @@ public final class ServicesCreateOrUpdateSamples {
      */
     public static void createOrUpdateAServiceWithAllParameters(
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager
-            .services().define("service1").withRegion("westus2").withExistingResourceGroup(
-                "rg1")
-            .withKind(Kind.FHIR_R4).withTags(mapOf())
+        manager.services()
+            .define("service1")
+            .withRegion("westus2")
+            .withExistingResourceGroup("rg1")
+            .withKind(Kind.FHIR_R4)
+            .withTags(mapOf())
             .withIdentity(new ServicesResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .withProperties(new ServicesProperties()
                 .withAccessPolicies(
@@ -47,20 +49,23 @@ public final class ServicesCreateOrUpdateSamples {
                     .withKeyVaultKeyUri("fakeTokenPlaceholder"))
                 .withAuthenticationConfiguration(new ServiceAuthenticationConfigurationInfo()
                     .withAuthority("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc")
-                    .withAudience("https://azurehealthcareapis.com").withSmartProxyEnabled(true))
-                .withCorsConfiguration(
-                    new ServiceCorsConfigurationInfo().withOrigins(Arrays.asList("*")).withHeaders(Arrays.asList("*"))
-                        .withMethods(Arrays.asList("DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT")).withMaxAge(1440)
-                        .withAllowCredentials(false))
+                    .withAudience("https://azurehealthcareapis.com")
+                    .withSmartProxyEnabled(true))
+                .withCorsConfiguration(new ServiceCorsConfigurationInfo().withOrigins(Arrays.asList("*"))
+                    .withHeaders(Arrays.asList("*"))
+                    .withMethods(Arrays.asList("DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"))
+                    .withMaxAge(1440)
+                    .withAllowCredentials(false))
                 .withExportConfiguration(
                     new ServiceExportConfigurationInfo().withStorageAccountName("existingStorageAccount"))
-                .withPrivateEndpointConnections(Arrays.asList()).withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
+                .withPrivateEndpointConnections(Arrays.asList())
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/legacy/
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/
      * ServiceCreateInDataSovereignRegionWithCmkEnabled.json
      */
     /**
@@ -70,10 +75,12 @@ public final class ServicesCreateOrUpdateSamples {
      */
     public static void createOrUpdateAServiceWithAllParametersAndCMKEnabledInADataSovereignRegion(
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager
-            .services().define("service1").withRegion("Southeast Asia").withExistingResourceGroup(
-                "rg1")
-            .withKind(Kind.FHIR_R4).withTags(mapOf())
+        manager.services()
+            .define("service1")
+            .withRegion("Southeast Asia")
+            .withExistingResourceGroup("rg1")
+            .withKind(Kind.FHIR_R4)
+            .withTags(mapOf())
             .withIdentity(new ServicesResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .withProperties(new ServicesProperties()
                 .withAccessPolicies(
@@ -84,20 +91,23 @@ public final class ServicesCreateOrUpdateSamples {
                     .withCrossTenantCmkApplicationId("de3fbeef-8c3a-428e-8b9f-4d229c8a85f4"))
                 .withAuthenticationConfiguration(new ServiceAuthenticationConfigurationInfo()
                     .withAuthority("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc")
-                    .withAudience("https://azurehealthcareapis.com").withSmartProxyEnabled(true))
-                .withCorsConfiguration(
-                    new ServiceCorsConfigurationInfo().withOrigins(Arrays.asList("*")).withHeaders(Arrays.asList("*"))
-                        .withMethods(Arrays.asList("DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT")).withMaxAge(1440)
-                        .withAllowCredentials(false))
+                    .withAudience("https://azurehealthcareapis.com")
+                    .withSmartProxyEnabled(true))
+                .withCorsConfiguration(new ServiceCorsConfigurationInfo().withOrigins(Arrays.asList("*"))
+                    .withHeaders(Arrays.asList("*"))
+                    .withMethods(Arrays.asList("DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"))
+                    .withMaxAge(1440)
+                    .withAllowCredentials(false))
                 .withExportConfiguration(
                     new ServiceExportConfigurationInfo().withStorageAccountName("existingStorageAccount"))
-                .withPrivateEndpointConnections(Arrays.asList()).withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
+                .withPrivateEndpointConnections(Arrays.asList())
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/legacy/
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/
      * ServiceCreateMinimum.json
      */
     /**
@@ -107,8 +117,12 @@ public final class ServicesCreateOrUpdateSamples {
      */
     public static void createOrUpdateAServiceWithMinimumParameters(
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.services().define("service2").withRegion("westus2").withExistingResourceGroup("rg1")
-            .withKind(Kind.FHIR_R4).withTags(mapOf())
+        manager.services()
+            .define("service2")
+            .withRegion("westus2")
+            .withExistingResourceGroup("rg1")
+            .withKind(Kind.FHIR_R4)
+            .withTags(mapOf())
             .withProperties(new ServicesProperties().withAccessPolicies(
                 Arrays.asList(new ServiceAccessPolicyEntry().withObjectId("c487e7d1-3210-41a3-8ccc-e9372b78da47"))))
             .create();

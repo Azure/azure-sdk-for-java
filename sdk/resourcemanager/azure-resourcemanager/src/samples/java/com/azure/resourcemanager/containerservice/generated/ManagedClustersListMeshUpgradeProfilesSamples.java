@@ -10,17 +10,20 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class ManagedClustersListMeshUpgradeProfilesSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * ManagedClustersList_MeshUpgradeProfiles.json
      */
     /**
      * Sample code: Lists version compatibility and upgrade profile for all service meshes in a cluster.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listsVersionCompatibilityAndUpgradeProfileForAllServiceMeshesInACluster(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getManagedClusters().listMeshUpgradeProfiles("rg1",
-            "clustername1", com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .listMeshUpgradeProfiles("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

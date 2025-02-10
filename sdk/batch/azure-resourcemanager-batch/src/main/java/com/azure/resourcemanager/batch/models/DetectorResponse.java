@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.resourcemanager.batch.fluent.models.DetectorResponseInner;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of DetectorResponse.
@@ -37,6 +38,13 @@ public interface DetectorResponse {
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the tags property: The tags of the resource.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
 
     /**
      * Gets the value property: A base64 encoded string that represents the content of a detector.

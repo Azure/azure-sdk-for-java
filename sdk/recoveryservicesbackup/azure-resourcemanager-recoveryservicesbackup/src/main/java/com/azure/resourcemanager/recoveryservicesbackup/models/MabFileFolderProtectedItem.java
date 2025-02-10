@@ -5,66 +5,79 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** MAB workload-specific backup item. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
-@JsonTypeName("MabFileFolderProtectedItem")
+/**
+ * MAB workload-specific backup item.
+ */
 @Fluent
 public final class MabFileFolderProtectedItem extends ProtectedItem {
     /*
+     * backup item type.
+     */
+    private String protectedItemType = "MabFileFolderProtectedItem";
+
+    /*
      * Friendly name of this backup item.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Name of the computer associated with this backup item.
      */
-    @JsonProperty(value = "computerName")
     private String computerName;
 
     /*
      * Status of last backup operation.
      */
-    @JsonProperty(value = "lastBackupStatus")
     private String lastBackupStatus;
 
     /*
      * Timestamp of the last backup operation on this backup item.
      */
-    @JsonProperty(value = "lastBackupTime")
     private OffsetDateTime lastBackupTime;
 
     /*
      * Protected, ProtectionStopped, IRPending or ProtectionError
      */
-    @JsonProperty(value = "protectionState")
     private String protectionState;
 
     /*
      * Sync time for deferred deletion in UTC
      */
-    @JsonProperty(value = "deferredDeleteSyncTimeInUTC")
     private Long deferredDeleteSyncTimeInUtc;
 
     /*
      * Additional information with this backup item.
      */
-    @JsonProperty(value = "extendedInfo")
     private MabFileFolderProtectedItemExtendedInfo extendedInfo;
 
-    /** Creates an instance of MabFileFolderProtectedItem class. */
+    /**
+     * Creates an instance of MabFileFolderProtectedItem class.
+     */
     public MabFileFolderProtectedItem() {
     }
 
     /**
+     * Get the protectedItemType property: backup item type.
+     * 
+     * @return the protectedItemType value.
+     */
+    @Override
+    public String protectedItemType() {
+        return this.protectedItemType;
+    }
+
+    /**
      * Get the friendlyName property: Friendly name of this backup item.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -73,7 +86,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the friendlyName property: Friendly name of this backup item.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -84,7 +97,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the computerName property: Name of the computer associated with this backup item.
-     *
+     * 
      * @return the computerName value.
      */
     public String computerName() {
@@ -93,7 +106,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the computerName property: Name of the computer associated with this backup item.
-     *
+     * 
      * @param computerName the computerName value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -104,7 +117,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the lastBackupStatus property: Status of last backup operation.
-     *
+     * 
      * @return the lastBackupStatus value.
      */
     public String lastBackupStatus() {
@@ -113,7 +126,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the lastBackupStatus property: Status of last backup operation.
-     *
+     * 
      * @param lastBackupStatus the lastBackupStatus value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -124,7 +137,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the lastBackupTime property: Timestamp of the last backup operation on this backup item.
-     *
+     * 
      * @return the lastBackupTime value.
      */
     public OffsetDateTime lastBackupTime() {
@@ -133,7 +146,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the lastBackupTime property: Timestamp of the last backup operation on this backup item.
-     *
+     * 
      * @param lastBackupTime the lastBackupTime value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -144,7 +157,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the protectionState property: Protected, ProtectionStopped, IRPending or ProtectionError.
-     *
+     * 
      * @return the protectionState value.
      */
     public String protectionState() {
@@ -153,7 +166,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the protectionState property: Protected, ProtectionStopped, IRPending or ProtectionError.
-     *
+     * 
      * @param protectionState the protectionState value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -164,7 +177,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the deferredDeleteSyncTimeInUtc property: Sync time for deferred deletion in UTC.
-     *
+     * 
      * @return the deferredDeleteSyncTimeInUtc value.
      */
     public Long deferredDeleteSyncTimeInUtc() {
@@ -173,7 +186,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the deferredDeleteSyncTimeInUtc property: Sync time for deferred deletion in UTC.
-     *
+     * 
      * @param deferredDeleteSyncTimeInUtc the deferredDeleteSyncTimeInUtc value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -184,7 +197,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the extendedInfo property: Additional information with this backup item.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public MabFileFolderProtectedItemExtendedInfo extendedInfo() {
@@ -193,7 +206,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the extendedInfo property: Additional information with this backup item.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -202,105 +215,135 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withLastRecoveryPoint(OffsetDateTime lastRecoveryPoint) {
         super.withLastRecoveryPoint(lastRecoveryPoint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withBackupSetName(String backupSetName) {
         super.withBackupSetName(backupSetName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withCreateMode(CreateMode createMode) {
         super.withCreateMode(createMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withDeferredDeleteTimeInUtc(OffsetDateTime deferredDeleteTimeInUtc) {
         super.withDeferredDeleteTimeInUtc(deferredDeleteTimeInUtc);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withIsScheduledForDeferredDelete(Boolean isScheduledForDeferredDelete) {
         super.withIsScheduledForDeferredDelete(isScheduledForDeferredDelete);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withDeferredDeleteTimeRemaining(String deferredDeleteTimeRemaining) {
         super.withDeferredDeleteTimeRemaining(deferredDeleteTimeRemaining);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withIsDeferredDeleteScheduleUpcoming(Boolean isDeferredDeleteScheduleUpcoming) {
         super.withIsDeferredDeleteScheduleUpcoming(isDeferredDeleteScheduleUpcoming);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
         super.withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
         super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
@@ -309,14 +352,140 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerName", containerName());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("policyId", policyId());
+        jsonWriter.writeStringField("lastRecoveryPoint",
+            lastRecoveryPoint() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastRecoveryPoint()));
+        jsonWriter.writeStringField("backupSetName", backupSetName());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeStringField("deferredDeleteTimeInUTC",
+            deferredDeleteTimeInUtc() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deferredDeleteTimeInUtc()));
+        jsonWriter.writeBooleanField("isScheduledForDeferredDelete", isScheduledForDeferredDelete());
+        jsonWriter.writeStringField("deferredDeleteTimeRemaining", deferredDeleteTimeRemaining());
+        jsonWriter.writeBooleanField("isDeferredDeleteScheduleUpcoming", isDeferredDeleteScheduleUpcoming());
+        jsonWriter.writeBooleanField("isRehydrate", isRehydrate());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchiveEnabled", isArchiveEnabled());
+        jsonWriter.writeStringField("policyName", policyName());
+        jsonWriter.writeNumberField("softDeleteRetentionPeriodInDays", softDeleteRetentionPeriod());
+        jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("computerName", this.computerName);
+        jsonWriter.writeStringField("lastBackupStatus", this.lastBackupStatus);
+        jsonWriter.writeStringField("lastBackupTime",
+            this.lastBackupTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastBackupTime));
+        jsonWriter.writeStringField("protectionState", this.protectionState);
+        jsonWriter.writeNumberField("deferredDeleteSyncTimeInUTC", this.deferredDeleteSyncTimeInUtc);
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MabFileFolderProtectedItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MabFileFolderProtectedItem if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MabFileFolderProtectedItem.
+     */
+    public static MabFileFolderProtectedItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MabFileFolderProtectedItem deserializedMabFileFolderProtectedItem = new MabFileFolderProtectedItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem
+                        .withWorkloadType(DataSourceType.fromString(reader.getString()));
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.withContainerName(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.withSourceResourceId(reader.getString());
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.withPolicyId(reader.getString());
+                } else if ("lastRecoveryPoint".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.withLastRecoveryPoint(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("backupSetName".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.withBackupSetName(reader.getString());
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("deferredDeleteTimeInUTC".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.withDeferredDeleteTimeInUtc(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("isScheduledForDeferredDelete".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem
+                        .withIsScheduledForDeferredDelete(reader.getNullable(JsonReader::getBoolean));
+                } else if ("deferredDeleteTimeRemaining".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.withDeferredDeleteTimeRemaining(reader.getString());
+                } else if ("isDeferredDeleteScheduleUpcoming".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem
+                        .withIsDeferredDeleteScheduleUpcoming(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isRehydrate".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.withIsRehydrate(reader.getNullable(JsonReader::getBoolean));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMabFileFolderProtectedItem
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem
+                        .withIsArchiveEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.withPolicyName(reader.getString());
+                } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem
+                        .withSoftDeleteRetentionPeriod(reader.getNullable(JsonReader::getInt));
+                } else if ("vaultId".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.withVaultId(reader.getString());
+                } else if ("protectedItemType".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.protectedItemType = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.friendlyName = reader.getString();
+                } else if ("computerName".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.computerName = reader.getString();
+                } else if ("lastBackupStatus".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.lastBackupStatus = reader.getString();
+                } else if ("lastBackupTime".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.lastBackupTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.protectionState = reader.getString();
+                } else if ("deferredDeleteSyncTimeInUTC".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.deferredDeleteSyncTimeInUtc
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedMabFileFolderProtectedItem.extendedInfo
+                        = MabFileFolderProtectedItemExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMabFileFolderProtectedItem;
+        });
     }
 }

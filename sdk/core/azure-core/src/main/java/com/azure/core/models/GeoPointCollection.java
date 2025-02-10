@@ -5,6 +5,7 @@ package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -17,7 +18,20 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a collection of {@link GeoPoint GeoPoints}.
+ * <p>Represents a collection of {@link GeoPoint GeoPoints} in GeoJSON format.</p>
+ *
+ * <p>This class encapsulates a list of {@link GeoPoint} instances that form a collection of points. Each point is
+ * defined by a {@link GeoPosition} which includes the longitude, latitude, and optionally the altitude.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the collection of points to JSON,
+ * and a {@link #fromJson(JsonReader)} method to deserialize a collection of points from JSON.</p>
+ *
+ * <p>Note:A point collection requires at least 2 coordinates for each point.</p>
+ *
+ * @see GeoPoint
+ * @see GeoPosition
+ * @see GeoObject
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoPointCollection extends GeoObject {

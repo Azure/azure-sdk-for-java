@@ -10,11 +10,10 @@ import com.azure.resourcemanager.databoxedge.models.SkuLocationInfo;
 public final class SkuLocationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuLocationInfo model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"cvydypatdoo\",\"zones\":[\"kniod\",\"oo\"],\"sites\":[\"nuj\",\"emmsbvdkc\",\"odtji\",\"fw\"]}")
-                .toObject(SkuLocationInfo.class);
+        SkuLocationInfo model = BinaryData
+            .fromString(
+                "{\"location\":\"oftrmaequia\",\"zones\":[\"cslfaoqzpiyylha\",\"nswhcc\"],\"sites\":[\"kaivwit\"]}")
+            .toObject(SkuLocationInfo.class);
     }
 
     @org.junit.jupiter.api.Test

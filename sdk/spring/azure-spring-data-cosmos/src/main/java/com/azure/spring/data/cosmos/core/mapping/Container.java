@@ -55,6 +55,17 @@ public @interface Container {
     String partitionKeyPath() default "";
 
     /**
+     * To set the partition key definition for container
+     * Should only be used for hierarchical partition key scenario.
+     *
+     * For general partition key support, use the {@link PartitionKey} annotation
+     * By default {@link PartitionKey} annotation will take precedence, unless not specified.
+     *
+     * @return list of partition key paths
+     */
+    String[] hierarchicalPartitionKeyPaths() default {};
+
+    /**
      * To enable auto scale for container RU limit
      * @return default as false
      */

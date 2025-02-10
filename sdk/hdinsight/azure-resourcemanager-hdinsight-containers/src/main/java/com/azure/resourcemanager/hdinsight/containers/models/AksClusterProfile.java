@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the cluster pool underlying AKS cluster. */
+/**
+ * Properties of the cluster pool underlying AKS cluster.
+ */
 @Fluent
-public class AksClusterProfile {
+public class AksClusterProfile implements JsonSerializable<AksClusterProfile> {
     /*
      * ARM Resource ID of the AKS cluster
      */
-    @JsonProperty(value = "aksClusterResourceId")
     private String aksClusterResourceId;
 
     /*
      * Identity properties of the AKS cluster agentpool MSI
      */
-    @JsonProperty(value = "aksClusterAgentPoolIdentityProfile")
     private AksClusterProfileAksClusterAgentPoolIdentityProfile aksClusterAgentPoolIdentityProfile;
 
     /*
      * AKS control plane and default node pool version of this ClusterPool
      */
-    @JsonProperty(value = "aksVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String aksVersion;
 
-    /** Creates an instance of AksClusterProfile class. */
+    /**
+     * Creates an instance of AksClusterProfile class.
+     */
     public AksClusterProfile() {
     }
 
     /**
      * Get the aksClusterResourceId property: ARM Resource ID of the AKS cluster.
-     *
+     * 
      * @return the aksClusterResourceId value.
      */
     public String aksClusterResourceId() {
@@ -43,7 +48,7 @@ public class AksClusterProfile {
 
     /**
      * Set the aksClusterResourceId property: ARM Resource ID of the AKS cluster.
-     *
+     * 
      * @param aksClusterResourceId the aksClusterResourceId value to set.
      * @return the AksClusterProfile object itself.
      */
@@ -54,7 +59,7 @@ public class AksClusterProfile {
 
     /**
      * Get the aksClusterAgentPoolIdentityProfile property: Identity properties of the AKS cluster agentpool MSI.
-     *
+     * 
      * @return the aksClusterAgentPoolIdentityProfile value.
      */
     public AksClusterProfileAksClusterAgentPoolIdentityProfile aksClusterAgentPoolIdentityProfile() {
@@ -63,7 +68,7 @@ public class AksClusterProfile {
 
     /**
      * Set the aksClusterAgentPoolIdentityProfile property: Identity properties of the AKS cluster agentpool MSI.
-     *
+     * 
      * @param aksClusterAgentPoolIdentityProfile the aksClusterAgentPoolIdentityProfile value to set.
      * @return the AksClusterProfile object itself.
      */
@@ -75,7 +80,7 @@ public class AksClusterProfile {
 
     /**
      * Get the aksVersion property: AKS control plane and default node pool version of this ClusterPool.
-     *
+     * 
      * @return the aksVersion value.
      */
     public String aksVersion() {
@@ -83,13 +88,66 @@ public class AksClusterProfile {
     }
 
     /**
+     * Set the aksVersion property: AKS control plane and default node pool version of this ClusterPool.
+     * 
+     * @param aksVersion the aksVersion value to set.
+     * @return the AksClusterProfile object itself.
+     */
+    AksClusterProfile withAksVersion(String aksVersion) {
+        this.aksVersion = aksVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (aksClusterAgentPoolIdentityProfile() != null) {
             aksClusterAgentPoolIdentityProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aksClusterResourceId", this.aksClusterResourceId);
+        jsonWriter.writeJsonField("aksClusterAgentPoolIdentityProfile", this.aksClusterAgentPoolIdentityProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AksClusterProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AksClusterProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AksClusterProfile.
+     */
+    public static AksClusterProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AksClusterProfile deserializedAksClusterProfile = new AksClusterProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aksClusterResourceId".equals(fieldName)) {
+                    deserializedAksClusterProfile.aksClusterResourceId = reader.getString();
+                } else if ("aksClusterAgentPoolIdentityProfile".equals(fieldName)) {
+                    deserializedAksClusterProfile.aksClusterAgentPoolIdentityProfile
+                        = AksClusterProfileAksClusterAgentPoolIdentityProfile.fromJson(reader);
+                } else if ("aksVersion".equals(fieldName)) {
+                    deserializedAksClusterProfile.aksVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAksClusterProfile;
+        });
     }
 }

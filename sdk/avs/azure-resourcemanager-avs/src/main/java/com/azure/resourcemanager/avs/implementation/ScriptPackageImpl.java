@@ -4,8 +4,10 @@
 
 package com.azure.resourcemanager.avs.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.fluent.models.ScriptPackageInner;
 import com.azure.resourcemanager.avs.models.ScriptPackage;
+import com.azure.resourcemanager.avs.models.ScriptPackageProvisioningState;
 
 public final class ScriptPackageImpl implements ScriptPackage {
     private ScriptPackageInner innerObject;
@@ -27,6 +29,14 @@ public final class ScriptPackageImpl implements ScriptPackage {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public ScriptPackageProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
     }
 
     public String description() {

@@ -5,52 +5,53 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** phone. */
+/**
+ * phone.
+ */
 @Fluent
-public final class MicrosoftGraphPhone {
+public final class MicrosoftGraphPhone implements JsonSerializable<MicrosoftGraphPhone> {
     /*
      * The language property.
      */
-    @JsonProperty(value = "language")
     private String language;
 
     /*
      * The phone number.
      */
-    @JsonProperty(value = "number")
     private String number;
 
     /*
      * The region property.
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * The type property.
      */
-    @JsonProperty(value = "type")
     private MicrosoftGraphPhoneType type;
 
     /*
      * phone
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPhone class. */
+    /**
+     * Creates an instance of MicrosoftGraphPhone class.
+     */
     public MicrosoftGraphPhone() {
     }
 
     /**
      * Get the language property: The language property.
-     *
+     * 
      * @return the language value.
      */
     public String language() {
@@ -59,7 +60,7 @@ public final class MicrosoftGraphPhone {
 
     /**
      * Set the language property: The language property.
-     *
+     * 
      * @param language the language value to set.
      * @return the MicrosoftGraphPhone object itself.
      */
@@ -70,7 +71,7 @@ public final class MicrosoftGraphPhone {
 
     /**
      * Get the number property: The phone number.
-     *
+     * 
      * @return the number value.
      */
     public String number() {
@@ -79,7 +80,7 @@ public final class MicrosoftGraphPhone {
 
     /**
      * Set the number property: The phone number.
-     *
+     * 
      * @param number the number value to set.
      * @return the MicrosoftGraphPhone object itself.
      */
@@ -90,7 +91,7 @@ public final class MicrosoftGraphPhone {
 
     /**
      * Get the region property: The region property.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -99,7 +100,7 @@ public final class MicrosoftGraphPhone {
 
     /**
      * Set the region property: The region property.
-     *
+     * 
      * @param region the region value to set.
      * @return the MicrosoftGraphPhone object itself.
      */
@@ -110,7 +111,7 @@ public final class MicrosoftGraphPhone {
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public MicrosoftGraphPhoneType type() {
@@ -119,7 +120,7 @@ public final class MicrosoftGraphPhone {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the MicrosoftGraphPhone object itself.
      */
@@ -130,17 +131,16 @@ public final class MicrosoftGraphPhone {
 
     /**
      * Get the additionalProperties property: phone.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: phone.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPhone object itself.
      */
@@ -149,19 +149,67 @@ public final class MicrosoftGraphPhone {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeStringField("number", this.number);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPhone from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPhone if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPhone.
+     */
+    public static MicrosoftGraphPhone fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPhone deserializedMicrosoftGraphPhone = new MicrosoftGraphPhone();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("language".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhone.language = reader.getString();
+                } else if ("number".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhone.number = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhone.region = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhone.type = MicrosoftGraphPhoneType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPhone.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPhone;
+        });
     }
 }

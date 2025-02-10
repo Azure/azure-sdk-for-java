@@ -20,10 +20,18 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +50,13 @@ public abstract class ArtifactsClientTestBase extends TestProxyTestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(SYNAPSE_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+    // Disable `name` and `id` sanitizers from the list of common sanitizers
+    public static final String[] REMOVE_SANITIZER_ID = { "AZSDK3430", "AZSDK3493" };
 
-    private static final String[] DEFAULT_SCOPES = new String[] {"https://dev.azuresynapse.net/.default"};
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://dev.azuresynapse.net/.default" };
 
     ArtifactsClientBuilder getArtifactsClientBuilder() {
-        return clientSetup(httpPipeline -> new ArtifactsClientBuilder()
-            .endpoint(getEndpoint())
-            .pipeline(httpPipeline));
+        return clientSetup(httpPipeline -> new ArtifactsClientBuilder().endpoint(getEndpoint()).pipeline(httpPipeline));
     }
 
     protected String getEndpoint() {
@@ -62,10 +70,48 @@ public abstract class ArtifactsClientTestBase extends TestProxyTestBase {
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         TokenCredential credential;
 
-        if (interceptorManager.isPlaybackMode()) {
-            credential = new MockTokenCredential();
-        } else {
-            credential = new DefaultAzureCredentialBuilder().build();
+        switch (getTestMode()) {
+            case RECORD:
+                credential = new DefaultAzureCredentialBuilder().build();
+
+                break;
+
+            case LIVE:
+                Configuration config = Configuration.getGlobalConfiguration();
+
+                ChainedTokenCredentialBuilder chainedTokenCredentialBuilder
+                    = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                        .addLast(new AzureCliCredentialBuilder().build())
+                        .addLast(new AzureDeveloperCliCredentialBuilder().build())
+                        .addLast(new AzurePowerShellCredentialBuilder().build());
+
+                String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+                String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+                String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+                String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+                if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+                    && !CoreUtils.isNullOrEmpty(clientId)
+                    && !CoreUtils.isNullOrEmpty(tenantId)
+                    && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+                    chainedTokenCredentialBuilder
+                        .addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+                            .clientId(clientId)
+                            .tenantId(tenantId)
+                            .serviceConnectionId(serviceConnectionId)
+                            .build());
+                }
+
+                credential = chainedTokenCredentialBuilder.build();
+
+                break;
+
+            default:
+                // On PLAYBACK mode
+                credential = new MockTokenCredential();
+
+                break;
         }
 
         HttpClient httpClient;
@@ -73,8 +119,8 @@ public abstract class ArtifactsClientTestBase extends TestProxyTestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
+        policies
+            .add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
@@ -95,8 +141,13 @@ public abstract class ArtifactsClientTestBase extends TestProxyTestBase {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(new TestProxySanitizer("$..id", null,
+                "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+        }
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
 
@@ -109,6 +160,7 @@ public abstract class ArtifactsClientTestBase extends TestProxyTestBase {
     void validateNotebook(NotebookResource expectedNotebook, NotebookResource actualNotebook) {
         assertEquals(expectedNotebook.getName(), actualNotebook.getName());
         assertEquals(expectedNotebook.getId(), actualNotebook.getId());
-        assertEquals(expectedNotebook.getProperties().getDescription(), actualNotebook.getProperties().getDescription());
+        assertEquals(expectedNotebook.getProperties().getDescription(),
+            actualNotebook.getProperties().getDescription());
     }
 }

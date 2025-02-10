@@ -6,9 +6,12 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.LoggerType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -16,46 +19,42 @@ import java.util.Map;
  * the Logger entity supports logging API Management events to Azure Event Hubs.
  */
 @Fluent
-public final class LoggerContractProperties {
+public final class LoggerContractProperties implements JsonSerializable<LoggerContractProperties> {
     /*
      * Logger type.
      */
-    @JsonProperty(value = "loggerType", required = true)
     private LoggerType loggerType;
 
     /*
      * Logger description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The name and SendRule connection string of the event hub for azureEventHub logger.
      * Instrumentation key for applicationInsights logger.
      */
-    @JsonProperty(value = "credentials")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> credentials;
 
     /*
      * Whether records are buffered in the logger before publishing. Default is assumed to be true.
      */
-    @JsonProperty(value = "isBuffered")
     private Boolean isBuffered;
 
     /*
      * Azure Resource Id of a log target (either Azure Event Hub resource or Azure Application Insights resource).
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
-    /** Creates an instance of LoggerContractProperties class. */
+    /**
+     * Creates an instance of LoggerContractProperties class.
+     */
     public LoggerContractProperties() {
     }
 
     /**
      * Get the loggerType property: Logger type.
-     *
+     * 
      * @return the loggerType value.
      */
     public LoggerType loggerType() {
@@ -64,7 +63,7 @@ public final class LoggerContractProperties {
 
     /**
      * Set the loggerType property: Logger type.
-     *
+     * 
      * @param loggerType the loggerType value to set.
      * @return the LoggerContractProperties object itself.
      */
@@ -75,7 +74,7 @@ public final class LoggerContractProperties {
 
     /**
      * Get the description property: Logger description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -84,7 +83,7 @@ public final class LoggerContractProperties {
 
     /**
      * Set the description property: Logger description.
-     *
+     * 
      * @param description the description value to set.
      * @return the LoggerContractProperties object itself.
      */
@@ -96,7 +95,7 @@ public final class LoggerContractProperties {
     /**
      * Get the credentials property: The name and SendRule connection string of the event hub for azureEventHub logger.
      * Instrumentation key for applicationInsights logger.
-     *
+     * 
      * @return the credentials value.
      */
     public Map<String, String> credentials() {
@@ -106,7 +105,7 @@ public final class LoggerContractProperties {
     /**
      * Set the credentials property: The name and SendRule connection string of the event hub for azureEventHub logger.
      * Instrumentation key for applicationInsights logger.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the LoggerContractProperties object itself.
      */
@@ -118,7 +117,7 @@ public final class LoggerContractProperties {
     /**
      * Get the isBuffered property: Whether records are buffered in the logger before publishing. Default is assumed to
      * be true.
-     *
+     * 
      * @return the isBuffered value.
      */
     public Boolean isBuffered() {
@@ -128,7 +127,7 @@ public final class LoggerContractProperties {
     /**
      * Set the isBuffered property: Whether records are buffered in the logger before publishing. Default is assumed to
      * be true.
-     *
+     * 
      * @param isBuffered the isBuffered value to set.
      * @return the LoggerContractProperties object itself.
      */
@@ -140,7 +139,7 @@ public final class LoggerContractProperties {
     /**
      * Get the resourceId property: Azure Resource Id of a log target (either Azure Event Hub resource or Azure
      * Application Insights resource).
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -150,7 +149,7 @@ public final class LoggerContractProperties {
     /**
      * Set the resourceId property: Azure Resource Id of a log target (either Azure Event Hub resource or Azure
      * Application Insights resource).
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the LoggerContractProperties object itself.
      */
@@ -161,17 +160,66 @@ public final class LoggerContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (loggerType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property loggerType in model LoggerContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property loggerType in model LoggerContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LoggerContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("loggerType", this.loggerType == null ? null : this.loggerType.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("credentials", this.credentials, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isBuffered", this.isBuffered);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoggerContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoggerContractProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LoggerContractProperties.
+     */
+    public static LoggerContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoggerContractProperties deserializedLoggerContractProperties = new LoggerContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loggerType".equals(fieldName)) {
+                    deserializedLoggerContractProperties.loggerType = LoggerType.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedLoggerContractProperties.description = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    Map<String, String> credentials = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLoggerContractProperties.credentials = credentials;
+                } else if ("isBuffered".equals(fieldName)) {
+                    deserializedLoggerContractProperties.isBuffered = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedLoggerContractProperties.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoggerContractProperties;
+        });
+    }
 }

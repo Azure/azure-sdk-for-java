@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DesktopInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DesktopInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"objectId\":\"fn\",\"description\":\"kwyfzqwhxxbuyqax\",\"friendlyName\":\"eqz\",\"iconHash\":\"priolx\"},\"id\":\"jaltolmnc\",\"name\":\"sobqw\",\"type\":\"sdbnwdcfhucqdpf\"}")
-                .toObject(DesktopInner.class);
-        Assertions.assertEquals("kwyfzqwhxxbuyqax", model.description());
-        Assertions.assertEquals("eqz", model.friendlyName());
+        DesktopInner model = BinaryData.fromString(
+            "{\"properties\":{\"objectId\":\"lxqtvcofudfl\",\"description\":\"gj\",\"friendlyName\":\"gdknnqv\",\"iconHash\":\"znqntoru\"},\"id\":\"sahmky\",\"name\":\"grauwjuetaebur\",\"type\":\"vdmovsmzlxwabm\"}")
+            .toObject(DesktopInner.class);
+        Assertions.assertEquals("gj", model.description());
+        Assertions.assertEquals("gdknnqv", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DesktopInner model = new DesktopInner().withDescription("kwyfzqwhxxbuyqax").withFriendlyName("eqz");
+        DesktopInner model = new DesktopInner().withDescription("gj").withFriendlyName("gdknnqv");
         model = BinaryData.fromObject(model).toObject(DesktopInner.class);
-        Assertions.assertEquals("kwyfzqwhxxbuyqax", model.description());
-        Assertions.assertEquals("eqz", model.friendlyName());
+        Assertions.assertEquals("gj", model.description());
+        Assertions.assertEquals("gdknnqv", model.friendlyName());
     }
 }

@@ -5,31 +5,51 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.maps.search.models.GeoJsonGeometry;
+import com.azure.maps.search.models.GeoJsonObjectType;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A valid `GeoJSON Polygon` geometry type. Please refer to [RFC
  * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.6) for details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Polygon")
 @Fluent
 public final class GeoJsonPolygon extends GeoJsonGeometry {
     /*
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     */
+    private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_POLYGON;
+
+    /*
      * Coordinates for the `GeoJson Polygon` geometry type.
      */
-    @JsonProperty(value = "coordinates", required = true)
     private List<List<List<Double>>> coordinates;
 
-    /** Creates an instance of GeoJsonPolygon class. */
-    public GeoJsonPolygon() {}
+    /**
+     * Creates an instance of GeoJsonPolygon class.
+     */
+    public GeoJsonPolygon() {
+    }
+
+    /**
+     * Get the type property: Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point,
+     * MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and
+     * FeatureCollection.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public GeoJsonObjectType getType() {
+        return this.type;
+    }
 
     /**
      * Get the coordinates property: Coordinates for the `GeoJson Polygon` geometry type.
-     *
+     * 
      * @return the coordinates value.
      */
     public List<List<List<Double>>> getCoordinates() {
@@ -38,12 +58,68 @@ public final class GeoJsonPolygon extends GeoJsonGeometry {
 
     /**
      * Set the coordinates property: Coordinates for the `GeoJson Polygon` geometry type.
-     *
+     * 
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonPolygon object itself.
      */
     public GeoJsonPolygon setCoordinates(List<List<List<Double>>> coordinates) {
         this.coordinates = coordinates;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GeoJsonPolygon setBbox(List<Double> bbox) {
+        super.setBbox(bbox);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("bbox", getBbox(), (writer, element) -> writer.writeDouble(element));
+        jsonWriter.writeArrayField("coordinates", this.coordinates, (writer, element) -> writer.writeArray(element,
+            (writer1, element1) -> writer1.writeArray(element1, (writer2, element2) -> writer2.writeDouble(element2))));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GeoJsonPolygon from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GeoJsonPolygon if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GeoJsonPolygon.
+     */
+    public static GeoJsonPolygon fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GeoJsonPolygon deserializedGeoJsonPolygon = new GeoJsonPolygon();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bbox".equals(fieldName)) {
+                    List<Double> bbox = reader.readArray(reader1 -> reader1.getDouble());
+                    deserializedGeoJsonPolygon.setBbox(bbox);
+                } else if ("coordinates".equals(fieldName)) {
+                    List<List<List<Double>>> coordinates = reader.readArray(
+                        reader1 -> reader1.readArray(reader2 -> reader2.readArray(reader3 -> reader3.getDouble())));
+                    deserializedGeoJsonPolygon.coordinates = coordinates;
+                } else if ("type".equals(fieldName)) {
+                    deserializedGeoJsonPolygon.type = GeoJsonObjectType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGeoJsonPolygon;
+        });
     }
 }

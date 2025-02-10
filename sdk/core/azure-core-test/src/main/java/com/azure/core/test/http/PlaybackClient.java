@@ -30,8 +30,8 @@ import java.util.regex.Pattern;
 public final class PlaybackClient implements HttpClient {
     private static final String X_MS_CLIENT_REQUEST_ID = "x-ms-client-request-id";
     private static final String X_MS_ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
-    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256_HEADER =
-        HttpHeaderName.fromString(X_MS_ENCRYPTION_KEY_SHA256);
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256_HEADER
+        = HttpHeaderName.fromString(X_MS_ENCRYPTION_KEY_SHA256);
 
     // Pattern that matches all '//' in a URL that aren't prefixed by 'http:' or 'https:'.
     private static final Pattern DOUBLE_SLASH_CLEANER = Pattern.compile("(?<!https?:)//");
@@ -113,8 +113,8 @@ public final class PlaybackClient implements HttpClient {
                 networkCallRecord.getHeaders().get(X_MS_CLIENT_REQUEST_ID));
         }
         if (request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256_HEADER) != null) {
-            networkCallRecord.getResponse().put(X_MS_ENCRYPTION_KEY_SHA256,
-                request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256_HEADER));
+            networkCallRecord.getResponse()
+                .put(X_MS_ENCRYPTION_KEY_SHA256, request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256_HEADER));
         }
 
         int recordStatusCode = Integer.parseInt(networkCallRecord.getResponse().get("StatusCode"));

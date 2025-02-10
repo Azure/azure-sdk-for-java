@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Data Model for a Private Endpoint Connection associated with a Private Link Scope. */
+/**
+ * The Data Model for a Private Endpoint Connection associated with a Private Link Scope.
+ */
 @Fluent
-public final class PrivateEndpointConnectionDataModel {
+public final class PrivateEndpointConnectionDataModel implements JsonSerializable<PrivateEndpointConnectionDataModel> {
     /*
      * The ARM Resource Id of the Private Endpoint.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The Name of the Private Endpoint.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Azure resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The Private Endpoint Connection properties.
      */
-    @JsonProperty(value = "properties")
     private PrivateEndpointConnectionProperties properties;
 
-    /** Creates an instance of PrivateEndpointConnectionDataModel class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionDataModel class.
+     */
     public PrivateEndpointConnectionDataModel() {
     }
 
     /**
      * Get the id property: The ARM Resource Id of the Private Endpoint.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -49,7 +53,7 @@ public final class PrivateEndpointConnectionDataModel {
 
     /**
      * Get the name property: The Name of the Private Endpoint.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +62,7 @@ public final class PrivateEndpointConnectionDataModel {
 
     /**
      * Get the type property: Azure resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -67,7 +71,7 @@ public final class PrivateEndpointConnectionDataModel {
 
     /**
      * Get the properties property: The Private Endpoint Connection properties.
-     *
+     * 
      * @return the properties value.
      */
     public PrivateEndpointConnectionProperties properties() {
@@ -76,7 +80,7 @@ public final class PrivateEndpointConnectionDataModel {
 
     /**
      * Set the properties property: The Private Endpoint Connection properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the PrivateEndpointConnectionDataModel object itself.
      */
@@ -87,12 +91,56 @@ public final class PrivateEndpointConnectionDataModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionDataModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionDataModel if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionDataModel.
+     */
+    public static PrivateEndpointConnectionDataModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionDataModel deserializedPrivateEndpointConnectionDataModel
+                = new PrivateEndpointConnectionDataModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionDataModel.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionDataModel.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionDataModel.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionDataModel.properties
+                        = PrivateEndpointConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionDataModel;
+        });
     }
 }

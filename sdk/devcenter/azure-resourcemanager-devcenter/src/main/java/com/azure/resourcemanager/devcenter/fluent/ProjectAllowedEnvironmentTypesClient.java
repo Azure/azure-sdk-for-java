@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.AllowedEnvironmentTypeInner;
 
-/** An instance of this class provides access to all the operations defined in ProjectAllowedEnvironmentTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProjectAllowedEnvironmentTypesClient.
+ */
 public interface ProjectAllowedEnvironmentTypesClient {
     /**
      * Lists allowed environment types for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface ProjectAllowedEnvironmentTypesClient {
 
     /**
      * Lists allowed environment types for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -39,12 +41,12 @@ public interface ProjectAllowedEnvironmentTypesClient {
      * @return result of the allowed environment type list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AllowedEnvironmentTypeInner> list(
-        String resourceGroupName, String projectName, Integer top, Context context);
+    PagedIterable<AllowedEnvironmentTypeInner> list(String resourceGroupName, String projectName, Integer top,
+        Context context);
 
     /**
      * Gets an allowed environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.
@@ -55,12 +57,12 @@ public interface ProjectAllowedEnvironmentTypesClient {
      * @return an allowed environment type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AllowedEnvironmentTypeInner> getWithResponse(
-        String resourceGroupName, String projectName, String environmentTypeName, Context context);
+    Response<AllowedEnvironmentTypeInner> getWithResponse(String resourceGroupName, String projectName,
+        String environmentTypeName, Context context);
 
     /**
      * Gets an allowed environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param environmentTypeName The name of the environment type.

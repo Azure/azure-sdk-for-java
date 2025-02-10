@@ -22,8 +22,7 @@ public final class CertificatesImpl implements Certificates {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public CertificatesImpl(
-        CertificatesClient innerClient,
+    public CertificatesImpl(CertificatesClient innerClient,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,23 +30,20 @@ public final class CertificatesImpl implements Certificates {
 
     public PagedIterable<Certificate> list(String resourceGroupName, String environmentName) {
         PagedIterable<CertificateInner> inner = this.serviceClient().list(resourceGroupName, environmentName);
-        return Utils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Certificate> list(String resourceGroupName, String environmentName, Context context) {
         PagedIterable<CertificateInner> inner = this.serviceClient().list(resourceGroupName, environmentName, context);
-        return Utils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
     }
 
-    public Response<Certificate> getWithResponse(
-        String resourceGroupName, String environmentName, String certificateName, Context context) {
-        Response<CertificateInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, environmentName, certificateName, context);
+    public Response<Certificate> getWithResponse(String resourceGroupName, String environmentName,
+        String certificateName, Context context) {
+        Response<CertificateInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, environmentName, certificateName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CertificateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -63,22 +59,13 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public Response<Certificate> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String certificateName,
-        CertificateInner certificateEnvelope,
-        Context context) {
-        Response<CertificateInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, environmentName, certificateName, certificateEnvelope, context);
+    public Response<Certificate> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
+        String certificateName, CertificateInner certificateEnvelope, Context context) {
+        Response<CertificateInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, certificateName, certificateEnvelope,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CertificateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -86,8 +73,8 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public Certificate createOrUpdate(String resourceGroupName, String environmentName, String certificateName) {
-        CertificateInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, environmentName, certificateName);
+        CertificateInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, environmentName, certificateName);
         if (inner != null) {
             return new CertificateImpl(inner, this.manager());
         } else {
@@ -95,8 +82,8 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String certificateName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String certificateName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, certificateName, context);
     }
 
@@ -104,34 +91,22 @@ public final class CertificatesImpl implements Certificates {
         this.serviceClient().delete(resourceGroupName, environmentName, certificateName);
     }
 
-    public Response<Certificate> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String certificateName,
-        CertificatePatch certificateEnvelope,
-        Context context) {
-        Response<CertificateInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, environmentName, certificateName, certificateEnvelope, context);
+    public Response<Certificate> updateWithResponse(String resourceGroupName, String environmentName,
+        String certificateName, CertificatePatch certificateEnvelope, Context context) {
+        Response<CertificateInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, environmentName, certificateName, certificateEnvelope, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CertificateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Certificate update(
-        String resourceGroupName,
-        String environmentName,
-        String certificateName,
+    public Certificate update(String resourceGroupName, String environmentName, String certificateName,
         CertificatePatch certificateEnvelope) {
-        CertificateInner inner =
-            this.serviceClient().update(resourceGroupName, environmentName, certificateName, certificateEnvelope);
+        CertificateInner inner
+            = this.serviceClient().update(resourceGroupName, environmentName, certificateName, certificateEnvelope);
         if (inner != null) {
             return new CertificateImpl(inner, this.manager());
         } else {

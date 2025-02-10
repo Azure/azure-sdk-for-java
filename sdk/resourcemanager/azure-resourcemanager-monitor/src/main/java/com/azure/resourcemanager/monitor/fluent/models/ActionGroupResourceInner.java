@@ -6,6 +6,9 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.ArmRoleReceiver;
 import com.azure.resourcemanager.monitor.models.AutomationRunbookReceiver;
 import com.azure.resourcemanager.monitor.models.AzureAppPushReceiver;
@@ -17,40 +20,92 @@ import com.azure.resourcemanager.monitor.models.LogicAppReceiver;
 import com.azure.resourcemanager.monitor.models.SmsReceiver;
 import com.azure.resourcemanager.monitor.models.VoiceReceiver;
 import com.azure.resourcemanager.monitor.models.WebhookReceiver;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** An action group resource. */
+/**
+ * An action group resource.
+ */
 @Fluent
 public final class ActionGroupResourceInner extends Resource {
     /*
      * The action groups properties of the resource.
      */
-    @JsonProperty(value = "properties")
     private ActionGroup innerProperties;
 
-    /** Creates an instance of ActionGroupResourceInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ActionGroupResourceInner class.
+     */
     public ActionGroupResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The action groups properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ActionGroup innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActionGroupResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActionGroupResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -59,7 +114,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Get the groupShortName property: The short name of the action group. This will be used in SMS messages.
-     *
+     * 
      * @return the groupShortName value.
      */
     public String groupShortName() {
@@ -68,7 +123,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Set the groupShortName property: The short name of the action group. This will be used in SMS messages.
-     *
+     * 
      * @param groupShortName the groupShortName value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -83,7 +138,7 @@ public final class ActionGroupResourceInner extends Resource {
     /**
      * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
      * none of its receivers will receive communications.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -93,7 +148,7 @@ public final class ActionGroupResourceInner extends Resource {
     /**
      * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
      * none of its receivers will receive communications.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -107,7 +162,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Get the emailReceivers property: The list of email receivers that are part of this action group.
-     *
+     * 
      * @return the emailReceivers value.
      */
     public List<EmailReceiver> emailReceivers() {
@@ -116,7 +171,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Set the emailReceivers property: The list of email receivers that are part of this action group.
-     *
+     * 
      * @param emailReceivers the emailReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -130,7 +185,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Get the smsReceivers property: The list of SMS receivers that are part of this action group.
-     *
+     * 
      * @return the smsReceivers value.
      */
     public List<SmsReceiver> smsReceivers() {
@@ -139,7 +194,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Set the smsReceivers property: The list of SMS receivers that are part of this action group.
-     *
+     * 
      * @param smsReceivers the smsReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -153,7 +208,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Get the webhookReceivers property: The list of webhook receivers that are part of this action group.
-     *
+     * 
      * @return the webhookReceivers value.
      */
     public List<WebhookReceiver> webhookReceivers() {
@@ -162,7 +217,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Set the webhookReceivers property: The list of webhook receivers that are part of this action group.
-     *
+     * 
      * @param webhookReceivers the webhookReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -176,7 +231,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Get the itsmReceivers property: The list of ITSM receivers that are part of this action group.
-     *
+     * 
      * @return the itsmReceivers value.
      */
     public List<ItsmReceiver> itsmReceivers() {
@@ -185,7 +240,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Set the itsmReceivers property: The list of ITSM receivers that are part of this action group.
-     *
+     * 
      * @param itsmReceivers the itsmReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -199,7 +254,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Get the azureAppPushReceivers property: The list of AzureAppPush receivers that are part of this action group.
-     *
+     * 
      * @return the azureAppPushReceivers value.
      */
     public List<AzureAppPushReceiver> azureAppPushReceivers() {
@@ -208,7 +263,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Set the azureAppPushReceivers property: The list of AzureAppPush receivers that are part of this action group.
-     *
+     * 
      * @param azureAppPushReceivers the azureAppPushReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -223,7 +278,7 @@ public final class ActionGroupResourceInner extends Resource {
     /**
      * Get the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
      * group.
-     *
+     * 
      * @return the automationRunbookReceivers value.
      */
     public List<AutomationRunbookReceiver> automationRunbookReceivers() {
@@ -233,12 +288,12 @@ public final class ActionGroupResourceInner extends Resource {
     /**
      * Set the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
      * group.
-     *
+     * 
      * @param automationRunbookReceivers the automationRunbookReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
-    public ActionGroupResourceInner withAutomationRunbookReceivers(
-        List<AutomationRunbookReceiver> automationRunbookReceivers) {
+    public ActionGroupResourceInner
+        withAutomationRunbookReceivers(List<AutomationRunbookReceiver> automationRunbookReceivers) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ActionGroup();
         }
@@ -248,7 +303,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Get the voiceReceivers property: The list of voice receivers that are part of this action group.
-     *
+     * 
      * @return the voiceReceivers value.
      */
     public List<VoiceReceiver> voiceReceivers() {
@@ -257,7 +312,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Set the voiceReceivers property: The list of voice receivers that are part of this action group.
-     *
+     * 
      * @param voiceReceivers the voiceReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -271,7 +326,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Get the logicAppReceivers property: The list of logic app receivers that are part of this action group.
-     *
+     * 
      * @return the logicAppReceivers value.
      */
     public List<LogicAppReceiver> logicAppReceivers() {
@@ -280,7 +335,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Set the logicAppReceivers property: The list of logic app receivers that are part of this action group.
-     *
+     * 
      * @param logicAppReceivers the logicAppReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -294,7 +349,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Get the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
-     *
+     * 
      * @return the azureFunctionReceivers value.
      */
     public List<AzureFunctionReceiver> azureFunctionReceivers() {
@@ -303,7 +358,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Set the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
-     *
+     * 
      * @param azureFunctionReceivers the azureFunctionReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -318,7 +373,7 @@ public final class ActionGroupResourceInner extends Resource {
     /**
      * Get the armRoleReceivers property: The list of ARM role receivers that are part of this action group. Roles are
      * Azure RBAC roles and only built-in roles are supported.
-     *
+     * 
      * @return the armRoleReceivers value.
      */
     public List<ArmRoleReceiver> armRoleReceivers() {
@@ -328,7 +383,7 @@ public final class ActionGroupResourceInner extends Resource {
     /**
      * Set the armRoleReceivers property: The list of ARM role receivers that are part of this action group. Roles are
      * Azure RBAC roles and only built-in roles are supported.
-     *
+     * 
      * @param armRoleReceivers the armRoleReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -342,7 +397,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Get the eventHubReceivers property: The list of event hub receivers that are part of this action group.
-     *
+     * 
      * @return the eventHubReceivers value.
      */
     public List<EventHubReceiver> eventHubReceivers() {
@@ -351,7 +406,7 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Set the eventHubReceivers property: The list of event hub receivers that are part of this action group.
-     *
+     * 
      * @param eventHubReceivers the eventHubReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
@@ -365,12 +420,62 @@ public final class ActionGroupResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionGroupResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionGroupResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActionGroupResourceInner.
+     */
+    public static ActionGroupResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionGroupResourceInner deserializedActionGroupResourceInner = new ActionGroupResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedActionGroupResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedActionGroupResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedActionGroupResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedActionGroupResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedActionGroupResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedActionGroupResourceInner.innerProperties = ActionGroup.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionGroupResourceInner;
+        });
     }
 }

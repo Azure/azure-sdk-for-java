@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceCapabilitiesBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceCapabilitiesBase model =
-            BinaryData.fromString("{\"type\":\"zdzevndh\"}").toObject(ResourceCapabilitiesBase.class);
+        ResourceCapabilitiesBase model
+            = BinaryData.fromString("{\"type\":\"zdzevndh\"}").toObject(ResourceCapabilitiesBase.class);
         Assertions.assertEquals("zdzevndh", model.type());
     }
 

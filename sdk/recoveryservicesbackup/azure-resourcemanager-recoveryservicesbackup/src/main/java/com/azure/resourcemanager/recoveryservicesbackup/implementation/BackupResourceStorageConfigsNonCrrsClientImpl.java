@@ -32,24 +32,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in BackupResourceStorageConfigsNonCrrsClient.
  */
 public final class BackupResourceStorageConfigsNonCrrsClientImpl implements BackupResourceStorageConfigsNonCrrsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BackupResourceStorageConfigsNonCrrsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of BackupResourceStorageConfigsNonCrrsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BackupResourceStorageConfigsNonCrrsClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    BackupResourceStorageConfigsNonCrrsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(BackupResourceStorageConfigsNonCrrsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,54 +60,40 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface BackupResourceStorageConfigsNonCrrsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupResourceConfigResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<BackupResourceConfigResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupResourceConfigResourceInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<BackupResourceConfigResourceInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") BackupResourceConfigResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> patch(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
+        Mono<Response<Void>> patch(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("vaultName") String vaultName, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") BackupResourceConfigResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Fetches resource storage config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,13 +102,11 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return the resource storage details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupResourceConfigResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName) {
+    private Mono<Response<BackupResourceConfigResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -132,30 +116,19 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Fetches resource storage config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -165,13 +138,11 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return the resource storage details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupResourceConfigResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, Context context) {
+    private Mono<Response<BackupResourceConfigResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -181,27 +152,18 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Fetches resource storage config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,7 +178,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
 
     /**
      * Fetches resource storage config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -226,14 +188,14 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return the resource storage details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupResourceConfigResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, Context context) {
+    public Response<BackupResourceConfigResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, context).block();
     }
 
     /**
      * Fetches resource storage config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -248,7 +210,7 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -258,13 +220,11 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return the resource storage details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupResourceConfigResourceInner>> updateWithResponseAsync(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
+    private Mono<Response<BackupResourceConfigResourceInner>> updateWithResponseAsync(String vaultName,
+        String resourceGroupName, BackupResourceConfigResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -274,10 +234,8 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -286,24 +244,14 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -314,13 +262,11 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return the resource storage details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupResourceConfigResourceInner>> updateWithResponseAsync(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context) {
+    private Mono<Response<BackupResourceConfigResourceInner>> updateWithResponseAsync(String vaultName,
+        String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -330,10 +276,8 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -342,21 +286,13 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -366,15 +302,15 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return the resource storage details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupResourceConfigResourceInner> updateAsync(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
+    private Mono<BackupResourceConfigResourceInner> updateAsync(String vaultName, String resourceGroupName,
+        BackupResourceConfigResourceInner parameters) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -385,14 +321,14 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return the resource storage details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupResourceConfigResourceInner> updateWithResponse(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context) {
+    public Response<BackupResourceConfigResourceInner> updateWithResponse(String vaultName, String resourceGroupName,
+        BackupResourceConfigResourceInner parameters, Context context) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
     }
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -402,14 +338,14 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return the resource storage details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupResourceConfigResourceInner update(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
+    public BackupResourceConfigResourceInner update(String vaultName, String resourceGroupName,
+        BackupResourceConfigResourceInner parameters) {
         return updateWithResponse(vaultName, resourceGroupName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -419,13 +355,11 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> patchWithResponseAsync(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
+    private Mono<Response<Void>> patchWithResponseAsync(String vaultName, String resourceGroupName,
+        BackupResourceConfigResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -435,10 +369,8 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -447,24 +379,14 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .patch(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.patch(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -475,13 +397,11 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> patchWithResponseAsync(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context) {
+    private Mono<Response<Void>> patchWithResponseAsync(String vaultName, String resourceGroupName,
+        BackupResourceConfigResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -491,10 +411,8 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -503,21 +421,13 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .patch(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.patch(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -527,14 +437,14 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> patchAsync(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters) {
+    private Mono<Void> patchAsync(String vaultName, String resourceGroupName,
+        BackupResourceConfigResourceInner parameters) {
         return patchWithResponseAsync(vaultName, resourceGroupName, parameters).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -545,14 +455,14 @@ public final class BackupResourceStorageConfigsNonCrrsClientImpl implements Back
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> patchWithResponse(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context) {
+    public Response<Void> patchWithResponse(String vaultName, String resourceGroupName,
+        BackupResourceConfigResourceInner parameters, Context context) {
         return patchWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
     }
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.

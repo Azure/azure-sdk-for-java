@@ -6,71 +6,42 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ClusterServer;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRole;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServersListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"fullyQualifiedDomainName\":\"jyofdxluusdtto\",\"role\":\"Coordinator\",\"state\":\"oekqvk\",\"haState\":\"nsmvbxwyj\",\"availabilityZone\":\"lh\",\"postgresqlVersion\":\"aalnjixi\",\"citusVersion\":\"yaw\",\"serverEdition\":\"yaqcslyjpkiidz\",\"storageQuotaInMb\":1211885049,\"vCores\":1066317539,\"enableHa\":true,\"enablePublicIpAccess\":true,\"isReadOnly\":false,\"administratorLogin\":\"ztfolhbnxk\"},\"id\":\"laulppg\",\"name\":\"dtpnapnyiropuhp\",\"type\":\"gvpgy\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"fullyQualifiedDomainName\":\"kqujidsuyono\",\"role\":\"Worker\",\"state\":\"ocqxtccmg\",\"haState\":\"dxyt\",\"availabilityZone\":\"oyrxvwfudwpzntxh\",\"postgresqlVersion\":\"hl\",\"citusVersion\":\"jbhckfrlhr\",\"serverEdition\":\"bkyvp\",\"storageQuotaInMb\":1219489836,\"vCores\":427278595,\"enableHa\":true,\"enablePublicIpAccess\":false,\"isReadOnly\":false,\"administratorLogin\":\"kuwbcrnwb\"},\"id\":\"hhseyv\",\"name\":\"us\",\"type\":\"tslhspkdeem\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ClusterServer> response
+            = manager.servers().listByCluster("dzumveekg", "wozuhkf", com.azure.core.util.Context.NONE);
 
-        CosmosDBForPostgreSqlManager manager =
-            CosmosDBForPostgreSqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ClusterServer> response =
-            manager.servers().listByCluster("gxywpmue", "fjz", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(ServerRole.WORKER, response.iterator().next().role());
-        Assertions.assertEquals("oyrxvwfudwpzntxh", response.iterator().next().availabilityZone());
-        Assertions.assertEquals("hl", response.iterator().next().postgresqlVersion());
-        Assertions.assertEquals("jbhckfrlhr", response.iterator().next().citusVersion());
-        Assertions.assertEquals("bkyvp", response.iterator().next().serverEdition());
-        Assertions.assertEquals(1219489836, response.iterator().next().storageQuotaInMb());
-        Assertions.assertEquals(427278595, response.iterator().next().vCores());
+        Assertions.assertEquals(ServerRole.COORDINATOR, response.iterator().next().role());
+        Assertions.assertEquals("lh", response.iterator().next().availabilityZone());
+        Assertions.assertEquals("aalnjixi", response.iterator().next().postgresqlVersion());
+        Assertions.assertEquals("yaw", response.iterator().next().citusVersion());
+        Assertions.assertEquals("yaqcslyjpkiidz", response.iterator().next().serverEdition());
+        Assertions.assertEquals(1211885049, response.iterator().next().storageQuotaInMb());
+        Assertions.assertEquals(1066317539, response.iterator().next().vCores());
         Assertions.assertEquals(true, response.iterator().next().enableHa());
     }
 }

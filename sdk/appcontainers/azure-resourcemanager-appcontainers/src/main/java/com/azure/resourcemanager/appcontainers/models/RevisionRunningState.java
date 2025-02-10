@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Current running state of the revision. */
+/**
+ * Current running state of the revision.
+ */
 public final class RevisionRunningState extends ExpandableStringEnum<RevisionRunningState> {
-    /** Static value Running for RevisionRunningState. */
+    /**
+     * Static value Running for RevisionRunningState.
+     */
     public static final RevisionRunningState RUNNING = fromString("Running");
 
-    /** Static value Processing for RevisionRunningState. */
+    /**
+     * Static value Processing for RevisionRunningState.
+     */
     public static final RevisionRunningState PROCESSING = fromString("Processing");
 
-    /** Static value Stopped for RevisionRunningState. */
+    /**
+     * Static value Stopped for RevisionRunningState.
+     */
     public static final RevisionRunningState STOPPED = fromString("Stopped");
 
-    /** Static value Degraded for RevisionRunningState. */
+    /**
+     * Static value Degraded for RevisionRunningState.
+     */
     public static final RevisionRunningState DEGRADED = fromString("Degraded");
 
-    /** Static value Failed for RevisionRunningState. */
+    /**
+     * Static value Failed for RevisionRunningState.
+     */
     public static final RevisionRunningState FAILED = fromString("Failed");
 
-    /** Static value Unknown for RevisionRunningState. */
+    /**
+     * Static value Unknown for RevisionRunningState.
+     */
     public static final RevisionRunningState UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of RevisionRunningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class RevisionRunningState extends ExpandableStringEnum<RevisionRun
 
     /**
      * Creates or finds a RevisionRunningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RevisionRunningState.
      */
-    @JsonCreator
     public static RevisionRunningState fromString(String name) {
         return fromString(name, RevisionRunningState.class);
     }
 
     /**
      * Gets known RevisionRunningState values.
-     *
+     * 
      * @return known RevisionRunningState values.
      */
     public static Collection<RevisionRunningState> values() {

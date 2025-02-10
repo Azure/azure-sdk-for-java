@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Delegated subnet usage data. */
+/**
+ * Delegated subnet usage data.
+ */
 @Immutable
-public final class DelegatedSubnetUsage {
+public final class DelegatedSubnetUsage implements JsonSerializable<DelegatedSubnetUsage> {
     /*
      * name of the subnet
      */
-    @JsonProperty(value = "subnetName", access = JsonProperty.Access.WRITE_ONLY)
     private String subnetName;
 
     /*
      * Number of used delegated subnets
      */
-    @JsonProperty(value = "usage", access = JsonProperty.Access.WRITE_ONLY)
     private Long usage;
 
-    /** Creates an instance of DelegatedSubnetUsage class. */
+    /**
+     * Creates an instance of DelegatedSubnetUsage class.
+     */
     public DelegatedSubnetUsage() {
     }
 
     /**
      * Get the subnetName property: name of the subnet.
-     *
+     * 
      * @return the subnetName value.
      */
     public String subnetName() {
@@ -37,7 +43,7 @@ public final class DelegatedSubnetUsage {
 
     /**
      * Get the usage property: Number of used delegated subnets.
-     *
+     * 
      * @return the usage value.
      */
     public Long usage() {
@@ -46,9 +52,46 @@ public final class DelegatedSubnetUsage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DelegatedSubnetUsage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DelegatedSubnetUsage if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DelegatedSubnetUsage.
+     */
+    public static DelegatedSubnetUsage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DelegatedSubnetUsage deserializedDelegatedSubnetUsage = new DelegatedSubnetUsage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetName".equals(fieldName)) {
+                    deserializedDelegatedSubnetUsage.subnetName = reader.getString();
+                } else if ("usage".equals(fieldName)) {
+                    deserializedDelegatedSubnetUsage.usage = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDelegatedSubnetUsage;
+        });
     }
 }

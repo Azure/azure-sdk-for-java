@@ -6,34 +6,50 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the On Premise Sql resource that was assessed. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "source")
-@JsonTypeName("OnPremiseSql")
+/**
+ * Details of the On Premise Sql resource that was assessed.
+ */
 @Fluent
 public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails {
     /*
+     * The platform where the assessed resource resides
+     */
+    private Source source = Source.ON_PREMISE_SQL;
+
+    /*
      * The Sql server name installed on the machine
      */
-    @JsonProperty(value = "serverName", required = true)
     private String serverName;
 
     /*
      * The Sql database name installed on the machine
      */
-    @JsonProperty(value = "databaseName", required = true)
     private String databaseName;
 
-    /** Creates an instance of OnPremiseSqlResourceDetails class. */
+    /**
+     * Creates an instance of OnPremiseSqlResourceDetails class.
+     */
     public OnPremiseSqlResourceDetails() {
     }
 
     /**
+     * Get the source property: The platform where the assessed resource resides.
+     * 
+     * @return the source value.
+     */
+    @Override
+    public Source source() {
+        return this.source;
+    }
+
+    /**
      * Get the serverName property: The Sql server name installed on the machine.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -42,7 +58,7 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
 
     /**
      * Set the serverName property: The Sql server name installed on the machine.
-     *
+     * 
      * @param serverName the serverName value to set.
      * @return the OnPremiseSqlResourceDetails object itself.
      */
@@ -53,7 +69,7 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
 
     /**
      * Get the databaseName property: The Sql database name installed on the machine.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -62,7 +78,7 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
 
     /**
      * Set the databaseName property: The Sql database name installed on the machine.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the OnPremiseSqlResourceDetails object itself.
      */
@@ -71,28 +87,36 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OnPremiseSqlResourceDetails withWorkspaceId(String workspaceId) {
         super.withWorkspaceId(workspaceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OnPremiseSqlResourceDetails withVmuuid(String vmuuid) {
         super.withVmuuid(vmuuid);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OnPremiseSqlResourceDetails withSourceComputerId(String sourceComputerId) {
         super.withSourceComputerId(sourceComputerId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OnPremiseSqlResourceDetails withMachineName(String machineName) {
         super.withMachineName(machineName);
@@ -101,25 +125,97 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (serverName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverName in model OnPremiseSqlResourceDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverName in model OnPremiseSqlResourceDetails"));
         }
         if (databaseName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseName in model OnPremiseSqlResourceDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property databaseName in model OnPremiseSqlResourceDetails"));
+        }
+        if (workspaceId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property workspaceId in model OnPremiseSqlResourceDetails"));
+        }
+        if (vmuuid() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vmuuid in model OnPremiseSqlResourceDetails"));
+        }
+        if (sourceComputerId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceComputerId in model OnPremiseSqlResourceDetails"));
+        }
+        if (machineName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property machineName in model OnPremiseSqlResourceDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OnPremiseSqlResourceDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workspaceId", workspaceId());
+        jsonWriter.writeStringField("vmuuid", vmuuid());
+        jsonWriter.writeStringField("sourceComputerId", sourceComputerId());
+        jsonWriter.writeStringField("machineName", machineName());
+        jsonWriter.writeStringField("serverName", this.serverName);
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OnPremiseSqlResourceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OnPremiseSqlResourceDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OnPremiseSqlResourceDetails.
+     */
+    public static OnPremiseSqlResourceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OnPremiseSqlResourceDetails deserializedOnPremiseSqlResourceDetails = new OnPremiseSqlResourceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspaceId".equals(fieldName)) {
+                    deserializedOnPremiseSqlResourceDetails.withWorkspaceId(reader.getString());
+                } else if ("vmuuid".equals(fieldName)) {
+                    deserializedOnPremiseSqlResourceDetails.withVmuuid(reader.getString());
+                } else if ("sourceComputerId".equals(fieldName)) {
+                    deserializedOnPremiseSqlResourceDetails.withSourceComputerId(reader.getString());
+                } else if ("machineName".equals(fieldName)) {
+                    deserializedOnPremiseSqlResourceDetails.withMachineName(reader.getString());
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedOnPremiseSqlResourceDetails.serverName = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedOnPremiseSqlResourceDetails.databaseName = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedOnPremiseSqlResourceDetails.source = Source.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOnPremiseSqlResourceDetails;
+        });
+    }
 }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of Payload body for Base image update triggers. */
+/**
+ * Type of Payload body for Base image update triggers.
+ */
 public final class UpdateTriggerPayloadType extends ExpandableStringEnum<UpdateTriggerPayloadType> {
-    /** Static value Default for UpdateTriggerPayloadType. */
+    /**
+     * Static value Default for UpdateTriggerPayloadType.
+     */
     public static final UpdateTriggerPayloadType DEFAULT = fromString("Default");
 
-    /** Static value Token for UpdateTriggerPayloadType. */
+    /**
+     * Static value Token for UpdateTriggerPayloadType.
+     */
     public static final UpdateTriggerPayloadType TOKEN = fromString("Token");
 
     /**
      * Creates a new instance of UpdateTriggerPayloadType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class UpdateTriggerPayloadType extends ExpandableStringEnum<UpdateT
 
     /**
      * Creates or finds a UpdateTriggerPayloadType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UpdateTriggerPayloadType.
      */
-    @JsonCreator
     public static UpdateTriggerPayloadType fromString(String name) {
         return fromString(name, UpdateTriggerPayloadType.class);
     }
 
     /**
      * Gets known UpdateTriggerPayloadType values.
-     *
+     * 
      * @return known UpdateTriggerPayloadType values.
      */
     public static Collection<UpdateTriggerPayloadType> values() {

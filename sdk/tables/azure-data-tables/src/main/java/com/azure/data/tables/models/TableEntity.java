@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * <h2>Overview</h2>
  * An entity within a table.
- *
+ * <p>
  * A {@code TableEntity} can be used directly when interacting with the Tables service, with methods on the
  * {@link com.azure.data.tables.TableClient} and {@link com.azure.data.tables.TableAsyncClient} classes that accept and
  * return {@code TableEntity} instances. After creating an instance, call the {@link #addProperty(String, Object)} or
@@ -143,7 +143,7 @@ public final class TableEntity {
 
     /**
      * Gets a single property from the entity's properties map.
-     *
+     * <p>
      * Only properties that have been added by calling {@link #addProperty(String, Object)} or
      * {@link #setProperties(Map)} will be returned from this method.
      *
@@ -157,7 +157,7 @@ public final class TableEntity {
 
     /**
      * Gets the map of the entity's properties.
-     *
+     * <p>
      * Only properties that have been added by calling {@link #addProperty(String, Object)} or
      * {@link #setProperties(Map)} will be returned from this method.
      *
@@ -215,16 +215,17 @@ public final class TableEntity {
         Objects.requireNonNull(key, "'key' cannot be null.");
 
         if (TablesConstants.TIMESTAMP_KEY.equals(key) && value != null && !(value instanceof OffsetDateTime)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' must be an OffsetDateTime.", key)));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(String.format("'%s' must be an OffsetDateTime.", key)));
         }
 
-        if ((TablesConstants.ODATA_ETAG_KEY.equals(key) || TablesConstants.ODATA_EDIT_LINK_KEY.equals(key)
-            || TablesConstants.ODATA_ID_KEY.equals(key) || TablesConstants.ODATA_TYPE_KEY.equals(key)) && value != null
-            && !(value instanceof String)) {
+        if ((TablesConstants.ODATA_ETAG_KEY.equals(key)
+            || TablesConstants.ODATA_EDIT_LINK_KEY.equals(key)
+            || TablesConstants.ODATA_ID_KEY.equals(key)
+            || TablesConstants.ODATA_TYPE_KEY.equals(key)) && value != null && !(value instanceof String)) {
 
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' must be a String.", key)));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException(String.format("'%s' must be a String.", key)));
         }
     }
 
@@ -248,7 +249,7 @@ public final class TableEntity {
 
     /**
      * Gets the entity's timestamp.
-     *
+     * <p>
      * The timestamp is automatically populated by the service. New {@code TableEntity} instances will not have a
      * timestamp, but a timestamp will be present on any {@code TableEntity} returned from the service.
      *
@@ -260,7 +261,7 @@ public final class TableEntity {
 
     /**
      * Gets the entity's eTag.
-     *
+     * <p>
      * The eTag is automatically populated by the service. New {@code TableEntity} instances will not have an eTag, but
      * an eTag will be present on any {@code TableEntity} returned from the service.
      *

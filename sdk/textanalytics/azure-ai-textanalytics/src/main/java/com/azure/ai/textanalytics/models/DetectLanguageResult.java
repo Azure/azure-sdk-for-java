@@ -19,8 +19,8 @@ public final class DetectLanguageResult extends TextAnalyticsResult {
      * @param error The document error.
      * @param primaryLanguage The detected primary language.
      */
-    public DetectLanguageResult(String id, TextDocumentStatistics textDocumentStatistics,
-                                TextAnalyticsError error, DetectedLanguage primaryLanguage) {
+    public DetectLanguageResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
+        DetectedLanguage primaryLanguage) {
         super(id, textDocumentStatistics, error);
         this.primaryLanguage = primaryLanguage;
     }

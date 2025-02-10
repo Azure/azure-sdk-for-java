@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Recovery plan protected item. */
+/**
+ * Recovery plan protected item.
+ */
 @Fluent
-public final class RecoveryPlanProtectedItem {
+public final class RecoveryPlanProtectedItem implements JsonSerializable<RecoveryPlanProtectedItem> {
     /*
      * The ARM Id of the recovery plan protected item.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The virtual machine Id.
      */
-    @JsonProperty(value = "virtualMachineId")
     private String virtualMachineId;
 
-    /** Creates an instance of RecoveryPlanProtectedItem class. */
+    /**
+     * Creates an instance of RecoveryPlanProtectedItem class.
+     */
     public RecoveryPlanProtectedItem() {
     }
 
     /**
      * Get the id property: The ARM Id of the recovery plan protected item.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +43,7 @@ public final class RecoveryPlanProtectedItem {
 
     /**
      * Set the id property: The ARM Id of the recovery plan protected item.
-     *
+     * 
      * @param id the id value to set.
      * @return the RecoveryPlanProtectedItem object itself.
      */
@@ -48,7 +54,7 @@ public final class RecoveryPlanProtectedItem {
 
     /**
      * Get the virtualMachineId property: The virtual machine Id.
-     *
+     * 
      * @return the virtualMachineId value.
      */
     public String virtualMachineId() {
@@ -57,7 +63,7 @@ public final class RecoveryPlanProtectedItem {
 
     /**
      * Set the virtualMachineId property: The virtual machine Id.
-     *
+     * 
      * @param virtualMachineId the virtualMachineId value to set.
      * @return the RecoveryPlanProtectedItem object itself.
      */
@@ -68,9 +74,48 @@ public final class RecoveryPlanProtectedItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("virtualMachineId", this.virtualMachineId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanProtectedItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanProtectedItem if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPlanProtectedItem.
+     */
+    public static RecoveryPlanProtectedItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanProtectedItem deserializedRecoveryPlanProtectedItem = new RecoveryPlanProtectedItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRecoveryPlanProtectedItem.id = reader.getString();
+                } else if ("virtualMachineId".equals(fieldName)) {
+                    deserializedRecoveryPlanProtectedItem.virtualMachineId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanProtectedItem;
+        });
     }
 }

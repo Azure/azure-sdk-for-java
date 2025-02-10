@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least 1 second. */
+/**
+ * Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least 1 second.
+ */
 @Fluent
-public final class PinholeTimeouts {
+public final class PinholeTimeouts implements JsonSerializable<PinholeTimeouts> {
     /*
      * Pinhole timeout for TCP pinholes in seconds. Default for TCP is 3 minutes.
      */
-    @JsonProperty(value = "tcp")
     private Integer tcp;
 
     /*
      * Pinhole timeout for UDP pinholes in seconds. Default for UDP is 30 seconds.
      */
-    @JsonProperty(value = "udp")
     private Integer udp;
 
     /*
      * Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is 30 seconds.
      */
-    @JsonProperty(value = "icmp")
     private Integer icmp;
 
-    /** Creates an instance of PinholeTimeouts class. */
+    /**
+     * Creates an instance of PinholeTimeouts class.
+     */
     public PinholeTimeouts() {
     }
 
     /**
      * Get the tcp property: Pinhole timeout for TCP pinholes in seconds. Default for TCP is 3 minutes.
-     *
+     * 
      * @return the tcp value.
      */
     public Integer tcp() {
@@ -43,7 +48,7 @@ public final class PinholeTimeouts {
 
     /**
      * Set the tcp property: Pinhole timeout for TCP pinholes in seconds. Default for TCP is 3 minutes.
-     *
+     * 
      * @param tcp the tcp value to set.
      * @return the PinholeTimeouts object itself.
      */
@@ -54,7 +59,7 @@ public final class PinholeTimeouts {
 
     /**
      * Get the udp property: Pinhole timeout for UDP pinholes in seconds. Default for UDP is 30 seconds.
-     *
+     * 
      * @return the udp value.
      */
     public Integer udp() {
@@ -63,7 +68,7 @@ public final class PinholeTimeouts {
 
     /**
      * Set the udp property: Pinhole timeout for UDP pinholes in seconds. Default for UDP is 30 seconds.
-     *
+     * 
      * @param udp the udp value to set.
      * @return the PinholeTimeouts object itself.
      */
@@ -74,7 +79,7 @@ public final class PinholeTimeouts {
 
     /**
      * Get the icmp property: Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is 30 seconds.
-     *
+     * 
      * @return the icmp value.
      */
     public Integer icmp() {
@@ -83,7 +88,7 @@ public final class PinholeTimeouts {
 
     /**
      * Set the icmp property: Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is 30 seconds.
-     *
+     * 
      * @param icmp the icmp value to set.
      * @return the PinholeTimeouts object itself.
      */
@@ -94,9 +99,51 @@ public final class PinholeTimeouts {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("tcp", this.tcp);
+        jsonWriter.writeNumberField("udp", this.udp);
+        jsonWriter.writeNumberField("icmp", this.icmp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PinholeTimeouts from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PinholeTimeouts if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PinholeTimeouts.
+     */
+    public static PinholeTimeouts fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PinholeTimeouts deserializedPinholeTimeouts = new PinholeTimeouts();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tcp".equals(fieldName)) {
+                    deserializedPinholeTimeouts.tcp = reader.getNullable(JsonReader::getInt);
+                } else if ("udp".equals(fieldName)) {
+                    deserializedPinholeTimeouts.udp = reader.getNullable(JsonReader::getInt);
+                } else if ("icmp".equals(fieldName)) {
+                    deserializedPinholeTimeouts.icmp = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPinholeTimeouts;
+        });
     }
 }

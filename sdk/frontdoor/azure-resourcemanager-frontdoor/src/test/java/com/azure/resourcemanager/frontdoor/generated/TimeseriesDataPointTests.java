@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class TimeseriesDataPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TimeseriesDataPoint model =
-            BinaryData.fromString("{\"dateTimeUTC\":\"mmji\",\"value\":34.513016}").toObject(TimeseriesDataPoint.class);
-        Assertions.assertEquals("mmji", model.dateTimeUtc());
-        Assertions.assertEquals(34.513016F, model.value());
+        TimeseriesDataPoint model = BinaryData.fromString("{\"dateTimeUTC\":\"xznptgoeiyb\",\"value\":11.274921}")
+            .toObject(TimeseriesDataPoint.class);
+        Assertions.assertEquals("xznptgoeiyb", model.dateTimeUtc());
+        Assertions.assertEquals(11.274921F, model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TimeseriesDataPoint model = new TimeseriesDataPoint().withDateTimeUtc("mmji").withValue(34.513016F);
+        TimeseriesDataPoint model = new TimeseriesDataPoint().withDateTimeUtc("xznptgoeiyb").withValue(11.274921F);
         model = BinaryData.fromObject(model).toObject(TimeseriesDataPoint.class);
-        Assertions.assertEquals("mmji", model.dateTimeUtc());
-        Assertions.assertEquals(34.513016F, model.value());
+        Assertions.assertEquals("xznptgoeiyb", model.dateTimeUtc());
+        Assertions.assertEquals(11.274921F, model.value());
     }
 }

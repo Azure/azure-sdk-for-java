@@ -5,55 +5,72 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Azure storage specific job. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
-@JsonTypeName("AzureWorkloadJob")
+/**
+ * Azure storage specific job.
+ */
 @Fluent
 public final class AzureWorkloadJob extends Job {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String jobType = "AzureWorkloadJob";
+
+    /*
      * Workload type of the job
      */
-    @JsonProperty(value = "workloadType")
     private String workloadType;
 
     /*
      * Time elapsed during the execution of this job.
      */
-    @JsonProperty(value = "duration")
     private Duration duration;
 
     /*
      * Gets or sets the state/actions applicable on this job like cancel/retry.
      */
-    @JsonProperty(value = "actionsInfo")
     private List<JobSupportedAction> actionsInfo;
 
     /*
      * Error details on execution of this job.
      */
-    @JsonProperty(value = "errorDetails")
     private List<AzureWorkloadErrorInfo> errorDetails;
 
     /*
      * Additional information about the job.
      */
-    @JsonProperty(value = "extendedInfo")
     private AzureWorkloadJobExtendedInfo extendedInfo;
 
-    /** Creates an instance of AzureWorkloadJob class. */
+    /**
+     * Creates an instance of AzureWorkloadJob class.
+     */
     public AzureWorkloadJob() {
     }
 
     /**
+     * Get the jobType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the jobType value.
+     */
+    @Override
+    public String jobType() {
+        return this.jobType;
+    }
+
+    /**
      * Get the workloadType property: Workload type of the job.
-     *
+     * 
      * @return the workloadType value.
      */
     public String workloadType() {
@@ -62,7 +79,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Set the workloadType property: Workload type of the job.
-     *
+     * 
      * @param workloadType the workloadType value to set.
      * @return the AzureWorkloadJob object itself.
      */
@@ -73,7 +90,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Get the duration property: Time elapsed during the execution of this job.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -82,7 +99,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Set the duration property: Time elapsed during the execution of this job.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the AzureWorkloadJob object itself.
      */
@@ -93,7 +110,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Get the actionsInfo property: Gets or sets the state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @return the actionsInfo value.
      */
     public List<JobSupportedAction> actionsInfo() {
@@ -102,7 +119,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Set the actionsInfo property: Gets or sets the state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @param actionsInfo the actionsInfo value to set.
      * @return the AzureWorkloadJob object itself.
      */
@@ -113,7 +130,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Get the errorDetails property: Error details on execution of this job.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<AzureWorkloadErrorInfo> errorDetails() {
@@ -122,7 +139,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Set the errorDetails property: Error details on execution of this job.
-     *
+     * 
      * @param errorDetails the errorDetails value to set.
      * @return the AzureWorkloadJob object itself.
      */
@@ -133,7 +150,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Get the extendedInfo property: Additional information about the job.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public AzureWorkloadJobExtendedInfo extendedInfo() {
@@ -142,7 +159,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Set the extendedInfo property: Additional information about the job.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the AzureWorkloadJob object itself.
      */
@@ -151,49 +168,63 @@ public final class AzureWorkloadJob extends Job {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withEntityFriendlyName(String entityFriendlyName) {
         super.withEntityFriendlyName(entityFriendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withOperation(String operation) {
         super.withOperation(operation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withStatus(String status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withActivityId(String activityId) {
         super.withActivityId(activityId);
@@ -202,17 +233,100 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (errorDetails() != null) {
             errorDetails().forEach(e -> e.validate());
         }
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("entityFriendlyName", entityFriendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("operation", operation());
+        jsonWriter.writeStringField("status", status());
+        jsonWriter.writeStringField("startTime",
+            startTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startTime()));
+        jsonWriter.writeStringField("endTime",
+            endTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(endTime()));
+        jsonWriter.writeStringField("activityId", activityId());
+        jsonWriter.writeStringField("jobType", this.jobType);
+        jsonWriter.writeStringField("workloadType", this.workloadType);
+        jsonWriter.writeStringField("duration", CoreUtils.durationToStringWithDays(this.duration));
+        jsonWriter.writeArrayField("actionsInfo", this.actionsInfo,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("errorDetails", this.errorDetails, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWorkloadJob from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWorkloadJob if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWorkloadJob.
+     */
+    public static AzureWorkloadJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWorkloadJob deserializedAzureWorkloadJob = new AzureWorkloadJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityFriendlyName".equals(fieldName)) {
+                    deserializedAzureWorkloadJob.withEntityFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureWorkloadJob
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("operation".equals(fieldName)) {
+                    deserializedAzureWorkloadJob.withOperation(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedAzureWorkloadJob.withStatus(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedAzureWorkloadJob.withStartTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedAzureWorkloadJob.withEndTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("activityId".equals(fieldName)) {
+                    deserializedAzureWorkloadJob.withActivityId(reader.getString());
+                } else if ("jobType".equals(fieldName)) {
+                    deserializedAzureWorkloadJob.jobType = reader.getString();
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureWorkloadJob.workloadType = reader.getString();
+                } else if ("duration".equals(fieldName)) {
+                    deserializedAzureWorkloadJob.duration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("actionsInfo".equals(fieldName)) {
+                    List<JobSupportedAction> actionsInfo
+                        = reader.readArray(reader1 -> JobSupportedAction.fromString(reader1.getString()));
+                    deserializedAzureWorkloadJob.actionsInfo = actionsInfo;
+                } else if ("errorDetails".equals(fieldName)) {
+                    List<AzureWorkloadErrorInfo> errorDetails
+                        = reader.readArray(reader1 -> AzureWorkloadErrorInfo.fromJson(reader1));
+                    deserializedAzureWorkloadJob.errorDetails = errorDetails;
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedAzureWorkloadJob.extendedInfo = AzureWorkloadJobExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWorkloadJob;
+        });
     }
 }

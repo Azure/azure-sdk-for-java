@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class A2ACrossClusterMigrationReplicationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2ACrossClusterMigrationReplicationDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"A2ACrossClusterMigration\",\"fabricObjectId\":\"sknxrwzawnvsbcf\",\"primaryFabricLocation\":\"agxnvhycvdimw\",\"osType\":\"regzgyufutrwpwer\",\"vmProtectionState\":\"kzkdhmeott\",\"vmProtectionStateDescription\":\"jyosxwwh\",\"lifecycleId\":\"jtfvpndpmiljpn\"}")
-                .toObject(A2ACrossClusterMigrationReplicationDetails.class);
+        A2ACrossClusterMigrationReplicationDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"A2ACrossClusterMigration\",\"fabricObjectId\":\"sknxrwzawnvsbcf\",\"primaryFabricLocation\":\"agxnvhycvdimw\",\"osType\":\"regzgyufutrwpwer\",\"vmProtectionState\":\"kzkdhmeott\",\"vmProtectionStateDescription\":\"jyosxwwh\",\"lifecycleId\":\"jtfvpndpmiljpn\"}")
+            .toObject(A2ACrossClusterMigrationReplicationDetails.class);
         Assertions.assertEquals("sknxrwzawnvsbcf", model.fabricObjectId());
         Assertions.assertEquals("agxnvhycvdimw", model.primaryFabricLocation());
         Assertions.assertEquals("regzgyufutrwpwer", model.osType());
@@ -26,9 +24,8 @@ public final class A2ACrossClusterMigrationReplicationDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2ACrossClusterMigrationReplicationDetails model =
-            new A2ACrossClusterMigrationReplicationDetails()
-                .withFabricObjectId("sknxrwzawnvsbcf")
+        A2ACrossClusterMigrationReplicationDetails model
+            = new A2ACrossClusterMigrationReplicationDetails().withFabricObjectId("sknxrwzawnvsbcf")
                 .withPrimaryFabricLocation("agxnvhycvdimw")
                 .withOsType("regzgyufutrwpwer")
                 .withVmProtectionState("kzkdhmeott")

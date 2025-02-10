@@ -6,27 +6,48 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AzureResourceLink;
 import com.azure.resourcemanager.security.models.SecureScoreControlDefinitionSource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Information about the security control. */
+/**
+ * Information about the security control.
+ */
 @Immutable
 public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
     /*
      * Security Control Definition Properties.
      */
-    @JsonProperty(value = "properties")
     private SecureScoreControlDefinitionItemProperties innerProperties;
 
-    /** Creates an instance of SecureScoreControlDefinitionItemInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SecureScoreControlDefinitionItemInner class.
+     */
     public SecureScoreControlDefinitionItemInner() {
     }
 
     /**
      * Get the innerProperties property: Security Control Definition Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecureScoreControlDefinitionItemProperties innerProperties() {
@@ -34,8 +55,38 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: User friendly display name of the control.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -44,7 +95,7 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
 
     /**
      * Get the description property: User friendly description of the control.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -53,7 +104,7 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
 
     /**
      * Get the maxScore property: Maximum control score (0..10).
-     *
+     * 
      * @return the maxScore value.
      */
     public Integer maxScore() {
@@ -62,7 +113,7 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
 
     /**
      * Get the source property: Source object from which the control was created.
-     *
+     * 
      * @return the source value.
      */
     public SecureScoreControlDefinitionSource source() {
@@ -72,7 +123,7 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
     /**
      * Get the assessmentDefinitions property: Array of assessments metadata IDs that are included in this security
      * control.
-     *
+     * 
      * @return the assessmentDefinitions value.
      */
     public List<AzureResourceLink> assessmentDefinitions() {
@@ -81,12 +132,57 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecureScoreControlDefinitionItemInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecureScoreControlDefinitionItemInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecureScoreControlDefinitionItemInner.
+     */
+    public static SecureScoreControlDefinitionItemInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecureScoreControlDefinitionItemInner deserializedSecureScoreControlDefinitionItemInner
+                = new SecureScoreControlDefinitionItemInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecureScoreControlDefinitionItemInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSecureScoreControlDefinitionItemInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSecureScoreControlDefinitionItemInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSecureScoreControlDefinitionItemInner.innerProperties
+                        = SecureScoreControlDefinitionItemProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecureScoreControlDefinitionItemInner;
+        });
     }
 }

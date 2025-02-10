@@ -12,6 +12,7 @@ GitHub repository and documentation of how to set up and use the proxy can be fo
     - [Start the proxy server](#start-the-proxy-server)
     - [Record or playback tests](#record-or-playback-tests)
     - [Adding sanitizers](#adding-sanitizers)
+    - [Removing sanitizers](#removing-sanitizers)
 - [Migrate management-plane tests](#migrate-management-plane-tests)
 - [Next steps](#next-steps)
 - [Advanced details](#advanced-details)
@@ -147,6 +148,36 @@ In the snippet above, any storage endpoint URIs that match the specified URL reg
 made to `https://REDACTED-secondary.table.core.windows.net`, and URLs will also be sanitized in bodies and headers.
 
 For more details about sanitizers and their options, please refer to [TestProxySanitizer][test_proxy_sanitizer].
+
+### Removing sanitizers
+The Azure SDK tools come with a [standard set of sanitizers](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs) that are automatically applied to all test cases. These sanitizers are designed to eliminate sensitive data from the test recordings. However, users have the flexibility to deactivate specific sanitizers if necessary. This can be done by using the `interceptorManager.removeSanitizer("SanitizerID")` method within the test setup, allowing developers to tailor the sanitization process to their specific testing needs.
+
+For instance, to deactivate the sanitizer that targets the `$..id` body key, you would use `interceptorManager.removeSanitizer("AZSDK3440")`.
+
+```java
+if (!interceptorManager.isLiveMode()) {
+    // Deactivate the default sanitizer that redacts the value of JSON key "id" from the response body
+    interceptorManager.removeSanitizer("AZSDK3440");
+}
+```
+
+Here's an example of a recording before and after the sanitizer is removed:
+
+Before:
+```json
+{
+  "id": "Sanitized", 
+  "name": "test"
+}
+```
+
+After removing the sanitizer:
+```json
+{
+  "id": "1234-5678-9012-3456", 
+  "name": "test"
+}
+```
 
 #### Note regarding body matching
 

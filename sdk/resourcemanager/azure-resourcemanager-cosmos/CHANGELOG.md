@@ -1,6 +1,6 @@
 # Release History
 
-## 2.35.0-beta.1 (Unreleased)
+## 2.48.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,152 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.47.0 (2025-01-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.46.0 (2024-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-11-15`.
+
+## 2.46.0-beta.1 (2024-12-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-12-01-preview`.
+
+## 2.45.0 (2024-11-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.44.1 (2024-11-07)
+
+### Bugs Fixed
+
+- Removed wrong validation on non-required `location` property for some classes.
+
+## 2.44.0 (2024-10-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.43.0 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.43.0-beta.1 (2024-09-13)
+
+### Other Changes
+
+### Dependency Updates
+
+- Updated `api-version` to `2024-09-01-preview`.
+
+## 2.42.0 (2024-08-23)
+
+### Other Changes
+
+- Replaced `Jackson` with `azure-json` for serialization/deserialization.
+
+## 2.41.0 (2024-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.40.0 (2024-06-24)
+
+### Breaking Changes
+
+- Properties under `ServiceResourceCreateUpdateParameters` class is moved to `ServiceResourceCreateUpdateProperties` class of its "properties" property.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-05-15`.
+
+## 2.40.0-beta.1 (2024-06-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-05-15-preview`.
+
+## 2.39.0 (2024-05-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.38.0 (2024-04-16)
+
+### Features Added
+
+- Supported disabling public network access in `CosmosDBAccount` via `disablePublicNetworkAccess()`, for private link feature.
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.37.0-beta.1 (2024-03-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Preview release for `api-version` `2024-02-15-preview`.
+
+## 2.36.0 (2024-02-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.35.0 (2024-01-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.35.0-beta.1 (2024-01-24)
+
+- Preview release for `api-version` `2023-11-15-preview`.
 
 ## 2.34.0 (2023-12-22)
 

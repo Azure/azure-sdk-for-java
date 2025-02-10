@@ -14,7 +14,7 @@ import java.util.Map;
 public final class PartnerNamespacesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * PartnerNamespaces_Update.json
      */
     /**
@@ -23,8 +23,10 @@ public final class PartnerNamespacesUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerNamespacesUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        PartnerNamespace resource = manager.partnerNamespaces().getByResourceGroupWithResponse("examplerg",
-            "examplePartnerNamespaceName1", com.azure.core.util.Context.NONE).getValue();
+        PartnerNamespace resource = manager.partnerNamespaces()
+            .getByResourceGroupWithResponse("examplerg", "examplePartnerNamespaceName1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1")).apply();
     }
 

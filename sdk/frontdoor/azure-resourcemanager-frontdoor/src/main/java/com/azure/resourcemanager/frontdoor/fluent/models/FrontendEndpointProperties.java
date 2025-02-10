@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.CustomHttpsConfiguration;
 import com.azure.resourcemanager.frontdoor.models.CustomHttpsProvisioningState;
 import com.azure.resourcemanager.frontdoor.models.CustomHttpsProvisioningSubstate;
@@ -12,46 +15,42 @@ import com.azure.resourcemanager.frontdoor.models.FrontDoorResourceState;
 import com.azure.resourcemanager.frontdoor.models.FrontendEndpointUpdateParameters;
 import com.azure.resourcemanager.frontdoor.models.FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink;
 import com.azure.resourcemanager.frontdoor.models.SessionAffinityEnabledState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The JSON object that contains the properties required to create a frontend endpoint. */
+/**
+ * The JSON object that contains the properties required to create a frontend endpoint.
+ */
 @Fluent
 public final class FrontendEndpointProperties extends FrontendEndpointUpdateParameters {
     /*
-     * Resource status of the Front Door or Front Door SubResource.
-     *
      * Resource status.
      */
-    @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private FrontDoorResourceState resourceState;
 
     /*
      * Provisioning status of Custom Https of the frontendEndpoint.
      */
-    @JsonProperty(value = "customHttpsProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CustomHttpsProvisioningState customHttpsProvisioningState;
 
     /*
      * Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step.
      */
-    @JsonProperty(value = "customHttpsProvisioningSubstate", access = JsonProperty.Access.WRITE_ONLY)
     private CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate;
 
     /*
      * The configuration specifying how to enable HTTPS
      */
-    @JsonProperty(value = "customHttpsConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private CustomHttpsConfiguration customHttpsConfiguration;
 
-    /** Creates an instance of FrontendEndpointProperties class. */
+    /**
+     * Creates an instance of FrontendEndpointProperties class.
+     */
     public FrontendEndpointProperties() {
     }
 
     /**
-     * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * Get the resourceState property: Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
@@ -60,7 +59,7 @@ public final class FrontendEndpointProperties extends FrontendEndpointUpdatePara
 
     /**
      * Get the customHttpsProvisioningState property: Provisioning status of Custom Https of the frontendEndpoint.
-     *
+     * 
      * @return the customHttpsProvisioningState value.
      */
     public CustomHttpsProvisioningState customHttpsProvisioningState() {
@@ -70,7 +69,7 @@ public final class FrontendEndpointProperties extends FrontendEndpointUpdatePara
     /**
      * Get the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
      * enabling/disabling process step by step.
-     *
+     * 
      * @return the customHttpsProvisioningSubstate value.
      */
     public CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate() {
@@ -79,36 +78,44 @@ public final class FrontendEndpointProperties extends FrontendEndpointUpdatePara
 
     /**
      * Get the customHttpsConfiguration property: The configuration specifying how to enable HTTPS.
-     *
+     * 
      * @return the customHttpsConfiguration value.
      */
     public CustomHttpsConfiguration customHttpsConfiguration() {
         return this.customHttpsConfiguration;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontendEndpointProperties withHostname(String hostname) {
         super.withHostname(hostname);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public FrontendEndpointProperties withSessionAffinityEnabledState(
-        SessionAffinityEnabledState sessionAffinityEnabledState) {
+    public FrontendEndpointProperties
+        withSessionAffinityEnabledState(SessionAffinityEnabledState sessionAffinityEnabledState) {
         super.withSessionAffinityEnabledState(sessionAffinityEnabledState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontendEndpointProperties withSessionAffinityTtlSeconds(Integer sessionAffinityTtlSeconds) {
         super.withSessionAffinityTtlSeconds(sessionAffinityTtlSeconds);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontendEndpointProperties withWebApplicationFirewallPolicyLink(
         FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
@@ -118,14 +125,77 @@ public final class FrontendEndpointProperties extends FrontendEndpointUpdatePara
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (customHttpsConfiguration() != null) {
             customHttpsConfiguration().validate();
         }
+        if (webApplicationFirewallPolicyLink() != null) {
+            webApplicationFirewallPolicyLink().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostName", hostname());
+        jsonWriter.writeStringField("sessionAffinityEnabledState",
+            sessionAffinityEnabledState() == null ? null : sessionAffinityEnabledState().toString());
+        jsonWriter.writeNumberField("sessionAffinityTtlSeconds", sessionAffinityTtlSeconds());
+        jsonWriter.writeJsonField("webApplicationFirewallPolicyLink", webApplicationFirewallPolicyLink());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FrontendEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FrontendEndpointProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FrontendEndpointProperties.
+     */
+    public static FrontendEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FrontendEndpointProperties deserializedFrontendEndpointProperties = new FrontendEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostName".equals(fieldName)) {
+                    deserializedFrontendEndpointProperties.withHostname(reader.getString());
+                } else if ("sessionAffinityEnabledState".equals(fieldName)) {
+                    deserializedFrontendEndpointProperties
+                        .withSessionAffinityEnabledState(SessionAffinityEnabledState.fromString(reader.getString()));
+                } else if ("sessionAffinityTtlSeconds".equals(fieldName)) {
+                    deserializedFrontendEndpointProperties
+                        .withSessionAffinityTtlSeconds(reader.getNullable(JsonReader::getInt));
+                } else if ("webApplicationFirewallPolicyLink".equals(fieldName)) {
+                    deserializedFrontendEndpointProperties.withWebApplicationFirewallPolicyLink(
+                        FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink.fromJson(reader));
+                } else if ("resourceState".equals(fieldName)) {
+                    deserializedFrontendEndpointProperties.resourceState
+                        = FrontDoorResourceState.fromString(reader.getString());
+                } else if ("customHttpsProvisioningState".equals(fieldName)) {
+                    deserializedFrontendEndpointProperties.customHttpsProvisioningState
+                        = CustomHttpsProvisioningState.fromString(reader.getString());
+                } else if ("customHttpsProvisioningSubstate".equals(fieldName)) {
+                    deserializedFrontendEndpointProperties.customHttpsProvisioningSubstate
+                        = CustomHttpsProvisioningSubstate.fromString(reader.getString());
+                } else if ("customHttpsConfiguration".equals(fieldName)) {
+                    deserializedFrontendEndpointProperties.customHttpsConfiguration
+                        = CustomHttpsConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFrontendEndpointProperties;
+        });
     }
 }

@@ -6,7 +6,6 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 
-import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
@@ -20,10 +19,10 @@ class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
             super.populatePropertyBag();
 
         synchronized(this) {
-            setProperty(
-                this,
+            this.set(
                 Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-                ChangeFeedStartFromTypes.NOW);
+                ChangeFeedStartFromTypes.NOW
+            );
         }
     }
 

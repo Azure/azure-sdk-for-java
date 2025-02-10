@@ -5,74 +5,73 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.ChangeFeed;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.storage.models.LastAccessTimeTrackingPolicy;
 import com.azure.resourcemanager.storage.models.RestorePolicyProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a storage account’s Blob service. */
+/**
+ * The properties of a storage account’s Blob service.
+ */
 @Fluent
-public final class BlobServicePropertiesProperties {
+public final class BlobServicePropertiesProperties implements JsonSerializable<BlobServicePropertiesProperties> {
     /*
      * Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no
-     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled
-     * for the Blob service.
+     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for
+     * the Blob service.
      */
-    @JsonProperty(value = "cors")
     private CorsRules cors;
 
     /*
      * DefaultServiceVersion indicates the default version to use for requests to the Blob service if an incoming
      * request’s version is not specified. Possible values include version 2008-10-27 and all more recent versions.
      */
-    @JsonProperty(value = "defaultServiceVersion")
     private String defaultServiceVersion;
 
     /*
      * The blob service properties for blob soft delete.
      */
-    @JsonProperty(value = "deleteRetentionPolicy")
     private DeleteRetentionPolicy deleteRetentionPolicy;
 
     /*
      * Versioning is enabled if set to true.
      */
-    @JsonProperty(value = "isVersioningEnabled")
     private Boolean isVersioningEnabled;
 
     /*
      * Deprecated in favor of isVersioningEnabled property.
      */
-    @JsonProperty(value = "automaticSnapshotPolicyEnabled")
     private Boolean automaticSnapshotPolicyEnabled;
 
     /*
      * The blob service properties for change feed events.
      */
-    @JsonProperty(value = "changeFeed")
     private ChangeFeed changeFeed;
 
     /*
      * The blob service properties for blob restore policy.
      */
-    @JsonProperty(value = "restorePolicy")
     private RestorePolicyProperties restorePolicy;
 
     /*
      * The blob service properties for container soft delete.
      */
-    @JsonProperty(value = "containerDeleteRetentionPolicy")
     private DeleteRetentionPolicy containerDeleteRetentionPolicy;
 
     /*
      * The blob service property to configure last access time based tracking policy.
      */
-    @JsonProperty(value = "lastAccessTimeTrackingPolicy")
     private LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy;
 
-    /** Creates an instance of BlobServicePropertiesProperties class. */
+    /**
+     * Creates an instance of BlobServicePropertiesProperties class.
+     */
     public BlobServicePropertiesProperties() {
     }
 
@@ -80,7 +79,7 @@ public final class BlobServicePropertiesProperties {
      * Get the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
      * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
      * will be disabled for the Blob service.
-     *
+     * 
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -91,7 +90,7 @@ public final class BlobServicePropertiesProperties {
      * Set the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
      * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
      * will be disabled for the Blob service.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the BlobServicePropertiesProperties object itself.
      */
@@ -104,7 +103,7 @@ public final class BlobServicePropertiesProperties {
      * Get the defaultServiceVersion property: DefaultServiceVersion indicates the default version to use for requests
      * to the Blob service if an incoming request’s version is not specified. Possible values include version 2008-10-27
      * and all more recent versions.
-     *
+     * 
      * @return the defaultServiceVersion value.
      */
     public String defaultServiceVersion() {
@@ -115,7 +114,7 @@ public final class BlobServicePropertiesProperties {
      * Set the defaultServiceVersion property: DefaultServiceVersion indicates the default version to use for requests
      * to the Blob service if an incoming request’s version is not specified. Possible values include version 2008-10-27
      * and all more recent versions.
-     *
+     * 
      * @param defaultServiceVersion the defaultServiceVersion value to set.
      * @return the BlobServicePropertiesProperties object itself.
      */
@@ -126,7 +125,7 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Get the deleteRetentionPolicy property: The blob service properties for blob soft delete.
-     *
+     * 
      * @return the deleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy deleteRetentionPolicy() {
@@ -135,7 +134,7 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Set the deleteRetentionPolicy property: The blob service properties for blob soft delete.
-     *
+     * 
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
      * @return the BlobServicePropertiesProperties object itself.
      */
@@ -146,7 +145,7 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Get the isVersioningEnabled property: Versioning is enabled if set to true.
-     *
+     * 
      * @return the isVersioningEnabled value.
      */
     public Boolean isVersioningEnabled() {
@@ -155,7 +154,7 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Set the isVersioningEnabled property: Versioning is enabled if set to true.
-     *
+     * 
      * @param isVersioningEnabled the isVersioningEnabled value to set.
      * @return the BlobServicePropertiesProperties object itself.
      */
@@ -166,7 +165,7 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Get the automaticSnapshotPolicyEnabled property: Deprecated in favor of isVersioningEnabled property.
-     *
+     * 
      * @return the automaticSnapshotPolicyEnabled value.
      */
     public Boolean automaticSnapshotPolicyEnabled() {
@@ -175,7 +174,7 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Set the automaticSnapshotPolicyEnabled property: Deprecated in favor of isVersioningEnabled property.
-     *
+     * 
      * @param automaticSnapshotPolicyEnabled the automaticSnapshotPolicyEnabled value to set.
      * @return the BlobServicePropertiesProperties object itself.
      */
@@ -186,7 +185,7 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Get the changeFeed property: The blob service properties for change feed events.
-     *
+     * 
      * @return the changeFeed value.
      */
     public ChangeFeed changeFeed() {
@@ -195,7 +194,7 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Set the changeFeed property: The blob service properties for change feed events.
-     *
+     * 
      * @param changeFeed the changeFeed value to set.
      * @return the BlobServicePropertiesProperties object itself.
      */
@@ -206,7 +205,7 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Get the restorePolicy property: The blob service properties for blob restore policy.
-     *
+     * 
      * @return the restorePolicy value.
      */
     public RestorePolicyProperties restorePolicy() {
@@ -215,7 +214,7 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Set the restorePolicy property: The blob service properties for blob restore policy.
-     *
+     * 
      * @param restorePolicy the restorePolicy value to set.
      * @return the BlobServicePropertiesProperties object itself.
      */
@@ -226,7 +225,7 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Get the containerDeleteRetentionPolicy property: The blob service properties for container soft delete.
-     *
+     * 
      * @return the containerDeleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy containerDeleteRetentionPolicy() {
@@ -235,12 +234,12 @@ public final class BlobServicePropertiesProperties {
 
     /**
      * Set the containerDeleteRetentionPolicy property: The blob service properties for container soft delete.
-     *
+     * 
      * @param containerDeleteRetentionPolicy the containerDeleteRetentionPolicy value to set.
      * @return the BlobServicePropertiesProperties object itself.
      */
-    public BlobServicePropertiesProperties withContainerDeleteRetentionPolicy(
-        DeleteRetentionPolicy containerDeleteRetentionPolicy) {
+    public BlobServicePropertiesProperties
+        withContainerDeleteRetentionPolicy(DeleteRetentionPolicy containerDeleteRetentionPolicy) {
         this.containerDeleteRetentionPolicy = containerDeleteRetentionPolicy;
         return this;
     }
@@ -248,7 +247,7 @@ public final class BlobServicePropertiesProperties {
     /**
      * Get the lastAccessTimeTrackingPolicy property: The blob service property to configure last access time based
      * tracking policy.
-     *
+     * 
      * @return the lastAccessTimeTrackingPolicy value.
      */
     public LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy() {
@@ -258,19 +257,19 @@ public final class BlobServicePropertiesProperties {
     /**
      * Set the lastAccessTimeTrackingPolicy property: The blob service property to configure last access time based
      * tracking policy.
-     *
+     * 
      * @param lastAccessTimeTrackingPolicy the lastAccessTimeTrackingPolicy value to set.
      * @return the BlobServicePropertiesProperties object itself.
      */
-    public BlobServicePropertiesProperties withLastAccessTimeTrackingPolicy(
-        LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy) {
+    public BlobServicePropertiesProperties
+        withLastAccessTimeTrackingPolicy(LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy) {
         this.lastAccessTimeTrackingPolicy = lastAccessTimeTrackingPolicy;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -292,5 +291,72 @@ public final class BlobServicePropertiesProperties {
         if (lastAccessTimeTrackingPolicy() != null) {
             lastAccessTimeTrackingPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("cors", this.cors);
+        jsonWriter.writeStringField("defaultServiceVersion", this.defaultServiceVersion);
+        jsonWriter.writeJsonField("deleteRetentionPolicy", this.deleteRetentionPolicy);
+        jsonWriter.writeBooleanField("isVersioningEnabled", this.isVersioningEnabled);
+        jsonWriter.writeBooleanField("automaticSnapshotPolicyEnabled", this.automaticSnapshotPolicyEnabled);
+        jsonWriter.writeJsonField("changeFeed", this.changeFeed);
+        jsonWriter.writeJsonField("restorePolicy", this.restorePolicy);
+        jsonWriter.writeJsonField("containerDeleteRetentionPolicy", this.containerDeleteRetentionPolicy);
+        jsonWriter.writeJsonField("lastAccessTimeTrackingPolicy", this.lastAccessTimeTrackingPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobServicePropertiesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobServicePropertiesProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BlobServicePropertiesProperties.
+     */
+    public static BlobServicePropertiesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobServicePropertiesProperties deserializedBlobServicePropertiesProperties
+                = new BlobServicePropertiesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cors".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.cors = CorsRules.fromJson(reader);
+                } else if ("defaultServiceVersion".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.defaultServiceVersion = reader.getString();
+                } else if ("deleteRetentionPolicy".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.deleteRetentionPolicy
+                        = DeleteRetentionPolicy.fromJson(reader);
+                } else if ("isVersioningEnabled".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.isVersioningEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("automaticSnapshotPolicyEnabled".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.automaticSnapshotPolicyEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("changeFeed".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.changeFeed = ChangeFeed.fromJson(reader);
+                } else if ("restorePolicy".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.restorePolicy
+                        = RestorePolicyProperties.fromJson(reader);
+                } else if ("containerDeleteRetentionPolicy".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.containerDeleteRetentionPolicy
+                        = DeleteRetentionPolicy.fromJson(reader);
+                } else if ("lastAccessTimeTrackingPolicy".equals(fieldName)) {
+                    deserializedBlobServicePropertiesProperties.lastAccessTimeTrackingPolicy
+                        = LastAccessTimeTrackingPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobServicePropertiesProperties;
+        });
     }
 }

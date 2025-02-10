@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -155,7 +154,7 @@ public final class EventHubBufferedProducerClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventHubProperties getEventHubProperties() {
-        return client.getEventHubProperties().block(operationTimeout);
+        return client.getEventHubProperties().block();
     }
 
     /**
@@ -181,7 +180,7 @@ public final class EventHubBufferedProducerClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionProperties getPartitionProperties(String partitionId) {
-        return client.getPartitionProperties(partitionId).block(operationTimeout);
+        return client.getPartitionProperties(partitionId).block();
     }
 
     /**

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.quantum.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Result of check name availability. */
+/**
+ * Result of check name availability.
+ */
 @Fluent
-public final class CheckNameAvailabilityResultInner {
+public final class CheckNameAvailabilityResultInner implements JsonSerializable<CheckNameAvailabilityResultInner> {
     /*
      * Indicator of availability of the Quantum Workspace resource name.
      */
-    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /*
      * The reason of unavailability.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * The detailed info regarding the reason associated with the Namespace.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of CheckNameAvailabilityResultInner class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityResultInner class.
+     */
     public CheckNameAvailabilityResultInner() {
     }
 
     /**
      * Get the nameAvailable property: Indicator of availability of the Quantum Workspace resource name.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -43,7 +48,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Set the nameAvailable property: Indicator of availability of the Quantum Workspace resource name.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the CheckNameAvailabilityResultInner object itself.
      */
@@ -54,7 +59,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Get the reason property: The reason of unavailability.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -63,7 +68,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Set the reason property: The reason of unavailability.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the CheckNameAvailabilityResultInner object itself.
      */
@@ -74,7 +79,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Get the message property: The detailed info regarding the reason associated with the Namespace.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -83,9 +88,52 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameAvailabilityResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameAvailabilityResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckNameAvailabilityResultInner.
+     */
+    public static CheckNameAvailabilityResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameAvailabilityResultInner deserializedCheckNameAvailabilityResultInner
+                = new CheckNameAvailabilityResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResultInner.nameAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResultInner.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResultInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameAvailabilityResultInner;
+        });
     }
 }

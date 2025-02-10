@@ -6,8 +6,11 @@ package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
@@ -15,36 +18,30 @@ import java.util.UUID;
  * Setting indicating whether the service has a managed identity associated with it.
  */
 @Fluent
-public final class ServiceManagedIdentityIdentity {
+public final class ServiceManagedIdentityIdentity implements JsonSerializable<ServiceManagedIdentityIdentity> {
     /*
      * Type of identity being specified, currently SystemAssigned and None are allowed.
      */
-    @JsonProperty(value = "type", required = true)
     private ServiceManagedIdentityType type;
 
     /*
      * The service principal ID of the system assigned identity. This property will only be provided for a system
      * assigned identity.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
 
     /*
      * The tenant ID of the system assigned identity. This property will only be provided for a system assigned
      * identity.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tenantId;
 
     /*
-     * The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys
-     * will be ARM resource ids in the form:
+     * The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will
+     * be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
-     * userAssignedIdentities/{identityName}.
-     * The dictionary values can be empty objects ({}) in requests.
+     * userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
@@ -84,8 +81,8 @@ public final class ServiceManagedIdentityIdentity {
     }
 
     /**
-     * Get the tenantId property: The tenant ID of the system assigned identity. This property will only be provided
-     * for a system assigned identity.
+     * Get the tenantId property: The tenant ID of the system assigned identity. This property will only be provided for
+     * a system assigned identity.
      * 
      * @return the tenantId value.
      */
@@ -127,8 +124,9 @@ public final class ServiceManagedIdentityIdentity {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model ServiceManagedIdentityIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property type in model ServiceManagedIdentityIdentity"));
         }
         if (userAssignedIdentities() != null) {
             userAssignedIdentities().values().forEach(e -> {
@@ -140,4 +138,55 @@ public final class ServiceManagedIdentityIdentity {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceManagedIdentityIdentity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceManagedIdentityIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceManagedIdentityIdentity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceManagedIdentityIdentity.
+     */
+    public static ServiceManagedIdentityIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceManagedIdentityIdentity deserializedServiceManagedIdentityIdentity
+                = new ServiceManagedIdentityIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedServiceManagedIdentityIdentity.type
+                        = ServiceManagedIdentityType.fromString(reader.getString());
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedServiceManagedIdentityIdentity.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedServiceManagedIdentityIdentity.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));
+                    deserializedServiceManagedIdentityIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceManagedIdentityIdentity;
+        });
+    }
 }

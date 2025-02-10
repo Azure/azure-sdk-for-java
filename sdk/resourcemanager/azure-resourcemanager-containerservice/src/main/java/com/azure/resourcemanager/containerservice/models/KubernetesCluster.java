@@ -24,94 +24,193 @@ import java.util.Map;
 /** A client-side representation for a managed Kubernetes cluster. */
 @Fluent
 public interface KubernetesCluster
-    extends GroupableResource<ContainerServiceManager, ManagedClusterInner>,
-    Refreshable<KubernetesCluster>,
-    Updatable<KubernetesCluster.Update>,
-    SupportsListingPrivateLinkResource,
-    SupportsListingPrivateEndpointConnection {
+    extends GroupableResource<ContainerServiceManager, ManagedClusterInner>, Refreshable<KubernetesCluster>,
+    Updatable<KubernetesCluster.Update>, SupportsListingPrivateLinkResource, SupportsListingPrivateEndpointConnection {
 
-    /** @return the provisioning state of the Kubernetes cluster */
+    /**
+     * Gets the provisioning state of the Kubernetes cluster.
+     *
+     * @return the provisioning state of the Kubernetes cluster
+     */
     String provisioningState();
 
-    /** @return the DNS prefix which was specified at creation time */
+    /**
+     * Gets the DNS prefix which was specified at creation time.
+     *
+     * @return the DNS prefix which was specified at creation time
+     */
     String dnsPrefix();
 
-    /** @return the FQDN for the master pool */
+    /**
+     * Gets the FQDN for the master pool.
+     *
+     * @return the FQDN for the master pool
+     */
     String fqdn();
 
-    /** @return the Kubernetes version */
+    /**
+     * Gets the Kubernetes version.
+     *
+     * @return the Kubernetes version
+     */
     String version();
 
-    /** @return the Kubernetes configuration file content with administrative privileges to the cluster */
+    /**
+     * Gets the Kubernetes configuration file content with administrative privileges to the cluster.
+     *
+     * @return the Kubernetes configuration file content with administrative privileges to the cluster
+     */
     byte[] adminKubeConfigContent();
 
-    /** @return the Kubernetes configuration file content with user-level privileges to the cluster */
+    /**
+     * Gets the Kubernetes configuration file content with user-level privileges to the cluster.
+     *
+     * @return the Kubernetes configuration file content with user-level privileges to the cluster
+     */
     byte[] userKubeConfigContent();
 
     /**
+     * Gets the Kubernetes configuration file content with user-level privileges to the cluster.
+     *
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
      * @return the Kubernetes configuration file content with user-level privileges to the cluster
      */
     byte[] userKubeConfigContent(Format format);
 
-    /** @return the Kubernetes credentials with administrative privileges to the cluster */
+    /**
+     * Gets the Kubernetes credentials with administrative privileges to the cluster.
+     *
+     * @return the Kubernetes credentials with administrative privileges to the cluster
+     */
     List<CredentialResult> adminKubeConfigs();
 
-    /** @return the Kubernetes credentials with user-level privileges to the cluster */
+    /**
+     * Gets the Kubernetes credentials with user-level privileges to the cluster.
+     *
+     * @return the Kubernetes credentials with user-level privileges to the cluster
+     */
     List<CredentialResult> userKubeConfigs();
 
     /**
+     * Gets the Kubernetes credentials with user-level privileges to the cluster.
+     *
      * @param format Only apply to AAD clusters, specifies the format of returned kubeconfig. Format 'azure' will return azure auth-provider kubeconfig; format 'exec' will return exec format kubeconfig, which requires kubelogin binary in the path.
      * @return the Kubernetes credentials with user-level privileges to the cluster
      */
     List<CredentialResult> userKubeConfigs(Format format);
 
-    /** @return the service principal client ID */
+    /**
+     * Gets the service principal client ID.
+     *
+     * @return the service principal client ID
+     */
     String servicePrincipalClientId();
 
-    /** @return the service principal secret */
+    /**
+     * Gets the service principal secret.
+     *
+     * @return the service principal secret
+     */
     String servicePrincipalSecret();
 
-    /** @return the Linux root username */
+    /**
+     * Gets the Linux root username.
+     *
+     * @return the Linux root username
+     */
     String linuxRootUsername();
 
-    /** @return the Linux SSH key */
+    /**
+     * Gets the Linux SSH key.
+     *
+     * @return the Linux SSH key
+     */
     String sshKey();
 
-    /** @return the agent pools in the Kubernetes cluster */
+    /**
+     * Gets the agent pools in the Kubernetes cluster.
+     *
+     * @return the agent pools in the Kubernetes cluster
+     */
     Map<String, KubernetesClusterAgentPool> agentPools();
 
-    /** @return the network profile settings for the cluster */
+    /**
+     * Gets the network profile settings for the cluster.
+     *
+     * @return the network profile settings for the cluster
+     */
     ContainerServiceNetworkProfile networkProfile();
 
-    /** @return the cluster's add-on's profiles */
+    /**
+     * Gets the cluster's add-on's profiles.
+     *
+     * @return the cluster's add-on's profiles
+     */
     Map<String, ManagedClusterAddonProfile> addonProfiles();
 
-    /** @return the name of the resource group containing agent pool nodes */
+    /**
+     * Gets the name of the resource group containing agent pool nodes.
+     *
+     * @return the name of the resource group containing agent pool nodes
+     */
     String nodeResourceGroup();
 
-    /** @return true if Kubernetes Role-Based Access Control is enabled */
+    /**
+     * Checks whether Kubernetes Role-Based Access Control is enabled.
+     *
+     * @return true if Kubernetes Role-Based Access Control is enabled
+     */
     boolean enableRBAC();
 
-    /** @return the power state */
+    /**
+     * Gets the power state.
+     *
+     * @return the power state
+     */
     PowerState powerState();
 
     /**
+     * Gets the SKU of a Managed Cluster.
+     *
+     * @return the SKU of a Managed Cluster
+     */
+    ManagedClusterSku sku();
+
+    /**
+     * Gets the System Assigned Managed Service Identity specific Active Directory service principal ID
+     *     assigned to the Kubernetes cluster.
+     *
      * @return the System Assigned Managed Service Identity specific Active Directory service principal ID
      *     assigned to the Kubernetes cluster.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /** @return the IDs (object IDs) of the Azure AD groups as the admin group of the cluster. */
+    /**
+     * Gets the IDs (object IDs) of the Azure AD groups as the admin group of the cluster.
+     *
+     * @return the IDs (object IDs) of the Azure AD groups as the admin group of the cluster.
+     */
     List<String> azureActiveDirectoryGroupIds();
 
-    /** @return whether local accounts is enabled. */
+    /**
+     * Checks whether local accounts is enabled.
+     *
+     * @return whether local accounts is enabled.
+     */
     boolean isLocalAccountsEnabled();
 
-    /** @return whether Azure Role-Based Access Control for Kubernetes authorization is enabled. */
+    /**
+     * Checks whether Azure Role-Based Access Control for Kubernetes authorization is enabled.
+     *
+     * @return whether Azure Role-Based Access Control for Kubernetes authorization is enabled.
+     */
     boolean isAzureRbacEnabled();
 
-    /** @return resource ID of the disk encryption set. */
+    /**
+     * Gets resource ID of the disk encryption set.
+     *
+     * @return resource ID of the disk encryption set.
+     */
     String diskEncryptionSetId();
 
     /**
@@ -120,6 +219,13 @@ public interface KubernetesCluster
      * @return The resource group containing agent pool nodes.
      */
     String agentPoolResourceGroup();
+
+    /**
+     * Checks whether the kubernetes cluster can be accessed from public network.
+     *
+     * @return whether the kubernetes cluster can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
 
     // Actions
 
@@ -159,19 +265,12 @@ public interface KubernetesCluster
     // Fluent interfaces
 
     /** Interface for all the definitions related to a Kubernetes cluster. */
-    interface Definition
-        extends KubernetesCluster.DefinitionStages.Blank,
-            KubernetesCluster.DefinitionStages.WithGroup,
-            KubernetesCluster.DefinitionStages.WithVersion,
-            DefinitionStages.WithLinuxRootUsername,
-            DefinitionStages.WithLinuxSshKey,
-            DefinitionStages.WithServicePrincipalClientId,
-            DefinitionStages.WithServicePrincipalProfile,
-            DefinitionStages.WithDnsPrefix,
-            DefinitionStages.WithAgentPool,
-            DefinitionStages.WithNetworkProfile,
-            DefinitionStages.WithAddOnProfiles,
-            KubernetesCluster.DefinitionStages.WithCreate {
+    interface Definition extends KubernetesCluster.DefinitionStages.Blank, KubernetesCluster.DefinitionStages.WithGroup,
+        KubernetesCluster.DefinitionStages.WithVersion, DefinitionStages.WithLinuxRootUsername,
+        DefinitionStages.WithLinuxSshKey, DefinitionStages.WithServicePrincipalClientId,
+        DefinitionStages.WithServicePrincipalProfile, DefinitionStages.WithDnsPrefix, DefinitionStages.WithAgentPool,
+        DefinitionStages.WithNetworkProfile, DefinitionStages.WithAddOnProfiles, DefinitionStages.WithManagedClusterSku,
+        DefinitionStages.WithPublicNetworkAccess, KubernetesCluster.DefinitionStages.WithCreate {
     }
 
     /** Grouping of Kubernetes cluster definition stages. */
@@ -186,6 +285,35 @@ public interface KubernetesCluster
          * The stage of the Kubernetes cluster definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithVersion> {
+        }
+
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify the managed cluster SKU.
+         * LongTermSupport and Premium tier should be enabled/disabled together.
+         * For more information, please see https://learn.microsoft.com/azure/aks/long-term-support
+         */
+        interface WithManagedClusterSku {
+
+            /**
+             * Specifies the managed cluster SKU is free.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withFreeSku();
+
+            /**
+             * Specifies the managed cluster SKU is standard.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withStandardSku();
+
+            /**
+             * Specifies the managed cluster SKU is premium.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withPremiumSku();
         }
 
         /**
@@ -407,6 +535,51 @@ public interface KubernetesCluster
             }
 
             /**
+             * The stage of a network profile definition allowing to specify the network plugin mode.
+             *
+             * @param <ParentT> the stage of the network plugin mode definition to return to after attaching this definition
+             */
+            interface WithNetworkPluginMode<ParentT> {
+                /**
+                 * Specifies the network plugin mode to be used for building the Kubernetes network.
+                 *
+                 * @param networkPluginMode the network plugin mode to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkPluginMode(NetworkPluginMode networkPluginMode);
+            }
+
+            /**
+             * The stage of a network profile definition allowing to specify the network mode.
+             *
+             * @param <ParentT> the stage of the network mode definition to return to after attaching this definition
+             */
+            interface WithNetworkMode<ParentT> {
+                /**
+                 * Specifies the network plugin mode to be used for building the Kubernetes network.
+                 *
+                 * @param networkMode the network mode to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkMode(NetworkMode networkMode);
+            }
+
+            /**
+             * The stage of a network profile definition allowing to specify the network data plan.
+             *
+             * @param <ParentT> the stage of the network mode definition to return to after attaching this definition
+             */
+            interface WithNetworkDataPlan<ParentT> {
+                /**
+                 * Specifies the network data plan to be used for building the Kubernetes network.
+                 *
+                 * @param networkDataPlan the network data plan to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkDataPlan(NetworkDataplane networkDataPlan);
+            }
+
+            /**
              * The final stage of a network profile definition. At this stage, any remaining optional settings can be
              * specified, or the container service agent pool can be attached to the parent container service
              * definition.
@@ -414,14 +587,15 @@ public interface KubernetesCluster
              * @param <ParentT> the stage of the container service definition to return to after attaching this
              *     definition
              */
-            interface WithAttach<ParentT>
-                extends NetworkProfileDefinitionStages.WithNetworkPolicy<ParentT>,
-                    NetworkProfileDefinitionStages.WithPodCidr<ParentT>,
-                    NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
-                    NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
-                    NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
-                    NetworkProfileDefinitionStages.WithLoadBalancerProfile<ParentT>,
-                    Attachable.InDefinition<ParentT> {
+            interface WithAttach<ParentT> extends NetworkProfileDefinitionStages.WithNetworkPolicy<ParentT>,
+                NetworkProfileDefinitionStages.WithPodCidr<ParentT>,
+                NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
+                NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
+                NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
+                NetworkProfileDefinitionStages.WithLoadBalancerProfile<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>, Attachable.InDefinition<ParentT> {
             }
         }
 
@@ -431,14 +605,16 @@ public interface KubernetesCluster
          *
          * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
-        interface NetworkProfileDefinition<ParentT>
-            extends NetworkProfileDefinitionStages.Blank<ParentT>,
-                NetworkProfileDefinitionStages.WithNetworkPolicy<ParentT>,
-                NetworkProfileDefinitionStages.WithPodCidr<ParentT>,
-                NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
-                NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
-                NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
-                NetworkProfileDefinitionStages.WithAttach<ParentT> {
+        interface NetworkProfileDefinition<ParentT> extends NetworkProfileDefinitionStages.Blank<ParentT>,
+            NetworkProfileDefinitionStages.WithNetworkPolicy<ParentT>,
+            NetworkProfileDefinitionStages.WithPodCidr<ParentT>,
+            NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
+            NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
+            NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
+            NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
+            NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
+            NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>,
+            NetworkProfileDefinitionStages.WithAttach<ParentT> {
         }
 
         /** The stage of the Kubernetes cluster definition allowing to specify the DNS prefix label. */
@@ -563,39 +739,33 @@ public interface KubernetesCluster
             WithCreate withAgentPoolResourceGroup(String resourceGroupName);
         }
 
+        /** The stage of Kubernetes cluster  definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Disables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<KubernetesCluster>,
-                WithAgentPool,
-                WithNetworkProfile,
-                WithDnsPrefix,
-                WithAddOnProfiles,
-                WithAccessProfiles,
-                WithAutoScalerProfile,
-                WithManagedServiceIdentity,
-                WithRBAC,
-                WithAAD,
-                WithLocalAccounts,
-                WithDiskEncryption,
-                WithAgentPoolResourceGroup,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<KubernetesCluster>, WithAgentPool, WithNetworkProfile, WithDnsPrefix,
+            WithAddOnProfiles, WithAccessProfiles, WithAutoScalerProfile, WithManagedServiceIdentity, WithRBAC, WithAAD,
+            WithLocalAccounts, WithDiskEncryption, WithAgentPoolResourceGroup, WithManagedClusterSku,
+            WithPublicNetworkAccess, Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
-        extends UpdateStages.WithAgentPool,
-            UpdateStages.WithAddOnProfiles,
-            UpdateStages.WithNetworkProfile,
-            UpdateStages.WithRBAC,
-            UpdateStages.WithAutoScalerProfile,
-            UpdateStages.WithAAD,
-            UpdateStages.WithLocalAccounts,
-            Resource.UpdateWithTags<KubernetesCluster.Update>,
-            Appliable<KubernetesCluster> {
+        extends UpdateStages.WithAgentPool, UpdateStages.WithAddOnProfiles, UpdateStages.WithNetworkProfile,
+        UpdateStages.WithRBAC, UpdateStages.WithAutoScalerProfile, UpdateStages.WithAAD, UpdateStages.WithLocalAccounts,
+        UpdateStages.WithVersion, UpdateStages.WithManagedClusterSku, UpdateStages.WithPublicNetworkAccess,
+        Resource.UpdateWithTags<KubernetesCluster.Update>, Appliable<KubernetesCluster> {
     }
 
     /** Grouping of the Kubernetes cluster update stages. */
@@ -726,6 +896,67 @@ public interface KubernetesCluster
              * @return the next stage
              */
             Update disableLocalAccounts();
+        }
+
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify the managed cluster SKU.
+         * LongTermSupport and Premium tier should be enabled/disabled together.
+         * For more information, please see https://learn.microsoft.com/azure/aks/long-term-support
+         */
+        interface WithManagedClusterSku {
+
+            /**
+             * Specifies the managed cluster SKU is free.
+             *
+             * @return the next stage
+             */
+            Update withFreeSku();
+
+            /**
+             * Specifies the managed cluster SKU is standard.
+             *
+             * @return the next stage
+             */
+            Update withStandardSku();
+
+            /**
+             * Specifies the managed cluster SKU is premium.
+             *
+             * @return the next stage
+             */
+            Update withPremiumSku();
+        }
+
+        /**
+         * The stage of the Kubernetes cluster update allowing to specify orchestration type.
+         */
+        interface WithVersion {
+            /**
+             * Specifies the version for the Kubernetes cluster.
+             * Could retrieve from {@link KubernetesClusters#listOrchestrators(Region, ContainerServiceResourceTypes)}
+             * To prevent version conflicts, specify a higher version than the initial version.
+             *
+             * @param kubernetesVersion the kubernetes version
+             * @return the next stage
+             */
+            Update withVersion(String kubernetesVersion);
+        }
+
+        /** The stage of kubernetes cluster update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+
+            /**
+             * Disables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
         }
     }
 }

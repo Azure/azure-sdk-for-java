@@ -12,21 +12,22 @@ public final class StorageQueueEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageQueueEventSubscriptionDestination model = BinaryData.fromString(
-            "{\"endpointType\":\"StorageQueue\",\"properties\":{\"resourceId\":\"ajq\",\"queueName\":\"kpeexpgeumilh\",\"queueMessageTimeToLiveInSeconds\":7483844362250504784}}")
+            "{\"endpointType\":\"StorageQueue\",\"properties\":{\"resourceId\":\"bicziuswswj\",\"queueName\":\"b\",\"queueMessageTimeToLiveInSeconds\":6634581254816359607}}")
             .toObject(StorageQueueEventSubscriptionDestination.class);
-        Assertions.assertEquals("ajq", model.resourceId());
-        Assertions.assertEquals("kpeexpgeumilh", model.queueName());
-        Assertions.assertEquals(7483844362250504784L, model.queueMessageTimeToLiveInSeconds());
+        Assertions.assertEquals("bicziuswswj", model.resourceId());
+        Assertions.assertEquals("b", model.queueName());
+        Assertions.assertEquals(6634581254816359607L, model.queueMessageTimeToLiveInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageQueueEventSubscriptionDestination model
-            = new StorageQueueEventSubscriptionDestination().withResourceId("ajq").withQueueName("kpeexpgeumilh")
-                .withQueueMessageTimeToLiveInSeconds(7483844362250504784L);
+            = new StorageQueueEventSubscriptionDestination().withResourceId("bicziuswswj")
+                .withQueueName("b")
+                .withQueueMessageTimeToLiveInSeconds(6634581254816359607L);
         model = BinaryData.fromObject(model).toObject(StorageQueueEventSubscriptionDestination.class);
-        Assertions.assertEquals("ajq", model.resourceId());
-        Assertions.assertEquals("kpeexpgeumilh", model.queueName());
-        Assertions.assertEquals(7483844362250504784L, model.queueMessageTimeToLiveInSeconds());
+        Assertions.assertEquals("bicziuswswj", model.resourceId());
+        Assertions.assertEquals("b", model.queueName());
+        Assertions.assertEquals(6634581254816359607L, model.queueMessageTimeToLiveInSeconds());
     }
 }

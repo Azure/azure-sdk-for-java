@@ -6,26 +6,33 @@ package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A rule governing the accessibility of a managed hsm pool from a specific virtual network. */
+/**
+ * A rule governing the accessibility of a managed hsm pool from a specific virtual network.
+ */
 @Fluent
-public final class MhsmVirtualNetworkRule {
+public final class MhsmVirtualNetworkRule implements JsonSerializable<MhsmVirtualNetworkRule> {
     /*
      * Full resource id of a vnet subnet, such as
      * '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of MhsmVirtualNetworkRule class. */
+    /**
+     * Creates an instance of MhsmVirtualNetworkRule class.
+     */
     public MhsmVirtualNetworkRule() {
     }
 
     /**
      * Get the id property: Full resource id of a vnet subnet, such as
      * '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -35,7 +42,7 @@ public final class MhsmVirtualNetworkRule {
     /**
      * Set the id property: Full resource id of a vnet subnet, such as
      * '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
-     *
+     * 
      * @param id the id value to set.
      * @return the MhsmVirtualNetworkRule object itself.
      */
@@ -46,16 +53,52 @@ public final class MhsmVirtualNetworkRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model MhsmVirtualNetworkRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model MhsmVirtualNetworkRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MhsmVirtualNetworkRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MhsmVirtualNetworkRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MhsmVirtualNetworkRule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MhsmVirtualNetworkRule.
+     */
+    public static MhsmVirtualNetworkRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MhsmVirtualNetworkRule deserializedMhsmVirtualNetworkRule = new MhsmVirtualNetworkRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMhsmVirtualNetworkRule.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMhsmVirtualNetworkRule;
+        });
+    }
 }

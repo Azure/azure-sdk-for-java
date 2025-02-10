@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters that define the configuration of traffic analytics.
  */
 @Fluent
-public final class TrafficAnalyticsProperties {
+public final class TrafficAnalyticsProperties implements JsonSerializable<TrafficAnalyticsProperties> {
     /*
      * Parameters that define the configuration of traffic analytics.
      */
-    @JsonProperty(value = "networkWatcherFlowAnalyticsConfiguration")
     private TrafficAnalyticsConfigurationProperties networkWatcherFlowAnalyticsConfiguration;
 
     /**
@@ -56,5 +59,43 @@ public final class TrafficAnalyticsProperties {
         if (networkWatcherFlowAnalyticsConfiguration() != null) {
             networkWatcherFlowAnalyticsConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("networkWatcherFlowAnalyticsConfiguration",
+            this.networkWatcherFlowAnalyticsConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrafficAnalyticsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrafficAnalyticsProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrafficAnalyticsProperties.
+     */
+    public static TrafficAnalyticsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrafficAnalyticsProperties deserializedTrafficAnalyticsProperties = new TrafficAnalyticsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkWatcherFlowAnalyticsConfiguration".equals(fieldName)) {
+                    deserializedTrafficAnalyticsProperties.networkWatcherFlowAnalyticsConfiguration
+                        = TrafficAnalyticsConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrafficAnalyticsProperties;
+        });
     }
 }

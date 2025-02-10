@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** attachmentType. */
+/**
+ * attachmentType.
+ */
 public final class MicrosoftGraphAttachmentType extends ExpandableStringEnum<MicrosoftGraphAttachmentType> {
-    /** Static value file for MicrosoftGraphAttachmentType. */
+    /**
+     * Static value file for MicrosoftGraphAttachmentType.
+     */
     public static final MicrosoftGraphAttachmentType FILE = fromString("file");
 
-    /** Static value item for MicrosoftGraphAttachmentType. */
+    /**
+     * Static value item for MicrosoftGraphAttachmentType.
+     */
     public static final MicrosoftGraphAttachmentType ITEM = fromString("item");
 
-    /** Static value reference for MicrosoftGraphAttachmentType. */
+    /**
+     * Static value reference for MicrosoftGraphAttachmentType.
+     */
     public static final MicrosoftGraphAttachmentType REFERENCE = fromString("reference");
 
     /**
      * Creates a new instance of MicrosoftGraphAttachmentType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class MicrosoftGraphAttachmentType extends ExpandableStringEnum<Mic
 
     /**
      * Creates or finds a MicrosoftGraphAttachmentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphAttachmentType.
      */
-    @JsonCreator
     public static MicrosoftGraphAttachmentType fromString(String name) {
         return fromString(name, MicrosoftGraphAttachmentType.class);
     }
 
     /**
      * Gets known MicrosoftGraphAttachmentType values.
-     *
+     * 
      * @return known MicrosoftGraphAttachmentType values.
      */
     public static Collection<MicrosoftGraphAttachmentType> values() {

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for WorkloadNetworks ListVirtualMachines. */
+/**
+ * Samples for WorkloadNetworks ListVirtualMachines.
+ */
 public final class WorkloadNetworksListVirtualMachinesSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListVirtualMachines.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/
+     * WorkloadNetworks_ListVirtualMachines.json
      */
     /**
      * Sample code: WorkloadNetworks_ListVirtualMachines.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListVirtualMachines(com.azure.resourcemanager.avs.AvsManager manager) {

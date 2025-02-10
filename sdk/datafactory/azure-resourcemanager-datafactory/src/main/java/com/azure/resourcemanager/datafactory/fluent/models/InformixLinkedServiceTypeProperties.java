@@ -6,51 +6,50 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Informix linked service properties.
  */
 @Fluent
-public final class InformixLinkedServiceTypeProperties {
+public final class InformixLinkedServiceTypeProperties
+    implements JsonSerializable<InformixLinkedServiceTypeProperties> {
     /*
      * The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
      * string, or SecureString, or AzureKeyVaultSecretReference, or Expression with resultType string.
      */
-    @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
      * Type of authentication used to connect to the Informix as ODBC data store. Possible values are: Anonymous and
      * Basic. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
      * The access credential portion of the connection string specified in driver-specific property-value format.
      */
-    @JsonProperty(value = "credential")
     private SecretBase credential;
 
     /*
      * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName")
     private Object username;
 
     /*
      * Password for Basic authentication.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -61,8 +60,8 @@ public final class InformixLinkedServiceTypeProperties {
 
     /**
      * Get the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression
-     * with resultType string.
+     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression with
+     * resultType string.
      * 
      * @return the connectionString value.
      */
@@ -72,8 +71,8 @@ public final class InformixLinkedServiceTypeProperties {
 
     /**
      * Set the connectionString property: The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression
-     * with resultType string.
+     * optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression with
+     * resultType string.
      * 
      * @param connectionString the connectionString value to set.
      * @return the InformixLinkedServiceTypeProperties object itself.
@@ -170,8 +169,8 @@ public final class InformixLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -180,8 +179,8 @@ public final class InformixLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the InformixLinkedServiceTypeProperties object itself.
@@ -198,8 +197,9 @@ public final class InformixLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectionString in model InformixLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model InformixLinkedServiceTypeProperties"));
         }
         if (credential() != null) {
             credential().validate();
@@ -210,4 +210,57 @@ public final class InformixLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InformixLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        jsonWriter.writeJsonField("credential", this.credential);
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InformixLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InformixLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InformixLinkedServiceTypeProperties.
+     */
+    public static InformixLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InformixLinkedServiceTypeProperties deserializedInformixLinkedServiceTypeProperties
+                = new InformixLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedInformixLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedInformixLinkedServiceTypeProperties.authenticationType = reader.readUntyped();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedInformixLinkedServiceTypeProperties.credential = SecretBase.fromJson(reader);
+                } else if ("userName".equals(fieldName)) {
+                    deserializedInformixLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedInformixLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedInformixLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInformixLinkedServiceTypeProperties;
+        });
+    }
 }

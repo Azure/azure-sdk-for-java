@@ -13,30 +13,34 @@ public final class DatasourceSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatasourceSet model = BinaryData.fromString(
-            "{\"datasourceType\":\"lwzbhvgyugu\",\"objectType\":\"vmkfssxqu\",\"resourceID\":\"kfplgmgsxnk\",\"resourceLocation\":\"kde\",\"resourceName\":\"pvlopwiyighxpkd\",\"resourceType\":\"baiuebbaumny\",\"resourceUri\":\"ped\",\"resourceProperties\":{\"objectType\":\"BaseResourceProperties\"}}")
+            "{\"datasourceType\":\"kevle\",\"objectType\":\"zfbuhf\",\"resourceID\":\"vfaxkffeiith\",\"resourceLocation\":\"m\",\"resourceName\":\"yvshxmz\",\"resourceType\":\"bzoggigrx\",\"resourceUri\":\"ur\",\"resourceProperties\":{\"objectType\":\"BaseResourceProperties\"}}")
             .toObject(DatasourceSet.class);
-        Assertions.assertEquals("lwzbhvgyugu", model.datasourceType());
-        Assertions.assertEquals("vmkfssxqu", model.objectType());
-        Assertions.assertEquals("kfplgmgsxnk", model.resourceId());
-        Assertions.assertEquals("kde", model.resourceLocation());
-        Assertions.assertEquals("pvlopwiyighxpkd", model.resourceName());
-        Assertions.assertEquals("baiuebbaumny", model.resourceType());
-        Assertions.assertEquals("ped", model.resourceUri());
+        Assertions.assertEquals("kevle", model.datasourceType());
+        Assertions.assertEquals("zfbuhf", model.objectType());
+        Assertions.assertEquals("vfaxkffeiith", model.resourceId());
+        Assertions.assertEquals("m", model.resourceLocation());
+        Assertions.assertEquals("yvshxmz", model.resourceName());
+        Assertions.assertEquals("bzoggigrx", model.resourceType());
+        Assertions.assertEquals("ur", model.resourceUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasourceSet model = new DatasourceSet().withDatasourceType("lwzbhvgyugu").withObjectType("vmkfssxqu")
-            .withResourceId("kfplgmgsxnk").withResourceLocation("kde").withResourceName("pvlopwiyighxpkd")
-            .withResourceType("baiuebbaumny").withResourceUri("ped")
+        DatasourceSet model = new DatasourceSet().withDatasourceType("kevle")
+            .withObjectType("zfbuhf")
+            .withResourceId("vfaxkffeiith")
+            .withResourceLocation("m")
+            .withResourceName("yvshxmz")
+            .withResourceType("bzoggigrx")
+            .withResourceUri("ur")
             .withResourceProperties(new BaseResourceProperties());
         model = BinaryData.fromObject(model).toObject(DatasourceSet.class);
-        Assertions.assertEquals("lwzbhvgyugu", model.datasourceType());
-        Assertions.assertEquals("vmkfssxqu", model.objectType());
-        Assertions.assertEquals("kfplgmgsxnk", model.resourceId());
-        Assertions.assertEquals("kde", model.resourceLocation());
-        Assertions.assertEquals("pvlopwiyighxpkd", model.resourceName());
-        Assertions.assertEquals("baiuebbaumny", model.resourceType());
-        Assertions.assertEquals("ped", model.resourceUri());
+        Assertions.assertEquals("kevle", model.datasourceType());
+        Assertions.assertEquals("zfbuhf", model.objectType());
+        Assertions.assertEquals("vfaxkffeiith", model.resourceId());
+        Assertions.assertEquals("m", model.resourceLocation());
+        Assertions.assertEquals("yvshxmz", model.resourceName());
+        Assertions.assertEquals("bzoggigrx", model.resourceType());
+        Assertions.assertEquals("ur", model.resourceUri());
     }
 }

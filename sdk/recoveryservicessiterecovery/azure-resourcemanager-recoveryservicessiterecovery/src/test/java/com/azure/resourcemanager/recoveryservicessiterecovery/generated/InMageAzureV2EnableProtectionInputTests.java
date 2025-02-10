@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageAzureV2EnableProtectionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageAzureV2EnableProtectionInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageAzureV2\",\"masterTargetId\":\"uukppdixqb\",\"processServerId\":\"xvhhyqq\",\"storageAccountId\":\"at\",\"runAsAccountId\":\"rznmginmtsdixc\",\"multiVmGroupId\":\"kibmgjymn\",\"multiVmGroupName\":\"cag\",\"disksToInclude\":[{\"diskId\":\"cqzoofjnqjsve\",\"logStorageAccountId\":\"bhtleberpy\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"nfqnwj\"},{\"diskId\":\"xowkdnj\",\"logStorageAccountId\":\"gkr\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"hycpnowawonoe\"}],\"targetAzureNetworkId\":\"guqlhfwa\",\"targetAzureSubnetId\":\"jzmpy\",\"enableRdpOnTargetOption\":\"uyfazbkoc\",\"targetAzureVmName\":\"gvthrmxkbcjww\",\"logStorageAccountId\":\"omraw\",\"targetAzureV1ResourceGroupId\":\"keboo\",\"targetAzureV2ResourceGroupId\":\"l\",\"diskType\":\"StandardSSD_LRS\",\"targetAvailabilitySetId\":\"gaedaoiq\",\"targetAvailabilityZone\":\"mgd\",\"targetProximityPlacementGroupId\":\"gabdxfkuzbwjeco\",\"licenseType\":\"NoLicenseType\",\"sqlServerLicenseType\":\"NotSpecified\",\"targetVmSize\":\"qbpel\",\"diskEncryptionSetId\":\"ibncgagdvcd\",\"targetVmTags\":{\"df\":\"tzbpyfao\"},\"seedManagedDiskTags\":{\"rf\":\"ncwmhjob\",\"dc\":\"ri\",\"f\":\"h\",\"oorssatfy\":\"cvbzwgwhgkgsoa\"},\"targetManagedDiskTags\":{\"dqn\":\"ufdmxuq\",\"fqayopbtsix\":\"sttuxv\",\"jay\":\"gvbhxmndztgs\"},\"targetNicTags\":{\"q\":\"rxneibpgbrhbj\",\"nmotpuwnnoh\":\"nh\",\"wyiulaynosu\":\"mzngocfrjuy\"}}")
-                .toObject(InMageAzureV2EnableProtectionInput.class);
+        InMageAzureV2EnableProtectionInput model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageAzureV2\",\"masterTargetId\":\"uukppdixqb\",\"processServerId\":\"xvhhyqq\",\"storageAccountId\":\"at\",\"runAsAccountId\":\"rznmginmtsdixc\",\"multiVmGroupId\":\"kibmgjymn\",\"multiVmGroupName\":\"cag\",\"disksToInclude\":[{\"diskId\":\"cqzoofjnqjsve\",\"logStorageAccountId\":\"bhtleberpy\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"nfqnwj\"},{\"diskId\":\"xowkdnj\",\"logStorageAccountId\":\"gkr\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"hycpnowawonoe\"}],\"targetAzureNetworkId\":\"guqlhfwa\",\"targetAzureSubnetId\":\"jzmpy\",\"enableRdpOnTargetOption\":\"uyfazbkoc\",\"targetAzureVmName\":\"gvthrmxkbcjww\",\"logStorageAccountId\":\"omraw\",\"targetAzureV1ResourceGroupId\":\"keboo\",\"targetAzureV2ResourceGroupId\":\"l\",\"diskType\":\"StandardSSD_LRS\",\"targetAvailabilitySetId\":\"gaedaoiq\",\"targetAvailabilityZone\":\"mgd\",\"targetProximityPlacementGroupId\":\"gabdxfkuzbwjeco\",\"licenseType\":\"NoLicenseType\",\"sqlServerLicenseType\":\"NotSpecified\",\"targetVmSize\":\"qbpel\",\"diskEncryptionSetId\":\"ibncgagdvcd\",\"targetVmTags\":{\"df\":\"tzbpyfao\"},\"seedManagedDiskTags\":{\"rf\":\"ncwmhjob\",\"dc\":\"ri\",\"f\":\"h\",\"oorssatfy\":\"cvbzwgwhgkgsoa\"},\"targetManagedDiskTags\":{\"dqn\":\"ufdmxuq\",\"fqayopbtsix\":\"sttuxv\",\"jay\":\"gvbhxmndztgs\"},\"targetNicTags\":{\"q\":\"rxneibpgbrhbj\",\"nmotpuwnnoh\":\"nh\",\"wyiulaynosu\":\"mzngocfrjuy\"}}")
+            .toObject(InMageAzureV2EnableProtectionInput.class);
         Assertions.assertEquals("uukppdixqb", model.masterTargetId());
         Assertions.assertEquals("xvhhyqq", model.processServerId());
         Assertions.assertEquals("at", model.storageAccountId());
@@ -56,27 +54,22 @@ public final class InMageAzureV2EnableProtectionInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2EnableProtectionInput model =
-            new InMageAzureV2EnableProtectionInput()
-                .withMasterTargetId("uukppdixqb")
+        InMageAzureV2EnableProtectionInput model
+            = new InMageAzureV2EnableProtectionInput().withMasterTargetId("uukppdixqb")
                 .withProcessServerId("xvhhyqq")
                 .withStorageAccountId("at")
                 .withRunAsAccountId("rznmginmtsdixc")
                 .withMultiVmGroupId("kibmgjymn")
                 .withMultiVmGroupName("cag")
-                .withDisksToInclude(
-                    Arrays
-                        .asList(
-                            new InMageAzureV2DiskInputDetails()
-                                .withDiskId("cqzoofjnqjsve")
-                                .withLogStorageAccountId("bhtleberpy")
-                                .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
-                                .withDiskEncryptionSetId("nfqnwj"),
-                            new InMageAzureV2DiskInputDetails()
-                                .withDiskId("xowkdnj")
-                                .withLogStorageAccountId("gkr")
-                                .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
-                                .withDiskEncryptionSetId("hycpnowawonoe")))
+                .withDisksToInclude(Arrays.asList(
+                    new InMageAzureV2DiskInputDetails().withDiskId("cqzoofjnqjsve")
+                        .withLogStorageAccountId("bhtleberpy")
+                        .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
+                        .withDiskEncryptionSetId("nfqnwj"),
+                    new InMageAzureV2DiskInputDetails().withDiskId("xowkdnj")
+                        .withLogStorageAccountId("gkr")
+                        .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
+                        .withDiskEncryptionSetId("hycpnowawonoe")))
                 .withTargetAzureNetworkId("guqlhfwa")
                 .withTargetAzureSubnetId("jzmpy")
                 .withEnableRdpOnTargetOption("uyfazbkoc")

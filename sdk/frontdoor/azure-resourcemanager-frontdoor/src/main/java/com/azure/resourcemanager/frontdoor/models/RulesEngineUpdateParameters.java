@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Rules Engine Configuration to apply to a Routing Rule. */
+/**
+ * Rules Engine Configuration to apply to a Routing Rule.
+ */
 @Fluent
-public class RulesEngineUpdateParameters {
+public class RulesEngineUpdateParameters implements JsonSerializable<RulesEngineUpdateParameters> {
     /*
      * A list of rules that define a particular Rules Engine Configuration.
      */
-    @JsonProperty(value = "rules")
     private List<RulesEngineRule> rules;
 
-    /** Creates an instance of RulesEngineUpdateParameters class. */
+    /**
+     * Creates an instance of RulesEngineUpdateParameters class.
+     */
     public RulesEngineUpdateParameters() {
     }
 
     /**
      * Get the rules property: A list of rules that define a particular Rules Engine Configuration.
-     *
+     * 
      * @return the rules value.
      */
     public List<RulesEngineRule> rules() {
@@ -32,7 +39,7 @@ public class RulesEngineUpdateParameters {
 
     /**
      * Set the rules property: A list of rules that define a particular Rules Engine Configuration.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RulesEngineUpdateParameters object itself.
      */
@@ -43,12 +50,49 @@ public class RulesEngineUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RulesEngineUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RulesEngineUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RulesEngineUpdateParameters.
+     */
+    public static RulesEngineUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RulesEngineUpdateParameters deserializedRulesEngineUpdateParameters = new RulesEngineUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rules".equals(fieldName)) {
+                    List<RulesEngineRule> rules = reader.readArray(reader1 -> RulesEngineRule.fromJson(reader1));
+                    deserializedRulesEngineUpdateParameters.rules = rules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRulesEngineUpdateParameters;
+        });
     }
 }

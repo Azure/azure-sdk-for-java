@@ -3,18 +3,15 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import java.util.Map;
+import java.io.IOException;
 
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /** The CallTransferAccepted model. */
 @Immutable
@@ -22,40 +19,20 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
-    @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
+    private ResultInformation resultInformation;
 
     /**
      * The participant who is being transferred away.
      */
-    @JsonIgnore
-    private final CommunicationIdentifier transferee;
+    private CommunicationIdentifier transferee;
 
     /**
      * Target to whom the call is transferred.
      */
-    @JsonIgnore
-    private final CommunicationIdentifier transferTarget;
+    private CommunicationIdentifier transferTarget;
 
-    @JsonCreator
-    private CallTransferAccepted(
-            @JsonProperty("transferee") Map<String, Object> transferee,
-            @JsonProperty("transferTarget") Map<String, Object> transferTarget) {
-        this.resultInformation = null;
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        this.transferee = CommunicationIdentifierConverter.convert(mapper.convertValue(transferee, CommunicationIdentifierModel.class));
-        this.transferTarget = CommunicationIdentifierConverter.convert(mapper.convertValue(transferTarget, CommunicationIdentifierModel.class));
+    private CallTransferAccepted() {
 
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**
@@ -72,5 +49,47 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
      */
     public CommunicationIdentifier getTransferTarget() {
         return this.transferTarget;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("transferee", CommunicationIdentifierConverter.convert(transferee));
+        jsonWriter.writeJsonField("transferTarget", CommunicationIdentifierConverter.convert(transferTarget));
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CallTransferAccepted from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CallTransferAccepted if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CallTransferAccepted.
+     */
+    public static CallTransferAccepted fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final CallTransferAccepted event = new CallTransferAccepted();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("transferee".equals(fieldName)) {
+                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
+                    event.transferee = CommunicationIdentifierConverter.convert(inner);
+                } else if ("transferTarget".equals(fieldName)) {
+                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
+                    event.transferTarget = CommunicationIdentifierConverter.convert(inner);
+                } else {
+                    if (!event.readField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
+                }
+            }
+            return event;
+        });
     }
 }

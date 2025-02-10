@@ -5,57 +5,77 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure Recovery Services Vault specific protection intent item. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "protectionIntentItemType",
-    defaultImpl = AzureWorkloadAutoProtectionIntent.class)
-@JsonTypeName("AzureWorkloadAutoProtectionIntent")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "AzureWorkloadSQLAutoProtectionIntent",
-        value = AzureWorkloadSqlAutoProtectionIntent.class)
-})
+/**
+ * Azure Recovery Services Vault specific protection intent item.
+ */
 @Fluent
 public class AzureWorkloadAutoProtectionIntent extends AzureRecoveryServiceVaultProtectionIntent {
-    /** Creates an instance of AzureWorkloadAutoProtectionIntent class. */
+    /*
+     * backup protectionIntent type.
+     */
+    private ProtectionIntentItemType protectionIntentItemType
+        = ProtectionIntentItemType.AZURE_WORKLOAD_AUTO_PROTECTION_INTENT;
+
+    /**
+     * Creates an instance of AzureWorkloadAutoProtectionIntent class.
+     */
     public AzureWorkloadAutoProtectionIntent() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the protectionIntentItemType property: backup protectionIntent type.
+     * 
+     * @return the protectionIntentItemType value.
+     */
+    @Override
+    public ProtectionIntentItemType protectionIntentItemType() {
+        return this.protectionIntentItemType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadAutoProtectionIntent withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadAutoProtectionIntent withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadAutoProtectionIntent withItemId(String itemId) {
         super.withItemId(itemId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadAutoProtectionIntent withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadAutoProtectionIntent withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -64,11 +84,92 @@ public class AzureWorkloadAutoProtectionIntent extends AzureRecoveryServiceVault
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("itemId", itemId());
+        jsonWriter.writeStringField("policyId", policyId());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("protectionIntentItemType",
+            this.protectionIntentItemType == null ? null : this.protectionIntentItemType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWorkloadAutoProtectionIntent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWorkloadAutoProtectionIntent if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWorkloadAutoProtectionIntent.
+     */
+    public static AzureWorkloadAutoProtectionIntent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("protectionIntentItemType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureWorkloadSQLAutoProtectionIntent".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlAutoProtectionIntent.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AzureWorkloadAutoProtectionIntent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWorkloadAutoProtectionIntent deserializedAzureWorkloadAutoProtectionIntent
+                = new AzureWorkloadAutoProtectionIntent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureWorkloadAutoProtectionIntent
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureWorkloadAutoProtectionIntent.withSourceResourceId(reader.getString());
+                } else if ("itemId".equals(fieldName)) {
+                    deserializedAzureWorkloadAutoProtectionIntent.withItemId(reader.getString());
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedAzureWorkloadAutoProtectionIntent.withPolicyId(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureWorkloadAutoProtectionIntent
+                        .withProtectionState(ProtectionStatus.fromString(reader.getString()));
+                } else if ("protectionIntentItemType".equals(fieldName)) {
+                    deserializedAzureWorkloadAutoProtectionIntent.protectionIntentItemType
+                        = ProtectionIntentItemType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWorkloadAutoProtectionIntent;
+        });
     }
 }

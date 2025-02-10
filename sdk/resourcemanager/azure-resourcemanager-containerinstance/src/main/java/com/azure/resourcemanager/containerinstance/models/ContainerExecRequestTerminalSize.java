@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The size of the terminal. */
+/**
+ * The size of the terminal.
+ */
 @Fluent
-public final class ContainerExecRequestTerminalSize {
+public final class ContainerExecRequestTerminalSize implements JsonSerializable<ContainerExecRequestTerminalSize> {
     /*
      * The row size of the terminal
      */
-    @JsonProperty(value = "rows")
     private Integer rows;
 
     /*
      * The column size of the terminal
      */
-    @JsonProperty(value = "cols")
     private Integer cols;
 
-    /** Creates an instance of ContainerExecRequestTerminalSize class. */
+    /**
+     * Creates an instance of ContainerExecRequestTerminalSize class.
+     */
     public ContainerExecRequestTerminalSize() {
     }
 
     /**
      * Get the rows property: The row size of the terminal.
-     *
+     * 
      * @return the rows value.
      */
     public Integer rows() {
@@ -37,7 +43,7 @@ public final class ContainerExecRequestTerminalSize {
 
     /**
      * Set the rows property: The row size of the terminal.
-     *
+     * 
      * @param rows the rows value to set.
      * @return the ContainerExecRequestTerminalSize object itself.
      */
@@ -48,7 +54,7 @@ public final class ContainerExecRequestTerminalSize {
 
     /**
      * Get the cols property: The column size of the terminal.
-     *
+     * 
      * @return the cols value.
      */
     public Integer cols() {
@@ -57,7 +63,7 @@ public final class ContainerExecRequestTerminalSize {
 
     /**
      * Set the cols property: The column size of the terminal.
-     *
+     * 
      * @param cols the cols value to set.
      * @return the ContainerExecRequestTerminalSize object itself.
      */
@@ -68,9 +74,49 @@ public final class ContainerExecRequestTerminalSize {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("rows", this.rows);
+        jsonWriter.writeNumberField("cols", this.cols);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerExecRequestTerminalSize from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerExecRequestTerminalSize if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerExecRequestTerminalSize.
+     */
+    public static ContainerExecRequestTerminalSize fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerExecRequestTerminalSize deserializedContainerExecRequestTerminalSize
+                = new ContainerExecRequestTerminalSize();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rows".equals(fieldName)) {
+                    deserializedContainerExecRequestTerminalSize.rows = reader.getNullable(JsonReader::getInt);
+                } else if ("cols".equals(fieldName)) {
+                    deserializedContainerExecRequestTerminalSize.cols = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerExecRequestTerminalSize;
+        });
     }
 }

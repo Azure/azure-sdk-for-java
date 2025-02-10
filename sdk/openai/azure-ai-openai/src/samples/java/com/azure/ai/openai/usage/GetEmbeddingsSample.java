@@ -10,6 +10,7 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.EmbeddingsUsage;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
 
@@ -23,8 +24,8 @@ public class GetEmbeddingsSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
         OpenAIClient client = new OpenAIClientBuilder()
@@ -38,7 +39,9 @@ public class GetEmbeddingsSample {
 
         for (EmbeddingItem item : embeddings.getData()) {
             System.out.printf("Index: %d.%n", item.getPromptIndex());
-            for (Double embedding : item.getEmbedding()) {
+            System.out.println("Embedding as base64 encoded string: " +  item.getEmbeddingAsString());
+            System.out.println("Embedding as list of floats: ");
+            for (Float embedding : item.getEmbedding()) {
                 System.out.printf("%f;", embedding);
             }
         }

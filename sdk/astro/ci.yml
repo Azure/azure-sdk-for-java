@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/astro/ci.yml
+      - sdk/astro/azure-resourcemanager-astro/
+    exclude:
+      - sdk/astro/pom.xml
+      - sdk/astro/azure-resourcemanager-astro/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/astro/ci.yml
+      - sdk/astro/azure-resourcemanager-astro/
+    exclude:
+      - sdk/astro/pom.xml
+      - sdk/astro/azure-resourcemanager-astro/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerastro
+    displayName: azure-resourcemanager-astro
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: astro
+    Artifacts:
+      - name: azure-resourcemanager-astro
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerastro
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerastro }}

@@ -16,72 +16,39 @@ public final class ResourceGuardProxyBaseResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceGuardProxyBaseResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"hmk\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"auwjuetaebu\",\"defaultResourceRequest\":\"vdmovsmzlxwabm\"},{\"vaultCriticalOperation\":\"efkifr\",\"defaultResourceRequest\":\"puqujmqlgkfbtn\"},{\"vaultCriticalOperation\":\"aongbj\",\"defaultResourceRequest\":\"tujitcjedft\"},{\"vaultCriticalOperation\":\"ae\",\"defaultResourceRequest\":\"ojvdcpzfoqo\"}],\"lastUpdatedTime\":\"cybxa\",\"description\":\"gszufoxciqopid\"},\"id\":\"mciodhkhazxkhn\",\"name\":\"bon\",\"type\":\"wntoegokdwbwh\"},{\"properties\":{\"resourceGuardResourceId\":\"zcmrvexztvb\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"frao\",\"defaultResourceRequest\":\"koowtl\"},{\"vaultCriticalOperation\":\"guxawqaldsyuuxi\",\"defaultResourceRequest\":\"rqf\"},{\"vaultCriticalOperation\":\"wyznkbyku\",\"defaultResourceRequest\":\"pfhpagmhrskdsnfd\"}],\"lastUpdatedTime\":\"oakgtdlmkkzev\",\"description\":\"hewpusdsttwv\"},\"id\":\"vbbejdcng\",\"name\":\"qmoa\",\"type\":\"ufgmjzrwrdg\"},{\"properties\":{\"resourceGuardResourceId\":\"aenuuz\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"minrfdw\",\"defaultResourceRequest\":\"uhhziuiefozbhdm\"},{\"vaultCriticalOperation\":\"l\",\"defaultResourceRequest\":\"qhoftrmaequiah\"}],\"lastUpdatedTime\":\"cslfaoqzpiyylha\",\"description\":\"swhccsphk\"},\"id\":\"vwitqscyw\",\"name\":\"ggwoluhczb\",\"type\":\"emh\"},{\"properties\":{\"resourceGuardResourceId\":\"sbrgz\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"weyp\",\"defaultResourceRequest\":\"dxggicccnxqhuexm\"},{\"vaultCriticalOperation\":\"tlstvlzywem\",\"defaultResourceRequest\":\"rncsdtclu\"},{\"vaultCriticalOperation\":\"ypbsfgytguslfead\",\"defaultResourceRequest\":\"gq\"},{\"vaultCriticalOperation\":\"yhejhzisxgfp\",\"defaultResourceRequest\":\"olppvksrpqvujz\"}],\"lastUpdatedTime\":\"ehtwdwrft\",\"description\":\"iby\"},\"id\":\"dl\",\"name\":\"h\",\"type\":\"hfwpracstwit\"}],\"nextLink\":\"hevxcced\"}")
+            "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"rtuzqogs\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"vfdnwnwmewzsyyce\",\"defaultResourceRequest\":\"soibjudpfrx\"},{\"vaultCriticalOperation\":\"thzvaytdwkqbrqu\",\"defaultResourceRequest\":\"axhexiilivp\"}],\"lastUpdatedTime\":\"iirqtd\",\"description\":\"axoruzfgsquy\"},\"id\":\"rxxle\",\"name\":\"tramxjez\",\"type\":\"lwnwxuqlcvydyp\"}],\"nextLink\":\"dooaojkniodko\"}")
             .toObject(ResourceGuardProxyBaseResourceList.class);
-        Assertions.assertEquals("hevxcced", model.nextLink());
-        Assertions.assertEquals("hmk", model.value().get(0).properties().resourceGuardResourceId());
-        Assertions.assertEquals("auwjuetaebu",
+        Assertions.assertEquals("dooaojkniodko", model.nextLink());
+        Assertions.assertEquals("rtuzqogs", model.value().get(0).properties().resourceGuardResourceId());
+        Assertions.assertEquals("vfdnwnwmewzsyyce",
             model.value().get(0).properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("vdmovsmzlxwabm",
+        Assertions.assertEquals("soibjudpfrx",
             model.value().get(0).properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("cybxa", model.value().get(0).properties().lastUpdatedTime());
-        Assertions.assertEquals("gszufoxciqopid", model.value().get(0).properties().description());
+        Assertions.assertEquals("iirqtd", model.value().get(0).properties().lastUpdatedTime());
+        Assertions.assertEquals("axoruzfgsquy", model.value().get(0).properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuardProxyBaseResourceList model = new ResourceGuardProxyBaseResourceList().withNextLink("hevxcced")
-            .withValue(Arrays.asList(
-                new ResourceGuardProxyBaseResourceInner()
-                    .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("hmk")
+        ResourceGuardProxyBaseResourceList model
+            = new ResourceGuardProxyBaseResourceList().withNextLink("dooaojkniodko")
+                .withValue(Arrays.asList(new ResourceGuardProxyBaseResourceInner()
+                    .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("rtuzqogs")
                         .withResourceGuardOperationDetails(Arrays.asList(
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("auwjuetaebu")
-                                .withDefaultResourceRequest("vdmovsmzlxwabm"),
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("efkifr")
-                                .withDefaultResourceRequest("puqujmqlgkfbtn"),
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("aongbj")
-                                .withDefaultResourceRequest("tujitcjedft"),
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("ae")
-                                .withDefaultResourceRequest("ojvdcpzfoqo")))
-                        .withLastUpdatedTime("cybxa").withDescription("gszufoxciqopid")),
-                new ResourceGuardProxyBaseResourceInner()
-                    .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("zcmrvexztvb")
-                        .withResourceGuardOperationDetails(Arrays.asList(
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("frao")
-                                .withDefaultResourceRequest("koowtl"),
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("guxawqaldsyuuxi")
-                                .withDefaultResourceRequest("rqf"),
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("wyznkbyku")
-                                .withDefaultResourceRequest("pfhpagmhrskdsnfd")))
-                        .withLastUpdatedTime("oakgtdlmkkzev").withDescription("hewpusdsttwv")),
-                new ResourceGuardProxyBaseResourceInner()
-                    .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("aenuuz")
-                        .withResourceGuardOperationDetails(Arrays.asList(
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("minrfdw")
-                                .withDefaultResourceRequest("uhhziuiefozbhdm"),
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("l")
-                                .withDefaultResourceRequest("qhoftrmaequiah")))
-                        .withLastUpdatedTime("cslfaoqzpiyylha").withDescription("swhccsphk")),
-                new ResourceGuardProxyBaseResourceInner()
-                    .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("sbrgz")
-                        .withResourceGuardOperationDetails(Arrays.asList(
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("weyp")
-                                .withDefaultResourceRequest("dxggicccnxqhuexm"),
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("tlstvlzywem")
-                                .withDefaultResourceRequest("rncsdtclu"),
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("ypbsfgytguslfead")
-                                .withDefaultResourceRequest("gq"),
-                            new ResourceGuardOperationDetail().withVaultCriticalOperation("yhejhzisxgfp")
-                                .withDefaultResourceRequest("olppvksrpqvujz")))
-                        .withLastUpdatedTime("ehtwdwrft").withDescription("iby"))));
+                            new ResourceGuardOperationDetail().withVaultCriticalOperation("vfdnwnwmewzsyyce")
+                                .withDefaultResourceRequest("soibjudpfrx"),
+                            new ResourceGuardOperationDetail().withVaultCriticalOperation("thzvaytdwkqbrqu")
+                                .withDefaultResourceRequest("axhexiilivp")))
+                        .withLastUpdatedTime("iirqtd")
+                        .withDescription("axoruzfgsquy"))));
         model = BinaryData.fromObject(model).toObject(ResourceGuardProxyBaseResourceList.class);
-        Assertions.assertEquals("hevxcced", model.nextLink());
-        Assertions.assertEquals("hmk", model.value().get(0).properties().resourceGuardResourceId());
-        Assertions.assertEquals("auwjuetaebu",
+        Assertions.assertEquals("dooaojkniodko", model.nextLink());
+        Assertions.assertEquals("rtuzqogs", model.value().get(0).properties().resourceGuardResourceId());
+        Assertions.assertEquals("vfdnwnwmewzsyyce",
             model.value().get(0).properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("vdmovsmzlxwabm",
+        Assertions.assertEquals("soibjudpfrx",
             model.value().get(0).properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("cybxa", model.value().get(0).properties().lastUpdatedTime());
-        Assertions.assertEquals("gszufoxciqopid", model.value().get(0).properties().description());
+        Assertions.assertEquals("iirqtd", model.value().get(0).properties().lastUpdatedTime());
+        Assertions.assertEquals("axoruzfgsquy", model.value().get(0).properties().description());
     }
 }

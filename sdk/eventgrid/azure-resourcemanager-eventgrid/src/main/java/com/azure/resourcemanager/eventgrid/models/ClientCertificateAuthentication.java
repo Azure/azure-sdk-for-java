@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The certificate authentication properties for the client.
  */
 @Fluent
-public final class ClientCertificateAuthentication {
+public final class ClientCertificateAuthentication implements JsonSerializable<ClientCertificateAuthentication> {
     /*
      * The validation scheme used to authenticate the client. Default value is SubjectMatchesAuthenticationName.
      */
-    @JsonProperty(value = "validationScheme")
     private ClientCertificateValidationScheme validationScheme;
 
     /*
      * The list of thumbprints that are allowed during client authentication. This property is required only if the
      * validationScheme is 'ThumbprintMatch'.
      */
-    @JsonProperty(value = "allowedThumbprints")
     private List<String> allowedThumbprints;
 
     /**
@@ -82,5 +84,49 @@ public final class ClientCertificateAuthentication {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validationScheme",
+            this.validationScheme == null ? null : this.validationScheme.toString());
+        jsonWriter.writeArrayField("allowedThumbprints", this.allowedThumbprints,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientCertificateAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientCertificateAuthentication if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClientCertificateAuthentication.
+     */
+    public static ClientCertificateAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientCertificateAuthentication deserializedClientCertificateAuthentication
+                = new ClientCertificateAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validationScheme".equals(fieldName)) {
+                    deserializedClientCertificateAuthentication.validationScheme
+                        = ClientCertificateValidationScheme.fromString(reader.getString());
+                } else if ("allowedThumbprints".equals(fieldName)) {
+                    List<String> allowedThumbprints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClientCertificateAuthentication.allowedThumbprints = allowedThumbprints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientCertificateAuthentication;
+        });
     }
 }

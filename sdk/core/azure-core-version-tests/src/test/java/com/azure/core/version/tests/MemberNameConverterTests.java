@@ -44,8 +44,7 @@ public class MemberNameConverterTests {
         ObjectMapper mapper = new ObjectMapper();
 
         // Configure the mapper with non-private field serialization.
-        mapper.setVisibility(mapper.getVisibilityChecker()
-            .withFieldVisibility(JsonAutoDetect.Visibility.NON_PRIVATE));
+        mapper.setVisibility(mapper.getVisibilityChecker().withFieldVisibility(JsonAutoDetect.Visibility.NON_PRIVATE));
 
         JACKSON_JSON_SERIALIZER = new JacksonJsonSerializerBuilder().serializer(mapper).build();
     }
@@ -224,7 +223,6 @@ public class MemberNameConverterTests {
         assertEquals(EXPECT_VALUE_IN_METHOD, JACKSON_JSON_SERIALIZER.convertMemberName(m));
     }
 
-
     @Test
     public void testPropertyNameOnMethodAnnotationWithEmptyValue() throws NoSuchMethodException {
         class LocalHotel {
@@ -267,8 +265,7 @@ public class MemberNameConverterTests {
     @ParameterizedTest
     @MethodSource("classConversionSupplier")
     public <T> void classConversion(T object, JacksonJsonSerializer converter, Set<String> expected) {
-        Set<String> actual = getAllDeclaredMembers(object.getClass())
-            .map(converter::convertMemberName)
+        Set<String> actual = getAllDeclaredMembers(object.getClass()).map(converter::convertMemberName)
             .filter(Objects::nonNull)
             .collect(Collectors.toSet());
 
@@ -284,8 +281,7 @@ public class MemberNameConverterTests {
                 new HashSet<>(Arrays.asList("age", "name"))),
 
             Arguments.of(new GettersWithAnnotations().setAge(50).setName("John Doe"), JACKSON_JSON_SERIALIZER,
-                new HashSet<>(Arrays.asList("_age", "_name")))
-        );
+                new HashSet<>(Arrays.asList("_age", "_name"))));
     }
 
     private static Stream<Member> getAllDeclaredMembers(Class<?> clazz) {
@@ -296,4 +292,3 @@ public class MemberNameConverterTests {
         return members.stream();
     }
 }
-

@@ -5,35 +5,39 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.WebhookPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The parameters for updating a webhook. */
+/**
+ * The parameters for updating a webhook.
+ */
 @Fluent
-public final class WebhookUpdateParameters {
+public final class WebhookUpdateParameters implements JsonSerializable<WebhookUpdateParameters> {
     /*
      * The tags for the webhook.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The properties that the webhook will be updated with.
      */
-    @JsonProperty(value = "properties")
     private WebhookPropertiesUpdateParameters innerProperties;
 
-    /** Creates an instance of WebhookUpdateParameters class. */
+    /**
+     * Creates an instance of WebhookUpdateParameters class.
+     */
     public WebhookUpdateParameters() {
     }
 
     /**
      * Get the tags property: The tags for the webhook.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -42,7 +46,7 @@ public final class WebhookUpdateParameters {
 
     /**
      * Set the tags property: The tags for the webhook.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the WebhookUpdateParameters object itself.
      */
@@ -53,7 +57,7 @@ public final class WebhookUpdateParameters {
 
     /**
      * Get the innerProperties property: The properties that the webhook will be updated with.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebhookPropertiesUpdateParameters innerProperties() {
@@ -62,7 +66,7 @@ public final class WebhookUpdateParameters {
 
     /**
      * Get the serviceUri property: The service URI for the webhook to post notifications.
-     *
+     * 
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -71,7 +75,7 @@ public final class WebhookUpdateParameters {
 
     /**
      * Set the serviceUri property: The service URI for the webhook to post notifications.
-     *
+     * 
      * @param serviceUri the serviceUri value to set.
      * @return the WebhookUpdateParameters object itself.
      */
@@ -85,7 +89,7 @@ public final class WebhookUpdateParameters {
 
     /**
      * Get the customHeaders property: Custom headers that will be added to the webhook notifications.
-     *
+     * 
      * @return the customHeaders value.
      */
     public Map<String, String> customHeaders() {
@@ -94,7 +98,7 @@ public final class WebhookUpdateParameters {
 
     /**
      * Set the customHeaders property: Custom headers that will be added to the webhook notifications.
-     *
+     * 
      * @param customHeaders the customHeaders value to set.
      * @return the WebhookUpdateParameters object itself.
      */
@@ -108,7 +112,7 @@ public final class WebhookUpdateParameters {
 
     /**
      * Get the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public WebhookStatus status() {
@@ -117,7 +121,7 @@ public final class WebhookUpdateParameters {
 
     /**
      * Set the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @param status the status value to set.
      * @return the WebhookUpdateParameters object itself.
      */
@@ -133,7 +137,7 @@ public final class WebhookUpdateParameters {
      * Get the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -144,7 +148,7 @@ public final class WebhookUpdateParameters {
      * Set the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the WebhookUpdateParameters object itself.
      */
@@ -158,7 +162,7 @@ public final class WebhookUpdateParameters {
 
     /**
      * Get the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @return the actions value.
      */
     public List<WebhookAction> actions() {
@@ -167,7 +171,7 @@ public final class WebhookUpdateParameters {
 
     /**
      * Set the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the WebhookUpdateParameters object itself.
      */
@@ -181,12 +185,53 @@ public final class WebhookUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebhookUpdateParameters.
+     */
+    public static WebhookUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookUpdateParameters deserializedWebhookUpdateParameters = new WebhookUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebhookUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebhookUpdateParameters.innerProperties
+                        = WebhookPropertiesUpdateParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookUpdateParameters;
+        });
     }
 }

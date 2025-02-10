@@ -7,7 +7,10 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -18,20 +21,32 @@ public class ServicesResource extends Resource {
     /*
      * The kind of the service.
      */
-    @JsonProperty(value = "kind", required = true)
     private Kind kind;
 
     /*
      * An etag associated with the resource, used for optimistic concurrency when editing it.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Setting indicating whether the service has a managed identity associated with it.
      */
-    @JsonProperty(value = "identity")
     private ServicesResourceIdentity identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of ServicesResource class.
@@ -100,6 +115,36 @@ public class ServicesResource extends Resource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -124,8 +169,8 @@ public class ServicesResource extends Resource {
      */
     public void validate() {
         if (kind() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property kind in model ServicesResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kind in model ServicesResource"));
         }
         if (identity() != null) {
             identity().validate();
@@ -133,4 +178,60 @@ public class ServicesResource extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServicesResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicesResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServicesResource.
+     */
+    public static ServicesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicesResource deserializedServicesResource = new ServicesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServicesResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServicesResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServicesResource.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedServicesResource.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServicesResource.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedServicesResource.kind = Kind.fromString(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedServicesResource.etag = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedServicesResource.identity = ServicesResourceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicesResource;
+        });
+    }
 }

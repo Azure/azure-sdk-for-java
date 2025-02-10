@@ -5,90 +5,84 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** contentType. */
+/**
+ * contentType.
+ */
 @Fluent
 public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
     /*
      * The descriptive text for the item.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The name of the group this content type belongs to. Helps organize related content types.
      */
-    @JsonProperty(value = "group")
     private String group;
 
     /*
      * Indicates whether the content type is hidden in the list's 'New' menu.
      */
-    @JsonProperty(value = "hidden")
     private Boolean hidden;
 
     /*
      * itemReference
      */
-    @JsonProperty(value = "inheritedFrom")
     private MicrosoftGraphItemReference inheritedFrom;
 
     /*
      * The name of the content type.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * contentTypeOrder
      */
-    @JsonProperty(value = "order")
     private MicrosoftGraphContentTypeOrder order;
 
     /*
      * The unique identifier of the content type.
      */
-    @JsonProperty(value = "parentId")
     private String parentId;
 
     /*
      * If true, the content type cannot be modified unless this value is first set to false.
      */
-    @JsonProperty(value = "readOnly")
     private Boolean readOnly;
 
     /*
      * If true, the content type cannot be modified by users or through push-down operations. Only site collection
      * administrators can seal or unseal content types.
      */
-    @JsonProperty(value = "sealed")
     private Boolean sealed;
 
     /*
      * The collection of columns that are required by this content type
      */
-    @JsonProperty(value = "columnLinks")
     private List<MicrosoftGraphColumnLink> columnLinks;
 
     /*
      * contentType
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphContentType class. */
+    /**
+     * Creates an instance of MicrosoftGraphContentType class.
+     */
     public MicrosoftGraphContentType() {
     }
 
     /**
      * Get the description property: The descriptive text for the item.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -97,7 +91,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Set the description property: The descriptive text for the item.
-     *
+     * 
      * @param description the description value to set.
      * @return the MicrosoftGraphContentType object itself.
      */
@@ -108,7 +102,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Get the group property: The name of the group this content type belongs to. Helps organize related content types.
-     *
+     * 
      * @return the group value.
      */
     public String group() {
@@ -117,7 +111,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Set the group property: The name of the group this content type belongs to. Helps organize related content types.
-     *
+     * 
      * @param group the group value to set.
      * @return the MicrosoftGraphContentType object itself.
      */
@@ -128,7 +122,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Get the hidden property: Indicates whether the content type is hidden in the list's 'New' menu.
-     *
+     * 
      * @return the hidden value.
      */
     public Boolean hidden() {
@@ -137,7 +131,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Set the hidden property: Indicates whether the content type is hidden in the list's 'New' menu.
-     *
+     * 
      * @param hidden the hidden value to set.
      * @return the MicrosoftGraphContentType object itself.
      */
@@ -148,7 +142,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Get the inheritedFrom property: itemReference.
-     *
+     * 
      * @return the inheritedFrom value.
      */
     public MicrosoftGraphItemReference inheritedFrom() {
@@ -157,7 +151,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Set the inheritedFrom property: itemReference.
-     *
+     * 
      * @param inheritedFrom the inheritedFrom value to set.
      * @return the MicrosoftGraphContentType object itself.
      */
@@ -168,7 +162,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Get the name property: The name of the content type.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -177,7 +171,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Set the name property: The name of the content type.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphContentType object itself.
      */
@@ -188,7 +182,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Get the order property: contentTypeOrder.
-     *
+     * 
      * @return the order value.
      */
     public MicrosoftGraphContentTypeOrder order() {
@@ -197,7 +191,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Set the order property: contentTypeOrder.
-     *
+     * 
      * @param order the order value to set.
      * @return the MicrosoftGraphContentType object itself.
      */
@@ -208,7 +202,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Get the parentId property: The unique identifier of the content type.
-     *
+     * 
      * @return the parentId value.
      */
     public String parentId() {
@@ -217,7 +211,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Set the parentId property: The unique identifier of the content type.
-     *
+     * 
      * @param parentId the parentId value to set.
      * @return the MicrosoftGraphContentType object itself.
      */
@@ -228,7 +222,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Get the readOnly property: If true, the content type cannot be modified unless this value is first set to false.
-     *
+     * 
      * @return the readOnly value.
      */
     public Boolean readOnly() {
@@ -237,7 +231,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Set the readOnly property: If true, the content type cannot be modified unless this value is first set to false.
-     *
+     * 
      * @param readOnly the readOnly value to set.
      * @return the MicrosoftGraphContentType object itself.
      */
@@ -249,7 +243,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
     /**
      * Get the sealed property: If true, the content type cannot be modified by users or through push-down operations.
      * Only site collection administrators can seal or unseal content types.
-     *
+     * 
      * @return the sealed value.
      */
     public Boolean sealed() {
@@ -259,7 +253,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
     /**
      * Set the sealed property: If true, the content type cannot be modified by users or through push-down operations.
      * Only site collection administrators can seal or unseal content types.
-     *
+     * 
      * @param sealed the sealed value to set.
      * @return the MicrosoftGraphContentType object itself.
      */
@@ -270,7 +264,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Get the columnLinks property: The collection of columns that are required by this content type.
-     *
+     * 
      * @return the columnLinks value.
      */
     public List<MicrosoftGraphColumnLink> columnLinks() {
@@ -279,7 +273,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Set the columnLinks property: The collection of columns that are required by this content type.
-     *
+     * 
      * @param columnLinks the columnLinks value to set.
      * @return the MicrosoftGraphContentType object itself.
      */
@@ -290,17 +284,16 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: contentType.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: contentType.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphContentType object itself.
      */
@@ -309,15 +302,9 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphContentType withId(String id) {
         super.withId(id);
@@ -326,7 +313,7 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -341,5 +328,84 @@ public final class MicrosoftGraphContentType extends MicrosoftGraphEntity {
         if (columnLinks() != null) {
             columnLinks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("group", this.group);
+        jsonWriter.writeBooleanField("hidden", this.hidden);
+        jsonWriter.writeJsonField("inheritedFrom", this.inheritedFrom);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("order", this.order);
+        jsonWriter.writeStringField("parentId", this.parentId);
+        jsonWriter.writeBooleanField("readOnly", this.readOnly);
+        jsonWriter.writeBooleanField("sealed", this.sealed);
+        jsonWriter.writeArrayField("columnLinks", this.columnLinks, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphContentType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphContentType if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphContentType.
+     */
+    public static MicrosoftGraphContentType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphContentType deserializedMicrosoftGraphContentType = new MicrosoftGraphContentType();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentType.withId(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentType.description = reader.getString();
+                } else if ("group".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentType.group = reader.getString();
+                } else if ("hidden".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentType.hidden = reader.getNullable(JsonReader::getBoolean);
+                } else if ("inheritedFrom".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentType.inheritedFrom = MicrosoftGraphItemReference.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentType.name = reader.getString();
+                } else if ("order".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentType.order = MicrosoftGraphContentTypeOrder.fromJson(reader);
+                } else if ("parentId".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentType.parentId = reader.getString();
+                } else if ("readOnly".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentType.readOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sealed".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentType.sealed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("columnLinks".equals(fieldName)) {
+                    List<MicrosoftGraphColumnLink> columnLinks
+                        = reader.readArray(reader1 -> MicrosoftGraphColumnLink.fromJson(reader1));
+                    deserializedMicrosoftGraphContentType.columnLinks = columnLinks;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphContentType.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphContentType;
+        });
     }
 }

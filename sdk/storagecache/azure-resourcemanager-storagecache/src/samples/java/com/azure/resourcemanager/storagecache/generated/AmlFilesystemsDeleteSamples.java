@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-/** Samples for AmlFilesystems Delete. */
+/**
+ * Samples for AmlFilesystems Delete.
+ */
 public final class AmlFilesystemsDeleteSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_Delete.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/
+     * amlFilesystems_Delete.json
      */
     /**
      * Sample code: amlFilesystems_Delete.
-     *
+     * 
      * @param manager Entry point to StorageCacheManager.
      */
     public static void amlFilesystemsDelete(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {

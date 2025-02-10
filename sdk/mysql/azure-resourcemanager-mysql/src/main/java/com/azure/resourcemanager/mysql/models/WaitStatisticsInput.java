@@ -14,7 +14,8 @@ import java.time.OffsetDateTime;
 /** Input to get wait statistics. */
 @Fluent
 public final class WaitStatisticsInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatisticsInput.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WaitStatisticsInput.class);
 
     /*
      * The properties of a wait statistics input.
@@ -107,10 +108,8 @@ public final class WaitStatisticsInput {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model WaitStatisticsInput"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model WaitStatisticsInput"));
         } else {
             innerProperties().validate();
         }

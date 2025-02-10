@@ -6,30 +6,36 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The RegenerateEndpointKeysRequest model. */
+/**
+ * The RegenerateEndpointKeysRequest model.
+ */
 @Fluent
-public final class RegenerateEndpointKeysRequest {
+public final class RegenerateEndpointKeysRequest implements JsonSerializable<RegenerateEndpointKeysRequest> {
     /*
      * [Required] Specification for which type of key to generate. Primary or Secondary.
      */
-    @JsonProperty(value = "keyType", required = true)
     private KeyType keyType;
 
     /*
      * The value the key is set to.
      */
-    @JsonProperty(value = "keyValue")
     private String keyValue;
 
-    /** Creates an instance of RegenerateEndpointKeysRequest class. */
+    /**
+     * Creates an instance of RegenerateEndpointKeysRequest class.
+     */
     public RegenerateEndpointKeysRequest() {
     }
 
     /**
      * Get the keyType property: [Required] Specification for which type of key to generate. Primary or Secondary.
-     *
+     * 
      * @return the keyType value.
      */
     public KeyType keyType() {
@@ -38,7 +44,7 @@ public final class RegenerateEndpointKeysRequest {
 
     /**
      * Set the keyType property: [Required] Specification for which type of key to generate. Primary or Secondary.
-     *
+     * 
      * @param keyType the keyType value to set.
      * @return the RegenerateEndpointKeysRequest object itself.
      */
@@ -49,7 +55,7 @@ public final class RegenerateEndpointKeysRequest {
 
     /**
      * Get the keyValue property: The value the key is set to.
-     *
+     * 
      * @return the keyValue value.
      */
     public String keyValue() {
@@ -58,7 +64,7 @@ public final class RegenerateEndpointKeysRequest {
 
     /**
      * Set the keyValue property: The value the key is set to.
-     *
+     * 
      * @param keyValue the keyValue value to set.
      * @return the RegenerateEndpointKeysRequest object itself.
      */
@@ -69,17 +75,57 @@ public final class RegenerateEndpointKeysRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyType in model RegenerateEndpointKeysRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyType in model RegenerateEndpointKeysRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RegenerateEndpointKeysRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyType", this.keyType == null ? null : this.keyType.toString());
+        jsonWriter.writeStringField("keyValue", this.keyValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegenerateEndpointKeysRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegenerateEndpointKeysRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RegenerateEndpointKeysRequest.
+     */
+    public static RegenerateEndpointKeysRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegenerateEndpointKeysRequest deserializedRegenerateEndpointKeysRequest
+                = new RegenerateEndpointKeysRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyType".equals(fieldName)) {
+                    deserializedRegenerateEndpointKeysRequest.keyType = KeyType.fromString(reader.getString());
+                } else if ("keyValue".equals(fieldName)) {
+                    deserializedRegenerateEndpointKeysRequest.keyValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegenerateEndpointKeysRequest;
+        });
+    }
 }

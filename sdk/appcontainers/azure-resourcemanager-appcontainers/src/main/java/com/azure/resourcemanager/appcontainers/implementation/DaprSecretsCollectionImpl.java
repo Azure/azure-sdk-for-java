@@ -15,8 +15,7 @@ public final class DaprSecretsCollectionImpl implements DaprSecretsCollection {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    DaprSecretsCollectionImpl(
-        DaprSecretsCollectionInner innerObject,
+    DaprSecretsCollectionImpl(DaprSecretsCollectionInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

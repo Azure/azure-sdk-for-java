@@ -40,16 +40,31 @@ public final class PatchUtil {
         for (PatchOperation patchOperation : patchOperationList) {
 
             JsonSerializable operationJsonSerializable = new JsonSerializable();
-            operationJsonSerializable.set(PatchConstants.PropertyNames_OperationType, patchOperation.getOperationType().getOperationValue());
+            operationJsonSerializable.set(
+                PatchConstants.PropertyNames_OperationType,
+                patchOperation.getOperationType().getOperationValue()
+            );
 
             if (patchOperation instanceof PatchOperationCore) {
                 if (patchOperation.getOperationType() == PatchOperationType.MOVE) {
-                    operationJsonSerializable.set(PatchConstants.PropertyNames_Path, ((PatchOperationCore)patchOperation).getPath());
-                    operationJsonSerializable.set(PatchConstants.PropertyNames_From, ((PatchOperationCore)patchOperation).getFrom());
+                    operationJsonSerializable.set(
+                        PatchConstants.PropertyNames_Path,
+                        ((PatchOperationCore)patchOperation).getPath()
+                    );
+                    operationJsonSerializable.set(
+                        PatchConstants.PropertyNames_From,
+                        ((PatchOperationCore)patchOperation).getFrom()
+                    );
                 }
                 else {
-                    operationJsonSerializable.set(PatchConstants.PropertyNames_Path, ((PatchOperationCore)patchOperation).getPath());
-                    operationJsonSerializable.set(PatchConstants.PropertyNames_Value, ((PatchOperationCore)patchOperation).getResource());
+                    operationJsonSerializable.set(
+                        PatchConstants.PropertyNames_Path,
+                        ((PatchOperationCore)patchOperation).getPath()
+                    );
+                    operationJsonSerializable.set(
+                        PatchConstants.PropertyNames_Value,
+                        ((PatchOperationCore)patchOperation).getResource()
+                    );
                 }
             } else {
                 throw new IllegalArgumentException("Invalid patch operation type");
@@ -58,13 +73,19 @@ public final class PatchUtil {
             operations.add(operationJsonSerializable.getPropertyBag());
         }
 
-        jsonSerializable.set(PatchConstants.OPERATIONS, operations);
+        jsonSerializable.set(
+            PatchConstants.OPERATIONS,
+            operations
+        );
 
         if(requestOptions != null) {
             String filterPredicate = requestOptions.getFilterPredicate();
             if(filterPredicate != null) {
                 if (!filterPredicate.isEmpty()) {
-                    jsonSerializable.set(PatchConstants.CONDITION, filterPredicate);
+                    jsonSerializable.set(
+                        PatchConstants.CONDITION,
+                        filterPredicate
+                    );
                 }
             }
         }

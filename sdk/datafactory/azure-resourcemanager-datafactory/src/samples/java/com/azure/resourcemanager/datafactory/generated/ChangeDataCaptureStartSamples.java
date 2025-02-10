@@ -18,7 +18,8 @@ public final class ChangeDataCaptureStartSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void changeDataCaptureStart(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().startWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleChangeDataCapture", com.azure.core.util.Context.NONE);
+        manager.changeDataCaptures()
+            .startWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleChangeDataCapture",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the SIM resource. */
+/**
+ * The state of the SIM resource.
+ */
 public final class SimState extends ExpandableStringEnum<SimState> {
-    /** Static value Disabled for SimState. */
+    /**
+     * Static value Disabled for SimState.
+     */
     public static final SimState DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for SimState. */
+    /**
+     * Static value Enabled for SimState.
+     */
     public static final SimState ENABLED = fromString("Enabled");
 
-    /** Static value Invalid for SimState. */
+    /**
+     * Static value Invalid for SimState.
+     */
     public static final SimState INVALID = fromString("Invalid");
 
     /**
      * Creates a new instance of SimState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class SimState extends ExpandableStringEnum<SimState> {
 
     /**
      * Creates or finds a SimState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SimState.
      */
-    @JsonCreator
     public static SimState fromString(String name) {
         return fromString(name, SimState.class);
     }
 
     /**
      * Gets known SimState values.
-     *
+     * 
      * @return known SimState values.
      */
     public static Collection<SimState> values() {

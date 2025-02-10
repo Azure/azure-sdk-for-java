@@ -6,31 +6,51 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryServicesProviderProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Provider details. */
+/**
+ * Provider details.
+ */
 @Fluent
 public final class RecoveryServicesProviderInner extends ProxyResource {
     /*
      * Provider properties.
      */
-    @JsonProperty(value = "properties")
     private RecoveryServicesProviderProperties properties;
 
     /*
      * Resource Location
      */
-    @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of RecoveryServicesProviderInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RecoveryServicesProviderInner class.
+     */
     public RecoveryServicesProviderInner() {
     }
 
     /**
      * Get the properties property: Provider properties.
-     *
+     * 
      * @return the properties value.
      */
     public RecoveryServicesProviderProperties properties() {
@@ -39,7 +59,7 @@ public final class RecoveryServicesProviderInner extends ProxyResource {
 
     /**
      * Set the properties property: Provider properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RecoveryServicesProviderInner object itself.
      */
@@ -50,7 +70,7 @@ public final class RecoveryServicesProviderInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +79,7 @@ public final class RecoveryServicesProviderInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the RecoveryServicesProviderInner object itself.
      */
@@ -69,13 +89,91 @@ public final class RecoveryServicesProviderInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryServicesProviderInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryServicesProviderInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryServicesProviderInner.
+     */
+    public static RecoveryServicesProviderInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryServicesProviderInner deserializedRecoveryServicesProviderInner
+                = new RecoveryServicesProviderInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderInner.properties
+                        = RecoveryServicesProviderProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedRecoveryServicesProviderInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryServicesProviderInner;
+        });
     }
 }

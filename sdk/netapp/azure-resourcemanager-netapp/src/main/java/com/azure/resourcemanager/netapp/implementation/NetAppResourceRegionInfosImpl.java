@@ -29,12 +29,12 @@ public final class NetAppResourceRegionInfosImpl implements NetAppResourceRegion
 
     public PagedIterable<RegionInfoResource> list(String location) {
         PagedIterable<RegionInfoResourceInner> inner = this.serviceClient().list(location);
-        return Utils.mapPage(inner, inner1 -> new RegionInfoResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegionInfoResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RegionInfoResource> list(String location, Context context) {
         PagedIterable<RegionInfoResourceInner> inner = this.serviceClient().list(location, context);
-        return Utils.mapPage(inner, inner1 -> new RegionInfoResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegionInfoResourceImpl(inner1, this.manager()));
     }
 
     public Response<RegionInfoResource> getWithResponse(String location, Context context) {

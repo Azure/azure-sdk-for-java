@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties returned with in an insight.
  */
 @Fluent
-public final class Diagnostic {
+public final class Diagnostic implements JsonSerializable<Diagnostic> {
     /*
      * Solution Id
      */
-    @JsonProperty(value = "solutionId")
     private String solutionId;
 
     /*
      * Denotes the status of the diagnostic resource.
      */
-    @JsonProperty(value = "status")
     private Status status;
 
     /*
      * The problems (if any) detected by this insight.
      */
-    @JsonProperty(value = "insights")
     private List<Insight> insights;
 
     /*
      * Error definition.
      */
-    @JsonProperty(value = "error")
     private Error error;
 
     /**
@@ -135,5 +135,51 @@ public final class Diagnostic {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("solutionId", this.solutionId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeArrayField("insights", this.insights, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Diagnostic from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Diagnostic if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Diagnostic.
+     */
+    public static Diagnostic fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Diagnostic deserializedDiagnostic = new Diagnostic();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("solutionId".equals(fieldName)) {
+                    deserializedDiagnostic.solutionId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedDiagnostic.status = Status.fromString(reader.getString());
+                } else if ("insights".equals(fieldName)) {
+                    List<Insight> insights = reader.readArray(reader1 -> Insight.fromJson(reader1));
+                    deserializedDiagnostic.insights = insights;
+                } else if ("error".equals(fieldName)) {
+                    deserializedDiagnostic.error = Error.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnostic;
+        });
     }
 }

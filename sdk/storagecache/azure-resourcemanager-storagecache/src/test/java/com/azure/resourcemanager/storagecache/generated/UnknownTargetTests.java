@@ -13,24 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class UnknownTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UnknownTarget model =
-            BinaryData
-                .fromString(
-                    "{\"attributes\":{\"lla\":\"gxk\",\"z\":\"melwuipiccjz\",\"vvcnayr\":\"v\",\"rdvstkwqqtch\":\"yrnxxmueedn\"}}")
-                .toObject(UnknownTarget.class);
-        Assertions.assertEquals("gxk", model.attributes().get("lla"));
+        UnknownTarget model
+            = BinaryData.fromString("{\"attributes\":{\"fbn\":\"xuvw\"}}").toObject(UnknownTarget.class);
+        Assertions.assertEquals("xuvw", model.attributes().get("fbn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnknownTarget model =
-            new UnknownTarget()
-                .withAttributes(
-                    mapOf("lla", "gxk", "z", "melwuipiccjz", "vvcnayr", "v", "rdvstkwqqtch", "yrnxxmueedn"));
+        UnknownTarget model = new UnknownTarget().withAttributes(mapOf("fbn", "xuvw"));
         model = BinaryData.fromObject(model).toObject(UnknownTarget.class);
-        Assertions.assertEquals("gxk", model.attributes().get("lla"));
+        Assertions.assertEquals("xuvw", model.attributes().get("fbn"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"value\":\"rywn\",\"description\":\"oqftiyqzrnkcq\",\"defaultValue\":\"xlwhzlsicoh\",\"dataType\":\"Numeric\",\"allowedValues\":\"wvl\",\"source\":\"avwhheunm\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":false,\"unit\":\"onocukok\",\"documentationLink\":\"axuconuq\"},\"id\":\"fkbey\",\"name\":\"ewrmjmwvvjektc\",\"type\":\"senhwlrs\"}")
-                .toObject(ConfigurationInner.class);
+        ConfigurationInner model = BinaryData.fromString(
+            "{\"properties\":{\"value\":\"rywn\",\"description\":\"oqftiyqzrnkcq\",\"defaultValue\":\"xlwhzlsicoh\",\"dataType\":\"Numeric\",\"allowedValues\":\"wvl\",\"source\":\"avwhheunm\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":false,\"unit\":\"onocukok\",\"documentationLink\":\"axuconuq\"},\"id\":\"fkbey\",\"name\":\"ewrmjmwvvjektc\",\"type\":\"senhwlrs\"}")
+            .toObject(ConfigurationInner.class);
         Assertions.assertEquals("rywn", model.value());
         Assertions.assertEquals("avwhheunm", model.source());
     }

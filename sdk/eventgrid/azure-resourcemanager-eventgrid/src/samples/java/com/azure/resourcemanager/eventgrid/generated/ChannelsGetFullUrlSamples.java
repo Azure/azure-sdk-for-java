@@ -10,7 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class ChannelsGetFullUrlSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * Channels_GetFullUrl.json
      */
     /**
@@ -19,7 +19,8 @@ public final class ChannelsGetFullUrlSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void channelsGetFullUrl(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.channels().getFullUrlWithResponse("examplerg", "examplenamespace", "examplechannel",
-            com.azure.core.util.Context.NONE);
+        manager.channels()
+            .getFullUrlWithResponse("examplerg", "examplenamespace", "examplechannel",
+                com.azure.core.util.Context.NONE);
     }
 }

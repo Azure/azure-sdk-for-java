@@ -7,23 +7,24 @@ package com.azure.resourcemanager.reservations.generated;
 import com.azure.resourcemanager.reservations.models.ExchangeRequest;
 import com.azure.resourcemanager.reservations.models.ExchangeRequestProperties;
 
-/** Samples for Exchange Post. */
+/**
+ * Samples for Exchange Post.
+ */
 public final class ExchangePostSamples {
     /*
-     * x-ms-original-file: specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/Exchange.json
+     * x-ms-original-file:
+     * specification/reservations/resource-manager/Microsoft.Capacity/stable/2022-11-01/examples/Exchange.json
      */
     /**
      * Sample code: Exchange.
-     *
+     * 
      * @param manager Entry point to ReservationsManager.
      */
     public static void exchange(com.azure.resourcemanager.reservations.ReservationsManager manager) {
-        manager
-            .exchanges()
+        manager.exchanges()
             .post(
-                new ExchangeRequest()
-                    .withProperties(
-                        new ExchangeRequestProperties().withSessionId("66e2ac8f-439e-4345-8235-6fef07608081")),
+                new ExchangeRequest().withProperties(
+                    new ExchangeRequestProperties().withSessionId("66e2ac8f-439e-4345-8235-6fef07608081")),
                 com.azure.core.util.Context.NONE);
     }
 }

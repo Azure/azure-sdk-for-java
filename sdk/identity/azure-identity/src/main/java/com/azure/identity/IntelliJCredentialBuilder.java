@@ -20,7 +20,7 @@ import java.util.List;
  * for IntelliJ plugin</a> for the IntelliJ IDEA development environment. It enables developers to create, test, and
  * deploy Java applications to the Azure cloud platform. In order to use the plugin authentication as a user or
  * service principal against
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> is required.
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> is required.
  * The {@link IntelliJCredential} authenticates in a development environment and acquires a token on behalf of the
  * logged-in account in Azure Toolkit for IntelliJ. It uses the logged in user information on the IntelliJ IDE and uses
  * it to authenticate the application against Microsoft Entra ID.</p>
@@ -34,8 +34,7 @@ import java.util.List;
  *
  * <!-- src_embed com.azure.identity.credential.intellijcredential.construct -->
  * <pre>
- * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.intellijcredential.construct -->
  *
@@ -45,6 +44,13 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
     private static final ClientLogger LOGGER = new ClientLogger(IntelliJCredentialBuilder.class);
 
     private String tenantId;
+
+    /**
+     * Constructs an instance of IntelliJCredentialBuilder.
+     */
+    public IntelliJCredentialBuilder() {
+        super();
+    }
 
     /**
      * Sets the tenant id of the user to authenticate through the {@link IntelliJCredential}. The default is
@@ -70,12 +76,15 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
      * @param databasePath the path to the KeePass database.
      * @throws IllegalArgumentException if {@code databasePath} is either not specified or is empty.
      * @return An updated instance of this builder with the KeePass database path set as specified.
+     * @deprecated Support for older Azure Toolkit for IntelliJ versions was
+     * <a href="https://aka.ms/azsdk/java/identity/intellij-credential-update">removed in 1.14.0.</a>
      */
+    @Deprecated
     public IntelliJCredentialBuilder keePassDatabasePath(String databasePath) {
         if (CoreUtils.isNullOrEmpty(databasePath)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The KeePass database path is either empty or not configured."
-                                                 + " Please configure it on the builder."));
+                    + " Please configure it on the builder."));
         }
         this.identityClientOptions.setIntelliJKeePassDatabasePath(databasePath);
         return this;
@@ -91,8 +100,8 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
      * @return An updated instance of this builder with the additional tenants configured.
      */
     public IntelliJCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -106,7 +115,8 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
      * @return An updated instance of this builder with the additional tenants configured.
      */
     public IntelliJCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 

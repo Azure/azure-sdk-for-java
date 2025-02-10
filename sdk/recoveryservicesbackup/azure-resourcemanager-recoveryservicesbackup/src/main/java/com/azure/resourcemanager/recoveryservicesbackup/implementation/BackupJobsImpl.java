@@ -19,8 +19,7 @@ public final class BackupJobsImpl implements BackupJobs {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BackupJobsImpl(
-        BackupJobsClient innerClient,
+    public BackupJobsImpl(BackupJobsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,14 +27,14 @@ public final class BackupJobsImpl implements BackupJobs {
 
     public PagedIterable<JobResource> list(String vaultName, String resourceGroupName) {
         PagedIterable<JobResourceInner> inner = this.serviceClient().list(vaultName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new JobResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<JobResource> list(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context) {
-        PagedIterable<JobResourceInner> inner =
-            this.serviceClient().list(vaultName, resourceGroupName, filter, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new JobResourceImpl(inner1, this.manager()));
+    public PagedIterable<JobResource> list(String vaultName, String resourceGroupName, String filter, String skipToken,
+        Context context) {
+        PagedIterable<JobResourceInner> inner
+            = this.serviceClient().list(vaultName, resourceGroupName, filter, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobResourceImpl(inner1, this.manager()));
     }
 
     private BackupJobsClient serviceClient() {

@@ -5,35 +5,51 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A2A provider specific recovery point details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
+/**
+ * A2A provider specific recovery point details.
+ */
 @Fluent
 public final class A2ARecoveryPointDetails extends ProviderSpecificRecoveryPointDetails {
     /*
+     * Gets the provider type.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * A value indicating whether the recovery point is multi VM consistent.
      */
-    @JsonProperty(value = "recoveryPointSyncType")
     private RecoveryPointSyncType recoveryPointSyncType;
 
     /*
      * List of disk ids representing a recovery point.
      */
-    @JsonProperty(value = "disks")
     private List<String> disks;
 
-    /** Creates an instance of A2ARecoveryPointDetails class. */
+    /**
+     * Creates an instance of A2ARecoveryPointDetails class.
+     */
     public A2ARecoveryPointDetails() {
     }
 
     /**
+     * Get the instanceType property: Gets the provider type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the recoveryPointSyncType property: A value indicating whether the recovery point is multi VM consistent.
-     *
+     * 
      * @return the recoveryPointSyncType value.
      */
     public RecoveryPointSyncType recoveryPointSyncType() {
@@ -42,7 +58,7 @@ public final class A2ARecoveryPointDetails extends ProviderSpecificRecoveryPoint
 
     /**
      * Set the recoveryPointSyncType property: A value indicating whether the recovery point is multi VM consistent.
-     *
+     * 
      * @param recoveryPointSyncType the recoveryPointSyncType value to set.
      * @return the A2ARecoveryPointDetails object itself.
      */
@@ -53,7 +69,7 @@ public final class A2ARecoveryPointDetails extends ProviderSpecificRecoveryPoint
 
     /**
      * Get the disks property: List of disk ids representing a recovery point.
-     *
+     * 
      * @return the disks value.
      */
     public List<String> disks() {
@@ -62,7 +78,7 @@ public final class A2ARecoveryPointDetails extends ProviderSpecificRecoveryPoint
 
     /**
      * Set the disks property: List of disk ids representing a recovery point.
-     *
+     * 
      * @param disks the disks value to set.
      * @return the A2ARecoveryPointDetails object itself.
      */
@@ -73,11 +89,55 @@ public final class A2ARecoveryPointDetails extends ProviderSpecificRecoveryPoint
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("recoveryPointSyncType",
+            this.recoveryPointSyncType == null ? null : this.recoveryPointSyncType.toString());
+        jsonWriter.writeArrayField("disks", this.disks, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2ARecoveryPointDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2ARecoveryPointDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2ARecoveryPointDetails.
+     */
+    public static A2ARecoveryPointDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2ARecoveryPointDetails deserializedA2ARecoveryPointDetails = new A2ARecoveryPointDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedA2ARecoveryPointDetails.instanceType = reader.getString();
+                } else if ("recoveryPointSyncType".equals(fieldName)) {
+                    deserializedA2ARecoveryPointDetails.recoveryPointSyncType
+                        = RecoveryPointSyncType.fromString(reader.getString());
+                } else if ("disks".equals(fieldName)) {
+                    List<String> disks = reader.readArray(reader1 -> reader1.getString());
+                    deserializedA2ARecoveryPointDetails.disks = disks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2ARecoveryPointDetails;
+        });
     }
 }

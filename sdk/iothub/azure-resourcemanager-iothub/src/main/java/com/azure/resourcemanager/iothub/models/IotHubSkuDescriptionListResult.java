@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iothub.fluent.models.IotHubSkuDescriptionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The JSON-serialized array of IotHubSkuDescription objects with a next link. */
+/**
+ * The JSON-serialized array of IotHubSkuDescription objects with a next link.
+ */
 @Fluent
-public final class IotHubSkuDescriptionListResult {
+public final class IotHubSkuDescriptionListResult implements JsonSerializable<IotHubSkuDescriptionListResult> {
     /*
      * The array of IotHubSkuDescription.
      */
-    @JsonProperty(value = "value")
     private List<IotHubSkuDescriptionInner> value;
 
     /*
      * The next link.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of IotHubSkuDescriptionListResult class. */
+    /**
+     * Creates an instance of IotHubSkuDescriptionListResult class.
+     */
     public IotHubSkuDescriptionListResult() {
     }
 
     /**
      * Get the value property: The array of IotHubSkuDescription.
-     *
+     * 
      * @return the value value.
      */
     public List<IotHubSkuDescriptionInner> value() {
@@ -39,7 +45,7 @@ public final class IotHubSkuDescriptionListResult {
 
     /**
      * Set the value property: The array of IotHubSkuDescription.
-     *
+     * 
      * @param value the value value to set.
      * @return the IotHubSkuDescriptionListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class IotHubSkuDescriptionListResult {
 
     /**
      * Get the nextLink property: The next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,53 @@ public final class IotHubSkuDescriptionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotHubSkuDescriptionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotHubSkuDescriptionListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotHubSkuDescriptionListResult.
+     */
+    public static IotHubSkuDescriptionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotHubSkuDescriptionListResult deserializedIotHubSkuDescriptionListResult
+                = new IotHubSkuDescriptionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<IotHubSkuDescriptionInner> value
+                        = reader.readArray(reader1 -> IotHubSkuDescriptionInner.fromJson(reader1));
+                    deserializedIotHubSkuDescriptionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedIotHubSkuDescriptionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotHubSkuDescriptionListResult;
+        });
     }
 }

@@ -8,52 +8,70 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.Actions;
 import com.azure.resourcemanager.monitor.models.AlertSeverity;
 import com.azure.resourcemanager.monitor.models.Kind;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleCriteria;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-/** The scheduled query rule resource. */
+/**
+ * The scheduled query rule resource.
+ */
 @Fluent
 public final class ScheduledQueryRuleResourceInner extends Resource {
     /*
      * Indicates the type of scheduled query rule. The default is LogAlert.
      */
-    @JsonProperty(value = "kind")
     private Kind kind;
 
     /*
      * The etag field is *not* required. If it is provided in the response body, it must also be provided as a header
-     * per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested
-     * resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match
-     * (section 14.26), and If-Range (section 14.27) header fields.
+     * per the normal etag convention. Entity tags are used for comparing two or more entities from the same requested
+     * resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section
+     * 14.26), and If-Range (section 14.27) header fields.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * SystemData of ScheduledQueryRule.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The rule properties of the resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private ScheduledQueryRuleProperties innerProperties = new ScheduledQueryRuleProperties();
 
-    /** Creates an instance of ScheduledQueryRuleResourceInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ScheduledQueryRuleResourceInner class.
+     */
     public ScheduledQueryRuleResourceInner() {
     }
 
     /**
      * Get the kind property: Indicates the type of scheduled query rule. The default is LogAlert.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -62,7 +80,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Set the kind property: Indicates the type of scheduled query rule. The default is LogAlert.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -76,7 +94,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
      * provided as a header per the normal etag convention. Entity tags are used for comparing two or more entities from
      * the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24),
      * If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -85,7 +103,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Get the systemData property: SystemData of ScheduledQueryRule.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -94,21 +112,55 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Get the innerProperties property: The rule properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScheduledQueryRuleProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduledQueryRuleResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduledQueryRuleResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -117,7 +169,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Get the createdWithApiVersion property: The api-version used when creating this alert rule.
-     *
+     * 
      * @return the createdWithApiVersion value.
      */
     public String createdWithApiVersion() {
@@ -126,7 +178,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Get the isLegacyLogAnalyticsRule property: True if alert rule is legacy Log Analytic rule.
-     *
+     * 
      * @return the isLegacyLogAnalyticsRule value.
      */
     public Boolean isLegacyLogAnalyticsRule() {
@@ -135,7 +187,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Get the description property: The description of the scheduled query rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -144,7 +196,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Set the description property: The description of the scheduled query rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -158,7 +210,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Get the displayName property: The display name of the alert rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -167,7 +219,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Set the displayName property: The display name of the alert rule.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -182,7 +234,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Get the severity property: Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest.
      * Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -192,7 +244,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Set the severity property: Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest.
      * Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -207,7 +259,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Get the enabled property: The flag which indicates whether this scheduled query rule is enabled. Value should be
      * true or false.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -217,7 +269,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Set the enabled property: The flag which indicates whether this scheduled query rule is enabled. Value should be
      * true or false.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -231,7 +283,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Get the scopes property: The list of resource id's that this scheduled query rule is scoped to.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -240,7 +292,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Set the scopes property: The list of resource id's that this scheduled query rule is scoped to.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -255,7 +307,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Get the evaluationFrequency property: How often the scheduled query rule is evaluated represented in ISO 8601
      * duration format. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the evaluationFrequency value.
      */
     public Duration evaluationFrequency() {
@@ -265,7 +317,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Set the evaluationFrequency property: How often the scheduled query rule is evaluated represented in ISO 8601
      * duration format. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param evaluationFrequency the evaluationFrequency value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -280,7 +332,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Get the windowSize property: The period of time (in ISO 8601 duration format) on which the Alert query will be
      * executed (bin size). Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the windowSize value.
      */
     public Duration windowSize() {
@@ -290,7 +342,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Set the windowSize property: The period of time (in ISO 8601 duration format) on which the Alert query will be
      * executed (bin size). Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param windowSize the windowSize value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -305,7 +357,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Get the overrideQueryTimeRange property: If specified then overrides the query time range (default is
      * WindowSize*NumberOfEvaluationPeriods). Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the overrideQueryTimeRange value.
      */
     public Duration overrideQueryTimeRange() {
@@ -315,7 +367,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Set the overrideQueryTimeRange property: If specified then overrides the query time range (default is
      * WindowSize*NumberOfEvaluationPeriods). Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param overrideQueryTimeRange the overrideQueryTimeRange value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -332,7 +384,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
      * created/updated. For example if the scope is a resource group and targetResourceTypes is
      * Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource
      * group which meet the alert criteria. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the targetResourceTypes value.
      */
     public List<String> targetResourceTypes() {
@@ -344,7 +396,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
      * created/updated. For example if the scope is a resource group and targetResourceTypes is
      * Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource
      * group which meet the alert criteria. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param targetResourceTypes the targetResourceTypes value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -358,7 +410,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Get the criteria property: The rule criteria that defines the conditions of the scheduled query rule.
-     *
+     * 
      * @return the criteria value.
      */
     public ScheduledQueryRuleCriteria criteria() {
@@ -367,7 +419,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Set the criteria property: The rule criteria that defines the conditions of the scheduled query rule.
-     *
+     * 
      * @param criteria the criteria value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -382,7 +434,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Get the muteActionsDuration property: Mute actions for the chosen period of time (in ISO 8601 duration format)
      * after the alert is fired. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the muteActionsDuration value.
      */
     public Duration muteActionsDuration() {
@@ -392,7 +444,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Set the muteActionsDuration property: Mute actions for the chosen period of time (in ISO 8601 duration format)
      * after the alert is fired. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param muteActionsDuration the muteActionsDuration value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -406,7 +458,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Get the actions property: Actions to invoke when the alert fires.
-     *
+     * 
      * @return the actions value.
      */
     public Actions actions() {
@@ -415,7 +467,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Set the actions property: Actions to invoke when the alert fires.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -430,7 +482,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Get the isWorkspaceAlertsStorageConfigured property: The flag which indicates whether this scheduled query rule
      * has been configured to be stored in the customer's storage. The default is false.
-     *
+     * 
      * @return the isWorkspaceAlertsStorageConfigured value.
      */
     public Boolean isWorkspaceAlertsStorageConfigured() {
@@ -441,7 +493,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
      * Get the checkWorkspaceAlertsStorageConfigured property: The flag which indicates whether this scheduled query
      * rule should be stored in the customer's storage. The default is false. Relevant only for rules of the kind
      * LogAlert.
-     *
+     * 
      * @return the checkWorkspaceAlertsStorageConfigured value.
      */
     public Boolean checkWorkspaceAlertsStorageConfigured() {
@@ -452,12 +504,12 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
      * Set the checkWorkspaceAlertsStorageConfigured property: The flag which indicates whether this scheduled query
      * rule should be stored in the customer's storage. The default is false. Relevant only for rules of the kind
      * LogAlert.
-     *
+     * 
      * @param checkWorkspaceAlertsStorageConfigured the checkWorkspaceAlertsStorageConfigured value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
-    public ScheduledQueryRuleResourceInner withCheckWorkspaceAlertsStorageConfigured(
-        Boolean checkWorkspaceAlertsStorageConfigured) {
+    public ScheduledQueryRuleResourceInner
+        withCheckWorkspaceAlertsStorageConfigured(Boolean checkWorkspaceAlertsStorageConfigured) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScheduledQueryRuleProperties();
         }
@@ -468,7 +520,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Get the skipQueryValidation property: The flag which indicates whether the provided query should be validated or
      * not. The default is false. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the skipQueryValidation value.
      */
     public Boolean skipQueryValidation() {
@@ -478,7 +530,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Set the skipQueryValidation property: The flag which indicates whether the provided query should be validated or
      * not. The default is false. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param skipQueryValidation the skipQueryValidation value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -493,7 +545,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
      * The default is true. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the autoMitigate value.
      */
     public Boolean autoMitigate() {
@@ -503,7 +555,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     /**
      * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
      * The default is true. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param autoMitigate the autoMitigate value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
@@ -517,19 +569,77 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ScheduledQueryRuleResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ScheduledQueryRuleResourceInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduledQueryRuleResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledQueryRuleResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledQueryRuleResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduledQueryRuleResourceInner.
+     */
+    public static ScheduledQueryRuleResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledQueryRuleResourceInner deserializedScheduledQueryRuleResourceInner
+                = new ScheduledQueryRuleResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScheduledQueryRuleResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.innerProperties
+                        = ScheduledQueryRuleProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.kind = Kind.fromString(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedScheduledQueryRuleResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledQueryRuleResourceInner;
+        });
+    }
 }

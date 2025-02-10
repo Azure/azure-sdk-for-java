@@ -5,74 +5,73 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Service network profile payload. */
+/**
+ * Service network profile payload.
+ */
 @Fluent
-public final class NetworkProfile {
+public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
     /*
-     * Fully qualified resource Id of the subnet to host Azure Spring Apps
-     * Service Runtime
+     * Fully qualified resource Id of the subnet to host Azure Spring Apps Service Runtime
      */
-    @JsonProperty(value = "serviceRuntimeSubnetId")
     private String serviceRuntimeSubnetId;
 
     /*
-     * Fully qualified resource Id of the subnet to host customer apps in Azure
-     * Spring Apps
+     * Fully qualified resource Id of the subnet to host customer apps in Azure Spring Apps
      */
-    @JsonProperty(value = "appSubnetId")
     private String appSubnetId;
 
     /*
      * Azure Spring Apps service reserved CIDR
      */
-    @JsonProperty(value = "serviceCidr")
     private String serviceCidr;
 
     /*
-     * Name of the resource group containing network resources of Azure Spring
-     * Apps Service Runtime
+     * Name of the resource group containing network resources of Azure Spring Apps Service Runtime
      */
-    @JsonProperty(value = "serviceRuntimeNetworkResourceGroup")
     private String serviceRuntimeNetworkResourceGroup;
 
     /*
-     * Name of the resource group containing network resources for customer
-     * apps in Azure Spring Apps
+     * Name of the resource group containing network resources for customer apps in Azure Spring Apps
      */
-    @JsonProperty(value = "appNetworkResourceGroup")
     private String appNetworkResourceGroup;
 
     /*
      * Desired outbound IP resources for Azure Spring Apps resource.
      */
-    @JsonProperty(value = "outboundIPs", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkProfileOutboundIPs outboundIPs;
 
     /*
      * Required inbound or outbound traffics for Azure Spring Apps resource.
      */
-    @JsonProperty(value = "requiredTraffics", access = JsonProperty.Access.WRITE_ONLY)
     private List<RequiredTraffic> requiredTraffics;
 
     /*
      * Ingress configuration payload for Azure Spring Apps resource.
      */
-    @JsonProperty(value = "ingressConfig")
     private IngressConfig ingressConfig;
 
     /*
      * The egress traffic type of Azure Spring Apps VNet instances.
      */
-    @JsonProperty(value = "outboundType")
     private String outboundType;
+
+    /**
+     * Creates an instance of NetworkProfile class.
+     */
+    public NetworkProfile() {
+    }
 
     /**
      * Get the serviceRuntimeSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Apps
      * Service Runtime.
-     *
+     * 
      * @return the serviceRuntimeSubnetId value.
      */
     public String serviceRuntimeSubnetId() {
@@ -82,7 +81,7 @@ public final class NetworkProfile {
     /**
      * Set the serviceRuntimeSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Apps
      * Service Runtime.
-     *
+     * 
      * @param serviceRuntimeSubnetId the serviceRuntimeSubnetId value to set.
      * @return the NetworkProfile object itself.
      */
@@ -94,7 +93,7 @@ public final class NetworkProfile {
     /**
      * Get the appSubnetId property: Fully qualified resource Id of the subnet to host customer apps in Azure Spring
      * Apps.
-     *
+     * 
      * @return the appSubnetId value.
      */
     public String appSubnetId() {
@@ -104,7 +103,7 @@ public final class NetworkProfile {
     /**
      * Set the appSubnetId property: Fully qualified resource Id of the subnet to host customer apps in Azure Spring
      * Apps.
-     *
+     * 
      * @param appSubnetId the appSubnetId value to set.
      * @return the NetworkProfile object itself.
      */
@@ -115,7 +114,7 @@ public final class NetworkProfile {
 
     /**
      * Get the serviceCidr property: Azure Spring Apps service reserved CIDR.
-     *
+     * 
      * @return the serviceCidr value.
      */
     public String serviceCidr() {
@@ -124,7 +123,7 @@ public final class NetworkProfile {
 
     /**
      * Set the serviceCidr property: Azure Spring Apps service reserved CIDR.
-     *
+     * 
      * @param serviceCidr the serviceCidr value to set.
      * @return the NetworkProfile object itself.
      */
@@ -136,7 +135,7 @@ public final class NetworkProfile {
     /**
      * Get the serviceRuntimeNetworkResourceGroup property: Name of the resource group containing network resources of
      * Azure Spring Apps Service Runtime.
-     *
+     * 
      * @return the serviceRuntimeNetworkResourceGroup value.
      */
     public String serviceRuntimeNetworkResourceGroup() {
@@ -146,7 +145,7 @@ public final class NetworkProfile {
     /**
      * Set the serviceRuntimeNetworkResourceGroup property: Name of the resource group containing network resources of
      * Azure Spring Apps Service Runtime.
-     *
+     * 
      * @param serviceRuntimeNetworkResourceGroup the serviceRuntimeNetworkResourceGroup value to set.
      * @return the NetworkProfile object itself.
      */
@@ -158,7 +157,7 @@ public final class NetworkProfile {
     /**
      * Get the appNetworkResourceGroup property: Name of the resource group containing network resources for customer
      * apps in Azure Spring Apps.
-     *
+     * 
      * @return the appNetworkResourceGroup value.
      */
     public String appNetworkResourceGroup() {
@@ -168,7 +167,7 @@ public final class NetworkProfile {
     /**
      * Set the appNetworkResourceGroup property: Name of the resource group containing network resources for customer
      * apps in Azure Spring Apps.
-     *
+     * 
      * @param appNetworkResourceGroup the appNetworkResourceGroup value to set.
      * @return the NetworkProfile object itself.
      */
@@ -179,7 +178,7 @@ public final class NetworkProfile {
 
     /**
      * Get the outboundIPs property: Desired outbound IP resources for Azure Spring Apps resource.
-     *
+     * 
      * @return the outboundIPs value.
      */
     public NetworkProfileOutboundIPs outboundIPs() {
@@ -188,7 +187,7 @@ public final class NetworkProfile {
 
     /**
      * Get the requiredTraffics property: Required inbound or outbound traffics for Azure Spring Apps resource.
-     *
+     * 
      * @return the requiredTraffics value.
      */
     public List<RequiredTraffic> requiredTraffics() {
@@ -197,7 +196,7 @@ public final class NetworkProfile {
 
     /**
      * Get the ingressConfig property: Ingress configuration payload for Azure Spring Apps resource.
-     *
+     * 
      * @return the ingressConfig value.
      */
     public IngressConfig ingressConfig() {
@@ -206,7 +205,7 @@ public final class NetworkProfile {
 
     /**
      * Set the ingressConfig property: Ingress configuration payload for Azure Spring Apps resource.
-     *
+     * 
      * @param ingressConfig the ingressConfig value to set.
      * @return the NetworkProfile object itself.
      */
@@ -217,7 +216,7 @@ public final class NetworkProfile {
 
     /**
      * Get the outboundType property: The egress traffic type of Azure Spring Apps VNet instances.
-     *
+     * 
      * @return the outboundType value.
      */
     public String outboundType() {
@@ -226,7 +225,7 @@ public final class NetworkProfile {
 
     /**
      * Set the outboundType property: The egress traffic type of Azure Spring Apps VNet instances.
-     *
+     * 
      * @param outboundType the outboundType value to set.
      * @return the NetworkProfile object itself.
      */
@@ -237,7 +236,7 @@ public final class NetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -250,5 +249,65 @@ public final class NetworkProfile {
         if (ingressConfig() != null) {
             ingressConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceRuntimeSubnetId", this.serviceRuntimeSubnetId);
+        jsonWriter.writeStringField("appSubnetId", this.appSubnetId);
+        jsonWriter.writeStringField("serviceCidr", this.serviceCidr);
+        jsonWriter.writeStringField("serviceRuntimeNetworkResourceGroup", this.serviceRuntimeNetworkResourceGroup);
+        jsonWriter.writeStringField("appNetworkResourceGroup", this.appNetworkResourceGroup);
+        jsonWriter.writeJsonField("ingressConfig", this.ingressConfig);
+        jsonWriter.writeStringField("outboundType", this.outboundType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkProfile.
+     */
+    public static NetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkProfile deserializedNetworkProfile = new NetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceRuntimeSubnetId".equals(fieldName)) {
+                    deserializedNetworkProfile.serviceRuntimeSubnetId = reader.getString();
+                } else if ("appSubnetId".equals(fieldName)) {
+                    deserializedNetworkProfile.appSubnetId = reader.getString();
+                } else if ("serviceCidr".equals(fieldName)) {
+                    deserializedNetworkProfile.serviceCidr = reader.getString();
+                } else if ("serviceRuntimeNetworkResourceGroup".equals(fieldName)) {
+                    deserializedNetworkProfile.serviceRuntimeNetworkResourceGroup = reader.getString();
+                } else if ("appNetworkResourceGroup".equals(fieldName)) {
+                    deserializedNetworkProfile.appNetworkResourceGroup = reader.getString();
+                } else if ("outboundIPs".equals(fieldName)) {
+                    deserializedNetworkProfile.outboundIPs = NetworkProfileOutboundIPs.fromJson(reader);
+                } else if ("requiredTraffics".equals(fieldName)) {
+                    List<RequiredTraffic> requiredTraffics
+                        = reader.readArray(reader1 -> RequiredTraffic.fromJson(reader1));
+                    deserializedNetworkProfile.requiredTraffics = requiredTraffics;
+                } else if ("ingressConfig".equals(fieldName)) {
+                    deserializedNetworkProfile.ingressConfig = IngressConfig.fromJson(reader);
+                } else if ("outboundType".equals(fieldName)) {
+                    deserializedNetworkProfile.outboundType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkProfile;
+        });
     }
 }

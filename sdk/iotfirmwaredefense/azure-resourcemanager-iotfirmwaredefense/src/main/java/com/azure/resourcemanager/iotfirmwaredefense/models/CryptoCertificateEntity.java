@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information on an entity (distinguished name) in a cryptographic certificate. */
+/**
+ * Information on an entity (distinguished name) in a cryptographic certificate.
+ */
 @Fluent
-public final class CryptoCertificateEntity {
+public final class CryptoCertificateEntity implements JsonSerializable<CryptoCertificateEntity> {
     /*
      * Common name of the certificate entity.
      */
-    @JsonProperty(value = "commonName")
     private String commonName;
 
     /*
      * Organization of the certificate entity.
      */
-    @JsonProperty(value = "organization")
     private String organization;
 
     /*
      * The organizational unit of the certificate entity.
      */
-    @JsonProperty(value = "organizationalUnit")
     private String organizationalUnit;
 
     /*
      * Geographical state or province of the certificate entity.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * Country code of the certificate entity.
      */
-    @JsonProperty(value = "country")
     private String country;
 
-    /** Creates an instance of CryptoCertificateEntity class. */
+    /**
+     * Creates an instance of CryptoCertificateEntity class.
+     */
     public CryptoCertificateEntity() {
     }
 
     /**
      * Get the commonName property: Common name of the certificate entity.
-     *
+     * 
      * @return the commonName value.
      */
     public String commonName() {
@@ -55,7 +58,7 @@ public final class CryptoCertificateEntity {
 
     /**
      * Set the commonName property: Common name of the certificate entity.
-     *
+     * 
      * @param commonName the commonName value to set.
      * @return the CryptoCertificateEntity object itself.
      */
@@ -66,7 +69,7 @@ public final class CryptoCertificateEntity {
 
     /**
      * Get the organization property: Organization of the certificate entity.
-     *
+     * 
      * @return the organization value.
      */
     public String organization() {
@@ -75,7 +78,7 @@ public final class CryptoCertificateEntity {
 
     /**
      * Set the organization property: Organization of the certificate entity.
-     *
+     * 
      * @param organization the organization value to set.
      * @return the CryptoCertificateEntity object itself.
      */
@@ -86,7 +89,7 @@ public final class CryptoCertificateEntity {
 
     /**
      * Get the organizationalUnit property: The organizational unit of the certificate entity.
-     *
+     * 
      * @return the organizationalUnit value.
      */
     public String organizationalUnit() {
@@ -95,7 +98,7 @@ public final class CryptoCertificateEntity {
 
     /**
      * Set the organizationalUnit property: The organizational unit of the certificate entity.
-     *
+     * 
      * @param organizationalUnit the organizationalUnit value to set.
      * @return the CryptoCertificateEntity object itself.
      */
@@ -106,7 +109,7 @@ public final class CryptoCertificateEntity {
 
     /**
      * Get the state property: Geographical state or province of the certificate entity.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -115,7 +118,7 @@ public final class CryptoCertificateEntity {
 
     /**
      * Set the state property: Geographical state or province of the certificate entity.
-     *
+     * 
      * @param state the state value to set.
      * @return the CryptoCertificateEntity object itself.
      */
@@ -126,7 +129,7 @@ public final class CryptoCertificateEntity {
 
     /**
      * Get the country property: Country code of the certificate entity.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -135,7 +138,7 @@ public final class CryptoCertificateEntity {
 
     /**
      * Set the country property: Country code of the certificate entity.
-     *
+     * 
      * @param country the country value to set.
      * @return the CryptoCertificateEntity object itself.
      */
@@ -146,9 +149,57 @@ public final class CryptoCertificateEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commonName", this.commonName);
+        jsonWriter.writeStringField("organization", this.organization);
+        jsonWriter.writeStringField("organizationalUnit", this.organizationalUnit);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("country", this.country);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CryptoCertificateEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CryptoCertificateEntity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CryptoCertificateEntity.
+     */
+    public static CryptoCertificateEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CryptoCertificateEntity deserializedCryptoCertificateEntity = new CryptoCertificateEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commonName".equals(fieldName)) {
+                    deserializedCryptoCertificateEntity.commonName = reader.getString();
+                } else if ("organization".equals(fieldName)) {
+                    deserializedCryptoCertificateEntity.organization = reader.getString();
+                } else if ("organizationalUnit".equals(fieldName)) {
+                    deserializedCryptoCertificateEntity.organizationalUnit = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedCryptoCertificateEntity.state = reader.getString();
+                } else if ("country".equals(fieldName)) {
+                    deserializedCryptoCertificateEntity.country = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCryptoCertificateEntity;
+        });
     }
 }

@@ -6,8 +6,12 @@ package com.azure.resourcemanager.dns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.dns.models.ARecord;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dns.models.AaaaRecord;
+import com.azure.resourcemanager.dns.models.ARecord;
 import com.azure.resourcemanager.dns.models.CaaRecord;
 import com.azure.resourcemanager.dns.models.CnameRecord;
 import com.azure.resourcemanager.dns.models.MxRecord;
@@ -16,112 +20,99 @@ import com.azure.resourcemanager.dns.models.PtrRecord;
 import com.azure.resourcemanager.dns.models.SoaRecord;
 import com.azure.resourcemanager.dns.models.SrvRecord;
 import com.azure.resourcemanager.dns.models.TxtRecord;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Represents the properties of the records in the record set. */
+/**
+ * Represents the properties of the records in the record set.
+ */
 @Fluent
-public final class RecordSetProperties {
+public final class RecordSetProperties implements JsonSerializable<RecordSetProperties> {
     /*
      * The metadata attached to the record set.
      */
-    @JsonProperty(value = "metadata")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
     /*
      * The TTL (time-to-live) of the records in the record set.
      */
-    @JsonProperty(value = "TTL")
     private Long ttl;
 
     /*
      * Fully qualified domain name of the record set.
      */
-    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /*
      * provisioning State of the record set.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * A reference to an azure resource from where the dns resource value is taken.
      */
-    @JsonProperty(value = "targetResource")
     private SubResource targetResource;
 
     /*
      * The list of A records in the record set.
      */
-    @JsonProperty(value = "ARecords")
     private List<ARecord> aRecords;
 
     /*
      * The list of AAAA records in the record set.
      */
-    @JsonProperty(value = "AAAARecords")
     private List<AaaaRecord> aaaaRecords;
 
     /*
      * The list of MX records in the record set.
      */
-    @JsonProperty(value = "MXRecords")
     private List<MxRecord> mxRecords;
 
     /*
      * The list of NS records in the record set.
      */
-    @JsonProperty(value = "NSRecords")
     private List<NsRecord> nsRecords;
 
     /*
      * The list of PTR records in the record set.
      */
-    @JsonProperty(value = "PTRRecords")
     private List<PtrRecord> ptrRecords;
 
     /*
      * The list of SRV records in the record set.
      */
-    @JsonProperty(value = "SRVRecords")
     private List<SrvRecord> srvRecords;
 
     /*
      * The list of TXT records in the record set.
      */
-    @JsonProperty(value = "TXTRecords")
     private List<TxtRecord> txtRecords;
 
     /*
-     * The CNAME record in the  record set.
+     * The CNAME record in the record set.
      */
-    @JsonProperty(value = "CNAMERecord")
     private CnameRecord cnameRecord;
 
     /*
      * The SOA record in the record set.
      */
-    @JsonProperty(value = "SOARecord")
     private SoaRecord soaRecord;
 
     /*
      * The list of CAA records in the record set.
      */
-    @JsonProperty(value = "caaRecords")
     private List<CaaRecord> caaRecords;
 
-    /** Creates an instance of RecordSetProperties class. */
+    /**
+     * Creates an instance of RecordSetProperties class.
+     */
     public RecordSetProperties() {
     }
 
     /**
      * Get the metadata property: The metadata attached to the record set.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -130,7 +121,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the metadata property: The metadata attached to the record set.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -141,7 +132,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the ttl property: The TTL (time-to-live) of the records in the record set.
-     *
+     * 
      * @return the ttl value.
      */
     public Long ttl() {
@@ -150,7 +141,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the ttl property: The TTL (time-to-live) of the records in the record set.
-     *
+     * 
      * @param ttl the ttl value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -161,7 +152,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the fqdn property: Fully qualified domain name of the record set.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -170,7 +161,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the provisioningState property: provisioning State of the record set.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -179,7 +170,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the targetResource property: A reference to an azure resource from where the dns resource value is taken.
-     *
+     * 
      * @return the targetResource value.
      */
     public SubResource targetResource() {
@@ -188,7 +179,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the targetResource property: A reference to an azure resource from where the dns resource value is taken.
-     *
+     * 
      * @param targetResource the targetResource value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -199,7 +190,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the aRecords property: The list of A records in the record set.
-     *
+     * 
      * @return the aRecords value.
      */
     public List<ARecord> aRecords() {
@@ -208,7 +199,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the aRecords property: The list of A records in the record set.
-     *
+     * 
      * @param aRecords the aRecords value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -219,7 +210,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the aaaaRecords property: The list of AAAA records in the record set.
-     *
+     * 
      * @return the aaaaRecords value.
      */
     public List<AaaaRecord> aaaaRecords() {
@@ -228,7 +219,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the aaaaRecords property: The list of AAAA records in the record set.
-     *
+     * 
      * @param aaaaRecords the aaaaRecords value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -239,7 +230,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the mxRecords property: The list of MX records in the record set.
-     *
+     * 
      * @return the mxRecords value.
      */
     public List<MxRecord> mxRecords() {
@@ -248,7 +239,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the mxRecords property: The list of MX records in the record set.
-     *
+     * 
      * @param mxRecords the mxRecords value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -259,7 +250,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the nsRecords property: The list of NS records in the record set.
-     *
+     * 
      * @return the nsRecords value.
      */
     public List<NsRecord> nsRecords() {
@@ -268,7 +259,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the nsRecords property: The list of NS records in the record set.
-     *
+     * 
      * @param nsRecords the nsRecords value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -279,7 +270,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the ptrRecords property: The list of PTR records in the record set.
-     *
+     * 
      * @return the ptrRecords value.
      */
     public List<PtrRecord> ptrRecords() {
@@ -288,7 +279,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the ptrRecords property: The list of PTR records in the record set.
-     *
+     * 
      * @param ptrRecords the ptrRecords value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -299,7 +290,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the srvRecords property: The list of SRV records in the record set.
-     *
+     * 
      * @return the srvRecords value.
      */
     public List<SrvRecord> srvRecords() {
@@ -308,7 +299,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the srvRecords property: The list of SRV records in the record set.
-     *
+     * 
      * @param srvRecords the srvRecords value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -319,7 +310,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the txtRecords property: The list of TXT records in the record set.
-     *
+     * 
      * @return the txtRecords value.
      */
     public List<TxtRecord> txtRecords() {
@@ -328,7 +319,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the txtRecords property: The list of TXT records in the record set.
-     *
+     * 
      * @param txtRecords the txtRecords value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -339,7 +330,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the cnameRecord property: The CNAME record in the record set.
-     *
+     * 
      * @return the cnameRecord value.
      */
     public CnameRecord cnameRecord() {
@@ -348,7 +339,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the cnameRecord property: The CNAME record in the record set.
-     *
+     * 
      * @param cnameRecord the cnameRecord value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -359,7 +350,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the soaRecord property: The SOA record in the record set.
-     *
+     * 
      * @return the soaRecord value.
      */
     public SoaRecord soaRecord() {
@@ -368,7 +359,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the soaRecord property: The SOA record in the record set.
-     *
+     * 
      * @param soaRecord the soaRecord value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -379,7 +370,7 @@ public final class RecordSetProperties {
 
     /**
      * Get the caaRecords property: The list of CAA records in the record set.
-     *
+     * 
      * @return the caaRecords value.
      */
     public List<CaaRecord> caaRecords() {
@@ -388,7 +379,7 @@ public final class RecordSetProperties {
 
     /**
      * Set the caaRecords property: The list of CAA records in the record set.
-     *
+     * 
      * @param caaRecords the caaRecords value to set.
      * @return the RecordSetProperties object itself.
      */
@@ -399,7 +390,7 @@ public final class RecordSetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -433,5 +424,90 @@ public final class RecordSetProperties {
         if (caaRecords() != null) {
             caaRecords().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("TTL", this.ttl);
+        jsonWriter.writeJsonField("targetResource", this.targetResource);
+        jsonWriter.writeArrayField("ARecords", this.aRecords, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("AAAARecords", this.aaaaRecords, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("MXRecords", this.mxRecords, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("NSRecords", this.nsRecords, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("PTRRecords", this.ptrRecords, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("SRVRecords", this.srvRecords, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("TXTRecords", this.txtRecords, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("CNAMERecord", this.cnameRecord);
+        jsonWriter.writeJsonField("SOARecord", this.soaRecord);
+        jsonWriter.writeArrayField("caaRecords", this.caaRecords, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecordSetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecordSetProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecordSetProperties.
+     */
+    public static RecordSetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecordSetProperties deserializedRecordSetProperties = new RecordSetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRecordSetProperties.metadata = metadata;
+                } else if ("TTL".equals(fieldName)) {
+                    deserializedRecordSetProperties.ttl = reader.getNullable(JsonReader::getLong);
+                } else if ("fqdn".equals(fieldName)) {
+                    deserializedRecordSetProperties.fqdn = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRecordSetProperties.provisioningState = reader.getString();
+                } else if ("targetResource".equals(fieldName)) {
+                    deserializedRecordSetProperties.targetResource = SubResource.fromJson(reader);
+                } else if ("ARecords".equals(fieldName)) {
+                    List<ARecord> aRecords = reader.readArray(reader1 -> ARecord.fromJson(reader1));
+                    deserializedRecordSetProperties.aRecords = aRecords;
+                } else if ("AAAARecords".equals(fieldName)) {
+                    List<AaaaRecord> aaaaRecords = reader.readArray(reader1 -> AaaaRecord.fromJson(reader1));
+                    deserializedRecordSetProperties.aaaaRecords = aaaaRecords;
+                } else if ("MXRecords".equals(fieldName)) {
+                    List<MxRecord> mxRecords = reader.readArray(reader1 -> MxRecord.fromJson(reader1));
+                    deserializedRecordSetProperties.mxRecords = mxRecords;
+                } else if ("NSRecords".equals(fieldName)) {
+                    List<NsRecord> nsRecords = reader.readArray(reader1 -> NsRecord.fromJson(reader1));
+                    deserializedRecordSetProperties.nsRecords = nsRecords;
+                } else if ("PTRRecords".equals(fieldName)) {
+                    List<PtrRecord> ptrRecords = reader.readArray(reader1 -> PtrRecord.fromJson(reader1));
+                    deserializedRecordSetProperties.ptrRecords = ptrRecords;
+                } else if ("SRVRecords".equals(fieldName)) {
+                    List<SrvRecord> srvRecords = reader.readArray(reader1 -> SrvRecord.fromJson(reader1));
+                    deserializedRecordSetProperties.srvRecords = srvRecords;
+                } else if ("TXTRecords".equals(fieldName)) {
+                    List<TxtRecord> txtRecords = reader.readArray(reader1 -> TxtRecord.fromJson(reader1));
+                    deserializedRecordSetProperties.txtRecords = txtRecords;
+                } else if ("CNAMERecord".equals(fieldName)) {
+                    deserializedRecordSetProperties.cnameRecord = CnameRecord.fromJson(reader);
+                } else if ("SOARecord".equals(fieldName)) {
+                    deserializedRecordSetProperties.soaRecord = SoaRecord.fromJson(reader);
+                } else if ("caaRecords".equals(fieldName)) {
+                    List<CaaRecord> caaRecords = reader.readArray(reader1 -> CaaRecord.fromJson(reader1));
+                    deserializedRecordSetProperties.caaRecords = caaRecords;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecordSetProperties;
+        });
     }
 }

@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Cosmos DB location metadata.
  */
 @Immutable
-public final class LocationProperties {
+public final class LocationProperties implements JsonSerializable<LocationProperties> {
     /*
      * Flag indicating whether the location supports availability zones or not.
      */
-    @JsonProperty(value = "supportsAvailabilityZone", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean supportsAvailabilityZone;
 
     /*
      * Flag indicating whether the location is residency sensitive.
      */
-    @JsonProperty(value = "isResidencyRestricted", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isResidencyRestricted;
 
     /*
      * The properties of available backup storage redundancies.
      */
-    @JsonProperty(value = "backupStorageRedundancies", access = JsonProperty.Access.WRITE_ONLY)
     private List<BackupStorageRedundancy> backupStorageRedundancies;
 
     /*
      * Flag indicating whether the subscription have access in region for Non-Availability Zones.
      */
-    @JsonProperty(value = "isSubscriptionRegionAccessAllowedForRegular", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isSubscriptionRegionAccessAllowedForRegular;
 
     /*
      * Flag indicating whether the subscription have access in region for Availability Zones(Az).
      */
-    @JsonProperty(value = "isSubscriptionRegionAccessAllowedForAz", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isSubscriptionRegionAccessAllowedForAz;
 
     /*
      * Enum to indicate current buildout status of the region.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private Status status;
 
     /**
@@ -118,5 +116,55 @@ public final class LocationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocationProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LocationProperties.
+     */
+    public static LocationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocationProperties deserializedLocationProperties = new LocationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("supportsAvailabilityZone".equals(fieldName)) {
+                    deserializedLocationProperties.supportsAvailabilityZone
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isResidencyRestricted".equals(fieldName)) {
+                    deserializedLocationProperties.isResidencyRestricted = reader.getNullable(JsonReader::getBoolean);
+                } else if ("backupStorageRedundancies".equals(fieldName)) {
+                    List<BackupStorageRedundancy> backupStorageRedundancies
+                        = reader.readArray(reader1 -> BackupStorageRedundancy.fromString(reader1.getString()));
+                    deserializedLocationProperties.backupStorageRedundancies = backupStorageRedundancies;
+                } else if ("isSubscriptionRegionAccessAllowedForRegular".equals(fieldName)) {
+                    deserializedLocationProperties.isSubscriptionRegionAccessAllowedForRegular
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isSubscriptionRegionAccessAllowedForAz".equals(fieldName)) {
+                    deserializedLocationProperties.isSubscriptionRegionAccessAllowedForAz
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("status".equals(fieldName)) {
+                    deserializedLocationProperties.status = Status.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocationProperties;
+        });
     }
 }

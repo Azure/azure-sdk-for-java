@@ -4,21 +4,29 @@
 
 package com.azure.resourcemanager.eventhubs.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ProvisioningStateDR. */
+/**
+ * Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or 'Succeeded' or
+ * 'Failed'.
+ */
 public enum ProvisioningStateDR {
-    /** Enum value Accepted. */
+    /**
+     * Enum value Accepted.
+     */
     ACCEPTED("Accepted"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed");
 
-    /** The actual serialized value for a ProvisioningStateDR instance. */
+    /**
+     * The actual serialized value for a ProvisioningStateDR instance.
+     */
     private final String value;
 
     ProvisioningStateDR(String value) {
@@ -27,12 +35,14 @@ public enum ProvisioningStateDR {
 
     /**
      * Parses a serialized value to a ProvisioningStateDR instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ProvisioningStateDR object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProvisioningStateDR fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ProvisioningStateDR[] items = ProvisioningStateDR.values();
         for (ProvisioningStateDR item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +52,9 @@ public enum ProvisioningStateDR {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

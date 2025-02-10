@@ -8,37 +8,57 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicyResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.SimState;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
 import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** SIM resource. */
+/**
+ * SIM resource.
+ */
 @Fluent
 public final class SimInner extends ProxyResource {
     /*
      * SIM Properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private SimPropertiesFormat innerProperties = new SimPropertiesFormat();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SimInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SimInner class.
+     */
     public SimInner() {
     }
 
     /**
      * Get the innerProperties property: SIM Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SimPropertiesFormat innerProperties() {
@@ -47,7 +67,7 @@ public final class SimInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -55,8 +75,38 @@ public final class SimInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the authenticationKey property: The Ki value for the SIM.
-     *
+     * 
      * @return the authenticationKey value.
      */
     public String authenticationKey() {
@@ -65,7 +115,7 @@ public final class SimInner extends ProxyResource {
 
     /**
      * Set the authenticationKey property: The Ki value for the SIM.
-     *
+     * 
      * @param authenticationKey the authenticationKey value to set.
      * @return the SimInner object itself.
      */
@@ -79,7 +129,7 @@ public final class SimInner extends ProxyResource {
 
     /**
      * Get the operatorKeyCode property: The Opc value for the SIM.
-     *
+     * 
      * @return the operatorKeyCode value.
      */
     public String operatorKeyCode() {
@@ -88,7 +138,7 @@ public final class SimInner extends ProxyResource {
 
     /**
      * Set the operatorKeyCode property: The Opc value for the SIM.
-     *
+     * 
      * @param operatorKeyCode the operatorKeyCode value to set.
      * @return the SimInner object itself.
      */
@@ -102,7 +152,7 @@ public final class SimInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the SIM resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -111,7 +161,7 @@ public final class SimInner extends ProxyResource {
 
     /**
      * Get the simState property: The state of the SIM resource.
-     *
+     * 
      * @return the simState value.
      */
     public SimState simState() {
@@ -120,7 +170,7 @@ public final class SimInner extends ProxyResource {
 
     /**
      * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that site.
-     *
+     * 
      * @return the siteProvisioningState value.
      */
     public Map<String, SiteProvisioningState> siteProvisioningState() {
@@ -130,7 +180,7 @@ public final class SimInner extends ProxyResource {
     /**
      * Get the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
      * the SIM.
-     *
+     * 
      * @return the internationalMobileSubscriberIdentity value.
      */
     public String internationalMobileSubscriberIdentity() {
@@ -140,7 +190,7 @@ public final class SimInner extends ProxyResource {
     /**
      * Set the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
      * the SIM.
-     *
+     * 
      * @param internationalMobileSubscriberIdentity the internationalMobileSubscriberIdentity value to set.
      * @return the SimInner object itself.
      */
@@ -154,7 +204,7 @@ public final class SimInner extends ProxyResource {
 
     /**
      * Get the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the SIM.
-     *
+     * 
      * @return the integratedCircuitCardIdentifier value.
      */
     public String integratedCircuitCardIdentifier() {
@@ -163,7 +213,7 @@ public final class SimInner extends ProxyResource {
 
     /**
      * Set the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the SIM.
-     *
+     * 
      * @param integratedCircuitCardIdentifier the integratedCircuitCardIdentifier value to set.
      * @return the SimInner object itself.
      */
@@ -179,7 +229,7 @@ public final class SimInner extends ProxyResource {
      * Get the deviceType property: An optional free-form text field that can be used to record the device type this SIM
      * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
      * this value.
-     *
+     * 
      * @return the deviceType value.
      */
     public String deviceType() {
@@ -190,7 +240,7 @@ public final class SimInner extends ProxyResource {
      * Set the deviceType property: An optional free-form text field that can be used to record the device type this SIM
      * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
      * this value.
-     *
+     * 
      * @param deviceType the deviceType value to set.
      * @return the SimInner object itself.
      */
@@ -205,7 +255,7 @@ public final class SimInner extends ProxyResource {
     /**
      * Get the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same location as the
      * SIM.
-     *
+     * 
      * @return the simPolicy value.
      */
     public SimPolicyResourceId simPolicy() {
@@ -215,7 +265,7 @@ public final class SimInner extends ProxyResource {
     /**
      * Set the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same location as the
      * SIM.
-     *
+     * 
      * @param simPolicy the simPolicy value to set.
      * @return the SimInner object itself.
      */
@@ -230,7 +280,7 @@ public final class SimInner extends ProxyResource {
     /**
      * Get the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each address is
      * assigned at a defined network scope, made up of {attached data network, slice}.
-     *
+     * 
      * @return the staticIpConfiguration value.
      */
     public List<SimStaticIpProperties> staticIpConfiguration() {
@@ -240,7 +290,7 @@ public final class SimInner extends ProxyResource {
     /**
      * Set the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each address is
      * assigned at a defined network scope, made up of {attached data network, slice}.
-     *
+     * 
      * @param staticIpConfiguration the staticIpConfiguration value to set.
      * @return the SimInner object itself.
      */
@@ -254,7 +304,7 @@ public final class SimInner extends ProxyResource {
 
     /**
      * Get the vendorName property: The name of the SIM vendor who provided this SIM, if any.
-     *
+     * 
      * @return the vendorName value.
      */
     public String vendorName() {
@@ -264,7 +314,7 @@ public final class SimInner extends ProxyResource {
     /**
      * Get the vendorKeyFingerprint property: The public key fingerprint of the SIM vendor who provided this SIM, if
      * any.
-     *
+     * 
      * @return the vendorKeyFingerprint value.
      */
     public String vendorKeyFingerprint() {
@@ -273,18 +323,62 @@ public final class SimInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model SimInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model SimInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SimInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SimInner.
+     */
+    public static SimInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimInner deserializedSimInner = new SimInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSimInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSimInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSimInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSimInner.innerProperties = SimPropertiesFormat.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSimInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimInner;
+        });
+    }
 }

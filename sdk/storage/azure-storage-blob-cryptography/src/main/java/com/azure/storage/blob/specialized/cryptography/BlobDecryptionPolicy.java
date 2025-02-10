@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -14,7 +15,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,10 +23,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.CONTENT_LENGTH;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.CONTENT_RANGE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_METADATA_HEADER;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.RANGE_HEADER;
@@ -54,7 +51,6 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
      * encrypted.
      */
     private final boolean requiresEncryption;
-
 
     /**
      * Initializes a new instance of the {@link BlobDecryptionPolicy} class with the specified key and resolver.
@@ -95,8 +91,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                      * didn't expand the range at all.
                      */
                     EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
-                        httpResponse.getHeaderValue(Constants.HeaderConstants.X_MS_META + "-"
-                            + ENCRYPTION_DATA_KEY), requiresEncryption);
+                        httpResponse.getHeaderValue(ENCRYPTION_METADATA_HEADER), requiresEncryption);
                     // If there was no encryption data, it was either an error response or the blob is not encrypted.
                     if (!isEncryptedBlob(encryptionData)) {
                         return Mono.just(httpResponse);
@@ -110,7 +105,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                      */
                     EncryptedBlobRange encryptedRange = new EncryptedBlobRange(new BlobRange(0), encryptionData);
                     encryptedRange.setAdjustedDownloadCount(
-                        Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
+                        Long.parseLong(responseHeaders.getValue(HttpHeaderName.CONTENT_LENGTH)));
 
                     boolean padding = hasPadding(responseHeaders, encryptionData, encryptedRange);
 
@@ -128,11 +123,11 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             if (!isEncryptedBlob(context)) {
                 return validateEncryptionDataConsistency(next.process());
             }
-            EncryptionData encryptionData =
-                (EncryptionData) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get();
+            EncryptionData encryptionData
+                = (EncryptionData) context.getData(CryptographyConstants.ENCRYPTION_DATA_KEY).get();
 
-            EncryptedBlobRange encryptedRange = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(
-                initialRangeHeader, encryptionData);
+            EncryptedBlobRange encryptedRange
+                = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(initialRangeHeader, encryptionData);
             if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null) {
                 requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
             }
@@ -147,7 +142,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                         return httpResponse;
                     }
                     encryptedRange.setAdjustedDownloadCount(
-                        Long.parseLong(responseHeaders.getValue(CONTENT_LENGTH)));
+                        Long.parseLong(responseHeaders.getValue(HttpHeaderName.CONTENT_LENGTH)));
 
                     /*
                      * We expect padding only if we are at the end of a blob and it is not a multiple of the
@@ -155,9 +150,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                      */
                     boolean padding = hasPadding(httpResponse.getHeaders(), encryptionData, encryptedRange);
 
-                    Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(),
-                        encryptedRange, padding, encryptionData,
-                        httpResponse.getRequest().getUrl());
+                    Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRange, padding,
+                        encryptionData, httpResponse.getRequest().getUrl());
 
                     return new DecryptedResponse(httpResponse, plainTextData);
                 } else {
@@ -182,22 +176,21 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
     private Mono<HttpResponse> validateEncryptionDataConsistency(Mono<HttpResponse> responseMono) {
         return responseMono.map(response -> {
             if (response.getHeaderValue(ENCRYPTION_METADATA_HEADER) != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException("GetProperties did not find"
-                    + " encryption data, but download request returned encryption data."));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "GetProperties did not find" + " encryption data, but download request returned encryption data."));
             }
             return response;
         });
     }
 
     private boolean hasPadding(HttpHeaders responseHeaders, EncryptionData encryptionData,
-            EncryptedBlobRange encryptedRange) {
+        EncryptedBlobRange encryptedRange) {
         /*
          * We expect padding only if we are at the end of a blob and it is not a multiple of the encryption
          * block size. Padding is only ever present in track 1.
          */
         return encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)
-                && (encryptedRange.toBlobRange().getOffset()
-                + encryptedRange.toBlobRange().getCount()
+            && (encryptedRange.toBlobRange().getOffset() + encryptedRange.toBlobRange().getCount()
                 > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE));
     }
 
@@ -227,14 +220,14 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
         Decryptor decryptor = Decryptor.getDecryptor(keyResolver, keyWrapper, encryptionData);
         Flux<ByteBuffer> dataToTrim = decryptor.getKeyEncryptionKey()
-                .flatMapMany(key -> decryptor.decrypt(encryptedFlux, encryptedBlobRange, padding, uriToLog,
-                        totalInputBytes, key));
+            .flatMapMany(
+                key -> decryptor.decrypt(encryptedFlux, encryptedBlobRange, padding, uriToLog, totalInputBytes, key));
 
         return trimData(encryptedBlobRange, totalOutputBytes, dataToTrim);
     }
 
-    Flux<ByteBuffer> trimData(EncryptedBlobRange encryptedBlobRange,
-            AtomicLong totalOutputBytes, Flux<ByteBuffer> dataToTrim) {
+    Flux<ByteBuffer> trimData(EncryptedBlobRange encryptedBlobRange, AtomicLong totalOutputBytes,
+        Flux<ByteBuffer> dataToTrim) {
         return dataToTrim.map(plaintextByteBuffer -> {
             int decryptedBytes = plaintextByteBuffer.limit();
 
@@ -254,8 +247,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * offsetAdjustment, so when we do reach customer-requested data, advancing the position by
                  * the whole offsetAdjustment would be too much.
                  */
-                int remainingAdjustment = encryptedBlobRange.getAmountPlaintextToSkip()
-                        - (int) totalOutputBytes.longValue();
+                int remainingAdjustment
+                    = encryptedBlobRange.getAmountPlaintextToSkip() - (int) totalOutputBytes.longValue();
 
                 /*
                  * Setting the position past the limit will throw. This is in the case of very small
@@ -282,8 +275,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 beginningOfEndAdjustment = Long.MAX_VALUE;
             } else {
                 // Calculate the end of the user-requested data so we can trim anything after.
-                beginningOfEndAdjustment = encryptedBlobRange.getAmountPlaintextToSkip()
-                        + encryptedBlobRange.getOriginalRange().getCount();
+                beginningOfEndAdjustment
+                    = encryptedBlobRange.getAmountPlaintextToSkip() + encryptedBlobRange.getOriginalRange().getCount();
             }
 
             /*
@@ -292,7 +285,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
              */
             if (decryptedBytes + totalOutputBytes.longValue() > beginningOfEndAdjustment) {
                 long amountPastEnd // past the end of user-requested data.
-                        = decryptedBytes + totalOutputBytes.longValue() - beginningOfEndAdjustment;
+                    = decryptedBytes + totalOutputBytes.longValue() - beginningOfEndAdjustment;
                 /*
                  * Note that amountPastEnd can only be up to 16 for v1 or 4mb for v2, so the cast is safe. We do not
                  * need to worry about limit() throwing because we allocated at least enough space for decryptedBytes
@@ -301,7 +294,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                  * the same as position.
                  */
                 int newLimit = totalOutputBytes.longValue() <= beginningOfEndAdjustment
-                        ? decryptedBytes - (int) amountPastEnd : plaintextByteBuffer.position();
+                    ? decryptedBytes - (int) amountPastEnd
+                    : plaintextByteBuffer.position();
                 plaintextByteBuffer.limit(newLimit);
             } else if (decryptedBytes + totalOutputBytes.longValue() > encryptedBlobRange.getAmountPlaintextToSkip()) {
                 /*
@@ -325,12 +319,12 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
     private Long blobSize(HttpHeaders headers) {
         // e.g. 0-5/1024
-        if (headers.getValue(CONTENT_RANGE) != null) {
-            String range = headers.getValue(CONTENT_RANGE);
+        if (headers.getValue(HttpHeaderName.CONTENT_RANGE) != null) {
+            String range = headers.getValue(HttpHeaderName.CONTENT_RANGE);
             return Long.valueOf(range.split("/")[1]);
         } else {
             // If there was no content range header, we requested a full blob, so the blobSize = contentLength
-            return Long.valueOf(headers.getValue(CONTENT_LENGTH));
+            return Long.valueOf(headers.getValue(HttpHeaderName.CONTENT_LENGTH));
         }
     }
 

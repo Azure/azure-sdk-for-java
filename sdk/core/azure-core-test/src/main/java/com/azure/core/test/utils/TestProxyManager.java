@@ -37,7 +37,8 @@ public final class TestProxyManager {
     }
 
     @Deprecated
-    private TestProxyManager() { }
+    private TestProxyManager() {
+    }
 
     /**
      * Start an instance of the test proxy.
@@ -48,8 +49,9 @@ public final class TestProxyManager {
         try {
             // if we're not running in CI we will check to see if someone has started the proxy, and start one if not.
             if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1), null)) {
-                String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
-                    TestProxyUtils.getProxyProcessName()).toString();
+                String commandLine = Paths
+                    .get(TestProxyDownloader.getProxyDirectory().toString(), TestProxyUtils.getProxyProcessName())
+                    .toString();
 
                 Path repoRoot = TestUtils.getRepoRootResolveUntil(WORKING_DIRECTORY, "eng");
 
@@ -101,8 +103,8 @@ public final class TestProxyManager {
 
     private static boolean checkAlive(int loops, Duration waitTime, Process proxy) throws InterruptedException {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
-        HttpRequest request = new HttpRequest(HttpMethod.GET,
-            String.format("%s/admin/isalive", TestProxyUtils.getProxyUrl()));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.GET, String.format("%s/admin/isalive", TestProxyUtils.getProxyUrl()));
         for (int i = 0; i < loops; i++) {
             // If the proxy isn't alive and the exit value isn't 0, then the proxy process has exited with an error
             // and stop waiting.

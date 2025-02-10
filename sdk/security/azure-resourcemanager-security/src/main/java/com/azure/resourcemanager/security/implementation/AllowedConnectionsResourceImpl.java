@@ -16,8 +16,7 @@ public final class AllowedConnectionsResourceImpl implements AllowedConnectionsR
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    AllowedConnectionsResourceImpl(
-        AllowedConnectionsResourceInner innerObject,
+    AllowedConnectionsResourceImpl(AllowedConnectionsResourceInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

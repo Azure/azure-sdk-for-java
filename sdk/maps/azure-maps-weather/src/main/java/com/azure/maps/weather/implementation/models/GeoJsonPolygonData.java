@@ -5,24 +5,32 @@
 package com.azure.maps.weather.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The GeoJsonPolygonData model. */
+/**
+ * The GeoJsonPolygonData model.
+ */
 @Fluent
-public class GeoJsonPolygonData {
+public class GeoJsonPolygonData implements JsonSerializable<GeoJsonPolygonData> {
     /*
      * Coordinates for the `GeoJson Polygon` geometry type.
      */
-    @JsonProperty(value = "coordinates", required = true)
     private List<List<List<Double>>> coordinates;
 
-    /** Creates an instance of GeoJsonPolygonData class. */
-    public GeoJsonPolygonData() {}
+    /**
+     * Creates an instance of GeoJsonPolygonData class.
+     */
+    public GeoJsonPolygonData() {
+    }
 
     /**
      * Get the coordinates property: Coordinates for the `GeoJson Polygon` geometry type.
-     *
+     * 
      * @return the coordinates value.
      */
     public List<List<List<Double>>> getCoordinates() {
@@ -31,12 +39,52 @@ public class GeoJsonPolygonData {
 
     /**
      * Set the coordinates property: Coordinates for the `GeoJson Polygon` geometry type.
-     *
+     * 
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonPolygonData object itself.
      */
     public GeoJsonPolygonData setCoordinates(List<List<List<Double>>> coordinates) {
         this.coordinates = coordinates;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("coordinates", this.coordinates, (writer, element) -> writer.writeArray(element,
+            (writer1, element1) -> writer1.writeArray(element1, (writer2, element2) -> writer2.writeDouble(element2))));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GeoJsonPolygonData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GeoJsonPolygonData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GeoJsonPolygonData.
+     */
+    public static GeoJsonPolygonData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GeoJsonPolygonData deserializedGeoJsonPolygonData = new GeoJsonPolygonData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("coordinates".equals(fieldName)) {
+                    List<List<List<Double>>> coordinates = reader.readArray(
+                        reader1 -> reader1.readArray(reader2 -> reader2.readArray(reader3 -> reader3.getDouble())));
+                    deserializedGeoJsonPolygonData.coordinates = coordinates;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGeoJsonPolygonData;
+        });
     }
 }

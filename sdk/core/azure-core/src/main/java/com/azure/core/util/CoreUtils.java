@@ -3,10 +3,12 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.http.AuthenticateChallengeParser;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import org.reactivestreams.Publisher;
@@ -14,7 +16,15 @@ import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.DateTimeException;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQueries;
+import java.time.temporal.TemporalQuery;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,12 +36,15 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +55,9 @@ public final class CoreUtils {
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
 
     private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
+
+    // Used to check if the ISO8601 date time doesn't have a colon in the offset.
+    private static final Pattern ISO8601_COLONLESS_OFFSET = Pattern.compile("([+-][0-9]{2})([0-9]{2})(?=\\[|$)");
 
     private CoreUtils() {
         // Exists only to defeat instantiation.
@@ -190,7 +206,6 @@ public final class CoreUtils {
         return Flux.fromIterable(page.getElements()).concatWith(content.apply(nextPageLink, context));
     }
 
-
     /**
      * Helper method that returns an immutable {@link Map} of properties defined in {@code propertiesFileName}.
      *
@@ -202,9 +217,9 @@ public final class CoreUtils {
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);
-                return Collections.unmodifiableMap(properties.entrySet().stream()
-                    .collect(Collectors.toMap(entry -> (String) entry.getKey(),
-                        entry -> (String) entry.getValue())));
+                return Collections.unmodifiableMap(properties.entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
             LOGGER.log(LogLevel.WARNING, () -> "Failed to get properties from " + propertiesFileName, ex);
@@ -383,36 +398,47 @@ public final class CoreUtils {
         switch (count) {
             case 0:
                 return "";
+
             case 1:
                 return values.get(0);
+
             case 2:
                 return values.get(0) + delimiter + values.get(1);
+
             case 3:
                 return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
+
             case 4:
                 return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
                     + values.get(3);
+
             case 5:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4);
+
             case 6:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5);
+
             case 7:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+
             case 8:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                    + delimiter + values.get(7);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7);
+
             case 9:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                    + delimiter + values.get(7) + delimiter + values.get(8);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7) + delimiter + values.get(8);
+
             case 10:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                    + delimiter + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+
             default:
                 return String.join(delimiter, values);
         }
@@ -572,6 +598,75 @@ public final class CoreUtils {
     }
 
     /**
+     * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will close the
+     * {@code executorService} when the JVM is shutting down.
+     * <p>
+     * {@link Runtime#addShutdownHook(Thread)} checks for security privileges and will throw an exception if the proper
+     * security isn't available. So, if running with a security manager, setting
+     * {@code AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to add
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code executorService} is null, no shutdown hook will be added and this method will return null.
+     * <p>
+     * The {@code shutdownTimeout} is the amount of time to wait for the {@code executorService} to shutdown. If the
+     * {@code executorService} doesn't shutdown within half the timeout, it will be forcefully shutdown.
+     *
+     * @param executorService The {@link ExecutorService} to shutdown when the JVM is shutting down.
+     * @param shutdownTimeout The amount of time to wait for the {@code executorService} to shutdown.
+     * @return The {@code executorService} that was passed in.
+     * @throws NullPointerException If {@code shutdownTimeout} is null.
+     * @throws IllegalArgumentException If {@code shutdownTimeout} is zero or negative.
+     */
+    public static ExecutorService addShutdownHookSafely(ExecutorService executorService, Duration shutdownTimeout) {
+        if (executorService == null) {
+            return null;
+        }
+        Objects.requireNonNull(shutdownTimeout, "'shutdownTimeout' cannot be null.");
+        if (shutdownTimeout.isZero() || shutdownTimeout.isNegative()) {
+            throw new IllegalArgumentException("'shutdownTimeout' must be a non-zero positive duration.");
+        }
+
+        CoreUtils.addShutdownHookSafely(createExecutorServiceShutdownThread(executorService, shutdownTimeout));
+
+        return executorService;
+    }
+
+    static Thread createExecutorServiceShutdownThread(ExecutorService executorService, Duration shutdownTimeout) {
+        long timeoutNanos = shutdownTimeout.toNanos();
+        return new Thread(() -> {
+            try {
+                executorService.shutdown();
+                if (!executorService.awaitTermination(timeoutNanos / 2, TimeUnit.NANOSECONDS)) {
+                    executorService.shutdownNow();
+                    executorService.awaitTermination(timeoutNanos / 2, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                executorService.shutdown();
+            }
+        });
+    }
+
+    /**
+     * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will run when the JVM is
+     * shutting down.
+     * <p>
+     * {@link Runtime#addShutdownHook(Thread)} checks for security privileges and will throw an exception if the proper
+     * security isn't available. So, if running with a security manager, setting
+     * {@code AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to add
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code shutdownThread} is null, no shutdown hook will be added and this method will return null.
+     *
+     * @param shutdownThread The {@link Thread} that will be added as a
+     * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
+     * @return The {@link Thread} that was passed in.
+     */
+    public static Thread addShutdownHookSafely(Thread shutdownThread) {
+        return ImplUtils.addShutdownHookSafely(shutdownThread);
+    }
+
+    /**
      * Converts a {@link Duration} to a string in ISO-8601 format with support for a day component.
      * <p>
      * {@link Duration#toString()} doesn't use a day component, so if the duration is greater than 24 hours it would
@@ -668,5 +763,71 @@ public final class CoreUtils {
         }
 
         return builder.toString();
+    }
+
+    /**
+     * Parses a string into an {@link OffsetDateTime}.
+     * <p>
+     * If {@code dateString} is null, null will be returned.
+     * <p>
+     * This method attempts to parse the {@code dateString} using
+     * {@link DateTimeFormatter#parseBest(CharSequence, TemporalQuery[])}. This will use
+     * {@link OffsetDateTime#from(TemporalAccessor)} as the first attempt and will fall back to
+     * {@link LocalDateTime#from(TemporalAccessor)} with setting the offset as {@link ZoneOffset#UTC}.
+     *
+     * @param dateString The string to parse into an {@link OffsetDateTime}.
+     * @return The parsed {@link OffsetDateTime}, or null if {@code dateString} was null.
+     * @throws DateTimeException If the {@code dateString} cannot be parsed by either
+     * {@link OffsetDateTime#from(TemporalAccessor)} or {@link LocalDateTime#from(TemporalAccessor)}.
+     */
+    public static OffsetDateTime parseBestOffsetDateTime(String dateString) {
+        if (dateString == null) {
+            return null;
+        }
+
+        Matcher matcher = ISO8601_COLONLESS_OFFSET.matcher(dateString);
+        if (matcher.find()) {
+            dateString = dateString.substring(0, matcher.start()) + matcher.group(1) + ":" + matcher.group(2)
+                + dateString.substring(matcher.start() + 5);
+        }
+
+        TemporalAccessor temporal
+            = DateTimeFormatter.ISO_DATE_TIME.parseBest(dateString, OffsetDateTime::from, LocalDateTime::from);
+
+        if (temporal.query(TemporalQueries.offset()) == null) {
+            return LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC);
+        } else {
+            return OffsetDateTime.from(temporal);
+        }
+    }
+
+    /**
+     * Processes an authenticate header, such as {@link HttpHeaderName#WWW_AUTHENTICATE} or
+     * {@link HttpHeaderName#PROXY_AUTHENTICATE}, into a list of {@link AuthenticateChallenge}.
+     * <p>
+     * If the {@code authenticateHeader} is null or empty an empty list will be returned.
+     * <p>
+     * This method will parse the authenticate header as plainly as possible, meaning no casing will be changed on the
+     * scheme and no decoding will be done on the parameters. The only processing done is removal of quotes around
+     * parameter values and backslashes escaping values. Ex, {@code "va\"lue"} will be parsed as {@code va"lue}.
+     * <p>
+     * In addition to processing as plainly as possible, this method will not validate the authenticate header, it will
+     * only parse it. Though, if the authenticate header has syntax errors an {@link IllegalStateException} will be
+     * thrown.
+     * <p>
+     * A list of {@link AuthenticateChallenge} will be returned as it is valid for multiple authenticate challenges to
+     * use the same scheme, therefore a map cannot be used as the scheme would be the key and only one challenge would
+     * be stored.
+     *
+     * @param authenticateHeader The authenticate header to be parsed.
+     * @return A list of authenticate challenges.
+     * @throws IllegalArgumentException If the {@code authenticateHeader} has syntax errors.
+     */
+    public static List<AuthenticateChallenge> parseAuthenticateHeader(String authenticateHeader) {
+        if (isNullOrEmpty(authenticateHeader)) {
+            return Collections.emptyList();
+        }
+
+        return new AuthenticateChallengeParser(authenticateHeader).parse();
     }
 }

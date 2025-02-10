@@ -20,7 +20,7 @@ public class FileListFromComputeNodeOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -34,7 +34,8 @@ public class FileListFromComputeNodeOptions {
 
     /**
      * The maximum time that the server can spend processing the request, in
-     * seconds. The default is 30 seconds.
+     * seconds. The default is 30 seconds. If the value is larger than 30, the
+     * default will be used instead.
      */
     @JsonProperty(value = "")
     private Integer timeout;
@@ -62,7 +63,7 @@ public class FileListFromComputeNodeOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
      *
      * @return the filter value
      */
@@ -71,7 +72,7 @@ public class FileListFromComputeNodeOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
      *
      * @param filter the filter value to set
      * @return the FileListFromComputeNodeOptions object itself.
@@ -102,7 +103,7 @@ public class FileListFromComputeNodeOptions {
     }
 
     /**
-     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @return the timeout value
      */
@@ -111,7 +112,7 @@ public class FileListFromComputeNodeOptions {
     }
 
     /**
-     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @param timeout the timeout value to set
      * @return the FileListFromComputeNodeOptions object itself.

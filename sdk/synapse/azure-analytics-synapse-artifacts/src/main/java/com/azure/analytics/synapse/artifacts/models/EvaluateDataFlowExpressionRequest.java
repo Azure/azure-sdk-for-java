@@ -5,41 +5,40 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Request body structure for data flow expression preview.
  */
 @Fluent
-public final class EvaluateDataFlowExpressionRequest {
+public final class EvaluateDataFlowExpressionRequest implements JsonSerializable<EvaluateDataFlowExpressionRequest> {
     /*
      * The ID of data flow debug session.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * The data flow which contains the debug session.
      */
-    @JsonProperty(value = "dataFlowName")
     private String dataFlowName;
 
     /*
      * The output stream name.
      */
-    @JsonProperty(value = "streamName")
     private String streamName;
 
     /*
      * The row limit for preview request.
      */
-    @JsonProperty(value = "rowLimits")
     private Integer rowLimits;
 
     /*
      * The expression for preview.
      */
-    @JsonProperty(value = "expression")
     private String expression;
 
     /**
@@ -146,5 +145,54 @@ public final class EvaluateDataFlowExpressionRequest {
     public EvaluateDataFlowExpressionRequest setExpression(String expression) {
         this.expression = expression;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeStringField("dataFlowName", this.dataFlowName);
+        jsonWriter.writeStringField("streamName", this.streamName);
+        jsonWriter.writeNumberField("rowLimits", this.rowLimits);
+        jsonWriter.writeStringField("expression", this.expression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EvaluateDataFlowExpressionRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EvaluateDataFlowExpressionRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EvaluateDataFlowExpressionRequest.
+     */
+    public static EvaluateDataFlowExpressionRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EvaluateDataFlowExpressionRequest deserializedEvaluateDataFlowExpressionRequest
+                = new EvaluateDataFlowExpressionRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sessionId".equals(fieldName)) {
+                    deserializedEvaluateDataFlowExpressionRequest.sessionId = reader.getString();
+                } else if ("dataFlowName".equals(fieldName)) {
+                    deserializedEvaluateDataFlowExpressionRequest.dataFlowName = reader.getString();
+                } else if ("streamName".equals(fieldName)) {
+                    deserializedEvaluateDataFlowExpressionRequest.streamName = reader.getString();
+                } else if ("rowLimits".equals(fieldName)) {
+                    deserializedEvaluateDataFlowExpressionRequest.rowLimits = reader.getNullable(JsonReader::getInt);
+                } else if ("expression".equals(fieldName)) {
+                    deserializedEvaluateDataFlowExpressionRequest.expression = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEvaluateDataFlowExpressionRequest;
+        });
     }
 }

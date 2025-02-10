@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-
 public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOptions> {
 
     private final EventProcessorClient eventProcessorClient;
@@ -32,11 +31,12 @@ public class EventProcessorJedisTest extends EventPerfTest<EventProcessorJedisOp
      */
     public EventProcessorJedisTest(EventProcessorJedisOptions options) {
         super(options);
-        Duration errorAfter = options.getErrorAfterInSeconds() > 0
-            ? Duration.ofSeconds(options.getErrorAfterInSeconds()) : null;
+        Duration errorAfter
+            = options.getErrorAfterInSeconds() > 0 ? Duration.ofSeconds(options.getErrorAfterInSeconds()) : null;
 
         JedisPoolConfig poolConfig = new JedisPoolConfig();
-        JedisPool jedisPool = new JedisPool(poolConfig, options.getHostName(), 6380, 5000, 1000, options.getPassword(), Protocol.DEFAULT_DATABASE, options.getUserName(), true, null, null, null);
+        JedisPool jedisPool = new JedisPool(poolConfig, options.getHostName(), 6380, 5000, 1000, options.getPassword(),
+            Protocol.DEFAULT_DATABASE, options.getUserName(), true, null, null, null);
         JedisCheckpointStore checkpointStore = new JedisCheckpointStore(jedisPool);
 
         Consumer<ErrorContext> errorProcessor = errorContext -> super.errorRaised(errorContext.getThrowable());

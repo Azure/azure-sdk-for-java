@@ -14,7 +14,7 @@ public final class SolutionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Solutions model = BinaryData.fromString(
-            "{\"solutions\":[{\"solutionId\":\"ixuigdtopbobj\",\"solutionType\":\"Diagnostics\",\"description\":\"e\",\"requiredInputs\":[\"m\"]},{\"solutionId\":\"hrzayvvtpgvdf\",\"solutionType\":\"Solutions\",\"description\":\"kftutqxlngxlefg\",\"requiredInputs\":[\"xkrxdqmi\",\"tthzrvqd\"]},{\"solutionId\":\"bhj\",\"solutionType\":\"Diagnostics\",\"description\":\"ehoqfbowskan\",\"requiredInputs\":[\"zlcuiywgqywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\",\"fsxlzevgbmqjqa\"]},{\"solutionId\":\"y\",\"solutionType\":\"Solutions\",\"description\":\"kwlzuvccfwnfn\",\"requiredInputs\":[\"fionl\",\"bxetqgtzxdpn\"]}]}")
+            "{\"solutions\":[{\"solutionId\":\"ixuigdtopbobj\",\"solutionType\":\"Diagnostics\",\"description\":\"e\",\"requiredInputs\":[\"m\"]},{\"solutionId\":\"hrzayvvtpgvdf\",\"solutionType\":\"SelfHelp\",\"description\":\"kftutqxlngxlefg\",\"requiredInputs\":[\"xkrxdqmi\",\"tthzrvqd\"]},{\"solutionId\":\"bhj\",\"solutionType\":\"Solutions\",\"description\":\"ehoqfbowskan\",\"requiredInputs\":[\"zlcuiywgqywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\",\"fsxlzevgbmqjqa\"]},{\"solutionId\":\"y\",\"solutionType\":\"SelfHelp\",\"description\":\"kwlzuvccfwnfn\",\"requiredInputs\":[\"fionl\",\"bxetqgtzxdpn\"]}]}")
             .toObject(Solutions.class);
         Assertions.assertEquals("ixuigdtopbobj", model.solutions().get(0).solutionId());
     }

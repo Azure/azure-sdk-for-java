@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.ValidateSyncMigrationInput
 public final class ValidateSyncMigrationInputSqlServerTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateSyncMigrationInputSqlServerTaskOutput model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"nzvdfbzdixzmq\",\"name\":\"odawopqhewjptmcg\",\"validationErrors\":[{\"message\":\"t\",\"actionableMessage\":\"lnd\",\"filePath\":\"tutmzl\",\"lineNumber\":\"ojlvfhrbbpneqvc\",\"hResult\":2017882900,\"stackTrace\":\"urmochpprprs\"},{\"message\":\"okayzejnhlbkp\",\"actionableMessage\":\"pcpil\",\"filePath\":\"a\",\"lineNumber\":\"vechndbnwiehole\",\"hResult\":1333761955,\"stackTrace\":\"uubw\"},{\"message\":\"qsfapaqt\",\"actionableMessage\":\"rrqwexjk\",\"filePath\":\"xap\",\"lineNumber\":\"og\",\"hResult\":1688417232,\"stackTrace\":\"bpudcdab\"}]}")
-                .toObject(ValidateSyncMigrationInputSqlServerTaskOutput.class);
+        ValidateSyncMigrationInputSqlServerTaskOutput model = BinaryData.fromString(
+            "{\"id\":\"swvxwlmzqwmv\",\"name\":\"njmxmcuqudtcvcl\",\"validationErrors\":[{\"message\":\"dkvgfabuiyjibuzp\",\"actionableMessage\":\"ugneikn\",\"filePath\":\"oxgjiuqhibt\",\"lineNumber\":\"ipq\",\"hResult\":399178723,\"stackTrace\":\"mur\"},{\"message\":\"x\",\"actionableMessage\":\"wpktvqylkmqpzoyh\",\"filePath\":\"bcg\",\"lineNumber\":\"cloxo\",\"hResult\":477398510,\"stackTrace\":\"njipnwjfujql\"}]}")
+            .toObject(ValidateSyncMigrationInputSqlServerTaskOutput.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -17,7 +17,6 @@ import org.testng.annotations.BeforeMethod;
 import java.lang.reflect.Method;
 
 public abstract class CosmosEncryptionAsyncClientTest implements ITest {
-
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor cosmosClientBuilderAccessor =
         ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
@@ -36,17 +35,13 @@ public abstract class CosmosEncryptionAsyncClientTest implements ITest {
         return this.clientBuilder;
     }
 
-    public final ConnectionPolicy getConnectionPolicy() {
-        return cosmosClientBuilderAccessor.getConnectionPolicy(this.clientBuilder);
-    }
-
     @Override
     public final String getTestName() {
         return this.testName;
     }
 
     @BeforeMethod(alwaysRun = true)
-    public final void setTestName(Method method) {
+    public final void setTestName(Method method, Object[] row) {
         String testClassAndMethodName = Strings.lenientFormat("%s::%s",
             method.getDeclaringClass().getSimpleName(),
             method.getName());
@@ -66,10 +61,19 @@ public abstract class CosmosEncryptionAsyncClientTest implements ITest {
         } else {
             this.testName = testClassAndMethodName;
         }
+
+        String suffix = this.resolveTestNameSuffix(row);
+        if (suffix != null && !suffix.isEmpty()) {
+            this.testName += "(" + suffix + ")";
+        }
     }
 
     @AfterMethod(alwaysRun = true)
     public final void unsetTestName() {
         this.testName = null;
+    }
+
+    public String resolveTestNameSuffix(Object[] row) {
+        return "";
     }
 }

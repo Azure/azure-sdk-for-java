@@ -5,6 +5,8 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import java.util.Map;
@@ -18,11 +20,15 @@ public class ShareFileCreateOptions {
     private final long size;
     private ShareFileHttpHeaders httpHeaders;
     private FileSmbProperties smbProperties;
-    private String filePermission;
+    private String filePermissionKey;
+    private FilePermissionFormat filePermissionFormat;
     private Map<String, String> metadata;
     private ShareRequestConditions requestConditions;
+    private FilePosixProperties posixProperties;
 
     /**
+     * Creates a new instance of {@link ShareFileCreateOptions}.
+     *
      * @param size Specifies the maximum size for the file share.
      */
     public ShareFileCreateOptions(long size) {
@@ -30,6 +36,8 @@ public class ShareFileCreateOptions {
     }
 
     /**
+     * Gets the maximum size for the file share.
+     *
      * @return Specifies the maximum size for the file share.
      */
     public long getSize() {
@@ -37,6 +45,8 @@ public class ShareFileCreateOptions {
     }
 
     /**
+     * Gets the file's http headers.
+     *
      * @return the file's http headers.
      */
     public ShareFileHttpHeaders getShareFileHttpHeaders() {
@@ -45,6 +55,7 @@ public class ShareFileCreateOptions {
 
     /**
      * Sets the file's http headers.
+     *
      * @param headers the http headers.
      * @return the updated options.
      */
@@ -54,24 +65,8 @@ public class ShareFileCreateOptions {
     }
 
     /**
-     * @return The file's permission key.
-     */
-    public String getFilePermission() {
-        return filePermission;
-    }
-
-    /**
-     * Sets the file permission key.
+     * Gets the optional SMB properties to set on the destination file or directory.
      *
-     * @param filePermissionKey The file permission key.
-     * @return the updated options.
-     */
-    public ShareFileCreateOptions setFilePermission(String filePermissionKey) {
-        this.filePermission = filePermissionKey;
-        return this;
-    }
-
-    /**
      * @return Optional SMB properties to set on the destination file or directory. The only properties that are
      * considered are file attributes, file creation time, file last write time, and file permission key. The rest are
      * ignored.
@@ -81,6 +76,8 @@ public class ShareFileCreateOptions {
     }
 
     /**
+     * Sets the optional SMB properties to set on the destination file or directory.
+     *
      * @param smbProperties Optional SMB properties to set on the destination file or directory. The only properties
      * that are  considered are file attributes, file creation time, file last write time, and file permission key. The
      * rest are ignored.
@@ -92,6 +89,8 @@ public class ShareFileCreateOptions {
     }
 
     /**
+     * Gets the metadata to associate with the share.
+     *
      * @return Metadata to associate with the share
      */
     public Map<String, String> getMetadata() {
@@ -99,6 +98,8 @@ public class ShareFileCreateOptions {
     }
 
     /**
+     * Sets the metadata to associate with the share.
+     *
      * @param metadata Metadata to associate with the share. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @return The updated options.
@@ -125,6 +126,68 @@ public class ShareFileCreateOptions {
      */
     public ShareFileCreateOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * Gets the file permission.
+     *
+     * @return file permission.
+     */
+    public String getFilePermission() {
+        return filePermissionKey;
+    }
+
+    /**
+     * Sets the file permission.
+     *
+     * @param filePermissionKey the file permission.
+     * @return The updated options.
+     */
+    public ShareFileCreateOptions setFilePermission(String filePermissionKey) {
+        this.filePermissionKey = filePermissionKey;
+        return this;
+    }
+
+    /**
+     * Gets the file permission format.
+     *
+     * @return file permission format.
+     */
+    public FilePermissionFormat getFilePermissionFormat() {
+        return filePermissionFormat;
+    }
+
+    /**
+     * Sets the file permission format.
+     *
+     * @param filePermissionFormat the file permission format.
+     * @return The updated options.
+     */
+    public ShareFileCreateOptions setFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        this.filePermissionFormat = filePermissionFormat;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @return {@link FilePosixProperties}
+     */
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @param posixProperties {@link FilePosixProperties}
+     * @return The updated options.
+     */
+    public ShareFileCreateOptions setPosixProperties(FilePosixProperties posixProperties) {
+        this.posixProperties = posixProperties;
         return this;
     }
 }

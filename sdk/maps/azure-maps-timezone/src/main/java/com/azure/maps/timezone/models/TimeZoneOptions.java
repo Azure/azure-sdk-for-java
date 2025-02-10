@@ -5,37 +5,54 @@
 package com.azure.maps.timezone.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TimezoneOptions. */
+/**
+ * Defines values for TimezoneOptions.
+ */
 public final class TimeZoneOptions extends ExpandableStringEnum<TimeZoneOptions> {
-    /** Static value none for TimezoneOptions. */
+    /**
+     * Do not include zoneinfo or transitions in the result.
+     */
     public static final TimeZoneOptions NONE = fromString("none");
 
-    /** Static value zoneInfo for TimezoneOptions. */
+    /**
+     * Include additional time zone info in the result.
+     */
     public static final TimeZoneOptions ZONE_INFO = fromString("zoneInfo");
 
-    /** Static value transitions for TimezoneOptions. */
+    /**
+     * Include transition information in the result (The number of transitions is currently capped at 250).
+     */
     public static final TimeZoneOptions TRANSITIONS = fromString("transitions");
 
-    /** Static value all for TimezoneOptions. */
+    /**
+     * Include both zoneinfo and transitions in the result.
+     */
     public static final TimeZoneOptions ALL = fromString("all");
 
     /**
+     * Creates a new instance of TimezoneOptions value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TimeZoneOptions() {
+    }
+
+    /**
      * Creates or finds a TimezoneOptions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TimezoneOptions.
      */
-    @JsonCreator
     public static TimeZoneOptions fromString(String name) {
         return fromString(name, TimeZoneOptions.class);
     }
 
     /**
      * Gets known TimezoneOptions values.
-     *
+     * 
      * @return known TimezoneOptions values.
      */
     public static Collection<TimeZoneOptions> values() {

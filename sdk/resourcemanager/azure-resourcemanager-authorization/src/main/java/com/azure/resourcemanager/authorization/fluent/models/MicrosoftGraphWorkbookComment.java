@@ -5,47 +5,48 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** workbookComment. */
+/**
+ * workbookComment.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
     /*
      * The content of comment.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * Indicates the type for the comment.
      */
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * Read-only. Nullable.
      */
-    @JsonProperty(value = "replies")
     private List<MicrosoftGraphWorkbookCommentReply> replies;
 
     /*
      * workbookComment
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookComment class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookComment class.
+     */
     public MicrosoftGraphWorkbookComment() {
     }
 
     /**
      * Get the content property: The content of comment.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -54,7 +55,7 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
 
     /**
      * Set the content property: The content of comment.
-     *
+     * 
      * @param content the content value to set.
      * @return the MicrosoftGraphWorkbookComment object itself.
      */
@@ -65,7 +66,7 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
 
     /**
      * Get the contentType property: Indicates the type for the comment.
-     *
+     * 
      * @return the contentType value.
      */
     public String contentType() {
@@ -74,7 +75,7 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
 
     /**
      * Set the contentType property: Indicates the type for the comment.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the MicrosoftGraphWorkbookComment object itself.
      */
@@ -85,7 +86,7 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
 
     /**
      * Get the replies property: Read-only. Nullable.
-     *
+     * 
      * @return the replies value.
      */
     public List<MicrosoftGraphWorkbookCommentReply> replies() {
@@ -94,7 +95,7 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
 
     /**
      * Set the replies property: Read-only. Nullable.
-     *
+     * 
      * @param replies the replies value to set.
      * @return the MicrosoftGraphWorkbookComment object itself.
      */
@@ -105,17 +106,16 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: workbookComment.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookComment.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookComment object itself.
      */
@@ -124,15 +124,9 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookComment withId(String id) {
         super.withId(id);
@@ -141,7 +135,7 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -150,5 +144,64 @@ public final class MicrosoftGraphWorkbookComment extends MicrosoftGraphEntity {
         if (replies() != null) {
             replies().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeArrayField("replies", this.replies, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookComment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookComment if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookComment.
+     */
+    public static MicrosoftGraphWorkbookComment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookComment deserializedMicrosoftGraphWorkbookComment
+                = new MicrosoftGraphWorkbookComment();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookComment.withId(reader.getString());
+                } else if ("content".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookComment.content = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookComment.contentType = reader.getString();
+                } else if ("replies".equals(fieldName)) {
+                    List<MicrosoftGraphWorkbookCommentReply> replies
+                        = reader.readArray(reader1 -> MicrosoftGraphWorkbookCommentReply.fromJson(reader1));
+                    deserializedMicrosoftGraphWorkbookComment.replies = replies;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookComment.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookComment;
+        });
     }
 }

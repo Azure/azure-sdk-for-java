@@ -6,32 +6,52 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.ProvisioningState;
 import com.azure.resourcemanager.security.models.SecurityFamily;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The SecuritySolution model. */
+/**
+ * The SecuritySolution model.
+ */
 @Fluent
 public final class SecuritySolutionInner extends ProxyResource {
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private SecuritySolutionProperties innerProperties;
 
     /*
      * Location where the resource is stored
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of SecuritySolutionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SecuritySolutionInner class.
+     */
     public SecuritySolutionInner() {
     }
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecuritySolutionProperties innerProperties() {
@@ -40,7 +60,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -48,8 +68,38 @@ public final class SecuritySolutionInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @return the securityFamily value.
      */
     public SecurityFamily securityFamily() {
@@ -58,7 +108,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @param securityFamily the securityFamily value to set.
      * @return the SecuritySolutionInner object itself.
      */
@@ -72,7 +122,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The security family provisioning State.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -81,7 +131,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the provisioningState property: The security family provisioning State.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the SecuritySolutionInner object itself.
      */
@@ -95,7 +145,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the template property: The security solutions' template.
-     *
+     * 
      * @return the template value.
      */
     public String template() {
@@ -104,7 +154,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the template property: The security solutions' template.
-     *
+     * 
      * @param template the template value to set.
      * @return the SecuritySolutionInner object itself.
      */
@@ -118,7 +168,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the protectionStatus property: The security solutions' status.
-     *
+     * 
      * @return the protectionStatus value.
      */
     public String protectionStatus() {
@@ -127,7 +177,7 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the protectionStatus property: The security solutions' status.
-     *
+     * 
      * @param protectionStatus the protectionStatus value to set.
      * @return the SecuritySolutionInner object itself.
      */
@@ -141,12 +191,57 @@ public final class SecuritySolutionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecuritySolutionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecuritySolutionInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecuritySolutionInner.
+     */
+    public static SecuritySolutionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecuritySolutionInner deserializedSecuritySolutionInner = new SecuritySolutionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecuritySolutionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSecuritySolutionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSecuritySolutionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSecuritySolutionInner.innerProperties = SecuritySolutionProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedSecuritySolutionInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecuritySolutionInner;
+        });
     }
 }

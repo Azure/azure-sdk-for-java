@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Vault Job specific error information. */
+/**
+ * Vault Job specific error information.
+ */
 @Fluent
-public final class VaultJobErrorInfo {
+public final class VaultJobErrorInfo implements JsonSerializable<VaultJobErrorInfo> {
     /*
      * Error code.
      */
-    @JsonProperty(value = "errorCode")
     private Integer errorCode;
 
     /*
      * Localized error string.
      */
-    @JsonProperty(value = "errorString")
     private String errorString;
 
     /*
      * List of localized recommendations for above error code.
      */
-    @JsonProperty(value = "recommendations")
     private List<String> recommendations;
 
-    /** Creates an instance of VaultJobErrorInfo class. */
+    /**
+     * Creates an instance of VaultJobErrorInfo class.
+     */
     public VaultJobErrorInfo() {
     }
 
     /**
      * Get the errorCode property: Error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -44,7 +49,7 @@ public final class VaultJobErrorInfo {
 
     /**
      * Set the errorCode property: Error code.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the VaultJobErrorInfo object itself.
      */
@@ -55,7 +60,7 @@ public final class VaultJobErrorInfo {
 
     /**
      * Get the errorString property: Localized error string.
-     *
+     * 
      * @return the errorString value.
      */
     public String errorString() {
@@ -64,7 +69,7 @@ public final class VaultJobErrorInfo {
 
     /**
      * Set the errorString property: Localized error string.
-     *
+     * 
      * @param errorString the errorString value to set.
      * @return the VaultJobErrorInfo object itself.
      */
@@ -75,7 +80,7 @@ public final class VaultJobErrorInfo {
 
     /**
      * Get the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @return the recommendations value.
      */
     public List<String> recommendations() {
@@ -84,7 +89,7 @@ public final class VaultJobErrorInfo {
 
     /**
      * Set the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @param recommendations the recommendations value to set.
      * @return the VaultJobErrorInfo object itself.
      */
@@ -95,9 +100,53 @@ public final class VaultJobErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("errorString", this.errorString);
+        jsonWriter.writeArrayField("recommendations", this.recommendations,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultJobErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultJobErrorInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VaultJobErrorInfo.
+     */
+    public static VaultJobErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultJobErrorInfo deserializedVaultJobErrorInfo = new VaultJobErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorCode".equals(fieldName)) {
+                    deserializedVaultJobErrorInfo.errorCode = reader.getNullable(JsonReader::getInt);
+                } else if ("errorString".equals(fieldName)) {
+                    deserializedVaultJobErrorInfo.errorString = reader.getString();
+                } else if ("recommendations".equals(fieldName)) {
+                    List<String> recommendations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVaultJobErrorInfo.recommendations = recommendations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultJobErrorInfo;
+        });
     }
 }

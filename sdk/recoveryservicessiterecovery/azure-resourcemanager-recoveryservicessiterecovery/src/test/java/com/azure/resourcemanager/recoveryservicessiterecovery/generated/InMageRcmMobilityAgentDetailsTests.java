@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmMo
 public final class InMageRcmMobilityAgentDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmMobilityAgentDetails model =
-            BinaryData
-                .fromString(
-                    "{\"version\":\"ielbqrv\",\"latestVersion\":\"qvknmpecqxgiq\",\"latestAgentReleaseDate\":\"ifubnsnstlpwqp\",\"driverVersion\":\"xjkhtupsv\",\"latestUpgradableVersionWithoutReboot\":\"uweuiy\",\"agentVersionExpiryDate\":\"2021-02-16T23:45:49Z\",\"driverVersionExpiryDate\":\"2021-01-05T18:40:56Z\",\"lastHeartbeatUtc\":\"2021-09-02T16:14:15Z\",\"reasonsBlockingUpgrade\":[\"DistroIsNotReported\"],\"isUpgradeable\":\"evyllznfhkqyt\"}")
-                .toObject(InMageRcmMobilityAgentDetails.class);
+        InMageRcmMobilityAgentDetails model = BinaryData.fromString(
+            "{\"version\":\"ielbqrv\",\"latestVersion\":\"qvknmpecqxgiq\",\"latestAgentReleaseDate\":\"ifubnsnstlpwqp\",\"driverVersion\":\"xjkhtupsv\",\"latestUpgradableVersionWithoutReboot\":\"uweuiy\",\"agentVersionExpiryDate\":\"2021-02-16T23:45:49Z\",\"driverVersionExpiryDate\":\"2021-01-05T18:40:56Z\",\"lastHeartbeatUtc\":\"2021-09-02T16:14:15Z\",\"reasonsBlockingUpgrade\":[\"DistroIsNotReported\"],\"isUpgradeable\":\"evyllznfhkqyt\"}")
+            .toObject(InMageRcmMobilityAgentDetails.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -5,55 +5,60 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Additional information on Azure IaaS VM specific backup item. */
+/**
+ * Additional information on Azure IaaS VM specific backup item.
+ */
 @Fluent
-public final class AzureIaaSvmProtectedItemExtendedInfo {
+public final class AzureIaaSvmProtectedItemExtendedInfo
+    implements JsonSerializable<AzureIaaSvmProtectedItemExtendedInfo> {
     /*
      * The oldest backup copy available for this backup item across all tiers.
      */
-    @JsonProperty(value = "oldestRecoveryPoint")
     private OffsetDateTime oldestRecoveryPoint;
 
     /*
      * The oldest backup copy available for this backup item in vault tier
      */
-    @JsonProperty(value = "oldestRecoveryPointInVault")
     private OffsetDateTime oldestRecoveryPointInVault;
 
     /*
      * The oldest backup copy available for this backup item in archive tier
      */
-    @JsonProperty(value = "oldestRecoveryPointInArchive")
     private OffsetDateTime oldestRecoveryPointInArchive;
 
     /*
      * The latest backup copy available for this backup item in archive tier
      */
-    @JsonProperty(value = "newestRecoveryPointInArchive")
     private OffsetDateTime newestRecoveryPointInArchive;
 
     /*
      * Number of backup copies available for this backup item.
      */
-    @JsonProperty(value = "recoveryPointCount")
     private Integer recoveryPointCount;
 
     /*
      * Specifies if backup policy associated with the backup item is inconsistent.
      */
-    @JsonProperty(value = "policyInconsistent")
     private Boolean policyInconsistent;
 
-    /** Creates an instance of AzureIaaSvmProtectedItemExtendedInfo class. */
+    /**
+     * Creates an instance of AzureIaaSvmProtectedItemExtendedInfo class.
+     */
     public AzureIaaSvmProtectedItemExtendedInfo() {
     }
 
     /**
      * Get the oldestRecoveryPoint property: The oldest backup copy available for this backup item across all tiers.
-     *
+     * 
      * @return the oldestRecoveryPoint value.
      */
     public OffsetDateTime oldestRecoveryPoint() {
@@ -62,7 +67,7 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
 
     /**
      * Set the oldestRecoveryPoint property: The oldest backup copy available for this backup item across all tiers.
-     *
+     * 
      * @param oldestRecoveryPoint the oldestRecoveryPoint value to set.
      * @return the AzureIaaSvmProtectedItemExtendedInfo object itself.
      */
@@ -73,7 +78,7 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
 
     /**
      * Get the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault tier.
-     *
+     * 
      * @return the oldestRecoveryPointInVault value.
      */
     public OffsetDateTime oldestRecoveryPointInVault() {
@@ -82,12 +87,12 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
 
     /**
      * Set the oldestRecoveryPointInVault property: The oldest backup copy available for this backup item in vault tier.
-     *
+     * 
      * @param oldestRecoveryPointInVault the oldestRecoveryPointInVault value to set.
      * @return the AzureIaaSvmProtectedItemExtendedInfo object itself.
      */
-    public AzureIaaSvmProtectedItemExtendedInfo withOldestRecoveryPointInVault(
-        OffsetDateTime oldestRecoveryPointInVault) {
+    public AzureIaaSvmProtectedItemExtendedInfo
+        withOldestRecoveryPointInVault(OffsetDateTime oldestRecoveryPointInVault) {
         this.oldestRecoveryPointInVault = oldestRecoveryPointInVault;
         return this;
     }
@@ -95,7 +100,7 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
     /**
      * Get the oldestRecoveryPointInArchive property: The oldest backup copy available for this backup item in archive
      * tier.
-     *
+     * 
      * @return the oldestRecoveryPointInArchive value.
      */
     public OffsetDateTime oldestRecoveryPointInArchive() {
@@ -105,12 +110,12 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
     /**
      * Set the oldestRecoveryPointInArchive property: The oldest backup copy available for this backup item in archive
      * tier.
-     *
+     * 
      * @param oldestRecoveryPointInArchive the oldestRecoveryPointInArchive value to set.
      * @return the AzureIaaSvmProtectedItemExtendedInfo object itself.
      */
-    public AzureIaaSvmProtectedItemExtendedInfo withOldestRecoveryPointInArchive(
-        OffsetDateTime oldestRecoveryPointInArchive) {
+    public AzureIaaSvmProtectedItemExtendedInfo
+        withOldestRecoveryPointInArchive(OffsetDateTime oldestRecoveryPointInArchive) {
         this.oldestRecoveryPointInArchive = oldestRecoveryPointInArchive;
         return this;
     }
@@ -118,7 +123,7 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
     /**
      * Get the newestRecoveryPointInArchive property: The latest backup copy available for this backup item in archive
      * tier.
-     *
+     * 
      * @return the newestRecoveryPointInArchive value.
      */
     public OffsetDateTime newestRecoveryPointInArchive() {
@@ -128,19 +133,19 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
     /**
      * Set the newestRecoveryPointInArchive property: The latest backup copy available for this backup item in archive
      * tier.
-     *
+     * 
      * @param newestRecoveryPointInArchive the newestRecoveryPointInArchive value to set.
      * @return the AzureIaaSvmProtectedItemExtendedInfo object itself.
      */
-    public AzureIaaSvmProtectedItemExtendedInfo withNewestRecoveryPointInArchive(
-        OffsetDateTime newestRecoveryPointInArchive) {
+    public AzureIaaSvmProtectedItemExtendedInfo
+        withNewestRecoveryPointInArchive(OffsetDateTime newestRecoveryPointInArchive) {
         this.newestRecoveryPointInArchive = newestRecoveryPointInArchive;
         return this;
     }
 
     /**
      * Get the recoveryPointCount property: Number of backup copies available for this backup item.
-     *
+     * 
      * @return the recoveryPointCount value.
      */
     public Integer recoveryPointCount() {
@@ -149,7 +154,7 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
 
     /**
      * Set the recoveryPointCount property: Number of backup copies available for this backup item.
-     *
+     * 
      * @param recoveryPointCount the recoveryPointCount value to set.
      * @return the AzureIaaSvmProtectedItemExtendedInfo object itself.
      */
@@ -160,7 +165,7 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
 
     /**
      * Get the policyInconsistent property: Specifies if backup policy associated with the backup item is inconsistent.
-     *
+     * 
      * @return the policyInconsistent value.
      */
     public Boolean policyInconsistent() {
@@ -169,7 +174,7 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
 
     /**
      * Set the policyInconsistent property: Specifies if backup policy associated with the backup item is inconsistent.
-     *
+     * 
      * @param policyInconsistent the policyInconsistent value to set.
      * @return the AzureIaaSvmProtectedItemExtendedInfo object itself.
      */
@@ -180,9 +185,79 @@ public final class AzureIaaSvmProtectedItemExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("oldestRecoveryPoint",
+            this.oldestRecoveryPoint == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.oldestRecoveryPoint));
+        jsonWriter.writeStringField("oldestRecoveryPointInVault",
+            this.oldestRecoveryPointInVault == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.oldestRecoveryPointInVault));
+        jsonWriter.writeStringField("oldestRecoveryPointInArchive",
+            this.oldestRecoveryPointInArchive == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.oldestRecoveryPointInArchive));
+        jsonWriter.writeStringField("newestRecoveryPointInArchive",
+            this.newestRecoveryPointInArchive == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.newestRecoveryPointInArchive));
+        jsonWriter.writeNumberField("recoveryPointCount", this.recoveryPointCount);
+        jsonWriter.writeBooleanField("policyInconsistent", this.policyInconsistent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureIaaSvmProtectedItemExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureIaaSvmProtectedItemExtendedInfo if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureIaaSvmProtectedItemExtendedInfo.
+     */
+    public static AzureIaaSvmProtectedItemExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureIaaSvmProtectedItemExtendedInfo deserializedAzureIaaSvmProtectedItemExtendedInfo
+                = new AzureIaaSvmProtectedItemExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("oldestRecoveryPoint".equals(fieldName)) {
+                    deserializedAzureIaaSvmProtectedItemExtendedInfo.oldestRecoveryPoint = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("oldestRecoveryPointInVault".equals(fieldName)) {
+                    deserializedAzureIaaSvmProtectedItemExtendedInfo.oldestRecoveryPointInVault = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("oldestRecoveryPointInArchive".equals(fieldName)) {
+                    deserializedAzureIaaSvmProtectedItemExtendedInfo.oldestRecoveryPointInArchive = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("newestRecoveryPointInArchive".equals(fieldName)) {
+                    deserializedAzureIaaSvmProtectedItemExtendedInfo.newestRecoveryPointInArchive = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveryPointCount".equals(fieldName)) {
+                    deserializedAzureIaaSvmProtectedItemExtendedInfo.recoveryPointCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("policyInconsistent".equals(fieldName)) {
+                    deserializedAzureIaaSvmProtectedItemExtendedInfo.policyInconsistent
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureIaaSvmProtectedItemExtendedInfo;
+        });
     }
 }

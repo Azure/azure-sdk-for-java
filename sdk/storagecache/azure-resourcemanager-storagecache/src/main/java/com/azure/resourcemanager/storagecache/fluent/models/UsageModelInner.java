@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.UsageModelDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A usage model. */
+/**
+ * A usage model.
+ */
 @Fluent
-public final class UsageModelInner {
+public final class UsageModelInner implements JsonSerializable<UsageModelInner> {
     /*
      * Localized information describing this usage model.
      */
-    @JsonProperty(value = "display")
     private UsageModelDisplay display;
 
     /*
      * Non-localized keyword name for this usage model.
      */
-    @JsonProperty(value = "modelName")
     private String modelName;
 
     /*
      * The type of Storage Target to which this model is applicable (only nfs3 as of this version).
      */
-    @JsonProperty(value = "targetType")
     private String targetType;
 
-    /** Creates an instance of UsageModelInner class. */
+    /**
+     * Creates an instance of UsageModelInner class.
+     */
     public UsageModelInner() {
     }
 
     /**
      * Get the display property: Localized information describing this usage model.
-     *
+     * 
      * @return the display value.
      */
     public UsageModelDisplay display() {
@@ -44,7 +49,7 @@ public final class UsageModelInner {
 
     /**
      * Set the display property: Localized information describing this usage model.
-     *
+     * 
      * @param display the display value to set.
      * @return the UsageModelInner object itself.
      */
@@ -55,7 +60,7 @@ public final class UsageModelInner {
 
     /**
      * Get the modelName property: Non-localized keyword name for this usage model.
-     *
+     * 
      * @return the modelName value.
      */
     public String modelName() {
@@ -64,7 +69,7 @@ public final class UsageModelInner {
 
     /**
      * Set the modelName property: Non-localized keyword name for this usage model.
-     *
+     * 
      * @param modelName the modelName value to set.
      * @return the UsageModelInner object itself.
      */
@@ -76,7 +81,7 @@ public final class UsageModelInner {
     /**
      * Get the targetType property: The type of Storage Target to which this model is applicable (only nfs3 as of this
      * version).
-     *
+     * 
      * @return the targetType value.
      */
     public String targetType() {
@@ -86,7 +91,7 @@ public final class UsageModelInner {
     /**
      * Set the targetType property: The type of Storage Target to which this model is applicable (only nfs3 as of this
      * version).
-     *
+     * 
      * @param targetType the targetType value to set.
      * @return the UsageModelInner object itself.
      */
@@ -97,12 +102,54 @@ public final class UsageModelInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("modelName", this.modelName);
+        jsonWriter.writeStringField("targetType", this.targetType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageModelInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UsageModelInner.
+     */
+    public static UsageModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageModelInner deserializedUsageModelInner = new UsageModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("display".equals(fieldName)) {
+                    deserializedUsageModelInner.display = UsageModelDisplay.fromJson(reader);
+                } else if ("modelName".equals(fieldName)) {
+                    deserializedUsageModelInner.modelName = reader.getString();
+                } else if ("targetType".equals(fieldName)) {
+                    deserializedUsageModelInner.targetType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageModelInner;
+        });
     }
 }

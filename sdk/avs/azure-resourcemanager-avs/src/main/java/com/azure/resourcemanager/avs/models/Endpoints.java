@@ -5,36 +5,56 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Endpoint addresses. */
+/**
+ * Endpoint addresses.
+ */
 @Immutable
-public final class Endpoints {
+public final class Endpoints implements JsonSerializable<Endpoints> {
     /*
-     * Endpoint for the NSX-T Data Center manager
+     * Endpoint FQDN for the NSX-T Data Center manager
      */
-    @JsonProperty(value = "nsxtManager", access = JsonProperty.Access.WRITE_ONLY)
     private String nsxtManager;
 
     /*
-     * Endpoint for Virtual Center Server Appliance
+     * Endpoint FQDN for Virtual Center Server Appliance
      */
-    @JsonProperty(value = "vcsa", access = JsonProperty.Access.WRITE_ONLY)
     private String vcsa;
 
     /*
-     * Endpoint for the HCX Cloud Manager
+     * Endpoint FQDN for the HCX Cloud Manager
      */
-    @JsonProperty(value = "hcxCloudManager", access = JsonProperty.Access.WRITE_ONLY)
     private String hcxCloudManager;
 
-    /** Creates an instance of Endpoints class. */
+    /*
+     * Endpoint IP for the NSX-T Data Center manager
+     */
+    private String nsxtManagerIp;
+
+    /*
+     * Endpoint IP for Virtual Center Server Appliance
+     */
+    private String vcenterIp;
+
+    /*
+     * Endpoint IP for the HCX Cloud Manager
+     */
+    private String hcxCloudManagerIp;
+
+    /**
+     * Creates an instance of Endpoints class.
+     */
     public Endpoints() {
     }
 
     /**
-     * Get the nsxtManager property: Endpoint for the NSX-T Data Center manager.
-     *
+     * Get the nsxtManager property: Endpoint FQDN for the NSX-T Data Center manager.
+     * 
      * @return the nsxtManager value.
      */
     public String nsxtManager() {
@@ -42,8 +62,8 @@ public final class Endpoints {
     }
 
     /**
-     * Get the vcsa property: Endpoint for Virtual Center Server Appliance.
-     *
+     * Get the vcsa property: Endpoint FQDN for Virtual Center Server Appliance.
+     * 
      * @return the vcsa value.
      */
     public String vcsa() {
@@ -51,8 +71,8 @@ public final class Endpoints {
     }
 
     /**
-     * Get the hcxCloudManager property: Endpoint for the HCX Cloud Manager.
-     *
+     * Get the hcxCloudManager property: Endpoint FQDN for the HCX Cloud Manager.
+     * 
      * @return the hcxCloudManager value.
      */
     public String hcxCloudManager() {
@@ -60,10 +80,82 @@ public final class Endpoints {
     }
 
     /**
+     * Get the nsxtManagerIp property: Endpoint IP for the NSX-T Data Center manager.
+     * 
+     * @return the nsxtManagerIp value.
+     */
+    public String nsxtManagerIp() {
+        return this.nsxtManagerIp;
+    }
+
+    /**
+     * Get the vcenterIp property: Endpoint IP for Virtual Center Server Appliance.
+     * 
+     * @return the vcenterIp value.
+     */
+    public String vcenterIp() {
+        return this.vcenterIp;
+    }
+
+    /**
+     * Get the hcxCloudManagerIp property: Endpoint IP for the HCX Cloud Manager.
+     * 
+     * @return the hcxCloudManagerIp value.
+     */
+    public String hcxCloudManagerIp() {
+        return this.hcxCloudManagerIp;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Endpoints from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Endpoints if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Endpoints.
+     */
+    public static Endpoints fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Endpoints deserializedEndpoints = new Endpoints();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nsxtManager".equals(fieldName)) {
+                    deserializedEndpoints.nsxtManager = reader.getString();
+                } else if ("vcsa".equals(fieldName)) {
+                    deserializedEndpoints.vcsa = reader.getString();
+                } else if ("hcxCloudManager".equals(fieldName)) {
+                    deserializedEndpoints.hcxCloudManager = reader.getString();
+                } else if ("nsxtManagerIp".equals(fieldName)) {
+                    deserializedEndpoints.nsxtManagerIp = reader.getString();
+                } else if ("vcenterIp".equals(fieldName)) {
+                    deserializedEndpoints.vcenterIp = reader.getString();
+                } else if ("hcxCloudManagerIp".equals(fieldName)) {
+                    deserializedEndpoints.hcxCloudManagerIp = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpoints;
+        });
     }
 }

@@ -30,7 +30,7 @@ public class KeyVaultLongRunningOperation {
      * @param endTime The end time of the {@link KeyVaultLongRunningOperation}.
      */
     public KeyVaultLongRunningOperation(String status, String statusDetails, KeyVaultAdministrationError error,
-                                        String operationId, OffsetDateTime startTime, OffsetDateTime endTime) {
+        String operationId, OffsetDateTime startTime, OffsetDateTime endTime) {
         this.status = status;
         this.statusDetails = statusDetails;
         this.error = error;

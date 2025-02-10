@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** DNS Service status. */
+/**
+ * DNS service status.
+ */
 public final class DnsServiceStatusEnum extends ExpandableStringEnum<DnsServiceStatusEnum> {
-    /** Static value SUCCESS for DnsServiceStatusEnum. */
+    /**
+     * Static value SUCCESS for DnsServiceStatusEnum.
+     */
     public static final DnsServiceStatusEnum SUCCESS = fromString("SUCCESS");
 
-    /** Static value FAILURE for DnsServiceStatusEnum. */
+    /**
+     * Static value FAILURE for DnsServiceStatusEnum.
+     */
     public static final DnsServiceStatusEnum FAILURE = fromString("FAILURE");
 
     /**
      * Creates a new instance of DnsServiceStatusEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class DnsServiceStatusEnum extends ExpandableStringEnum<DnsServiceS
 
     /**
      * Creates or finds a DnsServiceStatusEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DnsServiceStatusEnum.
      */
-    @JsonCreator
     public static DnsServiceStatusEnum fromString(String name) {
         return fromString(name, DnsServiceStatusEnum.class);
     }
 
     /**
      * Gets known DnsServiceStatusEnum values.
-     *
+     * 
      * @return known DnsServiceStatusEnum values.
      */
     public static Collection<DnsServiceStatusEnum> values() {

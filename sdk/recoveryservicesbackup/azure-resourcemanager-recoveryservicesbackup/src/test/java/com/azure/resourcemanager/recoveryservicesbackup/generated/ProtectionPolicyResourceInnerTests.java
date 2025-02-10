@@ -15,36 +15,30 @@ import org.junit.jupiter.api.Assertions;
 public final class ProtectionPolicyResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectionPolicyResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1565866782,\"resourceGuardOperationRequests\":[\"qik\",\"bbovplwzbhvgyugu\",\"svmkfssxquk\",\"fpl\"]},\"eTag\":\"gsxnkjzkdeslpv\",\"location\":\"opwi\",\"tags\":{\"zb\":\"hxpkd\",\"upedeojnabckhs\":\"iuebbaumny\"},\"id\":\"txp\",\"name\":\"ie\",\"type\":\"tfhvpesapskrdqmh\"}")
-                .toObject(ProtectionPolicyResourceInner.class);
-        Assertions.assertEquals("opwi", model.location());
-        Assertions.assertEquals("hxpkd", model.tags().get("zb"));
-        Assertions.assertEquals(1565866782, model.properties().protectedItemsCount());
-        Assertions.assertEquals("qik", model.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("gsxnkjzkdeslpv", model.etag());
+        ProtectionPolicyResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":208644200,\"resourceGuardOperationRequests\":[\"kvceoveilovnotyf\",\"fcnj\",\"k\"]},\"eTag\":\"x\",\"location\":\"hbttkphyw\",\"tags\":{\"mclfplphoxuscr\":\"jtoqne\",\"psbjta\":\"abgy\",\"kqujidsuyono\":\"qugxywpmueefjzwf\",\"tcc\":\"glaocq\"},\"id\":\"g\",\"name\":\"udxytlmoyrx\",\"type\":\"wfudwpzntxhdzhl\"}")
+            .toObject(ProtectionPolicyResourceInner.class);
+        Assertions.assertEquals("hbttkphyw", model.location());
+        Assertions.assertEquals("jtoqne", model.tags().get("mclfplphoxuscr"));
+        Assertions.assertEquals(208644200, model.properties().protectedItemsCount());
+        Assertions.assertEquals("kvceoveilovnotyf", model.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("x", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionPolicyResourceInner model =
-            new ProtectionPolicyResourceInner()
-                .withLocation("opwi")
-                .withTags(mapOf("zb", "hxpkd", "upedeojnabckhs", "iuebbaumny"))
-                .withProperties(
-                    new ProtectionPolicy()
-                        .withProtectedItemsCount(1565866782)
-                        .withResourceGuardOperationRequests(
-                            Arrays.asList("qik", "bbovplwzbhvgyugu", "svmkfssxquk", "fpl")))
-                .withEtag("gsxnkjzkdeslpv");
+        ProtectionPolicyResourceInner model = new ProtectionPolicyResourceInner().withLocation("hbttkphyw")
+            .withTags(mapOf("mclfplphoxuscr", "jtoqne", "psbjta", "abgy", "kqujidsuyono", "qugxywpmueefjzwf", "tcc",
+                "glaocq"))
+            .withProperties(new ProtectionPolicy().withProtectedItemsCount(208644200)
+                .withResourceGuardOperationRequests(Arrays.asList("kvceoveilovnotyf", "fcnj", "k")))
+            .withEtag("x");
         model = BinaryData.fromObject(model).toObject(ProtectionPolicyResourceInner.class);
-        Assertions.assertEquals("opwi", model.location());
-        Assertions.assertEquals("hxpkd", model.tags().get("zb"));
-        Assertions.assertEquals(1565866782, model.properties().protectedItemsCount());
-        Assertions.assertEquals("qik", model.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("gsxnkjzkdeslpv", model.etag());
+        Assertions.assertEquals("hbttkphyw", model.location());
+        Assertions.assertEquals("jtoqne", model.tags().get("mclfplphoxuscr"));
+        Assertions.assertEquals(208644200, model.properties().protectedItemsCount());
+        Assertions.assertEquals("kvceoveilovnotyf", model.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("x", model.etag());
     }
 
     // Use "Map.of" if available

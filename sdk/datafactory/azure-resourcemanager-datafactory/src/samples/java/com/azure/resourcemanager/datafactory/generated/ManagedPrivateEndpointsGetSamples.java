@@ -18,8 +18,8 @@ public final class ManagedPrivateEndpointsGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedPrivateEndpointsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedPrivateEndpoints().getWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedVirtualNetworkName", "exampleManagedPrivateEndpointName", null,
-            com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName",
+                "exampleManagedPrivateEndpointName", null, com.azure.core.util.Context.NONE);
     }
 }

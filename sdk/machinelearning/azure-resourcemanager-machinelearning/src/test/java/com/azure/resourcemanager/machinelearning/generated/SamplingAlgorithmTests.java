@@ -10,10 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.SamplingAlgorithm;
 public final class SamplingAlgorithmTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SamplingAlgorithm model =
-            BinaryData
-                .fromString("{\"samplingAlgorithmType\":\"SamplingAlgorithm\"}")
-                .toObject(SamplingAlgorithm.class);
+        SamplingAlgorithm model = BinaryData.fromString("{\"samplingAlgorithmType\":\"SamplingAlgorithm\"}")
+            .toObject(SamplingAlgorithm.class);
     }
 
     @org.junit.jupiter.api.Test

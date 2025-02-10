@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Client script details for file / folder restore. */
+/**
+ * Client script details for file / folder restore.
+ */
 @Fluent
-public final class ClientScriptForConnect {
+public final class ClientScriptForConnect implements JsonSerializable<ClientScriptForConnect> {
     /*
      * File content of the client script for file / folder restore.
      */
-    @JsonProperty(value = "scriptContent")
     private String scriptContent;
 
     /*
      * File extension of the client script for file / folder restore - .ps1 , .sh , etc.
      */
-    @JsonProperty(value = "scriptExtension")
     private String scriptExtension;
 
     /*
      * OS type - Windows, Linux etc. for which this file / folder restore client script works.
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * URL of Executable from where to source the content. If this is not null then ScriptContent should not be used
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * Mandatory suffix that should be added to the name of script that is given for download to user.
      * If its null or empty then , ignore it.
      */
-    @JsonProperty(value = "scriptNameSuffix")
     private String scriptNameSuffix;
 
-    /** Creates an instance of ClientScriptForConnect class. */
+    /**
+     * Creates an instance of ClientScriptForConnect class.
+     */
     public ClientScriptForConnect() {
     }
 
     /**
      * Get the scriptContent property: File content of the client script for file / folder restore.
-     *
+     * 
      * @return the scriptContent value.
      */
     public String scriptContent() {
@@ -56,7 +59,7 @@ public final class ClientScriptForConnect {
 
     /**
      * Set the scriptContent property: File content of the client script for file / folder restore.
-     *
+     * 
      * @param scriptContent the scriptContent value to set.
      * @return the ClientScriptForConnect object itself.
      */
@@ -68,7 +71,7 @@ public final class ClientScriptForConnect {
     /**
      * Get the scriptExtension property: File extension of the client script for file / folder restore - .ps1 , .sh ,
      * etc.
-     *
+     * 
      * @return the scriptExtension value.
      */
     public String scriptExtension() {
@@ -78,7 +81,7 @@ public final class ClientScriptForConnect {
     /**
      * Set the scriptExtension property: File extension of the client script for file / folder restore - .ps1 , .sh ,
      * etc.
-     *
+     * 
      * @param scriptExtension the scriptExtension value to set.
      * @return the ClientScriptForConnect object itself.
      */
@@ -89,7 +92,7 @@ public final class ClientScriptForConnect {
 
     /**
      * Get the osType property: OS type - Windows, Linux etc. for which this file / folder restore client script works.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -98,7 +101,7 @@ public final class ClientScriptForConnect {
 
     /**
      * Set the osType property: OS type - Windows, Linux etc. for which this file / folder restore client script works.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the ClientScriptForConnect object itself.
      */
@@ -110,7 +113,7 @@ public final class ClientScriptForConnect {
     /**
      * Get the url property: URL of Executable from where to source the content. If this is not null then ScriptContent
      * should not be used.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -120,7 +123,7 @@ public final class ClientScriptForConnect {
     /**
      * Set the url property: URL of Executable from where to source the content. If this is not null then ScriptContent
      * should not be used.
-     *
+     * 
      * @param url the url value to set.
      * @return the ClientScriptForConnect object itself.
      */
@@ -131,8 +134,9 @@ public final class ClientScriptForConnect {
 
     /**
      * Get the scriptNameSuffix property: Mandatory suffix that should be added to the name of script that is given for
-     * download to user. If its null or empty then , ignore it.
-     *
+     * download to user.
+     * If its null or empty then , ignore it.
+     * 
      * @return the scriptNameSuffix value.
      */
     public String scriptNameSuffix() {
@@ -141,8 +145,9 @@ public final class ClientScriptForConnect {
 
     /**
      * Set the scriptNameSuffix property: Mandatory suffix that should be added to the name of script that is given for
-     * download to user. If its null or empty then , ignore it.
-     *
+     * download to user.
+     * If its null or empty then , ignore it.
+     * 
      * @param scriptNameSuffix the scriptNameSuffix value to set.
      * @return the ClientScriptForConnect object itself.
      */
@@ -153,9 +158,57 @@ public final class ClientScriptForConnect {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scriptContent", this.scriptContent);
+        jsonWriter.writeStringField("scriptExtension", this.scriptExtension);
+        jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("scriptNameSuffix", this.scriptNameSuffix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientScriptForConnect from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientScriptForConnect if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClientScriptForConnect.
+     */
+    public static ClientScriptForConnect fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientScriptForConnect deserializedClientScriptForConnect = new ClientScriptForConnect();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scriptContent".equals(fieldName)) {
+                    deserializedClientScriptForConnect.scriptContent = reader.getString();
+                } else if ("scriptExtension".equals(fieldName)) {
+                    deserializedClientScriptForConnect.scriptExtension = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedClientScriptForConnect.osType = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedClientScriptForConnect.url = reader.getString();
+                } else if ("scriptNameSuffix".equals(fieldName)) {
+                    deserializedClientScriptForConnect.scriptNameSuffix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientScriptForConnect;
+        });
     }
 }

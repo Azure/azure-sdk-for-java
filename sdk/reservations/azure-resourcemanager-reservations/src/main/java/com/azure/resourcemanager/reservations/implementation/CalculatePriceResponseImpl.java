@@ -13,8 +13,7 @@ public final class CalculatePriceResponseImpl implements CalculatePriceResponse 
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    CalculatePriceResponseImpl(
-        CalculatePriceResponseInner innerObject,
+    CalculatePriceResponseImpl(CalculatePriceResponseInner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -81,7 +82,6 @@ public class AddressResolver implements IAddressResolver {
             }
 
             request.requestContext.resolvedPartitionKeyRange = result.TargetPartitionKeyRange;
-
             return Mono.just(result.Addresses);
         });
     }
@@ -179,7 +179,7 @@ public class AddressResolver implements IAddressResolver {
 
             if (logger.isDebugEnabled()) {
                 logger.debug(
-                    "Routing map for request with partitionkeyrageid {} was not found",
+                    "Routing map for request with partitionkeyrangeid {} was not found",
                     request.getPartitionKeyRangeIdentity().toHeader());
             }
             InvalidPartitionException invalidPartitionException = new InvalidPartitionException();
@@ -225,12 +225,21 @@ public class AddressResolver implements IAddressResolver {
                 !(request.getResourceType() == ResourceType.StoredProcedure && request.getOperationType() == OperationType.ExecuteJavaScript) &&
                 // Collection head is sent internally for strong consistency given routing hints from original requst, which is for partitioned resource.
                 !(request.getResourceType() == ResourceType.DocumentCollection && request.getOperationType() == OperationType.Head)) {
-                logger.error(
-                    "Shouldn't come here for non partitioned resources. resourceType : {}, operationtype:{}, resourceaddress:{}",
+
+                String errorMessage = String.format(
+                    "Shouldn't come here for non partitioned resources. resourceType : %s, operationtype:%s, resourceaddress:%s",
                     request.getResourceType(),
                     request.getOperationType(),
                     request.getResourceAddress());
-                return Mono.error(BridgeInternal.setResourceAddress(new InternalServerErrorException(RMResources.InternalServerError), request.requestContext.resourcePhysicalAddress));
+
+                logger.error(errorMessage);
+                return Mono.error(
+                    BridgeInternal
+                        .setResourceAddress(
+                            new InternalServerErrorException(
+                                Exceptions.getInternalServerErrorMessage(errorMessage),
+                                HttpConstants.SubStatusCodes.NON_PARTITIONED_RESOURCES),
+                            request.requestContext.resourcePhysicalAddress));
             }
 
             PartitionKeyRange range;
@@ -264,7 +273,7 @@ public class AddressResolver implements IAddressResolver {
 
                 if (addressesValueHolder.v == null) {
                     logger.info(
-                        "Could not resolve addresses for identity {}/{}. Potentially collection cache or routing map cache is outdated. Return empty - upper logic will refresh and retry. ",
+                        "Could not resolve addresses for identity {}. Potentially collection cache or routing map cache is outdated. Return empty - upper logic will refresh and retry. ",
                         new PartitionKeyRangeIdentity(collection.getResourceId(), range.getId()));
                     return Mono.just(new Utils.ValueHolder<>(null));
                 }
@@ -661,7 +670,9 @@ public class AddressResolver implements IAddressResolver {
         }
 
         if (partitionKey == null) {
-            throw new InternalServerErrorException(String.format("partition key is null"));
+            throw new InternalServerErrorException(
+                Exceptions.getInternalServerErrorMessage("partition key is null"),
+                HttpConstants.SubStatusCodes.PARTITION_KEY_IS_NULL);
         }
 
         if (partitionKey.equals(PartitionKeyInternal.Empty) || Utils.getCollectionSize(partitionKey.getComponents()) == collection.getPartitionKey().getPaths().size()) {
@@ -669,7 +680,10 @@ public class AddressResolver implements IAddressResolver {
             // partition getKey definition cached - like if collection with same getName but with RANGE partitioning is created.
             // In this case server will not pass x-ms-documentdb-collection-rid check and will return back InvalidPartitionException.
             // GATEWAY will refresh its cache and retry.
-            String effectivePartitionKey = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, collection.getPartitionKey());
+            String effectivePartitionKey = StringUtils.isNotEmpty(request.getEffectivePartitionKey())
+                ? request.getEffectivePartitionKey() : PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, collection.getPartitionKey());
+
+            request.setEffectivePartitionKey(effectivePartitionKey);
 
             // There should be exactly one range which contains a partition key. Always.
             return routingMap.getRangeByEffectivePartitionKey(effectivePartitionKey);

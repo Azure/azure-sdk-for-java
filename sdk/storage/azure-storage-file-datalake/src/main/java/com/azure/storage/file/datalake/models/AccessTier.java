@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -84,17 +83,27 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
     public static final AccessTier ARCHIVE = fromString("Archive");
 
     /**
+     * Creates a new instance of {@link AccessTier} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of AccessTier.
+     */
+    @Deprecated
+    public AccessTier() {
+    }
+
+    /**
      * Creates or finds a AccessTier from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding AccessTier.
      */
-    @JsonCreator
     public static AccessTier fromString(String name) {
         return fromString(name, AccessTier.class);
     }
 
     /**
+     * Gets known AccessTier values.
+     *
      * @return known AccessTier values.
      */
     public static Collection<AccessTier> values() {

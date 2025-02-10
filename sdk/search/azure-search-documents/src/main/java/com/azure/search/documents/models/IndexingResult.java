@@ -98,6 +98,9 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
         return this.statusCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

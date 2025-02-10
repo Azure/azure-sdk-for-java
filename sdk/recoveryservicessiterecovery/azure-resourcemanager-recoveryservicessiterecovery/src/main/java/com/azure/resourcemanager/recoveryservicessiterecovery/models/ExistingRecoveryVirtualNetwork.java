@@ -6,35 +6,51 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Existing recovery virtual network input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Existing")
+/**
+ * Existing recovery virtual network input.
+ */
 @Fluent
 public final class ExistingRecoveryVirtualNetwork extends RecoveryVirtualNetworkCustomDetails {
     /*
+     * The class type.
+     */
+    private String resourceType = "Existing";
+
+    /*
      * The recovery virtual network Id. Will throw error, if resource does not exist.
      */
-    @JsonProperty(value = "recoveryVirtualNetworkId", required = true)
     private String recoveryVirtualNetworkId;
 
     /*
      * The recovery subnet name.
      */
-    @JsonProperty(value = "recoverySubnetName")
     private String recoverySubnetName;
 
-    /** Creates an instance of ExistingRecoveryVirtualNetwork class. */
+    /**
+     * Creates an instance of ExistingRecoveryVirtualNetwork class.
+     */
     public ExistingRecoveryVirtualNetwork() {
+    }
+
+    /**
+     * Get the resourceType property: The class type.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
     }
 
     /**
      * Get the recoveryVirtualNetworkId property: The recovery virtual network Id. Will throw error, if resource does
      * not exist.
-     *
+     * 
      * @return the recoveryVirtualNetworkId value.
      */
     public String recoveryVirtualNetworkId() {
@@ -44,7 +60,7 @@ public final class ExistingRecoveryVirtualNetwork extends RecoveryVirtualNetwork
     /**
      * Set the recoveryVirtualNetworkId property: The recovery virtual network Id. Will throw error, if resource does
      * not exist.
-     *
+     * 
      * @param recoveryVirtualNetworkId the recoveryVirtualNetworkId value to set.
      * @return the ExistingRecoveryVirtualNetwork object itself.
      */
@@ -55,7 +71,7 @@ public final class ExistingRecoveryVirtualNetwork extends RecoveryVirtualNetwork
 
     /**
      * Get the recoverySubnetName property: The recovery subnet name.
-     *
+     * 
      * @return the recoverySubnetName value.
      */
     public String recoverySubnetName() {
@@ -64,7 +80,7 @@ public final class ExistingRecoveryVirtualNetwork extends RecoveryVirtualNetwork
 
     /**
      * Set the recoverySubnetName property: The recovery subnet name.
-     *
+     * 
      * @param recoverySubnetName the recoverySubnetName value to set.
      * @return the ExistingRecoveryVirtualNetwork object itself.
      */
@@ -75,19 +91,61 @@ public final class ExistingRecoveryVirtualNetwork extends RecoveryVirtualNetwork
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryVirtualNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryVirtualNetworkId in model ExistingRecoveryVirtualNetwork"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryVirtualNetworkId in model ExistingRecoveryVirtualNetwork"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExistingRecoveryVirtualNetwork.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryVirtualNetworkId", this.recoveryVirtualNetworkId);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("recoverySubnetName", this.recoverySubnetName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExistingRecoveryVirtualNetwork from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExistingRecoveryVirtualNetwork if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExistingRecoveryVirtualNetwork.
+     */
+    public static ExistingRecoveryVirtualNetwork fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExistingRecoveryVirtualNetwork deserializedExistingRecoveryVirtualNetwork
+                = new ExistingRecoveryVirtualNetwork();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryVirtualNetworkId".equals(fieldName)) {
+                    deserializedExistingRecoveryVirtualNetwork.recoveryVirtualNetworkId = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedExistingRecoveryVirtualNetwork.resourceType = reader.getString();
+                } else if ("recoverySubnetName".equals(fieldName)) {
+                    deserializedExistingRecoveryVirtualNetwork.recoverySubnetName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExistingRecoveryVirtualNetwork;
+        });
+    }
 }

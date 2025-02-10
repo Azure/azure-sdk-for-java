@@ -6,20 +6,18 @@ package com.azure.resourcemanager.storagecache.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
 import com.azure.resourcemanager.storagecache.models.ClfsTarget;
+import com.azure.resourcemanager.storagecache.models.NamespaceJunction;
 import com.azure.resourcemanager.storagecache.models.Nfs3Target;
 import com.azure.resourcemanager.storagecache.models.OperationalStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTarget;
 import com.azure.resourcemanager.storagecache.models.StorageTargetType;
 import com.azure.resourcemanager.storagecache.models.UnknownTarget;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -27,84 +25,74 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class StorageTargetsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"junctions\":[{\"namespacePath\":\"fzzhmkdasv\",\"targetPath\":\"yhbxcudchxgs\",\"nfsExport\":\"oldforobw\",\"nfsAccessPolicy\":\"vizbfhfo\"},{\"namespacePath\":\"acqpbtuodxesza\",\"targetPath\":\"elawumu\",\"nfsExport\":\"lzkwrrwoy\",\"nfsAccessPolicy\":\"ucwyhahno\"}],\"targetType\":\"unknown\",\"provisioningState\":\"Succeeded\",\"state\":\"Suspended\",\"nfs3\":{\"target\":\"psvfuurutlwexxwl\",\"usageModel\":\"niexzsrzpgepq\",\"verificationTimer\":417783908,\"writeBackTimer\":2090759507},\"clfs\":{\"target\":\"gdakchz\"},\"unknown\":{\"attributes\":{\"ibn\":\"xqnrkcxk\",\"swqrntvlwijp\":\"mysu\",\"uncuw\":\"ttexoqqpwcyyufmh\",\"unqndyfpchrqb\":\"qspkcdqzhlctd\"}},\"blobNfs\":{\"target\":\"rcgegydcwboxjum\",\"usageModel\":\"qoli\",\"verificationTimer\":960198730,\"writeBackTimer\":153099260},\"allocationPercentage\":1564106365},\"location\":\"ubrjtl\",\"id\":\"xfuojrn\",\"name\":\"iflrzpasccbiu\",\"type\":\"mzdlyjdfqwmkyo\"}";
 
-        String responseStr =
-            "{\"properties\":{\"junctions\":[],\"targetType\":\"clfs\",\"provisioningState\":\"Succeeded\",\"state\":\"Flushing\",\"nfs3\":{\"target\":\"fxtsgum\",\"usageModel\":\"glikkxwslolb\",\"verificationTimer\":1224144822,\"writeBackTimer\":845097361},\"clfs\":{\"target\":\"vfelfktgplcrpwj\"},\"unknown\":{\"attributes\":{}},\"blobNfs\":{\"target\":\"igbrnjw\",\"usageModel\":\"kpnb\",\"verificationTimer\":1716189852,\"writeBackTimer\":1901897096},\"allocationPercentage\":1268634918},\"location\":\"kagfhsxtt\",\"id\":\"gzxnfaazpxdtnk\",\"name\":\"mkqjj\",\"type\":\"wuenvr\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StorageCacheManager manager = StorageCacheManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        StorageTarget response = manager.storageTargets()
+            .define("mwmdxmebwjscjpa")
+            .withExistingCache("thwtzol", "a")
+            .withJunctions(Arrays.asList(
+                new NamespaceJunction().withNamespacePath("a")
+                    .withTargetPath("qxnmwmqt")
+                    .withNfsExport("xyi")
+                    .withNfsAccessPolicy("dt"),
+                new NamespaceJunction().withNamespacePath("cttadi")
+                    .withTargetPath("eukmr")
+                    .withNfsExport("eekpndz")
+                    .withNfsAccessPolicy("pmudqmeqwig"),
+                new NamespaceJunction().withNamespacePath("bu")
+                    .withTargetPath("wyxebeybpmzz")
+                    .withNfsExport("tffyaqit")
+                    .withNfsAccessPolicy("heioqa"),
+                new NamespaceJunction().withNamespacePath("v")
+                    .withTargetPath("ufuqyrx")
+                    .withNfsExport("lcgqlsismj")
+                    .withNfsAccessPolicy("rddga")))
+            .withTargetType(StorageTargetType.BLOB_NFS)
+            .withState(OperationalStateType.READY)
+            .withNfs3(new Nfs3Target().withTarget("sjuivfcdisyir")
+                .withUsageModel("zhczexrxzbujrtrh")
+                .withVerificationTimer(1247179302)
+                .withWriteBackTimer(934568942))
+            .withClfs(new ClfsTarget().withTarget("h"))
+            .withUnknown(new UnknownTarget().withAttributes(mapOf("jtszcof", "zonzlrpiqywnc", "k", "zehtdhgb")))
+            .withBlobNfs(new BlobNfsTarget().withTarget("ljeamu")
+                .withUsageModel("zmlovuanash")
+                .withVerificationTimer(1712193542)
+                .withWriteBackTimer(1846794278))
+            .create();
 
-        StorageCacheManager manager =
-            StorageCacheManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        StorageTarget response =
-            manager
-                .storageTargets()
-                .define("gsopbyrqufegxu")
-                .withExistingCache("wjygvjayvblmhvk", "uhbxvvy")
-                .withJunctions(Arrays.asList())
-                .withTargetType(StorageTargetType.CLFS)
-                .withState(OperationalStateType.SUSPENDED)
-                .withNfs3(
-                    new Nfs3Target()
-                        .withTarget("l")
-                        .withUsageModel("ngitvgbmhrixkwm")
-                        .withVerificationTimer(1594893264)
-                        .withWriteBackTimer(2074654020))
-                .withClfs(new ClfsTarget().withTarget("grhbpn"))
-                .withUnknown(new UnknownTarget().withAttributes(mapOf()))
-                .withBlobNfs(
-                    new BlobNfsTarget()
-                        .withTarget("ccbdre")
-                        .withUsageModel("hcexdrrvqa")
-                        .withVerificationTimer(396764740)
-                        .withWriteBackTimer(1584778168))
-                .create();
-
-        Assertions.assertEquals(StorageTargetType.CLFS, response.targetType());
-        Assertions.assertEquals(OperationalStateType.FLUSHING, response.state());
-        Assertions.assertEquals("fxtsgum", response.nfs3().target());
-        Assertions.assertEquals("glikkxwslolb", response.nfs3().usageModel());
-        Assertions.assertEquals(1224144822, response.nfs3().verificationTimer());
-        Assertions.assertEquals(845097361, response.nfs3().writeBackTimer());
-        Assertions.assertEquals("vfelfktgplcrpwj", response.clfs().target());
-        Assertions.assertEquals("igbrnjw", response.blobNfs().target());
-        Assertions.assertEquals("kpnb", response.blobNfs().usageModel());
-        Assertions.assertEquals(1716189852, response.blobNfs().verificationTimer());
-        Assertions.assertEquals(1901897096, response.blobNfs().writeBackTimer());
+        Assertions.assertEquals("fzzhmkdasv", response.junctions().get(0).namespacePath());
+        Assertions.assertEquals("yhbxcudchxgs", response.junctions().get(0).targetPath());
+        Assertions.assertEquals("oldforobw", response.junctions().get(0).nfsExport());
+        Assertions.assertEquals("vizbfhfo", response.junctions().get(0).nfsAccessPolicy());
+        Assertions.assertEquals(StorageTargetType.UNKNOWN, response.targetType());
+        Assertions.assertEquals(OperationalStateType.SUSPENDED, response.state());
+        Assertions.assertEquals("psvfuurutlwexxwl", response.nfs3().target());
+        Assertions.assertEquals("niexzsrzpgepq", response.nfs3().usageModel());
+        Assertions.assertEquals(417783908, response.nfs3().verificationTimer());
+        Assertions.assertEquals(2090759507, response.nfs3().writeBackTimer());
+        Assertions.assertEquals("gdakchz", response.clfs().target());
+        Assertions.assertEquals("xqnrkcxk", response.unknown().attributes().get("ibn"));
+        Assertions.assertEquals("rcgegydcwboxjum", response.blobNfs().target());
+        Assertions.assertEquals("qoli", response.blobNfs().usageModel());
+        Assertions.assertEquals(960198730, response.blobNfs().verificationTimer());
+        Assertions.assertEquals(153099260, response.blobNfs().writeBackTimer());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

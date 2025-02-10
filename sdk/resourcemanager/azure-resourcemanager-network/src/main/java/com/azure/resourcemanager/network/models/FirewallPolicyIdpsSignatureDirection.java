@@ -4,12 +4,9 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 -
- * InternalOutbound.
+ * InternalOutbound, 5 - InternalInbound.
  */
 public enum FirewallPolicyIdpsSignatureDirection {
     /**
@@ -35,7 +32,12 @@ public enum FirewallPolicyIdpsSignatureDirection {
     /**
      * Enum value 4.
      */
-    FOUR(4);
+    FOUR(4),
+
+    /**
+     * Enum value 5.
+     */
+    FIVE(5);
 
     /**
      * The actual serialized value for a FirewallPolicyIdpsSignatureDirection instance.
@@ -52,7 +54,6 @@ public enum FirewallPolicyIdpsSignatureDirection {
      * @param value the serialized value to parse.
      * @return the parsed FirewallPolicyIdpsSignatureDirection object, or null if unable to parse.
      */
-    @JsonCreator
     public static FirewallPolicyIdpsSignatureDirection fromInt(int value) {
         FirewallPolicyIdpsSignatureDirection[] items = FirewallPolicyIdpsSignatureDirection.values();
         for (FirewallPolicyIdpsSignatureDirection item : items) {
@@ -68,7 +69,6 @@ public enum FirewallPolicyIdpsSignatureDirection {
      * 
      * @return the int value.
      */
-    @JsonValue
     public int toInt() {
         return this.value;
     }

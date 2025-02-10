@@ -5,27 +5,36 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the ExpressRoute Circuit Authorization provisioning. */
+/**
+ * Global Reach Connection provisioning state.
+ */
 public final class GlobalReachConnectionProvisioningState
     extends ExpandableStringEnum<GlobalReachConnectionProvisioningState> {
-    /** Static value Succeeded for GlobalReachConnectionProvisioningState. */
+    /**
+     * Static value Succeeded for GlobalReachConnectionProvisioningState.
+     */
     public static final GlobalReachConnectionProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for GlobalReachConnectionProvisioningState. */
+    /**
+     * Static value Failed for GlobalReachConnectionProvisioningState.
+     */
     public static final GlobalReachConnectionProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Updating for GlobalReachConnectionProvisioningState. */
-    public static final GlobalReachConnectionProvisioningState UPDATING = fromString("Updating");
-
-    /** Static value Canceled for GlobalReachConnectionProvisioningState. */
+    /**
+     * Static value Canceled for GlobalReachConnectionProvisioningState.
+     */
     public static final GlobalReachConnectionProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Static value Updating for GlobalReachConnectionProvisioningState.
+     */
+    public static final GlobalReachConnectionProvisioningState UPDATING = fromString("Updating");
+
+    /**
      * Creates a new instance of GlobalReachConnectionProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +43,17 @@ public final class GlobalReachConnectionProvisioningState
 
     /**
      * Creates or finds a GlobalReachConnectionProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GlobalReachConnectionProvisioningState.
      */
-    @JsonCreator
     public static GlobalReachConnectionProvisioningState fromString(String name) {
         return fromString(name, GlobalReachConnectionProvisioningState.class);
     }
 
     /**
      * Gets known GlobalReachConnectionProvisioningState values.
-     *
+     * 
      * @return known GlobalReachConnectionProvisioningState values.
      */
     public static Collection<GlobalReachConnectionProvisioningState> values() {

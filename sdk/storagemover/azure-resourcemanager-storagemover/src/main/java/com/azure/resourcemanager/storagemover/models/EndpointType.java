@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Endpoint resource type. */
+/**
+ * The Endpoint resource type.
+ */
 public final class EndpointType extends ExpandableStringEnum<EndpointType> {
-    /** Static value AzureStorageBlobContainer for EndpointType. */
+    /**
+     * Static value AzureStorageBlobContainer for EndpointType.
+     */
     public static final EndpointType AZURE_STORAGE_BLOB_CONTAINER = fromString("AzureStorageBlobContainer");
 
-    /** Static value NfsMount for EndpointType. */
+    /**
+     * Static value NfsMount for EndpointType.
+     */
     public static final EndpointType NFS_MOUNT = fromString("NfsMount");
 
-    /** Static value AzureStorageSmbFileShare for EndpointType. */
+    /**
+     * Static value AzureStorageSmbFileShare for EndpointType.
+     */
     public static final EndpointType AZURE_STORAGE_SMB_FILE_SHARE = fromString("AzureStorageSmbFileShare");
 
-    /** Static value SmbMount for EndpointType. */
+    /**
+     * Static value SmbMount for EndpointType.
+     */
     public static final EndpointType SMB_MOUNT = fromString("SmbMount");
 
     /**
      * Creates a new instance of EndpointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
 
     /**
      * Creates or finds a EndpointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndpointType.
      */
-    @JsonCreator
     public static EndpointType fromString(String name) {
         return fromString(name, EndpointType.class);
     }
 
     /**
      * Gets known EndpointType values.
-     *
+     * 
      * @return known EndpointType values.
      */
     public static Collection<EndpointType> values() {

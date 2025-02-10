@@ -19,8 +19,7 @@ public final class AvailableWorkloadProfilesImpl implements AvailableWorkloadPro
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public AvailableWorkloadProfilesImpl(
-        AvailableWorkloadProfilesClient innerClient,
+    public AvailableWorkloadProfilesImpl(AvailableWorkloadProfilesClient innerClient,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class AvailableWorkloadProfilesImpl implements AvailableWorkloadPro
 
     public PagedIterable<AvailableWorkloadProfile> get(String location) {
         PagedIterable<AvailableWorkloadProfileInner> inner = this.serviceClient().get(location);
-        return Utils.mapPage(inner, inner1 -> new AvailableWorkloadProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailableWorkloadProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailableWorkloadProfile> get(String location, Context context) {
         PagedIterable<AvailableWorkloadProfileInner> inner = this.serviceClient().get(location, context);
-        return Utils.mapPage(inner, inner1 -> new AvailableWorkloadProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailableWorkloadProfileImpl(inner1, this.manager()));
     }
 
     private AvailableWorkloadProfilesClient serviceClient() {

@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details about the change resource. */
+/**
+ * Details about the change resource.
+ */
 @Immutable
-public final class ChangeAttributes {
+public final class ChangeAttributes implements JsonSerializable<ChangeAttributes> {
     /*
      * The ARM correlation ID of the change resource
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /*
      * The time the change(s) on the target resource ocurred
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String timestamp;
 
     /*
      * The number of changes this resource captures
      */
-    @JsonProperty(value = "changesCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long changesCount;
 
     /*
      * The GUID of the previous snapshot
      */
-    @JsonProperty(value = "previousResourceSnapshotId", access = JsonProperty.Access.WRITE_ONLY)
     private String previousResourceSnapshotId;
 
     /*
      * The GUID of the new snapshot
      */
-    @JsonProperty(value = "newResourceSnapshotId", access = JsonProperty.Access.WRITE_ONLY)
     private String newResourceSnapshotId;
 
-    /** Creates an instance of ChangeAttributes class. */
+    /**
+     * Creates an instance of ChangeAttributes class.
+     */
     public ChangeAttributes() {
     }
 
     /**
      * Get the correlationId property: The ARM correlation ID of the change resource.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -55,7 +58,7 @@ public final class ChangeAttributes {
 
     /**
      * Get the timestamp property: The time the change(s) on the target resource ocurred.
-     *
+     * 
      * @return the timestamp value.
      */
     public String timestamp() {
@@ -64,7 +67,7 @@ public final class ChangeAttributes {
 
     /**
      * Get the changesCount property: The number of changes this resource captures.
-     *
+     * 
      * @return the changesCount value.
      */
     public Long changesCount() {
@@ -73,7 +76,7 @@ public final class ChangeAttributes {
 
     /**
      * Get the previousResourceSnapshotId property: The GUID of the previous snapshot.
-     *
+     * 
      * @return the previousResourceSnapshotId value.
      */
     public String previousResourceSnapshotId() {
@@ -82,7 +85,7 @@ public final class ChangeAttributes {
 
     /**
      * Get the newResourceSnapshotId property: The GUID of the new snapshot.
-     *
+     * 
      * @return the newResourceSnapshotId value.
      */
     public String newResourceSnapshotId() {
@@ -91,9 +94,52 @@ public final class ChangeAttributes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangeAttributes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangeAttributes if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChangeAttributes.
+     */
+    public static ChangeAttributes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangeAttributes deserializedChangeAttributes = new ChangeAttributes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("correlationId".equals(fieldName)) {
+                    deserializedChangeAttributes.correlationId = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedChangeAttributes.timestamp = reader.getString();
+                } else if ("changesCount".equals(fieldName)) {
+                    deserializedChangeAttributes.changesCount = reader.getNullable(JsonReader::getLong);
+                } else if ("previousResourceSnapshotId".equals(fieldName)) {
+                    deserializedChangeAttributes.previousResourceSnapshotId = reader.getString();
+                } else if ("newResourceSnapshotId".equals(fieldName)) {
+                    deserializedChangeAttributes.newResourceSnapshotId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangeAttributes;
+        });
     }
 }

@@ -14,23 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class LtrBackupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LtrBackupRequest model =
-            BinaryData
-                .fromString(
-                    "{\"targetDetails\":{\"sasUriList\":[\"b\",\"ac\",\"op\"]},\"backupSettings\":{\"backupName\":\"fqrhhuaopppc\"}}")
-                .toObject(LtrBackupRequest.class);
-        Assertions.assertEquals("fqrhhuaopppc", model.backupSettings().backupName());
-        Assertions.assertEquals("b", model.targetDetails().sasUriList().get(0));
+        LtrBackupRequest model = BinaryData
+            .fromString(
+                "{\"targetDetails\":{\"sasUriList\":[\"pt\",\"d\"]},\"backupSettings\":{\"backupName\":\"gpfqbuace\"}}")
+            .toObject(LtrBackupRequest.class);
+        Assertions.assertEquals("gpfqbuace", model.backupSettings().backupName());
+        Assertions.assertEquals("pt", model.targetDetails().sasUriList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LtrBackupRequest model =
-            new LtrBackupRequest()
-                .withBackupSettings(new BackupSettings().withBackupName("fqrhhuaopppc"))
-                .withTargetDetails(new BackupStoreDetails().withSasUriList(Arrays.asList("b", "ac", "op")));
+        LtrBackupRequest model
+            = new LtrBackupRequest().withBackupSettings(new BackupSettings().withBackupName("gpfqbuace"))
+                .withTargetDetails(new BackupStoreDetails().withSasUriList(Arrays.asList("pt", "d")));
         model = BinaryData.fromObject(model).toObject(LtrBackupRequest.class);
-        Assertions.assertEquals("fqrhhuaopppc", model.backupSettings().backupName());
-        Assertions.assertEquals("b", model.targetDetails().sasUriList().get(0));
+        Assertions.assertEquals("gpfqbuace", model.backupSettings().backupName());
+        Assertions.assertEquals("pt", model.targetDetails().sasUriList().get(0));
     }
 }

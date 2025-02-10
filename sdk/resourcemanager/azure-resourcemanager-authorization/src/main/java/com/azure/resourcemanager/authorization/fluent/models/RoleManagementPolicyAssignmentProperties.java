@@ -5,51 +5,55 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.models.PolicyAssignmentProperties;
 import com.azure.resourcemanager.authorization.models.RoleManagementPolicyRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Role management policy assignment properties with scope. */
+/**
+ * Role management policy assignment properties with scope.
+ */
 @Fluent
-public final class RoleManagementPolicyAssignmentProperties {
+public final class RoleManagementPolicyAssignmentProperties
+    implements JsonSerializable<RoleManagementPolicyAssignmentProperties> {
     /*
      * The role management policy scope.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * The role definition of management policy assignment.
      */
-    @JsonProperty(value = "roleDefinitionId")
     private String roleDefinitionId;
 
     /*
      * The policy id role management policy assignment.
      */
-    @JsonProperty(value = "policyId")
     private String policyId;
 
     /*
      * The readonly computed rule applied to the policy.
      */
-    @JsonProperty(value = "effectiveRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<RoleManagementPolicyRule> effectiveRules;
 
     /*
      * Additional properties of scope, role definition and policy
      */
-    @JsonProperty(value = "policyAssignmentProperties", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyAssignmentProperties policyAssignmentProperties;
 
-    /** Creates an instance of RoleManagementPolicyAssignmentProperties class. */
+    /**
+     * Creates an instance of RoleManagementPolicyAssignmentProperties class.
+     */
     public RoleManagementPolicyAssignmentProperties() {
     }
 
     /**
      * Get the scope property: The role management policy scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -58,7 +62,7 @@ public final class RoleManagementPolicyAssignmentProperties {
 
     /**
      * Set the scope property: The role management policy scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the RoleManagementPolicyAssignmentProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class RoleManagementPolicyAssignmentProperties {
 
     /**
      * Get the roleDefinitionId property: The role definition of management policy assignment.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -78,7 +82,7 @@ public final class RoleManagementPolicyAssignmentProperties {
 
     /**
      * Set the roleDefinitionId property: The role definition of management policy assignment.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleManagementPolicyAssignmentProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class RoleManagementPolicyAssignmentProperties {
 
     /**
      * Get the policyId property: The policy id role management policy assignment.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -98,7 +102,7 @@ public final class RoleManagementPolicyAssignmentProperties {
 
     /**
      * Set the policyId property: The policy id role management policy assignment.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the RoleManagementPolicyAssignmentProperties object itself.
      */
@@ -109,7 +113,7 @@ public final class RoleManagementPolicyAssignmentProperties {
 
     /**
      * Get the effectiveRules property: The readonly computed rule applied to the policy.
-     *
+     * 
      * @return the effectiveRules value.
      */
     public List<RoleManagementPolicyRule> effectiveRules() {
@@ -118,7 +122,7 @@ public final class RoleManagementPolicyAssignmentProperties {
 
     /**
      * Get the policyAssignmentProperties property: Additional properties of scope, role definition and policy.
-     *
+     * 
      * @return the policyAssignmentProperties value.
      */
     public PolicyAssignmentProperties policyAssignmentProperties() {
@@ -127,7 +131,7 @@ public final class RoleManagementPolicyAssignmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -137,5 +141,55 @@ public final class RoleManagementPolicyAssignmentProperties {
         if (policyAssignmentProperties() != null) {
             policyAssignmentProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
+        jsonWriter.writeStringField("policyId", this.policyId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleManagementPolicyAssignmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleManagementPolicyAssignmentProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleManagementPolicyAssignmentProperties.
+     */
+    public static RoleManagementPolicyAssignmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleManagementPolicyAssignmentProperties deserializedRoleManagementPolicyAssignmentProperties
+                = new RoleManagementPolicyAssignmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    deserializedRoleManagementPolicyAssignmentProperties.scope = reader.getString();
+                } else if ("roleDefinitionId".equals(fieldName)) {
+                    deserializedRoleManagementPolicyAssignmentProperties.roleDefinitionId = reader.getString();
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedRoleManagementPolicyAssignmentProperties.policyId = reader.getString();
+                } else if ("effectiveRules".equals(fieldName)) {
+                    List<RoleManagementPolicyRule> effectiveRules
+                        = reader.readArray(reader1 -> RoleManagementPolicyRule.fromJson(reader1));
+                    deserializedRoleManagementPolicyAssignmentProperties.effectiveRules = effectiveRules;
+                } else if ("policyAssignmentProperties".equals(fieldName)) {
+                    deserializedRoleManagementPolicyAssignmentProperties.policyAssignmentProperties
+                        = PolicyAssignmentProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleManagementPolicyAssignmentProperties;
+        });
     }
 }

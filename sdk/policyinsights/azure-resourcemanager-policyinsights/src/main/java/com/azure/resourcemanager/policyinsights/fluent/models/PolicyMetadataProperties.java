@@ -5,30 +5,65 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the policy metadata. */
+/**
+ * The properties of the policy metadata.
+ */
 @Immutable
 public final class PolicyMetadataProperties extends PolicyMetadataSlimProperties {
     /*
      * The description of the policy metadata.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The requirements of the policy metadata.
      */
-    @JsonProperty(value = "requirements", access = JsonProperty.Access.WRITE_ONLY)
     private String requirements;
 
-    /** Creates an instance of PolicyMetadataProperties class. */
+    /*
+     * Additional metadata.
+     */
+    private Object metadata;
+
+    /*
+     * Url for getting additional content about the resource metadata.
+     */
+    private String additionalContentUrl;
+
+    /*
+     * The owner of the policy metadata.
+     */
+    private String owner;
+
+    /*
+     * The title of the policy metadata.
+     */
+    private String title;
+
+    /*
+     * The category of the policy metadata.
+     */
+    private String category;
+
+    /*
+     * The policy metadata identifier.
+     */
+    private String metadataId;
+
+    /**
+     * Creates an instance of PolicyMetadataProperties class.
+     */
     public PolicyMetadataProperties() {
     }
 
     /**
      * Get the description property: The description of the policy metadata.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -37,7 +72,7 @@ public final class PolicyMetadataProperties extends PolicyMetadataSlimProperties
 
     /**
      * Get the requirements property: The requirements of the policy metadata.
-     *
+     * 
      * @return the requirements value.
      */
     public String requirements() {
@@ -45,12 +80,120 @@ public final class PolicyMetadataProperties extends PolicyMetadataSlimProperties
     }
 
     /**
+     * Get the metadata property: Additional metadata.
+     * 
+     * @return the metadata value.
+     */
+    @Override
+    public Object metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Get the additionalContentUrl property: Url for getting additional content about the resource metadata.
+     * 
+     * @return the additionalContentUrl value.
+     */
+    @Override
+    public String additionalContentUrl() {
+        return this.additionalContentUrl;
+    }
+
+    /**
+     * Get the owner property: The owner of the policy metadata.
+     * 
+     * @return the owner value.
+     */
+    @Override
+    public String owner() {
+        return this.owner;
+    }
+
+    /**
+     * Get the title property: The title of the policy metadata.
+     * 
+     * @return the title value.
+     */
+    @Override
+    public String title() {
+        return this.title;
+    }
+
+    /**
+     * Get the category property: The category of the policy metadata.
+     * 
+     * @return the category value.
+     */
+    @Override
+    public String category() {
+        return this.category;
+    }
+
+    /**
+     * Get the metadataId property: The policy metadata identifier.
+     * 
+     * @return the metadataId value.
+     */
+    @Override
+    public String metadataId() {
+        return this.metadataId;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyMetadataProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyMetadataProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyMetadataProperties.
+     */
+    public static PolicyMetadataProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyMetadataProperties deserializedPolicyMetadataProperties = new PolicyMetadataProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadataId".equals(fieldName)) {
+                    deserializedPolicyMetadataProperties.metadataId = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedPolicyMetadataProperties.category = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedPolicyMetadataProperties.title = reader.getString();
+                } else if ("owner".equals(fieldName)) {
+                    deserializedPolicyMetadataProperties.owner = reader.getString();
+                } else if ("additionalContentUrl".equals(fieldName)) {
+                    deserializedPolicyMetadataProperties.additionalContentUrl = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedPolicyMetadataProperties.metadata = reader.readUntyped();
+                } else if ("description".equals(fieldName)) {
+                    deserializedPolicyMetadataProperties.description = reader.getString();
+                } else if ("requirements".equals(fieldName)) {
+                    deserializedPolicyMetadataProperties.requirements = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyMetadataProperties;
+        });
     }
 }

@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: networkcloud
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-networkcloud
         groupId: com.azure.resourcemanager

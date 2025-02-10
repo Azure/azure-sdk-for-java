@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents a collection of diagnostic setting category resources. */
+/**
+ * Represents a collection of diagnostic setting category resources.
+ */
 @Fluent
-public final class DiagnosticSettingsCategoryResourceCollectionInner {
+public final class DiagnosticSettingsCategoryResourceCollectionInner
+    implements JsonSerializable<DiagnosticSettingsCategoryResourceCollectionInner> {
     /*
      * The collection of diagnostic settings category resources.
      */
-    @JsonProperty(value = "value")
     private List<DiagnosticSettingsCategoryResourceInner> value;
 
-    /** Creates an instance of DiagnosticSettingsCategoryResourceCollectionInner class. */
+    /**
+     * Creates an instance of DiagnosticSettingsCategoryResourceCollectionInner class.
+     */
     public DiagnosticSettingsCategoryResourceCollectionInner() {
     }
 
     /**
      * Get the value property: The collection of diagnostic settings category resources.
-     *
+     * 
      * @return the value value.
      */
     public List<DiagnosticSettingsCategoryResourceInner> value() {
@@ -32,24 +40,63 @@ public final class DiagnosticSettingsCategoryResourceCollectionInner {
 
     /**
      * Set the value property: The collection of diagnostic settings category resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the DiagnosticSettingsCategoryResourceCollectionInner object itself.
      */
-    public DiagnosticSettingsCategoryResourceCollectionInner withValue(
-        List<DiagnosticSettingsCategoryResourceInner> value) {
+    public DiagnosticSettingsCategoryResourceCollectionInner
+        withValue(List<DiagnosticSettingsCategoryResourceInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticSettingsCategoryResourceCollectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticSettingsCategoryResourceCollectionInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticSettingsCategoryResourceCollectionInner.
+     */
+    public static DiagnosticSettingsCategoryResourceCollectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticSettingsCategoryResourceCollectionInner deserializedDiagnosticSettingsCategoryResourceCollectionInner
+                = new DiagnosticSettingsCategoryResourceCollectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DiagnosticSettingsCategoryResourceInner> value
+                        = reader.readArray(reader1 -> DiagnosticSettingsCategoryResourceInner.fromJson(reader1));
+                    deserializedDiagnosticSettingsCategoryResourceCollectionInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticSettingsCategoryResourceCollectionInner;
+        });
     }
 }

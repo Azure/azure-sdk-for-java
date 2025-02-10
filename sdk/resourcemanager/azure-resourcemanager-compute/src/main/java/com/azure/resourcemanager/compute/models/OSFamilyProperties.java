@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * OS family properties.
  */
 @Immutable
-public final class OSFamilyProperties {
+public final class OSFamilyProperties implements JsonSerializable<OSFamilyProperties> {
     /*
      * The OS family name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The OS family label.
      */
-    @JsonProperty(value = "label", access = JsonProperty.Access.WRITE_ONLY)
     private String label;
 
     /*
      * List of OS versions belonging to this family.
      */
-    @JsonProperty(value = "versions", access = JsonProperty.Access.WRITE_ONLY)
     private List<OSVersionPropertiesBase> versions;
 
     /**
@@ -73,5 +74,46 @@ public final class OSFamilyProperties {
         if (versions() != null) {
             versions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSFamilyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSFamilyProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OSFamilyProperties.
+     */
+    public static OSFamilyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSFamilyProperties deserializedOSFamilyProperties = new OSFamilyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOSFamilyProperties.name = reader.getString();
+                } else if ("label".equals(fieldName)) {
+                    deserializedOSFamilyProperties.label = reader.getString();
+                } else if ("versions".equals(fieldName)) {
+                    List<OSVersionPropertiesBase> versions
+                        = reader.readArray(reader1 -> OSVersionPropertiesBase.fromJson(reader1));
+                    deserializedOSFamilyProperties.versions = versions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSFamilyProperties;
+        });
     }
 }

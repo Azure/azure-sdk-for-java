@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ContainerCpuStatistics model.
  */
 @Fluent
-public final class ContainerCpuStatistics {
+public final class ContainerCpuStatistics implements JsonSerializable<ContainerCpuStatistics> {
     /*
      * The cpuUsage property.
      */
-    @JsonProperty(value = "cpuUsage")
     private ContainerCpuUsage cpuUsage;
 
     /*
      * The systemCpuUsage property.
      */
-    @JsonProperty(value = "systemCpuUsage")
     private Long systemCpuUsage;
 
     /*
      * The onlineCpuCount property.
      */
-    @JsonProperty(value = "onlineCpuCount")
     private Integer onlineCpuCount;
 
     /*
      * The throttlingData property.
      */
-    @JsonProperty(value = "throttlingData")
     private ContainerThrottlingData throttlingData;
 
     /**
@@ -134,5 +134,50 @@ public final class ContainerCpuStatistics {
         if (throttlingData() != null) {
             throttlingData().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("cpuUsage", this.cpuUsage);
+        jsonWriter.writeNumberField("systemCpuUsage", this.systemCpuUsage);
+        jsonWriter.writeNumberField("onlineCpuCount", this.onlineCpuCount);
+        jsonWriter.writeJsonField("throttlingData", this.throttlingData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerCpuStatistics from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerCpuStatistics if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerCpuStatistics.
+     */
+    public static ContainerCpuStatistics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerCpuStatistics deserializedContainerCpuStatistics = new ContainerCpuStatistics();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cpuUsage".equals(fieldName)) {
+                    deserializedContainerCpuStatistics.cpuUsage = ContainerCpuUsage.fromJson(reader);
+                } else if ("systemCpuUsage".equals(fieldName)) {
+                    deserializedContainerCpuStatistics.systemCpuUsage = reader.getNullable(JsonReader::getLong);
+                } else if ("onlineCpuCount".equals(fieldName)) {
+                    deserializedContainerCpuStatistics.onlineCpuCount = reader.getNullable(JsonReader::getInt);
+                } else if ("throttlingData".equals(fieldName)) {
+                    deserializedContainerCpuStatistics.throttlingData = ContainerThrottlingData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerCpuStatistics;
+        });
     }
 }

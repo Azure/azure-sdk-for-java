@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerNameItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerNameItem model =
-            BinaryData
-                .fromString("{\"name\":\"fpownoizhwlr\",\"fullyQualifiedDomainName\":\"bqsoqijg\"}")
+        ServerNameItem model
+            = BinaryData.fromString("{\"name\":\"qsoqijgkd\",\"fullyQualifiedDomainName\":\"pazlobcufpdz\"}")
                 .toObject(ServerNameItem.class);
-        Assertions.assertEquals("fpownoizhwlr", model.name());
+        Assertions.assertEquals("qsoqijgkd", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerNameItem model = new ServerNameItem().withName("fpownoizhwlr");
+        ServerNameItem model = new ServerNameItem().withName("qsoqijgkd");
         model = BinaryData.fromObject(model).toObject(ServerNameItem.class);
-        Assertions.assertEquals("fpownoizhwlr", model.name());
+        Assertions.assertEquals("qsoqijgkd", model.name());
     }
 }

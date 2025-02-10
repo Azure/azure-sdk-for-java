@@ -8,59 +8,78 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.scvmm.models.DynamicMemoryEnabled;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
-import com.azure.resourcemanager.scvmm.models.IsCustomizable;
-import com.azure.resourcemanager.scvmm.models.LimitCpuForMigration;
-import com.azure.resourcemanager.scvmm.models.NetworkInterfaces;
-import com.azure.resourcemanager.scvmm.models.OsType;
-import com.azure.resourcemanager.scvmm.models.VirtualDisk;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.resourcemanager.scvmm.models.VirtualMachineTemplateProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** The VirtualMachineTemplates resource definition. */
+/**
+ * The VirtualMachineTemplates resource definition.
+ */
 @Fluent
 public final class VirtualMachineTemplateInner extends Resource {
     /*
-     * Resource properties.
+     * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties", required = true)
-    private VirtualMachineTemplateProperties innerProperties = new VirtualMachineTemplateProperties();
-
-    /*
-     * The system data.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    private VirtualMachineTemplateProperties properties;
 
     /*
      * The extended location.
      */
-    @JsonProperty(value = "extendedLocation", required = true)
     private ExtendedLocation extendedLocation;
 
-    /**
-     * Get the innerProperties property: Resource properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private VirtualMachineTemplateProperties innerProperties() {
-        return this.innerProperties;
+    private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of VirtualMachineTemplateInner class.
+     */
+    public VirtualMachineTemplateInner() {
     }
 
     /**
-     * Get the systemData property: The system data.
-     *
-     * @return the systemData value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    public VirtualMachineTemplateProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the VirtualMachineTemplateInner object itself.
+     */
+    public VirtualMachineTemplateInner withProperties(VirtualMachineTemplateProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the extendedLocation property: The extended location.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -69,7 +88,7 @@ public final class VirtualMachineTemplateInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the VirtualMachineTemplateInner object itself.
      */
@@ -78,14 +97,57 @@ public final class VirtualMachineTemplateInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineTemplateInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineTemplateInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -93,233 +155,78 @@ public final class VirtualMachineTemplateInner extends Resource {
     }
 
     /**
-     * Get the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
-     *
-     * @return the inventoryItemId value.
-     */
-    public String inventoryItemId() {
-        return this.innerProperties() == null ? null : this.innerProperties().inventoryItemId();
-    }
-
-    /**
-     * Set the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
-     *
-     * @param inventoryItemId the inventoryItemId value to set.
-     * @return the VirtualMachineTemplateInner object itself.
-     */
-    public VirtualMachineTemplateInner withInventoryItemId(String inventoryItemId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineTemplateProperties();
-        }
-        this.innerProperties().withInventoryItemId(inventoryItemId);
-        return this;
-    }
-
-    /**
-     * Get the uuid property: Unique ID of the virtual machine template.
-     *
-     * @return the uuid value.
-     */
-    public String uuid() {
-        return this.innerProperties() == null ? null : this.innerProperties().uuid();
-    }
-
-    /**
-     * Set the uuid property: Unique ID of the virtual machine template.
-     *
-     * @param uuid the uuid value to set.
-     * @return the VirtualMachineTemplateInner object itself.
-     */
-    public VirtualMachineTemplateInner withUuid(String uuid) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineTemplateProperties();
-        }
-        this.innerProperties().withUuid(uuid);
-        return this;
-    }
-
-    /**
-     * Get the vmmServerId property: ARM Id of the vmmServer resource in which this resource resides.
-     *
-     * @return the vmmServerId value.
-     */
-    public String vmmServerId() {
-        return this.innerProperties() == null ? null : this.innerProperties().vmmServerId();
-    }
-
-    /**
-     * Set the vmmServerId property: ARM Id of the vmmServer resource in which this resource resides.
-     *
-     * @param vmmServerId the vmmServerId value to set.
-     * @return the VirtualMachineTemplateInner object itself.
-     */
-    public VirtualMachineTemplateInner withVmmServerId(String vmmServerId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineTemplateProperties();
-        }
-        this.innerProperties().withVmmServerId(vmmServerId);
-        return this;
-    }
-
-    /**
-     * Get the osType property: Gets or sets the type of the os.
-     *
-     * @return the osType value.
-     */
-    public OsType osType() {
-        return this.innerProperties() == null ? null : this.innerProperties().osType();
-    }
-
-    /**
-     * Get the osName property: Gets or sets os name.
-     *
-     * @return the osName value.
-     */
-    public String osName() {
-        return this.innerProperties() == null ? null : this.innerProperties().osName();
-    }
-
-    /**
-     * Get the computerName property: Gets or sets computer name.
-     *
-     * @return the computerName value.
-     */
-    public String computerName() {
-        return this.innerProperties() == null ? null : this.innerProperties().computerName();
-    }
-
-    /**
-     * Get the memoryMB property: MemoryMB is the desired size of a virtual machine's memory, in MB.
-     *
-     * @return the memoryMB value.
-     */
-    public Integer memoryMB() {
-        return this.innerProperties() == null ? null : this.innerProperties().memoryMB();
-    }
-
-    /**
-     * Get the cpuCount property: Gets or sets the desired number of vCPUs for the vm.
-     *
-     * @return the cpuCount value.
-     */
-    public Integer cpuCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().cpuCount();
-    }
-
-    /**
-     * Get the limitCpuForMigration property: Gets or sets a value indicating whether to enable processor compatibility
-     * mode for live migration of VMs.
-     *
-     * @return the limitCpuForMigration value.
-     */
-    public LimitCpuForMigration limitCpuForMigration() {
-        return this.innerProperties() == null ? null : this.innerProperties().limitCpuForMigration();
-    }
-
-    /**
-     * Get the dynamicMemoryEnabled property: Gets or sets a value indicating whether to enable dynamic memory or not.
-     *
-     * @return the dynamicMemoryEnabled value.
-     */
-    public DynamicMemoryEnabled dynamicMemoryEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().dynamicMemoryEnabled();
-    }
-
-    /**
-     * Get the isCustomizable property: Gets or sets a value indicating whether the vm template is customizable or not.
-     *
-     * @return the isCustomizable value.
-     */
-    public IsCustomizable isCustomizable() {
-        return this.innerProperties() == null ? null : this.innerProperties().isCustomizable();
-    }
-
-    /**
-     * Get the dynamicMemoryMaxMB property: Gets or sets the max dynamic memory for the vm.
-     *
-     * @return the dynamicMemoryMaxMB value.
-     */
-    public Integer dynamicMemoryMaxMB() {
-        return this.innerProperties() == null ? null : this.innerProperties().dynamicMemoryMaxMB();
-    }
-
-    /**
-     * Get the dynamicMemoryMinMB property: Gets or sets the min dynamic memory for the vm.
-     *
-     * @return the dynamicMemoryMinMB value.
-     */
-    public Integer dynamicMemoryMinMB() {
-        return this.innerProperties() == null ? null : this.innerProperties().dynamicMemoryMinMB();
-    }
-
-    /**
-     * Get the isHighlyAvailable property: Gets highly available property.
-     *
-     * @return the isHighlyAvailable value.
-     */
-    public String isHighlyAvailable() {
-        return this.innerProperties() == null ? null : this.innerProperties().isHighlyAvailable();
-    }
-
-    /**
-     * Get the generation property: Gets or sets the generation for the vm.
-     *
-     * @return the generation value.
-     */
-    public Integer generation() {
-        return this.innerProperties() == null ? null : this.innerProperties().generation();
-    }
-
-    /**
-     * Get the networkInterfaces property: Gets or sets the network interfaces of the template.
-     *
-     * @return the networkInterfaces value.
-     */
-    public List<NetworkInterfaces> networkInterfaces() {
-        return this.innerProperties() == null ? null : this.innerProperties().networkInterfaces();
-    }
-
-    /**
-     * Get the disks property: Gets or sets the disks of the template.
-     *
-     * @return the disks value.
-     */
-    public List<VirtualDisk> disks() {
-        return this.innerProperties() == null ? null : this.innerProperties().disks();
-    }
-
-    /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model VirtualMachineTemplateInner"));
-        } else {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
         if (extendedLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property extendedLocation in model VirtualMachineTemplateInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property extendedLocation in model VirtualMachineTemplateInner"));
         } else {
             extendedLocation().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineTemplateInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineTemplateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineTemplateInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineTemplateInner.
+     */
+    public static VirtualMachineTemplateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineTemplateInner deserializedVirtualMachineTemplateInner = new VirtualMachineTemplateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineTemplateInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.properties
+                        = VirtualMachineTemplateProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVirtualMachineTemplateInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineTemplateInner;
+        });
+    }
 }

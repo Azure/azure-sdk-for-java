@@ -12,6 +12,7 @@ import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
+import java.util.function.Consumer;
 
 import static com.azure.storage.common.implementation.SasImplUtils.formatQueryParameterDate;
 import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQueryParameter;
@@ -68,6 +69,20 @@ public class AccountSasImplUtil {
      * @return A String representing the Sas
      */
     public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
+        return generateSas(storageSharedKeyCredentials, null, context);
+    }
+
+    /**
+     * Generates a Sas signed with a {@link StorageSharedKeyCredential}
+     *
+     * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     * @return A String representing the Sas
+     */
+    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials,
+        Consumer<String> stringToSignHandler, Context context) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         StorageImplUtils.assertNotNull("services", this.services);
         StorageImplUtils.assertNotNull("resourceTypes", this.resourceTypes);
@@ -80,36 +95,32 @@ public class AccountSasImplUtil {
         // Signature is generated on the un-url-encoded values.
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
+        if (stringToSignHandler != null) {
+            stringToSignHandler.accept(stringToSign);
+        }
+
         return encode(signature);
     }
 
     private String stringToSign(final StorageSharedKeyCredential storageSharedKeyCredentials) {
         if (VERSION.compareTo("2020-10-02") <= 0) {
-            return String.join("\n",
-                storageSharedKeyCredentials.getAccountName(),
+            return String.join("\n", storageSharedKeyCredentials.getAccountName(),
                 AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
-                this.services,
-                resourceTypes,
+                this.services, resourceTypes,
                 this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
                 Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-                this.protocol == null ? "" : this.protocol.toString(),
-                VERSION,
-                "" // Account SAS requires an additional newline character
+                this.protocol == null ? "" : this.protocol.toString(), VERSION, "" // Account SAS requires an additional newline character
             );
         } else {
-            return String.join("\n",
-                storageSharedKeyCredentials.getAccountName(),
+            return String.join("\n", storageSharedKeyCredentials.getAccountName(),
                 AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
-                this.services,
-                resourceTypes,
+                this.services, resourceTypes,
                 this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
                 Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-                this.protocol == null ? "" : this.protocol.toString(),
-                VERSION,
-                this.encryptionScope == null ? "" : this.encryptionScope,
-                "" // Account SAS requires an additional newline character
+                this.protocol == null ? "" : this.protocol.toString(), VERSION,
+                this.encryptionScope == null ? "" : this.encryptionScope, "" // Account SAS requires an additional newline character
             );
         }
     }
@@ -125,10 +136,10 @@ public class AccountSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICES, this.services);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_RESOURCES_TYPES, this.resourceTypes);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(
-            new TimeAndFormat(this.startTime, null)));
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(
-            new TimeAndFormat(this.expiryTime, null)));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME,
+            formatQueryParameterDate(new TimeAndFormat(this.startTime, null)));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME,
+            formatQueryParameterDate(new TimeAndFormat(this.expiryTime, null)));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);

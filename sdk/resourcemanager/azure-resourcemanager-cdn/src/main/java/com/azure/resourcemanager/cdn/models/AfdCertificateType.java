@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the source of the SSL certificate. */
+/**
+ * Defines the source of the SSL certificate.
+ */
 public final class AfdCertificateType extends ExpandableStringEnum<AfdCertificateType> {
-    /** Static value CustomerCertificate for AfdCertificateType. */
+    /**
+     * Static value CustomerCertificate for AfdCertificateType.
+     */
     public static final AfdCertificateType CUSTOMER_CERTIFICATE = fromString("CustomerCertificate");
 
-    /** Static value ManagedCertificate for AfdCertificateType. */
+    /**
+     * Static value ManagedCertificate for AfdCertificateType.
+     */
     public static final AfdCertificateType MANAGED_CERTIFICATE = fromString("ManagedCertificate");
 
-    /** Static value AzureFirstPartyManagedCertificate for AfdCertificateType. */
-    public static final AfdCertificateType AZURE_FIRST_PARTY_MANAGED_CERTIFICATE =
-        fromString("AzureFirstPartyManagedCertificate");
+    /**
+     * Static value AzureFirstPartyManagedCertificate for AfdCertificateType.
+     */
+    public static final AfdCertificateType AZURE_FIRST_PARTY_MANAGED_CERTIFICATE
+        = fromString("AzureFirstPartyManagedCertificate");
 
     /**
      * Creates a new instance of AfdCertificateType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +38,17 @@ public final class AfdCertificateType extends ExpandableStringEnum<AfdCertificat
 
     /**
      * Creates or finds a AfdCertificateType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AfdCertificateType.
      */
-    @JsonCreator
     public static AfdCertificateType fromString(String name) {
         return fromString(name, AfdCertificateType.class);
     }
 
     /**
      * Gets known AfdCertificateType values.
-     *
+     * 
      * @return known AfdCertificateType values.
      */
     public static Collection<AfdCertificateType> values() {

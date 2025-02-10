@@ -5,41 +5,70 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Number of file uploads is not in allowed range. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
-@JsonTypeName("FileUploadsNotInAllowedRange")
+/**
+ * Number of file uploads is not in allowed range.
+ */
 @Fluent
 public final class FileUploadsNotInAllowedRange extends TimeWindowCustomAlertRule {
-    /** Creates an instance of FileUploadsNotInAllowedRange class. */
+    /*
+     * The type of the custom alert rule.
+     */
+    private String ruleType = "FileUploadsNotInAllowedRange";
+
+    /**
+     * Creates an instance of FileUploadsNotInAllowedRange class.
+     */
     public FileUploadsNotInAllowedRange() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileUploadsNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {
         super.withTimeWindowSize(timeWindowSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileUploadsNotInAllowedRange withMinThreshold(int minThreshold) {
         super.withMinThreshold(minThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileUploadsNotInAllowedRange withMaxThreshold(int maxThreshold) {
         super.withMaxThreshold(maxThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileUploadsNotInAllowedRange withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -48,11 +77,71 @@ public final class FileUploadsNotInAllowedRange extends TimeWindowCustomAlertRul
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (timeWindowSize() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeWindowSize in model FileUploadsNotInAllowedRange"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FileUploadsNotInAllowedRange.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeIntField("minThreshold", minThreshold());
+        jsonWriter.writeIntField("maxThreshold", maxThreshold());
+        jsonWriter.writeStringField("timeWindowSize", CoreUtils.durationToStringWithDays(timeWindowSize()));
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileUploadsNotInAllowedRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileUploadsNotInAllowedRange if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileUploadsNotInAllowedRange.
+     */
+    public static FileUploadsNotInAllowedRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileUploadsNotInAllowedRange deserializedFileUploadsNotInAllowedRange = new FileUploadsNotInAllowedRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedFileUploadsNotInAllowedRange.withIsEnabled(reader.getBoolean());
+                } else if ("minThreshold".equals(fieldName)) {
+                    deserializedFileUploadsNotInAllowedRange.withMinThreshold(reader.getInt());
+                } else if ("maxThreshold".equals(fieldName)) {
+                    deserializedFileUploadsNotInAllowedRange.withMaxThreshold(reader.getInt());
+                } else if ("timeWindowSize".equals(fieldName)) {
+                    deserializedFileUploadsNotInAllowedRange.withTimeWindowSize(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedFileUploadsNotInAllowedRange.withDisplayName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedFileUploadsNotInAllowedRange.withDescription(reader.getString());
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedFileUploadsNotInAllowedRange.ruleType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileUploadsNotInAllowedRange;
+        });
     }
 }

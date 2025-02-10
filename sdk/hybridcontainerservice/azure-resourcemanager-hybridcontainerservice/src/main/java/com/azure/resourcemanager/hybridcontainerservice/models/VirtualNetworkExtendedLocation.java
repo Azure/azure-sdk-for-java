@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * The VirtualNetworkExtendedLocation model.
+ * Extended location pointing to the underlying infrastructure.
  */
 @Fluent
-public final class VirtualNetworkExtendedLocation {
+public final class VirtualNetworkExtendedLocation implements JsonSerializable<VirtualNetworkExtendedLocation> {
     /*
-     * The extended location type.
+     * The extended location type. Allowed value: 'CustomLocation'
      */
-    @JsonProperty(value = "type")
-    private String type;
+    private ExtendedLocationTypes type;
 
     /*
-     * The extended location name.
+     * ARM Id of the extended location.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -31,27 +33,27 @@ public final class VirtualNetworkExtendedLocation {
     }
 
     /**
-     * Get the type property: The extended location type.
+     * Get the type property: The extended location type. Allowed value: 'CustomLocation'.
      * 
      * @return the type value.
      */
-    public String type() {
+    public ExtendedLocationTypes type() {
         return this.type;
     }
 
     /**
-     * Set the type property: The extended location type.
+     * Set the type property: The extended location type. Allowed value: 'CustomLocation'.
      * 
      * @param type the type value to set.
      * @return the VirtualNetworkExtendedLocation object itself.
      */
-    public VirtualNetworkExtendedLocation withType(String type) {
+    public VirtualNetworkExtendedLocation withType(ExtendedLocationTypes type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the name property: The extended location name.
+     * Get the name property: ARM Id of the extended location.
      * 
      * @return the name value.
      */
@@ -60,7 +62,7 @@ public final class VirtualNetworkExtendedLocation {
     }
 
     /**
-     * Set the name property: The extended location name.
+     * Set the name property: ARM Id of the extended location.
      * 
      * @param name the name value to set.
      * @return the VirtualNetworkExtendedLocation object itself.
@@ -76,5 +78,46 @@ public final class VirtualNetworkExtendedLocation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkExtendedLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkExtendedLocation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkExtendedLocation.
+     */
+    public static VirtualNetworkExtendedLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkExtendedLocation deserializedVirtualNetworkExtendedLocation
+                = new VirtualNetworkExtendedLocation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedVirtualNetworkExtendedLocation.type
+                        = ExtendedLocationTypes.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualNetworkExtendedLocation.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkExtendedLocation;
+        });
     }
 }

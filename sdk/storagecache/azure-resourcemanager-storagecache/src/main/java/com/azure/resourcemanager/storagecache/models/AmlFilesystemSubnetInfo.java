@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information required to validate the subnet that will be used in AML file system create. */
+/**
+ * Information required to validate the subnet that will be used in AML file system create.
+ */
 @Fluent
-public final class AmlFilesystemSubnetInfo {
+public final class AmlFilesystemSubnetInfo implements JsonSerializable<AmlFilesystemSubnetInfo> {
     /*
-     * Subnet used for managing the AML file system and for client-facing operations. This subnet should have at least
-     * a /24 subnet mask within the VNET's address space.
+     * Subnet used for managing the AML file system and for client-facing operations. This subnet should have at least a
+     * /24 subnet mask within the VNET's address space.
      */
-    @JsonProperty(value = "filesystemSubnet")
     private String filesystemSubnet;
 
     /*
      * The size of the AML file system, in TiB.
      */
-    @JsonProperty(value = "storageCapacityTiB")
     private Float storageCapacityTiB;
 
     /*
      * SKU for the resource.
      */
-    @JsonProperty(value = "sku")
     private SkuName sku;
 
     /*
      * Region that the AML file system will be created in.
      */
-    @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of AmlFilesystemSubnetInfo class. */
+    /**
+     * Creates an instance of AmlFilesystemSubnetInfo class.
+     */
     public AmlFilesystemSubnetInfo() {
     }
 
     /**
      * Get the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing operations.
      * This subnet should have at least a /24 subnet mask within the VNET's address space.
-     *
+     * 
      * @return the filesystemSubnet value.
      */
     public String filesystemSubnet() {
@@ -52,7 +56,7 @@ public final class AmlFilesystemSubnetInfo {
     /**
      * Set the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing operations.
      * This subnet should have at least a /24 subnet mask within the VNET's address space.
-     *
+     * 
      * @param filesystemSubnet the filesystemSubnet value to set.
      * @return the AmlFilesystemSubnetInfo object itself.
      */
@@ -63,7 +67,7 @@ public final class AmlFilesystemSubnetInfo {
 
     /**
      * Get the storageCapacityTiB property: The size of the AML file system, in TiB.
-     *
+     * 
      * @return the storageCapacityTiB value.
      */
     public Float storageCapacityTiB() {
@@ -72,7 +76,7 @@ public final class AmlFilesystemSubnetInfo {
 
     /**
      * Set the storageCapacityTiB property: The size of the AML file system, in TiB.
-     *
+     * 
      * @param storageCapacityTiB the storageCapacityTiB value to set.
      * @return the AmlFilesystemSubnetInfo object itself.
      */
@@ -83,7 +87,7 @@ public final class AmlFilesystemSubnetInfo {
 
     /**
      * Get the sku property: SKU for the resource.
-     *
+     * 
      * @return the sku value.
      */
     public SkuName sku() {
@@ -92,7 +96,7 @@ public final class AmlFilesystemSubnetInfo {
 
     /**
      * Set the sku property: SKU for the resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AmlFilesystemSubnetInfo object itself.
      */
@@ -103,7 +107,7 @@ public final class AmlFilesystemSubnetInfo {
 
     /**
      * Get the location property: Region that the AML file system will be created in.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -112,7 +116,7 @@ public final class AmlFilesystemSubnetInfo {
 
     /**
      * Set the location property: Region that the AML file system will be created in.
-     *
+     * 
      * @param location the location value to set.
      * @return the AmlFilesystemSubnetInfo object itself.
      */
@@ -123,12 +127,57 @@ public final class AmlFilesystemSubnetInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filesystemSubnet", this.filesystemSubnet);
+        jsonWriter.writeNumberField("storageCapacityTiB", this.storageCapacityTiB);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemSubnetInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemSubnetInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemSubnetInfo.
+     */
+    public static AmlFilesystemSubnetInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemSubnetInfo deserializedAmlFilesystemSubnetInfo = new AmlFilesystemSubnetInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filesystemSubnet".equals(fieldName)) {
+                    deserializedAmlFilesystemSubnetInfo.filesystemSubnet = reader.getString();
+                } else if ("storageCapacityTiB".equals(fieldName)) {
+                    deserializedAmlFilesystemSubnetInfo.storageCapacityTiB = reader.getNullable(JsonReader::getFloat);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAmlFilesystemSubnetInfo.sku = SkuName.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedAmlFilesystemSubnetInfo.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemSubnetInfo;
+        });
     }
 }

@@ -100,7 +100,10 @@ class LeaseStoreImpl implements LeaseStore {
         String lockId = this.getStoreLockName();
         InternalObjectNode containerDocument = new InternalObjectNode();
         containerDocument.setId(lockId);
-        BridgeInternal.setProperty(containerDocument, Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
+        containerDocument.set(
+            Constants.Properties.TTL,
+            Long.valueOf(lockExpirationTime.getSeconds()).intValue()
+        );
 
         return this.client.createItem(
             this.leaseCollectionLink,

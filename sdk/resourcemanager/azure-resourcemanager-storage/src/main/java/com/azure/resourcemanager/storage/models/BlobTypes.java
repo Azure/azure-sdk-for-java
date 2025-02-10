@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for GeoReplicationStatus. */
@@ -16,17 +15,29 @@ public final class BlobTypes extends ExpandableStringEnum<BlobTypes> {
     public static final BlobTypes SNAPSHOT = fromString("snapshot");
 
     /**
+     * Creates a new instance of BlobTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobTypes() {
+    }
+
+    /**
      * Creates or finds a BlobType from its string representation.
      *
      * @param name a name to look for
      * @return the corresponding BlobType
      */
-    @JsonCreator
     public static BlobTypes fromString(String name) {
         return fromString(name, BlobTypes.class);
     }
 
-    /** @return known BlobType values */
+    /**
+     * Gets known BlobType values.
+     *
+     * @return known BlobType values
+     */
     public static Collection<BlobTypes> values() {
         return values(BlobTypes.class);
     }

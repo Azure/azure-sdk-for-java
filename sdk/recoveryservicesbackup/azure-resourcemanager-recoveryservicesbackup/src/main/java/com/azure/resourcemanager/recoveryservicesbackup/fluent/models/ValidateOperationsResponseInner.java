@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The ValidateOperationsResponse model. */
+/**
+ * The ValidateOperationsResponse model.
+ */
 @Fluent
-public final class ValidateOperationsResponseInner {
+public final class ValidateOperationsResponseInner implements JsonSerializable<ValidateOperationsResponseInner> {
     /*
      * Base class for validate operation response.
      */
-    @JsonProperty(value = "validateOperationResponse")
     private ValidateOperationResponse validateOperationResponse;
 
-    /** Creates an instance of ValidateOperationsResponseInner class. */
+    /**
+     * Creates an instance of ValidateOperationsResponseInner class.
+     */
     public ValidateOperationsResponseInner() {
     }
 
     /**
      * Get the validateOperationResponse property: Base class for validate operation response.
-     *
+     * 
      * @return the validateOperationResponse value.
      */
     public ValidateOperationResponse validateOperationResponse() {
@@ -32,24 +39,62 @@ public final class ValidateOperationsResponseInner {
 
     /**
      * Set the validateOperationResponse property: Base class for validate operation response.
-     *
+     * 
      * @param validateOperationResponse the validateOperationResponse value to set.
      * @return the ValidateOperationsResponseInner object itself.
      */
-    public ValidateOperationsResponseInner withValidateOperationResponse(
-        ValidateOperationResponse validateOperationResponse) {
+    public ValidateOperationsResponseInner
+        withValidateOperationResponse(ValidateOperationResponse validateOperationResponse) {
         this.validateOperationResponse = validateOperationResponse;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (validateOperationResponse() != null) {
             validateOperationResponse().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("validateOperationResponse", this.validateOperationResponse);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateOperationsResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateOperationsResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidateOperationsResponseInner.
+     */
+    public static ValidateOperationsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateOperationsResponseInner deserializedValidateOperationsResponseInner
+                = new ValidateOperationsResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validateOperationResponse".equals(fieldName)) {
+                    deserializedValidateOperationsResponseInner.validateOperationResponse
+                        = ValidateOperationResponse.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateOperationsResponseInner;
+        });
     }
 }

@@ -5,41 +5,58 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.EventHubOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes an Event Hub output data source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Microsoft.ServiceBus/EventHub")
+/**
+ * Describes an Event Hub output data source.
+ */
 @Fluent
 public final class EventHubOutputDataSource extends OutputDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubOutputDataSource.class);
+    /*
+     * Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+     */
+    private String type = "Microsoft.ServiceBus/EventHub";
 
     /*
-     * The properties that are associated with an Event Hub output. Required on
-     * PUT (CreateOrReplace) requests.
+     * The properties that are associated with an Event Hub output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private EventHubOutputDataSourceProperties innerProperties;
+
+    /**
+     * Creates an instance of EventHubOutputDataSource class.
+     */
+    public EventHubOutputDataSource() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of data source output will be written to. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
 
     /**
      * Get the innerProperties property: The properties that are associated with an Event Hub output. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the innerProperties value.
      */
-    private EventHubOutputDataSourceProperties innerProperties() {
+    EventHubOutputDataSourceProperties innerProperties() {
         return this.innerProperties;
     }
 
     /**
      * Get the partitionKey property: The key/column that is used to determine to which partition to send event data.
-     *
+     * 
      * @return the partitionKey value.
      */
     public String partitionKey() {
@@ -48,7 +65,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
 
     /**
      * Set the partitionKey property: The key/column that is used to determine to which partition to send event data.
-     *
+     * 
      * @param partitionKey the partitionKey value to set.
      * @return the EventHubOutputDataSource object itself.
      */
@@ -62,7 +79,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
 
     /**
      * Get the propertyColumns property: The properties associated with this Event Hub output.
-     *
+     * 
      * @return the propertyColumns value.
      */
     public List<String> propertyColumns() {
@@ -71,7 +88,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
 
     /**
      * Set the propertyColumns property: The properties associated with this Event Hub output.
-     *
+     * 
      * @param propertyColumns the propertyColumns value to set.
      * @return the EventHubOutputDataSource object itself.
      */
@@ -85,7 +102,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
 
     /**
      * Get the eventHubName property: The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the eventHubName value.
      */
     public String eventHubName() {
@@ -94,7 +111,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
 
     /**
      * Set the eventHubName property: The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param eventHubName the eventHubName value to set.
      * @return the EventHubOutputDataSource object itself.
      */
@@ -109,7 +126,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
     /**
      * Get the serviceBusNamespace property: The namespace that is associated with the desired Event Hub, Service Bus
      * Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the serviceBusNamespace value.
      */
     public String serviceBusNamespace() {
@@ -119,7 +136,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
     /**
      * Set the serviceBusNamespace property: The namespace that is associated with the desired Event Hub, Service Bus
      * Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param serviceBusNamespace the serviceBusNamespace value to set.
      * @return the EventHubOutputDataSource object itself.
      */
@@ -134,7 +151,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
     /**
      * Get the sharedAccessPolicyName property: The shared access policy name for the Event Hub, Service Bus Queue,
      * Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyName value.
      */
     public String sharedAccessPolicyName() {
@@ -144,7 +161,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
     /**
      * Set the sharedAccessPolicyName property: The shared access policy name for the Event Hub, Service Bus Queue,
      * Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyName the sharedAccessPolicyName value to set.
      * @return the EventHubOutputDataSource object itself.
      */
@@ -159,7 +176,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
     /**
      * Get the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyKey value.
      */
     public String sharedAccessPolicyKey() {
@@ -169,7 +186,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
     /**
      * Set the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyKey the sharedAccessPolicyKey value to set.
      * @return the EventHubOutputDataSource object itself.
      */
@@ -183,7 +200,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
 
     /**
      * Get the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @return the authenticationMode value.
      */
     public AuthenticationMode authenticationMode() {
@@ -192,7 +209,7 @@ public final class EventHubOutputDataSource extends OutputDataSource {
 
     /**
      * Set the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @param authenticationMode the authenticationMode value to set.
      * @return the EventHubOutputDataSource object itself.
      */
@@ -206,14 +223,53 @@ public final class EventHubOutputDataSource extends OutputDataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubOutputDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubOutputDataSource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventHubOutputDataSource.
+     */
+    public static EventHubOutputDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubOutputDataSource deserializedEventHubOutputDataSource = new EventHubOutputDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedEventHubOutputDataSource.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEventHubOutputDataSource.innerProperties
+                        = EventHubOutputDataSourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubOutputDataSource;
+        });
     }
 }

@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** KPack ClusterStack properties payload. */
+/**
+ * KPack ClusterStack properties payload.
+ */
 @Fluent
-public final class StackProperties {
+public final class StackProperties implements JsonSerializable<StackProperties> {
     /*
      * Id of the ClusterStack.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Version of the ClusterStack
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /**
+     * Creates an instance of StackProperties class.
+     */
+    public StackProperties() {
+    }
+
+    /**
      * Get the id property: Id of the ClusterStack.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -33,7 +43,7 @@ public final class StackProperties {
 
     /**
      * Set the id property: Id of the ClusterStack.
-     *
+     * 
      * @param id the id value to set.
      * @return the StackProperties object itself.
      */
@@ -44,7 +54,7 @@ public final class StackProperties {
 
     /**
      * Get the version property: Version of the ClusterStack.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -53,7 +63,7 @@ public final class StackProperties {
 
     /**
      * Set the version property: Version of the ClusterStack.
-     *
+     * 
      * @param version the version value to set.
      * @return the StackProperties object itself.
      */
@@ -64,9 +74,48 @@ public final class StackProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StackProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StackProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StackProperties.
+     */
+    public static StackProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StackProperties deserializedStackProperties = new StackProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStackProperties.id = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedStackProperties.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStackProperties;
+        });
     }
 }

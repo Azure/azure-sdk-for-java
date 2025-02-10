@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the resource. */
+/**
+ * Provisioning state of the resource.
+ */
 public final class ProvisioningStatus extends ExpandableStringEnum<ProvisioningStatus> {
-    /** Static value Accepted for ProvisioningStatus. */
+    /**
+     * Static value Accepted for ProvisioningStatus.
+     */
     public static final ProvisioningStatus ACCEPTED = fromString("Accepted");
 
-    /** Static value Succeeded for ProvisioningStatus. */
+    /**
+     * Static value Succeeded for ProvisioningStatus.
+     */
     public static final ProvisioningStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for ProvisioningStatus. */
+    /**
+     * Static value Canceled for ProvisioningStatus.
+     */
     public static final ProvisioningStatus CANCELED = fromString("Canceled");
 
-    /** Static value Failed for ProvisioningStatus. */
+    /**
+     * Static value Failed for ProvisioningStatus.
+     */
     public static final ProvisioningStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of ProvisioningStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ProvisioningStatus extends ExpandableStringEnum<ProvisioningS
 
     /**
      * Creates or finds a ProvisioningStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProvisioningStatus.
      */
-    @JsonCreator
     public static ProvisioningStatus fromString(String name) {
         return fromString(name, ProvisioningStatus.class);
     }
 
     /**
      * Gets known ProvisioningStatus values.
-     *
+     * 
      * @return known ProvisioningStatus values.
      */
     public static Collection<ProvisioningStatus> values() {

@@ -5,59 +5,73 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** AzureFileShare Restore Request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureFileShareRestoreRequest")
+/**
+ * AzureFileShare Restore Request.
+ */
 @Fluent
 public final class AzureFileShareRestoreRequest extends RestoreRequest {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "AzureFileShareRestoreRequest";
+
+    /*
      * Type of this recovery.
      */
-    @JsonProperty(value = "recoveryType")
     private RecoveryType recoveryType;
 
     /*
      * Source storage account ARM Id
      */
-    @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
     /*
      * Options to resolve copy conflicts.
      */
-    @JsonProperty(value = "copyOptions")
     private CopyOptions copyOptions;
 
     /*
      * Restore Type (FullShareRestore or ItemLevelRestore)
      */
-    @JsonProperty(value = "restoreRequestType")
     private RestoreRequestType restoreRequestType;
 
     /*
      * List of Source Files/Folders(which need to recover) and TargetFolderPath details
      */
-    @JsonProperty(value = "restoreFileSpecs")
     private List<RestoreFileSpecs> restoreFileSpecs;
 
     /*
      * Target File Share Details
      */
-    @JsonProperty(value = "targetDetails")
     private TargetAfsRestoreInfo targetDetails;
 
-    /** Creates an instance of AzureFileShareRestoreRequest class. */
+    /**
+     * Creates an instance of AzureFileShareRestoreRequest class.
+     */
     public AzureFileShareRestoreRequest() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the recoveryType property: Type of this recovery.
-     *
+     * 
      * @return the recoveryType value.
      */
     public RecoveryType recoveryType() {
@@ -66,7 +80,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
 
     /**
      * Set the recoveryType property: Type of this recovery.
-     *
+     * 
      * @param recoveryType the recoveryType value to set.
      * @return the AzureFileShareRestoreRequest object itself.
      */
@@ -77,7 +91,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
 
     /**
      * Get the sourceResourceId property: Source storage account ARM Id.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -86,7 +100,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
 
     /**
      * Set the sourceResourceId property: Source storage account ARM Id.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the AzureFileShareRestoreRequest object itself.
      */
@@ -97,7 +111,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
 
     /**
      * Get the copyOptions property: Options to resolve copy conflicts.
-     *
+     * 
      * @return the copyOptions value.
      */
     public CopyOptions copyOptions() {
@@ -106,7 +120,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
 
     /**
      * Set the copyOptions property: Options to resolve copy conflicts.
-     *
+     * 
      * @param copyOptions the copyOptions value to set.
      * @return the AzureFileShareRestoreRequest object itself.
      */
@@ -117,7 +131,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
 
     /**
      * Get the restoreRequestType property: Restore Type (FullShareRestore or ItemLevelRestore).
-     *
+     * 
      * @return the restoreRequestType value.
      */
     public RestoreRequestType restoreRequestType() {
@@ -126,7 +140,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
 
     /**
      * Set the restoreRequestType property: Restore Type (FullShareRestore or ItemLevelRestore).
-     *
+     * 
      * @param restoreRequestType the restoreRequestType value to set.
      * @return the AzureFileShareRestoreRequest object itself.
      */
@@ -138,7 +152,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
     /**
      * Get the restoreFileSpecs property: List of Source Files/Folders(which need to recover) and TargetFolderPath
      * details.
-     *
+     * 
      * @return the restoreFileSpecs value.
      */
     public List<RestoreFileSpecs> restoreFileSpecs() {
@@ -148,7 +162,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
     /**
      * Set the restoreFileSpecs property: List of Source Files/Folders(which need to recover) and TargetFolderPath
      * details.
-     *
+     * 
      * @param restoreFileSpecs the restoreFileSpecs value to set.
      * @return the AzureFileShareRestoreRequest object itself.
      */
@@ -159,7 +173,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
 
     /**
      * Get the targetDetails property: Target File Share Details.
-     *
+     * 
      * @return the targetDetails value.
      */
     public TargetAfsRestoreInfo targetDetails() {
@@ -168,7 +182,7 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
 
     /**
      * Set the targetDetails property: Target File Share Details.
-     *
+     * 
      * @param targetDetails the targetDetails value to set.
      * @return the AzureFileShareRestoreRequest object itself.
      */
@@ -178,18 +192,92 @@ public final class AzureFileShareRestoreRequest extends RestoreRequest {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureFileShareRestoreRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (restoreFileSpecs() != null) {
             restoreFileSpecs().forEach(e -> e.validate());
         }
         if (targetDetails() != null) {
             targetDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("recoveryType", this.recoveryType == null ? null : this.recoveryType.toString());
+        jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        jsonWriter.writeStringField("copyOptions", this.copyOptions == null ? null : this.copyOptions.toString());
+        jsonWriter.writeStringField("restoreRequestType",
+            this.restoreRequestType == null ? null : this.restoreRequestType.toString());
+        jsonWriter.writeArrayField("restoreFileSpecs", this.restoreFileSpecs,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("targetDetails", this.targetDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileShareRestoreRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileShareRestoreRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileShareRestoreRequest.
+     */
+    public static AzureFileShareRestoreRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileShareRestoreRequest deserializedAzureFileShareRestoreRequest = new AzureFileShareRestoreRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFileShareRestoreRequest
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureFileShareRestoreRequest.objectType = reader.getString();
+                } else if ("recoveryType".equals(fieldName)) {
+                    deserializedAzureFileShareRestoreRequest.recoveryType = RecoveryType.fromString(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureFileShareRestoreRequest.sourceResourceId = reader.getString();
+                } else if ("copyOptions".equals(fieldName)) {
+                    deserializedAzureFileShareRestoreRequest.copyOptions = CopyOptions.fromString(reader.getString());
+                } else if ("restoreRequestType".equals(fieldName)) {
+                    deserializedAzureFileShareRestoreRequest.restoreRequestType
+                        = RestoreRequestType.fromString(reader.getString());
+                } else if ("restoreFileSpecs".equals(fieldName)) {
+                    List<RestoreFileSpecs> restoreFileSpecs
+                        = reader.readArray(reader1 -> RestoreFileSpecs.fromJson(reader1));
+                    deserializedAzureFileShareRestoreRequest.restoreFileSpecs = restoreFileSpecs;
+                } else if ("targetDetails".equals(fieldName)) {
+                    deserializedAzureFileShareRestoreRequest.targetDetails = TargetAfsRestoreInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileShareRestoreRequest;
+        });
     }
 }

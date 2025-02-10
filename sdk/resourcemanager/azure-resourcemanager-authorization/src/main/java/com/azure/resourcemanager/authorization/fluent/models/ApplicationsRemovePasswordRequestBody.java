@@ -5,35 +5,41 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-/** The ApplicationsRemovePasswordRequestBody model. */
+/**
+ * The ApplicationsRemovePasswordRequestBody model.
+ */
 @Fluent
-public final class ApplicationsRemovePasswordRequestBody {
+public final class ApplicationsRemovePasswordRequestBody
+    implements JsonSerializable<ApplicationsRemovePasswordRequestBody> {
     /*
      * The keyId property.
      */
-    @JsonProperty(value = "keyId")
     private UUID keyId;
 
     /*
      * Dictionary of <AnyObject>
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ApplicationsRemovePasswordRequestBody class. */
+    /**
+     * Creates an instance of ApplicationsRemovePasswordRequestBody class.
+     */
     public ApplicationsRemovePasswordRequestBody() {
     }
 
     /**
      * Get the keyId property: The keyId property.
-     *
+     * 
      * @return the keyId value.
      */
     public UUID keyId() {
@@ -42,7 +48,7 @@ public final class ApplicationsRemovePasswordRequestBody {
 
     /**
      * Set the keyId property: The keyId property.
-     *
+     * 
      * @param keyId the keyId value to set.
      * @return the ApplicationsRemovePasswordRequestBody object itself.
      */
@@ -53,17 +59,16 @@ public final class ApplicationsRemovePasswordRequestBody {
 
     /**
      * Get the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ApplicationsRemovePasswordRequestBody object itself.
      */
@@ -72,19 +77,60 @@ public final class ApplicationsRemovePasswordRequestBody {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyId", Objects.toString(this.keyId, null));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationsRemovePasswordRequestBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationsRemovePasswordRequestBody if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationsRemovePasswordRequestBody.
+     */
+    public static ApplicationsRemovePasswordRequestBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationsRemovePasswordRequestBody deserializedApplicationsRemovePasswordRequestBody
+                = new ApplicationsRemovePasswordRequestBody();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyId".equals(fieldName)) {
+                    deserializedApplicationsRemovePasswordRequestBody.keyId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedApplicationsRemovePasswordRequestBody.additionalProperties = additionalProperties;
+
+            return deserializedApplicationsRemovePasswordRequestBody;
+        });
     }
 }

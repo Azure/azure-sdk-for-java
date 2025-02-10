@@ -14,6 +14,7 @@ trigger:
       - sdk/identity/azure-identity/pom.xml
       - sdk/identity/azure-identity-perf/pom.xml
       - sdk/identity/azure-identity-broker/pom.xml
+      - sdk/identity/azure-identity-extensions/
 
 pr:
   branches:
@@ -30,6 +31,7 @@ pr:
       - sdk/identity/azure-identity/pom.xml
       - sdk/identity/azure-identity-perf/pom.xml
       - sdk/identity/azure-identity-broker/pom.xml
+      - sdk/identity/azure-identity-extensions/
 
 parameters:
 - name: release_dependsonlivetests
@@ -40,46 +42,63 @@ parameters:
   displayName: 'azure-identity'
   type: boolean
   default: true
-- name: release_azureidentityextensions
-  displayName: 'azure-identity-extensions'
-  type: boolean
-  default: true
 - name: release_azureidentitybroker
   displayName: 'azure-identity-broker'
   type: boolean
   default: true
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: identity
-    EnableBatchRelease: true
+    TimeoutInMinutes: 90
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
       - name: azure-identity
         groupId: com.azure
         safeName: azureidentity
         releaseInBatch: ${{ parameters.release_azureidentity }}
-      - name: azure-identity-extensions
-        groupId: com.azure
-        safeName: azureidentityextensions
-        releaseInBatch: ${{ parameters.release_azureidentityextensions }}
       - name: azure-identity-broker
         groupId: com.azure
         safeName: azureidentitybroker
         releaseInBatch: ${{ parameters.release_azureidentitybroker }}
     AdditionalModules:
+      - name: azure-identity-broker-samples
+        groupId: com.azure
       - name: azure-identity-perf
         groupId: com.azure
         # required by the above perf library
       - name: perf-test-core
         groupId: com.azure
     LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          # TODO: Remove/Refactor this to work in test code, as here it will only work in public cloud.
+          PreTestRunSteps:
+            - task: AzureCLI@2
+              displayName: Refresh OIDC token
+              env:
+                ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
+              inputs:
+                azureSubscription: azure-sdk-tests-public
+                addSpnToEnvironment: true
+                scriptLocation: inlineScript
+                scriptType: pscore
+                inlineScript: |
+                  Write-Host "##vso[task.setvariable variable=ARM_OIDC_TOKEN;issecret=true]$($env:idToken)"
+          PersistOidcToken: true
+          Location: 'westus2'
+          CalledFromClient: true
           ServiceDirectory: identity
-          SupportedClouds: 'Public,UsGov,China'
+          EnvVars:
+            AZ_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
+            AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET: $(AZURE-IDENTITY-MULTI-TENANT-CLIENT-SECRET)
+          CloudConfig:
+            Public:
+              SubscriptionConfigurations:
+                - $(sub-config-identity-test-resources)
           Artifacts:
             - name: azure-identity
               groupId: com.azure
               safeName: azureidentity
+

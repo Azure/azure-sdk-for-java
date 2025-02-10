@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Lease Share response schema. */
+/**
+ * Lease Share response schema.
+ */
 @Fluent
-public final class LeaseShareResponseInner {
+public final class LeaseShareResponseInner implements JsonSerializable<LeaseShareResponseInner> {
     /*
      * Returned unique lease ID that must be included with any request to delete the share, or to renew, change, or
      * release the lease.
      */
-    @JsonProperty(value = "leaseId")
     private String leaseId;
 
     /*
      * Approximate time remaining in the lease period, in seconds.
      */
-    @JsonProperty(value = "leaseTimeSeconds")
     private String leaseTimeSeconds;
 
-    /** Creates an instance of LeaseShareResponseInner class. */
+    /**
+     * Creates an instance of LeaseShareResponseInner class.
+     */
     public LeaseShareResponseInner() {
     }
 
     /**
      * Get the leaseId property: Returned unique lease ID that must be included with any request to delete the share, or
      * to renew, change, or release the lease.
-     *
+     * 
      * @return the leaseId value.
      */
     public String leaseId() {
@@ -40,7 +46,7 @@ public final class LeaseShareResponseInner {
     /**
      * Set the leaseId property: Returned unique lease ID that must be included with any request to delete the share, or
      * to renew, change, or release the lease.
-     *
+     * 
      * @param leaseId the leaseId value to set.
      * @return the LeaseShareResponseInner object itself.
      */
@@ -51,7 +57,7 @@ public final class LeaseShareResponseInner {
 
     /**
      * Get the leaseTimeSeconds property: Approximate time remaining in the lease period, in seconds.
-     *
+     * 
      * @return the leaseTimeSeconds value.
      */
     public String leaseTimeSeconds() {
@@ -60,7 +66,7 @@ public final class LeaseShareResponseInner {
 
     /**
      * Set the leaseTimeSeconds property: Approximate time remaining in the lease period, in seconds.
-     *
+     * 
      * @param leaseTimeSeconds the leaseTimeSeconds value to set.
      * @return the LeaseShareResponseInner object itself.
      */
@@ -71,9 +77,48 @@ public final class LeaseShareResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("leaseId", this.leaseId);
+        jsonWriter.writeStringField("leaseTimeSeconds", this.leaseTimeSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LeaseShareResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LeaseShareResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LeaseShareResponseInner.
+     */
+    public static LeaseShareResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LeaseShareResponseInner deserializedLeaseShareResponseInner = new LeaseShareResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("leaseId".equals(fieldName)) {
+                    deserializedLeaseShareResponseInner.leaseId = reader.getString();
+                } else if ("leaseTimeSeconds".equals(fieldName)) {
+                    deserializedLeaseShareResponseInner.leaseTimeSeconds = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLeaseShareResponseInner;
+        });
     }
 }

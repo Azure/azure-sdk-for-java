@@ -7,20 +7,22 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * application
- *
- * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * 
+ * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -32,51 +34,43 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * applications that can render file streams may set the addIns property for its 'FileHandler' functionality. This
      * will let services like Microsoft 365 call the application in the context of a document the user is working on.
      */
-    @JsonProperty(value = "addIns")
     private List<MicrosoftGraphAddIn> addIns;
 
     /*
      * apiApplication
      */
-    @JsonProperty(value = "api")
     private MicrosoftGraphApiApplication api;
 
     /*
      * The unique identifier for the application that is assigned to an application by Azure AD. Not nullable.
      * Read-only.
      */
-    @JsonProperty(value = "appId")
     private String appId;
 
     /*
      * The applicationTemplateId property.
      */
-    @JsonProperty(value = "applicationTemplateId")
     private String applicationTemplateId;
 
     /*
      * The collection of roles the application declares. With app role assignments, these roles can be assigned to
      * users, groups, or other applications' service principals. Not nullable.
      */
-    @JsonProperty(value = "appRoles")
     private List<MicrosoftGraphAppRole> appRoles;
 
     /*
      * The date and time the application was registered. Read-only.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * The description property.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The display name for the application.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
@@ -85,7 +79,6 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * rolesAll: This will get all of the security groups, distribution groups, and Azure AD directory roles that the
      * signed-in user is a member of
      */
-    @JsonProperty(value = "groupMembershipClaims")
     private String groupMembershipClaims;
 
     /*
@@ -93,91 +86,77 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * application is multi-tenant. For more information see Application Objects and Service Principal Objects. The any
      * operator is required for filter expressions on multi-valued properties. Not nullable.
      */
-    @JsonProperty(value = "identifierUris")
     private List<String> identifierUris;
 
     /*
      * informationalUrl
      */
-    @JsonProperty(value = "info")
     private MicrosoftGraphInformationalUrl info;
 
     /*
      * The isDeviceOnlyAuthSupported property.
      */
-    @JsonProperty(value = "isDeviceOnlyAuthSupported")
     private Boolean isDeviceOnlyAuthSupported;
 
     /*
      * Specifies the fallback application type as public client, such as an installed application running on a mobile
      * device. The default value is false which means the fallback application type is confidential client such as web
      * app. There are certain scenarios where Azure AD cannot determine the client application type (e.g. ROPC flow
-     * where it is configured without specifying a redirect URI). In those cases Azure AD will interpret the
-     * application type based on the value of this property.
+     * where it is configured without specifying a redirect URI). In those cases Azure AD will interpret the application
+     * type based on the value of this property.
      */
-    @JsonProperty(value = "isFallbackPublicClient")
     private Boolean isFallbackPublicClient;
 
     /*
      * The collection of key credentials associated with the application Not nullable.
      */
-    @JsonProperty(value = "keyCredentials")
     private List<MicrosoftGraphKeyCredentialInner> keyCredentials;
 
     /*
      * The main logo for the application. Not nullable.
      */
-    @JsonProperty(value = "logo")
     private Base64Url logo;
 
     /*
      * The notes property.
      */
-    @JsonProperty(value = "notes")
     private String notes;
 
     /*
      * The oauth2RequirePostResponse property.
      */
-    @JsonProperty(value = "oauth2RequirePostResponse")
     private Boolean oauth2RequirePostResponse;
 
     /*
      * optionalClaims
      */
-    @JsonProperty(value = "optionalClaims")
     private MicrosoftGraphOptionalClaims optionalClaims;
 
     /*
      * parentalControlSettings
      */
-    @JsonProperty(value = "parentalControlSettings")
     private MicrosoftGraphParentalControlSettings parentalControlSettings;
 
     /*
      * The collection of password credentials associated with the application. Not nullable.
      */
-    @JsonProperty(value = "passwordCredentials")
     private List<MicrosoftGraphPasswordCredentialInner> passwordCredentials;
 
     /*
      * publicClientApplication
      */
-    @JsonProperty(value = "publicClient")
     private MicrosoftGraphPublicClientApplication publicClient;
 
     /*
      * The verified publisher domain for the application. Read-only.
      */
-    @JsonProperty(value = "publisherDomain")
     private String publisherDomain;
 
     /*
      * Specifies resources that this application requires access to and the set of OAuth permission scopes and
-     * application roles that it needs under each of those resources. This pre-configuration of required resource
-     * access drives the consent experience. Not nullable.
+     * application roles that it needs under each of those resources. This pre-configuration of required resource access
+     * drives the consent experience. Not nullable.
      */
-    @JsonProperty(value = "requiredResourceAccess")
     private List<MicrosoftGraphRequiredResourceAccess> requiredResourceAccess;
 
     /*
@@ -190,13 +169,11 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * allows for the widest set of user identities including local accounts and user identities from Microsoft,
      * Facebook, Google, Twitter, or any OpenID Connect provider.
      */
-    @JsonProperty(value = "signInAudience")
     private String signInAudience;
 
     /*
      * Custom strings that can be used to categorize and identify the application. Not nullable.
      */
-    @JsonProperty(value = "tags")
     private List<String> tags;
 
     /*
@@ -204,62 +181,54 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * the tokens it emits by using the key this property points to. The application code that receives the encrypted
      * token must use the matching private key to decrypt the token before it can be used for the signed-in user.
      */
-    @JsonProperty(value = "tokenEncryptionKeyId")
     private UUID tokenEncryptionKeyId;
 
     /*
      * webApplication
      */
-    @JsonProperty(value = "web")
     private MicrosoftGraphWebApplication web;
 
     /*
-     * directoryObject
-     *
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonProperty(value = "createdOnBehalfOf")
     private MicrosoftGraphDirectoryObjectInner createdOnBehalfOf;
 
     /*
      * Read-only. Nullable.
      */
-    @JsonProperty(value = "extensionProperties")
     private List<MicrosoftGraphExtensionPropertyInner> extensionProperties;
 
     /*
      * The homeRealmDiscoveryPolicies property.
      */
-    @JsonProperty(value = "homeRealmDiscoveryPolicies")
     private List<MicrosoftGraphHomeRealmDiscoveryPolicyInner> homeRealmDiscoveryPolicies;
 
     /*
      * Directory objects that are owners of the application. The owners are a set of non-admin users who are allowed to
      * modify this object. Requires version 2013-11-08 or newer. Read-only. Nullable.
      */
-    @JsonProperty(value = "owners")
     private List<MicrosoftGraphDirectoryObjectInner> owners;
 
     /*
      * The tokenIssuancePolicies property.
      */
-    @JsonProperty(value = "tokenIssuancePolicies")
     private List<MicrosoftGraphTokenIssuancePolicy> tokenIssuancePolicies;
 
     /*
      * The tokenLifetimePolicies property.
      */
-    @JsonProperty(value = "tokenLifetimePolicies")
     private List<MicrosoftGraphTokenLifetimePolicy> tokenLifetimePolicies;
 
     /*
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphApplicationInner class. */
+    /**
+     * Creates an instance of MicrosoftGraphApplicationInner class.
+     */
     public MicrosoftGraphApplicationInner() {
     }
 
@@ -268,7 +237,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * contexts. For example, applications that can render file streams may set the addIns property for its
      * 'FileHandler' functionality. This will let services like Microsoft 365 call the application in the context of a
      * document the user is working on.
-     *
+     * 
      * @return the addIns value.
      */
     public List<MicrosoftGraphAddIn> addIns() {
@@ -280,7 +249,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * contexts. For example, applications that can render file streams may set the addIns property for its
      * 'FileHandler' functionality. This will let services like Microsoft 365 call the application in the context of a
      * document the user is working on.
-     *
+     * 
      * @param addIns the addIns value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -291,7 +260,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the api property: apiApplication.
-     *
+     * 
      * @return the api value.
      */
     public MicrosoftGraphApiApplication api() {
@@ -300,7 +269,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the api property: apiApplication.
-     *
+     * 
      * @param api the api value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -312,7 +281,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     /**
      * Get the appId property: The unique identifier for the application that is assigned to an application by Azure AD.
      * Not nullable. Read-only.
-     *
+     * 
      * @return the appId value.
      */
     public String appId() {
@@ -322,7 +291,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     /**
      * Set the appId property: The unique identifier for the application that is assigned to an application by Azure AD.
      * Not nullable. Read-only.
-     *
+     * 
      * @param appId the appId value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -333,7 +302,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the applicationTemplateId property: The applicationTemplateId property.
-     *
+     * 
      * @return the applicationTemplateId value.
      */
     public String applicationTemplateId() {
@@ -342,7 +311,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the applicationTemplateId property: The applicationTemplateId property.
-     *
+     * 
      * @param applicationTemplateId the applicationTemplateId value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -354,7 +323,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     /**
      * Get the appRoles property: The collection of roles the application declares. With app role assignments, these
      * roles can be assigned to users, groups, or other applications' service principals. Not nullable.
-     *
+     * 
      * @return the appRoles value.
      */
     public List<MicrosoftGraphAppRole> appRoles() {
@@ -364,7 +333,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     /**
      * Set the appRoles property: The collection of roles the application declares. With app role assignments, these
      * roles can be assigned to users, groups, or other applications' service principals. Not nullable.
-     *
+     * 
      * @param appRoles the appRoles value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -375,7 +344,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the createdDateTime property: The date and time the application was registered. Read-only.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -384,7 +353,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the createdDateTime property: The date and time the application was registered. Read-only.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -395,7 +364,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the description property: The description property.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -404,7 +373,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the description property: The description property.
-     *
+     * 
      * @param description the description value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -415,7 +384,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the displayName property: The display name for the application.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -424,7 +393,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the displayName property: The display name for the application.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -438,7 +407,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * that the application expects. To set this attribute, use one of the following valid string
      * values:NoneSecurityGroup: For security groups and Azure AD rolesAll: This will get all of the security groups,
      * distribution groups, and Azure AD directory roles that the signed-in user is a member of.
-     *
+     * 
      * @return the groupMembershipClaims value.
      */
     public String groupMembershipClaims() {
@@ -450,7 +419,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * that the application expects. To set this attribute, use one of the following valid string
      * values:NoneSecurityGroup: For security groups and Azure AD rolesAll: This will get all of the security groups,
      * distribution groups, and Azure AD directory roles that the signed-in user is a member of.
-     *
+     * 
      * @param groupMembershipClaims the groupMembershipClaims value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -464,7 +433,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * verified custom domain if the application is multi-tenant. For more information see Application Objects and
      * Service Principal Objects. The any operator is required for filter expressions on multi-valued properties. Not
      * nullable.
-     *
+     * 
      * @return the identifierUris value.
      */
     public List<String> identifierUris() {
@@ -476,7 +445,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * verified custom domain if the application is multi-tenant. For more information see Application Objects and
      * Service Principal Objects. The any operator is required for filter expressions on multi-valued properties. Not
      * nullable.
-     *
+     * 
      * @param identifierUris the identifierUris value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -487,7 +456,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the info property: informationalUrl.
-     *
+     * 
      * @return the info value.
      */
     public MicrosoftGraphInformationalUrl info() {
@@ -496,7 +465,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the info property: informationalUrl.
-     *
+     * 
      * @param info the info value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -507,7 +476,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the isDeviceOnlyAuthSupported property: The isDeviceOnlyAuthSupported property.
-     *
+     * 
      * @return the isDeviceOnlyAuthSupported value.
      */
     public Boolean isDeviceOnlyAuthSupported() {
@@ -516,7 +485,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the isDeviceOnlyAuthSupported property: The isDeviceOnlyAuthSupported property.
-     *
+     * 
      * @param isDeviceOnlyAuthSupported the isDeviceOnlyAuthSupported value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -531,7 +500,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * type is confidential client such as web app. There are certain scenarios where Azure AD cannot determine the
      * client application type (e.g. ROPC flow where it is configured without specifying a redirect URI). In those cases
      * Azure AD will interpret the application type based on the value of this property.
-     *
+     * 
      * @return the isFallbackPublicClient value.
      */
     public Boolean isFallbackPublicClient() {
@@ -544,7 +513,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * type is confidential client such as web app. There are certain scenarios where Azure AD cannot determine the
      * client application type (e.g. ROPC flow where it is configured without specifying a redirect URI). In those cases
      * Azure AD will interpret the application type based on the value of this property.
-     *
+     * 
      * @param isFallbackPublicClient the isFallbackPublicClient value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -555,7 +524,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the keyCredentials property: The collection of key credentials associated with the application Not nullable.
-     *
+     * 
      * @return the keyCredentials value.
      */
     public List<MicrosoftGraphKeyCredentialInner> keyCredentials() {
@@ -564,7 +533,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the keyCredentials property: The collection of key credentials associated with the application Not nullable.
-     *
+     * 
      * @param keyCredentials the keyCredentials value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -575,7 +544,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the logo property: The main logo for the application. Not nullable.
-     *
+     * 
      * @return the logo value.
      */
     public byte[] logo() {
@@ -587,7 +556,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the logo property: The main logo for the application. Not nullable.
-     *
+     * 
      * @param logo the logo value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -602,7 +571,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the notes property: The notes property.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -611,7 +580,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the notes property: The notes property.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -622,7 +591,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the oauth2RequirePostResponse property: The oauth2RequirePostResponse property.
-     *
+     * 
      * @return the oauth2RequirePostResponse value.
      */
     public Boolean oauth2RequirePostResponse() {
@@ -631,7 +600,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the oauth2RequirePostResponse property: The oauth2RequirePostResponse property.
-     *
+     * 
      * @param oauth2RequirePostResponse the oauth2RequirePostResponse value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -642,7 +611,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the optionalClaims property: optionalClaims.
-     *
+     * 
      * @return the optionalClaims value.
      */
     public MicrosoftGraphOptionalClaims optionalClaims() {
@@ -651,7 +620,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the optionalClaims property: optionalClaims.
-     *
+     * 
      * @param optionalClaims the optionalClaims value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -662,7 +631,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the parentalControlSettings property: parentalControlSettings.
-     *
+     * 
      * @return the parentalControlSettings value.
      */
     public MicrosoftGraphParentalControlSettings parentalControlSettings() {
@@ -671,12 +640,12 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the parentalControlSettings property: parentalControlSettings.
-     *
+     * 
      * @param parentalControlSettings the parentalControlSettings value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
-    public MicrosoftGraphApplicationInner withParentalControlSettings(
-        MicrosoftGraphParentalControlSettings parentalControlSettings) {
+    public MicrosoftGraphApplicationInner
+        withParentalControlSettings(MicrosoftGraphParentalControlSettings parentalControlSettings) {
         this.parentalControlSettings = parentalControlSettings;
         return this;
     }
@@ -684,7 +653,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     /**
      * Get the passwordCredentials property: The collection of password credentials associated with the application. Not
      * nullable.
-     *
+     * 
      * @return the passwordCredentials value.
      */
     public List<MicrosoftGraphPasswordCredentialInner> passwordCredentials() {
@@ -694,19 +663,19 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     /**
      * Set the passwordCredentials property: The collection of password credentials associated with the application. Not
      * nullable.
-     *
+     * 
      * @param passwordCredentials the passwordCredentials value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
-    public MicrosoftGraphApplicationInner withPasswordCredentials(
-        List<MicrosoftGraphPasswordCredentialInner> passwordCredentials) {
+    public MicrosoftGraphApplicationInner
+        withPasswordCredentials(List<MicrosoftGraphPasswordCredentialInner> passwordCredentials) {
         this.passwordCredentials = passwordCredentials;
         return this;
     }
 
     /**
      * Get the publicClient property: publicClientApplication.
-     *
+     * 
      * @return the publicClient value.
      */
     public MicrosoftGraphPublicClientApplication publicClient() {
@@ -715,7 +684,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the publicClient property: publicClientApplication.
-     *
+     * 
      * @param publicClient the publicClient value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -726,7 +695,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the publisherDomain property: The verified publisher domain for the application. Read-only.
-     *
+     * 
      * @return the publisherDomain value.
      */
     public String publisherDomain() {
@@ -735,7 +704,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the publisherDomain property: The verified publisher domain for the application. Read-only.
-     *
+     * 
      * @param publisherDomain the publisherDomain value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -748,7 +717,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * Get the requiredResourceAccess property: Specifies resources that this application requires access to and the set
      * of OAuth permission scopes and application roles that it needs under each of those resources. This
      * pre-configuration of required resource access drives the consent experience. Not nullable.
-     *
+     * 
      * @return the requiredResourceAccess value.
      */
     public List<MicrosoftGraphRequiredResourceAccess> requiredResourceAccess() {
@@ -759,12 +728,12 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * Set the requiredResourceAccess property: Specifies resources that this application requires access to and the set
      * of OAuth permission scopes and application roles that it needs under each of those resources. This
      * pre-configuration of required resource access drives the consent experience. Not nullable.
-     *
+     * 
      * @param requiredResourceAccess the requiredResourceAccess value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
-    public MicrosoftGraphApplicationInner withRequiredResourceAccess(
-        List<MicrosoftGraphRequiredResourceAccess> requiredResourceAccess) {
+    public MicrosoftGraphApplicationInner
+        withRequiredResourceAccess(List<MicrosoftGraphRequiredResourceAccess> requiredResourceAccess) {
         this.requiredResourceAccess = requiredResourceAccess;
         return this;
     }
@@ -778,7 +747,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * Microsoft account only.For authenticating users with Azure AD B2C user flows, use
      * AzureADandPersonalMicrosoftAccount. This value allows for the widest set of user identities including local
      * accounts and user identities from Microsoft, Facebook, Google, Twitter, or any OpenID Connect provider.
-     *
+     * 
      * @return the signInAudience value.
      */
     public String signInAudience() {
@@ -794,7 +763,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * Microsoft account only.For authenticating users with Azure AD B2C user flows, use
      * AzureADandPersonalMicrosoftAccount. This value allows for the widest set of user identities including local
      * accounts and user identities from Microsoft, Facebook, Google, Twitter, or any OpenID Connect provider.
-     *
+     * 
      * @param signInAudience the signInAudience value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -805,7 +774,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the tags property: Custom strings that can be used to categorize and identify the application. Not nullable.
-     *
+     * 
      * @return the tags value.
      */
     public List<String> tags() {
@@ -814,7 +783,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the tags property: Custom strings that can be used to categorize and identify the application. Not nullable.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -828,7 +797,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * When configured, Azure AD encrypts all the tokens it emits by using the key this property points to. The
      * application code that receives the encrypted token must use the matching private key to decrypt the token before
      * it can be used for the signed-in user.
-     *
+     * 
      * @return the tokenEncryptionKeyId value.
      */
     public UUID tokenEncryptionKeyId() {
@@ -840,7 +809,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
      * When configured, Azure AD encrypts all the tokens it emits by using the key this property points to. The
      * application code that receives the encrypted token must use the matching private key to decrypt the token before
      * it can be used for the signed-in user.
-     *
+     * 
      * @param tokenEncryptionKeyId the tokenEncryptionKeyId value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -851,7 +820,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the web property: webApplication.
-     *
+     * 
      * @return the web value.
      */
     public MicrosoftGraphWebApplication web() {
@@ -860,7 +829,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the web property: webApplication.
-     *
+     * 
      * @param web the web value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -870,11 +839,9 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     }
 
     /**
-     * Get the createdOnBehalfOf property: directoryObject
-     *
-     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
-     * directory entity types.
-     *
+     * Get the createdOnBehalfOf property: Represents an Azure Active Directory object. The directoryObject type is the
+     * base type for many other directory entity types.
+     * 
      * @return the createdOnBehalfOf value.
      */
     public MicrosoftGraphDirectoryObjectInner createdOnBehalfOf() {
@@ -882,11 +849,9 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     }
 
     /**
-     * Set the createdOnBehalfOf property: directoryObject
-     *
-     * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other
-     * directory entity types.
-     *
+     * Set the createdOnBehalfOf property: Represents an Azure Active Directory object. The directoryObject type is the
+     * base type for many other directory entity types.
+     * 
      * @param createdOnBehalfOf the createdOnBehalfOf value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -897,7 +862,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the extensionProperties property: Read-only. Nullable.
-     *
+     * 
      * @return the extensionProperties value.
      */
     public List<MicrosoftGraphExtensionPropertyInner> extensionProperties() {
@@ -906,19 +871,19 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the extensionProperties property: Read-only. Nullable.
-     *
+     * 
      * @param extensionProperties the extensionProperties value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
-    public MicrosoftGraphApplicationInner withExtensionProperties(
-        List<MicrosoftGraphExtensionPropertyInner> extensionProperties) {
+    public MicrosoftGraphApplicationInner
+        withExtensionProperties(List<MicrosoftGraphExtensionPropertyInner> extensionProperties) {
         this.extensionProperties = extensionProperties;
         return this;
     }
 
     /**
      * Get the homeRealmDiscoveryPolicies property: The homeRealmDiscoveryPolicies property.
-     *
+     * 
      * @return the homeRealmDiscoveryPolicies value.
      */
     public List<MicrosoftGraphHomeRealmDiscoveryPolicyInner> homeRealmDiscoveryPolicies() {
@@ -927,12 +892,12 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the homeRealmDiscoveryPolicies property: The homeRealmDiscoveryPolicies property.
-     *
+     * 
      * @param homeRealmDiscoveryPolicies the homeRealmDiscoveryPolicies value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
-    public MicrosoftGraphApplicationInner withHomeRealmDiscoveryPolicies(
-        List<MicrosoftGraphHomeRealmDiscoveryPolicyInner> homeRealmDiscoveryPolicies) {
+    public MicrosoftGraphApplicationInner
+        withHomeRealmDiscoveryPolicies(List<MicrosoftGraphHomeRealmDiscoveryPolicyInner> homeRealmDiscoveryPolicies) {
         this.homeRealmDiscoveryPolicies = homeRealmDiscoveryPolicies;
         return this;
     }
@@ -940,7 +905,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     /**
      * Get the owners property: Directory objects that are owners of the application. The owners are a set of non-admin
      * users who are allowed to modify this object. Requires version 2013-11-08 or newer. Read-only. Nullable.
-     *
+     * 
      * @return the owners value.
      */
     public List<MicrosoftGraphDirectoryObjectInner> owners() {
@@ -950,7 +915,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     /**
      * Set the owners property: Directory objects that are owners of the application. The owners are a set of non-admin
      * users who are allowed to modify this object. Requires version 2013-11-08 or newer. Read-only. Nullable.
-     *
+     * 
      * @param owners the owners value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -961,7 +926,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Get the tokenIssuancePolicies property: The tokenIssuancePolicies property.
-     *
+     * 
      * @return the tokenIssuancePolicies value.
      */
     public List<MicrosoftGraphTokenIssuancePolicy> tokenIssuancePolicies() {
@@ -970,19 +935,19 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the tokenIssuancePolicies property: The tokenIssuancePolicies property.
-     *
+     * 
      * @param tokenIssuancePolicies the tokenIssuancePolicies value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
-    public MicrosoftGraphApplicationInner withTokenIssuancePolicies(
-        List<MicrosoftGraphTokenIssuancePolicy> tokenIssuancePolicies) {
+    public MicrosoftGraphApplicationInner
+        withTokenIssuancePolicies(List<MicrosoftGraphTokenIssuancePolicy> tokenIssuancePolicies) {
         this.tokenIssuancePolicies = tokenIssuancePolicies;
         return this;
     }
 
     /**
      * Get the tokenLifetimePolicies property: The tokenLifetimePolicies property.
-     *
+     * 
      * @return the tokenLifetimePolicies value.
      */
     public List<MicrosoftGraphTokenLifetimePolicy> tokenLifetimePolicies() {
@@ -991,12 +956,12 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Set the tokenLifetimePolicies property: The tokenLifetimePolicies property.
-     *
+     * 
      * @param tokenLifetimePolicies the tokenLifetimePolicies value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
-    public MicrosoftGraphApplicationInner withTokenLifetimePolicies(
-        List<MicrosoftGraphTokenLifetimePolicy> tokenLifetimePolicies) {
+    public MicrosoftGraphApplicationInner
+        withTokenLifetimePolicies(List<MicrosoftGraphTokenLifetimePolicy> tokenLifetimePolicies) {
         this.tokenLifetimePolicies = tokenLifetimePolicies;
         return this;
     }
@@ -1004,10 +969,9 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -1015,7 +979,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
     /**
      * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphApplicationInner object itself.
      */
@@ -1024,22 +988,18 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphApplicationInner withDeletedDateTime(OffsetDateTime deletedDateTime) {
         super.withDeletedDateTime(deletedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphApplicationInner withId(String id) {
         super.withId(id);
@@ -1048,7 +1008,7 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -1105,5 +1065,198 @@ public final class MicrosoftGraphApplicationInner extends MicrosoftGraphDirector
         if (tokenLifetimePolicies() != null) {
             tokenLifetimePolicies().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("deletedDateTime",
+            deletedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deletedDateTime()));
+        jsonWriter.writeArrayField("addIns", this.addIns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("api", this.api);
+        jsonWriter.writeStringField("appId", this.appId);
+        jsonWriter.writeStringField("applicationTemplateId", this.applicationTemplateId);
+        jsonWriter.writeArrayField("appRoles", this.appRoles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("groupMembershipClaims", this.groupMembershipClaims);
+        jsonWriter.writeArrayField("identifierUris", this.identifierUris,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("info", this.info);
+        jsonWriter.writeBooleanField("isDeviceOnlyAuthSupported", this.isDeviceOnlyAuthSupported);
+        jsonWriter.writeBooleanField("isFallbackPublicClient", this.isFallbackPublicClient);
+        jsonWriter.writeArrayField("keyCredentials", this.keyCredentials,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("logo", Objects.toString(this.logo, null));
+        jsonWriter.writeStringField("notes", this.notes);
+        jsonWriter.writeBooleanField("oauth2RequirePostResponse", this.oauth2RequirePostResponse);
+        jsonWriter.writeJsonField("optionalClaims", this.optionalClaims);
+        jsonWriter.writeJsonField("parentalControlSettings", this.parentalControlSettings);
+        jsonWriter.writeArrayField("passwordCredentials", this.passwordCredentials,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("publicClient", this.publicClient);
+        jsonWriter.writeStringField("publisherDomain", this.publisherDomain);
+        jsonWriter.writeArrayField("requiredResourceAccess", this.requiredResourceAccess,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("signInAudience", this.signInAudience);
+        jsonWriter.writeArrayField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("tokenEncryptionKeyId", Objects.toString(this.tokenEncryptionKeyId, null));
+        jsonWriter.writeJsonField("web", this.web);
+        jsonWriter.writeJsonField("createdOnBehalfOf", this.createdOnBehalfOf);
+        jsonWriter.writeArrayField("extensionProperties", this.extensionProperties,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("homeRealmDiscoveryPolicies", this.homeRealmDiscoveryPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("owners", this.owners, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tokenIssuancePolicies", this.tokenIssuancePolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tokenLifetimePolicies", this.tokenLifetimePolicies,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphApplicationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphApplicationInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphApplicationInner.
+     */
+    public static MicrosoftGraphApplicationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphApplicationInner deserializedMicrosoftGraphApplicationInner
+                = new MicrosoftGraphApplicationInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.withId(reader.getString());
+                } else if ("deletedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.withDeletedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("addIns".equals(fieldName)) {
+                    List<MicrosoftGraphAddIn> addIns
+                        = reader.readArray(reader1 -> MicrosoftGraphAddIn.fromJson(reader1));
+                    deserializedMicrosoftGraphApplicationInner.addIns = addIns;
+                } else if ("api".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.api = MicrosoftGraphApiApplication.fromJson(reader);
+                } else if ("appId".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.appId = reader.getString();
+                } else if ("applicationTemplateId".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.applicationTemplateId = reader.getString();
+                } else if ("appRoles".equals(fieldName)) {
+                    List<MicrosoftGraphAppRole> appRoles
+                        = reader.readArray(reader1 -> MicrosoftGraphAppRole.fromJson(reader1));
+                    deserializedMicrosoftGraphApplicationInner.appRoles = appRoles;
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.displayName = reader.getString();
+                } else if ("groupMembershipClaims".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.groupMembershipClaims = reader.getString();
+                } else if ("identifierUris".equals(fieldName)) {
+                    List<String> identifierUris = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphApplicationInner.identifierUris = identifierUris;
+                } else if ("info".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.info = MicrosoftGraphInformationalUrl.fromJson(reader);
+                } else if ("isDeviceOnlyAuthSupported".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.isDeviceOnlyAuthSupported
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isFallbackPublicClient".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.isFallbackPublicClient
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("keyCredentials".equals(fieldName)) {
+                    List<MicrosoftGraphKeyCredentialInner> keyCredentials
+                        = reader.readArray(reader1 -> MicrosoftGraphKeyCredentialInner.fromJson(reader1));
+                    deserializedMicrosoftGraphApplicationInner.keyCredentials = keyCredentials;
+                } else if ("logo".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.logo
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("notes".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.notes = reader.getString();
+                } else if ("oauth2RequirePostResponse".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.oauth2RequirePostResponse
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("optionalClaims".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.optionalClaims
+                        = MicrosoftGraphOptionalClaims.fromJson(reader);
+                } else if ("parentalControlSettings".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.parentalControlSettings
+                        = MicrosoftGraphParentalControlSettings.fromJson(reader);
+                } else if ("passwordCredentials".equals(fieldName)) {
+                    List<MicrosoftGraphPasswordCredentialInner> passwordCredentials
+                        = reader.readArray(reader1 -> MicrosoftGraphPasswordCredentialInner.fromJson(reader1));
+                    deserializedMicrosoftGraphApplicationInner.passwordCredentials = passwordCredentials;
+                } else if ("publicClient".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.publicClient
+                        = MicrosoftGraphPublicClientApplication.fromJson(reader);
+                } else if ("publisherDomain".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.publisherDomain = reader.getString();
+                } else if ("requiredResourceAccess".equals(fieldName)) {
+                    List<MicrosoftGraphRequiredResourceAccess> requiredResourceAccess
+                        = reader.readArray(reader1 -> MicrosoftGraphRequiredResourceAccess.fromJson(reader1));
+                    deserializedMicrosoftGraphApplicationInner.requiredResourceAccess = requiredResourceAccess;
+                } else if ("signInAudience".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.signInAudience = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    List<String> tags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphApplicationInner.tags = tags;
+                } else if ("tokenEncryptionKeyId".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.tokenEncryptionKeyId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("web".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.web = MicrosoftGraphWebApplication.fromJson(reader);
+                } else if ("createdOnBehalfOf".equals(fieldName)) {
+                    deserializedMicrosoftGraphApplicationInner.createdOnBehalfOf
+                        = MicrosoftGraphDirectoryObjectInner.fromJson(reader);
+                } else if ("extensionProperties".equals(fieldName)) {
+                    List<MicrosoftGraphExtensionPropertyInner> extensionProperties
+                        = reader.readArray(reader1 -> MicrosoftGraphExtensionPropertyInner.fromJson(reader1));
+                    deserializedMicrosoftGraphApplicationInner.extensionProperties = extensionProperties;
+                } else if ("homeRealmDiscoveryPolicies".equals(fieldName)) {
+                    List<MicrosoftGraphHomeRealmDiscoveryPolicyInner> homeRealmDiscoveryPolicies
+                        = reader.readArray(reader1 -> MicrosoftGraphHomeRealmDiscoveryPolicyInner.fromJson(reader1));
+                    deserializedMicrosoftGraphApplicationInner.homeRealmDiscoveryPolicies = homeRealmDiscoveryPolicies;
+                } else if ("owners".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> owners
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphApplicationInner.owners = owners;
+                } else if ("tokenIssuancePolicies".equals(fieldName)) {
+                    List<MicrosoftGraphTokenIssuancePolicy> tokenIssuancePolicies
+                        = reader.readArray(reader1 -> MicrosoftGraphTokenIssuancePolicy.fromJson(reader1));
+                    deserializedMicrosoftGraphApplicationInner.tokenIssuancePolicies = tokenIssuancePolicies;
+                } else if ("tokenLifetimePolicies".equals(fieldName)) {
+                    List<MicrosoftGraphTokenLifetimePolicy> tokenLifetimePolicies
+                        = reader.readArray(reader1 -> MicrosoftGraphTokenLifetimePolicy.fromJson(reader1));
+                    deserializedMicrosoftGraphApplicationInner.tokenLifetimePolicies = tokenLifetimePolicies;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphApplicationInner.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphApplicationInner;
+        });
     }
 }

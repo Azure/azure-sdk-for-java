@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthenticationMode. */
+/**
+ * Authentication Mode. Valid modes are `ConnectionString`, `Msi` and 'UserToken'.
+ */
 public final class AuthenticationMode extends ExpandableStringEnum<AuthenticationMode> {
-    /** Static value Msi for AuthenticationMode. */
+    /**
+     * Static value Msi for AuthenticationMode.
+     */
     public static final AuthenticationMode MSI = fromString("Msi");
 
-    /** Static value UserToken for AuthenticationMode. */
+    /**
+     * Static value UserToken for AuthenticationMode.
+     */
     public static final AuthenticationMode USER_TOKEN = fromString("UserToken");
 
-    /** Static value ConnectionString for AuthenticationMode. */
+    /**
+     * Static value ConnectionString for AuthenticationMode.
+     */
     public static final AuthenticationMode CONNECTION_STRING = fromString("ConnectionString");
 
     /**
+     * Creates a new instance of AuthenticationMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationMode() {
+    }
+
+    /**
      * Creates or finds a AuthenticationMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AuthenticationMode.
      */
-    @JsonCreator
     public static AuthenticationMode fromString(String name) {
         return fromString(name, AuthenticationMode.class);
     }
 
-    /** @return known AuthenticationMode values. */
+    /**
+     * Gets known AuthenticationMode values.
+     * 
+     * @return known AuthenticationMode values.
+     */
     public static Collection<AuthenticationMode> values() {
         return values(AuthenticationMode.class);
     }

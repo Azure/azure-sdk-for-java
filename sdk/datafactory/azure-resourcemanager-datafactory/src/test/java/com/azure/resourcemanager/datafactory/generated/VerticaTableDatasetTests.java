@@ -19,34 +19,34 @@ public final class VerticaTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VerticaTableDataset model = BinaryData.fromString(
-            "{\"type\":\"VerticaTable\",\"typeProperties\":{\"tableName\":\"dataxbofpr\",\"table\":\"dataiva\",\"schema\":\"datasbfzl\"},\"description\":\"jr\",\"structure\":\"datasfv\",\"schema\":\"datahqxtm\",\"linkedServiceName\":{\"referenceName\":\"lmfcleuovelvsp\",\"parameters\":{\"jtoudode\":\"datajtez\",\"sr\":\"datawmv\",\"emt\":\"dataciexu\"}},\"parameters\":{\"x\":{\"type\":\"Bool\",\"defaultValue\":\"dataymmcgskscb\"},\"wa\":{\"type\":\"SecureString\",\"defaultValue\":\"dataxicjojxolknsh\"},\"nchzz\":{\"type\":\"Int\",\"defaultValue\":\"databhmbglmnlbnat\"}},\"annotations\":[\"dataxortd\",\"datazvhbujk\",\"datahophqwo\"],\"folder\":{\"name\":\"ccqtwsrbf\"},\"\":{\"dzfbv\":\"dataii\",\"jtshlwvrsksdzmh\":\"dataxrvnhhmfsnqp\",\"pwfbwoetxiz\":\"datatsy\"}}")
+            "{\"type\":\"VerticaTable\",\"typeProperties\":{\"tableName\":\"datakuobclobnaqeizpl\",\"table\":\"datalyugpnn\",\"schema\":\"datajmkffeonmnvmu\"},\"description\":\"iqywlpxmliyt\",\"structure\":\"datagcrun\",\"schema\":\"datailxstekb\",\"linkedServiceName\":{\"referenceName\":\"rhyvs\",\"parameters\":{\"kltrvgioguoxc\":\"datariemorszffi\",\"gxgrggy\":\"datadqoxhdenmj\"}},\"parameters\":{\"xvvmrnjrdi\":{\"type\":\"Float\",\"defaultValue\":\"dataqinr\"},\"gcmpnc\":{\"type\":\"Bool\",\"defaultValue\":\"dataqswsychdcj\"}},\"annotations\":[\"datagbnoqnowvfxe\"],\"folder\":{\"name\":\"gwjekyqirvcpoln\"},\"\":{\"v\":\"datappdilb\"}}")
             .toObject(VerticaTableDataset.class);
-        Assertions.assertEquals("jr", model.description());
-        Assertions.assertEquals("lmfcleuovelvsp", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("x").type());
-        Assertions.assertEquals("ccqtwsrbf", model.folder().name());
+        Assertions.assertEquals("iqywlpxmliyt", model.description());
+        Assertions.assertEquals("rhyvs", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("xvvmrnjrdi").type());
+        Assertions.assertEquals("gwjekyqirvcpoln", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VerticaTableDataset model
-            = new VerticaTableDataset().withDescription("jr").withStructure("datasfv").withSchema("datahqxtm")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("lmfcleuovelvsp")
-                    .withParameters(mapOf("jtoudode", "datajtez", "sr", "datawmv", "emt", "dataciexu")))
-                .withParameters(mapOf("x",
-                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataymmcgskscb"), "wa",
-                    new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                        .withDefaultValue("dataxicjojxolknsh"),
-                    "nchzz",
-                    new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("databhmbglmnlbnat")))
-                .withAnnotations(Arrays.asList("dataxortd", "datazvhbujk", "datahophqwo"))
-                .withFolder(new DatasetFolder().withName("ccqtwsrbf")).withTableName("dataxbofpr").withTable("dataiva")
-                .withSchemaTypePropertiesSchema("datasbfzl");
+        VerticaTableDataset model = new VerticaTableDataset().withDescription("iqywlpxmliyt")
+            .withStructure("datagcrun")
+            .withSchema("datailxstekb")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("rhyvs")
+                .withParameters(mapOf("kltrvgioguoxc", "datariemorszffi", "gxgrggy", "datadqoxhdenmj")))
+            .withParameters(mapOf("xvvmrnjrdi",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataqinr"), "gcmpnc",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataqswsychdcj")))
+            .withAnnotations(Arrays.asList("datagbnoqnowvfxe"))
+            .withFolder(new DatasetFolder().withName("gwjekyqirvcpoln"))
+            .withTableName("datakuobclobnaqeizpl")
+            .withTable("datalyugpnn")
+            .withSchemaTypePropertiesSchema("datajmkffeonmnvmu");
         model = BinaryData.fromObject(model).toObject(VerticaTableDataset.class);
-        Assertions.assertEquals("jr", model.description());
-        Assertions.assertEquals("lmfcleuovelvsp", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("x").type());
-        Assertions.assertEquals("ccqtwsrbf", model.folder().name());
+        Assertions.assertEquals("iqywlpxmliyt", model.description());
+        Assertions.assertEquals("rhyvs", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("xvvmrnjrdi").type());
+        Assertions.assertEquals("gwjekyqirvcpoln", model.folder().name());
     }
 
     // Use "Map.of" if available

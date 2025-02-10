@@ -10,7 +10,8 @@ package com.azure.resourcemanager.nginx.generated;
 public final class ConfigurationsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Configurations_Delete.json
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Delete.
+     * json
      */
     /**
      * Sample code: Configurations_Delete.

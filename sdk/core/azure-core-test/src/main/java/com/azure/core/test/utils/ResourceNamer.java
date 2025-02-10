@@ -69,7 +69,8 @@ public class ResourceNamer {
             str.append(CoreUtils.randomUuid()
                 .toString()
                 .replace("-", "")
-                .substring(0, Math.min(32, length)).toLowerCase(LOCALE));
+                .substring(0, Math.min(32, length))
+                .toLowerCase(LOCALE));
         }
         return str.toString();
     }

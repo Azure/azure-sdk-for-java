@@ -5,33 +5,32 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.CommunityGalleryMetadata;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Describes the properties of a community gallery.
  */
 @Fluent
-public final class CommunityGalleryProperties {
+public final class CommunityGalleryProperties implements JsonSerializable<CommunityGalleryProperties> {
     /*
      * The disclaimer for a community gallery resource.
      */
-    @JsonProperty(value = "disclaimer")
     private String disclaimer;
 
     /*
      * The artifact tags of a community gallery resource.
      */
-    @JsonProperty(value = "artifactTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> artifactTags;
 
     /*
      * The metadata of community gallery.
      */
-    @JsonProperty(value = "communityMetadata")
     private CommunityGalleryMetadata communityMetadata;
 
     /**
@@ -109,5 +108,49 @@ public final class CommunityGalleryProperties {
         if (communityMetadata() != null) {
             communityMetadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("disclaimer", this.disclaimer);
+        jsonWriter.writeMapField("artifactTags", this.artifactTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("communityMetadata", this.communityMetadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunityGalleryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunityGalleryProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommunityGalleryProperties.
+     */
+    public static CommunityGalleryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunityGalleryProperties deserializedCommunityGalleryProperties = new CommunityGalleryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disclaimer".equals(fieldName)) {
+                    deserializedCommunityGalleryProperties.disclaimer = reader.getString();
+                } else if ("artifactTags".equals(fieldName)) {
+                    Map<String, String> artifactTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCommunityGalleryProperties.artifactTags = artifactTags;
+                } else if ("communityMetadata".equals(fieldName)) {
+                    deserializedCommunityGalleryProperties.communityMetadata
+                        = CommunityGalleryMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunityGalleryProperties;
+        });
     }
 }

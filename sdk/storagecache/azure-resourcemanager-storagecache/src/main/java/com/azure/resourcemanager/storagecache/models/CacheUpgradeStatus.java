@@ -5,50 +5,54 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties describing the software upgrade state of the cache. */
+/**
+ * Properties describing the software upgrade state of the cache.
+ */
 @Immutable
-public final class CacheUpgradeStatus {
+public final class CacheUpgradeStatus implements JsonSerializable<CacheUpgradeStatus> {
     /*
      * Version string of the firmware currently installed on this cache.
      */
-    @JsonProperty(value = "currentFirmwareVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String currentFirmwareVersion;
 
     /*
      * True if there is a firmware update ready to install on this cache. The firmware will automatically be installed
      * after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
      */
-    @JsonProperty(value = "firmwareUpdateStatus", access = JsonProperty.Access.WRITE_ONLY)
     private FirmwareStatusType firmwareUpdateStatus;
 
     /*
      * Time at which the pending firmware update will automatically be installed on the cache.
      */
-    @JsonProperty(value = "firmwareUpdateDeadline", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime firmwareUpdateDeadline;
 
     /*
      * Time of the last successful firmware update.
      */
-    @JsonProperty(value = "lastFirmwareUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastFirmwareUpdate;
 
     /*
      * When firmwareUpdateAvailable is true, this field holds the version string for the update.
      */
-    @JsonProperty(value = "pendingFirmwareVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String pendingFirmwareVersion;
 
-    /** Creates an instance of CacheUpgradeStatus class. */
+    /**
+     * Creates an instance of CacheUpgradeStatus class.
+     */
     public CacheUpgradeStatus() {
     }
 
     /**
      * Get the currentFirmwareVersion property: Version string of the firmware currently installed on this cache.
-     *
+     * 
      * @return the currentFirmwareVersion value.
      */
     public String currentFirmwareVersion() {
@@ -59,7 +63,7 @@ public final class CacheUpgradeStatus {
      * Get the firmwareUpdateStatus property: True if there is a firmware update ready to install on this cache. The
      * firmware will automatically be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade
      * operation.
-     *
+     * 
      * @return the firmwareUpdateStatus value.
      */
     public FirmwareStatusType firmwareUpdateStatus() {
@@ -69,7 +73,7 @@ public final class CacheUpgradeStatus {
     /**
      * Get the firmwareUpdateDeadline property: Time at which the pending firmware update will automatically be
      * installed on the cache.
-     *
+     * 
      * @return the firmwareUpdateDeadline value.
      */
     public OffsetDateTime firmwareUpdateDeadline() {
@@ -78,7 +82,7 @@ public final class CacheUpgradeStatus {
 
     /**
      * Get the lastFirmwareUpdate property: Time of the last successful firmware update.
-     *
+     * 
      * @return the lastFirmwareUpdate value.
      */
     public OffsetDateTime lastFirmwareUpdate() {
@@ -88,7 +92,7 @@ public final class CacheUpgradeStatus {
     /**
      * Get the pendingFirmwareVersion property: When firmwareUpdateAvailable is true, this field holds the version
      * string for the update.
-     *
+     * 
      * @return the pendingFirmwareVersion value.
      */
     public String pendingFirmwareVersion() {
@@ -97,9 +101,55 @@ public final class CacheUpgradeStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheUpgradeStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheUpgradeStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CacheUpgradeStatus.
+     */
+    public static CacheUpgradeStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheUpgradeStatus deserializedCacheUpgradeStatus = new CacheUpgradeStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentFirmwareVersion".equals(fieldName)) {
+                    deserializedCacheUpgradeStatus.currentFirmwareVersion = reader.getString();
+                } else if ("firmwareUpdateStatus".equals(fieldName)) {
+                    deserializedCacheUpgradeStatus.firmwareUpdateStatus
+                        = FirmwareStatusType.fromString(reader.getString());
+                } else if ("firmwareUpdateDeadline".equals(fieldName)) {
+                    deserializedCacheUpgradeStatus.firmwareUpdateDeadline = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastFirmwareUpdate".equals(fieldName)) {
+                    deserializedCacheUpgradeStatus.lastFirmwareUpdate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("pendingFirmwareVersion".equals(fieldName)) {
+                    deserializedCacheUpgradeStatus.pendingFirmwareVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheUpgradeStatus;
+        });
     }
 }

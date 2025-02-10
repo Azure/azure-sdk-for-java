@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The configuration settings of the checks that should be made while validating the JWT Claims.
  */
 @Fluent
-public final class JwtClaimChecks {
+public final class JwtClaimChecks implements JsonSerializable<JwtClaimChecks> {
     /*
      * The list of the allowed groups.
      */
-    @JsonProperty(value = "allowedGroups")
     private List<String> allowedGroups;
 
     /*
      * The list of the allowed client applications.
      */
-    @JsonProperty(value = "allowedClientApplications")
     private List<String> allowedClientApplications;
 
     /**
@@ -77,5 +79,48 @@ public final class JwtClaimChecks {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allowedGroups", this.allowedGroups,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("allowedClientApplications", this.allowedClientApplications,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JwtClaimChecks from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JwtClaimChecks if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JwtClaimChecks.
+     */
+    public static JwtClaimChecks fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JwtClaimChecks deserializedJwtClaimChecks = new JwtClaimChecks();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowedGroups".equals(fieldName)) {
+                    List<String> allowedGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedJwtClaimChecks.allowedGroups = allowedGroups;
+                } else if ("allowedClientApplications".equals(fieldName)) {
+                    List<String> allowedClientApplications = reader.readArray(reader1 -> reader1.getString());
+                    deserializedJwtClaimChecks.allowedClientApplications = allowedClientApplications;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJwtClaimChecks;
+        });
     }
 }

@@ -6,29 +6,59 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.models.ClusterResourceProperties;
 import com.azure.resourcemanager.appplatform.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Service resource. */
+/**
+ * Service resource.
+ */
 @Fluent
 public final class ServiceResourceInner extends Resource {
     /*
      * Properties of the Service resource
      */
-    @JsonProperty(value = "properties")
     private ClusterResourceProperties properties;
 
     /*
      * Sku of the Service resource
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ServiceResourceInner class.
+     */
+    public ServiceResourceInner() {
+    }
 
     /**
      * Get the properties property: Properties of the Service resource.
-     *
+     * 
      * @return the properties value.
      */
     public ClusterResourceProperties properties() {
@@ -37,7 +67,7 @@ public final class ServiceResourceInner extends Resource {
 
     /**
      * Set the properties property: Properties of the Service resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ServiceResourceInner object itself.
      */
@@ -48,7 +78,7 @@ public final class ServiceResourceInner extends Resource {
 
     /**
      * Get the sku property: Sku of the Service resource.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -57,7 +87,7 @@ public final class ServiceResourceInner extends Resource {
 
     /**
      * Set the sku property: Sku of the Service resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ServiceResourceInner object itself.
      */
@@ -66,14 +96,57 @@ public final class ServiceResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -82,7 +155,7 @@ public final class ServiceResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -92,5 +165,60 @@ public final class ServiceResourceInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceResourceInner.
+     */
+    public static ServiceResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceResourceInner deserializedServiceResourceInner = new ServiceResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServiceResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServiceResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedServiceResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceResourceInner.properties = ClusterResourceProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedServiceResourceInner.sku = Sku.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedServiceResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceResourceInner;
+        });
     }
 }

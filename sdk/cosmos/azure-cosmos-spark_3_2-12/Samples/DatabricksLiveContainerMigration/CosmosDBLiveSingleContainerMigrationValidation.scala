@@ -52,7 +52,7 @@ OPTIONS (
   spark.cosmos.database = '${cosmosSourceDatabaseName}', -- source database 
   spark.cosmos.container = '${cosmosSourceContainerName}', -- source container 
   spark.cosmos.read.inferSchema.enabled = 'False',  
-  spark.cosmos.read.partitioning.strategy = 'Default');
+  spark.cosmos.read.partitioning.strategy = 'Restrictive');
 """
 
 var selectView = s"""

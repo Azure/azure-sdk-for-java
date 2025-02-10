@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Weekly retention format. */
+/**
+ * Weekly retention format.
+ */
 @Fluent
-public final class WeeklyRetentionFormat {
+public final class WeeklyRetentionFormat implements JsonSerializable<WeeklyRetentionFormat> {
     /*
      * List of days of the week.
      */
-    @JsonProperty(value = "daysOfTheWeek")
     private List<DayOfWeek> daysOfTheWeek;
 
     /*
      * List of weeks of month.
      */
-    @JsonProperty(value = "weeksOfTheMonth")
     private List<WeekOfMonth> weeksOfTheMonth;
 
-    /** Creates an instance of WeeklyRetentionFormat class. */
+    /**
+     * Creates an instance of WeeklyRetentionFormat class.
+     */
     public WeeklyRetentionFormat() {
     }
 
     /**
      * Get the daysOfTheWeek property: List of days of the week.
-     *
+     * 
      * @return the daysOfTheWeek value.
      */
     public List<DayOfWeek> daysOfTheWeek() {
@@ -38,7 +44,7 @@ public final class WeeklyRetentionFormat {
 
     /**
      * Set the daysOfTheWeek property: List of days of the week.
-     *
+     * 
      * @param daysOfTheWeek the daysOfTheWeek value to set.
      * @return the WeeklyRetentionFormat object itself.
      */
@@ -49,7 +55,7 @@ public final class WeeklyRetentionFormat {
 
     /**
      * Get the weeksOfTheMonth property: List of weeks of month.
-     *
+     * 
      * @return the weeksOfTheMonth value.
      */
     public List<WeekOfMonth> weeksOfTheMonth() {
@@ -58,7 +64,7 @@ public final class WeeklyRetentionFormat {
 
     /**
      * Set the weeksOfTheMonth property: List of weeks of month.
-     *
+     * 
      * @param weeksOfTheMonth the weeksOfTheMonth value to set.
      * @return the WeeklyRetentionFormat object itself.
      */
@@ -69,9 +75,54 @@ public final class WeeklyRetentionFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("daysOfTheWeek", this.daysOfTheWeek,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("weeksOfTheMonth", this.weeksOfTheMonth,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WeeklyRetentionFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WeeklyRetentionFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WeeklyRetentionFormat.
+     */
+    public static WeeklyRetentionFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WeeklyRetentionFormat deserializedWeeklyRetentionFormat = new WeeklyRetentionFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("daysOfTheWeek".equals(fieldName)) {
+                    List<DayOfWeek> daysOfTheWeek
+                        = reader.readArray(reader1 -> DayOfWeek.fromString(reader1.getString()));
+                    deserializedWeeklyRetentionFormat.daysOfTheWeek = daysOfTheWeek;
+                } else if ("weeksOfTheMonth".equals(fieldName)) {
+                    List<WeekOfMonth> weeksOfTheMonth
+                        = reader.readArray(reader1 -> WeekOfMonth.fromString(reader1.getString()));
+                    deserializedWeeklyRetentionFormat.weeksOfTheMonth = weeksOfTheMonth;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWeeklyRetentionFormat;
+        });
     }
 }

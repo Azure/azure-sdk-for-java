@@ -6,57 +6,40 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.KubernetesVersionProfileInner;
 import com.azure.resourcemanager.hybridcontainerservice.models.ExtendedLocation;
 import com.azure.resourcemanager.hybridcontainerservice.models.ExtendedLocationTypes;
 import com.azure.resourcemanager.hybridcontainerservice.models.KubernetesVersionProfile;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ResourceProvidersPutKubernetesVersionsMockTests {
     @Test
     public void testPutKubernetesVersions() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"kagfhsxtt\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"values\":[{\"version\":\"aa\",\"capabilities\":{\"supportPlan\":[\"tnkdmkqj\",\"lwuenvrkp\"]},\"isPreview\":true,\"patchVersions\":{\"bre\":{},\"qaaysjkixqt\":{}}},{\"version\":\"ttezlw\",\"capabilities\":{\"supportPlan\":[\"akpjpqqmtedlt\"]},\"isPreview\":false,\"patchVersions\":{\"yeozphvwauyqncy\":{},\"upkvipmdsc\":{},\"xqupevzhf\":{}}},{\"version\":\"otxhojujby\",\"capabilities\":{\"supportPlan\":[\"c\"]},\"isPreview\":true,\"patchVersions\":{\"bjx\":{},\"fw\":{},\"yl\":{},\"coolsttpkiwkkb\":{}}},{\"version\":\"jrywvtylbfpnc\",\"capabilities\":{\"supportPlan\":[\"iwii\",\"htywubxcbihwq\",\"nfdn\"]},\"isPreview\":true,\"patchVersions\":{\"rdgoihxumw\":{},\"ton\":{},\"zj\":{},\"uu\":{}}}]},\"id\":\"dlwggytsbwtovv\",\"name\":\"gseinq\",\"type\":\"iufxqknpir\"}";
+            = "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"iin\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"values\":[{\"version\":\"lwbtlhf\",\"isPreview\":false,\"patchVersions\":{\"hszfjvfb\":{},\"ofel\":{}}},{\"version\":\"grqmqhldvrii\",\"isPreview\":false,\"patchVersions\":{\"lg\":{}}},{\"version\":\"kvtvsexso\",\"isPreview\":false,\"patchVersions\":{\"qhhahhxvrhmzkwpj\":{},\"wws\":{},\"ughftqsx\":{}}}]},\"id\":\"xujxuknd\",\"name\":\"digrjguufzdmsyqt\",\"type\":\"ihwhbotzingamvpp\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        HybridContainerServiceManager manager = HybridContainerServiceManager.configure().withHttpClient(httpClient)
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HybridContainerServiceManager manager = HybridContainerServiceManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        KubernetesVersionProfile response = manager.resourceProviders().putKubernetesVersions("tmtdhtmdvypgik",
-            new KubernetesVersionProfileInner().withExtendedLocation(
-                new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("w")),
-            com.azure.core.util.Context.NONE);
+        KubernetesVersionProfile response = manager.resourceProviders()
+            .putKubernetesVersions("yhgbijtjivfx",
+                new KubernetesVersionProfileInner().withExtendedLocation(
+                    new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("ibsystawf")),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals("kagfhsxtt", response.extendedLocation().name());
+        Assertions.assertEquals("iin", response.extendedLocation().name());
     }
 }

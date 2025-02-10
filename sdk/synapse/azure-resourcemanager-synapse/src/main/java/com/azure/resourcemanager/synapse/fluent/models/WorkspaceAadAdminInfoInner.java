@@ -6,24 +6,45 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Workspace active directory administrator. */
+/**
+ * Workspace active directory administrator.
+ */
 @Fluent
 public final class WorkspaceAadAdminInfoInner extends ProxyResource {
     /*
      * Workspace active directory administrator properties
      */
-    @JsonProperty(value = "properties")
     private AadAdminProperties innerProperties;
 
-    /** Creates an instance of WorkspaceAadAdminInfoInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WorkspaceAadAdminInfoInner class.
+     */
     public WorkspaceAadAdminInfoInner() {
     }
 
     /**
      * Get the innerProperties property: Workspace active directory administrator properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AadAdminProperties innerProperties() {
@@ -31,8 +52,38 @@ public final class WorkspaceAadAdminInfoInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the tenantId property: Tenant ID of the workspace active directory administrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -41,7 +92,7 @@ public final class WorkspaceAadAdminInfoInner extends ProxyResource {
 
     /**
      * Set the tenantId property: Tenant ID of the workspace active directory administrator.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the WorkspaceAadAdminInfoInner object itself.
      */
@@ -55,7 +106,7 @@ public final class WorkspaceAadAdminInfoInner extends ProxyResource {
 
     /**
      * Get the login property: Login of the workspace active directory administrator.
-     *
+     * 
      * @return the login value.
      */
     public String login() {
@@ -64,7 +115,7 @@ public final class WorkspaceAadAdminInfoInner extends ProxyResource {
 
     /**
      * Set the login property: Login of the workspace active directory administrator.
-     *
+     * 
      * @param login the login value to set.
      * @return the WorkspaceAadAdminInfoInner object itself.
      */
@@ -78,7 +129,7 @@ public final class WorkspaceAadAdminInfoInner extends ProxyResource {
 
     /**
      * Get the administratorType property: Workspace active directory administrator type.
-     *
+     * 
      * @return the administratorType value.
      */
     public String administratorType() {
@@ -87,7 +138,7 @@ public final class WorkspaceAadAdminInfoInner extends ProxyResource {
 
     /**
      * Set the administratorType property: Workspace active directory administrator type.
-     *
+     * 
      * @param administratorType the administratorType value to set.
      * @return the WorkspaceAadAdminInfoInner object itself.
      */
@@ -101,7 +152,7 @@ public final class WorkspaceAadAdminInfoInner extends ProxyResource {
 
     /**
      * Get the sid property: Object ID of the workspace active directory administrator.
-     *
+     * 
      * @return the sid value.
      */
     public String sid() {
@@ -110,7 +161,7 @@ public final class WorkspaceAadAdminInfoInner extends ProxyResource {
 
     /**
      * Set the sid property: Object ID of the workspace active directory administrator.
-     *
+     * 
      * @param sid the sid value to set.
      * @return the WorkspaceAadAdminInfoInner object itself.
      */
@@ -124,12 +175,55 @@ public final class WorkspaceAadAdminInfoInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceAadAdminInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceAadAdminInfoInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkspaceAadAdminInfoInner.
+     */
+    public static WorkspaceAadAdminInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceAadAdminInfoInner deserializedWorkspaceAadAdminInfoInner = new WorkspaceAadAdminInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkspaceAadAdminInfoInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkspaceAadAdminInfoInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkspaceAadAdminInfoInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkspaceAadAdminInfoInner.innerProperties = AadAdminProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceAadAdminInfoInner;
+        });
     }
 }

@@ -5,28 +5,37 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** teamsAppDistributionMethod. */
+/**
+ * teamsAppDistributionMethod.
+ */
 public final class MicrosoftGraphTeamsAppDistributionMethod
     extends ExpandableStringEnum<MicrosoftGraphTeamsAppDistributionMethod> {
-    /** Static value store for MicrosoftGraphTeamsAppDistributionMethod. */
+    /**
+     * Static value store for MicrosoftGraphTeamsAppDistributionMethod.
+     */
     public static final MicrosoftGraphTeamsAppDistributionMethod STORE = fromString("store");
 
-    /** Static value organization for MicrosoftGraphTeamsAppDistributionMethod. */
+    /**
+     * Static value organization for MicrosoftGraphTeamsAppDistributionMethod.
+     */
     public static final MicrosoftGraphTeamsAppDistributionMethod ORGANIZATION = fromString("organization");
 
-    /** Static value sideloaded for MicrosoftGraphTeamsAppDistributionMethod. */
+    /**
+     * Static value sideloaded for MicrosoftGraphTeamsAppDistributionMethod.
+     */
     public static final MicrosoftGraphTeamsAppDistributionMethod SIDELOADED = fromString("sideloaded");
 
-    /** Static value unknownFutureValue for MicrosoftGraphTeamsAppDistributionMethod. */
-    public static final MicrosoftGraphTeamsAppDistributionMethod UNKNOWN_FUTURE_VALUE =
-        fromString("unknownFutureValue");
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphTeamsAppDistributionMethod.
+     */
+    public static final MicrosoftGraphTeamsAppDistributionMethod UNKNOWN_FUTURE_VALUE
+        = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphTeamsAppDistributionMethod value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,18 +44,17 @@ public final class MicrosoftGraphTeamsAppDistributionMethod
 
     /**
      * Creates or finds a MicrosoftGraphTeamsAppDistributionMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphTeamsAppDistributionMethod.
      */
-    @JsonCreator
     public static MicrosoftGraphTeamsAppDistributionMethod fromString(String name) {
         return fromString(name, MicrosoftGraphTeamsAppDistributionMethod.class);
     }
 
     /**
      * Gets known MicrosoftGraphTeamsAppDistributionMethod values.
-     *
+     * 
      * @return known MicrosoftGraphTeamsAppDistributionMethod values.
      */
     public static Collection<MicrosoftGraphTeamsAppDistributionMethod> values() {

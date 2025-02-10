@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AccessPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccessPoliciesClient.
+ */
 public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AccessPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RedisManagementClientImpl client;
 
     /**
      * Initializes an instance of AccessPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AccessPoliciesClientImpl(RedisManagementClientImpl client) {
-        this.service =
-            RestProxy.create(AccessPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AccessPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,80 +70,56 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
     @Host("{$host}")
     @ServiceInterface(name = "RedisManagementClien")
     public interface AccessPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies/{accessPolicyName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies/{accessPolicyName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cacheName") String cacheName,
-            @PathParam("accessPolicyName") String accessPolicyName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> createUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName,
+            @PathParam("accessPolicyName") String accessPolicyName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RedisCacheAccessPolicyInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") RedisCacheAccessPolicyInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies/{accessPolicyName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies/{accessPolicyName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cacheName") String cacheName,
-            @PathParam("accessPolicyName") String accessPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName,
+            @PathParam("accessPolicyName") String accessPolicyName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies/{accessPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies/{accessPolicyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisCacheAccessPolicyInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cacheName") String cacheName,
-            @PathParam("accessPolicyName") String accessPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RedisCacheAccessPolicyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName,
+            @PathParam("accessPolicyName") String accessPolicyName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RedisCacheAccessPolicyList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cacheName") String cacheName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RedisCacheAccessPolicyList>> list(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("cacheName") String cacheName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisCacheAccessPolicyList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Adds an access policy to the redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -148,13 +130,11 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return response to get/put access policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(
-        String resourceGroupName, String cacheName, String accessPolicyName, RedisCacheAccessPolicyInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(String resourceGroupName, String cacheName,
+        String accessPolicyName, RedisCacheAccessPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,10 +148,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
                 .error(new IllegalArgumentException("Parameter accessPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -180,25 +158,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            cacheName,
-                            accessPolicyName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createUpdate(this.client.getEndpoint(), resourceGroupName, cacheName,
+                accessPolicyName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Adds an access policy to the redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -210,17 +178,11 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return response to get/put access policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(
-        String resourceGroupName,
-        String cacheName,
-        String accessPolicyName,
-        RedisCacheAccessPolicyInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(String resourceGroupName, String cacheName,
+        String accessPolicyName, RedisCacheAccessPolicyInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -234,10 +196,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
                 .error(new IllegalArgumentException("Parameter accessPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -246,22 +206,13 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                cacheName,
-                accessPolicyName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createUpdate(this.client.getEndpoint(), resourceGroupName, cacheName, accessPolicyName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Adds an access policy to the redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -274,21 +225,16 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RedisCacheAccessPolicyInner>, RedisCacheAccessPolicyInner> beginCreateUpdateAsync(
         String resourceGroupName, String cacheName, String accessPolicyName, RedisCacheAccessPolicyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateWithResponseAsync(resourceGroupName, cacheName, accessPolicyName, parameters);
-        return this
-            .client
-            .<RedisCacheAccessPolicyInner, RedisCacheAccessPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                RedisCacheAccessPolicyInner.class,
-                RedisCacheAccessPolicyInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createUpdateWithResponseAsync(resourceGroupName, cacheName, accessPolicyName, parameters);
+        return this.client.<RedisCacheAccessPolicyInner, RedisCacheAccessPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), RedisCacheAccessPolicyInner.class, RedisCacheAccessPolicyInner.class,
+            this.client.getContext());
     }
 
     /**
      * Adds an access policy to the redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -301,27 +247,19 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RedisCacheAccessPolicyInner>, RedisCacheAccessPolicyInner> beginCreateUpdateAsync(
-        String resourceGroupName,
-        String cacheName,
-        String accessPolicyName,
-        RedisCacheAccessPolicyInner parameters,
+        String resourceGroupName, String cacheName, String accessPolicyName, RedisCacheAccessPolicyInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateWithResponseAsync(resourceGroupName, cacheName, accessPolicyName, parameters, context);
-        return this
-            .client
-            .<RedisCacheAccessPolicyInner, RedisCacheAccessPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                RedisCacheAccessPolicyInner.class,
-                RedisCacheAccessPolicyInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createUpdateWithResponseAsync(resourceGroupName, cacheName, accessPolicyName, parameters, context);
+        return this.client.<RedisCacheAccessPolicyInner, RedisCacheAccessPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), RedisCacheAccessPolicyInner.class, RedisCacheAccessPolicyInner.class,
+            context);
     }
 
     /**
      * Adds an access policy to the redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -339,7 +277,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
 
     /**
      * Adds an access policy to the redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -352,19 +290,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RedisCacheAccessPolicyInner>, RedisCacheAccessPolicyInner> beginCreateUpdate(
-        String resourceGroupName,
-        String cacheName,
-        String accessPolicyName,
-        RedisCacheAccessPolicyInner parameters,
+        String resourceGroupName, String cacheName, String accessPolicyName, RedisCacheAccessPolicyInner parameters,
         Context context) {
-        return this
-            .beginCreateUpdateAsync(resourceGroupName, cacheName, accessPolicyName, parameters, context)
+        return this.beginCreateUpdateAsync(resourceGroupName, cacheName, accessPolicyName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Adds an access policy to the redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -375,16 +309,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return response to get/put access policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisCacheAccessPolicyInner> createUpdateAsync(
-        String resourceGroupName, String cacheName, String accessPolicyName, RedisCacheAccessPolicyInner parameters) {
-        return beginCreateUpdateAsync(resourceGroupName, cacheName, accessPolicyName, parameters)
-            .last()
+    public Mono<RedisCacheAccessPolicyInner> createUpdateAsync(String resourceGroupName, String cacheName,
+        String accessPolicyName, RedisCacheAccessPolicyInner parameters) {
+        return beginCreateUpdateAsync(resourceGroupName, cacheName, accessPolicyName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Adds an access policy to the redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -396,20 +329,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return response to get/put access policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RedisCacheAccessPolicyInner> createUpdateAsync(
-        String resourceGroupName,
-        String cacheName,
-        String accessPolicyName,
-        RedisCacheAccessPolicyInner parameters,
-        Context context) {
-        return beginCreateUpdateAsync(resourceGroupName, cacheName, accessPolicyName, parameters, context)
-            .last()
+    private Mono<RedisCacheAccessPolicyInner> createUpdateAsync(String resourceGroupName, String cacheName,
+        String accessPolicyName, RedisCacheAccessPolicyInner parameters, Context context) {
+        return beginCreateUpdateAsync(resourceGroupName, cacheName, accessPolicyName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Adds an access policy to the redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -420,14 +348,14 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return response to get/put access policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisCacheAccessPolicyInner createUpdate(
-        String resourceGroupName, String cacheName, String accessPolicyName, RedisCacheAccessPolicyInner parameters) {
+    public RedisCacheAccessPolicyInner createUpdate(String resourceGroupName, String cacheName, String accessPolicyName,
+        RedisCacheAccessPolicyInner parameters) {
         return createUpdateAsync(resourceGroupName, cacheName, accessPolicyName, parameters).block();
     }
 
     /**
      * Adds an access policy to the redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -439,18 +367,14 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return response to get/put access policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisCacheAccessPolicyInner createUpdate(
-        String resourceGroupName,
-        String cacheName,
-        String accessPolicyName,
-        RedisCacheAccessPolicyInner parameters,
-        Context context) {
+    public RedisCacheAccessPolicyInner createUpdate(String resourceGroupName, String cacheName, String accessPolicyName,
+        RedisCacheAccessPolicyInner parameters, Context context) {
         return createUpdateAsync(resourceGroupName, cacheName, accessPolicyName, parameters, context).block();
     }
 
     /**
      * Deletes the access policy from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -460,13 +384,11 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String cacheName, String accessPolicyName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String cacheName,
+        String accessPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -480,31 +402,19 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
                 .error(new IllegalArgumentException("Parameter accessPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            cacheName,
-                            accessPolicyName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, cacheName,
+                accessPolicyName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the access policy from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -515,13 +425,11 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String cacheName, String accessPolicyName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String cacheName,
+        String accessPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -535,28 +443,18 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
                 .error(new IllegalArgumentException("Parameter accessPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                cacheName,
-                accessPolicyName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, cacheName, accessPolicyName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the access policy from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -566,18 +464,16 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String cacheName, String accessPolicyName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String cacheName,
+        String accessPolicyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, cacheName, accessPolicyName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the access policy from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -588,19 +484,18 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String cacheName, String accessPolicyName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String cacheName,
+        String accessPolicyName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, cacheName, accessPolicyName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, cacheName, accessPolicyName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the access policy from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -610,14 +505,14 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cacheName, String accessPolicyName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName,
+        String accessPolicyName) {
         return this.beginDeleteAsync(resourceGroupName, cacheName, accessPolicyName).getSyncPoller();
     }
 
     /**
      * Deletes the access policy from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -628,14 +523,14 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String cacheName, String accessPolicyName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName,
+        String accessPolicyName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, cacheName, accessPolicyName, context).getSyncPoller();
     }
 
     /**
      * Deletes the access policy from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -646,14 +541,13 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String cacheName, String accessPolicyName) {
-        return beginDeleteAsync(resourceGroupName, cacheName, accessPolicyName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, cacheName, accessPolicyName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the access policy from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -664,16 +558,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String cacheName, String accessPolicyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, cacheName, accessPolicyName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String cacheName, String accessPolicyName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, cacheName, accessPolicyName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the access policy from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -688,7 +581,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
 
     /**
      * Deletes the access policy from a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -704,7 +597,7 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
 
     /**
      * Gets the detailed information about an access policy of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -712,16 +605,14 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the detailed information about an access policy of a redis cache along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RedisCacheAccessPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String cacheName, String accessPolicyName) {
+    public Mono<Response<RedisCacheAccessPolicyInner>> getWithResponseAsync(String resourceGroupName, String cacheName,
+        String accessPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -735,31 +626,19 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
                 .error(new IllegalArgumentException("Parameter accessPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            cacheName,
-                            accessPolicyName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, cacheName,
+                accessPolicyName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the detailed information about an access policy of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -768,16 +647,14 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the detailed information about an access policy of a redis cache along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RedisCacheAccessPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String cacheName, String accessPolicyName, Context context) {
+    private Mono<Response<RedisCacheAccessPolicyInner>> getWithResponseAsync(String resourceGroupName, String cacheName,
+        String accessPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -791,47 +668,37 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
                 .error(new IllegalArgumentException("Parameter accessPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                cacheName,
-                accessPolicyName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, cacheName, accessPolicyName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the detailed information about an access policy of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed information about an access policy of a redis cache on successful completion of {@link
-     *     Mono}.
+     * @return the detailed information about an access policy of a redis cache on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisCacheAccessPolicyInner> getAsync(
-        String resourceGroupName, String cacheName, String accessPolicyName) {
+    public Mono<RedisCacheAccessPolicyInner> getAsync(String resourceGroupName, String cacheName,
+        String accessPolicyName) {
         return getWithResponseAsync(resourceGroupName, cacheName, accessPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the detailed information about an access policy of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -842,14 +709,14 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the detailed information about an access policy of a redis cache along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RedisCacheAccessPolicyInner> getWithResponse(
-        String resourceGroupName, String cacheName, String accessPolicyName, Context context) {
+    public Response<RedisCacheAccessPolicyInner> getWithResponse(String resourceGroupName, String cacheName,
+        String accessPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, cacheName, accessPolicyName, context).block();
     }
 
     /**
      * Gets the detailed information about an access policy of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param accessPolicyName The name of the access policy that is being added to the Redis cache.
@@ -865,23 +732,21 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
 
     /**
      * Gets the list of access policies associated with this redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of access policies associated with this redis cache along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisCacheAccessPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String cacheName) {
+    private Mono<PagedResponse<RedisCacheAccessPolicyInner>> listSinglePageAsync(String resourceGroupName,
+        String cacheName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -891,39 +756,21 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            cacheName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<RedisCacheAccessPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, cacheName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<RedisCacheAccessPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of access policies associated with this redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
@@ -931,16 +778,14 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of access policies associated with this redis cache along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RedisCacheAccessPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String cacheName, Context context) {
+    private Mono<PagedResponse<RedisCacheAccessPolicyInner>> listSinglePageAsync(String resourceGroupName,
+        String cacheName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -950,80 +795,64 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                cacheName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), resourceGroupName, cacheName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of access policies associated with this redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of access policies associated with this redis cache as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of access policies associated with this redis cache as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RedisCacheAccessPolicyInner> listAsync(String resourceGroupName, String cacheName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, cacheName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, cacheName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of access policies associated with this redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of access policies associated with this redis cache as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of access policies associated with this redis cache as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RedisCacheAccessPolicyInner> listAsync(
-        String resourceGroupName, String cacheName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, cacheName, context),
+    private PagedFlux<RedisCacheAccessPolicyInner> listAsync(String resourceGroupName, String cacheName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, cacheName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of access policies associated with this redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of access policies associated with this redis cache as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of access policies associated with this redis cache as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RedisCacheAccessPolicyInner> list(String resourceGroupName, String cacheName) {
@@ -1032,32 +861,31 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
 
     /**
      * Gets the list of access policies associated with this redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of access policies associated with this redis cache as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of access policies associated with this redis cache as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RedisCacheAccessPolicyInner> list(
-        String resourceGroupName, String cacheName, Context context) {
+    public PagedIterable<RedisCacheAccessPolicyInner> list(String resourceGroupName, String cacheName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, cacheName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of access policies (with properties) of a Redis cache along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RedisCacheAccessPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -1065,37 +893,26 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RedisCacheAccessPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RedisCacheAccessPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of access policies (with properties) of a Redis cache along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RedisCacheAccessPolicyInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1103,23 +920,13 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

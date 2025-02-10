@@ -13,22 +13,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class SentSharesCreateInvitation {
     public static void main(String[] args) {
-        SentSharesClient sentSharesClient =
-                new SentSharesClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("accountName.purview.azure.com/share")
-                        .buildClient();
+        SentSharesClient sentSharesClient
+            = new SentSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("accountName.purview.azure.com/share")
+                .buildClient();
         // BEGIN:com.azure.analytics.purview.sharing.generated.sentsharescreatesentshareinvitation.sentsharescreateinvitation
-        BinaryData sentShareInvitation =
-                BinaryData.fromString(
-                        "{\"invitationKind\":\"User\",\"properties\":{\"expirationDate\":null,\"notify\":true,\"targetEmail\":\"testReceiver@microsoft.com\"}}");
+        BinaryData sentShareInvitation = BinaryData.fromString(
+            "{\"invitationKind\":\"User\",\"properties\":{\"expirationDate\":null,\"notify\":true,\"targetEmail\":\"testReceiver@microsoft.com\"}}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                sentSharesClient.createSentShareInvitationWithResponse(
-                        "FF4A2AAE-8755-47BB-9C00-A774B5A7006E",
-                        "9F154FA4-93D1-426B-A908-A9CAC7192B21",
-                        sentShareInvitation,
-                        requestOptions);
+        Response<BinaryData> response
+            = sentSharesClient.createSentShareInvitationWithResponse("FF4A2AAE-8755-47BB-9C00-A774B5A7006E",
+                "9F154FA4-93D1-426B-A908-A9CAC7192B21", sentShareInvitation, requestOptions);
         // END:com.azure.analytics.purview.sharing.generated.sentsharescreatesentshareinvitation.sentsharescreateinvitation
     }
 }

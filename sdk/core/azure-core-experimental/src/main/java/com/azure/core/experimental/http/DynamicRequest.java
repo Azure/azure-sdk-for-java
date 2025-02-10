@@ -38,10 +38,13 @@ import java.util.stream.Collectors;
  *
  * <p>
  * To demonstrate how this class can be used to construct a request, let's use a Pet Store service as an example. The
- * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger definition.</a>
+ * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger
+ * definition.</a>
  * </p>
  *
- * <p><strong>Creating an instance of DynamicRequest using the constructor</strong></p>
+ * <p>
+ * <strong>Creating an instance of DynamicRequest using the constructor</strong>
+ * </p>
  * <!-- src_embed com.azure.core.experimental.http.dynamicrequest.instantiation -->
  * <pre>
  * ObjectSerializer serializer = JsonSerializerProviders.createInstance&#40;true&#41;;
@@ -50,11 +53,15 @@ import java.util.stream.Collectors;
  * </pre>
  * <!-- end com.azure.core.experimental.http.dynamicrequest.instantiation -->
  *
- * <p>An Azure service client may provide methods that are specific to the service which returns an instance
+ * <p>
+ * An Azure service client may provide methods that are specific to the service which returns an instance
  * {@link DynamicRequest} that comes preconfigured with some request components like the endpoint, required path
- * params, headers etc. </p>
+ * params, headers etc.
+ * </p>
  *
- * <p><strong>Configuring the request with a path param and making a HTTP GET request</strong></p>
+ * <p>
+ * <strong>Configuring the request with a path param and making a HTTP GET request</strong>
+ * </p>
  * Continuing with the pet store example, getting information about a pet requires making a
  * <a href="https://petstore.swagger.io/#/pet/getPetById">HTTP GET call
  * to the pet service</a> and setting the pet id in path param as shown in the sample below.
@@ -64,11 +71,14 @@ import java.util.stream.Collectors;
  * DynamicResponse response = dynamicRequest
  *     .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&#47;&#123;petId&#125;&quot;&#41; &#47;&#47; may already be set if request is created from a client
  *     .setPathParam&#40;&quot;petId&quot;, &quot;2343245&quot;&#41;
+ *     .setHttpMethod&#40;HttpMethod.POST&#41;
  *     .send&#40;&#41;; &#47;&#47; makes the service call
  * </pre>
  * <!-- end com.azure.core.experimental.http.dynamicrequest.getrequest -->
  *
- * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
+ * <p>
+ * <strong>Configuring the request with JSON body and making a HTTP POST request</strong>
+ * </p>
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, a HTTP POST call should
  * be made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
@@ -80,52 +90,49 @@ import java.util.stream.Collectors;
  *   "category": {
  *     "id": 0,
  *     "name": "string"
- *   },
- *   "name": "doggie",
- *   "photoUrls": [
- *     "string"
- *   ],
- *   "tags": [
- *     {
- *       "id": 0,
- *       "name": "string"
- *     }
- *   ],
- *   "status": "available"
+ * },
+ * "name": "doggie",
+ * "photoUrls": [
+ * "string"
+ * ],
+ * "tags": [
+ * {
+ * "id": 0,
+ * "name": "string"
+ * }
+ * ],
+ * "status": "available"
  * }
  * }</pre>
  *
- * To create a concrete request, Json builder provided in javax package is used here for demonstration. However, any
- * other Json building library can be used to achieve similar results.
+ * To create a concrete request, {code azure-json} is used here for demonstration. However, any other Json building
+ * library can be used to achieve similar results.
  *
  * <!-- src_embed com.azure.core.experimental.http.dynamicrequest.createjsonrequest -->
  * <pre>
- * JsonArray photoUrls = Json.createArrayBuilder&#40;&#41;
- *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;
- *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet2&quot;&#41;
- *     .build&#40;&#41;;
+ * JsonArray photoUrls = new JsonArray&#40;&#41;
+ *     .addElement&#40;new JsonString&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;&#41;
+ *     .addElement&#40;new JsonString&#40;&quot;https:&#47;&#47;imgur.com&#47;pet2&quot;&#41;&#41;;
  *
- * JsonArray tags = Json.createArrayBuilder&#40;&#41;
- *     .add&#40;Json.createObjectBuilder&#40;&#41;
- *         .add&#40;&quot;id&quot;, 0&#41;
- *         .add&#40;&quot;name&quot;, &quot;Labrador&quot;&#41;
- *         .build&#40;&#41;&#41;
- *     .add&#40;Json.createObjectBuilder&#40;&#41;
- *         .add&#40;&quot;id&quot;, 1&#41;
- *         .add&#40;&quot;name&quot;, &quot;2021&quot;&#41;
- *         .build&#40;&#41;&#41;
- *     .build&#40;&#41;;
+ * JsonArray tags = new JsonArray&#40;&#41;
+ *     .addElement&#40;new JsonObject&#40;&#41;
+ *         .setProperty&#40;&quot;id&quot;, new JsonNumber&#40;0&#41;&#41;
+ *         .setProperty&#40;&quot;name&quot;, new JsonString&#40;&quot;Labrador&quot;&#41;&#41;&#41;
+ *     .addElement&#40;new JsonObject&#40;&#41;
+ *         .setProperty&#40;&quot;id&quot;, new JsonNumber&#40;1&#41;&#41;
+ *         .setProperty&#40;&quot;name&quot;, new JsonString&#40;&quot;2021&quot;&#41;&#41;&#41;;
  *
- * JsonObject requestBody = Json.createObjectBuilder&#40;&#41;
- *     .add&#40;&quot;id&quot;, 0&#41;
- *     .add&#40;&quot;name&quot;, &quot;foo&quot;&#41;
- *     .add&#40;&quot;status&quot;, &quot;available&quot;&#41;
- *     .add&#40;&quot;category&quot;, Json.createObjectBuilder&#40;&#41;.add&#40;&quot;id&quot;, 0&#41;.add&#40;&quot;name&quot;, &quot;dog&quot;&#41;&#41;
- *     .add&#40;&quot;photoUrls&quot;, photoUrls&#41;
- *     .add&#40;&quot;tags&quot;, tags&#41;
- *     .build&#40;&#41;;
+ * JsonObject requestBody = new JsonObject&#40;&#41;
+ *     .setProperty&#40;&quot;id&quot;, new JsonNumber&#40;0&#41;&#41;
+ *     .setProperty&#40;&quot;name&quot;, new JsonString&#40;&quot;foo&quot;&#41;&#41;
+ *     .setProperty&#40;&quot;status&quot;, new JsonString&#40;&quot;available&quot;&#41;&#41;
+ *     .setProperty&#40;&quot;category&quot;, new JsonObject&#40;&#41;
+ *         .setProperty&#40;&quot;id&quot;, new JsonNumber&#40;0&#41;&#41;
+ *         .setProperty&#40;&quot;name&quot;, new JsonString&#40;&quot;dog&quot;&#41;&#41;&#41;
+ *     .setProperty&#40;&quot;photoUrls&quot;, photoUrls&#41;
+ *     .setProperty&#40;&quot;tags&quot;, tags&#41;;
  *
- * String requestBodyStr = requestBody.toString&#40;&#41;;
+ * BinaryData requestBodyData = BinaryData.fromObject&#40;requestBody&#41;;
  * </pre>
  * <!-- end com.azure.core.experimental.http.dynamicrequest.createjsonrequest -->
  *
@@ -136,7 +143,7 @@ import java.util.stream.Collectors;
  * DynamicResponse response = dynamicRequest
  *     .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41; &#47;&#47; may already be set if request is created from a client
  *     .addHeader&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;
- *     .setBody&#40;requestBodyStr&#41;
+ *     .setBody&#40;requestBodyData&#41;
  *     .send&#40;&#41;; &#47;&#47; makes the service call
  * </pre>
  * <!-- end com.azure.core.experimental.http.dynamicrequest.postrequest -->
@@ -332,7 +339,8 @@ public final class DynamicRequest {
         }
         if (!queries.isEmpty()) {
             url = url + (url.contains("?") ? "&" : "?");
-            url = url + queries.keySet().stream().map(key -> key + "=" + queries.get(key)).collect(Collectors.joining("&"));
+            url = url
+                + queries.keySet().stream().map(key -> key + "=" + queries.get(key)).collect(Collectors.joining("&"));
         }
         HttpRequest request = new HttpRequest(httpMethod, url);
         if (headers != null) {

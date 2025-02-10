@@ -6,6 +6,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.DatabaseConnectionOverview;
 import com.azure.resourcemanager.appservice.models.EnterpriseGradeCdnStatus;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
@@ -16,7 +19,7 @@ import com.azure.resourcemanager.appservice.models.StaticSiteBuildProperties;
 import com.azure.resourcemanager.appservice.models.StaticSiteLinkedBackend;
 import com.azure.resourcemanager.appservice.models.StaticSiteTemplateOptions;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserProvidedFunctionApp;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,26 +31,39 @@ public final class StaticSiteArmResourceInner extends Resource {
     /*
      * Core resource properties
      */
-    @JsonProperty(value = "properties")
     private StaticSite innerProperties;
 
     /*
      * Description of a SKU for a scalable resource.
      */
-    @JsonProperty(value = "sku")
     private SkuDescription sku;
 
     /*
      * Managed service identity.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
-     * Kind of resource.
+     * Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-
+     * resource-kind-reference for details supported values for kind.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of StaticSiteArmResourceInner class.
@@ -105,7 +121,9 @@ public final class StaticSiteArmResourceInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of resource.
+     * Get the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
      * 
      * @return the kind value.
      */
@@ -114,7 +132,9 @@ public final class StaticSiteArmResourceInner extends Resource {
     }
 
     /**
-     * Set the kind property: Kind of resource.
+     * Set the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
      * 
      * @param kind the kind value to set.
      * @return the StaticSiteArmResourceInner object itself.
@@ -122,6 +142,36 @@ public final class StaticSiteArmResourceInner extends Resource {
     public StaticSiteArmResourceInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -423,8 +473,8 @@ public final class StaticSiteArmResourceInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static
-     * web app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+     * Get the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static web
+     * app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -433,8 +483,8 @@ public final class StaticSiteArmResourceInner extends Resource {
     }
 
     /**
-     * Set the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static
-     * web app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+     * Set the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static web
+     * app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the StaticSiteArmResourceInner object itself.
@@ -471,5 +521,64 @@ public final class StaticSiteArmResourceInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticSiteArmResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticSiteArmResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StaticSiteArmResourceInner.
+     */
+    public static StaticSiteArmResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticSiteArmResourceInner deserializedStaticSiteArmResourceInner = new StaticSiteArmResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStaticSiteArmResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStaticSiteArmResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStaticSiteArmResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedStaticSiteArmResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStaticSiteArmResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStaticSiteArmResourceInner.innerProperties = StaticSite.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedStaticSiteArmResourceInner.sku = SkuDescription.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedStaticSiteArmResourceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStaticSiteArmResourceInner.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticSiteArmResourceInner;
+        });
     }
 }

@@ -6,25 +6,27 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.datafactory.fluent.models.ManagedIdentityCredentialResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datafactory.fluent.models.CredentialResourceInner;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A list of credential resources.
  */
 @Fluent
-public final class CredentialListResponse {
+public final class CredentialListResponse implements JsonSerializable<CredentialListResponse> {
     /*
      * List of credentials.
      */
-    @JsonProperty(value = "value", required = true)
-    private List<ManagedIdentityCredentialResourceInner> value;
+    private List<CredentialResourceInner> value;
 
     /*
      * The link to the next page of results, if any remaining results exist.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -38,7 +40,7 @@ public final class CredentialListResponse {
      * 
      * @return the value value.
      */
-    public List<ManagedIdentityCredentialResourceInner> value() {
+    public List<CredentialResourceInner> value() {
         return this.value;
     }
 
@@ -48,7 +50,7 @@ public final class CredentialListResponse {
      * @param value the value value to set.
      * @return the CredentialListResponse object itself.
      */
-    public CredentialListResponse withValue(List<ManagedIdentityCredentialResourceInner> value) {
+    public CredentialListResponse withValue(List<CredentialResourceInner> value) {
         this.value = value;
         return this;
     }
@@ -80,12 +82,54 @@ public final class CredentialListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model CredentialListResponse"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model CredentialListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CredentialListResponse.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CredentialListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CredentialListResponse if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CredentialListResponse.
+     */
+    public static CredentialListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CredentialListResponse deserializedCredentialListResponse = new CredentialListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CredentialResourceInner> value
+                        = reader.readArray(reader1 -> CredentialResourceInner.fromJson(reader1));
+                    deserializedCredentialListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCredentialListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentialListResponse;
+        });
+    }
 }

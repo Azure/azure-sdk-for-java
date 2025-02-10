@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
@@ -33,19 +34,22 @@ public class FaultInjectionServerErrorResultInternal {
     private final Duration delay;
 
     private final Boolean suppressServiceRequests;
+    private final double injectionRate;
 
 
     public FaultInjectionServerErrorResultInternal(
         FaultInjectionServerErrorType serverErrorTypes,
         Integer times,
         Duration delay,
-        Boolean suppressServiceRequests) {
+        Boolean suppressServiceRequests,
+        double injectionRate) {
 
         checkArgument(serverErrorTypes != null, "Argument 'serverErrorType' can not be null");
         this.serverErrorType = serverErrorTypes;
         this.times = times;
         this.delay = delay;
         this.suppressServiceRequests = suppressServiceRequests;
+        this.injectionRate = injectionRate;
     }
 
     public FaultInjectionServerErrorType getServerErrorType() {
@@ -62,6 +66,10 @@ public class FaultInjectionServerErrorResultInternal {
 
     public Boolean getSuppressServiceRequests() {
         return this.suppressServiceRequests;
+    }
+
+    public double getInjectionRate() {
+        return this.injectionRate;
     }
 
     public boolean isApplicable(String ruleId, RxDocumentServiceRequest request) {
@@ -117,7 +125,7 @@ public class FaultInjectionServerErrorResultInternal {
 
             case READ_SESSION_NOT_AVAILABLE:
 
-                final String badSessionToken = "1:1#1#1=1#1=1";
+                final String badSessionToken = partitionKeyRangeId + ":" + "1#1#1=1#1=1";
 
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));
@@ -154,6 +162,12 @@ public class FaultInjectionServerErrorResultInternal {
             case NAME_CACHE_IS_STALE:
                 cosmosException =
                     new InvalidPartitionException(this.getErrorMessage(RMResources.InvalidPartitionKey));
+                break;
+
+            case PARTITION_IS_GONE:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
+                cosmosException = new PartitionKeyRangeGoneException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
             default:

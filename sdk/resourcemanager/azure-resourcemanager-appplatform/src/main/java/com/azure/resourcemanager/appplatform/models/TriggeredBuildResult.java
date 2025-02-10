@@ -5,20 +5,59 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The build result triggered by a build. */
+/**
+ * The build result triggered by a build.
+ */
 @Fluent
-public final class TriggeredBuildResult {
+public final class TriggeredBuildResult implements JsonSerializable<TriggeredBuildResult> {
     /*
      * The unique build id of this build result
      */
-    @JsonProperty(value = "id")
     private String id;
+
+    /*
+     * The provisioning state of this build result
+     */
+    private TriggeredBuildResultProvisioningState provisioningState;
+
+    /*
+     * The container image of this build result
+     */
+    private String image;
+
+    /*
+     * The last transition time of this build result
+     */
+    private OffsetDateTime lastTransitionTime;
+
+    /*
+     * The last transition reason of this build result
+     */
+    private String lastTransitionReason;
+
+    /*
+     * The last transition status of this build result
+     */
+    private String lastTransitionStatus;
+
+    /**
+     * Creates an instance of TriggeredBuildResult class.
+     */
+    public TriggeredBuildResult() {
+    }
 
     /**
      * Get the id property: The unique build id of this build result.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -27,7 +66,7 @@ public final class TriggeredBuildResult {
 
     /**
      * Set the id property: The unique build id of this build result.
-     *
+     * 
      * @param id the id value to set.
      * @return the TriggeredBuildResult object itself.
      */
@@ -37,10 +76,154 @@ public final class TriggeredBuildResult {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of this build result.
+     * 
+     * @return the provisioningState value.
+     */
+    public TriggeredBuildResultProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the image property: The container image of this build result.
+     * 
+     * @return the image value.
+     */
+    public String image() {
+        return this.image;
+    }
+
+    /**
+     * Set the image property: The container image of this build result.
+     * 
+     * @param image the image value to set.
+     * @return the TriggeredBuildResult object itself.
+     */
+    public TriggeredBuildResult withImage(String image) {
+        this.image = image;
+        return this;
+    }
+
+    /**
+     * Get the lastTransitionTime property: The last transition time of this build result.
+     * 
+     * @return the lastTransitionTime value.
+     */
+    public OffsetDateTime lastTransitionTime() {
+        return this.lastTransitionTime;
+    }
+
+    /**
+     * Set the lastTransitionTime property: The last transition time of this build result.
+     * 
+     * @param lastTransitionTime the lastTransitionTime value to set.
+     * @return the TriggeredBuildResult object itself.
+     */
+    public TriggeredBuildResult withLastTransitionTime(OffsetDateTime lastTransitionTime) {
+        this.lastTransitionTime = lastTransitionTime;
+        return this;
+    }
+
+    /**
+     * Get the lastTransitionReason property: The last transition reason of this build result.
+     * 
+     * @return the lastTransitionReason value.
+     */
+    public String lastTransitionReason() {
+        return this.lastTransitionReason;
+    }
+
+    /**
+     * Set the lastTransitionReason property: The last transition reason of this build result.
+     * 
+     * @param lastTransitionReason the lastTransitionReason value to set.
+     * @return the TriggeredBuildResult object itself.
+     */
+    public TriggeredBuildResult withLastTransitionReason(String lastTransitionReason) {
+        this.lastTransitionReason = lastTransitionReason;
+        return this;
+    }
+
+    /**
+     * Get the lastTransitionStatus property: The last transition status of this build result.
+     * 
+     * @return the lastTransitionStatus value.
+     */
+    public String lastTransitionStatus() {
+        return this.lastTransitionStatus;
+    }
+
+    /**
+     * Set the lastTransitionStatus property: The last transition status of this build result.
+     * 
+     * @param lastTransitionStatus the lastTransitionStatus value to set.
+     * @return the TriggeredBuildResult object itself.
+     */
+    public TriggeredBuildResult withLastTransitionStatus(String lastTransitionStatus) {
+        this.lastTransitionStatus = lastTransitionStatus;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("image", this.image);
+        jsonWriter.writeStringField("lastTransitionTime",
+            this.lastTransitionTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastTransitionTime));
+        jsonWriter.writeStringField("lastTransitionReason", this.lastTransitionReason);
+        jsonWriter.writeStringField("lastTransitionStatus", this.lastTransitionStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggeredBuildResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggeredBuildResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggeredBuildResult.
+     */
+    public static TriggeredBuildResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggeredBuildResult deserializedTriggeredBuildResult = new TriggeredBuildResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.id = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.provisioningState
+                        = TriggeredBuildResultProvisioningState.fromString(reader.getString());
+                } else if ("image".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.image = reader.getString();
+                } else if ("lastTransitionTime".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.lastTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastTransitionReason".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.lastTransitionReason = reader.getString();
+                } else if ("lastTransitionStatus".equals(fieldName)) {
+                    deserializedTriggeredBuildResult.lastTransitionStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggeredBuildResult;
+        });
     }
 }

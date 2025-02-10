@@ -5,106 +5,96 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of express route cross connection peering.
  */
 @Fluent
-public final class ExpressRouteCrossConnectionPeeringProperties {
+public final class ExpressRouteCrossConnectionPeeringProperties
+    implements JsonSerializable<ExpressRouteCrossConnectionPeeringProperties> {
     /*
      * The peering type.
      */
-    @JsonProperty(value = "peeringType")
     private ExpressRoutePeeringType peeringType;
 
     /*
      * The peering state.
      */
-    @JsonProperty(value = "state")
     private ExpressRoutePeeringState state;
 
     /*
      * The Azure ASN.
      */
-    @JsonProperty(value = "azureASN", access = JsonProperty.Access.WRITE_ONLY)
     private Integer azureAsn;
 
     /*
      * The peer ASN.
      */
-    @JsonProperty(value = "peerASN")
     private Long peerAsn;
 
     /*
      * The primary address prefix.
      */
-    @JsonProperty(value = "primaryPeerAddressPrefix")
     private String primaryPeerAddressPrefix;
 
     /*
      * The secondary address prefix.
      */
-    @JsonProperty(value = "secondaryPeerAddressPrefix")
     private String secondaryPeerAddressPrefix;
 
     /*
      * The primary port.
      */
-    @JsonProperty(value = "primaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryAzurePort;
 
     /*
      * The secondary port.
      */
-    @JsonProperty(value = "secondaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryAzurePort;
 
     /*
      * The shared key.
      */
-    @JsonProperty(value = "sharedKey")
     private String sharedKey;
 
     /*
      * The VLAN ID.
      */
-    @JsonProperty(value = "vlanId")
     private Integer vlanId;
 
     /*
      * The Microsoft peering configuration.
      */
-    @JsonProperty(value = "microsoftPeeringConfig")
     private ExpressRouteCircuitPeeringConfig microsoftPeeringConfig;
 
     /*
      * The provisioning state of the express route cross connection peering resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The GatewayManager Etag.
      */
-    @JsonProperty(value = "gatewayManagerEtag")
     private String gatewayManagerEtag;
 
     /*
      * Who was the last to modify the peering.
      */
-    @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String lastModifiedBy;
 
     /*
      * The IPv6 peering configuration.
      */
-    @JsonProperty(value = "ipv6PeeringConfig")
     private Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig;
 
     /**
@@ -374,5 +364,89 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
         if (ipv6PeeringConfig() != null) {
             ipv6PeeringConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("peeringType", this.peeringType == null ? null : this.peeringType.toString());
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeNumberField("peerASN", this.peerAsn);
+        jsonWriter.writeStringField("primaryPeerAddressPrefix", this.primaryPeerAddressPrefix);
+        jsonWriter.writeStringField("secondaryPeerAddressPrefix", this.secondaryPeerAddressPrefix);
+        jsonWriter.writeStringField("sharedKey", this.sharedKey);
+        jsonWriter.writeNumberField("vlanId", this.vlanId);
+        jsonWriter.writeJsonField("microsoftPeeringConfig", this.microsoftPeeringConfig);
+        jsonWriter.writeStringField("gatewayManagerEtag", this.gatewayManagerEtag);
+        jsonWriter.writeJsonField("ipv6PeeringConfig", this.ipv6PeeringConfig);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCrossConnectionPeeringProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCrossConnectionPeeringProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCrossConnectionPeeringProperties.
+     */
+    public static ExpressRouteCrossConnectionPeeringProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCrossConnectionPeeringProperties deserializedExpressRouteCrossConnectionPeeringProperties
+                = new ExpressRouteCrossConnectionPeeringProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("peeringType".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.peeringType
+                        = ExpressRoutePeeringType.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.state
+                        = ExpressRoutePeeringState.fromString(reader.getString());
+                } else if ("azureASN".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.azureAsn
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("peerASN".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.peerAsn
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("primaryPeerAddressPrefix".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.primaryPeerAddressPrefix
+                        = reader.getString();
+                } else if ("secondaryPeerAddressPrefix".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.secondaryPeerAddressPrefix
+                        = reader.getString();
+                } else if ("primaryAzurePort".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.primaryAzurePort = reader.getString();
+                } else if ("secondaryAzurePort".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.secondaryAzurePort = reader.getString();
+                } else if ("sharedKey".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.sharedKey = reader.getString();
+                } else if ("vlanId".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.vlanId
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("microsoftPeeringConfig".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.microsoftPeeringConfig
+                        = ExpressRouteCircuitPeeringConfig.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("gatewayManagerEtag".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.gatewayManagerEtag = reader.getString();
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.lastModifiedBy = reader.getString();
+                } else if ("ipv6PeeringConfig".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionPeeringProperties.ipv6PeeringConfig
+                        = Ipv6ExpressRouteCircuitPeeringConfig.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCrossConnectionPeeringProperties;
+        });
     }
 }

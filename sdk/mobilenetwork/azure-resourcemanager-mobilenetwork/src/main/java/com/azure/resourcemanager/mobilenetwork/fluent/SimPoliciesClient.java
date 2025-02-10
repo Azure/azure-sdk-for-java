@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimPolicyInner;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in SimPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SimPoliciesClient.
+ */
 public interface SimPoliciesClient {
     /**
      * Deletes the specified SIM policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -28,12 +30,12 @@ public interface SimPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String simPolicyName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String simPolicyName);
 
     /**
      * Deletes the specified SIM policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -44,12 +46,12 @@ public interface SimPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String simPolicyName, Context context);
 
     /**
      * Deletes the specified SIM policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -62,7 +64,7 @@ public interface SimPoliciesClient {
 
     /**
      * Deletes the specified SIM policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -76,7 +78,7 @@ public interface SimPoliciesClient {
 
     /**
      * Gets information about the specified SIM policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -87,12 +89,12 @@ public interface SimPoliciesClient {
      * @return information about the specified SIM policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SimPolicyInner> getWithResponse(
-        String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context);
+    Response<SimPolicyInner> getWithResponse(String resourceGroupName, String mobileNetworkName, String simPolicyName,
+        Context context);
 
     /**
      * Gets information about the specified SIM policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -106,7 +108,7 @@ public interface SimPoliciesClient {
 
     /**
      * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -117,12 +119,12 @@ public interface SimPoliciesClient {
      * @return the {@link SyncPoller} for polling of sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SimPolicyInner>, SimPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String simPolicyName, SimPolicyInner parameters);
+    SyncPoller<PollResult<SimPolicyInner>, SimPolicyInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String simPolicyName, SimPolicyInner parameters);
 
     /**
      * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -134,16 +136,12 @@ public interface SimPoliciesClient {
      * @return the {@link SyncPoller} for polling of sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SimPolicyInner>, SimPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String simPolicyName,
-        SimPolicyInner parameters,
-        Context context);
+    SyncPoller<PollResult<SimPolicyInner>, SimPolicyInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String simPolicyName, SimPolicyInner parameters, Context context);
 
     /**
      * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -154,12 +152,12 @@ public interface SimPoliciesClient {
      * @return sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SimPolicyInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String simPolicyName, SimPolicyInner parameters);
+    SimPolicyInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String simPolicyName,
+        SimPolicyInner parameters);
 
     /**
      * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -171,16 +169,12 @@ public interface SimPoliciesClient {
      * @return sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SimPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String simPolicyName,
-        SimPolicyInner parameters,
-        Context context);
+    SimPolicyInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String simPolicyName,
+        SimPolicyInner parameters, Context context);
 
     /**
      * Updates SIM policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -192,16 +186,12 @@ public interface SimPoliciesClient {
      * @return sIM policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SimPolicyInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String simPolicyName,
-        TagsObject parameters,
-        Context context);
+    Response<SimPolicyInner> updateTagsWithResponse(String resourceGroupName, String mobileNetworkName,
+        String simPolicyName, TagsObject parameters, Context context);
 
     /**
      * Updates SIM policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
@@ -212,12 +202,12 @@ public interface SimPoliciesClient {
      * @return sIM policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SimPolicyInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String simPolicyName, TagsObject parameters);
+    SimPolicyInner updateTags(String resourceGroupName, String mobileNetworkName, String simPolicyName,
+        TagsObject parameters);
 
     /**
      * Gets all the SIM policies in a mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -230,7 +220,7 @@ public interface SimPoliciesClient {
 
     /**
      * Gets all the SIM policies in a mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -240,6 +230,6 @@ public interface SimPoliciesClient {
      * @return all the SIM policies in a mobile network as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SimPolicyInner> listByMobileNetwork(
-        String resourceGroupName, String mobileNetworkName, Context context);
+    PagedIterable<SimPolicyInner> listByMobileNetwork(String resourceGroupName, String mobileNetworkName,
+        Context context);
 }

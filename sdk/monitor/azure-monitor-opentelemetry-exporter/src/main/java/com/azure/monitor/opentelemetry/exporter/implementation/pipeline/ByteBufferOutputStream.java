@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-class ByteBufferOutputStream extends OutputStream {
+public class ByteBufferOutputStream extends OutputStream {
 
     private final AppInsightsByteBufferPool byteBufferPool;
 
@@ -16,7 +16,7 @@ class ByteBufferOutputStream extends OutputStream {
 
     private ByteBuffer current;
 
-    ByteBufferOutputStream(AppInsightsByteBufferPool byteBufferPool) {
+    public ByteBufferOutputStream(AppInsightsByteBufferPool byteBufferPool) {
         this.byteBufferPool = byteBufferPool;
         current = byteBufferPool.remove();
         byteBuffers.add(current);
@@ -46,7 +46,7 @@ class ByteBufferOutputStream extends OutputStream {
         byteBuffers.add(current);
     }
 
-    List<ByteBuffer> getByteBuffers() {
+    public List<ByteBuffer> getByteBuffers() {
         return byteBuffers;
     }
 }

@@ -3,8 +3,7 @@
 
 package com.azure.maps.weather;
 
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,84 +12,56 @@ public class WeatherClientBuilderTest {
     // Test for null mapsClientId, the client ID value
     @Test
     public void missingMapsClientId() {
-        assertThrows(NullPointerException.class, () -> {
-            final WeatherClientBuilder builder = new WeatherClientBuilder();
-            builder.weatherClientId(null);
-        });
+        assertThrows(NullPointerException.class, () -> new WeatherClientBuilder().weatherClientId(null));
     }
 
     // Test for missing endpoint
     @Test
     public void missingEndpoint() {
-        assertThrows(NullPointerException.class, () -> {
-            final WeatherClientBuilder builder = new WeatherClientBuilder();
-            builder.endpoint(null);
-        });
+        assertThrows(NullPointerException.class, () -> new WeatherClientBuilder().endpoint(null));
     }
 
     // Test for missing configuration
     @Test
     public void missingConfiguration() {
-        assertThrows(NullPointerException.class, () -> {
-            final WeatherClientBuilder builder = new WeatherClientBuilder();
-            builder.configuration(null);
-        });
+        assertThrows(NullPointerException.class, () -> new WeatherClientBuilder().configuration(null));
     }
 
     // Test for missing http log options
     @Test
     public void missingHttpLogOptions() {
-        assertThrows(NullPointerException.class, () -> {
-            final WeatherClientBuilder builder = new WeatherClientBuilder();
-            builder.httpLogOptions(null);
-        });
+        assertThrows(NullPointerException.class, () -> new WeatherClientBuilder().httpLogOptions(null));
     }
 
     // Test for missing retry policy
     @Test
     public void missingRetryPolicy() {
-        assertThrows(NullPointerException.class, () -> {
-            final WeatherClientBuilder builder = new WeatherClientBuilder();
-            builder.retryPolicy(null);
-        });
+        assertThrows(NullPointerException.class, () -> new WeatherClientBuilder().retryPolicy(null));
     }
 
     // Test for missing client options
     @Test
     public void missingClientOptions() {
-        assertThrows(NullPointerException.class, () -> {
-            final WeatherClientBuilder builder = new WeatherClientBuilder();
-            builder.clientOptions(null);
-        });
+        assertThrows(NullPointerException.class, () -> new WeatherClientBuilder().clientOptions(null));
     }
 
     // Test for missing add policy
     @Test
     public void missingAddPolicy() {
-        assertThrows(NullPointerException.class, () -> {
-            final WeatherClientBuilder builder = new WeatherClientBuilder();
-            builder.addPolicy(null);
-        });
+        assertThrows(NullPointerException.class, () -> new WeatherClientBuilder().addPolicy(null));
     }
 
     // Test for null map id, valid token credential
     @Test
     public void missingMapsClientIdValidTokenCredential() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            final WeatherClientBuilder builder = new WeatherClientBuilder();
-            DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-            builder.credential(tokenCredential);
-            builder.buildClient();
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> new WeatherClientBuilder().credential(new MockTokenCredential()).buildClient());
     }
 
     // Test for null key credential and null token credential despite valid mapsClientId
     @Test
     public void missingCredentials() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            final WeatherClientBuilder builder = new WeatherClientBuilder();
-            builder.weatherClientId("weatherClientId");
-            builder.buildClient();
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> new WeatherClientBuilder().weatherClientId("weatherClientId").buildClient());
     }
 }

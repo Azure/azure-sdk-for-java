@@ -5,33 +5,42 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties specific to client affine subscriptions. */
+/**
+ * Properties specific to client affine subscriptions.
+ */
 @Fluent
-public final class SBClientAffineProperties {
+public final class SBClientAffineProperties implements JsonSerializable<SBClientAffineProperties> {
     /*
      * Indicates the Client ID of the application that created the client-affine subscription.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * For client-affine subscriptions, this value indicates whether the subscription is durable or not.
      */
-    @JsonProperty(value = "isDurable")
     private Boolean isDurable;
 
     /*
      * For client-affine subscriptions, this value indicates whether the subscription is shared or not.
      */
-    @JsonProperty(value = "isShared")
     private Boolean isShared;
+
+    /**
+     * Creates an instance of SBClientAffineProperties class.
+     */
+    public SBClientAffineProperties() {
+    }
 
     /**
      * Get the clientId property: Indicates the Client ID of the application that created the client-affine
      * subscription.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -41,7 +50,7 @@ public final class SBClientAffineProperties {
     /**
      * Set the clientId property: Indicates the Client ID of the application that created the client-affine
      * subscription.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the SBClientAffineProperties object itself.
      */
@@ -53,7 +62,7 @@ public final class SBClientAffineProperties {
     /**
      * Get the isDurable property: For client-affine subscriptions, this value indicates whether the subscription is
      * durable or not.
-     *
+     * 
      * @return the isDurable value.
      */
     public Boolean isDurable() {
@@ -63,7 +72,7 @@ public final class SBClientAffineProperties {
     /**
      * Set the isDurable property: For client-affine subscriptions, this value indicates whether the subscription is
      * durable or not.
-     *
+     * 
      * @param isDurable the isDurable value to set.
      * @return the SBClientAffineProperties object itself.
      */
@@ -75,7 +84,7 @@ public final class SBClientAffineProperties {
     /**
      * Get the isShared property: For client-affine subscriptions, this value indicates whether the subscription is
      * shared or not.
-     *
+     * 
      * @return the isShared value.
      */
     public Boolean isShared() {
@@ -85,7 +94,7 @@ public final class SBClientAffineProperties {
     /**
      * Set the isShared property: For client-affine subscriptions, this value indicates whether the subscription is
      * shared or not.
-     *
+     * 
      * @param isShared the isShared value to set.
      * @return the SBClientAffineProperties object itself.
      */
@@ -96,9 +105,51 @@ public final class SBClientAffineProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeBooleanField("isDurable", this.isDurable);
+        jsonWriter.writeBooleanField("isShared", this.isShared);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBClientAffineProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBClientAffineProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SBClientAffineProperties.
+     */
+    public static SBClientAffineProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBClientAffineProperties deserializedSBClientAffineProperties = new SBClientAffineProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientId".equals(fieldName)) {
+                    deserializedSBClientAffineProperties.clientId = reader.getString();
+                } else if ("isDurable".equals(fieldName)) {
+                    deserializedSBClientAffineProperties.isDurable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isShared".equals(fieldName)) {
+                    deserializedSBClientAffineProperties.isShared = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBClientAffineProperties;
+        });
     }
 }

@@ -5,50 +5,56 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Additional information about Azure File Share backup item. */
+/**
+ * Additional information about Azure File Share backup item.
+ */
 @Fluent
-public final class AzureFileshareProtectedItemExtendedInfo {
+public final class AzureFileshareProtectedItemExtendedInfo
+    implements JsonSerializable<AzureFileshareProtectedItemExtendedInfo> {
     /*
      * The oldest backup copy available for this item in the service.
      */
-    @JsonProperty(value = "oldestRecoveryPoint")
     private OffsetDateTime oldestRecoveryPoint;
 
     /*
      * Number of available backup copies associated with this backup item.
      */
-    @JsonProperty(value = "recoveryPointCount")
     private Integer recoveryPointCount;
 
     /*
      * Indicates consistency of policy object and policy applied to this backup item.
      */
-    @JsonProperty(value = "policyState")
     private String policyState;
 
     /*
      * Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted,
      * Deleted}
      */
-    @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceState;
 
     /*
      * The resource state sync time for this backup item.
      */
-    @JsonProperty(value = "resourceStateSyncTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime resourceStateSyncTime;
 
-    /** Creates an instance of AzureFileshareProtectedItemExtendedInfo class. */
+    /**
+     * Creates an instance of AzureFileshareProtectedItemExtendedInfo class.
+     */
     public AzureFileshareProtectedItemExtendedInfo() {
     }
 
     /**
      * Get the oldestRecoveryPoint property: The oldest backup copy available for this item in the service.
-     *
+     * 
      * @return the oldestRecoveryPoint value.
      */
     public OffsetDateTime oldestRecoveryPoint() {
@@ -57,7 +63,7 @@ public final class AzureFileshareProtectedItemExtendedInfo {
 
     /**
      * Set the oldestRecoveryPoint property: The oldest backup copy available for this item in the service.
-     *
+     * 
      * @param oldestRecoveryPoint the oldestRecoveryPoint value to set.
      * @return the AzureFileshareProtectedItemExtendedInfo object itself.
      */
@@ -68,7 +74,7 @@ public final class AzureFileshareProtectedItemExtendedInfo {
 
     /**
      * Get the recoveryPointCount property: Number of available backup copies associated with this backup item.
-     *
+     * 
      * @return the recoveryPointCount value.
      */
     public Integer recoveryPointCount() {
@@ -77,7 +83,7 @@ public final class AzureFileshareProtectedItemExtendedInfo {
 
     /**
      * Set the recoveryPointCount property: Number of available backup copies associated with this backup item.
-     *
+     * 
      * @param recoveryPointCount the recoveryPointCount value to set.
      * @return the AzureFileshareProtectedItemExtendedInfo object itself.
      */
@@ -88,7 +94,7 @@ public final class AzureFileshareProtectedItemExtendedInfo {
 
     /**
      * Get the policyState property: Indicates consistency of policy object and policy applied to this backup item.
-     *
+     * 
      * @return the policyState value.
      */
     public String policyState() {
@@ -97,7 +103,7 @@ public final class AzureFileshareProtectedItemExtendedInfo {
 
     /**
      * Set the policyState property: Indicates consistency of policy object and policy applied to this backup item.
-     *
+     * 
      * @param policyState the policyState value to set.
      * @return the AzureFileshareProtectedItemExtendedInfo object itself.
      */
@@ -109,7 +115,7 @@ public final class AzureFileshareProtectedItemExtendedInfo {
     /**
      * Get the resourceState property: Indicates the state of this resource. Possible values are from enum ResourceState
      * {Invalid, Active, SoftDeleted, Deleted}.
-     *
+     * 
      * @return the resourceState value.
      */
     public String resourceState() {
@@ -118,7 +124,7 @@ public final class AzureFileshareProtectedItemExtendedInfo {
 
     /**
      * Get the resourceStateSyncTime property: The resource state sync time for this backup item.
-     *
+     * 
      * @return the resourceStateSyncTime value.
      */
     public OffsetDateTime resourceStateSyncTime() {
@@ -127,9 +133,62 @@ public final class AzureFileshareProtectedItemExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("oldestRecoveryPoint",
+            this.oldestRecoveryPoint == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.oldestRecoveryPoint));
+        jsonWriter.writeNumberField("recoveryPointCount", this.recoveryPointCount);
+        jsonWriter.writeStringField("policyState", this.policyState);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileshareProtectedItemExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileshareProtectedItemExtendedInfo if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileshareProtectedItemExtendedInfo.
+     */
+    public static AzureFileshareProtectedItemExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileshareProtectedItemExtendedInfo deserializedAzureFileshareProtectedItemExtendedInfo
+                = new AzureFileshareProtectedItemExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("oldestRecoveryPoint".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItemExtendedInfo.oldestRecoveryPoint = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveryPointCount".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItemExtendedInfo.recoveryPointCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("policyState".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItemExtendedInfo.policyState = reader.getString();
+                } else if ("resourceState".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItemExtendedInfo.resourceState = reader.getString();
+                } else if ("resourceStateSyncTime".equals(fieldName)) {
+                    deserializedAzureFileshareProtectedItemExtendedInfo.resourceStateSyncTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileshareProtectedItemExtendedInfo;
+        });
     }
 }

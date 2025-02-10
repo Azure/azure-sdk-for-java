@@ -5,26 +5,30 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * A time range.
- *
+ * 
  * For example, between 2021-05-25T13:00:00Z and 2021-05-25T14:00:00Z.
  */
 @Fluent
-public final class TimeSpan {
+public final class TimeSpan implements JsonSerializable<TimeSpan> {
     /*
      * The start of a time span
      */
-    @JsonProperty(value = "start")
     private OffsetDateTime start;
 
     /*
      * The end of a time span
      */
-    @JsonProperty(value = "end")
     private OffsetDateTime end;
 
     /**
@@ -35,7 +39,7 @@ public final class TimeSpan {
 
     /**
      * Get the start property: The start of a time span.
-     *
+     * 
      * @return the start value.
      */
     public OffsetDateTime start() {
@@ -44,7 +48,7 @@ public final class TimeSpan {
 
     /**
      * Set the start property: The start of a time span.
-     *
+     * 
      * @param start the start value to set.
      * @return the TimeSpan object itself.
      */
@@ -55,7 +59,7 @@ public final class TimeSpan {
 
     /**
      * Get the end property: The end of a time span.
-     *
+     * 
      * @return the end value.
      */
     public OffsetDateTime end() {
@@ -64,7 +68,7 @@ public final class TimeSpan {
 
     /**
      * Set the end property: The end of a time span.
-     *
+     * 
      * @param end the end value to set.
      * @return the TimeSpan object itself.
      */
@@ -75,9 +79,52 @@ public final class TimeSpan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("start",
+            this.start == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.start));
+        jsonWriter.writeStringField("end",
+            this.end == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.end));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeSpan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeSpan if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TimeSpan.
+     */
+    public static TimeSpan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeSpan deserializedTimeSpan = new TimeSpan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("start".equals(fieldName)) {
+                    deserializedTimeSpan.start = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("end".equals(fieldName)) {
+                    deserializedTimeSpan.end = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeSpan;
+        });
     }
 }

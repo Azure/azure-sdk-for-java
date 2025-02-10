@@ -78,14 +78,14 @@ public final class DomainTopicsImpl implements DomainTopics {
 
     public PagedIterable<DomainTopic> listByDomain(String resourceGroupName, String domainName) {
         PagedIterable<DomainTopicInner> inner = this.serviceClient().listByDomain(resourceGroupName, domainName);
-        return Utils.mapPage(inner, inner1 -> new DomainTopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DomainTopicImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DomainTopic> listByDomain(String resourceGroupName, String domainName, String filter,
         Integer top, Context context) {
         PagedIterable<DomainTopicInner> inner
             = this.serviceClient().listByDomain(resourceGroupName, domainName, filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new DomainTopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DomainTopicImpl(inner1, this.manager()));
     }
 
     private DomainTopicsClient serviceClient() {

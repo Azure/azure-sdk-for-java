@@ -11,13 +11,22 @@ public final class KeyPropertiesHelper {
 
     public interface KeyPropertiesAccessor {
         void setCreatedOn(KeyProperties keyProperties, OffsetDateTime createdOn);
+
         void setUpdatedOn(KeyProperties keyProperties, OffsetDateTime updatedOn);
+
         void setRecoveryLevel(KeyProperties keyProperties, String recoveryLevel);
+
         void setName(KeyProperties keyProperties, String name);
+
         void setVersion(KeyProperties keyProperties, String version);
+
         void setId(KeyProperties keyProperties, String id);
+
         void setManaged(KeyProperties keyProperties, Boolean managed);
+
         void setRecoverableDays(KeyProperties keyProperties, Integer recoverableDays);
+
+        void setHsmPlatform(KeyProperties keyProperties, String hsmPlatform);
     }
 
     public static void setCreatedOn(KeyProperties keyProperties, OffsetDateTime createdOn) {
@@ -52,9 +61,14 @@ public final class KeyPropertiesHelper {
         accessor.setRecoverableDays(keyProperties, recoverableDays);
     }
 
+    public static void setHsmPlatform(KeyProperties keyProperties, String hsmPlatform) {
+        accessor.setHsmPlatform(keyProperties, hsmPlatform);
+    }
+
     public static void setAccessor(KeyPropertiesAccessor accessor) {
         KeyPropertiesHelper.accessor = accessor;
     }
 
-    private KeyPropertiesHelper() { }
+    private KeyPropertiesHelper() {
+    }
 }

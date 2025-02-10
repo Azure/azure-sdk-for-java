@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes an Azure resource with location. */
+/**
+ * Describes an Azure resource with location.
+ */
 @Immutable
-public class Location {
+public class Location implements JsonSerializable<Location> {
     /*
      * Location where the resource is stored
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of Location class. */
+    /**
+     * Creates an instance of Location class.
+     */
     public Location() {
     }
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -30,10 +37,56 @@ public class Location {
     }
 
     /**
+     * Set the location property: Location where the resource is stored.
+     * 
+     * @param location the location value to set.
+     * @return the Location object itself.
+     */
+    Location withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Location from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Location if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Location.
+     */
+    public static Location fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Location deserializedLocation = new Location();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedLocation.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocation;
+        });
     }
 }

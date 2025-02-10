@@ -28,7 +28,7 @@ class RequestResponseUtilsTest {
      * @param statusCodeHeader Status code header key.
      */
     @ParameterizedTest
-    @ValueSource(strings = {"statusCode", "status-code"})
+    @ValueSource(strings = { "statusCode", "status-code" })
     void getResponseStatusCode(String statusCodeHeader) {
         // Arrange
         final AmqpResponseCode expected = AmqpResponseCode.GONE;
@@ -52,7 +52,7 @@ class RequestResponseUtilsTest {
      * @param header Description header key.
      */
     @ParameterizedTest
-    @ValueSource(strings = {"statusDescription", "status-description"})
+    @ValueSource(strings = { "statusDescription", "status-description" })
     void getResponseDescription(String header) {
         // Arrange
         final String expected = "Contents of description";
@@ -76,7 +76,7 @@ class RequestResponseUtilsTest {
      * @param header Description header key.
      */
     @ParameterizedTest
-    @ValueSource(strings = {"error-condition", "errorCondition"})
+    @ValueSource(strings = { "error-condition", "errorCondition" })
     void getErrorCondition(String header) {
         // Arrange
         final AmqpErrorCondition expected = AmqpErrorCondition.LINK_STOLEN;

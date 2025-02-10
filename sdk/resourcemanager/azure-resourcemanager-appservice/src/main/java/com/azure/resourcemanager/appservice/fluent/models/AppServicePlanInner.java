@@ -6,13 +6,16 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ExtendedLocation;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.StatusOptions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -24,26 +27,39 @@ public final class AppServicePlanInner extends Resource {
     /*
      * AppServicePlan resource specific properties
      */
-    @JsonProperty(value = "properties")
     private AppServicePlanProperties innerProperties;
 
     /*
      * Description of a SKU for a scalable resource.
      */
-    @JsonProperty(value = "sku")
     private SkuDescription sku;
 
     /*
      * Extended Location.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
-     * Kind of resource.
+     * Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-
+     * resource-kind-reference for details supported values for kind.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of AppServicePlanInner class.
@@ -101,7 +117,9 @@ public final class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of resource.
+     * Get the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
      * 
      * @return the kind value.
      */
@@ -110,7 +128,9 @@ public final class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Set the kind property: Kind of resource.
+     * Set the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
      * 
      * @param kind the kind value to set.
      * @return the AppServicePlanInner object itself.
@@ -118,6 +138,36 @@ public final class AppServicePlanInner extends Resource {
     public AppServicePlanInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -556,8 +606,8 @@ public final class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform
-     * availability zone balancing.
+     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
+     * zone balancing.
      * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone balancing.
      * 
      * @return the zoneRedundant value.
@@ -567,8 +617,8 @@ public final class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform
-     * availability zone balancing.
+     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
+     * zone balancing.
      * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone balancing.
      * 
      * @param zoneRedundant the zoneRedundant value to set.
@@ -597,5 +647,64 @@ public final class AppServicePlanInner extends Resource {
         if (extendedLocation() != null) {
             extendedLocation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServicePlanInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServicePlanInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppServicePlanInner.
+     */
+    public static AppServicePlanInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServicePlanInner deserializedAppServicePlanInner = new AppServicePlanInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAppServicePlanInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAppServicePlanInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAppServicePlanInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAppServicePlanInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAppServicePlanInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAppServicePlanInner.innerProperties = AppServicePlanProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAppServicePlanInner.sku = SkuDescription.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedAppServicePlanInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAppServicePlanInner.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServicePlanInner;
+        });
     }
 }

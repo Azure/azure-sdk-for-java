@@ -12,8 +12,7 @@ public final class DeploymentLogsImpl implements DeploymentLogs {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    DeploymentLogsImpl(
-        DeploymentLogsInner innerObject,
+    DeploymentLogsImpl(DeploymentLogsInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

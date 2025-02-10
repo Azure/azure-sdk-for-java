@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VmmToVmmNet
 public final class VmmToVmmNetworkMappingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmmToVmmNetworkMappingSettings model =
-            BinaryData.fromString("{\"instanceType\":\"VmmToVmm\"}").toObject(VmmToVmmNetworkMappingSettings.class);
+        VmmToVmmNetworkMappingSettings model
+            = BinaryData.fromString("{\"instanceType\":\"VmmToVmm\"}").toObject(VmmToVmmNetworkMappingSettings.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.AccessRightsDescription;
@@ -24,29 +24,27 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class SharedAccessPolicyTests extends DeviceProvisioningTestBase {
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void sharedAccessPolicyCRUD() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {
-            ProvisioningServiceDescriptionInner provisioningServiceDescription =
-                createProvisioningService(iotDpsManager, resourceGroup);
+            ProvisioningServiceDescriptionInner provisioningServiceDescription
+                = createProvisioningService(iotDpsManager, resourceGroup);
 
             // verify owner key has been created
-            SharedAccessSignatureAuthorizationRule ownerKey =
-                iotDpsManager
-                    .iotDpsResources()
-                    .listKeysForKeyName(provisioningServiceDescription.name(), OWNER_ACCESS_KEY_NAME, resourceGroup.name());
+            SharedAccessSignatureAuthorizationRule ownerKey = iotDpsManager.iotDpsResources()
+                .listKeysForKeyName(provisioningServiceDescription.name(), OWNER_ACCESS_KEY_NAME, resourceGroup.name());
 
             assertEquals(OWNER_ACCESS_KEY_NAME, ownerKey.keyName());
 
             // verify that getting an undefined key makes listKeysForKeyName throw
             try {
-                iotDpsManager
-                    .iotDpsResources()
-                    .listKeysForKeyName(provisioningServiceDescription.name(), "thisKeyDoesNotExist", resourceGroup.name());
+                iotDpsManager.iotDpsResources()
+                    .listKeysForKeyName(provisioningServiceDescription.name(), "thisKeyDoesNotExist",
+                        resourceGroup.name());
 
                 fail("Getting a key that does not exist should have thrown an exception");
             } catch (ErrorDetailsException ex) {
@@ -56,33 +54,26 @@ public class SharedAccessPolicyTests extends DeviceProvisioningTestBase {
             // verify that you can create a new key
             String newKeyName = "someNewKey";
             AccessRightsDescription expectedAccessRights = AccessRightsDescription.DEVICE_CONNECT;
-            SharedAccessSignatureAuthorizationRuleInner newKey =
-                new SharedAccessSignatureAuthorizationRuleInner()
-                    .withKeyName(newKeyName)
+            SharedAccessSignatureAuthorizationRuleInner newKey
+                = new SharedAccessSignatureAuthorizationRuleInner().withKeyName(newKeyName)
                     .withRights(expectedAccessRights);
 
             List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies = new ArrayList<>(2);
             authorizationPolicies.add(ownerKey.innerModel());
             authorizationPolicies.add(newKey);
 
-            IotDpsPropertiesDescription propertiesWithNewKey = provisioningServiceDescription
-                .properties()
-                .withAuthorizationPolicies(authorizationPolicies);
+            IotDpsPropertiesDescription propertiesWithNewKey
+                = provisioningServiceDescription.properties().withAuthorizationPolicies(authorizationPolicies);
 
-            ProvisioningServiceDescriptionInner serviceWithNewProperties =
-                provisioningServiceDescription.withProperties(propertiesWithNewKey);
+            ProvisioningServiceDescriptionInner serviceWithNewProperties
+                = provisioningServiceDescription.withProperties(propertiesWithNewKey);
 
-            iotDpsManager
-                .serviceClient()
+            iotDpsManager.serviceClient()
                 .getIotDpsResources()
-                .createOrUpdate(
-                    resourceGroup.name(),
-                    serviceWithNewProperties.name(),
-                    serviceWithNewProperties);
+                .createOrUpdate(resourceGroup.name(), serviceWithNewProperties.name(), serviceWithNewProperties);
 
             // after updating the service, the key should be retrievable
-            SharedAccessSignatureAuthorizationRule retrievedNewKey = iotDpsManager
-                .iotDpsResources()
+            SharedAccessSignatureAuthorizationRule retrievedNewKey = iotDpsManager.iotDpsResources()
                 .listKeysForKeyName(provisioningServiceDescription.name(), newKeyName, resourceGroup.name());
 
             assertEquals(expectedAccessRights, retrievedNewKey.rights());
@@ -90,18 +81,14 @@ public class SharedAccessPolicyTests extends DeviceProvisioningTestBase {
             // verify that the new key can be deleted
             provisioningServiceDescription.properties().authorizationPolicies().remove(newKey);
 
-            iotDpsManager
-                .serviceClient()
+            iotDpsManager.serviceClient()
                 .getIotDpsResources()
-                .createOrUpdate(
-                    resourceGroup.name(),
-                    provisioningServiceDescription.name(),
+                .createOrUpdate(resourceGroup.name(), provisioningServiceDescription.name(),
                     provisioningServiceDescription);
 
             // verify that the new key was deleted by attempting to retrieve it
             try {
-                iotDpsManager
-                    .iotDpsResources()
+                iotDpsManager.iotDpsResources()
                     .listKeysForKeyName(provisioningServiceDescription.name(), newKeyName, resourceGroup.name());
 
                 fail("Getting a key that does not exist should have thrown an exception");

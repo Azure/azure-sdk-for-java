@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginGroupUpdatePropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** AFDOrigin group properties needed for origin group creation or update. */
+/**
+ * AFDOrigin group properties needed for origin group creation or update.
+ */
 @Fluent
-public final class AfdOriginGroupUpdateParameters {
+public final class AfdOriginGroupUpdateParameters implements JsonSerializable<AfdOriginGroupUpdateParameters> {
     /*
      * The JSON object that contains the properties of the origin group.
      */
-    @JsonProperty(value = "properties")
     private AfdOriginGroupUpdatePropertiesParameters innerProperties;
 
-    /** Creates an instance of AfdOriginGroupUpdateParameters class. */
+    /**
+     * Creates an instance of AfdOriginGroupUpdateParameters class.
+     */
     public AfdOriginGroupUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin group.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AfdOriginGroupUpdatePropertiesParameters innerProperties() {
@@ -32,7 +39,7 @@ public final class AfdOriginGroupUpdateParameters {
 
     /**
      * Get the profileName property: The name of the profile which holds the origin group.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -41,7 +48,7 @@ public final class AfdOriginGroupUpdateParameters {
 
     /**
      * Get the loadBalancingSettings property: Load balancing settings for a backend pool.
-     *
+     * 
      * @return the loadBalancingSettings value.
      */
     public LoadBalancingSettingsParameters loadBalancingSettings() {
@@ -50,12 +57,12 @@ public final class AfdOriginGroupUpdateParameters {
 
     /**
      * Set the loadBalancingSettings property: Load balancing settings for a backend pool.
-     *
+     * 
      * @param loadBalancingSettings the loadBalancingSettings value to set.
      * @return the AfdOriginGroupUpdateParameters object itself.
      */
-    public AfdOriginGroupUpdateParameters withLoadBalancingSettings(
-        LoadBalancingSettingsParameters loadBalancingSettings) {
+    public AfdOriginGroupUpdateParameters
+        withLoadBalancingSettings(LoadBalancingSettingsParameters loadBalancingSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AfdOriginGroupUpdatePropertiesParameters();
         }
@@ -66,7 +73,7 @@ public final class AfdOriginGroupUpdateParameters {
     /**
      * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
      * the origin.
-     *
+     * 
      * @return the healthProbeSettings value.
      */
     public HealthProbeParameters healthProbeSettings() {
@@ -76,7 +83,7 @@ public final class AfdOriginGroupUpdateParameters {
     /**
      * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
      * the origin.
-     *
+     * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the AfdOriginGroupUpdateParameters object itself.
      */
@@ -92,7 +99,7 @@ public final class AfdOriginGroupUpdateParameters {
      * Get the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
@@ -105,9 +112,9 @@ public final class AfdOriginGroupUpdateParameters {
      * Set the trafficRestorationTimeToHealedOrNewEndpointsInMinutes property: Time in minutes to shift the traffic to
      * the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint is added. Default is 10 mins.
      * This property is currently not supported.
-     *
+     * 
      * @param trafficRestorationTimeToHealedOrNewEndpointsInMinutes the
-     *     trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
+     * trafficRestorationTimeToHealedOrNewEndpointsInMinutes value to set.
      * @return the AfdOriginGroupUpdateParameters object itself.
      */
     public AfdOriginGroupUpdateParameters withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
@@ -115,8 +122,7 @@ public final class AfdOriginGroupUpdateParameters {
         if (this.innerProperties() == null) {
             this.innerProperties = new AfdOriginGroupUpdatePropertiesParameters();
         }
-        this
-            .innerProperties()
+        this.innerProperties()
             .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
                 trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
@@ -125,7 +131,7 @@ public final class AfdOriginGroupUpdateParameters {
     /**
      * Get the sessionAffinityState property: Whether to allow session affinity on this host. Valid options are
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the sessionAffinityState value.
      */
     public EnabledState sessionAffinityState() {
@@ -135,7 +141,7 @@ public final class AfdOriginGroupUpdateParameters {
     /**
      * Set the sessionAffinityState property: Whether to allow session affinity on this host. Valid options are
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param sessionAffinityState the sessionAffinityState value to set.
      * @return the AfdOriginGroupUpdateParameters object itself.
      */
@@ -149,12 +155,50 @@ public final class AfdOriginGroupUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdOriginGroupUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdOriginGroupUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AfdOriginGroupUpdateParameters.
+     */
+    public static AfdOriginGroupUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdOriginGroupUpdateParameters deserializedAfdOriginGroupUpdateParameters
+                = new AfdOriginGroupUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAfdOriginGroupUpdateParameters.innerProperties
+                        = AfdOriginGroupUpdatePropertiesParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdOriginGroupUpdateParameters;
+        });
     }
 }

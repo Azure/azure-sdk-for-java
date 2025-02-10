@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a network port. */
+/**
+ * Properties of a network port.
+ */
 @Fluent
-public final class Port {
+public final class Port implements JsonSerializable<Port> {
     /*
      * Protocol type of the port.
      */
-    @JsonProperty(value = "transportProtocol")
     private TransportProtocol transportProtocol;
 
     /*
      * Backend port of the target virtual machine.
      */
-    @JsonProperty(value = "backendPort")
     private Integer backendPort;
 
-    /** Creates an instance of Port class. */
+    /**
+     * Creates an instance of Port class.
+     */
     public Port() {
     }
 
     /**
      * Get the transportProtocol property: Protocol type of the port.
-     *
+     * 
      * @return the transportProtocol value.
      */
     public TransportProtocol transportProtocol() {
@@ -37,7 +43,7 @@ public final class Port {
 
     /**
      * Set the transportProtocol property: Protocol type of the port.
-     *
+     * 
      * @param transportProtocol the transportProtocol value to set.
      * @return the Port object itself.
      */
@@ -48,7 +54,7 @@ public final class Port {
 
     /**
      * Get the backendPort property: Backend port of the target virtual machine.
-     *
+     * 
      * @return the backendPort value.
      */
     public Integer backendPort() {
@@ -57,7 +63,7 @@ public final class Port {
 
     /**
      * Set the backendPort property: Backend port of the target virtual machine.
-     *
+     * 
      * @param backendPort the backendPort value to set.
      * @return the Port object itself.
      */
@@ -68,9 +74,49 @@ public final class Port {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transportProtocol",
+            this.transportProtocol == null ? null : this.transportProtocol.toString());
+        jsonWriter.writeNumberField("backendPort", this.backendPort);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Port from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Port if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Port.
+     */
+    public static Port fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Port deserializedPort = new Port();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transportProtocol".equals(fieldName)) {
+                    deserializedPort.transportProtocol = TransportProtocol.fromString(reader.getString());
+                } else if ("backendPort".equals(fieldName)) {
+                    deserializedPort.backendPort = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPort;
+        });
     }
 }

@@ -5,32 +5,70 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrincipalType;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.RoleType;
+import java.io.IOException;
 
-/** The properties of a cluster role. */
+/**
+ * The properties of a cluster role.
+ */
 @Fluent
-public final class RoleProperties {
+public final class RoleProperties implements JsonSerializable<RoleProperties> {
     /*
-     * The password of the cluster role.
+     * The roleType property.
      */
-    @JsonProperty(value = "password")
+    private RoleType roleType;
+
+    /*
+     * The password of the cluster role. If an identity is used, password will not be required.
+     */
     private String password;
+
+    /*
+     * The externalIdentity property.
+     */
+    private RolePropertiesExternalIdentity innerExternalIdentity;
 
     /*
      * Provisioning state of the role
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of RoleProperties class. */
+    /**
+     * Creates an instance of RoleProperties class.
+     */
     public RoleProperties() {
     }
 
     /**
-     * Get the password property: The password of the cluster role.
-     *
+     * Get the roleType property: The roleType property.
+     * 
+     * @return the roleType value.
+     */
+    public RoleType roleType() {
+        return this.roleType;
+    }
+
+    /**
+     * Set the roleType property: The roleType property.
+     * 
+     * @param roleType the roleType value to set.
+     * @return the RoleProperties object itself.
+     */
+    public RoleProperties withRoleType(RoleType roleType) {
+        this.roleType = roleType;
+        return this;
+    }
+
+    /**
+     * Get the password property: The password of the cluster role. If an identity is used, password will not be
+     * required.
+     * 
      * @return the password value.
      */
     public String password() {
@@ -38,8 +76,9 @@ public final class RoleProperties {
     }
 
     /**
-     * Set the password property: The password of the cluster role.
-     *
+     * Set the password property: The password of the cluster role. If an identity is used, password will not be
+     * required.
+     * 
      * @param password the password value to set.
      * @return the RoleProperties object itself.
      */
@@ -49,8 +88,17 @@ public final class RoleProperties {
     }
 
     /**
+     * Get the innerExternalIdentity property: The externalIdentity property.
+     * 
+     * @return the innerExternalIdentity value.
+     */
+    private RolePropertiesExternalIdentity innerExternalIdentity() {
+        return this.innerExternalIdentity;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the role.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,17 +106,126 @@ public final class RoleProperties {
     }
 
     /**
+     * Get the objectId property: The objectId property.
+     * 
+     * @return the objectId value.
+     */
+    public String objectId() {
+        return this.innerExternalIdentity() == null ? null : this.innerExternalIdentity().objectId();
+    }
+
+    /**
+     * Set the objectId property: The objectId property.
+     * 
+     * @param objectId the objectId value to set.
+     * @return the RoleProperties object itself.
+     */
+    public RoleProperties withObjectId(String objectId) {
+        if (this.innerExternalIdentity() == null) {
+            this.innerExternalIdentity = new RolePropertiesExternalIdentity();
+        }
+        this.innerExternalIdentity().withObjectId(objectId);
+        return this;
+    }
+
+    /**
+     * Get the principalType property: The principalType property.
+     * 
+     * @return the principalType value.
+     */
+    public PrincipalType principalType() {
+        return this.innerExternalIdentity() == null ? null : this.innerExternalIdentity().principalType();
+    }
+
+    /**
+     * Set the principalType property: The principalType property.
+     * 
+     * @param principalType the principalType value to set.
+     * @return the RoleProperties object itself.
+     */
+    public RoleProperties withPrincipalType(PrincipalType principalType) {
+        if (this.innerExternalIdentity() == null) {
+            this.innerExternalIdentity = new RolePropertiesExternalIdentity();
+        }
+        this.innerExternalIdentity().withPrincipalType(principalType);
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: The tenantId property.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.innerExternalIdentity() == null ? null : this.innerExternalIdentity().tenantId();
+    }
+
+    /**
+     * Set the tenantId property: The tenantId property.
+     * 
+     * @param tenantId the tenantId value to set.
+     * @return the RoleProperties object itself.
+     */
+    public RoleProperties withTenantId(String tenantId) {
+        if (this.innerExternalIdentity() == null) {
+            this.innerExternalIdentity = new RolePropertiesExternalIdentity();
+        }
+        this.innerExternalIdentity().withTenantId(tenantId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property password in model RoleProperties"));
+        if (innerExternalIdentity() != null) {
+            innerExternalIdentity().validate();
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(RoleProperties.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("roleType", this.roleType == null ? null : this.roleType.toString());
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeJsonField("externalIdentity", this.innerExternalIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleProperties.
+     */
+    public static RoleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleProperties deserializedRoleProperties = new RoleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("roleType".equals(fieldName)) {
+                    deserializedRoleProperties.roleType = RoleType.fromString(reader.getString());
+                } else if ("password".equals(fieldName)) {
+                    deserializedRoleProperties.password = reader.getString();
+                } else if ("externalIdentity".equals(fieldName)) {
+                    deserializedRoleProperties.innerExternalIdentity = RolePropertiesExternalIdentity.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRoleProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleProperties;
+        });
+    }
 }

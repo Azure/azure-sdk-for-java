@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The ALR option. */
+/**
+ * The ALR option.
+ */
 public final class AlternateLocationRecoveryOption extends ExpandableStringEnum<AlternateLocationRecoveryOption> {
-    /** Static value CreateVmIfNotFound for AlternateLocationRecoveryOption. */
+    /**
+     * Static value CreateVmIfNotFound for AlternateLocationRecoveryOption.
+     */
     public static final AlternateLocationRecoveryOption CREATE_VM_IF_NOT_FOUND = fromString("CreateVmIfNotFound");
 
-    /** Static value NoAction for AlternateLocationRecoveryOption. */
+    /**
+     * Static value NoAction for AlternateLocationRecoveryOption.
+     */
     public static final AlternateLocationRecoveryOption NO_ACTION = fromString("NoAction");
 
     /**
      * Creates a new instance of AlternateLocationRecoveryOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AlternateLocationRecoveryOption extends ExpandableStringEnum<
 
     /**
      * Creates or finds a AlternateLocationRecoveryOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlternateLocationRecoveryOption.
      */
-    @JsonCreator
     public static AlternateLocationRecoveryOption fromString(String name) {
         return fromString(name, AlternateLocationRecoveryOption.class);
     }
 
     /**
      * Gets known AlternateLocationRecoveryOption values.
-     *
+     * 
      * @return known AlternateLocationRecoveryOption values.
      */
     public static Collection<AlternateLocationRecoveryOption> values() {

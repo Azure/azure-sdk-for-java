@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Infra network profile for HCI platform.
+ * Infrastructure network profile for HCI platform.
  */
 @Fluent
-public final class VirtualNetworkPropertiesInfraVnetProfileHci {
+public final class VirtualNetworkPropertiesInfraVnetProfileHci
+    implements JsonSerializable<VirtualNetworkPropertiesInfraVnetProfileHci> {
     /*
-     * Resource group in MOC(Microsoft On-premises Cloud)
+     * Group in MOC(Microsoft On-premises Cloud)
      */
-    @JsonProperty(value = "mocGroup")
     private String mocGroup;
 
     /*
      * Location in MOC(Microsoft On-premises Cloud)
      */
-    @JsonProperty(value = "mocLocation")
     private String mocLocation;
 
     /*
      * Virtual Network name in MOC(Microsoft On-premises Cloud)
      */
-    @JsonProperty(value = "mocVnetName")
     private String mocVnetName;
 
     /**
@@ -37,7 +39,7 @@ public final class VirtualNetworkPropertiesInfraVnetProfileHci {
     }
 
     /**
-     * Get the mocGroup property: Resource group in MOC(Microsoft On-premises Cloud).
+     * Get the mocGroup property: Group in MOC(Microsoft On-premises Cloud).
      * 
      * @return the mocGroup value.
      */
@@ -46,7 +48,7 @@ public final class VirtualNetworkPropertiesInfraVnetProfileHci {
     }
 
     /**
-     * Set the mocGroup property: Resource group in MOC(Microsoft On-premises Cloud).
+     * Set the mocGroup property: Group in MOC(Microsoft On-premises Cloud).
      * 
      * @param mocGroup the mocGroup value to set.
      * @return the VirtualNetworkPropertiesInfraVnetProfileHci object itself.
@@ -102,5 +104,48 @@ public final class VirtualNetworkPropertiesInfraVnetProfileHci {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mocGroup", this.mocGroup);
+        jsonWriter.writeStringField("mocLocation", this.mocLocation);
+        jsonWriter.writeStringField("mocVnetName", this.mocVnetName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkPropertiesInfraVnetProfileHci from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkPropertiesInfraVnetProfileHci if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkPropertiesInfraVnetProfileHci.
+     */
+    public static VirtualNetworkPropertiesInfraVnetProfileHci fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkPropertiesInfraVnetProfileHci deserializedVirtualNetworkPropertiesInfraVnetProfileHci
+                = new VirtualNetworkPropertiesInfraVnetProfileHci();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mocGroup".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesInfraVnetProfileHci.mocGroup = reader.getString();
+                } else if ("mocLocation".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesInfraVnetProfileHci.mocLocation = reader.getString();
+                } else if ("mocVnetName".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesInfraVnetProfileHci.mocVnetName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkPropertiesInfraVnetProfileHci;
+        });
     }
 }

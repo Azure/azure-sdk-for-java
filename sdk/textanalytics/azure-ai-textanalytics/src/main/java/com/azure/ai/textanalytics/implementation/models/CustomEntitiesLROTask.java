@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Use custom models to ease the process of information extraction from unstructured documents like contracts or
@@ -18,16 +17,34 @@ import java.util.Objects;
 @Fluent
 public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
     /*
+     * Enumeration of supported long-running Text Analysis tasks.
+     */
+    private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.CUSTOM_ENTITY_RECOGNITION;
+
+    /*
      * Supported parameters for a Custom Entities task.
      */
     private CustomEntitiesTaskParameters parameters;
 
-    /** Creates an instance of CustomEntitiesLROTask class. */
-    public CustomEntitiesLROTask() {}
+    /**
+     * Creates an instance of CustomEntitiesLROTask class.
+     */
+    public CustomEntitiesLROTask() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported long-running Text Analysis tasks.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AnalyzeTextLROTaskKind getKind() {
+        return this.kind;
+    }
 
     /**
      * Get the parameters property: Supported parameters for a Custom Entities task.
-     *
+     * 
      * @return the parameters value.
      */
     public CustomEntitiesTaskParameters getParameters() {
@@ -36,7 +53,7 @@ public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
 
     /**
      * Set the parameters property: Supported parameters for a Custom Entities task.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the CustomEntitiesLROTask object itself.
      */
@@ -45,58 +62,54 @@ public final class CustomEntitiesLROTask extends AnalyzeTextLROTask {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEntitiesLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(AnalyzeTextLROTaskKind.CUSTOM_ENTITY_RECOGNITION, null));
         jsonWriter.writeStringField("taskName", getTaskName());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of CustomEntitiesLROTask from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomEntitiesLROTask if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CustomEntitiesLROTask.
      */
     public static CustomEntitiesLROTask fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CustomEntitiesLROTask deserializedCustomEntitiesLROTask = new CustomEntitiesLROTask();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CustomEntitiesLROTask deserializedCustomEntitiesLROTask = new CustomEntitiesLROTask();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"CustomEntityRecognition".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'CustomEntityRecognition'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("taskName".equals(fieldName)) {
-                            deserializedCustomEntitiesLROTask.setTaskName(reader.getString());
-                        } else if ("parameters".equals(fieldName)) {
-                            deserializedCustomEntitiesLROTask.parameters =
-                                    CustomEntitiesTaskParameters.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("taskName".equals(fieldName)) {
+                    deserializedCustomEntitiesLROTask.setTaskName(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedCustomEntitiesLROTask.kind = AnalyzeTextLROTaskKind.fromString(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedCustomEntitiesLROTask.parameters = CustomEntitiesTaskParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCustomEntitiesLROTask;
-                });
+            return deserializedCustomEntitiesLROTask;
+        });
     }
 }

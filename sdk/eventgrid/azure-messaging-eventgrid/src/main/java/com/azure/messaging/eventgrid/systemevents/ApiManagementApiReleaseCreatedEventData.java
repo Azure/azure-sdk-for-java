@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiReleaseCreated event.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIReleaseCreated event.
  */
 @Fluent
 public final class ApiManagementApiReleaseCreatedEventData
@@ -55,6 +55,9 @@ public final class ApiManagementApiReleaseCreatedEventData
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The result of the assessment. */
+/**
+ * The result of the assessment.
+ */
 @Fluent
 public final class AssessmentStatusResponse extends AssessmentStatus {
     /*
      * The time that the assessment was created and first evaluated. Returned as UTC time in ISO 8601 format
      */
-    @JsonProperty(value = "firstEvaluationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime firstEvaluationDate;
 
     /*
      * The time that the status of the assessment last changed. Returned as UTC time in ISO 8601 format
      */
-    @JsonProperty(value = "statusChangeDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime statusChangeDate;
 
-    /** Creates an instance of AssessmentStatusResponse class. */
+    /**
+     * Creates an instance of AssessmentStatusResponse class.
+     */
     public AssessmentStatusResponse() {
     }
 
     /**
      * Get the firstEvaluationDate property: The time that the assessment was created and first evaluated. Returned as
      * UTC time in ISO 8601 format.
-     *
+     * 
      * @return the firstEvaluationDate value.
      */
     public OffsetDateTime firstEvaluationDate() {
@@ -40,28 +47,34 @@ public final class AssessmentStatusResponse extends AssessmentStatus {
     /**
      * Get the statusChangeDate property: The time that the status of the assessment last changed. Returned as UTC time
      * in ISO 8601 format.
-     *
+     * 
      * @return the statusChangeDate value.
      */
     public OffsetDateTime statusChangeDate() {
         return this.statusChangeDate;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssessmentStatusResponse withCode(AssessmentStatusCode code) {
         super.withCode(code);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssessmentStatusResponse withCause(String cause) {
         super.withCause(cause);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssessmentStatusResponse withDescription(String description) {
         super.withDescription(description);
@@ -70,11 +83,65 @@ public final class AssessmentStatusResponse extends AssessmentStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (code() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property code in model AssessmentStatusResponse"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AssessmentStatusResponse.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", code() == null ? null : code().toString());
+        jsonWriter.writeStringField("cause", cause());
+        jsonWriter.writeStringField("description", description());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssessmentStatusResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssessmentStatusResponse if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AssessmentStatusResponse.
+     */
+    public static AssessmentStatusResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssessmentStatusResponse deserializedAssessmentStatusResponse = new AssessmentStatusResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedAssessmentStatusResponse.withCode(AssessmentStatusCode.fromString(reader.getString()));
+                } else if ("cause".equals(fieldName)) {
+                    deserializedAssessmentStatusResponse.withCause(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedAssessmentStatusResponse.withDescription(reader.getString());
+                } else if ("firstEvaluationDate".equals(fieldName)) {
+                    deserializedAssessmentStatusResponse.firstEvaluationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("statusChangeDate".equals(fieldName)) {
+                    deserializedAssessmentStatusResponse.statusChangeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAssessmentStatusResponse;
+        });
     }
 }

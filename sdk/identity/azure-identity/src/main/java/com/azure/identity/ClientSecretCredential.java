@@ -17,16 +17,15 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-
 /**
  * <p>The ClientSecretCredential acquires a token via service principal authentication. It is a type of authentication
  * in Azure that enables a non-interactive login to
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>, allowing an
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>, allowing an
  * application or service to authenticate itself with Azure resources.
  * A Service Principal is essentially an identity created for an application in Microsoft Entra ID that can be used to
  * authenticate with Azure resources. It's like a "user identity" for the application or service, and it provides
  * a way for the application to authenticate itself with Azure resources without needing to use a user's credentials.
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> allows users to
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> allows users to
  * register service principals which can be used as an identity for authentication.
  * A client secret associated with the registered service principal is used as the password when authenticating the
  * service principal.
@@ -52,8 +51,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.identity.credential.clientsecretcredential.construct -->
  * <pre>
- * TokenCredential clientSecretCredential = new ClientSecretCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential clientSecretCredential = new ClientSecretCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientSecret&#40;clientSecret&#41;
  *     .build&#40;&#41;;
@@ -71,8 +69,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.identity.credential.clientsecretcredential.constructwithproxy -->
  * <pre>
- * TokenCredential secretCredential = new ClientSecretCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential secretCredential = new ClientSecretCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientSecret&#40;clientSecret&#41;
  *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
@@ -99,11 +96,10 @@ public class ClientSecretCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     ClientSecretCredential(String tenantId, String clientId, String clientSecret,
-                           IdentityClientOptions identityClientOptions) {
+        IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(clientSecret, "'clientSecret' cannot be null.");
         Objects.requireNonNull(identityClientOptions, "'identityClientOptions' cannot be null.");
-        IdentityClientBuilder builder =  new IdentityClientBuilder()
-            .tenantId(tenantId)
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .clientSecret(clientSecret)
             .identityClientOptions(identityClientOptions);
@@ -118,17 +114,20 @@ public class ClientSecretCredential implements TokenCredential {
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error));
     }
 
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClientCache(request);
-            LoggingUtil.logTokenSuccess(LOGGER, request);
-            return token;
-        } catch (Exception e) { }
+            if (token != null) {
+                LoggingUtil.logTokenSuccess(LOGGER, request);
+                return token;
+            }
+        } catch (Exception e) {
+        }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);

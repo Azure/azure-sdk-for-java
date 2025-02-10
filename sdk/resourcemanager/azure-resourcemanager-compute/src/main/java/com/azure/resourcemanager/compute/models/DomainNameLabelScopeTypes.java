@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -49,7 +48,6 @@ public final class DomainNameLabelScopeTypes extends ExpandableStringEnum<Domain
      * @param name a name to look for.
      * @return the corresponding DomainNameLabelScopeTypes.
      */
-    @JsonCreator
     public static DomainNameLabelScopeTypes fromString(String name) {
         return fromString(name, DomainNameLabelScopeTypes.class);
     }

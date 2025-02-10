@@ -5,34 +5,33 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Image analyze category.
+ * The harm category supported in Image content analysis.
  */
 public final class ImageCategory extends ExpandableStringEnum<ImageCategory> {
 
     /**
-     * Static value Hate for ImageCategory.
+     * The harm category for Image - Hate.
      */
     @Generated
     public static final ImageCategory HATE = fromString("Hate");
 
     /**
-     * Static value SelfHarm for ImageCategory.
+     * The harm category for Image - SelfHarm.
      */
     @Generated
     public static final ImageCategory SELF_HARM = fromString("SelfHarm");
 
     /**
-     * Static value Sexual for ImageCategory.
+     * The harm category for Image - Sexual.
      */
     @Generated
     public static final ImageCategory SEXUAL = fromString("Sexual");
 
     /**
-     * Static value Violence for ImageCategory.
+     * The harm category for Image - Violence.
      */
     @Generated
     public static final ImageCategory VIOLENCE = fromString("Violence");
@@ -54,7 +53,6 @@ public final class ImageCategory extends ExpandableStringEnum<ImageCategory> {
      * @return the corresponding ImageCategory.
      */
     @Generated
-    @JsonCreator
     public static ImageCategory fromString(String name) {
         return fromString(name, ImageCategory.class);
     }

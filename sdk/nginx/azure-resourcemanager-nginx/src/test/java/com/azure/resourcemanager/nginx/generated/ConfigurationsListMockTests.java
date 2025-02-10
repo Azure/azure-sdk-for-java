@@ -6,62 +6,43 @@ package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.nginx.NginxManager;
 import com.azure.resourcemanager.nginx.models.NginxConfiguration;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ConfigurationsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"files\":[{\"content\":\"gu\",\"virtualPath\":\"vmkfssxqu\"},{\"content\":\"fpl\",\"virtualPath\":\"gsxnkjzkdeslpv\"},{\"content\":\"pwiyig\",\"virtualPath\":\"pkdwzbai\"},{\"content\":\"bbaumnyquped\",\"virtualPath\":\"jn\"}],\"protectedFiles\":[{\"content\":\"hsmtxpsiebtfhvp\",\"virtualPath\":\"apskrdqm\"},{\"content\":\"jdhtldwkyzxu\",\"virtualPath\":\"kn\"},{\"content\":\"scwsv\",\"virtualPath\":\"otogtwrupqs\"}],\"package\":{\"data\":\"micykvceoveilo\",\"protectedFiles\":[\"tyfjfcnjbkcnxdhb\"]},\"rootFile\":\"kphywpnvjto\"},\"location\":\"ermclfplphoxuscr\",\"id\":\"bgyepsbj\",\"name\":\"azqugxywpmueefj\",\"type\":\"wfqkquj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"files\":[{\"content\":\"wyzmhtxon\",\"virtualPath\":\"ts\"}],\"protectedFiles\":[{\"content\":\"bp\",\"virtualPath\":\"qpsrknftguvri\"},{\"content\":\"prwmdyvxqt\",\"virtualPath\":\"riwwroy\"},{\"content\":\"exrmcqibycnojvk\",\"virtualPath\":\"e\"},{\"content\":\"sgzvahapjyzhpv\",\"virtualPath\":\"zcjrvxdjzlmwlx\"}],\"package\":{\"data\":\"gfhzovawjvzunlut\",\"protectedFiles\":[\"prnxipeil\"]},\"rootFile\":\"zuaejxd\"},\"location\":\"tskzbbtdzumveek\",\"id\":\"wozuhkf\",\"name\":\"bsjyofdx\",\"type\":\"uusdttouwa\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        NginxManager manager = NginxManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NginxManager manager = NginxManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<NginxConfiguration> response
-            = manager.configurations().list("lcuhxwtctyqiklb", "ovplw", com.azure.core.util.Context.NONE);
+            = manager.configurations().list("jkbegibtnmxiebww", "loayqcgw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gu", response.iterator().next().properties().files().get(0).content());
-        Assertions.assertEquals("vmkfssxqu", response.iterator().next().properties().files().get(0).virtualPath());
-        Assertions.assertEquals("hsmtxpsiebtfhvp",
-            response.iterator().next().properties().protectedFiles().get(0).content());
-        Assertions.assertEquals("apskrdqm",
+        Assertions.assertEquals("wyzmhtxon", response.iterator().next().properties().files().get(0).content());
+        Assertions.assertEquals("ts", response.iterator().next().properties().files().get(0).virtualPath());
+        Assertions.assertEquals("bp", response.iterator().next().properties().protectedFiles().get(0).content());
+        Assertions.assertEquals("qpsrknftguvri",
             response.iterator().next().properties().protectedFiles().get(0).virtualPath());
-        Assertions.assertEquals("micykvceoveilo", response.iterator().next().properties().packageProperty().data());
-        Assertions.assertEquals("tyfjfcnjbkcnxdhb",
+        Assertions.assertEquals("gfhzovawjvzunlut", response.iterator().next().properties().packageProperty().data());
+        Assertions.assertEquals("prnxipeil",
             response.iterator().next().properties().packageProperty().protectedFiles().get(0));
-        Assertions.assertEquals("kphywpnvjto", response.iterator().next().properties().rootFile());
-        Assertions.assertEquals("ermclfplphoxuscr", response.iterator().next().location());
+        Assertions.assertEquals("zuaejxd", response.iterator().next().properties().rootFile());
+        Assertions.assertEquals("tskzbbtdzumveek", response.iterator().next().location());
     }
 }

@@ -6,19 +6,21 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.LtrPreBackupResponseInner;
 
-/** An immutable client-side representation of LtrPreBackupResponse. */
+/**
+ * An immutable client-side representation of LtrPreBackupResponse.
+ */
 public interface LtrPreBackupResponse {
     /**
      * Gets the numberOfContainers property: Number of storage containers the plugin will use during backup. More than
      * one containers may be used for size limitations, parallelism, or redundancy etc.
-     *
+     * 
      * @return the numberOfContainers value.
      */
     int numberOfContainers();
 
     /**
      * Gets the inner com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.LtrPreBackupResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     LtrPreBackupResponseInner innerModel();

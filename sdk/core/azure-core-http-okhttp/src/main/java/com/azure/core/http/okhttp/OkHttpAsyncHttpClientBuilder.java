@@ -4,10 +4,12 @@
 package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.okhttp.implementation.OkHttpProxySelector;
 import com.azure.core.http.okhttp.implementation.ProxyAuthenticator;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
@@ -19,13 +21,95 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
-import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 
 /**
  * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by OkHttp.
+ * The client built from this builder can support sending requests synchronously and asynchronously. Use
+ * {@link HttpClient#sendSync(HttpRequest, Context)} to send the provided request synchronously with contextual
+ * information.
+ *
+ * <p>
+ * <strong>Building a new HttpClient instance</strong>
+ * </p>
+ *
+ * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *         .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
+ *
+ * <p>
+ * <strong>Building a new HttpClient instance using http proxy.</strong>
+ * </p>
+ *
+ * <p>
+ * Configuring the OkHttp client with a proxy is relevant when your application needs to communicate with Azure
+ * services through a proxy server.
+ * </p>
+ *
+ * <!-- src_embed com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions -->
+ * <pre>
+ * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
+ * final int proxyPort = 9999; &#47;&#47; Proxy port
+ * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
+ *         new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *         .proxy&#40;proxyOptions&#41;
+ *         .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions -->
+ *
+ * <p>
+ * <strong>Building a new HttpClient instance with connection timeout.</strong>
+ * </p>
+ *
+ * <p>
+ * Setting a reasonable connection timeout is particularly important in scenarios where network conditions might
+ * be unpredictable or where the server may not be responsive.
+ * </p>
+ *
+ * <!-- src_embed com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout -->
+ * <pre>
+ * final Duration connectionTimeout = Duration.ofSeconds&#40;250&#41;; &#47;&#47; connection timeout of 250 seconds
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *         .connectionTimeout&#40;connectionTimeout&#41;
+ *         .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout -->
+ *
+ * <p>
+ * <strong>Building a new HttpClient instance with HTTP/2 Support.</strong>
+ * </p>
+ *
+ * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *         .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
+ *
+ * <p>
+ * It is also possible to create a OkHttp HttpClient that only supports HTTP/2.
+ * </p>
+ *
+ * <!-- src_embed readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
+ * <pre>
+ * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;new OkHttpClient.Builder&#40;&#41;
+ *     .protocols&#40;Collections.singletonList&#40;Protocol.H2_PRIOR_KNOWLEDGE&#41;&#41;
+ *     .build&#40;&#41;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
+ *
+ * @see HttpClient
+ * @see OkHttpAsyncHttpClient
  */
 public class OkHttpAsyncHttpClientBuilder {
 
@@ -33,24 +117,9 @@ public class OkHttpAsyncHttpClientBuilder {
 
     private final okhttp3.OkHttpClient okHttpClient;
 
-    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-    private static final Duration DEFAULT_CONNECT_TIMEOUT;
-    private static final Duration DEFAULT_WRITE_TIMEOUT;
-    private static final Duration DEFAULT_READ_TIMEOUT;
-
-    static {
-        ClientLogger logger = new ClientLogger(OkHttpAsyncHttpClientBuilder.class);
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger);
-        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), logger);
-        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), logger);
-    }
-
     private List<Interceptor> networkInterceptors = new ArrayList<>();
     private Duration readTimeout;
+    private Duration responseTimeout;
     private Duration writeTimeout;
     private Duration connectionTimeout;
     private Duration callTimeout;
@@ -118,8 +187,28 @@ public class OkHttpAsyncHttpClientBuilder {
      * @see OkHttpClient.Builder#readTimeout(Duration)
      */
     public OkHttpAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
-        // setReadTimeout can be null
         this.readTimeout = readTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the response timeout duration used when waiting for a server to reply.
+     * <p>
+     * The response timeout begins once the request write completes and finishes once the first response read is
+     * triggered when the server response is received.
+     * <p>
+     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT} or a
+     * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied to the response. When applying the timeout the greatest of one millisecond and the value of {@code
+     * responseTimeout} will be used.
+     * <p>
+     * Given OkHttp doesn't have an equivalent timeout for just responses, this is handled manually.
+     *
+     * @param responseTimeout Response timeout duration.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
+     */
+    public OkHttpAsyncHttpClientBuilder responseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
         return this;
     }
 
@@ -265,9 +354,8 @@ public class OkHttpAsyncHttpClientBuilder {
      * @return A new OkHttp-backed {@link com.azure.core.http.HttpClient} instance.
      */
     public HttpClient build() {
-        OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null
-            ? new OkHttpClient.Builder()
-            : this.okHttpClient.newBuilder();
+        OkHttpClient.Builder httpClientBuilder
+            = this.okHttpClient == null ? new OkHttpClient.Builder() : this.okHttpClient.newBuilder();
 
         // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {
@@ -275,10 +363,9 @@ public class OkHttpAsyncHttpClientBuilder {
         }
 
         // Configure operation timeouts.
-        httpClientBuilder = httpClientBuilder
-            .connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT))
-            .writeTimeout(getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT))
-            .readTimeout(getTimeout(readTimeout, DEFAULT_READ_TIMEOUT));
+        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, getDefaultConnectTimeout()))
+            .writeTimeout(getTimeout(writeTimeout, getDefaultWriteTimeout()))
+            .readTimeout(getTimeout(readTimeout, getDefaultReadTimeout()));
 
         if (callTimeout != null) {
             // Call timeout is disabled by default.
@@ -295,23 +382,20 @@ public class OkHttpAsyncHttpClientBuilder {
             httpClientBuilder = httpClientBuilder.dispatcher(dispatcher);
         }
 
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
-        ProxyOptions buildProxyOptions = (proxyOptions == null)
-            ? ProxyOptions.fromConfiguration(buildConfiguration, true)
-            : proxyOptions;
+        ProxyOptions buildProxyOptions
+            = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
         if (buildProxyOptions != null) {
-            httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(
-                buildProxyOptions.getType().toProxyType(),
-                buildProxyOptions::getAddress,
-                buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder
+                = httpClientBuilder.proxySelector(new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(),
+                    buildProxyOptions::getAddress, buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
-                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(buildProxyOptions.getUsername(),
-                    buildProxyOptions.getPassword());
+                ProxyAuthenticator proxyAuthenticator
+                    = new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword());
 
                 httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
                     .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());
@@ -321,31 +405,7 @@ public class OkHttpAsyncHttpClientBuilder {
         // Set the followRedirects property.
         httpClientBuilder.followRedirects(this.followRedirects);
 
-        return new OkHttpAsyncHttpClient(httpClientBuilder.build());
-    }
-
-    /*
-     * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.
-     *
-     * If the timeout is {@code null} the default timeout will be used. If the timeout is less than or equal to zero
-     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
-     */
-    static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
-        // Timeout is null, use the default timeout.
-        if (configuredTimeout == null) {
-            return defaultTimeout;
-        }
-
-        // Timeout is less than or equal to zero, return no timeout.
-        if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
-            return Duration.ZERO;
-        }
-
-        // Return the maximum of the timeout period and the minimum allowed timeout period.
-        if (configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0) {
-            return MINIMUM_TIMEOUT;
-        } else  {
-            return configuredTimeout;
-        }
+        return new OkHttpAsyncHttpClient(httpClientBuilder.build(),
+            getTimeout(responseTimeout, getDefaultResponseTimeout()));
     }
 }

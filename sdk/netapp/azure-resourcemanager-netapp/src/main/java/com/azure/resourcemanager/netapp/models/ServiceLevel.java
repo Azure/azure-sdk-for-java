@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -35,6 +34,11 @@ public final class ServiceLevel extends ExpandableStringEnum<ServiceLevel> {
     public static final ServiceLevel STANDARD_ZRS = fromString("StandardZRS");
 
     /**
+     * Static value Flexible for ServiceLevel.
+     */
+    public static final ServiceLevel FLEXIBLE = fromString("Flexible");
+
+    /**
      * Creates a new instance of ServiceLevel value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -49,7 +53,6 @@ public final class ServiceLevel extends ExpandableStringEnum<ServiceLevel> {
      * @param name a name to look for.
      * @return the corresponding ServiceLevel.
      */
-    @JsonCreator
     public static ServiceLevel fromString(String name) {
         return fromString(name, ServiceLevel.class);
     }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * supported. "Disabled" stands for storage auto-grow is not supported.
  */
 public final class StorageAutoGrowthSupportedEnum extends ExpandableStringEnum<StorageAutoGrowthSupportedEnum> {
-    /** Static value Enabled for StorageAutoGrowthSupportedEnum. */
+    /**
+     * Static value Enabled for StorageAutoGrowthSupportedEnum.
+     */
     public static final StorageAutoGrowthSupportedEnum ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for StorageAutoGrowthSupportedEnum. */
+    /**
+     * Static value Disabled for StorageAutoGrowthSupportedEnum.
+     */
     public static final StorageAutoGrowthSupportedEnum DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of StorageAutoGrowthSupportedEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class StorageAutoGrowthSupportedEnum extends ExpandableStringEnum<S
 
     /**
      * Creates or finds a StorageAutoGrowthSupportedEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageAutoGrowthSupportedEnum.
      */
-    @JsonCreator
     public static StorageAutoGrowthSupportedEnum fromString(String name) {
         return fromString(name, StorageAutoGrowthSupportedEnum.class);
     }
 
     /**
      * Gets known StorageAutoGrowthSupportedEnum values.
-     *
+     * 
      * @return known StorageAutoGrowthSupportedEnum values.
      */
     public static Collection<StorageAutoGrowthSupportedEnum> values() {

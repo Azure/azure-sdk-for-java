@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents cluster name availability. */
+/**
+ * Represents cluster name availability.
+ */
 @Fluent
-public final class NameAvailabilityInner {
+public final class NameAvailabilityInner implements JsonSerializable<NameAvailabilityInner> {
     /*
      * Error message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Indicates whether the cluster name is available.
      */
-    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /*
      * Name of the cluster.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Type of the cluster.
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of NameAvailabilityInner class. */
+    /**
+     * Creates an instance of NameAvailabilityInner class.
+     */
     public NameAvailabilityInner() {
     }
 
     /**
      * Get the message property: Error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -49,7 +53,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Set the message property: Error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the NameAvailabilityInner object itself.
      */
@@ -60,7 +64,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Get the nameAvailable property: Indicates whether the cluster name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -69,7 +73,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Set the nameAvailable property: Indicates whether the cluster name is available.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the NameAvailabilityInner object itself.
      */
@@ -80,7 +84,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Get the name property: Name of the cluster.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +93,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Set the name property: Name of the cluster.
-     *
+     * 
      * @param name the name value to set.
      * @return the NameAvailabilityInner object itself.
      */
@@ -100,7 +104,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Get the type property: Type of the cluster.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -109,7 +113,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Set the type property: Type of the cluster.
-     *
+     * 
      * @param type the type value to set.
      * @return the NameAvailabilityInner object itself.
      */
@@ -120,9 +124,54 @@ public final class NameAvailabilityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameAvailabilityInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameAvailabilityInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NameAvailabilityInner.
+     */
+    public static NameAvailabilityInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameAvailabilityInner deserializedNameAvailabilityInner = new NameAvailabilityInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.message = reader.getString();
+                } else if ("nameAvailable".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.nameAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameAvailabilityInner;
+        });
     }
 }

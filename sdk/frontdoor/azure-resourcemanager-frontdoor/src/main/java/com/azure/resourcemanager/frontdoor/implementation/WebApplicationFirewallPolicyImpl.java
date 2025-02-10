@@ -21,10 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class WebApplicationFirewallPolicyImpl
-    implements WebApplicationFirewallPolicy,
-        WebApplicationFirewallPolicy.Definition,
-        WebApplicationFirewallPolicy.Update {
+public final class WebApplicationFirewallPolicyImpl implements WebApplicationFirewallPolicy,
+    WebApplicationFirewallPolicy.Definition, WebApplicationFirewallPolicy.Update {
     private WebApplicationFirewallPolicyInner innerObject;
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
@@ -141,20 +139,16 @@ public final class WebApplicationFirewallPolicyImpl
     }
 
     public WebApplicationFirewallPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .createOrUpdate(resourceGroupName, policyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .createOrUpdate(resourceGroupName, policyName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WebApplicationFirewallPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .createOrUpdate(resourceGroupName, policyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .createOrUpdate(resourceGroupName, policyName, this.innerModel(), context);
         return this;
     }
 
@@ -170,49 +164,41 @@ public final class WebApplicationFirewallPolicyImpl
     }
 
     public WebApplicationFirewallPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .update(resourceGroupName, policyName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .update(resourceGroupName, policyName, updateParameters, Context.NONE);
         return this;
     }
 
     public WebApplicationFirewallPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .update(resourceGroupName, policyName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .update(resourceGroupName, policyName, updateParameters, context);
         return this;
     }
 
-    WebApplicationFirewallPolicyImpl(
-        WebApplicationFirewallPolicyInner innerObject,
+    WebApplicationFirewallPolicyImpl(WebApplicationFirewallPolicyInner innerObject,
         com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.policyName = Utils.getValueFromIdByName(innerObject.id(), "FrontDoorWebApplicationFirewallPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.policyName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "FrontDoorWebApplicationFirewallPolicies");
     }
 
     public WebApplicationFirewallPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .getByResourceGroupWithResponse(resourceGroupName, policyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .getByResourceGroupWithResponse(resourceGroupName, policyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public WebApplicationFirewallPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .getByResourceGroupWithResponse(resourceGroupName, policyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .getByResourceGroupWithResponse(resourceGroupName, policyName, context)
+            .getValue();
         return this;
     }
 

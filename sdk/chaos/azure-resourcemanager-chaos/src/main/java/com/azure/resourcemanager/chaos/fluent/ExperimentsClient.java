@@ -16,11 +16,13 @@ import com.azure.resourcemanager.chaos.fluent.models.ExperimentExecutionInner;
 import com.azure.resourcemanager.chaos.fluent.models.ExperimentInner;
 import com.azure.resourcemanager.chaos.models.ExperimentUpdate;
 
-/** An instance of this class provides access to all the operations defined in ExperimentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExperimentsClient.
+ */
 public interface ExperimentsClient {
     /**
      * Get a list of Experiment resources in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Experiment resources in a subscription as paginated response with {@link PagedIterable}.
@@ -30,9 +32,9 @@ public interface ExperimentsClient {
 
     /**
      * Get a list of Experiment resources in a subscription.
-     *
+     * 
      * @param running Optional value that indicates whether to filter results based on if the Experiment is currently
-     *     running. If null, then the results will not be filtered.
+     * running. If null, then the results will not be filtered.
      * @param continuationToken String that sets the continuation token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface ExperimentsClient {
 
     /**
      * Get a list of Experiment resources in a resource group.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,10 +59,10 @@ public interface ExperimentsClient {
 
     /**
      * Get a list of Experiment resources in a resource group.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param running Optional value that indicates whether to filter results based on if the Experiment is currently
-     *     running. If null, then the results will not be filtered.
+     * running. If null, then the results will not be filtered.
      * @param continuationToken String that sets the continuation token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,12 +71,12 @@ public interface ExperimentsClient {
      * @return a list of Experiment resources in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExperimentInner> listByResourceGroup(
-        String resourceGroupName, Boolean running, String continuationToken, Context context);
+    PagedIterable<ExperimentInner> listByResourceGroup(String resourceGroupName, Boolean running,
+        String continuationToken, Context context);
 
     /**
      * Delete a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,7 +89,7 @@ public interface ExperimentsClient {
 
     /**
      * Delete a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -101,7 +103,7 @@ public interface ExperimentsClient {
 
     /**
      * Delete a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,7 +115,7 @@ public interface ExperimentsClient {
 
     /**
      * Delete a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -126,7 +128,7 @@ public interface ExperimentsClient {
 
     /**
      * Get a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -136,12 +138,12 @@ public interface ExperimentsClient {
      * @return a Experiment resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExperimentInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String experimentName, Context context);
+    Response<ExperimentInner> getByResourceGroupWithResponse(String resourceGroupName, String experimentName,
+        Context context);
 
     /**
      * Get a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +156,7 @@ public interface ExperimentsClient {
 
     /**
      * Create or update a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param experiment Experiment resource to be created or updated.
@@ -164,12 +166,12 @@ public interface ExperimentsClient {
      * @return the {@link SyncPoller} for polling of model that represents a Experiment resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(
-        String resourceGroupName, String experimentName, ExperimentInner experiment);
+    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(String resourceGroupName,
+        String experimentName, ExperimentInner experiment);
 
     /**
      * Create or update a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param experiment Experiment resource to be created or updated.
@@ -180,12 +182,12 @@ public interface ExperimentsClient {
      * @return the {@link SyncPoller} for polling of model that represents a Experiment resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(
-        String resourceGroupName, String experimentName, ExperimentInner experiment, Context context);
+    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(String resourceGroupName,
+        String experimentName, ExperimentInner experiment, Context context);
 
     /**
      * Create or update a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param experiment Experiment resource to be created or updated.
@@ -199,7 +201,7 @@ public interface ExperimentsClient {
 
     /**
      * Create or update a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param experiment Experiment resource to be created or updated.
@@ -210,12 +212,12 @@ public interface ExperimentsClient {
      * @return model that represents a Experiment resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExperimentInner createOrUpdate(
-        String resourceGroupName, String experimentName, ExperimentInner experiment, Context context);
+    ExperimentInner createOrUpdate(String resourceGroupName, String experimentName, ExperimentInner experiment,
+        Context context);
 
     /**
      * The operation to update an experiment.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param experiment Parameters supplied to the Update experiment operation.
@@ -225,12 +227,12 @@ public interface ExperimentsClient {
      * @return the {@link SyncPoller} for polling of model that represents a Experiment resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(
-        String resourceGroupName, String experimentName, ExperimentUpdate experiment);
+    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(String resourceGroupName,
+        String experimentName, ExperimentUpdate experiment);
 
     /**
      * The operation to update an experiment.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param experiment Parameters supplied to the Update experiment operation.
@@ -241,12 +243,12 @@ public interface ExperimentsClient {
      * @return the {@link SyncPoller} for polling of model that represents a Experiment resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(
-        String resourceGroupName, String experimentName, ExperimentUpdate experiment, Context context);
+    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(String resourceGroupName,
+        String experimentName, ExperimentUpdate experiment, Context context);
 
     /**
      * The operation to update an experiment.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param experiment Parameters supplied to the Update experiment operation.
@@ -260,7 +262,7 @@ public interface ExperimentsClient {
 
     /**
      * The operation to update an experiment.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param experiment Parameters supplied to the Update experiment operation.
@@ -271,12 +273,12 @@ public interface ExperimentsClient {
      * @return model that represents a Experiment resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExperimentInner update(
-        String resourceGroupName, String experimentName, ExperimentUpdate experiment, Context context);
+    ExperimentInner update(String resourceGroupName, String experimentName, ExperimentUpdate experiment,
+        Context context);
 
     /**
      * Cancel a running Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,7 +291,7 @@ public interface ExperimentsClient {
 
     /**
      * Cancel a running Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -303,7 +305,7 @@ public interface ExperimentsClient {
 
     /**
      * Cancel a running Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,7 +317,7 @@ public interface ExperimentsClient {
 
     /**
      * Cancel a running Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -328,7 +330,7 @@ public interface ExperimentsClient {
 
     /**
      * Start a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,7 +343,7 @@ public interface ExperimentsClient {
 
     /**
      * Start a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -355,7 +357,7 @@ public interface ExperimentsClient {
 
     /**
      * Start a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,7 +369,7 @@ public interface ExperimentsClient {
 
     /**
      * Start a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -380,7 +382,7 @@ public interface ExperimentsClient {
 
     /**
      * Get a list of executions of an Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,7 +395,7 @@ public interface ExperimentsClient {
 
     /**
      * Get a list of executions of an Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -403,12 +405,12 @@ public interface ExperimentsClient {
      * @return a list of executions of an Experiment resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExperimentExecutionInner> listAllExecutions(
-        String resourceGroupName, String experimentName, Context context);
+    PagedIterable<ExperimentExecutionInner> listAllExecutions(String resourceGroupName, String experimentName,
+        Context context);
 
     /**
      * Get an execution of an Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param executionId GUID that represents a Experiment execution detail.
@@ -419,12 +421,12 @@ public interface ExperimentsClient {
      * @return an execution of an Experiment resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExperimentExecutionInner> getExecutionWithResponse(
-        String resourceGroupName, String experimentName, String executionId, Context context);
+    Response<ExperimentExecutionInner> getExecutionWithResponse(String resourceGroupName, String experimentName,
+        String executionId, Context context);
 
     /**
      * Get an execution of an Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param executionId GUID that represents a Experiment execution detail.
@@ -438,7 +440,7 @@ public interface ExperimentsClient {
 
     /**
      * Execution details of an experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param executionId GUID that represents a Experiment execution detail.
@@ -449,12 +451,12 @@ public interface ExperimentsClient {
      * @return model that represents the execution details of an Experiment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExperimentExecutionDetailsInner> executionDetailsWithResponse(
-        String resourceGroupName, String experimentName, String executionId, Context context);
+    Response<ExperimentExecutionDetailsInner> executionDetailsWithResponse(String resourceGroupName,
+        String experimentName, String executionId, Context context);
 
     /**
      * Execution details of an experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param executionId GUID that represents a Experiment execution detail.
@@ -464,6 +466,6 @@ public interface ExperimentsClient {
      * @return model that represents the execution details of an Experiment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExperimentExecutionDetailsInner executionDetails(
-        String resourceGroupName, String experimentName, String executionId);
+    ExperimentExecutionDetailsInner executionDetails(String resourceGroupName, String experimentName,
+        String executionId);
 }

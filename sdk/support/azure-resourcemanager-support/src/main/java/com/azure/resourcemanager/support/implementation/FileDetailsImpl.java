@@ -42,15 +42,15 @@ public final class FileDetailsImpl implements FileDetails, FileDetails.Definitio
         return this.innerModel().createdOn();
     }
 
-    public Float chunkSize() {
+    public Integer chunkSize() {
         return this.innerModel().chunkSize();
     }
 
-    public Float fileSize() {
+    public Integer fileSize() {
         return this.innerModel().fileSize();
     }
 
-    public Float numberOfChunks() {
+    public Integer numberOfChunks() {
         return this.innerModel().numberOfChunks();
     }
 
@@ -72,22 +72,18 @@ public final class FileDetailsImpl implements FileDetails, FileDetails.Definitio
     }
 
     public FileDetails create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFiles()
-                .createWithResponse(fileWorkspaceName, fileName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFiles()
+            .createWithResponse(fileWorkspaceName, fileName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public FileDetails create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFiles()
-                .createWithResponse(fileWorkspaceName, fileName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFiles()
+            .createWithResponse(fileWorkspaceName, fileName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -98,18 +94,18 @@ public final class FileDetailsImpl implements FileDetails, FileDetails.Definitio
     }
 
     public FileDetails refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFiles()
-                .getWithResponse(fileWorkspaceName, fileName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFiles()
+            .getWithResponse(fileWorkspaceName, fileName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FileDetails refresh(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getFiles().getWithResponse(fileWorkspaceName, fileName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFiles()
+            .getWithResponse(fileWorkspaceName, fileName, context)
+            .getValue();
         return this;
     }
 
@@ -121,17 +117,17 @@ public final class FileDetailsImpl implements FileDetails, FileDetails.Definitio
         serviceManager.files().upload(fileWorkspaceName, fileName, uploadFile);
     }
 
-    public FileDetailsImpl withChunkSize(Float chunkSize) {
+    public FileDetailsImpl withChunkSize(Integer chunkSize) {
         this.innerModel().withChunkSize(chunkSize);
         return this;
     }
 
-    public FileDetailsImpl withFileSize(Float fileSize) {
+    public FileDetailsImpl withFileSize(Integer fileSize) {
         this.innerModel().withFileSize(fileSize);
         return this;
     }
 
-    public FileDetailsImpl withNumberOfChunks(Float numberOfChunks) {
+    public FileDetailsImpl withNumberOfChunks(Integer numberOfChunks) {
         this.innerModel().withNumberOfChunks(numberOfChunks);
         return this;
     }

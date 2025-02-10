@@ -15,31 +15,22 @@ import org.junit.jupiter.api.Assertions;
 public final class TagSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagSettingsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"hzls\":[\"kcqvyxl\"],\"konocu\":[\"ohoqqnwvlryav\",\"hheunmmqhgyx\"],\"jmwvvj\":[\"klyaxuconu\",\"szfkbe\",\"pewr\"]},\"filterOperator\":\"Any\"}")
-                .toObject(TagSettingsProperties.class);
-        Assertions.assertEquals("kcqvyxl", model.tags().get("hzls").get(0));
-        Assertions.assertEquals(TagOperators.ANY, model.filterOperator());
+        TagSettingsProperties model = BinaryData
+            .fromString(
+                "{\"tags\":{\"slpvlop\":[\"u\",\"uosvmkfssxqukk\",\"plgmgsxnk\",\"zkd\"]},\"filterOperator\":\"All\"}")
+            .toObject(TagSettingsProperties.class);
+        Assertions.assertEquals("u", model.tags().get("slpvlop").get(0));
+        Assertions.assertEquals(TagOperators.ALL, model.filterOperator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagSettingsProperties model =
-            new TagSettingsProperties()
-                .withTags(
-                    mapOf(
-                        "hzls",
-                        Arrays.asList("kcqvyxl"),
-                        "konocu",
-                        Arrays.asList("ohoqqnwvlryav", "hheunmmqhgyx"),
-                        "jmwvvj",
-                        Arrays.asList("klyaxuconu", "szfkbe", "pewr")))
-                .withFilterOperator(TagOperators.ANY);
+        TagSettingsProperties model = new TagSettingsProperties()
+            .withTags(mapOf("slpvlop", Arrays.asList("u", "uosvmkfssxqukk", "plgmgsxnk", "zkd")))
+            .withFilterOperator(TagOperators.ALL);
         model = BinaryData.fromObject(model).toObject(TagSettingsProperties.class);
-        Assertions.assertEquals("kcqvyxl", model.tags().get("hzls").get(0));
-        Assertions.assertEquals(TagOperators.ANY, model.filterOperator());
+        Assertions.assertEquals("u", model.tags().get("slpvlop").get(0));
+        Assertions.assertEquals(TagOperators.ALL, model.filterOperator());
     }
 
     // Use "Map.of" if available

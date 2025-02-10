@@ -5,45 +5,57 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** SQL specific recoverypoint, specifically encapsulates full/diff recoverypoint along with extended info. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = AzureWorkloadSqlRecoveryPoint.class)
-@JsonTypeName("AzureWorkloadSQLRecoveryPoint")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "AzureWorkloadSQLPointInTimeRecoveryPoint",
-        value = AzureWorkloadSqlPointInTimeRecoveryPoint.class)
-})
+/**
+ * SQL specific recoverypoint, specifically encapsulates full/diff recoverypoint along with extended info.
+ */
 @Fluent
 public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "AzureWorkloadSQLRecoveryPoint";
+
     /*
      * Extended Info that provides data directory details. Will be populated in two cases:
      * When a specific recovery point is accessed using GetRecoveryPoint
      * Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter
      */
-    @JsonProperty(value = "extendedInfo")
     private AzureWorkloadSqlRecoveryPointExtendedInfo extendedInfo;
 
-    /** Creates an instance of AzureWorkloadSqlRecoveryPoint class. */
+    /**
+     * Creates an instance of AzureWorkloadSqlRecoveryPoint class.
+     */
     public AzureWorkloadSqlRecoveryPoint() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the extendedInfo property: Extended Info that provides data directory details. Will be populated in two
-     * cases: When a specific recovery point is accessed using GetRecoveryPoint Or when ListRecoveryPoints is called for
-     * Log RP only with ExtendedInfo query filter.
-     *
+     * cases:
+     * When a specific recovery point is accessed using GetRecoveryPoint
+     * Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter.
+     * 
      * @return the extendedInfo value.
      */
     public AzureWorkloadSqlRecoveryPointExtendedInfo extendedInfo() {
@@ -52,9 +64,10 @@ public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
 
     /**
      * Set the extendedInfo property: Extended Info that provides data directory details. Will be populated in two
-     * cases: When a specific recovery point is accessed using GetRecoveryPoint Or when ListRecoveryPoints is called for
-     * Log RP only with ExtendedInfo query filter.
-     *
+     * cases:
+     * When a specific recovery point is accessed using GetRecoveryPoint
+     * Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter.
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the AzureWorkloadSqlRecoveryPoint object itself.
      */
@@ -63,37 +76,47 @@ public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRecoveryPoint withRecoveryPointTimeInUtc(OffsetDateTime recoveryPointTimeInUtc) {
         super.withRecoveryPointTimeInUtc(recoveryPointTimeInUtc);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRecoveryPoint withType(RestorePointType type) {
         super.withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSqlRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
+    public AzureWorkloadSqlRecoveryPoint
+        withRecoveryPointTierDetails(List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         super.withRecoveryPointTierDetails(recoveryPointTierDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSqlRecoveryPoint withRecoveryPointMoveReadinessInfo(
-        Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
+    public AzureWorkloadSqlRecoveryPoint
+        withRecoveryPointMoveReadinessInfo(Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo) {
         super.withRecoveryPointMoveReadinessInfo(recoveryPointMoveReadinessInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRecoveryPoint withRecoveryPointProperties(RecoveryPointProperties recoveryPointProperties) {
         super.withRecoveryPointProperties(recoveryPointProperties);
@@ -102,14 +125,119 @@ public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+        if (recoveryPointTierDetails() != null) {
+            recoveryPointTierDetails().forEach(e -> e.validate());
+        }
+        if (recoveryPointMoveReadinessInfo() != null) {
+            recoveryPointMoveReadinessInfo().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (recoveryPointProperties() != null) {
+            recoveryPointProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryPointTimeInUTC",
+            recoveryPointTimeInUtc() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(recoveryPointTimeInUtc()));
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
+        jsonWriter.writeArrayField("recoveryPointTierDetails", recoveryPointTierDetails(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("recoveryPointMoveReadinessInfo", recoveryPointMoveReadinessInfo(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("recoveryPointProperties", recoveryPointProperties());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWorkloadSqlRecoveryPoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWorkloadSqlRecoveryPoint if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWorkloadSqlRecoveryPoint.
+     */
+    public static AzureWorkloadSqlRecoveryPoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureWorkloadSQLPointInTimeRecoveryPoint".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlPointInTimeRecoveryPoint.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AzureWorkloadSqlRecoveryPoint fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWorkloadSqlRecoveryPoint deserializedAzureWorkloadSqlRecoveryPoint
+                = new AzureWorkloadSqlRecoveryPoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryPointTimeInUTC".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRecoveryPoint.withRecoveryPointTimeInUtc(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRecoveryPoint.withType(RestorePointType.fromString(reader.getString()));
+                } else if ("recoveryPointTierDetails".equals(fieldName)) {
+                    List<RecoveryPointTierInformationV2> recoveryPointTierDetails
+                        = reader.readArray(reader1 -> RecoveryPointTierInformationV2.fromJson(reader1));
+                    deserializedAzureWorkloadSqlRecoveryPoint.withRecoveryPointTierDetails(recoveryPointTierDetails);
+                } else if ("recoveryPointMoveReadinessInfo".equals(fieldName)) {
+                    Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo
+                        = reader.readMap(reader1 -> RecoveryPointMoveReadinessInfo.fromJson(reader1));
+                    deserializedAzureWorkloadSqlRecoveryPoint
+                        .withRecoveryPointMoveReadinessInfo(recoveryPointMoveReadinessInfo);
+                } else if ("recoveryPointProperties".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRecoveryPoint
+                        .withRecoveryPointProperties(RecoveryPointProperties.fromJson(reader));
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRecoveryPoint.objectType = reader.getString();
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRecoveryPoint.extendedInfo
+                        = AzureWorkloadSqlRecoveryPointExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWorkloadSqlRecoveryPoint;
+        });
     }
 }

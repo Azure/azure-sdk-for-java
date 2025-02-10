@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-/** Samples for RuleSets Delete. */
+/**
+ * Samples for RuleSets Delete.
+ */
 public final class RuleSetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/RuleSets_Delete.json
+     * x-ms-original-file:
+     * specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/RuleSets_Delete.json
      */
     /**
      * Sample code: RuleSets_Delete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void ruleSetsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
+        azure.cdnProfiles()
             .manager()
             .serviceClient()
             .getRuleSets()

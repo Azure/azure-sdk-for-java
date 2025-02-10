@@ -6,10 +6,12 @@ package com.azure.core.serializer.json.jackson.implementation;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.ReflectiveInvoker;
+import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonSerializable;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -125,7 +128,6 @@ public final class ObjectMapperShim {
 
     private final ObjectMapper mapper;
     private MemberNameConverterImpl memberNameConverter;
-
 
     /**
      * Creates instance of {@link ObjectMapperShim}.
@@ -265,6 +267,7 @@ public final class ObjectMapperShim {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private JavaType createJavaType(Type type) {
         if (type == null) {
             return null;
@@ -281,7 +284,55 @@ public final class ObjectMapperShim {
             return getFromTypeCache(type, t -> mapper.getTypeFactory()
                 .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments));
         } else {
-            return getFromTypeCache(type, t -> mapper.getTypeFactory().constructType(t));
+            return getFromTypeCache(type, t -> {
+                JavaType javaType = mapper.constructType(t);
+
+                // Non-container type, just need to check for the type being JsonSerializable.
+                if (!javaType.isContainerType()) {
+                    Class<?> clazz = javaType.getRawClass();
+                    if (ReflectionSerializable.supportsJsonSerializable(clazz)) {
+                        return javaType
+                            .withValueHandler(new JsonSerializableDeserializer((Class<JsonSerializable<?>>) clazz));
+                    }
+
+                    return javaType;
+                }
+
+                // Need additional handling here so that the JavaType returned has the correct value handler for
+                // JsonSerializable types.
+                // While JsonSerializableDeserializer is registered with the ObjectMapper, and it mutates the
+                // JsonSerializer used by Jackson to handle as a JsonSerializable type, there have been cases where
+                // collection types (List, Map, etc) have not been handled correctly. So, additional handling is done
+                // here to ensure that the JavaType returned has the correct value handler.
+                //
+                // These are container types and they need to be traversed until a non-container type is found.
+
+                JavaType initializeType = javaType;
+                Stack<JavaType> containerTypes = new Stack<>();
+                while (javaType.isContainerType()) {
+                    containerTypes.add(javaType);
+                    javaType = javaType.getContentType();
+                }
+
+                // At this point the javaType is a non-container type, check if it is a JsonSerializable type.
+                Class<?> clazz = javaType.getRawClass();
+                if (ReflectionSerializable.supportsJsonSerializable(clazz)) {
+                    // JsonSerializable type, so add the JsonSerializableDeserializer as the value handler.
+                    javaType = javaType
+                        .withValueHandler(new JsonSerializableDeserializer((Class<JsonSerializable<?>>) clazz));
+                } else {
+                    return initializeType;
+                }
+
+                // Now we need to unwind the stack of container types and update the content type of each container
+                // type. Jackson returns new instances upon each modification, so we need to track the new instance.
+                JavaType toReturn = javaType;
+                while (!containerTypes.isEmpty()) {
+                    toReturn = containerTypes.pop().withContentType(toReturn);
+                }
+
+                return toReturn;
+            });
         }
     }
 
@@ -305,7 +356,7 @@ public final class ObjectMapperShim {
             ReflectiveInvoker constructor = getFromHeadersConstructorCache(deserializedHeadersType);
 
             if (constructor != NO_CONSTRUCTOR_REFLECTIVE_INVOKER) {
-                return (T) constructor.invokeWithArguments(headers);
+                return (T) constructor.invokeStatic(headers);
             }
         } catch (Exception exception) {
             // invokeWithArguments will fail with a non-RuntimeException if the reflective call was invalid.

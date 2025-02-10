@@ -6,34 +6,50 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Recovery plan HVR Azure failback input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVReplicaAzureFailback")
+/**
+ * Recovery plan HVR Azure failback input.
+ */
 @Fluent
 public final class RecoveryPlanHyperVReplicaAzureFailbackInput extends RecoveryPlanProviderSpecificFailoverInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "HyperVReplicaAzureFailback";
+
+    /*
      * The data sync option.
      */
-    @JsonProperty(value = "dataSyncOption", required = true)
     private DataSyncStatus dataSyncOption;
 
     /*
      * The ALR option.
      */
-    @JsonProperty(value = "recoveryVmCreationOption", required = true)
     private AlternateLocationRecoveryOption recoveryVmCreationOption;
 
-    /** Creates an instance of RecoveryPlanHyperVReplicaAzureFailbackInput class. */
+    /**
+     * Creates an instance of RecoveryPlanHyperVReplicaAzureFailbackInput class.
+     */
     public RecoveryPlanHyperVReplicaAzureFailbackInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the dataSyncOption property: The data sync option.
-     *
+     * 
      * @return the dataSyncOption value.
      */
     public DataSyncStatus dataSyncOption() {
@@ -42,7 +58,7 @@ public final class RecoveryPlanHyperVReplicaAzureFailbackInput extends RecoveryP
 
     /**
      * Set the dataSyncOption property: The data sync option.
-     *
+     * 
      * @param dataSyncOption the dataSyncOption value to set.
      * @return the RecoveryPlanHyperVReplicaAzureFailbackInput object itself.
      */
@@ -53,7 +69,7 @@ public final class RecoveryPlanHyperVReplicaAzureFailbackInput extends RecoveryP
 
     /**
      * Get the recoveryVmCreationOption property: The ALR option.
-     *
+     * 
      * @return the recoveryVmCreationOption value.
      */
     public AlternateLocationRecoveryOption recoveryVmCreationOption() {
@@ -62,39 +78,82 @@ public final class RecoveryPlanHyperVReplicaAzureFailbackInput extends RecoveryP
 
     /**
      * Set the recoveryVmCreationOption property: The ALR option.
-     *
+     * 
      * @param recoveryVmCreationOption the recoveryVmCreationOption value to set.
      * @return the RecoveryPlanHyperVReplicaAzureFailbackInput object itself.
      */
-    public RecoveryPlanHyperVReplicaAzureFailbackInput withRecoveryVmCreationOption(
-        AlternateLocationRecoveryOption recoveryVmCreationOption) {
+    public RecoveryPlanHyperVReplicaAzureFailbackInput
+        withRecoveryVmCreationOption(AlternateLocationRecoveryOption recoveryVmCreationOption) {
         this.recoveryVmCreationOption = recoveryVmCreationOption;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (dataSyncOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataSyncOption in model"
-                            + " RecoveryPlanHyperVReplicaAzureFailbackInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataSyncOption in model RecoveryPlanHyperVReplicaAzureFailbackInput"));
         }
         if (recoveryVmCreationOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryVmCreationOption in model"
-                            + " RecoveryPlanHyperVReplicaAzureFailbackInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryVmCreationOption in model RecoveryPlanHyperVReplicaAzureFailbackInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPlanHyperVReplicaAzureFailbackInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSyncOption",
+            this.dataSyncOption == null ? null : this.dataSyncOption.toString());
+        jsonWriter.writeStringField("recoveryVmCreationOption",
+            this.recoveryVmCreationOption == null ? null : this.recoveryVmCreationOption.toString());
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanHyperVReplicaAzureFailbackInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanHyperVReplicaAzureFailbackInput if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryPlanHyperVReplicaAzureFailbackInput.
+     */
+    public static RecoveryPlanHyperVReplicaAzureFailbackInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanHyperVReplicaAzureFailbackInput deserializedRecoveryPlanHyperVReplicaAzureFailbackInput
+                = new RecoveryPlanHyperVReplicaAzureFailbackInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSyncOption".equals(fieldName)) {
+                    deserializedRecoveryPlanHyperVReplicaAzureFailbackInput.dataSyncOption
+                        = DataSyncStatus.fromString(reader.getString());
+                } else if ("recoveryVmCreationOption".equals(fieldName)) {
+                    deserializedRecoveryPlanHyperVReplicaAzureFailbackInput.recoveryVmCreationOption
+                        = AlternateLocationRecoveryOption.fromString(reader.getString());
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedRecoveryPlanHyperVReplicaAzureFailbackInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanHyperVReplicaAzureFailbackInput;
+        });
+    }
 }

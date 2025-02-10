@@ -6,28 +6,34 @@ package com.azure.resourcemanager.selfhelp.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.selfhelp.models.ResponseValidationProperties;
+import com.azure.resourcemanager.selfhelp.models.ValidationScope;
 import org.junit.jupiter.api.Assertions;
 
 public final class ResponseValidationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResponseValidationProperties model = BinaryData.fromString(
-            "{\"regex\":\"a\",\"isRequired\":true,\"validationErrorMessage\":\"czelpcirel\",\"maxLength\":2411008459227076557}")
+            "{\"regex\":\"n\",\"validationScope\":\"IpAddressFormat\",\"isRequired\":true,\"validationErrorMessage\":\"swiydmcwyhzdx\",\"maxLength\":5645412032437353957}")
             .toObject(ResponseValidationProperties.class);
-        Assertions.assertEquals("a", model.regex());
+        Assertions.assertEquals("n", model.regex());
+        Assertions.assertEquals(ValidationScope.IP_ADDRESS_FORMAT, model.validationScope());
         Assertions.assertEquals(true, model.isRequired());
-        Assertions.assertEquals("czelpcirel", model.validationErrorMessage());
-        Assertions.assertEquals(2411008459227076557L, model.maxLength());
+        Assertions.assertEquals("swiydmcwyhzdx", model.validationErrorMessage());
+        Assertions.assertEquals(5645412032437353957L, model.maxLength());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResponseValidationProperties model = new ResponseValidationProperties().withRegex("a").withIsRequired(true)
-            .withValidationErrorMessage("czelpcirel").withMaxLength(2411008459227076557L);
+        ResponseValidationProperties model = new ResponseValidationProperties().withRegex("n")
+            .withValidationScope(ValidationScope.IP_ADDRESS_FORMAT)
+            .withIsRequired(true)
+            .withValidationErrorMessage("swiydmcwyhzdx")
+            .withMaxLength(5645412032437353957L);
         model = BinaryData.fromObject(model).toObject(ResponseValidationProperties.class);
-        Assertions.assertEquals("a", model.regex());
+        Assertions.assertEquals("n", model.regex());
+        Assertions.assertEquals(ValidationScope.IP_ADDRESS_FORMAT, model.validationScope());
         Assertions.assertEquals(true, model.isRequired());
-        Assertions.assertEquals("czelpcirel", model.validationErrorMessage());
-        Assertions.assertEquals(2411008459227076557L, model.maxLength());
+        Assertions.assertEquals("swiydmcwyhzdx", model.validationErrorMessage());
+        Assertions.assertEquals(5645412032437353957L, model.maxLength());
     }
 }

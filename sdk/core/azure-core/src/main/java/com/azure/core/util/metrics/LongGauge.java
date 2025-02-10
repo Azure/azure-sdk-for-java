@@ -10,7 +10,8 @@ import java.util.function.Supplier;
 /**
  * A counter instrument that records {@code long} values.
  *
- * <p>Counters only allow adding positive values, and guarantee the resulting metrics will be
+ * <p>
+ * Counters only allow adding positive values, and guarantee the resulting metrics will be
  * always-increasing monotonic sums.
  */
 public interface LongGauge {

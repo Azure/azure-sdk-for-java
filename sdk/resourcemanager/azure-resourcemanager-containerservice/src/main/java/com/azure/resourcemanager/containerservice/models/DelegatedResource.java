@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Delegated resource properties - internal use only.
  */
 @Fluent
-public final class DelegatedResource {
+public final class DelegatedResource implements JsonSerializable<DelegatedResource> {
     /*
      * The ARM resource id of the delegated resource - internal use only.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The tenant id of the delegated resource - internal use only.
      */
-    @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
     /*
      * The delegation id of the referral delegation (optional) - internal use only.
      */
-    @JsonProperty(value = "referralResource")
     private String referralResource;
 
     /*
      * The source resource location - internal use only.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /**
@@ -45,7 +46,7 @@ public final class DelegatedResource {
 
     /**
      * Get the resourceId property: The ARM resource id of the delegated resource - internal use only.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -54,7 +55,7 @@ public final class DelegatedResource {
 
     /**
      * Set the resourceId property: The ARM resource id of the delegated resource - internal use only.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the DelegatedResource object itself.
      */
@@ -65,7 +66,7 @@ public final class DelegatedResource {
 
     /**
      * Get the tenantId property: The tenant id of the delegated resource - internal use only.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -74,7 +75,7 @@ public final class DelegatedResource {
 
     /**
      * Set the tenantId property: The tenant id of the delegated resource - internal use only.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the DelegatedResource object itself.
      */
@@ -85,7 +86,7 @@ public final class DelegatedResource {
 
     /**
      * Get the referralResource property: The delegation id of the referral delegation (optional) - internal use only.
-     *
+     * 
      * @return the referralResource value.
      */
     public String referralResource() {
@@ -94,7 +95,7 @@ public final class DelegatedResource {
 
     /**
      * Set the referralResource property: The delegation id of the referral delegation (optional) - internal use only.
-     *
+     * 
      * @param referralResource the referralResource value to set.
      * @return the DelegatedResource object itself.
      */
@@ -105,7 +106,7 @@ public final class DelegatedResource {
 
     /**
      * Get the location property: The source resource location - internal use only.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -114,7 +115,7 @@ public final class DelegatedResource {
 
     /**
      * Set the location property: The source resource location - internal use only.
-     *
+     * 
      * @param location the location value to set.
      * @return the DelegatedResource object itself.
      */
@@ -125,9 +126,55 @@ public final class DelegatedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeStringField("referralResource", this.referralResource);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DelegatedResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DelegatedResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DelegatedResource.
+     */
+    public static DelegatedResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DelegatedResource deserializedDelegatedResource = new DelegatedResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedDelegatedResource.resourceId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedDelegatedResource.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("referralResource".equals(fieldName)) {
+                    deserializedDelegatedResource.referralResource = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDelegatedResource.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDelegatedResource;
+        });
     }
 }

@@ -5,41 +5,41 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters that define the configuration of traffic analytics.
  */
 @Fluent
-public final class TrafficAnalyticsConfigurationProperties {
+public final class TrafficAnalyticsConfigurationProperties
+    implements JsonSerializable<TrafficAnalyticsConfigurationProperties> {
     /*
      * Flag to enable/disable traffic analytics.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The resource guid of the attached workspace.
      */
-    @JsonProperty(value = "workspaceId")
     private String workspaceId;
 
     /*
      * The location of the attached workspace.
      */
-    @JsonProperty(value = "workspaceRegion")
     private String workspaceRegion;
 
     /*
      * Resource Id of the attached workspace.
      */
-    @JsonProperty(value = "workspaceResourceId")
     private String workspaceResourceId;
 
     /*
      * The interval in minutes which would decide how frequently TA service should do flow analytics.
      */
-    @JsonProperty(value = "trafficAnalyticsInterval")
     private Integer trafficAnalyticsInterval;
 
     /**
@@ -156,5 +156,56 @@ public final class TrafficAnalyticsConfigurationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("workspaceId", this.workspaceId);
+        jsonWriter.writeStringField("workspaceRegion", this.workspaceRegion);
+        jsonWriter.writeStringField("workspaceResourceId", this.workspaceResourceId);
+        jsonWriter.writeNumberField("trafficAnalyticsInterval", this.trafficAnalyticsInterval);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrafficAnalyticsConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrafficAnalyticsConfigurationProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrafficAnalyticsConfigurationProperties.
+     */
+    public static TrafficAnalyticsConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrafficAnalyticsConfigurationProperties deserializedTrafficAnalyticsConfigurationProperties
+                = new TrafficAnalyticsConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedTrafficAnalyticsConfigurationProperties.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("workspaceId".equals(fieldName)) {
+                    deserializedTrafficAnalyticsConfigurationProperties.workspaceId = reader.getString();
+                } else if ("workspaceRegion".equals(fieldName)) {
+                    deserializedTrafficAnalyticsConfigurationProperties.workspaceRegion = reader.getString();
+                } else if ("workspaceResourceId".equals(fieldName)) {
+                    deserializedTrafficAnalyticsConfigurationProperties.workspaceResourceId = reader.getString();
+                } else if ("trafficAnalyticsInterval".equals(fieldName)) {
+                    deserializedTrafficAnalyticsConfigurationProperties.trafficAnalyticsInterval
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrafficAnalyticsConfigurationProperties;
+        });
     }
 }

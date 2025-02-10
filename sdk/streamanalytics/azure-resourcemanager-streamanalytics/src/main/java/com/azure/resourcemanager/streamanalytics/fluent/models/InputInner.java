@@ -6,10 +6,11 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.InputProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * An input object, containing all information associated with the named input. All inputs are contained under a
@@ -17,31 +18,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class InputInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InputInner.class);
-
     /*
-     * The properties that are associated with an input. Required on PUT
-     * (CreateOrReplace) requests.
+     * The properties that are associated with an input. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private InputProperties properties;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /**
+     * Creates an instance of InputInner class.
+     */
+    public InputInner() {
+    }
 
     /**
      * Get the properties property: The properties that are associated with an input. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @return the properties value.
      */
     public InputProperties properties() {
@@ -51,7 +52,7 @@ public final class InputInner extends SubResource {
     /**
      * Set the properties property: The properties that are associated with an input. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the InputInner object itself.
      */
@@ -62,7 +63,7 @@ public final class InputInner extends SubResource {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -71,7 +72,7 @@ public final class InputInner extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the InputInner object itself.
      */
@@ -82,14 +83,16 @@ public final class InputInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InputInner withId(String id) {
         super.withId(id);
@@ -98,12 +101,56 @@ public final class InputInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InputInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InputInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the InputInner.
+     */
+    public static InputInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InputInner deserializedInputInner = new InputInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedInputInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInputInner.properties = InputProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedInputInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedInputInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInputInner;
+        });
     }
 }

@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A list of notebook workspace resources.
  */
 @Fluent
-public final class NotebookWorkspaceListResult {
+public final class NotebookWorkspaceListResult implements JsonSerializable<NotebookWorkspaceListResult> {
     /*
      * Array of notebook workspace resources
      */
-    @JsonProperty(value = "value")
     private List<NotebookWorkspaceInner> value;
 
     /**
@@ -55,5 +58,43 @@ public final class NotebookWorkspaceListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotebookWorkspaceListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotebookWorkspaceListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotebookWorkspaceListResult.
+     */
+    public static NotebookWorkspaceListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotebookWorkspaceListResult deserializedNotebookWorkspaceListResult = new NotebookWorkspaceListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NotebookWorkspaceInner> value
+                        = reader.readArray(reader1 -> NotebookWorkspaceInner.fromJson(reader1));
+                    deserializedNotebookWorkspaceListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotebookWorkspaceListResult;
+        });
     }
 }

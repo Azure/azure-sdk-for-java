@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.quantum.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quantum.models.ProviderProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Information about an offering. A provider offering is an entity that offers Targets to run Azure Quantum Jobs. */
+/**
+ * Information about an offering. A provider offering is an entity that offers Targets to run Azure Quantum Jobs.
+ */
 @Fluent
-public final class ProviderDescriptionInner {
+public final class ProviderDescriptionInner implements JsonSerializable<ProviderDescriptionInner> {
     /*
      * Unique provider's id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Provider's display name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * A list of provider-specific properties.
+     * Provider properties.
      */
-    @JsonProperty(value = "properties")
     private ProviderProperties properties;
 
-    /** Creates an instance of ProviderDescriptionInner class. */
+    /**
+     * Creates an instance of ProviderDescriptionInner class.
+     */
     public ProviderDescriptionInner() {
     }
 
     /**
      * Get the id property: Unique provider's id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +49,7 @@ public final class ProviderDescriptionInner {
 
     /**
      * Set the id property: Unique provider's id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ProviderDescriptionInner object itself.
      */
@@ -55,7 +60,7 @@ public final class ProviderDescriptionInner {
 
     /**
      * Get the name property: Provider's display name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,8 +68,8 @@ public final class ProviderDescriptionInner {
     }
 
     /**
-     * Get the properties property: A list of provider-specific properties.
-     *
+     * Get the properties property: Provider properties.
+     * 
      * @return the properties value.
      */
     public ProviderProperties properties() {
@@ -72,8 +77,8 @@ public final class ProviderDescriptionInner {
     }
 
     /**
-     * Set the properties property: A list of provider-specific properties.
-     *
+     * Set the properties property: Provider properties.
+     * 
      * @param properties the properties value to set.
      * @return the ProviderDescriptionInner object itself.
      */
@@ -84,12 +89,53 @@ public final class ProviderDescriptionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderDescriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderDescriptionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderDescriptionInner.
+     */
+    public static ProviderDescriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderDescriptionInner deserializedProviderDescriptionInner = new ProviderDescriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProviderDescriptionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProviderDescriptionInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProviderDescriptionInner.properties = ProviderProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderDescriptionInner;
+        });
     }
 }

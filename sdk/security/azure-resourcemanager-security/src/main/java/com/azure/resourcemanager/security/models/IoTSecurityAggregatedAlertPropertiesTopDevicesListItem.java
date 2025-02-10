@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The IoTSecurityAggregatedAlertPropertiesTopDevicesListItem model. */
+/**
+ * The IoTSecurityAggregatedAlertPropertiesTopDevicesListItem model.
+ */
 @Immutable
-public final class IoTSecurityAggregatedAlertPropertiesTopDevicesListItem {
+public final class IoTSecurityAggregatedAlertPropertiesTopDevicesListItem
+    implements JsonSerializable<IoTSecurityAggregatedAlertPropertiesTopDevicesListItem> {
     /*
      * Name of the device.
      */
-    @JsonProperty(value = "deviceId", access = JsonProperty.Access.WRITE_ONLY)
     private String deviceId;
 
     /*
      * Number of alerts raised for this device.
      */
-    @JsonProperty(value = "alertsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long alertsCount;
 
     /*
      * Most recent time this alert was raised for this device, on this day.
      */
-    @JsonProperty(value = "lastOccurrence", access = JsonProperty.Access.WRITE_ONLY)
     private String lastOccurrence;
 
-    /** Creates an instance of IoTSecurityAggregatedAlertPropertiesTopDevicesListItem class. */
+    /**
+     * Creates an instance of IoTSecurityAggregatedAlertPropertiesTopDevicesListItem class.
+     */
     public IoTSecurityAggregatedAlertPropertiesTopDevicesListItem() {
     }
 
     /**
      * Get the deviceId property: Name of the device.
-     *
+     * 
      * @return the deviceId value.
      */
     public String deviceId() {
@@ -43,7 +49,7 @@ public final class IoTSecurityAggregatedAlertPropertiesTopDevicesListItem {
 
     /**
      * Get the alertsCount property: Number of alerts raised for this device.
-     *
+     * 
      * @return the alertsCount value.
      */
     public Long alertsCount() {
@@ -52,7 +58,7 @@ public final class IoTSecurityAggregatedAlertPropertiesTopDevicesListItem {
 
     /**
      * Get the lastOccurrence property: Most recent time this alert was raised for this device, on this day.
-     *
+     * 
      * @return the lastOccurrence value.
      */
     public String lastOccurrence() {
@@ -61,9 +67,52 @@ public final class IoTSecurityAggregatedAlertPropertiesTopDevicesListItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTSecurityAggregatedAlertPropertiesTopDevicesListItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTSecurityAggregatedAlertPropertiesTopDevicesListItem if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IoTSecurityAggregatedAlertPropertiesTopDevicesListItem.
+     */
+    public static IoTSecurityAggregatedAlertPropertiesTopDevicesListItem fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTSecurityAggregatedAlertPropertiesTopDevicesListItem deserializedIoTSecurityAggregatedAlertPropertiesTopDevicesListItem
+                = new IoTSecurityAggregatedAlertPropertiesTopDevicesListItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertPropertiesTopDevicesListItem.deviceId = reader.getString();
+                } else if ("alertsCount".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertPropertiesTopDevicesListItem.alertsCount
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("lastOccurrence".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertPropertiesTopDevicesListItem.lastOccurrence
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTSecurityAggregatedAlertPropertiesTopDevicesListItem;
+        });
     }
 }

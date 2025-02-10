@@ -5,59 +5,55 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * BGP peer status details.
  */
 @Immutable
-public final class BgpPeerStatus {
+public final class BgpPeerStatus implements JsonSerializable<BgpPeerStatus> {
     /*
      * The virtual network gateway's local address.
      */
-    @JsonProperty(value = "localAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String localAddress;
 
     /*
      * The remote BGP peer.
      */
-    @JsonProperty(value = "neighbor", access = JsonProperty.Access.WRITE_ONLY)
     private String neighbor;
 
     /*
      * The autonomous system number of the remote BGP peer.
      */
-    @JsonProperty(value = "asn", access = JsonProperty.Access.WRITE_ONLY)
     private Long asn;
 
     /*
      * The BGP peer state.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private BgpPeerState state;
 
     /*
      * For how long the peering has been up.
      */
-    @JsonProperty(value = "connectedDuration", access = JsonProperty.Access.WRITE_ONLY)
     private String connectedDuration;
 
     /*
      * The number of routes learned from this peer.
      */
-    @JsonProperty(value = "routesReceived", access = JsonProperty.Access.WRITE_ONLY)
     private Long routesReceived;
 
     /*
      * The number of BGP messages sent.
      */
-    @JsonProperty(value = "messagesSent", access = JsonProperty.Access.WRITE_ONLY)
     private Long messagesSent;
 
     /*
      * The number of BGP messages received.
      */
-    @JsonProperty(value = "messagesReceived", access = JsonProperty.Access.WRITE_ONLY)
     private Long messagesReceived;
 
     /**
@@ -144,5 +140,54 @@ public final class BgpPeerStatus {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BgpPeerStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BgpPeerStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BgpPeerStatus.
+     */
+    public static BgpPeerStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BgpPeerStatus deserializedBgpPeerStatus = new BgpPeerStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("localAddress".equals(fieldName)) {
+                    deserializedBgpPeerStatus.localAddress = reader.getString();
+                } else if ("neighbor".equals(fieldName)) {
+                    deserializedBgpPeerStatus.neighbor = reader.getString();
+                } else if ("asn".equals(fieldName)) {
+                    deserializedBgpPeerStatus.asn = reader.getNullable(JsonReader::getLong);
+                } else if ("state".equals(fieldName)) {
+                    deserializedBgpPeerStatus.state = BgpPeerState.fromString(reader.getString());
+                } else if ("connectedDuration".equals(fieldName)) {
+                    deserializedBgpPeerStatus.connectedDuration = reader.getString();
+                } else if ("routesReceived".equals(fieldName)) {
+                    deserializedBgpPeerStatus.routesReceived = reader.getNullable(JsonReader::getLong);
+                } else if ("messagesSent".equals(fieldName)) {
+                    deserializedBgpPeerStatus.messagesSent = reader.getNullable(JsonReader::getLong);
+                } else if ("messagesReceived".equals(fieldName)) {
+                    deserializedBgpPeerStatus.messagesReceived = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBgpPeerStatus;
+        });
     }
 }

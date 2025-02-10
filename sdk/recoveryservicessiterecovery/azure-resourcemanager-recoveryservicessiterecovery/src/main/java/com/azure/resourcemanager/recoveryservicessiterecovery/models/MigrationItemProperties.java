@@ -5,140 +5,129 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Migration item properties. */
+/**
+ * Migration item properties.
+ */
 @Fluent
-public final class MigrationItemProperties {
+public final class MigrationItemProperties implements JsonSerializable<MigrationItemProperties> {
     /*
      * The on-premise virtual machine name.
      */
-    @JsonProperty(value = "machineName", access = JsonProperty.Access.WRITE_ONLY)
     private String machineName;
 
     /*
      * The ARM Id of policy governing this item.
      */
-    @JsonProperty(value = "policyId", access = JsonProperty.Access.WRITE_ONLY)
     private String policyId;
 
     /*
      * The name of policy governing this item.
      */
-    @JsonProperty(value = "policyFriendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String policyFriendlyName;
 
     /*
      * The recovery services provider ARM Id.
      */
-    @JsonProperty(value = "recoveryServicesProviderId", access = JsonProperty.Access.WRITE_ONLY)
     private String recoveryServicesProviderId;
 
     /*
      * The replication status.
      */
-    @JsonProperty(value = "replicationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String replicationStatus;
 
     /*
      * The migration status.
      */
-    @JsonProperty(value = "migrationState", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState migrationState;
 
     /*
      * The migration state description.
      */
-    @JsonProperty(value = "migrationStateDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationStateDescription;
 
     /*
      * The last test migration time.
      */
-    @JsonProperty(value = "lastTestMigrationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastTestMigrationTime;
 
     /*
      * The status of the last test migration.
      */
-    @JsonProperty(value = "lastTestMigrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String lastTestMigrationStatus;
 
     /*
      * The last migration time.
      */
-    @JsonProperty(value = "lastMigrationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastMigrationTime;
 
     /*
      * The status of the last migration.
      */
-    @JsonProperty(value = "lastMigrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String lastMigrationStatus;
 
     /*
      * The test migrate state.
      */
-    @JsonProperty(value = "testMigrateState", access = JsonProperty.Access.WRITE_ONLY)
     private TestMigrationState testMigrateState;
 
     /*
      * The test migrate state description.
      */
-    @JsonProperty(value = "testMigrateStateDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String testMigrateStateDescription;
 
     /*
      * The consolidated health.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectionHealth health;
 
     /*
      * The list of health errors.
      */
-    @JsonProperty(value = "healthErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthError> healthErrors;
 
     /*
      * The allowed operations on the migration item based on the current migration state of the item.
      */
-    @JsonProperty(value = "allowedOperations", access = JsonProperty.Access.WRITE_ONLY)
     private List<MigrationItemOperation> allowedOperations;
 
     /*
      * The current job details.
      */
-    @JsonProperty(value = "currentJob", access = JsonProperty.Access.WRITE_ONLY)
     private CurrentJobDetails currentJob;
 
     /*
      * The critical past job details.
      */
-    @JsonProperty(value = "criticalJobHistory", access = JsonProperty.Access.WRITE_ONLY)
     private List<CriticalJobHistoryDetails> criticalJobHistory;
 
     /*
      * The correlation Id for events associated with this migration item.
      */
-    @JsonProperty(value = "eventCorrelationId", access = JsonProperty.Access.WRITE_ONLY)
     private String eventCorrelationId;
 
     /*
      * The migration provider custom settings.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private MigrationProviderSpecificSettings providerSpecificDetails;
 
-    /** Creates an instance of MigrationItemProperties class. */
+    /**
+     * Creates an instance of MigrationItemProperties class.
+     */
     public MigrationItemProperties() {
     }
 
     /**
      * Get the machineName property: The on-premise virtual machine name.
-     *
+     * 
      * @return the machineName value.
      */
     public String machineName() {
@@ -147,7 +136,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the policyId property: The ARM Id of policy governing this item.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -156,7 +145,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the policyFriendlyName property: The name of policy governing this item.
-     *
+     * 
      * @return the policyFriendlyName value.
      */
     public String policyFriendlyName() {
@@ -165,7 +154,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the recoveryServicesProviderId property: The recovery services provider ARM Id.
-     *
+     * 
      * @return the recoveryServicesProviderId value.
      */
     public String recoveryServicesProviderId() {
@@ -174,7 +163,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the replicationStatus property: The replication status.
-     *
+     * 
      * @return the replicationStatus value.
      */
     public String replicationStatus() {
@@ -183,7 +172,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the migrationState property: The migration status.
-     *
+     * 
      * @return the migrationState value.
      */
     public MigrationState migrationState() {
@@ -192,7 +181,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the migrationStateDescription property: The migration state description.
-     *
+     * 
      * @return the migrationStateDescription value.
      */
     public String migrationStateDescription() {
@@ -201,7 +190,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the lastTestMigrationTime property: The last test migration time.
-     *
+     * 
      * @return the lastTestMigrationTime value.
      */
     public OffsetDateTime lastTestMigrationTime() {
@@ -210,7 +199,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the lastTestMigrationStatus property: The status of the last test migration.
-     *
+     * 
      * @return the lastTestMigrationStatus value.
      */
     public String lastTestMigrationStatus() {
@@ -219,7 +208,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the lastMigrationTime property: The last migration time.
-     *
+     * 
      * @return the lastMigrationTime value.
      */
     public OffsetDateTime lastMigrationTime() {
@@ -228,7 +217,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the lastMigrationStatus property: The status of the last migration.
-     *
+     * 
      * @return the lastMigrationStatus value.
      */
     public String lastMigrationStatus() {
@@ -237,7 +226,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the testMigrateState property: The test migrate state.
-     *
+     * 
      * @return the testMigrateState value.
      */
     public TestMigrationState testMigrateState() {
@@ -246,7 +235,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the testMigrateStateDescription property: The test migrate state description.
-     *
+     * 
      * @return the testMigrateStateDescription value.
      */
     public String testMigrateStateDescription() {
@@ -255,7 +244,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the health property: The consolidated health.
-     *
+     * 
      * @return the health value.
      */
     public ProtectionHealth health() {
@@ -264,7 +253,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the healthErrors property: The list of health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -274,7 +263,7 @@ public final class MigrationItemProperties {
     /**
      * Get the allowedOperations property: The allowed operations on the migration item based on the current migration
      * state of the item.
-     *
+     * 
      * @return the allowedOperations value.
      */
     public List<MigrationItemOperation> allowedOperations() {
@@ -283,7 +272,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the currentJob property: The current job details.
-     *
+     * 
      * @return the currentJob value.
      */
     public CurrentJobDetails currentJob() {
@@ -292,7 +281,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the criticalJobHistory property: The critical past job details.
-     *
+     * 
      * @return the criticalJobHistory value.
      */
     public List<CriticalJobHistoryDetails> criticalJobHistory() {
@@ -301,7 +290,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the eventCorrelationId property: The correlation Id for events associated with this migration item.
-     *
+     * 
      * @return the eventCorrelationId value.
      */
     public String eventCorrelationId() {
@@ -310,7 +299,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the providerSpecificDetails property: The migration provider custom settings.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public MigrationProviderSpecificSettings providerSpecificDetails() {
@@ -319,19 +308,19 @@ public final class MigrationItemProperties {
 
     /**
      * Set the providerSpecificDetails property: The migration provider custom settings.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the MigrationItemProperties object itself.
      */
-    public MigrationItemProperties withProviderSpecificDetails(
-        MigrationProviderSpecificSettings providerSpecificDetails) {
+    public MigrationItemProperties
+        withProviderSpecificDetails(MigrationProviderSpecificSettings providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -347,5 +336,88 @@ public final class MigrationItemProperties {
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationItemProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrationItemProperties.
+     */
+    public static MigrationItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationItemProperties deserializedMigrationItemProperties = new MigrationItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("machineName".equals(fieldName)) {
+                    deserializedMigrationItemProperties.machineName = reader.getString();
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedMigrationItemProperties.policyId = reader.getString();
+                } else if ("policyFriendlyName".equals(fieldName)) {
+                    deserializedMigrationItemProperties.policyFriendlyName = reader.getString();
+                } else if ("recoveryServicesProviderId".equals(fieldName)) {
+                    deserializedMigrationItemProperties.recoveryServicesProviderId = reader.getString();
+                } else if ("replicationStatus".equals(fieldName)) {
+                    deserializedMigrationItemProperties.replicationStatus = reader.getString();
+                } else if ("migrationState".equals(fieldName)) {
+                    deserializedMigrationItemProperties.migrationState = MigrationState.fromString(reader.getString());
+                } else if ("migrationStateDescription".equals(fieldName)) {
+                    deserializedMigrationItemProperties.migrationStateDescription = reader.getString();
+                } else if ("lastTestMigrationTime".equals(fieldName)) {
+                    deserializedMigrationItemProperties.lastTestMigrationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastTestMigrationStatus".equals(fieldName)) {
+                    deserializedMigrationItemProperties.lastTestMigrationStatus = reader.getString();
+                } else if ("lastMigrationTime".equals(fieldName)) {
+                    deserializedMigrationItemProperties.lastMigrationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastMigrationStatus".equals(fieldName)) {
+                    deserializedMigrationItemProperties.lastMigrationStatus = reader.getString();
+                } else if ("testMigrateState".equals(fieldName)) {
+                    deserializedMigrationItemProperties.testMigrateState
+                        = TestMigrationState.fromString(reader.getString());
+                } else if ("testMigrateStateDescription".equals(fieldName)) {
+                    deserializedMigrationItemProperties.testMigrateStateDescription = reader.getString();
+                } else if ("health".equals(fieldName)) {
+                    deserializedMigrationItemProperties.health = ProtectionHealth.fromString(reader.getString());
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthError> healthErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedMigrationItemProperties.healthErrors = healthErrors;
+                } else if ("allowedOperations".equals(fieldName)) {
+                    List<MigrationItemOperation> allowedOperations
+                        = reader.readArray(reader1 -> MigrationItemOperation.fromString(reader1.getString()));
+                    deserializedMigrationItemProperties.allowedOperations = allowedOperations;
+                } else if ("currentJob".equals(fieldName)) {
+                    deserializedMigrationItemProperties.currentJob = CurrentJobDetails.fromJson(reader);
+                } else if ("criticalJobHistory".equals(fieldName)) {
+                    List<CriticalJobHistoryDetails> criticalJobHistory
+                        = reader.readArray(reader1 -> CriticalJobHistoryDetails.fromJson(reader1));
+                    deserializedMigrationItemProperties.criticalJobHistory = criticalJobHistory;
+                } else if ("eventCorrelationId".equals(fieldName)) {
+                    deserializedMigrationItemProperties.eventCorrelationId = reader.getString();
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedMigrationItemProperties.providerSpecificDetails
+                        = MigrationProviderSpecificSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationItemProperties;
+        });
     }
 }

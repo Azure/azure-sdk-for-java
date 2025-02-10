@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,17 +18,15 @@ import java.util.List;
  * nextLink to get the next set of results.
  */
 @Fluent
-public final class ListVpnServerConfigurationsResult {
+public final class ListVpnServerConfigurationsResult implements JsonSerializable<ListVpnServerConfigurationsResult> {
     /*
      * List of VpnServerConfigurations.
      */
-    @JsonProperty(value = "value")
     private List<VpnServerConfigurationInner> value;
 
     /*
      * URL to get the next set of operation list results if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -82,5 +84,47 @@ public final class ListVpnServerConfigurationsResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListVpnServerConfigurationsResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListVpnServerConfigurationsResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListVpnServerConfigurationsResult.
+     */
+    public static ListVpnServerConfigurationsResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListVpnServerConfigurationsResult deserializedListVpnServerConfigurationsResult
+                = new ListVpnServerConfigurationsResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VpnServerConfigurationInner> value
+                        = reader.readArray(reader1 -> VpnServerConfigurationInner.fromJson(reader1));
+                    deserializedListVpnServerConfigurationsResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedListVpnServerConfigurationsResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListVpnServerConfigurationsResult;
+        });
     }
 }

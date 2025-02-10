@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Accepted protocol schemes. */
+/**
+ * Accepted protocol schemes.
+ */
 public final class FrontDoorProtocol extends ExpandableStringEnum<FrontDoorProtocol> {
-    /** Static value Http for FrontDoorProtocol. */
+    /**
+     * Static value Http for FrontDoorProtocol.
+     */
     public static final FrontDoorProtocol HTTP = fromString("Http");
 
-    /** Static value Https for FrontDoorProtocol. */
+    /**
+     * Static value Https for FrontDoorProtocol.
+     */
     public static final FrontDoorProtocol HTTPS = fromString("Https");
 
     /**
      * Creates a new instance of FrontDoorProtocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class FrontDoorProtocol extends ExpandableStringEnum<FrontDoorProto
 
     /**
      * Creates or finds a FrontDoorProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FrontDoorProtocol.
      */
-    @JsonCreator
     public static FrontDoorProtocol fromString(String name) {
         return fromString(name, FrontDoorProtocol.class);
     }
 
     /**
      * Gets known FrontDoorProtocol values.
-     *
+     * 
      * @return known FrontDoorProtocol values.
      */
     public static Collection<FrontDoorProtocol> values() {

@@ -16,8 +16,7 @@ public final class SecureScoreControlDefinitionItemImpl implements SecureScoreCo
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    SecureScoreControlDefinitionItemImpl(
-        SecureScoreControlDefinitionItemInner innerObject,
+    SecureScoreControlDefinitionItemImpl(SecureScoreControlDefinitionItemInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

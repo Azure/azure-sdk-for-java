@@ -3,6 +3,7 @@
 
 package com.azure.core.http.okhttp.implementation;
 
+import com.azure.core.http.okhttp.implementation.mocking.MockInterceptorChain;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import okhttp3.Address;
 import okhttp3.Authenticator;
@@ -14,12 +15,10 @@ import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 
 import javax.net.SocketFactory;
 import java.io.IOException;
@@ -36,9 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link ProxyAuthenticator}.
@@ -54,20 +50,14 @@ public class ProxyAuthenticatorTests {
         + "nonce=\"7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v\", "
         + "opaque=\"FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS\"";
 
-    private static final Headers DIGEST_CHALLENGE_HEADERS = new Headers.Builder()
-        .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
-        .build();
+    private static final Headers DIGEST_CHALLENGE_HEADERS
+        = new Headers.Builder().add("Proxy-Authenticate: " + DIGEST_CHALLENGE).build();
 
     private static final Predicate<String> BASIC_PREDICATE = "Basic MTox"::equals;
     private static final Predicate<String> DIGEST_PREDICATE = (authHeader) -> authHeader.startsWith("Digest");
 
     private static final String ORIGINAL_NONCE = "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v";
     private static final String UPDATED_NONCE = "FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS";
-
-    @AfterEach
-    public void cleanupInlineMocks() {
-        Mockito.framework().clearInlineMock(this);
-    }
 
     /**
      * Tests that when a preemptive challenge is sent by the OkHttp client before a {@code Proxy-Authenticate} challenge
@@ -107,21 +97,16 @@ public class ProxyAuthenticatorTests {
     public static Stream<Arguments> authorizationIsAppliedSupplier() {
         return Stream.of(
             // ChallengeHolder only containing Basic challenge.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: Basic")
-                .build(), BASIC_PREDICATE),
+            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic").build(), BASIC_PREDICATE),
 
             // ChallengeHolder only containing Digest challenge.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
-                .build(), DIGEST_PREDICATE),
+            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: " + DIGEST_CHALLENGE).build(),
+                DIGEST_PREDICATE),
 
             // ChallengeHolder containing both Basic and Digest challenge.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: Basic")
+            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic")
                 .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
-                .build(), DIGEST_PREDICATE)
-        );
+                .build(), DIGEST_PREDICATE));
     }
 
     /**
@@ -154,15 +139,11 @@ public class ProxyAuthenticatorTests {
     public static Stream<Arguments> authorizationCanBePipelinedSupplier() {
         return Stream.of(
             // Pipelined Basic authorization.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: Basic")
-                .build(), BASIC_PREDICATE),
+            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic").build(), BASIC_PREDICATE),
 
             // Pipelined Digest authorization.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
-                .build(), DIGEST_PREDICATE)
-        );
+            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: " + DIGEST_CHALLENGE).build(),
+                DIGEST_PREDICATE));
     }
 
     /**
@@ -183,8 +164,8 @@ public class ProxyAuthenticatorTests {
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
-        Interceptor.Chain chain = mock(Interceptor.Chain.class);
-        when(chain.proceed(any())).thenReturn(mockResponse("This is a test", new Headers.Builder().build()));
+        Interceptor.Chain chain
+            = new MockInterceptorChain(mockResponse("This is a test", new Headers.Builder().build()), null);
 
         interceptor.intercept(chain);
 
@@ -219,12 +200,10 @@ public class ProxyAuthenticatorTests {
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
-        Interceptor.Chain chain = mock(Interceptor.Chain.class);
-        when(chain.proceed(any())).thenReturn(mockResponse("This is a test",
-            new Headers.Builder()
-                .add("Proxy-Authentication-Info: nc=00000001, cnonce=\"" + cnonce + "\"")
-                .build()));
-        when(chain.request()).thenReturn(authenticateRequest);
+        Interceptor.Chain chain = new MockInterceptorChain(
+            mockResponse("This is a test",
+                new Headers.Builder().add("Proxy-Authentication-Info: nc=00000001, cnonce=\"" + cnonce + "\"").build()),
+            authenticateRequest);
 
         interceptor.intercept(chain);
 
@@ -255,12 +234,9 @@ public class ProxyAuthenticatorTests {
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
-        Interceptor.Chain chain = mock(Interceptor.Chain.class);
-        when(chain.proceed(any())).thenReturn(mockResponse("This is a test",
-            new Headers.Builder()
-                .add("Proxy-Authentication-Info: nc=00000001, cnonce=\"incorrectCnonce\"")
-                .build()));
-        when(chain.request()).thenReturn(authenticateRequest);
+        Interceptor.Chain chain = new MockInterceptorChain(mockResponse("This is a test",
+            new Headers.Builder().add("Proxy-Authentication-Info: nc=00000001, cnonce=\"incorrectCnonce\"").build()),
+            authenticateRequest);
 
         assertThrows(IllegalStateException.class, () -> interceptor.intercept(chain));
     }
@@ -283,12 +259,10 @@ public class ProxyAuthenticatorTests {
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
-        Interceptor.Chain chain = mock(Interceptor.Chain.class);
-        when(chain.proceed(any())).thenReturn(mockResponse("This is a test",
-            new Headers.Builder()
-                .add("Proxy-Authentication-Info: nextnonce=\"" + UPDATED_NONCE + "\"")
-                .build()));
-        when(chain.request()).thenReturn(authenticateRequest);
+        Interceptor.Chain chain = new MockInterceptorChain(
+            mockResponse("This is a test",
+                new Headers.Builder().add("Proxy-Authentication-Info: nextnonce=\"" + UPDATED_NONCE + "\"").build()),
+            authenticateRequest);
 
         interceptor.intercept(chain);
 
@@ -302,8 +276,13 @@ public class ProxyAuthenticatorTests {
     }
 
     private static Response mockResponse(String message, Headers headers) {
-        return new Response.Builder().request(DEFAULT_REQUEST).protocol(Protocol.HTTP_1_1).message(message)
-            .code(407).headers(headers).sentRequestAtMillis(0).receivedResponseAtMillis(1)
+        return new Response.Builder().request(DEFAULT_REQUEST)
+            .protocol(Protocol.HTTP_1_1)
+            .message(message)
+            .code(407)
+            .headers(headers)
+            .sentRequestAtMillis(0)
+            .receivedResponseAtMillis(1)
             .build();
     }
 }

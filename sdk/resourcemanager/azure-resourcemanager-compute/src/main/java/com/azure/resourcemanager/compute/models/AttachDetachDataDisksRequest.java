@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specifies the input for attaching and detaching a list of managed data disks.
  */
 @Fluent
-public final class AttachDetachDataDisksRequest {
+public final class AttachDetachDataDisksRequest implements JsonSerializable<AttachDetachDataDisksRequest> {
     /*
      * The list of managed data disks to be attached.
      */
-    @JsonProperty(value = "dataDisksToAttach")
     private List<DataDisksToAttach> dataDisksToAttach;
 
     /*
      * The list of managed data disks to be detached.
      */
-    @JsonProperty(value = "dataDisksToDetach")
     private List<DataDisksToDetach> dataDisksToDetach;
 
     /**
@@ -83,5 +85,50 @@ public final class AttachDetachDataDisksRequest {
         if (dataDisksToDetach() != null) {
             dataDisksToDetach().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dataDisksToAttach", this.dataDisksToAttach,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dataDisksToDetach", this.dataDisksToDetach,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AttachDetachDataDisksRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AttachDetachDataDisksRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AttachDetachDataDisksRequest.
+     */
+    public static AttachDetachDataDisksRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AttachDetachDataDisksRequest deserializedAttachDetachDataDisksRequest = new AttachDetachDataDisksRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataDisksToAttach".equals(fieldName)) {
+                    List<DataDisksToAttach> dataDisksToAttach
+                        = reader.readArray(reader1 -> DataDisksToAttach.fromJson(reader1));
+                    deserializedAttachDetachDataDisksRequest.dataDisksToAttach = dataDisksToAttach;
+                } else if ("dataDisksToDetach".equals(fieldName)) {
+                    List<DataDisksToDetach> dataDisksToDetach
+                        = reader.readArray(reader1 -> DataDisksToDetach.fromJson(reader1));
+                    deserializedAttachDetachDataDisksRequest.dataDisksToDetach = dataDisksToDetach;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAttachDetachDataDisksRequest;
+        });
     }
 }

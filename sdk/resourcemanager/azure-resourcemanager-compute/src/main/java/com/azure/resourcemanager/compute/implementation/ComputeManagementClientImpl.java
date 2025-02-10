@@ -31,6 +31,8 @@ import com.azure.resourcemanager.compute.fluent.GalleryApplicationVersionsClient
 import com.azure.resourcemanager.compute.fluent.GalleryApplicationsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImageVersionsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
+import com.azure.resourcemanager.compute.fluent.GalleryInVMAccessControlProfileVersionsClient;
+import com.azure.resourcemanager.compute.fluent.GalleryInVMAccessControlProfilesClient;
 import com.azure.resourcemanager.compute.fluent.GallerySharingProfilesClient;
 import com.azure.resourcemanager.compute.fluent.ImagesClient;
 import com.azure.resourcemanager.compute.fluent.LogAnalyticsClient;
@@ -43,6 +45,7 @@ import com.azure.resourcemanager.compute.fluent.SharedGalleriesClient;
 import com.azure.resourcemanager.compute.fluent.SharedGalleryImageVersionsClient;
 import com.azure.resourcemanager.compute.fluent.SharedGalleryImagesClient;
 import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
+import com.azure.resourcemanager.compute.fluent.SoftDeletedResourcesClient;
 import com.azure.resourcemanager.compute.fluent.SshPublicKeysClient;
 import com.azure.resourcemanager.compute.fluent.UsagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
@@ -657,6 +660,20 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The SoftDeletedResourcesClient object to access its operations.
+     */
+    private final SoftDeletedResourcesClient softDeletedResources;
+
+    /**
+     * Gets the SoftDeletedResourcesClient object to access its operations.
+     * 
+     * @return the SoftDeletedResourcesClient object.
+     */
+    public SoftDeletedResourcesClient getSoftDeletedResources() {
+        return this.softDeletedResources;
+    }
+
+    /**
      * The GallerySharingProfilesClient object to access its operations.
      */
     private final GallerySharingProfilesClient gallerySharingProfiles;
@@ -668,6 +685,34 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public GallerySharingProfilesClient getGallerySharingProfiles() {
         return this.gallerySharingProfiles;
+    }
+
+    /**
+     * The GalleryInVMAccessControlProfilesClient object to access its operations.
+     */
+    private final GalleryInVMAccessControlProfilesClient galleryInVMAccessControlProfiles;
+
+    /**
+     * Gets the GalleryInVMAccessControlProfilesClient object to access its operations.
+     * 
+     * @return the GalleryInVMAccessControlProfilesClient object.
+     */
+    public GalleryInVMAccessControlProfilesClient getGalleryInVMAccessControlProfiles() {
+        return this.galleryInVMAccessControlProfiles;
+    }
+
+    /**
+     * The GalleryInVMAccessControlProfileVersionsClient object to access its operations.
+     */
+    private final GalleryInVMAccessControlProfileVersionsClient galleryInVMAccessControlProfileVersions;
+
+    /**
+     * Gets the GalleryInVMAccessControlProfileVersionsClient object to access its operations.
+     * 
+     * @return the GalleryInVMAccessControlProfileVersionsClient object.
+     */
+    public GalleryInVMAccessControlProfileVersionsClient getGalleryInVMAccessControlProfileVersions() {
+        return this.galleryInVMAccessControlProfileVersions;
     }
 
     /**
@@ -880,7 +925,10 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);
         this.galleryApplications = new GalleryApplicationsClientImpl(this);
         this.galleryApplicationVersions = new GalleryApplicationVersionsClientImpl(this);
+        this.softDeletedResources = new SoftDeletedResourcesClientImpl(this);
         this.gallerySharingProfiles = new GallerySharingProfilesClientImpl(this);
+        this.galleryInVMAccessControlProfiles = new GalleryInVMAccessControlProfilesClientImpl(this);
+        this.galleryInVMAccessControlProfileVersions = new GalleryInVMAccessControlProfileVersionsClientImpl(this);
         this.sharedGalleries = new SharedGalleriesClientImpl(this);
         this.sharedGalleryImages = new SharedGalleryImagesClientImpl(this);
         this.sharedGalleryImageVersions = new SharedGalleryImageVersionsClientImpl(this);

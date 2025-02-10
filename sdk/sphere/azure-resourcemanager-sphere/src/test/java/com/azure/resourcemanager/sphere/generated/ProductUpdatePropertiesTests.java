@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sphere.fluent.models.ProductUpdateProperties;
+import com.azure.resourcemanager.sphere.models.ProductUpdateProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class ProductUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductUpdateProperties model =
-            BinaryData.fromString("{\"description\":\"zfcl\"}").toObject(ProductUpdateProperties.class);
-        Assertions.assertEquals("zfcl", model.description());
+        ProductUpdateProperties model
+            = BinaryData.fromString("{\"description\":\"hvgyuguosvmk\"}").toObject(ProductUpdateProperties.class);
+        Assertions.assertEquals("hvgyuguosvmk", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductUpdateProperties model = new ProductUpdateProperties().withDescription("zfcl");
+        ProductUpdateProperties model = new ProductUpdateProperties().withDescription("hvgyuguosvmk");
         model = BinaryData.fromObject(model).toObject(ProductUpdateProperties.class);
-        Assertions.assertEquals("zfcl", model.description());
+        Assertions.assertEquals("hvgyuguosvmk", model.description());
     }
 }

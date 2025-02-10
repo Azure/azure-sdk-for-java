@@ -21,37 +21,31 @@ public final class AzureDevOpsOrgsImpl implements AzureDevOpsOrgs {
 
     private final com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager;
 
-    public AzureDevOpsOrgsImpl(
-        AzureDevOpsOrgsClient innerClient,
+    public AzureDevOpsOrgsImpl(AzureDevOpsOrgsClient innerClient,
         com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<AzureDevOpsOrg> list(String resourceGroupName, String azureDevOpsConnectorName) {
-        PagedIterable<AzureDevOpsOrgInner> inner =
-            this.serviceClient().list(resourceGroupName, azureDevOpsConnectorName);
+        PagedIterable<AzureDevOpsOrgInner> inner
+            = this.serviceClient().list(resourceGroupName, azureDevOpsConnectorName);
         return Utils.mapPage(inner, inner1 -> new AzureDevOpsOrgImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AzureDevOpsOrg> list(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context) {
-        PagedIterable<AzureDevOpsOrgInner> inner =
-            this.serviceClient().list(resourceGroupName, azureDevOpsConnectorName, context);
+    public PagedIterable<AzureDevOpsOrg> list(String resourceGroupName, String azureDevOpsConnectorName,
+        Context context) {
+        PagedIterable<AzureDevOpsOrgInner> inner
+            = this.serviceClient().list(resourceGroupName, azureDevOpsConnectorName, context);
         return Utils.mapPage(inner, inner1 -> new AzureDevOpsOrgImpl(inner1, this.manager()));
     }
 
-    public Response<AzureDevOpsOrg> getWithResponse(
-        String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName, Context context) {
-        Response<AzureDevOpsOrgInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, context);
+    public Response<AzureDevOpsOrg> getWithResponse(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, Context context) {
+        Response<AzureDevOpsOrgInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureDevOpsOrgImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -59,8 +53,8 @@ public final class AzureDevOpsOrgsImpl implements AzureDevOpsOrgs {
     }
 
     public AzureDevOpsOrg get(String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName) {
-        AzureDevOpsOrgInner inner =
-            this.serviceClient().get(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName);
+        AzureDevOpsOrgInner inner
+            = this.serviceClient().get(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName);
         if (inner != null) {
             return new AzureDevOpsOrgImpl(inner, this.manager());
         } else {
@@ -71,59 +65,38 @@ public final class AzureDevOpsOrgsImpl implements AzureDevOpsOrgs {
     public AzureDevOpsOrg getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String azureDevOpsConnectorName = Utils.getValueFromIdByName(id, "azureDevOpsConnectors");
         if (azureDevOpsConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'azureDevOpsConnectors'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'azureDevOpsConnectors'.", id)));
         }
         String azureDevOpsOrgName = Utils.getValueFromIdByName(id, "orgs");
         if (azureDevOpsOrgName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'orgs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'orgs'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, Context.NONE)
             .getValue();
     }
 
     public Response<AzureDevOpsOrg> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String azureDevOpsConnectorName = Utils.getValueFromIdByName(id, "azureDevOpsConnectors");
         if (azureDevOpsConnectorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'azureDevOpsConnectors'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'azureDevOpsConnectors'.", id)));
         }
         String azureDevOpsOrgName = Utils.getValueFromIdByName(id, "orgs");
         if (azureDevOpsOrgName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'orgs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'orgs'.", id)));
         }
         return this.getWithResponse(resourceGroupName, azureDevOpsConnectorName, azureDevOpsOrgName, context);
     }

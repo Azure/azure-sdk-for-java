@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-/** Samples for Rules ListByRuleSet. */
+/**
+ * Samples for Rules ListByRuleSet.
+ */
 public final class RulesListByRuleSetSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Rules_ListByRuleSet.json
+     * x-ms-original-file:
+     * specification/cdn/resource-manager/Microsoft.Cdn/stable/2024-02-01/examples/Rules_ListByRuleSet.json
      */
     /**
      * Sample code: Rules_ListByRuleSet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void rulesListByRuleSet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cdnProfiles()
+        azure.cdnProfiles()
             .manager()
             .serviceClient()
             .getRules()

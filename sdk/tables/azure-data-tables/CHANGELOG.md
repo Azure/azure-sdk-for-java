@@ -1,6 +1,6 @@
 # Release History
 
-## 12.4.0-beta.1 (Unreleased)
+## 12.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,148 @@
 
 ### Other Changes
 
+## 12.5.0 (2024-11-21)
+
+### Features Added
+
+- Added support for Microsoft Entra authentication when using the Tables SDK with Azure Cosmos endpoints.
+
+### Other Changes
+
+- Removed handwritten translation layer between generated and custom types.
+- Add serialization support using `azure-xml`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
+
+## 12.4.6 (2024-10-17)
+
+### Bugs Fixed
+
+- `createTableIfNotExists` now returns a table client for the table that already exists instead of null when the table is
+present within the service.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+## 12.4.5 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+
+
+## 12.4.4 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-xml` from `1.0.0` to version `1.1.0`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
+
+
+## 12.4.3 (2024-07-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+
+
+## 12.4.2 (2024-06-13)
+
+### Bugs Fixed
+
+- Fixed [the bug](https://github.com/Azure/azure-sdk-for-java/pull/40392) where the deserialization of TableEntity was inconsistent between `ListEntities` and `getEntity` methods.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+
+## 12.4.1 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+## 12.4.0 (2024-04-12)
+
+### Breaking Changes
+
+- Removed `jackson-dataformat-xml` as a dependency.
+
+### Bugs Fixed
+
+- Fixed the issue where `createTableIfNotExists` utilized improper logic for checking for 409 status code.
+
+### Other Changes
+
+- Migrating from Jackson to stream-style serialization.
+
+#### Dependency Updates
+
+- Introducing `azure-xml` version `1.0.0` as a dependency.
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+## 12.4.0-beta.1 (2024-03-13)
+
+### Breaking Changes
+
+- Removed `jackson-dataformat-xml` as a dependency.
+
+### Other Changes
+
+- Migrating from Jackson to stream-style serialization.
+
+#### Dependency Updates
+
+- Introducing `azure-xml` version `1.0.0-beta.3` as a beta dependency.
+
+## 12.3.20 (2024-03-07)
+
+### Bugs Fixed
+- Removed the 409 status-code error-level log message "TableAlreadyExists" that was printed when calling `TableServiceClient.createTableIfNotExists()` on a table that already exists.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+## 12.3.19 (2024-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
+
 ## 12.3.18 (2023-12-04)
 
 ### Other Changes
@@ -18,6 +160,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
 
 ## 12.3.17 (2023-11-20)
 
@@ -37,6 +180,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
 
 ## 12.3.15 (2023-09-18)
 
@@ -217,7 +361,7 @@
 ## 12.2.0 (2022-02-10)
 
 ### Features added
-- Implemented new traits (micro-interfaces) in `TableClientBuiler` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
+- Implemented new traits (micro-interfaces) in `TableClientBuilder` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
 
 ### Other Changes
 

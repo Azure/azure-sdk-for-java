@@ -11,14 +11,16 @@ public final class GreenplumDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GreenplumDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"dataqicmdrgcuzjmvk\",\"table\":\"datar\",\"schema\":\"dataqhgcm\"}")
+            .fromString(
+                "{\"tableName\":\"datamqeumzyyhmgqa\",\"table\":\"datavjqutxrbgbzgfhzd\",\"schema\":\"datahk\"}")
             .toObject(GreenplumDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GreenplumDatasetTypeProperties model = new GreenplumDatasetTypeProperties().withTableName("dataqicmdrgcuzjmvk")
-            .withTable("datar").withSchema("dataqhgcm");
+        GreenplumDatasetTypeProperties model = new GreenplumDatasetTypeProperties().withTableName("datamqeumzyyhmgqa")
+            .withTable("datavjqutxrbgbzgfhzd")
+            .withSchema("datahk");
         model = BinaryData.fromObject(model).toObject(GreenplumDatasetTypeProperties.class);
     }
 }

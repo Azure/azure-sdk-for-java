@@ -5,32 +5,41 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This object is returned from a successful Route Reachable Range call. */
+/**
+ * This object is returned from a successful Route Reachable Range call.
+ */
 @Fluent
-public final class RouteRangeResult {
+public final class RouteRangeResult implements JsonSerializable<RouteRangeResult> {
     /*
      * Format Version property
      */
-    @JsonProperty(value = "formatVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String formatVersion;
 
     /*
      * Reachable Range
      */
-    @JsonProperty(value = "reachableRange")
     private RouteRange reachableRange;
 
     /*
      * Reports the effective settings used in the current call.
      */
-    @JsonProperty(value = "report")
     private RouteReport report;
 
     /**
+     * Creates an instance of RouteRangeResult class.
+     */
+    public RouteRangeResult() {
+    }
+
+    /**
      * Get the formatVersion property: Format Version property.
-     *
+     * 
      * @return the formatVersion value.
      */
     public String getFormatVersion() {
@@ -39,7 +48,7 @@ public final class RouteRangeResult {
 
     /**
      * Get the reachableRange property: Reachable Range.
-     *
+     * 
      * @return the reachableRange value.
      */
     public RouteRange getReachableRange() {
@@ -48,7 +57,7 @@ public final class RouteRangeResult {
 
     /**
      * Set the reachableRange property: Reachable Range.
-     *
+     * 
      * @param reachableRange the reachableRange value to set.
      * @return the RouteRangeResult object itself.
      */
@@ -59,7 +68,7 @@ public final class RouteRangeResult {
 
     /**
      * Get the report property: Reports the effective settings used in the current call.
-     *
+     * 
      * @return the report value.
      */
     public RouteReport getReport() {
@@ -68,12 +77,53 @@ public final class RouteRangeResult {
 
     /**
      * Set the report property: Reports the effective settings used in the current call.
-     *
+     * 
      * @param report the report value to set.
      * @return the RouteRangeResult object itself.
      */
     public RouteRangeResult setReport(RouteReport report) {
         this.report = report;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("reachableRange", this.reachableRange);
+        jsonWriter.writeJsonField("report", this.report);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteRangeResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteRangeResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteRangeResult.
+     */
+    public static RouteRangeResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteRangeResult deserializedRouteRangeResult = new RouteRangeResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("formatVersion".equals(fieldName)) {
+                    deserializedRouteRangeResult.formatVersion = reader.getString();
+                } else if ("reachableRange".equals(fieldName)) {
+                    deserializedRouteRangeResult.reachableRange = RouteRange.fromJson(reader);
+                } else if ("report".equals(fieldName)) {
+                    deserializedRouteRangeResult.report = RouteReport.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteRangeResult;
+        });
     }
 }

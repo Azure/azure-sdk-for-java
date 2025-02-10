@@ -13,73 +13,77 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.ExpressRouteAuthorizationInner;
 
-/** An instance of this class provides access to all the operations defined in AuthorizationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AuthorizationsClient.
+ */
 public interface AuthorizationsClient {
     /**
-     * List ExpressRoute Circuit Authorizations in a private cloud.
-     *
+     * List ExpressRouteAuthorization resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of ExpressRoute Circuit Authorizations as paginated response with {@link PagedIterable}.
+     * @return the response of a ExpressRouteAuthorization list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteAuthorizationInner> list(String resourceGroupName, String privateCloudName);
 
     /**
-     * List ExpressRoute Circuit Authorizations in a private cloud.
-     *
+     * List ExpressRouteAuthorization resources by PrivateCloud.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of ExpressRoute Circuit Authorizations as paginated response with {@link PagedIterable}.
+     * @return the response of a ExpressRouteAuthorization list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressRouteAuthorizationInner> list(
-        String resourceGroupName, String privateCloudName, Context context);
+    PagedIterable<ExpressRouteAuthorizationInner> list(String resourceGroupName, String privateCloudName,
+        Context context);
 
     /**
-     * Get an ExpressRoute Circuit Authorization by name in a private cloud.
-     *
+     * Get a ExpressRouteAuthorization.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
+     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ExpressRoute Circuit Authorization by name in a private cloud along with {@link Response}.
+     * @return a ExpressRouteAuthorization along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteAuthorizationInner> getWithResponse(
-        String resourceGroupName, String privateCloudName, String authorizationName, Context context);
+    Response<ExpressRouteAuthorizationInner> getWithResponse(String resourceGroupName, String privateCloudName,
+        String authorizationName, Context context);
 
     /**
-     * Get an ExpressRoute Circuit Authorization by name in a private cloud.
-     *
+     * Get a ExpressRouteAuthorization.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
+     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an ExpressRoute Circuit Authorization by name in a private cloud.
+     * @return a ExpressRouteAuthorization.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExpressRouteAuthorizationInner get(String resourceGroupName, String privateCloudName, String authorizationName);
 
     /**
-     * Create or update an ExpressRoute Circuit Authorization in a private cloud.
-     *
+     * Create a ExpressRouteAuthorization.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
-     * @param authorization An ExpressRoute Circuit Authorization.
+     * @param privateCloudName Name of the private cloud.
+     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
+     * @param authorization Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -87,18 +91,16 @@ public interface AuthorizationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteAuthorizationInner>, ExpressRouteAuthorizationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String authorizationName,
+        String resourceGroupName, String privateCloudName, String authorizationName,
         ExpressRouteAuthorizationInner authorization);
 
     /**
-     * Create or update an ExpressRoute Circuit Authorization in a private cloud.
-     *
+     * Create a ExpressRouteAuthorization.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
-     * @param authorization An ExpressRoute Circuit Authorization.
+     * @param privateCloudName Name of the private cloud.
+     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
+     * @param authorization Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,38 +109,32 @@ public interface AuthorizationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteAuthorizationInner>, ExpressRouteAuthorizationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String authorizationName,
-        ExpressRouteAuthorizationInner authorization,
-        Context context);
+        String resourceGroupName, String privateCloudName, String authorizationName,
+        ExpressRouteAuthorizationInner authorization, Context context);
 
     /**
-     * Create or update an ExpressRoute Circuit Authorization in a private cloud.
-     *
+     * Create a ExpressRouteAuthorization.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
-     * @param authorization An ExpressRoute Circuit Authorization.
+     * @param privateCloudName Name of the private cloud.
+     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
+     * @param authorization Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute Circuit Authorization.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteAuthorizationInner createOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String authorizationName,
-        ExpressRouteAuthorizationInner authorization);
+    ExpressRouteAuthorizationInner createOrUpdate(String resourceGroupName, String privateCloudName,
+        String authorizationName, ExpressRouteAuthorizationInner authorization);
 
     /**
-     * Create or update an ExpressRoute Circuit Authorization in a private cloud.
-     *
+     * Create a ExpressRouteAuthorization.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName The name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
-     * @param authorization An ExpressRoute Circuit Authorization.
+     * @param privateCloudName Name of the private cloud.
+     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
+     * @param authorization Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -146,34 +142,30 @@ public interface AuthorizationsClient {
      * @return expressRoute Circuit Authorization.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteAuthorizationInner createOrUpdate(
-        String resourceGroupName,
-        String privateCloudName,
-        String authorizationName,
-        ExpressRouteAuthorizationInner authorization,
-        Context context);
+    ExpressRouteAuthorizationInner createOrUpdate(String resourceGroupName, String privateCloudName,
+        String authorizationName, ExpressRouteAuthorizationInner authorization, Context context);
 
     /**
-     * Delete an ExpressRoute Circuit Authorization in a private cloud.
-     *
+     * Delete a ExpressRouteAuthorization.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
+     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateCloudName, String authorizationName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
+        String authorizationName);
 
     /**
-     * Delete an ExpressRoute Circuit Authorization in a private cloud.
-     *
+     * Delete a ExpressRouteAuthorization.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
+     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -181,15 +173,15 @@ public interface AuthorizationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateCloudName, String authorizationName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
+        String authorizationName, Context context);
 
     /**
-     * Delete an ExpressRoute Circuit Authorization in a private cloud.
-     *
+     * Delete a ExpressRouteAuthorization.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
+     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -198,11 +190,11 @@ public interface AuthorizationsClient {
     void delete(String resourceGroupName, String privateCloudName, String authorizationName);
 
     /**
-     * Delete an ExpressRoute Circuit Authorization in a private cloud.
-     *
+     * Delete a ExpressRouteAuthorization.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param authorizationName Name of the ExpressRoute Circuit Authorization in the private cloud.
+     * @param authorizationName Name of the ExpressRoute Circuit Authorization.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

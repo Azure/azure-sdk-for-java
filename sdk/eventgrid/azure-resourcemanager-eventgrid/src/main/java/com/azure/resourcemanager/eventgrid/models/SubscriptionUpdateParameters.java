@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.SubscriptionUpdateParametersProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * Properties of the Event Subscription update.
  */
 @Fluent
-public final class SubscriptionUpdateParameters {
+public final class SubscriptionUpdateParameters implements JsonSerializable<SubscriptionUpdateParameters> {
     /*
      * Properties of the Event Subscription update parameters.
      */
-    @JsonProperty(value = "properties")
     private SubscriptionUpdateParametersProperties innerProperties;
 
     /**
@@ -104,6 +108,29 @@ public final class SubscriptionUpdateParameters {
     }
 
     /**
+     * Get the expirationTimeUtc property: Expiration time of the event subscription.
+     * 
+     * @return the expirationTimeUtc value.
+     */
+    public OffsetDateTime expirationTimeUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().expirationTimeUtc();
+    }
+
+    /**
+     * Set the expirationTimeUtc property: Expiration time of the event subscription.
+     * 
+     * @param expirationTimeUtc the expirationTimeUtc value to set.
+     * @return the SubscriptionUpdateParameters object itself.
+     */
+    public SubscriptionUpdateParameters withExpirationTimeUtc(OffsetDateTime expirationTimeUtc) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionUpdateParametersProperties();
+        }
+        this.innerProperties().withExpirationTimeUtc(expirationTimeUtc);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -112,5 +139,42 @@ public final class SubscriptionUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionUpdateParameters.
+     */
+    public static SubscriptionUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionUpdateParameters deserializedSubscriptionUpdateParameters = new SubscriptionUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSubscriptionUpdateParameters.innerProperties
+                        = SubscriptionUpdateParametersProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionUpdateParameters;
+        });
     }
 }

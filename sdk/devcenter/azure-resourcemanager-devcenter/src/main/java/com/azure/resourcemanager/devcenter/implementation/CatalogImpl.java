@@ -18,6 +18,7 @@ import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.SyncErrorDetails;
 import com.azure.resourcemanager.devcenter.models.SyncStats;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.Map;
 
 public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.Update {
@@ -77,6 +78,15 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
         return this.innerModel().syncType();
     }
 
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -91,33 +101,29 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
 
     private String resourceGroupName;
 
-    private String devCenterName;
+    private String projectName;
 
     private String catalogName;
 
     private CatalogUpdate updateBody;
 
-    public CatalogImpl withExistingDevcenter(String resourceGroupName, String devCenterName) {
+    public CatalogImpl withExistingProject(String resourceGroupName, String projectName) {
         this.resourceGroupName = resourceGroupName;
-        this.devCenterName = devCenterName;
+        this.projectName = projectName;
         return this;
     }
 
     public Catalog create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCatalogs()
-                .createOrUpdate(resourceGroupName, devCenterName, catalogName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectCatalogs()
+            .createOrUpdate(resourceGroupName, projectName, catalogName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Catalog create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCatalogs()
-                .createOrUpdate(resourceGroupName, devCenterName, catalogName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectCatalogs()
+            .createOrUpdate(resourceGroupName, projectName, catalogName, this.innerModel(), context);
         return this;
     }
 
@@ -133,75 +139,76 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
     }
 
     public Catalog apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCatalogs()
-                .update(resourceGroupName, devCenterName, catalogName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectCatalogs()
+            .patch(resourceGroupName, projectName, catalogName, updateBody, Context.NONE);
         return this;
     }
 
     public Catalog apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCatalogs()
-                .update(resourceGroupName, devCenterName, catalogName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectCatalogs()
+            .patch(resourceGroupName, projectName, catalogName, updateBody, context);
         return this;
     }
 
     CatalogImpl(CatalogInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.devCenterName = Utils.getValueFromIdByName(innerObject.id(), "devcenters");
-        this.catalogName = Utils.getValueFromIdByName(innerObject.id(), "catalogs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
+        this.catalogName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "catalogs");
     }
 
     public Catalog refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCatalogs()
-                .getWithResponse(resourceGroupName, devCenterName, catalogName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectCatalogs()
+            .getWithResponse(resourceGroupName, projectName, catalogName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Catalog refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCatalogs()
-                .getWithResponse(resourceGroupName, devCenterName, catalogName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProjectCatalogs()
+            .getWithResponse(resourceGroupName, projectName, catalogName, context)
+            .getValue();
         return this;
     }
 
     public Response<SyncErrorDetails> getSyncErrorDetailsWithResponse(Context context) {
-        return serviceManager
-            .catalogs()
-            .getSyncErrorDetailsWithResponse(resourceGroupName, devCenterName, catalogName, context);
+        return serviceManager.projectCatalogs()
+            .getSyncErrorDetailsWithResponse(resourceGroupName, projectName, catalogName, context);
     }
 
     public SyncErrorDetails getSyncErrorDetails() {
-        return serviceManager.catalogs().getSyncErrorDetails(resourceGroupName, devCenterName, catalogName);
+        return serviceManager.projectCatalogs().getSyncErrorDetails(resourceGroupName, projectName, catalogName);
     }
 
     public void sync() {
-        serviceManager.catalogs().sync(resourceGroupName, devCenterName, catalogName);
+        serviceManager.projectCatalogs().sync(resourceGroupName, projectName, catalogName);
     }
 
     public void sync(Context context) {
-        serviceManager.catalogs().sync(resourceGroupName, devCenterName, catalogName, context);
+        serviceManager.projectCatalogs().sync(resourceGroupName, projectName, catalogName, context);
     }
 
     public void connect() {
-        serviceManager.catalogs().connect(resourceGroupName, devCenterName, catalogName);
+        serviceManager.projectCatalogs().connect(resourceGroupName, projectName, catalogName);
     }
 
     public void connect(Context context) {
-        serviceManager.catalogs().connect(resourceGroupName, devCenterName, catalogName, context);
+        serviceManager.projectCatalogs().connect(resourceGroupName, projectName, catalogName, context);
+    }
+
+    public CatalogImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateBody.withTags(tags);
+            return this;
+        }
     }
 
     public CatalogImpl withGitHub(GitCatalog gitHub) {
@@ -232,11 +239,6 @@ public final class CatalogImpl implements Catalog, Catalog.Definition, Catalog.U
             this.updateBody.withSyncType(syncType);
             return this;
         }
-    }
-
-    public CatalogImpl withTags(Map<String, String> tags) {
-        this.updateBody.withTags(tags);
-        return this;
     }
 
     private boolean isInCreateMode() {

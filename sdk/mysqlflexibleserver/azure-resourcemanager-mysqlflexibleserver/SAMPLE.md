@@ -1,23 +1,10 @@
 # Code snippets and samples
 
 
-## AzureADAdministrators
-
-- [CreateOrUpdate](#azureadadministrators_createorupdate)
-- [Delete](#azureadadministrators_delete)
-- [Get](#azureadadministrators_get)
-- [ListByServer](#azureadadministrators_listbyserver)
-
-## BackupAndExport
-
-- [Create](#backupandexport_create)
-- [ValidateBackup](#backupandexport_validatebackup)
-
 ## Backups
 
 - [Get](#backups_get)
 - [ListByServer](#backups_listbyserver)
-- [Put](#backups_put)
 
 ## CheckNameAvailability
 
@@ -34,7 +21,6 @@
 ## Configurations
 
 - [BatchUpdate](#configurations_batchupdate)
-- [CreateOrUpdate](#configurations_createorupdate)
 - [Get](#configurations_get)
 - [ListByServer](#configurations_listbyserver)
 - [Update](#configurations_update)
@@ -61,10 +47,6 @@
 
 - [List](#locationbasedcapabilities_list)
 
-## LogFiles
-
-- [ListByServer](#logfiles_listbyserver)
-
 ## Operations
 
 - [List](#operations_list)
@@ -81,182 +63,28 @@
 - [GetByResourceGroup](#servers_getbyresourcegroup)
 - [List](#servers_list)
 - [ListByResourceGroup](#servers_listbyresourcegroup)
-- [ResetGtid](#servers_resetgtid)
 - [Restart](#servers_restart)
 - [Start](#servers_start)
 - [Stop](#servers_stop)
 - [Update](#servers_update)
-### AzureADAdministrators_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorName;
-import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorType;
-
-/** Samples for AzureADAdministrators CreateOrUpdate. */
-public final class AzureADAdministratorsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/AAD/preview/2021-12-01-preview/examples/AzureADAdministratorCreate.json
-     */
-    /**
-     * Sample code: Create an azure ad administrator.
-     *
-     * @param manager Entry point to MySqlManager.
-     */
-    public static void createAnAzureAdAdministrator(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .azureADAdministrators()
-            .define(AdministratorName.ACTIVE_DIRECTORY)
-            .withExistingFlexibleServer("testrg", "mysqltestsvc4")
-            .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
-            .withLogin("bob@contoso.com")
-            .withSid("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c")
-            .withTenantId("c12b7025-bfe2-46c1-b463-993b5e4cd467")
-            .withIdentityResourceId(
-                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/test-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-umi")
-            .create();
-    }
-}
-```
-
-### AzureADAdministrators_Delete
-
-```java
-import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorName;
-
-/** Samples for AzureADAdministrators Delete. */
-public final class AzureADAdministratorsDeleteSamples {
-    /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/AAD/preview/2021-12-01-preview/examples/AzureADAdministratorDelete.json
-     */
-    /**
-     * Sample code: Delete an azure ad administrator.
-     *
-     * @param manager Entry point to MySqlManager.
-     */
-    public static void deleteAnAzureAdAdministrator(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .azureADAdministrators()
-            .delete("testrg", "mysqltestsvc4", AdministratorName.ACTIVE_DIRECTORY, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AzureADAdministrators_Get
-
-```java
-import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorName;
-
-/** Samples for AzureADAdministrators Get. */
-public final class AzureADAdministratorsGetSamples {
-    /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/AAD/preview/2021-12-01-preview/examples/AzureADAdministratorGet.json
-     */
-    /**
-     * Sample code: Get an azure ad administrator.
-     *
-     * @param manager Entry point to MySqlManager.
-     */
-    public static void getAnAzureAdAdministrator(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .azureADAdministrators()
-            .getWithResponse(
-                "testrg", "mysqltestsvc4", AdministratorName.ACTIVE_DIRECTORY, com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AzureADAdministrators_ListByServer
-
-```java
-/** Samples for AzureADAdministrators ListByServer. */
-public final class AzureADAdministratorsListByServerSamples {
-    /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/AAD/preview/2021-12-01-preview/examples/AzureADAdministratorsListByServer.json
-     */
-    /**
-     * Sample code: List Azure AD administrators in a server.
-     *
-     * @param manager Entry point to MySqlManager.
-     */
-    public static void listAzureADAdministratorsInAServer(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.azureADAdministrators().listByServer("testrg", "mysqltestsvc4", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### BackupAndExport_Create
-
-```java
-import com.azure.resourcemanager.mysqlflexibleserver.models.BackupAndExportRequest;
-import com.azure.resourcemanager.mysqlflexibleserver.models.BackupSettings;
-import com.azure.resourcemanager.mysqlflexibleserver.models.FullBackupStoreDetails;
-import java.util.Arrays;
-
-/** Samples for BackupAndExport Create. */
-public final class BackupAndExportCreateSamples {
-    /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2022-09-30-preview/examples/BackupAndExport.json
-     */
-    /**
-     * Sample code: Create and Export Backup.
-     *
-     * @param manager Entry point to MySqlManager.
-     */
-    public static void createAndExportBackup(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .backupAndExports()
-            .create(
-                "TestGroup",
-                "mysqltestserver",
-                new BackupAndExportRequest()
-                    .withBackupSettings(new BackupSettings().withBackupName("customer-backup-name"))
-                    .withTargetDetails(
-                        new FullBackupStoreDetails().withSasUriList(Arrays.asList("sasuri1", "sasuri2"))),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### BackupAndExport_ValidateBackup
-
-```java
-/** Samples for BackupAndExport ValidateBackup. */
-public final class BackupAndExportValidateBackupSamples {
-    /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2022-09-30-preview/examples/ValidateBackup.json
-     */
-    /**
-     * Sample code: Validate Backup.
-     *
-     * @param manager Entry point to MySqlManager.
-     */
-    public static void validateBackup(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .backupAndExports()
-            .validateBackupWithResponse("TestGroup", "mysqltestserver", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### Backups_Get
 
 ```java
-/** Samples for Backups Get. */
+/**
+ * Samples for Backups Get.
+ */
 public final class BackupsGetSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2022-09-30-preview/examples/BackupGet.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/BackupGet.json
      */
     /**
      * Sample code: Get a backup for a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void getABackupForAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .backups()
+        manager.backups()
             .getWithResponse("TestGroup", "mysqltestserver", "daily_20210615T160516", com.azure.core.util.Context.NONE);
     }
 }
@@ -265,37 +93,22 @@ public final class BackupsGetSamples {
 ### Backups_ListByServer
 
 ```java
-/** Samples for Backups ListByServer. */
+/**
+ * Samples for Backups ListByServer.
+ */
 public final class BackupsListByServerSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2022-09-30-preview/examples/BackupsListByServer.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/BackupsListByServer.
+     * json
      */
     /**
      * Sample code: List backups for a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void listBackupsForAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
         manager.backups().listByServer("TestGroup", "mysqltestserver", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Backups_Put
-
-```java
-/** Samples for Backups Put. */
-public final class BackupsPutSamples {
-    /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2022-09-30-preview/examples/BackupPut.json
-     */
-    /**
-     * Sample code: Create backup for a server.
-     *
-     * @param manager Entry point to MySqlManager.
-     */
-    public static void createBackupForAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.backups().putWithResponse("TestGroup", "mysqltestserver", "mybackup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -305,21 +118,23 @@ public final class BackupsPutSamples {
 ```java
 import com.azure.resourcemanager.mysqlflexibleserver.models.NameAvailabilityRequest;
 
-/** Samples for CheckNameAvailability Execute. */
+/**
+ * Samples for CheckNameAvailability Execute.
+ */
 public final class CheckNameAvailabilityExecuteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/preview/2021-12-01-preview/examples/CheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/CheckNameAvailability
+     * .json
      */
     /**
      * Sample code: Check name availability.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void checkNameAvailability(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .checkNameAvailabilities()
-            .executeWithResponse(
-                "SouthEastAsia",
+        manager.checkNameAvailabilities()
+            .executeWithResponse("SouthEastAsia",
                 new NameAvailabilityRequest().withName("name1").withType("Microsoft.DBforMySQL/flexibleServers"),
                 com.azure.core.util.Context.NONE);
     }
@@ -331,19 +146,22 @@ public final class CheckNameAvailabilityExecuteSamples {
 ```java
 import com.azure.resourcemanager.mysqlflexibleserver.models.NameAvailabilityRequest;
 
-/** Samples for CheckNameAvailabilityWithoutLocation Execute. */
+/**
+ * Samples for CheckNameAvailabilityWithoutLocation Execute.
+ */
 public final class CheckNameAvailabilityWithoutLocationExecuteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/preview/2021-12-01-preview/examples/CheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/CheckNameAvailability
+     * .json
      */
     /**
      * Sample code: Check name availability.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void checkNameAvailability(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .checkNameAvailabilityWithoutLocations()
+        manager.checkNameAvailabilityWithoutLocations()
             .executeWithResponse(
                 new NameAvailabilityRequest().withName("name1").withType("Microsoft.DBforMySQL/flexibleServers"),
                 com.azure.core.util.Context.NONE);
@@ -356,25 +174,24 @@ public final class CheckNameAvailabilityWithoutLocationExecuteSamples {
 ```java
 import com.azure.resourcemanager.mysqlflexibleserver.models.VirtualNetworkSubnetUsageParameter;
 
-/** Samples for CheckVirtualNetworkSubnetUsage Execute. */
+/**
+ * Samples for CheckVirtualNetworkSubnetUsage Execute.
+ */
 public final class CheckVirtualNetworkSubnetUsageExecuteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/preview/2021-12-01-preview/examples/CheckVirtualNetworkSubnetUsage.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * CheckVirtualNetworkSubnetUsage.json
      */
     /**
      * Sample code: CheckVirtualNetworkSubnetUsage.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
-    public static void checkVirtualNetworkSubnetUsage(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .checkVirtualNetworkSubnetUsages()
-            .executeWithResponse(
-                "WestUS",
-                new VirtualNetworkSubnetUsageParameter()
-                    .withVirtualNetworkResourceId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/testvnet"),
+    public static void
+        checkVirtualNetworkSubnetUsage(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+        manager.checkVirtualNetworkSubnetUsages()
+            .executeWithResponse("WestUS", new VirtualNetworkSubnetUsageParameter().withVirtualNetworkResourceId(
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/testvnet"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -385,60 +202,28 @@ public final class CheckVirtualNetworkSubnetUsageExecuteSamples {
 ```java
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationForBatchUpdate;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationListForBatchUpdate;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ResetAllToDefault;
 import java.util.Arrays;
 
-/** Samples for Configurations BatchUpdate. */
+/**
+ * Samples for Configurations BatchUpdate.
+ */
 public final class ConfigurationsBatchUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2021-12-01-preview/examples/ConfigurationsBatchUpdate.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * ConfigurationsBatchUpdate.json
      */
     /**
      * Sample code: ConfigurationList.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void configurationList(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .configurations()
-            .batchUpdate(
-                "testrg",
-                "mysqltestserver",
-                new ConfigurationListForBatchUpdate()
-                    .withValue(
-                        Arrays
-                            .asList(
-                                new ConfigurationForBatchUpdate().withName("event_scheduler").withValue("OFF"),
-                                new ConfigurationForBatchUpdate().withName("div_precision_increment").withValue("8")))
-                    .withResetAllToDefault(ResetAllToDefault.FALSE),
+        manager.configurations()
+            .batchUpdate("testrg", "mysqltestserver",
+                new ConfigurationListForBatchUpdate().withValue(
+                    Arrays.asList(new ConfigurationForBatchUpdate().withName("event_scheduler").withValue("OFF"),
+                        new ConfigurationForBatchUpdate().withName("div_precision_increment").withValue("8"))),
                 com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Configurations_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
-
-/** Samples for Configurations CreateOrUpdate. */
-public final class ConfigurationsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2021-12-01-preview/examples/ConfigurationCreateOrUpdate.json
-     */
-    /**
-     * Sample code: ConfigurationCreateOrUpdate.
-     *
-     * @param manager Entry point to MySqlManager.
-     */
-    public static void configurationCreateOrUpdate(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .configurations()
-            .define("event_scheduler")
-            .withExistingFlexibleServer("TestGroup", "testserver")
-            .withValue("off")
-            .withSource(ConfigurationSource.USER_OVERRIDE)
-            .create();
     }
 }
 ```
@@ -446,19 +231,21 @@ public final class ConfigurationsCreateOrUpdateSamples {
 ### Configurations_Get
 
 ```java
-/** Samples for Configurations Get. */
+/**
+ * Samples for Configurations Get.
+ */
 public final class ConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2021-12-01-preview/examples/ConfigurationGet.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ConfigurationGet.json
      */
     /**
      * Sample code: Get a configuration.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void getAConfiguration(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .configurations()
+        manager.configurations()
             .getWithResponse("TestGroup", "testserver", "event_scheduler", com.azure.core.util.Context.NONE);
     }
 }
@@ -467,21 +254,22 @@ public final class ConfigurationsGetSamples {
 ### Configurations_ListByServer
 
 ```java
-/** Samples for Configurations ListByServer. */
+/**
+ * Samples for Configurations ListByServer.
+ */
 public final class ConfigurationsListByServerSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2021-12-01-preview/examples/ConfigurationsListByServer.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * ConfigurationsListByServer.json
      */
     /**
      * Sample code: List all configurations for a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
-    public static void listAllConfigurationsForAServer(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .configurations()
-            .listByServer("testrg", "mysqltestserver", null, null, 1, 8, com.azure.core.util.Context.NONE);
+    public static void
+        listAllConfigurationsForAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+        manager.configurations().listByServer("testrg", "mysqltestserver", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -489,26 +277,28 @@ public final class ConfigurationsListByServerSamples {
 ### Configurations_Update
 
 ```java
-import com.azure.resourcemanager.mysqlflexibleserver.models.Configuration;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
 
-/** Samples for Configurations Update. */
+/**
+ * Samples for Configurations Update.
+ */
 public final class ConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2021-12-01-preview/examples/ConfigurationUpdate.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ConfigurationUpdate.
+     * json
      */
     /**
      * Sample code: Update a user configuration.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void updateAUserConfiguration(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        Configuration resource =
-            manager
-                .configurations()
-                .getWithResponse("testrg", "testserver", "event_scheduler", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withValue("on").withSource(ConfigurationSource.USER_OVERRIDE).apply();
+        manager.configurations()
+            .update("testrg", "testserver", "event_scheduler",
+                new ConfigurationInner().withValue("on").withSource(ConfigurationSource.USER_OVERRIDE),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -516,19 +306,21 @@ public final class ConfigurationsUpdateSamples {
 ### Databases_CreateOrUpdate
 
 ```java
-/** Samples for Databases CreateOrUpdate. */
+/**
+ * Samples for Databases CreateOrUpdate.
+ */
 public final class DatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Databases/preview/2021-12-01-preview/examples/DatabaseCreate.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/DatabaseCreate.json
      */
     /**
      * Sample code: Create a database.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void createADatabase(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .databases()
+        manager.databases()
             .define("db1")
             .withExistingFlexibleServer("TestGroup", "testserver")
             .withCharset("utf8")
@@ -541,14 +333,17 @@ public final class DatabasesCreateOrUpdateSamples {
 ### Databases_Delete
 
 ```java
-/** Samples for Databases Delete. */
+/**
+ * Samples for Databases Delete.
+ */
 public final class DatabasesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Databases/preview/2021-12-01-preview/examples/DatabaseDelete.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/DatabaseDelete.json
      */
     /**
      * Sample code: Delete a database.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void deleteADatabase(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -560,14 +355,17 @@ public final class DatabasesDeleteSamples {
 ### Databases_Get
 
 ```java
-/** Samples for Databases Get. */
+/**
+ * Samples for Databases Get.
+ */
 public final class DatabasesGetSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Databases/preview/2021-12-01-preview/examples/DatabaseGet.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/DatabaseGet.json
      */
     /**
      * Sample code: Get a database.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void getADatabase(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -579,14 +377,18 @@ public final class DatabasesGetSamples {
 ### Databases_ListByServer
 
 ```java
-/** Samples for Databases ListByServer. */
+/**
+ * Samples for Databases ListByServer.
+ */
 public final class DatabasesListByServerSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Databases/preview/2021-12-01-preview/examples/DatabasesListByServer.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/DatabasesListByServer
+     * .json
      */
     /**
      * Sample code: List databases in a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void listDatabasesInAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -598,19 +400,22 @@ public final class DatabasesListByServerSamples {
 ### FirewallRules_CreateOrUpdate
 
 ```java
-/** Samples for FirewallRules CreateOrUpdate. */
+/**
+ * Samples for FirewallRules CreateOrUpdate.
+ */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Firewall/preview/2021-12-01-preview/examples/FirewallRuleCreate.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/FirewallRuleCreate.
+     * json
      */
     /**
      * Sample code: Create a firewall rule.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void createAFirewallRule(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .firewallRules()
+        manager.firewallRules()
             .define("rule1")
             .withExistingFlexibleServer("TestGroup", "testserver")
             .withStartIpAddress("0.0.0.0")
@@ -623,14 +428,18 @@ public final class FirewallRulesCreateOrUpdateSamples {
 ### FirewallRules_Delete
 
 ```java
-/** Samples for FirewallRules Delete. */
+/**
+ * Samples for FirewallRules Delete.
+ */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Firewall/preview/2021-12-01-preview/examples/FirewallRuleDelete.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/FirewallRuleDelete.
+     * json
      */
     /**
      * Sample code: Delete a firewall rule.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void deleteAFirewallRule(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -642,14 +451,17 @@ public final class FirewallRulesDeleteSamples {
 ### FirewallRules_Get
 
 ```java
-/** Samples for FirewallRules Get. */
+/**
+ * Samples for FirewallRules Get.
+ */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Firewall/preview/2021-12-01-preview/examples/FirewallRuleGet.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/FirewallRuleGet.json
      */
     /**
      * Sample code: Get a firewall rule.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void getAFirewallRule(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -661,18 +473,21 @@ public final class FirewallRulesGetSamples {
 ### FirewallRules_ListByServer
 
 ```java
-/** Samples for FirewallRules ListByServer. */
+/**
+ * Samples for FirewallRules ListByServer.
+ */
 public final class FirewallRulesListByServerSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Firewall/preview/2021-12-01-preview/examples/FirewallRulesListByServer.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * FirewallRulesListByServer.json
      */
     /**
      * Sample code: List all firewall rules in a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
-    public static void listAllFirewallRulesInAServer(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+    public static void
+        listAllFirewallRulesInAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
         manager.firewallRules().listByServer("TestGroup", "testserver", com.azure.core.util.Context.NONE);
     }
 }
@@ -681,14 +496,17 @@ public final class FirewallRulesListByServerSamples {
 ### GetPrivateDnsZoneSuffix_Execute
 
 ```java
-/** Samples for GetPrivateDnsZoneSuffix Execute. */
+/**
+ * Samples for GetPrivateDnsZoneSuffix Execute.
+ */
 public final class GetPrivateDnsZoneSuffixExecuteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/preview/2021-12-01-preview/examples/GetPrivateDnsZoneSuffix.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * GetPrivateDnsZoneSuffix.json
      */
     /**
      * Sample code: GetPrivateDnsZoneSuffix.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void getPrivateDnsZoneSuffix(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -700,14 +518,17 @@ public final class GetPrivateDnsZoneSuffixExecuteSamples {
 ### LocationBasedCapabilities_List
 
 ```java
-/** Samples for LocationBasedCapabilities List. */
+/**
+ * Samples for LocationBasedCapabilities List.
+ */
 public final class LocationBasedCapabilitiesListSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/preview/2021-12-01-preview/examples/CapabilitiesByLocationList.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * CapabilitiesByLocationList.json
      */
     /**
      * Sample code: CapabilitiesList.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void capabilitiesList(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -716,37 +537,20 @@ public final class LocationBasedCapabilitiesListSamples {
 }
 ```
 
-### LogFiles_ListByServer
-
-```java
-/** Samples for LogFiles ListByServer. */
-public final class LogFilesListByServerSamples {
-    /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/LogFiles/preview/2021-12-01-preview/examples/LogFilesListByServer.json
-     */
-    /**
-     * Sample code: List all server log files for a server.
-     *
-     * @param manager Entry point to MySqlManager.
-     */
-    public static void listAllServerLogFilesForAServer(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.logFiles().listByServer("testrg", "mysqltestsvc1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/ServiceOperations/preview/2021-12-01-preview/examples/OperationsList.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/OperationsList.json
      */
     /**
      * Sample code: OperationList.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void operationList(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -758,14 +562,18 @@ public final class OperationsListSamples {
 ### Replicas_ListByServer
 
 ```java
-/** Samples for Replicas ListByServer. */
+/**
+ * Samples for Replicas ListByServer.
+ */
 public final class ReplicasListByServerSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ReplicasListByServer.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ReplicasListByServer.
+     * json
      */
     /**
      * Sample code: List replicas for a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void listReplicasForAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -797,19 +605,22 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Servers Create. */
+/**
+ * Samples for Servers Create.
+ */
 public final class ServersCreateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreateReplica.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerCreateReplica.
+     * json
      */
     /**
      * Sample code: Create a replica server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void createAReplicaServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .servers()
+        manager.servers()
             .define("replica-server")
             .withRegion("SoutheastAsia")
             .withExistingResourceGroup("testgr")
@@ -820,16 +631,16 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreate.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerCreate.json
      */
     /**
      * Sample code: Create a new server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void createANewServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .servers()
+        manager.servers()
             .define("mysqltestserver")
             .withRegion("southeastasia")
             .withExistingResourceGroup("testrg")
@@ -848,45 +659,40 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreateWithBYOK.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerCreateWithBYOK.
+     * json
      */
     /**
      * Sample code: Create a server with byok.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void createAServerWithByok(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager)
         throws IOException {
-        manager
-            .servers()
+        manager.servers()
             .define("mysqltestserver")
             .withRegion("southeastasia")
             .withExistingResourceGroup("testrg")
             .withTags(mapOf("num", "1"))
-            .withIdentity(
-                new Identity()
-                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize("{}", Object.class, SerializerEncoding.JSON))))
+            .withIdentity(new Identity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
+                    SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))))
             .withSku(new Sku().withName("Standard_D2ds_v4").withTier(SkuTier.GENERAL_PURPOSE))
             .withAdministratorLogin("cloudsa")
             .withAdministratorLoginPassword("your_password")
             .withVersion(ServerVersion.FIVE_SEVEN)
             .withAvailabilityZone("1")
             .withCreateMode(CreateMode.DEFAULT)
-            .withDataEncryption(
-                new DataEncryption()
-                    .withPrimaryUserAssignedIdentityId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity")
-                    .withPrimaryKeyUri("fakeTokenPlaceholder")
-                    .withGeoBackupUserAssignedIdentityId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-identity")
-                    .withGeoBackupKeyUri("fakeTokenPlaceholder")
-                    .withType(DataEncryptionType.AZURE_KEY_VAULT))
+            .withDataEncryption(new DataEncryption().withPrimaryUserAssignedIdentityId(
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity")
+                .withPrimaryKeyUri("fakeTokenPlaceholder")
+                .withGeoBackupUserAssignedIdentityId(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-identity")
+                .withGeoBackupKeyUri("fakeTokenPlaceholder")
+                .withType(DataEncryptionType.AZURE_KEY_VAULT))
             .withStorage(new Storage().withStorageSizeGB(100).withIops(600).withAutoGrow(EnableStatusEnum.DISABLED))
             .withBackup(new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(EnableStatusEnum.DISABLED))
             .withHighAvailability(
@@ -895,17 +701,17 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerCreateWithPointInTimeRestore.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * ServerCreateWithPointInTimeRestore.json
      */
     /**
      * Sample code: Create a server as a point in time restore.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
-    public static void createAServerAsAPointInTimeRestore(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .servers()
+    public static void
+        createAServerAsAPointInTimeRestore(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+        manager.servers()
             .define("targetserver")
             .withRegion("SoutheastAsia")
             .withExistingResourceGroup("TargetResourceGroup")
@@ -918,6 +724,7 @@ public final class ServersCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -934,14 +741,17 @@ public final class ServersCreateSamples {
 ### Servers_Delete
 
 ```java
-/** Samples for Servers Delete. */
+/**
+ * Samples for Servers Delete.
+ */
 public final class ServersDeleteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerDelete.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerDelete.json
      */
     /**
      * Sample code: Delete a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void deleteAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -953,14 +763,17 @@ public final class ServersDeleteSamples {
 ### Servers_Failover
 
 ```java
-/** Samples for Servers Failover. */
+/**
+ * Samples for Servers Failover.
+ */
 public final class ServersFailoverSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerFailover.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerFailover.json
      */
     /**
      * Sample code: Restart a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void restartAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -972,14 +785,18 @@ public final class ServersFailoverSamples {
 ### Servers_GetByResourceGroup
 
 ```java
-/** Samples for Servers GetByResourceGroup. */
+/**
+ * Samples for Servers GetByResourceGroup.
+ */
 public final class ServersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerGetWithVnet.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerGetWithVnet.
+     * json
      */
     /**
      * Sample code: Get a server with vnet.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void getAServerWithVnet(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -987,11 +804,12 @@ public final class ServersGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerGet.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerGet.json
      */
     /**
      * Sample code: Get a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void getAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -1003,14 +821,17 @@ public final class ServersGetByResourceGroupSamples {
 ### Servers_List
 
 ```java
-/** Samples for Servers List. */
+/**
+ * Samples for Servers List.
+ */
 public final class ServersListSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServersList.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServersList.json
      */
     /**
      * Sample code: List servers in a subscription.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void listServersInASubscription(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -1022,45 +843,21 @@ public final class ServersListSamples {
 ### Servers_ListByResourceGroup
 
 ```java
-/** Samples for Servers ListByResourceGroup. */
+/**
+ * Samples for Servers ListByResourceGroup.
+ */
 public final class ServersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServersListByResourceGroup.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * ServersListByResourceGroup.json
      */
     /**
      * Sample code: List servers in a resource group.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void listServersInAResourceGroup(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
         manager.servers().listByResourceGroup("TestGroup", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Servers_ResetGtid
-
-```java
-import com.azure.resourcemanager.mysqlflexibleserver.models.ServerGtidSetParameter;
-
-/** Samples for Servers ResetGtid. */
-public final class ServersResetGtidSamples {
-    /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerResetGtid.json
-     */
-    /**
-     * Sample code: Reset GTID on a server.
-     *
-     * @param manager Entry point to MySqlManager.
-     */
-    public static void resetGTIDOnAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .servers()
-            .resetGtid(
-                "TestGroup",
-                "testserver",
-                new ServerGtidSetParameter().withGtidSet("4aff5b51-97ba-11ed-a955-002248036acc:1-16"),
-                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1071,24 +868,23 @@ public final class ServersResetGtidSamples {
 import com.azure.resourcemanager.mysqlflexibleserver.models.EnableStatusEnum;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerRestartParameter;
 
-/** Samples for Servers Restart. */
+/**
+ * Samples for Servers Restart.
+ */
 public final class ServersRestartSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerRestart.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerRestart.json
      */
     /**
      * Sample code: Restart a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void restartAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .servers()
-            .restart(
-                "TestGroup",
-                "testserver",
-                new ServerRestartParameter()
-                    .withRestartWithFailover(EnableStatusEnum.ENABLED)
+        manager.servers()
+            .restart("TestGroup", "testserver",
+                new ServerRestartParameter().withRestartWithFailover(EnableStatusEnum.ENABLED)
                     .withMaxFailoverSeconds(60),
                 com.azure.core.util.Context.NONE);
     }
@@ -1098,14 +894,17 @@ public final class ServersRestartSamples {
 ### Servers_Start
 
 ```java
-/** Samples for Servers Start. */
+/**
+ * Samples for Servers Start.
+ */
 public final class ServersStartSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerStart.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerStart.json
      */
     /**
      * Sample code: Start a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void startAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -1117,14 +916,17 @@ public final class ServersStartSamples {
 ### Servers_Stop
 
 ```java
-/** Samples for Servers Stop. */
+/**
+ * Samples for Servers Stop.
+ */
 public final class ServersStopSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerStop.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerStop.json
      */
     /**
      * Sample code: Stop a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void stopAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
@@ -1150,97 +952,82 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Servers Update. */
+/**
+ * Samples for Servers Update.
+ */
 public final class ServersUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerUpdateWithCustomerMaintenanceWindow.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/
+     * ServerUpdateWithCustomerMaintenanceWindow.json
      */
     /**
      * Sample code: Update server customer maintenance window.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
-    public static void updateServerCustomerMaintenanceWindow(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        Server resource =
-            manager
-                .servers()
-                .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withMaintenanceWindow(
-                new MaintenanceWindow()
-                    .withCustomWindow("Enabled")
-                    .withStartHour(8)
-                    .withStartMinute(0)
-                    .withDayOfWeek(1))
+    public static void
+        updateServerCustomerMaintenanceWindow(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withMaintenanceWindow(new MaintenanceWindow().withCustomWindow("Enabled")
+                .withStartHour(8)
+                .withStartMinute(0)
+                .withDayOfWeek(1))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerUpdateWithBYOK.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerUpdateWithBYOK.
+     * json
      */
     /**
      * Sample code: Update server with byok.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void updateServerWithByok(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager)
         throws IOException {
-        Server resource =
-            manager
-                .servers()
-                .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withIdentity(
-                new Identity()
-                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize("{}", Object.class, SerializerEncoding.JSON))))
-            .withDataEncryption(
-                new DataEncryption()
-                    .withPrimaryUserAssignedIdentityId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity")
-                    .withPrimaryKeyUri("fakeTokenPlaceholder")
-                    .withGeoBackupUserAssignedIdentityId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-identity")
-                    .withGeoBackupKeyUri("fakeTokenPlaceholder")
-                    .withType(DataEncryptionType.AZURE_KEY_VAULT))
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withIdentity(new Identity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
+                    SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{}", Object.class, SerializerEncoding.JSON))))
+            .withDataEncryption(new DataEncryption().withPrimaryUserAssignedIdentityId(
+                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity")
+                .withPrimaryKeyUri("fakeTokenPlaceholder")
+                .withGeoBackupUserAssignedIdentityId(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-identity")
+                .withGeoBackupKeyUri("fakeTokenPlaceholder")
+                .withType(DataEncryptionType.AZURE_KEY_VAULT))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/preview/2022-09-30-preview/examples/ServerUpdate.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/legacy/stable/2021-05-01/examples/ServerUpdate.json
      */
     /**
      * Sample code: Update a server.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void updateAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        Server resource =
-            manager
-                .servers()
-                .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withStorage(
-                new Storage()
-                    .withStorageSizeGB(30)
-                    .withIops(200)
-                    .withAutoGrow(EnableStatusEnum.DISABLED)
-                    .withAutoIoScaling(EnableStatusEnum.DISABLED))
+        Server resource = manager.servers()
+            .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withStorage(new Storage().withStorageSizeGB(30).withIops(200).withAutoGrow(EnableStatusEnum.DISABLED))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,46 +5,60 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This class represents the script action task details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("ScriptActionTaskDetails")
+/**
+ * This class represents the script action task details.
+ */
 @Fluent
 public final class ScriptActionTaskDetails extends TaskTypeDetails {
     /*
+     * The type of task details.
+     */
+    private String instanceType = "ScriptActionTaskDetails";
+
+    /*
      * The name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The path.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * The output.
      */
-    @JsonProperty(value = "output")
     private String output;
 
     /*
      * A value indicating whether it is a primary side script or not.
      */
-    @JsonProperty(value = "isPrimarySideScript")
     private Boolean isPrimarySideScript;
 
-    /** Creates an instance of ScriptActionTaskDetails class. */
+    /**
+     * Creates an instance of ScriptActionTaskDetails class.
+     */
     public ScriptActionTaskDetails() {
     }
 
     /**
+     * Get the instanceType property: The type of task details.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the name property: The name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -53,7 +67,7 @@ public final class ScriptActionTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the name property: The name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ScriptActionTaskDetails object itself.
      */
@@ -64,7 +78,7 @@ public final class ScriptActionTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the path property: The path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -73,7 +87,7 @@ public final class ScriptActionTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the path property: The path.
-     *
+     * 
      * @param path the path value to set.
      * @return the ScriptActionTaskDetails object itself.
      */
@@ -84,7 +98,7 @@ public final class ScriptActionTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the output property: The output.
-     *
+     * 
      * @return the output value.
      */
     public String output() {
@@ -93,7 +107,7 @@ public final class ScriptActionTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the output property: The output.
-     *
+     * 
      * @param output the output value to set.
      * @return the ScriptActionTaskDetails object itself.
      */
@@ -104,7 +118,7 @@ public final class ScriptActionTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the isPrimarySideScript property: A value indicating whether it is a primary side script or not.
-     *
+     * 
      * @return the isPrimarySideScript value.
      */
     public Boolean isPrimarySideScript() {
@@ -113,7 +127,7 @@ public final class ScriptActionTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the isPrimarySideScript property: A value indicating whether it is a primary side script or not.
-     *
+     * 
      * @param isPrimarySideScript the isPrimarySideScript value to set.
      * @return the ScriptActionTaskDetails object itself.
      */
@@ -124,11 +138,59 @@ public final class ScriptActionTaskDetails extends TaskTypeDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("output", this.output);
+        jsonWriter.writeBooleanField("isPrimarySideScript", this.isPrimarySideScript);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptActionTaskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptActionTaskDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScriptActionTaskDetails.
+     */
+    public static ScriptActionTaskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptActionTaskDetails deserializedScriptActionTaskDetails = new ScriptActionTaskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedScriptActionTaskDetails.instanceType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScriptActionTaskDetails.name = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedScriptActionTaskDetails.path = reader.getString();
+                } else if ("output".equals(fieldName)) {
+                    deserializedScriptActionTaskDetails.output = reader.getString();
+                } else if ("isPrimarySideScript".equals(fieldName)) {
+                    deserializedScriptActionTaskDetails.isPrimarySideScript
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptActionTaskDetails;
+        });
     }
 }

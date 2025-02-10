@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
  */
 public final class PollingUtils {
     private static final String FORWARD_SLASH = "/";
+
     /**
      * Serialize a response to a {@link BinaryData}. If the response is already a {@link BinaryData}, return as is.
      *

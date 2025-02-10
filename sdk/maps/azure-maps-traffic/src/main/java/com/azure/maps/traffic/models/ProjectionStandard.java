@@ -5,31 +5,44 @@
 package com.azure.maps.traffic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProjectionStandard. */
+/**
+ * Defines values for ProjectionStandard.
+ */
 public final class ProjectionStandard extends ExpandableStringEnum<ProjectionStandard> {
-    /** Static value EPSG900913 for ProjectionStandard. */
+    /**
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html).
+     */
     public static final ProjectionStandard EPSG900913 = fromString("EPSG900913");
 
-    /** Static value EPSG4326 for ProjectionStandard. */
+    /**
+     * [EPSG4326](http://spatialreference.org/ref/epsg/4326/).
+     */
     public static final ProjectionStandard EPSG4326 = fromString("EPSG4326");
 
     /**
+     * Creates a new instance of ProjectionStandard value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProjectionStandard() {
+    }
+
+    /**
      * Creates or finds a ProjectionStandard from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProjectionStandard.
      */
-    @JsonCreator
     public static ProjectionStandard fromString(String name) {
         return fromString(name, ProjectionStandard.class);
     }
 
     /**
      * Gets known ProjectionStandard values.
-     *
+     * 
      * @return known ProjectionStandard values.
      */
     public static Collection<ProjectionStandard> values() {

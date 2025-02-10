@@ -16,8 +16,8 @@ public final class TopologyResourceImpl implements TopologyResource {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    TopologyResourceImpl(
-        TopologyResourceInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    TopologyResourceImpl(TopologyResourceInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

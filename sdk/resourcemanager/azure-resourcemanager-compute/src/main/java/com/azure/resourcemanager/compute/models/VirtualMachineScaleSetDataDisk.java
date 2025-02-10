@@ -6,71 +6,66 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a virtual machine scale set data disk.
  */
 @Fluent
-public final class VirtualMachineScaleSetDataDisk {
+public final class VirtualMachineScaleSetDataDisk implements JsonSerializable<VirtualMachineScaleSetDataDisk> {
     /*
      * The disk name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
      * therefore must be unique for each data disk attached to a VM.
      */
-    @JsonProperty(value = "lun", required = true)
     private int lun;
 
     /*
      * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The default
      * values are: **None for Standard storage. ReadOnly for Premium storage.**
      */
-    @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /*
      * Specifies whether writeAccelerator should be enabled or disabled on the disk.
      */
-    @JsonProperty(value = "writeAcceleratorEnabled")
     private Boolean writeAcceleratorEnabled;
 
     /*
      * The create option.
      */
-    @JsonProperty(value = "createOption", required = true)
     private DiskCreateOptionTypes createOption;
 
     /*
-     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
-     * disk in a virtual machine image. The property diskSizeGB is the number of bytes x 1024^3 for the disk and the
-     * value cannot be larger than 1023.
+     * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk
+     * in a virtual machine image. The property diskSizeGB is the number of bytes x 1024^3 for the disk and the value
+     * cannot be larger than 1023.
      */
-    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
      * The managed disk parameters.
      */
-    @JsonProperty(value = "managedDisk")
     private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /*
      * Specifies the Read-Write IOPS for the managed disk. Should be used only when StorageAccountType is UltraSSD_LRS.
      * If not specified, a default value would be assigned based on diskSizeGB.
      */
-    @JsonProperty(value = "diskIOPSReadWrite")
     private Long diskIopsReadWrite;
 
     /*
      * Specifies the bandwidth in MB per second for the managed disk. Should be used only when StorageAccountType is
      * UltraSSD_LRS. If not specified, a default value would be assigned based on diskSizeGB.
      */
-    @JsonProperty(value = "diskMBpsReadWrite")
     private Long diskMBpsReadWrite;
 
     /*
@@ -79,7 +74,6 @@ public final class VirtualMachineScaleSetDataDisk {
      * the data disk is deleted when the VMSS Flex VM is deleted.<br><br> **Detach** If this value is used, the data
      * disk is retained after VMSS Flex VM is deleted.<br><br> The default value is set to **Delete**.
      */
-    @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
 
     /**
@@ -153,8 +147,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @return the writeAcceleratorEnabled value.
      */
@@ -163,8 +157,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
@@ -261,8 +255,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk. Should be
-     * used only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on
+     * Get the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk. Should be used
+     * only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on
      * diskSizeGB.
      * 
      * @return the diskMBpsReadWrite value.
@@ -272,8 +266,8 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk. Should be
-     * used only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on
+     * Set the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk. Should be used
+     * only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on
      * diskSizeGB.
      * 
      * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
@@ -319,8 +313,9 @@ public final class VirtualMachineScaleSetDataDisk {
      */
     public void validate() {
         if (createOption() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property createOption in model VirtualMachineScaleSetDataDisk"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property createOption in model VirtualMachineScaleSetDataDisk"));
         }
         if (managedDisk() != null) {
             managedDisk().validate();
@@ -328,4 +323,75 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetDataDisk.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("lun", this.lun);
+        jsonWriter.writeStringField("createOption", this.createOption == null ? null : this.createOption.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
+        jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
+        jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeJsonField("managedDisk", this.managedDisk);
+        jsonWriter.writeNumberField("diskIOPSReadWrite", this.diskIopsReadWrite);
+        jsonWriter.writeNumberField("diskMBpsReadWrite", this.diskMBpsReadWrite);
+        jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetDataDisk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetDataDisk if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetDataDisk.
+     */
+    public static VirtualMachineScaleSetDataDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetDataDisk deserializedVirtualMachineScaleSetDataDisk
+                = new VirtualMachineScaleSetDataDisk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lun".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetDataDisk.lun = reader.getInt();
+                } else if ("createOption".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetDataDisk.createOption
+                        = DiskCreateOptionTypes.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetDataDisk.name = reader.getString();
+                } else if ("caching".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetDataDisk.caching = CachingTypes.fromString(reader.getString());
+                } else if ("writeAcceleratorEnabled".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetDataDisk.writeAcceleratorEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetDataDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("managedDisk".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetDataDisk.managedDisk
+                        = VirtualMachineScaleSetManagedDiskParameters.fromJson(reader);
+                } else if ("diskIOPSReadWrite".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetDataDisk.diskIopsReadWrite
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("diskMBpsReadWrite".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetDataDisk.diskMBpsReadWrite
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("deleteOption".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetDataDisk.deleteOption
+                        = DiskDeleteOptionTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetDataDisk;
+        });
+    }
 }

@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * schema. Map keys are assumed to be strings.
  * If a block's count is negative, its absolute value is used, and the count is followed immediately by a long block
  * size indicating the number of bytes in the block.
- *
+ * <p>
  * Long Key Value Key Value Key Value .... Long Key Value Key Value Key Value .... Long(0)
  * If initial Long parsed is negative, it can look like
  * Long(negative) Long Key Value Key Value Key Value ....
@@ -32,7 +32,7 @@ public class AvroMapSchema extends AvroCompositeSchema {
     private final AvroType valueType;
     private Long blockCount;
     private String key;
-    private Map<String, Object> ret;
+    private final Map<String, Object> ret;
 
     /**
      * Constructs a new AvroMapSchema.
@@ -51,10 +51,7 @@ public class AvroMapSchema extends AvroCompositeSchema {
     public void pushToStack() {
         this.state.pushToStack(this);
         /* Read the block size, call onBlockCount. */
-        AvroLongSchema blockSchema = new AvroLongSchema(
-            this.state,
-            this::onBlockCount
-        );
+        AvroLongSchema blockSchema = new AvroLongSchema(this.state, this::onBlockCount);
         blockSchema.pushToStack();
     }
 
@@ -65,7 +62,7 @@ public class AvroMapSchema extends AvroCompositeSchema {
      */
     private void onBlockCount(Object blockCount) {
         checkType("blockCount", blockCount, Long.class);
-        Long bc = (Long) blockCount;
+        long bc = (long) blockCount;
         /* If blockCount = 0 then we're done.*/
         if (bc == 0) {
             this.result = this.ret;
@@ -73,18 +70,12 @@ public class AvroMapSchema extends AvroCompositeSchema {
             /* If blockCount > 0, read the key, call onKey. */
         } else if (bc > 0) {
             this.blockCount = bc;
-            AvroStringSchema keySchema = new AvroStringSchema(
-                this.state,
-                this::onKey
-            );
+            AvroStringSchema keySchema = new AvroStringSchema(this.state, this::onKey);
             keySchema.pushToStack();
             /* If blockCount < 0, use absolute value, read the byteCount, call onByteCount. */
         } else {
             this.blockCount = -bc;
-            AvroLongSchema byteCountSchema = new AvroLongSchema(
-                this.state,
-                this::onByteCount
-            );
+            AvroLongSchema byteCountSchema = new AvroLongSchema(this.state, this::onByteCount);
             byteCountSchema.pushToStack();
         }
     }
@@ -96,10 +87,7 @@ public class AvroMapSchema extends AvroCompositeSchema {
      */
     private void onByteCount(Object byteCount) {
         /* Read the key, call onKey. */
-        AvroStringSchema keySchema = new AvroStringSchema(
-            this.state,
-            this::onKey
-        );
+        AvroStringSchema keySchema = new AvroStringSchema(this.state, this::onKey);
         keySchema.pushToStack();
     }
 
@@ -112,11 +100,7 @@ public class AvroMapSchema extends AvroCompositeSchema {
         checkType("key", key, String.class);
         /* Store the key, read the value, call onValue. */
         this.key = (String) key;
-        AvroSchema valueSchema = getSchema(
-            this.valueType,
-            this.state,
-            this::onValue
-        );
+        AvroSchema valueSchema = getSchema(this.valueType, this.state, this::onValue);
         valueSchema.pushToStack();
     }
 
@@ -134,17 +118,11 @@ public class AvroMapSchema extends AvroCompositeSchema {
 
         /* If blockCount = 0, there are no more items in the block, read another blockCount and call onBlockCount. */
         if (this.blockCount == 0) {
-            AvroLongSchema blockCountSchema = new AvroLongSchema(
-                this.state,
-                this::onBlockCount
-            );
+            AvroLongSchema blockCountSchema = new AvroLongSchema(this.state, this::onBlockCount);
             blockCountSchema.pushToStack();
             /* If blockCount != 0, there are more key/value pairs in the block, read another key and call onKey. */
         } else {
-            AvroStringSchema keySchema = new AvroStringSchema(
-                this.state,
-                this::onKey
-            );
+            AvroStringSchema keySchema = new AvroStringSchema(this.state, this::onKey);
             keySchema.pushToStack();
         }
     }

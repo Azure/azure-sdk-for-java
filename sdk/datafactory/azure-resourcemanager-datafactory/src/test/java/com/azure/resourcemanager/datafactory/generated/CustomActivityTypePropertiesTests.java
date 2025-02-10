@@ -18,42 +18,40 @@ public final class CustomActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomActivityTypeProperties model = BinaryData.fromString(
-            "{\"command\":\"dataxwdppiodnntol\",\"resourceLinkedService\":{\"referenceName\":\"zptngr\",\"parameters\":{\"u\":\"dataimxacxcaczcdkomr\",\"jnxdyskyrhsijxml\":\"dataytjxpdqwy\"}},\"folderPath\":\"dataymfxjsuwmbdt\",\"referenceObjects\":{\"linkedServices\":[{\"referenceName\":\"gzybp\",\"parameters\":{\"vnqszqkrsnxue\":\"datapghloemqa\",\"tmtgk\":\"datawrbqadtvpgu\",\"xxe\":\"dataiv\",\"odvzjkz\":\"dataplphkiyiqpi\"}},{\"referenceName\":\"lvxdpopubbwps\",\"parameters\":{\"w\":\"datab\",\"mmgf\":\"datahjqakacbcbrsnnv\",\"qmty\":\"datat\",\"jkbisjurilqc\":\"dataqut\"}}],\"datasets\":[{\"referenceName\":\"dorbufog\",\"parameters\":{\"qajsuauwojgvp\":\"databiz\",\"nbr\":\"datazvtgwlzqcyvrbg\",\"ubnnmzz\":\"dataekjbljfk\"}},{\"referenceName\":\"bcxbvnh\",\"parameters\":{\"asxak\":\"datadfxxaoyisky\",\"mqkgc\":\"dataqbwjtnfa\",\"s\":\"dataldxuweweeegsz\",\"hfcdhbcr\":\"dataryfap\"}}]},\"extendedProperties\":{\"nfrhbkn\":\"datadszuxhaqlywty\",\"xhfg\":\"dataagpnmcqud\"},\"retentionTimeInDays\":\"datazegm\",\"autoUserSpecification\":\"dataebzoujhijlduuvxk\"}")
+            "{\"command\":\"datajdu\",\"resourceLinkedService\":{\"referenceName\":\"xbrjdpeypuqwd\",\"parameters\":{\"xdeo\":\"datamfvxfssho\",\"fnreempbumyuiquz\":\"datanzprdgmmgtqgzdf\",\"facflkbgohxbj\":\"dataotfoifjrik\"}},\"folderPath\":\"datafpfxbqdrjunigx\",\"referenceObjects\":{\"linkedServices\":[{\"referenceName\":\"ghga\",\"parameters\":{\"wrncwhlxvngj\":\"datavenvrltijq\",\"bd\":\"datapydjdpapndmv\",\"xidecdehskmfiu\":\"datavvtapwkwkthm\"}},{\"referenceName\":\"npjzx\",\"parameters\":{\"kznffqv\":\"datasgyyrgdguvkgqllg\"}},{\"referenceName\":\"xnytihhqancw\",\"parameters\":{\"snbdfamyolvgksla\":\"datagdpfzdygtk\",\"rswvwzu\":\"datauon\",\"omxvbruzxsnz\":\"datatqcxoamxumwzduhi\"}}],\"datasets\":[{\"referenceName\":\"gf\",\"parameters\":{\"zclnqexlnpwpw\":\"datadouneozgnwmc\"}}]},\"extendedProperties\":{\"cfoqdspslcvpqwrs\":\"datasjkondrk\",\"g\":\"datadpikx\",\"phcwzdwvyjz\":\"dataaegrppwoligfljt\",\"mfoztwmvprn\":\"datakvycinmywjcf\"},\"retentionTimeInDays\":\"dataxsexzxbiwnqe\",\"autoUserSpecification\":\"datatbztog\"}")
             .toObject(CustomActivityTypeProperties.class);
-        Assertions.assertEquals("zptngr", model.resourceLinkedService().referenceName());
-        Assertions.assertEquals("gzybp", model.referenceObjects().linkedServices().get(0).referenceName());
-        Assertions.assertEquals("dorbufog", model.referenceObjects().datasets().get(0).referenceName());
+        Assertions.assertEquals("xbrjdpeypuqwd", model.resourceLinkedService().referenceName());
+        Assertions.assertEquals("ghga", model.referenceObjects().linkedServices().get(0).referenceName());
+        Assertions.assertEquals("gf", model.referenceObjects().datasets().get(0).referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomActivityTypeProperties model
-            = new CustomActivityTypeProperties().withCommand("dataxwdppiodnntol")
-                .withResourceLinkedService(new LinkedServiceReference().withReferenceName("zptngr")
-                    .withParameters(mapOf("u", "dataimxacxcaczcdkomr", "jnxdyskyrhsijxml", "dataytjxpdqwy")))
-                .withFolderPath("dataymfxjsuwmbdt")
-                .withReferenceObjects(
-                    new CustomActivityReferenceObject()
-                        .withLinkedServices(Arrays.asList(
-                            new LinkedServiceReference().withReferenceName("gzybp")
-                                .withParameters(mapOf("vnqszqkrsnxue", "datapghloemqa", "tmtgk", "datawrbqadtvpgu",
-                                    "xxe", "dataiv", "odvzjkz", "dataplphkiyiqpi")),
-                            new LinkedServiceReference().withReferenceName("lvxdpopubbwps")
-                                .withParameters(mapOf("w", "datab", "mmgf", "datahjqakacbcbrsnnv", "qmty", "datat",
-                                    "jkbisjurilqc", "dataqut"))))
-                        .withDatasets(Arrays.asList(
-                            new DatasetReference().withReferenceName("dorbufog")
-                                .withParameters(mapOf("qajsuauwojgvp", "databiz", "nbr", "datazvtgwlzqcyvrbg",
-                                    "ubnnmzz", "dataekjbljfk")),
-                            new DatasetReference().withReferenceName("bcxbvnh")
-                                .withParameters(mapOf("asxak", "datadfxxaoyisky", "mqkgc", "dataqbwjtnfa", "s",
-                                    "dataldxuweweeegsz", "hfcdhbcr", "dataryfap")))))
-                .withExtendedProperties(mapOf("nfrhbkn", "datadszuxhaqlywty", "xhfg", "dataagpnmcqud"))
-                .withRetentionTimeInDays("datazegm").withAutoUserSpecification("dataebzoujhijlduuvxk");
+        CustomActivityTypeProperties model = new CustomActivityTypeProperties().withCommand("datajdu")
+            .withResourceLinkedService(new LinkedServiceReference().withReferenceName("xbrjdpeypuqwd")
+                .withParameters(mapOf("xdeo", "datamfvxfssho", "fnreempbumyuiquz", "datanzprdgmmgtqgzdf",
+                    "facflkbgohxbj", "dataotfoifjrik")))
+            .withFolderPath("datafpfxbqdrjunigx")
+            .withReferenceObjects(new CustomActivityReferenceObject()
+                .withLinkedServices(Arrays.asList(
+                    new LinkedServiceReference().withReferenceName("ghga")
+                        .withParameters(mapOf("wrncwhlxvngj", "datavenvrltijq", "bd", "datapydjdpapndmv",
+                            "xidecdehskmfiu", "datavvtapwkwkthm")),
+                    new LinkedServiceReference().withReferenceName("npjzx")
+                        .withParameters(mapOf("kznffqv", "datasgyyrgdguvkgqllg")),
+                    new LinkedServiceReference().withReferenceName("xnytihhqancw")
+                        .withParameters(mapOf("snbdfamyolvgksla", "datagdpfzdygtk", "rswvwzu", "datauon",
+                            "omxvbruzxsnz", "datatqcxoamxumwzduhi"))))
+                .withDatasets(Arrays.asList(new DatasetReference().withReferenceName("gf")
+                    .withParameters(mapOf("zclnqexlnpwpw", "datadouneozgnwmc")))))
+            .withExtendedProperties(mapOf("cfoqdspslcvpqwrs", "datasjkondrk", "g", "datadpikx", "phcwzdwvyjz",
+                "dataaegrppwoligfljt", "mfoztwmvprn", "datakvycinmywjcf"))
+            .withRetentionTimeInDays("dataxsexzxbiwnqe")
+            .withAutoUserSpecification("datatbztog");
         model = BinaryData.fromObject(model).toObject(CustomActivityTypeProperties.class);
-        Assertions.assertEquals("zptngr", model.resourceLinkedService().referenceName());
-        Assertions.assertEquals("gzybp", model.referenceObjects().linkedServices().get(0).referenceName());
-        Assertions.assertEquals("dorbufog", model.referenceObjects().datasets().get(0).referenceName());
+        Assertions.assertEquals("xbrjdpeypuqwd", model.resourceLinkedService().referenceName());
+        Assertions.assertEquals("ghga", model.referenceObjects().linkedServices().get(0).referenceName());
+        Assertions.assertEquals("gf", model.referenceObjects().datasets().get(0).referenceName());
     }
 
     // Use "Map.of" if available

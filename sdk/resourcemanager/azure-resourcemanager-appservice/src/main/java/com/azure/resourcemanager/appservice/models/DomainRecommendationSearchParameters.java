@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Domain recommendation search parameters.
  */
 @Fluent
-public final class DomainRecommendationSearchParameters {
+public final class DomainRecommendationSearchParameters
+    implements JsonSerializable<DomainRecommendationSearchParameters> {
     /*
      * Keywords to be used for generating domain recommendations.
      */
-    @JsonProperty(value = "keywords")
     private String keywords;
 
     /*
      * Maximum number of recommendations.
      */
-    @JsonProperty(value = "maxDomainRecommendations")
     private Integer maxDomainRecommendations;
 
     /**
@@ -76,5 +79,46 @@ public final class DomainRecommendationSearchParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keywords", this.keywords);
+        jsonWriter.writeNumberField("maxDomainRecommendations", this.maxDomainRecommendations);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainRecommendationSearchParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainRecommendationSearchParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DomainRecommendationSearchParameters.
+     */
+    public static DomainRecommendationSearchParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainRecommendationSearchParameters deserializedDomainRecommendationSearchParameters
+                = new DomainRecommendationSearchParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keywords".equals(fieldName)) {
+                    deserializedDomainRecommendationSearchParameters.keywords = reader.getString();
+                } else if ("maxDomainRecommendations".equals(fieldName)) {
+                    deserializedDomainRecommendationSearchParameters.maxDomainRecommendations
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainRecommendationSearchParameters;
+        });
     }
 }

@@ -6,34 +6,50 @@ package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of Azure Storage SMB file share endpoint. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
-@JsonTypeName("AzureStorageSmbFileShare")
+/**
+ * The properties of Azure Storage SMB file share endpoint.
+ */
 @Fluent
 public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBaseProperties {
     /*
+     * The Endpoint resource type.
+     */
+    private EndpointType endpointType = EndpointType.AZURE_STORAGE_SMB_FILE_SHARE;
+
+    /*
      * The Azure Resource ID of the storage account.
      */
-    @JsonProperty(value = "storageAccountResourceId", required = true)
     private String storageAccountResourceId;
 
     /*
      * The name of the Azure Storage file share.
      */
-    @JsonProperty(value = "fileShareName", required = true)
     private String fileShareName;
 
-    /** Creates an instance of AzureStorageSmbFileShareEndpointProperties class. */
+    /**
+     * Creates an instance of AzureStorageSmbFileShareEndpointProperties class.
+     */
     public AzureStorageSmbFileShareEndpointProperties() {
     }
 
     /**
+     * Get the endpointType property: The Endpoint resource type.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
      * Get the storageAccountResourceId property: The Azure Resource ID of the storage account.
-     *
+     * 
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -42,7 +58,7 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
 
     /**
      * Set the storageAccountResourceId property: The Azure Resource ID of the storage account.
-     *
+     * 
      * @param storageAccountResourceId the storageAccountResourceId value to set.
      * @return the AzureStorageSmbFileShareEndpointProperties object itself.
      */
@@ -53,7 +69,7 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
 
     /**
      * Get the fileShareName property: The name of the Azure Storage file share.
-     *
+     * 
      * @return the fileShareName value.
      */
     public String fileShareName() {
@@ -62,7 +78,7 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
 
     /**
      * Set the fileShareName property: The name of the Azure Storage file share.
-     *
+     * 
      * @param fileShareName the fileShareName value to set.
      * @return the AzureStorageSmbFileShareEndpointProperties object itself.
      */
@@ -71,7 +87,9 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageSmbFileShareEndpointProperties withDescription(String description) {
         super.withDescription(description);
@@ -80,26 +98,74 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (storageAccountResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountResourceId in model"
-                            + " AzureStorageSmbFileShareEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountResourceId in model AzureStorageSmbFileShareEndpointProperties"));
         }
         if (fileShareName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fileShareName in model AzureStorageSmbFileShareEndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fileShareName in model AzureStorageSmbFileShareEndpointProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureStorageSmbFileShareEndpointProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("storageAccountResourceId", this.storageAccountResourceId);
+        jsonWriter.writeStringField("fileShareName", this.fileShareName);
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureStorageSmbFileShareEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureStorageSmbFileShareEndpointProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureStorageSmbFileShareEndpointProperties.
+     */
+    public static AzureStorageSmbFileShareEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureStorageSmbFileShareEndpointProperties deserializedAzureStorageSmbFileShareEndpointProperties
+                = new AzureStorageSmbFileShareEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedAzureStorageSmbFileShareEndpointProperties.withDescription(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAzureStorageSmbFileShareEndpointProperties
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("storageAccountResourceId".equals(fieldName)) {
+                    deserializedAzureStorageSmbFileShareEndpointProperties.storageAccountResourceId
+                        = reader.getString();
+                } else if ("fileShareName".equals(fieldName)) {
+                    deserializedAzureStorageSmbFileShareEndpointProperties.fileShareName = reader.getString();
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedAzureStorageSmbFileShareEndpointProperties.endpointType
+                        = EndpointType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureStorageSmbFileShareEndpointProperties;
+        });
+    }
 }

@@ -53,7 +53,6 @@ import com.azure.resourcemanager.appservice.models.DatabaseConnectionCollection;
 import com.azure.resourcemanager.appservice.models.DatabaseConnectionPatchRequest;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.PrivateEndpointConnectionCollection;
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteBasicAuthPropertiesCollection;
 import com.azure.resourcemanager.appservice.models.StaticSiteBuildCollection;
 import com.azure.resourcemanager.appservice.models.StaticSiteCollection;
@@ -102,8 +101,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
-     * The interface defining all the services for WebSiteManagementClientStaticSites to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for WebSiteManagementClientStaticSites to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
@@ -664,7 +663,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
+            @BodyParam("application/json") RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -5724,8 +5723,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String environmentName, String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope) {
         final Boolean isForced = null;
-        return this.beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name,
-            environmentName, functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced).getSyncPoller();
+        return this
+            .beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
+                functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced)
+            .getSyncPoller();
     }
 
     /**
@@ -5755,8 +5756,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String environmentName, String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
             Context context) {
-        return this.beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name,
-            environmentName, functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context)
+        return this
+            .beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
+                functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context)
             .getSyncPoller();
     }
 
@@ -6234,8 +6236,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(String resourceGroupName,
         String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
-        return this.beginCreateZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-            staticSiteZipDeploymentEnvelope).getSyncPoller();
+        return this
+            .beginCreateZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
+                staticSiteZipDeploymentEnvelope)
+            .getSyncPoller();
     }
 
     /**
@@ -6258,8 +6262,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(String resourceGroupName,
         String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope,
         Context context) {
-        return this.beginCreateZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-            staticSiteZipDeploymentEnvelope, context).getSyncPoller();
+        return this
+            .beginCreateZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
+                staticSiteZipDeploymentEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
@@ -7120,7 +7126,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
+     * @param staticSiteUserRolesInvitationEnvelope The staticSiteUserRolesInvitationEnvelope parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7167,7 +7173,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
+     * @param staticSiteUserRolesInvitationEnvelope The staticSiteUserRolesInvitationEnvelope parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -7214,7 +7220,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
+     * @param staticSiteUserRolesInvitationEnvelope The staticSiteUserRolesInvitationEnvelope parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7235,7 +7241,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
+     * @param staticSiteUserRolesInvitationEnvelope The staticSiteUserRolesInvitationEnvelope parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -7257,7 +7263,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
+     * @param staticSiteUserRolesInvitationEnvelope The staticSiteUserRolesInvitationEnvelope parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7755,8 +7761,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         SyncPoller<PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomain(String resourceGroupName, String name, String domainName,
             StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope) {
-        return this.beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope).getSyncPoller();
+        return this
+            .beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
+                staticSiteCustomDomainRequestPropertiesEnvelope)
+            .getSyncPoller();
     }
 
     /**
@@ -7781,8 +7789,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         beginCreateOrUpdateStaticSiteCustomDomain(String resourceGroupName, String name, String domainName,
             StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
             Context context) {
-        return this.beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
+                staticSiteCustomDomainRequestPropertiesEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
@@ -8301,8 +8311,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSite(String resourceGroupName,
         String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope) {
-        return this.beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope).getSyncPoller();
+        return this
+            .beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
+                staticSiteCustomDomainRequestPropertiesEnvelope)
+            .getSyncPoller();
     }
 
     /**
@@ -8326,8 +8338,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
         Context context) {
-        return this.beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope, context).getSyncPoller();
+        return this
+            .beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
+                staticSiteCustomDomainRequestPropertiesEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
@@ -10524,7 +10538,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -10577,7 +10591,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -10628,7 +10642,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public
         PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionAsync(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         Mono<Response<Flux<ByteBuffer>>> mono = approveOrRejectPrivateEndpointConnectionWithResponseAsync(
             resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper);
         return this.client
@@ -10656,8 +10671,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     private
         PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionAsync(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
-            Context context) {
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = approveOrRejectPrivateEndpointConnectionWithResponseAsync(
             resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, context);
@@ -10685,9 +10700,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public
         SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
-        return this.beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
-            privateEndpointConnectionName, privateEndpointWrapper).getSyncPoller();
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
+        return this
+            .beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
+                privateEndpointWrapper)
+            .getSyncPoller();
     }
 
     /**
@@ -10709,10 +10727,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public
         SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
-            Context context) {
-        return this.beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
-            privateEndpointConnectionName, privateEndpointWrapper, context).getSyncPoller();
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
+        return this
+            .beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
+                privateEndpointWrapper, context)
+            .getSyncPoller();
     }
 
     /**
@@ -10732,7 +10752,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         return beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
             privateEndpointConnectionName, privateEndpointWrapper).last()
                 .flatMap(this.client::getLroFinalResultOrError);
@@ -10756,7 +10776,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         return beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
             privateEndpointConnectionName, privateEndpointWrapper, context).last()
                 .flatMap(this.client::getLroFinalResultOrError);
@@ -10779,7 +10799,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         return approveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
             privateEndpointWrapper).block();
     }
@@ -10802,7 +10822,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         return approveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
             privateEndpointWrapper, context).block();
     }
@@ -11199,7 +11219,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
+     * @param resetPropertiesEnvelope The resetPropertiesEnvelope parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11243,7 +11263,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
+     * @param resetPropertiesEnvelope The resetPropertiesEnvelope parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11287,7 +11307,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
+     * @param resetPropertiesEnvelope The resetPropertiesEnvelope parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11307,7 +11327,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
+     * @param resetPropertiesEnvelope The resetPropertiesEnvelope parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11328,7 +11348,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
+     * @param resetPropertiesEnvelope The resetPropertiesEnvelope parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -12028,8 +12048,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope) {
         final Boolean isForced = null;
-        return this.beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
-            staticSiteUserProvidedFunctionEnvelope, isForced).getSyncPoller();
+        return this
+            .beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
+                staticSiteUserProvidedFunctionEnvelope, isForced)
+            .getSyncPoller();
     }
 
     /**
@@ -12058,8 +12080,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
             Context context) {
-        return this.beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
-            staticSiteUserProvidedFunctionEnvelope, isForced, context).getSyncPoller();
+        return this
+            .beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
+                staticSiteUserProvidedFunctionEnvelope, isForced, context)
+            .getSyncPoller();
     }
 
     /**
@@ -12516,8 +12540,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(String resourceGroupName,
         String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
-        return this.beginCreateZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope,
-            context).getSyncPoller();
+        return this
+            .beginCreateZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -12538,7 +12564,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Mono<Void> createZipDeploymentForStaticSiteAsync(String resourceGroupName, String name,
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
         return beginCreateZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -12782,8 +12809,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateBackend(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
         Context context) {
-        return this.beginValidateBackendAsync(resourceGroupName, name, linkedBackendName,
-            staticSiteLinkedBackendEnvelope, context).getSyncPoller();
+        return this
+            .beginValidateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -12802,7 +12831,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Mono<Void> validateBackendAsync(String resourceGroupName, String name, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
         return beginValidateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -13034,8 +13064,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        return this.beginValidateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope).getSyncPoller();
+        return this
+            .beginValidateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
+                staticSiteLinkedBackendEnvelope)
+            .getSyncPoller();
     }
 
     /**
@@ -13056,8 +13088,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        return this.beginValidateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope, context).getSyncPoller();
+        return this
+            .beginValidateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
+                staticSiteLinkedBackendEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
@@ -14322,8 +14356,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuild(String resourceGroupName, String name, String environmentName, String linkedBackendName,
             StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        return this.beginLinkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope).getSyncPoller();
+        return this
+            .beginLinkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
+                staticSiteLinkedBackendEnvelope)
+            .getSyncPoller();
     }
 
     /**
@@ -14344,8 +14380,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuild(String resourceGroupName, String name, String environmentName, String linkedBackendName,
             StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        return this.beginLinkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope, context).getSyncPoller();
+        return this
+            .beginLinkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
+                staticSiteLinkedBackendEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
@@ -14591,9 +14629,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14618,9 +14654,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14646,9 +14680,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14675,9 +14707,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14704,9 +14734,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14735,9 +14763,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14765,9 +14791,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14796,9 +14820,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14826,9 +14848,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14856,9 +14876,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14886,9 +14904,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14917,9 +14933,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14947,9 +14961,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14978,9 +14990,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15008,9 +15018,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15040,9 +15048,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15071,9 +15077,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15102,9 +15106,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15132,9 +15134,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15163,9 +15163,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15193,9 +15191,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15223,9 +15219,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15253,9 +15247,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15285,9 +15277,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15315,9 +15305,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15346,9 +15334,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15375,9 +15361,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15406,9 +15390,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15436,9 +15418,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15468,9 +15448,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15499,9 +15477,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15530,9 +15506,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15560,9 +15534,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -15592,9 +15564,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

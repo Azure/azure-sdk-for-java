@@ -20,7 +20,7 @@ public class AccountListPoolNodeCountsOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -33,7 +33,8 @@ public class AccountListPoolNodeCountsOptions {
 
     /**
      * The maximum time that the server can spend processing the request, in
-     * seconds. The default is 30 seconds.
+     * seconds. The default is 30 seconds. If the value is larger than 30, the
+     * default will be used instead.
      */
     @JsonProperty(value = "")
     private Integer timeout;
@@ -61,7 +62,7 @@ public class AccountListPoolNodeCountsOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch.
      *
      * @return the filter value
      */
@@ -70,7 +71,7 @@ public class AccountListPoolNodeCountsOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch.
      *
      * @param filter the filter value to set
      * @return the AccountListPoolNodeCountsOptions object itself.
@@ -101,7 +102,7 @@ public class AccountListPoolNodeCountsOptions {
     }
 
     /**
-     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @return the timeout value
      */
@@ -110,7 +111,7 @@ public class AccountListPoolNodeCountsOptions {
     }
 
     /**
-     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @param timeout the timeout value to set
      * @return the AccountListPoolNodeCountsOptions object itself.

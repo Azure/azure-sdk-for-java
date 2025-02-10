@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ParameterInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ParameterInfo model =
-            BinaryData.fromString("{\"name\":\"euel\",\"value\":\"hsd\"}").toObject(ParameterInfo.class);
+        ParameterInfo model
+            = BinaryData.fromString("{\"name\":\"euel\",\"value\":\"hsd\"}").toObject(ParameterInfo.class);
         Assertions.assertEquals("euel", model.name());
         Assertions.assertEquals("hsd", model.value());
     }

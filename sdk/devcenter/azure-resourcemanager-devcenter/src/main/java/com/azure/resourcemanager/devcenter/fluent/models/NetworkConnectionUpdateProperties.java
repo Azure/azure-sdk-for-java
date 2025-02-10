@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of network connection. These properties can be updated after the resource has been created. */
+/**
+ * Properties of network connection. These properties can be updated after the resource has been created.
+ */
 @Fluent
-public class NetworkConnectionUpdateProperties {
+public class NetworkConnectionUpdateProperties implements JsonSerializable<NetworkConnectionUpdateProperties> {
     /*
      * The subnet to attach Virtual Machines to
      */
-    @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
      * Active Directory domain name
      */
-    @JsonProperty(value = "domainName")
     private String domainName;
 
     /*
      * Active Directory domain Organization Unit (OU)
      */
-    @JsonProperty(value = "organizationUnit")
     private String organizationUnit;
 
     /*
      * The username of an Active Directory account (user or service account) that has permissions to create computer
      * objects in Active Directory. Required format: admin@contoso.com.
      */
-    @JsonProperty(value = "domainUsername")
     private String domainUsername;
 
     /*
      * The password for the account used to join domain
      */
-    @JsonProperty(value = "domainPassword")
     private String domainPassword;
 
-    /** Creates an instance of NetworkConnectionUpdateProperties class. */
+    /**
+     * Creates an instance of NetworkConnectionUpdateProperties class.
+     */
     public NetworkConnectionUpdateProperties() {
     }
 
     /**
      * Get the subnetId property: The subnet to attach Virtual Machines to.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -56,7 +59,7 @@ public class NetworkConnectionUpdateProperties {
 
     /**
      * Set the subnetId property: The subnet to attach Virtual Machines to.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the NetworkConnectionUpdateProperties object itself.
      */
@@ -67,7 +70,7 @@ public class NetworkConnectionUpdateProperties {
 
     /**
      * Get the domainName property: Active Directory domain name.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -76,7 +79,7 @@ public class NetworkConnectionUpdateProperties {
 
     /**
      * Set the domainName property: Active Directory domain name.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the NetworkConnectionUpdateProperties object itself.
      */
@@ -87,7 +90,7 @@ public class NetworkConnectionUpdateProperties {
 
     /**
      * Get the organizationUnit property: Active Directory domain Organization Unit (OU).
-     *
+     * 
      * @return the organizationUnit value.
      */
     public String organizationUnit() {
@@ -96,7 +99,7 @@ public class NetworkConnectionUpdateProperties {
 
     /**
      * Set the organizationUnit property: Active Directory domain Organization Unit (OU).
-     *
+     * 
      * @param organizationUnit the organizationUnit value to set.
      * @return the NetworkConnectionUpdateProperties object itself.
      */
@@ -107,8 +110,8 @@ public class NetworkConnectionUpdateProperties {
 
     /**
      * Get the domainUsername property: The username of an Active Directory account (user or service account) that has
-     * permissions to create computer objects in Active Directory. Required format: admin@contoso.com.
-     *
+     * permissions to create computer objects in Active Directory. Required format: admin&#064;contoso.com.
+     * 
      * @return the domainUsername value.
      */
     public String domainUsername() {
@@ -117,8 +120,8 @@ public class NetworkConnectionUpdateProperties {
 
     /**
      * Set the domainUsername property: The username of an Active Directory account (user or service account) that has
-     * permissions to create computer objects in Active Directory. Required format: admin@contoso.com.
-     *
+     * permissions to create computer objects in Active Directory. Required format: admin&#064;contoso.com.
+     * 
      * @param domainUsername the domainUsername value to set.
      * @return the NetworkConnectionUpdateProperties object itself.
      */
@@ -129,7 +132,7 @@ public class NetworkConnectionUpdateProperties {
 
     /**
      * Get the domainPassword property: The password for the account used to join domain.
-     *
+     * 
      * @return the domainPassword value.
      */
     public String domainPassword() {
@@ -138,7 +141,7 @@ public class NetworkConnectionUpdateProperties {
 
     /**
      * Set the domainPassword property: The password for the account used to join domain.
-     *
+     * 
      * @param domainPassword the domainPassword value to set.
      * @return the NetworkConnectionUpdateProperties object itself.
      */
@@ -149,9 +152,58 @@ public class NetworkConnectionUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("domainName", this.domainName);
+        jsonWriter.writeStringField("organizationUnit", this.organizationUnit);
+        jsonWriter.writeStringField("domainUsername", this.domainUsername);
+        jsonWriter.writeStringField("domainPassword", this.domainPassword);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkConnectionUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkConnectionUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkConnectionUpdateProperties.
+     */
+    public static NetworkConnectionUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkConnectionUpdateProperties deserializedNetworkConnectionUpdateProperties
+                = new NetworkConnectionUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedNetworkConnectionUpdateProperties.subnetId = reader.getString();
+                } else if ("domainName".equals(fieldName)) {
+                    deserializedNetworkConnectionUpdateProperties.domainName = reader.getString();
+                } else if ("organizationUnit".equals(fieldName)) {
+                    deserializedNetworkConnectionUpdateProperties.organizationUnit = reader.getString();
+                } else if ("domainUsername".equals(fieldName)) {
+                    deserializedNetworkConnectionUpdateProperties.domainUsername = reader.getString();
+                } else if ("domainPassword".equals(fieldName)) {
+                    deserializedNetworkConnectionUpdateProperties.domainPassword = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkConnectionUpdateProperties;
+        });
     }
 }

@@ -6,9 +6,12 @@ package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.FrontDoorResourceState;
 import com.azure.resourcemanager.frontdoor.models.RulesEngineRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,16 +23,32 @@ public final class RulesEngineInner extends ProxyResource {
     /*
      * Properties of the Rules Engine Configuration.
      */
-    @JsonProperty(value = "properties")
     private RulesEngineProperties innerProperties;
 
-    /** Creates an instance of RulesEngineInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RulesEngineInner class.
+     */
     public RulesEngineInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Rules Engine Configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RulesEngineProperties innerProperties() {
@@ -37,10 +56,38 @@ public final class RulesEngineInner extends ProxyResource {
     }
 
     /**
-     * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the resourceState property: Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
@@ -49,7 +96,7 @@ public final class RulesEngineInner extends ProxyResource {
 
     /**
      * Get the rules property: A list of rules that define a particular Rules Engine Configuration.
-     *
+     * 
      * @return the rules value.
      */
     public List<RulesEngineRule> rules() {
@@ -58,7 +105,7 @@ public final class RulesEngineInner extends ProxyResource {
 
     /**
      * Set the rules property: A list of rules that define a particular Rules Engine Configuration.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RulesEngineInner object itself.
      */
@@ -72,12 +119,55 @@ public final class RulesEngineInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RulesEngineInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RulesEngineInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RulesEngineInner.
+     */
+    public static RulesEngineInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RulesEngineInner deserializedRulesEngineInner = new RulesEngineInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRulesEngineInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRulesEngineInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRulesEngineInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRulesEngineInner.innerProperties = RulesEngineProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRulesEngineInner;
+        });
     }
 }

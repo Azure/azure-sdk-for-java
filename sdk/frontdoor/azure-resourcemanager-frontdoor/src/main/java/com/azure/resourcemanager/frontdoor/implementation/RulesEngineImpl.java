@@ -67,20 +67,16 @@ public final class RulesEngineImpl implements RulesEngine, RulesEngine.Definitio
     }
 
     public RulesEngine create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRulesEngines()
-                .createOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRulesEngines()
+            .createOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public RulesEngine create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRulesEngines()
-                .createOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRulesEngines()
+            .createOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, this.innerModel(), context);
         return this;
     }
 
@@ -95,48 +91,40 @@ public final class RulesEngineImpl implements RulesEngine, RulesEngine.Definitio
     }
 
     public RulesEngine apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRulesEngines()
-                .createOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRulesEngines()
+            .createOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public RulesEngine apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRulesEngines()
-                .createOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRulesEngines()
+            .createOrUpdate(resourceGroupName, frontDoorName, rulesEngineName, this.innerModel(), context);
         return this;
     }
 
     RulesEngineImpl(RulesEngineInner innerObject, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.frontDoorName = Utils.getValueFromIdByName(innerObject.id(), "frontDoors");
-        this.rulesEngineName = Utils.getValueFromIdByName(innerObject.id(), "rulesEngines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.frontDoorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "frontDoors");
+        this.rulesEngineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "rulesEngines");
     }
 
     public RulesEngine refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRulesEngines()
-                .getWithResponse(resourceGroupName, frontDoorName, rulesEngineName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRulesEngines()
+            .getWithResponse(resourceGroupName, frontDoorName, rulesEngineName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public RulesEngine refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRulesEngines()
-                .getWithResponse(resourceGroupName, frontDoorName, rulesEngineName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRulesEngines()
+            .getWithResponse(resourceGroupName, frontDoorName, rulesEngineName, context)
+            .getValue();
         return this;
     }
 

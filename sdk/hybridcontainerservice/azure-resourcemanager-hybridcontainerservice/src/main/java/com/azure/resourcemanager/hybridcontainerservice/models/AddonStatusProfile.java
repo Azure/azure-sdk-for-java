@@ -5,37 +5,37 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Defines the addon status profile.
+ * The status profile of the addons and other kubernetes components.
  */
 @Fluent
-public final class AddonStatusProfile {
+public final class AddonStatusProfile implements JsonSerializable<AddonStatusProfile> {
     /*
-     * Name of the addon
+     * Name of the addon or component
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Observed phase of the addon on the target cluster. Possible values include: 'pending', 'provisioning',
-     * 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned', 'deleting',
-     * 'failed', 'upgrading'
+     * Observed phase of the addon or component on the provisioned cluster. Possible values include: 'pending',
+     * 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned',
+     * 'deleting', 'failed', 'upgrading'
      */
-    @JsonProperty(value = "phase")
     private AddonPhase phase;
 
     /*
-     * Indicates whether the addon is ready
+     * Indicates whether the addon or component is ready
      */
-    @JsonProperty(value = "ready")
     private Boolean ready;
 
     /*
-     * Error message while deploying the addon
+     * Observed error message from the addon or component
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /**
@@ -45,7 +45,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Get the name property: Name of the addon.
+     * Get the name property: Name of the addon or component.
      * 
      * @return the name value.
      */
@@ -54,7 +54,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Set the name property: Name of the addon.
+     * Set the name property: Name of the addon or component.
      * 
      * @param name the name value to set.
      * @return the AddonStatusProfile object itself.
@@ -65,9 +65,9 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Get the phase property: Observed phase of the addon on the target cluster. Possible values include: 'pending',
-     * 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned',
-     * 'deleting', 'failed', 'upgrading'.
+     * Get the phase property: Observed phase of the addon or component on the provisioned cluster. Possible values
+     * include: 'pending', 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning
+     * {MSICertificateDownloaded}', 'provisioned', 'deleting', 'failed', 'upgrading'.
      * 
      * @return the phase value.
      */
@@ -76,9 +76,9 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Set the phase property: Observed phase of the addon on the target cluster. Possible values include: 'pending',
-     * 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned',
-     * 'deleting', 'failed', 'upgrading'.
+     * Set the phase property: Observed phase of the addon or component on the provisioned cluster. Possible values
+     * include: 'pending', 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning
+     * {MSICertificateDownloaded}', 'provisioned', 'deleting', 'failed', 'upgrading'.
      * 
      * @param phase the phase value to set.
      * @return the AddonStatusProfile object itself.
@@ -89,7 +89,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Get the ready property: Indicates whether the addon is ready.
+     * Get the ready property: Indicates whether the addon or component is ready.
      * 
      * @return the ready value.
      */
@@ -98,7 +98,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Set the ready property: Indicates whether the addon is ready.
+     * Set the ready property: Indicates whether the addon or component is ready.
      * 
      * @param ready the ready value to set.
      * @return the AddonStatusProfile object itself.
@@ -109,7 +109,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Get the errorMessage property: Error message while deploying the addon.
+     * Get the errorMessage property: Observed error message from the addon or component.
      * 
      * @return the errorMessage value.
      */
@@ -118,7 +118,7 @@ public final class AddonStatusProfile {
     }
 
     /**
-     * Set the errorMessage property: Error message while deploying the addon.
+     * Set the errorMessage property: Observed error message from the addon or component.
      * 
      * @param errorMessage the errorMessage value to set.
      * @return the AddonStatusProfile object itself.
@@ -134,5 +134,50 @@ public final class AddonStatusProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("phase", this.phase == null ? null : this.phase.toString());
+        jsonWriter.writeBooleanField("ready", this.ready);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddonStatusProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddonStatusProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddonStatusProfile.
+     */
+    public static AddonStatusProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddonStatusProfile deserializedAddonStatusProfile = new AddonStatusProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAddonStatusProfile.name = reader.getString();
+                } else if ("phase".equals(fieldName)) {
+                    deserializedAddonStatusProfile.phase = AddonPhase.fromString(reader.getString());
+                } else if ("ready".equals(fieldName)) {
+                    deserializedAddonStatusProfile.ready = reader.getNullable(JsonReader::getBoolean);
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedAddonStatusProfile.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddonStatusProfile;
+        });
     }
 }

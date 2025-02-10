@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseAutomaticTuningInner;
 import com.azure.resourcemanager.sql.models.AutomaticTuningMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeDesired;
@@ -12,63 +11,56 @@ import com.azure.resourcemanager.sql.models.AutomaticTuningOptions;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DatabaseAutomaticTuning Update. */
+/**
+ * Samples for DatabaseAutomaticTuning Update.
+ */
 public final class DatabaseAutomaticTuningUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAutomaticTuningUpdateMax.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAutomaticTuningUpdateMax.json
      */
     /**
      * Sample code: Updates database automatic tuning settings with all properties.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updatesDatabaseAutomaticTuningSettingsWithAllProperties(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        updatesDatabaseAutomaticTuningSettingsWithAllProperties(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabaseAutomaticTunings()
-            .updateWithResponse(
-                "default-sql-onebox",
-                "testsvr11",
-                "db1",
-                new DatabaseAutomaticTuningInner()
-                    .withDesiredState(AutomaticTuningMode.AUTO)
-                    .withOptions(
-                        mapOf(
-                            "createIndex",
-                            new AutomaticTuningOptions().withDesiredState(AutomaticTuningOptionModeDesired.OFF),
-                            "dropIndex",
-                            new AutomaticTuningOptions().withDesiredState(AutomaticTuningOptionModeDesired.ON),
-                            "forceLastGoodPlan",
-                            new AutomaticTuningOptions().withDesiredState(AutomaticTuningOptionModeDesired.DEFAULT))),
-                Context.NONE);
+            .updateWithResponse("default-sql-onebox", "testsvr11", "db1",
+                new DatabaseAutomaticTuningInner().withDesiredState(AutomaticTuningMode.AUTO)
+                    .withOptions(mapOf("createIndex",
+                        new AutomaticTuningOptions().withDesiredState(AutomaticTuningOptionModeDesired.OFF),
+                        "dropIndex", new AutomaticTuningOptions().withDesiredState(AutomaticTuningOptionModeDesired.ON),
+                        "forceLastGoodPlan",
+                        new AutomaticTuningOptions().withDesiredState(AutomaticTuningOptionModeDesired.DEFAULT))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAutomaticTuningUpdateMin.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DatabaseAutomaticTuningUpdateMin.json
      */
     /**
      * Sample code: Updates database automatic tuning settings with minimal properties.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updatesDatabaseAutomaticTuningSettingsWithMinimalProperties(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getDatabaseAutomaticTunings()
-            .updateWithResponse(
-                "default-sql-onebox",
-                "testsvr11",
-                "db1",
+            .updateWithResponse("default-sql-onebox", "testsvr11", "db1",
                 new DatabaseAutomaticTuningInner().withDesiredState(AutomaticTuningMode.AUTO),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

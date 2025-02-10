@@ -17,8 +17,8 @@ public final class EndpointsImpl implements Endpoints {
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
 
-    public EndpointsImpl(
-        EndpointsClient innerClient, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
+    public EndpointsImpl(EndpointsClient innerClient,
+        com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -27,8 +27,8 @@ public final class EndpointsImpl implements Endpoints {
         this.serviceClient().purgeContent(resourceGroupName, frontDoorName, contentFilePaths);
     }
 
-    public void purgeContent(
-        String resourceGroupName, String frontDoorName, PurgeParameters contentFilePaths, Context context) {
+    public void purgeContent(String resourceGroupName, String frontDoorName, PurgeParameters contentFilePaths,
+        Context context) {
         this.serviceClient().purgeContent(resourceGroupName, frontDoorName, contentFilePaths, context);
     }
 

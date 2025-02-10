@@ -14,19 +14,17 @@ public final class DatabricksSparkPythonActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabricksSparkPythonActivityTypeProperties model = BinaryData.fromString(
-            "{\"pythonFile\":\"datacgmfklqswwdbs\",\"parameters\":[\"dataysedqrbevobqrwng\"],\"libraries\":[{\"ycou\":\"dataquzxmtmsyi\",\"sdjkrosq\":\"dataks\",\"jgyjoklngjsglz\":\"datavffrncsw\",\"wsqdnasjup\":\"datai\"},{\"zbdtvrg\":\"dataakks\",\"iotvfcbgffd\":\"dataebvqslikeuqv\"},{\"lixhapvwacwrc\":\"dataffatyqawtfyzqop\"}]}")
+            "{\"pythonFile\":\"datacgrkgt\",\"parameters\":[\"datalaywkbuved\",\"datatezeyfdgnaoi\",\"datarufdgtwxie\"],\"libraries\":[{\"eeqelmrp\":\"datagphfzdgs\",\"rgqskd\":\"datagg\",\"vgodekfefae\":\"datajwobegdxjxk\",\"jrakn\":\"dataulrfeqefqdvoo\"}]}")
             .toObject(DatabricksSparkPythonActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabricksSparkPythonActivityTypeProperties model = new DatabricksSparkPythonActivityTypeProperties()
-            .withPythonFile("datacgmfklqswwdbs").withParameters(Arrays.asList("dataysedqrbevobqrwng"))
-            .withLibraries(Arrays.asList(
-                mapOf("ycou", "dataquzxmtmsyi", "sdjkrosq", "dataks", "jgyjoklngjsglz", "datavffrncsw", "wsqdnasjup",
-                    "datai"),
-                mapOf("zbdtvrg", "dataakks", "iotvfcbgffd", "dataebvqslikeuqv"),
-                mapOf("lixhapvwacwrc", "dataffatyqawtfyzqop")));
+        DatabricksSparkPythonActivityTypeProperties model
+            = new DatabricksSparkPythonActivityTypeProperties().withPythonFile("datacgrkgt")
+                .withParameters(Arrays.asList("datalaywkbuved", "datatezeyfdgnaoi", "datarufdgtwxie"))
+                .withLibraries(Arrays.asList(mapOf("eeqelmrp", "datagphfzdgs", "rgqskd", "datagg", "vgodekfefae",
+                    "datajwobegdxjxk", "jrakn", "dataulrfeqefqdvoo")));
         model = BinaryData.fromObject(model).toObject(DatabricksSparkPythonActivityTypeProperties.class);
     }
 

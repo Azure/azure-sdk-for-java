@@ -16,7 +16,11 @@ import java.io.IOException;
 public interface ApplicationGatewayAuthenticationCertificate
     extends HasInnerModel<ApplicationGatewayAuthenticationCertificateInner>, ChildResource<ApplicationGateway> {
 
-    /** @return base-64 encoded bytes of the X.509 certificate */
+    /**
+     * Gets base-64 encoded bytes of the X.509 certificate.
+     *
+     * @return base-64 encoded bytes of the X.509 certificate
+     */
     String data();
 
     /** Grouping of application gateway authentication certificate stages. */
@@ -83,10 +87,8 @@ public interface ApplicationGatewayAuthenticationCertificate
      * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ReturnT>
-        extends DefinitionStages.Blank<ReturnT>,
-            DefinitionStages.WithAttach<ReturnT>,
-            DefinitionStages.WithData<ReturnT> {
+    interface Definition<ReturnT> extends DefinitionStages.Blank<ReturnT>, DefinitionStages.WithAttach<ReturnT>,
+        DefinitionStages.WithData<ReturnT> {
     }
 
     /** Grouping of application gateway authentication certificate update stages. */
@@ -168,9 +170,7 @@ public interface ApplicationGatewayAuthenticationCertificate
      * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface UpdateDefinition<ReturnT>
-        extends UpdateDefinitionStages.Blank<ReturnT>,
-            UpdateDefinitionStages.WithAttach<ReturnT>,
-            UpdateDefinitionStages.WithData<ReturnT> {
+    interface UpdateDefinition<ReturnT> extends UpdateDefinitionStages.Blank<ReturnT>,
+        UpdateDefinitionStages.WithAttach<ReturnT>, UpdateDefinitionStages.WithData<ReturnT> {
     }
 }

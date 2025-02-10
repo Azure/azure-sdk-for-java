@@ -13,8 +13,7 @@ public final class ReplicationApplianceImpl implements ReplicationAppliance {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    ReplicationApplianceImpl(
-        ReplicationApplianceInner innerObject,
+    ReplicationApplianceImpl(ReplicationApplianceInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

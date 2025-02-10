@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Sku of Azure Spring Apps. */
+/**
+ * Sku of Azure Spring Apps.
+ */
 @Fluent
-public final class Sku {
+public final class Sku implements JsonSerializable<Sku> {
     /*
      * Name of the Sku
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Tier of the Sku
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * Current capacity of the target resource
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /**
+     * Creates an instance of Sku class.
+     */
+    public Sku() {
+    }
+
+    /**
      * Get the name property: Name of the Sku.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +48,7 @@ public final class Sku {
 
     /**
      * Set the name property: Name of the Sku.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -50,7 +59,7 @@ public final class Sku {
 
     /**
      * Get the tier property: Tier of the Sku.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -59,7 +68,7 @@ public final class Sku {
 
     /**
      * Set the tier property: Tier of the Sku.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -70,7 +79,7 @@ public final class Sku {
 
     /**
      * Get the capacity property: Current capacity of the target resource.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -79,7 +88,7 @@ public final class Sku {
 
     /**
      * Set the capacity property: Current capacity of the target resource.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -90,9 +99,51 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Sku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Sku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Sku.
+     */
+    public static Sku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Sku deserializedSku = new Sku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSku.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSku.tier = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSku;
+        });
     }
 }

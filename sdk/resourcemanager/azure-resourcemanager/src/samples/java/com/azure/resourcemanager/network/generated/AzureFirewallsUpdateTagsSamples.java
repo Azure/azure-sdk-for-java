@@ -14,7 +14,7 @@ import java.util.Map;
 public final class AzureFirewallsUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/AzureFirewallUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/AzureFirewallUpdateTags.json
      */
     /**
      * Sample code: Update Azure Firewall Tags.
@@ -22,8 +22,12 @@ public final class AzureFirewallsUpdateTagsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAzureFirewallTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAzureFirewalls().updateTags("azfwtest", "fw1",
-            new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getAzureFirewalls()
+            .updateTags("azfwtest", "fw1", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

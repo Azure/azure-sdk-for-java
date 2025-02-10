@@ -5,64 +5,60 @@
 package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Email server settings.
  * https://grafana.com/docs/grafana/v9.0/setup-grafana/configure-grafana/#smtp.
  */
 @Fluent
-public final class Smtp {
+public final class Smtp implements JsonSerializable<Smtp> {
     /*
      * Enable this to allow Grafana to send email. Default is false
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * SMTP server hostname with port, e.g. test.email.net:587
      */
-    @JsonProperty(value = "host")
     private String host;
 
     /*
      * User of SMTP auth
      */
-    @JsonProperty(value = "user")
     private String user;
 
     /*
      * Password of SMTP auth. If the password contains # or ;, then you have to wrap it with triple quotes
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Address used when sending out emails
      * https://pkg.go.dev/net/mail#Address
      */
-    @JsonProperty(value = "fromAddress")
     private String fromAddress;
 
     /*
      * Name to be used when sending out emails. Default is "Azure Managed Grafana Notification"
      * https://pkg.go.dev/net/mail#Address
      */
-    @JsonProperty(value = "fromName")
     private String fromName;
 
     /*
      * The StartTLSPolicy setting of the SMTP configuration
      * https://pkg.go.dev/github.com/go-mail/mail#StartTLSPolicy
      */
-    @JsonProperty(value = "startTLSPolicy")
     private StartTlsPolicy startTlsPolicy;
 
     /*
      * Verify SSL for SMTP server. Default is false
      * https://pkg.go.dev/crypto/tls#Config
      */
-    @JsonProperty(value = "skipVerify")
     private Boolean skipVerify;
 
     /**
@@ -249,5 +245,63 @@ public final class Smtp {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("host", this.host);
+        jsonWriter.writeStringField("user", this.user);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("fromAddress", this.fromAddress);
+        jsonWriter.writeStringField("fromName", this.fromName);
+        jsonWriter.writeStringField("startTLSPolicy",
+            this.startTlsPolicy == null ? null : this.startTlsPolicy.toString());
+        jsonWriter.writeBooleanField("skipVerify", this.skipVerify);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Smtp from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Smtp if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Smtp.
+     */
+    public static Smtp fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Smtp deserializedSmtp = new Smtp();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedSmtp.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("host".equals(fieldName)) {
+                    deserializedSmtp.host = reader.getString();
+                } else if ("user".equals(fieldName)) {
+                    deserializedSmtp.user = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedSmtp.password = reader.getString();
+                } else if ("fromAddress".equals(fieldName)) {
+                    deserializedSmtp.fromAddress = reader.getString();
+                } else if ("fromName".equals(fieldName)) {
+                    deserializedSmtp.fromName = reader.getString();
+                } else if ("startTLSPolicy".equals(fieldName)) {
+                    deserializedSmtp.startTlsPolicy = StartTlsPolicy.fromString(reader.getString());
+                } else if ("skipVerify".equals(fieldName)) {
+                    deserializedSmtp.skipVerify = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmtp;
+        });
     }
 }

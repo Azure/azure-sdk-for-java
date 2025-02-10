@@ -14,31 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class VMHostUpdateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMHostUpdateRequest model =
-            BinaryData
-                .fromString(
-                    "{\"vmResourceIds\":[{\"id\":\"ebxetqgtzxdp\",\"agentVersion\":\"bqqwxrj\"},{\"id\":\"al\",\"agentVersion\":\"wsubisnja\"},{\"id\":\"mngnzscxaqw\",\"agentVersion\":\"chcbonqvpkvlrxnj\"},{\"id\":\"seiphe\",\"agentVersion\":\"lokeyy\"}],\"state\":\"Install\"}")
-                .toObject(VMHostUpdateRequest.class);
-        Assertions.assertEquals("ebxetqgtzxdp", model.vmResourceIds().get(0).id());
-        Assertions.assertEquals("bqqwxrj", model.vmResourceIds().get(0).agentVersion());
+        VMHostUpdateRequest model = BinaryData
+            .fromString(
+                "{\"vmResourceIds\":[{\"id\":\"tki\",\"agentVersion\":\"xhqyudxorrqnb\"}],\"state\":\"Install\"}")
+            .toObject(VMHostUpdateRequest.class);
+        Assertions.assertEquals("tki", model.vmResourceIds().get(0).id());
+        Assertions.assertEquals("xhqyudxorrqnb", model.vmResourceIds().get(0).agentVersion());
         Assertions.assertEquals(VMHostUpdateStates.INSTALL, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMHostUpdateRequest model =
-            new VMHostUpdateRequest()
-                .withVmResourceIds(
-                    Arrays
-                        .asList(
-                            new VMResourcesInner().withId("ebxetqgtzxdp").withAgentVersion("bqqwxrj"),
-                            new VMResourcesInner().withId("al").withAgentVersion("wsubisnja"),
-                            new VMResourcesInner().withId("mngnzscxaqw").withAgentVersion("chcbonqvpkvlrxnj"),
-                            new VMResourcesInner().withId("seiphe").withAgentVersion("lokeyy")))
-                .withState(VMHostUpdateStates.INSTALL);
+        VMHostUpdateRequest model = new VMHostUpdateRequest()
+            .withVmResourceIds(Arrays.asList(new VMResourcesInner().withId("tki").withAgentVersion("xhqyudxorrqnb")))
+            .withState(VMHostUpdateStates.INSTALL);
         model = BinaryData.fromObject(model).toObject(VMHostUpdateRequest.class);
-        Assertions.assertEquals("ebxetqgtzxdp", model.vmResourceIds().get(0).id());
-        Assertions.assertEquals("bqqwxrj", model.vmResourceIds().get(0).agentVersion());
+        Assertions.assertEquals("tki", model.vmResourceIds().get(0).id());
+        Assertions.assertEquals("xhqyudxorrqnb", model.vmResourceIds().get(0).agentVersion());
         Assertions.assertEquals(VMHostUpdateStates.INSTALL, model.state());
     }
 }

@@ -31,16 +31,16 @@ The pipeline variable that should be set containing the linting goals.
 #>
 
 param(
-  [Parameter(Mandatory = $true)]
-  [string]$BuildReason,
+    [Parameter(Mandatory = $true)]
+    [string]$BuildReason,
 
-  [Parameter(Mandatory = $true)]
-  [string]$SourceBranch,
+    [Parameter(Mandatory = $true)]
+    [string]$SourceBranch,
 
-  [string]$TargetBranch = ("origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}" -replace "refs/heads/"),
+    [string]$TargetBranch = ("origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}" -replace "refs/heads/"),
 
-  [Parameter(Mandatory = $true)]
-  [string]$LintingPipelineVariable
+    [Parameter(Mandatory = $true)]
+    [string]$LintingPipelineVariable
 )
 
 Write-Host "Build reason: ${BuildReason}"
@@ -49,32 +49,55 @@ Write-Host "Target branch: ${TargetBranch}"
 Write-Host "Linting pipeline variable: ${LintingPipelineVariable}"
 
 if ($BuildReason -ne "PullRequest") {
-    Write-Host "Non-PR pipeline runs always use linting goals 'checkstyle:check revapi:check spotbugs:check'"
-    Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]checkstyle:check revapi:check spotbugs:check"
+    Write-Host "Non-PR pipeline runs always run Checkstyle, RevApi, and Spotbugs."
+    Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]-Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false"
+    Write-Host "##vso[task.setvariable variable=RunLinting;]true"
     exit 0
 }
 
-$lintingGoals = ''
+$diffFiles = (git diff $TargetBranch $SourceBranch --name-only --relative)
+if ($diffFiles -contains 'eng/code-quality-reports/ci.yml') {
+    Write-Host "PR changed the CI configuration, running all linting steps."
+    Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]-Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false"
+    Write-Host "##vso[task.setvariable variable=RunLinting;]true"
+    exit 0
+}
+
+$runLinting = 'false'
+[string[]]$lintingGoals = @()
 $baseDiffDirectory = 'eng/code-quality-reports/src/main'
 
-$checkstyleSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/com/azure/tools/checkstyle/*").Count -gt 0
-$checkstyleConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
+
+$checkstyleSourceChanged = ($diffFiles -match "${baseDiffDirectory}/java/com/azure/tools/checkstyle/*").Count -gt 0
+$checkstyleConfigChanged = ($diffFiles -match "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
 if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
-    $lintingGoals += 'checkstyle:check'
+    $runLinting = 'true'
+    $lintingGoals += '-Dcheckstyle.failOnViolation=false'
+    $lintingGoals += '-Dcheckstyle.failsOnError=false'
+} else {
+    $lintingGoals += '-Dcheckstyle.skip=true'
 }
 
-$revapiSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/com/azure/tools/revapi/*").Count -gt 0
-$revapiConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/revapi/*").Count -gt 0
+$revapiSourceChanged = ($diffFiles -match "${baseDiffDirectory}/java/com/azure/tools/revapi/*").Count -gt 0
+$revapiConfigChanged = ($diffFiles -match "${baseDiffDirectory}/resources/revapi/*").Count -gt 0
 if ($revapiSourceChanged -or $revapiConfigChanged) {
-    $lintingGoals += ' revapi:check'
+    $runLinting = 'true'
+    $lintingGoals += '-Drevapi.failBuildOnProblemsFound=false'
+} else {
+    $lintingGoals += '-Drevapi.skip=true'
 }
 
-$spotbugsConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/spotbugs/*").Count -gt 0
+$spotbugsConfigChanged = ($diffFiles -match "${baseDiffDirectory}/resources/spotbugs/*").Count -gt 0
 if ($spotbugsConfigChanged) {
-    $lintingGoals += ' spotbugs:check'
+    $runLinting = 'true'
+    $lintingGoals += '-Dspotbugs.failOnError=false'
+} else {
+    $lintingGoals += '-Dspotbugs.skip=true'
 }
 
-Write-Host "Using linting goals '${lintingGoals}'"
-Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]${lintingGoals}"
+$lintingCommand = $lintingGoals -join ' '
+Write-Host "Using linting goals '${lintingCommand}'"
+Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]${lintingCommand}"
+Write-Host "##vso[task.setvariable variable=RunLinting;]${runLinting}"
 
 exit 0

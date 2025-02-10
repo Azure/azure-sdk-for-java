@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ReplicationSchedule extends ExpandableStringEnum<ReplicationS
      * @param name a name to look for.
      * @return the corresponding ReplicationSchedule.
      */
-    @JsonCreator
     public static ReplicationSchedule fromString(String name) {
         return fromString(name, ReplicationSchedule.class);
     }

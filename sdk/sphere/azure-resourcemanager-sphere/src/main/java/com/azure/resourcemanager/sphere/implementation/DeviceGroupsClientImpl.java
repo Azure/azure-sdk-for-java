@@ -34,7 +34,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sphere.fluent.DeviceGroupsClient;
-import com.azure.resourcemanager.sphere.fluent.models.CountDeviceResponseInner;
+import com.azure.resourcemanager.sphere.fluent.models.CountDevicesResponseInner;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupInner;
 import com.azure.resourcemanager.sphere.models.ClaimDevicesRequest;
 import com.azure.resourcemanager.sphere.models.DeviceGroupListResult;
@@ -43,165 +43,125 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeviceGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeviceGroupsClient.
+ */
 public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DeviceGroupsService service;
 
-    /** The service client containing this operation class. */
-    private final AzureSphereManagementClientImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final AzureSphereMgmtClientImpl client;
 
     /**
      * Initializes an instance of DeviceGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    DeviceGroupsClientImpl(AzureSphereManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DeviceGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    DeviceGroupsClientImpl(AzureSphereMgmtClientImpl client) {
+        this.service
+            = RestProxy.create(DeviceGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureSphereManagementClientDeviceGroups to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AzureSphereMgmtClientDeviceGroups to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureSphereManagemen")
+    @ServiceInterface(name = "AzureSphereMgmtClien")
     public interface DeviceGroupsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeviceGroupListResult>> listByProduct(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$maxpagesize") Integer maxpagesize,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<DeviceGroupListResult>> listByProduct(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$maxpagesize") Integer maxpagesize, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DeviceGroupInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @BodyParam("application/json") DeviceGroupInner resource, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeviceGroupInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @BodyParam("application/json") DeviceGroupUpdate properties, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @BodyParam("application/json") DeviceGroupInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/claimDevices")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @BodyParam("application/json") DeviceGroupUpdate properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/claimDevices")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> claimDevices(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
+        Mono<Response<Flux<ByteBuffer>>> claimDevices(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
             @BodyParam("application/json") ClaimDevicesRequest claimDevicesRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/countDevices")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureSphere/catalogs/{catalogName}/products/{productName}/deviceGroups/{deviceGroupName}/countDevices")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CountDeviceResponseInner>> countDevices(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("catalogName") String catalogName,
-            @PathParam("productName") String productName,
-            @PathParam("deviceGroupName") String deviceGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CountDevicesResponseInner>> countDevices(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("catalogName") String catalogName,
+            @PathParam("productName") String productName, @PathParam("deviceGroupName") String deviceGroupName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeviceGroupListResult>> listByProductNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
      * for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -213,28 +173,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DeviceGroup list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeviceGroupInner>> listByProductSinglePageAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize) {
+    private Mono<PagedResponse<DeviceGroupInner>> listByProductSinglePageAsync(String resourceGroupName,
+        String catalogName, String productName, String filter, Integer top, Integer skip, Integer maxpagesize) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -248,38 +198,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByProduct(
-                            this.client.getEndpoint(),
-                            filter,
-                            top,
-                            skip,
-                            maxpagesize,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            accept,
-                            context))
-            .<PagedResponse<DeviceGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByProduct(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, filter, top, skip, maxpagesize, catalogName,
+                productName, accept, context))
+            .<PagedResponse<DeviceGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
      * for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -292,29 +222,19 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DeviceGroup list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeviceGroupInner>> listByProductSinglePageAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
+    private Mono<PagedResponse<DeviceGroupInner>> listByProductSinglePageAsync(String resourceGroupName,
+        String catalogName, String productName, String filter, Integer top, Integer skip, Integer maxpagesize,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -329,34 +249,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByProduct(
-                this.client.getEndpoint(),
-                filter,
-                top,
-                skip,
-                maxpagesize,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByProduct(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, filter, top, skip, maxpagesize, catalogName, productName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
      * for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -370,25 +272,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the response of a DeviceGroup list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeviceGroupInner> listByProductAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize) {
-        return new PagedFlux<>(
-            () ->
-                listByProductSinglePageAsync(
-                    resourceGroupName, catalogName, productName, filter, top, skip, maxpagesize),
-            nextLink -> listByProductNextSinglePageAsync(nextLink));
+    private PagedFlux<DeviceGroupInner> listByProductAsync(String resourceGroupName, String catalogName,
+        String productName, String filter, Integer top, Integer skip, Integer maxpagesize) {
+        return new PagedFlux<>(() -> listByProductSinglePageAsync(resourceGroupName, catalogName, productName, filter,
+            top, skip, maxpagesize), nextLink -> listByProductNextSinglePageAsync(nextLink));
     }
 
     /**
      * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
      * for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -398,23 +291,20 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the response of a DeviceGroup list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeviceGroupInner> listByProductAsync(
-        String resourceGroupName, String catalogName, String productName) {
+    private PagedFlux<DeviceGroupInner> listByProductAsync(String resourceGroupName, String catalogName,
+        String productName) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
         final Integer maxpagesize = null;
-        return new PagedFlux<>(
-            () ->
-                listByProductSinglePageAsync(
-                    resourceGroupName, catalogName, productName, filter, top, skip, maxpagesize),
-            nextLink -> listByProductNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByProductSinglePageAsync(resourceGroupName, catalogName, productName, filter,
+            top, skip, maxpagesize), nextLink -> listByProductNextSinglePageAsync(nextLink));
     }
 
     /**
      * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
      * for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -429,26 +319,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the response of a DeviceGroup list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeviceGroupInner> listByProductAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByProductSinglePageAsync(
-                    resourceGroupName, catalogName, productName, filter, top, skip, maxpagesize, context),
-            nextLink -> listByProductNextSinglePageAsync(nextLink, context));
+    private PagedFlux<DeviceGroupInner> listByProductAsync(String resourceGroupName, String catalogName,
+        String productName, String filter, Integer top, Integer skip, Integer maxpagesize, Context context) {
+        return new PagedFlux<>(() -> listByProductSinglePageAsync(resourceGroupName, catalogName, productName, filter,
+            top, skip, maxpagesize, context), nextLink -> listByProductNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
      * for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -458,8 +338,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeviceGroupInner> listByProduct(
-        String resourceGroupName, String catalogName, String productName) {
+    public PagedIterable<DeviceGroupInner> listByProduct(String resourceGroupName, String catalogName,
+        String productName) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -471,7 +351,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
      * for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -486,15 +366,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeviceGroupInner> listByProduct(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context) {
+    public PagedIterable<DeviceGroupInner> listByProduct(String resourceGroupName, String catalogName,
+        String productName, String filter, Integer top, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
             listByProductAsync(resourceGroupName, catalogName, productName, filter, top, skip, maxpagesize, context));
     }
@@ -502,7 +375,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -513,19 +386,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return a DeviceGroup along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeviceGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    private Mono<Response<DeviceGroupInner>> getWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -543,26 +412,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -574,19 +433,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return a DeviceGroup along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeviceGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
+    private Mono<Response<DeviceGroupInner>> getWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -604,23 +459,14 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, catalogName, productName, deviceGroupName, accept, context);
     }
 
     /**
      * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -631,8 +477,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return a DeviceGroup on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeviceGroupInner> getAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    private Mono<DeviceGroupInner> getAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName) {
         return getWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -640,7 +486,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -652,15 +498,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return a DeviceGroup along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeviceGroupInner> getWithResponse(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
+    public Response<DeviceGroupInner> getWithResponse(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, context).block();
     }
 
     /**
      * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -671,15 +517,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return a DeviceGroup.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceGroupInner get(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    public DeviceGroupInner get(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName) {
         return getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE).getValue();
     }
 
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -689,26 +535,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an device group resource belonging to a product resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, DeviceGroupInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -731,27 +569,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, resource,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -762,27 +589,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an device group resource belonging to a product resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, DeviceGroupInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -805,24 +623,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, resource,
+            accept, context);
     }
 
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -835,27 +644,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+        String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         DeviceGroupInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, resource);
-        return this
-            .client
-            .<DeviceGroupInner, DeviceGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DeviceGroupInner.class,
-                DeviceGroupInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, resource);
+        return this.client.<DeviceGroupInner, DeviceGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeviceGroupInner.class, DeviceGroupInner.class, this.client.getContext());
     }
 
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -869,26 +669,19 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource,
-        Context context) {
+        String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        DeviceGroupInner resource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, resource, context);
-        return this
-            .client
-            .<DeviceGroupInner, DeviceGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DeviceGroupInner.class, DeviceGroupInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, catalogName,
+            productName, deviceGroupName, resource, context);
+        return this.client.<DeviceGroupInner, DeviceGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeviceGroupInner.class, DeviceGroupInner.class, context);
     }
 
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -900,21 +693,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, resource)
+    public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, DeviceGroupInner resource) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, resource)
             .getSyncPoller();
     }
 
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -927,13 +715,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource,
-        Context context) {
+    public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, DeviceGroupInner resource, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, resource, context)
             .getSyncPoller();
@@ -942,7 +725,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -954,21 +737,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return an device group resource belonging to a product resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeviceGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, resource)
-            .last()
+    private Mono<DeviceGroupInner> createOrUpdateAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, DeviceGroupInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -981,13 +759,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return an device group resource belonging to a product resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeviceGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource,
-        Context context) {
+    private Mono<DeviceGroupInner> createOrUpdateAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, DeviceGroupInner resource, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, resource, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -996,7 +769,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1008,19 +781,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceGroupInner createOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource) {
+    public DeviceGroupInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, DeviceGroupInner resource) {
         return createOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, resource).block();
     }
 
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1033,13 +802,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceGroupInner createOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource,
-        Context context) {
+    public DeviceGroupInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, DeviceGroupInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, resource, context)
             .block();
     }
@@ -1047,7 +811,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1057,26 +821,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an device group resource belonging to a product resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, DeviceGroupUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1099,27 +855,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
+                properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1130,27 +875,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an device group resource belonging to a product resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, DeviceGroupUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1173,24 +909,14 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                properties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, catalogName, productName, deviceGroupName, properties, accept, context);
     }
 
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1202,28 +928,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link PollerFlux} for polling of an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties);
-        return this
-            .client
-            .<DeviceGroupInner, DeviceGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DeviceGroupInner.class,
-                DeviceGroupInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdateAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, DeviceGroupUpdate properties) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties);
+        return this.client.<DeviceGroupInner, DeviceGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeviceGroupInner.class, DeviceGroupInner.class, this.client.getContext());
     }
 
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1236,26 +952,19 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link PollerFlux} for polling of an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties,
-        Context context) {
+    private PollerFlux<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdateAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, DeviceGroupUpdate properties, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties, context);
-        return this
-            .client
-            .<DeviceGroupInner, DeviceGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DeviceGroupInner.class, DeviceGroupInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, catalogName, productName,
+            deviceGroupName, properties, context);
+        return this.client.<DeviceGroupInner, DeviceGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeviceGroupInner.class, DeviceGroupInner.class, context);
     }
 
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1267,21 +976,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties) {
-        return this
-            .beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties)
+    public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, DeviceGroupUpdate properties) {
+        return this.beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties)
             .getSyncPoller();
     }
 
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1294,22 +998,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties, context)
+    public SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, DeviceGroupUpdate properties, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties, context)
             .getSyncPoller();
     }
 
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1321,21 +1019,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return an device group resource belonging to a product resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeviceGroupInner> updateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties) {
-        return beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties)
-            .last()
+    private Mono<DeviceGroupInner> updateAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, DeviceGroupUpdate properties) {
+        return beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1348,13 +1041,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return an device group resource belonging to a product resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeviceGroupInner> updateAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties,
-        Context context) {
+    private Mono<DeviceGroupInner> updateAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, DeviceGroupUpdate properties, Context context) {
         return beginUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1363,7 +1051,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1375,19 +1063,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceGroupInner update(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties) {
+    public DeviceGroupInner update(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, DeviceGroupUpdate properties) {
         return updateAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties).block();
     }
 
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1400,20 +1084,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeviceGroupInner update(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties,
-        Context context) {
+    public DeviceGroupInner update(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, DeviceGroupUpdate properties, Context context) {
         return updateAsync(resourceGroupName, catalogName, productName, deviceGroupName, properties, context).block();
     }
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1424,19 +1103,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1454,26 +1129,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1485,19 +1150,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1515,23 +1176,14 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, catalogName, productName, deviceGroupName, accept, context);
     }
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1542,20 +1194,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1567,20 +1217,19 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1591,15 +1240,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName) {
         return this.beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName).getSyncPoller();
     }
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1611,17 +1260,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, context)
             .getSyncPoller();
     }
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1632,17 +1280,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
-        return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName) {
+        return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1654,17 +1301,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, Context context) {
+        return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1681,7 +1327,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1692,15 +1338,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
+    public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        Context context) {
         deleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, context).block();
     }
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1712,23 +1358,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> claimDevicesWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest) {
+    private Mono<Response<Flux<ByteBuffer>>> claimDevicesWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1752,27 +1390,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .claimDevices(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            claimDevicesRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.claimDevices(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
+                claimDevicesRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1785,24 +1412,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> claimDevicesWithResponseAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> claimDevicesWithResponseAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1826,24 +1444,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .claimDevices(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                claimDevicesRequest,
-                accept,
-                context);
+        return service.claimDevices(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName,
+            claimDevicesRequest, accept, context);
     }
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1855,25 +1464,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginClaimDevicesAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            claimDevicesWithResponseAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginClaimDevicesAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono = claimDevicesWithResponseAsync(resourceGroupName, catalogName,
+            productName, deviceGroupName, claimDevicesRequest);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1886,26 +1488,19 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginClaimDevicesAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginClaimDevicesAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            claimDevicesWithResponseAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = claimDevicesWithResponseAsync(resourceGroupName, catalogName,
+            productName, deviceGroupName, claimDevicesRequest, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1917,12 +1512,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginClaimDevices(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest) {
+    public SyncPoller<PollResult<Void>, Void> beginClaimDevices(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest) {
         return this
             .beginClaimDevicesAsync(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest)
             .getSyncPoller();
@@ -1931,7 +1522,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1944,23 +1535,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginClaimDevices(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginClaimDevices(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest, Context context) {
         return this
-            .beginClaimDevicesAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest, context)
+            .beginClaimDevicesAsync(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1972,12 +1558,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> claimDevicesAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest) {
+    private Mono<Void> claimDevicesAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, ClaimDevicesRequest claimDevicesRequest) {
         return beginClaimDevicesAsync(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1986,7 +1568,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -1999,23 +1581,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> claimDevicesAsync(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest,
-        Context context) {
-        return beginClaimDevicesAsync(
-                resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> claimDevicesAsync(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, ClaimDevicesRequest claimDevicesRequest, Context context) {
+        return beginClaimDevicesAsync(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2026,11 +1601,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void claimDevices(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    public void claimDevices(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         ClaimDevicesRequest claimDevicesRequest) {
         claimDevicesAsync(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest).block();
     }
@@ -2038,7 +1609,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2050,13 +1621,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void claimDevices(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest,
-        Context context) {
+    public void claimDevices(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        ClaimDevicesRequest claimDevicesRequest, Context context) {
         claimDevicesAsync(resourceGroupName, catalogName, productName, deviceGroupName, claimDevicesRequest, context)
             .block();
     }
@@ -2064,7 +1630,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
      * product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2073,22 +1639,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the action call for count devices in a catalog along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CountDeviceResponseInner>> countDevicesWithResponseAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    private Mono<Response<CountDevicesResponseInner>> countDevicesWithResponseAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2106,26 +1668,16 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .countDevices(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            catalogName,
-                            productName,
-                            deviceGroupName,
-                            accept,
-                            context))
+            .withContext(context -> service.countDevices(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
      * product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2135,22 +1687,18 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the action call for count devices in a catalog along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CountDeviceResponseInner>> countDevicesWithResponseAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
+    private Mono<Response<CountDevicesResponseInner>> countDevicesWithResponseAsync(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2168,23 +1716,15 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .countDevices(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                accept,
-                context);
+        return service.countDevices(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, catalogName, productName, deviceGroupName, accept,
+            context);
     }
 
     /**
      * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
      * product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2195,8 +1735,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return response to the action call for count devices in a catalog on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CountDeviceResponseInner> countDevicesAsync(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    private Mono<CountDevicesResponseInner> countDevicesAsync(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName) {
         return countDevicesWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2204,7 +1744,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
      * product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2216,8 +1756,8 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return response to the action call for count devices in a catalog along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CountDeviceResponseInner> countDevicesWithResponse(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context) {
+    public Response<CountDevicesResponseInner> countDevicesWithResponse(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, Context context) {
         return countDevicesWithResponseAsync(resourceGroupName, catalogName, productName, deviceGroupName, context)
             .block();
     }
@@ -2225,7 +1765,7 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
     /**
      * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
      * product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -2236,22 +1776,21 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
      * @return response to the action call for count devices in a catalog.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CountDeviceResponseInner countDevices(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    public CountDevicesResponseInner countDevices(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName) {
         return countDevicesWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, Context.NONE)
             .getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DeviceGroup list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeviceGroupInner>> listByProductNextSinglePageAsync(String nextLink) {
@@ -2259,37 +1798,27 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByProductNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeviceGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DeviceGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DeviceGroup list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeviceGroupInner>> listByProductNextSinglePageAsync(String nextLink, Context context) {
@@ -2297,23 +1826,13 @@ public final class DeviceGroupsClientImpl implements DeviceGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByProductNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByProductNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

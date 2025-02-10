@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Settings that apply to all backend pools. */
+/**
+ * Settings that apply to all backend pools.
+ */
 @Fluent
-public final class BackendPoolsSettings {
+public final class BackendPoolsSettings implements JsonSerializable<BackendPoolsSettings> {
     /*
      * Whether to enforce certificate name check on HTTPS requests to all backend pools. No effect on non-HTTPS
      * requests.
      */
-    @JsonProperty(value = "enforceCertificateNameCheck")
     private EnforceCertificateNameCheckEnabledState enforceCertificateNameCheck;
 
     /*
      * Send and receive timeout on forwarding request to the backend. When timeout is reached, the request fails and
      * returns.
      */
-    @JsonProperty(value = "sendRecvTimeoutSeconds")
     private Integer sendRecvTimeoutSeconds;
 
-    /** Creates an instance of BackendPoolsSettings class. */
+    /**
+     * Creates an instance of BackendPoolsSettings class.
+     */
     public BackendPoolsSettings() {
     }
 
     /**
      * Get the enforceCertificateNameCheck property: Whether to enforce certificate name check on HTTPS requests to all
      * backend pools. No effect on non-HTTPS requests.
-     *
+     * 
      * @return the enforceCertificateNameCheck value.
      */
     public EnforceCertificateNameCheckEnabledState enforceCertificateNameCheck() {
@@ -41,12 +47,12 @@ public final class BackendPoolsSettings {
     /**
      * Set the enforceCertificateNameCheck property: Whether to enforce certificate name check on HTTPS requests to all
      * backend pools. No effect on non-HTTPS requests.
-     *
+     * 
      * @param enforceCertificateNameCheck the enforceCertificateNameCheck value to set.
      * @return the BackendPoolsSettings object itself.
      */
-    public BackendPoolsSettings withEnforceCertificateNameCheck(
-        EnforceCertificateNameCheckEnabledState enforceCertificateNameCheck) {
+    public BackendPoolsSettings
+        withEnforceCertificateNameCheck(EnforceCertificateNameCheckEnabledState enforceCertificateNameCheck) {
         this.enforceCertificateNameCheck = enforceCertificateNameCheck;
         return this;
     }
@@ -54,7 +60,7 @@ public final class BackendPoolsSettings {
     /**
      * Get the sendRecvTimeoutSeconds property: Send and receive timeout on forwarding request to the backend. When
      * timeout is reached, the request fails and returns.
-     *
+     * 
      * @return the sendRecvTimeoutSeconds value.
      */
     public Integer sendRecvTimeoutSeconds() {
@@ -64,7 +70,7 @@ public final class BackendPoolsSettings {
     /**
      * Set the sendRecvTimeoutSeconds property: Send and receive timeout on forwarding request to the backend. When
      * timeout is reached, the request fails and returns.
-     *
+     * 
      * @param sendRecvTimeoutSeconds the sendRecvTimeoutSeconds value to set.
      * @return the BackendPoolsSettings object itself.
      */
@@ -75,9 +81,50 @@ public final class BackendPoolsSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("enforceCertificateNameCheck",
+            this.enforceCertificateNameCheck == null ? null : this.enforceCertificateNameCheck.toString());
+        jsonWriter.writeNumberField("sendRecvTimeoutSeconds", this.sendRecvTimeoutSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendPoolsSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendPoolsSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackendPoolsSettings.
+     */
+    public static BackendPoolsSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendPoolsSettings deserializedBackendPoolsSettings = new BackendPoolsSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enforceCertificateNameCheck".equals(fieldName)) {
+                    deserializedBackendPoolsSettings.enforceCertificateNameCheck
+                        = EnforceCertificateNameCheckEnabledState.fromString(reader.getString());
+                } else if ("sendRecvTimeoutSeconds".equals(fieldName)) {
+                    deserializedBackendPoolsSettings.sendRecvTimeoutSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendPoolsSettings;
+        });
     }
 }

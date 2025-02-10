@@ -5,14 +5,20 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
- * Parameters to use when configuring Elasticsearch® as an Azure OpenAI chat extension.
+ * Parameters to use when configuring Elasticsearch® as an Azure OpenAI chat extension. The supported authentication
+ * types are KeyAndKeyId and EncodedAPIKey.
  */
 @Fluent
-public final class ElasticsearchChatExtensionParameters {
+public final class ElasticsearchChatExtensionParameters
+    implements JsonSerializable<ElasticsearchChatExtensionParameters> {
 
     /*
      * The authentication method to use when accessing the defined data source.
@@ -23,21 +29,18 @@ public final class ElasticsearchChatExtensionParameters {
      * authentication.
      */
     @Generated
-    @JsonProperty(value = "authentication")
     private OnYourDataAuthenticationOptions authentication;
 
     /*
      * The configured top number of documents to feature for the configured query.
      */
     @Generated
-    @JsonProperty(value = "topNDocuments")
     private Integer topNDocuments;
 
     /*
      * Whether queries should be restricted to use of indexed data.
      */
     @Generated
-    @JsonProperty(value = "inScope")
     private Boolean inScope;
 
     /*
@@ -45,51 +48,36 @@ public final class ElasticsearchChatExtensionParameters {
      * precision but lower recall of the answer.
      */
     @Generated
-    @JsonProperty(value = "strictness")
     private Integer strictness;
-
-    /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a
-     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
-     * limit for it, and it counts against the overall token limit.
-     */
-    @Generated
-    @JsonProperty(value = "roleInformation")
-    private String roleInformation;
 
     /*
      * The endpoint of Elasticsearch®.
      */
     @Generated
-    @JsonProperty(value = "endpoint")
-    private String endpoint;
+    private final String endpoint;
 
     /*
      * The index name of Elasticsearch®.
      */
     @Generated
-    @JsonProperty(value = "indexName")
-    private String indexName;
+    private final String indexName;
 
     /*
      * The index field mapping options of Elasticsearch®.
      */
     @Generated
-    @JsonProperty(value = "fieldsMapping")
     private ElasticsearchIndexFieldMappingOptions fieldsMapping;
 
     /*
      * The query type of Elasticsearch®.
      */
     @Generated
-    @JsonProperty(value = "queryType")
     private ElasticsearchQueryType queryType;
 
     /*
      * The embedding dependency for vector search.
      */
     @Generated
-    @JsonProperty(value = "embeddingDependency")
     private OnYourDataVectorizationSource embeddingDependency;
 
     /**
@@ -99,9 +87,7 @@ public final class ElasticsearchChatExtensionParameters {
      * @param indexName the indexName value to set.
      */
     @Generated
-    @JsonCreator
-    public ElasticsearchChatExtensionParameters(@JsonProperty(value = "endpoint") String endpoint,
-        @JsonProperty(value = "indexName") String indexName) {
+    public ElasticsearchChatExtensionParameters(String endpoint, String indexName) {
         this.endpoint = endpoint;
         this.indexName = indexName;
     }
@@ -207,32 +193,6 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Get the roleInformation property: Give the model instructions about how it should behave and any context it
-     * should reference when generating a response. You can describe the assistant's personality and tell it how to
-     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
-     *
-     * @return the roleInformation value.
-     */
-    @Generated
-    public String getRoleInformation() {
-        return this.roleInformation;
-    }
-
-    /**
-     * Set the roleInformation property: Give the model instructions about how it should behave and any context it
-     * should reference when generating a response. You can describe the assistant's personality and tell it how to
-     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
-     *
-     * @param roleInformation the roleInformation value to set.
-     * @return the ElasticsearchChatExtensionParameters object itself.
-     */
-    @Generated
-    public ElasticsearchChatExtensionParameters setRoleInformation(String roleInformation) {
-        this.roleInformation = roleInformation;
-        return this;
-    }
-
-    /**
      * Get the endpoint property: The endpoint of Elasticsearch®.
      *
      * @return the endpoint value.
@@ -316,6 +276,198 @@ public final class ElasticsearchChatExtensionParameters {
     public ElasticsearchChatExtensionParameters
         setEmbeddingDependency(OnYourDataVectorizationSource embeddingDependency) {
         this.embeddingDependency = embeddingDependency;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeStringField("index_name", this.indexName);
+        jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
+        jsonWriter.writeBooleanField("in_scope", this.inScope);
+        jsonWriter.writeNumberField("strictness", this.strictness);
+        jsonWriter.writeNumberField("max_search_queries", this.maxSearchQueries);
+        jsonWriter.writeBooleanField("allow_partial_result", this.allowPartialResult);
+        jsonWriter.writeArrayField("include_contexts", this.includeContexts,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("authentication", this.authentication);
+        jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
+        jsonWriter.writeStringField("query_type", this.queryType == null ? null : this.queryType.toString());
+        jsonWriter.writeJsonField("embedding_dependency", this.embeddingDependency);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticsearchChatExtensionParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticsearchChatExtensionParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ElasticsearchChatExtensionParameters.
+     */
+    @Generated
+    public static ElasticsearchChatExtensionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String endpoint = null;
+            String indexName = null;
+            Integer topNDocuments = null;
+            Boolean inScope = null;
+            Integer strictness = null;
+            Integer maxSearchQueries = null;
+            Boolean allowPartialResult = null;
+            List<OnYourDataContextProperty> includeContexts = null;
+            OnYourDataAuthenticationOptions authentication = null;
+            ElasticsearchIndexFieldMappingOptions fieldsMapping = null;
+            ElasticsearchQueryType queryType = null;
+            OnYourDataVectorizationSource embeddingDependency = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("endpoint".equals(fieldName)) {
+                    endpoint = reader.getString();
+                } else if ("index_name".equals(fieldName)) {
+                    indexName = reader.getString();
+                } else if ("top_n_documents".equals(fieldName)) {
+                    topNDocuments = reader.getNullable(JsonReader::getInt);
+                } else if ("in_scope".equals(fieldName)) {
+                    inScope = reader.getNullable(JsonReader::getBoolean);
+                } else if ("strictness".equals(fieldName)) {
+                    strictness = reader.getNullable(JsonReader::getInt);
+                } else if ("max_search_queries".equals(fieldName)) {
+                    maxSearchQueries = reader.getNullable(JsonReader::getInt);
+                } else if ("allow_partial_result".equals(fieldName)) {
+                    allowPartialResult = reader.getNullable(JsonReader::getBoolean);
+                } else if ("include_contexts".equals(fieldName)) {
+                    includeContexts
+                        = reader.readArray(reader1 -> OnYourDataContextProperty.fromString(reader1.getString()));
+                } else if ("authentication".equals(fieldName)) {
+                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
+                } else if ("fields_mapping".equals(fieldName)) {
+                    fieldsMapping = ElasticsearchIndexFieldMappingOptions.fromJson(reader);
+                } else if ("query_type".equals(fieldName)) {
+                    queryType = ElasticsearchQueryType.fromString(reader.getString());
+                } else if ("embedding_dependency".equals(fieldName)) {
+                    embeddingDependency = OnYourDataVectorizationSource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ElasticsearchChatExtensionParameters deserializedElasticsearchChatExtensionParameters
+                = new ElasticsearchChatExtensionParameters(endpoint, indexName);
+            deserializedElasticsearchChatExtensionParameters.topNDocuments = topNDocuments;
+            deserializedElasticsearchChatExtensionParameters.inScope = inScope;
+            deserializedElasticsearchChatExtensionParameters.strictness = strictness;
+            deserializedElasticsearchChatExtensionParameters.maxSearchQueries = maxSearchQueries;
+            deserializedElasticsearchChatExtensionParameters.allowPartialResult = allowPartialResult;
+            deserializedElasticsearchChatExtensionParameters.includeContexts = includeContexts;
+            deserializedElasticsearchChatExtensionParameters.authentication = authentication;
+            deserializedElasticsearchChatExtensionParameters.fieldsMapping = fieldsMapping;
+            deserializedElasticsearchChatExtensionParameters.queryType = queryType;
+            deserializedElasticsearchChatExtensionParameters.embeddingDependency = embeddingDependency;
+            return deserializedElasticsearchChatExtensionParameters;
+        });
+    }
+
+    /*
+     * The max number of rewritten queries should be send to search provider for one user message. If not specified,
+     * the system will decide the number of queries to send.
+     */
+    @Generated
+    private Integer maxSearchQueries;
+
+    /*
+     * If specified as true, the system will allow partial search results to be used and the request fails if all the
+     * queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     */
+    @Generated
+    private Boolean allowPartialResult;
+
+    /*
+     * The included properties of the output context. If not specified, the default value is `citations` and `intent`.
+     */
+    @Generated
+    private List<OnYourDataContextProperty> includeContexts;
+
+    /**
+     * Get the maxSearchQueries property: The max number of rewritten queries should be send to search provider for one
+     * user message. If not specified,
+     * the system will decide the number of queries to send.
+     *
+     * @return the maxSearchQueries value.
+     */
+    @Generated
+    public Integer getMaxSearchQueries() {
+        return this.maxSearchQueries;
+    }
+
+    /**
+     * Set the maxSearchQueries property: The max number of rewritten queries should be send to search provider for one
+     * user message. If not specified,
+     * the system will decide the number of queries to send.
+     *
+     * @param maxSearchQueries the maxSearchQueries value to set.
+     * @return the ElasticsearchChatExtensionParameters object itself.
+     */
+    @Generated
+    public ElasticsearchChatExtensionParameters setMaxSearchQueries(Integer maxSearchQueries) {
+        this.maxSearchQueries = maxSearchQueries;
+        return this;
+    }
+
+    /**
+     * Get the allowPartialResult property: If specified as true, the system will allow partial search results to be
+     * used and the request fails if all the queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     *
+     * @return the allowPartialResult value.
+     */
+    @Generated
+    public Boolean isAllowPartialResult() {
+        return this.allowPartialResult;
+    }
+
+    /**
+     * Set the allowPartialResult property: If specified as true, the system will allow partial search results to be
+     * used and the request fails if all the queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     *
+     * @param allowPartialResult the allowPartialResult value to set.
+     * @return the ElasticsearchChatExtensionParameters object itself.
+     */
+    @Generated
+    public ElasticsearchChatExtensionParameters setAllowPartialResult(Boolean allowPartialResult) {
+        this.allowPartialResult = allowPartialResult;
+        return this;
+    }
+
+    /**
+     * Get the includeContexts property: The included properties of the output context. If not specified, the default
+     * value is `citations` and `intent`.
+     *
+     * @return the includeContexts value.
+     */
+    @Generated
+    public List<OnYourDataContextProperty> getIncludeContexts() {
+        return this.includeContexts;
+    }
+
+    /**
+     * Set the includeContexts property: The included properties of the output context. If not specified, the default
+     * value is `citations` and `intent`.
+     *
+     * @param includeContexts the includeContexts value to set.
+     * @return the ElasticsearchChatExtensionParameters object itself.
+     */
+    @Generated
+    public ElasticsearchChatExtensionParameters setIncludeContexts(List<OnYourDataContextProperty> includeContexts) {
+        this.includeContexts = includeContexts;
         return this;
     }
 }

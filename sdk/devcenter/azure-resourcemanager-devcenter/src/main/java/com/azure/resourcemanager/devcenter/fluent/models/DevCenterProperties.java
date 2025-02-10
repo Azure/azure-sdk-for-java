@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.devcenter.models.DevCenterProjectCatalogSettings;
 import com.azure.resourcemanager.devcenter.models.Encryption;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of the devcenter. */
+/**
+ * Properties of the devcenter.
+ */
 @Fluent
 public final class DevCenterProperties extends DevCenterUpdateProperties {
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The URI of the Dev Center.
      */
-    @JsonProperty(value = "devCenterUri", access = JsonProperty.Access.WRITE_ONLY)
     private String devCenterUri;
 
-    /** Creates an instance of DevCenterProperties class. */
+    /**
+     * Creates an instance of DevCenterProperties class.
+     */
     public DevCenterProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -39,21 +45,25 @@ public final class DevCenterProperties extends DevCenterUpdateProperties {
 
     /**
      * Get the devCenterUri property: The URI of the Dev Center.
-     *
+     * 
      * @return the devCenterUri value.
      */
     public String devCenterUri() {
         return this.devCenterUri;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterProperties withEncryption(Encryption encryption) {
         super.withEncryption(encryption);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
@@ -61,12 +71,74 @@ public final class DevCenterProperties extends DevCenterUpdateProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DevCenterProperties withProjectCatalogSettings(DevCenterProjectCatalogSettings projectCatalogSettings) {
+        super.withProjectCatalogSettings(projectCatalogSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (encryption() != null) {
+            encryption().validate();
+        }
+        if (projectCatalogSettings() != null) {
+            projectCatalogSettings().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("encryption", encryption());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeJsonField("projectCatalogSettings", projectCatalogSettings());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevCenterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevCenterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevCenterProperties.
+     */
+    public static DevCenterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevCenterProperties deserializedDevCenterProperties = new DevCenterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encryption".equals(fieldName)) {
+                    deserializedDevCenterProperties.withEncryption(Encryption.fromJson(reader));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDevCenterProperties.withDisplayName(reader.getString());
+                } else if ("projectCatalogSettings".equals(fieldName)) {
+                    deserializedDevCenterProperties
+                        .withProjectCatalogSettings(DevCenterProjectCatalogSettings.fromJson(reader));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDevCenterProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("devCenterUri".equals(fieldName)) {
+                    deserializedDevCenterProperties.devCenterUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevCenterProperties;
+        });
     }
 }

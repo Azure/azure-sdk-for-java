@@ -26,8 +26,7 @@ public class DataLakeServiceSasModelsTests {
     @MethodSource("sasPermissionsToStringSupplier")
     public void pathSasPermissionsToString(boolean read, boolean write, boolean delete, boolean create, boolean add,
         boolean list, boolean move, boolean execute, boolean owner, boolean permission, String expectedString) {
-        PathSasPermission perms = new PathSasPermission()
-            .setReadPermission(read)
+        PathSasPermission perms = new PathSasPermission().setReadPermission(read)
             .setWritePermission(write)
             .setDeletePermission(delete)
             .setCreatePermission(create)
@@ -54,8 +53,7 @@ public class DataLakeServiceSasModelsTests {
             Arguments.of(false, false, false, false, false, false, false, true, false, false, "e"),
             Arguments.of(false, false, false, false, false, false, false, false, true, false, "o"),
             Arguments.of(false, false, false, false, false, false, false, false, false, true, "p"),
-            Arguments.of(true, true, true, true, true, true, true, true, true, true, "racwdlmeop")
-        );
+            Arguments.of(true, true, true, true, true, true, true, true, true, true, "racwdlmeop"));
     }
 
     @ParameterizedTest
@@ -90,8 +88,7 @@ public class DataLakeServiceSasModelsTests {
             Arguments.of("o", false, false, false, false, false, false, false, false, true, false),
             Arguments.of("p", false, false, false, false, false, false, false, false, false, true),
             Arguments.of("racwdlmeop", true, true, true, true, true, true, true, true, true, true),
-            Arguments.of("malwdcrepo", true, true, true, true, true, true, true, true, true, true)
-        );
+            Arguments.of("malwdcrepo", true, true, true, true, true, true, true, true, true, true));
     }
 
     @Test
@@ -110,8 +107,7 @@ public class DataLakeServiceSasModelsTests {
     public void fileSystemSasPermissionsToString(boolean read, boolean write, boolean delete, boolean create,
         boolean add, boolean list, boolean move, boolean execute, boolean owner, boolean permission,
         String expectedString) {
-        FileSystemSasPermission perms = new FileSystemSasPermission()
-            .setReadPermission(read)
+        FileSystemSasPermission perms = new FileSystemSasPermission().setReadPermission(read)
             .setWritePermission(write)
             .setDeletePermission(delete)
             .setCreatePermission(create)
@@ -160,24 +156,30 @@ public class DataLakeServiceSasModelsTests {
             OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), new PathSasPermission().setReadPermission(true));
         DataLakeSasImplUtil implUtil = new DataLakeSasImplUtil(v, "containerName", "blobName", false);
 
-        NullPointerException ex = assertThrows(NullPointerException.class, () -> implUtil.generateSas(null, Context.NONE));
+        NullPointerException ex
+            = assertThrows(NullPointerException.class, () -> implUtil.generateSas(null, Context.NONE));
         assertTrue(ex.getMessage().contains("storageSharedKeyCredential"));
 
-        ex = assertThrows(NullPointerException.class, () ->  implUtil.generateUserDelegationSas(null, "accountName", Context.NONE));
+        ex = assertThrows(NullPointerException.class,
+            () -> implUtil.generateUserDelegationSas(null, "accountName", Context.NONE));
         assertTrue(ex.getMessage().contains("delegationKey"));
 
-        ex = assertThrows(NullPointerException.class, () ->  implUtil.generateUserDelegationSas(new UserDelegationKey(), null, Context.NONE));
+        ex = assertThrows(NullPointerException.class,
+            () -> implUtil.generateUserDelegationSas(new UserDelegationKey(), null, Context.NONE));
         assertTrue(ex.getMessage().contains("accountName"));
     }
 
     @ParameterizedTest
     @MethodSource("ensureStateResourceAndPermissionSupplier")
-    public void ensureStateResourceAndPermission(String container, String blob, boolean isDirectory,
-        Object permission, String resource, String permissionString, Integer directoryDepth) {
+    public void ensureStateResourceAndPermission(String container, String blob, boolean isDirectory, Object permission,
+        String resource, String permissionString, Integer directoryDepth) {
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         DataLakeSasImplUtil implUtil = (permission instanceof PathSasPermission)
-            ? new DataLakeSasImplUtil(new DataLakeServiceSasSignatureValues(expiryTime, (PathSasPermission) permission), container, blob, isDirectory)
-            : new DataLakeSasImplUtil(new DataLakeServiceSasSignatureValues(expiryTime, (FileSystemSasPermission) permission), container, blob, isDirectory);
+            ? new DataLakeSasImplUtil(new DataLakeServiceSasSignatureValues(expiryTime, (PathSasPermission) permission),
+                container, blob, isDirectory)
+            : new DataLakeSasImplUtil(
+                new DataLakeServiceSasSignatureValues(expiryTime, (FileSystemSasPermission) permission), container,
+                blob, isDirectory);
 
         implUtil.ensureState();
 
@@ -197,8 +199,7 @@ public class DataLakeServiceSasModelsTests {
             Arguments.of("container", "blob/", true, new PathSasPermission().setReadPermission(true), "d", "r", 1),
             Arguments.of("container", "blob/dir1", true, new PathSasPermission().setReadPermission(true), "d", "r", 2),
             Arguments.of("container", "blob/dir1/dir2", true, new PathSasPermission().setReadPermission(true), "d", "r",
-                3)
-        );
+                3));
 
     }
 
@@ -207,9 +208,9 @@ public class DataLakeServiceSasModelsTests {
         OffsetDateTime e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         FileSystemSasPermission p = new FileSystemSasPermission().setReadPermission(true).setListPermission(true);
 
-        DataLakeServiceSasSignatureValues v = new DataLakeServiceSasSignatureValues(e, p)
-            .setPreauthorizedAgentObjectId("authorizedId")
-            .setAgentObjectId("unauthorizedId");
+        DataLakeServiceSasSignatureValues v
+            = new DataLakeServiceSasSignatureValues(e, p).setPreauthorizedAgentObjectId("authorizedId")
+                .setAgentObjectId("unauthorizedId");
         DataLakeSasImplUtil implUtil = new DataLakeSasImplUtil(v, "containerName", "blobName", true);
 
         assertThrows(IllegalStateException.class, implUtil::ensureState);

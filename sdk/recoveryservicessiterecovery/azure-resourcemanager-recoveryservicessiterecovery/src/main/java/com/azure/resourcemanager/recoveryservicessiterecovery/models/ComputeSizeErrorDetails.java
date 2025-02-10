@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents the error used to indicate why the target compute size is not applicable. */
+/**
+ * Represents the error used to indicate why the target compute size is not applicable.
+ */
 @Fluent
-public final class ComputeSizeErrorDetails {
+public final class ComputeSizeErrorDetails implements JsonSerializable<ComputeSizeErrorDetails> {
     /*
      * The error message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The severity of the error.
      */
-    @JsonProperty(value = "severity")
     private String severity;
 
-    /** Creates an instance of ComputeSizeErrorDetails class. */
+    /**
+     * Creates an instance of ComputeSizeErrorDetails class.
+     */
     public ComputeSizeErrorDetails() {
     }
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -37,7 +43,7 @@ public final class ComputeSizeErrorDetails {
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ComputeSizeErrorDetails object itself.
      */
@@ -48,7 +54,7 @@ public final class ComputeSizeErrorDetails {
 
     /**
      * Get the severity property: The severity of the error.
-     *
+     * 
      * @return the severity value.
      */
     public String severity() {
@@ -57,7 +63,7 @@ public final class ComputeSizeErrorDetails {
 
     /**
      * Set the severity property: The severity of the error.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the ComputeSizeErrorDetails object itself.
      */
@@ -68,9 +74,48 @@ public final class ComputeSizeErrorDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("severity", this.severity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputeSizeErrorDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputeSizeErrorDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputeSizeErrorDetails.
+     */
+    public static ComputeSizeErrorDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputeSizeErrorDetails deserializedComputeSizeErrorDetails = new ComputeSizeErrorDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedComputeSizeErrorDetails.message = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedComputeSizeErrorDetails.severity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputeSizeErrorDetails;
+        });
     }
 }

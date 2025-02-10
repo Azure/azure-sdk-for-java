@@ -6,8 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountCreateUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,20 +22,32 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     /*
      * Indicates the type of database account. This can only be set at database account creation.
      */
-    @JsonProperty(value = "kind")
     private DatabaseAccountKind kind;
 
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * Properties to create and update Azure Cosmos DB database accounts.
      */
-    @JsonProperty(value = "properties", required = true)
     private DatabaseAccountCreateUpdateProperties innerProperties = new DatabaseAccountCreateUpdateProperties();
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of DatabaseAccountCreateUpdateParameters class.
@@ -41,8 +56,7 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the kind property: Indicates the type of database account. This can only be set at database account
-     * creation.
+     * Get the kind property: Indicates the type of database account. This can only be set at database account creation.
      * 
      * @return the kind value.
      */
@@ -51,8 +65,7 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Set the kind property: Indicates the type of database account. This can only be set at database account
-     * creation.
+     * Set the kind property: Indicates the type of database account. This can only be set at database account creation.
      * 
      * @param kind the kind value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
@@ -89,6 +102,36 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
      */
     private DatabaseAccountCreateUpdateProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -164,20 +207,6 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
      */
     public String databaseAccountOfferType() {
         return this.innerProperties() == null ? null : this.innerProperties().databaseAccountOfferType();
-    }
-
-    /**
-     * Set the databaseAccountOfferType property: The offer type for the database.
-     * 
-     * @param databaseAccountOfferType the databaseAccountOfferType value to set.
-     * @return the DatabaseAccountCreateUpdateParameters object itself.
-     */
-    public DatabaseAccountCreateUpdateParameters withDatabaseAccountOfferType(String databaseAccountOfferType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
-        }
-        this.innerProperties().withDatabaseAccountOfferType(databaseAccountOfferType);
-        return this;
     }
 
     /**
@@ -816,8 +845,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @return the enableBurstCapacity value.
      */
@@ -826,8 +855,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
@@ -866,23 +895,109 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @return the enablePerRegionPerPartitionAutoscale value.
+     */
+    public Boolean enablePerRegionPerPartitionAutoscale() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePerRegionPerPartitionAutoscale();
+    }
+
+    /**
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
+     * @return the DatabaseAccountCreateUpdateParameters object itself.
+     */
+    public DatabaseAccountCreateUpdateParameters
+        withEnablePerRegionPerPartitionAutoscale(Boolean enablePerRegionPerPartitionAutoscale) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountCreateUpdateProperties();
+        }
+        this.innerProperties().withEnablePerRegionPerPartitionAutoscale(enablePerRegionPerPartitionAutoscale);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (identity() != null) {
             identity().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model DatabaseAccountCreateUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model DatabaseAccountCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatabaseAccountCreateUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseAccountCreateUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseAccountCreateUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseAccountCreateUpdateParameters.
+     */
+    public static DatabaseAccountCreateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseAccountCreateUpdateParameters deserializedDatabaseAccountCreateUpdateParameters
+                = new DatabaseAccountCreateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDatabaseAccountCreateUpdateParameters.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDatabaseAccountCreateUpdateParameters.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDatabaseAccountCreateUpdateParameters.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDatabaseAccountCreateUpdateParameters.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDatabaseAccountCreateUpdateParameters.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDatabaseAccountCreateUpdateParameters.innerProperties
+                        = DatabaseAccountCreateUpdateProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDatabaseAccountCreateUpdateParameters.kind
+                        = DatabaseAccountKind.fromString(reader.getString());
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDatabaseAccountCreateUpdateParameters.identity
+                        = ManagedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseAccountCreateUpdateParameters;
+        });
+    }
 }

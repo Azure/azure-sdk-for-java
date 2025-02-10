@@ -6,23 +6,25 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure Data Factory expression definition.
  */
 @Fluent
-public final class Expression {
+public final class Expression implements JsonSerializable<Expression> {
     /*
      * Expression type.
      */
-    @JsonProperty(value = "type", required = true)
-    private String type = "Expression";
+    private final String type = "Expression";
 
     /*
      * Expression value.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
@@ -38,17 +40,6 @@ public final class Expression {
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Expression type.
-     * 
-     * @param type the type value to set.
-     * @return the Expression object itself.
-     */
-    public Expression withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**
@@ -78,10 +69,48 @@ public final class Expression {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model Expression"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model Expression"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Expression.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Expression from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Expression if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Expression.
+     */
+    public static Expression fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Expression deserializedExpression = new Expression();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedExpression.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpression;
+        });
+    }
 }

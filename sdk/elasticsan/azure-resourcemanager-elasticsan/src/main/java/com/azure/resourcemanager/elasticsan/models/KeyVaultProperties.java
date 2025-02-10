@@ -5,56 +5,59 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of key vault. */
+/**
+ * Properties of key vault.
+ */
 @Fluent
-public final class KeyVaultProperties {
+public final class KeyVaultProperties implements JsonSerializable<KeyVaultProperties> {
     /*
      * The name of KeyVault key.
      */
-    @JsonProperty(value = "keyName")
     private String keyName;
 
     /*
      * The version of KeyVault key.
      */
-    @JsonProperty(value = "keyVersion")
     private String keyVersion;
 
     /*
      * The Uri of KeyVault.
      */
-    @JsonProperty(value = "keyVaultUri")
     private String keyVaultUri;
 
     /*
      * The object identifier of the current versioned Key Vault Key in use.
      */
-    @JsonProperty(value = "currentVersionedKeyIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String currentVersionedKeyIdentifier;
 
     /*
      * Timestamp of last rotation of the Key Vault Key.
      */
-    @JsonProperty(value = "lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastKeyRotationTimestamp;
 
     /*
      * This is a read only property that represents the expiration time of the current version of the customer managed
      * key used for encryption.
      */
-    @JsonProperty(value = "currentVersionedKeyExpirationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime currentVersionedKeyExpirationTimestamp;
 
-    /** Creates an instance of KeyVaultProperties class. */
+    /**
+     * Creates an instance of KeyVaultProperties class.
+     */
     public KeyVaultProperties() {
     }
 
     /**
      * Get the keyName property: The name of KeyVault key.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -63,7 +66,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyName property: The name of KeyVault key.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -74,7 +77,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVersion property: The version of KeyVault key.
-     *
+     * 
      * @return the keyVersion value.
      */
     public String keyVersion() {
@@ -83,7 +86,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVersion property: The version of KeyVault key.
-     *
+     * 
      * @param keyVersion the keyVersion value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -94,7 +97,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVaultUri property: The Uri of KeyVault.
-     *
+     * 
      * @return the keyVaultUri value.
      */
     public String keyVaultUri() {
@@ -103,7 +106,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVaultUri property: The Uri of KeyVault.
-     *
+     * 
      * @param keyVaultUri the keyVaultUri value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -115,7 +118,7 @@ public final class KeyVaultProperties {
     /**
      * Get the currentVersionedKeyIdentifier property: The object identifier of the current versioned Key Vault Key in
      * use.
-     *
+     * 
      * @return the currentVersionedKeyIdentifier value.
      */
     public String currentVersionedKeyIdentifier() {
@@ -124,7 +127,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the lastKeyRotationTimestamp property: Timestamp of last rotation of the Key Vault Key.
-     *
+     * 
      * @return the lastKeyRotationTimestamp value.
      */
     public OffsetDateTime lastKeyRotationTimestamp() {
@@ -134,7 +137,7 @@ public final class KeyVaultProperties {
     /**
      * Get the currentVersionedKeyExpirationTimestamp property: This is a read only property that represents the
      * expiration time of the current version of the customer managed key used for encryption.
-     *
+     * 
      * @return the currentVersionedKeyExpirationTimestamp value.
      */
     public OffsetDateTime currentVersionedKeyExpirationTimestamp() {
@@ -143,9 +146,59 @@ public final class KeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyName", this.keyName);
+        jsonWriter.writeStringField("keyVersion", this.keyVersion);
+        jsonWriter.writeStringField("keyVaultUri", this.keyVaultUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultProperties.
+     */
+    public static KeyVaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultProperties deserializedKeyVaultProperties = new KeyVaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyName".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyName = reader.getString();
+                } else if ("keyVersion".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyVersion = reader.getString();
+                } else if ("keyVaultUri".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyVaultUri = reader.getString();
+                } else if ("currentVersionedKeyIdentifier".equals(fieldName)) {
+                    deserializedKeyVaultProperties.currentVersionedKeyIdentifier = reader.getString();
+                } else if ("lastKeyRotationTimestamp".equals(fieldName)) {
+                    deserializedKeyVaultProperties.lastKeyRotationTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentVersionedKeyExpirationTimestamp".equals(fieldName)) {
+                    deserializedKeyVaultProperties.currentVersionedKeyExpirationTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultProperties;
+        });
     }
 }

@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.statsbeat;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.StatsbeatTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.SystemInformation;
 import org.junit.jupiter.api.Test;
 
@@ -62,7 +61,6 @@ public class CustomDimensionsTest {
         customDimensions.populateProperties(telemetryBuilder, null);
 
         MetricsData data = (MetricsData) telemetryBuilder.build().getData().getBaseData();
-        assertThat(data.getProperties().get("runtimeVersion"))
-            .isEqualTo(System.getProperty("java.version"));
+        assertThat(data.getProperties().get("runtimeVersion")).isEqualTo(System.getProperty("java.version"));
     }
 }

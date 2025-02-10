@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the response we got from elastic while creating external user. */
+/**
+ * The properties of the response we got from elastic while creating external user.
+ */
 @Immutable
-public final class ExternalUserCreationResponseInner {
+public final class ExternalUserCreationResponseInner implements JsonSerializable<ExternalUserCreationResponseInner> {
     /*
      * Shows if user is created or updated
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean created;
 
-    /** Creates an instance of ExternalUserCreationResponseInner class. */
+    /**
+     * Creates an instance of ExternalUserCreationResponseInner class.
+     */
     public ExternalUserCreationResponseInner() {
     }
 
     /**
      * Get the created property: Shows if user is created or updated.
-     *
+     * 
      * @return the created value.
      */
     public Boolean created() {
@@ -31,9 +38,45 @@ public final class ExternalUserCreationResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExternalUserCreationResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExternalUserCreationResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExternalUserCreationResponseInner.
+     */
+    public static ExternalUserCreationResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExternalUserCreationResponseInner deserializedExternalUserCreationResponseInner
+                = new ExternalUserCreationResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("created".equals(fieldName)) {
+                    deserializedExternalUserCreationResponseInner.created = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExternalUserCreationResponseInner;
+        });
     }
 }

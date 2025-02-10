@@ -6,36 +6,41 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** InMageRcm disk input. */
+/**
+ * InMageRcm disk input.
+ */
 @Fluent
-public final class InMageRcmDisksDefaultInput {
+public final class InMageRcmDisksDefaultInput implements JsonSerializable<InMageRcmDisksDefaultInput> {
     /*
      * The log storage account ARM Id.
      */
-    @JsonProperty(value = "logStorageAccountId", required = true)
     private String logStorageAccountId;
 
     /*
      * The disk type.
      */
-    @JsonProperty(value = "diskType", required = true)
     private DiskAccountType diskType;
 
     /*
      * The DiskEncryptionSet ARM Id.
      */
-    @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
-    /** Creates an instance of InMageRcmDisksDefaultInput class. */
+    /**
+     * Creates an instance of InMageRcmDisksDefaultInput class.
+     */
     public InMageRcmDisksDefaultInput() {
     }
 
     /**
      * Get the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -44,7 +49,7 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Set the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @param logStorageAccountId the logStorageAccountId value to set.
      * @return the InMageRcmDisksDefaultInput object itself.
      */
@@ -55,7 +60,7 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Get the diskType property: The disk type.
-     *
+     * 
      * @return the diskType value.
      */
     public DiskAccountType diskType() {
@@ -64,7 +69,7 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Set the diskType property: The disk type.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the InMageRcmDisksDefaultInput object itself.
      */
@@ -75,7 +80,7 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Get the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -84,7 +89,7 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Set the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the InMageRcmDisksDefaultInput object itself.
      */
@@ -95,23 +100,64 @@ public final class InMageRcmDisksDefaultInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (logStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property logStorageAccountId in model InMageRcmDisksDefaultInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property logStorageAccountId in model InMageRcmDisksDefaultInput"));
         }
         if (diskType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskType in model InMageRcmDisksDefaultInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property diskType in model InMageRcmDisksDefaultInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InMageRcmDisksDefaultInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("logStorageAccountId", this.logStorageAccountId);
+        jsonWriter.writeStringField("diskType", this.diskType == null ? null : this.diskType.toString());
+        jsonWriter.writeStringField("diskEncryptionSetId", this.diskEncryptionSetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmDisksDefaultInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmDisksDefaultInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InMageRcmDisksDefaultInput.
+     */
+    public static InMageRcmDisksDefaultInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmDisksDefaultInput deserializedInMageRcmDisksDefaultInput = new InMageRcmDisksDefaultInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logStorageAccountId".equals(fieldName)) {
+                    deserializedInMageRcmDisksDefaultInput.logStorageAccountId = reader.getString();
+                } else if ("diskType".equals(fieldName)) {
+                    deserializedInMageRcmDisksDefaultInput.diskType = DiskAccountType.fromString(reader.getString());
+                } else if ("diskEncryptionSetId".equals(fieldName)) {
+                    deserializedInMageRcmDisksDefaultInput.diskEncryptionSetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmDisksDefaultInput;
+        });
+    }
 }

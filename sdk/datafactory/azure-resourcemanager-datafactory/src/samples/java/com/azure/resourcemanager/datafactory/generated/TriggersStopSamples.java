@@ -18,7 +18,7 @@ public final class TriggersStopSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersStop(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().stop("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .stop("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", com.azure.core.util.Context.NONE);
     }
 }

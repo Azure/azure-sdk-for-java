@@ -6,75 +6,41 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ProjectEnvironmentTypesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"environmentCount\":979398617,\"deploymentTargetId\":\"jibuzphdug\",\"displayName\":\"iknp\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"x\":{\"roleName\":\"qhibtozipqwjedm\",\"description\":\"r\"},\"gcl\":{\"roleName\":\"wpktvqylkmqpzoyh\",\"description\":\"bcg\"},\"hpzpo\":{\"roleName\":\"oebqinjipn\",\"description\":\"fujqlafcba\"},\"uartvti\":{\"roleName\":\"iyjwpfilkmkkho\",\"description\":\"dndviauogp\"}}},\"userRoleAssignments\":{\"xffi\":{\"roles\":{\"chnmna\":{},\"mnxhkxjqirwrweo\":{}}},\"ttaboidvmfqh\":{\"roles\":{\"wrsnewmozqvbu\":{},\"qmamhsycxhxzga\":{}}}}},\"tags\":{\"g\":\"bowsepd\",\"c\":\"mtdherngb\",\"obkauxofsh\":\"uahokq\"},\"identity\":{\"principalId\":\"4c58b0cf-10ee-4e52-8e14-95b155b9bb5d\",\"tenantId\":\"11cfb244-b80e-4c69-a491-cea4bbdefabb\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"iywzejy\":{\"principalId\":\"817851ec-78de-4826-b4b2-ec7dae60ada1\",\"clientId\":\"83713492-1d29-4dbc-9170-f5013ee2ef9c\"},\"lwkojpllndnpdw\":{\"principalId\":\"b8fcac5f-62f2-4819-a9ed-ab4c251b29bd\",\"clientId\":\"0f75c803-2535-4bec-9757-b3b159690ce3\"},\"afgfugsnn\":{\"principalId\":\"32090794-adca-4920-a9ac-b11223be4759\",\"clientId\":\"f8fe44b7-6977-4a49-ac1c-434307620cf8\"},\"et\":{\"principalId\":\"61db8b70-8713-4401-8563-d386722e616d\",\"clientId\":\"70324f99-665d-49e1-9a05-c64a542f0fe2\"}}},\"location\":\"ypococtfjgtixr\",\"id\":\"zuyt\",\"name\":\"rmlmuowo\",\"type\":\"bauiropi\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updated\",\"displayName\":\"uxtyasiibmi\",\"environmentCount\":1192000578,\"deploymentTargetId\":\"ustgnljhnmgixhc\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"ndm\":{\"roleName\":\"udorh\",\"description\":\"yyprotwyp\"},\"mdtzfjltfvnzc\":{\"roleName\":\"hu\",\"description\":\"mjkavlgorbmft\"}}},\"userRoleAssignments\":{\"qgqqihedsvqwthmk\":{\"roles\":{\"p\":{},\"opv\":{},\"bdb\":{}}}}},\"tags\":{\"qcwdhoh\":\"cysihs\",\"sufco\":\"dtmcd\"},\"identity\":{\"principalId\":\"960a468b-6f30-46a8-936a-62d1a0d2252c\",\"tenantId\":\"935d0f39-d663-4b11-94f4-1563033a0654\",\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{\"uapcvhdbevwqqxe\":{\"principalId\":\"dcb8d430-917f-49fa-a2a1-2a1f1a80b193\",\"clientId\":\"6be43b35-b4f6-4604-abed-432288c1bb9f\"},\"onqzinkfkbgbzbow\":{\"principalId\":\"47157874-e8a3-49fa-b0d7-50c2ab666a04\",\"clientId\":\"f90346ee-ff85-4779-9bd8-ecd7780cda93\"}}},\"location\":\"qocl\",\"id\":\"ygvkzqkjj\",\"name\":\"okbzef\",\"type\":\"zrxcczurt\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ProjectEnvironmentType> response = manager.projectEnvironmentTypes()
+            .list("vtxnjmxmcuqud", "cvclxynpdk", 1887329670, com.azure.core.util.Context.NONE);
 
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ProjectEnvironmentType> response =
-            manager
-                .projectEnvironmentTypes()
-                .list("qhykprlpyzn", "ciqdsme", 1994491974, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("cysihs", response.iterator().next().tags().get("qcwdhoh"));
-        Assertions
-            .assertEquals(
-                ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("qocl", response.iterator().next().location());
-        Assertions.assertEquals("uxtyasiibmi", response.iterator().next().displayName());
-        Assertions.assertEquals("ustgnljhnmgixhc", response.iterator().next().deploymentTargetId());
+        Assertions.assertEquals("bowsepd", response.iterator().next().tags().get("g"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("ypococtfjgtixr", response.iterator().next().location());
+        Assertions.assertEquals("jibuzphdug", response.iterator().next().deploymentTargetId());
+        Assertions.assertEquals("iknp", response.iterator().next().displayName());
         Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, response.iterator().next().status());
     }
 }

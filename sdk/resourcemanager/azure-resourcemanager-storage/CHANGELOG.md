@@ -1,6 +1,6 @@
 # Release History
 
-## 2.35.0-beta.1 (Unreleased)
+## 2.48.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,111 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.47.0 (2025-01-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.46.0 (2024-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.45.0 (2024-11-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.44.0 (2024-10-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.43.0 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.42.0 (2024-08-23)
+
+### Other Changes
+
+- Replaced `Jackson` with `azure-json` for serialization/deserialization.
+
+## 2.41.0 (2024-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.40.0 (2024-06-24)
+
+### Breaking Changes
+
+- Behavior changed on `StorageAccount`, as default, disallows cross-tenant replication. Supported `allowCrossTenantReplication` in `Create` mode.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-05-01`.
+
+## 2.39.0 (2024-05-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.38.0 (2024-04-16)
+
+### Features Added
+
+- Supported disabling public network access in `StorageAccount` via `disablePublicNetworkAccess()`, for private link feature.
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.36.0 (2024-02-29)
+
+### Features Added
+
+- Supported encryption with Customer-managed keys using user-assigned service identity.
+- Supported `withExistingUserAssignedManagedServiceIdentity(String)` for `StorageAccount`. 
+
+## 2.35.0 (2024-01-26)
+
+### Features Added
+
+- Supported user-assigned service identity for `StorageAccount` in create and update. 
+
+### Other Changes
+
+- Added dependency of `azure-resourcemanager-msi` and `azure-resourcemanager-authorization`.
 
 ## 2.34.0 (2023-12-22)
 

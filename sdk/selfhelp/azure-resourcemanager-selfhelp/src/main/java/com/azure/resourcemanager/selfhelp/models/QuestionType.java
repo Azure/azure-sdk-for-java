@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -33,6 +32,16 @@ public final class QuestionType extends ExpandableStringEnum<QuestionType> {
     public static final QuestionType MULTI_LINE_INFO_BOX = fromString("MultiLineInfoBox");
 
     /**
+     * Static value DateTimePicker for QuestionType.
+     */
+    public static final QuestionType DATE_TIME_PICKER = fromString("DateTimePicker");
+
+    /**
+     * Static value MultiSelect for QuestionType.
+     */
+    public static final QuestionType MULTI_SELECT = fromString("MultiSelect");
+
+    /**
      * Creates a new instance of QuestionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -47,7 +56,6 @@ public final class QuestionType extends ExpandableStringEnum<QuestionType> {
      * @param name a name to look for.
      * @return the corresponding QuestionType.
      */
-    @JsonCreator
     public static QuestionType fromString(String name) {
         return fromString(name, QuestionType.class);
     }

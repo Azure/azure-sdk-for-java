@@ -11,40 +11,56 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The CustomEntitiesResultDocumentsItem model. */
+/**
+ * The CustomEntitiesResultDocumentsItem model.
+ */
 @Fluent
 public final class CustomEntitiesResultDocumentsItem extends EntitiesDocumentResult {
-    /** Creates an instance of CustomEntitiesResultDocumentsItem class. */
-    public CustomEntitiesResultDocumentsItem() {}
+    /**
+     * Creates an instance of CustomEntitiesResultDocumentsItem class.
+     */
+    public CustomEntitiesResultDocumentsItem() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEntitiesResultDocumentsItem setEntities(List<Entity> entities) {
         super.setEntities(entities);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEntitiesResultDocumentsItem setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEntitiesResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEntitiesResultDocumentsItem setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -57,40 +73,37 @@ public final class CustomEntitiesResultDocumentsItem extends EntitiesDocumentRes
 
     /**
      * Reads an instance of CustomEntitiesResultDocumentsItem from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomEntitiesResultDocumentsItem if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomEntitiesResultDocumentsItem.
      */
     public static CustomEntitiesResultDocumentsItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CustomEntitiesResultDocumentsItem deserializedCustomEntitiesResultDocumentsItem =
-                            new CustomEntitiesResultDocumentsItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CustomEntitiesResultDocumentsItem deserializedCustomEntitiesResultDocumentsItem
+                = new CustomEntitiesResultDocumentsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedCustomEntitiesResultDocumentsItem.setId(reader.getString());
-                        } else if ("warnings".equals(fieldName)) {
-                            List<DocumentWarning> warnings =
-                                    reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
-                            deserializedCustomEntitiesResultDocumentsItem.setWarnings(warnings);
-                        } else if ("entities".equals(fieldName)) {
-                            List<Entity> entities = reader.readArray(reader1 -> Entity.fromJson(reader1));
-                            deserializedCustomEntitiesResultDocumentsItem.setEntities(entities);
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedCustomEntitiesResultDocumentsItem.setStatistics(
-                                    DocumentStatistics.fromJson(reader));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedCustomEntitiesResultDocumentsItem.setId(reader.getString());
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedCustomEntitiesResultDocumentsItem.setWarnings(warnings);
+                } else if ("entities".equals(fieldName)) {
+                    List<Entity> entities = reader.readArray(reader1 -> Entity.fromJson(reader1));
+                    deserializedCustomEntitiesResultDocumentsItem.setEntities(entities);
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedCustomEntitiesResultDocumentsItem.setStatistics(DocumentStatistics.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCustomEntitiesResultDocumentsItem;
-                });
+            return deserializedCustomEntitiesResultDocumentsItem;
+        });
     }
 }

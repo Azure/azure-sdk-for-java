@@ -6,34 +6,50 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VMwareCbt specific migrate input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareCbt")
+/**
+ * VMwareCbt specific migrate input.
+ */
 @Fluent
 public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "VMwareCbt";
+
+    /*
      * A value indicating whether VM is to be shutdown.
      */
-    @JsonProperty(value = "performShutdown", required = true)
     private String performShutdown;
 
     /*
      * A value indicating the inplace OS Upgrade version.
      */
-    @JsonProperty(value = "osUpgradeVersion")
     private String osUpgradeVersion;
 
-    /** Creates an instance of VMwareCbtMigrateInput class. */
+    /**
+     * Creates an instance of VMwareCbtMigrateInput class.
+     */
     public VMwareCbtMigrateInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the performShutdown property: A value indicating whether VM is to be shutdown.
-     *
+     * 
      * @return the performShutdown value.
      */
     public String performShutdown() {
@@ -42,7 +58,7 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
 
     /**
      * Set the performShutdown property: A value indicating whether VM is to be shutdown.
-     *
+     * 
      * @param performShutdown the performShutdown value to set.
      * @return the VMwareCbtMigrateInput object itself.
      */
@@ -53,7 +69,7 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
 
     /**
      * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
-     *
+     * 
      * @return the osUpgradeVersion value.
      */
     public String osUpgradeVersion() {
@@ -62,7 +78,7 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
 
     /**
      * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
-     *
+     * 
      * @param osUpgradeVersion the osUpgradeVersion value to set.
      * @return the VMwareCbtMigrateInput object itself.
      */
@@ -73,19 +89,60 @@ public final class VMwareCbtMigrateInput extends MigrateProviderSpecificInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (performShutdown() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property performShutdown in model VMwareCbtMigrateInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property performShutdown in model VMwareCbtMigrateInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMwareCbtMigrateInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("performShutdown", this.performShutdown);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("osUpgradeVersion", this.osUpgradeVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtMigrateInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtMigrateInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMwareCbtMigrateInput.
+     */
+    public static VMwareCbtMigrateInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtMigrateInput deserializedVMwareCbtMigrateInput = new VMwareCbtMigrateInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("performShutdown".equals(fieldName)) {
+                    deserializedVMwareCbtMigrateInput.performShutdown = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareCbtMigrateInput.instanceType = reader.getString();
+                } else if ("osUpgradeVersion".equals(fieldName)) {
+                    deserializedVMwareCbtMigrateInput.osUpgradeVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtMigrateInput;
+        });
+    }
 }

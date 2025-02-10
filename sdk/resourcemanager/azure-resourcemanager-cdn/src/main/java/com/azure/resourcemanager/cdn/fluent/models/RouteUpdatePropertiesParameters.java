@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdRouteCacheConfiguration;
@@ -13,93 +17,85 @@ import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
 import com.azure.resourcemanager.cdn.models.HttpsRedirect;
 import com.azure.resourcemanager.cdn.models.LinkToDefaultDomain;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The JSON object that contains the properties of the domain to create. */
+/**
+ * The JSON object that contains the properties of the domain to create.
+ */
 @Fluent
-public class RouteUpdatePropertiesParameters {
+public class RouteUpdatePropertiesParameters implements JsonSerializable<RouteUpdatePropertiesParameters> {
     /*
      * The name of the endpoint which holds the route.
      */
-    @JsonProperty(value = "endpointName", access = JsonProperty.Access.WRITE_ONLY)
     private String endpointName;
 
     /*
      * Domains referenced by this endpoint.
      */
-    @JsonProperty(value = "customDomains")
     private List<ActivatedResourceReference> customDomains;
 
     /*
      * A reference to the origin group.
      */
-    @JsonProperty(value = "originGroup")
     private ResourceReference originGroup;
 
     /*
      * A directory path on the origin that AzureFrontDoor can use to retrieve content from, e.g.
      * contoso.cloudapp.net/originpath.
      */
-    @JsonProperty(value = "originPath")
     private String originPath;
 
     /*
      * rule sets referenced by this endpoint.
      */
-    @JsonProperty(value = "ruleSets")
     private List<ResourceReference> ruleSets;
 
     /*
      * List of supported protocols for this route.
      */
-    @JsonProperty(value = "supportedProtocols")
     private List<AfdEndpointProtocols> supportedProtocols;
 
     /*
      * The route patterns of the rule.
      */
-    @JsonProperty(value = "patternsToMatch")
     private List<String> patternsToMatch;
 
     /*
      * The caching configuration for this route. To disable caching, do not provide a cacheConfiguration object.
      */
-    @JsonProperty(value = "cacheConfiguration")
     private AfdRouteCacheConfiguration cacheConfiguration;
 
     /*
      * Protocol this rule will use when forwarding traffic to backends.
      */
-    @JsonProperty(value = "forwardingProtocol")
     private ForwardingProtocol forwardingProtocol;
 
     /*
      * whether this route will be linked to the default endpoint domain.
      */
-    @JsonProperty(value = "linkToDefaultDomain")
     private LinkToDefaultDomain linkToDefaultDomain;
 
     /*
-     * Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this is a easy way to set up this
-     * rule and it will be the first rule that gets executed.
+     * Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this is a easy way to set up this rule
+     * and it will be the first rule that gets executed.
      */
-    @JsonProperty(value = "httpsRedirect")
     private HttpsRedirect httpsRedirect;
 
     /*
      * Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
      */
-    @JsonProperty(value = "enabledState")
     private EnabledState enabledState;
 
-    /** Creates an instance of RouteUpdatePropertiesParameters class. */
+    /**
+     * Creates an instance of RouteUpdatePropertiesParameters class.
+     */
     public RouteUpdatePropertiesParameters() {
     }
 
     /**
      * Get the endpointName property: The name of the endpoint which holds the route.
-     *
+     * 
      * @return the endpointName value.
      */
     public String endpointName() {
@@ -107,8 +103,19 @@ public class RouteUpdatePropertiesParameters {
     }
 
     /**
+     * Set the endpointName property: The name of the endpoint which holds the route.
+     * 
+     * @param endpointName the endpointName value to set.
+     * @return the RouteUpdatePropertiesParameters object itself.
+     */
+    RouteUpdatePropertiesParameters withEndpointName(String endpointName) {
+        this.endpointName = endpointName;
+        return this;
+    }
+
+    /**
      * Get the customDomains property: Domains referenced by this endpoint.
-     *
+     * 
      * @return the customDomains value.
      */
     public List<ActivatedResourceReference> customDomains() {
@@ -117,7 +124,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Set the customDomains property: Domains referenced by this endpoint.
-     *
+     * 
      * @param customDomains the customDomains value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
@@ -128,7 +135,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Get the originGroup property: A reference to the origin group.
-     *
+     * 
      * @return the originGroup value.
      */
     public ResourceReference originGroup() {
@@ -137,7 +144,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Set the originGroup property: A reference to the origin group.
-     *
+     * 
      * @param originGroup the originGroup value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
@@ -149,7 +156,7 @@ public class RouteUpdatePropertiesParameters {
     /**
      * Get the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content from,
      * e.g. contoso.cloudapp.net/originpath.
-     *
+     * 
      * @return the originPath value.
      */
     public String originPath() {
@@ -159,7 +166,7 @@ public class RouteUpdatePropertiesParameters {
     /**
      * Set the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content from,
      * e.g. contoso.cloudapp.net/originpath.
-     *
+     * 
      * @param originPath the originPath value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
@@ -170,7 +177,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Get the ruleSets property: rule sets referenced by this endpoint.
-     *
+     * 
      * @return the ruleSets value.
      */
     public List<ResourceReference> ruleSets() {
@@ -179,7 +186,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Set the ruleSets property: rule sets referenced by this endpoint.
-     *
+     * 
      * @param ruleSets the ruleSets value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
@@ -190,7 +197,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Get the supportedProtocols property: List of supported protocols for this route.
-     *
+     * 
      * @return the supportedProtocols value.
      */
     public List<AfdEndpointProtocols> supportedProtocols() {
@@ -199,7 +206,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Set the supportedProtocols property: List of supported protocols for this route.
-     *
+     * 
      * @param supportedProtocols the supportedProtocols value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
@@ -210,7 +217,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Get the patternsToMatch property: The route patterns of the rule.
-     *
+     * 
      * @return the patternsToMatch value.
      */
     public List<String> patternsToMatch() {
@@ -219,7 +226,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Set the patternsToMatch property: The route patterns of the rule.
-     *
+     * 
      * @param patternsToMatch the patternsToMatch value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
@@ -231,7 +238,7 @@ public class RouteUpdatePropertiesParameters {
     /**
      * Get the cacheConfiguration property: The caching configuration for this route. To disable caching, do not provide
      * a cacheConfiguration object.
-     *
+     * 
      * @return the cacheConfiguration value.
      */
     public AfdRouteCacheConfiguration cacheConfiguration() {
@@ -241,7 +248,7 @@ public class RouteUpdatePropertiesParameters {
     /**
      * Set the cacheConfiguration property: The caching configuration for this route. To disable caching, do not provide
      * a cacheConfiguration object.
-     *
+     * 
      * @param cacheConfiguration the cacheConfiguration value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
@@ -252,7 +259,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Get the forwardingProtocol property: Protocol this rule will use when forwarding traffic to backends.
-     *
+     * 
      * @return the forwardingProtocol value.
      */
     public ForwardingProtocol forwardingProtocol() {
@@ -261,7 +268,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Set the forwardingProtocol property: Protocol this rule will use when forwarding traffic to backends.
-     *
+     * 
      * @param forwardingProtocol the forwardingProtocol value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
@@ -272,7 +279,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Get the linkToDefaultDomain property: whether this route will be linked to the default endpoint domain.
-     *
+     * 
      * @return the linkToDefaultDomain value.
      */
     public LinkToDefaultDomain linkToDefaultDomain() {
@@ -281,7 +288,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Set the linkToDefaultDomain property: whether this route will be linked to the default endpoint domain.
-     *
+     * 
      * @param linkToDefaultDomain the linkToDefaultDomain value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
@@ -293,7 +300,7 @@ public class RouteUpdatePropertiesParameters {
     /**
      * Get the httpsRedirect property: Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this
      * is a easy way to set up this rule and it will be the first rule that gets executed.
-     *
+     * 
      * @return the httpsRedirect value.
      */
     public HttpsRedirect httpsRedirect() {
@@ -303,7 +310,7 @@ public class RouteUpdatePropertiesParameters {
     /**
      * Set the httpsRedirect property: Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this
      * is a easy way to set up this rule and it will be the first rule that gets executed.
-     *
+     * 
      * @param httpsRedirect the httpsRedirect value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
@@ -314,7 +321,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Get the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the enabledState value.
      */
     public EnabledState enabledState() {
@@ -323,7 +330,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Set the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the RouteUpdatePropertiesParameters object itself.
      */
@@ -334,7 +341,7 @@ public class RouteUpdatePropertiesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -350,5 +357,89 @@ public class RouteUpdatePropertiesParameters {
         if (cacheConfiguration() != null) {
             cacheConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("customDomains", this.customDomains, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("originGroup", this.originGroup);
+        jsonWriter.writeStringField("originPath", this.originPath);
+        jsonWriter.writeArrayField("ruleSets", this.ruleSets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("supportedProtocols", this.supportedProtocols,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("patternsToMatch", this.patternsToMatch,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("cacheConfiguration", this.cacheConfiguration);
+        jsonWriter.writeStringField("forwardingProtocol",
+            this.forwardingProtocol == null ? null : this.forwardingProtocol.toString());
+        jsonWriter.writeStringField("linkToDefaultDomain",
+            this.linkToDefaultDomain == null ? null : this.linkToDefaultDomain.toString());
+        jsonWriter.writeStringField("httpsRedirect", this.httpsRedirect == null ? null : this.httpsRedirect.toString());
+        jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteUpdatePropertiesParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteUpdatePropertiesParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteUpdatePropertiesParameters.
+     */
+    public static RouteUpdatePropertiesParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteUpdatePropertiesParameters deserializedRouteUpdatePropertiesParameters
+                = new RouteUpdatePropertiesParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointName".equals(fieldName)) {
+                    deserializedRouteUpdatePropertiesParameters.endpointName = reader.getString();
+                } else if ("customDomains".equals(fieldName)) {
+                    List<ActivatedResourceReference> customDomains
+                        = reader.readArray(reader1 -> ActivatedResourceReference.fromJson(reader1));
+                    deserializedRouteUpdatePropertiesParameters.customDomains = customDomains;
+                } else if ("originGroup".equals(fieldName)) {
+                    deserializedRouteUpdatePropertiesParameters.originGroup = ResourceReference.fromJson(reader);
+                } else if ("originPath".equals(fieldName)) {
+                    deserializedRouteUpdatePropertiesParameters.originPath = reader.getString();
+                } else if ("ruleSets".equals(fieldName)) {
+                    List<ResourceReference> ruleSets = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
+                    deserializedRouteUpdatePropertiesParameters.ruleSets = ruleSets;
+                } else if ("supportedProtocols".equals(fieldName)) {
+                    List<AfdEndpointProtocols> supportedProtocols
+                        = reader.readArray(reader1 -> AfdEndpointProtocols.fromString(reader1.getString()));
+                    deserializedRouteUpdatePropertiesParameters.supportedProtocols = supportedProtocols;
+                } else if ("patternsToMatch".equals(fieldName)) {
+                    List<String> patternsToMatch = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRouteUpdatePropertiesParameters.patternsToMatch = patternsToMatch;
+                } else if ("cacheConfiguration".equals(fieldName)) {
+                    deserializedRouteUpdatePropertiesParameters.cacheConfiguration
+                        = AfdRouteCacheConfiguration.fromJson(reader);
+                } else if ("forwardingProtocol".equals(fieldName)) {
+                    deserializedRouteUpdatePropertiesParameters.forwardingProtocol
+                        = ForwardingProtocol.fromString(reader.getString());
+                } else if ("linkToDefaultDomain".equals(fieldName)) {
+                    deserializedRouteUpdatePropertiesParameters.linkToDefaultDomain
+                        = LinkToDefaultDomain.fromString(reader.getString());
+                } else if ("httpsRedirect".equals(fieldName)) {
+                    deserializedRouteUpdatePropertiesParameters.httpsRedirect
+                        = HttpsRedirect.fromString(reader.getString());
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedRouteUpdatePropertiesParameters.enabledState
+                        = EnabledState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteUpdatePropertiesParameters;
+        });
     }
 }

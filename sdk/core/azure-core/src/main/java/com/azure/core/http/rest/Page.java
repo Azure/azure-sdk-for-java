@@ -26,8 +26,6 @@ public interface Page<T> extends ContinuablePage<String, T> {
     @Deprecated
     default List<T> getItems() {
         IterableStream<T> iterableStream = this.getElements();
-        return iterableStream == null
-            ? new ArrayList<>()
-            : this.getElements().stream().collect(Collectors.toList());
+        return iterableStream == null ? new ArrayList<>() : this.getElements().stream().collect(Collectors.toList());
     }
 }

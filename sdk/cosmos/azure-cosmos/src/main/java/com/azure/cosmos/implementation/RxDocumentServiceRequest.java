@@ -4,20 +4,21 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.http.HttpTransportSerializer;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.PriorityLevel;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;
@@ -27,6 +28,9 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
@@ -60,7 +64,8 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     // has the non serialized value of the partition-key
     private PartitionKeyInternal partitionKeyInternal;
-
+    private PartitionKeyDefinition partitionKeyDefinition;
+    private String effectivePartitionKey;
     private FeedRangeInternal feedRange;
     private Range<String> effectiveRange;
     private int numberOfItemsInBatchRequest;
@@ -83,6 +88,10 @@ public class RxDocumentServiceRequest implements Cloneable {
     private volatile Duration responseTimeout;
 
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
+
+    private volatile boolean hasFeedRangeFilteringBeenApplied = false;
+
+    private final AtomicReference<HttpTransportSerializer> httpTransportSerializer = new AtomicReference<>(null);
 
     public boolean isReadOnlyRequest() {
         return this.operationType.isReadOnlyOperation();
@@ -115,6 +124,14 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public boolean getNonIdempotentWriteRetriesEnabled() {
         return this.nonIdempotentWriteRetriesEnabled;
+    }
+
+    public boolean hasFeedRangeFilteringBeenApplied() {
+        return this.hasFeedRangeFilteringBeenApplied;
+    }
+
+    public void setHasFeedRangeFilteringBeenApplied(boolean hasFeedRangeFilteringBeenApplied) {
+        this.hasFeedRangeFilteringBeenApplied = hasFeedRangeFilteringBeenApplied;
     }
 
     public boolean isReadOnly() {
@@ -232,7 +249,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                     this.resourceId = null;
                 }
             } else {
-                throw new IllegalArgumentException(RMResources.NotFound);
+                throw new IllegalArgumentException(RMResources.NotFound + ", - Path: " + path);
             }
         } else {
             this.isNameBased = false;
@@ -385,8 +402,14 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Map<String, String> headers,
                                                   Object options) {
 
+        // only ever used for non Document operations
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
-            ModelBridgeInternal.serializeJsonToByteBuffer(resource), headers, AuthorizationTokenType.PrimaryMasterKey);
+            resource.serializeJsonToByteBuffer(
+                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                null,
+                resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert)),
+            headers,
+            AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
         return request;
@@ -563,25 +586,6 @@ public class RxDocumentServiceRequest implements Cloneable {
      * @param resourceType the resource type.
      * @param relativePath the relative URI path.
      * @param headers      the request headers.
-     * @return the created document service request.
-     */
-    public static RxDocumentServiceRequest create(DiagnosticsClientContext clientContext,
-                                                  OperationType operation,
-                                                  Resource resource,
-                                                  ResourceType resourceType,
-                                                  String relativePath,
-                                                  Map<String, String> headers) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
-        return new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, resourceContent, headers, AuthorizationTokenType.PrimaryMasterKey);
-    }
-
-    /**
-     * Creates a DocumentServiceRequest without body.
-     *
-     * @param operation    the operation type.
-     * @param resourceType the resource type.
-     * @param relativePath the relative URI path.
-     * @param headers      the request headers.
      * @param authorizationTokenType      the request authorizationTokenType.
      * @return the created document service request.
      */
@@ -592,7 +596,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   String relativePath,
                                                   Map<String, String> headers,
                                                   AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER, // only used from test code
+            null,
+            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, resourceContent, headers, authorizationTokenType);
     }
 
@@ -647,7 +654,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   ResourceType resourceType,
                                                   Resource resource,
                                                   Map<String, String> headers) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceId, resourceType, resourceContent, headers, false, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -668,7 +678,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Resource resource,
                                                   Map<String, String> headers,
                                                   AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceId, resourceType, resourceContent, headers, false, authorizationTokenType);
     }
 
@@ -722,7 +735,10 @@ public class RxDocumentServiceRequest implements Cloneable {
             Resource resource,
             String resourceFullName,
             ResourceType resourceType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER, // only used from test code
+            null,
+            resourceType == ResourceType.Document && (operationType == OperationType.Create || operationType == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext,
                 operationType,
                 resourceFullName,
@@ -741,7 +757,10 @@ public class RxDocumentServiceRequest implements Cloneable {
             String resourceFullName,
             ResourceType resourceType,
             AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operationType == OperationType.Create || operationType == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext,
                 operationType,
                 resourceFullName,
@@ -922,6 +941,14 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.partitionKeyInternal;
     }
 
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.partitionKeyDefinition;
+    }
+
     public boolean isChangeFeedRequest() {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
     }
@@ -985,38 +1012,6 @@ public class RxDocumentServiceRequest implements Cloneable {
         }
     }
 
-    public static RxDocumentServiceRequest createFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
-        RxDocumentServiceRequest modifiedRequest;
-        if (!request.getIsNameBased()) {
-            modifiedRequest = RxDocumentServiceRequest.create(request.clientContext,
-                                                              request.getOperationType(),
-                                                              request.getResourceId(),
-                                                              request.getResourceType(),
-                                                              modifiedResource,
-                                                              request.headers);
-        } else {
-            modifiedRequest = RxDocumentServiceRequest.createFromName(request.clientContext,
-                                                                      request.getOperationType(),
-                                                                      modifiedResource,
-                                                                      request.getResourceAddress(),
-                                                                      request.getResourceType());
-        }
-        return modifiedRequest;
-    }
-
-    public void clearRoutingHints() {
-        this.partitionKeyRangeIdentity = null;
-        this.requestContext.resolvedPartitionKeyRange = null;
-    }
-
-    public synchronized Flux<ByteBuf> getContentAsByteBufFlux() {
-        if (contentAsByteArray == null) {
-            return Flux.empty();
-        }
-
-        return Flux.just(Unpooled.wrappedBuffer(contentAsByteArray));
-    }
-
     public synchronized Flux<byte[]> getContentAsByteArrayFlux() {
         if (contentAsByteArray == null) {
             return Flux.empty();
@@ -1057,6 +1052,8 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.feedRange = this.feedRange;
         rxDocumentServiceRequest.effectiveRange = this.effectiveRange;
         rxDocumentServiceRequest.isFeed = this.isFeed;
+        rxDocumentServiceRequest.resourceId = this.resourceId;
+        rxDocumentServiceRequest.hasFeedRangeFilteringBeenApplied = this.hasFeedRangeFilteringBeenApplied;
         return rxDocumentServiceRequest;
     }
 
@@ -1178,5 +1175,37 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void setResponseTimeout(Duration responseTimeout) {
         this.responseTimeout = responseTimeout;
+    }
+
+    public String getEffectivePartitionKey() {
+        return effectivePartitionKey;
+    }
+
+    public void setEffectivePartitionKey(String effectivePartitionKey) {
+        this.effectivePartitionKey = effectivePartitionKey;
+    }
+
+    public void setThinclientHeaders(String operationType, String resourceType) {
+        this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_OPERATION_TYPE, operationType);
+        this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_RESOURCE_TYPE, resourceType);
+    }
+
+    public RxDocumentServiceRequest setHttpTransportSerializer(HttpTransportSerializer transportSerializer) {
+        this.httpTransportSerializer.set(transportSerializer);
+
+        return this;
+    }
+
+    public HttpTransportSerializer getEffectiveHttpTransportSerializer(
+        HttpTransportSerializer defaultTransportSerializer) {
+
+        checkNotNull(defaultTransportSerializer, "Argument 'defaultTransportSerializer' must not be null.");
+
+        HttpTransportSerializer snapshot = this.httpTransportSerializer.get();
+        if (snapshot != null) {
+            return snapshot;
+        }
+
+        return defaultTransportSerializer;
     }
 }

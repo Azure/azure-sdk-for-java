@@ -14,34 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateRunStrategyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateRunStrategy model =
-            BinaryData
-                .fromString(
-                    "{\"stages\":[{\"name\":\"seiphe\",\"groups\":[{\"name\":\"okeyyienj\"},{\"name\":\"dlwtgrhpdj\"}],\"afterStageWaitInSeconds\":523400535}]}")
-                .toObject(UpdateRunStrategy.class);
-        Assertions.assertEquals("seiphe", model.stages().get(0).name());
-        Assertions.assertEquals("okeyyienj", model.stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(523400535, model.stages().get(0).afterStageWaitInSeconds());
+        UpdateRunStrategy model = BinaryData.fromString(
+            "{\"stages\":[{\"name\":\"suesnzw\",\"groups\":[{\"name\":\"bavo\"},{\"name\":\"xzdmohctb\"},{\"name\":\"vudwx\"}],\"afterStageWaitInSeconds\":1492638603}]}")
+            .toObject(UpdateRunStrategy.class);
+        Assertions.assertEquals("suesnzw", model.stages().get(0).name());
+        Assertions.assertEquals("bavo", model.stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1492638603, model.stages().get(0).afterStageWaitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateRunStrategy model =
-            new UpdateRunStrategy()
-                .withStages(
-                    Arrays
-                        .asList(
-                            new UpdateStage()
-                                .withName("seiphe")
-                                .withGroups(
-                                    Arrays
-                                        .asList(
-                                            new UpdateGroup().withName("okeyyienj"),
-                                            new UpdateGroup().withName("dlwtgrhpdj")))
-                                .withAfterStageWaitInSeconds(523400535)));
+        UpdateRunStrategy model = new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("suesnzw")
+            .withGroups(Arrays.asList(new UpdateGroup().withName("bavo"), new UpdateGroup().withName("xzdmohctb"),
+                new UpdateGroup().withName("vudwx")))
+            .withAfterStageWaitInSeconds(1492638603)));
         model = BinaryData.fromObject(model).toObject(UpdateRunStrategy.class);
-        Assertions.assertEquals("seiphe", model.stages().get(0).name());
-        Assertions.assertEquals("okeyyienj", model.stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(523400535, model.stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("suesnzw", model.stages().get(0).name());
+        Assertions.assertEquals("bavo", model.stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1492638603, model.stages().get(0).afterStageWaitInSeconds());
     }
 }

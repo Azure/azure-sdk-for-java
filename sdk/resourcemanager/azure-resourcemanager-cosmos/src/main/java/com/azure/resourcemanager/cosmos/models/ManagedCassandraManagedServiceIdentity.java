@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Identity for the resource.
  */
 @Fluent
-public final class ManagedCassandraManagedServiceIdentity {
+public final class ManagedCassandraManagedServiceIdentity
+    implements JsonSerializable<ManagedCassandraManagedServiceIdentity> {
     /*
      * The object id of the identity resource.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The tenant id of the resource.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * The type of the resource.
      */
-    @JsonProperty(value = "type")
     private ManagedCassandraResourceIdentityType type;
 
     /**
@@ -80,5 +82,47 @@ public final class ManagedCassandraManagedServiceIdentity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedCassandraManagedServiceIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedCassandraManagedServiceIdentity if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedCassandraManagedServiceIdentity.
+     */
+    public static ManagedCassandraManagedServiceIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedCassandraManagedServiceIdentity deserializedManagedCassandraManagedServiceIdentity
+                = new ManagedCassandraManagedServiceIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedManagedCassandraManagedServiceIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedManagedCassandraManagedServiceIdentity.tenantId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedCassandraManagedServiceIdentity.type
+                        = ManagedCassandraResourceIdentityType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedCassandraManagedServiceIdentity;
+        });
     }
 }

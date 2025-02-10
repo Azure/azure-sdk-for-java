@@ -6,57 +6,59 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The platform where the packet core is deployed. */
+/**
+ * The platform where the packet core is deployed.
+ */
 @Fluent
-public final class PlatformConfiguration {
+public final class PlatformConfiguration implements JsonSerializable<PlatformConfiguration> {
     /*
      * The platform type where packet core is deployed.
      */
-    @JsonProperty(value = "type", required = true)
     private PlatformType type;
 
     /*
      * The Azure Stack Edge device where the packet core is deployed. If the device is part of a fault tolerant pair,
      * either device in the pair can be specified.
      */
-    @JsonProperty(value = "azureStackEdgeDevice")
     private AzureStackEdgeDeviceResourceId azureStackEdgeDevice;
 
     /*
      * The Azure Stack Edge devices where the packet core is deployed. If the packet core is deployed across multiple
      * devices, all devices will appear in this list.
      */
-    @JsonProperty(value = "azureStackEdgeDevices", access = JsonProperty.Access.WRITE_ONLY)
     private List<AzureStackEdgeDeviceResourceId> azureStackEdgeDevices;
 
     /*
      * The Azure Stack HCI cluster where the packet core is deployed.
      */
-    @JsonProperty(value = "azureStackHciCluster")
     private AzureStackHciClusterResourceId azureStackHciCluster;
 
     /*
      * Azure Arc connected cluster where the packet core is deployed.
      */
-    @JsonProperty(value = "connectedCluster")
     private ConnectedClusterResourceId connectedCluster;
 
     /*
      * Azure Arc custom location where the packet core is deployed.
      */
-    @JsonProperty(value = "customLocation")
     private CustomLocationResourceId customLocation;
 
-    /** Creates an instance of PlatformConfiguration class. */
+    /**
+     * Creates an instance of PlatformConfiguration class.
+     */
     public PlatformConfiguration() {
     }
 
     /**
      * Get the type property: The platform type where packet core is deployed.
-     *
+     * 
      * @return the type value.
      */
     public PlatformType type() {
@@ -65,7 +67,7 @@ public final class PlatformConfiguration {
 
     /**
      * Set the type property: The platform type where packet core is deployed.
-     *
+     * 
      * @param type the type value to set.
      * @return the PlatformConfiguration object itself.
      */
@@ -77,7 +79,7 @@ public final class PlatformConfiguration {
     /**
      * Get the azureStackEdgeDevice property: The Azure Stack Edge device where the packet core is deployed. If the
      * device is part of a fault tolerant pair, either device in the pair can be specified.
-     *
+     * 
      * @return the azureStackEdgeDevice value.
      */
     public AzureStackEdgeDeviceResourceId azureStackEdgeDevice() {
@@ -87,7 +89,7 @@ public final class PlatformConfiguration {
     /**
      * Set the azureStackEdgeDevice property: The Azure Stack Edge device where the packet core is deployed. If the
      * device is part of a fault tolerant pair, either device in the pair can be specified.
-     *
+     * 
      * @param azureStackEdgeDevice the azureStackEdgeDevice value to set.
      * @return the PlatformConfiguration object itself.
      */
@@ -99,7 +101,7 @@ public final class PlatformConfiguration {
     /**
      * Get the azureStackEdgeDevices property: The Azure Stack Edge devices where the packet core is deployed. If the
      * packet core is deployed across multiple devices, all devices will appear in this list.
-     *
+     * 
      * @return the azureStackEdgeDevices value.
      */
     public List<AzureStackEdgeDeviceResourceId> azureStackEdgeDevices() {
@@ -108,7 +110,7 @@ public final class PlatformConfiguration {
 
     /**
      * Get the azureStackHciCluster property: The Azure Stack HCI cluster where the packet core is deployed.
-     *
+     * 
      * @return the azureStackHciCluster value.
      */
     public AzureStackHciClusterResourceId azureStackHciCluster() {
@@ -117,7 +119,7 @@ public final class PlatformConfiguration {
 
     /**
      * Set the azureStackHciCluster property: The Azure Stack HCI cluster where the packet core is deployed.
-     *
+     * 
      * @param azureStackHciCluster the azureStackHciCluster value to set.
      * @return the PlatformConfiguration object itself.
      */
@@ -128,7 +130,7 @@ public final class PlatformConfiguration {
 
     /**
      * Get the connectedCluster property: Azure Arc connected cluster where the packet core is deployed.
-     *
+     * 
      * @return the connectedCluster value.
      */
     public ConnectedClusterResourceId connectedCluster() {
@@ -137,7 +139,7 @@ public final class PlatformConfiguration {
 
     /**
      * Set the connectedCluster property: Azure Arc connected cluster where the packet core is deployed.
-     *
+     * 
      * @param connectedCluster the connectedCluster value to set.
      * @return the PlatformConfiguration object itself.
      */
@@ -148,7 +150,7 @@ public final class PlatformConfiguration {
 
     /**
      * Get the customLocation property: Azure Arc custom location where the packet core is deployed.
-     *
+     * 
      * @return the customLocation value.
      */
     public CustomLocationResourceId customLocation() {
@@ -157,7 +159,7 @@ public final class PlatformConfiguration {
 
     /**
      * Set the customLocation property: Azure Arc custom location where the packet core is deployed.
-     *
+     * 
      * @param customLocation the customLocation value to set.
      * @return the PlatformConfiguration object itself.
      */
@@ -168,14 +170,13 @@ public final class PlatformConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model PlatformConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model PlatformConfiguration"));
         }
         if (azureStackEdgeDevice() != null) {
             azureStackEdgeDevice().validate();
@@ -195,4 +196,59 @@ public final class PlatformConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PlatformConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("azureStackEdgeDevice", this.azureStackEdgeDevice);
+        jsonWriter.writeJsonField("azureStackHciCluster", this.azureStackHciCluster);
+        jsonWriter.writeJsonField("connectedCluster", this.connectedCluster);
+        jsonWriter.writeJsonField("customLocation", this.customLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlatformConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlatformConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PlatformConfiguration.
+     */
+    public static PlatformConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlatformConfiguration deserializedPlatformConfiguration = new PlatformConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedPlatformConfiguration.type = PlatformType.fromString(reader.getString());
+                } else if ("azureStackEdgeDevice".equals(fieldName)) {
+                    deserializedPlatformConfiguration.azureStackEdgeDevice
+                        = AzureStackEdgeDeviceResourceId.fromJson(reader);
+                } else if ("azureStackEdgeDevices".equals(fieldName)) {
+                    List<AzureStackEdgeDeviceResourceId> azureStackEdgeDevices
+                        = reader.readArray(reader1 -> AzureStackEdgeDeviceResourceId.fromJson(reader1));
+                    deserializedPlatformConfiguration.azureStackEdgeDevices = azureStackEdgeDevices;
+                } else if ("azureStackHciCluster".equals(fieldName)) {
+                    deserializedPlatformConfiguration.azureStackHciCluster
+                        = AzureStackHciClusterResourceId.fromJson(reader);
+                } else if ("connectedCluster".equals(fieldName)) {
+                    deserializedPlatformConfiguration.connectedCluster = ConnectedClusterResourceId.fromJson(reader);
+                } else if ("customLocation".equals(fieldName)) {
+                    deserializedPlatformConfiguration.customLocation = CustomLocationResourceId.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlatformConfiguration;
+        });
+    }
 }

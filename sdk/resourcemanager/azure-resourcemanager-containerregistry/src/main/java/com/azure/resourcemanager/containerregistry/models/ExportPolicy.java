@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The export policy for a container registry. */
+/**
+ * The export policy for a container registry.
+ */
 @Fluent
-public final class ExportPolicy {
+public final class ExportPolicy implements JsonSerializable<ExportPolicy> {
     /*
      * The value that indicates whether the policy is enabled or not.
      */
-    @JsonProperty(value = "status")
     private ExportPolicyStatus status;
 
-    /** Creates an instance of ExportPolicy class. */
+    /**
+     * Creates an instance of ExportPolicy class.
+     */
     public ExportPolicy() {
     }
 
     /**
      * Get the status property: The value that indicates whether the policy is enabled or not.
-     *
+     * 
      * @return the status value.
      */
     public ExportPolicyStatus status() {
@@ -31,7 +38,7 @@ public final class ExportPolicy {
 
     /**
      * Set the status property: The value that indicates whether the policy is enabled or not.
-     *
+     * 
      * @param status the status value to set.
      * @return the ExportPolicy object itself.
      */
@@ -42,9 +49,45 @@ public final class ExportPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExportPolicy.
+     */
+    public static ExportPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportPolicy deserializedExportPolicy = new ExportPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedExportPolicy.status = ExportPolicyStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportPolicy;
+        });
     }
 }

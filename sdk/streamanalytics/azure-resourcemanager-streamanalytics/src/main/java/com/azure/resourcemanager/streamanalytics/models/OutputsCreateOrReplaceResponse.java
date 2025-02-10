@@ -9,27 +9,29 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.streamanalytics.fluent.models.OutputInner;
 
-/** Contains all response data for the createOrReplace operation. */
+/**
+ * Contains all response data for the createOrReplace operation.
+ */
 public final class OutputsCreateOrReplaceResponse extends ResponseBase<OutputsCreateOrReplaceHeaders, OutputInner> {
     /**
      * Creates an instance of OutputsCreateOrReplaceResponse.
-     *
+     * 
      * @param request the request which resulted in this OutputsCreateOrReplaceResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public OutputsCreateOrReplaceResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        OutputInner value,
-        OutputsCreateOrReplaceHeaders headers) {
+    public OutputsCreateOrReplaceResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        OutputInner value, OutputsCreateOrReplaceHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     * 
+     * @return the deserialized response body.
+     */
     @Override
     public OutputInner getValue() {
         return super.getValue();

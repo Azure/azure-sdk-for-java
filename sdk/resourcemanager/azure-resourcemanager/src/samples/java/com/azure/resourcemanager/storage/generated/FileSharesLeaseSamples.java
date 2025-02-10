@@ -7,52 +7,45 @@ package com.azure.resourcemanager.storage.generated;
 import com.azure.resourcemanager.storage.models.LeaseShareAction;
 import com.azure.resourcemanager.storage.models.LeaseShareRequest;
 
-/** Samples for FileShares Lease. */
+/**
+ * Samples for FileShares Lease.
+ */
 public final class FileSharesLeaseSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileSharesLease_Break.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesLease_Break.json
      */
     /**
      * Sample code: Break a lease on a share.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void breakALeaseOnAShare(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getFileShares()
-            .leaseWithResponse(
-                "res3376",
-                "sto328",
-                "share12",
-                null,
-                new LeaseShareRequest()
-                    .withAction(LeaseShareAction.BREAK)
+            .leaseWithResponse("res3376", "sto328", "share12", null,
+                new LeaseShareRequest().withAction(LeaseShareAction.BREAK)
                     .withLeaseId("8698f513-fa75-44a1-b8eb-30ba336af27d"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileSharesLease_Acquire.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesLease_Acquire.json
      */
     /**
      * Sample code: Acquire a lease on a share.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void acquireALeaseOnAShare(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getFileShares()
-            .leaseWithResponse(
-                "res3376",
-                "sto328",
-                "share124",
-                null,
+            .leaseWithResponse("res3376", "sto328", "share124", null,
                 new LeaseShareRequest().withAction(LeaseShareAction.ACQUIRE).withLeaseDuration(-1),
                 com.azure.core.util.Context.NONE);
     }

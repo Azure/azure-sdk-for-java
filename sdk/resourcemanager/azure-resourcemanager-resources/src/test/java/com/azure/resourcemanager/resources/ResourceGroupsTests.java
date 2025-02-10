@@ -26,10 +26,10 @@ public class ResourceGroupsTests extends ResourceManagementTest {
         Region region = Region.US_SOUTH_CENTRAL;
         // Create
         resourceGroups.define(rgName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .withTag("department", "finance")
-                .withTag("tagname", "tagvalue")
-                .create();
+            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withTag("department", "finance")
+            .withTag("tagname", "tagvalue")
+            .create();
         // List
         ResourceGroup groupResult = null;
         for (ResourceGroup rg : resourceGroups.listByTag("department", "finance")) {
@@ -51,9 +51,7 @@ public class ResourceGroupsTests extends ResourceManagementTest {
         Assertions.assertNotNull(getGroup);
         Assertions.assertEquals(rgName, getGroup.name());
         // Update
-        ResourceGroup updatedGroup = getGroup.update()
-                .withTag("tag1", "value1")
-                .apply();
+        ResourceGroup updatedGroup = getGroup.update().withTag("tag1", "value1").apply();
         Assertions.assertEquals("value1", updatedGroup.tags().get("tag1"));
         Assertions.assertTrue(region.name().equalsIgnoreCase(getGroup.regionName()));
         // Delete

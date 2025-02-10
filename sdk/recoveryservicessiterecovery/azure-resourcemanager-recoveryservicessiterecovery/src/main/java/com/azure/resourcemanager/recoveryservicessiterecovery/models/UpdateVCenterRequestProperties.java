@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of an update vCenter request. */
+/**
+ * The properties of an update vCenter request.
+ */
 @Fluent
-public final class UpdateVCenterRequestProperties {
+public final class UpdateVCenterRequestProperties implements JsonSerializable<UpdateVCenterRequestProperties> {
     /*
      * The friendly name of the vCenter.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The IP address of the vCenter to be discovered.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * The process server Id from where the update can be orchestrated.
      */
-    @JsonProperty(value = "processServerId")
     private String processServerId;
 
     /*
      * The port number for discovery.
      */
-    @JsonProperty(value = "port")
     private String port;
 
     /*
      * The CS account Id which has privileges to update the vCenter.
      */
-    @JsonProperty(value = "runAsAccountId")
     private String runAsAccountId;
 
-    /** Creates an instance of UpdateVCenterRequestProperties class. */
+    /**
+     * Creates an instance of UpdateVCenterRequestProperties class.
+     */
     public UpdateVCenterRequestProperties() {
     }
 
     /**
      * Get the friendlyName property: The friendly name of the vCenter.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -55,7 +58,7 @@ public final class UpdateVCenterRequestProperties {
 
     /**
      * Set the friendlyName property: The friendly name of the vCenter.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the UpdateVCenterRequestProperties object itself.
      */
@@ -66,7 +69,7 @@ public final class UpdateVCenterRequestProperties {
 
     /**
      * Get the ipAddress property: The IP address of the vCenter to be discovered.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -75,7 +78,7 @@ public final class UpdateVCenterRequestProperties {
 
     /**
      * Set the ipAddress property: The IP address of the vCenter to be discovered.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the UpdateVCenterRequestProperties object itself.
      */
@@ -86,7 +89,7 @@ public final class UpdateVCenterRequestProperties {
 
     /**
      * Get the processServerId property: The process server Id from where the update can be orchestrated.
-     *
+     * 
      * @return the processServerId value.
      */
     public String processServerId() {
@@ -95,7 +98,7 @@ public final class UpdateVCenterRequestProperties {
 
     /**
      * Set the processServerId property: The process server Id from where the update can be orchestrated.
-     *
+     * 
      * @param processServerId the processServerId value to set.
      * @return the UpdateVCenterRequestProperties object itself.
      */
@@ -106,7 +109,7 @@ public final class UpdateVCenterRequestProperties {
 
     /**
      * Get the port property: The port number for discovery.
-     *
+     * 
      * @return the port value.
      */
     public String port() {
@@ -115,7 +118,7 @@ public final class UpdateVCenterRequestProperties {
 
     /**
      * Set the port property: The port number for discovery.
-     *
+     * 
      * @param port the port value to set.
      * @return the UpdateVCenterRequestProperties object itself.
      */
@@ -126,7 +129,7 @@ public final class UpdateVCenterRequestProperties {
 
     /**
      * Get the runAsAccountId property: The CS account Id which has privileges to update the vCenter.
-     *
+     * 
      * @return the runAsAccountId value.
      */
     public String runAsAccountId() {
@@ -135,7 +138,7 @@ public final class UpdateVCenterRequestProperties {
 
     /**
      * Set the runAsAccountId property: The CS account Id which has privileges to update the vCenter.
-     *
+     * 
      * @param runAsAccountId the runAsAccountId value to set.
      * @return the UpdateVCenterRequestProperties object itself.
      */
@@ -146,9 +149,58 @@ public final class UpdateVCenterRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("processServerId", this.processServerId);
+        jsonWriter.writeStringField("port", this.port);
+        jsonWriter.writeStringField("runAsAccountId", this.runAsAccountId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateVCenterRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateVCenterRequestProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateVCenterRequestProperties.
+     */
+    public static UpdateVCenterRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateVCenterRequestProperties deserializedUpdateVCenterRequestProperties
+                = new UpdateVCenterRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedUpdateVCenterRequestProperties.friendlyName = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedUpdateVCenterRequestProperties.ipAddress = reader.getString();
+                } else if ("processServerId".equals(fieldName)) {
+                    deserializedUpdateVCenterRequestProperties.processServerId = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedUpdateVCenterRequestProperties.port = reader.getString();
+                } else if ("runAsAccountId".equals(fieldName)) {
+                    deserializedUpdateVCenterRequestProperties.runAsAccountId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateVCenterRequestProperties;
+        });
     }
 }

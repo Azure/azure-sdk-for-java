@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * Represents percentile metrics values.
@@ -15,44 +20,67 @@ public final class PercentileMetricValue extends MetricValue {
     /*
      * The 10th percentile value for the metric.
      */
-    @JsonProperty(value = "P10", access = JsonProperty.Access.WRITE_ONLY)
     private Double p10;
 
     /*
      * The 25th percentile value for the metric.
      */
-    @JsonProperty(value = "P25", access = JsonProperty.Access.WRITE_ONLY)
     private Double p25;
 
     /*
      * The 50th percentile value for the metric.
      */
-    @JsonProperty(value = "P50", access = JsonProperty.Access.WRITE_ONLY)
     private Double p50;
 
     /*
      * The 75th percentile value for the metric.
      */
-    @JsonProperty(value = "P75", access = JsonProperty.Access.WRITE_ONLY)
     private Double p75;
 
     /*
      * The 90th percentile value for the metric.
      */
-    @JsonProperty(value = "P90", access = JsonProperty.Access.WRITE_ONLY)
     private Double p90;
 
     /*
      * The 95th percentile value for the metric.
      */
-    @JsonProperty(value = "P95", access = JsonProperty.Access.WRITE_ONLY)
     private Double p95;
 
     /*
      * The 99th percentile value for the metric.
      */
-    @JsonProperty(value = "P99", access = JsonProperty.Access.WRITE_ONLY)
     private Double p99;
+
+    /*
+     * The total value of the metric.
+     */
+    private Double total;
+
+    /*
+     * The metric timestamp (ISO-8601 format).
+     */
+    private OffsetDateTime timestamp;
+
+    /*
+     * The min value of the metric.
+     */
+    private Double minimum;
+
+    /*
+     * The max value of the metric.
+     */
+    private Double maximum;
+
+    /*
+     * The average value of the metric.
+     */
+    private Double average;
+
+    /*
+     * The number of values for the metric.
+     */
+    private Integer count;
 
     /**
      * Creates an instance of PercentileMetricValue class.
@@ -124,12 +152,131 @@ public final class PercentileMetricValue extends MetricValue {
     }
 
     /**
+     * Get the total property: The total value of the metric.
+     * 
+     * @return the total value.
+     */
+    @Override
+    public Double total() {
+        return this.total;
+    }
+
+    /**
+     * Get the timestamp property: The metric timestamp (ISO-8601 format).
+     * 
+     * @return the timestamp value.
+     */
+    @Override
+    public OffsetDateTime timestamp() {
+        return this.timestamp;
+    }
+
+    /**
+     * Get the minimum property: The min value of the metric.
+     * 
+     * @return the minimum value.
+     */
+    @Override
+    public Double minimum() {
+        return this.minimum;
+    }
+
+    /**
+     * Get the maximum property: The max value of the metric.
+     * 
+     * @return the maximum value.
+     */
+    @Override
+    public Double maximum() {
+        return this.maximum;
+    }
+
+    /**
+     * Get the average property: The average value of the metric.
+     * 
+     * @return the average value.
+     */
+    @Override
+    public Double average() {
+        return this.average;
+    }
+
+    /**
+     * Get the count property: The number of values for the metric.
+     * 
+     * @return the count value.
+     */
+    @Override
+    public Integer count() {
+        return this.count;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PercentileMetricValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PercentileMetricValue if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PercentileMetricValue.
+     */
+    public static PercentileMetricValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PercentileMetricValue deserializedPercentileMetricValue = new PercentileMetricValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("_count".equals(fieldName)) {
+                    deserializedPercentileMetricValue.count = reader.getNullable(JsonReader::getInt);
+                } else if ("average".equals(fieldName)) {
+                    deserializedPercentileMetricValue.average = reader.getNullable(JsonReader::getDouble);
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedPercentileMetricValue.maximum = reader.getNullable(JsonReader::getDouble);
+                } else if ("minimum".equals(fieldName)) {
+                    deserializedPercentileMetricValue.minimum = reader.getNullable(JsonReader::getDouble);
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedPercentileMetricValue.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("total".equals(fieldName)) {
+                    deserializedPercentileMetricValue.total = reader.getNullable(JsonReader::getDouble);
+                } else if ("P10".equals(fieldName)) {
+                    deserializedPercentileMetricValue.p10 = reader.getNullable(JsonReader::getDouble);
+                } else if ("P25".equals(fieldName)) {
+                    deserializedPercentileMetricValue.p25 = reader.getNullable(JsonReader::getDouble);
+                } else if ("P50".equals(fieldName)) {
+                    deserializedPercentileMetricValue.p50 = reader.getNullable(JsonReader::getDouble);
+                } else if ("P75".equals(fieldName)) {
+                    deserializedPercentileMetricValue.p75 = reader.getNullable(JsonReader::getDouble);
+                } else if ("P90".equals(fieldName)) {
+                    deserializedPercentileMetricValue.p90 = reader.getNullable(JsonReader::getDouble);
+                } else if ("P95".equals(fieldName)) {
+                    deserializedPercentileMetricValue.p95 = reader.getNullable(JsonReader::getDouble);
+                } else if ("P99".equals(fieldName)) {
+                    deserializedPercentileMetricValue.p99 = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPercentileMetricValue;
+        });
     }
 }

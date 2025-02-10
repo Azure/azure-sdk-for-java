@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The state of a private link service connection. */
+/**
+ * The state of a private link service connection.
+ */
 @Fluent
-public final class PrivateLinkServiceConnectionState {
+public final class PrivateLinkServiceConnectionState implements JsonSerializable<PrivateLinkServiceConnectionState> {
     /*
      * The private link service connection status.
      */
-    @JsonProperty(value = "status")
     private ConnectionStatus status;
 
     /*
      * The description for connection status. For example if connection is rejected it can indicate reason for
      * rejection.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * A message indicating if changes on the service provider require any updates on the consumer.
      */
-    @JsonProperty(value = "actionsRequired")
     private ActionsRequired actionsRequired;
 
-    /** Creates an instance of PrivateLinkServiceConnectionState class. */
+    /**
+     * Creates an instance of PrivateLinkServiceConnectionState class.
+     */
     public PrivateLinkServiceConnectionState() {
     }
 
     /**
      * Get the status property: The private link service connection status.
-     *
+     * 
      * @return the status value.
      */
     public ConnectionStatus status() {
@@ -44,7 +49,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Set the status property: The private link service connection status.
-     *
+     * 
      * @param status the status value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -56,7 +61,7 @@ public final class PrivateLinkServiceConnectionState {
     /**
      * Get the description property: The description for connection status. For example if connection is rejected it can
      * indicate reason for rejection.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -66,7 +71,7 @@ public final class PrivateLinkServiceConnectionState {
     /**
      * Set the description property: The description for connection status. For example if connection is rejected it can
      * indicate reason for rejection.
-     *
+     * 
      * @param description the description value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -78,7 +83,7 @@ public final class PrivateLinkServiceConnectionState {
     /**
      * Get the actionsRequired property: A message indicating if changes on the service provider require any updates on
      * the consumer.
-     *
+     * 
      * @return the actionsRequired value.
      */
     public ActionsRequired actionsRequired() {
@@ -88,7 +93,7 @@ public final class PrivateLinkServiceConnectionState {
     /**
      * Set the actionsRequired property: A message indicating if changes on the service provider require any updates on
      * the consumer.
-     *
+     * 
      * @param actionsRequired the actionsRequired value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -99,9 +104,55 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("actionsRequired",
+            this.actionsRequired == null ? null : this.actionsRequired.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkServiceConnectionState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkServiceConnectionState if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkServiceConnectionState.
+     */
+    public static PrivateLinkServiceConnectionState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkServiceConnectionState deserializedPrivateLinkServiceConnectionState
+                = new PrivateLinkServiceConnectionState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnectionState.status
+                        = ConnectionStatus.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnectionState.description = reader.getString();
+                } else if ("actionsRequired".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnectionState.actionsRequired
+                        = ActionsRequired.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkServiceConnectionState;
+        });
     }
 }

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageType. */
+/**
+ * The type of the storage.
+ */
 public final class StorageType extends ExpandableStringEnum<StorageType> {
-    /** Static value StorageAccount for StorageType. */
+    /**
+     * Static value StorageAccount for StorageType.
+     */
     public static final StorageType STORAGE_ACCOUNT = fromString("StorageAccount");
 
     /**
+     * Creates a new instance of StorageType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageType() {
+    }
+
+    /**
      * Creates or finds a StorageType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageType.
      */
-    @JsonCreator
     public static StorageType fromString(String name) {
         return fromString(name, StorageType.class);
     }
 
     /**
      * Gets known StorageType values.
-     *
+     * 
      * @return known StorageType values.
      */
     public static Collection<StorageType> values() {

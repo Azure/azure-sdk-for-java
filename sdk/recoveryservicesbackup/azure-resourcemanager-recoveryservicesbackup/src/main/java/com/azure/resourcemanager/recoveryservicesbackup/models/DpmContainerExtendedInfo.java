@@ -5,25 +5,34 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Additional information of the DPMContainer. */
+/**
+ * Additional information of the DPMContainer.
+ */
 @Fluent
-public final class DpmContainerExtendedInfo {
+public final class DpmContainerExtendedInfo implements JsonSerializable<DpmContainerExtendedInfo> {
     /*
      * Last refresh time of the DPMContainer.
      */
-    @JsonProperty(value = "lastRefreshedAt")
     private OffsetDateTime lastRefreshedAt;
 
-    /** Creates an instance of DpmContainerExtendedInfo class. */
+    /**
+     * Creates an instance of DpmContainerExtendedInfo class.
+     */
     public DpmContainerExtendedInfo() {
     }
 
     /**
      * Get the lastRefreshedAt property: Last refresh time of the DPMContainer.
-     *
+     * 
      * @return the lastRefreshedAt value.
      */
     public OffsetDateTime lastRefreshedAt() {
@@ -32,7 +41,7 @@ public final class DpmContainerExtendedInfo {
 
     /**
      * Set the lastRefreshedAt property: Last refresh time of the DPMContainer.
-     *
+     * 
      * @param lastRefreshedAt the lastRefreshedAt value to set.
      * @return the DpmContainerExtendedInfo object itself.
      */
@@ -43,9 +52,47 @@ public final class DpmContainerExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastRefreshedAt",
+            this.lastRefreshedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRefreshedAt));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DpmContainerExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DpmContainerExtendedInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DpmContainerExtendedInfo.
+     */
+    public static DpmContainerExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DpmContainerExtendedInfo deserializedDpmContainerExtendedInfo = new DpmContainerExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastRefreshedAt".equals(fieldName)) {
+                    deserializedDpmContainerExtendedInfo.lastRefreshedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDpmContainerExtendedInfo;
+        });
     }
 }

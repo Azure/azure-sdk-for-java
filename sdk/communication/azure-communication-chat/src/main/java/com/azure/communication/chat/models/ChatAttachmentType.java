@@ -4,7 +4,6 @@
 package com.azure.communication.chat.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,18 +13,32 @@ public final class ChatAttachmentType extends ExpandableStringEnum<ChatAttachmen
     /** Static value image for ChatAttachmentType. */
     public static final ChatAttachmentType IMAGE = fromString("image");
 
+    /** Static value file for ChatAttachmentType. */
+    public static final ChatAttachmentType FILE = fromString("file");
+
+    /**
+     * Creates an instance of {@link ChatAttachmentType} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of ChatAttachmentType.
+     */
+    @Deprecated
+    public ChatAttachmentType() {
+    }
+
     /**
      * Creates or finds a ChatAttachmentType from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding ChatAttachmentType.
      */
-    @JsonCreator
     public static ChatAttachmentType fromString(String name) {
         return fromString(name, ChatAttachmentType.class);
     }
 
-    /** @return known ChatAttachmentType values. */
+    /**
+     * Get the collection of ChatAttachmentType values.
+     * @return known ChatAttachmentType values.
+     */
     public static Collection<ChatAttachmentType> values() {
         return values(ChatAttachmentType.class);
     }

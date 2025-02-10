@@ -44,40 +44,56 @@ import java.util.Map;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
- * {@link KeyVaultAccessControlAsyncClient} and {@link KeyVaultAccessControlClient}, by calling
- * {@link KeyVaultAccessControlClientBuilder#buildAsyncClient()} and
- * {@link KeyVaultAccessControlClientBuilder#buildClient()} respectively. It constructs an instance of the desired
- * client.
+ * {@link KeyVaultAccessControlAsyncClient access control async client} and
+ * {@link KeyVaultAccessControlClient access control sync client}, by calling
+ * {@link KeyVaultAccessControlClientBuilder#buildAsyncClient() buildAsyncClient} and
+ * {@link KeyVaultAccessControlClientBuilder#buildClient() buildClient} respectively. It constructs an instance of the
+ * desired client.
  *
- * <p> The minimal configuration options required by {@link KeyVaultAccessControlClientBuilder} to build an
- * an {@link KeyVaultAccessControlAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
+ * <p> The minimal configuration options required by {@link KeyVaultAccessControlClientBuilder} to build a
+ * {@link KeyVaultAccessControlAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
  *
- * <p><strong>Samples to construct a sync client</strong></p>
- * <!-- src_embed com.azure.security.keyvault.administration.keyVaultAccessControlClient.instantiation -->
- * <pre>
- * KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
- *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.administration.keyVaultAccessControlClient.instantiation -->
- * <p><strong>Samples to construct an async client</strong></p>
- * <!-- src_embed com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.instantiation -->
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient.instantiation -->
  * <pre>
  * KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder&#40;&#41;
  *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.security.keyvault.administration.keyVaultAccessControlAsyncClient.instantiation -->
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient.instantiation -->
  *
- * @see KeyVaultAccessControlClient
+ * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
+ * {@link HttpClient http client} can be optionally configured in the {@link KeyVaultAccessControlClientBuilder}.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient.instantiation.withHttpClient -->
+ * <pre>
+ * KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient.instantiation.withHttpClient -->
+ *
+ * <p> The minimal configuration options required by {@link KeyVaultAccessControlClientBuilder} to build a
+ * {@link KeyVaultAccessControlClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultAccessControlClient.instantiation -->
+ * <pre>
+ * KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultAccessControlClient.instantiation -->
+ *
  * @see KeyVaultAccessControlAsyncClient
+ * @see KeyVaultAccessControlClient
  */
-@ServiceClientBuilder(serviceClients = {KeyVaultAccessControlClient.class, KeyVaultAccessControlAsyncClient.class})
-public final class KeyVaultAccessControlClientBuilder implements
-    TokenCredentialTrait<KeyVaultAccessControlClientBuilder>,
-    HttpTrait<KeyVaultAccessControlClientBuilder>,
+@ServiceClientBuilder(serviceClients = { KeyVaultAccessControlClient.class, KeyVaultAccessControlAsyncClient.class })
+public final class KeyVaultAccessControlClientBuilder
+    implements TokenCredentialTrait<KeyVaultAccessControlClientBuilder>, HttpTrait<KeyVaultAccessControlClientBuilder>,
     ConfigurationTrait<KeyVaultAccessControlClientBuilder> {
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientBuilder.class);
@@ -165,17 +181,15 @@ public final class KeyVaultAccessControlClientBuilder implements
         return new KeyVaultAccessControlAsyncClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
-
     private Configuration validateEndpointAndGetConfiguration() {
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
         return buildConfiguration;
     }
@@ -183,7 +197,6 @@ public final class KeyVaultAccessControlClientBuilder implements
     private KeyVaultAdministrationServiceVersion getServiceVersion() {
         return serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
     }
-
 
     private HttpPipeline getPipeline(Configuration buildConfiguration, ServiceVersion serviceVersion) {
         // Closest to API goes first, closest to wire goes last.
@@ -200,8 +213,8 @@ public final class KeyVaultAccessControlClientBuilder implements
             clientVersion, buildConfiguration));
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders().forEach(header ->
-            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        localClientOptions.getHeaders()
+            .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
         policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         // Add per call additional policies.
@@ -223,8 +236,7 @@ public final class KeyVaultAccessControlClientBuilder implements
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .clientOptions(localClientOptions)
@@ -251,8 +263,7 @@ public final class KeyVaultAccessControlClientBuilder implements
         try {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
         }
 
         return this;

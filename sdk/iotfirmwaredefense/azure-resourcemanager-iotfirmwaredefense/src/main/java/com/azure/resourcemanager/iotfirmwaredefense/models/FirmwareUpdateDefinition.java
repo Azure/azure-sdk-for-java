@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.FirmwareProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Firmware definition. */
+/**
+ * Firmware definition.
+ */
 @Fluent
-public final class FirmwareUpdateDefinition {
+public final class FirmwareUpdateDefinition implements JsonSerializable<FirmwareUpdateDefinition> {
     /*
      * The editable properties of a firmware
      */
-    @JsonProperty(value = "properties")
     private FirmwareProperties innerProperties;
 
-    /** Creates an instance of FirmwareUpdateDefinition class. */
+    /**
+     * Creates an instance of FirmwareUpdateDefinition class.
+     */
     public FirmwareUpdateDefinition() {
     }
 
     /**
      * Get the innerProperties property: The editable properties of a firmware.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FirmwareProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Get the fileName property: File name for a firmware that user uploaded.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -42,7 +49,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Set the fileName property: File name for a firmware that user uploaded.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the FirmwareUpdateDefinition object itself.
      */
@@ -56,7 +63,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Get the vendor property: Firmware vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -65,7 +72,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Set the vendor property: Firmware vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the FirmwareUpdateDefinition object itself.
      */
@@ -79,7 +86,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Get the model property: Firmware model.
-     *
+     * 
      * @return the model value.
      */
     public String model() {
@@ -88,7 +95,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Set the model property: Firmware model.
-     *
+     * 
      * @param model the model value to set.
      * @return the FirmwareUpdateDefinition object itself.
      */
@@ -102,7 +109,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Get the version property: Firmware version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -111,7 +118,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Set the version property: Firmware version.
-     *
+     * 
      * @param version the version value to set.
      * @return the FirmwareUpdateDefinition object itself.
      */
@@ -125,7 +132,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Get the description property: User-specified description of the firmware.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -134,7 +141,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Set the description property: User-specified description of the firmware.
-     *
+     * 
      * @param description the description value to set.
      * @return the FirmwareUpdateDefinition object itself.
      */
@@ -148,7 +155,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Get the fileSize property: File size of the uploaded firmware image.
-     *
+     * 
      * @return the fileSize value.
      */
     public Long fileSize() {
@@ -157,7 +164,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Set the fileSize property: File size of the uploaded firmware image.
-     *
+     * 
      * @param fileSize the fileSize value to set.
      * @return the FirmwareUpdateDefinition object itself.
      */
@@ -171,7 +178,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Get the status property: The status of firmware scan.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -180,7 +187,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Set the status property: The status of firmware scan.
-     *
+     * 
      * @param status the status value to set.
      * @return the FirmwareUpdateDefinition object itself.
      */
@@ -194,20 +201,20 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Get the statusMessages property: A list of errors or other messages generated during firmware analysis.
-     *
+     * 
      * @return the statusMessages value.
      */
-    public List<Object> statusMessages() {
+    public List<StatusMessage> statusMessages() {
         return this.innerProperties() == null ? null : this.innerProperties().statusMessages();
     }
 
     /**
      * Set the statusMessages property: A list of errors or other messages generated during firmware analysis.
-     *
+     * 
      * @param statusMessages the statusMessages value to set.
      * @return the FirmwareUpdateDefinition object itself.
      */
-    public FirmwareUpdateDefinition withStatusMessages(List<Object> statusMessages) {
+    public FirmwareUpdateDefinition withStatusMessages(List<StatusMessage> statusMessages) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FirmwareProperties();
         }
@@ -217,7 +224,7 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -226,12 +233,48 @@ public final class FirmwareUpdateDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirmwareUpdateDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirmwareUpdateDefinition if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirmwareUpdateDefinition.
+     */
+    public static FirmwareUpdateDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirmwareUpdateDefinition deserializedFirmwareUpdateDefinition = new FirmwareUpdateDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedFirmwareUpdateDefinition.innerProperties = FirmwareProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirmwareUpdateDefinition;
+        });
     }
 }

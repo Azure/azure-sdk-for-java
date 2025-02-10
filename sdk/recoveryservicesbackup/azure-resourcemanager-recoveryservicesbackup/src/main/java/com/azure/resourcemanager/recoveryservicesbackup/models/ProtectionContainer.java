@@ -5,66 +5,73 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for container with backup items. Containers with specific workloads are derived from this class. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "containerType",
-    defaultImpl = ProtectionContainer.class)
-@JsonTypeName("ProtectionContainer")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DPMContainer", value = DpmContainer.class),
-    @JsonSubTypes.Type(name = "IaasVMContainer", value = IaaSvmContainer.class),
-    @JsonSubTypes.Type(name = "AzureWorkloadContainer", value = AzureWorkloadContainer.class),
-    @JsonSubTypes.Type(name = "AzureSqlContainer", value = AzureSqlContainer.class),
-    @JsonSubTypes.Type(name = "StorageContainer", value = AzureStorageContainer.class),
-    @JsonSubTypes.Type(name = "GenericContainer", value = GenericContainer.class),
-    @JsonSubTypes.Type(name = "Windows", value = MabContainer.class)
-})
+/**
+ * Base class for container with backup items. Containers with specific workloads are derived from this class.
+ */
 @Fluent
-public class ProtectionContainer {
+public class ProtectionContainer implements JsonSerializable<ProtectionContainer> {
+    /*
+     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+     * 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer
+     */
+    private ProtectableContainerType containerType;
+
     /*
      * Friendly name of the container.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Type of backup management for the container.
      */
-    @JsonProperty(value = "backupManagementType")
     private BackupManagementType backupManagementType;
 
     /*
      * Status of registration of the container with the Recovery Services Vault.
      */
-    @JsonProperty(value = "registrationStatus")
     private String registrationStatus;
 
     /*
      * Status of health of the container.
      */
-    @JsonProperty(value = "healthStatus")
     private String healthStatus;
 
     /*
      * Type of the protectable object associated with this container
      */
-    @JsonProperty(value = "protectableObjectType")
     private String protectableObjectType;
 
-    /** Creates an instance of ProtectionContainer class. */
+    /**
+     * Creates an instance of ProtectionContainer class.
+     */
     public ProtectionContainer() {
     }
 
     /**
+     * Get the containerType property: Type of the container. The value of this property for: 1. Compute Azure VM is
+     * Microsoft.Compute/virtualMachines 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer.
+     * 
+     * @return the containerType value.
+     */
+    public ProtectableContainerType containerType() {
+        return this.containerType;
+    }
+
+    /**
      * Get the friendlyName property: Friendly name of the container.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -73,7 +80,7 @@ public class ProtectionContainer {
 
     /**
      * Set the friendlyName property: Friendly name of the container.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ProtectionContainer object itself.
      */
@@ -84,7 +91,7 @@ public class ProtectionContainer {
 
     /**
      * Get the backupManagementType property: Type of backup management for the container.
-     *
+     * 
      * @return the backupManagementType value.
      */
     public BackupManagementType backupManagementType() {
@@ -93,7 +100,7 @@ public class ProtectionContainer {
 
     /**
      * Set the backupManagementType property: Type of backup management for the container.
-     *
+     * 
      * @param backupManagementType the backupManagementType value to set.
      * @return the ProtectionContainer object itself.
      */
@@ -104,7 +111,7 @@ public class ProtectionContainer {
 
     /**
      * Get the registrationStatus property: Status of registration of the container with the Recovery Services Vault.
-     *
+     * 
      * @return the registrationStatus value.
      */
     public String registrationStatus() {
@@ -113,7 +120,7 @@ public class ProtectionContainer {
 
     /**
      * Set the registrationStatus property: Status of registration of the container with the Recovery Services Vault.
-     *
+     * 
      * @param registrationStatus the registrationStatus value to set.
      * @return the ProtectionContainer object itself.
      */
@@ -124,7 +131,7 @@ public class ProtectionContainer {
 
     /**
      * Get the healthStatus property: Status of health of the container.
-     *
+     * 
      * @return the healthStatus value.
      */
     public String healthStatus() {
@@ -133,7 +140,7 @@ public class ProtectionContainer {
 
     /**
      * Set the healthStatus property: Status of health of the container.
-     *
+     * 
      * @param healthStatus the healthStatus value to set.
      * @return the ProtectionContainer object itself.
      */
@@ -144,7 +151,7 @@ public class ProtectionContainer {
 
     /**
      * Get the protectableObjectType property: Type of the protectable object associated with this container.
-     *
+     * 
      * @return the protectableObjectType value.
      */
     public String protectableObjectType() {
@@ -153,7 +160,7 @@ public class ProtectionContainer {
 
     /**
      * Set the protectableObjectType property: Type of the protectable object associated with this container.
-     *
+     * 
      * @param protectableObjectType the protectableObjectType value to set.
      * @return the ProtectionContainer object itself.
      */
@@ -164,9 +171,110 @@ public class ProtectionContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerType", this.containerType == null ? null : this.containerType.toString());
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("backupManagementType",
+            this.backupManagementType == null ? null : this.backupManagementType.toString());
+        jsonWriter.writeStringField("registrationStatus", this.registrationStatus);
+        jsonWriter.writeStringField("healthStatus", this.healthStatus);
+        jsonWriter.writeStringField("protectableObjectType", this.protectableObjectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectionContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectionContainer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtectionContainer.
+     */
+    public static ProtectionContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("containerType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("DPMContainer".equals(discriminatorValue)) {
+                    return DpmContainer.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureBackupServerContainer".equals(discriminatorValue)) {
+                    return AzureBackupServerContainer.fromJson(readerToUse.reset());
+                } else if ("IaasVMContainer".equals(discriminatorValue)) {
+                    return IaaSvmContainer.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("Microsoft.ClassicCompute/virtualMachines".equals(discriminatorValue)) {
+                    return AzureIaaSClassicComputeVMContainer.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Compute/virtualMachines".equals(discriminatorValue)) {
+                    return AzureIaaSComputeVMContainer.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadContainer".equals(discriminatorValue)) {
+                    return AzureWorkloadContainer.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("SQLAGWorkLoadContainer".equals(discriminatorValue)) {
+                    return AzureSqlagWorkloadContainerProtectionContainer.fromJson(readerToUse.reset());
+                } else if ("VMAppContainer".equals(discriminatorValue)) {
+                    return AzureVMAppContainerProtectionContainer.fromJson(readerToUse.reset());
+                } else if ("AzureSqlContainer".equals(discriminatorValue)) {
+                    return AzureSqlContainer.fromJson(readerToUse.reset());
+                } else if ("StorageContainer".equals(discriminatorValue)) {
+                    return AzureStorageContainer.fromJson(readerToUse.reset());
+                } else if ("GenericContainer".equals(discriminatorValue)) {
+                    return GenericContainer.fromJson(readerToUse.reset());
+                } else if ("Windows".equals(discriminatorValue)) {
+                    return MabContainer.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ProtectionContainer fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectionContainer deserializedProtectionContainer = new ProtectionContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("containerType".equals(fieldName)) {
+                    deserializedProtectionContainer.containerType
+                        = ProtectableContainerType.fromString(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedProtectionContainer.friendlyName = reader.getString();
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedProtectionContainer.backupManagementType
+                        = BackupManagementType.fromString(reader.getString());
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedProtectionContainer.registrationStatus = reader.getString();
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedProtectionContainer.healthStatus = reader.getString();
+                } else if ("protectableObjectType".equals(fieldName)) {
+                    deserializedProtectionContainer.protectableObjectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectionContainer;
+        });
     }
 }

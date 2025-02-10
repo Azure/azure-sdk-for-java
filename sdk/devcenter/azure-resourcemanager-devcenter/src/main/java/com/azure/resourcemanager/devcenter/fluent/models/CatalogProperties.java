@@ -5,61 +5,64 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.CatalogConnectionState;
 import com.azure.resourcemanager.devcenter.models.CatalogSyncState;
 import com.azure.resourcemanager.devcenter.models.CatalogSyncType;
 import com.azure.resourcemanager.devcenter.models.GitCatalog;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.SyncStats;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** Properties of a catalog. */
+/**
+ * Properties of a catalog.
+ */
 @Fluent
 public final class CatalogProperties extends CatalogUpdateProperties {
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The synchronization state of the catalog.
      */
-    @JsonProperty(value = "syncState", access = JsonProperty.Access.WRITE_ONLY)
     private CatalogSyncState syncState;
 
     /*
      * Stats of the latest synchronization.
      */
-    @JsonProperty(value = "lastSyncStats", access = JsonProperty.Access.WRITE_ONLY)
     private SyncStats lastSyncStats;
 
     /*
      * The connection state of the catalog.
      */
-    @JsonProperty(value = "connectionState", access = JsonProperty.Access.WRITE_ONLY)
     private CatalogConnectionState connectionState;
 
     /*
      * When the catalog was last connected.
      */
-    @JsonProperty(value = "lastConnectionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastConnectionTime;
 
     /*
      * When the catalog was last synced.
      */
-    @JsonProperty(value = "lastSyncTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSyncTime;
 
-    /** Creates an instance of CatalogProperties class. */
+    /**
+     * Creates an instance of CatalogProperties class.
+     */
     public CatalogProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -68,7 +71,7 @@ public final class CatalogProperties extends CatalogUpdateProperties {
 
     /**
      * Get the syncState property: The synchronization state of the catalog.
-     *
+     * 
      * @return the syncState value.
      */
     public CatalogSyncState syncState() {
@@ -77,7 +80,7 @@ public final class CatalogProperties extends CatalogUpdateProperties {
 
     /**
      * Get the lastSyncStats property: Stats of the latest synchronization.
-     *
+     * 
      * @return the lastSyncStats value.
      */
     public SyncStats lastSyncStats() {
@@ -86,7 +89,7 @@ public final class CatalogProperties extends CatalogUpdateProperties {
 
     /**
      * Get the connectionState property: The connection state of the catalog.
-     *
+     * 
      * @return the connectionState value.
      */
     public CatalogConnectionState connectionState() {
@@ -95,7 +98,7 @@ public final class CatalogProperties extends CatalogUpdateProperties {
 
     /**
      * Get the lastConnectionTime property: When the catalog was last connected.
-     *
+     * 
      * @return the lastConnectionTime value.
      */
     public OffsetDateTime lastConnectionTime() {
@@ -104,28 +107,34 @@ public final class CatalogProperties extends CatalogUpdateProperties {
 
     /**
      * Get the lastSyncTime property: When the catalog was last synced.
-     *
+     * 
      * @return the lastSyncTime value.
      */
     public OffsetDateTime lastSyncTime() {
         return this.lastSyncTime;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CatalogProperties withGitHub(GitCatalog gitHub) {
         super.withGitHub(gitHub);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CatalogProperties withAdoGit(GitCatalog adoGit) {
         super.withAdoGit(adoGit);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CatalogProperties withSyncType(CatalogSyncType syncType) {
         super.withSyncType(syncType);
@@ -133,15 +142,90 @@ public final class CatalogProperties extends CatalogUpdateProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CatalogProperties withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastSyncStats() != null) {
             lastSyncStats().validate();
         }
+        if (gitHub() != null) {
+            gitHub().validate();
+        }
+        if (adoGit() != null) {
+            adoGit().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("gitHub", gitHub());
+        jsonWriter.writeJsonField("adoGit", adoGit());
+        jsonWriter.writeStringField("syncType", syncType() == null ? null : syncType().toString());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CatalogProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CatalogProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CatalogProperties.
+     */
+    public static CatalogProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CatalogProperties deserializedCatalogProperties = new CatalogProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gitHub".equals(fieldName)) {
+                    deserializedCatalogProperties.withGitHub(GitCatalog.fromJson(reader));
+                } else if ("adoGit".equals(fieldName)) {
+                    deserializedCatalogProperties.withAdoGit(GitCatalog.fromJson(reader));
+                } else if ("syncType".equals(fieldName)) {
+                    deserializedCatalogProperties.withSyncType(CatalogSyncType.fromString(reader.getString()));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCatalogProperties.withTags(tags);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCatalogProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("syncState".equals(fieldName)) {
+                    deserializedCatalogProperties.syncState = CatalogSyncState.fromString(reader.getString());
+                } else if ("lastSyncStats".equals(fieldName)) {
+                    deserializedCatalogProperties.lastSyncStats = SyncStats.fromJson(reader);
+                } else if ("connectionState".equals(fieldName)) {
+                    deserializedCatalogProperties.connectionState
+                        = CatalogConnectionState.fromString(reader.getString());
+                } else if ("lastConnectionTime".equals(fieldName)) {
+                    deserializedCatalogProperties.lastConnectionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSyncTime".equals(fieldName)) {
+                    deserializedCatalogProperties.lastSyncTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCatalogProperties;
+        });
     }
 }

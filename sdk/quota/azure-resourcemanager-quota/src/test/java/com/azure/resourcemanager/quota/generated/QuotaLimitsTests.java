@@ -17,29 +17,28 @@ public final class QuotaLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaLimits model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"jdpvwryo\",\"name\":{\"value\":\"oacctaza\",\"localizedValue\":\"j\"},\"resourceType\":\"hbcryffdfdosyge\",\"quotaPeriod\":\"aojakhmsbzjhcrz\",\"isQuotaApplicable\":true,\"properties\":\"datahlxaolthqtr\"},\"id\":\"qjbpfzfsin\",\"name\":\"gvfcj\",\"type\":\"wzo\"},{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"felluwfzitonpe\",\"name\":{\"value\":\"jkjlxofpdvhpfx\",\"localizedValue\":\"pini\"},\"resourceType\":\"ayhuy\",\"quotaPeriod\":\"kpode\",\"isQuotaApplicable\":true,\"properties\":\"datainuvamiheogn\"},\"id\":\"rxzxtheo\",\"name\":\"usivye\",\"type\":\"cciqihnhungbwjz\"},{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"gxg\",\"name\":{\"value\":\"emv\",\"localizedValue\":\"fkufublj\"},\"resourceType\":\"xqeofjaeqjhqjba\",\"quotaPeriod\":\"msmjqulngsntn\",\"isQuotaApplicable\":true,\"properties\":\"datazgcwrw\"},\"id\":\"lxxwrljdouskc\",\"name\":\"vkocrcjdkwtn\",\"type\":\"xbnjbiksq\"}],\"nextLink\":\"lssai\"}")
+            "{\"value\":[{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"idokgjlj\",\"name\":{\"value\":\"gvcl\",\"localizedValue\":\"gsncghkjeszz\"},\"resourceType\":\"ijhtxf\",\"quotaPeriod\":\"xbf\",\"isQuotaApplicable\":true,\"properties\":\"dataeh\"},\"id\":\"pvecxgodeb\",\"name\":\"qkkrb\",\"type\":\"pukgriwflzlfb\"},{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"zycispn\",\"name\":{\"value\":\"hmgkbrpyy\",\"localizedValue\":\"ibnuqqkpik\"},\"resourceType\":\"rgvtqag\",\"quotaPeriod\":\"uynhijg\",\"isQuotaApplicable\":false,\"properties\":\"datafsiarbutr\"},\"id\":\"vpnazzm\",\"name\":\"jrunmpxtt\",\"type\":\"bh\"}],\"nextLink\":\"nlankxmyskpb\"}")
             .toObject(QuotaLimits.class);
-        Assertions.assertEquals("oacctaza", model.value().get(0).properties().name().value());
-        Assertions.assertEquals("hbcryffdfdosyge", model.value().get(0).properties().resourceType());
-        Assertions.assertEquals("lssai", model.nextLink());
+        Assertions.assertEquals("gvcl", model.value().get(0).properties().name().value());
+        Assertions.assertEquals("ijhtxf", model.value().get(0).properties().resourceType());
+        Assertions.assertEquals("nlankxmyskpb", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QuotaLimits model = new QuotaLimits().withValue(Arrays.asList(
             new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
-                .withName(new ResourceName().withValue("oacctaza")).withResourceType("hbcryffdfdosyge")
-                .withProperties("datahlxaolthqtr")),
+                .withName(new ResourceName().withValue("gvcl"))
+                .withResourceType("ijhtxf")
+                .withProperties("dataeh")),
             new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
-                .withName(new ResourceName().withValue("jkjlxofpdvhpfx")).withResourceType("ayhuy")
-                .withProperties("datainuvamiheogn")),
-            new CurrentQuotaLimitBaseInner().withProperties(
-                new QuotaProperties().withLimit(new LimitJsonObject()).withName(new ResourceName().withValue("emv"))
-                    .withResourceType("xqeofjaeqjhqjba").withProperties("datazgcwrw"))))
-            .withNextLink("lssai");
+                .withName(new ResourceName().withValue("hmgkbrpyy"))
+                .withResourceType("rgvtqag")
+                .withProperties("datafsiarbutr"))))
+            .withNextLink("nlankxmyskpb");
         model = BinaryData.fromObject(model).toObject(QuotaLimits.class);
-        Assertions.assertEquals("oacctaza", model.value().get(0).properties().name().value());
-        Assertions.assertEquals("hbcryffdfdosyge", model.value().get(0).properties().resourceType());
-        Assertions.assertEquals("lssai", model.nextLink());
+        Assertions.assertEquals("gvcl", model.value().get(0).properties().name().value());
+        Assertions.assertEquals("ijhtxf", model.value().get(0).properties().resourceType());
+        Assertions.assertEquals("nlankxmyskpb", model.nextLink());
     }
 }

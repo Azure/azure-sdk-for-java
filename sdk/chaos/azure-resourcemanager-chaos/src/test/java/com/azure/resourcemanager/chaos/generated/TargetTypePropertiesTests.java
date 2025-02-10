@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.fluent.models.TargetTypeProperties;
 public final class TargetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"dmjsjqb\",\"description\":\"hyxxrwlycoduhpk\",\"propertiesSchema\":\"gymare\",\"resourceTypes\":[\"jxqugjhky\"]}")
-                .toObject(TargetTypeProperties.class);
+        TargetTypeProperties model = BinaryData.fromString(
+            "{\"displayName\":\"iodkooebwnujhem\",\"description\":\"bvdkcrodtjin\",\"propertiesSchema\":\"jlfltkacjvefkdlf\",\"resourceTypes\":[\"ggkfpagaowpul\",\"qblylsyxkqj\"]}")
+            .toObject(TargetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test

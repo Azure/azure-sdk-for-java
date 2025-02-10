@@ -6,43 +6,47 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the source code repository. */
+/**
+ * The properties of the source code repository.
+ */
 @Fluent
-public final class SourceProperties {
+public final class SourceProperties implements JsonSerializable<SourceProperties> {
     /*
      * The type of source control service.
      */
-    @JsonProperty(value = "sourceControlType", required = true)
     private SourceControlType sourceControlType;
 
     /*
      * The full URL to the source code repository
      */
-    @JsonProperty(value = "repositoryUrl", required = true)
     private String repositoryUrl;
 
     /*
      * The branch name of the source code.
      */
-    @JsonProperty(value = "branch")
     private String branch;
 
     /*
      * The authorization properties for accessing the source code repository and to set up
      * webhooks for notifications.
      */
-    @JsonProperty(value = "sourceControlAuthProperties")
     private AuthInfo sourceControlAuthProperties;
 
-    /** Creates an instance of SourceProperties class. */
+    /**
+     * Creates an instance of SourceProperties class.
+     */
     public SourceProperties() {
     }
 
     /**
      * Get the sourceControlType property: The type of source control service.
-     *
+     * 
      * @return the sourceControlType value.
      */
     public SourceControlType sourceControlType() {
@@ -51,7 +55,7 @@ public final class SourceProperties {
 
     /**
      * Set the sourceControlType property: The type of source control service.
-     *
+     * 
      * @param sourceControlType the sourceControlType value to set.
      * @return the SourceProperties object itself.
      */
@@ -62,7 +66,7 @@ public final class SourceProperties {
 
     /**
      * Get the repositoryUrl property: The full URL to the source code repository.
-     *
+     * 
      * @return the repositoryUrl value.
      */
     public String repositoryUrl() {
@@ -71,7 +75,7 @@ public final class SourceProperties {
 
     /**
      * Set the repositoryUrl property: The full URL to the source code repository.
-     *
+     * 
      * @param repositoryUrl the repositoryUrl value to set.
      * @return the SourceProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class SourceProperties {
 
     /**
      * Get the branch property: The branch name of the source code.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -91,7 +95,7 @@ public final class SourceProperties {
 
     /**
      * Set the branch property: The branch name of the source code.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SourceProperties object itself.
      */
@@ -102,8 +106,9 @@ public final class SourceProperties {
 
     /**
      * Get the sourceControlAuthProperties property: The authorization properties for accessing the source code
-     * repository and to set up webhooks for notifications.
-     *
+     * repository and to set up
+     * webhooks for notifications.
+     * 
      * @return the sourceControlAuthProperties value.
      */
     public AuthInfo sourceControlAuthProperties() {
@@ -112,8 +117,9 @@ public final class SourceProperties {
 
     /**
      * Set the sourceControlAuthProperties property: The authorization properties for accessing the source code
-     * repository and to set up webhooks for notifications.
-     *
+     * repository and to set up
+     * webhooks for notifications.
+     * 
      * @param sourceControlAuthProperties the sourceControlAuthProperties value to set.
      * @return the SourceProperties object itself.
      */
@@ -124,20 +130,18 @@ public final class SourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceControlType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceControlType in model SourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceControlType in model SourceProperties"));
         }
         if (repositoryUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property repositoryUrl in model SourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property repositoryUrl in model SourceProperties"));
         }
         if (sourceControlAuthProperties() != null) {
             sourceControlAuthProperties().validate();
@@ -145,4 +149,51 @@ public final class SourceProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceControlType",
+            this.sourceControlType == null ? null : this.sourceControlType.toString());
+        jsonWriter.writeStringField("repositoryUrl", this.repositoryUrl);
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeJsonField("sourceControlAuthProperties", this.sourceControlAuthProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SourceProperties.
+     */
+    public static SourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceProperties deserializedSourceProperties = new SourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceControlType".equals(fieldName)) {
+                    deserializedSourceProperties.sourceControlType = SourceControlType.fromString(reader.getString());
+                } else if ("repositoryUrl".equals(fieldName)) {
+                    deserializedSourceProperties.repositoryUrl = reader.getString();
+                } else if ("branch".equals(fieldName)) {
+                    deserializedSourceProperties.branch = reader.getString();
+                } else if ("sourceControlAuthProperties".equals(fieldName)) {
+                    deserializedSourceProperties.sourceControlAuthProperties = AuthInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceProperties;
+        });
+    }
 }

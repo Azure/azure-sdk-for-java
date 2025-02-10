@@ -4,7 +4,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 
 /** Request payload for reclassifying jobs. */
@@ -20,7 +19,6 @@ public final class ReclassifyJobOptions {
      * Creates an instance of ReclassifyJobOptionsInternal class.
      * @param jobId jobId.
      */
-    @Generated
     public ReclassifyJobOptions(String jobId) {
         this.jobId = jobId;
     }

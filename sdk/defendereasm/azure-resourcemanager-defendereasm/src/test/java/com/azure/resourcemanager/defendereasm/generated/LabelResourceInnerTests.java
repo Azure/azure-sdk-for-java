@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LabelResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabelResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"rl\",\"color\":\"ugjzzdatqxhocdge\",\"provisioningState\":\"Accepted\"},\"id\":\"phut\",\"name\":\"cndvkaozwyiftyhx\",\"type\":\"urokft\"}")
-                .toObject(LabelResourceInner.class);
+        LabelResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"rl\",\"color\":\"ugjzzdatqxhocdge\",\"provisioningState\":\"Accepted\"},\"id\":\"phut\",\"name\":\"cndvkaozwyiftyhx\",\"type\":\"urokft\"}")
+            .toObject(LabelResourceInner.class);
         Assertions.assertEquals("rl", model.displayName());
         Assertions.assertEquals("ugjzzdatqxhocdge", model.color());
     }

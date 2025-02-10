@@ -6,45 +6,51 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The instance view of a resource.
  */
 @Fluent
-public final class AvailabilitySetProperties {
+public final class AvailabilitySetProperties implements JsonSerializable<AvailabilitySetProperties> {
     /*
      * Update Domain count.
      */
-    @JsonProperty(value = "platformUpdateDomainCount")
     private Integer platformUpdateDomainCount;
 
     /*
      * Fault Domain count.
      */
-    @JsonProperty(value = "platformFaultDomainCount")
     private Integer platformFaultDomainCount;
 
     /*
      * A list of references to all virtual machines in the availability set.
      */
-    @JsonProperty(value = "virtualMachines")
     private List<SubResource> virtualMachines;
 
     /*
      * Specifies information about the proximity placement group that the availability set should be assigned to.
      * Minimum api-version: 2018-04-01.
      */
-    @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<InstanceViewStatus> statuses;
+
+    /*
+     * Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets Scheduled Event related configurations
+     * for the availability set.
+     */
+    private ScheduledEventsPolicy scheduledEventsPolicy;
 
     /**
      * Creates an instance of AvailabilitySetProperties class.
@@ -144,6 +150,28 @@ public final class AvailabilitySetProperties {
     }
 
     /**
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.scheduledEventsPolicy;
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the AvailabilitySetProperties object itself.
+     */
+    public AvailabilitySetProperties withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        this.scheduledEventsPolicy = scheduledEventsPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -152,5 +180,65 @@ public final class AvailabilitySetProperties {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+        if (scheduledEventsPolicy() != null) {
+            scheduledEventsPolicy().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("platformUpdateDomainCount", this.platformUpdateDomainCount);
+        jsonWriter.writeNumberField("platformFaultDomainCount", this.platformFaultDomainCount);
+        jsonWriter.writeArrayField("virtualMachines", this.virtualMachines,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("proximityPlacementGroup", this.proximityPlacementGroup);
+        jsonWriter.writeJsonField("scheduledEventsPolicy", this.scheduledEventsPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailabilitySetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailabilitySetProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailabilitySetProperties.
+     */
+    public static AvailabilitySetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailabilitySetProperties deserializedAvailabilitySetProperties = new AvailabilitySetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("platformUpdateDomainCount".equals(fieldName)) {
+                    deserializedAvailabilitySetProperties.platformUpdateDomainCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("platformFaultDomainCount".equals(fieldName)) {
+                    deserializedAvailabilitySetProperties.platformFaultDomainCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("virtualMachines".equals(fieldName)) {
+                    List<SubResource> virtualMachines = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedAvailabilitySetProperties.virtualMachines = virtualMachines;
+                } else if ("proximityPlacementGroup".equals(fieldName)) {
+                    deserializedAvailabilitySetProperties.proximityPlacementGroup = SubResource.fromJson(reader);
+                } else if ("statuses".equals(fieldName)) {
+                    List<InstanceViewStatus> statuses
+                        = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
+                    deserializedAvailabilitySetProperties.statuses = statuses;
+                } else if ("scheduledEventsPolicy".equals(fieldName)) {
+                    deserializedAvailabilitySetProperties.scheduledEventsPolicy
+                        = ScheduledEventsPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailabilitySetProperties;
+        });
     }
 }

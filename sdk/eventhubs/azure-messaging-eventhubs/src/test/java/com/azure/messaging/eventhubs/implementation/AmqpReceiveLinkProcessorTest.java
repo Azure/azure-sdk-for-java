@@ -10,6 +10,8 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
@@ -49,9 +51,11 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class AmqpReceiveLinkProcessorTest {
+    private static final ClientLogger LOGGER = new ClientLogger(AmqpReceiveLinkProcessorTest.class);
+
     private static final int PREFETCH = 5;
-    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION =
-        new EventHubsConsumerInstrumentation(null, null, "hostname", "hubname", "$Default", false);
+    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION
+        = new EventHubsConsumerInstrumentation(null, null, "hostname", "hubname", "$Default", false);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
 
     @Mock
@@ -83,7 +87,8 @@ class AmqpReceiveLinkProcessorTest {
 
         when(retryPolicy.getRetryOptions()).thenReturn(new AmqpRetryOptions());
 
-        linkProcessor = new AmqpReceiveLinkProcessor("entity-path", PREFETCH, "partition", parentConnection, DEFAULT_INSTRUMENTATION);
+        linkProcessor = new AmqpReceiveLinkProcessor("entity-path", PREFETCH, "partition", parentConnection,
+            DEFAULT_INSTRUMENTATION);
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor.flux());
         when(link1.receive()).thenReturn(messageProcessor.flux());
@@ -101,12 +106,12 @@ class AmqpReceiveLinkProcessorTest {
 
     @Test
     void constructor() {
-        Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(
-            "entity-path", PREFETCH,  "partition", null, DEFAULT_INSTRUMENTATION));
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new AmqpReceiveLinkProcessor(
-            "ENTITY", -1, "partition", parentConnection, DEFAULT_INSTRUMENTATION));
-        Assertions.assertThrows(NullPointerException.class, () -> new AmqpReceiveLinkProcessor(
-            null, PREFETCH, "partition", parentConnection, DEFAULT_INSTRUMENTATION));
+        Assertions.assertThrows(NullPointerException.class,
+            () -> new AmqpReceiveLinkProcessor("entity-path", PREFETCH, "partition", null, DEFAULT_INSTRUMENTATION));
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new AmqpReceiveLinkProcessor("ENTITY", -1, "partition", parentConnection, DEFAULT_INSTRUMENTATION));
+        Assertions.assertThrows(NullPointerException.class,
+            () -> new AmqpReceiveLinkProcessor(null, PREFETCH, "partition", parentConnection, DEFAULT_INSTRUMENTATION));
     }
 
     /**
@@ -119,20 +124,15 @@ class AmqpReceiveLinkProcessorTest {
         when(link1.getEndpointStates()).thenReturn(endpoints.flux());
         when(link1.getCredits()).thenReturn(PREFETCH);
 
-        AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
-            .subscribeWith(linkProcessor);
+        AmqpReceiveLinkProcessor processor
+            = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1)).subscribeWith(linkProcessor);
 
         // Act & Assert
-        StepVerifier.create(processor)
-            .then(() -> {
-                endpoints.next(AmqpEndpointState.ACTIVE);
-                messageProcessor.next(message1);
-                messageProcessor.next(message2);
-            })
-            .expectNext(message1)
-            .expectNext(message2)
-            .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(processor).then(() -> {
+            endpoints.next(AmqpEndpointState.ACTIVE);
+            messageProcessor.next(message1);
+            messageProcessor.next(message2);
+        }).expectNext(message1).expectNext(message2).thenCancel().verify(DEFAULT_TIMEOUT);
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -158,8 +158,8 @@ class AmqpReceiveLinkProcessorTest {
         final int backpressure = 15;
         // Because one message was emitted.
         final int expected = backpressure - 1;
-        AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
-            .subscribeWith(linkProcessor);
+        AmqpReceiveLinkProcessor processor
+            = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1)).subscribeWith(linkProcessor);
 
         // Act & Assert
         StepVerifier.create(processor, backpressure)
@@ -184,16 +184,13 @@ class AmqpReceiveLinkProcessorTest {
     void respectsBackpressureLessThanMinimum() {
         // Arrange
         final int backpressure = -1;
-        AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
-            .subscribeWith(linkProcessor);
+        AmqpReceiveLinkProcessor processor
+            = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1)).subscribeWith(linkProcessor);
         when(link1.getCredits()).thenReturn(1);
 
         // Act
-        processor.subscribe(
-            e -> System.out.println("message: " + e),
-            Assertions::fail,
-            () -> System.out.println("Complete."),
-            s -> s.request(backpressure));
+        processor.subscribe(e -> LOGGER.log(LogLevel.VERBOSE, () -> "message: " + e), Assertions::fail,
+            () -> LOGGER.log(LogLevel.VERBOSE, () -> "Complete."), s -> s.request(backpressure));
 
         // Assert
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
@@ -212,17 +209,15 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void onSubscribingTwiceThrowsException() {
         // Arrange
-        AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
-            .subscribeWith(linkProcessor);
+        AmqpReceiveLinkProcessor processor
+            = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1)).subscribeWith(linkProcessor);
 
         // Subscribing first time
         processor.subscribe();
 
         // Act & Assert
         // The second time we subscribe, we expect that it'll throw.
-        StepVerifier.create(processor)
-            .expectError(IllegalStateException.class)
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(processor).expectError(IllegalStateException.class).verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -231,7 +226,7 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void newLinkOnClose() {
         // Arrange
-        final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2, link3};
+        final AmqpReceiveLink[] connections = new AmqpReceiveLink[] { link1, link2, link3 };
 
         final Message message3 = mock(Message.class);
         final Message message4 = mock(Message.class);
@@ -255,18 +250,13 @@ class AmqpReceiveLinkProcessorTest {
         when(link3.getCredits()).thenReturn(1);
 
         // Act & Assert
-        StepVerifier.create(processor)
-            .then(() -> messageProcessor.next(message1))
-            .expectNext(message1)
-            .then(() -> {
-                // Close that first link.
-                endpointProcessor.complete();
-            })
-            .expectNext(message2)
-            .then(() -> {
-                // Close connection 2
-                connection2Endpoints.complete();
-            })
+        StepVerifier.create(processor).then(() -> messageProcessor.next(message1)).expectNext(message1).then(() -> {
+            // Close that first link.
+            endpointProcessor.complete();
+        }).expectNext(message2).then(() -> {
+            // Close connection 2
+            connection2Endpoints.complete();
+        })
             .expectNext(message3)
             .expectNext(message4)
             .then(() -> processor.cancel())
@@ -284,7 +274,7 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void nonRetryableError() {
         // Arrange
-        final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2};
+        final AmqpReceiveLink[] connections = new AmqpReceiveLink[] { link1, link2 };
 
         final AmqpReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
         final Message message3 = mock(Message.class);
@@ -293,29 +283,23 @@ class AmqpReceiveLinkProcessorTest {
         when(link2.receive()).thenReturn(Flux.just(message2, message3));
         when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
-        final AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.ARGUMENT_ERROR, "Non"
-            + "-retryable-error",
-            new AmqpErrorContext("test-namespace"));
+        final AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.ARGUMENT_ERROR,
+            "Non" + "-retryable-error", new AmqpErrorContext("test-namespace"));
         when(retryPolicy.calculateRetryDelay(amqpException, 1)).thenReturn(null);
 
         // Act & Assert
         // Verify that we get the first connection.
-        StepVerifier.create(processor)
-            .then(() -> {
-                endpointProcessor.next(AmqpEndpointState.ACTIVE);
-                messageProcessor.next(message1);
-            })
-            .expectNext(message1)
-            .then(() -> endpointProcessor.error(amqpException))
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof AmqpException);
-                AmqpException exception = (AmqpException) error;
+        StepVerifier.create(processor).then(() -> {
+            endpointProcessor.next(AmqpEndpointState.ACTIVE);
+            messageProcessor.next(message1);
+        }).expectNext(message1).then(() -> endpointProcessor.error(amqpException)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof AmqpException);
+            AmqpException exception = (AmqpException) error;
 
-                assertFalse(exception.isTransient());
-                Assertions.assertEquals(amqpException.getErrorCondition(), exception.getErrorCondition());
-                Assertions.assertEquals(amqpException.getMessage(), exception.getMessage());
-            })
-            .verify(DEFAULT_TIMEOUT);
+            assertFalse(exception.isTransient());
+            Assertions.assertEquals(amqpException.getErrorCondition(), exception.getErrorCondition());
+            Assertions.assertEquals(amqpException.getMessage(), exception.getMessage());
+        }).verify(DEFAULT_TIMEOUT);
 
         assertTrue(processor.isTerminated());
         assertTrue(processor.hasError());
@@ -360,7 +344,7 @@ class AmqpReceiveLinkProcessorTest {
     @Test
     void doNotRetryWhenParentConnectionIsClosed() {
         // Arrange
-        final AmqpReceiveLink[] connections = new AmqpReceiveLink[]{link1, link2};
+        final AmqpReceiveLink[] connections = new AmqpReceiveLink[] { link1, link2 };
 
         final AmqpReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
 
@@ -373,26 +357,19 @@ class AmqpReceiveLinkProcessorTest {
         when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(processor)
-            .then(() -> {
-                endpointProcessor.next(AmqpEndpointState.ACTIVE);
-                messageProcessor.next(message1);
-            })
-            .expectNext(message1)
-            .then(() -> endpointProcessor.complete())
-            .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(processor).then(() -> {
+            endpointProcessor.next(AmqpEndpointState.ACTIVE);
+            messageProcessor.next(message1);
+        }).expectNext(message1).then(() -> endpointProcessor.complete()).thenCancel().verify(DEFAULT_TIMEOUT);
 
         assertTrue(processor.isTerminated());
     }
 
     @Test
     void requiresNonNull() {
-        Assertions.assertThrows(NullPointerException.class,
-            () -> linkProcessor.onNext(null));
+        Assertions.assertThrows(NullPointerException.class, () -> linkProcessor.onNext(null));
 
-        Assertions.assertThrows(NullPointerException.class,
-            () -> linkProcessor.onError(null));
+        Assertions.assertThrows(NullPointerException.class, () -> linkProcessor.onError(null));
     }
 
     /**
@@ -402,22 +379,17 @@ class AmqpReceiveLinkProcessorTest {
     void stopsEmittingAfterBackPressure() {
         // Arrange
         final int backpressure = 5;
-        AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
-            .subscribeWith(linkProcessor);
+        AmqpReceiveLinkProcessor processor
+            = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1)).subscribeWith(linkProcessor);
 
         when(link1.getCredits()).thenReturn(0, 5, 4, 3, 2, 1);
 
         // Act & Assert
-        StepVerifier.create(processor, backpressure)
-            .then(() -> {
-                for (int i = 0; i < backpressure + 2; i++) {
-                    messageProcessor.next(message2);
-                }
-            })
-            .expectNextCount(backpressure)
-            .thenAwait(Duration.ofSeconds(2))
-            .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(processor, backpressure).then(() -> {
+            for (int i = 0; i < backpressure + 2; i++) {
+                messageProcessor.next(message2);
+            }
+        }).expectNextCount(backpressure).thenAwait(Duration.ofSeconds(2)).thenCancel().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -428,12 +400,11 @@ class AmqpReceiveLinkProcessorTest {
         when(link1.getCredits()).thenReturn(PREFETCH);
 
         // Act & Assert
-        StepVerifier.create(processor)
-            .then(() -> {
-                endpointProcessor.next(AmqpEndpointState.ACTIVE);
-                messageProcessor.next(message1);
-                messageProcessor.next(message2);
-            })
+        StepVerifier.create(processor).then(() -> {
+            endpointProcessor.next(AmqpEndpointState.ACTIVE);
+            messageProcessor.next(message1);
+            messageProcessor.next(message2);
+        })
             .expectNext(message1)
             .expectNext(message2)
             .then(() -> endpointProcessor.complete())
@@ -463,16 +434,11 @@ class AmqpReceiveLinkProcessorTest {
         when(link1.getCredits()).thenReturn(PREFETCH);
 
         // Act & Assert
-        StepVerifier.create(processor)
-            .then(() -> {
-                endpointProcessor.next(AmqpEndpointState.ACTIVE);
-                messageProcessor.next(message1);
-                messageProcessor.next(message2);
-            })
-            .expectNext(message1)
-            .expectNext(message2)
-            .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(processor).then(() -> {
+            endpointProcessor.next(AmqpEndpointState.ACTIVE);
+            messageProcessor.next(message1);
+            messageProcessor.next(message2);
+        }).expectNext(message1).expectNext(message2).thenCancel().verify(DEFAULT_TIMEOUT);
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -502,17 +468,13 @@ class AmqpReceiveLinkProcessorTest {
         when(link1.getCredits()).thenReturn(0, PREFETCH);
 
         // Act & Assert
-        StepVerifier.create(processor, backpressure)
-            .then(() -> {
-                endpointProcessor.next(AmqpEndpointState.ACTIVE);
-                final int emitted = backpressure + 5;
-                for (int i = 0; i < emitted; i++) {
-                    messageProcessor.next(mock(Message.class));
-                }
-            })
-            .expectNextCount(backpressure)
-            .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(processor, backpressure).then(() -> {
+            endpointProcessor.next(AmqpEndpointState.ACTIVE);
+            final int emitted = backpressure + 5;
+            for (int i = 0; i < emitted; i++) {
+                messageProcessor.next(mock(Message.class));
+            }
+        }).expectNextCount(backpressure).thenCancel().verify(DEFAULT_TIMEOUT);
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -541,31 +503,22 @@ class AmqpReceiveLinkProcessorTest {
         final int nextRequest = 11;
 
         // Act & Assert
-        StepVerifier.create(processor, backpressure)
-            .then(() -> {
-                endpointProcessor.next(AmqpEndpointState.ACTIVE);
-                for (int i = 0; i < backpressure; i++) {
-                    messageProcessor.next(mock(Message.class));
-                }
-            })
-            .expectNextCount(backpressure)
-            .then(() -> {
-                final Supplier<Integer> integerSupplier = creditListener.get();
-                assertNotNull(integerSupplier);
-                // Invoking this once. Should return a value and notify that there are no credits left on the link.
-                final int messages = integerSupplier.get();
-                System.out.println("Messages: " + messages);
-            })
-            .expectNoEvent(Duration.ofSeconds(1))
-            .thenRequest(nextRequest)
-            .then(() -> {
-                for (int i = 0; i < nextRequest; i++) {
-                    messageProcessor.next(mock(Message.class));
-                }
-            })
-            .expectNextCount(nextRequest)
-            .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(processor, backpressure).then(() -> {
+            endpointProcessor.next(AmqpEndpointState.ACTIVE);
+            for (int i = 0; i < backpressure; i++) {
+                messageProcessor.next(mock(Message.class));
+            }
+        }).expectNextCount(backpressure).then(() -> {
+            final Supplier<Integer> integerSupplier = creditListener.get();
+            assertNotNull(integerSupplier);
+            // Invoking this once. Should return a value and notify that there are no credits left on the link.
+            final int messages = integerSupplier.get();
+            LOGGER.log(LogLevel.VERBOSE, () -> "Messages: " + messages);
+        }).expectNoEvent(Duration.ofSeconds(1)).thenRequest(nextRequest).then(() -> {
+            for (int i = 0; i < nextRequest; i++) {
+                messageProcessor.next(mock(Message.class));
+            }
+        }).expectNextCount(nextRequest).thenCancel().verify(DEFAULT_TIMEOUT);
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());
@@ -586,9 +539,8 @@ class AmqpReceiveLinkProcessorTest {
                     final int index = counter.getAndIncrement();
 
                     if (index == links.length) {
-                        emitter.error(new RuntimeException(String.format(
-                            "Cannot emit more. Index: %s. # of Connections: %s",
-                            index, links.length)));
+                        emitter.error(new RuntimeException(
+                            String.format("Cannot emit more. Index: %s. # of Connections: %s", index, links.length)));
                         break;
                     }
 

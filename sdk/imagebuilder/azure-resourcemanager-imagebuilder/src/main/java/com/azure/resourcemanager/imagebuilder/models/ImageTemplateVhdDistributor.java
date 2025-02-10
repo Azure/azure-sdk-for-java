@@ -5,31 +5,49 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Distribute via VHD in a storage account. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("VHD")
+/**
+ * Distribute via VHD in a storage account.
+ */
 @Fluent
 public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor {
     /*
-     * Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty string) in which case
-     * VHD would be published to the storage account in the staging resource group.
+     * Type of distribution.
      */
-    @JsonProperty(value = "uri")
+    private String type = "VHD";
+
+    /*
+     * Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty string) in which case VHD
+     * would be published to the storage account in the staging resource group.
+     */
     private String uri;
 
-    /** Creates an instance of ImageTemplateVhdDistributor class. */
+    /**
+     * Creates an instance of ImageTemplateVhdDistributor class.
+     */
     public ImageTemplateVhdDistributor() {
+    }
+
+    /**
+     * Get the type property: Type of distribution.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the uri property: Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty
      * string) in which case VHD would be published to the storage account in the staging resource group.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -39,7 +57,7 @@ public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor 
     /**
      * Set the uri property: Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty
      * string) in which case VHD would be published to the storage account in the staging resource group.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ImageTemplateVhdDistributor object itself.
      */
@@ -48,14 +66,18 @@ public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateVhdDistributor withRunOutputName(String runOutputName) {
         super.withRunOutputName(runOutputName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateVhdDistributor withArtifactTags(Map<String, String> artifactTags) {
         super.withArtifactTags(artifactTags);
@@ -64,11 +86,64 @@ public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (runOutputName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property runOutputName in model ImageTemplateVhdDistributor"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateVhdDistributor.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("runOutputName", runOutputName());
+        jsonWriter.writeMapField("artifactTags", artifactTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("uri", this.uri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateVhdDistributor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateVhdDistributor if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageTemplateVhdDistributor.
+     */
+    public static ImageTemplateVhdDistributor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateVhdDistributor deserializedImageTemplateVhdDistributor = new ImageTemplateVhdDistributor();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runOutputName".equals(fieldName)) {
+                    deserializedImageTemplateVhdDistributor.withRunOutputName(reader.getString());
+                } else if ("artifactTags".equals(fieldName)) {
+                    Map<String, String> artifactTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedImageTemplateVhdDistributor.withArtifactTags(artifactTags);
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateVhdDistributor.type = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedImageTemplateVhdDistributor.uri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateVhdDistributor;
+        });
     }
 }

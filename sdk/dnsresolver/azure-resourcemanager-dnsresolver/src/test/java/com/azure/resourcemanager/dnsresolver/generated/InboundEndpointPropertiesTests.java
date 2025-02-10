@@ -11,37 +11,30 @@ import com.azure.resourcemanager.dnsresolver.models.IpAllocationMethod;
 import com.azure.resourcemanager.dnsresolver.models.IpConfiguration;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class InboundEndpointPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        InboundEndpointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"ipConfigurations\":[{\"subnet\":{\"id\":\"fwvuk\"},\"privateIpAddress\":\"audccsnhs\",\"privateIpAllocationMethod\":\"Dynamic\"}],\"provisioningState\":\"Creating\",\"resourceGuid\":\"hkryhtn\"}")
-                .toObject(InboundEndpointProperties.class);
-        Assertions.assertEquals("fwvuk", model.ipConfigurations().get(0).subnet().id());
-        Assertions.assertEquals("audccsnhs", model.ipConfigurations().get(0).privateIpAddress());
-        Assertions
-            .assertEquals(IpAllocationMethod.DYNAMIC, model.ipConfigurations().get(0).privateIpAllocationMethod());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        InboundEndpointProperties model = BinaryData.fromString(
+            "{\"ipConfigurations\":[{\"subnet\":{\"id\":\"xvd\"},\"privateIpAddress\":\"jgrtfwvukxga\",\"privateIpAllocationMethod\":\"Static\"},{\"subnet\":{\"id\":\"snhsjcnyejhkryh\"},\"privateIpAddress\":\"apcz\",\"privateIpAllocationMethod\":\"Static\"}],\"provisioningState\":\"Creating\",\"resourceGuid\":\"emkkvnipjox\"}")
+            .toObject(InboundEndpointProperties.class);
+        Assertions.assertEquals("xvd", model.ipConfigurations().get(0).subnet().id());
+        Assertions.assertEquals("jgrtfwvukxga", model.ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals(IpAllocationMethod.STATIC, model.ipConfigurations().get(0).privateIpAllocationMethod());
     }
 
-    @Test
-    public void testSerialize() {
-        InboundEndpointProperties model =
-            new InboundEndpointProperties()
-                .withIpConfigurations(
-                    Arrays
-                        .asList(
-                            new IpConfiguration()
-                                .withSubnet(new SubResource().withId("fwvuk"))
-                                .withPrivateIpAddress("audccsnhs")
-                                .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        InboundEndpointProperties model = new InboundEndpointProperties().withIpConfigurations(Arrays.asList(
+            new IpConfiguration().withSubnet(new SubResource().withId("xvd"))
+                .withPrivateIpAddress("jgrtfwvukxga")
+                .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC),
+            new IpConfiguration().withSubnet(new SubResource().withId("snhsjcnyejhkryh"))
+                .withPrivateIpAddress("apcz")
+                .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)));
         model = BinaryData.fromObject(model).toObject(InboundEndpointProperties.class);
-        Assertions.assertEquals("fwvuk", model.ipConfigurations().get(0).subnet().id());
-        Assertions.assertEquals("audccsnhs", model.ipConfigurations().get(0).privateIpAddress());
-        Assertions
-            .assertEquals(IpAllocationMethod.DYNAMIC, model.ipConfigurations().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals("xvd", model.ipConfigurations().get(0).subnet().id());
+        Assertions.assertEquals("jgrtfwvukxga", model.ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals(IpAllocationMethod.STATIC, model.ipConfigurations().get(0).privateIpAllocationMethod());
     }
 }

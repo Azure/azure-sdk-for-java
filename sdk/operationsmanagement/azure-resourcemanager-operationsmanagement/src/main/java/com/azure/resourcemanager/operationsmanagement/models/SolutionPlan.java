@@ -5,38 +5,42 @@
 package com.azure.resourcemanager.operationsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Plan for solution object supported by the OperationsManagement resource provider. */
+/**
+ * Plan for solution object supported by the OperationsManagement resource provider.
+ */
 @Fluent
-public final class SolutionPlan {
+public final class SolutionPlan implements JsonSerializable<SolutionPlan> {
     /*
      * name of the solution to be created. For Microsoft published solution it should be in the format of
      * solutionType(workspaceName). SolutionType part is case sensitive. For third party solution, it can be anything.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Publisher name. For gallery solution, it is Microsoft.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * promotionCode, Not really used now, can you left as empty
      */
-    @JsonProperty(value = "promotionCode")
     private String promotionCode;
 
     /*
      * name of the solution to enabled/add. For Microsoft published gallery solution it should be in the format of
      * OMSGallery/<solutionType>. This is case sensitive
      */
-    @JsonProperty(value = "product")
     private String product;
 
-    /** Creates an instance of SolutionPlan class. */
+    /**
+     * Creates an instance of SolutionPlan class.
+     */
     public SolutionPlan() {
     }
 
@@ -44,7 +48,7 @@ public final class SolutionPlan {
      * Get the name property: name of the solution to be created. For Microsoft published solution it should be in the
      * format of solutionType(workspaceName). SolutionType part is case sensitive. For third party solution, it can be
      * anything.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +59,7 @@ public final class SolutionPlan {
      * Set the name property: name of the solution to be created. For Microsoft published solution it should be in the
      * format of solutionType(workspaceName). SolutionType part is case sensitive. For third party solution, it can be
      * anything.
-     *
+     * 
      * @param name the name value to set.
      * @return the SolutionPlan object itself.
      */
@@ -66,7 +70,7 @@ public final class SolutionPlan {
 
     /**
      * Get the publisher property: Publisher name. For gallery solution, it is Microsoft.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -75,7 +79,7 @@ public final class SolutionPlan {
 
     /**
      * Set the publisher property: Publisher name. For gallery solution, it is Microsoft.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the SolutionPlan object itself.
      */
@@ -86,7 +90,7 @@ public final class SolutionPlan {
 
     /**
      * Get the promotionCode property: promotionCode, Not really used now, can you left as empty.
-     *
+     * 
      * @return the promotionCode value.
      */
     public String promotionCode() {
@@ -95,7 +99,7 @@ public final class SolutionPlan {
 
     /**
      * Set the promotionCode property: promotionCode, Not really used now, can you left as empty.
-     *
+     * 
      * @param promotionCode the promotionCode value to set.
      * @return the SolutionPlan object itself.
      */
@@ -107,7 +111,7 @@ public final class SolutionPlan {
     /**
      * Get the product property: name of the solution to enabled/add. For Microsoft published gallery solution it should
      * be in the format of OMSGallery/&lt;solutionType&gt;. This is case sensitive.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -117,7 +121,7 @@ public final class SolutionPlan {
     /**
      * Set the product property: name of the solution to enabled/add. For Microsoft published gallery solution it should
      * be in the format of OMSGallery/&lt;solutionType&gt;. This is case sensitive.
-     *
+     * 
      * @param product the product value to set.
      * @return the SolutionPlan object itself.
      */
@@ -128,9 +132,54 @@ public final class SolutionPlan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("promotionCode", this.promotionCode);
+        jsonWriter.writeStringField("product", this.product);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SolutionPlan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SolutionPlan if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SolutionPlan.
+     */
+    public static SolutionPlan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SolutionPlan deserializedSolutionPlan = new SolutionPlan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSolutionPlan.name = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedSolutionPlan.publisher = reader.getString();
+                } else if ("promotionCode".equals(fieldName)) {
+                    deserializedSolutionPlan.promotionCode = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedSolutionPlan.product = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSolutionPlan;
+        });
     }
 }

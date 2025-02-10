@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the patch mode. */
+/**
+ * Specifies the patch mode.
+ */
 public final class PatchModeTypes extends ExpandableStringEnum<PatchModeTypes> {
-    /** Static value ImageDefault for PatchModeTypes. */
+    /**
+     * Static value ImageDefault for PatchModeTypes.
+     */
     public static final PatchModeTypes IMAGE_DEFAULT = fromString("ImageDefault");
 
-    /** Static value AutomaticByPlatform for PatchModeTypes. */
+    /**
+     * Static value AutomaticByPlatform for PatchModeTypes.
+     */
     public static final PatchModeTypes AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
-    /** Static value AutomaticByOS for PatchModeTypes. */
+    /**
+     * Static value AutomaticByOS for PatchModeTypes.
+     */
     public static final PatchModeTypes AUTOMATIC_BY_OS = fromString("AutomaticByOS");
 
-    /** Static value Manual for PatchModeTypes. */
+    /**
+     * Static value Manual for PatchModeTypes.
+     */
     public static final PatchModeTypes MANUAL = fromString("Manual");
 
     /**
      * Creates a new instance of PatchModeTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class PatchModeTypes extends ExpandableStringEnum<PatchModeTypes> {
 
     /**
      * Creates or finds a PatchModeTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PatchModeTypes.
      */
-    @JsonCreator
     public static PatchModeTypes fromString(String name) {
         return fromString(name, PatchModeTypes.class);
     }
 
     /**
      * Gets known PatchModeTypes values.
-     *
+     * 
      * @return known PatchModeTypes values.
      */
     public static Collection<PatchModeTypes> values() {

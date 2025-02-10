@@ -32,23 +32,29 @@ public final class OperationListResultTests {
     public void testSerialize() throws Exception {
         OperationListResult model = new OperationListResult().withValue(Arrays.asList(
             new OperationInner().withName("quvgjxpybczme")
-                .withDisplay(new OperationDisplay().withProvider("zopbsphrupidgs").withResource("bejhphoycmsxa")
-                    .withOperation("hdxbmtqio").withDescription("zehtbmu"))
+                .withDisplay(new OperationDisplay().withProvider("zopbsphrupidgs")
+                    .withResource("bejhphoycmsxa")
+                    .withOperation("hdxbmtqio")
+                    .withDescription("zehtbmu"))
                 .withOrigin("ownoizhw")
                 .withServiceSpecification(new ServiceSpecification()
                     .withMetricSpecifications(Arrays.asList(new MetricSpecification(), new MetricSpecification()))
                     .withLogSpecifications(Arrays.asList(new LogSpecification(), new LogSpecification()))),
             new OperationInner().withName("qijgkd")
-                .withDisplay(new OperationDisplay().withProvider("azlobcufpdznrbt").withResource("qjnqglhqgnufoooj")
-                    .withOperation("ifsqesaagdfmg").withDescription("lhjxr"))
+                .withDisplay(new OperationDisplay().withProvider("azlobcufpdznrbt")
+                    .withResource("qjnqglhqgnufoooj")
+                    .withOperation("ifsqesaagdfmg")
+                    .withDescription("lhjxr"))
                 .withOrigin("kwm")
                 .withServiceSpecification(new ServiceSpecification()
                     .withMetricSpecifications(Arrays.asList(new MetricSpecification(), new MetricSpecification()))
                     .withLogSpecifications(Arrays.asList(new LogSpecification(), new LogSpecification(),
                         new LogSpecification(), new LogSpecification()))),
             new OperationInner().withName("to")
-                .withDisplay(new OperationDisplay()
-                    .withProvider("a").withResource("ajpsquc").withOperation("o").withDescription("dkfo"))
+                .withDisplay(new OperationDisplay().withProvider("a")
+                    .withResource("ajpsquc")
+                    .withOperation("o")
+                    .withDescription("dkfo"))
                 .withOrigin("nygj")
                 .withServiceSpecification(new ServiceSpecification()
                     .withMetricSpecifications(

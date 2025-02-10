@@ -6,58 +6,39 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.GetSsisObjectMetadataRequest;
 import com.azure.resourcemanager.datafactory.models.SsisObjectMetadataListResponse;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationRuntimeObjectMetadatasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":1075337942816524885,\"name\":\"m\",\"description\":\"bodswgnglmllrxpx\"},{\"type\":\"SsisObjectMetadata\",\"id\":3298767872651639188,\"name\":\"yscjefapouwsyns\",\"description\":\"ndirdlehjz\"},{\"type\":\"SsisObjectMetadata\",\"id\":6434920934723993066,\"name\":\"hggvhco\",\"description\":\"eti\"}],\"nextLink\":\"tkeiram\"}";
+            = "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":8989974928153576075,\"name\":\"qn\",\"description\":\"mxitvmrq\"},{\"type\":\"SsisObjectMetadata\",\"id\":2339635829156681038,\"name\":\"cmuvskdvqyf\",\"description\":\"wxcabfrvjpfojh\"},{\"type\":\"SsisObjectMetadata\",\"id\":1740640778338465745,\"name\":\"qyohzhund\",\"description\":\"pdxfvjdfusuwght\"},{\"type\":\"SsisObjectMetadata\",\"id\":8786005440905854712,\"name\":\"hfeadedivadpc\",\"description\":\"qpm\"}],\"nextLink\":\"sdzfle\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SsisObjectMetadataListResponse response = manager.integrationRuntimeObjectMetadatas()
+            .getWithResponse("sd", "swozpm", "hdnx", new GetSsisObjectMetadataRequest().withMetadataPath("fesursb"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SsisObjectMetadataListResponse response
-            = manager.integrationRuntimeObjectMetadatas()
-                .getWithResponse("kd", "gr", "cltfkyqyiiujukc",
-                    new GetSsisObjectMetadataRequest().withMetadataPath("vp"), com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(1075337942816524885L, response.value().get(0).id());
-        Assertions.assertEquals("m", response.value().get(0).name());
-        Assertions.assertEquals("bodswgnglmllrxpx", response.value().get(0).description());
-        Assertions.assertEquals("tkeiram", response.nextLink());
+        Assertions.assertEquals(8989974928153576075L, response.value().get(0).id());
+        Assertions.assertEquals("qn", response.value().get(0).name());
+        Assertions.assertEquals("mxitvmrq", response.value().get(0).description());
+        Assertions.assertEquals("sdzfle", response.nextLink());
     }
 }

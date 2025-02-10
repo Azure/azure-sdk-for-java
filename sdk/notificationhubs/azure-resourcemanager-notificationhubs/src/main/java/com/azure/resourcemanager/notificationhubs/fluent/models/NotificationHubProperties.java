@@ -5,79 +5,78 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
 import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
 import com.azure.resourcemanager.notificationhubs.models.GcmCredential;
 import com.azure.resourcemanager.notificationhubs.models.MpnsCredential;
 import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** NotificationHub properties. */
+/**
+ * NotificationHub properties.
+ */
 @Fluent
-public final class NotificationHubProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationHubProperties.class);
-
+public final class NotificationHubProperties implements JsonSerializable<NotificationHubProperties> {
     /*
      * The NotificationHub name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The RegistrationTtl of the created NotificationHub
      */
-    @JsonProperty(value = "registrationTtl")
     private String registrationTtl;
 
     /*
      * The AuthorizationRules of the created NotificationHub
      */
-    @JsonProperty(value = "authorizationRules")
     private List<SharedAccessAuthorizationRuleProperties> authorizationRules;
 
     /*
      * The ApnsCredential of the created NotificationHub
      */
-    @JsonProperty(value = "apnsCredential")
     private ApnsCredential apnsCredential;
 
     /*
      * The WnsCredential of the created NotificationHub
      */
-    @JsonProperty(value = "wnsCredential")
     private WnsCredential wnsCredential;
 
     /*
      * The GcmCredential of the created NotificationHub
      */
-    @JsonProperty(value = "gcmCredential")
     private GcmCredential gcmCredential;
 
     /*
      * The MpnsCredential of the created NotificationHub
      */
-    @JsonProperty(value = "mpnsCredential")
     private MpnsCredential mpnsCredential;
 
     /*
      * The AdmCredential of the created NotificationHub
      */
-    @JsonProperty(value = "admCredential")
     private AdmCredential admCredential;
 
     /*
      * The BaiduCredential of the created NotificationHub
      */
-    @JsonProperty(value = "baiduCredential")
     private BaiduCredential baiduCredential;
 
     /**
+     * Creates an instance of NotificationHubProperties class.
+     */
+    public NotificationHubProperties() {
+    }
+
+    /**
      * Get the name property: The NotificationHub name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -86,7 +85,7 @@ public final class NotificationHubProperties {
 
     /**
      * Set the name property: The NotificationHub name.
-     *
+     * 
      * @param name the name value to set.
      * @return the NotificationHubProperties object itself.
      */
@@ -97,7 +96,7 @@ public final class NotificationHubProperties {
 
     /**
      * Get the registrationTtl property: The RegistrationTtl of the created NotificationHub.
-     *
+     * 
      * @return the registrationTtl value.
      */
     public String registrationTtl() {
@@ -106,7 +105,7 @@ public final class NotificationHubProperties {
 
     /**
      * Set the registrationTtl property: The RegistrationTtl of the created NotificationHub.
-     *
+     * 
      * @param registrationTtl the registrationTtl value to set.
      * @return the NotificationHubProperties object itself.
      */
@@ -117,7 +116,7 @@ public final class NotificationHubProperties {
 
     /**
      * Get the authorizationRules property: The AuthorizationRules of the created NotificationHub.
-     *
+     * 
      * @return the authorizationRules value.
      */
     public List<SharedAccessAuthorizationRuleProperties> authorizationRules() {
@@ -126,19 +125,19 @@ public final class NotificationHubProperties {
 
     /**
      * Set the authorizationRules property: The AuthorizationRules of the created NotificationHub.
-     *
+     * 
      * @param authorizationRules the authorizationRules value to set.
      * @return the NotificationHubProperties object itself.
      */
-    public NotificationHubProperties withAuthorizationRules(
-        List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
+    public NotificationHubProperties
+        withAuthorizationRules(List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
         this.authorizationRules = authorizationRules;
         return this;
     }
 
     /**
      * Get the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the apnsCredential value.
      */
     public ApnsCredential apnsCredential() {
@@ -147,7 +146,7 @@ public final class NotificationHubProperties {
 
     /**
      * Set the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
+     * 
      * @param apnsCredential the apnsCredential value to set.
      * @return the NotificationHubProperties object itself.
      */
@@ -158,7 +157,7 @@ public final class NotificationHubProperties {
 
     /**
      * Get the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the wnsCredential value.
      */
     public WnsCredential wnsCredential() {
@@ -167,7 +166,7 @@ public final class NotificationHubProperties {
 
     /**
      * Set the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
+     * 
      * @param wnsCredential the wnsCredential value to set.
      * @return the NotificationHubProperties object itself.
      */
@@ -178,7 +177,7 @@ public final class NotificationHubProperties {
 
     /**
      * Get the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
+     * 
      * @return the gcmCredential value.
      */
     public GcmCredential gcmCredential() {
@@ -187,7 +186,7 @@ public final class NotificationHubProperties {
 
     /**
      * Set the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
+     * 
      * @param gcmCredential the gcmCredential value to set.
      * @return the NotificationHubProperties object itself.
      */
@@ -198,7 +197,7 @@ public final class NotificationHubProperties {
 
     /**
      * Get the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
+     * 
      * @return the mpnsCredential value.
      */
     public MpnsCredential mpnsCredential() {
@@ -207,7 +206,7 @@ public final class NotificationHubProperties {
 
     /**
      * Set the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
+     * 
      * @param mpnsCredential the mpnsCredential value to set.
      * @return the NotificationHubProperties object itself.
      */
@@ -218,7 +217,7 @@ public final class NotificationHubProperties {
 
     /**
      * Get the admCredential property: The AdmCredential of the created NotificationHub.
-     *
+     * 
      * @return the admCredential value.
      */
     public AdmCredential admCredential() {
@@ -227,7 +226,7 @@ public final class NotificationHubProperties {
 
     /**
      * Set the admCredential property: The AdmCredential of the created NotificationHub.
-     *
+     * 
      * @param admCredential the admCredential value to set.
      * @return the NotificationHubProperties object itself.
      */
@@ -238,7 +237,7 @@ public final class NotificationHubProperties {
 
     /**
      * Get the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
+     * 
      * @return the baiduCredential value.
      */
     public BaiduCredential baiduCredential() {
@@ -247,7 +246,7 @@ public final class NotificationHubProperties {
 
     /**
      * Set the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
+     * 
      * @param baiduCredential the baiduCredential value to set.
      * @return the NotificationHubProperties object itself.
      */
@@ -258,7 +257,7 @@ public final class NotificationHubProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -283,5 +282,68 @@ public final class NotificationHubProperties {
         if (baiduCredential() != null) {
             baiduCredential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("registrationTtl", this.registrationTtl);
+        jsonWriter.writeArrayField("authorizationRules", this.authorizationRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("apnsCredential", this.apnsCredential);
+        jsonWriter.writeJsonField("wnsCredential", this.wnsCredential);
+        jsonWriter.writeJsonField("gcmCredential", this.gcmCredential);
+        jsonWriter.writeJsonField("mpnsCredential", this.mpnsCredential);
+        jsonWriter.writeJsonField("admCredential", this.admCredential);
+        jsonWriter.writeJsonField("baiduCredential", this.baiduCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationHubProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationHubProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotificationHubProperties.
+     */
+    public static NotificationHubProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationHubProperties deserializedNotificationHubProperties = new NotificationHubProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNotificationHubProperties.name = reader.getString();
+                } else if ("registrationTtl".equals(fieldName)) {
+                    deserializedNotificationHubProperties.registrationTtl = reader.getString();
+                } else if ("authorizationRules".equals(fieldName)) {
+                    List<SharedAccessAuthorizationRuleProperties> authorizationRules
+                        = reader.readArray(reader1 -> SharedAccessAuthorizationRuleProperties.fromJson(reader1));
+                    deserializedNotificationHubProperties.authorizationRules = authorizationRules;
+                } else if ("apnsCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.apnsCredential = ApnsCredential.fromJson(reader);
+                } else if ("wnsCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.wnsCredential = WnsCredential.fromJson(reader);
+                } else if ("gcmCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.gcmCredential = GcmCredential.fromJson(reader);
+                } else if ("mpnsCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.mpnsCredential = MpnsCredential.fromJson(reader);
+                } else if ("admCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.admCredential = AdmCredential.fromJson(reader);
+                } else if ("baiduCredential".equals(fieldName)) {
+                    deserializedNotificationHubProperties.baiduCredential = BaiduCredential.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationHubProperties;
+        });
     }
 }

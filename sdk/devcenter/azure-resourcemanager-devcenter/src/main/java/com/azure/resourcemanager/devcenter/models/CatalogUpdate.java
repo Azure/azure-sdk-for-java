@@ -5,34 +5,33 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.fluent.models.CatalogUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The catalog's properties for partial update. Properties not provided in the update request will not be changed. */
+/**
+ * The catalog's properties for partial update. Properties not provided in the update request will not be changed.
+ */
 @Fluent
-public final class CatalogUpdate {
+public final class CatalogUpdate implements JsonSerializable<CatalogUpdate> {
     /*
      * Catalog properties for update.
      */
-    @JsonProperty(value = "properties")
     private CatalogUpdateProperties innerProperties;
 
-    /*
-     * Resource tags.
+    /**
+     * Creates an instance of CatalogUpdate class.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
-
-    /** Creates an instance of CatalogUpdate class. */
     public CatalogUpdate() {
     }
 
     /**
      * Get the innerProperties property: Catalog properties for update.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CatalogUpdateProperties innerProperties() {
@@ -40,28 +39,8 @@ public final class CatalogUpdate {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the CatalogUpdate object itself.
-     */
-    public CatalogUpdate withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
      * Get the gitHub property: Properties for a GitHub catalog type.
-     *
+     * 
      * @return the gitHub value.
      */
     public GitCatalog gitHub() {
@@ -70,7 +49,7 @@ public final class CatalogUpdate {
 
     /**
      * Set the gitHub property: Properties for a GitHub catalog type.
-     *
+     * 
      * @param gitHub the gitHub value to set.
      * @return the CatalogUpdate object itself.
      */
@@ -84,7 +63,7 @@ public final class CatalogUpdate {
 
     /**
      * Get the adoGit property: Properties for an Azure DevOps catalog type.
-     *
+     * 
      * @return the adoGit value.
      */
     public GitCatalog adoGit() {
@@ -93,7 +72,7 @@ public final class CatalogUpdate {
 
     /**
      * Set the adoGit property: Properties for an Azure DevOps catalog type.
-     *
+     * 
      * @param adoGit the adoGit value to set.
      * @return the CatalogUpdate object itself.
      */
@@ -107,7 +86,7 @@ public final class CatalogUpdate {
 
     /**
      * Get the syncType property: Indicates the type of sync that is configured for the catalog.
-     *
+     * 
      * @return the syncType value.
      */
     public CatalogSyncType syncType() {
@@ -116,7 +95,7 @@ public final class CatalogUpdate {
 
     /**
      * Set the syncType property: Indicates the type of sync that is configured for the catalog.
-     *
+     * 
      * @param syncType the syncType value to set.
      * @return the CatalogUpdate object itself.
      */
@@ -129,13 +108,72 @@ public final class CatalogUpdate {
     }
 
     /**
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.innerProperties() == null ? null : this.innerProperties().tags();
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the CatalogUpdate object itself.
+     */
+    public CatalogUpdate withTags(Map<String, String> tags) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CatalogUpdateProperties();
+        }
+        this.innerProperties().withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CatalogUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CatalogUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CatalogUpdate.
+     */
+    public static CatalogUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CatalogUpdate deserializedCatalogUpdate = new CatalogUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedCatalogUpdate.innerProperties = CatalogUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCatalogUpdate;
+        });
     }
 }

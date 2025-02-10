@@ -6,77 +6,71 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for VpnSite.
  */
 @Fluent
-public final class VpnSiteProperties {
+public final class VpnSiteProperties implements JsonSerializable<VpnSiteProperties> {
     /*
      * The VirtualWAN to which the vpnSite belongs.
      */
-    @JsonProperty(value = "virtualWan")
     private SubResource virtualWan;
 
     /*
      * The device properties.
      */
-    @JsonProperty(value = "deviceProperties")
     private DeviceProperties deviceProperties;
 
     /*
      * The ip-address for the vpn-site.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * The key for vpn-site that can be used for connections.
      */
-    @JsonProperty(value = "siteKey")
     private String siteKey;
 
     /*
      * The AddressSpace that contains an array of IP address ranges.
      */
-    @JsonProperty(value = "addressSpace")
     private AddressSpace addressSpace;
 
     /*
      * The set of bgp properties.
      */
-    @JsonProperty(value = "bgpProperties")
     private BgpSettings bgpProperties;
 
     /*
      * The provisioning state of the VPN site resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * IsSecuritySite flag.
      */
-    @JsonProperty(value = "isSecuritySite")
     private Boolean isSecuritySite;
 
     /*
      * List of all vpn site links.
      */
-    @JsonProperty(value = "vpnSiteLinks")
     private List<VpnSiteLinkInner> vpnSiteLinks;
 
     /*
      * Office365 Policy.
      */
-    @JsonProperty(value = "o365Policy")
     private O365PolicyProperties o365Policy;
 
     /**
@@ -295,5 +289,69 @@ public final class VpnSiteProperties {
         if (o365Policy() != null) {
             o365Policy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("virtualWan", this.virtualWan);
+        jsonWriter.writeJsonField("deviceProperties", this.deviceProperties);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("siteKey", this.siteKey);
+        jsonWriter.writeJsonField("addressSpace", this.addressSpace);
+        jsonWriter.writeJsonField("bgpProperties", this.bgpProperties);
+        jsonWriter.writeBooleanField("isSecuritySite", this.isSecuritySite);
+        jsonWriter.writeArrayField("vpnSiteLinks", this.vpnSiteLinks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("o365Policy", this.o365Policy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnSiteProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnSiteProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnSiteProperties.
+     */
+    public static VpnSiteProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnSiteProperties deserializedVpnSiteProperties = new VpnSiteProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualWan".equals(fieldName)) {
+                    deserializedVpnSiteProperties.virtualWan = SubResource.fromJson(reader);
+                } else if ("deviceProperties".equals(fieldName)) {
+                    deserializedVpnSiteProperties.deviceProperties = DeviceProperties.fromJson(reader);
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedVpnSiteProperties.ipAddress = reader.getString();
+                } else if ("siteKey".equals(fieldName)) {
+                    deserializedVpnSiteProperties.siteKey = reader.getString();
+                } else if ("addressSpace".equals(fieldName)) {
+                    deserializedVpnSiteProperties.addressSpace = AddressSpace.fromJson(reader);
+                } else if ("bgpProperties".equals(fieldName)) {
+                    deserializedVpnSiteProperties.bgpProperties = BgpSettings.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVpnSiteProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("isSecuritySite".equals(fieldName)) {
+                    deserializedVpnSiteProperties.isSecuritySite = reader.getNullable(JsonReader::getBoolean);
+                } else if ("vpnSiteLinks".equals(fieldName)) {
+                    List<VpnSiteLinkInner> vpnSiteLinks
+                        = reader.readArray(reader1 -> VpnSiteLinkInner.fromJson(reader1));
+                    deserializedVpnSiteProperties.vpnSiteLinks = vpnSiteLinks;
+                } else if ("o365Policy".equals(fieldName)) {
+                    deserializedVpnSiteProperties.o365Policy = O365PolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnSiteProperties;
+        });
     }
 }

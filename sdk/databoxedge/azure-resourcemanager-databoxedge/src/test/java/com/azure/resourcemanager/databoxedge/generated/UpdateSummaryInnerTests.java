@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateSummaryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateSummaryInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"deviceVersionNumber\":\"ggkzzlvmbmpa\",\"friendlyDeviceVersionName\":\"odfvuefywsbp\",\"deviceLastScannedDateTime\":\"2021-09-23T19:46:07Z\",\"lastCompletedScanJobDateTime\":\"2021-11-18T13:44:32Z\",\"lastCompletedDownloadJobDateTime\":\"2021-05-07T00:25:25Z\",\"lastCompletedInstallJobDateTime\":\"2021-03-30T01:45:45Z\",\"totalNumberOfUpdatesAvailable\":192759077,\"totalNumberOfUpdatesPendingDownload\":1120299710,\"totalNumberOfUpdatesPendingInstall\":938616277,\"rebootBehavior\":\"RequiresReboot\",\"ongoingUpdateOperation\":\"Install\",\"inProgressDownloadJobId\":\"yzvqt\",\"inProgressInstallJobId\":\"ubex\",\"inProgressDownloadJobStartedDateTime\":\"2021-04-19T22:54:33Z\",\"inProgressInstallJobStartedDateTime\":\"2021-05-08T13:31:38Z\",\"updateTitles\":[\"ndjmquxvyp\",\"mg\"],\"totalUpdateSizeInBytes\":50.27622509760092},\"id\":\"whojvp\",\"name\":\"jqg\",\"type\":\"ysmocmbqfqvmkcxo\"}")
-                .toObject(UpdateSummaryInner.class);
-        Assertions.assertEquals("ggkzzlvmbmpa", model.deviceVersionNumber());
-        Assertions.assertEquals("odfvuefywsbp", model.friendlyDeviceVersionName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T19:46:07Z"), model.deviceLastScannedDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-18T13:44:32Z"), model.lastCompletedScanJobDateTime());
+        UpdateSummaryInner model = BinaryData.fromString(
+            "{\"properties\":{\"deviceVersionNumber\":\"yrnxxmueedn\",\"friendlyDeviceVersionName\":\"dvstkw\",\"deviceLastScannedDateTime\":\"2021-05-02T23:11:18Z\",\"lastCompletedScanJobDateTime\":\"2021-07-16T17:22:34Z\",\"lastCompletedDownloadJobDateTime\":\"2021-06-20T11:42:34Z\",\"lastCompletedInstallJobDateTime\":\"2021-08-29T08:31:09Z\",\"totalNumberOfUpdatesAvailable\":1261287466,\"totalNumberOfUpdatesPendingDownload\":149792642,\"totalNumberOfUpdatesPendingInstall\":895344141,\"rebootBehavior\":\"NeverReboots\",\"ongoingUpdateOperation\":\"None\",\"inProgressDownloadJobId\":\"vgpiohgwxrt\",\"inProgressInstallJobId\":\"dxepxgyq\",\"inProgressDownloadJobStartedDateTime\":\"2021-01-20T23:29:46Z\",\"inProgressInstallJobStartedDateTime\":\"2021-07-18T03:12:47Z\",\"updateTitles\":[\"pkukghi\",\"dblx\",\"wi\",\"fnjhfjxwmszkkfo\"],\"totalUpdateSizeInBytes\":56.35293478364015},\"id\":\"fkzikfj\",\"name\":\"wneaiv\",\"type\":\"wczelpci\"}")
+            .toObject(UpdateSummaryInner.class);
+        Assertions.assertEquals("yrnxxmueedn", model.deviceVersionNumber());
+        Assertions.assertEquals("dvstkw", model.friendlyDeviceVersionName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T23:11:18Z"), model.deviceLastScannedDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T17:22:34Z"), model.lastCompletedScanJobDateTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateSummaryInner model =
-            new UpdateSummaryInner()
-                .withDeviceVersionNumber("ggkzzlvmbmpa")
-                .withFriendlyDeviceVersionName("odfvuefywsbp")
-                .withDeviceLastScannedDateTime(OffsetDateTime.parse("2021-09-23T19:46:07Z"))
-                .withLastCompletedScanJobDateTime(OffsetDateTime.parse("2021-11-18T13:44:32Z"));
+        UpdateSummaryInner model = new UpdateSummaryInner().withDeviceVersionNumber("yrnxxmueedn")
+            .withFriendlyDeviceVersionName("dvstkw")
+            .withDeviceLastScannedDateTime(OffsetDateTime.parse("2021-05-02T23:11:18Z"))
+            .withLastCompletedScanJobDateTime(OffsetDateTime.parse("2021-07-16T17:22:34Z"));
         model = BinaryData.fromObject(model).toObject(UpdateSummaryInner.class);
-        Assertions.assertEquals("ggkzzlvmbmpa", model.deviceVersionNumber());
-        Assertions.assertEquals("odfvuefywsbp", model.friendlyDeviceVersionName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T19:46:07Z"), model.deviceLastScannedDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-18T13:44:32Z"), model.lastCompletedScanJobDateTime());
+        Assertions.assertEquals("yrnxxmueedn", model.deviceVersionNumber());
+        Assertions.assertEquals("dvstkw", model.friendlyDeviceVersionName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T23:11:18Z"), model.deviceLastScannedDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T17:22:34Z"), model.lastCompletedScanJobDateTime());
     }
 }

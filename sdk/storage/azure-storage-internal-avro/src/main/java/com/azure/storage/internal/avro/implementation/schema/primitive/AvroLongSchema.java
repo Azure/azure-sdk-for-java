@@ -29,7 +29,7 @@ public class AvroLongSchema extends AvroSimpleSchema {
     private long n; /* Keeps track of the number so far. */
     private long shift = 7; /* The current shift value. */
     private boolean first = true; /* Whether or not the first byte has been read yet. (This is to deal with the initial
-    code that runs before the while loop in the class level docs.)*/
+                                  code that runs before the while loop in the class level docs.)*/
     private int lastB; /* The last byte read. */
 
     /**

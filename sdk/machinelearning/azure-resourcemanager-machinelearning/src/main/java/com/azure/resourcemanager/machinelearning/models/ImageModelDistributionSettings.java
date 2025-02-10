@@ -5,88 +5,87 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Distribution expressions to sweep over values of model settings. &lt;example&gt; Some examples are: &lt;code&gt;
- * ModelName = "choice('seresnext', 'resnest50')"; LearningRate = "uniform(0.001, 0.01)"; LayersToFreeze = "choice(0,
- * 2)"; &lt;/code&gt;&lt;/example&gt; All distributions can be specified as distribution_name(min, max) or choice(val1,
- * val2, ..., valn) where distribution name can be: uniform, quniform, loguniform, etc For more details on how to
- * compose distribution expressions please check the documentation:
- * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters For more information on the
- * available settings please visit the official documentation:
+ * Distribution expressions to sweep over values of model settings.
+ * &lt;example&gt;
+ * Some examples are:
+ * ```
+ * ModelName = "choice('seresnext', 'resnest50')";
+ * LearningRate = "uniform(0.001, 0.01)";
+ * LayersToFreeze = "choice(0, 2)";
+ * ```&lt;/example&gt;
+ * All distributions can be specified as distribution_name(min, max) or choice(val1, val2, ..., valn)
+ * where distribution name can be: uniform, quniform, loguniform, etc
+ * For more details on how to compose distribution expressions please check the documentation:
+ * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters
+ * For more information on the available settings please visit the official documentation:
  * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
  */
 @Fluent
-public class ImageModelDistributionSettings {
+public class ImageModelDistributionSettings implements JsonSerializable<ImageModelDistributionSettings> {
     /*
      * Enable AMSGrad when optimizer is 'adam' or 'adamw'.
      */
-    @JsonProperty(value = "amsGradient")
     private String amsGradient;
 
     /*
      * Settings for using Augmentations.
      */
-    @JsonProperty(value = "augmentations")
     private String augmentations;
 
     /*
      * Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
      */
-    @JsonProperty(value = "beta1")
     private String beta1;
 
     /*
      * Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
      */
-    @JsonProperty(value = "beta2")
     private String beta2;
 
     /*
      * Whether to use distributer training.
      */
-    @JsonProperty(value = "distributed")
     private String distributed;
 
     /*
      * Enable early stopping logic during training.
      */
-    @JsonProperty(value = "earlyStopping")
     private String earlyStopping;
 
     /*
      * Minimum number of epochs or validation evaluations to wait before primary metric improvement
      * is tracked for early stopping. Must be a positive integer.
      */
-    @JsonProperty(value = "earlyStoppingDelay")
     private String earlyStoppingDelay;
 
     /*
      * Minimum number of epochs or validation evaluations with no primary metric improvement before
      * the run is stopped. Must be a positive integer.
      */
-    @JsonProperty(value = "earlyStoppingPatience")
     private String earlyStoppingPatience;
-
-    /*
-     * Enable normalization when exporting ONNX model.
-     */
-    @JsonProperty(value = "enableOnnxNormalization")
-    private String enableOnnxNormalization;
 
     /*
      * Frequency to evaluate validation dataset to get metric scores. Must be a positive integer.
      */
-    @JsonProperty(value = "evaluationFrequency")
     private String evaluationFrequency;
 
     /*
-     * Gradient accumulation means running a configured number of "GradAccumulationStep"\  steps without
+     * Enable normalization when exporting ONNX model.
+     */
+    private String enableOnnxNormalization;
+
+    /*
+     * Gradient accumulation means running a configured number of "GradAccumulationStep" steps without
      * updating the model weights while accumulating the gradients of those steps, and then using
      * the accumulated gradients to compute the weight updates. Must be a positive integer.
      */
-    @JsonProperty(value = "gradientAccumulationStep")
     private String gradientAccumulationStep;
 
     /*
@@ -95,19 +94,16 @@ public class ImageModelDistributionSettings {
      * freezing layer0 and layer1. For a full list of models supported and details on layer freeze, please
      * see: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
      */
-    @JsonProperty(value = "layersToFreeze")
     private String layersToFreeze;
 
     /*
      * Initial learning rate. Must be a float in the range [0, 1].
      */
-    @JsonProperty(value = "learningRate")
     private String learningRate;
 
     /*
      * Type of learning rate scheduler. Must be 'warmup_cosine' or 'step'.
      */
-    @JsonProperty(value = "learningRateScheduler")
     private String learningRateScheduler;
 
     /*
@@ -115,94 +111,82 @@ public class ImageModelDistributionSettings {
      * For more information on the available models please visit the official documentation:
      * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
      */
-    @JsonProperty(value = "modelName")
     private String modelName;
 
     /*
      * Value of momentum when optimizer is 'sgd'. Must be a float in the range [0, 1].
      */
-    @JsonProperty(value = "momentum")
     private String momentum;
 
     /*
      * Enable nesterov when optimizer is 'sgd'.
      */
-    @JsonProperty(value = "nesterov")
     private String nesterov;
 
     /*
      * Number of training epochs. Must be a positive integer.
      */
-    @JsonProperty(value = "numberOfEpochs")
     private String numberOfEpochs;
 
     /*
      * Number of data loader workers. Must be a non-negative integer.
      */
-    @JsonProperty(value = "numberOfWorkers")
     private String numberOfWorkers;
 
     /*
      * Type of optimizer. Must be either 'sgd', 'adam', or 'adamw'.
      */
-    @JsonProperty(value = "optimizer")
     private String optimizer;
 
     /*
      * Random seed to be used when using deterministic training.
      */
-    @JsonProperty(value = "randomSeed")
     private String randomSeed;
 
     /*
      * Value of gamma when learning rate scheduler is 'step'. Must be a float in the range [0, 1].
      */
-    @JsonProperty(value = "stepLRGamma")
     private String stepLRGamma;
 
     /*
      * Value of step size when learning rate scheduler is 'step'. Must be a positive integer.
      */
-    @JsonProperty(value = "stepLRStepSize")
     private String stepLRStepSize;
 
     /*
      * Training batch size. Must be a positive integer.
      */
-    @JsonProperty(value = "trainingBatchSize")
     private String trainingBatchSize;
 
     /*
      * Validation batch size. Must be a positive integer.
      */
-    @JsonProperty(value = "validationBatchSize")
     private String validationBatchSize;
 
     /*
      * Value of cosine cycle when learning rate scheduler is 'warmup_cosine'. Must be a float in the range [0, 1].
      */
-    @JsonProperty(value = "warmupCosineLRCycles")
     private String warmupCosineLRCycles;
 
     /*
      * Value of warmup epochs when learning rate scheduler is 'warmup_cosine'. Must be a positive integer.
      */
-    @JsonProperty(value = "warmupCosineLRWarmupEpochs")
     private String warmupCosineLRWarmupEpochs;
 
     /*
      * Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must be a float in the range[0, 1].
      */
-    @JsonProperty(value = "weightDecay")
     private String weightDecay;
 
-    /** Creates an instance of ImageModelDistributionSettings class. */
+    /**
+     * Creates an instance of ImageModelDistributionSettings class.
+     */
     public ImageModelDistributionSettings() {
     }
 
     /**
      * Get the amsGradient property: Enable AMSGrad when optimizer is 'adam' or 'adamw'.
-     *
+     * 
      * @return the amsGradient value.
      */
     public String amsGradient() {
@@ -211,7 +195,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the amsGradient property: Enable AMSGrad when optimizer is 'adam' or 'adamw'.
-     *
+     * 
      * @param amsGradient the amsGradient value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -222,7 +206,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the augmentations property: Settings for using Augmentations.
-     *
+     * 
      * @return the augmentations value.
      */
     public String augmentations() {
@@ -231,7 +215,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the augmentations property: Settings for using Augmentations.
-     *
+     * 
      * @param augmentations the augmentations value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -243,7 +227,7 @@ public class ImageModelDistributionSettings {
     /**
      * Get the beta1 property: Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0,
      * 1].
-     *
+     * 
      * @return the beta1 value.
      */
     public String beta1() {
@@ -253,7 +237,7 @@ public class ImageModelDistributionSettings {
     /**
      * Set the beta1 property: Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0,
      * 1].
-     *
+     * 
      * @param beta1 the beta1 value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -265,7 +249,7 @@ public class ImageModelDistributionSettings {
     /**
      * Get the beta2 property: Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0,
      * 1].
-     *
+     * 
      * @return the beta2 value.
      */
     public String beta2() {
@@ -275,7 +259,7 @@ public class ImageModelDistributionSettings {
     /**
      * Set the beta2 property: Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0,
      * 1].
-     *
+     * 
      * @param beta2 the beta2 value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -286,7 +270,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the distributed property: Whether to use distributer training.
-     *
+     * 
      * @return the distributed value.
      */
     public String distributed() {
@@ -295,7 +279,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the distributed property: Whether to use distributer training.
-     *
+     * 
      * @param distributed the distributed value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -306,7 +290,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the earlyStopping property: Enable early stopping logic during training.
-     *
+     * 
      * @return the earlyStopping value.
      */
     public String earlyStopping() {
@@ -315,7 +299,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the earlyStopping property: Enable early stopping logic during training.
-     *
+     * 
      * @param earlyStopping the earlyStopping value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -326,8 +310,9 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the earlyStoppingDelay property: Minimum number of epochs or validation evaluations to wait before primary
-     * metric improvement is tracked for early stopping. Must be a positive integer.
-     *
+     * metric improvement
+     * is tracked for early stopping. Must be a positive integer.
+     * 
      * @return the earlyStoppingDelay value.
      */
     public String earlyStoppingDelay() {
@@ -336,8 +321,9 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the earlyStoppingDelay property: Minimum number of epochs or validation evaluations to wait before primary
-     * metric improvement is tracked for early stopping. Must be a positive integer.
-     *
+     * metric improvement
+     * is tracked for early stopping. Must be a positive integer.
+     * 
      * @param earlyStoppingDelay the earlyStoppingDelay value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -348,8 +334,9 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the earlyStoppingPatience property: Minimum number of epochs or validation evaluations with no primary metric
-     * improvement before the run is stopped. Must be a positive integer.
-     *
+     * improvement before
+     * the run is stopped. Must be a positive integer.
+     * 
      * @return the earlyStoppingPatience value.
      */
     public String earlyStoppingPatience() {
@@ -358,8 +345,9 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the earlyStoppingPatience property: Minimum number of epochs or validation evaluations with no primary metric
-     * improvement before the run is stopped. Must be a positive integer.
-     *
+     * improvement before
+     * the run is stopped. Must be a positive integer.
+     * 
      * @param earlyStoppingPatience the earlyStoppingPatience value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -369,29 +357,9 @@ public class ImageModelDistributionSettings {
     }
 
     /**
-     * Get the enableOnnxNormalization property: Enable normalization when exporting ONNX model.
-     *
-     * @return the enableOnnxNormalization value.
-     */
-    public String enableOnnxNormalization() {
-        return this.enableOnnxNormalization;
-    }
-
-    /**
-     * Set the enableOnnxNormalization property: Enable normalization when exporting ONNX model.
-     *
-     * @param enableOnnxNormalization the enableOnnxNormalization value to set.
-     * @return the ImageModelDistributionSettings object itself.
-     */
-    public ImageModelDistributionSettings withEnableOnnxNormalization(String enableOnnxNormalization) {
-        this.enableOnnxNormalization = enableOnnxNormalization;
-        return this;
-    }
-
-    /**
      * Get the evaluationFrequency property: Frequency to evaluate validation dataset to get metric scores. Must be a
      * positive integer.
-     *
+     * 
      * @return the evaluationFrequency value.
      */
     public String evaluationFrequency() {
@@ -401,7 +369,7 @@ public class ImageModelDistributionSettings {
     /**
      * Set the evaluationFrequency property: Frequency to evaluate validation dataset to get metric scores. Must be a
      * positive integer.
-     *
+     * 
      * @param evaluationFrequency the evaluationFrequency value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -411,10 +379,31 @@ public class ImageModelDistributionSettings {
     }
 
     /**
+     * Get the enableOnnxNormalization property: Enable normalization when exporting ONNX model.
+     * 
+     * @return the enableOnnxNormalization value.
+     */
+    public String enableOnnxNormalization() {
+        return this.enableOnnxNormalization;
+    }
+
+    /**
+     * Set the enableOnnxNormalization property: Enable normalization when exporting ONNX model.
+     * 
+     * @param enableOnnxNormalization the enableOnnxNormalization value to set.
+     * @return the ImageModelDistributionSettings object itself.
+     */
+    public ImageModelDistributionSettings withEnableOnnxNormalization(String enableOnnxNormalization) {
+        this.enableOnnxNormalization = enableOnnxNormalization;
+        return this;
+    }
+
+    /**
      * Get the gradientAccumulationStep property: Gradient accumulation means running a configured number of
-     * "GradAccumulationStep"\ steps without updating the model weights while accumulating the gradients of those steps,
-     * and then using the accumulated gradients to compute the weight updates. Must be a positive integer.
-     *
+     * "GradAccumulationStep" steps without
+     * updating the model weights while accumulating the gradients of those steps, and then using
+     * the accumulated gradients to compute the weight updates. Must be a positive integer.
+     * 
      * @return the gradientAccumulationStep value.
      */
     public String gradientAccumulationStep() {
@@ -423,9 +412,10 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the gradientAccumulationStep property: Gradient accumulation means running a configured number of
-     * "GradAccumulationStep"\ steps without updating the model weights while accumulating the gradients of those steps,
-     * and then using the accumulated gradients to compute the weight updates. Must be a positive integer.
-     *
+     * "GradAccumulationStep" steps without
+     * updating the model weights while accumulating the gradients of those steps, and then using
+     * the accumulated gradients to compute the weight updates. Must be a positive integer.
+     * 
      * @param gradientAccumulationStep the gradientAccumulationStep value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -435,11 +425,11 @@ public class ImageModelDistributionSettings {
     }
 
     /**
-     * Get the layersToFreeze property: Number of layers to freeze for the model. Must be a positive integer. For
-     * instance, passing 2 as value for 'seresnext' means freezing layer0 and layer1. For a full list of models
-     * supported and details on layer freeze, please see:
-     * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
-     *
+     * Get the layersToFreeze property: Number of layers to freeze for the model. Must be a positive integer.
+     * For instance, passing 2 as value for 'seresnext' means
+     * freezing layer0 and layer1. For a full list of models supported and details on layer freeze, please
+     * see: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+     * 
      * @return the layersToFreeze value.
      */
     public String layersToFreeze() {
@@ -447,11 +437,11 @@ public class ImageModelDistributionSettings {
     }
 
     /**
-     * Set the layersToFreeze property: Number of layers to freeze for the model. Must be a positive integer. For
-     * instance, passing 2 as value for 'seresnext' means freezing layer0 and layer1. For a full list of models
-     * supported and details on layer freeze, please see:
-     * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
-     *
+     * Set the layersToFreeze property: Number of layers to freeze for the model. Must be a positive integer.
+     * For instance, passing 2 as value for 'seresnext' means
+     * freezing layer0 and layer1. For a full list of models supported and details on layer freeze, please
+     * see: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+     * 
      * @param layersToFreeze the layersToFreeze value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -462,7 +452,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the learningRate property: Initial learning rate. Must be a float in the range [0, 1].
-     *
+     * 
      * @return the learningRate value.
      */
     public String learningRate() {
@@ -471,7 +461,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the learningRate property: Initial learning rate. Must be a float in the range [0, 1].
-     *
+     * 
      * @param learningRate the learningRate value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -482,7 +472,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the learningRateScheduler property: Type of learning rate scheduler. Must be 'warmup_cosine' or 'step'.
-     *
+     * 
      * @return the learningRateScheduler value.
      */
     public String learningRateScheduler() {
@@ -491,7 +481,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the learningRateScheduler property: Type of learning rate scheduler. Must be 'warmup_cosine' or 'step'.
-     *
+     * 
      * @param learningRateScheduler the learningRateScheduler value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -501,10 +491,10 @@ public class ImageModelDistributionSettings {
     }
 
     /**
-     * Get the modelName property: Name of the model to use for training. For more information on the available models
-     * please visit the official documentation:
+     * Get the modelName property: Name of the model to use for training.
+     * For more information on the available models please visit the official documentation:
      * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
-     *
+     * 
      * @return the modelName value.
      */
     public String modelName() {
@@ -512,10 +502,10 @@ public class ImageModelDistributionSettings {
     }
 
     /**
-     * Set the modelName property: Name of the model to use for training. For more information on the available models
-     * please visit the official documentation:
+     * Set the modelName property: Name of the model to use for training.
+     * For more information on the available models please visit the official documentation:
      * https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
-     *
+     * 
      * @param modelName the modelName value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -526,7 +516,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the momentum property: Value of momentum when optimizer is 'sgd'. Must be a float in the range [0, 1].
-     *
+     * 
      * @return the momentum value.
      */
     public String momentum() {
@@ -535,7 +525,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the momentum property: Value of momentum when optimizer is 'sgd'. Must be a float in the range [0, 1].
-     *
+     * 
      * @param momentum the momentum value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -546,7 +536,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the nesterov property: Enable nesterov when optimizer is 'sgd'.
-     *
+     * 
      * @return the nesterov value.
      */
     public String nesterov() {
@@ -555,7 +545,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the nesterov property: Enable nesterov when optimizer is 'sgd'.
-     *
+     * 
      * @param nesterov the nesterov value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -566,7 +556,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the numberOfEpochs property: Number of training epochs. Must be a positive integer.
-     *
+     * 
      * @return the numberOfEpochs value.
      */
     public String numberOfEpochs() {
@@ -575,7 +565,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the numberOfEpochs property: Number of training epochs. Must be a positive integer.
-     *
+     * 
      * @param numberOfEpochs the numberOfEpochs value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -586,7 +576,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the numberOfWorkers property: Number of data loader workers. Must be a non-negative integer.
-     *
+     * 
      * @return the numberOfWorkers value.
      */
     public String numberOfWorkers() {
@@ -595,7 +585,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the numberOfWorkers property: Number of data loader workers. Must be a non-negative integer.
-     *
+     * 
      * @param numberOfWorkers the numberOfWorkers value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -606,7 +596,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the optimizer property: Type of optimizer. Must be either 'sgd', 'adam', or 'adamw'.
-     *
+     * 
      * @return the optimizer value.
      */
     public String optimizer() {
@@ -615,7 +605,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the optimizer property: Type of optimizer. Must be either 'sgd', 'adam', or 'adamw'.
-     *
+     * 
      * @param optimizer the optimizer value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -626,7 +616,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the randomSeed property: Random seed to be used when using deterministic training.
-     *
+     * 
      * @return the randomSeed value.
      */
     public String randomSeed() {
@@ -635,7 +625,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the randomSeed property: Random seed to be used when using deterministic training.
-     *
+     * 
      * @param randomSeed the randomSeed value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -647,7 +637,7 @@ public class ImageModelDistributionSettings {
     /**
      * Get the stepLRGamma property: Value of gamma when learning rate scheduler is 'step'. Must be a float in the range
      * [0, 1].
-     *
+     * 
      * @return the stepLRGamma value.
      */
     public String stepLRGamma() {
@@ -657,7 +647,7 @@ public class ImageModelDistributionSettings {
     /**
      * Set the stepLRGamma property: Value of gamma when learning rate scheduler is 'step'. Must be a float in the range
      * [0, 1].
-     *
+     * 
      * @param stepLRGamma the stepLRGamma value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -669,7 +659,7 @@ public class ImageModelDistributionSettings {
     /**
      * Get the stepLRStepSize property: Value of step size when learning rate scheduler is 'step'. Must be a positive
      * integer.
-     *
+     * 
      * @return the stepLRStepSize value.
      */
     public String stepLRStepSize() {
@@ -679,7 +669,7 @@ public class ImageModelDistributionSettings {
     /**
      * Set the stepLRStepSize property: Value of step size when learning rate scheduler is 'step'. Must be a positive
      * integer.
-     *
+     * 
      * @param stepLRStepSize the stepLRStepSize value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -690,7 +680,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the trainingBatchSize property: Training batch size. Must be a positive integer.
-     *
+     * 
      * @return the trainingBatchSize value.
      */
     public String trainingBatchSize() {
@@ -699,7 +689,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the trainingBatchSize property: Training batch size. Must be a positive integer.
-     *
+     * 
      * @param trainingBatchSize the trainingBatchSize value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -710,7 +700,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Get the validationBatchSize property: Validation batch size. Must be a positive integer.
-     *
+     * 
      * @return the validationBatchSize value.
      */
     public String validationBatchSize() {
@@ -719,7 +709,7 @@ public class ImageModelDistributionSettings {
 
     /**
      * Set the validationBatchSize property: Validation batch size. Must be a positive integer.
-     *
+     * 
      * @param validationBatchSize the validationBatchSize value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -731,7 +721,7 @@ public class ImageModelDistributionSettings {
     /**
      * Get the warmupCosineLRCycles property: Value of cosine cycle when learning rate scheduler is 'warmup_cosine'.
      * Must be a float in the range [0, 1].
-     *
+     * 
      * @return the warmupCosineLRCycles value.
      */
     public String warmupCosineLRCycles() {
@@ -741,7 +731,7 @@ public class ImageModelDistributionSettings {
     /**
      * Set the warmupCosineLRCycles property: Value of cosine cycle when learning rate scheduler is 'warmup_cosine'.
      * Must be a float in the range [0, 1].
-     *
+     * 
      * @param warmupCosineLRCycles the warmupCosineLRCycles value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -753,7 +743,7 @@ public class ImageModelDistributionSettings {
     /**
      * Get the warmupCosineLRWarmupEpochs property: Value of warmup epochs when learning rate scheduler is
      * 'warmup_cosine'. Must be a positive integer.
-     *
+     * 
      * @return the warmupCosineLRWarmupEpochs value.
      */
     public String warmupCosineLRWarmupEpochs() {
@@ -763,7 +753,7 @@ public class ImageModelDistributionSettings {
     /**
      * Set the warmupCosineLRWarmupEpochs property: Value of warmup epochs when learning rate scheduler is
      * 'warmup_cosine'. Must be a positive integer.
-     *
+     * 
      * @param warmupCosineLRWarmupEpochs the warmupCosineLRWarmupEpochs value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -775,7 +765,7 @@ public class ImageModelDistributionSettings {
     /**
      * Get the weightDecay property: Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must be a float
      * in the range[0, 1].
-     *
+     * 
      * @return the weightDecay value.
      */
     public String weightDecay() {
@@ -785,7 +775,7 @@ public class ImageModelDistributionSettings {
     /**
      * Set the weightDecay property: Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must be a float
      * in the range[0, 1].
-     *
+     * 
      * @param weightDecay the weightDecay value to set.
      * @return the ImageModelDistributionSettings object itself.
      */
@@ -796,9 +786,127 @@ public class ImageModelDistributionSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("amsGradient", this.amsGradient);
+        jsonWriter.writeStringField("augmentations", this.augmentations);
+        jsonWriter.writeStringField("beta1", this.beta1);
+        jsonWriter.writeStringField("beta2", this.beta2);
+        jsonWriter.writeStringField("distributed", this.distributed);
+        jsonWriter.writeStringField("earlyStopping", this.earlyStopping);
+        jsonWriter.writeStringField("earlyStoppingDelay", this.earlyStoppingDelay);
+        jsonWriter.writeStringField("earlyStoppingPatience", this.earlyStoppingPatience);
+        jsonWriter.writeStringField("evaluationFrequency", this.evaluationFrequency);
+        jsonWriter.writeStringField("enableOnnxNormalization", this.enableOnnxNormalization);
+        jsonWriter.writeStringField("gradientAccumulationStep", this.gradientAccumulationStep);
+        jsonWriter.writeStringField("layersToFreeze", this.layersToFreeze);
+        jsonWriter.writeStringField("learningRate", this.learningRate);
+        jsonWriter.writeStringField("learningRateScheduler", this.learningRateScheduler);
+        jsonWriter.writeStringField("modelName", this.modelName);
+        jsonWriter.writeStringField("momentum", this.momentum);
+        jsonWriter.writeStringField("nesterov", this.nesterov);
+        jsonWriter.writeStringField("numberOfEpochs", this.numberOfEpochs);
+        jsonWriter.writeStringField("numberOfWorkers", this.numberOfWorkers);
+        jsonWriter.writeStringField("optimizer", this.optimizer);
+        jsonWriter.writeStringField("randomSeed", this.randomSeed);
+        jsonWriter.writeStringField("stepLRGamma", this.stepLRGamma);
+        jsonWriter.writeStringField("stepLRStepSize", this.stepLRStepSize);
+        jsonWriter.writeStringField("trainingBatchSize", this.trainingBatchSize);
+        jsonWriter.writeStringField("validationBatchSize", this.validationBatchSize);
+        jsonWriter.writeStringField("warmupCosineLRCycles", this.warmupCosineLRCycles);
+        jsonWriter.writeStringField("warmupCosineLRWarmupEpochs", this.warmupCosineLRWarmupEpochs);
+        jsonWriter.writeStringField("weightDecay", this.weightDecay);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageModelDistributionSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageModelDistributionSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageModelDistributionSettings.
+     */
+    public static ImageModelDistributionSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageModelDistributionSettings deserializedImageModelDistributionSettings
+                = new ImageModelDistributionSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("amsGradient".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.amsGradient = reader.getString();
+                } else if ("augmentations".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.augmentations = reader.getString();
+                } else if ("beta1".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.beta1 = reader.getString();
+                } else if ("beta2".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.beta2 = reader.getString();
+                } else if ("distributed".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.distributed = reader.getString();
+                } else if ("earlyStopping".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.earlyStopping = reader.getString();
+                } else if ("earlyStoppingDelay".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.earlyStoppingDelay = reader.getString();
+                } else if ("earlyStoppingPatience".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.earlyStoppingPatience = reader.getString();
+                } else if ("evaluationFrequency".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.evaluationFrequency = reader.getString();
+                } else if ("enableOnnxNormalization".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.enableOnnxNormalization = reader.getString();
+                } else if ("gradientAccumulationStep".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.gradientAccumulationStep = reader.getString();
+                } else if ("layersToFreeze".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.layersToFreeze = reader.getString();
+                } else if ("learningRate".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.learningRate = reader.getString();
+                } else if ("learningRateScheduler".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.learningRateScheduler = reader.getString();
+                } else if ("modelName".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.modelName = reader.getString();
+                } else if ("momentum".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.momentum = reader.getString();
+                } else if ("nesterov".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.nesterov = reader.getString();
+                } else if ("numberOfEpochs".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.numberOfEpochs = reader.getString();
+                } else if ("numberOfWorkers".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.numberOfWorkers = reader.getString();
+                } else if ("optimizer".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.optimizer = reader.getString();
+                } else if ("randomSeed".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.randomSeed = reader.getString();
+                } else if ("stepLRGamma".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.stepLRGamma = reader.getString();
+                } else if ("stepLRStepSize".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.stepLRStepSize = reader.getString();
+                } else if ("trainingBatchSize".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.trainingBatchSize = reader.getString();
+                } else if ("validationBatchSize".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.validationBatchSize = reader.getString();
+                } else if ("warmupCosineLRCycles".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.warmupCosineLRCycles = reader.getString();
+                } else if ("warmupCosineLRWarmupEpochs".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.warmupCosineLRWarmupEpochs = reader.getString();
+                } else if ("weightDecay".equals(fieldName)) {
+                    deserializedImageModelDistributionSettings.weightDecay = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageModelDistributionSettings;
+        });
     }
 }

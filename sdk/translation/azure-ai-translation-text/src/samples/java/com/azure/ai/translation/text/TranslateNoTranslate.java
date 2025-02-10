@@ -3,15 +3,11 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.List;
-import java.util.ArrayList;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.ai.translation.text.models.InputTextItem;
-import com.azure.ai.translation.text.models.ProfanityAction;
-import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
+import com.azure.ai.translation.text.models.TranslateOptions;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.Translation;
+import com.azure.ai.translation.text.models.TranslationText;
+import com.azure.core.credential.AzureKeyCredential;
 
 /**
  * It's sometimes useful to exclude specific content from translation. You can use the attribute
@@ -36,19 +32,15 @@ public class TranslateNoTranslate {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        TextType textType = TextType.HTML;
-        String from = "en";
-        List<String> targetLanguages = new ArrayList<>();
-        targetLanguages.add("cs");
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("<div class=\"notranslate\">This will not be translated.</div><div>This will be translated. </div>"));
+        TranslateOptions translateOptions = new TranslateOptions()
+            .addTargetLanguage("en")
+            .setSourceLanguage("cs")
+            .setTextType(TextType.HTML);
 
-        List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, from, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, null, null, false);
+        TranslatedTextItem translation = client.translate("<div class=\"notranslate\">This will not be translated.</div><div>This will be translated. </div>", translateOptions);
 
-        for (TranslatedTextItem translation : translations) {
-            for (Translation textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-            }
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
     }
 }

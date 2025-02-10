@@ -21,8 +21,7 @@ public final class CustomizationPoliciesImpl implements CustomizationPolicies {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    public CustomizationPoliciesImpl(
-        CustomizationPoliciesClient innerClient,
+    public CustomizationPoliciesImpl(CustomizationPoliciesClient innerClient,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,23 +29,20 @@ public final class CustomizationPoliciesImpl implements CustomizationPolicies {
 
     public PagedIterable<CustomizationPolicy> list(String regionId, String pcName) {
         PagedIterable<CustomizationPolicyInner> inner = this.serviceClient().list(regionId, pcName);
-        return Utils.mapPage(inner, inner1 -> new CustomizationPolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomizationPolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CustomizationPolicy> list(String regionId, String pcName, String filter, Context context) {
         PagedIterable<CustomizationPolicyInner> inner = this.serviceClient().list(regionId, pcName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new CustomizationPolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomizationPolicyImpl(inner1, this.manager()));
     }
 
-    public Response<CustomizationPolicy> getWithResponse(
-        String regionId, String pcName, String customizationPolicyName, Context context) {
-        Response<CustomizationPolicyInner> inner =
-            this.serviceClient().getWithResponse(regionId, pcName, customizationPolicyName, context);
+    public Response<CustomizationPolicy> getWithResponse(String regionId, String pcName, String customizationPolicyName,
+        Context context) {
+        Response<CustomizationPolicyInner> inner
+            = this.serviceClient().getWithResponse(regionId, pcName, customizationPolicyName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CustomizationPolicyImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -13,11 +13,7 @@ module com.azure.resourcemanager.compute {
     exports com.azure.resourcemanager.compute.fluent.models;
     exports com.azure.resourcemanager.compute.models;
 
-    // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.compute.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.compute.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    // open packages specifically for azure core
+    opens com.azure.resourcemanager.compute.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.compute.models to com.azure.core;
 }

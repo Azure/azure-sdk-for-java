@@ -5,46 +5,50 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Contract to validate if backup can be enabled on the given resource in a given vault and given configuration. It will
- * validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed in
- * properties.
+ * Contract to validate if backup can be enabled on the given resource in a given vault and given configuration.
+ * It will validate followings
+ * 1. Vault capacity
+ * 2. VM is already protected
+ * 3. Any VM related configuration passed in properties.
  */
 @Fluent
-public final class PreValidateEnableBackupRequest {
+public final class PreValidateEnableBackupRequest implements JsonSerializable<PreValidateEnableBackupRequest> {
     /*
      * ProtectedItem Type- VM, SqlDataBase, AzureFileShare etc
      */
-    @JsonProperty(value = "resourceType")
     private DataSourceType resourceType;
 
     /*
      * ARM Virtual Machine Id
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * ARM id of the Recovery Services Vault
      */
-    @JsonProperty(value = "vaultId")
     private String vaultId;
 
     /*
      * Configuration of VM if any needs to be validated like OS type etc
      */
-    @JsonProperty(value = "properties")
     private String properties;
 
-    /** Creates an instance of PreValidateEnableBackupRequest class. */
+    /**
+     * Creates an instance of PreValidateEnableBackupRequest class.
+     */
     public PreValidateEnableBackupRequest() {
     }
 
     /**
      * Get the resourceType property: ProtectedItem Type- VM, SqlDataBase, AzureFileShare etc.
-     *
+     * 
      * @return the resourceType value.
      */
     public DataSourceType resourceType() {
@@ -53,7 +57,7 @@ public final class PreValidateEnableBackupRequest {
 
     /**
      * Set the resourceType property: ProtectedItem Type- VM, SqlDataBase, AzureFileShare etc.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the PreValidateEnableBackupRequest object itself.
      */
@@ -64,7 +68,7 @@ public final class PreValidateEnableBackupRequest {
 
     /**
      * Get the resourceId property: ARM Virtual Machine Id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -73,7 +77,7 @@ public final class PreValidateEnableBackupRequest {
 
     /**
      * Set the resourceId property: ARM Virtual Machine Id.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the PreValidateEnableBackupRequest object itself.
      */
@@ -84,7 +88,7 @@ public final class PreValidateEnableBackupRequest {
 
     /**
      * Get the vaultId property: ARM id of the Recovery Services Vault.
-     *
+     * 
      * @return the vaultId value.
      */
     public String vaultId() {
@@ -93,7 +97,7 @@ public final class PreValidateEnableBackupRequest {
 
     /**
      * Set the vaultId property: ARM id of the Recovery Services Vault.
-     *
+     * 
      * @param vaultId the vaultId value to set.
      * @return the PreValidateEnableBackupRequest object itself.
      */
@@ -104,7 +108,7 @@ public final class PreValidateEnableBackupRequest {
 
     /**
      * Get the properties property: Configuration of VM if any needs to be validated like OS type etc.
-     *
+     * 
      * @return the properties value.
      */
     public String properties() {
@@ -113,7 +117,7 @@ public final class PreValidateEnableBackupRequest {
 
     /**
      * Set the properties property: Configuration of VM if any needs to be validated like OS type etc.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the PreValidateEnableBackupRequest object itself.
      */
@@ -124,9 +128,56 @@ public final class PreValidateEnableBackupRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType == null ? null : this.resourceType.toString());
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("vaultId", this.vaultId);
+        jsonWriter.writeStringField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PreValidateEnableBackupRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PreValidateEnableBackupRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PreValidateEnableBackupRequest.
+     */
+    public static PreValidateEnableBackupRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PreValidateEnableBackupRequest deserializedPreValidateEnableBackupRequest
+                = new PreValidateEnableBackupRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedPreValidateEnableBackupRequest.resourceType
+                        = DataSourceType.fromString(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedPreValidateEnableBackupRequest.resourceId = reader.getString();
+                } else if ("vaultId".equals(fieldName)) {
+                    deserializedPreValidateEnableBackupRequest.vaultId = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPreValidateEnableBackupRequest.properties = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPreValidateEnableBackupRequest;
+        });
     }
 }

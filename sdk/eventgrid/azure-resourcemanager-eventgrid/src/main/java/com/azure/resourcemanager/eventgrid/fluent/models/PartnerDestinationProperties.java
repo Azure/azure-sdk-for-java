@@ -5,27 +5,32 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestinationActivationState;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestinationProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Properties of the Partner Destination.
  */
 @Fluent
-public final class PartnerDestinationProperties {
+public final class PartnerDestinationProperties implements JsonSerializable<PartnerDestinationProperties> {
     /*
      * The immutable Id of the corresponding partner registration.
      */
-    @JsonProperty(value = "partnerRegistrationImmutableId")
     private UUID partnerRegistrationImmutableId;
 
     /*
      * Endpoint context associated with this partner destination.
      */
-    @JsonProperty(value = "endpointServiceContext")
     private String endpointServiceContext;
 
     /*
@@ -33,31 +38,26 @@ public final class PartnerDestinationProperties {
      * activated,
      * the partner destination and corresponding channel are deleted.
      */
-    @JsonProperty(value = "expirationTimeIfNotActivatedUtc")
     private OffsetDateTime expirationTimeIfNotActivatedUtc;
 
     /*
      * Provisioning state of the partner destination.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PartnerDestinationProvisioningState provisioningState;
 
     /*
      * Activation state of the partner destination.
      */
-    @JsonProperty(value = "activationState")
     private PartnerDestinationActivationState activationState;
 
     /*
      * Endpoint Base URL of the partner destination
      */
-    @JsonProperty(value = "endpointBaseUrl")
     private String endpointBaseUrl;
 
     /*
      * Context or helpful message that can be used during the approval process.
      */
-    @JsonProperty(value = "messageForActivation")
     private String messageForActivation;
 
     /**
@@ -206,5 +206,67 @@ public final class PartnerDestinationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("partnerRegistrationImmutableId",
+            Objects.toString(this.partnerRegistrationImmutableId, null));
+        jsonWriter.writeStringField("endpointServiceContext", this.endpointServiceContext);
+        jsonWriter.writeStringField("expirationTimeIfNotActivatedUtc",
+            this.expirationTimeIfNotActivatedUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTimeIfNotActivatedUtc));
+        jsonWriter.writeStringField("activationState",
+            this.activationState == null ? null : this.activationState.toString());
+        jsonWriter.writeStringField("endpointBaseUrl", this.endpointBaseUrl);
+        jsonWriter.writeStringField("messageForActivation", this.messageForActivation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerDestinationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerDestinationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerDestinationProperties.
+     */
+    public static PartnerDestinationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerDestinationProperties deserializedPartnerDestinationProperties = new PartnerDestinationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partnerRegistrationImmutableId".equals(fieldName)) {
+                    deserializedPartnerDestinationProperties.partnerRegistrationImmutableId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("endpointServiceContext".equals(fieldName)) {
+                    deserializedPartnerDestinationProperties.endpointServiceContext = reader.getString();
+                } else if ("expirationTimeIfNotActivatedUtc".equals(fieldName)) {
+                    deserializedPartnerDestinationProperties.expirationTimeIfNotActivatedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPartnerDestinationProperties.provisioningState
+                        = PartnerDestinationProvisioningState.fromString(reader.getString());
+                } else if ("activationState".equals(fieldName)) {
+                    deserializedPartnerDestinationProperties.activationState
+                        = PartnerDestinationActivationState.fromString(reader.getString());
+                } else if ("endpointBaseUrl".equals(fieldName)) {
+                    deserializedPartnerDestinationProperties.endpointBaseUrl = reader.getString();
+                } else if ("messageForActivation".equals(fieldName)) {
+                    deserializedPartnerDestinationProperties.messageForActivation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerDestinationProperties;
+        });
     }
 }

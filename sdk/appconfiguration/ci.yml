@@ -51,7 +51,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: appconfiguration
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-data-appconfiguration
         groupId: com.azure
@@ -61,3 +60,6 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerappconfiguration
         releaseInBatch: ${{ parameters.release_azureresourcemanagerappconfiguration }}
+    AdditionalModules:
+      - name: perf-test-core
+        groupId: com.azure

@@ -66,7 +66,8 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
         this.writeTimeoutMillis = writeTimeoutMillis;
         this.progressReporter = (context != null) ? context.getProgressReporter() : null;
         this.responseTimeoutMillis = (context != null && context.getResponseTimeoutOverride() != null)
-            ? context.getResponseTimeoutOverride() : responseTimeoutMillis;
+            ? context.getResponseTimeoutOverride()
+            : responseTimeoutMillis;
         this.readTimeoutMillis = readTimeoutMillis;
     }
 
@@ -95,8 +96,9 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
     public void startWriteTracking() {
         writeTrackingStarted = true;
         if (ctx != null && writeTimeoutMillis > 0) {
-            this.writeTimeoutWatcher = ctx.executor().scheduleAtFixedRate(() -> writeTimeoutRunnable(ctx),
-                writeTimeoutMillis, writeTimeoutMillis, TimeUnit.MILLISECONDS);
+            this.writeTimeoutWatcher = ctx.executor()
+                .scheduleAtFixedRate(() -> writeTimeoutRunnable(ctx), writeTimeoutMillis, writeTimeoutMillis,
+                    TimeUnit.MILLISECONDS);
         }
     }
 
@@ -159,8 +161,8 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
         // No progress has been made since the last timeout event, channel has timed out.
         if (!closed) {
             disposeWriteTimeoutWatcher();
-            ctx.fireExceptionCaught(new TimeoutException("Channel write operation timed out after " + writeTimeoutMillis
-                + " milliseconds."));
+            ctx.fireExceptionCaught(new TimeoutException(
+                "Channel write operation timed out after " + writeTimeoutMillis + " milliseconds."));
             ctx.close();
             closed = true;
         }
@@ -181,8 +183,8 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
     public void startResponseTracking() {
         responseTrackingStarted = true;
         if (ctx != null && responseTimeoutMillis > 0) {
-            this.responseTimeoutWatcher = ctx.executor().schedule(() -> responseTimedOut(ctx), responseTimeoutMillis,
-                TimeUnit.MILLISECONDS);
+            this.responseTimeoutWatcher
+                = ctx.executor().schedule(() -> responseTimedOut(ctx), responseTimeoutMillis, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -197,8 +199,8 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
     void responseTimedOut(ChannelHandlerContext ctx) {
         if (!closed) {
             disposeResponseTimeoutWatcher();
-            ctx.fireExceptionCaught(new TimeoutException("Channel response timed out after " + responseTimeoutMillis
-                + " milliseconds."));
+            ctx.fireExceptionCaught(
+                new TimeoutException("Channel response timed out after " + responseTimeoutMillis + " milliseconds."));
             ctx.close();
             closed = true;
         }
@@ -237,8 +239,9 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
     public void startReadTracking() {
         readTrackingStarted = true;
         if (ctx != null && readTimeoutMillis > 0) {
-            this.readTimeoutWatcher = ctx.executor().scheduleAtFixedRate(() -> readTimeoutRunnable(ctx),
-                readTimeoutMillis, readTimeoutMillis, TimeUnit.MILLISECONDS);
+            this.readTimeoutWatcher = ctx.executor()
+                .scheduleAtFixedRate(() -> readTimeoutRunnable(ctx), readTimeoutMillis, readTimeoutMillis,
+                    TimeUnit.MILLISECONDS);
         }
     }
 
@@ -259,8 +262,8 @@ public final class AzureSdkHandler extends ChannelDuplexHandler {
         // No progress has been made since the last timeout event, channel has timed out.
         if (!closed) {
             disposeReadTimeoutWatcher();
-            ctx.fireExceptionCaught(new TimeoutException("Channel read timed out after " + readTimeoutMillis
-                + " milliseconds."));
+            ctx.fireExceptionCaught(
+                new TimeoutException("Channel read timed out after " + readTimeoutMillis + " milliseconds."));
             ctx.close();
             closed = true;
         }

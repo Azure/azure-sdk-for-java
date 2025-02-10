@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class Severity extends ExpandableStringEnum<Severity> {
      * @param name a name to look for.
      * @return the corresponding Severity.
      */
-    @JsonCreator
     public static Severity fromString(String name) {
         return fromString(name, Severity.class);
     }

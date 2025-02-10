@@ -8,55 +8,73 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.cdn.models.ProfileLogScrubbing;
 import com.azure.resourcemanager.cdn.models.ProfileProvisioningState;
 import com.azure.resourcemanager.cdn.models.ProfileResourceState;
 import com.azure.resourcemanager.cdn.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** A profile is a logical grouping of endpoints that share the same settings. */
+/**
+ * A profile is a logical grouping of endpoints that share the same settings.
+ */
 @Fluent
 public final class ProfileInner extends Resource {
     /*
      * The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature list and rate) of the
      * profile.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD profile.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * Managed service identity (system assigned and/or user assigned identities).
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * The JSON object that contains the properties required to create a profile.
      */
-    @JsonProperty(value = "properties")
     private ProfileProperties innerProperties;
 
     /*
      * Read only system data
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ProfileInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ProfileInner class.
+     */
     public ProfileInner() {
     }
 
     /**
      * Get the sku property: The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature
      * list and rate) of the profile.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -66,7 +84,7 @@ public final class ProfileInner extends Resource {
     /**
      * Set the sku property: The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature
      * list and rate) of the profile.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ProfileInner object itself.
      */
@@ -78,7 +96,7 @@ public final class ProfileInner extends Resource {
     /**
      * Get the kind property: Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD
      * profile.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -87,7 +105,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -96,7 +114,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ProfileInner object itself.
      */
@@ -107,7 +125,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties required to create a profile.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProfileProperties innerProperties() {
@@ -116,21 +134,55 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the systemData property: Read only system data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -139,7 +191,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the resourceState property: Resource status of the profile.
-     *
+     * 
      * @return the resourceState value.
      */
     public ProfileResourceState resourceState() {
@@ -148,7 +200,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning status of the profile.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProfileProvisioningState provisioningState() {
@@ -157,7 +209,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the extendedProperties property: Key-Value pair representing additional properties for profiles.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -166,7 +218,7 @@ public final class ProfileInner extends Resource {
 
     /**
      * Get the frontDoorId property: The Id of the frontdoor.
-     *
+     * 
      * @return the frontDoorId value.
      */
     public String frontDoorId() {
@@ -176,7 +228,7 @@ public final class ProfileInner extends Resource {
     /**
      * Get the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
      * timeout is reached, the request fails and returns.
-     *
+     * 
      * @return the originResponseTimeoutSeconds value.
      */
     public Integer originResponseTimeoutSeconds() {
@@ -186,7 +238,7 @@ public final class ProfileInner extends Resource {
     /**
      * Set the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
      * timeout is reached, the request fails and returns.
-     *
+     * 
      * @param originResponseTimeoutSeconds the originResponseTimeoutSeconds value to set.
      * @return the ProfileInner object itself.
      */
@@ -199,15 +251,37 @@ public final class ProfileInner extends Resource {
     }
 
     /**
+     * Get the logScrubbing property: Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
+     * 
+     * @return the logScrubbing value.
+     */
+    public ProfileLogScrubbing logScrubbing() {
+        return this.innerProperties() == null ? null : this.innerProperties().logScrubbing();
+    }
+
+    /**
+     * Set the logScrubbing property: Defines rules that scrub sensitive fields in the Azure Front Door profile logs.
+     * 
+     * @param logScrubbing the logScrubbing value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withLogScrubbing(ProfileLogScrubbing logScrubbing) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withLogScrubbing(logScrubbing);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model ProfileInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model ProfileInner"));
         } else {
             sku().validate();
         }
@@ -220,4 +294,64 @@ public final class ProfileInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ProfileInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProfileInner.
+     */
+    public static ProfileInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileInner deserializedProfileInner = new ProfileInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProfileInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProfileInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProfileInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedProfileInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProfileInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedProfileInner.sku = Sku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedProfileInner.kind = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedProfileInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProfileInner.innerProperties = ProfileProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedProfileInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileInner;
+        });
+    }
 }

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The name of usage. */
+/**
+ * The name of usage.
+ */
 @Fluent
-public final class NameInfo {
+public final class NameInfo implements JsonSerializable<NameInfo> {
     /*
      * Value of usage.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Localized value of usage.
      */
-    @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of NameInfo class. */
+    /**
+     * Creates an instance of NameInfo class.
+     */
     public NameInfo() {
     }
 
     /**
      * Get the value property: Value of usage.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +43,7 @@ public final class NameInfo {
 
     /**
      * Set the value property: Value of usage.
-     *
+     * 
      * @param value the value value to set.
      * @return the NameInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class NameInfo {
 
     /**
      * Get the localizedValue property: Localized value of usage.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -57,7 +63,7 @@ public final class NameInfo {
 
     /**
      * Set the localizedValue property: Localized value of usage.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the NameInfo object itself.
      */
@@ -68,9 +74,48 @@ public final class NameInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("localizedValue", this.localizedValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the NameInfo.
+     */
+    public static NameInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameInfo deserializedNameInfo = new NameInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedNameInfo.value = reader.getString();
+                } else if ("localizedValue".equals(fieldName)) {
+                    deserializedNameInfo.localizedValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameInfo;
+        });
     }
 }

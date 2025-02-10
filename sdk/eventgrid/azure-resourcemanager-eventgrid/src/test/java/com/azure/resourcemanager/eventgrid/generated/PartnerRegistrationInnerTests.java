@@ -15,23 +15,23 @@ public final class PartnerRegistrationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerRegistrationInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"partnerRegistrationImmutableId\":\"01246b86-e9b2-4a5e-93f3-f90f7a3b601a\"},\"location\":\"hcz\",\"tags\":{\"vk\":\"xzbujrtrhqvwr\",\"zonzlrpiqywnc\":\"gnl\"},\"id\":\"jtszcof\",\"name\":\"zehtdhgb\",\"type\":\"k\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"partnerRegistrationImmutableId\":\"7f5a87d9-74b1-42d8-a546-b5d305bfc544\"},\"location\":\"tqwpwya\",\"tags\":{\"oguyaip\":\"asqbucljgkyex\",\"waz\":\"dsdaultxijjumf\",\"jng\":\"nqnm\",\"bjwgnyfus\":\"qdqx\"},\"id\":\"zsvtuikzhajqgl\",\"name\":\"fh\",\"type\":\"l\"}")
             .toObject(PartnerRegistrationInner.class);
-        Assertions.assertEquals("hcz", model.location());
-        Assertions.assertEquals("xzbujrtrhqvwr", model.tags().get("vk"));
-        Assertions.assertEquals(UUID.fromString("01246b86-e9b2-4a5e-93f3-f90f7a3b601a"),
+        Assertions.assertEquals("tqwpwya", model.location());
+        Assertions.assertEquals("asqbucljgkyex", model.tags().get("oguyaip"));
+        Assertions.assertEquals(UUID.fromString("7f5a87d9-74b1-42d8-a546-b5d305bfc544"),
             model.partnerRegistrationImmutableId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerRegistrationInner model = new PartnerRegistrationInner().withLocation("hcz")
-            .withTags(mapOf("vk", "xzbujrtrhqvwr", "zonzlrpiqywnc", "gnl"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("01246b86-e9b2-4a5e-93f3-f90f7a3b601a"));
+        PartnerRegistrationInner model = new PartnerRegistrationInner().withLocation("tqwpwya")
+            .withTags(mapOf("oguyaip", "asqbucljgkyex", "waz", "dsdaultxijjumf", "jng", "nqnm", "bjwgnyfus", "qdqx"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("7f5a87d9-74b1-42d8-a546-b5d305bfc544"));
         model = BinaryData.fromObject(model).toObject(PartnerRegistrationInner.class);
-        Assertions.assertEquals("hcz", model.location());
-        Assertions.assertEquals("xzbujrtrhqvwr", model.tags().get("vk"));
-        Assertions.assertEquals(UUID.fromString("01246b86-e9b2-4a5e-93f3-f90f7a3b601a"),
+        Assertions.assertEquals("tqwpwya", model.location());
+        Assertions.assertEquals("asqbucljgkyex", model.tags().get("oguyaip"));
+        Assertions.assertEquals(UUID.fromString("7f5a87d9-74b1-42d8-a546-b5d305bfc544"),
             model.partnerRegistrationImmutableId());
     }
 

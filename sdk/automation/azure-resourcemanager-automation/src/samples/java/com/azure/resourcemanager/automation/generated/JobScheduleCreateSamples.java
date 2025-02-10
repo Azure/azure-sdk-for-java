@@ -10,19 +10,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** Samples for JobSchedule Create. */
+/**
+ * Samples for JobSchedule Create.
+ */
 public final class JobScheduleCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/createJobSchedule.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/preview/2020-01-13-preview/examples/
+     * createJobSchedule.json
      */
     /**
      * Sample code: Create a job schedule.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createAJobSchedule(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .jobSchedules()
+        manager.jobSchedules()
             .define(UUID.fromString("0fa462ba-3aa2-4138-83ca-9ebc3bc55cdc"))
             .withExistingAutomationAccount("rg", "ContoseAutomationAccount")
             .withSchedule(
@@ -32,6 +35,7 @@ public final class JobScheduleCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

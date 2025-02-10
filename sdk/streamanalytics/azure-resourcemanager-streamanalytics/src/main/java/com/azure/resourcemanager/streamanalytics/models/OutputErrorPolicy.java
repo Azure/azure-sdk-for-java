@@ -5,29 +5,47 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OutputErrorPolicy. */
+/**
+ * Indicates the policy to apply to events that arrive at the output and cannot be written to the external storage due
+ * to being malformed (missing column values, column values of wrong type or size).
+ */
 public final class OutputErrorPolicy extends ExpandableStringEnum<OutputErrorPolicy> {
-    /** Static value Stop for OutputErrorPolicy. */
+    /**
+     * Static value Stop for OutputErrorPolicy.
+     */
     public static final OutputErrorPolicy STOP = fromString("Stop");
 
-    /** Static value Drop for OutputErrorPolicy. */
+    /**
+     * Static value Drop for OutputErrorPolicy.
+     */
     public static final OutputErrorPolicy DROP = fromString("Drop");
 
     /**
+     * Creates a new instance of OutputErrorPolicy value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OutputErrorPolicy() {
+    }
+
+    /**
      * Creates or finds a OutputErrorPolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OutputErrorPolicy.
      */
-    @JsonCreator
     public static OutputErrorPolicy fromString(String name) {
         return fromString(name, OutputErrorPolicy.class);
     }
 
-    /** @return known OutputErrorPolicy values. */
+    /**
+     * Gets known OutputErrorPolicy values.
+     * 
+     * @return known OutputErrorPolicy values.
+     */
     public static Collection<OutputErrorPolicy> values() {
         return values(OutputErrorPolicy.class);
     }

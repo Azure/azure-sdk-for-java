@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.ResourceUsageName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The usage and limit (quota) for a resource. */
+/**
+ * The usage and limit (quota) for a resource.
+ */
 @Immutable
-public final class ResourceUsageInner {
+public final class ResourceUsageInner implements JsonSerializable<ResourceUsageInner> {
     /*
      * The limit (quota) for this resource.
      */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Integer limit;
 
     /*
      * Unit that the limit and usages are expressed in, such as 'Count'.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /*
      * The current usage of this resource.
      */
-    @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentValue;
 
     /*
      * Naming information for this resource type.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceUsageName name;
 
-    /** Creates an instance of ResourceUsageInner class. */
+    /**
+     * Creates an instance of ResourceUsageInner class.
+     */
     public ResourceUsageInner() {
     }
 
     /**
      * Get the limit property: The limit (quota) for this resource.
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -50,7 +54,7 @@ public final class ResourceUsageInner {
 
     /**
      * Get the unit property: Unit that the limit and usages are expressed in, such as 'Count'.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -59,7 +63,7 @@ public final class ResourceUsageInner {
 
     /**
      * Get the currentValue property: The current usage of this resource.
-     *
+     * 
      * @return the currentValue value.
      */
     public Integer currentValue() {
@@ -68,7 +72,7 @@ public final class ResourceUsageInner {
 
     /**
      * Get the name property: Naming information for this resource type.
-     *
+     * 
      * @return the name value.
      */
     public ResourceUsageName name() {
@@ -77,12 +81,53 @@ public final class ResourceUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceUsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceUsageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceUsageInner.
+     */
+    public static ResourceUsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceUsageInner deserializedResourceUsageInner = new ResourceUsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limit".equals(fieldName)) {
+                    deserializedResourceUsageInner.limit = reader.getNullable(JsonReader::getInt);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedResourceUsageInner.unit = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedResourceUsageInner.currentValue = reader.getNullable(JsonReader::getInt);
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceUsageInner.name = ResourceUsageName.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceUsageInner;
+        });
     }
 }

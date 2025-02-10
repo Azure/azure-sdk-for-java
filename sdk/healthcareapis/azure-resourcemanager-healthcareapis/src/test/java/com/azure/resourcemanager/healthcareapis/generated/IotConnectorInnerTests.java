@@ -19,39 +19,38 @@ public final class IotConnectorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotConnectorInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deprovisioned\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"bpbewtghfgb\",\"consumerGroup\":\"gw\",\"fullyQualifiedEventHubNamespace\":\"vlvqhjkbegi\"},\"deviceMapping\":{\"content\":\"datamxiebw\"}},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"a0cddd50-7cc5-402e-8a74-da6110fc6422\",\"tenantId\":\"e5d63ea9-1515-4bca-8c3f-3284c67c5eaf\",\"userAssignedIdentities\":{\"rtzju\":{\"principalId\":\"162b90a1-4d9a-4fdf-acbd-27f744bb79f2\",\"clientId\":\"d699535f-b8d3-4a3c-97c4-e5b96a424f6d\"},\"yzm\":{\"principalId\":\"5f689c38-7d5b-4db8-8666-01c9b7d91dea\",\"clientId\":\"d753c9e0-1047-4b8a-8b5e-458907c7a87a\"},\"ongmtsa\":{\"principalId\":\"a13196c4-0bca-4635-8883-309cf89795df\",\"clientId\":\"ab7ebb04-65c7-4217-80c7-f6b96fe66116\"}}},\"tags\":{\"xqpsrknftguv\":\"bp\",\"riwwroy\":\"iuhprwmdyvxqta\",\"bycnojvkn\":\"bexrmcq\",\"qsgzvahapj\":\"e\"},\"location\":\"hpvgqz\",\"etag\":\"rvxdjzlmw\",\"id\":\"xkvugfhzov\",\"name\":\"wjvzunluthnn\",\"type\":\"rnxipei\"}")
+            "{\"properties\":{\"provisioningState\":\"Accepted\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"cmgyud\",\"consumerGroup\":\"tlmoyrx\",\"fullyQualifiedEventHubNamespace\":\"fudwpznt\"},\"deviceMapping\":{\"content\":\"datazhlrqjb\"}},\"identity\":{\"type\":\"None\",\"principalId\":\"ea52b8d7-3aed-4822-be6f-4448e562e4aa\",\"tenantId\":\"e93a8256-827b-4094-bf00-f55ba5643964\",\"userAssignedIdentities\":{\"bkyvp\":{\"principalId\":\"e8576dd4-9027-4511-8834-7d1808156b5c\",\"clientId\":\"2c4c906f-4a62-4416-af6c-0843824079d0\"},\"n\":{\"principalId\":\"a5c79352-a895-4e42-bb3b-e7ac74e1a6d4\",\"clientId\":\"4c134a06-a08d-4e28-96bf-0989b9ed4ac4\"}}},\"tags\":{\"kafkuwbcrnwbm\":\"p\",\"us\":\"hhseyv\",\"ofmxagkvtmelmqkr\":\"tslhspkdeem\"},\"location\":\"hvljuahaquh\",\"etag\":\"hmdua\",\"id\":\"aex\",\"name\":\"pvfadmwsrcr\",\"type\":\"vxpvgomz\"}")
             .toObject(IotConnectorInner.class);
-        Assertions.assertEquals("rvxdjzlmw", model.etag());
-        Assertions.assertEquals("hpvgqz", model.location());
-        Assertions.assertEquals("bp", model.tags().get("xqpsrknftguv"));
-        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("bpbewtghfgb", model.ingestionEndpointConfiguration().eventHubName());
-        Assertions.assertEquals("gw", model.ingestionEndpointConfiguration().consumerGroup());
-        Assertions.assertEquals("vlvqhjkbegi",
-            model.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
+        Assertions.assertEquals("hmdua", model.etag());
+        Assertions.assertEquals("hvljuahaquh", model.location());
+        Assertions.assertEquals("p", model.tags().get("kafkuwbcrnwbm"));
+        Assertions.assertEquals(ServiceManagedIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("cmgyud", model.ingestionEndpointConfiguration().eventHubName());
+        Assertions.assertEquals("tlmoyrx", model.ingestionEndpointConfiguration().consumerGroup());
+        Assertions.assertEquals("fudwpznt", model.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotConnectorInner model = new IotConnectorInner().withEtag("rvxdjzlmw").withLocation("hpvgqz")
-            .withTags(
-                mapOf("xqpsrknftguv", "bp", "riwwroy", "iuhprwmdyvxqta", "bycnojvkn", "bexrmcq", "qsgzvahapj", "e"))
-            .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("rtzju", new UserAssignedIdentity(), "yzm",
-                    new UserAssignedIdentity(), "ongmtsa", new UserAssignedIdentity())))
+        IotConnectorInner model = new IotConnectorInner().withEtag("hmdua")
+            .withLocation("hvljuahaquh")
+            .withTags(mapOf("kafkuwbcrnwbm", "p", "us", "hhseyv", "ofmxagkvtmelmqkr", "tslhspkdeem"))
+            .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.NONE)
+                .withUserAssignedIdentities(
+                    mapOf("bkyvp", new UserAssignedIdentity(), "n", new UserAssignedIdentity())))
             .withIngestionEndpointConfiguration(
-                new IotEventHubIngestionEndpointConfiguration().withEventHubName("bpbewtghfgb").withConsumerGroup("gw")
-                    .withFullyQualifiedEventHubNamespace("vlvqhjkbegi"))
-            .withDeviceMapping(new IotMappingProperties().withContent("datamxiebw"));
+                new IotEventHubIngestionEndpointConfiguration().withEventHubName("cmgyud")
+                    .withConsumerGroup("tlmoyrx")
+                    .withFullyQualifiedEventHubNamespace("fudwpznt"))
+            .withDeviceMapping(new IotMappingProperties().withContent("datazhlrqjb"));
         model = BinaryData.fromObject(model).toObject(IotConnectorInner.class);
-        Assertions.assertEquals("rvxdjzlmw", model.etag());
-        Assertions.assertEquals("hpvgqz", model.location());
-        Assertions.assertEquals("bp", model.tags().get("xqpsrknftguv"));
-        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("bpbewtghfgb", model.ingestionEndpointConfiguration().eventHubName());
-        Assertions.assertEquals("gw", model.ingestionEndpointConfiguration().consumerGroup());
-        Assertions.assertEquals("vlvqhjkbegi",
-            model.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
+        Assertions.assertEquals("hmdua", model.etag());
+        Assertions.assertEquals("hvljuahaquh", model.location());
+        Assertions.assertEquals("p", model.tags().get("kafkuwbcrnwbm"));
+        Assertions.assertEquals(ServiceManagedIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("cmgyud", model.ingestionEndpointConfiguration().eventHubName());
+        Assertions.assertEquals("tlmoyrx", model.ingestionEndpointConfiguration().consumerGroup());
+        Assertions.assertEquals("fudwpznt", model.ingestionEndpointConfiguration().fullyQualifiedEventHubNamespace());
     }
 
     // Use "Map.of" if available

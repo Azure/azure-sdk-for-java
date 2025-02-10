@@ -5,73 +5,72 @@
 package com.azure.resourcemanager.quantum.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Information about a specific sku. */
+/**
+ * Information about a specific sku.
+ */
 @Fluent
-public final class SkuDescription {
+public final class SkuDescription implements JsonSerializable<SkuDescription> {
     /*
      * Unique sku id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Display name of this sku.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Display name of this sku.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Description about this sku.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Uri to subscribe to the restricted access sku.
      */
-    @JsonProperty(value = "restrictedAccessUri")
     private String restrictedAccessUri;
 
     /*
      * Flag to indicate whether the sku should be automatically added during workspace creation.
      */
-    @JsonProperty(value = "autoAdd")
     private Boolean autoAdd;
 
     /*
      * The list of targets available for this sku.
      */
-    @JsonProperty(value = "targets")
     private List<String> targets;
 
     /*
      * The list of quota dimensions for this sku.
      */
-    @JsonProperty(value = "quotaDimensions")
     private List<QuotaDimension> quotaDimensions;
 
     /*
      * The list of pricing details for the sku.
      */
-    @JsonProperty(value = "pricingDetails")
     private List<PricingDetail> pricingDetails;
 
-    /** Creates an instance of SkuDescription class. */
+    /**
+     * Creates an instance of SkuDescription class.
+     */
     public SkuDescription() {
     }
 
     /**
      * Get the id property: Unique sku id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -80,7 +79,7 @@ public final class SkuDescription {
 
     /**
      * Set the id property: Unique sku id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SkuDescription object itself.
      */
@@ -91,7 +90,7 @@ public final class SkuDescription {
 
     /**
      * Get the name property: Display name of this sku.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -100,7 +99,7 @@ public final class SkuDescription {
 
     /**
      * Set the name property: Display name of this sku.
-     *
+     * 
      * @param name the name value to set.
      * @return the SkuDescription object itself.
      */
@@ -111,7 +110,7 @@ public final class SkuDescription {
 
     /**
      * Get the version property: Display name of this sku.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -120,7 +119,7 @@ public final class SkuDescription {
 
     /**
      * Set the version property: Display name of this sku.
-     *
+     * 
      * @param version the version value to set.
      * @return the SkuDescription object itself.
      */
@@ -131,7 +130,7 @@ public final class SkuDescription {
 
     /**
      * Get the description property: Description about this sku.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -140,7 +139,7 @@ public final class SkuDescription {
 
     /**
      * Set the description property: Description about this sku.
-     *
+     * 
      * @param description the description value to set.
      * @return the SkuDescription object itself.
      */
@@ -151,7 +150,7 @@ public final class SkuDescription {
 
     /**
      * Get the restrictedAccessUri property: Uri to subscribe to the restricted access sku.
-     *
+     * 
      * @return the restrictedAccessUri value.
      */
     public String restrictedAccessUri() {
@@ -160,7 +159,7 @@ public final class SkuDescription {
 
     /**
      * Set the restrictedAccessUri property: Uri to subscribe to the restricted access sku.
-     *
+     * 
      * @param restrictedAccessUri the restrictedAccessUri value to set.
      * @return the SkuDescription object itself.
      */
@@ -172,7 +171,7 @@ public final class SkuDescription {
     /**
      * Get the autoAdd property: Flag to indicate whether the sku should be automatically added during workspace
      * creation.
-     *
+     * 
      * @return the autoAdd value.
      */
     public Boolean autoAdd() {
@@ -182,7 +181,7 @@ public final class SkuDescription {
     /**
      * Set the autoAdd property: Flag to indicate whether the sku should be automatically added during workspace
      * creation.
-     *
+     * 
      * @param autoAdd the autoAdd value to set.
      * @return the SkuDescription object itself.
      */
@@ -193,7 +192,7 @@ public final class SkuDescription {
 
     /**
      * Get the targets property: The list of targets available for this sku.
-     *
+     * 
      * @return the targets value.
      */
     public List<String> targets() {
@@ -202,7 +201,7 @@ public final class SkuDescription {
 
     /**
      * Set the targets property: The list of targets available for this sku.
-     *
+     * 
      * @param targets the targets value to set.
      * @return the SkuDescription object itself.
      */
@@ -213,7 +212,7 @@ public final class SkuDescription {
 
     /**
      * Get the quotaDimensions property: The list of quota dimensions for this sku.
-     *
+     * 
      * @return the quotaDimensions value.
      */
     public List<QuotaDimension> quotaDimensions() {
@@ -222,7 +221,7 @@ public final class SkuDescription {
 
     /**
      * Set the quotaDimensions property: The list of quota dimensions for this sku.
-     *
+     * 
      * @param quotaDimensions the quotaDimensions value to set.
      * @return the SkuDescription object itself.
      */
@@ -233,7 +232,7 @@ public final class SkuDescription {
 
     /**
      * Get the pricingDetails property: The list of pricing details for the sku.
-     *
+     * 
      * @return the pricingDetails value.
      */
     public List<PricingDetail> pricingDetails() {
@@ -242,7 +241,7 @@ public final class SkuDescription {
 
     /**
      * Set the pricingDetails property: The list of pricing details for the sku.
-     *
+     * 
      * @param pricingDetails the pricingDetails value to set.
      * @return the SkuDescription object itself.
      */
@@ -253,7 +252,7 @@ public final class SkuDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -263,5 +262,71 @@ public final class SkuDescription {
         if (pricingDetails() != null) {
             pricingDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("restrictedAccessUri", this.restrictedAccessUri);
+        jsonWriter.writeBooleanField("autoAdd", this.autoAdd);
+        jsonWriter.writeArrayField("targets", this.targets, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("quotaDimensions", this.quotaDimensions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("pricingDetails", this.pricingDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuDescription if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuDescription.
+     */
+    public static SkuDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuDescription deserializedSkuDescription = new SkuDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSkuDescription.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSkuDescription.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSkuDescription.version = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSkuDescription.description = reader.getString();
+                } else if ("restrictedAccessUri".equals(fieldName)) {
+                    deserializedSkuDescription.restrictedAccessUri = reader.getString();
+                } else if ("autoAdd".equals(fieldName)) {
+                    deserializedSkuDescription.autoAdd = reader.getNullable(JsonReader::getBoolean);
+                } else if ("targets".equals(fieldName)) {
+                    List<String> targets = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuDescription.targets = targets;
+                } else if ("quotaDimensions".equals(fieldName)) {
+                    List<QuotaDimension> quotaDimensions
+                        = reader.readArray(reader1 -> QuotaDimension.fromJson(reader1));
+                    deserializedSkuDescription.quotaDimensions = quotaDimensions;
+                } else if ("pricingDetails".equals(fieldName)) {
+                    List<PricingDetail> pricingDetails = reader.readArray(reader1 -> PricingDetail.fromJson(reader1));
+                    deserializedSkuDescription.pricingDetails = pricingDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuDescription;
+        });
     }
 }

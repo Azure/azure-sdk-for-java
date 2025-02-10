@@ -14,14 +14,14 @@ public final class DelimitedTextReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DelimitedTextReadSettings model = BinaryData.fromString(
-            "{\"type\":\"DelimitedTextReadSettings\",\"skipLineCount\":\"datafulookwnzotj\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"lkkqvmmmweljc\":\"dataidlodcqs\",\"mnsmnjitxug\":\"datauegym\",\"ioecmbyoxpv\":\"datalbibwodayipgsh\",\"okzdshhhdixn\":\"datavfchfuxuqpdde\"}},\"\":{\"fywspajak\":\"datazibmstvzzkz\",\"nmhxtmzz\":\"datahvpkt\",\"sajjgvusnwi\":\"dataautsrvsbknvouy\"}}")
+            "{\"type\":\"DelimitedTextReadSettings\",\"skipLineCount\":\"datawkesxvzcxxf\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"ycxmhorrecoiqw\":\"datagqwbrzkmgyl\",\"cyhjhrkfpt\":\"dataqliz\"}},\"\":{\"jdvfjvbwawymah\":\"datammisbfmbvmajcmpo\"}}")
             .toObject(DelimitedTextReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelimitedTextReadSettings model
-            = new DelimitedTextReadSettings().withSkipLineCount("datafulookwnzotj").withCompressionProperties(
+        DelimitedTextReadSettings model = new DelimitedTextReadSettings().withSkipLineCount("datawkesxvzcxxf")
+            .withCompressionProperties(
                 new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings")));
         model = BinaryData.fromObject(model).toObject(DelimitedTextReadSettings.class);
     }

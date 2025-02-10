@@ -5,25 +5,45 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Reference to a build result. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("BuildResult")
+/**
+ * Reference to a build result.
+ */
 @Fluent
 public final class BuildResultUserSourceInfo extends UserSourceInfo {
     /*
-     * Resource id of an existing succeeded build result under the same Spring
-     * instance.
+     * Type of the source uploaded
      */
-    @JsonProperty(value = "buildResultId")
+    private String type = "BuildResult";
+
+    /*
+     * Resource id of an existing succeeded build result under the same Spring instance.
+     */
     private String buildResultId;
 
     /**
+     * Creates an instance of BuildResultUserSourceInfo class.
+     */
+    public BuildResultUserSourceInfo() {
+    }
+
+    /**
+     * Get the type property: Type of the source uploaded.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the buildResultId property: Resource id of an existing succeeded build result under the same Spring instance.
-     *
+     * 
      * @return the buildResultId value.
      */
     public String buildResultId() {
@@ -32,7 +52,7 @@ public final class BuildResultUserSourceInfo extends UserSourceInfo {
 
     /**
      * Set the buildResultId property: Resource id of an existing succeeded build result under the same Spring instance.
-     *
+     * 
      * @param buildResultId the buildResultId value to set.
      * @return the BuildResultUserSourceInfo object itself.
      */
@@ -41,7 +61,9 @@ public final class BuildResultUserSourceInfo extends UserSourceInfo {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BuildResultUserSourceInfo withVersion(String version) {
         super.withVersion(version);
@@ -50,11 +72,53 @@ public final class BuildResultUserSourceInfo extends UserSourceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("buildResultId", this.buildResultId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildResultUserSourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildResultUserSourceInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildResultUserSourceInfo.
+     */
+    public static BuildResultUserSourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildResultUserSourceInfo deserializedBuildResultUserSourceInfo = new BuildResultUserSourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedBuildResultUserSourceInfo.withVersion(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedBuildResultUserSourceInfo.type = reader.getString();
+                } else if ("buildResultId".equals(fieldName)) {
+                    deserializedBuildResultUserSourceInfo.buildResultId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildResultUserSourceInfo;
+        });
     }
 }

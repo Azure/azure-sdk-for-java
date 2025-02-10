@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Operation model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"bqwrvtldgm\",\"display\":{\"provider\":\"vm\",\"resource\":\"paslthaqfxssmwu\",\"operation\":\"bdsrez\",\"description\":\"rhneuyowq\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"rcgp\":\"dataib\",\"ejzanlfz\":\"datakpzi\",\"zonokixrjqci\":\"dataiavrm\"}}")
-                .toObject(Operation.class);
-        Assertions.assertEquals(false, model.isDataAction());
+        Operation model = BinaryData.fromString(
+            "{\"name\":\"wkqnyhg\",\"display\":{\"provider\":\"tjivfxzsjabib\",\"resource\":\"stawfsdjpvkv\",\"operation\":\"jxbkzbzkdvn\",\"description\":\"abudurgk\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"mouwqlgzrfzeey\":\"datajjklff\",\"bjbsybb\":\"databizikayuhq\"}}")
+            .toObject(Operation.class);
+        Assertions.assertEquals(true, model.isDataAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Operation model = new Operation().withIsDataAction(false);
+        Operation model = new Operation().withIsDataAction(true);
         model = BinaryData.fromObject(model).toObject(Operation.class);
-        Assertions.assertEquals(false, model.isDataAction());
+        Assertions.assertEquals(true, model.isDataAction());
     }
 }

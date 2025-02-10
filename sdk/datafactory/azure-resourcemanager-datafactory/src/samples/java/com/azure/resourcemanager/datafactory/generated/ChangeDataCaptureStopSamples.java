@@ -18,7 +18,8 @@ public final class ChangeDataCaptureStopSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void changeDataCaptureStop(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.changeDataCaptures().stopWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleChangeDataCapture", com.azure.core.util.Context.NONE);
+        manager.changeDataCaptures()
+            .stopWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleChangeDataCapture",
+                com.azure.core.util.Context.NONE);
     }
 }

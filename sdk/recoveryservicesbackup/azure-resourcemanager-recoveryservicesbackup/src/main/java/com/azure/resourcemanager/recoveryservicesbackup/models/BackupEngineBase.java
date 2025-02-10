@@ -5,103 +5,100 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The base backup engine class. All workload specific backup engines derive from this class. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "backupEngineType",
-    defaultImpl = BackupEngineBase.class)
-@JsonTypeName("BackupEngineBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureBackupServerEngine", value = AzureBackupServerEngine.class),
-    @JsonSubTypes.Type(name = "DpmBackupEngine", value = DpmBackupEngine.class)
-})
+/**
+ * The base backup engine class. All workload specific backup engines derive from this class.
+ */
 @Fluent
-public class BackupEngineBase {
+public class BackupEngineBase implements JsonSerializable<BackupEngineBase> {
+    /*
+     * Type of the backup engine.
+     */
+    private BackupEngineType backupEngineType = BackupEngineType.fromString("BackupEngineBase");
+
     /*
      * Friendly name of the backup engine.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Type of backup management for the backup engine.
      */
-    @JsonProperty(value = "backupManagementType")
     private BackupManagementType backupManagementType;
 
     /*
      * Registration status of the backup engine with the Recovery Services Vault.
      */
-    @JsonProperty(value = "registrationStatus")
     private String registrationStatus;
 
     /*
      * Status of the backup engine with the Recovery Services Vault. = {Active/Deleting/DeleteFailed}
      */
-    @JsonProperty(value = "backupEngineState")
     private String backupEngineState;
 
     /*
      * Backup status of the backup engine.
      */
-    @JsonProperty(value = "healthStatus")
     private String healthStatus;
 
     /*
      * Flag indicating if the backup engine be registered, once already registered.
      */
-    @JsonProperty(value = "canReRegister")
     private Boolean canReRegister;
 
     /*
      * ID of the backup engine.
      */
-    @JsonProperty(value = "backupEngineId")
     private String backupEngineId;
 
     /*
      * Backup engine version
      */
-    @JsonProperty(value = "dpmVersion")
     private String dpmVersion;
 
     /*
      * Backup agent version
      */
-    @JsonProperty(value = "azureBackupAgentVersion")
     private String azureBackupAgentVersion;
 
     /*
      * To check if backup agent upgrade available
      */
-    @JsonProperty(value = "isAzureBackupAgentUpgradeAvailable")
     private Boolean isAzureBackupAgentUpgradeAvailable;
 
     /*
      * To check if backup engine upgrade available
      */
-    @JsonProperty(value = "isDpmUpgradeAvailable")
     private Boolean isDpmUpgradeAvailable;
 
     /*
      * Extended info of the backupengine
      */
-    @JsonProperty(value = "extendedInfo")
     private BackupEngineExtendedInfo extendedInfo;
 
-    /** Creates an instance of BackupEngineBase class. */
+    /**
+     * Creates an instance of BackupEngineBase class.
+     */
     public BackupEngineBase() {
     }
 
     /**
+     * Get the backupEngineType property: Type of the backup engine.
+     * 
+     * @return the backupEngineType value.
+     */
+    public BackupEngineType backupEngineType() {
+        return this.backupEngineType;
+    }
+
+    /**
      * Get the friendlyName property: Friendly name of the backup engine.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -110,7 +107,7 @@ public class BackupEngineBase {
 
     /**
      * Set the friendlyName property: Friendly name of the backup engine.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -121,7 +118,7 @@ public class BackupEngineBase {
 
     /**
      * Get the backupManagementType property: Type of backup management for the backup engine.
-     *
+     * 
      * @return the backupManagementType value.
      */
     public BackupManagementType backupManagementType() {
@@ -130,7 +127,7 @@ public class BackupEngineBase {
 
     /**
      * Set the backupManagementType property: Type of backup management for the backup engine.
-     *
+     * 
      * @param backupManagementType the backupManagementType value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -141,7 +138,7 @@ public class BackupEngineBase {
 
     /**
      * Get the registrationStatus property: Registration status of the backup engine with the Recovery Services Vault.
-     *
+     * 
      * @return the registrationStatus value.
      */
     public String registrationStatus() {
@@ -150,7 +147,7 @@ public class BackupEngineBase {
 
     /**
      * Set the registrationStatus property: Registration status of the backup engine with the Recovery Services Vault.
-     *
+     * 
      * @param registrationStatus the registrationStatus value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -162,7 +159,7 @@ public class BackupEngineBase {
     /**
      * Get the backupEngineState property: Status of the backup engine with the Recovery Services Vault. =
      * {Active/Deleting/DeleteFailed}.
-     *
+     * 
      * @return the backupEngineState value.
      */
     public String backupEngineState() {
@@ -172,7 +169,7 @@ public class BackupEngineBase {
     /**
      * Set the backupEngineState property: Status of the backup engine with the Recovery Services Vault. =
      * {Active/Deleting/DeleteFailed}.
-     *
+     * 
      * @param backupEngineState the backupEngineState value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -183,7 +180,7 @@ public class BackupEngineBase {
 
     /**
      * Get the healthStatus property: Backup status of the backup engine.
-     *
+     * 
      * @return the healthStatus value.
      */
     public String healthStatus() {
@@ -192,7 +189,7 @@ public class BackupEngineBase {
 
     /**
      * Set the healthStatus property: Backup status of the backup engine.
-     *
+     * 
      * @param healthStatus the healthStatus value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -203,7 +200,7 @@ public class BackupEngineBase {
 
     /**
      * Get the canReRegister property: Flag indicating if the backup engine be registered, once already registered.
-     *
+     * 
      * @return the canReRegister value.
      */
     public Boolean canReRegister() {
@@ -212,7 +209,7 @@ public class BackupEngineBase {
 
     /**
      * Set the canReRegister property: Flag indicating if the backup engine be registered, once already registered.
-     *
+     * 
      * @param canReRegister the canReRegister value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -223,7 +220,7 @@ public class BackupEngineBase {
 
     /**
      * Get the backupEngineId property: ID of the backup engine.
-     *
+     * 
      * @return the backupEngineId value.
      */
     public String backupEngineId() {
@@ -232,7 +229,7 @@ public class BackupEngineBase {
 
     /**
      * Set the backupEngineId property: ID of the backup engine.
-     *
+     * 
      * @param backupEngineId the backupEngineId value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -243,7 +240,7 @@ public class BackupEngineBase {
 
     /**
      * Get the dpmVersion property: Backup engine version.
-     *
+     * 
      * @return the dpmVersion value.
      */
     public String dpmVersion() {
@@ -252,7 +249,7 @@ public class BackupEngineBase {
 
     /**
      * Set the dpmVersion property: Backup engine version.
-     *
+     * 
      * @param dpmVersion the dpmVersion value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -263,7 +260,7 @@ public class BackupEngineBase {
 
     /**
      * Get the azureBackupAgentVersion property: Backup agent version.
-     *
+     * 
      * @return the azureBackupAgentVersion value.
      */
     public String azureBackupAgentVersion() {
@@ -272,7 +269,7 @@ public class BackupEngineBase {
 
     /**
      * Set the azureBackupAgentVersion property: Backup agent version.
-     *
+     * 
      * @param azureBackupAgentVersion the azureBackupAgentVersion value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -283,7 +280,7 @@ public class BackupEngineBase {
 
     /**
      * Get the isAzureBackupAgentUpgradeAvailable property: To check if backup agent upgrade available.
-     *
+     * 
      * @return the isAzureBackupAgentUpgradeAvailable value.
      */
     public Boolean isAzureBackupAgentUpgradeAvailable() {
@@ -292,7 +289,7 @@ public class BackupEngineBase {
 
     /**
      * Set the isAzureBackupAgentUpgradeAvailable property: To check if backup agent upgrade available.
-     *
+     * 
      * @param isAzureBackupAgentUpgradeAvailable the isAzureBackupAgentUpgradeAvailable value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -303,7 +300,7 @@ public class BackupEngineBase {
 
     /**
      * Get the isDpmUpgradeAvailable property: To check if backup engine upgrade available.
-     *
+     * 
      * @return the isDpmUpgradeAvailable value.
      */
     public Boolean isDpmUpgradeAvailable() {
@@ -312,7 +309,7 @@ public class BackupEngineBase {
 
     /**
      * Set the isDpmUpgradeAvailable property: To check if backup engine upgrade available.
-     *
+     * 
      * @param isDpmUpgradeAvailable the isDpmUpgradeAvailable value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -323,7 +320,7 @@ public class BackupEngineBase {
 
     /**
      * Get the extendedInfo property: Extended info of the backupengine.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public BackupEngineExtendedInfo extendedInfo() {
@@ -332,7 +329,7 @@ public class BackupEngineBase {
 
     /**
      * Set the extendedInfo property: Extended info of the backupengine.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the BackupEngineBase object itself.
      */
@@ -343,12 +340,115 @@ public class BackupEngineBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (extendedInfo() != null) {
             extendedInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupEngineType",
+            this.backupEngineType == null ? null : this.backupEngineType.toString());
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("backupManagementType",
+            this.backupManagementType == null ? null : this.backupManagementType.toString());
+        jsonWriter.writeStringField("registrationStatus", this.registrationStatus);
+        jsonWriter.writeStringField("backupEngineState", this.backupEngineState);
+        jsonWriter.writeStringField("healthStatus", this.healthStatus);
+        jsonWriter.writeBooleanField("canReRegister", this.canReRegister);
+        jsonWriter.writeStringField("backupEngineId", this.backupEngineId);
+        jsonWriter.writeStringField("dpmVersion", this.dpmVersion);
+        jsonWriter.writeStringField("azureBackupAgentVersion", this.azureBackupAgentVersion);
+        jsonWriter.writeBooleanField("isAzureBackupAgentUpgradeAvailable", this.isAzureBackupAgentUpgradeAvailable);
+        jsonWriter.writeBooleanField("isDpmUpgradeAvailable", this.isDpmUpgradeAvailable);
+        jsonWriter.writeJsonField("extendedInfo", this.extendedInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupEngineBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupEngineBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupEngineBase.
+     */
+    public static BackupEngineBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("backupEngineType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureBackupServerEngine".equals(discriminatorValue)) {
+                    return AzureBackupServerEngine.fromJson(readerToUse.reset());
+                } else if ("DpmBackupEngine".equals(discriminatorValue)) {
+                    return DpmBackupEngine.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static BackupEngineBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupEngineBase deserializedBackupEngineBase = new BackupEngineBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupEngineType".equals(fieldName)) {
+                    deserializedBackupEngineBase.backupEngineType = BackupEngineType.fromString(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedBackupEngineBase.friendlyName = reader.getString();
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedBackupEngineBase.backupManagementType
+                        = BackupManagementType.fromString(reader.getString());
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedBackupEngineBase.registrationStatus = reader.getString();
+                } else if ("backupEngineState".equals(fieldName)) {
+                    deserializedBackupEngineBase.backupEngineState = reader.getString();
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedBackupEngineBase.healthStatus = reader.getString();
+                } else if ("canReRegister".equals(fieldName)) {
+                    deserializedBackupEngineBase.canReRegister = reader.getNullable(JsonReader::getBoolean);
+                } else if ("backupEngineId".equals(fieldName)) {
+                    deserializedBackupEngineBase.backupEngineId = reader.getString();
+                } else if ("dpmVersion".equals(fieldName)) {
+                    deserializedBackupEngineBase.dpmVersion = reader.getString();
+                } else if ("azureBackupAgentVersion".equals(fieldName)) {
+                    deserializedBackupEngineBase.azureBackupAgentVersion = reader.getString();
+                } else if ("isAzureBackupAgentUpgradeAvailable".equals(fieldName)) {
+                    deserializedBackupEngineBase.isAzureBackupAgentUpgradeAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDpmUpgradeAvailable".equals(fieldName)) {
+                    deserializedBackupEngineBase.isDpmUpgradeAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedBackupEngineBase.extendedInfo = BackupEngineExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupEngineBase;
+        });
     }
 }

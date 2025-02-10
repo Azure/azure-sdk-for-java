@@ -10,6 +10,7 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +34,11 @@ public final class Utility {
       */
     public static final String STORAGE_TRACING_NAMESPACE_VALUE = "Microsoft.Storage";
 
+    /**
+     * Creates a new instance of {@link Utility}.
+     */
+    public Utility() {
+    }
 
     /**
      * Performs a safe decoding of the passed string, taking care to preserve each {@code +} character rather than
@@ -234,16 +240,18 @@ public final class Utility {
             try {
                 if (data.read() != -1) {
                     long totalLength = 1 + data.available();
-                    return FluxUtil.fluxError(LOGGER, new UnexpectedLengthException(String.format(
-                        "Request body emitted %d bytes, more than the expected %d bytes.", totalLength, length),
-                        totalLength, length));
+                    return FluxUtil.fluxError(LOGGER,
+                        new UnexpectedLengthException(
+                            String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                                totalLength, length),
+                            totalLength, length));
                 }
             } catch (IOException e) {
                 return FluxUtil.fluxError(LOGGER, new UncheckedIOException(e));
             }
         }
 
-        return Flux.defer(() -> {
+        return Flux.<ByteBuffer>defer(() -> {
             /*
              * If the request needs to be retried, the flux will be resubscribed to. The stream and counter must be
              * reset in order to correctly return the same data again.
@@ -283,9 +291,10 @@ public final class Utility {
                 }
 
                 if (numOfBytes == -1 && currentTotalLength[0] < length) {
-                    sink.error(LOGGER.logExceptionAsError(new UnexpectedLengthException(String.format(
-                        "Request body emitted %d bytes, less than the expected %d bytes.",
-                        currentTotalLength[0], length), currentTotalLength[0], length)));
+                    sink.error(LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                        String.format("Request body emitted %d bytes, less than the expected %d bytes.",
+                            currentTotalLength[0], length),
+                        currentTotalLength[0], length)));
                     return is;
                 }
 
@@ -296,7 +305,8 @@ public final class Utility {
                             long totalLength = 1 + currentTotalLength[0] + data.available();
                             sink.error(LOGGER.logExceptionAsError(new UnexpectedLengthException(
                                 String.format("Request body emitted %d bytes, more than the expected %d bytes.",
-                                    totalLength, length), totalLength, length)));
+                                    totalLength, length),
+                                totalLength, length)));
                             return is;
                         } else if (currentTotalLength[0] > length) {
                             sink.error(LOGGER.logExceptionAsError(new IllegalStateException(
@@ -316,7 +326,7 @@ public final class Utility {
                 }
                 return is;
             });
-        });
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 
     /**
@@ -328,8 +338,6 @@ public final class Utility {
      * @return The updated url.
      */
     public static String appendQueryParameter(String url, String key, String value) {
-        return (url.indexOf('?') != -1)
-            ? url + "&" + key + "=" + value
-            : url + "?" + key + "=" + value;
+        return (url.indexOf('?') != -1) ? url + "&" + key + "=" + value : url + "?" + key + "=" + value;
     }
 }

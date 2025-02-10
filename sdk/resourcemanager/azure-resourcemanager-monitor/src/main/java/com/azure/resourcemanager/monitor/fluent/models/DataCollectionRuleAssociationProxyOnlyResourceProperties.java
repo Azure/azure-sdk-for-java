@@ -5,45 +5,145 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleAssociation;
+import com.azure.resourcemanager.monitor.models.DataCollectionRuleAssociationMetadata;
+import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleAssociationProvisioningState;
+import java.io.IOException;
 
-/** Resource properties. */
+/**
+ * Resource properties.
+ */
 @Fluent
 public final class DataCollectionRuleAssociationProxyOnlyResourceProperties extends DataCollectionRuleAssociation {
-    /** Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceProperties class. */
+    /*
+     * The resource provisioning state.
+     */
+    private KnownDataCollectionRuleAssociationProvisioningState provisioningState;
+
+    /*
+     * Metadata about the resource
+     */
+    private DataCollectionRuleAssociationMetadata metadata;
+
+    /**
+     * Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceProperties class.
+     */
     public DataCollectionRuleAssociationProxyOnlyResourceProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the provisioningState property: The resource provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public KnownDataCollectionRuleAssociationProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the metadata property: Metadata about the resource.
+     * 
+     * @return the metadata value.
+     */
+    @Override
+    public DataCollectionRuleAssociationMetadata metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionRuleAssociationProxyOnlyResourceProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DataCollectionRuleAssociationProxyOnlyResourceProperties withDataCollectionRuleId(
-        String dataCollectionRuleId) {
+    public DataCollectionRuleAssociationProxyOnlyResourceProperties
+        withDataCollectionRuleId(String dataCollectionRuleId) {
         super.withDataCollectionRuleId(dataCollectionRuleId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DataCollectionRuleAssociationProxyOnlyResourceProperties withDataCollectionEndpointId(
-        String dataCollectionEndpointId) {
+    public DataCollectionRuleAssociationProxyOnlyResourceProperties
+        withDataCollectionEndpointId(String dataCollectionEndpointId) {
         super.withDataCollectionEndpointId(dataCollectionEndpointId);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("dataCollectionRuleId", dataCollectionRuleId());
+        jsonWriter.writeStringField("dataCollectionEndpointId", dataCollectionEndpointId());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataCollectionRuleAssociationProxyOnlyResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataCollectionRuleAssociationProxyOnlyResourceProperties if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * DataCollectionRuleAssociationProxyOnlyResourceProperties.
+     */
+    public static DataCollectionRuleAssociationProxyOnlyResourceProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataCollectionRuleAssociationProxyOnlyResourceProperties deserializedDataCollectionRuleAssociationProxyOnlyResourceProperties
+                = new DataCollectionRuleAssociationProxyOnlyResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDataCollectionRuleAssociationProxyOnlyResourceProperties
+                        .withDescription(reader.getString());
+                } else if ("dataCollectionRuleId".equals(fieldName)) {
+                    deserializedDataCollectionRuleAssociationProxyOnlyResourceProperties
+                        .withDataCollectionRuleId(reader.getString());
+                } else if ("dataCollectionEndpointId".equals(fieldName)) {
+                    deserializedDataCollectionRuleAssociationProxyOnlyResourceProperties
+                        .withDataCollectionEndpointId(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDataCollectionRuleAssociationProxyOnlyResourceProperties.provisioningState
+                        = KnownDataCollectionRuleAssociationProvisioningState.fromString(reader.getString());
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedDataCollectionRuleAssociationProxyOnlyResourceProperties.metadata
+                        = DataCollectionRuleAssociationMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataCollectionRuleAssociationProxyOnlyResourceProperties;
+        });
     }
 }

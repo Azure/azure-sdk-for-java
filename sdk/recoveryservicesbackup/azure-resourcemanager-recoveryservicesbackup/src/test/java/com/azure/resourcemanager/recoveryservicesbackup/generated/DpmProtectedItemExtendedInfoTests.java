@@ -14,61 +14,58 @@ import org.junit.jupiter.api.Assertions;
 public final class DpmProtectedItemExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DpmProtectedItemExtendedInfo model =
-            BinaryData
-                .fromString(
-                    "{\"protectableObjectLoadPath\":{\"pttaqutd\":\"jgicgaao\",\"gehkfkimrtixokff\":\"wemxswvruunzz\",\"qwhix\":\"yinljqe\"},\"protected\":false,\"isPresentOnCloud\":false,\"lastBackupStatus\":\"hiyxgvelfclduc\",\"lastRefreshedAt\":\"2021-06-28T02:53:43Z\",\"oldestRecoveryPoint\":\"2020-12-30T21:40:21Z\",\"recoveryPointCount\":1691245829,\"onPremiseOldestRecoveryPoint\":\"2021-01-25T09:33:02Z\",\"onPremiseLatestRecoveryPoint\":\"2021-02-26T01:35:32Z\",\"onPremiseRecoveryPointCount\":1517477938,\"isCollocated\":true,\"protectionGroupName\":\"tmninw\",\"diskStorageUsedInBytes\":\"zcilnghg\",\"totalDiskStorageSizeInBytes\":\"ejjtbxqmul\"}")
-                .toObject(DpmProtectedItemExtendedInfo.class);
-        Assertions.assertEquals("jgicgaao", model.protectableObjectLoadPath().get("pttaqutd"));
-        Assertions.assertEquals(false, model.protectedProperty());
-        Assertions.assertEquals(false, model.isPresentOnCloud());
-        Assertions.assertEquals("hiyxgvelfclduc", model.lastBackupStatus());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T02:53:43Z"), model.lastRefreshedAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-30T21:40:21Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(1691245829, model.recoveryPointCount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-25T09:33:02Z"), model.onPremiseOldestRecoveryPoint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T01:35:32Z"), model.onPremiseLatestRecoveryPoint());
-        Assertions.assertEquals(1517477938, model.onPremiseRecoveryPointCount());
+        DpmProtectedItemExtendedInfo model = BinaryData.fromString(
+            "{\"protectableObjectLoadPath\":{\"vkfvxcnqmxqpswok\":\"dfuyd\",\"kzsz\":\"vkhlggdhbemz\",\"fpgpicrmnzhrgm\":\"wiwtglxxhl\",\"qcbfrmbodths\":\"gjsxv\"},\"protected\":true,\"isPresentOnCloud\":true,\"lastBackupStatus\":\"i\",\"lastRefreshedAt\":\"2021-01-20T04:23:32Z\",\"oldestRecoveryPoint\":\"2021-06-17T12:23:54Z\",\"recoveryPointCount\":47418436,\"onPremiseOldestRecoveryPoint\":\"2021-05-28T16:52:57Z\",\"onPremiseLatestRecoveryPoint\":\"2021-11-04T08:18:17Z\",\"onPremiseRecoveryPointCount\":1419015231,\"isCollocated\":true,\"protectionGroupName\":\"au\",\"diskStorageUsedInBytes\":\"wvsgmwohqfzizvu\",\"totalDiskStorageSizeInBytes\":\"mk\"}")
+            .toObject(DpmProtectedItemExtendedInfo.class);
+        Assertions.assertEquals("dfuyd", model.protectableObjectLoadPath().get("vkfvxcnqmxqpswok"));
+        Assertions.assertEquals(true, model.protectedProperty());
+        Assertions.assertEquals(true, model.isPresentOnCloud());
+        Assertions.assertEquals("i", model.lastBackupStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T04:23:32Z"), model.lastRefreshedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T12:23:54Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(47418436, model.recoveryPointCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T16:52:57Z"), model.onPremiseOldestRecoveryPoint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T08:18:17Z"), model.onPremiseLatestRecoveryPoint());
+        Assertions.assertEquals(1419015231, model.onPremiseRecoveryPointCount());
         Assertions.assertEquals(true, model.isCollocated());
-        Assertions.assertEquals("tmninw", model.protectionGroupName());
-        Assertions.assertEquals("zcilnghg", model.diskStorageUsedInBytes());
-        Assertions.assertEquals("ejjtbxqmul", model.totalDiskStorageSizeInBytes());
+        Assertions.assertEquals("au", model.protectionGroupName());
+        Assertions.assertEquals("wvsgmwohqfzizvu", model.diskStorageUsedInBytes());
+        Assertions.assertEquals("mk", model.totalDiskStorageSizeInBytes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DpmProtectedItemExtendedInfo model =
-            new DpmProtectedItemExtendedInfo()
-                .withProtectableObjectLoadPath(
-                    mapOf("pttaqutd", "jgicgaao", "gehkfkimrtixokff", "wemxswvruunzz", "qwhix", "yinljqe"))
-                .withProtectedProperty(false)
-                .withIsPresentOnCloud(false)
-                .withLastBackupStatus("hiyxgvelfclduc")
-                .withLastRefreshedAt(OffsetDateTime.parse("2021-06-28T02:53:43Z"))
-                .withOldestRecoveryPoint(OffsetDateTime.parse("2020-12-30T21:40:21Z"))
-                .withRecoveryPointCount(1691245829)
-                .withOnPremiseOldestRecoveryPoint(OffsetDateTime.parse("2021-01-25T09:33:02Z"))
-                .withOnPremiseLatestRecoveryPoint(OffsetDateTime.parse("2021-02-26T01:35:32Z"))
-                .withOnPremiseRecoveryPointCount(1517477938)
-                .withIsCollocated(true)
-                .withProtectionGroupName("tmninw")
-                .withDiskStorageUsedInBytes("zcilnghg")
-                .withTotalDiskStorageSizeInBytes("ejjtbxqmul");
+        DpmProtectedItemExtendedInfo model = new DpmProtectedItemExtendedInfo()
+            .withProtectableObjectLoadPath(mapOf("vkfvxcnqmxqpswok", "dfuyd", "kzsz", "vkhlggdhbemz", "fpgpicrmnzhrgm",
+                "wiwtglxxhl", "qcbfrmbodths", "gjsxv"))
+            .withProtectedProperty(true)
+            .withIsPresentOnCloud(true)
+            .withLastBackupStatus("i")
+            .withLastRefreshedAt(OffsetDateTime.parse("2021-01-20T04:23:32Z"))
+            .withOldestRecoveryPoint(OffsetDateTime.parse("2021-06-17T12:23:54Z"))
+            .withRecoveryPointCount(47418436)
+            .withOnPremiseOldestRecoveryPoint(OffsetDateTime.parse("2021-05-28T16:52:57Z"))
+            .withOnPremiseLatestRecoveryPoint(OffsetDateTime.parse("2021-11-04T08:18:17Z"))
+            .withOnPremiseRecoveryPointCount(1419015231)
+            .withIsCollocated(true)
+            .withProtectionGroupName("au")
+            .withDiskStorageUsedInBytes("wvsgmwohqfzizvu")
+            .withTotalDiskStorageSizeInBytes("mk");
         model = BinaryData.fromObject(model).toObject(DpmProtectedItemExtendedInfo.class);
-        Assertions.assertEquals("jgicgaao", model.protectableObjectLoadPath().get("pttaqutd"));
-        Assertions.assertEquals(false, model.protectedProperty());
-        Assertions.assertEquals(false, model.isPresentOnCloud());
-        Assertions.assertEquals("hiyxgvelfclduc", model.lastBackupStatus());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T02:53:43Z"), model.lastRefreshedAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-30T21:40:21Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(1691245829, model.recoveryPointCount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-25T09:33:02Z"), model.onPremiseOldestRecoveryPoint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T01:35:32Z"), model.onPremiseLatestRecoveryPoint());
-        Assertions.assertEquals(1517477938, model.onPremiseRecoveryPointCount());
+        Assertions.assertEquals("dfuyd", model.protectableObjectLoadPath().get("vkfvxcnqmxqpswok"));
+        Assertions.assertEquals(true, model.protectedProperty());
+        Assertions.assertEquals(true, model.isPresentOnCloud());
+        Assertions.assertEquals("i", model.lastBackupStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T04:23:32Z"), model.lastRefreshedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T12:23:54Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(47418436, model.recoveryPointCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-28T16:52:57Z"), model.onPremiseOldestRecoveryPoint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T08:18:17Z"), model.onPremiseLatestRecoveryPoint());
+        Assertions.assertEquals(1419015231, model.onPremiseRecoveryPointCount());
         Assertions.assertEquals(true, model.isCollocated());
-        Assertions.assertEquals("tmninw", model.protectionGroupName());
-        Assertions.assertEquals("zcilnghg", model.diskStorageUsedInBytes());
-        Assertions.assertEquals("ejjtbxqmul", model.totalDiskStorageSizeInBytes());
+        Assertions.assertEquals("au", model.protectionGroupName());
+        Assertions.assertEquals("wvsgmwohqfzizvu", model.diskStorageUsedInBytes());
+        Assertions.assertEquals("mk", model.totalDiskStorageSizeInBytes());
     }
 
     // Use "Map.of" if available

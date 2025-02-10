@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.fluent.models.ConfigurationServiceResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Object that includes an array of configuration service resources and a possible link for next set. */
+/**
+ * Object that includes an array of configuration service resources and a possible link for next set.
+ */
 @Fluent
-public final class ConfigurationServiceResourceCollection {
+public final class ConfigurationServiceResourceCollection
+    implements JsonSerializable<ConfigurationServiceResourceCollection> {
     /*
      * Collection of configuration service resources
      */
-    @JsonProperty(value = "value")
     private List<ConfigurationServiceResourceInner> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of ConfigurationServiceResourceCollection class.
+     */
+    public ConfigurationServiceResourceCollection() {
+    }
+
+    /**
      * Get the value property: Collection of configuration service resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ConfigurationServiceResourceInner> value() {
@@ -36,7 +47,7 @@ public final class ConfigurationServiceResourceCollection {
 
     /**
      * Set the value property: Collection of configuration service resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationServiceResourceCollection object itself.
      */
@@ -46,9 +57,9 @@ public final class ConfigurationServiceResourceCollection {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +67,9 @@ public final class ConfigurationServiceResourceCollection {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ConfigurationServiceResourceCollection object itself.
      */
@@ -69,12 +80,54 @@ public final class ConfigurationServiceResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationServiceResourceCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationServiceResourceCollection if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationServiceResourceCollection.
+     */
+    public static ConfigurationServiceResourceCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationServiceResourceCollection deserializedConfigurationServiceResourceCollection
+                = new ConfigurationServiceResourceCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ConfigurationServiceResourceInner> value
+                        = reader.readArray(reader1 -> ConfigurationServiceResourceInner.fromJson(reader1));
+                    deserializedConfigurationServiceResourceCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedConfigurationServiceResourceCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationServiceResourceCollection;
+        });
     }
 }

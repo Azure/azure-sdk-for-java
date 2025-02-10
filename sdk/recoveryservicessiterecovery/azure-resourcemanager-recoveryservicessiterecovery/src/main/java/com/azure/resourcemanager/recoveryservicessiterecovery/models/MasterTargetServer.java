@@ -5,128 +5,120 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Details of a Master Target Server. */
+/**
+ * Details of a Master Target Server.
+ */
 @Fluent
-public final class MasterTargetServer {
+public final class MasterTargetServer implements JsonSerializable<MasterTargetServer> {
     /*
      * The server Id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The IP address of the server.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * The server name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The OS type of the server.
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * The version of the scout component on the server.
      */
-    @JsonProperty(value = "agentVersion")
     private String agentVersion;
 
     /*
      * The last heartbeat received from the server.
      */
-    @JsonProperty(value = "lastHeartbeat")
     private OffsetDateTime lastHeartbeat;
 
     /*
      * Version status.
      */
-    @JsonProperty(value = "versionStatus")
     private String versionStatus;
 
     /*
      * The retention volumes of Master target Server.
      */
-    @JsonProperty(value = "retentionVolumes")
     private List<RetentionVolume> retentionVolumes;
 
     /*
      * The list of data stores in the fabric.
      */
-    @JsonProperty(value = "dataStores")
     private List<DataStore> dataStores;
 
     /*
      * Validation errors.
      */
-    @JsonProperty(value = "validationErrors")
     private List<HealthError> validationErrors;
 
     /*
      * Health errors.
      */
-    @JsonProperty(value = "healthErrors")
     private List<HealthError> healthErrors;
 
     /*
      * Disk count of the master target.
      */
-    @JsonProperty(value = "diskCount")
     private Integer diskCount;
 
     /*
      * OS Version of the master target.
      */
-    @JsonProperty(value = "osVersion")
     private String osVersion;
 
     /*
      * Agent expiry date.
      */
-    @JsonProperty(value = "agentExpiryDate")
     private OffsetDateTime agentExpiryDate;
 
     /*
      * MARS agent version.
      */
-    @JsonProperty(value = "marsAgentVersion")
     private String marsAgentVersion;
 
     /*
      * MARS agent expiry date.
      */
-    @JsonProperty(value = "marsAgentExpiryDate")
     private OffsetDateTime marsAgentExpiryDate;
 
     /*
      * Agent version details.
      */
-    @JsonProperty(value = "agentVersionDetails")
     private VersionDetails agentVersionDetails;
 
     /*
      * Mars agent version details.
      */
-    @JsonProperty(value = "marsAgentVersionDetails")
     private VersionDetails marsAgentVersionDetails;
 
-    /** Creates an instance of MasterTargetServer class. */
+    /**
+     * Creates an instance of MasterTargetServer class.
+     */
     public MasterTargetServer() {
     }
 
     /**
      * Get the id property: The server Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -135,7 +127,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the id property: The server Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -146,7 +138,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the ipAddress property: The IP address of the server.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -155,7 +147,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the ipAddress property: The IP address of the server.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -166,7 +158,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the name property: The server name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -175,7 +167,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the name property: The server name.
-     *
+     * 
      * @param name the name value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -186,7 +178,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the osType property: The OS type of the server.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -195,7 +187,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the osType property: The OS type of the server.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -206,7 +198,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the agentVersion property: The version of the scout component on the server.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -215,7 +207,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the agentVersion property: The version of the scout component on the server.
-     *
+     * 
      * @param agentVersion the agentVersion value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -226,7 +218,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the lastHeartbeat property: The last heartbeat received from the server.
-     *
+     * 
      * @return the lastHeartbeat value.
      */
     public OffsetDateTime lastHeartbeat() {
@@ -235,7 +227,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the lastHeartbeat property: The last heartbeat received from the server.
-     *
+     * 
      * @param lastHeartbeat the lastHeartbeat value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -246,7 +238,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the versionStatus property: Version status.
-     *
+     * 
      * @return the versionStatus value.
      */
     public String versionStatus() {
@@ -255,7 +247,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the versionStatus property: Version status.
-     *
+     * 
      * @param versionStatus the versionStatus value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -266,7 +258,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the retentionVolumes property: The retention volumes of Master target Server.
-     *
+     * 
      * @return the retentionVolumes value.
      */
     public List<RetentionVolume> retentionVolumes() {
@@ -275,7 +267,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the retentionVolumes property: The retention volumes of Master target Server.
-     *
+     * 
      * @param retentionVolumes the retentionVolumes value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -286,7 +278,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the dataStores property: The list of data stores in the fabric.
-     *
+     * 
      * @return the dataStores value.
      */
     public List<DataStore> dataStores() {
@@ -295,7 +287,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the dataStores property: The list of data stores in the fabric.
-     *
+     * 
      * @param dataStores the dataStores value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -306,7 +298,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the validationErrors property: Validation errors.
-     *
+     * 
      * @return the validationErrors value.
      */
     public List<HealthError> validationErrors() {
@@ -315,7 +307,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the validationErrors property: Validation errors.
-     *
+     * 
      * @param validationErrors the validationErrors value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -326,7 +318,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the healthErrors property: Health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -335,7 +327,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the healthErrors property: Health errors.
-     *
+     * 
      * @param healthErrors the healthErrors value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -346,7 +338,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the diskCount property: Disk count of the master target.
-     *
+     * 
      * @return the diskCount value.
      */
     public Integer diskCount() {
@@ -355,7 +347,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the diskCount property: Disk count of the master target.
-     *
+     * 
      * @param diskCount the diskCount value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -366,7 +358,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the osVersion property: OS Version of the master target.
-     *
+     * 
      * @return the osVersion value.
      */
     public String osVersion() {
@@ -375,7 +367,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the osVersion property: OS Version of the master target.
-     *
+     * 
      * @param osVersion the osVersion value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -386,7 +378,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @return the agentExpiryDate value.
      */
     public OffsetDateTime agentExpiryDate() {
@@ -395,7 +387,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @param agentExpiryDate the agentExpiryDate value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -406,7 +398,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the marsAgentVersion property: MARS agent version.
-     *
+     * 
      * @return the marsAgentVersion value.
      */
     public String marsAgentVersion() {
@@ -415,7 +407,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the marsAgentVersion property: MARS agent version.
-     *
+     * 
      * @param marsAgentVersion the marsAgentVersion value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -426,7 +418,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the marsAgentExpiryDate property: MARS agent expiry date.
-     *
+     * 
      * @return the marsAgentExpiryDate value.
      */
     public OffsetDateTime marsAgentExpiryDate() {
@@ -435,7 +427,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the marsAgentExpiryDate property: MARS agent expiry date.
-     *
+     * 
      * @param marsAgentExpiryDate the marsAgentExpiryDate value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -446,7 +438,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the agentVersionDetails property: Agent version details.
-     *
+     * 
      * @return the agentVersionDetails value.
      */
     public VersionDetails agentVersionDetails() {
@@ -455,7 +447,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the agentVersionDetails property: Agent version details.
-     *
+     * 
      * @param agentVersionDetails the agentVersionDetails value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -466,7 +458,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the marsAgentVersionDetails property: Mars agent version details.
-     *
+     * 
      * @return the marsAgentVersionDetails value.
      */
     public VersionDetails marsAgentVersionDetails() {
@@ -475,7 +467,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the marsAgentVersionDetails property: Mars agent version details.
-     *
+     * 
      * @param marsAgentVersionDetails the marsAgentVersionDetails value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -486,7 +478,7 @@ public final class MasterTargetServer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -508,5 +500,107 @@ public final class MasterTargetServer {
         if (marsAgentVersionDetails() != null) {
             marsAgentVersionDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeStringField("lastHeartbeat",
+            this.lastHeartbeat == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastHeartbeat));
+        jsonWriter.writeStringField("versionStatus", this.versionStatus);
+        jsonWriter.writeArrayField("retentionVolumes", this.retentionVolumes,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dataStores", this.dataStores, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("validationErrors", this.validationErrors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("healthErrors", this.healthErrors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("diskCount", this.diskCount);
+        jsonWriter.writeStringField("osVersion", this.osVersion);
+        jsonWriter.writeStringField("agentExpiryDate",
+            this.agentExpiryDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.agentExpiryDate));
+        jsonWriter.writeStringField("marsAgentVersion", this.marsAgentVersion);
+        jsonWriter.writeStringField("marsAgentExpiryDate",
+            this.marsAgentExpiryDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.marsAgentExpiryDate));
+        jsonWriter.writeJsonField("agentVersionDetails", this.agentVersionDetails);
+        jsonWriter.writeJsonField("marsAgentVersionDetails", this.marsAgentVersionDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MasterTargetServer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MasterTargetServer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MasterTargetServer.
+     */
+    public static MasterTargetServer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MasterTargetServer deserializedMasterTargetServer = new MasterTargetServer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMasterTargetServer.id = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedMasterTargetServer.ipAddress = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMasterTargetServer.name = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedMasterTargetServer.osType = reader.getString();
+                } else if ("agentVersion".equals(fieldName)) {
+                    deserializedMasterTargetServer.agentVersion = reader.getString();
+                } else if ("lastHeartbeat".equals(fieldName)) {
+                    deserializedMasterTargetServer.lastHeartbeat = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("versionStatus".equals(fieldName)) {
+                    deserializedMasterTargetServer.versionStatus = reader.getString();
+                } else if ("retentionVolumes".equals(fieldName)) {
+                    List<RetentionVolume> retentionVolumes
+                        = reader.readArray(reader1 -> RetentionVolume.fromJson(reader1));
+                    deserializedMasterTargetServer.retentionVolumes = retentionVolumes;
+                } else if ("dataStores".equals(fieldName)) {
+                    List<DataStore> dataStores = reader.readArray(reader1 -> DataStore.fromJson(reader1));
+                    deserializedMasterTargetServer.dataStores = dataStores;
+                } else if ("validationErrors".equals(fieldName)) {
+                    List<HealthError> validationErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedMasterTargetServer.validationErrors = validationErrors;
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthError> healthErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedMasterTargetServer.healthErrors = healthErrors;
+                } else if ("diskCount".equals(fieldName)) {
+                    deserializedMasterTargetServer.diskCount = reader.getNullable(JsonReader::getInt);
+                } else if ("osVersion".equals(fieldName)) {
+                    deserializedMasterTargetServer.osVersion = reader.getString();
+                } else if ("agentExpiryDate".equals(fieldName)) {
+                    deserializedMasterTargetServer.agentExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("marsAgentVersion".equals(fieldName)) {
+                    deserializedMasterTargetServer.marsAgentVersion = reader.getString();
+                } else if ("marsAgentExpiryDate".equals(fieldName)) {
+                    deserializedMasterTargetServer.marsAgentExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("agentVersionDetails".equals(fieldName)) {
+                    deserializedMasterTargetServer.agentVersionDetails = VersionDetails.fromJson(reader);
+                } else if ("marsAgentVersionDetails".equals(fieldName)) {
+                    deserializedMasterTargetServer.marsAgentVersionDetails = VersionDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMasterTargetServer;
+        });
     }
 }

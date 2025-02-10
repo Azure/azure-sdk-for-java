@@ -5,38 +5,64 @@
 package com.azure.resourcemanager.confidentialledger.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Confidential Ledger. Contains the properties of Confidential Ledger Resource. */
+/**
+ * Confidential Ledger. Contains the properties of Confidential Ledger Resource.
+ */
 @Fluent
-public final class ConfidentialLedgerInner extends Resource {
+public final class ConfidentialLedgerInner extends ProxyResource {
     /*
-     * LedgerProperties
-     *
      * Properties of Confidential Ledger Resource.
      */
-    @JsonProperty(value = "properties")
     private LedgerProperties properties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Metadata pertaining to creation and last modification of the resource
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ConfidentialLedgerInner class. */
+    /*
+     * The Azure location where the Confidential Ledger is running.
+     */
+    private String location;
+
+    /*
+     * Additional tags for Confidential Ledger
+     */
+    private Map<String, String> tags;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ConfidentialLedgerInner class.
+     */
     public ConfidentialLedgerInner() {
     }
 
     /**
-     * Get the properties property: LedgerProperties
-     *
-     * <p>Properties of Confidential Ledger Resource.
-     *
+     * Get the properties property: Properties of Confidential Ledger Resource.
+     * 
      * @return the properties value.
      */
     public LedgerProperties properties() {
@@ -44,10 +70,8 @@ public final class ConfidentialLedgerInner extends Resource {
     }
 
     /**
-     * Set the properties property: LedgerProperties
-     *
-     * <p>Properties of Confidential Ledger Resource.
-     *
+     * Set the properties property: Properties of Confidential Ledger Resource.
+     * 
      * @param properties the properties value to set.
      * @return the ConfidentialLedgerInner object itself.
      */
@@ -57,36 +81,144 @@ public final class ConfidentialLedgerInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ConfidentialLedgerInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
+    /**
+     * Get the location property: The Azure location where the Confidential Ledger is running.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ConfidentialLedgerInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
+    /**
+     * Set the location property: The Azure location where the Confidential Ledger is running.
+     * 
+     * @param location the location value to set.
+     * @return the ConfidentialLedgerInner object itself.
+     */
+    public ConfidentialLedgerInner withLocation(String location) {
+        this.location = location;
         return this;
     }
 
     /**
+     * Get the tags property: Additional tags for Confidential Ledger.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Additional tags for Confidential Ledger.
+     * 
+     * @param tags the tags value to set.
+     * @return the ConfidentialLedgerInner object itself.
+     */
+    public ConfidentialLedgerInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfidentialLedgerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfidentialLedgerInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConfidentialLedgerInner.
+     */
+    public static ConfidentialLedgerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfidentialLedgerInner deserializedConfidentialLedgerInner = new ConfidentialLedgerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConfidentialLedgerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConfidentialLedgerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConfidentialLedgerInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConfidentialLedgerInner.properties = LedgerProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedConfidentialLedgerInner.systemData = SystemData.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedConfidentialLedgerInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedConfidentialLedgerInner.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfidentialLedgerInner;
+        });
     }
 }

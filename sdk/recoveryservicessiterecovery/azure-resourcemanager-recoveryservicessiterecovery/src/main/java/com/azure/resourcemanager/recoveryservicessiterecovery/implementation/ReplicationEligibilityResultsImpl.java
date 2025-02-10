@@ -13,8 +13,7 @@ public final class ReplicationEligibilityResultsImpl implements ReplicationEligi
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    ReplicationEligibilityResultsImpl(
-        ReplicationEligibilityResultsInner innerObject,
+    ReplicationEligibilityResultsImpl(ReplicationEligibilityResultsInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

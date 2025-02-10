@@ -7,7 +7,7 @@ package com.azure.resourcemanager.hybridcontainerservice.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.HybridIdentityMetadataInner;
 import com.azure.resourcemanager.hybridcontainerservice.models.HybridIdentityMetadata;
-import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
+import com.azure.resourcemanager.hybridcontainerservice.models.HybridIdentityMetadataProperties;
 
 public final class HybridIdentityMetadataImpl implements HybridIdentityMetadata {
     private HybridIdentityMetadataInner innerObject;
@@ -32,20 +32,12 @@ public final class HybridIdentityMetadataImpl implements HybridIdentityMetadata 
         return this.innerModel().type();
     }
 
+    public HybridIdentityMetadataProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public String resourceUid() {
-        return this.innerModel().resourceUid();
-    }
-
-    public String publicKey() {
-        return this.innerModel().publicKey();
-    }
-
-    public ResourceProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public HybridIdentityMetadataInner innerModel() {

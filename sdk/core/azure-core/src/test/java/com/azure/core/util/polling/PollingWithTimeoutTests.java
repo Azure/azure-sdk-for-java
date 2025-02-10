@@ -30,13 +30,16 @@ public class PollingWithTimeoutTests {
 
     private static final PollResponse<TestResponse> ACTIVATION_RESPONSE
         = new PollResponse<>(NOT_STARTED, new TestResponse("Activated"));
-    private static final PollResponse<TestResponse> RESPONSE_ZERO = new PollResponse<>(IN_PROGRESS, new TestResponse("0"));
-    private static final PollResponse<TestResponse> RESPONSE_ONE = new PollResponse<>(IN_PROGRESS, new TestResponse("1"));
+    private static final PollResponse<TestResponse> RESPONSE_ZERO
+        = new PollResponse<>(IN_PROGRESS, new TestResponse("0"));
+    private static final PollResponse<TestResponse> RESPONSE_ONE
+        = new PollResponse<>(IN_PROGRESS, new TestResponse("1"));
 
-    private static final Function<PollingContext<TestResponse>, PollResponse<TestResponse>> SYNC_NEVER_COMPLETES = ignored -> {
-        sleep();
-        return RESPONSE_ZERO;
-    };
+    private static final Function<PollingContext<TestResponse>, PollResponse<TestResponse>> SYNC_NEVER_COMPLETES
+        = ignored -> {
+            sleep();
+            return RESPONSE_ZERO;
+        };
 
     private static final Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> ASYNC_NEVER_COMPLETES
         = ignored -> Mono.delay(Duration.ofSeconds(10)).map(ignored2 -> RESPONSE_ZERO);
@@ -180,8 +183,8 @@ public class PollingWithTimeoutTests {
         assertTimeoutException(poller::getFinalResult, hasBeenRan);
     }
 
-    private static SyncPoller<TestResponse, CertificateOutput> createSimplePoller(
-        Function<PollingContext<TestResponse>, PollResponse<TestResponse>> pollOperation) {
+    private static SyncPoller<TestResponse, CertificateOutput>
+        createSimplePoller(Function<PollingContext<TestResponse>, PollResponse<TestResponse>> pollOperation) {
         return new SimpleSyncPoller<>(TEN_MILLIS, cxt -> ACTIVATION_RESPONSE, pollOperation,
             (ignored1, ignored2) -> null, ignored -> null);
     }
@@ -221,8 +224,8 @@ public class PollingWithTimeoutTests {
         assertEquals(expected.getResponse(), pollResponse.getValue().getResponse());
     }
 
-    private static Function<PollingContext<TestResponse>, PollResponse<TestResponse>> syncRunsOnce(
-        AtomicBoolean hasBeenRan) {
+    private static Function<PollingContext<TestResponse>, PollResponse<TestResponse>>
+        syncRunsOnce(AtomicBoolean hasBeenRan) {
         return ignored -> {
             if (hasBeenRan.compareAndSet(false, true)) {
                 return RESPONSE_ZERO;
@@ -233,10 +236,11 @@ public class PollingWithTimeoutTests {
         };
     }
 
-    private static Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> asyncRunsOnce(
-        AtomicBoolean hasBeenRan) {
+    private static Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>>
+        asyncRunsOnce(AtomicBoolean hasBeenRan) {
         return ignored -> (hasBeenRan.compareAndSet(false, true))
-            ? Mono.just(RESPONSE_ZERO) : Mono.delay(Duration.ofSeconds(10)).map(ignored2 -> RESPONSE_ONE);
+            ? Mono.just(RESPONSE_ZERO)
+            : Mono.delay(Duration.ofSeconds(10)).map(ignored2 -> RESPONSE_ONE);
     }
 
     private static String printException(Throwable throwable) {

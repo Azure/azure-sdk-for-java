@@ -5,40 +5,50 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A custom alert rule that checks if a value (depends on the custom alert type) is within the given range. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "ruleType",
-    defaultImpl = ThresholdCustomAlertRule.class)
-@JsonTypeName("ThresholdCustomAlertRule")
-@JsonSubTypes({@JsonSubTypes.Type(name = "TimeWindowCustomAlertRule", value = TimeWindowCustomAlertRule.class)})
+/**
+ * A custom alert rule that checks if a value (depends on the custom alert type) is within the given range.
+ */
 @Fluent
 public class ThresholdCustomAlertRule extends CustomAlertRule {
     /*
+     * The type of the custom alert rule.
+     */
+    private String ruleType = "ThresholdCustomAlertRule";
+
+    /*
      * The minimum threshold.
      */
-    @JsonProperty(value = "minThreshold", required = true)
     private int minThreshold;
 
     /*
      * The maximum threshold.
      */
-    @JsonProperty(value = "maxThreshold", required = true)
     private int maxThreshold;
 
-    /** Creates an instance of ThresholdCustomAlertRule class. */
+    /**
+     * Creates an instance of ThresholdCustomAlertRule class.
+     */
     public ThresholdCustomAlertRule() {
     }
 
     /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
+    }
+
+    /**
      * Get the minThreshold property: The minimum threshold.
-     *
+     * 
      * @return the minThreshold value.
      */
     public int minThreshold() {
@@ -47,7 +57,7 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
 
     /**
      * Set the minThreshold property: The minimum threshold.
-     *
+     * 
      * @param minThreshold the minThreshold value to set.
      * @return the ThresholdCustomAlertRule object itself.
      */
@@ -58,7 +68,7 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
 
     /**
      * Get the maxThreshold property: The maximum threshold.
-     *
+     * 
      * @return the maxThreshold value.
      */
     public int maxThreshold() {
@@ -67,7 +77,7 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
 
     /**
      * Set the maxThreshold property: The maximum threshold.
-     *
+     * 
      * @param maxThreshold the maxThreshold value to set.
      * @return the ThresholdCustomAlertRule object itself.
      */
@@ -76,7 +86,9 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThresholdCustomAlertRule withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -85,11 +97,117 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeIntField("minThreshold", this.minThreshold);
+        jsonWriter.writeIntField("maxThreshold", this.maxThreshold);
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThresholdCustomAlertRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThresholdCustomAlertRule if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ThresholdCustomAlertRule.
+     */
+    public static ThresholdCustomAlertRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("ruleType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("TimeWindowCustomAlertRule".equals(discriminatorValue)) {
+                    return TimeWindowCustomAlertRule.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("ActiveConnectionsNotInAllowedRange".equals(discriminatorValue)) {
+                    return ActiveConnectionsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("AmqpC2DMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return AmqpC2DMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("MqttC2DMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return MqttC2DMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("HttpC2DMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return HttpC2DMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("AmqpC2DRejectedMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return AmqpC2DRejectedMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("MqttC2DRejectedMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return MqttC2DRejectedMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("HttpC2DRejectedMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return HttpC2DRejectedMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("AmqpD2CMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return AmqpD2CMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("MqttD2CMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return MqttD2CMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("HttpD2CMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return HttpD2CMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("DirectMethodInvokesNotInAllowedRange".equals(discriminatorValue)) {
+                    return DirectMethodInvokesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("FailedLocalLoginsNotInAllowedRange".equals(discriminatorValue)) {
+                    return FailedLocalLoginsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("FileUploadsNotInAllowedRange".equals(discriminatorValue)) {
+                    return FileUploadsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("QueuePurgesNotInAllowedRange".equals(discriminatorValue)) {
+                    return QueuePurgesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("TwinUpdatesNotInAllowedRange".equals(discriminatorValue)) {
+                    return TwinUpdatesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("UnauthorizedOperationsNotInAllowedRange".equals(discriminatorValue)) {
+                    return UnauthorizedOperationsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ThresholdCustomAlertRule fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThresholdCustomAlertRule deserializedThresholdCustomAlertRule = new ThresholdCustomAlertRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedThresholdCustomAlertRule.withIsEnabled(reader.getBoolean());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedThresholdCustomAlertRule.withDisplayName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedThresholdCustomAlertRule.withDescription(reader.getString());
+                } else if ("minThreshold".equals(fieldName)) {
+                    deserializedThresholdCustomAlertRule.minThreshold = reader.getInt();
+                } else if ("maxThreshold".equals(fieldName)) {
+                    deserializedThresholdCustomAlertRule.maxThreshold = reader.getInt();
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedThresholdCustomAlertRule.ruleType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThresholdCustomAlertRule;
+        });
     }
 }

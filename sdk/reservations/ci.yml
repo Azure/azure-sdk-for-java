@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: reservations
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-reservations
         groupId: com.azure.resourcemanager

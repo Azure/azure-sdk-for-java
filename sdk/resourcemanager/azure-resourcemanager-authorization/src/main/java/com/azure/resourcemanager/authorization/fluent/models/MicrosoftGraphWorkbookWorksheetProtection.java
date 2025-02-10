@@ -5,40 +5,42 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookWorksheetProtection. */
+/**
+ * workbookWorksheetProtection.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookWorksheetProtection extends MicrosoftGraphEntity {
     /*
      * workbookWorksheetProtectionOptions
      */
-    @JsonProperty(value = "options")
     private MicrosoftGraphWorkbookWorksheetProtectionOptions options;
 
     /*
-     * Indicates if the worksheet is protected.  Read-only.
+     * Indicates if the worksheet is protected. Read-only.
      */
-    @JsonProperty(value = "protected")
     private Boolean protectedProperty;
 
     /*
      * workbookWorksheetProtection
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookWorksheetProtection class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookWorksheetProtection class.
+     */
     public MicrosoftGraphWorkbookWorksheetProtection() {
     }
 
     /**
      * Get the options property: workbookWorksheetProtectionOptions.
-     *
+     * 
      * @return the options value.
      */
     public MicrosoftGraphWorkbookWorksheetProtectionOptions options() {
@@ -47,19 +49,19 @@ public final class MicrosoftGraphWorkbookWorksheetProtection extends MicrosoftGr
 
     /**
      * Set the options property: workbookWorksheetProtectionOptions.
-     *
+     * 
      * @param options the options value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtection object itself.
      */
-    public MicrosoftGraphWorkbookWorksheetProtection withOptions(
-        MicrosoftGraphWorkbookWorksheetProtectionOptions options) {
+    public MicrosoftGraphWorkbookWorksheetProtection
+        withOptions(MicrosoftGraphWorkbookWorksheetProtectionOptions options) {
         this.options = options;
         return this;
     }
 
     /**
      * Get the protectedProperty property: Indicates if the worksheet is protected. Read-only.
-     *
+     * 
      * @return the protectedProperty value.
      */
     public Boolean protectedProperty() {
@@ -68,7 +70,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtection extends MicrosoftGr
 
     /**
      * Set the protectedProperty property: Indicates if the worksheet is protected. Read-only.
-     *
+     * 
      * @param protectedProperty the protectedProperty value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtection object itself.
      */
@@ -79,35 +81,28 @@ public final class MicrosoftGraphWorkbookWorksheetProtection extends MicrosoftGr
 
     /**
      * Get the additionalProperties property: workbookWorksheetProtection.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookWorksheetProtection.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookWorksheetProtection object itself.
      */
-    public MicrosoftGraphWorkbookWorksheetProtection withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphWorkbookWorksheetProtection
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookWorksheetProtection withId(String id) {
         super.withId(id);
@@ -116,7 +111,7 @@ public final class MicrosoftGraphWorkbookWorksheetProtection extends MicrosoftGr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -125,5 +120,61 @@ public final class MicrosoftGraphWorkbookWorksheetProtection extends MicrosoftGr
         if (options() != null) {
             options().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("options", this.options);
+        jsonWriter.writeBooleanField("protected", this.protectedProperty);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookWorksheetProtection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookWorksheetProtection if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookWorksheetProtection.
+     */
+    public static MicrosoftGraphWorkbookWorksheetProtection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookWorksheetProtection deserializedMicrosoftGraphWorkbookWorksheetProtection
+                = new MicrosoftGraphWorkbookWorksheetProtection();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtection.withId(reader.getString());
+                } else if ("options".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtection.options
+                        = MicrosoftGraphWorkbookWorksheetProtectionOptions.fromJson(reader);
+                } else if ("protected".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookWorksheetProtection.protectedProperty
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookWorksheetProtection.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookWorksheetProtection;
+        });
     }
 }

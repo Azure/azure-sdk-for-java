@@ -15,8 +15,7 @@ public final class DebugSendResponseImpl implements DebugSendResponse {
 
     private final com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager;
 
-    DebugSendResponseImpl(
-        DebugSendResponseInner innerObject,
+    DebugSendResponseImpl(DebugSendResponseInner innerObject,
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

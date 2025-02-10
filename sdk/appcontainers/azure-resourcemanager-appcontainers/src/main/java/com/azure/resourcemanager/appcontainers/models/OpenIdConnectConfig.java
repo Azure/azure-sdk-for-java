@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The configuration settings of the endpoints used for the custom Open ID Connect provider. */
+/**
+ * The configuration settings of the endpoints used for the custom Open ID Connect provider.
+ */
 @Fluent
-public final class OpenIdConnectConfig {
+public final class OpenIdConnectConfig implements JsonSerializable<OpenIdConnectConfig> {
     /*
      * The endpoint to be used to make an authorization request.
      */
-    @JsonProperty(value = "authorizationEndpoint")
     private String authorizationEndpoint;
 
     /*
      * The endpoint to be used to request a token.
      */
-    @JsonProperty(value = "tokenEndpoint")
     private String tokenEndpoint;
 
     /*
      * The endpoint that issues the token.
      */
-    @JsonProperty(value = "issuer")
     private String issuer;
 
     /*
      * The endpoint that provides the keys necessary to validate the token.
      */
-    @JsonProperty(value = "certificationUri")
     private String certificationUri;
 
     /*
      * The endpoint that contains all the configuration endpoints for the provider.
      */
-    @JsonProperty(value = "wellKnownOpenIdConfiguration")
     private String wellKnownOpenIdConfiguration;
 
-    /** Creates an instance of OpenIdConnectConfig class. */
+    /**
+     * Creates an instance of OpenIdConnectConfig class.
+     */
     public OpenIdConnectConfig() {
     }
 
     /**
      * Get the authorizationEndpoint property: The endpoint to be used to make an authorization request.
-     *
+     * 
      * @return the authorizationEndpoint value.
      */
     public String authorizationEndpoint() {
@@ -55,7 +58,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Set the authorizationEndpoint property: The endpoint to be used to make an authorization request.
-     *
+     * 
      * @param authorizationEndpoint the authorizationEndpoint value to set.
      * @return the OpenIdConnectConfig object itself.
      */
@@ -66,7 +69,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Get the tokenEndpoint property: The endpoint to be used to request a token.
-     *
+     * 
      * @return the tokenEndpoint value.
      */
     public String tokenEndpoint() {
@@ -75,7 +78,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Set the tokenEndpoint property: The endpoint to be used to request a token.
-     *
+     * 
      * @param tokenEndpoint the tokenEndpoint value to set.
      * @return the OpenIdConnectConfig object itself.
      */
@@ -86,7 +89,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Get the issuer property: The endpoint that issues the token.
-     *
+     * 
      * @return the issuer value.
      */
     public String issuer() {
@@ -95,7 +98,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Set the issuer property: The endpoint that issues the token.
-     *
+     * 
      * @param issuer the issuer value to set.
      * @return the OpenIdConnectConfig object itself.
      */
@@ -106,7 +109,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Get the certificationUri property: The endpoint that provides the keys necessary to validate the token.
-     *
+     * 
      * @return the certificationUri value.
      */
     public String certificationUri() {
@@ -115,7 +118,7 @@ public final class OpenIdConnectConfig {
 
     /**
      * Set the certificationUri property: The endpoint that provides the keys necessary to validate the token.
-     *
+     * 
      * @param certificationUri the certificationUri value to set.
      * @return the OpenIdConnectConfig object itself.
      */
@@ -127,7 +130,7 @@ public final class OpenIdConnectConfig {
     /**
      * Get the wellKnownOpenIdConfiguration property: The endpoint that contains all the configuration endpoints for the
      * provider.
-     *
+     * 
      * @return the wellKnownOpenIdConfiguration value.
      */
     public String wellKnownOpenIdConfiguration() {
@@ -137,7 +140,7 @@ public final class OpenIdConnectConfig {
     /**
      * Set the wellKnownOpenIdConfiguration property: The endpoint that contains all the configuration endpoints for the
      * provider.
-     *
+     * 
      * @param wellKnownOpenIdConfiguration the wellKnownOpenIdConfiguration value to set.
      * @return the OpenIdConnectConfig object itself.
      */
@@ -148,9 +151,57 @@ public final class OpenIdConnectConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authorizationEndpoint", this.authorizationEndpoint);
+        jsonWriter.writeStringField("tokenEndpoint", this.tokenEndpoint);
+        jsonWriter.writeStringField("issuer", this.issuer);
+        jsonWriter.writeStringField("certificationUri", this.certificationUri);
+        jsonWriter.writeStringField("wellKnownOpenIdConfiguration", this.wellKnownOpenIdConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OpenIdConnectConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OpenIdConnectConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OpenIdConnectConfig.
+     */
+    public static OpenIdConnectConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OpenIdConnectConfig deserializedOpenIdConnectConfig = new OpenIdConnectConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authorizationEndpoint".equals(fieldName)) {
+                    deserializedOpenIdConnectConfig.authorizationEndpoint = reader.getString();
+                } else if ("tokenEndpoint".equals(fieldName)) {
+                    deserializedOpenIdConnectConfig.tokenEndpoint = reader.getString();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedOpenIdConnectConfig.issuer = reader.getString();
+                } else if ("certificationUri".equals(fieldName)) {
+                    deserializedOpenIdConnectConfig.certificationUri = reader.getString();
+                } else if ("wellKnownOpenIdConfiguration".equals(fieldName)) {
+                    deserializedOpenIdConnectConfig.wellKnownOpenIdConfiguration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOpenIdConnectConfig;
+        });
     }
 }

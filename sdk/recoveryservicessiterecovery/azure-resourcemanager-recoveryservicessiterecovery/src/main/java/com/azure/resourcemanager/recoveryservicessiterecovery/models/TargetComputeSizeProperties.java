@@ -5,79 +5,77 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents applicable recovery vm sizes properties. */
+/**
+ * Represents applicable recovery vm sizes properties.
+ */
 @Fluent
-public final class TargetComputeSizeProperties {
+public final class TargetComputeSizeProperties implements JsonSerializable<TargetComputeSizeProperties> {
     /*
      * Target compute size name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Target compute size display name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The maximum cpu cores count supported by target compute size.
      */
-    @JsonProperty(value = "cpuCoresCount")
     private Integer cpuCoresCount;
 
     /*
      * The Available vCPUs supported by target compute size.
      */
-    @JsonProperty(value = "vCPUsAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Integer vCpusAvailable;
 
     /*
      * The maximum memory in GB supported by target compute size.
      */
-    @JsonProperty(value = "memoryInGB")
     private Double memoryInGB;
 
     /*
      * The maximum data disks count supported by target compute size.
      */
-    @JsonProperty(value = "maxDataDiskCount")
     private Integer maxDataDiskCount;
 
     /*
      * The maximum Nics count supported by target compute size.
      */
-    @JsonProperty(value = "maxNicsCount")
     private Integer maxNicsCount;
 
     /*
      * The reasons why the target compute size is not applicable for the protected item.
      */
-    @JsonProperty(value = "errors")
     private List<ComputeSizeErrorDetails> errors;
 
     /*
      * The value indicating whether the target compute size supports high Iops.
      */
-    @JsonProperty(value = "highIopsSupported")
     private String highIopsSupported;
 
     /*
      * The supported HyperV Generations.
      */
-    @JsonProperty(value = "hyperVGenerations")
     private List<String> hyperVGenerations;
 
-    /** Creates an instance of TargetComputeSizeProperties class. */
+    /**
+     * Creates an instance of TargetComputeSizeProperties class.
+     */
     public TargetComputeSizeProperties() {
     }
 
     /**
      * Get the name property: Target compute size name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -86,7 +84,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the name property: Target compute size name.
-     *
+     * 
      * @param name the name value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -97,7 +95,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the friendlyName property: Target compute size display name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -106,7 +104,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the friendlyName property: Target compute size display name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -117,7 +115,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the cpuCoresCount property: The maximum cpu cores count supported by target compute size.
-     *
+     * 
      * @return the cpuCoresCount value.
      */
     public Integer cpuCoresCount() {
@@ -126,7 +124,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the cpuCoresCount property: The maximum cpu cores count supported by target compute size.
-     *
+     * 
      * @param cpuCoresCount the cpuCoresCount value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -137,7 +135,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the vCpusAvailable property: The Available vCPUs supported by target compute size.
-     *
+     * 
      * @return the vCpusAvailable value.
      */
     public Integer vCpusAvailable() {
@@ -146,7 +144,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the memoryInGB property: The maximum memory in GB supported by target compute size.
-     *
+     * 
      * @return the memoryInGB value.
      */
     public Double memoryInGB() {
@@ -155,7 +153,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the memoryInGB property: The maximum memory in GB supported by target compute size.
-     *
+     * 
      * @param memoryInGB the memoryInGB value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -166,7 +164,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the maxDataDiskCount property: The maximum data disks count supported by target compute size.
-     *
+     * 
      * @return the maxDataDiskCount value.
      */
     public Integer maxDataDiskCount() {
@@ -175,7 +173,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the maxDataDiskCount property: The maximum data disks count supported by target compute size.
-     *
+     * 
      * @param maxDataDiskCount the maxDataDiskCount value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -186,7 +184,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the maxNicsCount property: The maximum Nics count supported by target compute size.
-     *
+     * 
      * @return the maxNicsCount value.
      */
     public Integer maxNicsCount() {
@@ -195,7 +193,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the maxNicsCount property: The maximum Nics count supported by target compute size.
-     *
+     * 
      * @param maxNicsCount the maxNicsCount value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -206,7 +204,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the errors property: The reasons why the target compute size is not applicable for the protected item.
-     *
+     * 
      * @return the errors value.
      */
     public List<ComputeSizeErrorDetails> errors() {
@@ -215,7 +213,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the errors property: The reasons why the target compute size is not applicable for the protected item.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -226,7 +224,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the highIopsSupported property: The value indicating whether the target compute size supports high Iops.
-     *
+     * 
      * @return the highIopsSupported value.
      */
     public String highIopsSupported() {
@@ -235,7 +233,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the highIopsSupported property: The value indicating whether the target compute size supports high Iops.
-     *
+     * 
      * @param highIopsSupported the highIopsSupported value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -246,7 +244,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the hyperVGenerations property: The supported HyperV Generations.
-     *
+     * 
      * @return the hyperVGenerations value.
      */
     public List<String> hyperVGenerations() {
@@ -255,7 +253,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the hyperVGenerations property: The supported HyperV Generations.
-     *
+     * 
      * @param hyperVGenerations the hyperVGenerations value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -266,12 +264,78 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeNumberField("cpuCoresCount", this.cpuCoresCount);
+        jsonWriter.writeNumberField("memoryInGB", this.memoryInGB);
+        jsonWriter.writeNumberField("maxDataDiskCount", this.maxDataDiskCount);
+        jsonWriter.writeNumberField("maxNicsCount", this.maxNicsCount);
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("highIopsSupported", this.highIopsSupported);
+        jsonWriter.writeArrayField("hyperVGenerations", this.hyperVGenerations,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetComputeSizeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetComputeSizeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TargetComputeSizeProperties.
+     */
+    public static TargetComputeSizeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetComputeSizeProperties deserializedTargetComputeSizeProperties = new TargetComputeSizeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedTargetComputeSizeProperties.name = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedTargetComputeSizeProperties.friendlyName = reader.getString();
+                } else if ("cpuCoresCount".equals(fieldName)) {
+                    deserializedTargetComputeSizeProperties.cpuCoresCount = reader.getNullable(JsonReader::getInt);
+                } else if ("vCPUsAvailable".equals(fieldName)) {
+                    deserializedTargetComputeSizeProperties.vCpusAvailable = reader.getNullable(JsonReader::getInt);
+                } else if ("memoryInGB".equals(fieldName)) {
+                    deserializedTargetComputeSizeProperties.memoryInGB = reader.getNullable(JsonReader::getDouble);
+                } else if ("maxDataDiskCount".equals(fieldName)) {
+                    deserializedTargetComputeSizeProperties.maxDataDiskCount = reader.getNullable(JsonReader::getInt);
+                } else if ("maxNicsCount".equals(fieldName)) {
+                    deserializedTargetComputeSizeProperties.maxNicsCount = reader.getNullable(JsonReader::getInt);
+                } else if ("errors".equals(fieldName)) {
+                    List<ComputeSizeErrorDetails> errors
+                        = reader.readArray(reader1 -> ComputeSizeErrorDetails.fromJson(reader1));
+                    deserializedTargetComputeSizeProperties.errors = errors;
+                } else if ("highIopsSupported".equals(fieldName)) {
+                    deserializedTargetComputeSizeProperties.highIopsSupported = reader.getString();
+                } else if ("hyperVGenerations".equals(fieldName)) {
+                    List<String> hyperVGenerations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTargetComputeSizeProperties.hyperVGenerations = hyperVGenerations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetComputeSizeProperties;
+        });
     }
 }

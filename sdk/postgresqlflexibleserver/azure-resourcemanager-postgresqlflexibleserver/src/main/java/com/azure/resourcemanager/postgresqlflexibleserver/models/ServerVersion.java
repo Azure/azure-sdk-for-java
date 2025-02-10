@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The version of a server. */
+/**
+ * The version of a server.
+ */
 public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
-    /** Static value 15 for ServerVersion. */
-    public static final ServerVersion ONE_FIVE = fromString("15");
-
-    /** Static value 14 for ServerVersion. */
-    public static final ServerVersion ONE_FOUR = fromString("14");
-
-    /** Static value 13 for ServerVersion. */
-    public static final ServerVersion ONE_THREE = fromString("13");
-
-    /** Static value 12 for ServerVersion. */
-    public static final ServerVersion ONE_TWO = fromString("12");
-
-    /** Static value 11 for ServerVersion. */
-    public static final ServerVersion ONE_ONE = fromString("11");
-
-    /** Static value 16 for ServerVersion. */
+    /**
+     * Static value 16 for ServerVersion.
+     */
     public static final ServerVersion ONE_SIX = fromString("16");
 
     /**
+     * Static value 15 for ServerVersion.
+     */
+    public static final ServerVersion ONE_FIVE = fromString("15");
+
+    /**
+     * Static value 14 for ServerVersion.
+     */
+    public static final ServerVersion ONE_FOUR = fromString("14");
+
+    /**
+     * Static value 13 for ServerVersion.
+     */
+    public static final ServerVersion ONE_THREE = fromString("13");
+
+    /**
+     * Static value 12 for ServerVersion.
+     */
+    public static final ServerVersion ONE_TWO = fromString("12");
+
+    /**
+     * Static value 11 for ServerVersion.
+     */
+    public static final ServerVersion ONE_ONE = fromString("11");
+
+    /**
      * Creates a new instance of ServerVersion value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
 
     /**
      * Creates or finds a ServerVersion from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServerVersion.
      */
-    @JsonCreator
     public static ServerVersion fromString(String name) {
         return fromString(name, ServerVersion.class);
     }
 
     /**
      * Gets known ServerVersion values.
-     *
+     * 
      * @return known ServerVersion values.
      */
     public static Collection<ServerVersion> values() {

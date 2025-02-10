@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of OnlineDeployments. */
+/**
+ * Resource collection API of OnlineDeployments.
+ */
 public interface OnlineDeployments {
     /**
      * List Inference Endpoint Deployments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -25,7 +27,7 @@ public interface OnlineDeployments {
 
     /**
      * List Inference Endpoint Deployments.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -38,18 +40,12 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OnlineDeployment> list(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String orderBy,
-        Integer top,
-        String skip,
-        Context context);
+    PagedIterable<OnlineDeployment> list(String resourceGroupName, String workspaceName, String endpointName,
+        String orderBy, Integer top, String skip, Context context);
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -62,7 +58,7 @@ public interface OnlineDeployments {
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -72,12 +68,12 @@ public interface OnlineDeployments {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
+    void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
+        Context context);
 
     /**
      * Get Inference Deployment Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -88,12 +84,12 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return inference Deployment Deployment along with {@link Response}.
      */
-    Response<OnlineDeployment> getWithResponse(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName, Context context);
+    Response<OnlineDeployment> getWithResponse(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, Context context);
 
     /**
      * Get Inference Deployment Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -107,7 +103,7 @@ public interface OnlineDeployments {
 
     /**
      * Polls an Endpoint operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -119,17 +115,12 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<DeploymentLogs> getLogsWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        DeploymentLogsRequest body,
-        Context context);
+    Response<DeploymentLogs> getLogsWithResponse(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, DeploymentLogsRequest body, Context context);
 
     /**
      * Polls an Endpoint operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -140,16 +131,12 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    DeploymentLogs getLogs(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
+    DeploymentLogs getLogs(String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
         DeploymentLogsRequest body);
 
     /**
      * List Inference Endpoint Deployment Skus.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -159,12 +146,12 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of SkuResource entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SkuResource> listSkus(
-        String resourceGroupName, String workspaceName, String endpointName, String deploymentName);
+    PagedIterable<SkuResource> listSkus(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName);
 
     /**
      * List Inference Endpoint Deployment Skus.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param endpointName Inference endpoint name.
@@ -177,18 +164,12 @@ public interface OnlineDeployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of SkuResource entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SkuResource> listSkus(
-        String resourceGroupName,
-        String workspaceName,
-        String endpointName,
-        String deploymentName,
-        Integer count,
-        String skip,
-        Context context);
+    PagedIterable<SkuResource> listSkus(String resourceGroupName, String workspaceName, String endpointName,
+        String deploymentName, Integer count, String skip, Context context);
 
     /**
      * Get Inference Deployment Deployment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -199,7 +180,7 @@ public interface OnlineDeployments {
 
     /**
      * Get Inference Deployment Deployment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,7 +192,7 @@ public interface OnlineDeployments {
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,7 +202,7 @@ public interface OnlineDeployments {
 
     /**
      * Delete Inference Endpoint Deployment (asynchronous).
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +213,7 @@ public interface OnlineDeployments {
 
     /**
      * Begins definition for a new OnlineDeployment resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new OnlineDeployment definition.
      */

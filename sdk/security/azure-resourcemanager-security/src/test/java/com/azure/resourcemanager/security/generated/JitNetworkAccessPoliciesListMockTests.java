@@ -6,63 +6,49 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicy;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.security.models.Protocol;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class JitNetworkAccessPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"virtualMachines\":[{\"id\":\"kxdxuwsaifmcwn\",\"ports\":[{\"number\":1709337276,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"lehgcvkbc\"}],\"publicIpAddress\":\"jolgjyyxpvels\"},{\"id\":\"erqzevxo\",\"ports\":[{\"number\":1426486317,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"txwaljglzo\"},{\"number\":869551802,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"waafrqulh\"},{\"number\":1456299493,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"qb\"},{\"number\":826879471,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"afjrqpjiyrqjcrg\"}],\"publicIpAddress\":\"wmzwdfkbnrzorpdl\"},{\"id\":\"bqc\",\"ports\":[{\"number\":412593801,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"gxx\"}],\"publicIpAddress\":\"etgzdgvpy\"},{\"id\":\"gdaqqilzd\",\"ports\":[{\"number\":993013459,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"joedx\"}],\"publicIpAddress\":\"ucaifpaurwwgilf\"}],\"requests\":[{\"virtualMachines\":[{\"id\":\"cdmkxwxdcvjw\",\"ports\":[]}],\"startTimeUtc\":\"2021-07-14T06:16:44Z\",\"requestor\":\"z\",\"justification\":\"keciqchxrtuicd\"},{\"virtualMachines\":[{\"id\":\"wdfmmpzhzzwvywr\",\"ports\":[]}],\"startTimeUtc\":\"2021-11-04T17:58:18Z\",\"requestor\":\"ngydgr\",\"justification\":\"n\"},{\"virtualMachines\":[{\"id\":\"kiqaondjr\",\"ports\":[]},{\"id\":\"clamgglvlmfejdoq\",\"ports\":[]}],\"startTimeUtc\":\"2021-09-17T13:35:26Z\",\"requestor\":\"kgltyg\",\"justification\":\"qfgqkayejsxtlg\"},{\"virtualMachines\":[{\"id\":\"wf\",\"ports\":[]},{\"id\":\"ziiucij\",\"ports\":[]}],\"startTimeUtc\":\"2021-09-22T22:06:45Z\",\"requestor\":\"eatlijjjrtvamcas\",\"justification\":\"nxkvccxetyvku\"}],\"provisioningState\":\"ignohi\"},\"kind\":\"gqogjwpindedva\",\"location\":\"xbhmed\",\"id\":\"ilb\",\"name\":\"ywfcfxzi\",\"type\":\"zzihvwy\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"sgqk\"},\"kind\":\"yecup\",\"location\":\"ijpardavsjcf\",\"id\":\"azpzdqwuz\",\"name\":\"cmcokxizekuv\",\"type\":\"rjwuca\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<JitNetworkAccessPolicy> response
+            = manager.jitNetworkAccessPolicies().list(com.azure.core.util.Context.NONE);
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<JitNetworkAccessPolicy> response =
-            manager.jitNetworkAccessPolicies().list(com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("yecup", response.iterator().next().kind());
+        Assertions.assertEquals("gqogjwpindedva", response.iterator().next().kind());
+        Assertions.assertEquals("kxdxuwsaifmcwn", response.iterator().next().virtualMachines().get(0).id());
+        Assertions.assertEquals(1709337276,
+            response.iterator().next().virtualMachines().get(0).ports().get(0).number());
+        Assertions.assertEquals(Protocol.ASTERISK,
+            response.iterator().next().virtualMachines().get(0).ports().get(0).protocol());
+        Assertions.assertEquals("lehgcvkbc",
+            response.iterator().next().virtualMachines().get(0).ports().get(0).maxRequestAccessDuration());
+        Assertions.assertEquals("jolgjyyxpvels", response.iterator().next().virtualMachines().get(0).publicIpAddress());
+        Assertions.assertEquals("cdmkxwxdcvjw",
+            response.iterator().next().requests().get(0).virtualMachines().get(0).id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T06:16:44Z"),
+            response.iterator().next().requests().get(0).startTimeUtc());
+        Assertions.assertEquals("z", response.iterator().next().requests().get(0).requestor());
+        Assertions.assertEquals("keciqchxrtuicd", response.iterator().next().requests().get(0).justification());
     }
 }

@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.confidentialledger;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -11,17 +10,20 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +35,15 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
     private static TokenCredential credential;
     private static ResourceGroup testResourceGroup;
     private ConfidentialLedgerManagementOperations ledgerOperationsInstance;
+
+    @Override
+    protected void beforeTest() {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            interceptorManager.addMatchers(
+                Collections.singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
+        }
+    }
+
     @BeforeAll
     public static void setup() {
         // Authenticate
@@ -43,6 +54,7 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
         String testResourceGroupName = "acl-sdk-test-rg";
         setTestResourceGroup(testResourceGroupName);
     }
+
     @AfterAll
     public static void cleanUp() {
         // If AZURE_TEST_MODE isn't set to a value, use PLAYBACK mode as a default
@@ -50,45 +62,50 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
 
         // Delete the created resource group in LIVE and RECORD modes only
         if (!("PLAYBACK".equals(testMode))) {
-            ResourceManager
-                .authenticate(getCredential(), getAzureProfile())
+            ResourceManager.authenticate(getCredential(), getAzureProfile())
                 .withDefaultSubscription()
                 .resourceGroups()
                 .deleteByName(testResourceGroup.name());
         }
     }
+
     @BeforeEach
     public void setupManager() {
         ConfidentialLedgerManager ledgerManager = null;
         if (getTestMode() == TestMode.LIVE) {
-            ledgerManager = ConfidentialLedgerManager
-                .authenticate(getCredential(), getAzureProfile());
+            ledgerManager = ConfidentialLedgerManager.authenticate(getCredential(), getAzureProfile());
         } else if (getTestMode() == TestMode.RECORD) {
-            ledgerManager = ConfidentialLedgerManager
-                .configure()
+            ledgerManager = ConfidentialLedgerManager.configure()
                 .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .withPolicy(interceptorManager.getRecordPolicy())
                 .authenticate(getCredential(), getAzureProfile());
         } else if (getTestMode() == TestMode.PLAYBACK) {
-            ledgerManager = ConfidentialLedgerManager
-                .configure()
+            ledgerManager = ConfidentialLedgerManager.configure()
                 .withDefaultPollInterval(Duration.ofMillis(10))
                 .withHttpClient(interceptorManager.getPlaybackClient())
                 .authenticate(getCredential(), getAzureProfile());
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(new TestProxySanitizer("$..id", null,
+                "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
+            // Disable `Location`, `Operation-Location`, `$..id` and `$..name` from the default list of sanitizers as they are used in the SDK.
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3493", "AZSDK3430");
+        }
+
         ledgerOperationsInstance = new ConfidentialLedgerManagementOperations(ledgerManager);
     }
+
     public static ResourceGroup getTestResourceGroup() {
         return testResourceGroup;
     }
+
     public static void setTestResourceGroup(String testResourceGroupName) {
         String testMode = getTestModeForStaticMethods();
 
         // Create a resource group in LIVE and RECORD modes only, Mock it otherwise
         if (!("PLAYBACK".equals(testMode))) {
-            testResourceGroup = ResourceManager
-                .authenticate(getCredential(), getAzureProfile())
+            testResourceGroup = ResourceManager.authenticate(getCredential(), getAzureProfile())
                 .withDefaultSubscription()
                 .resourceGroups()
                 .define(testResourceGroupName)
@@ -99,9 +116,11 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
             when(testResourceGroup.name()).thenReturn(testResourceGroupName);
         }
     }
+
     public static AzureProfile getAzureProfile() {
         return azureProfile;
     }
+
     public static void setAzureProfile() {
         String testMode = getTestModeForStaticMethods();
         if ("PLAYBACK".equals(testMode)) {
@@ -118,7 +137,7 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
     public static void setCredential() {
         String testMode = getTestModeForStaticMethods();
         if ("PLAYBACK".equals(testMode)) {
-            credential = (request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            credential = new MockTokenCredential();
         } else {
             credential = new DefaultAzureCredentialBuilder().build();
         }
@@ -137,6 +156,7 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
         }
         return testMode;
     }
+
     protected Map<String, String> mapOf(String... inputs) {
         Map<String, String> map = new HashMap<>();
         for (int i = 0; i < inputs.length; i += 2) {

@@ -5,54 +5,62 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** Platform specific packet core control plane version properties. */
+/**
+ * Platform specific packet core control plane version properties.
+ */
 @Fluent
-public final class Platform {
+public final class Platform implements JsonSerializable<Platform> {
     /*
      * The platform type where this version can be deployed.
      */
-    @JsonProperty(value = "platformType")
     private PlatformType platformType;
 
     /*
      * The state of this packet core control plane version on this platform.
      */
-    @JsonProperty(value = "versionState")
     private VersionState versionState;
 
     /*
      * The minimum software version of the platform where this packet core version can be deployed.
      */
-    @JsonProperty(value = "minimumPlatformSoftwareVersion")
     private String minimumPlatformSoftwareVersion;
 
     /*
      * The maximum software version of the platform where this packet core version can be deployed.
      */
-    @JsonProperty(value = "maximumPlatformSoftwareVersion")
     private String maximumPlatformSoftwareVersion;
 
     /*
      * Indicates whether this is the recommended version for this platform.
      */
-    @JsonProperty(value = "recommendedVersion")
     private RecommendedVersion recommendedVersion;
 
     /*
      * Indicates whether this version is obsoleted for this platform.
      */
-    @JsonProperty(value = "obsoleteVersion")
     private ObsoleteVersion obsoleteVersion;
 
-    /** Creates an instance of Platform class. */
+    /*
+     * The list of versions to which a high availability upgrade from this version is supported.
+     */
+    private List<String> haUpgradesAvailable;
+
+    /**
+     * Creates an instance of Platform class.
+     */
     public Platform() {
     }
 
     /**
      * Get the platformType property: The platform type where this version can be deployed.
-     *
+     * 
      * @return the platformType value.
      */
     public PlatformType platformType() {
@@ -61,7 +69,7 @@ public final class Platform {
 
     /**
      * Set the platformType property: The platform type where this version can be deployed.
-     *
+     * 
      * @param platformType the platformType value to set.
      * @return the Platform object itself.
      */
@@ -72,7 +80,7 @@ public final class Platform {
 
     /**
      * Get the versionState property: The state of this packet core control plane version on this platform.
-     *
+     * 
      * @return the versionState value.
      */
     public VersionState versionState() {
@@ -81,7 +89,7 @@ public final class Platform {
 
     /**
      * Set the versionState property: The state of this packet core control plane version on this platform.
-     *
+     * 
      * @param versionState the versionState value to set.
      * @return the Platform object itself.
      */
@@ -93,7 +101,7 @@ public final class Platform {
     /**
      * Get the minimumPlatformSoftwareVersion property: The minimum software version of the platform where this packet
      * core version can be deployed.
-     *
+     * 
      * @return the minimumPlatformSoftwareVersion value.
      */
     public String minimumPlatformSoftwareVersion() {
@@ -103,7 +111,7 @@ public final class Platform {
     /**
      * Set the minimumPlatformSoftwareVersion property: The minimum software version of the platform where this packet
      * core version can be deployed.
-     *
+     * 
      * @param minimumPlatformSoftwareVersion the minimumPlatformSoftwareVersion value to set.
      * @return the Platform object itself.
      */
@@ -115,7 +123,7 @@ public final class Platform {
     /**
      * Get the maximumPlatformSoftwareVersion property: The maximum software version of the platform where this packet
      * core version can be deployed.
-     *
+     * 
      * @return the maximumPlatformSoftwareVersion value.
      */
     public String maximumPlatformSoftwareVersion() {
@@ -125,7 +133,7 @@ public final class Platform {
     /**
      * Set the maximumPlatformSoftwareVersion property: The maximum software version of the platform where this packet
      * core version can be deployed.
-     *
+     * 
      * @param maximumPlatformSoftwareVersion the maximumPlatformSoftwareVersion value to set.
      * @return the Platform object itself.
      */
@@ -136,7 +144,7 @@ public final class Platform {
 
     /**
      * Get the recommendedVersion property: Indicates whether this is the recommended version for this platform.
-     *
+     * 
      * @return the recommendedVersion value.
      */
     public RecommendedVersion recommendedVersion() {
@@ -145,7 +153,7 @@ public final class Platform {
 
     /**
      * Set the recommendedVersion property: Indicates whether this is the recommended version for this platform.
-     *
+     * 
      * @param recommendedVersion the recommendedVersion value to set.
      * @return the Platform object itself.
      */
@@ -156,7 +164,7 @@ public final class Platform {
 
     /**
      * Get the obsoleteVersion property: Indicates whether this version is obsoleted for this platform.
-     *
+     * 
      * @return the obsoleteVersion value.
      */
     public ObsoleteVersion obsoleteVersion() {
@@ -165,7 +173,7 @@ public final class Platform {
 
     /**
      * Set the obsoleteVersion property: Indicates whether this version is obsoleted for this platform.
-     *
+     * 
      * @param obsoleteVersion the obsoleteVersion value to set.
      * @return the Platform object itself.
      */
@@ -175,10 +183,90 @@ public final class Platform {
     }
 
     /**
+     * Get the haUpgradesAvailable property: The list of versions to which a high availability upgrade from this version
+     * is supported.
+     * 
+     * @return the haUpgradesAvailable value.
+     */
+    public List<String> haUpgradesAvailable() {
+        return this.haUpgradesAvailable;
+    }
+
+    /**
+     * Set the haUpgradesAvailable property: The list of versions to which a high availability upgrade from this version
+     * is supported.
+     * 
+     * @param haUpgradesAvailable the haUpgradesAvailable value to set.
+     * @return the Platform object itself.
+     */
+    public Platform withHaUpgradesAvailable(List<String> haUpgradesAvailable) {
+        this.haUpgradesAvailable = haUpgradesAvailable;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("platformType", this.platformType == null ? null : this.platformType.toString());
+        jsonWriter.writeStringField("versionState", this.versionState == null ? null : this.versionState.toString());
+        jsonWriter.writeStringField("minimumPlatformSoftwareVersion", this.minimumPlatformSoftwareVersion);
+        jsonWriter.writeStringField("maximumPlatformSoftwareVersion", this.maximumPlatformSoftwareVersion);
+        jsonWriter.writeStringField("recommendedVersion",
+            this.recommendedVersion == null ? null : this.recommendedVersion.toString());
+        jsonWriter.writeStringField("obsoleteVersion",
+            this.obsoleteVersion == null ? null : this.obsoleteVersion.toString());
+        jsonWriter.writeArrayField("haUpgradesAvailable", this.haUpgradesAvailable,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Platform from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Platform if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Platform.
+     */
+    public static Platform fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Platform deserializedPlatform = new Platform();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("platformType".equals(fieldName)) {
+                    deserializedPlatform.platformType = PlatformType.fromString(reader.getString());
+                } else if ("versionState".equals(fieldName)) {
+                    deserializedPlatform.versionState = VersionState.fromString(reader.getString());
+                } else if ("minimumPlatformSoftwareVersion".equals(fieldName)) {
+                    deserializedPlatform.minimumPlatformSoftwareVersion = reader.getString();
+                } else if ("maximumPlatformSoftwareVersion".equals(fieldName)) {
+                    deserializedPlatform.maximumPlatformSoftwareVersion = reader.getString();
+                } else if ("recommendedVersion".equals(fieldName)) {
+                    deserializedPlatform.recommendedVersion = RecommendedVersion.fromString(reader.getString());
+                } else if ("obsoleteVersion".equals(fieldName)) {
+                    deserializedPlatform.obsoleteVersion = ObsoleteVersion.fromString(reader.getString());
+                } else if ("haUpgradesAvailable".equals(fieldName)) {
+                    List<String> haUpgradesAvailable = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPlatform.haUpgradesAvailable = haUpgradesAvailable;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlatform;
+        });
     }
 }

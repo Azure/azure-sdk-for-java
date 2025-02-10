@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentOperationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of deployment operations. */
+/**
+ * List of deployment operations.
+ */
 @Fluent
-public final class DeploymentOperationsListResult {
+public final class DeploymentOperationsListResult implements JsonSerializable<DeploymentOperationsListResult> {
     /*
      * An array of deployment operations.
      */
-    @JsonProperty(value = "value")
     private List<DeploymentOperationInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DeploymentOperationsListResult class. */
+    /**
+     * Creates an instance of DeploymentOperationsListResult class.
+     */
     public DeploymentOperationsListResult() {
     }
 
     /**
      * Get the value property: An array of deployment operations.
-     *
+     * 
      * @return the value value.
      */
     public List<DeploymentOperationInner> value() {
@@ -39,7 +45,7 @@ public final class DeploymentOperationsListResult {
 
     /**
      * Set the value property: An array of deployment operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the DeploymentOperationsListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class DeploymentOperationsListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,53 @@ public final class DeploymentOperationsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentOperationsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentOperationsListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentOperationsListResult.
+     */
+    public static DeploymentOperationsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentOperationsListResult deserializedDeploymentOperationsListResult
+                = new DeploymentOperationsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DeploymentOperationInner> value
+                        = reader.readArray(reader1 -> DeploymentOperationInner.fromJson(reader1));
+                    deserializedDeploymentOperationsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDeploymentOperationsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentOperationsListResult;
+        });
     }
 }

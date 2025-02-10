@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input configuration for a patch run. */
+/**
+ * Input configuration for a patch run.
+ */
 @Fluent
-public final class InputPatchConfiguration {
+public final class InputPatchConfiguration implements JsonSerializable<InputPatchConfiguration> {
     /*
-     * Possible reboot preference as defined by the user based on which it would be decided to reboot the machine or
-     * not after the patch operation is completed.
+     * Possible reboot preference as defined by the user based on which it would be decided to reboot the machine or not
+     * after the patch operation is completed.
      */
-    @JsonProperty(value = "rebootSetting")
     private RebootOptions rebootSetting;
 
     /*
      * Input parameters specific to patching a Windows machine. For Linux machines, do not pass this property.
      */
-    @JsonProperty(value = "windowsParameters")
     private InputWindowsParameters windowsParameters;
 
     /*
      * Input parameters specific to patching Linux machine. For Windows machines, do not pass this property.
      */
-    @JsonProperty(value = "linuxParameters")
     private InputLinuxParameters linuxParameters;
 
-    /** Creates an instance of InputPatchConfiguration class. */
+    /**
+     * Creates an instance of InputPatchConfiguration class.
+     */
     public InputPatchConfiguration() {
     }
 
     /**
      * Get the rebootSetting property: Possible reboot preference as defined by the user based on which it would be
      * decided to reboot the machine or not after the patch operation is completed.
-     *
+     * 
      * @return the rebootSetting value.
      */
     public RebootOptions rebootSetting() {
@@ -46,7 +51,7 @@ public final class InputPatchConfiguration {
     /**
      * Set the rebootSetting property: Possible reboot preference as defined by the user based on which it would be
      * decided to reboot the machine or not after the patch operation is completed.
-     *
+     * 
      * @param rebootSetting the rebootSetting value to set.
      * @return the InputPatchConfiguration object itself.
      */
@@ -58,7 +63,7 @@ public final class InputPatchConfiguration {
     /**
      * Get the windowsParameters property: Input parameters specific to patching a Windows machine. For Linux machines,
      * do not pass this property.
-     *
+     * 
      * @return the windowsParameters value.
      */
     public InputWindowsParameters windowsParameters() {
@@ -68,7 +73,7 @@ public final class InputPatchConfiguration {
     /**
      * Set the windowsParameters property: Input parameters specific to patching a Windows machine. For Linux machines,
      * do not pass this property.
-     *
+     * 
      * @param windowsParameters the windowsParameters value to set.
      * @return the InputPatchConfiguration object itself.
      */
@@ -80,7 +85,7 @@ public final class InputPatchConfiguration {
     /**
      * Get the linuxParameters property: Input parameters specific to patching Linux machine. For Windows machines, do
      * not pass this property.
-     *
+     * 
      * @return the linuxParameters value.
      */
     public InputLinuxParameters linuxParameters() {
@@ -90,7 +95,7 @@ public final class InputPatchConfiguration {
     /**
      * Set the linuxParameters property: Input parameters specific to patching Linux machine. For Windows machines, do
      * not pass this property.
-     *
+     * 
      * @param linuxParameters the linuxParameters value to set.
      * @return the InputPatchConfiguration object itself.
      */
@@ -101,7 +106,7 @@ public final class InputPatchConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -111,5 +116,47 @@ public final class InputPatchConfiguration {
         if (linuxParameters() != null) {
             linuxParameters().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rebootSetting", this.rebootSetting == null ? null : this.rebootSetting.toString());
+        jsonWriter.writeJsonField("windowsParameters", this.windowsParameters);
+        jsonWriter.writeJsonField("linuxParameters", this.linuxParameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InputPatchConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InputPatchConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InputPatchConfiguration.
+     */
+    public static InputPatchConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InputPatchConfiguration deserializedInputPatchConfiguration = new InputPatchConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rebootSetting".equals(fieldName)) {
+                    deserializedInputPatchConfiguration.rebootSetting = RebootOptions.fromString(reader.getString());
+                } else if ("windowsParameters".equals(fieldName)) {
+                    deserializedInputPatchConfiguration.windowsParameters = InputWindowsParameters.fromJson(reader);
+                } else if ("linuxParameters".equals(fieldName)) {
+                    deserializedInputPatchConfiguration.linuxParameters = InputLinuxParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInputPatchConfiguration;
+        });
     }
 }

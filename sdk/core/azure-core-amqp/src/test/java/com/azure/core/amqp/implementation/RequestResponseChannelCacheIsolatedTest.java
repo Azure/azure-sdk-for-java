@@ -31,7 +31,8 @@ import java.util.function.Supplier;
 /**
  * Tests for {@link RequestResponseChannelCache}.
  * <p>
- * See <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
+ * See <a href=
+ * "https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
  * for why this test class needs to run in Isolated mode.
  * </p>
  */
@@ -86,7 +87,8 @@ public class RequestResponseChannelCacheIsolatedTest {
                         return true;
                     })
                     .verifyComplete();
-                // Two channel should be supplied (initial channel and second channel on retry when initial channel timeout).
+                // Two channel should be supplied (initial channel and second channel on retry when initial channel
+                // timeout).
                 endpoint.assertChannelCreateCount(channelsCount);
             }
         } finally {
@@ -219,7 +221,7 @@ public class RequestResponseChannelCacheIsolatedTest {
                 verifier.create(() -> channelMono)
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
-                    .verifyErrorMatches(e ->  e == nonRetriableError);
+                    .verifyErrorMatches(e -> e == nonRetriableError);
                 endpoint.assertChannelCreateCount(channelsCount);
             }
         } finally {
@@ -244,7 +246,9 @@ public class RequestResponseChannelCacheIsolatedTest {
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
                 verifier.create(() -> channelMono)
                     .thenRequest(1)
-                    .thenAwait(OPERATION_TIMEOUT.minusSeconds(2)) // OPERATION_TIMEOUT == 3 seconds
+                    .thenAwait(OPERATION_TIMEOUT.minusSeconds(2)) // OPERATION_TIMEOUT
+                    // == 3
+                    // seconds
                     .thenCancel()
                     .verify();
                 // Assert that the cancel while waiting for channel to active will close the channel.
@@ -258,11 +262,13 @@ public class RequestResponseChannelCacheIsolatedTest {
     }
 
     private MockEndpoint createEndpoint(String connectionId, Deque<ChannelState> channelStates) {
-        return new MockEndpoint(connectionId, CH_ENTITY_PATH, CH_SESSION_NAME, CH_LINK_NAME, channelStates, retryPolicy);
+        return new MockEndpoint(connectionId, CH_ENTITY_PATH, CH_SESSION_NAME, CH_LINK_NAME, channelStates,
+            retryPolicy);
     }
 
     private RequestResponseChannelCache createCache(MockEndpoint ep) {
-        return new RequestResponseChannelCache(ep.connection(), CH_ENTITY_PATH, CH_SESSION_NAME, CH_LINK_NAME, retryPolicy);
+        return new RequestResponseChannelCache(ep.connection(), CH_ENTITY_PATH, CH_SESSION_NAME, CH_LINK_NAME,
+            retryPolicy);
     }
 
     private static final class VirtualTimeStepVerifier implements AutoCloseable {

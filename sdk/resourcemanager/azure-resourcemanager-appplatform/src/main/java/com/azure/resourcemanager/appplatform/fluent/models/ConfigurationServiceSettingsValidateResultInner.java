@@ -5,21 +5,33 @@
 package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.models.ConfigurationServiceGitPropertyValidateResult;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Validation result for configuration service settings. */
+/**
+ * Validation result for configuration service settings.
+ */
 @Fluent
-public final class ConfigurationServiceSettingsValidateResultInner {
+public final class ConfigurationServiceSettingsValidateResultInner
+    implements JsonSerializable<ConfigurationServiceSettingsValidateResultInner> {
     /*
      * Validation result for configuration service settings
      */
-    @JsonProperty(value = "gitPropertyValidationResult")
     private ConfigurationServiceGitPropertyValidateResult gitPropertyValidationResult;
 
     /**
+     * Creates an instance of ConfigurationServiceSettingsValidateResultInner class.
+     */
+    public ConfigurationServiceSettingsValidateResultInner() {
+    }
+
+    /**
      * Get the gitPropertyValidationResult property: Validation result for configuration service settings.
-     *
+     * 
      * @return the gitPropertyValidationResult value.
      */
     public ConfigurationServiceGitPropertyValidateResult gitPropertyValidationResult() {
@@ -28,24 +40,62 @@ public final class ConfigurationServiceSettingsValidateResultInner {
 
     /**
      * Set the gitPropertyValidationResult property: Validation result for configuration service settings.
-     *
+     * 
      * @param gitPropertyValidationResult the gitPropertyValidationResult value to set.
      * @return the ConfigurationServiceSettingsValidateResultInner object itself.
      */
-    public ConfigurationServiceSettingsValidateResultInner withGitPropertyValidationResult(
-        ConfigurationServiceGitPropertyValidateResult gitPropertyValidationResult) {
+    public ConfigurationServiceSettingsValidateResultInner
+        withGitPropertyValidationResult(ConfigurationServiceGitPropertyValidateResult gitPropertyValidationResult) {
         this.gitPropertyValidationResult = gitPropertyValidationResult;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (gitPropertyValidationResult() != null) {
             gitPropertyValidationResult().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("gitPropertyValidationResult", this.gitPropertyValidationResult);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationServiceSettingsValidateResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationServiceSettingsValidateResultInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationServiceSettingsValidateResultInner.
+     */
+    public static ConfigurationServiceSettingsValidateResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationServiceSettingsValidateResultInner deserializedConfigurationServiceSettingsValidateResultInner
+                = new ConfigurationServiceSettingsValidateResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gitPropertyValidationResult".equals(fieldName)) {
+                    deserializedConfigurationServiceSettingsValidateResultInner.gitPropertyValidationResult
+                        = ConfigurationServiceGitPropertyValidateResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationServiceSettingsValidateResultInner;
+        });
     }
 }

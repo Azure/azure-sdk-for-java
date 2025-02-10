@@ -5,35 +5,36 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The configuration parameters used for performing automatic OS upgrade.
  */
 @Fluent
-public final class AutomaticOSUpgradePolicy {
+public final class AutomaticOSUpgradePolicy implements JsonSerializable<AutomaticOSUpgradePolicy> {
     /*
      * Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a
-     * newer version of the OS image becomes available. Default value is false. If this is set to true for Windows
-     * based scale sets,
+     * newer version of the OS image becomes available. Default value is false. If this is set to true for Windows based
+     * scale sets,
      * [enableAutomaticUpdates](https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.
-     * windowsconfiguration.enableautomaticupdates?view=azure-dotnet)
-     * is automatically set to false and cannot be set to true.
+     * windowsconfiguration.enableautomaticupdates?view=azure-dotnet) is automatically set to false and cannot be set to
+     * true.
      */
-    @JsonProperty(value = "enableAutomaticOSUpgrade")
     private Boolean enableAutomaticOSUpgrade;
 
     /*
      * Whether OS image rollback feature should be disabled. Default value is false.
      */
-    @JsonProperty(value = "disableAutomaticRollback")
     private Boolean disableAutomaticRollback;
 
     /*
      * Indicates whether rolling upgrade policy should be used during Auto OS Upgrade. Default value is false. Auto OS
      * Upgrade will fallback to the default policy if no policy is defined on the VMSS.
      */
-    @JsonProperty(value = "useRollingUpgradePolicy")
     private Boolean useRollingUpgradePolicy;
 
     /*
@@ -42,7 +43,6 @@ public final class AutomaticOSUpgradePolicy {
      * 'Platform.PendingOSUpgrade'. The upgrade then defers until the upgrade is approved via an ApproveRollingUpgrade
      * call.
      */
-    @JsonProperty(value = "osRollingUpgradeDeferral")
     private Boolean osRollingUpgradeDeferral;
 
     /**
@@ -52,9 +52,9 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
-     * Get the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to
-     * scale set instances in a rolling fashion when a newer version of the OS image becomes available. Default value
-     * is false. If this is set to true for Windows based scale sets,
+     * Get the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
+     * set instances in a rolling fashion when a newer version of the OS image becomes available. Default value is
+     * false. If this is set to true for Windows based scale sets,
      * [enableAutomaticUpdates](https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.windowsconfiguration.enableautomaticupdates?view=azure-dotnet)
      * is automatically set to false and cannot be set to true.
      * 
@@ -65,9 +65,9 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
-     * Set the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to
-     * scale set instances in a rolling fashion when a newer version of the OS image becomes available. Default value
-     * is false. If this is set to true for Windows based scale sets,
+     * Set the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
+     * set instances in a rolling fashion when a newer version of the OS image becomes available. Default value is
+     * false. If this is set to true for Windows based scale sets,
      * [enableAutomaticUpdates](https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.windowsconfiguration.enableautomaticupdates?view=azure-dotnet)
      * is automatically set to false and cannot be set to true.
      * 
@@ -80,8 +80,8 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
-     * Get the disableAutomaticRollback property: Whether OS image rollback feature should be disabled. Default value
-     * is false.
+     * Get the disableAutomaticRollback property: Whether OS image rollback feature should be disabled. Default value is
+     * false.
      * 
      * @return the disableAutomaticRollback value.
      */
@@ -90,8 +90,8 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
-     * Set the disableAutomaticRollback property: Whether OS image rollback feature should be disabled. Default value
-     * is false.
+     * Set the disableAutomaticRollback property: Whether OS image rollback feature should be disabled. Default value is
+     * false.
      * 
      * @param disableAutomaticRollback the disableAutomaticRollback value to set.
      * @return the AutomaticOSUpgradePolicy object itself.
@@ -126,10 +126,10 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
-     * Get the osRollingUpgradeDeferral property: Indicates whether Auto OS Upgrade should undergo deferral. Deferred
-     * OS upgrades will send advanced notifications on a per-VM basis that an OS upgrade from rolling upgrades is
-     * incoming, via the IMDS tag 'Platform.PendingOSUpgrade'. The upgrade then defers until the upgrade is approved
-     * via an ApproveRollingUpgrade call.
+     * Get the osRollingUpgradeDeferral property: Indicates whether Auto OS Upgrade should undergo deferral. Deferred OS
+     * upgrades will send advanced notifications on a per-VM basis that an OS upgrade from rolling upgrades is incoming,
+     * via the IMDS tag 'Platform.PendingOSUpgrade'. The upgrade then defers until the upgrade is approved via an
+     * ApproveRollingUpgrade call.
      * 
      * @return the osRollingUpgradeDeferral value.
      */
@@ -138,10 +138,10 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
-     * Set the osRollingUpgradeDeferral property: Indicates whether Auto OS Upgrade should undergo deferral. Deferred
-     * OS upgrades will send advanced notifications on a per-VM basis that an OS upgrade from rolling upgrades is
-     * incoming, via the IMDS tag 'Platform.PendingOSUpgrade'. The upgrade then defers until the upgrade is approved
-     * via an ApproveRollingUpgrade call.
+     * Set the osRollingUpgradeDeferral property: Indicates whether Auto OS Upgrade should undergo deferral. Deferred OS
+     * upgrades will send advanced notifications on a per-VM basis that an OS upgrade from rolling upgrades is incoming,
+     * via the IMDS tag 'Platform.PendingOSUpgrade'. The upgrade then defers until the upgrade is approved via an
+     * ApproveRollingUpgrade call.
      * 
      * @param osRollingUpgradeDeferral the osRollingUpgradeDeferral value to set.
      * @return the AutomaticOSUpgradePolicy object itself.
@@ -157,5 +157,54 @@ public final class AutomaticOSUpgradePolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enableAutomaticOSUpgrade", this.enableAutomaticOSUpgrade);
+        jsonWriter.writeBooleanField("disableAutomaticRollback", this.disableAutomaticRollback);
+        jsonWriter.writeBooleanField("useRollingUpgradePolicy", this.useRollingUpgradePolicy);
+        jsonWriter.writeBooleanField("osRollingUpgradeDeferral", this.osRollingUpgradeDeferral);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomaticOSUpgradePolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomaticOSUpgradePolicy if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomaticOSUpgradePolicy.
+     */
+    public static AutomaticOSUpgradePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomaticOSUpgradePolicy deserializedAutomaticOSUpgradePolicy = new AutomaticOSUpgradePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enableAutomaticOSUpgrade".equals(fieldName)) {
+                    deserializedAutomaticOSUpgradePolicy.enableAutomaticOSUpgrade
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableAutomaticRollback".equals(fieldName)) {
+                    deserializedAutomaticOSUpgradePolicy.disableAutomaticRollback
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("useRollingUpgradePolicy".equals(fieldName)) {
+                    deserializedAutomaticOSUpgradePolicy.useRollingUpgradePolicy
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("osRollingUpgradeDeferral".equals(fieldName)) {
+                    deserializedAutomaticOSUpgradePolicy.osRollingUpgradeDeferral
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomaticOSUpgradePolicy;
+        });
     }
 }

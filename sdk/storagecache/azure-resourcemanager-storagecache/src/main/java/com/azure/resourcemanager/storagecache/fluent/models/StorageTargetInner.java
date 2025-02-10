@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
 import com.azure.resourcemanager.storagecache.models.ClfsTarget;
 import com.azure.resourcemanager.storagecache.models.NamespaceJunction;
@@ -14,25 +18,53 @@ import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTargetResource;
 import com.azure.resourcemanager.storagecache.models.StorageTargetType;
 import com.azure.resourcemanager.storagecache.models.UnknownTarget;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Type of the Storage Target. */
+/**
+ * Type of the Storage Target.
+ */
 @Fluent
 public final class StorageTargetInner extends StorageTargetResource {
     /*
      * StorageTarget properties
      */
-    @JsonProperty(value = "properties")
     private StorageTargetProperties innerProperties;
 
-    /** Creates an instance of StorageTargetInner class. */
+    /*
+     * The system meta data relating to this resource.
+     */
+    private SystemData systemData;
+
+    /*
+     * Region name string.
+     */
+    private String location;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StorageTargetInner class.
+     */
     public StorageTargetInner() {
     }
 
     /**
      * Get the innerProperties property: StorageTarget properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StorageTargetProperties innerProperties() {
@@ -40,8 +72,58 @@ public final class StorageTargetInner extends StorageTargetResource {
     }
 
     /**
+     * Get the systemData property: The system meta data relating to this resource.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the location property: Region name string.
+     * 
+     * @return the location value.
+     */
+    @Override
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the junctions property: List of cache namespace junctions to target for namespace associations.
-     *
+     * 
      * @return the junctions value.
      */
     public List<NamespaceJunction> junctions() {
@@ -50,7 +132,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Set the junctions property: List of cache namespace junctions to target for namespace associations.
-     *
+     * 
      * @param junctions the junctions value to set.
      * @return the StorageTargetInner object itself.
      */
@@ -64,7 +146,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Get the targetType property: Type of the Storage Target.
-     *
+     * 
      * @return the targetType value.
      */
     public StorageTargetType targetType() {
@@ -73,7 +155,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Set the targetType property: Type of the Storage Target.
-     *
+     * 
      * @param targetType the targetType value to set.
      * @return the StorageTargetInner object itself.
      */
@@ -88,7 +170,7 @@ public final class StorageTargetInner extends StorageTargetResource {
     /**
      * Get the provisioningState property: ARM provisioning state, see
      * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStateType provisioningState() {
@@ -97,7 +179,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Get the state property: Storage target operational state.
-     *
+     * 
      * @return the state value.
      */
     public OperationalStateType state() {
@@ -106,7 +188,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Set the state property: Storage target operational state.
-     *
+     * 
      * @param state the state value to set.
      * @return the StorageTargetInner object itself.
      */
@@ -120,7 +202,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Get the nfs3 property: Properties when targetType is nfs3.
-     *
+     * 
      * @return the nfs3 value.
      */
     public Nfs3Target nfs3() {
@@ -129,7 +211,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Set the nfs3 property: Properties when targetType is nfs3.
-     *
+     * 
      * @param nfs3 the nfs3 value to set.
      * @return the StorageTargetInner object itself.
      */
@@ -143,7 +225,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Get the clfs property: Properties when targetType is clfs.
-     *
+     * 
      * @return the clfs value.
      */
     public ClfsTarget clfs() {
@@ -152,7 +234,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Set the clfs property: Properties when targetType is clfs.
-     *
+     * 
      * @param clfs the clfs value to set.
      * @return the StorageTargetInner object itself.
      */
@@ -166,7 +248,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Get the unknown property: Properties when targetType is unknown.
-     *
+     * 
      * @return the unknown value.
      */
     public UnknownTarget unknown() {
@@ -175,7 +257,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Set the unknown property: Properties when targetType is unknown.
-     *
+     * 
      * @param unknown the unknown value to set.
      * @return the StorageTargetInner object itself.
      */
@@ -189,7 +271,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Get the blobNfs property: Properties when targetType is blobNfs.
-     *
+     * 
      * @return the blobNfs value.
      */
     public BlobNfsTarget blobNfs() {
@@ -198,7 +280,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Set the blobNfs property: Properties when targetType is blobNfs.
-     *
+     * 
      * @param blobNfs the blobNfs value to set.
      * @return the StorageTargetInner object itself.
      */
@@ -212,7 +294,7 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Get the allocationPercentage property: The percentage of cache space allocated for this storage target.
-     *
+     * 
      * @return the allocationPercentage value.
      */
     public Integer allocationPercentage() {
@@ -221,14 +303,60 @@ public final class StorageTargetInner extends StorageTargetResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTargetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTargetInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageTargetInner.
+     */
+    public static StorageTargetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTargetInner deserializedStorageTargetInner = new StorageTargetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageTargetInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageTargetInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageTargetInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedStorageTargetInner.location = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedStorageTargetInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageTargetInner.innerProperties = StorageTargetProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTargetInner;
+        });
     }
 }

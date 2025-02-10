@@ -6,37 +6,41 @@ package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.SubscriptionQuotaProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the current quota for the subscription. */
+/**
+ * Describes the current quota for the subscription.
+ */
 @Fluent
 public final class SubscriptionQuota extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionQuota.class);
-
     /*
      * Describes the properties of the quota.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private SubscriptionQuotaProperties innerProperties;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
+     * Creates an instance of SubscriptionQuota class.
+     */
+    public SubscriptionQuota() {
+    }
+
+    /**
      * Get the innerProperties property: Describes the properties of the quota.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SubscriptionQuotaProperties innerProperties() {
@@ -45,7 +49,7 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -54,7 +58,7 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SubscriptionQuota object itself.
      */
@@ -65,14 +69,16 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SubscriptionQuota withId(String id) {
         super.withId(id);
@@ -81,7 +87,7 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Get the maxCount property: The max permitted usage of this resource.
-     *
+     * 
      * @return the maxCount value.
      */
     public Integer maxCount() {
@@ -90,7 +96,7 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Get the currentCount property: The current usage of this resource.
-     *
+     * 
      * @return the currentCount value.
      */
     public Integer currentCount() {
@@ -99,12 +105,55 @@ public final class SubscriptionQuota extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionQuota from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionQuota if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionQuota.
+     */
+    public static SubscriptionQuota fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionQuota deserializedSubscriptionQuota = new SubscriptionQuota();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSubscriptionQuota.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSubscriptionQuota.innerProperties = SubscriptionQuotaProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSubscriptionQuota.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSubscriptionQuota.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionQuota;
+        });
     }
 }

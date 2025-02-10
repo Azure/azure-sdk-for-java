@@ -13,33 +13,30 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"resourceId\":\"zevgb\",\"source\":\"jqabcypmivkwlzuv\",\"action\":{\"onlebxetqgtzxdpn\":\"datawnfnbacf\",\"eallnwsubisnj\":\"databqqwxrj\"},\"singular\":\"pmng\",\"plural\":\"scxaq\"}")
-                .toObject(ResourceMetadata.class);
-        Assertions.assertEquals("zevgb", model.resourceId());
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.source());
-        Assertions.assertEquals("pmng", model.singular());
-        Assertions.assertEquals("scxaq", model.plural());
+        ResourceMetadata model = BinaryData.fromString(
+            "{\"resourceId\":\"nljky\",\"source\":\"j\",\"action\":{\"gidokgjljyoxgvcl\":\"dataj\",\"jhtxfvgxbfsmxne\":\"databgsncghkjeszzhb\"},\"singular\":\"pvecxgodeb\",\"plural\":\"kk\"}")
+            .toObject(ResourceMetadata.class);
+        Assertions.assertEquals("nljky", model.resourceId());
+        Assertions.assertEquals("j", model.source());
+        Assertions.assertEquals("pvecxgodeb", model.singular());
+        Assertions.assertEquals("kk", model.plural());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceMetadata model =
-            new ResourceMetadata()
-                .withResourceId("zevgb")
-                .withSource("jqabcypmivkwlzuv")
-                .withAction(mapOf("onlebxetqgtzxdpn", "datawnfnbacf", "eallnwsubisnj", "databqqwxrj"))
-                .withSingular("pmng")
-                .withPlural("scxaq");
+        ResourceMetadata model = new ResourceMetadata().withResourceId("nljky")
+            .withSource("j")
+            .withAction(mapOf("gidokgjljyoxgvcl", "dataj", "jhtxfvgxbfsmxne", "databgsncghkjeszzhb"))
+            .withSingular("pvecxgodeb")
+            .withPlural("kk");
         model = BinaryData.fromObject(model).toObject(ResourceMetadata.class);
-        Assertions.assertEquals("zevgb", model.resourceId());
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.source());
-        Assertions.assertEquals("pmng", model.singular());
-        Assertions.assertEquals("scxaq", model.plural());
+        Assertions.assertEquals("nljky", model.resourceId());
+        Assertions.assertEquals("j", model.source());
+        Assertions.assertEquals("pvecxgodeb", model.singular());
+        Assertions.assertEquals("kk", model.plural());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

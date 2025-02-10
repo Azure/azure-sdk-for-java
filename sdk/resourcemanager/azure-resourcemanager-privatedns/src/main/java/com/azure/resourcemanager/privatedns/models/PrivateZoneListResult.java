@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.privatedns.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.privatedns.fluent.models.PrivateZoneInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response to a Private DNS zone list operation. */
+/**
+ * The response to a Private DNS zone list operation.
+ */
 @Fluent
-public final class PrivateZoneListResult {
+public final class PrivateZoneListResult implements JsonSerializable<PrivateZoneListResult> {
     /*
      * Information about the Private DNS zones.
      */
-    @JsonProperty(value = "value")
     private List<PrivateZoneInner> value;
 
     /*
      * The continuation token for the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PrivateZoneListResult class. */
+    /**
+     * Creates an instance of PrivateZoneListResult class.
+     */
     public PrivateZoneListResult() {
     }
 
     /**
      * Get the value property: Information about the Private DNS zones.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateZoneInner> value() {
@@ -39,7 +45,7 @@ public final class PrivateZoneListResult {
 
     /**
      * Set the value property: Information about the Private DNS zones.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateZoneListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class PrivateZoneListResult {
 
     /**
      * Get the nextLink property: The continuation token for the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,51 @@ public final class PrivateZoneListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateZoneListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateZoneListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateZoneListResult.
+     */
+    public static PrivateZoneListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateZoneListResult deserializedPrivateZoneListResult = new PrivateZoneListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PrivateZoneInner> value = reader.readArray(reader1 -> PrivateZoneInner.fromJson(reader1));
+                    deserializedPrivateZoneListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPrivateZoneListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateZoneListResult;
+        });
     }
 }

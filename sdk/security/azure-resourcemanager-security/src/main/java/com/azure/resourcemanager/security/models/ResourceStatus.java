@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the resource regarding a single assessment. */
+/**
+ * The status of the resource regarding a single assessment.
+ */
 public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
-    /** Static value Healthy for ResourceStatus. */
+    /**
+     * Static value Healthy for ResourceStatus.
+     */
     public static final ResourceStatus HEALTHY = fromString("Healthy");
 
-    /** Static value NotApplicable for ResourceStatus. */
+    /**
+     * Static value NotApplicable for ResourceStatus.
+     */
     public static final ResourceStatus NOT_APPLICABLE = fromString("NotApplicable");
 
-    /** Static value OffByPolicy for ResourceStatus. */
+    /**
+     * Static value OffByPolicy for ResourceStatus.
+     */
     public static final ResourceStatus OFF_BY_POLICY = fromString("OffByPolicy");
 
-    /** Static value NotHealthy for ResourceStatus. */
+    /**
+     * Static value NotHealthy for ResourceStatus.
+     */
     public static final ResourceStatus NOT_HEALTHY = fromString("NotHealthy");
 
     /**
      * Creates a new instance of ResourceStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
 
     /**
      * Creates or finds a ResourceStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceStatus.
      */
-    @JsonCreator
     public static ResourceStatus fromString(String name) {
         return fromString(name, ResourceStatus.class);
     }
 
     /**
      * Gets known ResourceStatus values.
-     *
+     * 
      * @return known ResourceStatus values.
      */
     public static Collection<ResourceStatus> values() {

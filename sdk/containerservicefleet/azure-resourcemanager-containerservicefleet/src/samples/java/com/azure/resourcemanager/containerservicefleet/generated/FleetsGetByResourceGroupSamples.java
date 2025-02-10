@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.containerservicefleet.generated;
 
-/** Samples for Fleets GetByResourceGroup. */
+/**
+ * Samples for Fleets GetByResourceGroup.
+ */
 public final class FleetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Fleets_Get.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-05-02-preview/
+     * examples/Fleets_Get.json
      */
     /**
      * Sample code: Gets a Fleet resource.
-     *
+     * 
      * @param manager Entry point to ContainerServiceFleetManager.
      */
-    public static void getsAFleetResource(
-        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
+    public static void
+        getsAFleetResource(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
         manager.fleets().getByResourceGroupWithResponse("rg1", "fleet1", com.azure.core.util.Context.NONE);
     }
 }

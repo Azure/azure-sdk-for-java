@@ -6,29 +6,30 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Pipeline reference type.
  */
 @Fluent
-public final class PipelineReference {
+public final class PipelineReference implements JsonSerializable<PipelineReference> {
     /*
      * Pipeline reference type.
      */
-    @JsonProperty(value = "type", required = true)
-    private String type = "PipelineReference";
+    private final String type = "PipelineReference";
 
     /*
      * Reference pipeline name.
      */
-    @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
     /*
      * Reference name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -44,17 +45,6 @@ public final class PipelineReference {
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Pipeline reference type.
-     * 
-     * @param type the type value to set.
-     * @return the PipelineReference object itself.
-     */
-    public PipelineReference withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**
@@ -104,10 +94,52 @@ public final class PipelineReference {
      */
     public void validate() {
         if (referenceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property referenceName in model PipelineReference"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property referenceName in model PipelineReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PipelineReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PipelineReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PipelineReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PipelineReference.
+     */
+    public static PipelineReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PipelineReference deserializedPipelineReference = new PipelineReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("referenceName".equals(fieldName)) {
+                    deserializedPipelineReference.referenceName = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPipelineReference.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPipelineReference;
+        });
+    }
 }

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPointTierInformationV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPointTierInformationV2 model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ArchivedRP\",\"status\":\"Rehydrated\",\"extendedInfo\":{\"twly\":\"wahfbousnfepgfew\",\"limmbcxf\":\"gncxykxhdj\",\"pxtgqscjav\":\"bcporxvxcjzhqizx\"}}")
-                .toObject(RecoveryPointTierInformationV2.class);
+        RecoveryPointTierInformationV2 model = BinaryData.fromString(
+            "{\"type\":\"ArchivedRP\",\"status\":\"Rehydrated\",\"extendedInfo\":{\"twly\":\"wahfbousnfepgfew\",\"limmbcxf\":\"gncxykxhdj\",\"pxtgqscjav\":\"bcporxvxcjzhqizx\"}}")
+            .toObject(RecoveryPointTierInformationV2.class);
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
         Assertions.assertEquals(RecoveryPointTierStatus.REHYDRATED, model.status());
         Assertions.assertEquals("wahfbousnfepgfew", model.extendedInfo().get("twly"));
@@ -27,9 +25,8 @@ public final class RecoveryPointTierInformationV2Tests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointTierInformationV2 model =
-            new RecoveryPointTierInformationV2()
-                .withType(RecoveryPointTierType.ARCHIVED_RP)
+        RecoveryPointTierInformationV2 model
+            = new RecoveryPointTierInformationV2().withType(RecoveryPointTierType.ARCHIVED_RP)
                 .withStatus(RecoveryPointTierStatus.REHYDRATED)
                 .withExtendedInfo(
                     mapOf("twly", "wahfbousnfepgfew", "limmbcxf", "gncxykxhdj", "pxtgqscjav", "bcporxvxcjzhqizx"));

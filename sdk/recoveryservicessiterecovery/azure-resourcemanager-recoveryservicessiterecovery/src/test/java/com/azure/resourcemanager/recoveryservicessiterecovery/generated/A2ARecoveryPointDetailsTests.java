@@ -13,20 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class A2ARecoveryPointDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2ARecoveryPointDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"A2A\",\"recoveryPointSyncType\":\"PerVmRecoveryPoint\",\"disks\":[\"llizhce\",\"moqodka\",\"ppyi\"]}")
-                .toObject(A2ARecoveryPointDetails.class);
+        A2ARecoveryPointDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"A2A\",\"recoveryPointSyncType\":\"PerVmRecoveryPoint\",\"disks\":[\"llizhce\",\"moqodka\",\"ppyi\"]}")
+            .toObject(A2ARecoveryPointDetails.class);
         Assertions.assertEquals(RecoveryPointSyncType.PER_VM_RECOVERY_POINT, model.recoveryPointSyncType());
         Assertions.assertEquals("llizhce", model.disks().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2ARecoveryPointDetails model =
-            new A2ARecoveryPointDetails()
-                .withRecoveryPointSyncType(RecoveryPointSyncType.PER_VM_RECOVERY_POINT)
+        A2ARecoveryPointDetails model
+            = new A2ARecoveryPointDetails().withRecoveryPointSyncType(RecoveryPointSyncType.PER_VM_RECOVERY_POINT)
                 .withDisks(Arrays.asList("llizhce", "moqodka", "ppyi"));
         model = BinaryData.fromObject(model).toObject(A2ARecoveryPointDetails.class);
         Assertions.assertEquals(RecoveryPointSyncType.PER_VM_RECOVERY_POINT, model.recoveryPointSyncType());

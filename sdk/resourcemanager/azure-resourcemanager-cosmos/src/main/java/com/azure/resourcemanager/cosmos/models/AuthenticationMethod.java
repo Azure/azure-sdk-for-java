@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -44,7 +43,6 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
      * @param name a name to look for.
      * @return the corresponding AuthenticationMethod.
      */
-    @JsonCreator
     public static AuthenticationMethod fromString(String name) {
         return fromString(name, AuthenticationMethod.class);
     }

@@ -1,16 +1,135 @@
 # Release History
 
-## 4.21.0-beta.1 (Unreleased)
+## 4.28.0 (2025-01-21)
+
+### Features Added
+- Added `internetMessageId` property to `AcsEmailDeliveryReportReceivedEventData`.
+- Added `recipientMailServerHostName` property to `AcsEmailDeliveryReportStatusDetails`.
+- Added `segmentCount` property to `AcsSmsReceivedEventData`.
+
+## 4.27.0 (2024-11-18)
+
+### Features Added
+- New `ResourceNotificationsContainerServiceEventResourcesScheduledEventData` event, new `StorageLifecyclePolicyrunSummary` field on `StorageLifecyclePolicyCompletedEventData`. [#42966](https://github.com/Azure/azure-sdk-for-java/pull/42966)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+
+## 4.26.0 (2024-10-10)
 
 ### Features Added
 
-### Breaking Changes
+- Added `onBehalfOfCommunicationIdentifier` field to `AcsIncomingCallEventData`. [#42211](https://github.com/azure/azure-sdk-for-java/issues/42211)
 
-### Bugs Fixed
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+## 4.25.0 (2024-09-20)
+
+### Features Added
+- Added `WithResponse` methods to sender and receiver clients, allowing for more control of requests and more inspection of responses. [#41879](https://github.com/Azure/azure-sdk-for-java/pull/41879)
+- Added new field on `StorageLifecyclePolicyCompletedEventData` for details of a policy action. [#41886](https://github.com/Azure/azure-sdk-for-java/pull/41886)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
+## 4.24.0 (2024-08-20)
+
+### Features Added
+- Added `StorageBlobAccessTier` metadata to `StorageBlobCreatedEventData` and `StorageBlobTierChangedEventData` [#41398](https://github.com/Azure/azure-sdk-for-java/pull/41398)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+
+## 4.23.0 (2024-07-30)
+
+### Features added
+
+- New ACS Router events
+- Fix serialization bug in `AcsEmailDeliveryReportReceivedEventData` and `AcsEmailEngagementTrackingReportReceivedEventData`
+
+## 4.22.4 (2024-07-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+
+
+## 4.22.3 (2024-06-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+
+
+## 4.22.2 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+
+## 4.22.1 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+
+## 4.22.0 (2024-03-11)
+
+### Features Added
+- New System Events for API Center
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+
+## 4.21.0 (2024-02-13)
+
+### Features Added
+- new System Events for Azure VMWare Solution, Storage.
+- Add `metadata` property to `AcsChatThreadCreatedEventData`.
 
 ### Other Changes
 - Enabled stream-style serialization.
 - Updated to latest autorest.java
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 
 ## 4.20.1 (2023-12-04)
 

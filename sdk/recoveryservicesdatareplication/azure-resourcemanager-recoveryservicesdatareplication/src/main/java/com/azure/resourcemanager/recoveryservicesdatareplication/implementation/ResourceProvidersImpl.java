@@ -21,26 +21,20 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final ResourceProvidersClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityResponseModel> checkNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityModel body, Context context) {
-        Response<CheckNameAvailabilityResponseModelInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(location, body, context);
+    public Response<CheckNameAvailabilityResponseModel> checkNameAvailabilityWithResponse(String location,
+        CheckNameAvailabilityModel body, Context context) {
+        Response<CheckNameAvailabilityResponseModelInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(location, body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResponseModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -56,15 +50,12 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Response<DeploymentPreflightModel> deploymentPreflightWithResponse(
-        String resourceGroupName, String deploymentId, DeploymentPreflightModelInner body, Context context) {
-        Response<DeploymentPreflightModelInner> inner =
-            this.serviceClient().deploymentPreflightWithResponse(resourceGroupName, deploymentId, body, context);
+    public Response<DeploymentPreflightModel> deploymentPreflightWithResponse(String resourceGroupName,
+        String deploymentId, DeploymentPreflightModelInner body, Context context) {
+        Response<DeploymentPreflightModelInner> inner
+            = this.serviceClient().deploymentPreflightWithResponse(resourceGroupName, deploymentId, body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DeploymentPreflightModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -45,7 +44,6 @@ public final class RestorePointEncryptionType extends ExpandableStringEnum<Resto
      * @param name a name to look for.
      * @return the corresponding RestorePointEncryptionType.
      */
-    @JsonCreator
     public static RestorePointEncryptionType fromString(String name) {
         return fromString(name, RestorePointEncryptionType.class);
     }

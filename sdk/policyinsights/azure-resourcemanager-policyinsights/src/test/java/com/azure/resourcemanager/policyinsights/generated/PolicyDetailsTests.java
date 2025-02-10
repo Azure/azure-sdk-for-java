@@ -6,20 +6,17 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.PolicyDetails;
-import org.junit.jupiter.api.Test;
 
 public final class PolicyDetailsTests {
-    @Test
-    public void testDeserialize() {
-        PolicyDetails model =
-            BinaryData
-                .fromString(
-                    "{\"policyDefinitionId\":\"phlxa\",\"policyAssignmentId\":\"thqt\",\"policyAssignmentDisplayName\":\"qjbpfzfsin\",\"policyAssignmentScope\":\"v\",\"policySetDefinitionId\":\"jrwzox\",\"policyDefinitionReferenceId\":\"tfell\"}")
-                .toObject(PolicyDetails.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PolicyDetails model = BinaryData.fromString(
+            "{\"policyDefinitionId\":\"kao\",\"policyAssignmentId\":\"yiftyhxhuro\",\"policyAssignmentDisplayName\":\"tyxolniwpwc\",\"policyAssignmentScope\":\"jfkgiawxk\",\"policySetDefinitionId\":\"ypl\",\"policyDefinitionReferenceId\":\"kbasyypn\"}")
+            .toObject(PolicyDetails.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PolicyDetails model = new PolicyDetails();
         model = BinaryData.fromObject(model).toObject(PolicyDetails.class);
     }

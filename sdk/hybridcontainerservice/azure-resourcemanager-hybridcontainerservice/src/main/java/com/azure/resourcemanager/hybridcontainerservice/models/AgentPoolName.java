@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * AgentPool Name.
+ * Name of the default Agent Pool.
  */
 @Fluent
-public class AgentPoolName {
+public class AgentPoolName implements JsonSerializable<AgentPoolName> {
     /*
-     * Unique name of the agent pool profile in the context of the subscription and resource group.
+     * Unique name of the default agent pool in the context of the provisioned cluster. Default value is
+     * <clusterName>-nodepool1
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -25,8 +29,8 @@ public class AgentPoolName {
     }
 
     /**
-     * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * Get the name property: Unique name of the default agent pool in the context of the provisioned cluster. Default
+     * value is &lt;clusterName&gt;-nodepool1.
      * 
      * @return the name value.
      */
@@ -35,8 +39,8 @@ public class AgentPoolName {
     }
 
     /**
-     * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * Set the name property: Unique name of the default agent pool in the context of the provisioned cluster. Default
+     * value is &lt;clusterName&gt;-nodepool1.
      * 
      * @param name the name value to set.
      * @return the AgentPoolName object itself.
@@ -52,5 +56,41 @@ public class AgentPoolName {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolName if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolName.
+     */
+    public static AgentPoolName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolName deserializedAgentPoolName = new AgentPoolName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAgentPoolName.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolName;
+        });
     }
 }

@@ -6,37 +6,35 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterVersionInner;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterVersionProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class ClusterVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterVersionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"clusterType\":\"j\",\"clusterVersion\":\"nlfzxiavrmbz\",\"ossVersion\":\"okixrjqcir\",\"clusterPoolVersion\":\"pfrlazsz\",\"isPreview\":false,\"components\":[{\"name\":\"ndfpwpj\",\"version\":\"wbtlhflsjcdh\"}]},\"id\":\"zfjvfbgofe\",\"name\":\"jagrqmqhldvr\",\"type\":\"iiojnal\"}")
-                .toObject(ClusterVersionInner.class);
-        Assertions.assertEquals("j", model.clusterType());
-        Assertions.assertEquals("nlfzxiavrmbz", model.clusterVersion());
-        Assertions.assertEquals("okixrjqcir", model.ossVersion());
-        Assertions.assertEquals("pfrlazsz", model.clusterPoolVersion());
-        Assertions.assertEquals(false, model.isPreview());
+        ClusterVersionInner model = BinaryData.fromString(
+            "{\"properties\":{\"clusterType\":\"goo\",\"clusterVersion\":\"kqfqjbvl\",\"ossVersion\":\"rfmluiqtq\",\"clusterPoolVersion\":\"avyvnqqyba\",\"isPreview\":true,\"components\":[{\"name\":\"jkqa\",\"version\":\"gzslesjcbhernnti\"},{\"name\":\"djc\",\"version\":\"quwrbehwag\"}]},\"id\":\"buffkmrqemvvhm\",\"name\":\"tdrjfutacoebj\",\"type\":\"ewzcjznmwcp\"}")
+            .toObject(ClusterVersionInner.class);
+        Assertions.assertEquals("goo", model.properties().clusterType());
+        Assertions.assertEquals("kqfqjbvl", model.properties().clusterVersion());
+        Assertions.assertEquals("rfmluiqtq", model.properties().ossVersion());
+        Assertions.assertEquals("avyvnqqyba", model.properties().clusterPoolVersion());
+        Assertions.assertEquals(true, model.properties().isPreview());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterVersionInner model =
-            new ClusterVersionInner()
-                .withClusterType("j")
-                .withClusterVersion("nlfzxiavrmbz")
-                .withOssVersion("okixrjqcir")
-                .withClusterPoolVersion("pfrlazsz")
-                .withIsPreview(false);
+        ClusterVersionInner model
+            = new ClusterVersionInner().withProperties(new ClusterVersionProperties().withClusterType("goo")
+                .withClusterVersion("kqfqjbvl")
+                .withOssVersion("rfmluiqtq")
+                .withClusterPoolVersion("avyvnqqyba")
+                .withIsPreview(true));
         model = BinaryData.fromObject(model).toObject(ClusterVersionInner.class);
-        Assertions.assertEquals("j", model.clusterType());
-        Assertions.assertEquals("nlfzxiavrmbz", model.clusterVersion());
-        Assertions.assertEquals("okixrjqcir", model.ossVersion());
-        Assertions.assertEquals("pfrlazsz", model.clusterPoolVersion());
-        Assertions.assertEquals(false, model.isPreview());
+        Assertions.assertEquals("goo", model.properties().clusterType());
+        Assertions.assertEquals("kqfqjbvl", model.properties().clusterVersion());
+        Assertions.assertEquals("rfmluiqtq", model.properties().ossVersion());
+        Assertions.assertEquals("avyvnqqyba", model.properties().clusterPoolVersion());
+        Assertions.assertEquals(true, model.properties().isPreview());
     }
 }

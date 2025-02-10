@@ -6,77 +6,46 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.WorkloadGroup;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SqlPoolWorkloadGroupsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"minResourcePercent\":1820004369,\"maxResourcePercent\":138567947,\"minResourcePercentPerRequest\":91.25878692489961,\"maxResourcePercentPerRequest\":23.282740053067407,\"importance\":\"vztiucwviqllukh\",\"queryExecutionTimeout\":576317178},\"id\":\"qxgcbvzarmqcbpo\",\"name\":\"stsinvag\",\"type\":\"vjyhdrxbrdvc\"}";
 
-        String responseStr =
-            "{\"properties\":{\"minResourcePercent\":453404729,\"maxResourcePercent\":674809851,\"minResourcePercentPerRequest\":32.96738546288102,\"maxResourcePercentPerRequest\":30.618266500851867,\"importance\":\"oejng\",\"queryExecutionTimeout\":1730568794},\"id\":\"s\",\"name\":\"daxjsum\",\"type\":\"pezco\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        WorkloadGroup response = manager.sqlPoolWorkloadGroups()
+            .define("i")
+            .withExistingSqlPool("ikyjtkakvlb", "shjvpzaptuoskaoi", "jixwfgc")
+            .withMinResourcePercent(1869059553)
+            .withMaxResourcePercent(89327285)
+            .withMinResourcePercentPerRequest(50.80002194867509)
+            .withMaxResourcePercentPerRequest(64.43193670749677D)
+            .withImportance("qynvavitmdm")
+            .withQueryExecutionTimeout(708536304)
+            .create();
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        WorkloadGroup response =
-            manager
-                .sqlPoolWorkloadGroups()
-                .define("qgkujds")
-                .withExistingSqlPool("tqm", "wz", "drpizfulgyctsdb")
-                .withMinResourcePercent(1079434333)
-                .withMaxResourcePercent(31780783)
-                .withMinResourcePercentPerRequest(78.9520427818557)
-                .withMaxResourcePercentPerRequest(89.21254465206381D)
-                .withImportance("btigapdyarikeejd")
-                .withQueryExecutionTimeout(348647398)
-                .create();
-
-        Assertions.assertEquals(453404729, response.minResourcePercent());
-        Assertions.assertEquals(674809851, response.maxResourcePercent());
-        Assertions.assertEquals(32.96738546288102, response.minResourcePercentPerRequest());
-        Assertions.assertEquals(30.618266500851867D, response.maxResourcePercentPerRequest());
-        Assertions.assertEquals("oejng", response.importance());
-        Assertions.assertEquals(1730568794, response.queryExecutionTimeout());
+        Assertions.assertEquals(1820004369, response.minResourcePercent());
+        Assertions.assertEquals(138567947, response.maxResourcePercent());
+        Assertions.assertEquals(91.25878692489961, response.minResourcePercentPerRequest());
+        Assertions.assertEquals(23.282740053067407D, response.maxResourcePercentPerRequest());
+        Assertions.assertEquals("vztiucwviqllukh", response.importance());
+        Assertions.assertEquals(576317178, response.queryExecutionTimeout());
     }
 }

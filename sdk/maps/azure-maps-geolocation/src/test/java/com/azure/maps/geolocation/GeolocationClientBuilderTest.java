@@ -3,95 +3,65 @@
 
 package com.azure.maps.geolocation;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-
+import com.azure.core.test.utils.MockTokenCredential;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GeolocationClientBuilderTest {
     // Test for null GeolocationClientId, the client ID value
     @Test
     public void missingClientId() {
-        assertThrows(NullPointerException.class, () -> {
-            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
-            builder.clientId(null);
-        });
+        assertThrows(NullPointerException.class, () -> new GeolocationClientBuilder().clientId(null));
     }
 
     // Test for missing endpoint
     @Test
     public void missingEndpoint() {
-        assertThrows(NullPointerException.class, () -> {
-            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
-            builder.endpoint(null);
-        });
+        assertThrows(NullPointerException.class, () -> new GeolocationClientBuilder().endpoint(null));
     }
 
     // Test for missing configuration
     @Test
     public void missingConfiguration() {
-        assertThrows(NullPointerException.class, () -> {
-            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
-            builder.configuration(null);
-        });
+        assertThrows(NullPointerException.class, () -> new GeolocationClientBuilder().configuration(null));
     }
 
     // Test for missing http log options
     @Test
     public void missingHttpLogOptions() {
-        assertThrows(NullPointerException.class, () -> {
-            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
-            builder.httpLogOptions(null);
-        });
+        assertThrows(NullPointerException.class, () -> new GeolocationClientBuilder().httpLogOptions(null));
     }
 
     // Test for missing retry policy
     @Test
     public void missingRetryPolicy() {
-        assertThrows(NullPointerException.class, () -> {
-            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
-            builder.retryPolicy(null);
-        });
+        assertThrows(NullPointerException.class, () -> new GeolocationClientBuilder().retryPolicy(null));
     }
 
     // Test for missing client options
     @Test
     public void missingClientOptions() {
-        assertThrows(NullPointerException.class, () -> {
-            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
-            builder.clientOptions(null);
-        });
+        assertThrows(NullPointerException.class, () -> new GeolocationClientBuilder().clientOptions(null));
     }
 
     // Test for missing add policy
     @Test
     public void missingAddPolicy() {
-        assertThrows(NullPointerException.class, () -> {
-            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
-            builder.addPolicy(null);
-        });
+        assertThrows(NullPointerException.class, () -> new GeolocationClientBuilder().addPolicy(null));
     }
 
     // Test for null map id, valid token credential
     @Test
     public void missingMapsClientIdValidTokenCredential() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
-            DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-            builder.credential(tokenCredential);
-            builder.buildClient();
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> new GeolocationClientBuilder().credential(new MockTokenCredential()).buildClient());
     }
 
     // Test for null key credential and null token credential despite valid mapsClientId
     @Test
     public void missingCredentials() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            final GeolocationClientBuilder builder = new GeolocationClientBuilder();
-            builder.clientId("geolocationClientId");
-            builder.buildClient();
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> new GeolocationClientBuilder().clientId("geolocationClientId").buildClient());
     }
 }

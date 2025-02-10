@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response for ConfigurationAssignments list. */
+/**
+ * Response for ConfigurationAssignments list.
+ */
 @Fluent
-public final class ListConfigurationAssignmentsResult {
+public final class ListConfigurationAssignmentsResult implements JsonSerializable<ListConfigurationAssignmentsResult> {
     /*
      * The list of configuration Assignments
      */
-    @JsonProperty(value = "value")
     private List<ConfigurationAssignmentInner> value;
 
-    /** Creates an instance of ListConfigurationAssignmentsResult class. */
+    /**
+     * Creates an instance of ListConfigurationAssignmentsResult class.
+     */
     public ListConfigurationAssignmentsResult() {
     }
 
     /**
      * Get the value property: The list of configuration Assignments.
-     *
+     * 
      * @return the value value.
      */
     public List<ConfigurationAssignmentInner> value() {
@@ -33,7 +40,7 @@ public final class ListConfigurationAssignmentsResult {
 
     /**
      * Set the value property: The list of configuration Assignments.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListConfigurationAssignmentsResult object itself.
      */
@@ -44,12 +51,51 @@ public final class ListConfigurationAssignmentsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListConfigurationAssignmentsResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListConfigurationAssignmentsResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListConfigurationAssignmentsResult.
+     */
+    public static ListConfigurationAssignmentsResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListConfigurationAssignmentsResult deserializedListConfigurationAssignmentsResult
+                = new ListConfigurationAssignmentsResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ConfigurationAssignmentInner> value
+                        = reader.readArray(reader1 -> ConfigurationAssignmentInner.fromJson(reader1));
+                    deserializedListConfigurationAssignmentsResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListConfigurationAssignmentsResult;
+        });
     }
 }

@@ -23,7 +23,7 @@ Write-Host "Downloading latest JDK to" (Get-Location)
 
 if (!(Test-Path -Path $jdkUnzipName -PathType container)) {
   # Query Adoptium for the list of installs for the JDK feature version.
-  Write-Host "Inkvoking web request to '$getInstalls' to find JDK $JdkFeatureVersion installs available on $os."
+  Write-Host "Invoking web request to '$getInstalls' to find JDK $JdkFeatureVersion installs available on $os."
   $installsAvailable = Invoke-WebRequest -URI $getInstalls | ConvertFrom-Json
   $jdkLink = $installsAvailable.binary.package.link
   $jdkZipName = $jdkLink.split("/")[-1]
@@ -39,7 +39,7 @@ if (!(Test-Path -Path $jdkUnzipName -PathType container)) {
     tar -xvf $jdkZipName -C "jdk-temp"
     Move-Item -Path (Join-Path -Path "jdk-temp" -ChildPath (Get-ChildItem "jdk-temp")[0].Name) -Destination $jdkUnzipName
   }
-  
+
 }
 
 $javaHome = (Convert-Path $jdkUnzipName)

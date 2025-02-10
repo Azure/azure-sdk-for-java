@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes how identity is verified. */
+/**
+ * Describes how identity is verified.
+ */
 @Fluent
-public class Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
-
+public final class Identity implements JsonSerializable<Identity> {
     /*
      * The identity tenantId
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * The identity principal ID
      */
-    @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
      * The identity type
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /**
+     * Creates an instance of Identity class.
+     */
+    public Identity() {
+    }
+
+    /**
      * Get the tenantId property: The identity tenantId.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -42,19 +47,8 @@ public class Identity {
     }
 
     /**
-     * Set the tenantId property: The identity tenantId.
-     *
-     * @param tenantId the tenantId value to set.
-     * @return the Identity object itself.
-     */
-    public Identity withTenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
-
-    /**
      * Get the principalId property: The identity principal ID.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -62,19 +56,8 @@ public class Identity {
     }
 
     /**
-     * Set the principalId property: The identity principal ID.
-     *
-     * @param principalId the principalId value to set.
-     * @return the Identity object itself.
-     */
-    public Identity withPrincipalId(String principalId) {
-        this.principalId = principalId;
-        return this;
-    }
-
-    /**
      * Get the type property: The identity type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -83,7 +66,7 @@ public class Identity {
 
     /**
      * Set the type property: The identity type.
-     *
+     * 
      * @param type the type value to set.
      * @return the Identity object itself.
      */
@@ -94,9 +77,49 @@ public class Identity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Identity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Identity if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Identity.
+     */
+    public static Identity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Identity deserializedIdentity = new Identity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedIdentity.tenantId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedIdentity.principalId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIdentity.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentity;
+        });
     }
 }

@@ -5,12 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * The load balancer sku for the managed cluster.
- *
+ * 
  * The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for
  * more information about the differences between load balancer SKUs.
  */
@@ -27,7 +26,7 @@ public final class LoadBalancerSku extends ExpandableStringEnum<LoadBalancerSku>
 
     /**
      * Creates a new instance of LoadBalancerSku value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +35,17 @@ public final class LoadBalancerSku extends ExpandableStringEnum<LoadBalancerSku>
 
     /**
      * Creates or finds a LoadBalancerSku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LoadBalancerSku.
      */
-    @JsonCreator
     public static LoadBalancerSku fromString(String name) {
         return fromString(name, LoadBalancerSku.class);
     }
 
     /**
      * Gets known LoadBalancerSku values.
-     *
+     * 
      * @return known LoadBalancerSku values.
      */
     public static Collection<LoadBalancerSku> values() {

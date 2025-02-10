@@ -6,67 +6,36 @@ package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagemover.StorageMoverManager;
 import com.azure.resourcemanager.storagemover.models.StorageMover;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class StorageMoversGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"description\":\"opwi\",\"provisioningState\":\"Canceled\"},\"location\":\"xpkd\",\"tags\":{\"edeojnabc\":\"aiuebbaumnyqu\",\"sapskr\":\"hsmtxpsiebtfhvp\",\"kyzxuutk\":\"qmhjjdhtld\"},\"id\":\"cwscwsvlx\",\"name\":\"togt\",\"type\":\"rupqsxvnmicy\"}";
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"dbhrbnlankxm\",\"provisioningState\":\"Succeeded\"},\"location\":\"bhenbtkcxywnyt\",\"tags\":{\"qidybyx\":\"yn\",\"aaxdbabphlwrq\":\"zfcl\",\"hsucoc\":\"fkts\",\"ckzywbiexzfeyue\":\"nyyazttbtwwrqpue\"},\"id\":\"xibxujwbhqwalm\",\"name\":\"zyoxaepdkzjan\",\"type\":\"ux\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StorageMoverManager manager = StorageMoverManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        StorageMover response = manager.storageMovers()
+            .getByResourceGroupWithResponse("mg", "xnkjzkdesl", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        StorageMoverManager manager =
-            StorageMoverManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        StorageMover response =
-            manager
-                .storageMovers()
-                .getByResourceGroupWithResponse("arbu", "rcvpnazzmhjrunmp", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("bhenbtkcxywnyt", response.location());
-        Assertions.assertEquals("yn", response.tags().get("qidybyx"));
-        Assertions.assertEquals("dbhrbnlankxm", response.description());
+        Assertions.assertEquals("xpkd", response.location());
+        Assertions.assertEquals("aiuebbaumnyqu", response.tags().get("edeojnabc"));
+        Assertions.assertEquals("opwi", response.description());
     }
 }

@@ -5,23 +5,25 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Notebook parameter.
  */
 @Fluent
-public final class NotebookParameter {
+public final class NotebookParameter implements JsonSerializable<NotebookParameter> {
     /*
      * Notebook parameter value. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "value")
     private Object value;
 
     /*
      * Notebook parameter type.
      */
-    @JsonProperty(value = "type")
     private NotebookParameterType type;
 
     /**
@@ -68,5 +70,44 @@ public final class NotebookParameter {
     public NotebookParameter setType(NotebookParameterType type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotebookParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotebookParameter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotebookParameter.
+     */
+    public static NotebookParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotebookParameter deserializedNotebookParameter = new NotebookParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedNotebookParameter.value = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNotebookParameter.type = NotebookParameterType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotebookParameter;
+        });
     }
 }

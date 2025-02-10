@@ -7,11 +7,14 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,26 +26,37 @@ public final class BastionHostInner extends Resource {
     /*
      * Represents the bastion host resource.
      */
-    @JsonProperty(value = "properties")
     private BastionHostPropertiesFormat innerProperties;
+
+    /*
+     * A list of availability zones denoting where the resource needs to come from.
+     */
+    private List<String> zones;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The sku of this Bastion Host.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of BastionHostInner class.
@@ -57,6 +71,26 @@ public final class BastionHostInner extends Resource {
      */
     private BastionHostPropertiesFormat innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the zones property: A list of availability zones denoting where the resource needs to come from.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: A list of availability zones denoting where the resource needs to come from.
+     * 
+     * @param zones the zones value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
     }
 
     /**
@@ -106,6 +140,26 @@ public final class BastionHostInner extends Resource {
     public BastionHostInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -391,6 +445,52 @@ public final class BastionHostInner extends Resource {
     }
 
     /**
+     * Get the enableSessionRecording property: Enable/Disable Session Recording feature of the Bastion Host resource.
+     * 
+     * @return the enableSessionRecording value.
+     */
+    public Boolean enableSessionRecording() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableSessionRecording();
+    }
+
+    /**
+     * Set the enableSessionRecording property: Enable/Disable Session Recording feature of the Bastion Host resource.
+     * 
+     * @param enableSessionRecording the enableSessionRecording value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnableSessionRecording(Boolean enableSessionRecording) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnableSessionRecording(enableSessionRecording);
+        return this;
+    }
+
+    /**
+     * Get the enablePrivateOnlyBastion property: Enable/Disable Private Only feature of the Bastion Host resource.
+     * 
+     * @return the enablePrivateOnlyBastion value.
+     */
+    public Boolean enablePrivateOnlyBastion() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePrivateOnlyBastion();
+    }
+
+    /**
+     * Set the enablePrivateOnlyBastion property: Enable/Disable Private Only feature of the Bastion Host resource.
+     * 
+     * @param enablePrivateOnlyBastion the enablePrivateOnlyBastion value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnablePrivateOnlyBastion(Boolean enablePrivateOnlyBastion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnablePrivateOnlyBastion(enablePrivateOnlyBastion);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -402,5 +502,65 @@ public final class BastionHostInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BastionHostInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BastionHostInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BastionHostInner.
+     */
+    public static BastionHostInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BastionHostInner deserializedBastionHostInner = new BastionHostInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedBastionHostInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBastionHostInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedBastionHostInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBastionHostInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBastionHostInner.innerProperties = BastionHostPropertiesFormat.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBastionHostInner.zones = zones;
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBastionHostInner.etag = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedBastionHostInner.sku = Sku.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedBastionHostInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBastionHostInner;
+        });
     }
 }

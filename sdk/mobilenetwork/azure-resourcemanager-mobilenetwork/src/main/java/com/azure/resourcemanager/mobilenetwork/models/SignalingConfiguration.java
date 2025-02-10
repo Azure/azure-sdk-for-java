@@ -5,24 +5,39 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** Signaling configuration for the packet core. */
+/**
+ * Signaling configuration for the packet core.
+ */
 @Fluent
-public final class SignalingConfiguration {
+public final class SignalingConfiguration implements JsonSerializable<SignalingConfiguration> {
     /*
      * Configuration enabling 4G NAS reroute.
      */
-    @JsonProperty(value = "nasReroute")
     private NasRerouteConfiguration nasReroute;
 
-    /** Creates an instance of SignalingConfiguration class. */
+    /*
+     * An ordered list of NAS encryption algorithms, used to encrypt control plane traffic between the UE and packet
+     * core, in order from most to least preferred. If not specified, the packet core will use a built-in default
+     * ordering.
+     */
+    private List<NasEncryptionType> nasEncryption;
+
+    /**
+     * Creates an instance of SignalingConfiguration class.
+     */
     public SignalingConfiguration() {
     }
 
     /**
      * Get the nasReroute property: Configuration enabling 4G NAS reroute.
-     *
+     * 
      * @return the nasReroute value.
      */
     public NasRerouteConfiguration nasReroute() {
@@ -31,7 +46,7 @@ public final class SignalingConfiguration {
 
     /**
      * Set the nasReroute property: Configuration enabling 4G NAS reroute.
-     *
+     * 
      * @param nasReroute the nasReroute value to set.
      * @return the SignalingConfiguration object itself.
      */
@@ -41,13 +56,79 @@ public final class SignalingConfiguration {
     }
 
     /**
+     * Get the nasEncryption property: An ordered list of NAS encryption algorithms, used to encrypt control plane
+     * traffic between the UE and packet core, in order from most to least preferred. If not specified, the packet core
+     * will use a built-in default ordering.
+     * 
+     * @return the nasEncryption value.
+     */
+    public List<NasEncryptionType> nasEncryption() {
+        return this.nasEncryption;
+    }
+
+    /**
+     * Set the nasEncryption property: An ordered list of NAS encryption algorithms, used to encrypt control plane
+     * traffic between the UE and packet core, in order from most to least preferred. If not specified, the packet core
+     * will use a built-in default ordering.
+     * 
+     * @param nasEncryption the nasEncryption value to set.
+     * @return the SignalingConfiguration object itself.
+     */
+    public SignalingConfiguration withNasEncryption(List<NasEncryptionType> nasEncryption) {
+        this.nasEncryption = nasEncryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (nasReroute() != null) {
             nasReroute().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("nasReroute", this.nasReroute);
+        jsonWriter.writeArrayField("nasEncryption", this.nasEncryption,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SignalingConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SignalingConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SignalingConfiguration.
+     */
+    public static SignalingConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SignalingConfiguration deserializedSignalingConfiguration = new SignalingConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nasReroute".equals(fieldName)) {
+                    deserializedSignalingConfiguration.nasReroute = NasRerouteConfiguration.fromJson(reader);
+                } else if ("nasEncryption".equals(fieldName)) {
+                    List<NasEncryptionType> nasEncryption
+                        = reader.readArray(reader1 -> NasEncryptionType.fromString(reader1.getString()));
+                    deserializedSignalingConfiguration.nasEncryption = nasEncryption;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSignalingConfiguration;
+        });
     }
 }

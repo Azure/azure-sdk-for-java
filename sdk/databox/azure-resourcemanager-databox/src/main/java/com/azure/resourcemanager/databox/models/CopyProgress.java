@@ -5,123 +5,114 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Copy progress. */
+/**
+ * Copy progress.
+ */
 @Immutable
-public class CopyProgress {
+public class CopyProgress implements JsonSerializable<CopyProgress> {
     /*
      * Name of the storage account. This will be empty for data account types other than storage account.
      */
-    @JsonProperty(value = "storageAccountName", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccountName;
 
     /*
      * Transfer type of data
      */
-    @JsonProperty(value = "transferType", access = JsonProperty.Access.WRITE_ONLY)
     private TransferType transferType;
 
     /*
      * Data Account Type.
      */
-    @JsonProperty(value = "dataAccountType", access = JsonProperty.Access.WRITE_ONLY)
     private DataAccountType dataAccountType;
 
     /*
      * Id of the account where the data needs to be uploaded.
      */
-    @JsonProperty(value = "accountId", access = JsonProperty.Access.WRITE_ONLY)
     private String accountId;
 
     /*
      * To indicate bytes transferred.
      */
-    @JsonProperty(value = "bytesProcessed", access = JsonProperty.Access.WRITE_ONLY)
     private Long bytesProcessed;
 
     /*
      * Total amount of data to be processed by the job.
      */
-    @JsonProperty(value = "totalBytesToProcess", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalBytesToProcess;
 
     /*
      * Number of files processed
      */
-    @JsonProperty(value = "filesProcessed", access = JsonProperty.Access.WRITE_ONLY)
     private Long filesProcessed;
 
     /*
      * Total files to process
      */
-    @JsonProperty(value = "totalFilesToProcess", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalFilesToProcess;
 
     /*
      * Number of files not adhering to azure naming conventions which were processed by automatic renaming
      */
-    @JsonProperty(value = "invalidFilesProcessed", access = JsonProperty.Access.WRITE_ONLY)
     private Long invalidFilesProcessed;
 
     /*
      * Total amount of data not adhering to azure naming conventions which were processed by automatic renaming
      */
-    @JsonProperty(value = "invalidFileBytesUploaded", access = JsonProperty.Access.WRITE_ONLY)
     private Long invalidFileBytesUploaded;
 
     /*
      * Number of folders not adhering to azure naming conventions which were processed by automatic renaming
      */
-    @JsonProperty(value = "renamedContainerCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long renamedContainerCount;
 
     /*
      * Number of files which could not be copied
      */
-    @JsonProperty(value = "filesErroredOut", access = JsonProperty.Access.WRITE_ONLY)
     private Long filesErroredOut;
 
     /*
      * To indicate directories errored out in the job.
      */
-    @JsonProperty(value = "directoriesErroredOut", access = JsonProperty.Access.WRITE_ONLY)
     private Long directoriesErroredOut;
 
     /*
      * To indicate directories renamed
      */
-    @JsonProperty(value = "invalidDirectoriesProcessed", access = JsonProperty.Access.WRITE_ONLY)
     private Long invalidDirectoriesProcessed;
 
     /*
      * To indicate if enumeration of data is in progress.
      * Until this is true, the TotalBytesToProcess may not be valid.
      */
-    @JsonProperty(value = "isEnumerationInProgress", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEnumerationInProgress;
 
     /*
      * Error, if any, in the stage
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private CloudError error;
 
     /*
      * Available actions on the job.
      */
-    @JsonProperty(value = "actions", access = JsonProperty.Access.WRITE_ONLY)
     private List<CustomerResolutionCode> actions;
 
-    /** Creates an instance of CopyProgress class. */
+    /**
+     * Creates an instance of CopyProgress class.
+     */
     public CopyProgress() {
     }
 
     /**
      * Get the storageAccountName property: Name of the storage account. This will be empty for data account types other
      * than storage account.
-     *
+     * 
      * @return the storageAccountName value.
      */
     public String storageAccountName() {
@@ -129,8 +120,20 @@ public class CopyProgress {
     }
 
     /**
+     * Set the storageAccountName property: Name of the storage account. This will be empty for data account types other
+     * than storage account.
+     * 
+     * @param storageAccountName the storageAccountName value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withStorageAccountName(String storageAccountName) {
+        this.storageAccountName = storageAccountName;
+        return this;
+    }
+
+    /**
      * Get the transferType property: Transfer type of data.
-     *
+     * 
      * @return the transferType value.
      */
     public TransferType transferType() {
@@ -138,8 +141,19 @@ public class CopyProgress {
     }
 
     /**
+     * Set the transferType property: Transfer type of data.
+     * 
+     * @param transferType the transferType value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withTransferType(TransferType transferType) {
+        this.transferType = transferType;
+        return this;
+    }
+
+    /**
      * Get the dataAccountType property: Data Account Type.
-     *
+     * 
      * @return the dataAccountType value.
      */
     public DataAccountType dataAccountType() {
@@ -147,8 +161,19 @@ public class CopyProgress {
     }
 
     /**
+     * Set the dataAccountType property: Data Account Type.
+     * 
+     * @param dataAccountType the dataAccountType value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withDataAccountType(DataAccountType dataAccountType) {
+        this.dataAccountType = dataAccountType;
+        return this;
+    }
+
+    /**
      * Get the accountId property: Id of the account where the data needs to be uploaded.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -156,8 +181,19 @@ public class CopyProgress {
     }
 
     /**
+     * Set the accountId property: Id of the account where the data needs to be uploaded.
+     * 
+     * @param accountId the accountId value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withAccountId(String accountId) {
+        this.accountId = accountId;
+        return this;
+    }
+
+    /**
      * Get the bytesProcessed property: To indicate bytes transferred.
-     *
+     * 
      * @return the bytesProcessed value.
      */
     public Long bytesProcessed() {
@@ -165,8 +201,19 @@ public class CopyProgress {
     }
 
     /**
+     * Set the bytesProcessed property: To indicate bytes transferred.
+     * 
+     * @param bytesProcessed the bytesProcessed value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withBytesProcessed(Long bytesProcessed) {
+        this.bytesProcessed = bytesProcessed;
+        return this;
+    }
+
+    /**
      * Get the totalBytesToProcess property: Total amount of data to be processed by the job.
-     *
+     * 
      * @return the totalBytesToProcess value.
      */
     public Long totalBytesToProcess() {
@@ -174,8 +221,19 @@ public class CopyProgress {
     }
 
     /**
+     * Set the totalBytesToProcess property: Total amount of data to be processed by the job.
+     * 
+     * @param totalBytesToProcess the totalBytesToProcess value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withTotalBytesToProcess(Long totalBytesToProcess) {
+        this.totalBytesToProcess = totalBytesToProcess;
+        return this;
+    }
+
+    /**
      * Get the filesProcessed property: Number of files processed.
-     *
+     * 
      * @return the filesProcessed value.
      */
     public Long filesProcessed() {
@@ -183,8 +241,19 @@ public class CopyProgress {
     }
 
     /**
+     * Set the filesProcessed property: Number of files processed.
+     * 
+     * @param filesProcessed the filesProcessed value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withFilesProcessed(Long filesProcessed) {
+        this.filesProcessed = filesProcessed;
+        return this;
+    }
+
+    /**
      * Get the totalFilesToProcess property: Total files to process.
-     *
+     * 
      * @return the totalFilesToProcess value.
      */
     public Long totalFilesToProcess() {
@@ -192,9 +261,20 @@ public class CopyProgress {
     }
 
     /**
+     * Set the totalFilesToProcess property: Total files to process.
+     * 
+     * @param totalFilesToProcess the totalFilesToProcess value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withTotalFilesToProcess(Long totalFilesToProcess) {
+        this.totalFilesToProcess = totalFilesToProcess;
+        return this;
+    }
+
+    /**
      * Get the invalidFilesProcessed property: Number of files not adhering to azure naming conventions which were
      * processed by automatic renaming.
-     *
+     * 
      * @return the invalidFilesProcessed value.
      */
     public Long invalidFilesProcessed() {
@@ -202,9 +282,21 @@ public class CopyProgress {
     }
 
     /**
+     * Set the invalidFilesProcessed property: Number of files not adhering to azure naming conventions which were
+     * processed by automatic renaming.
+     * 
+     * @param invalidFilesProcessed the invalidFilesProcessed value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withInvalidFilesProcessed(Long invalidFilesProcessed) {
+        this.invalidFilesProcessed = invalidFilesProcessed;
+        return this;
+    }
+
+    /**
      * Get the invalidFileBytesUploaded property: Total amount of data not adhering to azure naming conventions which
      * were processed by automatic renaming.
-     *
+     * 
      * @return the invalidFileBytesUploaded value.
      */
     public Long invalidFileBytesUploaded() {
@@ -212,9 +304,21 @@ public class CopyProgress {
     }
 
     /**
+     * Set the invalidFileBytesUploaded property: Total amount of data not adhering to azure naming conventions which
+     * were processed by automatic renaming.
+     * 
+     * @param invalidFileBytesUploaded the invalidFileBytesUploaded value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withInvalidFileBytesUploaded(Long invalidFileBytesUploaded) {
+        this.invalidFileBytesUploaded = invalidFileBytesUploaded;
+        return this;
+    }
+
+    /**
      * Get the renamedContainerCount property: Number of folders not adhering to azure naming conventions which were
      * processed by automatic renaming.
-     *
+     * 
      * @return the renamedContainerCount value.
      */
     public Long renamedContainerCount() {
@@ -222,8 +326,20 @@ public class CopyProgress {
     }
 
     /**
+     * Set the renamedContainerCount property: Number of folders not adhering to azure naming conventions which were
+     * processed by automatic renaming.
+     * 
+     * @param renamedContainerCount the renamedContainerCount value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withRenamedContainerCount(Long renamedContainerCount) {
+        this.renamedContainerCount = renamedContainerCount;
+        return this;
+    }
+
+    /**
      * Get the filesErroredOut property: Number of files which could not be copied.
-     *
+     * 
      * @return the filesErroredOut value.
      */
     public Long filesErroredOut() {
@@ -231,8 +347,19 @@ public class CopyProgress {
     }
 
     /**
+     * Set the filesErroredOut property: Number of files which could not be copied.
+     * 
+     * @param filesErroredOut the filesErroredOut value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withFilesErroredOut(Long filesErroredOut) {
+        this.filesErroredOut = filesErroredOut;
+        return this;
+    }
+
+    /**
      * Get the directoriesErroredOut property: To indicate directories errored out in the job.
-     *
+     * 
      * @return the directoriesErroredOut value.
      */
     public Long directoriesErroredOut() {
@@ -240,8 +367,19 @@ public class CopyProgress {
     }
 
     /**
+     * Set the directoriesErroredOut property: To indicate directories errored out in the job.
+     * 
+     * @param directoriesErroredOut the directoriesErroredOut value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withDirectoriesErroredOut(Long directoriesErroredOut) {
+        this.directoriesErroredOut = directoriesErroredOut;
+        return this;
+    }
+
+    /**
      * Get the invalidDirectoriesProcessed property: To indicate directories renamed.
-     *
+     * 
      * @return the invalidDirectoriesProcessed value.
      */
     public Long invalidDirectoriesProcessed() {
@@ -249,9 +387,20 @@ public class CopyProgress {
     }
 
     /**
-     * Get the isEnumerationInProgress property: To indicate if enumeration of data is in progress. Until this is true,
-     * the TotalBytesToProcess may not be valid.
-     *
+     * Set the invalidDirectoriesProcessed property: To indicate directories renamed.
+     * 
+     * @param invalidDirectoriesProcessed the invalidDirectoriesProcessed value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withInvalidDirectoriesProcessed(Long invalidDirectoriesProcessed) {
+        this.invalidDirectoriesProcessed = invalidDirectoriesProcessed;
+        return this;
+    }
+
+    /**
+     * Get the isEnumerationInProgress property: To indicate if enumeration of data is in progress.
+     * Until this is true, the TotalBytesToProcess may not be valid.
+     * 
      * @return the isEnumerationInProgress value.
      */
     public Boolean isEnumerationInProgress() {
@@ -259,8 +408,20 @@ public class CopyProgress {
     }
 
     /**
+     * Set the isEnumerationInProgress property: To indicate if enumeration of data is in progress.
+     * Until this is true, the TotalBytesToProcess may not be valid.
+     * 
+     * @param isEnumerationInProgress the isEnumerationInProgress value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withIsEnumerationInProgress(Boolean isEnumerationInProgress) {
+        this.isEnumerationInProgress = isEnumerationInProgress;
+        return this;
+    }
+
+    /**
      * Get the error property: Error, if any, in the stage.
-     *
+     * 
      * @return the error value.
      */
     public CloudError error() {
@@ -268,8 +429,19 @@ public class CopyProgress {
     }
 
     /**
+     * Set the error property: Error, if any, in the stage.
+     * 
+     * @param error the error value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withError(CloudError error) {
+        this.error = error;
+        return this;
+    }
+
+    /**
      * Get the actions property: Available actions on the job.
-     *
+     * 
      * @return the actions value.
      */
     public List<CustomerResolutionCode> actions() {
@@ -277,13 +449,93 @@ public class CopyProgress {
     }
 
     /**
+     * Set the actions property: Available actions on the job.
+     * 
+     * @param actions the actions value to set.
+     * @return the CopyProgress object itself.
+     */
+    CopyProgress withActions(List<CustomerResolutionCode> actions) {
+        this.actions = actions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CopyProgress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CopyProgress if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CopyProgress.
+     */
+    public static CopyProgress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CopyProgress deserializedCopyProgress = new CopyProgress();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountName".equals(fieldName)) {
+                    deserializedCopyProgress.storageAccountName = reader.getString();
+                } else if ("transferType".equals(fieldName)) {
+                    deserializedCopyProgress.transferType = TransferType.fromString(reader.getString());
+                } else if ("dataAccountType".equals(fieldName)) {
+                    deserializedCopyProgress.dataAccountType = DataAccountType.fromString(reader.getString());
+                } else if ("accountId".equals(fieldName)) {
+                    deserializedCopyProgress.accountId = reader.getString();
+                } else if ("bytesProcessed".equals(fieldName)) {
+                    deserializedCopyProgress.bytesProcessed = reader.getNullable(JsonReader::getLong);
+                } else if ("totalBytesToProcess".equals(fieldName)) {
+                    deserializedCopyProgress.totalBytesToProcess = reader.getNullable(JsonReader::getLong);
+                } else if ("filesProcessed".equals(fieldName)) {
+                    deserializedCopyProgress.filesProcessed = reader.getNullable(JsonReader::getLong);
+                } else if ("totalFilesToProcess".equals(fieldName)) {
+                    deserializedCopyProgress.totalFilesToProcess = reader.getNullable(JsonReader::getLong);
+                } else if ("invalidFilesProcessed".equals(fieldName)) {
+                    deserializedCopyProgress.invalidFilesProcessed = reader.getNullable(JsonReader::getLong);
+                } else if ("invalidFileBytesUploaded".equals(fieldName)) {
+                    deserializedCopyProgress.invalidFileBytesUploaded = reader.getNullable(JsonReader::getLong);
+                } else if ("renamedContainerCount".equals(fieldName)) {
+                    deserializedCopyProgress.renamedContainerCount = reader.getNullable(JsonReader::getLong);
+                } else if ("filesErroredOut".equals(fieldName)) {
+                    deserializedCopyProgress.filesErroredOut = reader.getNullable(JsonReader::getLong);
+                } else if ("directoriesErroredOut".equals(fieldName)) {
+                    deserializedCopyProgress.directoriesErroredOut = reader.getNullable(JsonReader::getLong);
+                } else if ("invalidDirectoriesProcessed".equals(fieldName)) {
+                    deserializedCopyProgress.invalidDirectoriesProcessed = reader.getNullable(JsonReader::getLong);
+                } else if ("isEnumerationInProgress".equals(fieldName)) {
+                    deserializedCopyProgress.isEnumerationInProgress = reader.getNullable(JsonReader::getBoolean);
+                } else if ("error".equals(fieldName)) {
+                    deserializedCopyProgress.error = CloudError.fromJson(reader);
+                } else if ("actions".equals(fieldName)) {
+                    List<CustomerResolutionCode> actions
+                        = reader.readArray(reader1 -> CustomerResolutionCode.fromString(reader1.getString()));
+                    deserializedCopyProgress.actions = actions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCopyProgress;
+        });
     }
 }

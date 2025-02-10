@@ -25,43 +25,40 @@ public final class NetworkConnectionsImpl implements NetworkConnections {
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    public NetworkConnectionsImpl(
-        NetworkConnectionsClient innerClient, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    public NetworkConnectionsImpl(NetworkConnectionsClient innerClient,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<NetworkConnection> list() {
         PagedIterable<NetworkConnectionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new NetworkConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkConnection> list(Integer top, Context context) {
         PagedIterable<NetworkConnectionInner> inner = this.serviceClient().list(top, context);
-        return Utils.mapPage(inner, inner1 -> new NetworkConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<NetworkConnection> listByResourceGroup(String resourceGroupName) {
         PagedIterable<NetworkConnectionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new NetworkConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkConnectionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NetworkConnection> listByResourceGroup(
-        String resourceGroupName, Integer top, Context context) {
-        PagedIterable<NetworkConnectionInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, top, context);
-        return Utils.mapPage(inner, inner1 -> new NetworkConnectionImpl(inner1, this.manager()));
+    public PagedIterable<NetworkConnection> listByResourceGroup(String resourceGroupName, Integer top,
+        Context context) {
+        PagedIterable<NetworkConnectionInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkConnectionImpl(inner1, this.manager()));
     }
 
-    public Response<NetworkConnection> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkConnectionName, Context context) {
-        Response<NetworkConnectionInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, networkConnectionName, context);
+    public Response<NetworkConnection> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkConnectionName, Context context) {
+        Response<NetworkConnectionInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, networkConnectionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkConnectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -69,8 +66,8 @@ public final class NetworkConnectionsImpl implements NetworkConnections {
     }
 
     public NetworkConnection getByResourceGroup(String resourceGroupName, String networkConnectionName) {
-        NetworkConnectionInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, networkConnectionName);
+        NetworkConnectionInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, networkConnectionName);
         if (inner != null) {
             return new NetworkConnectionImpl(inner, this.manager());
         } else {
@@ -86,29 +83,26 @@ public final class NetworkConnectionsImpl implements NetworkConnections {
         this.serviceClient().delete(resourceGroupName, networkConnectionName, context);
     }
 
-    public PagedIterable<HealthCheckStatusDetails> listHealthDetails(
-        String resourceGroupName, String networkConnectionName) {
-        PagedIterable<HealthCheckStatusDetailsInner> inner =
-            this.serviceClient().listHealthDetails(resourceGroupName, networkConnectionName);
-        return Utils.mapPage(inner, inner1 -> new HealthCheckStatusDetailsImpl(inner1, this.manager()));
+    public PagedIterable<HealthCheckStatusDetails> listHealthDetails(String resourceGroupName,
+        String networkConnectionName) {
+        PagedIterable<HealthCheckStatusDetailsInner> inner
+            = this.serviceClient().listHealthDetails(resourceGroupName, networkConnectionName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HealthCheckStatusDetailsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<HealthCheckStatusDetails> listHealthDetails(
-        String resourceGroupName, String networkConnectionName, Integer top, Context context) {
-        PagedIterable<HealthCheckStatusDetailsInner> inner =
-            this.serviceClient().listHealthDetails(resourceGroupName, networkConnectionName, top, context);
-        return Utils.mapPage(inner, inner1 -> new HealthCheckStatusDetailsImpl(inner1, this.manager()));
+    public PagedIterable<HealthCheckStatusDetails> listHealthDetails(String resourceGroupName,
+        String networkConnectionName, Integer top, Context context) {
+        PagedIterable<HealthCheckStatusDetailsInner> inner
+            = this.serviceClient().listHealthDetails(resourceGroupName, networkConnectionName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HealthCheckStatusDetailsImpl(inner1, this.manager()));
     }
 
-    public Response<HealthCheckStatusDetails> getHealthDetailsWithResponse(
-        String resourceGroupName, String networkConnectionName, Context context) {
-        Response<HealthCheckStatusDetailsInner> inner =
-            this.serviceClient().getHealthDetailsWithResponse(resourceGroupName, networkConnectionName, context);
+    public Response<HealthCheckStatusDetails> getHealthDetailsWithResponse(String resourceGroupName,
+        String networkConnectionName, Context context) {
+        Response<HealthCheckStatusDetailsInner> inner
+            = this.serviceClient().getHealthDetailsWithResponse(resourceGroupName, networkConnectionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new HealthCheckStatusDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -116,8 +110,8 @@ public final class NetworkConnectionsImpl implements NetworkConnections {
     }
 
     public HealthCheckStatusDetails getHealthDetails(String resourceGroupName, String networkConnectionName) {
-        HealthCheckStatusDetailsInner inner =
-            this.serviceClient().getHealthDetails(resourceGroupName, networkConnectionName);
+        HealthCheckStatusDetailsInner inner
+            = this.serviceClient().getHealthDetails(resourceGroupName, networkConnectionName);
         if (inner != null) {
             return new HealthCheckStatusDetailsImpl(inner, this.manager());
         } else {
@@ -133,102 +127,74 @@ public final class NetworkConnectionsImpl implements NetworkConnections {
         this.serviceClient().runHealthChecks(resourceGroupName, networkConnectionName, context);
     }
 
-    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String networkConnectionName) {
-        PagedIterable<OutboundEnvironmentEndpointInner> inner =
-            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, networkConnectionName);
-        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String networkConnectionName) {
+        PagedIterable<OutboundEnvironmentEndpointInner> inner
+            = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, networkConnectionName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String networkConnectionName, Integer top, Context context) {
-        PagedIterable<OutboundEnvironmentEndpointInner> inner =
-            this
-                .serviceClient()
-                .listOutboundNetworkDependenciesEndpoints(resourceGroupName, networkConnectionName, top, context);
-        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String networkConnectionName, Integer top, Context context) {
+        PagedIterable<OutboundEnvironmentEndpointInner> inner = this.serviceClient()
+            .listOutboundNetworkDependenciesEndpoints(resourceGroupName, networkConnectionName, top, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
     }
 
     public NetworkConnection getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkConnectionName = Utils.getValueFromIdByName(id, "networkConnections");
+        String networkConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "networkConnections");
         if (networkConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'networkConnections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkConnections'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, networkConnectionName, Context.NONE).getValue();
     }
 
     public Response<NetworkConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkConnectionName = Utils.getValueFromIdByName(id, "networkConnections");
+        String networkConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "networkConnections");
         if (networkConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'networkConnections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkConnections'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, networkConnectionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkConnectionName = Utils.getValueFromIdByName(id, "networkConnections");
+        String networkConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "networkConnections");
         if (networkConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'networkConnections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkConnections'.", id)));
         }
         this.delete(resourceGroupName, networkConnectionName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String networkConnectionName = Utils.getValueFromIdByName(id, "networkConnections");
+        String networkConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "networkConnections");
         if (networkConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'networkConnections'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkConnections'.", id)));
         }
         this.delete(resourceGroupName, networkConnectionName, context);
     }

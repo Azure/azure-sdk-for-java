@@ -28,13 +28,13 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 
@@ -48,14 +48,15 @@ import java.util.Objects;
 
 import static com.azure.core.util.CoreUtils.getApplicationId;
 
-/** This class provides a fluent builder API to help add in the configuration and instantiation of the
- * {@link AttestationClient} and {@link AttestationAsyncClient} classes calling the
- * {@link AttestationClientBuilder#buildClient()} or {@link AttestationClientBuilder#buildAsyncClient()}.
- *
- * <p>The minimal configuration option required by {@link AttestationClientBuilder} is {@code String endpoint}.
- *
- * For the {@link AttestationClient#attestTpm(BinaryData)} API, the client also requires that a {@link TokenCredential} object
- * be configured.
+/**
+ * This class provides a fluent builder API to help add in the configuration and instantiation of the
+ * {@link AttestationClient} and {@link AttestationAsyncClient} classes calling the {@link #buildClient()} or
+ * {@link #buildAsyncClient()}.
+ * <p>
+ * The minimal configuration option required by {@link AttestationClientBuilder} is {@code String endpoint}.
+ * <p>
+ * For the {@link AttestationClient#attestTpm(BinaryData)} API, the client also requires that a {@link TokenCredential}
+ * object be configured.
  *
  * <p><strong>Instantiate a synchronous Attestation Client</strong></p>
  * <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildClient -->
@@ -72,33 +73,27 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient -->
- *     <p><strong>Build a attestation client for use with the {@link AttestationClient#attestTpm(BinaryData)} API</strong></p>
- *     <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildAsyncClientForTpm -->
+ * <p><strong>Build a attestation client for use with the {@link AttestationClient#attestTpm(BinaryData)} API</strong></p>
+ * <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildAsyncClientForTpm -->
  * <pre>
  * AttestationAsyncClient asyncClientForTpm = new AttestationClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- *     <!-- end com.azure.security.attestation.AttestationClientBuilder.buildAsyncClientForTpm -->
+ * <!-- end com.azure.security.attestation.AttestationClientBuilder.buildAsyncClientForTpm -->
  */
-@ServiceClientBuilder(
-        serviceClients = {
-            AttestationClient.class,
-            AttestationAsyncClient.class,
-        })
-public final class AttestationClientBuilder implements
-    ConfigurationTrait<AttestationClientBuilder>,
-    EndpointTrait<AttestationClientBuilder>,
-    HttpTrait<AttestationClientBuilder>,
-    TokenCredentialTrait<AttestationClientBuilder> {
+@ServiceClientBuilder(serviceClients = { AttestationClient.class, AttestationAsyncClient.class })
+public final class AttestationClientBuilder
+    implements ConfigurationTrait<AttestationClientBuilder>, EndpointTrait<AttestationClientBuilder>,
+    HttpTrait<AttestationClientBuilder>, TokenCredentialTrait<AttestationClientBuilder> {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
-    private final String[] dataplaneScope = new String[] {"https://attest.azure.net/.default"};
+    private final String[] dataplaneScope = new String[] { "https://attest.azure.net/.default" };
 
     private final ClientLogger logger = new ClientLogger(AttestationClientBuilder.class);
 
@@ -120,7 +115,6 @@ public final class AttestationClientBuilder implements
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
 
-
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-security-attestation.properties");
         CLIENT_NAME = properties.getOrDefault(SDK_NAME, "UnknownName");
@@ -138,7 +132,7 @@ public final class AttestationClientBuilder implements
 
     /**
      * Builds an instance of {@link AttestationClient} synchronous client.
-     *
+     * <p>
      * Instantiating a synchronous Attestation client:
      * <br>
      * <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildClient -->
@@ -158,7 +152,7 @@ public final class AttestationClientBuilder implements
 
     /**
      * Builds an instance of AttestationAsyncClient async client.
-     *
+     * <p>
      * Instantiating a synchronous Attestation client:
      * <br>
      * <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient -->
@@ -177,7 +171,7 @@ public final class AttestationClientBuilder implements
     }
 
     /**
-     * Sets The attestation endpoint URI, for example https://myinstance.attest.azure.net.
+     * Sets The attestation endpoint URI, for example {@code https://myinstance.attest.azure.net}.
      *
      * @param endpoint The endpoint to connect to.
      * @return the AttestationClientBuilder.
@@ -204,6 +198,7 @@ public final class AttestationClientBuilder implements
         this.serviceVersion = serviceVersion;
         return this;
     }
+
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
@@ -296,7 +291,6 @@ public final class AttestationClientBuilder implements
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
      * <p>
      * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
@@ -420,16 +414,14 @@ public final class AttestationClientBuilder implements
      */
     private AttestationClientImpl buildInnerClient() {
 
-//        AttestationClientImplBuilder clientImplBuilder = new AttestationClientImplBuilder();
+        //        AttestationClientImplBuilder clientImplBuilder = new AttestationClientImplBuilder();
         // Global Env configuration store
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         // Service version
-        AttestationServiceVersion version = serviceVersion != null
-            ? serviceVersion
-            : AttestationServiceVersion.getLatest();
+        AttestationServiceVersion version
+            = serviceVersion != null ? serviceVersion : AttestationServiceVersion.getLatest();
 
         // endpoint cannot be null, which is required in request authentication
         String endpoint = this.endpoint;
@@ -443,8 +435,8 @@ public final class AttestationClientBuilder implements
 
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies.add(new UserAgentPolicy(
-                getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
+            policies.add(new UserAgentPolicy(getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME,
+                CLIENT_VERSION, buildConfiguration));
             policies.add(new RequestIdPolicy());
             policies.add(new AddHeadersFromContextPolicy());
 
@@ -463,21 +455,20 @@ public final class AttestationClientBuilder implements
             policies.addAll(perRetryPolicies);
 
             List<HttpHeader> httpHeaderList = new ArrayList<>();
-            localClientOptions.getHeaders().forEach(
-                header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            localClientOptions.getHeaders()
+                .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
             policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
 
             // customized pipeline
-            pipeline = new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .clientOptions(localClientOptions)
                 .build();
         }
 
-        return new AttestationClientImpl(pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, version.getVersion());
+        return new AttestationClientImpl(pipeline, endpoint, version.getVersion());
     }
 }

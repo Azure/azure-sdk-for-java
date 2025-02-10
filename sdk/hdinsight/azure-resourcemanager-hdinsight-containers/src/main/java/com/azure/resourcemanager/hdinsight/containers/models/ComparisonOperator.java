@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The comparison operator. */
+/**
+ * The comparison operator.
+ */
 public final class ComparisonOperator extends ExpandableStringEnum<ComparisonOperator> {
-    /** Static value greaterThan for ComparisonOperator. */
+    /**
+     * Static value greaterThan for ComparisonOperator.
+     */
     public static final ComparisonOperator GREATER_THAN = fromString("greaterThan");
 
-    /** Static value greaterThanOrEqual for ComparisonOperator. */
+    /**
+     * Static value greaterThanOrEqual for ComparisonOperator.
+     */
     public static final ComparisonOperator GREATER_THAN_OR_EQUAL = fromString("greaterThanOrEqual");
 
-    /** Static value lessThan for ComparisonOperator. */
+    /**
+     * Static value lessThan for ComparisonOperator.
+     */
     public static final ComparisonOperator LESS_THAN = fromString("lessThan");
 
-    /** Static value lessThanOrEqual for ComparisonOperator. */
+    /**
+     * Static value lessThanOrEqual for ComparisonOperator.
+     */
     public static final ComparisonOperator LESS_THAN_OR_EQUAL = fromString("lessThanOrEqual");
 
     /**
      * Creates a new instance of ComparisonOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ComparisonOperator extends ExpandableStringEnum<ComparisonOpe
 
     /**
      * Creates or finds a ComparisonOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ComparisonOperator.
      */
-    @JsonCreator
     public static ComparisonOperator fromString(String name) {
         return fromString(name, ComparisonOperator.class);
     }
 
     /**
      * Gets known ComparisonOperator values.
-     *
+     * 
      * @return known ComparisonOperator values.
      */
     public static Collection<ComparisonOperator> values() {

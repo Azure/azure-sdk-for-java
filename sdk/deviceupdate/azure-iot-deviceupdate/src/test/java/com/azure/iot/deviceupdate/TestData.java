@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.iot.deviceupdate;
 
 import com.azure.core.util.Configuration;
@@ -9,8 +10,8 @@ public class TestData {
 
     public static final String CLIENT_ID = getTestValue("CLIENT_ID", "clientId");
 
-    public static final String ACCOUNT_ENDPOINT = getTestValue("ACCOUNT_ENDPOINT",
-        "contosoprodwus2.api.adu.microsoft.com");
+    public static final String ACCOUNT_ENDPOINT
+        = getTestValue("ACCOUNT_ENDPOINT", "contosoprodwus2.api.adu.microsoft.com");
 
     public static final String INSTANCE_ID = getTestValue("INSTANCE_ID", "blue");
 
@@ -32,8 +33,7 @@ public class TestData {
 
     private static String getTestValue(String name, String defaultValue) {
         if (Configuration.getGlobalConfiguration().contains(name)) {
-            return Configuration.getGlobalConfiguration()
-                .get(name);
+            return Configuration.getGlobalConfiguration().get(name);
         } else {
             String value = System.getenv("AZURE_" + name);
             if (value == null) {

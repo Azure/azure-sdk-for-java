@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Object that includes an array of supported stacks resources and a possible link for next set. */
+/**
+ * Object that includes an array of supported stacks resources and a possible link for next set.
+ */
 @Fluent
-public final class SupportedStacksCollectionInner {
+public final class SupportedStacksCollectionInner implements JsonSerializable<SupportedStacksCollectionInner> {
     /*
      * Collection of supported stacks resources
      */
-    @JsonProperty(value = "value")
     private List<SupportedStackResourceInner> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of SupportedStacksCollectionInner class.
+     */
+    public SupportedStacksCollectionInner() {
+    }
+
+    /**
      * Get the value property: Collection of supported stacks resources.
-     *
+     * 
      * @return the value value.
      */
     public List<SupportedStackResourceInner> value() {
@@ -35,7 +45,7 @@ public final class SupportedStacksCollectionInner {
 
     /**
      * Set the value property: Collection of supported stacks resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the SupportedStacksCollectionInner object itself.
      */
@@ -45,9 +55,9 @@ public final class SupportedStacksCollectionInner {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,9 +65,9 @@ public final class SupportedStacksCollectionInner {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SupportedStacksCollectionInner object itself.
      */
@@ -68,12 +78,54 @@ public final class SupportedStacksCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedStacksCollectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedStacksCollectionInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedStacksCollectionInner.
+     */
+    public static SupportedStacksCollectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedStacksCollectionInner deserializedSupportedStacksCollectionInner
+                = new SupportedStacksCollectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SupportedStackResourceInner> value
+                        = reader.readArray(reader1 -> SupportedStackResourceInner.fromJson(reader1));
+                    deserializedSupportedStacksCollectionInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSupportedStacksCollectionInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedStacksCollectionInner;
+        });
     }
 }

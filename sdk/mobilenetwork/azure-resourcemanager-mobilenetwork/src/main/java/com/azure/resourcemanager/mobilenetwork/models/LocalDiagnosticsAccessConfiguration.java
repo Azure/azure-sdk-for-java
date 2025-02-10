@@ -6,30 +6,37 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The kubernetes ingress configuration to control access to packet core diagnostics over local APIs. */
+/**
+ * The kubernetes ingress configuration to control access to packet core diagnostics over local APIs.
+ */
 @Fluent
-public final class LocalDiagnosticsAccessConfiguration {
+public final class LocalDiagnosticsAccessConfiguration
+    implements JsonSerializable<LocalDiagnosticsAccessConfiguration> {
     /*
      * How to authenticate users who access local diagnostics APIs.
      */
-    @JsonProperty(value = "authenticationType", required = true)
     private AuthenticationType authenticationType;
 
     /*
      * The HTTPS server TLS certificate used to secure local access to diagnostics.
      */
-    @JsonProperty(value = "httpsServerCertificate")
     private HttpsServerCertificate httpsServerCertificate;
 
-    /** Creates an instance of LocalDiagnosticsAccessConfiguration class. */
+    /**
+     * Creates an instance of LocalDiagnosticsAccessConfiguration class.
+     */
     public LocalDiagnosticsAccessConfiguration() {
     }
 
     /**
      * Get the authenticationType property: How to authenticate users who access local diagnostics APIs.
-     *
+     * 
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
@@ -38,7 +45,7 @@ public final class LocalDiagnosticsAccessConfiguration {
 
     /**
      * Set the authenticationType property: How to authenticate users who access local diagnostics APIs.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the LocalDiagnosticsAccessConfiguration object itself.
      */
@@ -50,7 +57,7 @@ public final class LocalDiagnosticsAccessConfiguration {
     /**
      * Get the httpsServerCertificate property: The HTTPS server TLS certificate used to secure local access to
      * diagnostics.
-     *
+     * 
      * @return the httpsServerCertificate value.
      */
     public HttpsServerCertificate httpsServerCertificate() {
@@ -60,27 +67,26 @@ public final class LocalDiagnosticsAccessConfiguration {
     /**
      * Set the httpsServerCertificate property: The HTTPS server TLS certificate used to secure local access to
      * diagnostics.
-     *
+     * 
      * @param httpsServerCertificate the httpsServerCertificate value to set.
      * @return the LocalDiagnosticsAccessConfiguration object itself.
      */
-    public LocalDiagnosticsAccessConfiguration withHttpsServerCertificate(
-        HttpsServerCertificate httpsServerCertificate) {
+    public LocalDiagnosticsAccessConfiguration
+        withHttpsServerCertificate(HttpsServerCertificate httpsServerCertificate) {
         this.httpsServerCertificate = httpsServerCertificate;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (authenticationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authenticationType in model LocalDiagnosticsAccessConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model LocalDiagnosticsAccessConfiguration"));
         }
         if (httpsServerCertificate() != null) {
             httpsServerCertificate().validate();
@@ -88,4 +94,48 @@ public final class LocalDiagnosticsAccessConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LocalDiagnosticsAccessConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeJsonField("httpsServerCertificate", this.httpsServerCertificate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocalDiagnosticsAccessConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocalDiagnosticsAccessConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LocalDiagnosticsAccessConfiguration.
+     */
+    public static LocalDiagnosticsAccessConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocalDiagnosticsAccessConfiguration deserializedLocalDiagnosticsAccessConfiguration
+                = new LocalDiagnosticsAccessConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authenticationType".equals(fieldName)) {
+                    deserializedLocalDiagnosticsAccessConfiguration.authenticationType
+                        = AuthenticationType.fromString(reader.getString());
+                } else if ("httpsServerCertificate".equals(fieldName)) {
+                    deserializedLocalDiagnosticsAccessConfiguration.httpsServerCertificate
+                        = HttpsServerCertificate.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocalDiagnosticsAccessConfiguration;
+        });
+    }
 }

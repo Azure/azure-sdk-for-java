@@ -5,50 +5,55 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Additional information of the container. */
+/**
+ * Additional information of the container.
+ */
 @Fluent
-public final class MabContainerExtendedInfo {
+public final class MabContainerExtendedInfo implements JsonSerializable<MabContainerExtendedInfo> {
     /*
      * Time stamp when this container was refreshed.
      */
-    @JsonProperty(value = "lastRefreshedAt")
     private OffsetDateTime lastRefreshedAt;
 
     /*
      * Type of backup items associated with this container.
      */
-    @JsonProperty(value = "backupItemType")
     private BackupItemType backupItemType;
 
     /*
      * List of backup items associated with this container.
      */
-    @JsonProperty(value = "backupItems")
     private List<String> backupItems;
 
     /*
      * Backup policy associated with this container.
      */
-    @JsonProperty(value = "policyName")
     private String policyName;
 
     /*
      * Latest backup status of this container.
      */
-    @JsonProperty(value = "lastBackupStatus")
     private String lastBackupStatus;
 
-    /** Creates an instance of MabContainerExtendedInfo class. */
+    /**
+     * Creates an instance of MabContainerExtendedInfo class.
+     */
     public MabContainerExtendedInfo() {
     }
 
     /**
      * Get the lastRefreshedAt property: Time stamp when this container was refreshed.
-     *
+     * 
      * @return the lastRefreshedAt value.
      */
     public OffsetDateTime lastRefreshedAt() {
@@ -57,7 +62,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Set the lastRefreshedAt property: Time stamp when this container was refreshed.
-     *
+     * 
      * @param lastRefreshedAt the lastRefreshedAt value to set.
      * @return the MabContainerExtendedInfo object itself.
      */
@@ -68,7 +73,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Get the backupItemType property: Type of backup items associated with this container.
-     *
+     * 
      * @return the backupItemType value.
      */
     public BackupItemType backupItemType() {
@@ -77,7 +82,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Set the backupItemType property: Type of backup items associated with this container.
-     *
+     * 
      * @param backupItemType the backupItemType value to set.
      * @return the MabContainerExtendedInfo object itself.
      */
@@ -88,7 +93,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Get the backupItems property: List of backup items associated with this container.
-     *
+     * 
      * @return the backupItems value.
      */
     public List<String> backupItems() {
@@ -97,7 +102,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Set the backupItems property: List of backup items associated with this container.
-     *
+     * 
      * @param backupItems the backupItems value to set.
      * @return the MabContainerExtendedInfo object itself.
      */
@@ -108,7 +113,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Get the policyName property: Backup policy associated with this container.
-     *
+     * 
      * @return the policyName value.
      */
     public String policyName() {
@@ -117,7 +122,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Set the policyName property: Backup policy associated with this container.
-     *
+     * 
      * @param policyName the policyName value to set.
      * @return the MabContainerExtendedInfo object itself.
      */
@@ -128,7 +133,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Get the lastBackupStatus property: Latest backup status of this container.
-     *
+     * 
      * @return the lastBackupStatus value.
      */
     public String lastBackupStatus() {
@@ -137,7 +142,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Set the lastBackupStatus property: Latest backup status of this container.
-     *
+     * 
      * @param lastBackupStatus the lastBackupStatus value to set.
      * @return the MabContainerExtendedInfo object itself.
      */
@@ -148,9 +153,61 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastRefreshedAt",
+            this.lastRefreshedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRefreshedAt));
+        jsonWriter.writeStringField("backupItemType",
+            this.backupItemType == null ? null : this.backupItemType.toString());
+        jsonWriter.writeArrayField("backupItems", this.backupItems, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("policyName", this.policyName);
+        jsonWriter.writeStringField("lastBackupStatus", this.lastBackupStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MabContainerExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MabContainerExtendedInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MabContainerExtendedInfo.
+     */
+    public static MabContainerExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MabContainerExtendedInfo deserializedMabContainerExtendedInfo = new MabContainerExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastRefreshedAt".equals(fieldName)) {
+                    deserializedMabContainerExtendedInfo.lastRefreshedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("backupItemType".equals(fieldName)) {
+                    deserializedMabContainerExtendedInfo.backupItemType = BackupItemType.fromString(reader.getString());
+                } else if ("backupItems".equals(fieldName)) {
+                    List<String> backupItems = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMabContainerExtendedInfo.backupItems = backupItems;
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedMabContainerExtendedInfo.policyName = reader.getString();
+                } else if ("lastBackupStatus".equals(fieldName)) {
+                    deserializedMabContainerExtendedInfo.lastBackupStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMabContainerExtendedInfo;
+        });
     }
 }

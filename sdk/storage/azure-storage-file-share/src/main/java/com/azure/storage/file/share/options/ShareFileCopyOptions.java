@@ -5,7 +5,11 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.models.ModeCopyMode;
+import com.azure.storage.file.share.models.OwnerCopyMode;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
+import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
@@ -16,17 +20,28 @@ import java.util.Map;
  */
 @Fluent
 public final class ShareFileCopyOptions {
-
     private FileSmbProperties smbProperties;
     private String filePermission;
+    private FilePermissionFormat filePermissionFormat;
     private PermissionCopyModeType permissionCopyModeType;
     private Boolean ignoreReadOnly;
     private Boolean setArchiveAttribute;
     private Map<String, String> metadata;
     private ShareRequestConditions destinationRequestConditions;
     private CopyableFileSmbPropertiesList smbPropertiesToCopy;
+    private FilePosixProperties posixProperties;
+    private ModeCopyMode modeCopyMode;
+    private OwnerCopyMode ownerCopyMode;
 
     /**
+     * Creates a new instance of {@link ShareFileCopyOptions}.
+     */
+    public ShareFileCopyOptions() {
+    }
+
+    /**
+     * Gets the file permission key.
+     *
      * @return The file's permission key.
      */
     public String getFilePermission() {
@@ -45,6 +60,8 @@ public final class ShareFileCopyOptions {
     }
 
     /**
+     * Gets the SMB properties to set on the destination file.
+     *
      * @return Optional SMB properties to set on the destination file or directory. The only properties that are
      * considered are file attributes, file creation time, file last write time, and file permission key. The rest are
      * ignored.
@@ -54,6 +71,8 @@ public final class ShareFileCopyOptions {
     }
 
     /**
+     * Sets the SMB properties to set on the destination file.
+     *
      * @param smbProperties Optional SMB properties to set on the destination file or directory. The only properties
      * that are  considered are file attributes, file creation time, file last write time, and file permission key. The
      * rest are ignored.
@@ -65,6 +84,9 @@ public final class ShareFileCopyOptions {
     }
 
     /**
+     * Gets the option to copy file security descriptor from source file or to set it using the value which is defined
+     * by the header value of FilePermission or FilePermissionKey.
+     *
      * @return the option to copy file security descriptor from source file or to set it using the value which is
      * defined by the header value of FilePermission or FilePermissionKey.
      */
@@ -73,6 +95,8 @@ public final class ShareFileCopyOptions {
     }
 
     /**
+     * Sets the option to copy file security descriptor from source file or to set it using the value which is defined
+     * by the header value of FilePermission or FilePermissionKey.
      *
      * @param copyModeType specified option to copy file security descriptor from source file or to set it using the
      * value which is defined by the header value of FilePermission or FilePermissionKey.
@@ -84,13 +108,19 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * @return Optional boolean specifying to overwrite the target file if it already exists and has read-only attribute set.
+     * Gets the optional boolean specifying to overwrite the target file if it already exists and has read-only
+     * attribute set.
+     *
+     * @return Optional boolean specifying to overwrite the target file if it already exists and has read-only attribute
+     * set.
      */
     public Boolean isIgnoreReadOnly() {
         return ignoreReadOnly;
     }
 
     /**
+     * Sets the optional boolean specifying to overwrite the target file if it already exists and has read-only
+     * attribute set.
      *
      * @param ignoreReadOnly Optional boolean specifying to overwrite the target file if it already exists and has
      * read-only attribute set.
@@ -102,7 +132,10 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * @return Optional boolean Specifying to set archive attribute on a target file. True means archive attribute will
+     * Gets the optional boolean specifying to set archive attribute on a target file. True means archive attribute will
+     * be set on a target file despite attribute overrides or a source file state.
+     *
+     * @return Optional boolean specifying to set archive attribute on a target file. True means archive attribute will
      * be set on a target file despite attribute overrides or a source file state.
      */
     public Boolean isArchiveAttributeSet() {
@@ -110,6 +143,8 @@ public final class ShareFileCopyOptions {
     }
 
     /**
+     * Sets the optional boolean specifying to set archive attribute on a target file. True means archive attribute will
+     * be set on a target file despite attribute overrides or a source file state.
      *
      * @param archiveAttribute Optional boolean Specifying to set archive attribute on a target file. True means archive
      * attribute will be set on a target file despite attribute overrides or a source file state.
@@ -121,14 +156,18 @@ public final class ShareFileCopyOptions {
     }
 
     /**
-     * @return Metadata to associate with the share
+     * Gets the metadata to associate with the file.
+     *
+     * @return Metadata to associate with the file.
      */
     public Map<String, String> getMetadata() {
         return metadata;
     }
 
     /**
-     * @param metadata Metadata to associate with the share. If there is leading or trailing whitespace in any
+     * Sets the metadata to associate with the file.
+     *
+     * @param metadata Metadata to associate with the file. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @return The updated options.
      */
@@ -158,6 +197,8 @@ public final class ShareFileCopyOptions {
     }
 
     /**
+     * Gets the SMB properties to copy from the source file.
+     *
      * @return SMB properties to copy from the source file.
      */
     public CopyableFileSmbPropertiesList getSmbPropertiesToCopy() {
@@ -165,11 +206,103 @@ public final class ShareFileCopyOptions {
     }
 
     /**
+     * Sets the SMB properties to copy from the source file.
+     *
      * @param smbProperties list of SMB properties to copy from the source file.
      * @return The updated options.
      */
     public ShareFileCopyOptions setSmbPropertiesToCopy(CopyableFileSmbPropertiesList smbProperties) {
         smbPropertiesToCopy = smbProperties;
+        return this;
+    }
+
+    /**
+     * Gets the file permission format.
+     *
+     * @return file permission format.
+     */
+    public FilePermissionFormat getFilePermissionFormat() {
+        return filePermissionFormat;
+    }
+
+    /**
+     * Sets the file permission format.
+     *
+     * @param filePermissionFormat the file permission format.
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        this.filePermissionFormat = filePermissionFormat;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @return {@link FilePosixProperties}
+     */
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @param posixProperties {@link FilePosixProperties}
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setPosixProperties(FilePosixProperties posixProperties) {
+        this.posixProperties = posixProperties;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated, the destination file will have the default File Mode.
+     *
+     * @return The destination file's FileMode.
+     */
+    public ModeCopyMode getModeCopyMode() {
+        return modeCopyMode;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated, the destination file will have the default File Mode.
+     *
+     * @param modeCopyMode The destination file's FileMode.
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setModeCopyMode(ModeCopyMode modeCopyMode) {
+        this.modeCopyMode = modeCopyMode;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated,the destination file will have the default Owner and Group.
+     *
+     * @return The destination file's Owner and Group.
+     */
+    public OwnerCopyMode getOwnerCopyMode() {
+        return ownerCopyMode;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *  If not populated,the destination file will have the default Owner and Group.
+     *
+     * @param ownerCopyMode The destination file's Owner and Group.
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setOwnerCopyMode(OwnerCopyMode ownerCopyMode) {
+        this.ownerCopyMode = ownerCopyMode;
         return this;
     }
 }

@@ -6,52 +6,65 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VMWare Azure specific policy Input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageAzureV2")
+/**
+ * VMWare Azure specific policy Input.
+ */
 @Fluent
 public final class InMageAzureV2PolicyInput extends PolicyProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMageAzureV2";
+
+    /*
      * The recovery point threshold in minutes.
      */
-    @JsonProperty(value = "recoveryPointThresholdInMinutes")
     private Integer recoveryPointThresholdInMinutes;
 
     /*
      * The duration in minutes until which the recovery points need to be stored.
      */
-    @JsonProperty(value = "recoveryPointHistory")
     private Integer recoveryPointHistory;
 
     /*
      * The crash consistent snapshot frequency (in minutes).
      */
-    @JsonProperty(value = "crashConsistentFrequencyInMinutes")
     private Integer crashConsistentFrequencyInMinutes;
 
     /*
      * The app consistent snapshot frequency (in minutes).
      */
-    @JsonProperty(value = "appConsistentFrequencyInMinutes")
     private Integer appConsistentFrequencyInMinutes;
 
     /*
      * A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'.
      */
-    @JsonProperty(value = "multiVmSyncStatus", required = true)
     private SetMultiVmSyncStatus multiVmSyncStatus;
 
-    /** Creates an instance of InMageAzureV2PolicyInput class. */
+    /**
+     * Creates an instance of InMageAzureV2PolicyInput class.
+     */
     public InMageAzureV2PolicyInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the recoveryPointThresholdInMinutes property: The recovery point threshold in minutes.
-     *
+     * 
      * @return the recoveryPointThresholdInMinutes value.
      */
     public Integer recoveryPointThresholdInMinutes() {
@@ -60,7 +73,7 @@ public final class InMageAzureV2PolicyInput extends PolicyProviderSpecificInput 
 
     /**
      * Set the recoveryPointThresholdInMinutes property: The recovery point threshold in minutes.
-     *
+     * 
      * @param recoveryPointThresholdInMinutes the recoveryPointThresholdInMinutes value to set.
      * @return the InMageAzureV2PolicyInput object itself.
      */
@@ -71,7 +84,7 @@ public final class InMageAzureV2PolicyInput extends PolicyProviderSpecificInput 
 
     /**
      * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
-     *
+     * 
      * @return the recoveryPointHistory value.
      */
     public Integer recoveryPointHistory() {
@@ -80,7 +93,7 @@ public final class InMageAzureV2PolicyInput extends PolicyProviderSpecificInput 
 
     /**
      * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
-     *
+     * 
      * @param recoveryPointHistory the recoveryPointHistory value to set.
      * @return the InMageAzureV2PolicyInput object itself.
      */
@@ -91,7 +104,7 @@ public final class InMageAzureV2PolicyInput extends PolicyProviderSpecificInput 
 
     /**
      * Get the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the crashConsistentFrequencyInMinutes value.
      */
     public Integer crashConsistentFrequencyInMinutes() {
@@ -100,7 +113,7 @@ public final class InMageAzureV2PolicyInput extends PolicyProviderSpecificInput 
 
     /**
      * Set the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the InMageAzureV2PolicyInput object itself.
      */
@@ -111,7 +124,7 @@ public final class InMageAzureV2PolicyInput extends PolicyProviderSpecificInput 
 
     /**
      * Get the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public Integer appConsistentFrequencyInMinutes() {
@@ -120,7 +133,7 @@ public final class InMageAzureV2PolicyInput extends PolicyProviderSpecificInput 
 
     /**
      * Set the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the InMageAzureV2PolicyInput object itself.
      */
@@ -132,7 +145,7 @@ public final class InMageAzureV2PolicyInput extends PolicyProviderSpecificInput 
     /**
      * Get the multiVmSyncStatus property: A value indicating whether multi-VM sync has to be enabled. Value should be
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the multiVmSyncStatus value.
      */
     public SetMultiVmSyncStatus multiVmSyncStatus() {
@@ -142,7 +155,7 @@ public final class InMageAzureV2PolicyInput extends PolicyProviderSpecificInput 
     /**
      * Set the multiVmSyncStatus property: A value indicating whether multi-VM sync has to be enabled. Value should be
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param multiVmSyncStatus the multiVmSyncStatus value to set.
      * @return the InMageAzureV2PolicyInput object itself.
      */
@@ -153,19 +166,74 @@ public final class InMageAzureV2PolicyInput extends PolicyProviderSpecificInput 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (multiVmSyncStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property multiVmSyncStatus in model InMageAzureV2PolicyInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property multiVmSyncStatus in model InMageAzureV2PolicyInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InMageAzureV2PolicyInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("multiVmSyncStatus",
+            this.multiVmSyncStatus == null ? null : this.multiVmSyncStatus.toString());
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeNumberField("recoveryPointThresholdInMinutes", this.recoveryPointThresholdInMinutes);
+        jsonWriter.writeNumberField("recoveryPointHistory", this.recoveryPointHistory);
+        jsonWriter.writeNumberField("crashConsistentFrequencyInMinutes", this.crashConsistentFrequencyInMinutes);
+        jsonWriter.writeNumberField("appConsistentFrequencyInMinutes", this.appConsistentFrequencyInMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageAzureV2PolicyInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageAzureV2PolicyInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InMageAzureV2PolicyInput.
+     */
+    public static InMageAzureV2PolicyInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageAzureV2PolicyInput deserializedInMageAzureV2PolicyInput = new InMageAzureV2PolicyInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("multiVmSyncStatus".equals(fieldName)) {
+                    deserializedInMageAzureV2PolicyInput.multiVmSyncStatus
+                        = SetMultiVmSyncStatus.fromString(reader.getString());
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedInMageAzureV2PolicyInput.instanceType = reader.getString();
+                } else if ("recoveryPointThresholdInMinutes".equals(fieldName)) {
+                    deserializedInMageAzureV2PolicyInput.recoveryPointThresholdInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("recoveryPointHistory".equals(fieldName)) {
+                    deserializedInMageAzureV2PolicyInput.recoveryPointHistory = reader.getNullable(JsonReader::getInt);
+                } else if ("crashConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedInMageAzureV2PolicyInput.crashConsistentFrequencyInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("appConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedInMageAzureV2PolicyInput.appConsistentFrequencyInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageAzureV2PolicyInput;
+        });
+    }
 }

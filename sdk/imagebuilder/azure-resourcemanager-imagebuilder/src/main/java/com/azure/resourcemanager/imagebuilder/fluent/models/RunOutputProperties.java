@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.imagebuilder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the properties of a run output. */
+/**
+ * Describes the properties of a run output.
+ */
 @Fluent
-public final class RunOutputProperties {
+public final class RunOutputProperties implements JsonSerializable<RunOutputProperties> {
     /*
      * The resource id of the artifact.
      */
-    @JsonProperty(value = "artifactId")
     private String artifactId;
 
     /*
      * The location URI of the artifact.
      */
-    @JsonProperty(value = "artifactUri")
     private String artifactUri;
 
     /*
      * Provisioning state of the resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of RunOutputProperties class. */
+    /**
+     * Creates an instance of RunOutputProperties class.
+     */
     public RunOutputProperties() {
     }
 
     /**
      * Get the artifactId property: The resource id of the artifact.
-     *
+     * 
      * @return the artifactId value.
      */
     public String artifactId() {
@@ -44,7 +49,7 @@ public final class RunOutputProperties {
 
     /**
      * Set the artifactId property: The resource id of the artifact.
-     *
+     * 
      * @param artifactId the artifactId value to set.
      * @return the RunOutputProperties object itself.
      */
@@ -55,7 +60,7 @@ public final class RunOutputProperties {
 
     /**
      * Get the artifactUri property: The location URI of the artifact.
-     *
+     * 
      * @return the artifactUri value.
      */
     public String artifactUri() {
@@ -64,7 +69,7 @@ public final class RunOutputProperties {
 
     /**
      * Set the artifactUri property: The location URI of the artifact.
-     *
+     * 
      * @param artifactUri the artifactUri value to set.
      * @return the RunOutputProperties object itself.
      */
@@ -75,7 +80,7 @@ public final class RunOutputProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -84,9 +89,51 @@ public final class RunOutputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("artifactId", this.artifactId);
+        jsonWriter.writeStringField("artifactUri", this.artifactUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunOutputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunOutputProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunOutputProperties.
+     */
+    public static RunOutputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunOutputProperties deserializedRunOutputProperties = new RunOutputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("artifactId".equals(fieldName)) {
+                    deserializedRunOutputProperties.artifactId = reader.getString();
+                } else if ("artifactUri".equals(fieldName)) {
+                    deserializedRunOutputProperties.artifactUri = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRunOutputProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunOutputProperties;
+        });
     }
 }

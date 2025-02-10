@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.MonitorAlertSeverity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties that represent the Monitor Alert destination of an event subscription.
  */
 @Fluent
-public final class MonitorAlertEventSubscriptionDestinationProperties {
+public final class MonitorAlertEventSubscriptionDestinationProperties
+    implements JsonSerializable<MonitorAlertEventSubscriptionDestinationProperties> {
     /*
      * The severity that will be attached to every Alert fired through this event subscription.
      * This field must be provided.
      */
-    @JsonProperty(value = "severity")
     private MonitorAlertSeverity severity;
 
     /*
      * The description that will be attached to every Alert fired through this event subscription.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * The list of ARM Ids of Action Groups that will be triggered on every Alert fired through this event
-     * subscription.
+     * The list of ARM Ids of Action Groups that will be triggered on every Alert fired through this event subscription.
      * Each resource ARM Id should follow this pattern:
      * /subscriptions/{AzureSubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Insights/actionGroups
      * /{ActionGroupName}.
      */
-    @JsonProperty(value = "actionGroups")
     private List<String> actionGroups;
 
     /**
@@ -121,5 +122,51 @@ public final class MonitorAlertEventSubscriptionDestinationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("actionGroups", this.actionGroups, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitorAlertEventSubscriptionDestinationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitorAlertEventSubscriptionDestinationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitorAlertEventSubscriptionDestinationProperties.
+     */
+    public static MonitorAlertEventSubscriptionDestinationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitorAlertEventSubscriptionDestinationProperties deserializedMonitorAlertEventSubscriptionDestinationProperties
+                = new MonitorAlertEventSubscriptionDestinationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("severity".equals(fieldName)) {
+                    deserializedMonitorAlertEventSubscriptionDestinationProperties.severity
+                        = MonitorAlertSeverity.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedMonitorAlertEventSubscriptionDestinationProperties.description = reader.getString();
+                } else if ("actionGroups".equals(fieldName)) {
+                    List<String> actionGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMonitorAlertEventSubscriptionDestinationProperties.actionGroups = actionGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitorAlertEventSubscriptionDestinationProperties;
+        });
     }
 }

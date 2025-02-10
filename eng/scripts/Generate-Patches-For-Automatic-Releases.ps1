@@ -21,6 +21,11 @@ try {
     # Generate the list of artifacts to update for a patch release.
     . "${PSScriptRoot}/Update-Artifacts-List-For-Patch-Release.ps1" -SourcesDirectory $SourcesDirectory -YmlToUpdate $PackagesYmlPath
 
+    # Update local repository with all the latest changes from remote repository
+    # And clean up any references that have been deleted on the remote side.
+    Write-Host "git fetch --all --prune"
+    git fetch --all --prune
+
     # Checkout a branch to work on based off of main in upstream.
     if ($currentBranchName -ne $branchName) {
         Write-Host "git checkout -b $branchName $remoteName/main"
@@ -60,21 +65,7 @@ try {
 
     # Update POMs for all libraries with dependencies on the libraries to patch. Also, update the READMEs of the latter.
     python "${PSScriptRoot}/../versioning/update_versions.py" --update-type library --build-type client --ll $libraryList
-
-    Write-Host "git add -A"
-    git add -A
-
-    $commitMessage = "Updated dependencies in libraries and READMEs via version_client.txt"
-
-    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" commit -m $commitMessage"
-    git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" commit -m $commitMessage
-
-    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" push $remoteName $branchName"
-    git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" push $remoteName $branchName
 } catch {
     LogError "Failed to update dependencies in libraries and READMEs via version_client.txt"
     exit 1
-} finally {
-    Write-Host "git checkout $currentBranchName"
-    git checkout $currentBranchName
 }

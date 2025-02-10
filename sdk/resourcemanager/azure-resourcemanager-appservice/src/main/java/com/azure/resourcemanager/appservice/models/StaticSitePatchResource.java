@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSite;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,8 +20,22 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
     /*
      * Core resource properties
      */
-    @JsonProperty(value = "properties")
     private StaticSite innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of StaticSitePatchResource class.
@@ -33,6 +50,36 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
      */
     private StaticSite innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -325,8 +372,8 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static
-     * web app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+     * Get the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static web
+     * app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -335,8 +382,8 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static
-     * web app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+     * Set the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static web
+     * app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the StaticSitePatchResource object itself.
@@ -365,9 +412,54 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticSitePatchResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticSitePatchResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StaticSitePatchResource.
+     */
+    public static StaticSitePatchResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticSitePatchResource deserializedStaticSitePatchResource = new StaticSitePatchResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStaticSitePatchResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStaticSitePatchResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStaticSitePatchResource.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStaticSitePatchResource.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStaticSitePatchResource.innerProperties = StaticSite.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticSitePatchResource;
+        });
     }
 }

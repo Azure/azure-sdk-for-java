@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An error response from the pod identity provisioning.
  */
 @Fluent
-public final class ManagedClusterPodIdentityProvisioningError {
+public final class ManagedClusterPodIdentityProvisioningError
+    implements JsonSerializable<ManagedClusterPodIdentityProvisioningError> {
     /*
      * Details about the error.
      */
-    @JsonProperty(value = "error")
     private ManagedClusterPodIdentityProvisioningErrorBody error;
 
     /**
@@ -26,7 +30,7 @@ public final class ManagedClusterPodIdentityProvisioningError {
 
     /**
      * Get the error property: Details about the error.
-     *
+     * 
      * @return the error value.
      */
     public ManagedClusterPodIdentityProvisioningErrorBody error() {
@@ -35,7 +39,7 @@ public final class ManagedClusterPodIdentityProvisioningError {
 
     /**
      * Set the error property: Details about the error.
-     *
+     * 
      * @param error the error value to set.
      * @return the ManagedClusterPodIdentityProvisioningError object itself.
      */
@@ -46,12 +50,50 @@ public final class ManagedClusterPodIdentityProvisioningError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterPodIdentityProvisioningError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterPodIdentityProvisioningError if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterPodIdentityProvisioningError.
+     */
+    public static ManagedClusterPodIdentityProvisioningError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterPodIdentityProvisioningError deserializedManagedClusterPodIdentityProvisioningError
+                = new ManagedClusterPodIdentityProvisioningError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentityProvisioningError.error
+                        = ManagedClusterPodIdentityProvisioningErrorBody.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterPodIdentityProvisioningError;
+        });
     }
 }

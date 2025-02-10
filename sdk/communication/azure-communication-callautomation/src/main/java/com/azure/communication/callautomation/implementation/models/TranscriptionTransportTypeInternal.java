@@ -5,26 +5,41 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TranscriptionTransportTypeInternal. */
+/**
+ * The type of transport to be used for live transcription, eg. Websocket.
+ */
 public final class TranscriptionTransportTypeInternal extends ExpandableStringEnum<TranscriptionTransportTypeInternal> {
-    /** Static value websocket for TranscriptionTransportTypeInternal. */
+    /**
+     * Static value websocket for TranscriptionTransportTypeInternal.
+     */
     public static final TranscriptionTransportTypeInternal WEBSOCKET = fromString("websocket");
 
     /**
+     * Creates a new instance of TranscriptionTransportTypeInternal value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TranscriptionTransportTypeInternal() {
+    }
+
+    /**
      * Creates or finds a TranscriptionTransportTypeInternal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TranscriptionTransportTypeInternal.
      */
-    @JsonCreator
     public static TranscriptionTransportTypeInternal fromString(String name) {
         return fromString(name, TranscriptionTransportTypeInternal.class);
     }
 
-    /** @return known TranscriptionTransportTypeInternal values. */
+    /**
+     * Gets known TranscriptionTransportTypeInternal values.
+     * 
+     * @return known TranscriptionTransportTypeInternal values.
+     */
     public static Collection<TranscriptionTransportTypeInternal> values() {
         return values(TranscriptionTransportTypeInternal.class);
     }

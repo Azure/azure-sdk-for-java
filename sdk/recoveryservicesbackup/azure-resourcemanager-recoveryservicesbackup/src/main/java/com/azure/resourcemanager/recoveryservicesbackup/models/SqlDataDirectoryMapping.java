@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Encapsulates information regarding data directory. */
+/**
+ * Encapsulates information regarding data directory.
+ */
 @Fluent
-public final class SqlDataDirectoryMapping {
+public final class SqlDataDirectoryMapping implements JsonSerializable<SqlDataDirectoryMapping> {
     /*
      * Type of data directory mapping
      */
-    @JsonProperty(value = "mappingType")
     private SqlDataDirectoryType mappingType;
 
     /*
      * Restore source logical name path
      */
-    @JsonProperty(value = "sourceLogicalName")
     private String sourceLogicalName;
 
     /*
      * Restore source path
      */
-    @JsonProperty(value = "sourcePath")
     private String sourcePath;
 
     /*
      * Target path
      */
-    @JsonProperty(value = "targetPath")
     private String targetPath;
 
-    /** Creates an instance of SqlDataDirectoryMapping class. */
+    /**
+     * Creates an instance of SqlDataDirectoryMapping class.
+     */
     public SqlDataDirectoryMapping() {
     }
 
     /**
      * Get the mappingType property: Type of data directory mapping.
-     *
+     * 
      * @return the mappingType value.
      */
     public SqlDataDirectoryType mappingType() {
@@ -49,7 +53,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Set the mappingType property: Type of data directory mapping.
-     *
+     * 
      * @param mappingType the mappingType value to set.
      * @return the SqlDataDirectoryMapping object itself.
      */
@@ -60,7 +64,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Get the sourceLogicalName property: Restore source logical name path.
-     *
+     * 
      * @return the sourceLogicalName value.
      */
     public String sourceLogicalName() {
@@ -69,7 +73,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Set the sourceLogicalName property: Restore source logical name path.
-     *
+     * 
      * @param sourceLogicalName the sourceLogicalName value to set.
      * @return the SqlDataDirectoryMapping object itself.
      */
@@ -80,7 +84,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Get the sourcePath property: Restore source path.
-     *
+     * 
      * @return the sourcePath value.
      */
     public String sourcePath() {
@@ -89,7 +93,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Set the sourcePath property: Restore source path.
-     *
+     * 
      * @param sourcePath the sourcePath value to set.
      * @return the SqlDataDirectoryMapping object itself.
      */
@@ -100,7 +104,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Get the targetPath property: Target path.
-     *
+     * 
      * @return the targetPath value.
      */
     public String targetPath() {
@@ -109,7 +113,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Set the targetPath property: Target path.
-     *
+     * 
      * @param targetPath the targetPath value to set.
      * @return the SqlDataDirectoryMapping object itself.
      */
@@ -120,9 +124,55 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mappingType", this.mappingType == null ? null : this.mappingType.toString());
+        jsonWriter.writeStringField("sourceLogicalName", this.sourceLogicalName);
+        jsonWriter.writeStringField("sourcePath", this.sourcePath);
+        jsonWriter.writeStringField("targetPath", this.targetPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlDataDirectoryMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlDataDirectoryMapping if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlDataDirectoryMapping.
+     */
+    public static SqlDataDirectoryMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlDataDirectoryMapping deserializedSqlDataDirectoryMapping = new SqlDataDirectoryMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mappingType".equals(fieldName)) {
+                    deserializedSqlDataDirectoryMapping.mappingType
+                        = SqlDataDirectoryType.fromString(reader.getString());
+                } else if ("sourceLogicalName".equals(fieldName)) {
+                    deserializedSqlDataDirectoryMapping.sourceLogicalName = reader.getString();
+                } else if ("sourcePath".equals(fieldName)) {
+                    deserializedSqlDataDirectoryMapping.sourcePath = reader.getString();
+                } else if ("targetPath".equals(fieldName)) {
+                    deserializedSqlDataDirectoryMapping.targetPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlDataDirectoryMapping;
+        });
     }
 }

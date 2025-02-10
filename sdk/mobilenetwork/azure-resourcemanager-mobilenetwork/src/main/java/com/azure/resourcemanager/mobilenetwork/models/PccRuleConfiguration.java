@@ -6,17 +6,22 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Data flow policy rule configuration. */
+/**
+ * Data flow policy rule configuration.
+ */
 @Fluent
-public final class PccRuleConfiguration {
+public final class PccRuleConfiguration implements JsonSerializable<PccRuleConfiguration> {
     /*
      * The name of the rule. This must be unique within the parent service. You must not use any of the following
      * reserved strings - `default`, `requested` or `service`.
      */
-    @JsonProperty(value = "ruleName", required = true)
     private String ruleName;
 
     /*
@@ -24,36 +29,34 @@ public final class PccRuleConfiguration {
      * for a particular SIM. A lower value means a higher priority. This value should be unique among all data flow
      * policy rules configured in the mobile network.
      */
-    @JsonProperty(value = "rulePrecedence", required = true)
     private int rulePrecedence;
 
     /*
      * The QoS policy to use for packets matching this rule. If this field is null then the parent service will define
      * the QoS settings.
      */
-    @JsonProperty(value = "ruleQosPolicy")
     private PccRuleQosPolicy ruleQosPolicy;
 
     /*
      * Determines whether flows that match this data flow policy rule are permitted.
      */
-    @JsonProperty(value = "trafficControl")
     private TrafficControlPermission trafficControl;
 
     /*
      * The set of data flow templates to use for this data flow policy rule.
      */
-    @JsonProperty(value = "serviceDataFlowTemplates", required = true)
     private List<ServiceDataFlowTemplate> serviceDataFlowTemplates;
 
-    /** Creates an instance of PccRuleConfiguration class. */
+    /**
+     * Creates an instance of PccRuleConfiguration class.
+     */
     public PccRuleConfiguration() {
     }
 
     /**
      * Get the ruleName property: The name of the rule. This must be unique within the parent service. You must not use
      * any of the following reserved strings - `default`, `requested` or `service`.
-     *
+     * 
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -63,7 +66,7 @@ public final class PccRuleConfiguration {
     /**
      * Set the ruleName property: The name of the rule. This must be unique within the parent service. You must not use
      * any of the following reserved strings - `default`, `requested` or `service`.
-     *
+     * 
      * @param ruleName the ruleName value to set.
      * @return the PccRuleConfiguration object itself.
      */
@@ -76,7 +79,7 @@ public final class PccRuleConfiguration {
      * Get the rulePrecedence property: A precedence value that is used to decide between data flow policy rules when
      * identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value should
      * be unique among all data flow policy rules configured in the mobile network.
-     *
+     * 
      * @return the rulePrecedence value.
      */
     public int rulePrecedence() {
@@ -87,7 +90,7 @@ public final class PccRuleConfiguration {
      * Set the rulePrecedence property: A precedence value that is used to decide between data flow policy rules when
      * identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value should
      * be unique among all data flow policy rules configured in the mobile network.
-     *
+     * 
      * @param rulePrecedence the rulePrecedence value to set.
      * @return the PccRuleConfiguration object itself.
      */
@@ -99,7 +102,7 @@ public final class PccRuleConfiguration {
     /**
      * Get the ruleQosPolicy property: The QoS policy to use for packets matching this rule. If this field is null then
      * the parent service will define the QoS settings.
-     *
+     * 
      * @return the ruleQosPolicy value.
      */
     public PccRuleQosPolicy ruleQosPolicy() {
@@ -109,7 +112,7 @@ public final class PccRuleConfiguration {
     /**
      * Set the ruleQosPolicy property: The QoS policy to use for packets matching this rule. If this field is null then
      * the parent service will define the QoS settings.
-     *
+     * 
      * @param ruleQosPolicy the ruleQosPolicy value to set.
      * @return the PccRuleConfiguration object itself.
      */
@@ -120,7 +123,7 @@ public final class PccRuleConfiguration {
 
     /**
      * Get the trafficControl property: Determines whether flows that match this data flow policy rule are permitted.
-     *
+     * 
      * @return the trafficControl value.
      */
     public TrafficControlPermission trafficControl() {
@@ -129,7 +132,7 @@ public final class PccRuleConfiguration {
 
     /**
      * Set the trafficControl property: Determines whether flows that match this data flow policy rule are permitted.
-     *
+     * 
      * @param trafficControl the trafficControl value to set.
      * @return the PccRuleConfiguration object itself.
      */
@@ -140,7 +143,7 @@ public final class PccRuleConfiguration {
 
     /**
      * Get the serviceDataFlowTemplates property: The set of data flow templates to use for this data flow policy rule.
-     *
+     * 
      * @return the serviceDataFlowTemplates value.
      */
     public List<ServiceDataFlowTemplate> serviceDataFlowTemplates() {
@@ -149,7 +152,7 @@ public final class PccRuleConfiguration {
 
     /**
      * Set the serviceDataFlowTemplates property: The set of data flow templates to use for this data flow policy rule.
-     *
+     * 
      * @param serviceDataFlowTemplates the serviceDataFlowTemplates value to set.
      * @return the PccRuleConfiguration object itself.
      */
@@ -160,27 +163,79 @@ public final class PccRuleConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleName in model PccRuleConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ruleName in model PccRuleConfiguration"));
         }
         if (ruleQosPolicy() != null) {
             ruleQosPolicy().validate();
         }
         if (serviceDataFlowTemplates() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceDataFlowTemplates in model PccRuleConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceDataFlowTemplates in model PccRuleConfiguration"));
         } else {
             serviceDataFlowTemplates().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PccRuleConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleName", this.ruleName);
+        jsonWriter.writeIntField("rulePrecedence", this.rulePrecedence);
+        jsonWriter.writeArrayField("serviceDataFlowTemplates", this.serviceDataFlowTemplates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("ruleQosPolicy", this.ruleQosPolicy);
+        jsonWriter.writeStringField("trafficControl",
+            this.trafficControl == null ? null : this.trafficControl.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PccRuleConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PccRuleConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PccRuleConfiguration.
+     */
+    public static PccRuleConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PccRuleConfiguration deserializedPccRuleConfiguration = new PccRuleConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleName".equals(fieldName)) {
+                    deserializedPccRuleConfiguration.ruleName = reader.getString();
+                } else if ("rulePrecedence".equals(fieldName)) {
+                    deserializedPccRuleConfiguration.rulePrecedence = reader.getInt();
+                } else if ("serviceDataFlowTemplates".equals(fieldName)) {
+                    List<ServiceDataFlowTemplate> serviceDataFlowTemplates
+                        = reader.readArray(reader1 -> ServiceDataFlowTemplate.fromJson(reader1));
+                    deserializedPccRuleConfiguration.serviceDataFlowTemplates = serviceDataFlowTemplates;
+                } else if ("ruleQosPolicy".equals(fieldName)) {
+                    deserializedPccRuleConfiguration.ruleQosPolicy = PccRuleQosPolicy.fromJson(reader);
+                } else if ("trafficControl".equals(fieldName)) {
+                    deserializedPccRuleConfiguration.trafficControl
+                        = TrafficControlPermission.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPccRuleConfiguration;
+        });
+    }
 }

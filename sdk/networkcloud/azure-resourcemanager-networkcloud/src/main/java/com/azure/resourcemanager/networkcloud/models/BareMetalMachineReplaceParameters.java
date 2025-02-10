@@ -5,57 +5,53 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * BareMetalMachineReplaceParameters represents the body of the request to physically swap a bare metal machine for
  * another.
  */
 @Fluent
-public final class BareMetalMachineReplaceParameters {
+public final class BareMetalMachineReplaceParameters implements JsonSerializable<BareMetalMachineReplaceParameters> {
     /*
-     * AdministrativeCredentials represents the admin credentials for the device requiring password-based
-     * authentication.
-     *
      * The credentials of the baseboard management controller on this bare metal machine.
      */
-    @JsonProperty(value = "bmcCredentials")
     private AdministrativeCredentials bmcCredentials;
 
     /*
      * The MAC address of the BMC device.
      */
-    @JsonProperty(value = "bmcMacAddress")
     private String bmcMacAddress;
 
     /*
      * The MAC address of a NIC connected to the PXE network.
      */
-    @JsonProperty(value = "bootMacAddress")
     private String bootMacAddress;
 
     /*
      * The OS-level hostname assigned to this machine.
      */
-    @JsonProperty(value = "machineName")
     private String machineName;
 
     /*
      * The serial number of the bare metal machine.
      */
-    @JsonProperty(value = "serialNumber")
     private String serialNumber;
 
-    /** Creates an instance of BareMetalMachineReplaceParameters class. */
+    /**
+     * Creates an instance of BareMetalMachineReplaceParameters class.
+     */
     public BareMetalMachineReplaceParameters() {
     }
 
     /**
-     * Get the bmcCredentials property: AdministrativeCredentials represents the admin credentials for the device
-     * requiring password-based authentication.
-     *
-     * <p>The credentials of the baseboard management controller on this bare metal machine.
-     *
+     * Get the bmcCredentials property: The credentials of the baseboard management controller on this bare metal
+     * machine.
+     * 
      * @return the bmcCredentials value.
      */
     public AdministrativeCredentials bmcCredentials() {
@@ -63,11 +59,9 @@ public final class BareMetalMachineReplaceParameters {
     }
 
     /**
-     * Set the bmcCredentials property: AdministrativeCredentials represents the admin credentials for the device
-     * requiring password-based authentication.
-     *
-     * <p>The credentials of the baseboard management controller on this bare metal machine.
-     *
+     * Set the bmcCredentials property: The credentials of the baseboard management controller on this bare metal
+     * machine.
+     * 
      * @param bmcCredentials the bmcCredentials value to set.
      * @return the BareMetalMachineReplaceParameters object itself.
      */
@@ -78,7 +72,7 @@ public final class BareMetalMachineReplaceParameters {
 
     /**
      * Get the bmcMacAddress property: The MAC address of the BMC device.
-     *
+     * 
      * @return the bmcMacAddress value.
      */
     public String bmcMacAddress() {
@@ -87,7 +81,7 @@ public final class BareMetalMachineReplaceParameters {
 
     /**
      * Set the bmcMacAddress property: The MAC address of the BMC device.
-     *
+     * 
      * @param bmcMacAddress the bmcMacAddress value to set.
      * @return the BareMetalMachineReplaceParameters object itself.
      */
@@ -98,7 +92,7 @@ public final class BareMetalMachineReplaceParameters {
 
     /**
      * Get the bootMacAddress property: The MAC address of a NIC connected to the PXE network.
-     *
+     * 
      * @return the bootMacAddress value.
      */
     public String bootMacAddress() {
@@ -107,7 +101,7 @@ public final class BareMetalMachineReplaceParameters {
 
     /**
      * Set the bootMacAddress property: The MAC address of a NIC connected to the PXE network.
-     *
+     * 
      * @param bootMacAddress the bootMacAddress value to set.
      * @return the BareMetalMachineReplaceParameters object itself.
      */
@@ -118,7 +112,7 @@ public final class BareMetalMachineReplaceParameters {
 
     /**
      * Get the machineName property: The OS-level hostname assigned to this machine.
-     *
+     * 
      * @return the machineName value.
      */
     public String machineName() {
@@ -127,7 +121,7 @@ public final class BareMetalMachineReplaceParameters {
 
     /**
      * Set the machineName property: The OS-level hostname assigned to this machine.
-     *
+     * 
      * @param machineName the machineName value to set.
      * @return the BareMetalMachineReplaceParameters object itself.
      */
@@ -138,7 +132,7 @@ public final class BareMetalMachineReplaceParameters {
 
     /**
      * Get the serialNumber property: The serial number of the bare metal machine.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -147,7 +141,7 @@ public final class BareMetalMachineReplaceParameters {
 
     /**
      * Set the serialNumber property: The serial number of the bare metal machine.
-     *
+     * 
      * @param serialNumber the serialNumber value to set.
      * @return the BareMetalMachineReplaceParameters object itself.
      */
@@ -158,12 +152,62 @@ public final class BareMetalMachineReplaceParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (bmcCredentials() != null) {
             bmcCredentials().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("bmcCredentials", this.bmcCredentials);
+        jsonWriter.writeStringField("bmcMacAddress", this.bmcMacAddress);
+        jsonWriter.writeStringField("bootMacAddress", this.bootMacAddress);
+        jsonWriter.writeStringField("machineName", this.machineName);
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BareMetalMachineReplaceParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BareMetalMachineReplaceParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BareMetalMachineReplaceParameters.
+     */
+    public static BareMetalMachineReplaceParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BareMetalMachineReplaceParameters deserializedBareMetalMachineReplaceParameters
+                = new BareMetalMachineReplaceParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bmcCredentials".equals(fieldName)) {
+                    deserializedBareMetalMachineReplaceParameters.bmcCredentials
+                        = AdministrativeCredentials.fromJson(reader);
+                } else if ("bmcMacAddress".equals(fieldName)) {
+                    deserializedBareMetalMachineReplaceParameters.bmcMacAddress = reader.getString();
+                } else if ("bootMacAddress".equals(fieldName)) {
+                    deserializedBareMetalMachineReplaceParameters.bootMacAddress = reader.getString();
+                } else if ("machineName".equals(fieldName)) {
+                    deserializedBareMetalMachineReplaceParameters.machineName = reader.getString();
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedBareMetalMachineReplaceParameters.serialNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBareMetalMachineReplaceParameters;
+        });
     }
 }

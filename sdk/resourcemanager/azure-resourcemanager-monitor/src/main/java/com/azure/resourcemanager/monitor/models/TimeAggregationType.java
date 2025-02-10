@@ -4,30 +4,43 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** time aggregation type. How the data that is collected should be combined over time. The default value is Average. */
+/**
+ * time aggregation type. How the data that is collected should be combined over time. The default value is Average.
+ */
 public enum TimeAggregationType {
-    /** Enum value Average. */
+    /**
+     * Enum value Average.
+     */
     AVERAGE("Average"),
 
-    /** Enum value Minimum. */
+    /**
+     * Enum value Minimum.
+     */
     MINIMUM("Minimum"),
 
-    /** Enum value Maximum. */
+    /**
+     * Enum value Maximum.
+     */
     MAXIMUM("Maximum"),
 
-    /** Enum value Total. */
+    /**
+     * Enum value Total.
+     */
     TOTAL("Total"),
 
-    /** Enum value Count. */
+    /**
+     * Enum value Count.
+     */
     COUNT("Count"),
 
-    /** Enum value Last. */
+    /**
+     * Enum value Last.
+     */
     LAST("Last");
 
-    /** The actual serialized value for a TimeAggregationType instance. */
+    /**
+     * The actual serialized value for a TimeAggregationType instance.
+     */
     private final String value;
 
     TimeAggregationType(String value) {
@@ -36,11 +49,10 @@ public enum TimeAggregationType {
 
     /**
      * Parses a serialized value to a TimeAggregationType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed TimeAggregationType object, or null if unable to parse.
      */
-    @JsonCreator
     public static TimeAggregationType fromString(String value) {
         if (value == null) {
             return null;
@@ -54,8 +66,9 @@ public enum TimeAggregationType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

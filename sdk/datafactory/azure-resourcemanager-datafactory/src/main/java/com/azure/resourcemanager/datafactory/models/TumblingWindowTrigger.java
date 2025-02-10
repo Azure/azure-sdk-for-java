@@ -6,37 +6,51 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.TumblingWindowTriggerTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Trigger that schedules pipeline runs for all fixed time interval windows from a start time without gaps and also
  * supports backfill scenarios (when start time is in the past).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("TumblingWindowTrigger")
 @Fluent
 public final class TumblingWindowTrigger extends Trigger {
     /*
+     * Trigger type.
+     */
+    private String type = "TumblingWindowTrigger";
+
+    /*
      * Pipeline for which runs are created when an event is fired for trigger window that is ready.
      */
-    @JsonProperty(value = "pipeline", required = true)
     private TriggerPipelineReference pipeline;
 
     /*
      * Tumbling Window Trigger properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private TumblingWindowTriggerTypeProperties innerTypeProperties = new TumblingWindowTriggerTypeProperties();
 
     /**
      * Creates an instance of TumblingWindowTrigger class.
      */
     public TumblingWindowTrigger() {
+    }
+
+    /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -289,20 +303,85 @@ public final class TumblingWindowTrigger extends Trigger {
      */
     @Override
     public void validate() {
-        super.validate();
         if (pipeline() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property pipeline in model TumblingWindowTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property pipeline in model TumblingWindowTrigger"));
         } else {
             pipeline().validate();
         }
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model TumblingWindowTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model TumblingWindowTrigger"));
         } else {
             innerTypeProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TumblingWindowTrigger.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("pipeline", this.pipeline);
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TumblingWindowTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TumblingWindowTrigger if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TumblingWindowTrigger.
+     */
+    public static TumblingWindowTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TumblingWindowTrigger deserializedTumblingWindowTrigger = new TumblingWindowTrigger();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger.withDescription(reader.getString());
+                } else if ("runtimeState".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger
+                        .withRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedTumblingWindowTrigger.withAnnotations(annotations);
+                } else if ("pipeline".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger.pipeline = TriggerPipelineReference.fromJson(reader);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger.innerTypeProperties
+                        = TumblingWindowTriggerTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedTumblingWindowTrigger.withAdditionalProperties(additionalProperties);
+
+            return deserializedTumblingWindowTrigger;
+        });
+    }
 }

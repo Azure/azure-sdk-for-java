@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The fully qualified metric namespace name. */
+/**
+ * The fully qualified metric namespace name.
+ */
 @Fluent
-public final class MetricNamespaceName {
+public final class MetricNamespaceName implements JsonSerializable<MetricNamespaceName> {
     /*
      * The metric namespace name.
      */
-    @JsonProperty(value = "metricNamespaceName")
     private String metricNamespaceName;
 
-    /** Creates an instance of MetricNamespaceName class. */
+    /**
+     * Creates an instance of MetricNamespaceName class.
+     */
     public MetricNamespaceName() {
     }
 
     /**
      * Get the metricNamespaceName property: The metric namespace name.
-     *
+     * 
      * @return the metricNamespaceName value.
      */
     public String metricNamespaceName() {
@@ -31,7 +38,7 @@ public final class MetricNamespaceName {
 
     /**
      * Set the metricNamespaceName property: The metric namespace name.
-     *
+     * 
      * @param metricNamespaceName the metricNamespaceName value to set.
      * @return the MetricNamespaceName object itself.
      */
@@ -42,9 +49,45 @@ public final class MetricNamespaceName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metricNamespaceName", this.metricNamespaceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricNamespaceName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricNamespaceName if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricNamespaceName.
+     */
+    public static MetricNamespaceName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricNamespaceName deserializedMetricNamespaceName = new MetricNamespaceName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricNamespaceName".equals(fieldName)) {
+                    deserializedMetricNamespaceName.metricNamespaceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricNamespaceName;
+        });
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class EventSubscriptionsListByDomainTopicSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * EventSubscriptions_ListByDomainTopic.json
      */
     /**
@@ -20,7 +20,7 @@ public final class EventSubscriptionsListByDomainTopicSamples {
      */
     public static void
         eventSubscriptionsListByDomainTopic(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.eventSubscriptions().listByDomainTopic("examplerg", "domain1", "topic1", null, null,
-            com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions()
+            .listByDomainTopic("examplerg", "domain1", "topic1", null, null, com.azure.core.util.Context.NONE);
     }
 }

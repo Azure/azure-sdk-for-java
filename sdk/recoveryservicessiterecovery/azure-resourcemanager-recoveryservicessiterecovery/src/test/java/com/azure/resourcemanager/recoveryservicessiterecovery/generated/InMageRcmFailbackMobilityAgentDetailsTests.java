@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmFa
 public final class InMageRcmFailbackMobilityAgentDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmFailbackMobilityAgentDetails model =
-            BinaryData
-                .fromString(
-                    "{\"version\":\"s\",\"latestVersion\":\"yljurkeposehqqyl\",\"driverVersion\":\"ctwjwdsdlzm\",\"latestUpgradableVersionWithoutReboot\":\"erxxxoteehkhowgo\",\"agentVersionExpiryDate\":\"2021-04-11T20:48:45Z\",\"driverVersionExpiryDate\":\"2021-03-02T05:47:55Z\",\"lastHeartbeatUtc\":\"2021-02-03T22:17:50Z\",\"reasonsBlockingUpgrade\":[\"AgentNoHeartbeat\"],\"isUpgradeable\":\"pnp\"}")
-                .toObject(InMageRcmFailbackMobilityAgentDetails.class);
+        InMageRcmFailbackMobilityAgentDetails model = BinaryData.fromString(
+            "{\"version\":\"s\",\"latestVersion\":\"yljurkeposehqqyl\",\"driverVersion\":\"ctwjwdsdlzm\",\"latestUpgradableVersionWithoutReboot\":\"erxxxoteehkhowgo\",\"agentVersionExpiryDate\":\"2021-04-11T20:48:45Z\",\"driverVersionExpiryDate\":\"2021-03-02T05:47:55Z\",\"lastHeartbeatUtc\":\"2021-02-03T22:17:50Z\",\"reasonsBlockingUpgrade\":[\"AgentNoHeartbeat\"],\"isUpgradeable\":\"pnp\"}")
+            .toObject(InMageRcmFailbackMobilityAgentDetails.class);
     }
 
     @org.junit.jupiter.api.Test

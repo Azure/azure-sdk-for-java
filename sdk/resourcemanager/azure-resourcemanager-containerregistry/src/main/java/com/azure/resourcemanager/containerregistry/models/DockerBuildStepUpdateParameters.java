@@ -5,59 +5,71 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties for updating a docker build step. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Docker")
+/**
+ * The properties for updating a docker build step.
+ */
 @Fluent
 public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParameters {
     /*
+     * The type of the step.
+     */
+    private StepType type = StepType.DOCKER;
+
+    /*
      * The fully qualified image names including the repository and tag.
      */
-    @JsonProperty(value = "imageNames")
     private List<String> imageNames;
 
     /*
      * The value of this property indicates whether the image built should be pushed to the registry or not.
      */
-    @JsonProperty(value = "isPushEnabled")
     private Boolean isPushEnabled;
 
     /*
      * The value of this property indicates whether the image cache is enabled or not.
      */
-    @JsonProperty(value = "noCache")
     private Boolean noCache;
 
     /*
      * The Docker file path relative to the source context.
      */
-    @JsonProperty(value = "dockerFilePath")
     private String dockerFilePath;
 
     /*
      * The collection of override arguments to be used when executing this build step.
      */
-    @JsonProperty(value = "arguments")
     private List<Argument> arguments;
 
     /*
      * The name of the target build stage for the docker build.
      */
-    @JsonProperty(value = "target")
     private String target;
 
-    /** Creates an instance of DockerBuildStepUpdateParameters class. */
+    /**
+     * Creates an instance of DockerBuildStepUpdateParameters class.
+     */
     public DockerBuildStepUpdateParameters() {
     }
 
     /**
+     * Get the type property: The type of the step.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public StepType type() {
+        return this.type;
+    }
+
+    /**
      * Get the imageNames property: The fully qualified image names including the repository and tag.
-     *
+     * 
      * @return the imageNames value.
      */
     public List<String> imageNames() {
@@ -66,7 +78,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Set the imageNames property: The fully qualified image names including the repository and tag.
-     *
+     * 
      * @param imageNames the imageNames value to set.
      * @return the DockerBuildStepUpdateParameters object itself.
      */
@@ -78,7 +90,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
     /**
      * Get the isPushEnabled property: The value of this property indicates whether the image built should be pushed to
      * the registry or not.
-     *
+     * 
      * @return the isPushEnabled value.
      */
     public Boolean isPushEnabled() {
@@ -88,7 +100,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
     /**
      * Set the isPushEnabled property: The value of this property indicates whether the image built should be pushed to
      * the registry or not.
-     *
+     * 
      * @param isPushEnabled the isPushEnabled value to set.
      * @return the DockerBuildStepUpdateParameters object itself.
      */
@@ -99,7 +111,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Get the noCache property: The value of this property indicates whether the image cache is enabled or not.
-     *
+     * 
      * @return the noCache value.
      */
     public Boolean noCache() {
@@ -108,7 +120,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Set the noCache property: The value of this property indicates whether the image cache is enabled or not.
-     *
+     * 
      * @param noCache the noCache value to set.
      * @return the DockerBuildStepUpdateParameters object itself.
      */
@@ -119,7 +131,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Get the dockerFilePath property: The Docker file path relative to the source context.
-     *
+     * 
      * @return the dockerFilePath value.
      */
     public String dockerFilePath() {
@@ -128,7 +140,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Set the dockerFilePath property: The Docker file path relative to the source context.
-     *
+     * 
      * @param dockerFilePath the dockerFilePath value to set.
      * @return the DockerBuildStepUpdateParameters object itself.
      */
@@ -139,7 +151,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Get the arguments property: The collection of override arguments to be used when executing this build step.
-     *
+     * 
      * @return the arguments value.
      */
     public List<Argument> arguments() {
@@ -148,7 +160,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Set the arguments property: The collection of override arguments to be used when executing this build step.
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the DockerBuildStepUpdateParameters object itself.
      */
@@ -159,7 +171,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Get the target property: The name of the target build stage for the docker build.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -168,7 +180,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Set the target property: The name of the target build stage for the docker build.
-     *
+     * 
      * @param target the target value to set.
      * @return the DockerBuildStepUpdateParameters object itself.
      */
@@ -177,14 +189,18 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DockerBuildStepUpdateParameters withContextPath(String contextPath) {
         super.withContextPath(contextPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DockerBuildStepUpdateParameters withContextAccessToken(String contextAccessToken) {
         super.withContextAccessToken(contextAccessToken);
@@ -193,7 +209,7 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -202,5 +218,69 @@ public final class DockerBuildStepUpdateParameters extends TaskStepUpdateParamet
         if (arguments() != null) {
             arguments().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("contextPath", contextPath());
+        jsonWriter.writeStringField("contextAccessToken", contextAccessToken());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("imageNames", this.imageNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isPushEnabled", this.isPushEnabled);
+        jsonWriter.writeBooleanField("noCache", this.noCache);
+        jsonWriter.writeStringField("dockerFilePath", this.dockerFilePath);
+        jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("target", this.target);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DockerBuildStepUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DockerBuildStepUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DockerBuildStepUpdateParameters.
+     */
+    public static DockerBuildStepUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DockerBuildStepUpdateParameters deserializedDockerBuildStepUpdateParameters
+                = new DockerBuildStepUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contextPath".equals(fieldName)) {
+                    deserializedDockerBuildStepUpdateParameters.withContextPath(reader.getString());
+                } else if ("contextAccessToken".equals(fieldName)) {
+                    deserializedDockerBuildStepUpdateParameters.withContextAccessToken(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedDockerBuildStepUpdateParameters.type = StepType.fromString(reader.getString());
+                } else if ("imageNames".equals(fieldName)) {
+                    List<String> imageNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDockerBuildStepUpdateParameters.imageNames = imageNames;
+                } else if ("isPushEnabled".equals(fieldName)) {
+                    deserializedDockerBuildStepUpdateParameters.isPushEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("noCache".equals(fieldName)) {
+                    deserializedDockerBuildStepUpdateParameters.noCache = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dockerFilePath".equals(fieldName)) {
+                    deserializedDockerBuildStepUpdateParameters.dockerFilePath = reader.getString();
+                } else if ("arguments".equals(fieldName)) {
+                    List<Argument> arguments = reader.readArray(reader1 -> Argument.fromJson(reader1));
+                    deserializedDockerBuildStepUpdateParameters.arguments = arguments;
+                } else if ("target".equals(fieldName)) {
+                    deserializedDockerBuildStepUpdateParameters.target = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDockerBuildStepUpdateParameters;
+        });
     }
 }

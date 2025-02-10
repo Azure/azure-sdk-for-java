@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationLogicalNetworks. */
+/**
+ * Resource collection API of ReplicationLogicalNetworks.
+ */
 public interface ReplicationLogicalNetworks {
     /**
      * Gets the list of logical networks under a fabric.
-     *
-     * <p>Lists all the logical networks of the Azure Site Recovery fabric.
-     *
+     * 
+     * Lists all the logical networks of the Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Server Id.
@@ -23,14 +25,14 @@ public interface ReplicationLogicalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of logical networks as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LogicalNetwork> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName);
+    PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName);
 
     /**
      * Gets the list of logical networks under a fabric.
-     *
-     * <p>Lists all the logical networks of the Azure Site Recovery fabric.
-     *
+     * 
+     * Lists all the logical networks of the Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Server Id.
@@ -40,14 +42,14 @@ public interface ReplicationLogicalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of logical networks as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<LogicalNetwork> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName, Context context);
+    PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName, Context context);
 
     /**
      * Gets a logical network with specified server id and logical network name.
-     *
-     * <p>Gets the details of a logical network.
-     *
+     * 
+     * Gets the details of a logical network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Server Id.
@@ -58,14 +60,14 @@ public interface ReplicationLogicalNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a logical network along with {@link Response}.
      */
-    Response<LogicalNetwork> getWithResponse(
-        String resourceName, String resourceGroupName, String fabricName, String logicalNetworkName, Context context);
+    Response<LogicalNetwork> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+        String logicalNetworkName, Context context);
 
     /**
      * Gets a logical network with specified server id and logical network name.
-     *
-     * <p>Gets the details of a logical network.
-     *
+     * 
+     * Gets the details of a logical network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Server Id.

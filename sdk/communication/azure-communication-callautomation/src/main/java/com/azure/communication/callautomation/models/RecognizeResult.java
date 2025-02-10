@@ -3,7 +3,13 @@
 
 package com.azure.communication.callautomation.models;
 
-/** Defines the absract for Recognize Result. */
-public abstract class RecognizeResult {
+import com.azure.json.JsonSerializable;
 
+/** Defines the absract for Recognize Result. */
+public abstract class RecognizeResult implements JsonSerializable<RecognizeResult> {
+    /**
+     * Creates an instance of {@link RecognizeResult}.
+     */
+    public RecognizeResult() {
+    }
 }

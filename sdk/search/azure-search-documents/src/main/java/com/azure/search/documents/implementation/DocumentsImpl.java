@@ -23,10 +23,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
+import com.azure.search.documents.implementation.models.ErrorResponseException;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.RequestOptions;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
-import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestRequest;
@@ -66,8 +66,8 @@ public final class DocumentsImpl {
     }
 
     /**
-     * The interface defining all the services for SearchIndexClientDocuments to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for SearchIndexClientDocuments to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}/indexes('{indexName}')")
     @ServiceInterface(name = "SearchIndexClientDoc")
@@ -75,21 +75,21 @@ public final class DocumentsImpl {
 
         @Get("/docs/$count")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Long>> count(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/docs/$count")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<Long> countSync(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/docs/search.post.search")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchDocumentsResult>> searchPost(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
@@ -97,7 +97,7 @@ public final class DocumentsImpl {
 
         @Post("/docs/search.post.search")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchDocumentsResult> searchPostSync(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
@@ -105,7 +105,7 @@ public final class DocumentsImpl {
 
         @Get("/docs('{key}')")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Map<String, Object>>> get(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @PathParam("key") String key,
             @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion,
@@ -114,7 +114,7 @@ public final class DocumentsImpl {
 
         @Get("/docs('{key}')")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<Map<String, Object>> getSync(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @PathParam("key") String key,
             @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion,
@@ -123,7 +123,7 @@ public final class DocumentsImpl {
 
         @Post("/docs/search.post.suggest")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SuggestDocumentsResult>> suggestPost(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
@@ -131,7 +131,7 @@ public final class DocumentsImpl {
 
         @Post("/docs/search.post.suggest")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SuggestDocumentsResult> suggestPostSync(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
@@ -139,7 +139,7 @@ public final class DocumentsImpl {
 
         @Post("/docs/search.index")
         @ExpectedResponses({ 200, 207 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<IndexDocumentsResult>> index(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
@@ -147,7 +147,7 @@ public final class DocumentsImpl {
 
         @Post("/docs/search.index")
         @ExpectedResponses({ 200, 207 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<IndexDocumentsResult> indexSync(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
@@ -155,7 +155,7 @@ public final class DocumentsImpl {
 
         @Post("/docs/search.post.autocomplete")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<AutocompleteResult>> autocompletePost(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -163,7 +163,7 @@ public final class DocumentsImpl {
 
         @Post("/docs/search.post.autocomplete")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<AutocompleteResult> autocompletePostSync(@HostParam("endpoint") String endpoint,
             @HostParam("indexName") String indexName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -175,20 +175,13 @@ public final class DocumentsImpl {
      *
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Long>> countWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.count(this.client.getEndpoint(), this.client.getIndexName(),
-            xMsClientRequestId, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> countWithResponseAsync(requestOptions, context));
     }
 
     /**
@@ -197,7 +190,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -218,7 +211,7 @@ public final class DocumentsImpl {
      *
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -233,7 +226,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
@@ -248,7 +241,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
@@ -269,7 +262,7 @@ public final class DocumentsImpl {
      *
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -284,7 +277,7 @@ public final class DocumentsImpl {
      * @param searchRequest The definition of the Search request.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing search results from an index along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -292,14 +285,7 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(SearchRequest searchRequest,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.searchPost(this.client.getEndpoint(), this.client.getIndexName(),
-            this.client.getApiVersion(), xMsClientRequestId, accept, searchRequest, context));
+        return FluxUtil.withContext(context -> searchPostWithResponseAsync(searchRequest, requestOptions, context));
     }
 
     /**
@@ -309,7 +295,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing search results from an index along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -333,7 +319,7 @@ public final class DocumentsImpl {
      * @param searchRequest The definition of the Search request.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing search results from an index on successful completion of {@link Mono}.
      */
@@ -350,7 +336,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing search results from an index on successful completion of {@link Mono}.
      */
@@ -368,7 +354,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing search results from an index along with {@link Response}.
      */
@@ -391,7 +377,7 @@ public final class DocumentsImpl {
      * @param searchRequest The definition of the Search request.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing search results from an index.
      */
@@ -408,7 +394,7 @@ public final class DocumentsImpl {
      * from the returned document.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a document retrieved via a document lookup operation along with {@link Response} on successful completion
      * of {@link Mono}.
@@ -416,16 +402,7 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Map<String, Object>>> getWithResponseAsync(String key, List<String> selectedFields,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String selectedFieldsConverted = (selectedFields == null) ? null : selectedFields.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getIndexName(), key,
-            selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(key, selectedFields, requestOptions, context));
     }
 
     /**
@@ -437,7 +414,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a document retrieved via a document lookup operation along with {@link Response} on successful completion
      * of {@link Mono}.
@@ -451,8 +428,11 @@ public final class DocumentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String selectedFieldsConverted = (selectedFields == null) ? null : selectedFields.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String selectedFieldsConverted = (selectedFields == null)
+            ? null
+            : selectedFields.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.get(this.client.getEndpoint(), this.client.getIndexName(), key, selectedFieldsConverted,
             this.client.getApiVersion(), xMsClientRequestId, accept, context);
     }
@@ -465,7 +445,7 @@ public final class DocumentsImpl {
      * from the returned document.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
      */
@@ -484,7 +464,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
      */
@@ -504,7 +484,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a document retrieved via a document lookup operation along with {@link Response}.
      */
@@ -517,8 +497,11 @@ public final class DocumentsImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        String selectedFieldsConverted = (selectedFields == null) ? null : selectedFields.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String selectedFieldsConverted = (selectedFields == null)
+            ? null
+            : selectedFields.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.getSync(this.client.getEndpoint(), this.client.getIndexName(), key, selectedFieldsConverted,
             this.client.getApiVersion(), xMsClientRequestId, accept, context);
     }
@@ -531,7 +514,7 @@ public final class DocumentsImpl {
      * from the returned document.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a document retrieved via a document lookup operation.
      */
@@ -546,7 +529,7 @@ public final class DocumentsImpl {
      * @param suggestRequest The Suggest request.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing suggestion query results from an index along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -554,15 +537,7 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SuggestDocumentsResult>> suggestPostWithResponseAsync(SuggestRequest suggestRequest,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil
-            .withContext(context -> service.suggestPost(this.client.getEndpoint(), this.client.getIndexName(),
-                this.client.getApiVersion(), xMsClientRequestId, accept, suggestRequest, context));
+        return FluxUtil.withContext(context -> suggestPostWithResponseAsync(suggestRequest, requestOptions, context));
     }
 
     /**
@@ -572,7 +547,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing suggestion query results from an index along with {@link Response} on successful
      * completion of {@link Mono}.
@@ -596,7 +571,7 @@ public final class DocumentsImpl {
      * @param suggestRequest The Suggest request.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing suggestion query results from an index on successful completion of {@link Mono}.
      */
@@ -613,7 +588,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing suggestion query results from an index on successful completion of {@link Mono}.
      */
@@ -631,7 +606,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing suggestion query results from an index along with {@link Response}.
      */
@@ -654,7 +629,7 @@ public final class DocumentsImpl {
      * @param suggestRequest The Suggest request.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing suggestion query results from an index.
      */
@@ -669,7 +644,7 @@ public final class DocumentsImpl {
      * @param batch The batch of index actions.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of operations for all documents in the indexing request along with
      * {@link Response} on successful completion of {@link Mono}.
@@ -677,14 +652,7 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> indexWithResponseAsync(IndexBatch batch,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.index(this.client.getEndpoint(), this.client.getIndexName(),
-            this.client.getApiVersion(), xMsClientRequestId, accept, batch, context));
+        return FluxUtil.withContext(context -> indexWithResponseAsync(batch, requestOptions, context));
     }
 
     /**
@@ -694,7 +662,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of operations for all documents in the indexing request along with
      * {@link Response} on successful completion of {@link Mono}.
@@ -718,7 +686,7 @@ public final class DocumentsImpl {
      * @param batch The batch of index actions.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of operations for all documents in the indexing request on successful
      * completion of {@link Mono}.
@@ -735,7 +703,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of operations for all documents in the indexing request on successful
      * completion of {@link Mono}.
@@ -752,7 +720,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of operations for all documents in the indexing request along with
      * {@link Response}.
@@ -776,7 +744,7 @@ public final class DocumentsImpl {
      * @param batch The batch of index actions.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of operations for all documents in the indexing request.
      */
@@ -791,22 +759,15 @@ public final class DocumentsImpl {
      * @param autocompleteRequest The definition of the Autocomplete request.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of Autocomplete query along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AutocompleteResult>> autocompletePostWithResponseAsync(AutocompleteRequest autocompleteRequest,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return FluxUtil
-            .withContext(context -> service.autocompletePost(this.client.getEndpoint(), this.client.getIndexName(),
-                xMsClientRequestId, this.client.getApiVersion(), accept, autocompleteRequest, context));
+            .withContext(context -> autocompletePostWithResponseAsync(autocompleteRequest, requestOptions, context));
     }
 
     /**
@@ -816,7 +777,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of Autocomplete query along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -839,7 +800,7 @@ public final class DocumentsImpl {
      * @param autocompleteRequest The definition of the Autocomplete request.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of Autocomplete query on successful completion of {@link Mono}.
      */
@@ -857,7 +818,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of Autocomplete query on successful completion of {@link Mono}.
      */
@@ -875,7 +836,7 @@ public final class DocumentsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of Autocomplete query along with {@link Response}.
      */
@@ -898,7 +859,7 @@ public final class DocumentsImpl {
      * @param autocompleteRequest The definition of the Autocomplete request.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of Autocomplete query.
      */

@@ -9,7 +9,19 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Represents HTTP header names for multiple versions of HTTP.
+ * <p>Represents HTTP header names for multiple versions of HTTP.</p>
+ *
+ * <p>This class encapsulates the name of an HTTP header in a case-insensitive manner. It provides methods to access the
+ * case-sensitive and case-insensitive versions of the header name.</p>
+ *
+ * <p>It also provides constants for commonly used HTTP header names. For example, you can use {@link #CONTENT_TYPE} to get
+ * the Content-Type header name, and {@link #AUTHORIZATION} to get the Authorization header name.</p>
+ *
+ * <p>This class is useful when you want to work with the names of HTTP headers in a case-insensitive manner, or when you
+ * want to use the predefined constants for commonly used HTTP header names.</p>
+ *
+ * <p>Note: This class extends {@link ExpandableStringEnum}, so it can be used in the same way as other expandable string
+ * enums. For example, you can use the {@link #fromString(String)} method to get an instance of this class from a string.</p>
  */
 @SuppressWarnings("unused")
 public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
@@ -165,6 +177,11 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     public static final HttpHeaderName AUTHORIZATION = fromString("Authorization");
 
     /**
+     * {@code Azure-AsyncOperation}/{@code azure-azyncoperation}
+     */
+    public static final HttpHeaderName AZURE_ASYNCOPERATION = fromString("Azure-AsyncOperation");
+
+    /**
      * {@code Cache-Control}/{@code cache-control}
      */
     public static final HttpHeaderName CACHE_CONTROL = fromString("Cache-Control");
@@ -305,6 +322,11 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     public static final HttpHeaderName MAX_FORWARDS = fromString("Max-Forwards");
 
     /**
+     * {@code Operation-Location}/{@code operation-location}
+     */
+    public static final HttpHeaderName OPERATION_LOCATION = fromString("Operation-Location");
+
+    /**
      * {@code Origin}/{@code origin}
      */
     public static final HttpHeaderName ORIGIN = fromString("Origin");
@@ -348,6 +370,11 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
      * {@code Retry-After}/{@code retry-after}
      */
     public static final HttpHeaderName RETRY_AFTER = fromString("Retry-After");
+
+    /**
+     * {@code retry-after-ms}
+     */
+    public static final HttpHeaderName RETRY_AFTER_MS = fromString("retry-after-ms");
 
     /**
      * {@code Server}/{@code server}
@@ -412,15 +439,30 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     /**
      * {@code x-ms-client-request-id}
      */
+    public static final HttpHeaderName X_MS_CLIENT_ID = fromString("x-ms-client-id");
+
+    /**
+     * {@code x-ms-client-request-id}
+     */
     public static final HttpHeaderName X_MS_CLIENT_REQUEST_ID = fromString("x-ms-client-request-id");
+
+    /**
+     * {@code x-ms-date}
+     */
+    public static final HttpHeaderName X_MS_DATE = fromString("x-ms-date");
 
     /**
      * {@code x-ms-request-id}
      */
-    public static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+    public static final HttpHeaderName X_MS_REQUEST_ID = fromString("x-ms-request-id");
+
+    /**
+     * {@code x-ms-retry-after-ms}
+     */
+    public static final HttpHeaderName X_MS_RETRY_AFTER_MS = fromString("x-ms-retry-after-ms");
 
     /**
      * {@code traceparent}
      */
-    public static final HttpHeaderName TRACEPARENT = HttpHeaderName.fromString("traceparent");
+    public static final HttpHeaderName TRACEPARENT = fromString("traceparent");
 }

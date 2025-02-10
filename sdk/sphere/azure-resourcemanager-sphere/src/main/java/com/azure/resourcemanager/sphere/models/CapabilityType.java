@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Capability image type. */
+/**
+ * Capability image type.
+ */
 public final class CapabilityType extends ExpandableStringEnum<CapabilityType> {
-    /** Static value ApplicationDevelopment for CapabilityType. */
+    /**
+     * Static value ApplicationDevelopment for CapabilityType.
+     */
     public static final CapabilityType APPLICATION_DEVELOPMENT = fromString("ApplicationDevelopment");
 
-    /** Static value FieldServicing for CapabilityType. */
+    /**
+     * Static value FieldServicing for CapabilityType.
+     */
     public static final CapabilityType FIELD_SERVICING = fromString("FieldServicing");
 
     /**
      * Creates a new instance of CapabilityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class CapabilityType extends ExpandableStringEnum<CapabilityType> {
 
     /**
      * Creates or finds a CapabilityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CapabilityType.
      */
-    @JsonCreator
     public static CapabilityType fromString(String name) {
         return fromString(name, CapabilityType.class);
     }
 
     /**
      * Gets known CapabilityType values.
-     *
+     * 
      * @return known CapabilityType values.
      */
     public static Collection<CapabilityType> values() {

@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Vpn device configuration script generation parameters.
  */
 @Fluent
-public final class VpnDeviceScriptParameters {
+public final class VpnDeviceScriptParameters implements JsonSerializable<VpnDeviceScriptParameters> {
     /*
      * The vendor for the vpn device.
      */
-    @JsonProperty(value = "vendor")
     private String vendor;
 
     /*
      * The device family for the vpn device.
      */
-    @JsonProperty(value = "deviceFamily")
     private String deviceFamily;
 
     /*
      * The firmware version for the vpn device.
      */
-    @JsonProperty(value = "firmwareVersion")
     private String firmwareVersion;
 
     /**
@@ -102,5 +103,47 @@ public final class VpnDeviceScriptParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vendor", this.vendor);
+        jsonWriter.writeStringField("deviceFamily", this.deviceFamily);
+        jsonWriter.writeStringField("firmwareVersion", this.firmwareVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnDeviceScriptParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnDeviceScriptParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnDeviceScriptParameters.
+     */
+    public static VpnDeviceScriptParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnDeviceScriptParameters deserializedVpnDeviceScriptParameters = new VpnDeviceScriptParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vendor".equals(fieldName)) {
+                    deserializedVpnDeviceScriptParameters.vendor = reader.getString();
+                } else if ("deviceFamily".equals(fieldName)) {
+                    deserializedVpnDeviceScriptParameters.deviceFamily = reader.getString();
+                } else if ("firmwareVersion".equals(fieldName)) {
+                    deserializedVpnDeviceScriptParameters.firmwareVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnDeviceScriptParameters;
+        });
     }
 }

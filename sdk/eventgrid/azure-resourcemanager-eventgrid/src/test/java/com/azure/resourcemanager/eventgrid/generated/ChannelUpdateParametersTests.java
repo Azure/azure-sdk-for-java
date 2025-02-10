@@ -36,16 +36,22 @@ public final class ChannelUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChannelUpdateParameters model = new ChannelUpdateParameters()
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-08-27T18:55:51Z"))
-            .withPartnerDestinationInfo(new PartnerUpdateDestinationInfo()).withPartnerTopicInfo(
-                new PartnerUpdateTopicInfo().withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                    .withInlineEventTypes(mapOf("gbquxigj",
-                        new InlineEventProperties().withDescription("rtumkdosvq").withDisplayName("bmdg")
-                            .withDocumentationUrl("jfddgmbmbe").withDataSchemaUrl("pbhtqqrolfpfpsa"),
-                        "vpys",
-                        new InlineEventProperties().withDescription("gzjaoyfhrtxilne").withDisplayName("ujysvle")
-                            .withDocumentationUrl("vfqawrlyxwjkcpr").withDataSchemaUrl("wbxgjvt")))));
+        ChannelUpdateParameters model
+            = new ChannelUpdateParameters()
+                .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-08-27T18:55:51Z"))
+                .withPartnerDestinationInfo(new PartnerUpdateDestinationInfo())
+                .withPartnerTopicInfo(new PartnerUpdateTopicInfo()
+                    .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                        .withInlineEventTypes(mapOf("gbquxigj",
+                            new InlineEventProperties().withDescription("rtumkdosvq")
+                                .withDisplayName("bmdg")
+                                .withDocumentationUrl("jfddgmbmbe")
+                                .withDataSchemaUrl("pbhtqqrolfpfpsa"),
+                            "vpys",
+                            new InlineEventProperties().withDescription("gzjaoyfhrtxilne")
+                                .withDisplayName("ujysvle")
+                                .withDocumentationUrl("vfqawrlyxwjkcpr")
+                                .withDataSchemaUrl("wbxgjvt")))));
         model = BinaryData.fromObject(model).toObject(ChannelUpdateParameters.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T18:55:51Z"), model.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.partnerTopicInfo().eventTypeInfo().kind());

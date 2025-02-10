@@ -7,46 +7,48 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterJobInner;
 
-/** An immutable client-side representation of ClusterJob. */
+/**
+ * An immutable client-side representation of ClusterJob.
+ */
 public interface ClusterJob {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Properties of cluster job.
-     *
+     * 
      * @return the properties value.
      */
     ClusterJobProperties properties();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterJobInner object.
-     *
+     * 
      * @return the inner object.
      */
     ClusterJobInner innerModel();

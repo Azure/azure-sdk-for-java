@@ -39,17 +39,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LedgersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LedgersClient.
+ */
 public final class LedgersClientImpl implements LedgersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LedgersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ConfidentialLedgerManagementClientImpl client;
 
     /**
      * Initializes an instance of LedgersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LedgersClientImpl(ConfidentialLedgerManagementClientImpl client) {
@@ -64,117 +70,84 @@ public final class LedgersClientImpl implements LedgersClient {
     @Host("{$host}")
     @ServiceInterface(name = "ConfidentialLedgerMa")
     public interface LedgersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfidentialLedgerInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ledgerName") String ledgerName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConfidentialLedgerInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ledgerName") String ledgerName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ledgerName") String ledgerName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ledgerName") String ledgerName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ledgerName") String ledgerName,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ledgerName") String ledgerName,
             @BodyParam("application/json") ConfidentialLedgerInner confidentialLedger,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers/{ledgerName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ledgerName") String ledgerName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ledgerName") String ledgerName,
             @BodyParam("application/json") ConfidentialLedgerInner confidentialLedger,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConfidentialLedger/ledgers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfidentialLedgerList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConfidentialLedgerList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ConfidentialLedger/ledgers/")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfidentialLedgerList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConfidentialLedgerList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfidentialLedgerList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfidentialLedgerList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieves information about a Confidential Ledger resource.
-     *
-     * <p>Retrieves the properties of a Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of a Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -182,19 +155,15 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfidentialLedgerInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String ledgerName) {
+    private Mono<Response<ConfidentialLedgerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String ledgerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -205,26 +174,17 @@ public final class LedgersClientImpl implements LedgersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            ledgerName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, ledgerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves information about a Confidential Ledger resource.
-     *
-     * <p>Retrieves the properties of a Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of a Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,19 +193,15 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfidentialLedgerInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String ledgerName, Context context) {
+    private Mono<Response<ConfidentialLedgerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String ledgerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -256,23 +212,16 @@ public final class LedgersClientImpl implements LedgersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                ledgerName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, ledgerName, accept, context);
     }
 
     /**
      * Retrieves information about a Confidential Ledger resource.
-     *
-     * <p>Retrieves the properties of a Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of a Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -287,10 +236,10 @@ public final class LedgersClientImpl implements LedgersClient {
 
     /**
      * Retrieves information about a Confidential Ledger resource.
-     *
-     * <p>Retrieves the properties of a Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of a Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,17 +248,17 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfidentialLedgerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String ledgerName, Context context) {
+    public Response<ConfidentialLedgerInner> getByResourceGroupWithResponse(String resourceGroupName, String ledgerName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ledgerName, context).block();
     }
 
     /**
      * Retrieves information about a Confidential Ledger resource.
-     *
-     * <p>Retrieves the properties of a Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of a Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -323,10 +272,10 @@ public final class LedgersClientImpl implements LedgersClient {
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -336,16 +285,12 @@ public final class LedgersClientImpl implements LedgersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String ledgerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -356,26 +301,17 @@ public final class LedgersClientImpl implements LedgersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            ledgerName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, ledgerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -384,19 +320,15 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String ledgerName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String ledgerName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -407,23 +339,16 @@ public final class LedgersClientImpl implements LedgersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                ledgerName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, ledgerName, accept, context);
     }
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -433,18 +358,16 @@ public final class LedgersClientImpl implements LedgersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ledgerName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ledgerName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,21 +376,20 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String ledgerName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ledgerName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ledgerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -481,10 +403,10 @@ public final class LedgersClientImpl implements LedgersClient {
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -493,17 +415,17 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String ledgerName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ledgerName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, ledgerName, context).getSyncPoller();
     }
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -517,10 +439,10 @@ public final class LedgersClientImpl implements LedgersClient {
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -530,17 +452,16 @@ public final class LedgersClientImpl implements LedgersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String ledgerName, Context context) {
-        return beginDeleteAsync(resourceGroupName, ledgerName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, ledgerName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -553,10 +474,10 @@ public final class LedgersClientImpl implements LedgersClient {
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -570,10 +491,10 @@ public final class LedgersClientImpl implements LedgersClient {
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -582,19 +503,15 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -611,27 +528,17 @@ public final class LedgersClientImpl implements LedgersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            ledgerName,
-                            confidentialLedger,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, ledgerName, confidentialLedger, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @param context The context to associate with this operation.
@@ -641,19 +548,15 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -670,24 +573,16 @@ public final class LedgersClientImpl implements LedgersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                ledgerName,
-                confidentialLedger,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, ledgerName, confidentialLedger, accept, context);
     }
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -696,26 +591,21 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return the {@link PollerFlux} for polling of confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginCreateAsync(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, ledgerName, confidentialLedger);
-        return this
-            .client
-            .<ConfidentialLedgerInner, ConfidentialLedgerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfidentialLedgerInner.class,
-                ConfidentialLedgerInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner>
+        beginCreateAsync(String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, ledgerName, confidentialLedger);
+        return this.client.<ConfidentialLedgerInner, ConfidentialLedgerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConfidentialLedgerInner.class, ConfidentialLedgerInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @param context The context to associate with this operation.
@@ -728,24 +618,18 @@ public final class LedgersClientImpl implements LedgersClient {
     private PollerFlux<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginCreateAsync(
         String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, ledgerName, confidentialLedger, context);
-        return this
-            .client
-            .<ConfidentialLedgerInner, ConfidentialLedgerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfidentialLedgerInner.class,
-                ConfidentialLedgerInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, ledgerName, confidentialLedger, context);
+        return this.client.<ConfidentialLedgerInner, ConfidentialLedgerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConfidentialLedgerInner.class, ConfidentialLedgerInner.class, context);
     }
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -754,17 +638,17 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return the {@link SyncPoller} for polling of confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginCreate(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
+    public SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner>
+        beginCreate(String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
         return this.beginCreateAsync(resourceGroupName, ledgerName, confidentialLedger).getSyncPoller();
     }
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @param context The context to associate with this operation.
@@ -781,10 +665,10 @@ public final class LedgersClientImpl implements LedgersClient {
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -793,19 +677,18 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfidentialLedgerInner> createAsync(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
-        return beginCreateAsync(resourceGroupName, ledgerName, confidentialLedger)
-            .last()
+    private Mono<ConfidentialLedgerInner> createAsync(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger) {
+        return beginCreateAsync(resourceGroupName, ledgerName, confidentialLedger).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @param context The context to associate with this operation.
@@ -815,19 +698,18 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfidentialLedgerInner> createAsync(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context) {
-        return beginCreateAsync(resourceGroupName, ledgerName, confidentialLedger, context)
-            .last()
+    private Mono<ConfidentialLedgerInner> createAsync(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger, Context context) {
+        return beginCreateAsync(resourceGroupName, ledgerName, confidentialLedger, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -836,17 +718,17 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfidentialLedgerInner create(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
+    public ConfidentialLedgerInner create(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger) {
         return createAsync(resourceGroupName, ledgerName, confidentialLedger).block();
     }
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @param context The context to associate with this operation.
@@ -856,17 +738,17 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfidentialLedgerInner create(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context) {
+    public ConfidentialLedgerInner create(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger, Context context) {
         return createAsync(resourceGroupName, ledgerName, confidentialLedger, context).block();
     }
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -875,19 +757,15 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -904,27 +782,17 @@ public final class LedgersClientImpl implements LedgersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            ledgerName,
-                            confidentialLedger,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, ledgerName, confidentialLedger, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @param context The context to associate with this operation.
@@ -934,19 +802,15 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -963,24 +827,16 @@ public final class LedgersClientImpl implements LedgersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                ledgerName,
-                confidentialLedger,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, ledgerName, confidentialLedger, accept, context);
     }
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -989,26 +845,21 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return the {@link PollerFlux} for polling of confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginUpdateAsync(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, ledgerName, confidentialLedger);
-        return this
-            .client
-            .<ConfidentialLedgerInner, ConfidentialLedgerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfidentialLedgerInner.class,
-                ConfidentialLedgerInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner>
+        beginUpdateAsync(String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, ledgerName, confidentialLedger);
+        return this.client.<ConfidentialLedgerInner, ConfidentialLedgerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConfidentialLedgerInner.class, ConfidentialLedgerInner.class,
+            this.client.getContext());
     }
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @param context The context to associate with this operation.
@@ -1021,24 +872,18 @@ public final class LedgersClientImpl implements LedgersClient {
     private PollerFlux<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginUpdateAsync(
         String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, ledgerName, confidentialLedger, context);
-        return this
-            .client
-            .<ConfidentialLedgerInner, ConfidentialLedgerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfidentialLedgerInner.class,
-                ConfidentialLedgerInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, ledgerName, confidentialLedger, context);
+        return this.client.<ConfidentialLedgerInner, ConfidentialLedgerInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConfidentialLedgerInner.class, ConfidentialLedgerInner.class, context);
     }
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1047,17 +892,17 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return the {@link SyncPoller} for polling of confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginUpdate(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
+    public SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner>
+        beginUpdate(String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
         return this.beginUpdateAsync(resourceGroupName, ledgerName, confidentialLedger).getSyncPoller();
     }
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @param context The context to associate with this operation.
@@ -1074,10 +919,10 @@ public final class LedgersClientImpl implements LedgersClient {
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1086,19 +931,18 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfidentialLedgerInner> updateAsync(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
-        return beginUpdateAsync(resourceGroupName, ledgerName, confidentialLedger)
-            .last()
+    private Mono<ConfidentialLedgerInner> updateAsync(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger) {
+        return beginUpdateAsync(resourceGroupName, ledgerName, confidentialLedger).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @param context The context to associate with this operation.
@@ -1108,19 +952,18 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfidentialLedgerInner> updateAsync(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context) {
-        return beginUpdateAsync(resourceGroupName, ledgerName, confidentialLedger, context)
-            .last()
+    private Mono<ConfidentialLedgerInner> updateAsync(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger, Context context) {
+        return beginUpdateAsync(resourceGroupName, ledgerName, confidentialLedger, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1129,17 +972,17 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfidentialLedgerInner update(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger) {
+    public ConfidentialLedgerInner update(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger) {
         return updateAsync(resourceGroupName, ledgerName, confidentialLedger).block();
     }
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @param context The context to associate with this operation.
@@ -1149,38 +992,34 @@ public final class LedgersClientImpl implements LedgersClient {
      * @return confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfidentialLedgerInner update(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context) {
+    public ConfidentialLedgerInner update(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger, Context context) {
         return updateAsync(resourceGroupName, ledgerName, confidentialLedger, context).block();
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription and resource group
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfidentialLedgerInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter) {
+    private Mono<PagedResponse<ConfidentialLedgerInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1188,57 +1027,37 @@ public final class LedgersClientImpl implements LedgersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<ConfidentialLedgerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, filter, accept, context))
+            .<PagedResponse<ConfidentialLedgerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription and resource group
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfidentialLedgerInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Context context) {
+    private Mono<PagedResponse<ConfidentialLedgerInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1247,98 +1066,82 @@ public final class LedgersClientImpl implements LedgersClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription and resource group
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfidentialLedgerInner> listByResourceGroupAsync(String resourceGroupName, String filter) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription and resource group
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfidentialLedgerInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription and resource group
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConfidentialLedgerInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, context),
+    private PagedFlux<ConfidentialLedgerInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription and resource group
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfidentialLedgerInner> listByResourceGroup(String resourceGroupName) {
@@ -1348,186 +1151,150 @@ public final class LedgersClientImpl implements LedgersClient {
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription and resource group
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfidentialLedgerInner> listByResourceGroup(
-        String resourceGroupName, String filter, Context context) {
+    public PagedIterable<ConfidentialLedgerInner> listByResourceGroup(String resourceGroupName, String filter,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, context));
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfidentialLedgerInner>> listSinglePageAsync(String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<ConfidentialLedgerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), filter, accept, context))
+            .<PagedResponse<ConfidentialLedgerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfidentialLedgerInner>> listSinglePageAsync(String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), filter,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfidentialLedgerInner> listAsync(String filter) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfidentialLedgerInner> listAsync() {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfidentialLedgerInner> listAsync(String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfidentialLedgerInner> list() {
@@ -1537,16 +1304,16 @@ public final class LedgersClientImpl implements LedgersClient {
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfidentialLedgerInner> list(String filter, Context context) {
@@ -1555,14 +1322,13 @@ public final class LedgersClientImpl implements LedgersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfidentialLedgerInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1570,76 +1336,55 @@ public final class LedgersClientImpl implements LedgersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ConfidentialLedgerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ConfidentialLedgerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfidentialLedgerInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ConfidentialLedgerInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfidentialLedgerInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1647,63 +1392,43 @@ public final class LedgersClientImpl implements LedgersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ConfidentialLedgerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ConfidentialLedgerInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of Confidential Ledgers and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfidentialLedgerInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ConfidentialLedgerInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.8 (Unreleased)
+## 2.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,147 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.9.13 (2025-02-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
+
+## 2.9.12 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+
+## 2.9.11 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+- Upgraded Reactor Core from `3.4.38` to `3.4.41`.
+
+## 2.9.10 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
+## 2.9.9 (2024-09-12)
+
+### Features Added
+
+- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, removing the dependency on AmqpChannelProcessor. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
+
+### Bugs Fixed
+
+- Fixes the endpoint state subscription to log errors using ClientLogger so that error do not reach Reactor global OnErrorDropped hook. ([41637](https://github.com/Azure/azure-sdk-for-java/issues/41637))
+- Fixes thread unsafe operation in AMQP session by introducing ReactorSessionCache. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+
+## 2.9.8 (2024-07-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to `1.51.0`.
+
+## 2.9.7 (2024-07-12)
+
+### Bugs Fixed
+- Removing duplicate ReactorSession::closeAsync call in session-endpoint error-handler. ([#40667](https://github.com/Azure/azure-sdk-for-java/pull/40667))
+
+## 2.9.6 (2024-06-11)
+
+### Features Added
+
+- Added feature to enable/disable SSL when initially creating connection to support AMQP calls on port 5672.
+
+## 2.9.5 (2024-06-06)
+
+### Bugs Fixed
+
+- Expose and use port when parsing `ConnectionStringProperties`. ([#40415](https://github.com/Azure/azure-sdk-for-java/pull/40415))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+- Upgraded Reactor Core from `3.4.36` to `3.4.38`.
+
+## 2.9.4 (2024-05-01)
+
+### Features Added
+
+- `WindowedSubscriber` to translate the asynchronous stream of events or messages to `IterableStream` ([38705](https://github.com/Azure/azure-sdk-for-java/pull/38705)).
+
+### Other Changes
+
+- Improvements to logging. ([#39904](https://github.com/Azure/azure-sdk-for-java/pull/39904))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+- Upgraded `qpid-proton-j-extensions` from `1.2.4` to `1.2.5`.
+
+## 2.9.3 (2024-04-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+- Upgraded `proton-j` from `0.33.8` to `0.34.1`.
+- Upgraded Reactor Core from `3.4.34` to `3.4.36`.
+
+## 2.9.2 (2024-03-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to `1.47.0`.
+
+## 2.9.1 (2024-02-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
+
+## 2.9.0 (2024-01-17)
+
+### Bugs Fixed
+
+- Retry connection on timeout ([38317](https://github.com/Azure/azure-sdk-for-java/pull/38317))
+
+### Features Added
+
+- The version 2.9.0 is the stable release for all the features introduced in the 2.9.0-beta.* versions.
+
+## 2.8.14 (2023-11-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.0` to `1.45.1`.
 
 ## 2.9.0-beta.7 (2023-11-22)
 
@@ -230,7 +371,7 @@
 
 ### Features Added
 
-- Added AMQP-level metrics to reporting number of sent batches, duration of network call, number of received message and consumer lag as well as 
+- Added AMQP-level metrics to reporting number of sent batches, duration of network call, number of received message and consumer lag as well as
   error counters. Metrics are off by default and can be enabled with [azure-core-metrics-opentelemetry](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/README.md)
   plugin. ([#30583](https://github.com/Azure/azure-sdk-for-java/pull/30583))
 
@@ -261,7 +402,7 @@
 ### Bugs Fixed
 
 - Ensure ReactorReceiver EndpointStates terminates if there is no remote-close acknowledgment ([#29212](https://github.com/Azure/azure-sdk-for-java/issues/29212))
-- Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582)) 
+- Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582))
 
 ### Other Changes
 
@@ -285,13 +426,13 @@
 
 - Upgraded `azure-core` from `1.28.0` to `1.29.0`.
 
-- Added "entityPath" context to logger for ReceiveLinkHandlers, SendLinkHandler, LinkHandler, and ReactorReceiver. 
+- Added "entityPath" context to logger for ReceiveLinkHandlers, SendLinkHandler, LinkHandler, and ReactorReceiver.
 
 ## 2.5.0 (2022-05-06)
 
 ### Features Added
 
-- Added `ProxyOptions.fromConfiguration(Configuration)` to enable creation of `ProxyOptions` from an environment 
+- Added `ProxyOptions.fromConfiguration(Configuration)` to enable creation of `ProxyOptions` from an environment
   configuration.
 
 ### Bugs Fixed
@@ -309,9 +450,9 @@
 
 ### Bugs Fixed
 
-- Fixed an issue where error from one receiver bypassed to parent connection that resulted in taking down rest of the 
+- Fixed an issue where error from one receiver bypassed to parent connection that resulted in taking down rest of the
   receivers. ([#27716](https://github.com/Azure/azure-sdk-for-java/issues/27716))
-- Downgraded the level of a log entry in RequestResponseChannel from error to warn, the sender and receiver often 
+- Downgraded the level of a log entry in RequestResponseChannel from error to warn, the sender and receiver often
   recover from this error, but due to the log level, it generates false alerts in monitoring systems. ([26968](https://github.com/Azure/azure-sdk-for-java/issues/26968))
 
 ### Other Changes
@@ -461,7 +602,7 @@
 
 ## 2.0.6 (2021-05-24)
 ### Bug Fixes
-- Fixed a bug that caused amqp connection not to retry when network error happened.
+- Fixed a bug that caused AMQP connection not to retry when network error happened.
 
 ## 2.0.5 (2021-05-07)
 

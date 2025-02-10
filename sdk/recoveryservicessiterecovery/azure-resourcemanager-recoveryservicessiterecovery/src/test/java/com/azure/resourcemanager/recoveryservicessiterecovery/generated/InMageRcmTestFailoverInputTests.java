@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageRcmTestFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmTestFailoverInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"InMageRcm\",\"networkId\":\"ychakvy\",\"recoveryPointId\":\"bqvum\"}")
-                .toObject(InMageRcmTestFailoverInput.class);
+        InMageRcmTestFailoverInput model = BinaryData
+            .fromString("{\"instanceType\":\"InMageRcm\",\"networkId\":\"ychakvy\",\"recoveryPointId\":\"bqvum\"}")
+            .toObject(InMageRcmTestFailoverInput.class);
         Assertions.assertEquals("ychakvy", model.networkId());
         Assertions.assertEquals("bqvum", model.recoveryPointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmTestFailoverInput model =
-            new InMageRcmTestFailoverInput().withNetworkId("ychakvy").withRecoveryPointId("bqvum");
+        InMageRcmTestFailoverInput model
+            = new InMageRcmTestFailoverInput().withNetworkId("ychakvy").withRecoveryPointId("bqvum");
         model = BinaryData.fromObject(model).toObject(InMageRcmTestFailoverInput.class);
         Assertions.assertEquals("ychakvy", model.networkId());
         Assertions.assertEquals("bqvum", model.recoveryPointId());

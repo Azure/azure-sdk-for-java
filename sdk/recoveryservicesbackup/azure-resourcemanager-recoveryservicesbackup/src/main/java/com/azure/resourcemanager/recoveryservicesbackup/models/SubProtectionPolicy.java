@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Sub-protection policy which includes schedule and retention. */
+/**
+ * Sub-protection policy which includes schedule and retention.
+ */
 @Fluent
-public final class SubProtectionPolicy {
+public final class SubProtectionPolicy implements JsonSerializable<SubProtectionPolicy> {
     /*
      * Type of backup policy type
      */
-    @JsonProperty(value = "policyType")
     private PolicyType policyType;
 
     /*
      * Backup schedule specified as part of backup policy.
      */
-    @JsonProperty(value = "schedulePolicy")
     private SchedulePolicy schedulePolicy;
 
     /*
      * Retention policy with the details on backup copy retention ranges.
      */
-    @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
     /*
@@ -35,17 +37,22 @@ public final class SubProtectionPolicy {
      * Key is Target Tier, defined in RecoveryPointTierType enum.
      * Tiering policy specifies the criteria to move RP to the target tier.
      */
-    @JsonProperty(value = "tieringPolicy")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, TieringPolicy> tieringPolicy;
 
-    /** Creates an instance of SubProtectionPolicy class. */
+    /*
+     * Snapshot Backup related fields for WorkloadType SaPHanaSystem
+     */
+    private SnapshotBackupAdditionalDetails snapshotBackupAdditionalDetails;
+
+    /**
+     * Creates an instance of SubProtectionPolicy class.
+     */
     public SubProtectionPolicy() {
     }
 
     /**
      * Get the policyType property: Type of backup policy type.
-     *
+     * 
      * @return the policyType value.
      */
     public PolicyType policyType() {
@@ -54,7 +61,7 @@ public final class SubProtectionPolicy {
 
     /**
      * Set the policyType property: Type of backup policy type.
-     *
+     * 
      * @param policyType the policyType value to set.
      * @return the SubProtectionPolicy object itself.
      */
@@ -65,7 +72,7 @@ public final class SubProtectionPolicy {
 
     /**
      * Get the schedulePolicy property: Backup schedule specified as part of backup policy.
-     *
+     * 
      * @return the schedulePolicy value.
      */
     public SchedulePolicy schedulePolicy() {
@@ -74,7 +81,7 @@ public final class SubProtectionPolicy {
 
     /**
      * Set the schedulePolicy property: Backup schedule specified as part of backup policy.
-     *
+     * 
      * @param schedulePolicy the schedulePolicy value to set.
      * @return the SubProtectionPolicy object itself.
      */
@@ -85,7 +92,7 @@ public final class SubProtectionPolicy {
 
     /**
      * Get the retentionPolicy property: Retention policy with the details on backup copy retention ranges.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -94,7 +101,7 @@ public final class SubProtectionPolicy {
 
     /**
      * Set the retentionPolicy property: Retention policy with the details on backup copy retention ranges.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the SubProtectionPolicy object itself.
      */
@@ -104,9 +111,10 @@ public final class SubProtectionPolicy {
     }
 
     /**
-     * Get the tieringPolicy property: Tiering policy to automatically move RPs to another tier. Key is Target Tier,
-     * defined in RecoveryPointTierType enum. Tiering policy specifies the criteria to move RP to the target tier.
-     *
+     * Get the tieringPolicy property: Tiering policy to automatically move RPs to another tier.
+     * Key is Target Tier, defined in RecoveryPointTierType enum.
+     * Tiering policy specifies the criteria to move RP to the target tier.
+     * 
      * @return the tieringPolicy value.
      */
     public Map<String, TieringPolicy> tieringPolicy() {
@@ -114,9 +122,10 @@ public final class SubProtectionPolicy {
     }
 
     /**
-     * Set the tieringPolicy property: Tiering policy to automatically move RPs to another tier. Key is Target Tier,
-     * defined in RecoveryPointTierType enum. Tiering policy specifies the criteria to move RP to the target tier.
-     *
+     * Set the tieringPolicy property: Tiering policy to automatically move RPs to another tier.
+     * Key is Target Tier, defined in RecoveryPointTierType enum.
+     * Tiering policy specifies the criteria to move RP to the target tier.
+     * 
      * @param tieringPolicy the tieringPolicy value to set.
      * @return the SubProtectionPolicy object itself.
      */
@@ -126,8 +135,29 @@ public final class SubProtectionPolicy {
     }
 
     /**
+     * Get the snapshotBackupAdditionalDetails property: Snapshot Backup related fields for WorkloadType SaPHanaSystem.
+     * 
+     * @return the snapshotBackupAdditionalDetails value.
+     */
+    public SnapshotBackupAdditionalDetails snapshotBackupAdditionalDetails() {
+        return this.snapshotBackupAdditionalDetails;
+    }
+
+    /**
+     * Set the snapshotBackupAdditionalDetails property: Snapshot Backup related fields for WorkloadType SaPHanaSystem.
+     * 
+     * @param snapshotBackupAdditionalDetails the snapshotBackupAdditionalDetails value to set.
+     * @return the SubProtectionPolicy object itself.
+     */
+    public SubProtectionPolicy
+        withSnapshotBackupAdditionalDetails(SnapshotBackupAdditionalDetails snapshotBackupAdditionalDetails) {
+        this.snapshotBackupAdditionalDetails = snapshotBackupAdditionalDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -138,14 +168,65 @@ public final class SubProtectionPolicy {
             retentionPolicy().validate();
         }
         if (tieringPolicy() != null) {
-            tieringPolicy()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            tieringPolicy().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+        if (snapshotBackupAdditionalDetails() != null) {
+            snapshotBackupAdditionalDetails().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyType", this.policyType == null ? null : this.policyType.toString());
+        jsonWriter.writeJsonField("schedulePolicy", this.schedulePolicy);
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
+        jsonWriter.writeMapField("tieringPolicy", this.tieringPolicy, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("snapshotBackupAdditionalDetails", this.snapshotBackupAdditionalDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubProtectionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubProtectionPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubProtectionPolicy.
+     */
+    public static SubProtectionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubProtectionPolicy deserializedSubProtectionPolicy = new SubProtectionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyType".equals(fieldName)) {
+                    deserializedSubProtectionPolicy.policyType = PolicyType.fromString(reader.getString());
+                } else if ("schedulePolicy".equals(fieldName)) {
+                    deserializedSubProtectionPolicy.schedulePolicy = SchedulePolicy.fromJson(reader);
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedSubProtectionPolicy.retentionPolicy = RetentionPolicy.fromJson(reader);
+                } else if ("tieringPolicy".equals(fieldName)) {
+                    Map<String, TieringPolicy> tieringPolicy
+                        = reader.readMap(reader1 -> TieringPolicy.fromJson(reader1));
+                    deserializedSubProtectionPolicy.tieringPolicy = tieringPolicy;
+                } else if ("snapshotBackupAdditionalDetails".equals(fieldName)) {
+                    deserializedSubProtectionPolicy.snapshotBackupAdditionalDetails
+                        = SnapshotBackupAdditionalDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubProtectionPolicy;
+        });
     }
 }

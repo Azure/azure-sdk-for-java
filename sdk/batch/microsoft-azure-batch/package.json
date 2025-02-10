@@ -20,5 +20,8 @@
     "gulp": "^3.9.0",
     "gulp-exec": "2.1.2",
     "yargs": "3.29.0"
+  },
+  "dependencies": {
+    "azure-sdk-for-java-codegen": "file:"
   }
 }

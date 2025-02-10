@@ -5,57 +5,61 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Represents a metric value. */
+/**
+ * Represents a metric value.
+ */
 @Fluent
-public final class MetricValue {
+public final class MetricValue implements JsonSerializable<MetricValue> {
     /*
      * the timestamp for the metric value in ISO 8601 format.
      */
-    @JsonProperty(value = "timeStamp", required = true)
     private OffsetDateTime timestamp;
 
     /*
      * the average value in the time range.
      */
-    @JsonProperty(value = "average")
     private Double average;
 
     /*
      * the least value in the time range.
      */
-    @JsonProperty(value = "minimum")
     private Double minimum;
 
     /*
      * the greatest value in the time range.
      */
-    @JsonProperty(value = "maximum")
     private Double maximum;
 
     /*
      * the sum of all of the values in the time range.
      */
-    @JsonProperty(value = "total")
     private Double total;
 
     /*
      * the number of samples in the time range. Can be used to determine the number of values that contributed to the
      * average value.
      */
-    @JsonProperty(value = "count")
     private Double count;
 
-    /** Creates an instance of MetricValue class. */
+    /**
+     * Creates an instance of MetricValue class.
+     */
     public MetricValue() {
     }
 
     /**
      * Get the timestamp property: the timestamp for the metric value in ISO 8601 format.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -64,7 +68,7 @@ public final class MetricValue {
 
     /**
      * Set the timestamp property: the timestamp for the metric value in ISO 8601 format.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the MetricValue object itself.
      */
@@ -75,7 +79,7 @@ public final class MetricValue {
 
     /**
      * Get the average property: the average value in the time range.
-     *
+     * 
      * @return the average value.
      */
     public Double average() {
@@ -84,7 +88,7 @@ public final class MetricValue {
 
     /**
      * Set the average property: the average value in the time range.
-     *
+     * 
      * @param average the average value to set.
      * @return the MetricValue object itself.
      */
@@ -95,7 +99,7 @@ public final class MetricValue {
 
     /**
      * Get the minimum property: the least value in the time range.
-     *
+     * 
      * @return the minimum value.
      */
     public Double minimum() {
@@ -104,7 +108,7 @@ public final class MetricValue {
 
     /**
      * Set the minimum property: the least value in the time range.
-     *
+     * 
      * @param minimum the minimum value to set.
      * @return the MetricValue object itself.
      */
@@ -115,7 +119,7 @@ public final class MetricValue {
 
     /**
      * Get the maximum property: the greatest value in the time range.
-     *
+     * 
      * @return the maximum value.
      */
     public Double maximum() {
@@ -124,7 +128,7 @@ public final class MetricValue {
 
     /**
      * Set the maximum property: the greatest value in the time range.
-     *
+     * 
      * @param maximum the maximum value to set.
      * @return the MetricValue object itself.
      */
@@ -135,7 +139,7 @@ public final class MetricValue {
 
     /**
      * Get the total property: the sum of all of the values in the time range.
-     *
+     * 
      * @return the total value.
      */
     public Double total() {
@@ -144,7 +148,7 @@ public final class MetricValue {
 
     /**
      * Set the total property: the sum of all of the values in the time range.
-     *
+     * 
      * @param total the total value to set.
      * @return the MetricValue object itself.
      */
@@ -156,7 +160,7 @@ public final class MetricValue {
     /**
      * Get the count property: the number of samples in the time range. Can be used to determine the number of values
      * that contributed to the average value.
-     *
+     * 
      * @return the count value.
      */
     public Double count() {
@@ -166,7 +170,7 @@ public final class MetricValue {
     /**
      * Set the count property: the number of samples in the time range. Can be used to determine the number of values
      * that contributed to the average value.
-     *
+     * 
      * @param count the count value to set.
      * @return the MetricValue object itself.
      */
@@ -177,16 +181,69 @@ public final class MetricValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (timestamp() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timestamp in model MetricValue"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timestamp in model MetricValue"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MetricValue.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeStamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeNumberField("average", this.average);
+        jsonWriter.writeNumberField("minimum", this.minimum);
+        jsonWriter.writeNumberField("maximum", this.maximum);
+        jsonWriter.writeNumberField("total", this.total);
+        jsonWriter.writeNumberField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricValue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetricValue.
+     */
+    public static MetricValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricValue deserializedMetricValue = new MetricValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeStamp".equals(fieldName)) {
+                    deserializedMetricValue.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("average".equals(fieldName)) {
+                    deserializedMetricValue.average = reader.getNullable(JsonReader::getDouble);
+                } else if ("minimum".equals(fieldName)) {
+                    deserializedMetricValue.minimum = reader.getNullable(JsonReader::getDouble);
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedMetricValue.maximum = reader.getNullable(JsonReader::getDouble);
+                } else if ("total".equals(fieldName)) {
+                    deserializedMetricValue.total = reader.getNullable(JsonReader::getDouble);
+                } else if ("count".equals(fieldName)) {
+                    deserializedMetricValue.count = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricValue;
+        });
+    }
 }

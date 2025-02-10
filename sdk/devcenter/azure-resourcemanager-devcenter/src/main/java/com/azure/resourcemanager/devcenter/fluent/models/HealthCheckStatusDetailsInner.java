@@ -7,33 +7,53 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.HealthCheck;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Health Check details. */
+/**
+ * Health Check details.
+ */
 @Immutable
 public final class HealthCheckStatusDetailsInner extends ProxyResource {
     /*
      * Health check status details properties.
      */
-    @JsonProperty(value = "properties")
     private HealthCheckStatusDetailsProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of HealthCheckStatusDetailsInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of HealthCheckStatusDetailsInner class.
+     */
     public HealthCheckStatusDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: Health check status details properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HealthCheckStatusDetailsProperties innerProperties() {
@@ -42,7 +62,7 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,8 +70,38 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the startDateTime property: Start time of last execution of the health checks.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -60,7 +110,7 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
 
     /**
      * Get the endDateTime property: End time of last execution of the health checks.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -69,7 +119,7 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
 
     /**
      * Get the healthChecks property: Details for each health check item.
-     *
+     * 
      * @return the healthChecks value.
      */
     public List<HealthCheck> healthChecks() {
@@ -78,12 +128,59 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthCheckStatusDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthCheckStatusDetailsInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HealthCheckStatusDetailsInner.
+     */
+    public static HealthCheckStatusDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthCheckStatusDetailsInner deserializedHealthCheckStatusDetailsInner
+                = new HealthCheckStatusDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHealthCheckStatusDetailsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedHealthCheckStatusDetailsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHealthCheckStatusDetailsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHealthCheckStatusDetailsInner.innerProperties
+                        = HealthCheckStatusDetailsProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedHealthCheckStatusDetailsInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthCheckStatusDetailsInner;
+        });
     }
 }

@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.StorageMigrationOptionsProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Options for app content migration.
@@ -16,8 +19,22 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
     /*
      * StorageMigrationOptions resource specific properties
      */
-    @JsonProperty(value = "properties")
     private StorageMigrationOptionsProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of StorageMigrationOptions class.
@@ -32,6 +49,36 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
      */
     private StorageMigrationOptionsProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -115,8 +162,8 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Get the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during
-     * copy operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during copy
+     * operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the blockWriteAccessToSite value.
      */
@@ -125,8 +172,8 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Set the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during
-     * copy operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during copy
+     * operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param blockWriteAccessToSite the blockWriteAccessToSite value to set.
      * @return the StorageMigrationOptions object itself.
@@ -146,9 +193,55 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageMigrationOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageMigrationOptions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageMigrationOptions.
+     */
+    public static StorageMigrationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageMigrationOptions deserializedStorageMigrationOptions = new StorageMigrationOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageMigrationOptions.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageMigrationOptions.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageMigrationOptions.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStorageMigrationOptions.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageMigrationOptions.innerProperties
+                        = StorageMigrationOptionsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageMigrationOptions;
+        });
     }
 }

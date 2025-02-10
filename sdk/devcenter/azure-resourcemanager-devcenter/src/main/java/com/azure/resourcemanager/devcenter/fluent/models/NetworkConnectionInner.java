@@ -7,34 +7,54 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.DomainJoinType;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Network related settings. */
+/**
+ * Network related settings.
+ */
 @Fluent
 public final class NetworkConnectionInner extends Resource {
     /*
      * Properties of a Network Connection
      */
-    @JsonProperty(value = "properties")
     private NetworkProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NetworkConnectionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NetworkConnectionInner class.
+     */
     public NetworkConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of a Network Connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkProperties innerProperties() {
@@ -43,21 +63,55 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkConnectionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkConnectionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -66,7 +120,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -76,7 +130,7 @@ public final class NetworkConnectionInner extends Resource {
     /**
      * Get the healthCheckStatus property: Overall health status of the network connection. Health checks are run on
      * creation, update, and periodically to validate the network connection.
-     *
+     * 
      * @return the healthCheckStatus value.
      */
     public HealthCheckStatus healthCheckStatus() {
@@ -85,7 +139,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the networkingResourceGroupName property: The name for resource group where NICs will be placed.
-     *
+     * 
      * @return the networkingResourceGroupName value.
      */
     public String networkingResourceGroupName() {
@@ -94,7 +148,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the networkingResourceGroupName property: The name for resource group where NICs will be placed.
-     *
+     * 
      * @param networkingResourceGroupName the networkingResourceGroupName value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -108,7 +162,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the domainJoinType property: AAD Join type.
-     *
+     * 
      * @return the domainJoinType value.
      */
     public DomainJoinType domainJoinType() {
@@ -117,7 +171,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the domainJoinType property: AAD Join type.
-     *
+     * 
      * @param domainJoinType the domainJoinType value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -131,7 +185,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the subnetId property: The subnet to attach Virtual Machines to.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -140,7 +194,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the subnetId property: The subnet to attach Virtual Machines to.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -154,7 +208,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the domainName property: Active Directory domain name.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -163,7 +217,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the domainName property: Active Directory domain name.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -177,7 +231,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the organizationUnit property: Active Directory domain Organization Unit (OU).
-     *
+     * 
      * @return the organizationUnit value.
      */
     public String organizationUnit() {
@@ -186,7 +240,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the organizationUnit property: Active Directory domain Organization Unit (OU).
-     *
+     * 
      * @param organizationUnit the organizationUnit value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -200,8 +254,8 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the domainUsername property: The username of an Active Directory account (user or service account) that has
-     * permissions to create computer objects in Active Directory. Required format: admin@contoso.com.
-     *
+     * permissions to create computer objects in Active Directory. Required format: admin&#064;contoso.com.
+     * 
      * @return the domainUsername value.
      */
     public String domainUsername() {
@@ -210,8 +264,8 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the domainUsername property: The username of an Active Directory account (user or service account) that has
-     * permissions to create computer objects in Active Directory. Required format: admin@contoso.com.
-     *
+     * permissions to create computer objects in Active Directory. Required format: admin&#064;contoso.com.
+     * 
      * @param domainUsername the domainUsername value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -225,7 +279,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Get the domainPassword property: The password for the account used to join domain.
-     *
+     * 
      * @return the domainPassword value.
      */
     public String domainPassword() {
@@ -234,7 +288,7 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Set the domainPassword property: The password for the account used to join domain.
-     *
+     * 
      * @param domainPassword the domainPassword value to set.
      * @return the NetworkConnectionInner object itself.
      */
@@ -248,12 +302,64 @@ public final class NetworkConnectionInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkConnectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkConnectionInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkConnectionInner.
+     */
+    public static NetworkConnectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkConnectionInner deserializedNetworkConnectionInner = new NetworkConnectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetworkConnectionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkConnectionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkConnectionInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNetworkConnectionInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNetworkConnectionInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkConnectionInner.innerProperties = NetworkProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedNetworkConnectionInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkConnectionInner;
+        });
     }
 }

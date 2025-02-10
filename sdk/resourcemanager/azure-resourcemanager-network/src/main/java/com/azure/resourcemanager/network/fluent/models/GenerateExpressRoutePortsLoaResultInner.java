@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Response for GenerateExpressRoutePortsLOA API service call.
  */
 @Fluent
-public final class GenerateExpressRoutePortsLoaResultInner {
+public final class GenerateExpressRoutePortsLoaResultInner
+    implements JsonSerializable<GenerateExpressRoutePortsLoaResultInner> {
     /*
      * The content as a base64 encoded string.
      */
-    @JsonProperty(value = "encodedContent")
     private String encodedContent;
 
     /**
@@ -50,5 +54,42 @@ public final class GenerateExpressRoutePortsLoaResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("encodedContent", this.encodedContent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateExpressRoutePortsLoaResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateExpressRoutePortsLoaResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenerateExpressRoutePortsLoaResultInner.
+     */
+    public static GenerateExpressRoutePortsLoaResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateExpressRoutePortsLoaResultInner deserializedGenerateExpressRoutePortsLoaResultInner
+                = new GenerateExpressRoutePortsLoaResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encodedContent".equals(fieldName)) {
+                    deserializedGenerateExpressRoutePortsLoaResultInner.encodedContent = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateExpressRoutePortsLoaResultInner;
+        });
     }
 }

@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeploymentResourceStatus. */
+/**
+ * Status of the Deployment.
+ */
 public final class DeploymentResourceStatus extends ExpandableStringEnum<DeploymentResourceStatus> {
-    /** Static value Stopped for DeploymentResourceStatus. */
+    /**
+     * Static value Stopped for DeploymentResourceStatus.
+     */
     public static final DeploymentResourceStatus STOPPED = fromString("Stopped");
 
-    /** Static value Running for DeploymentResourceStatus. */
+    /**
+     * Static value Running for DeploymentResourceStatus.
+     */
     public static final DeploymentResourceStatus RUNNING = fromString("Running");
 
     /**
+     * Creates a new instance of DeploymentResourceStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeploymentResourceStatus() {
+    }
+
+    /**
      * Creates or finds a DeploymentResourceStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeploymentResourceStatus.
      */
-    @JsonCreator
     public static DeploymentResourceStatus fromString(String name) {
         return fromString(name, DeploymentResourceStatus.class);
     }
 
     /**
      * Gets known DeploymentResourceStatus values.
-     *
+     * 
      * @return known DeploymentResourceStatus values.
      */
     public static Collection<DeploymentResourceStatus> values() {

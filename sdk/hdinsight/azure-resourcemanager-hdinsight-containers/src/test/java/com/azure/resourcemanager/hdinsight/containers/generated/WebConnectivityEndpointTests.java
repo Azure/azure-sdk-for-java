@@ -11,15 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class WebConnectivityEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WebConnectivityEndpoint model =
-            BinaryData.fromString("{\"fqdn\":\"zwfqkqujidsuyon\"}").toObject(WebConnectivityEndpoint.class);
-        Assertions.assertEquals("zwfqkqujidsuyon", model.fqdn());
+        WebConnectivityEndpoint model = BinaryData.fromString("{\"fqdn\":\"pfqbuaceopzf\",\"privateFqdn\":\"hhuao\"}")
+            .toObject(WebConnectivityEndpoint.class);
+        Assertions.assertEquals("pfqbuaceopzf", model.fqdn());
+        Assertions.assertEquals("hhuao", model.privateFqdn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebConnectivityEndpoint model = new WebConnectivityEndpoint().withFqdn("zwfqkqujidsuyon");
+        WebConnectivityEndpoint model = new WebConnectivityEndpoint().withFqdn("pfqbuaceopzf").withPrivateFqdn("hhuao");
         model = BinaryData.fromObject(model).toObject(WebConnectivityEndpoint.class);
-        Assertions.assertEquals("zwfqkqujidsuyon", model.fqdn());
+        Assertions.assertEquals("pfqbuaceopzf", model.fqdn());
+        Assertions.assertEquals("hhuao", model.privateFqdn());
     }
 }

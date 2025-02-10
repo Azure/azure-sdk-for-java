@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateCustomizerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateCustomizer model =
-            BinaryData
-                .fromString("{\"type\":\"ImageTemplateCustomizer\",\"name\":\"tazak\"}")
+        ImageTemplateCustomizer model
+            = BinaryData.fromString("{\"type\":\"ImageTemplateCustomizer\",\"name\":\"odepoogin\"}")
                 .toObject(ImageTemplateCustomizer.class);
-        Assertions.assertEquals("tazak", model.name());
+        Assertions.assertEquals("odepoogin", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateCustomizer model = new ImageTemplateCustomizer().withName("tazak");
+        ImageTemplateCustomizer model = new ImageTemplateCustomizer().withName("odepoogin");
         model = BinaryData.fromObject(model).toObject(ImageTemplateCustomizer.class);
-        Assertions.assertEquals("tazak", model.name());
+        Assertions.assertEquals("odepoogin", model.name());
     }
 }

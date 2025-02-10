@@ -5,51 +5,55 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.devcenter.models.TrackedResourceUpdate;
+import java.io.IOException;
+import java.util.Map;
 
-/** Updatable properties of a Schedule. */
+/**
+ * Updatable properties of a Schedule.
+ */
 @Fluent
-public class ScheduleUpdateProperties {
+public class ScheduleUpdateProperties extends TrackedResourceUpdate {
     /*
      * Supported type this scheduled task represents.
      */
-    @JsonProperty(value = "type")
     private ScheduledType type;
 
     /*
      * The frequency of this scheduled task.
      */
-    @JsonProperty(value = "frequency")
     private ScheduledFrequency frequency;
 
     /*
      * The target time to trigger the action. The format is HH:MM.
      */
-    @JsonProperty(value = "time")
     private String time;
 
     /*
      * The IANA timezone id at which the schedule should execute.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * Indicates whether or not this scheduled task is enabled.
      */
-    @JsonProperty(value = "state")
     private ScheduleEnableStatus state;
 
-    /** Creates an instance of ScheduleUpdateProperties class. */
+    /**
+     * Creates an instance of ScheduleUpdateProperties class.
+     */
     public ScheduleUpdateProperties() {
     }
 
     /**
      * Get the type property: Supported type this scheduled task represents.
-     *
+     * 
      * @return the type value.
      */
     public ScheduledType type() {
@@ -58,7 +62,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Set the type property: Supported type this scheduled task represents.
-     *
+     * 
      * @param type the type value to set.
      * @return the ScheduleUpdateProperties object itself.
      */
@@ -69,7 +73,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Get the frequency property: The frequency of this scheduled task.
-     *
+     * 
      * @return the frequency value.
      */
     public ScheduledFrequency frequency() {
@@ -78,7 +82,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Set the frequency property: The frequency of this scheduled task.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the ScheduleUpdateProperties object itself.
      */
@@ -89,7 +93,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Get the time property: The target time to trigger the action. The format is HH:MM.
-     *
+     * 
      * @return the time value.
      */
     public String time() {
@@ -98,7 +102,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Set the time property: The target time to trigger the action. The format is HH:MM.
-     *
+     * 
      * @param time the time value to set.
      * @return the ScheduleUpdateProperties object itself.
      */
@@ -109,7 +113,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Get the timeZone property: The IANA timezone id at which the schedule should execute.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -118,7 +122,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Set the timeZone property: The IANA timezone id at which the schedule should execute.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the ScheduleUpdateProperties object itself.
      */
@@ -129,7 +133,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Get the state property: Indicates whether or not this scheduled task is enabled.
-     *
+     * 
      * @return the state value.
      */
     public ScheduleEnableStatus state() {
@@ -138,7 +142,7 @@ public class ScheduleUpdateProperties {
 
     /**
      * Set the state property: Indicates whether or not this scheduled task is enabled.
-     *
+     * 
      * @param state the state value to set.
      * @return the ScheduleUpdateProperties object itself.
      */
@@ -148,10 +152,84 @@ public class ScheduleUpdateProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ScheduleUpdateProperties withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ScheduleUpdateProperties withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeStringField("time", this.time);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleUpdateProperties.
+     */
+    public static ScheduleUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleUpdateProperties deserializedScheduleUpdateProperties = new ScheduleUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScheduleUpdateProperties.withTags(tags);
+                } else if ("location".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.withLocation(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.type = ScheduledType.fromString(reader.getString());
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.frequency = ScheduledFrequency.fromString(reader.getString());
+                } else if ("time".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.time = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.timeZone = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedScheduleUpdateProperties.state = ScheduleEnableStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleUpdateProperties;
+        });
     }
 }

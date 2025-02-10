@@ -6,23 +6,26 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SAP ODP Resource properties.
  */
 @Fluent
-public final class SapOdpResourceDatasetTypeProperties {
+public final class SapOdpResourceDatasetTypeProperties
+    implements JsonSerializable<SapOdpResourceDatasetTypeProperties> {
     /*
      * The context of the SAP ODP Object. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "context", required = true)
     private Object context;
 
     /*
      * The name of the SAP ODP Object. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "objectName", required = true)
     private Object objectName;
 
     /**
@@ -32,8 +35,7 @@ public final class SapOdpResourceDatasetTypeProperties {
     }
 
     /**
-     * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @return the context value.
      */
@@ -42,8 +44,7 @@ public final class SapOdpResourceDatasetTypeProperties {
     }
 
     /**
-     * Set the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Set the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @param context the context value to set.
      * @return the SapOdpResourceDatasetTypeProperties object itself.
@@ -54,8 +55,7 @@ public final class SapOdpResourceDatasetTypeProperties {
     }
 
     /**
-     * Get the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Get the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @return the objectName value.
      */
@@ -64,8 +64,7 @@ public final class SapOdpResourceDatasetTypeProperties {
     }
 
     /**
-     * Set the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType
-     * string).
+     * Set the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType string).
      * 
      * @param objectName the objectName value to set.
      * @return the SapOdpResourceDatasetTypeProperties object itself.
@@ -82,14 +81,57 @@ public final class SapOdpResourceDatasetTypeProperties {
      */
     public void validate() {
         if (context() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property context in model SapOdpResourceDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property context in model SapOdpResourceDatasetTypeProperties"));
         }
         if (objectName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property objectName in model SapOdpResourceDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property objectName in model SapOdpResourceDatasetTypeProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SapOdpResourceDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("context", this.context);
+        jsonWriter.writeUntypedField("objectName", this.objectName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapOdpResourceDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapOdpResourceDatasetTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapOdpResourceDatasetTypeProperties.
+     */
+    public static SapOdpResourceDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapOdpResourceDatasetTypeProperties deserializedSapOdpResourceDatasetTypeProperties
+                = new SapOdpResourceDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("context".equals(fieldName)) {
+                    deserializedSapOdpResourceDatasetTypeProperties.context = reader.readUntyped();
+                } else if ("objectName".equals(fieldName)) {
+                    deserializedSapOdpResourceDatasetTypeProperties.objectName = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapOdpResourceDatasetTypeProperties;
+        });
+    }
 }

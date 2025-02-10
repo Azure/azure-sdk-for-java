@@ -9,6 +9,7 @@ import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -51,11 +52,15 @@ public class AddressRepositoryIT {
     AddressRepository repository;
 
     @Autowired
+    CosmosConfig cosmosConfig;
+
+    @Autowired
     private CosmosTemplate template;
 
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
+    @SuppressWarnings("deprecation")
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -301,5 +306,99 @@ public class AddressRepositoryIT {
         } catch (CosmosAccessException ex) {
             assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
         }
+    }
+
+
+    @Test
+    public void queryDatabaseWithQueryMetricsEnabled() {
+        // Test flag is true
+        assertThat(cosmosConfig.isQueryMetricsEnabled()).isTrue();
+
+        // Make sure a query runs
+        final List<Address> result = TestUtils.toList(repository.findAll());
+        assertThat(result.size()).isEqualTo(4);
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).contains("retrievedDocumentCount");
+        assertThat(queryDiagnostics).contains("queryPreparationTimes");
+        assertThat(queryDiagnostics).contains("runtimeExecutionTimes");
+        assertThat(queryDiagnostics).contains("fetchExecutionRanges");
+    }
+
+    @Test
+    public void queryDatabaseWithIndexMetricsEnabled() {
+        // Test flag is true
+        assertThat(cosmosConfig.isIndexMetricsEnabled()).isTrue();
+
+        // Make sure a query runs
+        final List<Address> result = TestUtils.toList(repository.findAll());
+        assertThat(result.size()).isEqualTo(4);
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).contains("\"indexUtilizationInfo\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedCompositeIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialCompositeIndexes\"");
+    }
+
+    @Test
+    public void testFindFirstByOrderByStreetAsc() {
+        final Address result = repository.findFirstByOrderByStreetAsc();
+        assertThat(result).isEqualTo(TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testFindFirstByOrderByStreetDesc() {
+        final Address result = repository.findFirstByOrderByStreetDesc();
+        assertThat(result).isEqualTo(TEST_ADDRESS2_PARTITION1);
+    }
+
+    @Test
+    public void testFindTopByOrderByStreetAsc() {
+        final Address result = repository.findTopByOrderByStreetAsc();
+        assertThat(result).isEqualTo(TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testFindTopByOrderByStreetDesc() {
+        final Address result = repository.findTopByOrderByStreetDesc();
+        assertThat(result).isEqualTo(TEST_ADDRESS2_PARTITION1);
+    }
+
+    @Test
+    public void testFindAllByStreetNotNull() {
+        Address TEST_ADDRESS_TEMP = new Address(
+            TestConstants.POSTAL_CODE, null, TestConstants.CITY);
+        final List<Address> result = TestUtils.toList(repository.findAllByStreetNotNull());
+        assertThat(result.size()).isEqualTo(4);
+        assertThat(result).isEqualTo(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,
+            TEST_ADDRESS2_PARTITION1, TEST_ADDRESS4_PARTITION3));
+
+    }
+
+    @Test
+    public void testFindFirst2ByOrderByStreetAsc() {
+        List<Address> result = TestUtils.toList(repository.findFirst2ByOrderByStreetAsc());
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result).isEqualTo(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2));
+    }
+
+    @Test
+    public void testFindTop3ByOrderByStreetDesc() {
+        List<Address> result = TestUtils.toList(repository.findTop3ByOrderByStreetDesc());
+        assertThat(result.size()).isEqualTo(3);
+        assertThat(result).isEqualTo(Lists.newArrayList(TEST_ADDRESS2_PARTITION1,
+            TEST_ADDRESS4_PARTITION3, TEST_ADDRESS1_PARTITION2));
+    }
+
+    @Test
+    public void testCountByStreetNotNull() {
+        Address TEST_ADDRESS_TEMP = new Address(
+            TestConstants.POSTAL_CODE, null, TestConstants.CITY);
+        final Long result = repository.countByStreetNotNull();
+        assertThat(result).isEqualTo(4);
     }
 }

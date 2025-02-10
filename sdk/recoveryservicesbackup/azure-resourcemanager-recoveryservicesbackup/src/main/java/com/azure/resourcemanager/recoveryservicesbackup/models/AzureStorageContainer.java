@@ -5,52 +5,73 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure Storage Account workload-specific container. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
-@JsonTypeName("StorageContainer")
+/**
+ * Azure Storage Account workload-specific container.
+ */
 @Fluent
 public final class AzureStorageContainer extends ProtectionContainer {
     /*
+     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+     * 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer
+     */
+    private ProtectableContainerType containerType = ProtectableContainerType.STORAGE_CONTAINER;
+
+    /*
      * Fully qualified ARM url.
      */
-    @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
     /*
      * Storage account version.
      */
-    @JsonProperty(value = "storageAccountVersion")
     private String storageAccountVersion;
 
     /*
      * Resource group name of Recovery Services Vault.
      */
-    @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
 
     /*
      * Number of items backed up in this container.
      */
-    @JsonProperty(value = "protectedItemCount")
     private Long protectedItemCount;
 
     /*
      * Whether storage account lock is to be acquired for this container or not.
      */
-    @JsonProperty(value = "acquireStorageAccountLock")
     private AcquireStorageAccountLock acquireStorageAccountLock;
 
-    /** Creates an instance of AzureStorageContainer class. */
+    /**
+     * Creates an instance of AzureStorageContainer class.
+     */
     public AzureStorageContainer() {
     }
 
     /**
+     * Get the containerType property: Type of the container. The value of this property for: 1. Compute Azure VM is
+     * Microsoft.Compute/virtualMachines 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer.
+     * 
+     * @return the containerType value.
+     */
+    @Override
+    public ProtectableContainerType containerType() {
+        return this.containerType;
+    }
+
+    /**
      * Get the sourceResourceId property: Fully qualified ARM url.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -59,7 +80,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Set the sourceResourceId property: Fully qualified ARM url.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the AzureStorageContainer object itself.
      */
@@ -70,7 +91,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Get the storageAccountVersion property: Storage account version.
-     *
+     * 
      * @return the storageAccountVersion value.
      */
     public String storageAccountVersion() {
@@ -79,7 +100,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Set the storageAccountVersion property: Storage account version.
-     *
+     * 
      * @param storageAccountVersion the storageAccountVersion value to set.
      * @return the AzureStorageContainer object itself.
      */
@@ -90,7 +111,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Get the resourceGroup property: Resource group name of Recovery Services Vault.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -99,7 +120,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Set the resourceGroup property: Resource group name of Recovery Services Vault.
-     *
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the AzureStorageContainer object itself.
      */
@@ -110,7 +131,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Get the protectedItemCount property: Number of items backed up in this container.
-     *
+     * 
      * @return the protectedItemCount value.
      */
     public Long protectedItemCount() {
@@ -119,7 +140,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Set the protectedItemCount property: Number of items backed up in this container.
-     *
+     * 
      * @param protectedItemCount the protectedItemCount value to set.
      * @return the AzureStorageContainer object itself.
      */
@@ -131,7 +152,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
     /**
      * Get the acquireStorageAccountLock property: Whether storage account lock is to be acquired for this container or
      * not.
-     *
+     * 
      * @return the acquireStorageAccountLock value.
      */
     public AcquireStorageAccountLock acquireStorageAccountLock() {
@@ -141,7 +162,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
     /**
      * Set the acquireStorageAccountLock property: Whether storage account lock is to be acquired for this container or
      * not.
-     *
+     * 
      * @param acquireStorageAccountLock the acquireStorageAccountLock value to set.
      * @return the AzureStorageContainer object itself.
      */
@@ -150,35 +171,45 @@ public final class AzureStorageContainer extends ProtectionContainer {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageContainer withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageContainer withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageContainer withProtectableObjectType(String protectableObjectType) {
         super.withProtectableObjectType(protectableObjectType);
@@ -187,11 +218,81 @@ public final class AzureStorageContainer extends ProtectionContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("registrationStatus", registrationStatus());
+        jsonWriter.writeStringField("healthStatus", healthStatus());
+        jsonWriter.writeStringField("protectableObjectType", protectableObjectType());
+        jsonWriter.writeStringField("containerType", this.containerType == null ? null : this.containerType.toString());
+        jsonWriter.writeStringField("sourceResourceId", this.sourceResourceId);
+        jsonWriter.writeStringField("storageAccountVersion", this.storageAccountVersion);
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        jsonWriter.writeNumberField("protectedItemCount", this.protectedItemCount);
+        jsonWriter.writeStringField("acquireStorageAccountLock",
+            this.acquireStorageAccountLock == null ? null : this.acquireStorageAccountLock.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureStorageContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureStorageContainer if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureStorageContainer.
+     */
+    public static AzureStorageContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureStorageContainer deserializedAzureStorageContainer = new AzureStorageContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureStorageContainer.withFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureStorageContainer
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedAzureStorageContainer.withRegistrationStatus(reader.getString());
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedAzureStorageContainer.withHealthStatus(reader.getString());
+                } else if ("protectableObjectType".equals(fieldName)) {
+                    deserializedAzureStorageContainer.withProtectableObjectType(reader.getString());
+                } else if ("containerType".equals(fieldName)) {
+                    deserializedAzureStorageContainer.containerType
+                        = ProtectableContainerType.fromString(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureStorageContainer.sourceResourceId = reader.getString();
+                } else if ("storageAccountVersion".equals(fieldName)) {
+                    deserializedAzureStorageContainer.storageAccountVersion = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedAzureStorageContainer.resourceGroup = reader.getString();
+                } else if ("protectedItemCount".equals(fieldName)) {
+                    deserializedAzureStorageContainer.protectedItemCount = reader.getNullable(JsonReader::getLong);
+                } else if ("acquireStorageAccountLock".equals(fieldName)) {
+                    deserializedAzureStorageContainer.acquireStorageAccountLock
+                        = AcquireStorageAccountLock.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureStorageContainer;
+        });
     }
 }

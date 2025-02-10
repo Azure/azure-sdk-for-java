@@ -13,25 +13,18 @@ import java.util.Arrays;
 public final class CreateProtectionContainerInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateProtectionContainerInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"providerSpecificInput\":[{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"},{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"},{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"}]}}")
-                .toObject(CreateProtectionContainerInput.class);
+        CreateProtectionContainerInput model = BinaryData.fromString(
+            "{\"properties\":{\"providerSpecificInput\":[{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"},{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"},{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"}]}}")
+            .toObject(CreateProtectionContainerInput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateProtectionContainerInput model =
-            new CreateProtectionContainerInput()
-                .withProperties(
-                    new CreateProtectionContainerInputProperties()
-                        .withProviderSpecificInput(
-                            Arrays
-                                .asList(
-                                    new ReplicationProviderSpecificContainerCreationInput(),
-                                    new ReplicationProviderSpecificContainerCreationInput(),
-                                    new ReplicationProviderSpecificContainerCreationInput())));
+        CreateProtectionContainerInput model
+            = new CreateProtectionContainerInput().withProperties(new CreateProtectionContainerInputProperties()
+                .withProviderSpecificInput(Arrays.asList(new ReplicationProviderSpecificContainerCreationInput(),
+                    new ReplicationProviderSpecificContainerCreationInput(),
+                    new ReplicationProviderSpecificContainerCreationInput())));
         model = BinaryData.fromObject(model).toObject(CreateProtectionContainerInput.class);
     }
 }

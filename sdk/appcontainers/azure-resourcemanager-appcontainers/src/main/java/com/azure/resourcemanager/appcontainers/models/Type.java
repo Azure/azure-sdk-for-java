@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of probe. */
+/**
+ * The type of probe.
+ */
 public final class Type extends ExpandableStringEnum<Type> {
-    /** Static value Liveness for Type. */
+    /**
+     * Static value Liveness for Type.
+     */
     public static final Type LIVENESS = fromString("Liveness");
 
-    /** Static value Readiness for Type. */
+    /**
+     * Static value Readiness for Type.
+     */
     public static final Type READINESS = fromString("Readiness");
 
-    /** Static value Startup for Type. */
+    /**
+     * Static value Startup for Type.
+     */
     public static final Type STARTUP = fromString("Startup");
 
     /**
      * Creates a new instance of Type value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Creates or finds a Type from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Type.
      */
-    @JsonCreator
     public static Type fromString(String name) {
         return fromString(name, Type.class);
     }
 
     /**
      * Gets known Type values.
-     *
+     * 
      * @return known Type values.
      */
     public static Collection<Type> values() {

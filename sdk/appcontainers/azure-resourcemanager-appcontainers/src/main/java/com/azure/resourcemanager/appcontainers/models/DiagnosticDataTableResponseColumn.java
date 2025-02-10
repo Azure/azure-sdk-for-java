@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Diagnostics data column. */
+/**
+ * Diagnostics data column.
+ */
 @Fluent
-public final class DiagnosticDataTableResponseColumn {
+public final class DiagnosticDataTableResponseColumn implements JsonSerializable<DiagnosticDataTableResponseColumn> {
     /*
      * Column name
      */
-    @JsonProperty(value = "columnName")
     private String columnName;
 
     /*
      * Data type of the column
      */
-    @JsonProperty(value = "dataType")
     private String dataType;
 
     /*
      * Column type
      */
-    @JsonProperty(value = "columnType")
     private String columnType;
 
-    /** Creates an instance of DiagnosticDataTableResponseColumn class. */
+    /**
+     * Creates an instance of DiagnosticDataTableResponseColumn class.
+     */
     public DiagnosticDataTableResponseColumn() {
     }
 
     /**
      * Get the columnName property: Column name.
-     *
+     * 
      * @return the columnName value.
      */
     public String columnName() {
@@ -43,7 +48,7 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Set the columnName property: Column name.
-     *
+     * 
      * @param columnName the columnName value to set.
      * @return the DiagnosticDataTableResponseColumn object itself.
      */
@@ -54,7 +59,7 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Get the dataType property: Data type of the column.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -63,7 +68,7 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Set the dataType property: Data type of the column.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the DiagnosticDataTableResponseColumn object itself.
      */
@@ -74,7 +79,7 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Get the columnType property: Column type.
-     *
+     * 
      * @return the columnType value.
      */
     public String columnType() {
@@ -83,7 +88,7 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Set the columnType property: Column type.
-     *
+     * 
      * @param columnType the columnType value to set.
      * @return the DiagnosticDataTableResponseColumn object itself.
      */
@@ -94,9 +99,52 @@ public final class DiagnosticDataTableResponseColumn {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("columnName", this.columnName);
+        jsonWriter.writeStringField("dataType", this.dataType);
+        jsonWriter.writeStringField("columnType", this.columnType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticDataTableResponseColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticDataTableResponseColumn if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticDataTableResponseColumn.
+     */
+    public static DiagnosticDataTableResponseColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticDataTableResponseColumn deserializedDiagnosticDataTableResponseColumn
+                = new DiagnosticDataTableResponseColumn();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("columnName".equals(fieldName)) {
+                    deserializedDiagnosticDataTableResponseColumn.columnName = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedDiagnosticDataTableResponseColumn.dataType = reader.getString();
+                } else if ("columnType".equals(fieldName)) {
+                    deserializedDiagnosticDataTableResponseColumn.columnType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticDataTableResponseColumn;
+        });
     }
 }

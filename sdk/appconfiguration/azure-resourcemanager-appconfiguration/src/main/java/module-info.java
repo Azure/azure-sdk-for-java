@@ -10,10 +10,6 @@ module com.azure.resourcemanager.appconfiguration {
     exports com.azure.resourcemanager.appconfiguration.fluent.models;
     exports com.azure.resourcemanager.appconfiguration.models;
 
-    opens com.azure.resourcemanager.appconfiguration.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.appconfiguration.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.appconfiguration.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.appconfiguration.models to com.azure.core;
 }

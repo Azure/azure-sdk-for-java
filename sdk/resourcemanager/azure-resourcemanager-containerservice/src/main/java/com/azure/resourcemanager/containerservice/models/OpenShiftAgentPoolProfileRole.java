@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -24,7 +23,7 @@ public final class OpenShiftAgentPoolProfileRole extends ExpandableStringEnum<Op
 
     /**
      * Creates a new instance of OpenShiftAgentPoolProfileRole value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +32,17 @@ public final class OpenShiftAgentPoolProfileRole extends ExpandableStringEnum<Op
 
     /**
      * Creates or finds a OpenShiftAgentPoolProfileRole from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OpenShiftAgentPoolProfileRole.
      */
-    @JsonCreator
     public static OpenShiftAgentPoolProfileRole fromString(String name) {
         return fromString(name, OpenShiftAgentPoolProfileRole.class);
     }
 
     /**
      * Gets known OpenShiftAgentPoolProfileRole values.
-     *
+     * 
      * @return known OpenShiftAgentPoolProfileRole values.
      */
     public static Collection<OpenShiftAgentPoolProfileRole> values() {

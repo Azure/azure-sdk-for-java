@@ -5,67 +5,68 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** CalculateExchange response properties. */
+/**
+ * CalculateExchange response properties.
+ */
 @Fluent
-public final class CalculateExchangeResponseProperties {
+public final class CalculateExchangeResponseProperties
+    implements JsonSerializable<CalculateExchangeResponseProperties> {
     /*
      * Exchange session identifier
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "netPayable")
     private Price netPayable;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "refundsTotal")
     private Price refundsTotal;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "purchasesTotal")
     private Price purchasesTotal;
 
     /*
      * Details of the reservations being purchased
      */
-    @JsonProperty(value = "reservationsToPurchase")
     private List<ReservationToPurchaseCalculateExchange> reservationsToPurchase;
 
     /*
      * Details of the savings plans being purchased
      */
-    @JsonProperty(value = "savingsPlansToPurchase")
     private List<SavingsPlanToPurchaseCalculateExchange> savingsPlansToPurchase;
 
     /*
      * Details of the reservations being returned
      */
-    @JsonProperty(value = "reservationsToExchange")
     private List<ReservationToExchange> reservationsToExchange;
 
     /*
      * Exchange policy errors
      */
-    @JsonProperty(value = "policyResult")
     private ExchangePolicyErrors policyResult;
 
-    /** Creates an instance of CalculateExchangeResponseProperties class. */
+    /**
+     * Creates an instance of CalculateExchangeResponseProperties class.
+     */
     public CalculateExchangeResponseProperties() {
     }
 
     /**
      * Get the sessionId property: Exchange session identifier.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -74,7 +75,7 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Set the sessionId property: Exchange session identifier.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the CalculateExchangeResponseProperties object itself.
      */
@@ -85,7 +86,7 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Get the netPayable property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the netPayable value.
      */
     public Price netPayable() {
@@ -94,7 +95,7 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Set the netPayable property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param netPayable the netPayable value to set.
      * @return the CalculateExchangeResponseProperties object itself.
      */
@@ -105,7 +106,7 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Get the refundsTotal property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the refundsTotal value.
      */
     public Price refundsTotal() {
@@ -114,7 +115,7 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Set the refundsTotal property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param refundsTotal the refundsTotal value to set.
      * @return the CalculateExchangeResponseProperties object itself.
      */
@@ -125,7 +126,7 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Get the purchasesTotal property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the purchasesTotal value.
      */
     public Price purchasesTotal() {
@@ -134,7 +135,7 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Set the purchasesTotal property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param purchasesTotal the purchasesTotal value to set.
      * @return the CalculateExchangeResponseProperties object itself.
      */
@@ -145,7 +146,7 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Get the reservationsToPurchase property: Details of the reservations being purchased.
-     *
+     * 
      * @return the reservationsToPurchase value.
      */
     public List<ReservationToPurchaseCalculateExchange> reservationsToPurchase() {
@@ -154,19 +155,19 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Set the reservationsToPurchase property: Details of the reservations being purchased.
-     *
+     * 
      * @param reservationsToPurchase the reservationsToPurchase value to set.
      * @return the CalculateExchangeResponseProperties object itself.
      */
-    public CalculateExchangeResponseProperties withReservationsToPurchase(
-        List<ReservationToPurchaseCalculateExchange> reservationsToPurchase) {
+    public CalculateExchangeResponseProperties
+        withReservationsToPurchase(List<ReservationToPurchaseCalculateExchange> reservationsToPurchase) {
         this.reservationsToPurchase = reservationsToPurchase;
         return this;
     }
 
     /**
      * Get the savingsPlansToPurchase property: Details of the savings plans being purchased.
-     *
+     * 
      * @return the savingsPlansToPurchase value.
      */
     public List<SavingsPlanToPurchaseCalculateExchange> savingsPlansToPurchase() {
@@ -175,19 +176,19 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Set the savingsPlansToPurchase property: Details of the savings plans being purchased.
-     *
+     * 
      * @param savingsPlansToPurchase the savingsPlansToPurchase value to set.
      * @return the CalculateExchangeResponseProperties object itself.
      */
-    public CalculateExchangeResponseProperties withSavingsPlansToPurchase(
-        List<SavingsPlanToPurchaseCalculateExchange> savingsPlansToPurchase) {
+    public CalculateExchangeResponseProperties
+        withSavingsPlansToPurchase(List<SavingsPlanToPurchaseCalculateExchange> savingsPlansToPurchase) {
         this.savingsPlansToPurchase = savingsPlansToPurchase;
         return this;
     }
 
     /**
      * Get the reservationsToExchange property: Details of the reservations being returned.
-     *
+     * 
      * @return the reservationsToExchange value.
      */
     public List<ReservationToExchange> reservationsToExchange() {
@@ -196,19 +197,19 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Set the reservationsToExchange property: Details of the reservations being returned.
-     *
+     * 
      * @param reservationsToExchange the reservationsToExchange value to set.
      * @return the CalculateExchangeResponseProperties object itself.
      */
-    public CalculateExchangeResponseProperties withReservationsToExchange(
-        List<ReservationToExchange> reservationsToExchange) {
+    public CalculateExchangeResponseProperties
+        withReservationsToExchange(List<ReservationToExchange> reservationsToExchange) {
         this.reservationsToExchange = reservationsToExchange;
         return this;
     }
 
     /**
      * Get the policyResult property: Exchange policy errors.
-     *
+     * 
      * @return the policyResult value.
      */
     public ExchangePolicyErrors policyResult() {
@@ -217,7 +218,7 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Set the policyResult property: Exchange policy errors.
-     *
+     * 
      * @param policyResult the policyResult value to set.
      * @return the CalculateExchangeResponseProperties object itself.
      */
@@ -228,7 +229,7 @@ public final class CalculateExchangeResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -253,5 +254,73 @@ public final class CalculateExchangeResponseProperties {
         if (policyResult() != null) {
             policyResult().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeJsonField("netPayable", this.netPayable);
+        jsonWriter.writeJsonField("refundsTotal", this.refundsTotal);
+        jsonWriter.writeJsonField("purchasesTotal", this.purchasesTotal);
+        jsonWriter.writeArrayField("reservationsToPurchase", this.reservationsToPurchase,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("savingsPlansToPurchase", this.savingsPlansToPurchase,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("reservationsToExchange", this.reservationsToExchange,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("policyResult", this.policyResult);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CalculateExchangeResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CalculateExchangeResponseProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CalculateExchangeResponseProperties.
+     */
+    public static CalculateExchangeResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CalculateExchangeResponseProperties deserializedCalculateExchangeResponseProperties
+                = new CalculateExchangeResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sessionId".equals(fieldName)) {
+                    deserializedCalculateExchangeResponseProperties.sessionId = reader.getString();
+                } else if ("netPayable".equals(fieldName)) {
+                    deserializedCalculateExchangeResponseProperties.netPayable = Price.fromJson(reader);
+                } else if ("refundsTotal".equals(fieldName)) {
+                    deserializedCalculateExchangeResponseProperties.refundsTotal = Price.fromJson(reader);
+                } else if ("purchasesTotal".equals(fieldName)) {
+                    deserializedCalculateExchangeResponseProperties.purchasesTotal = Price.fromJson(reader);
+                } else if ("reservationsToPurchase".equals(fieldName)) {
+                    List<ReservationToPurchaseCalculateExchange> reservationsToPurchase
+                        = reader.readArray(reader1 -> ReservationToPurchaseCalculateExchange.fromJson(reader1));
+                    deserializedCalculateExchangeResponseProperties.reservationsToPurchase = reservationsToPurchase;
+                } else if ("savingsPlansToPurchase".equals(fieldName)) {
+                    List<SavingsPlanToPurchaseCalculateExchange> savingsPlansToPurchase
+                        = reader.readArray(reader1 -> SavingsPlanToPurchaseCalculateExchange.fromJson(reader1));
+                    deserializedCalculateExchangeResponseProperties.savingsPlansToPurchase = savingsPlansToPurchase;
+                } else if ("reservationsToExchange".equals(fieldName)) {
+                    List<ReservationToExchange> reservationsToExchange
+                        = reader.readArray(reader1 -> ReservationToExchange.fromJson(reader1));
+                    deserializedCalculateExchangeResponseProperties.reservationsToExchange = reservationsToExchange;
+                } else if ("policyResult".equals(fieldName)) {
+                    deserializedCalculateExchangeResponseProperties.policyResult
+                        = ExchangePolicyErrors.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCalculateExchangeResponseProperties;
+        });
     }
 }

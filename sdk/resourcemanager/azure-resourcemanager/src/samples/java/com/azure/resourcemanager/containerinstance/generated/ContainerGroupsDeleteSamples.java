@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.containerinstance.generated;
 
-/** Samples for ContainerGroups Delete. */
+/**
+ * Samples for ContainerGroups Delete.
+ */
 public final class ContainerGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/ContainerGroupsDelete.json
+     * x-ms-original-file:
+     * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/
+     * ContainerGroupsDelete.json
      */
     /**
      * Sample code: ContainerGroupsDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void containerGroupsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerGroups()
+        azure.containerGroups()
             .manager()
             .serviceClient()
             .getContainerGroups()

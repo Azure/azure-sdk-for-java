@@ -17,6 +17,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -50,7 +51,6 @@ import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
@@ -100,26 +100,22 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  * {@link EncryptedBlobAsyncClient}</li>
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
-public final class EncryptedBlobClientBuilder implements
-    TokenCredentialTrait<EncryptedBlobClientBuilder>,
-    ConnectionStringTrait<EncryptedBlobClientBuilder>,
-    AzureNamedKeyCredentialTrait<EncryptedBlobClientBuilder>,
-    AzureSasCredentialTrait<EncryptedBlobClientBuilder>,
-    HttpTrait<EncryptedBlobClientBuilder>,
-    ConfigurationTrait<EncryptedBlobClientBuilder>,
-    EndpointTrait<EncryptedBlobClientBuilder> {
+@ServiceClientBuilder(serviceClients = { EncryptedBlobAsyncClient.class, EncryptedBlobClient.class })
+public final class EncryptedBlobClientBuilder implements TokenCredentialTrait<EncryptedBlobClientBuilder>,
+    ConnectionStringTrait<EncryptedBlobClientBuilder>, AzureNamedKeyCredentialTrait<EncryptedBlobClientBuilder>,
+    AzureSasCredentialTrait<EncryptedBlobClientBuilder>, HttpTrait<EncryptedBlobClientBuilder>,
+    ConfigurationTrait<EncryptedBlobClientBuilder>, EndpointTrait<EncryptedBlobClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobClientBuilder.class);
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-storage-blob-cryptography.properties");
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-storage-blob-cryptography.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
     private static final String BLOB_CLIENT_NAME = USER_AGENT_PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
     private static final String BLOB_CLIENT_VERSION = USER_AGENT_PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-    private static final String USER_AGENT_MODIFICATION_REGEX =
-        "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?)( .*?)?";
+    private static final String USER_AGENT_MODIFICATION_REGEX
+        = "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?)( .*?)?";
 
     private String endpoint;
     private String accountName;
@@ -152,6 +148,7 @@ public final class EncryptedBlobClientBuilder implements
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
+    private BlobClientSideEncryptionOptions clientSideEncryptionOptions;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -173,6 +170,7 @@ public final class EncryptedBlobClientBuilder implements
      * preferred for security reasons, though v1 continues to be supported for compatibility reasons. Note that even a
      * client configured to encrypt using v2 can decrypt blobs that use the v1 protocol.
      */
+    @SuppressWarnings("deprecation")
     public EncryptedBlobClientBuilder(EncryptionVersion version) {
         Objects.requireNonNull(version);
         logOptions = getDefaultHttpLogOptions();
@@ -247,11 +245,15 @@ public final class EncryptedBlobClientBuilder implements
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
+        this.clientSideEncryptionOptions = this.clientSideEncryptionOptions == null
+            ? new BlobClientSideEncryptionOptions()
+            : this.clientSideEncryptionOptions;
+
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption,
+            clientSideEncryptionOptions);
     }
-
 
     private HttpPipeline addBlobUserAgentModificationPolicy(HttpPipeline pipeline) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -264,11 +266,23 @@ public final class EncryptedBlobClientBuilder implements
             }
         }
 
-        return new HttpPipelineBuilder()
-            .httpClient(pipeline.getHttpClient())
+        return new HttpPipelineBuilder().httpClient(pipeline.getHttpClient())
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .tracer(pipeline.getTracer())
             .build();
+    }
+
+    private String getVersionString(EncryptionVersion encryptionVersion) {
+        switch (encryptionVersion) {
+            case V2:
+                return "2.0";
+
+            case V2_1:
+                return "2.1";
+
+            default:
+                return "1.0";
+        }
     }
 
     private String modifyUserAgentString(String applicationId, Configuration userAgentConfiguration) {
@@ -276,7 +290,7 @@ public final class EncryptedBlobClientBuilder implements
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION,
             userAgentConfiguration);
         Matcher matcher = pattern.matcher(userAgent);
-        String version = encryptionVersion == EncryptionVersion.V2 ? "2.0" : "1.0";
+        String version = getVersionString(encryptionVersion);
         String stringToAppend = "azstorage-clientsideencryption/" + version;
         if (matcher.matches() && !userAgent.contains(stringToAppend)) {
             String segment1 = matcher.group(1) == null ? "" : matcher.group(1);
@@ -288,8 +302,8 @@ public final class EncryptedBlobClientBuilder implements
     }
 
     private HttpPipeline getHttpPipeline() {
-        CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, LOGGER);
+        CredentialValidator.validateSingleCredentialIsPresent(storageSharedKeyCredential, tokenCredential,
+            azureSasCredential, sasToken, LOGGER);
 
         // Prefer the pipeline set by the customer.
         if (httpPipeline != null) {
@@ -309,8 +323,7 @@ public final class EncryptedBlobClientBuilder implements
             // There is guaranteed not to be a decryption policy in the provided pipeline. Add one to the front.
             policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
 
-            return new HttpPipelineBuilder()
-                .httpClient(httpPipeline.getHttpClient())
+            return new HttpPipelineBuilder().httpClient(httpPipeline.getHttpClient())
                 .tracer(httpPipeline.getTracer())
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .build();
@@ -322,8 +335,7 @@ public final class EncryptedBlobClientBuilder implements
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
-        String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
-            : logOptions.getApplicationId();
+        String applicationId = CoreUtils.getApplicationId(clientOptions, logOptions);
 
         // adding modified user-agent string that will contain "azstorage-clientsideencryption/" + encryption version
         String modifiedUserAgent = modifyUserAgentString(applicationId, userAgentConfiguration);
@@ -339,9 +351,8 @@ public final class EncryptedBlobClientBuilder implements
 
         // We need to place this policy right before the credential policy since headers may affect the string to sign
         // of the request.
-        HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         policies.add(new MetadataValidationPolicy());
@@ -361,17 +372,15 @@ public final class EncryptedBlobClientBuilder implements
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        policies.add(new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
+        policies.add(new ResponseValidationPolicyBuilder().addOptionalEcho(HttpHeaderName.X_MS_CLIENT_REQUEST_ID)
+            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME)
             .build());
 
         policies.add(new HttpLoggingPolicy(logOptions));
 
         policies.add(new ScrubEtagPolicy());
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(createTracer(clientOptions))
             .build();
@@ -409,8 +418,8 @@ public final class EncryptedBlobClientBuilder implements
 
         // If the key is provided, ensure the key wrap algorithm is also provided.
         if (this.keyWrapper != null && this.keyWrapAlgorithm == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Key Wrap Algorithm must be specified with a Key."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("Key Wrap Algorithm must be specified with a Key."));
         }
     }
 
@@ -467,8 +476,7 @@ public final class EncryptedBlobClientBuilder implements
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public EncryptedBlobClientBuilder sasToken(String sasToken) {
-        this.sasToken = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+        this.sasToken = Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -483,8 +491,7 @@ public final class EncryptedBlobClientBuilder implements
      */
     @Override
     public EncryptedBlobClientBuilder credential(AzureSasCredential credential) {
-        this.azureSasCredential = Objects.requireNonNull(credential,
-            "'credential' cannot be null.");
+        this.azureSasCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -512,13 +519,11 @@ public final class EncryptedBlobClientBuilder implements
      */
     @Override
     public EncryptedBlobClientBuilder connectionString(String connectionString) {
-        StorageConnectionString storageConnectionString
-            = StorageConnectionString.create(connectionString, LOGGER);
+        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException(
-                    "connectionString missing required settings to derive blob service endpoint."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "connectionString missing required settings to derive blob service endpoint."));
         }
         this.endpoint(endpoint.getPrimaryUri());
         if (storageConnectionString.getAccountName() != null) {
@@ -536,8 +541,6 @@ public final class EncryptedBlobClientBuilder implements
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
-     *
-     * <p>If the blob name contains special characters, pass in the url encoded version of the blob name. </p>
      *
      * <p>If the endpoint is to a blob in the root container, this method will fail as it will interpret the blob name
      * as the container name. With only one path element, it is impossible to distinguish between a container name and a
@@ -557,9 +560,9 @@ public final class EncryptedBlobClientBuilder implements
 
             this.accountName = parts.getAccountName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
-            this.containerName = parts.getBlobContainerName() == null ? this.containerName
-                : parts.getBlobContainerName();
-            this.blobName = parts.getBlobName() == null ? this.blobName : Utility.urlEncode(parts.getBlobName());
+            this.containerName
+                = parts.getBlobContainerName() == null ? this.containerName : parts.getBlobContainerName();
+            this.blobName = parts.getBlobName() == null ? this.blobName : parts.getBlobName();
             this.snapshot = parts.getSnapshot();
             this.versionId = parts.getVersionId();
 
@@ -595,8 +598,7 @@ public final class EncryptedBlobClientBuilder implements
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public EncryptedBlobClientBuilder blobName(String blobName) {
-        this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
-            "'blobName' cannot be null.")));
+        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         return this;
     }
 
@@ -715,7 +717,7 @@ public final class EncryptedBlobClientBuilder implements
 
     /**
      * Sets the request retry options for all the requests made through the client.
-     *
+     * <p>
      * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryOptions {@link RequestRetryOptions}.
@@ -826,8 +828,7 @@ public final class EncryptedBlobClientBuilder implements
         if (customerProvidedKey == null) {
             this.customerProvidedKey = null;
         } else {
-            this.customerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            this.customerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
@@ -917,6 +918,23 @@ public final class EncryptedBlobClientBuilder implements
      */
     public EncryptedBlobClientBuilder requiresEncryption(boolean requiresEncryption) {
         this.requiresEncryption = requiresEncryption;
+        return this;
+    }
+
+    /**
+     * Sets the encryption options for the blob.
+     *
+     * @param clientSideEncryptionOptions The {@link BlobClientSideEncryptionOptions} for the blob.
+     * @return the updated EncryptedBlobClientBuilder object
+     * @throws IllegalArgumentException If {@link EncryptionVersion} is not V2_1.
+     */
+    public EncryptedBlobClientBuilder
+        clientSideEncryptionOptions(BlobClientSideEncryptionOptions clientSideEncryptionOptions) {
+        if (this.encryptionVersion != EncryptionVersion.V2_1) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "ClientSideEncryptionOptions can only be set if encryption version is V2_1."));
+        }
+        this.clientSideEncryptionOptions = clientSideEncryptionOptions;
         return this;
     }
 }

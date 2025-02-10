@@ -5,47 +5,68 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** AzureStorage backup policy. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
-@JsonTypeName("AzureStorage")
+/**
+ * AzureStorage backup policy.
+ */
 @Fluent
 public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String backupManagementType = "AzureStorage";
+
+    /*
      * Type of workload for the backup management
      */
-    @JsonProperty(value = "workLoadType")
     private WorkloadType workLoadType;
 
     /*
      * Backup schedule specified as part of backup policy.
      */
-    @JsonProperty(value = "schedulePolicy")
     private SchedulePolicy schedulePolicy;
 
     /*
      * Retention policy with the details on backup copy retention ranges.
      */
-    @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
+
+    /*
+     * Retention policy with the details on hardened backup copy retention ranges.
+     */
+    private VaultRetentionPolicy vaultRetentionPolicy;
 
     /*
      * TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
-    /** Creates an instance of AzureFileShareProtectionPolicy class. */
+    /**
+     * Creates an instance of AzureFileShareProtectionPolicy class.
+     */
     public AzureFileShareProtectionPolicy() {
     }
 
     /**
+     * Get the backupManagementType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the backupManagementType value.
+     */
+    @Override
+    public String backupManagementType() {
+        return this.backupManagementType;
+    }
+
+    /**
      * Get the workLoadType property: Type of workload for the backup management.
-     *
+     * 
      * @return the workLoadType value.
      */
     public WorkloadType workLoadType() {
@@ -54,7 +75,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the workLoadType property: Type of workload for the backup management.
-     *
+     * 
      * @param workLoadType the workLoadType value to set.
      * @return the AzureFileShareProtectionPolicy object itself.
      */
@@ -65,7 +86,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Get the schedulePolicy property: Backup schedule specified as part of backup policy.
-     *
+     * 
      * @return the schedulePolicy value.
      */
     public SchedulePolicy schedulePolicy() {
@@ -74,7 +95,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the schedulePolicy property: Backup schedule specified as part of backup policy.
-     *
+     * 
      * @param schedulePolicy the schedulePolicy value to set.
      * @return the AzureFileShareProtectionPolicy object itself.
      */
@@ -85,7 +106,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Get the retentionPolicy property: Retention policy with the details on backup copy retention ranges.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -94,7 +115,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the retentionPolicy property: Retention policy with the details on backup copy retention ranges.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the AzureFileShareProtectionPolicy object itself.
      */
@@ -104,8 +125,30 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
     }
 
     /**
+     * Get the vaultRetentionPolicy property: Retention policy with the details on hardened backup copy retention
+     * ranges.
+     * 
+     * @return the vaultRetentionPolicy value.
+     */
+    public VaultRetentionPolicy vaultRetentionPolicy() {
+        return this.vaultRetentionPolicy;
+    }
+
+    /**
+     * Set the vaultRetentionPolicy property: Retention policy with the details on hardened backup copy retention
+     * ranges.
+     * 
+     * @param vaultRetentionPolicy the vaultRetentionPolicy value to set.
+     * @return the AzureFileShareProtectionPolicy object itself.
+     */
+    public AzureFileShareProtectionPolicy withVaultRetentionPolicy(VaultRetentionPolicy vaultRetentionPolicy) {
+        this.vaultRetentionPolicy = vaultRetentionPolicy;
+        return this;
+    }
+
+    /**
      * Get the timeZone property: TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -114,7 +157,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the timeZone property: TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the AzureFileShareProtectionPolicy object itself.
      */
@@ -123,34 +166,104 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileShareProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         super.withProtectedItemsCount(protectedItemsCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureFileShareProtectionPolicy withResourceGuardOperationRequests(
-        List<String> resourceGuardOperationRequests) {
+    public AzureFileShareProtectionPolicy
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (schedulePolicy() != null) {
             schedulePolicy().validate();
         }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();
         }
+        if (vaultRetentionPolicy() != null) {
+            vaultRetentionPolicy().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("protectedItemsCount", protectedItemsCount());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("backupManagementType", this.backupManagementType);
+        jsonWriter.writeStringField("workLoadType", this.workLoadType == null ? null : this.workLoadType.toString());
+        jsonWriter.writeJsonField("schedulePolicy", this.schedulePolicy);
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
+        jsonWriter.writeJsonField("vaultRetentionPolicy", this.vaultRetentionPolicy);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileShareProtectionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileShareProtectionPolicy if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileShareProtectionPolicy.
+     */
+    public static AzureFileShareProtectionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileShareProtectionPolicy deserializedAzureFileShareProtectionPolicy
+                = new AzureFileShareProtectionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectedItemsCount".equals(fieldName)) {
+                    deserializedAzureFileShareProtectionPolicy
+                        .withProtectedItemsCount(reader.getNullable(JsonReader::getInt));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureFileShareProtectionPolicy
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureFileShareProtectionPolicy.backupManagementType = reader.getString();
+                } else if ("workLoadType".equals(fieldName)) {
+                    deserializedAzureFileShareProtectionPolicy.workLoadType
+                        = WorkloadType.fromString(reader.getString());
+                } else if ("schedulePolicy".equals(fieldName)) {
+                    deserializedAzureFileShareProtectionPolicy.schedulePolicy = SchedulePolicy.fromJson(reader);
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedAzureFileShareProtectionPolicy.retentionPolicy = RetentionPolicy.fromJson(reader);
+                } else if ("vaultRetentionPolicy".equals(fieldName)) {
+                    deserializedAzureFileShareProtectionPolicy.vaultRetentionPolicy
+                        = VaultRetentionPolicy.fromJson(reader);
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedAzureFileShareProtectionPolicy.timeZone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileShareProtectionPolicy;
+        });
     }
 }

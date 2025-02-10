@@ -17,8 +17,7 @@ public final class ManagedEnvironmentStoragesCollectionImpl implements ManagedEn
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    ManagedEnvironmentStoragesCollectionImpl(
-        ManagedEnvironmentStoragesCollectionInner innerObject,
+    ManagedEnvironmentStoragesCollectionImpl(ManagedEnvironmentStoragesCollectionInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class ManagedEnvironmentStoragesCollectionImpl implements ManagedEn
     public List<ManagedEnvironmentStorage> value() {
         List<ManagedEnvironmentStorageInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ManagedEnvironmentStorageImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ManagedEnvironmentStorageImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

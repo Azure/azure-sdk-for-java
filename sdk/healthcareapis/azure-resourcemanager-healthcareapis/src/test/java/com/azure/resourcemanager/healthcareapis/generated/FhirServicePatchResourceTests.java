@@ -17,21 +17,24 @@ public final class FhirServicePatchResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FhirServicePatchResource model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"c6a2aafa-5694-4560-8ec0-2e5b72d03d93\",\"tenantId\":\"79d425cb-1d61-40cf-a641-1d55a108a6b7\",\"userAssignedIdentities\":{\"fovljxyws\":{\"principalId\":\"5e476d69-3e0a-458e-9e90-9fe3925a1538\",\"clientId\":\"67f8c7fa-c883-4f28-b1db-1418760dfea5\"},\"yrs\":{\"principalId\":\"abc341ca-dee0-4ec2-8cce-82e12713d144\",\"clientId\":\"2e8e697f-d7d1-4ffb-a82a-f7969e7b1c75\"},\"ytgadgvraeaene\":{\"principalId\":\"c49d1c22-243f-4fff-a432-5e1a6172b12c\",\"clientId\":\"f10e97fe-6d9b-4921-a7d6-a456f4ef644a\"}}},\"tags\":{\"jfqka\":\"arrwlquu\"}}")
+            "{\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"b46965b9-daae-4437-a87c-5fc694b0569d\",\"tenantId\":\"a44b4564-574a-44b7-8fc7-9eab89221736\",\"userAssignedIdentities\":{\"fbtkuwhhmhyk\":{\"principalId\":\"48b5f881-419a-4aa6-8f4f-c22c983bce9b\",\"clientId\":\"221f1ba6-10fb-42c0-880f-ecfc511bb5b4\"},\"xafnndlpichko\":{\"principalId\":\"229aae6e-6980-4110-9fc2-d2fecfb87508\",\"clientId\":\"8aa0aac1-703b-41f2-9fa3-53627be31a2a\"},\"cdyhbpkkpwdreqn\":{\"principalId\":\"a2087f17-57fc-4169-96ef-3f062e147676\",\"clientId\":\"f96dcac5-5bcc-46aa-b886-513f67601953\"},\"qfovljxywsuws\":{\"principalId\":\"7ec98738-d1c7-4ff4-8b50-262ce4457bd5\",\"clientId\":\"3ca883dc-1a19-42b7-9e46-505b3a335024\"}}},\"tags\":{\"r\":\"ndsytgadg\"}}")
             .toObject(FhirServicePatchResource.class);
-        Assertions.assertEquals("arrwlquu", model.tags().get("jfqka"));
-        Assertions.assertEquals(ServiceManagedIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ndsytgadg", model.tags().get("r"));
+        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FhirServicePatchResource model = new FhirServicePatchResource().withTags(mapOf("jfqka", "arrwlquu"))
-            .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("fovljxyws", new UserAssignedIdentity(), "yrs",
-                    new UserAssignedIdentity(), "ytgadgvraeaene", new UserAssignedIdentity())));
+        FhirServicePatchResource model
+            = new FhirServicePatchResource().withTags(mapOf("r", "ndsytgadg"))
+                .withIdentity(new ServiceManagedIdentityIdentity()
+                    .withType(ServiceManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("fbtkuwhhmhyk", new UserAssignedIdentity(), "xafnndlpichko",
+                        new UserAssignedIdentity(), "cdyhbpkkpwdreqn", new UserAssignedIdentity(), "qfovljxywsuws",
+                        new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(FhirServicePatchResource.class);
-        Assertions.assertEquals("arrwlquu", model.tags().get("jfqka"));
-        Assertions.assertEquals(ServiceManagedIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ndsytgadg", model.tags().get("r"));
+        Assertions.assertEquals(ServiceManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

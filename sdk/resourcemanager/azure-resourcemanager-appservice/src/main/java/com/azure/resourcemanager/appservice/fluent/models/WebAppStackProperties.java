@@ -5,38 +5,38 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.StackPreferredOs;
 import com.azure.resourcemanager.appservice.models.WebAppMajorVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * WebAppStack resource specific properties.
  */
 @Immutable
-public final class WebAppStackProperties {
+public final class WebAppStackProperties implements JsonSerializable<WebAppStackProperties> {
     /*
      * Web App stack (display only).
      */
-    @JsonProperty(value = "displayText", access = JsonProperty.Access.WRITE_ONLY)
     private String displayText;
 
     /*
      * Web App stack name.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /*
      * List of major versions available.
      */
-    @JsonProperty(value = "majorVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<WebAppMajorVersion> majorVersions;
 
     /*
      * Web App stack preferred OS.
      */
-    @JsonProperty(value = "preferredOs", access = JsonProperty.Access.WRITE_ONLY)
     private StackPreferredOs preferredOs;
 
     /**
@@ -90,5 +90,48 @@ public final class WebAppStackProperties {
         if (majorVersions() != null) {
             majorVersions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebAppStackProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebAppStackProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebAppStackProperties.
+     */
+    public static WebAppStackProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebAppStackProperties deserializedWebAppStackProperties = new WebAppStackProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayText".equals(fieldName)) {
+                    deserializedWebAppStackProperties.displayText = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedWebAppStackProperties.value = reader.getString();
+                } else if ("majorVersions".equals(fieldName)) {
+                    List<WebAppMajorVersion> majorVersions
+                        = reader.readArray(reader1 -> WebAppMajorVersion.fromJson(reader1));
+                    deserializedWebAppStackProperties.majorVersions = majorVersions;
+                } else if ("preferredOs".equals(fieldName)) {
+                    deserializedWebAppStackProperties.preferredOs = StackPreferredOs.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebAppStackProperties;
+        });
     }
 }

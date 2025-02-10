@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class StaticSitesGetLinkedBackendForBuildSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetLinkedBackendForStaticSiteBuild.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetLinkedBackendForStaticSiteBuild.
      * json
      */
     /**
@@ -20,7 +20,11 @@ public final class StaticSitesGetLinkedBackendForBuildSamples {
      */
     public static void getDetailsOfTheLinkedBackendRegisteredWithAStaticSiteBuildByName(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().getLinkedBackendForBuildWithResponse("rg",
-            "testStaticSite0", "default", "testBackend", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .getLinkedBackendForBuildWithResponse("rg", "testStaticSite0", "default", "testBackend",
+                com.azure.core.util.Context.NONE);
     }
 }

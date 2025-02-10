@@ -5,7 +5,11 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Spark pool auto-scaling properties
@@ -13,23 +17,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Auto-scaling properties of a Big Data pool powered by Apache Spark.
  */
 @Fluent
-public final class AutoScaleProperties {
+public final class AutoScaleProperties implements JsonSerializable<AutoScaleProperties> {
     /*
      * The minimum number of nodes the Big Data pool can support.
      */
-    @JsonProperty(value = "minNodeCount")
     private Integer minNodeCount;
 
     /*
      * Whether automatic scaling is enabled for the Big Data pool.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The maximum number of nodes the Big Data pool can support.
      */
-    @JsonProperty(value = "maxNodeCount")
     private Integer maxNodeCount;
 
     /**
@@ -96,5 +97,47 @@ public final class AutoScaleProperties {
     public AutoScaleProperties setMaxNodeCount(Integer maxNodeCount) {
         this.maxNodeCount = maxNodeCount;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("minNodeCount", this.minNodeCount);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeNumberField("maxNodeCount", this.maxNodeCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoScaleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoScaleProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoScaleProperties.
+     */
+    public static AutoScaleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoScaleProperties deserializedAutoScaleProperties = new AutoScaleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minNodeCount".equals(fieldName)) {
+                    deserializedAutoScaleProperties.minNodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedAutoScaleProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maxNodeCount".equals(fieldName)) {
+                    deserializedAutoScaleProperties.maxNodeCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoScaleProperties;
+        });
     }
 }

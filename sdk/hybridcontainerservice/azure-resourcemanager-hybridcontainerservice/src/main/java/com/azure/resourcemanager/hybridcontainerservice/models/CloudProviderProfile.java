@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * CloudProviderProfile - The underlying cloud infra provider properties.
+ * The profile for the underlying cloud infrastructure provider for the provisioned cluster.
  */
 @Fluent
-public final class CloudProviderProfile {
+public final class CloudProviderProfile implements JsonSerializable<CloudProviderProfile> {
     /*
-     * InfraNetworkProfile - List of infra network profiles for the provisioned cluster
+     * The profile for the infrastructure networks used by the provisioned cluster
      */
-    @JsonProperty(value = "infraNetworkProfile")
     private CloudProviderProfileInfraNetworkProfile infraNetworkProfile;
 
     /**
@@ -25,7 +28,7 @@ public final class CloudProviderProfile {
     }
 
     /**
-     * Get the infraNetworkProfile property: InfraNetworkProfile - List of infra network profiles for the provisioned
+     * Get the infraNetworkProfile property: The profile for the infrastructure networks used by the provisioned
      * cluster.
      * 
      * @return the infraNetworkProfile value.
@@ -35,7 +38,7 @@ public final class CloudProviderProfile {
     }
 
     /**
-     * Set the infraNetworkProfile property: InfraNetworkProfile - List of infra network profiles for the provisioned
+     * Set the infraNetworkProfile property: The profile for the infrastructure networks used by the provisioned
      * cluster.
      * 
      * @param infraNetworkProfile the infraNetworkProfile value to set.
@@ -55,5 +58,42 @@ public final class CloudProviderProfile {
         if (infraNetworkProfile() != null) {
             infraNetworkProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("infraNetworkProfile", this.infraNetworkProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudProviderProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudProviderProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudProviderProfile.
+     */
+    public static CloudProviderProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudProviderProfile deserializedCloudProviderProfile = new CloudProviderProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("infraNetworkProfile".equals(fieldName)) {
+                    deserializedCloudProviderProfile.infraNetworkProfile
+                        = CloudProviderProfileInfraNetworkProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudProviderProfile;
+        });
     }
 }

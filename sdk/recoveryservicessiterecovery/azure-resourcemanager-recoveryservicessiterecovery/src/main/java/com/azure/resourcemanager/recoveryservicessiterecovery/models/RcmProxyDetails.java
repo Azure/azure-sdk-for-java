@@ -5,80 +5,79 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** RCM proxy details. */
+/**
+ * RCM proxy details.
+ */
 @Immutable
-public final class RcmProxyDetails {
+public final class RcmProxyDetails implements JsonSerializable<RcmProxyDetails> {
     /*
      * The RCM proxy Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The RCM proxy name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The RCM proxy Bios Id.
      */
-    @JsonProperty(value = "biosId", access = JsonProperty.Access.WRITE_ONLY)
     private String biosId;
 
     /*
      * The fabric object Id.
      */
-    @JsonProperty(value = "fabricObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricObjectId;
 
     /*
      * The RCM proxy Fqdn.
      */
-    @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
     /*
      * The client authentication type.
      */
-    @JsonProperty(value = "clientAuthenticationType", access = JsonProperty.Access.WRITE_ONLY)
     private String clientAuthenticationType;
 
     /*
      * The version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * The last heartbeat received from the RCM proxy.
      */
-    @JsonProperty(value = "lastHeartbeatUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastHeartbeatUtc;
 
     /*
      * The health of the RCM proxy.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectionHealth health;
 
     /*
      * The health errors.
      */
-    @JsonProperty(value = "healthErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthError> healthErrors;
 
-    /** Creates an instance of RcmProxyDetails class. */
+    /**
+     * Creates an instance of RcmProxyDetails class.
+     */
     public RcmProxyDetails() {
     }
 
     /**
      * Get the id property: The RCM proxy Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -87,7 +86,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the name property: The RCM proxy name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -96,7 +95,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the biosId property: The RCM proxy Bios Id.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -105,7 +104,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the fabricObjectId property: The fabric object Id.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -114,7 +113,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the fqdn property: The RCM proxy Fqdn.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -123,7 +122,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the clientAuthenticationType property: The client authentication type.
-     *
+     * 
      * @return the clientAuthenticationType value.
      */
     public String clientAuthenticationType() {
@@ -132,7 +131,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the version property: The version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -141,7 +140,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the lastHeartbeatUtc property: The last heartbeat received from the RCM proxy.
-     *
+     * 
      * @return the lastHeartbeatUtc value.
      */
     public OffsetDateTime lastHeartbeatUtc() {
@@ -150,7 +149,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the health property: The health of the RCM proxy.
-     *
+     * 
      * @return the health value.
      */
     public ProtectionHealth health() {
@@ -159,7 +158,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the healthErrors property: The health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -168,12 +167,67 @@ public final class RcmProxyDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (healthErrors() != null) {
             healthErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RcmProxyDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RcmProxyDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RcmProxyDetails.
+     */
+    public static RcmProxyDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RcmProxyDetails deserializedRcmProxyDetails = new RcmProxyDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRcmProxyDetails.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRcmProxyDetails.name = reader.getString();
+                } else if ("biosId".equals(fieldName)) {
+                    deserializedRcmProxyDetails.biosId = reader.getString();
+                } else if ("fabricObjectId".equals(fieldName)) {
+                    deserializedRcmProxyDetails.fabricObjectId = reader.getString();
+                } else if ("fqdn".equals(fieldName)) {
+                    deserializedRcmProxyDetails.fqdn = reader.getString();
+                } else if ("clientAuthenticationType".equals(fieldName)) {
+                    deserializedRcmProxyDetails.clientAuthenticationType = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedRcmProxyDetails.version = reader.getString();
+                } else if ("lastHeartbeatUtc".equals(fieldName)) {
+                    deserializedRcmProxyDetails.lastHeartbeatUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("health".equals(fieldName)) {
+                    deserializedRcmProxyDetails.health = ProtectionHealth.fromString(reader.getString());
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthError> healthErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedRcmProxyDetails.healthErrors = healthErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRcmProxyDetails;
+        });
     }
 }

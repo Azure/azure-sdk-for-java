@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for GenerateReservationDetailsReport ByBillingAccountId. */
+/**
+ * Samples for GenerateReservationDetailsReport ByBillingAccountId.
+ */
 public final class GenerateReservationDetailsReportByBillingAccountIdSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateReservationDetailsReportByBillingAccount.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * GenerateReservationDetailsReportByBillingAccount.json
      */
     /**
      * Sample code: ReservationDetails.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void reservationDetails(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .generateReservationDetailsReports()
+        manager.generateReservationDetailsReports()
             .byBillingAccountId("9845612", "2020-01-01", "2020-01-30", com.azure.core.util.Context.NONE);
     }
 }

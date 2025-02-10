@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameAvailabilityResponseInner model =
-            BinaryData
-                .fromString("{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"uhczbwemh\"}")
-                .toObject(CheckNameAvailabilityResponseInner.class);
-        Assertions.assertEquals(false, model.nameAvailable());
+        CheckNameAvailabilityResponseInner model = BinaryData
+            .fromString("{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"faazpxdtnkdmkqjj\"}")
+            .toObject(CheckNameAvailabilityResponseInner.class);
+        Assertions.assertEquals(true, model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("uhczbwemh", model.message());
+        Assertions.assertEquals("faazpxdtnkdmkqjj", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameAvailabilityResponseInner model =
-            new CheckNameAvailabilityResponseInner()
-                .withNameAvailable(false)
-                .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS)
-                .withMessage("uhczbwemh");
+        CheckNameAvailabilityResponseInner model = new CheckNameAvailabilityResponseInner().withNameAvailable(true)
+            .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS)
+            .withMessage("faazpxdtnkdmkqjj");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityResponseInner.class);
-        Assertions.assertEquals(false, model.nameAvailable());
+        Assertions.assertEquals(true, model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("uhczbwemh", model.message());
+        Assertions.assertEquals("faazpxdtnkdmkqjj", model.message());
     }
 }

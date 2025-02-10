@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.Channels;
 import com.azure.resourcemanager.appservice.models.NotificationLevel;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.ResourceScopeType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -22,8 +25,22 @@ public final class RecommendationInner extends ProxyOnlyResource {
     /*
      * Recommendation resource specific properties
      */
-    @JsonProperty(value = "properties")
     private RecommendationProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of RecommendationInner class.
@@ -38,6 +55,36 @@ public final class RecommendationInner extends ProxyOnlyResource {
      */
     private RecommendationProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -291,8 +338,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is
-     * invalid.
+     * Get the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
      * 
      * @return the enabled value.
      */
@@ -301,8 +347,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is
-     * invalid.
+     * Set the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
      * 
      * @param enabled the enabled value to set.
      * @return the RecommendationInner object itself.
@@ -581,9 +626,54 @@ public final class RecommendationInner extends ProxyOnlyResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecommendationInner.
+     */
+    public static RecommendationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendationInner deserializedRecommendationInner = new RecommendationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRecommendationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRecommendationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRecommendationInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedRecommendationInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRecommendationInner.innerProperties = RecommendationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendationInner;
+        });
     }
 }

@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Disk configuration. */
+/**
+ * Disk configuration.
+ */
 @Fluent
-public final class RecoveryPointDiskConfiguration {
+public final class RecoveryPointDiskConfiguration implements JsonSerializable<RecoveryPointDiskConfiguration> {
     /*
      * Number of disks included in backup
      */
-    @JsonProperty(value = "numberOfDisksIncludedInBackup")
     private Integer numberOfDisksIncludedInBackup;
 
     /*
      * Number of disks attached to the VM
      */
-    @JsonProperty(value = "numberOfDisksAttachedToVm")
     private Integer numberOfDisksAttachedToVm;
 
     /*
      * Information of disks included in backup
      */
-    @JsonProperty(value = "includedDiskList")
     private List<DiskInformation> includedDiskList;
 
     /*
      * Information of disks excluded from backup
      */
-    @JsonProperty(value = "excludedDiskList")
     private List<DiskInformation> excludedDiskList;
 
-    /** Creates an instance of RecoveryPointDiskConfiguration class. */
+    /**
+     * Creates an instance of RecoveryPointDiskConfiguration class.
+     */
     public RecoveryPointDiskConfiguration() {
     }
 
     /**
      * Get the numberOfDisksIncludedInBackup property: Number of disks included in backup.
-     *
+     * 
      * @return the numberOfDisksIncludedInBackup value.
      */
     public Integer numberOfDisksIncludedInBackup() {
@@ -50,7 +54,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Set the numberOfDisksIncludedInBackup property: Number of disks included in backup.
-     *
+     * 
      * @param numberOfDisksIncludedInBackup the numberOfDisksIncludedInBackup value to set.
      * @return the RecoveryPointDiskConfiguration object itself.
      */
@@ -61,7 +65,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Get the numberOfDisksAttachedToVm property: Number of disks attached to the VM.
-     *
+     * 
      * @return the numberOfDisksAttachedToVm value.
      */
     public Integer numberOfDisksAttachedToVm() {
@@ -70,7 +74,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Set the numberOfDisksAttachedToVm property: Number of disks attached to the VM.
-     *
+     * 
      * @param numberOfDisksAttachedToVm the numberOfDisksAttachedToVm value to set.
      * @return the RecoveryPointDiskConfiguration object itself.
      */
@@ -81,7 +85,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Get the includedDiskList property: Information of disks included in backup.
-     *
+     * 
      * @return the includedDiskList value.
      */
     public List<DiskInformation> includedDiskList() {
@@ -90,7 +94,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Set the includedDiskList property: Information of disks included in backup.
-     *
+     * 
      * @param includedDiskList the includedDiskList value to set.
      * @return the RecoveryPointDiskConfiguration object itself.
      */
@@ -101,7 +105,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Get the excludedDiskList property: Information of disks excluded from backup.
-     *
+     * 
      * @return the excludedDiskList value.
      */
     public List<DiskInformation> excludedDiskList() {
@@ -110,7 +114,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Set the excludedDiskList property: Information of disks excluded from backup.
-     *
+     * 
      * @param excludedDiskList the excludedDiskList value to set.
      * @return the RecoveryPointDiskConfiguration object itself.
      */
@@ -121,7 +125,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -131,5 +135,59 @@ public final class RecoveryPointDiskConfiguration {
         if (excludedDiskList() != null) {
             excludedDiskList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("numberOfDisksIncludedInBackup", this.numberOfDisksIncludedInBackup);
+        jsonWriter.writeNumberField("numberOfDisksAttachedToVm", this.numberOfDisksAttachedToVm);
+        jsonWriter.writeArrayField("includedDiskList", this.includedDiskList,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("excludedDiskList", this.excludedDiskList,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPointDiskConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPointDiskConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPointDiskConfiguration.
+     */
+    public static RecoveryPointDiskConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPointDiskConfiguration deserializedRecoveryPointDiskConfiguration
+                = new RecoveryPointDiskConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("numberOfDisksIncludedInBackup".equals(fieldName)) {
+                    deserializedRecoveryPointDiskConfiguration.numberOfDisksIncludedInBackup
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfDisksAttachedToVm".equals(fieldName)) {
+                    deserializedRecoveryPointDiskConfiguration.numberOfDisksAttachedToVm
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("includedDiskList".equals(fieldName)) {
+                    List<DiskInformation> includedDiskList
+                        = reader.readArray(reader1 -> DiskInformation.fromJson(reader1));
+                    deserializedRecoveryPointDiskConfiguration.includedDiskList = includedDiskList;
+                } else if ("excludedDiskList".equals(fieldName)) {
+                    List<DiskInformation> excludedDiskList
+                        = reader.readArray(reader1 -> DiskInformation.fromJson(reader1));
+                    deserializedRecoveryPointDiskConfiguration.excludedDiskList = excludedDiskList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPointDiskConfiguration;
+        });
     }
 }

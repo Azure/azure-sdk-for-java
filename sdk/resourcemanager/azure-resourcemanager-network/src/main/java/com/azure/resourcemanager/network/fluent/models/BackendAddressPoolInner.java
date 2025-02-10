@@ -6,11 +6,14 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelInterface;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SyncMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,26 +24,22 @@ public final class BackendAddressPoolInner extends SubResource {
     /*
      * Properties of load balancer backend address pool.
      */
-    @JsonProperty(value = "properties")
     private BackendAddressPoolPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within the set of backend address pools used by the load balancer. This
      * name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -187,8 +186,8 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the loadBalancingRules property: An array of references to load balancing rules that use this backend
-     * address pool.
+     * Get the loadBalancingRules property: An array of references to load balancing rules that use this backend address
+     * pool.
      * 
      * @return the loadBalancingRules value.
      */
@@ -215,8 +214,7 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the inboundNatRules property: An array of references to inbound NAT rules that use this backend address
-     * pool.
+     * Get the inboundNatRules property: An array of references to inbound NAT rules that use this backend address pool.
      * 
      * @return the inboundNatRules value.
      */
@@ -313,5 +311,52 @@ public final class BackendAddressPoolInner extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendAddressPoolInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendAddressPoolInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackendAddressPoolInner.
+     */
+    public static BackendAddressPoolInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendAddressPoolInner deserializedBackendAddressPoolInner = new BackendAddressPoolInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBackendAddressPoolInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackendAddressPoolInner.innerProperties
+                        = BackendAddressPoolPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedBackendAddressPoolInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBackendAddressPoolInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBackendAddressPoolInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendAddressPoolInner;
+        });
     }
 }

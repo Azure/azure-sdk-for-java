@@ -35,12 +35,7 @@ public class TestResourceNamer extends ResourceNamer {
      */
     @Deprecated
     public TestResourceNamer(String name, TestMode testMode, RecordedData storage) {
-        this(name,
-            testMode,
-            false,
-            null,
-            null,
-            storage);
+        this(name, testMode, false, null, null, storage);
 
     }
 
@@ -54,44 +49,33 @@ public class TestResourceNamer extends ResourceNamer {
      * {@code false}, and {@code storage} is {@code null}.
      */
     public TestResourceNamer(TestContextManager testContextManager, RecordedData storage) {
-        this(testContextManager.getTestName(),
-            testContextManager.getTestMode(),
-            testContextManager.doNotRecordTest(),
-            null,
-            null,
-            storage
-        );
+        this(testContextManager.getTestName(), testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
+            null, null, storage);
         // Only need recordedData if the test is running in playback or record.
-        if (testContextManager.getTestMode() != TestMode.LIVE && !testContextManager.doNotRecordTest() && !testContextManager.isTestProxyEnabled()) {
+        if (testContextManager.getTestMode() != TestMode.LIVE
+            && !testContextManager.doNotRecordTest()
+            && !testContextManager.isTestProxyEnabled()) {
             Objects.requireNonNull(storage, "'recordedData' cannot be null.");
         }
 
     }
 
     /**
-     * Constrctor of TestResourceNamer
+     * Constructor of TestResourceNamer
      *
      * @param testContextManager Contextual information about the test being run, such as test name, {@link TestMode},
      * and others.
      * @param storeVariable A {@link Consumer} for storing random variables into a recording.
      * @param getVariable a {@link Supplier} for retrieving random variables from a recording.
      */
-    public TestResourceNamer(TestContextManager testContextManager, Consumer<String> storeVariable, Supplier<String> getVariable) {
-        this(testContextManager.getTestName(),
-            testContextManager.getTestMode(),
-            testContextManager.doNotRecordTest(),
-            storeVariable,
-            getVariable,
-            null
-        );
+    public TestResourceNamer(TestContextManager testContextManager, Consumer<String> storeVariable,
+        Supplier<String> getVariable) {
+        this(testContextManager.getTestName(), testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
+            storeVariable, getVariable, null);
     }
 
-    private TestResourceNamer(String name,
-                              TestMode testMode,
-                              boolean doNotRecord,
-                              Consumer<String> storeVariable,
-                              Supplier<String> getVariable,
-                              RecordedData storage) {
+    private TestResourceNamer(String name, TestMode testMode, boolean doNotRecord, Consumer<String> storeVariable,
+        Supplier<String> getVariable, RecordedData storage) {
         super(name);
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);

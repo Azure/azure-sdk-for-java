@@ -58,33 +58,33 @@ public final class SystemTopicsImpl implements SystemTopics {
 
     public PagedIterable<SystemTopic> list() {
         PagedIterable<SystemTopicInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SystemTopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SystemTopicImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SystemTopic> list(String filter, Integer top, Context context) {
         PagedIterable<SystemTopicInner> inner = this.serviceClient().list(filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new SystemTopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SystemTopicImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SystemTopic> listByResourceGroup(String resourceGroupName) {
         PagedIterable<SystemTopicInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new SystemTopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SystemTopicImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SystemTopic> listByResourceGroup(String resourceGroupName, String filter, Integer top,
         Context context) {
         PagedIterable<SystemTopicInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new SystemTopicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SystemTopicImpl(inner1, this.manager()));
     }
 
     public SystemTopic getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String systemTopicName = Utils.getValueFromIdByName(id, "systemTopics");
+        String systemTopicName = ResourceManagerUtils.getValueFromIdByName(id, "systemTopics");
         if (systemTopicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'systemTopics'.", id)));
@@ -93,12 +93,12 @@ public final class SystemTopicsImpl implements SystemTopics {
     }
 
     public Response<SystemTopic> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String systemTopicName = Utils.getValueFromIdByName(id, "systemTopics");
+        String systemTopicName = ResourceManagerUtils.getValueFromIdByName(id, "systemTopics");
         if (systemTopicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'systemTopics'.", id)));
@@ -107,12 +107,12 @@ public final class SystemTopicsImpl implements SystemTopics {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String systemTopicName = Utils.getValueFromIdByName(id, "systemTopics");
+        String systemTopicName = ResourceManagerUtils.getValueFromIdByName(id, "systemTopics");
         if (systemTopicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'systemTopics'.", id)));
@@ -121,12 +121,12 @@ public final class SystemTopicsImpl implements SystemTopics {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String systemTopicName = Utils.getValueFromIdByName(id, "systemTopics");
+        String systemTopicName = ResourceManagerUtils.getValueFromIdByName(id, "systemTopics");
         if (systemTopicName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'systemTopics'.", id)));

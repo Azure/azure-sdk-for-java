@@ -5,23 +5,27 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** uploadSession. */
+/**
+ * uploadSession.
+ */
 @Fluent
-public final class MicrosoftGraphUploadSession {
+public final class MicrosoftGraphUploadSession implements JsonSerializable<MicrosoftGraphUploadSession> {
     /*
      * The date and time in UTC that the upload session will expire. The complete file must be uploaded before this
      * expiration time is reached.
      */
-    @JsonProperty(value = "expirationDateTime")
     private OffsetDateTime expirationDateTime;
 
     /*
@@ -30,28 +34,28 @@ public final class MicrosoftGraphUploadSession {
      * attachments, instead of a collection of ranges, this property always indicates a single value '{start}', the
      * location in the file where the next upload should begin.
      */
-    @JsonProperty(value = "nextExpectedRanges")
     private List<String> nextExpectedRanges;
 
     /*
      * The URL endpoint that accepts PUT requests for byte ranges of the file.
      */
-    @JsonProperty(value = "uploadUrl")
     private String uploadUrl;
 
     /*
      * uploadSession
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphUploadSession class. */
+    /**
+     * Creates an instance of MicrosoftGraphUploadSession class.
+     */
     public MicrosoftGraphUploadSession() {
     }
 
     /**
      * Get the expirationDateTime property: The date and time in UTC that the upload session will expire. The complete
      * file must be uploaded before this expiration time is reached.
-     *
+     * 
      * @return the expirationDateTime value.
      */
     public OffsetDateTime expirationDateTime() {
@@ -61,7 +65,7 @@ public final class MicrosoftGraphUploadSession {
     /**
      * Set the expirationDateTime property: The date and time in UTC that the upload session will expire. The complete
      * file must be uploaded before this expiration time is reached.
-     *
+     * 
      * @param expirationDateTime the expirationDateTime value to set.
      * @return the MicrosoftGraphUploadSession object itself.
      */
@@ -75,7 +79,7 @@ public final class MicrosoftGraphUploadSession {
      * ranges are zero indexed and of the format 'start-end' (e.g. '0-26' to indicate the first 27 bytes of the file).
      * When uploading files as Outlook attachments, instead of a collection of ranges, this property always indicates a
      * single value '{start}', the location in the file where the next upload should begin.
-     *
+     * 
      * @return the nextExpectedRanges value.
      */
     public List<String> nextExpectedRanges() {
@@ -87,7 +91,7 @@ public final class MicrosoftGraphUploadSession {
      * ranges are zero indexed and of the format 'start-end' (e.g. '0-26' to indicate the first 27 bytes of the file).
      * When uploading files as Outlook attachments, instead of a collection of ranges, this property always indicates a
      * single value '{start}', the location in the file where the next upload should begin.
-     *
+     * 
      * @param nextExpectedRanges the nextExpectedRanges value to set.
      * @return the MicrosoftGraphUploadSession object itself.
      */
@@ -98,7 +102,7 @@ public final class MicrosoftGraphUploadSession {
 
     /**
      * Get the uploadUrl property: The URL endpoint that accepts PUT requests for byte ranges of the file.
-     *
+     * 
      * @return the uploadUrl value.
      */
     public String uploadUrl() {
@@ -107,7 +111,7 @@ public final class MicrosoftGraphUploadSession {
 
     /**
      * Set the uploadUrl property: The URL endpoint that accepts PUT requests for byte ranges of the file.
-     *
+     * 
      * @param uploadUrl the uploadUrl value to set.
      * @return the MicrosoftGraphUploadSession object itself.
      */
@@ -118,17 +122,16 @@ public final class MicrosoftGraphUploadSession {
 
     /**
      * Get the additionalProperties property: uploadSession.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: uploadSession.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphUploadSession object itself.
      */
@@ -137,19 +140,70 @@ public final class MicrosoftGraphUploadSession {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeArrayField("nextExpectedRanges", this.nextExpectedRanges,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("uploadUrl", this.uploadUrl);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphUploadSession from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphUploadSession if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphUploadSession.
+     */
+    public static MicrosoftGraphUploadSession fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphUploadSession deserializedMicrosoftGraphUploadSession = new MicrosoftGraphUploadSession();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expirationDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphUploadSession.expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("nextExpectedRanges".equals(fieldName)) {
+                    List<String> nextExpectedRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphUploadSession.nextExpectedRanges = nextExpectedRanges;
+                } else if ("uploadUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphUploadSession.uploadUrl = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphUploadSession.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphUploadSession;
+        });
     }
 }

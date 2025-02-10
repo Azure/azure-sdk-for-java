@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TokenCertificateName. */
+/**
+ * Defines values for TokenCertificateName.
+ */
 public final class TokenCertificateName extends ExpandableStringEnum<TokenCertificateName> {
-    /** Static value certificate1 for TokenCertificateName. */
+    /**
+     * Static value certificate1 for TokenCertificateName.
+     */
     public static final TokenCertificateName CERTIFICATE1 = fromString("certificate1");
 
-    /** Static value certificate2 for TokenCertificateName. */
+    /**
+     * Static value certificate2 for TokenCertificateName.
+     */
     public static final TokenCertificateName CERTIFICATE2 = fromString("certificate2");
 
     /**
      * Creates a new instance of TokenCertificateName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class TokenCertificateName extends ExpandableStringEnum<TokenCertif
 
     /**
      * Creates or finds a TokenCertificateName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TokenCertificateName.
      */
-    @JsonCreator
     public static TokenCertificateName fromString(String name) {
         return fromString(name, TokenCertificateName.class);
     }
 
     /**
      * Gets known TokenCertificateName values.
-     *
+     * 
      * @return known TokenCertificateName values.
      */
     public static Collection<TokenCertificateName> values() {

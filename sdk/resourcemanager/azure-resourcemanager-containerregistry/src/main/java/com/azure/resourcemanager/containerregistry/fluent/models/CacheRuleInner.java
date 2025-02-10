@@ -7,32 +7,52 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** An object that represents a cache rule for a container registry. */
+/**
+ * An object that represents a cache rule for a container registry.
+ */
 @Fluent
 public final class CacheRuleInner extends ProxyResource {
     /*
      * The properties of the cache rule.
      */
-    @JsonProperty(value = "properties")
     private CacheRuleProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of CacheRuleInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of CacheRuleInner class.
+     */
     public CacheRuleInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the cache rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CacheRuleProperties innerProperties() {
@@ -41,7 +61,7 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,9 +69,39 @@ public final class CacheRuleInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the credentialSetResourceId property: The ARM resource ID of the credential store which is associated with
      * the cache rule.
-     *
+     * 
      * @return the credentialSetResourceId value.
      */
     public String credentialSetResourceId() {
@@ -61,7 +111,7 @@ public final class CacheRuleInner extends ProxyResource {
     /**
      * Set the credentialSetResourceId property: The ARM resource ID of the credential store which is associated with
      * the cache rule.
-     *
+     * 
      * @param credentialSetResourceId the credentialSetResourceId value to set.
      * @return the CacheRuleInner object itself.
      */
@@ -75,7 +125,7 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Get the sourceRepository property: Source repository pulled from upstream.
-     *
+     * 
      * @return the sourceRepository value.
      */
     public String sourceRepository() {
@@ -84,7 +134,7 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Set the sourceRepository property: Source repository pulled from upstream.
-     *
+     * 
      * @param sourceRepository the sourceRepository value to set.
      * @return the CacheRuleInner object itself.
      */
@@ -97,9 +147,9 @@ public final class CacheRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the targetRepository property: Target repository specified in docker pull command. Eg: docker pull
-     * myregistry.azurecr.io/{targetRepository}:{tag}.
-     *
+     * Get the targetRepository property: Target repository specified in docker pull command.
+     * Eg: docker pull myregistry.azurecr.io/{targetRepository}:{tag}.
+     * 
      * @return the targetRepository value.
      */
     public String targetRepository() {
@@ -107,9 +157,9 @@ public final class CacheRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the targetRepository property: Target repository specified in docker pull command. Eg: docker pull
-     * myregistry.azurecr.io/{targetRepository}:{tag}.
-     *
+     * Set the targetRepository property: Target repository specified in docker pull command.
+     * Eg: docker pull myregistry.azurecr.io/{targetRepository}:{tag}.
+     * 
      * @param targetRepository the targetRepository value to set.
      * @return the CacheRuleInner object itself.
      */
@@ -123,7 +173,7 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The creation date of the cache rule.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -132,7 +182,7 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -141,12 +191,57 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheRuleInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CacheRuleInner.
+     */
+    public static CacheRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheRuleInner deserializedCacheRuleInner = new CacheRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCacheRuleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCacheRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCacheRuleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCacheRuleInner.innerProperties = CacheRuleProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCacheRuleInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheRuleInner;
+        });
     }
 }

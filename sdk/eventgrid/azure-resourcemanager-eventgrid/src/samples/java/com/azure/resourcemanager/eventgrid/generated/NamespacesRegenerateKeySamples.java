@@ -12,7 +12,7 @@ import com.azure.resourcemanager.eventgrid.models.NamespaceRegenerateKeyRequest;
 public final class NamespacesRegenerateKeySamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * Namespaces_RegenerateKey.json
      */
     /**
@@ -21,7 +21,9 @@ public final class NamespacesRegenerateKeySamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void namespacesRegenerateKey(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.namespaces().regenerateKey("examplerg", "exampleNamespaceName1",
-            new NamespaceRegenerateKeyRequest().withKeyName("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .regenerateKey("examplerg", "exampleNamespaceName1",
+                new NamespaceRegenerateKeyRequest().withKeyName("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

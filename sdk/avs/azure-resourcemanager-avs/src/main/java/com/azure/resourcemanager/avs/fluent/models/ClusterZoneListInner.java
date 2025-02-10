@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.ClusterZone;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of all zones and associated hosts for a cluster. */
+/**
+ * List of all zones and associated hosts for a cluster.
+ */
 @Fluent
-public final class ClusterZoneListInner {
+public final class ClusterZoneListInner implements JsonSerializable<ClusterZoneListInner> {
     /*
      * Zone and associated hosts info
      */
-    @JsonProperty(value = "zones")
     private List<ClusterZone> zones;
 
-    /** Creates an instance of ClusterZoneListInner class. */
+    /**
+     * Creates an instance of ClusterZoneListInner class.
+     */
     public ClusterZoneListInner() {
     }
 
     /**
      * Get the zones property: Zone and associated hosts info.
-     *
+     * 
      * @return the zones value.
      */
     public List<ClusterZone> zones() {
@@ -33,7 +40,7 @@ public final class ClusterZoneListInner {
 
     /**
      * Set the zones property: Zone and associated hosts info.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ClusterZoneListInner object itself.
      */
@@ -44,12 +51,49 @@ public final class ClusterZoneListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (zones() != null) {
             zones().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterZoneListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterZoneListInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterZoneListInner.
+     */
+    public static ClusterZoneListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterZoneListInner deserializedClusterZoneListInner = new ClusterZoneListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("zones".equals(fieldName)) {
+                    List<ClusterZone> zones = reader.readArray(reader1 -> ClusterZone.fromJson(reader1));
+                    deserializedClusterZoneListInner.zones = zones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterZoneListInner;
+        });
     }
 }

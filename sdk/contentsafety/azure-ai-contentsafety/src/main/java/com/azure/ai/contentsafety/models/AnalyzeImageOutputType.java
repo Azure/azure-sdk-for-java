@@ -5,7 +5,6 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -36,7 +35,6 @@ public final class AnalyzeImageOutputType extends ExpandableStringEnum<AnalyzeIm
      * @return the corresponding AnalyzeImageOutputType.
      */
     @Generated
-    @JsonCreator
     public static AnalyzeImageOutputType fromString(String name) {
         return fromString(name, AnalyzeImageOutputType.class);
     }

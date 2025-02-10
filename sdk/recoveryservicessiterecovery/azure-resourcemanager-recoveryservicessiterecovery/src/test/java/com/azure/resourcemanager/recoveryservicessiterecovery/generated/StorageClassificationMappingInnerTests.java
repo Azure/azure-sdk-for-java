@@ -12,21 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageClassificationMappingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageClassificationMappingInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"targetStorageClassificationId\":\"cf\"},\"location\":\"rxgkne\",\"id\":\"vyi\",\"name\":\"zqodfvpgshox\",\"type\":\"sgbpfgzdjtx\"}")
-                .toObject(StorageClassificationMappingInner.class);
+        StorageClassificationMappingInner model = BinaryData.fromString(
+            "{\"properties\":{\"targetStorageClassificationId\":\"cf\"},\"location\":\"rxgkne\",\"id\":\"vyi\",\"name\":\"zqodfvpgshox\",\"type\":\"sgbpfgzdjtx\"}")
+            .toObject(StorageClassificationMappingInner.class);
         Assertions.assertEquals("cf", model.properties().targetStorageClassificationId());
         Assertions.assertEquals("rxgkne", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageClassificationMappingInner model =
-            new StorageClassificationMappingInner()
-                .withProperties(new StorageClassificationMappingProperties().withTargetStorageClassificationId("cf"))
-                .withLocation("rxgkne");
+        StorageClassificationMappingInner model = new StorageClassificationMappingInner()
+            .withProperties(new StorageClassificationMappingProperties().withTargetStorageClassificationId("cf"))
+            .withLocation("rxgkne");
         model = BinaryData.fromObject(model).toObject(StorageClassificationMappingInner.class);
         Assertions.assertEquals("cf", model.properties().targetStorageClassificationId());
         Assertions.assertEquals("rxgkne", model.location());

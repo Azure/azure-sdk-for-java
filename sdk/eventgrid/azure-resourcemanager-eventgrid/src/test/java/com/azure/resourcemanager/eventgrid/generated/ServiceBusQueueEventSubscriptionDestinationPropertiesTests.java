@@ -14,19 +14,20 @@ public final class ServiceBusQueueEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceBusQueueEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"eyngjg\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"vpygglp\"}]}")
+            "{\"resourceId\":\"wnvz\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"oywsxvjabjqqaxu\"}]}")
             .toObject(ServiceBusQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("eyngjg", model.resourceId());
-        Assertions.assertEquals("vpygglp", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("wnvz", model.resourceId());
+        Assertions.assertEquals("oywsxvjabjqqaxu", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceBusQueueEventSubscriptionDestinationProperties model
-            = new ServiceBusQueueEventSubscriptionDestinationProperties().withResourceId("eyngjg")
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("vpygglp")));
+            = new ServiceBusQueueEventSubscriptionDestinationProperties().withResourceId("wnvz")
+                .withDeliveryAttributeMappings(
+                    Arrays.asList(new DeliveryAttributeMapping().withName("oywsxvjabjqqaxu")));
         model = BinaryData.fromObject(model).toObject(ServiceBusQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("eyngjg", model.resourceId());
-        Assertions.assertEquals("vpygglp", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("wnvz", model.resourceId());
+        Assertions.assertEquals("oywsxvjabjqqaxu", model.deliveryAttributeMappings().get(0).name());
     }
 }

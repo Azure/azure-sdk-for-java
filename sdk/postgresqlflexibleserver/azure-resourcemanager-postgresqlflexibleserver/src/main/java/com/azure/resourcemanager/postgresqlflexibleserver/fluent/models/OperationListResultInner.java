@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Operation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of resource provider operations. */
+/**
+ * A list of resource provider operations.
+ */
 @Fluent
-public final class OperationListResultInner {
+public final class OperationListResultInner implements JsonSerializable<OperationListResultInner> {
     /*
      * Collection of available operation details
      */
-    @JsonProperty(value = "value")
     private List<Operation> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OperationListResultInner class. */
+    /**
+     * Creates an instance of OperationListResultInner class.
+     */
     public OperationListResultInner() {
     }
 
     /**
      * Get the value property: Collection of available operation details.
-     *
+     * 
      * @return the value value.
      */
     public List<Operation> value() {
@@ -40,7 +46,7 @@ public final class OperationListResultInner {
 
     /**
      * Set the value property: Collection of available operation details.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationListResultInner object itself.
      */
@@ -50,9 +56,9 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,9 +66,9 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationListResultInner object itself.
      */
@@ -73,12 +79,52 @@ public final class OperationListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationListResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationListResultInner.
+     */
+    public static OperationListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationListResultInner deserializedOperationListResultInner = new OperationListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<Operation> value = reader.readArray(reader1 -> Operation.fromJson(reader1));
+                    deserializedOperationListResultInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOperationListResultInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationListResultInner;
+        });
     }
 }

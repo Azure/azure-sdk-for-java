@@ -7,26 +7,15 @@ package com.azure.resourcemanager.labservices.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of OperationResults. */
+/**
+ * Resource collection API of OperationResults.
+ */
 public interface OperationResults {
     /**
      * Get an azure operation result.
-     *
-     * <p>Returns an azure operation result.
-     *
-     * @param operationResultId The operation result ID / name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long running operation result.
-     */
-    OperationResult get(String operationResultId);
-
-    /**
-     * Get an azure operation result.
-     *
-     * <p>Returns an azure operation result.
-     *
+     * 
+     * Returns an azure operation result.
+     * 
      * @param operationResultId The operation result ID / name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,4 +24,17 @@ public interface OperationResults {
      * @return a long running operation result along with {@link Response}.
      */
     Response<OperationResult> getWithResponse(String operationResultId, Context context);
+
+    /**
+     * Get an azure operation result.
+     * 
+     * Returns an azure operation result.
+     * 
+     * @param operationResultId The operation result ID / name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a long running operation result.
+     */
+    OperationResult get(String operationResultId);
 }

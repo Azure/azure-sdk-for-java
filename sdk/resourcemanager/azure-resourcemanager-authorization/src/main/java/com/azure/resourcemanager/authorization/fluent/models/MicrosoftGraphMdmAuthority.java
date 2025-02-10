@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** mdmAuthority. */
+/**
+ * mdmAuthority.
+ */
 public final class MicrosoftGraphMdmAuthority extends ExpandableStringEnum<MicrosoftGraphMdmAuthority> {
-    /** Static value unknown for MicrosoftGraphMdmAuthority. */
+    /**
+     * Static value unknown for MicrosoftGraphMdmAuthority.
+     */
     public static final MicrosoftGraphMdmAuthority UNKNOWN = fromString("unknown");
 
-    /** Static value intune for MicrosoftGraphMdmAuthority. */
+    /**
+     * Static value intune for MicrosoftGraphMdmAuthority.
+     */
     public static final MicrosoftGraphMdmAuthority INTUNE = fromString("intune");
 
-    /** Static value sccm for MicrosoftGraphMdmAuthority. */
+    /**
+     * Static value sccm for MicrosoftGraphMdmAuthority.
+     */
     public static final MicrosoftGraphMdmAuthority SCCM = fromString("sccm");
 
-    /** Static value office365 for MicrosoftGraphMdmAuthority. */
+    /**
+     * Static value office365 for MicrosoftGraphMdmAuthority.
+     */
     public static final MicrosoftGraphMdmAuthority OFFICE365 = fromString("office365");
 
     /**
      * Creates a new instance of MicrosoftGraphMdmAuthority value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class MicrosoftGraphMdmAuthority extends ExpandableStringEnum<Micro
 
     /**
      * Creates or finds a MicrosoftGraphMdmAuthority from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphMdmAuthority.
      */
-    @JsonCreator
     public static MicrosoftGraphMdmAuthority fromString(String name) {
         return fromString(name, MicrosoftGraphMdmAuthority.class);
     }
 
     /**
      * Gets known MicrosoftGraphMdmAuthority values.
-     *
+     * 
      * @return known MicrosoftGraphMdmAuthority values.
      */
     public static Collection<MicrosoftGraphMdmAuthority> values() {

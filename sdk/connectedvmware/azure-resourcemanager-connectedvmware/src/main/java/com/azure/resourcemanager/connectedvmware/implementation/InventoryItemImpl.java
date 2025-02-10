@@ -15,8 +15,7 @@ public final class InventoryItemImpl implements InventoryItem, InventoryItem.Def
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    InventoryItemImpl(
-        InventoryItemInner innerObject,
+    InventoryItemImpl(InventoryItemInner innerObject,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -67,22 +66,18 @@ public final class InventoryItemImpl implements InventoryItem, InventoryItem.Def
     }
 
     public InventoryItem create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInventoryItems()
-                .createWithResponse(resourceGroupName, vcenterName, inventoryItemName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInventoryItems()
+            .createWithResponse(resourceGroupName, vcenterName, inventoryItemName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public InventoryItem create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInventoryItems()
-                .createWithResponse(resourceGroupName, vcenterName, inventoryItemName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInventoryItems()
+            .createWithResponse(resourceGroupName, vcenterName, inventoryItemName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -93,22 +88,18 @@ public final class InventoryItemImpl implements InventoryItem, InventoryItem.Def
     }
 
     public InventoryItem refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInventoryItems()
-                .getWithResponse(resourceGroupName, vcenterName, inventoryItemName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInventoryItems()
+            .getWithResponse(resourceGroupName, vcenterName, inventoryItemName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public InventoryItem refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInventoryItems()
-                .getWithResponse(resourceGroupName, vcenterName, inventoryItemName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInventoryItems()
+            .getWithResponse(resourceGroupName, vcenterName, inventoryItemName, context)
+            .getValue();
         return this;
     }
 

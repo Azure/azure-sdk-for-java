@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern> %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  <appender name="OpenTelemetry"
+            class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
+  </appender>
+
+  <root level="WARN">
+    <appender-ref ref="STDOUT" />
+    <appender-ref ref="OpenTelemetry"/>
+  </root>
+
+<!--  this is the category used by HTTP logging policy, add more/adjust as needed-->
+  <logger name="com.azure.storage.file.share.stress" level="INFO">
+    <appender-ref ref="STDOUT" />
+  </logger>
+  <logger name="com.azure.storage.stress" level="INFO">
+    <appender-ref ref="STDOUT" />
+  </logger>
+</configuration>

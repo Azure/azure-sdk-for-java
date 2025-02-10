@@ -7,18 +7,20 @@ package com.azure.resourcemanager.security.models;
 import com.azure.resourcemanager.security.fluent.models.PricingListInner;
 import java.util.List;
 
-/** An immutable client-side representation of PricingList. */
+/**
+ * An immutable client-side representation of PricingList.
+ */
 public interface PricingList {
     /**
      * Gets the value property: List of pricing configurations.
-     *
+     * 
      * @return the value value.
      */
     List<Pricing> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.PricingListInner object.
-     *
+     * 
      * @return the inner object.
      */
     PricingListInner innerModel();

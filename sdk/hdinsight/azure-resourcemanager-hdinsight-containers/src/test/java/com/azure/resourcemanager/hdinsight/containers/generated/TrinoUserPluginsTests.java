@@ -13,31 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class TrinoUserPluginsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrinoUserPlugins model =
-            BinaryData
-                .fromString(
-                    "{\"plugins\":[{\"enabled\":false,\"name\":\"j\",\"path\":\"hfxobbcswsrtj\"},{\"enabled\":true,\"name\":\"rbpbewtghfgblcg\",\"path\":\"zvlvqhjkbegib\"}]}")
-                .toObject(TrinoUserPlugins.class);
+        TrinoUserPlugins model = BinaryData
+            .fromString("{\"plugins\":[{\"enabled\":false,\"name\":\"nsikvmkqzeqqkdl\",\"path\":\"zxmhhvhgu\"}]}")
+            .toObject(TrinoUserPlugins.class);
         Assertions.assertEquals(false, model.plugins().get(0).enabled());
-        Assertions.assertEquals("j", model.plugins().get(0).name());
-        Assertions.assertEquals("hfxobbcswsrtj", model.plugins().get(0).path());
+        Assertions.assertEquals("nsikvmkqzeqqkdl", model.plugins().get(0).name());
+        Assertions.assertEquals("zxmhhvhgu", model.plugins().get(0).path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrinoUserPlugins model =
-            new TrinoUserPlugins()
-                .withPlugins(
-                    Arrays
-                        .asList(
-                            new TrinoUserPlugin().withEnabled(false).withName("j").withPath("hfxobbcswsrtj"),
-                            new TrinoUserPlugin()
-                                .withEnabled(true)
-                                .withName("rbpbewtghfgblcg")
-                                .withPath("zvlvqhjkbegib")));
+        TrinoUserPlugins model = new TrinoUserPlugins().withPlugins(
+            Arrays.asList(new TrinoUserPlugin().withEnabled(false).withName("nsikvmkqzeqqkdl").withPath("zxmhhvhgu")));
         model = BinaryData.fromObject(model).toObject(TrinoUserPlugins.class);
         Assertions.assertEquals(false, model.plugins().get(0).enabled());
-        Assertions.assertEquals("j", model.plugins().get(0).name());
-        Assertions.assertEquals("hfxobbcswsrtj", model.plugins().get(0).path());
+        Assertions.assertEquals("nsikvmkqzeqqkdl", model.plugins().get(0).name());
+        Assertions.assertEquals("zxmhhvhgu", model.plugins().get(0).path());
     }
 }

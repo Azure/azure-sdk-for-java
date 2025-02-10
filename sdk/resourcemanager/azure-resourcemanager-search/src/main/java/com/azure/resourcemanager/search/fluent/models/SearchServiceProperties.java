@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.search.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.search.models.DataPlaneAuthOptions;
 import com.azure.resourcemanager.search.models.EncryptionWithCmk;
 import com.azure.resourcemanager.search.models.HostingMode;
@@ -13,25 +17,25 @@ import com.azure.resourcemanager.search.models.ProvisioningState;
 import com.azure.resourcemanager.search.models.PublicNetworkAccess;
 import com.azure.resourcemanager.search.models.SearchSemanticSearch;
 import com.azure.resourcemanager.search.models.SearchServiceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of the search service. */
+/**
+ * Properties of the search service.
+ */
 @Fluent
-public final class SearchServiceProperties {
+public final class SearchServiceProperties implements JsonSerializable<SearchServiceProperties> {
     /*
      * The number of replicas in the search service. If specified, it must be a value between 1 and 12 inclusive for
      * standard SKUs or between 1 and 3 inclusive for basic SKU.
      */
-    @JsonProperty(value = "replicaCount")
     private Integer replicaCount;
 
     /*
-     * The number of partitions in the search service; if specified, it can be 1, 2, 3, 4, 6, or 12. Values greater
-     * than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode set to 'highDensity', the
-     * allowed values are between 1 and 3.
+     * The number of partitions in the search service; if specified, it can be 1, 2, 3, 4, 6, or 12. Values greater than
+     * 1 are only valid for standard SKUs. For 'standard3' services with hostingMode set to 'highDensity', the allowed
+     * values are between 1 and 3.
      */
-    @JsonProperty(value = "partitionCount")
     private Integer partitionCount;
 
     /*
@@ -39,34 +43,30 @@ public final class SearchServiceProperties {
      * allow up to 1000 indexes, which is much higher than the maximum indexes allowed for any other SKU. For the
      * standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this value must be 'default'.
      */
-    @JsonProperty(value = "hostingMode")
     private HostingMode hostingMode;
 
     /*
-     * This value can be set to 'enabled' to avoid breaking changes on existing customer resources and templates. If
-     * set to 'disabled', traffic over public interface is not allowed, and private endpoint connections would be the
+     * This value can be set to 'enabled' to avoid breaking changes on existing customer resources and templates. If set
+     * to 'disabled', traffic over public interface is not allowed, and private endpoint connections would be the
      * exclusive access method.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * The status of the search service. Possible values include: 'running': The search service is running and no
      * provisioning operations are underway. 'provisioning': The search service is being provisioned or scaled up or
-     * down. 'deleting': The search service is being deleted. 'degraded': The search service is degraded. This can
-     * occur when the underlying search units are not healthy. The search service is most likely operational, but
-     * performance might be slow and some requests might be dropped. 'disabled': The search service is disabled. In
-     * this state, the service will reject all API requests. 'error': The search service is in an error state. If your
-     * service is in the degraded, disabled, or error states, Microsoft is actively investigating the underlying issue.
-     * Dedicated services in these states are still chargeable based on the number of search units provisioned.
+     * down. 'deleting': The search service is being deleted. 'degraded': The search service is degraded. This can occur
+     * when the underlying search units are not healthy. The search service is most likely operational, but performance
+     * might be slow and some requests might be dropped. 'disabled': The search service is disabled. In this state, the
+     * service will reject all API requests. 'error': The search service is in an error state. If your service is in the
+     * degraded, disabled, or error states, Microsoft is actively investigating the underlying issue. Dedicated services
+     * in these states are still chargeable based on the number of search units provisioned.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private SearchServiceStatus status;
 
     /*
      * The details of the search service status.
      */
-    @JsonProperty(value = "statusDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String statusDetails;
 
     /*
@@ -77,63 +77,57 @@ public final class SearchServiceProperties {
      * operation is completed. If you are using the free service, this value tends to come back as 'succeeded' directly
      * in the call to Create search service. This is because the free service uses capacity that is already set up.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Network-specific rules that determine how the search service may be reached.
      */
-    @JsonProperty(value = "networkRuleSet")
     private NetworkRuleSet networkRuleSet;
 
     /*
      * Specifies any policy regarding encryption of resources (such as indexes) using customer manager keys within a
      * search service.
      */
-    @JsonProperty(value = "encryptionWithCmk")
     private EncryptionWithCmk encryptionWithCmk;
 
     /*
      * When set to true, calls to the search service will not be permitted to utilize API keys for authentication. This
      * cannot be set to true if 'dataPlaneAuthOptions' are defined.
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
      * Defines the options for how the data plane API of a search service authenticates requests. This cannot be set if
      * 'disableLocalAuth' is set to true.
      */
-    @JsonProperty(value = "authOptions")
     private DataPlaneAuthOptions authOptions;
 
     /*
      * The list of private endpoint connections to the search service.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Sets options that control the availability of semantic search. This configuration is only possible for certain
      * search SKUs in certain locations.
      */
-    @JsonProperty(value = "semanticSearch")
     private SearchSemanticSearch semanticSearch;
 
     /*
      * The list of shared private link resources managed by the search service.
      */
-    @JsonProperty(value = "sharedPrivateLinkResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources;
 
-    /** Creates an instance of SearchServiceProperties class. */
+    /**
+     * Creates an instance of SearchServiceProperties class.
+     */
     public SearchServiceProperties() {
     }
 
     /**
      * Get the replicaCount property: The number of replicas in the search service. If specified, it must be a value
      * between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
-     *
+     * 
      * @return the replicaCount value.
      */
     public Integer replicaCount() {
@@ -143,7 +137,7 @@ public final class SearchServiceProperties {
     /**
      * Set the replicaCount property: The number of replicas in the search service. If specified, it must be a value
      * between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
-     *
+     * 
      * @param replicaCount the replicaCount value to set.
      * @return the SearchServiceProperties object itself.
      */
@@ -156,7 +150,7 @@ public final class SearchServiceProperties {
      * Get the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2, 3,
      * 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode
      * set to 'highDensity', the allowed values are between 1 and 3.
-     *
+     * 
      * @return the partitionCount value.
      */
     public Integer partitionCount() {
@@ -167,7 +161,7 @@ public final class SearchServiceProperties {
      * Set the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2, 3,
      * 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode
      * set to 'highDensity', the allowed values are between 1 and 3.
-     *
+     * 
      * @param partitionCount the partitionCount value to set.
      * @return the SearchServiceProperties object itself.
      */
@@ -181,7 +175,7 @@ public final class SearchServiceProperties {
      * high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for
      * any other SKU. For the standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this
      * value must be 'default'.
-     *
+     * 
      * @return the hostingMode value.
      */
     public HostingMode hostingMode() {
@@ -193,7 +187,7 @@ public final class SearchServiceProperties {
      * high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for
      * any other SKU. For the standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this
      * value must be 'default'.
-     *
+     * 
      * @param hostingMode the hostingMode value to set.
      * @return the SearchServiceProperties object itself.
      */
@@ -206,7 +200,7 @@ public final class SearchServiceProperties {
      * Get the publicNetworkAccess property: This value can be set to 'enabled' to avoid breaking changes on existing
      * customer resources and templates. If set to 'disabled', traffic over public interface is not allowed, and private
      * endpoint connections would be the exclusive access method.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -217,7 +211,7 @@ public final class SearchServiceProperties {
      * Set the publicNetworkAccess property: This value can be set to 'enabled' to avoid breaking changes on existing
      * customer resources and templates. If set to 'disabled', traffic over public interface is not allowed, and private
      * endpoint connections would be the exclusive access method.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the SearchServiceProperties object itself.
      */
@@ -236,7 +230,7 @@ public final class SearchServiceProperties {
      * state. If your service is in the degraded, disabled, or error states, Microsoft is actively investigating the
      * underlying issue. Dedicated services in these states are still chargeable based on the number of search units
      * provisioned.
-     *
+     * 
      * @return the status value.
      */
     public SearchServiceStatus status() {
@@ -245,7 +239,7 @@ public final class SearchServiceProperties {
 
     /**
      * Get the statusDetails property: The details of the search service status.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -260,7 +254,7 @@ public final class SearchServiceProperties {
      * operation to see when an operation is completed. If you are using the free service, this value tends to come back
      * as 'succeeded' directly in the call to Create search service. This is because the free service uses capacity that
      * is already set up.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -269,7 +263,7 @@ public final class SearchServiceProperties {
 
     /**
      * Get the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -278,7 +272,7 @@ public final class SearchServiceProperties {
 
     /**
      * Set the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
-     *
+     * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the SearchServiceProperties object itself.
      */
@@ -290,7 +284,7 @@ public final class SearchServiceProperties {
     /**
      * Get the encryptionWithCmk property: Specifies any policy regarding encryption of resources (such as indexes)
      * using customer manager keys within a search service.
-     *
+     * 
      * @return the encryptionWithCmk value.
      */
     public EncryptionWithCmk encryptionWithCmk() {
@@ -300,7 +294,7 @@ public final class SearchServiceProperties {
     /**
      * Set the encryptionWithCmk property: Specifies any policy regarding encryption of resources (such as indexes)
      * using customer manager keys within a search service.
-     *
+     * 
      * @param encryptionWithCmk the encryptionWithCmk value to set.
      * @return the SearchServiceProperties object itself.
      */
@@ -312,7 +306,7 @@ public final class SearchServiceProperties {
     /**
      * Get the disableLocalAuth property: When set to true, calls to the search service will not be permitted to utilize
      * API keys for authentication. This cannot be set to true if 'dataPlaneAuthOptions' are defined.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -322,7 +316,7 @@ public final class SearchServiceProperties {
     /**
      * Set the disableLocalAuth property: When set to true, calls to the search service will not be permitted to utilize
      * API keys for authentication. This cannot be set to true if 'dataPlaneAuthOptions' are defined.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the SearchServiceProperties object itself.
      */
@@ -334,7 +328,7 @@ public final class SearchServiceProperties {
     /**
      * Get the authOptions property: Defines the options for how the data plane API of a search service authenticates
      * requests. This cannot be set if 'disableLocalAuth' is set to true.
-     *
+     * 
      * @return the authOptions value.
      */
     public DataPlaneAuthOptions authOptions() {
@@ -344,7 +338,7 @@ public final class SearchServiceProperties {
     /**
      * Set the authOptions property: Defines the options for how the data plane API of a search service authenticates
      * requests. This cannot be set if 'disableLocalAuth' is set to true.
-     *
+     * 
      * @param authOptions the authOptions value to set.
      * @return the SearchServiceProperties object itself.
      */
@@ -355,7 +349,7 @@ public final class SearchServiceProperties {
 
     /**
      * Get the privateEndpointConnections property: The list of private endpoint connections to the search service.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -365,7 +359,7 @@ public final class SearchServiceProperties {
     /**
      * Get the semanticSearch property: Sets options that control the availability of semantic search. This
      * configuration is only possible for certain search SKUs in certain locations.
-     *
+     * 
      * @return the semanticSearch value.
      */
     public SearchSemanticSearch semanticSearch() {
@@ -375,7 +369,7 @@ public final class SearchServiceProperties {
     /**
      * Set the semanticSearch property: Sets options that control the availability of semantic search. This
      * configuration is only possible for certain search SKUs in certain locations.
-     *
+     * 
      * @param semanticSearch the semanticSearch value to set.
      * @return the SearchServiceProperties object itself.
      */
@@ -387,7 +381,7 @@ public final class SearchServiceProperties {
     /**
      * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the search
      * service.
-     *
+     * 
      * @return the sharedPrivateLinkResources value.
      */
     public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
@@ -396,7 +390,7 @@ public final class SearchServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -415,5 +409,84 @@ public final class SearchServiceProperties {
         if (sharedPrivateLinkResources() != null) {
             sharedPrivateLinkResources().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("replicaCount", this.replicaCount);
+        jsonWriter.writeNumberField("partitionCount", this.partitionCount);
+        jsonWriter.writeStringField("hostingMode", this.hostingMode == null ? null : this.hostingMode.toString());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("networkRuleSet", this.networkRuleSet);
+        jsonWriter.writeJsonField("encryptionWithCmk", this.encryptionWithCmk);
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeJsonField("authOptions", this.authOptions);
+        jsonWriter.writeStringField("semanticSearch",
+            this.semanticSearch == null ? null : this.semanticSearch.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchServiceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchServiceProperties.
+     */
+    public static SearchServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchServiceProperties deserializedSearchServiceProperties = new SearchServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("replicaCount".equals(fieldName)) {
+                    deserializedSearchServiceProperties.replicaCount = reader.getNullable(JsonReader::getInt);
+                } else if ("partitionCount".equals(fieldName)) {
+                    deserializedSearchServiceProperties.partitionCount = reader.getNullable(JsonReader::getInt);
+                } else if ("hostingMode".equals(fieldName)) {
+                    deserializedSearchServiceProperties.hostingMode = HostingMode.fromString(reader.getString());
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedSearchServiceProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedSearchServiceProperties.status = SearchServiceStatus.fromString(reader.getString());
+                } else if ("statusDetails".equals(fieldName)) {
+                    deserializedSearchServiceProperties.statusDetails = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSearchServiceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("networkRuleSet".equals(fieldName)) {
+                    deserializedSearchServiceProperties.networkRuleSet = NetworkRuleSet.fromJson(reader);
+                } else if ("encryptionWithCmk".equals(fieldName)) {
+                    deserializedSearchServiceProperties.encryptionWithCmk = EncryptionWithCmk.fromJson(reader);
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedSearchServiceProperties.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("authOptions".equals(fieldName)) {
+                    deserializedSearchServiceProperties.authOptions = DataPlaneAuthOptions.fromJson(reader);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedSearchServiceProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("semanticSearch".equals(fieldName)) {
+                    deserializedSearchServiceProperties.semanticSearch
+                        = SearchSemanticSearch.fromString(reader.getString());
+                } else if ("sharedPrivateLinkResources".equals(fieldName)) {
+                    List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources
+                        = reader.readArray(reader1 -> SharedPrivateLinkResourceInner.fromJson(reader1));
+                    deserializedSearchServiceProperties.sharedPrivateLinkResources = sharedPrivateLinkResources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchServiceProperties;
+        });
     }
 }

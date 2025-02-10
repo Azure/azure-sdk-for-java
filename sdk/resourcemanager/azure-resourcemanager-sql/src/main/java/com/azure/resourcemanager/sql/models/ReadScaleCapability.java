@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The read scale capability. */
+/**
+ * The read scale capability.
+ */
 @Fluent
-public final class ReadScaleCapability {
+public final class ReadScaleCapability implements JsonSerializable<ReadScaleCapability> {
     /*
      * The maximum number of read scale replicas.
      */
-    @JsonProperty(value = "maxNumberOfReplicas", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxNumberOfReplicas;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ReadScaleCapability class. */
+    /**
+     * Creates an instance of ReadScaleCapability class.
+     */
     public ReadScaleCapability() {
     }
 
     /**
      * Get the maxNumberOfReplicas property: The maximum number of read scale replicas.
-     *
+     * 
      * @return the maxNumberOfReplicas value.
      */
     public Integer maxNumberOfReplicas() {
@@ -43,7 +48,7 @@ public final class ReadScaleCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -52,7 +57,7 @@ public final class ReadScaleCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -61,7 +66,7 @@ public final class ReadScaleCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ReadScaleCapability object itself.
      */
@@ -72,9 +77,49 @@ public final class ReadScaleCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReadScaleCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReadScaleCapability if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReadScaleCapability.
+     */
+    public static ReadScaleCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReadScaleCapability deserializedReadScaleCapability = new ReadScaleCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxNumberOfReplicas".equals(fieldName)) {
+                    deserializedReadScaleCapability.maxNumberOfReplicas = reader.getNullable(JsonReader::getInt);
+                } else if ("status".equals(fieldName)) {
+                    deserializedReadScaleCapability.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedReadScaleCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReadScaleCapability;
+        });
     }
 }

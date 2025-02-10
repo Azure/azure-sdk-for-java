@@ -6,32 +6,34 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.WebActivityAuthentication;
 import com.azure.resourcemanager.datafactory.models.WebhookActivityMethod;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * WebHook activity type properties.
  */
 @Fluent
-public final class WebhookActivityTypeProperties {
+public final class WebhookActivityTypeProperties implements JsonSerializable<WebhookActivityTypeProperties> {
     /*
      * Rest API method for target endpoint.
      */
-    @JsonProperty(value = "method", required = true)
     private WebhookActivityMethod method;
 
     /*
      * WebHook activity target endpoint and path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
      * The timeout within which the webhook should be called back. If there is no value specified, it defaults to 10
      * minutes. Type: string. Pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "timeout")
     private String timeout;
 
     /*
@@ -39,20 +41,17 @@ public final class WebhookActivityTypeProperties {
      * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "headers")
-    private Object headers;
+    private Map<String, Object> headers;
 
     /*
      * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
      * method Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "body")
     private Object body;
 
     /*
      * Authentication method used for calling the endpoint.
      */
-    @JsonProperty(value = "authentication")
     private WebActivityAuthentication authentication;
 
     /*
@@ -60,7 +59,6 @@ public final class WebhookActivityTypeProperties {
      * activity can be marked as failed by setting statusCode >= 400 in callback request. Default is false. Type:
      * boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "reportStatusOnCallBack")
     private Object reportStatusOnCallBack;
 
     /**
@@ -142,7 +140,7 @@ public final class WebhookActivityTypeProperties {
      * 
      * @return the headers value.
      */
-    public Object headers() {
+    public Map<String, Object> headers() {
         return this.headers;
     }
 
@@ -154,7 +152,7 @@ public final class WebhookActivityTypeProperties {
      * @param headers the headers value to set.
      * @return the WebhookActivityTypeProperties object itself.
      */
-    public WebhookActivityTypeProperties withHeaders(Object headers) {
+    public WebhookActivityTypeProperties withHeaders(Map<String, Object> headers) {
         this.headers = headers;
         return this;
     }
@@ -232,12 +230,14 @@ public final class WebhookActivityTypeProperties {
      */
     public void validate() {
         if (method() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property method in model WebhookActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property method in model WebhookActivityTypeProperties"));
         }
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model WebhookActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model WebhookActivityTypeProperties"));
         }
         if (authentication() != null) {
             authentication().validate();
@@ -245,4 +245,63 @@ public final class WebhookActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebhookActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
+        jsonWriter.writeUntypedField("url", this.url);
+        jsonWriter.writeStringField("timeout", this.timeout);
+        jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeUntypedField("body", this.body);
+        jsonWriter.writeJsonField("authentication", this.authentication);
+        jsonWriter.writeUntypedField("reportStatusOnCallBack", this.reportStatusOnCallBack);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookActivityTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebhookActivityTypeProperties.
+     */
+    public static WebhookActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookActivityTypeProperties deserializedWebhookActivityTypeProperties
+                = new WebhookActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("method".equals(fieldName)) {
+                    deserializedWebhookActivityTypeProperties.method
+                        = WebhookActivityMethod.fromString(reader.getString());
+                } else if ("url".equals(fieldName)) {
+                    deserializedWebhookActivityTypeProperties.url = reader.readUntyped();
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedWebhookActivityTypeProperties.timeout = reader.getString();
+                } else if ("headers".equals(fieldName)) {
+                    Map<String, Object> headers = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedWebhookActivityTypeProperties.headers = headers;
+                } else if ("body".equals(fieldName)) {
+                    deserializedWebhookActivityTypeProperties.body = reader.readUntyped();
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedWebhookActivityTypeProperties.authentication
+                        = WebActivityAuthentication.fromJson(reader);
+                } else if ("reportStatusOnCallBack".equals(fieldName)) {
+                    deserializedWebhookActivityTypeProperties.reportStatusOnCallBack = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookActivityTypeProperties;
+        });
+    }
 }

@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** weekIndex. */
+/**
+ * weekIndex.
+ */
 public final class MicrosoftGraphWeekIndex extends ExpandableStringEnum<MicrosoftGraphWeekIndex> {
-    /** Static value first for MicrosoftGraphWeekIndex. */
+    /**
+     * Static value first for MicrosoftGraphWeekIndex.
+     */
     public static final MicrosoftGraphWeekIndex FIRST = fromString("first");
 
-    /** Static value second for MicrosoftGraphWeekIndex. */
+    /**
+     * Static value second for MicrosoftGraphWeekIndex.
+     */
     public static final MicrosoftGraphWeekIndex SECOND = fromString("second");
 
-    /** Static value third for MicrosoftGraphWeekIndex. */
+    /**
+     * Static value third for MicrosoftGraphWeekIndex.
+     */
     public static final MicrosoftGraphWeekIndex THIRD = fromString("third");
 
-    /** Static value fourth for MicrosoftGraphWeekIndex. */
+    /**
+     * Static value fourth for MicrosoftGraphWeekIndex.
+     */
     public static final MicrosoftGraphWeekIndex FOURTH = fromString("fourth");
 
-    /** Static value last for MicrosoftGraphWeekIndex. */
+    /**
+     * Static value last for MicrosoftGraphWeekIndex.
+     */
     public static final MicrosoftGraphWeekIndex LAST = fromString("last");
 
     /**
      * Creates a new instance of MicrosoftGraphWeekIndex value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class MicrosoftGraphWeekIndex extends ExpandableStringEnum<Microsof
 
     /**
      * Creates or finds a MicrosoftGraphWeekIndex from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphWeekIndex.
      */
-    @JsonCreator
     public static MicrosoftGraphWeekIndex fromString(String name) {
         return fromString(name, MicrosoftGraphWeekIndex.class);
     }
 
     /**
      * Gets known MicrosoftGraphWeekIndex values.
-     *
+     * 
      * @return known MicrosoftGraphWeekIndex values.
      */
     public static Collection<MicrosoftGraphWeekIndex> values() {

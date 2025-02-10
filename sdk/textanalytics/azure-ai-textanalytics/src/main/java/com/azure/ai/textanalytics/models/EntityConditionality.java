@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -35,7 +34,6 @@ public final class EntityConditionality extends ExpandableStringEnum<EntityCondi
      * @param name The string name to look for.
      * @return The corresponding {@code EntityConditionality}.
      */
-    @JsonCreator
     public static EntityConditionality fromString(String name) {
         return fromString(name, EntityConditionality.class);
     }

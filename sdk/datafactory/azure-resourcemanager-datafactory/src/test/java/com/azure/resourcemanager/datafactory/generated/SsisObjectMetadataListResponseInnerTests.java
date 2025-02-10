@@ -26,7 +26,8 @@ public final class SsisObjectMetadataListResponseInnerTests {
     public void testSerialize() throws Exception {
         SsisObjectMetadataListResponseInner model = new SsisObjectMetadataListResponseInner().withValue(Arrays.asList(
             new SsisObjectMetadata().withId(1248291372184779781L).withName("zvlvqhjkbegib").withDescription("mxiebw"),
-            new SsisObjectMetadata().withId(9167362709610232735L).withName("yqcgwrtzjuzgwy")
+            new SsisObjectMetadata().withId(9167362709610232735L)
+                .withName("yqcgwrtzjuzgwy")
                 .withDescription("htxongmtsavjc"),
             new SsisObjectMetadata().withId(7752304449285326809L).withName("p").withDescription("knftguvriuh")))
             .withNextLink("wmdyvxqtay");

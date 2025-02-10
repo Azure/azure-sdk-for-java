@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Container App container environment variable. */
+/**
+ * Container App container environment variable.
+ */
 @Fluent
-public final class EnvironmentVar {
+public final class EnvironmentVar implements JsonSerializable<EnvironmentVar> {
     /*
      * Environment variable name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Non-secret environment variable value.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Name of the Container App secret from which to pull the environment variable value.
      */
-    @JsonProperty(value = "secretRef")
     private String secretRef;
 
-    /** Creates an instance of EnvironmentVar class. */
+    /**
+     * Creates an instance of EnvironmentVar class.
+     */
     public EnvironmentVar() {
     }
 
     /**
      * Get the name property: Environment variable name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +48,7 @@ public final class EnvironmentVar {
 
     /**
      * Set the name property: Environment variable name.
-     *
+     * 
      * @param name the name value to set.
      * @return the EnvironmentVar object itself.
      */
@@ -54,7 +59,7 @@ public final class EnvironmentVar {
 
     /**
      * Get the value property: Non-secret environment variable value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -63,7 +68,7 @@ public final class EnvironmentVar {
 
     /**
      * Set the value property: Non-secret environment variable value.
-     *
+     * 
      * @param value the value value to set.
      * @return the EnvironmentVar object itself.
      */
@@ -74,7 +79,7 @@ public final class EnvironmentVar {
 
     /**
      * Get the secretRef property: Name of the Container App secret from which to pull the environment variable value.
-     *
+     * 
      * @return the secretRef value.
      */
     public String secretRef() {
@@ -83,7 +88,7 @@ public final class EnvironmentVar {
 
     /**
      * Set the secretRef property: Name of the Container App secret from which to pull the environment variable value.
-     *
+     * 
      * @param secretRef the secretRef value to set.
      * @return the EnvironmentVar object itself.
      */
@@ -94,9 +99,51 @@ public final class EnvironmentVar {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("secretRef", this.secretRef);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentVar from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentVar if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentVar.
+     */
+    public static EnvironmentVar fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentVar deserializedEnvironmentVar = new EnvironmentVar();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedEnvironmentVar.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedEnvironmentVar.value = reader.getString();
+                } else if ("secretRef".equals(fieldName)) {
+                    deserializedEnvironmentVar.secretRef = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentVar;
+        });
     }
 }

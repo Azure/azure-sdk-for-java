@@ -7,43 +7,98 @@ package com.azure.resourcemanager.logic.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.ContentLink;
 import com.azure.resourcemanager.logic.models.IntegrationAccountMapPropertiesParametersSchema;
 import com.azure.resourcemanager.logic.models.MapType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The integration account map. */
+/**
+ * The integration account map.
+ */
 @Fluent
 public final class IntegrationAccountMapInner extends Resource {
     /*
      * The integration account map properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private IntegrationAccountMapProperties innerProperties = new IntegrationAccountMapProperties();
 
-    /** Creates an instance of IntegrationAccountMapInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IntegrationAccountMapInner class.
+     */
     public IntegrationAccountMapInner() {
     }
 
     /**
      * Get the innerProperties property: The integration account map properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IntegrationAccountMapProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationAccountMapInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationAccountMapInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -52,7 +107,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Get the mapType property: The map type.
-     *
+     * 
      * @return the mapType value.
      */
     public MapType mapType() {
@@ -61,7 +116,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Set the mapType property: The map type.
-     *
+     * 
      * @param mapType the mapType value to set.
      * @return the IntegrationAccountMapInner object itself.
      */
@@ -75,7 +130,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Get the parametersSchema property: The parameters schema of integration account map.
-     *
+     * 
      * @return the parametersSchema value.
      */
     public IntegrationAccountMapPropertiesParametersSchema parametersSchema() {
@@ -84,12 +139,12 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Set the parametersSchema property: The parameters schema of integration account map.
-     *
+     * 
      * @param parametersSchema the parametersSchema value to set.
      * @return the IntegrationAccountMapInner object itself.
      */
-    public IntegrationAccountMapInner withParametersSchema(
-        IntegrationAccountMapPropertiesParametersSchema parametersSchema) {
+    public IntegrationAccountMapInner
+        withParametersSchema(IntegrationAccountMapPropertiesParametersSchema parametersSchema) {
         if (this.innerProperties() == null) {
             this.innerProperties = new IntegrationAccountMapProperties();
         }
@@ -99,7 +154,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Get the createdTime property: The created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -108,7 +163,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Get the changedTime property: The changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -117,7 +172,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Get the content property: The content.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -126,7 +181,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Set the content property: The content.
-     *
+     * 
      * @param content the content value to set.
      * @return the IntegrationAccountMapInner object itself.
      */
@@ -140,7 +195,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Get the contentType property: The content type.
-     *
+     * 
      * @return the contentType value.
      */
     public String contentType() {
@@ -149,7 +204,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Set the contentType property: The content type.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the IntegrationAccountMapInner object itself.
      */
@@ -163,7 +218,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Get the contentLink property: The content link.
-     *
+     * 
      * @return the contentLink value.
      */
     public ContentLink contentLink() {
@@ -172,7 +227,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Get the metadata property: The metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -181,7 +236,7 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Set the metadata property: The metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the IntegrationAccountMapInner object itself.
      */
@@ -195,19 +250,69 @@ public final class IntegrationAccountMapInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model IntegrationAccountMapInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IntegrationAccountMapInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountMapInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountMapInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountMapInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationAccountMapInner.
+     */
+    public static IntegrationAccountMapInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountMapInner deserializedIntegrationAccountMapInner = new IntegrationAccountMapInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIntegrationAccountMapInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIntegrationAccountMapInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIntegrationAccountMapInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIntegrationAccountMapInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIntegrationAccountMapInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIntegrationAccountMapInner.innerProperties
+                        = IntegrationAccountMapProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountMapInner;
+        });
+    }
 }

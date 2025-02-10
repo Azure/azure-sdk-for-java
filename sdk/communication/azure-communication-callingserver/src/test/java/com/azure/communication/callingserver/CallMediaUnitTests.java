@@ -12,6 +12,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.AbstractMap;
@@ -28,22 +29,19 @@ public class CallMediaUnitTests {
 
     @BeforeEach
     public void setup() {
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 202)))
-            );
+        CallConnection callConnection = CallAutomationUnitTestBase
+            .getCallConnection(new ArrayList<>(Collections.singletonList(new AbstractMap.SimpleEntry<>("", 202))));
         callMedia = callConnection.getCallMedia();
 
         playSource = new FileSource();
         playSource.setPlaySourceId("playSourceId");
         playSource.setUri("filePath");
 
-        playOptions = new PlayOptions()
-            .setLoop(false)
-            .setOperationContext("operationContext");
+        playOptions = new PlayOptions().setLoop(false).setOperationContext("operationContext");
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void playFileWithResponseTest() {
         Response<Void> response = callMedia.playWithResponse(playSource,
             Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions, Context.NONE);
@@ -51,20 +49,24 @@ public class CallMediaUnitTests {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void playFileToAllWithResponseTest() {
         Response<Void> response = callMedia.playToAllWithResponse(playSource, playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void cancelAllOperationsWithResponse() {
         Response<Void> response = callMedia.cancelAllMediaOperationsWithResponse(Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recognizeWithResponseTest() {
-        RecognizeOptions recognizeOptions = new RecognizeOptions(RecognizeInputType.DTMF, new RecognizeConfigurations());
+        RecognizeOptions recognizeOptions
+            = new RecognizeOptions(RecognizeInputType.DTMF, new RecognizeConfigurations());
         Response<Void> response = callMedia.recognizeWithResponse(recognizeOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }

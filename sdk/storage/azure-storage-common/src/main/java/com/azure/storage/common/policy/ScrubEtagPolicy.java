@@ -19,6 +19,12 @@ import reactor.core.publisher.Mono;
 public class ScrubEtagPolicy implements HttpPipelinePolicy {
 
     /**
+     * Creates a new instance of {@link ScrubEtagPolicy}.
+     */
+    public ScrubEtagPolicy() {
+    }
+
+    /**
      * Wraps any potential error responses from the service and applies post-processing of the response's eTag header to
      * standardize the value.
      *
@@ -38,10 +44,8 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return next.process()
-            .flatMap(response -> Mono.just(scrubETagHeader(response)));
+        return next.process().flatMap(response -> Mono.just(scrubETagHeader(response)));
     }
-
 
     /*
     The service is inconsistent in whether the eTag header value has quotes. This method will check if the

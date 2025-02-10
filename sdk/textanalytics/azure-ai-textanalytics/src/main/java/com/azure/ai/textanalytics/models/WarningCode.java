@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -40,7 +39,6 @@ public final class WarningCode extends ExpandableStringEnum<WarningCode> {
      * @param name A name to look for.
      * @return The corresponding {@code WarningCode}.
      */
-    @JsonCreator
     public static WarningCode fromString(String name) {
         return fromString(name, WarningCode.class);
     }

@@ -4,11 +4,14 @@
 
 package com.azure.resourcemanager.confluent.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.confluent.models.LinkOrganization;
+import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
+import com.azure.resourcemanager.confluent.models.ListRegionsSuccessResponse;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.OrganizationResource;
 import com.azure.resourcemanager.confluent.models.OrganizationResourceUpdate;
@@ -113,14 +116,16 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource create() {
-        this.innerObject = serviceManager.serviceClient().getOrganizations().create(resourceGroupName, organizationName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .create(resourceGroupName, organizationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public OrganizationResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getOrganizations().create(resourceGroupName, organizationName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .create(resourceGroupName, organizationName, this.innerModel(), context);
         return this;
     }
 
@@ -136,14 +141,18 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource apply() {
-        this.innerObject = serviceManager.serviceClient().getOrganizations()
-            .updateWithResponse(resourceGroupName, organizationName, updateBody, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .updateWithResponse(resourceGroupName, organizationName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public OrganizationResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getOrganizations()
-            .updateWithResponse(resourceGroupName, organizationName, updateBody, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .updateWithResponse(resourceGroupName, organizationName, updateBody, context)
+            .getValue();
         return this;
     }
 
@@ -151,20 +160,33 @@ public final class OrganizationResourceImpl
         com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationName = Utils.getValueFromIdByName(innerObject.id(), "organizations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
     }
 
     public OrganizationResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getOrganizations()
-            .getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public OrganizationResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getOrganizations()
-            .getByResourceGroupWithResponse(resourceGroupName, organizationName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrganizations()
+            .getByResourceGroupWithResponse(resourceGroupName, organizationName, context)
+            .getValue();
         return this;
+    }
+
+    public Response<ListRegionsSuccessResponse> listRegionsWithResponse(ListAccessRequestModel body, Context context) {
+        return serviceManager.organizations()
+            .listRegionsWithResponse(resourceGroupName, organizationName, body, context);
+    }
+
+    public ListRegionsSuccessResponse listRegions(ListAccessRequestModel body) {
+        return serviceManager.organizations().listRegions(resourceGroupName, organizationName, body);
     }
 
     public OrganizationResourceImpl withRegion(Region location) {

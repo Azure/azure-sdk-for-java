@@ -10,13 +10,14 @@ This package contains a Java SDK for Azure Communication Call Automation Service
 ### Prerequisites
 
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
-- [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
+- [Java Development Kit (JDK)](https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+- A deployed Communication Services resource. You can use the [Azure Portal](https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-communication-callautomation;current})
+
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -24,6 +25,7 @@ This package contains a Java SDK for Azure Communication Call Automation Service
     <version>1.1.0</version>
 </dependency>
 ```
+
 [//]: # ({x-version-update-end})
 
 ## Key concepts
@@ -42,8 +44,10 @@ This is the restart of Call Automation Service. It is renamed to Call Automation
 ## Examples
 
 ### Handle Mid-Connection events with CallAutomation's EventProcessor
+
 To easily handle mid-connection events, Call Automation's SDK provides easier way to handle these events.
 Take a look at `CallAutomationEventProcessor`. This will ensure correlation between call and events more easily.
+
 ```Java
 @RestController
 public class ActionController {
@@ -62,6 +66,7 @@ public class ActionController {
     }
 }
 ```
+
 `processEvents` is required for EventProcessor to work.
 After event is being consumed by EventProcessor, you can start using its feature.
 
@@ -88,6 +93,7 @@ public class commandClass {
     }
 }
 ```
+
 If timeout was not set when calling "waitForEventProcessorAsync", the default timeout is 4 minutes.
 
 ## Troubleshooting
@@ -123,7 +129,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[product_docs]: https://docs.microsoft.com/azure/communication-services/
+[product_docs]: https://learn.microsoft.com/azure/communication-services/
 [package]: https://dev.azure.com/azure-sdk/public/_artifacts/feed/azure-sdk-for-java-communication-interaction
 [api_documentation]: https://aka.ms/java-docs
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callautomation/src

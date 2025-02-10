@@ -7,34 +7,54 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ConfigurationDataType;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRoleGroupConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents configuration details for coordinator and node. */
+/**
+ * Represents configuration details for coordinator and node.
+ */
 @Fluent
 public final class ConfigurationInner extends ProxyResource {
     /*
      * The properties of configuration.
      */
-    @JsonProperty(value = "properties")
     private ConfigurationProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ConfigurationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ConfigurationInner class.
+     */
     public ConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConfigurationProperties innerProperties() {
@@ -43,7 +63,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,8 +71,38 @@ public final class ConfigurationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the description property: Description of the configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -61,7 +111,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the dataType property: Data type of the configuration.
-     *
+     * 
      * @return the dataType value.
      */
     public ConfigurationDataType dataType() {
@@ -70,7 +120,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the allowedValues property: Allowed values of the configuration.
-     *
+     * 
      * @return the allowedValues value.
      */
     public String allowedValues() {
@@ -79,7 +129,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the requiresRestart property: If configuration change requires restart.
-     *
+     * 
      * @return the requiresRestart value.
      */
     public Boolean requiresRestart() {
@@ -88,7 +138,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Set the requiresRestart property: If configuration change requires restart.
-     *
+     * 
      * @param requiresRestart the requiresRestart value to set.
      * @return the ConfigurationInner object itself.
      */
@@ -102,7 +152,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the serverRoleGroupConfigurations property: The list of server role group configuration values.
-     *
+     * 
      * @return the serverRoleGroupConfigurations value.
      */
     public List<ServerRoleGroupConfiguration> serverRoleGroupConfigurations() {
@@ -111,12 +161,12 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Set the serverRoleGroupConfigurations property: The list of server role group configuration values.
-     *
+     * 
      * @param serverRoleGroupConfigurations the serverRoleGroupConfigurations value to set.
      * @return the ConfigurationInner object itself.
      */
-    public ConfigurationInner withServerRoleGroupConfigurations(
-        List<ServerRoleGroupConfiguration> serverRoleGroupConfigurations) {
+    public ConfigurationInner
+        withServerRoleGroupConfigurations(List<ServerRoleGroupConfiguration> serverRoleGroupConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ConfigurationProperties();
         }
@@ -126,7 +176,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -135,12 +185,57 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConfigurationInner.
+     */
+    public static ConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationInner deserializedConfigurationInner = new ConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConfigurationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConfigurationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConfigurationInner.innerProperties = ConfigurationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedConfigurationInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationInner;
+        });
     }
 }

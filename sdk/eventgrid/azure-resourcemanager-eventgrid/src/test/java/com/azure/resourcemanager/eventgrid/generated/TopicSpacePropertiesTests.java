@@ -13,18 +13,18 @@ public final class TopicSpacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TopicSpaceProperties model = BinaryData.fromString(
-            "{\"description\":\"fayorpravkjoges\",\"topicTemplates\":[\"nsmjkwynqxaekqs\",\"kvwjtqpkevmy\",\"tjcrspxklurccl\",\"gxannnoytzposewx\"],\"provisioningState\":\"Canceled\"}")
+            "{\"description\":\"uteyxeyguq\",\"topicTemplates\":[\"jiitnspxlzdesygr\",\"jwaiuf\"],\"provisioningState\":\"Updating\"}")
             .toObject(TopicSpaceProperties.class);
-        Assertions.assertEquals("fayorpravkjoges", model.description());
-        Assertions.assertEquals("nsmjkwynqxaekqs", model.topicTemplates().get(0));
+        Assertions.assertEquals("uteyxeyguq", model.description());
+        Assertions.assertEquals("jiitnspxlzdesygr", model.topicTemplates().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TopicSpaceProperties model = new TopicSpaceProperties().withDescription("fayorpravkjoges")
-            .withTopicTemplates(Arrays.asList("nsmjkwynqxaekqs", "kvwjtqpkevmy", "tjcrspxklurccl", "gxannnoytzposewx"));
+        TopicSpaceProperties model = new TopicSpaceProperties().withDescription("uteyxeyguq")
+            .withTopicTemplates(Arrays.asList("jiitnspxlzdesygr", "jwaiuf"));
         model = BinaryData.fromObject(model).toObject(TopicSpaceProperties.class);
-        Assertions.assertEquals("fayorpravkjoges", model.description());
-        Assertions.assertEquals("nsmjkwynqxaekqs", model.topicTemplates().get(0));
+        Assertions.assertEquals("uteyxeyguq", model.description());
+        Assertions.assertEquals("jiitnspxlzdesygr", model.topicTemplates().get(0));
     }
 }

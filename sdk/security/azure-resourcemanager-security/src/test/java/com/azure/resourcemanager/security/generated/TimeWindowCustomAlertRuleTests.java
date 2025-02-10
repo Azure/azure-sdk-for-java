@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class TimeWindowCustomAlertRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TimeWindowCustomAlertRule model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT137H35S\",\"minThreshold\":80244831,\"maxThreshold\":925016585,\"displayName\":\"oo\",\"description\":\"xlzevgbmqjqabcy\",\"isEnabled\":true}")
-                .toObject(TimeWindowCustomAlertRule.class);
+        TimeWindowCustomAlertRule model = BinaryData.fromString(
+            "{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT65H45M11S\",\"minThreshold\":500448783,\"maxThreshold\":676639191,\"displayName\":\"exxbczwtr\",\"description\":\"iqzbq\",\"isEnabled\":true}")
+            .toObject(TimeWindowCustomAlertRule.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(80244831, model.minThreshold());
-        Assertions.assertEquals(925016585, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT137H35S"), model.timeWindowSize());
+        Assertions.assertEquals(500448783, model.minThreshold());
+        Assertions.assertEquals(676639191, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT65H45M11S"), model.timeWindowSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TimeWindowCustomAlertRule model =
-            new TimeWindowCustomAlertRule()
-                .withIsEnabled(true)
-                .withMinThreshold(80244831)
-                .withMaxThreshold(925016585)
-                .withTimeWindowSize(Duration.parse("PT137H35S"));
+        TimeWindowCustomAlertRule model = new TimeWindowCustomAlertRule().withIsEnabled(true)
+            .withMinThreshold(500448783)
+            .withMaxThreshold(676639191)
+            .withTimeWindowSize(Duration.parse("PT65H45M11S"));
         model = BinaryData.fromObject(model).toObject(TimeWindowCustomAlertRule.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(80244831, model.minThreshold());
-        Assertions.assertEquals(925016585, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT137H35S"), model.timeWindowSize());
+        Assertions.assertEquals(500448783, model.minThreshold());
+        Assertions.assertEquals(676639191, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT65H45M11S"), model.timeWindowSize());
     }
 }

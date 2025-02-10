@@ -5,49 +5,53 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The container instance state. */
+/**
+ * The container instance state.
+ */
 @Immutable
-public final class ContainerState {
+public final class ContainerState implements JsonSerializable<ContainerState> {
     /*
      * The state of the container instance.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
     /*
      * The date-time when the container instance state started.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The container instance exit codes correspond to those from the `docker run` command.
      */
-    @JsonProperty(value = "exitCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer exitCode;
 
     /*
      * The date-time when the container instance state finished.
      */
-    @JsonProperty(value = "finishTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime finishTime;
 
     /*
      * The human-readable status of the container instance state.
      */
-    @JsonProperty(value = "detailStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String detailStatus;
 
-    /** Creates an instance of ContainerState class. */
+    /**
+     * Creates an instance of ContainerState class.
+     */
     public ContainerState() {
     }
 
     /**
      * Get the state property: The state of the container instance.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -56,7 +60,7 @@ public final class ContainerState {
 
     /**
      * Get the startTime property: The date-time when the container instance state started.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -65,7 +69,7 @@ public final class ContainerState {
 
     /**
      * Get the exitCode property: The container instance exit codes correspond to those from the `docker run` command.
-     *
+     * 
      * @return the exitCode value.
      */
     public Integer exitCode() {
@@ -74,7 +78,7 @@ public final class ContainerState {
 
     /**
      * Get the finishTime property: The date-time when the container instance state finished.
-     *
+     * 
      * @return the finishTime value.
      */
     public OffsetDateTime finishTime() {
@@ -83,7 +87,7 @@ public final class ContainerState {
 
     /**
      * Get the detailStatus property: The human-readable status of the container instance state.
-     *
+     * 
      * @return the detailStatus value.
      */
     public String detailStatus() {
@@ -92,9 +96,54 @@ public final class ContainerState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerState if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerState.
+     */
+    public static ContainerState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerState deserializedContainerState = new ContainerState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedContainerState.state = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedContainerState.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("exitCode".equals(fieldName)) {
+                    deserializedContainerState.exitCode = reader.getNullable(JsonReader::getInt);
+                } else if ("finishTime".equals(fieldName)) {
+                    deserializedContainerState.finishTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("detailStatus".equals(fieldName)) {
+                    deserializedContainerState.detailStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerState;
+        });
     }
 }

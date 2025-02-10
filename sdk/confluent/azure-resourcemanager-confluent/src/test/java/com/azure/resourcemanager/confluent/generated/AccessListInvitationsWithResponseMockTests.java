@@ -6,76 +6,56 @@ package com.azure.resourcemanager.confluent.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confluent.ConfluentManager;
 import com.azure.resourcemanager.confluent.models.AccessListInvitationsSuccessResponse;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccessListInvitationsWithResponseMockTests {
     @Test
     public void testListInvitationsWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"kind\":\"mkqjj\",\"metadata\":{\"first\":\"envrkpyouaibrebq\",\"last\":\"ysjkixqtnqttez\",\"prev\":\"fffiak\",\"next\":\"pqqmted\",\"total_size\":1028485886},\"data\":[{\"kind\":\"hyeozphvwau\",\"id\":\"ncyg\",\"metadata\":{\"self\":\"vipmdscwxqupevzh\",\"resource_name\":\"totxhojujb\",\"created_at\":\"elmcuvhixbjxyfw\",\"updated_at\":\"lrcoolsttpki\",\"deleted_at\":\"kbnujr\"},\"email\":\"vtylbfpncu\",\"auth_type\":\"oiwiithtywub\",\"status\":\"bihwqknfdnt\",\"accepted_at\":\"chrdgoihxumwcto\",\"expires_at\":\"zj\"}]}";
+            = "{\"kind\":\"jwogqqnobpudc\",\"metadata\":{\"first\":\"tqwpwya\",\"last\":\"zasqbucljgkyexao\",\"prev\":\"yaipidsda\",\"next\":\"tx\",\"total_size\":634071043},\"data\":[{\"kind\":\"qwazlnqnmcjngzq\",\"id\":\"xtbjwgnyfusfzsv\",\"metadata\":{\"self\":\"kzhajqglcfhm\",\"resource_name\":\"qryxyn\",\"created_at\":\"zrdpsovwxznptgoe\",\"updated_at\":\"bbabp\",\"deleted_at\":\"vf\"},\"email\":\"kvntjlrigjkskyri\",\"auth_type\":\"vzidsxwaab\",\"status\":\"ifrygzn\",\"accepted_at\":\"axri\",\"expires_at\":\"zob\"},{\"kind\":\"pxl\",\"id\":\"lnelxieixynl\",\"metadata\":{\"self\":\"cwcrojphs\",\"resource_name\":\"cawjutifdwfmvi\",\"created_at\":\"rqjb\",\"updated_at\":\"zhraglkafh\",\"deleted_at\":\"qjujeickpzvcp\"},\"email\":\"mxelnwcltyjed\",\"auth_type\":\"xm\",\"status\":\"mkqscaz\",\"accepted_at\":\"wxtzxpuamwab\",\"expires_at\":\"rvxcush\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ConfluentManager manager = ConfluentManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ConfluentManager manager = ConfluentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AccessListInvitationsSuccessResponse response = manager.access()
-            .listInvitationsWithResponse("hjglikk", "wslolbqp",
-                new ListAccessRequestModel().withSearchFilters(
-                    mapOf("elfk", "lmv", "njwmwkpnbsazejj", "gplcrpwjxeznoigb", "augzxnfaazpxdtn", "qkagfhsxt")),
-                com.azure.core.util.Context.NONE)
+            .listInvitationsWithResponse("paq", "ferr",
+                new ListAccessRequestModel().withSearchFilters(mapOf("kmfx", "x")), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mkqjj", response.kind());
-        Assertions.assertEquals("envrkpyouaibrebq", response.metadata().first());
-        Assertions.assertEquals("ysjkixqtnqttez", response.metadata().last());
-        Assertions.assertEquals("fffiak", response.metadata().prev());
-        Assertions.assertEquals("pqqmted", response.metadata().next());
-        Assertions.assertEquals(1028485886, response.metadata().totalSize());
-        Assertions.assertEquals("hyeozphvwau", response.data().get(0).kind());
-        Assertions.assertEquals("ncyg", response.data().get(0).id());
-        Assertions.assertEquals("vipmdscwxqupevzh", response.data().get(0).metadata().self());
-        Assertions.assertEquals("totxhojujb", response.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("elmcuvhixbjxyfw", response.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("lrcoolsttpki", response.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("kbnujr", response.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("vtylbfpncu", response.data().get(0).email());
-        Assertions.assertEquals("oiwiithtywub", response.data().get(0).authType());
-        Assertions.assertEquals("bihwqknfdnt", response.data().get(0).status());
-        Assertions.assertEquals("chrdgoihxumwcto", response.data().get(0).acceptedAt());
-        Assertions.assertEquals("zj", response.data().get(0).expiresAt());
+        Assertions.assertEquals("jwogqqnobpudc", response.kind());
+        Assertions.assertEquals("tqwpwya", response.metadata().first());
+        Assertions.assertEquals("zasqbucljgkyexao", response.metadata().last());
+        Assertions.assertEquals("yaipidsda", response.metadata().prev());
+        Assertions.assertEquals("tx", response.metadata().next());
+        Assertions.assertEquals(634071043, response.metadata().totalSize());
+        Assertions.assertEquals("qwazlnqnmcjngzq", response.data().get(0).kind());
+        Assertions.assertEquals("xtbjwgnyfusfzsv", response.data().get(0).id());
+        Assertions.assertEquals("kzhajqglcfhm", response.data().get(0).metadata().self());
+        Assertions.assertEquals("qryxyn", response.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("zrdpsovwxznptgoe", response.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("bbabp", response.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("vf", response.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("kvntjlrigjkskyri", response.data().get(0).email());
+        Assertions.assertEquals("vzidsxwaab", response.data().get(0).authType());
+        Assertions.assertEquals("ifrygzn", response.data().get(0).status());
+        Assertions.assertEquals("axri", response.data().get(0).acceptedAt());
+        Assertions.assertEquals("zob", response.data().get(0).expiresAt());
     }
 
     // Use "Map.of" if available

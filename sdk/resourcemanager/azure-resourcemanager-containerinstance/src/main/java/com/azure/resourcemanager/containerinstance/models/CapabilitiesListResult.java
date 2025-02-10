@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The response containing list of capabilities. */
+/**
+ * The response containing list of capabilities.
+ */
 @Fluent
-public final class CapabilitiesListResult {
+public final class CapabilitiesListResult implements JsonSerializable<CapabilitiesListResult> {
     /*
      * The list of capabilities.
      */
-    @JsonProperty(value = "value")
     private List<Capabilities> value;
 
     /*
      * The URI to fetch the next page of capabilities.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CapabilitiesListResult class. */
+    /**
+     * Creates an instance of CapabilitiesListResult class.
+     */
     public CapabilitiesListResult() {
     }
 
     /**
      * Get the value property: The list of capabilities.
-     *
+     * 
      * @return the value value.
      */
     public List<Capabilities> value() {
@@ -38,7 +44,7 @@ public final class CapabilitiesListResult {
 
     /**
      * Set the value property: The list of capabilities.
-     *
+     * 
      * @param value the value value to set.
      * @return the CapabilitiesListResult object itself.
      */
@@ -49,7 +55,7 @@ public final class CapabilitiesListResult {
 
     /**
      * Get the nextLink property: The URI to fetch the next page of capabilities.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -58,7 +64,7 @@ public final class CapabilitiesListResult {
 
     /**
      * Set the nextLink property: The URI to fetch the next page of capabilities.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CapabilitiesListResult object itself.
      */
@@ -69,12 +75,52 @@ public final class CapabilitiesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilitiesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilitiesListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapabilitiesListResult.
+     */
+    public static CapabilitiesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilitiesListResult deserializedCapabilitiesListResult = new CapabilitiesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<Capabilities> value = reader.readArray(reader1 -> Capabilities.fromJson(reader1));
+                    deserializedCapabilitiesListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCapabilitiesListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilitiesListResult;
+        });
     }
 }

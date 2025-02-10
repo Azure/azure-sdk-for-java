@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** This class represents the group task details when parent child relationship exists in the drill down. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = GroupTaskDetails.class)
-@JsonTypeName("GroupTaskDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "InlineWorkflowTaskDetails", value = InlineWorkflowTaskDetails.class),
-    @JsonSubTypes.Type(name = "RecoveryPlanGroupTaskDetails", value = RecoveryPlanGroupTaskDetails.class)
-})
+/**
+ * This class represents the group task details when parent child relationship exists in the drill down.
+ */
 @Fluent
-public class GroupTaskDetails {
+public class GroupTaskDetails implements JsonSerializable<GroupTaskDetails> {
+    /*
+     * The type of task details.
+     */
+    private String instanceType = "GroupTaskDetails";
+
     /*
      * The child tasks.
      */
-    @JsonProperty(value = "childTasks")
     private List<AsrTask> childTasks;
 
-    /** Creates an instance of GroupTaskDetails class. */
+    /**
+     * Creates an instance of GroupTaskDetails class.
+     */
     public GroupTaskDetails() {
     }
 
     /**
+     * Get the instanceType property: The type of task details.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the childTasks property: The child tasks.
-     *
+     * 
      * @return the childTasks value.
      */
     public List<AsrTask> childTasks() {
@@ -45,7 +53,7 @@ public class GroupTaskDetails {
 
     /**
      * Set the childTasks property: The child tasks.
-     *
+     * 
      * @param childTasks the childTasks value to set.
      * @return the GroupTaskDetails object itself.
      */
@@ -56,12 +64,81 @@ public class GroupTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (childTasks() != null) {
             childTasks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeArrayField("childTasks", this.childTasks, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupTaskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupTaskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GroupTaskDetails.
+     */
+    public static GroupTaskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("InlineWorkflowTaskDetails".equals(discriminatorValue)) {
+                    return InlineWorkflowTaskDetails.fromJson(readerToUse.reset());
+                } else if ("RecoveryPlanGroupTaskDetails".equals(discriminatorValue)) {
+                    return RecoveryPlanGroupTaskDetails.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("RecoveryPlanShutdownGroupTaskDetails".equals(discriminatorValue)) {
+                    return RecoveryPlanShutdownGroupTaskDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static GroupTaskDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupTaskDetails deserializedGroupTaskDetails = new GroupTaskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedGroupTaskDetails.instanceType = reader.getString();
+                } else if ("childTasks".equals(fieldName)) {
+                    List<AsrTask> childTasks = reader.readArray(reader1 -> AsrTask.fromJson(reader1));
+                    deserializedGroupTaskDetails.childTasks = childTasks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupTaskDetails;
+        });
     }
 }

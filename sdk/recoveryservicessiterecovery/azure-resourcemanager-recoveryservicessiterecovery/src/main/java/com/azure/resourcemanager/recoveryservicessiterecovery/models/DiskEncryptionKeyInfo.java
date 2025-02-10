@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Disk Encryption Key Information (BitLocker Encryption Key (BEK) on Windows). */
+/**
+ * Disk Encryption Key Information (BitLocker Encryption Key (BEK) on Windows).
+ */
 @Fluent
-public final class DiskEncryptionKeyInfo {
+public final class DiskEncryptionKeyInfo implements JsonSerializable<DiskEncryptionKeyInfo> {
     /*
      * The secret url / identifier.
      */
-    @JsonProperty(value = "secretIdentifier")
     private String secretIdentifier;
 
     /*
      * The KeyVault resource ARM id for secret.
      */
-    @JsonProperty(value = "keyVaultResourceArmId")
     private String keyVaultResourceArmId;
 
-    /** Creates an instance of DiskEncryptionKeyInfo class. */
+    /**
+     * Creates an instance of DiskEncryptionKeyInfo class.
+     */
     public DiskEncryptionKeyInfo() {
     }
 
     /**
      * Get the secretIdentifier property: The secret url / identifier.
-     *
+     * 
      * @return the secretIdentifier value.
      */
     public String secretIdentifier() {
@@ -37,7 +43,7 @@ public final class DiskEncryptionKeyInfo {
 
     /**
      * Set the secretIdentifier property: The secret url / identifier.
-     *
+     * 
      * @param secretIdentifier the secretIdentifier value to set.
      * @return the DiskEncryptionKeyInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class DiskEncryptionKeyInfo {
 
     /**
      * Get the keyVaultResourceArmId property: The KeyVault resource ARM id for secret.
-     *
+     * 
      * @return the keyVaultResourceArmId value.
      */
     public String keyVaultResourceArmId() {
@@ -57,7 +63,7 @@ public final class DiskEncryptionKeyInfo {
 
     /**
      * Set the keyVaultResourceArmId property: The KeyVault resource ARM id for secret.
-     *
+     * 
      * @param keyVaultResourceArmId the keyVaultResourceArmId value to set.
      * @return the DiskEncryptionKeyInfo object itself.
      */
@@ -68,9 +74,48 @@ public final class DiskEncryptionKeyInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("secretIdentifier", this.secretIdentifier);
+        jsonWriter.writeStringField("keyVaultResourceArmId", this.keyVaultResourceArmId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskEncryptionKeyInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskEncryptionKeyInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskEncryptionKeyInfo.
+     */
+    public static DiskEncryptionKeyInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskEncryptionKeyInfo deserializedDiskEncryptionKeyInfo = new DiskEncryptionKeyInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secretIdentifier".equals(fieldName)) {
+                    deserializedDiskEncryptionKeyInfo.secretIdentifier = reader.getString();
+                } else if ("keyVaultResourceArmId".equals(fieldName)) {
+                    deserializedDiskEncryptionKeyInfo.keyVaultResourceArmId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskEncryptionKeyInfo;
+        });
     }
 }

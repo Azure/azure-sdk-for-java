@@ -5,39 +5,44 @@
 package com.azure.resourcemanager.newrelicobservability.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.newrelicobservability.models.FilteringTag;
 import com.azure.resourcemanager.newrelicobservability.models.SendMetricsStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Set of rules for sending metrics for the Monitor resource. */
+/**
+ * Set of rules for sending metrics for the Monitor resource.
+ */
 @Fluent
-public final class MetricRulesInner {
+public final class MetricRulesInner implements JsonSerializable<MetricRulesInner> {
     /*
      * Flag specifying if metrics should be sent for the Monitor resource.
      */
-    @JsonProperty(value = "sendMetrics")
     private SendMetricsStatus sendMetrics;
 
     /*
      * List of filtering tags to be used for capturing metrics.
      */
-    @JsonProperty(value = "filteringTags")
     private List<FilteringTag> filteringTags;
 
     /*
      * User Email
      */
-    @JsonProperty(value = "userEmail")
     private String userEmail;
 
-    /** Creates an instance of MetricRulesInner class. */
+    /**
+     * Creates an instance of MetricRulesInner class.
+     */
     public MetricRulesInner() {
     }
 
     /**
      * Get the sendMetrics property: Flag specifying if metrics should be sent for the Monitor resource.
-     *
+     * 
      * @return the sendMetrics value.
      */
     public SendMetricsStatus sendMetrics() {
@@ -46,7 +51,7 @@ public final class MetricRulesInner {
 
     /**
      * Set the sendMetrics property: Flag specifying if metrics should be sent for the Monitor resource.
-     *
+     * 
      * @param sendMetrics the sendMetrics value to set.
      * @return the MetricRulesInner object itself.
      */
@@ -57,7 +62,7 @@ public final class MetricRulesInner {
 
     /**
      * Get the filteringTags property: List of filtering tags to be used for capturing metrics.
-     *
+     * 
      * @return the filteringTags value.
      */
     public List<FilteringTag> filteringTags() {
@@ -66,7 +71,7 @@ public final class MetricRulesInner {
 
     /**
      * Set the filteringTags property: List of filtering tags to be used for capturing metrics.
-     *
+     * 
      * @param filteringTags the filteringTags value to set.
      * @return the MetricRulesInner object itself.
      */
@@ -77,7 +82,7 @@ public final class MetricRulesInner {
 
     /**
      * Get the userEmail property: User Email.
-     *
+     * 
      * @return the userEmail value.
      */
     public String userEmail() {
@@ -86,7 +91,7 @@ public final class MetricRulesInner {
 
     /**
      * Set the userEmail property: User Email.
-     *
+     * 
      * @param userEmail the userEmail value to set.
      * @return the MetricRulesInner object itself.
      */
@@ -97,12 +102,55 @@ public final class MetricRulesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filteringTags() != null) {
             filteringTags().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sendMetrics", this.sendMetrics == null ? null : this.sendMetrics.toString());
+        jsonWriter.writeArrayField("filteringTags", this.filteringTags, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("userEmail", this.userEmail);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricRulesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricRulesInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricRulesInner.
+     */
+    public static MetricRulesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricRulesInner deserializedMetricRulesInner = new MetricRulesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sendMetrics".equals(fieldName)) {
+                    deserializedMetricRulesInner.sendMetrics = SendMetricsStatus.fromString(reader.getString());
+                } else if ("filteringTags".equals(fieldName)) {
+                    List<FilteringTag> filteringTags = reader.readArray(reader1 -> FilteringTag.fromJson(reader1));
+                    deserializedMetricRulesInner.filteringTags = filteringTags;
+                } else if ("userEmail".equals(fieldName)) {
+                    deserializedMetricRulesInner.userEmail = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricRulesInner;
+        });
     }
 }

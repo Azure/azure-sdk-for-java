@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Vault setting properties. */
+/**
+ * Vault setting properties.
+ */
 @Fluent
-public final class VaultSettingProperties {
+public final class VaultSettingProperties implements JsonSerializable<VaultSettingProperties> {
     /*
      * The migration solution ARM Id.
      */
-    @JsonProperty(value = "migrationSolutionId")
     private String migrationSolutionId;
 
     /*
      * VMware to Azure provider type.
      */
-    @JsonProperty(value = "vmwareToAzureProviderType")
     private String vmwareToAzureProviderType;
 
-    /** Creates an instance of VaultSettingProperties class. */
+    /**
+     * Creates an instance of VaultSettingProperties class.
+     */
     public VaultSettingProperties() {
     }
 
     /**
      * Get the migrationSolutionId property: The migration solution ARM Id.
-     *
+     * 
      * @return the migrationSolutionId value.
      */
     public String migrationSolutionId() {
@@ -37,7 +43,7 @@ public final class VaultSettingProperties {
 
     /**
      * Set the migrationSolutionId property: The migration solution ARM Id.
-     *
+     * 
      * @param migrationSolutionId the migrationSolutionId value to set.
      * @return the VaultSettingProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class VaultSettingProperties {
 
     /**
      * Get the vmwareToAzureProviderType property: VMware to Azure provider type.
-     *
+     * 
      * @return the vmwareToAzureProviderType value.
      */
     public String vmwareToAzureProviderType() {
@@ -57,7 +63,7 @@ public final class VaultSettingProperties {
 
     /**
      * Set the vmwareToAzureProviderType property: VMware to Azure provider type.
-     *
+     * 
      * @param vmwareToAzureProviderType the vmwareToAzureProviderType value to set.
      * @return the VaultSettingProperties object itself.
      */
@@ -68,9 +74,48 @@ public final class VaultSettingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("migrationSolutionId", this.migrationSolutionId);
+        jsonWriter.writeStringField("vmwareToAzureProviderType", this.vmwareToAzureProviderType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultSettingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultSettingProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VaultSettingProperties.
+     */
+    public static VaultSettingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultSettingProperties deserializedVaultSettingProperties = new VaultSettingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("migrationSolutionId".equals(fieldName)) {
+                    deserializedVaultSettingProperties.migrationSolutionId = reader.getString();
+                } else if ("vmwareToAzureProviderType".equals(fieldName)) {
+                    deserializedVaultSettingProperties.vmwareToAzureProviderType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultSettingProperties;
+        });
     }
 }

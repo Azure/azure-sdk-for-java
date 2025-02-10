@@ -6,76 +6,43 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBaseResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ResourceGuardProxyOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"resourceGuardResourceId\":\"evsaa\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"caxikhfjqebgl\",\"defaultResourceRequest\":\"kxgzzromvygysem\"},{\"vaultCriticalOperation\":\"esrfsvpinkzpatq\",\"defaultResourceRequest\":\"iswxspv\"}],\"lastUpdatedTime\":\"ojazbbgspfte\",\"description\":\"b\"},\"eTag\":\"vpvdylytcovqse\",\"location\":\"srfjbdxzfxnx\",\"tags\":{\"cy\":\"muoswkjmdih\"},\"id\":\"yzlwhbwzjnufzrf\",\"name\":\"m\",\"type\":\"qgnnbz\"}";
 
-        String responseStr =
-            "{\"properties\":{\"resourceGuardResourceId\":\"wkqyns\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"offbkkwvdxaexqok\",\"defaultResourceRequest\":\"rlj\"},{\"vaultCriticalOperation\":\"lzbnobrqlpbcjt\",\"defaultResourceRequest\":\"zuyudivbxnh\"}],\"lastUpdatedTime\":\"eaeonqelwgdh\",\"description\":\"uzytz\"},\"eTag\":\"ogatmoljiy\",\"location\":\"mpinmzvfkneerzzt\",\"tags\":{\"lugdybnhrxlelf\":\"sj\",\"htdm\":\"hkeizcp\",\"c\":\"wjekptycaydbj\"},\"id\":\"ymlcfnzhmhsurlg\",\"name\":\"qkpmmzpstau\",\"type\":\"lawiubmomsgvvjhv\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ResourceGuardProxyBaseResource response = manager.resourceGuardProxyOperations()
+            .getWithResponse("eq", "dynzjahwr", "uomzczfki", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ResourceGuardProxyBaseResource response =
-            manager
-                .resourceGuardProxyOperations()
-                .getWithResponse("dvragpokddxejhh", "vgua", "tpt", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("mpinmzvfkneerzzt", response.location());
-        Assertions.assertEquals("sj", response.tags().get("lugdybnhrxlelf"));
-        Assertions.assertEquals("wkqyns", response.properties().resourceGuardResourceId());
-        Assertions
-            .assertEquals(
-                "offbkkwvdxaexqok",
-                response.properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions
-            .assertEquals("rlj", response.properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("eaeonqelwgdh", response.properties().lastUpdatedTime());
-        Assertions.assertEquals("uzytz", response.properties().description());
-        Assertions.assertEquals("ogatmoljiy", response.etag());
+        Assertions.assertEquals("srfjbdxzfxnx", response.location());
+        Assertions.assertEquals("muoswkjmdih", response.tags().get("cy"));
+        Assertions.assertEquals("evsaa", response.properties().resourceGuardResourceId());
+        Assertions.assertEquals("caxikhfjqebgl",
+            response.properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
+        Assertions.assertEquals("kxgzzromvygysem",
+            response.properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
+        Assertions.assertEquals("ojazbbgspfte", response.properties().lastUpdatedTime());
+        Assertions.assertEquals("b", response.properties().description());
+        Assertions.assertEquals("vpvdylytcovqse", response.etag());
     }
 }

@@ -3,11 +3,8 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.List;
-import java.util.ArrayList;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.text.models.DictionaryLookupItem;
-import com.azure.ai.translation.text.models.InputTextItem;
+import com.azure.core.credential.AzureKeyCredential;
 
 /**
  * Returns equivalent words for the source term in the target language.
@@ -29,18 +26,15 @@ public class DictionaryLookup {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-		// BEGIN: getTextTranslationDictionaryLookup
+        // BEGIN: getTextTranslationDictionaryLookup
         String sourceLanguage = "en";
         String targetLanguage = "es";
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("fly"));
+        String content = "fly";
 
-        List<DictionaryLookupItem> dictionaryEntries = client.lookupDictionaryEntries(sourceLanguage, targetLanguage, content);
+        DictionaryLookupItem dictionaryEntry = client.lookupDictionaryEntries(sourceLanguage, targetLanguage, content);
 
-        for (DictionaryLookupItem dictionaryEntry : dictionaryEntries) {
-            System.out.println("For the given input " + dictionaryEntry.getTranslations().size() + " entries were found in the dictionary.");
-            System.out.println("First entry: '" + dictionaryEntry.getTranslations().get(0).getDisplayTarget() + "', confidence: " + dictionaryEntry.getTranslations().get(0).getConfidence());
-        }
-		// END: getTextTranslationDictionaryLookup
+        System.out.println("For the given input " + dictionaryEntry.getTranslations().size() + " entries were found in the dictionary.");
+        System.out.println("First entry: '" + dictionaryEntry.getTranslations().get(0).getDisplayTarget() + "', confidence: " + dictionaryEntry.getTranslations().get(0).getConfidence());
+        // END: getTextTranslationDictionaryLookup
     }
 }

@@ -2,12 +2,14 @@ trigger: none
 
 pr: none
 
-stages:
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: resourcehealth
-      Artifacts:
-        - name: azure-resourcemanager-resourcehealth
-          groupId: com.azure.resourcemanager
-          safeName: azureresourcemanagerresourcehealth
-      Clouds: 'Public'
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: resourcehealth
+    Artifacts:
+      - name: azure-resourcemanager-resourcehealth
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresourcehealth
+    # Only run tests on Windows to save cost.
+    MatrixFilters:
+      - pool=.*(win).*

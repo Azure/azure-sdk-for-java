@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Size of agent VMs. Note: This is no longer maintained. */
@@ -546,7 +545,6 @@ public final class ContainerServiceVMSizeTypes extends ExpandableStringEnum<Cont
      * @param name a name to look for.
      * @return the corresponding ContainerServiceVMSizeTypes.
      */
-    @JsonCreator
     public static ContainerServiceVMSizeTypes fromString(String name) {
         return fromString(name, ContainerServiceVMSizeTypes.class);
     }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PossibleOperationsDirections. */
+/**
+ * Defines values for PossibleOperationsDirections.
+ */
 public final class PossibleOperationsDirections extends ExpandableStringEnum<PossibleOperationsDirections> {
-    /** Static value PrimaryToRecovery for PossibleOperationsDirections. */
+    /**
+     * Static value PrimaryToRecovery for PossibleOperationsDirections.
+     */
     public static final PossibleOperationsDirections PRIMARY_TO_RECOVERY = fromString("PrimaryToRecovery");
 
-    /** Static value RecoveryToPrimary for PossibleOperationsDirections. */
+    /**
+     * Static value RecoveryToPrimary for PossibleOperationsDirections.
+     */
     public static final PossibleOperationsDirections RECOVERY_TO_PRIMARY = fromString("RecoveryToPrimary");
 
     /**
      * Creates a new instance of PossibleOperationsDirections value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class PossibleOperationsDirections extends ExpandableStringEnum<Pos
 
     /**
      * Creates or finds a PossibleOperationsDirections from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PossibleOperationsDirections.
      */
-    @JsonCreator
     public static PossibleOperationsDirections fromString(String name) {
         return fromString(name, PossibleOperationsDirections.class);
     }
 
     /**
      * Gets known PossibleOperationsDirections values.
-     *
+     * 
      * @return known PossibleOperationsDirections values.
      */
     public static Collection<PossibleOperationsDirections> values() {

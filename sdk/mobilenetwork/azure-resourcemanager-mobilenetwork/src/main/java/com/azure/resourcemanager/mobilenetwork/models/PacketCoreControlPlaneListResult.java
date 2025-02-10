@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response for packet core control planes API service call. */
+/**
+ * Response for packet core control planes API service call.
+ */
 @Fluent
-public final class PacketCoreControlPlaneListResult {
+public final class PacketCoreControlPlaneListResult implements JsonSerializable<PacketCoreControlPlaneListResult> {
     /*
      * A list of packet core control planes in a resource group.
      */
-    @JsonProperty(value = "value")
     private List<PacketCoreControlPlaneInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PacketCoreControlPlaneListResult class. */
+    /**
+     * Creates an instance of PacketCoreControlPlaneListResult class.
+     */
     public PacketCoreControlPlaneListResult() {
     }
 
     /**
      * Get the value property: A list of packet core control planes in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<PacketCoreControlPlaneInner> value() {
@@ -39,7 +45,7 @@ public final class PacketCoreControlPlaneListResult {
 
     /**
      * Set the value property: A list of packet core control planes in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the PacketCoreControlPlaneListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class PacketCoreControlPlaneListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,53 @@ public final class PacketCoreControlPlaneListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCoreControlPlaneListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCoreControlPlaneListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PacketCoreControlPlaneListResult.
+     */
+    public static PacketCoreControlPlaneListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCoreControlPlaneListResult deserializedPacketCoreControlPlaneListResult
+                = new PacketCoreControlPlaneListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PacketCoreControlPlaneInner> value
+                        = reader.readArray(reader1 -> PacketCoreControlPlaneInner.fromJson(reader1));
+                    deserializedPacketCoreControlPlaneListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPacketCoreControlPlaneListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCoreControlPlaneListResult;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,18 +13,24 @@ import java.util.Collection;
  * server requires a client certificate.
  */
 public final class IngressClientCertificateMode extends ExpandableStringEnum<IngressClientCertificateMode> {
-    /** Static value ignore for IngressClientCertificateMode. */
+    /**
+     * Static value ignore for IngressClientCertificateMode.
+     */
     public static final IngressClientCertificateMode IGNORE = fromString("ignore");
 
-    /** Static value accept for IngressClientCertificateMode. */
+    /**
+     * Static value accept for IngressClientCertificateMode.
+     */
     public static final IngressClientCertificateMode ACCEPT = fromString("accept");
 
-    /** Static value require for IngressClientCertificateMode. */
+    /**
+     * Static value require for IngressClientCertificateMode.
+     */
     public static final IngressClientCertificateMode REQUIRE = fromString("require");
 
     /**
      * Creates a new instance of IngressClientCertificateMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +39,17 @@ public final class IngressClientCertificateMode extends ExpandableStringEnum<Ing
 
     /**
      * Creates or finds a IngressClientCertificateMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IngressClientCertificateMode.
      */
-    @JsonCreator
     public static IngressClientCertificateMode fromString(String name) {
         return fromString(name, IngressClientCertificateMode.class);
     }
 
     /**
      * Gets known IngressClientCertificateMode values.
-     *
+     * 
      * @return known IngressClientCertificateMode values.
      */
     public static Collection<IngressClientCertificateMode> values() {

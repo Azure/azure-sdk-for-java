@@ -19,8 +19,7 @@ public final class AzureTrafficCollectorsBySubscriptionsImpl implements AzureTra
 
     private final com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager serviceManager;
 
-    public AzureTrafficCollectorsBySubscriptionsImpl(
-        AzureTrafficCollectorsBySubscriptionsClient innerClient,
+    public AzureTrafficCollectorsBySubscriptionsImpl(AzureTrafficCollectorsBySubscriptionsClient innerClient,
         com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class AzureTrafficCollectorsBySubscriptionsImpl implements AzureTra
 
     public PagedIterable<AzureTrafficCollector> list() {
         PagedIterable<AzureTrafficCollectorInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AzureTrafficCollectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureTrafficCollectorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureTrafficCollector> list(Context context) {
         PagedIterable<AzureTrafficCollectorInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AzureTrafficCollectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureTrafficCollectorImpl(inner1, this.manager()));
     }
 
     private AzureTrafficCollectorsBySubscriptionsClient serviceClient() {

@@ -18,8 +18,12 @@ import java.util.function.Supplier;
  * operate on individual items. When processing the response by page, each response will contain the items in the page
  * as well as the request details like status code and headers.
  *
- * <p><strong>Process each item in Flux</strong></p>
- * <p>To process one item at a time, simply subscribe to this Flux.</p>
+ * <p>
+ * <strong>Process each item in Flux</strong>
+ * </p>
+ * <p>
+ * To process one item at a time, simply subscribe to this Flux.
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.items -->
  * <pre>
  * pagedFluxBase
@@ -30,8 +34,12 @@ import java.util.function.Supplier;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedfluxbase.items -->
  *
- * <p><strong>Process one page at a time</strong></p>
- * <p>To process one page at a time, starting from the beginning, use {@link #byPage() byPage()} method.</p>
+ * <p>
+ * <strong>Process one page at a time</strong>
+ * </p>
+ * <p>
+ * To process one page at a time, starting from the beginning, use {@link #byPage() byPage()} method.
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.pages -->
  * <pre>
  * pagedFluxBase
@@ -44,9 +52,13 @@ import java.util.function.Supplier;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedfluxbase.pages -->
  *
- * <p><strong>Process items starting from a continuation token</strong></p>
- * <p>To process items one page at a time starting from any page associated with a continuation token, use
- * {@link #byPage(String)}.</p>
+ * <p>
+ * <strong>Process items starting from a continuation token</strong>
+ * </p>
+ * <p>
+ * To process items one page at a time starting from any page associated with a continuation token, use
+ * {@link #byPage(String)}.
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken -->
  * <pre>
  * String continuationToken = getContinuationToken&#40;&#41;;
@@ -139,7 +151,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * Creates a Flux of {@link PagedResponse} starting from the first page.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.bypage -->
+     * <!-- src_embed com.azure.core.http.rest.PagedFluxBase.byPage -->
      * <pre>
      * &#47;&#47; Start processing the results from first page
      * pagedFluxBase.byPage&#40;&#41;
@@ -151,7 +163,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.pagedfluxbase.bypage -->
+     * <!-- end com.azure.core.http.rest.pagedFluxBase.byPage -->
      *
      * @return A {@link PagedFluxBase} starting from the first page
      */
@@ -164,7 +176,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * To start from first page, use {@link #byPage()} instead.
      *
      * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.bypage#String -->
+     * <!-- src_embed com.azure.core.http.rest.PagedFluxBase.byPage#String -->
      * <pre>
      * &#47;&#47; Start processing the results from a page associated with the continuation token
      * String continuationToken = getContinuationToken&#40;&#41;;
@@ -177,7 +189,7 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      *         error -&gt; System.err.println&#40;&quot;An error occurred: &quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Processing complete.&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.http.rest.pagedfluxbase.bypage#String -->
+     * <!-- end com.azure.core.http.rest.PagedFluxBase.byPage#String -->
      *
      * @param continuationToken The continuation token used to fetch the next page
      * @return A {@link PagedFluxBase} starting from the page associated with the continuation token

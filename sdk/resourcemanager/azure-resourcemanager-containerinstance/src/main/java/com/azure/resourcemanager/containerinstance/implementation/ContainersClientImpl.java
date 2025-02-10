@@ -30,22 +30,28 @@ import com.azure.resourcemanager.containerinstance.fluent.models.LogsInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ContainersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContainersClient.
+ */
 public final class ContainersClientImpl implements ContainersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ContainersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerInstanceManagementClientImpl client;
 
     /**
      * Initializes an instance of ContainersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ContainersClientImpl(ContainerInstanceManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ContainersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ContainersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,87 +62,68 @@ public final class ContainersClientImpl implements ContainersClient {
     @Host("{$host}")
     @ServiceInterface(name = "ContainerInstanceMan")
     public interface ContainersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/logs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/logs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogsInner>> listLogs(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<LogsInner>> listLogs(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
-            @PathParam("containerName") String containerName,
-            @QueryParam("tail") Integer tail,
-            @QueryParam("timestamps") Boolean timestamps,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("containerName") String containerName, @QueryParam("tail") Integer tail,
+            @QueryParam("timestamps") Boolean timestamps, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/exec")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/exec")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerExecResponseInner>> executeCommand(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ContainerExecResponseInner>> executeCommand(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
             @PathParam("containerName") String containerName,
             @BodyParam("application/json") ContainerExecRequest containerExecRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/attach")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/attach")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerAttachResponseInner>> attach(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ContainerAttachResponseInner>> attach(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
-            @PathParam("containerName") String containerName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("containerName") String containerName, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the logs for a specified container instance.
-     *
-     * <p>Get the logs for a specified container instance in a specified resource group and container group.
-     *
+     * 
+     * Get the logs for a specified container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
-     *     available logs are shown up to 4mb.
+     * available logs are shown up to 4mb.
      * @param timestamps If true, adds a timestamp at the beginning of every line of log output. If not provided,
-     *     defaults to false.
+     * defaults to false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the logs for a specified container instance in a specified resource group and container group along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogsInner>> listLogsWithResponseAsync(
-        String resourceGroupName, String containerGroupName, String containerName, Integer tail, Boolean timestamps) {
+    public Mono<Response<LogsInner>> listLogsWithResponseAsync(String resourceGroupName, String containerGroupName,
+        String containerName, Integer tail, Boolean timestamps) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -151,61 +138,41 @@ public final class ContainersClientImpl implements ContainersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listLogs(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            containerName,
-                            tail,
-                            timestamps,
-                            accept,
-                            context))
+            .withContext(context -> service.listLogs(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, containerGroupName, containerName, tail, timestamps,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the logs for a specified container instance.
-     *
-     * <p>Get the logs for a specified container instance in a specified resource group and container group.
-     *
+     * 
+     * Get the logs for a specified container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
-     *     available logs are shown up to 4mb.
+     * available logs are shown up to 4mb.
      * @param timestamps If true, adds a timestamp at the beginning of every line of log output. If not provided,
-     *     defaults to false.
+     * defaults to false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the logs for a specified container instance in a specified resource group and container group along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogsInner>> listLogsWithResponseAsync(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
-        Integer tail,
-        Boolean timestamps,
-        Context context) {
+    private Mono<Response<LogsInner>> listLogsWithResponseAsync(String resourceGroupName, String containerGroupName,
+        String containerName, Integer tail, Boolean timestamps, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -220,25 +187,15 @@ public final class ContainersClientImpl implements ContainersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listLogs(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                containerName,
-                tail,
-                timestamps,
-                accept,
-                context);
+        return service.listLogs(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, containerGroupName, containerName, tail, timestamps, accept, context);
     }
 
     /**
      * Get the logs for a specified container instance.
-     *
-     * <p>Get the logs for a specified container instance in a specified resource group and container group.
-     *
+     * 
+     * Get the logs for a specified container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -246,7 +203,7 @@ public final class ContainersClientImpl implements ContainersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the logs for a specified container instance in a specified resource group and container group on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogsInner> listLogsAsync(String resourceGroupName, String containerGroupName, String containerName) {
@@ -258,41 +215,35 @@ public final class ContainersClientImpl implements ContainersClient {
 
     /**
      * Get the logs for a specified container instance.
-     *
-     * <p>Get the logs for a specified container instance in a specified resource group and container group.
-     *
+     * 
+     * Get the logs for a specified container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
-     *     available logs are shown up to 4mb.
+     * available logs are shown up to 4mb.
      * @param timestamps If true, adds a timestamp at the beginning of every line of log output. If not provided,
-     *     defaults to false.
+     * defaults to false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the logs for a specified container instance in a specified resource group and container group along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogsInner> listLogsWithResponse(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
-        Integer tail,
-        Boolean timestamps,
-        Context context) {
-        return listLogsWithResponseAsync(
-                resourceGroupName, containerGroupName, containerName, tail, timestamps, context)
-            .block();
+    public Response<LogsInner> listLogsWithResponse(String resourceGroupName, String containerGroupName,
+        String containerName, Integer tail, Boolean timestamps, Context context) {
+        return listLogsWithResponseAsync(resourceGroupName, containerGroupName, containerName, tail, timestamps,
+            context).block();
     }
 
     /**
      * Get the logs for a specified container instance.
-     *
-     * <p>Get the logs for a specified container instance in a specified resource group and container group.
-     *
+     * 
+     * Get the logs for a specified container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -305,16 +256,15 @@ public final class ContainersClientImpl implements ContainersClient {
     public LogsInner listLogs(String resourceGroupName, String containerGroupName, String containerName) {
         final Integer tail = null;
         final Boolean timestamps = null;
-        return listLogsWithResponse(
-                resourceGroupName, containerGroupName, containerName, tail, timestamps, Context.NONE)
-            .getValue();
+        return listLogsWithResponse(resourceGroupName, containerGroupName, containerName, tail, timestamps,
+            Context.NONE).getValue();
     }
 
     /**
      * Executes a command in a specific container instance.
-     *
-     * <p>Executes a command for a specific container instance in a specified resource group and container group.
-     *
+     * 
+     * Executes a command for a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -323,25 +273,18 @@ public final class ContainersClientImpl implements ContainersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the information for the container exec command along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerExecResponseInner>> executeCommandWithResponseAsync(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
-        ContainerExecRequest containerExecRequest) {
+    public Mono<Response<ContainerExecResponseInner>> executeCommandWithResponseAsync(String resourceGroupName,
+        String containerGroupName, String containerName, ContainerExecRequest containerExecRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -362,27 +305,17 @@ public final class ContainersClientImpl implements ContainersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .executeCommand(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            containerName,
-                            containerExecRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.executeCommand(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, containerGroupName, containerName, containerExecRequest,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Executes a command in a specific container instance.
-     *
-     * <p>Executes a command for a specific container instance in a specified resource group and container group.
-     *
+     * 
+     * Executes a command for a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -392,26 +325,18 @@ public final class ContainersClientImpl implements ContainersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the information for the container exec command along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContainerExecResponseInner>> executeCommandWithResponseAsync(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
-        ContainerExecRequest containerExecRequest,
-        Context context) {
+    private Mono<Response<ContainerExecResponseInner>> executeCommandWithResponseAsync(String resourceGroupName,
+        String containerGroupName, String containerName, ContainerExecRequest containerExecRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -432,24 +357,16 @@ public final class ContainersClientImpl implements ContainersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .executeCommand(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                containerName,
-                containerExecRequest,
-                accept,
-                context);
+        return service.executeCommand(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), resourceGroupName, containerGroupName, containerName, containerExecRequest,
+            accept, context);
     }
 
     /**
      * Executes a command in a specific container instance.
-     *
-     * <p>Executes a command for a specific container instance in a specified resource group and container group.
-     *
+     * 
+     * Executes a command for a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -460,21 +377,17 @@ public final class ContainersClientImpl implements ContainersClient {
      * @return the information for the container exec command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerExecResponseInner> executeCommandAsync(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
-        ContainerExecRequest containerExecRequest) {
-        return executeCommandWithResponseAsync(
-                resourceGroupName, containerGroupName, containerName, containerExecRequest)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ContainerExecResponseInner> executeCommandAsync(String resourceGroupName, String containerGroupName,
+        String containerName, ContainerExecRequest containerExecRequest) {
+        return executeCommandWithResponseAsync(resourceGroupName, containerGroupName, containerName,
+            containerExecRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Executes a command in a specific container instance.
-     *
-     * <p>Executes a command for a specific container instance in a specified resource group and container group.
-     *
+     * 
+     * Executes a command for a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -486,22 +399,17 @@ public final class ContainersClientImpl implements ContainersClient {
      * @return the information for the container exec command along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerExecResponseInner> executeCommandWithResponse(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
-        ContainerExecRequest containerExecRequest,
-        Context context) {
-        return executeCommandWithResponseAsync(
-                resourceGroupName, containerGroupName, containerName, containerExecRequest, context)
-            .block();
+    public Response<ContainerExecResponseInner> executeCommandWithResponse(String resourceGroupName,
+        String containerGroupName, String containerName, ContainerExecRequest containerExecRequest, Context context) {
+        return executeCommandWithResponseAsync(resourceGroupName, containerGroupName, containerName,
+            containerExecRequest, context).block();
     }
 
     /**
      * Executes a command in a specific container instance.
-     *
-     * <p>Executes a command for a specific container instance in a specified resource group and container group.
-     *
+     * 
+     * Executes a command for a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -512,22 +420,17 @@ public final class ContainersClientImpl implements ContainersClient {
      * @return the information for the container exec command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerExecResponseInner executeCommand(
-        String resourceGroupName,
-        String containerGroupName,
-        String containerName,
-        ContainerExecRequest containerExecRequest) {
-        return executeCommandWithResponse(
-                resourceGroupName, containerGroupName, containerName, containerExecRequest, Context.NONE)
-            .getValue();
+    public ContainerExecResponseInner executeCommand(String resourceGroupName, String containerGroupName,
+        String containerName, ContainerExecRequest containerExecRequest) {
+        return executeCommandWithResponse(resourceGroupName, containerGroupName, containerName, containerExecRequest,
+            Context.NONE).getValue();
     }
 
     /**
      * Attach to the output of a specific container instance.
-     *
-     * <p>Attach to the output stream of a specific container instance in a specified resource group and container
-     * group.
-     *
+     * 
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -535,22 +438,18 @@ public final class ContainersClientImpl implements ContainersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the information for the output stream from container attach along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(
-        String resourceGroupName, String containerGroupName, String containerName) {
+    public Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(String resourceGroupName,
+        String containerGroupName, String containerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -565,27 +464,16 @@ public final class ContainersClientImpl implements ContainersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .attach(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            containerName,
-                            accept,
-                            context))
+            .withContext(context -> service.attach(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, containerGroupName, containerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Attach to the output of a specific container instance.
-     *
-     * <p>Attach to the output stream of a specific container instance in a specified resource group and container
-     * group.
-     *
+     * 
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -594,22 +482,18 @@ public final class ContainersClientImpl implements ContainersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the information for the output stream from container attach along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(
-        String resourceGroupName, String containerGroupName, String containerName, Context context) {
+    private Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(String resourceGroupName,
+        String containerGroupName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -624,24 +508,15 @@ public final class ContainersClientImpl implements ContainersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .attach(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                containerName,
-                accept,
-                context);
+        return service.attach(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, containerGroupName, containerName, accept, context);
     }
 
     /**
      * Attach to the output of a specific container instance.
-     *
-     * <p>Attach to the output stream of a specific container instance in a specified resource group and container
-     * group.
-     *
+     * 
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -651,18 +526,17 @@ public final class ContainersClientImpl implements ContainersClient {
      * @return the information for the output stream from container attach on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerAttachResponseInner> attachAsync(
-        String resourceGroupName, String containerGroupName, String containerName) {
+    public Mono<ContainerAttachResponseInner> attachAsync(String resourceGroupName, String containerGroupName,
+        String containerName) {
         return attachWithResponseAsync(resourceGroupName, containerGroupName, containerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Attach to the output of a specific container instance.
-     *
-     * <p>Attach to the output stream of a specific container instance in a specified resource group and container
-     * group.
-     *
+     * 
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -673,17 +547,16 @@ public final class ContainersClientImpl implements ContainersClient {
      * @return the information for the output stream from container attach along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerAttachResponseInner> attachWithResponse(
-        String resourceGroupName, String containerGroupName, String containerName, Context context) {
+    public Response<ContainerAttachResponseInner> attachWithResponse(String resourceGroupName,
+        String containerGroupName, String containerName, Context context) {
         return attachWithResponseAsync(resourceGroupName, containerGroupName, containerName, context).block();
     }
 
     /**
      * Attach to the output of a specific container instance.
-     *
-     * <p>Attach to the output stream of a specific container instance in a specified resource group and container
-     * group.
-     *
+     * 
+     * Attach to the output stream of a specific container instance in a specified resource group and container group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
@@ -693,8 +566,8 @@ public final class ContainersClientImpl implements ContainersClient {
      * @return the information for the output stream from container attach.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerAttachResponseInner attach(
-        String resourceGroupName, String containerGroupName, String containerName) {
+    public ContainerAttachResponseInner attach(String resourceGroupName, String containerGroupName,
+        String containerName) {
         return attachWithResponse(resourceGroupName, containerGroupName, containerName, Context.NONE).getValue();
     }
 }

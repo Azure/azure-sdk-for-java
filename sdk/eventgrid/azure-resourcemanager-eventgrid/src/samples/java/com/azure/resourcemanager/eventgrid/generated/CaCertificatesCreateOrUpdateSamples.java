@@ -10,7 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class CaCertificatesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * CaCertificates_CreateOrUpdate.json
      */
     /**
@@ -19,8 +19,11 @@ public final class CaCertificatesCreateOrUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void caCertificatesCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.caCertificates().define("exampleCACertificateName1")
-            .withExistingNamespace("examplerg", "exampleNamespaceName1").withDescription("This is a test certificate")
-            .withEncodedCertificate("base64EncodePemFormattedCertificateString").create();
+        manager.caCertificates()
+            .define("exampleCACertificateName1")
+            .withExistingNamespace("examplerg", "exampleNamespaceName1")
+            .withDescription("This is a test certificate")
+            .withEncodedCertificate("base64EncodePemFormattedCertificateString")
+            .create();
     }
 }

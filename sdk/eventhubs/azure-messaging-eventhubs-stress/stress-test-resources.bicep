@@ -1,56 +1,40 @@
 @description('The base resource name.')
-param baseResourceName string = resourceGroup().name
+param baseName string = resourceGroup().name
 
 @description('The location of the resources. By default, this is the same as the resource group.')
 param location string = resourceGroup().location
 
-var subBaseName = '${substring(baseResourceName, 0, min(length(baseResourceName), 22))}-${substring(guid(baseResourceName), 0, 5)}'
-var eventHubsNamespaceName = '${subBaseName}-namespace'
-var eventHubName = 'test-event-hub'
-var eventHubsAuthRulesName = 'stress-test-auth-rule'
-var secondEventHubName = 'test-event-hub-2'
+@description('The name of the storage account.')
+param storageAccountName string = 'stress${uniqueString(resourceGroup().id)}'
 
-// storage account must be between 3 and 24 characters in length and use numbers and lower-case letters only
-var storageAccountName = replace('${subBaseName}ac', '-', '')
 var storageContainerName = 'test-blob-container'
 
 resource eventHubsNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
-  name: eventHubsNamespaceName
+  name: baseName
   location: location
   sku: {
-    name: 'Standard'
-    tier: 'Standard'
+    name: 'Premium'
+    tier: 'Premium'
+    capacity: 2
   }
   properties: {}
 }
 
 resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
   parent: eventHubsNamespace
-  name: eventHubName
+  name: 'test-event-hub'
   properties: {
     messageRetentionInDays: 1
     partitionCount: 32
   }
 }
 
-resource secondEventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
+resource forwardEventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
   parent: eventHubsNamespace
-  name: secondEventHubName
+  name: 'forward-event-hub'
   properties: {
     messageRetentionInDays: 1
     partitionCount: 32
-  }
-}
-
-resource eventHubsAuthRules 'Microsoft.EventHub/namespaces/authorizationRules@2021-11-01' = {
-  parent: eventHubsNamespace
-  name: eventHubsAuthRulesName
-  properties: {
-    rights: [
-      'Manage'
-      'Send'
-      'Listen'
-    ]
   }
 }
 
@@ -73,18 +57,13 @@ resource storageContainer 'Microsoft.Storage/storageAccounts/blobServices/contai
   ]
 }
 
-// Construct eventhubs connection string
-var eventHubsVersion = eventHubsNamespace.apiVersion
-var eventHubsConnectionString = listkeys(eventHubsAuthRulesName, eventHubsVersion).primaryConnectionString
+var eventHubsHttpsEndpoint = replace(eventHubsNamespace.properties.serviceBusEndpoint, 'https://', '')
+var eventHubsPortIndex = lastIndexOf(eventHubsHttpsEndpoint, ':')
+output EVENT_HUBS_FULLY_QUALIFIED_NAMESPACE string = substring(eventHubsHttpsEndpoint, 0, eventHubsPortIndex)
+output EVENT_HUBS_EVENT_HUB_NAME string = eventHub.name
 
-// Construct storage account connection string
-var endpointSuffix = environment().suffixes.storage
-var storageAccountId = storageAccount.id
-var storageAccountVersion = storageAccount.apiVersion
-var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${endpointSuffix};AccountKey=${listKeys(storageAccountId, storageAccountVersion).keys[0].value}'
+output FORWARD_EVENT_HUB_NAME string = forwardEventHub.name
+output FORWARD_PARTITIONS_COUNT int = forwardEventHub.properties.partitionCount
 
-output EVENTHUBS_EVENT_HUB_NAME string = eventHubName
-output EVENTHUBS_CONNECTION_STRING string = '"${eventHubsConnectionString}"'
+output STORAGE_BLOB_ENDPOINT_URI string = storageAccount.properties.primaryEndpoints.blob
 output STORAGE_CONTAINER_NAME string = storageContainerName
-output STORAGE_CONNECTION_STRING string = '"${storageConnectionString}"'
-output SECOND_EVENTHUBS_EVENT_HUB_NAME string = secondEventHubName

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** High availability properties of a server. */
+/**
+ * High availability properties of a server.
+ */
 @Fluent
-public final class HighAvailability {
+public final class HighAvailability implements JsonSerializable<HighAvailability> {
     /*
      * The HA mode for the server.
      */
-    @JsonProperty(value = "mode")
     private HighAvailabilityMode mode;
 
     /*
      * A state of a HA server that is visible to user.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private ServerHAState state;
 
     /*
      * availability zone information of the standby.
      */
-    @JsonProperty(value = "standbyAvailabilityZone")
     private String standbyAvailabilityZone;
 
-    /** Creates an instance of HighAvailability class. */
+    /**
+     * Creates an instance of HighAvailability class.
+     */
     public HighAvailability() {
     }
 
     /**
      * Get the mode property: The HA mode for the server.
-     *
+     * 
      * @return the mode value.
      */
     public HighAvailabilityMode mode() {
@@ -43,7 +48,7 @@ public final class HighAvailability {
 
     /**
      * Set the mode property: The HA mode for the server.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the HighAvailability object itself.
      */
@@ -54,7 +59,7 @@ public final class HighAvailability {
 
     /**
      * Get the state property: A state of a HA server that is visible to user.
-     *
+     * 
      * @return the state value.
      */
     public ServerHAState state() {
@@ -63,7 +68,7 @@ public final class HighAvailability {
 
     /**
      * Get the standbyAvailabilityZone property: availability zone information of the standby.
-     *
+     * 
      * @return the standbyAvailabilityZone value.
      */
     public String standbyAvailabilityZone() {
@@ -72,7 +77,7 @@ public final class HighAvailability {
 
     /**
      * Set the standbyAvailabilityZone property: availability zone information of the standby.
-     *
+     * 
      * @param standbyAvailabilityZone the standbyAvailabilityZone value to set.
      * @return the HighAvailability object itself.
      */
@@ -83,9 +88,50 @@ public final class HighAvailability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("standbyAvailabilityZone", this.standbyAvailabilityZone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HighAvailability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HighAvailability if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HighAvailability.
+     */
+    public static HighAvailability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HighAvailability deserializedHighAvailability = new HighAvailability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedHighAvailability.mode = HighAvailabilityMode.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedHighAvailability.state = ServerHAState.fromString(reader.getString());
+                } else if ("standbyAvailabilityZone".equals(fieldName)) {
+                    deserializedHighAvailability.standbyAvailabilityZone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHighAvailability;
+        });
     }
 }

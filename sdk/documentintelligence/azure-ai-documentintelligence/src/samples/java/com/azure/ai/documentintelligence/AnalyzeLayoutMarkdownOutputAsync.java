@@ -3,10 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.ContentFormat;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -36,15 +35,9 @@ public class AnalyzeLayoutMarkdownOutputAsync {
 
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/sample-forms/forms/Invoice_6.pdf");
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutPoller =
                 client.beginAnalyzeDocument("prebuilt-layout",
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        ContentFormat.MARKDOWN,
-                        new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
+                        new AnalyzeDocumentOptions(Files.readAllBytes(invoiceDocument.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
                 analyzeLayoutPoller
@@ -58,7 +51,7 @@ public class AnalyzeLayoutMarkdownOutputAsync {
                                         new RuntimeException(
                                                 "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                             }
-                        }).map(AnalyzeResultOperation::getAnalyzeResult);
+                        });
 
         analyzeLayoutResultMono.subscribe(analyzeLayoutResult -> {
             System.out.println("Markdown output");

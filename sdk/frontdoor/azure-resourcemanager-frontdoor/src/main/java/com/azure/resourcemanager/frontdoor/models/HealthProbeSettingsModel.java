@@ -6,37 +6,41 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.fluent.models.HealthProbeSettingsProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Load balancing settings for a backend pool. */
+/**
+ * Load balancing settings for a backend pool.
+ */
 @Fluent
 public final class HealthProbeSettingsModel extends SubResource {
     /*
      * Properties of the health probe settings
      */
-    @JsonProperty(value = "properties")
     private HealthProbeSettingsProperties innerProperties;
 
     /*
      * Resource name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of HealthProbeSettingsModel class. */
+    /**
+     * Creates an instance of HealthProbeSettingsModel class.
+     */
     public HealthProbeSettingsModel() {
     }
 
     /**
      * Get the innerProperties property: Properties of the health probe settings.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HealthProbeSettingsProperties innerProperties() {
@@ -45,7 +49,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -54,7 +58,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -65,14 +69,16 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthProbeSettingsModel withId(String id) {
         super.withId(id);
@@ -80,10 +86,8 @@ public final class HealthProbeSettingsModel extends SubResource {
     }
 
     /**
-     * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * Get the resourceState property: Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
@@ -92,7 +96,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the path property: The path to use for the health probe. Default is /.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -101,7 +105,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Set the path property: The path to use for the health probe. Default is /.
-     *
+     * 
      * @param path the path value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -115,7 +119,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the protocol property: Protocol scheme to use for this probe.
-     *
+     * 
      * @return the protocol value.
      */
     public FrontDoorProtocol protocol() {
@@ -124,7 +128,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Set the protocol property: Protocol scheme to use for this probe.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -138,7 +142,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the intervalInSeconds property: The number of seconds between health probes.
-     *
+     * 
      * @return the intervalInSeconds value.
      */
     public Integer intervalInSeconds() {
@@ -147,7 +151,7 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Set the intervalInSeconds property: The number of seconds between health probes.
-     *
+     * 
      * @param intervalInSeconds the intervalInSeconds value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -162,7 +166,7 @@ public final class HealthProbeSettingsModel extends SubResource {
     /**
      * Get the healthProbeMethod property: Configures which HTTP method to use to probe the backends defined under
      * backendPools.
-     *
+     * 
      * @return the healthProbeMethod value.
      */
     public FrontDoorHealthProbeMethod healthProbeMethod() {
@@ -172,7 +176,7 @@ public final class HealthProbeSettingsModel extends SubResource {
     /**
      * Set the healthProbeMethod property: Configures which HTTP method to use to probe the backends defined under
      * backendPools.
-     *
+     * 
      * @param healthProbeMethod the healthProbeMethod value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -188,7 +192,7 @@ public final class HealthProbeSettingsModel extends SubResource {
      * Get the enabledState property: Whether to enable health probes to be made against backends defined under
      * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
      * pool.
-     *
+     * 
      * @return the enabledState value.
      */
     public HealthProbeEnabled enabledState() {
@@ -199,7 +203,7 @@ public final class HealthProbeSettingsModel extends SubResource {
      * Set the enabledState property: Whether to enable health probes to be made against backends defined under
      * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
      * pool.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -213,12 +217,57 @@ public final class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthProbeSettingsModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthProbeSettingsModel if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthProbeSettingsModel.
+     */
+    public static HealthProbeSettingsModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthProbeSettingsModel deserializedHealthProbeSettingsModel = new HealthProbeSettingsModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHealthProbeSettingsModel.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHealthProbeSettingsModel.innerProperties
+                        = HealthProbeSettingsProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedHealthProbeSettingsModel.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHealthProbeSettingsModel.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthProbeSettingsModel;
+        });
     }
 }

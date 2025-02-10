@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PreconfiguredEndpointListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PreconfiguredEndpointList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"doaon\",\"endpoint\":\"jcntuj\",\"endpointType\":\"AFD\",\"backend\":\"ed\"},\"location\":\"twwaezkojvdcpzf\",\"tags\":{\"x\":\"uicybxarzgszuf\",\"khazxkhnzbonlwn\":\"iqopidoamciod\",\"szzcmrvexztv\":\"oegokdwbwh\",\"gsfraoyzkoow\":\"t\"},\"id\":\"lmnguxaw\",\"name\":\"aldsy\",\"type\":\"uximerqfobw\"},{\"properties\":{\"description\":\"kby\",\"endpoint\":\"t\",\"endpointType\":\"ATM\",\"backend\":\"pagmhrskdsnf\"},\"location\":\"sd\",\"tags\":{\"zev\":\"gtdlmk\",\"ewpusdsttwvogvb\":\"l\",\"m\":\"ejdcngqqmoakuf\"},\"id\":\"zr\",\"name\":\"rdgrtw\",\"type\":\"enuuzkopbm\"}],\"nextLink\":\"rfdwoyu\"}")
-                .toObject(PreconfiguredEndpointList.class);
-        Assertions.assertEquals("rfdwoyu", model.nextLink());
+        PreconfiguredEndpointList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"zhzbezkgimsi\",\"endpoint\":\"asi\",\"endpointType\":\"ATM\",\"backend\":\"vvjskgfmocwahp\"},\"location\":\"gat\",\"tags\":{\"zybbj\":\"ahhvjhhna\"},\"id\":\"idjks\",\"name\":\"xkyxvxevblbj\",\"type\":\"dnlj\"},{\"properties\":{\"description\":\"euaulxu\",\"endpoint\":\"mjbnk\",\"endpointType\":\"AzureRegion\",\"backend\":\"nenlsvxeizzg\"},\"location\":\"klnsrmffey\",\"tags\":{\"ymerteeammxq\":\"ktp\"},\"id\":\"ekkkzd\",\"name\":\"rtkgdojbmxvavref\",\"type\":\"eesvecu\"},{\"properties\":{\"description\":\"xtxsuwprtujw\",\"endpoint\":\"wddji\",\"endpointType\":\"AFD\",\"backend\":\"vit\"},\"location\":\"tvtzeexavoxtfg\",\"tags\":{\"pypqtgsfj\":\"dmdqb\"},\"id\":\"cbslhhx\",\"name\":\"db\",\"type\":\"vodhtn\"}],\"nextLink\":\"rudhzmmesckdl\"}")
+            .toObject(PreconfiguredEndpointList.class);
+        Assertions.assertEquals("rudhzmmesckdl", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PreconfiguredEndpointList model = new PreconfiguredEndpointList().withNextLink("rfdwoyu");
+        PreconfiguredEndpointList model = new PreconfiguredEndpointList().withNextLink("rudhzmmesckdl");
         model = BinaryData.fromObject(model).toObject(PreconfiguredEndpointList.class);
-        Assertions.assertEquals("rfdwoyu", model.nextLink());
+        Assertions.assertEquals("rudhzmmesckdl", model.nextLink());
     }
 }

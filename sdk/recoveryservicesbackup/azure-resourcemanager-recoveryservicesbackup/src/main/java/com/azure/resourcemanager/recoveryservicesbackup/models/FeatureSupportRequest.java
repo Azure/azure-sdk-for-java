@@ -5,32 +5,105 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for feature request. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "featureType",
-    defaultImpl = FeatureSupportRequest.class)
-@JsonTypeName("FeatureSupportRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureBackupGoals", value = AzureBackupGoalFeatureSupportRequest.class),
-    @JsonSubTypes.Type(name = "AzureVMResourceBackup", value = AzureVMResourceFeatureSupportRequest.class)
-})
+/**
+ * Base class for feature request.
+ */
 @Immutable
-public class FeatureSupportRequest {
-    /** Creates an instance of FeatureSupportRequest class. */
+public class FeatureSupportRequest implements JsonSerializable<FeatureSupportRequest> {
+    /*
+     * backup support feature type.
+     */
+    private String featureType = "FeatureSupportRequest";
+
+    /**
+     * Creates an instance of FeatureSupportRequest class.
+     */
     public FeatureSupportRequest() {
     }
 
     /**
+     * Get the featureType property: backup support feature type.
+     * 
+     * @return the featureType value.
+     */
+    public String featureType() {
+        return this.featureType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("featureType", this.featureType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FeatureSupportRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FeatureSupportRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FeatureSupportRequest.
+     */
+    public static FeatureSupportRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("featureType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureBackupGoals".equals(discriminatorValue)) {
+                    return AzureBackupGoalFeatureSupportRequest.fromJson(readerToUse.reset());
+                } else if ("AzureVMResourceBackup".equals(discriminatorValue)) {
+                    return AzureVMResourceFeatureSupportRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static FeatureSupportRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FeatureSupportRequest deserializedFeatureSupportRequest = new FeatureSupportRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("featureType".equals(fieldName)) {
+                    deserializedFeatureSupportRequest.featureType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFeatureSupportRequest;
+        });
     }
 }

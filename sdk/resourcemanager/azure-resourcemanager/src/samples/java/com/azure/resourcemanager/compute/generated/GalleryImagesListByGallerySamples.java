@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class GalleryImagesListByGallerySamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImage_ListByGallery.json
      */
     /**
@@ -19,7 +19,10 @@ public final class GalleryImagesListByGallerySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listGalleryImagesInAGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImages().listByGallery("myResourceGroup",
-            "myGalleryName", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImages()
+            .listByGallery("myResourceGroup", "myGalleryName", com.azure.core.util.Context.NONE);
     }
 }

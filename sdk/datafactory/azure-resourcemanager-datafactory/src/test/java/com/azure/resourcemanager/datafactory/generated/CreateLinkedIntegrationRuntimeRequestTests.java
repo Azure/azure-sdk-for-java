@@ -23,7 +23,9 @@ public final class CreateLinkedIntegrationRuntimeRequestTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreateLinkedIntegrationRuntimeRequest model = new CreateLinkedIntegrationRuntimeRequest().withName("ni")
-            .withSubscriptionId("x").withDataFactoryName("kpycgklwndnhjd").withDataFactoryLocation("whvylw");
+            .withSubscriptionId("x")
+            .withDataFactoryName("kpycgklwndnhjd")
+            .withDataFactoryLocation("whvylw");
         model = BinaryData.fromObject(model).toObject(CreateLinkedIntegrationRuntimeRequest.class);
         Assertions.assertEquals("ni", model.name());
         Assertions.assertEquals("x", model.subscriptionId());

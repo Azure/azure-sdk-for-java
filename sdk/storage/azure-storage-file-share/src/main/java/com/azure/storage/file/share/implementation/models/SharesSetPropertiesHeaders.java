@@ -8,71 +8,203 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The SharesSetPropertiesHeaders model. */
-@JacksonXmlRootElement(localName = "null")
+/**
+ * The SharesSetPropertiesHeaders model.
+ */
 @Fluent
 public final class SharesSetPropertiesHeaders {
     /*
+     * The x-ms-share-provisioned-iops property.
+     */
+    private Long xMsShareProvisionedIops;
+
+    /*
+     * The x-ms-share-included-burst-iops property.
+     */
+    private Long xMsShareIncludedBurstIops;
+
+    /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
-     * The ETag property.
+     * The x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time property.
      */
-    @JsonProperty(value = "ETag")
-    private String eTag;
+    private DateTimeRfc1123 xMsShareNextAllowedProvisionedBandwidthDowngradeTime;
 
     /*
      * The Last-Modified property.
      */
-    @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-request-id property.
+     * The x-ms-share-max-burst-credits-for-iops property.
      */
-    @JsonProperty(value = "x-ms-request-id")
-    private String xMsRequestId;
+    private Long xMsShareMaxBurstCreditsForIops;
+
+    /*
+     * The x-ms-share-next-allowed-provisioned-iops-downgrade-time property.
+     */
+    private DateTimeRfc1123 xMsShareNextAllowedProvisionedIopsDowngradeTime;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
+
+    /*
+     * The x-ms-share-provisioned-bandwidth-mibps property.
+     */
+    private Long xMsShareProvisionedBandwidthMibps;
+
+    /*
+     * The x-ms-share-quota property.
+     */
+    private Long xMsShareQuota;
+
+    /*
+     * The ETag property.
+     */
+    private String eTag;
+
+    /*
+     * The x-ms-request-id property.
+     */
+    private String xMsRequestId;
+
+    /*
+     * The x-ms-share-next-allowed-quota-downgrade-time property.
+     */
+    private DateTimeRfc1123 xMsShareNextAllowedQuotaDowngradeTime;
+
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_IOPS
+        = HttpHeaderName.fromString("x-ms-share-provisioned-iops");
+
+    private static final HttpHeaderName X_MS_SHARE_INCLUDED_BURST_IOPS
+        = HttpHeaderName.fromString("x-ms-share-included-burst-iops");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+    private static final HttpHeaderName X_MS_SHARE_NEXT_ALLOWED_PROVISIONED_BANDWIDTH_DOWNGRADE_TIME
+        = HttpHeaderName.fromString("x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time");
+
+    private static final HttpHeaderName X_MS_SHARE_MAX_BURST_CREDITS_FOR_IOPS
+        = HttpHeaderName.fromString("x-ms-share-max-burst-credits-for-iops");
+
+    private static final HttpHeaderName X_MS_SHARE_NEXT_ALLOWED_PROVISIONED_IOPS_DOWNGRADE_TIME
+        = HttpHeaderName.fromString("x-ms-share-next-allowed-provisioned-iops-downgrade-time");
+
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS
+        = HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps");
+
+    private static final HttpHeaderName X_MS_SHARE_QUOTA = HttpHeaderName.fromString("x-ms-share-quota");
+
+    private static final HttpHeaderName X_MS_SHARE_NEXT_ALLOWED_QUOTA_DOWNGRADE_TIME
+        = HttpHeaderName.fromString("x-ms-share-next-allowed-quota-downgrade-time");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of SharesSetPropertiesHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SharesSetPropertiesHeaders(HttpHeaders rawHeaders) {
+        String xMsShareProvisionedIops = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_IOPS);
+        if (xMsShareProvisionedIops != null) {
+            this.xMsShareProvisionedIops = Long.parseLong(xMsShareProvisionedIops);
+        }
+        String xMsShareIncludedBurstIops = rawHeaders.getValue(X_MS_SHARE_INCLUDED_BURST_IOPS);
+        if (xMsShareIncludedBurstIops != null) {
+            this.xMsShareIncludedBurstIops = Long.parseLong(xMsShareIncludedBurstIops);
+        }
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String xMsShareNextAllowedProvisionedBandwidthDowngradeTime
+            = rawHeaders.getValue(X_MS_SHARE_NEXT_ALLOWED_PROVISIONED_BANDWIDTH_DOWNGRADE_TIME);
+        if (xMsShareNextAllowedProvisionedBandwidthDowngradeTime != null) {
+            this.xMsShareNextAllowedProvisionedBandwidthDowngradeTime
+                = new DateTimeRfc1123(xMsShareNextAllowedProvisionedBandwidthDowngradeTime);
+        }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        String xMsShareMaxBurstCreditsForIops = rawHeaders.getValue(X_MS_SHARE_MAX_BURST_CREDITS_FOR_IOPS);
+        if (xMsShareMaxBurstCreditsForIops != null) {
+            this.xMsShareMaxBurstCreditsForIops = Long.parseLong(xMsShareMaxBurstCreditsForIops);
+        }
+        String xMsShareNextAllowedProvisionedIopsDowngradeTime
+            = rawHeaders.getValue(X_MS_SHARE_NEXT_ALLOWED_PROVISIONED_IOPS_DOWNGRADE_TIME);
+        if (xMsShareNextAllowedProvisionedIopsDowngradeTime != null) {
+            this.xMsShareNextAllowedProvisionedIopsDowngradeTime
+                = new DateTimeRfc1123(xMsShareNextAllowedProvisionedIopsDowngradeTime);
+        }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
+        String xMsShareProvisionedBandwidthMibps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS);
+        if (xMsShareProvisionedBandwidthMibps != null) {
+            this.xMsShareProvisionedBandwidthMibps = Long.parseLong(xMsShareProvisionedBandwidthMibps);
+        }
+        String xMsShareQuota = rawHeaders.getValue(X_MS_SHARE_QUOTA);
+        if (xMsShareQuota != null) {
+            this.xMsShareQuota = Long.parseLong(xMsShareQuota);
+        }
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        String xMsShareNextAllowedQuotaDowngradeTime
+            = rawHeaders.getValue(X_MS_SHARE_NEXT_ALLOWED_QUOTA_DOWNGRADE_TIME);
+        if (xMsShareNextAllowedQuotaDowngradeTime != null) {
+            this.xMsShareNextAllowedQuotaDowngradeTime = new DateTimeRfc1123(xMsShareNextAllowedQuotaDowngradeTime);
+        }
+    }
+
+    /**
+     * Get the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
+     * 
+     * @return the xMsShareProvisionedIops value.
+     */
+    public Long getXMsShareProvisionedIops() {
+        return this.xMsShareProvisionedIops;
+    }
+
+    /**
+     * Set the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
+     * 
+     * @param xMsShareProvisionedIops the xMsShareProvisionedIops value to set.
+     * @return the SharesSetPropertiesHeaders object itself.
+     */
+    public SharesSetPropertiesHeaders setXMsShareProvisionedIops(Long xMsShareProvisionedIops) {
+        this.xMsShareProvisionedIops = xMsShareProvisionedIops;
+        return this;
+    }
+
+    /**
+     * Get the xMsShareIncludedBurstIops property: The x-ms-share-included-burst-iops property.
+     * 
+     * @return the xMsShareIncludedBurstIops value.
+     */
+    public Long getXMsShareIncludedBurstIops() {
+        return this.xMsShareIncludedBurstIops;
+    }
+
+    /**
+     * Set the xMsShareIncludedBurstIops property: The x-ms-share-included-burst-iops property.
+     * 
+     * @param xMsShareIncludedBurstIops the xMsShareIncludedBurstIops value to set.
+     * @return the SharesSetPropertiesHeaders object itself.
+     */
+    public SharesSetPropertiesHeaders setXMsShareIncludedBurstIops(Long xMsShareIncludedBurstIops) {
+        this.xMsShareIncludedBurstIops = xMsShareIncludedBurstIops;
+        return this;
     }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -81,7 +213,7 @@ public final class SharesSetPropertiesHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the SharesSetPropertiesHeaders object itself.
      */
@@ -91,28 +223,40 @@ public final class SharesSetPropertiesHeaders {
     }
 
     /**
-     * Get the eTag property: The ETag property.
-     *
-     * @return the eTag value.
+     * Get the xMsShareNextAllowedProvisionedBandwidthDowngradeTime property: The
+     * x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time property.
+     * 
+     * @return the xMsShareNextAllowedProvisionedBandwidthDowngradeTime value.
      */
-    public String getETag() {
-        return this.eTag;
+    public OffsetDateTime getXMsShareNextAllowedProvisionedBandwidthDowngradeTime() {
+        if (this.xMsShareNextAllowedProvisionedBandwidthDowngradeTime == null) {
+            return null;
+        }
+        return this.xMsShareNextAllowedProvisionedBandwidthDowngradeTime.getDateTime();
     }
 
     /**
-     * Set the eTag property: The ETag property.
-     *
-     * @param eTag the eTag value to set.
+     * Set the xMsShareNextAllowedProvisionedBandwidthDowngradeTime property: The
+     * x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time property.
+     * 
+     * @param xMsShareNextAllowedProvisionedBandwidthDowngradeTime the
+     * xMsShareNextAllowedProvisionedBandwidthDowngradeTime value to set.
      * @return the SharesSetPropertiesHeaders object itself.
      */
-    public SharesSetPropertiesHeaders setETag(String eTag) {
-        this.eTag = eTag;
+    public SharesSetPropertiesHeaders setXMsShareNextAllowedProvisionedBandwidthDowngradeTime(
+        OffsetDateTime xMsShareNextAllowedProvisionedBandwidthDowngradeTime) {
+        if (xMsShareNextAllowedProvisionedBandwidthDowngradeTime == null) {
+            this.xMsShareNextAllowedProvisionedBandwidthDowngradeTime = null;
+        } else {
+            this.xMsShareNextAllowedProvisionedBandwidthDowngradeTime
+                = new DateTimeRfc1123(xMsShareNextAllowedProvisionedBandwidthDowngradeTime);
+        }
         return this;
     }
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -124,7 +268,7 @@ public final class SharesSetPropertiesHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the SharesSetPropertiesHeaders object itself.
      */
@@ -138,28 +282,60 @@ public final class SharesSetPropertiesHeaders {
     }
 
     /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
-     *
-     * @return the xMsRequestId value.
+     * Get the xMsShareMaxBurstCreditsForIops property: The x-ms-share-max-burst-credits-for-iops property.
+     * 
+     * @return the xMsShareMaxBurstCreditsForIops value.
      */
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
+    public Long getXMsShareMaxBurstCreditsForIops() {
+        return this.xMsShareMaxBurstCreditsForIops;
     }
 
     /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     *
-     * @param xMsRequestId the xMsRequestId value to set.
+     * Set the xMsShareMaxBurstCreditsForIops property: The x-ms-share-max-burst-credits-for-iops property.
+     * 
+     * @param xMsShareMaxBurstCreditsForIops the xMsShareMaxBurstCreditsForIops value to set.
      * @return the SharesSetPropertiesHeaders object itself.
      */
-    public SharesSetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
+    public SharesSetPropertiesHeaders setXMsShareMaxBurstCreditsForIops(Long xMsShareMaxBurstCreditsForIops) {
+        this.xMsShareMaxBurstCreditsForIops = xMsShareMaxBurstCreditsForIops;
+        return this;
+    }
+
+    /**
+     * Get the xMsShareNextAllowedProvisionedIopsDowngradeTime property: The
+     * x-ms-share-next-allowed-provisioned-iops-downgrade-time property.
+     * 
+     * @return the xMsShareNextAllowedProvisionedIopsDowngradeTime value.
+     */
+    public OffsetDateTime getXMsShareNextAllowedProvisionedIopsDowngradeTime() {
+        if (this.xMsShareNextAllowedProvisionedIopsDowngradeTime == null) {
+            return null;
+        }
+        return this.xMsShareNextAllowedProvisionedIopsDowngradeTime.getDateTime();
+    }
+
+    /**
+     * Set the xMsShareNextAllowedProvisionedIopsDowngradeTime property: The
+     * x-ms-share-next-allowed-provisioned-iops-downgrade-time property.
+     * 
+     * @param xMsShareNextAllowedProvisionedIopsDowngradeTime the xMsShareNextAllowedProvisionedIopsDowngradeTime value
+     * to set.
+     * @return the SharesSetPropertiesHeaders object itself.
+     */
+    public SharesSetPropertiesHeaders setXMsShareNextAllowedProvisionedIopsDowngradeTime(
+        OffsetDateTime xMsShareNextAllowedProvisionedIopsDowngradeTime) {
+        if (xMsShareNextAllowedProvisionedIopsDowngradeTime == null) {
+            this.xMsShareNextAllowedProvisionedIopsDowngradeTime = null;
+        } else {
+            this.xMsShareNextAllowedProvisionedIopsDowngradeTime
+                = new DateTimeRfc1123(xMsShareNextAllowedProvisionedIopsDowngradeTime);
+        }
         return this;
     }
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -171,7 +347,7 @@ public final class SharesSetPropertiesHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the SharesSetPropertiesHeaders object itself.
      */
@@ -180,6 +356,116 @@ public final class SharesSetPropertiesHeaders {
             this.date = null;
         } else {
             this.date = new DateTimeRfc1123(date);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsShareProvisionedBandwidthMibps property: The x-ms-share-provisioned-bandwidth-mibps property.
+     * 
+     * @return the xMsShareProvisionedBandwidthMibps value.
+     */
+    public Long getXMsShareProvisionedBandwidthMibps() {
+        return this.xMsShareProvisionedBandwidthMibps;
+    }
+
+    /**
+     * Set the xMsShareProvisionedBandwidthMibps property: The x-ms-share-provisioned-bandwidth-mibps property.
+     * 
+     * @param xMsShareProvisionedBandwidthMibps the xMsShareProvisionedBandwidthMibps value to set.
+     * @return the SharesSetPropertiesHeaders object itself.
+     */
+    public SharesSetPropertiesHeaders setXMsShareProvisionedBandwidthMibps(Long xMsShareProvisionedBandwidthMibps) {
+        this.xMsShareProvisionedBandwidthMibps = xMsShareProvisionedBandwidthMibps;
+        return this;
+    }
+
+    /**
+     * Get the xMsShareQuota property: The x-ms-share-quota property.
+     * 
+     * @return the xMsShareQuota value.
+     */
+    public Long getXMsShareQuota() {
+        return this.xMsShareQuota;
+    }
+
+    /**
+     * Set the xMsShareQuota property: The x-ms-share-quota property.
+     * 
+     * @param xMsShareQuota the xMsShareQuota value to set.
+     * @return the SharesSetPropertiesHeaders object itself.
+     */
+    public SharesSetPropertiesHeaders setXMsShareQuota(Long xMsShareQuota) {
+        this.xMsShareQuota = xMsShareQuota;
+        return this;
+    }
+
+    /**
+     * Get the eTag property: The ETag property.
+     * 
+     * @return the eTag value.
+     */
+    public String getETag() {
+        return this.eTag;
+    }
+
+    /**
+     * Set the eTag property: The ETag property.
+     * 
+     * @param eTag the eTag value to set.
+     * @return the SharesSetPropertiesHeaders object itself.
+     */
+    public SharesSetPropertiesHeaders setETag(String eTag) {
+        this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the SharesSetPropertiesHeaders object itself.
+     */
+    public SharesSetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsShareNextAllowedQuotaDowngradeTime property: The x-ms-share-next-allowed-quota-downgrade-time
+     * property.
+     * 
+     * @return the xMsShareNextAllowedQuotaDowngradeTime value.
+     */
+    public OffsetDateTime getXMsShareNextAllowedQuotaDowngradeTime() {
+        if (this.xMsShareNextAllowedQuotaDowngradeTime == null) {
+            return null;
+        }
+        return this.xMsShareNextAllowedQuotaDowngradeTime.getDateTime();
+    }
+
+    /**
+     * Set the xMsShareNextAllowedQuotaDowngradeTime property: The x-ms-share-next-allowed-quota-downgrade-time
+     * property.
+     * 
+     * @param xMsShareNextAllowedQuotaDowngradeTime the xMsShareNextAllowedQuotaDowngradeTime value to set.
+     * @return the SharesSetPropertiesHeaders object itself.
+     */
+    public SharesSetPropertiesHeaders
+        setXMsShareNextAllowedQuotaDowngradeTime(OffsetDateTime xMsShareNextAllowedQuotaDowngradeTime) {
+        if (xMsShareNextAllowedQuotaDowngradeTime == null) {
+            this.xMsShareNextAllowedQuotaDowngradeTime = null;
+        } else {
+            this.xMsShareNextAllowedQuotaDowngradeTime = new DateTimeRfc1123(xMsShareNextAllowedQuotaDowngradeTime);
         }
         return this;
     }

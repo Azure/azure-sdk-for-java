@@ -4,25 +4,32 @@
 
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A list which includes all the compliance result for one report. */
-@Fluent
-public final class ReportComplianceStatus {
+/**
+ * A list which includes all the compliance result for one report.
+ */
+@Immutable
+public final class ReportComplianceStatus implements JsonSerializable<ReportComplianceStatus> {
     /*
      * The Microsoft 365 certification name.
      */
-    @JsonProperty(value = "m365")
     private OverviewStatus m365;
 
-    /** Creates an instance of ReportComplianceStatus class. */
+    /**
+     * Creates an instance of ReportComplianceStatus class.
+     */
     public ReportComplianceStatus() {
     }
 
     /**
      * Get the m365 property: The Microsoft 365 certification name.
-     *
+     * 
      * @return the m365 value.
      */
     public OverviewStatus m365() {
@@ -30,24 +37,48 @@ public final class ReportComplianceStatus {
     }
 
     /**
-     * Set the m365 property: The Microsoft 365 certification name.
-     *
-     * @param m365 the m365 value to set.
-     * @return the ReportComplianceStatus object itself.
-     */
-    public ReportComplianceStatus withM365(OverviewStatus m365) {
-        this.m365 = m365;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (m365() != null) {
             m365().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportComplianceStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportComplianceStatus if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReportComplianceStatus.
+     */
+    public static ReportComplianceStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportComplianceStatus deserializedReportComplianceStatus = new ReportComplianceStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("m365".equals(fieldName)) {
+                    deserializedReportComplianceStatus.m365 = OverviewStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReportComplianceStatus;
+        });
     }
 }

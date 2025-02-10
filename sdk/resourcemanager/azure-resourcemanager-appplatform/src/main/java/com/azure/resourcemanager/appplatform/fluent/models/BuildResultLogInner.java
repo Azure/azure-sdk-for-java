@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Build result log resource properties payload. */
+/**
+ * Build result log resource properties payload.
+ */
 @Fluent
-public final class BuildResultLogInner {
+public final class BuildResultLogInner implements JsonSerializable<BuildResultLogInner> {
     /*
      * The public download URL of this build result log
      */
-    @JsonProperty(value = "blobUrl")
     private String blobUrl;
 
     /**
+     * Creates an instance of BuildResultLogInner class.
+     */
+    public BuildResultLogInner() {
+    }
+
+    /**
      * Get the blobUrl property: The public download URL of this build result log.
-     *
+     * 
      * @return the blobUrl value.
      */
     public String blobUrl() {
@@ -27,7 +38,7 @@ public final class BuildResultLogInner {
 
     /**
      * Set the blobUrl property: The public download URL of this build result log.
-     *
+     * 
      * @param blobUrl the blobUrl value to set.
      * @return the BuildResultLogInner object itself.
      */
@@ -38,9 +49,45 @@ public final class BuildResultLogInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("blobUrl", this.blobUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildResultLogInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildResultLogInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildResultLogInner.
+     */
+    public static BuildResultLogInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildResultLogInner deserializedBuildResultLogInner = new BuildResultLogInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("blobUrl".equals(fieldName)) {
+                    deserializedBuildResultLogInner.blobUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildResultLogInner;
+        });
     }
 }

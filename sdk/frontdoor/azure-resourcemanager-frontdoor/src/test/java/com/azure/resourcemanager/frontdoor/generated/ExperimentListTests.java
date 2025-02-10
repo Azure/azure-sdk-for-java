@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ExperimentListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"lolp\",\"enabledState\":\"Enabled\",\"resourceState\":\"Enabling\",\"status\":\"ujzra\",\"scriptFileUri\":\"twdw\"},\"location\":\"ftswibyrcdlbhsh\",\"tags\":{\"hevxcced\":\"racstwity\"},\"id\":\"pnmdyodnwzxltjcv\",\"name\":\"hlt\",\"type\":\"ugcxnavvwxq\"}],\"nextLink\":\"y\"}")
-                .toObject(ExperimentList.class);
-        Assertions.assertEquals("y", model.nextLink());
+        ExperimentList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"fzpbgtgkyl\",\"endpointA\":{\"name\":\"hrjeuutlw\",\"endpoint\":\"z\"},\"endpointB\":{\"name\":\"okvbwnhhtqlgehg\",\"endpoint\":\"ipifhpfeoajvg\"},\"enabledState\":\"Disabled\",\"resourceState\":\"Deleting\",\"status\":\"sheafid\",\"scriptFileUri\":\"ugsresmkssjhoi\"},\"location\":\"txfkfweg\",\"tags\":{\"ucb\":\"ptil\"},\"id\":\"qtgdqohmcwsl\",\"name\":\"riz\",\"type\":\"tpwb\"},{\"properties\":{\"description\":\"llibphbqzmizak\",\"endpointA\":{\"name\":\"nkjpdnjzha\",\"endpoint\":\"ylhjlm\"},\"endpointB\":{\"name\":\"xprimrsop\",\"endpoint\":\"ecj\"},\"enabledState\":\"Enabled\",\"resourceState\":\"Disabled\",\"status\":\"tvasy\",\"scriptFileUri\":\"xdza\"},\"location\":\"mweoohgu\",\"tags\":{\"olbaemwmdx\":\"zboyjathwt\",\"f\":\"ebwjscjpahlxvea\",\"qcttadijaeukmrsi\":\"xnmwmqtibxyijddt\"},\"id\":\"ekpndzaapmudq\",\"name\":\"eqw\",\"type\":\"gp\"},{\"properties\":{\"description\":\"dqwyxeb\",\"endpointA\":{\"name\":\"pmzznrtffya\",\"endpoint\":\"tmhheioqa\"},\"endpointB\":{\"name\":\"seufuqy\",\"endpoint\":\"pdlc\"},\"enabledState\":\"Disabled\",\"resourceState\":\"Enabled\",\"status\":\"mjqfrddgamquhio\",\"scriptFileUri\":\"sjuivfcdisyir\"},\"location\":\"xzhczexrxz\",\"tags\":{\"zonzlrpiqywnc\":\"rtrhqvwrevkhgnl\",\"zehtdhgb\":\"jtszcof\",\"reljeamur\":\"k\"},\"id\":\"zmlovuanash\",\"name\":\"xlpm\",\"type\":\"erbdk\"}],\"nextLink\":\"vidizozsdb\"}")
+            .toObject(ExperimentList.class);
+        Assertions.assertEquals("vidizozsdb", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentList model = new ExperimentList().withNextLink("y");
+        ExperimentList model = new ExperimentList().withNextLink("vidizozsdb");
         model = BinaryData.fromObject(model).toObject(ExperimentList.class);
-        Assertions.assertEquals("y", model.nextLink());
+        Assertions.assertEquals("vidizozsdb", model.nextLink());
     }
 }

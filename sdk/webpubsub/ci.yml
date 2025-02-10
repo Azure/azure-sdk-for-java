@@ -49,7 +49,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: webpubsub
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-messaging-webpubsub
         groupId: com.azure

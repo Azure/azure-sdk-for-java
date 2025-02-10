@@ -3,17 +3,13 @@
 
 package com.azure.maps.geolocation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.io.IOException;
-
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.maps.geolocation.models.IpAddressToLocationResult;
-
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class GeolocationClientTest extends GeolocationClientTestBase {
     private GeolocationClient client;
@@ -23,12 +19,17 @@ public class GeolocationClientTest extends GeolocationClientTestBase {
         return getGeoLocationAsyncClientBuilder(httpClient, serviceVersion).buildClient();
     }
 
-    // Test get location 
+    // Test get location
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.geolocation.TestUtils#getTestParameters")
-    public void testGetLocation(HttpClient httpClient, GeolocationServiceVersion serviceVersion) throws IOException {
+    public void testGetLocation(HttpClient httpClient, GeolocationServiceVersion serviceVersion) {
         client = getGeoLocationClient(httpClient, serviceVersion);
-        IpAddressToLocationResult actualResult = client.getLocation("131.107.0.89");
+        IpAddressToLocationResult actualResult = null;
+        try {
+            actualResult = client.getLocation(InetAddress.getByName("131.107.0.89"));
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
         IpAddressToLocationResult expectedResult = TestUtils.getExpectedLocation();
         validateGetLocation(actualResult, expectedResult);
     }
@@ -37,18 +38,13 @@ public class GeolocationClientTest extends GeolocationClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.geolocation.TestUtils#getTestParameters")
-    public void testGetLocationWithResponse(HttpClient httpClient, GeolocationServiceVersion serviceVersion) throws IOException {
+    public void testGetLocationWithResponse(HttpClient httpClient, GeolocationServiceVersion serviceVersion) {
         client = getGeoLocationClient(httpClient, serviceVersion);
-        validateGetLocationWithResponse(TestUtils.getExpectedLocation(), 200, client.getLocationWithResponse("131.107.0.89", null));
-    }
-
-    // Case 2: Respone 400, incorrect input
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.maps.geolocation.TestUtils#getTestParameters")
-    public void testInvalidGetLocationWithResponse(HttpClient httpClient, GeolocationServiceVersion serviceVersion) throws IOException {
-        client = getGeoLocationClient(httpClient, serviceVersion);
-        final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-            () -> client.getLocationWithResponse("0000000asdfsdf", null));
-        assertEquals(400, httpResponseException.getResponse().getStatusCode());
+        try {
+            validateGetLocationWithResponse(TestUtils.getExpectedLocation(),
+                client.getLocationWithResponse(InetAddress.getByName("131.107.0.89"), null));
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

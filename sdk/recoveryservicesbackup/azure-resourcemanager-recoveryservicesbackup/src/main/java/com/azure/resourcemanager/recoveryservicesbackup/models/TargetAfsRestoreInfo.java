@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Target Azure File Share Info. */
+/**
+ * Target Azure File Share Info.
+ */
 @Fluent
-public final class TargetAfsRestoreInfo {
+public final class TargetAfsRestoreInfo implements JsonSerializable<TargetAfsRestoreInfo> {
     /*
      * File share name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Target file share resource ARM ID
      */
-    @JsonProperty(value = "targetResourceId")
     private String targetResourceId;
 
-    /** Creates an instance of TargetAfsRestoreInfo class. */
+    /**
+     * Creates an instance of TargetAfsRestoreInfo class.
+     */
     public TargetAfsRestoreInfo() {
     }
 
     /**
      * Get the name property: File share name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class TargetAfsRestoreInfo {
 
     /**
      * Set the name property: File share name.
-     *
+     * 
      * @param name the name value to set.
      * @return the TargetAfsRestoreInfo object itself.
      */
@@ -48,7 +54,7 @@ public final class TargetAfsRestoreInfo {
 
     /**
      * Get the targetResourceId property: Target file share resource ARM ID.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -57,7 +63,7 @@ public final class TargetAfsRestoreInfo {
 
     /**
      * Set the targetResourceId property: Target file share resource ARM ID.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the TargetAfsRestoreInfo object itself.
      */
@@ -68,9 +74,48 @@ public final class TargetAfsRestoreInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetAfsRestoreInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetAfsRestoreInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TargetAfsRestoreInfo.
+     */
+    public static TargetAfsRestoreInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetAfsRestoreInfo deserializedTargetAfsRestoreInfo = new TargetAfsRestoreInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedTargetAfsRestoreInfo.name = reader.getString();
+                } else if ("targetResourceId".equals(fieldName)) {
+                    deserializedTargetAfsRestoreInfo.targetResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetAfsRestoreInfo;
+        });
     }
 }

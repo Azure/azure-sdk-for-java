@@ -60,21 +60,16 @@ public final class GitHubOwnerImpl implements GitHubOwner, GitHubOwner.Definitio
     }
 
     public GitHubOwner create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubOwners()
-                .createOrUpdate(
-                    resourceGroupName, gitHubConnectorName, gitHubOwnerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubOwners()
+            .createOrUpdate(resourceGroupName, gitHubConnectorName, gitHubOwnerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public GitHubOwner create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubOwners()
-                .createOrUpdate(resourceGroupName, gitHubConnectorName, gitHubOwnerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubOwners()
+            .createOrUpdate(resourceGroupName, gitHubConnectorName, gitHubOwnerName, this.innerModel(), context);
         return this;
     }
 
@@ -89,25 +84,21 @@ public final class GitHubOwnerImpl implements GitHubOwner, GitHubOwner.Definitio
     }
 
     public GitHubOwner apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubOwners()
-                .update(resourceGroupName, gitHubConnectorName, gitHubOwnerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubOwners()
+            .update(resourceGroupName, gitHubConnectorName, gitHubOwnerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public GitHubOwner apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubOwners()
-                .update(resourceGroupName, gitHubConnectorName, gitHubOwnerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubOwners()
+            .update(resourceGroupName, gitHubConnectorName, gitHubOwnerName, this.innerModel(), context);
         return this;
     }
 
-    GitHubOwnerImpl(
-        GitHubOwnerInner innerObject, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
+    GitHubOwnerImpl(GitHubOwnerInner innerObject,
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -116,22 +107,18 @@ public final class GitHubOwnerImpl implements GitHubOwner, GitHubOwner.Definitio
     }
 
     public GitHubOwner refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubOwners()
-                .getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubOwners()
+            .getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GitHubOwner refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubOwners()
-                .getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubOwners()
+            .getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, context)
+            .getValue();
         return this;
     }
 

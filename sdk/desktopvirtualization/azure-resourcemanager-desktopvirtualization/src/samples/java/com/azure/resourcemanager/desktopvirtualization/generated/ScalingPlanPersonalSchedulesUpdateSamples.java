@@ -9,26 +9,27 @@ import com.azure.resourcemanager.desktopvirtualization.models.SessionHandlingOpe
 import com.azure.resourcemanager.desktopvirtualization.models.SetStartVMOnConnect;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
 
-/** Samples for ScalingPlanPersonalSchedules Update. */
+/**
+ * Samples for ScalingPlanPersonalSchedules Update.
+ */
 public final class ScalingPlanPersonalSchedulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ScalingPlanPersonalSchedule_Update.json
+     * x-ms-original-file:
+     * specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/
+     * ScalingPlanPersonalSchedule_Update.json
      */
     /**
      * Sample code: ScalingPlanPersonalSchedules_Update.
-     *
+     * 
      * @param manager Entry point to DesktopVirtualizationManager.
      */
     public static void scalingPlanPersonalSchedulesUpdate(
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
-        ScalingPlanPersonalSchedule resource =
-            manager
-                .scalingPlanPersonalSchedules()
-                .getWithResponse(
-                    "resourceGroup1", "scalingPlan1", "scalingPlanScheduleWeekdays1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        ScalingPlanPersonalSchedule resource = manager.scalingPlanPersonalSchedules()
+            .getWithResponse("resourceGroup1", "scalingPlan1", "scalingPlanScheduleWeekdays1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withPeakStartTime(new Time().withHour(8).withMinute(0))
             .withPeakActionOnDisconnect(SessionHandlingOperation.NONE)
             .withPeakMinutesToWaitOnDisconnect(10)

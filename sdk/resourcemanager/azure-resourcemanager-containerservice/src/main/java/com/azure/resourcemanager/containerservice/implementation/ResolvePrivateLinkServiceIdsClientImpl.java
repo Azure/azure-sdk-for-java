@@ -42,7 +42,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
 
     /**
      * Initializes an instance of ResolvePrivateLinkServiceIdsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResolvePrivateLinkServiceIdsClientImpl(ContainerServiceManagementClientImpl client) {
@@ -71,7 +71,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -104,7 +104,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.post(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -114,7 +114,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -148,7 +148,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-10-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.post(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -157,7 +157,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -175,7 +175,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -193,7 +193,7 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.

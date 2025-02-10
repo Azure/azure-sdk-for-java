@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Frontend endpoint used in routing rule. */
+/**
+ * Frontend endpoint used in routing rule.
+ */
 @Fluent
-public class FrontendEndpointUpdateParameters {
+public class FrontendEndpointUpdateParameters implements JsonSerializable<FrontendEndpointUpdateParameters> {
     /*
      * The host name of the frontendEndpoint. Must be a domain name.
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
      * Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
      */
-    @JsonProperty(value = "sessionAffinityEnabledState")
     private SessionAffinityEnabledState sessionAffinityEnabledState;
 
     /*
      * UNUSED. This field will be ignored. The TTL to use in seconds for session affinity, if applicable.
      */
-    @JsonProperty(value = "sessionAffinityTtlSeconds")
     private Integer sessionAffinityTtlSeconds;
 
     /*
      * Defines the Web Application Firewall policy for each host (if applicable)
      */
-    @JsonProperty(value = "webApplicationFirewallPolicyLink")
     private FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
 
-    /** Creates an instance of FrontendEndpointUpdateParameters class. */
+    /**
+     * Creates an instance of FrontendEndpointUpdateParameters class.
+     */
     public FrontendEndpointUpdateParameters() {
     }
 
     /**
      * Get the hostname property: The host name of the frontendEndpoint. Must be a domain name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -49,7 +53,7 @@ public class FrontendEndpointUpdateParameters {
 
     /**
      * Set the hostname property: The host name of the frontendEndpoint. Must be a domain name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the FrontendEndpointUpdateParameters object itself.
      */
@@ -61,7 +65,7 @@ public class FrontendEndpointUpdateParameters {
     /**
      * Get the sessionAffinityEnabledState property: Whether to allow session affinity on this host. Valid options are
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the sessionAffinityEnabledState value.
      */
     public SessionAffinityEnabledState sessionAffinityEnabledState() {
@@ -71,12 +75,12 @@ public class FrontendEndpointUpdateParameters {
     /**
      * Set the sessionAffinityEnabledState property: Whether to allow session affinity on this host. Valid options are
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param sessionAffinityEnabledState the sessionAffinityEnabledState value to set.
      * @return the FrontendEndpointUpdateParameters object itself.
      */
-    public FrontendEndpointUpdateParameters withSessionAffinityEnabledState(
-        SessionAffinityEnabledState sessionAffinityEnabledState) {
+    public FrontendEndpointUpdateParameters
+        withSessionAffinityEnabledState(SessionAffinityEnabledState sessionAffinityEnabledState) {
         this.sessionAffinityEnabledState = sessionAffinityEnabledState;
         return this;
     }
@@ -84,7 +88,7 @@ public class FrontendEndpointUpdateParameters {
     /**
      * Get the sessionAffinityTtlSeconds property: UNUSED. This field will be ignored. The TTL to use in seconds for
      * session affinity, if applicable.
-     *
+     * 
      * @return the sessionAffinityTtlSeconds value.
      */
     public Integer sessionAffinityTtlSeconds() {
@@ -94,7 +98,7 @@ public class FrontendEndpointUpdateParameters {
     /**
      * Set the sessionAffinityTtlSeconds property: UNUSED. This field will be ignored. The TTL to use in seconds for
      * session affinity, if applicable.
-     *
+     * 
      * @param sessionAffinityTtlSeconds the sessionAffinityTtlSeconds value to set.
      * @return the FrontendEndpointUpdateParameters object itself.
      */
@@ -106,7 +110,7 @@ public class FrontendEndpointUpdateParameters {
     /**
      * Get the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for each host (if
      * applicable).
-     *
+     * 
      * @return the webApplicationFirewallPolicyLink value.
      */
     public FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
@@ -116,7 +120,7 @@ public class FrontendEndpointUpdateParameters {
     /**
      * Set the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for each host (if
      * applicable).
-     *
+     * 
      * @param webApplicationFirewallPolicyLink the webApplicationFirewallPolicyLink value to set.
      * @return the FrontendEndpointUpdateParameters object itself.
      */
@@ -128,12 +132,62 @@ public class FrontendEndpointUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (webApplicationFirewallPolicyLink() != null) {
             webApplicationFirewallPolicyLink().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeStringField("sessionAffinityEnabledState",
+            this.sessionAffinityEnabledState == null ? null : this.sessionAffinityEnabledState.toString());
+        jsonWriter.writeNumberField("sessionAffinityTtlSeconds", this.sessionAffinityTtlSeconds);
+        jsonWriter.writeJsonField("webApplicationFirewallPolicyLink", this.webApplicationFirewallPolicyLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FrontendEndpointUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FrontendEndpointUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FrontendEndpointUpdateParameters.
+     */
+    public static FrontendEndpointUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FrontendEndpointUpdateParameters deserializedFrontendEndpointUpdateParameters
+                = new FrontendEndpointUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostName".equals(fieldName)) {
+                    deserializedFrontendEndpointUpdateParameters.hostname = reader.getString();
+                } else if ("sessionAffinityEnabledState".equals(fieldName)) {
+                    deserializedFrontendEndpointUpdateParameters.sessionAffinityEnabledState
+                        = SessionAffinityEnabledState.fromString(reader.getString());
+                } else if ("sessionAffinityTtlSeconds".equals(fieldName)) {
+                    deserializedFrontendEndpointUpdateParameters.sessionAffinityTtlSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("webApplicationFirewallPolicyLink".equals(fieldName)) {
+                    deserializedFrontendEndpointUpdateParameters.webApplicationFirewallPolicyLink
+                        = FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFrontendEndpointUpdateParameters;
+        });
     }
 }

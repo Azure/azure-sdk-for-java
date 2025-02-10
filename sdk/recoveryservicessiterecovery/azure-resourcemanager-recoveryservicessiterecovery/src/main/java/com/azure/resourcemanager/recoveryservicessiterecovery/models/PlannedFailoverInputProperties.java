@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input definition for planned failover input properties. */
+/**
+ * Input definition for planned failover input properties.
+ */
 @Fluent
-public final class PlannedFailoverInputProperties {
+public final class PlannedFailoverInputProperties implements JsonSerializable<PlannedFailoverInputProperties> {
     /*
      * Failover direction.
      */
-    @JsonProperty(value = "failoverDirection")
     private String failoverDirection;
 
     /*
      * Provider specific settings.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private PlannedFailoverProviderSpecificFailoverInput providerSpecificDetails;
 
-    /** Creates an instance of PlannedFailoverInputProperties class. */
+    /**
+     * Creates an instance of PlannedFailoverInputProperties class.
+     */
     public PlannedFailoverInputProperties() {
     }
 
     /**
      * Get the failoverDirection property: Failover direction.
-     *
+     * 
      * @return the failoverDirection value.
      */
     public String failoverDirection() {
@@ -37,7 +43,7 @@ public final class PlannedFailoverInputProperties {
 
     /**
      * Set the failoverDirection property: Failover direction.
-     *
+     * 
      * @param failoverDirection the failoverDirection value to set.
      * @return the PlannedFailoverInputProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class PlannedFailoverInputProperties {
 
     /**
      * Get the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public PlannedFailoverProviderSpecificFailoverInput providerSpecificDetails() {
@@ -57,24 +63,65 @@ public final class PlannedFailoverInputProperties {
 
     /**
      * Set the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the PlannedFailoverInputProperties object itself.
      */
-    public PlannedFailoverInputProperties withProviderSpecificDetails(
-        PlannedFailoverProviderSpecificFailoverInput providerSpecificDetails) {
+    public PlannedFailoverInputProperties
+        withProviderSpecificDetails(PlannedFailoverProviderSpecificFailoverInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("failoverDirection", this.failoverDirection);
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlannedFailoverInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlannedFailoverInputProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PlannedFailoverInputProperties.
+     */
+    public static PlannedFailoverInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlannedFailoverInputProperties deserializedPlannedFailoverInputProperties
+                = new PlannedFailoverInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("failoverDirection".equals(fieldName)) {
+                    deserializedPlannedFailoverInputProperties.failoverDirection = reader.getString();
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedPlannedFailoverInputProperties.providerSpecificDetails
+                        = PlannedFailoverProviderSpecificFailoverInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlannedFailoverInputProperties;
+        });
     }
 }

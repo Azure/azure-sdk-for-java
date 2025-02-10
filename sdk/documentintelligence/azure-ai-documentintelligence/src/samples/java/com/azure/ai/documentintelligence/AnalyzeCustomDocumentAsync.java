@@ -3,14 +3,11 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.ContentFormat;
-import com.azure.ai.documentintelligence.models.Document;
-import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentTable;
-import com.azure.ai.documentintelligence.models.StringIndexType;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
@@ -18,7 +15,6 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -46,14 +42,9 @@ public class AnalyzeCustomDocumentAsync {
             + "sample-forms/forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         String modelId = "{modelId}";
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller
+        PollerFlux<AnalyzeOperationDetails, AnalyzeResult> analyzeDocumentPoller
             = client.beginAnalyzeDocument(modelId,
-            "1",
-            "en-US",
-            StringIndexType.TEXT_ELEMENTS,
-            Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
-            null,
-            ContentFormat.TEXT, new AnalyzeDocumentRequest().setBase64Source(fileContent));
+                new AnalyzeDocumentOptions(fileContent));
 
 
         Mono<AnalyzeResult> analyzeDocumentResult = analyzeDocumentPoller
@@ -65,14 +56,14 @@ public class AnalyzeCustomDocumentAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            }).map(AnalyzeResultOperation::getAnalyzeResult);
+            });
 
         analyzeDocumentResult.subscribe(analyzeResult -> {
             for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
-                Document analyzedDocument = analyzeResult.getDocuments().get(i);
+                AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
                 System.out.printf("----------- Analyzing custom document %d -----------%n", i);
                 System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
-                    analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+                    analyzedDocument.getDocumentType(), analyzedDocument.getConfidence());
             }
 
             analyzeResult.getPages().forEach(documentPage -> {

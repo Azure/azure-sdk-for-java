@@ -6,45 +6,100 @@ package com.azure.resourcemanager.hanaonazure.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hanaonazure.models.HanaInstancePowerStateEnum;
 import com.azure.resourcemanager.hanaonazure.models.HanaProvisioningStatesEnum;
 import com.azure.resourcemanager.hanaonazure.models.HardwareProfile;
 import com.azure.resourcemanager.hanaonazure.models.NetworkProfile;
 import com.azure.resourcemanager.hanaonazure.models.OSProfile;
 import com.azure.resourcemanager.hanaonazure.models.StorageProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** HANA instance info on Azure (ARM properties and HANA properties). */
+/**
+ * HANA instance info on Azure (ARM properties and HANA properties).
+ */
 @Fluent
 public final class HanaInstanceInner extends Resource {
     /*
      * HANA instance properties
      */
-    @JsonProperty(value = "properties")
     private HanaInstanceProperties innerProperties;
 
-    /** Creates an instance of HanaInstanceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of HanaInstanceInner class.
+     */
     public HanaInstanceInner() {
     }
 
     /**
      * Get the innerProperties property: HANA instance properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HanaInstanceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HanaInstanceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HanaInstanceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -53,7 +108,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Get the hardwareProfile property: Specifies the hardware settings for the HANA instance.
-     *
+     * 
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -62,7 +117,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Set the hardwareProfile property: Specifies the hardware settings for the HANA instance.
-     *
+     * 
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the HanaInstanceInner object itself.
      */
@@ -76,7 +131,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Get the storageProfile property: Specifies the storage settings for the HANA instance disks.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -85,7 +140,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Set the storageProfile property: Specifies the storage settings for the HANA instance disks.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the HanaInstanceInner object itself.
      */
@@ -99,7 +154,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the HANA instance.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -108,7 +163,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Set the osProfile property: Specifies the operating system settings for the HANA instance.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the HanaInstanceInner object itself.
      */
@@ -122,7 +177,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Get the networkProfile property: Specifies the network settings for the HANA instance.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -131,7 +186,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Set the networkProfile property: Specifies the network settings for the HANA instance.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the HanaInstanceInner object itself.
      */
@@ -145,7 +200,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Get the hanaInstanceId property: Specifies the HANA instance unique ID.
-     *
+     * 
      * @return the hanaInstanceId value.
      */
     public String hanaInstanceId() {
@@ -154,7 +209,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Get the powerState property: Resource power state.
-     *
+     * 
      * @return the powerState value.
      */
     public HanaInstancePowerStateEnum powerState() {
@@ -163,7 +218,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Get the proximityPlacementGroup property: Resource proximity placement group.
-     *
+     * 
      * @return the proximityPlacementGroup value.
      */
     public String proximityPlacementGroup() {
@@ -172,7 +227,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Get the hwRevision property: Hardware revision of a HANA instance.
-     *
+     * 
      * @return the hwRevision value.
      */
     public String hwRevision() {
@@ -181,7 +236,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Get the partnerNodeId property: ARM ID of another HanaInstance that will share a network with this HanaInstance.
-     *
+     * 
      * @return the partnerNodeId value.
      */
     public String partnerNodeId() {
@@ -190,7 +245,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Set the partnerNodeId property: ARM ID of another HanaInstance that will share a network with this HanaInstance.
-     *
+     * 
      * @param partnerNodeId the partnerNodeId value to set.
      * @return the HanaInstanceInner object itself.
      */
@@ -204,7 +259,7 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Get the provisioningState property: State of provisioning of the HanaInstance.
-     *
+     * 
      * @return the provisioningState value.
      */
     public HanaProvisioningStatesEnum provisioningState() {
@@ -213,12 +268,62 @@ public final class HanaInstanceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HanaInstanceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HanaInstanceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HanaInstanceInner.
+     */
+    public static HanaInstanceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HanaInstanceInner deserializedHanaInstanceInner = new HanaInstanceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHanaInstanceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedHanaInstanceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHanaInstanceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedHanaInstanceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHanaInstanceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHanaInstanceInner.innerProperties = HanaInstanceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHanaInstanceInner;
+        });
     }
 }

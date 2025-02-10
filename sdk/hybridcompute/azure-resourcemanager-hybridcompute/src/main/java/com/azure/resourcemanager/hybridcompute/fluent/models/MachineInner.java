@@ -8,61 +8,82 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.ArcKindEnum;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
+import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
+import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.hybridcompute.models.StorageProfile;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-/** Describes a hybrid machine. */
+/**
+ * Describes a hybrid machine.
+ */
 @Fluent
 public final class MachineInner extends Resource {
     /*
      * Hybrid Compute Machine properties
      */
-    @JsonProperty(value = "properties")
     private MachinePropertiesInner innerProperties;
 
     /*
      * The list of extensions affiliated to the machine
      */
-    @JsonProperty(value = "resources", access = JsonProperty.Access.WRITE_ONLY)
     private List<MachineExtensionInner> resources;
 
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
      */
-    @JsonProperty(value = "kind")
     private ArcKindEnum kind;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of MachineInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MachineInner class.
+     */
     public MachineInner() {
     }
 
     /**
      * Get the innerProperties property: Hybrid Compute Machine properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MachinePropertiesInner innerProperties() {
@@ -71,7 +92,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the resources property: The list of extensions affiliated to the machine.
-     *
+     * 
      * @return the resources value.
      */
     public List<MachineExtensionInner> resources() {
@@ -80,7 +101,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -89,7 +110,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the MachineInner object itself.
      */
@@ -101,7 +122,7 @@ public final class MachineInner extends Resource {
     /**
      * Get the kind property: Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware
      * etc.
-     *
+     * 
      * @return the kind value.
      */
     public ArcKindEnum kind() {
@@ -111,7 +132,7 @@ public final class MachineInner extends Resource {
     /**
      * Set the kind property: Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware
      * etc.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the MachineInner object itself.
      */
@@ -122,21 +143,55 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MachineInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MachineInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -145,7 +200,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the locationData property: Metadata pertaining to the geographic location of the resource.
-     *
+     * 
      * @return the locationData value.
      */
     public LocationData locationData() {
@@ -154,7 +209,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Set the locationData property: Metadata pertaining to the geographic location of the resource.
-     *
+     * 
      * @param locationData the locationData value to set.
      * @return the MachineInner object itself.
      */
@@ -169,7 +224,7 @@ public final class MachineInner extends Resource {
     /**
      * Get the agentConfiguration property: Configurable properties that the user can set locally via the azcmagent
      * config command, or remotely via ARM.
-     *
+     * 
      * @return the agentConfiguration value.
      */
     public AgentConfiguration agentConfiguration() {
@@ -178,7 +233,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the serviceStatuses property: Statuses of dependent services that are reported back to ARM.
-     *
+     * 
      * @return the serviceStatuses value.
      */
     public ServiceStatuses serviceStatuses() {
@@ -187,7 +242,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Set the serviceStatuses property: Statuses of dependent services that are reported back to ARM.
-     *
+     * 
      * @param serviceStatuses the serviceStatuses value to set.
      * @return the MachineInner object itself.
      */
@@ -200,8 +255,35 @@ public final class MachineInner extends Resource {
     }
 
     /**
+     * Get the hardwareProfile property: Information about the machine's hardware.
+     * 
+     * @return the hardwareProfile value.
+     */
+    public HardwareProfile hardwareProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().hardwareProfile();
+    }
+
+    /**
+     * Get the storageProfile property: Information about the machine's storage.
+     * 
+     * @return the storageProfile value.
+     */
+    public StorageProfile storageProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
+    }
+
+    /**
+     * Get the firmwareProfile property: Information about the machine's firmware.
+     * 
+     * @return the firmwareProfile value.
+     */
+    public FirmwareProfile firmwareProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().firmwareProfile();
+    }
+
+    /**
      * Get the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
-     *
+     * 
      * @return the cloudMetadata value.
      */
     public CloudMetadata cloudMetadata() {
@@ -210,7 +292,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Set the cloudMetadata property: The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
-     *
+     * 
      * @param cloudMetadata the cloudMetadata value to set.
      * @return the MachineInner object itself.
      */
@@ -224,7 +306,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the agentUpgrade property: The info of the machine w.r.t Agent Upgrade.
-     *
+     * 
      * @return the agentUpgrade value.
      */
     public AgentUpgrade agentUpgrade() {
@@ -233,7 +315,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Set the agentUpgrade property: The info of the machine w.r.t Agent Upgrade.
-     *
+     * 
      * @param agentUpgrade the agentUpgrade value to set.
      * @return the MachineInner object itself.
      */
@@ -247,7 +329,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the hybrid machine.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -256,7 +338,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Set the osProfile property: Specifies the operating system settings for the hybrid machine.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the MachineInner object itself.
      */
@@ -269,8 +351,8 @@ public final class MachineInner extends Resource {
     }
 
     /**
-     * Get the licenseProfile property: Specifies the ESU related properties for a machine.
-     *
+     * Get the licenseProfile property: Specifies the License related properties for a machine.
+     * 
      * @return the licenseProfile value.
      */
     public LicenseProfileMachineInstanceViewInner licenseProfile() {
@@ -278,8 +360,8 @@ public final class MachineInner extends Resource {
     }
 
     /**
-     * Set the licenseProfile property: Specifies the ESU related properties for a machine.
-     *
+     * Set the licenseProfile property: Specifies the License related properties for a machine.
+     * 
      * @param licenseProfile the licenseProfile value to set.
      * @return the MachineInner object itself.
      */
@@ -293,7 +375,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -302,7 +384,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the status property: The status of the hybrid machine agent.
-     *
+     * 
      * @return the status value.
      */
     public StatusTypes status() {
@@ -311,7 +393,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the lastStatusChange property: The time of the last status change.
-     *
+     * 
      * @return the lastStatusChange value.
      */
     public OffsetDateTime lastStatusChange() {
@@ -320,7 +402,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the errorDetails property: Details about the error state.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<ManagementError> errorDetails() {
@@ -329,7 +411,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the agentVersion property: The hybrid machine agent full version.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -338,20 +420,20 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the vmId property: Specifies the hybrid machine unique ID.
-     *
+     * 
      * @return the vmId value.
      */
-    public String vmId() {
+    public UUID vmId() {
         return this.innerProperties() == null ? null : this.innerProperties().vmId();
     }
 
     /**
      * Set the vmId property: Specifies the hybrid machine unique ID.
-     *
+     * 
      * @param vmId the vmId value to set.
      * @return the MachineInner object itself.
      */
-    public MachineInner withVmId(String vmId) {
+    public MachineInner withVmId(UUID vmId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MachinePropertiesInner();
         }
@@ -361,7 +443,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the displayName property: Specifies the hybrid machine display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -370,7 +452,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the machineFqdn property: Specifies the hybrid machine FQDN.
-     *
+     * 
      * @return the machineFqdn value.
      */
     public String machineFqdn() {
@@ -380,7 +462,7 @@ public final class MachineInner extends Resource {
     /**
      * Get the clientPublicKey property: Public Key that the client provides to be used during initial resource
      * onboarding.
-     *
+     * 
      * @return the clientPublicKey value.
      */
     public String clientPublicKey() {
@@ -390,7 +472,7 @@ public final class MachineInner extends Resource {
     /**
      * Set the clientPublicKey property: Public Key that the client provides to be used during initial resource
      * onboarding.
-     *
+     * 
      * @param clientPublicKey the clientPublicKey value to set.
      * @return the MachineInner object itself.
      */
@@ -404,7 +486,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the osName property: The Operating System running on the hybrid machine.
-     *
+     * 
      * @return the osName value.
      */
     public String osName() {
@@ -413,7 +495,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the osVersion property: The version of Operating System running on the hybrid machine.
-     *
+     * 
      * @return the osVersion value.
      */
     public String osVersion() {
@@ -422,7 +504,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the osType property: The type of Operating System (windows/linux).
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -431,7 +513,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Set the osType property: The type of Operating System (windows/linux).
-     *
+     * 
      * @param osType the osType value to set.
      * @return the MachineInner object itself.
      */
@@ -445,16 +527,16 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the vmUuid property: Specifies the Arc Machine's unique SMBIOS ID.
-     *
+     * 
      * @return the vmUuid value.
      */
-    public String vmUuid() {
+    public UUID vmUuid() {
         return this.innerProperties() == null ? null : this.innerProperties().vmUuid();
     }
 
     /**
      * Get the extensions property: Machine Extensions information (deprecated field).
-     *
+     * 
      * @return the extensions value.
      */
     public List<MachineExtensionInstanceView> extensions() {
@@ -463,7 +545,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Set the extensions property: Machine Extensions information (deprecated field).
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the MachineInner object itself.
      */
@@ -477,7 +559,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the osSku property: Specifies the Operating System product SKU.
-     *
+     * 
      * @return the osSku value.
      */
     public String osSku() {
@@ -485,8 +567,17 @@ public final class MachineInner extends Resource {
     }
 
     /**
+     * Get the osEdition property: The edition of the Operating System.
+     * 
+     * @return the osEdition value.
+     */
+    public String osEdition() {
+        return this.innerProperties() == null ? null : this.innerProperties().osEdition();
+    }
+
+    /**
      * Get the domainName property: Specifies the Windows domain name.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -495,7 +586,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the adFqdn property: Specifies the AD fully qualified display name.
-     *
+     * 
      * @return the adFqdn value.
      */
     public String adFqdn() {
@@ -504,7 +595,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the dnsFqdn property: Specifies the DNS fully qualified display name.
-     *
+     * 
      * @return the dnsFqdn value.
      */
     public String dnsFqdn() {
@@ -514,7 +605,7 @@ public final class MachineInner extends Resource {
     /**
      * Get the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
      * to, if any.
-     *
+     * 
      * @return the privateLinkScopeResourceId value.
      */
     public String privateLinkScopeResourceId() {
@@ -524,7 +615,7 @@ public final class MachineInner extends Resource {
     /**
      * Set the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
      * to, if any.
-     *
+     * 
      * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
      * @return the MachineInner object itself.
      */
@@ -539,7 +630,7 @@ public final class MachineInner extends Resource {
     /**
      * Get the parentClusterResourceId property: The resource id of the parent cluster (Azure HCI) this machine is
      * assigned to, if any.
-     *
+     * 
      * @return the parentClusterResourceId value.
      */
     public String parentClusterResourceId() {
@@ -549,7 +640,7 @@ public final class MachineInner extends Resource {
     /**
      * Set the parentClusterResourceId property: The resource id of the parent cluster (Azure HCI) this machine is
      * assigned to, if any.
-     *
+     * 
      * @param parentClusterResourceId the parentClusterResourceId value to set.
      * @return the MachineInner object itself.
      */
@@ -563,7 +654,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the mssqlDiscovered property: Specifies whether any MS SQL instance is discovered on the machine.
-     *
+     * 
      * @return the mssqlDiscovered value.
      */
     public String mssqlDiscovered() {
@@ -572,7 +663,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Set the mssqlDiscovered property: Specifies whether any MS SQL instance is discovered on the machine.
-     *
+     * 
      * @param mssqlDiscovered the mssqlDiscovered value to set.
      * @return the MachineInner object itself.
      */
@@ -586,7 +677,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the detectedProperties property: Detected properties from the machine.
-     *
+     * 
      * @return the detectedProperties value.
      */
     public Map<String, String> detectedProperties() {
@@ -595,7 +686,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Get the networkProfile property: Information about the network the machine is on.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfileInner networkProfile() {
@@ -604,7 +695,7 @@ public final class MachineInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -617,5 +708,67 @@ public final class MachineInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MachineInner.
+     */
+    public static MachineInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineInner deserializedMachineInner = new MachineInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMachineInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMachineInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMachineInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedMachineInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMachineInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMachineInner.innerProperties = MachinePropertiesInner.fromJson(reader);
+                } else if ("resources".equals(fieldName)) {
+                    List<MachineExtensionInner> resources
+                        = reader.readArray(reader1 -> MachineExtensionInner.fromJson(reader1));
+                    deserializedMachineInner.resources = resources;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedMachineInner.identity = Identity.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedMachineInner.kind = ArcKindEnum.fromString(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMachineInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineInner;
+        });
     }
 }

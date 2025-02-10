@@ -9,14 +9,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-
 /**
  * Represents configuration property.
  *
  * @param <T> Type of property value.
  */
 public final class ConfigurationProperty<T> {
-    private static final Function<String, String> REDACT_VALUE_SANITIZER = (value) -> "redacted";
+    static final Function<String, String> REDACT_VALUE_SANITIZER = (value) -> "redacted";
 
     private final String name;
     private final List<String> aliases;

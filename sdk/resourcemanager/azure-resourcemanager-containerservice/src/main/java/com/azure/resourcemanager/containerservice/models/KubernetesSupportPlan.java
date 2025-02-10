@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -24,7 +23,7 @@ public final class KubernetesSupportPlan extends ExpandableStringEnum<Kubernetes
 
     /**
      * Creates a new instance of KubernetesSupportPlan value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +32,17 @@ public final class KubernetesSupportPlan extends ExpandableStringEnum<Kubernetes
 
     /**
      * Creates or finds a KubernetesSupportPlan from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KubernetesSupportPlan.
      */
-    @JsonCreator
     public static KubernetesSupportPlan fromString(String name) {
         return fromString(name, KubernetesSupportPlan.class);
     }
 
     /**
      * Gets known KubernetesSupportPlan values.
-     *
+     * 
      * @return known KubernetesSupportPlan values.
      */
     public static Collection<KubernetesSupportPlan> values() {

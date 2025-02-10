@@ -5,43 +5,44 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Metric information.
  */
 @Fluent
-public final class PerfMonSet {
+public final class PerfMonSet implements JsonSerializable<PerfMonSet> {
     /*
      * Unique key name of the counter.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Start time of the period.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * End time of the period.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Presented time grain.
      */
-    @JsonProperty(value = "timeGrain")
     private String timeGrain;
 
     /*
      * Collection of workers that are active during this time.
      */
-    @JsonProperty(value = "values")
     private List<PerfMonSample> values;
 
     /**
@@ -159,5 +160,58 @@ public final class PerfMonSet {
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("timeGrain", this.timeGrain);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PerfMonSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PerfMonSet if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the PerfMonSet.
+     */
+    public static PerfMonSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PerfMonSet deserializedPerfMonSet = new PerfMonSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPerfMonSet.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedPerfMonSet.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedPerfMonSet.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeGrain".equals(fieldName)) {
+                    deserializedPerfMonSet.timeGrain = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<PerfMonSample> values = reader.readArray(reader1 -> PerfMonSample.fromJson(reader1));
+                    deserializedPerfMonSet.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPerfMonSet;
+        });
     }
 }

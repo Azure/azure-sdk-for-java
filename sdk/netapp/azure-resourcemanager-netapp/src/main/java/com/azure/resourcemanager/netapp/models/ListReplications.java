@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List Replications.
  */
 @Fluent
-public final class ListReplications {
+public final class ListReplications implements JsonSerializable<ListReplications> {
     /*
      * A list of replications
      */
-    @JsonProperty(value = "value")
     private List<ReplicationInner> value;
 
     /**
@@ -55,5 +58,42 @@ public final class ListReplications {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListReplications from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListReplications if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListReplications.
+     */
+    public static ListReplications fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListReplications deserializedListReplications = new ListReplications();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ReplicationInner> value = reader.readArray(reader1 -> ReplicationInner.fromJson(reader1));
+                    deserializedListReplications.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListReplications;
+        });
     }
 }

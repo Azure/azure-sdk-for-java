@@ -136,8 +136,12 @@ public class ReadmeSamples {
             this.id = UUID.randomUUID().toString();
         }
 
-        String getId () {
+        public String getId () {
             return id;
+        }
+
+        public String getSensitiveString() {
+            return sensitiveString;
         }
 
         void setSensitiveString(String sensitiveString) {

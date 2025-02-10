@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -24,17 +23,27 @@ public final class ArchiveStatus extends ExpandableStringEnum<ArchiveStatus> {
     public static final ArchiveStatus REHYDRATE_PENDING_TO_COOL = fromString("rehydrate-pending-to-cool");
 
     /**
+     * Creates a new instance of {@link ArchiveStatus} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of ArchiveStatus.
+     */
+    @Deprecated
+    public ArchiveStatus() {
+    }
+
+    /**
      * Creates or finds a ArchiveStatus from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding ArchiveStatus.
      */
-    @JsonCreator
     public static ArchiveStatus fromString(String name) {
         return fromString(name, ArchiveStatus.class);
     }
 
     /**
+     * Gets known ArchiveStatus values.
+     *
      * @return known ArchiveStatus values.
      */
     public static Collection<ArchiveStatus> values() {

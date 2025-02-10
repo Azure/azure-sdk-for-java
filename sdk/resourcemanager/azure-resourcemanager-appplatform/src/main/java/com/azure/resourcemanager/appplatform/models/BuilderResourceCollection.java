@@ -5,29 +5,39 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.fluent.models.BuilderResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Object that includes an array of Builder resources and a possible link for next set. */
+/**
+ * Object that includes an array of Builder resources and a possible link for next set.
+ */
 @Fluent
-public final class BuilderResourceCollection {
+public final class BuilderResourceCollection implements JsonSerializable<BuilderResourceCollection> {
     /*
      * Collection of Builder resources
      */
-    @JsonProperty(value = "value")
     private List<BuilderResourceInner> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of BuilderResourceCollection class.
+     */
+    public BuilderResourceCollection() {
+    }
+
+    /**
      * Get the value property: Collection of Builder resources.
-     *
+     * 
      * @return the value value.
      */
     public List<BuilderResourceInner> value() {
@@ -36,7 +46,7 @@ public final class BuilderResourceCollection {
 
     /**
      * Set the value property: Collection of Builder resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the BuilderResourceCollection object itself.
      */
@@ -46,9 +56,9 @@ public final class BuilderResourceCollection {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +66,9 @@ public final class BuilderResourceCollection {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BuilderResourceCollection object itself.
      */
@@ -69,12 +79,53 @@ public final class BuilderResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuilderResourceCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuilderResourceCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuilderResourceCollection.
+     */
+    public static BuilderResourceCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuilderResourceCollection deserializedBuilderResourceCollection = new BuilderResourceCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<BuilderResourceInner> value
+                        = reader.readArray(reader1 -> BuilderResourceInner.fromJson(reader1));
+                    deserializedBuilderResourceCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedBuilderResourceCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuilderResourceCollection;
+        });
     }
 }

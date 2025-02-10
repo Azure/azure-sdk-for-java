@@ -70,6 +70,7 @@ public final class KeyVaultKeysModelsUtils {
             KeyPropertiesHelper.setUpdatedOn(properties, attributes.getUpdated());
             KeyPropertiesHelper.setRecoveryLevel(properties, Objects.toString(attributes.getRecoveryLevel(), null));
             KeyPropertiesHelper.setRecoverableDays(properties, attributes.getRecoverableDays());
+            KeyPropertiesHelper.setHsmPlatform(properties, attributes.getHsmPlatform());
         }
     }
 
@@ -103,14 +104,13 @@ public final class KeyVaultKeysModelsUtils {
         return deletedKey;
     }
 
-    private static JsonWebKey mapJsonWebKeyFromImpl(
-        com.azure.security.keyvault.keys.implementation.models.JsonWebKey impl) {
+    private static JsonWebKey
+        mapJsonWebKeyFromImpl(com.azure.security.keyvault.keys.implementation.models.JsonWebKey impl) {
         if (impl == null) {
             return null;
         }
 
-        return new JsonWebKey()
-            .setId(impl.getKid())
+        return new JsonWebKey().setId(impl.getKid())
             .setKeyType(impl.getKty())
             .setKeyOps(impl.getKeyOps())
             .setN(impl.getN())
@@ -133,8 +133,7 @@ public final class KeyVaultKeysModelsUtils {
             return null;
         }
 
-        return new com.azure.security.keyvault.keys.implementation.models.JsonWebKey()
-            .setKid(key.getId())
+        return new com.azure.security.keyvault.keys.implementation.models.JsonWebKey().setKid(key.getId())
             .setKty(key.getKeyType())
             .setKeyOps(key.getKeyOps())
             .setN(key.getN())
@@ -157,8 +156,7 @@ public final class KeyVaultKeysModelsUtils {
             return null;
         }
 
-        return new KeyAttributes()
-            .setEnabled(options.isEnabled())
+        return new KeyAttributes().setEnabled(options.isEnabled())
             .setExportable(options.isExportable())
             .setExpires(options.getExpiresOn())
             .setNotBefore(options.getNotBefore());
@@ -169,8 +167,7 @@ public final class KeyVaultKeysModelsUtils {
             return null;
         }
 
-        return new KeyAttributes()
-            .setEnabled(properties.isEnabled())
+        return new KeyAttributes().setEnabled(properties.isEnabled())
             .setExportable(properties.isExportable())
             .setExpires(properties.getExpiresOn())
             .setNotBefore(properties.getNotBefore());
@@ -181,8 +178,7 @@ public final class KeyVaultKeysModelsUtils {
             return;
         }
 
-        properties.setReleasePolicy(mapKeyReleasePolicyImpl(bundle.getReleasePolicy()))
-            .setTags(bundle.getTags());
+        properties.setReleasePolicy(mapKeyReleasePolicyImpl(bundle.getReleasePolicy())).setTags(bundle.getTags());
 
         KeyPropertiesHelper.setManaged(properties, bundle.isManaged());
         KeyPropertiesHelper.setId(properties, bundle.getKey().getKid());
@@ -199,14 +195,14 @@ public final class KeyVaultKeysModelsUtils {
 
             KeyPropertiesHelper.setCreatedOn(properties, attributes.getCreated());
             KeyPropertiesHelper.setUpdatedOn(properties, attributes.getUpdated());
-            KeyPropertiesHelper.setRecoveryLevel(properties,
-                Objects.toString(attributes.getRecoveryLevel().toString(), null));
+            KeyPropertiesHelper.setRecoveryLevel(properties, Objects.toString(attributes.getRecoveryLevel(), null));
             KeyPropertiesHelper.setRecoverableDays(properties, attributes.getRecoverableDays());
+            KeyPropertiesHelper.setHsmPlatform(properties, attributes.getHsmPlatform());
         }
     }
 
-    public static com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy mapKeyReleasePolicy(
-        KeyReleasePolicy policy) {
+    public static com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy
+        mapKeyReleasePolicy(KeyReleasePolicy policy) {
         if (policy == null) {
             return null;
         }
@@ -217,24 +213,23 @@ public final class KeyVaultKeysModelsUtils {
             .setEncodedPolicy(policy.getEncodedPolicy().toBytes());
     }
 
-    private static KeyReleasePolicy mapKeyReleasePolicyImpl(
-        com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy impl) {
+    private static KeyReleasePolicy
+        mapKeyReleasePolicyImpl(com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy impl) {
         if (impl == null) {
             return null;
         }
 
-        return new KeyReleasePolicy(BinaryData.fromBytes(impl.getEncodedPolicy()))
-            .setContentType(impl.getContentType())
+        return new KeyReleasePolicy(BinaryData.fromBytes(impl.getEncodedPolicy())).setContentType(impl.getContentType())
             .setImmutable(impl.isImmutable());
     }
 
-    public static KeyRotationPolicy mapKeyRotationPolicyImpl(
-        com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
+    public static KeyRotationPolicy
+        mapKeyRotationPolicyImpl(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
         return (impl == null) ? null : KeyRotationPolicyHelper.createPolicy(impl);
     }
 
-    public static com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy mapKeyRotationPolicy(
-        KeyRotationPolicy policy) {
+    public static com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy
+        mapKeyRotationPolicy(KeyRotationPolicy policy) {
         if (policy == null) {
             return null;
         }

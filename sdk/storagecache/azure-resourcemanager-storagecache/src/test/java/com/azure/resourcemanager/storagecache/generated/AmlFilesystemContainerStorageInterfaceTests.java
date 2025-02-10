@@ -10,11 +10,9 @@ import com.azure.resourcemanager.storagecache.models.AmlFilesystemContainerStora
 public final class AmlFilesystemContainerStorageInterfaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmlFilesystemContainerStorageInterface model =
-            BinaryData
-                .fromString(
-                    "{\"persistentVolumeClaim\":\"akeqs\",\"persistentVolume\":\"yb\",\"storageClass\":\"qedqytbciqfoufl\"}")
-                .toObject(AmlFilesystemContainerStorageInterface.class);
+        AmlFilesystemContainerStorageInterface model = BinaryData.fromString(
+            "{\"persistentVolumeClaim\":\"huxinpmqnj\",\"persistentVolume\":\"wixjsprozvcp\",\"storageClass\":\"eg\"}")
+            .toObject(AmlFilesystemContainerStorageInterface.class);
     }
 
     @org.junit.jupiter.api.Test

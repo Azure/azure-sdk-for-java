@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SchedulerCurrentState extends ExpandableStringEnum<SchedulerC
      * @param name a name to look for.
      * @return the corresponding SchedulerCurrentState.
      */
-    @JsonCreator
     public static SchedulerCurrentState fromString(String name) {
         return fromString(name, SchedulerCurrentState.class);
     }

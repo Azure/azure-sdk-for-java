@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The status of a member update operation. */
+/**
+ * The status of a member update operation.
+ */
 @Immutable
-public final class MemberUpdateStatus {
+public final class MemberUpdateStatus implements JsonSerializable<MemberUpdateStatus> {
     /*
      * The status of the MemberUpdate operation.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private UpdateStatus status;
 
     /*
      * The name of the FleetMember.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The Azure resource id of the target Kubernetes cluster.
      */
-    @JsonProperty(value = "clusterResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterResourceId;
 
     /*
      * The operation resource id of the latest attempt to perform the operation.
      */
-    @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /*
      * The status message after processing the member update operation.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of MemberUpdateStatus class. */
+    /**
+     * Creates an instance of MemberUpdateStatus class.
+     */
     public MemberUpdateStatus() {
     }
 
     /**
      * Get the status property: The status of the MemberUpdate operation.
-     *
+     * 
      * @return the status value.
      */
     public UpdateStatus status() {
@@ -55,7 +58,7 @@ public final class MemberUpdateStatus {
 
     /**
      * Get the name property: The name of the FleetMember.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +67,7 @@ public final class MemberUpdateStatus {
 
     /**
      * Get the clusterResourceId property: The Azure resource id of the target Kubernetes cluster.
-     *
+     * 
      * @return the clusterResourceId value.
      */
     public String clusterResourceId() {
@@ -73,7 +76,7 @@ public final class MemberUpdateStatus {
 
     /**
      * Get the operationId property: The operation resource id of the latest attempt to perform the operation.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -82,7 +85,7 @@ public final class MemberUpdateStatus {
 
     /**
      * Get the message property: The status message after processing the member update operation.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -91,12 +94,55 @@ public final class MemberUpdateStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MemberUpdateStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MemberUpdateStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MemberUpdateStatus.
+     */
+    public static MemberUpdateStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MemberUpdateStatus deserializedMemberUpdateStatus = new MemberUpdateStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedMemberUpdateStatus.status = UpdateStatus.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedMemberUpdateStatus.name = reader.getString();
+                } else if ("clusterResourceId".equals(fieldName)) {
+                    deserializedMemberUpdateStatus.clusterResourceId = reader.getString();
+                } else if ("operationId".equals(fieldName)) {
+                    deserializedMemberUpdateStatus.operationId = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedMemberUpdateStatus.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMemberUpdateStatus;
+        });
     }
 }

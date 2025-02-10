@@ -10,7 +10,7 @@ package com.azure.resourcemanager.healthcareapis.generated;
 public final class IotConnectorFhirDestinationDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/iotconnectors/
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/
      * iotconnector_fhirdestination_Delete.json
      */
     /**
@@ -20,7 +20,7 @@ public final class IotConnectorFhirDestinationDeleteSamples {
      */
     public static void
         deleteAnIoTConnectorDestination(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.iotConnectorFhirDestinations().delete("testRG", "workspace1", "blue", "dest1",
-            com.azure.core.util.Context.NONE);
+        manager.iotConnectorFhirDestinations()
+            .delete("testRG", "workspace1", "blue", "dest1", com.azure.core.util.Context.NONE);
     }
 }

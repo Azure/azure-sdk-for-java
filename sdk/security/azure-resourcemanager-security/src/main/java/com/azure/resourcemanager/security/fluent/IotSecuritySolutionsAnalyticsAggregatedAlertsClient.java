@@ -18,9 +18,9 @@ import com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedAle
 public interface IotSecuritySolutionsAnalyticsAggregatedAlertsClient {
     /**
      * Use this method to get the aggregated alert list of yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,9 +32,9 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlertsClient {
 
     /**
      * Use this method to get the aggregated alert list of yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param top Number of results to retrieve.
      * @param context The context to associate with this operation.
@@ -44,15 +44,15 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlertsClient {
      * @return list of IoT Security solution aggregated alert data as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IoTSecurityAggregatedAlertInner> list(
-        String resourceGroupName, String solutionName, Integer top, Context context);
+    PagedIterable<IoTSecurityAggregatedAlertInner> list(String resourceGroupName, String solutionName, Integer top,
+        Context context);
 
     /**
      * Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is
      * performed by alert name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param aggregatedAlertName Identifier of the aggregated alert.
      * @param context The context to associate with this operation.
@@ -62,15 +62,15 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlertsClient {
      * @return security Solution Aggregated Alert information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IoTSecurityAggregatedAlertInner> getWithResponse(
-        String resourceGroupName, String solutionName, String aggregatedAlertName, Context context);
+    Response<IoTSecurityAggregatedAlertInner> getWithResponse(String resourceGroupName, String solutionName,
+        String aggregatedAlertName, Context context);
 
     /**
      * Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is
      * performed by alert name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param aggregatedAlertName Identifier of the aggregated alert.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,9 +83,9 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlertsClient {
 
     /**
      * Use this method to dismiss an aggregated IoT Security Solution Alert.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param aggregatedAlertName Identifier of the aggregated alert.
      * @param context The context to associate with this operation.
@@ -95,14 +95,14 @@ public interface IotSecuritySolutionsAnalyticsAggregatedAlertsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> dismissWithResponse(
-        String resourceGroupName, String solutionName, String aggregatedAlertName, Context context);
+    Response<Void> dismissWithResponse(String resourceGroupName, String solutionName, String aggregatedAlertName,
+        Context context);
 
     /**
      * Use this method to dismiss an aggregated IoT Security Solution Alert.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param aggregatedAlertName Identifier of the aggregated alert.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

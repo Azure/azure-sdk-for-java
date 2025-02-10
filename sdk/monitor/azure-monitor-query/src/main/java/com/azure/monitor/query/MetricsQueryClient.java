@@ -33,9 +33,20 @@ import java.util.stream.Collectors;
 import static com.azure.monitor.query.implementation.metrics.models.MetricsHelper.convertToMetricsQueryResult;
 
 /**
- * The synchronous client for querying Azure Monitor metrics.
+ * <p>The synchronous client for querying Azure Monitor metrics.</p>
  *
- * <p><strong>Instantiating a synchronous Metrics query Client</strong></p>
+ * <p>Azure Monitor Metrics is a feature of Azure Monitor that collects numeric data from monitored resources into a
+ * time-series database. Metrics are numerical values that are collected at regular intervals and describe some aspect
+ * of a system at a particular time. The MetricsQueryClient provides synchronous implementations of methods that query
+ * metrics from your Azure services.</p>
+ *
+ * <h2>Getting Started</h2>
+ *
+ * <p>
+ *     Authenticating and building MetricsQueryClient instances are done through {@link MetricsQueryClientBuilder}.
+ *     The following sample shows how to build a new MetricsQueryClient instance.
+ * </p>
+ *
  * <!-- src_embed com.azure.monitor.query.MetricsQueryClient.instantiation -->
  * <pre>
  * MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder&#40;&#41;
@@ -43,6 +54,27 @@ import static com.azure.monitor.query.implementation.metrics.models.MetricsHelpe
  *         .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.query.MetricsQueryClient.instantiation -->
+ *
+ * <p>
+ *     For more information on building and authenticating, see the {@link MetricsQueryClientBuilder} documentation.
+ * </p>
+ *
+ * <h3>Client Usage</h3>
+ *
+ * <p>
+ *     For more information on using the MetricsQueryClient, see the following method documentation:
+ * </p>
+ *
+ * <ul>
+ *     <li>
+ *         {@link MetricsQueryClient#queryResource(String, List)} - Query metrics for an Azure resource.
+ *         {@link MetricsQueryClient#listMetricNamespaces(String, OffsetDateTime)} - Lists all the metrics namespaces created for the resource URI.
+ *         {@link MetricsQueryClient#listMetricDefinitions(String)} - Lists all the metrics definitions created for the resource URI.
+ *     </li>
+ * </ul>
+ *
+ * @see com.azure.monitor.query
+ * @see MetricsQueryClientBuilder
  */
 @ServiceClient(builder = MetricsQueryClientBuilder.class)
 public final class MetricsQueryClient {
@@ -51,9 +83,8 @@ public final class MetricsQueryClient {
     private final MetricsNamespacesClientImpl metricsNamespaceClient;
     private final MetricsDefinitionsClientImpl metricsDefinitionsClient;
 
-    MetricsQueryClient(MonitorManagementClientImpl metricsClient,
-                       MetricsNamespacesClientImpl metricsNamespaceClient,
-                       MetricsDefinitionsClientImpl metricsDefinitionsClients) {
+    MetricsQueryClient(MonitorManagementClientImpl metricsClient, MetricsNamespacesClientImpl metricsNamespaceClient,
+        MetricsDefinitionsClientImpl metricsDefinitionsClients) {
         this.metricsClient = metricsClient;
         this.metricsNamespaceClient = metricsNamespaceClient;
         this.metricsDefinitionsClient = metricsDefinitionsClients;
@@ -103,17 +134,16 @@ public final class MetricsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricsQueryResult> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
-                                                                  MetricsQueryOptions options, Context context) {
+        MetricsQueryOptions options, Context context) {
         Objects.requireNonNull(resourceUri, "'resourceUri' cannot be null");
 
         String aggregation = null;
         if (options != null && !CoreUtils.isNullOrEmpty(options.getAggregations())) {
-            aggregation = options.getAggregations()
-                .stream()
-                .map(type -> type.toString())
-                .collect(Collectors.joining(","));
+            aggregation
+                = options.getAggregations().stream().map(type -> type.toString()).collect(Collectors.joining(","));
         }
-        String timespan = options == null || options.getTimeInterval() == null ? null
+        String timespan = options == null || options.getTimeInterval() == null
+            ? null
             : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
         Duration granularity = options == null ? null : options.getGranularity();
         Integer top = options == null ? null : options.getTop();
@@ -121,10 +151,9 @@ public final class MetricsQueryClient {
         String filter = options == null ? null : options.getFilter();
         String metricNamespace = options == null ? null : options.getMetricNamespace();
 
-        Response<MetricsResponse> metricsResponseResponse = metricsClient
-            .getMetrics()
-            .listWithResponse(resourceUri, timespan, granularity, String.join(",", metricsNames),
-                aggregation, top, orderBy, filter, ResultType.DATA, metricNamespace, context);
+        Response<MetricsResponse> metricsResponseResponse = metricsClient.getMetrics()
+            .listWithResponse(resourceUri, timespan, granularity, String.join(",", metricsNames), aggregation, top,
+                orderBy, filter, ResultType.DATA, metricNamespace, null, null, null, context);
         return convertToMetricsQueryResult(metricsResponseResponse);
     }
 
@@ -153,15 +182,13 @@ public final class MetricsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime,
-                                                               Context context) {
+        Context context) {
         Objects.requireNonNull(resourceUri, "'resourceUri' cannot be null");
-        PagedResponse<com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace> response = metricsNamespaceClient.getMetricNamespaces().listSinglePage(resourceUri,
-            startTime == null ? null : startTime.toString(), context);
-        List<MetricNamespace> metricNamespaces = response.getValue()
-            .stream()
-            .map(MetricsHelper::mapMetricNamespace)
-            .collect(Collectors.toList());
-
+        PagedResponse<com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace> response
+            = metricsNamespaceClient.getMetricNamespaces()
+                .listSinglePage(resourceUri, startTime == null ? null : startTime.toString(), context);
+        List<MetricNamespace> metricNamespaces
+            = response.getValue().stream().map(MetricsHelper::mapMetricNamespace).collect(Collectors.toList());
 
         return new PagedIterable<>(() -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
             response.getHeaders(), metricNamespaces, response.getContinuationToken(), null));
@@ -191,13 +218,12 @@ public final class MetricsQueryClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace,
-                                                                 Context context) {
+        Context context) {
         Objects.requireNonNull(resourceUri, "'resourceUri' cannot be null");
-        PagedResponse<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricDefinition> response = metricsDefinitionsClient.getMetricDefinitions().listSinglePage(resourceUri, metricsNamespace, context);
-        List<MetricDefinition> metricDefinitions = response.getValue()
-            .stream()
-            .map(MetricsHelper::mapToMetricDefinition)
-            .collect(Collectors.toList());
+        PagedResponse<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricDefinition> response
+            = metricsDefinitionsClient.getMetricDefinitions().listSinglePage(resourceUri, metricsNamespace, context);
+        List<MetricDefinition> metricDefinitions
+            = response.getValue().stream().map(MetricsHelper::mapToMetricDefinition).collect(Collectors.toList());
 
         return new PagedIterable<>(() -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
             response.getHeaders(), metricDefinitions, response.getContinuationToken(), null));

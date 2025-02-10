@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.fluent.models.WnsCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Description of a NotificationHub WnsCredential. */
+/**
+ * Description of a NotificationHub WnsCredential.
+ */
 @Fluent
-public final class WnsCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WnsCredential.class);
-
+public final class WnsCredential implements JsonSerializable<WnsCredential> {
     /*
      * Properties of NotificationHub WnsCredential.
      */
-    @JsonProperty(value = "properties")
     private WnsCredentialProperties innerProperties;
 
     /**
+     * Creates an instance of WnsCredential class.
+     */
+    public WnsCredential() {
+    }
+
+    /**
      * Get the innerProperties property: Properties of NotificationHub WnsCredential.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WnsCredentialProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class WnsCredential {
 
     /**
      * Get the packageSid property: The package ID for this credential.
-     *
+     * 
      * @return the packageSid value.
      */
     public String packageSid() {
@@ -41,7 +48,7 @@ public final class WnsCredential {
 
     /**
      * Set the packageSid property: The package ID for this credential.
-     *
+     * 
      * @param packageSid the packageSid value to set.
      * @return the WnsCredential object itself.
      */
@@ -55,7 +62,7 @@ public final class WnsCredential {
 
     /**
      * Get the secretKey property: The secret key.
-     *
+     * 
      * @return the secretKey value.
      */
     public String secretKey() {
@@ -64,7 +71,7 @@ public final class WnsCredential {
 
     /**
      * Set the secretKey property: The secret key.
-     *
+     * 
      * @param secretKey the secretKey value to set.
      * @return the WnsCredential object itself.
      */
@@ -78,7 +85,7 @@ public final class WnsCredential {
 
     /**
      * Get the windowsLiveEndpoint property: The Windows Live endpoint.
-     *
+     * 
      * @return the windowsLiveEndpoint value.
      */
     public String windowsLiveEndpoint() {
@@ -87,7 +94,7 @@ public final class WnsCredential {
 
     /**
      * Set the windowsLiveEndpoint property: The Windows Live endpoint.
-     *
+     * 
      * @param windowsLiveEndpoint the windowsLiveEndpoint value to set.
      * @return the WnsCredential object itself.
      */
@@ -101,12 +108,48 @@ public final class WnsCredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WnsCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WnsCredential if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WnsCredential.
+     */
+    public static WnsCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WnsCredential deserializedWnsCredential = new WnsCredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedWnsCredential.innerProperties = WnsCredentialProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWnsCredential;
+        });
     }
 }

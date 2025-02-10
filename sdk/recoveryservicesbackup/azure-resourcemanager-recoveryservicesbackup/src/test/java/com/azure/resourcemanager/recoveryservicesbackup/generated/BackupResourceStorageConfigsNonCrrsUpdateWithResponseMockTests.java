@@ -6,11 +6,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceConfig;
@@ -19,84 +17,50 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.DedupState;
 import com.azure.resourcemanager.recoveryservicesbackup.models.StorageType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.StorageTypeState;
 import com.azure.resourcemanager.recoveryservicesbackup.models.XcoolState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BackupResourceStorageConfigsNonCrrsUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"storageModelType\":\"Invalid\",\"storageType\":\"Invalid\",\"storageTypeState\":\"Unlocked\",\"crossRegionRestoreFlag\":true,\"dedupState\":\"Enabled\",\"xcoolState\":\"Enabled\"},\"eTag\":\"qdurelyujlfyoum\",\"location\":\"ckyeclcdigpta\",\"tags\":{\"oclxiut\":\"zmqxucyci\"},\"id\":\"jc\",\"name\":\"z\",\"type\":\"zjd\"}";
 
-        String responseStr =
-            "{\"properties\":{\"storageModelType\":\"Invalid\",\"storageType\":\"Invalid\",\"storageTypeState\":\"Unlocked\",\"crossRegionRestoreFlag\":false,\"dedupState\":\"Enabled\",\"xcoolState\":\"Invalid\"},\"eTag\":\"d\",\"location\":\"jsaqwotmmwllcols\",\"tags\":{\"hexcgjokj\":\"apte\",\"bksdqhjvyklxesl\":\"jnhvlqjbekpeeks\",\"cpoq\":\"hhus\",\"g\":\"avnwqj\"},\"id\":\"knlejjjkxybwfd\",\"name\":\"kjbztensvkzykj\",\"type\":\"jknsxfwu\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        BackupResourceConfigResource response = manager.backupResourceStorageConfigsNonCrrs()
+            .updateWithResponse("byubhiqdxyurnpn", "hza",
+                new BackupResourceConfigResourceInner().withLocation("rkdlb")
+                    .withTags(mapOf("hzlwxaea", "xvhcs", "ndsbdw", "vurex", "t", "aderzmw", "tmvmmagoaqylkjz", "pag"))
+                    .withProperties(new BackupResourceConfig().withStorageModelType(StorageType.GEO_REDUNDANT)
+                        .withStorageType(StorageType.LOCALLY_REDUNDANT)
+                        .withStorageTypeState(StorageTypeState.INVALID)
+                        .withCrossRegionRestoreFlag(false)
+                        .withDedupState(DedupState.ENABLED)
+                        .withXcoolState(XcoolState.DISABLED))
+                    .withEtag("gvxvatv"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        BackupResourceConfigResource response =
-            manager
-                .backupResourceStorageConfigsNonCrrs()
-                .updateWithResponse(
-                    "dqq",
-                    "tekva",
-                    new BackupResourceConfigResourceInner()
-                        .withLocation("mxhzzysevus")
-                        .withTags(mapOf("imipskdyzatvfuz", "zrrryv", "ip", "aftjvvruxwigsy", "gdgkki", "dsmjtgr"))
-                        .withProperties(
-                            new BackupResourceConfig()
-                                .withStorageModelType(StorageType.LOCALLY_REDUNDANT)
-                                .withStorageType(StorageType.ZONE_REDUNDANT)
-                                .withStorageTypeState(StorageTypeState.UNLOCKED)
-                                .withCrossRegionRestoreFlag(true)
-                                .withDedupState(DedupState.DISABLED)
-                                .withXcoolState(XcoolState.INVALID))
-                        .withEtag("a"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("jsaqwotmmwllcols", response.location());
-        Assertions.assertEquals("apte", response.tags().get("hexcgjokj"));
+        Assertions.assertEquals("ckyeclcdigpta", response.location());
+        Assertions.assertEquals("zmqxucyci", response.tags().get("oclxiut"));
         Assertions.assertEquals(StorageType.INVALID, response.properties().storageModelType());
         Assertions.assertEquals(StorageType.INVALID, response.properties().storageType());
         Assertions.assertEquals(StorageTypeState.UNLOCKED, response.properties().storageTypeState());
-        Assertions.assertEquals(false, response.properties().crossRegionRestoreFlag());
+        Assertions.assertEquals(true, response.properties().crossRegionRestoreFlag());
         Assertions.assertEquals(DedupState.ENABLED, response.properties().dedupState());
-        Assertions.assertEquals(XcoolState.INVALID, response.properties().xcoolState());
-        Assertions.assertEquals("d", response.etag());
+        Assertions.assertEquals(XcoolState.ENABLED, response.properties().xcoolState());
+        Assertions.assertEquals("qdurelyujlfyoum", response.etag());
     }
 
     // Use "Map.of" if available

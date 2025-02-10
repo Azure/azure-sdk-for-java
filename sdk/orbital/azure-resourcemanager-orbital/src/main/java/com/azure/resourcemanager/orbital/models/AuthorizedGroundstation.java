@@ -6,31 +6,38 @@ package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Objects;
 
-/** Authorized groundstation. */
+/**
+ * Authorized groundstation.
+ */
 @Fluent
-public final class AuthorizedGroundstation {
+public final class AuthorizedGroundstation implements JsonSerializable<AuthorizedGroundstation> {
     /*
      * Groundstation name.
      */
-    @JsonProperty(value = "groundStation", required = true)
     private String groundStation;
 
     /*
      * Date of authorization expiration.
      */
-    @JsonProperty(value = "expirationDate", required = true)
     private LocalDate expirationDate;
 
-    /** Creates an instance of AuthorizedGroundstation class. */
+    /**
+     * Creates an instance of AuthorizedGroundstation class.
+     */
     public AuthorizedGroundstation() {
     }
 
     /**
      * Get the groundStation property: Groundstation name.
-     *
+     * 
      * @return the groundStation value.
      */
     public String groundStation() {
@@ -39,7 +46,7 @@ public final class AuthorizedGroundstation {
 
     /**
      * Set the groundStation property: Groundstation name.
-     *
+     * 
      * @param groundStation the groundStation value to set.
      * @return the AuthorizedGroundstation object itself.
      */
@@ -50,7 +57,7 @@ public final class AuthorizedGroundstation {
 
     /**
      * Get the expirationDate property: Date of authorization expiration.
-     *
+     * 
      * @return the expirationDate value.
      */
     public LocalDate expirationDate() {
@@ -59,7 +66,7 @@ public final class AuthorizedGroundstation {
 
     /**
      * Set the expirationDate property: Date of authorization expiration.
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the AuthorizedGroundstation object itself.
      */
@@ -70,23 +77,62 @@ public final class AuthorizedGroundstation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (groundStation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groundStation in model AuthorizedGroundstation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property groundStation in model AuthorizedGroundstation"));
         }
         if (expirationDate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expirationDate in model AuthorizedGroundstation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property expirationDate in model AuthorizedGroundstation"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AuthorizedGroundstation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("groundStation", this.groundStation);
+        jsonWriter.writeStringField("expirationDate", Objects.toString(this.expirationDate, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizedGroundstation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizedGroundstation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AuthorizedGroundstation.
+     */
+    public static AuthorizedGroundstation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizedGroundstation deserializedAuthorizedGroundstation = new AuthorizedGroundstation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groundStation".equals(fieldName)) {
+                    deserializedAuthorizedGroundstation.groundStation = reader.getString();
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedAuthorizedGroundstation.expirationDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizedGroundstation;
+        });
+    }
 }

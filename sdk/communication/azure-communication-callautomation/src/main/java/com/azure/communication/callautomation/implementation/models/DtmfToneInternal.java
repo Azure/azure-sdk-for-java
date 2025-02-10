@@ -5,71 +5,116 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DtmfToneInternal. */
+/**
+ * Defines values for DtmfToneInternal.
+ */
 public final class DtmfToneInternal extends ExpandableStringEnum<DtmfToneInternal> {
-    /** Static value zero for DtmfToneInternal. */
+    /**
+     * Static value zero for DtmfToneInternal.
+     */
     public static final DtmfToneInternal ZERO = fromString("zero");
 
-    /** Static value one for DtmfToneInternal. */
+    /**
+     * Static value one for DtmfToneInternal.
+     */
     public static final DtmfToneInternal ONE = fromString("one");
 
-    /** Static value two for DtmfToneInternal. */
+    /**
+     * Static value two for DtmfToneInternal.
+     */
     public static final DtmfToneInternal TWO = fromString("two");
 
-    /** Static value three for DtmfToneInternal. */
+    /**
+     * Static value three for DtmfToneInternal.
+     */
     public static final DtmfToneInternal THREE = fromString("three");
 
-    /** Static value four for DtmfToneInternal. */
+    /**
+     * Static value four for DtmfToneInternal.
+     */
     public static final DtmfToneInternal FOUR = fromString("four");
 
-    /** Static value five for DtmfToneInternal. */
+    /**
+     * Static value five for DtmfToneInternal.
+     */
     public static final DtmfToneInternal FIVE = fromString("five");
 
-    /** Static value six for DtmfToneInternal. */
+    /**
+     * Static value six for DtmfToneInternal.
+     */
     public static final DtmfToneInternal SIX = fromString("six");
 
-    /** Static value seven for DtmfToneInternal. */
+    /**
+     * Static value seven for DtmfToneInternal.
+     */
     public static final DtmfToneInternal SEVEN = fromString("seven");
 
-    /** Static value eight for DtmfToneInternal. */
+    /**
+     * Static value eight for DtmfToneInternal.
+     */
     public static final DtmfToneInternal EIGHT = fromString("eight");
 
-    /** Static value nine for DtmfToneInternal. */
+    /**
+     * Static value nine for DtmfToneInternal.
+     */
     public static final DtmfToneInternal NINE = fromString("nine");
 
-    /** Static value a for DtmfToneInternal. */
+    /**
+     * Static value a for DtmfToneInternal.
+     */
     public static final DtmfToneInternal A = fromString("a");
 
-    /** Static value b for DtmfToneInternal. */
+    /**
+     * Static value b for DtmfToneInternal.
+     */
     public static final DtmfToneInternal B = fromString("b");
 
-    /** Static value c for DtmfToneInternal. */
+    /**
+     * Static value c for DtmfToneInternal.
+     */
     public static final DtmfToneInternal C = fromString("c");
 
-    /** Static value d for DtmfToneInternal. */
+    /**
+     * Static value d for DtmfToneInternal.
+     */
     public static final DtmfToneInternal D = fromString("d");
 
-    /** Static value pound for DtmfToneInternal. */
+    /**
+     * Static value pound for DtmfToneInternal.
+     */
     public static final DtmfToneInternal POUND = fromString("pound");
 
-    /** Static value asterisk for DtmfToneInternal. */
+    /**
+     * Static value asterisk for DtmfToneInternal.
+     */
     public static final DtmfToneInternal ASTERISK = fromString("asterisk");
 
     /**
+     * Creates a new instance of DtmfToneInternal value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DtmfToneInternal() {
+    }
+
+    /**
      * Creates or finds a DtmfToneInternal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DtmfToneInternal.
      */
-    @JsonCreator
     public static DtmfToneInternal fromString(String name) {
         return fromString(name, DtmfToneInternal.class);
     }
 
-    /** @return known DtmfToneInternal values. */
+    /**
+     * Gets known DtmfToneInternal values.
+     * 
+     * @return known DtmfToneInternal values.
+     */
     public static Collection<DtmfToneInternal> values() {
         return values(DtmfToneInternal.class);
     }

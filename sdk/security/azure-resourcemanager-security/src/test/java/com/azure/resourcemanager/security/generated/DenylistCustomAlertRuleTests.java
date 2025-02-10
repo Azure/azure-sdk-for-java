@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DenylistCustomAlertRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DenylistCustomAlertRule model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"okeyyienj\",\"dlwtgrhpdj\"],\"valueType\":\"String\",\"displayName\":\"asxazjpqyegualhb\",\"description\":\"hejjz\",\"isEnabled\":false}")
-                .toObject(DenylistCustomAlertRule.class);
+        DenylistCustomAlertRule model = BinaryData.fromString(
+            "{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"uugidyjrrfby\",\"osvexcsonpclhoc\",\"hslkevleggzf\"],\"valueType\":\"String\",\"displayName\":\"mvfaxkffeiith\",\"description\":\"m\",\"isEnabled\":false}")
+            .toObject(DenylistCustomAlertRule.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("okeyyienj", model.denylistValues().get(0));
+        Assertions.assertEquals("uugidyjrrfby", model.denylistValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DenylistCustomAlertRule model =
-            new DenylistCustomAlertRule()
-                .withIsEnabled(false)
-                .withDenylistValues(Arrays.asList("okeyyienj", "dlwtgrhpdj"));
+        DenylistCustomAlertRule model = new DenylistCustomAlertRule().withIsEnabled(false)
+            .withDenylistValues(Arrays.asList("uugidyjrrfby", "osvexcsonpclhoc", "hslkevleggzf"));
         model = BinaryData.fromObject(model).toObject(DenylistCustomAlertRule.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("okeyyienj", model.denylistValues().get(0));
+        Assertions.assertEquals("uugidyjrrfby", model.denylistValues().get(0));
     }
 }

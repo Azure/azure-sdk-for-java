@@ -11,13 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityResourceInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Check migration name validity and availability
-     *
-     * <p>This method checks whether a proposed migration name is valid and available.
-     *
+     * 
+     * This method checks whether a proposed migration name is valid and available.
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -25,21 +27,19 @@ public interface ResourceProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration name's availability along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a migration name's availability along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MigrationNameAvailabilityResourceInner>> checkMigrationNameAvailabilityWithResponseAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
+        String subscriptionId, String resourceGroupName, String targetDbServerName,
         MigrationNameAvailabilityResourceInner parameters);
 
     /**
      * Check migration name validity and availability
-     *
-     * <p>This method checks whether a proposed migration name is valid and available.
-     *
+     * 
+     * This method checks whether a proposed migration name is valid and available.
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -50,17 +50,14 @@ public interface ResourceProvidersClient {
      * @return represents a migration name's availability on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MigrationNameAvailabilityResourceInner> checkMigrationNameAvailabilityAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters);
+    Mono<MigrationNameAvailabilityResourceInner> checkMigrationNameAvailabilityAsync(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, MigrationNameAvailabilityResourceInner parameters);
 
     /**
      * Check migration name validity and availability
-     *
-     * <p>This method checks whether a proposed migration name is valid and available.
-     *
+     * 
+     * This method checks whether a proposed migration name is valid and available.
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -72,18 +69,15 @@ public interface ResourceProvidersClient {
      * @return represents a migration name's availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MigrationNameAvailabilityResourceInner> checkMigrationNameAvailabilityWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters,
+    Response<MigrationNameAvailabilityResourceInner> checkMigrationNameAvailabilityWithResponse(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, MigrationNameAvailabilityResourceInner parameters,
         Context context);
 
     /**
      * Check migration name validity and availability
-     *
-     * <p>This method checks whether a proposed migration name is valid and available.
-     *
+     * 
+     * This method checks whether a proposed migration name is valid and available.
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -94,9 +88,6 @@ public interface ResourceProvidersClient {
      * @return represents a migration name's availability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MigrationNameAvailabilityResourceInner checkMigrationNameAvailability(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters);
+    MigrationNameAvailabilityResourceInner checkMigrationNameAvailability(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, MigrationNameAvailabilityResourceInner parameters);
 }

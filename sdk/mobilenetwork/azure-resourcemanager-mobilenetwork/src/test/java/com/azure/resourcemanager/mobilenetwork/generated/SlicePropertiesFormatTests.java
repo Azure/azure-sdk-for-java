@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class SlicePropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SlicePropertiesFormat model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Accepted\",\"snssai\":{\"sst\":673531978,\"sd\":\"vreljea\"},\"description\":\"rvzmlovuana\"}")
-                .toObject(SlicePropertiesFormat.class);
-        Assertions.assertEquals(673531978, model.snssai().sst());
-        Assertions.assertEquals("vreljea", model.snssai().sd());
-        Assertions.assertEquals("rvzmlovuana", model.description());
+        SlicePropertiesFormat model = BinaryData.fromString(
+            "{\"provisioningState\":\"Unknown\",\"snssai\":{\"sst\":373191664,\"sd\":\"rngifl\"},\"description\":\"pasccbi\"}")
+            .toObject(SlicePropertiesFormat.class);
+        Assertions.assertEquals(373191664, model.snssai().sst());
+        Assertions.assertEquals("rngifl", model.snssai().sd());
+        Assertions.assertEquals("pasccbi", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SlicePropertiesFormat model =
-            new SlicePropertiesFormat()
-                .withSnssai(new Snssai().withSst(673531978).withSd("vreljea"))
-                .withDescription("rvzmlovuana");
+        SlicePropertiesFormat model
+            = new SlicePropertiesFormat().withSnssai(new Snssai().withSst(373191664).withSd("rngifl"))
+                .withDescription("pasccbi");
         model = BinaryData.fromObject(model).toObject(SlicePropertiesFormat.class);
-        Assertions.assertEquals(673531978, model.snssai().sst());
-        Assertions.assertEquals("vreljea", model.snssai().sd());
-        Assertions.assertEquals("rvzmlovuana", model.description());
+        Assertions.assertEquals(373191664, model.snssai().sst());
+        Assertions.assertEquals("rngifl", model.snssai().sd());
+        Assertions.assertEquals("pasccbi", model.description());
     }
 }

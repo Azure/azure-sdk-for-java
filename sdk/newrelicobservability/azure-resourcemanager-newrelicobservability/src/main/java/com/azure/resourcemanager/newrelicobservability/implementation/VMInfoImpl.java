@@ -12,8 +12,7 @@ public final class VMInfoImpl implements VMInfo {
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    VMInfoImpl(
-        VMInfoInner innerObject,
+    VMInfoImpl(VMInfoInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

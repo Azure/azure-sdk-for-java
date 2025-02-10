@@ -3,20 +3,22 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
-final class EncryptedRegionInfo {
+import java.io.IOException;
 
+final class EncryptedRegionInfo implements JsonSerializable<EncryptedRegionInfo> {
     /**
      * The cipher text length.
      */
-    @JsonProperty(value = "DataLength")
-    private int dataLength;
+    private long dataLength;
 
     /**
      * The nonce length.
      */
-    @JsonProperty(value = "NonceLength")
     private int nonceLength;
 
     EncryptedRegionInfo() {
@@ -28,7 +30,7 @@ final class EncryptedRegionInfo {
      * @param ciphertextLength The length of the cipher text.
      * @param nonceLength The length of the nonce.
      */
-    EncryptedRegionInfo(int ciphertextLength, int nonceLength) {
+    EncryptedRegionInfo(long ciphertextLength, int nonceLength) {
         this.dataLength = ciphertextLength;
         this.nonceLength = nonceLength;
     }
@@ -38,7 +40,7 @@ final class EncryptedRegionInfo {
      *
      * @return The ciphertextLength property.
      */
-    public int getDataLength() {
+    public long getDataLength() {
         return dataLength;
     }
 
@@ -49,5 +51,40 @@ final class EncryptedRegionInfo {
      */
     public int getNonceLength() {
         return nonceLength;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeNumberField("DataLength", dataLength)
+            .writeNumberField("NonceLength", nonceLength)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptedRegionInfo from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return The EncryptedRegionInfo read from the JsonReader.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static EncryptedRegionInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptedRegionInfo encryptedRegionInfo = new EncryptedRegionInfo();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("DataLength".equals(fieldName)) {
+                    encryptedRegionInfo.dataLength = reader.getLong();
+                } else if ("NonceLength".equals(fieldName)) {
+                    encryptedRegionInfo.nonceLength = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return encryptedRegionInfo;
+        });
     }
 }

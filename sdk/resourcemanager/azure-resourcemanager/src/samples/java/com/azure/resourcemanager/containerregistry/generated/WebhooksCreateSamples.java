@@ -11,28 +11,27 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Webhooks Create. */
+/**
+ * Samples for Webhooks Create.
+ */
 public final class WebhooksCreateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/WebhookCreate.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/
+     * WebhookCreate.json
      */
     /**
      * Sample code: WebhookCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void webhookCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
+        azure.containerRegistries()
             .manager()
             .serviceClient()
             .getWebhooks()
-            .create(
-                "myResourceGroup",
-                "myRegistry",
-                "myWebhook",
-                new WebhookCreateParameters()
-                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
+            .create("myResourceGroup", "myRegistry", "myWebhook",
+                new WebhookCreateParameters().withTags(mapOf("key", "fakeTokenPlaceholder"))
                     .withLocation("westus")
                     .withServiceUri("http://myservice.com")
                     .withCustomHeaders(mapOf("Authorization", "fakeTokenPlaceholder"))
@@ -42,6 +41,7 @@ public final class WebhooksCreateSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

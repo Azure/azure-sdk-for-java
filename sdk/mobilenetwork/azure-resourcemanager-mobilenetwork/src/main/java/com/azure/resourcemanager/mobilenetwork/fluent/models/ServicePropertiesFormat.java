@@ -6,19 +6,24 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.PccRuleConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.QosPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Service properties. */
+/**
+ * Service properties.
+ */
 @Fluent
-public final class ServicePropertiesFormat {
+public final class ServicePropertiesFormat implements JsonSerializable<ServicePropertiesFormat> {
     /*
      * The provisioning state of the service resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
@@ -26,30 +31,29 @@ public final class ServicePropertiesFormat {
      * particular SIM. A lower value means a higher priority. This value should be unique among all services configured
      * in the mobile network.
      */
-    @JsonProperty(value = "servicePrecedence", required = true)
     private int servicePrecedence;
 
     /*
      * The QoS policy to use for packets matching this service. This can be overridden for particular flows using the
-     * ruleQosPolicy field in a PccRuleConfiguration. If this field is null then the UE's SIM policy will define the
-     * QoS settings.
+     * ruleQosPolicy field in a PccRuleConfiguration. If this field is null then the UE's SIM policy will define the QoS
+     * settings.
      */
-    @JsonProperty(value = "serviceQosPolicy")
     private QosPolicy serviceQosPolicy;
 
     /*
      * The set of data flow policy rules that make up this service.
      */
-    @JsonProperty(value = "pccRules", required = true)
     private List<PccRuleConfiguration> pccRules;
 
-    /** Creates an instance of ServicePropertiesFormat class. */
+    /**
+     * Creates an instance of ServicePropertiesFormat class.
+     */
     public ServicePropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the service resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -60,7 +64,7 @@ public final class ServicePropertiesFormat {
      * Get the servicePrecedence property: A precedence value that is used to decide between services when identifying
      * the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique
      * among all services configured in the mobile network.
-     *
+     * 
      * @return the servicePrecedence value.
      */
     public int servicePrecedence() {
@@ -71,7 +75,7 @@ public final class ServicePropertiesFormat {
      * Set the servicePrecedence property: A precedence value that is used to decide between services when identifying
      * the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique
      * among all services configured in the mobile network.
-     *
+     * 
      * @param servicePrecedence the servicePrecedence value to set.
      * @return the ServicePropertiesFormat object itself.
      */
@@ -84,7 +88,7 @@ public final class ServicePropertiesFormat {
      * Get the serviceQosPolicy property: The QoS policy to use for packets matching this service. This can be
      * overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null
      * then the UE's SIM policy will define the QoS settings.
-     *
+     * 
      * @return the serviceQosPolicy value.
      */
     public QosPolicy serviceQosPolicy() {
@@ -95,7 +99,7 @@ public final class ServicePropertiesFormat {
      * Set the serviceQosPolicy property: The QoS policy to use for packets matching this service. This can be
      * overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null
      * then the UE's SIM policy will define the QoS settings.
-     *
+     * 
      * @param serviceQosPolicy the serviceQosPolicy value to set.
      * @return the ServicePropertiesFormat object itself.
      */
@@ -106,7 +110,7 @@ public final class ServicePropertiesFormat {
 
     /**
      * Get the pccRules property: The set of data flow policy rules that make up this service.
-     *
+     * 
      * @return the pccRules value.
      */
     public List<PccRuleConfiguration> pccRules() {
@@ -115,7 +119,7 @@ public final class ServicePropertiesFormat {
 
     /**
      * Set the pccRules property: The set of data flow policy rules that make up this service.
-     *
+     * 
      * @param pccRules the pccRules value to set.
      * @return the ServicePropertiesFormat object itself.
      */
@@ -126,7 +130,7 @@ public final class ServicePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -134,14 +138,61 @@ public final class ServicePropertiesFormat {
             serviceQosPolicy().validate();
         }
         if (pccRules() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property pccRules in model ServicePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property pccRules in model ServicePropertiesFormat"));
         } else {
             pccRules().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServicePropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("servicePrecedence", this.servicePrecedence);
+        jsonWriter.writeArrayField("pccRules", this.pccRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("serviceQosPolicy", this.serviceQosPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicePropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServicePropertiesFormat.
+     */
+    public static ServicePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicePropertiesFormat deserializedServicePropertiesFormat = new ServicePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("servicePrecedence".equals(fieldName)) {
+                    deserializedServicePropertiesFormat.servicePrecedence = reader.getInt();
+                } else if ("pccRules".equals(fieldName)) {
+                    List<PccRuleConfiguration> pccRules
+                        = reader.readArray(reader1 -> PccRuleConfiguration.fromJson(reader1));
+                    deserializedServicePropertiesFormat.pccRules = pccRules;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedServicePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("serviceQosPolicy".equals(fieldName)) {
+                    deserializedServicePropertiesFormat.serviceQosPolicy = QosPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicePropertiesFormat;
+        });
+    }
 }

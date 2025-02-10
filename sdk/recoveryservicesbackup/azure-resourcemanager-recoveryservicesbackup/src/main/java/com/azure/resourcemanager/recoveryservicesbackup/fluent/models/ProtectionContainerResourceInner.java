@@ -6,32 +6,52 @@ package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainer;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Base class for container with backup items. Containers with specific workloads are derived from this class. */
+/**
+ * Base class for container with backup items. Containers with specific workloads are derived from this class.
+ */
 @Fluent
 public final class ProtectionContainerResourceInner extends Resource {
     /*
      * ProtectionContainerResource properties
      */
-    @JsonProperty(value = "properties")
     private ProtectionContainer properties;
 
     /*
      * Optional ETag.
      */
-    @JsonProperty(value = "eTag")
     private String etag;
 
-    /** Creates an instance of ProtectionContainerResourceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ProtectionContainerResourceInner class.
+     */
     public ProtectionContainerResourceInner() {
     }
 
     /**
      * Get the properties property: ProtectionContainerResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public ProtectionContainer properties() {
@@ -40,7 +60,7 @@ public final class ProtectionContainerResourceInner extends Resource {
 
     /**
      * Set the properties property: ProtectionContainerResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ProtectionContainerResourceInner object itself.
      */
@@ -51,7 +71,7 @@ public final class ProtectionContainerResourceInner extends Resource {
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -60,7 +80,7 @@ public final class ProtectionContainerResourceInner extends Resource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ProtectionContainerResourceInner object itself.
      */
@@ -69,14 +89,48 @@ public final class ProtectionContainerResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtectionContainerResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtectionContainerResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,12 +139,66 @@ public final class ProtectionContainerResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("eTag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectionContainerResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectionContainerResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProtectionContainerResourceInner.
+     */
+    public static ProtectionContainerResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectionContainerResourceInner deserializedProtectionContainerResourceInner
+                = new ProtectionContainerResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProtectionContainerResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProtectionContainerResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProtectionContainerResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedProtectionContainerResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProtectionContainerResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProtectionContainerResourceInner.properties = ProtectionContainer.fromJson(reader);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedProtectionContainerResourceInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectionContainerResourceInner;
+        });
     }
 }

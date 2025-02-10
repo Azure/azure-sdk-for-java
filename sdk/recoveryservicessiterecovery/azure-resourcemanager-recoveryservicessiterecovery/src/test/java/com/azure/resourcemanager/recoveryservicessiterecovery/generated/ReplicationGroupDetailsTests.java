@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.Replication
 public final class ReplicationGroupDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationGroupDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"ReplicationGroupDetails\"}")
-                .toObject(ReplicationGroupDetails.class);
+        ReplicationGroupDetails model = BinaryData.fromString("{\"instanceType\":\"ReplicationGroupDetails\"}")
+            .toObject(ReplicationGroupDetails.class);
     }
 
     @org.junit.jupiter.api.Test

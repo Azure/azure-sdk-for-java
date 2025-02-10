@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentLogsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentLogsRequest model =
-            BinaryData
-                .fromString("{\"containerType\":\"StorageInitializer\",\"tail\":304740778}")
+        DeploymentLogsRequest model
+            = BinaryData.fromString("{\"containerType\":\"InferenceServer\",\"tail\":1245703985}")
                 .toObject(DeploymentLogsRequest.class);
-        Assertions.assertEquals(ContainerType.STORAGE_INITIALIZER, model.containerType());
-        Assertions.assertEquals(304740778, model.tail());
+        Assertions.assertEquals(ContainerType.INFERENCE_SERVER, model.containerType());
+        Assertions.assertEquals(1245703985, model.tail());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentLogsRequest model =
-            new DeploymentLogsRequest().withContainerType(ContainerType.STORAGE_INITIALIZER).withTail(304740778);
+        DeploymentLogsRequest model
+            = new DeploymentLogsRequest().withContainerType(ContainerType.INFERENCE_SERVER).withTail(1245703985);
         model = BinaryData.fromObject(model).toObject(DeploymentLogsRequest.class);
-        Assertions.assertEquals(ContainerType.STORAGE_INITIALIZER, model.containerType());
-        Assertions.assertEquals(304740778, model.tail());
+        Assertions.assertEquals(ContainerType.INFERENCE_SERVER, model.containerType());
+        Assertions.assertEquals(1245703985, model.tail());
     }
 }

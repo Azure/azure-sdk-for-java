@@ -6,80 +6,84 @@ package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Certificate details representing the Vault credentials. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "authType",
-    defaultImpl = ResourceCertificateDetails.class)
-@JsonTypeName("ResourceCertificateDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureActiveDirectory", value = ResourceCertificateAndAadDetails.class),
-    @JsonSubTypes.Type(name = "AccessControlService", value = ResourceCertificateAndAcsDetails.class)
-})
+/**
+ * Certificate details representing the Vault credentials.
+ */
 @Fluent
-public class ResourceCertificateDetails {
+public class ResourceCertificateDetails implements JsonSerializable<ResourceCertificateDetails> {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String authType = "ResourceCertificateDetails";
+
     /*
      * The base64 encoded certificate raw data string.
      */
-    @JsonProperty(value = "certificate")
     private byte[] certificate;
 
     /*
      * Certificate friendly name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Certificate issuer.
      */
-    @JsonProperty(value = "issuer")
     private String issuer;
 
     /*
      * Resource ID of the vault.
      */
-    @JsonProperty(value = "resourceId")
     private Long resourceId;
 
     /*
      * Certificate Subject Name.
      */
-    @JsonProperty(value = "subject")
     private String subject;
 
     /*
      * Certificate thumbprint.
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
      * Certificate Validity start Date time.
      */
-    @JsonProperty(value = "validFrom")
     private OffsetDateTime validFrom;
 
     /*
      * Certificate Validity End Date time.
      */
-    @JsonProperty(value = "validTo")
     private OffsetDateTime validTo;
 
-    /** Creates an instance of ResourceCertificateDetails class. */
+    /**
+     * Creates an instance of ResourceCertificateDetails class.
+     */
     public ResourceCertificateDetails() {
     }
 
     /**
+     * Get the authType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the authType value.
+     */
+    public String authType() {
+        return this.authType;
+    }
+
+    /**
      * Get the certificate property: The base64 encoded certificate raw data string.
-     *
+     * 
      * @return the certificate value.
      */
     public byte[] certificate() {
@@ -88,7 +92,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Set the certificate property: The base64 encoded certificate raw data string.
-     *
+     * 
      * @param certificate the certificate value to set.
      * @return the ResourceCertificateDetails object itself.
      */
@@ -99,7 +103,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Get the friendlyName property: Certificate friendly name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -108,7 +112,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Set the friendlyName property: Certificate friendly name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ResourceCertificateDetails object itself.
      */
@@ -119,7 +123,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Get the issuer property: Certificate issuer.
-     *
+     * 
      * @return the issuer value.
      */
     public String issuer() {
@@ -128,7 +132,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Set the issuer property: Certificate issuer.
-     *
+     * 
      * @param issuer the issuer value to set.
      * @return the ResourceCertificateDetails object itself.
      */
@@ -139,7 +143,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Get the resourceId property: Resource ID of the vault.
-     *
+     * 
      * @return the resourceId value.
      */
     public Long resourceId() {
@@ -148,7 +152,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Set the resourceId property: Resource ID of the vault.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ResourceCertificateDetails object itself.
      */
@@ -159,7 +163,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Get the subject property: Certificate Subject Name.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -168,7 +172,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Set the subject property: Certificate Subject Name.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the ResourceCertificateDetails object itself.
      */
@@ -179,7 +183,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Get the thumbprint property: Certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -188,7 +192,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Set the thumbprint property: Certificate thumbprint.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the ResourceCertificateDetails object itself.
      */
@@ -199,7 +203,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Get the validFrom property: Certificate Validity start Date time.
-     *
+     * 
      * @return the validFrom value.
      */
     public OffsetDateTime validFrom() {
@@ -208,7 +212,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Set the validFrom property: Certificate Validity start Date time.
-     *
+     * 
      * @param validFrom the validFrom value to set.
      * @return the ResourceCertificateDetails object itself.
      */
@@ -219,7 +223,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Get the validTo property: Certificate Validity End Date time.
-     *
+     * 
      * @return the validTo value.
      */
     public OffsetDateTime validTo() {
@@ -228,7 +232,7 @@ public class ResourceCertificateDetails {
 
     /**
      * Set the validTo property: Certificate Validity End Date time.
-     *
+     * 
      * @param validTo the validTo value to set.
      * @return the ResourceCertificateDetails object itself.
      */
@@ -239,9 +243,100 @@ public class ResourceCertificateDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authType", this.authType);
+        jsonWriter.writeBinaryField("certificate", this.certificate);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("issuer", this.issuer);
+        jsonWriter.writeNumberField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeStringField("validFrom",
+            this.validFrom == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.validFrom));
+        jsonWriter.writeStringField("validTo",
+            this.validTo == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.validTo));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceCertificateDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceCertificateDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceCertificateDetails.
+     */
+    public static ResourceCertificateDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("authType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureActiveDirectory".equals(discriminatorValue)) {
+                    return ResourceCertificateAndAadDetails.fromJson(readerToUse.reset());
+                } else if ("AccessControlService".equals(discriminatorValue)) {
+                    return ResourceCertificateAndAcsDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ResourceCertificateDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceCertificateDetails deserializedResourceCertificateDetails = new ResourceCertificateDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authType".equals(fieldName)) {
+                    deserializedResourceCertificateDetails.authType = reader.getString();
+                } else if ("certificate".equals(fieldName)) {
+                    deserializedResourceCertificateDetails.certificate = reader.getBinary();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedResourceCertificateDetails.friendlyName = reader.getString();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedResourceCertificateDetails.issuer = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedResourceCertificateDetails.resourceId = reader.getNullable(JsonReader::getLong);
+                } else if ("subject".equals(fieldName)) {
+                    deserializedResourceCertificateDetails.subject = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedResourceCertificateDetails.thumbprint = reader.getString();
+                } else if ("validFrom".equals(fieldName)) {
+                    deserializedResourceCertificateDetails.validFrom = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("validTo".equals(fieldName)) {
+                    deserializedResourceCertificateDetails.validTo = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceCertificateDetails;
+        });
     }
 }

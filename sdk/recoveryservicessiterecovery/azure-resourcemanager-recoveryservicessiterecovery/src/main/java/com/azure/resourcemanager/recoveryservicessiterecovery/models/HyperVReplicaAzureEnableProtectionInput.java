@@ -5,198 +5,183 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** HyperVReplicaAzure specific enable protection input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVReplicaAzure")
+/**
+ * HyperVReplicaAzure specific enable protection input.
+ */
 @Fluent
 public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtectionProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "HyperVReplicaAzure";
+
+    /*
      * The Hyper-V host VM Id.
      */
-    @JsonProperty(value = "hvHostVmId")
     private String hvHostVmId;
 
     /*
      * The VM Name.
      */
-    @JsonProperty(value = "vmName")
     private String vmName;
 
     /*
      * The OS type associated with VM.
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * The OS disk VHD id associated with VM.
      */
-    @JsonProperty(value = "vhdId")
     private String vhdId;
 
     /*
      * The storage account Id.
      */
-    @JsonProperty(value = "targetStorageAccountId")
     private String targetStorageAccountId;
 
     /*
      * The selected target Azure network Id.
      */
-    @JsonProperty(value = "targetAzureNetworkId")
     private String targetAzureNetworkId;
 
     /*
      * The selected target Azure subnet Id.
      */
-    @JsonProperty(value = "targetAzureSubnetId")
     private String targetAzureSubnetId;
 
     /*
      * The selected option to enable RDP\SSH on target vm after failover. String value of
      * SrsDataContract.EnableRDPOnTargetOption enum.
      */
-    @JsonProperty(value = "enableRdpOnTargetOption")
     private String enableRdpOnTargetOption;
 
     /*
      * The target azure VM Name.
      */
-    @JsonProperty(value = "targetAzureVmName")
     private String targetAzureVmName;
 
     /*
      * The storage account to be used for logging during replication.
      */
-    @JsonProperty(value = "logStorageAccountId")
     private String logStorageAccountId;
 
     /*
      * The list of VHD Ids of disks to be protected.
      */
-    @JsonProperty(value = "disksToInclude")
     private List<String> disksToInclude;
 
     /*
      * The Id of the target resource group (for classic deployment) in which the failover VM is to be created.
      */
-    @JsonProperty(value = "targetAzureV1ResourceGroupId")
     private String targetAzureV1ResourceGroupId;
 
     /*
      * The Id of the target resource group (for resource manager deployment) in which the failover VM is to be created.
      */
-    @JsonProperty(value = "targetAzureV2ResourceGroupId")
     private String targetAzureV2ResourceGroupId;
 
     /*
      * A value indicating whether managed disks should be used during failover.
      */
-    @JsonProperty(value = "useManagedDisks")
     private String useManagedDisks;
 
     /*
      * The target availability set ARM Id for resource manager deployment.
      */
-    @JsonProperty(value = "targetAvailabilitySetId")
     private String targetAvailabilitySetId;
 
     /*
      * The target availability zone.
      */
-    @JsonProperty(value = "targetAvailabilityZone")
     private String targetAvailabilityZone;
 
     /*
      * License type.
      */
-    @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
 
     /*
      * The SQL Server license type.
      */
-    @JsonProperty(value = "sqlServerLicenseType")
     private SqlServerLicenseType sqlServerLicenseType;
 
     /*
      * The target VM size.
      */
-    @JsonProperty(value = "targetVmSize")
     private String targetVmSize;
 
     /*
      * The proximity placement group ARM Id.
      */
-    @JsonProperty(value = "targetProximityPlacementGroupId")
     private String targetProximityPlacementGroupId;
 
     /*
      * A value indicating whether managed disks should be used during replication.
      */
-    @JsonProperty(value = "useManagedDisksForReplication")
     private String useManagedDisksForReplication;
 
     /*
      * The DiskType.
      */
-    @JsonProperty(value = "diskType")
     private DiskAccountType diskType;
 
     /*
      * The disks to include list for managed disks.
      */
-    @JsonProperty(value = "disksToIncludeForManagedDisks")
     private List<HyperVReplicaAzureDiskInputDetails> disksToIncludeForManagedDisks;
 
     /*
      * The DiskEncryptionSet ARM Id.
      */
-    @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
     /*
      * The target VM tags.
      */
-    @JsonProperty(value = "targetVmTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetVmTags;
 
     /*
      * The tags for the seed managed disks.
      */
-    @JsonProperty(value = "seedManagedDiskTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> seedManagedDiskTags;
 
     /*
      * The tags for the target managed disks.
      */
-    @JsonProperty(value = "targetManagedDiskTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetManagedDiskTags;
 
     /*
      * The tags for the target NICs.
      */
-    @JsonProperty(value = "targetNicTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetNicTags;
 
-    /** Creates an instance of HyperVReplicaAzureEnableProtectionInput class. */
+    /**
+     * Creates an instance of HyperVReplicaAzureEnableProtectionInput class.
+     */
     public HyperVReplicaAzureEnableProtectionInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the hvHostVmId property: The Hyper-V host VM Id.
-     *
+     * 
      * @return the hvHostVmId value.
      */
     public String hvHostVmId() {
@@ -205,7 +190,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the hvHostVmId property: The Hyper-V host VM Id.
-     *
+     * 
      * @param hvHostVmId the hvHostVmId value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -216,7 +201,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the vmName property: The VM Name.
-     *
+     * 
      * @return the vmName value.
      */
     public String vmName() {
@@ -225,7 +210,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the vmName property: The VM Name.
-     *
+     * 
      * @param vmName the vmName value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -236,7 +221,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the osType property: The OS type associated with VM.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -245,7 +230,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the osType property: The OS type associated with VM.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -256,7 +241,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the vhdId property: The OS disk VHD id associated with VM.
-     *
+     * 
      * @return the vhdId value.
      */
     public String vhdId() {
@@ -265,7 +250,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the vhdId property: The OS disk VHD id associated with VM.
-     *
+     * 
      * @param vhdId the vhdId value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -276,7 +261,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the targetStorageAccountId property: The storage account Id.
-     *
+     * 
      * @return the targetStorageAccountId value.
      */
     public String targetStorageAccountId() {
@@ -285,7 +270,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the targetStorageAccountId property: The storage account Id.
-     *
+     * 
      * @param targetStorageAccountId the targetStorageAccountId value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -296,7 +281,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the targetAzureNetworkId property: The selected target Azure network Id.
-     *
+     * 
      * @return the targetAzureNetworkId value.
      */
     public String targetAzureNetworkId() {
@@ -305,7 +290,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the targetAzureNetworkId property: The selected target Azure network Id.
-     *
+     * 
      * @param targetAzureNetworkId the targetAzureNetworkId value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -316,7 +301,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the targetAzureSubnetId property: The selected target Azure subnet Id.
-     *
+     * 
      * @return the targetAzureSubnetId value.
      */
     public String targetAzureSubnetId() {
@@ -325,7 +310,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the targetAzureSubnetId property: The selected target Azure subnet Id.
-     *
+     * 
      * @param targetAzureSubnetId the targetAzureSubnetId value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -337,7 +322,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     /**
      * Get the enableRdpOnTargetOption property: The selected option to enable RDP\SSH on target vm after failover.
      * String value of SrsDataContract.EnableRDPOnTargetOption enum.
-     *
+     * 
      * @return the enableRdpOnTargetOption value.
      */
     public String enableRdpOnTargetOption() {
@@ -347,7 +332,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     /**
      * Set the enableRdpOnTargetOption property: The selected option to enable RDP\SSH on target vm after failover.
      * String value of SrsDataContract.EnableRDPOnTargetOption enum.
-     *
+     * 
      * @param enableRdpOnTargetOption the enableRdpOnTargetOption value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -358,7 +343,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the targetAzureVmName property: The target azure VM Name.
-     *
+     * 
      * @return the targetAzureVmName value.
      */
     public String targetAzureVmName() {
@@ -367,7 +352,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the targetAzureVmName property: The target azure VM Name.
-     *
+     * 
      * @param targetAzureVmName the targetAzureVmName value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -378,7 +363,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the logStorageAccountId property: The storage account to be used for logging during replication.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -387,7 +372,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the logStorageAccountId property: The storage account to be used for logging during replication.
-     *
+     * 
      * @param logStorageAccountId the logStorageAccountId value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -398,7 +383,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the disksToInclude property: The list of VHD Ids of disks to be protected.
-     *
+     * 
      * @return the disksToInclude value.
      */
     public List<String> disksToInclude() {
@@ -407,7 +392,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the disksToInclude property: The list of VHD Ids of disks to be protected.
-     *
+     * 
      * @param disksToInclude the disksToInclude value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -419,7 +404,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     /**
      * Get the targetAzureV1ResourceGroupId property: The Id of the target resource group (for classic deployment) in
      * which the failover VM is to be created.
-     *
+     * 
      * @return the targetAzureV1ResourceGroupId value.
      */
     public String targetAzureV1ResourceGroupId() {
@@ -429,12 +414,12 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     /**
      * Set the targetAzureV1ResourceGroupId property: The Id of the target resource group (for classic deployment) in
      * which the failover VM is to be created.
-     *
+     * 
      * @param targetAzureV1ResourceGroupId the targetAzureV1ResourceGroupId value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
-    public HyperVReplicaAzureEnableProtectionInput withTargetAzureV1ResourceGroupId(
-        String targetAzureV1ResourceGroupId) {
+    public HyperVReplicaAzureEnableProtectionInput
+        withTargetAzureV1ResourceGroupId(String targetAzureV1ResourceGroupId) {
         this.targetAzureV1ResourceGroupId = targetAzureV1ResourceGroupId;
         return this;
     }
@@ -442,7 +427,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     /**
      * Get the targetAzureV2ResourceGroupId property: The Id of the target resource group (for resource manager
      * deployment) in which the failover VM is to be created.
-     *
+     * 
      * @return the targetAzureV2ResourceGroupId value.
      */
     public String targetAzureV2ResourceGroupId() {
@@ -452,19 +437,19 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     /**
      * Set the targetAzureV2ResourceGroupId property: The Id of the target resource group (for resource manager
      * deployment) in which the failover VM is to be created.
-     *
+     * 
      * @param targetAzureV2ResourceGroupId the targetAzureV2ResourceGroupId value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
-    public HyperVReplicaAzureEnableProtectionInput withTargetAzureV2ResourceGroupId(
-        String targetAzureV2ResourceGroupId) {
+    public HyperVReplicaAzureEnableProtectionInput
+        withTargetAzureV2ResourceGroupId(String targetAzureV2ResourceGroupId) {
         this.targetAzureV2ResourceGroupId = targetAzureV2ResourceGroupId;
         return this;
     }
 
     /**
      * Get the useManagedDisks property: A value indicating whether managed disks should be used during failover.
-     *
+     * 
      * @return the useManagedDisks value.
      */
     public String useManagedDisks() {
@@ -473,7 +458,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the useManagedDisks property: A value indicating whether managed disks should be used during failover.
-     *
+     * 
      * @param useManagedDisks the useManagedDisks value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -484,7 +469,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the targetAvailabilitySetId property: The target availability set ARM Id for resource manager deployment.
-     *
+     * 
      * @return the targetAvailabilitySetId value.
      */
     public String targetAvailabilitySetId() {
@@ -493,7 +478,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the targetAvailabilitySetId property: The target availability set ARM Id for resource manager deployment.
-     *
+     * 
      * @param targetAvailabilitySetId the targetAvailabilitySetId value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -504,7 +489,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @return the targetAvailabilityZone value.
      */
     public String targetAvailabilityZone() {
@@ -513,7 +498,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @param targetAvailabilityZone the targetAvailabilityZone value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -524,7 +509,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the licenseType property: License type.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -533,7 +518,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the licenseType property: License type.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -544,7 +529,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @return the sqlServerLicenseType value.
      */
     public SqlServerLicenseType sqlServerLicenseType() {
@@ -553,7 +538,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @param sqlServerLicenseType the sqlServerLicenseType value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -564,7 +549,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the targetVmSize property: The target VM size.
-     *
+     * 
      * @return the targetVmSize value.
      */
     public String targetVmSize() {
@@ -573,7 +558,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the targetVmSize property: The target VM size.
-     *
+     * 
      * @param targetVmSize the targetVmSize value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -584,7 +569,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the targetProximityPlacementGroupId property: The proximity placement group ARM Id.
-     *
+     * 
      * @return the targetProximityPlacementGroupId value.
      */
     public String targetProximityPlacementGroupId() {
@@ -593,12 +578,12 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the targetProximityPlacementGroupId property: The proximity placement group ARM Id.
-     *
+     * 
      * @param targetProximityPlacementGroupId the targetProximityPlacementGroupId value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
-    public HyperVReplicaAzureEnableProtectionInput withTargetProximityPlacementGroupId(
-        String targetProximityPlacementGroupId) {
+    public HyperVReplicaAzureEnableProtectionInput
+        withTargetProximityPlacementGroupId(String targetProximityPlacementGroupId) {
         this.targetProximityPlacementGroupId = targetProximityPlacementGroupId;
         return this;
     }
@@ -606,7 +591,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     /**
      * Get the useManagedDisksForReplication property: A value indicating whether managed disks should be used during
      * replication.
-     *
+     * 
      * @return the useManagedDisksForReplication value.
      */
     public String useManagedDisksForReplication() {
@@ -616,19 +601,19 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
     /**
      * Set the useManagedDisksForReplication property: A value indicating whether managed disks should be used during
      * replication.
-     *
+     * 
      * @param useManagedDisksForReplication the useManagedDisksForReplication value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
-    public HyperVReplicaAzureEnableProtectionInput withUseManagedDisksForReplication(
-        String useManagedDisksForReplication) {
+    public HyperVReplicaAzureEnableProtectionInput
+        withUseManagedDisksForReplication(String useManagedDisksForReplication) {
         this.useManagedDisksForReplication = useManagedDisksForReplication;
         return this;
     }
 
     /**
      * Get the diskType property: The DiskType.
-     *
+     * 
      * @return the diskType value.
      */
     public DiskAccountType diskType() {
@@ -637,7 +622,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the diskType property: The DiskType.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -648,7 +633,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the disksToIncludeForManagedDisks property: The disks to include list for managed disks.
-     *
+     * 
      * @return the disksToIncludeForManagedDisks value.
      */
     public List<HyperVReplicaAzureDiskInputDetails> disksToIncludeForManagedDisks() {
@@ -657,19 +642,19 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the disksToIncludeForManagedDisks property: The disks to include list for managed disks.
-     *
+     * 
      * @param disksToIncludeForManagedDisks the disksToIncludeForManagedDisks value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
-    public HyperVReplicaAzureEnableProtectionInput withDisksToIncludeForManagedDisks(
-        List<HyperVReplicaAzureDiskInputDetails> disksToIncludeForManagedDisks) {
+    public HyperVReplicaAzureEnableProtectionInput
+        withDisksToIncludeForManagedDisks(List<HyperVReplicaAzureDiskInputDetails> disksToIncludeForManagedDisks) {
         this.disksToIncludeForManagedDisks = disksToIncludeForManagedDisks;
         return this;
     }
 
     /**
      * Get the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -678,7 +663,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -689,7 +674,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the targetVmTags property: The target VM tags.
-     *
+     * 
      * @return the targetVmTags value.
      */
     public Map<String, String> targetVmTags() {
@@ -698,7 +683,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the targetVmTags property: The target VM tags.
-     *
+     * 
      * @param targetVmTags the targetVmTags value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -709,7 +694,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the seedManagedDiskTags property: The tags for the seed managed disks.
-     *
+     * 
      * @return the seedManagedDiskTags value.
      */
     public Map<String, String> seedManagedDiskTags() {
@@ -718,7 +703,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the seedManagedDiskTags property: The tags for the seed managed disks.
-     *
+     * 
      * @param seedManagedDiskTags the seedManagedDiskTags value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -729,7 +714,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Get the targetManagedDiskTags property: The tags for the target managed disks.
-     *
+     * 
      * @return the targetManagedDiskTags value.
      */
     public Map<String, String> targetManagedDiskTags() {
@@ -738,19 +723,19 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the targetManagedDiskTags property: The tags for the target managed disks.
-     *
+     * 
      * @param targetManagedDiskTags the targetManagedDiskTags value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
-    public HyperVReplicaAzureEnableProtectionInput withTargetManagedDiskTags(
-        Map<String, String> targetManagedDiskTags) {
+    public HyperVReplicaAzureEnableProtectionInput
+        withTargetManagedDiskTags(Map<String, String> targetManagedDiskTags) {
         this.targetManagedDiskTags = targetManagedDiskTags;
         return this;
     }
 
     /**
      * Get the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @return the targetNicTags value.
      */
     public Map<String, String> targetNicTags() {
@@ -759,7 +744,7 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Set the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @param targetNicTags the targetNicTags value to set.
      * @return the HyperVReplicaAzureEnableProtectionInput object itself.
      */
@@ -770,14 +755,154 @@ public final class HyperVReplicaAzureEnableProtectionInput extends EnableProtect
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (disksToIncludeForManagedDisks() != null) {
             disksToIncludeForManagedDisks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("hvHostVmId", this.hvHostVmId);
+        jsonWriter.writeStringField("vmName", this.vmName);
+        jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeStringField("vhdId", this.vhdId);
+        jsonWriter.writeStringField("targetStorageAccountId", this.targetStorageAccountId);
+        jsonWriter.writeStringField("targetAzureNetworkId", this.targetAzureNetworkId);
+        jsonWriter.writeStringField("targetAzureSubnetId", this.targetAzureSubnetId);
+        jsonWriter.writeStringField("enableRdpOnTargetOption", this.enableRdpOnTargetOption);
+        jsonWriter.writeStringField("targetAzureVmName", this.targetAzureVmName);
+        jsonWriter.writeStringField("logStorageAccountId", this.logStorageAccountId);
+        jsonWriter.writeArrayField("disksToInclude", this.disksToInclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("targetAzureV1ResourceGroupId", this.targetAzureV1ResourceGroupId);
+        jsonWriter.writeStringField("targetAzureV2ResourceGroupId", this.targetAzureV2ResourceGroupId);
+        jsonWriter.writeStringField("useManagedDisks", this.useManagedDisks);
+        jsonWriter.writeStringField("targetAvailabilitySetId", this.targetAvailabilitySetId);
+        jsonWriter.writeStringField("targetAvailabilityZone", this.targetAvailabilityZone);
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("sqlServerLicenseType",
+            this.sqlServerLicenseType == null ? null : this.sqlServerLicenseType.toString());
+        jsonWriter.writeStringField("targetVmSize", this.targetVmSize);
+        jsonWriter.writeStringField("targetProximityPlacementGroupId", this.targetProximityPlacementGroupId);
+        jsonWriter.writeStringField("useManagedDisksForReplication", this.useManagedDisksForReplication);
+        jsonWriter.writeStringField("diskType", this.diskType == null ? null : this.diskType.toString());
+        jsonWriter.writeArrayField("disksToIncludeForManagedDisks", this.disksToIncludeForManagedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("diskEncryptionSetId", this.diskEncryptionSetId);
+        jsonWriter.writeMapField("targetVmTags", this.targetVmTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("seedManagedDiskTags", this.seedManagedDiskTags,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetManagedDiskTags", this.targetManagedDiskTags,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetNicTags", this.targetNicTags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVReplicaAzureEnableProtectionInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVReplicaAzureEnableProtectionInput if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVReplicaAzureEnableProtectionInput.
+     */
+    public static HyperVReplicaAzureEnableProtectionInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVReplicaAzureEnableProtectionInput deserializedHyperVReplicaAzureEnableProtectionInput
+                = new HyperVReplicaAzureEnableProtectionInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.instanceType = reader.getString();
+                } else if ("hvHostVmId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.hvHostVmId = reader.getString();
+                } else if ("vmName".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.vmName = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.osType = reader.getString();
+                } else if ("vhdId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.vhdId = reader.getString();
+                } else if ("targetStorageAccountId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetStorageAccountId = reader.getString();
+                } else if ("targetAzureNetworkId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetAzureNetworkId = reader.getString();
+                } else if ("targetAzureSubnetId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetAzureSubnetId = reader.getString();
+                } else if ("enableRdpOnTargetOption".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.enableRdpOnTargetOption = reader.getString();
+                } else if ("targetAzureVmName".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetAzureVmName = reader.getString();
+                } else if ("logStorageAccountId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.logStorageAccountId = reader.getString();
+                } else if ("disksToInclude".equals(fieldName)) {
+                    List<String> disksToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHyperVReplicaAzureEnableProtectionInput.disksToInclude = disksToInclude;
+                } else if ("targetAzureV1ResourceGroupId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetAzureV1ResourceGroupId
+                        = reader.getString();
+                } else if ("targetAzureV2ResourceGroupId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetAzureV2ResourceGroupId
+                        = reader.getString();
+                } else if ("useManagedDisks".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.useManagedDisks = reader.getString();
+                } else if ("targetAvailabilitySetId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetAvailabilitySetId = reader.getString();
+                } else if ("targetAvailabilityZone".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetAvailabilityZone = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.licenseType
+                        = LicenseType.fromString(reader.getString());
+                } else if ("sqlServerLicenseType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.sqlServerLicenseType
+                        = SqlServerLicenseType.fromString(reader.getString());
+                } else if ("targetVmSize".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetVmSize = reader.getString();
+                } else if ("targetProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetProximityPlacementGroupId
+                        = reader.getString();
+                } else if ("useManagedDisksForReplication".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.useManagedDisksForReplication
+                        = reader.getString();
+                } else if ("diskType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.diskType
+                        = DiskAccountType.fromString(reader.getString());
+                } else if ("disksToIncludeForManagedDisks".equals(fieldName)) {
+                    List<HyperVReplicaAzureDiskInputDetails> disksToIncludeForManagedDisks
+                        = reader.readArray(reader1 -> HyperVReplicaAzureDiskInputDetails.fromJson(reader1));
+                    deserializedHyperVReplicaAzureEnableProtectionInput.disksToIncludeForManagedDisks
+                        = disksToIncludeForManagedDisks;
+                } else if ("diskEncryptionSetId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzureEnableProtectionInput.diskEncryptionSetId = reader.getString();
+                } else if ("targetVmTags".equals(fieldName)) {
+                    Map<String, String> targetVmTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetVmTags = targetVmTags;
+                } else if ("seedManagedDiskTags".equals(fieldName)) {
+                    Map<String, String> seedManagedDiskTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHyperVReplicaAzureEnableProtectionInput.seedManagedDiskTags = seedManagedDiskTags;
+                } else if ("targetManagedDiskTags".equals(fieldName)) {
+                    Map<String, String> targetManagedDiskTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetManagedDiskTags = targetManagedDiskTags;
+                } else if ("targetNicTags".equals(fieldName)) {
+                    Map<String, String> targetNicTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHyperVReplicaAzureEnableProtectionInput.targetNicTags = targetNicTags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVReplicaAzureEnableProtectionInput;
+        });
     }
 }

@@ -5,31 +5,107 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Update replication protected item provider specific input. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = UpdateReplicationProtectedItemProviderSpecificInput.class)
-@JsonTypeName("UpdateApplianceForReplicationProtectedItemProviderSpecificInput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmUpdateApplianceForReplicationProtectedItemInput.class)
-})
+/**
+ * Update replication protected item provider specific input.
+ */
 @Immutable
-public class UpdateReplicationProtectedItemProviderSpecificInput {
-    /** Creates an instance of UpdateReplicationProtectedItemProviderSpecificInput class. */
+public class UpdateReplicationProtectedItemProviderSpecificInput
+    implements JsonSerializable<UpdateReplicationProtectedItemProviderSpecificInput> {
+    /*
+     * The class type.
+     */
+    private String instanceType = "UpdateApplianceForReplicationProtectedItemProviderSpecificInput";
+
+    /**
+     * Creates an instance of UpdateReplicationProtectedItemProviderSpecificInput class.
+     */
     public UpdateReplicationProtectedItemProviderSpecificInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateReplicationProtectedItemProviderSpecificInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateReplicationProtectedItemProviderSpecificInput if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateReplicationProtectedItemProviderSpecificInput.
+     */
+    public static UpdateReplicationProtectedItemProviderSpecificInput fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("InMageRcm".equals(discriminatorValue)) {
+                    return InMageRcmUpdateApplianceForReplicationProtectedItemInput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static UpdateReplicationProtectedItemProviderSpecificInput fromJsonKnownDiscriminator(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateReplicationProtectedItemProviderSpecificInput deserializedUpdateReplicationProtectedItemProviderSpecificInput
+                = new UpdateReplicationProtectedItemProviderSpecificInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedUpdateReplicationProtectedItemProviderSpecificInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateReplicationProtectedItemProviderSpecificInput;
+        });
     }
 }

@@ -12,8 +12,8 @@ public final class MetadataSyncConfigImpl implements MetadataSyncConfig {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    MetadataSyncConfigImpl(
-        MetadataSyncConfigInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    MetadataSyncConfigImpl(MetadataSyncConfigInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

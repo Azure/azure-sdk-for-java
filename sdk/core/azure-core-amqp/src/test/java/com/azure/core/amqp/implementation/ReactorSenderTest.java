@@ -111,7 +111,7 @@ public class ReactorSenderTest {
     private ArgumentCaptor<ReadableBuffer> messageBufferCaptor;
 
     @Captor
-    private  ArgumentCaptor<DeliveryState> deliveryStateArgumentCaptor;
+    private ArgumentCaptor<DeliveryState> deliveryStateArgumentCaptor;
 
     private final TestPublisher<AmqpResponseCode> authorizationResults = TestPublisher.createCold();
     private Message message;
@@ -156,9 +156,7 @@ public class ReactorSenderTest {
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(sender.getRemoteMaxMessageSize()).thenReturn(UnsignedLong.valueOf(1000));
 
-        options = new AmqpRetryOptions()
-            .setTryTimeout(Duration.ofSeconds(2))
-            .setMode(AmqpRetryMode.EXPONENTIAL);
+        options = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(2)).setMode(AmqpRetryMode.EXPONENTIAL);
 
         message = Proton.message();
         message.setMessageId("my-message-id");
@@ -179,17 +177,11 @@ public class ReactorSenderTest {
 
     @Test
     public void testLinkSize() {
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
 
-        StepVerifier.create(reactorSender.getLinkSize())
-            .expectNext(1000)
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
-        StepVerifier.create(reactorSender.getLinkSize())
-            .expectNext(1000)
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.getLinkSize()).expectNext(1000).expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.getLinkSize()).expectNext(1000).expectComplete().verify(VERIFY_TIMEOUT);
 
         verify(sender).getRemoteMaxMessageSize();
     }
@@ -199,13 +191,13 @@ public class ReactorSenderTest {
         // Arrange
         final String exceptionString = "fake exception";
 
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final ReactorSender spyReactorSender = spy(reactorSender);
 
         final Throwable exception = new RuntimeException(exceptionString);
-        doReturn(Mono.error(exception)).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(),
-            eq(transactionalState));
+        doReturn(Mono.error(exception)).when(spyReactorSender)
+            .send(any(byte[].class), anyInt(), anyInt(), eq(transactionalState));
 
         // Act
         StepVerifier.create(spyReactorSender.send(message, transactionalState))
@@ -224,25 +216,21 @@ public class ReactorSenderTest {
     @Test
     public void testSendWithTransaction() {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final ReactorSender spyReactorSender = spy(reactorSender);
 
-        doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(),
-            eq(transactionalState));
+        doReturn(Mono.empty()).when(spyReactorSender)
+            .send(any(byte[].class), anyInt(), anyInt(), eq(transactionalState));
 
         // Act
-        StepVerifier.create(spyReactorSender.send(message, transactionalState))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
-        StepVerifier.create(spyReactorSender.send(message, transactionalState))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(spyReactorSender.send(message, transactionalState)).expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(spyReactorSender.send(message, transactionalState)).expectComplete().verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(sender).getRemoteMaxMessageSize();
-        verify(spyReactorSender, times(2)).send(any(byte[].class), anyInt(),
-            eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), eq(transactionalState));
+        verify(spyReactorSender, times(2)).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT),
+            eq(transactionalState));
     }
 
     /**
@@ -259,8 +247,8 @@ public class ReactorSenderTest {
             return null;
         }).when(scheduler).schedule(any(Runnable.class), anyLong(), any(TimeUnit.class));
 
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
 
         // Creating delivery for sending.
         final Delivery deliveryToSend = mock(Delivery.class);
@@ -276,7 +264,15 @@ public class ReactorSenderTest {
 
         // Act
         StepVerifier.create(reactorSender.send(message, transactionalState))
-            .expectError(AmqpException.class) // Because we did not process a "delivered message", it'll timeout.
+            .expectError(AmqpException.class) // Because
+            // we did
+            // not
+            // process
+            // a
+            // "delivered
+            // message",
+            // it'll
+            // timeout.
             .verify(VERIFY_TIMEOUT);
 
         // Assert
@@ -289,19 +285,15 @@ public class ReactorSenderTest {
     @Test
     public void testSend() {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final ReactorSender spyReactorSender = spy(reactorSender);
 
         doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
 
         // Act
-        StepVerifier.create(spyReactorSender.send(message))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
-        StepVerifier.create(spyReactorSender.send(message))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(spyReactorSender.send(message)).expectComplete().verify(VERIFY_TIMEOUT);
+        StepVerifier.create(spyReactorSender.send(message)).expectComplete().verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(sender).getRemoteMaxMessageSize();
@@ -315,8 +307,8 @@ public class ReactorSenderTest {
         message2.setMessageId("id2");
         message2.setBody(new AmqpValue("world"));
 
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final ReactorSender spyReactorSender = spy(reactorSender);
 
         doReturn(Mono.empty()).when(spyReactorSender).send(any(ReadableBuffer.class), anyInt(), isNull());
@@ -355,20 +347,18 @@ public class ReactorSenderTest {
         // Arrange
         when(sender.getRemoteMaxMessageSize()).thenReturn(UnsignedLong.valueOf(10));
 
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final ReactorSender spyReactorSender = spy(reactorSender);
 
         doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
 
         // Act
-        StepVerifier.create(spyReactorSender.send(message))
-            .expectErrorSatisfies(throwable -> {
-                Assertions.assertTrue(throwable instanceof AmqpException);
-                Assertions.assertTrue(throwable.getMessage().startsWith("Error sending. Size of the payload exceeded "
-                    + "maximum message size"));
-            })
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(spyReactorSender.send(message)).expectErrorSatisfies(throwable -> {
+            Assertions.assertTrue(throwable instanceof AmqpException);
+            Assertions.assertTrue(throwable.getMessage()
+                .startsWith("Error sending. Size of the payload exceeded " + "maximum message size"));
+        }).verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(sender, times(1)).getRemoteMaxMessageSize();
@@ -381,8 +371,8 @@ public class ReactorSenderTest {
     @Test
     void parentDisposesConnection() throws IOException {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false, "Test-shutdown-signal");
 
         doAnswer(invocationOnMock -> {
@@ -414,8 +404,8 @@ public class ReactorSenderTest {
     @Test
     void parentClosesEndpoint() throws IOException {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false, "Test-shutdown-signal");
 
         doAnswer(invocationOnMock -> {
@@ -451,8 +441,8 @@ public class ReactorSenderTest {
     @Test
     void disposesOnHandlerError() {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final UnsupportedOperationException testException = new UnsupportedOperationException("test-exception");
 
         // Act and Assert
@@ -463,9 +453,7 @@ public class ReactorSenderTest {
             .verify(VERIFY_TIMEOUT);
 
         // Expect that this Mono has completed.
-        StepVerifier.create(reactorSender.isClosed())
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.isClosed()).expectComplete().verify(VERIFY_TIMEOUT);
 
         assertTrue(reactorSender.isDisposed());
 
@@ -479,8 +467,8 @@ public class ReactorSenderTest {
     @Test
     void disposesOnHandlerComplete() throws IOException {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
 
         doAnswer(invocationOnMock -> {
             final Runnable work = invocationOnMock.getArgument(0);
@@ -496,9 +484,7 @@ public class ReactorSenderTest {
             .verify(VERIFY_TIMEOUT);
 
         // Expect that this Mono has completed.
-        StepVerifier.create(reactorSender.isClosed())
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.isClosed()).expectComplete().verify(VERIFY_TIMEOUT);
 
         assertTrue(reactorSender.isDisposed());
 
@@ -514,8 +500,8 @@ public class ReactorSenderTest {
     @Test
     void disposesOnErrorSchedulingCloseWork() throws IOException {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final AtomicBoolean wasClosed = new AtomicBoolean();
         doAnswer(invocationOnMock -> {
             if (wasClosed.get()) {
@@ -533,20 +519,18 @@ public class ReactorSenderTest {
             .verify(VERIFY_TIMEOUT);
 
         // Expect that this Mono has completed.
-        StepVerifier.create(reactorSender.isClosed())
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.isClosed()).expectComplete().verify(VERIFY_TIMEOUT);
     }
 
     @Test
     void disposeCompletes() throws IOException {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final String message = "some-message";
         final AmqpErrorCondition errorCondition = AmqpErrorCondition.UNAUTHORIZED_ACCESS;
-        final ErrorCondition condition = new ErrorCondition(Symbol.getSymbol(errorCondition.getErrorCondition()),
-            "Test-users");
+        final ErrorCondition condition
+            = new ErrorCondition(Symbol.getSymbol(errorCondition.getErrorCondition()), "Test-users");
 
         doAnswer(invocationOnMock -> {
             endpointStatePublisher.complete();
@@ -560,14 +544,10 @@ public class ReactorSenderTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
-        StepVerifier.create(reactorSender.closeAsync(message, condition))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.closeAsync(message, condition)).expectComplete().verify(VERIFY_TIMEOUT);
 
         // Expect the same outcome.
-        StepVerifier.create(reactorSender.closeAsync("something", null))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.closeAsync("something", null)).expectComplete().verify(VERIFY_TIMEOUT);
 
         // Assert
         assertTrue(reactorSender.isDisposed());
@@ -586,8 +566,8 @@ public class ReactorSenderTest {
     @Test
     void pendingMessagesError() throws IOException {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final UnsupportedOperationException testException = new UnsupportedOperationException("test-exception");
         final Message message = Proton.message();
         final UnsignedLong size = new UnsignedLong(2048L);
@@ -599,16 +579,11 @@ public class ReactorSenderTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act and Assert
-        StepVerifier.create(reactorSender.send(message))
-            .then(() -> {
-            })
-            .expectError(UnsupportedOperationException.class)
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.send(message)).then(() -> {
+        }).expectError(UnsupportedOperationException.class).verify(VERIFY_TIMEOUT);
 
         // Expect that this Mono has completed.
-        StepVerifier.create(reactorSender.isClosed())
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.isClosed()).expectComplete().verify(VERIFY_TIMEOUT);
 
         assertTrue(reactorSender.isDisposed());
 
@@ -622,8 +597,8 @@ public class ReactorSenderTest {
     @Test
     void pendingMessagesErrorWithShutdown() throws IOException {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final Message message = Proton.message();
         final UnsignedLong size = new UnsignedLong(2048L);
         when(sender.getRemoteMaxMessageSize()).thenReturn(size);
@@ -647,15 +622,13 @@ public class ReactorSenderTest {
         }).when(sender).close();
 
         // Act and Assert
-        StepVerifier.create(reactorSender.send(message))
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof AmqpException);
+        StepVerifier.create(reactorSender.send(message)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof AmqpException);
 
-                final AmqpException amqpException = (AmqpException) error;
-                assertTrue(amqpException.isTransient());
-                assertTrue(amqpException.getMessage().contains("not complete sends"));
-            })
-            .verify(VERIFY_TIMEOUT);
+            final AmqpException amqpException = (AmqpException) error;
+            assertTrue(amqpException.isTransient());
+            assertTrue(amqpException.getMessage().contains("not complete sends"));
+        }).verify(VERIFY_TIMEOUT);
 
         assertTrue(reactorSender.isDisposed());
 
@@ -666,8 +639,8 @@ public class ReactorSenderTest {
     @Test
     void closesWhenNoLongerAuthorized() throws IOException {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final AmqpException error = new AmqpException(false, AmqpErrorCondition.ILLEGAL_STATE, "not-allowed",
             new AmqpErrorContext("foo-bar"));
 
@@ -691,8 +664,8 @@ public class ReactorSenderTest {
     @Test
     void closesWhenAuthorizationResultsComplete() throws IOException {
         // Arrange
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
 
         doAnswer(invocationOnMock -> {
             final Runnable work = invocationOnMock.getArgument(0);
@@ -715,9 +688,8 @@ public class ReactorSenderTest {
     @Test
     public void sendWorkTimeout() throws IOException {
         // Arrange
-        final AmqpRetryOptions noRetryOptions = new AmqpRetryOptions()
-            .setTryTimeout(Duration.ofSeconds(2))
-            .setMaxRetries(0);
+        final AmqpRetryOptions noRetryOptions
+            = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(2)).setMaxRetries(0);
         final long milliseconds = noRetryOptions.getTryTimeout().toMillis();
 
         doAnswer(invocationOnMock -> {
@@ -737,17 +709,14 @@ public class ReactorSenderTest {
         when(sender.advance()).thenReturn(true);
         when(sender.send(any(), eq(0), anyInt())).thenAnswer(invocation -> invocation.getArgument(2));
 
-
-        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, noRetryOptions, scheduler, AmqpMetricsProvider.noop());
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, noRetryOptions, scheduler, AmqpMetricsProvider.noop());
 
         // Act
-        StepVerifier.create(reactorSender.send(message))
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof AmqpException);
-                assertEquals(AmqpErrorCondition.TIMEOUT_ERROR, ((AmqpException) error).getErrorCondition());
-            })
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorSender.send(message)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof AmqpException);
+            assertEquals(AmqpErrorCondition.TIMEOUT_ERROR, ((AmqpException) error).getErrorCondition());
+        }).verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(sender).getRemoteMaxMessageSize();
@@ -777,9 +746,9 @@ public class ReactorSenderTest {
         when(sender.send(any(), anyInt(), anyInt())).thenAnswer(invocation -> invocation.getArgument(2));
 
         TestMeter meter = new TestMeter();
-        ReactorSender reactorSenderWithMetrics = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
-            reactorProvider, tokenManager, messageSerializer, options, scheduler,
-            new AmqpMetricsProvider(meter, HOSTNAME, ENTITY_PATH));
+        ReactorSender reactorSenderWithMetrics
+            = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler, reactorProvider, tokenManager,
+                messageSerializer, options, scheduler, new AmqpMetricsProvider(meter, HOSTNAME, ENTITY_PATH));
 
         // Act
         StepVerifier.create(reactorSenderWithMetrics.send(message))

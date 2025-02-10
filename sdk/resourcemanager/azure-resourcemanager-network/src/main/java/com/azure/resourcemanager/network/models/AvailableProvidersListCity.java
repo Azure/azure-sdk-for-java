@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * City or town details.
  */
 @Fluent
-public final class AvailableProvidersListCity {
+public final class AvailableProvidersListCity implements JsonSerializable<AvailableProvidersListCity> {
     /*
      * The city or town name.
      */
-    @JsonProperty(value = "cityName")
     private String cityName;
 
     /*
      * A list of Internet service providers.
      */
-    @JsonProperty(value = "providers")
     private List<String> providers;
 
     /**
@@ -77,5 +79,45 @@ public final class AvailableProvidersListCity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cityName", this.cityName);
+        jsonWriter.writeArrayField("providers", this.providers, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableProvidersListCity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableProvidersListCity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableProvidersListCity.
+     */
+    public static AvailableProvidersListCity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableProvidersListCity deserializedAvailableProvidersListCity = new AvailableProvidersListCity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cityName".equals(fieldName)) {
+                    deserializedAvailableProvidersListCity.cityName = reader.getString();
+                } else if ("providers".equals(fieldName)) {
+                    List<String> providers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAvailableProvidersListCity.providers = providers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableProvidersListCity;
+        });
     }
 }

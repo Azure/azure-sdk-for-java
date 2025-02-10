@@ -6,11 +6,8 @@ package com.azure.resourcemanager.hybridcontainerservice.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterUpgradeProfileInner;
-import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterPoolUpgradeProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterUpgradeProfile;
-import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
-import java.util.Collections;
-import java.util.List;
+import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterUpgradeProfileProperties;
 
 public final class ProvisionedClusterUpgradeProfileImpl implements ProvisionedClusterUpgradeProfile {
     private ProvisionedClusterUpgradeProfileInner innerObject;
@@ -35,25 +32,12 @@ public final class ProvisionedClusterUpgradeProfileImpl implements ProvisionedCl
         return this.innerModel().type();
     }
 
+    public ProvisionedClusterUpgradeProfileProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public ResourceProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public ProvisionedClusterPoolUpgradeProfile controlPlaneProfile() {
-        return this.innerModel().controlPlaneProfile();
-    }
-
-    public List<ProvisionedClusterPoolUpgradeProfile> agentPoolProfiles() {
-        List<ProvisionedClusterPoolUpgradeProfile> inner = this.innerModel().agentPoolProfiles();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     public ProvisionedClusterUpgradeProfileInner innerModel() {

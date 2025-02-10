@@ -5,39 +5,42 @@
 package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elastic.models.SendingLogs;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a resource currently being monitored by the Elastic monitor resource. */
+/**
+ * The properties of a resource currently being monitored by the Elastic monitor resource.
+ */
 @Fluent
-public final class MonitoredResourceInner {
+public final class MonitoredResourceInner implements JsonSerializable<MonitoredResourceInner> {
     /*
      * The ARM id of the resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
-     * SendingLogs
-     *
      * Flag indicating the status of the resource for sending logs operation to Elastic.
      */
-    @JsonProperty(value = "sendingLogs")
     private SendingLogs sendingLogs;
 
     /*
      * Reason for why the resource is sending logs (or why it is not sending).
      */
-    @JsonProperty(value = "reasonForLogsStatus")
     private String reasonForLogsStatus;
 
-    /** Creates an instance of MonitoredResourceInner class. */
+    /**
+     * Creates an instance of MonitoredResourceInner class.
+     */
     public MonitoredResourceInner() {
     }
 
     /**
      * Get the id property: The ARM id of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -46,7 +49,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Set the id property: The ARM id of the resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -56,10 +59,8 @@ public final class MonitoredResourceInner {
     }
 
     /**
-     * Get the sendingLogs property: SendingLogs
-     *
-     * <p>Flag indicating the status of the resource for sending logs operation to Elastic.
-     *
+     * Get the sendingLogs property: Flag indicating the status of the resource for sending logs operation to Elastic.
+     * 
      * @return the sendingLogs value.
      */
     public SendingLogs sendingLogs() {
@@ -67,10 +68,8 @@ public final class MonitoredResourceInner {
     }
 
     /**
-     * Set the sendingLogs property: SendingLogs
-     *
-     * <p>Flag indicating the status of the resource for sending logs operation to Elastic.
-     *
+     * Set the sendingLogs property: Flag indicating the status of the resource for sending logs operation to Elastic.
+     * 
      * @param sendingLogs the sendingLogs value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -81,7 +80,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Get the reasonForLogsStatus property: Reason for why the resource is sending logs (or why it is not sending).
-     *
+     * 
      * @return the reasonForLogsStatus value.
      */
     public String reasonForLogsStatus() {
@@ -90,7 +89,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Set the reasonForLogsStatus property: Reason for why the resource is sending logs (or why it is not sending).
-     *
+     * 
      * @param reasonForLogsStatus the reasonForLogsStatus value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -101,9 +100,51 @@ public final class MonitoredResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("sendingLogs", this.sendingLogs == null ? null : this.sendingLogs.toString());
+        jsonWriter.writeStringField("reasonForLogsStatus", this.reasonForLogsStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitoredResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitoredResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitoredResourceInner.
+     */
+    public static MonitoredResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitoredResourceInner deserializedMonitoredResourceInner = new MonitoredResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.id = reader.getString();
+                } else if ("sendingLogs".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.sendingLogs = SendingLogs.fromString(reader.getString());
+                } else if ("reasonForLogsStatus".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.reasonForLogsStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitoredResourceInner;
+        });
     }
 }

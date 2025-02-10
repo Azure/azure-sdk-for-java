@@ -5,29 +5,48 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** IaaS VM workload-specific restore with integrated rehydration of recovery point. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("IaasVMRestoreWithRehydrationRequest")
+/**
+ * IaaS VM workload-specific restore with integrated rehydration of recovery point.
+ */
 @Fluent
 public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequest {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "IaasVMRestoreWithRehydrationRequest";
+
+    /*
      * RP Rehydration Info
      */
-    @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
-    /** Creates an instance of IaasVMRestoreWithRehydrationRequest class. */
+    /**
+     * Creates an instance of IaasVMRestoreWithRehydrationRequest class.
+     */
     public IaasVMRestoreWithRehydrationRequest() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @return the recoveryPointRehydrationInfo value.
      */
     public RecoveryPointRehydrationInfo recoveryPointRehydrationInfo() {
@@ -36,189 +55,390 @@ public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequ
 
     /**
      * Set the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @param recoveryPointRehydrationInfo the recoveryPointRehydrationInfo value to set.
      * @return the IaasVMRestoreWithRehydrationRequest object itself.
      */
-    public IaasVMRestoreWithRehydrationRequest withRecoveryPointRehydrationInfo(
-        RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
+    public IaasVMRestoreWithRehydrationRequest
+        withRecoveryPointRehydrationInfo(RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
         this.recoveryPointRehydrationInfo = recoveryPointRehydrationInfo;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withRecoveryPointId(String recoveryPointId) {
         super.withRecoveryPointId(recoveryPointId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withRecoveryType(RecoveryType recoveryType) {
         super.withRecoveryType(recoveryType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withTargetResourceGroupId(String targetResourceGroupId) {
         super.withTargetResourceGroupId(targetResourceGroupId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withStorageAccountId(String storageAccountId) {
         super.withStorageAccountId(storageAccountId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withVirtualNetworkId(String virtualNetworkId) {
         super.withVirtualNetworkId(virtualNetworkId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withSubnetId(String subnetId) {
         super.withSubnetId(subnetId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withTargetDomainNameId(String targetDomainNameId) {
         super.withTargetDomainNameId(targetDomainNameId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withRegion(String region) {
         super.withRegion(region);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withAffinityGroup(String affinityGroup) {
         super.withAffinityGroup(affinityGroup);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withCreateNewCloudService(Boolean createNewCloudService) {
         super.withCreateNewCloudService(createNewCloudService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withOriginalStorageAccountOption(Boolean originalStorageAccountOption) {
         super.withOriginalStorageAccountOption(originalStorageAccountOption);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withEncryptionDetails(EncryptionDetails encryptionDetails) {
         super.withEncryptionDetails(encryptionDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withRestoreDiskLunList(List<Integer> restoreDiskLunList) {
         super.withRestoreDiskLunList(restoreDiskLunList);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withRestoreWithManagedDisks(Boolean restoreWithManagedDisks) {
         super.withRestoreWithManagedDisks(restoreWithManagedDisks);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withDiskEncryptionSetId(String diskEncryptionSetId) {
         super.withDiskEncryptionSetId(diskEncryptionSetId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withZones(List<String> zones) {
         super.withZones(zones);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withIdentityInfo(IdentityInfo identityInfo) {
         super.withIdentityInfo(identityInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public IaasVMRestoreWithRehydrationRequest withIdentityBasedRestoreDetails(
-        IdentityBasedRestoreDetails identityBasedRestoreDetails) {
+    public IaasVMRestoreWithRehydrationRequest
+        withIdentityBasedRestoreDetails(IdentityBasedRestoreDetails identityBasedRestoreDetails) {
         super.withIdentityBasedRestoreDetails(identityBasedRestoreDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withExtendedLocation(ExtendedLocation extendedLocation) {
         super.withExtendedLocation(extendedLocation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withSecuredVMDetails(SecuredVMDetails securedVMDetails) {
         super.withSecuredVMDetails(securedVMDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public IaasVMRestoreWithRehydrationRequest withTargetDiskNetworkAccessSettings(
-        TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings) {
+    public IaasVMRestoreWithRehydrationRequest
+        withTargetDiskNetworkAccessSettings(TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings) {
         super.withTargetDiskNetworkAccessSettings(targetDiskNetworkAccessSettings);
         return this;
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public IaasVMRestoreWithRehydrationRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointRehydrationInfo() != null) {
             recoveryPointRehydrationInfo().validate();
         }
+        if (encryptionDetails() != null) {
+            encryptionDetails().validate();
+        }
+        if (identityInfo() != null) {
+            identityInfo().validate();
+        }
+        if (identityBasedRestoreDetails() != null) {
+            identityBasedRestoreDetails().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
+        if (securedVMDetails() != null) {
+            securedVMDetails().validate();
+        }
+        if (targetDiskNetworkAccessSettings() != null) {
+            targetDiskNetworkAccessSettings().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("recoveryPointId", recoveryPointId());
+        jsonWriter.writeStringField("recoveryType", recoveryType() == null ? null : recoveryType().toString());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("targetVirtualMachineId", targetVirtualMachineId());
+        jsonWriter.writeStringField("targetResourceGroupId", targetResourceGroupId());
+        jsonWriter.writeStringField("storageAccountId", storageAccountId());
+        jsonWriter.writeStringField("virtualNetworkId", virtualNetworkId());
+        jsonWriter.writeStringField("subnetId", subnetId());
+        jsonWriter.writeStringField("targetDomainNameId", targetDomainNameId());
+        jsonWriter.writeStringField("region", region());
+        jsonWriter.writeStringField("affinityGroup", affinityGroup());
+        jsonWriter.writeBooleanField("createNewCloudService", createNewCloudService());
+        jsonWriter.writeBooleanField("originalStorageAccountOption", originalStorageAccountOption());
+        jsonWriter.writeJsonField("encryptionDetails", encryptionDetails());
+        jsonWriter.writeArrayField("restoreDiskLunList", restoreDiskLunList(),
+            (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeBooleanField("restoreWithManagedDisks", restoreWithManagedDisks());
+        jsonWriter.writeStringField("diskEncryptionSetId", diskEncryptionSetId());
+        jsonWriter.writeArrayField("zones", zones(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identityInfo", identityInfo());
+        jsonWriter.writeJsonField("identityBasedRestoreDetails", identityBasedRestoreDetails());
+        jsonWriter.writeJsonField("extendedLocation", extendedLocation());
+        jsonWriter.writeJsonField("securedVMDetails", securedVMDetails());
+        jsonWriter.writeJsonField("targetDiskNetworkAccessSettings", targetDiskNetworkAccessSettings());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeJsonField("recoveryPointRehydrationInfo", this.recoveryPointRehydrationInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IaasVMRestoreWithRehydrationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IaasVMRestoreWithRehydrationRequest if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IaasVMRestoreWithRehydrationRequest.
+     */
+    public static IaasVMRestoreWithRehydrationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IaasVMRestoreWithRehydrationRequest deserializedIaasVMRestoreWithRehydrationRequest
+                = new IaasVMRestoreWithRehydrationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIaasVMRestoreWithRehydrationRequest
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withRecoveryPointId(reader.getString());
+                } else if ("recoveryType".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest
+                        .withRecoveryType(RecoveryType.fromString(reader.getString()));
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withSourceResourceId(reader.getString());
+                } else if ("targetVirtualMachineId".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withTargetVirtualMachineId(reader.getString());
+                } else if ("targetResourceGroupId".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withTargetResourceGroupId(reader.getString());
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withStorageAccountId(reader.getString());
+                } else if ("virtualNetworkId".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withVirtualNetworkId(reader.getString());
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withSubnetId(reader.getString());
+                } else if ("targetDomainNameId".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withTargetDomainNameId(reader.getString());
+                } else if ("region".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withRegion(reader.getString());
+                } else if ("affinityGroup".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withAffinityGroup(reader.getString());
+                } else if ("createNewCloudService".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest
+                        .withCreateNewCloudService(reader.getNullable(JsonReader::getBoolean));
+                } else if ("originalStorageAccountOption".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest
+                        .withOriginalStorageAccountOption(reader.getNullable(JsonReader::getBoolean));
+                } else if ("encryptionDetails".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest
+                        .withEncryptionDetails(EncryptionDetails.fromJson(reader));
+                } else if ("restoreDiskLunList".equals(fieldName)) {
+                    List<Integer> restoreDiskLunList = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedIaasVMRestoreWithRehydrationRequest.withRestoreDiskLunList(restoreDiskLunList);
+                } else if ("restoreWithManagedDisks".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest
+                        .withRestoreWithManagedDisks(reader.getNullable(JsonReader::getBoolean));
+                } else if ("diskEncryptionSetId".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withDiskEncryptionSetId(reader.getString());
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIaasVMRestoreWithRehydrationRequest.withZones(zones);
+                } else if ("identityInfo".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.withIdentityInfo(IdentityInfo.fromJson(reader));
+                } else if ("identityBasedRestoreDetails".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest
+                        .withIdentityBasedRestoreDetails(IdentityBasedRestoreDetails.fromJson(reader));
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest
+                        .withExtendedLocation(ExtendedLocation.fromJson(reader));
+                } else if ("securedVMDetails".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest
+                        .withSecuredVMDetails(SecuredVMDetails.fromJson(reader));
+                } else if ("targetDiskNetworkAccessSettings".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest
+                        .withTargetDiskNetworkAccessSettings(TargetDiskNetworkAccessSettings.fromJson(reader));
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.objectType = reader.getString();
+                } else if ("recoveryPointRehydrationInfo".equals(fieldName)) {
+                    deserializedIaasVMRestoreWithRehydrationRequest.recoveryPointRehydrationInfo
+                        = RecoveryPointRehydrationInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIaasVMRestoreWithRehydrationRequest;
+        });
     }
 }

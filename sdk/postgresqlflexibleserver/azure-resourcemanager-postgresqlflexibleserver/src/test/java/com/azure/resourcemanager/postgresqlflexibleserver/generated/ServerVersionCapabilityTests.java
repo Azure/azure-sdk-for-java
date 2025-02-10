@@ -10,11 +10,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersionCa
 public final class ServerVersionCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerVersionCapability model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"evfyexfwhybcib\",\"supportedVersionsToUpgrade\":[\"dcsi\",\"ynnaam\",\"ectehf\"],\"status\":\"Available\",\"reason\":\"jeyp\"}")
-                .toObject(ServerVersionCapability.class);
+        ServerVersionCapability model = BinaryData.fromString(
+            "{\"name\":\"evfyexfwhybcib\",\"supportedVersionsToUpgrade\":[\"dcsi\",\"ynnaam\",\"ectehf\"],\"status\":\"Available\",\"reason\":\"jeyp\"}")
+            .toObject(ServerVersionCapability.class);
     }
 
     @org.junit.jupiter.api.Test

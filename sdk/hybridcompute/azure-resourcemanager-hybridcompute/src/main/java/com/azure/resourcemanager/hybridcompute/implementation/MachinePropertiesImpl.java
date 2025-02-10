@@ -11,6 +11,8 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkProfileInner
 import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
+import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
+import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
@@ -19,18 +21,19 @@ import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
+import com.azure.resourcemanager.hybridcompute.models.StorageProfile;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public final class MachinePropertiesImpl implements MachineProperties {
     private MachinePropertiesInner innerObject;
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    MachinePropertiesImpl(
-        MachinePropertiesInner innerObject,
+    MachinePropertiesImpl(MachinePropertiesInner innerObject,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -46,6 +49,18 @@ public final class MachinePropertiesImpl implements MachineProperties {
 
     public ServiceStatuses serviceStatuses() {
         return this.innerModel().serviceStatuses();
+    }
+
+    public HardwareProfile hardwareProfile() {
+        return this.innerModel().hardwareProfile();
+    }
+
+    public StorageProfile storageProfile() {
+        return this.innerModel().storageProfile();
+    }
+
+    public FirmwareProfile firmwareProfile() {
+        return this.innerModel().firmwareProfile();
     }
 
     public CloudMetadata cloudMetadata() {
@@ -94,7 +109,7 @@ public final class MachinePropertiesImpl implements MachineProperties {
         return this.innerModel().agentVersion();
     }
 
-    public String vmId() {
+    public UUID vmId() {
         return this.innerModel().vmId();
     }
 
@@ -122,7 +137,7 @@ public final class MachinePropertiesImpl implements MachineProperties {
         return this.innerModel().osType();
     }
 
-    public String vmUuid() {
+    public UUID vmUuid() {
         return this.innerModel().vmUuid();
     }
 
@@ -137,6 +152,10 @@ public final class MachinePropertiesImpl implements MachineProperties {
 
     public String osSku() {
         return this.innerModel().osSku();
+    }
+
+    public String osEdition() {
+        return this.innerModel().osEdition();
     }
 
     public String domainName() {

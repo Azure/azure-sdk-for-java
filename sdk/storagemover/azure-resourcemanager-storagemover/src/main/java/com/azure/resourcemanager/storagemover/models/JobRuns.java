@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of JobRuns. */
+/**
+ * Resource collection API of JobRuns.
+ */
 public interface JobRuns {
     /**
      * Lists all Job Runs in a Job Definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -22,12 +24,12 @@ public interface JobRuns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Job Runs as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JobRun> list(
-        String resourceGroupName, String storageMoverName, String projectName, String jobDefinitionName);
+    PagedIterable<JobRun> list(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName);
 
     /**
      * Lists all Job Runs in a Job Definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -38,16 +40,12 @@ public interface JobRuns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Job Runs as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<JobRun> list(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
-        Context context);
+    PagedIterable<JobRun> list(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName, Context context);
 
     /**
      * Gets a Job Run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -59,17 +57,12 @@ public interface JobRuns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Job Run resource along with {@link Response}.
      */
-    Response<JobRun> getWithResponse(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
-        String jobRunName,
-        Context context);
+    Response<JobRun> getWithResponse(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName, String jobRunName, Context context);
 
     /**
      * Gets a Job Run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param projectName The name of the Project resource.
@@ -80,10 +73,6 @@ public interface JobRuns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Job Run resource.
      */
-    JobRun get(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
+    JobRun get(String resourceGroupName, String storageMoverName, String projectName, String jobDefinitionName,
         String jobRunName);
 }

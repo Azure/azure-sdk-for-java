@@ -6,23 +6,25 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'.
  */
 @Fluent
-public final class WeeklySchedule {
+public final class WeeklySchedule implements JsonSerializable<WeeklySchedule> {
     /*
      * Specifies the number of weeks between each set of occurrences.
      */
-    @JsonProperty(value = "intervalWeeks", required = true)
     private int intervalWeeks;
 
     /*
      * Specifies on which day of the week the maintenance occurs.
      */
-    @JsonProperty(value = "dayOfWeek", required = true)
     private WeekDay dayOfWeek;
 
     /**
@@ -33,7 +35,7 @@ public final class WeeklySchedule {
 
     /**
      * Get the intervalWeeks property: Specifies the number of weeks between each set of occurrences.
-     *
+     * 
      * @return the intervalWeeks value.
      */
     public int intervalWeeks() {
@@ -42,7 +44,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the intervalWeeks property: Specifies the number of weeks between each set of occurrences.
-     *
+     * 
      * @param intervalWeeks the intervalWeeks value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -53,7 +55,7 @@ public final class WeeklySchedule {
 
     /**
      * Get the dayOfWeek property: Specifies on which day of the week the maintenance occurs.
-     *
+     * 
      * @return the dayOfWeek value.
      */
     public WeekDay dayOfWeek() {
@@ -62,7 +64,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the dayOfWeek property: Specifies on which day of the week the maintenance occurs.
-     *
+     * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -73,15 +75,55 @@ public final class WeeklySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dayOfWeek() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dayOfWeek in model WeeklySchedule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dayOfWeek in model WeeklySchedule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WeeklySchedule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("intervalWeeks", this.intervalWeeks);
+        jsonWriter.writeStringField("dayOfWeek", this.dayOfWeek == null ? null : this.dayOfWeek.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WeeklySchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WeeklySchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WeeklySchedule.
+     */
+    public static WeeklySchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WeeklySchedule deserializedWeeklySchedule = new WeeklySchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("intervalWeeks".equals(fieldName)) {
+                    deserializedWeeklySchedule.intervalWeeks = reader.getInt();
+                } else if ("dayOfWeek".equals(fieldName)) {
+                    deserializedWeeklySchedule.dayOfWeek = WeekDay.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWeeklySchedule;
+        });
+    }
 }

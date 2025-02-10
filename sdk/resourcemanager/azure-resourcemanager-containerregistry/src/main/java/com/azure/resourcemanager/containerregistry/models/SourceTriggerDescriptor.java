@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The source trigger that caused a run. */
+/**
+ * The source trigger that caused a run.
+ */
 @Fluent
-public final class SourceTriggerDescriptor {
+public final class SourceTriggerDescriptor implements JsonSerializable<SourceTriggerDescriptor> {
     /*
      * The unique ID of the trigger.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The event type of the trigger.
      */
-    @JsonProperty(value = "eventType")
     private String eventType;
 
     /*
      * The unique ID that identifies a commit.
      */
-    @JsonProperty(value = "commitId")
     private String commitId;
 
     /*
      * The unique ID that identifies pull request.
      */
-    @JsonProperty(value = "pullRequestId")
     private String pullRequestId;
 
     /*
      * The repository URL.
      */
-    @JsonProperty(value = "repositoryUrl")
     private String repositoryUrl;
 
     /*
      * The branch name in the repository.
      */
-    @JsonProperty(value = "branchName")
     private String branchName;
 
     /*
      * The source control provider type.
      */
-    @JsonProperty(value = "providerType")
     private String providerType;
 
-    /** Creates an instance of SourceTriggerDescriptor class. */
+    /**
+     * Creates an instance of SourceTriggerDescriptor class.
+     */
     public SourceTriggerDescriptor() {
     }
 
     /**
      * Get the id property: The unique ID of the trigger.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -67,7 +68,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the id property: The unique ID of the trigger.
-     *
+     * 
      * @param id the id value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -78,7 +79,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the eventType property: The event type of the trigger.
-     *
+     * 
      * @return the eventType value.
      */
     public String eventType() {
@@ -87,7 +88,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the eventType property: The event type of the trigger.
-     *
+     * 
      * @param eventType the eventType value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -98,7 +99,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the commitId property: The unique ID that identifies a commit.
-     *
+     * 
      * @return the commitId value.
      */
     public String commitId() {
@@ -107,7 +108,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the commitId property: The unique ID that identifies a commit.
-     *
+     * 
      * @param commitId the commitId value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -118,7 +119,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the pullRequestId property: The unique ID that identifies pull request.
-     *
+     * 
      * @return the pullRequestId value.
      */
     public String pullRequestId() {
@@ -127,7 +128,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the pullRequestId property: The unique ID that identifies pull request.
-     *
+     * 
      * @param pullRequestId the pullRequestId value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -138,7 +139,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the repositoryUrl property: The repository URL.
-     *
+     * 
      * @return the repositoryUrl value.
      */
     public String repositoryUrl() {
@@ -147,7 +148,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the repositoryUrl property: The repository URL.
-     *
+     * 
      * @param repositoryUrl the repositoryUrl value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -158,7 +159,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the branchName property: The branch name in the repository.
-     *
+     * 
      * @return the branchName value.
      */
     public String branchName() {
@@ -167,7 +168,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the branchName property: The branch name in the repository.
-     *
+     * 
      * @param branchName the branchName value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -178,7 +179,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Get the providerType property: The source control provider type.
-     *
+     * 
      * @return the providerType value.
      */
     public String providerType() {
@@ -187,7 +188,7 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Set the providerType property: The source control provider type.
-     *
+     * 
      * @param providerType the providerType value to set.
      * @return the SourceTriggerDescriptor object itself.
      */
@@ -198,9 +199,63 @@ public final class SourceTriggerDescriptor {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("eventType", this.eventType);
+        jsonWriter.writeStringField("commitId", this.commitId);
+        jsonWriter.writeStringField("pullRequestId", this.pullRequestId);
+        jsonWriter.writeStringField("repositoryUrl", this.repositoryUrl);
+        jsonWriter.writeStringField("branchName", this.branchName);
+        jsonWriter.writeStringField("providerType", this.providerType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceTriggerDescriptor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceTriggerDescriptor if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceTriggerDescriptor.
+     */
+    public static SourceTriggerDescriptor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceTriggerDescriptor deserializedSourceTriggerDescriptor = new SourceTriggerDescriptor();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSourceTriggerDescriptor.id = reader.getString();
+                } else if ("eventType".equals(fieldName)) {
+                    deserializedSourceTriggerDescriptor.eventType = reader.getString();
+                } else if ("commitId".equals(fieldName)) {
+                    deserializedSourceTriggerDescriptor.commitId = reader.getString();
+                } else if ("pullRequestId".equals(fieldName)) {
+                    deserializedSourceTriggerDescriptor.pullRequestId = reader.getString();
+                } else if ("repositoryUrl".equals(fieldName)) {
+                    deserializedSourceTriggerDescriptor.repositoryUrl = reader.getString();
+                } else if ("branchName".equals(fieldName)) {
+                    deserializedSourceTriggerDescriptor.branchName = reader.getString();
+                } else if ("providerType".equals(fieldName)) {
+                    deserializedSourceTriggerDescriptor.providerType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceTriggerDescriptor;
+        });
     }
 }

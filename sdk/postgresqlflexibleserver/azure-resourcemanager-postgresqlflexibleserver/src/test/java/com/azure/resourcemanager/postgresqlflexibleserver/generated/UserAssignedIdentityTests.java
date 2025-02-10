@@ -15,27 +15,24 @@ import org.junit.jupiter.api.Assertions;
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"userAssignedIdentities\":{\"hahvljuahaq\":{\"principalId\":\"kv\",\"clientId\":\"elmqk\"}},\"type\":\"UserAssigned\",\"tenantId\":\"dhmdua\"}")
-                .toObject(UserAssignedIdentity.class);
+        UserAssignedIdentity model = BinaryData.fromString(
+            "{\"userAssignedIdentities\":{\"hahvljuahaq\":{\"principalId\":\"kv\",\"clientId\":\"elmqk\"}},\"type\":\"SystemAssigned\",\"tenantId\":\"dhmdua\"}")
+            .toObject(UserAssignedIdentity.class);
         Assertions.assertEquals("kv", model.userAssignedIdentities().get("hahvljuahaq").principalId());
         Assertions.assertEquals("elmqk", model.userAssignedIdentities().get("hahvljuahaq").clientId());
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserAssignedIdentity model =
-            new UserAssignedIdentity()
-                .withUserAssignedIdentities(
-                    mapOf("hahvljuahaq", new UserIdentity().withPrincipalId("kv").withClientId("elmqk")))
-                .withType(IdentityType.USER_ASSIGNED);
+        UserAssignedIdentity model = new UserAssignedIdentity()
+            .withUserAssignedIdentities(
+                mapOf("hahvljuahaq", new UserIdentity().withPrincipalId("kv").withClientId("elmqk")))
+            .withType(IdentityType.SYSTEM_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
         Assertions.assertEquals("kv", model.userAssignedIdentities().get("hahvljuahaq").principalId());
         Assertions.assertEquals("elmqk", model.userAssignedIdentities().get("hahvljuahaq").clientId());
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

@@ -4,32 +4,33 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Servers List. */
+/**
+ * Samples for Servers List.
+ */
 public final class ServersListSamples {
     /*
      * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerList.json
      */
     /**
      * Sample code: List servers.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listServers(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.sqlServers().manager().serviceClient().getServers().list(null, Context.NONE);
+        azure.sqlServers().manager().serviceClient().getServers().list(null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerListWithExpandEqualsAdministrators.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/
+     * ServerListWithExpandEqualsAdministrators.json
      */
     /**
      * Sample code: List servers with $expand=administrators/activedirectory.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listServersWithExpandAdministratorsActivedirectory(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.sqlServers().manager().serviceClient().getServers().list(null, Context.NONE);
+    public static void
+        listServersWithExpandAdministratorsActivedirectory(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers().manager().serviceClient().getServers().list(null, com.azure.core.util.Context.NONE);
     }
 }

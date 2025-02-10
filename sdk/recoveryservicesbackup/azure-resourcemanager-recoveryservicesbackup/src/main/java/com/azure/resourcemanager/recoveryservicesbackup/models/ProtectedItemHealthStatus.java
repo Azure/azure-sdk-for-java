@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Health status of the backup item, evaluated based on last heartbeat received. */
+/**
+ * Health status of the backup item, evaluated based on last heartbeat received.
+ */
 public final class ProtectedItemHealthStatus extends ExpandableStringEnum<ProtectedItemHealthStatus> {
-    /** Static value Invalid for ProtectedItemHealthStatus. */
+    /**
+     * Static value Invalid for ProtectedItemHealthStatus.
+     */
     public static final ProtectedItemHealthStatus INVALID = fromString("Invalid");
 
-    /** Static value Healthy for ProtectedItemHealthStatus. */
+    /**
+     * Static value Healthy for ProtectedItemHealthStatus.
+     */
     public static final ProtectedItemHealthStatus HEALTHY = fromString("Healthy");
 
-    /** Static value Unhealthy for ProtectedItemHealthStatus. */
+    /**
+     * Static value Unhealthy for ProtectedItemHealthStatus.
+     */
     public static final ProtectedItemHealthStatus UNHEALTHY = fromString("Unhealthy");
 
-    /** Static value NotReachable for ProtectedItemHealthStatus. */
+    /**
+     * Static value NotReachable for ProtectedItemHealthStatus.
+     */
     public static final ProtectedItemHealthStatus NOT_REACHABLE = fromString("NotReachable");
 
-    /** Static value IRPending for ProtectedItemHealthStatus. */
+    /**
+     * Static value IRPending for ProtectedItemHealthStatus.
+     */
     public static final ProtectedItemHealthStatus IRPENDING = fromString("IRPending");
 
     /**
      * Creates a new instance of ProtectedItemHealthStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class ProtectedItemHealthStatus extends ExpandableStringEnum<Protec
 
     /**
      * Creates or finds a ProtectedItemHealthStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProtectedItemHealthStatus.
      */
-    @JsonCreator
     public static ProtectedItemHealthStatus fromString(String name) {
         return fromString(name, ProtectedItemHealthStatus.class);
     }
 
     /**
      * Gets known ProtectedItemHealthStatus values.
-     *
+     * 
      * @return known ProtectedItemHealthStatus values.
      */
     public static Collection<ProtectedItemHealthStatus> values() {

@@ -12,12 +12,14 @@ import scala.util.control.Breaks
 private[spark] object TransientErrorsRetryPolicy extends BasicLoggingTrait {
   private val rnd = Random
 
+  //scalastyle:off method.length
   def executeWithRetry[T]
   (
     func: () => T,
     initialMaxRetryIntervalInMs: Int = CosmosConstants.initialMaxRetryIntervalForTransientFailuresInMs,
     maxRetryIntervalInMs: Int = CosmosConstants.maxRetryIntervalForTransientFailuresInMs,
-    maxRetryCount: Int = Int.MaxValue
+    maxRetryCount: Int = Int.MaxValue,
+    statusResetFuncBetweenRetry: Option[() => Unit] = None
   ): T = {
     val loop = new Breaks()
     val retryCount = new AtomicLong(0)
@@ -52,6 +54,10 @@ private[spark] object TransientErrorsRetryPolicy extends BasicLoggingTrait {
               throw cosmosException
             }
           case other: Throwable => throw other
+        }
+
+        if (statusResetFuncBetweenRetry.isDefined) {
+          statusResetFuncBetweenRetry.get.apply()
         }
 
         Thread.sleep(retryIntervalInMs)

@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-/** An alert status properties. */
+/**
+ * An alert status properties.
+ */
 @Fluent
-public final class MetricAlertStatusProperties {
+public final class MetricAlertStatusProperties implements JsonSerializable<MetricAlertStatusProperties> {
     /*
      * An object describing the type of the dimensions.
      */
-    @JsonProperty(value = "dimensions")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> dimensions;
 
     /*
      * status value
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * UTC time when the status was checked.
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
-    /** Creates an instance of MetricAlertStatusProperties class. */
+    /**
+     * Creates an instance of MetricAlertStatusProperties class.
+     */
     public MetricAlertStatusProperties() {
     }
 
     /**
      * Get the dimensions property: An object describing the type of the dimensions.
-     *
+     * 
      * @return the dimensions value.
      */
     public Map<String, String> dimensions() {
@@ -47,7 +52,7 @@ public final class MetricAlertStatusProperties {
 
     /**
      * Set the dimensions property: An object describing the type of the dimensions.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the MetricAlertStatusProperties object itself.
      */
@@ -58,7 +63,7 @@ public final class MetricAlertStatusProperties {
 
     /**
      * Get the status property: status value.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -67,7 +72,7 @@ public final class MetricAlertStatusProperties {
 
     /**
      * Set the status property: status value.
-     *
+     * 
      * @param status the status value to set.
      * @return the MetricAlertStatusProperties object itself.
      */
@@ -78,7 +83,7 @@ public final class MetricAlertStatusProperties {
 
     /**
      * Get the timestamp property: UTC time when the status was checked.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -87,7 +92,7 @@ public final class MetricAlertStatusProperties {
 
     /**
      * Set the timestamp property: UTC time when the status was checked.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the MetricAlertStatusProperties object itself.
      */
@@ -98,9 +103,54 @@ public final class MetricAlertStatusProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("dimensions", this.dimensions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricAlertStatusProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricAlertStatusProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricAlertStatusProperties.
+     */
+    public static MetricAlertStatusProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricAlertStatusProperties deserializedMetricAlertStatusProperties = new MetricAlertStatusProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dimensions".equals(fieldName)) {
+                    Map<String, String> dimensions = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMetricAlertStatusProperties.dimensions = dimensions;
+                } else if ("status".equals(fieldName)) {
+                    deserializedMetricAlertStatusProperties.status = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedMetricAlertStatusProperties.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricAlertStatusProperties;
+        });
     }
 }

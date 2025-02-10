@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties for generating an upload URL. */
+/**
+ * Properties for generating an upload URL.
+ */
 @Fluent
-public final class GenerateUploadUrlRequest {
+public final class GenerateUploadUrlRequest implements JsonSerializable<GenerateUploadUrlRequest> {
     /*
      * A unique ID for the firmware to be uploaded.
      */
-    @JsonProperty(value = "firmwareId")
     private String firmwareId;
 
-    /** Creates an instance of GenerateUploadUrlRequest class. */
+    /**
+     * Creates an instance of GenerateUploadUrlRequest class.
+     */
     public GenerateUploadUrlRequest() {
     }
 
     /**
      * Get the firmwareId property: A unique ID for the firmware to be uploaded.
-     *
+     * 
      * @return the firmwareId value.
      */
     public String firmwareId() {
@@ -31,7 +38,7 @@ public final class GenerateUploadUrlRequest {
 
     /**
      * Set the firmwareId property: A unique ID for the firmware to be uploaded.
-     *
+     * 
      * @param firmwareId the firmwareId value to set.
      * @return the GenerateUploadUrlRequest object itself.
      */
@@ -42,9 +49,45 @@ public final class GenerateUploadUrlRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("firmwareId", this.firmwareId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateUploadUrlRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateUploadUrlRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenerateUploadUrlRequest.
+     */
+    public static GenerateUploadUrlRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateUploadUrlRequest deserializedGenerateUploadUrlRequest = new GenerateUploadUrlRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("firmwareId".equals(fieldName)) {
+                    deserializedGenerateUploadUrlRequest.firmwareId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateUploadUrlRequest;
+        });
     }
 }

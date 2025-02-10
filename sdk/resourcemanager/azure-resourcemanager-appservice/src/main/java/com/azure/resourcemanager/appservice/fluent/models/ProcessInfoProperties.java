@@ -5,9 +5,14 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -15,222 +20,185 @@ import java.util.Map;
  * ProcessInfo resource specific properties.
  */
 @Fluent
-public final class ProcessInfoProperties {
+public final class ProcessInfoProperties implements JsonSerializable<ProcessInfoProperties> {
     /*
      * ARM Identifier for deployment.
      */
-    @JsonProperty(value = "identifier", access = JsonProperty.Access.WRITE_ONLY)
     private Integer identifier;
 
     /*
      * Deployment name.
      */
-    @JsonProperty(value = "deployment_name")
     private String deploymentName;
 
     /*
      * HRef URI.
      */
-    @JsonProperty(value = "href")
     private String href;
 
     /*
      * Minidump URI.
      */
-    @JsonProperty(value = "minidump")
     private String minidump;
 
     /*
      * Is profile running?
      */
-    @JsonProperty(value = "is_profile_running")
     private Boolean isProfileRunning;
 
     /*
      * Is the IIS Profile running?
      */
-    @JsonProperty(value = "is_iis_profile_running")
     private Boolean isIisProfileRunning;
 
     /*
      * IIS Profile timeout (seconds).
      */
-    @JsonProperty(value = "iis_profile_timeout_in_seconds")
     private Double iisProfileTimeoutInSeconds;
 
     /*
      * Parent process.
      */
-    @JsonProperty(value = "parent")
     private String parent;
 
     /*
      * Child process list.
      */
-    @JsonProperty(value = "children")
     private List<String> children;
 
     /*
      * Thread list.
      */
-    @JsonProperty(value = "threads")
     private List<ProcessThreadInfoInner> threads;
 
     /*
      * List of open files.
      */
-    @JsonProperty(value = "open_file_handles")
     private List<String> openFileHandles;
 
     /*
      * List of modules.
      */
-    @JsonProperty(value = "modules")
     private List<ProcessModuleInfoInner> modules;
 
     /*
      * File name of this process.
      */
-    @JsonProperty(value = "file_name")
     private String fileName;
 
     /*
      * Command line.
      */
-    @JsonProperty(value = "command_line")
     private String commandLine;
 
     /*
      * User name.
      */
-    @JsonProperty(value = "user_name")
     private String username;
 
     /*
      * Handle count.
      */
-    @JsonProperty(value = "handle_count")
     private Integer handleCount;
 
     /*
      * Module count.
      */
-    @JsonProperty(value = "module_count")
     private Integer moduleCount;
 
     /*
      * Thread count.
      */
-    @JsonProperty(value = "thread_count")
     private Integer threadCount;
 
     /*
      * Start time.
      */
-    @JsonProperty(value = "start_time")
     private OffsetDateTime startTime;
 
     /*
      * Total CPU time.
      */
-    @JsonProperty(value = "total_cpu_time")
     private String totalCpuTime;
 
     /*
      * User CPU time.
      */
-    @JsonProperty(value = "user_cpu_time")
     private String userCpuTime;
 
     /*
      * Privileged CPU time.
      */
-    @JsonProperty(value = "privileged_cpu_time")
     private String privilegedCpuTime;
 
     /*
      * Working set.
      */
-    @JsonProperty(value = "working_set")
     private Long workingSet;
 
     /*
      * Peak working set.
      */
-    @JsonProperty(value = "peak_working_set")
     private Long peakWorkingSet;
 
     /*
      * Private memory size.
      */
-    @JsonProperty(value = "private_memory")
     private Long privateMemory;
 
     /*
      * Virtual memory size.
      */
-    @JsonProperty(value = "virtual_memory")
     private Long virtualMemory;
 
     /*
      * Peak virtual memory usage.
      */
-    @JsonProperty(value = "peak_virtual_memory")
     private Long peakVirtualMemory;
 
     /*
      * Paged system memory.
      */
-    @JsonProperty(value = "paged_system_memory")
     private Long pagedSystemMemory;
 
     /*
      * Non-paged system memory.
      */
-    @JsonProperty(value = "non_paged_system_memory")
     private Long nonPagedSystemMemory;
 
     /*
      * Paged memory.
      */
-    @JsonProperty(value = "paged_memory")
     private Long pagedMemory;
 
     /*
      * Peak paged memory.
      */
-    @JsonProperty(value = "peak_paged_memory")
     private Long peakPagedMemory;
 
     /*
      * Time stamp.
      */
-    @JsonProperty(value = "time_stamp")
     private OffsetDateTime timestamp;
 
     /*
      * List of environment variables.
      */
-    @JsonProperty(value = "environment_variables")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> environmentVariables;
 
     /*
      * Is this the SCM site?
      */
-    @JsonProperty(value = "is_scm_site")
     private Boolean isScmSite;
 
     /*
      * Is this a Web Job?
      */
-    @JsonProperty(value = "is_webjob")
     private Boolean isWebjob;
 
     /*
      * Description of process.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -960,5 +928,159 @@ public final class ProcessInfoProperties {
         if (modules() != null) {
             modules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deployment_name", this.deploymentName);
+        jsonWriter.writeStringField("href", this.href);
+        jsonWriter.writeStringField("minidump", this.minidump);
+        jsonWriter.writeBooleanField("is_profile_running", this.isProfileRunning);
+        jsonWriter.writeBooleanField("is_iis_profile_running", this.isIisProfileRunning);
+        jsonWriter.writeNumberField("iis_profile_timeout_in_seconds", this.iisProfileTimeoutInSeconds);
+        jsonWriter.writeStringField("parent", this.parent);
+        jsonWriter.writeArrayField("children", this.children, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("threads", this.threads, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("open_file_handles", this.openFileHandles,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("modules", this.modules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("file_name", this.fileName);
+        jsonWriter.writeStringField("command_line", this.commandLine);
+        jsonWriter.writeStringField("user_name", this.username);
+        jsonWriter.writeNumberField("handle_count", this.handleCount);
+        jsonWriter.writeNumberField("module_count", this.moduleCount);
+        jsonWriter.writeNumberField("thread_count", this.threadCount);
+        jsonWriter.writeStringField("start_time",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("total_cpu_time", this.totalCpuTime);
+        jsonWriter.writeStringField("user_cpu_time", this.userCpuTime);
+        jsonWriter.writeStringField("privileged_cpu_time", this.privilegedCpuTime);
+        jsonWriter.writeNumberField("working_set", this.workingSet);
+        jsonWriter.writeNumberField("peak_working_set", this.peakWorkingSet);
+        jsonWriter.writeNumberField("private_memory", this.privateMemory);
+        jsonWriter.writeNumberField("virtual_memory", this.virtualMemory);
+        jsonWriter.writeNumberField("peak_virtual_memory", this.peakVirtualMemory);
+        jsonWriter.writeNumberField("paged_system_memory", this.pagedSystemMemory);
+        jsonWriter.writeNumberField("non_paged_system_memory", this.nonPagedSystemMemory);
+        jsonWriter.writeNumberField("paged_memory", this.pagedMemory);
+        jsonWriter.writeNumberField("peak_paged_memory", this.peakPagedMemory);
+        jsonWriter.writeStringField("time_stamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeMapField("environment_variables", this.environmentVariables,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("is_scm_site", this.isScmSite);
+        jsonWriter.writeBooleanField("is_webjob", this.isWebjob);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessInfoProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProcessInfoProperties.
+     */
+    public static ProcessInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessInfoProperties deserializedProcessInfoProperties = new ProcessInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identifier".equals(fieldName)) {
+                    deserializedProcessInfoProperties.identifier = reader.getNullable(JsonReader::getInt);
+                } else if ("deployment_name".equals(fieldName)) {
+                    deserializedProcessInfoProperties.deploymentName = reader.getString();
+                } else if ("href".equals(fieldName)) {
+                    deserializedProcessInfoProperties.href = reader.getString();
+                } else if ("minidump".equals(fieldName)) {
+                    deserializedProcessInfoProperties.minidump = reader.getString();
+                } else if ("is_profile_running".equals(fieldName)) {
+                    deserializedProcessInfoProperties.isProfileRunning = reader.getNullable(JsonReader::getBoolean);
+                } else if ("is_iis_profile_running".equals(fieldName)) {
+                    deserializedProcessInfoProperties.isIisProfileRunning = reader.getNullable(JsonReader::getBoolean);
+                } else if ("iis_profile_timeout_in_seconds".equals(fieldName)) {
+                    deserializedProcessInfoProperties.iisProfileTimeoutInSeconds
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("parent".equals(fieldName)) {
+                    deserializedProcessInfoProperties.parent = reader.getString();
+                } else if ("children".equals(fieldName)) {
+                    List<String> children = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProcessInfoProperties.children = children;
+                } else if ("threads".equals(fieldName)) {
+                    List<ProcessThreadInfoInner> threads
+                        = reader.readArray(reader1 -> ProcessThreadInfoInner.fromJson(reader1));
+                    deserializedProcessInfoProperties.threads = threads;
+                } else if ("open_file_handles".equals(fieldName)) {
+                    List<String> openFileHandles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProcessInfoProperties.openFileHandles = openFileHandles;
+                } else if ("modules".equals(fieldName)) {
+                    List<ProcessModuleInfoInner> modules
+                        = reader.readArray(reader1 -> ProcessModuleInfoInner.fromJson(reader1));
+                    deserializedProcessInfoProperties.modules = modules;
+                } else if ("file_name".equals(fieldName)) {
+                    deserializedProcessInfoProperties.fileName = reader.getString();
+                } else if ("command_line".equals(fieldName)) {
+                    deserializedProcessInfoProperties.commandLine = reader.getString();
+                } else if ("user_name".equals(fieldName)) {
+                    deserializedProcessInfoProperties.username = reader.getString();
+                } else if ("handle_count".equals(fieldName)) {
+                    deserializedProcessInfoProperties.handleCount = reader.getNullable(JsonReader::getInt);
+                } else if ("module_count".equals(fieldName)) {
+                    deserializedProcessInfoProperties.moduleCount = reader.getNullable(JsonReader::getInt);
+                } else if ("thread_count".equals(fieldName)) {
+                    deserializedProcessInfoProperties.threadCount = reader.getNullable(JsonReader::getInt);
+                } else if ("start_time".equals(fieldName)) {
+                    deserializedProcessInfoProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("total_cpu_time".equals(fieldName)) {
+                    deserializedProcessInfoProperties.totalCpuTime = reader.getString();
+                } else if ("user_cpu_time".equals(fieldName)) {
+                    deserializedProcessInfoProperties.userCpuTime = reader.getString();
+                } else if ("privileged_cpu_time".equals(fieldName)) {
+                    deserializedProcessInfoProperties.privilegedCpuTime = reader.getString();
+                } else if ("working_set".equals(fieldName)) {
+                    deserializedProcessInfoProperties.workingSet = reader.getNullable(JsonReader::getLong);
+                } else if ("peak_working_set".equals(fieldName)) {
+                    deserializedProcessInfoProperties.peakWorkingSet = reader.getNullable(JsonReader::getLong);
+                } else if ("private_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.privateMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("virtual_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.virtualMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("peak_virtual_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.peakVirtualMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("paged_system_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.pagedSystemMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("non_paged_system_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.nonPagedSystemMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("paged_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.pagedMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("peak_paged_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.peakPagedMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("time_stamp".equals(fieldName)) {
+                    deserializedProcessInfoProperties.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("environment_variables".equals(fieldName)) {
+                    Map<String, String> environmentVariables = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProcessInfoProperties.environmentVariables = environmentVariables;
+                } else if ("is_scm_site".equals(fieldName)) {
+                    deserializedProcessInfoProperties.isScmSite = reader.getNullable(JsonReader::getBoolean);
+                } else if ("is_webjob".equals(fieldName)) {
+                    deserializedProcessInfoProperties.isWebjob = reader.getNullable(JsonReader::getBoolean);
+                } else if ("description".equals(fieldName)) {
+                    deserializedProcessInfoProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessInfoProperties;
+        });
     }
 }

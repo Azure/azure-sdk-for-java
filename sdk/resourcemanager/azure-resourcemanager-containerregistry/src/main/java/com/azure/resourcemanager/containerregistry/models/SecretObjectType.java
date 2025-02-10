@@ -5,20 +5,26 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the secret object which determines how the value of the secret object has to be interpreted. */
+/**
+ * The type of the secret object which determines how the value of the secret object has to be
+ * interpreted.
+ */
 public final class SecretObjectType extends ExpandableStringEnum<SecretObjectType> {
-    /** Static value Opaque for SecretObjectType. */
+    /**
+     * Static value Opaque for SecretObjectType.
+     */
     public static final SecretObjectType OPAQUE = fromString("Opaque");
 
-    /** Static value Vaultsecret for SecretObjectType. */
+    /**
+     * Static value Vaultsecret for SecretObjectType.
+     */
     public static final SecretObjectType VAULTSECRET = fromString("Vaultsecret");
 
     /**
      * Creates a new instance of SecretObjectType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +33,17 @@ public final class SecretObjectType extends ExpandableStringEnum<SecretObjectTyp
 
     /**
      * Creates or finds a SecretObjectType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecretObjectType.
      */
-    @JsonCreator
     public static SecretObjectType fromString(String name) {
         return fromString(name, SecretObjectType.class);
     }
 
     /**
      * Gets known SecretObjectType values.
-     *
+     * 
      * @return known SecretObjectType values.
      */
     public static Collection<SecretObjectType> values() {

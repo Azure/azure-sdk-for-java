@@ -15,8 +15,7 @@ public final class ControllerConnectionDetailsListImpl implements ControllerConn
 
     private final com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager;
 
-    ControllerConnectionDetailsListImpl(
-        ControllerConnectionDetailsListInner innerObject,
+    ControllerConnectionDetailsListImpl(ControllerConnectionDetailsListInner innerObject,
         com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

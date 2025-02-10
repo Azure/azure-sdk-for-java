@@ -16,7 +16,7 @@ import java.io.IOException;
 public final class IotConnectorFhirDestinationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/iotconnectors/
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/iotconnectors/
      * iotconnector_fhirdestination_Create.json
      */
     /**
@@ -26,14 +26,18 @@ public final class IotConnectorFhirDestinationCreateOrUpdateSamples {
      */
     public static void createOrUpdateAnIotConnectorFHIRDestination(
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) throws IOException {
-        manager.iotConnectorFhirDestinations().define("dest1").withExistingIotconnector("testRG", "workspace1", "blue")
+        manager.iotConnectorFhirDestinations()
+            .define("dest1")
+            .withExistingIotconnector("testRG", "workspace1", "blue")
             .withResourceIdentityResolutionType(IotIdentityResolutionType.CREATE)
             .withFhirServiceResourceId(
                 "subscriptions/11111111-2222-3333-4444-555566667777/resourceGroups/myrg/providers/Microsoft.HealthcareApis/workspaces/myworkspace/fhirservices/myfhirservice")
-            .withFhirMapping(new IotMappingProperties()
-                .withContent(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
+            .withFhirMapping(new IotMappingProperties().withContent(SerializerFactory
+                .createDefaultManagementSerializerAdapter()
+                .deserialize(
                     "{\"template\":[{\"template\":{\"codes\":[{\"code\":\"8867-4\",\"display\":\"Heart rate\",\"system\":\"http://loinc.org\"}],\"periodInterval\":60,\"typeName\":\"heartrate\",\"value\":{\"defaultPeriod\":5000,\"unit\":\"count/min\",\"valueName\":\"hr\",\"valueType\":\"SampledData\"}},\"templateType\":\"CodeValueFhir\"}],\"templateType\":\"CollectionFhirTemplate\"}",
                     Object.class, SerializerEncoding.JSON)))
-            .withRegion("westus").create();
+            .withRegion("westus")
+            .create();
     }
 }

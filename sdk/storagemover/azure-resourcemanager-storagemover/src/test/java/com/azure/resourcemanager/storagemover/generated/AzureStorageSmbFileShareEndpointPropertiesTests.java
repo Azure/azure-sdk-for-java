@@ -11,26 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureStorageSmbFileShareEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureStorageSmbFileShareEndpointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"endpointType\":\"AzureStorageSmbFileShare\",\"storageAccountResourceId\":\"npiucgygevqznty\",\"fileShareName\":\"mrbpizcdrqj\",\"description\":\"pyd\",\"provisioningState\":\"Succeeded\"}")
-                .toObject(AzureStorageSmbFileShareEndpointProperties.class);
-        Assertions.assertEquals("pyd", model.description());
-        Assertions.assertEquals("npiucgygevqznty", model.storageAccountResourceId());
-        Assertions.assertEquals("mrbpizcdrqj", model.fileShareName());
+        AzureStorageSmbFileShareEndpointProperties model = BinaryData.fromString(
+            "{\"endpointType\":\"AzureStorageSmbFileShare\",\"storageAccountResourceId\":\"bijhtxfvgxbf\",\"fileShareName\":\"mxnehmp\",\"description\":\"cxgod\",\"provisioningState\":\"Canceled\"}")
+            .toObject(AzureStorageSmbFileShareEndpointProperties.class);
+        Assertions.assertEquals("cxgod", model.description());
+        Assertions.assertEquals("bijhtxfvgxbf", model.storageAccountResourceId());
+        Assertions.assertEquals("mxnehmp", model.fileShareName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStorageSmbFileShareEndpointProperties model =
-            new AzureStorageSmbFileShareEndpointProperties()
-                .withDescription("pyd")
-                .withStorageAccountResourceId("npiucgygevqznty")
-                .withFileShareName("mrbpizcdrqj");
+        AzureStorageSmbFileShareEndpointProperties model
+            = new AzureStorageSmbFileShareEndpointProperties().withDescription("cxgod")
+                .withStorageAccountResourceId("bijhtxfvgxbf")
+                .withFileShareName("mxnehmp");
         model = BinaryData.fromObject(model).toObject(AzureStorageSmbFileShareEndpointProperties.class);
-        Assertions.assertEquals("pyd", model.description());
-        Assertions.assertEquals("npiucgygevqznty", model.storageAccountResourceId());
-        Assertions.assertEquals("mrbpizcdrqj", model.fileShareName());
+        Assertions.assertEquals("cxgod", model.description());
+        Assertions.assertEquals("bijhtxfvgxbf", model.storageAccountResourceId());
+        Assertions.assertEquals("mxnehmp", model.fileShareName());
     }
 }

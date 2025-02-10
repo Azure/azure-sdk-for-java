@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.fluent.models.StorageTargetInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of Storage Targets. */
+/**
+ * A list of Storage Targets.
+ */
 @Fluent
-public final class StorageTargetsResult {
+public final class StorageTargetsResult implements JsonSerializable<StorageTargetsResult> {
     /*
      * The URI to fetch the next page of Storage Targets.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of Storage Targets defined for the cache.
      */
-    @JsonProperty(value = "value")
     private List<StorageTargetInner> value;
 
-    /** Creates an instance of StorageTargetsResult class. */
+    /**
+     * Creates an instance of StorageTargetsResult class.
+     */
     public StorageTargetsResult() {
     }
 
     /**
      * Get the nextLink property: The URI to fetch the next page of Storage Targets.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class StorageTargetsResult {
 
     /**
      * Set the nextLink property: The URI to fetch the next page of Storage Targets.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the StorageTargetsResult object itself.
      */
@@ -50,7 +56,7 @@ public final class StorageTargetsResult {
 
     /**
      * Get the value property: The list of Storage Targets defined for the cache.
-     *
+     * 
      * @return the value value.
      */
     public List<StorageTargetInner> value() {
@@ -59,7 +65,7 @@ public final class StorageTargetsResult {
 
     /**
      * Set the value property: The list of Storage Targets defined for the cache.
-     *
+     * 
      * @param value the value value to set.
      * @return the StorageTargetsResult object itself.
      */
@@ -70,12 +76,52 @@ public final class StorageTargetsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTargetsResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTargetsResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTargetsResult.
+     */
+    public static StorageTargetsResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTargetsResult deserializedStorageTargetsResult = new StorageTargetsResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedStorageTargetsResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<StorageTargetInner> value = reader.readArray(reader1 -> StorageTargetInner.fromJson(reader1));
+                    deserializedStorageTargetsResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTargetsResult;
+        });
     }
 }

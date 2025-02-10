@@ -5,30 +5,48 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties that are associated with an input containing reference data. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Reference")
+/**
+ * The properties that are associated with an input containing reference data.
+ */
 @Fluent
 public final class ReferenceInputProperties extends InputProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReferenceInputProperties.class);
+    /*
+     * Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace)
+     * requests.
+     */
+    private String type = "Reference";
 
     /*
-     * Describes an input data source that contains reference data. Required on
-     * PUT (CreateOrReplace) requests.
+     * Describes an input data source that contains reference data. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "datasource")
     private ReferenceInputDataSource datasource;
+
+    /**
+     * Creates an instance of ReferenceInputProperties class.
+     */
+    public ReferenceInputProperties() {
+    }
+
+    /**
+     * Get the type property: Indicates whether the input is a source of reference data or stream data. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
 
     /**
      * Get the datasource property: Describes an input data source that contains reference data. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the datasource value.
      */
     public ReferenceInputDataSource datasource() {
@@ -38,7 +56,7 @@ public final class ReferenceInputProperties extends InputProperties {
     /**
      * Set the datasource property: Describes an input data source that contains reference data. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @param datasource the datasource value to set.
      * @return the ReferenceInputProperties object itself.
      */
@@ -47,21 +65,27 @@ public final class ReferenceInputProperties extends InputProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReferenceInputProperties withSerialization(Serialization serialization) {
         super.withSerialization(serialization);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReferenceInputProperties withCompression(Compression compression) {
         super.withCompression(compression);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ReferenceInputProperties withPartitionKey(String partitionKey) {
         super.withPartitionKey(partitionKey);
@@ -70,14 +94,74 @@ public final class ReferenceInputProperties extends InputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (datasource() != null) {
             datasource().validate();
         }
+        if (serialization() != null) {
+            serialization().validate();
+        }
+        if (diagnostics() != null) {
+            diagnostics().validate();
+        }
+        if (compression() != null) {
+            compression().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("serialization", serialization());
+        jsonWriter.writeJsonField("compression", compression());
+        jsonWriter.writeStringField("partitionKey", partitionKey());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("datasource", this.datasource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReferenceInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReferenceInputProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReferenceInputProperties.
+     */
+    public static ReferenceInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReferenceInputProperties deserializedReferenceInputProperties = new ReferenceInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serialization".equals(fieldName)) {
+                    deserializedReferenceInputProperties.withSerialization(Serialization.fromJson(reader));
+                } else if ("diagnostics".equals(fieldName)) {
+                    deserializedReferenceInputProperties.withDiagnostics(Diagnostics.fromJson(reader));
+                } else if ("etag".equals(fieldName)) {
+                    deserializedReferenceInputProperties.withEtag(reader.getString());
+                } else if ("compression".equals(fieldName)) {
+                    deserializedReferenceInputProperties.withCompression(Compression.fromJson(reader));
+                } else if ("partitionKey".equals(fieldName)) {
+                    deserializedReferenceInputProperties.withPartitionKey(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedReferenceInputProperties.type = reader.getString();
+                } else if ("datasource".equals(fieldName)) {
+                    deserializedReferenceInputProperties.datasource = ReferenceInputDataSource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReferenceInputProperties;
+        });
     }
 }

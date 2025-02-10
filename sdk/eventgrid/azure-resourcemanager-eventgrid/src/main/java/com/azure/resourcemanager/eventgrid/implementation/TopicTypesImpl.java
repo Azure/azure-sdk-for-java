@@ -31,12 +31,12 @@ public final class TopicTypesImpl implements TopicTypes {
 
     public PagedIterable<TopicTypeInfo> list() {
         PagedIterable<TopicTypeInfoInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new TopicTypeInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TopicTypeInfoImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TopicTypeInfo> list(Context context) {
         PagedIterable<TopicTypeInfoInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new TopicTypeInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TopicTypeInfoImpl(inner1, this.manager()));
     }
 
     public Response<TopicTypeInfo> getWithResponse(String topicTypeName, Context context) {
@@ -60,12 +60,12 @@ public final class TopicTypesImpl implements TopicTypes {
 
     public PagedIterable<EventType> listEventTypes(String topicTypeName) {
         PagedIterable<EventTypeInner> inner = this.serviceClient().listEventTypes(topicTypeName);
-        return Utils.mapPage(inner, inner1 -> new EventTypeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventTypeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventType> listEventTypes(String topicTypeName, Context context) {
         PagedIterable<EventTypeInner> inner = this.serviceClient().listEventTypes(topicTypeName, context);
-        return Utils.mapPage(inner, inner1 -> new EventTypeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventTypeImpl(inner1, this.manager()));
     }
 
     private TopicTypesClient serviceClient() {

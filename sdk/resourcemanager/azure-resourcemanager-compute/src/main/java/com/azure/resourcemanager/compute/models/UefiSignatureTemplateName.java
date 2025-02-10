@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class UefiSignatureTemplateName extends ExpandableStringEnum<UefiSi
      * @param name a name to look for.
      * @return the corresponding UefiSignatureTemplateName.
      */
-    @JsonCreator
     public static UefiSignatureTemplateName fromString(String name) {
         return fromString(name, UefiSignatureTemplateName.class);
     }

@@ -5,50 +5,48 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.SnapshotRecoverySource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * SnapshotRestoreRequest resource specific properties.
  */
 @Fluent
-public final class SnapshotRestoreRequestProperties {
+public final class SnapshotRestoreRequestProperties implements JsonSerializable<SnapshotRestoreRequestProperties> {
     /*
      * Point in time in which the app restore should be done, formatted as a DateTime string.
      */
-    @JsonProperty(value = "snapshotTime")
     private String snapshotTime;
 
     /*
      * Optional. Specifies the web app that snapshot contents will be retrieved from.
      * If empty, the targeted web app will be used as the source.
      */
-    @JsonProperty(value = "recoverySource")
     private SnapshotRecoverySource recoverySource;
 
     /*
      * If <code>true</code> the restore operation can overwrite source app; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "overwrite", required = true)
     private boolean overwrite;
 
     /*
      * If true, site configuration, in addition to content, will be reverted.
      */
-    @JsonProperty(value = "recoverConfiguration")
     private Boolean recoverConfiguration;
 
     /*
      * If true, custom hostname conflicts will be ignored when recovering to a target web app.
      * This setting is only necessary when RecoverConfiguration is enabled.
      */
-    @JsonProperty(value = "ignoreConflictingHostNames")
     private Boolean ignoreConflictingHostNames;
 
     /*
      * If true, the snapshot is retrieved from DRSecondary endpoint.
      */
-    @JsonProperty(value = "useDRSecondary")
     private Boolean useDRSecondary;
 
     /**
@@ -196,5 +194,62 @@ public final class SnapshotRestoreRequestProperties {
         if (recoverySource() != null) {
             recoverySource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("overwrite", this.overwrite);
+        jsonWriter.writeStringField("snapshotTime", this.snapshotTime);
+        jsonWriter.writeJsonField("recoverySource", this.recoverySource);
+        jsonWriter.writeBooleanField("recoverConfiguration", this.recoverConfiguration);
+        jsonWriter.writeBooleanField("ignoreConflictingHostNames", this.ignoreConflictingHostNames);
+        jsonWriter.writeBooleanField("useDRSecondary", this.useDRSecondary);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotRestoreRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotRestoreRequestProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnapshotRestoreRequestProperties.
+     */
+    public static SnapshotRestoreRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotRestoreRequestProperties deserializedSnapshotRestoreRequestProperties
+                = new SnapshotRestoreRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("overwrite".equals(fieldName)) {
+                    deserializedSnapshotRestoreRequestProperties.overwrite = reader.getBoolean();
+                } else if ("snapshotTime".equals(fieldName)) {
+                    deserializedSnapshotRestoreRequestProperties.snapshotTime = reader.getString();
+                } else if ("recoverySource".equals(fieldName)) {
+                    deserializedSnapshotRestoreRequestProperties.recoverySource
+                        = SnapshotRecoverySource.fromJson(reader);
+                } else if ("recoverConfiguration".equals(fieldName)) {
+                    deserializedSnapshotRestoreRequestProperties.recoverConfiguration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ignoreConflictingHostNames".equals(fieldName)) {
+                    deserializedSnapshotRestoreRequestProperties.ignoreConflictingHostNames
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("useDRSecondary".equals(fieldName)) {
+                    deserializedSnapshotRestoreRequestProperties.useDRSecondary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotRestoreRequestProperties;
+        });
     }
 }

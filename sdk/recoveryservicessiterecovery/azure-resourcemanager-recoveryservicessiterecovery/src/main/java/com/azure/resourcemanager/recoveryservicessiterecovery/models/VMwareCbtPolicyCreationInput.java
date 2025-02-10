@@ -5,41 +5,56 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VMware Cbt policy creation input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareCbt")
+/**
+ * VMware Cbt policy creation input.
+ */
 @Fluent
 public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "VMwareCbt";
+
+    /*
      * The duration in minutes until which the recovery points need to be stored.
      */
-    @JsonProperty(value = "recoveryPointHistoryInMinutes")
     private Integer recoveryPointHistoryInMinutes;
 
     /*
      * The crash consistent snapshot frequency (in minutes).
      */
-    @JsonProperty(value = "crashConsistentFrequencyInMinutes")
     private Integer crashConsistentFrequencyInMinutes;
 
     /*
      * The app consistent snapshot frequency (in minutes).
      */
-    @JsonProperty(value = "appConsistentFrequencyInMinutes")
     private Integer appConsistentFrequencyInMinutes;
 
-    /** Creates an instance of VMwareCbtPolicyCreationInput class. */
+    /**
+     * Creates an instance of VMwareCbtPolicyCreationInput class.
+     */
     public VMwareCbtPolicyCreationInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
      * Get the recoveryPointHistoryInMinutes property: The duration in minutes until which the recovery points need to
      * be stored.
-     *
+     * 
      * @return the recoveryPointHistoryInMinutes value.
      */
     public Integer recoveryPointHistoryInMinutes() {
@@ -49,7 +64,7 @@ public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificIn
     /**
      * Set the recoveryPointHistoryInMinutes property: The duration in minutes until which the recovery points need to
      * be stored.
-     *
+     * 
      * @param recoveryPointHistoryInMinutes the recoveryPointHistoryInMinutes value to set.
      * @return the VMwareCbtPolicyCreationInput object itself.
      */
@@ -60,7 +75,7 @@ public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificIn
 
     /**
      * Get the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the crashConsistentFrequencyInMinutes value.
      */
     public Integer crashConsistentFrequencyInMinutes() {
@@ -69,19 +84,19 @@ public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificIn
 
     /**
      * Set the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the VMwareCbtPolicyCreationInput object itself.
      */
-    public VMwareCbtPolicyCreationInput withCrashConsistentFrequencyInMinutes(
-        Integer crashConsistentFrequencyInMinutes) {
+    public VMwareCbtPolicyCreationInput
+        withCrashConsistentFrequencyInMinutes(Integer crashConsistentFrequencyInMinutes) {
         this.crashConsistentFrequencyInMinutes = crashConsistentFrequencyInMinutes;
         return this;
     }
 
     /**
      * Get the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public Integer appConsistentFrequencyInMinutes() {
@@ -90,7 +105,7 @@ public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificIn
 
     /**
      * Set the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the VMwareCbtPolicyCreationInput object itself.
      */
@@ -101,11 +116,58 @@ public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificIn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeNumberField("recoveryPointHistoryInMinutes", this.recoveryPointHistoryInMinutes);
+        jsonWriter.writeNumberField("crashConsistentFrequencyInMinutes", this.crashConsistentFrequencyInMinutes);
+        jsonWriter.writeNumberField("appConsistentFrequencyInMinutes", this.appConsistentFrequencyInMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtPolicyCreationInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtPolicyCreationInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMwareCbtPolicyCreationInput.
+     */
+    public static VMwareCbtPolicyCreationInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtPolicyCreationInput deserializedVMwareCbtPolicyCreationInput = new VMwareCbtPolicyCreationInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareCbtPolicyCreationInput.instanceType = reader.getString();
+                } else if ("recoveryPointHistoryInMinutes".equals(fieldName)) {
+                    deserializedVMwareCbtPolicyCreationInput.recoveryPointHistoryInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("crashConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedVMwareCbtPolicyCreationInput.crashConsistentFrequencyInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("appConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedVMwareCbtPolicyCreationInput.appConsistentFrequencyInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtPolicyCreationInput;
+        });
     }
 }

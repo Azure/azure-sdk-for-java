@@ -5,21 +5,23 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An internet location from which the model may retrieve an image.
  */
 @Fluent
-public final class ChatMessageImageUrl {
+public final class ChatMessageImageUrl implements JsonSerializable<ChatMessageImageUrl> {
 
     /*
      * The URL of the image.
      */
     @Generated
-    @JsonProperty(value = "url")
-    private String url;
+    private final String url;
 
     /**
      * Creates an instance of ChatMessageImageUrl class.
@@ -27,8 +29,7 @@ public final class ChatMessageImageUrl {
      * @param url the url value to set.
      */
     @Generated
-    @JsonCreator
-    public ChatMessageImageUrl(@JsonProperty(value = "url") String url) {
+    public ChatMessageImageUrl(String url) {
         this.url = url;
     }
 
@@ -47,7 +48,6 @@ public final class ChatMessageImageUrl {
      * accuracy.
      */
     @Generated
-    @JsonProperty(value = "detail")
     private ChatMessageImageDetailLevel detail;
 
     /**
@@ -74,5 +74,48 @@ public final class ChatMessageImageUrl {
     public ChatMessageImageUrl setDetail(ChatMessageImageDetailLevel detail) {
         this.detail = detail;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("detail", this.detail == null ? null : this.detail.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatMessageImageUrl from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatMessageImageUrl if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatMessageImageUrl.
+     */
+    @Generated
+    public static ChatMessageImageUrl fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String url = null;
+            ChatMessageImageDetailLevel detail = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                } else if ("detail".equals(fieldName)) {
+                    detail = ChatMessageImageDetailLevel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ChatMessageImageUrl deserializedChatMessageImageUrl = new ChatMessageImageUrl(url);
+            deserializedChatMessageImageUrl.detail = detail;
+            return deserializedChatMessageImageUrl;
+        });
     }
 }

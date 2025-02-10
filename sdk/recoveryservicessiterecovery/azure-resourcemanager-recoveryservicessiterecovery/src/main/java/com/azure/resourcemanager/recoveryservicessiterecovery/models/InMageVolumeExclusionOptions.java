@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Guest disk signature based disk exclusion option when doing enable protection of virtual machine in InMage provider.
  */
 @Fluent
-public final class InMageVolumeExclusionOptions {
+public final class InMageVolumeExclusionOptions implements JsonSerializable<InMageVolumeExclusionOptions> {
     /*
      * The volume label. The disk having any volume with this label will be excluded from replication.
      */
-    @JsonProperty(value = "volumeLabel")
     private String volumeLabel;
 
     /*
@@ -23,17 +26,18 @@ public final class InMageVolumeExclusionOptions {
      * volume has label matching with VolumeLabel this disk will be excluded from replication if
      * OnlyExcludeIfSingleVolume is false.
      */
-    @JsonProperty(value = "onlyExcludeIfSingleVolume")
     private String onlyExcludeIfSingleVolume;
 
-    /** Creates an instance of InMageVolumeExclusionOptions class. */
+    /**
+     * Creates an instance of InMageVolumeExclusionOptions class.
+     */
     public InMageVolumeExclusionOptions() {
     }
 
     /**
      * Get the volumeLabel property: The volume label. The disk having any volume with this label will be excluded from
      * replication.
-     *
+     * 
      * @return the volumeLabel value.
      */
     public String volumeLabel() {
@@ -43,7 +47,7 @@ public final class InMageVolumeExclusionOptions {
     /**
      * Set the volumeLabel property: The volume label. The disk having any volume with this label will be excluded from
      * replication.
-     *
+     * 
      * @param volumeLabel the volumeLabel value to set.
      * @return the InMageVolumeExclusionOptions object itself.
      */
@@ -56,7 +60,7 @@ public final class InMageVolumeExclusionOptions {
      * Get the onlyExcludeIfSingleVolume property: The value indicating whether to exclude multi volume disk or not. If
      * a disk has multiple volumes and one of the volume has label matching with VolumeLabel this disk will be excluded
      * from replication if OnlyExcludeIfSingleVolume is false.
-     *
+     * 
      * @return the onlyExcludeIfSingleVolume value.
      */
     public String onlyExcludeIfSingleVolume() {
@@ -67,7 +71,7 @@ public final class InMageVolumeExclusionOptions {
      * Set the onlyExcludeIfSingleVolume property: The value indicating whether to exclude multi volume disk or not. If
      * a disk has multiple volumes and one of the volume has label matching with VolumeLabel this disk will be excluded
      * from replication if OnlyExcludeIfSingleVolume is false.
-     *
+     * 
      * @param onlyExcludeIfSingleVolume the onlyExcludeIfSingleVolume value to set.
      * @return the InMageVolumeExclusionOptions object itself.
      */
@@ -78,9 +82,48 @@ public final class InMageVolumeExclusionOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("volumeLabel", this.volumeLabel);
+        jsonWriter.writeStringField("onlyExcludeIfSingleVolume", this.onlyExcludeIfSingleVolume);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageVolumeExclusionOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageVolumeExclusionOptions if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageVolumeExclusionOptions.
+     */
+    public static InMageVolumeExclusionOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageVolumeExclusionOptions deserializedInMageVolumeExclusionOptions = new InMageVolumeExclusionOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("volumeLabel".equals(fieldName)) {
+                    deserializedInMageVolumeExclusionOptions.volumeLabel = reader.getString();
+                } else if ("onlyExcludeIfSingleVolume".equals(fieldName)) {
+                    deserializedInMageVolumeExclusionOptions.onlyExcludeIfSingleVolume = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageVolumeExclusionOptions;
+        });
     }
 }

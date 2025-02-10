@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FrontDoors. */
+/**
+ * Resource collection API of FrontDoors.
+ */
 public interface FrontDoors {
     /**
      * Lists all of the Front Doors within an Azure subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Front Doors as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface FrontDoors {
 
     /**
      * Lists all of the Front Doors within an Azure subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface FrontDoors {
 
     /**
      * Lists all of the Front Doors within a resource group under a subscription.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface FrontDoors {
 
     /**
      * Lists all of the Front Doors within a resource group under a subscription.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +57,7 @@ public interface FrontDoors {
 
     /**
      * Gets a Front Door with the specified Front Door name under the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param context The context to associate with this operation.
@@ -63,13 +65,13 @@ public interface FrontDoors {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Front Door with the specified Front Door name under the specified subscription and resource group along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     Response<FrontDoor> getByResourceGroupWithResponse(String resourceGroupName, String frontDoorName, Context context);
 
     /**
      * Gets a Front Door with the specified Front Door name under the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,7 +83,7 @@ public interface FrontDoors {
 
     /**
      * Deletes an existing Front Door with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +94,7 @@ public interface FrontDoors {
 
     /**
      * Deletes an existing Front Door with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param context The context to associate with this operation.
@@ -104,7 +106,7 @@ public interface FrontDoors {
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param customDomainProperties Custom domain to be validated.
@@ -114,15 +116,12 @@ public interface FrontDoors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of custom domain validation along with {@link Response}.
      */
-    Response<ValidateCustomDomainOutput> validateCustomDomainWithResponse(
-        String resourceGroupName,
-        String frontDoorName,
-        ValidateCustomDomainInput customDomainProperties,
-        Context context);
+    Response<ValidateCustomDomainOutput> validateCustomDomainWithResponse(String resourceGroupName,
+        String frontDoorName, ValidateCustomDomainInput customDomainProperties, Context context);
 
     /**
      * Validates the custom domain mapping to ensure it maps to the correct Front Door endpoint in DNS.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param customDomainProperties Custom domain to be validated.
@@ -131,37 +130,37 @@ public interface FrontDoors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of custom domain validation.
      */
-    ValidateCustomDomainOutput validateCustomDomain(
-        String resourceGroupName, String frontDoorName, ValidateCustomDomainInput customDomainProperties);
+    ValidateCustomDomainOutput validateCustomDomain(String resourceGroupName, String frontDoorName,
+        ValidateCustomDomainInput customDomainProperties);
 
     /**
      * Gets a Front Door with the specified Front Door name under the specified subscription and resource group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Front Door with the specified Front Door name under the specified subscription and resource group along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     FrontDoor getById(String id);
 
     /**
      * Gets a Front Door with the specified Front Door name under the specified subscription and resource group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Front Door with the specified Front Door name under the specified subscription and resource group along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     Response<FrontDoor> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes an existing Front Door with the specified parameters.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -171,7 +170,7 @@ public interface FrontDoors {
 
     /**
      * Deletes an existing Front Door with the specified parameters.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +181,7 @@ public interface FrontDoors {
 
     /**
      * Begins definition for a new FrontDoor resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new FrontDoor definition.
      */

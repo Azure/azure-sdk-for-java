@@ -3,11 +3,8 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.List;
-import java.util.ArrayList;
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.TransliteratedText;
+import com.azure.core.credential.AzureKeyCredential;
 
 /**
  * Converts characters or letters of a source language to the corresponding
@@ -30,18 +27,15 @@ public class Transliterate {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-		// BEGIN: getTextTranslationTransliterate
+        // BEGIN: getTextTranslationTransliterate
         String language = "zh-Hans";
         String fromScript = "Hans";
         String toScript = "Latn";
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("这是个测试。"));
+        String content = "这是个测试。";
 
-        List<TransliteratedText> transliterations = client.transliterate(language, fromScript, toScript, content);
+        TransliteratedText transliteration = client.transliterate(language, fromScript, toScript, content);
 
-        for (TransliteratedText transliteration : transliterations) {
-            System.out.println("Input text was transliterated to '" + transliteration.getScript() + "' script. Transliterated text: '" + transliteration.getText() + "'.");
-        }
-		// END: getTextTranslationTransliterate
+        System.out.println("Input text was transliterated to '" + transliteration.getScript() + "' script. Transliterated text: '" + transliteration.getText() + "'.");
+        // END: getTextTranslationTransliterate
     }
 }

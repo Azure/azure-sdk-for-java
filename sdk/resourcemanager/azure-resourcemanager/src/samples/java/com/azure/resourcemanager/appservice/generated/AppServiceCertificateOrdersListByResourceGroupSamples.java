@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class AppServiceCertificateOrdersListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/
+     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-04-01/examples/
      * ListAppServiceCertificateOrdersByResourceGroup.json
      */
     /**
@@ -20,7 +20,10 @@ public final class AppServiceCertificateOrdersListByResourceGroupSamples {
      */
     public static void
         listAppServiceCertificateOrdersByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceCertificateOrders().listByResourceGroup("testrg123",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceCertificateOrders()
+            .listByResourceGroup("testrg123", com.azure.core.util.Context.NONE);
     }
 }

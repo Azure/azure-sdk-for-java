@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AlertRules GetByResourceGroup. */
+/**
+ * Samples for AlertRules GetByResourceGroup.
+ */
 public final class AlertRulesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/getAlertRule.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/getAlertRule.json
      */
     /**
      * Sample code: Get an alert rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getAlertRules()
-            .getByResourceGroupWithResponse("Rac46PostSwapRG", "chiricutin", Context.NONE);
+            .getByResourceGroupWithResponse("Rac46PostSwapRG", "chiricutin", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BuildProvisioningState. */
+/**
+ * Provisioning state of the KPack build result.
+ */
 public final class BuildProvisioningState extends ExpandableStringEnum<BuildProvisioningState> {
-    /** Static value Creating for BuildProvisioningState. */
+    /**
+     * Static value Creating for BuildProvisioningState.
+     */
     public static final BuildProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for BuildProvisioningState. */
+    /**
+     * Static value Updating for BuildProvisioningState.
+     */
     public static final BuildProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Succeeded for BuildProvisioningState. */
+    /**
+     * Static value Succeeded for BuildProvisioningState.
+     */
     public static final BuildProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for BuildProvisioningState. */
+    /**
+     * Static value Failed for BuildProvisioningState.
+     */
     public static final BuildProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Deleting for BuildProvisioningState. */
+    /**
+     * Static value Deleting for BuildProvisioningState.
+     */
     public static final BuildProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of BuildProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BuildProvisioningState() {
+    }
+
+    /**
      * Creates or finds a BuildProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BuildProvisioningState.
      */
-    @JsonCreator
     public static BuildProvisioningState fromString(String name) {
         return fromString(name, BuildProvisioningState.class);
     }
 
     /**
      * Gets known BuildProvisioningState values.
-     *
+     * 
      * @return known BuildProvisioningState values.
      */
     public static Collection<BuildProvisioningState> values() {

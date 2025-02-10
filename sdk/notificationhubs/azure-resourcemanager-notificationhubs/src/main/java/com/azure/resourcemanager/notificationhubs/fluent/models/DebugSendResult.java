@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The DebugSendResult model. */
+/**
+ * The DebugSendResult model.
+ */
 @Fluent
-public final class DebugSendResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DebugSendResult.class);
-
+public final class DebugSendResult implements JsonSerializable<DebugSendResult> {
     /*
      * successful send
      */
-    @JsonProperty(value = "success")
     private Float success;
 
     /*
      * send failure
      */
-    @JsonProperty(value = "failure")
     private Float failure;
 
     /*
      * actual failure description
      */
-    @JsonProperty(value = "results")
     private Object results;
 
     /**
+     * Creates an instance of DebugSendResult class.
+     */
+    public DebugSendResult() {
+    }
+
+    /**
      * Get the success property: successful send.
-     *
+     * 
      * @return the success value.
      */
     public Float success() {
@@ -43,7 +48,7 @@ public final class DebugSendResult {
 
     /**
      * Set the success property: successful send.
-     *
+     * 
      * @param success the success value to set.
      * @return the DebugSendResult object itself.
      */
@@ -54,7 +59,7 @@ public final class DebugSendResult {
 
     /**
      * Get the failure property: send failure.
-     *
+     * 
      * @return the failure value.
      */
     public Float failure() {
@@ -63,7 +68,7 @@ public final class DebugSendResult {
 
     /**
      * Set the failure property: send failure.
-     *
+     * 
      * @param failure the failure value to set.
      * @return the DebugSendResult object itself.
      */
@@ -74,7 +79,7 @@ public final class DebugSendResult {
 
     /**
      * Get the results property: actual failure description.
-     *
+     * 
      * @return the results value.
      */
     public Object results() {
@@ -83,7 +88,7 @@ public final class DebugSendResult {
 
     /**
      * Set the results property: actual failure description.
-     *
+     * 
      * @param results the results value to set.
      * @return the DebugSendResult object itself.
      */
@@ -94,9 +99,51 @@ public final class DebugSendResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("success", this.success);
+        jsonWriter.writeNumberField("failure", this.failure);
+        jsonWriter.writeUntypedField("results", this.results);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DebugSendResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DebugSendResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DebugSendResult.
+     */
+    public static DebugSendResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DebugSendResult deserializedDebugSendResult = new DebugSendResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("success".equals(fieldName)) {
+                    deserializedDebugSendResult.success = reader.getNullable(JsonReader::getFloat);
+                } else if ("failure".equals(fieldName)) {
+                    deserializedDebugSendResult.failure = reader.getNullable(JsonReader::getFloat);
+                } else if ("results".equals(fieldName)) {
+                    deserializedDebugSendResult.results = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDebugSendResult;
+        });
     }
 }

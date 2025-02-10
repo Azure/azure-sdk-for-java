@@ -5,110 +5,103 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** post. */
+/**
+ * post.
+ */
 @Fluent
 public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
     /*
      * itemBody
      */
-    @JsonProperty(value = "body")
     private MicrosoftGraphItemBody body;
 
     /*
      * Unique ID of the conversation. Read-only.
      */
-    @JsonProperty(value = "conversationId")
     private String conversationId;
 
     /*
      * Unique ID of the conversation thread. Read-only.
      */
-    @JsonProperty(value = "conversationThreadId")
     private String conversationThreadId;
 
     /*
      * recipient
      */
-    @JsonProperty(value = "from")
     private MicrosoftGraphRecipient from;
 
     /*
      * Indicates whether the post has at least one attachment. This is a default property.
      */
-    @JsonProperty(value = "hasAttachments")
     private Boolean hasAttachments;
 
     /*
      * Conversation participants that were added to the thread as part of this post.
      */
-    @JsonProperty(value = "newParticipants")
     private List<MicrosoftGraphRecipient> newParticipants;
 
     /*
-     * Specifies when the post was received. The DateTimeOffset type represents date and time information using ISO
-     * 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * Specifies when the post was received. The DateTimeOffset type represents date and time information using ISO 8601
+     * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "receivedDateTime")
     private OffsetDateTime receivedDateTime;
 
     /*
      * recipient
      */
-    @JsonProperty(value = "sender")
     private MicrosoftGraphRecipient sender;
 
     /*
      * Read-only. Nullable.
      */
-    @JsonProperty(value = "attachments")
     private List<MicrosoftGraphAttachment> attachments;
 
     /*
      * The collection of open extensions defined for the post. Read-only. Nullable.
      */
-    @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
      * post
      */
-    @JsonProperty(value = "inReplyTo")
     private MicrosoftGraphPost inReplyTo;
 
     /*
      * The collection of multi-value extended properties defined for the post. Read-only. Nullable.
      */
-    @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * The collection of single-value extended properties defined for the post. Read-only. Nullable.
      */
-    @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * post
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPost class. */
+    /**
+     * Creates an instance of MicrosoftGraphPost class.
+     */
     public MicrosoftGraphPost() {
     }
 
     /**
      * Get the body property: itemBody.
-     *
+     * 
      * @return the body value.
      */
     public MicrosoftGraphItemBody body() {
@@ -117,7 +110,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the body property: itemBody.
-     *
+     * 
      * @param body the body value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -128,7 +121,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the conversationId property: Unique ID of the conversation. Read-only.
-     *
+     * 
      * @return the conversationId value.
      */
     public String conversationId() {
@@ -137,7 +130,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the conversationId property: Unique ID of the conversation. Read-only.
-     *
+     * 
      * @param conversationId the conversationId value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -148,7 +141,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the conversationThreadId property: Unique ID of the conversation thread. Read-only.
-     *
+     * 
      * @return the conversationThreadId value.
      */
     public String conversationThreadId() {
@@ -157,7 +150,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the conversationThreadId property: Unique ID of the conversation thread. Read-only.
-     *
+     * 
      * @param conversationThreadId the conversationThreadId value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -168,7 +161,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the from property: recipient.
-     *
+     * 
      * @return the from value.
      */
     public MicrosoftGraphRecipient from() {
@@ -177,7 +170,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the from property: recipient.
-     *
+     * 
      * @param from the from value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -189,7 +182,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
     /**
      * Get the hasAttachments property: Indicates whether the post has at least one attachment. This is a default
      * property.
-     *
+     * 
      * @return the hasAttachments value.
      */
     public Boolean hasAttachments() {
@@ -199,7 +192,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
     /**
      * Set the hasAttachments property: Indicates whether the post has at least one attachment. This is a default
      * property.
-     *
+     * 
      * @param hasAttachments the hasAttachments value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -210,7 +203,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the newParticipants property: Conversation participants that were added to the thread as part of this post.
-     *
+     * 
      * @return the newParticipants value.
      */
     public List<MicrosoftGraphRecipient> newParticipants() {
@@ -219,7 +212,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the newParticipants property: Conversation participants that were added to the thread as part of this post.
-     *
+     * 
      * @param newParticipants the newParticipants value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -232,7 +225,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
      * Get the receivedDateTime property: Specifies when the post was received. The DateTimeOffset type represents date
      * and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014
      * would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the receivedDateTime value.
      */
     public OffsetDateTime receivedDateTime() {
@@ -243,7 +236,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
      * Set the receivedDateTime property: Specifies when the post was received. The DateTimeOffset type represents date
      * and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014
      * would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param receivedDateTime the receivedDateTime value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -254,7 +247,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the sender property: recipient.
-     *
+     * 
      * @return the sender value.
      */
     public MicrosoftGraphRecipient sender() {
@@ -263,7 +256,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the sender property: recipient.
-     *
+     * 
      * @param sender the sender value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -274,7 +267,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the attachments property: Read-only. Nullable.
-     *
+     * 
      * @return the attachments value.
      */
     public List<MicrosoftGraphAttachment> attachments() {
@@ -283,7 +276,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the attachments property: Read-only. Nullable.
-     *
+     * 
      * @param attachments the attachments value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -294,7 +287,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the extensions property: The collection of open extensions defined for the post. Read-only. Nullable.
-     *
+     * 
      * @return the extensions value.
      */
     public List<MicrosoftGraphExtension> extensions() {
@@ -303,7 +296,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the extensions property: The collection of open extensions defined for the post. Read-only. Nullable.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -314,7 +307,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the inReplyTo property: post.
-     *
+     * 
      * @return the inReplyTo value.
      */
     public MicrosoftGraphPost inReplyTo() {
@@ -323,7 +316,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the inReplyTo property: post.
-     *
+     * 
      * @param inReplyTo the inReplyTo value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -335,7 +328,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
     /**
      * Get the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * post. Read-only. Nullable.
-     *
+     * 
      * @return the multiValueExtendedProperties value.
      */
     public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
@@ -345,7 +338,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
     /**
      * Set the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * post. Read-only. Nullable.
-     *
+     * 
      * @param multiValueExtendedProperties the multiValueExtendedProperties value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -358,7 +351,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
     /**
      * Get the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the post. Read-only. Nullable.
-     *
+     * 
      * @return the singleValueExtendedProperties value.
      */
     public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
@@ -368,7 +361,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
     /**
      * Set the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the post. Read-only. Nullable.
-     *
+     * 
      * @param singleValueExtendedProperties the singleValueExtendedProperties value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -380,17 +373,16 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the additionalProperties property: post.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: post.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPost object itself.
      */
@@ -399,43 +391,45 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPost withCategories(List<String> categories) {
         super.withCategories(categories);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPost withChangeKey(String changeKey) {
         super.withChangeKey(changeKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPost withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPost withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPost withId(String id) {
         super.withId(id);
@@ -444,7 +438,7 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -477,5 +471,127 @@ public final class MicrosoftGraphPost extends MicrosoftGraphOutlookItem {
         if (singleValueExtendedProperties() != null) {
             singleValueExtendedProperties().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("categories", categories(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("changeKey", changeKey());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeJsonField("body", this.body);
+        jsonWriter.writeStringField("conversationId", this.conversationId);
+        jsonWriter.writeStringField("conversationThreadId", this.conversationThreadId);
+        jsonWriter.writeJsonField("from", this.from);
+        jsonWriter.writeBooleanField("hasAttachments", this.hasAttachments);
+        jsonWriter.writeArrayField("newParticipants", this.newParticipants,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("receivedDateTime",
+            this.receivedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedDateTime));
+        jsonWriter.writeJsonField("sender", this.sender);
+        jsonWriter.writeArrayField("attachments", this.attachments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("inReplyTo", this.inReplyTo);
+        jsonWriter.writeArrayField("multiValueExtendedProperties", this.multiValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("singleValueExtendedProperties", this.singleValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPost from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPost if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPost.
+     */
+    public static MicrosoftGraphPost fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPost deserializedMicrosoftGraphPost = new MicrosoftGraphPost();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.withId(reader.getString());
+                } else if ("categories".equals(fieldName)) {
+                    List<String> categories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphPost.withCategories(categories);
+                } else if ("changeKey".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.withChangeKey(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("body".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.body = MicrosoftGraphItemBody.fromJson(reader);
+                } else if ("conversationId".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.conversationId = reader.getString();
+                } else if ("conversationThreadId".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.conversationThreadId = reader.getString();
+                } else if ("from".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.from = MicrosoftGraphRecipient.fromJson(reader);
+                } else if ("hasAttachments".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.hasAttachments = reader.getNullable(JsonReader::getBoolean);
+                } else if ("newParticipants".equals(fieldName)) {
+                    List<MicrosoftGraphRecipient> newParticipants
+                        = reader.readArray(reader1 -> MicrosoftGraphRecipient.fromJson(reader1));
+                    deserializedMicrosoftGraphPost.newParticipants = newParticipants;
+                } else if ("receivedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.receivedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sender".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.sender = MicrosoftGraphRecipient.fromJson(reader);
+                } else if ("attachments".equals(fieldName)) {
+                    List<MicrosoftGraphAttachment> attachments
+                        = reader.readArray(reader1 -> MicrosoftGraphAttachment.fromJson(reader1));
+                    deserializedMicrosoftGraphPost.attachments = attachments;
+                } else if ("extensions".equals(fieldName)) {
+                    List<MicrosoftGraphExtension> extensions
+                        = reader.readArray(reader1 -> MicrosoftGraphExtension.fromJson(reader1));
+                    deserializedMicrosoftGraphPost.extensions = extensions;
+                } else if ("inReplyTo".equals(fieldName)) {
+                    deserializedMicrosoftGraphPost.inReplyTo = MicrosoftGraphPost.fromJson(reader);
+                } else if ("multiValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties
+                        = reader.readArray(reader1 -> MicrosoftGraphMultiValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphPost.multiValueExtendedProperties = multiValueExtendedProperties;
+                } else if ("singleValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties = reader
+                        .readArray(reader1 -> MicrosoftGraphSingleValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphPost.singleValueExtendedProperties = singleValueExtendedProperties;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPost.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPost;
+        });
     }
 }

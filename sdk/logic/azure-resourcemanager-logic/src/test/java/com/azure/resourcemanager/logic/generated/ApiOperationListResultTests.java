@@ -6,8 +6,23 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.logic.fluent.models.ApiOperationInner;
+import com.azure.resourcemanager.logic.models.ApiOperationAnnotation;
 import com.azure.resourcemanager.logic.models.ApiOperationListResult;
 import com.azure.resourcemanager.logic.models.ApiOperationPropertiesDefinition;
+import com.azure.resourcemanager.logic.models.ApiReference;
+import com.azure.resourcemanager.logic.models.ApiTier;
+import com.azure.resourcemanager.logic.models.ResourceReference;
+import com.azure.resourcemanager.logic.models.StatusAnnotation;
+import com.azure.resourcemanager.logic.models.SwaggerCustomDynamicList;
+import com.azure.resourcemanager.logic.models.SwaggerCustomDynamicProperties;
+import com.azure.resourcemanager.logic.models.SwaggerCustomDynamicSchema;
+import com.azure.resourcemanager.logic.models.SwaggerCustomDynamicTree;
+import com.azure.resourcemanager.logic.models.SwaggerCustomDynamicTreeCommand;
+import com.azure.resourcemanager.logic.models.SwaggerCustomDynamicTreeSettings;
+import com.azure.resourcemanager.logic.models.SwaggerExternalDocumentation;
+import com.azure.resourcemanager.logic.models.SwaggerSchema;
+import com.azure.resourcemanager.logic.models.SwaggerSchemaType;
+import com.azure.resourcemanager.logic.models.SwaggerXml;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,111 +31,458 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiOperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiOperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"summary\":\"juj\",\"description\":\"ckpzvcpopmxeln\",\"visibility\":\"ltyjedexxmlfmk\",\"trigger\":\"cazuaw\",\"triggerHint\":\"z\",\"pageable\":true,\"responsesDefinition\":{},\"isWebhook\":false,\"isNotification\":false},\"location\":\"vxcushsphaivmx\",\"tags\":{\"sgzwywakoihknsm\":\"flv\",\"nymzotqyr\":\"blmljh\",\"xmvwfg\":\"uzcbmqq\",\"qnhcvsqltnzoibg\":\"ayxonsupeujl\"},\"id\":\"xgnxfyqonmpqoxwd\",\"name\":\"fdbxiqxeiiqbim\",\"type\":\"tmwwi\"},{\"properties\":{\"summary\":\"hfqpofv\",\"description\":\"cblembnkbwv\",\"visibility\":\"xk\",\"trigger\":\"vqihebwtswbzuwf\",\"triggerHint\":\"urageg\",\"pageable\":true,\"responsesDefinition\":{},\"isWebhook\":false,\"isNotification\":false},\"location\":\"jubggbqigkxkb\",\"tags\":{\"acy\":\"gak\",\"pv\":\"cmjdmspof\",\"iofrzgbzjedmstk\":\"hryl\"},\"id\":\"nlvxbcuii\",\"name\":\"nktwfansnvpdibmi\",\"type\":\"ostbzbkiwb\"},{\"properties\":{\"summary\":\"yophz\",\"description\":\"l\",\"visibility\":\"crpfbcunez\",\"trigger\":\"e\",\"triggerHint\":\"lfwyfwlwxjwetn\",\"pageable\":false,\"responsesDefinition\":{},\"isWebhook\":true,\"isNotification\":false},\"location\":\"ylptrsqqwztcm\",\"tags\":{\"jexfdeqvhp\":\"chcxwaxfewzj\",\"zjrgyww\":\"ylkkshkbffmbm\"},\"id\":\"gjxsnptfu\",\"name\":\"gicgaaoepttaq\",\"type\":\"tdewemxswvruu\"},{\"properties\":{\"summary\":\"jgehkf\",\"description\":\"m\",\"visibility\":\"ixokffqyin\",\"trigger\":\"qepqwhixmon\",\"triggerHint\":\"shiy\",\"pageable\":false,\"responsesDefinition\":{},\"isWebhook\":false,\"isNotification\":false},\"location\":\"cb\",\"tags\":{\"cobiegstmninwjiz\":\"svu\"},\"id\":\"i\",\"name\":\"nghgshej\",\"type\":\"tbxqmuluxlxq\"}],\"nextLink\":\"nersb\"}")
-                .toObject(ApiOperationListResult.class);
-        Assertions.assertEquals("vxcushsphaivmx", model.value().get(0).location());
-        Assertions.assertEquals("flv", model.value().get(0).tags().get("sgzwywakoihknsm"));
-        Assertions.assertEquals("juj", model.value().get(0).properties().summary());
-        Assertions.assertEquals("ckpzvcpopmxeln", model.value().get(0).properties().description());
-        Assertions.assertEquals("ltyjedexxmlfmk", model.value().get(0).properties().visibility());
-        Assertions.assertEquals("cazuaw", model.value().get(0).properties().trigger());
-        Assertions.assertEquals("z", model.value().get(0).properties().triggerHint());
-        Assertions.assertEquals(true, model.value().get(0).properties().pageable());
-        Assertions.assertEquals(false, model.value().get(0).properties().isWebhook());
-        Assertions.assertEquals(false, model.value().get(0).properties().isNotification());
-        Assertions.assertEquals("nersb", model.nextLink());
+        ApiOperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"summary\":\"aqa\",\"description\":\"ipietgbe\",\"visibility\":\"fulbmoichdl\",\"trigger\":\"fpubntnbatz\",\"triggerHint\":\"qs\",\"pageable\":false,\"annotation\":{\"status\":\"NotSpecified\",\"family\":\"cat\",\"revision\":269063397},\"api\":{\"displayName\":\"plrvkmjcwmjvlg\",\"description\":\"gcvkyyli\",\"iconUri\":\"zbj\",\"swagger\":\"datafxsfuztlvtmv\",\"brandColor\":\"bwidql\",\"category\":\"Enterprise\",\"integrationServiceEnvironment\":{\"id\":\"veo\",\"name\":\"zrvjfnmjmvlwyzgi\",\"type\":\"kujrllfojui\"},\"id\":\"puuyjucejik\",\"name\":\"eovvtzej\",\"type\":\"jklntikyj\"},\"inputsDefinition\":{\"ref\":\"dbqzolxrzvhqjw\",\"type\":\"Number\",\"title\":\"gv\",\"items\":{\"ref\":\"c\",\"type\":\"Null\",\"title\":\"lawjmjsmwrok\",\"items\":{},\"properties\":{\"zzzwy\":{},\"afitlhguynuchlg\":{},\"ltxdwhmozu\":{},\"gzvlnsnn\":{}},\"additionalProperties\":\"datafpafolpymwamxq\",\"required\":[\"gpgdphtvdulaj\",\"lejchcsr\"],\"maxProperties\":1625370422,\"minProperties\":1865328530,\"allOf\":[{},{},{}],\"discriminator\":\"nrupdwvnphcnzqtp\",\"readOnly\":false,\"xml\":{},\"externalDocs\":{},\"example\":\"datav\",\"notificationUrlExtension\":true,\"dynamicSchemaOld\":{},\"dynamicSchemaNew\":{},\"dynamicListNew\":{},\"dynamicTree\":{}},\"properties\":{\"smlzzhzdtxetlgy\":{},\"lhqvlnnpxybafi\":{}},\"additionalProperties\":\"dataeaarbgjekglklbyu\",\"required\":[\"wcwvmzeg\"],\"maxProperties\":1512322504,\"minProperties\":417009435,\"allOf\":[{},{},{}],\"discriminator\":\"wgdnqzbr\",\"readOnly\":true,\"xml\":{\"name\":\"hzmtksjc\",\"namespace\":\"digsxcdgl\",\"prefix\":\"lkeuac\",\"attribute\":true,\"wrapped\":true,\"extensions\":{\"mdgycxn\":\"dataytswfp\",\"qjjyslurl\":\"dataskw\"}},\"externalDocs\":{\"description\":\"hkvpedwqsls\",\"uri\":\"mpqvwwsk\",\"extensions\":{\"uvqejosovyrrle\":\"datacbrwi\",\"uqtljqobbpih\":\"dataesi\",\"bbmpxdlvykfre\":\"datahcecybmrqbr\"}},\"example\":\"datarseqwjksghudgz\",\"notificationUrlExtension\":true,\"dynamicSchemaOld\":{\"operationId\":\"ggsvoujkxibdaf\",\"valuePath\":\"kmdyomkxfbvfbh\",\"parameters\":{\"gddeimaw\":\"datarhpw\"}},\"dynamicSchemaNew\":{\"operationId\":\"gkkumuikjcj\",\"valuePath\":\"ztbws\",\"parameters\":{\"owxwcomli\":{},\"ytwvczcswkacve\":{}}},\"dynamicListNew\":{\"operationId\":\"dvlvhbwrnfxtgdd\",\"builtInOperation\":\"th\",\"itemsPath\":\"n\",\"itemValuePath\":\"aoyankcoeqswa\",\"itemTitlePath\":\"ltytmhdr\",\"parameters\":{\"nhd\":{},\"lktgjc\":{}}},\"dynamicTree\":{\"settings\":{},\"open\":{},\"browse\":{}}},\"responsesDefinition\":{\"ymkmvguihyw\":{\"ref\":\"lwywae\",\"type\":\"Object\",\"title\":\"fbukklelssxblycs\",\"items\":{},\"properties\":{\"ksrl\":{}},\"additionalProperties\":\"datadesqplpvmjcdo\",\"required\":[\"idyvteow\",\"vgp\"],\"maxProperties\":1221924953,\"minProperties\":1318865428,\"allOf\":[{},{}],\"discriminator\":\"xzecpaxwkufykhvu\",\"readOnly\":false,\"xml\":{},\"externalDocs\":{},\"example\":\"datautznabaobns\",\"notificationUrlExtension\":true,\"dynamicSchemaOld\":{},\"dynamicSchemaNew\":{},\"dynamicListNew\":{},\"dynamicTree\":{}}},\"isWebhook\":true,\"isNotification\":true},\"location\":\"phkixkykxdssjpe\",\"tags\":{\"yincql\":\"cfxhikkflrmy\"},\"id\":\"riswslmiiio\",\"name\":\"gqcg\",\"type\":\"uugqk\"},{\"properties\":{\"summary\":\"tiowlx\",\"description\":\"qd\",\"visibility\":\"jgwdtgukranbl\",\"trigger\":\"hqlkccuzgygqwaho\",\"triggerHint\":\"lwgniiprglvawu\",\"pageable\":false,\"annotation\":{\"status\":\"Preview\",\"family\":\"ivlsbbjpmc\",\"revision\":304134042},\"api\":{\"displayName\":\"foxx\",\"description\":\"bvphavpm\",\"iconUri\":\"rbqgvgov\",\"swagger\":\"databttefjoknss\",\"brandColor\":\"zqedikdfrdbi\",\"category\":\"Enterprise\",\"integrationServiceEnvironment\":{\"id\":\"eihfq\",\"name\":\"gwfiwzcxmjpby\",\"type\":\"hmgtvljvrcmyfqi\"},\"id\":\"xhnpo\",\"name\":\"qwcabvnui\",\"type\":\"ey\"},\"inputsDefinition\":{\"ref\":\"lpaugmrm\",\"type\":\"Number\",\"title\":\"xwtoaukhfkvc\",\"items\":{\"ref\":\"zmoaeds\",\"type\":\"Integer\",\"title\":\"ive\",\"items\":{},\"properties\":{\"yeew\":{},\"ei\":{},\"bp\":{}},\"additionalProperties\":\"datag\",\"required\":[\"u\",\"mljdlrgmsplzga\"],\"maxProperties\":1116825850,\"minProperties\":1243615425,\"allOf\":[{},{},{},{}],\"discriminator\":\"ewgnxkympqanxrj\",\"readOnly\":false,\"xml\":{},\"externalDocs\":{},\"example\":\"datataoypnyghshxc\",\"notificationUrlExtension\":false,\"dynamicSchemaOld\":{},\"dynamicSchemaNew\":{},\"dynamicListNew\":{},\"dynamicTree\":{}},\"properties\":{\"hpxycphdrwjjk\":{},\"vyom\":{},\"c\":{}},\"additionalProperties\":\"datazvxnqmhrp\",\"required\":[\"fwmkoisqcssffxui\"],\"maxProperties\":2104491949,\"minProperties\":73890401,\"allOf\":[{},{},{}],\"discriminator\":\"kdqzrdzsylo\",\"readOnly\":true,\"xml\":{\"name\":\"czzydmxzjij\",\"namespace\":\"uaurkihcir\",\"prefix\":\"efxrdcoxnbk\",\"attribute\":false,\"wrapped\":true,\"extensions\":{\"izxqltgrd\":\"datanqbnqb\",\"a\":\"datagypxrxvbfihwuhvc\"}},\"externalDocs\":{\"description\":\"bxrblmliowxihspn\",\"uri\":\"qagnepzwakl\",\"extensions\":{\"mz\":\"databqqqagwwrxa\"}},\"example\":\"dataglrrczez\",\"notificationUrlExtension\":true,\"dynamicSchemaOld\":{\"operationId\":\"njad\",\"valuePath\":\"oawjqoyueay\",\"parameters\":{\"byrrueqth\":\"datacmsp\",\"mbscbbx\":\"datamg\",\"d\":\"datagdhxi\",\"dnafcbqwre\":\"dataopedbwdpyqyybxub\"}},\"dynamicSchemaNew\":{\"operationId\":\"laqacigele\",\"valuePath\":\"d\",\"parameters\":{\"vwzkj\":{},\"pwbeonr\":{},\"kwzdqybxcea\":{},\"xcptsoqfyiaseqc\":{}}},\"dynamicListNew\":{\"operationId\":\"ttzrazisgyki\",\"builtInOperation\":\"mvanbwzo\",\"itemsPath\":\"nrxxbsojklin\",\"itemValuePath\":\"dptysprqs\",\"itemTitlePath\":\"zxojpslsv\",\"parameters\":{\"liufiqwoyxq\":{}}},\"dynamicTree\":{\"settings\":{},\"open\":{},\"browse\":{}}},\"responsesDefinition\":{\"zfrgqhaohcm\":{\"ref\":\"ucqpqojxcxzrz\",\"type\":\"Boolean\",\"title\":\"zbenribc\",\"items\":{},\"properties\":{\"zqddtjwfljhzn\":{},\"mtuatmzwcjjncqtj\":{}},\"additionalProperties\":\"dataizvg\",\"required\":[\"tzuuvb\",\"ngrebwg\"],\"maxProperties\":1931944433,\"minProperties\":1978368742,\"allOf\":[{},{}],\"discriminator\":\"wvajq\",\"readOnly\":false,\"xml\":{},\"externalDocs\":{},\"example\":\"dataoqza\",\"notificationUrlExtension\":true,\"dynamicSchemaOld\":{},\"dynamicSchemaNew\":{},\"dynamicListNew\":{},\"dynamicTree\":{}},\"mjnlexwhcb\":{\"ref\":\"oc\",\"type\":\"String\",\"title\":\"hmbpyryxamebly\",\"items\":{},\"properties\":{\"fkmroc\":{},\"nehvsmt\":{},\"dlfp\":{},\"apucygvo\":{}},\"additionalProperties\":\"datayunssx\",\"required\":[\"ieegjl\"],\"maxProperties\":388874323,\"minProperties\":1800252643,\"allOf\":[{},{},{},{}],\"discriminator\":\"sgb\",\"readOnly\":true,\"xml\":{},\"externalDocs\":{},\"example\":\"dataygdhgaqipirpiwr\",\"notificationUrlExtension\":true,\"dynamicSchemaOld\":{},\"dynamicSchemaNew\":{},\"dynamicListNew\":{},\"dynamicTree\":{}},\"srfhf\":{\"ref\":\"ibkeph\",\"type\":\"Integer\",\"title\":\"rctat\",\"items\":{},\"properties\":{\"tqpbrlcy\":{},\"duczkgof\":{}},\"additionalProperties\":\"datafsrucv\",\"required\":[\"pcjttbstvjeaqn\",\"mvvfko\",\"mlghktuidvrmazlp\",\"wwexymzvlazipbh\"],\"maxProperties\":636989436,\"minProperties\":1689805997,\"allOf\":[{}],\"discriminator\":\"yuuzivens\",\"readOnly\":true,\"xml\":{},\"externalDocs\":{},\"example\":\"datavpkpatlb\",\"notificationUrlExtension\":false,\"dynamicSchemaOld\":{},\"dynamicSchemaNew\":{},\"dynamicListNew\":{},\"dynamicTree\":{}}},\"isWebhook\":true,\"isNotification\":true},\"location\":\"nbnxwcdomm\",\"tags\":{\"zfgbrttuiaclkie\":\"qa\",\"hiqfyuttdiy\":\"hajlfn\",\"vnwsw\":\"b\",\"cvogygzyvne\":\"txkyctwwgzwxjlm\"},\"id\":\"zaifghtmoqqtlff\",\"name\":\"zbkr\",\"type\":\"jjjavfqnvhnq\"}],\"nextLink\":\"wdogiyetesyp\"}")
+            .toObject(ApiOperationListResult.class);
+        Assertions.assertEquals("phkixkykxdssjpe", model.value().get(0).location());
+        Assertions.assertEquals("cfxhikkflrmy", model.value().get(0).tags().get("yincql"));
+        Assertions.assertEquals("aqa", model.value().get(0).properties().summary());
+        Assertions.assertEquals("ipietgbe", model.value().get(0).properties().description());
+        Assertions.assertEquals("fulbmoichdl", model.value().get(0).properties().visibility());
+        Assertions.assertEquals("fpubntnbatz", model.value().get(0).properties().trigger());
+        Assertions.assertEquals("qs", model.value().get(0).properties().triggerHint());
+        Assertions.assertEquals(false, model.value().get(0).properties().pageable());
+        Assertions.assertEquals(StatusAnnotation.NOT_SPECIFIED,
+            model.value().get(0).properties().annotation().status());
+        Assertions.assertEquals("cat", model.value().get(0).properties().annotation().family());
+        Assertions.assertEquals(269063397, model.value().get(0).properties().annotation().revision());
+        Assertions.assertEquals("puuyjucejik", model.value().get(0).properties().api().id());
+        Assertions.assertEquals("plrvkmjcwmjvlg", model.value().get(0).properties().api().displayName());
+        Assertions.assertEquals("gcvkyyli", model.value().get(0).properties().api().description());
+        Assertions.assertEquals("zbj", model.value().get(0).properties().api().iconUri());
+        Assertions.assertEquals("bwidql", model.value().get(0).properties().api().brandColor());
+        Assertions.assertEquals(ApiTier.ENTERPRISE, model.value().get(0).properties().api().category());
+        Assertions.assertEquals("veo", model.value().get(0).properties().api().integrationServiceEnvironment().id());
+        Assertions.assertEquals("dbqzolxrzvhqjw", model.value().get(0).properties().inputsDefinition().ref());
+        Assertions.assertEquals(SwaggerSchemaType.NUMBER, model.value().get(0).properties().inputsDefinition().type());
+        Assertions.assertEquals("gv", model.value().get(0).properties().inputsDefinition().title());
+        Assertions.assertEquals("c", model.value().get(0).properties().inputsDefinition().items().ref());
+        Assertions.assertEquals(SwaggerSchemaType.NULL,
+            model.value().get(0).properties().inputsDefinition().items().type());
+        Assertions.assertEquals("lawjmjsmwrok", model.value().get(0).properties().inputsDefinition().items().title());
+        Assertions.assertEquals("gpgdphtvdulaj",
+            model.value().get(0).properties().inputsDefinition().items().required().get(0));
+        Assertions.assertEquals(1625370422,
+            model.value().get(0).properties().inputsDefinition().items().maxProperties());
+        Assertions.assertEquals(1865328530,
+            model.value().get(0).properties().inputsDefinition().items().minProperties());
+        Assertions.assertEquals("nrupdwvnphcnzqtp",
+            model.value().get(0).properties().inputsDefinition().items().discriminator());
+        Assertions.assertEquals(false, model.value().get(0).properties().inputsDefinition().items().readOnly());
+        Assertions.assertEquals(true,
+            model.value().get(0).properties().inputsDefinition().items().notificationUrlExtension());
+        Assertions.assertEquals("wcwvmzeg", model.value().get(0).properties().inputsDefinition().required().get(0));
+        Assertions.assertEquals(1512322504, model.value().get(0).properties().inputsDefinition().maxProperties());
+        Assertions.assertEquals(417009435, model.value().get(0).properties().inputsDefinition().minProperties());
+        Assertions.assertEquals("wgdnqzbr", model.value().get(0).properties().inputsDefinition().discriminator());
+        Assertions.assertEquals(true, model.value().get(0).properties().inputsDefinition().readOnly());
+        Assertions.assertEquals("hzmtksjc", model.value().get(0).properties().inputsDefinition().xml().name());
+        Assertions.assertEquals("digsxcdgl", model.value().get(0).properties().inputsDefinition().xml().namespace());
+        Assertions.assertEquals("lkeuac", model.value().get(0).properties().inputsDefinition().xml().prefix());
+        Assertions.assertEquals(true, model.value().get(0).properties().inputsDefinition().xml().attribute());
+        Assertions.assertEquals(true, model.value().get(0).properties().inputsDefinition().xml().wrapped());
+        Assertions.assertEquals("hkvpedwqsls",
+            model.value().get(0).properties().inputsDefinition().externalDocs().description());
+        Assertions.assertEquals("mpqvwwsk", model.value().get(0).properties().inputsDefinition().externalDocs().uri());
+        Assertions.assertEquals(true, model.value().get(0).properties().inputsDefinition().notificationUrlExtension());
+        Assertions.assertEquals("ggsvoujkxibdaf",
+            model.value().get(0).properties().inputsDefinition().dynamicSchemaOld().operationId());
+        Assertions.assertEquals("kmdyomkxfbvfbh",
+            model.value().get(0).properties().inputsDefinition().dynamicSchemaOld().valuePath());
+        Assertions.assertEquals("gkkumuikjcj",
+            model.value().get(0).properties().inputsDefinition().dynamicSchemaNew().operationId());
+        Assertions.assertEquals("ztbws",
+            model.value().get(0).properties().inputsDefinition().dynamicSchemaNew().valuePath());
+        Assertions.assertEquals("dvlvhbwrnfxtgdd",
+            model.value().get(0).properties().inputsDefinition().dynamicListNew().operationId());
+        Assertions.assertEquals("th",
+            model.value().get(0).properties().inputsDefinition().dynamicListNew().builtInOperation());
+        Assertions.assertEquals("n", model.value().get(0).properties().inputsDefinition().dynamicListNew().itemsPath());
+        Assertions.assertEquals("aoyankcoeqswa",
+            model.value().get(0).properties().inputsDefinition().dynamicListNew().itemValuePath());
+        Assertions.assertEquals("ltytmhdr",
+            model.value().get(0).properties().inputsDefinition().dynamicListNew().itemTitlePath());
+        Assertions.assertEquals("lwywae",
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").ref());
+        Assertions.assertEquals(SwaggerSchemaType.OBJECT,
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").type());
+        Assertions.assertEquals("fbukklelssxblycs",
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").title());
+        Assertions.assertEquals("idyvteow",
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").required().get(0));
+        Assertions.assertEquals(1221924953,
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").maxProperties());
+        Assertions.assertEquals(1318865428,
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").minProperties());
+        Assertions.assertEquals("xzecpaxwkufykhvu",
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").discriminator());
+        Assertions.assertEquals(false,
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").readOnly());
+        Assertions.assertEquals(true,
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").notificationUrlExtension());
+        Assertions.assertEquals(true, model.value().get(0).properties().isWebhook());
+        Assertions.assertEquals(true, model.value().get(0).properties().isNotification());
+        Assertions.assertEquals("wdogiyetesyp", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiOperationListResult model =
-            new ApiOperationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ApiOperationInner()
-                                .withLocation("vxcushsphaivmx")
-                                .withTags(
-                                    mapOf(
-                                        "sgzwywakoihknsm",
-                                        "flv",
-                                        "nymzotqyr",
-                                        "blmljh",
-                                        "xmvwfg",
-                                        "uzcbmqq",
-                                        "qnhcvsqltnzoibg",
-                                        "ayxonsupeujl"))
+        ApiOperationListResult model = new ApiOperationListResult()
+            .withValue(Arrays.asList(
+                new ApiOperationInner().withLocation("phkixkykxdssjpe")
+                    .withTags(mapOf("yincql", "cfxhikkflrmy"))
+                    .withProperties(new ApiOperationPropertiesDefinition().withSummary("aqa")
+                        .withDescription("ipietgbe")
+                        .withVisibility("fulbmoichdl")
+                        .withTrigger("fpubntnbatz")
+                        .withTriggerHint("qs")
+                        .withPageable(false)
+                        .withAnnotation(new ApiOperationAnnotation().withStatus(StatusAnnotation.NOT_SPECIFIED)
+                            .withFamily("cat")
+                            .withRevision(269063397))
+                        .withApi(new ApiReference()
+                            .withId("puuyjucejik")
+                            .withDisplayName("plrvkmjcwmjvlg")
+                            .withDescription("gcvkyyli")
+                            .withIconUri("zbj")
+                            .withSwagger("datafxsfuztlvtmv")
+                            .withBrandColor("bwidql")
+                            .withCategory(ApiTier.ENTERPRISE)
+                            .withIntegrationServiceEnvironment(new ResourceReference().withId("veo")))
+                        .withInputsDefinition(new SwaggerSchema().withRef("dbqzolxrzvhqjw")
+                            .withType(SwaggerSchemaType.NUMBER)
+                            .withTitle("gv")
+                            .withItems(new SwaggerSchema().withRef("c")
+                                .withType(SwaggerSchemaType.NULL)
+                                .withTitle("lawjmjsmwrok")
+                                .withItems(new SwaggerSchema())
                                 .withProperties(
-                                    new ApiOperationPropertiesDefinition()
-                                        .withSummary("juj")
-                                        .withDescription("ckpzvcpopmxeln")
-                                        .withVisibility("ltyjedexxmlfmk")
-                                        .withTrigger("cazuaw")
-                                        .withTriggerHint("z")
-                                        .withPageable(true)
-                                        .withResponsesDefinition(mapOf())
-                                        .withIsWebhook(false)
-                                        .withIsNotification(false)),
-                            new ApiOperationInner()
-                                .withLocation("jubggbqigkxkb")
-                                .withTags(mapOf("acy", "gak", "pv", "cmjdmspof", "iofrzgbzjedmstk", "hryl"))
-                                .withProperties(
-                                    new ApiOperationPropertiesDefinition()
-                                        .withSummary("hfqpofv")
-                                        .withDescription("cblembnkbwv")
-                                        .withVisibility("xk")
-                                        .withTrigger("vqihebwtswbzuwf")
-                                        .withTriggerHint("urageg")
-                                        .withPageable(true)
-                                        .withResponsesDefinition(mapOf())
-                                        .withIsWebhook(false)
-                                        .withIsNotification(false)),
-                            new ApiOperationInner()
-                                .withLocation("ylptrsqqwztcm")
-                                .withTags(mapOf("jexfdeqvhp", "chcxwaxfewzj", "zjrgyww", "ylkkshkbffmbm"))
-                                .withProperties(
-                                    new ApiOperationPropertiesDefinition()
-                                        .withSummary("yophz")
-                                        .withDescription("l")
-                                        .withVisibility("crpfbcunez")
-                                        .withTrigger("e")
-                                        .withTriggerHint("lfwyfwlwxjwetn")
-                                        .withPageable(false)
-                                        .withResponsesDefinition(mapOf())
-                                        .withIsWebhook(true)
-                                        .withIsNotification(false)),
-                            new ApiOperationInner()
-                                .withLocation("cb")
-                                .withTags(mapOf("cobiegstmninwjiz", "svu"))
-                                .withProperties(
-                                    new ApiOperationPropertiesDefinition()
-                                        .withSummary("jgehkf")
-                                        .withDescription("m")
-                                        .withVisibility("ixokffqyin")
-                                        .withTrigger("qepqwhixmon")
-                                        .withTriggerHint("shiy")
-                                        .withPageable(false)
-                                        .withResponsesDefinition(mapOf())
-                                        .withIsWebhook(false)
-                                        .withIsNotification(false))))
-                .withNextLink("nersb");
+                                    mapOf("zzzwy", new SwaggerSchema(), "afitlhguynuchlg", new SwaggerSchema(),
+                                        "ltxdwhmozu", new SwaggerSchema(), "gzvlnsnn", new SwaggerSchema()))
+                                .withAdditionalProperties("datafpafolpymwamxq")
+                                .withRequired(Arrays.asList("gpgdphtvdulaj", "lejchcsr"))
+                                .withMaxProperties(1625370422)
+                                .withMinProperties(1865328530)
+                                .withAllOf(Arrays.asList(new SwaggerSchema(), new SwaggerSchema(), new SwaggerSchema()))
+                                .withDiscriminator("nrupdwvnphcnzqtp")
+                                .withReadOnly(false)
+                                .withXml(new SwaggerXml())
+                                .withExternalDocs(new SwaggerExternalDocumentation())
+                                .withExample("datav")
+                                .withNotificationUrlExtension(true)
+                                .withDynamicSchemaOld(new SwaggerCustomDynamicSchema())
+                                .withDynamicSchemaNew(new SwaggerCustomDynamicProperties())
+                                .withDynamicListNew(new SwaggerCustomDynamicList())
+                                .withDynamicTree(new SwaggerCustomDynamicTree()))
+                            .withProperties(
+                                mapOf("smlzzhzdtxetlgy", new SwaggerSchema(), "lhqvlnnpxybafi", new SwaggerSchema()))
+                            .withAdditionalProperties("dataeaarbgjekglklbyu")
+                            .withRequired(Arrays.asList("wcwvmzeg"))
+                            .withMaxProperties(1512322504)
+                            .withMinProperties(417009435)
+                            .withAllOf(Arrays.asList(new SwaggerSchema(), new SwaggerSchema(), new SwaggerSchema()))
+                            .withDiscriminator("wgdnqzbr")
+                            .withReadOnly(true)
+                            .withXml(new SwaggerXml().withName("hzmtksjc")
+                                .withNamespace("digsxcdgl")
+                                .withPrefix("lkeuac")
+                                .withAttribute(true)
+                                .withWrapped(true)
+                                .withExtensions(mapOf("mdgycxn", "dataytswfp", "qjjyslurl", "dataskw")))
+                            .withExternalDocs(new SwaggerExternalDocumentation().withDescription("hkvpedwqsls")
+                                .withUri("mpqvwwsk")
+                                .withExtensions(mapOf("uvqejosovyrrle", "datacbrwi", "uqtljqobbpih", "dataesi",
+                                    "bbmpxdlvykfre", "datahcecybmrqbr")))
+                            .withExample("datarseqwjksghudgz")
+                            .withNotificationUrlExtension(true)
+                            .withDynamicSchemaOld(new SwaggerCustomDynamicSchema().withOperationId("ggsvoujkxibdaf")
+                                .withValuePath("kmdyomkxfbvfbh")
+                                .withParameters(mapOf("gddeimaw", "datarhpw")))
+                            .withDynamicSchemaNew(new SwaggerCustomDynamicProperties().withOperationId("gkkumuikjcj")
+                                .withValuePath("ztbws")
+                                .withParameters(mapOf("owxwcomli", new SwaggerCustomDynamicProperties(),
+                                    "ytwvczcswkacve", new SwaggerCustomDynamicProperties())))
+                            .withDynamicListNew(new SwaggerCustomDynamicList().withOperationId("dvlvhbwrnfxtgdd")
+                                .withBuiltInOperation("th")
+                                .withItemsPath("n")
+                                .withItemValuePath("aoyankcoeqswa")
+                                .withItemTitlePath("ltytmhdr")
+                                .withParameters(mapOf("nhd", new SwaggerCustomDynamicProperties(), "lktgjc",
+                                    new SwaggerCustomDynamicProperties())))
+                            .withDynamicTree(
+                                new SwaggerCustomDynamicTree().withSettings(new SwaggerCustomDynamicTreeSettings())
+                                    .withOpen(new SwaggerCustomDynamicTreeCommand())
+                                    .withBrowse(new SwaggerCustomDynamicTreeCommand())))
+                        .withResponsesDefinition(mapOf(
+                            "ymkmvguihyw",
+                            new SwaggerSchema().withRef("lwywae")
+                                .withType(SwaggerSchemaType.OBJECT)
+                                .withTitle("fbukklelssxblycs")
+                                .withItems(new SwaggerSchema())
+                                .withProperties(mapOf("ksrl", new SwaggerSchema()))
+                                .withAdditionalProperties("datadesqplpvmjcdo")
+                                .withRequired(Arrays.asList("idyvteow", "vgp"))
+                                .withMaxProperties(1221924953)
+                                .withMinProperties(1318865428)
+                                .withAllOf(Arrays.asList(new SwaggerSchema(), new SwaggerSchema()))
+                                .withDiscriminator("xzecpaxwkufykhvu")
+                                .withReadOnly(false)
+                                .withXml(new SwaggerXml())
+                                .withExternalDocs(new SwaggerExternalDocumentation())
+                                .withExample("datautznabaobns")
+                                .withNotificationUrlExtension(true)
+                                .withDynamicSchemaOld(new SwaggerCustomDynamicSchema())
+                                .withDynamicSchemaNew(new SwaggerCustomDynamicProperties())
+                                .withDynamicListNew(new SwaggerCustomDynamicList())
+                                .withDynamicTree(new SwaggerCustomDynamicTree())))
+                        .withIsWebhook(true)
+                        .withIsNotification(true)),
+                new ApiOperationInner().withLocation("nbnxwcdomm")
+                    .withTags(mapOf("zfgbrttuiaclkie", "qa", "hiqfyuttdiy", "hajlfn", "vnwsw", "b", "cvogygzyvne",
+                        "txkyctwwgzwxjlm"))
+                    .withProperties(new ApiOperationPropertiesDefinition().withSummary("tiowlx")
+                        .withDescription("qd")
+                        .withVisibility("jgwdtgukranbl")
+                        .withTrigger("hqlkccuzgygqwaho")
+                        .withTriggerHint("lwgniiprglvawu")
+                        .withPageable(false)
+                        .withAnnotation(new ApiOperationAnnotation().withStatus(StatusAnnotation.PREVIEW)
+                            .withFamily("ivlsbbjpmc")
+                            .withRevision(304134042))
+                        .withApi(new ApiReference().withId("xhnpo")
+                            .withDisplayName("foxx")
+                            .withDescription("bvphavpm")
+                            .withIconUri("rbqgvgov")
+                            .withSwagger("databttefjoknss")
+                            .withBrandColor("zqedikdfrdbi")
+                            .withCategory(ApiTier.ENTERPRISE)
+                            .withIntegrationServiceEnvironment(new ResourceReference().withId("eihfq")))
+                        .withInputsDefinition(new SwaggerSchema().withRef("lpaugmrm")
+                            .withType(SwaggerSchemaType.NUMBER)
+                            .withTitle("xwtoaukhfkvc")
+                            .withItems(new SwaggerSchema().withRef("zmoaeds")
+                                .withType(SwaggerSchemaType.INTEGER)
+                                .withTitle("ive")
+                                .withItems(new SwaggerSchema())
+                                .withProperties(mapOf("yeew", new SwaggerSchema(), "ei", new SwaggerSchema(), "bp",
+                                    new SwaggerSchema()))
+                                .withAdditionalProperties("datag")
+                                .withRequired(Arrays.asList("u", "mljdlrgmsplzga"))
+                                .withMaxProperties(1116825850)
+                                .withMinProperties(1243615425)
+                                .withAllOf(Arrays.asList(new SwaggerSchema(), new SwaggerSchema(), new SwaggerSchema(),
+                                    new SwaggerSchema()))
+                                .withDiscriminator("ewgnxkympqanxrj")
+                                .withReadOnly(false)
+                                .withXml(new SwaggerXml())
+                                .withExternalDocs(new SwaggerExternalDocumentation())
+                                .withExample("datataoypnyghshxc")
+                                .withNotificationUrlExtension(false)
+                                .withDynamicSchemaOld(new SwaggerCustomDynamicSchema())
+                                .withDynamicSchemaNew(new SwaggerCustomDynamicProperties())
+                                .withDynamicListNew(new SwaggerCustomDynamicList())
+                                .withDynamicTree(new SwaggerCustomDynamicTree()))
+                            .withProperties(mapOf("hpxycphdrwjjk", new SwaggerSchema(), "vyom", new SwaggerSchema(),
+                                "c", new SwaggerSchema()))
+                            .withAdditionalProperties("datazvxnqmhrp")
+                            .withRequired(Arrays.asList("fwmkoisqcssffxui"))
+                            .withMaxProperties(2104491949)
+                            .withMinProperties(73890401)
+                            .withAllOf(Arrays.asList(new SwaggerSchema(), new SwaggerSchema(), new SwaggerSchema()))
+                            .withDiscriminator("kdqzrdzsylo")
+                            .withReadOnly(true)
+                            .withXml(new SwaggerXml().withName("czzydmxzjij")
+                                .withNamespace("uaurkihcir")
+                                .withPrefix("efxrdcoxnbk")
+                                .withAttribute(false)
+                                .withWrapped(true)
+                                .withExtensions(mapOf("izxqltgrd", "datanqbnqb", "a", "datagypxrxvbfihwuhvc")))
+                            .withExternalDocs(new SwaggerExternalDocumentation().withDescription("bxrblmliowxihspn")
+                                .withUri("qagnepzwakl")
+                                .withExtensions(mapOf("mz", "databqqqagwwrxa")))
+                            .withExample("dataglrrczez")
+                            .withNotificationUrlExtension(true)
+                            .withDynamicSchemaOld(new SwaggerCustomDynamicSchema().withOperationId("njad")
+                                .withValuePath("oawjqoyueay")
+                                .withParameters(mapOf("byrrueqth", "datacmsp", "mbscbbx", "datamg", "d", "datagdhxi",
+                                    "dnafcbqwre", "dataopedbwdpyqyybxub")))
+                            .withDynamicSchemaNew(new SwaggerCustomDynamicProperties().withOperationId("laqacigele")
+                                .withValuePath("d")
+                                .withParameters(mapOf("vwzkj", new SwaggerCustomDynamicProperties(), "pwbeonr",
+                                    new SwaggerCustomDynamicProperties(), "kwzdqybxcea",
+                                    new SwaggerCustomDynamicProperties(), "xcptsoqfyiaseqc",
+                                    new SwaggerCustomDynamicProperties())))
+                            .withDynamicListNew(new SwaggerCustomDynamicList().withOperationId("ttzrazisgyki")
+                                .withBuiltInOperation("mvanbwzo")
+                                .withItemsPath("nrxxbsojklin")
+                                .withItemValuePath("dptysprqs")
+                                .withItemTitlePath("zxojpslsv")
+                                .withParameters(mapOf("liufiqwoyxq", new SwaggerCustomDynamicProperties())))
+                            .withDynamicTree(
+                                new SwaggerCustomDynamicTree().withSettings(new SwaggerCustomDynamicTreeSettings())
+                                    .withOpen(new SwaggerCustomDynamicTreeCommand())
+                                    .withBrowse(new SwaggerCustomDynamicTreeCommand())))
+                        .withResponsesDefinition(mapOf("zfrgqhaohcm", new SwaggerSchema().withRef("ucqpqojxcxzrz")
+                            .withType(SwaggerSchemaType.BOOLEAN)
+                            .withTitle("zbenribc")
+                            .withItems(new SwaggerSchema())
+                            .withProperties(
+                                mapOf("zqddtjwfljhzn", new SwaggerSchema(), "mtuatmzwcjjncqtj", new SwaggerSchema()))
+                            .withAdditionalProperties("dataizvg")
+                            .withRequired(Arrays.asList("tzuuvb", "ngrebwg"))
+                            .withMaxProperties(1931944433)
+                            .withMinProperties(1978368742)
+                            .withAllOf(Arrays.asList(new SwaggerSchema(), new SwaggerSchema()))
+                            .withDiscriminator("wvajq")
+                            .withReadOnly(false)
+                            .withXml(new SwaggerXml())
+                            .withExternalDocs(new SwaggerExternalDocumentation())
+                            .withExample("dataoqza")
+                            .withNotificationUrlExtension(true)
+                            .withDynamicSchemaOld(new SwaggerCustomDynamicSchema())
+                            .withDynamicSchemaNew(new SwaggerCustomDynamicProperties())
+                            .withDynamicListNew(new SwaggerCustomDynamicList())
+                            .withDynamicTree(new SwaggerCustomDynamicTree()), "mjnlexwhcb",
+                            new SwaggerSchema().withRef("oc")
+                                .withType(SwaggerSchemaType.STRING)
+                                .withTitle("hmbpyryxamebly")
+                                .withItems(new SwaggerSchema())
+                                .withProperties(mapOf("fkmroc", new SwaggerSchema(), "nehvsmt", new SwaggerSchema(),
+                                    "dlfp", new SwaggerSchema(), "apucygvo", new SwaggerSchema()))
+                                .withAdditionalProperties("datayunssx")
+                                .withRequired(Arrays.asList("ieegjl"))
+                                .withMaxProperties(388874323)
+                                .withMinProperties(1800252643)
+                                .withAllOf(Arrays.asList(new SwaggerSchema(), new SwaggerSchema(), new SwaggerSchema(),
+                                    new SwaggerSchema()))
+                                .withDiscriminator("sgb")
+                                .withReadOnly(true)
+                                .withXml(new SwaggerXml())
+                                .withExternalDocs(new SwaggerExternalDocumentation())
+                                .withExample("dataygdhgaqipirpiwr")
+                                .withNotificationUrlExtension(true)
+                                .withDynamicSchemaOld(new SwaggerCustomDynamicSchema())
+                                .withDynamicSchemaNew(new SwaggerCustomDynamicProperties())
+                                .withDynamicListNew(new SwaggerCustomDynamicList())
+                                .withDynamicTree(new SwaggerCustomDynamicTree()),
+                            "srfhf",
+                            new SwaggerSchema().withRef("ibkeph")
+                                .withType(SwaggerSchemaType.INTEGER)
+                                .withTitle("rctat")
+                                .withItems(new SwaggerSchema())
+                                .withProperties(mapOf("tqpbrlcy", new SwaggerSchema(), "duczkgof", new SwaggerSchema()))
+                                .withAdditionalProperties("datafsrucv")
+                                .withRequired(
+                                    Arrays.asList("pcjttbstvjeaqn", "mvvfko", "mlghktuidvrmazlp", "wwexymzvlazipbh"))
+                                .withMaxProperties(636989436)
+                                .withMinProperties(1689805997)
+                                .withAllOf(Arrays.asList(new SwaggerSchema()))
+                                .withDiscriminator("yuuzivens")
+                                .withReadOnly(true)
+                                .withXml(new SwaggerXml())
+                                .withExternalDocs(new SwaggerExternalDocumentation())
+                                .withExample("datavpkpatlb")
+                                .withNotificationUrlExtension(false)
+                                .withDynamicSchemaOld(new SwaggerCustomDynamicSchema())
+                                .withDynamicSchemaNew(new SwaggerCustomDynamicProperties())
+                                .withDynamicListNew(new SwaggerCustomDynamicList())
+                                .withDynamicTree(new SwaggerCustomDynamicTree())))
+                        .withIsWebhook(true)
+                        .withIsNotification(true))))
+            .withNextLink("wdogiyetesyp");
         model = BinaryData.fromObject(model).toObject(ApiOperationListResult.class);
-        Assertions.assertEquals("vxcushsphaivmx", model.value().get(0).location());
-        Assertions.assertEquals("flv", model.value().get(0).tags().get("sgzwywakoihknsm"));
-        Assertions.assertEquals("juj", model.value().get(0).properties().summary());
-        Assertions.assertEquals("ckpzvcpopmxeln", model.value().get(0).properties().description());
-        Assertions.assertEquals("ltyjedexxmlfmk", model.value().get(0).properties().visibility());
-        Assertions.assertEquals("cazuaw", model.value().get(0).properties().trigger());
-        Assertions.assertEquals("z", model.value().get(0).properties().triggerHint());
-        Assertions.assertEquals(true, model.value().get(0).properties().pageable());
-        Assertions.assertEquals(false, model.value().get(0).properties().isWebhook());
-        Assertions.assertEquals(false, model.value().get(0).properties().isNotification());
-        Assertions.assertEquals("nersb", model.nextLink());
+        Assertions.assertEquals("phkixkykxdssjpe", model.value().get(0).location());
+        Assertions.assertEquals("cfxhikkflrmy", model.value().get(0).tags().get("yincql"));
+        Assertions.assertEquals("aqa", model.value().get(0).properties().summary());
+        Assertions.assertEquals("ipietgbe", model.value().get(0).properties().description());
+        Assertions.assertEquals("fulbmoichdl", model.value().get(0).properties().visibility());
+        Assertions.assertEquals("fpubntnbatz", model.value().get(0).properties().trigger());
+        Assertions.assertEquals("qs", model.value().get(0).properties().triggerHint());
+        Assertions.assertEquals(false, model.value().get(0).properties().pageable());
+        Assertions.assertEquals(StatusAnnotation.NOT_SPECIFIED,
+            model.value().get(0).properties().annotation().status());
+        Assertions.assertEquals("cat", model.value().get(0).properties().annotation().family());
+        Assertions.assertEquals(269063397, model.value().get(0).properties().annotation().revision());
+        Assertions.assertEquals("puuyjucejik", model.value().get(0).properties().api().id());
+        Assertions.assertEquals("plrvkmjcwmjvlg", model.value().get(0).properties().api().displayName());
+        Assertions.assertEquals("gcvkyyli", model.value().get(0).properties().api().description());
+        Assertions.assertEquals("zbj", model.value().get(0).properties().api().iconUri());
+        Assertions.assertEquals("bwidql", model.value().get(0).properties().api().brandColor());
+        Assertions.assertEquals(ApiTier.ENTERPRISE, model.value().get(0).properties().api().category());
+        Assertions.assertEquals("veo", model.value().get(0).properties().api().integrationServiceEnvironment().id());
+        Assertions.assertEquals("dbqzolxrzvhqjw", model.value().get(0).properties().inputsDefinition().ref());
+        Assertions.assertEquals(SwaggerSchemaType.NUMBER, model.value().get(0).properties().inputsDefinition().type());
+        Assertions.assertEquals("gv", model.value().get(0).properties().inputsDefinition().title());
+        Assertions.assertEquals("c", model.value().get(0).properties().inputsDefinition().items().ref());
+        Assertions.assertEquals(SwaggerSchemaType.NULL,
+            model.value().get(0).properties().inputsDefinition().items().type());
+        Assertions.assertEquals("lawjmjsmwrok", model.value().get(0).properties().inputsDefinition().items().title());
+        Assertions.assertEquals("gpgdphtvdulaj",
+            model.value().get(0).properties().inputsDefinition().items().required().get(0));
+        Assertions.assertEquals(1625370422,
+            model.value().get(0).properties().inputsDefinition().items().maxProperties());
+        Assertions.assertEquals(1865328530,
+            model.value().get(0).properties().inputsDefinition().items().minProperties());
+        Assertions.assertEquals("nrupdwvnphcnzqtp",
+            model.value().get(0).properties().inputsDefinition().items().discriminator());
+        Assertions.assertEquals(false, model.value().get(0).properties().inputsDefinition().items().readOnly());
+        Assertions.assertEquals(true,
+            model.value().get(0).properties().inputsDefinition().items().notificationUrlExtension());
+        Assertions.assertEquals("wcwvmzeg", model.value().get(0).properties().inputsDefinition().required().get(0));
+        Assertions.assertEquals(1512322504, model.value().get(0).properties().inputsDefinition().maxProperties());
+        Assertions.assertEquals(417009435, model.value().get(0).properties().inputsDefinition().minProperties());
+        Assertions.assertEquals("wgdnqzbr", model.value().get(0).properties().inputsDefinition().discriminator());
+        Assertions.assertEquals(true, model.value().get(0).properties().inputsDefinition().readOnly());
+        Assertions.assertEquals("hzmtksjc", model.value().get(0).properties().inputsDefinition().xml().name());
+        Assertions.assertEquals("digsxcdgl", model.value().get(0).properties().inputsDefinition().xml().namespace());
+        Assertions.assertEquals("lkeuac", model.value().get(0).properties().inputsDefinition().xml().prefix());
+        Assertions.assertEquals(true, model.value().get(0).properties().inputsDefinition().xml().attribute());
+        Assertions.assertEquals(true, model.value().get(0).properties().inputsDefinition().xml().wrapped());
+        Assertions.assertEquals("hkvpedwqsls",
+            model.value().get(0).properties().inputsDefinition().externalDocs().description());
+        Assertions.assertEquals("mpqvwwsk", model.value().get(0).properties().inputsDefinition().externalDocs().uri());
+        Assertions.assertEquals(true, model.value().get(0).properties().inputsDefinition().notificationUrlExtension());
+        Assertions.assertEquals("ggsvoujkxibdaf",
+            model.value().get(0).properties().inputsDefinition().dynamicSchemaOld().operationId());
+        Assertions.assertEquals("kmdyomkxfbvfbh",
+            model.value().get(0).properties().inputsDefinition().dynamicSchemaOld().valuePath());
+        Assertions.assertEquals("gkkumuikjcj",
+            model.value().get(0).properties().inputsDefinition().dynamicSchemaNew().operationId());
+        Assertions.assertEquals("ztbws",
+            model.value().get(0).properties().inputsDefinition().dynamicSchemaNew().valuePath());
+        Assertions.assertEquals("dvlvhbwrnfxtgdd",
+            model.value().get(0).properties().inputsDefinition().dynamicListNew().operationId());
+        Assertions.assertEquals("th",
+            model.value().get(0).properties().inputsDefinition().dynamicListNew().builtInOperation());
+        Assertions.assertEquals("n", model.value().get(0).properties().inputsDefinition().dynamicListNew().itemsPath());
+        Assertions.assertEquals("aoyankcoeqswa",
+            model.value().get(0).properties().inputsDefinition().dynamicListNew().itemValuePath());
+        Assertions.assertEquals("ltytmhdr",
+            model.value().get(0).properties().inputsDefinition().dynamicListNew().itemTitlePath());
+        Assertions.assertEquals("lwywae",
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").ref());
+        Assertions.assertEquals(SwaggerSchemaType.OBJECT,
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").type());
+        Assertions.assertEquals("fbukklelssxblycs",
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").title());
+        Assertions.assertEquals("idyvteow",
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").required().get(0));
+        Assertions.assertEquals(1221924953,
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").maxProperties());
+        Assertions.assertEquals(1318865428,
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").minProperties());
+        Assertions.assertEquals("xzecpaxwkufykhvu",
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").discriminator());
+        Assertions.assertEquals(false,
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").readOnly());
+        Assertions.assertEquals(true,
+            model.value().get(0).properties().responsesDefinition().get("ymkmvguihyw").notificationUrlExtension());
+        Assertions.assertEquals(true, model.value().get(0).properties().isWebhook());
+        Assertions.assertEquals(true, model.value().get(0).properties().isNotification());
+        Assertions.assertEquals("wdogiyetesyp", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

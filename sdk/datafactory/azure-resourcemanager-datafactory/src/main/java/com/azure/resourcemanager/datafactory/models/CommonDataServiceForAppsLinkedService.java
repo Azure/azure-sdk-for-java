@@ -6,24 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.CommonDataServiceForAppsLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Common Data Service for Apps linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("CommonDataServiceForApps")
 @Fluent
 public final class CommonDataServiceForAppsLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "CommonDataServiceForApps";
+
+    /*
      * Common Data Service for Apps linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private CommonDataServiceForAppsLinkedServiceTypeProperties innerTypeProperties
         = new CommonDataServiceForAppsLinkedServiceTypeProperties();
 
@@ -34,12 +38,31 @@ public final class CommonDataServiceForAppsLinkedService extends LinkedService {
     }
 
     /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Common Data Service for Apps linked service properties.
      * 
      * @return the innerTypeProperties value.
      */
     private CommonDataServiceForAppsLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CommonDataServiceForAppsLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -212,7 +235,8 @@ public final class CommonDataServiceForAppsLinkedService extends LinkedService {
     /**
      * Get the authenticationType property: The authentication type to connect to Common Data Service for Apps server.
      * 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. 'AADServicePrincipal' for
-     * Server-To-Server authentication in online scenario. Type: string (or Expression with resultType string).
+     * Server-To-Server authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type:
+     * string (or Expression with resultType string).
      * 
      * @return the authenticationType value.
      */
@@ -223,7 +247,8 @@ public final class CommonDataServiceForAppsLinkedService extends LinkedService {
     /**
      * Set the authenticationType property: The authentication type to connect to Common Data Service for Apps server.
      * 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. 'AADServicePrincipal' for
-     * Server-To-Server authentication in online scenario. Type: string (or Expression with resultType string).
+     * Server-To-Server authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type:
+     * string (or Expression with resultType string).
      * 
      * @param authenticationType the authenticationType value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
@@ -233,6 +258,31 @@ public final class CommonDataServiceForAppsLinkedService extends LinkedService {
             this.innerTypeProperties = new CommonDataServiceForAppsLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the domain value.
+     */
+    public Object domain() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().domain();
+    }
+
+    /**
+     * Set the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param domain the domain value to set.
+     * @return the CommonDataServiceForAppsLinkedService object itself.
+     */
+    public CommonDataServiceForAppsLinkedService withDomain(Object domain) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new CommonDataServiceForAppsLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDomain(domain);
         return this;
     }
 
@@ -310,9 +360,9 @@ public final class CommonDataServiceForAppsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the servicePrincipalCredentialType value.
      */
@@ -321,9 +371,9 @@ public final class CommonDataServiceForAppsLinkedService extends LinkedService {
     }
 
     /**
-     * Set the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
@@ -367,8 +417,8 @@ public final class CommonDataServiceForAppsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -377,8 +427,8 @@ public final class CommonDataServiceForAppsLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
@@ -398,14 +448,96 @@ public final class CommonDataServiceForAppsLinkedService extends LinkedService {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model CommonDataServiceForAppsLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model CommonDataServiceForAppsLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CommonDataServiceForAppsLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonDataServiceForAppsLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonDataServiceForAppsLinkedService if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommonDataServiceForAppsLinkedService.
+     */
+    public static CommonDataServiceForAppsLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommonDataServiceForAppsLinkedService deserializedCommonDataServiceForAppsLinkedService
+                = new CommonDataServiceForAppsLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedService
+                        .withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedCommonDataServiceForAppsLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedCommonDataServiceForAppsLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedService.innerTypeProperties
+                        = CommonDataServiceForAppsLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCommonDataServiceForAppsLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedCommonDataServiceForAppsLinkedService;
+        });
+    }
 }

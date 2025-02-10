@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceAzureADOnlyAuthenticationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of active directory only authentications. */
+/**
+ * A list of active directory only authentications.
+ */
 @Immutable
-public final class ManagedInstanceAzureADOnlyAuthListResult {
+public final class ManagedInstanceAzureADOnlyAuthListResult
+    implements JsonSerializable<ManagedInstanceAzureADOnlyAuthListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedInstanceAzureADOnlyAuthenticationInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedInstanceAzureADOnlyAuthListResult class. */
+    /**
+     * Creates an instance of ManagedInstanceAzureADOnlyAuthListResult class.
+     */
     public ManagedInstanceAzureADOnlyAuthListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedInstanceAzureADOnlyAuthenticationInner> value() {
@@ -39,7 +46,7 @@ public final class ManagedInstanceAzureADOnlyAuthListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +55,52 @@ public final class ManagedInstanceAzureADOnlyAuthListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceAzureADOnlyAuthListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceAzureADOnlyAuthListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedInstanceAzureADOnlyAuthListResult.
+     */
+    public static ManagedInstanceAzureADOnlyAuthListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceAzureADOnlyAuthListResult deserializedManagedInstanceAzureADOnlyAuthListResult
+                = new ManagedInstanceAzureADOnlyAuthListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ManagedInstanceAzureADOnlyAuthenticationInner> value
+                        = reader.readArray(reader1 -> ManagedInstanceAzureADOnlyAuthenticationInner.fromJson(reader1));
+                    deserializedManagedInstanceAzureADOnlyAuthListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedManagedInstanceAzureADOnlyAuthListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceAzureADOnlyAuthListResult;
+        });
     }
 }

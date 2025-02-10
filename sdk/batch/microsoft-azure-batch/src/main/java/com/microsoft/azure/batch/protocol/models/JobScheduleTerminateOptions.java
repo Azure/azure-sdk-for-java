@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class JobScheduleTerminateOptions {
     /**
      * The maximum time that the server can spend processing the request, in
-     * seconds. The default is 30 seconds.
+     * seconds. The default is 30 seconds. If the value is larger than 30, the
+     * default will be used instead.
      */
     @JsonProperty(value = "")
     private Integer timeout;
@@ -79,7 +80,15 @@ public class JobScheduleTerminateOptions {
     private DateTimeRfc1123 ifUnmodifiedSince;
 
     /**
-     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * If true, the server will terminate the JobSchedule even if the
+     * corresponding nodes have not fully processed the termination. The
+     * default value is false.
+     */
+    @JsonProperty(value = "")
+    private Boolean force;
+
+    /**
+     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @return the timeout value
      */
@@ -88,7 +97,7 @@ public class JobScheduleTerminateOptions {
     }
 
     /**
-     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @param timeout the timeout value to set
      * @return the JobScheduleTerminateOptions object itself.
@@ -256,6 +265,26 @@ public class JobScheduleTerminateOptions {
         } else {
             this.ifUnmodifiedSince = new DateTimeRfc1123(ifUnmodifiedSince);
         }
+        return this;
+    }
+
+    /**
+     * Get if true, the server will terminate the JobSchedule even if the corresponding nodes have not fully processed the termination. The default value is false.
+     *
+     * @return the force value
+     */
+    public Boolean force() {
+        return this.force;
+    }
+
+    /**
+     * Set if true, the server will terminate the JobSchedule even if the corresponding nodes have not fully processed the termination. The default value is false.
+     *
+     * @param force the force value to set
+     * @return the JobScheduleTerminateOptions object itself.
+     */
+    public JobScheduleTerminateOptions withForce(Boolean force) {
+        this.force = force;
         return this;
     }
 

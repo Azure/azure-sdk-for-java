@@ -21,21 +21,17 @@ public final class LicenseProfilesImpl implements LicenseProfiles {
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    public LicenseProfilesImpl(
-        LicenseProfilesClient innerClient,
+    public LicenseProfilesImpl(LicenseProfilesClient innerClient,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public Response<LicenseProfile> getWithResponse(String resourceGroupName, String machineName, Context context) {
-        Response<LicenseProfileInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, machineName, context);
+        Response<LicenseProfileInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, machineName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LicenseProfileImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -61,86 +57,66 @@ public final class LicenseProfilesImpl implements LicenseProfiles {
 
     public PagedIterable<LicenseProfile> list(String resourceGroupName, String machineName) {
         PagedIterable<LicenseProfileInner> inner = this.serviceClient().list(resourceGroupName, machineName);
-        return Utils.mapPage(inner, inner1 -> new LicenseProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LicenseProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LicenseProfile> list(String resourceGroupName, String machineName, Context context) {
         PagedIterable<LicenseProfileInner> inner = this.serviceClient().list(resourceGroupName, machineName, context);
-        return Utils.mapPage(inner, inner1 -> new LicenseProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LicenseProfileImpl(inner1, this.manager()));
     }
 
     public LicenseProfile getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String machineName = Utils.getValueFromIdByName(id, "machines");
+        String machineName = ResourceManagerUtils.getValueFromIdByName(id, "machines");
         if (machineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
         }
         return this.getWithResponse(resourceGroupName, machineName, Context.NONE).getValue();
     }
 
     public Response<LicenseProfile> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String machineName = Utils.getValueFromIdByName(id, "machines");
+        String machineName = ResourceManagerUtils.getValueFromIdByName(id, "machines");
         if (machineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
         }
         return this.getWithResponse(resourceGroupName, machineName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String machineName = Utils.getValueFromIdByName(id, "machines");
+        String machineName = ResourceManagerUtils.getValueFromIdByName(id, "machines");
         if (machineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
         }
         this.delete(resourceGroupName, machineName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String machineName = Utils.getValueFromIdByName(id, "machines");
+        String machineName = ResourceManagerUtils.getValueFromIdByName(id, "machines");
         if (machineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'machines'.", id)));
         }
         this.delete(resourceGroupName, machineName, context);
     }

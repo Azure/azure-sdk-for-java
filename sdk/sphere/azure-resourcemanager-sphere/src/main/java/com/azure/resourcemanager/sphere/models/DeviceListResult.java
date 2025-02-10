@@ -6,32 +6,38 @@ package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of a Device list operation. */
+/**
+ * The response of a Device list operation.
+ */
 @Fluent
-public final class DeviceListResult {
+public final class DeviceListResult implements JsonSerializable<DeviceListResult> {
     /*
      * The Device items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<DeviceInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DeviceListResult class. */
+    /**
+     * Creates an instance of DeviceListResult class.
+     */
     public DeviceListResult() {
     }
 
     /**
      * Get the value property: The Device items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<DeviceInner> value() {
@@ -40,7 +46,7 @@ public final class DeviceListResult {
 
     /**
      * Set the value property: The Device items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the DeviceListResult object itself.
      */
@@ -51,7 +57,7 @@ public final class DeviceListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +66,7 @@ public final class DeviceListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DeviceListResult object itself.
      */
@@ -71,18 +77,58 @@ public final class DeviceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model DeviceListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model DeviceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeviceListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeviceListResult.
+     */
+    public static DeviceListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceListResult deserializedDeviceListResult = new DeviceListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DeviceInner> value = reader.readArray(reader1 -> DeviceInner.fromJson(reader1));
+                    deserializedDeviceListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDeviceListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceListResult;
+        });
+    }
 }

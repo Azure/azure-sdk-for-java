@@ -18,14 +18,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewWorkflowClient type.
+ */
 @ServiceClient(builder = WorkflowTaskClientBuilder.class, isAsync = true)
 public final class WorkflowTaskAsyncClient {
-    @Generated private final WorkflowTasksOperationsImpl serviceClient;
+    @Generated
+    private final WorkflowTasksOperationsImpl serviceClient;
 
     /**
      * Initializes an instance of WorkflowTaskAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -35,11 +38,12 @@ public final class WorkflowTaskAsyncClient {
 
     /**
      * Get a workflow task.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     type: String(Approval/SimpleTask/approval/simpleTask) (Required)
      *     id: String (Required)
      *     title: String (Optional)
      *     workflowRunId: String (Required)
@@ -69,8 +73,9 @@ public final class WorkflowTaskAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -87,10 +92,10 @@ public final class WorkflowTaskAsyncClient {
 
     /**
      * Reassign a workflow task.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     reassignments (Optional): [
      *          (Optional){
@@ -99,8 +104,9 @@ public final class WorkflowTaskAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param reassignCommand The request body of reassigning a workflow task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -112,8 +118,8 @@ public final class WorkflowTaskAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> reassignWithResponse(
-            String taskId, BinaryData reassignCommand, RequestOptions requestOptions) {
+    public Mono<Response<Void>> reassignWithResponse(String taskId, BinaryData reassignCommand,
+        RequestOptions requestOptions) {
         return this.serviceClient.reassignWithResponseAsync(taskId, reassignCommand, requestOptions);
     }
 }

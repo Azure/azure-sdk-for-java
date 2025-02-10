@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details needed if the VM was encrypted at the time of backup. */
+/**
+ * Details needed if the VM was encrypted at the time of backup.
+ */
 @Fluent
-public final class EncryptionDetails {
+public final class EncryptionDetails implements JsonSerializable<EncryptionDetails> {
     /*
      * Identifies whether this backup copy represents an encrypted VM at the time of backup.
      */
-    @JsonProperty(value = "encryptionEnabled")
     private Boolean encryptionEnabled;
 
     /*
      * Key Url.
      */
-    @JsonProperty(value = "kekUrl")
     private String kekUrl;
 
     /*
      * Secret Url.
      */
-    @JsonProperty(value = "secretKeyUrl")
     private String secretKeyUrl;
 
     /*
      * ID of Key Vault where KEK is stored.
      */
-    @JsonProperty(value = "kekVaultId")
     private String kekVaultId;
 
     /*
      * ID of Key Vault where Secret is stored.
      */
-    @JsonProperty(value = "secretKeyVaultId")
     private String secretKeyVaultId;
 
-    /** Creates an instance of EncryptionDetails class. */
+    /**
+     * Creates an instance of EncryptionDetails class.
+     */
     public EncryptionDetails() {
     }
 
     /**
      * Get the encryptionEnabled property: Identifies whether this backup copy represents an encrypted VM at the time of
      * backup.
-     *
+     * 
      * @return the encryptionEnabled value.
      */
     public Boolean encryptionEnabled() {
@@ -57,7 +60,7 @@ public final class EncryptionDetails {
     /**
      * Set the encryptionEnabled property: Identifies whether this backup copy represents an encrypted VM at the time of
      * backup.
-     *
+     * 
      * @param encryptionEnabled the encryptionEnabled value to set.
      * @return the EncryptionDetails object itself.
      */
@@ -68,7 +71,7 @@ public final class EncryptionDetails {
 
     /**
      * Get the kekUrl property: Key Url.
-     *
+     * 
      * @return the kekUrl value.
      */
     public String kekUrl() {
@@ -77,7 +80,7 @@ public final class EncryptionDetails {
 
     /**
      * Set the kekUrl property: Key Url.
-     *
+     * 
      * @param kekUrl the kekUrl value to set.
      * @return the EncryptionDetails object itself.
      */
@@ -88,7 +91,7 @@ public final class EncryptionDetails {
 
     /**
      * Get the secretKeyUrl property: Secret Url.
-     *
+     * 
      * @return the secretKeyUrl value.
      */
     public String secretKeyUrl() {
@@ -97,7 +100,7 @@ public final class EncryptionDetails {
 
     /**
      * Set the secretKeyUrl property: Secret Url.
-     *
+     * 
      * @param secretKeyUrl the secretKeyUrl value to set.
      * @return the EncryptionDetails object itself.
      */
@@ -108,7 +111,7 @@ public final class EncryptionDetails {
 
     /**
      * Get the kekVaultId property: ID of Key Vault where KEK is stored.
-     *
+     * 
      * @return the kekVaultId value.
      */
     public String kekVaultId() {
@@ -117,7 +120,7 @@ public final class EncryptionDetails {
 
     /**
      * Set the kekVaultId property: ID of Key Vault where KEK is stored.
-     *
+     * 
      * @param kekVaultId the kekVaultId value to set.
      * @return the EncryptionDetails object itself.
      */
@@ -128,7 +131,7 @@ public final class EncryptionDetails {
 
     /**
      * Get the secretKeyVaultId property: ID of Key Vault where Secret is stored.
-     *
+     * 
      * @return the secretKeyVaultId value.
      */
     public String secretKeyVaultId() {
@@ -137,7 +140,7 @@ public final class EncryptionDetails {
 
     /**
      * Set the secretKeyVaultId property: ID of Key Vault where Secret is stored.
-     *
+     * 
      * @param secretKeyVaultId the secretKeyVaultId value to set.
      * @return the EncryptionDetails object itself.
      */
@@ -148,9 +151,57 @@ public final class EncryptionDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("encryptionEnabled", this.encryptionEnabled);
+        jsonWriter.writeStringField("kekUrl", this.kekUrl);
+        jsonWriter.writeStringField("secretKeyUrl", this.secretKeyUrl);
+        jsonWriter.writeStringField("kekVaultId", this.kekVaultId);
+        jsonWriter.writeStringField("secretKeyVaultId", this.secretKeyVaultId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionDetails.
+     */
+    public static EncryptionDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionDetails deserializedEncryptionDetails = new EncryptionDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encryptionEnabled".equals(fieldName)) {
+                    deserializedEncryptionDetails.encryptionEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kekUrl".equals(fieldName)) {
+                    deserializedEncryptionDetails.kekUrl = reader.getString();
+                } else if ("secretKeyUrl".equals(fieldName)) {
+                    deserializedEncryptionDetails.secretKeyUrl = reader.getString();
+                } else if ("kekVaultId".equals(fieldName)) {
+                    deserializedEncryptionDetails.kekVaultId = reader.getString();
+                } else if ("secretKeyVaultId".equals(fieldName)) {
+                    deserializedEncryptionDetails.secretKeyVaultId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionDetails;
+        });
     }
 }

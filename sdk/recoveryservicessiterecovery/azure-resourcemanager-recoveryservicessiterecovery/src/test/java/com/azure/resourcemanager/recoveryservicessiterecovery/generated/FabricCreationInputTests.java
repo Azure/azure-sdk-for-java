@@ -12,18 +12,15 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.FabricSpeci
 public final class FabricCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FabricCreationInput model =
-            BinaryData
-                .fromString("{\"properties\":{\"customDetails\":{\"instanceType\":\"FabricSpecificCreationInput\"}}}")
-                .toObject(FabricCreationInput.class);
+        FabricCreationInput model = BinaryData
+            .fromString("{\"properties\":{\"customDetails\":{\"instanceType\":\"FabricSpecificCreationInput\"}}}")
+            .toObject(FabricCreationInput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FabricCreationInput model =
-            new FabricCreationInput()
-                .withProperties(
-                    new FabricCreationInputProperties().withCustomDetails(new FabricSpecificCreationInput()));
+        FabricCreationInput model = new FabricCreationInput()
+            .withProperties(new FabricCreationInputProperties().withCustomDetails(new FabricSpecificCreationInput()));
         model = BinaryData.fromObject(model).toObject(FabricCreationInput.class);
     }
 }

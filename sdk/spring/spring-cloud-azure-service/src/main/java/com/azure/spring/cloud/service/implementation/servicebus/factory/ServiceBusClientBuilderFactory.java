@@ -83,7 +83,7 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
         PropertyMapper mapper = new PropertyMapper();
 
         mapper.from(this.clientCommonProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
-
+        mapper.from(this.clientCommonProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
         if (this.clientCommonProperties instanceof ServiceBusNamespaceProperties) {
             mapper.from(((ServiceBusNamespaceProperties) this.clientCommonProperties).getCrossEntityTransactions())
                   .whenTrue()

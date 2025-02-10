@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A resource SKU capability. */
+/**
+ * A resource SKU capability.
+ */
 @Fluent
-public final class ResourceSkuCapabilities {
+public final class ResourceSkuCapabilities implements JsonSerializable<ResourceSkuCapabilities> {
     /*
      * Name of a capability, such as ops/sec.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Quantity, if the capability is measured by quantity.
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of ResourceSkuCapabilities class. */
+    /**
+     * Creates an instance of ResourceSkuCapabilities class.
+     */
     public ResourceSkuCapabilities() {
     }
 
     /**
      * Get the name property: Name of a capability, such as ops/sec.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Set the name property: Name of a capability, such as ops/sec.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceSkuCapabilities object itself.
      */
@@ -48,7 +54,7 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Get the value property: Quantity, if the capability is measured by quantity.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +63,7 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Set the value property: Quantity, if the capability is measured by quantity.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceSkuCapabilities object itself.
      */
@@ -68,9 +74,48 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuCapabilities from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuCapabilities if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSkuCapabilities.
+     */
+    public static ResourceSkuCapabilities fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuCapabilities deserializedResourceSkuCapabilities = new ResourceSkuCapabilities();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedResourceSkuCapabilities.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedResourceSkuCapabilities.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuCapabilities;
+        });
     }
 }

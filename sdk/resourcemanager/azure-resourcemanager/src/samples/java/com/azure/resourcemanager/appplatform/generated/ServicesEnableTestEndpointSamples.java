@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Services EnableTestEndpoint. */
+/**
+ * Samples for Services EnableTestEndpoint.
+ */
 public final class ServicesEnableTestEndpointSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Services_EnableTestEndpoint.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/
+     * Services_EnableTestEndpoint.json
      */
     /**
      * Sample code: Services_EnableTestEndpoint.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesEnableTestEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
+        azure.springServices()
             .manager()
             .serviceClient()
             .getServices()
-            .enableTestEndpointWithResponse("myResourceGroup", "myservice", Context.NONE);
+            .enableTestEndpointWithResponse("myResourceGroup", "myservice", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Additional information for the MAB workload-specific job. */
+/**
+ * Additional information for the MAB workload-specific job.
+ */
 @Fluent
-public final class MabJobExtendedInfo {
+public final class MabJobExtendedInfo implements JsonSerializable<MabJobExtendedInfo> {
     /*
      * List of tasks for this job.
      */
-    @JsonProperty(value = "tasksList")
     private List<MabJobTaskDetails> tasksList;
 
     /*
      * The job properties.
      */
-    @JsonProperty(value = "propertyBag")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> propertyBag;
 
     /*
      * Non localized error message specific to this job.
      */
-    @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
 
-    /** Creates an instance of MabJobExtendedInfo class. */
+    /**
+     * Creates an instance of MabJobExtendedInfo class.
+     */
     public MabJobExtendedInfo() {
     }
 
     /**
      * Get the tasksList property: List of tasks for this job.
-     *
+     * 
      * @return the tasksList value.
      */
     public List<MabJobTaskDetails> tasksList() {
@@ -47,7 +50,7 @@ public final class MabJobExtendedInfo {
 
     /**
      * Set the tasksList property: List of tasks for this job.
-     *
+     * 
      * @param tasksList the tasksList value to set.
      * @return the MabJobExtendedInfo object itself.
      */
@@ -58,7 +61,7 @@ public final class MabJobExtendedInfo {
 
     /**
      * Get the propertyBag property: The job properties.
-     *
+     * 
      * @return the propertyBag value.
      */
     public Map<String, String> propertyBag() {
@@ -67,7 +70,7 @@ public final class MabJobExtendedInfo {
 
     /**
      * Set the propertyBag property: The job properties.
-     *
+     * 
      * @param propertyBag the propertyBag value to set.
      * @return the MabJobExtendedInfo object itself.
      */
@@ -78,7 +81,7 @@ public final class MabJobExtendedInfo {
 
     /**
      * Get the dynamicErrorMessage property: Non localized error message specific to this job.
-     *
+     * 
      * @return the dynamicErrorMessage value.
      */
     public String dynamicErrorMessage() {
@@ -87,7 +90,7 @@ public final class MabJobExtendedInfo {
 
     /**
      * Set the dynamicErrorMessage property: Non localized error message specific to this job.
-     *
+     * 
      * @param dynamicErrorMessage the dynamicErrorMessage value to set.
      * @return the MabJobExtendedInfo object itself.
      */
@@ -98,12 +101,57 @@ public final class MabJobExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tasksList() != null) {
             tasksList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tasksList", this.tasksList, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("propertyBag", this.propertyBag, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("dynamicErrorMessage", this.dynamicErrorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MabJobExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MabJobExtendedInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MabJobExtendedInfo.
+     */
+    public static MabJobExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MabJobExtendedInfo deserializedMabJobExtendedInfo = new MabJobExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tasksList".equals(fieldName)) {
+                    List<MabJobTaskDetails> tasksList
+                        = reader.readArray(reader1 -> MabJobTaskDetails.fromJson(reader1));
+                    deserializedMabJobExtendedInfo.tasksList = tasksList;
+                } else if ("propertyBag".equals(fieldName)) {
+                    Map<String, String> propertyBag = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMabJobExtendedInfo.propertyBag = propertyBag;
+                } else if ("dynamicErrorMessage".equals(fieldName)) {
+                    deserializedMabJobExtendedInfo.dynamicErrorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMabJobExtendedInfo;
+        });
     }
 }

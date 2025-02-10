@@ -27,22 +27,28 @@ import com.azure.resourcemanager.search.models.AdminKeyKind;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AdminKeysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AdminKeysClient.
+ */
 public final class AdminKeysClientImpl implements AdminKeysClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AdminKeysService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SearchManagementClientImpl client;
 
     /**
      * Initializes an instance of AdminKeysClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AdminKeysClientImpl(SearchManagementClientImpl client) {
-        this.service =
-            RestProxy.create(AdminKeysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AdminKeysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,60 +59,47 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
     @Host("{$host}")
     @ServiceInterface(name = "SearchManagementClie")
     public interface AdminKeysService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/listAdminKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/listAdminKeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AdminKeyResultInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AdminKeyResultInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("searchServiceName") String searchServiceName,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/regenerateAdminKey/{keyKind}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/regenerateAdminKey/{keyKind}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AdminKeyResultInner>> regenerate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AdminKeyResultInner>> regenerate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("searchServiceName") String searchServiceName,
-            @PathParam("keyKind") AdminKeyKind keyKind,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("searchServiceName") String searchServiceName, @PathParam("keyKind") AdminKeyKind keyKind,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the primary and secondary admin API keys for the specified search service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the primary and secondary admin API keys for the specified search service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AdminKeyResultInner>> getWithResponseAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId) {
+    public Mono<Response<AdminKeyResultInner>> getWithResponseAsync(String resourceGroupName, String searchServiceName,
+        UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -117,51 +110,37 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            searchServiceName,
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+                clientRequestId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the primary and secondary admin API keys for the specified search service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the primary and secondary admin API keys for the specified search service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AdminKeyResultInner>> getWithResponseAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    private Mono<Response<AdminKeyResultInner>> getWithResponseAsync(String resourceGroupName, String searchServiceName,
+        UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -172,36 +151,26 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                searchServiceName,
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, searchServiceName, clientRequestId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the primary and secondary admin API keys for the specified search service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the primary and secondary admin API keys for the specified search service on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AdminKeyResultInner> getAsync(String resourceGroupName, String searchServiceName) {
@@ -212,12 +181,12 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
 
     /**
      * Gets the primary and secondary admin API keys for the specified search service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -225,16 +194,16 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
      * @return the primary and secondary admin API keys for the specified search service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AdminKeyResultInner> getWithResponse(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    public Response<AdminKeyResultInner> getWithResponse(String resourceGroupName, String searchServiceName,
+        UUID clientRequestId, Context context) {
         return getWithResponseAsync(resourceGroupName, searchServiceName, clientRequestId, context).block();
     }
 
     /**
      * Gets the primary and secondary admin API keys for the specified search service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -249,27 +218,25 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
 
     /**
      * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param keyKind Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the primary and secondary admin API keys for a given search service along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return response containing the primary and secondary admin API keys for a given search service along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AdminKeyResultInner>> regenerateWithResponseAsync(
-        String resourceGroupName, String searchServiceName, AdminKeyKind keyKind, UUID clientRequestId) {
+    public Mono<Response<AdminKeyResultInner>> regenerateWithResponseAsync(String resourceGroupName,
+        String searchServiceName, AdminKeyKind keyKind, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -283,57 +250,39 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
             return Mono.error(new IllegalArgumentException("Parameter keyKind is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .regenerate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            searchServiceName,
-                            keyKind,
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.regenerate(this.client.getEndpoint(), resourceGroupName, searchServiceName, keyKind,
+                    clientRequestId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param keyKind Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the primary and secondary admin API keys for a given search service along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return response containing the primary and secondary admin API keys for a given search service along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AdminKeyResultInner>> regenerateWithResponseAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        AdminKeyKind keyKind,
-        UUID clientRequestId,
-        Context context) {
+    private Mono<Response<AdminKeyResultInner>> regenerateWithResponseAsync(String resourceGroupName,
+        String searchServiceName, AdminKeyKind keyKind, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -347,42 +296,31 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
             return Mono.error(new IllegalArgumentException("Parameter keyKind is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                searchServiceName,
-                keyKind,
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.regenerate(this.client.getEndpoint(), resourceGroupName, searchServiceName, keyKind,
+            clientRequestId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param keyKind Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the primary and secondary admin API keys for a given search service on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AdminKeyResultInner> regenerateAsync(
-        String resourceGroupName, String searchServiceName, AdminKeyKind keyKind) {
+    public Mono<AdminKeyResultInner> regenerateAsync(String resourceGroupName, String searchServiceName,
+        AdminKeyKind keyKind) {
         final UUID clientRequestId = null;
         return regenerateWithResponseAsync(resourceGroupName, searchServiceName, keyKind, clientRequestId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -390,36 +328,32 @@ public final class AdminKeysClientImpl implements AdminKeysClient {
 
     /**
      * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param keyKind Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the primary and secondary admin API keys for a given search service along with {@link
-     *     Response}.
+     * @return response containing the primary and secondary admin API keys for a given search service along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AdminKeyResultInner> regenerateWithResponse(
-        String resourceGroupName,
-        String searchServiceName,
-        AdminKeyKind keyKind,
-        UUID clientRequestId,
-        Context context) {
+    public Response<AdminKeyResultInner> regenerateWithResponse(String resourceGroupName, String searchServiceName,
+        AdminKeyKind keyKind, UUID clientRequestId, Context context) {
         return regenerateWithResponseAsync(resourceGroupName, searchServiceName, keyKind, clientRequestId, context)
             .block();
     }
 
     /**
      * Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param keyKind Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

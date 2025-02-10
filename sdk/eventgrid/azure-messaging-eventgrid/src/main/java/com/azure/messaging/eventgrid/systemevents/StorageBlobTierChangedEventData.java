@@ -49,6 +49,16 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     private String blobType;
 
     /*
+     * The current tier of the blob.
+     */
+    private StorageBlobAccessTier accessTier;
+
+    /*
+     * The previous tier of the blob.
+     */
+    private StorageBlobAccessTier previousTier;
+
+    /*
      * The path to the blob.
      */
     private String url;
@@ -65,8 +75,8 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     private String identity;
 
     /*
-     * For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should
-     * be ignored by event consumers.
+     * For service use only. Diagnostic data occasionally included by the Azure Storage service. This property should be
+     * ignored by event consumers.
      */
     private Object storageDiagnostics;
 
@@ -97,8 +107,8 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     }
 
     /**
-     * Get the clientRequestId property: A request id provided by the client of the storage API operation that
-     * triggered this event.
+     * Get the clientRequestId property: A request id provided by the client of the storage API operation that triggered
+     * this event.
      * 
      * @return the clientRequestId value.
      */
@@ -107,8 +117,8 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     }
 
     /**
-     * Set the clientRequestId property: A request id provided by the client of the storage API operation that
-     * triggered this event.
+     * Set the clientRequestId property: A request id provided by the client of the storage API operation that triggered
+     * this event.
      * 
      * @param clientRequestId the clientRequestId value to set.
      * @return the StorageBlobTierChangedEventData object itself.
@@ -205,6 +215,46 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     }
 
     /**
+     * Get the accessTier property: The current tier of the blob.
+     * 
+     * @return the accessTier value.
+     */
+    public StorageBlobAccessTier getAccessTier() {
+        return this.accessTier;
+    }
+
+    /**
+     * Set the accessTier property: The current tier of the blob.
+     * 
+     * @param accessTier the accessTier value to set.
+     * @return the StorageBlobTierChangedEventData object itself.
+     */
+    public StorageBlobTierChangedEventData setAccessTier(StorageBlobAccessTier accessTier) {
+        this.accessTier = accessTier;
+        return this;
+    }
+
+    /**
+     * Get the previousTier property: The previous tier of the blob.
+     * 
+     * @return the previousTier value.
+     */
+    public StorageBlobAccessTier getPreviousTier() {
+        return this.previousTier;
+    }
+
+    /**
+     * Set the previousTier property: The previous tier of the blob.
+     * 
+     * @param previousTier the previousTier value to set.
+     * @return the StorageBlobTierChangedEventData object itself.
+     */
+    public StorageBlobTierChangedEventData setPreviousTier(StorageBlobAccessTier previousTier) {
+        this.previousTier = previousTier;
+        return this;
+    }
+
+    /**
      * Get the url property: The path to the blob.
      * 
      * @return the url value.
@@ -225,9 +275,9 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     }
 
     /**
-     * Get the sequencer property: An opaque string value representing the logical sequence of events for any
-     * particular blob name. Users can use standard string comparison to understand the relative sequence of two events
-     * on the same blob name.
+     * Get the sequencer property: An opaque string value representing the logical sequence of events for any particular
+     * blob name. Users can use standard string comparison to understand the relative sequence of two events on the same
+     * blob name.
      * 
      * @return the sequencer value.
      */
@@ -236,9 +286,9 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
     }
 
     /**
-     * Set the sequencer property: An opaque string value representing the logical sequence of events for any
-     * particular blob name. Users can use standard string comparison to understand the relative sequence of two events
-     * on the same blob name.
+     * Set the sequencer property: An opaque string value representing the logical sequence of events for any particular
+     * blob name. Users can use standard string comparison to understand the relative sequence of two events on the same
+     * blob name.
      * 
      * @param sequencer the sequencer value to set.
      * @return the StorageBlobTierChangedEventData object itself.
@@ -290,9 +340,14 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accessTier", this.accessTier == null ? null : this.accessTier.toString());
+        jsonWriter.writeStringField("previousTier", this.previousTier == null ? null : this.previousTier.toString());
         jsonWriter.writeStringField("api", this.api);
         jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
         jsonWriter.writeStringField("requestId", this.requestId);
@@ -312,6 +367,7 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
      * @param jsonReader The JsonReader being read.
      * @return An instance of StorageBlobTierChangedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the StorageBlobTierChangedEventData.
      */
     public static StorageBlobTierChangedEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -322,7 +378,13 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("api".equals(fieldName)) {
+                if ("accessTier".equals(fieldName)) {
+                    deserializedStorageBlobTierChangedEventData.accessTier
+                        = StorageBlobAccessTier.fromString(reader.getString());
+                } else if ("previousTier".equals(fieldName)) {
+                    deserializedStorageBlobTierChangedEventData.previousTier
+                        = StorageBlobAccessTier.fromString(reader.getString());
+                } else if ("api".equals(fieldName)) {
                     deserializedStorageBlobTierChangedEventData.api = reader.getString();
                 } else if ("clientRequestId".equals(fieldName)) {
                     deserializedStorageBlobTierChangedEventData.clientRequestId = reader.getString();

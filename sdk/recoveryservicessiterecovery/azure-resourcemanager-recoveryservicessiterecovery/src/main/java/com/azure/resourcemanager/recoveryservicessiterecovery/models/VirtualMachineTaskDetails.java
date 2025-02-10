@@ -5,34 +5,50 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This class represents the virtual machine task details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VirtualMachineTaskDetails")
+/**
+ * This class represents the virtual machine task details.
+ */
 @Fluent
 public final class VirtualMachineTaskDetails extends JobTaskDetails {
     /*
+     * The type of task details.
+     */
+    private String instanceType = "VirtualMachineTaskDetails";
+
+    /*
      * The skipped reason.
      */
-    @JsonProperty(value = "skippedReason")
     private String skippedReason;
 
     /*
      * The skipped reason string.
      */
-    @JsonProperty(value = "skippedReasonString")
     private String skippedReasonString;
 
-    /** Creates an instance of VirtualMachineTaskDetails class. */
+    /**
+     * Creates an instance of VirtualMachineTaskDetails class.
+     */
     public VirtualMachineTaskDetails() {
     }
 
     /**
+     * Get the instanceType property: The type of task details.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the skippedReason property: The skipped reason.
-     *
+     * 
      * @return the skippedReason value.
      */
     public String skippedReason() {
@@ -41,7 +57,7 @@ public final class VirtualMachineTaskDetails extends JobTaskDetails {
 
     /**
      * Set the skippedReason property: The skipped reason.
-     *
+     * 
      * @param skippedReason the skippedReason value to set.
      * @return the VirtualMachineTaskDetails object itself.
      */
@@ -52,7 +68,7 @@ public final class VirtualMachineTaskDetails extends JobTaskDetails {
 
     /**
      * Get the skippedReasonString property: The skipped reason string.
-     *
+     * 
      * @return the skippedReasonString value.
      */
     public String skippedReasonString() {
@@ -61,7 +77,7 @@ public final class VirtualMachineTaskDetails extends JobTaskDetails {
 
     /**
      * Set the skippedReasonString property: The skipped reason string.
-     *
+     * 
      * @param skippedReasonString the skippedReasonString value to set.
      * @return the VirtualMachineTaskDetails object itself.
      */
@@ -70,7 +86,9 @@ public final class VirtualMachineTaskDetails extends JobTaskDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineTaskDetails withJobTask(JobEntity jobTask) {
         super.withJobTask(jobTask);
@@ -79,11 +97,58 @@ public final class VirtualMachineTaskDetails extends JobTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (jobTask() != null) {
+            jobTask().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("jobTask", jobTask());
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("skippedReason", this.skippedReason);
+        jsonWriter.writeStringField("skippedReasonString", this.skippedReasonString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineTaskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineTaskDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineTaskDetails.
+     */
+    public static VirtualMachineTaskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineTaskDetails deserializedVirtualMachineTaskDetails = new VirtualMachineTaskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobTask".equals(fieldName)) {
+                    deserializedVirtualMachineTaskDetails.withJobTask(JobEntity.fromJson(reader));
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedVirtualMachineTaskDetails.instanceType = reader.getString();
+                } else if ("skippedReason".equals(fieldName)) {
+                    deserializedVirtualMachineTaskDetails.skippedReason = reader.getString();
+                } else if ("skippedReasonString".equals(fieldName)) {
+                    deserializedVirtualMachineTaskDetails.skippedReasonString = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineTaskDetails;
+        });
     }
 }

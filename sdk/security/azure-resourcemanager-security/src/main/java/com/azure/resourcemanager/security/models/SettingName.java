@@ -5,30 +5,41 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SettingName. */
+/**
+ * Defines values for SettingName.
+ */
 public final class SettingName extends ExpandableStringEnum<SettingName> {
-    /** Static value MCAS for SettingName. */
+    /**
+     * Static value MCAS for SettingName.
+     */
     public static final SettingName MCAS = fromString("MCAS");
 
-    /** Static value WDATP for SettingName. */
+    /**
+     * Static value WDATP for SettingName.
+     */
     public static final SettingName WDATP = fromString("WDATP");
 
-    /** Static value WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW for SettingName. */
-    public static final SettingName WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW =
-        fromString("WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW");
+    /**
+     * Static value WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW for SettingName.
+     */
+    public static final SettingName WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW
+        = fromString("WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW");
 
-    /** Static value WDATP_UNIFIED_SOLUTION for SettingName. */
+    /**
+     * Static value WDATP_UNIFIED_SOLUTION for SettingName.
+     */
     public static final SettingName WDATP_UNIFIED_SOLUTION = fromString("WDATP_UNIFIED_SOLUTION");
 
-    /** Static value Sentinel for SettingName. */
+    /**
+     * Static value Sentinel for SettingName.
+     */
     public static final SettingName SENTINEL = fromString("Sentinel");
 
     /**
      * Creates a new instance of SettingName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,18 +48,17 @@ public final class SettingName extends ExpandableStringEnum<SettingName> {
 
     /**
      * Creates or finds a SettingName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SettingName.
      */
-    @JsonCreator
     public static SettingName fromString(String name) {
         return fromString(name, SettingName.class);
     }
 
     /**
      * Gets known SettingName values.
-     *
+     * 
      * @return known SettingName values.
      */
     public static Collection<SettingName> values() {

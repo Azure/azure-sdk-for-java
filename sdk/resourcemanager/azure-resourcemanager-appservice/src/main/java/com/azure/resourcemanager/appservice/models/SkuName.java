@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -78,6 +77,11 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     public static final SkuName ELASTIC_ISOLATED = fromString("ElasticIsolated");
 
     /**
+     * Static value FlexConsumption for SkuName.
+     */
+    public static final SkuName FLEX_CONSUMPTION = fromString("FlexConsumption");
+
+    /**
      * Creates a new instance of SkuName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -92,7 +96,6 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
      * @param name a name to look for.
      * @return the corresponding SkuName.
      */
-    @JsonCreator
     public static SkuName fromString(String name) {
         return fromString(name, SkuName.class);
     }

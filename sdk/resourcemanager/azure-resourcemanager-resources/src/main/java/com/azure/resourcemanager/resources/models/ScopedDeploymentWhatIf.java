@@ -6,30 +6,36 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Deployment What-if operation parameters. */
+/**
+ * Deployment What-if operation parameters.
+ */
 @Fluent
-public final class ScopedDeploymentWhatIf {
+public final class ScopedDeploymentWhatIf implements JsonSerializable<ScopedDeploymentWhatIf> {
     /*
      * The location to store the deployment data.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * The deployment properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private DeploymentWhatIfProperties properties;
 
-    /** Creates an instance of ScopedDeploymentWhatIf class. */
+    /**
+     * Creates an instance of ScopedDeploymentWhatIf class.
+     */
     public ScopedDeploymentWhatIf() {
     }
 
     /**
      * Get the location property: The location to store the deployment data.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -38,7 +44,7 @@ public final class ScopedDeploymentWhatIf {
 
     /**
      * Set the location property: The location to store the deployment data.
-     *
+     * 
      * @param location the location value to set.
      * @return the ScopedDeploymentWhatIf object itself.
      */
@@ -49,7 +55,7 @@ public final class ScopedDeploymentWhatIf {
 
     /**
      * Get the properties property: The deployment properties.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentWhatIfProperties properties() {
@@ -58,7 +64,7 @@ public final class ScopedDeploymentWhatIf {
 
     /**
      * Set the properties property: The deployment properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ScopedDeploymentWhatIf object itself.
      */
@@ -69,24 +75,63 @@ public final class ScopedDeploymentWhatIf {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property location in model ScopedDeploymentWhatIf"));
         }
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model ScopedDeploymentWhatIf"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model ScopedDeploymentWhatIf"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScopedDeploymentWhatIf.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScopedDeploymentWhatIf from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScopedDeploymentWhatIf if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScopedDeploymentWhatIf.
+     */
+    public static ScopedDeploymentWhatIf fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScopedDeploymentWhatIf deserializedScopedDeploymentWhatIf = new ScopedDeploymentWhatIf();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedScopedDeploymentWhatIf.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScopedDeploymentWhatIf.properties = DeploymentWhatIfProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScopedDeploymentWhatIf;
+        });
+    }
 }

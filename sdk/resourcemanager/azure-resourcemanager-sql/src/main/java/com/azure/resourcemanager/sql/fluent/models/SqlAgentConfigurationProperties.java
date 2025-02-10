@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SqlAgentConfigurationPropertiesState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Sql agent configuration properties. */
+/**
+ * Sql agent configuration properties.
+ */
 @Fluent
-public final class SqlAgentConfigurationProperties {
+public final class SqlAgentConfigurationProperties implements JsonSerializable<SqlAgentConfigurationProperties> {
     /*
      * The state of Sql Agent.
      */
-    @JsonProperty(value = "state")
     private SqlAgentConfigurationPropertiesState state;
 
-    /** Creates an instance of SqlAgentConfigurationProperties class. */
+    /**
+     * Creates an instance of SqlAgentConfigurationProperties class.
+     */
     public SqlAgentConfigurationProperties() {
     }
 
     /**
      * Get the state property: The state of Sql Agent.
-     *
+     * 
      * @return the state value.
      */
     public SqlAgentConfigurationPropertiesState state() {
@@ -32,7 +39,7 @@ public final class SqlAgentConfigurationProperties {
 
     /**
      * Set the state property: The state of Sql Agent.
-     *
+     * 
      * @param state the state value to set.
      * @return the SqlAgentConfigurationProperties object itself.
      */
@@ -43,9 +50,47 @@ public final class SqlAgentConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlAgentConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlAgentConfigurationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlAgentConfigurationProperties.
+     */
+    public static SqlAgentConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlAgentConfigurationProperties deserializedSqlAgentConfigurationProperties
+                = new SqlAgentConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedSqlAgentConfigurationProperties.state
+                        = SqlAgentConfigurationPropertiesState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlAgentConfigurationProperties;
+        });
     }
 }

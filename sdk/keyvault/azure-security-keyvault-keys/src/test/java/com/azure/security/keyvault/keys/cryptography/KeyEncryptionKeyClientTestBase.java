@@ -14,7 +14,8 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
@@ -32,13 +33,13 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
     protected boolean runManagedHsmTest = false;
 
     private static final int MAX_RETRIES = 5;
-    private static final RetryOptions LIVE_RETRY_OPTIONS = new RetryOptions(new ExponentialBackoffOptions()
-        .setMaxRetries(MAX_RETRIES)
-        .setBaseDelay(Duration.ofSeconds(2))
-        .setMaxDelay(Duration.ofSeconds(16)));
+    private static final RetryOptions LIVE_RETRY_OPTIONS
+        = new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(MAX_RETRIES)
+            .setBaseDelay(Duration.ofSeconds(2))
+            .setMaxDelay(Duration.ofSeconds(16)));
 
-    private static final RetryOptions PLAYBACK_RETRY_OPTIONS =
-        new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
+    private static final RetryOptions PLAYBACK_RETRY_OPTIONS
+        = new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
 
     void beforeTestSetup() {
         KeyVaultCredentialPolicy.clearCache();
@@ -47,8 +48,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
     KeyEncryptionKeyClientBuilder getKeyEncryptionKeyClientBuilder(HttpClient httpClient,
         CryptographyServiceVersion serviceVersion) {
 
-        KeyEncryptionKeyClientBuilder builder = new KeyEncryptionKeyClientBuilder()
-            .serviceVersion(serviceVersion)
+        KeyEncryptionKeyClientBuilder builder = new KeyEncryptionKeyClientBuilder().serviceVersion(serviceVersion)
             .credential(getTokenCredentialAndSetMatchers())
             .httpClient(httpClient);
 
@@ -65,8 +65,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
 
     KeyClientBuilder getKeyClientBuilder(HttpClient httpClient, String endpoint, KeyServiceVersion serviceVersion) {
 
-        KeyClientBuilder builder = new KeyClientBuilder()
-            .vaultUrl(endpoint)
+        KeyClientBuilder builder = new KeyClientBuilder().vaultUrl(endpoint)
             .serviceVersion(serviceVersion)
             .credential(getTokenCredentialAndSetMatchers())
             .httpClient(httpClient);
@@ -84,8 +83,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
 
     CryptographyClientImpl getCryptographyClientImpl(HttpClient httpClient, String keyId,
         CryptographyServiceVersion serviceVersion) {
-        CryptographyClientBuilder builder = new CryptographyClientBuilder()
-            .keyIdentifier(keyId)
+        CryptographyClientBuilder builder = new CryptographyClientBuilder().keyIdentifier(keyId)
             .serviceVersion(serviceVersion)
             .credential(getTokenCredentialAndSetMatchers())
             .httpClient(httpClient);
@@ -104,17 +102,10 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
     }
 
     private TokenCredential getTokenCredentialAndSetMatchers() {
-        if (!interceptorManager.isPlaybackMode()) {
-            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
-            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
-            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
-
-            return new ClientSecretCredentialBuilder()
-                .clientSecret(Objects.requireNonNull(clientKey, "The client key cannot be null"))
-                .clientId(Objects.requireNonNull(clientId, "The client id cannot be null"))
-                .tenantId(Objects.requireNonNull(tenantId, "The tenant id cannot be null"))
-                .additionallyAllowedTenants("*")
-                .build();
+        if (interceptorManager.isLiveMode()) {
+            return new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
         } else {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());
@@ -139,8 +130,10 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestProxyTestBase {
 
     public String getEndpoint() {
         final String endpoint = runManagedHsmTest
-            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "https://hsmname.managedhsm.azure.net")
-            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://vaultname.vault.azure.net");
+            ? Configuration.getGlobalConfiguration()
+                .get("AZURE_MANAGEDHSM_ENDPOINT", "https://hsmname.managedhsm.azure.net")
+            : Configuration.getGlobalConfiguration()
+                .get("AZURE_KEYVAULT_ENDPOINT", "https://vaultname.vault.azure.net");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }

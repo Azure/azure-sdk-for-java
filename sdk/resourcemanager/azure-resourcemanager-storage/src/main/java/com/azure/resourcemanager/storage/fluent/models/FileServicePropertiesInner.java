@@ -6,34 +6,54 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.storage.models.ProtocolSettings;
 import com.azure.resourcemanager.storage.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of File services in storage account. */
+/**
+ * The properties of File services in storage account.
+ */
 @Fluent
 public final class FileServicePropertiesInner extends ProxyResource {
     /*
      * The properties of File services in storage account.
      */
-    @JsonProperty(value = "properties")
     private FileServicePropertiesProperties innerFileServiceProperties;
 
     /*
      * Sku name and tier.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
-    /** Creates an instance of FileServicePropertiesInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of FileServicePropertiesInner class.
+     */
     public FileServicePropertiesInner() {
     }
 
     /**
      * Get the innerFileServiceProperties property: The properties of File services in storage account.
-     *
+     * 
      * @return the innerFileServiceProperties value.
      */
     private FileServicePropertiesProperties innerFileServiceProperties() {
@@ -42,7 +62,7 @@ public final class FileServicePropertiesInner extends ProxyResource {
 
     /**
      * Get the sku property: Sku name and tier.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -50,10 +70,40 @@ public final class FileServicePropertiesInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
      * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
      * will be disabled for the File service.
-     *
+     * 
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -64,7 +114,7 @@ public final class FileServicePropertiesInner extends ProxyResource {
      * Set the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
      * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
      * will be disabled for the File service.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the FileServicePropertiesInner object itself.
      */
@@ -78,7 +128,7 @@ public final class FileServicePropertiesInner extends ProxyResource {
 
     /**
      * Get the shareDeleteRetentionPolicy property: The file service properties for share soft delete.
-     *
+     * 
      * @return the shareDeleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy shareDeleteRetentionPolicy() {
@@ -89,7 +139,7 @@ public final class FileServicePropertiesInner extends ProxyResource {
 
     /**
      * Set the shareDeleteRetentionPolicy property: The file service properties for share soft delete.
-     *
+     * 
      * @param shareDeleteRetentionPolicy the shareDeleteRetentionPolicy value to set.
      * @return the FileServicePropertiesInner object itself.
      */
@@ -103,7 +153,7 @@ public final class FileServicePropertiesInner extends ProxyResource {
 
     /**
      * Get the protocolSettings property: Protocol settings for file service.
-     *
+     * 
      * @return the protocolSettings value.
      */
     public ProtocolSettings protocolSettings() {
@@ -112,7 +162,7 @@ public final class FileServicePropertiesInner extends ProxyResource {
 
     /**
      * Set the protocolSettings property: Protocol settings for file service.
-     *
+     * 
      * @param protocolSettings the protocolSettings value to set.
      * @return the FileServicePropertiesInner object itself.
      */
@@ -126,7 +176,7 @@ public final class FileServicePropertiesInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -136,5 +186,51 @@ public final class FileServicePropertiesInner extends ProxyResource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerFileServiceProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileServicePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileServicePropertiesInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileServicePropertiesInner.
+     */
+    public static FileServicePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileServicePropertiesInner deserializedFileServicePropertiesInner = new FileServicePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFileServicePropertiesInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFileServicePropertiesInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFileServicePropertiesInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFileServicePropertiesInner.innerFileServiceProperties
+                        = FileServicePropertiesProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedFileServicePropertiesInner.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileServicePropertiesInner;
+        });
     }
 }

@@ -7,6 +7,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -134,6 +135,13 @@ public final class FluxByteBufferContent extends BinaryDataContent {
     }
 
     @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
+
+        jsonWriter.writeBinary(toBytes());
+    }
+
+    @Override
     public boolean isReplayable() {
         return isReplayable;
     }
@@ -150,8 +158,8 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         }
 
         return bufferContent().map(bufferedData -> {
-            FluxByteBufferContent bufferedContent = new FluxByteBufferContent(Flux.fromIterable(bufferedData)
-                .map(ByteBuffer::duplicate), length, true);
+            FluxByteBufferContent bufferedContent
+                = new FluxByteBufferContent(Flux.fromIterable(bufferedData).map(ByteBuffer::duplicate), length, true);
             cachedReplayableContent.set(bufferedContent);
 
             return bufferedContent;
@@ -189,7 +197,6 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         }).collect(LinkedList::new, LinkedList::add);
     }
 
-
     @Override
     public BinaryDataContentType getContentType() {
         return BinaryDataContentType.BINARY;
@@ -201,9 +208,9 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         }
 
         return FluxUtil.collectBytesInByteBufferStream(content)
-                // this doesn't seem to be working (newBoundedElastic() didn't work either)
-                // .publishOn(Schedulers.boundedElastic())
-                .share()
-                .block();
+            // this doesn't seem to be working (newBoundedElastic() didn't work either)
+            // .publishOn(Schedulers.boundedElastic())
+            .share()
+            .block();
     }
 }

@@ -13,33 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkScopesResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkScopesResource model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"lfltka\",\"tags\":{\"akggkfpag\":\"efkdlf\",\"lyls\":\"owpulpq\",\"agxsdszuemps\":\"xkqjnsjervt\",\"nqicvinvkjjxdxrb\":\"zkfzbeyv\"},\"id\":\"ukzclewyhmlwpaz\",\"name\":\"zpof\",\"type\":\"cckwyfzqwhxxbu\"}")
-                .toObject(PrivateLinkScopesResource.class);
-        Assertions.assertEquals("lfltka", model.location());
-        Assertions.assertEquals("efkdlf", model.tags().get("akggkfpag"));
+        PrivateLinkScopesResource model = BinaryData.fromString(
+            "{\"location\":\"zpnfqntcypsxj\",\"tags\":{\"vydfceacvlhvygdy\":\"imwkslircizj\",\"mrtwna\":\"t\",\"wkojgcyztsfmzn\":\"jslb\"},\"id\":\"aeqphchqnr\",\"name\":\"rpxeh\",\"type\":\"wrykqgai\"}")
+            .toObject(PrivateLinkScopesResource.class);
+        Assertions.assertEquals("zpnfqntcypsxj", model.location());
+        Assertions.assertEquals("imwkslircizj", model.tags().get("vydfceacvlhvygdy"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkScopesResource model =
-            new PrivateLinkScopesResource()
-                .withLocation("lfltka")
-                .withTags(
-                    mapOf(
-                        "akggkfpag",
-                        "efkdlf",
-                        "lyls",
-                        "owpulpq",
-                        "agxsdszuemps",
-                        "xkqjnsjervt",
-                        "nqicvinvkjjxdxrb",
-                        "zkfzbeyv"));
+        PrivateLinkScopesResource model = new PrivateLinkScopesResource().withLocation("zpnfqntcypsxj")
+            .withTags(mapOf("vydfceacvlhvygdy", "imwkslircizj", "mrtwna", "t", "wkojgcyztsfmzn", "jslb"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkScopesResource.class);
-        Assertions.assertEquals("lfltka", model.location());
-        Assertions.assertEquals("efkdlf", model.tags().get("akggkfpag"));
+        Assertions.assertEquals("zpnfqntcypsxj", model.location());
+        Assertions.assertEquals("imwkslircizj", model.tags().get("vydfceacvlhvygdy"));
     }
 
     // Use "Map.of" if available

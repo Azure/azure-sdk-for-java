@@ -30,7 +30,7 @@ public interface RedirectStrategy {
      * @return {@code true} if the request should be redirected, {@code false} otherwise
      */
     boolean shouldAttemptRedirect(HttpPipelineCallContext context, HttpResponse httpResponse, int tryCount,
-                                  Set<String> attemptedRedirectUrls);
+        Set<String> attemptedRedirectUrls);
 
     /**
      * Creates an {@link HttpRequest request} for the redirect attempt.

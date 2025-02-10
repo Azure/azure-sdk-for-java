@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,6 +52,11 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     public static final EndpointType AZURE_VMSS = fromString("AzureVMSS");
 
     /**
+     * Static value AzureArcNetwork for EndpointType.
+     */
+    public static final EndpointType AZURE_ARC_NETWORK = fromString("AzureArcNetwork");
+
+    /**
      * Creates a new instance of EndpointType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -67,7 +71,6 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
      * @param name a name to look for.
      * @return the corresponding EndpointType.
      */
-    @JsonCreator
     public static EndpointType fromString(String name) {
         return fromString(name, EndpointType.class);
     }

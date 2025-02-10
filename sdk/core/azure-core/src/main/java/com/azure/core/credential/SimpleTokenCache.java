@@ -16,26 +16,38 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * <p>The Simple Token Cache offers a basic in-memory token caching mechanism. It is designed to help improve
- * performance and reduce the number of token requests made to Azure services during application runtime.</p>
+ * <p>
+ * The Simple Token Cache offers a basic in-memory token caching mechanism. It is designed to help improve
+ * performance and reduce the number of token requests made to Azure services during application runtime.
+ * </p>
  *
- * <p>When using Azure services that require authentication, such as Azure Storage or Azure Key Vault, the library
+ * <p>
+ * When using Azure services that require authentication, such as Azure Storage or Azure Key Vault, the library
  * handles the acquisition and management of access tokens. By default, each request made to an Azure service triggers
  * a token request, which involves authentication and token retrieval from the authentication provider
- * (e.g., Azure Active Directory).</p>
+ * (e.g., Azure Active Directory).
+ * </p>
  *
- * <p>The Simple Token Cache feature caches the access tokens retrieved from the authentication provider in memory
+ * <p>
+ * The Simple Token Cache feature caches the access tokens retrieved from the authentication provider in memory
  * for a certain period. This caching mechanism helps reduce the overhead of repeated token requests, especially when
- * multiple requests are made within a short time frame.</p>
+ * multiple requests are made within a short time frame.
+ * </p>
  *
- * <p>The Simple Token Cache is designed for simplicity and ease of use. It automatically handles token expiration
+ * <p>
+ * The Simple Token Cache is designed for simplicity and ease of use. It automatically handles token expiration
  * and refreshing. When a cached token is about to expire, the SDK automatically attempts to refresh it by requesting
  * a new token from the authentication provider. The cached tokens are associated with a specific Azure resource or
- * scope and are used for subsequent requests to that resource.</p>
+ * scope and are used for subsequent requests to that resource.
+ * </p>
  *
- * <p><strong>Sample: Azure SAS Authentication</strong></p>
+ * <p>
+ * <strong>Sample: Azure SAS Authentication</strong>
+ * </p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.core.credential.SimpleTokenCache}.</p>
+ * <p>
+ * The following code sample demonstrates the creation of a {@link com.azure.core.credential.SimpleTokenCache}.
+ * </p>
  *
  * <!-- src_embed com.azure.core.credential.simpleTokenCache -->
  * <pre>
@@ -51,9 +63,7 @@ import java.util.function.Supplier;
  * @see com.azure.core.credential.TokenCredential
  */
 public class SimpleTokenCache {
-    // The delay after a refresh to attempt another token refresh
-    private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
-    private static final String REFRESH_DELAY_STRING = String.valueOf(REFRESH_DELAY.getSeconds());
+
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     // SimpleTokenCache is commonly used, use a static logger.
@@ -65,16 +75,29 @@ public class SimpleTokenCache {
     private final Supplier<Mono<AccessToken>> tokenSupplier;
     private final Predicate<AccessToken> shouldRefresh;
 
+    // The delay after a refresh to attempt another token refresh
+    private final Duration refreshDelay;
+    private final String refreshDelayString;
+
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
      *
      * @param tokenSupplier a method to get a new token
      */
     public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier) {
+        this(tokenSupplier, Duration.ofSeconds(30));
+
+    }
+
+    SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier, Duration refreshDelay) {
         this.wip = new AtomicReference<>();
         this.tokenSupplier = tokenSupplier;
         this.shouldRefresh = accessToken -> OffsetDateTime.now()
-            .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
+            .isAfter(accessToken.getRefreshAt() == null
+                ? accessToken.getExpiresAt().minus(REFRESH_OFFSET)
+                : accessToken.getRefreshAt());
+        this.refreshDelay = refreshDelay;
+        this.refreshDelayString = String.valueOf(refreshDelay.getSeconds());
     }
 
     /**
@@ -100,8 +123,8 @@ public class SimpleTokenCache {
                             tokenRefresh = Mono.defer(tokenSupplier);
                         } else {
                             // wait for timeout, then refresh
-                            tokenRefresh = Mono.defer(tokenSupplier)
-                                .delaySubscription(Duration.between(now, nextTokenRefresh));
+                            tokenRefresh
+                                = Mono.defer(tokenSupplier).delaySubscription(Duration.between(now, nextTokenRefresh));
                         }
                         // cache doesn't exist or expired, no fallback
                         fallback = Mono.empty();
@@ -118,28 +141,25 @@ public class SimpleTokenCache {
                         fallback = Mono.just(cache);
                     }
 
-                    return Mono.using(() -> wip, ignored -> tokenRefresh.materialize()
-                        .flatMap(signal -> {
-                            AccessToken accessToken = signal.get();
-                            Throwable error = signal.getThrowable();
-                            if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                                buildTokenRefreshLog(LogLevel.INFORMATIONAL, cache, now)
-                                    .log("Acquired a new access token");
-                                cache = accessToken;
-                                sinksOne.tryEmitValue(accessToken);
-                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
-                                return Mono.just(accessToken);
-                            } else if (signal.isOnError() && error != null) { // ERROR
-                                buildTokenRefreshLog(LogLevel.ERROR, cache, now)
-                                    .log("Failed to acquire a new access token");
-                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
-                                return fallback.switchIfEmpty(Mono.error(() -> error));
-                            } else { // NO REFRESH
-                                sinksOne.tryEmitEmpty();
-                                return fallback;
-                            }
-                        })
-                        .doOnError(sinksOne::tryEmitError), w -> w.set(null));
+                    return Mono.using(() -> wip, ignored -> tokenRefresh.materialize().flatMap(signal -> {
+                        AccessToken accessToken = signal.get();
+                        Throwable error = signal.getThrowable();
+                        if (signal.isOnNext() && accessToken != null) { // SUCCESS
+                            buildTokenRefreshLog(LogLevel.INFORMATIONAL, cache, now).log("Acquired a new access token");
+                            cache = accessToken;
+                            sinksOne.tryEmitValue(accessToken);
+                            nextTokenRefresh = OffsetDateTime.now().plus(refreshDelay);
+                            return Mono.just(accessToken);
+                        } else if (signal.isOnError() && error != null) { // ERROR
+                            buildTokenRefreshLog(LogLevel.ERROR, cache, now)
+                                .log("Failed to acquire a new access token");
+                            nextTokenRefresh = OffsetDateTime.now().plus(refreshDelay);
+                            return fallback.switchIfEmpty(Mono.error(() -> error));
+                        } else { // NO REFRESH
+                            sinksOne.tryEmitEmpty();
+                            return fallback;
+                        }
+                    }).doOnError(sinksOne::tryEmitError), w -> w.set(null));
                 } else if (cache != null && !cache.isExpired()) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cache);
@@ -164,17 +184,16 @@ public class SimpleTokenCache {
         return wip.get();
     }
 
-    private static LoggingEventBuilder buildTokenRefreshLog(LogLevel level, AccessToken cache, OffsetDateTime now) {
+    private LoggingEventBuilder buildTokenRefreshLog(LogLevel level, AccessToken cache, OffsetDateTime now) {
         LoggingEventBuilder logBuilder = LOGGER.atLevel(level);
         if (cache == null || !LOGGER.canLogAtLevel(level)) {
             return logBuilder;
         }
 
         Duration tte = Duration.between(now, cache.getExpiresAt());
-        return logBuilder
-                .addKeyValue("expiresAt", cache.getExpiresAt())
-                .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
-                .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)
-                .addKeyValue("expired", tte.isNegative());
+        return logBuilder.addKeyValue("expiresAt", cache.getExpiresAt())
+            .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
+            .addKeyValue("retryAfterSeconds", refreshDelayString)
+            .addKeyValue("expired", tte.isNegative());
     }
 }

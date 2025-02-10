@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-/** Samples for StorageTargetOperation Invalidate. */
+/**
+ * Samples for StorageTargetOperation Invalidate.
+ */
 public final class StorageTargetOperationInvalidateSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/StorageTargets_Invalidate.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/
+     * StorageTargets_Invalidate.json
      */
     /**
      * Sample code: StorageTargets_Invalidate.
-     *
+     * 
      * @param manager Entry point to StorageCacheManager.
      */
     public static void storageTargetsInvalidate(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {

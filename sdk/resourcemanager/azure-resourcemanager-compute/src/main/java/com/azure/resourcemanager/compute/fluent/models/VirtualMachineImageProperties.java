@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.ArchitectureTypes;
 import com.azure.resourcemanager.compute.models.AutomaticOSUpgradeProperties;
 import com.azure.resourcemanager.compute.models.DataDiskImage;
@@ -14,66 +18,57 @@ import com.azure.resourcemanager.compute.models.ImageDeprecationStatus;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.VirtualMachineImageFeature;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the properties of a Virtual Machine Image.
  */
 @Fluent
-public final class VirtualMachineImageProperties {
+public final class VirtualMachineImageProperties implements JsonSerializable<VirtualMachineImageProperties> {
     /*
      * Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
      */
-    @JsonProperty(value = "plan")
     private PurchasePlan plan;
 
     /*
      * Contains the os disk image information.
      */
-    @JsonProperty(value = "osDiskImage")
     private OSDiskImage osDiskImage;
 
     /*
      * The dataDiskImages property.
      */
-    @JsonProperty(value = "dataDiskImages")
     private List<DataDiskImage> dataDiskImages;
 
     /*
      * Describes automatic OS upgrade properties on the image.
      */
-    @JsonProperty(value = "automaticOSUpgradeProperties")
     private AutomaticOSUpgradeProperties automaticOSUpgradeProperties;
 
     /*
      * Specifies the HyperVGeneration Type
      */
-    @JsonProperty(value = "hyperVGeneration")
     private HyperVGenerationTypes hyperVGeneration;
 
     /*
      * Specifies disallowed configuration for the VirtualMachine created from the image
      */
-    @JsonProperty(value = "disallowed")
     private DisallowedConfiguration disallowed;
 
     /*
      * The features property.
      */
-    @JsonProperty(value = "features")
     private List<VirtualMachineImageFeature> features;
 
     /*
      * Specifies the Architecture Type
      */
-    @JsonProperty(value = "architecture")
     private ArchitectureTypes architecture;
 
     /*
      * Describes image deprecation status properties on the image.
      */
-    @JsonProperty(value = "imageDeprecationStatus")
     private ImageDeprecationStatus imageDeprecationStatus;
 
     /**
@@ -290,5 +285,75 @@ public final class VirtualMachineImageProperties {
         if (imageDeprecationStatus() != null) {
             imageDeprecationStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("plan", this.plan);
+        jsonWriter.writeJsonField("osDiskImage", this.osDiskImage);
+        jsonWriter.writeArrayField("dataDiskImages", this.dataDiskImages,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("automaticOSUpgradeProperties", this.automaticOSUpgradeProperties);
+        jsonWriter.writeStringField("hyperVGeneration",
+            this.hyperVGeneration == null ? null : this.hyperVGeneration.toString());
+        jsonWriter.writeJsonField("disallowed", this.disallowed);
+        jsonWriter.writeArrayField("features", this.features, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("architecture", this.architecture == null ? null : this.architecture.toString());
+        jsonWriter.writeJsonField("imageDeprecationStatus", this.imageDeprecationStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineImageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineImageProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineImageProperties.
+     */
+    public static VirtualMachineImageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineImageProperties deserializedVirtualMachineImageProperties
+                = new VirtualMachineImageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("plan".equals(fieldName)) {
+                    deserializedVirtualMachineImageProperties.plan = PurchasePlan.fromJson(reader);
+                } else if ("osDiskImage".equals(fieldName)) {
+                    deserializedVirtualMachineImageProperties.osDiskImage = OSDiskImage.fromJson(reader);
+                } else if ("dataDiskImages".equals(fieldName)) {
+                    List<DataDiskImage> dataDiskImages = reader.readArray(reader1 -> DataDiskImage.fromJson(reader1));
+                    deserializedVirtualMachineImageProperties.dataDiskImages = dataDiskImages;
+                } else if ("automaticOSUpgradeProperties".equals(fieldName)) {
+                    deserializedVirtualMachineImageProperties.automaticOSUpgradeProperties
+                        = AutomaticOSUpgradeProperties.fromJson(reader);
+                } else if ("hyperVGeneration".equals(fieldName)) {
+                    deserializedVirtualMachineImageProperties.hyperVGeneration
+                        = HyperVGenerationTypes.fromString(reader.getString());
+                } else if ("disallowed".equals(fieldName)) {
+                    deserializedVirtualMachineImageProperties.disallowed = DisallowedConfiguration.fromJson(reader);
+                } else if ("features".equals(fieldName)) {
+                    List<VirtualMachineImageFeature> features
+                        = reader.readArray(reader1 -> VirtualMachineImageFeature.fromJson(reader1));
+                    deserializedVirtualMachineImageProperties.features = features;
+                } else if ("architecture".equals(fieldName)) {
+                    deserializedVirtualMachineImageProperties.architecture
+                        = ArchitectureTypes.fromString(reader.getString());
+                } else if ("imageDeprecationStatus".equals(fieldName)) {
+                    deserializedVirtualMachineImageProperties.imageDeprecationStatus
+                        = ImageDeprecationStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineImageProperties;
+        });
     }
 }

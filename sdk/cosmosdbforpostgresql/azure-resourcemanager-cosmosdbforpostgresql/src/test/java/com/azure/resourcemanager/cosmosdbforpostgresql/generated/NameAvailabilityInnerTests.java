@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class NameAvailabilityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NameAvailabilityInner model =
-            BinaryData
-                .fromString(
-                    "{\"message\":\"rjfeallnwsubisnj\",\"nameAvailable\":false,\"name\":\"ngnzscxaqwoochc\",\"type\":\"nqvpkvlrxnje\"}")
-                .toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals("rjfeallnwsubisnj", model.message());
-        Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals("ngnzscxaqwoochc", model.name());
-        Assertions.assertEquals("nqvpkvlrxnje", model.type());
+        NameAvailabilityInner model = BinaryData
+            .fromString("{\"message\":\"sa\",\"nameAvailable\":true,\"name\":\"uo\",\"type\":\"skghsauuimj\"}")
+            .toObject(NameAvailabilityInner.class);
+        Assertions.assertEquals("sa", model.message());
+        Assertions.assertEquals(true, model.nameAvailable());
+        Assertions.assertEquals("uo", model.name());
+        Assertions.assertEquals("skghsauuimj", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NameAvailabilityInner model =
-            new NameAvailabilityInner()
-                .withMessage("rjfeallnwsubisnj")
-                .withNameAvailable(false)
-                .withName("ngnzscxaqwoochc")
-                .withType("nqvpkvlrxnje");
+        NameAvailabilityInner model = new NameAvailabilityInner().withMessage("sa")
+            .withNameAvailable(true)
+            .withName("uo")
+            .withType("skghsauuimj");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals("rjfeallnwsubisnj", model.message());
-        Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals("ngnzscxaqwoochc", model.name());
-        Assertions.assertEquals("nqvpkvlrxnje", model.type());
+        Assertions.assertEquals("sa", model.message());
+        Assertions.assertEquals(true, model.nameAvailable());
+        Assertions.assertEquals("uo", model.name());
+        Assertions.assertEquals("skghsauuimj", model.type());
     }
 }

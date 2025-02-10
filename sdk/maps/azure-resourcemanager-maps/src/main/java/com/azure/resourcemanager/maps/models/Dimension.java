@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Dimension of map account, for example API Category, Api Name, Result Type, and Response Code. */
+/**
+ * Dimension of map account, for example API Category, Api Name, Result Type, and Response Code.
+ */
 @Fluent
-public final class Dimension {
+public final class Dimension implements JsonSerializable<Dimension> {
     /*
      * Display name of dimension.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Display name of dimension.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Internal name of the dimension.
      */
-    @JsonProperty(value = "internalName")
     private String internalName;
 
     /*
      * Internal metric name of the dimension.
      */
-    @JsonProperty(value = "internalMetricName")
     private String internalMetricName;
 
     /*
      * Source Mdm Namespace of the dimension.
      */
-    @JsonProperty(value = "sourceMdmNamespace")
     private String sourceMdmNamespace;
 
     /*
      * Flag to indicate exporting to Azure Monitor.
      */
-    @JsonProperty(value = "toBeExportedToShoebox")
     private Boolean toBeExportedToShoebox;
 
-    /** Creates an instance of Dimension class. */
+    /**
+     * Creates an instance of Dimension class.
+     */
     public Dimension() {
     }
 
     /**
      * Get the name property: Display name of dimension.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +63,7 @@ public final class Dimension {
 
     /**
      * Set the name property: Display name of dimension.
-     *
+     * 
      * @param name the name value to set.
      * @return the Dimension object itself.
      */
@@ -72,7 +74,7 @@ public final class Dimension {
 
     /**
      * Get the displayName property: Display name of dimension.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -81,7 +83,7 @@ public final class Dimension {
 
     /**
      * Set the displayName property: Display name of dimension.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the Dimension object itself.
      */
@@ -92,7 +94,7 @@ public final class Dimension {
 
     /**
      * Get the internalName property: Internal name of the dimension.
-     *
+     * 
      * @return the internalName value.
      */
     public String internalName() {
@@ -101,7 +103,7 @@ public final class Dimension {
 
     /**
      * Set the internalName property: Internal name of the dimension.
-     *
+     * 
      * @param internalName the internalName value to set.
      * @return the Dimension object itself.
      */
@@ -112,7 +114,7 @@ public final class Dimension {
 
     /**
      * Get the internalMetricName property: Internal metric name of the dimension.
-     *
+     * 
      * @return the internalMetricName value.
      */
     public String internalMetricName() {
@@ -121,7 +123,7 @@ public final class Dimension {
 
     /**
      * Set the internalMetricName property: Internal metric name of the dimension.
-     *
+     * 
      * @param internalMetricName the internalMetricName value to set.
      * @return the Dimension object itself.
      */
@@ -132,7 +134,7 @@ public final class Dimension {
 
     /**
      * Get the sourceMdmNamespace property: Source Mdm Namespace of the dimension.
-     *
+     * 
      * @return the sourceMdmNamespace value.
      */
     public String sourceMdmNamespace() {
@@ -141,7 +143,7 @@ public final class Dimension {
 
     /**
      * Set the sourceMdmNamespace property: Source Mdm Namespace of the dimension.
-     *
+     * 
      * @param sourceMdmNamespace the sourceMdmNamespace value to set.
      * @return the Dimension object itself.
      */
@@ -152,7 +154,7 @@ public final class Dimension {
 
     /**
      * Get the toBeExportedToShoebox property: Flag to indicate exporting to Azure Monitor.
-     *
+     * 
      * @return the toBeExportedToShoebox value.
      */
     public Boolean toBeExportedToShoebox() {
@@ -161,7 +163,7 @@ public final class Dimension {
 
     /**
      * Set the toBeExportedToShoebox property: Flag to indicate exporting to Azure Monitor.
-     *
+     * 
      * @param toBeExportedToShoebox the toBeExportedToShoebox value to set.
      * @return the Dimension object itself.
      */
@@ -172,9 +174,60 @@ public final class Dimension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("internalName", this.internalName);
+        jsonWriter.writeStringField("internalMetricName", this.internalMetricName);
+        jsonWriter.writeStringField("sourceMdmNamespace", this.sourceMdmNamespace);
+        jsonWriter.writeBooleanField("toBeExportedToShoebox", this.toBeExportedToShoebox);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Dimension from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Dimension if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Dimension.
+     */
+    public static Dimension fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Dimension deserializedDimension = new Dimension();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDimension.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDimension.displayName = reader.getString();
+                } else if ("internalName".equals(fieldName)) {
+                    deserializedDimension.internalName = reader.getString();
+                } else if ("internalMetricName".equals(fieldName)) {
+                    deserializedDimension.internalMetricName = reader.getString();
+                } else if ("sourceMdmNamespace".equals(fieldName)) {
+                    deserializedDimension.sourceMdmNamespace = reader.getString();
+                } else if ("toBeExportedToShoebox".equals(fieldName)) {
+                    deserializedDimension.toBeExportedToShoebox = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDimension;
+        });
     }
 }

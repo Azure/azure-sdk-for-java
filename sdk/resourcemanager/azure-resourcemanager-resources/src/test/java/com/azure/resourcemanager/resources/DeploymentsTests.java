@@ -10,6 +10,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.test.utils.TestUtilities;
@@ -38,16 +40,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DeploymentsTests extends ResourceManagementTest {
+    private static final ClientLogger LOGGER = new ClientLogger(DeploymentsTests.class);
+
     private ResourceGroups resourceGroups;
     private ResourceGroup resourceGroup;
 
     private String testId;
     private String rgName;
-    private static final String TEMPLATE_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json";
-    private static final String BLANK_TEMPLATE_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json";
-    private static final String PARAMETERS_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json";
-    private static final String UPDATE_TEMPLATE = "{\"$schema\":\"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#\",\"contentVersion\":\"1.0.0.0\",\"parameters\":{\"vnetName\":{\"type\":\"string\",\"defaultValue\":\"VNet2\",\"metadata\":{\"description\":\"VNet name\"}},\"vnetAddressPrefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/16\",\"metadata\":{\"description\":\"Address prefix\"}},\"subnet1Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/24\",\"metadata\":{\"description\":\"Subnet 1 Prefix\"}},\"subnet1Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet1\",\"metadata\":{\"description\":\"Subnet 1 Name\"}},\"subnet2Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.1.0/24\",\"metadata\":{\"description\":\"Subnet 2 Prefix\"}},\"subnet2Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet222\",\"metadata\":{\"description\":\"Subnet 2 Name\"}}},\"variables\":{\"apiVersion\":\"2015-06-15\"},\"resources\":[{\"apiVersion\":\"[variables('apiVersion')]\",\"type\":\"Microsoft.Network/virtualNetworks\",\"name\":\"[parameters('vnetName')]\",\"location\":\"[resourceGroup().location]\",\"properties\":{\"addressSpace\":{\"addressPrefixes\":[\"[parameters('vnetAddressPrefix')]\"]},\"subnets\":[{\"name\":\"[parameters('subnet1Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet1Prefix')]\"}},{\"name\":\"[parameters('subnet2Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet2Prefix')]\"}}]}}]}";
-    private static final String UPDATE_PARAMETERS = "{\"vnetAddressPrefix\":{\"value\":\"10.0.0.0/16\"},\"subnet1Name\":{\"value\":\"Subnet1\"},\"subnet1Prefix\":{\"value\":\"10.0.0.0/24\"}}";
+    private static final String TEMPLATE_URI
+        = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json";
+    private static final String BLANK_TEMPLATE_URI
+        = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json";
+    private static final String PARAMETERS_URI
+        = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json";
+    private static final String UPDATE_TEMPLATE
+        = "{\"$schema\":\"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#\",\"contentVersion\":\"1.0.0.0\",\"parameters\":{\"vnetName\":{\"type\":\"string\",\"defaultValue\":\"VNet2\",\"metadata\":{\"description\":\"VNet name\"}},\"vnetAddressPrefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/16\",\"metadata\":{\"description\":\"Address prefix\"}},\"subnet1Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/24\",\"metadata\":{\"description\":\"Subnet 1 Prefix\"}},\"subnet1Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet1\",\"metadata\":{\"description\":\"Subnet 1 Name\"}},\"subnet2Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.1.0/24\",\"metadata\":{\"description\":\"Subnet 2 Prefix\"}},\"subnet2Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet222\",\"metadata\":{\"description\":\"Subnet 2 Name\"}}},\"variables\":{\"apiVersion\":\"2015-06-15\"},\"resources\":[{\"apiVersion\":\"[variables('apiVersion')]\",\"type\":\"Microsoft.Network/virtualNetworks\",\"name\":\"[parameters('vnetName')]\",\"location\":\"[resourceGroup().location]\",\"properties\":{\"addressSpace\":{\"addressPrefixes\":[\"[parameters('vnetAddressPrefix')]\"]},\"subnets\":[{\"name\":\"[parameters('subnet1Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet1Prefix')]\"}},{\"name\":\"[parameters('subnet2Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet2Prefix')]\"}}]}}]}";
+    private static final String UPDATE_PARAMETERS
+        = "{\"vnetAddressPrefix\":{\"value\":\"10.0.0.0/16\"},\"subnet1Name\":{\"value\":\"Subnet1\"},\"subnet1Prefix\":{\"value\":\"10.0.0.0/24\"}}";
     private static final String CONTENT_VERSION = "1.0.0.0";
     private static final String NETWORK_API_VERSION = "2020-11-01";
 
@@ -57,9 +66,7 @@ public class DeploymentsTests extends ResourceManagementTest {
         testId = generateRandomResourceName("", 9);
         resourceGroups = resourceClient.resourceGroups();
         rgName = "rg" + testId;
-        resourceGroup = resourceGroups.define(rgName)
-            .withRegion(Region.US_SOUTH_CENTRAL)
-            .create();
+        resourceGroup = resourceGroups.define(rgName).withRegion(Region.US_SOUTH_CENTRAL).create();
     }
 
     @Override
@@ -95,7 +102,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dpName);
         Assertions.assertNotNull(deployment);
         Assertions.assertEquals("Succeeded", deployment.provisioningState());
-        GenericResource generic = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
+        GenericResource generic = resourceClient.genericResources()
+            .get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
         Assertions.assertNotNull(generic);
         // Export
         Assertions.assertNotNull(deployment.exportTemplate().templateAsJson());
@@ -106,7 +114,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertEquals(3, TestUtilities.getSize(operations));
         DeploymentOperation op = deployment.deploymentOperations().getById(operations.iterator().next().operationId());
         Assertions.assertNotNull(op);
-        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
+        resourceClient.genericResources()
+            .delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
     }
 
     @Test
@@ -145,7 +154,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertEquals("Succeeded", result.status());
         Assertions.assertEquals(1, result.changes().size());
 
-        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
+        resourceClient.genericResources()
+            .delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
     }
 
     @Test
@@ -185,7 +195,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertEquals("Succeeded", result.status());
         Assertions.assertEquals(0, result.changes().size());
 
-        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
+        resourceClient.genericResources()
+            .delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
     }
 
     @Test
@@ -207,41 +218,47 @@ public class DeploymentsTests extends ResourceManagementTest {
         deployment.cancel();
         deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
         Assertions.assertEquals("Canceled", deployment.provisioningState());
-        Assertions.assertFalse(resourceClient.genericResources().checkExistence(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION));
+        Assertions.assertFalse(resourceClient.genericResources()
+            .checkExistence(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION));
     }
 
     @Test
     public void canUpdateVirtualNetworkDeployment() throws Exception {
         final String dp = "dpC" + testId;
-
-        // Begin create
-        Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
-            .define(dp)
-            .withExistingResourceGroup(rgName)
-            .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
-            .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
-            .withMode(DeploymentMode.COMPLETE)
-            .beginCreate();
-        Deployment createdDeployment = acceptedDeployment.getActivationResponse().getValue();
-        Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
-        Assertions.assertEquals(createdDeployment.correlationId(), deployment.correlationId());
-        Assertions.assertEquals(dp, deployment.name());
-        // Cancel
-        deployment.cancel();
-        deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
-        Assertions.assertEquals("Canceled", deployment.provisioningState());
-        // Update
-        deployment.update()
-            .withTemplate(UPDATE_TEMPLATE)
-            .withParameters(UPDATE_PARAMETERS)
-            .withMode(DeploymentMode.INCREMENTAL)
-            .apply();
-        deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
-        Assertions.assertEquals(DeploymentMode.INCREMENTAL, deployment.mode());
-        Assertions.assertEquals("Succeeded", deployment.provisioningState());
-        GenericResource genericVnet = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", NETWORK_API_VERSION);
-        Assertions.assertNotNull(genericVnet);
-        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", NETWORK_API_VERSION);
+        try {
+            // Begin create
+            Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
+                .define(dp)
+                .withExistingResourceGroup(rgName)
+                .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
+                .withMode(DeploymentMode.COMPLETE)
+                .beginCreate();
+            Deployment createdDeployment = acceptedDeployment.getActivationResponse().getValue();
+            Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
+            Assertions.assertEquals(createdDeployment.correlationId(), deployment.correlationId());
+            Assertions.assertEquals(dp, deployment.name());
+            // Cancel
+            deployment.cancel();
+            deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
+            Assertions.assertEquals("Canceled", deployment.provisioningState());
+            // Update
+            deployment.update()
+                .withTemplate(UPDATE_TEMPLATE)
+                .withParameters(UPDATE_PARAMETERS)
+                .withMode(DeploymentMode.INCREMENTAL)
+                .apply();
+            deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
+            Assertions.assertEquals(DeploymentMode.INCREMENTAL, deployment.mode());
+            Assertions.assertEquals("Succeeded", deployment.provisioningState());
+            GenericResource genericVnet = resourceClient.genericResources()
+                .get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", NETWORK_API_VERSION);
+            Assertions.assertNotNull(genericVnet);
+            resourceClient.genericResources()
+                .delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", NETWORK_API_VERSION);
+        } finally {
+            resourceClient.deployments().deleteByResourceGroup(rgName, dp);
+        }
     }
 
     @Test
@@ -270,9 +287,8 @@ public class DeploymentsTests extends ResourceManagementTest {
 
             PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
-            delayInMills = pollResponse.getRetryAfter() == null
-                ? defaultDelayInMillis
-                : pollResponse.getRetryAfter().toMillis();
+            delayInMills
+                = pollResponse.getRetryAfter() == null ? defaultDelayInMillis : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         Deployment deployment = acceptedDeployment.getFinalResult();
@@ -301,7 +317,8 @@ public class DeploymentsTests extends ResourceManagementTest {
     public void canDeployVirtualNetworkSyncPollWithFailure() throws Exception {
         final long defaultDelayInMillis = 10 * 1000;
 
-        final String templateJson = "{ \"$schema\": \"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\", \"contentVersion\": \"1.0.0.0\", \"resources\": [ { \"type\": \"Microsoft.Storage/storageAccounts\", \"apiVersion\": \"2019-04-01\", \"name\": \"satestnameconflict\", \"location\": \"eastus\", \"sku\": { \"name\": \"Standard_LRS\" }, \"kind\": \"StorageV2\", \"properties\": { \"supportsHttpsTrafficOnly\": true } } ] }";
+        final String templateJson
+            = "{ \"$schema\": \"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\", \"contentVersion\": \"1.0.0.0\", \"resources\": [ { \"type\": \"Microsoft.Storage/storageAccounts\", \"apiVersion\": \"2019-04-01\", \"name\": \"satestnameconflict\", \"location\": \"eastus\", \"sku\": { \"name\": \"Standard_LRS\" }, \"kind\": \"StorageV2\", \"properties\": { \"supportsHttpsTrafficOnly\": true } } ] }";
 
         final String dp = "dpE" + testId;
         // Begin create
@@ -324,9 +341,8 @@ public class DeploymentsTests extends ResourceManagementTest {
 
             PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
             pollStatus = pollResponse.getStatus();
-            delayInMills = pollResponse.getRetryAfter() == null
-                ? defaultDelayInMillis
-                : pollResponse.getRetryAfter().toMillis();
+            delayInMills
+                = pollResponse.getRetryAfter() == null ? defaultDelayInMillis : pollResponse.getRetryAfter().toMillis();
         }
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         Deployment deployment = acceptedDeployment.getFinalResult();
@@ -379,13 +395,14 @@ public class DeploymentsTests extends ResourceManagementTest {
             deployment = resourceClient.deployments().getByResourceGroup(newRgName, dp2);
             Assertions.assertEquals("Failed", deployment.provisioningState());
             PagedIterable<DeploymentOperation> operations = deployment.deploymentOperations().list();
-            Optional<DeploymentOperation> failedOperation = operations.stream()
-                .filter(o -> "Failed".equalsIgnoreCase(o.provisioningState())).findFirst();
+            Optional<DeploymentOperation> failedOperation
+                = operations.stream().filter(o -> "Failed".equalsIgnoreCase(o.provisioningState())).findFirst();
             Assertions.assertTrue(failedOperation.isPresent());
             Assertions.assertEquals("Conflict", failedOperation.get().statusCode());
 
             // check poll result again, should stay failed
-            Assertions.assertEquals(LongRunningOperationStatus.FAILED, acceptedDeployment.getSyncPoller().poll().getStatus());
+            Assertions.assertEquals(LongRunningOperationStatus.FAILED,
+                acceptedDeployment.getSyncPoller().poll().getStatus());
             exceptionOnFinalResult = false;
             try {
                 deployment = acceptedDeployment.getFinalResult();
@@ -419,11 +436,12 @@ public class DeploymentsTests extends ResourceManagementTest {
                 .create();
         } catch (ManagementException deploymentException) {
             // verify ManagementException
-            Assertions.assertTrue(deploymentException.getValue().getDetails().stream()
+            Assertions.assertTrue(deploymentException.getValue()
+                .getDetails()
+                .stream()
                 .anyMatch(detail -> detail.getMessage().contains("Subnet2")));
 
-            Deployment failedDeployment = resourceClient.deployments()
-                .getByResourceGroup(rgName, dpName);
+            Deployment failedDeployment = resourceClient.deployments().getByResourceGroup(rgName, dpName);
             deploymentError = failedDeployment.error();
 
             // verify deployment operations
@@ -434,8 +452,8 @@ public class DeploymentsTests extends ResourceManagementTest {
         }
         // verify Deployment.error()
         Assertions.assertNotNull(deploymentError);
-        Assertions.assertTrue(deploymentError.getDetails().stream()
-            .anyMatch(detail -> detail.getMessage().contains("Subnet2")));
+        Assertions.assertTrue(
+            deploymentError.getDetails().stream().anyMatch(detail -> detail.getMessage().contains("Subnet2")));
     }
 
     @Test
@@ -446,9 +464,8 @@ public class DeploymentsTests extends ResourceManagementTest {
 
         try {
             String correlationRequestId = generateRandomUuid();
-            System.out.println("x-ms-correlation-request-id: " + correlationRequestId);
-            Context context = new Context(
-                AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
+            LOGGER.log(LogLevel.VERBOSE, () -> "x-ms-correlation-request-id: " + correlationRequestId);
+            Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
                 new HttpHeaders().set("x-ms-correlation-request-id", correlationRequestId));
 
             // with context
@@ -478,7 +495,8 @@ public class DeploymentsTests extends ResourceManagementTest {
                 .withMode(DeploymentMode.COMPLETE)
                 .create();
 
-            Assertions.assertEquals(correlationRequestId, deployment1.getActivationResponse().getValue().innerModel().properties().correlationId());
+            Assertions.assertEquals(correlationRequestId,
+                deployment1.getActivationResponse().getValue().innerModel().properties().correlationId());
             Assertions.assertEquals(correlationRequestId, deployment2.innerModel().properties().correlationId());
             Assertions.assertNotEquals(correlationRequestId, deployment3.innerModel().properties().correlationId());
         } finally {

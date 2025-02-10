@@ -36,8 +36,7 @@ public class MessageContentTest {
         final MessageContent message = new MessageContent();
 
         // Act
-        final MessageContent actual = message.setContentType(contentType)
-            .setBodyAsBinaryData(binaryData);
+        final MessageContent actual = message.setContentType(contentType).setBodyAsBinaryData(binaryData);
 
         // Assert
         assertEquals(binaryData, actual.getBodyAsBinaryData());

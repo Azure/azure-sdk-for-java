@@ -15,12 +15,27 @@ import java.util.Set;
 /** Type representing sku for an Azure compute resource. */
 @Fluent
 public interface ComputeSku extends HasInnerModel<ResourceSkuInner> {
-    /** @return the sku name */
+    /**
+     * Gets the SKU name.
+     *
+     * @return the SKU name
+     */
     ComputeSkuName name();
-    /** @return the sku tier */
+
+    /**
+     * Gets the SKU tier.
+     *
+     * @return the SKU tier
+     */
     ComputeSkuTier tier();
-    /** @return the compute resource type that the sku describes */
+
+    /**
+     * Gets the compute resource type that the SKU describes.
+     *
+     * @return the compute resource type that the SKU describes
+     */
     ComputeResourceType resourceType();
+
     /**
      * The virtual machine size type if the sku describes sku for virtual machine resource type.
      *
@@ -30,6 +45,7 @@ public interface ComputeSku extends HasInnerModel<ResourceSkuInner> {
      * @return the virtual machine size type
      */
     VirtualMachineSizeTypes virtualMachineSizeType();
+
     /**
      * The managed disk or snapshot sku type if the sku describes sku for disk or snapshot resource type.
      *
@@ -39,6 +55,7 @@ public interface ComputeSku extends HasInnerModel<ResourceSkuInner> {
      * @return the managed disk or snapshot sku type
      */
     DiskSkuTypes diskSkuType();
+
     /**
      * The availability set sku type if the sku describes sku for availability set resource type.
      *
@@ -48,18 +65,53 @@ public interface ComputeSku extends HasInnerModel<ResourceSkuInner> {
      * @return the availability set sku type
      */
     AvailabilitySetSkuTypes availabilitySetSkuType();
-    /** @return the regions that the sku is available */
+
+    /**
+     * Gets the regions that the SKU is available.
+     *
+     * @return the regions that the sku is available
+     */
     List<Region> regions();
-    /** @return the availability zones supported for this sku, index by region */
+
+    /**
+     * Gets the availability zones supported for this SKU.
+     *
+     * @return the availability zones supported for this SKU, index by region
+     */
     Map<Region, Set<AvailabilityZoneId>> zones();
-    /** @return the scaling information of the sku */
+
+    /**
+     * Gets the scaling information of the SKU.
+     *
+     * @return the scaling information of the SKU
+     */
     ResourceSkuCapacity capacity();
-    /** @return the api versions that this sku supports */
+
+    /**
+     * Gets the api versions that this SKU supports.
+     *
+     * @return the api versions that this SKU supports
+     */
     List<String> apiVersions();
-    /** @return the metadata for querying the sku pricing information */
+
+    /**
+     * Gets the metadata for querying the SKU pricing information.
+     *
+     * @return the metadata for querying the SKU pricing information
+     */
     List<ResourceSkuCosts> costs();
-    /** @return the capabilities of the sku */
+
+    /**
+     * Gets the capabilities of the SKU.
+     *
+     * @return the capabilities of the SKU
+     */
     List<ResourceSkuCapabilities> capabilities();
-    /** @return the restrictions because of which SKU cannot be used */
+
+    /**
+     * Gets the restrictions because of which SKU cannot be used.
+     *
+     * @return the restrictions because of which SKU cannot be used
+     */
     List<ResourceSkuRestrictions> restrictions();
 }

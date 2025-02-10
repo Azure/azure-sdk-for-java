@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Whether the operation refers to the primary or secondary key. */
+/**
+ * Whether the operation refers to the primary or secondary key.
+ */
 public final class KeyType extends ExpandableStringEnum<KeyType> {
-    /** Static value primary for KeyType. */
+    /**
+     * Static value primary for KeyType.
+     */
     public static final KeyType PRIMARY = fromString("primary");
 
-    /** Static value secondary for KeyType. */
+    /**
+     * Static value secondary for KeyType.
+     */
     public static final KeyType SECONDARY = fromString("secondary");
 
     /**
      * Creates a new instance of KeyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
 
     /**
      * Creates or finds a KeyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KeyType.
      */
-    @JsonCreator
     public static KeyType fromString(String name) {
         return fromString(name, KeyType.class);
     }
 
     /**
      * Gets known KeyType values.
-     *
+     * 
      * @return known KeyType values.
      */
     public static Collection<KeyType> values() {

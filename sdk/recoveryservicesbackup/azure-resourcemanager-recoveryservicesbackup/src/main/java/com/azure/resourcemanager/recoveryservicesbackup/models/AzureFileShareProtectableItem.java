@@ -5,41 +5,56 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Protectable item for Azure Fileshare workloads. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
-@JsonTypeName("AzureFileShare")
+/**
+ * Protectable item for Azure Fileshare workloads.
+ */
 @Fluent
 public final class AzureFileShareProtectableItem extends WorkloadProtectableItem {
     /*
+     * Type of the backup item.
+     */
+    private String protectableItemType = "AzureFileShare";
+
+    /*
      * Full Fabric ID of container to which this protectable item belongs. For example, ARM ID.
      */
-    @JsonProperty(value = "parentContainerFabricId")
     private String parentContainerFabricId;
 
     /*
      * Friendly name of container to which this protectable item belongs.
      */
-    @JsonProperty(value = "parentContainerFriendlyName")
     private String parentContainerFriendlyName;
 
     /*
      * File Share type XSync or XSMB.
      */
-    @JsonProperty(value = "azureFileShareType")
     private AzureFileShareType azureFileShareType;
 
-    /** Creates an instance of AzureFileShareProtectableItem class. */
+    /**
+     * Creates an instance of AzureFileShareProtectableItem class.
+     */
     public AzureFileShareProtectableItem() {
+    }
+
+    /**
+     * Get the protectableItemType property: Type of the backup item.
+     * 
+     * @return the protectableItemType value.
+     */
+    @Override
+    public String protectableItemType() {
+        return this.protectableItemType;
     }
 
     /**
      * Get the parentContainerFabricId property: Full Fabric ID of container to which this protectable item belongs. For
      * example, ARM ID.
-     *
+     * 
      * @return the parentContainerFabricId value.
      */
     public String parentContainerFabricId() {
@@ -49,7 +64,7 @@ public final class AzureFileShareProtectableItem extends WorkloadProtectableItem
     /**
      * Set the parentContainerFabricId property: Full Fabric ID of container to which this protectable item belongs. For
      * example, ARM ID.
-     *
+     * 
      * @param parentContainerFabricId the parentContainerFabricId value to set.
      * @return the AzureFileShareProtectableItem object itself.
      */
@@ -60,7 +75,7 @@ public final class AzureFileShareProtectableItem extends WorkloadProtectableItem
 
     /**
      * Get the parentContainerFriendlyName property: Friendly name of container to which this protectable item belongs.
-     *
+     * 
      * @return the parentContainerFriendlyName value.
      */
     public String parentContainerFriendlyName() {
@@ -69,7 +84,7 @@ public final class AzureFileShareProtectableItem extends WorkloadProtectableItem
 
     /**
      * Set the parentContainerFriendlyName property: Friendly name of container to which this protectable item belongs.
-     *
+     * 
      * @param parentContainerFriendlyName the parentContainerFriendlyName value to set.
      * @return the AzureFileShareProtectableItem object itself.
      */
@@ -80,7 +95,7 @@ public final class AzureFileShareProtectableItem extends WorkloadProtectableItem
 
     /**
      * Get the azureFileShareType property: File Share type XSync or XSMB.
-     *
+     * 
      * @return the azureFileShareType value.
      */
     public AzureFileShareType azureFileShareType() {
@@ -89,7 +104,7 @@ public final class AzureFileShareProtectableItem extends WorkloadProtectableItem
 
     /**
      * Set the azureFileShareType property: File Share type XSync or XSMB.
-     *
+     * 
      * @param azureFileShareType the azureFileShareType value to set.
      * @return the AzureFileShareProtectableItem object itself.
      */
@@ -98,28 +113,36 @@ public final class AzureFileShareProtectableItem extends WorkloadProtectableItem
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileShareProtectableItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileShareProtectableItem withWorkloadType(String workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileShareProtectableItem withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileShareProtectableItem withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -128,11 +151,71 @@ public final class AzureFileShareProtectableItem extends WorkloadProtectableItem
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupManagementType", backupManagementType());
+        jsonWriter.writeStringField("workloadType", workloadType());
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("protectableItemType", this.protectableItemType);
+        jsonWriter.writeStringField("parentContainerFabricId", this.parentContainerFabricId);
+        jsonWriter.writeStringField("parentContainerFriendlyName", this.parentContainerFriendlyName);
+        jsonWriter.writeStringField("azureFileShareType",
+            this.azureFileShareType == null ? null : this.azureFileShareType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileShareProtectableItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileShareProtectableItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileShareProtectableItem.
+     */
+    public static AzureFileShareProtectableItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileShareProtectableItem deserializedAzureFileShareProtectableItem
+                = new AzureFileShareProtectableItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.withBackupManagementType(reader.getString());
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.withWorkloadType(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.withFriendlyName(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem
+                        .withProtectionState(ProtectionStatus.fromString(reader.getString()));
+                } else if ("protectableItemType".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.protectableItemType = reader.getString();
+                } else if ("parentContainerFabricId".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.parentContainerFabricId = reader.getString();
+                } else if ("parentContainerFriendlyName".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.parentContainerFriendlyName = reader.getString();
+                } else if ("azureFileShareType".equals(fieldName)) {
+                    deserializedAzureFileShareProtectableItem.azureFileShareType
+                        = AzureFileShareType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileShareProtectableItem;
+        });
     }
 }

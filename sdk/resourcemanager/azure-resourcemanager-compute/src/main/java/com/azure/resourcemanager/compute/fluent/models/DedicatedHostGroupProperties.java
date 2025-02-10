@@ -5,49 +5,47 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupInstanceView;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupPropertiesAdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Dedicated Host Group Properties.
  */
 @Fluent
-public final class DedicatedHostGroupProperties {
+public final class DedicatedHostGroupProperties implements JsonSerializable<DedicatedHostGroupProperties> {
     /*
      * Number of fault domains that the host group can span.
      */
-    @JsonProperty(value = "platformFaultDomainCount", required = true)
     private int platformFaultDomainCount;
 
     /*
      * A list of references to all dedicated hosts in the dedicated host group.
      */
-    @JsonProperty(value = "hosts", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> hosts;
 
     /*
      * The dedicated host group instance view, which has the list of instance view of the dedicated hosts under the
      * dedicated host group.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private DedicatedHostGroupInstanceView instanceView;
 
     /*
      * Specifies whether virtual machines or virtual machine scale sets can be placed automatically on the dedicated
-     * host group. Automatic placement means resources are allocated on dedicated hosts, that are chosen by Azure,
-     * under the dedicated host group. The value is defaulted to 'false' when not provided. Minimum api-version:
-     * 2020-06-01.
+     * host group. Automatic placement means resources are allocated on dedicated hosts, that are chosen by Azure, under
+     * the dedicated host group. The value is defaulted to 'false' when not provided. Minimum api-version: 2020-06-01.
      */
-    @JsonProperty(value = "supportAutomaticPlacement")
     private Boolean supportAutomaticPlacement;
 
     /*
      * Enables or disables a capability on the dedicated host group. Minimum api-version: 2022-03-01.
      */
-    @JsonProperty(value = "additionalCapabilities")
     private DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities;
 
     /**
@@ -86,8 +84,8 @@ public final class DedicatedHostGroupProperties {
     }
 
     /**
-     * Get the instanceView property: The dedicated host group instance view, which has the list of instance view of
-     * the dedicated hosts under the dedicated host group.
+     * Get the instanceView property: The dedicated host group instance view, which has the list of instance view of the
+     * dedicated hosts under the dedicated host group.
      * 
      * @return the instanceView value.
      */
@@ -98,8 +96,8 @@ public final class DedicatedHostGroupProperties {
     /**
      * Get the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
      * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
-     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false'
-     * when not provided. Minimum api-version: 2020-06-01.
+     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
+     * not provided. Minimum api-version: 2020-06-01.
      * 
      * @return the supportAutomaticPlacement value.
      */
@@ -110,8 +108,8 @@ public final class DedicatedHostGroupProperties {
     /**
      * Set the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
      * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
-     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false'
-     * when not provided. Minimum api-version: 2020-06-01.
+     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
+     * not provided. Minimum api-version: 2020-06-01.
      * 
      * @param supportAutomaticPlacement the supportAutomaticPlacement value to set.
      * @return the DedicatedHostGroupProperties object itself.
@@ -159,5 +157,57 @@ public final class DedicatedHostGroupProperties {
         if (additionalCapabilities() != null) {
             additionalCapabilities().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("platformFaultDomainCount", this.platformFaultDomainCount);
+        jsonWriter.writeBooleanField("supportAutomaticPlacement", this.supportAutomaticPlacement);
+        jsonWriter.writeJsonField("additionalCapabilities", this.additionalCapabilities);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHostGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHostGroupProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DedicatedHostGroupProperties.
+     */
+    public static DedicatedHostGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHostGroupProperties deserializedDedicatedHostGroupProperties = new DedicatedHostGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("platformFaultDomainCount".equals(fieldName)) {
+                    deserializedDedicatedHostGroupProperties.platformFaultDomainCount = reader.getInt();
+                } else if ("hosts".equals(fieldName)) {
+                    List<SubResourceReadOnly> hosts
+                        = reader.readArray(reader1 -> SubResourceReadOnly.fromJson(reader1));
+                    deserializedDedicatedHostGroupProperties.hosts = hosts;
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedDedicatedHostGroupProperties.instanceView
+                        = DedicatedHostGroupInstanceView.fromJson(reader);
+                } else if ("supportAutomaticPlacement".equals(fieldName)) {
+                    deserializedDedicatedHostGroupProperties.supportAutomaticPlacement
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("additionalCapabilities".equals(fieldName)) {
+                    deserializedDedicatedHostGroupProperties.additionalCapabilities
+                        = DedicatedHostGroupPropertiesAdditionalCapabilities.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHostGroupProperties;
+        });
     }
 }

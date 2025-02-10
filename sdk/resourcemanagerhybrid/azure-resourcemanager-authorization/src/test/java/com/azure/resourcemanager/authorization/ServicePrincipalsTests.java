@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.authorization;
 
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
@@ -115,7 +116,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             ResourceManager resourceManager =
                 ResourceManager
-                    .authenticate(credentialFromFile(), profile())
+                    .authenticate(new DefaultAzureCredentialBuilder().build(), profile())
                     .withSubscription(subscription);
             ResourceGroup group = resourceManager.resourceGroups().define(rgName).withRegion(locationOrDefault(Region.US_WEST)).create();
 

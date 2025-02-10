@@ -6,35 +6,53 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Criterion to filter metrics. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType")
-@JsonTypeName("StaticThresholdCriterion")
+/**
+ * Criterion to filter metrics.
+ */
 @Fluent
 public final class MetricCriteria extends MultiMetricCriteria {
     /*
+     * Specifies the type of threshold criteria
+     */
+    private CriterionType criterionType = CriterionType.STATIC_THRESHOLD_CRITERION;
+
+    /*
      * the criteria operator.
      */
-    @JsonProperty(value = "operator", required = true)
     private Operator operator;
 
     /*
      * the criteria threshold value that activates the alert.
      */
-    @JsonProperty(value = "threshold", required = true)
     private double threshold;
 
-    /** Creates an instance of MetricCriteria class. */
+    /**
+     * Creates an instance of MetricCriteria class.
+     */
     public MetricCriteria() {
     }
 
     /**
+     * Get the criterionType property: Specifies the type of threshold criteria.
+     * 
+     * @return the criterionType value.
+     */
+    @Override
+    public CriterionType criterionType() {
+        return this.criterionType;
+    }
+
+    /**
      * Get the operator property: the criteria operator.
-     *
+     * 
      * @return the operator value.
      */
     public Operator operator() {
@@ -43,7 +61,7 @@ public final class MetricCriteria extends MultiMetricCriteria {
 
     /**
      * Set the operator property: the criteria operator.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the MetricCriteria object itself.
      */
@@ -54,7 +72,7 @@ public final class MetricCriteria extends MultiMetricCriteria {
 
     /**
      * Get the threshold property: the criteria threshold value that activates the alert.
-     *
+     * 
      * @return the threshold value.
      */
     public double threshold() {
@@ -63,7 +81,7 @@ public final class MetricCriteria extends MultiMetricCriteria {
 
     /**
      * Set the threshold property: the criteria threshold value that activates the alert.
-     *
+     * 
      * @param threshold the threshold value to set.
      * @return the MetricCriteria object itself.
      */
@@ -72,42 +90,54 @@ public final class MetricCriteria extends MultiMetricCriteria {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withMetricName(String metricName) {
         super.withMetricName(metricName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withMetricNamespace(String metricNamespace) {
         super.withMetricNamespace(metricNamespace);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withTimeAggregation(AggregationTypeEnum timeAggregation) {
         super.withTimeAggregation(timeAggregation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withDimensions(List<MetricDimension> dimensions) {
         super.withDimensions(dimensions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withSkipMetricValidation(Boolean skipMetricValidation) {
         super.withSkipMetricValidation(skipMetricValidation);
@@ -116,18 +146,90 @@ public final class MetricCriteria extends MultiMetricCriteria {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operator in model MetricCriteria"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property operator in model MetricCriteria"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MetricCriteria.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("metricName", metricName());
+        jsonWriter.writeStringField("timeAggregation", timeAggregation() == null ? null : timeAggregation().toString());
+        jsonWriter.writeStringField("metricNamespace", metricNamespace());
+        jsonWriter.writeArrayField("dimensions", dimensions(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("skipMetricValidation", skipMetricValidation());
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeDoubleField("threshold", this.threshold);
+        jsonWriter.writeStringField("criterionType", this.criterionType == null ? null : this.criterionType.toString());
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricCriteria if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetricCriteria.
+     */
+    public static MetricCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricCriteria deserializedMetricCriteria = new MetricCriteria();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMetricCriteria.withName(reader.getString());
+                } else if ("metricName".equals(fieldName)) {
+                    deserializedMetricCriteria.withMetricName(reader.getString());
+                } else if ("timeAggregation".equals(fieldName)) {
+                    deserializedMetricCriteria.withTimeAggregation(AggregationTypeEnum.fromString(reader.getString()));
+                } else if ("metricNamespace".equals(fieldName)) {
+                    deserializedMetricCriteria.withMetricNamespace(reader.getString());
+                } else if ("dimensions".equals(fieldName)) {
+                    List<MetricDimension> dimensions = reader.readArray(reader1 -> MetricDimension.fromJson(reader1));
+                    deserializedMetricCriteria.withDimensions(dimensions);
+                } else if ("skipMetricValidation".equals(fieldName)) {
+                    deserializedMetricCriteria.withSkipMetricValidation(reader.getNullable(JsonReader::getBoolean));
+                } else if ("operator".equals(fieldName)) {
+                    deserializedMetricCriteria.operator = Operator.fromString(reader.getString());
+                } else if ("threshold".equals(fieldName)) {
+                    deserializedMetricCriteria.threshold = reader.getDouble();
+                } else if ("criterionType".equals(fieldName)) {
+                    deserializedMetricCriteria.criterionType = CriterionType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMetricCriteria.withAdditionalProperties(additionalProperties);
+
+            return deserializedMetricCriteria;
+        });
+    }
 }

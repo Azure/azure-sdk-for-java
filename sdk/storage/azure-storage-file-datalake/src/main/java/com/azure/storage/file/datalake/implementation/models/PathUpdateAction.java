@@ -4,27 +4,38 @@
 
 package com.azure.storage.file.datalake.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for PathUpdateAction. */
+/**
+ * Defines values for PathUpdateAction.
+ */
 public enum PathUpdateAction {
-    /** Enum value append. */
+    /**
+     * Enum value append.
+     */
     APPEND("append"),
 
-    /** Enum value flush. */
+    /**
+     * Enum value flush.
+     */
     FLUSH("flush"),
 
-    /** Enum value setProperties. */
+    /**
+     * Enum value setProperties.
+     */
     SET_PROPERTIES("setProperties"),
 
-    /** Enum value setAccessControl. */
+    /**
+     * Enum value setAccessControl.
+     */
     SET_ACCESS_CONTROL("setAccessControl"),
 
-    /** Enum value setAccessControlRecursive. */
+    /**
+     * Enum value setAccessControlRecursive.
+     */
     SET_ACCESS_CONTROL_RECURSIVE("setAccessControlRecursive");
 
-    /** The actual serialized value for a PathUpdateAction instance. */
+    /**
+     * The actual serialized value for a PathUpdateAction instance.
+     */
     private final String value;
 
     PathUpdateAction(String value) {
@@ -33,11 +44,10 @@ public enum PathUpdateAction {
 
     /**
      * Parses a serialized value to a PathUpdateAction instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PathUpdateAction object, or null if unable to parse.
      */
-    @JsonCreator
     public static PathUpdateAction fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +61,9 @@ public enum PathUpdateAction {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

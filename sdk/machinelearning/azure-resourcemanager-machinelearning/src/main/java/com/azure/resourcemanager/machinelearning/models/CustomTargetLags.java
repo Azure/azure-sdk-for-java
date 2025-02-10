@@ -6,29 +6,46 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The CustomTargetLags model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "mode")
-@JsonTypeName("Custom")
+/**
+ * The CustomTargetLags model.
+ */
 @Fluent
 public final class CustomTargetLags extends TargetLags {
     /*
+     * [Required] Set target lags mode - Auto/Custom
+     */
+    private TargetLagsMode mode = TargetLagsMode.CUSTOM;
+
+    /*
      * [Required] Set target lags values.
      */
-    @JsonProperty(value = "values", required = true)
     private List<Integer> values;
 
-    /** Creates an instance of CustomTargetLags class. */
+    /**
+     * Creates an instance of CustomTargetLags class.
+     */
     public CustomTargetLags() {
     }
 
     /**
+     * Get the mode property: [Required] Set target lags mode - Auto/Custom.
+     * 
+     * @return the mode value.
+     */
+    @Override
+    public TargetLagsMode mode() {
+        return this.mode;
+    }
+
+    /**
      * Get the values property: [Required] Set target lags values.
-     *
+     * 
      * @return the values value.
      */
     public List<Integer> values() {
@@ -37,7 +54,7 @@ public final class CustomTargetLags extends TargetLags {
 
     /**
      * Set the values property: [Required] Set target lags values.
-     *
+     * 
      * @param values the values value to set.
      * @return the CustomTargetLags object itself.
      */
@@ -48,18 +65,58 @@ public final class CustomTargetLags extends TargetLags {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (values() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property values in model CustomTargetLags"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property values in model CustomTargetLags"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomTargetLags.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomTargetLags from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomTargetLags if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomTargetLags.
+     */
+    public static CustomTargetLags fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomTargetLags deserializedCustomTargetLags = new CustomTargetLags();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("values".equals(fieldName)) {
+                    List<Integer> values = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedCustomTargetLags.values = values;
+                } else if ("mode".equals(fieldName)) {
+                    deserializedCustomTargetLags.mode = TargetLagsMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomTargetLags;
+        });
+    }
 }

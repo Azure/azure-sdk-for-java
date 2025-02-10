@@ -16,8 +16,7 @@ public final class CustomHostnameAnalysisResultImpl implements CustomHostnameAna
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    CustomHostnameAnalysisResultImpl(
-        CustomHostnameAnalysisResultInner innerObject,
+    CustomHostnameAnalysisResultImpl(CustomHostnameAnalysisResultInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

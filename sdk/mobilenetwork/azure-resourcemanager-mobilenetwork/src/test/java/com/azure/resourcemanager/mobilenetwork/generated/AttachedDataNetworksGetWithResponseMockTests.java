@@ -6,83 +6,55 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.AttachedDataNetwork;
 import com.azure.resourcemanager.mobilenetwork.models.NaptEnabled;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AttachedDataNetworksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"userPlaneDataInterface\":{\"name\":\"tuwkffdj\",\"ipv4Address\":\"sysidfvclglxnf\",\"ipv4Subnet\":\"jtkbusqogsfika\",\"ipv4Gateway\":\"ansharujtjiqxfz\",\"vlanId\":846546082,\"ipv4AddressList\":[\"vwkpqh\",\"penuy\",\"bqeqqekewvnqvcd\"],\"bfdIpv4Endpoints\":[\"a\",\"cmfdjwnlax\"]},\"dnsAddresses\":[\"njqikcz\"],\"naptConfiguration\":{\"enabled\":\"Enabled\",\"portRange\":{\"minPort\":422155037,\"maxPort\":1938868822},\"portReuseHoldTime\":{\"tcp\":1614916869,\"udp\":394245524},\"pinholeLimits\":196661330,\"pinholeTimeouts\":{\"tcp\":283921806,\"udp\":1164479404,\"icmp\":47746370}},\"userEquipmentAddressPoolPrefix\":[\"ntsj\",\"qrsxyp\",\"uuuybnchrsziz\"],\"userEquipmentStaticAddressPoolPrefix\":[\"elyetndnbf\",\"yggagflnlgmt\",\"wahzjmucftbyr\"]},\"location\":\"rohkpigqfusu\",\"tags\":{\"noxaxmqeqal\":\"mkwkl\"},\"id\":\"hjnhgwydyynfsvk\",\"name\":\"gbv\",\"type\":\"ta\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"userPlaneDataInterface\":{\"name\":\"lt\",\"ipv4Address\":\"eyl\",\"ipv4Subnet\":\"mfgvxirpghriypo\",\"ipv4Gateway\":\"yhlqhykprlpyznu\"},\"dnsAddresses\":[\"qdsmexiit\"],\"naptConfiguration\":{\"enabled\":\"Disabled\",\"portRange\":{\"minPort\":1550177536,\"maxPort\":1265824648},\"portReuseHoldTime\":{\"tcp\":1535598222,\"udp\":2086565224},\"pinholeLimits\":1192000578,\"pinholeTimeouts\":{\"tcp\":1246730356,\"udp\":1143037859,\"icmp\":1300683178}},\"userEquipmentAddressPoolPrefix\":[\"nmgixh\",\"mavmq\",\"oudorhcgyyp\"],\"userEquipmentStaticAddressPoolPrefix\":[\"wy\",\"undmbx\",\"ugcmjkavlgorb\"]},\"location\":\"tp\",\"tags\":{\"p\":\"zfjltfvnzcyjto\",\"bdb\":\"opv\"},\"id\":\"qgqqihedsvqwthmk\",\"name\":\"ibcysihsgqc\",\"type\":\"dhohsdtmcdzsuf\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AttachedDataNetwork response = manager.attachedDataNetworks()
+            .getWithResponse("razftxejwabmdujt", "vcopex", "m", "urbuhhlkyqltq", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AttachedDataNetwork response =
-            manager
-                .attachedDataNetworks()
-                .getWithResponse("acvbmqz", "qqxlajr", "wxacevehj", "uyxoaf", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("tp", response.location());
-        Assertions.assertEquals("zfjltfvnzcyjto", response.tags().get("p"));
-        Assertions.assertEquals("lt", response.userPlaneDataInterface().name());
-        Assertions.assertEquals("eyl", response.userPlaneDataInterface().ipv4Address());
-        Assertions.assertEquals("mfgvxirpghriypo", response.userPlaneDataInterface().ipv4Subnet());
-        Assertions.assertEquals("yhlqhykprlpyznu", response.userPlaneDataInterface().ipv4Gateway());
-        Assertions.assertEquals("qdsmexiit", response.dnsAddresses().get(0));
-        Assertions.assertEquals(NaptEnabled.DISABLED, response.naptConfiguration().enabled());
-        Assertions.assertEquals(1550177536, response.naptConfiguration().portRange().minPort());
-        Assertions.assertEquals(1265824648, response.naptConfiguration().portRange().maxPort());
-        Assertions.assertEquals(1535598222, response.naptConfiguration().portReuseHoldTime().tcp());
-        Assertions.assertEquals(2086565224, response.naptConfiguration().portReuseHoldTime().udp());
-        Assertions.assertEquals(1192000578, response.naptConfiguration().pinholeLimits());
-        Assertions.assertEquals(1246730356, response.naptConfiguration().pinholeTimeouts().tcp());
-        Assertions.assertEquals(1143037859, response.naptConfiguration().pinholeTimeouts().udp());
-        Assertions.assertEquals(1300683178, response.naptConfiguration().pinholeTimeouts().icmp());
-        Assertions.assertEquals("nmgixh", response.userEquipmentAddressPoolPrefix().get(0));
-        Assertions.assertEquals("wy", response.userEquipmentStaticAddressPoolPrefix().get(0));
+        Assertions.assertEquals("rohkpigqfusu", response.location());
+        Assertions.assertEquals("mkwkl", response.tags().get("noxaxmqeqal"));
+        Assertions.assertEquals("tuwkffdj", response.userPlaneDataInterface().name());
+        Assertions.assertEquals("sysidfvclglxnf", response.userPlaneDataInterface().ipv4Address());
+        Assertions.assertEquals("jtkbusqogsfika", response.userPlaneDataInterface().ipv4Subnet());
+        Assertions.assertEquals("ansharujtjiqxfz", response.userPlaneDataInterface().ipv4Gateway());
+        Assertions.assertEquals(846546082, response.userPlaneDataInterface().vlanId());
+        Assertions.assertEquals("vwkpqh", response.userPlaneDataInterface().ipv4AddressList().get(0));
+        Assertions.assertEquals("a", response.userPlaneDataInterface().bfdIpv4Endpoints().get(0));
+        Assertions.assertEquals("njqikcz", response.dnsAddresses().get(0));
+        Assertions.assertEquals(NaptEnabled.ENABLED, response.naptConfiguration().enabled());
+        Assertions.assertEquals(422155037, response.naptConfiguration().portRange().minPort());
+        Assertions.assertEquals(1938868822, response.naptConfiguration().portRange().maxPort());
+        Assertions.assertEquals(1614916869, response.naptConfiguration().portReuseHoldTime().tcp());
+        Assertions.assertEquals(394245524, response.naptConfiguration().portReuseHoldTime().udp());
+        Assertions.assertEquals(196661330, response.naptConfiguration().pinholeLimits());
+        Assertions.assertEquals(283921806, response.naptConfiguration().pinholeTimeouts().tcp());
+        Assertions.assertEquals(1164479404, response.naptConfiguration().pinholeTimeouts().udp());
+        Assertions.assertEquals(47746370, response.naptConfiguration().pinholeTimeouts().icmp());
+        Assertions.assertEquals("ntsj", response.userEquipmentAddressPoolPrefix().get(0));
+        Assertions.assertEquals("elyetndnbf", response.userEquipmentStaticAddressPoolPrefix().get(0));
     }
 }

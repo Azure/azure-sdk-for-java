@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The BackupResourceEncryptionConfig model. */
+/**
+ * The BackupResourceEncryptionConfig model.
+ */
 @Fluent
-public class BackupResourceEncryptionConfig {
+public class BackupResourceEncryptionConfig implements JsonSerializable<BackupResourceEncryptionConfig> {
     /*
      * Encryption At Rest Type
      */
-    @JsonProperty(value = "encryptionAtRestType")
     private EncryptionAtRestType encryptionAtRestType;
 
     /*
      * Key Vault Key URI
      */
-    @JsonProperty(value = "keyUri")
     private String keyUri;
 
     /*
      * Key Vault Subscription Id
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * The lastUpdateStatus property.
      */
-    @JsonProperty(value = "lastUpdateStatus")
     private LastUpdateStatus lastUpdateStatus;
 
     /*
      * The infrastructureEncryptionState property.
      */
-    @JsonProperty(value = "infrastructureEncryptionState")
     private InfrastructureEncryptionState infrastructureEncryptionState;
 
-    /** Creates an instance of BackupResourceEncryptionConfig class. */
+    /**
+     * Creates an instance of BackupResourceEncryptionConfig class.
+     */
     public BackupResourceEncryptionConfig() {
     }
 
     /**
      * Get the encryptionAtRestType property: Encryption At Rest Type.
-     *
+     * 
      * @return the encryptionAtRestType value.
      */
     public EncryptionAtRestType encryptionAtRestType() {
@@ -55,7 +58,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Set the encryptionAtRestType property: Encryption At Rest Type.
-     *
+     * 
      * @param encryptionAtRestType the encryptionAtRestType value to set.
      * @return the BackupResourceEncryptionConfig object itself.
      */
@@ -66,7 +69,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Get the keyUri property: Key Vault Key URI.
-     *
+     * 
      * @return the keyUri value.
      */
     public String keyUri() {
@@ -75,7 +78,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Set the keyUri property: Key Vault Key URI.
-     *
+     * 
      * @param keyUri the keyUri value to set.
      * @return the BackupResourceEncryptionConfig object itself.
      */
@@ -86,7 +89,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Get the subscriptionId property: Key Vault Subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -95,7 +98,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Set the subscriptionId property: Key Vault Subscription Id.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the BackupResourceEncryptionConfig object itself.
      */
@@ -106,7 +109,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Get the lastUpdateStatus property: The lastUpdateStatus property.
-     *
+     * 
      * @return the lastUpdateStatus value.
      */
     public LastUpdateStatus lastUpdateStatus() {
@@ -115,7 +118,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Set the lastUpdateStatus property: The lastUpdateStatus property.
-     *
+     * 
      * @param lastUpdateStatus the lastUpdateStatus value to set.
      * @return the BackupResourceEncryptionConfig object itself.
      */
@@ -126,7 +129,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Get the infrastructureEncryptionState property: The infrastructureEncryptionState property.
-     *
+     * 
      * @return the infrastructureEncryptionState value.
      */
     public InfrastructureEncryptionState infrastructureEncryptionState() {
@@ -135,21 +138,76 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Set the infrastructureEncryptionState property: The infrastructureEncryptionState property.
-     *
+     * 
      * @param infrastructureEncryptionState the infrastructureEncryptionState value to set.
      * @return the BackupResourceEncryptionConfig object itself.
      */
-    public BackupResourceEncryptionConfig withInfrastructureEncryptionState(
-        InfrastructureEncryptionState infrastructureEncryptionState) {
+    public BackupResourceEncryptionConfig
+        withInfrastructureEncryptionState(InfrastructureEncryptionState infrastructureEncryptionState) {
         this.infrastructureEncryptionState = infrastructureEncryptionState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("encryptionAtRestType",
+            this.encryptionAtRestType == null ? null : this.encryptionAtRestType.toString());
+        jsonWriter.writeStringField("keyUri", this.keyUri);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("lastUpdateStatus",
+            this.lastUpdateStatus == null ? null : this.lastUpdateStatus.toString());
+        jsonWriter.writeStringField("infrastructureEncryptionState",
+            this.infrastructureEncryptionState == null ? null : this.infrastructureEncryptionState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupResourceEncryptionConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupResourceEncryptionConfig if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupResourceEncryptionConfig.
+     */
+    public static BackupResourceEncryptionConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupResourceEncryptionConfig deserializedBackupResourceEncryptionConfig
+                = new BackupResourceEncryptionConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encryptionAtRestType".equals(fieldName)) {
+                    deserializedBackupResourceEncryptionConfig.encryptionAtRestType
+                        = EncryptionAtRestType.fromString(reader.getString());
+                } else if ("keyUri".equals(fieldName)) {
+                    deserializedBackupResourceEncryptionConfig.keyUri = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedBackupResourceEncryptionConfig.subscriptionId = reader.getString();
+                } else if ("lastUpdateStatus".equals(fieldName)) {
+                    deserializedBackupResourceEncryptionConfig.lastUpdateStatus
+                        = LastUpdateStatus.fromString(reader.getString());
+                } else if ("infrastructureEncryptionState".equals(fieldName)) {
+                    deserializedBackupResourceEncryptionConfig.infrastructureEncryptionState
+                        = InfrastructureEncryptionState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupResourceEncryptionConfig;
+        });
     }
 }

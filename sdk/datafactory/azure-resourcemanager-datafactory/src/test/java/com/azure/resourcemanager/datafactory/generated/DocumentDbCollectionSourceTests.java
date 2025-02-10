@@ -11,16 +11,20 @@ public final class DocumentDbCollectionSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DocumentDbCollectionSource model = BinaryData.fromString(
-            "{\"type\":\"DocumentDbCollectionSource\",\"query\":\"datanrgmgnvcusv\",\"nestingSeparator\":\"datakzbdbv\",\"queryTimeout\":\"datanchymrfomlh\",\"additionalColumns\":\"dataiktecs\",\"sourceRetryCount\":\"datacqweydaa\",\"sourceRetryWait\":\"datattmfcx\",\"maxConcurrentConnections\":\"datawfsqjxxbs\",\"disableMetricsCollection\":\"dataqiwl\",\"\":{\"zpr\":\"datatsyjzdasgk\",\"lbddlnzmff\":\"dataqomuzohnpkof\",\"junmgd\":\"datavowlammvazvwzien\"}}")
+            "{\"type\":\"DocumentDbCollectionSource\",\"query\":\"datadljqjstncjwz\",\"nestingSeparator\":\"datatezltlundkj\",\"queryTimeout\":\"datavhhxivshjuxm\",\"additionalColumns\":\"dataythxearlp\",\"sourceRetryCount\":\"datajjticly\",\"sourceRetryWait\":\"dataduxbungmpn\",\"maxConcurrentConnections\":\"datatgucdfxglrcj\",\"disableMetricsCollection\":\"dataoaz\",\"\":{\"nyhzestt\":\"datajcwuzanpoyrqjoni\"}}")
             .toObject(DocumentDbCollectionSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DocumentDbCollectionSource model = new DocumentDbCollectionSource().withSourceRetryCount("datacqweydaa")
-            .withSourceRetryWait("datattmfcx").withMaxConcurrentConnections("datawfsqjxxbs")
-            .withDisableMetricsCollection("dataqiwl").withQuery("datanrgmgnvcusv").withNestingSeparator("datakzbdbv")
-            .withQueryTimeout("datanchymrfomlh").withAdditionalColumns("dataiktecs");
+        DocumentDbCollectionSource model = new DocumentDbCollectionSource().withSourceRetryCount("datajjticly")
+            .withSourceRetryWait("dataduxbungmpn")
+            .withMaxConcurrentConnections("datatgucdfxglrcj")
+            .withDisableMetricsCollection("dataoaz")
+            .withQuery("datadljqjstncjwz")
+            .withNestingSeparator("datatezltlundkj")
+            .withQueryTimeout("datavhhxivshjuxm")
+            .withAdditionalColumns("dataythxearlp");
         model = BinaryData.fromObject(model).toObject(DocumentDbCollectionSource.class);
     }
 }

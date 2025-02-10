@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "@odata\\.type",
     defaultImpl = TurtleWithTypeIdContainingDot.class)
@@ -25,4 +26,3 @@ public class TurtleWithTypeIdContainingDot extends NonEmptyAnimalWithTypeIdConta
         return this;
     }
 }
-

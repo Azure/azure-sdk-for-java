@@ -16,25 +16,35 @@ public final class BackupVaultsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupVaultsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"bajlka\"},\"location\":\"wxyiopidkqq\",\"tags\":{\"dmligovibrxk\":\"vscx\",\"cbgoor\":\"mloazuru\",\"ybfhjxa\":\"te\",\"il\":\"vvjgslor\"},\"id\":\"yw\",\"name\":\"t\",\"type\":\"gkxnyedabg\"},{\"properties\":{\"provisioningState\":\"dtj\"},\"location\":\"wbcihxuuwh\",\"tags\":{\"akkud\":\"xccybvpa\",\"wjplma\":\"px\"},\"id\":\"stcyohpfkyrkdbd\",\"name\":\"iogsjkmnwq\",\"type\":\"nobaiyhddviacegf\"}],\"nextLink\":\"ntfpmvmemfnc\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"tjuewbcihx\"},\"location\":\"whcjyxcc\",\"tags\":{\"px\":\"payakkud\",\"stcyohpfkyrkdbd\":\"wjplma\",\"nobaiyhddviacegf\":\"iogsjkmnwq\"},\"id\":\"m\",\"name\":\"tfpmvmemfnczdw\",\"type\":\"vbalxlllc\"},{\"properties\":{\"provisioningState\":\"db\"},\"location\":\"vwrdnhfukuvsj\",\"tags\":{\"lerchpq\":\"smystuluqypfc\",\"dfc\":\"mfpjbabw\",\"qddrihpfhoqcaae\":\"sspuunnoxyhkx\",\"djvlpj\":\"dao\"},\"id\":\"xkzb\",\"name\":\"msgeivsiykzk\",\"type\":\"ncj\"},{\"properties\":{\"provisioningState\":\"nbzoggcu\"},\"location\":\"p\",\"tags\":{\"ylbf\":\"rpgogtqxep\"},\"id\":\"ajlyjtlvofqzhv\",\"name\":\"cib\",\"type\":\"fmo\"},{\"properties\":{\"provisioningState\":\"rkjpvdwxfzwii\"},\"location\":\"zjb\",\"tags\":{\"mbtrnegvmnvu\":\"sxjrk\",\"bkkd\":\"eqvldspast\",\"apeewchpxlkt\":\"flvestmjlxrrilo\",\"ufuztcktyhjtq\":\"kuziycsle\"},\"id\":\"dcgzul\",\"name\":\"mmrqz\",\"type\":\"rr\"}],\"nextLink\":\"pglydz\"}")
             .toObject(BackupVaultsList.class);
-        Assertions.assertEquals("wxyiopidkqq", model.value().get(0).location());
-        Assertions.assertEquals("vscx", model.value().get(0).tags().get("dmligovibrxk"));
-        Assertions.assertEquals("ntfpmvmemfnc", model.nextLink());
+        Assertions.assertEquals("whcjyxcc", model.value().get(0).location());
+        Assertions.assertEquals("payakkud", model.value().get(0).tags().get("px"));
+        Assertions.assertEquals("pglydz", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupVaultsList model = new BackupVaultsList()
-            .withValue(Arrays.asList(
-                new BackupVaultInner().withLocation("wxyiopidkqq")
-                    .withTags(mapOf("dmligovibrxk", "vscx", "cbgoor", "mloazuru", "ybfhjxa", "te", "il", "vvjgslor")),
-                new BackupVaultInner().withLocation("wbcihxuuwh").withTags(mapOf("akkud", "xccybvpa", "wjplma", "px"))))
-            .withNextLink("ntfpmvmemfnc");
+        BackupVaultsList model
+            = new BackupVaultsList()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new BackupVaultInner().withLocation("whcjyxcc")
+                                .withTags(mapOf("px", "payakkud", "stcyohpfkyrkdbd", "wjplma", "nobaiyhddviacegf",
+                                    "iogsjkmnwq")),
+                            new BackupVaultInner().withLocation("vwrdnhfukuvsj")
+                                .withTags(mapOf("lerchpq", "smystuluqypfc", "dfc", "mfpjbabw", "qddrihpfhoqcaae",
+                                    "sspuunnoxyhkx", "djvlpj", "dao")),
+                            new BackupVaultInner().withLocation("p").withTags(mapOf("ylbf", "rpgogtqxep")),
+                            new BackupVaultInner().withLocation("zjb")
+                                .withTags(mapOf("mbtrnegvmnvu", "sxjrk", "bkkd", "eqvldspast", "apeewchpxlkt",
+                                    "flvestmjlxrrilo", "ufuztcktyhjtq", "kuziycsle"))))
+                .withNextLink("pglydz");
         model = BinaryData.fromObject(model).toObject(BackupVaultsList.class);
-        Assertions.assertEquals("wxyiopidkqq", model.value().get(0).location());
-        Assertions.assertEquals("vscx", model.value().get(0).tags().get("dmligovibrxk"));
-        Assertions.assertEquals("ntfpmvmemfnc", model.nextLink());
+        Assertions.assertEquals("whcjyxcc", model.value().get(0).location());
+        Assertions.assertEquals("payakkud", model.value().get(0).tags().get("px"));
+        Assertions.assertEquals("pglydz", model.nextLink());
     }
 
     // Use "Map.of" if available

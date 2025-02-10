@@ -7,11 +7,13 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ContainerAppsRevisionReplicas. */
+/**
+ * Resource collection API of ContainerAppsRevisionReplicas.
+ */
 public interface ContainerAppsRevisionReplicas {
     /**
      * Get a replica for a Container App Revision.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
@@ -19,23 +21,23 @@ public interface ContainerAppsRevisionReplicas {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a replica for a Container App Revision along with {@link Response}.
      */
-    Response<Replica> getReplicaWithResponse(
-        String resourceGroupName, String containerAppName, String revisionName, String replicaName, Context context);
+    Response<Replica> getReplicaWithResponse(String resourceGroupName, String containerAppName, String revisionName,
+        String replicaName, Context context);
 
     /**
      * Get a replica for a Container App Revision.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
      * @param replicaName Name of the Container App Revision Replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a replica for a Container App Revision.
      */
@@ -43,29 +45,29 @@ public interface ContainerAppsRevisionReplicas {
 
     /**
      * List replicas for a Container App Revision.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Revision Replicas collection ARM resource along with {@link Response}.
      */
-    Response<ReplicaCollection> listReplicasWithResponse(
-        String resourceGroupName, String containerAppName, String revisionName, Context context);
+    Response<ReplicaCollection> listReplicasWithResponse(String resourceGroupName, String containerAppName,
+        String revisionName, Context context);
 
     /**
      * List replicas for a Container App Revision.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App Revision Replicas collection ARM resource.
      */

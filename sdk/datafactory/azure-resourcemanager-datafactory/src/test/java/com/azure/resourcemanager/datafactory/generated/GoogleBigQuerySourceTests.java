@@ -11,16 +11,19 @@ public final class GoogleBigQuerySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQuerySource model = BinaryData.fromString(
-            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"dataadafecwnufldzjc\",\"queryTimeout\":\"datahjbzpoh\",\"additionalColumns\":\"datajgpe\",\"sourceRetryCount\":\"databoxvwtlnv\",\"sourceRetryWait\":\"datahtujaqpkup\",\"maxConcurrentConnections\":\"datacrjeypd\",\"disableMetricsCollection\":\"datascxzsynbdrqirni\",\"\":{\"sorsola\":\"datathyebwgesovsvjx\",\"afpyil\":\"datahlyhgiisnfaxtob\"}}")
+            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"dataeydmeuimlhyze\",\"queryTimeout\":\"dataivkzrvya\",\"additionalColumns\":\"dataqgyui\",\"sourceRetryCount\":\"dataelyjduzapnopoto\",\"sourceRetryWait\":\"datarrqcaglyt\",\"maxConcurrentConnections\":\"datacbdpczmzuwr\",\"disableMetricsCollection\":\"datahfwce\",\"\":{\"cyfccnwmdpbso\":\"dataaqaviqskylwpq\",\"fxpveruuckrzw\":\"datakn\"}}")
             .toObject(GoogleBigQuerySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQuerySource model
-            = new GoogleBigQuerySource().withSourceRetryCount("databoxvwtlnv").withSourceRetryWait("datahtujaqpkup")
-                .withMaxConcurrentConnections("datacrjeypd").withDisableMetricsCollection("datascxzsynbdrqirni")
-                .withQueryTimeout("datahjbzpoh").withAdditionalColumns("datajgpe").withQuery("dataadafecwnufldzjc");
+        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("dataelyjduzapnopoto")
+            .withSourceRetryWait("datarrqcaglyt")
+            .withMaxConcurrentConnections("datacbdpczmzuwr")
+            .withDisableMetricsCollection("datahfwce")
+            .withQueryTimeout("dataivkzrvya")
+            .withAdditionalColumns("dataqgyui")
+            .withQuery("dataeydmeuimlhyze");
         model = BinaryData.fromObject(model).toObject(GoogleBigQuerySource.class);
     }
 }

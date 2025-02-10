@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ProfileUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProfileUpdateProperties model =
-            BinaryData.fromString("{\"enabledState\":\"Disabled\"}").toObject(ProfileUpdateProperties.class);
-        Assertions.assertEquals(State.DISABLED, model.enabledState());
+        ProfileUpdateProperties model
+            = BinaryData.fromString("{\"enabledState\":\"Enabled\"}").toObject(ProfileUpdateProperties.class);
+        Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProfileUpdateProperties model = new ProfileUpdateProperties().withEnabledState(State.DISABLED);
+        ProfileUpdateProperties model = new ProfileUpdateProperties().withEnabledState(State.ENABLED);
         model = BinaryData.fromObject(model).toObject(ProfileUpdateProperties.class);
-        Assertions.assertEquals(State.DISABLED, model.enabledState());
+        Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 }

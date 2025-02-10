@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The monitoring status of the endpoint. */
+/**
+ * The monitoring status of the endpoint.
+ */
 public final class EndpointMonitorStatus extends ExpandableStringEnum<EndpointMonitorStatus> {
-    /** Static value CheckingEndpoint for EndpointMonitorStatus. */
+    /**
+     * Static value CheckingEndpoint for EndpointMonitorStatus.
+     */
     public static final EndpointMonitorStatus CHECKING_ENDPOINT = fromString("CheckingEndpoint");
 
-    /** Static value Online for EndpointMonitorStatus. */
+    /**
+     * Static value Online for EndpointMonitorStatus.
+     */
     public static final EndpointMonitorStatus ONLINE = fromString("Online");
 
-    /** Static value Degraded for EndpointMonitorStatus. */
+    /**
+     * Static value Degraded for EndpointMonitorStatus.
+     */
     public static final EndpointMonitorStatus DEGRADED = fromString("Degraded");
 
-    /** Static value Disabled for EndpointMonitorStatus. */
+    /**
+     * Static value Disabled for EndpointMonitorStatus.
+     */
     public static final EndpointMonitorStatus DISABLED = fromString("Disabled");
 
-    /** Static value Inactive for EndpointMonitorStatus. */
+    /**
+     * Static value Inactive for EndpointMonitorStatus.
+     */
     public static final EndpointMonitorStatus INACTIVE = fromString("Inactive");
 
-    /** Static value Stopped for EndpointMonitorStatus. */
+    /**
+     * Static value Stopped for EndpointMonitorStatus.
+     */
     public static final EndpointMonitorStatus STOPPED = fromString("Stopped");
 
-    /** Static value Unmonitored for EndpointMonitorStatus. */
+    /**
+     * Static value Unmonitored for EndpointMonitorStatus.
+     */
     public static final EndpointMonitorStatus UNMONITORED = fromString("Unmonitored");
 
     /**
      * Creates a new instance of EndpointMonitorStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class EndpointMonitorStatus extends ExpandableStringEnum<EndpointMo
 
     /**
      * Creates or finds a EndpointMonitorStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndpointMonitorStatus.
      */
-    @JsonCreator
     public static EndpointMonitorStatus fromString(String name) {
         return fromString(name, EndpointMonitorStatus.class);
     }
 
     /**
      * Gets known EndpointMonitorStatus values.
-     *
+     * 
      * @return known EndpointMonitorStatus values.
      */
     public static Collection<EndpointMonitorStatus> values() {

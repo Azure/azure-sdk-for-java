@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.Editor;
@@ -6,7 +9,9 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.PropertyCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier.Keyword;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.javadoc.Javadoc;
@@ -19,7 +24,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQueries;
@@ -232,7 +236,7 @@ public class EventGridCustomization extends Customization {
         logger.info("Total number of events with proper description " + validEventDescription.size());
 
         customization.getRawEditor()
-        .addFile("src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java", sb.toString());
+            .addFile("src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java", sb.toString());
 
 
         customizeMediaJobOutputAsset(customization);
@@ -244,6 +248,29 @@ public class EventGridCustomization extends Customization {
         customizeEventGridClientImplImports(customization);
         customizeAcsRouterEvents(customization);
         customizeResourceNotificationEvents(customization);
+        customizeCommunicationIdentifierModelKind(customization);
+        customizeAcsMessageChannelEventError(customization);
+        customizeCommuicationSMSEvents(customization);
+    }
+
+    public void customizeCommuicationSMSEvents(LibraryCustomization customization) {
+        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+        ClassCustomization classCustomization = packageModels.getClass("AcsSmsReceivedEventData");
+        classCustomization.customizeAst(ast -> {
+            ast.getClassByName("AcsSmsReceivedEventData").ifPresent(clazz -> {
+                clazz.getFieldByName("segmentCount").get().getVariable(0).setType("Integer");
+            });
+        });
+
+        classCustomization.customizeAst(comp -> {
+            ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsSmsReceivedEventData").get();
+            clazz.getMethodsByName("setSegmentCount").forEach(m -> {
+                m.getParameter(0).setType(Integer.class);
+            });
+            clazz.getMethodsByName("getSegmentCount").forEach(m -> {
+                m.setType(Integer.class);
+            });
+        });
     }
 
     public void customizeResourceEvents(LibraryCustomization customization, Logger logger) {
@@ -338,68 +365,142 @@ public class EventGridCustomization extends Customization {
         });
     }
 
+
+    public void customizeAcsMessageChannelEventError(LibraryCustomization customization) {
+        PackageCustomization packageCustomization = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
+
+        ClassCustomization classCustomization = packageCustomization.getClass("AcsMessageEventData");
+        classCustomization.addImports("com.azure.core.models.ResponseError");
+        classCustomization.customizeAst(comp -> {
+           ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsMessageEventData").get();
+           // Fix up the getError method to always return a ResponseError.
+           clazz.getMethodsByName("getError").forEach(m -> {
+               m.setType("ResponseError")
+                   .setBody(parseBlock("{ return new ResponseError(this.error.getChannelCode(), this.error.getChannelMessage()); }"))
+                   .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the error property: The channel error code and message."))))
+                       .addBlockTag("return", "the error value."));
+               });
+
+           // Fix up the existing setError method to be private. It's used for deserializing.
+           clazz.getMethodsByName("setError").forEach(m -> {
+               m.setType("void");
+               m.setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Used for json deserialization in derived types."))))
+                   .addBlockTag("param", "error The error value to set"));
+               m.removeModifier(Keyword.PUBLIC);
+               m.setBody(parseBlock("{ this.error = error; }"));
+           });
+           // Add the new setError method that takes a ResonseError.
+           MethodDeclaration m = clazz.addMethod("setError", Keyword.PUBLIC);
+           m.setType("AcsMessageEventData");
+           m.addParameter("ResponseError", "error");
+           m.setBody(parseBlock("{ this.error = new AcsMessageChannelEventError().setChannelCode(error.getCode()).setChannelMessage(error.getMessage()); return this; }"))
+               .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the error property: The channel error code and message."))))
+                   .addBlockTag("param", "error The ResponseError object containing error code and message.")
+                   .addBlockTag("return", "the AcsMessageEventData object itself."));
+        });
+
+        Arrays.asList("AcsMessageDeliveryStatusUpdatedEventData", "AcsMessageReceivedEventData").forEach(name -> {
+            ClassCustomization localClass = packageCustomization.getClass(name);
+            localClass.addImports("com.azure.core.models.ResponseError");
+            localClass.customizeAst(comp -> {
+                ClassOrInterfaceDeclaration clazz = comp.getClassByName(name).get();
+
+                // the existing setError method isn't necessary any longer as the base type doesn't return anything now.
+                clazz.getMethodsByName("setError").forEach(clazz::remove);
+
+                // add the new setError method that takes a ResponseError
+                MethodDeclaration method = clazz.addMethod("setError");
+                method.setType(name);
+                method.setModifiers(Keyword.PUBLIC);
+                method.addParameter("ResponseError", "error");
+                method.setBody(parseBlock("{ super.setError(error); return this; }"))
+                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the error property: The channel error code and message."))))
+                        .addBlockTag("param", "error The ResponseError object containing error code and message.")
+                        .addBlockTag("return", "the " + name +  " object itself."));
+
+            });
+        });
+    }
+
+    // rename-model doesn't work on enums, so do this instead.
+    public void customizeCommunicationIdentifierModelKind(LibraryCustomization customization) {
+        ClassCustomization classCustomization = customization
+            .getPackage("com.azure.messaging.eventgrid.systemevents")
+            .getClass("CommunicationIdentifierModelKind")
+            .rename("AcsCommunicationIdentifierKind");
+    }
+
     public void customizeMediaLiveEventIngestHeartbeatEventData(LibraryCustomization customization) {
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
         ClassCustomization classCustomization = packageModels.getClass("MediaLiveEventIngestHeartbeatEventData");
-        classCustomization.addStaticBlock("static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class);", Arrays.asList("com.azure.core.util.logging.ClientLogger"));
-        classCustomization.getMethod("getIngestDriftValue")
-            .setReturnType("Integer", "")
-            .replaceBody("if (\"n/a\".equals(this.ingestDriftValue)) { return null; } try { return Integer.parseInt(this.ingestDriftValue); } catch (NumberFormatException ex) { LOGGER.logExceptionAsError(ex); return null; }");
+        classCustomization.customizeAst(comp -> {
+            comp.addImport("java.time.OffsetDateTime");
+            ClassOrInterfaceDeclaration clazz = comp.getClassByName("MediaLiveEventIngestHeartbeatEventData").get();
+            comp.addImport("com.azure.core.util.logging.ClientLogger");
+            clazz.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class)"), Keyword.PRIVATE, Keyword.STATIC, Keyword.FINAL);
 
-        classCustomization.getMethod("getLastFragmentArrivalTime")
-            .setReturnType("OffsetDateTime", "")
-            .replaceBody("return OffsetDateTime.parse(this.lastFragmentArrivalTime);", Arrays.asList("java.time.OffsetDateTime"));
+            clazz.getMethodsByName("getIngestDriftValue").forEach(m -> {
+                m.setType("Integer")
+                    .setBody(parseBlock("{ if (\"n/a\".equals(this.ingestDriftValue)) { return null; } try { return Integer.parseInt(this.ingestDriftValue); } catch (NumberFormatException ex) { LOGGER.logExceptionAsError(ex); return null; } }"));
+            });
+            clazz.getMethodsByName("getLastFragmentArrivalTime").forEach(m -> {
+                m.setType("OffsetDateTime")
+                    .setBody(parseBlock("{ return OffsetDateTime.parse(this.lastFragmentArrivalTime); }"));
+            });
+        });
 
     }
 
     public void customizeMediaLiveEventChannelArchiveHeartbeatEventDataDuration(LibraryCustomization customization) {
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
         ClassCustomization classCustomization = packageModels.getClass("MediaLiveEventChannelArchiveHeartbeatEventData");
-        classCustomization.addStaticBlock("static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class);");
 
-        PropertyCustomization property = classCustomization.getProperty("channelLatencyMs");
-        property.generateGetterAndSetter();
+        classCustomization.customizeAst(comp -> {
+            ClassOrInterfaceDeclaration clazz = comp.getClassByName("MediaLiveEventChannelArchiveHeartbeatEventData").get();
+            clazz.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class)"), Keyword.PRIVATE, Keyword.STATIC, Keyword.FINAL);
+            comp.addImport("java.time.Duration");
+            comp.addImport("com.azure.core.util.logging.ClientLogger");
+            clazz.getMethodsByName("getChannelLatencyMs").forEach(m -> {
+                m.setName("getChannelLatency")
+                    .setType("Duration")
+                    .setBody(parseBlock("{ if (\"n/a\".equals(this.channelLatencyMs)) { return null; } Long channelLatencyMsLong; try { channelLatencyMsLong = Long.parseLong(this.channelLatencyMs); } catch (NumberFormatException ex) { LOGGER.logExceptionAsError(ex); return null; } return Duration.ofMillis(channelLatencyMsLong); }"))
+                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Gets the duration of channel latency."))))
+                        .addBlockTag("return", "the duration of channel latency."));
+            });
 
-        classCustomization.getMethod("getChannelLatencyMs")
-            .rename("getChannelLatency")
-            .setReturnType("Duration", "")
-            .replaceBody("if (\"n/a\".equals(this.channelLatencyMs)) { return null; } Long channelLatencyMsLong; try { channelLatencyMsLong = Long.parseLong(this.channelLatencyMs); } catch (NumberFormatException ex) { LOGGER.logExceptionAsError(ex); return null; } return Duration.ofMillis(channelLatencyMsLong);", Arrays.asList("java.time.Duration"))
-            .getJavadoc()
-            .setDescription("Gets the duration of channel latency.")
-            .setReturn("the duration of channel latency.");
-
-        try {
-            classCustomization.removeMethod("setChannelLatencyMs");
-            classCustomization.removeMethod("setLatencyResultCode");
-            classCustomization.removeMethod("getLogger");
-        } catch (IllegalArgumentException ignored) {
-
-        }
+            clazz.getMethodsByName("setChannelLatencyMs").forEach(m -> m.remove());
+            clazz.getMethodsByName("setLatencyResultCode").forEach(m -> m.remove());
+            clazz.getMethodsByName("getLogger").forEach(m -> m.remove());
+        });
     }
 
     public void customizeAcsRecordingFileStatusUpdatedEventDataDuration(LibraryCustomization customization) {
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
         ClassCustomization classCustomization = packageModels.getClass("AcsRecordingFileStatusUpdatedEventData");
-        PropertyCustomization property = classCustomization.getProperty("recordingDurationMs");
-        property.generateGetterAndSetter();
+        classCustomization.customizeAst(compilationUnit -> {
+            PropertyCustomization property = classCustomization.getProperty("recordingDurationMs");
+            property.generateGetterAndSetter();
 
-        classCustomization.getMethod("getRecordingDurationMs")
-            .rename("getRecordingDuration")
-            .setReturnType("Duration", "Duration.ofMillis(%s)")
-            .replaceBody("if (this.recordingDurationMs != null) { return Duration.ofMillis(this.recordingDurationMs); } return null;", Arrays.asList("java.time.Duration"))
-            .getJavadoc()
-            .setDescription("Get the recordingDuration property: The recording duration.")
-            .setReturn("the recordingDuration value.");
+            ClassOrInterfaceDeclaration clazz = compilationUnit.getClassByName("AcsRecordingFileStatusUpdatedEventData").get();
+            compilationUnit.addImport("java.time.Duration");
+            clazz.getMethodsByName("getRecordingDurationMs").forEach(m -> {
+                m.setName("getRecordingDuration")
+                    .setType("Duration")
+                    .setBody(parseBlock("{ if (this.recordingDurationMs != null) { return Duration.ofMillis(this.recordingDurationMs); } return null; }"))
+                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the recordingDuration property: The recording duration."))))
+                        .addBlockTag("return", "the recordingDuration value."));
+            });
 
-
-        classCustomization.getMethod("setRecordingDurationMs")
-            .rename("setRecordingDuration")
-            .replaceParameters("Duration recordingDuration")
-            .replaceBody("if (recordingDuration != null) { this.recordingDurationMs = recordingDuration.toMillis(); } else { this.recordingDurationMs = null; } return this;")
-            .getJavadoc()
-            .setDescription("Set the recordingDuration property: The recording duration.")
-            .setParam("recordingDuration", "the recordingDuration value to set.")
-            .removeParam("recordingDurationMs");
+            clazz.getMethodsByName("setRecordingDurationMs").forEach(m -> {
+                m.setName("setRecordingDuration")
+                    .setType("AcsRecordingFileStatusUpdatedEventData")
+                    .setParameters(new NodeList<>( new Parameter().setType("Duration").setName("recordingDuration")))
+                    .setBody(parseBlock("{ if (recordingDuration != null) { this.recordingDurationMs = recordingDuration.toMillis(); } else { this.recordingDurationMs = null; } return this; }"))
+                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the recordingDuration property: The recording duration."))))
+                        .addBlockTag("param", "recordingDuration the recordingDuration value to set.")
+                        .addBlockTag("return", "the AcsRecordingFileStatusUpdatedEventData object itself."));
+            });
+        });
 
     }
 
@@ -476,10 +577,10 @@ public class EventGridCustomization extends Customization {
                 m.setName("setTimeToLive");
                 m.getParameter(0).setName("timeToLive");
                 m.setJavadocComment(
-                      "     * Set the timeToLive property: Router Job Worker Selector Time to Live in Seconds.\n"
-                    + "     *\n"
-                    + "     * @param timeToLive the timeToLive value to set.\n"
-                    + "     * @return the AcsRouterWorkerSelector object itself.\n");
+                    "     * Set the timeToLive property: Router Job Worker Selector Time to Live in Seconds.\n"
+                        + "     *\n"
+                        + "     * @param timeToLive the timeToLive value to set.\n"
+                        + "     * @return the AcsRouterWorkerSelector object itself.\n");
             });
         });
 
@@ -512,9 +613,9 @@ public class EventGridCustomization extends Customization {
 
         classCustomization = packageModels.getClass("AcsRouterJobWaitingForActivationEventData");
         classCustomization.customizeAst(comp -> {
-           ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsRouterJobWaitingForActivationEventData").get();
-           clazz.getMethodsByName("setUnavailableForMatching").forEach(m -> m.getParameter(0).setType(Boolean.class));
-           clazz.getMethodsByName("isUnavailableForMatching").forEach(m -> m.setType(Boolean.class));
+            ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsRouterJobWaitingForActivationEventData").get();
+            clazz.getMethodsByName("setUnavailableForMatching").forEach(m -> m.getParameter(0).setType(Boolean.class));
+            clazz.getMethodsByName("isUnavailableForMatching").forEach(m -> m.setType(Boolean.class));
         });
     }
 

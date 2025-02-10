@@ -5,39 +5,52 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Azure Data Explorer sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureDataExplorerSink")
 @Fluent
 public final class AzureDataExplorerSink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "AzureDataExplorerSink";
+
+    /*
      * A name of a pre-created csv mapping that was defined on the target Kusto table. Type: string.
      */
-    @JsonProperty(value = "ingestionMappingName")
     private Object ingestionMappingName;
 
     /*
      * An explicit column mapping description provided in a json format. Type: string.
      */
-    @JsonProperty(value = "ingestionMappingAsJson")
     private Object ingestionMappingAsJson;
 
     /*
      * If set to true, any aggregation will be skipped. Default is false. Type: boolean.
      */
-    @JsonProperty(value = "flushImmediately")
     private Object flushImmediately;
 
     /**
      * Creates an instance of AzureDataExplorerSink class.
      */
     public AzureDataExplorerSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -149,5 +162,76 @@ public final class AzureDataExplorerSink extends CopySink {
     public AzureDataExplorerSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("ingestionMappingName", this.ingestionMappingName);
+        jsonWriter.writeUntypedField("ingestionMappingAsJson", this.ingestionMappingAsJson);
+        jsonWriter.writeUntypedField("flushImmediately", this.flushImmediately);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDataExplorerSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDataExplorerSink if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureDataExplorerSink.
+     */
+    public static AzureDataExplorerSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDataExplorerSink deserializedAzureDataExplorerSink = new AzureDataExplorerSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedAzureDataExplorerSink.setWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedAzureDataExplorerSink.setWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedAzureDataExplorerSink.setSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedAzureDataExplorerSink.setSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAzureDataExplorerSink.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureDataExplorerSink.type = reader.getString();
+                } else if ("ingestionMappingName".equals(fieldName)) {
+                    deserializedAzureDataExplorerSink.ingestionMappingName = reader.readUntyped();
+                } else if ("ingestionMappingAsJson".equals(fieldName)) {
+                    deserializedAzureDataExplorerSink.ingestionMappingAsJson = reader.readUntyped();
+                } else if ("flushImmediately".equals(fieldName)) {
+                    deserializedAzureDataExplorerSink.flushImmediately = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureDataExplorerSink.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureDataExplorerSink;
+        });
     }
 }

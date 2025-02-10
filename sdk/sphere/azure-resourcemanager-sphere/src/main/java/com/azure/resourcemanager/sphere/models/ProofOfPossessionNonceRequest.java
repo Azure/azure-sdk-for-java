@@ -6,24 +6,31 @@ package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request for the proof of possession nonce. */
+/**
+ * Request for the proof of possession nonce.
+ */
 @Fluent
-public final class ProofOfPossessionNonceRequest {
+public final class ProofOfPossessionNonceRequest implements JsonSerializable<ProofOfPossessionNonceRequest> {
     /*
      * The proof of possession nonce
      */
-    @JsonProperty(value = "proofOfPossessionNonce", required = true)
     private String proofOfPossessionNonce;
 
-    /** Creates an instance of ProofOfPossessionNonceRequest class. */
+    /**
+     * Creates an instance of ProofOfPossessionNonceRequest class.
+     */
     public ProofOfPossessionNonceRequest() {
     }
 
     /**
      * Get the proofOfPossessionNonce property: The proof of possession nonce.
-     *
+     * 
      * @return the proofOfPossessionNonce value.
      */
     public String proofOfPossessionNonce() {
@@ -32,7 +39,7 @@ public final class ProofOfPossessionNonceRequest {
 
     /**
      * Set the proofOfPossessionNonce property: The proof of possession nonce.
-     *
+     * 
      * @param proofOfPossessionNonce the proofOfPossessionNonce value to set.
      * @return the ProofOfPossessionNonceRequest object itself.
      */
@@ -43,17 +50,54 @@ public final class ProofOfPossessionNonceRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (proofOfPossessionNonce() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property proofOfPossessionNonce in model ProofOfPossessionNonceRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property proofOfPossessionNonce in model ProofOfPossessionNonceRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ProofOfPossessionNonceRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("proofOfPossessionNonce", this.proofOfPossessionNonce);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProofOfPossessionNonceRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProofOfPossessionNonceRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProofOfPossessionNonceRequest.
+     */
+    public static ProofOfPossessionNonceRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProofOfPossessionNonceRequest deserializedProofOfPossessionNonceRequest
+                = new ProofOfPossessionNonceRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("proofOfPossessionNonce".equals(fieldName)) {
+                    deserializedProofOfPossessionNonceRequest.proofOfPossessionNonce = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProofOfPossessionNonceRequest;
+        });
+    }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class EventSubscriptionsListGlobalBySubscriptionForTopicTypeSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * EventSubscriptions_ListGlobalBySubscriptionForTopicType.json
      */
     /**
@@ -20,7 +20,8 @@ public final class EventSubscriptionsListGlobalBySubscriptionForTopicTypeSamples
      */
     public static void eventSubscriptionsListGlobalBySubscriptionForTopicType(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.eventSubscriptions().listGlobalBySubscriptionForTopicType("Microsoft.Resources.Subscriptions", null,
-            null, com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions()
+            .listGlobalBySubscriptionForTopicType("Microsoft.Resources.Subscriptions", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

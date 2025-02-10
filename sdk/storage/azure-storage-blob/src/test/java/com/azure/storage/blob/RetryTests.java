@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.Test;
@@ -32,12 +33,12 @@ public class RetryTests extends BlobTestBase {
         try {
             retryTestURL = new URL("https://" + RequestRetryTestFactory.RETRY_TEST_PRIMARY_HOST);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to create URL for retry tests.", e);
         }
     }
 
-    private static final RequestRetryOptions REQUEST_RETRY_OPTIONS = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL,
-        6, 2, 1000L, 4000L, RequestRetryTestFactory.RETRY_TEST_SECONDARY_HOST);
+    private static final RequestRetryOptions REQUEST_RETRY_OPTIONS = new RequestRetryOptions(
+        RetryPolicyType.EXPONENTIAL, 6, 2, 1000L, 4000L, RequestRetryTestFactory.RETRY_TEST_SECONDARY_HOST);
 
     protected void retryScenario(Runnable runnable) {
         int retry = 0;
@@ -55,27 +56,23 @@ public class RetryTests extends BlobTestBase {
     @Test
     public void retriesUntilSuccess() {
         retryScenario(() -> {
-            RequestRetryTestFactory retryTestFactory =
-                new RequestRetryTestFactory(
-                    RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS, REQUEST_RETRY_OPTIONS);
+            RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS, REQUEST_RETRY_OPTIONS);
 
             Mono<HttpResponse> responseMono = Mono.defer(() -> retryTestFactory.send(retryTestURL));
 
-            StepVerifier.create(responseMono)
-                .assertNext(it -> {
-                    assertEquals(it.getStatusCode(), 200);
-                    assertEquals(6, retryTestFactory.getTryNumber());
-                }).verifyComplete();
+            StepVerifier.create(responseMono).assertNext(it -> {
+                assertEquals(it.getStatusCode(), 200);
+                assertEquals(6, retryTestFactory.getTryNumber());
+            }).verifyComplete();
         });
     }
 
     @Test
     public void syncRetriesUntilSuccessWithPrimaryAndSecondaryHostScenario() {
         retryScenario(() -> {
-            RequestRetryTestFactory retryTestFactory =
-                new RequestRetryTestFactory(
-                    RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS,
-                    REQUEST_RETRY_OPTIONS);
+            RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS, REQUEST_RETRY_OPTIONS);
 
             try (HttpResponse response = retryTestFactory.sendSync(retryTestURL)) {
                 assertEquals(response.getStatusCode(), 200);
@@ -87,18 +84,15 @@ public class RetryTests extends BlobTestBase {
     @Test
     public void retriesUntilMaxRetries() {
         retryScenario(() -> {
-            RequestRetryTestFactory retryTestFactory =
-                new RequestRetryTestFactory(
-                    RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES,
-                    REQUEST_RETRY_OPTIONS);
+            RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES, REQUEST_RETRY_OPTIONS);
 
             Mono<HttpResponse> responseMono = Mono.defer(() -> retryTestFactory.send(retryTestURL));
 
-            StepVerifier.create(responseMono)
-                .assertNext(it -> {
-                    assertEquals(it.getStatusCode(), 503);
-                    assertEquals(retryTestFactory.getTryNumber(), REQUEST_RETRY_OPTIONS.getMaxTries());
-                }).verifyComplete();
+            StepVerifier.create(responseMono).assertNext(it -> {
+                assertEquals(it.getStatusCode(), 503);
+                assertEquals(retryTestFactory.getTryNumber(), REQUEST_RETRY_OPTIONS.getMaxTries());
+            }).verifyComplete();
         });
     }
 
@@ -132,28 +126,23 @@ public class RetryTests extends BlobTestBase {
     @Test
     public void retriesNonRetryable() {
         retryScenario(() -> {
-            RequestRetryTestFactory retryTestFactory =
-                new RequestRetryTestFactory(
-                    RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_RETRYABLE,
-                    REQUEST_RETRY_OPTIONS);
+            RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_RETRYABLE, REQUEST_RETRY_OPTIONS);
 
             Mono<HttpResponse> responseMono = Mono.defer(() -> retryTestFactory.send(retryTestURL));
 
-            StepVerifier.create(responseMono)
-                .assertNext(it -> {
-                    assertEquals(it.getStatusCode(), 400);
-                    assertEquals(retryTestFactory.getTryNumber(), 1);
-                }).verifyComplete();
+            StepVerifier.create(responseMono).assertNext(it -> {
+                assertEquals(it.getStatusCode(), 400);
+                assertEquals(retryTestFactory.getTryNumber(), 1);
+            }).verifyComplete();
         });
     }
 
     @Test
     public void retriesNonRetryableSecondary() {
         retryScenario(() -> {
-            RequestRetryTestFactory retryTestFactory =
-                new RequestRetryTestFactory(
-                    RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_RETRYABLE_SECONDARY,
-                    REQUEST_RETRY_OPTIONS);
+            RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_RETRYABLE_SECONDARY, REQUEST_RETRY_OPTIONS);
 
             Mono<HttpResponse> responseMono = Mono.defer(() -> retryTestFactory.send(retryTestURL));
 
@@ -168,8 +157,7 @@ public class RetryTests extends BlobTestBase {
     public void retriesNetworkError() {
         retryScenario(() -> {
             RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
-                RequestRetryTestFactory.RETRY_TEST_SCENARIO_NETWORK_ERROR,
-                REQUEST_RETRY_OPTIONS);
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_NETWORK_ERROR, REQUEST_RETRY_OPTIONS);
 
             Mono<HttpResponse> responseMono = Mono.defer(() -> retryTestFactory.send(retryTestURL));
 
@@ -180,13 +168,11 @@ public class RetryTests extends BlobTestBase {
         });
     }
 
-
     @Test
     public void retriesWrappedNetworkError() {
         retryScenario(() -> {
             RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
-                RequestRetryTestFactory.RETRY_TEST_SCENARIO_WRAPPED_NETWORK_ERROR,
-                REQUEST_RETRY_OPTIONS);
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_WRAPPED_NETWORK_ERROR, REQUEST_RETRY_OPTIONS);
 
             Mono<HttpResponse> responseMono = Mono.defer(() -> retryTestFactory.send(retryTestURL));
 
@@ -200,9 +186,8 @@ public class RetryTests extends BlobTestBase {
     @Test
     public void retriesWrappedTimeoutError() {
         retryScenario(() -> {
-            RequestRetryTestFactory retryTestFactory =
-                new RequestRetryTestFactory(RequestRetryTestFactory.RETRY_TEST_SCENARIO_WRAPPED_TIMEOUT_ERROR,
-                    REQUEST_RETRY_OPTIONS);
+            RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_WRAPPED_TIMEOUT_ERROR, REQUEST_RETRY_OPTIONS);
 
             Mono<HttpResponse> responseMono = Mono.defer(() -> retryTestFactory.send(retryTestURL));
 
@@ -217,8 +202,7 @@ public class RetryTests extends BlobTestBase {
     public void retriesTryTimeout() {
         retryScenario(() -> {
             RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
-                RequestRetryTestFactory.RETRY_TEST_SCENARIO_TRY_TIMEOUT,
-                REQUEST_RETRY_OPTIONS);
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_TRY_TIMEOUT, REQUEST_RETRY_OPTIONS);
 
             Mono<HttpResponse> responseMono = Mono.defer(() -> retryTestFactory.send(retryTestURL));
 
@@ -233,8 +217,7 @@ public class RetryTests extends BlobTestBase {
     public void retriesExponentialDelay() {
         retryScenario(() -> {
             RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
-                RequestRetryTestFactory.RETRY_TEST_SCENARIO_TRY_TIMEOUT,
-                REQUEST_RETRY_OPTIONS);
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_TRY_TIMEOUT, REQUEST_RETRY_OPTIONS);
 
             Mono<HttpResponse> responseMono = Mono.defer(() -> retryTestFactory.send(retryTestURL));
 
@@ -249,8 +232,7 @@ public class RetryTests extends BlobTestBase {
     public void retriesFixedDelay() {
         retryScenario(() -> {
             RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
-                RequestRetryTestFactory.RETRY_TEST_SCENARIO_FIXED_TIMING,
-                REQUEST_RETRY_OPTIONS);
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_FIXED_TIMING, REQUEST_RETRY_OPTIONS);
 
             Mono<HttpResponse> responseMono = Mono.defer(() -> retryTestFactory.send(retryTestURL));
 
@@ -265,8 +247,7 @@ public class RetryTests extends BlobTestBase {
     public void retriesNonReplyableFlux() {
         retryScenario(() -> {
             RequestRetryTestFactory retryTestFactory = new RequestRetryTestFactory(
-                RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE,
-                REQUEST_RETRY_OPTIONS);
+                RequestRetryTestFactory.RETRY_TEST_SCENARIO_NON_REPLAYABLE_FLOWABLE, REQUEST_RETRY_OPTIONS);
 
             Mono<HttpResponse> responseMono = Mono.defer(() -> retryTestFactory.send(retryTestURL));
 
@@ -283,20 +264,14 @@ public class RetryTests extends BlobTestBase {
     @MethodSource("retriesOptionsInvalidSupplier")
     public void retriesOptionsInvalid(Integer maxTries, Integer tryTimeout, Long retryDelayInMs,
         Long maxRetryDelayInMs) {
-        retryScenario(() -> assertThrows(IllegalArgumentException.class, () ->
-            new RequestRetryOptions(null, maxTries, tryTimeout, retryDelayInMs, maxRetryDelayInMs, null)));
+        retryScenario(() -> assertThrows(IllegalArgumentException.class,
+            () -> new RequestRetryOptions(null, maxTries, tryTimeout, retryDelayInMs, maxRetryDelayInMs, null)));
     }
 
     private static Stream<Arguments> retriesOptionsInvalidSupplier() {
-        return Stream.of(
-            Arguments.of(0, null, null, null),
-            Arguments.of(null, 0, null, null),
-            Arguments.of(null, null, 0L, 1L),
-            Arguments.of(null, null, 1L, 0L),
-            Arguments.of(null, null, null, 1L),
-            Arguments.of(null, null, 1L, null),
-            Arguments.of(null, null, 5L, 4L)
-        );
+        return Stream.of(Arguments.of(0, null, null, null), Arguments.of(null, 0, null, null),
+            Arguments.of(null, null, 0L, 1L), Arguments.of(null, null, 1L, 0L), Arguments.of(null, null, null, 1L),
+            Arguments.of(null, null, 1L, null), Arguments.of(null, null, 5L, 4L));
     }
 
 }

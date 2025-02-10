@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Observed phase of the addon on the target cluster. Possible values include: 'pending', 'provisioning', 'provisioning
- * {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned', 'deleting', 'failed', 'upgrading'.
+ * Observed phase of the addon or component on the provisioned cluster. Possible values include: 'pending',
+ * 'provisioning', 'provisioning {HelmChartInstalled}', 'provisioning {MSICertificateDownloaded}', 'provisioned',
+ * 'deleting', 'failed', 'upgrading'.
  */
 public final class AddonPhase extends ExpandableStringEnum<AddonPhase> {
     /**
@@ -69,7 +69,6 @@ public final class AddonPhase extends ExpandableStringEnum<AddonPhase> {
      * @param name a name to look for.
      * @return the corresponding AddonPhase.
      */
-    @JsonCreator
     public static AddonPhase fromString(String name) {
         return fromString(name, AddonPhase.class);
     }

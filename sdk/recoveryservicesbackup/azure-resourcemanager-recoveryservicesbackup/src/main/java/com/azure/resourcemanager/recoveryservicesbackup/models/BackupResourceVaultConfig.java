@@ -5,67 +5,67 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Backup resource vault config details. */
+/**
+ * Backup resource vault config details.
+ */
 @Fluent
-public final class BackupResourceVaultConfig {
+public final class BackupResourceVaultConfig implements JsonSerializable<BackupResourceVaultConfig> {
     /*
      * Storage type.
      */
-    @JsonProperty(value = "storageModelType")
     private StorageType storageModelType;
 
     /*
      * Storage type.
      */
-    @JsonProperty(value = "storageType")
     private StorageType storageType;
 
     /*
      * Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked.
      */
-    @JsonProperty(value = "storageTypeState")
     private StorageTypeState storageTypeState;
 
     /*
      * Enabled or Disabled.
      */
-    @JsonProperty(value = "enhancedSecurityState")
     private EnhancedSecurityState enhancedSecurityState;
 
     /*
      * Soft Delete feature state
      */
-    @JsonProperty(value = "softDeleteFeatureState")
     private SoftDeleteFeatureState softDeleteFeatureState;
 
     /*
      * Soft delete retention period in days
      */
-    @JsonProperty(value = "softDeleteRetentionPeriodInDays")
     private Integer softDeleteRetentionPeriodInDays;
 
     /*
      * ResourceGuard Operation Requests
      */
-    @JsonProperty(value = "resourceGuardOperationRequests")
     private List<String> resourceGuardOperationRequests;
 
     /*
      * This flag is no longer in use. Please use 'softDeleteFeatureState' to set the soft delete state for the vault
      */
-    @JsonProperty(value = "isSoftDeleteFeatureStateEditable")
     private Boolean isSoftDeleteFeatureStateEditable;
 
-    /** Creates an instance of BackupResourceVaultConfig class. */
+    /**
+     * Creates an instance of BackupResourceVaultConfig class.
+     */
     public BackupResourceVaultConfig() {
     }
 
     /**
      * Get the storageModelType property: Storage type.
-     *
+     * 
      * @return the storageModelType value.
      */
     public StorageType storageModelType() {
@@ -74,7 +74,7 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Set the storageModelType property: Storage type.
-     *
+     * 
      * @param storageModelType the storageModelType value to set.
      * @return the BackupResourceVaultConfig object itself.
      */
@@ -85,7 +85,7 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Get the storageType property: Storage type.
-     *
+     * 
      * @return the storageType value.
      */
     public StorageType storageType() {
@@ -94,7 +94,7 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Set the storageType property: Storage type.
-     *
+     * 
      * @param storageType the storageType value to set.
      * @return the BackupResourceVaultConfig object itself.
      */
@@ -106,7 +106,7 @@ public final class BackupResourceVaultConfig {
     /**
      * Get the storageTypeState property: Locked or Unlocked. Once a machine is registered against a resource, the
      * storageTypeState is always Locked.
-     *
+     * 
      * @return the storageTypeState value.
      */
     public StorageTypeState storageTypeState() {
@@ -116,7 +116,7 @@ public final class BackupResourceVaultConfig {
     /**
      * Set the storageTypeState property: Locked or Unlocked. Once a machine is registered against a resource, the
      * storageTypeState is always Locked.
-     *
+     * 
      * @param storageTypeState the storageTypeState value to set.
      * @return the BackupResourceVaultConfig object itself.
      */
@@ -127,7 +127,7 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Get the enhancedSecurityState property: Enabled or Disabled.
-     *
+     * 
      * @return the enhancedSecurityState value.
      */
     public EnhancedSecurityState enhancedSecurityState() {
@@ -136,7 +136,7 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Set the enhancedSecurityState property: Enabled or Disabled.
-     *
+     * 
      * @param enhancedSecurityState the enhancedSecurityState value to set.
      * @return the BackupResourceVaultConfig object itself.
      */
@@ -147,7 +147,7 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Get the softDeleteFeatureState property: Soft Delete feature state.
-     *
+     * 
      * @return the softDeleteFeatureState value.
      */
     public SoftDeleteFeatureState softDeleteFeatureState() {
@@ -156,7 +156,7 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Set the softDeleteFeatureState property: Soft Delete feature state.
-     *
+     * 
      * @param softDeleteFeatureState the softDeleteFeatureState value to set.
      * @return the BackupResourceVaultConfig object itself.
      */
@@ -167,7 +167,7 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Get the softDeleteRetentionPeriodInDays property: Soft delete retention period in days.
-     *
+     * 
      * @return the softDeleteRetentionPeriodInDays value.
      */
     public Integer softDeleteRetentionPeriodInDays() {
@@ -176,7 +176,7 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Set the softDeleteRetentionPeriodInDays property: Soft delete retention period in days.
-     *
+     * 
      * @param softDeleteRetentionPeriodInDays the softDeleteRetentionPeriodInDays value to set.
      * @return the BackupResourceVaultConfig object itself.
      */
@@ -187,7 +187,7 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Get the resourceGuardOperationRequests property: ResourceGuard Operation Requests.
-     *
+     * 
      * @return the resourceGuardOperationRequests value.
      */
     public List<String> resourceGuardOperationRequests() {
@@ -196,7 +196,7 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Set the resourceGuardOperationRequests property: ResourceGuard Operation Requests.
-     *
+     * 
      * @param resourceGuardOperationRequests the resourceGuardOperationRequests value to set.
      * @return the BackupResourceVaultConfig object itself.
      */
@@ -208,7 +208,7 @@ public final class BackupResourceVaultConfig {
     /**
      * Get the isSoftDeleteFeatureStateEditable property: This flag is no longer in use. Please use
      * 'softDeleteFeatureState' to set the soft delete state for the vault.
-     *
+     * 
      * @return the isSoftDeleteFeatureStateEditable value.
      */
     public Boolean isSoftDeleteFeatureStateEditable() {
@@ -218,7 +218,7 @@ public final class BackupResourceVaultConfig {
     /**
      * Set the isSoftDeleteFeatureStateEditable property: This flag is no longer in use. Please use
      * 'softDeleteFeatureState' to set the soft delete state for the vault.
-     *
+     * 
      * @param isSoftDeleteFeatureStateEditable the isSoftDeleteFeatureStateEditable value to set.
      * @return the BackupResourceVaultConfig object itself.
      */
@@ -229,9 +229,78 @@ public final class BackupResourceVaultConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageModelType",
+            this.storageModelType == null ? null : this.storageModelType.toString());
+        jsonWriter.writeStringField("storageType", this.storageType == null ? null : this.storageType.toString());
+        jsonWriter.writeStringField("storageTypeState",
+            this.storageTypeState == null ? null : this.storageTypeState.toString());
+        jsonWriter.writeStringField("enhancedSecurityState",
+            this.enhancedSecurityState == null ? null : this.enhancedSecurityState.toString());
+        jsonWriter.writeStringField("softDeleteFeatureState",
+            this.softDeleteFeatureState == null ? null : this.softDeleteFeatureState.toString());
+        jsonWriter.writeNumberField("softDeleteRetentionPeriodInDays", this.softDeleteRetentionPeriodInDays);
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", this.resourceGuardOperationRequests,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isSoftDeleteFeatureStateEditable", this.isSoftDeleteFeatureStateEditable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupResourceVaultConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupResourceVaultConfig if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupResourceVaultConfig.
+     */
+    public static BackupResourceVaultConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupResourceVaultConfig deserializedBackupResourceVaultConfig = new BackupResourceVaultConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageModelType".equals(fieldName)) {
+                    deserializedBackupResourceVaultConfig.storageModelType = StorageType.fromString(reader.getString());
+                } else if ("storageType".equals(fieldName)) {
+                    deserializedBackupResourceVaultConfig.storageType = StorageType.fromString(reader.getString());
+                } else if ("storageTypeState".equals(fieldName)) {
+                    deserializedBackupResourceVaultConfig.storageTypeState
+                        = StorageTypeState.fromString(reader.getString());
+                } else if ("enhancedSecurityState".equals(fieldName)) {
+                    deserializedBackupResourceVaultConfig.enhancedSecurityState
+                        = EnhancedSecurityState.fromString(reader.getString());
+                } else if ("softDeleteFeatureState".equals(fieldName)) {
+                    deserializedBackupResourceVaultConfig.softDeleteFeatureState
+                        = SoftDeleteFeatureState.fromString(reader.getString());
+                } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedBackupResourceVaultConfig.softDeleteRetentionPeriodInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBackupResourceVaultConfig.resourceGuardOperationRequests
+                        = resourceGuardOperationRequests;
+                } else if ("isSoftDeleteFeatureStateEditable".equals(fieldName)) {
+                    deserializedBackupResourceVaultConfig.isSoftDeleteFeatureStateEditable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupResourceVaultConfig;
+        });
     }
 }

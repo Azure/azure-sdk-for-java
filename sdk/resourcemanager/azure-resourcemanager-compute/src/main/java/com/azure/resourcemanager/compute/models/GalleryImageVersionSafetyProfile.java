@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -16,14 +19,18 @@ public final class GalleryImageVersionSafetyProfile extends GalleryArtifactSafet
     /*
      * Indicates whether this image has been reported as violating Microsoft's policies.
      */
-    @JsonProperty(value = "reportedForPolicyViolation", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean reportedForPolicyViolation;
 
     /*
      * A list of Policy Violations that have been reported for this Gallery Image Version.
      */
-    @JsonProperty(value = "policyViolations", access = JsonProperty.Access.WRITE_ONLY)
     private List<PolicyViolation> policyViolations;
+
+    /*
+     * Indicates whether or not the deletion is blocked for this Gallery Image Version if its End Of Life has not
+     * expired.
+     */
+    private Boolean blockDeletionBeforeEndOfLife;
 
     /**
      * Creates an instance of GalleryImageVersionSafetyProfile class.
@@ -52,6 +59,28 @@ public final class GalleryImageVersionSafetyProfile extends GalleryArtifactSafet
     }
 
     /**
+     * Get the blockDeletionBeforeEndOfLife property: Indicates whether or not the deletion is blocked for this Gallery
+     * Image Version if its End Of Life has not expired.
+     * 
+     * @return the blockDeletionBeforeEndOfLife value.
+     */
+    public Boolean blockDeletionBeforeEndOfLife() {
+        return this.blockDeletionBeforeEndOfLife;
+    }
+
+    /**
+     * Set the blockDeletionBeforeEndOfLife property: Indicates whether or not the deletion is blocked for this Gallery
+     * Image Version if its End Of Life has not expired.
+     * 
+     * @param blockDeletionBeforeEndOfLife the blockDeletionBeforeEndOfLife value to set.
+     * @return the GalleryImageVersionSafetyProfile object itself.
+     */
+    public GalleryImageVersionSafetyProfile withBlockDeletionBeforeEndOfLife(Boolean blockDeletionBeforeEndOfLife) {
+        this.blockDeletionBeforeEndOfLife = blockDeletionBeforeEndOfLife;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -68,9 +97,57 @@ public final class GalleryImageVersionSafetyProfile extends GalleryArtifactSafet
      */
     @Override
     public void validate() {
-        super.validate();
         if (policyViolations() != null) {
             policyViolations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowDeletionOfReplicatedLocations", allowDeletionOfReplicatedLocations());
+        jsonWriter.writeBooleanField("blockDeletionBeforeEndOfLife", this.blockDeletionBeforeEndOfLife);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageVersionSafetyProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageVersionSafetyProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryImageVersionSafetyProfile.
+     */
+    public static GalleryImageVersionSafetyProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageVersionSafetyProfile deserializedGalleryImageVersionSafetyProfile
+                = new GalleryImageVersionSafetyProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowDeletionOfReplicatedLocations".equals(fieldName)) {
+                    deserializedGalleryImageVersionSafetyProfile
+                        .withAllowDeletionOfReplicatedLocations(reader.getNullable(JsonReader::getBoolean));
+                } else if ("reportedForPolicyViolation".equals(fieldName)) {
+                    deserializedGalleryImageVersionSafetyProfile.reportedForPolicyViolation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("policyViolations".equals(fieldName)) {
+                    List<PolicyViolation> policyViolations
+                        = reader.readArray(reader1 -> PolicyViolation.fromJson(reader1));
+                    deserializedGalleryImageVersionSafetyProfile.policyViolations = policyViolations;
+                } else if ("blockDeletionBeforeEndOfLife".equals(fieldName)) {
+                    deserializedGalleryImageVersionSafetyProfile.blockDeletionBeforeEndOfLife
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageVersionSafetyProfile;
+        });
     }
 }

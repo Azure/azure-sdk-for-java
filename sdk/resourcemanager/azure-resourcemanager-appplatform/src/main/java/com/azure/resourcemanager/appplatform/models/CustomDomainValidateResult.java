@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Validation result for custom domain. */
+/**
+ * Validation result for custom domain.
+ */
 @Fluent
-public final class CustomDomainValidateResult {
+public final class CustomDomainValidateResult implements JsonSerializable<CustomDomainValidateResult> {
     /*
      * Indicates if domain name is valid.
      */
-    @JsonProperty(value = "isValid")
     private Boolean isValid;
 
     /*
      * Message of why domain name is invalid.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
+     * Creates an instance of CustomDomainValidateResult class.
+     */
+    public CustomDomainValidateResult() {
+    }
+
+    /**
      * Get the isValid property: Indicates if domain name is valid.
-     *
+     * 
      * @return the isValid value.
      */
     public Boolean isValid() {
@@ -33,7 +43,7 @@ public final class CustomDomainValidateResult {
 
     /**
      * Set the isValid property: Indicates if domain name is valid.
-     *
+     * 
      * @param isValid the isValid value to set.
      * @return the CustomDomainValidateResult object itself.
      */
@@ -44,7 +54,7 @@ public final class CustomDomainValidateResult {
 
     /**
      * Get the message property: Message of why domain name is invalid.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -53,7 +63,7 @@ public final class CustomDomainValidateResult {
 
     /**
      * Set the message property: Message of why domain name is invalid.
-     *
+     * 
      * @param message the message value to set.
      * @return the CustomDomainValidateResult object itself.
      */
@@ -64,9 +74,48 @@ public final class CustomDomainValidateResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isValid", this.isValid);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDomainValidateResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDomainValidateResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomDomainValidateResult.
+     */
+    public static CustomDomainValidateResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDomainValidateResult deserializedCustomDomainValidateResult = new CustomDomainValidateResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isValid".equals(fieldName)) {
+                    deserializedCustomDomainValidateResult.isValid = reader.getNullable(JsonReader::getBoolean);
+                } else if ("message".equals(fieldName)) {
+                    deserializedCustomDomainValidateResult.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDomainValidateResult;
+        });
     }
 }

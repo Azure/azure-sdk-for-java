@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Gets the method in which this recommended action can be manually implemented. e.g., TSql, AzurePowerShell. */
+/**
+ * Gets the method in which this recommended action can be manually implemented. e.g., TSql, AzurePowerShell.
+ */
 public enum ImplementationMethod {
-    /** Enum value TSql. */
+    /**
+     * Enum value TSql.
+     */
     TSQL("TSql"),
 
-    /** Enum value AzurePowerShell. */
+    /**
+     * Enum value AzurePowerShell.
+     */
     AZURE_POWER_SHELL("AzurePowerShell");
 
-    /** The actual serialized value for a ImplementationMethod instance. */
+    /**
+     * The actual serialized value for a ImplementationMethod instance.
+     */
     private final String value;
 
     ImplementationMethod(String value) {
@@ -24,11 +29,10 @@ public enum ImplementationMethod {
 
     /**
      * Parses a serialized value to a ImplementationMethod instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ImplementationMethod object, or null if unable to parse.
      */
-    @JsonCreator
     public static ImplementationMethod fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum ImplementationMethod {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

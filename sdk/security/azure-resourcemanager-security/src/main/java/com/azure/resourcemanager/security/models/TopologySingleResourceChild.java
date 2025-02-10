@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The TopologySingleResourceChild model. */
+/**
+ * The TopologySingleResourceChild model.
+ */
 @Immutable
-public final class TopologySingleResourceChild {
+public final class TopologySingleResourceChild implements JsonSerializable<TopologySingleResourceChild> {
     /*
      * Azure resource id which serves as child resource in topology view
      */
-    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
-    /** Creates an instance of TopologySingleResourceChild class. */
+    /**
+     * Creates an instance of TopologySingleResourceChild class.
+     */
     public TopologySingleResourceChild() {
     }
 
     /**
      * Get the resourceId property: Azure resource id which serves as child resource in topology view.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -31,9 +38,44 @@ public final class TopologySingleResourceChild {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopologySingleResourceChild from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopologySingleResourceChild if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopologySingleResourceChild.
+     */
+    public static TopologySingleResourceChild fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopologySingleResourceChild deserializedTopologySingleResourceChild = new TopologySingleResourceChild();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedTopologySingleResourceChild.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopologySingleResourceChild;
+        });
     }
 }

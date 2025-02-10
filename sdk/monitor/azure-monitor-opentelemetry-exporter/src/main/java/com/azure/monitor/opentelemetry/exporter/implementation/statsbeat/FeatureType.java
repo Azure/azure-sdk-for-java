@@ -4,6 +4,5 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.statsbeat;
 
 enum FeatureType {
-    FEATURE,
-    INSTRUMENTATION
+    FEATURE, INSTRUMENTATION
 }

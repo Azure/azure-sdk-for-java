@@ -5,58 +5,64 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Synapse role definition details. */
+/**
+ * Synapse role definition details.
+ */
 @Fluent
-public final class SynapseRoleDefinition {
+public final class SynapseRoleDefinition implements JsonSerializable<SynapseRoleDefinition> {
     /*
      * Role Definition ID
      */
-    @JsonProperty(value = "id")
     private UUID id;
 
     /*
      * Name of the Synapse role
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Is a built-in role or not
      */
-    @JsonProperty(value = "isBuiltIn")
     private Boolean isBuiltIn;
 
     /*
      * Description for the Synapse role
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Permissions for the Synapse role
      */
-    @JsonProperty(value = "permissions")
     private List<SynapseRbacPermission> permissions;
 
     /*
      * Allowed scopes for the Synapse role
      */
-    @JsonProperty(value = "scopes")
     private List<String> scopes;
 
     /*
      * Availability of the Synapse role
      */
-    @JsonProperty(value = "availabilityStatus")
     private String availabilityStatus;
 
     /**
+     * Creates an instance of SynapseRoleDefinition class.
+     */
+    public SynapseRoleDefinition() {
+    }
+
+    /**
      * Get the id property: Role Definition ID.
-     *
+     * 
      * @return the id value.
      */
     public UUID getId() {
@@ -65,7 +71,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Set the id property: Role Definition ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the SynapseRoleDefinition object itself.
      */
@@ -76,7 +82,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Get the name property: Name of the Synapse role.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -85,7 +91,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Set the name property: Name of the Synapse role.
-     *
+     * 
      * @param name the name value to set.
      * @return the SynapseRoleDefinition object itself.
      */
@@ -96,7 +102,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Get the isBuiltIn property: Is a built-in role or not.
-     *
+     * 
      * @return the isBuiltIn value.
      */
     public Boolean isBuiltIn() {
@@ -105,7 +111,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Set the isBuiltIn property: Is a built-in role or not.
-     *
+     * 
      * @param isBuiltIn the isBuiltIn value to set.
      * @return the SynapseRoleDefinition object itself.
      */
@@ -116,7 +122,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Get the description property: Description for the Synapse role.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -125,7 +131,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Set the description property: Description for the Synapse role.
-     *
+     * 
      * @param description the description value to set.
      * @return the SynapseRoleDefinition object itself.
      */
@@ -136,7 +142,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Get the permissions property: Permissions for the Synapse role.
-     *
+     * 
      * @return the permissions value.
      */
     public List<SynapseRbacPermission> getPermissions() {
@@ -145,7 +151,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Set the permissions property: Permissions for the Synapse role.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the SynapseRoleDefinition object itself.
      */
@@ -156,7 +162,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Get the scopes property: Allowed scopes for the Synapse role.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> getScopes() {
@@ -165,7 +171,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Set the scopes property: Allowed scopes for the Synapse role.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the SynapseRoleDefinition object itself.
      */
@@ -176,7 +182,7 @@ public final class SynapseRoleDefinition {
 
     /**
      * Get the availabilityStatus property: Availability of the Synapse role.
-     *
+     * 
      * @return the availabilityStatus value.
      */
     public String getAvailabilityStatus() {
@@ -185,12 +191,70 @@ public final class SynapseRoleDefinition {
 
     /**
      * Set the availabilityStatus property: Availability of the Synapse role.
-     *
+     * 
      * @param availabilityStatus the availabilityStatus value to set.
      * @return the SynapseRoleDefinition object itself.
      */
     public SynapseRoleDefinition setAvailabilityStatus(String availabilityStatus) {
         this.availabilityStatus = availabilityStatus;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isBuiltIn", this.isBuiltIn);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("permissions", this.permissions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("availabilityStatus", this.availabilityStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SynapseRoleDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SynapseRoleDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SynapseRoleDefinition.
+     */
+    public static SynapseRoleDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SynapseRoleDefinition deserializedSynapseRoleDefinition = new SynapseRoleDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSynapseRoleDefinition.id
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedSynapseRoleDefinition.name = reader.getString();
+                } else if ("isBuiltIn".equals(fieldName)) {
+                    deserializedSynapseRoleDefinition.isBuiltIn = reader.getNullable(JsonReader::getBoolean);
+                } else if ("description".equals(fieldName)) {
+                    deserializedSynapseRoleDefinition.description = reader.getString();
+                } else if ("permissions".equals(fieldName)) {
+                    List<SynapseRbacPermission> permissions
+                        = reader.readArray(reader1 -> SynapseRbacPermission.fromJson(reader1));
+                    deserializedSynapseRoleDefinition.permissions = permissions;
+                } else if ("scopes".equals(fieldName)) {
+                    List<String> scopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSynapseRoleDefinition.scopes = scopes;
+                } else if ("availabilityStatus".equals(fieldName)) {
+                    deserializedSynapseRoleDefinition.availabilityStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSynapseRoleDefinition;
+        });
     }
 }

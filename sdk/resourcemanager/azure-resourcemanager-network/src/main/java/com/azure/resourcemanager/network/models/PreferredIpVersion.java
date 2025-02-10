@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class PreferredIpVersion extends ExpandableStringEnum<PreferredIpVe
      * @param name a name to look for.
      * @return the corresponding PreferredIpVersion.
      */
-    @JsonCreator
     public static PreferredIpVersion fromString(String name) {
         return fromString(name, PreferredIpVersion.class);
     }

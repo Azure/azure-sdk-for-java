@@ -8,26 +8,29 @@ import com.azure.resourcemanager.vmwarecloudsimple.models.DedicatedCloudService;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DedicatedCloudServices Update. */
+/**
+ * Samples for DedicatedCloudServices Update.
+ */
 public final class DedicatedCloudServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/PatchDedicatedService.json
+     * x-ms-original-file:
+     * specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/
+     * PatchDedicatedService.json
      */
     /**
      * Sample code: PatchDedicatedService.
-     *
+     * 
      * @param manager Entry point to VMwareCloudSimpleManager.
      */
-    public static void patchDedicatedService(
-        com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager manager) {
-        DedicatedCloudService resource =
-            manager
-                .dedicatedCloudServices()
-                .getByResourceGroupWithResponse("myResourceGroup", "myService", com.azure.core.util.Context.NONE)
-                .getValue();
+    public static void
+        patchDedicatedService(com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager manager) {
+        DedicatedCloudService resource = manager.dedicatedCloudServices()
+            .getByResourceGroupWithResponse("myResourceGroup", "myService", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("myTag", "tagValue")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

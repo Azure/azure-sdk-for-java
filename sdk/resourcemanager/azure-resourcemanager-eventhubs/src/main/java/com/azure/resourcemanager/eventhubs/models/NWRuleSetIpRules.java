@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The response from the List namespace operation. */
+/**
+ * The response from the List namespace operation.
+ */
 @Fluent
-public final class NWRuleSetIpRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NWRuleSetIpRules.class);
-
+public final class NWRuleSetIpRules implements JsonSerializable<NWRuleSetIpRules> {
     /*
      * IP Mask
      */
-    @JsonProperty(value = "ipMask")
     private String ipMask;
 
     /*
      * The IP Filter Action
      */
-    @JsonProperty(value = "action")
     private NetworkRuleIpAction action;
 
     /**
+     * Creates an instance of NWRuleSetIpRules class.
+     */
+    public NWRuleSetIpRules() {
+    }
+
+    /**
      * Get the ipMask property: IP Mask.
-     *
+     * 
      * @return the ipMask value.
      */
     public String ipMask() {
@@ -37,7 +43,7 @@ public final class NWRuleSetIpRules {
 
     /**
      * Set the ipMask property: IP Mask.
-     *
+     * 
      * @param ipMask the ipMask value to set.
      * @return the NWRuleSetIpRules object itself.
      */
@@ -48,7 +54,7 @@ public final class NWRuleSetIpRules {
 
     /**
      * Get the action property: The IP Filter Action.
-     *
+     * 
      * @return the action value.
      */
     public NetworkRuleIpAction action() {
@@ -57,7 +63,7 @@ public final class NWRuleSetIpRules {
 
     /**
      * Set the action property: The IP Filter Action.
-     *
+     * 
      * @param action the action value to set.
      * @return the NWRuleSetIpRules object itself.
      */
@@ -68,9 +74,48 @@ public final class NWRuleSetIpRules {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipMask", this.ipMask);
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NWRuleSetIpRules from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NWRuleSetIpRules if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NWRuleSetIpRules.
+     */
+    public static NWRuleSetIpRules fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NWRuleSetIpRules deserializedNWRuleSetIpRules = new NWRuleSetIpRules();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipMask".equals(fieldName)) {
+                    deserializedNWRuleSetIpRules.ipMask = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    deserializedNWRuleSetIpRules.action = NetworkRuleIpAction.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNWRuleSetIpRules;
+        });
     }
 }

@@ -9,24 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DnsResolvers. */
+/**
+ * Resource collection API of DnsResolvers.
+ */
 public interface DnsResolvers {
     /**
      * Deletes a DNS resolver. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String dnsResolverName, String ifMatch);
-
-    /**
-     * Deletes a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,11 +26,11 @@ public interface DnsResolvers {
 
     /**
      * Deletes a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,7 +40,21 @@ public interface DnsResolvers {
 
     /**
      * Gets properties of a DNS resolver.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsResolverName The name of the DNS resolver.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a DNS resolver along with {@link Response}.
+     */
+    Response<DnsResolver> getByResourceGroupWithResponse(String resourceGroupName, String dnsResolverName,
+        Context context);
+
+    /**
+     * Gets properties of a DNS resolver.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -62,84 +65,70 @@ public interface DnsResolvers {
     DnsResolver getByResourceGroup(String resourceGroupName, String dnsResolverName);
 
     /**
-     * Gets properties of a DNS resolver.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a DNS resolver along with {@link Response}.
-     */
-    Response<DnsResolver> getByResourceGroupWithResponse(
-        String resourceGroupName, String dnsResolverName, Context context);
-
-    /**
      * Lists DNS resolvers within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS resolvers as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DnsResolver> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists DNS resolvers within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS resolvers as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DnsResolver> listByResourceGroup(String resourceGroupName, Integer top, Context context);
 
     /**
      * Lists DNS resolvers in all resource groups of a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS resolvers as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DnsResolver> list();
 
     /**
      * Lists DNS resolvers in all resource groups of a subscription.
-     *
+     * 
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS resolvers as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS resolvers as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<DnsResolver> list(Integer top, Context context);
 
     /**
      * Lists DNS resolver resource IDs linked to a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on sub-resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on sub-resources as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<SubResource> listByVirtualNetwork(String resourceGroupName, String virtualNetworkName);
 
     /**
      * Lists DNS resolver resource IDs linked to a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -147,15 +136,15 @@ public interface DnsResolvers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on sub-resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on sub-resources as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<SubResource> listByVirtualNetwork(
-        String resourceGroupName, String virtualNetworkName, Integer top, Context context);
+    PagedIterable<SubResource> listByVirtualNetwork(String resourceGroupName, String virtualNetworkName, Integer top,
+        Context context);
 
     /**
      * Gets properties of a DNS resolver.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -166,7 +155,7 @@ public interface DnsResolvers {
 
     /**
      * Gets properties of a DNS resolver.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +167,7 @@ public interface DnsResolvers {
 
     /**
      * Deletes a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -188,10 +177,10 @@ public interface DnsResolvers {
 
     /**
      * Deletes a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -201,7 +190,7 @@ public interface DnsResolvers {
 
     /**
      * Begins definition for a new DnsResolver resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DnsResolver definition.
      */

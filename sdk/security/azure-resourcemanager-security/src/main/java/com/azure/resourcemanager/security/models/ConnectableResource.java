@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the allowed inbound and outbound traffic of an Azure resource. */
+/**
+ * Describes the allowed inbound and outbound traffic of an Azure resource.
+ */
 @Immutable
-public final class ConnectableResource {
+public final class ConnectableResource implements JsonSerializable<ConnectableResource> {
     /*
      * The Azure resource id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The list of Azure resources that the resource has inbound allowed connection from
      */
-    @JsonProperty(value = "inboundConnectedResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectedResource> inboundConnectedResources;
 
     /*
      * The list of Azure resources that the resource has outbound allowed connection to
      */
-    @JsonProperty(value = "outboundConnectedResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectedResource> outboundConnectedResources;
 
-    /** Creates an instance of ConnectableResource class. */
+    /**
+     * Creates an instance of ConnectableResource class.
+     */
     public ConnectableResource() {
     }
 
     /**
      * Get the id property: The Azure resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -45,7 +50,7 @@ public final class ConnectableResource {
     /**
      * Get the inboundConnectedResources property: The list of Azure resources that the resource has inbound allowed
      * connection from.
-     *
+     * 
      * @return the inboundConnectedResources value.
      */
     public List<ConnectedResource> inboundConnectedResources() {
@@ -55,7 +60,7 @@ public final class ConnectableResource {
     /**
      * Get the outboundConnectedResources property: The list of Azure resources that the resource has outbound allowed
      * connection to.
-     *
+     * 
      * @return the outboundConnectedResources value.
      */
     public List<ConnectedResource> outboundConnectedResources() {
@@ -64,7 +69,7 @@ public final class ConnectableResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -74,5 +79,48 @@ public final class ConnectableResource {
         if (outboundConnectedResources() != null) {
             outboundConnectedResources().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectableResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectableResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectableResource.
+     */
+    public static ConnectableResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectableResource deserializedConnectableResource = new ConnectableResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectableResource.id = reader.getString();
+                } else if ("inboundConnectedResources".equals(fieldName)) {
+                    List<ConnectedResource> inboundConnectedResources
+                        = reader.readArray(reader1 -> ConnectedResource.fromJson(reader1));
+                    deserializedConnectableResource.inboundConnectedResources = inboundConnectedResources;
+                } else if ("outboundConnectedResources".equals(fieldName)) {
+                    List<ConnectedResource> outboundConnectedResources
+                        = reader.readArray(reader1 -> ConnectedResource.fromJson(reader1));
+                    deserializedConnectableResource.outboundConnectedResources = outboundConnectedResources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectableResource;
+        });
     }
 }

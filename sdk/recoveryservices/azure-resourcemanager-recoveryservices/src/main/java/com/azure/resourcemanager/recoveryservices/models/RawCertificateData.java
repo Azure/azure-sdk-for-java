@@ -6,30 +6,36 @@ package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Raw certificate data. */
+/**
+ * Raw certificate data.
+ */
 @Fluent
-public final class RawCertificateData {
+public final class RawCertificateData implements JsonSerializable<RawCertificateData> {
     /*
      * Specifies the authentication type.
      */
-    @JsonProperty(value = "authType")
     private AuthType authType;
 
     /*
      * The base64 encoded certificate raw data string
      */
-    @JsonProperty(value = "certificate")
     private byte[] certificate;
 
-    /** Creates an instance of RawCertificateData class. */
+    /**
+     * Creates an instance of RawCertificateData class.
+     */
     public RawCertificateData() {
     }
 
     /**
      * Get the authType property: Specifies the authentication type.
-     *
+     * 
      * @return the authType value.
      */
     public AuthType authType() {
@@ -38,7 +44,7 @@ public final class RawCertificateData {
 
     /**
      * Set the authType property: Specifies the authentication type.
-     *
+     * 
      * @param authType the authType value to set.
      * @return the RawCertificateData object itself.
      */
@@ -49,7 +55,7 @@ public final class RawCertificateData {
 
     /**
      * Get the certificate property: The base64 encoded certificate raw data string.
-     *
+     * 
      * @return the certificate value.
      */
     public byte[] certificate() {
@@ -58,7 +64,7 @@ public final class RawCertificateData {
 
     /**
      * Set the certificate property: The base64 encoded certificate raw data string.
-     *
+     * 
      * @param certificate the certificate value to set.
      * @return the RawCertificateData object itself.
      */
@@ -69,9 +75,48 @@ public final class RawCertificateData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
+        jsonWriter.writeBinaryField("certificate", this.certificate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RawCertificateData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RawCertificateData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RawCertificateData.
+     */
+    public static RawCertificateData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RawCertificateData deserializedRawCertificateData = new RawCertificateData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authType".equals(fieldName)) {
+                    deserializedRawCertificateData.authType = AuthType.fromString(reader.getString());
+                } else if ("certificate".equals(fieldName)) {
+                    deserializedRawCertificateData.certificate = reader.getBinary();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRawCertificateData;
+        });
     }
 }

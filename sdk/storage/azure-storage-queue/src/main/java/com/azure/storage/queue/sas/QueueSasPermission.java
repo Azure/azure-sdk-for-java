@@ -55,19 +55,22 @@ public final class QueueSasPermission {
                 case 'r':
                     permissions.readPermission = true;
                     break;
+
                 case 'a':
                     permissions.addPermission = true;
                     break;
+
                 case 'u':
                     permissions.updatePermission = true;
                     break;
+
                 case 'p':
                     permissions.processPermission = true;
                     break;
+
                 default:
-                    throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permissionString, c));
+                    throw new IllegalArgumentException(String.format(Locale.ROOT,
+                        Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permissionString, c));
             }
         }
         return permissions;
@@ -174,7 +177,7 @@ public final class QueueSasPermission {
         // The order of the characters should be as specified here to ensure correctness:
         // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(4);
 
         if (this.readPermission) {
             builder.append('r');

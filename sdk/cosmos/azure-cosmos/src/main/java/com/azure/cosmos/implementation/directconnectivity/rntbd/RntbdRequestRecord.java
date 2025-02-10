@@ -31,6 +31,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.CHANNEL_ACQUISITION_STARTED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.COMPLETED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.CREATED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.DECODE_TIME;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.PIPELINED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.QUEUED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.RECEIVED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.TRANSIT_TIME;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
@@ -256,6 +264,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
     public boolean expire() {
         final CosmosException error;
+
         if ((this.args.serviceRequest().isReadOnly() || !this.hasSendingRequestStarted()) ||
             this.args.serviceRequest().getNonIdempotentWriteRetriesEnabled()){
             // Convert from requestTimeoutException to GoneException for the following two scenarios so they can be safely retried:
@@ -264,7 +273,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             error = new GoneException(this.toString(), null, this.args.physicalAddressUri().getURI(), HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
         } else {
             // For sent write request, converting to requestTimeout, will not be retried.
-            error = new RequestTimeoutException(this.toString(), this.args.physicalAddressUri().getURI());
+            error = new RequestTimeoutException(this.toString(), this.args.physicalAddressUri().getURI(), HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT);
         }
 
         BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
@@ -309,21 +318,21 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         Instant timeCompletedOrNow = timeCompleted == null ? now : timeCompleted;
 
         return RequestTimeline.of(
-            new RequestTimeline.Event("created",
+            new RequestTimeline.Event(CREATED,
                 timeCreated, timeQueued == null ? timeCompletedOrNow : timeQueued),
-            new RequestTimeline.Event("queued",
+            new RequestTimeline.Event(QUEUED,
                 timeQueued, timeChannelAcquisitionStarted == null ? timeCompletedOrNow : timeChannelAcquisitionStarted),
-            new RequestTimeline.Event("channelAcquisitionStarted",
+            new RequestTimeline.Event(CHANNEL_ACQUISITION_STARTED,
                 timeChannelAcquisitionStarted, timePipelined == null ? timeCompletedOrNow : timePipelined),
-            new RequestTimeline.Event("pipelined",
+            new RequestTimeline.Event(PIPELINED,
                 timePipelined, timeSent == null ? timeCompletedOrNow : timeSent),
-            new RequestTimeline.Event("transitTime",
+            new RequestTimeline.Event(TRANSIT_TIME,
                 timeSent, timeDecodeStarted == null ? timeCompletedOrNow : timeDecodeStarted),
-            new RequestTimeline.Event("decodeTime",
+            new RequestTimeline.Event(DECODE_TIME,
                 timeDecodeStarted, timeReceived == null ? timeCompletedOrNow : timeReceived),
-            new RequestTimeline.Event("received",
+            new RequestTimeline.Event(RECEIVED,
                 timeReceived, timeCompletedOrNow),
-            new RequestTimeline.Event("completed",
+            new RequestTimeline.Event(COMPLETED,
                 timeCompleted, now));
     }
 
@@ -337,7 +346,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
     @Override
     public String toString() {
-        return RntbdObjectMapper.toString(this);
+        return RntbdObjectMapper.toJson(this);
     }
 
     // endregion
@@ -363,6 +372,8 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             final SerializerProvider provider) throws IOException {
 
             generator.writeStartObject();
+
+            generator.writeObjectFieldStart(RntbdRequestRecord.class.getSimpleName());
             generator.writeObjectField("args", value.args());
             generator.writeNumberField("requestLength", value.requestLength());
             generator.writeNumberField("responseLength", value.responseLength());
@@ -386,14 +397,13 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
                     generator.writeObjectFieldStart("error");
                     generator.writeStringField("type", error.getClass().getName());
-                    generator.writeObjectField("value", error);
+                    generator.writeStringField("value", error.toString());
                     generator.writeEndObject();
 
                 } catch (CancellationException | InterruptedException exception) {
 
                     generator.writeObjectFieldStart("error");
                     generator.writeStringField("type", exception.getClass().getName());
-                    generator.writeObjectField("value", exception);
                     generator.writeEndObject();
                 }
             }
@@ -401,6 +411,8 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             generator.writeEndObject();
 
             generator.writeObjectField("timeline", value.takeTimelineSnapshot());
+            generator.writeEndObject();
+
             generator.writeEndObject();
         }
     }

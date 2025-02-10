@@ -5,40 +5,47 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * BEK is bitlocker key. KEK is encryption key for BEK If the VM was encrypted then we will store following details : 1.
- * Secret(BEK) - Url + Backup Data + vaultId. 2. Key(KEK) - Url + Backup Data + vaultId. 3. EncryptionMechanism BEK and
- * KEK can potentially have different vault ids.
+ * BEK is bitlocker key.
+ * KEK is encryption key for BEK
+ * If the VM was encrypted then we will store following details :
+ * 1. Secret(BEK) - Url + Backup Data + vaultId.
+ * 2. Key(KEK) - Url + Backup Data + vaultId.
+ * 3. EncryptionMechanism
+ * BEK and KEK can potentially have different vault ids.
  */
 @Fluent
-public final class KeyAndSecretDetails {
+public final class KeyAndSecretDetails implements JsonSerializable<KeyAndSecretDetails> {
     /*
      * KEK is encryption key for BEK.
      */
-    @JsonProperty(value = "kekDetails")
     private KekDetails kekDetails;
 
     /*
      * BEK is bitlocker encryption key.
      */
-    @JsonProperty(value = "bekDetails")
     private BekDetails bekDetails;
 
     /*
      * Encryption mechanism: None/ SinglePass/ DoublePass
      */
-    @JsonProperty(value = "encryptionMechanism")
     private String encryptionMechanism;
 
-    /** Creates an instance of KeyAndSecretDetails class. */
+    /**
+     * Creates an instance of KeyAndSecretDetails class.
+     */
     public KeyAndSecretDetails() {
     }
 
     /**
      * Get the kekDetails property: KEK is encryption key for BEK.
-     *
+     * 
      * @return the kekDetails value.
      */
     public KekDetails kekDetails() {
@@ -47,7 +54,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Set the kekDetails property: KEK is encryption key for BEK.
-     *
+     * 
      * @param kekDetails the kekDetails value to set.
      * @return the KeyAndSecretDetails object itself.
      */
@@ -58,7 +65,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Get the bekDetails property: BEK is bitlocker encryption key.
-     *
+     * 
      * @return the bekDetails value.
      */
     public BekDetails bekDetails() {
@@ -67,7 +74,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Set the bekDetails property: BEK is bitlocker encryption key.
-     *
+     * 
      * @param bekDetails the bekDetails value to set.
      * @return the KeyAndSecretDetails object itself.
      */
@@ -78,7 +85,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Get the encryptionMechanism property: Encryption mechanism: None/ SinglePass/ DoublePass.
-     *
+     * 
      * @return the encryptionMechanism value.
      */
     public String encryptionMechanism() {
@@ -87,7 +94,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Set the encryptionMechanism property: Encryption mechanism: None/ SinglePass/ DoublePass.
-     *
+     * 
      * @param encryptionMechanism the encryptionMechanism value to set.
      * @return the KeyAndSecretDetails object itself.
      */
@@ -98,7 +105,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -108,5 +115,47 @@ public final class KeyAndSecretDetails {
         if (bekDetails() != null) {
             bekDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("kekDetails", this.kekDetails);
+        jsonWriter.writeJsonField("bekDetails", this.bekDetails);
+        jsonWriter.writeStringField("encryptionMechanism", this.encryptionMechanism);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyAndSecretDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyAndSecretDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyAndSecretDetails.
+     */
+    public static KeyAndSecretDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyAndSecretDetails deserializedKeyAndSecretDetails = new KeyAndSecretDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kekDetails".equals(fieldName)) {
+                    deserializedKeyAndSecretDetails.kekDetails = KekDetails.fromJson(reader);
+                } else if ("bekDetails".equals(fieldName)) {
+                    deserializedKeyAndSecretDetails.bekDetails = BekDetails.fromJson(reader);
+                } else if ("encryptionMechanism".equals(fieldName)) {
+                    deserializedKeyAndSecretDetails.encryptionMechanism = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyAndSecretDetails;
+        });
     }
 }

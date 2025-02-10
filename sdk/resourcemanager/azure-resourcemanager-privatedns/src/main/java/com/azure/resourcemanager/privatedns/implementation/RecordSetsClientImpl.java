@@ -35,22 +35,28 @@ import com.azure.resourcemanager.privatedns.models.RecordSetListResult;
 import com.azure.resourcemanager.privatedns.models.RecordType;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RecordSetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecordSetsClient.
+ */
 public final class RecordSetsClientImpl implements RecordSetsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RecordSetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PrivateDnsManagementClientImpl client;
 
     /**
      * Initializes an instance of RecordSetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RecordSetsClientImpl(PrivateDnsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(RecordSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RecordSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,163 +67,118 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
     @Host("{$host}")
     @ServiceInterface(name = "PrivateDnsManagement")
     public interface RecordSetsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecordSetInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RecordSetInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateZoneName") String privateZoneName,
-            @PathParam("recordType") RecordType recordType,
+            @PathParam("privateZoneName") String privateZoneName, @PathParam("recordType") RecordType recordType,
             @PathParam(value = "relativeRecordSetName", encoded = true) String relativeRecordSetName,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RecordSetInner parameters,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") RecordSetInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecordSetInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RecordSetInner>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateZoneName") String privateZoneName,
-            @PathParam("recordType") RecordType recordType,
+            @PathParam("privateZoneName") String privateZoneName, @PathParam("recordType") RecordType recordType,
             @PathParam(value = "relativeRecordSetName", encoded = true) String relativeRecordSetName,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RecordSetInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") RecordSetInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateZoneName") String privateZoneName,
-            @PathParam("recordType") RecordType recordType,
+            @PathParam("privateZoneName") String privateZoneName, @PathParam("recordType") RecordType recordType,
             @PathParam(value = "relativeRecordSetName", encoded = true) String relativeRecordSetName,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecordSetInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RecordSetInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateZoneName") String privateZoneName,
-            @PathParam("recordType") RecordType recordType,
+            @PathParam("privateZoneName") String privateZoneName, @PathParam("recordType") RecordType recordType,
             @PathParam(value = "relativeRecordSetName", encoded = true) String relativeRecordSetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecordSetListResult>> listByType(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RecordSetListResult>> listByType(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateZoneName") String privateZoneName,
-            @PathParam("recordType") RecordType recordType,
-            @QueryParam("$top") Integer top,
+            @PathParam("privateZoneName") String privateZoneName, @PathParam("recordType") RecordType recordType,
+            @QueryParam("$top") Integer top, @QueryParam("$recordsetnamesuffix") String recordsetnamesuffix,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/ALL")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RecordSetListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("privateZoneName") String privateZoneName, @QueryParam("$top") Integer top,
             @QueryParam("$recordsetnamesuffix") String recordsetnamesuffix,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/ALL")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecordSetListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateZoneName") String privateZoneName,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$recordsetnamesuffix") String recordsetnamesuffix,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecordSetListResult>> listByTypeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecordSetListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RecordSetListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates or updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not
-     *     created (they are created when the Private DNS zone is created).
+     * created (they are created when the Private DNS zone is created).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the record set. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     *     set. Other values will be ignored.
+     * set. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone along with {@link Response} on successful completion of {@link Mono}.
+     * zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordSetInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters,
-        String ifMatch,
-        String ifNoneMatch) {
+    public Mono<Response<RecordSetInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String privateZoneName, RecordType recordType, String relativeRecordSetName, RecordSetInner parameters,
+        String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -235,10 +196,8 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
                 .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -247,60 +206,39 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            privateZoneName,
-                            recordType,
-                            relativeRecordSetName,
-                            ifMatch,
-                            ifNoneMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                privateZoneName, recordType, relativeRecordSetName, ifMatch, ifNoneMatch, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not
-     *     created (they are created when the Private DNS zone is created).
+     * created (they are created when the Private DNS zone is created).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the record set. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     *     set. Other values will be ignored.
+     * set. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone along with {@link Response} on successful completion of {@link Mono}.
+     * zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecordSetInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+    private Mono<Response<RecordSetInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String privateZoneName, RecordType recordType, String relativeRecordSetName, RecordSetInner parameters,
+        String ifMatch, String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -318,10 +256,8 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
                 .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -330,158 +266,109 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                privateZoneName,
-                recordType,
-                relativeRecordSetName,
-                ifMatch,
-                ifNoneMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, privateZoneName, recordType,
+            relativeRecordSetName, ifMatch, ifNoneMatch, this.client.getApiVersion(), this.client.getSubscriptionId(),
+            parameters, accept, context);
     }
 
     /**
      * Creates or updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not
-     *     created (they are created when the Private DNS zone is created).
+     * created (they are created when the Private DNS zone is created).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone on successful completion of {@link Mono}.
+     * zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordSetInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters) {
+    public Mono<RecordSetInner> createOrUpdateAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, RecordSetInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, privateZoneName, recordType, relativeRecordSetName, parameters, ifMatch, ifNoneMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, privateZoneName, recordType, relativeRecordSetName,
+            parameters, ifMatch, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not
-     *     created (they are created when the Private DNS zone is created).
+     * created (they are created when the Private DNS zone is created).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the record set. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
-     *     set. Other values will be ignored.
+     * set. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone along with {@link Response}.
+     * zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordSetInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                privateZoneName,
-                recordType,
-                relativeRecordSetName,
-                parameters,
-                ifMatch,
-                ifNoneMatch,
-                context)
-            .block();
+    public Response<RecordSetInner> createOrUpdateWithResponse(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, RecordSetInner parameters, String ifMatch,
+        String ifNoneMatch, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, privateZoneName, recordType, relativeRecordSetName,
+            parameters, ifMatch, ifNoneMatch, context).block();
     }
 
     /**
      * Creates or updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not
-     *     created (they are created when the Private DNS zone is created).
+     * created (they are created when the Private DNS zone is created).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     * zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordSetInner createOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters) {
+    public RecordSetInner createOrUpdate(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName, RecordSetInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName,
-                privateZoneName,
-                recordType,
-                relativeRecordSetName,
-                parameters,
-                ifMatch,
-                ifNoneMatch,
-                Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, privateZoneName, recordType, relativeRecordSetName,
+            parameters, ifMatch, ifNoneMatch, Context.NONE).getValue();
     }
 
     /**
      * Updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the record set. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone along with {@link Response} on successful completion of {@link Mono}.
+     * zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordSetInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters,
-        String ifMatch) {
+    public Mono<Response<RecordSetInner>> updateWithResponseAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, RecordSetInner parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -499,10 +386,8 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
                 .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -511,55 +396,36 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            privateZoneName,
-                            recordType,
-                            relativeRecordSetName,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, privateZoneName,
+                recordType, relativeRecordSetName, ifMatch, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the record set. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone along with {@link Response} on successful completion of {@link Mono}.
+     * zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecordSetInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters,
-        String ifMatch,
+    private Mono<Response<RecordSetInner>> updateWithResponseAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, RecordSetInner parameters, String ifMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -577,10 +443,8 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
                 .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -589,24 +453,14 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                privateZoneName,
-                recordType,
-                relativeRecordSetName,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, privateZoneName, recordType,
+            relativeRecordSetName, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+            accept, context);
     }
 
     /**
      * Updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -616,55 +470,44 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone on successful completion of {@link Mono}.
+     * zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordSetInner> updateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters) {
+    public Mono<RecordSetInner> updateAsync(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName, RecordSetInner parameters) {
         final String ifMatch = null;
-        return updateWithResponseAsync(
-                resourceGroupName, privateZoneName, recordType, relativeRecordSetName, parameters, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return updateWithResponseAsync(resourceGroupName, privateZoneName, recordType, relativeRecordSetName,
+            parameters, ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the record set. Omit this value to always overwrite the current record set. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone along with {@link Response}.
+     * zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordSetInner> updateWithResponse(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters,
-        String ifMatch,
+    public Response<RecordSetInner> updateWithResponse(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, RecordSetInner parameters, String ifMatch,
         Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, privateZoneName, recordType, relativeRecordSetName, parameters, ifMatch, context)
-            .block();
+        return updateWithResponseAsync(resourceGroupName, privateZoneName, recordType, relativeRecordSetName,
+            parameters, ifMatch, context).block();
     }
 
     /**
      * Updates a record set within a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -674,54 +517,37 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS
-     *     zone.
+     * zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordSetInner update(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        RecordSetInner parameters) {
+    public RecordSetInner update(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName, RecordSetInner parameters) {
         final String ifMatch = null;
-        return updateWithResponse(
-                resourceGroupName,
-                privateZoneName,
-                recordType,
-                relativeRecordSetName,
-                parameters,
-                ifMatch,
-                Context.NONE)
-            .getValue();
+        return updateWithResponse(resourceGroupName, privateZoneName, recordType, relativeRecordSetName, parameters,
+            ifMatch, Context.NONE).getValue();
     }
 
     /**
      * Deletes a record set from a Private DNS zone. This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
-     *     deleted when the Private DNS zone is deleted).
+     * deleted when the Private DNS zone is deleted).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param ifMatch The ETag of the record set. Omit this value to always delete the current record set. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        String ifMatch) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -739,40 +565,27 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
                 .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            privateZoneName,
-                            recordType,
-                            relativeRecordSetName,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, privateZoneName,
+                recordType, relativeRecordSetName, ifMatch, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a record set from a Private DNS zone. This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
-     *     deleted when the Private DNS zone is deleted).
+     * deleted when the Private DNS zone is deleted).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param ifMatch The ETag of the record set. Omit this value to always delete the current record set. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -780,18 +593,11 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -809,34 +615,23 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
                 .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                privateZoneName,
-                recordType,
-                relativeRecordSetName,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, privateZoneName, recordType,
+            relativeRecordSetName, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
+            context);
     }
 
     /**
      * Deletes a record set from a Private DNS zone. This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
-     *     deleted when the Private DNS zone is deleted).
+     * deleted when the Private DNS zone is deleted).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -844,8 +639,8 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String privateZoneName, RecordType recordType, String relativeRecordSetName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName) {
         final String ifMatch = null;
         return deleteWithResponseAsync(resourceGroupName, privateZoneName, recordType, relativeRecordSetName, ifMatch)
             .flatMap(ignored -> Mono.empty());
@@ -853,14 +648,14 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
 
     /**
      * Deletes a record set from a Private DNS zone. This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
-     *     deleted when the Private DNS zone is deleted).
+     * deleted when the Private DNS zone is deleted).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param ifMatch The ETag of the record set. Omit this value to always delete the current record set. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -868,41 +663,35 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        String ifMatch,
-        Context context) {
-        return deleteWithResponseAsync(
-                resourceGroupName, privateZoneName, recordType, relativeRecordSetName, ifMatch, context)
-            .block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName, String ifMatch, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, privateZoneName, recordType, relativeRecordSetName, ifMatch,
+            context).block();
     }
 
     /**
      * Deletes a record set from a Private DNS zone. This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
-     *     deleted when the Private DNS zone is deleted).
+     * deleted when the Private DNS zone is deleted).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String privateZoneName, RecordType recordType, String relativeRecordSetName) {
+    public void delete(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName) {
         final String ifMatch = null;
-        deleteWithResponse(
-            resourceGroupName, privateZoneName, recordType, relativeRecordSetName, ifMatch, Context.NONE);
+        deleteWithResponse(resourceGroupName, privateZoneName, recordType, relativeRecordSetName, ifMatch,
+            Context.NONE);
     }
 
     /**
      * Gets a record set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -913,13 +702,11 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return a record set along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordSetInner>> getWithResponseAsync(
-        String resourceGroupName, String privateZoneName, RecordType recordType, String relativeRecordSetName) {
+    public Mono<Response<RecordSetInner>> getWithResponseAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -937,32 +724,20 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
                 .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            privateZoneName,
-                            recordType,
-                            relativeRecordSetName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, privateZoneName,
+                recordType, relativeRecordSetName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a record set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -974,17 +749,11 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return a record set along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecordSetInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        Context context) {
+    private Mono<Response<RecordSetInner>> getWithResponseAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1002,29 +771,18 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
                 .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                privateZoneName,
-                recordType,
-                relativeRecordSetName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, privateZoneName, recordType,
+            relativeRecordSetName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets a record set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -1035,15 +793,15 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return a record set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordSetInner> getAsync(
-        String resourceGroupName, String privateZoneName, RecordType recordType, String relativeRecordSetName) {
+    public Mono<RecordSetInner> getAsync(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName) {
         return getWithResponseAsync(resourceGroupName, privateZoneName, recordType, relativeRecordSetName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a record set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -1055,19 +813,15 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return a record set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordSetInner> getWithResponse(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        String relativeRecordSetName,
-        Context context) {
+    public Response<RecordSetInner> getWithResponse(String resourceGroupName, String privateZoneName,
+        RecordType recordType, String relativeRecordSetName, Context context) {
         return getWithResponseAsync(resourceGroupName, privateZoneName, recordType, relativeRecordSetName, context)
             .block();
     }
 
     /**
      * Gets a record set.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of DNS record in this record set.
@@ -1078,40 +832,34 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return a record set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordSetInner get(
-        String resourceGroupName, String privateZoneName, RecordType recordType, String relativeRecordSetName) {
+    public RecordSetInner get(String resourceGroupName, String privateZoneName, RecordType recordType,
+        String relativeRecordSetName) {
         return getWithResponse(resourceGroupName, privateZoneName, recordType, relativeRecordSetName, Context.NONE)
             .getValue();
     }
 
     /**
      * Lists the record sets of a specified type in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecordSetInner>> listByTypeSinglePageAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        Integer top,
-        String recordsetnamesuffix) {
+    private Mono<PagedResponse<RecordSetInner>> listByTypeSinglePageAsync(String resourceGroupName,
+        String privateZoneName, RecordType recordType, Integer top, String recordsetnamesuffix) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1125,69 +873,42 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
             return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByType(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            privateZoneName,
-                            recordType,
-                            top,
-                            recordsetnamesuffix,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<RecordSetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByType(this.client.getEndpoint(), resourceGroupName, privateZoneName,
+                recordType, top, recordsetnamesuffix, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<RecordSetInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the record sets of a specified type in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecordSetInner>> listByTypeSinglePageAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        Integer top,
-        String recordsetnamesuffix,
-        Context context) {
+    private Mono<PagedResponse<RecordSetInner>> listByTypeSinglePageAsync(String resourceGroupName,
+        String privateZoneName, RecordType recordType, Integer top, String recordsetnamesuffix, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1201,58 +922,36 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
             return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByType(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                privateZoneName,
-                recordType,
-                top,
-                recordsetnamesuffix,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByType(this.client.getEndpoint(), resourceGroupName, privateZoneName, recordType, top,
+                recordsetnamesuffix, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the record sets of a specified type in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecordSetInner> listByTypeAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        Integer top,
-        String recordsetnamesuffix) {
+    public PagedFlux<RecordSetInner> listByTypeAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, Integer top, String recordsetnamesuffix) {
         return new PagedFlux<>(
             () -> listByTypeSinglePageAsync(resourceGroupName, privateZoneName, recordType, top, recordsetnamesuffix),
             nextLink -> listByTypeNextSinglePageAsync(nextLink));
@@ -1260,7 +959,7 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
 
     /**
      * Lists the record sets of a specified type in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
@@ -1270,8 +969,8 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return the response to a record set list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecordSetInner> listByTypeAsync(
-        String resourceGroupName, String privateZoneName, RecordType recordType) {
+    public PagedFlux<RecordSetInner> listByTypeAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType) {
         final Integer top = null;
         final String recordsetnamesuffix = null;
         return new PagedFlux<>(
@@ -1281,14 +980,14 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
 
     /**
      * Lists the record sets of a specified type in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1296,23 +995,15 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return the response to a record set list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecordSetInner> listByTypeAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        Integer top,
-        String recordsetnamesuffix,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByTypeSinglePageAsync(
-                    resourceGroupName, privateZoneName, recordType, top, recordsetnamesuffix, context),
-            nextLink -> listByTypeNextSinglePageAsync(nextLink, context));
+    private PagedFlux<RecordSetInner> listByTypeAsync(String resourceGroupName, String privateZoneName,
+        RecordType recordType, Integer top, String recordsetnamesuffix, Context context) {
+        return new PagedFlux<>(() -> listByTypeSinglePageAsync(resourceGroupName, privateZoneName, recordType, top,
+            recordsetnamesuffix, context), nextLink -> listByTypeNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the record sets of a specified type in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
@@ -1322,8 +1013,8 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return the response to a record set list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecordSetInner> listByType(
-        String resourceGroupName, String privateZoneName, RecordType recordType) {
+    public PagedIterable<RecordSetInner> listByType(String resourceGroupName, String privateZoneName,
+        RecordType recordType) {
         final Integer top = null;
         final String recordsetnamesuffix = null;
         return new PagedIterable<>(
@@ -1332,14 +1023,14 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
 
     /**
      * Lists the record sets of a specified type in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1347,40 +1038,33 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return the response to a record set list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecordSetInner> listByType(
-        String resourceGroupName,
-        String privateZoneName,
-        RecordType recordType,
-        Integer top,
-        String recordsetnamesuffix,
-        Context context) {
+    public PagedIterable<RecordSetInner> listByType(String resourceGroupName, String privateZoneName,
+        RecordType recordType, Integer top, String recordsetnamesuffix, Context context) {
         return new PagedIterable<>(
             listByTypeAsync(resourceGroupName, privateZoneName, recordType, top, recordsetnamesuffix, context));
     }
 
     /**
      * Lists all record sets in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecordSetInner>> listSinglePageAsync(
-        String resourceGroupName, String privateZoneName, Integer top, String recordsetnamesuffix) {
+    private Mono<PagedResponse<RecordSetInner>> listSinglePageAsync(String resourceGroupName, String privateZoneName,
+        Integer top, String recordsetnamesuffix) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1391,62 +1075,40 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
                 .error(new IllegalArgumentException("Parameter privateZoneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            privateZoneName,
-                            top,
-                            recordsetnamesuffix,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<RecordSetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, privateZoneName, top,
+                recordsetnamesuffix, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<RecordSetInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all record sets in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecordSetInner>> listSinglePageAsync(
-        String resourceGroupName, String privateZoneName, Integer top, String recordsetnamesuffix, Context context) {
+    private Mono<PagedResponse<RecordSetInner>> listSinglePageAsync(String resourceGroupName, String privateZoneName,
+        Integer top, String recordsetnamesuffix, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1457,60 +1119,42 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
                 .error(new IllegalArgumentException("Parameter privateZoneName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                privateZoneName,
-                top,
-                recordsetnamesuffix,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), resourceGroupName, privateZoneName, top, recordsetnamesuffix,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all record sets in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RecordSetInner> listAsync(
-        String resourceGroupName, String privateZoneName, Integer top, String recordsetnamesuffix) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, privateZoneName, top, recordsetnamesuffix),
+    public PagedFlux<RecordSetInner> listAsync(String resourceGroupName, String privateZoneName, Integer top,
+        String recordsetnamesuffix) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateZoneName, top, recordsetnamesuffix),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all record sets in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1522,20 +1166,19 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
     public PagedFlux<RecordSetInner> listAsync(String resourceGroupName, String privateZoneName) {
         final Integer top = null;
         final String recordsetnamesuffix = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, privateZoneName, top, recordsetnamesuffix),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateZoneName, top, recordsetnamesuffix),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all record sets in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1543,8 +1186,8 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return the response to a record set list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecordSetInner> listAsync(
-        String resourceGroupName, String privateZoneName, Integer top, String recordsetnamesuffix, Context context) {
+    private PagedFlux<RecordSetInner> listAsync(String resourceGroupName, String privateZoneName, Integer top,
+        String recordsetnamesuffix, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, privateZoneName, top, recordsetnamesuffix, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -1552,7 +1195,7 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
 
     /**
      * Lists all record sets in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1569,13 +1212,13 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
 
     /**
      * Lists all record sets in a Private DNS zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param recordsetnamesuffix The suffix label of the record set name to be used to filter the record set
-     *     enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
-     *     ".&lt;recordsetnamesuffix&gt;".
+     * enumeration. If this parameter is specified, the returned enumeration will only contain records that end with
+     * ".&lt;recordsetnamesuffix&gt;".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1583,21 +1226,20 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
      * @return the response to a record set list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecordSetInner> list(
-        String resourceGroupName, String privateZoneName, Integer top, String recordsetnamesuffix, Context context) {
+    public PagedIterable<RecordSetInner> list(String resourceGroupName, String privateZoneName, Integer top,
+        String recordsetnamesuffix, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, privateZoneName, top, recordsetnamesuffix, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecordSetInner>> listByTypeNextSinglePageAsync(String nextLink) {
@@ -1605,37 +1247,27 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByTypeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RecordSetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RecordSetInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecordSetInner>> listByTypeNextSinglePageAsync(String nextLink, Context context) {
@@ -1643,36 +1275,25 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTypeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTypeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecordSetInner>> listNextSinglePageAsync(String nextLink) {
@@ -1680,37 +1301,26 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RecordSetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RecordSetInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecordSetInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1718,23 +1328,13 @@ public final class RecordSetsClientImpl implements RecordSetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

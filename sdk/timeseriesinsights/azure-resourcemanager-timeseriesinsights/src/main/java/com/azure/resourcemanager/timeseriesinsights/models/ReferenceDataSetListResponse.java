@@ -7,11 +7,13 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.ReferenceDataSetListResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of ReferenceDataSetListResponse. */
+/**
+ * An immutable client-side representation of ReferenceDataSetListResponse.
+ */
 public interface ReferenceDataSetListResponse {
     /**
      * Gets the value property: Result of the List Reference Data Sets operation.
-     *
+     * 
      * @return the value value.
      */
     List<ReferenceDataSetResource> value();
@@ -19,7 +21,7 @@ public interface ReferenceDataSetListResponse {
     /**
      * Gets the inner com.azure.resourcemanager.timeseriesinsights.fluent.models.ReferenceDataSetListResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ReferenceDataSetListResponseInner innerModel();

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class GalleryImageVersionsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Delete.json
      */
     /**
@@ -19,7 +19,11 @@ public final class GalleryImageVersionsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAGalleryImageVersion(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleryImageVersions().delete("myResourceGroup",
-            "myGalleryName", "myGalleryImageName", "1.0.0", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .delete("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -21,35 +21,33 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    public RoleAssignmentsImpl(
-        RoleAssignmentsClient innerClient,
+    public RoleAssignmentsImpl(RoleAssignmentsClient innerClient,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<RoleAssignmentResourceFormat> listByHub(String resourceGroupName, String hubName) {
-        PagedIterable<RoleAssignmentResourceFormatInner> inner =
-            this.serviceClient().listByHub(resourceGroupName, hubName);
-        return Utils.mapPage(inner, inner1 -> new RoleAssignmentResourceFormatImpl(inner1, this.manager()));
+        PagedIterable<RoleAssignmentResourceFormatInner> inner
+            = this.serviceClient().listByHub(resourceGroupName, hubName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new RoleAssignmentResourceFormatImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RoleAssignmentResourceFormat> listByHub(
-        String resourceGroupName, String hubName, Context context) {
-        PagedIterable<RoleAssignmentResourceFormatInner> inner =
-            this.serviceClient().listByHub(resourceGroupName, hubName, context);
-        return Utils.mapPage(inner, inner1 -> new RoleAssignmentResourceFormatImpl(inner1, this.manager()));
+    public PagedIterable<RoleAssignmentResourceFormat> listByHub(String resourceGroupName, String hubName,
+        Context context) {
+        PagedIterable<RoleAssignmentResourceFormatInner> inner
+            = this.serviceClient().listByHub(resourceGroupName, hubName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new RoleAssignmentResourceFormatImpl(inner1, this.manager()));
     }
 
-    public Response<RoleAssignmentResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String assignmentName, Context context) {
-        Response<RoleAssignmentResourceFormatInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, hubName, assignmentName, context);
+    public Response<RoleAssignmentResourceFormat> getWithResponse(String resourceGroupName, String hubName,
+        String assignmentName, Context context) {
+        Response<RoleAssignmentResourceFormatInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, hubName, assignmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RoleAssignmentResourceFormatImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,8 +63,8 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String hubName, String assignmentName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String assignmentName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, hubName, assignmentName, context);
     }
 
@@ -75,109 +73,77 @@ public final class RoleAssignmentsImpl implements RoleAssignments {
     }
 
     public RoleAssignmentResourceFormat getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String assignmentName = Utils.getValueFromIdByName(id, "roleAssignments");
+        String assignmentName = ResourceManagerUtils.getValueFromIdByName(id, "roleAssignments");
         if (assignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'roleAssignments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'roleAssignments'.", id)));
         }
         return this.getWithResponse(resourceGroupName, hubName, assignmentName, Context.NONE).getValue();
     }
 
     public Response<RoleAssignmentResourceFormat> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String assignmentName = Utils.getValueFromIdByName(id, "roleAssignments");
+        String assignmentName = ResourceManagerUtils.getValueFromIdByName(id, "roleAssignments");
         if (assignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'roleAssignments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'roleAssignments'.", id)));
         }
         return this.getWithResponse(resourceGroupName, hubName, assignmentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String assignmentName = Utils.getValueFromIdByName(id, "roleAssignments");
+        String assignmentName = ResourceManagerUtils.getValueFromIdByName(id, "roleAssignments");
         if (assignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'roleAssignments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'roleAssignments'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, hubName, assignmentName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String assignmentName = Utils.getValueFromIdByName(id, "roleAssignments");
+        String assignmentName = ResourceManagerUtils.getValueFromIdByName(id, "roleAssignments");
         if (assignmentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'roleAssignments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'roleAssignments'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, hubName, assignmentName, context);
     }

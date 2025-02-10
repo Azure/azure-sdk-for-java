@@ -110,7 +110,10 @@ public final class CosmosError extends  JsonSerializable {
      * @param additionalErrorInfo the partitioned query execution info.
      */
     private void setAdditionalErrorInfo(String additionalErrorInfo) {
-        super.set(Constants.Properties.ADDITIONAL_ERROR_INFO, additionalErrorInfo);
+        super.set(
+            Constants.Properties.ADDITIONAL_ERROR_INFO,
+            additionalErrorInfo
+        );
     }
 
     /**

@@ -11,7 +11,7 @@ public final class OutboundEnvironmentEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundEnvironmentEndpointInner model = BinaryData.fromString(
-            "{\"category\":\"rdgrtw\",\"endpoints\":[{\"domainName\":\"uzkopbminrfd\",\"description\":\"yuhhziu\",\"endpointDetails\":[{\"port\":900012181},{\"port\":1689863270},{\"port\":1792601934},{\"port\":962807389}]},{\"domainName\":\"mzqhoftrmaequi\",\"description\":\"xicslfao\",\"endpointDetails\":[{\"port\":1413149705},{\"port\":2064945633},{\"port\":980018563},{\"port\":1404219514}]},{\"domainName\":\"whccs\",\"description\":\"kaivwit\",\"endpointDetails\":[{\"port\":2016722653},{\"port\":494883497},{\"port\":1839231877}]}]}")
+            "{\"category\":\"izsjqlhkrr\",\"endpoints\":[{\"domainName\":\"ibqipqkg\",\"description\":\"xndzwm\",\"endpointDetails\":[{\"port\":1155749150},{\"port\":754811246}]},{\"domainName\":\"orwkqnyh\",\"description\":\"ij\",\"endpointDetails\":[{\"port\":1117462910},{\"port\":394204922},{\"port\":1033603649},{\"port\":1988757032}]}]}")
             .toObject(OutboundEnvironmentEndpointInner.class);
     }
 

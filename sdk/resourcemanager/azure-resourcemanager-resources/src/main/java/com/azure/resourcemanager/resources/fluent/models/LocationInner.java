@@ -5,72 +5,72 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.AvailabilityZoneMappings;
 import com.azure.resourcemanager.resources.models.LocationMetadata;
 import com.azure.resourcemanager.resources.models.LocationType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Location information. */
+/**
+ * Location information.
+ */
 @Fluent
-public final class LocationInner {
+public final class LocationInner implements JsonSerializable<LocationInner> {
     /*
      * The fully qualified ID of the location. For example,
      * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The subscription ID.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * The location name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The location type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private LocationType type;
 
     /*
      * The display name of the location.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The display name of the location and its region.
      */
-    @JsonProperty(value = "regionalDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String regionalDisplayName;
 
     /*
      * Metadata of the location, such as lat/long, paired region, and others.
      */
-    @JsonProperty(value = "metadata")
     private LocationMetadata metadata;
 
     /*
      * The availability zone mappings for this region.
      */
-    @JsonProperty(value = "availabilityZoneMappings")
     private List<AvailabilityZoneMappings> availabilityZoneMappings;
 
-    /** Creates an instance of LocationInner class. */
+    /**
+     * Creates an instance of LocationInner class.
+     */
     public LocationInner() {
     }
 
     /**
      * Get the id property: The fully qualified ID of the location. For example,
      * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -79,7 +79,7 @@ public final class LocationInner {
 
     /**
      * Get the subscriptionId property: The subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -88,7 +88,7 @@ public final class LocationInner {
 
     /**
      * Get the name property: The location name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -97,7 +97,7 @@ public final class LocationInner {
 
     /**
      * Get the type property: The location type.
-     *
+     * 
      * @return the type value.
      */
     public LocationType type() {
@@ -106,7 +106,7 @@ public final class LocationInner {
 
     /**
      * Get the displayName property: The display name of the location.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -115,7 +115,7 @@ public final class LocationInner {
 
     /**
      * Get the regionalDisplayName property: The display name of the location and its region.
-     *
+     * 
      * @return the regionalDisplayName value.
      */
     public String regionalDisplayName() {
@@ -124,7 +124,7 @@ public final class LocationInner {
 
     /**
      * Get the metadata property: Metadata of the location, such as lat/long, paired region, and others.
-     *
+     * 
      * @return the metadata value.
      */
     public LocationMetadata metadata() {
@@ -133,7 +133,7 @@ public final class LocationInner {
 
     /**
      * Set the metadata property: Metadata of the location, such as lat/long, paired region, and others.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the LocationInner object itself.
      */
@@ -144,7 +144,7 @@ public final class LocationInner {
 
     /**
      * Get the availabilityZoneMappings property: The availability zone mappings for this region.
-     *
+     * 
      * @return the availabilityZoneMappings value.
      */
     public List<AvailabilityZoneMappings> availabilityZoneMappings() {
@@ -153,7 +153,7 @@ public final class LocationInner {
 
     /**
      * Set the availabilityZoneMappings property: The availability zone mappings for this region.
-     *
+     * 
      * @param availabilityZoneMappings the availabilityZoneMappings value to set.
      * @return the LocationInner object itself.
      */
@@ -164,7 +164,7 @@ public final class LocationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -174,5 +174,59 @@ public final class LocationInner {
         if (availabilityZoneMappings() != null) {
             availabilityZoneMappings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeArrayField("availabilityZoneMappings", this.availabilityZoneMappings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LocationInner.
+     */
+    public static LocationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocationInner deserializedLocationInner = new LocationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLocationInner.id = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedLocationInner.subscriptionId = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLocationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLocationInner.type = LocationType.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedLocationInner.displayName = reader.getString();
+                } else if ("regionalDisplayName".equals(fieldName)) {
+                    deserializedLocationInner.regionalDisplayName = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedLocationInner.metadata = LocationMetadata.fromJson(reader);
+                } else if ("availabilityZoneMappings".equals(fieldName)) {
+                    List<AvailabilityZoneMappings> availabilityZoneMappings
+                        = reader.readArray(reader1 -> AvailabilityZoneMappings.fromJson(reader1));
+                    deserializedLocationInner.availabilityZoneMappings = availabilityZoneMappings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocationInner;
+        });
     }
 }

@@ -5,24 +5,39 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.storagemover.models.UploadLimitSchedule;
+import java.io.IOException;
 
-/** The AgentUpdateProperties model. */
+/**
+ * The AgentUpdateProperties model.
+ */
 @Fluent
-public final class AgentUpdateProperties {
+public final class AgentUpdateProperties implements JsonSerializable<AgentUpdateProperties> {
     /*
      * A description for the Agent.
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of AgentUpdateProperties class. */
+    /*
+     * The WAN-link upload limit schedule that applies to any Job Run the agent executes. Data plane operations
+     * (migrating files) are affected. Control plane operations ensure seamless migration functionality and are not
+     * limited by this schedule. The schedule is interpreted with the agent's local time.
+     */
+    private UploadLimitSchedule uploadLimitSchedule;
+
+    /**
+     * Creates an instance of AgentUpdateProperties class.
+     */
     public AgentUpdateProperties() {
     }
 
     /**
      * Get the description property: A description for the Agent.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -31,7 +46,7 @@ public final class AgentUpdateProperties {
 
     /**
      * Set the description property: A description for the Agent.
-     *
+     * 
      * @param description the description value to set.
      * @return the AgentUpdateProperties object itself.
      */
@@ -41,10 +56,78 @@ public final class AgentUpdateProperties {
     }
 
     /**
+     * Get the uploadLimitSchedule property: The WAN-link upload limit schedule that applies to any Job Run the agent
+     * executes. Data plane operations (migrating files) are affected. Control plane operations ensure seamless
+     * migration functionality and are not limited by this schedule. The schedule is interpreted with the agent's local
+     * time.
+     * 
+     * @return the uploadLimitSchedule value.
+     */
+    public UploadLimitSchedule uploadLimitSchedule() {
+        return this.uploadLimitSchedule;
+    }
+
+    /**
+     * Set the uploadLimitSchedule property: The WAN-link upload limit schedule that applies to any Job Run the agent
+     * executes. Data plane operations (migrating files) are affected. Control plane operations ensure seamless
+     * migration functionality and are not limited by this schedule. The schedule is interpreted with the agent's local
+     * time.
+     * 
+     * @param uploadLimitSchedule the uploadLimitSchedule value to set.
+     * @return the AgentUpdateProperties object itself.
+     */
+    public AgentUpdateProperties withUploadLimitSchedule(UploadLimitSchedule uploadLimitSchedule) {
+        this.uploadLimitSchedule = uploadLimitSchedule;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (uploadLimitSchedule() != null) {
+            uploadLimitSchedule().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("uploadLimitSchedule", this.uploadLimitSchedule);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentUpdateProperties.
+     */
+    public static AgentUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentUpdateProperties deserializedAgentUpdateProperties = new AgentUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedAgentUpdateProperties.description = reader.getString();
+                } else if ("uploadLimitSchedule".equals(fieldName)) {
+                    deserializedAgentUpdateProperties.uploadLimitSchedule = UploadLimitSchedule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentUpdateProperties;
+        });
     }
 }

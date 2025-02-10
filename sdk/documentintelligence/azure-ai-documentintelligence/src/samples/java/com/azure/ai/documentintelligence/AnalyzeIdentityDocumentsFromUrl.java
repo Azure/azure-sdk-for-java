@@ -3,10 +3,10 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
-import com.azure.ai.documentintelligence.models.Document;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
+import com.azure.ai.documentintelligence.models.AnalyzedDocument;
 import com.azure.ai.documentintelligence.models.DocumentField;
 import com.azure.ai.documentintelligence.models.DocumentFieldType;
 import com.azure.core.credential.AzureKeyCredential;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * Sample for analyzing commonly found ID document fields from a file source URL of an identity document.
- * See fields found on an identity document <a href=https://aka.ms/documentintelligence/iddocumentfields>href</a>
+ * See fields found on an identity document <a href=https://aka.ms/formrecognizer/iddocumentfields>href</a>
  */
 public class AnalyzeIdentityDocumentsFromUrl {
 
@@ -38,19 +38,13 @@ public class AnalyzeIdentityDocumentsFromUrl {
         String licenseDocumentUrl =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/"
                 + "azure-ai-documentintelligence/src/samples/resources/sample-forms/IdentityDocuments/license.png";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeIdentityDocumentPoller
-            = client.beginAnalyzeDocument("prebuilt-idDocument",
-            null,
-            null,
-            null,
-            null,
-            null,
-            null, new AnalyzeDocumentRequest().setUrlSource(licenseDocumentUrl));
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeIdentityDocumentPoller
+            = client.beginAnalyzeDocument("prebuilt-idDocument", new AnalyzeDocumentOptions(licenseDocumentUrl));
 
-        AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();
 
         for (int i = 0; i < identityDocumentResults.getDocuments().size(); i++) {
-            Document analyzedIDDocument = identityDocumentResults.getDocuments().get(i);
+            AnalyzedDocument analyzedIDDocument = identityDocumentResults.getDocuments().get(i);
             Map<String, DocumentField> licenseFields = analyzedIDDocument.getFields();
             System.out.printf("----------- Analyzed license info for page %d -----------%n", i);
             DocumentField addressField = licenseFields.get("Address");
@@ -84,7 +78,7 @@ public class AnalyzeIdentityDocumentsFromUrl {
             if (dateOfExpirationField != null) {
                 if (DocumentFieldType.DATE == dateOfExpirationField.getType()) {
                     LocalDate expirationDate = dateOfExpirationField.getValueDate();
-                    System.out.printf("Document date of expiration: %s, confidence: %.2f%n",
+                    System.out.printf("AnalyzedDocument date of expiration: %s, confidence: %.2f%n",
                         expirationDate, dateOfExpirationField.getConfidence());
                 }
             }
@@ -93,7 +87,7 @@ public class AnalyzeIdentityDocumentsFromUrl {
             if (documentNumberField != null) {
                 if (DocumentFieldType.STRING == documentNumberField.getType()) {
                     String documentNumber = documentNumberField.getValueString();
-                    System.out.printf("Document number: %s, confidence: %.2f%n",
+                    System.out.printf("AnalyzedDocument number: %s, confidence: %.2f%n",
                         documentNumber, documentNumberField.getConfidence());
                 }
             }

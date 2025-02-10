@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -36,6 +35,12 @@ public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTy
         = fromString("ConfidentialVM_DiskEncryptedWithCustomerKey");
 
     /**
+     * Static value ConfidentialVM_NonPersistedTPM for DiskSecurityTypes.
+     */
+    public static final DiskSecurityTypes CONFIDENTIAL_VM_NON_PERSISTED_TPM
+        = fromString("ConfidentialVM_NonPersistedTPM");
+
+    /**
      * Creates a new instance of DiskSecurityTypes value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -50,7 +55,6 @@ public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTy
      * @param name a name to look for.
      * @return the corresponding DiskSecurityTypes.
      */
-    @JsonCreator
     public static DiskSecurityTypes fromString(String name) {
         return fromString(name, DiskSecurityTypes.class);
     }

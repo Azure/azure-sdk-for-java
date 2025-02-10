@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.RelationshipsLookup;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of suggest relationship links operation. */
+/**
+ * The response of suggest relationship links operation.
+ */
 @Immutable
-public final class SuggestRelationshipLinksResponseInner {
+public final class SuggestRelationshipLinksResponseInner
+    implements JsonSerializable<SuggestRelationshipLinksResponseInner> {
     /*
      * The interaction name.
      */
-    @JsonProperty(value = "interactionName", access = JsonProperty.Access.WRITE_ONLY)
     private String interactionName;
 
     /*
      * Suggested relationships for the type.
      */
-    @JsonProperty(value = "suggestedRelationships", access = JsonProperty.Access.WRITE_ONLY)
     private List<RelationshipsLookup> suggestedRelationships;
 
-    /** Creates an instance of SuggestRelationshipLinksResponseInner class. */
+    /**
+     * Creates an instance of SuggestRelationshipLinksResponseInner class.
+     */
     public SuggestRelationshipLinksResponseInner() {
     }
 
     /**
      * Get the interactionName property: The interaction name.
-     *
+     * 
      * @return the interactionName value.
      */
     public String interactionName() {
@@ -39,7 +46,7 @@ public final class SuggestRelationshipLinksResponseInner {
 
     /**
      * Get the suggestedRelationships property: Suggested relationships for the type.
-     *
+     * 
      * @return the suggestedRelationships value.
      */
     public List<RelationshipsLookup> suggestedRelationships() {
@@ -48,12 +55,52 @@ public final class SuggestRelationshipLinksResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (suggestedRelationships() != null) {
             suggestedRelationships().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SuggestRelationshipLinksResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SuggestRelationshipLinksResponseInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SuggestRelationshipLinksResponseInner.
+     */
+    public static SuggestRelationshipLinksResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SuggestRelationshipLinksResponseInner deserializedSuggestRelationshipLinksResponseInner
+                = new SuggestRelationshipLinksResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("interactionName".equals(fieldName)) {
+                    deserializedSuggestRelationshipLinksResponseInner.interactionName = reader.getString();
+                } else if ("suggestedRelationships".equals(fieldName)) {
+                    List<RelationshipsLookup> suggestedRelationships
+                        = reader.readArray(reader1 -> RelationshipsLookup.fromJson(reader1));
+                    deserializedSuggestRelationshipLinksResponseInner.suggestedRelationships = suggestedRelationships;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSuggestRelationshipLinksResponseInner;
+        });
     }
 }

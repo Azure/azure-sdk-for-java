@@ -1,7 +1,9 @@
 trigger: none
 
-stages:
-  - template: /sdk/communication/communication-tests-template.yml
-    parameters:
-      PackageName: azure-communication-rooms
-      SafeName: azurecommunicationrooms
+extends:
+  template: /sdk/communication/communication-tests-template.yml
+  parameters:
+    PackageName: azure-communication-rooms
+    SafeName: azurecommunicationrooms
+    TestResourceDirectories:
+      - communication/test-resources/

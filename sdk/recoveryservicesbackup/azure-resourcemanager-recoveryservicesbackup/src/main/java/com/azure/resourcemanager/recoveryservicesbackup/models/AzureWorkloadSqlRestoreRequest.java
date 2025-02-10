@@ -5,56 +5,60 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** AzureWorkload SQL -specific restore. Specifically for full/diff restore. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = AzureWorkloadSqlRestoreRequest.class)
-@JsonTypeName("AzureWorkloadSQLRestoreRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "AzureWorkloadSQLPointInTimeRestoreRequest",
-        value = AzureWorkloadSqlPointInTimeRestoreRequest.class),
-    @JsonSubTypes.Type(
-        name = "AzureWorkloadSQLRestoreWithRehydrateRequest",
-        value = AzureWorkloadSqlRestoreWithRehydrateRequest.class)
-})
+/**
+ * AzureWorkload SQL -specific restore. Specifically for full/diff restore.
+ */
 @Fluent
 public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "AzureWorkloadSQLRestoreRequest";
+
+    /*
      * Default option set to true. If this is set to false, alternate data directory must be provided
      */
-    @JsonProperty(value = "shouldUseAlternateTargetLocation")
     private Boolean shouldUseAlternateTargetLocation;
 
     /*
      * SQL specific property where user can chose to set no-recovery when restore operation is tried
      */
-    @JsonProperty(value = "isNonRecoverable")
     private Boolean isNonRecoverable;
 
     /*
      * Data directory details
      */
-    @JsonProperty(value = "alternateDirectoryPaths")
     private List<SqlDataDirectoryMapping> alternateDirectoryPaths;
 
-    /** Creates an instance of AzureWorkloadSqlRestoreRequest class. */
+    /**
+     * Creates an instance of AzureWorkloadSqlRestoreRequest class.
+     */
     public AzureWorkloadSqlRestoreRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
      * Get the shouldUseAlternateTargetLocation property: Default option set to true. If this is set to false, alternate
      * data directory must be provided.
-     *
+     * 
      * @return the shouldUseAlternateTargetLocation value.
      */
     public Boolean shouldUseAlternateTargetLocation() {
@@ -64,12 +68,12 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
     /**
      * Set the shouldUseAlternateTargetLocation property: Default option set to true. If this is set to false, alternate
      * data directory must be provided.
-     *
+     * 
      * @param shouldUseAlternateTargetLocation the shouldUseAlternateTargetLocation value to set.
      * @return the AzureWorkloadSqlRestoreRequest object itself.
      */
-    public AzureWorkloadSqlRestoreRequest withShouldUseAlternateTargetLocation(
-        Boolean shouldUseAlternateTargetLocation) {
+    public AzureWorkloadSqlRestoreRequest
+        withShouldUseAlternateTargetLocation(Boolean shouldUseAlternateTargetLocation) {
         this.shouldUseAlternateTargetLocation = shouldUseAlternateTargetLocation;
         return this;
     }
@@ -77,7 +81,7 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
     /**
      * Get the isNonRecoverable property: SQL specific property where user can chose to set no-recovery when restore
      * operation is tried.
-     *
+     * 
      * @return the isNonRecoverable value.
      */
     public Boolean isNonRecoverable() {
@@ -87,7 +91,7 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
     /**
      * Set the isNonRecoverable property: SQL specific property where user can chose to set no-recovery when restore
      * operation is tried.
-     *
+     * 
      * @param isNonRecoverable the isNonRecoverable value to set.
      * @return the AzureWorkloadSqlRestoreRequest object itself.
      */
@@ -98,7 +102,7 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
 
     /**
      * Get the alternateDirectoryPaths property: Data directory details.
-     *
+     * 
      * @return the alternateDirectoryPaths value.
      */
     public List<SqlDataDirectoryMapping> alternateDirectoryPaths() {
@@ -107,52 +111,93 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
 
     /**
      * Set the alternateDirectoryPaths property: Data directory details.
-     *
+     * 
      * @param alternateDirectoryPaths the alternateDirectoryPaths value to set.
      * @return the AzureWorkloadSqlRestoreRequest object itself.
      */
-    public AzureWorkloadSqlRestoreRequest withAlternateDirectoryPaths(
-        List<SqlDataDirectoryMapping> alternateDirectoryPaths) {
+    public AzureWorkloadSqlRestoreRequest
+        withAlternateDirectoryPaths(List<SqlDataDirectoryMapping> alternateDirectoryPaths) {
         this.alternateDirectoryPaths = alternateDirectoryPaths;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreRequest withRecoveryType(RecoveryType recoveryType) {
         super.withRecoveryType(recoveryType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreRequest withPropertyBag(Map<String, String> propertyBag) {
         super.withPropertyBag(propertyBag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreRequest withTargetInfo(TargetRestoreInfo targetInfo) {
         super.withTargetInfo(targetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlRestoreRequest withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlRestoreRequest
+        withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails userAssignedManagedIdentityDetails) {
+        super.withUserAssignedManagedIdentityDetails(userAssignedManagedIdentityDetails);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlRestoreRequest
+        withSnapshotRestoreParameters(SnapshotRestoreParameters snapshotRestoreParameters) {
+        super.withSnapshotRestoreParameters(snapshotRestoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
@@ -160,15 +205,151 @@ public class AzureWorkloadSqlRestoreRequest extends AzureWorkloadRestoreRequest 
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlRestoreRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (alternateDirectoryPaths() != null) {
             alternateDirectoryPaths().forEach(e -> e.validate());
         }
+        if (targetInfo() != null) {
+            targetInfo().validate();
+        }
+        if (userAssignedManagedIdentityDetails() != null) {
+            userAssignedManagedIdentityDetails().validate();
+        }
+        if (snapshotRestoreParameters() != null) {
+            snapshotRestoreParameters().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("recoveryType", recoveryType() == null ? null : recoveryType().toString());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeMapField("propertyBag", propertyBag(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("targetInfo", targetInfo());
+        jsonWriter.writeStringField("recoveryMode", recoveryMode() == null ? null : recoveryMode().toString());
+        jsonWriter.writeStringField("targetResourceGroupName", targetResourceGroupName());
+        jsonWriter.writeJsonField("userAssignedManagedIdentityDetails", userAssignedManagedIdentityDetails());
+        jsonWriter.writeJsonField("snapshotRestoreParameters", snapshotRestoreParameters());
+        jsonWriter.writeStringField("targetVirtualMachineId", targetVirtualMachineId());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeBooleanField("shouldUseAlternateTargetLocation", this.shouldUseAlternateTargetLocation);
+        jsonWriter.writeBooleanField("isNonRecoverable", this.isNonRecoverable);
+        jsonWriter.writeArrayField("alternateDirectoryPaths", this.alternateDirectoryPaths,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWorkloadSqlRestoreRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWorkloadSqlRestoreRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWorkloadSqlRestoreRequest.
+     */
+    public static AzureWorkloadSqlRestoreRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureWorkloadSQLPointInTimeRestoreRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlPointInTimeRestoreRequest.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSQLRestoreWithRehydrateRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlRestoreWithRehydrateRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AzureWorkloadSqlRestoreRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWorkloadSqlRestoreRequest deserializedAzureWorkloadSqlRestoreRequest
+                = new AzureWorkloadSqlRestoreRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureWorkloadSqlRestoreRequest
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("recoveryType".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRestoreRequest
+                        .withRecoveryType(RecoveryType.fromString(reader.getString()));
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRestoreRequest.withSourceResourceId(reader.getString());
+                } else if ("propertyBag".equals(fieldName)) {
+                    Map<String, String> propertyBag = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureWorkloadSqlRestoreRequest.withPropertyBag(propertyBag);
+                } else if ("targetInfo".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRestoreRequest.withTargetInfo(TargetRestoreInfo.fromJson(reader));
+                } else if ("recoveryMode".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRestoreRequest
+                        .withRecoveryMode(RecoveryMode.fromString(reader.getString()));
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRestoreRequest.withTargetResourceGroupName(reader.getString());
+                } else if ("userAssignedManagedIdentityDetails".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRestoreRequest
+                        .withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails.fromJson(reader));
+                } else if ("snapshotRestoreParameters".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRestoreRequest
+                        .withSnapshotRestoreParameters(SnapshotRestoreParameters.fromJson(reader));
+                } else if ("targetVirtualMachineId".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRestoreRequest.withTargetVirtualMachineId(reader.getString());
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRestoreRequest.objectType = reader.getString();
+                } else if ("shouldUseAlternateTargetLocation".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRestoreRequest.shouldUseAlternateTargetLocation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isNonRecoverable".equals(fieldName)) {
+                    deserializedAzureWorkloadSqlRestoreRequest.isNonRecoverable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("alternateDirectoryPaths".equals(fieldName)) {
+                    List<SqlDataDirectoryMapping> alternateDirectoryPaths
+                        = reader.readArray(reader1 -> SqlDataDirectoryMapping.fromJson(reader1));
+                    deserializedAzureWorkloadSqlRestoreRequest.alternateDirectoryPaths = alternateDirectoryPaths;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWorkloadSqlRestoreRequest;
+        });
     }
 }

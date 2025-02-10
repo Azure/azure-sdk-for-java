@@ -7,11 +7,13 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of StartMenuItems. */
+/**
+ * Resource collection API of StartMenuItems.
+ */
 public interface StartMenuItems {
     /**
      * List start menu items in the given application group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface StartMenuItems {
 
     /**
      * List start menu items in the given application group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param pageSize Number of items per page.
@@ -35,11 +37,6 @@ public interface StartMenuItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return startMenuItemList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<StartMenuItem> list(
-        String resourceGroupName,
-        String applicationGroupName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context);
+    PagedIterable<StartMenuItem> list(String resourceGroupName, String applicationGroupName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context);
 }

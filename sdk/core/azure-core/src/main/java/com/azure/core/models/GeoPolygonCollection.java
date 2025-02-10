@@ -5,6 +5,7 @@ package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -17,7 +18,25 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a collection of {@link GeoPolygon GeoPolygons}.
+ * <p>Represents a collection of {@link GeoPolygon GeoPolygons} in GeoJSON format.</p>
+ *
+ * <p>This class encapsulates a list of {@link GeoPolygon} instances that form a collection of polygons. Each polygon
+ * is defined by a list of {@link GeoLinearRing} instances that form the boundary of the polygon.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the collection of polygons to JSON,
+ * and a {@link #fromJson(JsonReader)} method to deserialize a collection of polygons from JSON.</p>
+ *
+ * <p>This class is useful when you want to work with a collection of polygons in a geographic context. For example,
+ * you can use it to represent a complex geographic area on a map that is composed of multiple polygons.</p>
+ *
+ * <p>Note: A polygon collection requires at least one ring for each polygon, and each ring requires at least
+ * 4 coordinates (with the first and last coordinates being the same to form a closed loop).</p>
+ *
+ * @see GeoPolygon
+ * @see GeoLinearRing
+ * @see GeoPosition
+ * @see GeoObject
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoPolygonCollection extends GeoObject {
@@ -130,8 +149,8 @@ public final class GeoPolygonCollection extends GeoObject {
                             + "'MultiPolygon'. The found 'type' was '" + type + "'.");
                     }
                 } else if ("coordinates".equals(fieldName)) {
-                    List<List<GeoLinearRing>> polygonRings =
-                        reader.readArray(polygon -> polygon.readArray(GeoLinearRing::fromJson));
+                    List<List<GeoLinearRing>> polygonRings
+                        = reader.readArray(polygon -> polygon.readArray(GeoLinearRing::fromJson));
                     polygons = new ArrayList<>(polygonRings.size());
                     for (List<GeoLinearRing> rings : polygonRings) {
                         polygons.add(new GeoPolygon(rings));

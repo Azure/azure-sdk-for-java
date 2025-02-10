@@ -6,26 +6,47 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ReplicationMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** Distributed availability group between box and Sql Managed Instance. */
+/**
+ * Distributed availability group between box and Sql Managed Instance.
+ */
 @Fluent
 public final class DistributedAvailabilityGroupInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private DistributedAvailabilityGroupProperties innerProperties;
 
-    /** Creates an instance of DistributedAvailabilityGroupInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DistributedAvailabilityGroupInner class.
+     */
     public DistributedAvailabilityGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DistributedAvailabilityGroupProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the targetDatabase property: The name of the target database.
-     *
+     * 
      * @return the targetDatabase value.
      */
     public String targetDatabase() {
@@ -43,7 +94,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Set the targetDatabase property: The name of the target database.
-     *
+     * 
      * @param targetDatabase the targetDatabase value to set.
      * @return the DistributedAvailabilityGroupInner object itself.
      */
@@ -57,7 +108,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Get the sourceEndpoint property: The source endpoint.
-     *
+     * 
      * @return the sourceEndpoint value.
      */
     public String sourceEndpoint() {
@@ -66,7 +117,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Set the sourceEndpoint property: The source endpoint.
-     *
+     * 
      * @param sourceEndpoint the sourceEndpoint value to set.
      * @return the DistributedAvailabilityGroupInner object itself.
      */
@@ -80,7 +131,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Get the primaryAvailabilityGroupName property: The primary availability group name.
-     *
+     * 
      * @return the primaryAvailabilityGroupName value.
      */
     public String primaryAvailabilityGroupName() {
@@ -89,7 +140,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Set the primaryAvailabilityGroupName property: The primary availability group name.
-     *
+     * 
      * @param primaryAvailabilityGroupName the primaryAvailabilityGroupName value to set.
      * @return the DistributedAvailabilityGroupInner object itself.
      */
@@ -103,7 +154,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Get the secondaryAvailabilityGroupName property: The secondary availability group name.
-     *
+     * 
      * @return the secondaryAvailabilityGroupName value.
      */
     public String secondaryAvailabilityGroupName() {
@@ -112,7 +163,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Set the secondaryAvailabilityGroupName property: The secondary availability group name.
-     *
+     * 
      * @param secondaryAvailabilityGroupName the secondaryAvailabilityGroupName value to set.
      * @return the DistributedAvailabilityGroupInner object itself.
      */
@@ -127,7 +178,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
     /**
      * Get the replicationMode property: The replication mode of a distributed availability group. Parameter will be
      * ignored during link creation.
-     *
+     * 
      * @return the replicationMode value.
      */
     public ReplicationMode replicationMode() {
@@ -137,7 +188,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
     /**
      * Set the replicationMode property: The replication mode of a distributed availability group. Parameter will be
      * ignored during link creation.
-     *
+     * 
      * @param replicationMode the replicationMode value to set.
      * @return the DistributedAvailabilityGroupInner object itself.
      */
@@ -151,7 +202,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Get the distributedAvailabilityGroupId property: The distributed availability group id.
-     *
+     * 
      * @return the distributedAvailabilityGroupId value.
      */
     public UUID distributedAvailabilityGroupId() {
@@ -160,7 +211,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Get the sourceReplicaId property: The source replica id.
-     *
+     * 
      * @return the sourceReplicaId value.
      */
     public UUID sourceReplicaId() {
@@ -169,7 +220,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Get the targetReplicaId property: The target replica id.
-     *
+     * 
      * @return the targetReplicaId value.
      */
     public UUID targetReplicaId() {
@@ -178,7 +229,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Get the linkState property: The link state.
-     *
+     * 
      * @return the linkState value.
      */
     public String linkState() {
@@ -187,7 +238,7 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Get the lastHardenedLsn property: The last hardened lsn.
-     *
+     * 
      * @return the lastHardenedLsn value.
      */
     public String lastHardenedLsn() {
@@ -196,12 +247,57 @@ public final class DistributedAvailabilityGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DistributedAvailabilityGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DistributedAvailabilityGroupInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DistributedAvailabilityGroupInner.
+     */
+    public static DistributedAvailabilityGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DistributedAvailabilityGroupInner deserializedDistributedAvailabilityGroupInner
+                = new DistributedAvailabilityGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupInner.innerProperties
+                        = DistributedAvailabilityGroupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDistributedAvailabilityGroupInner;
+        });
     }
 }

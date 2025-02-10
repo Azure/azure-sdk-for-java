@@ -5,55 +5,55 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** itemActivity. */
+/**
+ * itemActivity.
+ */
 @Fluent
 public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
     /*
      * accessAction
      */
-    @JsonProperty(value = "access")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> access;
 
     /*
      * Details about when the activity took place. Read-only.
      */
-    @JsonProperty(value = "activityDateTime")
     private OffsetDateTime activityDateTime;
 
     /*
      * identitySet
      */
-    @JsonProperty(value = "actor")
     private MicrosoftGraphIdentitySet actor;
 
     /*
      * driveItem
      */
-    @JsonProperty(value = "driveItem")
     private MicrosoftGraphDriveItem driveItem;
 
     /*
      * itemActivity
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphItemActivity class. */
+    /**
+     * Creates an instance of MicrosoftGraphItemActivity class.
+     */
     public MicrosoftGraphItemActivity() {
     }
 
     /**
      * Get the access property: accessAction.
-     *
+     * 
      * @return the access value.
      */
     public Map<String, Object> access() {
@@ -62,7 +62,7 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
 
     /**
      * Set the access property: accessAction.
-     *
+     * 
      * @param access the access value to set.
      * @return the MicrosoftGraphItemActivity object itself.
      */
@@ -73,7 +73,7 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
 
     /**
      * Get the activityDateTime property: Details about when the activity took place. Read-only.
-     *
+     * 
      * @return the activityDateTime value.
      */
     public OffsetDateTime activityDateTime() {
@@ -82,7 +82,7 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
 
     /**
      * Set the activityDateTime property: Details about when the activity took place. Read-only.
-     *
+     * 
      * @param activityDateTime the activityDateTime value to set.
      * @return the MicrosoftGraphItemActivity object itself.
      */
@@ -93,7 +93,7 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
 
     /**
      * Get the actor property: identitySet.
-     *
+     * 
      * @return the actor value.
      */
     public MicrosoftGraphIdentitySet actor() {
@@ -102,7 +102,7 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
 
     /**
      * Set the actor property: identitySet.
-     *
+     * 
      * @param actor the actor value to set.
      * @return the MicrosoftGraphItemActivity object itself.
      */
@@ -113,7 +113,7 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
 
     /**
      * Get the driveItem property: driveItem.
-     *
+     * 
      * @return the driveItem value.
      */
     public MicrosoftGraphDriveItem driveItem() {
@@ -122,7 +122,7 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
 
     /**
      * Set the driveItem property: driveItem.
-     *
+     * 
      * @param driveItem the driveItem value to set.
      * @return the MicrosoftGraphItemActivity object itself.
      */
@@ -133,17 +133,16 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: itemActivity.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: itemActivity.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphItemActivity object itself.
      */
@@ -152,15 +151,9 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphItemActivity withId(String id) {
         super.withId(id);
@@ -169,7 +162,7 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -181,5 +174,69 @@ public final class MicrosoftGraphItemActivity extends MicrosoftGraphEntity {
         if (driveItem() != null) {
             driveItem().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeMapField("access", this.access, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("activityDateTime",
+            this.activityDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.activityDateTime));
+        jsonWriter.writeJsonField("actor", this.actor);
+        jsonWriter.writeJsonField("driveItem", this.driveItem);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphItemActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphItemActivity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphItemActivity.
+     */
+    public static MicrosoftGraphItemActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphItemActivity deserializedMicrosoftGraphItemActivity = new MicrosoftGraphItemActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivity.withId(reader.getString());
+                } else if ("access".equals(fieldName)) {
+                    Map<String, Object> access = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphItemActivity.access = access;
+                } else if ("activityDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivity.activityDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("actor".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivity.actor = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("driveItem".equals(fieldName)) {
+                    deserializedMicrosoftGraphItemActivity.driveItem = MicrosoftGraphDriveItem.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphItemActivity.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphItemActivity;
+        });
     }
 }

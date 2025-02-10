@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DeleteOptions extends ExpandableStringEnum<DeleteOptions> {
      * @param name a name to look for.
      * @return the corresponding DeleteOptions.
      */
-    @JsonCreator
     public static DeleteOptions fromString(String name) {
         return fromString(name, DeleteOptions.class);
     }

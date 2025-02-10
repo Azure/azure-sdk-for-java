@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Create mode to indicate recovery of existing soft deleted data source or creation of new data source. */
+/**
+ * Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
+ */
 public final class CreateMode extends ExpandableStringEnum<CreateMode> {
-    /** Static value Invalid for CreateMode. */
+    /**
+     * Static value Invalid for CreateMode.
+     */
     public static final CreateMode INVALID = fromString("Invalid");
 
-    /** Static value Default for CreateMode. */
+    /**
+     * Static value Default for CreateMode.
+     */
     public static final CreateMode DEFAULT = fromString("Default");
 
-    /** Static value Recover for CreateMode. */
+    /**
+     * Static value Recover for CreateMode.
+     */
     public static final CreateMode RECOVER = fromString("Recover");
 
     /**
      * Creates a new instance of CreateMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class CreateMode extends ExpandableStringEnum<CreateMode> {
 
     /**
      * Creates or finds a CreateMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CreateMode.
      */
-    @JsonCreator
     public static CreateMode fromString(String name) {
         return fromString(name, CreateMode.class);
     }
 
     /**
      * Gets known CreateMode values.
-     *
+     * 
      * @return known CreateMode values.
      */
     public static Collection<CreateMode> values() {

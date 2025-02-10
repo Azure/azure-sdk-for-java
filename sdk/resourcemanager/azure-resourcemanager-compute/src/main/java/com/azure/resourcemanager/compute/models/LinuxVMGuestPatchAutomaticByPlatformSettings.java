@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies additional settings to be applied when patch mode AutomaticByPlatform is selected in Linux patch settings.
  */
 @Fluent
-public final class LinuxVMGuestPatchAutomaticByPlatformSettings {
+public final class LinuxVMGuestPatchAutomaticByPlatformSettings
+    implements JsonSerializable<LinuxVMGuestPatchAutomaticByPlatformSettings> {
     /*
      * Specifies the reboot setting for all AutomaticByPlatform patch installation operations.
      */
-    @JsonProperty(value = "rebootSetting")
     private LinuxVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting;
 
     /*
      * Enables customer to schedule patching without accidental upgrades
      */
-    @JsonProperty(value = "bypassPlatformSafetyChecksOnUserSchedule")
     private Boolean bypassPlatformSafetyChecksOnUserSchedule;
 
     /**
@@ -82,5 +85,48 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rebootSetting", this.rebootSetting == null ? null : this.rebootSetting.toString());
+        jsonWriter.writeBooleanField("bypassPlatformSafetyChecksOnUserSchedule",
+            this.bypassPlatformSafetyChecksOnUserSchedule);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinuxVMGuestPatchAutomaticByPlatformSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinuxVMGuestPatchAutomaticByPlatformSettings if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinuxVMGuestPatchAutomaticByPlatformSettings.
+     */
+    public static LinuxVMGuestPatchAutomaticByPlatformSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinuxVMGuestPatchAutomaticByPlatformSettings deserializedLinuxVMGuestPatchAutomaticByPlatformSettings
+                = new LinuxVMGuestPatchAutomaticByPlatformSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rebootSetting".equals(fieldName)) {
+                    deserializedLinuxVMGuestPatchAutomaticByPlatformSettings.rebootSetting
+                        = LinuxVMGuestPatchAutomaticByPlatformRebootSetting.fromString(reader.getString());
+                } else if ("bypassPlatformSafetyChecksOnUserSchedule".equals(fieldName)) {
+                    deserializedLinuxVMGuestPatchAutomaticByPlatformSettings.bypassPlatformSafetyChecksOnUserSchedule
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinuxVMGuestPatchAutomaticByPlatformSettings;
+        });
     }
 }

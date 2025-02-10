@@ -11,16 +11,19 @@ public final class OdbcSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OdbcSource model = BinaryData.fromString(
-            "{\"type\":\"OdbcSource\",\"query\":\"databdkxlwcku\",\"queryTimeout\":\"datazkzjjtapvqjebtd\",\"additionalColumns\":\"datagkeexsozpkvylvty\",\"sourceRetryCount\":\"datatfqpmpywwybu\",\"sourceRetryWait\":\"datamjc\",\"maxConcurrentConnections\":\"dataoecdqun\",\"disableMetricsCollection\":\"dataqcocc\",\"\":{\"rbyrb\":\"dataj\"}}")
+            "{\"type\":\"OdbcSource\",\"query\":\"databnekhjzbfb\",\"queryTimeout\":\"dataeqkuozarr\",\"additionalColumns\":\"datapyzryjb\",\"sourceRetryCount\":\"databcvoyqnrjdrc\",\"sourceRetryWait\":\"datarvzewogh\",\"maxConcurrentConnections\":\"datazxkjqecj\",\"disableMetricsCollection\":\"dataromeawthycbigpi\",\"\":{\"lawakhe\":\"dataxhzjnparsulmu\",\"talo\":\"dataxxqgoavzycxpza\",\"r\":\"datamftmxwtwzs\",\"qhfvouyqzhoik\":\"datarf\"}}")
             .toObject(OdbcSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OdbcSource model = new OdbcSource().withSourceRetryCount("datatfqpmpywwybu").withSourceRetryWait("datamjc")
-            .withMaxConcurrentConnections("dataoecdqun").withDisableMetricsCollection("dataqcocc")
-            .withQueryTimeout("datazkzjjtapvqjebtd").withAdditionalColumns("datagkeexsozpkvylvty")
-            .withQuery("databdkxlwcku");
+        OdbcSource model = new OdbcSource().withSourceRetryCount("databcvoyqnrjdrc")
+            .withSourceRetryWait("datarvzewogh")
+            .withMaxConcurrentConnections("datazxkjqecj")
+            .withDisableMetricsCollection("dataromeawthycbigpi")
+            .withQueryTimeout("dataeqkuozarr")
+            .withAdditionalColumns("datapyzryjb")
+            .withQuery("databnekhjzbfb");
         model = BinaryData.fromObject(model).toObject(OdbcSource.class);
     }
 }

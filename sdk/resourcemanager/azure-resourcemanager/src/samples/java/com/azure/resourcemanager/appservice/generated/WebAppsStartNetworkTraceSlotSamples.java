@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WebAppsStartNetworkTraceSlotSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/StartWebSiteNetworkTraceOperation.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/StartWebSiteNetworkTraceOperation.
      * json
      */
     /**
@@ -19,7 +19,11 @@ public final class WebAppsStartNetworkTraceSlotSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void startANewNetworkTraceOperationForASite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().startNetworkTraceSlot("testrg123", "SampleApp",
-            "Production", 60, null, null, com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .startNetworkTraceSlot("testrg123", "SampleApp", "Production", 60, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,82 +4,83 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for TenantActivityLogs List. */
+/**
+ * Samples for TenantActivityLogs List.
+ */
 public final class TenantActivityLogsListSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/GetTenantActivityLogsFilteredAndSelected.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/
+     * GetTenantActivityLogsFilteredAndSelected.json
      */
     /**
      * Sample code: Get Tenant Activity Logs with filter and select.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTenantActivityLogsWithFilterAndSelect(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getTenantActivityLogs()
             .list(
-                "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and"
-                    + " resourceGroupName eq 'MSSupportGroup'",
+                "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and resourceGroupName eq 'MSSupportGroup'",
                 "eventName,id,resourceGroupName,resourceProviderName,operationName,status,eventTimestamp,correlationId,submissionTimestamp,level",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/GetTenantActivityLogsSelected.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/
+     * GetTenantActivityLogsSelected.json
      */
     /**
      * Sample code: Get Tenant Activity Logs with select.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTenantActivityLogsWithSelect(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getTenantActivityLogs()
-            .list(
-                null,
+            .list(null,
                 "eventName,id,resourceGroupName,resourceProviderName,operationName,status,eventTimestamp,correlationId,submissionTimestamp,level",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/GetTenantActivityLogsFiltered.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/
+     * GetTenantActivityLogsFiltered.json
      */
     /**
      * Sample code: Get Tenant Activity Logs with filter.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTenantActivityLogsWithFilter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getTenantActivityLogs()
             .list(
-                "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and"
-                    + " resourceGroupName eq 'MSSupportGroup'",
-                null,
-                Context.NONE);
+                "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and resourceGroupName eq 'MSSupportGroup'",
+                null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/GetTenantActivityLogsNoParams.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/
+     * GetTenantActivityLogsNoParams.json
      */
     /**
      * Sample code: Get Tenant Activity Logs without filter or select.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getTenantActivityLogsWithoutFilterOrSelect(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getTenantActivityLogs().list(null, null, Context.NONE);
+    public static void
+        getTenantActivityLogsWithoutFilterOrSelect(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getTenantActivityLogs()
+            .list(null, null, com.azure.core.util.Context.NONE);
     }
 }

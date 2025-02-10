@@ -17,13 +17,12 @@ import java.util.UUID;
  */
 public class DefaultHeartBeatPropertyProvider implements HeartBeatPayloadProviderInterface {
 
-    private static final Logger logger =
-        LoggerFactory.getLogger(DefaultHeartBeatPropertyProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultHeartBeatPropertyProvider.class);
 
     /**
      * Collection holding default properties for this default provider.
      */
-    private final Set<String> defaultFields;
+    final Set<String> defaultFields;
 
     /**
      * Random GUID that would help in analysis when app has stopped and restarted. Each restart will
@@ -61,16 +60,20 @@ public class DefaultHeartBeatPropertyProvider implements HeartBeatPayloadProvide
                             case JRE_VERSION:
                                 provider.addHeartBeatProperty(fieldName, getJreVersion(), true);
                                 break;
+
                             case SDK_VERSION:
                                 provider.addHeartBeatProperty(fieldName, getSdkVersion(), true);
                                 break;
+
                             case OS_VERSION:
                             case OS_TYPE:
                                 provider.addHeartBeatProperty(fieldName, getOsVersion(), true);
                                 break;
+
                             case PROCESS_SESSION_ID:
                                 provider.addHeartBeatProperty(fieldName, getProcessSessionId(), true);
                                 break;
+
                             default:
                                 // We won't accept unknown properties in default providers.
                                 logger.trace("Encountered unknown default property");

@@ -4,284 +4,179 @@
 
 package com.azure.resourcemanager.billing.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.billing.models.Amount;
-import com.azure.resourcemanager.billing.models.Document;
-import com.azure.resourcemanager.billing.models.InvoiceDocumentType;
-import com.azure.resourcemanager.billing.models.InvoiceStatus;
-import com.azure.resourcemanager.billing.models.InvoiceType;
-import com.azure.resourcemanager.billing.models.PaymentProperties;
-import com.azure.resourcemanager.billing.models.RebillDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
-import java.util.List;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.billing.models.InvoiceProperties;
+import com.azure.resourcemanager.billing.models.ProxyResourceWithTags;
+import java.io.IOException;
 import java.util.Map;
 
-/** An invoice. */
-@Immutable
-public final class InvoiceInner extends ProxyResource {
+/**
+ * An invoice.
+ */
+@Fluent
+public final class InvoiceInner extends ProxyResourceWithTags {
     /*
      * An invoice.
      */
-    @JsonProperty(value = "properties")
-    private InvoiceProperties innerProperties;
+    private InvoiceProperties properties;
 
-    /** Creates an instance of InvoiceInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of InvoiceInner class.
+     */
     public InvoiceInner() {
     }
 
     /**
-     * Get the innerProperties property: An invoice.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: An invoice.
+     * 
+     * @return the properties value.
      */
-    private InvoiceProperties innerProperties() {
-        return this.innerProperties;
+    public InvoiceProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the dueDate property: The due date for the invoice.
-     *
-     * @return the dueDate value.
+     * Set the properties property: An invoice.
+     * 
+     * @param properties the properties value to set.
+     * @return the InvoiceInner object itself.
      */
-    public OffsetDateTime dueDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().dueDate();
+    public InvoiceInner withProperties(InvoiceProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
-     * Get the invoiceDate property: The date when the invoice was generated.
-     *
-     * @return the invoiceDate value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public OffsetDateTime invoiceDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().invoiceDate();
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Get the status property: The current status of the invoice.
-     *
-     * @return the status value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public InvoiceStatus status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the amountDue property: The amount due as of now.
-     *
-     * @return the amountDue value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public Amount amountDue() {
-        return this.innerProperties() == null ? null : this.innerProperties().amountDue();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the azurePrepaymentApplied property: The amount of Azure prepayment applied to the charges. This field is
-     * applicable to billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @return the azurePrepaymentApplied value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public Amount azurePrepaymentApplied() {
-        return this.innerProperties() == null ? null : this.innerProperties().azurePrepaymentApplied();
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the billedAmount property: The total charges for the invoice billing period.
-     *
-     * @return the billedAmount value.
+     * {@inheritDoc}
      */
-    public Amount billedAmount() {
-        return this.innerProperties() == null ? null : this.innerProperties().billedAmount();
-    }
-
-    /**
-     * Get the creditAmount property: The total refund for returns and cancellations during the invoice billing period.
-     * This field is applicable to billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @return the creditAmount value.
-     */
-    public Amount creditAmount() {
-        return this.innerProperties() == null ? null : this.innerProperties().creditAmount();
-    }
-
-    /**
-     * Get the freeAzureCreditApplied property: The amount of free Azure credits applied to the charges. This field is
-     * applicable to billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @return the freeAzureCreditApplied value.
-     */
-    public Amount freeAzureCreditApplied() {
-        return this.innerProperties() == null ? null : this.innerProperties().freeAzureCreditApplied();
-    }
-
-    /**
-     * Get the subTotal property: The pre-tax amount due. This field is applicable to billing accounts with agreement
-     * type Microsoft Customer Agreement.
-     *
-     * @return the subTotal value.
-     */
-    public Amount subTotal() {
-        return this.innerProperties() == null ? null : this.innerProperties().subTotal();
-    }
-
-    /**
-     * Get the taxAmount property: The amount of tax charged for the billing period. This field is applicable to billing
-     * accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @return the taxAmount value.
-     */
-    public Amount taxAmount() {
-        return this.innerProperties() == null ? null : this.innerProperties().taxAmount();
-    }
-
-    /**
-     * Get the totalAmount property: The amount due when the invoice was generated. This field is applicable to billing
-     * accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @return the totalAmount value.
-     */
-    public Amount totalAmount() {
-        return this.innerProperties() == null ? null : this.innerProperties().totalAmount();
-    }
-
-    /**
-     * Get the invoicePeriodStartDate property: The start date of the billing period for which the invoice is generated.
-     *
-     * @return the invoicePeriodStartDate value.
-     */
-    public OffsetDateTime invoicePeriodStartDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().invoicePeriodStartDate();
-    }
-
-    /**
-     * Get the invoicePeriodEndDate property: The end date of the billing period for which the invoice is generated.
-     *
-     * @return the invoicePeriodEndDate value.
-     */
-    public OffsetDateTime invoicePeriodEndDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().invoicePeriodEndDate();
-    }
-
-    /**
-     * Get the invoiceType property: Invoice type.
-     *
-     * @return the invoiceType value.
-     */
-    public InvoiceType invoiceType() {
-        return this.innerProperties() == null ? null : this.innerProperties().invoiceType();
-    }
-
-    /**
-     * Get the isMonthlyInvoice property: Specifies if the invoice is generated as part of monthly invoicing cycle or
-     * not. This field is applicable to billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @return the isMonthlyInvoice value.
-     */
-    public Boolean isMonthlyInvoice() {
-        return this.innerProperties() == null ? null : this.innerProperties().isMonthlyInvoice();
-    }
-
-    /**
-     * Get the billingProfileId property: The ID of the billing profile for which the invoice is generated.
-     *
-     * @return the billingProfileId value.
-     */
-    public String billingProfileId() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
-    }
-
-    /**
-     * Get the billingProfileDisplayName property: The name of the billing profile for which the invoice is generated.
-     *
-     * @return the billingProfileDisplayName value.
-     */
-    public String billingProfileDisplayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().billingProfileDisplayName();
-    }
-
-    /**
-     * Get the purchaseOrderNumber property: An optional purchase order number for the invoice.
-     *
-     * @return the purchaseOrderNumber value.
-     */
-    public String purchaseOrderNumber() {
-        return this.innerProperties() == null ? null : this.innerProperties().purchaseOrderNumber();
-    }
-
-    /**
-     * Get the documents property: List of documents available to download such as invoice and tax receipt.
-     *
-     * @return the documents value.
-     */
-    public List<Document> documents() {
-        return this.innerProperties() == null ? null : this.innerProperties().documents();
-    }
-
-    /**
-     * Get the payments property: List of payments.
-     *
-     * @return the payments value.
-     */
-    public List<PaymentProperties> payments() {
-        return this.innerProperties() == null ? null : this.innerProperties().payments();
-    }
-
-    /**
-     * Get the rebillDetails property: Rebill details for an invoice.
-     *
-     * @return the rebillDetails value.
-     */
-    public Map<String, RebillDetails> rebillDetails() {
-        return this.innerProperties() == null ? null : this.innerProperties().rebillDetails();
-    }
-
-    /**
-     * Get the documentType property: The type of the document.
-     *
-     * @return the documentType value.
-     */
-    public InvoiceDocumentType documentType() {
-        return this.innerProperties() == null ? null : this.innerProperties().documentType();
-    }
-
-    /**
-     * Get the billedDocumentId property: The Id of the active invoice which is originally billed after this invoice was
-     * voided. This field is applicable to the void invoices only.
-     *
-     * @return the billedDocumentId value.
-     */
-    public String billedDocumentId() {
-        return this.innerProperties() == null ? null : this.innerProperties().billedDocumentId();
-    }
-
-    /**
-     * Get the creditForDocumentId property: The Id of the invoice which got voided and this credit note was issued as a
-     * result. This field is applicable to the credit notes only.
-     *
-     * @return the creditForDocumentId value.
-     */
-    public String creditForDocumentId() {
-        return this.innerProperties() == null ? null : this.innerProperties().creditForDocumentId();
-    }
-
-    /**
-     * Get the subscriptionId property: The ID of the subscription for which the invoice is generated.
-     *
-     * @return the subscriptionId value.
-     */
-    public String subscriptionId() {
-        return this.innerProperties() == null ? null : this.innerProperties().subscriptionId();
+    @Override
+    public InvoiceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InvoiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InvoiceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InvoiceInner.
+     */
+    public static InvoiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InvoiceInner deserializedInvoiceInner = new InvoiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedInvoiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedInvoiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedInvoiceInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInvoiceInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedInvoiceInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInvoiceInner.properties = InvoiceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInvoiceInner;
+        });
     }
 }

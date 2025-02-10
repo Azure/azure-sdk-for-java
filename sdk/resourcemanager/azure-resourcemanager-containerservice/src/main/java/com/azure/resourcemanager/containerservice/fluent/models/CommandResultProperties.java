@@ -5,48 +5,47 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The results of a run command.
  */
 @Immutable
-public final class CommandResultProperties {
+public final class CommandResultProperties implements JsonSerializable<CommandResultProperties> {
     /*
      * provisioning State
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The exit code of the command
      */
-    @JsonProperty(value = "exitCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer exitCode;
 
     /*
      * The time when the command started.
      */
-    @JsonProperty(value = "startedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedAt;
 
     /*
      * The time when the command finished.
      */
-    @JsonProperty(value = "finishedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime finishedAt;
 
     /*
      * The command output.
      */
-    @JsonProperty(value = "logs", access = JsonProperty.Access.WRITE_ONLY)
     private String logs;
 
     /*
      * An explanation of why provisioningState is set to failed (if so).
      */
-    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
     /**
@@ -57,7 +56,7 @@ public final class CommandResultProperties {
 
     /**
      * Get the provisioningState property: provisioning State.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -66,7 +65,7 @@ public final class CommandResultProperties {
 
     /**
      * Get the exitCode property: The exit code of the command.
-     *
+     * 
      * @return the exitCode value.
      */
     public Integer exitCode() {
@@ -75,7 +74,7 @@ public final class CommandResultProperties {
 
     /**
      * Get the startedAt property: The time when the command started.
-     *
+     * 
      * @return the startedAt value.
      */
     public OffsetDateTime startedAt() {
@@ -84,7 +83,7 @@ public final class CommandResultProperties {
 
     /**
      * Get the finishedAt property: The time when the command finished.
-     *
+     * 
      * @return the finishedAt value.
      */
     public OffsetDateTime finishedAt() {
@@ -93,7 +92,7 @@ public final class CommandResultProperties {
 
     /**
      * Get the logs property: The command output.
-     *
+     * 
      * @return the logs value.
      */
     public String logs() {
@@ -102,7 +101,7 @@ public final class CommandResultProperties {
 
     /**
      * Get the reason property: An explanation of why provisioningState is set to failed (if so).
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -111,9 +110,56 @@ public final class CommandResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommandResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommandResultProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommandResultProperties.
+     */
+    public static CommandResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommandResultProperties deserializedCommandResultProperties = new CommandResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedCommandResultProperties.provisioningState = reader.getString();
+                } else if ("exitCode".equals(fieldName)) {
+                    deserializedCommandResultProperties.exitCode = reader.getNullable(JsonReader::getInt);
+                } else if ("startedAt".equals(fieldName)) {
+                    deserializedCommandResultProperties.startedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("finishedAt".equals(fieldName)) {
+                    deserializedCommandResultProperties.finishedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("logs".equals(fieldName)) {
+                    deserializedCommandResultProperties.logs = reader.getString();
+                } else if ("reason".equals(fieldName)) {
+                    deserializedCommandResultProperties.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommandResultProperties;
+        });
     }
 }

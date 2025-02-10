@@ -5,27 +5,32 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Vault Job for CMK - has CMK specific info. */
+/**
+ * Vault Job for CMK - has CMK specific info.
+ */
 @Fluent
-public final class VaultJobExtendedInfo {
+public final class VaultJobExtendedInfo implements JsonSerializable<VaultJobExtendedInfo> {
     /*
      * Job properties.
      */
-    @JsonProperty(value = "propertyBag")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> propertyBag;
 
-    /** Creates an instance of VaultJobExtendedInfo class. */
+    /**
+     * Creates an instance of VaultJobExtendedInfo class.
+     */
     public VaultJobExtendedInfo() {
     }
 
     /**
      * Get the propertyBag property: Job properties.
-     *
+     * 
      * @return the propertyBag value.
      */
     public Map<String, String> propertyBag() {
@@ -34,7 +39,7 @@ public final class VaultJobExtendedInfo {
 
     /**
      * Set the propertyBag property: Job properties.
-     *
+     * 
      * @param propertyBag the propertyBag value to set.
      * @return the VaultJobExtendedInfo object itself.
      */
@@ -45,9 +50,46 @@ public final class VaultJobExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("propertyBag", this.propertyBag, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultJobExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultJobExtendedInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VaultJobExtendedInfo.
+     */
+    public static VaultJobExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultJobExtendedInfo deserializedVaultJobExtendedInfo = new VaultJobExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("propertyBag".equals(fieldName)) {
+                    Map<String, String> propertyBag = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVaultJobExtendedInfo.propertyBag = propertyBag;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultJobExtendedInfo;
+        });
     }
 }

@@ -15,29 +15,24 @@ import org.junit.jupiter.api.Assertions;
 public final class DailyRetentionScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DailyRetentionSchedule model =
-            BinaryData
-                .fromString(
-                    "{\"retentionTimes\":[\"2021-11-10T08:55:59Z\",\"2021-07-20T07:23:19Z\"],\"retentionDuration\":{\"count\":2025422564,\"durationType\":\"Months\"}}")
-                .toObject(DailyRetentionSchedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-10T08:55:59Z"), model.retentionTimes().get(0));
-        Assertions.assertEquals(2025422564, model.retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.MONTHS, model.retentionDuration().durationType());
+        DailyRetentionSchedule model = BinaryData.fromString(
+            "{\"retentionTimes\":[\"2021-08-08T18:46:08Z\",\"2021-03-16T15:49:25Z\",\"2021-08-22T14:03:47Z\"],\"retentionDuration\":{\"count\":743676437,\"durationType\":\"Weeks\"}}")
+            .toObject(DailyRetentionSchedule.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T18:46:08Z"), model.retentionTimes().get(0));
+        Assertions.assertEquals(743676437, model.retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.WEEKS, model.retentionDuration().durationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DailyRetentionSchedule model =
-            new DailyRetentionSchedule()
-                .withRetentionTimes(
-                    Arrays
-                        .asList(
-                            OffsetDateTime.parse("2021-11-10T08:55:59Z"), OffsetDateTime.parse("2021-07-20T07:23:19Z")))
-                .withRetentionDuration(
-                    new RetentionDuration().withCount(2025422564).withDurationType(RetentionDurationType.MONTHS));
+        DailyRetentionSchedule model = new DailyRetentionSchedule()
+            .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-08-08T18:46:08Z"),
+                OffsetDateTime.parse("2021-03-16T15:49:25Z"), OffsetDateTime.parse("2021-08-22T14:03:47Z")))
+            .withRetentionDuration(
+                new RetentionDuration().withCount(743676437).withDurationType(RetentionDurationType.WEEKS));
         model = BinaryData.fromObject(model).toObject(DailyRetentionSchedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-10T08:55:59Z"), model.retentionTimes().get(0));
-        Assertions.assertEquals(2025422564, model.retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.MONTHS, model.retentionDuration().durationType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-08T18:46:08Z"), model.retentionTimes().get(0));
+        Assertions.assertEquals(743676437, model.retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.WEEKS, model.retentionDuration().durationType());
     }
 }

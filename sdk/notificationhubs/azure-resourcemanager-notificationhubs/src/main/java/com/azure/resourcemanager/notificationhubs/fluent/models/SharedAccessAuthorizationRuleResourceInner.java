@@ -6,34 +6,54 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.AccessRights;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Description of a Namespace AuthorizationRules. */
+/**
+ * Description of a Namespace AuthorizationRules.
+ */
 @Fluent
 public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedAccessAuthorizationRuleResourceInner.class);
-
     /*
      * Properties of the Namespace AuthorizationRule.
      */
-    @JsonProperty(value = "properties")
     private SharedAccessAuthorizationRuleProperties innerProperties;
 
     /*
      * The sku of the created namespace
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SharedAccessAuthorizationRuleResourceInner class.
+     */
+    public SharedAccessAuthorizationRuleResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the Namespace AuthorizationRule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SharedAccessAuthorizationRuleProperties innerProperties() {
@@ -42,7 +62,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Get the sku property: The sku of the created namespace.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -51,7 +71,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Set the sku property: The sku of the created namespace.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SharedAccessAuthorizationRuleResourceInner object itself.
      */
@@ -60,14 +80,48 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SharedAccessAuthorizationRuleResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SharedAccessAuthorizationRuleResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -76,7 +130,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Get the rights property: The rights associated with the rule.
-     *
+     * 
      * @return the rights value.
      */
     public List<AccessRights> rights() {
@@ -85,7 +139,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Set the rights property: The rights associated with the rule.
-     *
+     * 
      * @param rights the rights value to set.
      * @return the SharedAccessAuthorizationRuleResourceInner object itself.
      */
@@ -99,7 +153,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Get the primaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -108,7 +162,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Get the secondaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -117,7 +171,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Get the keyName property: A string that describes the authorization rule.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -126,7 +180,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Get the claimType property: A string that describes the claim type.
-     *
+     * 
      * @return the claimType value.
      */
     public String claimType() {
@@ -135,7 +189,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Get the claimValue property: A string that describes the claim value.
-     *
+     * 
      * @return the claimValue value.
      */
     public String claimValue() {
@@ -144,7 +198,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Get the modifiedTime property: The last modified time for this rule.
-     *
+     * 
      * @return the modifiedTime value.
      */
     public String modifiedTime() {
@@ -153,7 +207,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Get the createdTime property: The created time for this rule.
-     *
+     * 
      * @return the createdTime value.
      */
     public String createdTime() {
@@ -162,7 +216,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Get the revision property: The revision number for the rule.
-     *
+     * 
      * @return the revision value.
      */
     public Integer revision() {
@@ -171,7 +225,7 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -181,5 +235,60 @@ public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharedAccessAuthorizationRuleResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharedAccessAuthorizationRuleResourceInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SharedAccessAuthorizationRuleResourceInner.
+     */
+    public static SharedAccessAuthorizationRuleResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharedAccessAuthorizationRuleResourceInner deserializedSharedAccessAuthorizationRuleResourceInner
+                = new SharedAccessAuthorizationRuleResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSharedAccessAuthorizationRuleResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleResourceInner.innerProperties
+                        = SharedAccessAuthorizationRuleProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleResourceInner.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharedAccessAuthorizationRuleResourceInner;
+        });
     }
 }

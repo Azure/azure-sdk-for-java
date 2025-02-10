@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of the L2 network. */
+/**
+ * The provisioning state of the L2 network.
+ */
 public final class L2NetworkProvisioningState extends ExpandableStringEnum<L2NetworkProvisioningState> {
-    /** Static value Succeeded for L2NetworkProvisioningState. */
+    /**
+     * Static value Succeeded for L2NetworkProvisioningState.
+     */
     public static final L2NetworkProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for L2NetworkProvisioningState. */
+    /**
+     * Static value Failed for L2NetworkProvisioningState.
+     */
     public static final L2NetworkProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for L2NetworkProvisioningState. */
+    /**
+     * Static value Canceled for L2NetworkProvisioningState.
+     */
     public static final L2NetworkProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Provisioning for L2NetworkProvisioningState. */
+    /**
+     * Static value Provisioning for L2NetworkProvisioningState.
+     */
     public static final L2NetworkProvisioningState PROVISIONING = fromString("Provisioning");
 
-    /** Static value Accepted for L2NetworkProvisioningState. */
+    /**
+     * Static value Accepted for L2NetworkProvisioningState.
+     */
     public static final L2NetworkProvisioningState ACCEPTED = fromString("Accepted");
 
     /**
      * Creates a new instance of L2NetworkProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class L2NetworkProvisioningState extends ExpandableStringEnum<L2Net
 
     /**
      * Creates or finds a L2NetworkProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding L2NetworkProvisioningState.
      */
-    @JsonCreator
     public static L2NetworkProvisioningState fromString(String name) {
         return fromString(name, L2NetworkProvisioningState.class);
     }
 
     /**
      * Gets known L2NetworkProvisioningState values.
-     *
+     * 
      * @return known L2NetworkProvisioningState values.
      */
     public static Collection<L2NetworkProvisioningState> values() {

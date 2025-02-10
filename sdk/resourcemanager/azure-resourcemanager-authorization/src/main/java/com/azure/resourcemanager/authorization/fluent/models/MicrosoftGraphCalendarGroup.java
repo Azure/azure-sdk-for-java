@@ -5,49 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
-/** calendarGroup. */
+/**
+ * calendarGroup.
+ */
 @Fluent
 public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
     /*
      * Identifies the version of the calendar group. Every time the calendar group is changed, ChangeKey changes as
      * well. This allows Exchange to apply changes to the correct version of the object. Read-only.
      */
-    @JsonProperty(value = "changeKey")
     private String changeKey;
 
     /*
      * The class identifier. Read-only.
      */
-    @JsonProperty(value = "classId")
     private UUID classId;
 
     /*
      * The group name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The calendars in the calendar group. Navigation property. Read-only. Nullable.
      */
-    @JsonProperty(value = "calendars")
     private List<MicrosoftGraphCalendar> calendars;
 
     /*
      * calendarGroup
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphCalendarGroup class. */
+    /**
+     * Creates an instance of MicrosoftGraphCalendarGroup class.
+     */
     public MicrosoftGraphCalendarGroup() {
     }
 
@@ -55,7 +56,7 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
      * Get the changeKey property: Identifies the version of the calendar group. Every time the calendar group is
      * changed, ChangeKey changes as well. This allows Exchange to apply changes to the correct version of the object.
      * Read-only.
-     *
+     * 
      * @return the changeKey value.
      */
     public String changeKey() {
@@ -66,7 +67,7 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
      * Set the changeKey property: Identifies the version of the calendar group. Every time the calendar group is
      * changed, ChangeKey changes as well. This allows Exchange to apply changes to the correct version of the object.
      * Read-only.
-     *
+     * 
      * @param changeKey the changeKey value to set.
      * @return the MicrosoftGraphCalendarGroup object itself.
      */
@@ -77,7 +78,7 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
 
     /**
      * Get the classId property: The class identifier. Read-only.
-     *
+     * 
      * @return the classId value.
      */
     public UUID classId() {
@@ -86,7 +87,7 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
 
     /**
      * Set the classId property: The class identifier. Read-only.
-     *
+     * 
      * @param classId the classId value to set.
      * @return the MicrosoftGraphCalendarGroup object itself.
      */
@@ -97,7 +98,7 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
 
     /**
      * Get the name property: The group name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -106,7 +107,7 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
 
     /**
      * Set the name property: The group name.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphCalendarGroup object itself.
      */
@@ -117,7 +118,7 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
 
     /**
      * Get the calendars property: The calendars in the calendar group. Navigation property. Read-only. Nullable.
-     *
+     * 
      * @return the calendars value.
      */
     public List<MicrosoftGraphCalendar> calendars() {
@@ -126,7 +127,7 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
 
     /**
      * Set the calendars property: The calendars in the calendar group. Navigation property. Read-only. Nullable.
-     *
+     * 
      * @param calendars the calendars value to set.
      * @return the MicrosoftGraphCalendarGroup object itself.
      */
@@ -137,17 +138,16 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: calendarGroup.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: calendarGroup.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphCalendarGroup object itself.
      */
@@ -156,15 +156,9 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphCalendarGroup withId(String id) {
         super.withId(id);
@@ -173,7 +167,7 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -182,5 +176,67 @@ public final class MicrosoftGraphCalendarGroup extends MicrosoftGraphEntity {
         if (calendars() != null) {
             calendars().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("changeKey", this.changeKey);
+        jsonWriter.writeStringField("classId", Objects.toString(this.classId, null));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("calendars", this.calendars, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphCalendarGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphCalendarGroup if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphCalendarGroup.
+     */
+    public static MicrosoftGraphCalendarGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphCalendarGroup deserializedMicrosoftGraphCalendarGroup = new MicrosoftGraphCalendarGroup();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendarGroup.withId(reader.getString());
+                } else if ("changeKey".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendarGroup.changeKey = reader.getString();
+                } else if ("classId".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendarGroup.classId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendarGroup.name = reader.getString();
+                } else if ("calendars".equals(fieldName)) {
+                    List<MicrosoftGraphCalendar> calendars
+                        = reader.readArray(reader1 -> MicrosoftGraphCalendar.fromJson(reader1));
+                    deserializedMicrosoftGraphCalendarGroup.calendars = calendars;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphCalendarGroup.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphCalendarGroup;
+        });
     }
 }

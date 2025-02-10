@@ -6,8 +6,8 @@
 #     Get `SPRING_CLOUD_VERSION` from https://github.com/spring-cloud/spring-cloud-release/tags.
 #     Note that spring-cloud version should compatible with spring-boot version.
 #     Refs: https://spring.io/projects/spring-cloud.
-#  2. Run command: `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py -b 2.7.0 -c 2021.0.3`.
-#     Or `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py --spring_boot_dependencies_version 2.7.0 --spring_cloud_dependencies_version 2021.0.3`.
+#  2. Run command: `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py -b 3.0.0-M5 -c 2022.0.0-M5`.
+#     Or `python .\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py --spring_boot_dependencies_version 3.0.0-M5 --spring_cloud_dependencies_version 2022.0.0-M5`.
 #  3. Then a file named `spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt` will be created.
 #
 # Please refer to ./README.md to get more information about this script.

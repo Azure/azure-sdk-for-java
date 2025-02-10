@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Critical past job details of the migration item. */
+/**
+ * Critical past job details of the migration item.
+ */
 @Immutable
-public final class CriticalJobHistoryDetails {
+public final class CriticalJobHistoryDetails implements JsonSerializable<CriticalJobHistoryDetails> {
     /*
      * The job name.
      */
-    @JsonProperty(value = "jobName", access = JsonProperty.Access.WRITE_ONLY)
     private String jobName;
 
     /*
      * The ARM Id of the job being executed.
      */
-    @JsonProperty(value = "jobId", access = JsonProperty.Access.WRITE_ONLY)
     private String jobId;
 
     /*
      * The start time of the job.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The job state.
      */
-    @JsonProperty(value = "jobStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String jobStatus;
 
-    /** Creates an instance of CriticalJobHistoryDetails class. */
+    /**
+     * Creates an instance of CriticalJobHistoryDetails class.
+     */
     public CriticalJobHistoryDetails() {
     }
 
     /**
      * Get the jobName property: The job name.
-     *
+     * 
      * @return the jobName value.
      */
     public String jobName() {
@@ -50,7 +55,7 @@ public final class CriticalJobHistoryDetails {
 
     /**
      * Get the jobId property: The ARM Id of the job being executed.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -59,7 +64,7 @@ public final class CriticalJobHistoryDetails {
 
     /**
      * Get the startTime property: The start time of the job.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -68,7 +73,7 @@ public final class CriticalJobHistoryDetails {
 
     /**
      * Get the jobStatus property: The job state.
-     *
+     * 
      * @return the jobStatus value.
      */
     public String jobStatus() {
@@ -77,9 +82,51 @@ public final class CriticalJobHistoryDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CriticalJobHistoryDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CriticalJobHistoryDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CriticalJobHistoryDetails.
+     */
+    public static CriticalJobHistoryDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CriticalJobHistoryDetails deserializedCriticalJobHistoryDetails = new CriticalJobHistoryDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobName".equals(fieldName)) {
+                    deserializedCriticalJobHistoryDetails.jobName = reader.getString();
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedCriticalJobHistoryDetails.jobId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedCriticalJobHistoryDetails.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("jobStatus".equals(fieldName)) {
+                    deserializedCriticalJobHistoryDetails.jobStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCriticalJobHistoryDetails;
+        });
     }
 }

@@ -15,8 +15,7 @@ public final class WorkloadItemResourceImpl implements WorkloadItemResource {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    WorkloadItemResourceImpl(
-        WorkloadItemResourceInner innerObject,
+    WorkloadItemResourceImpl(WorkloadItemResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

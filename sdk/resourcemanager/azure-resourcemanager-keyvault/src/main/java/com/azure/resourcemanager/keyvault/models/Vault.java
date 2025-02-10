@@ -20,64 +20,120 @@ import java.util.List;
 
 /** An immutable client-side representation of an Azure Key Vault. */
 @Fluent
-public interface Vault
-    extends GroupableResource<KeyVaultManager, VaultInner>, Refreshable<Vault>, Updatable<Vault.Update>,
-    SupportsListingPrivateLinkResource,
-    SupportsUpdatingPrivateEndpointConnection {
+public interface Vault extends GroupableResource<KeyVaultManager, VaultInner>, Refreshable<Vault>,
+    Updatable<Vault.Update>, SupportsListingPrivateLinkResource, SupportsUpdatingPrivateEndpointConnection {
 
-    /** @return an authenticated Key Vault secret client */
+    /**
+     * Gets an authenticated Key Vault secret client.
+     *
+     * @return an authenticated Key Vault secret client
+     */
     SecretAsyncClient secretClient();
 
-    /** @return an authenticated Key Vault key client */
+    /**
+     * Gets an authenticated Key Vault key client.
+     *
+     * @return an authenticated Key Vault key client
+     */
     KeyAsyncClient keyClient();
 
-    /** @return an authenticated Key Vault rest client */
+    /**
+     * Gets an authenticated Key Vault rest client.
+     *
+     * @return an authenticated Key Vault rest client
+     */
     HttpPipeline vaultHttpPipeline();
 
-    /** @return the Key Vault key API entry point */
+    /**
+     * Gets the Key Vault key API entry point.
+     *
+     * @return the Key Vault key API entry point
+     */
     Keys keys();
 
-    /** @return the Key Vault secret API entry point */
+    /**
+     * Gets the Key Vault secret API entry point.
+     *
+     * @return the Key Vault secret API entry point
+     */
     Secrets secrets();
 
-    /** @return the URI of the vault for performing operations on keys and secrets. */
+    /**
+     * Gets the URI of the vault for performing operations on keys and secrets.
+     *
+     * @return the URI of the vault for performing operations on keys and secrets.
+     */
     String vaultUri();
 
     /**
+     * Gets the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     *
      * @return the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
      */
     String tenantId();
 
-    /** @return SKU details. */
+    /**
+     * Gets SKU details.
+     *
+     * @return SKU details.
+     */
     Sku sku();
 
     /**
+     * Gets an array of 0 to 16 identities that have access to the key vault.
+     *
      * @return an array of 0 to 16 identities that have access to the key vault. All identities in the array must use
      *     the same tenant ID as the key vault's tenant ID.
      */
     List<AccessPolicy> accessPolicies();
 
     /**
+     * Checks whether role based access control (RBAC) for authorization of data access is enabled.
+     *
      * @return whether role based access control (RBAC) for authorization of data access is enabled.
      */
     boolean roleBasedAccessControlEnabled();
 
     /**
+     * Whether the vault can be accessed from public network.
+     *
+     * @return whether the vault can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Checks whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key
+     *     vault.
+     *
      * @return whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key
      *     vault.
      */
     boolean enabledForDeployment();
 
-    /** @return whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys. */
+    /**
+     * Checks whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
+     *
+     * @return whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
+     */
     boolean enabledForDiskEncryption();
 
-    /** @return whether Azure Resource Manager is permitted to retrieve secrets from the key vault. */
+    /**
+     * Checks whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
+     *
+     * @return whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
+     */
     boolean enabledForTemplateDeployment();
 
-    /** @return whether soft delete is enabled for this key vault. */
+    /**
+     * Gets whether soft delete is enabled for this key vault.
+     *
+     * @return whether soft delete is enabled for this key vault.
+     */
     boolean softDeleteEnabled();
 
     /**
+     * Checks whether purge protection is enabled for this key vault.
+     *
      * @return whether purge protection is enabled for this key vault. Purge protection can only be enabled if soft
      *     delete is enabled.
      */
@@ -102,11 +158,8 @@ public interface Vault
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithAccessPolicy,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithAccessPolicy,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the key vault definition stages. */
@@ -166,6 +219,12 @@ public interface Vault
 
         /** A key vault definition allowing the networkAcl to be set. */
         interface WithNetworkRuleSet {
+            /**
+             * Disables public network access for the vault, for private link feature.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
 
             /**
              * Specifies that by default access to key vault should be allowed from all networks.
@@ -298,13 +357,9 @@ public interface Vault
          * A key vault definition with sufficient inputs to create a new storage account in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<Vault>,
-                GroupableResource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithNetworkRuleSet,
-                DefinitionStages.WithConfigurations,
-                DefinitionStages.WithAccessPolicy {
+        interface WithCreate extends Creatable<Vault>, GroupableResource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithSku, DefinitionStages.WithNetworkRuleSet, DefinitionStages.WithConfigurations,
+            DefinitionStages.WithAccessPolicy {
         }
     }
 
@@ -362,6 +417,19 @@ public interface Vault
 
         /** A key vault update allowing the NetworkRuleSet to be set. */
         interface WithNetworkRuleSet {
+            /**
+             * Enables public network access for the vault.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+
+            /**
+             * Disables public network access for the vault, for private link feature.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
 
             /**
              * Specifies that by default access to key vault should be allowed from all networks.
@@ -492,11 +560,7 @@ public interface Vault
     }
 
     /** The template for a key vault update operation, containing all the settings that can be modified. */
-    interface Update
-        extends GroupableResource.UpdateWithTags<Update>,
-            Appliable<Vault>,
-            UpdateStages.WithAccessPolicy,
-            UpdateStages.WithNetworkRuleSet,
-            UpdateStages.WithConfigurations {
+    interface Update extends GroupableResource.UpdateWithTags<Update>, Appliable<Vault>, UpdateStages.WithAccessPolicy,
+        UpdateStages.WithNetworkRuleSet, UpdateStages.WithConfigurations {
     }
 }

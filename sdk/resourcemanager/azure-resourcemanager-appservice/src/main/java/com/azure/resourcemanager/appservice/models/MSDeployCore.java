@@ -5,44 +5,41 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * MSDeploy ARM PUT core information.
  */
 @Fluent
-public class MSDeployCore {
+public class MSDeployCore implements JsonSerializable<MSDeployCore> {
     /*
      * Package URI
      */
-    @JsonProperty(value = "packageUri")
     private String packageUri;
 
     /*
      * SQL Connection String
      */
-    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * Database Type
      */
-    @JsonProperty(value = "dbType")
     private String dbType;
 
     /*
      * URI of MSDeploy Parameters file. Must not be set if SetParameters is used.
      */
-    @JsonProperty(value = "setParametersXmlFileUri")
     private String setParametersXmlFileUri;
 
     /*
      * MSDeploy Parameters. Must not be set if SetParametersXmlFileUri is used.
      */
-    @JsonProperty(value = "setParameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> setParameters;
 
     /*
@@ -51,14 +48,12 @@ public class MSDeployCore {
      * will not be deleted, and any App_Data directory in the source will be ignored.
      * Setting is <code>false</code> by default.
      */
-    @JsonProperty(value = "skipAppData")
     private Boolean skipAppData;
 
     /*
      * Sets the AppOffline rule while the MSDeploy operation executes.
      * Setting is <code>false</code> by default.
      */
-    @JsonProperty(value = "appOffline")
     private Boolean appOffline;
 
     /**
@@ -223,5 +218,60 @@ public class MSDeployCore {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("packageUri", this.packageUri);
+        jsonWriter.writeStringField("connectionString", this.connectionString);
+        jsonWriter.writeStringField("dbType", this.dbType);
+        jsonWriter.writeStringField("setParametersXmlFileUri", this.setParametersXmlFileUri);
+        jsonWriter.writeMapField("setParameters", this.setParameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("skipAppData", this.skipAppData);
+        jsonWriter.writeBooleanField("appOffline", this.appOffline);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MSDeployCore from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MSDeployCore if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MSDeployCore.
+     */
+    public static MSDeployCore fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MSDeployCore deserializedMSDeployCore = new MSDeployCore();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packageUri".equals(fieldName)) {
+                    deserializedMSDeployCore.packageUri = reader.getString();
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedMSDeployCore.connectionString = reader.getString();
+                } else if ("dbType".equals(fieldName)) {
+                    deserializedMSDeployCore.dbType = reader.getString();
+                } else if ("setParametersXmlFileUri".equals(fieldName)) {
+                    deserializedMSDeployCore.setParametersXmlFileUri = reader.getString();
+                } else if ("setParameters".equals(fieldName)) {
+                    Map<String, String> setParameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMSDeployCore.setParameters = setParameters;
+                } else if ("skipAppData".equals(fieldName)) {
+                    deserializedMSDeployCore.skipAppData = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appOffline".equals(fieldName)) {
+                    deserializedMSDeployCore.appOffline = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMSDeployCore;
+        });
     }
 }

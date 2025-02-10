@@ -5,49 +5,53 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.Display;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Operations discovery class. */
+/**
+ * Operations discovery class.
+ */
 @Fluent
-public final class OperationsDiscoveryInner {
+public final class OperationsDiscoveryInner implements JsonSerializable<OperationsDiscoveryInner> {
     /*
      * Name of the API. The name of the operation being performed on this particular object. It should match the action
      * name that appears in RBAC / the event service. Examples of operations include: *
      * Microsoft.Compute/virtualMachine/capture/action * Microsoft.Compute/virtualMachine/restart/action *
      * Microsoft.Compute/virtualMachine/write * Microsoft.Compute/virtualMachine/read *
-     * Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace
-     * (2) Type hierarchy for which the action applies (e.g. server/databases for a SQL Azure database) (3) Read,
-     * Write, Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named value,
-     * Write should be used. If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it is a
-     * POST, Action should be used. As a note: all resource providers would need to include the "{Resource Provider
-     * Namespace}/register/action" operation in their response. This API is used to register for their service, and
-     * should include details about the operation (e.g. a localized name for the resource provider + any special
-     * considerations like PII release).
+     * Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace (2)
+     * Type hierarchy for which the action applies (e.g. server/databases for a SQL Azure database) (3) Read, Write,
+     * Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named value, Write should
+     * be used. If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it is a POST, Action
+     * should be used. As a note: all resource providers would need to include the
+     * "{Resource Provider Namespace}/register/action" operation in their response. This API is used to register for
+     * their service, and should include details about the operation (e.g. a localized name for the resource provider +
+     * any special considerations like PII release).
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Object type.
      */
-    @JsonProperty(value = "display")
     private Display display;
 
     /*
-     * Origin. The intended executor of the operation; governs the display of the operation in the RBAC UX and the
-     * audit logs UX. Default value is "user,system".
+     * Origin. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit
+     * logs UX. Default value is "user,system".
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
     /*
      * Properties. Reserved for future use.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
-    /** Creates an instance of OperationsDiscoveryInner class. */
+    /**
+     * Creates an instance of OperationsDiscoveryInner class.
+     */
     public OperationsDiscoveryInner() {
     }
 
@@ -64,7 +68,7 @@ public final class OperationsDiscoveryInner {
      * Namespace}/register/action" operation in their response. This API is used to register for their service, and
      * should include details about the operation (e.g. a localized name for the resource provider + any special
      * considerations like PII release).
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -84,7 +88,7 @@ public final class OperationsDiscoveryInner {
      * Namespace}/register/action" operation in their response. This API is used to register for their service, and
      * should include details about the operation (e.g. a localized name for the resource provider + any special
      * considerations like PII release).
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationsDiscoveryInner object itself.
      */
@@ -95,7 +99,7 @@ public final class OperationsDiscoveryInner {
 
     /**
      * Get the display property: Object type.
-     *
+     * 
      * @return the display value.
      */
     public Display display() {
@@ -104,7 +108,7 @@ public final class OperationsDiscoveryInner {
 
     /**
      * Set the display property: Object type.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationsDiscoveryInner object itself.
      */
@@ -116,7 +120,7 @@ public final class OperationsDiscoveryInner {
     /**
      * Get the origin property: Origin. The intended executor of the operation; governs the display of the operation in
      * the RBAC UX and the audit logs UX. Default value is "user,system".
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -126,7 +130,7 @@ public final class OperationsDiscoveryInner {
     /**
      * Set the origin property: Origin. The intended executor of the operation; governs the display of the operation in
      * the RBAC UX and the audit logs UX. Default value is "user,system".
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationsDiscoveryInner object itself.
      */
@@ -137,7 +141,7 @@ public final class OperationsDiscoveryInner {
 
     /**
      * Get the properties property: Properties. Reserved for future use.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -146,7 +150,7 @@ public final class OperationsDiscoveryInner {
 
     /**
      * Set the properties property: Properties. Reserved for future use.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationsDiscoveryInner object itself.
      */
@@ -157,12 +161,57 @@ public final class OperationsDiscoveryInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("origin", this.origin);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationsDiscoveryInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationsDiscoveryInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationsDiscoveryInner.
+     */
+    public static OperationsDiscoveryInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationsDiscoveryInner deserializedOperationsDiscoveryInner = new OperationsDiscoveryInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationsDiscoveryInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationsDiscoveryInner.display = Display.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationsDiscoveryInner.origin = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationsDiscoveryInner.properties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationsDiscoveryInner;
+        });
     }
 }

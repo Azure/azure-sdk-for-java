@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * SSL type.
  */
@@ -41,7 +38,6 @@ public enum SslState {
      * @param value the serialized value to parse.
      * @return the parsed SslState object, or null if unable to parse.
      */
-    @JsonCreator
     public static SslState fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum SslState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

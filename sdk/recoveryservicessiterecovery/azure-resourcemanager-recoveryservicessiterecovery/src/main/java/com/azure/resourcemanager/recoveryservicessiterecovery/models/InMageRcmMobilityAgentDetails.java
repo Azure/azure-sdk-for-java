@@ -5,80 +5,79 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** InMageRcm mobility agent details. */
+/**
+ * InMageRcm mobility agent details.
+ */
 @Immutable
-public final class InMageRcmMobilityAgentDetails {
+public final class InMageRcmMobilityAgentDetails implements JsonSerializable<InMageRcmMobilityAgentDetails> {
     /*
      * The agent version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * The latest agent version available.
      */
-    @JsonProperty(value = "latestVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String latestVersion;
 
     /*
      * The latest agent version release date.
      */
-    @JsonProperty(value = "latestAgentReleaseDate", access = JsonProperty.Access.WRITE_ONLY)
     private String latestAgentReleaseDate;
 
     /*
      * The driver version.
      */
-    @JsonProperty(value = "driverVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String driverVersion;
 
     /*
      * The latest upgradeable version available without reboot.
      */
-    @JsonProperty(value = "latestUpgradableVersionWithoutReboot", access = JsonProperty.Access.WRITE_ONLY)
     private String latestUpgradableVersionWithoutReboot;
 
     /*
      * The agent version expiry date.
      */
-    @JsonProperty(value = "agentVersionExpiryDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime agentVersionExpiryDate;
 
     /*
      * The driver version expiry date.
      */
-    @JsonProperty(value = "driverVersionExpiryDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime driverVersionExpiryDate;
 
     /*
      * The time of the last heartbeat received from the agent.
      */
-    @JsonProperty(value = "lastHeartbeatUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastHeartbeatUtc;
 
     /*
      * The whether update is possible or not.
      */
-    @JsonProperty(value = "reasonsBlockingUpgrade", access = JsonProperty.Access.WRITE_ONLY)
     private List<AgentUpgradeBlockedReason> reasonsBlockingUpgrade;
 
     /*
      * A value indicating whether agent is upgradeable or not.
      */
-    @JsonProperty(value = "isUpgradeable", access = JsonProperty.Access.WRITE_ONLY)
     private String isUpgradeable;
 
-    /** Creates an instance of InMageRcmMobilityAgentDetails class. */
+    /**
+     * Creates an instance of InMageRcmMobilityAgentDetails class.
+     */
     public InMageRcmMobilityAgentDetails() {
     }
 
     /**
      * Get the version property: The agent version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -87,7 +86,7 @@ public final class InMageRcmMobilityAgentDetails {
 
     /**
      * Get the latestVersion property: The latest agent version available.
-     *
+     * 
      * @return the latestVersion value.
      */
     public String latestVersion() {
@@ -96,7 +95,7 @@ public final class InMageRcmMobilityAgentDetails {
 
     /**
      * Get the latestAgentReleaseDate property: The latest agent version release date.
-     *
+     * 
      * @return the latestAgentReleaseDate value.
      */
     public String latestAgentReleaseDate() {
@@ -105,7 +104,7 @@ public final class InMageRcmMobilityAgentDetails {
 
     /**
      * Get the driverVersion property: The driver version.
-     *
+     * 
      * @return the driverVersion value.
      */
     public String driverVersion() {
@@ -114,7 +113,7 @@ public final class InMageRcmMobilityAgentDetails {
 
     /**
      * Get the latestUpgradableVersionWithoutReboot property: The latest upgradeable version available without reboot.
-     *
+     * 
      * @return the latestUpgradableVersionWithoutReboot value.
      */
     public String latestUpgradableVersionWithoutReboot() {
@@ -123,7 +122,7 @@ public final class InMageRcmMobilityAgentDetails {
 
     /**
      * Get the agentVersionExpiryDate property: The agent version expiry date.
-     *
+     * 
      * @return the agentVersionExpiryDate value.
      */
     public OffsetDateTime agentVersionExpiryDate() {
@@ -132,7 +131,7 @@ public final class InMageRcmMobilityAgentDetails {
 
     /**
      * Get the driverVersionExpiryDate property: The driver version expiry date.
-     *
+     * 
      * @return the driverVersionExpiryDate value.
      */
     public OffsetDateTime driverVersionExpiryDate() {
@@ -141,7 +140,7 @@ public final class InMageRcmMobilityAgentDetails {
 
     /**
      * Get the lastHeartbeatUtc property: The time of the last heartbeat received from the agent.
-     *
+     * 
      * @return the lastHeartbeatUtc value.
      */
     public OffsetDateTime lastHeartbeatUtc() {
@@ -150,7 +149,7 @@ public final class InMageRcmMobilityAgentDetails {
 
     /**
      * Get the reasonsBlockingUpgrade property: The whether update is possible or not.
-     *
+     * 
      * @return the reasonsBlockingUpgrade value.
      */
     public List<AgentUpgradeBlockedReason> reasonsBlockingUpgrade() {
@@ -159,7 +158,7 @@ public final class InMageRcmMobilityAgentDetails {
 
     /**
      * Get the isUpgradeable property: A value indicating whether agent is upgradeable or not.
-     *
+     * 
      * @return the isUpgradeable value.
      */
     public String isUpgradeable() {
@@ -168,9 +167,68 @@ public final class InMageRcmMobilityAgentDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmMobilityAgentDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmMobilityAgentDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmMobilityAgentDetails.
+     */
+    public static InMageRcmMobilityAgentDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmMobilityAgentDetails deserializedInMageRcmMobilityAgentDetails
+                = new InMageRcmMobilityAgentDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedInMageRcmMobilityAgentDetails.version = reader.getString();
+                } else if ("latestVersion".equals(fieldName)) {
+                    deserializedInMageRcmMobilityAgentDetails.latestVersion = reader.getString();
+                } else if ("latestAgentReleaseDate".equals(fieldName)) {
+                    deserializedInMageRcmMobilityAgentDetails.latestAgentReleaseDate = reader.getString();
+                } else if ("driverVersion".equals(fieldName)) {
+                    deserializedInMageRcmMobilityAgentDetails.driverVersion = reader.getString();
+                } else if ("latestUpgradableVersionWithoutReboot".equals(fieldName)) {
+                    deserializedInMageRcmMobilityAgentDetails.latestUpgradableVersionWithoutReboot = reader.getString();
+                } else if ("agentVersionExpiryDate".equals(fieldName)) {
+                    deserializedInMageRcmMobilityAgentDetails.agentVersionExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("driverVersionExpiryDate".equals(fieldName)) {
+                    deserializedInMageRcmMobilityAgentDetails.driverVersionExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastHeartbeatUtc".equals(fieldName)) {
+                    deserializedInMageRcmMobilityAgentDetails.lastHeartbeatUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("reasonsBlockingUpgrade".equals(fieldName)) {
+                    List<AgentUpgradeBlockedReason> reasonsBlockingUpgrade
+                        = reader.readArray(reader1 -> AgentUpgradeBlockedReason.fromString(reader1.getString()));
+                    deserializedInMageRcmMobilityAgentDetails.reasonsBlockingUpgrade = reasonsBlockingUpgrade;
+                } else if ("isUpgradeable".equals(fieldName)) {
+                    deserializedInMageRcmMobilityAgentDetails.isUpgradeable = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmMobilityAgentDetails;
+        });
     }
 }

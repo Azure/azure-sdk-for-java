@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,42 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.2 (2024-12-04)
+
+- Azure Resource Manager Maintenance client library for Java. This package contains Microsoft Azure SDK for Maintenance Management SDK. Azure Maintenance Management Client. Package tag package-preview-2023-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+## 1.1.0-beta.1 (2024-05-20)
+
+- Azure Resource Manager Maintenance client library for Java. This package contains Microsoft Azure SDK for Maintenance Management SDK. Azure Maintenance Management Client. Package tag package-preview-2023-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ScheduledEventApproveResponse` was added
+
+* `models.ScheduledEvents` was added
+
+#### `MaintenanceManager` was modified
+
+* `scheduledEvents()` was added
+
+#### `models.ApplyUpdates` was modified
+
+* `createOrUpdateOrCancelWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ApplyUpdateInner,com.azure.core.util.Context)` was added
+* `createOrUpdateOrCancel(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ApplyUpdateInner)` was added
 
 ## 1.0.0 (2023-08-22)
 

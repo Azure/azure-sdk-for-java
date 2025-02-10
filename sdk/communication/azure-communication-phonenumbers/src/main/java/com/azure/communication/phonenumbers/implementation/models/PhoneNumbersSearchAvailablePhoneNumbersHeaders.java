@@ -4,41 +4,57 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The PhoneNumbersSearchAvailablePhoneNumbersHeaders model. */
+/**
+ * The PhoneNumbersSearchAvailablePhoneNumbersHeaders model.
+ */
 @Fluent
-@Generated
 public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
     /*
      * The operation-id property.
      */
-    @JsonProperty(value = "operation-id")
     private String operationId;
 
     /*
      * The search-id property.
      */
-    @JsonProperty(value = "search-id")
     private String searchId;
 
     /*
      * The Operation-Location property.
      */
-    @JsonProperty(value = "Operation-Location")
     private String operationLocation;
 
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
     private String location;
+
+    private static final HttpHeaderName OPERATION_ID = HttpHeaderName.fromString("operation-id");
+
+    private static final HttpHeaderName SEARCH_ID = HttpHeaderName.fromString("search-id");
+
+    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of PhoneNumbersSearchAvailablePhoneNumbersHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public PhoneNumbersSearchAvailablePhoneNumbersHeaders(HttpHeaders rawHeaders) {
+        this.operationId = rawHeaders.getValue(OPERATION_ID);
+        this.searchId = rawHeaders.getValue(SEARCH_ID);
+        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
+    }
 
     /**
      * Get the operationId property: The operation-id property.
-     *
+     * 
      * @return the operationId value.
      */
     public String getOperationId() {
@@ -47,7 +63,7 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
 
     /**
      * Set the operationId property: The operation-id property.
-     *
+     * 
      * @param operationId the operationId value to set.
      * @return the PhoneNumbersSearchAvailablePhoneNumbersHeaders object itself.
      */
@@ -58,7 +74,7 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
 
     /**
      * Get the searchId property: The search-id property.
-     *
+     * 
      * @return the searchId value.
      */
     public String getSearchId() {
@@ -67,7 +83,7 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
 
     /**
      * Set the searchId property: The search-id property.
-     *
+     * 
      * @param searchId the searchId value to set.
      * @return the PhoneNumbersSearchAvailablePhoneNumbersHeaders object itself.
      */
@@ -78,7 +94,7 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
 
     /**
      * Get the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @return the operationLocation value.
      */
     public String getOperationLocation() {
@@ -87,7 +103,7 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
 
     /**
      * Set the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @param operationLocation the operationLocation value to set.
      * @return the PhoneNumbersSearchAvailablePhoneNumbersHeaders object itself.
      */
@@ -98,7 +114,7 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String getLocation() {
@@ -107,7 +123,7 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the PhoneNumbersSearchAvailablePhoneNumbersHeaders object itself.
      */

@@ -7,16 +7,20 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-/** message. */
+/**
+ * message.
+ */
 @Fluent
 public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
@@ -24,49 +28,41 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     /*
      * The Bcc: recipients for the message.
      */
-    @JsonProperty(value = "bccRecipients")
     private List<MicrosoftGraphRecipient> bccRecipients;
 
     /*
      * itemBody
      */
-    @JsonProperty(value = "body")
     private MicrosoftGraphItemBody body;
 
     /*
      * The first 255 characters of the message body. It is in text format.
      */
-    @JsonProperty(value = "bodyPreview")
     private String bodyPreview;
 
     /*
      * The Cc: recipients for the message.
      */
-    @JsonProperty(value = "ccRecipients")
     private List<MicrosoftGraphRecipient> ccRecipients;
 
     /*
      * The ID of the conversation the email belongs to.
      */
-    @JsonProperty(value = "conversationId")
     private String conversationId;
 
     /*
      * Indicates the position of the message within the conversation.
      */
-    @JsonProperty(value = "conversationIndex")
     private Base64Url conversationIndex;
 
     /*
      * followupFlag
      */
-    @JsonProperty(value = "flag")
     private MicrosoftGraphFollowupFlag flag;
 
     /*
      * recipient
      */
-    @JsonProperty(value = "from")
     private MicrosoftGraphRecipient from;
 
     /*
@@ -74,156 +70,136 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * contains only inline attachments, this property is false. To verify the existence of inline attachments, parse
      * the body property to look for a src attribute, such as <IMG src='cid:image001.jpg@01D26CD8.6C05F070'>.
      */
-    @JsonProperty(value = "hasAttachments")
     private Boolean hasAttachments;
 
     /*
      * importance
      */
-    @JsonProperty(value = "importance")
     private MicrosoftGraphImportance importance;
 
     /*
      * inferenceClassificationType
      */
-    @JsonProperty(value = "inferenceClassification")
     private MicrosoftGraphInferenceClassificationType inferenceClassification;
 
     /*
      * A collection of message headers defined by RFC5322. The set includes message headers indicating the network path
      * taken by a message from the sender to the recipient. It can also contain custom message headers that hold app
-     * data for the message.  Returned only on applying a $select query option. Read-only.
+     * data for the message. Returned only on applying a $select query option. Read-only.
      */
-    @JsonProperty(value = "internetMessageHeaders")
     private List<MicrosoftGraphInternetMessageHeader> internetMessageHeaders;
 
     /*
      * The message ID in the format specified by RFC2822.
      */
-    @JsonProperty(value = "internetMessageId")
     private String internetMessageId;
 
     /*
      * Indicates whether a read receipt is requested for the message.
      */
-    @JsonProperty(value = "isDeliveryReceiptRequested")
     private Boolean isDeliveryReceiptRequested;
 
     /*
      * Indicates whether the message is a draft. A message is a draft if it hasn't been sent yet.
      */
-    @JsonProperty(value = "isDraft")
     private Boolean isDraft;
 
     /*
      * Indicates whether the message has been read.
      */
-    @JsonProperty(value = "isRead")
     private Boolean isRead;
 
     /*
      * Indicates whether a read receipt is requested for the message.
      */
-    @JsonProperty(value = "isReadReceiptRequested")
     private Boolean isReadReceiptRequested;
 
     /*
      * The unique identifier for the message's parent mailFolder.
      */
-    @JsonProperty(value = "parentFolderId")
     private String parentFolderId;
 
     /*
-     * The date and time the message was received.  The date and time information uses ISO 8601 format and is always in
+     * The date and time the message was received. The date and time information uses ISO 8601 format and is always in
      * UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
      */
-    @JsonProperty(value = "receivedDateTime")
     private OffsetDateTime receivedDateTime;
 
     /*
      * The email addresses to use when replying.
      */
-    @JsonProperty(value = "replyTo")
     private List<MicrosoftGraphRecipient> replyTo;
 
     /*
      * recipient
      */
-    @JsonProperty(value = "sender")
     private MicrosoftGraphRecipient sender;
 
     /*
-     * The date and time the message was sent.  The date and time information uses ISO 8601 format and is always in UTC
+     * The date and time the message was sent. The date and time information uses ISO 8601 format and is always in UTC
      * time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
      */
-    @JsonProperty(value = "sentDateTime")
     private OffsetDateTime sentDateTime;
 
     /*
      * The subject of the message.
      */
-    @JsonProperty(value = "subject")
     private String subject;
 
     /*
      * The To: recipients for the message.
      */
-    @JsonProperty(value = "toRecipients")
     private List<MicrosoftGraphRecipient> toRecipients;
 
     /*
      * itemBody
      */
-    @JsonProperty(value = "uniqueBody")
     private MicrosoftGraphItemBody uniqueBody;
 
     /*
      * The URL to open the message in Outlook on the web.You can append an ispopout argument to the end of the URL to
      * change how the message is displayed. If ispopout is not present or if it is set to 1, then the message is shown
      * in a popout window. If ispopout is set to 0, then the browser will show the message in the Outlook on the web
-     * review pane.The message will open in the browser if you are logged in to your mailbox via Outlook on the web.
-     * You will be prompted to login if you are not already logged in with the browser.This URL cannot be accessed from
+     * review pane.The message will open in the browser if you are logged in to your mailbox via Outlook on the web. You
+     * will be prompted to login if you are not already logged in with the browser.This URL cannot be accessed from
      * within an iFrame.
      */
-    @JsonProperty(value = "webLink")
     private String webLink;
 
     /*
      * The fileAttachment and itemAttachment attachments for the message.
      */
-    @JsonProperty(value = "attachments")
     private List<MicrosoftGraphAttachment> attachments;
 
     /*
      * The collection of open extensions defined for the message. Nullable.
      */
-    @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
      * The collection of multi-value extended properties defined for the message. Nullable.
      */
-    @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * The collection of single-value extended properties defined for the message. Nullable.
      */
-    @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * message
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphMessage class. */
+    /**
+     * Creates an instance of MicrosoftGraphMessage class.
+     */
     public MicrosoftGraphMessage() {
     }
 
     /**
      * Get the bccRecipients property: The Bcc: recipients for the message.
-     *
+     * 
      * @return the bccRecipients value.
      */
     public List<MicrosoftGraphRecipient> bccRecipients() {
@@ -232,7 +208,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the bccRecipients property: The Bcc: recipients for the message.
-     *
+     * 
      * @param bccRecipients the bccRecipients value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -243,7 +219,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the body property: itemBody.
-     *
+     * 
      * @return the body value.
      */
     public MicrosoftGraphItemBody body() {
@@ -252,7 +228,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the body property: itemBody.
-     *
+     * 
      * @param body the body value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -263,7 +239,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the bodyPreview property: The first 255 characters of the message body. It is in text format.
-     *
+     * 
      * @return the bodyPreview value.
      */
     public String bodyPreview() {
@@ -272,7 +248,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the bodyPreview property: The first 255 characters of the message body. It is in text format.
-     *
+     * 
      * @param bodyPreview the bodyPreview value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -283,7 +259,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the ccRecipients property: The Cc: recipients for the message.
-     *
+     * 
      * @return the ccRecipients value.
      */
     public List<MicrosoftGraphRecipient> ccRecipients() {
@@ -292,7 +268,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the ccRecipients property: The Cc: recipients for the message.
-     *
+     * 
      * @param ccRecipients the ccRecipients value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -303,7 +279,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the conversationId property: The ID of the conversation the email belongs to.
-     *
+     * 
      * @return the conversationId value.
      */
     public String conversationId() {
@@ -312,7 +288,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the conversationId property: The ID of the conversation the email belongs to.
-     *
+     * 
      * @param conversationId the conversationId value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -323,7 +299,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the conversationIndex property: Indicates the position of the message within the conversation.
-     *
+     * 
      * @return the conversationIndex value.
      */
     public byte[] conversationIndex() {
@@ -335,7 +311,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the conversationIndex property: Indicates the position of the message within the conversation.
-     *
+     * 
      * @param conversationIndex the conversationIndex value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -350,7 +326,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the flag property: followupFlag.
-     *
+     * 
      * @return the flag value.
      */
     public MicrosoftGraphFollowupFlag flag() {
@@ -359,7 +335,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the flag property: followupFlag.
-     *
+     * 
      * @param flag the flag value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -370,7 +346,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the from property: recipient.
-     *
+     * 
      * @return the from value.
      */
     public MicrosoftGraphRecipient from() {
@@ -379,7 +355,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the from property: recipient.
-     *
+     * 
      * @param from the from value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -392,8 +368,8 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * Get the hasAttachments property: Indicates whether the message has attachments. This property doesn't include
      * inline attachments, so if a message contains only inline attachments, this property is false. To verify the
      * existence of inline attachments, parse the body property to look for a src attribute, such as &lt;IMG
-     * src='cid:image001.jpg@01D26CD8.6C05F070'&gt;.
-     *
+     * src='cid:image001.jpg&#064;01D26CD8.6C05F070'&gt;.
+     * 
      * @return the hasAttachments value.
      */
     public Boolean hasAttachments() {
@@ -404,8 +380,8 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * Set the hasAttachments property: Indicates whether the message has attachments. This property doesn't include
      * inline attachments, so if a message contains only inline attachments, this property is false. To verify the
      * existence of inline attachments, parse the body property to look for a src attribute, such as &lt;IMG
-     * src='cid:image001.jpg@01D26CD8.6C05F070'&gt;.
-     *
+     * src='cid:image001.jpg&#064;01D26CD8.6C05F070'&gt;.
+     * 
      * @param hasAttachments the hasAttachments value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -416,7 +392,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the importance property: importance.
-     *
+     * 
      * @return the importance value.
      */
     public MicrosoftGraphImportance importance() {
@@ -425,7 +401,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the importance property: importance.
-     *
+     * 
      * @param importance the importance value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -436,7 +412,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the inferenceClassification property: inferenceClassificationType.
-     *
+     * 
      * @return the inferenceClassification value.
      */
     public MicrosoftGraphInferenceClassificationType inferenceClassification() {
@@ -445,12 +421,12 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the inferenceClassification property: inferenceClassificationType.
-     *
+     * 
      * @param inferenceClassification the inferenceClassification value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
-    public MicrosoftGraphMessage withInferenceClassification(
-        MicrosoftGraphInferenceClassificationType inferenceClassification) {
+    public MicrosoftGraphMessage
+        withInferenceClassification(MicrosoftGraphInferenceClassificationType inferenceClassification) {
         this.inferenceClassification = inferenceClassification;
         return this;
     }
@@ -460,7 +436,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * message headers indicating the network path taken by a message from the sender to the recipient. It can also
      * contain custom message headers that hold app data for the message. Returned only on applying a $select query
      * option. Read-only.
-     *
+     * 
      * @return the internetMessageHeaders value.
      */
     public List<MicrosoftGraphInternetMessageHeader> internetMessageHeaders() {
@@ -472,19 +448,19 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * message headers indicating the network path taken by a message from the sender to the recipient. It can also
      * contain custom message headers that hold app data for the message. Returned only on applying a $select query
      * option. Read-only.
-     *
+     * 
      * @param internetMessageHeaders the internetMessageHeaders value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
-    public MicrosoftGraphMessage withInternetMessageHeaders(
-        List<MicrosoftGraphInternetMessageHeader> internetMessageHeaders) {
+    public MicrosoftGraphMessage
+        withInternetMessageHeaders(List<MicrosoftGraphInternetMessageHeader> internetMessageHeaders) {
         this.internetMessageHeaders = internetMessageHeaders;
         return this;
     }
 
     /**
      * Get the internetMessageId property: The message ID in the format specified by RFC2822.
-     *
+     * 
      * @return the internetMessageId value.
      */
     public String internetMessageId() {
@@ -493,7 +469,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the internetMessageId property: The message ID in the format specified by RFC2822.
-     *
+     * 
      * @param internetMessageId the internetMessageId value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -504,7 +480,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the isDeliveryReceiptRequested property: Indicates whether a read receipt is requested for the message.
-     *
+     * 
      * @return the isDeliveryReceiptRequested value.
      */
     public Boolean isDeliveryReceiptRequested() {
@@ -513,7 +489,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the isDeliveryReceiptRequested property: Indicates whether a read receipt is requested for the message.
-     *
+     * 
      * @param isDeliveryReceiptRequested the isDeliveryReceiptRequested value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -525,7 +501,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     /**
      * Get the isDraft property: Indicates whether the message is a draft. A message is a draft if it hasn't been sent
      * yet.
-     *
+     * 
      * @return the isDraft value.
      */
     public Boolean isDraft() {
@@ -535,7 +511,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     /**
      * Set the isDraft property: Indicates whether the message is a draft. A message is a draft if it hasn't been sent
      * yet.
-     *
+     * 
      * @param isDraft the isDraft value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -546,7 +522,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the isRead property: Indicates whether the message has been read.
-     *
+     * 
      * @return the isRead value.
      */
     public Boolean isRead() {
@@ -555,7 +531,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the isRead property: Indicates whether the message has been read.
-     *
+     * 
      * @param isRead the isRead value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -566,7 +542,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the isReadReceiptRequested property: Indicates whether a read receipt is requested for the message.
-     *
+     * 
      * @return the isReadReceiptRequested value.
      */
     public Boolean isReadReceiptRequested() {
@@ -575,7 +551,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the isReadReceiptRequested property: Indicates whether a read receipt is requested for the message.
-     *
+     * 
      * @param isReadReceiptRequested the isReadReceiptRequested value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -586,7 +562,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the parentFolderId property: The unique identifier for the message's parent mailFolder.
-     *
+     * 
      * @return the parentFolderId value.
      */
     public String parentFolderId() {
@@ -595,7 +571,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the parentFolderId property: The unique identifier for the message's parent mailFolder.
-     *
+     * 
      * @param parentFolderId the parentFolderId value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -608,7 +584,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * Get the receivedDateTime property: The date and time the message was received. The date and time information uses
      * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the receivedDateTime value.
      */
     public OffsetDateTime receivedDateTime() {
@@ -619,7 +595,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * Set the receivedDateTime property: The date and time the message was received. The date and time information uses
      * ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param receivedDateTime the receivedDateTime value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -630,7 +606,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the replyTo property: The email addresses to use when replying.
-     *
+     * 
      * @return the replyTo value.
      */
     public List<MicrosoftGraphRecipient> replyTo() {
@@ -639,7 +615,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the replyTo property: The email addresses to use when replying.
-     *
+     * 
      * @param replyTo the replyTo value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -650,7 +626,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the sender property: recipient.
-     *
+     * 
      * @return the sender value.
      */
     public MicrosoftGraphRecipient sender() {
@@ -659,7 +635,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the sender property: recipient.
-     *
+     * 
      * @param sender the sender value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -672,7 +648,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * Get the sentDateTime property: The date and time the message was sent. The date and time information uses ISO
      * 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the sentDateTime value.
      */
     public OffsetDateTime sentDateTime() {
@@ -683,7 +659,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * Set the sentDateTime property: The date and time the message was sent. The date and time information uses ISO
      * 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param sentDateTime the sentDateTime value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -694,7 +670,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the subject property: The subject of the message.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -703,7 +679,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the subject property: The subject of the message.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -714,7 +690,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the toRecipients property: The To: recipients for the message.
-     *
+     * 
      * @return the toRecipients value.
      */
     public List<MicrosoftGraphRecipient> toRecipients() {
@@ -723,7 +699,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the toRecipients property: The To: recipients for the message.
-     *
+     * 
      * @param toRecipients the toRecipients value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -734,7 +710,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the uniqueBody property: itemBody.
-     *
+     * 
      * @return the uniqueBody value.
      */
     public MicrosoftGraphItemBody uniqueBody() {
@@ -743,7 +719,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the uniqueBody property: itemBody.
-     *
+     * 
      * @param uniqueBody the uniqueBody value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -759,7 +735,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * the Outlook on the web review pane.The message will open in the browser if you are logged in to your mailbox via
      * Outlook on the web. You will be prompted to login if you are not already logged in with the browser.This URL
      * cannot be accessed from within an iFrame.
-     *
+     * 
      * @return the webLink value.
      */
     public String webLink() {
@@ -773,7 +749,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * the Outlook on the web review pane.The message will open in the browser if you are logged in to your mailbox via
      * Outlook on the web. You will be prompted to login if you are not already logged in with the browser.This URL
      * cannot be accessed from within an iFrame.
-     *
+     * 
      * @param webLink the webLink value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -784,7 +760,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the attachments property: The fileAttachment and itemAttachment attachments for the message.
-     *
+     * 
      * @return the attachments value.
      */
     public List<MicrosoftGraphAttachment> attachments() {
@@ -793,7 +769,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the attachments property: The fileAttachment and itemAttachment attachments for the message.
-     *
+     * 
      * @param attachments the attachments value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -804,7 +780,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the extensions property: The collection of open extensions defined for the message. Nullable.
-     *
+     * 
      * @return the extensions value.
      */
     public List<MicrosoftGraphExtension> extensions() {
@@ -813,7 +789,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the extensions property: The collection of open extensions defined for the message. Nullable.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -825,7 +801,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     /**
      * Get the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * message. Nullable.
-     *
+     * 
      * @return the multiValueExtendedProperties value.
      */
     public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
@@ -835,7 +811,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     /**
      * Set the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * message. Nullable.
-     *
+     * 
      * @param multiValueExtendedProperties the multiValueExtendedProperties value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -848,7 +824,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     /**
      * Get the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the message. Nullable.
-     *
+     * 
      * @return the singleValueExtendedProperties value.
      */
     public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
@@ -858,7 +834,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
     /**
      * Set the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the message. Nullable.
-     *
+     * 
      * @param singleValueExtendedProperties the singleValueExtendedProperties value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -870,17 +846,16 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the additionalProperties property: message.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: message.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
@@ -889,43 +864,45 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphMessage withCategories(List<String> categories) {
         super.withCategories(categories);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphMessage withChangeKey(String changeKey) {
         super.withChangeKey(changeKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphMessage withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphMessage withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphMessage withId(String id) {
         super.withId(id);
@@ -934,7 +911,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -982,5 +959,194 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
         if (singleValueExtendedProperties() != null) {
             singleValueExtendedProperties().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("categories", categories(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("changeKey", changeKey());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeArrayField("bccRecipients", this.bccRecipients, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("body", this.body);
+        jsonWriter.writeStringField("bodyPreview", this.bodyPreview);
+        jsonWriter.writeArrayField("ccRecipients", this.ccRecipients, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("conversationId", this.conversationId);
+        jsonWriter.writeStringField("conversationIndex", Objects.toString(this.conversationIndex, null));
+        jsonWriter.writeJsonField("flag", this.flag);
+        jsonWriter.writeJsonField("from", this.from);
+        jsonWriter.writeBooleanField("hasAttachments", this.hasAttachments);
+        jsonWriter.writeStringField("importance", this.importance == null ? null : this.importance.toString());
+        jsonWriter.writeStringField("inferenceClassification",
+            this.inferenceClassification == null ? null : this.inferenceClassification.toString());
+        jsonWriter.writeArrayField("internetMessageHeaders", this.internetMessageHeaders,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("internetMessageId", this.internetMessageId);
+        jsonWriter.writeBooleanField("isDeliveryReceiptRequested", this.isDeliveryReceiptRequested);
+        jsonWriter.writeBooleanField("isDraft", this.isDraft);
+        jsonWriter.writeBooleanField("isRead", this.isRead);
+        jsonWriter.writeBooleanField("isReadReceiptRequested", this.isReadReceiptRequested);
+        jsonWriter.writeStringField("parentFolderId", this.parentFolderId);
+        jsonWriter.writeStringField("receivedDateTime",
+            this.receivedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedDateTime));
+        jsonWriter.writeArrayField("replyTo", this.replyTo, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("sender", this.sender);
+        jsonWriter.writeStringField("sentDateTime",
+            this.sentDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.sentDateTime));
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeArrayField("toRecipients", this.toRecipients, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("uniqueBody", this.uniqueBody);
+        jsonWriter.writeStringField("webLink", this.webLink);
+        jsonWriter.writeArrayField("attachments", this.attachments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("multiValueExtendedProperties", this.multiValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("singleValueExtendedProperties", this.singleValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphMessage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphMessage if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphMessage.
+     */
+    public static MicrosoftGraphMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphMessage deserializedMicrosoftGraphMessage = new MicrosoftGraphMessage();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.withId(reader.getString());
+                } else if ("categories".equals(fieldName)) {
+                    List<String> categories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphMessage.withCategories(categories);
+                } else if ("changeKey".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.withChangeKey(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("bccRecipients".equals(fieldName)) {
+                    List<MicrosoftGraphRecipient> bccRecipients
+                        = reader.readArray(reader1 -> MicrosoftGraphRecipient.fromJson(reader1));
+                    deserializedMicrosoftGraphMessage.bccRecipients = bccRecipients;
+                } else if ("body".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.body = MicrosoftGraphItemBody.fromJson(reader);
+                } else if ("bodyPreview".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.bodyPreview = reader.getString();
+                } else if ("ccRecipients".equals(fieldName)) {
+                    List<MicrosoftGraphRecipient> ccRecipients
+                        = reader.readArray(reader1 -> MicrosoftGraphRecipient.fromJson(reader1));
+                    deserializedMicrosoftGraphMessage.ccRecipients = ccRecipients;
+                } else if ("conversationId".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.conversationId = reader.getString();
+                } else if ("conversationIndex".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.conversationIndex
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("flag".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.flag = MicrosoftGraphFollowupFlag.fromJson(reader);
+                } else if ("from".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.from = MicrosoftGraphRecipient.fromJson(reader);
+                } else if ("hasAttachments".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.hasAttachments = reader.getNullable(JsonReader::getBoolean);
+                } else if ("importance".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.importance
+                        = MicrosoftGraphImportance.fromString(reader.getString());
+                } else if ("inferenceClassification".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.inferenceClassification
+                        = MicrosoftGraphInferenceClassificationType.fromString(reader.getString());
+                } else if ("internetMessageHeaders".equals(fieldName)) {
+                    List<MicrosoftGraphInternetMessageHeader> internetMessageHeaders
+                        = reader.readArray(reader1 -> MicrosoftGraphInternetMessageHeader.fromJson(reader1));
+                    deserializedMicrosoftGraphMessage.internetMessageHeaders = internetMessageHeaders;
+                } else if ("internetMessageId".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.internetMessageId = reader.getString();
+                } else if ("isDeliveryReceiptRequested".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.isDeliveryReceiptRequested
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDraft".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.isDraft = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isRead".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.isRead = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isReadReceiptRequested".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.isReadReceiptRequested
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("parentFolderId".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.parentFolderId = reader.getString();
+                } else if ("receivedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.receivedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("replyTo".equals(fieldName)) {
+                    List<MicrosoftGraphRecipient> replyTo
+                        = reader.readArray(reader1 -> MicrosoftGraphRecipient.fromJson(reader1));
+                    deserializedMicrosoftGraphMessage.replyTo = replyTo;
+                } else if ("sender".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.sender = MicrosoftGraphRecipient.fromJson(reader);
+                } else if ("sentDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.sentDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("subject".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.subject = reader.getString();
+                } else if ("toRecipients".equals(fieldName)) {
+                    List<MicrosoftGraphRecipient> toRecipients
+                        = reader.readArray(reader1 -> MicrosoftGraphRecipient.fromJson(reader1));
+                    deserializedMicrosoftGraphMessage.toRecipients = toRecipients;
+                } else if ("uniqueBody".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.uniqueBody = MicrosoftGraphItemBody.fromJson(reader);
+                } else if ("webLink".equals(fieldName)) {
+                    deserializedMicrosoftGraphMessage.webLink = reader.getString();
+                } else if ("attachments".equals(fieldName)) {
+                    List<MicrosoftGraphAttachment> attachments
+                        = reader.readArray(reader1 -> MicrosoftGraphAttachment.fromJson(reader1));
+                    deserializedMicrosoftGraphMessage.attachments = attachments;
+                } else if ("extensions".equals(fieldName)) {
+                    List<MicrosoftGraphExtension> extensions
+                        = reader.readArray(reader1 -> MicrosoftGraphExtension.fromJson(reader1));
+                    deserializedMicrosoftGraphMessage.extensions = extensions;
+                } else if ("multiValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties
+                        = reader.readArray(reader1 -> MicrosoftGraphMultiValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphMessage.multiValueExtendedProperties = multiValueExtendedProperties;
+                } else if ("singleValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties = reader
+                        .readArray(reader1 -> MicrosoftGraphSingleValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphMessage.singleValueExtendedProperties = singleValueExtendedProperties;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphMessage.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphMessage;
+        });
     }
 }

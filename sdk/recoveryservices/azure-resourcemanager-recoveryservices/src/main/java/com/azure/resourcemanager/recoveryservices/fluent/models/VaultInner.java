@@ -7,52 +7,69 @@ package com.azure.resourcemanager.recoveryservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
 import com.azure.resourcemanager.recoveryservices.models.Sku;
 import com.azure.resourcemanager.recoveryservices.models.VaultProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Resource information, as returned by the resource provider. */
+/**
+ * Resource information, as returned by the resource provider.
+ */
 @Fluent
 public final class VaultInner extends Resource {
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private IdentityData identity;
 
     /*
      * Properties of the vault.
      */
-    @JsonProperty(value = "properties")
     private VaultProperties properties;
 
     /*
      * Identifies the unique system identifier for each Azure resource.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Optional ETag.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
-    /** Creates an instance of VaultInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VaultInner class.
+     */
     public VaultInner() {
     }
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityData identity() {
@@ -61,7 +78,7 @@ public final class VaultInner extends Resource {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the VaultInner object itself.
      */
@@ -72,7 +89,7 @@ public final class VaultInner extends Resource {
 
     /**
      * Get the properties property: Properties of the vault.
-     *
+     * 
      * @return the properties value.
      */
     public VaultProperties properties() {
@@ -81,7 +98,7 @@ public final class VaultInner extends Resource {
 
     /**
      * Set the properties property: Properties of the vault.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the VaultInner object itself.
      */
@@ -92,7 +109,7 @@ public final class VaultInner extends Resource {
 
     /**
      * Get the sku property: Identifies the unique system identifier for each Azure resource.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -101,7 +118,7 @@ public final class VaultInner extends Resource {
 
     /**
      * Set the sku property: Identifies the unique system identifier for each Azure resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the VaultInner object itself.
      */
@@ -112,7 +129,7 @@ public final class VaultInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -121,7 +138,7 @@ public final class VaultInner extends Resource {
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -130,7 +147,7 @@ public final class VaultInner extends Resource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the VaultInner object itself.
      */
@@ -139,14 +156,48 @@ public final class VaultInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VaultInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VaultInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -155,7 +206,7 @@ public final class VaultInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -168,5 +219,66 @@ public final class VaultInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VaultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VaultInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VaultInner.
+     */
+    public static VaultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VaultInner deserializedVaultInner = new VaultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVaultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVaultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVaultInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVaultInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVaultInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedVaultInner.identity = IdentityData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVaultInner.properties = VaultProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedVaultInner.sku = Sku.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVaultInner.systemData = SystemData.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVaultInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVaultInner;
+        });
     }
 }

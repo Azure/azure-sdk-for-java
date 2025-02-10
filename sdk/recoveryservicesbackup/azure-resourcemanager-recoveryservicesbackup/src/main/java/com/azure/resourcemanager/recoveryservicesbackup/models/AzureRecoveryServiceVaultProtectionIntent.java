@@ -5,56 +5,77 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure Recovery Services Vault specific protection intent item. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "protectionIntentItemType",
-    defaultImpl = AzureRecoveryServiceVaultProtectionIntent.class)
-@JsonTypeName("RecoveryServiceVaultItem")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureWorkloadAutoProtectionIntent", value = AzureWorkloadAutoProtectionIntent.class)
-})
+/**
+ * Azure Recovery Services Vault specific protection intent item.
+ */
 @Fluent
 public class AzureRecoveryServiceVaultProtectionIntent extends ProtectionIntent {
-    /** Creates an instance of AzureRecoveryServiceVaultProtectionIntent class. */
+    /*
+     * backup protectionIntent type.
+     */
+    private ProtectionIntentItemType protectionIntentItemType = ProtectionIntentItemType.RECOVERY_SERVICE_VAULT_ITEM;
+
+    /**
+     * Creates an instance of AzureRecoveryServiceVaultProtectionIntent class.
+     */
     public AzureRecoveryServiceVaultProtectionIntent() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the protectionIntentItemType property: backup protectionIntent type.
+     * 
+     * @return the protectionIntentItemType value.
+     */
     @Override
-    public AzureRecoveryServiceVaultProtectionIntent withBackupManagementType(
-        BackupManagementType backupManagementType) {
+    public ProtectionIntentItemType protectionIntentItemType() {
+        return this.protectionIntentItemType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureRecoveryServiceVaultProtectionIntent
+        withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureRecoveryServiceVaultProtectionIntent withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureRecoveryServiceVaultProtectionIntent withItemId(String itemId) {
         super.withItemId(itemId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureRecoveryServiceVaultProtectionIntent withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureRecoveryServiceVaultProtectionIntent withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -63,11 +84,95 @@ public class AzureRecoveryServiceVaultProtectionIntent extends ProtectionIntent 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("itemId", itemId());
+        jsonWriter.writeStringField("policyId", policyId());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("protectionIntentItemType",
+            this.protectionIntentItemType == null ? null : this.protectionIntentItemType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureRecoveryServiceVaultProtectionIntent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureRecoveryServiceVaultProtectionIntent if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureRecoveryServiceVaultProtectionIntent.
+     */
+    public static AzureRecoveryServiceVaultProtectionIntent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("protectionIntentItemType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureWorkloadAutoProtectionIntent".equals(discriminatorValue)) {
+                    return AzureWorkloadAutoProtectionIntent.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadSQLAutoProtectionIntent".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlAutoProtectionIntent.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AzureRecoveryServiceVaultProtectionIntent fromJsonKnownDiscriminator(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureRecoveryServiceVaultProtectionIntent deserializedAzureRecoveryServiceVaultProtectionIntent
+                = new AzureRecoveryServiceVaultProtectionIntent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureRecoveryServiceVaultProtectionIntent
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureRecoveryServiceVaultProtectionIntent.withSourceResourceId(reader.getString());
+                } else if ("itemId".equals(fieldName)) {
+                    deserializedAzureRecoveryServiceVaultProtectionIntent.withItemId(reader.getString());
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedAzureRecoveryServiceVaultProtectionIntent.withPolicyId(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureRecoveryServiceVaultProtectionIntent
+                        .withProtectionState(ProtectionStatus.fromString(reader.getString()));
+                } else if ("protectionIntentItemType".equals(fieldName)) {
+                    deserializedAzureRecoveryServiceVaultProtectionIntent.protectionIntentItemType
+                        = ProtectionIntentItemType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureRecoveryServiceVaultProtectionIntent;
+        });
     }
 }

@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.fluent.models.MetricAlertResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents a collection of alert rule resources. */
+/**
+ * Represents a collection of alert rule resources.
+ */
 @Fluent
-public final class MetricAlertResourceCollection {
+public final class MetricAlertResourceCollection implements JsonSerializable<MetricAlertResourceCollection> {
     /*
      * the values for the alert rule resources.
      */
-    @JsonProperty(value = "value")
     private List<MetricAlertResourceInner> value;
 
-    /** Creates an instance of MetricAlertResourceCollection class. */
+    /**
+     * Creates an instance of MetricAlertResourceCollection class.
+     */
     public MetricAlertResourceCollection() {
     }
 
     /**
      * Get the value property: the values for the alert rule resources.
-     *
+     * 
      * @return the value value.
      */
     public List<MetricAlertResourceInner> value() {
@@ -33,7 +40,7 @@ public final class MetricAlertResourceCollection {
 
     /**
      * Set the value property: the values for the alert rule resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the MetricAlertResourceCollection object itself.
      */
@@ -44,12 +51,51 @@ public final class MetricAlertResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricAlertResourceCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricAlertResourceCollection if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricAlertResourceCollection.
+     */
+    public static MetricAlertResourceCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricAlertResourceCollection deserializedMetricAlertResourceCollection
+                = new MetricAlertResourceCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<MetricAlertResourceInner> value
+                        = reader.readArray(reader1 -> MetricAlertResourceInner.fromJson(reader1));
+                    deserializedMetricAlertResourceCollection.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricAlertResourceCollection;
+        });
     }
 }

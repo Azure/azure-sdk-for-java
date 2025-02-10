@@ -5,59 +5,61 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.ResourceSkuCapabilities;
 import com.azure.resourcemanager.storagecache.models.ResourceSkuLocationInfo;
 import com.azure.resourcemanager.storagecache.models.Restriction;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A resource SKU. */
+/**
+ * A resource SKU.
+ */
 @Fluent
-public final class ResourceSkuInner {
+public final class ResourceSkuInner implements JsonSerializable<ResourceSkuInner> {
     /*
      * The type of resource the SKU applies to.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * A list of capabilities of this SKU, such as throughput or ops/sec.
      */
-    @JsonProperty(value = "capabilities")
     private List<ResourceSkuCapabilities> capabilities;
 
     /*
      * The set of locations where the SKU is available. This is the supported and registered Azure Geo Regions (e.g.,
      * West US, East US, Southeast Asia, etc.).
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
 
     /*
      * The set of locations where the SKU is available.
      */
-    @JsonProperty(value = "locationInfo")
     private List<ResourceSkuLocationInfo> locationInfo;
 
     /*
      * The name of this SKU.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The restrictions preventing this SKU from being used. This is empty if there are no restrictions.
      */
-    @JsonProperty(value = "restrictions")
     private List<Restriction> restrictions;
 
-    /** Creates an instance of ResourceSkuInner class. */
+    /**
+     * Creates an instance of ResourceSkuInner class.
+     */
     public ResourceSkuInner() {
     }
 
     /**
      * Get the resourceType property: The type of resource the SKU applies to.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -66,7 +68,7 @@ public final class ResourceSkuInner {
 
     /**
      * Get the capabilities property: A list of capabilities of this SKU, such as throughput or ops/sec.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<ResourceSkuCapabilities> capabilities() {
@@ -75,7 +77,7 @@ public final class ResourceSkuInner {
 
     /**
      * Set the capabilities property: A list of capabilities of this SKU, such as throughput or ops/sec.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the ResourceSkuInner object itself.
      */
@@ -87,7 +89,7 @@ public final class ResourceSkuInner {
     /**
      * Get the locations property: The set of locations where the SKU is available. This is the supported and registered
      * Azure Geo Regions (e.g., West US, East US, Southeast Asia, etc.).
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -96,7 +98,7 @@ public final class ResourceSkuInner {
 
     /**
      * Get the locationInfo property: The set of locations where the SKU is available.
-     *
+     * 
      * @return the locationInfo value.
      */
     public List<ResourceSkuLocationInfo> locationInfo() {
@@ -105,7 +107,7 @@ public final class ResourceSkuInner {
 
     /**
      * Set the locationInfo property: The set of locations where the SKU is available.
-     *
+     * 
      * @param locationInfo the locationInfo value to set.
      * @return the ResourceSkuInner object itself.
      */
@@ -116,7 +118,7 @@ public final class ResourceSkuInner {
 
     /**
      * Get the name property: The name of this SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -125,7 +127,7 @@ public final class ResourceSkuInner {
 
     /**
      * Set the name property: The name of this SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceSkuInner object itself.
      */
@@ -137,7 +139,7 @@ public final class ResourceSkuInner {
     /**
      * Get the restrictions property: The restrictions preventing this SKU from being used. This is empty if there are
      * no restrictions.
-     *
+     * 
      * @return the restrictions value.
      */
     public List<Restriction> restrictions() {
@@ -147,7 +149,7 @@ public final class ResourceSkuInner {
     /**
      * Set the restrictions property: The restrictions preventing this SKU from being used. This is empty if there are
      * no restrictions.
-     *
+     * 
      * @param restrictions the restrictions value to set.
      * @return the ResourceSkuInner object itself.
      */
@@ -158,7 +160,7 @@ public final class ResourceSkuInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -171,5 +173,60 @@ public final class ResourceSkuInner {
         if (restrictions() != null) {
             restrictions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("locationInfo", this.locationInfo, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("restrictions", this.restrictions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSkuInner.
+     */
+    public static ResourceSkuInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuInner deserializedResourceSkuInner = new ResourceSkuInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedResourceSkuInner.resourceType = reader.getString();
+                } else if ("capabilities".equals(fieldName)) {
+                    List<ResourceSkuCapabilities> capabilities
+                        = reader.readArray(reader1 -> ResourceSkuCapabilities.fromJson(reader1));
+                    deserializedResourceSkuInner.capabilities = capabilities;
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceSkuInner.locations = locations;
+                } else if ("locationInfo".equals(fieldName)) {
+                    List<ResourceSkuLocationInfo> locationInfo
+                        = reader.readArray(reader1 -> ResourceSkuLocationInfo.fromJson(reader1));
+                    deserializedResourceSkuInner.locationInfo = locationInfo;
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceSkuInner.name = reader.getString();
+                } else if ("restrictions".equals(fieldName)) {
+                    List<Restriction> restrictions = reader.readArray(reader1 -> Restriction.fromJson(reader1));
+                    deserializedResourceSkuInner.restrictions = restrictions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuInner;
+        });
     }
 }

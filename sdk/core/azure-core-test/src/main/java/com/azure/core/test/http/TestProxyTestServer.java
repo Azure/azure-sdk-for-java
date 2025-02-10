@@ -3,15 +3,12 @@
 
 package com.azure.core.test.http;
 
-import com.azure.core.util.UrlBuilder;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Mono;
 import reactor.netty.DisposableServer;
 import reactor.netty.http.server.HttpServer;
 
 import java.io.Closeable;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Map;
 
 /**
@@ -20,17 +17,12 @@ import java.util.Map;
 public class TestProxyTestServer implements Closeable {
     private final DisposableServer server;
 
-    private static final String TEST_JSON_RESPONSE_BODY = "{\"modelId\":\"0cd2728b-210e-4c05-b706-f70554276bcc\",\"createdDateTime\":\"2022-08-31T00:00:00Z\",\"apiVersion\":\"2022-08-31\",  \"accountKey\" : \"secret_account_key\"}";
-    private static final String TEST_XML_RESPONSE_BODY = "{\"Body\":\"<UserDelegationKey><SignedTid>sensitiveInformation=</SignedTid></UserDelegationKey>\",\"primaryKey\":\"<PrimaryKey>fakePrimaryKey</PrimaryKey>\", \"TableName\":\"listtable09bf2a3d\"}";
-    URL url;
-
-    {
-        try {
-            url = new UrlBuilder().setHost("localhost").setPort(3000).setScheme("http").setPath("echoheaders").toUrl();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final String TEST_JSON_RESPONSE_BODY = "{\"modelId\":\"0cd2728b-210e-4c05-b706-f70554276bcc\","
+        + "\"createdDateTime\":\"2022-08-31T00:00:00Z\",\"apiVersion\":\"2022-08-31\","
+        + "  \"accountKey\" : \"secret_account_key\"," + "  \"client_secret\" : \"secret_client_secret\"}";
+    private static final String TEST_XML_RESPONSE_BODY = "{\"Body\":\"<UserDelegationKey>"
+        + "<SignedTid>sensitiveInformation=</SignedTid></UserDelegationKey>\",\"primaryKey\":"
+        + "\"<PrimaryKey>fakePrimaryKey</PrimaryKey>\", \"TableName\":\"listtable09bf2a3d\"}";
 
     /**
      * Constructor for TestProxyTestServer
@@ -38,10 +30,11 @@ public class TestProxyTestServer implements Closeable {
     public TestProxyTestServer() {
         server = HttpServer.create()
             .host("localhost")
-            .port(3000)
             .route(routes -> routes
                 .get("/", (req, res) -> res.status(HttpResponseStatus.OK).sendString(Mono.just("hello world")))
-                .post("/first/path", (req, res) -> res.status(HttpResponseStatus.OK).sendString(Mono.just("first path")))
+                .post("/first/path",
+                    (req, res) -> res.status(HttpResponseStatus.OK).sendString(Mono.just("first path")))
+                .post("/post", (req, res) -> res.status(HttpResponseStatus.OK))
                 .get("/echoheaders", (req, res) -> {
                     for (Map.Entry<String, String> requestHeader : req.requestHeaders()) {
                         res.addHeader(requestHeader.getKey(), requestHeader.getValue());
@@ -54,20 +47,29 @@ public class TestProxyTestServer implements Closeable {
                     }
                     return res.status(HttpResponseStatus.OK)
                         .addHeader("Content-Type", "application/json")
-                        .addHeader("Operation-Location", "https://resourceInfo.cognitiveservices.azure.com/fr/models//905a58f9-131e-42b8-8410-493ab1517d62")
+                        .addHeader("Operation-Location",
+                            "https://resourceInfo.cognitiveservices.azure.com/fr/models//905a58f9-131e-42b8-8410-493ab1517d62")
                         .sendString(Mono.just(TEST_JSON_RESPONSE_BODY));
                 })
                 .get("/fr/path/2",
                     (req, res) -> res.status(HttpResponseStatus.OK)
                         .addHeader("Content-Type", "application/json")
                         .sendString(Mono.just(TEST_XML_RESPONSE_BODY)))
-                .get("/getRedirect", (req, res) -> {
-                    return res.status(HttpResponseStatus.TEMPORARY_REDIRECT)
+                .get("/getRedirect",
+                    (req, res) -> res.status(HttpResponseStatus.TEMPORARY_REDIRECT)
                         .addHeader("Content-Type", "application/json")
-                        .addHeader("Location", url.toString());
-                }))
+                        .addHeader("Location", "http://localhost:" + port() + "/echoheaders")))
 
             .bindNow();
+    }
+
+    /**
+     * Get the port of the server.
+     *
+     * @return The port of the server.
+     */
+    public int port() {
+        return server.port();
     }
 
     @Override

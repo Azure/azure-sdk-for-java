@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hybridcompute.models.OperationListResult;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"origin\":\"gpfqbuace\",\"name\":\"zfq\",\"display\":{\"operation\":\"uaopppcqeq\",\"resource\":\"lzdahzxctobgbkdm\",\"description\":\"zpostmgrcfbu\",\"provider\":\"mfqjhhkxbp\"},\"isDataAction\":true}]}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"origin\":\"youlp\",\"name\":\"v\",\"display\":{\"operation\":\"l\",\"resource\":\"imjwosyt\",\"description\":\"tcs\",\"provider\":\"cktqumiekkezzi\"},\"isDataAction\":false}]}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

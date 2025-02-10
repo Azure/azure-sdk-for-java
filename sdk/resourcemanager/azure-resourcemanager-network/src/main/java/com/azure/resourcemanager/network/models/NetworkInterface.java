@@ -18,25 +18,26 @@ import java.util.Map;
 /** Network interface. */
 @Fluent
 public interface NetworkInterface
-    extends NetworkInterfaceBase,
-        GroupableResource<NetworkManager, NetworkInterfaceInner>,
-        Refreshable<NetworkInterface>,
-        Updatable<NetworkInterface.Update>,
-        UpdatableWithTags<NetworkInterface> {
-    /** @return the IP configurations of this network interface, indexed by their names. */
+    extends NetworkInterfaceBase, GroupableResource<NetworkManager, NetworkInterfaceInner>,
+    Refreshable<NetworkInterface>, Updatable<NetworkInterface.Update>, UpdatableWithTags<NetworkInterface> {
+    /**
+     * Gets the IP configurations of this network interface.
+     *
+     * @return the IP configurations of this network interface, indexed by their names.
+     */
     Map<String, NicIpConfiguration> ipConfigurations();
 
-    /** @return the primary IP configuration of this network interface */
+    /**
+     * Gets the primary IP configuration of this network interface.
+     *
+     * @return the primary IP configuration of this network interface
+     */
     NicIpConfiguration primaryIPConfiguration();
 
     /** The entirety of the network interface definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithPrimaryNetwork,
-            DefinitionStages.WithPrimaryNetworkSubnet,
-            DefinitionStages.WithPrimaryPrivateIP,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithPrimaryNetwork,
+        DefinitionStages.WithPrimaryNetworkSubnet, DefinitionStages.WithPrimaryPrivateIP, DefinitionStages.WithCreate {
     }
 
     /** Grouping of network interface definition stages. */
@@ -256,19 +257,25 @@ public interface NetworkInterface
             WithCreate withAcceleratedNetworking();
         }
 
+        /** The stage of the definition allowing to specify delete options for the public ip address. */
+        interface WithPublicIPAddressDeleteOptions {
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the update
+             */
+            WithCreate withPrimaryPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
+        }
+
         /**
          * The stage of the network interface definition which contains all the minimum required inputs for the resource
          * to be created, but also allows for any other optional settings to be specified.
          */
         interface WithCreate
-            extends Creatable<NetworkInterface>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithPrimaryPublicIPAddress,
-                WithNetworkSecurityGroup,
-                WithSecondaryIPConfiguration,
-                WithAcceleratedNetworking,
-                WithLoadBalancer,
-                WithApplicationSecurityGroup {
+            extends Creatable<NetworkInterface>, Resource.DefinitionWithTags<WithCreate>, WithPrimaryPublicIPAddress,
+            WithNetworkSecurityGroup, WithSecondaryIPConfiguration, WithAcceleratedNetworking, WithLoadBalancer,
+            WithApplicationSecurityGroup, WithPublicIPAddressDeleteOptions {
             /**
              * Enables IP forwarding in the network interface.
              *
@@ -500,8 +507,8 @@ public interface NetworkInterface
              * @param name name for the IP configuration
              * @return the first stage of the update
              */
-            NicIpConfiguration.UpdateDefinitionStages.Blank<NetworkInterface.Update> defineSecondaryIPConfiguration(
-                String name);
+            NicIpConfiguration.UpdateDefinitionStages.Blank<NetworkInterface.Update>
+                defineSecondaryIPConfiguration(String name);
 
             /**
              * Starts update of an IP configuration.
@@ -576,21 +583,26 @@ public interface NetworkInterface
              */
             Update withoutLoadBalancerInboundNatRules();
         }
+
+        /** The stage of the network interface update allowing to specify delete options for the public ip address. */
+        interface WithPublicIPAddressDeleteOptions {
+
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the update
+             */
+            Update withPrimaryPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update
-        extends Appliable<NetworkInterface>,
-            Resource.UpdateWithTags<Update>,
-            UpdateStages.WithPrimaryNetworkSubnet,
-            UpdateStages.WithPrimaryPrivateIP,
-            UpdateStages.WithPrimaryPublicIPAddress,
-            UpdateStages.WithNetworkSecurityGroup,
-            UpdateStages.WithIPForwarding,
-            UpdateStages.WithDnsServer,
-            UpdateStages.WithIPConfiguration,
-            UpdateStages.WithLoadBalancer,
-            UpdateStages.WithAcceleratedNetworking,
-            UpdateStages.WithApplicationSecurityGroup {
+        extends Appliable<NetworkInterface>, Resource.UpdateWithTags<Update>, UpdateStages.WithPrimaryNetworkSubnet,
+        UpdateStages.WithPrimaryPrivateIP, UpdateStages.WithPrimaryPublicIPAddress,
+        UpdateStages.WithNetworkSecurityGroup, UpdateStages.WithIPForwarding, UpdateStages.WithDnsServer,
+        UpdateStages.WithIPConfiguration, UpdateStages.WithLoadBalancer, UpdateStages.WithAcceleratedNetworking,
+        UpdateStages.WithApplicationSecurityGroup, UpdateStages.WithPublicIPAddressDeleteOptions {
     }
 }

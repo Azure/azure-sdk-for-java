@@ -22,22 +22,18 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationResource> getOperationStatusWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
-        Response<OperationResourceInner> inner =
-            this.serviceClient().getOperationStatusWithResponse(resourceGroupName, vaultName, operationId, context);
+    public Response<OperationResource> getOperationStatusWithResponse(String resourceGroupName, String vaultName,
+        String operationId, Context context) {
+        Response<OperationResourceInner> inner
+            = this.serviceClient().getOperationStatusWithResponse(resourceGroupName, vaultName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -45,8 +41,8 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     }
 
     public OperationResource getOperationStatus(String resourceGroupName, String vaultName, String operationId) {
-        OperationResourceInner inner =
-            this.serviceClient().getOperationStatus(resourceGroupName, vaultName, operationId);
+        OperationResourceInner inner
+            = this.serviceClient().getOperationStatus(resourceGroupName, vaultName, operationId);
         if (inner != null) {
             return new OperationResourceImpl(inner, this.manager());
         } else {
@@ -54,15 +50,12 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Response<Vault> getOperationResultWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
-        Response<VaultInner> inner =
-            this.serviceClient().getOperationResultWithResponse(resourceGroupName, vaultName, operationId, context);
+    public Response<Vault> getOperationResultWithResponse(String resourceGroupName, String vaultName,
+        String operationId, Context context) {
+        Response<VaultInner> inner
+            = this.serviceClient().getOperationResultWithResponse(resourceGroupName, vaultName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VaultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

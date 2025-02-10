@@ -76,7 +76,10 @@ public final class ConsistencyPolicy extends JsonSerializable {
      */
     public ConsistencyPolicy setDefaultConsistencyLevel(ConsistencyLevel level) {
         this.consistencyLevel = level;
-        super.set(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL, level.toString());
+        super.set(
+            Constants.Properties.DEFAULT_CONSISTENCY_LEVEL,
+            level.toString()
+        );
         return this;
     }
 
@@ -102,7 +105,10 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * @return the ConsistencyPolicy.
      */
     public ConsistencyPolicy setMaxStalenessPrefix(int maxStalenessPrefix) {
-        super.set(Constants.Properties.MAX_STALENESS_PREFIX, maxStalenessPrefix);
+        super.set(
+            Constants.Properties.MAX_STALENESS_PREFIX,
+            maxStalenessPrefix
+        );
         return this;
     }
 
@@ -131,7 +137,10 @@ public final class ConsistencyPolicy extends JsonSerializable {
         if (maxStalenessInterval == null) {
             throw new IllegalArgumentException("maxStalenessInterval should not be null");
         }
-        super.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessInterval.getSeconds());
+        super.set(
+            Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS,
+            maxStalenessInterval.getSeconds()
+        );
         return this;
     }
 

@@ -12,21 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Backup model =
-            BinaryData
-                .fromString(
-                    "{\"backupRetentionDays\":227486860,\"geoRedundantBackup\":\"Disabled\",\"earliestRestoreDate\":\"2021-01-07T23:05:24Z\"}")
-                .toObject(Backup.class);
-        Assertions.assertEquals(227486860, model.backupRetentionDays());
+        Backup model = BinaryData.fromString(
+            "{\"backupRetentionDays\":1950851050,\"geoRedundantBackup\":\"Disabled\",\"earliestRestoreDate\":\"2021-01-21T08:28Z\"}")
+            .toObject(Backup.class);
+        Assertions.assertEquals(1950851050, model.backupRetentionDays());
         Assertions.assertEquals(EnableStatusEnum.DISABLED, model.geoRedundantBackup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Backup model =
-            new Backup().withBackupRetentionDays(227486860).withGeoRedundantBackup(EnableStatusEnum.DISABLED);
+        Backup model
+            = new Backup().withBackupRetentionDays(1950851050).withGeoRedundantBackup(EnableStatusEnum.DISABLED);
         model = BinaryData.fromObject(model).toObject(Backup.class);
-        Assertions.assertEquals(227486860, model.backupRetentionDays());
+        Assertions.assertEquals(1950851050, model.backupRetentionDays());
         Assertions.assertEquals(EnableStatusEnum.DISABLED, model.geoRedundantBackup());
     }
 }

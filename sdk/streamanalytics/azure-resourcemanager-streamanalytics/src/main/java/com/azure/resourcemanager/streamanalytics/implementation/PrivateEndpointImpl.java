@@ -45,6 +45,10 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PrivateEndpointInner innerModel() {
         return this.innerObject;
     }
@@ -74,36 +78,20 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpoints()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    clusterName,
-                    privateEndpointName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
+            .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
+                createIfMatch, createIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpoint create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpoints()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    clusterName,
-                    privateEndpointName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
+            .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
+                createIfMatch, createIfNoneMatch, context)
+            .getValue();
         return this;
     }
 
@@ -122,66 +110,45 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpoints()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    clusterName,
-                    privateEndpointName,
-                    this.innerModel(),
-                    updateIfMatch,
-                    updateIfNoneMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
+            .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
+                updateIfMatch, updateIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpoint apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpoints()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    clusterName,
-                    privateEndpointName,
-                    this.innerModel(),
-                    updateIfMatch,
-                    updateIfNoneMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
+            .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
+                updateIfMatch, updateIfNoneMatch, context)
+            .getValue();
         return this;
     }
 
-    PrivateEndpointImpl(
-        PrivateEndpointInner innerObject,
+    PrivateEndpointImpl(PrivateEndpointInner innerObject,
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.privateEndpointName = Utils.getValueFromIdByName(innerObject.id(), "privateEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.privateEndpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpoints");
     }
 
     public PrivateEndpoint refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpoints()
-                .getWithResponse(resourceGroupName, clusterName, privateEndpointName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
+            .getWithResponse(resourceGroupName, clusterName, privateEndpointName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpoint refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpoints()
-                .getWithResponse(resourceGroupName, clusterName, privateEndpointName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
+            .getWithResponse(resourceGroupName, clusterName, privateEndpointName, context)
+            .getValue();
         return this;
     }
 

@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-/** Samples for ObjectReplicationPoliciesOperation Delete. */
+/**
+ * Samples for ObjectReplicationPoliciesOperation Delete.
+ */
 public final class ObjectReplicationPoliciesOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountDeleteObjectReplicationPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountDeleteObjectReplicationPolicy.json
      */
     /**
      * Sample code: StorageAccountDeleteObjectReplicationPolicies.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void storageAccountDeleteObjectReplicationPolicies(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+    public static void
+        storageAccountDeleteObjectReplicationPolicies(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getObjectReplicationPoliciesOperations()

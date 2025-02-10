@@ -8,7 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
 
 /**
  * Fluent credential builder for instantiating a {@link EnvironmentCredential}.
@@ -26,8 +25,7 @@ import java.util.concurrent.ForkJoinPool;
  *
  * <!-- src_embed com.azure.identity.credential.environmentcredential.construct -->
  * <pre>
- * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.environmentcredential.construct -->
  *
@@ -37,6 +35,13 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
     private static final ClientLogger LOGGER = new ClientLogger(EnvironmentCredentialBuilder.class);
 
     private String authorityHost;
+
+    /**
+     * Constructs an instance of EnvironmentCredentialBuilder.
+     */
+    public EnvironmentCredentialBuilder() {
+        super();
+    }
 
     /**
      * Specifies the Microsoft Entra endpoint to acquire tokens.
@@ -54,9 +59,9 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
      * <p>
-     * If this is not configured, the {@link ForkJoinPool#commonPool()} will be used which is
-     * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
-     * requests might starve and setting up this executor service should be considered.
+     * If this is not configured, the {@link com.azure.core.util.SharedExecutorService} will be used which is
+     * also shared with other SDK libraries. If there are many concurrent SDK tasks occurring, authentication
+     * requests might starve and configuring a separate executor service should be considered.
      * </p>
      *
      * <p> The executor service and can be safely shutdown if the TokenCredential is no longer being used by the

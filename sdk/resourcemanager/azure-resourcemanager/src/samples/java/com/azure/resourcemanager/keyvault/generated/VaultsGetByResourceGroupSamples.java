@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-/** Samples for Vaults GetByResourceGroup. */
+/**
+ * Samples for Vaults GetByResourceGroup.
+ */
 public final class VaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/getVault.json
+     * x-ms-original-file:
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/getVault.json
      */
     /**
      * Sample code: Retrieve a vault.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void retrieveAVault(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .vaults()
+        azure.vaults()
             .manager()
             .serviceClient()
             .getVaults()

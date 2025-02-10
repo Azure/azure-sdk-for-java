@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning status. */
+/**
+ * Provisioning status.
+ */
 public final class AfdProvisioningState extends ExpandableStringEnum<AfdProvisioningState> {
-    /** Static value Succeeded for AfdProvisioningState. */
+    /**
+     * Static value Succeeded for AfdProvisioningState.
+     */
     public static final AfdProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for AfdProvisioningState. */
+    /**
+     * Static value Failed for AfdProvisioningState.
+     */
     public static final AfdProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Updating for AfdProvisioningState. */
+    /**
+     * Static value Updating for AfdProvisioningState.
+     */
     public static final AfdProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for AfdProvisioningState. */
+    /**
+     * Static value Deleting for AfdProvisioningState.
+     */
     public static final AfdProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Creating for AfdProvisioningState. */
+    /**
+     * Static value Creating for AfdProvisioningState.
+     */
     public static final AfdProvisioningState CREATING = fromString("Creating");
 
     /**
      * Creates a new instance of AfdProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class AfdProvisioningState extends ExpandableStringEnum<AfdProvisio
 
     /**
      * Creates or finds a AfdProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AfdProvisioningState.
      */
-    @JsonCreator
     public static AfdProvisioningState fromString(String name) {
         return fromString(name, AfdProvisioningState.class);
     }
 
     /**
      * Gets known AfdProvisioningState values.
-     *
+     * 
      * @return known AfdProvisioningState values.
      */
     public static Collection<AfdProvisioningState> values() {

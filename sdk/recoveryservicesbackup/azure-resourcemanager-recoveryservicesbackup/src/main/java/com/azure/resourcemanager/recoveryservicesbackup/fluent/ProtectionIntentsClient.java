@@ -12,12 +12,16 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.PreValidat
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionIntentResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PreValidateEnableBackupRequest;
 
-/** An instance of this class provides access to all the operations defined in ProtectionIntentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectionIntentsClient.
+ */
 public interface ProtectionIntentsClient {
     /**
-     * It will validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed
-     * in properties.
-     *
+     * It will validate followings
+     * 1. Vault capacity
+     * 2. VM is already protected
+     * 3. Any VM related configuration passed in properties.
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Enable backup validation request on Virtual Machine.
      * @param context The context to associate with this operation.
@@ -27,13 +31,15 @@ public interface ProtectionIntentsClient {
      * @return response contract for enable backup validation request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PreValidateEnableBackupResponseInner> validateWithResponse(
-        String azureRegion, PreValidateEnableBackupRequest parameters, Context context);
+    Response<PreValidateEnableBackupResponseInner> validateWithResponse(String azureRegion,
+        PreValidateEnableBackupRequest parameters, Context context);
 
     /**
-     * It will validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed
-     * in properties.
-     *
+     * It will validate followings
+     * 1. Vault capacity
+     * 2. VM is already protected
+     * 3. Any VM related configuration passed in properties.
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Enable backup validation request on Virtual Machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,8 +52,9 @@ public interface ProtectionIntentsClient {
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
-     *
+     * the operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -59,13 +66,14 @@ public interface ProtectionIntentsClient {
      * @return base class for backup ProtectionIntent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectionIntentResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName, Context context);
+    Response<ProtectionIntentResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String intentObjectName, Context context);
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
-     *
+     * the operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -76,12 +84,12 @@ public interface ProtectionIntentsClient {
      * @return base class for backup ProtectionIntent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionIntentResourceInner get(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName);
+    ProtectionIntentResourceInner get(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName);
 
     /**
      * Create Intent for Enabling backup of an item. This is a synchronous operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -94,17 +102,12 @@ public interface ProtectionIntentsClient {
      * @return base class for backup ProtectionIntent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectionIntentResourceInner> createOrUpdateWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String intentObjectName,
-        ProtectionIntentResourceInner parameters,
-        Context context);
+    Response<ProtectionIntentResourceInner> createOrUpdateWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String intentObjectName, ProtectionIntentResourceInner parameters, Context context);
 
     /**
      * Create Intent for Enabling backup of an item. This is a synchronous operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -116,16 +119,12 @@ public interface ProtectionIntentsClient {
      * @return base class for backup ProtectionIntent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionIntentResourceInner createOrUpdate(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String intentObjectName,
-        ProtectionIntentResourceInner parameters);
+    ProtectionIntentResourceInner createOrUpdate(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName, ProtectionIntentResourceInner parameters);
 
     /**
      * Used to remove intent from an item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the intent.
@@ -137,12 +136,12 @@ public interface ProtectionIntentsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName, Context context);
+    Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName, Context context);
 
     /**
      * Used to remove intent from an item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the intent.

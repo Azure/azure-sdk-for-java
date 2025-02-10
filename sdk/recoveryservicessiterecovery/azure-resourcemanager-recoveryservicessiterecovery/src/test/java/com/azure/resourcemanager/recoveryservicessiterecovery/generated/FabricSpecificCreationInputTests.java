@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.FabricSpeci
 public final class FabricSpecificCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FabricSpecificCreationInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"FabricSpecificCreationInput\"}")
-                .toObject(FabricSpecificCreationInput.class);
+        FabricSpecificCreationInput model = BinaryData.fromString("{\"instanceType\":\"FabricSpecificCreationInput\"}")
+            .toObject(FabricSpecificCreationInput.class);
     }
 
     @org.junit.jupiter.api.Test

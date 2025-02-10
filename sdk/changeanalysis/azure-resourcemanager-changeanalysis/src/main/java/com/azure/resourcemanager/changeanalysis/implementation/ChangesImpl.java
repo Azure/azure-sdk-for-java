@@ -20,35 +20,35 @@ public final class ChangesImpl implements Changes {
 
     private final com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager serviceManager;
 
-    public ChangesImpl(
-        ChangesClient innerClient, com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager serviceManager) {
+    public ChangesImpl(ChangesClient innerClient,
+        com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Change> listByResourceGroup(
-        String resourceGroupName, OffsetDateTime startTime, OffsetDateTime endTime) {
-        PagedIterable<ChangeInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, startTime, endTime);
-        return Utils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
+    public PagedIterable<Change> listByResourceGroup(String resourceGroupName, OffsetDateTime startTime,
+        OffsetDateTime endTime) {
+        PagedIterable<ChangeInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, startTime, endTime);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Change> listByResourceGroup(
-        String resourceGroupName, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken, Context context) {
-        PagedIterable<ChangeInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, startTime, endTime, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
+    public PagedIterable<Change> listByResourceGroup(String resourceGroupName, OffsetDateTime startTime,
+        OffsetDateTime endTime, String skipToken, Context context) {
+        PagedIterable<ChangeInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, startTime, endTime, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Change> list(OffsetDateTime startTime, OffsetDateTime endTime) {
         PagedIterable<ChangeInner> inner = this.serviceClient().list(startTime, endTime);
-        return Utils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Change> list(
-        OffsetDateTime startTime, OffsetDateTime endTime, String skipToken, Context context) {
+    public PagedIterable<Change> list(OffsetDateTime startTime, OffsetDateTime endTime, String skipToken,
+        Context context) {
         PagedIterable<ChangeInner> inner = this.serviceClient().list(startTime, endTime, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ChangeImpl(inner1, this.manager()));
     }
 
     private ChangesClient serviceClient() {

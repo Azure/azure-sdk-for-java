@@ -6,37 +6,42 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a cluster firewall rule. */
+/**
+ * The properties of a cluster firewall rule.
+ */
 @Fluent
-public final class FirewallRuleProperties {
+public final class FirewallRuleProperties implements JsonSerializable<FirewallRuleProperties> {
     /*
      * The start IP address of the cluster firewall rule. Must be IPv4 format.
      */
-    @JsonProperty(value = "startIpAddress", required = true)
     private String startIpAddress;
 
     /*
      * The end IP address of the cluster firewall rule. Must be IPv4 format.
      */
-    @JsonProperty(value = "endIpAddress", required = true)
     private String endIpAddress;
 
     /*
      * Provisioning state of the firewall rule.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of FirewallRuleProperties class. */
+    /**
+     * Creates an instance of FirewallRuleProperties class.
+     */
     public FirewallRuleProperties() {
     }
 
     /**
      * Get the startIpAddress property: The start IP address of the cluster firewall rule. Must be IPv4 format.
-     *
+     * 
      * @return the startIpAddress value.
      */
     public String startIpAddress() {
@@ -45,7 +50,7 @@ public final class FirewallRuleProperties {
 
     /**
      * Set the startIpAddress property: The start IP address of the cluster firewall rule. Must be IPv4 format.
-     *
+     * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the FirewallRuleProperties object itself.
      */
@@ -56,7 +61,7 @@ public final class FirewallRuleProperties {
 
     /**
      * Get the endIpAddress property: The end IP address of the cluster firewall rule. Must be IPv4 format.
-     *
+     * 
      * @return the endIpAddress value.
      */
     public String endIpAddress() {
@@ -65,7 +70,7 @@ public final class FirewallRuleProperties {
 
     /**
      * Set the endIpAddress property: The end IP address of the cluster firewall rule. Must be IPv4 format.
-     *
+     * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the FirewallRuleProperties object itself.
      */
@@ -76,7 +81,7 @@ public final class FirewallRuleProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the firewall rule.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -85,23 +90,64 @@ public final class FirewallRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startIpAddress in model FirewallRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startIpAddress in model FirewallRuleProperties"));
         }
         if (endIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endIpAddress in model FirewallRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endIpAddress in model FirewallRuleProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FirewallRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startIpAddress", this.startIpAddress);
+        jsonWriter.writeStringField("endIpAddress", this.endIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallRuleProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FirewallRuleProperties.
+     */
+    public static FirewallRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallRuleProperties deserializedFirewallRuleProperties = new FirewallRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startIpAddress".equals(fieldName)) {
+                    deserializedFirewallRuleProperties.startIpAddress = reader.getString();
+                } else if ("endIpAddress".equals(fieldName)) {
+                    deserializedFirewallRuleProperties.endIpAddress = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFirewallRuleProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallRuleProperties;
+        });
+    }
 }

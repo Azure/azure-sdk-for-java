@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Supported operating systems property. */
+/**
+ * Supported operating systems property.
+ */
 @Fluent
-public final class SupportedOSProperty {
+public final class SupportedOSProperty implements JsonSerializable<SupportedOSProperty> {
     /*
      * The replication provider type.
      */
-    @JsonProperty(value = "instanceType")
     private String instanceType;
 
     /*
      * The list of supported operating systems.
      */
-    @JsonProperty(value = "supportedOs")
     private List<SupportedOSDetails> supportedOs;
 
-    /** Creates an instance of SupportedOSProperty class. */
+    /**
+     * Creates an instance of SupportedOSProperty class.
+     */
     public SupportedOSProperty() {
     }
 
     /**
      * Get the instanceType property: The replication provider type.
-     *
+     * 
      * @return the instanceType value.
      */
     public String instanceType() {
@@ -38,7 +44,7 @@ public final class SupportedOSProperty {
 
     /**
      * Set the instanceType property: The replication provider type.
-     *
+     * 
      * @param instanceType the instanceType value to set.
      * @return the SupportedOSProperty object itself.
      */
@@ -49,7 +55,7 @@ public final class SupportedOSProperty {
 
     /**
      * Get the supportedOs property: The list of supported operating systems.
-     *
+     * 
      * @return the supportedOs value.
      */
     public List<SupportedOSDetails> supportedOs() {
@@ -58,7 +64,7 @@ public final class SupportedOSProperty {
 
     /**
      * Set the supportedOs property: The list of supported operating systems.
-     *
+     * 
      * @param supportedOs the supportedOs value to set.
      * @return the SupportedOSProperty object itself.
      */
@@ -69,12 +75,53 @@ public final class SupportedOSProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (supportedOs() != null) {
             supportedOs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeArrayField("supportedOs", this.supportedOs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedOSProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedOSProperty if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedOSProperty.
+     */
+    public static SupportedOSProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedOSProperty deserializedSupportedOSProperty = new SupportedOSProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedSupportedOSProperty.instanceType = reader.getString();
+                } else if ("supportedOs".equals(fieldName)) {
+                    List<SupportedOSDetails> supportedOs
+                        = reader.readArray(reader1 -> SupportedOSDetails.fromJson(reader1));
+                    deserializedSupportedOSProperty.supportedOs = supportedOs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedOSProperty;
+        });
     }
 }

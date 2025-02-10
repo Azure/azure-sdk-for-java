@@ -5,69 +5,78 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** API portal properties payload. */
+/**
+ * API portal properties payload.
+ */
 @Fluent
-public final class ApiPortalProperties {
+public final class ApiPortalProperties implements JsonSerializable<ApiPortalProperties> {
     /*
      * State of the API portal.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ApiPortalProvisioningState provisioningState;
 
     /*
      * Indicates whether the API portal exposes endpoint.
      */
-    @JsonProperty(value = "public")
     private Boolean publicProperty;
 
     /*
      * URL of the API portal, exposed when 'public' is true.
      */
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /*
      * Indicate if only https is allowed.
      */
-    @JsonProperty(value = "httpsOnly")
     private Boolean httpsOnly;
 
     /*
      * The array of resource Ids of gateway to integrate with API portal.
      */
-    @JsonProperty(value = "gatewayIds")
     private List<String> gatewayIds;
 
     /*
      * Collection of OpenAPI source URL locations.
      */
-    @JsonProperty(value = "sourceUrls")
     private List<String> sourceUrls;
 
     /*
      * Single sign-on related configuration
      */
-    @JsonProperty(value = "ssoProperties")
     private SsoProperties ssoProperties;
 
     /*
      * The requested resource quantity for required CPU and Memory.
      */
-    @JsonProperty(value = "resourceRequests", access = JsonProperty.Access.WRITE_ONLY)
     private ApiPortalResourceRequests resourceRequests;
 
     /*
      * Collection of instances belong to API portal.
      */
-    @JsonProperty(value = "instances", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiPortalInstance> instances;
+
+    /*
+     * Indicates whether the API try-out feature is enabled or disabled. When enabled, users can try out the API by
+     * sending requests and viewing responses in API portal. When disabled, users cannot try out the API.
+     */
+    private ApiPortalApiTryOutEnabledState apiTryOutEnabledState;
+
+    /**
+     * Creates an instance of ApiPortalProperties class.
+     */
+    public ApiPortalProperties() {
+    }
 
     /**
      * Get the provisioningState property: State of the API portal.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ApiPortalProvisioningState provisioningState() {
@@ -76,7 +85,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the publicProperty property: Indicates whether the API portal exposes endpoint.
-     *
+     * 
      * @return the publicProperty value.
      */
     public Boolean publicProperty() {
@@ -85,7 +94,7 @@ public final class ApiPortalProperties {
 
     /**
      * Set the publicProperty property: Indicates whether the API portal exposes endpoint.
-     *
+     * 
      * @param publicProperty the publicProperty value to set.
      * @return the ApiPortalProperties object itself.
      */
@@ -96,7 +105,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the url property: URL of the API portal, exposed when 'public' is true.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -105,7 +114,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the httpsOnly property: Indicate if only https is allowed.
-     *
+     * 
      * @return the httpsOnly value.
      */
     public Boolean httpsOnly() {
@@ -114,7 +123,7 @@ public final class ApiPortalProperties {
 
     /**
      * Set the httpsOnly property: Indicate if only https is allowed.
-     *
+     * 
      * @param httpsOnly the httpsOnly value to set.
      * @return the ApiPortalProperties object itself.
      */
@@ -125,7 +134,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the gatewayIds property: The array of resource Ids of gateway to integrate with API portal.
-     *
+     * 
      * @return the gatewayIds value.
      */
     public List<String> gatewayIds() {
@@ -134,7 +143,7 @@ public final class ApiPortalProperties {
 
     /**
      * Set the gatewayIds property: The array of resource Ids of gateway to integrate with API portal.
-     *
+     * 
      * @param gatewayIds the gatewayIds value to set.
      * @return the ApiPortalProperties object itself.
      */
@@ -145,7 +154,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the sourceUrls property: Collection of OpenAPI source URL locations.
-     *
+     * 
      * @return the sourceUrls value.
      */
     public List<String> sourceUrls() {
@@ -154,7 +163,7 @@ public final class ApiPortalProperties {
 
     /**
      * Set the sourceUrls property: Collection of OpenAPI source URL locations.
-     *
+     * 
      * @param sourceUrls the sourceUrls value to set.
      * @return the ApiPortalProperties object itself.
      */
@@ -165,7 +174,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the ssoProperties property: Single sign-on related configuration.
-     *
+     * 
      * @return the ssoProperties value.
      */
     public SsoProperties ssoProperties() {
@@ -174,7 +183,7 @@ public final class ApiPortalProperties {
 
     /**
      * Set the ssoProperties property: Single sign-on related configuration.
-     *
+     * 
      * @param ssoProperties the ssoProperties value to set.
      * @return the ApiPortalProperties object itself.
      */
@@ -185,7 +194,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory.
-     *
+     * 
      * @return the resourceRequests value.
      */
     public ApiPortalResourceRequests resourceRequests() {
@@ -194,7 +203,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the instances property: Collection of instances belong to API portal.
-     *
+     * 
      * @return the instances value.
      */
     public List<ApiPortalInstance> instances() {
@@ -202,8 +211,32 @@ public final class ApiPortalProperties {
     }
 
     /**
+     * Get the apiTryOutEnabledState property: Indicates whether the API try-out feature is enabled or disabled. When
+     * enabled, users can try out the API by sending requests and viewing responses in API portal. When disabled, users
+     * cannot try out the API.
+     * 
+     * @return the apiTryOutEnabledState value.
+     */
+    public ApiPortalApiTryOutEnabledState apiTryOutEnabledState() {
+        return this.apiTryOutEnabledState;
+    }
+
+    /**
+     * Set the apiTryOutEnabledState property: Indicates whether the API try-out feature is enabled or disabled. When
+     * enabled, users can try out the API by sending requests and viewing responses in API portal. When disabled, users
+     * cannot try out the API.
+     * 
+     * @param apiTryOutEnabledState the apiTryOutEnabledState value to set.
+     * @return the ApiPortalProperties object itself.
+     */
+    public ApiPortalProperties withApiTryOutEnabledState(ApiPortalApiTryOutEnabledState apiTryOutEnabledState) {
+        this.apiTryOutEnabledState = apiTryOutEnabledState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -216,5 +249,71 @@ public final class ApiPortalProperties {
         if (instances() != null) {
             instances().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("public", this.publicProperty);
+        jsonWriter.writeBooleanField("httpsOnly", this.httpsOnly);
+        jsonWriter.writeArrayField("gatewayIds", this.gatewayIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sourceUrls", this.sourceUrls, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("ssoProperties", this.ssoProperties);
+        jsonWriter.writeStringField("apiTryOutEnabledState",
+            this.apiTryOutEnabledState == null ? null : this.apiTryOutEnabledState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiPortalProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiPortalProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiPortalProperties.
+     */
+    public static ApiPortalProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiPortalProperties deserializedApiPortalProperties = new ApiPortalProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedApiPortalProperties.provisioningState
+                        = ApiPortalProvisioningState.fromString(reader.getString());
+                } else if ("public".equals(fieldName)) {
+                    deserializedApiPortalProperties.publicProperty = reader.getNullable(JsonReader::getBoolean);
+                } else if ("url".equals(fieldName)) {
+                    deserializedApiPortalProperties.url = reader.getString();
+                } else if ("httpsOnly".equals(fieldName)) {
+                    deserializedApiPortalProperties.httpsOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("gatewayIds".equals(fieldName)) {
+                    List<String> gatewayIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiPortalProperties.gatewayIds = gatewayIds;
+                } else if ("sourceUrls".equals(fieldName)) {
+                    List<String> sourceUrls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiPortalProperties.sourceUrls = sourceUrls;
+                } else if ("ssoProperties".equals(fieldName)) {
+                    deserializedApiPortalProperties.ssoProperties = SsoProperties.fromJson(reader);
+                } else if ("resourceRequests".equals(fieldName)) {
+                    deserializedApiPortalProperties.resourceRequests = ApiPortalResourceRequests.fromJson(reader);
+                } else if ("instances".equals(fieldName)) {
+                    List<ApiPortalInstance> instances
+                        = reader.readArray(reader1 -> ApiPortalInstance.fromJson(reader1));
+                    deserializedApiPortalProperties.instances = instances;
+                } else if ("apiTryOutEnabledState".equals(fieldName)) {
+                    deserializedApiPortalProperties.apiTryOutEnabledState
+                        = ApiPortalApiTryOutEnabledState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiPortalProperties;
+        });
     }
 }

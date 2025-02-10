@@ -13,6 +13,8 @@ import com.azure.resourcemanager.resources.models.Subscription;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,9 @@ import java.util.function.Function;
  * Defines a few utilities.
  */
 public final class ResourceManagerUtils {
+    /**
+     * Creates a new instance of ResourceManagerUtils.
+     */
     private ResourceManagerUtils() {
     }
 
@@ -123,7 +128,7 @@ public final class ResourceManagerUtils {
         if (subscriptionList.size() == 0) {
             throw new ClientLogger(ResourceManagerUtils.class).logExceptionAsError(
                 new IllegalStateException("Please create a subscription before you start resource management. "
-                + "To learn more, see: https://azure.microsoft.com/free/."));
+                    + "To learn more, see: https://azure.microsoft.com/free/."));
         } else if (subscriptionList.size() > 1) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("More than one subscription found in your tenant. "
@@ -131,8 +136,8 @@ public final class ResourceManagerUtils {
             subscriptionList.forEach(subscription -> {
                 stringBuilder.append("\n" + subscription.displayName() + " : " + subscription.subscriptionId());
             });
-            throw new ClientLogger(ResourceManagerUtils.class).logExceptionAsError(
-                new IllegalStateException(stringBuilder.toString()));
+            throw new ClientLogger(ResourceManagerUtils.class)
+                .logExceptionAsError(new IllegalStateException(stringBuilder.toString()));
         }
         return subscriptionList.get(0).subscriptionId();
     }
@@ -186,6 +191,19 @@ public final class ResourceManagerUtils {
                     resource = String.format("https://%s/", endpoint.getValue().replaceAll("^\\.*", ""));
                     resource = removeTrailingSlash(resource);
                     break;
+                } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.STORAGE.identifier())) {
+                    // https://learn.microsoft.com/azure/storage/blobs/authorize-access-azure-active-directory#microsoft-authentication-library-msal
+                    try {
+                        // Try resource ID that is specific to a single storage account and service first. It's for
+                        // acquiring a token for authorizing requests to the specified account and service only.
+                        resource = String.format("https://%s", new URL(url).getAuthority());
+                        resource = removeTrailingSlash(resource);
+                    } catch (MalformedURLException e) {
+                        // Fallback to the resource ID that's the same for all public and sovereign clouds, which is
+                        // used to acquire a token for authorizing requests to any storage account.
+                        resource = "https://storage.azure.com";
+                    }
+                    break;
                 }
             }
         }
@@ -215,7 +233,7 @@ public final class ResourceManagerUtils {
      * @return the storage account connection string.
      */
     public static String getStorageConnectionString(String accountName, String accountKey,
-                                                    AzureEnvironment environment) {
+        AzureEnvironment environment) {
         if (environment == null || environment.getStorageEndpointSuffix() == null) {
             environment = AzureEnvironment.AZURE;
         }
@@ -233,6 +251,12 @@ public final class ResourceManagerUtils {
         private Function<String, IdentifierProvider> identifierFunction = ResourceNamer::new;
         private static DelayProvider delayProvider = new ResourceDelayProvider();
         private static Scheduler reactorScheduler = Schedulers.parallel();
+
+        /**
+         * Creates a new instance of InternalRuntimeContext.
+         */
+        public InternalRuntimeContext() {
+        }
 
         /**
          * Sets the resource namer

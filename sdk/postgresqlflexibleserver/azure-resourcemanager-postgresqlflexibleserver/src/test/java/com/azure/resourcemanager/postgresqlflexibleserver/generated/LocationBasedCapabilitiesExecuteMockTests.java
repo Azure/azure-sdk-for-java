@@ -6,63 +6,34 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.FlexibleServerCapability;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LocationBasedCapabilitiesExecuteMockTests {
     @Test
     public void testExecute() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"name\":\"oldweyuqdu\",\"supportedServerEditions\":[{\"name\":\"nrwrbiork\",\"defaultSkuName\":\"lywjhh\",\"supportedStorageEditions\":[{\"name\":\"xmsivfomiloxggdu\",\"defaultStorageSizeMb\":322470867216638009,\"supportedStorageMb\":[{},{},{},{}],\"status\":\"Disabled\",\"reason\":\"ao\"},{\"name\":\"chvcyyysfgdo\",\"defaultStorageSizeMb\":7467577489537815272,\"supportedStorageMb\":[{}],\"status\":\"Disabled\",\"reason\":\"pwoqo\"}],\"supportedServerSkus\":[{\"name\":\"jeknizshq\",\"vCores\":1591499316,\"supportedIops\":932128156,\"supportedMemoryPerVcoreMb\":4510672218626509110,\"supportedZones\":[\"b\",\"rrilbywdxsmic\",\"wrwfscjfnyns\"],\"supportedHaMode\":[\"ZoneRedundant\"],\"status\":\"Disabled\",\"reason\":\"voqyt\"},{\"name\":\"yo\",\"vCores\":853520386,\"supportedIops\":1293894339,\"supportedMemoryPerVcoreMb\":2703223552159511284,\"supportedZones\":[\"pthjoxo\"],\"supportedHaMode\":[\"SameZone\",\"ZoneRedundant\"],\"status\":\"Disabled\",\"reason\":\"iml\"}],\"status\":\"Default\",\"reason\":\"xkcgxxlxsffgcvi\"},{\"name\":\"zdwlvwlyoupfgfb\",\"defaultSkuName\":\"ubdyhgk\",\"supportedStorageEditions\":[{\"name\":\"sgow\",\"defaultStorageSizeMb\":7972724077673531011,\"supportedStorageMb\":[{},{},{}],\"status\":\"Available\",\"reason\":\"lahb\"}],\"supportedServerSkus\":[{\"name\":\"xtgzukxitmmqtgqq\",\"vCores\":1748959674,\"supportedIops\":107951618,\"supportedMemoryPerVcoreMb\":3154721021246185511,\"supportedZones\":[\"juisavokqdzf\"],\"supportedHaMode\":[\"ZoneRedundant\"],\"status\":\"Available\",\"reason\":\"frqttbajlkatnw\"},{\"name\":\"iopid\",\"vCores\":1150651693,\"supportedIops\":128266879,\"supportedMemoryPerVcoreMb\":3873613137312097491,\"supportedZones\":[\"kdmligovi\",\"rxkpmloazuruoc\"],\"supportedHaMode\":[\"SameZone\"],\"status\":\"Available\",\"reason\":\"eoybfhjxakvvjgs\"},{\"name\":\"r\",\"vCores\":1486233885,\"supportedIops\":482425656,\"supportedMemoryPerVcoreMb\":1679876509876130353,\"supportedZones\":[\"kxn\",\"edabgyvudtjue\",\"bcihxuuwhc\"],\"supportedHaMode\":[\"SameZone\",\"ZoneRedundant\"],\"status\":\"Visible\",\"reason\":\"payakkud\"}],\"status\":\"Disabled\",\"reason\":\"wjplma\"}],\"supportedServerVersions\":[{\"name\":\"yohpfkyrkdbdgiog\",\"supportedVersionsToUpgrade\":[\"mnwqj\",\"obaiyhddviaceg\",\"n\",\"ntfpmvmemfnc\"],\"status\":\"Visible\",\"reason\":\"vbalxlllc\"},{\"name\":\"odbzevwrdnhf\",\"supportedVersionsToUpgrade\":[\"vsjcswsmystuluqy\"],\"status\":\"Disabled\",\"reason\":\"lerchpq\"},{\"name\":\"f\",\"supportedVersionsToUpgrade\":[\"abwidfcxsspuun\",\"oxyhkxgqddrihpf\",\"oqcaaewdaomdj\"],\"status\":\"Available\",\"reason\":\"x\"}],\"fastProvisioningSupported\":\"Enabled\",\"supportedFastProvisioningEditions\":[{\"supportedTier\":\"sgeivsiy\",\"supportedSku\":\"kdncj\",\"supportedStorageGb\":1690186599,\"supportedServerVersions\":\"bzo\",\"serverCount\":1760548701,\"status\":\"Available\",\"reason\":\"p\"},{\"supportedTier\":\"y\",\"supportedSku\":\"gogtqxepnylbf\",\"supportedStorageGb\":347721012,\"supportedServerVersions\":\"yjt\",\"serverCount\":279762954,\"status\":\"Visible\",\"reason\":\"hvfcibyfmow\"},{\"supportedTier\":\"rkjpvdwxfzwii\",\"supportedSku\":\"zjb\",\"supportedStorageGb\":1608749608,\"supportedServerVersions\":\"xjrk\",\"serverCount\":2109306549,\"status\":\"Available\",\"reason\":\"egv\"},{\"supportedTier\":\"vuqeqvldspast\",\"supportedSku\":\"kkdmfl\",\"supportedStorageGb\":922777,\"supportedServerVersions\":\"mjlxrrilozapeewc\",\"serverCount\":159855339,\"status\":\"Default\",\"reason\":\"wk\"}],\"geoBackupSupported\":\"Disabled\",\"zoneRedundantHaSupported\":\"Disabled\",\"zoneRedundantHaAndGeoBackupSupported\":\"Disabled\",\"storageAutoGrowthSupported\":\"Enabled\",\"onlineResizeSupported\":\"Enabled\",\"restricted\":\"Enabled\",\"status\":\"Available\",\"reason\":\"tyh\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"in\",\"supportedServerEditions\":[{\"name\":\"zfttsttktlahb\",\"defaultSkuName\":\"ctxtgzukxi\",\"supportedStorageEditions\":[{\"name\":\"tg\",\"defaultStorageSizeMb\":1103543038740951284,\"supportedStorageMb\":[{},{}],\"status\":\"Visible\",\"reason\":\"xcpjuisavokqdzf\"}],\"supportedServerSkus\":[{\"name\":\"vjlfrqtt\",\"vCores\":213163160,\"supportedIops\":2078837978,\"supportedMemoryPerVcoreMb\":5055816291758609139,\"supportedZones\":[\"yiopi\",\"kqqfk\",\"vscx\",\"dmligovibrxk\"],\"supportedHaMode\":[\"SameZone\",\"SameZone\",\"ZoneRedundant\",\"SameZone\"],\"status\":\"Visible\",\"reason\":\"cbgoor\"}],\"status\":\"Disabled\",\"reason\":\"ybfhjxa\"},{\"name\":\"vjgsl\",\"defaultSkuName\":\"dilmyww\",\"supportedStorageEditions\":[{\"name\":\"xnyed\",\"defaultStorageSizeMb\":3535980306493011205,\"supportedStorageMb\":[{},{},{}],\"status\":\"Default\",\"reason\":\"uewbc\"},{\"name\":\"xuuwhcj\",\"defaultStorageSizeMb\":6711208445225485532,\"supportedStorageMb\":[{}],\"status\":\"Available\",\"reason\":\"yakk\"},{\"name\":\"zp\",\"defaultStorageSizeMb\":5992172880278428165,\"supportedStorageMb\":[{}],\"status\":\"Visible\",\"reason\":\"stcyohpfkyrkdbd\"}],\"supportedServerSkus\":[{\"name\":\"sjkmnwqj\",\"vCores\":1313812453,\"supportedIops\":1666235741,\"supportedMemoryPerVcoreMb\":2641783861935607406,\"supportedZones\":[\"iacegfnmn\",\"fpmvmemfnczd\",\"vvbalx\",\"l\"],\"supportedHaMode\":[\"ZoneRedundant\",\"ZoneRedundant\"],\"status\":\"Available\",\"reason\":\"evwrdnhfuk\"},{\"name\":\"sjcswsmystuluqyp\",\"vCores\":1783589840,\"supportedIops\":291266426,\"supportedMemoryPerVcoreMb\":2710586854780001980,\"supportedZones\":[\"bm\",\"pjbabwidfc\",\"sspuunnoxyhkx\",\"qddrihpfhoqcaae\"],\"supportedHaMode\":[\"ZoneRedundant\",\"SameZone\",\"SameZone\"],\"status\":\"Visible\",\"reason\":\"pjxxkzb\"},{\"name\":\"sgeivsiy\",\"vCores\":1299849927,\"supportedIops\":728133751,\"supportedMemoryPerVcoreMb\":5725396811649484374,\"supportedZones\":[\"nbzoggcu\",\"apzwyrpgog\",\"qxepnylbfuaj\",\"yjt\"],\"supportedHaMode\":[\"SameZone\"],\"status\":\"Disabled\",\"reason\":\"vfcibyfmowux\"}],\"status\":\"Visible\",\"reason\":\"vdwxfzwi\"},{\"name\":\"wzjbh\",\"defaultSkuName\":\"sxjrk\",\"supportedStorageEditions\":[{\"name\":\"rnegvmn\",\"defaultStorageSizeMb\":447209881782194832,\"supportedStorageMb\":[{},{}],\"status\":\"Disabled\",\"reason\":\"pa\"},{\"name\":\"jbkkdmflvestmjl\",\"defaultStorageSizeMb\":2570785226241708791,\"supportedStorageMb\":[{},{}],\"status\":\"Default\",\"reason\":\"eewchpxlktw\"}],\"supportedServerSkus\":[{\"name\":\"ycslevufuztcktyh\",\"vCores\":400720959,\"supportedIops\":1558169297,\"supportedMemoryPerVcoreMb\":4305474554682539257,\"supportedZones\":[\"wmmrq\",\"zrrjvpgly\",\"zgkrvqe\"],\"supportedHaMode\":[\"SameZone\",\"SameZone\"],\"status\":\"Visible\",\"reason\":\"utnwytpzdmovzvf\"},{\"name\":\"awzqadfl\",\"vCores\":318308535,\"supportedIops\":1869010035,\"supportedMemoryPerVcoreMb\":4345598210939458322,\"supportedZones\":[\"xndticokpvzmlqtm\"],\"supportedHaMode\":[\"SameZone\",\"ZoneRedundant\",\"SameZone\"],\"status\":\"Available\",\"reason\":\"clnpkci\"},{\"name\":\"zriykhy\",\"vCores\":1516048320,\"supportedIops\":638538203,\"supportedMemoryPerVcoreMb\":671931235197002479,\"supportedZones\":[\"vkjlmxhom\",\"ynhdwdigum\",\"nraauzz\"],\"supportedHaMode\":[\"SameZone\",\"SameZone\",\"SameZone\",\"SameZone\"],\"status\":\"Default\",\"reason\":\"ezwwv\"},{\"name\":\"qyuvvfonkp\",\"vCores\":1476796114,\"supportedIops\":157079545,\"supportedMemoryPerVcoreMb\":2954343681916155162,\"supportedZones\":[\"uyav\"],\"supportedHaMode\":[\"ZoneRedundant\"],\"status\":\"Disabled\",\"reason\":\"ttijfybvpoekrs\"}],\"status\":\"Default\",\"reason\":\"dhuzqgnjdgk\"}],\"supportedServerVersions\":[{\"name\":\"liqhzvhx\",\"supportedVersionsToUpgrade\":[\"mtk\",\"bo\"],\"status\":\"Available\",\"reason\":\"vdxzxhihfrbbc\"},{\"name\":\"qagt\",\"supportedVersionsToUpgrade\":[\"hlfkqojpy\",\"vgtrdcnifmzzs\",\"ymbrnysuxmpraf\",\"g\"],\"status\":\"Disabled\",\"reason\":\"cxvdfffwafqrouda\"}],\"fastProvisioningSupported\":\"Disabled\",\"supportedFastProvisioningEditions\":[{\"supportedTier\":\"hrv\",\"supportedSku\":\"unzo\",\"supportedStorageGb\":35410717,\"supportedServerVersions\":\"cxgkmoyxcdyui\",\"serverCount\":1002212342,\"status\":\"Disabled\",\"reason\":\"bzydvfvfcj\"}],\"geoBackupSupported\":\"Disabled\",\"zoneRedundantHaSupported\":\"Enabled\",\"zoneRedundantHaAndGeoBackupSupported\":\"Enabled\",\"storageAutoGrowthSupported\":\"Disabled\",\"onlineResizeSupported\":\"Enabled\",\"restricted\":\"Enabled\",\"status\":\"Default\",\"reason\":\"kiscvwmzhwpl\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PostgreSqlManager manager = PostgreSqlManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<FlexibleServerCapability> response
+            = manager.locationBasedCapabilities().execute("pzlrphw", com.azure.core.util.Context.NONE);
 
-        PostgreSqlManager manager =
-            PostgreSqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<FlexibleServerCapability> response =
-            manager.locationBasedCapabilities().execute("yhgk", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("in", response.iterator().next().name());
+        Assertions.assertEquals("oldweyuqdu", response.iterator().next().name());
     }
 }

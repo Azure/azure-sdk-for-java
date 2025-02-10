@@ -5,27 +5,30 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Definition of which performance counters will be collected and how they will be collected by this data collection
- * rule. Collected from both Windows and Linux machines where the counter is present.
+ * rule.
+ * Collected from both Windows and Linux machines where the counter is present.
  */
 @Fluent
-public final class PerfCounterDataSource {
+public final class PerfCounterDataSource implements JsonSerializable<PerfCounterDataSource> {
     /*
      * List of streams that this data source will be sent to.
      * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
      * be sent to.
      */
-    @JsonProperty(value = "streams")
     private List<KnownPerfCounterDataSourceStreams> streams;
 
     /*
      * The number of seconds between consecutive counter measurements (samples).
      */
-    @JsonProperty(value = "samplingFrequencyInSeconds")
     private Integer samplingFrequencyInSeconds;
 
     /*
@@ -33,24 +36,25 @@ public final class PerfCounterDataSource {
      * Use a wildcard (*) to collect a counter for all instances.
      * To get a list of performance counters on Windows, run the command 'typeperf'.
      */
-    @JsonProperty(value = "counterSpecifiers")
     private List<String> counterSpecifiers;
 
     /*
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of PerfCounterDataSource class. */
+    /**
+     * Creates an instance of PerfCounterDataSource class.
+     */
     public PerfCounterDataSource() {
     }
 
     /**
-     * Get the streams property: List of streams that this data source will be sent to. A stream indicates what schema
-     * will be used for this data and usually what table in Log Analytics the data will be sent to.
-     *
+     * Get the streams property: List of streams that this data source will be sent to.
+     * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
+     * be sent to.
+     * 
      * @return the streams value.
      */
     public List<KnownPerfCounterDataSourceStreams> streams() {
@@ -58,9 +62,10 @@ public final class PerfCounterDataSource {
     }
 
     /**
-     * Set the streams property: List of streams that this data source will be sent to. A stream indicates what schema
-     * will be used for this data and usually what table in Log Analytics the data will be sent to.
-     *
+     * Set the streams property: List of streams that this data source will be sent to.
+     * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
+     * be sent to.
+     * 
      * @param streams the streams value to set.
      * @return the PerfCounterDataSource object itself.
      */
@@ -72,7 +77,7 @@ public final class PerfCounterDataSource {
     /**
      * Get the samplingFrequencyInSeconds property: The number of seconds between consecutive counter measurements
      * (samples).
-     *
+     * 
      * @return the samplingFrequencyInSeconds value.
      */
     public Integer samplingFrequencyInSeconds() {
@@ -82,7 +87,7 @@ public final class PerfCounterDataSource {
     /**
      * Set the samplingFrequencyInSeconds property: The number of seconds between consecutive counter measurements
      * (samples).
-     *
+     * 
      * @param samplingFrequencyInSeconds the samplingFrequencyInSeconds value to set.
      * @return the PerfCounterDataSource object itself.
      */
@@ -93,9 +98,9 @@ public final class PerfCounterDataSource {
 
     /**
      * Get the counterSpecifiers property: A list of specifier names of the performance counters you want to collect.
-     * Use a wildcard (*) to collect a counter for all instances. To get a list of performance counters on Windows, run
-     * the command 'typeperf'.
-     *
+     * Use a wildcard (*) to collect a counter for all instances.
+     * To get a list of performance counters on Windows, run the command 'typeperf'.
+     * 
      * @return the counterSpecifiers value.
      */
     public List<String> counterSpecifiers() {
@@ -104,9 +109,9 @@ public final class PerfCounterDataSource {
 
     /**
      * Set the counterSpecifiers property: A list of specifier names of the performance counters you want to collect.
-     * Use a wildcard (*) to collect a counter for all instances. To get a list of performance counters on Windows, run
-     * the command 'typeperf'.
-     *
+     * Use a wildcard (*) to collect a counter for all instances.
+     * To get a list of performance counters on Windows, run the command 'typeperf'.
+     * 
      * @param counterSpecifiers the counterSpecifiers value to set.
      * @return the PerfCounterDataSource object itself.
      */
@@ -116,9 +121,9 @@ public final class PerfCounterDataSource {
     }
 
     /**
-     * Get the name property: A friendly name for the data source. This name should be unique across all data sources
-     * (regardless of type) within the data collection rule.
-     *
+     * Get the name property: A friendly name for the data source.
+     * This name should be unique across all data sources (regardless of type) within the data collection rule.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -126,9 +131,9 @@ public final class PerfCounterDataSource {
     }
 
     /**
-     * Set the name property: A friendly name for the data source. This name should be unique across all data sources
-     * (regardless of type) within the data collection rule.
-     *
+     * Set the name property: A friendly name for the data source.
+     * This name should be unique across all data sources (regardless of type) within the data collection rule.
+     * 
      * @param name the name value to set.
      * @return the PerfCounterDataSource object itself.
      */
@@ -139,9 +144,60 @@ public final class PerfCounterDataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("streams", this.streams,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeNumberField("samplingFrequencyInSeconds", this.samplingFrequencyInSeconds);
+        jsonWriter.writeArrayField("counterSpecifiers", this.counterSpecifiers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PerfCounterDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PerfCounterDataSource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PerfCounterDataSource.
+     */
+    public static PerfCounterDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PerfCounterDataSource deserializedPerfCounterDataSource = new PerfCounterDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("streams".equals(fieldName)) {
+                    List<KnownPerfCounterDataSourceStreams> streams = reader
+                        .readArray(reader1 -> KnownPerfCounterDataSourceStreams.fromString(reader1.getString()));
+                    deserializedPerfCounterDataSource.streams = streams;
+                } else if ("samplingFrequencyInSeconds".equals(fieldName)) {
+                    deserializedPerfCounterDataSource.samplingFrequencyInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("counterSpecifiers".equals(fieldName)) {
+                    List<String> counterSpecifiers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPerfCounterDataSource.counterSpecifiers = counterSpecifiers;
+                } else if ("name".equals(fieldName)) {
+                    deserializedPerfCounterDataSource.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPerfCounterDataSource;
+        });
     }
 }

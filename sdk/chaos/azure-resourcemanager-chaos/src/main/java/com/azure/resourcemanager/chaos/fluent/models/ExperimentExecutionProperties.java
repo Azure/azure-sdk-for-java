@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.chaos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Model that represents the execution properties of an Experiment. */
+/**
+ * Model that represents the execution properties of an Experiment.
+ */
 @Immutable
-public class ExperimentExecutionProperties {
+public class ExperimentExecutionProperties implements JsonSerializable<ExperimentExecutionProperties> {
     /*
      * The status of the execution.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * String that represents the start date time.
      */
-    @JsonProperty(value = "startedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedAt;
 
     /*
      * String that represents the stop date time.
      */
-    @JsonProperty(value = "stoppedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stoppedAt;
 
-    /** Creates an instance of ExperimentExecutionProperties class. */
+    /**
+     * Creates an instance of ExperimentExecutionProperties class.
+     */
     public ExperimentExecutionProperties() {
     }
 
     /**
      * Get the status property: The status of the execution.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -43,8 +49,19 @@ public class ExperimentExecutionProperties {
     }
 
     /**
+     * Set the status property: The status of the execution.
+     * 
+     * @param status the status value to set.
+     * @return the ExperimentExecutionProperties object itself.
+     */
+    ExperimentExecutionProperties withStatus(String status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
      * Get the startedAt property: String that represents the start date time.
-     *
+     * 
      * @return the startedAt value.
      */
     public OffsetDateTime startedAt() {
@@ -52,8 +69,19 @@ public class ExperimentExecutionProperties {
     }
 
     /**
+     * Set the startedAt property: String that represents the start date time.
+     * 
+     * @param startedAt the startedAt value to set.
+     * @return the ExperimentExecutionProperties object itself.
+     */
+    ExperimentExecutionProperties withStartedAt(OffsetDateTime startedAt) {
+        this.startedAt = startedAt;
+        return this;
+    }
+
+    /**
      * Get the stoppedAt property: String that represents the stop date time.
-     *
+     * 
      * @return the stoppedAt value.
      */
     public OffsetDateTime stoppedAt() {
@@ -61,10 +89,63 @@ public class ExperimentExecutionProperties {
     }
 
     /**
+     * Set the stoppedAt property: String that represents the stop date time.
+     * 
+     * @param stoppedAt the stoppedAt value to set.
+     * @return the ExperimentExecutionProperties object itself.
+     */
+    ExperimentExecutionProperties withStoppedAt(OffsetDateTime stoppedAt) {
+        this.stoppedAt = stoppedAt;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExperimentExecutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExperimentExecutionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExperimentExecutionProperties.
+     */
+    public static ExperimentExecutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExperimentExecutionProperties deserializedExperimentExecutionProperties
+                = new ExperimentExecutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedExperimentExecutionProperties.status = reader.getString();
+                } else if ("startedAt".equals(fieldName)) {
+                    deserializedExperimentExecutionProperties.startedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("stoppedAt".equals(fieldName)) {
+                    deserializedExperimentExecutionProperties.stoppedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExperimentExecutionProperties;
+        });
     }
 }

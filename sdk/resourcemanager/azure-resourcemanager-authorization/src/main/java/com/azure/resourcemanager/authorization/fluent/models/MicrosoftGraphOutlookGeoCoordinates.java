@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** outlookGeoCoordinates. */
+/**
+ * outlookGeoCoordinates.
+ */
 @Fluent
-public final class MicrosoftGraphOutlookGeoCoordinates {
+public final class MicrosoftGraphOutlookGeoCoordinates
+    implements JsonSerializable<MicrosoftGraphOutlookGeoCoordinates> {
     /*
      * The accuracy of the latitude and longitude. As an example, the accuracy can be measured in meters, such as the
      * latitude and longitude are accurate to within 50 meters.
      */
-    @JsonProperty(value = "accuracy")
     private Double accuracy;
 
     /*
      * The altitude of the location.
      */
-    @JsonProperty(value = "altitude")
     private Double altitude;
 
     /*
      * The accuracy of the altitude.
      */
-    @JsonProperty(value = "altitudeAccuracy")
     private Double altitudeAccuracy;
 
     /*
      * The latitude of the location.
      */
-    @JsonProperty(value = "latitude")
     private Double latitude;
 
     /*
      * The longitude of the location.
      */
-    @JsonProperty(value = "longitude")
     private Double longitude;
 
     /*
      * outlookGeoCoordinates
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOutlookGeoCoordinates class. */
+    /**
+     * Creates an instance of MicrosoftGraphOutlookGeoCoordinates class.
+     */
     public MicrosoftGraphOutlookGeoCoordinates() {
     }
 
     /**
      * Get the accuracy property: The accuracy of the latitude and longitude. As an example, the accuracy can be
      * measured in meters, such as the latitude and longitude are accurate to within 50 meters.
-     *
+     * 
      * @return the accuracy value.
      */
     public Double accuracy() {
@@ -68,7 +69,7 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
     /**
      * Set the accuracy property: The accuracy of the latitude and longitude. As an example, the accuracy can be
      * measured in meters, such as the latitude and longitude are accurate to within 50 meters.
-     *
+     * 
      * @param accuracy the accuracy value to set.
      * @return the MicrosoftGraphOutlookGeoCoordinates object itself.
      */
@@ -79,7 +80,7 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
 
     /**
      * Get the altitude property: The altitude of the location.
-     *
+     * 
      * @return the altitude value.
      */
     public Double altitude() {
@@ -88,7 +89,7 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
 
     /**
      * Set the altitude property: The altitude of the location.
-     *
+     * 
      * @param altitude the altitude value to set.
      * @return the MicrosoftGraphOutlookGeoCoordinates object itself.
      */
@@ -99,7 +100,7 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
 
     /**
      * Get the altitudeAccuracy property: The accuracy of the altitude.
-     *
+     * 
      * @return the altitudeAccuracy value.
      */
     public Double altitudeAccuracy() {
@@ -108,7 +109,7 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
 
     /**
      * Set the altitudeAccuracy property: The accuracy of the altitude.
-     *
+     * 
      * @param altitudeAccuracy the altitudeAccuracy value to set.
      * @return the MicrosoftGraphOutlookGeoCoordinates object itself.
      */
@@ -119,7 +120,7 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
 
     /**
      * Get the latitude property: The latitude of the location.
-     *
+     * 
      * @return the latitude value.
      */
     public Double latitude() {
@@ -128,7 +129,7 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
 
     /**
      * Set the latitude property: The latitude of the location.
-     *
+     * 
      * @param latitude the latitude value to set.
      * @return the MicrosoftGraphOutlookGeoCoordinates object itself.
      */
@@ -139,7 +140,7 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
 
     /**
      * Get the longitude property: The longitude of the location.
-     *
+     * 
      * @return the longitude value.
      */
     public Double longitude() {
@@ -148,7 +149,7 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
 
     /**
      * Set the longitude property: The longitude of the location.
-     *
+     * 
      * @param longitude the longitude value to set.
      * @return the MicrosoftGraphOutlookGeoCoordinates object itself.
      */
@@ -159,17 +160,16 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
 
     /**
      * Get the additionalProperties property: outlookGeoCoordinates.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: outlookGeoCoordinates.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOutlookGeoCoordinates object itself.
      */
@@ -178,19 +178,76 @@ public final class MicrosoftGraphOutlookGeoCoordinates {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("accuracy", this.accuracy);
+        jsonWriter.writeNumberField("altitude", this.altitude);
+        jsonWriter.writeNumberField("altitudeAccuracy", this.altitudeAccuracy);
+        jsonWriter.writeNumberField("latitude", this.latitude);
+        jsonWriter.writeNumberField("longitude", this.longitude);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOutlookGeoCoordinates from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOutlookGeoCoordinates if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOutlookGeoCoordinates.
+     */
+    public static MicrosoftGraphOutlookGeoCoordinates fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOutlookGeoCoordinates deserializedMicrosoftGraphOutlookGeoCoordinates
+                = new MicrosoftGraphOutlookGeoCoordinates();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accuracy".equals(fieldName)) {
+                    deserializedMicrosoftGraphOutlookGeoCoordinates.accuracy
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("altitude".equals(fieldName)) {
+                    deserializedMicrosoftGraphOutlookGeoCoordinates.altitude
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("altitudeAccuracy".equals(fieldName)) {
+                    deserializedMicrosoftGraphOutlookGeoCoordinates.altitudeAccuracy
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("latitude".equals(fieldName)) {
+                    deserializedMicrosoftGraphOutlookGeoCoordinates.latitude
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("longitude".equals(fieldName)) {
+                    deserializedMicrosoftGraphOutlookGeoCoordinates.longitude
+                        = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOutlookGeoCoordinates.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOutlookGeoCoordinates;
+        });
     }
 }

@@ -5,37 +5,114 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Provider specific input for apply recovery point. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = ApplyRecoveryPointProviderSpecificInput.class)
-@JsonTypeName("ApplyRecoveryPointProviderSpecificInput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "A2A", value = A2AApplyRecoveryPointInput.class),
-    @JsonSubTypes.Type(
-        name = "A2ACrossClusterMigration",
-        value = A2ACrossClusterMigrationApplyRecoveryPointInput.class),
-    @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzureApplyRecoveryPointInput.class),
-    @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2ApplyRecoveryPointInput.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmApplyRecoveryPointInput.class)
-})
+/**
+ * Provider specific input for apply recovery point.
+ */
 @Immutable
-public class ApplyRecoveryPointProviderSpecificInput {
-    /** Creates an instance of ApplyRecoveryPointProviderSpecificInput class. */
+public class ApplyRecoveryPointProviderSpecificInput
+    implements JsonSerializable<ApplyRecoveryPointProviderSpecificInput> {
+    /*
+     * The class type.
+     */
+    private String instanceType = "ApplyRecoveryPointProviderSpecificInput";
+
+    /**
+     * Creates an instance of ApplyRecoveryPointProviderSpecificInput class.
+     */
     public ApplyRecoveryPointProviderSpecificInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplyRecoveryPointProviderSpecificInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplyRecoveryPointProviderSpecificInput if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplyRecoveryPointProviderSpecificInput.
+     */
+    public static ApplyRecoveryPointProviderSpecificInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("A2A".equals(discriminatorValue)) {
+                    return A2AApplyRecoveryPointInput.fromJson(readerToUse.reset());
+                } else if ("A2ACrossClusterMigration".equals(discriminatorValue)) {
+                    return A2ACrossClusterMigrationApplyRecoveryPointInput.fromJson(readerToUse.reset());
+                } else if ("HyperVReplicaAzure".equals(discriminatorValue)) {
+                    return HyperVReplicaAzureApplyRecoveryPointInput.fromJson(readerToUse.reset());
+                } else if ("InMageAzureV2".equals(discriminatorValue)) {
+                    return InMageAzureV2ApplyRecoveryPointInput.fromJson(readerToUse.reset());
+                } else if ("InMageRcm".equals(discriminatorValue)) {
+                    return InMageRcmApplyRecoveryPointInput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ApplyRecoveryPointProviderSpecificInput fromJsonKnownDiscriminator(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplyRecoveryPointProviderSpecificInput deserializedApplyRecoveryPointProviderSpecificInput
+                = new ApplyRecoveryPointProviderSpecificInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedApplyRecoveryPointProviderSpecificInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplyRecoveryPointProviderSpecificInput;
+        });
     }
 }

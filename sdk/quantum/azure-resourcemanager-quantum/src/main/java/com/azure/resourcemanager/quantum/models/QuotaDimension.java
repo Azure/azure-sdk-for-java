@@ -5,66 +5,66 @@
 package com.azure.resourcemanager.quantum.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information about a specific quota dimension. */
+/**
+ * Information about a specific quota dimension.
+ */
 @Fluent
-public final class QuotaDimension {
+public final class QuotaDimension implements JsonSerializable<QuotaDimension> {
     /*
      * Unique id of this dimension.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The scope of this quota dimension.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * The reset period of this quota dimension.
      */
-    @JsonProperty(value = "period")
     private String period;
 
     /*
      * The max limit of this dimension.
      */
-    @JsonProperty(value = "quota")
     private Float quota;
 
     /*
      * The display name of this quota dimension.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A description about this quota dimension.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The standard unit of measurement used for this quota dimension.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * The standard unit of measurement used for this quota dimension in plural form.
      */
-    @JsonProperty(value = "unitPlural")
     private String unitPlural;
 
-    /** Creates an instance of QuotaDimension class. */
+    /**
+     * Creates an instance of QuotaDimension class.
+     */
     public QuotaDimension() {
     }
 
     /**
      * Get the id property: Unique id of this dimension.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -73,7 +73,7 @@ public final class QuotaDimension {
 
     /**
      * Set the id property: Unique id of this dimension.
-     *
+     * 
      * @param id the id value to set.
      * @return the QuotaDimension object itself.
      */
@@ -84,7 +84,7 @@ public final class QuotaDimension {
 
     /**
      * Get the scope property: The scope of this quota dimension.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -93,7 +93,7 @@ public final class QuotaDimension {
 
     /**
      * Set the scope property: The scope of this quota dimension.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the QuotaDimension object itself.
      */
@@ -104,7 +104,7 @@ public final class QuotaDimension {
 
     /**
      * Get the period property: The reset period of this quota dimension.
-     *
+     * 
      * @return the period value.
      */
     public String period() {
@@ -113,7 +113,7 @@ public final class QuotaDimension {
 
     /**
      * Set the period property: The reset period of this quota dimension.
-     *
+     * 
      * @param period the period value to set.
      * @return the QuotaDimension object itself.
      */
@@ -124,7 +124,7 @@ public final class QuotaDimension {
 
     /**
      * Get the quota property: The max limit of this dimension.
-     *
+     * 
      * @return the quota value.
      */
     public Float quota() {
@@ -133,7 +133,7 @@ public final class QuotaDimension {
 
     /**
      * Set the quota property: The max limit of this dimension.
-     *
+     * 
      * @param quota the quota value to set.
      * @return the QuotaDimension object itself.
      */
@@ -144,7 +144,7 @@ public final class QuotaDimension {
 
     /**
      * Get the name property: The display name of this quota dimension.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -153,7 +153,7 @@ public final class QuotaDimension {
 
     /**
      * Set the name property: The display name of this quota dimension.
-     *
+     * 
      * @param name the name value to set.
      * @return the QuotaDimension object itself.
      */
@@ -164,7 +164,7 @@ public final class QuotaDimension {
 
     /**
      * Get the description property: A description about this quota dimension.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -173,7 +173,7 @@ public final class QuotaDimension {
 
     /**
      * Set the description property: A description about this quota dimension.
-     *
+     * 
      * @param description the description value to set.
      * @return the QuotaDimension object itself.
      */
@@ -184,7 +184,7 @@ public final class QuotaDimension {
 
     /**
      * Get the unit property: The standard unit of measurement used for this quota dimension.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -193,7 +193,7 @@ public final class QuotaDimension {
 
     /**
      * Set the unit property: The standard unit of measurement used for this quota dimension.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the QuotaDimension object itself.
      */
@@ -204,7 +204,7 @@ public final class QuotaDimension {
 
     /**
      * Get the unitPlural property: The standard unit of measurement used for this quota dimension in plural form.
-     *
+     * 
      * @return the unitPlural value.
      */
     public String unitPlural() {
@@ -213,7 +213,7 @@ public final class QuotaDimension {
 
     /**
      * Set the unitPlural property: The standard unit of measurement used for this quota dimension in plural form.
-     *
+     * 
      * @param unitPlural the unitPlural value to set.
      * @return the QuotaDimension object itself.
      */
@@ -224,9 +224,66 @@ public final class QuotaDimension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("period", this.period);
+        jsonWriter.writeNumberField("quota", this.quota);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("unitPlural", this.unitPlural);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaDimension from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaDimension if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaDimension.
+     */
+    public static QuotaDimension fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaDimension deserializedQuotaDimension = new QuotaDimension();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedQuotaDimension.id = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedQuotaDimension.scope = reader.getString();
+                } else if ("period".equals(fieldName)) {
+                    deserializedQuotaDimension.period = reader.getString();
+                } else if ("quota".equals(fieldName)) {
+                    deserializedQuotaDimension.quota = reader.getNullable(JsonReader::getFloat);
+                } else if ("name".equals(fieldName)) {
+                    deserializedQuotaDimension.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedQuotaDimension.description = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedQuotaDimension.unit = reader.getString();
+                } else if ("unitPlural".equals(fieldName)) {
+                    deserializedQuotaDimension.unitPlural = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaDimension;
+        });
     }
 }

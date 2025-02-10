@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.ComplianceResultInner;
 public final class ComplianceResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComplianceResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"jdous\",\"name\":\"cqvkocrcjdkwtn\",\"type\":\"xbnjbiksq\"}")
-                .toObject(ComplianceResultInner.class);
+        ComplianceResultInner model = BinaryData.fromString(
+            "{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"lhqgnufooojy\",\"name\":\"ifsqesaagdfmg\",\"type\":\"zlhjxrifkwmrvkt\"}")
+            .toObject(ComplianceResultInner.class);
     }
 
     @org.junit.jupiter.api.Test

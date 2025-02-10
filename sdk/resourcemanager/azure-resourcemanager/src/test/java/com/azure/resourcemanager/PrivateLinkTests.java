@@ -12,8 +12,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -50,17 +50,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkTests.class);
 
     private AzureResourceManager azureResourceManager;
     private String rgName;
@@ -74,21 +71,10 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
     private final String vnAddressSpace = "10.0.0.0/28";
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -117,121 +103,137 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
 
     @Test
     public void testPrivateEndpoint() {
-//        String saName2 = generateRandomResourceName("sa", 10);
+        //        String saName2 = generateRandomResourceName("sa", 10);
         String peName2 = generateRandomResourceName("pe", 10);
-//        String pecName2 = generateRandomResourceName("pec", 10);
+        //        String pecName2 = generateRandomResourceName("pec", 10);
 
         String saDomainName = saName + ".blob.core.windows.net";
-        System.out.println("storage account domain name: " + saDomainName);
+        LOGGER.log(LogLevel.VERBOSE, () -> "storage account domain name: " + saDomainName);
 
-        StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
+        StorageAccount storageAccount = azureResourceManager.storageAccounts()
+            .define(saName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .create();
 
-        Network network = azureResourceManager.networks().define(vnName)
+        Network network = azureResourceManager.networks()
+            .define(vnName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withAddressSpace(vnAddressSpace)
             .defineSubnet(subnetName)
-                .withAddressPrefix(vnAddressSpace)
-                .disableNetworkPoliciesOnPrivateEndpoint()
-                .attach()
+            .withAddressPrefix(vnAddressSpace)
+            .disableNetworkPoliciesOnPrivateEndpoint()
+            .attach()
             .create();
 
         // private endpoint with manual approval
-        PrivateEndpoint privateEndpoint = azureResourceManager.privateEndpoints().define(peName)
+        PrivateEndpoint privateEndpoint = azureResourceManager.privateEndpoints()
+            .define(peName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withSubnet(network.subnets().get(subnetName))
             .definePrivateLinkServiceConnection(pecName)
-                .withResource(storageAccount)
-                .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
-                .withManualApproval("request message")
-                .attach()
+            .withResource(storageAccount)
+            .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
+            .withManualApproval("request message")
+            .attach()
             .create();
 
         Assertions.assertNotNull(privateEndpoint.subnet());
         Assertions.assertEquals(network.subnets().get(subnetName).id(), privateEndpoint.subnet().id());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
         Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
-        Assertions.assertTrue(privateEndpoint.privateLinkServiceConnections().values().iterator().next().isManualApproval());
-        Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB), privateEndpoint.privateLinkServiceConnections().get(pecName).subResourceNames());
-        Assertions.assertEquals("Pending", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
-        Assertions.assertEquals("request message", privateEndpoint.privateLinkServiceConnections().get(pecName).requestMessage());
+        Assertions
+            .assertTrue(privateEndpoint.privateLinkServiceConnections().values().iterator().next().isManualApproval());
+        Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB),
+            privateEndpoint.privateLinkServiceConnections().get(pecName).subResourceNames());
+        Assertions.assertEquals("Pending",
+            privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+        Assertions.assertEquals("request message",
+            privateEndpoint.privateLinkServiceConnections().get(pecName).requestMessage());
 
         // approve the connection
-        List<PrivateEndpointConnection> storageAccountConnections = storageAccount.listPrivateEndpointConnections().stream().collect(Collectors.toList());
+        List<PrivateEndpointConnection> storageAccountConnections
+            = storageAccount.listPrivateEndpointConnections().stream().collect(Collectors.toList());
         Assertions.assertEquals(1, storageAccountConnections.size());
         PrivateEndpointConnection storageAccountConnection = storageAccountConnections.iterator().next();
         Assertions.assertNotNull(storageAccountConnection.id());
         Assertions.assertNotNull(storageAccountConnection.privateEndpoint());
         Assertions.assertNotNull(storageAccountConnection.privateEndpoint().id());
         Assertions.assertNotNull(storageAccountConnection.privateLinkServiceConnectionState());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, storageAccountConnection.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+            storageAccountConnection.privateLinkServiceConnectionState().status());
         storageAccount.approvePrivateEndpointConnection(storageAccountConnection.name());
 
         // check again
         privateEndpoint.refresh();
-        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+        Assertions.assertEquals("Approved",
+            privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
 
-//        // update private endpoint
-//        StorageAccount storageAccount2 = azureResourceManager.storageAccounts().define(saName2)
-//            .withRegion(region)
-//            .withNewResourceGroup(rgName)
-//            .create();
-//
-//        privateEndpoint.update()
-//            .updatePrivateLinkServiceConnection(pecName)
-//                .withRequestMessage("request2")
-//                .parent()
-//            .apply();
-//
-//        Assertions.assertEquals("Pending", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
-//        Assertions.assertEquals("request2", privateEndpoint.privateLinkServiceConnections().get(pecName).requestMessage());
-//
-//        privateEndpoint.update()
-//            .withoutPrivateLinkServiceConnection(pecName)
-//            .definePrivateLinkServiceConnection(pecName2)
-//                .withResource(storageAccount2)
-//                .withSubResource(PrivateLinkSubResourceName.STORAGE_FILE)
-//                .attach()
-//            .apply();
-//
-//        Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_FILE), privateEndpoint.privateLinkServiceConnections().get(pecName2).subResourceNames());
-//        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName2).state().status());
+        //        // update private endpoint
+        //        StorageAccount storageAccount2 = azureResourceManager.storageAccounts().define(saName2)
+        //            .withRegion(region)
+        //            .withNewResourceGroup(rgName)
+        //            .create();
+        //
+        //        privateEndpoint.update()
+        //            .updatePrivateLinkServiceConnection(pecName)
+        //                .withRequestMessage("request2")
+        //                .parent()
+        //            .apply();
+        //
+        //        Assertions.assertEquals("Pending", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+        //        Assertions.assertEquals("request2", privateEndpoint.privateLinkServiceConnections().get(pecName).requestMessage());
+        //
+        //        privateEndpoint.update()
+        //            .withoutPrivateLinkServiceConnection(pecName)
+        //            .definePrivateLinkServiceConnection(pecName2)
+        //                .withResource(storageAccount2)
+        //                .withSubResource(PrivateLinkSubResourceName.STORAGE_FILE)
+        //                .attach()
+        //            .apply();
+        //
+        //        Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_FILE), privateEndpoint.privateLinkServiceConnections().get(pecName2).subResourceNames());
+        //        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName2).state().status());
 
         // delete
         azureResourceManager.privateEndpoints().deleteById(privateEndpoint.id());
 
         // private endpoint with auto-approval (RBAC based)
-        privateEndpoint = azureResourceManager.privateEndpoints().define(peName2)
+        privateEndpoint = azureResourceManager.privateEndpoints()
+            .define(peName2)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withSubnetId(network.subnets().get(subnetName).id())
             .definePrivateLinkServiceConnection(pecName)
-                .withResourceId(storageAccount.id())
-                .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
-                .attach()
+            .withResourceId(storageAccount.id())
+            .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
+            .attach()
             .create();
 
         Assertions.assertNotNull(privateEndpoint.subnet());
         Assertions.assertEquals(network.subnets().get(subnetName).id(), privateEndpoint.subnet().id());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
         Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
-        Assertions.assertEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
-        Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB), privateEndpoint.privateLinkServiceConnections().get(pecName).subResourceNames());
+        assertResourceIdEquals(storageAccount.id(),
+            privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
+        Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB),
+            privateEndpoint.privateLinkServiceConnections().get(pecName).subResourceNames());
         Assertions.assertNotNull(privateEndpoint.customDnsConfigurations());
         Assertions.assertFalse(privateEndpoint.customDnsConfigurations().isEmpty());
         // auto-approved
-        Assertions.assertFalse(privateEndpoint.privateLinkServiceConnections().values().iterator().next().isManualApproval());
-        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+        Assertions
+            .assertFalse(privateEndpoint.privateLinkServiceConnections().values().iterator().next().isManualApproval());
+        Assertions.assertEquals("Approved",
+            privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
 
         String saPrivateIp = privateEndpoint.customDnsConfigurations().get(0).ipAddresses().get(0);
-        System.out.println("storage account private ip: " + saPrivateIp);
+        LOGGER.log(LogLevel.VERBOSE, () -> "storage account private ip: " + saPrivateIp);
 
         // verify list
-        List<PrivateEndpoint> privateEndpoints = azureResourceManager.privateEndpoints().listByResourceGroup(rgName).stream().collect(Collectors.toList());
+        List<PrivateEndpoint> privateEndpoints
+            = azureResourceManager.privateEndpoints().listByResourceGroup(rgName).stream().collect(Collectors.toList());
         Assertions.assertEquals(1, privateEndpoints.size());
         Assertions.assertEquals(peName2, privateEndpoints.get(0).name());
     }
@@ -248,53 +250,61 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         String vmName = generateRandomResourceName("vm", 10);
 
         String saDomainName = saName + ".blob.core.windows.net";
-        System.out.println("storage account domain name: " + saDomainName);
+        LOGGER.log(LogLevel.VERBOSE, () -> "storage account domain name: " + saDomainName);
 
-        StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
+        StorageAccount storageAccount = azureResourceManager.storageAccounts()
+            .define(saName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .create();
 
-        Network network = azureResourceManager.networks().define(vnName)
+        Network network = azureResourceManager.networks()
+            .define(vnName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withAddressSpace(vnAddressSpace)
             .defineSubnet(subnetName)
-                .withAddressPrefix(vnAddressSpace)
-                .disableNetworkPoliciesOnPrivateEndpoint()
-                .attach()
+            .withAddressPrefix(vnAddressSpace)
+            .disableNetworkPoliciesOnPrivateEndpoint()
+            .attach()
             .create();
 
         // private endpoint
-        PrivateEndpoint privateEndpoint = azureResourceManager.privateEndpoints().define(peName)
+        PrivateEndpoint privateEndpoint = azureResourceManager.privateEndpoints()
+            .define(peName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withSubnetId(network.subnets().get(subnetName).id())
             .definePrivateLinkServiceConnection(pecName)
-                .withResourceId(storageAccount.id())
-                .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
-                .attach()
+            .withResourceId(storageAccount.id())
+            .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)
+            .attach()
             .create();
 
         Assertions.assertNotNull(privateEndpoint.subnet());
         Assertions.assertEquals(network.subnets().get(subnetName).id(), privateEndpoint.subnet().id());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
         Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
-        Assertions.assertEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
-        Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB), privateEndpoint.privateLinkServiceConnections().get(pecName).subResourceNames());
+        assertResourceIdEquals(storageAccount.id(),
+            privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
+        Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB),
+            privateEndpoint.privateLinkServiceConnections().get(pecName).subResourceNames());
         Assertions.assertNotNull(privateEndpoint.customDnsConfigurations());
         Assertions.assertFalse(privateEndpoint.customDnsConfigurations().isEmpty());
         // auto-approved
-        Assertions.assertFalse(privateEndpoint.privateLinkServiceConnections().values().iterator().next().isManualApproval());
-        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+        Assertions
+            .assertFalse(privateEndpoint.privateLinkServiceConnections().values().iterator().next().isManualApproval());
+        Assertions.assertEquals("Approved",
+            privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
 
         String saPrivateIp = privateEndpoint.customDnsConfigurations().get(0).ipAddresses().get(0);
-        System.out.println("storage account private ip: " + saPrivateIp);
+        LOGGER.log(LogLevel.VERBOSE, () -> "storage account private ip: " + saPrivateIp);
 
         VirtualMachine virtualMachine = null;
         if (validateOnVirtualMachine) {
             // create a test virtual machine
-            virtualMachine = azureResourceManager.virtualMachines().define(vmName)
+            virtualMachine = azureResourceManager.virtualMachines()
+                .define(vmName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
@@ -308,44 +318,52 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
                 .create();
 
             // verify private endpoint not yet works
-            RunCommandResult commandResult = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
+            RunCommandResult commandResult
+                = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
             for (InstanceViewStatus status : commandResult.value()) {
-                System.out.println(status.message());
+                LOGGER.log(LogLevel.VERBOSE, () -> status.message());
             }
-            Assertions.assertFalse(commandResult.value().stream().anyMatch(status -> status.message().contains(saPrivateIp)));
+            Assertions
+                .assertFalse(commandResult.value().stream().anyMatch(status -> status.message().contains(saPrivateIp)));
         }
 
         // private dns zone
-        PrivateDnsZone privateDnsZone = azureResourceManager.privateDnsZones().define("privatelink.blob.core.windows.net")
+        PrivateDnsZone privateDnsZone = azureResourceManager.privateDnsZones()
+            .define("privatelink.blob.core.windows.net")
             .withExistingResourceGroup(rgName)
             .defineARecordSet(saName)
-                .withIPv4Address(privateEndpoint.customDnsConfigurations().get(0).ipAddresses().get(0))
-                .attach()
+            .withIPv4Address(privateEndpoint.customDnsConfigurations().get(0).ipAddresses().get(0))
+            .attach()
             .defineVirtualNetworkLink(vnlName)
-                .withVirtualNetworkId(network.id())
-                .attach()
+            .withVirtualNetworkId(network.id())
+            .attach()
             .create();
 
         // private dns zone group on private endpoint
-        PrivateDnsZoneGroup privateDnsZoneGroup = privateEndpoint.privateDnsZoneGroups().define(pdzgName)
+        PrivateDnsZoneGroup privateDnsZoneGroup = privateEndpoint.privateDnsZoneGroups()
+            .define(pdzgName)
             .withPrivateDnsZoneConfigure(pdzcName, privateDnsZone.id())
             .create();
 
         if (validateOnVirtualMachine) {
             // verify private endpoint works
-            RunCommandResult commandResult = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
+            RunCommandResult commandResult
+                = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
             for (InstanceViewStatus status : commandResult.value()) {
-                System.out.println(status.message());
+                LOGGER.log(LogLevel.VERBOSE, () -> status.message());
             }
-            Assertions.assertTrue(commandResult.value().stream().anyMatch(status -> status.message().contains(saPrivateIp)));
+            Assertions
+                .assertTrue(commandResult.value().stream().anyMatch(status -> status.message().contains(saPrivateIp)));
         }
 
         // verify list and get for private dns zone group
         Assertions.assertEquals(1, privateEndpoint.privateDnsZoneGroups().list().stream().count());
-        Assertions.assertEquals(pdzgName, privateEndpoint.privateDnsZoneGroups().getById(privateDnsZoneGroup.id()).name());
+        Assertions.assertEquals(pdzgName,
+            privateEndpoint.privateDnsZoneGroups().getById(privateDnsZoneGroup.id()).name());
 
         // update private dns zone group
-        PrivateDnsZone privateDnsZone2 = azureResourceManager.privateDnsZones().define("link.blob.core.windows.net")
+        PrivateDnsZone privateDnsZone2 = azureResourceManager.privateDnsZones()
+            .define("link.blob.core.windows.net")
             .withExistingResourceGroup(rgName)
             .create();
 
@@ -360,7 +378,8 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
 
     @Test
     public void testStoragePrivateLinkResources() {
-        StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
+        StorageAccount storageAccount = azureResourceManager.storageAccounts()
+            .define(saName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .create();
@@ -373,10 +392,12 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         String vaultName = generateRandomResourceName("vault", 10);
         PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.VAULT;
 
-        Vault vault = azureResourceManager.vaults().define(vaultName)
+        Vault vault = azureResourceManager.vaults()
+            .define(vaultName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withEmptyAccessPolicy()
+            .disablePublicNetworkAccess()
             .create();
 
         validatePrivateLinkResource(vault, subResourceName.toString());
@@ -389,7 +410,8 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         String cosmosName = generateRandomResourceName("cosmos", 10);
         PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.COSMOS_SQL;
 
-        CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(cosmosName)
+        CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts()
+            .define(cosmosName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withDataModelSql()
@@ -398,11 +420,13 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
 
         PrivateEndpoint privateEndpoint = createPrivateEndpointForManualApproval(cosmosDBAccount, subResourceName);
 
-        com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection connection = cosmosDBAccount.listPrivateEndpointConnection().values().iterator().next();
+        com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection connection
+            = cosmosDBAccount.listPrivateEndpointConnection().values().iterator().next();
         cosmosDBAccount.approvePrivateEndpointConnection(connection.name());
 
         privateEndpoint.refresh();
-        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+        Assertions.assertEquals("Approved",
+            privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
     }
 
     @Test
@@ -413,15 +437,16 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
 
         PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.KUBERNETES_MANAGEMENT;
 
-        KubernetesCluster cluster = azureResourceManager.kubernetesClusters().define(clusterName)
+        KubernetesCluster cluster = azureResourceManager.kubernetesClusters()
+            .define(clusterName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withDefaultVersion()
             .withSystemAssignedManagedServiceIdentity()
             .defineAgentPool(apName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
             .attach()
             .withDnsPrefix(dnsPrefix)
             .enablePrivateCluster()
@@ -431,10 +456,12 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
 
         // private dns zone and private endpoint connection is created by AKS
 
-        List<PrivateEndpointConnection> connections = cluster.listPrivateEndpointConnections().stream().collect(Collectors.toList());
+        List<PrivateEndpointConnection> connections
+            = cluster.listPrivateEndpointConnections().stream().collect(Collectors.toList());
         Assertions.assertEquals(1, connections.size());
         PrivateEndpointConnection connection = connections.iterator().next();
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, connection.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            connection.privateLinkServiceConnectionState().status());
     }
 
     @Test
@@ -442,7 +469,8 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         String redisName = generateRandomResourceName("redis", 10);
         PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.REDIS_CACHE;
 
-        RedisCache redisCache = azureResourceManager.redisCaches().define(redisName)
+        RedisCache redisCache = azureResourceManager.redisCaches()
+            .define(redisName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withPremiumSku()
@@ -460,7 +488,8 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
 
         PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.WEB_SITES;
 
-        WebApp webapp = azureResourceManager.webApps().define(webappName)
+        WebApp webapp = azureResourceManager.webApps()
+            .define(webappName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withNewLinuxPlan(PricingTier.PREMIUM_P2V3) // requires P2 or P3
@@ -472,28 +501,28 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         validateListAndApprovePrivatePrivateEndpointConnection(webapp, subResourceName);
     }
 
-//    @Test
-//    public void testPrivateEndpointWebSlot() {
-//        String webappName = generateRandomResourceName("webapp", 20);
-//        String webappSlotName = generateRandomResourceName("webappslot", 20);
-//
-//        PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.WEB_SITES;
-//
-//        WebApp webapp = azureResourceManager.webApps().define(webappName)
-//            .withRegion(region)
-//            .withNewResourceGroup(rgName)
-//            .withNewLinuxPlan(PricingTier.PREMIUM_P2V3) // requires P2 or P3
-//            .withBuiltInImage(RuntimeStack.JAVA_11_JAVA11)
-//            .create();
-//
-//        DeploymentSlot slot = webapp.deploymentSlots().define(webappSlotName)
-//            .withConfigurationFromParent()
-//            .create();
-//
-//        validatePrivateLinkResource(slot, subResourceName.toString());
-//
-//        validateListAndApprovePrivatePrivateEndpointConnection(slot, subResourceName);
-//    }
+    //    @Test
+    //    public void testPrivateEndpointWebSlot() {
+    //        String webappName = generateRandomResourceName("webapp", 20);
+    //        String webappSlotName = generateRandomResourceName("webappslot", 20);
+    //
+    //        PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.WEB_SITES;
+    //
+    //        WebApp webapp = azureResourceManager.webApps().define(webappName)
+    //            .withRegion(region)
+    //            .withNewResourceGroup(rgName)
+    //            .withNewLinuxPlan(PricingTier.PREMIUM_P2V3) // requires P2 or P3
+    //            .withBuiltInImage(RuntimeStack.JAVA_11_JAVA11)
+    //            .create();
+    //
+    //        DeploymentSlot slot = webapp.deploymentSlots().define(webappSlotName)
+    //            .withConfigurationFromParent()
+    //            .create();
+    //
+    //        validatePrivateLinkResource(slot, subResourceName.toString());
+    //
+    //        validateListAndApprovePrivatePrivateEndpointConnection(slot, subResourceName);
+    //    }
 
     private void validatePrivateLinkResource(SupportsListingPrivateLinkResource resource, String requiredGroupId) {
         PagedIterable<PrivateLinkResource> privateLinkResources = resource.listPrivateLinkResources();
@@ -503,8 +532,10 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         Assertions.assertTrue(privateLinkResourceList.stream().anyMatch(r -> requiredGroupId.equals(r.groupId())));
     }
 
-    private PrivateEndpoint createPrivateEndpointForManualApproval(Resource resource, PrivateLinkSubResourceName subResourceName) {
-        Network network = azureResourceManager.networks().define(vnName)
+    private PrivateEndpoint createPrivateEndpointForManualApproval(Resource resource,
+        PrivateLinkSubResourceName subResourceName) {
+        Network network = azureResourceManager.networks()
+            .define(vnName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withAddressSpace(vnAddressSpace)
@@ -515,7 +546,8 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
             .create();
 
         // private endpoint with manual approval
-        PrivateEndpoint privateEndpoint = azureResourceManager.privateEndpoints().define(peName)
+        PrivateEndpoint privateEndpoint = azureResourceManager.privateEndpoints()
+            .define(peName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withSubnet(network.subnets().get(subnetName))
@@ -525,25 +557,31 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
             .withManualApproval("request message")
             .attach()
             .create();
-        Assertions.assertEquals("Pending", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+        Assertions.assertEquals("Pending",
+            privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
 
         return privateEndpoint;
     }
 
-    private <T extends Resource & SupportsUpdatingPrivateEndpointConnection> void validateApprovePrivatePrivateEndpointConnection(T resource, PrivateLinkSubResourceName subResourceName) {
+    private <T extends Resource & SupportsUpdatingPrivateEndpointConnection> void
+        validateApprovePrivatePrivateEndpointConnection(T resource, PrivateLinkSubResourceName subResourceName) {
         PrivateEndpoint privateEndpoint = createPrivateEndpointForManualApproval(resource, subResourceName);
 
         resource.approvePrivateEndpointConnection(pecName);
 
         // check again
         privateEndpoint.refresh();
-        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
+        Assertions.assertEquals("Approved",
+            privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
     }
 
-    private <T extends Resource & SupportsUpdatingPrivateEndpointConnection & SupportsListingPrivateEndpointConnection> void validateListAndApprovePrivatePrivateEndpointConnection(T resource, PrivateLinkSubResourceName subResourceName) {
+    private <T extends Resource & SupportsUpdatingPrivateEndpointConnection & SupportsListingPrivateEndpointConnection>
+        void
+        validateListAndApprovePrivatePrivateEndpointConnection(T resource, PrivateLinkSubResourceName subResourceName) {
         PrivateEndpoint privateEndpoint = createPrivateEndpointForManualApproval(resource, subResourceName);
 
-        List<PrivateEndpointConnection> connections = resource.listPrivateEndpointConnections().stream().collect(Collectors.toList());
+        List<PrivateEndpointConnection> connections
+            = resource.listPrivateEndpointConnections().stream().collect(Collectors.toList());
         Assertions.assertEquals(1, connections.size());
         PrivateEndpointConnection connection = connections.iterator().next();
 
@@ -552,18 +590,13 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         // check again
         privateEndpoint.refresh();
         int retry = 3;  // retry for eventual consistency, Redis having this issue
-        while (retry >= 0 && !"Approved".equals(privateEndpoint.privateLinkServiceConnections().get(pecName).state().status())) {
+        while (retry >= 0
+            && !"Approved".equals(privateEndpoint.privateLinkServiceConnections().get(pecName).state().status())) {
             ResourceManagerUtils.sleep(Duration.ofSeconds(30));
             privateEndpoint.refresh();
             retry--;
         }
-        Assertions.assertEquals("Approved", privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
-    }
-
-    private static HashMap<String, String> parseAuthFile(String authFilename) throws Exception {
-        String content = new String(Files.readAllBytes(new File(authFilename).toPath()), StandardCharsets.UTF_8).trim();
-        HashMap<String, String> auth = new HashMap<>();
-        auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
-        return auth;
+        Assertions.assertEquals("Approved",
+            privateEndpoint.privateLinkServiceConnections().get(pecName).state().status());
     }
 }

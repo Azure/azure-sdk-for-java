@@ -6,44 +6,50 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** The properties of a managed instance administrator. */
+/**
+ * The properties of a managed instance administrator.
+ */
 @Fluent
-public final class ManagedInstanceAdministratorProperties {
+public final class ManagedInstanceAdministratorProperties
+    implements JsonSerializable<ManagedInstanceAdministratorProperties> {
     /*
      * Type of the managed instance administrator.
      */
-    @JsonProperty(value = "administratorType", required = true)
     private ManagedInstanceAdministratorType administratorType;
 
     /*
      * Login name of the managed instance administrator.
      */
-    @JsonProperty(value = "login", required = true)
     private String login;
 
     /*
      * SID (object ID) of the managed instance administrator.
      */
-    @JsonProperty(value = "sid", required = true)
     private UUID sid;
 
     /*
      * Tenant ID of the managed instance administrator.
      */
-    @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
-    /** Creates an instance of ManagedInstanceAdministratorProperties class. */
+    /**
+     * Creates an instance of ManagedInstanceAdministratorProperties class.
+     */
     public ManagedInstanceAdministratorProperties() {
     }
 
     /**
      * Get the administratorType property: Type of the managed instance administrator.
-     *
+     * 
      * @return the administratorType value.
      */
     public ManagedInstanceAdministratorType administratorType() {
@@ -52,19 +58,19 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Set the administratorType property: Type of the managed instance administrator.
-     *
+     * 
      * @param administratorType the administratorType value to set.
      * @return the ManagedInstanceAdministratorProperties object itself.
      */
-    public ManagedInstanceAdministratorProperties withAdministratorType(
-        ManagedInstanceAdministratorType administratorType) {
+    public ManagedInstanceAdministratorProperties
+        withAdministratorType(ManagedInstanceAdministratorType administratorType) {
         this.administratorType = administratorType;
         return this;
     }
 
     /**
      * Get the login property: Login name of the managed instance administrator.
-     *
+     * 
      * @return the login value.
      */
     public String login() {
@@ -73,7 +79,7 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Set the login property: Login name of the managed instance administrator.
-     *
+     * 
      * @param login the login value to set.
      * @return the ManagedInstanceAdministratorProperties object itself.
      */
@@ -84,7 +90,7 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Get the sid property: SID (object ID) of the managed instance administrator.
-     *
+     * 
      * @return the sid value.
      */
     public UUID sid() {
@@ -93,7 +99,7 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Set the sid property: SID (object ID) of the managed instance administrator.
-     *
+     * 
      * @param sid the sid value to set.
      * @return the ManagedInstanceAdministratorProperties object itself.
      */
@@ -104,7 +110,7 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Get the tenantId property: Tenant ID of the managed instance administrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -113,7 +119,7 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Set the tenantId property: Tenant ID of the managed instance administrator.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ManagedInstanceAdministratorProperties object itself.
      */
@@ -124,29 +130,77 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (administratorType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorType in model ManagedInstanceAdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorType in model ManagedInstanceAdministratorProperties"));
         }
         if (login() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property login in model ManagedInstanceAdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property login in model ManagedInstanceAdministratorProperties"));
         }
         if (sid() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sid in model ManagedInstanceAdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sid in model ManagedInstanceAdministratorProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedInstanceAdministratorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("administratorType",
+            this.administratorType == null ? null : this.administratorType.toString());
+        jsonWriter.writeStringField("login", this.login);
+        jsonWriter.writeStringField("sid", Objects.toString(this.sid, null));
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceAdministratorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceAdministratorProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedInstanceAdministratorProperties.
+     */
+    public static ManagedInstanceAdministratorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceAdministratorProperties deserializedManagedInstanceAdministratorProperties
+                = new ManagedInstanceAdministratorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("administratorType".equals(fieldName)) {
+                    deserializedManagedInstanceAdministratorProperties.administratorType
+                        = ManagedInstanceAdministratorType.fromString(reader.getString());
+                } else if ("login".equals(fieldName)) {
+                    deserializedManagedInstanceAdministratorProperties.login = reader.getString();
+                } else if ("sid".equals(fieldName)) {
+                    deserializedManagedInstanceAdministratorProperties.sid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedManagedInstanceAdministratorProperties.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceAdministratorProperties;
+        });
+    }
 }

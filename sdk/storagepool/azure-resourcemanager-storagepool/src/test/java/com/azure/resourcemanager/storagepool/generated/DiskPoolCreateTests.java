@@ -16,57 +16,46 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskPoolCreateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskPoolCreate model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"odxobnbdxkqpxok\",\"tier\":\"ionpimexg\"},\"properties\":{\"availabilityZones\":[\"gcpo\"],\"disks\":[{\"id\":\"aajrm\"},{\"id\":\"djwzrlov\"},{\"id\":\"clwhijcoejctbz\"},{\"id\":\"qsqsy\"}],\"subnetId\":\"bkbfkgukdkex\",\"additionalCapabilities\":[\"ofmx\"]},\"managedBy\":\"c\",\"managedByExtended\":[\"gddtocj\"],\"location\":\"xhvpmoue\",\"tags\":{\"xqbzvddntwnd\":\"zxibqeoj\",\"vuhrhcffcyddgl\":\"icbtwnpzao\",\"xmqci\":\"jthjqkwpyei\",\"hkh\":\"q\"},\"id\":\"xuigdtopbobj\",\"name\":\"ghmewuam\",\"type\":\"uhrzayvvt\"}")
-                .toObject(DiskPoolCreate.class);
-        Assertions.assertEquals("xhvpmoue", model.location());
-        Assertions.assertEquals("zxibqeoj", model.tags().get("xqbzvddntwnd"));
-        Assertions.assertEquals("odxobnbdxkqpxok", model.sku().name());
-        Assertions.assertEquals("ionpimexg", model.sku().tier());
-        Assertions.assertEquals("c", model.managedBy());
-        Assertions.assertEquals("gddtocj", model.managedByExtended().get(0));
-        Assertions.assertEquals("gcpo", model.availabilityZones().get(0));
-        Assertions.assertEquals("aajrm", model.disks().get(0).id());
-        Assertions.assertEquals("bkbfkgukdkex", model.subnetId());
-        Assertions.assertEquals("ofmx", model.additionalCapabilities().get(0));
+        DiskPoolCreate model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"j\",\"tier\":\"vpmouexhdzxib\"},\"properties\":{\"availabilityZones\":[\"jnxqbzvddntwn\",\"eic\",\"twnpzaoqvuhrhcf\"],\"disks\":[{\"id\":\"ddglm\"}],\"subnetId\":\"t\",\"additionalCapabilities\":[\"kw\",\"yeicxmqciwqvhk\",\"ixuigdtopbobj\"]},\"managedBy\":\"hm\",\"managedByExtended\":[\"a\"],\"location\":\"a\",\"tags\":{\"yvvtpgvdfgio\":\"z\",\"gnxkrxdqmidtth\":\"kftutqxlngxlefg\"},\"id\":\"rvqdra\",\"name\":\"hjybigehoqfbo\",\"type\":\"skanyk\"}")
+            .toObject(DiskPoolCreate.class);
+        Assertions.assertEquals("a", model.location());
+        Assertions.assertEquals("z", model.tags().get("yvvtpgvdfgio"));
+        Assertions.assertEquals("j", model.sku().name());
+        Assertions.assertEquals("vpmouexhdzxib", model.sku().tier());
+        Assertions.assertEquals("hm", model.managedBy());
+        Assertions.assertEquals("a", model.managedByExtended().get(0));
+        Assertions.assertEquals("jnxqbzvddntwn", model.availabilityZones().get(0));
+        Assertions.assertEquals("ddglm", model.disks().get(0).id());
+        Assertions.assertEquals("t", model.subnetId());
+        Assertions.assertEquals("kw", model.additionalCapabilities().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskPoolCreate model =
-            new DiskPoolCreate()
-                .withLocation("xhvpmoue")
-                .withTags(
-                    mapOf(
-                        "xqbzvddntwnd", "zxibqeoj", "vuhrhcffcyddgl", "icbtwnpzao", "xmqci", "jthjqkwpyei", "hkh", "q"))
-                .withSku(new Sku().withName("odxobnbdxkqpxok").withTier("ionpimexg"))
-                .withManagedBy("c")
-                .withManagedByExtended(Arrays.asList("gddtocj"))
-                .withAvailabilityZones(Arrays.asList("gcpo"))
-                .withDisks(
-                    Arrays
-                        .asList(
-                            new Disk().withId("aajrm"),
-                            new Disk().withId("djwzrlov"),
-                            new Disk().withId("clwhijcoejctbz"),
-                            new Disk().withId("qsqsy")))
-                .withSubnetId("bkbfkgukdkex")
-                .withAdditionalCapabilities(Arrays.asList("ofmx"));
+        DiskPoolCreate model = new DiskPoolCreate().withLocation("a")
+            .withTags(mapOf("yvvtpgvdfgio", "z", "gnxkrxdqmidtth", "kftutqxlngxlefg"))
+            .withSku(new Sku().withName("j").withTier("vpmouexhdzxib"))
+            .withManagedBy("hm")
+            .withManagedByExtended(Arrays.asList("a"))
+            .withAvailabilityZones(Arrays.asList("jnxqbzvddntwn", "eic", "twnpzaoqvuhrhcf"))
+            .withDisks(Arrays.asList(new Disk().withId("ddglm")))
+            .withSubnetId("t")
+            .withAdditionalCapabilities(Arrays.asList("kw", "yeicxmqciwqvhk", "ixuigdtopbobj"));
         model = BinaryData.fromObject(model).toObject(DiskPoolCreate.class);
-        Assertions.assertEquals("xhvpmoue", model.location());
-        Assertions.assertEquals("zxibqeoj", model.tags().get("xqbzvddntwnd"));
-        Assertions.assertEquals("odxobnbdxkqpxok", model.sku().name());
-        Assertions.assertEquals("ionpimexg", model.sku().tier());
-        Assertions.assertEquals("c", model.managedBy());
-        Assertions.assertEquals("gddtocj", model.managedByExtended().get(0));
-        Assertions.assertEquals("gcpo", model.availabilityZones().get(0));
-        Assertions.assertEquals("aajrm", model.disks().get(0).id());
-        Assertions.assertEquals("bkbfkgukdkex", model.subnetId());
-        Assertions.assertEquals("ofmx", model.additionalCapabilities().get(0));
+        Assertions.assertEquals("a", model.location());
+        Assertions.assertEquals("z", model.tags().get("yvvtpgvdfgio"));
+        Assertions.assertEquals("j", model.sku().name());
+        Assertions.assertEquals("vpmouexhdzxib", model.sku().tier());
+        Assertions.assertEquals("hm", model.managedBy());
+        Assertions.assertEquals("a", model.managedByExtended().get(0));
+        Assertions.assertEquals("jnxqbzvddntwn", model.availabilityZones().get(0));
+        Assertions.assertEquals("ddglm", model.disks().get(0).id());
+        Assertions.assertEquals("t", model.subnetId());
+        Assertions.assertEquals("kw", model.additionalCapabilities().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

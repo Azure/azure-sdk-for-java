@@ -10,7 +10,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
  * Entry point to topic authorization rules management API.
  */
 @Fluent
-public interface TopicAuthorizationRules extends
-    AuthorizationRules<TopicAuthorizationRule>,
+public interface TopicAuthorizationRules extends AuthorizationRules<TopicAuthorizationRule>,
     SupportsCreating<TopicAuthorizationRule.DefinitionStages.Blank> {
 }

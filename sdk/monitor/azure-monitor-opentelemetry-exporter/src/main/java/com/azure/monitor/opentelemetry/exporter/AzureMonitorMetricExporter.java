@@ -28,8 +28,8 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
 class AzureMonitorMetricExporter implements MetricExporter {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorMetricExporter.class);
-    private static final OperationLogger OPERATION_LOGGER =
-        new OperationLogger(AzureMonitorMetricExporter.class, "Exporting metric");
+    private static final OperationLogger OPERATION_LOGGER
+        = new OperationLogger(AzureMonitorMetricExporter.class, "Exporting metric");
 
     private final AtomicBoolean stopped = new AtomicBoolean();
     private final MetricDataMapper mapper;
@@ -49,8 +49,7 @@ class AzureMonitorMetricExporter implements MetricExporter {
      */
     @Override
     public AggregationTemporality getAggregationTemporality(InstrumentType instrumentType) {
-        return AggregationTemporalitySelector.deltaPreferred()
-            .getAggregationTemporality(instrumentType);
+        return AggregationTemporalitySelector.deltaPreferred().getAggregationTemporality(instrumentType);
     }
 
     /**

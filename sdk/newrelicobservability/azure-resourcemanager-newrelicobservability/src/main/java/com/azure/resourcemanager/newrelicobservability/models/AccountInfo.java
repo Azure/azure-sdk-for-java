@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Account Info of the NewRelic account. */
+/**
+ * Account Info of the NewRelic account.
+ */
 @Fluent
-public final class AccountInfo {
+public final class AccountInfo implements JsonSerializable<AccountInfo> {
     /*
      * Account id
      */
-    @JsonProperty(value = "accountId")
     private String accountId;
 
     /*
      * ingestion key of account
      */
-    @JsonProperty(value = "ingestionKey")
     private String ingestionKey;
 
     /*
-     * NewRelic account region
+     * Region where New Relic account is present
      */
-    @JsonProperty(value = "region")
     private String region;
 
-    /** Creates an instance of AccountInfo class. */
+    /**
+     * Creates an instance of AccountInfo class.
+     */
     public AccountInfo() {
     }
 
     /**
      * Get the accountId property: Account id.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -43,7 +48,7 @@ public final class AccountInfo {
 
     /**
      * Set the accountId property: Account id.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the AccountInfo object itself.
      */
@@ -54,7 +59,7 @@ public final class AccountInfo {
 
     /**
      * Get the ingestionKey property: ingestion key of account.
-     *
+     * 
      * @return the ingestionKey value.
      */
     public String ingestionKey() {
@@ -63,7 +68,7 @@ public final class AccountInfo {
 
     /**
      * Set the ingestionKey property: ingestion key of account.
-     *
+     * 
      * @param ingestionKey the ingestionKey value to set.
      * @return the AccountInfo object itself.
      */
@@ -73,8 +78,8 @@ public final class AccountInfo {
     }
 
     /**
-     * Get the region property: NewRelic account region.
-     *
+     * Get the region property: Region where New Relic account is present.
+     * 
      * @return the region value.
      */
     public String region() {
@@ -82,8 +87,8 @@ public final class AccountInfo {
     }
 
     /**
-     * Set the region property: NewRelic account region.
-     *
+     * Set the region property: Region where New Relic account is present.
+     * 
      * @param region the region value to set.
      * @return the AccountInfo object itself.
      */
@@ -94,9 +99,51 @@ public final class AccountInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountId", this.accountId);
+        jsonWriter.writeStringField("ingestionKey", this.ingestionKey);
+        jsonWriter.writeStringField("region", this.region);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountInfo.
+     */
+    public static AccountInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountInfo deserializedAccountInfo = new AccountInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountId".equals(fieldName)) {
+                    deserializedAccountInfo.accountId = reader.getString();
+                } else if ("ingestionKey".equals(fieldName)) {
+                    deserializedAccountInfo.ingestionKey = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedAccountInfo.region = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountInfo;
+        });
     }
 }

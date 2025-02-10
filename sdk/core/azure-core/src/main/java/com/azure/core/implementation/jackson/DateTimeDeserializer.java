@@ -43,8 +43,8 @@ class DateTimeDeserializer extends JsonDeserializer<OffsetDateTime> {
         if (token == JsonToken.VALUE_NUMBER_INT) {
             return OffsetDateTime.ofInstant(Instant.ofEpochSecond(parser.getValueAsLong()), ZoneOffset.UTC);
         } else {
-            TemporalAccessor temporal = DateTimeFormatter.ISO_DATE_TIME
-                .parseBest(parser.getValueAsString(), OffsetDateTime::from, LocalDateTime::from);
+            TemporalAccessor temporal = DateTimeFormatter.ISO_DATE_TIME.parseBest(parser.getValueAsString(),
+                OffsetDateTime::from, LocalDateTime::from);
 
             if (temporal.query(TemporalQueries.offset()) == null) {
                 return LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC);

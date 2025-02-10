@@ -5,7 +5,6 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -65,17 +64,29 @@ public class PrivateLinkSubResourceName extends ExpandableStringEnum<PrivateLink
     public static final PrivateLinkSubResourceName REDIS_CACHE = fromString("redisCache");
 
     /**
+     * Creates a new instance of PrivateLinkSubResourceName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateLinkSubResourceName() {
+    }
+
+    /**
      * Creates or finds a PrivateLinkSubResourceName from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding PrivateLinkSubResourceName.
      */
-    @JsonCreator
     public static PrivateLinkSubResourceName fromString(String name) {
         return fromString(name, PrivateLinkSubResourceName.class);
     }
 
-    /** @return known PrivateLinkSubResourceName values. */
+    /**
+     * Gets known PrivateLinkSubResourceName values.
+     *
+     * @return known PrivateLinkSubResourceName values.
+     */
     public static Collection<PrivateLinkSubResourceName> values() {
         return values(PrivateLinkSubResourceName.class);
     }

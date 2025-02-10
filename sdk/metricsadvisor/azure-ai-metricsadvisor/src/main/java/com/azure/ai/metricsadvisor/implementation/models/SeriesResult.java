@@ -5,14 +5,15 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The SeriesResult model.
@@ -225,12 +226,15 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("series", this.series);
-        jsonWriter.writeArrayField("timestampList", this.timestampList,
-            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("timestampList", this.timestampList, (writer, element) -> writer
+            .writeString(element == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(element)));
         jsonWriter.writeArrayField("valueList", this.valueList, (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeArrayField("isAnomalyList", this.isAnomalyList,
             (writer, element) -> writer.writeBoolean(element));
@@ -264,7 +268,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
                     deserializedSeriesResult.series = SeriesIdentity.fromJson(reader);
                 } else if ("timestampList".equals(fieldName)) {
                     List<OffsetDateTime> timestampList = reader.readArray(reader1 -> reader1
-                        .getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                     deserializedSeriesResult.timestampList = timestampList;
                 } else if ("valueList".equals(fieldName)) {
                     List<Double> valueList = reader.readArray(reader1 -> reader1.getDouble());

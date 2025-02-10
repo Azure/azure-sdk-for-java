@@ -5,34 +5,121 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for backup copies. Workload-specific backup copies are derived from this class. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = RecoveryPoint.class)
-@JsonTypeName("RecoveryPoint")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureFileShareRecoveryPoint", value = AzureFileShareRecoveryPoint.class),
-    @JsonSubTypes.Type(name = "AzureWorkloadRecoveryPoint", value = AzureWorkloadRecoveryPoint.class),
-    @JsonSubTypes.Type(name = "GenericRecoveryPoint", value = GenericRecoveryPoint.class),
-    @JsonSubTypes.Type(name = "IaasVMRecoveryPoint", value = IaasVMRecoveryPoint.class)
-})
+/**
+ * Base class for backup copies. Workload-specific backup copies are derived from this class.
+ */
 @Immutable
-public class RecoveryPoint {
-    /** Creates an instance of RecoveryPoint class. */
+public class RecoveryPoint implements JsonSerializable<RecoveryPoint> {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "RecoveryPoint";
+
+    /**
+     * Creates an instance of RecoveryPoint class.
+     */
     public RecoveryPoint() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPoint if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPoint.
+     */
+    public static RecoveryPoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureFileShareRecoveryPoint".equals(discriminatorValue)) {
+                    return AzureFileShareRecoveryPoint.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadRecoveryPoint".equals(discriminatorValue)) {
+                    return AzureWorkloadRecoveryPoint.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadPointInTimeRecoveryPoint".equals(discriminatorValue)) {
+                    return AzureWorkloadPointInTimeRecoveryPoint.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadSAPHanaPointInTimeRecoveryPoint".equals(discriminatorValue)) {
+                    return AzureWorkloadSapHanaPointInTimeRecoveryPoint.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSAPHanaRecoveryPoint".equals(discriminatorValue)) {
+                    return AzureWorkloadSapHanaRecoveryPoint.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSQLRecoveryPoint".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlRecoveryPoint.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadSQLPointInTimeRecoveryPoint".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlPointInTimeRecoveryPoint.fromJson(readerToUse.reset());
+                } else if ("GenericRecoveryPoint".equals(discriminatorValue)) {
+                    return GenericRecoveryPoint.fromJson(readerToUse.reset());
+                } else if ("IaasVMRecoveryPoint".equals(discriminatorValue)) {
+                    return IaasVMRecoveryPoint.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RecoveryPoint fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPoint deserializedRecoveryPoint = new RecoveryPoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedRecoveryPoint.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPoint;
+        });
     }
 }

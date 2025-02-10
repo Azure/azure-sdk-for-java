@@ -14,33 +14,29 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterConfigFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterConfigFile model =
-            BinaryData
-                .fromString(
-                    "{\"fileName\":\"cykvceo\",\"content\":\"ilovnot\",\"encoding\":\"Base64\",\"path\":\"cnjbkcnxdhbt\",\"values\":{\"wpn\":\"h\",\"mclfplphoxuscr\":\"jtoqne\"}}")
-                .toObject(ClusterConfigFile.class);
-        Assertions.assertEquals("cykvceo", model.fileName());
-        Assertions.assertEquals("ilovnot", model.content());
-        Assertions.assertEquals(ContentEncoding.BASE64, model.encoding());
-        Assertions.assertEquals("cnjbkcnxdhbt", model.path());
-        Assertions.assertEquals("h", model.values().get("wpn"));
+        ClusterConfigFile model = BinaryData.fromString(
+            "{\"fileName\":\"ttouwaboekqvkel\",\"content\":\"mvb\",\"encoding\":\"None\",\"path\":\"sflhhca\",\"values\":{\"yjpkiidzyexz\":\"jixisxyawjoyaqcs\"}}")
+            .toObject(ClusterConfigFile.class);
+        Assertions.assertEquals("ttouwaboekqvkel", model.fileName());
+        Assertions.assertEquals("mvb", model.content());
+        Assertions.assertEquals(ContentEncoding.NONE, model.encoding());
+        Assertions.assertEquals("sflhhca", model.path());
+        Assertions.assertEquals("jixisxyawjoyaqcs", model.values().get("yjpkiidzyexz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterConfigFile model =
-            new ClusterConfigFile()
-                .withFileName("cykvceo")
-                .withContent("ilovnot")
-                .withEncoding(ContentEncoding.BASE64)
-                .withPath("cnjbkcnxdhbt")
-                .withValues(mapOf("wpn", "h", "mclfplphoxuscr", "jtoqne"));
+        ClusterConfigFile model = new ClusterConfigFile().withFileName("ttouwaboekqvkel")
+            .withContent("mvb")
+            .withEncoding(ContentEncoding.NONE)
+            .withPath("sflhhca")
+            .withValues(mapOf("yjpkiidzyexz", "jixisxyawjoyaqcs"));
         model = BinaryData.fromObject(model).toObject(ClusterConfigFile.class);
-        Assertions.assertEquals("cykvceo", model.fileName());
-        Assertions.assertEquals("ilovnot", model.content());
-        Assertions.assertEquals(ContentEncoding.BASE64, model.encoding());
-        Assertions.assertEquals("cnjbkcnxdhbt", model.path());
-        Assertions.assertEquals("h", model.values().get("wpn"));
+        Assertions.assertEquals("ttouwaboekqvkel", model.fileName());
+        Assertions.assertEquals("mvb", model.content());
+        Assertions.assertEquals(ContentEncoding.NONE, model.encoding());
+        Assertions.assertEquals("sflhhca", model.path());
+        Assertions.assertEquals("jixisxyawjoyaqcs", model.values().get("yjpkiidzyexz"));
     }
 
     // Use "Map.of" if available

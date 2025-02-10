@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Service Level Agreement details for a support ticket. */
+/**
+ * Service Level Agreement details for a support ticket.
+ */
 @Immutable
-public final class ServiceLevelAgreement {
+public final class ServiceLevelAgreement implements JsonSerializable<ServiceLevelAgreement> {
     /*
      * Time in UTC (ISO 8601 format) when the service level agreement starts.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Time in UTC (ISO 8601 format) when the service level agreement expires.
      */
-    @JsonProperty(value = "expirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationTime;
 
     /*
      * Service Level Agreement in minutes.
      */
-    @JsonProperty(value = "slaMinutes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer slaMinutes;
 
-    /** Creates an instance of ServiceLevelAgreement class. */
+    /**
+     * Creates an instance of ServiceLevelAgreement class.
+     */
     public ServiceLevelAgreement() {
     }
 
     /**
      * Get the startTime property: Time in UTC (ISO 8601 format) when the service level agreement starts.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -44,7 +50,7 @@ public final class ServiceLevelAgreement {
 
     /**
      * Get the expirationTime property: Time in UTC (ISO 8601 format) when the service level agreement expires.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -53,7 +59,7 @@ public final class ServiceLevelAgreement {
 
     /**
      * Get the slaMinutes property: Service Level Agreement in minutes.
-     *
+     * 
      * @return the slaMinutes value.
      */
     public Integer slaMinutes() {
@@ -62,9 +68,50 @@ public final class ServiceLevelAgreement {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceLevelAgreement from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceLevelAgreement if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceLevelAgreement.
+     */
+    public static ServiceLevelAgreement fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceLevelAgreement deserializedServiceLevelAgreement = new ServiceLevelAgreement();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedServiceLevelAgreement.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationTime".equals(fieldName)) {
+                    deserializedServiceLevelAgreement.expirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("slaMinutes".equals(fieldName)) {
+                    deserializedServiceLevelAgreement.slaMinutes = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceLevelAgreement;
+        });
     }
 }

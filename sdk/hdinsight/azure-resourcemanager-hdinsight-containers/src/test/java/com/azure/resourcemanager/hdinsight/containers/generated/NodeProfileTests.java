@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class NodeProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeProfile model =
-            BinaryData
-                .fromString("{\"type\":\"scjeypv\",\"vmSize\":\"ezrkgqhcjrefo\",\"count\":450468139}")
-                .toObject(NodeProfile.class);
-        Assertions.assertEquals("scjeypv", model.type());
-        Assertions.assertEquals("ezrkgqhcjrefo", model.vmSize());
-        Assertions.assertEquals(450468139, model.count());
+        NodeProfile model = BinaryData.fromString("{\"type\":\"w\",\"vmSize\":\"heun\",\"count\":1346564492}")
+            .toObject(NodeProfile.class);
+        Assertions.assertEquals("w", model.type());
+        Assertions.assertEquals("heun", model.vmSize());
+        Assertions.assertEquals(1346564492, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodeProfile model = new NodeProfile().withType("scjeypv").withVmSize("ezrkgqhcjrefo").withCount(450468139);
+        NodeProfile model = new NodeProfile().withType("w").withVmSize("heun").withCount(1346564492);
         model = BinaryData.fromObject(model).toObject(NodeProfile.class);
-        Assertions.assertEquals("scjeypv", model.type());
-        Assertions.assertEquals("ezrkgqhcjrefo", model.vmSize());
-        Assertions.assertEquals(450468139, model.count());
+        Assertions.assertEquals("w", model.type());
+        Assertions.assertEquals("heun", model.vmSize());
+        Assertions.assertEquals(1346564492, model.count());
     }
 }

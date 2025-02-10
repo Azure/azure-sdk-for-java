@@ -20,22 +20,18 @@ public final class ProtectionPolicyOperationStatusesImpl implements ProtectionPo
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ProtectionPolicyOperationStatusesImpl(
-        ProtectionPolicyOperationStatusesClient innerClient,
+    public ProtectionPolicyOperationStatusesImpl(ProtectionPolicyOperationStatusesClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationStatus> getWithResponse(
-        String vaultName, String resourceGroupName, String policyName, String operationId, Context context) {
-        Response<OperationStatusInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, policyName, operationId, context);
+    public Response<OperationStatus> getWithResponse(String vaultName, String resourceGroupName, String policyName,
+        String operationId, Context context) {
+        Response<OperationStatusInner> inner
+            = this.serviceClient().getWithResponse(vaultName, resourceGroupName, policyName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -6,63 +6,32 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.ReplicaCollection;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ContainerAppsRevisionReplicasListReplicasWithResponseMockTests {
     @Test
     public void testListReplicasWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-12-02T01:42:45Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"viqlluk\",\"containers\":[{},{},{},{}],\"initContainers\":[{},{},{},{}]},\"id\":\"gcbv\",\"name\":\"a\",\"type\":\"mqcbpokstsinv\"},{\"properties\":{\"createdTime\":\"2021-11-27T01:48:46Z\",\"runningState\":\"Unknown\",\"runningStateDetails\":\"d\",\"containers\":[{},{}],\"initContainers\":[{},{}]},\"id\":\"cehqw\",\"name\":\"itxnmxgnmgu\",\"type\":\"buwvorba\"},{\"properties\":{\"createdTime\":\"2021-02-26T19:00:19Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"dhlltqstqkqsyg\",\"containers\":[{},{}],\"initContainers\":[{},{},{},{}]},\"id\":\"ovagzkheuban\",\"name\":\"xunpqcckqiawzlz\",\"type\":\"laslgacizux\"},{\"properties\":{\"createdTime\":\"2021-05-21T14:34:58Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"wsaudoejtighsxj\",\"containers\":[{},{}],\"initContainers\":[{},{}]},\"id\":\"bala\",\"name\":\"ovu\",\"type\":\"wxhmehjnhjiot\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-08-20T05:45:20Z\",\"runningState\":\"Unknown\",\"runningStateDetails\":\"vuhx\",\"containers\":[{},{},{},{}],\"initContainers\":[{},{},{}]},\"id\":\"tznabao\",\"name\":\"nslujd\",\"type\":\"ltymkmvguihywart\"},{\"properties\":{\"createdTime\":\"2021-01-15T23:22:51Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"ky\",\"containers\":[{}],\"initContainers\":[{}]},\"id\":\"j\",\"name\":\"emmucfxh\",\"type\":\"kkflrmymyincqlhr\"},{\"properties\":{\"createdTime\":\"2021-10-10T16:10:58Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"iiovgqcgxu\",\"containers\":[{},{},{},{}],\"initContainers\":[{},{},{}]},\"id\":\"totiowlxteqdptjg\",\"name\":\"dtguk\",\"type\":\"anblwphqlkccu\"},{\"properties\":{\"createdTime\":\"2021-06-12T18:54:42Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"hoi\",\"containers\":[{},{}],\"initContainers\":[{},{},{}]},\"id\":\"iip\",\"name\":\"glvawuwzdufypivl\",\"type\":\"bbjpmcubkmif\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ReplicaCollection response = manager.containerAppsRevisionReplicas()
+            .listReplicasWithResponse("jbrhlhpvzadbw", "nnin", "fhxrzfr", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ContainerAppsApiManager manager =
-            ContainerAppsApiManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ReplicaCollection response =
-            manager
-                .containerAppsRevisionReplicas()
-                .listReplicasWithResponse(
-                    "sqplpvmjcd", "ewbidyvteowxv", "piudeugfsxzecpa", com.azure.core.util.Context.NONE)
-                .getValue();
     }
 }

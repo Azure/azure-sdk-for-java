@@ -6,11 +6,14 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ContentLink;
 import com.azure.resourcemanager.appservice.models.Correlation;
 import com.azure.resourcemanager.appservice.models.ResourceReference;
 import com.azure.resourcemanager.appservice.models.WorkflowStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
@@ -21,19 +24,16 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
     /*
      * Gets the workflow trigger history properties.
      */
-    @JsonProperty(value = "properties")
     private WorkflowTriggerHistoryProperties innerProperties;
 
     /*
      * Gets the workflow trigger history name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Gets the workflow trigger history type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -209,5 +209,49 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowTriggerHistoryInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowTriggerHistoryInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowTriggerHistoryInner.
+     */
+    public static WorkflowTriggerHistoryInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowTriggerHistoryInner deserializedWorkflowTriggerHistoryInner = new WorkflowTriggerHistoryInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryInner.innerProperties
+                        = WorkflowTriggerHistoryProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkflowTriggerHistoryInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowTriggerHistoryInner;
+        });
     }
 }

@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The conflict resolution policy for the container.
  */
 @Fluent
-public final class ConflictResolutionPolicy {
+public final class ConflictResolutionPolicy implements JsonSerializable<ConflictResolutionPolicy> {
     /*
      * Indicates the conflict resolution mode.
      */
-    @JsonProperty(value = "mode")
     private ConflictResolutionMode mode;
 
     /*
      * The conflict resolution path in the case of LastWriterWins mode.
      */
-    @JsonProperty(value = "conflictResolutionPath")
     private String conflictResolutionPath;
 
     /*
      * The procedure to resolve conflicts in the case of custom mode.
      */
-    @JsonProperty(value = "conflictResolutionProcedure")
     private String conflictResolutionProcedure;
 
     /**
@@ -102,5 +103,47 @@ public final class ConflictResolutionPolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("conflictResolutionPath", this.conflictResolutionPath);
+        jsonWriter.writeStringField("conflictResolutionProcedure", this.conflictResolutionProcedure);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConflictResolutionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConflictResolutionPolicy if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConflictResolutionPolicy.
+     */
+    public static ConflictResolutionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConflictResolutionPolicy deserializedConflictResolutionPolicy = new ConflictResolutionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedConflictResolutionPolicy.mode = ConflictResolutionMode.fromString(reader.getString());
+                } else if ("conflictResolutionPath".equals(fieldName)) {
+                    deserializedConflictResolutionPolicy.conflictResolutionPath = reader.getString();
+                } else if ("conflictResolutionProcedure".equals(fieldName)) {
+                    deserializedConflictResolutionPolicy.conflictResolutionProcedure = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConflictResolutionPolicy;
+        });
     }
 }

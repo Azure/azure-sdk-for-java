@@ -11,21 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class FhirServiceImportConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FhirServiceImportConfiguration model = BinaryData
-            .fromString("{\"integrationDataStore\":\"chkoymkcdyh\",\"initialImportMode\":true,\"enabled\":true}")
-            .toObject(FhirServiceImportConfiguration.class);
-        Assertions.assertEquals("chkoymkcdyh", model.integrationDataStore());
-        Assertions.assertEquals(true, model.initialImportMode());
+        FhirServiceImportConfiguration model
+            = BinaryData.fromString("{\"integrationDataStore\":\"pqlpq\",\"initialImportMode\":false,\"enabled\":true}")
+                .toObject(FhirServiceImportConfiguration.class);
+        Assertions.assertEquals("pqlpq", model.integrationDataStore());
+        Assertions.assertEquals(false, model.initialImportMode());
         Assertions.assertEquals(true, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FhirServiceImportConfiguration model = new FhirServiceImportConfiguration()
-            .withIntegrationDataStore("chkoymkcdyh").withInitialImportMode(true).withEnabled(true);
+        FhirServiceImportConfiguration model = new FhirServiceImportConfiguration().withIntegrationDataStore("pqlpq")
+            .withInitialImportMode(false)
+            .withEnabled(true);
         model = BinaryData.fromObject(model).toObject(FhirServiceImportConfiguration.class);
-        Assertions.assertEquals("chkoymkcdyh", model.integrationDataStore());
-        Assertions.assertEquals(true, model.initialImportMode());
+        Assertions.assertEquals("pqlpq", model.integrationDataStore());
+        Assertions.assertEquals(false, model.initialImportMode());
         Assertions.assertEquals(true, model.enabled());
     }
 }

@@ -6,36 +6,41 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The action to be executed by a job step. */
+/**
+ * The action to be executed by a job step.
+ */
 @Fluent
-public final class JobStepAction {
+public final class JobStepAction implements JsonSerializable<JobStepAction> {
     /*
      * Type of action being executed by the job step.
      */
-    @JsonProperty(value = "type")
     private JobStepActionType type;
 
     /*
      * The source of the action to execute.
      */
-    @JsonProperty(value = "source")
     private JobStepActionSource source;
 
     /*
      * The action value, for example the text of the T-SQL script to execute.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of JobStepAction class. */
+    /**
+     * Creates an instance of JobStepAction class.
+     */
     public JobStepAction() {
     }
 
     /**
      * Get the type property: Type of action being executed by the job step.
-     *
+     * 
      * @return the type value.
      */
     public JobStepActionType type() {
@@ -44,7 +49,7 @@ public final class JobStepAction {
 
     /**
      * Set the type property: Type of action being executed by the job step.
-     *
+     * 
      * @param type the type value to set.
      * @return the JobStepAction object itself.
      */
@@ -55,7 +60,7 @@ public final class JobStepAction {
 
     /**
      * Get the source property: The source of the action to execute.
-     *
+     * 
      * @return the source value.
      */
     public JobStepActionSource source() {
@@ -64,7 +69,7 @@ public final class JobStepAction {
 
     /**
      * Set the source property: The source of the action to execute.
-     *
+     * 
      * @param source the source value to set.
      * @return the JobStepAction object itself.
      */
@@ -75,7 +80,7 @@ public final class JobStepAction {
 
     /**
      * Get the value property: The action value, for example the text of the T-SQL script to execute.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -84,7 +89,7 @@ public final class JobStepAction {
 
     /**
      * Set the value property: The action value, for example the text of the T-SQL script to execute.
-     *
+     * 
      * @param value the value value to set.
      * @return the JobStepAction object itself.
      */
@@ -95,16 +100,58 @@ public final class JobStepAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model JobStepAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model JobStepAction"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobStepAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobStepAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobStepAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobStepAction.
+     */
+    public static JobStepAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobStepAction deserializedJobStepAction = new JobStepAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedJobStepAction.value = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobStepAction.type = JobStepActionType.fromString(reader.getString());
+                } else if ("source".equals(fieldName)) {
+                    deserializedJobStepAction.source = JobStepActionSource.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobStepAction;
+        });
+    }
 }

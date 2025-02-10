@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ProtectionC
 public final class ProtectionContainerFabricSpecificDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectionContainerFabricSpecificDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"vmkfssxqu\"}")
-                .toObject(ProtectionContainerFabricSpecificDetails.class);
+        ProtectionContainerFabricSpecificDetails model = BinaryData.fromString("{\"instanceType\":\"vmkfssxqu\"}")
+            .toObject(ProtectionContainerFabricSpecificDetails.class);
     }
 
     @org.junit.jupiter.api.Test

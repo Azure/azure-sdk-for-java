@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Summary of the replication job data for this vault. */
+/**
+ * Summary of the replication job data for this vault.
+ */
 @Fluent
-public final class JobsSummary {
+public final class JobsSummary implements JsonSerializable<JobsSummary> {
     /*
      * Count of failed jobs.
      */
-    @JsonProperty(value = "failedJobs")
     private Integer failedJobs;
 
     /*
      * Count of suspended jobs.
      */
-    @JsonProperty(value = "suspendedJobs")
     private Integer suspendedJobs;
 
     /*
      * Count of in-progress jobs.
      */
-    @JsonProperty(value = "inProgressJobs")
     private Integer inProgressJobs;
 
-    /** Creates an instance of JobsSummary class. */
+    /**
+     * Creates an instance of JobsSummary class.
+     */
     public JobsSummary() {
     }
 
     /**
      * Get the failedJobs property: Count of failed jobs.
-     *
+     * 
      * @return the failedJobs value.
      */
     public Integer failedJobs() {
@@ -43,7 +48,7 @@ public final class JobsSummary {
 
     /**
      * Set the failedJobs property: Count of failed jobs.
-     *
+     * 
      * @param failedJobs the failedJobs value to set.
      * @return the JobsSummary object itself.
      */
@@ -54,7 +59,7 @@ public final class JobsSummary {
 
     /**
      * Get the suspendedJobs property: Count of suspended jobs.
-     *
+     * 
      * @return the suspendedJobs value.
      */
     public Integer suspendedJobs() {
@@ -63,7 +68,7 @@ public final class JobsSummary {
 
     /**
      * Set the suspendedJobs property: Count of suspended jobs.
-     *
+     * 
      * @param suspendedJobs the suspendedJobs value to set.
      * @return the JobsSummary object itself.
      */
@@ -74,7 +79,7 @@ public final class JobsSummary {
 
     /**
      * Get the inProgressJobs property: Count of in-progress jobs.
-     *
+     * 
      * @return the inProgressJobs value.
      */
     public Integer inProgressJobs() {
@@ -83,7 +88,7 @@ public final class JobsSummary {
 
     /**
      * Set the inProgressJobs property: Count of in-progress jobs.
-     *
+     * 
      * @param inProgressJobs the inProgressJobs value to set.
      * @return the JobsSummary object itself.
      */
@@ -94,9 +99,51 @@ public final class JobsSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("failedJobs", this.failedJobs);
+        jsonWriter.writeNumberField("suspendedJobs", this.suspendedJobs);
+        jsonWriter.writeNumberField("inProgressJobs", this.inProgressJobs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobsSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobsSummary if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobsSummary.
+     */
+    public static JobsSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobsSummary deserializedJobsSummary = new JobsSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("failedJobs".equals(fieldName)) {
+                    deserializedJobsSummary.failedJobs = reader.getNullable(JsonReader::getInt);
+                } else if ("suspendedJobs".equals(fieldName)) {
+                    deserializedJobsSummary.suspendedJobs = reader.getNullable(JsonReader::getInt);
+                } else if ("inProgressJobs".equals(fieldName)) {
+                    deserializedJobsSummary.inProgressJobs = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobsSummary;
+        });
     }
 }

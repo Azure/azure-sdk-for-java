@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.streamanalytics.fluent.InputsClient;
@@ -45,19 +44,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in InputsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InputsClient.
+ */
 public final class InputsClientImpl implements InputsClient {
-    private final ClientLogger logger = new ClientLogger(InputsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final InputsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StreamAnalyticsManagementClientImpl client;
 
     /**
      * Initializes an instance of InputsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     InputsClientImpl(StreamAnalyticsManagementClientImpl client) {
@@ -71,156 +74,103 @@ public final class InputsClientImpl implements InputsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StreamAnalyticsManag")
-    private interface InputsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/inputs/{inputName}")
-        @ExpectedResponses({200, 201})
+    public interface InputsService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/inputs/{inputName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<InputsCreateOrReplaceResponse> createOrReplace(
-            @HostParam("$host") String endpoint,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @PathParam("inputName") String inputName,
-            @BodyParam("application/json") InputInner input,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<InputsCreateOrReplaceResponse> createOrReplace(@HostParam("$host") String endpoint,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @PathParam("inputName") String inputName, @BodyParam("application/json") InputInner input,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/inputs/{inputName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/inputs/{inputName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<InputsUpdateResponse> update(
-            @HostParam("$host") String endpoint,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @PathParam("inputName") String inputName,
-            @BodyParam("application/json") InputInner input,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<InputsUpdateResponse> update(@HostParam("$host") String endpoint, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @PathParam("inputName") String inputName, @BodyParam("application/json") InputInner input,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/inputs/{inputName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/inputs/{inputName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @PathParam("inputName") String inputName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @PathParam("inputName") String inputName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/inputs/{inputName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/inputs/{inputName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<InputsGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<InputsGetResponse> get(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @PathParam("inputName") String inputName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @PathParam("inputName") String inputName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/inputs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/inputs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InputListResult>> listByStreamingJob(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$select") String select,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<InputListResult>> listByStreamingJob(@HostParam("$host") String endpoint,
+            @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
-                + "/streamingjobs/{jobName}/inputs/{inputName}/test")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/inputs/{inputName}/test")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> test(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("jobName") String jobName,
-            @PathParam("inputName") String inputName,
-            @BodyParam("application/json") InputInner input,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> test(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @PathParam("inputName") String inputName, @BodyParam("application/json") InputInner input,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InputListResult>> listByStreamingJobNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates an input or replaces an already existing input under an existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input The definition of the input that will be used to create a new input or replace the existing one
-     *     under the streaming job.
+     * under the streaming job.
      * @param ifMatch The ETag of the input. Omit this value to always overwrite the current input. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new input to be created, but to prevent updating an existing input.
-     *     Other values will result in a 412 Pre-condition Failed response.
+     * Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an input object, containing all information associated with the named input.
+     * @return an input object, containing all information associated with the named input on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InputsCreateOrReplaceResponse> createOrReplaceWithResponseAsync(
-        String resourceGroupName,
-        String jobName,
-        String inputName,
-        InputInner input,
-        String ifMatch,
-        String ifNoneMatch) {
+    private Mono<InputsCreateOrReplaceResponse> createOrReplaceWithResponseAsync(String resourceGroupName,
+        String jobName, String inputName, InputInner input, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -239,62 +189,41 @@ public final class InputsClientImpl implements InputsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrReplace(
-                            this.client.getEndpoint(),
-                            ifMatch,
-                            ifNoneMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            inputName,
-                            input,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, jobName, inputName,
+                input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates an input or replaces an already existing input under an existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input The definition of the input that will be used to create a new input or replace the existing one
-     *     under the streaming job.
+     * under the streaming job.
      * @param ifMatch The ETag of the input. Omit this value to always overwrite the current input. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new input to be created, but to prevent updating an existing input.
-     *     Other values will result in a 412 Pre-condition Failed response.
+     * Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an input object, containing all information associated with the named input.
+     * @return an input object, containing all information associated with the named input on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InputsCreateOrReplaceResponse> createOrReplaceWithResponseAsync(
-        String resourceGroupName,
-        String jobName,
-        String inputName,
-        InputInner input,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+    private Mono<InputsCreateOrReplaceResponse> createOrReplaceWithResponseAsync(String resourceGroupName,
+        String jobName, String inputName, InputInner input, String ifMatch, String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -313,94 +242,66 @@ public final class InputsClientImpl implements InputsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrReplace(
-                this.client.getEndpoint(),
-                ifMatch,
-                ifNoneMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                inputName,
-                input,
-                accept,
-                context);
+        return service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, input, accept, context);
     }
 
     /**
      * Creates an input or replaces an already existing input under an existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input The definition of the input that will be used to create a new input or replace the existing one
-     *     under the streaming job.
-     * @param ifMatch The ETag of the input. Omit this value to always overwrite the current input. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new input to be created, but to prevent updating an existing input.
-     *     Other values will result in a 412 Pre-condition Failed response.
+     * under the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an input object, containing all information associated with the named input.
+     * @return an input object, containing all information associated with the named input on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InputInner> createOrReplaceAsync(
-        String resourceGroupName,
-        String jobName,
-        String inputName,
-        InputInner input,
-        String ifMatch,
-        String ifNoneMatch) {
-        return createOrReplaceWithResponseAsync(resourceGroupName, jobName, inputName, input, ifMatch, ifNoneMatch)
-            .flatMap(
-                (InputsCreateOrReplaceResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates an input or replaces an already existing input under an existing streaming job.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param inputName The name of the input.
-     * @param input The definition of the input that will be used to create a new input or replace the existing one
-     *     under the streaming job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an input object, containing all information associated with the named input.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InputInner> createOrReplaceAsync(
-        String resourceGroupName, String jobName, String inputName, InputInner input) {
+    private Mono<InputInner> createOrReplaceAsync(String resourceGroupName, String jobName, String inputName,
+        InputInner input) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         return createOrReplaceWithResponseAsync(resourceGroupName, jobName, inputName, input, ifMatch, ifNoneMatch)
-            .flatMap(
-                (InputsCreateOrReplaceResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates an input or replaces an already existing input under an existing streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input The definition of the input that will be used to create a new input or replace the existing one
-     *     under the streaming job.
+     * under the streaming job.
+     * @param ifMatch The ETag of the input. Omit this value to always overwrite the current input. Specify the
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new input to be created, but to prevent updating an existing input.
+     * Other values will result in a 412 Pre-condition Failed response.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an input object, containing all information associated with the named input.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InputsCreateOrReplaceResponse createOrReplaceWithResponse(String resourceGroupName, String jobName,
+        String inputName, InputInner input, String ifMatch, String ifNoneMatch, Context context) {
+        return createOrReplaceWithResponseAsync(resourceGroupName, jobName, inputName, input, ifMatch, ifNoneMatch,
+            context).block();
+    }
+
+    /**
+     * Creates an input or replaces an already existing input under an existing streaming job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param inputName The name of the input.
+     * @param input The definition of the input that will be used to create a new input or replace the existing one
+     * under the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -410,73 +311,39 @@ public final class InputsClientImpl implements InputsClient {
     public InputInner createOrReplace(String resourceGroupName, String jobName, String inputName, InputInner input) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return createOrReplaceAsync(resourceGroupName, jobName, inputName, input, ifMatch, ifNoneMatch).block();
-    }
-
-    /**
-     * Creates an input or replaces an already existing input under an existing streaming job.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param inputName The name of the input.
-     * @param input The definition of the input that will be used to create a new input or replace the existing one
-     *     under the streaming job.
-     * @param ifMatch The ETag of the input. Omit this value to always overwrite the current input. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new input to be created, but to prevent updating an existing input.
-     *     Other values will result in a 412 Pre-condition Failed response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an input object, containing all information associated with the named input.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InputsCreateOrReplaceResponse createOrReplaceWithResponse(
-        String resourceGroupName,
-        String jobName,
-        String inputName,
-        InputInner input,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
-        return createOrReplaceWithResponseAsync(
-                resourceGroupName, jobName, inputName, input, ifMatch, ifNoneMatch, context)
-            .block();
+        return createOrReplaceWithResponse(resourceGroupName, jobName, inputName, input, ifMatch, ifNoneMatch,
+            Context.NONE).getValue();
     }
 
     /**
      * Updates an existing input under an existing streaming job. This can be used to partially update (ie. update one
      * or two properties) an input without affecting the rest the job or input definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input An Input object. The properties specified here will overwrite the corresponding properties in the
-     *     existing input (ie. Those properties will be updated). Any properties that are set to null here will mean
-     *     that the corresponding property in the existing input will remain the same and not change as a result of this
-     *     PATCH operation.
+     * existing input (ie. Those properties will be updated). Any properties that are set to null here will mean that
+     * the corresponding property in the existing input will remain the same and not change as a result of this PATCH
+     * operation.
      * @param ifMatch The ETag of the input. Omit this value to always overwrite the current input. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an input object, containing all information associated with the named input.
+     * @return an input object, containing all information associated with the named input on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InputsUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName, String jobName, String inputName, InputInner input, String ifMatch) {
+    private Mono<InputsUpdateResponse> updateWithResponseAsync(String resourceGroupName, String jobName,
+        String inputName, InputInner input, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -495,56 +362,41 @@ public final class InputsClientImpl implements InputsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            inputName,
-                            input,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), ifMatch, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing input under an existing streaming job. This can be used to partially update (ie. update one
      * or two properties) an input without affecting the rest the job or input definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input An Input object. The properties specified here will overwrite the corresponding properties in the
-     *     existing input (ie. Those properties will be updated). Any properties that are set to null here will mean
-     *     that the corresponding property in the existing input will remain the same and not change as a result of this
-     *     PATCH operation.
+     * existing input (ie. Those properties will be updated). Any properties that are set to null here will mean that
+     * the corresponding property in the existing input will remain the same and not change as a result of this PATCH
+     * operation.
      * @param ifMatch The ETag of the input. Omit this value to always overwrite the current input. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an input object, containing all information associated with the named input.
+     * @return an input object, containing all information associated with the named input on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InputsUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName, String jobName, String inputName, InputInner input, String ifMatch, Context context) {
+    private Mono<InputsUpdateResponse> updateWithResponseAsync(String resourceGroupName, String jobName,
+        String inputName, InputInner input, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -563,93 +415,70 @@ public final class InputsClientImpl implements InputsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                inputName,
-                input,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), ifMatch, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, input, accept, context);
     }
 
     /**
      * Updates an existing input under an existing streaming job. This can be used to partially update (ie. update one
      * or two properties) an input without affecting the rest the job or input definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input An Input object. The properties specified here will overwrite the corresponding properties in the
-     *     existing input (ie. Those properties will be updated). Any properties that are set to null here will mean
-     *     that the corresponding property in the existing input will remain the same and not change as a result of this
-     *     PATCH operation.
-     * @param ifMatch The ETag of the input. Omit this value to always overwrite the current input. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * existing input (ie. Those properties will be updated). Any properties that are set to null here will mean that
+     * the corresponding property in the existing input will remain the same and not change as a result of this PATCH
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an input object, containing all information associated with the named input.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InputInner> updateAsync(
-        String resourceGroupName, String jobName, String inputName, InputInner input, String ifMatch) {
-        return updateWithResponseAsync(resourceGroupName, jobName, inputName, input, ifMatch)
-            .flatMap(
-                (InputsUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Updates an existing input under an existing streaming job. This can be used to partially update (ie. update one
-     * or two properties) an input without affecting the rest the job or input definition.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param inputName The name of the input.
-     * @param input An Input object. The properties specified here will overwrite the corresponding properties in the
-     *     existing input (ie. Those properties will be updated). Any properties that are set to null here will mean
-     *     that the corresponding property in the existing input will remain the same and not change as a result of this
-     *     PATCH operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an input object, containing all information associated with the named input.
+     * @return an input object, containing all information associated with the named input on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InputInner> updateAsync(String resourceGroupName, String jobName, String inputName, InputInner input) {
         final String ifMatch = null;
         return updateWithResponseAsync(resourceGroupName, jobName, inputName, input, ifMatch)
-            .flatMap(
-                (InputsUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates an existing input under an existing streaming job. This can be used to partially update (ie. update one
      * or two properties) an input without affecting the rest the job or input definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input An Input object. The properties specified here will overwrite the corresponding properties in the
-     *     existing input (ie. Those properties will be updated). Any properties that are set to null here will mean
-     *     that the corresponding property in the existing input will remain the same and not change as a result of this
-     *     PATCH operation.
+     * existing input (ie. Those properties will be updated). Any properties that are set to null here will mean that
+     * the corresponding property in the existing input will remain the same and not change as a result of this PATCH
+     * operation.
+     * @param ifMatch The ETag of the input. Omit this value to always overwrite the current input. Specify the
+     * last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an input object, containing all information associated with the named input.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InputsUpdateResponse updateWithResponse(String resourceGroupName, String jobName, String inputName,
+        InputInner input, String ifMatch, Context context) {
+        return updateWithResponseAsync(resourceGroupName, jobName, inputName, input, ifMatch, context).block();
+    }
+
+    /**
+     * Updates an existing input under an existing streaming job. This can be used to partially update (ie. update one
+     * or two properties) an input without affecting the rest the job or input definition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param inputName The name of the input.
+     * @param input An Input object. The properties specified here will overwrite the corresponding properties in the
+     * existing input (ie. Those properties will be updated). Any properties that are set to null here will mean that
+     * the corresponding property in the existing input will remain the same and not change as a result of this PATCH
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -658,58 +487,29 @@ public final class InputsClientImpl implements InputsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InputInner update(String resourceGroupName, String jobName, String inputName, InputInner input) {
         final String ifMatch = null;
-        return updateAsync(resourceGroupName, jobName, inputName, input, ifMatch).block();
-    }
-
-    /**
-     * Updates an existing input under an existing streaming job. This can be used to partially update (ie. update one
-     * or two properties) an input without affecting the rest the job or input definition.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param inputName The name of the input.
-     * @param input An Input object. The properties specified here will overwrite the corresponding properties in the
-     *     existing input (ie. Those properties will be updated). Any properties that are set to null here will mean
-     *     that the corresponding property in the existing input will remain the same and not change as a result of this
-     *     PATCH operation.
-     * @param ifMatch The ETag of the input. Omit this value to always overwrite the current input. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an input object, containing all information associated with the named input.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InputsUpdateResponse updateWithResponse(
-        String resourceGroupName, String jobName, String inputName, InputInner input, String ifMatch, Context context) {
-        return updateWithResponseAsync(resourceGroupName, jobName, inputName, input, ifMatch, context).block();
+        return updateWithResponse(resourceGroupName, jobName, inputName, input, ifMatch, Context.NONE).getValue();
     }
 
     /**
      * Deletes an input from the streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String jobName, String inputName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -723,24 +523,14 @@ public final class InputsClientImpl implements InputsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            inputName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an input from the streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
@@ -748,22 +538,18 @@ public final class InputsClientImpl implements InputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String jobName, String inputName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String jobName, String inputName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -777,38 +563,47 @@ public final class InputsClientImpl implements InputsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                inputName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, jobName, inputName, accept, context);
     }
 
     /**
      * Deletes an input from the streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String jobName, String inputName) {
-        return deleteWithResponseAsync(resourceGroupName, jobName, inputName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, jobName, inputName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes an input from the streaming job.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param inputName The name of the input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String jobName, String inputName,
+        Context context) {
+        return deleteWithResponseAsync(resourceGroupName, jobName, inputName, context).block();
+    }
+
+    /**
+     * Deletes an input from the streaming job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
@@ -818,51 +613,29 @@ public final class InputsClientImpl implements InputsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String jobName, String inputName) {
-        deleteAsync(resourceGroupName, jobName, inputName).block();
-    }
-
-    /**
-     * Deletes an input from the streaming job.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param inputName The name of the input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String jobName, String inputName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, jobName, inputName, context).block();
+        deleteWithResponse(resourceGroupName, jobName, inputName, Context.NONE);
     }
 
     /**
      * Gets details about the specified input.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified input.
+     * @return details about the specified input on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InputsGetResponse> getWithResponseAsync(String resourceGroupName, String jobName, String inputName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -876,24 +649,14 @@ public final class InputsClientImpl implements InputsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            inputName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets details about the specified input.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
@@ -901,22 +664,18 @@ public final class InputsClientImpl implements InputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified input.
+     * @return details about the specified input on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InputsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String jobName, String inputName, Context context) {
+    private Mono<InputsGetResponse> getWithResponseAsync(String resourceGroupName, String jobName, String inputName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -930,45 +689,48 @@ public final class InputsClientImpl implements InputsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                inputName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, jobName, inputName, accept, context);
     }
 
     /**
      * Gets details about the specified input.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified input.
+     * @return details about the specified input on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InputInner> getAsync(String resourceGroupName, String jobName, String inputName) {
         return getWithResponseAsync(resourceGroupName, jobName, inputName)
-            .flatMap(
-                (InputsGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets details about the specified input.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param inputName The name of the input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the specified input.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InputsGetResponse getWithResponse(String resourceGroupName, String jobName, String inputName,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, jobName, inputName, context).block();
+    }
+
+    /**
+     * Gets details about the specified input.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
@@ -979,54 +741,33 @@ public final class InputsClientImpl implements InputsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InputInner get(String resourceGroupName, String jobName, String inputName) {
-        return getAsync(resourceGroupName, jobName, inputName).block();
-    }
-
-    /**
-     * Gets details about the specified input.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param inputName The name of the input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified input.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InputsGetResponse getWithResponse(
-        String resourceGroupName, String jobName, String inputName, Context context) {
-        return getWithResponseAsync(resourceGroupName, jobName, inputName, context).block();
+        return getWithResponse(resourceGroupName, jobName, inputName, Context.NONE).getValue();
     }
 
     /**
      * Lists all of the inputs under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param select The $select OData query parameter. This is a comma-separated list of structural properties to
-     *     include in the response, or "*" to include all properties. By default, all properties are returned except
-     *     diagnostics. Currently only accepts '*' as a valid value.
+     * include in the response, or "*" to include all properties. By default, all properties are returned except
+     * diagnostics. Currently only accepts '*' as a valid value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of inputs under a streaming job.
+     * @return object containing a list of inputs under a streaming job along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InputInner>> listByStreamingJobSinglePageAsync(
-        String resourceGroupName, String jobName, String select) {
+    private Mono<PagedResponse<InputInner>> listByStreamingJobSinglePageAsync(String resourceGroupName, String jobName,
+        String select) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1038,57 +779,38 @@ public final class InputsClientImpl implements InputsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByStreamingJob(
-                            this.client.getEndpoint(),
-                            select,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            accept,
-                            context))
-            .<PagedResponse<InputInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByStreamingJob(this.client.getEndpoint(), select, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context))
+            .<PagedResponse<InputInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the inputs under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param select The $select OData query parameter. This is a comma-separated list of structural properties to
-     *     include in the response, or "*" to include all properties. By default, all properties are returned except
-     *     diagnostics. Currently only accepts '*' as a valid value.
+     * include in the response, or "*" to include all properties. By default, all properties are returned except
+     * diagnostics. Currently only accepts '*' as a valid value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of inputs under a streaming job.
+     * @return object containing a list of inputs under a streaming job along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InputInner>> listByStreamingJobSinglePageAsync(
-        String resourceGroupName, String jobName, String select, Context context) {
+    private Mono<PagedResponse<InputInner>> listByStreamingJobSinglePageAsync(String resourceGroupName, String jobName,
+        String select, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1100,95 +822,79 @@ public final class InputsClientImpl implements InputsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByStreamingJob(
-                this.client.getEndpoint(),
-                select,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByStreamingJob(this.client.getEndpoint(), select, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the inputs under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param select The $select OData query parameter. This is a comma-separated list of structural properties to
-     *     include in the response, or "*" to include all properties. By default, all properties are returned except
-     *     diagnostics. Currently only accepts '*' as a valid value.
+     * include in the response, or "*" to include all properties. By default, all properties are returned except
+     * diagnostics. Currently only accepts '*' as a valid value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of inputs under a streaming job.
+     * @return object containing a list of inputs under a streaming job as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InputInner> listByStreamingJobAsync(String resourceGroupName, String jobName, String select) {
-        return new PagedFlux<>(
-            () -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select),
+        return new PagedFlux<>(() -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select),
             nextLink -> listByStreamingJobNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the inputs under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of inputs under a streaming job.
+     * @return object containing a list of inputs under a streaming job as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InputInner> listByStreamingJobAsync(String resourceGroupName, String jobName) {
         final String select = null;
-        return new PagedFlux<>(
-            () -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select),
+        return new PagedFlux<>(() -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select),
             nextLink -> listByStreamingJobNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the inputs under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param select The $select OData query parameter. This is a comma-separated list of structural properties to
-     *     include in the response, or "*" to include all properties. By default, all properties are returned except
-     *     diagnostics. Currently only accepts '*' as a valid value.
+     * include in the response, or "*" to include all properties. By default, all properties are returned except
+     * diagnostics. Currently only accepts '*' as a valid value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of inputs under a streaming job.
+     * @return object containing a list of inputs under a streaming job as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<InputInner> listByStreamingJobAsync(
-        String resourceGroupName, String jobName, String select, Context context) {
-        return new PagedFlux<>(
-            () -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select, context),
+    private PagedFlux<InputInner> listByStreamingJobAsync(String resourceGroupName, String jobName, String select,
+        Context context) {
+        return new PagedFlux<>(() -> listByStreamingJobSinglePageAsync(resourceGroupName, jobName, select, context),
             nextLink -> listByStreamingJobNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the inputs under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of inputs under a streaming job.
+     * @return object containing a list of inputs under a streaming job as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InputInner> listByStreamingJob(String resourceGroupName, String jobName) {
@@ -1198,53 +904,51 @@ public final class InputsClientImpl implements InputsClient {
 
     /**
      * Lists all of the inputs under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param select The $select OData query parameter. This is a comma-separated list of structural properties to
-     *     include in the response, or "*" to include all properties. By default, all properties are returned except
-     *     diagnostics. Currently only accepts '*' as a valid value.
+     * include in the response, or "*" to include all properties. By default, all properties are returned except
+     * diagnostics. Currently only accepts '*' as a valid value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of inputs under a streaming job.
+     * @return object containing a list of inputs under a streaming job as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<InputInner> listByStreamingJob(
-        String resourceGroupName, String jobName, String select, Context context) {
+    public PagedIterable<InputInner> listByStreamingJob(String resourceGroupName, String jobName, String select,
+        Context context) {
         return new PagedIterable<>(listByStreamingJobAsync(resourceGroupName, jobName, select, context));
     }
 
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input If the input specified does not already exist, this parameter must contain the full input definition
-     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
-     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
-     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
+     * intended to be tested. If the input specified already exists, this parameter can be left null to test the
+     * existing input as is or if specified, the properties specified will overwrite the corresponding properties in the
+     * existing input (exactly like a PATCH operation) and the resulting input will be tested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return describes the status of the test operation along with error information, if applicable along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> testWithResponseAsync(
-        String resourceGroupName, String jobName, String inputName, InputInner input) {
+    private Mono<Response<Flux<ByteBuffer>>> testWithResponseAsync(String resourceGroupName, String jobName,
+        String inputName, InputInner input) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1261,52 +965,38 @@ public final class InputsClientImpl implements InputsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .test(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            jobName,
-                            inputName,
-                            input,
-                            accept,
-                            context))
+            .withContext(context -> service.test(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input If the input specified does not already exist, this parameter must contain the full input definition
-     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
-     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
-     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
+     * intended to be tested. If the input specified already exists, this parameter can be left null to test the
+     * existing input as is or if specified, the properties specified will overwrite the corresponding properties in the
+     * existing input (exactly like a PATCH operation) and the resulting input will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return describes the status of the test operation along with error information, if applicable along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> testWithResponseAsync(
-        String resourceGroupName, String jobName, String inputName, InputInner input, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> testWithResponseAsync(String resourceGroupName, String jobName,
+        String inputName, InputInner input, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1323,212 +1013,195 @@ public final class InputsClientImpl implements InputsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .test(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                jobName,
-                inputName,
-                input,
-                accept,
-                context);
+        return service.test(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, jobName, inputName, input, accept, context);
     }
 
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input If the input specified does not already exist, this parameter must contain the full input definition
-     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
-     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
-     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
+     * intended to be tested. If the input specified already exists, this parameter can be left null to test the
+     * existing input as is or if specified, the properties specified will overwrite the corresponding properties in the
+     * existing input (exactly like a PATCH operation) and the resulting input will be tested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return the {@link PollerFlux} for polling of describes the status of the test operation along with error
+     * information, if applicable.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTestAsync(
-        String resourceGroupName, String jobName, String inputName, InputInner input) {
+    private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner>
+        beginTestAsync(String resourceGroupName, String jobName, String inputName, InputInner input) {
         Mono<Response<Flux<ByteBuffer>>> mono = testWithResponseAsync(resourceGroupName, jobName, inputName, input);
-        return this
-            .client
-            .<ResourceTestStatusInner, ResourceTestStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ResourceTestStatusInner.class,
-                ResourceTestStatusInner.class,
-                this.client.getContext());
+        return this.client.<ResourceTestStatusInner, ResourceTestStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceTestStatusInner.class, ResourceTestStatusInner.class,
+            this.client.getContext());
     }
 
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param inputName The name of the input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes the status of the test operation along with error
+     * information, if applicable.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner>
+        beginTestAsync(String resourceGroupName, String jobName, String inputName) {
+        final InputInner input = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = testWithResponseAsync(resourceGroupName, jobName, inputName, input);
+        return this.client.<ResourceTestStatusInner, ResourceTestStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceTestStatusInner.class, ResourceTestStatusInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input If the input specified does not already exist, this parameter must contain the full input definition
-     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
-     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
-     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
+     * intended to be tested. If the input specified already exists, this parameter can be left null to test the
+     * existing input as is or if specified, the properties specified will overwrite the corresponding properties in the
+     * existing input (exactly like a PATCH operation) and the resulting input will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return the {@link PollerFlux} for polling of describes the status of the test operation along with error
+     * information, if applicable.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTestAsync(
-        String resourceGroupName, String jobName, String inputName, InputInner input, Context context) {
+    private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner>
+        beginTestAsync(String resourceGroupName, String jobName, String inputName, InputInner input, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            testWithResponseAsync(resourceGroupName, jobName, inputName, input, context);
-        return this
-            .client
-            .<ResourceTestStatusInner, ResourceTestStatusInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ResourceTestStatusInner.class,
-                ResourceTestStatusInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = testWithResponseAsync(resourceGroupName, jobName, inputName, input, context);
+        return this.client.<ResourceTestStatusInner, ResourceTestStatusInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ResourceTestStatusInner.class, ResourceTestStatusInner.class, context);
     }
 
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
-     * @param input If the input specified does not already exist, this parameter must contain the full input definition
-     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
-     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
-     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return the {@link SyncPoller} for polling of describes the status of the test operation along with error
+     * information, if applicable.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(
-        String resourceGroupName, String jobName, String inputName, InputInner input) {
-        return beginTestAsync(resourceGroupName, jobName, inputName, input).getSyncPoller();
+    public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(String resourceGroupName,
+        String jobName, String inputName) {
+        final InputInner input = null;
+        return this.beginTestAsync(resourceGroupName, jobName, inputName, input).getSyncPoller();
     }
 
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input If the input specified does not already exist, this parameter must contain the full input definition
-     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
-     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
-     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
+     * intended to be tested. If the input specified already exists, this parameter can be left null to test the
+     * existing input as is or if specified, the properties specified will overwrite the corresponding properties in the
+     * existing input (exactly like a PATCH operation) and the resulting input will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return the {@link SyncPoller} for polling of describes the status of the test operation along with error
+     * information, if applicable.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(
-        String resourceGroupName, String jobName, String inputName, InputInner input, Context context) {
-        return beginTestAsync(resourceGroupName, jobName, inputName, input, context).getSyncPoller();
+    public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(String resourceGroupName,
+        String jobName, String inputName, InputInner input, Context context) {
+        return this.beginTestAsync(resourceGroupName, jobName, inputName, input, context).getSyncPoller();
     }
 
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input If the input specified does not already exist, this parameter must contain the full input definition
-     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
-     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
-     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
+     * intended to be tested. If the input specified already exists, this parameter can be left null to test the
+     * existing input as is or if specified, the properties specified will overwrite the corresponding properties in the
+     * existing input (exactly like a PATCH operation) and the resulting input will be tested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return describes the status of the test operation along with error information, if applicable on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceTestStatusInner> testAsync(
-        String resourceGroupName, String jobName, String inputName, InputInner input) {
-        return beginTestAsync(resourceGroupName, jobName, inputName, input)
-            .last()
+    private Mono<ResourceTestStatusInner> testAsync(String resourceGroupName, String jobName, String inputName,
+        InputInner input) {
+        return beginTestAsync(resourceGroupName, jobName, inputName, input).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return describes the status of the test operation along with error information, if applicable on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceTestStatusInner> testAsync(String resourceGroupName, String jobName, String inputName) {
         final InputInner input = null;
-        return beginTestAsync(resourceGroupName, jobName, inputName, input)
-            .last()
+        return beginTestAsync(resourceGroupName, jobName, inputName, input).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input If the input specified does not already exist, this parameter must contain the full input definition
-     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
-     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
-     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
+     * intended to be tested. If the input specified already exists, this parameter can be left null to test the
+     * existing input as is or if specified, the properties specified will overwrite the corresponding properties in the
+     * existing input (exactly like a PATCH operation) and the resulting input will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
+     * @return describes the status of the test operation along with error information, if applicable on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceTestStatusInner> testAsync(
-        String resourceGroupName, String jobName, String inputName, InputInner input, Context context) {
-        return beginTestAsync(resourceGroupName, jobName, inputName, input, context)
-            .last()
+    private Mono<ResourceTestStatusInner> testAsync(String resourceGroupName, String jobName, String inputName,
+        InputInner input, Context context) {
+        return beginTestAsync(resourceGroupName, jobName, inputName, input, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param inputName The name of the input.
-     * @param input If the input specified does not already exist, this parameter must contain the full input definition
-     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
-     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
-     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceTestStatusInner test(String resourceGroupName, String jobName, String inputName, InputInner input) {
-        return testAsync(resourceGroupName, jobName, inputName, input).block();
-    }
-
-    /**
-     * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
@@ -1545,14 +1218,14 @@ public final class InputsClientImpl implements InputsClient {
 
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param inputName The name of the input.
      * @param input If the input specified does not already exist, this parameter must contain the full input definition
-     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
-     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
-     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
+     * intended to be tested. If the input specified already exists, this parameter can be left null to test the
+     * existing input as is or if specified, the properties specified will overwrite the corresponding properties in the
+     * existing input (exactly like a PATCH operation) and the resulting input will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1560,19 +1233,20 @@ public final class InputsClientImpl implements InputsClient {
      * @return describes the status of the test operation along with error information, if applicable.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceTestStatusInner test(
-        String resourceGroupName, String jobName, String inputName, InputInner input, Context context) {
+    public ResourceTestStatusInner test(String resourceGroupName, String jobName, String inputName, InputInner input,
+        Context context) {
         return testAsync(resourceGroupName, jobName, inputName, input, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of inputs under a streaming job.
+     * @return object containing a list of inputs under a streaming job along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InputInner>> listByStreamingJobNextSinglePageAsync(String nextLink) {
@@ -1580,36 +1254,28 @@ public final class InputsClientImpl implements InputsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByStreamingJobNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<InputInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<InputInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of inputs under a streaming job.
+     * @return object containing a list of inputs under a streaming job along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InputInner>> listByStreamingJobNextSinglePageAsync(String nextLink, Context context) {
@@ -1617,23 +1283,13 @@ public final class InputsClientImpl implements InputsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByStreamingJobNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByStreamingJobNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

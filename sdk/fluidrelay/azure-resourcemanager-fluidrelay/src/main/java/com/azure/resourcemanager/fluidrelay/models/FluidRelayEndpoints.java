@@ -5,33 +5,42 @@
 package com.azure.resourcemanager.fluidrelay.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The Fluid Relay endpoints for this server. */
+/**
+ * The Fluid Relay endpoints for this server.
+ */
 @Immutable
-public final class FluidRelayEndpoints {
+public final class FluidRelayEndpoints implements JsonSerializable<FluidRelayEndpoints> {
     /*
      * The Fluid Relay Orderer endpoints.
      */
-    @JsonProperty(value = "ordererEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> ordererEndpoints;
 
     /*
      * The Fluid Relay storage endpoints.
      */
-    @JsonProperty(value = "storageEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> storageEndpoints;
 
     /*
      * The Fluid Relay service endpoints.
      */
-    @JsonProperty(value = "serviceEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> serviceEndpoints;
 
     /**
+     * Creates an instance of FluidRelayEndpoints class.
+     */
+    public FluidRelayEndpoints() {
+    }
+
+    /**
      * Get the ordererEndpoints property: The Fluid Relay Orderer endpoints.
-     *
+     * 
      * @return the ordererEndpoints value.
      */
     public List<String> ordererEndpoints() {
@@ -40,7 +49,7 @@ public final class FluidRelayEndpoints {
 
     /**
      * Get the storageEndpoints property: The Fluid Relay storage endpoints.
-     *
+     * 
      * @return the storageEndpoints value.
      */
     public List<String> storageEndpoints() {
@@ -49,7 +58,7 @@ public final class FluidRelayEndpoints {
 
     /**
      * Get the serviceEndpoints property: The Fluid Relay service endpoints.
-     *
+     * 
      * @return the serviceEndpoints value.
      */
     public List<String> serviceEndpoints() {
@@ -58,9 +67,51 @@ public final class FluidRelayEndpoints {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluidRelayEndpoints from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluidRelayEndpoints if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FluidRelayEndpoints.
+     */
+    public static FluidRelayEndpoints fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluidRelayEndpoints deserializedFluidRelayEndpoints = new FluidRelayEndpoints();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ordererEndpoints".equals(fieldName)) {
+                    List<String> ordererEndpoints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFluidRelayEndpoints.ordererEndpoints = ordererEndpoints;
+                } else if ("storageEndpoints".equals(fieldName)) {
+                    List<String> storageEndpoints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFluidRelayEndpoints.storageEndpoints = storageEndpoints;
+                } else if ("serviceEndpoints".equals(fieldName)) {
+                    List<String> serviceEndpoints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFluidRelayEndpoints.serviceEndpoints = serviceEndpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluidRelayEndpoints;
+        });
     }
 }

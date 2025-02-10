@@ -5,72 +5,71 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The target of the event. */
+/**
+ * The target of the event.
+ */
 @Fluent
-public final class Target {
+public final class Target implements JsonSerializable<Target> {
     /*
      * The MIME type of the referenced object.
      */
-    @JsonProperty(value = "mediaType")
     private String mediaType;
 
     /*
      * The number of bytes of the content. Same as Length field.
      */
-    @JsonProperty(value = "size")
     private Long size;
 
     /*
      * The digest of the content, as defined by the Registry V2 HTTP API Specification.
      */
-    @JsonProperty(value = "digest")
     private String digest;
 
     /*
      * The number of bytes of the content. Same as Size field.
      */
-    @JsonProperty(value = "length")
     private Long length;
 
     /*
      * The repository name.
      */
-    @JsonProperty(value = "repository")
     private String repository;
 
     /*
      * The direct URL to the content.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The tag name.
      */
-    @JsonProperty(value = "tag")
     private String tag;
 
     /*
      * The name of the artifact.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The version of the artifact.
      */
-    @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of Target class. */
+    /**
+     * Creates an instance of Target class.
+     */
     public Target() {
     }
 
     /**
      * Get the mediaType property: The MIME type of the referenced object.
-     *
+     * 
      * @return the mediaType value.
      */
     public String mediaType() {
@@ -79,7 +78,7 @@ public final class Target {
 
     /**
      * Set the mediaType property: The MIME type of the referenced object.
-     *
+     * 
      * @param mediaType the mediaType value to set.
      * @return the Target object itself.
      */
@@ -90,7 +89,7 @@ public final class Target {
 
     /**
      * Get the size property: The number of bytes of the content. Same as Length field.
-     *
+     * 
      * @return the size value.
      */
     public Long size() {
@@ -99,7 +98,7 @@ public final class Target {
 
     /**
      * Set the size property: The number of bytes of the content. Same as Length field.
-     *
+     * 
      * @param size the size value to set.
      * @return the Target object itself.
      */
@@ -110,7 +109,7 @@ public final class Target {
 
     /**
      * Get the digest property: The digest of the content, as defined by the Registry V2 HTTP API Specification.
-     *
+     * 
      * @return the digest value.
      */
     public String digest() {
@@ -119,7 +118,7 @@ public final class Target {
 
     /**
      * Set the digest property: The digest of the content, as defined by the Registry V2 HTTP API Specification.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the Target object itself.
      */
@@ -130,7 +129,7 @@ public final class Target {
 
     /**
      * Get the length property: The number of bytes of the content. Same as Size field.
-     *
+     * 
      * @return the length value.
      */
     public Long length() {
@@ -139,7 +138,7 @@ public final class Target {
 
     /**
      * Set the length property: The number of bytes of the content. Same as Size field.
-     *
+     * 
      * @param length the length value to set.
      * @return the Target object itself.
      */
@@ -150,7 +149,7 @@ public final class Target {
 
     /**
      * Get the repository property: The repository name.
-     *
+     * 
      * @return the repository value.
      */
     public String repository() {
@@ -159,7 +158,7 @@ public final class Target {
 
     /**
      * Set the repository property: The repository name.
-     *
+     * 
      * @param repository the repository value to set.
      * @return the Target object itself.
      */
@@ -170,7 +169,7 @@ public final class Target {
 
     /**
      * Get the url property: The direct URL to the content.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -179,7 +178,7 @@ public final class Target {
 
     /**
      * Set the url property: The direct URL to the content.
-     *
+     * 
      * @param url the url value to set.
      * @return the Target object itself.
      */
@@ -190,7 +189,7 @@ public final class Target {
 
     /**
      * Get the tag property: The tag name.
-     *
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -199,7 +198,7 @@ public final class Target {
 
     /**
      * Set the tag property: The tag name.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the Target object itself.
      */
@@ -210,7 +209,7 @@ public final class Target {
 
     /**
      * Get the name property: The name of the artifact.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -219,7 +218,7 @@ public final class Target {
 
     /**
      * Set the name property: The name of the artifact.
-     *
+     * 
      * @param name the name value to set.
      * @return the Target object itself.
      */
@@ -230,7 +229,7 @@ public final class Target {
 
     /**
      * Get the version property: The version of the artifact.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -239,7 +238,7 @@ public final class Target {
 
     /**
      * Set the version property: The version of the artifact.
-     *
+     * 
      * @param version the version value to set.
      * @return the Target object itself.
      */
@@ -250,9 +249,69 @@ public final class Target {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mediaType", this.mediaType);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeStringField("digest", this.digest);
+        jsonWriter.writeNumberField("length", this.length);
+        jsonWriter.writeStringField("repository", this.repository);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("tag", this.tag);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Target from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Target if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Target.
+     */
+    public static Target fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Target deserializedTarget = new Target();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mediaType".equals(fieldName)) {
+                    deserializedTarget.mediaType = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedTarget.size = reader.getNullable(JsonReader::getLong);
+                } else if ("digest".equals(fieldName)) {
+                    deserializedTarget.digest = reader.getString();
+                } else if ("length".equals(fieldName)) {
+                    deserializedTarget.length = reader.getNullable(JsonReader::getLong);
+                } else if ("repository".equals(fieldName)) {
+                    deserializedTarget.repository = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedTarget.url = reader.getString();
+                } else if ("tag".equals(fieldName)) {
+                    deserializedTarget.tag = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTarget.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedTarget.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTarget;
+        });
     }
 }

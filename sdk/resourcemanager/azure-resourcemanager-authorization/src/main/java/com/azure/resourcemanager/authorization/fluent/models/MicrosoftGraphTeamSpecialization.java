@@ -5,40 +5,57 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** teamSpecialization. */
+/**
+ * teamSpecialization.
+ */
 public final class MicrosoftGraphTeamSpecialization extends ExpandableStringEnum<MicrosoftGraphTeamSpecialization> {
-    /** Static value none for MicrosoftGraphTeamSpecialization. */
+    /**
+     * Static value none for MicrosoftGraphTeamSpecialization.
+     */
     public static final MicrosoftGraphTeamSpecialization NONE = fromString("none");
 
-    /** Static value educationStandard for MicrosoftGraphTeamSpecialization. */
+    /**
+     * Static value educationStandard for MicrosoftGraphTeamSpecialization.
+     */
     public static final MicrosoftGraphTeamSpecialization EDUCATION_STANDARD = fromString("educationStandard");
 
-    /** Static value educationClass for MicrosoftGraphTeamSpecialization. */
+    /**
+     * Static value educationClass for MicrosoftGraphTeamSpecialization.
+     */
     public static final MicrosoftGraphTeamSpecialization EDUCATION_CLASS = fromString("educationClass");
 
-    /** Static value educationProfessionalLearningCommunity for MicrosoftGraphTeamSpecialization. */
-    public static final MicrosoftGraphTeamSpecialization EDUCATION_PROFESSIONAL_LEARNING_COMMUNITY =
-        fromString("educationProfessionalLearningCommunity");
+    /**
+     * Static value educationProfessionalLearningCommunity for MicrosoftGraphTeamSpecialization.
+     */
+    public static final MicrosoftGraphTeamSpecialization EDUCATION_PROFESSIONAL_LEARNING_COMMUNITY
+        = fromString("educationProfessionalLearningCommunity");
 
-    /** Static value educationStaff for MicrosoftGraphTeamSpecialization. */
+    /**
+     * Static value educationStaff for MicrosoftGraphTeamSpecialization.
+     */
     public static final MicrosoftGraphTeamSpecialization EDUCATION_STAFF = fromString("educationStaff");
 
-    /** Static value healthcareStandard for MicrosoftGraphTeamSpecialization. */
+    /**
+     * Static value healthcareStandard for MicrosoftGraphTeamSpecialization.
+     */
     public static final MicrosoftGraphTeamSpecialization HEALTHCARE_STANDARD = fromString("healthcareStandard");
 
-    /** Static value healthcareCareCoordination for MicrosoftGraphTeamSpecialization. */
-    public static final MicrosoftGraphTeamSpecialization HEALTHCARE_CARE_COORDINATION =
-        fromString("healthcareCareCoordination");
+    /**
+     * Static value healthcareCareCoordination for MicrosoftGraphTeamSpecialization.
+     */
+    public static final MicrosoftGraphTeamSpecialization HEALTHCARE_CARE_COORDINATION
+        = fromString("healthcareCareCoordination");
 
-    /** Static value unknownFutureValue for MicrosoftGraphTeamSpecialization. */
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphTeamSpecialization.
+     */
     public static final MicrosoftGraphTeamSpecialization UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphTeamSpecialization value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -47,18 +64,17 @@ public final class MicrosoftGraphTeamSpecialization extends ExpandableStringEnum
 
     /**
      * Creates or finds a MicrosoftGraphTeamSpecialization from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphTeamSpecialization.
      */
-    @JsonCreator
     public static MicrosoftGraphTeamSpecialization fromString(String name) {
         return fromString(name, MicrosoftGraphTeamSpecialization.class);
     }
 
     /**
      * Gets known MicrosoftGraphTeamSpecialization values.
-     *
+     * 
      * @return known MicrosoftGraphTeamSpecialization values.
      */
     public static Collection<MicrosoftGraphTeamSpecialization> values() {

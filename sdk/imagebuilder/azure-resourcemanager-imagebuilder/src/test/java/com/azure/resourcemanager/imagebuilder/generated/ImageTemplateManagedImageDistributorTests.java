@@ -13,41 +13,31 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateManagedImageDistributorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateManagedImageDistributor model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ManagedImage\",\"imageId\":\"vvdfwatkpnpul\",\"location\":\"xxbczwtr\",\"runOutputName\":\"wiqzbqjvsovmyo\",\"artifactTags\":{\"lb\":\"spkwlhzdobpxjm\",\"wzjuqk\":\"vnchrkcci\",\"iwkuofos\":\"rsa\",\"ugidyjrr\":\"ghsauuimjmvxied\"}}")
-                .toObject(ImageTemplateManagedImageDistributor.class);
-        Assertions.assertEquals("wiqzbqjvsovmyo", model.runOutputName());
-        Assertions.assertEquals("spkwlhzdobpxjm", model.artifactTags().get("lb"));
-        Assertions.assertEquals("vvdfwatkpnpul", model.imageId());
-        Assertions.assertEquals("xxbczwtr", model.location());
+        ImageTemplateManagedImageDistributor model = BinaryData.fromString(
+            "{\"type\":\"ManagedImage\",\"imageId\":\"zcdrqjsdpydnfyhx\",\"location\":\"eoejzic\",\"runOutputName\":\"ifsjttgzfbishcb\",\"artifactTags\":{\"alpbuxwgipwhon\":\"jdeyeamdpha\",\"kix\":\"wkgshwa\",\"eputtmrywnuzoqf\":\"bin\",\"qvyxlwhzlsicoho\":\"iyqzrnk\"}}")
+            .toObject(ImageTemplateManagedImageDistributor.class);
+        Assertions.assertEquals("ifsjttgzfbishcb", model.runOutputName());
+        Assertions.assertEquals("jdeyeamdpha", model.artifactTags().get("alpbuxwgipwhon"));
+        Assertions.assertEquals("zcdrqjsdpydnfyhx", model.imageId());
+        Assertions.assertEquals("eoejzic", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateManagedImageDistributor model =
-            new ImageTemplateManagedImageDistributor()
-                .withRunOutputName("wiqzbqjvsovmyo")
-                .withArtifactTags(
-                    mapOf(
-                        "lb",
-                        "spkwlhzdobpxjm",
-                        "wzjuqk",
-                        "vnchrkcci",
-                        "iwkuofos",
-                        "rsa",
-                        "ugidyjrr",
-                        "ghsauuimjmvxied"))
-                .withImageId("vvdfwatkpnpul")
-                .withLocation("xxbczwtr");
+        ImageTemplateManagedImageDistributor model
+            = new ImageTemplateManagedImageDistributor().withRunOutputName("ifsjttgzfbishcb")
+                .withArtifactTags(mapOf("alpbuxwgipwhon", "jdeyeamdpha", "kix", "wkgshwa", "eputtmrywnuzoqf", "bin",
+                    "qvyxlwhzlsicoho", "iyqzrnk"))
+                .withImageId("zcdrqjsdpydnfyhx")
+                .withLocation("eoejzic");
         model = BinaryData.fromObject(model).toObject(ImageTemplateManagedImageDistributor.class);
-        Assertions.assertEquals("wiqzbqjvsovmyo", model.runOutputName());
-        Assertions.assertEquals("spkwlhzdobpxjm", model.artifactTags().get("lb"));
-        Assertions.assertEquals("vvdfwatkpnpul", model.imageId());
-        Assertions.assertEquals("xxbczwtr", model.location());
+        Assertions.assertEquals("ifsjttgzfbishcb", model.runOutputName());
+        Assertions.assertEquals("jdeyeamdpha", model.artifactTags().get("alpbuxwgipwhon"));
+        Assertions.assertEquals("zcdrqjsdpydnfyhx", model.imageId());
+        Assertions.assertEquals("eoejzic", model.location());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

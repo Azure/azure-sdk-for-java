@@ -14,34 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuEnumerationForNewResourceResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuEnumerationForNewResourceResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"dmgloug\",\"tier\":\"AutoPremiumHost\",\"capacity\":815963973},{\"name\":\"mutduqktaps\",\"tier\":\"AutoPremiumHost\",\"capacity\":1678823592}]}")
-                .toObject(SkuEnumerationForNewResourceResultInner.class);
-        Assertions.assertEquals("dmgloug", model.value().get(0).name());
+        SkuEnumerationForNewResourceResultInner model = BinaryData
+            .fromString("{\"value\":[{\"name\":\"cuertu\",\"tier\":\"AutoPremiumHost\",\"capacity\":1475833169}]}")
+            .toObject(SkuEnumerationForNewResourceResultInner.class);
+        Assertions.assertEquals("cuertu", model.value().get(0).name());
         Assertions.assertEquals(CapacitySkuTier.AUTO_PREMIUM_HOST, model.value().get(0).tier());
-        Assertions.assertEquals(815963973, model.value().get(0).capacity());
+        Assertions.assertEquals(1475833169, model.value().get(0).capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuEnumerationForNewResourceResultInner model =
-            new SkuEnumerationForNewResourceResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CapacitySku()
-                                .withName("dmgloug")
-                                .withTier(CapacitySkuTier.AUTO_PREMIUM_HOST)
-                                .withCapacity(815963973),
-                            new CapacitySku()
-                                .withName("mutduqktaps")
-                                .withTier(CapacitySkuTier.AUTO_PREMIUM_HOST)
-                                .withCapacity(1678823592)));
+        SkuEnumerationForNewResourceResultInner model
+            = new SkuEnumerationForNewResourceResultInner().withValue(Arrays.asList(new CapacitySku().withName("cuertu")
+                .withTier(CapacitySkuTier.AUTO_PREMIUM_HOST)
+                .withCapacity(1475833169)));
         model = BinaryData.fromObject(model).toObject(SkuEnumerationForNewResourceResultInner.class);
-        Assertions.assertEquals("dmgloug", model.value().get(0).name());
+        Assertions.assertEquals("cuertu", model.value().get(0).name());
         Assertions.assertEquals(CapacitySkuTier.AUTO_PREMIUM_HOST, model.value().get(0).tier());
-        Assertions.assertEquals(815963973, model.value().get(0).capacity());
+        Assertions.assertEquals(1475833169, model.value().get(0).capacity());
     }
 }

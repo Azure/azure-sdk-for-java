@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":212642888,\"leasedByLabVmId\":\"ijr\",\"diskBlobName\":\"civmmg\",\"diskUri\":\"cf\",\"storageAccountId\":\"rxgkne\",\"createdDate\":\"2021-03-10T19:40:09Z\",\"hostCaching\":\"nzqodfvpg\",\"managedDiskId\":\"oxgsgbpfgzdjtx\",\"provisioningState\":\"flbqvgaq\",\"uniqueIdentifier\":\"gafcqu\"},\"location\":\"rdve\",\"tags\":{\"uzhyrmewipmvekdx\":\"sdtutnwlduyc\",\"zhhzjhfjmhvvmu\":\"kuqgsjjxundxgket\",\"yihsasbhudypohyu\":\"gpmuneqsxvmhfbuz\"},\"id\":\"ms\",\"name\":\"ynsqyrpfoobr\",\"type\":\"ttymsjny\"},{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":1366289055,\"leasedByLabVmId\":\"qzdz\",\"diskBlobName\":\"ilaxhn\",\"diskUri\":\"qlyvijo\",\"storageAccountId\":\"iv\",\"createdDate\":\"2021-07-27T23:48:23Z\",\"hostCaching\":\"zunbixx\",\"managedDiskId\":\"ikvcpwp\",\"provisioningState\":\"lrcivtsoxfrke\",\"uniqueIdentifier\":\"pmyyefrpmpdnqq\"},\"location\":\"ka\",\"tags\":{\"qfr\":\"qvmmbn\"},\"id\":\"qlkzme\",\"name\":\"nitgvkxlz\",\"type\":\"qdrfegcealzxwhc\"},{\"properties\":{\"diskType\":\"StandardSSD\",\"diskSizeGiB\":767381416,\"leasedByLabVmId\":\"yqhlwigdivbkbx\",\"diskBlobName\":\"mf\",\"diskUri\":\"uwasqvd\",\"storageAccountId\":\"y\",\"createdDate\":\"2021-08-11T03:03:16Z\",\"hostCaching\":\"akjsqz\",\"managedDiskId\":\"bezkgimsidxasic\",\"provisioningState\":\"yvvjskgfmo\",\"uniqueIdentifier\":\"ah\"},\"location\":\"qgatjeaahhvjhhn\",\"tags\":{\"yxvxevblbjed\":\"ybbjjidjksyx\",\"smjbnkppxyn\":\"ljlageuaulxu\"},\"id\":\"nlsvxeiz\",\"name\":\"gwklnsr\",\"type\":\"ffeycx\"},{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":1565970230,\"leasedByLabVmId\":\"merteeammxqiek\",\"diskBlobName\":\"zddrt\",\"diskUri\":\"doj\",\"storageAccountId\":\"xv\",\"createdDate\":\"2021-02-28T00:16:23Z\",\"hostCaching\":\"fdeesvecuijpxtx\",\"managedDiskId\":\"wprtu\",\"provisioningState\":\"sawddjibabxvi\",\"uniqueIdentifier\":\"tvtzeexavoxtfg\"},\"location\":\"ecdmdqbwpy\",\"tags\":{\"slhhxudbxv\":\"gsfjac\",\"tnsi\":\"d\"},\"id\":\"ud\",\"name\":\"z\",\"type\":\"mes\"}],\"nextLink\":\"dlpagzrcxfail\"}")
-                .toObject(DiskList.class);
+        DiskList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":212642888,\"leasedByLabVmId\":\"ijr\",\"diskBlobName\":\"civmmg\",\"diskUri\":\"cf\",\"storageAccountId\":\"rxgkne\",\"createdDate\":\"2021-03-10T19:40:09Z\",\"hostCaching\":\"nzqodfvpg\",\"managedDiskId\":\"oxgsgbpfgzdjtx\",\"provisioningState\":\"flbqvgaq\",\"uniqueIdentifier\":\"gafcqu\"},\"location\":\"rdve\",\"tags\":{\"uzhyrmewipmvekdx\":\"sdtutnwlduyc\",\"zhhzjhfjmhvvmu\":\"kuqgsjjxundxgket\",\"yihsasbhudypohyu\":\"gpmuneqsxvmhfbuz\"},\"id\":\"ms\",\"name\":\"ynsqyrpfoobr\",\"type\":\"ttymsjny\"},{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":1366289055,\"leasedByLabVmId\":\"qzdz\",\"diskBlobName\":\"ilaxhn\",\"diskUri\":\"qlyvijo\",\"storageAccountId\":\"iv\",\"createdDate\":\"2021-07-27T23:48:23Z\",\"hostCaching\":\"zunbixx\",\"managedDiskId\":\"ikvcpwp\",\"provisioningState\":\"lrcivtsoxfrke\",\"uniqueIdentifier\":\"pmyyefrpmpdnqq\"},\"location\":\"ka\",\"tags\":{\"qfr\":\"qvmmbn\"},\"id\":\"qlkzme\",\"name\":\"nitgvkxlz\",\"type\":\"qdrfegcealzxwhc\"},{\"properties\":{\"diskType\":\"StandardSSD\",\"diskSizeGiB\":767381416,\"leasedByLabVmId\":\"yqhlwigdivbkbx\",\"diskBlobName\":\"mf\",\"diskUri\":\"uwasqvd\",\"storageAccountId\":\"y\",\"createdDate\":\"2021-08-11T03:03:16Z\",\"hostCaching\":\"akjsqz\",\"managedDiskId\":\"bezkgimsidxasic\",\"provisioningState\":\"yvvjskgfmo\",\"uniqueIdentifier\":\"ah\"},\"location\":\"qgatjeaahhvjhhn\",\"tags\":{\"yxvxevblbjed\":\"ybbjjidjksyx\",\"smjbnkppxyn\":\"ljlageuaulxu\"},\"id\":\"nlsvxeiz\",\"name\":\"gwklnsr\",\"type\":\"ffeycx\"},{\"properties\":{\"diskType\":\"Premium\",\"diskSizeGiB\":1565970230,\"leasedByLabVmId\":\"merteeammxqiek\",\"diskBlobName\":\"zddrt\",\"diskUri\":\"doj\",\"storageAccountId\":\"xv\",\"createdDate\":\"2021-02-28T00:16:23Z\",\"hostCaching\":\"fdeesvecuijpxtx\",\"managedDiskId\":\"wprtu\",\"provisioningState\":\"sawddjibabxvi\",\"uniqueIdentifier\":\"tvtzeexavoxtfg\"},\"location\":\"ecdmdqbwpy\",\"tags\":{\"slhhxudbxv\":\"gsfjac\",\"tnsi\":\"d\"},\"id\":\"ud\",\"name\":\"z\",\"type\":\"mes\"}],\"nextLink\":\"dlpagzrcxfail\"}")
+            .toObject(DiskList.class);
         Assertions.assertEquals("rdve", model.value().get(0).location());
         Assertions.assertEquals("sdtutnwlduyc", model.value().get(0).tags().get("uzhyrmewipmvekdx"));
         Assertions.assertEquals(StorageType.PREMIUM, model.value().get(0).diskType());
@@ -36,63 +34,49 @@ public final class DiskListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskList model =
-            new DiskList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DiskInner()
-                                .withLocation("rdve")
-                                .withTags(
-                                    mapOf(
-                                        "uzhyrmewipmvekdx",
-                                        "sdtutnwlduyc",
-                                        "zhhzjhfjmhvvmu",
-                                        "kuqgsjjxundxgket",
-                                        "yihsasbhudypohyu",
-                                        "gpmuneqsxvmhfbuz"))
-                                .withDiskType(StorageType.PREMIUM)
-                                .withDiskSizeGiB(212642888)
-                                .withLeasedByLabVmId("ijr")
-                                .withDiskBlobName("civmmg")
-                                .withDiskUri("cf")
-                                .withStorageAccountId("rxgkne")
-                                .withHostCaching("nzqodfvpg")
-                                .withManagedDiskId("oxgsgbpfgzdjtx"),
-                            new DiskInner()
-                                .withLocation("ka")
-                                .withTags(mapOf("qfr", "qvmmbn"))
-                                .withDiskType(StorageType.PREMIUM)
-                                .withDiskSizeGiB(1366289055)
-                                .withLeasedByLabVmId("qzdz")
-                                .withDiskBlobName("ilaxhn")
-                                .withDiskUri("qlyvijo")
-                                .withStorageAccountId("iv")
-                                .withHostCaching("zunbixx")
-                                .withManagedDiskId("ikvcpwp"),
-                            new DiskInner()
-                                .withLocation("qgatjeaahhvjhhn")
-                                .withTags(mapOf("yxvxevblbjed", "ybbjjidjksyx", "smjbnkppxyn", "ljlageuaulxu"))
-                                .withDiskType(StorageType.STANDARD_SSD)
-                                .withDiskSizeGiB(767381416)
-                                .withLeasedByLabVmId("yqhlwigdivbkbx")
-                                .withDiskBlobName("mf")
-                                .withDiskUri("uwasqvd")
-                                .withStorageAccountId("y")
-                                .withHostCaching("akjsqz")
-                                .withManagedDiskId("bezkgimsidxasic"),
-                            new DiskInner()
-                                .withLocation("ecdmdqbwpy")
-                                .withTags(mapOf("slhhxudbxv", "gsfjac", "tnsi", "d"))
-                                .withDiskType(StorageType.PREMIUM)
-                                .withDiskSizeGiB(1565970230)
-                                .withLeasedByLabVmId("merteeammxqiek")
-                                .withDiskBlobName("zddrt")
-                                .withDiskUri("doj")
-                                .withStorageAccountId("xv")
-                                .withHostCaching("fdeesvecuijpxtx")
-                                .withManagedDiskId("wprtu")))
-                .withNextLink("dlpagzrcxfail");
+        DiskList model = new DiskList().withValue(Arrays.asList(
+            new DiskInner().withLocation("rdve")
+                .withTags(mapOf("uzhyrmewipmvekdx", "sdtutnwlduyc", "zhhzjhfjmhvvmu", "kuqgsjjxundxgket",
+                    "yihsasbhudypohyu", "gpmuneqsxvmhfbuz"))
+                .withDiskType(StorageType.PREMIUM)
+                .withDiskSizeGiB(212642888)
+                .withLeasedByLabVmId("ijr")
+                .withDiskBlobName("civmmg")
+                .withDiskUri("cf")
+                .withStorageAccountId("rxgkne")
+                .withHostCaching("nzqodfvpg")
+                .withManagedDiskId("oxgsgbpfgzdjtx"),
+            new DiskInner().withLocation("ka")
+                .withTags(mapOf("qfr", "qvmmbn"))
+                .withDiskType(StorageType.PREMIUM)
+                .withDiskSizeGiB(1366289055)
+                .withLeasedByLabVmId("qzdz")
+                .withDiskBlobName("ilaxhn")
+                .withDiskUri("qlyvijo")
+                .withStorageAccountId("iv")
+                .withHostCaching("zunbixx")
+                .withManagedDiskId("ikvcpwp"),
+            new DiskInner().withLocation("qgatjeaahhvjhhn")
+                .withTags(mapOf("yxvxevblbjed", "ybbjjidjksyx", "smjbnkppxyn", "ljlageuaulxu"))
+                .withDiskType(StorageType.STANDARD_SSD)
+                .withDiskSizeGiB(767381416)
+                .withLeasedByLabVmId("yqhlwigdivbkbx")
+                .withDiskBlobName("mf")
+                .withDiskUri("uwasqvd")
+                .withStorageAccountId("y")
+                .withHostCaching("akjsqz")
+                .withManagedDiskId("bezkgimsidxasic"),
+            new DiskInner().withLocation("ecdmdqbwpy")
+                .withTags(mapOf("slhhxudbxv", "gsfjac", "tnsi", "d"))
+                .withDiskType(StorageType.PREMIUM)
+                .withDiskSizeGiB(1565970230)
+                .withLeasedByLabVmId("merteeammxqiek")
+                .withDiskBlobName("zddrt")
+                .withDiskUri("doj")
+                .withStorageAccountId("xv")
+                .withHostCaching("fdeesvecuijpxtx")
+                .withManagedDiskId("wprtu")))
+            .withNextLink("dlpagzrcxfail");
         model = BinaryData.fromObject(model).toObject(DiskList.class);
         Assertions.assertEquals("rdve", model.value().get(0).location());
         Assertions.assertEquals("sdtutnwlduyc", model.value().get(0).tags().get("uzhyrmewipmvekdx"));

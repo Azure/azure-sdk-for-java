@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class DiagnosticsExecuteSiteAnalysisSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ExecuteSiteAnalysis.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ExecuteSiteAnalysis.json
      */
     /**
      * Sample code: Execute site analysis.
@@ -18,14 +18,17 @@ public final class DiagnosticsExecuteSiteAnalysisSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void executeSiteAnalysis(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDiagnostics().executeSiteAnalysisWithResponse(
-            "Sample-WestUSResourceGroup", "SampleApp", "availability", "apprestartanalyses", null, null, null,
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDiagnostics()
+            .executeSiteAnalysisWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability",
+                "apprestartanalyses", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Diagnostics_ExecuteSiteAnalysisSlot.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_ExecuteSiteAnalysisSlot.
      * json
      */
     /**
@@ -34,8 +37,11 @@ public final class DiagnosticsExecuteSiteAnalysisSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void executeSiteSlotAnalysis(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDiagnostics().executeSiteAnalysisWithResponse(
-            "Sample-WestUSResourceGroup", "SampleApp", "availability", "apprestartanalyses", null, null, null,
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDiagnostics()
+            .executeSiteAnalysisWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability",
+                "apprestartanalyses", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -105,6 +105,8 @@ public final class CosmosAsyncClient implements Closeable {
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
+    private final List<CosmosOperationPolicy> requestPolicies;
+    private final CosmosItemSerializer defaultCustomSerializer;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -121,6 +123,8 @@ public final class CosmosAsyncClient implements Closeable {
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
+        this.requestPolicies = builder.getOperationPolicies();
+        this.defaultCustomSerializer = builder.getCustomItemSerializer();
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
         SessionRetryOptions sessionRetryOptions = builder.getSessionRetryOptions();
 
@@ -148,6 +152,7 @@ public final class CosmosAsyncClient implements Closeable {
         }
 
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
+                                       .withOperationPolicies(this.requestPolicies)
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(keyOrResourceToken)
                                        .withConnectionPolicy(this.connectionPolicy)
@@ -167,6 +172,8 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
                                        .withSessionRetryOptions(sessionRetryOptions)
                                        .withContainerProactiveInitConfig(this.proactiveContainerInitConfig)
+                                       .withDefaultSerializer(this.defaultCustomSerializer)
+                                       .withRegionScopedSessionCapturingEnabled(builder.isRegionScopedSessionCapturingEnabled())
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
@@ -724,7 +731,7 @@ public final class CosmosAsyncClient implements Closeable {
                 requestOptions);
     }
 
-    private ConsistencyLevel getEffectiveConsistencyLevel(
+    ConsistencyLevel getEffectiveConsistencyLevel(
         OperationType operationType,
         ConsistencyLevel desiredConsistencyLevelOfOperation) {
 
@@ -759,6 +766,10 @@ public final class CosmosAsyncClient implements Closeable {
             telemetryConfigAccessor.getDiagnosticsThresholds(this.clientTelemetryConfig);
 
         return clientLevelThresholds != null ? clientLevelThresholds : new CosmosDiagnosticsThresholds();
+    }
+
+    CosmosItemSerializer getEffectiveItemSerializer(CosmosItemSerializer requestOptionsItemSerializer) {
+        return this.asyncDocumentClient.getEffectiveItemSerializer(requestOptionsItemSerializer);
     }
 
     boolean isTransportLevelTracingEnabled() {
@@ -849,7 +860,7 @@ public final class CosmosAsyncClient implements Closeable {
 
                 @Override
                 public String getConnectionMode(CosmosAsyncClient client) {
-                    return client.connectionPolicy.getConnectionMode().toString();
+                    return client.getConnectionPolicy().getConnectionMode().toString();
                 }
 
                 @Override
@@ -893,6 +904,16 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client) {
                     return client.getDiagnosticsProvider();
+                }
+
+                @Override
+                public List<CosmosOperationPolicy> getOperationPolicies(CosmosAsyncClient client) {
+                    return client.requestPolicies;
+                }
+
+                @Override
+                public CosmosItemSerializer getEffectiveItemSerializer(CosmosAsyncClient client, CosmosItemSerializer requestOptionsItemSerializer) {
+                    return client.getEffectiveItemSerializer(requestOptionsItemSerializer);
                 }
             }
         );

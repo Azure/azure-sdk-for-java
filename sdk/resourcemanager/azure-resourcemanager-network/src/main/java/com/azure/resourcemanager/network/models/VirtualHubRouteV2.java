@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * VirtualHubRouteTableV2 route.
  */
 @Fluent
-public final class VirtualHubRouteV2 {
+public final class VirtualHubRouteV2 implements JsonSerializable<VirtualHubRouteV2> {
     /*
      * The type of destinations.
      */
-    @JsonProperty(value = "destinationType")
     private String destinationType;
 
     /*
      * List of all destinations.
      */
-    @JsonProperty(value = "destinations")
     private List<String> destinations;
 
     /*
      * The type of next hops.
      */
-    @JsonProperty(value = "nextHopType")
     private String nextHopType;
 
     /*
      * NextHops ip address.
      */
-    @JsonProperty(value = "nextHops")
     private List<String> nextHops;
 
     /**
@@ -129,5 +129,52 @@ public final class VirtualHubRouteV2 {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("destinationType", this.destinationType);
+        jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("nextHopType", this.nextHopType);
+        jsonWriter.writeArrayField("nextHops", this.nextHops, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualHubRouteV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualHubRouteV2 if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualHubRouteV2.
+     */
+    public static VirtualHubRouteV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualHubRouteV2 deserializedVirtualHubRouteV2 = new VirtualHubRouteV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("destinationType".equals(fieldName)) {
+                    deserializedVirtualHubRouteV2.destinationType = reader.getString();
+                } else if ("destinations".equals(fieldName)) {
+                    List<String> destinations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualHubRouteV2.destinations = destinations;
+                } else if ("nextHopType".equals(fieldName)) {
+                    deserializedVirtualHubRouteV2.nextHopType = reader.getString();
+                } else if ("nextHops".equals(fieldName)) {
+                    List<String> nextHops = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualHubRouteV2.nextHops = nextHops;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualHubRouteV2;
+        });
     }
 }

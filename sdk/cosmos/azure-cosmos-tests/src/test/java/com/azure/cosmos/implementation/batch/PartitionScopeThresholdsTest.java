@@ -3,8 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import org.testng.annotations.Test;
 
 import java.util.Random;
@@ -22,7 +21,7 @@ public class PartitionScopeThresholdsTest {
         PartitionScopeThresholds thresholds =
             new PartitionScopeThresholds(
                 pkRangeId,
-                new CosmosBulkExecutionOptions());
+                new CosmosBulkExecutionOptionsImpl());
 
         assertThat(thresholds.getTargetMicroBatchSizeSnapshot())
             .isEqualTo(maxBatchSize);
@@ -42,10 +41,10 @@ public class PartitionScopeThresholdsTest {
     }
 
     @Test(groups = { "unit" })
-    public void alwaysThrottledShouldResultInBatSizeOfOne() {
+    public void alwaysThrottledShouldResultInBatchSizeOfOne() {
         String pkRangeId = UUID.randomUUID().toString();
         PartitionScopeThresholds thresholds =
-            new PartitionScopeThresholds(pkRangeId, new CosmosBulkExecutionOptions());
+            new PartitionScopeThresholds(pkRangeId, new CosmosBulkExecutionOptionsImpl());
 
         assertThat(thresholds.getTargetMicroBatchSizeSnapshot())
             .isEqualTo(BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
@@ -56,5 +55,29 @@ public class PartitionScopeThresholdsTest {
 
         assertThat(thresholds.getPartitionKeyRangeId()).isEqualTo(pkRangeId);
         assertThat(thresholds.getTargetMicroBatchSizeSnapshot()).isEqualTo(1);
+    }
+
+    @Test(groups = { "unit" })
+    public void initialTargetMicroBatchSize() {
+        String pkRangeId = UUID.randomUUID().toString();
+        PartitionScopeThresholds thresholds =
+            new PartitionScopeThresholds(pkRangeId, new CosmosBulkExecutionOptionsImpl());
+        assertThat(thresholds.getTargetMicroBatchSizeSnapshot())
+            .isEqualTo(BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
+
+        // initial targetBatchSize should be capped by maxBatchSize
+        int maxBatchSize = 5;
+        CosmosBulkExecutionOptionsImpl bulkOperations = new CosmosBulkExecutionOptionsImpl();
+        bulkOperations.setMaxMicroBatchSize(maxBatchSize);
+        thresholds = new PartitionScopeThresholds(pkRangeId, bulkOperations);
+        assertThat(thresholds.getTargetMicroBatchSizeSnapshot()).isEqualTo(maxBatchSize);
+
+        // initial targetBatchSize should be at least by minTargetBatchSize
+        int minTargetBatchSize = 5;
+        bulkOperations = new CosmosBulkExecutionOptionsImpl();
+        bulkOperations.setInitialMicroBatchSize(1);
+        bulkOperations.setMinTargetMicroBatchSize(minTargetBatchSize);
+        thresholds = new PartitionScopeThresholds(pkRangeId, bulkOperations);
+        assertThat(thresholds.getTargetMicroBatchSizeSnapshot()).isEqualTo(minTargetBatchSize);
     }
 }

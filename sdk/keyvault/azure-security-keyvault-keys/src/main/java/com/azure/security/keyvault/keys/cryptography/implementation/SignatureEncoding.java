@@ -7,7 +7,8 @@ import com.azure.core.util.CoreUtils;
 
 final class SignatureEncoding {
     // SignatureEncoding is intended to be a static class
-    private SignatureEncoding() { }
+    private SignatureEncoding() {
+    }
 
     /*
      * Converts an ASN.1 DER encoded ECDSA signature to a raw signature in the form R|S

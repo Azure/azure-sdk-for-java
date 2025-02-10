@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ResourceGuardProxyBase model. */
+/**
+ * The ResourceGuardProxyBase model.
+ */
 @Fluent
-public final class ResourceGuardProxyBase {
+public final class ResourceGuardProxyBase implements JsonSerializable<ResourceGuardProxyBase> {
     /*
      * The resourceGuardResourceId property.
      */
-    @JsonProperty(value = "resourceGuardResourceId")
     private String resourceGuardResourceId;
 
     /*
      * The resourceGuardOperationDetails property.
      */
-    @JsonProperty(value = "resourceGuardOperationDetails")
     private List<ResourceGuardOperationDetail> resourceGuardOperationDetails;
 
     /*
      * The lastUpdatedTime property.
      */
-    @JsonProperty(value = "lastUpdatedTime")
     private String lastUpdatedTime;
 
     /*
      * The description property.
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ResourceGuardProxyBase class. */
+    /**
+     * Creates an instance of ResourceGuardProxyBase class.
+     */
     public ResourceGuardProxyBase() {
     }
 
     /**
      * Get the resourceGuardResourceId property: The resourceGuardResourceId property.
-     *
+     * 
      * @return the resourceGuardResourceId value.
      */
     public String resourceGuardResourceId() {
@@ -50,7 +55,7 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Set the resourceGuardResourceId property: The resourceGuardResourceId property.
-     *
+     * 
      * @param resourceGuardResourceId the resourceGuardResourceId value to set.
      * @return the ResourceGuardProxyBase object itself.
      */
@@ -61,7 +66,7 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Get the resourceGuardOperationDetails property: The resourceGuardOperationDetails property.
-     *
+     * 
      * @return the resourceGuardOperationDetails value.
      */
     public List<ResourceGuardOperationDetail> resourceGuardOperationDetails() {
@@ -70,19 +75,19 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Set the resourceGuardOperationDetails property: The resourceGuardOperationDetails property.
-     *
+     * 
      * @param resourceGuardOperationDetails the resourceGuardOperationDetails value to set.
      * @return the ResourceGuardProxyBase object itself.
      */
-    public ResourceGuardProxyBase withResourceGuardOperationDetails(
-        List<ResourceGuardOperationDetail> resourceGuardOperationDetails) {
+    public ResourceGuardProxyBase
+        withResourceGuardOperationDetails(List<ResourceGuardOperationDetail> resourceGuardOperationDetails) {
         this.resourceGuardOperationDetails = resourceGuardOperationDetails;
         return this;
     }
 
     /**
      * Get the lastUpdatedTime property: The lastUpdatedTime property.
-     *
+     * 
      * @return the lastUpdatedTime value.
      */
     public String lastUpdatedTime() {
@@ -91,7 +96,7 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Set the lastUpdatedTime property: The lastUpdatedTime property.
-     *
+     * 
      * @param lastUpdatedTime the lastUpdatedTime value to set.
      * @return the ResourceGuardProxyBase object itself.
      */
@@ -102,7 +107,7 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Get the description property: The description property.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -111,7 +116,7 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Set the description property: The description property.
-     *
+     * 
      * @param description the description value to set.
      * @return the ResourceGuardProxyBase object itself.
      */
@@ -122,12 +127,68 @@ public final class ResourceGuardProxyBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (resourceGuardResourceId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceGuardResourceId in model ResourceGuardProxyBase"));
+        }
         if (resourceGuardOperationDetails() != null) {
             resourceGuardOperationDetails().forEach(e -> e.validate());
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceGuardProxyBase.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceGuardResourceId", this.resourceGuardResourceId);
+        jsonWriter.writeArrayField("resourceGuardOperationDetails", this.resourceGuardOperationDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("lastUpdatedTime", this.lastUpdatedTime);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceGuardProxyBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceGuardProxyBase if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceGuardProxyBase.
+     */
+    public static ResourceGuardProxyBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceGuardProxyBase deserializedResourceGuardProxyBase = new ResourceGuardProxyBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceGuardResourceId".equals(fieldName)) {
+                    deserializedResourceGuardProxyBase.resourceGuardResourceId = reader.getString();
+                } else if ("resourceGuardOperationDetails".equals(fieldName)) {
+                    List<ResourceGuardOperationDetail> resourceGuardOperationDetails
+                        = reader.readArray(reader1 -> ResourceGuardOperationDetail.fromJson(reader1));
+                    deserializedResourceGuardProxyBase.resourceGuardOperationDetails = resourceGuardOperationDetails;
+                } else if ("lastUpdatedTime".equals(fieldName)) {
+                    deserializedResourceGuardProxyBase.lastUpdatedTime = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedResourceGuardProxyBase.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceGuardProxyBase;
+        });
     }
 }

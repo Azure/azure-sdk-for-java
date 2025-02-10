@@ -5,19 +5,40 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of Azure Storage SMB file share endpoint to update. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
-@JsonTypeName("AzureStorageSmbFileShare")
+/**
+ * The properties of Azure Storage SMB file share endpoint to update.
+ */
 @Fluent
 public final class AzureStorageSmbFileShareEndpointUpdateProperties extends EndpointBaseUpdateProperties {
-    /** Creates an instance of AzureStorageSmbFileShareEndpointUpdateProperties class. */
+    /*
+     * The Endpoint resource type.
+     */
+    private EndpointType endpointType = EndpointType.AZURE_STORAGE_SMB_FILE_SHARE;
+
+    /**
+     * Creates an instance of AzureStorageSmbFileShareEndpointUpdateProperties class.
+     */
     public AzureStorageSmbFileShareEndpointUpdateProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the endpointType property: The Endpoint resource type.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageSmbFileShareEndpointUpdateProperties withDescription(String description) {
         super.withDescription(description);
@@ -26,11 +47,51 @@ public final class AzureStorageSmbFileShareEndpointUpdateProperties extends Endp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureStorageSmbFileShareEndpointUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureStorageSmbFileShareEndpointUpdateProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureStorageSmbFileShareEndpointUpdateProperties.
+     */
+    public static AzureStorageSmbFileShareEndpointUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureStorageSmbFileShareEndpointUpdateProperties deserializedAzureStorageSmbFileShareEndpointUpdateProperties
+                = new AzureStorageSmbFileShareEndpointUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedAzureStorageSmbFileShareEndpointUpdateProperties.withDescription(reader.getString());
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedAzureStorageSmbFileShareEndpointUpdateProperties.endpointType
+                        = EndpointType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureStorageSmbFileShareEndpointUpdateProperties;
+        });
     }
 }

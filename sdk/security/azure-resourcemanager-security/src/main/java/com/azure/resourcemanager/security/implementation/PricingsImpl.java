@@ -27,67 +27,67 @@ public final class PricingsImpl implements Pricings {
         this.serviceManager = serviceManager;
     }
 
-    public Response<PricingList> listWithResponse(Context context) {
-        Response<PricingListInner> inner = this.serviceClient().listWithResponse(context);
+    public Response<Pricing> getWithResponse(String scopeId, String pricingName, Context context) {
+        Response<PricingInner> inner = this.serviceClient().getWithResponse(scopeId, pricingName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PricingImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Pricing get(String scopeId, String pricingName) {
+        PricingInner inner = this.serviceClient().get(scopeId, pricingName);
+        if (inner != null) {
+            return new PricingImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Pricing> updateWithResponse(String scopeId, String pricingName, PricingInner pricing,
+        Context context) {
+        Response<PricingInner> inner = this.serviceClient().updateWithResponse(scopeId, pricingName, pricing, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PricingImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Pricing update(String scopeId, String pricingName, PricingInner pricing) {
+        PricingInner inner = this.serviceClient().update(scopeId, pricingName, pricing);
+        if (inner != null) {
+            return new PricingImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> deleteByResourceGroupWithResponse(String scopeId, String pricingName, Context context) {
+        return this.serviceClient().deleteWithResponse(scopeId, pricingName, context);
+    }
+
+    public void deleteByResourceGroup(String scopeId, String pricingName) {
+        this.serviceClient().delete(scopeId, pricingName);
+    }
+
+    public Response<PricingList> listWithResponse(String scopeId, String filter, Context context) {
+        Response<PricingListInner> inner = this.serviceClient().listWithResponse(scopeId, filter, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PricingListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PricingList list() {
-        PricingListInner inner = this.serviceClient().list();
+    public PricingList list(String scopeId) {
+        PricingListInner inner = this.serviceClient().list(scopeId);
         if (inner != null) {
             return new PricingListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Pricing> getWithResponse(String pricingName, Context context) {
-        Response<PricingInner> inner = this.serviceClient().getWithResponse(pricingName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PricingImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Pricing get(String pricingName) {
-        PricingInner inner = this.serviceClient().get(pricingName);
-        if (inner != null) {
-            return new PricingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Pricing> updateWithResponse(String pricingName, PricingInner pricing, Context context) {
-        Response<PricingInner> inner = this.serviceClient().updateWithResponse(pricingName, pricing, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PricingImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Pricing update(String pricingName, PricingInner pricing) {
-        PricingInner inner = this.serviceClient().update(pricingName, pricing);
-        if (inner != null) {
-            return new PricingImpl(inner, this.manager());
         } else {
             return null;
         }

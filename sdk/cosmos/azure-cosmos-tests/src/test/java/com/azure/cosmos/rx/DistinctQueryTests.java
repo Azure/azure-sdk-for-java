@@ -291,8 +291,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         List<Object> intpropList = itemPropertiesList
                                        .stream()
                                        .map(internalObjectNode ->
-                                                ModelBridgeInternal.getObjectFromJsonSerializable(
-                                                    internalObjectNode, "intprop"))
+                                                internalObjectNode.get("intprop"))
                                    .collect(Collectors.toList());
         // We insert two documents witn intprop as 5.0 and 5. Distinct should consider them as one
         assertThat(intpropList).containsExactlyInAnyOrder(null, 5);

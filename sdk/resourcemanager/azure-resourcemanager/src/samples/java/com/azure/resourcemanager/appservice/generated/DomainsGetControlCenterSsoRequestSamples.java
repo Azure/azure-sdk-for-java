@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class DomainsGetControlCenterSsoRequestSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-04-01/examples/
      * GetDomainControlCenterSsoRequest.json
      */
     /**
@@ -18,7 +18,10 @@ public final class DomainsGetControlCenterSsoRequestSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDomainControlCenterSsoRequest(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDomains()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDomains()
             .getControlCenterSsoRequestWithResponse(com.azure.core.util.Context.NONE);
     }
 }

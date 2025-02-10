@@ -14,43 +14,42 @@ import org.junit.jupiter.api.Assertions;
 public final class FlinkJobPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FlinkJobProperties model =
-            BinaryData
-                .fromString(
-                    "{\"jobType\":\"FlinkJob\",\"jobName\":\"ayhmtnvyqiatkz\",\"jobJarDirectory\":\"cnpwzcjaesgvvscc\",\"jarName\":\"jguq\",\"entryClass\":\"wygzlvdnkfxusem\",\"args\":\"zrmuhapfcqdps\",\"savePointName\":\"qvpsvuoymg\",\"action\":\"STOP\",\"flinkConfiguration\":{\"feo\":\"ezrypql\",\"edkowepbqpcrfk\":\"erqwkyhkobopg\",\"tn\":\"wccsnjvcdwxlpqek\"},\"jobId\":\"tjsyin\",\"status\":\"fq\",\"jobOutput\":\"mtdh\",\"actionResult\":\"dvypgikdgsz\",\"lastSavePoint\":\"kbir\"}")
-                .toObject(FlinkJobProperties.class);
-        Assertions.assertEquals("ayhmtnvyqiatkz", model.jobName());
-        Assertions.assertEquals("cnpwzcjaesgvvscc", model.jobJarDirectory());
-        Assertions.assertEquals("jguq", model.jarName());
-        Assertions.assertEquals("wygzlvdnkfxusem", model.entryClass());
-        Assertions.assertEquals("zrmuhapfcqdps", model.args());
-        Assertions.assertEquals("qvpsvuoymg", model.savePointName());
-        Assertions.assertEquals(Action.STOP, model.action());
-        Assertions.assertEquals("ezrypql", model.flinkConfiguration().get("feo"));
+        FlinkJobProperties model = BinaryData.fromString(
+            "{\"jobType\":\"FlinkJob\",\"runId\":\"bzevwrd\",\"jobName\":\"fukuvsjcswsmystu\",\"jobJarDirectory\":\"qypfcv\",\"jarName\":\"rchpqbmfpjbabwid\",\"entryClass\":\"xsspuunnoxyhk\",\"args\":\"qddrihpfhoqcaae\",\"savePointName\":\"aomdjvlpjxx\",\"action\":\"START\",\"flinkConfiguration\":{\"zkdnc\":\"sgeivsiy\",\"wyrpgogtqxepnyl\":\"dxonbzoggculap\",\"tlvofq\":\"fuajly\"},\"jobId\":\"vfcibyfmowux\",\"status\":\"jpvd\",\"jobOutput\":\"fzwiivwzjbhyz\",\"actionResult\":\"jrkambtrnegvmnv\",\"lastSavePoint\":\"eqvldspast\"}")
+            .toObject(FlinkJobProperties.class);
+        Assertions.assertEquals("bzevwrd", model.runId());
+        Assertions.assertEquals("fukuvsjcswsmystu", model.jobName());
+        Assertions.assertEquals("qypfcv", model.jobJarDirectory());
+        Assertions.assertEquals("rchpqbmfpjbabwid", model.jarName());
+        Assertions.assertEquals("xsspuunnoxyhk", model.entryClass());
+        Assertions.assertEquals("qddrihpfhoqcaae", model.args());
+        Assertions.assertEquals("aomdjvlpjxx", model.savePointName());
+        Assertions.assertEquals(Action.START, model.action());
+        Assertions.assertEquals("sgeivsiy", model.flinkConfiguration().get("zkdnc"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FlinkJobProperties model =
-            new FlinkJobProperties()
-                .withJobName("ayhmtnvyqiatkz")
-                .withJobJarDirectory("cnpwzcjaesgvvscc")
-                .withJarName("jguq")
-                .withEntryClass("wygzlvdnkfxusem")
-                .withArgs("zrmuhapfcqdps")
-                .withSavePointName("qvpsvuoymg")
-                .withAction(Action.STOP)
-                .withFlinkConfiguration(
-                    mapOf("feo", "ezrypql", "edkowepbqpcrfk", "erqwkyhkobopg", "tn", "wccsnjvcdwxlpqek"));
+        FlinkJobProperties model = new FlinkJobProperties().withRunId("bzevwrd")
+            .withJobName("fukuvsjcswsmystu")
+            .withJobJarDirectory("qypfcv")
+            .withJarName("rchpqbmfpjbabwid")
+            .withEntryClass("xsspuunnoxyhk")
+            .withArgs("qddrihpfhoqcaae")
+            .withSavePointName("aomdjvlpjxx")
+            .withAction(Action.START)
+            .withFlinkConfiguration(
+                mapOf("zkdnc", "sgeivsiy", "wyrpgogtqxepnyl", "dxonbzoggculap", "tlvofq", "fuajly"));
         model = BinaryData.fromObject(model).toObject(FlinkJobProperties.class);
-        Assertions.assertEquals("ayhmtnvyqiatkz", model.jobName());
-        Assertions.assertEquals("cnpwzcjaesgvvscc", model.jobJarDirectory());
-        Assertions.assertEquals("jguq", model.jarName());
-        Assertions.assertEquals("wygzlvdnkfxusem", model.entryClass());
-        Assertions.assertEquals("zrmuhapfcqdps", model.args());
-        Assertions.assertEquals("qvpsvuoymg", model.savePointName());
-        Assertions.assertEquals(Action.STOP, model.action());
-        Assertions.assertEquals("ezrypql", model.flinkConfiguration().get("feo"));
+        Assertions.assertEquals("bzevwrd", model.runId());
+        Assertions.assertEquals("fukuvsjcswsmystu", model.jobName());
+        Assertions.assertEquals("qypfcv", model.jobJarDirectory());
+        Assertions.assertEquals("rchpqbmfpjbabwid", model.jarName());
+        Assertions.assertEquals("xsspuunnoxyhk", model.entryClass());
+        Assertions.assertEquals("qddrihpfhoqcaae", model.args());
+        Assertions.assertEquals("aomdjvlpjxx", model.savePointName());
+        Assertions.assertEquals(Action.START, model.action());
+        Assertions.assertEquals("sgeivsiy", model.flinkConfiguration().get("zkdnc"));
     }
 
     // Use "Map.of" if available

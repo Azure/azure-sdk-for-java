@@ -5,103 +5,97 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Hyper V VM network input details. */
+/**
+ * Hyper V VM network input details.
+ */
 @Fluent
-public final class VMNicInputDetails {
+public final class VMNicInputDetails implements JsonSerializable<VMNicInputDetails> {
     /*
      * The nic Id.
      */
-    @JsonProperty(value = "nicId")
     private String nicId;
 
     /*
      * The IP configurations to be used by NIC during test failover and failover.
      */
-    @JsonProperty(value = "ipConfigs")
     private List<IpConfigInputDetails> ipConfigs;
 
     /*
      * Selection type for failover.
      */
-    @JsonProperty(value = "selectionType")
     private String selectionType;
 
     /*
      * The id of the NSG associated with the NIC.
      */
-    @JsonProperty(value = "recoveryNetworkSecurityGroupId")
     private String recoveryNetworkSecurityGroupId;
 
     /*
      * Whether the NIC has accelerated networking enabled.
      */
-    @JsonProperty(value = "enableAcceleratedNetworkingOnRecovery")
     private Boolean enableAcceleratedNetworkingOnRecovery;
 
     /*
      * The NSG to be used by NIC during test failover.
      */
-    @JsonProperty(value = "tfoNetworkSecurityGroupId")
     private String tfoNetworkSecurityGroupId;
 
     /*
      * Whether the test NIC has accelerated networking enabled.
      */
-    @JsonProperty(value = "enableAcceleratedNetworkingOnTfo")
     private Boolean enableAcceleratedNetworkingOnTfo;
 
     /*
      * The name of the NIC to be used when creating target NICs.
      */
-    @JsonProperty(value = "recoveryNicName")
     private String recoveryNicName;
 
     /*
      * The resource group of the NIC to be used when creating target NICs.
      */
-    @JsonProperty(value = "recoveryNicResourceGroupName")
     private String recoveryNicResourceGroupName;
 
     /*
      * A value indicating whether an existing NIC is allowed to be reused during failover subject to availability.
      */
-    @JsonProperty(value = "reuseExistingNic")
     private Boolean reuseExistingNic;
 
     /*
      * The name of the NIC to be used when creating target NICs in TFO.
      */
-    @JsonProperty(value = "tfoNicName")
     private String tfoNicName;
 
     /*
      * The resource group of the NIC to be used when creating target NICs in TFO.
      */
-    @JsonProperty(value = "tfoNicResourceGroupName")
     private String tfoNicResourceGroupName;
 
     /*
      * A value indicating whether an existing NIC is allowed to be reused during test failover subject to availability.
      */
-    @JsonProperty(value = "tfoReuseExistingNic")
     private Boolean tfoReuseExistingNic;
 
     /*
      * Target NIC name.
      */
-    @JsonProperty(value = "targetNicName")
     private String targetNicName;
 
-    /** Creates an instance of VMNicInputDetails class. */
+    /**
+     * Creates an instance of VMNicInputDetails class.
+     */
     public VMNicInputDetails() {
     }
 
     /**
      * Get the nicId property: The nic Id.
-     *
+     * 
      * @return the nicId value.
      */
     public String nicId() {
@@ -110,7 +104,7 @@ public final class VMNicInputDetails {
 
     /**
      * Set the nicId property: The nic Id.
-     *
+     * 
      * @param nicId the nicId value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -121,7 +115,7 @@ public final class VMNicInputDetails {
 
     /**
      * Get the ipConfigs property: The IP configurations to be used by NIC during test failover and failover.
-     *
+     * 
      * @return the ipConfigs value.
      */
     public List<IpConfigInputDetails> ipConfigs() {
@@ -130,7 +124,7 @@ public final class VMNicInputDetails {
 
     /**
      * Set the ipConfigs property: The IP configurations to be used by NIC during test failover and failover.
-     *
+     * 
      * @param ipConfigs the ipConfigs value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -141,7 +135,7 @@ public final class VMNicInputDetails {
 
     /**
      * Get the selectionType property: Selection type for failover.
-     *
+     * 
      * @return the selectionType value.
      */
     public String selectionType() {
@@ -150,7 +144,7 @@ public final class VMNicInputDetails {
 
     /**
      * Set the selectionType property: Selection type for failover.
-     *
+     * 
      * @param selectionType the selectionType value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -161,7 +155,7 @@ public final class VMNicInputDetails {
 
     /**
      * Get the recoveryNetworkSecurityGroupId property: The id of the NSG associated with the NIC.
-     *
+     * 
      * @return the recoveryNetworkSecurityGroupId value.
      */
     public String recoveryNetworkSecurityGroupId() {
@@ -170,7 +164,7 @@ public final class VMNicInputDetails {
 
     /**
      * Set the recoveryNetworkSecurityGroupId property: The id of the NSG associated with the NIC.
-     *
+     * 
      * @param recoveryNetworkSecurityGroupId the recoveryNetworkSecurityGroupId value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -181,7 +175,7 @@ public final class VMNicInputDetails {
 
     /**
      * Get the enableAcceleratedNetworkingOnRecovery property: Whether the NIC has accelerated networking enabled.
-     *
+     * 
      * @return the enableAcceleratedNetworkingOnRecovery value.
      */
     public Boolean enableAcceleratedNetworkingOnRecovery() {
@@ -190,7 +184,7 @@ public final class VMNicInputDetails {
 
     /**
      * Set the enableAcceleratedNetworkingOnRecovery property: Whether the NIC has accelerated networking enabled.
-     *
+     * 
      * @param enableAcceleratedNetworkingOnRecovery the enableAcceleratedNetworkingOnRecovery value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -201,7 +195,7 @@ public final class VMNicInputDetails {
 
     /**
      * Get the tfoNetworkSecurityGroupId property: The NSG to be used by NIC during test failover.
-     *
+     * 
      * @return the tfoNetworkSecurityGroupId value.
      */
     public String tfoNetworkSecurityGroupId() {
@@ -210,7 +204,7 @@ public final class VMNicInputDetails {
 
     /**
      * Set the tfoNetworkSecurityGroupId property: The NSG to be used by NIC during test failover.
-     *
+     * 
      * @param tfoNetworkSecurityGroupId the tfoNetworkSecurityGroupId value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -221,7 +215,7 @@ public final class VMNicInputDetails {
 
     /**
      * Get the enableAcceleratedNetworkingOnTfo property: Whether the test NIC has accelerated networking enabled.
-     *
+     * 
      * @return the enableAcceleratedNetworkingOnTfo value.
      */
     public Boolean enableAcceleratedNetworkingOnTfo() {
@@ -230,7 +224,7 @@ public final class VMNicInputDetails {
 
     /**
      * Set the enableAcceleratedNetworkingOnTfo property: Whether the test NIC has accelerated networking enabled.
-     *
+     * 
      * @param enableAcceleratedNetworkingOnTfo the enableAcceleratedNetworkingOnTfo value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -241,7 +235,7 @@ public final class VMNicInputDetails {
 
     /**
      * Get the recoveryNicName property: The name of the NIC to be used when creating target NICs.
-     *
+     * 
      * @return the recoveryNicName value.
      */
     public String recoveryNicName() {
@@ -250,7 +244,7 @@ public final class VMNicInputDetails {
 
     /**
      * Set the recoveryNicName property: The name of the NIC to be used when creating target NICs.
-     *
+     * 
      * @param recoveryNicName the recoveryNicName value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -262,7 +256,7 @@ public final class VMNicInputDetails {
     /**
      * Get the recoveryNicResourceGroupName property: The resource group of the NIC to be used when creating target
      * NICs.
-     *
+     * 
      * @return the recoveryNicResourceGroupName value.
      */
     public String recoveryNicResourceGroupName() {
@@ -272,7 +266,7 @@ public final class VMNicInputDetails {
     /**
      * Set the recoveryNicResourceGroupName property: The resource group of the NIC to be used when creating target
      * NICs.
-     *
+     * 
      * @param recoveryNicResourceGroupName the recoveryNicResourceGroupName value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -284,7 +278,7 @@ public final class VMNicInputDetails {
     /**
      * Get the reuseExistingNic property: A value indicating whether an existing NIC is allowed to be reused during
      * failover subject to availability.
-     *
+     * 
      * @return the reuseExistingNic value.
      */
     public Boolean reuseExistingNic() {
@@ -294,7 +288,7 @@ public final class VMNicInputDetails {
     /**
      * Set the reuseExistingNic property: A value indicating whether an existing NIC is allowed to be reused during
      * failover subject to availability.
-     *
+     * 
      * @param reuseExistingNic the reuseExistingNic value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -305,7 +299,7 @@ public final class VMNicInputDetails {
 
     /**
      * Get the tfoNicName property: The name of the NIC to be used when creating target NICs in TFO.
-     *
+     * 
      * @return the tfoNicName value.
      */
     public String tfoNicName() {
@@ -314,7 +308,7 @@ public final class VMNicInputDetails {
 
     /**
      * Set the tfoNicName property: The name of the NIC to be used when creating target NICs in TFO.
-     *
+     * 
      * @param tfoNicName the tfoNicName value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -326,7 +320,7 @@ public final class VMNicInputDetails {
     /**
      * Get the tfoNicResourceGroupName property: The resource group of the NIC to be used when creating target NICs in
      * TFO.
-     *
+     * 
      * @return the tfoNicResourceGroupName value.
      */
     public String tfoNicResourceGroupName() {
@@ -336,7 +330,7 @@ public final class VMNicInputDetails {
     /**
      * Set the tfoNicResourceGroupName property: The resource group of the NIC to be used when creating target NICs in
      * TFO.
-     *
+     * 
      * @param tfoNicResourceGroupName the tfoNicResourceGroupName value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -348,7 +342,7 @@ public final class VMNicInputDetails {
     /**
      * Get the tfoReuseExistingNic property: A value indicating whether an existing NIC is allowed to be reused during
      * test failover subject to availability.
-     *
+     * 
      * @return the tfoReuseExistingNic value.
      */
     public Boolean tfoReuseExistingNic() {
@@ -358,7 +352,7 @@ public final class VMNicInputDetails {
     /**
      * Set the tfoReuseExistingNic property: A value indicating whether an existing NIC is allowed to be reused during
      * test failover subject to availability.
-     *
+     * 
      * @param tfoReuseExistingNic the tfoReuseExistingNic value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -369,7 +363,7 @@ public final class VMNicInputDetails {
 
     /**
      * Get the targetNicName property: Target NIC name.
-     *
+     * 
      * @return the targetNicName value.
      */
     public String targetNicName() {
@@ -378,7 +372,7 @@ public final class VMNicInputDetails {
 
     /**
      * Set the targetNicName property: Target NIC name.
-     *
+     * 
      * @param targetNicName the targetNicName value to set.
      * @return the VMNicInputDetails object itself.
      */
@@ -389,12 +383,92 @@ public final class VMNicInputDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipConfigs() != null) {
             ipConfigs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nicId", this.nicId);
+        jsonWriter.writeArrayField("ipConfigs", this.ipConfigs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("selectionType", this.selectionType);
+        jsonWriter.writeStringField("recoveryNetworkSecurityGroupId", this.recoveryNetworkSecurityGroupId);
+        jsonWriter.writeBooleanField("enableAcceleratedNetworkingOnRecovery",
+            this.enableAcceleratedNetworkingOnRecovery);
+        jsonWriter.writeStringField("tfoNetworkSecurityGroupId", this.tfoNetworkSecurityGroupId);
+        jsonWriter.writeBooleanField("enableAcceleratedNetworkingOnTfo", this.enableAcceleratedNetworkingOnTfo);
+        jsonWriter.writeStringField("recoveryNicName", this.recoveryNicName);
+        jsonWriter.writeStringField("recoveryNicResourceGroupName", this.recoveryNicResourceGroupName);
+        jsonWriter.writeBooleanField("reuseExistingNic", this.reuseExistingNic);
+        jsonWriter.writeStringField("tfoNicName", this.tfoNicName);
+        jsonWriter.writeStringField("tfoNicResourceGroupName", this.tfoNicResourceGroupName);
+        jsonWriter.writeBooleanField("tfoReuseExistingNic", this.tfoReuseExistingNic);
+        jsonWriter.writeStringField("targetNicName", this.targetNicName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMNicInputDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMNicInputDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMNicInputDetails.
+     */
+    public static VMNicInputDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMNicInputDetails deserializedVMNicInputDetails = new VMNicInputDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nicId".equals(fieldName)) {
+                    deserializedVMNicInputDetails.nicId = reader.getString();
+                } else if ("ipConfigs".equals(fieldName)) {
+                    List<IpConfigInputDetails> ipConfigs
+                        = reader.readArray(reader1 -> IpConfigInputDetails.fromJson(reader1));
+                    deserializedVMNicInputDetails.ipConfigs = ipConfigs;
+                } else if ("selectionType".equals(fieldName)) {
+                    deserializedVMNicInputDetails.selectionType = reader.getString();
+                } else if ("recoveryNetworkSecurityGroupId".equals(fieldName)) {
+                    deserializedVMNicInputDetails.recoveryNetworkSecurityGroupId = reader.getString();
+                } else if ("enableAcceleratedNetworkingOnRecovery".equals(fieldName)) {
+                    deserializedVMNicInputDetails.enableAcceleratedNetworkingOnRecovery
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("tfoNetworkSecurityGroupId".equals(fieldName)) {
+                    deserializedVMNicInputDetails.tfoNetworkSecurityGroupId = reader.getString();
+                } else if ("enableAcceleratedNetworkingOnTfo".equals(fieldName)) {
+                    deserializedVMNicInputDetails.enableAcceleratedNetworkingOnTfo
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recoveryNicName".equals(fieldName)) {
+                    deserializedVMNicInputDetails.recoveryNicName = reader.getString();
+                } else if ("recoveryNicResourceGroupName".equals(fieldName)) {
+                    deserializedVMNicInputDetails.recoveryNicResourceGroupName = reader.getString();
+                } else if ("reuseExistingNic".equals(fieldName)) {
+                    deserializedVMNicInputDetails.reuseExistingNic = reader.getNullable(JsonReader::getBoolean);
+                } else if ("tfoNicName".equals(fieldName)) {
+                    deserializedVMNicInputDetails.tfoNicName = reader.getString();
+                } else if ("tfoNicResourceGroupName".equals(fieldName)) {
+                    deserializedVMNicInputDetails.tfoNicResourceGroupName = reader.getString();
+                } else if ("tfoReuseExistingNic".equals(fieldName)) {
+                    deserializedVMNicInputDetails.tfoReuseExistingNic = reader.getNullable(JsonReader::getBoolean);
+                } else if ("targetNicName".equals(fieldName)) {
+                    deserializedVMNicInputDetails.targetNicName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMNicInputDetails;
+        });
     }
 }

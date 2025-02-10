@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Source and target column mapping details.
  */
 @Fluent
-public final class MapperAttributeMapping {
+public final class MapperAttributeMapping implements JsonSerializable<MapperAttributeMapping> {
     /*
      * Name of the target column.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Type of the CDC attribute mapping. Note: 'Advanced' mapping type is also saved as 'Derived'.
      */
-    @JsonProperty(value = "type")
     private MappingType type;
 
     /*
      * Name of the function used for 'Aggregate' and 'Derived' (except 'Advanced') type mapping.
      */
-    @JsonProperty(value = "functionName")
     private String functionName;
 
     /*
      * Expression used for 'Aggregate' and 'Derived' type mapping.
      */
-    @JsonProperty(value = "expression")
     private String expression;
 
     /*
      * Reference of the source column used in the mapping. It is used for 'Direct' mapping type only.
      */
-    @JsonProperty(value = "attributeReference")
     private MapperAttributeReference attributeReference;
 
     /*
      * List of references for source columns. It is used for 'Derived' and 'Aggregate' type mappings only.
      */
-    @JsonProperty(value = "attributeReferences")
     private List<MapperAttributeReference> attributeReferences;
 
     /**
@@ -195,5 +193,59 @@ public final class MapperAttributeMapping {
         if (attributeReferences() != null) {
             attributeReferences().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("functionName", this.functionName);
+        jsonWriter.writeStringField("expression", this.expression);
+        jsonWriter.writeJsonField("attributeReference", this.attributeReference);
+        jsonWriter.writeArrayField("attributeReferences", this.attributeReferences,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapperAttributeMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapperAttributeMapping if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapperAttributeMapping.
+     */
+    public static MapperAttributeMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapperAttributeMapping deserializedMapperAttributeMapping = new MapperAttributeMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMapperAttributeMapping.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMapperAttributeMapping.type = MappingType.fromString(reader.getString());
+                } else if ("functionName".equals(fieldName)) {
+                    deserializedMapperAttributeMapping.functionName = reader.getString();
+                } else if ("expression".equals(fieldName)) {
+                    deserializedMapperAttributeMapping.expression = reader.getString();
+                } else if ("attributeReference".equals(fieldName)) {
+                    deserializedMapperAttributeMapping.attributeReference = MapperAttributeReference.fromJson(reader);
+                } else if ("attributeReferences".equals(fieldName)) {
+                    List<MapperAttributeReference> attributeReferences
+                        = reader.readArray(reader1 -> MapperAttributeReference.fromJson(reader1));
+                    deserializedMapperAttributeMapping.attributeReferences = attributeReferences;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapperAttributeMapping;
+        });
     }
 }

@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageRcmFailbackPlannedFailoverProviderInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmFailbackPlannedFailoverProviderInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"InMageRcmFailback\",\"recoveryPointType\":\"CrashConsistent\"}")
-                .toObject(InMageRcmFailbackPlannedFailoverProviderInput.class);
+        InMageRcmFailbackPlannedFailoverProviderInput model = BinaryData
+            .fromString("{\"instanceType\":\"InMageRcmFailback\",\"recoveryPointType\":\"CrashConsistent\"}")
+            .toObject(InMageRcmFailbackPlannedFailoverProviderInput.class);
         Assertions.assertEquals(InMageRcmFailbackRecoveryPointType.CRASH_CONSISTENT, model.recoveryPointType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmFailbackPlannedFailoverProviderInput model =
-            new InMageRcmFailbackPlannedFailoverProviderInput()
-                .withRecoveryPointType(InMageRcmFailbackRecoveryPointType.CRASH_CONSISTENT);
+        InMageRcmFailbackPlannedFailoverProviderInput model = new InMageRcmFailbackPlannedFailoverProviderInput()
+            .withRecoveryPointType(InMageRcmFailbackRecoveryPointType.CRASH_CONSISTENT);
         model = BinaryData.fromObject(model).toObject(InMageRcmFailbackPlannedFailoverProviderInput.class);
         Assertions.assertEquals(InMageRcmFailbackRecoveryPointType.CRASH_CONSISTENT, model.recoveryPointType());
     }

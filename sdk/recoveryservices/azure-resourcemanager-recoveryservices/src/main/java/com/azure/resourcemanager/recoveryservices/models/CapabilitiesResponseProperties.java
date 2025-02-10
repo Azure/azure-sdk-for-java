@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Capabilities properties in response. */
+/**
+ * Capabilities properties in response.
+ */
 @Fluent
-public final class CapabilitiesResponseProperties {
+public final class CapabilitiesResponseProperties implements JsonSerializable<CapabilitiesResponseProperties> {
     /*
      * The dnsZones property.
      */
-    @JsonProperty(value = "dnsZones")
     private List<DnsZoneResponse> dnsZones;
 
-    /** Creates an instance of CapabilitiesResponseProperties class. */
+    /**
+     * Creates an instance of CapabilitiesResponseProperties class.
+     */
     public CapabilitiesResponseProperties() {
     }
 
     /**
      * Get the dnsZones property: The dnsZones property.
-     *
+     * 
      * @return the dnsZones value.
      */
     public List<DnsZoneResponse> dnsZones() {
@@ -32,7 +39,7 @@ public final class CapabilitiesResponseProperties {
 
     /**
      * Set the dnsZones property: The dnsZones property.
-     *
+     * 
      * @param dnsZones the dnsZones value to set.
      * @return the CapabilitiesResponseProperties object itself.
      */
@@ -43,12 +50,50 @@ public final class CapabilitiesResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dnsZones() != null) {
             dnsZones().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dnsZones", this.dnsZones, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilitiesResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilitiesResponseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapabilitiesResponseProperties.
+     */
+    public static CapabilitiesResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilitiesResponseProperties deserializedCapabilitiesResponseProperties
+                = new CapabilitiesResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dnsZones".equals(fieldName)) {
+                    List<DnsZoneResponse> dnsZones = reader.readArray(reader1 -> DnsZoneResponse.fromJson(reader1));
+                    deserializedCapabilitiesResponseProperties.dnsZones = dnsZones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilitiesResponseProperties;
+        });
     }
 }

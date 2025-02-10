@@ -21,8 +21,10 @@ public final class ExposureControlGetFeatureValueByFactorySamples {
      */
     public static void
         exposureControlGetFeatureValueByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.exposureControls().getFeatureValueByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac").withFeatureType("Feature"),
-            com.azure.core.util.Context.NONE);
+        manager.exposureControls()
+            .getFeatureValueByFactoryWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
+                    .withFeatureType("Feature"),
+                com.azure.core.util.Context.NONE);
     }
 }

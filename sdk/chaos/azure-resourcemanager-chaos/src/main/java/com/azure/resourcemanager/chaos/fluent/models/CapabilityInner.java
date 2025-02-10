@@ -7,30 +7,50 @@ package com.azure.resourcemanager.chaos.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Model that represents a Capability resource. */
+/**
+ * Model that represents a Capability resource.
+ */
 @Immutable
 public final class CapabilityInner extends ProxyResource {
     /*
      * The standard system metadata of a resource type.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The properties of a capability resource.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityProperties innerProperties;
 
-    /** Creates an instance of CapabilityInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CapabilityInner class.
+     */
     public CapabilityInner() {
     }
 
     /**
      * Get the systemData property: The standard system metadata of a resource type.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -39,7 +59,7 @@ public final class CapabilityInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: The properties of a capability resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CapabilityProperties innerProperties() {
@@ -47,8 +67,38 @@ public final class CapabilityInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the publisher property: String of the Publisher that this Capability extends.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -57,7 +107,7 @@ public final class CapabilityInner extends ProxyResource {
 
     /**
      * Get the targetType property: String of the Target Type that this Capability extends.
-     *
+     * 
      * @return the targetType value.
      */
     public String targetType() {
@@ -66,7 +116,7 @@ public final class CapabilityInner extends ProxyResource {
 
     /**
      * Get the description property: Localized string of the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -75,7 +125,7 @@ public final class CapabilityInner extends ProxyResource {
 
     /**
      * Get the parametersSchema property: URL to retrieve JSON schema of the Capability parameters.
-     *
+     * 
      * @return the parametersSchema value.
      */
     public String parametersSchema() {
@@ -84,7 +134,7 @@ public final class CapabilityInner extends ProxyResource {
 
     /**
      * Get the urn property: String of the URN for this Capability Type.
-     *
+     * 
      * @return the urn value.
      */
     public String urn() {
@@ -93,12 +143,56 @@ public final class CapabilityInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilityInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilityInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CapabilityInner.
+     */
+    public static CapabilityInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilityInner deserializedCapabilityInner = new CapabilityInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCapabilityInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCapabilityInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCapabilityInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCapabilityInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCapabilityInner.innerProperties = CapabilityProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilityInner;
+        });
     }
 }

@@ -5,28 +5,47 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A rule metric data source. The discriminator value is always RuleMetricDataSource in this case. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
-@JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource")
+/**
+ * A rule metric data source. The discriminator value is always RuleMetricDataSource in this case.
+ */
 @Fluent
 public final class RuleMetricDataSource extends RuleDataSource {
     /*
+     * specifies the type of data source. There are two types of rule data sources: RuleMetricDataSource and
+     * RuleManagementEventDataSource
+     */
+    private String odataType = "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource";
+
+    /*
      * the name of the metric that defines what the rule monitors.
      */
-    @JsonProperty(value = "metricName")
     private String metricName;
 
-    /** Creates an instance of RuleMetricDataSource class. */
+    /**
+     * Creates an instance of RuleMetricDataSource class.
+     */
     public RuleMetricDataSource() {
     }
 
     /**
+     * Get the odataType property: specifies the type of data source. There are two types of rule data sources:
+     * RuleMetricDataSource and RuleManagementEventDataSource.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the metricName property: the name of the metric that defines what the rule monitors.
-     *
+     * 
      * @return the metricName value.
      */
     public String metricName() {
@@ -35,7 +54,7 @@ public final class RuleMetricDataSource extends RuleDataSource {
 
     /**
      * Set the metricName property: the name of the metric that defines what the rule monitors.
-     *
+     * 
      * @param metricName the metricName value to set.
      * @return the RuleMetricDataSource object itself.
      */
@@ -44,28 +63,36 @@ public final class RuleMetricDataSource extends RuleDataSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleMetricDataSource withResourceUri(String resourceUri) {
         super.withResourceUri(resourceUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleMetricDataSource withLegacyResourceId(String legacyResourceId) {
         super.withLegacyResourceId(legacyResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleMetricDataSource withResourceLocation(String resourceLocation) {
         super.withResourceLocation(resourceLocation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleMetricDataSource withMetricNamespace(String metricNamespace) {
         super.withMetricNamespace(metricNamespace);
@@ -74,11 +101,62 @@ public final class RuleMetricDataSource extends RuleDataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceUri", resourceUri());
+        jsonWriter.writeStringField("legacyResourceId", legacyResourceId());
+        jsonWriter.writeStringField("resourceLocation", resourceLocation());
+        jsonWriter.writeStringField("metricNamespace", metricNamespace());
+        jsonWriter.writeStringField("odata.type", this.odataType);
+        jsonWriter.writeStringField("metricName", this.metricName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RuleMetricDataSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RuleMetricDataSource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RuleMetricDataSource.
+     */
+    public static RuleMetricDataSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RuleMetricDataSource deserializedRuleMetricDataSource = new RuleMetricDataSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceUri".equals(fieldName)) {
+                    deserializedRuleMetricDataSource.withResourceUri(reader.getString());
+                } else if ("legacyResourceId".equals(fieldName)) {
+                    deserializedRuleMetricDataSource.withLegacyResourceId(reader.getString());
+                } else if ("resourceLocation".equals(fieldName)) {
+                    deserializedRuleMetricDataSource.withResourceLocation(reader.getString());
+                } else if ("metricNamespace".equals(fieldName)) {
+                    deserializedRuleMetricDataSource.withMetricNamespace(reader.getString());
+                } else if ("odata.type".equals(fieldName)) {
+                    deserializedRuleMetricDataSource.odataType = reader.getString();
+                } else if ("metricName".equals(fieldName)) {
+                    deserializedRuleMetricDataSource.metricName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleMetricDataSource;
+        });
     }
 }

@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobType. */
+/**
+ * Describes the type of the job. Valid modes are `Cloud` and 'Edge'.
+ */
 public final class JobType extends ExpandableStringEnum<JobType> {
-    /** Static value Cloud for JobType. */
+    /**
+     * Static value Cloud for JobType.
+     */
     public static final JobType CLOUD = fromString("Cloud");
 
-    /** Static value Edge for JobType. */
+    /**
+     * Static value Edge for JobType.
+     */
     public static final JobType EDGE = fromString("Edge");
 
     /**
+     * Creates a new instance of JobType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobType() {
+    }
+
+    /**
      * Creates or finds a JobType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobType.
      */
-    @JsonCreator
     public static JobType fromString(String name) {
         return fromString(name, JobType.class);
     }
 
-    /** @return known JobType values. */
+    /**
+     * Gets known JobType values.
+     * 
+     * @return known JobType values.
+     */
     public static Collection<JobType> values() {
         return values(JobType.class);
     }

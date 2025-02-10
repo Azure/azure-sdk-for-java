@@ -17,8 +17,7 @@ public final class ConnectedEnvironmentStoragesCollectionImpl implements Connect
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    ConnectedEnvironmentStoragesCollectionImpl(
-        ConnectedEnvironmentStoragesCollectionInner innerObject,
+    ConnectedEnvironmentStoragesCollectionImpl(ConnectedEnvironmentStoragesCollectionInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class ConnectedEnvironmentStoragesCollectionImpl implements Connect
     public List<ConnectedEnvironmentStorage> value() {
         List<ConnectedEnvironmentStorageInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ConnectedEnvironmentStorageImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ConnectedEnvironmentStorageImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

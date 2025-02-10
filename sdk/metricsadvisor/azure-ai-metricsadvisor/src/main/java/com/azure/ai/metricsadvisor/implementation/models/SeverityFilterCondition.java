@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The SeverityFilterCondition model.
@@ -73,11 +72,14 @@ public final class SeverityFilterCondition implements JsonSerializable<SeverityF
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("min", Objects.toString(this.min, null));
-        jsonWriter.writeStringField("max", Objects.toString(this.max, null));
+        jsonWriter.writeStringField("min", this.min == null ? null : this.min.toString());
+        jsonWriter.writeStringField("max", this.max == null ? null : this.max.toString());
         return jsonWriter.writeEndObject();
     }
 

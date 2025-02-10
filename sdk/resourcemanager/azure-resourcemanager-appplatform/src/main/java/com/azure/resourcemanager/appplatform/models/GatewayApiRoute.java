@@ -5,77 +5,74 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** API route config of the Spring Cloud Gateway. */
+/**
+ * API route config of the Spring Cloud Gateway.
+ */
 @Fluent
-public final class GatewayApiRoute {
+public final class GatewayApiRoute implements JsonSerializable<GatewayApiRoute> {
     /*
-     * A title, will be applied to methods in the generated OpenAPI
-     * documentation.
+     * A title, will be applied to methods in the generated OpenAPI documentation.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
-     * A description, will be applied to methods in the generated OpenAPI
-     * documentation.
+     * A description, will be applied to methods in the generated OpenAPI documentation.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Full uri, will override `appName`.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * Enable sso validation.
      */
-    @JsonProperty(value = "ssoEnabled")
     private Boolean ssoEnabled;
 
     /*
-     * Pass currently-authenticated user's identity token to application
-     * service, default is 'false'
+     * Pass currently-authenticated user's identity token to application service, default is 'false'
      */
-    @JsonProperty(value = "tokenRelay")
     private Boolean tokenRelay;
 
     /*
-     * A number of conditions to evaluate a route for each request. Each
-     * predicate may be evaluated against request headers and parameter values.
-     * All of the predicates associated with a route must evaluate to true for
-     * the route to be matched to the request.
+     * A number of conditions to evaluate a route for each request. Each predicate may be evaluated against request
+     * headers and parameter values. All of the predicates associated with a route must evaluate to true for the route
+     * to be matched to the request.
      */
-    @JsonProperty(value = "predicates")
     private List<String> predicates;
 
     /*
-     * To modify the request before sending it to the target endpoint, or the
-     * received response.
+     * To modify the request before sending it to the target endpoint, or the received response.
      */
-    @JsonProperty(value = "filters")
     private List<String> filters;
 
     /*
      * Route processing order.
      */
-    @JsonProperty(value = "order")
     private Integer order;
 
     /*
-     * Classification tags, will be applied to methods in the generated OpenAPI
-     * documentation.
+     * Classification tags, will be applied to methods in the generated OpenAPI documentation.
      */
-    @JsonProperty(value = "tags")
     private List<String> tags;
 
     /**
+     * Creates an instance of GatewayApiRoute class.
+     */
+    public GatewayApiRoute() {
+    }
+
+    /**
      * Get the title property: A title, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -84,7 +81,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the title property: A title, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @param title the title value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -95,7 +92,7 @@ public final class GatewayApiRoute {
 
     /**
      * Get the description property: A description, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -104,7 +101,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the description property: A description, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @param description the description value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -115,7 +112,7 @@ public final class GatewayApiRoute {
 
     /**
      * Get the uri property: Full uri, will override `appName`.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -124,7 +121,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the uri property: Full uri, will override `appName`.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -135,7 +132,7 @@ public final class GatewayApiRoute {
 
     /**
      * Get the ssoEnabled property: Enable sso validation.
-     *
+     * 
      * @return the ssoEnabled value.
      */
     public Boolean ssoEnabled() {
@@ -144,7 +141,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the ssoEnabled property: Enable sso validation.
-     *
+     * 
      * @param ssoEnabled the ssoEnabled value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -156,7 +153,7 @@ public final class GatewayApiRoute {
     /**
      * Get the tokenRelay property: Pass currently-authenticated user's identity token to application service, default
      * is 'false'.
-     *
+     * 
      * @return the tokenRelay value.
      */
     public Boolean tokenRelay() {
@@ -166,7 +163,7 @@ public final class GatewayApiRoute {
     /**
      * Set the tokenRelay property: Pass currently-authenticated user's identity token to application service, default
      * is 'false'.
-     *
+     * 
      * @param tokenRelay the tokenRelay value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -179,7 +176,7 @@ public final class GatewayApiRoute {
      * Get the predicates property: A number of conditions to evaluate a route for each request. Each predicate may be
      * evaluated against request headers and parameter values. All of the predicates associated with a route must
      * evaluate to true for the route to be matched to the request.
-     *
+     * 
      * @return the predicates value.
      */
     public List<String> predicates() {
@@ -190,7 +187,7 @@ public final class GatewayApiRoute {
      * Set the predicates property: A number of conditions to evaluate a route for each request. Each predicate may be
      * evaluated against request headers and parameter values. All of the predicates associated with a route must
      * evaluate to true for the route to be matched to the request.
-     *
+     * 
      * @param predicates the predicates value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -202,7 +199,7 @@ public final class GatewayApiRoute {
     /**
      * Get the filters property: To modify the request before sending it to the target endpoint, or the received
      * response.
-     *
+     * 
      * @return the filters value.
      */
     public List<String> filters() {
@@ -212,7 +209,7 @@ public final class GatewayApiRoute {
     /**
      * Set the filters property: To modify the request before sending it to the target endpoint, or the received
      * response.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -223,7 +220,7 @@ public final class GatewayApiRoute {
 
     /**
      * Get the order property: Route processing order.
-     *
+     * 
      * @return the order value.
      */
     public Integer order() {
@@ -232,7 +229,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the order property: Route processing order.
-     *
+     * 
      * @param order the order value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -243,7 +240,7 @@ public final class GatewayApiRoute {
 
     /**
      * Get the tags property: Classification tags, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @return the tags value.
      */
     public List<String> tags() {
@@ -252,7 +249,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the tags property: Classification tags, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -263,9 +260,72 @@ public final class GatewayApiRoute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeBooleanField("ssoEnabled", this.ssoEnabled);
+        jsonWriter.writeBooleanField("tokenRelay", this.tokenRelay);
+        jsonWriter.writeArrayField("predicates", this.predicates, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("order", this.order);
+        jsonWriter.writeArrayField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayApiRoute from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayApiRoute if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayApiRoute.
+     */
+    public static GatewayApiRoute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayApiRoute deserializedGatewayApiRoute = new GatewayApiRoute();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedGatewayApiRoute.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedGatewayApiRoute.description = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedGatewayApiRoute.uri = reader.getString();
+                } else if ("ssoEnabled".equals(fieldName)) {
+                    deserializedGatewayApiRoute.ssoEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("tokenRelay".equals(fieldName)) {
+                    deserializedGatewayApiRoute.tokenRelay = reader.getNullable(JsonReader::getBoolean);
+                } else if ("predicates".equals(fieldName)) {
+                    List<String> predicates = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayApiRoute.predicates = predicates;
+                } else if ("filters".equals(fieldName)) {
+                    List<String> filters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayApiRoute.filters = filters;
+                } else if ("order".equals(fieldName)) {
+                    deserializedGatewayApiRoute.order = reader.getNullable(JsonReader::getInt);
+                } else if ("tags".equals(fieldName)) {
+                    List<String> tags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayApiRoute.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayApiRoute;
+        });
     }
 }

@@ -6,71 +6,40 @@ package com.azure.resourcemanager.chaos.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.chaos.ChaosManager;
 import com.azure.resourcemanager.chaos.models.Experiment;
 import com.azure.resourcemanager.chaos.models.ResourceIdentityType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ExperimentsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"qmt\":{\"principalId\":\"8eaacbce-e5db-4f3c-b18c-ab43594f5a98\",\"clientId\":\"c3b4b2cb-021d-40d8-a438-6a9782710eb3\"},\"tmmjihyeozph\":{\"principalId\":\"bb509049-5400-4306-a7de-2dc85ed3eb45\",\"clientId\":\"68fe29b2-59cb-47c8-82d9-3e28f564e238\"}},\"principalId\":\"auyqncygupkv\",\"tenantId\":\"mdscwxqupev\"},\"properties\":{\"provisioningState\":\"Deleting\",\"steps\":[{\"name\":\"totxhojujb\",\"branches\":[{\"name\":\"elmcuvhixbjxyfw\",\"actions\":[]},{\"name\":\"yl\",\"actions\":[]},{\"name\":\"coolsttpkiwkkb\",\"actions\":[]},{\"name\":\"ujrywvtyl\",\"actions\":[]}]},{\"name\":\"fpncurdo\",\"branches\":[{\"name\":\"iithtywu\",\"actions\":[]},{\"name\":\"xcbihw\",\"actions\":[]},{\"name\":\"knfd\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"wjchrdg\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"luudfdlwggytsb\":\"dataumwctondz\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"tov\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"ufxqknpirgnepttw\":\"dataeinqf\",\"mqnrojlpijnkr\":\"datamsniffc\",\"zronasxift\":\"datafrddhcrati\"}}]},\"location\":\"zq\",\"tags\":{\"wesgogczh\":\"f\",\"lgnyhmo\":\"nnxk\",\"h\":\"sxkkg\"},\"id\":\"rghxjb\",\"name\":\"hqxvcxgfrpdsofbs\",\"type\":\"rnsvbuswd\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"azpxdtnkdmkqjjl\":{\"principalId\":\"d3811f85-895d-4f46-8859-2b0865e18fa5\",\"clientId\":\"8d0cdc82-fea6-4658-9bca-584d67b7dfd3\"},\"nvrk\":{\"principalId\":\"ec49a718-d51c-4e71-9106-7f7fed1cc9a0\",\"clientId\":\"a5740e1d-13d0-40cf-8b7c-7a74babb059c\"},\"uaibrebqaaysj\":{\"principalId\":\"f3d93ac3-ea28-4d91-984a-26ab3c46ecc7\",\"clientId\":\"5cf08346-017d-4041-be9d-7d2d19f2286f\"},\"qtnqtt\":{\"principalId\":\"38ad80f7-babd-43ac-bfec-5774032a538f\",\"clientId\":\"1acda986-2887-48ef-a438-2307d03e4195\"}},\"principalId\":\"lwfffi\",\"tenantId\":\"pjpqqmtedltmmji\"},\"properties\":{\"provisioningState\":\"Updating\",\"steps\":[{\"name\":\"zphv\",\"branches\":[{\"name\":\"uyqncygupkvipmd\",\"actions\":[]},{\"name\":\"cwxqu\",\"actions\":[]},{\"name\":\"evzhfsto\",\"actions\":[]}]},{\"name\":\"xhojuj\",\"branches\":[{\"name\":\"pelmcuvhixbjxyf\",\"actions\":[]},{\"name\":\"n\",\"actions\":[]}]},{\"name\":\"lrcoolsttpki\",\"branches\":[{\"name\":\"kbnujr\",\"actions\":[]},{\"name\":\"wvtylbfpncurdo\",\"actions\":[]}]},{\"name\":\"wiithtywub\",\"branches\":[{\"name\":\"bihwqknfdnt\",\"actions\":[]},{\"name\":\"jchrdgoihxumw\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"ond\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"tsbwtovvtgse\":\"dataudfdlwgg\"}}]},\"location\":\"nqfiufxqknpi\",\"tags\":{\"dmqnrojlpij\":\"epttwqmsniff\",\"xfrdd\":\"k\",\"atiz\":\"c\"},\"id\":\"ronasxift\",\"name\":\"zq\",\"type\":\"zh\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ChaosManager manager = ChaosManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Experiment> response
+            = manager.experiments().listByResourceGroup("ixqtn", false, "tezlwff", com.azure.core.util.Context.NONE);
 
-        ChaosManager manager =
-            ChaosManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Experiment> response =
-            manager
-                .experiments()
-                .listByResourceGroup("njwmwkpnbsazejj", true, "kagfhsxtt", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("nqfiufxqknpi", response.iterator().next().location());
-        Assertions.assertEquals("epttwqmsniff", response.iterator().next().tags().get("dmqnrojlpij"));
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("zphv", response.iterator().next().steps().get(0).name());
-        Assertions.assertEquals("uyqncygupkvipmd", response.iterator().next().steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("ond", response.iterator().next().selectors().get(0).id());
+        Assertions.assertEquals("zq", response.iterator().next().location());
+        Assertions.assertEquals("f", response.iterator().next().tags().get("wesgogczh"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("totxhojujb", response.iterator().next().steps().get(0).name());
+        Assertions.assertEquals("elmcuvhixbjxyfw", response.iterator().next().steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("wjchrdg", response.iterator().next().selectors().get(0).id());
     }
 }

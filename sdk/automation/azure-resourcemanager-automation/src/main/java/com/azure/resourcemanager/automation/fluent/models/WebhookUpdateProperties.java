@@ -5,41 +5,47 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The properties of the update webhook. */
+/**
+ * The properties of the update webhook.
+ */
 @Fluent
-public final class WebhookUpdateProperties {
+public final class WebhookUpdateProperties implements JsonSerializable<WebhookUpdateProperties> {
     /*
      * Gets or sets the value of the enabled flag of webhook.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * Gets or sets the name of the hybrid worker group the webhook job will run on.
      */
-    @JsonProperty(value = "runOn")
     private String runOn;
 
     /*
      * Gets or sets the parameters of the job.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * Gets or sets the description of the webhook.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of WebhookUpdateProperties class.
+     */
+    public WebhookUpdateProperties() {
+    }
+
+    /**
      * Get the isEnabled property: Gets or sets the value of the enabled flag of webhook.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -48,7 +54,7 @@ public final class WebhookUpdateProperties {
 
     /**
      * Set the isEnabled property: Gets or sets the value of the enabled flag of webhook.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the WebhookUpdateProperties object itself.
      */
@@ -59,7 +65,7 @@ public final class WebhookUpdateProperties {
 
     /**
      * Get the runOn property: Gets or sets the name of the hybrid worker group the webhook job will run on.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -68,7 +74,7 @@ public final class WebhookUpdateProperties {
 
     /**
      * Set the runOn property: Gets or sets the name of the hybrid worker group the webhook job will run on.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the WebhookUpdateProperties object itself.
      */
@@ -79,7 +85,7 @@ public final class WebhookUpdateProperties {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -88,7 +94,7 @@ public final class WebhookUpdateProperties {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the WebhookUpdateProperties object itself.
      */
@@ -99,7 +105,7 @@ public final class WebhookUpdateProperties {
 
     /**
      * Get the description property: Gets or sets the description of the webhook.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -108,7 +114,7 @@ public final class WebhookUpdateProperties {
 
     /**
      * Set the description property: Gets or sets the description of the webhook.
-     *
+     * 
      * @param description the description value to set.
      * @return the WebhookUpdateProperties object itself.
      */
@@ -119,9 +125,55 @@ public final class WebhookUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("runOn", this.runOn);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebhookUpdateProperties.
+     */
+    public static WebhookUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookUpdateProperties deserializedWebhookUpdateProperties = new WebhookUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedWebhookUpdateProperties.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("runOn".equals(fieldName)) {
+                    deserializedWebhookUpdateProperties.runOn = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebhookUpdateProperties.parameters = parameters;
+                } else if ("description".equals(fieldName)) {
+                    deserializedWebhookUpdateProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookUpdateProperties;
+        });
     }
 }

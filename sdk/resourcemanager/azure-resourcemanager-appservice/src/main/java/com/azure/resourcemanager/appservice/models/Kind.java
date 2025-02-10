@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class Kind extends ExpandableStringEnum<Kind> {
      * @param name a name to look for.
      * @return the corresponding Kind.
      */
-    @JsonCreator
     public static Kind fromString(String name) {
         return fromString(name, Kind.class);
     }

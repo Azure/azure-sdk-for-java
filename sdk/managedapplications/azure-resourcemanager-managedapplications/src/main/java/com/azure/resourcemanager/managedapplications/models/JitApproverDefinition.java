@@ -6,36 +6,41 @@ package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** JIT approver definition. */
+/**
+ * JIT approver definition.
+ */
 @Fluent
-public final class JitApproverDefinition {
+public final class JitApproverDefinition implements JsonSerializable<JitApproverDefinition> {
     /*
      * The approver service principal Id.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The approver type.
      */
-    @JsonProperty(value = "type")
     private JitApproverType type;
 
     /*
      * The approver display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of JitApproverDefinition class. */
+    /**
+     * Creates an instance of JitApproverDefinition class.
+     */
     public JitApproverDefinition() {
     }
 
     /**
      * Get the id property: The approver service principal Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +49,7 @@ public final class JitApproverDefinition {
 
     /**
      * Set the id property: The approver service principal Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the JitApproverDefinition object itself.
      */
@@ -55,7 +60,7 @@ public final class JitApproverDefinition {
 
     /**
      * Get the type property: The approver type.
-     *
+     * 
      * @return the type value.
      */
     public JitApproverType type() {
@@ -64,7 +69,7 @@ public final class JitApproverDefinition {
 
     /**
      * Set the type property: The approver type.
-     *
+     * 
      * @param type the type value to set.
      * @return the JitApproverDefinition object itself.
      */
@@ -75,7 +80,7 @@ public final class JitApproverDefinition {
 
     /**
      * Get the displayName property: The approver display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -84,7 +89,7 @@ public final class JitApproverDefinition {
 
     /**
      * Set the displayName property: The approver display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the JitApproverDefinition object itself.
      */
@@ -95,16 +100,58 @@ public final class JitApproverDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model JitApproverDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model JitApproverDefinition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JitApproverDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JitApproverDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JitApproverDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JitApproverDefinition.
+     */
+    public static JitApproverDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JitApproverDefinition deserializedJitApproverDefinition = new JitApproverDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJitApproverDefinition.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJitApproverDefinition.type = JitApproverType.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedJitApproverDefinition.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJitApproverDefinition;
+        });
+    }
 }

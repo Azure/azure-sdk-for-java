@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the cost details operation. */
+/**
+ * The status of the cost details operation.
+ */
 public final class CostDetailsStatusType extends ExpandableStringEnum<CostDetailsStatusType> {
-    /** Static value Completed for CostDetailsStatusType. */
+    /**
+     * Static value Completed for CostDetailsStatusType.
+     */
     public static final CostDetailsStatusType COMPLETED = fromString("Completed");
 
-    /** Static value NoDataFound for CostDetailsStatusType. */
+    /**
+     * Static value NoDataFound for CostDetailsStatusType.
+     */
     public static final CostDetailsStatusType NO_DATA_FOUND = fromString("NoDataFound");
 
-    /** Static value Failed for CostDetailsStatusType. */
+    /**
+     * Static value Failed for CostDetailsStatusType.
+     */
     public static final CostDetailsStatusType FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of CostDetailsStatusType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class CostDetailsStatusType extends ExpandableStringEnum<CostDetail
 
     /**
      * Creates or finds a CostDetailsStatusType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CostDetailsStatusType.
      */
-    @JsonCreator
     public static CostDetailsStatusType fromString(String name) {
         return fromString(name, CostDetailsStatusType.class);
     }
 
     /**
      * Gets known CostDetailsStatusType values.
-     *
+     * 
      * @return known CostDetailsStatusType values.
      */
     public static Collection<CostDetailsStatusType> values() {

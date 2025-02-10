@@ -46,8 +46,7 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
 
     abstract void testBlobStorage(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
-    protected void validateSqlServerFeedWithCredential(DataFeed dataFeed,
-                                                       DataSourceCredentialEntity credential) {
+    protected void validateSqlServerFeedWithCredential(DataFeed dataFeed, DataSourceCredentialEntity credential) {
         Assertions.assertTrue(dataFeed.getSource() instanceof SqlServerDataFeedSource);
         if (credential instanceof DataSourceSqlServerConnectionString) {
             Assertions.assertTrue(dataFeed.getSource() instanceof SqlServerDataFeedSource);
@@ -70,8 +69,7 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
         }
     }
 
-    protected void validateDataLakeFeedWithCredential(DataFeed dataFeed,
-                                                       DataSourceCredentialEntity credential) {
+    protected void validateDataLakeFeedWithCredential(DataFeed dataFeed, DataSourceCredentialEntity credential) {
         Assertions.assertTrue(dataFeed.getSource() instanceof AzureDataLakeStorageGen2DataFeedSource);
         if (credential instanceof DataSourceDataLakeGen2SharedKey) {
             Assertions.assertEquals(credential.getId(),
@@ -93,8 +91,7 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
         }
     }
 
-    protected void validateDataExplorerFeedWithCredential(DataFeed dataFeed,
-                                                          DataSourceCredentialEntity credential) {
+    protected void validateDataExplorerFeedWithCredential(DataFeed dataFeed, DataSourceCredentialEntity credential) {
         Assertions.assertTrue(dataFeed.getSource() instanceof AzureDataExplorerDataFeedSource);
         if (credential instanceof DataSourceServicePrincipal) {
             Assertions.assertEquals(credential.getId(),
@@ -112,12 +109,11 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
     }
 
     protected DataFeed initDataFeed() {
-        return new DataFeed().setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric("cost").setDisplayName("cost"),
-            new DataFeedMetric("revenue").setDisplayName("revenue")))
-            .setDimensions(Arrays.asList(
-                new DataFeedDimension("region").setDisplayName("region"),
-                new DataFeedDimension("category").setDisplayName("category"))))
+        return new DataFeed()
+            .setSchema(new DataFeedSchema(Arrays.asList(new DataFeedMetric("cost").setDisplayName("cost"),
+                new DataFeedMetric("revenue").setDisplayName("revenue")))
+                    .setDimensions(Arrays.asList(new DataFeedDimension("region").setDisplayName("region"),
+                        new DataFeedDimension("category").setDisplayName("category"))))
             .setName("java_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));
@@ -142,18 +138,14 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
     }
 
     protected DataSourceServicePrincipalInKeyVault initDatasourceServicePrincipalInKeyVault() {
-        final StringBuilder kvEndpoint = new StringBuilder()
-            .append("https://")
-            .append(UUID.randomUUID())
-            .append(".vault")
-            .append(".azure.net");
+        final StringBuilder kvEndpoint
+            = new StringBuilder().append("https://").append(UUID.randomUUID()).append(".vault").append(".azure.net");
         final String name = SP_IN_KV_DATASOURCE_CRED_NAME_PREFIX + UUID.randomUUID();
         final String cId = "e70248b2-bffa-11eb-8529-0242ac130003";
         final String tId = "45389ded-5e07-4e52-b225-4ae8f905afb5";
         final String mockSecr = "45389ded-5e07-4e52-b225-4ae8f905afb5";
 
-        return new DataSourceServicePrincipalInKeyVault()
-            .setName(name)
+        return new DataSourceServicePrincipalInKeyVault().setName(name)
             .setKeyVaultForDataSourceSecrets(kvEndpoint.toString(), cId, mockSecr)
             .setTenantId(tId)
             .setSecretNameForDataSourceClientId("DSClientID_1")

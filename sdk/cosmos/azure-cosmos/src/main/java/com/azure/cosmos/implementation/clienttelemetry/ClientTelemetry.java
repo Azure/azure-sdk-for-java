@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.clienttelemetry;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -36,8 +36,6 @@ import org.HdrHistogram.DoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -51,7 +49,6 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -98,9 +95,6 @@ public class ClientTelemetry {
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final HttpClient httpClient;
     private final HttpClient metadataHttpClient;
-    private final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
-        new CosmosDaemonThreadFactory("ClientTelemetry-" + instanceCount.incrementAndGet()));
-    private final Scheduler scheduler = Schedulers.fromExecutor(scheduledExecutorService);
     private static final Logger logger = LoggerFactory.getLogger(ClientTelemetry.class);
     private volatile boolean isClosed;
 
@@ -111,6 +105,13 @@ public class ClientTelemetry {
     private static final double PERCENTILE_999 = 99.9;
     private static final String USER_AGENT = Utils.getUserAgent();
     private final int clientTelemetrySchedulingSec;
+
+    //IMDS Constants
+    public static final String IMDS_AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
+    public static final Duration IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5);
+    public static final Duration IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
+    public static final Duration IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(5);
+    public static final int IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE = 5;
 
     private final IAuthorizationTokenProvider tokenProvider;
     private final String globalDatabaseAccountName;
@@ -212,17 +213,17 @@ public class ClientTelemetry {
         return this.clientMetricsEnabled;
     }
 
-    public void init() {
-        loadAzureVmMetaData();
-
-        if (this.isClientTelemetryEnabled()) {
-            sendClientTelemetry().subscribe();
-        }
+    public Mono<?> init() {
+        return loadAzureVmMetaData()
+            .doOnTerminate(() -> {
+                if (this.isClientTelemetryEnabled()) {
+                    sendClientTelemetry().subscribe();
+                }
+            });
     }
 
     public void close() {
         this.isClosed = true;
-        this.scheduledExecutorService.shutdown();
         logger.debug("GlobalEndpointManager closed.");
     }
 
@@ -244,9 +245,10 @@ public class ClientTelemetry {
     private HttpClient getHttpClientForIMDS() {
         // Proxy is not supported for azure instance metadata service
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
-                .withMaxIdleConnectionTimeout(IMDSConfig.DEFAULT_IDLE_CONNECTION_TIMEOUT)
-                .withPoolSize(IMDSConfig.DEFAULT_MAX_CONNECTION_POOL_SIZE)
-                .withNetworkRequestTimeout(IMDSConfig.DEFAULT_NETWORK_REQUEST_TIMEOUT);
+                .withMaxIdleConnectionTimeout(IMDS_DEFAULT_IDLE_CONNECTION_TIMEOUT)
+                .withPoolSize(IMDS_DEFAULT_MAX_CONNECTION_POOL_SIZE)
+                .withNetworkRequestTimeout(IMDS_DEFAULT_NETWORK_REQUEST_TIMEOUT)
+                .withConnectionAcquireTimeout(IMDS_DEFAULT_CONNECTION_ACQUIRE_TIMEOUT);
 
         return HttpClient.createFixed(httpClientConfig);
     }
@@ -279,8 +281,9 @@ public class ClientTelemetry {
                         URI targetEndpoint = new URI(endpoint);
                         ByteBuffer byteBuffer =
                             InternalObjectNode.serializeJsonToByteBuffer(this.clientTelemetryInfo,
-                                ClientTelemetry.OBJECT_MAPPER,
-                                null);
+                                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                                null,
+                                false);
                         byte[] tempBuffer = RxDocumentServiceRequest.toByteArray(byteBuffer);
                         Map<String, String> headers = new HashMap<>();
                         String date = Utils.nowAsRFC1123();
@@ -311,8 +314,7 @@ public class ClientTelemetry {
                         HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, targetEndpoint,
                             targetEndpoint.getPort(), httpHeaders)
                             .withBody(tempBuffer);
-                        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
-                            Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
+                        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
                         return httpResponseMono.flatMap(response -> {
                             if (response.statusCode() != HttpConstants.StatusCodes.NO_CONTENT) {
                                 logger.error("Client telemetry request did not succeeded, status code {}, request body {}",
@@ -345,7 +347,7 @@ public class ClientTelemetry {
                     ". Exception: ", ex);
                 clearDataForNextRun();
                 return this.sendClientTelemetry();
-            }).subscribeOn(scheduler);
+            }).subscribeOn(CosmosSchedulers.CLIENT_TELEMETRY_BOUNDED_ELASTIC);
     }
 
     private void populateAzureVmMetaData(AzureVMMetadata azureVMMetadata) {
@@ -355,20 +357,24 @@ public class ClientTelemetry {
             "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
     }
 
-    private void loadAzureVmMetaData() {
+    private Mono<?> loadAzureVmMetaData() {
+        if (Configs.shouldDisableIMDSAccess()) {
+            logger.info("Access to IMDS to get Azure VM metadata is disabled");
+            return Mono.empty();
+        }
         AzureVMMetadata metadataSnapshot = azureVmMetaDataSingleton.get();
 
         if (metadataSnapshot != null) {
             this.populateAzureVmMetaData(metadataSnapshot);
-            return;
+            return Mono.empty();
         }
 
         URI targetEndpoint = null;
         try {
-            targetEndpoint = new URI(IMDSConfig.AZURE_VM_METADATA);
+            targetEndpoint = new URI(IMDS_AZURE_VM_METADATA);
         } catch (URISyntaxException ex) {
             logger.info("Unable to parse azure vm metadata url");
-            return;
+            return Mono.empty();
         }
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Metadata", "true");
@@ -376,16 +382,19 @@ public class ClientTelemetry {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(),
             httpHeaders);
         Mono<HttpResponse> httpResponseMono = this.metadataHttpClient.send(httpRequest);
-        httpResponseMono
-            .flatMap(response -> response.bodyAsString()).map(metadataJson -> parse(metadataJson,
-                AzureVMMetadata.class)).doOnSuccess(metadata -> {
+
+        return httpResponseMono
+            .flatMap(HttpResponse::bodyAsString)
+            .map(metadataJson -> parse(metadataJson,
+                AzureVMMetadata.class))
+            .doOnSuccess(metadata -> {
                 azureVmMetaDataSingleton.compareAndSet(null, metadata);
                 this.populateAzureVmMetaData(metadata);
             }).onErrorResume(throwable -> {
                 logger.info("Client is not on azure vm");
                 logger.debug("Unable to get azure vm metadata", throwable);
                 return Mono.empty();
-            }).subscribe();
+            });
     }
 
     private static <T> T parse(String itemResponseBodyAsString, Class<T> itemClassType) {
@@ -455,12 +464,5 @@ public class ClientTelemetry {
         percentile.put(PERCENTILE_99, copyHistogram.getValueAtPercentile(PERCENTILE_99));
         percentile.put(PERCENTILE_999, copyHistogram.getValueAtPercentile(PERCENTILE_999));
         payload.getMetricInfo().setPercentiles(percentile);
-    }
-
-    static class IMDSConfig {
-        private static String AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
-        private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
-        private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
-        private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
     }
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.SecureScoreItemInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of secure scores. */
+/**
+ * List of secure scores.
+ */
 @Immutable
-public final class SecureScoresList {
+public final class SecureScoresList implements JsonSerializable<SecureScoresList> {
     /*
      * Collection of secure scores in this page
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SecureScoreItemInner> value;
 
     /*
      * The URI to fetch the next page.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SecureScoresList class. */
+    /**
+     * Creates an instance of SecureScoresList class.
+     */
     public SecureScoresList() {
     }
 
     /**
      * Get the value property: Collection of secure scores in this page.
-     *
+     * 
      * @return the value value.
      */
     public List<SecureScoreItemInner> value() {
@@ -39,7 +45,7 @@ public final class SecureScoresList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class SecureScoresList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecureScoresList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecureScoresList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecureScoresList.
+     */
+    public static SecureScoresList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecureScoresList deserializedSecureScoresList = new SecureScoresList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SecureScoreItemInner> value
+                        = reader.readArray(reader1 -> SecureScoreItemInner.fromJson(reader1));
+                    deserializedSecureScoresList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSecureScoresList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecureScoresList;
+        });
     }
 }

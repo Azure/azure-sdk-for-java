@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Encryption at rest settings for disk restore point. It is an optional property that can be specified in the input
  * while creating a restore point.
  */
 @Fluent
-public final class RestorePointEncryption {
+public final class RestorePointEncryption implements JsonSerializable<RestorePointEncryption> {
     /*
      * Describes the parameter of customer managed disk encryption set resource id that can be specified for disk.
      * **Note:** The disk encryption set resource id can only be specified for managed disk. Please refer
      * https://aka.ms/mdssewithcmkoverview for more details.
      */
-    @JsonProperty(value = "diskEncryptionSet")
     private DiskEncryptionSetParameters diskEncryptionSet;
 
     /*
      * The type of key used to encrypt the data of the disk restore point.
      */
-    @JsonProperty(value = "type")
     private RestorePointEncryptionType type;
 
     /**
@@ -86,5 +88,44 @@ public final class RestorePointEncryption {
         if (diskEncryptionSet() != null) {
             diskEncryptionSet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("diskEncryptionSet", this.diskEncryptionSet);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePointEncryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePointEncryption if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorePointEncryption.
+     */
+    public static RestorePointEncryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePointEncryption deserializedRestorePointEncryption = new RestorePointEncryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskEncryptionSet".equals(fieldName)) {
+                    deserializedRestorePointEncryption.diskEncryptionSet = DiskEncryptionSetParameters.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestorePointEncryption.type = RestorePointEncryptionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePointEncryption;
+        });
     }
 }

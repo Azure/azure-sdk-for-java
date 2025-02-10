@@ -6,53 +6,56 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Identity provider input. */
+/**
+ * Identity provider input.
+ */
 @Fluent
-public final class IdentityProviderInput {
+public final class IdentityProviderInput implements JsonSerializable<IdentityProviderInput> {
     /*
      * The tenant Id for the service principal with which the on-premise management/data plane components would
      * communicate with our Azure services.
      */
-    @JsonProperty(value = "tenantId", required = true)
     private String tenantId;
 
     /*
      * The application/client Id for the service principal with which the on-premise management/data plane components
      * would communicate with our Azure services.
      */
-    @JsonProperty(value = "applicationId", required = true)
     private String applicationId;
 
     /*
      * The object Id of the service principal with which the on-premise management/data plane components would
      * communicate with our Azure services.
      */
-    @JsonProperty(value = "objectId", required = true)
     private String objectId;
 
     /*
      * The intended Audience of the service principal with which the on-premise management/data plane components would
      * communicate with our Azure services.
      */
-    @JsonProperty(value = "audience", required = true)
     private String audience;
 
     /*
      * The base authority for Azure Active Directory authentication.
      */
-    @JsonProperty(value = "aadAuthority", required = true)
     private String aadAuthority;
 
-    /** Creates an instance of IdentityProviderInput class. */
+    /**
+     * Creates an instance of IdentityProviderInput class.
+     */
     public IdentityProviderInput() {
     }
 
     /**
      * Get the tenantId property: The tenant Id for the service principal with which the on-premise management/data
      * plane components would communicate with our Azure services.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -62,7 +65,7 @@ public final class IdentityProviderInput {
     /**
      * Set the tenantId property: The tenant Id for the service principal with which the on-premise management/data
      * plane components would communicate with our Azure services.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the IdentityProviderInput object itself.
      */
@@ -74,7 +77,7 @@ public final class IdentityProviderInput {
     /**
      * Get the applicationId property: The application/client Id for the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -84,7 +87,7 @@ public final class IdentityProviderInput {
     /**
      * Set the applicationId property: The application/client Id for the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the IdentityProviderInput object itself.
      */
@@ -96,7 +99,7 @@ public final class IdentityProviderInput {
     /**
      * Get the objectId property: The object Id of the service principal with which the on-premise management/data plane
      * components would communicate with our Azure services.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -106,7 +109,7 @@ public final class IdentityProviderInput {
     /**
      * Set the objectId property: The object Id of the service principal with which the on-premise management/data plane
      * components would communicate with our Azure services.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the IdentityProviderInput object itself.
      */
@@ -118,7 +121,7 @@ public final class IdentityProviderInput {
     /**
      * Get the audience property: The intended Audience of the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @return the audience value.
      */
     public String audience() {
@@ -128,7 +131,7 @@ public final class IdentityProviderInput {
     /**
      * Set the audience property: The intended Audience of the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @param audience the audience value to set.
      * @return the IdentityProviderInput object itself.
      */
@@ -139,7 +142,7 @@ public final class IdentityProviderInput {
 
     /**
      * Get the aadAuthority property: The base authority for Azure Active Directory authentication.
-     *
+     * 
      * @return the aadAuthority value.
      */
     public String aadAuthority() {
@@ -148,7 +151,7 @@ public final class IdentityProviderInput {
 
     /**
      * Set the aadAuthority property: The base authority for Azure Active Directory authentication.
-     *
+     * 
      * @param aadAuthority the aadAuthority value to set.
      * @return the IdentityProviderInput object itself.
      */
@@ -159,38 +162,82 @@ public final class IdentityProviderInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tenantId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tenantId in model IdentityProviderInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property tenantId in model IdentityProviderInput"));
         }
         if (applicationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property applicationId in model IdentityProviderInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property applicationId in model IdentityProviderInput"));
         }
         if (objectId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property objectId in model IdentityProviderInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property objectId in model IdentityProviderInput"));
         }
         if (audience() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property audience in model IdentityProviderInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property audience in model IdentityProviderInput"));
         }
         if (aadAuthority() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aadAuthority in model IdentityProviderInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property aadAuthority in model IdentityProviderInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IdentityProviderInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("applicationId", this.applicationId);
+        jsonWriter.writeStringField("objectId", this.objectId);
+        jsonWriter.writeStringField("audience", this.audience);
+        jsonWriter.writeStringField("aadAuthority", this.aadAuthority);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityProviderInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityProviderInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IdentityProviderInput.
+     */
+    public static IdentityProviderInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityProviderInput deserializedIdentityProviderInput = new IdentityProviderInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedIdentityProviderInput.tenantId = reader.getString();
+                } else if ("applicationId".equals(fieldName)) {
+                    deserializedIdentityProviderInput.applicationId = reader.getString();
+                } else if ("objectId".equals(fieldName)) {
+                    deserializedIdentityProviderInput.objectId = reader.getString();
+                } else if ("audience".equals(fieldName)) {
+                    deserializedIdentityProviderInput.audience = reader.getString();
+                } else if ("aadAuthority".equals(fieldName)) {
+                    deserializedIdentityProviderInput.aadAuthority = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityProviderInput;
+        });
+    }
 }

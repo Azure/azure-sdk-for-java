@@ -6,24 +6,32 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Update appliance for replication protected item input. */
+/**
+ * Update appliance for replication protected item input.
+ */
 @Fluent
-public final class UpdateApplianceForReplicationProtectedItemInput {
+public final class UpdateApplianceForReplicationProtectedItemInput
+    implements JsonSerializable<UpdateApplianceForReplicationProtectedItemInput> {
     /*
      * Update appliance replication protected item properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private UpdateApplianceForReplicationProtectedItemInputProperties properties;
 
-    /** Creates an instance of UpdateApplianceForReplicationProtectedItemInput class. */
+    /**
+     * Creates an instance of UpdateApplianceForReplicationProtectedItemInput class.
+     */
     public UpdateApplianceForReplicationProtectedItemInput() {
     }
 
     /**
      * Get the properties property: Update appliance replication protected item properties.
-     *
+     * 
      * @return the properties value.
      */
     public UpdateApplianceForReplicationProtectedItemInputProperties properties() {
@@ -32,32 +40,69 @@ public final class UpdateApplianceForReplicationProtectedItemInput {
 
     /**
      * Set the properties property: Update appliance replication protected item properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdateApplianceForReplicationProtectedItemInput object itself.
      */
-    public UpdateApplianceForReplicationProtectedItemInput withProperties(
-        UpdateApplianceForReplicationProtectedItemInputProperties properties) {
+    public UpdateApplianceForReplicationProtectedItemInput
+        withProperties(UpdateApplianceForReplicationProtectedItemInputProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model"
-                            + " UpdateApplianceForReplicationProtectedItemInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model UpdateApplianceForReplicationProtectedItemInput"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpdateApplianceForReplicationProtectedItemInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateApplianceForReplicationProtectedItemInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateApplianceForReplicationProtectedItemInput if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateApplianceForReplicationProtectedItemInput.
+     */
+    public static UpdateApplianceForReplicationProtectedItemInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateApplianceForReplicationProtectedItemInput deserializedUpdateApplianceForReplicationProtectedItemInput
+                = new UpdateApplianceForReplicationProtectedItemInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUpdateApplianceForReplicationProtectedItemInput.properties
+                        = UpdateApplianceForReplicationProtectedItemInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateApplianceForReplicationProtectedItemInput;
+        });
+    }
 }

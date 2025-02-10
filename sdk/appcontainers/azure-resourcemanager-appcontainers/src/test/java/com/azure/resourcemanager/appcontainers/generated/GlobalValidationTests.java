@@ -13,26 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class GlobalValidationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GlobalValidation model =
-            BinaryData
-                .fromString(
-                    "{\"unauthenticatedClientAction\":\"Return401\",\"redirectToProvider\":\"yhxhu\",\"excludedPaths\":[\"ftyxolniw\"]}")
-                .toObject(GlobalValidation.class);
+        GlobalValidation model = BinaryData.fromString(
+            "{\"unauthenticatedClientAction\":\"Return401\",\"redirectToProvider\":\"s\",\"excludedPaths\":[\"bquxigjy\",\"gzjaoyfhrtxilne\"]}")
+            .toObject(GlobalValidation.class);
         Assertions.assertEquals(UnauthenticatedClientActionV2.RETURN401, model.unauthenticatedClientAction());
-        Assertions.assertEquals("yhxhu", model.redirectToProvider());
-        Assertions.assertEquals("ftyxolniw", model.excludedPaths().get(0));
+        Assertions.assertEquals("s", model.redirectToProvider());
+        Assertions.assertEquals("bquxigjy", model.excludedPaths().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GlobalValidation model =
-            new GlobalValidation()
-                .withUnauthenticatedClientAction(UnauthenticatedClientActionV2.RETURN401)
-                .withRedirectToProvider("yhxhu")
-                .withExcludedPaths(Arrays.asList("ftyxolniw"));
+        GlobalValidation model
+            = new GlobalValidation().withUnauthenticatedClientAction(UnauthenticatedClientActionV2.RETURN401)
+                .withRedirectToProvider("s")
+                .withExcludedPaths(Arrays.asList("bquxigjy", "gzjaoyfhrtxilne"));
         model = BinaryData.fromObject(model).toObject(GlobalValidation.class);
         Assertions.assertEquals(UnauthenticatedClientActionV2.RETURN401, model.unauthenticatedClientAction());
-        Assertions.assertEquals("yhxhu", model.redirectToProvider());
-        Assertions.assertEquals("ftyxolniw", model.excludedPaths().get(0));
+        Assertions.assertEquals("s", model.redirectToProvider());
+        Assertions.assertEquals("bquxigjy", model.excludedPaths().get(0));
     }
 }

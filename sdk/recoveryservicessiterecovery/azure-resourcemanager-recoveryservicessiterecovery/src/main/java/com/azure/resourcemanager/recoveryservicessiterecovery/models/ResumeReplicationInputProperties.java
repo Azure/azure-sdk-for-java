@@ -6,24 +6,31 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Resume replication input properties. */
+/**
+ * Resume replication input properties.
+ */
 @Fluent
-public final class ResumeReplicationInputProperties {
+public final class ResumeReplicationInputProperties implements JsonSerializable<ResumeReplicationInputProperties> {
     /*
      * The provider specific input for resume replication.
      */
-    @JsonProperty(value = "providerSpecificDetails", required = true)
     private ResumeReplicationProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of ResumeReplicationInputProperties class. */
+    /**
+     * Creates an instance of ResumeReplicationInputProperties class.
+     */
     public ResumeReplicationInputProperties() {
     }
 
     /**
      * Get the providerSpecificDetails property: The provider specific input for resume replication.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ResumeReplicationProviderSpecificInput providerSpecificDetails() {
@@ -32,31 +39,69 @@ public final class ResumeReplicationInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific input for resume replication.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the ResumeReplicationInputProperties object itself.
      */
-    public ResumeReplicationInputProperties withProviderSpecificDetails(
-        ResumeReplicationProviderSpecificInput providerSpecificDetails) {
+    public ResumeReplicationInputProperties
+        withProviderSpecificDetails(ResumeReplicationProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model ResumeReplicationInputProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property providerSpecificDetails in model ResumeReplicationInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResumeReplicationInputProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResumeReplicationInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResumeReplicationInputProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResumeReplicationInputProperties.
+     */
+    public static ResumeReplicationInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResumeReplicationInputProperties deserializedResumeReplicationInputProperties
+                = new ResumeReplicationInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedResumeReplicationInputProperties.providerSpecificDetails
+                        = ResumeReplicationProviderSpecificInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResumeReplicationInputProperties;
+        });
+    }
 }

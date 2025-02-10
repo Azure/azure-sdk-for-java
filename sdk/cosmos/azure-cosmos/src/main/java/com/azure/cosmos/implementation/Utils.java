@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
@@ -10,15 +12,17 @@ import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.slf4j.Logger;
@@ -36,7 +40,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
@@ -45,9 +48,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -55,6 +63,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class Utils {
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+
+    // Flag to indicate whether enable JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS
+    // Keep the config here not Configs to break the circular reference
+    private static final boolean DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS = true;
+    private static final String ALLOW_UNQUOTED_CONTROL_CHARS = "COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS";
 
     public static final Class<?> byteArrayClass = new byte[0].getClass();
 
@@ -76,12 +89,50 @@ public class Utils {
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
 
+    private static AtomicReference<ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor> itemSerializerAccessor =
+        new AtomicReference<>(null);
+
+    public static ObjectMapper getDocumentObjectMapper(String serializationInclusionMode) {
+        if (Strings.isNullOrEmpty(serializationInclusionMode)) {
+            return simpleObjectMapper;
+        } else if ("Always".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.ALWAYS);
+        } else if ("NonNull".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        } else if ("NonEmpty".equalsIgnoreCase(serializationInclusionMode)) {
+        return createAndInitializeObjectMapper(false)
+            .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        } else if ("NonDefault".equalsIgnoreCase(serializationInclusionMode)) {
+            return createAndInitializeObjectMapper(false)
+                .setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+        }
+
+        return simpleObjectMapper;
+    }
+
     // NOTE DateTimeFormatter.RFC_1123_DATE_TIME cannot be used.
     // because cosmos db rfc1123 validation requires two digits for day.
     // so Thu, 04 Jan 2018 00:30:37 GMT is accepted by the cosmos db service,
     // but Thu, 4 Jan 2018 00:30:37 GMT is not.
     // Therefore, we need a custom date time formatter.
     private static final DateTimeFormatter RFC_1123_DATE_TIME = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+
+    private static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor ensureItemSerializerAccessor() {
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor snapshot = itemSerializerAccessor.get();
+        if (snapshot != null) {
+            return snapshot;
+        }
+
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor newInstance =
+            ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+        if (itemSerializerAccessor.compareAndSet(null, newInstance)) {
+            return newInstance;
+        }
+
+        return itemSerializerAccessor.get();
+    }
 
     private static ObjectMapper createAndInitializeObjectMapper(boolean allowDuplicateProperties) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -93,16 +144,50 @@ public class Utils {
         }
         objectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
-
-        // We will not register after burner for java 16+, due to its breaking changes
-        // https://github.com/Azure/azure-sdk-for-java/issues/23005
-        if (JAVA_VERSION != -1 && JAVA_VERSION < 16) {
-            objectMapper.registerModule(new AfterburnerModule());
+        if (shouldAllowUnquotedControlChars()) {
+            objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
         }
+
+        tryToLoadJacksonPerformanceLibrary(objectMapper);
 
         objectMapper.registerModule(new JavaTimeModule());
 
         return objectMapper;
+    }
+
+    private static void tryToLoadJacksonPerformanceLibrary(ObjectMapper objectMapper) {
+        // Afterburner and Blackbird are libraries that increase the performance of marshaling json to objects
+        boolean loaded = false;
+        if (JAVA_VERSION != -1) {
+            if (JAVA_VERSION >= 11) {
+                // Blackbird is preferred and only works with java 11+
+                // https://github.com/FasterXML/jackson-modules-base/tree/2.18/blackbird
+                loaded = loadModuleIfFound("com.fasterxml.jackson.module.blackbird.BlackbirdModule", objectMapper);
+            }
+            if (!loaded && JAVA_VERSION < 16) {
+                // Afterburner no longer works with java 16
+                // https://github.com/Azure/azure-sdk-for-java/issues/23005
+                // https://github.com/FasterXML/jackson-modules-base/tree/2.18/afterburner
+                loaded = loadModuleIfFound("com.fasterxml.jackson.module.afterburner.AfterburnerModule", objectMapper);
+            }
+        }
+        if (!loaded) {
+            logger.warn("Neither Afterburner nor Blackbird Jackson module loaded.  Consider adding one to your classpath for maximum Jackson performance.");
+        }
+    }
+
+    private static boolean loadModuleIfFound(String className, ObjectMapper objectMapper) {
+        try {
+            Class<?> clazz = Class.forName(className);
+            Module module = (Module)clazz.getDeclaredConstructor().newInstance();
+            objectMapper.registerModule(module);
+            return true;
+        } catch (ClassNotFoundException e) {
+            //Not found, dont register
+        } catch (Exception e) {
+            logger.warn("Issues loading Jackson performance module " + className, e);
+        }
+        return false;
     }
 
     private static ObjectMapper createAndInitializeDurationObjectMapper() {
@@ -380,6 +465,10 @@ public class Utils {
         return Utils.simpleObjectMapper;
     }
 
+    public static ObjectMapper getSimpleObjectMapperWithAllowDuplicates() {
+        return Utils.simpleObjectMapperAllowingDuplicatedProperties;
+    }
+
     public static ObjectMapper getDurationEnabledObjectMapper() {
         return durationEnabledObjectMapper;
     }
@@ -543,35 +632,96 @@ public class Utils {
         }
     }
 
-    public static <T> T parse(byte[] item, Class<T> itemClassType) {
+    public static <T> T parse(byte[] item, Class<T> itemClassType, CosmosItemSerializer itemSerializer) {
         if (Utils.isEmpty(item)) {
             return null;
         }
 
         try {
-            return getSimpleObjectMapper().readValue(item, itemClassType);
+            JsonNode jsonNode = getSimpleObjectMapper().readValue(item, JsonNode.class);
+            if (jsonNode instanceof ObjectNode) {
+                ObjectNode jsonTree = (ObjectNode)jsonNode;
+                CosmosItemSerializer effectiveSerializer = itemSerializer != null
+                    ? itemSerializer
+                    : CosmosItemSerializer.DEFAULT_SERIALIZER;
+
+                T result = ensureItemSerializerAccessor().deserializeSafe(
+                    effectiveSerializer,
+                    getSimpleObjectMapper().convertValue(jsonTree, ObjectNodeMap.JACKSON_MAP_TYPE),
+                    itemClassType);
+                return result;
+            }
+
+            return getSimpleObjectMapper().convertValue(jsonNode, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException(
                 String.format("Failed to parse byte-array %s to POJO.", new String(item, StandardCharsets.UTF_8)), e);
         }
     }
 
-    public static <T> T parse(byte[] item, Class<T> itemClassType, ItemDeserializer itemDeserializer) {
-        if (Utils.isEmpty(item)) {
-            return null;
-        }
+    public static <T> T parse(ObjectNode jsonNode, Class<T> itemClassType, CosmosItemSerializer itemSerializer) {
+        CosmosItemSerializer effectiveItemSerializer= itemSerializer == null ?
+                CosmosItemSerializer.DEFAULT_SERIALIZER : itemSerializer;
 
-        if (itemDeserializer == null) {
-            return Utils.parse(item, itemClassType);
-        }
-
-        return itemDeserializer.parseFrom(itemClassType, item);
+        return ensureItemSerializerAccessor().deserializeSafe(effectiveItemSerializer, new ObjectNodeMap(jsonNode), itemClassType);
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
+    public static void validateIdValue(Object itemIdValue) {
+        if (!(itemIdValue instanceof String)) {
+            return;
+        }
+
+        String itemId = (String)itemIdValue;
+        if (itemId != null
+            && Configs.isIdValueValidationEnabled()
+            && itemId.contains("/")) {
+
+            BadRequestException exception = new BadRequestException(
+                "The id value '" + itemId + "' contains the invalid character '/'. To stop the client-side validation "
+                    + "set the environment variable '" + Configs.PREVENT_INVALID_ID_CHARS + "' or the system property '"
+                    + Configs.PREVENT_INVALID_ID_CHARS_VARIABLE + "' to 'true'.");
+
+            BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.INVALID_ID_VALUE);
+
+            throw exception;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ByteBuffer serializeJsonToByteBuffer(
+        CosmosItemSerializer serializer,
+        Object object,
+        Consumer<Map<String, Object>> onAfterSerialization,
+        boolean isIdValidationEnabled) {
+
+        checkArgument(serializer != null || object instanceof Map<?, ?>, "Argument 'serializer' must not be null.");
+
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
-            objectMapper.writeValue(byteBufferOutputStream, object);
+            Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
+                ? (Map<String, Object>) object
+                : ensureItemSerializerAccessor().serializeSafe(serializer, object);
+
+            if (isIdValidationEnabled) {
+                validateIdValue(jsonTreeMap.get(Constants.Properties.ID));
+            }
+
+            if (onAfterSerialization != null) {
+                onAfterSerialization.accept(jsonTreeMap);
+            }
+
+            ObjectMapper mapper = ensureItemSerializerAccessor().getItemObjectMapper(serializer);
+            JsonNode jsonNode;
+
+            if (jsonTreeMap instanceof PrimitiveJsonNodeMap) {
+                jsonNode = ((PrimitiveJsonNodeMap)jsonTreeMap).getPrimitiveJsonNode();
+            } else if (jsonTreeMap instanceof ObjectNodeMap && onAfterSerialization == null) {
+                jsonNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
+            } else {
+                jsonNode = mapper.convertValue(jsonTreeMap, JsonNode.class);
+            }
+
+            mapper.writeValue(byteBufferOutputStream, jsonNode);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
             // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere
@@ -645,5 +795,17 @@ public class Utils {
             throw new IllegalArgumentException("MaxIntegratedCacheStaleness duration cannot be negative");
         }
         return maxIntegratedCacheStaleness.toMillis();
+    }
+
+    public static boolean shouldAllowUnquotedControlChars() {
+
+        String shouldAllowUnquotedControlCharsConfig =
+            System.getProperty(
+                ALLOW_UNQUOTED_CONTROL_CHARS,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(ALLOW_UNQUOTED_CONTROL_CHARS)),
+                    String.valueOf(DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS)));
+
+        return Boolean.parseBoolean(shouldAllowUnquotedControlCharsConfig);
     }
 }

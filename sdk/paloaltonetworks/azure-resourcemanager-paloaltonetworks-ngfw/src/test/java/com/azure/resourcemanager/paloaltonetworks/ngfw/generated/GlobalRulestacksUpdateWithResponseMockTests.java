@@ -6,11 +6,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AzureResourceManagerManagedIdentityProperties;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AzureResourceManagerUserAssignedIdentity;
@@ -21,7 +19,6 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.GlobalRulestackRes
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ManagedIdentityType;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ScopeType;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServices;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -29,33 +26,18 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class GlobalRulestacksUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"properties\":{\"panEtag\":\"voniypfp\",\"panLocation\":\"cpzgpxtiv\",\"scope\":\"LOCAL\",\"associatedSubscriptions\":[\"dibgqjxgpnrhgov\",\"gpikqmh\",\"ao\"],\"description\":\"rmzvupo\",\"defaultMode\":\"IPS\",\"minAppIdVersion\":\"fuyd\",\"provisioningState\":\"Deleting\",\"securityServices\":{\"vulnerabilityProfile\":\"xcnqmxqpswokmvkh\",\"antiSpywareProfile\":\"gdhbe\",\"antiVirusProfile\":\"qkzszuwiwtglxxh\",\"urlFilteringProfile\":\"fpgpicrmnzhrgm\",\"fileBlockingProfile\":\"j\",\"dnsSubscription\":\"vpqcb\",\"outboundUnTrustCertificate\":\"mbodthsqqgvri\",\"outboundTrustCertificate\":\"a\"}},\"location\":\"c\",\"identity\":{\"tenantId\":\"jfrnxousxauzlwv\",\"principalId\":\"mwohqfzizvuxmmkj\",\"type\":\"None\",\"userAssignedIdentities\":{\"zcugswvxwlmzqw\":{\"clientId\":\"wpztekovmribia\",\"principalId\":\"gplucfotangcfhny\"},\"pdkvg\":{\"clientId\":\"tx\",\"principalId\":\"mxmcuqudtcvclxy\"}}},\"id\":\"buiyji\",\"name\":\"uzphdugnei\",\"type\":\"n\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
@@ -73,16 +55,21 @@ public final class GlobalRulestacksUpdateWithResponseMockTests {
                         "mrnjh",
                         new AzureResourceManagerUserAssignedIdentity().withClientId("tuxuuyilflq")
                             .withPrincipalId("quvre"))))
-                .withProperties(
-                    new GlobalRulestackResourceUpdateProperties().withPanEtag("jztczytqj").withPanLocation("h")
-                        .withScope(ScopeType.GLOBAL).withAssociatedSubscriptions(Arrays.asList("prnjletlxsmr", "ddoui"))
-                        .withDescription("mowaziynknlqwzdv").withDefaultMode(DefaultMode.FIREWALL)
-                        .withMinAppIdVersion("xqszdtmaajquh")
-                        .withSecurityServices(new SecurityServices().withVulnerabilityProfile("lrjvmtyg")
-                            .withAntiSpywareProfile("mzyospspshck").withAntiVirusProfile("yjpmspbpssdfppyo")
-                            .withUrlFilteringProfile("ieyujtvc").withFileBlockingProfile("cnyxrxmunjd")
-                            .withDnsSubscription("glnkvxlxpagl").withOutboundUnTrustCertificate("vbgkcvkhpzv")
-                            .withOutboundTrustCertificate("d"))),
+                .withProperties(new GlobalRulestackResourceUpdateProperties().withPanEtag("jztczytqj")
+                    .withPanLocation("h")
+                    .withScope(ScopeType.GLOBAL)
+                    .withAssociatedSubscriptions(Arrays.asList("prnjletlxsmr", "ddoui"))
+                    .withDescription("mowaziynknlqwzdv")
+                    .withDefaultMode(DefaultMode.FIREWALL)
+                    .withMinAppIdVersion("xqszdtmaajquh")
+                    .withSecurityServices(new SecurityServices().withVulnerabilityProfile("lrjvmtyg")
+                        .withAntiSpywareProfile("mzyospspshck")
+                        .withAntiVirusProfile("yjpmspbpssdfppyo")
+                        .withUrlFilteringProfile("ieyujtvc")
+                        .withFileBlockingProfile("cnyxrxmunjd")
+                        .withDnsSubscription("glnkvxlxpagl")
+                        .withOutboundUnTrustCertificate("vbgkcvkhpzv")
+                        .withOutboundTrustCertificate("d"))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

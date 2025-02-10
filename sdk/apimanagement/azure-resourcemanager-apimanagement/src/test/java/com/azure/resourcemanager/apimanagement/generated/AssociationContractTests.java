@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AssociationContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssociationContract model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"created\"},\"id\":\"dl\",\"name\":\"eeih\",\"type\":\"pmnoejhqlf\"}")
-                .toObject(AssociationContract.class);
+        AssociationContract model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"created\"},\"id\":\"dl\",\"name\":\"eeih\",\"type\":\"pmnoejhqlf\"}")
+            .toObject(AssociationContract.class);
         Assertions.assertEquals(ProvisioningState.CREATED, model.provisioningState());
     }
 

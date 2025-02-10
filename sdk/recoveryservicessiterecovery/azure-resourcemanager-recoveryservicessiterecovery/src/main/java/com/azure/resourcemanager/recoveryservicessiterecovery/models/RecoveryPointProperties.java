@@ -5,37 +5,44 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Recovery point properties. */
+/**
+ * Recovery point properties.
+ */
 @Fluent
-public final class RecoveryPointProperties {
+public final class RecoveryPointProperties implements JsonSerializable<RecoveryPointProperties> {
     /*
      * The recovery point time.
      */
-    @JsonProperty(value = "recoveryPointTime")
     private OffsetDateTime recoveryPointTime;
 
     /*
      * The recovery point type: ApplicationConsistent, CrashConsistent.
      */
-    @JsonProperty(value = "recoveryPointType")
     private String recoveryPointType;
 
     /*
      * The provider specific details for the recovery point.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private ProviderSpecificRecoveryPointDetails providerSpecificDetails;
 
-    /** Creates an instance of RecoveryPointProperties class. */
+    /**
+     * Creates an instance of RecoveryPointProperties class.
+     */
     public RecoveryPointProperties() {
     }
 
     /**
      * Get the recoveryPointTime property: The recovery point time.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public OffsetDateTime recoveryPointTime() {
@@ -44,7 +51,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Set the recoveryPointTime property: The recovery point time.
-     *
+     * 
      * @param recoveryPointTime the recoveryPointTime value to set.
      * @return the RecoveryPointProperties object itself.
      */
@@ -55,7 +62,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Get the recoveryPointType property: The recovery point type: ApplicationConsistent, CrashConsistent.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public String recoveryPointType() {
@@ -64,7 +71,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Set the recoveryPointType property: The recovery point type: ApplicationConsistent, CrashConsistent.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the RecoveryPointProperties object itself.
      */
@@ -75,7 +82,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Get the providerSpecificDetails property: The provider specific details for the recovery point.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ProviderSpecificRecoveryPointDetails providerSpecificDetails() {
@@ -84,24 +91,71 @@ public final class RecoveryPointProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific details for the recovery point.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the RecoveryPointProperties object itself.
      */
-    public RecoveryPointProperties withProviderSpecificDetails(
-        ProviderSpecificRecoveryPointDetails providerSpecificDetails) {
+    public RecoveryPointProperties
+        withProviderSpecificDetails(ProviderSpecificRecoveryPointDetails providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryPointTime",
+            this.recoveryPointTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recoveryPointTime));
+        jsonWriter.writeStringField("recoveryPointType", this.recoveryPointType);
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPointProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPointProperties.
+     */
+    public static RecoveryPointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPointProperties deserializedRecoveryPointProperties = new RecoveryPointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryPointTime".equals(fieldName)) {
+                    deserializedRecoveryPointProperties.recoveryPointTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveryPointType".equals(fieldName)) {
+                    deserializedRecoveryPointProperties.recoveryPointType = reader.getString();
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedRecoveryPointProperties.providerSpecificDetails
+                        = ProviderSpecificRecoveryPointDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPointProperties;
+        });
     }
 }

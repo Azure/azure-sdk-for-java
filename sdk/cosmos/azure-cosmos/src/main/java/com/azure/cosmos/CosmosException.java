@@ -16,15 +16,15 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -140,7 +140,7 @@ public class CosmosException extends AzureException {
     /***
      * All selectable replica status.
      */
-    private final List<String> replicaStatusList = new ArrayList<>();
+    private final Map<String, Set<String>> replicaStatusList = new HashMap<>();
 
     /**
      * Fault injection ruleId
@@ -184,7 +184,7 @@ public class CosmosException extends AzureException {
     protected CosmosException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
         this.cosmosError = new CosmosError();
-        ModelBridgeInternal.setProperty(cosmosError, Constants.Properties.MESSAGE, errorMessage);
+        cosmosError.set(Constants.Properties.MESSAGE, errorMessage);
     }
 
     /**
@@ -309,9 +309,11 @@ public class CosmosException extends AzureException {
     }
 
     /**
-     * Gets the sub status code.
+     * Gets the sub status code. The sub status code is exposed for informational purposes only - new sub status codes
+     * can be added anytime and applications should never take a dependency on certain sub status codes. For
+     * applications treating errors based on status code is sufficient.
      *
-     * @return the status code.
+     * @return the sub status code.
      */
     public int getSubStatusCode() {
         int code = HttpConstants.SubStatusCodes.UNKNOWN;
@@ -489,10 +491,14 @@ public class CosmosException extends AzureException {
         if (cosmosError != null) {
             innerErrorMessage = cosmosError.getMessage();
             if (innerErrorMessage == null) {
-                innerErrorMessage = String.valueOf(
-                    ModelBridgeInternal.getObjectFromJsonSerializable(cosmosError, "Errors"));
+                innerErrorMessage = String.valueOf(cosmosError.get("Errors"));
             }
         }
+        // if cosmosError is null as well, try to get the underlying error from the internal cause
+        if (StringUtils.isEmpty(innerErrorMessage) && this.getCause() != null) {
+            innerErrorMessage = this.getCause().getMessage();
+        }
+
         return innerErrorMessage;
     }
 
@@ -605,7 +611,7 @@ public class CosmosException extends AzureException {
         return this.faultInjectionEvaluationResults;
     }
 
-    List<String> getReplicaStatusList() {
+    Map<String, Set<String>> getReplicaStatusList() {
         return this.replicaStatusList;
     }
 
@@ -621,7 +627,7 @@ public class CosmosException extends AzureException {
                     }
 
                     @Override
-                    public List<String> getReplicaStatusList(CosmosException cosmosException) {
+                    public Map<String, Set<String>> getReplicaStatusList(CosmosException cosmosException) {
                         return cosmosException.getReplicaStatusList();
                     }
 

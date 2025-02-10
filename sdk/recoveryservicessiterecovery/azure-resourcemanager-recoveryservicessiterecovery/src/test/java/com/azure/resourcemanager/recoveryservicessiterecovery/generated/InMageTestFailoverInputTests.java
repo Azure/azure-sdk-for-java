@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageTestFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageTestFailoverInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMage\",\"recoveryPointType\":\"Custom\",\"recoveryPointId\":\"snj\"}")
-                .toObject(InMageTestFailoverInput.class);
+        InMageTestFailoverInput model = BinaryData
+            .fromString("{\"instanceType\":\"InMage\",\"recoveryPointType\":\"Custom\",\"recoveryPointId\":\"snj\"}")
+            .toObject(InMageTestFailoverInput.class);
         Assertions.assertEquals(RecoveryPointType.CUSTOM, model.recoveryPointType());
         Assertions.assertEquals("snj", model.recoveryPointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageTestFailoverInput model =
-            new InMageTestFailoverInput().withRecoveryPointType(RecoveryPointType.CUSTOM).withRecoveryPointId("snj");
+        InMageTestFailoverInput model
+            = new InMageTestFailoverInput().withRecoveryPointType(RecoveryPointType.CUSTOM).withRecoveryPointId("snj");
         model = BinaryData.fromObject(model).toObject(InMageTestFailoverInput.class);
         Assertions.assertEquals(RecoveryPointType.CUSTOM, model.recoveryPointType());
         Assertions.assertEquals("snj", model.recoveryPointId());

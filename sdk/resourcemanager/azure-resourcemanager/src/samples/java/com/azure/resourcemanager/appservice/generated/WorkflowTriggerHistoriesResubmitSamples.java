@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WorkflowTriggerHistoriesResubmitSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/WorkflowTriggerHistories_Resubmit.
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/WorkflowTriggerHistories_Resubmit.
      * json
      */
     /**
@@ -20,7 +20,11 @@ public final class WorkflowTriggerHistoriesResubmitSamples {
      */
     public static void
         resubmitAWorkflowRunBasedOnTheTriggerHistory(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWorkflowTriggerHistories().resubmit("testResourceGroup",
-            "test-name", "testWorkflowName", "testTriggerName", "testHistoryName", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWorkflowTriggerHistories()
+            .resubmit("testResourceGroup", "test-name", "testWorkflowName", "testTriggerName", "testHistoryName",
+                com.azure.core.util.Context.NONE);
     }
 }

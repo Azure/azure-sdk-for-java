@@ -37,15 +37,23 @@ public final class GlobalRulestackResourceUpdatePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GlobalRulestackResourceUpdateProperties model = new GlobalRulestackResourceUpdateProperties()
-            .withPanEtag("igeho").withPanLocation("bowsk").withScope(ScopeType.LOCAL)
-            .withAssociatedSubscriptions(
-                Arrays.asList("zlcuiywgqywgndrv", "nhzgpphrcgyn", "ocpecfvmmco", "fsxlzevgbmqjqa"))
-            .withDescription("y").withDefaultMode(DefaultMode.FIREWALL).withMinAppIdVersion("kwlzuvccfwnfn")
-            .withSecurityServices(new SecurityServices().withVulnerabilityProfile("fionl").withAntiSpywareProfile("x")
-                .withAntiVirusProfile("qgtz").withUrlFilteringProfile("pnqbqqwxrjfe")
-                .withFileBlockingProfile("lnwsubisn").withDnsSubscription("mpmngnzscxaqwoo")
-                .withOutboundUnTrustCertificate("cbonqvpk").withOutboundTrustCertificate("rxnjeaseipheofl"));
+        GlobalRulestackResourceUpdateProperties model
+            = new GlobalRulestackResourceUpdateProperties().withPanEtag("igeho")
+                .withPanLocation("bowsk")
+                .withScope(ScopeType.LOCAL)
+                .withAssociatedSubscriptions(
+                    Arrays.asList("zlcuiywgqywgndrv", "nhzgpphrcgyn", "ocpecfvmmco", "fsxlzevgbmqjqa"))
+                .withDescription("y")
+                .withDefaultMode(DefaultMode.FIREWALL)
+                .withMinAppIdVersion("kwlzuvccfwnfn")
+                .withSecurityServices(new SecurityServices().withVulnerabilityProfile("fionl")
+                    .withAntiSpywareProfile("x")
+                    .withAntiVirusProfile("qgtz")
+                    .withUrlFilteringProfile("pnqbqqwxrjfe")
+                    .withFileBlockingProfile("lnwsubisn")
+                    .withDnsSubscription("mpmngnzscxaqwoo")
+                    .withOutboundUnTrustCertificate("cbonqvpk")
+                    .withOutboundTrustCertificate("rxnjeaseipheofl"));
         model = BinaryData.fromObject(model).toObject(GlobalRulestackResourceUpdateProperties.class);
         Assertions.assertEquals("igeho", model.panEtag());
         Assertions.assertEquals("bowsk", model.panLocation());

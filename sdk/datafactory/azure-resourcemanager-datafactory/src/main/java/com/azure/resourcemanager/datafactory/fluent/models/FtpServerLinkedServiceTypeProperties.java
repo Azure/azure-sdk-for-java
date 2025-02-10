@@ -6,65 +6,62 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.FtpAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties specific to this linked service type.
  */
 @Fluent
-public final class FtpServerLinkedServiceTypeProperties {
+public final class FtpServerLinkedServiceTypeProperties
+    implements JsonSerializable<FtpServerLinkedServiceTypeProperties> {
     /*
      * Host name of the FTP server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
-     * The TCP port number that the FTP server uses to listen for client connections. Default value is 21. Type:
-     * integer (or Expression with resultType integer), minimum: 0.
+     * The TCP port number that the FTP server uses to listen for client connections. Default value is 21. Type: integer
+     * (or Expression with resultType integer), minimum: 0.
      */
-    @JsonProperty(value = "port")
     private Object port;
 
     /*
      * The authentication type to be used to connect to the FTP server.
      */
-    @JsonProperty(value = "authenticationType")
     private FtpAuthenticationType authenticationType;
 
     /*
      * Username to logon the FTP server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName")
     private Object username;
 
     /*
      * Password to logon the FTP server.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
-     * If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type: boolean (or Expression
-     * with resultType boolean).
+     * If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
-    @JsonProperty(value = "enableSsl")
     private Object enableSsl;
 
     /*
      * If true, validate the FTP server SSL certificate when connect over SSL/TLS channel. Default value is true. Type:
      * boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
 
     /**
@@ -136,8 +133,7 @@ public final class FtpServerLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the username property: Username to logon the FTP server. Type: string (or Expression with resultType
-     * string).
+     * Get the username property: Username to logon the FTP server. Type: string (or Expression with resultType string).
      * 
      * @return the username value.
      */
@@ -146,8 +142,7 @@ public final class FtpServerLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the username property: Username to logon the FTP server. Type: string (or Expression with resultType
-     * string).
+     * Set the username property: Username to logon the FTP server. Type: string (or Expression with resultType string).
      * 
      * @param username the username value to set.
      * @return the FtpServerLinkedServiceTypeProperties object itself.
@@ -178,8 +173,8 @@ public final class FtpServerLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -188,8 +183,8 @@ public final class FtpServerLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the FtpServerLinkedServiceTypeProperties object itself.
@@ -200,8 +195,8 @@ public final class FtpServerLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the enableSsl property: If true, connect to the FTP server over SSL/TLS channel. Default value is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Get the enableSsl property: If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      * 
      * @return the enableSsl value.
      */
@@ -210,8 +205,8 @@ public final class FtpServerLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the enableSsl property: If true, connect to the FTP server over SSL/TLS channel. Default value is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Set the enableSsl property: If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      * 
      * @param enableSsl the enableSsl value to set.
      * @return the FtpServerLinkedServiceTypeProperties object itself.
@@ -222,8 +217,8 @@ public final class FtpServerLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the enableServerCertificateValidation property: If true, validate the FTP server SSL certificate when
-     * connect over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
+     * Get the enableServerCertificateValidation property: If true, validate the FTP server SSL certificate when connect
+     * over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @return the enableServerCertificateValidation value.
      */
@@ -232,8 +227,8 @@ public final class FtpServerLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the enableServerCertificateValidation property: If true, validate the FTP server SSL certificate when
-     * connect over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
+     * Set the enableServerCertificateValidation property: If true, validate the FTP server SSL certificate when connect
+     * over SSL/TLS channel. Default value is true. Type: boolean (or Expression with resultType boolean).
      * 
      * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
      * @return the FtpServerLinkedServiceTypeProperties object itself.
@@ -251,8 +246,9 @@ public final class FtpServerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property host in model FtpServerLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property host in model FtpServerLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();
@@ -260,4 +256,66 @@ public final class FtpServerLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FtpServerLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("host", this.host);
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+        jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FtpServerLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FtpServerLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FtpServerLinkedServiceTypeProperties.
+     */
+    public static FtpServerLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FtpServerLinkedServiceTypeProperties deserializedFtpServerLinkedServiceTypeProperties
+                = new FtpServerLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("host".equals(fieldName)) {
+                    deserializedFtpServerLinkedServiceTypeProperties.host = reader.readUntyped();
+                } else if ("port".equals(fieldName)) {
+                    deserializedFtpServerLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedFtpServerLinkedServiceTypeProperties.authenticationType
+                        = FtpAuthenticationType.fromString(reader.getString());
+                } else if ("userName".equals(fieldName)) {
+                    deserializedFtpServerLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedFtpServerLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedFtpServerLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("enableSsl".equals(fieldName)) {
+                    deserializedFtpServerLinkedServiceTypeProperties.enableSsl = reader.readUntyped();
+                } else if ("enableServerCertificateValidation".equals(fieldName)) {
+                    deserializedFtpServerLinkedServiceTypeProperties.enableServerCertificateValidation
+                        = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFtpServerLinkedServiceTypeProperties;
+        });
+    }
 }

@@ -3,7 +3,7 @@
 
 package com.azure.messaging.webpubsub.client;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -16,12 +16,11 @@ public class SequenceAckTests extends TestBase {
     // we may want to add a message interceptor to client to inspect the wire messages
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testNewSequenceIdAfterStop() {
         String groupName = "testNewSequenceIdAfterStop";
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.start();
         client.joinGroup(groupName);
@@ -46,12 +45,11 @@ public class SequenceAckTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testContinuedSequenceIdAfterRecover() {
         String groupName = "testContinuedSequenceIdAfterRecover";
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.start();
         client.joinGroup(groupName);
@@ -73,12 +71,11 @@ public class SequenceAckTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testNewSequenceIdAfterReconnect() {
         String groupName = "testNewSequenceIdAfterReconnect";
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.start();
         client.joinGroup(groupName);

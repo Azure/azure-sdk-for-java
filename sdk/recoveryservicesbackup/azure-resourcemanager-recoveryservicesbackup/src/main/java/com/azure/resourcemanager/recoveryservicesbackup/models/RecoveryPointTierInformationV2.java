@@ -5,30 +5,44 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** RecoveryPoint Tier Information V2. */
+/**
+ * RecoveryPoint Tier Information V2.
+ */
 @Fluent
 public final class RecoveryPointTierInformationV2 extends RecoveryPointTierInformation {
-    /** Creates an instance of RecoveryPointTierInformationV2 class. */
+    /**
+     * Creates an instance of RecoveryPointTierInformationV2 class.
+     */
     public RecoveryPointTierInformationV2() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPointTierInformationV2 withType(RecoveryPointTierType type) {
         super.withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPointTierInformationV2 withStatus(RecoveryPointTierStatus status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPointTierInformationV2 withExtendedInfo(Map<String, String> extendedInfo) {
         super.withExtendedInfo(extendedInfo);
@@ -37,11 +51,56 @@ public final class RecoveryPointTierInformationV2 extends RecoveryPointTierInfor
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
+        jsonWriter.writeStringField("status", status() == null ? null : status().toString());
+        jsonWriter.writeMapField("extendedInfo", extendedInfo(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPointTierInformationV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPointTierInformationV2 if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPointTierInformationV2.
+     */
+    public static RecoveryPointTierInformationV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPointTierInformationV2 deserializedRecoveryPointTierInformationV2
+                = new RecoveryPointTierInformationV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedRecoveryPointTierInformationV2
+                        .withType(RecoveryPointTierType.fromString(reader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedRecoveryPointTierInformationV2
+                        .withStatus(RecoveryPointTierStatus.fromString(reader.getString()));
+                } else if ("extendedInfo".equals(fieldName)) {
+                    Map<String, String> extendedInfo = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRecoveryPointTierInformationV2.withExtendedInfo(extendedInfo);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPointTierInformationV2;
+        });
     }
 }

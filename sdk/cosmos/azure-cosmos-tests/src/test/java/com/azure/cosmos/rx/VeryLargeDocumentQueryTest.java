@@ -69,7 +69,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
         //Keep size as ~ 1.999MB to account for size of other props
         int size = (int) (ONE_MB * 1.999);
-        BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
+        docDefinition.set("largeString", StringUtils.repeat("x", size));
 
         Mono<CosmosItemResponse<InternalObjectNode>> createObservable =
             createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());

@@ -6,24 +6,31 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Input definition for unplanned failover. */
+/**
+ * Input definition for unplanned failover.
+ */
 @Fluent
-public final class UnplannedFailoverInput {
+public final class UnplannedFailoverInput implements JsonSerializable<UnplannedFailoverInput> {
     /*
      * Unplanned failover input properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private UnplannedFailoverInputProperties properties;
 
-    /** Creates an instance of UnplannedFailoverInput class. */
+    /**
+     * Creates an instance of UnplannedFailoverInput class.
+     */
     public UnplannedFailoverInput() {
     }
 
     /**
      * Get the properties property: Unplanned failover input properties.
-     *
+     * 
      * @return the properties value.
      */
     public UnplannedFailoverInputProperties properties() {
@@ -32,7 +39,7 @@ public final class UnplannedFailoverInput {
 
     /**
      * Set the properties property: Unplanned failover input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UnplannedFailoverInput object itself.
      */
@@ -43,19 +50,55 @@ public final class UnplannedFailoverInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model UnplannedFailoverInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model UnplannedFailoverInput"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UnplannedFailoverInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UnplannedFailoverInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UnplannedFailoverInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UnplannedFailoverInput.
+     */
+    public static UnplannedFailoverInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UnplannedFailoverInput deserializedUnplannedFailoverInput = new UnplannedFailoverInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUnplannedFailoverInput.properties = UnplannedFailoverInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUnplannedFailoverInput;
+        });
+    }
 }

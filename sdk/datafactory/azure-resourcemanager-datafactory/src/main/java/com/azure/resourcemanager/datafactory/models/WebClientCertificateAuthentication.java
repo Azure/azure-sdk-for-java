@@ -6,34 +6,46 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A WebLinkedService that uses client certificate based authentication to communicate with an HTTP endpoint. This
  * scheme follows mutual authentication; the server must also provide valid credentials to the client.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authenticationType")
-@JsonTypeName("ClientCertificate")
 @Fluent
 public final class WebClientCertificateAuthentication extends WebLinkedServiceTypeProperties {
     /*
+     * Type of authentication used to connect to the web table source.
+     */
+    private WebAuthenticationType authenticationType = WebAuthenticationType.CLIENT_CERTIFICATE;
+
+    /*
      * Base64-encoded contents of a PFX file.
      */
-    @JsonProperty(value = "pfx", required = true)
     private SecretBase pfx;
 
     /*
      * Password for the PFX file.
      */
-    @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
     /**
      * Creates an instance of WebClientCertificateAuthentication class.
      */
     public WebClientCertificateAuthentication() {
+    }
+
+    /**
+     * Get the authenticationType property: Type of authentication used to connect to the web table source.
+     * 
+     * @return the authenticationType value.
+     */
+    @Override
+    public WebAuthenticationType authenticationType() {
+        return this.authenticationType;
     }
 
     /**
@@ -92,20 +104,75 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
      */
     @Override
     public void validate() {
-        super.validate();
         if (pfx() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property pfx in model WebClientCertificateAuthentication"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property pfx in model WebClientCertificateAuthentication"));
         } else {
             pfx().validate();
         }
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property password in model WebClientCertificateAuthentication"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model WebClientCertificateAuthentication"));
         } else {
             password().validate();
+        }
+        if (url() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model WebClientCertificateAuthentication"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebClientCertificateAuthentication.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("url", url());
+        jsonWriter.writeJsonField("pfx", this.pfx);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebClientCertificateAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebClientCertificateAuthentication if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebClientCertificateAuthentication.
+     */
+    public static WebClientCertificateAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebClientCertificateAuthentication deserializedWebClientCertificateAuthentication
+                = new WebClientCertificateAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedWebClientCertificateAuthentication.withUrl(reader.readUntyped());
+                } else if ("pfx".equals(fieldName)) {
+                    deserializedWebClientCertificateAuthentication.pfx = SecretBase.fromJson(reader);
+                } else if ("password".equals(fieldName)) {
+                    deserializedWebClientCertificateAuthentication.password = SecretBase.fromJson(reader);
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedWebClientCertificateAuthentication.authenticationType
+                        = WebAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebClientCertificateAuthentication;
+        });
+    }
 }

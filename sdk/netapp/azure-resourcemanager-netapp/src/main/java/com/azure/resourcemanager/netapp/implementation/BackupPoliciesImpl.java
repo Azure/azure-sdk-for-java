@@ -29,12 +29,12 @@ public final class BackupPoliciesImpl implements BackupPolicies {
 
     public PagedIterable<BackupPolicy> list(String resourceGroupName, String accountName) {
         PagedIterable<BackupPolicyInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new BackupPolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BackupPolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<BackupPolicy> list(String resourceGroupName, String accountName, Context context) {
         PagedIterable<BackupPolicyInner> inner = this.serviceClient().list(resourceGroupName, accountName, context);
-        return Utils.mapPage(inner, inner1 -> new BackupPolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BackupPolicyImpl(inner1, this.manager()));
     }
 
     public Response<BackupPolicy> getWithResponse(String resourceGroupName, String accountName, String backupPolicyName,
@@ -67,17 +67,17 @@ public final class BackupPoliciesImpl implements BackupPolicies {
     }
 
     public BackupPolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String backupPolicyName = Utils.getValueFromIdByName(id, "backupPolicies");
+        String backupPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
         if (backupPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
@@ -86,17 +86,17 @@ public final class BackupPoliciesImpl implements BackupPolicies {
     }
 
     public Response<BackupPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String backupPolicyName = Utils.getValueFromIdByName(id, "backupPolicies");
+        String backupPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
         if (backupPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
@@ -105,17 +105,17 @@ public final class BackupPoliciesImpl implements BackupPolicies {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String backupPolicyName = Utils.getValueFromIdByName(id, "backupPolicies");
+        String backupPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
         if (backupPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
@@ -124,17 +124,17 @@ public final class BackupPoliciesImpl implements BackupPolicies {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String backupPolicyName = Utils.getValueFromIdByName(id, "backupPolicies");
+        String backupPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
         if (backupPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));

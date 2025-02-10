@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface SqlServerDnsAliasOperations
     extends SupportsCreating<SqlServerDnsAliasOperations.DefinitionStages.WithSqlServer>,
-        SqlChildrenOperations<SqlServerDnsAlias> {
+    SqlChildrenOperations<SqlServerDnsAlias> {
 
     /**
      * Acquires server DNS alias from another server.
@@ -54,9 +54,8 @@ public interface SqlServerDnsAliasOperations
     Mono<Void> acquireAsync(String dnsAliasName, String oldSqlServerId, String newSqlServerId);
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface SqlServerDnsAliasOperationsDefinition
-        extends SqlServerDnsAliasOperations.DefinitionStages.WithSqlServer,
-            SqlServerDnsAliasOperations.DefinitionStages.WithCreate {
+    interface SqlServerDnsAliasOperationsDefinition extends SqlServerDnsAliasOperations.DefinitionStages.WithSqlServer,
+        SqlServerDnsAliasOperations.DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the SQL Server DNS alias definition stages. */
@@ -70,8 +69,8 @@ public interface SqlServerDnsAliasOperations
              * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
-            SqlServerDnsAliasOperations.DefinitionStages.WithCreate withExistingSqlServer(
-                String resourceGroupName, String sqlServerName);
+            SqlServerDnsAliasOperations.DefinitionStages.WithCreate withExistingSqlServer(String resourceGroupName,
+                String sqlServerName);
 
             /**
              * Sets the parent SQL server for the new Server DNS alias.

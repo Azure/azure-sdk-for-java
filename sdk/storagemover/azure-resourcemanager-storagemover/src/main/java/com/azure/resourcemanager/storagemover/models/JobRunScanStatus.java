@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of Agent's scanning of source. */
+/**
+ * The status of Agent's scanning of source.
+ */
 public final class JobRunScanStatus extends ExpandableStringEnum<JobRunScanStatus> {
-    /** Static value NotStarted for JobRunScanStatus. */
+    /**
+     * Static value NotStarted for JobRunScanStatus.
+     */
     public static final JobRunScanStatus NOT_STARTED = fromString("NotStarted");
 
-    /** Static value Scanning for JobRunScanStatus. */
+    /**
+     * Static value Scanning for JobRunScanStatus.
+     */
     public static final JobRunScanStatus SCANNING = fromString("Scanning");
 
-    /** Static value Completed for JobRunScanStatus. */
+    /**
+     * Static value Completed for JobRunScanStatus.
+     */
     public static final JobRunScanStatus COMPLETED = fromString("Completed");
 
     /**
      * Creates a new instance of JobRunScanStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class JobRunScanStatus extends ExpandableStringEnum<JobRunScanStatu
 
     /**
      * Creates or finds a JobRunScanStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobRunScanStatus.
      */
-    @JsonCreator
     public static JobRunScanStatus fromString(String name) {
         return fromString(name, JobRunScanStatus.class);
     }
 
     /**
      * Gets known JobRunScanStatus values.
-     *
+     * 
      * @return known JobRunScanStatus values.
      */
     public static Collection<JobRunScanStatus> values() {

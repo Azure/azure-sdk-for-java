@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** A JSON web signature. */
+/**
+ * A JSON web signature.
+ */
 @Fluent
 public final class JWK implements JsonSerializable<JWK> {
     /*
@@ -24,12 +26,15 @@ public final class JWK implements JsonSerializable<JWK> {
      */
     private String alg;
 
-    /** Creates an instance of JWK class. */
-    public JWK() {}
+    /**
+     * Creates an instance of JWK class.
+     */
+    public JWK() {
+    }
 
     /**
      * Get the jwk property: JSON web key parameter.
-     *
+     * 
      * @return the jwk value.
      */
     public JWKHeader getJwk() {
@@ -38,7 +43,7 @@ public final class JWK implements JsonSerializable<JWK> {
 
     /**
      * Set the jwk property: JSON web key parameter.
-     *
+     * 
      * @param jwk the jwk value to set.
      * @return the JWK object itself.
      */
@@ -49,7 +54,7 @@ public final class JWK implements JsonSerializable<JWK> {
 
     /**
      * Get the alg property: The algorithm used to sign or encrypt the JWT.
-     *
+     * 
      * @return the alg value.
      */
     public String getAlg() {
@@ -58,7 +63,7 @@ public final class JWK implements JsonSerializable<JWK> {
 
     /**
      * Set the alg property: The algorithm used to sign or encrypt the JWT.
-     *
+     * 
      * @param alg the alg value to set.
      * @return the JWK object itself.
      */
@@ -67,6 +72,9 @@ public final class JWK implements JsonSerializable<JWK> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -77,30 +85,29 @@ public final class JWK implements JsonSerializable<JWK> {
 
     /**
      * Reads an instance of JWK from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of JWK if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
+     * JSON null.
      * @throws IOException If an error occurs while reading the JWK.
      */
     public static JWK fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    JWK deserializedJWK = new JWK();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            JWK deserializedJWK = new JWK();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("jwk".equals(fieldName)) {
-                            deserializedJWK.jwk = JWKHeader.fromJson(reader);
-                        } else if ("alg".equals(fieldName)) {
-                            deserializedJWK.alg = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("jwk".equals(fieldName)) {
+                    deserializedJWK.jwk = JWKHeader.fromJson(reader);
+                } else if ("alg".equals(fieldName)) {
+                    deserializedJWK.alg = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedJWK;
-                });
+            return deserializedJWK;
+        });
     }
 }

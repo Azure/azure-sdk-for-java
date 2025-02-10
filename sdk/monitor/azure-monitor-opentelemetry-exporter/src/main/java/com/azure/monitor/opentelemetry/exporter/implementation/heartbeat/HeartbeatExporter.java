@@ -61,26 +61,18 @@ public class HeartbeatExporter {
      */
     private final ScheduledExecutorService heartBeatSenderService;
 
-    public static void start(
-        long intervalSeconds,
-        BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
+    public static void start(long intervalSeconds, BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
         Consumer<List<TelemetryItem>> telemetryItemsConsumer) {
         new HeartbeatExporter(intervalSeconds, telemetryInitializer, telemetryItemsConsumer);
     }
 
-    public HeartbeatExporter(
-        long intervalSeconds,
-        BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
+    public HeartbeatExporter(long intervalSeconds, BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer,
         Consumer<List<TelemetryItem>> telemetryItemsConsumer) {
         this.heartbeatProperties = new ConcurrentHashMap<>();
-        this.propertyUpdateService =
-            Executors.newCachedThreadPool(
-                ThreadPoolUtils.createDaemonThreadFactory(
-                    HeartbeatExporter.class, "propertyUpdateService"));
-        this.heartBeatSenderService =
-            Executors.newSingleThreadScheduledExecutor(
-                ThreadPoolUtils.createDaemonThreadFactory(
-                    HeartbeatExporter.class, "heartBeatSenderService"));
+        this.propertyUpdateService = Executors.newCachedThreadPool(
+            ThreadPoolUtils.createDaemonThreadFactory(HeartbeatExporter.class, "propertyUpdateService"));
+        this.heartBeatSenderService = Executors.newSingleThreadScheduledExecutor(
+            ThreadPoolUtils.createDaemonThreadFactory(HeartbeatExporter.class, "heartBeatSenderService"));
 
         this.telemetryItemsConsumer = telemetryItemsConsumer;
         this.telemetryInitializer = telemetryInitializer;
@@ -89,12 +81,10 @@ public class HeartbeatExporter {
         // results to come out as some I/O bound properties may take time.
         propertyUpdateService.execute(HeartbeatDefaultPayload.populateDefaultPayload(this));
 
-        heartBeatSenderService.scheduleAtFixedRate(
-            this::send, intervalSeconds, intervalSeconds, TimeUnit.SECONDS);
+        heartBeatSenderService.scheduleAtFixedRate(this::send, intervalSeconds, intervalSeconds, TimeUnit.SECONDS);
     }
 
-    public boolean addHeartBeatProperty(
-        String propertyName, String propertyValue, boolean isHealthy) {
+    public boolean addHeartBeatProperty(String propertyName, String propertyValue, boolean isHealthy) {
 
         if (heartbeatProperties.containsKey(propertyName)) {
             logger.verbose(
@@ -135,8 +125,8 @@ public class HeartbeatExporter {
             properties.put(entry.getKey(), payload.getPayloadValue());
             numHealthy += payload.isHealthy() ? 0 : 1;
         }
-        MetricTelemetryBuilder telemetryBuilder =
-            MetricTelemetryBuilder.create(HEARTBEAT_SYNTHETIC_METRIC_NAME, numHealthy);
+        MetricTelemetryBuilder telemetryBuilder
+            = MetricTelemetryBuilder.create(HEARTBEAT_SYNTHETIC_METRIC_NAME, numHealthy);
         // TODO (heya) this is an interesting problem how this should work
         // we might want to think of the Heartbeat as "library instrumentation"
         // and inject an "OpenTelemetry" instance into it, similar to how other
@@ -144,8 +134,8 @@ public class HeartbeatExporter {
         // would then go through the normal metric exporter
         // (this is not a problem we need to solve in this PR)
         telemetryInitializer.accept(telemetryBuilder, Resource.empty());
-        telemetryBuilder.addTag(
-            ContextTagKeys.AI_OPERATION_SYNTHETIC_SOURCE.toString(), HEARTBEAT_SYNTHETIC_METRIC_NAME);
+        telemetryBuilder.addTag(ContextTagKeys.AI_OPERATION_SYNTHETIC_SOURCE.toString(),
+            HEARTBEAT_SYNTHETIC_METRIC_NAME);
 
         for (Map.Entry<String, String> entry : properties.entrySet()) {
             telemetryBuilder.addProperty(entry.getKey(), entry.getValue());

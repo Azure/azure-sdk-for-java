@@ -5,33 +5,46 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current provisioning state. */
+/**
+ * The current provisioning state.
+ */
 public final class GeoReplicationRegionProvisioningState
     extends ExpandableStringEnum<GeoReplicationRegionProvisioningState> {
-    /** Static value Preprovisioning for GeoReplicationRegionProvisioningState. */
+    /**
+     * Static value Preprovisioning for GeoReplicationRegionProvisioningState.
+     */
     public static final GeoReplicationRegionProvisioningState PREPROVISIONING = fromString("Preprovisioning");
 
-    /** Static value Provisioning for GeoReplicationRegionProvisioningState. */
+    /**
+     * Static value Provisioning for GeoReplicationRegionProvisioningState.
+     */
     public static final GeoReplicationRegionProvisioningState PROVISIONING = fromString("Provisioning");
 
-    /** Static value Succeeded for GeoReplicationRegionProvisioningState. */
+    /**
+     * Static value Succeeded for GeoReplicationRegionProvisioningState.
+     */
     public static final GeoReplicationRegionProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for GeoReplicationRegionProvisioningState. */
+    /**
+     * Static value Failed for GeoReplicationRegionProvisioningState.
+     */
     public static final GeoReplicationRegionProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Deleting for GeoReplicationRegionProvisioningState. */
+    /**
+     * Static value Deleting for GeoReplicationRegionProvisioningState.
+     */
     public static final GeoReplicationRegionProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Cleanup for GeoReplicationRegionProvisioningState. */
+    /**
+     * Static value Cleanup for GeoReplicationRegionProvisioningState.
+     */
     public static final GeoReplicationRegionProvisioningState CLEANUP = fromString("Cleanup");
 
     /**
      * Creates a new instance of GeoReplicationRegionProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +53,17 @@ public final class GeoReplicationRegionProvisioningState
 
     /**
      * Creates or finds a GeoReplicationRegionProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GeoReplicationRegionProvisioningState.
      */
-    @JsonCreator
     public static GeoReplicationRegionProvisioningState fromString(String name) {
         return fromString(name, GeoReplicationRegionProvisioningState.class);
     }
 
     /**
      * Gets known GeoReplicationRegionProvisioningState values.
-     *
+     * 
      * @return known GeoReplicationRegionProvisioningState values.
      */
     public static Collection<GeoReplicationRegionProvisioningState> values() {

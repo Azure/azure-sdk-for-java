@@ -10,8 +10,8 @@ import com.azure.resourcemanager.storagemover.fluent.models.JobRunResourceIdInne
 public final class JobRunResourceIdInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobRunResourceIdInner model =
-            BinaryData.fromString("{\"jobRunResourceId\":\"b\"}").toObject(JobRunResourceIdInner.class);
+        JobRunResourceIdInner model
+            = BinaryData.fromString("{\"jobRunResourceId\":\"lexxbczwtru\"}").toObject(JobRunResourceIdInner.class);
     }
 
     @org.junit.jupiter.api.Test

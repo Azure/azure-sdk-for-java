@@ -5,57 +5,54 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * AADProfile specifies attributes for Azure Active Directory integration.
- *
+ * 
  * For more details see [managed AAD on AKS](https://docs.microsoft.com/azure/aks/managed-aad).
  */
 @Fluent
-public final class ManagedClusterAadProfile {
+public final class ManagedClusterAadProfile implements JsonSerializable<ManagedClusterAadProfile> {
     /*
      * Whether to enable managed AAD.
      */
-    @JsonProperty(value = "managed")
     private Boolean managed;
 
     /*
      * Whether to enable Azure RBAC for Kubernetes authorization.
      */
-    @JsonProperty(value = "enableAzureRBAC")
     private Boolean enableAzureRbac;
 
     /*
      * The list of AAD group object IDs that will have admin role of the cluster.
      */
-    @JsonProperty(value = "adminGroupObjectIDs")
     private List<String> adminGroupObjectIDs;
 
     /*
      * (DEPRECATED) The client AAD application ID. Learn more at https://aka.ms/aks/aad-legacy.
      */
-    @JsonProperty(value = "clientAppID")
     private String clientAppId;
 
     /*
      * (DEPRECATED) The server AAD application ID. Learn more at https://aka.ms/aks/aad-legacy.
      */
-    @JsonProperty(value = "serverAppID")
     private String serverAppId;
 
     /*
      * (DEPRECATED) The server AAD application secret. Learn more at https://aka.ms/aks/aad-legacy.
      */
-    @JsonProperty(value = "serverAppSecret")
     private String serverAppSecret;
 
     /*
      * The AAD tenant ID to use for authentication. If not specified, will use the tenant of the deployment
      * subscription.
      */
-    @JsonProperty(value = "tenantID")
     private String tenantId;
 
     /**
@@ -66,7 +63,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Get the managed property: Whether to enable managed AAD.
-     *
+     * 
      * @return the managed value.
      */
     public Boolean managed() {
@@ -75,7 +72,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Set the managed property: Whether to enable managed AAD.
-     *
+     * 
      * @param managed the managed value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -86,7 +83,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Get the enableAzureRbac property: Whether to enable Azure RBAC for Kubernetes authorization.
-     *
+     * 
      * @return the enableAzureRbac value.
      */
     public Boolean enableAzureRbac() {
@@ -95,7 +92,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Set the enableAzureRbac property: Whether to enable Azure RBAC for Kubernetes authorization.
-     *
+     * 
      * @param enableAzureRbac the enableAzureRbac value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -106,7 +103,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Get the adminGroupObjectIDs property: The list of AAD group object IDs that will have admin role of the cluster.
-     *
+     * 
      * @return the adminGroupObjectIDs value.
      */
     public List<String> adminGroupObjectIDs() {
@@ -115,7 +112,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Set the adminGroupObjectIDs property: The list of AAD group object IDs that will have admin role of the cluster.
-     *
+     * 
      * @param adminGroupObjectIDs the adminGroupObjectIDs value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -127,7 +124,7 @@ public final class ManagedClusterAadProfile {
     /**
      * Get the clientAppId property: (DEPRECATED) The client AAD application ID. Learn more at
      * https://aka.ms/aks/aad-legacy.
-     *
+     * 
      * @return the clientAppId value.
      */
     public String clientAppId() {
@@ -137,7 +134,7 @@ public final class ManagedClusterAadProfile {
     /**
      * Set the clientAppId property: (DEPRECATED) The client AAD application ID. Learn more at
      * https://aka.ms/aks/aad-legacy.
-     *
+     * 
      * @param clientAppId the clientAppId value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -149,7 +146,7 @@ public final class ManagedClusterAadProfile {
     /**
      * Get the serverAppId property: (DEPRECATED) The server AAD application ID. Learn more at
      * https://aka.ms/aks/aad-legacy.
-     *
+     * 
      * @return the serverAppId value.
      */
     public String serverAppId() {
@@ -159,7 +156,7 @@ public final class ManagedClusterAadProfile {
     /**
      * Set the serverAppId property: (DEPRECATED) The server AAD application ID. Learn more at
      * https://aka.ms/aks/aad-legacy.
-     *
+     * 
      * @param serverAppId the serverAppId value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -171,7 +168,7 @@ public final class ManagedClusterAadProfile {
     /**
      * Get the serverAppSecret property: (DEPRECATED) The server AAD application secret. Learn more at
      * https://aka.ms/aks/aad-legacy.
-     *
+     * 
      * @return the serverAppSecret value.
      */
     public String serverAppSecret() {
@@ -181,7 +178,7 @@ public final class ManagedClusterAadProfile {
     /**
      * Set the serverAppSecret property: (DEPRECATED) The server AAD application secret. Learn more at
      * https://aka.ms/aks/aad-legacy.
-     *
+     * 
      * @param serverAppSecret the serverAppSecret value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -193,7 +190,7 @@ public final class ManagedClusterAadProfile {
     /**
      * Get the tenantId property: The AAD tenant ID to use for authentication. If not specified, will use the tenant of
      * the deployment subscription.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -203,7 +200,7 @@ public final class ManagedClusterAadProfile {
     /**
      * Set the tenantId property: The AAD tenant ID to use for authentication. If not specified, will use the tenant of
      * the deployment subscription.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -214,9 +211,65 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("managed", this.managed);
+        jsonWriter.writeBooleanField("enableAzureRBAC", this.enableAzureRbac);
+        jsonWriter.writeArrayField("adminGroupObjectIDs", this.adminGroupObjectIDs,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("clientAppID", this.clientAppId);
+        jsonWriter.writeStringField("serverAppID", this.serverAppId);
+        jsonWriter.writeStringField("serverAppSecret", this.serverAppSecret);
+        jsonWriter.writeStringField("tenantID", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterAadProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterAadProfile if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterAadProfile.
+     */
+    public static ManagedClusterAadProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterAadProfile deserializedManagedClusterAadProfile = new ManagedClusterAadProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("managed".equals(fieldName)) {
+                    deserializedManagedClusterAadProfile.managed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAzureRBAC".equals(fieldName)) {
+                    deserializedManagedClusterAadProfile.enableAzureRbac = reader.getNullable(JsonReader::getBoolean);
+                } else if ("adminGroupObjectIDs".equals(fieldName)) {
+                    List<String> adminGroupObjectIDs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedClusterAadProfile.adminGroupObjectIDs = adminGroupObjectIDs;
+                } else if ("clientAppID".equals(fieldName)) {
+                    deserializedManagedClusterAadProfile.clientAppId = reader.getString();
+                } else if ("serverAppID".equals(fieldName)) {
+                    deserializedManagedClusterAadProfile.serverAppId = reader.getString();
+                } else if ("serverAppSecret".equals(fieldName)) {
+                    deserializedManagedClusterAadProfile.serverAppSecret = reader.getString();
+                } else if ("tenantID".equals(fieldName)) {
+                    deserializedManagedClusterAadProfile.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterAadProfile;
+        });
     }
 }

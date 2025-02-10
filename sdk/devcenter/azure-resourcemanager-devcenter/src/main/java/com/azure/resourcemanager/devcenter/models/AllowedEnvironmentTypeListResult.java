@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.fluent.models.AllowedEnvironmentTypeInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Result of the allowed environment type list operation. */
+/**
+ * Result of the allowed environment type list operation.
+ */
 @Immutable
-public final class AllowedEnvironmentTypeListResult {
+public final class AllowedEnvironmentTypeListResult implements JsonSerializable<AllowedEnvironmentTypeListResult> {
     /*
      * Current page of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AllowedEnvironmentTypeInner> value;
 
     /*
      * URL to get the next set of results if there are any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AllowedEnvironmentTypeListResult class. */
+    /**
+     * Creates an instance of AllowedEnvironmentTypeListResult class.
+     */
     public AllowedEnvironmentTypeListResult() {
     }
 
     /**
      * Get the value property: Current page of results.
-     *
+     * 
      * @return the value value.
      */
     public List<AllowedEnvironmentTypeInner> value() {
@@ -39,7 +45,7 @@ public final class AllowedEnvironmentTypeListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,52 @@ public final class AllowedEnvironmentTypeListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AllowedEnvironmentTypeListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AllowedEnvironmentTypeListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AllowedEnvironmentTypeListResult.
+     */
+    public static AllowedEnvironmentTypeListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AllowedEnvironmentTypeListResult deserializedAllowedEnvironmentTypeListResult
+                = new AllowedEnvironmentTypeListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AllowedEnvironmentTypeInner> value
+                        = reader.readArray(reader1 -> AllowedEnvironmentTypeInner.fromJson(reader1));
+                    deserializedAllowedEnvironmentTypeListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAllowedEnvironmentTypeListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAllowedEnvironmentTypeListResult;
+        });
     }
 }

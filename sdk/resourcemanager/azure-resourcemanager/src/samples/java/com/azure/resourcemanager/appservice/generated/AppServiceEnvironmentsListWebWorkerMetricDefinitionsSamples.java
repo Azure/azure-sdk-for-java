@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsListWebWorkerMetricDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
      * AppServiceEnvironments_ListWebWorkerMetricDefinitions.json
      */
     /**
@@ -19,7 +19,10 @@ public final class AppServiceEnvironmentsListWebWorkerMetricDefinitionsSamples {
      */
     public static void getMetricDefinitionsForAWorkerPoolOfAnAppServiceEnvironment(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().listWebWorkerMetricDefinitions("test-rg",
-            "test-ase", "0", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .listWebWorkerMetricDefinitions("test-rg", "test-ase", "0", com.azure.core.util.Context.NONE);
     }
 }

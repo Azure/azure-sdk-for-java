@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.ReplicationUpdateParametersProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters for updating a replication. */
+/**
+ * The parameters for updating a replication.
+ */
 @Fluent
-public final class ReplicationUpdateParameters {
+public final class ReplicationUpdateParameters implements JsonSerializable<ReplicationUpdateParameters> {
     /*
      * The tags for the replication.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The parameters for updating a replication's properties
      */
-    @JsonProperty(value = "properties")
     private ReplicationUpdateParametersProperties innerProperties;
 
-    /** Creates an instance of ReplicationUpdateParameters class. */
+    /**
+     * Creates an instance of ReplicationUpdateParameters class.
+     */
     public ReplicationUpdateParameters() {
     }
 
     /**
      * Get the tags property: The tags for the replication.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class ReplicationUpdateParameters {
 
     /**
      * Set the tags property: The tags for the replication.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ReplicationUpdateParameters object itself.
      */
@@ -52,7 +56,7 @@ public final class ReplicationUpdateParameters {
 
     /**
      * Get the innerProperties property: The parameters for updating a replication's properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ReplicationUpdateParametersProperties innerProperties() {
@@ -63,7 +67,7 @@ public final class ReplicationUpdateParameters {
      * Get the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @return the regionEndpointEnabled value.
      */
     public Boolean regionEndpointEnabled() {
@@ -74,7 +78,7 @@ public final class ReplicationUpdateParameters {
      * Set the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @param regionEndpointEnabled the regionEndpointEnabled value to set.
      * @return the ReplicationUpdateParameters object itself.
      */
@@ -88,12 +92,53 @@ public final class ReplicationUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationUpdateParameters.
+     */
+    public static ReplicationUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationUpdateParameters deserializedReplicationUpdateParameters = new ReplicationUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedReplicationUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedReplicationUpdateParameters.innerProperties
+                        = ReplicationUpdateParametersProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationUpdateParameters;
+        });
     }
 }

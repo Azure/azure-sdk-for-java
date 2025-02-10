@@ -10,10 +10,6 @@ module com.azure.resourcemanager.confidentialledger {
     exports com.azure.resourcemanager.confidentialledger.fluent.models;
     exports com.azure.resourcemanager.confidentialledger.models;
 
-    opens com.azure.resourcemanager.confidentialledger.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.confidentialledger.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.confidentialledger.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.confidentialledger.models to com.azure.core;
 }

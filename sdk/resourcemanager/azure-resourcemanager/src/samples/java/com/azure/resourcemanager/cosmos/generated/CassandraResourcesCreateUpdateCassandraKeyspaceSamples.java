@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class CassandraResourcesCreateUpdateCassandraKeyspaceSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBCassandraKeyspaceCreateUpdate.json
      */
     /**
@@ -24,12 +24,16 @@ public final class CassandraResourcesCreateUpdateCassandraKeyspaceSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBCassandraKeyspaceCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getCassandraResources().createUpdateCassandraKeyspace("rg1",
-            "ddb1", "keyspaceName",
-            new CassandraKeyspaceCreateUpdateParameters().withLocation("West US").withTags(mapOf())
-                .withResource(new CassandraKeyspaceResource().withId("keyspaceName"))
-                .withOptions(new CreateUpdateOptions()),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraResources()
+            .createUpdateCassandraKeyspace("rg1", "ddb1", "keyspaceName",
+                new CassandraKeyspaceCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new CassandraKeyspaceResource().withId("keyspaceName"))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

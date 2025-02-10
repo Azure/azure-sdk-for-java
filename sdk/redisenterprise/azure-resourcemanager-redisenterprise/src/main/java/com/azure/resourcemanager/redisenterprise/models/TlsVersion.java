@@ -5,23 +5,32 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The minimum TLS version for the cluster to support, e.g. '1.2'. */
+/**
+ * The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions can be added in the future. Note that
+ * TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use them. They are mentioned only for the sake of
+ * consistency with old API versions.
+ */
 public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
-    /** Static value 1.0 for TlsVersion. */
+    /**
+     * Static value 1.0 for TlsVersion.
+     */
     public static final TlsVersion ONE_ZERO = fromString("1.0");
 
-    /** Static value 1.1 for TlsVersion. */
+    /**
+     * Static value 1.1 for TlsVersion.
+     */
     public static final TlsVersion ONE_ONE = fromString("1.1");
 
-    /** Static value 1.2 for TlsVersion. */
+    /**
+     * Static value 1.2 for TlsVersion.
+     */
     public static final TlsVersion ONE_TWO = fromString("1.2");
 
     /**
      * Creates a new instance of TlsVersion value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +39,17 @@ public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
 
     /**
      * Creates or finds a TlsVersion from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TlsVersion.
      */
-    @JsonCreator
     public static TlsVersion fromString(String name) {
         return fromString(name, TlsVersion.class);
     }
 
     /**
      * Gets known TlsVersion values.
-     *
+     * 
      * @return known TlsVersion values.
      */
     public static Collection<TlsVersion> values() {

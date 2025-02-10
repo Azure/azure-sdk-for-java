@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Scaling configurations for event driven jobs. */
+/**
+ * Scaling configurations for event driven jobs.
+ */
 @Fluent
-public final class JobScale {
+public final class JobScale implements JsonSerializable<JobScale> {
     /*
      * Interval to check each event source in seconds. Defaults to 30s
      */
-    @JsonProperty(value = "pollingInterval")
     private Integer pollingInterval;
 
     /*
      * Minimum number of job executions that are created for a trigger, default 0
      */
-    @JsonProperty(value = "minExecutions")
     private Integer minExecutions;
 
     /*
      * Maximum number of job executions that are created for a trigger, default 100.
      */
-    @JsonProperty(value = "maxExecutions")
     private Integer maxExecutions;
 
     /*
      * Scaling rules.
      */
-    @JsonProperty(value = "rules")
     private List<JobScaleRule> rules;
 
-    /** Creates an instance of JobScale class. */
+    /**
+     * Creates an instance of JobScale class.
+     */
     public JobScale() {
     }
 
     /**
      * Get the pollingInterval property: Interval to check each event source in seconds. Defaults to 30s.
-     *
+     * 
      * @return the pollingInterval value.
      */
     public Integer pollingInterval() {
@@ -50,7 +54,7 @@ public final class JobScale {
 
     /**
      * Set the pollingInterval property: Interval to check each event source in seconds. Defaults to 30s.
-     *
+     * 
      * @param pollingInterval the pollingInterval value to set.
      * @return the JobScale object itself.
      */
@@ -61,7 +65,7 @@ public final class JobScale {
 
     /**
      * Get the minExecutions property: Minimum number of job executions that are created for a trigger, default 0.
-     *
+     * 
      * @return the minExecutions value.
      */
     public Integer minExecutions() {
@@ -70,7 +74,7 @@ public final class JobScale {
 
     /**
      * Set the minExecutions property: Minimum number of job executions that are created for a trigger, default 0.
-     *
+     * 
      * @param minExecutions the minExecutions value to set.
      * @return the JobScale object itself.
      */
@@ -81,7 +85,7 @@ public final class JobScale {
 
     /**
      * Get the maxExecutions property: Maximum number of job executions that are created for a trigger, default 100.
-     *
+     * 
      * @return the maxExecutions value.
      */
     public Integer maxExecutions() {
@@ -90,7 +94,7 @@ public final class JobScale {
 
     /**
      * Set the maxExecutions property: Maximum number of job executions that are created for a trigger, default 100.
-     *
+     * 
      * @param maxExecutions the maxExecutions value to set.
      * @return the JobScale object itself.
      */
@@ -101,7 +105,7 @@ public final class JobScale {
 
     /**
      * Get the rules property: Scaling rules.
-     *
+     * 
      * @return the rules value.
      */
     public List<JobScaleRule> rules() {
@@ -110,7 +114,7 @@ public final class JobScale {
 
     /**
      * Set the rules property: Scaling rules.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the JobScale object itself.
      */
@@ -121,12 +125,58 @@ public final class JobScale {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("pollingInterval", this.pollingInterval);
+        jsonWriter.writeNumberField("minExecutions", this.minExecutions);
+        jsonWriter.writeNumberField("maxExecutions", this.maxExecutions);
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobScale from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobScale if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the JobScale.
+     */
+    public static JobScale fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobScale deserializedJobScale = new JobScale();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pollingInterval".equals(fieldName)) {
+                    deserializedJobScale.pollingInterval = reader.getNullable(JsonReader::getInt);
+                } else if ("minExecutions".equals(fieldName)) {
+                    deserializedJobScale.minExecutions = reader.getNullable(JsonReader::getInt);
+                } else if ("maxExecutions".equals(fieldName)) {
+                    deserializedJobScale.maxExecutions = reader.getNullable(JsonReader::getInt);
+                } else if ("rules".equals(fieldName)) {
+                    List<JobScaleRule> rules = reader.readArray(reader1 -> JobScaleRule.fromJson(reader1));
+                    deserializedJobScale.rules = rules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobScale;
+        });
     }
 }

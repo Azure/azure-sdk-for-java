@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Certificates. */
+/**
+ * Resource collection API of Certificates.
+ */
 public interface Certificates {
     /**
      * List Certificate resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Certificates {
 
     /**
      * List Certificate resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -37,18 +39,12 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Certificate list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Certificate> listByCatalog(
-        String resourceGroupName,
-        String catalogName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context);
+    PagedIterable<Certificate> listByCatalog(String resourceGroupName, String catalogName, String filter, Integer top,
+        Integer skip, Integer maxpagesize, Context context);
 
     /**
      * Get a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -58,12 +54,12 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Certificate along with {@link Response}.
      */
-    Response<Certificate> getWithResponse(
-        String resourceGroupName, String catalogName, String serialNumber, Context context);
+    Response<Certificate> getWithResponse(String resourceGroupName, String catalogName, String serialNumber,
+        Context context);
 
     /**
      * Get a Certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -76,7 +72,7 @@ public interface Certificates {
 
     /**
      * Retrieves cert chain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -86,12 +82,12 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the certificate chain response along with {@link Response}.
      */
-    Response<CertificateChainResponse> retrieveCertChainWithResponse(
-        String resourceGroupName, String catalogName, String serialNumber, Context context);
+    Response<CertificateChainResponse> retrieveCertChainWithResponse(String resourceGroupName, String catalogName,
+        String serialNumber, Context context);
 
     /**
      * Retrieves cert chain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -104,7 +100,7 @@ public interface Certificates {
 
     /**
      * Gets the proof of possession nonce.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -115,16 +111,13 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the proof of possession nonce along with {@link Response}.
      */
-    Response<ProofOfPossessionNonceResponse> retrieveProofOfPossessionNonceWithResponse(
-        String resourceGroupName,
-        String catalogName,
-        String serialNumber,
-        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest,
+    Response<ProofOfPossessionNonceResponse> retrieveProofOfPossessionNonceWithResponse(String resourceGroupName,
+        String catalogName, String serialNumber, ProofOfPossessionNonceRequest proofOfPossessionNonceRequest,
         Context context);
 
     /**
      * Gets the proof of possession nonce.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param serialNumber Serial number of the certificate. Use '.default' to get current active certificate.
@@ -134,9 +127,6 @@ public interface Certificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the proof of possession nonce.
      */
-    ProofOfPossessionNonceResponse retrieveProofOfPossessionNonce(
-        String resourceGroupName,
-        String catalogName,
-        String serialNumber,
-        ProofOfPossessionNonceRequest proofOfPossessionNonceRequest);
+    ProofOfPossessionNonceResponse retrieveProofOfPossessionNonce(String resourceGroupName, String catalogName,
+        String serialNumber, ProofOfPossessionNonceRequest proofOfPossessionNonceRequest);
 }

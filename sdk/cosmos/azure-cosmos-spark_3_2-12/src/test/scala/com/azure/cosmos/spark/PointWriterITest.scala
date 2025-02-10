@@ -801,7 +801,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           partitionKeyDefinition,
           writeConfig,
           DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
-          new TestOutputMetricsPublisher)
+          new TestOutputMetricsPublisher,
+          1)
 
         // First create one item, as patch can only operate on existing items
         val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
@@ -1318,7 +1319,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
                 partitionKeyDefinition,
                 writeConfig,
                 DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
-                new TestOutputMetricsPublisher)
+                new TestOutputMetricsPublisher,
+                1)
 
               // First create one item
               val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)

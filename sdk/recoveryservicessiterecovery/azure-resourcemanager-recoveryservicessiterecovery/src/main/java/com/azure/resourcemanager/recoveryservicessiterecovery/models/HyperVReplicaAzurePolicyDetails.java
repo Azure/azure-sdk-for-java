@@ -5,60 +5,72 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Hyper-V Replica Azure specific protection profile details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVReplicaAzure")
+/**
+ * Hyper-V Replica Azure specific protection profile details.
+ */
 @Fluent
 public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "HyperVReplicaAzure";
+
+    /*
      * The duration (in hours) to which point the recovery history needs to be maintained.
      */
-    @JsonProperty(value = "recoveryPointHistoryDurationInHours")
     private Integer recoveryPointHistoryDurationInHours;
 
     /*
      * The interval (in hours) at which Hyper-V Replica should create an application consistent snapshot within the VM.
      */
-    @JsonProperty(value = "applicationConsistentSnapshotFrequencyInHours")
     private Integer applicationConsistentSnapshotFrequencyInHours;
 
     /*
      * The replication interval.
      */
-    @JsonProperty(value = "replicationInterval")
     private Integer replicationInterval;
 
     /*
      * The scheduled start time for the initial replication. If this parameter is Null, the initial replication starts
      * immediately.
      */
-    @JsonProperty(value = "onlineReplicationStartTime")
     private String onlineReplicationStartTime;
 
     /*
      * A value indicating whether encryption is enabled for virtual machines in this cloud.
      */
-    @JsonProperty(value = "encryption")
     private String encryption;
 
     /*
      * The active storage account Id.
      */
-    @JsonProperty(value = "activeStorageAccountId")
     private String activeStorageAccountId;
 
-    /** Creates an instance of HyperVReplicaAzurePolicyDetails class. */
+    /**
+     * Creates an instance of HyperVReplicaAzurePolicyDetails class.
+     */
     public HyperVReplicaAzurePolicyDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
      * Get the recoveryPointHistoryDurationInHours property: The duration (in hours) to which point the recovery history
      * needs to be maintained.
-     *
+     * 
      * @return the recoveryPointHistoryDurationInHours value.
      */
     public Integer recoveryPointHistoryDurationInHours() {
@@ -68,12 +80,12 @@ public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecifi
     /**
      * Set the recoveryPointHistoryDurationInHours property: The duration (in hours) to which point the recovery history
      * needs to be maintained.
-     *
+     * 
      * @param recoveryPointHistoryDurationInHours the recoveryPointHistoryDurationInHours value to set.
      * @return the HyperVReplicaAzurePolicyDetails object itself.
      */
-    public HyperVReplicaAzurePolicyDetails withRecoveryPointHistoryDurationInHours(
-        Integer recoveryPointHistoryDurationInHours) {
+    public HyperVReplicaAzurePolicyDetails
+        withRecoveryPointHistoryDurationInHours(Integer recoveryPointHistoryDurationInHours) {
         this.recoveryPointHistoryDurationInHours = recoveryPointHistoryDurationInHours;
         return this;
     }
@@ -81,7 +93,7 @@ public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecifi
     /**
      * Get the applicationConsistentSnapshotFrequencyInHours property: The interval (in hours) at which Hyper-V Replica
      * should create an application consistent snapshot within the VM.
-     *
+     * 
      * @return the applicationConsistentSnapshotFrequencyInHours value.
      */
     public Integer applicationConsistentSnapshotFrequencyInHours() {
@@ -91,20 +103,20 @@ public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecifi
     /**
      * Set the applicationConsistentSnapshotFrequencyInHours property: The interval (in hours) at which Hyper-V Replica
      * should create an application consistent snapshot within the VM.
-     *
+     * 
      * @param applicationConsistentSnapshotFrequencyInHours the applicationConsistentSnapshotFrequencyInHours value to
-     *     set.
+     * set.
      * @return the HyperVReplicaAzurePolicyDetails object itself.
      */
-    public HyperVReplicaAzurePolicyDetails withApplicationConsistentSnapshotFrequencyInHours(
-        Integer applicationConsistentSnapshotFrequencyInHours) {
+    public HyperVReplicaAzurePolicyDetails
+        withApplicationConsistentSnapshotFrequencyInHours(Integer applicationConsistentSnapshotFrequencyInHours) {
         this.applicationConsistentSnapshotFrequencyInHours = applicationConsistentSnapshotFrequencyInHours;
         return this;
     }
 
     /**
      * Get the replicationInterval property: The replication interval.
-     *
+     * 
      * @return the replicationInterval value.
      */
     public Integer replicationInterval() {
@@ -113,7 +125,7 @@ public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecifi
 
     /**
      * Set the replicationInterval property: The replication interval.
-     *
+     * 
      * @param replicationInterval the replicationInterval value to set.
      * @return the HyperVReplicaAzurePolicyDetails object itself.
      */
@@ -125,7 +137,7 @@ public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecifi
     /**
      * Get the onlineReplicationStartTime property: The scheduled start time for the initial replication. If this
      * parameter is Null, the initial replication starts immediately.
-     *
+     * 
      * @return the onlineReplicationStartTime value.
      */
     public String onlineReplicationStartTime() {
@@ -135,7 +147,7 @@ public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecifi
     /**
      * Set the onlineReplicationStartTime property: The scheduled start time for the initial replication. If this
      * parameter is Null, the initial replication starts immediately.
-     *
+     * 
      * @param onlineReplicationStartTime the onlineReplicationStartTime value to set.
      * @return the HyperVReplicaAzurePolicyDetails object itself.
      */
@@ -146,7 +158,7 @@ public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecifi
 
     /**
      * Get the encryption property: A value indicating whether encryption is enabled for virtual machines in this cloud.
-     *
+     * 
      * @return the encryption value.
      */
     public String encryption() {
@@ -155,7 +167,7 @@ public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecifi
 
     /**
      * Set the encryption property: A value indicating whether encryption is enabled for virtual machines in this cloud.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the HyperVReplicaAzurePolicyDetails object itself.
      */
@@ -166,7 +178,7 @@ public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecifi
 
     /**
      * Get the activeStorageAccountId property: The active storage account Id.
-     *
+     * 
      * @return the activeStorageAccountId value.
      */
     public String activeStorageAccountId() {
@@ -175,7 +187,7 @@ public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecifi
 
     /**
      * Set the activeStorageAccountId property: The active storage account Id.
-     *
+     * 
      * @param activeStorageAccountId the activeStorageAccountId value to set.
      * @return the HyperVReplicaAzurePolicyDetails object itself.
      */
@@ -186,11 +198,69 @@ public final class HyperVReplicaAzurePolicyDetails extends PolicyProviderSpecifi
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeNumberField("recoveryPointHistoryDurationInHours", this.recoveryPointHistoryDurationInHours);
+        jsonWriter.writeNumberField("applicationConsistentSnapshotFrequencyInHours",
+            this.applicationConsistentSnapshotFrequencyInHours);
+        jsonWriter.writeNumberField("replicationInterval", this.replicationInterval);
+        jsonWriter.writeStringField("onlineReplicationStartTime", this.onlineReplicationStartTime);
+        jsonWriter.writeStringField("encryption", this.encryption);
+        jsonWriter.writeStringField("activeStorageAccountId", this.activeStorageAccountId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVReplicaAzurePolicyDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVReplicaAzurePolicyDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVReplicaAzurePolicyDetails.
+     */
+    public static HyperVReplicaAzurePolicyDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVReplicaAzurePolicyDetails deserializedHyperVReplicaAzurePolicyDetails
+                = new HyperVReplicaAzurePolicyDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyDetails.instanceType = reader.getString();
+                } else if ("recoveryPointHistoryDurationInHours".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyDetails.recoveryPointHistoryDurationInHours
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("applicationConsistentSnapshotFrequencyInHours".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyDetails.applicationConsistentSnapshotFrequencyInHours
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("replicationInterval".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyDetails.replicationInterval
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("onlineReplicationStartTime".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyDetails.onlineReplicationStartTime = reader.getString();
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyDetails.encryption = reader.getString();
+                } else if ("activeStorageAccountId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePolicyDetails.activeStorageAccountId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVReplicaAzurePolicyDetails;
+        });
     }
 }

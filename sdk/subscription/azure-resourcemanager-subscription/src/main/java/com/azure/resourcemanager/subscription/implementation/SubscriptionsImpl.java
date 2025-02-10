@@ -23,29 +23,26 @@ public final class SubscriptionsImpl implements Subscriptions {
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    public SubscriptionsImpl(
-        SubscriptionsClient innerClient, com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
+    public SubscriptionsImpl(SubscriptionsClient innerClient,
+        com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Location> listLocations(String subscriptionId) {
         PagedIterable<LocationInner> inner = this.serviceClient().listLocations(subscriptionId);
-        return Utils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Location> listLocations(String subscriptionId, Context context) {
         PagedIterable<LocationInner> inner = this.serviceClient().listLocations(subscriptionId, context);
-        return Utils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LocationImpl(inner1, this.manager()));
     }
 
     public Response<Subscription> getWithResponse(String subscriptionId, Context context) {
         Response<SubscriptionInner> inner = this.serviceClient().getWithResponse(subscriptionId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SubscriptionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -63,12 +60,12 @@ public final class SubscriptionsImpl implements Subscriptions {
 
     public PagedIterable<Subscription> list() {
         PagedIterable<SubscriptionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SubscriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Subscription> list(Context context) {
         PagedIterable<SubscriptionInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SubscriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionImpl(inner1, this.manager()));
     }
 
     private SubscriptionsClient serviceClient() {

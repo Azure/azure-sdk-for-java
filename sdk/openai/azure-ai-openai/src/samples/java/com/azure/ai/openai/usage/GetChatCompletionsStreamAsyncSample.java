@@ -12,6 +12,8 @@ import com.azure.ai.openai.models.ChatRequestSystemMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +34,8 @@ public class GetChatCompletionsStreamAsyncSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) throws InterruptedException {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()
@@ -48,10 +50,6 @@ public class GetChatCompletionsStreamAsyncSample {
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
         client.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages))
-            // Remove .skip(1) when using Non-Azure OpenAI API
-            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-            // TODO: remove .skip(1) when service fix the issue.
-            .skip(1)
             .map(chatCompletions -> {
                 /* The delta is the message content for a streaming response.
                  * Subsequence of streaming delta will be like:
@@ -68,6 +66,11 @@ public class GetChatCompletionsStreamAsyncSample {
                  *     "content": "'t"
                  * }
                  */
+
+                if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
+                    return "";
+                }
+
                 ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
 
                 if (delta.getRole() != null) {
@@ -78,7 +81,7 @@ public class GetChatCompletionsStreamAsyncSample {
             .subscribe(
                 System.out::print,
                 error -> System.err.println("There was an error getting chat completions." + error),
-                () -> System.out.println("Completed called getChatCompletions."));
+                () -> System.out.println("Completed called getChatCompletionsStream."));
 
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

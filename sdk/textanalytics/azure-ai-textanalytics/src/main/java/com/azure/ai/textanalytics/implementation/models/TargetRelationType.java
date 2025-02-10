@@ -4,15 +4,23 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-/** The type related to the target. */
+/**
+ * The type related to the target.
+ */
 public enum TargetRelationType {
-    /** Enum value assessment. */
+    /**
+     * Enum value assessment.
+     */
     ASSESSMENT("assessment"),
 
-    /** Enum value target. */
+    /**
+     * Enum value target.
+     */
     TARGET("target");
 
-    /** The actual serialized value for a TargetRelationType instance. */
+    /**
+     * The actual serialized value for a TargetRelationType instance.
+     */
     private final String value;
 
     TargetRelationType(String value) {
@@ -21,7 +29,7 @@ public enum TargetRelationType {
 
     /**
      * Parses a serialized value to a TargetRelationType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed TargetRelationType object, or null if unable to parse.
      */
@@ -38,7 +46,9 @@ public enum TargetRelationType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

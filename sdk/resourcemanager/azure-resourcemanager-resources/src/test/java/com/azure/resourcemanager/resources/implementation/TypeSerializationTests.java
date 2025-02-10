@@ -6,18 +6,17 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.resources.models.DeploymentParameter;
-import com.azure.resourcemanager.resources.models.DeploymentProperties;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
+import com.azure.resourcemanager.resources.models.DeploymentParameter;
+import com.azure.resourcemanager.resources.models.DeploymentProperties;
 import com.azure.resourcemanager.resources.models.Tags;
 import com.azure.resourcemanager.resources.models.TagsPatchOperation;
 import com.azure.resourcemanager.resources.models.TagsPatchResource;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.AbstractMap;
 import java.util.Collections;
@@ -28,10 +27,10 @@ import java.util.Set;
 
 public class TypeSerializationTests {
 
-    private static final SerializerAdapter SERIALIZER_ADAPTER =
-        SerializerFactory.createDefaultManagementSerializerAdapter();
-    private static final TypeReference<Map<String, DeploymentParameter>> TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER =
-        new TypeReference<Map<String, DeploymentParameter>>() {
+    private static final SerializerAdapter SERIALIZER_ADAPTER
+        = SerializerFactory.createDefaultManagementSerializerAdapter();
+    private static final TypeReference<Map<String, DeploymentParameter>> TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER
+        = new TypeReference<Map<String, DeploymentParameter>>() {
         };
 
     public static final class Map1<K, V> extends AbstractMap<K, V> {
@@ -99,8 +98,7 @@ public class TypeSerializationTests {
     public void testTagsPatchResourceSerialization() throws Exception {
         Map<String, String> tags = new Map1<>("tag.1", "value.1");
 
-        TagsPatchResource tagsPatchResource = new TagsPatchResource()
-            .withOperation(TagsPatchOperation.REPLACE)
+        TagsPatchResource tagsPatchResource = new TagsPatchResource().withOperation(TagsPatchOperation.REPLACE)
             .withProperties(new Tags().withTags(tags));
 
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
@@ -110,35 +108,34 @@ public class TypeSerializationTests {
 
     @Test
     public void testDeploymentSerialization() throws Exception {
-        final String templateJson = "{ \"/subscriptions/<redacted>/resourceGroups/<redacted>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<redacted>\": {} }";
+        final String templateJson
+            = "{ \"/subscriptions/<redacted>/resourceGroups/<redacted>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<redacted>\": {} }";
+        final String parametersJson = "{\"id1\": {\"value\": \"myParameterType\"}}";
 
         DeploymentImpl deployment = new DeploymentImpl(new DeploymentExtendedInner(), "", null);
         deployment.withTemplate(templateJson);
 
+        deployment.withParameters(parametersJson);
+
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        String deploymentJson = serializerAdapter.serialize(createRequestFromInner(deployment), SerializerEncoding.JSON);
+        String deploymentJson
+            = serializerAdapter.serialize(createRequestFromInner(deployment), SerializerEncoding.JSON);
         Assertions.assertTrue(deploymentJson.contains("Microsoft.ManagedIdentity"));
+        Assertions.assertTrue(deploymentJson.contains("myParameterType"));
     }
 
-    private static DeploymentInner createRequestFromInner(DeploymentImpl deployment) throws NoSuchFieldException, IllegalAccessException, IOException {
-        String parametersJson = SERIALIZER_ADAPTER.serialize(
-            deployment.parameters(),
-            SerializerEncoding.JSON);
-        Map<String, DeploymentParameter> parameters = SERIALIZER_ADAPTER.deserialize(
-            parametersJson,
-            TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER.getType(),
-            SerializerEncoding.JSON);
+    private static DeploymentInner createRequestFromInner(DeploymentImpl deployment)
+        throws NoSuchFieldException, IllegalAccessException {
 
         Field field = DeploymentImpl.class.getDeclaredField("deploymentCreateUpdateParameters");
         field.setAccessible(true);
         DeploymentInner implInner = (DeploymentInner) field.get(deployment);
 
-        DeploymentInner inner = new DeploymentInner()
-                .withProperties(new DeploymentProperties());
+        DeploymentInner inner = new DeploymentInner().withProperties(new DeploymentProperties());
         inner.properties().withMode(deployment.mode());
         inner.properties().withTemplate(implInner.properties().template());
         inner.properties().withTemplateLink(deployment.templateLink());
-        inner.properties().withParameters(parameters);
+        inner.properties().withParameters(implInner.properties().parameters());
         inner.properties().withParametersLink(deployment.parametersLink());
         return inner;
     }

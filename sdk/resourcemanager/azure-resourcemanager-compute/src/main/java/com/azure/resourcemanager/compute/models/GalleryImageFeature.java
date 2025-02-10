@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A feature for gallery image.
  */
 @Fluent
-public final class GalleryImageFeature {
+public final class GalleryImageFeature implements JsonSerializable<GalleryImageFeature> {
     /*
      * The name of the gallery image feature.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The value of the gallery image feature.
      */
-    @JsonProperty(value = "value")
     private String value;
+
+    /*
+     * The minimum gallery image version which supports this feature.
+     */
+    private String startsAtVersion;
 
     /**
      * Creates an instance of GalleryImageFeature class.
@@ -71,10 +78,72 @@ public final class GalleryImageFeature {
     }
 
     /**
+     * Get the startsAtVersion property: The minimum gallery image version which supports this feature.
+     * 
+     * @return the startsAtVersion value.
+     */
+    public String startsAtVersion() {
+        return this.startsAtVersion;
+    }
+
+    /**
+     * Set the startsAtVersion property: The minimum gallery image version which supports this feature.
+     * 
+     * @param startsAtVersion the startsAtVersion value to set.
+     * @return the GalleryImageFeature object itself.
+     */
+    public GalleryImageFeature withStartsAtVersion(String startsAtVersion) {
+        this.startsAtVersion = startsAtVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("startsAtVersion", this.startsAtVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageFeature from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageFeature if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryImageFeature.
+     */
+    public static GalleryImageFeature fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageFeature deserializedGalleryImageFeature = new GalleryImageFeature();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedGalleryImageFeature.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedGalleryImageFeature.value = reader.getString();
+                } else if ("startsAtVersion".equals(fieldName)) {
+                    deserializedGalleryImageFeature.startsAtVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageFeature;
+        });
     }
 }

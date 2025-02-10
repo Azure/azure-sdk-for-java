@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of servers. */
+/**
+ * A list of servers.
+ */
 @Fluent
-public final class ServerListResult {
+public final class ServerListResult implements JsonSerializable<ServerListResult> {
     /*
      * The list of flexible servers
      */
-    @JsonProperty(value = "value")
     private List<ServerInner> value;
 
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ServerListResult class. */
+    /**
+     * Creates an instance of ServerListResult class.
+     */
     public ServerListResult() {
     }
 
     /**
      * Get the value property: The list of flexible servers.
-     *
+     * 
      * @return the value value.
      */
     public List<ServerInner> value() {
@@ -39,7 +45,7 @@ public final class ServerListResult {
 
     /**
      * Set the value property: The list of flexible servers.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServerListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ServerListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ServerListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ServerListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class ServerListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerListResult.
+     */
+    public static ServerListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerListResult deserializedServerListResult = new ServerListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ServerInner> value = reader.readArray(reader1 -> ServerInner.fromJson(reader1));
+                    deserializedServerListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedServerListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerListResult;
+        });
     }
 }

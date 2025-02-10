@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** the predictive autoscale mode. */
+/**
+ * the predictive autoscale mode.
+ */
 public enum PredictiveAutoscalePolicyScaleMode {
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled"),
 
-    /** Enum value ForecastOnly. */
+    /**
+     * Enum value ForecastOnly.
+     */
     FORECAST_ONLY("ForecastOnly"),
 
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled");
 
-    /** The actual serialized value for a PredictiveAutoscalePolicyScaleMode instance. */
+    /**
+     * The actual serialized value for a PredictiveAutoscalePolicyScaleMode instance.
+     */
     private final String value;
 
     PredictiveAutoscalePolicyScaleMode(String value) {
@@ -27,11 +34,10 @@ public enum PredictiveAutoscalePolicyScaleMode {
 
     /**
      * Parses a serialized value to a PredictiveAutoscalePolicyScaleMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PredictiveAutoscalePolicyScaleMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static PredictiveAutoscalePolicyScaleMode fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum PredictiveAutoscalePolicyScaleMode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

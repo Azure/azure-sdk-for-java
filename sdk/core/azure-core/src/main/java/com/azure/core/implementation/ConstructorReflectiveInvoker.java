@@ -4,6 +4,8 @@ package com.azure.core.implementation;
 
 import java.lang.reflect.Constructor;
 
+import static com.azure.core.implementation.MethodHandleReflectiveInvoker.createFinalArgs;
+
 /**
  * {@link Constructor}-based implementation of {@link ReflectiveInvoker}.
  */
@@ -21,7 +23,7 @@ final class ConstructorReflectiveInvoker implements ReflectiveInvoker {
 
     @Override
     public Object invokeWithArguments(Object target, Object... args) throws Exception {
-        return constructor.newInstance(args);
+        return constructor.newInstance(createFinalArgs(args));
     }
 
     @Override

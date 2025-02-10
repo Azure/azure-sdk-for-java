@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Resolve health input properties. */
+/**
+ * Resolve health input properties.
+ */
 @Fluent
-public final class ResolveHealthInputProperties {
+public final class ResolveHealthInputProperties implements JsonSerializable<ResolveHealthInputProperties> {
     /*
      * Health errors.
      */
-    @JsonProperty(value = "healthErrors")
     private List<ResolveHealthError> healthErrors;
 
-    /** Creates an instance of ResolveHealthInputProperties class. */
+    /**
+     * Creates an instance of ResolveHealthInputProperties class.
+     */
     public ResolveHealthInputProperties() {
     }
 
     /**
      * Get the healthErrors property: Health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<ResolveHealthError> healthErrors() {
@@ -32,7 +39,7 @@ public final class ResolveHealthInputProperties {
 
     /**
      * Set the healthErrors property: Health errors.
-     *
+     * 
      * @param healthErrors the healthErrors value to set.
      * @return the ResolveHealthInputProperties object itself.
      */
@@ -43,12 +50,50 @@ public final class ResolveHealthInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (healthErrors() != null) {
             healthErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("healthErrors", this.healthErrors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResolveHealthInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResolveHealthInputProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResolveHealthInputProperties.
+     */
+    public static ResolveHealthInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResolveHealthInputProperties deserializedResolveHealthInputProperties = new ResolveHealthInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("healthErrors".equals(fieldName)) {
+                    List<ResolveHealthError> healthErrors
+                        = reader.readArray(reader1 -> ResolveHealthError.fromJson(reader1));
+                    deserializedResolveHealthInputProperties.healthErrors = healthErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResolveHealthInputProperties;
+        });
     }
 }

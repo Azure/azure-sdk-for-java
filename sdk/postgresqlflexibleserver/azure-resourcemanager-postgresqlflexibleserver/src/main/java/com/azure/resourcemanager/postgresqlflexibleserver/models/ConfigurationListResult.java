@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of server configurations. */
+/**
+ * A list of server configurations.
+ */
 @Fluent
-public final class ConfigurationListResult {
+public final class ConfigurationListResult implements JsonSerializable<ConfigurationListResult> {
     /*
      * The list of server configurations.
      */
-    @JsonProperty(value = "value")
     private List<ConfigurationInner> value;
 
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ConfigurationListResult class. */
+    /**
+     * Creates an instance of ConfigurationListResult class.
+     */
     public ConfigurationListResult() {
     }
 
     /**
      * Get the value property: The list of server configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<ConfigurationInner> value() {
@@ -39,7 +45,7 @@ public final class ConfigurationListResult {
 
     /**
      * Set the value property: The list of server configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ConfigurationListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ConfigurationListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ConfigurationListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class ConfigurationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationListResult.
+     */
+    public static ConfigurationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationListResult deserializedConfigurationListResult = new ConfigurationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ConfigurationInner> value = reader.readArray(reader1 -> ConfigurationInner.fromJson(reader1));
+                    deserializedConfigurationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedConfigurationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationListResult;
+        });
     }
 }

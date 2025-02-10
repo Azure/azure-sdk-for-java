@@ -6,31 +6,37 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.DeepCreatedOriginProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The main origin of CDN content which is added when creating a CDN endpoint. */
+/**
+ * The main origin of CDN content which is added when creating a CDN endpoint.
+ */
 @Fluent
-public final class DeepCreatedOrigin {
+public final class DeepCreatedOrigin implements JsonSerializable<DeepCreatedOrigin> {
     /*
      * Origin name which must be unique within the endpoint.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Properties of the origin created on the CDN endpoint.
      */
-    @JsonProperty(value = "properties")
     private DeepCreatedOriginProperties innerProperties;
 
-    /** Creates an instance of DeepCreatedOrigin class. */
+    /**
+     * Creates an instance of DeepCreatedOrigin class.
+     */
     public DeepCreatedOrigin() {
     }
 
     /**
      * Get the name property: Origin name which must be unique within the endpoint.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +45,7 @@ public final class DeepCreatedOrigin {
 
     /**
      * Set the name property: Origin name which must be unique within the endpoint.
-     *
+     * 
      * @param name the name value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -50,7 +56,7 @@ public final class DeepCreatedOrigin {
 
     /**
      * Get the innerProperties property: Properties of the origin created on the CDN endpoint.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeepCreatedOriginProperties innerProperties() {
@@ -60,7 +66,7 @@ public final class DeepCreatedOrigin {
     /**
      * Get the hostname property: The address of the origin. It can be a domain name, IPv4 address, or IPv6 address.
      * This should be unique across all origins in an endpoint.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -70,7 +76,7 @@ public final class DeepCreatedOrigin {
     /**
      * Set the hostname property: The address of the origin. It can be a domain name, IPv4 address, or IPv6 address.
      * This should be unique across all origins in an endpoint.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -84,7 +90,7 @@ public final class DeepCreatedOrigin {
 
     /**
      * Get the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpPort value.
      */
     public Integer httpPort() {
@@ -93,7 +99,7 @@ public final class DeepCreatedOrigin {
 
     /**
      * Set the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpPort the httpPort value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -107,7 +113,7 @@ public final class DeepCreatedOrigin {
 
     /**
      * Get the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
@@ -116,7 +122,7 @@ public final class DeepCreatedOrigin {
 
     /**
      * Set the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpsPort the httpsPort value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -132,7 +138,7 @@ public final class DeepCreatedOrigin {
      * Get the originHostHeader property: The host header value sent to the origin with each request. If you leave this
      * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
      * Services require this host header value to match the origin hostname by default.
-     *
+     * 
      * @return the originHostHeader value.
      */
     public String originHostHeader() {
@@ -143,7 +149,7 @@ public final class DeepCreatedOrigin {
      * Set the originHostHeader property: The host header value sent to the origin with each request. If you leave this
      * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
      * Services require this host header value to match the origin hostname by default.
-     *
+     * 
      * @param originHostHeader the originHostHeader value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -158,7 +164,7 @@ public final class DeepCreatedOrigin {
     /**
      * Get the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -168,7 +174,7 @@ public final class DeepCreatedOrigin {
     /**
      * Set the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -183,7 +189,7 @@ public final class DeepCreatedOrigin {
     /**
      * Get the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -193,7 +199,7 @@ public final class DeepCreatedOrigin {
     /**
      * Set the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -207,7 +213,7 @@ public final class DeepCreatedOrigin {
 
     /**
      * Get the enabled property: Origin is enabled for load balancing or not. By default, origin is always enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -216,7 +222,7 @@ public final class DeepCreatedOrigin {
 
     /**
      * Set the enabled property: Origin is enabled for load balancing or not. By default, origin is always enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -231,7 +237,7 @@ public final class DeepCreatedOrigin {
     /**
      * Get the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this origin is 'Private'.
-     *
+     * 
      * @return the privateLinkAlias value.
      */
     public String privateLinkAlias() {
@@ -241,7 +247,7 @@ public final class DeepCreatedOrigin {
     /**
      * Set the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this origin is 'Private'.
-     *
+     * 
      * @param privateLinkAlias the privateLinkAlias value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -256,7 +262,7 @@ public final class DeepCreatedOrigin {
     /**
      * Get the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
@@ -266,7 +272,7 @@ public final class DeepCreatedOrigin {
     /**
      * Set the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -281,7 +287,7 @@ public final class DeepCreatedOrigin {
     /**
      * Get the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @return the privateLinkLocation value.
      */
     public String privateLinkLocation() {
@@ -291,7 +297,7 @@ public final class DeepCreatedOrigin {
     /**
      * Set the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @param privateLinkLocation the privateLinkLocation value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -306,7 +312,7 @@ public final class DeepCreatedOrigin {
     /**
      * Get the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @return the privateLinkApprovalMessage value.
      */
     public String privateLinkApprovalMessage() {
@@ -316,7 +322,7 @@ public final class DeepCreatedOrigin {
     /**
      * Set the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @param privateLinkApprovalMessage the privateLinkApprovalMessage value to set.
      * @return the DeepCreatedOrigin object itself.
      */
@@ -330,7 +336,7 @@ public final class DeepCreatedOrigin {
 
     /**
      * Get the privateEndpointStatus property: The approval status for the connection to the Private Link.
-     *
+     * 
      * @return the privateEndpointStatus value.
      */
     public PrivateEndpointStatus privateEndpointStatus() {
@@ -339,14 +345,13 @@ public final class DeepCreatedOrigin {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model DeepCreatedOrigin"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model DeepCreatedOrigin"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -354,4 +359,44 @@ public final class DeepCreatedOrigin {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeepCreatedOrigin.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeepCreatedOrigin from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeepCreatedOrigin if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeepCreatedOrigin.
+     */
+    public static DeepCreatedOrigin fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeepCreatedOrigin deserializedDeepCreatedOrigin = new DeepCreatedOrigin();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDeepCreatedOrigin.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDeepCreatedOrigin.innerProperties = DeepCreatedOriginProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeepCreatedOrigin;
+        });
+    }
 }

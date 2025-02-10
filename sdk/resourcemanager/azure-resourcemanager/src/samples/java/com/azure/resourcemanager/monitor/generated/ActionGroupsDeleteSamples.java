@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ActionGroups Delete. */
+/**
+ * Samples for ActionGroups Delete.
+ */
 public final class ActionGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/deleteActionGroup.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/deleteActionGroup.json
      */
     /**
      * Sample code: Delete an action group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAnActionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getActionGroups()
-            .deleteWithResponse("Default-NotificationRules", "SampleActionGroup", Context.NONE);
+            .deleteWithResponse("Default-NotificationRules", "SampleActionGroup", com.azure.core.util.Context.NONE);
     }
 }

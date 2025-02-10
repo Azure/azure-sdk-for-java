@@ -60,15 +60,11 @@ import java.util.Objects;
  * accessible.
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {BlobContainerClient.class, BlobContainerAsyncClient.class})
-public final class BlobContainerClientBuilder implements
-    TokenCredentialTrait<BlobContainerClientBuilder>,
-    ConnectionStringTrait<BlobContainerClientBuilder>,
-    AzureSasCredentialTrait<BlobContainerClientBuilder>,
-    AzureNamedKeyCredentialTrait<BlobContainerClientBuilder>,
-    HttpTrait<BlobContainerClientBuilder>,
-    ConfigurationTrait<BlobContainerClientBuilder>,
-    EndpointTrait<BlobContainerClientBuilder> {
+@ServiceClientBuilder(serviceClients = { BlobContainerClient.class, BlobContainerAsyncClient.class })
+public final class BlobContainerClientBuilder implements TokenCredentialTrait<BlobContainerClientBuilder>,
+    ConnectionStringTrait<BlobContainerClientBuilder>, AzureSasCredentialTrait<BlobContainerClientBuilder>,
+    AzureNamedKeyCredentialTrait<BlobContainerClientBuilder>, HttpTrait<BlobContainerClientBuilder>,
+    ConfigurationTrait<BlobContainerClientBuilder>, EndpointTrait<BlobContainerClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(BlobContainerClientBuilder.class);
 
     private String endpoint;
@@ -121,7 +117,26 @@ public final class BlobContainerClientBuilder implements
      * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlobContainerClient buildClient() {
-        return new BlobContainerClient(buildAsyncClient());
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
+
+        if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
+        }
+
+        /*
+        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
+        to read and debug.
+         */
+        String blobContainerName
+            = CoreUtils.isNullOrEmpty(containerName) ? BlobContainerClient.ROOT_CONTAINER_NAME : containerName;
+
+        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
+
+        HttpPipeline pipeline = constructPipeline();
+
+        return new BlobContainerClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
+            customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
     /**
@@ -146,27 +161,31 @@ public final class BlobContainerClientBuilder implements
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
 
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
-                + "scope cannot both be set"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
 
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        String blobContainerName = CoreUtils.isNullOrEmpty(containerName)
-            ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME
-            : containerName;
+        String blobContainerName
+            = CoreUtils.isNullOrEmpty(containerName) ? BlobContainerAsyncClient.ROOT_CONTAINER_NAME : containerName;
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+        HttpPipeline pipeline = constructPipeline();
 
         return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
+    }
+
+    private HttpPipeline constructPipeline() {
+        return (httpPipeline != null)
+            ? httpPipeline
+            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+                perRetryPolicies, configuration, audience, LOGGER);
     }
 
     /**
@@ -183,8 +202,8 @@ public final class BlobContainerClientBuilder implements
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.accountName = parts.getAccountName();
-            this.containerName = parts.getBlobContainerName() == null ? this.containerName
-                : parts.getBlobContainerName();
+            this.containerName
+                = parts.getBlobContainerName() == null ? this.containerName : parts.getBlobContainerName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
@@ -209,8 +228,7 @@ public final class BlobContainerClientBuilder implements
         if (customerProvidedKey == null) {
             this.customerProvidedKey = null;
         } else {
-            this.customerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            this.customerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
@@ -241,8 +259,8 @@ public final class BlobContainerClientBuilder implements
      * @param blobContainerEncryptionScope Encryption scope containing the encryption key information.
      * @return the updated BlobContainerClientBuilder object
      */
-    public BlobContainerClientBuilder blobContainerEncryptionScope(
-        BlobContainerEncryptionScope blobContainerEncryptionScope) {
+    public BlobContainerClientBuilder
+        blobContainerEncryptionScope(BlobContainerEncryptionScope blobContainerEncryptionScope) {
         this.blobContainerEncryptionScope = blobContainerEncryptionScope;
         return this;
     }
@@ -300,8 +318,7 @@ public final class BlobContainerClientBuilder implements
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public BlobContainerClientBuilder sasToken(String sasToken) {
-        this.sasToken = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+        this.sasToken = Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -316,8 +333,7 @@ public final class BlobContainerClientBuilder implements
      */
     @Override
     public BlobContainerClientBuilder credential(AzureSasCredential credential) {
-        this.azureSasCredential = Objects.requireNonNull(credential,
-            "'credential' cannot be null.");
+        this.azureSasCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -345,13 +361,11 @@ public final class BlobContainerClientBuilder implements
      */
     @Override
     public BlobContainerClientBuilder connectionString(String connectionString) {
-        StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, LOGGER);
+        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw LOGGER
-                    .logExceptionAsError(new IllegalArgumentException(
-                            "connectionString missing required settings to derive blob service endpoint."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "connectionString missing required settings to derive blob service endpoint."));
         }
         this.endpoint(endpoint.getPrimaryUri());
         if (storageConnectionString.getAccountName() != null) {
@@ -360,7 +374,7 @@ public final class BlobContainerClientBuilder implements
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
         if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
             this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
-                    authSettings.getAccount().getAccessKey()));
+                authSettings.getAccount().getAccessKey()));
         } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
             this.sasToken(authSettings.getSasToken());
         }

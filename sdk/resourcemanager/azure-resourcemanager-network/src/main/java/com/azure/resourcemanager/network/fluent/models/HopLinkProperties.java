@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Hop link properties.
  */
 @Immutable
-public final class HopLinkProperties {
+public final class HopLinkProperties implements JsonSerializable<HopLinkProperties> {
     /*
      * Minimum roundtrip time in milliseconds.
      */
-    @JsonProperty(value = "roundTripTimeMin", access = JsonProperty.Access.WRITE_ONLY)
     private Long roundTripTimeMin;
 
     /*
      * Average roundtrip time in milliseconds.
      */
-    @JsonProperty(value = "roundTripTimeAvg", access = JsonProperty.Access.WRITE_ONLY)
     private Long roundTripTimeAvg;
 
     /*
      * Maximum roundtrip time in milliseconds.
      */
-    @JsonProperty(value = "roundTripTimeMax", access = JsonProperty.Access.WRITE_ONLY)
     private Long roundTripTimeMax;
 
     /**
@@ -69,5 +70,44 @@ public final class HopLinkProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HopLinkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HopLinkProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HopLinkProperties.
+     */
+    public static HopLinkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HopLinkProperties deserializedHopLinkProperties = new HopLinkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("roundTripTimeMin".equals(fieldName)) {
+                    deserializedHopLinkProperties.roundTripTimeMin = reader.getNullable(JsonReader::getLong);
+                } else if ("roundTripTimeAvg".equals(fieldName)) {
+                    deserializedHopLinkProperties.roundTripTimeAvg = reader.getNullable(JsonReader::getLong);
+                } else if ("roundTripTimeMax".equals(fieldName)) {
+                    deserializedHopLinkProperties.roundTripTimeMax = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHopLinkProperties;
+        });
     }
 }

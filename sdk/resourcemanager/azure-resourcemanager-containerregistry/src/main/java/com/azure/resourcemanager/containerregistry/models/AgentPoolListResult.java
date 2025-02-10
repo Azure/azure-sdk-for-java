@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.AgentPoolInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The collection of agent pools. */
+/**
+ * The collection of agent pools.
+ */
 @Fluent
-public final class AgentPoolListResult {
+public final class AgentPoolListResult implements JsonSerializable<AgentPoolListResult> {
     /*
      * The collection value.
      */
-    @JsonProperty(value = "value")
     private List<AgentPoolInner> value;
 
     /*
      * The URI that can be used to request the next set of paged results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AgentPoolListResult class. */
+    /**
+     * Creates an instance of AgentPoolListResult class.
+     */
     public AgentPoolListResult() {
     }
 
     /**
      * Get the value property: The collection value.
-     *
+     * 
      * @return the value value.
      */
     public List<AgentPoolInner> value() {
@@ -39,7 +45,7 @@ public final class AgentPoolListResult {
 
     /**
      * Set the value property: The collection value.
-     *
+     * 
      * @param value the value value to set.
      * @return the AgentPoolListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class AgentPoolListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class AgentPoolListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AgentPoolListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class AgentPoolListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolListResult.
+     */
+    public static AgentPoolListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolListResult deserializedAgentPoolListResult = new AgentPoolListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AgentPoolInner> value = reader.readArray(reader1 -> AgentPoolInner.fromJson(reader1));
+                    deserializedAgentPoolListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAgentPoolListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolListResult;
+        });
     }
 }

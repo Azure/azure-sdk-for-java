@@ -14,7 +14,7 @@ import java.util.Map;
 public final class AccessListInvitationsSamples {
     /*
      * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Access_InvitationsList.
+     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Access_InvitationsList.
      * json
      */
     /**
@@ -23,10 +23,11 @@ public final class AccessListInvitationsSamples {
      * @param manager Entry point to ConfluentManager.
      */
     public static void accessInvitationsList(com.azure.resourcemanager.confluent.ConfluentManager manager) {
-        manager.access().listInvitationsWithResponse("myResourceGroup", "myOrganization",
-            new ListAccessRequestModel().withSearchFilters(
-                mapOf("pageSize", "10", "pageToken", "fakeTokenPlaceholder", "status", "INVITE_STATUS_SENT")),
-            com.azure.core.util.Context.NONE);
+        manager.access()
+            .listInvitationsWithResponse("myResourceGroup", "myOrganization",
+                new ListAccessRequestModel().withSearchFilters(
+                    mapOf("pageSize", "10", "pageToken", "fakeTokenPlaceholder", "status", "INVITE_STATUS_SENT")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

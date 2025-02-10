@@ -1,12 +1,196 @@
 # Release History
 
-## 1.46.0-beta.1 (Unreleased)
+## 1.56.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.55.0 (2025-02-06)
+
+### Features Added
+
+- Added `azure.core.models.AzureCloud` expandable enum to represent different Azure clouds. ([#43099](https://github.com/Azure/azure-sdk-for-java/pull/43099))
+- Added `CoreUtils.parseAuthenticateHeader` and `AuthenticateChallenge` class for parsing and consuming
+  `WWW-Authenticate` and `Proxy-Authenticate` headers. ([#43714](https://github.com/Azure/azure-sdk-for-java/pull/43714))
+
+### Other Changes
+
+- Removed length restriction on application id in `ClientOptions`. ([#42937](https://github.com/Azure/azure-sdk-for-java/pull/42937))
+
+#### Dependency Updates
+
+- Updated `azure-json` from `1.3.0` to `1.4.0`.
+- Updated `azure-xml` from `1.1.0` to `1.2.0`.
+
+## 1.54.1 (2024-11-14)
+
+### Bugs Fixed
+
+- Fixed a bug where when using a `SecurityManager` a recursive call can crash an application. ([#42906](https://github.com/Azure/azure-sdk-for-java/pull/42906))
+
+## 1.54.0 (2024-11-01)
+
+### Features Added
+
+- Added `HttpLogOptions.getAllowHttpHeaderNames()`, `HttpLogOptions.setAllowedHeaderNames(Set<HttpHeaderNames>)`, and
+  `HttpLogOptions.addAllowedHeaderName(HttpHeaderName)`.
+
+### Bugs Fixed
+
+- Fixed a bug where `Duration.between` could result in an exception if `OffsetDateTime.MAX` was used.
+
+### Other Changes
+
+- Deprecated `String`-based equivalent APIs in `HttpLogOptions` for allowed header names.
+- Deprecated `HttpLogOptions.prettyPrintBody`.
+
+#### Dependency Updates
+
+- Updated Reactor from `3.4.38` to `3.4.41`.
+
+## 1.53.0 (2024-10-01)
+
+### Features Added
+
+- Allow setting `SharedExecutorService`'s backing `ExecutorService` to allow for external configuration to manage the
+  shared thread pool. ([#41885](https://github.com/Azure/azure-sdk-for-java/pull/41885))
+- Change `SharedExecutorService` from implementing `ExecutorService` to `ScheduledExecutorService` to allow 
+  scheduled-based execution. ([#41885](https://github.com/Azure/azure-sdk-for-java/pull/41885))
+- Allow passing `schemaUrl` when creating a `Meter` or `Tracer` using `MeterProvider` and `TracerProvider`. ([#41789](https://github.com/Azure/azure-sdk-for-java/pull/41789))
+- Added `Binary.writeTo(JsonWriter)` to enable `BinaryData` to better integrate with `azure-json`. ([#42107](https://github.com/Azure/azure-sdk-for-java/pull/42107))
+- Added `ProofOfPossessionOptions` and a field to `TokenRequestContext` to indicate its use. ([#41852](https://github.com/Azure/azure-sdk-for-java/pull/41852))
+
+### Other Changes
+
+- Reduced synchronization lock contention when creating `URL`s with `UrlBuilder`. ([#41816](https://github.com/Azure/azure-sdk-for-java/pull/41816))
+- Don't let SPI loading errors crash an application. ([#41991](https://github.com/Azure/azure-sdk-for-java/pull/41991))
+
+## 1.52.0 (2024-09-12)
+
+### Features Added
+
+- Added new interface `ExpandableEnum` which allows for enums based on any type with expansion. Effectively, a generic
+  typed `ExpandableStringEnum`.
+
+### Bugs Fixed
+
+- Fixed a bug with serialization of arrays of `JsonSerializable`. ([#41645](https://github.com/Azure/azure-sdk-for-java/pull/41645))
+
+### Other Changes
+
+- Changed logging in `AccessTokenCache` to `VERBOSE`. ([#41648](https://github.com/Azure/azure-sdk-for-java/pull/41648))
+
+## 1.51.0 (2024-07-31)
+
+### Features Added
+
+- Added more HTTP header name constants to `HttpHeaderName`. ([#41354](https://github.com/Azure/azure-sdk-for-java/pull/41354))
+- Added support for "refresh on" in `SimpleTokenCache`. ([#41315](https://github.com/Azure/azure-sdk-for-java/pull/41315))
+
+### Bugs Fixed
+
+- Fixed a bug where `XmlMapperFactory` was incorrectly reflectively calling an API on `XmlMapper`. ([#41252](https://github.com/Azure/azure-sdk-for-java/pull/41252))
+- Fixed a bug where adding configuration properties with `ConfigurationBuilder.putProperty` did not work when retrieving 
+  them as system properties. ([#41362](https://github.com/Azure/azure-sdk-for-java/pull/41362))
+- Fixed a bug where datetime strings without a `:` in the offset would fail to parse. ([#41166](https://github.com/Azure/azure-sdk-for-java/pull/41166))
+
+### Other Changes
+
+- Reduced thread switching / thread parking in `RetryPolicy` by checking if the backoff delay was greater than zero. ([#41351](https://github.com/Azure/azure-sdk-for-java/pull/41351))
+
+#### Dependency Updates
+
+- Updated Jackson from `2.13.5` to `2.17.2`.
+
+## 1.50.0 (2024-07-12)
+
+### Features Added
+- Added support for `getRefreshAt()` functionality to `AccessToken` to get the time at which the token should be refreshed. ([#40982](https://github.com/Azure/azure-sdk-for-java/pull/41038))
+
+### Bugs Fixed
+- Fixed `SyncRestProxy` to return `InputStream` instead of `Mono<InputStream>`. ([#40982](https://github.com/Azure/azure-sdk-for-java/pull/40982))
+
+## 1.49.1 (2024-06-06)
+
+### Bugs Fixed
+
+- Fixed a bug where some policies didn't close the connection appropriately. ([#40052](https://github.com/Azure/azure-sdk-for-java/pull/40052))
+- Fixed an issue where HTTP response headers would be logged twice. ([#40190](https://github.com/Azure/azure-sdk-for-java/pull/40190))
+- Fixed a bug where container types wouldn't resolve to using `JsonSerializable` serialization for values. ([#40112](https://github.com/Azure/azure-sdk-for-java/pull/40112))
+- Fixed a bug where a generic `ObjectMapper` couldn't consume `CloudEvent` correctly. ([#40332](https://github.com/Azure/azure-sdk-for-java/pull/40332))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.36` to `3.4.38`.
+
+## 1.49.0 (2024-05-01)
+
+### Features Added
+
+- Added `SharedExecutorService` which acts as a global thread pool for the SDKs to use. ([#38860](https://github.com/Azure/azure-sdk-for-java/pull/38860))
+
+### Bugs Fixed
+
+- Fixed an issue where HTTP responses would not be logged if the response body was never consumed. ([#39964](https://github.com/Azure/azure-sdk-for-java/pull/39964))
+
+### Other Changes
+
+- Added default time to `CloudEvent` to be the current time if not set. ([#39751](https://github.com/Azure/azure-sdk-for-java/pull/39751))
+- Deprecated APIs exposing Jackson types. ([#39563](https://github.com/Azure/azure-sdk-for-java/pull/39563))
+
+## 1.48.0 (2024-04-05)
+
+### Features Added
+
+- Added dependency on `azure-xml` to support `XmlSerializable`, removing the need for Jackson Databind XML to handle
+  XML types generated and used by the SDKs.
+- Added new methods on `com.azure.core.util.tracing.Tracer` - `isRecording` and `addAttribute(String, Object, Context)`.
+- Added `CoreUtils.parseBestOffsetDateTime` which can handle cases when the `dateString` doesn't include a time zone.
+
+### Bugs Fixed
+
+- Fixed a bug where `text/event-stream` content type wasn't being handled correctly.
+  Replaced content type exact match `equals` by `startsWith`. ([#39128](https://github.com/Azure/azure-sdk-for-java/issues/39128))
+
+### Other Changes
+
+- Made `azure-json` `requires transitive` in `module-info.java`.
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.34` to `3.4.36`.
+
+## 1.47.0 (2024-03-01)
+
+### Features Added
+
+- Added `CoreUtils.addShutdownHookSafely(Thread)` which is a more generic version of 
+  `CoreUtils.addShutdownHookSafely(ExecutorService, Duration)`. ([#38730](https://github.com/Azure/azure-sdk-for-java/pull/38730))
+
+## 1.46.0 (2024-02-02)
 
 ### Features Added
 
 - Added `SyncPoller.getFinalResult(Duration)` to get the final result of a long-running operation with a timeout
   period. Allows for a single call rather than calling both `SyncPoller.waitForCompletion(Duration)` and
   `SyncPoller.getFinalResult()`.
+- Serialization model types now implement `JsonSerializable`. ([#37046](https://github.com/Azure/azure-sdk-for-java/pull/37046))
+- Added `CoreUtils.durationToStringWithDays`, exposing how serialization of `Duration` is done. ([#37763](https://github.com/Azure/azure-sdk-for-java/pull/37763))
+- Prevent requests that won't retry from being buffered. ([#37871](https://github.com/Azure/azure-sdk-for-java/pull/37871))
+- Added `BinaryData.writeTo(OutputStream)`, `BinaryData.writeTo(WriteableByteChannel)`, 
+  and `BinaryData.writeToAsync(AsynchronousByteChannel)` to allow writing the content of `BinaryData` to an 
+  `OutputStream`, `WriteableByteChannel`, or `AsynchronousByteChannel` respectively. ([#38271](https://github.com/Azure/azure-sdk-for-java/pull/38271))
+- Added `RetryOptions.shouldRetryCondition`, `RetryStrategy.shouldRetryCondition` and `RequestRetryCondition` to allow 
+  `RetryOptions` to determine which  HTTP responses and exceptions can be retried. ([#38585](https://github.com/Azure/azure-sdk-for-java/pull/38585))
+- Added `CoreUtils.addShutdownHookSafely` to add a shutdown hook with possible usage of `AccessController` to add it
+  in a privileged manner. ([#38580](https://github.com/Azure/azure-sdk-for-java/pull/38580))
 
 ### Breaking Changes
 
@@ -15,7 +199,18 @@
 
 ### Bugs Fixed
 
+- Fixed `RetryPolicy` usage of calculated delay. ([#37788](https://github.com/Azure/azure-sdk-for-java/pull/37788))
+
 ### Other Changes
+
+- `HttpLoggingPolicy` uses better defaults for allowed headers and query parameters to log. ([#37686](https://github.com/Azure/azure-sdk-for-java/pull/37686))
+- Performance improvements in `LoggingEventBuilder`. ([#37967](https://github.com/Azure/azure-sdk-for-java/pull/37967))
+- Performance improvements to HTTP header logging. ([#38492](https://github.com/Azure/azure-sdk-for-java/pull/38492))
+- Reduce redacted header logging. ([#38501](https://github.com/Azure/azure-sdk-for-java/pull/38501))
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.33` to `3.4.34`.
 
 ## 1.45.0 (2023-11-03)
 
@@ -415,12 +610,12 @@
 
 - Added support for strongly-typed HTTP header objects to be deserialized lazily on a per-field basis rather than all
   at once during construction.
-- Added `Context` support for `DefaultPollingStrategy`, `OperationResourcPollingStrategy` and `LocationPollingStrategy`.  
+- Added `Context` support for `DefaultPollingStrategy`, `OperationResourcePollingStrategy` and `LocationPollingStrategy`.  
 
 ### Other Changes
 
 - Reduced usage of reflection when sending requests and receiving responses in `RestProxy`.
-- Improved handling for catching and rethrowing exceptions to reduce wrapping exceptions and to not wrap `Error`s.
+- Improved handling for catching and re-throwing exceptions to reduce wrapping exceptions and to not wrap `Error`s.
 
 #### Dependency Updates
 
@@ -696,7 +891,7 @@
 - Added `ProxyOptions.fromConfiguration(Configuration, boolean)` which allows for configuring if the returned proxy
   is resolved.
 - Added a default `JsonSerializer` implementation which is optionally used when creating a `JsonSerializer` with
-  `JsonSerializerProviders` by passing the flag `useDefaultIfAbset`.
+  `JsonSerializerProviders` by passing the flag `useDefaultIfAbsent`.
 - Added the ability to configure HTTP logging level without making code changes by configuring environment property
   `AZURE_HTTP_LOG_DETAIL_LEVEL`.
 - Added constructor overloads to `PagedFlux` which allows for the paging implements to consume the `byPage` page size value.
@@ -907,7 +1102,7 @@
 - Logging exception at warning level, and append stack trace if log level is verbose.
 - Fixed HttpLoggingPolicy to take null HttpLogOptions.
 - Changed the User agent format.
-- Hide the secrets from evnironment variable.
+- Hide the secrets from environment variable.
 - UserAgentPolicy is using the value stored in the policy no matter what is stored in the passed request. Also, removed the service version from User agent format.
 - Added Iterable<T> overload for IterableStream<T>.
 - Reduce Prefetch Limit for PagedIterable and IterableStream.

@@ -11,22 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class TrinoUserPluginTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrinoUserPlugin model =
-            BinaryData
-                .fromString("{\"enabled\":false,\"name\":\"iebwwaloayqcgwrt\",\"path\":\"uzgwyzmhtx\"}")
+        TrinoUserPlugin model
+            = BinaryData.fromString("{\"enabled\":false,\"name\":\"kwobdagxtibq\",\"path\":\"bxwakbog\"}")
                 .toObject(TrinoUserPlugin.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("iebwwaloayqcgwrt", model.name());
-        Assertions.assertEquals("uzgwyzmhtx", model.path());
+        Assertions.assertEquals("kwobdagxtibq", model.name());
+        Assertions.assertEquals("bxwakbog", model.path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrinoUserPlugin model =
-            new TrinoUserPlugin().withEnabled(false).withName("iebwwaloayqcgwrt").withPath("uzgwyzmhtx");
+        TrinoUserPlugin model = new TrinoUserPlugin().withEnabled(false).withName("kwobdagxtibq").withPath("bxwakbog");
         model = BinaryData.fromObject(model).toObject(TrinoUserPlugin.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("iebwwaloayqcgwrt", model.name());
-        Assertions.assertEquals("uzgwyzmhtx", model.path());
+        Assertions.assertEquals("kwobdagxtibq", model.name());
+        Assertions.assertEquals("bxwakbog", model.path());
     }
 }

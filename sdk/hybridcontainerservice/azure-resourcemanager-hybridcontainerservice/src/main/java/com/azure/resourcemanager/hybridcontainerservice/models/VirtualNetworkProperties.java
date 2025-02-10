@@ -5,72 +5,61 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork.
+ * Properties of the virtual network resource.
  */
 @Fluent
-public final class VirtualNetworkProperties {
+public final class VirtualNetworkProperties implements JsonSerializable<VirtualNetworkProperties> {
     /*
      * The infraVnetProfile property.
      */
-    @JsonProperty(value = "infraVnetProfile")
     private VirtualNetworkPropertiesInfraVnetProfile infraVnetProfile;
 
     /*
-     * Virtual IP Pool for Kubernetes
+     * Range of IP Addresses for Kubernetes API Server and services if using HA Proxy load balancer
      */
-    @JsonProperty(value = "vipPool")
     private List<VirtualNetworkPropertiesVipPoolItem> vipPool;
 
     /*
-     * IP Pool for Virtual Machines
+     * Range of IP Addresses for Kubernetes node VMs
      */
-    @JsonProperty(value = "vmipPool")
     private List<VirtualNetworkPropertiesVmipPoolItem> vmipPool;
 
     /*
-     * Address of the DHCP servers associated with the network
+     * List of DNS server IP Addresses associated with the network
      */
-    @JsonProperty(value = "dhcpServers")
-    private List<String> dhcpServers;
-
-    /*
-     * Address of the DNS servers associated with the network
-     */
-    @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /*
-     * Address of the Gateway associated with the network
+     * IP Address of the Gateway associated with the network
      */
-    @JsonProperty(value = "gateway")
     private String gateway;
 
     /*
      * IP Address Prefix of the network
      */
-    @JsonProperty(value = "ipAddressPrefix")
     private String ipAddressPrefix;
 
     /*
      * VLAN Id used by the network
      */
-    @JsonProperty(value = "vlanID")
     private Integer vlanId;
 
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * HybridAKSNetworkStatus defines the observed state of HybridAKSNetwork
+     * Status of the virtual network resource
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkPropertiesStatus status;
 
     /**
@@ -100,7 +89,8 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Get the vipPool property: Virtual IP Pool for Kubernetes.
+     * Get the vipPool property: Range of IP Addresses for Kubernetes API Server and services if using HA Proxy load
+     * balancer.
      * 
      * @return the vipPool value.
      */
@@ -109,7 +99,8 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Set the vipPool property: Virtual IP Pool for Kubernetes.
+     * Set the vipPool property: Range of IP Addresses for Kubernetes API Server and services if using HA Proxy load
+     * balancer.
      * 
      * @param vipPool the vipPool value to set.
      * @return the VirtualNetworkProperties object itself.
@@ -120,7 +111,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Get the vmipPool property: IP Pool for Virtual Machines.
+     * Get the vmipPool property: Range of IP Addresses for Kubernetes node VMs.
      * 
      * @return the vmipPool value.
      */
@@ -129,7 +120,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Set the vmipPool property: IP Pool for Virtual Machines.
+     * Set the vmipPool property: Range of IP Addresses for Kubernetes node VMs.
      * 
      * @param vmipPool the vmipPool value to set.
      * @return the VirtualNetworkProperties object itself.
@@ -140,27 +131,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Get the dhcpServers property: Address of the DHCP servers associated with the network.
-     * 
-     * @return the dhcpServers value.
-     */
-    public List<String> dhcpServers() {
-        return this.dhcpServers;
-    }
-
-    /**
-     * Set the dhcpServers property: Address of the DHCP servers associated with the network.
-     * 
-     * @param dhcpServers the dhcpServers value to set.
-     * @return the VirtualNetworkProperties object itself.
-     */
-    public VirtualNetworkProperties withDhcpServers(List<String> dhcpServers) {
-        this.dhcpServers = dhcpServers;
-        return this;
-    }
-
-    /**
-     * Get the dnsServers property: Address of the DNS servers associated with the network.
+     * Get the dnsServers property: List of DNS server IP Addresses associated with the network.
      * 
      * @return the dnsServers value.
      */
@@ -169,7 +140,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Set the dnsServers property: Address of the DNS servers associated with the network.
+     * Set the dnsServers property: List of DNS server IP Addresses associated with the network.
      * 
      * @param dnsServers the dnsServers value to set.
      * @return the VirtualNetworkProperties object itself.
@@ -180,7 +151,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Get the gateway property: Address of the Gateway associated with the network.
+     * Get the gateway property: IP Address of the Gateway associated with the network.
      * 
      * @return the gateway value.
      */
@@ -189,7 +160,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Set the gateway property: Address of the Gateway associated with the network.
+     * Set the gateway property: IP Address of the Gateway associated with the network.
      * 
      * @param gateway the gateway value to set.
      * @return the VirtualNetworkProperties object itself.
@@ -249,7 +220,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Get the status property: HybridAKSNetworkStatus defines the observed state of HybridAKSNetwork.
+     * Get the status property: Status of the virtual network resource.
      * 
      * @return the status value.
      */
@@ -275,5 +246,70 @@ public final class VirtualNetworkProperties {
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("infraVnetProfile", this.infraVnetProfile);
+        jsonWriter.writeArrayField("vipPool", this.vipPool, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vmipPool", this.vmipPool, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dnsServers", this.dnsServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("gateway", this.gateway);
+        jsonWriter.writeStringField("ipAddressPrefix", this.ipAddressPrefix);
+        jsonWriter.writeNumberField("vlanID", this.vlanId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkProperties.
+     */
+    public static VirtualNetworkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkProperties deserializedVirtualNetworkProperties = new VirtualNetworkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("infraVnetProfile".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.infraVnetProfile
+                        = VirtualNetworkPropertiesInfraVnetProfile.fromJson(reader);
+                } else if ("vipPool".equals(fieldName)) {
+                    List<VirtualNetworkPropertiesVipPoolItem> vipPool
+                        = reader.readArray(reader1 -> VirtualNetworkPropertiesVipPoolItem.fromJson(reader1));
+                    deserializedVirtualNetworkProperties.vipPool = vipPool;
+                } else if ("vmipPool".equals(fieldName)) {
+                    List<VirtualNetworkPropertiesVmipPoolItem> vmipPool
+                        = reader.readArray(reader1 -> VirtualNetworkPropertiesVmipPoolItem.fromJson(reader1));
+                    deserializedVirtualNetworkProperties.vmipPool = vmipPool;
+                } else if ("dnsServers".equals(fieldName)) {
+                    List<String> dnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualNetworkProperties.dnsServers = dnsServers;
+                } else if ("gateway".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.gateway = reader.getString();
+                } else if ("ipAddressPrefix".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.ipAddressPrefix = reader.getString();
+                } else if ("vlanID".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.vlanId = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedVirtualNetworkProperties.status = VirtualNetworkPropertiesStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkProperties;
+        });
     }
 }

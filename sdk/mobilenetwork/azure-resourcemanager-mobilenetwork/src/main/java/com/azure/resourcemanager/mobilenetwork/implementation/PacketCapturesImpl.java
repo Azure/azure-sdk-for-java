@@ -23,23 +23,18 @@ public final class PacketCapturesImpl implements PacketCaptures {
 
     private final com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager;
 
-    public PacketCapturesImpl(
-        PacketCapturesClient innerClient, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
+    public PacketCapturesImpl(PacketCapturesClient innerClient,
+        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PacketCapture> getWithResponse(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName, Context context) {
-        Response<PacketCaptureInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, context);
+    public Response<PacketCapture> getWithResponse(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCaptureName, Context context) {
+        Response<PacketCaptureInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PacketCaptureImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -47,8 +42,8 @@ public final class PacketCapturesImpl implements PacketCaptures {
     }
 
     public PacketCapture get(String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName) {
-        PacketCaptureInner inner =
-            this.serviceClient().get(resourceGroupName, packetCoreControlPlaneName, packetCaptureName);
+        PacketCaptureInner inner
+            = this.serviceClient().get(resourceGroupName, packetCoreControlPlaneName, packetCaptureName);
         if (inner != null) {
             return new PacketCaptureImpl(inner, this.manager());
         } else {
@@ -60,15 +55,15 @@ public final class PacketCapturesImpl implements PacketCaptures {
         this.serviceClient().delete(resourceGroupName, packetCoreControlPlaneName, packetCaptureName);
     }
 
-    public void delete(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName, Context context) {
+    public void delete(String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, context);
     }
 
-    public AsyncOperationStatus stop(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName) {
-        AsyncOperationStatusInner inner =
-            this.serviceClient().stop(resourceGroupName, packetCoreControlPlaneName, packetCaptureName);
+    public AsyncOperationStatus stop(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCaptureName) {
+        AsyncOperationStatusInner inner
+            = this.serviceClient().stop(resourceGroupName, packetCoreControlPlaneName, packetCaptureName);
         if (inner != null) {
             return new AsyncOperationStatusImpl(inner, this.manager());
         } else {
@@ -76,10 +71,10 @@ public final class PacketCapturesImpl implements PacketCaptures {
         }
     }
 
-    public AsyncOperationStatus stop(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName, Context context) {
-        AsyncOperationStatusInner inner =
-            this.serviceClient().stop(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, context);
+    public AsyncOperationStatus stop(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCaptureName, Context context) {
+        AsyncOperationStatusInner inner
+            = this.serviceClient().stop(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, context);
         if (inner != null) {
             return new AsyncOperationStatusImpl(inner, this.manager());
         } else {
@@ -87,138 +82,93 @@ public final class PacketCapturesImpl implements PacketCaptures {
         }
     }
 
-    public PagedIterable<PacketCapture> listByPacketCoreControlPlane(
-        String resourceGroupName, String packetCoreControlPlaneName) {
-        PagedIterable<PacketCaptureInner> inner =
-            this.serviceClient().listByPacketCoreControlPlane(resourceGroupName, packetCoreControlPlaneName);
-        return Utils.mapPage(inner, inner1 -> new PacketCaptureImpl(inner1, this.manager()));
+    public PagedIterable<PacketCapture> listByPacketCoreControlPlane(String resourceGroupName,
+        String packetCoreControlPlaneName) {
+        PagedIterable<PacketCaptureInner> inner
+            = this.serviceClient().listByPacketCoreControlPlane(resourceGroupName, packetCoreControlPlaneName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PacketCaptureImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PacketCapture> listByPacketCoreControlPlane(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context) {
-        PagedIterable<PacketCaptureInner> inner =
-            this.serviceClient().listByPacketCoreControlPlane(resourceGroupName, packetCoreControlPlaneName, context);
-        return Utils.mapPage(inner, inner1 -> new PacketCaptureImpl(inner1, this.manager()));
+    public PagedIterable<PacketCapture> listByPacketCoreControlPlane(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context) {
+        PagedIterable<PacketCaptureInner> inner
+            = this.serviceClient().listByPacketCoreControlPlane(resourceGroupName, packetCoreControlPlaneName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PacketCaptureImpl(inner1, this.manager()));
     }
 
     public PacketCapture getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
+        String packetCoreControlPlaneName = ResourceManagerUtils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'packetCoreControlPlanes'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'packetCoreControlPlanes'.", id)));
         }
-        String packetCaptureName = Utils.getValueFromIdByName(id, "packetCaptures");
+        String packetCaptureName = ResourceManagerUtils.getValueFromIdByName(id, "packetCaptures");
         if (packetCaptureName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'packetCaptures'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'packetCaptures'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, Context.NONE)
             .getValue();
     }
 
     public Response<PacketCapture> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
+        String packetCoreControlPlaneName = ResourceManagerUtils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'packetCoreControlPlanes'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'packetCoreControlPlanes'.", id)));
         }
-        String packetCaptureName = Utils.getValueFromIdByName(id, "packetCaptures");
+        String packetCaptureName = ResourceManagerUtils.getValueFromIdByName(id, "packetCaptures");
         if (packetCaptureName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'packetCaptures'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'packetCaptures'.", id)));
         }
         return this.getWithResponse(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
+        String packetCoreControlPlaneName = ResourceManagerUtils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'packetCoreControlPlanes'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'packetCoreControlPlanes'.", id)));
         }
-        String packetCaptureName = Utils.getValueFromIdByName(id, "packetCaptures");
+        String packetCaptureName = ResourceManagerUtils.getValueFromIdByName(id, "packetCaptures");
         if (packetCaptureName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'packetCaptures'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'packetCaptures'.", id)));
         }
         this.delete(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String packetCoreControlPlaneName = Utils.getValueFromIdByName(id, "packetCoreControlPlanes");
+        String packetCoreControlPlaneName = ResourceManagerUtils.getValueFromIdByName(id, "packetCoreControlPlanes");
         if (packetCoreControlPlaneName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'packetCoreControlPlanes'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'packetCoreControlPlanes'.", id)));
         }
-        String packetCaptureName = Utils.getValueFromIdByName(id, "packetCaptures");
+        String packetCaptureName = ResourceManagerUtils.getValueFromIdByName(id, "packetCaptures");
         if (packetCaptureName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'packetCaptures'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'packetCaptures'.", id)));
         }
         this.delete(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, context);
     }

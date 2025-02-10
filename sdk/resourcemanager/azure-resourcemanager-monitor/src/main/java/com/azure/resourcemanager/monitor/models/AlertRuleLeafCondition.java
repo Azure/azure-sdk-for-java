@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * An Activity Log Alert rule condition that is met by comparing the field and value of an Activity Log event. This
- * condition must contain 'field' and either 'equals' or 'containsAny'.
+ * An Activity Log Alert rule condition that is met by comparing the field and value of an Activity Log event.
+ * This condition must contain 'field' and either 'equals' or 'containsAny'.
  */
 @Fluent
-public class AlertRuleLeafCondition {
+public class AlertRuleLeafCondition implements JsonSerializable<AlertRuleLeafCondition> {
     /*
      * The name of the Activity Log event's field that this condition will examine.
      * The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level',
      * 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything
      * beginning with 'properties'.
      */
-    @JsonProperty(value = "field")
     private String field;
 
     /*
-     * The value of the event's field will be compared to this value (case-insensitive) to determine if the condition
-     * is met.
+     * The value of the event's field will be compared to this value (case-insensitive) to determine if the condition is
+     * met.
      */
-    @JsonProperty(value = "equals")
     private String equals;
 
     /*
      * The value of the event's field will be compared to the values in this array (case-insensitive) to determine if
      * the condition is met.
      */
-    @JsonProperty(value = "containsAny")
     private List<String> containsAny;
 
-    /** Creates an instance of AlertRuleLeafCondition class. */
+    /**
+     * Creates an instance of AlertRuleLeafCondition class.
+     */
     public AlertRuleLeafCondition() {
     }
 
     /**
-     * Get the field property: The name of the Activity Log event's field that this condition will examine. The possible
-     * values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName',
-     * 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with
-     * 'properties'.
-     *
+     * Get the field property: The name of the Activity Log event's field that this condition will examine.
+     * The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level',
+     * 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything
+     * beginning with 'properties'.
+     * 
      * @return the field value.
      */
     public String field() {
@@ -54,11 +57,11 @@ public class AlertRuleLeafCondition {
     }
 
     /**
-     * Set the field property: The name of the Activity Log event's field that this condition will examine. The possible
-     * values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName',
-     * 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with
-     * 'properties'.
-     *
+     * Set the field property: The name of the Activity Log event's field that this condition will examine.
+     * The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level',
+     * 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything
+     * beginning with 'properties'.
+     * 
      * @param field the field value to set.
      * @return the AlertRuleLeafCondition object itself.
      */
@@ -70,7 +73,7 @@ public class AlertRuleLeafCondition {
     /**
      * Get the equals property: The value of the event's field will be compared to this value (case-insensitive) to
      * determine if the condition is met.
-     *
+     * 
      * @return the equals value.
      */
     public String equals() {
@@ -80,7 +83,7 @@ public class AlertRuleLeafCondition {
     /**
      * Set the equals property: The value of the event's field will be compared to this value (case-insensitive) to
      * determine if the condition is met.
-     *
+     * 
      * @param equals the equals value to set.
      * @return the AlertRuleLeafCondition object itself.
      */
@@ -92,7 +95,7 @@ public class AlertRuleLeafCondition {
     /**
      * Get the containsAny property: The value of the event's field will be compared to the values in this array
      * (case-insensitive) to determine if the condition is met.
-     *
+     * 
      * @return the containsAny value.
      */
     public List<String> containsAny() {
@@ -102,7 +105,7 @@ public class AlertRuleLeafCondition {
     /**
      * Set the containsAny property: The value of the event's field will be compared to the values in this array
      * (case-insensitive) to determine if the condition is met.
-     *
+     * 
      * @param containsAny the containsAny value to set.
      * @return the AlertRuleLeafCondition object itself.
      */
@@ -113,9 +116,52 @@ public class AlertRuleLeafCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("field", this.field);
+        jsonWriter.writeStringField("equals", this.equals);
+        jsonWriter.writeArrayField("containsAny", this.containsAny, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertRuleLeafCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertRuleLeafCondition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertRuleLeafCondition.
+     */
+    public static AlertRuleLeafCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertRuleLeafCondition deserializedAlertRuleLeafCondition = new AlertRuleLeafCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("field".equals(fieldName)) {
+                    deserializedAlertRuleLeafCondition.field = reader.getString();
+                } else if ("equals".equals(fieldName)) {
+                    deserializedAlertRuleLeafCondition.equals = reader.getString();
+                } else if ("containsAny".equals(fieldName)) {
+                    List<String> containsAny = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAlertRuleLeafCondition.containsAny = containsAny;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertRuleLeafCondition;
+        });
     }
 }

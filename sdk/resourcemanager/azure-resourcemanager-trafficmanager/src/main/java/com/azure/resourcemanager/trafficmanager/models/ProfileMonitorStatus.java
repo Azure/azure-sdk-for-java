@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The profile-level monitoring status of the Traffic Manager profile. */
+/**
+ * The profile-level monitoring status of the Traffic Manager profile.
+ */
 public final class ProfileMonitorStatus extends ExpandableStringEnum<ProfileMonitorStatus> {
-    /** Static value CheckingEndpoints for ProfileMonitorStatus. */
+    /**
+     * Static value CheckingEndpoints for ProfileMonitorStatus.
+     */
     public static final ProfileMonitorStatus CHECKING_ENDPOINTS = fromString("CheckingEndpoints");
 
-    /** Static value Online for ProfileMonitorStatus. */
+    /**
+     * Static value Online for ProfileMonitorStatus.
+     */
     public static final ProfileMonitorStatus ONLINE = fromString("Online");
 
-    /** Static value Degraded for ProfileMonitorStatus. */
+    /**
+     * Static value Degraded for ProfileMonitorStatus.
+     */
     public static final ProfileMonitorStatus DEGRADED = fromString("Degraded");
 
-    /** Static value Disabled for ProfileMonitorStatus. */
+    /**
+     * Static value Disabled for ProfileMonitorStatus.
+     */
     public static final ProfileMonitorStatus DISABLED = fromString("Disabled");
 
-    /** Static value Inactive for ProfileMonitorStatus. */
+    /**
+     * Static value Inactive for ProfileMonitorStatus.
+     */
     public static final ProfileMonitorStatus INACTIVE = fromString("Inactive");
 
     /**
      * Creates a new instance of ProfileMonitorStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class ProfileMonitorStatus extends ExpandableStringEnum<ProfileMoni
 
     /**
      * Creates or finds a ProfileMonitorStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProfileMonitorStatus.
      */
-    @JsonCreator
     public static ProfileMonitorStatus fromString(String name) {
         return fromString(name, ProfileMonitorStatus.class);
     }
 
     /**
      * Gets known ProfileMonitorStatus values.
-     *
+     * 
      * @return known ProfileMonitorStatus values.
      */
     public static Collection<ProfileMonitorStatus> values() {

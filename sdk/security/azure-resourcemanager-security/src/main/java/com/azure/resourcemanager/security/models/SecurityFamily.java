@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The security family of the discovered solution. */
+/**
+ * The security family of the discovered solution.
+ */
 public final class SecurityFamily extends ExpandableStringEnum<SecurityFamily> {
-    /** Static value Waf for SecurityFamily. */
+    /**
+     * Static value Waf for SecurityFamily.
+     */
     public static final SecurityFamily WAF = fromString("Waf");
 
-    /** Static value Ngfw for SecurityFamily. */
+    /**
+     * Static value Ngfw for SecurityFamily.
+     */
     public static final SecurityFamily NGFW = fromString("Ngfw");
 
-    /** Static value SaasWaf for SecurityFamily. */
+    /**
+     * Static value SaasWaf for SecurityFamily.
+     */
     public static final SecurityFamily SAAS_WAF = fromString("SaasWaf");
 
-    /** Static value Va for SecurityFamily. */
+    /**
+     * Static value Va for SecurityFamily.
+     */
     public static final SecurityFamily VA = fromString("Va");
 
     /**
      * Creates a new instance of SecurityFamily value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class SecurityFamily extends ExpandableStringEnum<SecurityFamily> {
 
     /**
      * Creates or finds a SecurityFamily from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecurityFamily.
      */
-    @JsonCreator
     public static SecurityFamily fromString(String name) {
         return fromString(name, SecurityFamily.class);
     }
 
     /**
      * Gets known SecurityFamily values.
-     *
+     * 
      * @return known SecurityFamily values.
      */
     public static Collection<SecurityFamily> values() {

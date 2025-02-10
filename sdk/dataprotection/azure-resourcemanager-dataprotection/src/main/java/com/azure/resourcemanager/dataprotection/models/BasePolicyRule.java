@@ -6,37 +6,42 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * BasePolicyRule
  * 
  * BasePolicy Rule.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = BasePolicyRule.class)
-@JsonTypeName("BasePolicyRule")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureBackupRule", value = AzureBackupRule.class),
-    @JsonSubTypes.Type(name = "AzureRetentionRule", value = AzureRetentionRule.class) })
 @Fluent
-public class BasePolicyRule {
+public class BasePolicyRule implements JsonSerializable<BasePolicyRule> {
+    /*
+     * The objectType property.
+     */
+    private String objectType = "BasePolicyRule";
+
     /*
      * The name property.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Creates an instance of BasePolicyRule class.
      */
     public BasePolicyRule() {
+    }
+
+    /**
+     * Get the objectType property: The objectType property.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -66,10 +71,77 @@ public class BasePolicyRule {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model BasePolicyRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model BasePolicyRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BasePolicyRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BasePolicyRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BasePolicyRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BasePolicyRule.
+     */
+    public static BasePolicyRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureBackupRule".equals(discriminatorValue)) {
+                    return AzureBackupRule.fromJson(readerToUse.reset());
+                } else if ("AzureRetentionRule".equals(discriminatorValue)) {
+                    return AzureRetentionRule.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static BasePolicyRule fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BasePolicyRule deserializedBasePolicyRule = new BasePolicyRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedBasePolicyRule.name = reader.getString();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedBasePolicyRule.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBasePolicyRule;
+        });
+    }
 }

@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Record of the environment.
+ * Details of cluster record.
  */
 @Fluent
-public final class ClusterRecord {
+public final class ClusterRecord implements JsonSerializable<ClusterRecord> {
     /*
-     * Type of environment
+     * Type of cluster
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
-     * Id of the environment
+     * Id of the cluster
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Metadata of the record
      */
-    @JsonProperty(value = "metadata")
     private MetadataEntity metadata;
 
     /*
-     * Display name of the user
+     * Display name of the cluster
      */
-    @JsonProperty(value = "display_name")
     private String displayName;
 
     /*
      * Specification of the cluster
      */
-    @JsonProperty(value = "spec")
     private ClusterSpecEntity spec;
 
     /*
      * Specification of the cluster
      */
-    @JsonProperty(value = "status")
     private ClusterStatusEntity status;
 
     /**
@@ -55,7 +53,7 @@ public final class ClusterRecord {
     }
 
     /**
-     * Get the kind property: Type of environment.
+     * Get the kind property: Type of cluster.
      * 
      * @return the kind value.
      */
@@ -64,7 +62,7 @@ public final class ClusterRecord {
     }
 
     /**
-     * Set the kind property: Type of environment.
+     * Set the kind property: Type of cluster.
      * 
      * @param kind the kind value to set.
      * @return the ClusterRecord object itself.
@@ -75,7 +73,7 @@ public final class ClusterRecord {
     }
 
     /**
-     * Get the id property: Id of the environment.
+     * Get the id property: Id of the cluster.
      * 
      * @return the id value.
      */
@@ -84,7 +82,7 @@ public final class ClusterRecord {
     }
 
     /**
-     * Set the id property: Id of the environment.
+     * Set the id property: Id of the cluster.
      * 
      * @param id the id value to set.
      * @return the ClusterRecord object itself.
@@ -115,7 +113,7 @@ public final class ClusterRecord {
     }
 
     /**
-     * Get the displayName property: Display name of the user.
+     * Get the displayName property: Display name of the cluster.
      * 
      * @return the displayName value.
      */
@@ -124,7 +122,7 @@ public final class ClusterRecord {
     }
 
     /**
-     * Set the displayName property: Display name of the user.
+     * Set the displayName property: Display name of the cluster.
      * 
      * @param displayName the displayName value to set.
      * @return the ClusterRecord object itself.
@@ -189,5 +187,56 @@ public final class ClusterRecord {
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeStringField("display_name", this.displayName);
+        jsonWriter.writeJsonField("spec", this.spec);
+        jsonWriter.writeJsonField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterRecord from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterRecord if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterRecord.
+     */
+    public static ClusterRecord fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterRecord deserializedClusterRecord = new ClusterRecord();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedClusterRecord.kind = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedClusterRecord.id = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedClusterRecord.metadata = MetadataEntity.fromJson(reader);
+                } else if ("display_name".equals(fieldName)) {
+                    deserializedClusterRecord.displayName = reader.getString();
+                } else if ("spec".equals(fieldName)) {
+                    deserializedClusterRecord.spec = ClusterSpecEntity.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedClusterRecord.status = ClusterStatusEntity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterRecord;
+        });
     }
 }

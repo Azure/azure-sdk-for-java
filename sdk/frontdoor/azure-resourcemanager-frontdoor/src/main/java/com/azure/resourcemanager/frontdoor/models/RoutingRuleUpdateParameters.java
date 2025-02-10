@@ -6,61 +6,62 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Routing rules to apply to an endpoint. */
+/**
+ * Routing rules to apply to an endpoint.
+ */
 @Fluent
-public class RoutingRuleUpdateParameters {
+public class RoutingRuleUpdateParameters implements JsonSerializable<RoutingRuleUpdateParameters> {
     /*
      * Frontend endpoints associated with this rule
      */
-    @JsonProperty(value = "frontendEndpoints")
     private List<SubResource> frontendEndpoints;
 
     /*
      * Protocol schemes to match for this rule
      */
-    @JsonProperty(value = "acceptedProtocols")
     private List<FrontDoorProtocol> acceptedProtocols;
 
     /*
      * The route patterns of the rule.
      */
-    @JsonProperty(value = "patternsToMatch")
     private List<String> patternsToMatch;
 
     /*
      * Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
      */
-    @JsonProperty(value = "enabledState")
     private RoutingRuleEnabledState enabledState;
 
     /*
      * A reference to the routing configuration.
      */
-    @JsonProperty(value = "routeConfiguration")
     private RouteConfiguration routeConfiguration;
 
     /*
      * A reference to a specific Rules Engine Configuration to apply to this route.
      */
-    @JsonProperty(value = "rulesEngine")
     private SubResource rulesEngine;
 
     /*
      * Defines the Web Application Firewall policy for each routing rule (if applicable)
      */
-    @JsonProperty(value = "webApplicationFirewallPolicyLink")
     private RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
 
-    /** Creates an instance of RoutingRuleUpdateParameters class. */
+    /**
+     * Creates an instance of RoutingRuleUpdateParameters class.
+     */
     public RoutingRuleUpdateParameters() {
     }
 
     /**
      * Get the frontendEndpoints property: Frontend endpoints associated with this rule.
-     *
+     * 
      * @return the frontendEndpoints value.
      */
     public List<SubResource> frontendEndpoints() {
@@ -69,7 +70,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the frontendEndpoints property: Frontend endpoints associated with this rule.
-     *
+     * 
      * @param frontendEndpoints the frontendEndpoints value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -80,7 +81,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Get the acceptedProtocols property: Protocol schemes to match for this rule.
-     *
+     * 
      * @return the acceptedProtocols value.
      */
     public List<FrontDoorProtocol> acceptedProtocols() {
@@ -89,7 +90,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the acceptedProtocols property: Protocol schemes to match for this rule.
-     *
+     * 
      * @param acceptedProtocols the acceptedProtocols value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -100,7 +101,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Get the patternsToMatch property: The route patterns of the rule.
-     *
+     * 
      * @return the patternsToMatch value.
      */
     public List<String> patternsToMatch() {
@@ -109,7 +110,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the patternsToMatch property: The route patterns of the rule.
-     *
+     * 
      * @param patternsToMatch the patternsToMatch value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -120,7 +121,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Get the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the enabledState value.
      */
     public RoutingRuleEnabledState enabledState() {
@@ -129,7 +130,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -140,7 +141,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Get the routeConfiguration property: A reference to the routing configuration.
-     *
+     * 
      * @return the routeConfiguration value.
      */
     public RouteConfiguration routeConfiguration() {
@@ -149,7 +150,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the routeConfiguration property: A reference to the routing configuration.
-     *
+     * 
      * @param routeConfiguration the routeConfiguration value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -160,7 +161,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Get the rulesEngine property: A reference to a specific Rules Engine Configuration to apply to this route.
-     *
+     * 
      * @return the rulesEngine value.
      */
     public SubResource rulesEngine() {
@@ -169,7 +170,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Set the rulesEngine property: A reference to a specific Rules Engine Configuration to apply to this route.
-     *
+     * 
      * @param rulesEngine the rulesEngine value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -181,7 +182,7 @@ public class RoutingRuleUpdateParameters {
     /**
      * Get the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for each routing
      * rule (if applicable).
-     *
+     * 
      * @return the webApplicationFirewallPolicyLink value.
      */
     public RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
@@ -191,7 +192,7 @@ public class RoutingRuleUpdateParameters {
     /**
      * Set the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for each routing
      * rule (if applicable).
-     *
+     * 
      * @param webApplicationFirewallPolicyLink the webApplicationFirewallPolicyLink value to set.
      * @return the RoutingRuleUpdateParameters object itself.
      */
@@ -203,7 +204,7 @@ public class RoutingRuleUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -213,5 +214,68 @@ public class RoutingRuleUpdateParameters {
         if (webApplicationFirewallPolicyLink() != null) {
             webApplicationFirewallPolicyLink().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("frontendEndpoints", this.frontendEndpoints,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("acceptedProtocols", this.acceptedProtocols,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("patternsToMatch", this.patternsToMatch,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
+        jsonWriter.writeJsonField("routeConfiguration", this.routeConfiguration);
+        jsonWriter.writeJsonField("rulesEngine", this.rulesEngine);
+        jsonWriter.writeJsonField("webApplicationFirewallPolicyLink", this.webApplicationFirewallPolicyLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutingRuleUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutingRuleUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoutingRuleUpdateParameters.
+     */
+    public static RoutingRuleUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutingRuleUpdateParameters deserializedRoutingRuleUpdateParameters = new RoutingRuleUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frontendEndpoints".equals(fieldName)) {
+                    List<SubResource> frontendEndpoints = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedRoutingRuleUpdateParameters.frontendEndpoints = frontendEndpoints;
+                } else if ("acceptedProtocols".equals(fieldName)) {
+                    List<FrontDoorProtocol> acceptedProtocols
+                        = reader.readArray(reader1 -> FrontDoorProtocol.fromString(reader1.getString()));
+                    deserializedRoutingRuleUpdateParameters.acceptedProtocols = acceptedProtocols;
+                } else if ("patternsToMatch".equals(fieldName)) {
+                    List<String> patternsToMatch = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRoutingRuleUpdateParameters.patternsToMatch = patternsToMatch;
+                } else if ("enabledState".equals(fieldName)) {
+                    deserializedRoutingRuleUpdateParameters.enabledState
+                        = RoutingRuleEnabledState.fromString(reader.getString());
+                } else if ("routeConfiguration".equals(fieldName)) {
+                    deserializedRoutingRuleUpdateParameters.routeConfiguration = RouteConfiguration.fromJson(reader);
+                } else if ("rulesEngine".equals(fieldName)) {
+                    deserializedRoutingRuleUpdateParameters.rulesEngine = SubResource.fromJson(reader);
+                } else if ("webApplicationFirewallPolicyLink".equals(fieldName)) {
+                    deserializedRoutingRuleUpdateParameters.webApplicationFirewallPolicyLink
+                        = RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutingRuleUpdateParameters;
+        });
     }
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ActiveDirectoryAdministratorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of active directory administrators. */
+/**
+ * A list of active directory administrators.
+ */
 @Fluent
-public final class AdministratorListResult {
+public final class AdministratorListResult implements JsonSerializable<AdministratorListResult> {
     /*
      * The list of active directory administrators
      */
-    @JsonProperty(value = "value")
     private List<ActiveDirectoryAdministratorInner> value;
 
     /*
      * The link used to get the next page of active directory.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AdministratorListResult class. */
+    /**
+     * Creates an instance of AdministratorListResult class.
+     */
     public AdministratorListResult() {
     }
 
     /**
      * Get the value property: The list of active directory administrators.
-     *
+     * 
      * @return the value value.
      */
     public List<ActiveDirectoryAdministratorInner> value() {
@@ -39,7 +45,7 @@ public final class AdministratorListResult {
 
     /**
      * Set the value property: The list of active directory administrators.
-     *
+     * 
      * @param value the value value to set.
      * @return the AdministratorListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class AdministratorListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of active directory.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class AdministratorListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of active directory.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AdministratorListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class AdministratorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdministratorListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdministratorListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdministratorListResult.
+     */
+    public static AdministratorListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdministratorListResult deserializedAdministratorListResult = new AdministratorListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ActiveDirectoryAdministratorInner> value
+                        = reader.readArray(reader1 -> ActiveDirectoryAdministratorInner.fromJson(reader1));
+                    deserializedAdministratorListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAdministratorListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdministratorListResult;
+        });
     }
 }

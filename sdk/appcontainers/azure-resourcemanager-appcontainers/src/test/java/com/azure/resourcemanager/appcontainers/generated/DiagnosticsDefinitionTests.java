@@ -13,21 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DiagnosticsDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticsDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"yjkqabqgzslesjcb\",\"name\":\"rnntiewdjcv\",\"description\":\"uwrbehwagoh\",\"author\":\"f\",\"category\":\"mrqemvvhmx\",\"supportTopicList\":[{\"id\":\"futacoebjvewzc\",\"pesId\":\"nmwcpmgu\"},{\"id\":\"draufactkah\",\"pesId\":\"v\"}],\"analysisTypes\":[\"ziuxxpshnee\"],\"type\":\"lfg\",\"score\":26.94627}")
-                .toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("ziuxxpshnee", model.analysisTypes().get(0));
+        DiagnosticsDefinition model = BinaryData.fromString(
+            "{\"id\":\"ddm\",\"name\":\"huytxzvtzn\",\"description\":\"xbannovvoxc\",\"author\":\"tprwnw\",\"category\":\"oevytlyokr\",\"supportTopicList\":[{\"id\":\"uxvnsasbcrymodi\",\"pesId\":\"xkl\"}],\"analysisTypes\":[\"xnazpmkml\"],\"type\":\"evfxzopjhbzxlioh\",\"score\":9.690398}")
+            .toObject(DiagnosticsDefinition.class);
+        Assertions.assertEquals("xnazpmkml", model.analysisTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticsDefinition model =
-            new DiagnosticsDefinition()
-                .withSupportTopicList(Arrays.asList(new DiagnosticSupportTopic(), new DiagnosticSupportTopic()))
-                .withAnalysisTypes(Arrays.asList("ziuxxpshnee"));
+        DiagnosticsDefinition model
+            = new DiagnosticsDefinition().withSupportTopicList(Arrays.asList(new DiagnosticSupportTopic()))
+                .withAnalysisTypes(Arrays.asList("xnazpmkml"));
         model = BinaryData.fromObject(model).toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("ziuxxpshnee", model.analysisTypes().get(0));
+        Assertions.assertEquals("xnazpmkml", model.analysisTypes().get(0));
     }
 }

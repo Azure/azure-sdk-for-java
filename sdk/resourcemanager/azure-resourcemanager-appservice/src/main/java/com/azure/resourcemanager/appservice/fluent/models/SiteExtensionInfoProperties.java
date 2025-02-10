@@ -5,134 +5,120 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.SiteExtensionType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * SiteExtensionInfo resource specific properties.
  */
 @Fluent
-public final class SiteExtensionInfoProperties {
+public final class SiteExtensionInfoProperties implements JsonSerializable<SiteExtensionInfoProperties> {
     /*
      * Site extension ID.
      */
-    @JsonProperty(value = "extension_id")
     private String extensionId;
 
     /*
      * The title property.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Site extension type.
      */
-    @JsonProperty(value = "extension_type")
     private SiteExtensionType extensionType;
 
     /*
      * Summary description.
      */
-    @JsonProperty(value = "summary")
     private String summary;
 
     /*
      * Detailed description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Version information.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Extension URL.
      */
-    @JsonProperty(value = "extension_url")
     private String extensionUrl;
 
     /*
      * Project URL.
      */
-    @JsonProperty(value = "project_url")
     private String projectUrl;
 
     /*
      * Icon URL.
      */
-    @JsonProperty(value = "icon_url")
     private String iconUrl;
 
     /*
      * License URL.
      */
-    @JsonProperty(value = "license_url")
     private String licenseUrl;
 
     /*
      * Feed URL.
      */
-    @JsonProperty(value = "feed_url")
     private String feedUrl;
 
     /*
      * List of authors.
      */
-    @JsonProperty(value = "authors")
     private List<String> authors;
 
     /*
      * Installer command line parameters.
      */
-    @JsonProperty(value = "installer_command_line_params")
     private String installerCommandLineParams;
 
     /*
      * Published timestamp.
      */
-    @JsonProperty(value = "published_date_time")
     private OffsetDateTime publishedDateTime;
 
     /*
      * Count of downloads.
      */
-    @JsonProperty(value = "download_count")
     private Integer downloadCount;
 
     /*
      * <code>true</code> if the local version is the latest version; <code>false</code> otherwise.
      */
-    @JsonProperty(value = "local_is_latest_version")
     private Boolean localIsLatestVersion;
 
     /*
      * Local path.
      */
-    @JsonProperty(value = "local_path")
     private String localPath;
 
     /*
      * Installed timestamp.
      */
-    @JsonProperty(value = "installed_date_time")
     private OffsetDateTime installedDateTime;
 
     /*
      * Provisioning state.
      */
-    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /*
      * Site Extension comment.
      */
-    @JsonProperty(value = "comment")
     private String comment;
 
     /**
@@ -549,5 +535,110 @@ public final class SiteExtensionInfoProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("extension_id", this.extensionId);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("extension_type",
+            this.extensionType == null ? null : this.extensionType.toString());
+        jsonWriter.writeStringField("summary", this.summary);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("extension_url", this.extensionUrl);
+        jsonWriter.writeStringField("project_url", this.projectUrl);
+        jsonWriter.writeStringField("icon_url", this.iconUrl);
+        jsonWriter.writeStringField("license_url", this.licenseUrl);
+        jsonWriter.writeStringField("feed_url", this.feedUrl);
+        jsonWriter.writeArrayField("authors", this.authors, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("installer_command_line_params", this.installerCommandLineParams);
+        jsonWriter.writeStringField("published_date_time",
+            this.publishedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.publishedDateTime));
+        jsonWriter.writeNumberField("download_count", this.downloadCount);
+        jsonWriter.writeBooleanField("local_is_latest_version", this.localIsLatestVersion);
+        jsonWriter.writeStringField("local_path", this.localPath);
+        jsonWriter.writeStringField("installed_date_time",
+            this.installedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.installedDateTime));
+        jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        jsonWriter.writeStringField("comment", this.comment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteExtensionInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteExtensionInfoProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteExtensionInfoProperties.
+     */
+    public static SiteExtensionInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteExtensionInfoProperties deserializedSiteExtensionInfoProperties = new SiteExtensionInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extension_id".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.extensionId = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.title = reader.getString();
+                } else if ("extension_type".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.extensionType
+                        = SiteExtensionType.fromString(reader.getString());
+                } else if ("summary".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.summary = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.description = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.version = reader.getString();
+                } else if ("extension_url".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.extensionUrl = reader.getString();
+                } else if ("project_url".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.projectUrl = reader.getString();
+                } else if ("icon_url".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.iconUrl = reader.getString();
+                } else if ("license_url".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.licenseUrl = reader.getString();
+                } else if ("feed_url".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.feedUrl = reader.getString();
+                } else if ("authors".equals(fieldName)) {
+                    List<String> authors = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSiteExtensionInfoProperties.authors = authors;
+                } else if ("installer_command_line_params".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.installerCommandLineParams = reader.getString();
+                } else if ("published_date_time".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.publishedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("download_count".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.downloadCount = reader.getNullable(JsonReader::getInt);
+                } else if ("local_is_latest_version".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.localIsLatestVersion
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("local_path".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.localPath = reader.getString();
+                } else if ("installed_date_time".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.installedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.provisioningState = reader.getString();
+                } else if ("comment".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.comment = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteExtensionInfoProperties;
+        });
     }
 }

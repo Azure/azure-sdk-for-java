@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Ingress configuration payload for Azure Spring Apps resource. */
+/**
+ * Ingress configuration payload for Azure Spring Apps resource.
+ */
 @Fluent
-public final class IngressConfig {
+public final class IngressConfig implements JsonSerializable<IngressConfig> {
     /*
      * Ingress read time out in seconds.
      */
-    @JsonProperty(value = "readTimeoutInSeconds")
     private Integer readTimeoutInSeconds;
 
     /**
+     * Creates an instance of IngressConfig class.
+     */
+    public IngressConfig() {
+    }
+
+    /**
      * Get the readTimeoutInSeconds property: Ingress read time out in seconds.
-     *
+     * 
      * @return the readTimeoutInSeconds value.
      */
     public Integer readTimeoutInSeconds() {
@@ -27,7 +38,7 @@ public final class IngressConfig {
 
     /**
      * Set the readTimeoutInSeconds property: Ingress read time out in seconds.
-     *
+     * 
      * @param readTimeoutInSeconds the readTimeoutInSeconds value to set.
      * @return the IngressConfig object itself.
      */
@@ -38,9 +49,45 @@ public final class IngressConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("readTimeoutInSeconds", this.readTimeoutInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IngressConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IngressConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IngressConfig.
+     */
+    public static IngressConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IngressConfig deserializedIngressConfig = new IngressConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("readTimeoutInSeconds".equals(fieldName)) {
+                    deserializedIngressConfig.readTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIngressConfig;
+        });
     }
 }

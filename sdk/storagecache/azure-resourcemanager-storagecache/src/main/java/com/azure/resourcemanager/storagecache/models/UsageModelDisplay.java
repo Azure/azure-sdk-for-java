@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Localized information describing this usage model. */
+/**
+ * Localized information describing this usage model.
+ */
 @Fluent
-public final class UsageModelDisplay {
+public final class UsageModelDisplay implements JsonSerializable<UsageModelDisplay> {
     /*
      * String to display for this usage model.
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of UsageModelDisplay class. */
+    /**
+     * Creates an instance of UsageModelDisplay class.
+     */
     public UsageModelDisplay() {
     }
 
     /**
      * Get the description property: String to display for this usage model.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -31,7 +38,7 @@ public final class UsageModelDisplay {
 
     /**
      * Set the description property: String to display for this usage model.
-     *
+     * 
      * @param description the description value to set.
      * @return the UsageModelDisplay object itself.
      */
@@ -42,9 +49,45 @@ public final class UsageModelDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageModelDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageModelDisplay if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UsageModelDisplay.
+     */
+    public static UsageModelDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageModelDisplay deserializedUsageModelDisplay = new UsageModelDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedUsageModelDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageModelDisplay;
+        });
     }
 }

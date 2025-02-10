@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of custom domain for API portal. */
+/**
+ * The properties of custom domain for API portal.
+ */
 @Fluent
-public final class ApiPortalCustomDomainProperties {
+public final class ApiPortalCustomDomainProperties implements JsonSerializable<ApiPortalCustomDomainProperties> {
     /*
      * The thumbprint of bound certificate.
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /**
+     * Creates an instance of ApiPortalCustomDomainProperties class.
+     */
+    public ApiPortalCustomDomainProperties() {
+    }
+
+    /**
      * Get the thumbprint property: The thumbprint of bound certificate.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -27,7 +38,7 @@ public final class ApiPortalCustomDomainProperties {
 
     /**
      * Set the thumbprint property: The thumbprint of bound certificate.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the ApiPortalCustomDomainProperties object itself.
      */
@@ -38,9 +49,46 @@ public final class ApiPortalCustomDomainProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiPortalCustomDomainProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiPortalCustomDomainProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiPortalCustomDomainProperties.
+     */
+    public static ApiPortalCustomDomainProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiPortalCustomDomainProperties deserializedApiPortalCustomDomainProperties
+                = new ApiPortalCustomDomainProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("thumbprint".equals(fieldName)) {
+                    deserializedApiPortalCustomDomainProperties.thumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiPortalCustomDomainProperties;
+        });
     }
 }

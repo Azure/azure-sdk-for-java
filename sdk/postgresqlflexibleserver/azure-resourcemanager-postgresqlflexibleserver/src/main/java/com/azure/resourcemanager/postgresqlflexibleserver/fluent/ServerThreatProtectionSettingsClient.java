@@ -19,11 +19,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServerThreatProtectionSettingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerThreatProtectionSettingsClient.
+ */
 public interface ServerThreatProtectionSettingsClient {
     /**
      * Get a list of server's Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +38,7 @@ public interface ServerThreatProtectionSettingsClient {
 
     /**
      * Get a list of server's Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +51,7 @@ public interface ServerThreatProtectionSettingsClient {
 
     /**
      * Get a list of server's Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -59,12 +61,12 @@ public interface ServerThreatProtectionSettingsClient {
      * @return a list of server's Threat Protection state as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerThreatProtectionSettingsModelInner> listByServer(
-        String resourceGroupName, String serverName, Context context);
+    PagedIterable<ServerThreatProtectionSettingsModelInner> listByServer(String resourceGroupName, String serverName,
+        Context context);
 
     /**
      * Get a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -72,15 +74,15 @@ public interface ServerThreatProtectionSettingsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server's Advanced Threat Protection settings along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServerThreatProtectionSettingsModelInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName);
+    Mono<Response<ServerThreatProtectionSettingsModelInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, ThreatProtectionName threatProtectionName);
 
     /**
      * Get a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -90,12 +92,12 @@ public interface ServerThreatProtectionSettingsClient {
      * @return a server's Advanced Threat Protection settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerThreatProtectionSettingsModelInner> getAsync(
-        String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName);
+    Mono<ServerThreatProtectionSettingsModelInner> getAsync(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName);
 
     /**
      * Get a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -106,12 +108,12 @@ public interface ServerThreatProtectionSettingsClient {
      * @return a server's Advanced Threat Protection settings along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerThreatProtectionSettingsModelInner> getWithResponse(
-        String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName, Context context);
+    Response<ServerThreatProtectionSettingsModelInner> getWithResponse(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, Context context);
 
     /**
      * Get a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -121,12 +123,12 @@ public interface ServerThreatProtectionSettingsClient {
      * @return a server's Advanced Threat Protection settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerThreatProtectionSettingsModelInner get(
-        String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName);
+    ServerThreatProtectionSettingsModelInner get(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName);
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -135,18 +137,15 @@ public interface ServerThreatProtectionSettingsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server's Advanced Threat Protection settings along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        ThreatProtectionName threatProtectionName,
-        ServerThreatProtectionSettingsModelInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters);
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -158,15 +157,12 @@ public interface ServerThreatProtectionSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            ThreatProtectionName threatProtectionName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
             ServerThreatProtectionSettingsModelInner parameters);
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -178,15 +174,12 @@ public interface ServerThreatProtectionSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            ThreatProtectionName threatProtectionName,
+        beginCreateOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
             ServerThreatProtectionSettingsModelInner parameters);
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -199,16 +192,12 @@ public interface ServerThreatProtectionSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerThreatProtectionSettingsModelInner>, ServerThreatProtectionSettingsModelInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serverName,
-            ThreatProtectionName threatProtectionName,
-            ServerThreatProtectionSettingsModelInner parameters,
-            Context context);
+        beginCreateOrUpdate(String resourceGroupName, String serverName, ThreatProtectionName threatProtectionName,
+            ServerThreatProtectionSettingsModelInner parameters, Context context);
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -219,15 +208,12 @@ public interface ServerThreatProtectionSettingsClient {
      * @return server's Advanced Threat Protection settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServerThreatProtectionSettingsModelInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        ThreatProtectionName threatProtectionName,
-        ServerThreatProtectionSettingsModelInner parameters);
+    Mono<ServerThreatProtectionSettingsModelInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters);
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -238,15 +224,12 @@ public interface ServerThreatProtectionSettingsClient {
      * @return server's Advanced Threat Protection settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerThreatProtectionSettingsModelInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        ThreatProtectionName threatProtectionName,
-        ServerThreatProtectionSettingsModelInner parameters);
+    ServerThreatProtectionSettingsModelInner createOrUpdate(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters);
 
     /**
      * Creates or updates a server's Advanced Threat Protection settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param threatProtectionName The name of the Threat Protection state.
@@ -258,10 +241,7 @@ public interface ServerThreatProtectionSettingsClient {
      * @return server's Advanced Threat Protection settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerThreatProtectionSettingsModelInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        ThreatProtectionName threatProtectionName,
-        ServerThreatProtectionSettingsModelInner parameters,
+    ServerThreatProtectionSettingsModelInner createOrUpdate(String resourceGroupName, String serverName,
+        ThreatProtectionName threatProtectionName, ServerThreatProtectionSettingsModelInner parameters,
         Context context);
 }

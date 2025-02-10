@@ -4,10 +4,11 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -16,52 +17,44 @@ import java.util.Objects;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2_1;
 import static com.azure.storage.blob.specialized.cryptography.EncryptionAlgorithm.AES_CBC_256;
 import static com.azure.storage.blob.specialized.cryptography.EncryptionAlgorithm.AES_GCM_256;
 
 /**
  * Represents the encryption data that is stored on the service.
  */
-final class EncryptionData {
+final class EncryptionData implements JsonSerializable<EncryptionData> {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptionData.class);
-
-    private static final ObjectMapper MAPPER = new ObjectMapper()
-        .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
     /**
      * The blob encryption mode.
      */
-    @JsonProperty(value = "EncryptionMode")
     private String encryptionMode;
 
     /**
      * A {@link WrappedKey} object that stores the wrapping algorithm, key identifier and the encrypted key
      */
-    @JsonProperty(value = "WrappedContentKey", required = true)
     private WrappedKey wrappedContentKey;
 
     /**
      * The encryption agent.
      */
-    @JsonProperty(value = "EncryptionAgent", required = true)
     private EncryptionAgent encryptionAgent;
 
     /**
      * The content encryption IV.
      */
-    @JsonProperty(value = "ContentEncryptionIV", required = true)
     private byte[] contentEncryptionIV;
 
     /**
      * The authentication block info.
      */
-    @JsonProperty(value = "EncryptedRegionInfo")
     private EncryptedRegionInfo encryptedRegionInfo;
 
     /**
      * Metadata for encryption.  Currently used only for storing the encryption library, but may contain other data.
      */
-    @JsonProperty(value = "KeyWrappingMetadata", required = true)
     private Map<String, String> keyWrappingMetadata;
 
     /**
@@ -82,8 +75,7 @@ final class EncryptionData {
      * @param keyWrappingMetadata Metadata for encryption.
      */
     EncryptionData(String encryptionMode, WrappedKey wrappedContentKey, EncryptionAgent encryptionAgent,
-        byte[] contentEncryptionIV, EncryptedRegionInfo encryptedRegionInfo,
-        Map<String, String> keyWrappingMetadata) {
+        byte[] contentEncryptionIV, EncryptedRegionInfo encryptedRegionInfo, Map<String, String> keyWrappingMetadata) {
         this.encryptionMode = encryptionMode;
         this.wrappedContentKey = wrappedContentKey;
         this.encryptionAgent = encryptionAgent;
@@ -219,10 +211,6 @@ final class EncryptionData {
         return this;
     }
 
-    String toJsonString() throws JsonProcessingException {
-        return MAPPER.writeValueAsString(this);
-    }
-
     /*
     Validates that encryption data is present if the client requires encryption and that appropriate values are present
     for the given protocol version.
@@ -230,30 +218,32 @@ final class EncryptionData {
     static EncryptionData getAndValidateEncryptionData(String encryptionDataString, boolean requiresEncryption) {
         if (encryptionDataString == null) {
             if (requiresEncryption) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
-                    + "downloaded data is not encrypted."));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "'requiresEncryption' set to true but " + "downloaded data is not encrypted."));
             }
             return null;
         }
 
-        try {
-            EncryptionData encryptionData = MAPPER.readValue(encryptionDataString, EncryptionData.class);
-            if (encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)) {
+        try (JsonReader jsonReader = JsonProviders.createReader(encryptionDataString)) {
+            EncryptionData encryptionData = EncryptionData.fromJson(jsonReader);
+            String encryptionProtocol = encryptionData.getEncryptionAgent().getProtocol();
+            if (encryptionProtocol.equals(ENCRYPTION_PROTOCOL_V1)) {
                 Objects.requireNonNull(encryptionData.getContentEncryptionIV(),
                     "contentEncryptionIV in encryptionData cannot be null");
-                Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(), "encryptedKey in "
-                    + "encryptionData.wrappedContentKey cannot be null");
+                Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(),
+                    "encryptedKey in " + "encryptionData.wrappedContentKey cannot be null");
                 if (!encryptionData.getEncryptionAgent().getAlgorithm().equals(AES_CBC_256)) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "Encryption algorithm does not match v1 protocol: "
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalArgumentException("Encryption algorithm does not match v1 protocol: "
                             + encryptionData.getEncryptionAgent().getAlgorithm()));
                 }
-            } else if (encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V2)) {
-                Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(), "encryptedKey in "
-                    + "encryptionData.wrappedContentKey cannot be null");
+            } else if (encryptionProtocol.equals(ENCRYPTION_PROTOCOL_V2)
+                || encryptionProtocol.equals(ENCRYPTION_PROTOCOL_V2_1)) {
+                Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(),
+                    "encryptedKey in " + "encryptionData.wrappedContentKey cannot be null");
                 if (!encryptionData.getEncryptionAgent().getAlgorithm().equals(AES_GCM_256)) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "Encryption algorithm does not match v2 protocol: "
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalArgumentException("Encryption algorithm does not match v2 protocol: "
                             + encryptionData.getEncryptionAgent().getAlgorithm()));
                 }
             } else {
@@ -269,8 +259,50 @@ final class EncryptionData {
         }
     }
 
-    static EncryptionData fromJsonString(String jsonString)
-        throws JsonProcessingException {
-        return MAPPER.readValue(jsonString, EncryptionData.class);
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("EncryptionMode", encryptionMode)
+            .writeJsonField("WrappedContentKey", wrappedContentKey)
+            .writeJsonField("EncryptionAgent", encryptionAgent)
+            .writeBinaryField("ContentEncryptionIV", contentEncryptionIV)
+            .writeJsonField("EncryptedRegionInfo", encryptedRegionInfo)
+            .writeMapField("KeyWrappingMetadata", keyWrappingMetadata, JsonWriter::writeString)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionData from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return The EncryptionData read from the JsonReader.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static EncryptionData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionData encryptionData = new EncryptionData();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("EncryptionMode".equals(fieldName)) {
+                    encryptionData.encryptionMode = reader.getString();
+                } else if ("WrappedContentKey".equals(fieldName)) {
+                    encryptionData.wrappedContentKey = WrappedKey.fromJson(reader);
+                } else if ("EncryptionAgent".equals(fieldName)) {
+                    encryptionData.encryptionAgent = EncryptionAgent.fromJson(reader);
+                } else if ("ContentEncryptionIV".equals(fieldName)) {
+                    encryptionData.contentEncryptionIV = reader.getBinary();
+                } else if ("EncryptedRegionInfo".equals(fieldName)) {
+                    encryptionData.encryptedRegionInfo = EncryptedRegionInfo.fromJson(reader);
+                } else if ("KeyWrappingMetadata".equals(fieldName)) {
+                    encryptionData.keyWrappingMetadata = reader.readMap(JsonReader::getString);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return encryptionData;
+        });
     }
 }

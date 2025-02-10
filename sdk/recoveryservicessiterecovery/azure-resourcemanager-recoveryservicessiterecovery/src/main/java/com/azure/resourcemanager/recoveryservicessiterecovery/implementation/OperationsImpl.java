@@ -19,8 +19,7 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient,
+    public OperationsImpl(OperationsClient innerClient,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,13 +27,13 @@ public final class OperationsImpl implements Operations {
 
     public PagedIterable<OperationsDiscovery> listByResourceGroup(String resourceGroupName) {
         PagedIterable<OperationsDiscoveryInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new OperationsDiscoveryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationsDiscoveryImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationsDiscovery> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<OperationsDiscoveryInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new OperationsDiscoveryImpl(inner1, this.manager()));
+        PagedIterable<OperationsDiscoveryInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationsDiscoveryImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

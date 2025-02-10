@@ -5,45 +5,45 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.TlsVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Information of Partner Namespace update parameter properties.
  */
 @Fluent
-public final class PartnerNamespaceUpdateParameterProperties {
+public final class PartnerNamespaceUpdateParameterProperties
+    implements JsonSerializable<PartnerNamespaceUpdateParameterProperties> {
     /*
      * This determines if traffic is allowed over public network. By default it is enabled.
-     * You can further restrict to specific IPs by configuring <seealso
-     * cref=
+     * You can further restrict to specific IPs by configuring <seealso cref=
      * "P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceUpdateParameterProperties.InboundIpRules"
      * />
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if
      * PublicNetworkAccess is enabled.
      */
-    @JsonProperty(value = "inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
     /*
      * Minimum TLS version of the publisher allowed to publish to this domain
      */
-    @JsonProperty(value = "minimumTlsVersionAllowed")
     private TlsVersion minimumTlsVersionAllowed;
 
     /*
      * This boolean is used to enable or disable local auth. Default value is false. When the property is set to true,
      * only AAD token will be used to authenticate if user is allowed to publish to the partner namespace.
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /**
@@ -53,8 +53,8 @@ public final class PartnerNamespaceUpdateParameterProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceUpdateParameterProperties.InboundIpRules"
      * /&gt;.
@@ -66,8 +66,8 @@ public final class PartnerNamespaceUpdateParameterProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
-     * is enabled.
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
      * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceUpdateParameterProperties.InboundIpRules"
      * /&gt;.
@@ -81,8 +81,8 @@ public final class PartnerNamespaceUpdateParameterProperties {
     }
 
     /**
-     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @return the inboundIpRules value.
      */
@@ -91,8 +91,8 @@ public final class PartnerNamespaceUpdateParameterProperties {
     }
 
     /**
-     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs.
-     * Note: These are considered only if PublicNetworkAccess is enabled.
+     * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
+     * These are considered only if PublicNetworkAccess is enabled.
      * 
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the PartnerNamespaceUpdateParameterProperties object itself.
@@ -157,5 +157,58 @@ public final class PartnerNamespaceUpdateParameterProperties {
         if (inboundIpRules() != null) {
             inboundIpRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeArrayField("inboundIpRules", this.inboundIpRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("minimumTlsVersionAllowed",
+            this.minimumTlsVersionAllowed == null ? null : this.minimumTlsVersionAllowed.toString());
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerNamespaceUpdateParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerNamespaceUpdateParameterProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerNamespaceUpdateParameterProperties.
+     */
+    public static PartnerNamespaceUpdateParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerNamespaceUpdateParameterProperties deserializedPartnerNamespaceUpdateParameterProperties
+                = new PartnerNamespaceUpdateParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedPartnerNamespaceUpdateParameterProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("inboundIpRules".equals(fieldName)) {
+                    List<InboundIpRule> inboundIpRules = reader.readArray(reader1 -> InboundIpRule.fromJson(reader1));
+                    deserializedPartnerNamespaceUpdateParameterProperties.inboundIpRules = inboundIpRules;
+                } else if ("minimumTlsVersionAllowed".equals(fieldName)) {
+                    deserializedPartnerNamespaceUpdateParameterProperties.minimumTlsVersionAllowed
+                        = TlsVersion.fromString(reader.getString());
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedPartnerNamespaceUpdateParameterProperties.disableLocalAuth
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerNamespaceUpdateParameterProperties;
+        });
     }
 }

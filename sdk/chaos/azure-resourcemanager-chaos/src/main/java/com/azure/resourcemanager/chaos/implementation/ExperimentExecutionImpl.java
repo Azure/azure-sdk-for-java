@@ -13,8 +13,8 @@ public final class ExperimentExecutionImpl implements ExperimentExecution {
 
     private final com.azure.resourcemanager.chaos.ChaosManager serviceManager;
 
-    ExperimentExecutionImpl(
-        ExperimentExecutionInner innerObject, com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
+    ExperimentExecutionImpl(ExperimentExecutionInner innerObject,
+        com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

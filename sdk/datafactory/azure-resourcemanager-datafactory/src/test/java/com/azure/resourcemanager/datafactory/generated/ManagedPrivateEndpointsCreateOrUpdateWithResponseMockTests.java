@@ -6,16 +6,13 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.ConnectionStateProperties;
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpoint;
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpointResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -23,47 +20,36 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ManagedPrivateEndpointsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"zzm\",\"description\":\"mh\",\"status\":\"caizxuiyuzufdms\"},\"fqdns\":[\"gnfljvra\",\"k\",\"ecozfauhnxxd\"],\"groupId\":\"hlgrz\",\"isReserved\":true,\"privateLinkResourceId\":\"zmh\",\"provisioningState\":\"twjimlfrkmy\",\"\":{\"wzc\":\"datamglbxoeghordccpk\",\"iqq\":\"datalvqlccaiphsart\",\"vq\":\"datadgyshpvva\",\"oxweuo\":\"datawrchwdxdkvqqtfjj\"}},\"name\":\"w\",\"type\":\"e\",\"etag\":\"ndheocjc\",\"id\":\"cunanwutve\"}";
+            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"fiwaocf\",\"description\":\"fjxdccwuzqwv\",\"status\":\"ewl\"},\"fqdns\":[\"eupsubawza\",\"zdzhhgbxcel\",\"awwjobtkyjvzzb\",\"ylimnm\"],\"groupId\":\"sjuacdqvr\",\"isReserved\":true,\"privateLinkResourceId\":\"qotzpepmlckz\",\"provisioningState\":\"ietfx\",\"\":{\"ehvmrao\":\"datazlivkaxwfkanuqf\",\"jti\":\"dataniibcily\",\"igy\":\"datahzjhqfuqomwh\",\"jjhn\":\"datagqewcv\"}},\"name\":\"rsgrt\",\"type\":\"depaun\",\"etag\":\"knucsrqfmcrye\",\"id\":\"lx\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ManagedPrivateEndpointResource response = manager.managedPrivateEndpoints().define("bczlrewfrmq")
-            .withExistingManagedVirtualNetwork("lokn", "adqf", "nrdagmihxjpflzpu")
+        ManagedPrivateEndpointResource response = manager.managedPrivateEndpoints()
+            .define("ukc")
+            .withExistingManagedVirtualNetwork("krejuuii", "rbtfarb", "arxyh")
             .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-                .withFqdns(Arrays.asList("eelkv", "kig")).withGroupId("rkwgsq").withPrivateLinkResourceId("cxwthkljk")
-                .withAdditionalProperties(mapOf("isReserved", true, "provisioningState", "jfcr")))
-            .withIfMatch("bmedzfo").create();
+                .withFqdns(Arrays.asList("czlyludrziaxige", "smuhkhnzsr"))
+                .withGroupId("wvzepgljtu")
+                .withPrivateLinkResourceId("prnfrl")
+                .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "cnbrwhsqtzgmf")))
+            .withIfMatch("itoibgv")
+            .create();
 
-        Assertions.assertEquals("cunanwutve", response.id());
-        Assertions.assertEquals("gnfljvra", response.properties().fqdns().get(0));
-        Assertions.assertEquals("hlgrz", response.properties().groupId());
-        Assertions.assertEquals("zmh", response.properties().privateLinkResourceId());
+        Assertions.assertEquals("lx", response.id());
+        Assertions.assertEquals("eupsubawza", response.properties().fqdns().get(0));
+        Assertions.assertEquals("sjuacdqvr", response.properties().groupId());
+        Assertions.assertEquals("qotzpepmlckz", response.properties().privateLinkResourceId());
     }
 
     // Use "Map.of" if available

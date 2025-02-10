@@ -9,19 +9,21 @@ import com.azure.resourcemanager.avs.models.AddonHcxProperties;
 import com.azure.resourcemanager.avs.models.AddonSrmProperties;
 import com.azure.resourcemanager.avs.models.AddonVrProperties;
 
-/** Samples for Addons CreateOrUpdate. */
+/**
+ * Samples for Addons CreateOrUpdate.
+ */
 public final class AddonsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_HCX.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_CreateOrUpdate_HCX.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_HCX.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void addonsCreateOrUpdateHCX(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .addons()
+        manager.addons()
             .define("hcx")
             .withExistingPrivateCloud("group1", "cloud1")
             .withProperties(new AddonHcxProperties().withOffer("VMware MaaS Cloud Provider (Enterprise)"))
@@ -29,16 +31,16 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_SRM.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_CreateOrUpdate_SRM.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_SRM.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void addonsCreateOrUpdateSRM(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .addons()
+        manager.addons()
             .define("srm")
             .withExistingPrivateCloud("group1", "cloud1")
             .withProperties(new AddonSrmProperties().withLicenseKey("fakeTokenPlaceholder"))
@@ -46,36 +48,34 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_ArcReg.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_CreateOrUpdate_ArcReg.json
      */
     /**
-     * Sample code: Addons_CreateOrUpdate_Arc.
-     *
+     * Sample code: Addons_CreateOrUpdate_ArcReg.
+     * 
      * @param manager Entry point to AvsManager.
      */
-    public static void addonsCreateOrUpdateArc(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .addons()
+    public static void addonsCreateOrUpdateArcReg(com.azure.resourcemanager.avs.AvsManager manager) {
+        manager.addons()
             .define("arc")
             .withExistingPrivateCloud("group1", "cloud1")
-            .withProperties(
-                new AddonArcProperties()
-                    .withVCenter(
-                        "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg_test/providers/Microsoft.ConnectedVMwarevSphere/VCenters/test-vcenter"))
+            .withProperties(new AddonArcProperties().withVCenter(
+                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg_test/providers/Microsoft.ConnectedVMwarevSphere/VCenters/test-vcenter"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_VR.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_CreateOrUpdate_VR.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_VR.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void addonsCreateOrUpdateVR(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .addons()
+        manager.addons()
             .define("vr")
             .withExistingPrivateCloud("group1", "cloud1")
             .withProperties(new AddonVrProperties().withVrsCount(1))

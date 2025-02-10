@@ -21,48 +21,94 @@ import java.util.List;
 public interface SqlServer
     extends GroupableResource<SqlServerManager, ServerInner>, Refreshable<SqlServer>, Updatable<SqlServer.Update> {
 
-    /** @return fully qualified name of the SQL Server */
+    /**
+     * Gets the fully qualified name of the SQL Server.
+     *
+     * @return fully qualified name of the SQL Server
+     */
     String fullyQualifiedDomainName();
 
-    /** @return the administrator login user name for the SQL Server */
+    /**
+     * Gets the administrator login user name for the SQL Server.
+     *
+     * @return the administrator login user name for the SQL Server
+     */
     String administratorLogin();
 
-    /** @return the SQL Server version */
+    /**
+     * Gets the SQL Server version.
+     *
+     * @return the SQL Server version
+     */
     String version();
 
-    /** @return the SQL Server "kind" */
+    /**
+     * Gets the kind of the SQL Server.
+     *
+     * @return the SQL Server "kind"
+     */
     String kind();
 
-    /** @return the state of the server. */
+    /**
+     * Gets the state of the server.
+     *
+     * @return the state of the server.
+     */
     String state();
 
-    /** @return true if Managed Service Identity is enabled for the SQL server */
+    /**
+     * Checks whether Managed Service Identity is enabled for the SQL server.
+     *
+     * @return true if Managed Service Identity is enabled for the SQL server
+     */
     boolean isManagedServiceIdentityEnabled();
 
     /**
+     * Gets the System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned to the
+     *     SQL server.
+     *
      * @return the System Assigned (Local) Managed Service Identity specific Active Directory tenant ID assigned to the
      *     SQL server.
      */
     String systemAssignedManagedServiceIdentityTenantId();
 
     /**
+     * Gets the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
+     *     assigned to the SQL server.
+     *
      * @return the System Assigned (Local) Managed Service Identity specific Active Directory service principal ID
      *     assigned to the SQL server.
      */
     String systemAssignedManagedServiceIdentityPrincipalId();
 
-    /** @return the type of Managed Service Identity used for the SQL server. */
+    /**
+     * Gets the type of Managed Service Identity used for the SQL server.
+     *
+     * @return the type of Managed Service Identity used for the SQL server.
+     */
     IdentityType managedServiceIdentityType();
 
     // Actions
 
-    /** @return returns the list of usage metrics for an Azure SQL Server */
+    /**
+     * Gets the list of usage metrics for an Azure SQL Server.
+     *
+     * @return returns the list of usage metrics for an Azure SQL Server
+     */
     List<ServerMetric> listUsageMetrics();
 
-    /** @return the list of all restorable dropped databases */
+    /**
+     * Gets the list of all restorable dropped databases.
+     *
+     * @return the list of all restorable dropped databases
+     */
     List<SqlRestorableDroppedDatabase> listRestorableDroppedDatabases();
 
-    /** @return the list of all restorable dropped databases */
+    /**
+     * Gets the list of all restorable dropped databases.
+     *
+     * @return the list of all restorable dropped databases
+     */
     PagedFlux<SqlRestorableDroppedDatabase> listRestorableDroppedDatabasesAsync();
 
     /**
@@ -74,6 +120,13 @@ public interface SqlServer
      * @return the SQL Firewall rule
      */
     SqlFirewallRule enableAccessFromAzureServices();
+
+    /**
+     * Checks whether the SQL Server can be accessed from public network.
+     *
+     * @return whether the SQL Server can be accessed from public network.
+     */
+    ServerNetworkAccessFlag publicNetworkAccess();
 
     /**
      * Sets the Azure services default access to this server to false.
@@ -113,31 +166,67 @@ public interface SqlServer
 
     // Collections
 
-    /** @return the entry point to manage SQL Firewall rules for this server */
+    /**
+     * Gets the entry point to manage SQL Firewall rules for this server.
+     *
+     * @return the entry point to manage SQL Firewall rules for this server
+     */
     SqlFirewallRuleOperations.SqlFirewallRuleActionsDefinition firewallRules();
 
-    /** @return the entry point to manage SQL Virtual Network Rule for this server */
+    /**
+     * Gets the entry point to manage SQL Virtual Network Rule for this server.
+     *
+     * @return the entry point to manage SQL Virtual Network Rule for this server
+     */
     SqlVirtualNetworkRuleOperations.SqlVirtualNetworkRuleActionsDefinition virtualNetworkRules();
 
-    /** @return the entry point to manage the SQL Elastic Pools for this server */
+    /**
+     * Gets the entry point to manage the SQL Elastic Pools for this server.
+     *
+     * @return the entry point to manage the SQL Elastic Pools for this server
+     */
     SqlElasticPoolOperations.SqlElasticPoolActionsDefinition elasticPools();
 
-    /** @return entry point to manage Databases for this SQL server */
+    /**
+     * Gets entry point to manage Databases for this SQL server.
+     *
+     * @return entry point to manage Databases for this SQL server
+     */
     SqlDatabaseOperations.SqlDatabaseActionsDefinition databases();
 
-    /** @return the entry point to manage SQL Server DNS aliases for this server */
+    /**
+     * Gets the entry point to manage SQL Server DNS aliases for this server.
+     *
+     * @return the entry point to manage SQL Server DNS aliases for this server
+     */
     SqlServerDnsAliasOperations.SqlServerDnsAliasActionsDefinition dnsAliases();
 
-    /** @return the entry point to manage SQL Failover Group for this server */
+    /**
+     * Gets the entry point to manage SQL Failover Group for this server.
+     *
+     * @return the entry point to manage SQL Failover Group for this server
+     */
     SqlFailoverGroupOperations.SqlFailoverGroupActionsDefinition failoverGroups();
 
-    /** @return the entry point to manage SQL Server Keys for this server */
+    /**
+     * Gets the entry point to manage SQL Server Keys for this server.
+     *
+     * @return the entry point to manage SQL Server Keys for this server
+     */
     SqlServerKeyOperations.SqlServerKeyActionsDefinition serverKeys();
 
-    /** @return the entry point to manage SQL Encryption Protector for this server */
+    /**
+     * Gets the entry point to manage SQL Encryption Protector for this server.
+     *
+     * @return the entry point to manage SQL Encryption Protector for this server
+     */
     SqlEncryptionProtectorOperations.SqlEncryptionProtectorActionsDefinition encryptionProtectors();
 
-    /** @return the entry point to manage SQL Server Security Alert Policy for this server */
+    /**
+     * Gets the entry point to manage SQL Server Security Alert Policy for this server.
+     *
+     * @return the entry point to manage SQL Server Security Alert Policy for this server
+     */
     SqlServerSecurityAlertPolicyOperations.SqlServerSecurityAlertPolicyActionsDefinition serverSecurityAlertPolicies();
 
     /**************************************************************
@@ -146,14 +235,9 @@ public interface SqlServer
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithAdministratorLogin,
-            DefinitionStages.WithAdministratorPassword,
-            DefinitionStages.WithElasticPool,
-            DefinitionStages.WithDatabase,
-            DefinitionStages.WithFirewallRule,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithAdministratorLogin,
+        DefinitionStages.WithAdministratorPassword, DefinitionStages.WithElasticPool, DefinitionStages.WithDatabase,
+        DefinitionStages.WithFirewallRule, DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the storage account definition stages. */
@@ -264,35 +348,34 @@ public interface SqlServer
              * @param virtualNetworkRuleName the name of the new SQL Virtual Network Rule
              * @return the first stage of the new SQL Virtual Network Rule definition
              */
-            SqlVirtualNetworkRule.DefinitionStages.Blank<? extends WithCreate> defineVirtualNetworkRule(
-                String virtualNetworkRuleName);
+            SqlVirtualNetworkRule.DefinitionStages.Blank<? extends WithCreate>
+                defineVirtualNetworkRule(String virtualNetworkRuleName);
+        }
+
+        /** The stage of SQL Server definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Disables public network access for the SQL Server.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
         }
 
         /**
          * A SQL Server definition with sufficient inputs to create a new SQL Server in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<SqlServer>,
-                WithActiveDirectoryAdministrator,
-                WithSystemAssignedManagedServiceIdentity,
-                WithElasticPool,
-                WithDatabase,
-                WithFirewallRule,
-                WithVirtualNetworkRule,
-                DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<SqlServer>, WithActiveDirectoryAdministrator,
+            WithSystemAssignedManagedServiceIdentity, WithElasticPool, WithDatabase, WithFirewallRule,
+            WithVirtualNetworkRule, WithPublicNetworkAccess, DefinitionWithTags<WithCreate> {
         }
     }
 
     /** The template for a SQLServer update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<SqlServer>,
-            UpdateStages.WithAdministratorPassword,
-            UpdateStages.WithElasticPool,
-            UpdateStages.WithDatabase,
-            UpdateStages.WithFirewallRule,
-            UpdateStages.WithSystemAssignedManagedServiceIdentity,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<SqlServer>, UpdateStages.WithAdministratorPassword, UpdateStages.WithElasticPool,
+        UpdateStages.WithDatabase, UpdateStages.WithFirewallRule, UpdateStages.WithSystemAssignedManagedServiceIdentity,
+        UpdateStages.WithPublicNetworkAccess, Resource.UpdateWithTags<Update> {
     }
 
     /** Grouping of all the SQLServer update stages. */
@@ -326,8 +409,7 @@ public interface SqlServer
              * @param elasticPoolName the name of the new SQL Elastic Pool
              * @return the first stage of the new SQL Elastic Pool definition
              */
-            SqlElasticPool.DefinitionStages.Blank<? extends Update> defineElasticPool(
-                String elasticPoolName);
+            SqlElasticPool.DefinitionStages.Blank<? extends Update> defineElasticPool(String elasticPoolName);
 
             /**
              * Removes elastic pool from the SQL Server.
@@ -365,8 +447,7 @@ public interface SqlServer
              * @param firewallRuleName the name of the new SQL Firewall rule
              * @return the first stage of the new SQL Firewall rule definition
              */
-            SqlFirewallRule.DefinitionStages.Blank<? extends Update> defineFirewallRule(
-                String firewallRuleName);
+            SqlFirewallRule.DefinitionStages.Blank<? extends Update> defineFirewallRule(String firewallRuleName);
 
             /**
              * Removes firewall rule from the SQL Server.
@@ -375,6 +456,23 @@ public interface SqlServer
              * @return Next stage of the SQL Server update
              */
             Update withoutFirewallRule(String firewallRuleName);
+        }
+
+        /** The stage of SQL Server update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the SQL Server.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+
+            /**
+             * Disables public network access for the SQL Server.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
         }
     }
 }

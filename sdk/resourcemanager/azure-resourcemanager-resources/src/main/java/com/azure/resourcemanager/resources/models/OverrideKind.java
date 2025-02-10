@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The override kind. */
+/**
+ * The override kind.
+ */
 public final class OverrideKind extends ExpandableStringEnum<OverrideKind> {
-    /** Static value policyEffect for OverrideKind. */
+    /**
+     * Static value policyEffect for OverrideKind.
+     */
     public static final OverrideKind POLICY_EFFECT = fromString("policyEffect");
 
     /**
      * Creates a new instance of OverrideKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class OverrideKind extends ExpandableStringEnum<OverrideKind> {
 
     /**
      * Creates or finds a OverrideKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OverrideKind.
      */
-    @JsonCreator
     public static OverrideKind fromString(String name) {
         return fromString(name, OverrideKind.class);
     }
 
     /**
      * Gets known OverrideKind values.
-     *
+     * 
      * @return known OverrideKind values.
      */
     public static Collection<OverrideKind> values() {

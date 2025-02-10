@@ -14,19 +14,25 @@ public final class MongoDbAtlasSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbAtlasSource model = BinaryData.fromString(
-            "{\"type\":\"MongoDbAtlasSource\",\"filter\":\"dataepkrncjrqhugu\",\"cursorMethods\":{\"project\":\"dataqqnwhcmvdowlqcy\",\"sort\":\"dataubzixqxx\",\"skip\":\"dataawbftzn\",\"limit\":\"datarfhj\",\"\":{\"bkdieismdkvfim\":\"datautbrnrilljucod\",\"lmn\":\"dataecij\"}},\"batchSize\":\"datapaf\",\"queryTimeout\":\"datax\",\"additionalColumns\":\"dataskelwzmjiigq\",\"sourceRetryCount\":\"datalcckgfoxvrb\",\"sourceRetryWait\":\"datajmenqcjjfxqt\",\"maxConcurrentConnections\":\"datafsvqyzgaweix\",\"disableMetricsCollection\":\"datablazwhdacz\",\"\":{\"zdxu\":\"dataduwlsovitpcsma\",\"ypvu\":\"datahmiu\"}}")
+            "{\"type\":\"MongoDbAtlasSource\",\"filter\":\"dataqexd\",\"cursorMethods\":{\"project\":\"datavkwwjjotfunsdu\",\"sort\":\"dataxvrwalek\",\"skip\":\"datadofuob\",\"limit\":\"datalainzvhl\",\"\":{\"lmihvzdaycmen\":\"dataib\",\"l\":\"datagzy\",\"jdotpcvddfmflwf\":\"datalvgqlexwqwbbell\"}},\"batchSize\":\"datakpwdpmygacu\",\"queryTimeout\":\"datahtwxifudlrxb\",\"additionalColumns\":\"dataftpvgmqzitc\",\"sourceRetryCount\":\"datamlltas\",\"sourceRetryWait\":\"dataqsf\",\"maxConcurrentConnections\":\"datae\",\"disableMetricsCollection\":\"dataveg\",\"\":{\"xisa\":\"datamyvgmbirvvvrb\",\"bridagwuvcdymoqv\":\"dataktuxwzvlh\",\"hrygw\":\"datajkrynziudmhe\"}}")
             .toObject(MongoDbAtlasSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbAtlasSource model = new MongoDbAtlasSource().withSourceRetryCount("datalcckgfoxvrb")
-            .withSourceRetryWait("datajmenqcjjfxqt").withMaxConcurrentConnections("datafsvqyzgaweix")
-            .withDisableMetricsCollection("datablazwhdacz").withFilter("dataepkrncjrqhugu")
-            .withCursorMethods(
-                new MongoDbCursorMethodsProperties().withProject("dataqqnwhcmvdowlqcy").withSort("dataubzixqxx")
-                    .withSkip("dataawbftzn").withLimit("datarfhj").withAdditionalProperties(mapOf()))
-            .withBatchSize("datapaf").withQueryTimeout("datax").withAdditionalColumns("dataskelwzmjiigq");
+        MongoDbAtlasSource model = new MongoDbAtlasSource().withSourceRetryCount("datamlltas")
+            .withSourceRetryWait("dataqsf")
+            .withMaxConcurrentConnections("datae")
+            .withDisableMetricsCollection("dataveg")
+            .withFilter("dataqexd")
+            .withCursorMethods(new MongoDbCursorMethodsProperties().withProject("datavkwwjjotfunsdu")
+                .withSort("dataxvrwalek")
+                .withSkip("datadofuob")
+                .withLimit("datalainzvhl")
+                .withAdditionalProperties(mapOf()))
+            .withBatchSize("datakpwdpmygacu")
+            .withQueryTimeout("datahtwxifudlrxb")
+            .withAdditionalColumns("dataftpvgmqzitc");
         model = BinaryData.fromObject(model).toObject(MongoDbAtlasSource.class);
     }
 

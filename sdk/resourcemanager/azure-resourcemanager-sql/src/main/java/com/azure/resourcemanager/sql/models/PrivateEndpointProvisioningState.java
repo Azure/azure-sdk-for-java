@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** State of the private endpoint connection. */
+/**
+ * State of the private endpoint connection.
+ */
 public final class PrivateEndpointProvisioningState extends ExpandableStringEnum<PrivateEndpointProvisioningState> {
-    /** Static value Approving for PrivateEndpointProvisioningState. */
+    /**
+     * Static value Approving for PrivateEndpointProvisioningState.
+     */
     public static final PrivateEndpointProvisioningState APPROVING = fromString("Approving");
 
-    /** Static value Ready for PrivateEndpointProvisioningState. */
+    /**
+     * Static value Ready for PrivateEndpointProvisioningState.
+     */
     public static final PrivateEndpointProvisioningState READY = fromString("Ready");
 
-    /** Static value Dropping for PrivateEndpointProvisioningState. */
+    /**
+     * Static value Dropping for PrivateEndpointProvisioningState.
+     */
     public static final PrivateEndpointProvisioningState DROPPING = fromString("Dropping");
 
-    /** Static value Failed for PrivateEndpointProvisioningState. */
+    /**
+     * Static value Failed for PrivateEndpointProvisioningState.
+     */
     public static final PrivateEndpointProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Rejecting for PrivateEndpointProvisioningState. */
+    /**
+     * Static value Rejecting for PrivateEndpointProvisioningState.
+     */
     public static final PrivateEndpointProvisioningState REJECTING = fromString("Rejecting");
 
     /**
+     * Creates a new instance of PrivateEndpointProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateEndpointProvisioningState() {
+    }
+
+    /**
      * Creates or finds a PrivateEndpointProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointProvisioningState.
      */
-    @JsonCreator
     public static PrivateEndpointProvisioningState fromString(String name) {
         return fromString(name, PrivateEndpointProvisioningState.class);
     }
 
     /**
      * Gets known PrivateEndpointProvisioningState values.
-     *
+     * 
      * @return known PrivateEndpointProvisioningState values.
      */
     public static Collection<PrivateEndpointProvisioningState> values() {

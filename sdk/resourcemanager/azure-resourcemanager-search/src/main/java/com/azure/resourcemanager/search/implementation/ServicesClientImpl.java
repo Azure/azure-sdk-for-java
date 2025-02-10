@@ -47,21 +47,24 @@ import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServicesClient. */
-public final class ServicesClientImpl
-    implements InnerSupportsGet<SearchServiceInner>,
-        InnerSupportsListing<SearchServiceInner>,
-        InnerSupportsDelete<Void>,
-        ServicesClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in ServicesClient.
+ */
+public final class ServicesClientImpl implements InnerSupportsGet<SearchServiceInner>,
+    InnerSupportsListing<SearchServiceInner>, InnerSupportsDelete<Void>, ServicesClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SearchManagementClientImpl client;
 
     /**
      * Initializes an instance of ServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServicesClientImpl(SearchManagementClientImpl client) {
@@ -76,158 +79,122 @@ public final class ServicesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "SearchManagementClie")
     public interface ServicesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("searchServiceName") String searchServiceName,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") SearchServiceInner service,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SearchServiceInner service, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SearchServiceInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SearchServiceInner>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("searchServiceName") String searchServiceName,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") SearchServiceUpdate service,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SearchServiceUpdate service, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SearchServiceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SearchServiceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("searchServiceName") String searchServiceName,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
-        @ExpectedResponses({200, 204, 404})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}")
+        @ExpectedResponses({ 200, 204, 404 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("searchServiceName") String searchServiceName,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SearchServiceListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SearchServiceListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Search/searchServices")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SearchServiceListResult>> list(
-            @HostParam("$host") String endpoint,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SearchServiceListResult>> list(@HostParam("$host") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Search/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityOutput>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<CheckNameAvailabilityOutput>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CheckNameAvailabilityInput checkNameAvailabilityInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SearchServiceListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @HeaderParam("Accept") String accept,
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SearchServiceListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @HeaderParam("Accept") String accept,
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a search service and its current state along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -238,10 +205,8 @@ public final class ServicesClientImpl
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (serviceParam == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceParam is required and cannot be null."));
@@ -250,55 +215,39 @@ public final class ServicesClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            searchServiceName,
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            serviceParam,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                searchServiceName, clientRequestId, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                serviceParam, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a search service and its current state along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        SearchServiceInner serviceParam,
-        UUID clientRequestId,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -309,10 +258,8 @@ public final class ServicesClientImpl
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (serviceParam == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceParam is required and cannot be null."));
@@ -321,33 +268,24 @@ public final class ServicesClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                searchServiceName,
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                serviceParam,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, searchServiceName, clientRequestId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), serviceParam, accept, context);
     }
 
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -356,29 +294,23 @@ public final class ServicesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId);
-        return this
-            .client
-            .<SearchServiceInner, SearchServiceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SearchServiceInner.class,
-                SearchServiceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId);
+        return this.client.<SearchServiceInner, SearchServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SearchServiceInner.class, SearchServiceInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -386,35 +318,29 @@ public final class ServicesClientImpl
      * @return the {@link PollerFlux} for polling of describes a search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam) {
+    public PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam) {
         final UUID clientRequestId = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId);
-        return this
-            .client
-            .<SearchServiceInner, SearchServiceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SearchServiceInner.class,
-                SearchServiceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId);
+        return this.client.<SearchServiceInner, SearchServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SearchServiceInner.class, SearchServiceInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -423,32 +349,26 @@ public final class ServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SearchServiceInner>, SearchServiceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        SearchServiceInner serviceParam,
-        UUID clientRequestId,
+        String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, searchServiceName, serviceParam, clientRequestId, context);
-        return this
-            .client
-            .<SearchServiceInner, SearchServiceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SearchServiceInner.class, SearchServiceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, searchServiceName,
+            serviceParam, clientRequestId, context);
+        return this.client.<SearchServiceInner, SearchServiceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SearchServiceInner.class, SearchServiceInner.class, context);
     }
 
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -456,28 +376,27 @@ public final class ServicesClientImpl
      * @return the {@link SyncPoller} for polling of describes a search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam) {
+    public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String searchServiceName, SearchServiceInner serviceParam) {
         final UUID clientRequestId = null;
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -485,12 +404,8 @@ public final class ServicesClientImpl
      * @return the {@link SyncPoller} for polling of describes a search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String searchServiceName,
-        SearchServiceInner serviceParam,
-        UUID clientRequestId,
-        Context context) {
+    public SyncPoller<PollResult<SearchServiceInner>, SearchServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId, context)
             .getSyncPoller();
@@ -499,41 +414,40 @@ public final class ServicesClientImpl
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a search service and its current state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchServiceInner> createOrUpdateAsync(
-        String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam, UUID clientRequestId) {
-        return beginCreateOrUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId)
-            .last()
+    public Mono<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName,
+        SearchServiceInner serviceParam, UUID clientRequestId) {
+        return beginCreateOrUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -541,28 +455,27 @@ public final class ServicesClientImpl
      * @return describes a search service and its current state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchServiceInner> createOrUpdateAsync(
-        String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam) {
+    public Mono<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName,
+        SearchServiceInner serviceParam) {
         final UUID clientRequestId = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -570,12 +483,8 @@ public final class ServicesClientImpl
      * @return describes a search service and its current state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SearchServiceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        SearchServiceInner serviceParam,
-        UUID clientRequestId,
-        Context context) {
+    private Mono<SearchServiceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName,
+        SearchServiceInner serviceParam, UUID clientRequestId, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -584,14 +493,14 @@ public final class ServicesClientImpl
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -599,8 +508,8 @@ public final class ServicesClientImpl
      * @return describes a search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchServiceInner createOrUpdate(
-        String resourceGroupName, String searchServiceName, SearchServiceInner serviceParam) {
+    public SearchServiceInner createOrUpdate(String resourceGroupName, String searchServiceName,
+        SearchServiceInner serviceParam) {
         final UUID clientRequestId = null;
         return createOrUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId).block();
     }
@@ -608,17 +517,17 @@ public final class ServicesClientImpl
     /**
      * Creates or updates a search service in the given resource group. If the search service already exists, all
      * properties will be updated with the given values.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to create or update. Search service names must only
-     *     contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
-     *     contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
-     *     globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
-     *     change the service name after the service is created.
+     * contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot
+     * contain consecutive dashes, and must be between 2 and 60 characters in length. Search service names must be
+     * globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net). You cannot
+     * change the service name after the service is created.
      * @param serviceParam The definition of the search service to create or update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -626,39 +535,33 @@ public final class ServicesClientImpl
      * @return describes a search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchServiceInner createOrUpdate(
-        String resourceGroupName,
-        String searchServiceName,
-        SearchServiceInner serviceParam,
-        UUID clientRequestId,
-        Context context) {
+    public SearchServiceInner createOrUpdate(String resourceGroupName, String searchServiceName,
+        SearchServiceInner serviceParam, UUID clientRequestId, Context context) {
         return createOrUpdateAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId, context)
             .block();
     }
 
     /**
      * Updates an existing search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to update.
      * @param serviceParam The definition of the search service to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a search service and its current state along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchServiceInner>> updateWithResponseAsync(
-        String resourceGroupName, String searchServiceName, SearchServiceUpdate serviceParam, UUID clientRequestId) {
+    public Mono<Response<SearchServiceInner>> updateWithResponseAsync(String resourceGroupName,
+        String searchServiceName, SearchServiceUpdate serviceParam, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -669,10 +572,8 @@ public final class ServicesClientImpl
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (serviceParam == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceParam is required and cannot be null."));
@@ -681,50 +582,34 @@ public final class ServicesClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            searchServiceName,
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            serviceParam,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+                clientRequestId, this.client.getApiVersion(), this.client.getSubscriptionId(), serviceParam, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to update.
      * @param serviceParam The definition of the search service to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a search service and its current state along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SearchServiceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String searchServiceName,
-        SearchServiceUpdate serviceParam,
-        UUID clientRequestId,
-        Context context) {
+    private Mono<Response<SearchServiceInner>> updateWithResponseAsync(String resourceGroupName,
+        String searchServiceName, SearchServiceUpdate serviceParam, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -735,10 +620,8 @@ public final class ServicesClientImpl
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (serviceParam == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceParam is required and cannot be null."));
@@ -747,24 +630,15 @@ public final class ServicesClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                searchServiceName,
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                serviceParam,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, searchServiceName, clientRequestId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), serviceParam, accept, context);
     }
 
     /**
      * Updates an existing search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to update.
      * @param serviceParam The definition of the search service to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -773,8 +647,8 @@ public final class ServicesClientImpl
      * @return describes a search service and its current state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchServiceInner> updateAsync(
-        String resourceGroupName, String searchServiceName, SearchServiceUpdate serviceParam) {
+    public Mono<SearchServiceInner> updateAsync(String resourceGroupName, String searchServiceName,
+        SearchServiceUpdate serviceParam) {
         final UUID clientRequestId = null;
         return updateWithResponseAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -782,13 +656,13 @@ public final class ServicesClientImpl
 
     /**
      * Updates an existing search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to update.
      * @param serviceParam The definition of the search service to update.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -796,21 +670,17 @@ public final class ServicesClientImpl
      * @return describes a search service and its current state along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchServiceInner> updateWithResponse(
-        String resourceGroupName,
-        String searchServiceName,
-        SearchServiceUpdate serviceParam,
-        UUID clientRequestId,
-        Context context) {
+    public Response<SearchServiceInner> updateWithResponse(String resourceGroupName, String searchServiceName,
+        SearchServiceUpdate serviceParam, UUID clientRequestId, Context context) {
         return updateWithResponseAsync(resourceGroupName, searchServiceName, serviceParam, clientRequestId, context)
             .block();
     }
 
     /**
      * Updates an existing search service in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service to update.
      * @param serviceParam The definition of the search service to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -819,8 +689,8 @@ public final class ServicesClientImpl
      * @return describes a search service and its current state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchServiceInner update(
-        String resourceGroupName, String searchServiceName, SearchServiceUpdate serviceParam) {
+    public SearchServiceInner update(String resourceGroupName, String searchServiceName,
+        SearchServiceUpdate serviceParam) {
         final UUID clientRequestId = null;
         return updateWithResponse(resourceGroupName, searchServiceName, serviceParam, clientRequestId, Context.NONE)
             .getValue();
@@ -828,26 +698,24 @@ public final class ServicesClientImpl
 
     /**
      * Gets the search service with the given name in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the search service with the given name in the given resource group along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchServiceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId) {
+    public Mono<Response<SearchServiceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String searchServiceName, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -858,51 +726,38 @@ public final class ServicesClientImpl
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            searchServiceName,
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+                    clientRequestId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the search service with the given name in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the search service with the given name in the given resource group along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SearchServiceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    private Mono<Response<SearchServiceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String searchServiceName, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -913,36 +768,26 @@ public final class ServicesClientImpl
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                searchServiceName,
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+            clientRequestId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the search service with the given name in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the search service with the given name in the given resource group on successful completion of {@link
-     *     Mono}.
+     * @return the search service with the given name in the given resource group on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchServiceInner> getByResourceGroupAsync(String resourceGroupName, String searchServiceName) {
@@ -953,12 +798,12 @@ public final class ServicesClientImpl
 
     /**
      * Gets the search service with the given name in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -966,17 +811,17 @@ public final class ServicesClientImpl
      * @return the search service with the given name in the given resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchServiceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    public Response<SearchServiceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String searchServiceName, UUID clientRequestId, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, searchServiceName, clientRequestId, context)
             .block();
     }
 
     /**
      * Gets the search service with the given name in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -992,25 +837,23 @@ public final class ServicesClientImpl
 
     /**
      * Deletes a search service in the given resource group, along with its associated resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String searchServiceName,
+        UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1021,36 +864,24 @@ public final class ServicesClientImpl
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            searchServiceName,
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, searchServiceName,
+                clientRequestId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a search service in the given resource group, along with its associated resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1058,13 +889,11 @@ public final class ServicesClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String searchServiceName,
+        UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1075,30 +904,20 @@ public final class ServicesClientImpl
                 .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                searchServiceName,
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, searchServiceName, clientRequestId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes a search service in the given resource group, along with its associated resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1114,12 +933,12 @@ public final class ServicesClientImpl
 
     /**
      * Deletes a search service in the given resource group, along with its associated resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1127,16 +946,16 @@ public final class ServicesClientImpl
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String searchServiceName, UUID clientRequestId,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, searchServiceName, clientRequestId, context).block();
     }
 
     /**
      * Deletes a search service in the given resource group, along with its associated resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param searchServiceName The name of the search service associated with the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1150,123 +969,86 @@ public final class ServicesClientImpl
 
     /**
      * Gets a list of all Search services in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all Search services in the given resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SearchServiceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, UUID clientRequestId) {
+    private Mono<PagedResponse<SearchServiceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<SearchServiceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                clientRequestId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<SearchServiceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of all Search services in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all Search services in the given resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SearchServiceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, UUID clientRequestId, Context context) {
+    private Mono<PagedResponse<SearchServiceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, clientRequestId,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of all Search services in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1274,16 +1056,15 @@ public final class ServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchServiceInner> listByResourceGroupAsync(String resourceGroupName, UUID clientRequestId) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, clientRequestId),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, clientRequestId),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, clientRequestId));
     }
 
     /**
      * Gets a list of all Search services in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1292,18 +1073,17 @@ public final class ServicesClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchServiceInner> listByResourceGroupAsync(String resourceGroupName) {
         final UUID clientRequestId = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, clientRequestId),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, clientRequestId),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, clientRequestId));
     }
 
     /**
      * Gets a list of all Search services in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1311,23 +1091,22 @@ public final class ServicesClientImpl
      * @return a list of all Search services in the given resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SearchServiceInner> listByResourceGroupAsync(
-        String resourceGroupName, UUID clientRequestId, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, clientRequestId, context),
+    private PagedFlux<SearchServiceInner> listByResourceGroupAsync(String resourceGroupName, UUID clientRequestId,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, clientRequestId, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, clientRequestId, context));
     }
 
     /**
      * Gets a list of all Search services in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all Search services in the given resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchServiceInner> listByResourceGroup(String resourceGroupName) {
@@ -1337,125 +1116,90 @@ public final class ServicesClientImpl
 
     /**
      * Gets a list of all Search services in the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
+     * value from the Azure Resource Manager API or the portal.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Search services in the given resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all Search services in the given resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SearchServiceInner> listByResourceGroup(
-        String resourceGroupName, UUID clientRequestId, Context context) {
+    public PagedIterable<SearchServiceInner> listByResourceGroup(String resourceGroupName, UUID clientRequestId,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, clientRequestId, context));
     }
 
     /**
      * Gets a list of all Search services in the given subscription.
-     *
+     * 
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all Search services in the given subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SearchServiceInner>> listSinglePageAsync(UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<SearchServiceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), clientRequestId,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<SearchServiceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of all Search services in the given subscription.
-     *
+     * 
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all Search services in the given subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SearchServiceInner>> listSinglePageAsync(UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), clientRequestId, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of all Search services in the given subscription.
-     *
+     * 
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1463,14 +1207,13 @@ public final class ServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchServiceInner> listAsync(UUID clientRequestId) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(clientRequestId),
+        return new PagedFlux<>(() -> listSinglePageAsync(clientRequestId),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, clientRequestId));
     }
 
     /**
      * Gets a list of all Search services in the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all Search services in the given subscription as paginated response with {@link PagedFlux}.
@@ -1478,16 +1221,15 @@ public final class ServicesClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchServiceInner> listAsync() {
         final UUID clientRequestId = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(clientRequestId),
+        return new PagedFlux<>(() -> listSinglePageAsync(clientRequestId),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, clientRequestId));
     }
 
     /**
      * Gets a list of all Search services in the given subscription.
-     *
+     * 
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1496,14 +1238,13 @@ public final class ServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SearchServiceInner> listAsync(UUID clientRequestId, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(clientRequestId, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(clientRequestId, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, clientRequestId, context));
     }
 
     /**
      * Gets a list of all Search services in the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all Search services in the given subscription as paginated response with {@link PagedIterable}.
@@ -1516,9 +1257,9 @@ public final class ServicesClientImpl
 
     /**
      * Gets a list of all Search services in the given subscription.
-     *
+     * 
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1533,109 +1274,80 @@ public final class ServicesClientImpl
     /**
      * Checks whether or not the given search service name is available for use. Search service names must be globally
      * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
-     *
+     * 
      * @param checkNameAvailabilityInput The resource name and type to check.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckNameAvailabilityOutput>> checkNameAvailabilityWithResponseAsync(
         CheckNameAvailabilityInput checkNameAvailabilityInput, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityInput is required and cannot be null."));
         } else {
             checkNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            checkNameAvailabilityInput,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), clientRequestId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), checkNameAvailabilityInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks whether or not the given search service name is available for use. Search service names must be globally
      * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
-     *
+     * 
      * @param checkNameAvailabilityInput The resource name and type to check.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityOutput>> checkNameAvailabilityWithResponseAsync(
         CheckNameAvailabilityInput checkNameAvailabilityInput, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityInput is required and cannot be null."));
         } else {
             checkNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                checkNameAvailabilityInput,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), clientRequestId, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), checkNameAvailabilityInput, accept, context);
     }
 
     /**
      * Checks whether or not the given search service name is available for use. Search service names must be globally
      * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
-     *
+     * 
      * @param checkNameAvailabilityInput The resource name and type to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1643,8 +1355,8 @@ public final class ServicesClientImpl
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityOutput> checkNameAvailabilityAsync(
-        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    public Mono<CheckNameAvailabilityOutput>
+        checkNameAvailabilityAsync(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         final UUID clientRequestId = null;
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityInput, clientRequestId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1653,10 +1365,10 @@ public final class ServicesClientImpl
     /**
      * Checks whether or not the given search service name is available for use. Search service names must be globally
      * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
-     *
+     * 
      * @param checkNameAvailabilityInput The resource name and type to check.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1672,7 +1384,7 @@ public final class ServicesClientImpl
     /**
      * Checks whether or not the given search service name is available for use. Search service names must be globally
      * unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
-     *
+     * 
      * @param checkNameAvailabilityInput The resource name and type to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1687,169 +1399,123 @@ public final class ServicesClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing a list of search services along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SearchServiceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, UUID clientRequestId) {
+    private Mono<PagedResponse<SearchServiceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        UUID clientRequestId) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroupNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context))
-            .<PagedResponse<SearchServiceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(),
+                clientRequestId, accept, context))
+            .<PagedResponse<SearchServiceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing a list of search services along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SearchServiceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, UUID clientRequestId, Context context) {
+    private Mono<PagedResponse<SearchServiceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        UUID clientRequestId, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing a list of search services along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SearchServiceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, UUID clientRequestId) {
+    private Mono<PagedResponse<SearchServiceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        UUID clientRequestId) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscriptionNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context))
-            .<PagedResponse<SearchServiceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), clientRequestId,
+                accept, context))
+            .<PagedResponse<SearchServiceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
+     * included in response information as a way to track the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing a list of search services along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SearchServiceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, UUID clientRequestId, Context context) {
+    private Mono<PagedResponse<SearchServiceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        UUID clientRequestId, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

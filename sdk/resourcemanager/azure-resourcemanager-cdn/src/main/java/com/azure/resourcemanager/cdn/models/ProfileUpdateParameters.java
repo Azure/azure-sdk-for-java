@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.ProfilePropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Properties required to update a profile. */
+/**
+ * Properties required to update a profile.
+ */
 @Fluent
-public final class ProfileUpdateParameters {
+public final class ProfileUpdateParameters implements JsonSerializable<ProfileUpdateParameters> {
     /*
      * Profile tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Managed service identity (system assigned and/or user assigned identities).
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * The JSON object containing profile update parameters.
      */
-    @JsonProperty(value = "properties")
     private ProfilePropertiesUpdateParameters innerProperties;
 
-    /** Creates an instance of ProfileUpdateParameters class. */
+    /**
+     * Creates an instance of ProfileUpdateParameters class.
+     */
     public ProfileUpdateParameters() {
     }
 
     /**
      * Get the tags property: Profile tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -47,7 +50,7 @@ public final class ProfileUpdateParameters {
 
     /**
      * Set the tags property: Profile tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ProfileUpdateParameters object itself.
      */
@@ -58,7 +61,7 @@ public final class ProfileUpdateParameters {
 
     /**
      * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -67,7 +70,7 @@ public final class ProfileUpdateParameters {
 
     /**
      * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ProfileUpdateParameters object itself.
      */
@@ -78,7 +81,7 @@ public final class ProfileUpdateParameters {
 
     /**
      * Get the innerProperties property: The JSON object containing profile update parameters.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProfilePropertiesUpdateParameters innerProperties() {
@@ -88,7 +91,7 @@ public final class ProfileUpdateParameters {
     /**
      * Get the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
      * timeout is reached, the request fails and returns.
-     *
+     * 
      * @return the originResponseTimeoutSeconds value.
      */
     public Integer originResponseTimeoutSeconds() {
@@ -98,7 +101,7 @@ public final class ProfileUpdateParameters {
     /**
      * Set the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
      * timeout is reached, the request fails and returns.
-     *
+     * 
      * @param originResponseTimeoutSeconds the originResponseTimeoutSeconds value to set.
      * @return the ProfileUpdateParameters object itself.
      */
@@ -111,8 +114,31 @@ public final class ProfileUpdateParameters {
     }
 
     /**
+     * Get the logScrubbing property: Defines rules to scrub sensitive fields in logs.
+     * 
+     * @return the logScrubbing value.
+     */
+    public ProfileLogScrubbing logScrubbing() {
+        return this.innerProperties() == null ? null : this.innerProperties().logScrubbing();
+    }
+
+    /**
+     * Set the logScrubbing property: Defines rules to scrub sensitive fields in logs.
+     * 
+     * @param logScrubbing the logScrubbing value to set.
+     * @return the ProfileUpdateParameters object itself.
+     */
+    public ProfileUpdateParameters withLogScrubbing(ProfileLogScrubbing logScrubbing) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfilePropertiesUpdateParameters();
+        }
+        this.innerProperties().withLogScrubbing(logScrubbing);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -122,5 +148,49 @@ public final class ProfileUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProfileUpdateParameters.
+     */
+    public static ProfileUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileUpdateParameters deserializedProfileUpdateParameters = new ProfileUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProfileUpdateParameters.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedProfileUpdateParameters.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProfileUpdateParameters.innerProperties
+                        = ProfilePropertiesUpdateParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileUpdateParameters;
+        });
     }
 }

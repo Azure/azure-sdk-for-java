@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties for updating triggers. */
+/**
+ * The properties for updating triggers.
+ */
 @Fluent
-public final class TriggerUpdateParameters {
+public final class TriggerUpdateParameters implements JsonSerializable<TriggerUpdateParameters> {
     /*
      * The collection of timer triggers.
      */
-    @JsonProperty(value = "timerTriggers")
     private List<TimerTriggerUpdateParameters> timerTriggers;
 
     /*
      * The collection of triggers based on source code repository.
      */
-    @JsonProperty(value = "sourceTriggers")
     private List<SourceTriggerUpdateParameters> sourceTriggers;
 
     /*
      * The trigger based on base image dependencies.
      */
-    @JsonProperty(value = "baseImageTrigger")
     private BaseImageTriggerUpdateParameters baseImageTrigger;
 
-    /** Creates an instance of TriggerUpdateParameters class. */
+    /**
+     * Creates an instance of TriggerUpdateParameters class.
+     */
     public TriggerUpdateParameters() {
     }
 
     /**
      * Get the timerTriggers property: The collection of timer triggers.
-     *
+     * 
      * @return the timerTriggers value.
      */
     public List<TimerTriggerUpdateParameters> timerTriggers() {
@@ -44,7 +49,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Set the timerTriggers property: The collection of timer triggers.
-     *
+     * 
      * @param timerTriggers the timerTriggers value to set.
      * @return the TriggerUpdateParameters object itself.
      */
@@ -55,7 +60,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Get the sourceTriggers property: The collection of triggers based on source code repository.
-     *
+     * 
      * @return the sourceTriggers value.
      */
     public List<SourceTriggerUpdateParameters> sourceTriggers() {
@@ -64,7 +69,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Set the sourceTriggers property: The collection of triggers based on source code repository.
-     *
+     * 
      * @param sourceTriggers the sourceTriggers value to set.
      * @return the TriggerUpdateParameters object itself.
      */
@@ -75,7 +80,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Get the baseImageTrigger property: The trigger based on base image dependencies.
-     *
+     * 
      * @return the baseImageTrigger value.
      */
     public BaseImageTriggerUpdateParameters baseImageTrigger() {
@@ -84,7 +89,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Set the baseImageTrigger property: The trigger based on base image dependencies.
-     *
+     * 
      * @param baseImageTrigger the baseImageTrigger value to set.
      * @return the TriggerUpdateParameters object itself.
      */
@@ -95,7 +100,7 @@ public final class TriggerUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -108,5 +113,53 @@ public final class TriggerUpdateParameters {
         if (baseImageTrigger() != null) {
             baseImageTrigger().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("timerTriggers", this.timerTriggers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sourceTriggers", this.sourceTriggers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("baseImageTrigger", this.baseImageTrigger);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggerUpdateParameters.
+     */
+    public static TriggerUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerUpdateParameters deserializedTriggerUpdateParameters = new TriggerUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timerTriggers".equals(fieldName)) {
+                    List<TimerTriggerUpdateParameters> timerTriggers
+                        = reader.readArray(reader1 -> TimerTriggerUpdateParameters.fromJson(reader1));
+                    deserializedTriggerUpdateParameters.timerTriggers = timerTriggers;
+                } else if ("sourceTriggers".equals(fieldName)) {
+                    List<SourceTriggerUpdateParameters> sourceTriggers
+                        = reader.readArray(reader1 -> SourceTriggerUpdateParameters.fromJson(reader1));
+                    deserializedTriggerUpdateParameters.sourceTriggers = sourceTriggers;
+                } else if ("baseImageTrigger".equals(fieldName)) {
+                    deserializedTriggerUpdateParameters.baseImageTrigger
+                        = BaseImageTriggerUpdateParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerUpdateParameters;
+        });
     }
 }

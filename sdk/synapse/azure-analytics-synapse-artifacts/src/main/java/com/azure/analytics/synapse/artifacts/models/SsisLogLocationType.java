@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class SsisLogLocationType extends ExpandableStringEnum<SsisLogLocat
      * @param name a name to look for.
      * @return the corresponding SsisLogLocationType.
      */
-    @JsonCreator
     public static SsisLogLocationType fromString(String name) {
         return fromString(name, SsisLogLocationType.class);
     }

@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LicenseProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LicenseProfilesClient.
+ */
 public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LicenseProfilesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HybridComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of LicenseProfilesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LicenseProfilesClientImpl(HybridComputeManagementClientImpl client) {
-        this.service =
-            RestProxy.create(LicenseProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LicenseProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,119 +72,88 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
     @Host("{$host}")
     @ServiceInterface(name = "HybridComputeManagem")
     public interface LicenseProfilesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/licenseProfiles/{licenseProfileName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/licenseProfiles/{licenseProfileName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("machineName") String machineName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
             @PathParam("licenseProfileName") String licenseProfileName,
-            @BodyParam("application/json") LicenseProfileInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") LicenseProfileInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/licenseProfiles/{licenseProfileName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/licenseProfiles/{licenseProfileName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("machineName") String machineName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
             @PathParam("licenseProfileName") String licenseProfileName,
-            @BodyParam("application/json") LicenseProfileUpdate parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") LicenseProfileUpdate parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/licenseProfiles/{licenseProfileName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/licenseProfiles/{licenseProfileName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LicenseProfileInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("machineName") String machineName,
-            @PathParam("licenseProfileName") String licenseProfileName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<LicenseProfileInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
+            @PathParam("licenseProfileName") String licenseProfileName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/licenseProfiles/{licenseProfileName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/licenseProfiles/{licenseProfileName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("machineName") String machineName,
-            @PathParam("licenseProfileName") String licenseProfileName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
+            @PathParam("licenseProfileName") String licenseProfileName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/licenseProfiles")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/licenseProfiles")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LicenseProfilesListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("machineName") String machineName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<LicenseProfilesListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LicenseProfilesListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a license profile in a hybrid machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String machineName, LicenseProfileInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String machineName, LicenseProfileInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -195,49 +170,35 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
         final String licenseProfileName = "default";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            machineName,
-                            licenseProfileName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, machineName, licenseProfileName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a license profile in a hybrid machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String machineName, LicenseProfileInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String machineName, LicenseProfileInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -254,51 +215,37 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
         final String licenseProfileName = "default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                machineName,
-                licenseProfileName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, machineName, licenseProfileName, parameters, accept,
+            context);
     }
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LicenseProfileInner>, LicenseProfileInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String machineName, LicenseProfileInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, machineName, parameters);
-        return this
-            .client
-            .<LicenseProfileInner, LicenseProfileInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LicenseProfileInner.class,
-                LicenseProfileInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<LicenseProfileInner>, LicenseProfileInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String machineName, LicenseProfileInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, machineName, parameters);
+        return this.client.<LicenseProfileInner, LicenseProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            LicenseProfileInner.class, LicenseProfileInner.class, this.client.getContext());
     }
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -309,37 +256,35 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
     private PollerFlux<PollResult<LicenseProfileInner>, LicenseProfileInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String machineName, LicenseProfileInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, machineName, parameters, context);
-        return this
-            .client
-            .<LicenseProfileInner, LicenseProfileInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LicenseProfileInner.class, LicenseProfileInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, machineName, parameters, context);
+        return this.client.<LicenseProfileInner, LicenseProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            LicenseProfileInner.class, LicenseProfileInner.class, context);
     }
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginCreateOrUpdate(
-        String resourceGroupName, String machineName, LicenseProfileInner parameters) {
+    public SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner>
+        beginCreateOrUpdate(String resourceGroupName, String machineName, LicenseProfileInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, machineName, parameters).getSyncPoller();
     }
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -354,29 +299,28 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a license profile in a hybrid machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LicenseProfileInner> createOrUpdateAsync(
-        String resourceGroupName, String machineName, LicenseProfileInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, machineName, parameters)
-            .last()
+    private Mono<LicenseProfileInner> createOrUpdateAsync(String resourceGroupName, String machineName,
+        LicenseProfileInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, machineName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -384,36 +328,35 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return describes a license profile in a hybrid machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LicenseProfileInner> createOrUpdateAsync(
-        String resourceGroupName, String machineName, LicenseProfileInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, machineName, parameters, context)
-            .last()
+    private Mono<LicenseProfileInner> createOrUpdateAsync(String resourceGroupName, String machineName,
+        LicenseProfileInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, machineName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LicenseProfileInner createOrUpdate(
-        String resourceGroupName, String machineName, LicenseProfileInner parameters) {
+    public LicenseProfileInner createOrUpdate(String resourceGroupName, String machineName,
+        LicenseProfileInner parameters) {
         return createOrUpdateAsync(resourceGroupName, machineName, parameters).block();
     }
 
     /**
      * The operation to create or update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
-     * @param parameters Parameters supplied to the Create license profile operation.
+     * @param parameters Parameters supplied to the Create or Update license profile operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -421,14 +364,14 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LicenseProfileInner createOrUpdate(
-        String resourceGroupName, String machineName, LicenseProfileInner parameters, Context context) {
+    public LicenseProfileInner createOrUpdate(String resourceGroupName, String machineName,
+        LicenseProfileInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, machineName, parameters, context).block();
     }
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -436,22 +379,18 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a license profile in a hybrid machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String machineName,
+        LicenseProfileUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -468,25 +407,15 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
         final String licenseProfileName = "default";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            machineName,
-                            licenseProfileName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, machineName, licenseProfileName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -495,22 +424,18 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a license profile in a hybrid machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String machineName,
+        LicenseProfileUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -527,22 +452,13 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
         final String licenseProfileName = "default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                machineName,
-                licenseProfileName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, machineName, licenseProfileName, parameters, accept, context);
     }
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -552,22 +468,16 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return the {@link PollerFlux} for polling of describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdateAsync(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters) {
+    private PollerFlux<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdateAsync(String resourceGroupName,
+        String machineName, LicenseProfileUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, machineName, parameters);
-        return this
-            .client
-            .<LicenseProfileInner, LicenseProfileInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LicenseProfileInner.class,
-                LicenseProfileInner.class,
-                this.client.getContext());
+        return this.client.<LicenseProfileInner, LicenseProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            LicenseProfileInner.class, LicenseProfileInner.class, this.client.getContext());
     }
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -578,20 +488,18 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return the {@link PollerFlux} for polling of describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdateAsync(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters, Context context) {
+    private PollerFlux<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdateAsync(String resourceGroupName,
+        String machineName, LicenseProfileUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, machineName, parameters, context);
-        return this
-            .client
-            .<LicenseProfileInner, LicenseProfileInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LicenseProfileInner.class, LicenseProfileInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, machineName, parameters, context);
+        return this.client.<LicenseProfileInner, LicenseProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            LicenseProfileInner.class, LicenseProfileInner.class, context);
     }
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -601,14 +509,14 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return the {@link SyncPoller} for polling of describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdate(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters) {
+    public SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdate(String resourceGroupName,
+        String machineName, LicenseProfileUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, machineName, parameters).getSyncPoller();
     }
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -619,14 +527,14 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return the {@link SyncPoller} for polling of describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdate(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters, Context context) {
+    public SyncPoller<PollResult<LicenseProfileInner>, LicenseProfileInner> beginUpdate(String resourceGroupName,
+        String machineName, LicenseProfileUpdate parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, machineName, parameters, context).getSyncPoller();
     }
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -636,16 +544,15 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return describes a license profile in a hybrid machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LicenseProfileInner> updateAsync(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, machineName, parameters)
-            .last()
+    private Mono<LicenseProfileInner> updateAsync(String resourceGroupName, String machineName,
+        LicenseProfileUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, machineName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -656,16 +563,15 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return describes a license profile in a hybrid machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LicenseProfileInner> updateAsync(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, machineName, parameters, context)
-            .last()
+    private Mono<LicenseProfileInner> updateAsync(String resourceGroupName, String machineName,
+        LicenseProfileUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, machineName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -681,7 +587,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
 
     /**
      * The operation to update a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param parameters Parameters supplied to the Update license profile operation.
@@ -692,35 +598,31 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return describes a license profile in a hybrid machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LicenseProfileInner update(
-        String resourceGroupName, String machineName, LicenseProfileUpdate parameters, Context context) {
+    public LicenseProfileInner update(String resourceGroupName, String machineName, LicenseProfileUpdate parameters,
+        Context context) {
         return updateAsync(resourceGroupName, machineName, parameters, context).block();
     }
 
     /**
      * Retrieves information about the view of a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a license profile in a hybrid machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LicenseProfileInner>> getWithResponseAsync(String resourceGroupName, String machineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -732,24 +634,14 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
         final String licenseProfileName = "default";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            machineName,
-                            licenseProfileName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, machineName, licenseProfileName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves information about the view of a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -757,22 +649,18 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a license profile in a hybrid machine along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LicenseProfileInner>> getWithResponseAsync(
-        String resourceGroupName, String machineName, Context context) {
+    private Mono<Response<LicenseProfileInner>> getWithResponseAsync(String resourceGroupName, String machineName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -784,21 +672,13 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
         final String licenseProfileName = "default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                machineName,
-                licenseProfileName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, machineName, licenseProfileName, accept, context);
     }
 
     /**
      * Retrieves information about the view of a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -813,7 +693,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
 
     /**
      * Retrieves information about the view of a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -823,14 +703,14 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return describes a license profile in a hybrid machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LicenseProfileInner> getWithResponse(
-        String resourceGroupName, String machineName, Context context) {
+    public Response<LicenseProfileInner> getWithResponse(String resourceGroupName, String machineName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, machineName, context).block();
     }
 
     /**
      * Retrieves information about the view of a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -845,7 +725,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -856,16 +736,12 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String machineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -877,24 +753,14 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
         final String licenseProfileName = "default";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            machineName,
-                            licenseProfileName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, machineName, licenseProfileName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -904,19 +770,15 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String machineName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String machineName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -928,21 +790,13 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
         final String licenseProfileName = "default";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                machineName,
-                licenseProfileName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, machineName, licenseProfileName, accept, context);
     }
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -953,15 +807,13 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String machineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, machineName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -971,18 +823,17 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String machineName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String machineName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, machineName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -997,7 +848,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -1007,14 +858,14 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String machineName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, machineName, context).getSyncPoller();
     }
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1029,7 +880,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -1040,14 +891,13 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String machineName, Context context) {
-        return beginDeleteAsync(resourceGroupName, machineName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, machineName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1061,7 +911,7 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
 
     /**
      * The operation to delete a license profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
@@ -1076,22 +926,20 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
 
     /**
      * The operation to get all license profiles of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List hybrid machine license profile operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LicenseProfileInner>> listSinglePageAsync(String resourceGroupName, String machineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1101,39 +949,21 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            machineName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<LicenseProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, machineName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<LicenseProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to get all license profiles of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine.
      * @param context The context to associate with this operation.
@@ -1141,16 +971,14 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List hybrid machine license profile operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LicenseProfileInner>> listSinglePageAsync(
-        String resourceGroupName, String machineName, Context context) {
+    private Mono<PagedResponse<LicenseProfileInner>> listSinglePageAsync(String resourceGroupName, String machineName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1160,36 +988,21 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                machineName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), resourceGroupName, machineName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * The operation to get all license profiles of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1199,13 +1012,13 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LicenseProfileInner> listAsync(String resourceGroupName, String machineName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, machineName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, machineName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * The operation to get all license profiles of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine.
      * @param context The context to associate with this operation.
@@ -1216,21 +1029,20 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LicenseProfileInner> listAsync(String resourceGroupName, String machineName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, machineName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, machineName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * The operation to get all license profiles of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List hybrid machine license profile operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List hybrid machine license profile operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LicenseProfileInner> list(String resourceGroupName, String machineName) {
@@ -1239,15 +1051,15 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
 
     /**
      * The operation to get all license profiles of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List hybrid machine license profile operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List hybrid machine license profile operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LicenseProfileInner> list(String resourceGroupName, String machineName, Context context) {
@@ -1256,14 +1068,13 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List hybrid machine license profile operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LicenseProfileInner>> listNextSinglePageAsync(String nextLink) {
@@ -1271,37 +1082,26 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LicenseProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<LicenseProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List hybrid machine license profile operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LicenseProfileInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1309,23 +1109,13 @@ public final class LicenseProfilesClientImpl implements LicenseProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

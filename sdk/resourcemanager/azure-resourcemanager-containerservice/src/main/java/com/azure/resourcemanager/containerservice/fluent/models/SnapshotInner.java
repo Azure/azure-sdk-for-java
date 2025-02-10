@@ -7,11 +7,14 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.SnapshotType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -22,14 +25,27 @@ public final class SnapshotInner extends Resource {
     /*
      * Properties of a snapshot.
      */
-    @JsonProperty(value = "properties")
     private SnapshotProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of SnapshotInner class.
@@ -39,7 +55,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of a snapshot.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SnapshotProperties innerProperties() {
@@ -48,11 +64,41 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -76,7 +122,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Get the creationData property: CreationData to be used to specify the source agent pool resource ID to create
      * this snapshot.
-     *
+     * 
      * @return the creationData value.
      */
     public CreationData creationData() {
@@ -86,7 +132,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Set the creationData property: CreationData to be used to specify the source agent pool resource ID to create
      * this snapshot.
-     *
+     * 
      * @param creationData the creationData value to set.
      * @return the SnapshotInner object itself.
      */
@@ -100,7 +146,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the snapshotType property: The type of a snapshot. The default is NodePool.
-     *
+     * 
      * @return the snapshotType value.
      */
     public SnapshotType snapshotType() {
@@ -109,7 +155,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Set the snapshotType property: The type of a snapshot. The default is NodePool.
-     *
+     * 
      * @param snapshotType the snapshotType value to set.
      * @return the SnapshotInner object itself.
      */
@@ -123,7 +169,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the kubernetesVersion property: The version of Kubernetes.
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -132,7 +178,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the nodeImageVersion property: The version of node image.
-     *
+     * 
      * @return the nodeImageVersion value.
      */
     public String nodeImageVersion() {
@@ -141,7 +187,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * 
      * @return the osType value.
      */
     public OSType osType() {
@@ -152,7 +198,7 @@ public final class SnapshotInner extends Resource {
      * Get the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
      * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
      * Windows.
-     *
+     * 
      * @return the osSku value.
      */
     public OSSku osSku() {
@@ -161,7 +207,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the vmSize property: The size of the VM.
-     *
+     * 
      * @return the vmSize value.
      */
     public String vmSize() {
@@ -170,7 +216,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the enableFips property: Whether to use a FIPS-enabled OS.
-     *
+     * 
      * @return the enableFips value.
      */
     public Boolean enableFips() {
@@ -179,12 +225,64 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnapshotInner.
+     */
+    public static SnapshotInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotInner deserializedSnapshotInner = new SnapshotInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSnapshotInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSnapshotInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSnapshotInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSnapshotInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSnapshotInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSnapshotInner.innerProperties = SnapshotProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSnapshotInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotInner;
+        });
     }
 }

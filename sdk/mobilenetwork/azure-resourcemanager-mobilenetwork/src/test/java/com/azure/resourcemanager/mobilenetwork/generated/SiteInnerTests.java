@@ -13,26 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class SiteInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SiteInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Unknown\",\"networkFunctions\":[{\"id\":\"b\"},{\"id\":\"hhxud\"},{\"id\":\"vodhtn\"}]},\"location\":\"rudhzmmesckdl\",\"tags\":{\"dfgsftufqobrj\":\"zrcxfailcfxwmdbo\",\"cc\":\"nac\",\"kizvytn\":\"knh\",\"aaeranokqgukk\":\"zvulj\"},\"id\":\"qnvb\",\"name\":\"oylaxxul\",\"type\":\"disdosfjbjsvgj\"}")
-                .toObject(SiteInner.class);
-        Assertions.assertEquals("rudhzmmesckdl", model.location());
-        Assertions.assertEquals("zrcxfailcfxwmdbo", model.tags().get("dfgsftufqobrj"));
+        SiteInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Unknown\",\"networkFunctions\":[{\"id\":\"esmkssjhoiftxfkf\"}]},\"location\":\"gpr\",\"tags\":{\"cbiqtgdqoh\":\"ill\",\"etpwbralll\":\"cwsldri\",\"p\":\"bphbqzmizakakank\"},\"id\":\"n\",\"name\":\"zhajoylhjlmuo\",\"type\":\"xprimrsop\"}")
+            .toObject(SiteInner.class);
+        Assertions.assertEquals("gpr", model.location());
+        Assertions.assertEquals("ill", model.tags().get("cbiqtgdqoh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SiteInner model =
-            new SiteInner()
-                .withLocation("rudhzmmesckdl")
-                .withTags(
-                    mapOf(
-                        "dfgsftufqobrj", "zrcxfailcfxwmdbo", "cc", "nac", "kizvytn", "knh", "aaeranokqgukk", "zvulj"));
+        SiteInner model = new SiteInner().withLocation("gpr")
+            .withTags(mapOf("cbiqtgdqoh", "ill", "etpwbralll", "cwsldri", "p", "bphbqzmizakakank"));
         model = BinaryData.fromObject(model).toObject(SiteInner.class);
-        Assertions.assertEquals("rudhzmmesckdl", model.location());
-        Assertions.assertEquals("zrcxfailcfxwmdbo", model.tags().get("dfgsftufqobrj"));
+        Assertions.assertEquals("gpr", model.location());
+        Assertions.assertEquals("ill", model.tags().get("cbiqtgdqoh"));
     }
 
     // Use "Map.of" if available

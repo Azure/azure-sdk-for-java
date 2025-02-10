@@ -12,19 +12,22 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sphere.fluent.models.CatalogInner;
-import com.azure.resourcemanager.sphere.fluent.models.CountDeviceResponseInner;
+import com.azure.resourcemanager.sphere.fluent.models.CountDevicesResponseInner;
 import com.azure.resourcemanager.sphere.fluent.models.DeploymentInner;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupInner;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceInner;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceInsightInner;
+import com.azure.resourcemanager.sphere.fluent.models.ImageInner;
 import com.azure.resourcemanager.sphere.models.CatalogUpdate;
 import com.azure.resourcemanager.sphere.models.ListDeviceGroupsRequest;
 
-/** An instance of this class provides access to all the operations defined in CatalogsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CatalogsClient.
+ */
 public interface CatalogsClient {
     /**
      * List Catalog resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Catalog list operation as paginated response with {@link PagedIterable}.
@@ -34,7 +37,7 @@ public interface CatalogsClient {
 
     /**
      * List Catalog resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,7 +49,7 @@ public interface CatalogsClient {
 
     /**
      * List Catalog resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,7 +61,7 @@ public interface CatalogsClient {
 
     /**
      * List Catalog resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +74,7 @@ public interface CatalogsClient {
 
     /**
      * Get a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param context The context to associate with this operation.
@@ -81,12 +84,12 @@ public interface CatalogsClient {
      * @return a Catalog along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CatalogInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String catalogName, Context context);
+    Response<CatalogInner> getByResourceGroupWithResponse(String resourceGroupName, String catalogName,
+        Context context);
 
     /**
      * Get a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +102,7 @@ public interface CatalogsClient {
 
     /**
      * Create a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param resource Resource create parameters.
@@ -109,12 +112,12 @@ public interface CatalogsClient {
      * @return the {@link SyncPoller} for polling of an Azure Sphere catalog.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(
-        String resourceGroupName, String catalogName, CatalogInner resource);
+    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(String resourceGroupName, String catalogName,
+        CatalogInner resource);
 
     /**
      * Create a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param resource Resource create parameters.
@@ -125,12 +128,12 @@ public interface CatalogsClient {
      * @return the {@link SyncPoller} for polling of an Azure Sphere catalog.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(
-        String resourceGroupName, String catalogName, CatalogInner resource, Context context);
+    SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(String resourceGroupName, String catalogName,
+        CatalogInner resource, Context context);
 
     /**
      * Create a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param resource Resource create parameters.
@@ -144,7 +147,7 @@ public interface CatalogsClient {
 
     /**
      * Create a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param resource Resource create parameters.
@@ -159,7 +162,7 @@ public interface CatalogsClient {
 
     /**
      * Update a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param properties The resource properties to be updated.
@@ -170,12 +173,12 @@ public interface CatalogsClient {
      * @return an Azure Sphere catalog along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CatalogInner> updateWithResponse(
-        String resourceGroupName, String catalogName, CatalogUpdate properties, Context context);
+    Response<CatalogInner> updateWithResponse(String resourceGroupName, String catalogName, CatalogUpdate properties,
+        Context context);
 
     /**
      * Update a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param properties The resource properties to be updated.
@@ -189,7 +192,7 @@ public interface CatalogsClient {
 
     /**
      * Delete a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,7 +205,7 @@ public interface CatalogsClient {
 
     /**
      * Delete a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param context The context to associate with this operation.
@@ -216,7 +219,7 @@ public interface CatalogsClient {
 
     /**
      * Delete a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +231,7 @@ public interface CatalogsClient {
 
     /**
      * Delete a Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param context The context to associate with this operation.
@@ -241,7 +244,7 @@ public interface CatalogsClient {
 
     /**
      * Counts devices in catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param context The context to associate with this operation.
@@ -251,12 +254,12 @@ public interface CatalogsClient {
      * @return response to the action call for count devices in a catalog along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CountDeviceResponseInner> countDevicesWithResponse(
-        String resourceGroupName, String catalogName, Context context);
+    Response<CountDevicesResponseInner> countDevicesWithResponse(String resourceGroupName, String catalogName,
+        Context context);
 
     /**
      * Counts devices in catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,11 +268,11 @@ public interface CatalogsClient {
      * @return response to the action call for count devices in a catalog.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CountDeviceResponseInner countDevices(String resourceGroupName, String catalogName);
+    CountDevicesResponseInner countDevices(String resourceGroupName, String catalogName);
 
     /**
      * Lists deployments for catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,7 +285,7 @@ public interface CatalogsClient {
 
     /**
      * Lists deployments for catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -296,18 +299,12 @@ public interface CatalogsClient {
      * @return the response of a Deployment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentInner> listDeployments(
-        String resourceGroupName,
-        String catalogName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context);
+    PagedIterable<DeploymentInner> listDeployments(String resourceGroupName, String catalogName, String filter,
+        Integer top, Integer skip, Integer maxpagesize, Context context);
 
     /**
      * List the device groups for the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param listDeviceGroupsRequest List device groups for catalog.
@@ -317,12 +314,12 @@ public interface CatalogsClient {
      * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeviceGroupInner> listDeviceGroups(
-        String resourceGroupName, String catalogName, ListDeviceGroupsRequest listDeviceGroupsRequest);
+    PagedIterable<DeviceGroupInner> listDeviceGroups(String resourceGroupName, String catalogName,
+        ListDeviceGroupsRequest listDeviceGroupsRequest);
 
     /**
      * List the device groups for the catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param listDeviceGroupsRequest List device groups for catalog.
@@ -337,19 +334,13 @@ public interface CatalogsClient {
      * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeviceGroupInner> listDeviceGroups(
-        String resourceGroupName,
-        String catalogName,
-        ListDeviceGroupsRequest listDeviceGroupsRequest,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
+    PagedIterable<DeviceGroupInner> listDeviceGroups(String resourceGroupName, String catalogName,
+        ListDeviceGroupsRequest listDeviceGroupsRequest, String filter, Integer top, Integer skip, Integer maxpagesize,
         Context context);
 
     /**
      * Lists device insights for catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -362,7 +353,7 @@ public interface CatalogsClient {
 
     /**
      * Lists device insights for catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -376,18 +367,12 @@ public interface CatalogsClient {
      * @return paged collection of DeviceInsight items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeviceInsightInner> listDeviceInsights(
-        String resourceGroupName,
-        String catalogName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context);
+    PagedIterable<DeviceInsightInner> listDeviceInsights(String resourceGroupName, String catalogName, String filter,
+        Integer top, Integer skip, Integer maxpagesize, Context context);
 
     /**
      * Lists devices for catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,7 +385,7 @@ public interface CatalogsClient {
 
     /**
      * Lists devices for catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -414,12 +399,64 @@ public interface CatalogsClient {
      * @return the response of a Device list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeviceInner> listDevices(
-        String resourceGroupName,
-        String catalogName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context);
+    PagedIterable<DeviceInner> listDevices(String resourceGroupName, String catalogName, String filter, Integer top,
+        Integer skip, Integer maxpagesize, Context context);
+
+    /**
+     * Creates an image. Use this action when the image ID is unknown.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param catalogName Name of catalog.
+     * @param uploadImageRequest Image upload request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUploadImage(String resourceGroupName, String catalogName,
+        ImageInner uploadImageRequest);
+
+    /**
+     * Creates an image. Use this action when the image ID is unknown.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param catalogName Name of catalog.
+     * @param uploadImageRequest Image upload request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUploadImage(String resourceGroupName, String catalogName,
+        ImageInner uploadImageRequest, Context context);
+
+    /**
+     * Creates an image. Use this action when the image ID is unknown.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param catalogName Name of catalog.
+     * @param uploadImageRequest Image upload request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void uploadImage(String resourceGroupName, String catalogName, ImageInner uploadImageRequest);
+
+    /**
+     * Creates an image. Use this action when the image ID is unknown.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param catalogName Name of catalog.
+     * @param uploadImageRequest Image upload request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void uploadImage(String resourceGroupName, String catalogName, ImageInner uploadImageRequest, Context context);
 }

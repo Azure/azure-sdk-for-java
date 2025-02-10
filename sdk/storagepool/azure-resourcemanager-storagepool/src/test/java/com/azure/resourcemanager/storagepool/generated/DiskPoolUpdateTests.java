@@ -16,37 +16,35 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskPoolUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskPoolUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"managedBy\":\"kanyktzlcuiywg\",\"managedByExtended\":[\"gndrvynh\",\"gpphrcgyn\",\"ocpecfvmmco\",\"fsxlzevgbmqjqa\"],\"properties\":{\"disks\":[{\"id\":\"pmivkwlzu\"}]},\"sku\":{\"name\":\"c\",\"tier\":\"nfnbacfionlebxe\"},\"tags\":{\"jfeallnwsub\":\"tzxdpnqbqqwx\",\"zscxaqwo\":\"snjampmng\"}}")
-                .toObject(DiskPoolUpdate.class);
-        Assertions.assertEquals("kanyktzlcuiywg", model.managedBy());
-        Assertions.assertEquals("gndrvynh", model.managedByExtended().get(0));
-        Assertions.assertEquals("c", model.sku().name());
-        Assertions.assertEquals("nfnbacfionlebxe", model.sku().tier());
-        Assertions.assertEquals("tzxdpnqbqqwx", model.tags().get("jfeallnwsub"));
-        Assertions.assertEquals("pmivkwlzu", model.disks().get(0).id());
+        DiskPoolUpdate model = BinaryData.fromString(
+            "{\"managedBy\":\"qqwx\",\"managedByExtended\":[\"eallnwsubisnj\",\"mpmngnzscxaqwoo\",\"hcbonqvpkvlr\"],\"properties\":{\"disks\":[{\"id\":\"ea\"},{\"id\":\"eipheoflokeyy\"}]},\"sku\":{\"name\":\"nj\",\"tier\":\"lwtgrhpdj\"},\"tags\":{\"lhbxxhejjzzvdud\":\"masxazjpqyegu\",\"pwlbjnpg\":\"wdslfhotwmcy\",\"nltyfsoppusuesnz\":\"cftadeh\"}}")
+            .toObject(DiskPoolUpdate.class);
+        Assertions.assertEquals("qqwx", model.managedBy());
+        Assertions.assertEquals("eallnwsubisnj", model.managedByExtended().get(0));
+        Assertions.assertEquals("nj", model.sku().name());
+        Assertions.assertEquals("lwtgrhpdj", model.sku().tier());
+        Assertions.assertEquals("masxazjpqyegu", model.tags().get("lhbxxhejjzzvdud"));
+        Assertions.assertEquals("ea", model.disks().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskPoolUpdate model =
-            new DiskPoolUpdate()
-                .withManagedBy("kanyktzlcuiywg")
-                .withManagedByExtended(Arrays.asList("gndrvynh", "gpphrcgyn", "ocpecfvmmco", "fsxlzevgbmqjqa"))
-                .withSku(new Sku().withName("c").withTier("nfnbacfionlebxe"))
-                .withTags(mapOf("jfeallnwsub", "tzxdpnqbqqwx", "zscxaqwo", "snjampmng"))
-                .withDisks(Arrays.asList(new Disk().withId("pmivkwlzu")));
+        DiskPoolUpdate model = new DiskPoolUpdate().withManagedBy("qqwx")
+            .withManagedByExtended(Arrays.asList("eallnwsubisnj", "mpmngnzscxaqwoo", "hcbonqvpkvlr"))
+            .withSku(new Sku().withName("nj").withTier("lwtgrhpdj"))
+            .withTags(
+                mapOf("lhbxxhejjzzvdud", "masxazjpqyegu", "pwlbjnpg", "wdslfhotwmcy", "nltyfsoppusuesnz", "cftadeh"))
+            .withDisks(Arrays.asList(new Disk().withId("ea"), new Disk().withId("eipheoflokeyy")));
         model = BinaryData.fromObject(model).toObject(DiskPoolUpdate.class);
-        Assertions.assertEquals("kanyktzlcuiywg", model.managedBy());
-        Assertions.assertEquals("gndrvynh", model.managedByExtended().get(0));
-        Assertions.assertEquals("c", model.sku().name());
-        Assertions.assertEquals("nfnbacfionlebxe", model.sku().tier());
-        Assertions.assertEquals("tzxdpnqbqqwx", model.tags().get("jfeallnwsub"));
-        Assertions.assertEquals("pmivkwlzu", model.disks().get(0).id());
+        Assertions.assertEquals("qqwx", model.managedBy());
+        Assertions.assertEquals("eallnwsubisnj", model.managedByExtended().get(0));
+        Assertions.assertEquals("nj", model.sku().name());
+        Assertions.assertEquals("lwtgrhpdj", model.sku().tier());
+        Assertions.assertEquals("masxazjpqyegu", model.tags().get("lhbxxhejjzzvdud"));
+        Assertions.assertEquals("ea", model.disks().get(0).id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -3,15 +3,17 @@
 
 package com.azure.core.implementation.logging;
 
+import com.azure.core.implementation.StringBuilderWriter;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
+import org.slf4j.Logger;
+import org.slf4j.Marker;
 import org.slf4j.helpers.FormattingTuple;
-import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
+import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
@@ -20,8 +22,7 @@ import java.time.temporal.ChronoField;
 /**
  * This class is an internal implementation of slf4j logger.
  */
-public final class DefaultLogger extends MarkerIgnoringBase {
-    private static final long serialVersionUID = -144261058636441630L;
+public final class DefaultLogger implements Logger {
 
     // The template for the log message:
     // YYYY-MM-DD HH:MM:ss.SSS [thread] [level] classpath - message
@@ -42,6 +43,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     private final boolean isInfoEnabled;
     private final boolean isWarnEnabled;
     private final boolean isErrorEnabled;
+    private final PrintStream logLocation;
 
     /**
      * Construct DefaultLogger for the given class.
@@ -49,7 +51,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * @param clazz Class creating the logger.
      */
     public DefaultLogger(Class<?> clazz) {
-        this(clazz.getCanonicalName(), false);
+        this(clazz.getCanonicalName(), System.out, fromEnvironment());
     }
 
     /**
@@ -59,7 +61,27 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * name passes in.
      */
     public DefaultLogger(String className) {
-        this(getClassPathFromClassName(className), false);
+        this(getClassPathFromClassName(className), System.out, fromEnvironment());
+    }
+
+    /**
+     * Construct DefaultLogger for the given class name.
+     *
+     * @param className Class name creating the logger. Will use class canonical name if exists, otherwise use the class
+     * name passes in.
+     * @param logLocation The location to log the messages.
+     * @param logLevel The log level supported by the logger.
+     */
+    public DefaultLogger(String className, PrintStream logLocation, LogLevel logLevel) {
+        this.classPath = getClassPathFromClassName(className);
+        int configuredLogLevel = logLevel.getLogLevel();
+
+        isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > configuredLogLevel;
+        isDebugEnabled = LogLevel.VERBOSE.getLogLevel() >= configuredLogLevel;
+        isInfoEnabled = LogLevel.INFORMATIONAL.getLogLevel() >= configuredLogLevel;
+        isWarnEnabled = LogLevel.WARNING.getLogLevel() >= configuredLogLevel;
+        isErrorEnabled = LogLevel.ERROR.getLogLevel() >= configuredLogLevel;
+        this.logLocation = logLocation;
     }
 
     private static String getClassPathFromClassName(String className) {
@@ -70,17 +92,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
             return className;
         }
-    }
-
-    private DefaultLogger(String classPath, boolean ignored) {
-        this.classPath = classPath;
-        int configuredLogLevel = fromEnvironment().getLogLevel();
-
-        isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > configuredLogLevel;
-        isDebugEnabled = LogLevel.VERBOSE.getLogLevel() >= configuredLogLevel;
-        isInfoEnabled = LogLevel.INFORMATIONAL.getLogLevel() >= configuredLogLevel;
-        isWarnEnabled = LogLevel.WARNING.getLogLevel() >= configuredLogLevel;
-        isErrorEnabled = LogLevel.ERROR.getLogLevel() >= configuredLogLevel;
     }
 
     private static LogLevel fromEnvironment() {
@@ -145,6 +156,36 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         log(TRACE, msg, t);
     }
 
+    @Override
+    public boolean isTraceEnabled(Marker marker) {
+        return isTraceEnabled();
+    }
+
+    @Override
+    public void trace(Marker marker, String s) {
+        trace(s);
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Object o) {
+        trace(s, o);
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Object o, Object o1) {
+        trace(s, o, o1);
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Object... objects) {
+        trace(s, objects);
+    }
+
+    @Override
+    public void trace(Marker marker, String s, Throwable throwable) {
+        trace(s, throwable);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -190,6 +231,36 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         log(DEBUG, msg, t);
     }
 
+    @Override
+    public boolean isDebugEnabled(Marker marker) {
+        return isDebugEnabled();
+    }
+
+    @Override
+    public void debug(Marker marker, String s) {
+        debug(s);
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Object o) {
+        debug(s, o);
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Object o, Object o1) {
+        debug(s, o, o1);
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Object... objects) {
+        debug(s, objects);
+    }
+
+    @Override
+    public void debug(Marker marker, String s, Throwable throwable) {
+        debug(s, throwable);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -197,7 +268,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     public boolean isInfoEnabled() {
         return isInfoEnabled;
     }
-
 
     /**
      * {@inheritDoc}
@@ -237,6 +307,36 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     @Override
     public void info(final String msg, final Throwable t) {
         log(INFO, msg, t);
+    }
+
+    @Override
+    public boolean isInfoEnabled(Marker marker) {
+        return isInfoEnabled();
+    }
+
+    @Override
+    public void info(Marker marker, String s) {
+        info(s);
+    }
+
+    @Override
+    public void info(Marker marker, String s, Object o) {
+        info(s, o);
+    }
+
+    @Override
+    public void info(Marker marker, String s, Object o, Object o1) {
+        info(s, o, o1);
+    }
+
+    @Override
+    public void info(Marker marker, String s, Object... objects) {
+        info(s, objects);
+    }
+
+    @Override
+    public void info(Marker marker, String s, Throwable throwable) {
+        info(s, throwable);
     }
 
     /**
@@ -287,6 +387,36 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         log(WARN, msg, t);
     }
 
+    @Override
+    public boolean isWarnEnabled(Marker marker) {
+        return isWarnEnabled();
+    }
+
+    @Override
+    public void warn(Marker marker, String s) {
+        warn(s);
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Object o) {
+        warn(s, o);
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Object o, Object o1) {
+        warn(s, o, o1);
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Object... objects) {
+        warn(s, objects);
+    }
+
+    @Override
+    public void warn(Marker marker, String s, Throwable throwable) {
+        warn(s, throwable);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -335,6 +465,36 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         log(ERROR, msg, t);
     }
 
+    @Override
+    public boolean isErrorEnabled(Marker marker) {
+        return isErrorEnabled();
+    }
+
+    @Override
+    public void error(Marker marker, String s) {
+        error(s);
+    }
+
+    @Override
+    public void error(Marker marker, String s, Object o) {
+        error(s, o);
+    }
+
+    @Override
+    public void error(Marker marker, String s, Object o, Object o1) {
+        error(s, o, o1);
+    }
+
+    @Override
+    public void error(Marker marker, String s, Object... objects) {
+        error(s, objects);
+    }
+
+    @Override
+    public void error(Marker marker, String s, Throwable throwable) {
+        error(s, throwable);
+    }
+
     /**
      * Format and write the message according to the {@code MESSAGE_TEMPLATE}.
      *
@@ -360,8 +520,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         // Use a larger initial buffer for the StringBuilder as it defaults to 16 and non-empty information is expected
         // to be much larger than that. This will reduce the amount of resizing and copying needed to be done.
         StringBuilder stringBuilder = new StringBuilder(256);
-        stringBuilder
-            .append(dateTime)
+        stringBuilder.append(dateTime)
             .append(OPEN_BRACKET)
             .append(threadName)
             .append(CLOSE_BRACKET)
@@ -403,7 +562,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         bytes[4] = '-';
 
         // MM-
-        zeroPad(now.getDayOfMonth(), bytes, 5);
+        zeroPad(now.getMonthValue(), bytes, 5);
         bytes[7] = '-';
 
         // dd
@@ -443,13 +602,12 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      */
     void writeWithThrowable(StringBuilder stringBuilder, Throwable t) {
         if (t != null) {
-            StringWriter sw = new StringWriter();
+            StringBuilderWriter sw = new StringBuilderWriter(stringBuilder);
             try (PrintWriter pw = new PrintWriter(sw)) {
                 t.printStackTrace(pw);
-                stringBuilder.append(sw);
             }
         }
-        System.out.print(stringBuilder.toString());
+        logLocation.print(stringBuilder.toString());
     }
 
     private static void zeroPad(int value, byte[] bytes, int index) {

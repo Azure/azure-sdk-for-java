@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.LoadBalancerBackend;
 import com.azure.resourcemanager.network.models.LoadBalancerInboundNatRule;
 import com.azure.resourcemanager.network.models.Network;
@@ -15,6 +17,8 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
+    private static final ClientLogger LOGGER = new ClientLogger(TestNetworkInterface.class);
+
     @Override
     public NetworkInterface createResource(NetworkInterfaces networkInterfaces) throws Exception {
 
@@ -24,30 +28,26 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         final String pipName = "pip" + postfix;
         final Region region = Region.US_EAST;
 
-        Network network =
-            networkInterfaces
-                .manager()
-                .networks()
-                .define(vnetName)
-                .withRegion(region)
-                .withNewResourceGroup()
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/29")
-                .withSubnet("subnet2", "10.0.0.8/29")
-                .create();
+        Network network = networkInterfaces.manager()
+            .networks()
+            .define(vnetName)
+            .withRegion(region)
+            .withNewResourceGroup()
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/29")
+            .withSubnet("subnet2", "10.0.0.8/29")
+            .create();
 
-        NetworkInterface nic =
-            networkInterfaces
-                .define(nicName)
-                .withRegion(region)
-                .withExistingResourceGroup(network.resourceGroupName())
-                .withExistingPrimaryNetwork(network)
-                .withSubnet("subnet1")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withNewPrimaryPublicIPAddress(pipName)
-                .withIPForwarding()
-                .withAcceleratedNetworking()
-                .create();
+        NetworkInterface nic = networkInterfaces.define(nicName)
+            .withRegion(region)
+            .withExistingResourceGroup(network.resourceGroupName())
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("subnet1")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress(pipName)
+            .withIPForwarding()
+            .withAcceleratedNetworking()
+            .create();
 
         // Verify NIC settings
         Assertions.assertTrue(nic.isAcceleratedNetworkingEnabled());
@@ -79,19 +79,17 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
 
     @Override
     public NetworkInterface updateResource(NetworkInterface resource) throws Exception {
-        resource =
-            resource
-                .update()
-                .withoutIPForwarding()
-                .withoutAcceleratedNetworking()
-                .withSubnet("subnet2")
-                .updateIPConfiguration("primary") // Updating the primary IP configuration
-                .withPrivateIpAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
-                .withoutPublicIpAddress() // Equivalent to ..update().withoutPrimaryPublicIPAddress()
-                .parent()
-                .withTag("tag1", "value1")
-                .withTag("tag2", "value2")
-                .apply();
+        resource = resource.update()
+            .withoutIPForwarding()
+            .withoutAcceleratedNetworking()
+            .withSubnet("subnet2")
+            .updateIPConfiguration("primary") // Updating the primary IP configuration
+            .withPrivateIpAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
+            .withoutPublicIpAddress() // Equivalent to ..update().withoutPrimaryPublicIPAddress()
+            .parent()
+            .withTag("tag1", "value1")
+            .withTag("tag2", "value2")
+            .apply();
 
         // Verifications
         Assertions.assertFalse(resource.isAcceleratedNetworkingEnabled());
@@ -113,8 +111,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
 
     public static void printNic(NetworkInterface resource) {
         StringBuilder info = new StringBuilder();
-        info
-            .append("NetworkInterface: ")
+        info.append("NetworkInterface: ")
             .append(resource.id())
             .append("Name: ")
             .append(resource.name())
@@ -141,8 +138,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             info.append("\n\t\t").append(dnsServerIp);
         }
 
-        info
-            .append("\n\tIP forwarding enabled? ")
+        info.append("\n\tIP forwarding enabled? ")
             .append(resource.isIPForwardingEnabled())
             .append("\n\tAccelerated networking enabled? ")
             .append(resource.isAcceleratedNetworkingEnabled())
@@ -160,8 +156,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
 
         // Output IP configs
         for (NicIpConfiguration ipConfig : resource.ipConfigurations().values()) {
-            info
-                .append("\n\t\tName: ")
+            info.append("\n\t\tName: ")
                 .append(ipConfig.name())
                 .append("\n\t\tPrivate IP: ")
                 .append(ipConfig.privateIpAddress())
@@ -180,8 +175,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             final List<LoadBalancerBackend> backends = ipConfig.listAssociatedLoadBalancerBackends();
             info.append("\n\t\tAssociated load balancer backends: ").append(backends.size());
             for (LoadBalancerBackend backend : backends) {
-                info
-                    .append("\n\t\t\tLoad balancer ID: ")
+                info.append("\n\t\t\tLoad balancer ID: ")
                     .append(backend.parent().id())
                     .append("\n\t\t\t\tBackend name: ")
                     .append(backend.name());
@@ -191,15 +185,14 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             final List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
             info.append("\n\t\tAssociated load balancer inbound NAT rules: ").append(natRules.size());
             for (LoadBalancerInboundNatRule natRule : natRules) {
-                info
-                    .append("\n\t\t\tLoad balancer ID: ")
+                info.append("\n\t\t\tLoad balancer ID: ")
                     .append(natRule.parent().id())
                     .append("\n\t\t\tInbound NAT rule name: ")
                     .append(natRule.name());
             }
         }
 
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 
     @Override

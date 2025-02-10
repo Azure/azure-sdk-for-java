@@ -5,53 +5,55 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** onenoteOperation. */
+/**
+ * onenoteOperation.
+ */
 @Fluent
 public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperation {
     /*
      * onenoteOperationError
      */
-    @JsonProperty(value = "error")
     private MicrosoftGraphOnenoteOperationError error;
 
     /*
      * The operation percent complete if the operation is still in running status
      */
-    @JsonProperty(value = "percentComplete")
     private String percentComplete;
 
     /*
      * The resource id.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The resource URI for the object. For example, the resource URI for a copied page or section.
      */
-    @JsonProperty(value = "resourceLocation")
     private String resourceLocation;
 
     /*
      * onenoteOperation
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOnenoteOperation class. */
+    /**
+     * Creates an instance of MicrosoftGraphOnenoteOperation class.
+     */
     public MicrosoftGraphOnenoteOperation() {
     }
 
     /**
      * Get the error property: onenoteOperationError.
-     *
+     * 
      * @return the error value.
      */
     public MicrosoftGraphOnenoteOperationError error() {
@@ -60,7 +62,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
 
     /**
      * Set the error property: onenoteOperationError.
-     *
+     * 
      * @param error the error value to set.
      * @return the MicrosoftGraphOnenoteOperation object itself.
      */
@@ -71,7 +73,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
 
     /**
      * Get the percentComplete property: The operation percent complete if the operation is still in running status.
-     *
+     * 
      * @return the percentComplete value.
      */
     public String percentComplete() {
@@ -80,7 +82,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
 
     /**
      * Set the percentComplete property: The operation percent complete if the operation is still in running status.
-     *
+     * 
      * @param percentComplete the percentComplete value to set.
      * @return the MicrosoftGraphOnenoteOperation object itself.
      */
@@ -91,7 +93,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
 
     /**
      * Get the resourceId property: The resource id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -100,7 +102,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
 
     /**
      * Set the resourceId property: The resource id.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the MicrosoftGraphOnenoteOperation object itself.
      */
@@ -112,7 +114,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
     /**
      * Get the resourceLocation property: The resource URI for the object. For example, the resource URI for a copied
      * page or section.
-     *
+     * 
      * @return the resourceLocation value.
      */
     public String resourceLocation() {
@@ -122,7 +124,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
     /**
      * Set the resourceLocation property: The resource URI for the object. For example, the resource URI for a copied
      * page or section.
-     *
+     * 
      * @param resourceLocation the resourceLocation value to set.
      * @return the MicrosoftGraphOnenoteOperation object itself.
      */
@@ -133,17 +135,16 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
 
     /**
      * Get the additionalProperties property: onenoteOperation.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: onenoteOperation.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOnenoteOperation object itself.
      */
@@ -152,36 +153,36 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOnenoteOperation withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOnenoteOperation withLastActionDateTime(OffsetDateTime lastActionDateTime) {
         super.withLastActionDateTime(lastActionDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOnenoteOperation withStatus(MicrosoftGraphOperationStatus status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOnenoteOperation withId(String id) {
         super.withId(id);
@@ -190,7 +191,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -199,5 +200,80 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeStringField("lastActionDateTime",
+            lastActionDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastActionDateTime()));
+        jsonWriter.writeStringField("status", status() == null ? null : status().toString());
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("percentComplete", this.percentComplete);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOnenoteOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOnenoteOperation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOnenoteOperation.
+     */
+    public static MicrosoftGraphOnenoteOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOnenoteOperation deserializedMicrosoftGraphOnenoteOperation
+                = new MicrosoftGraphOnenoteOperation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteOperation.withId(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteOperation.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastActionDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteOperation.withLastActionDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("status".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteOperation
+                        .withStatus(MicrosoftGraphOperationStatus.fromString(reader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteOperation.error
+                        = MicrosoftGraphOnenoteOperationError.fromJson(reader);
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteOperation.percentComplete = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteOperation.resourceId = reader.getString();
+                } else if ("resourceLocation".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteOperation.resourceLocation = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOnenoteOperation.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOnenoteOperation;
+        });
     }
 }

@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties specific to applied scope type. Not required if not applicable. */
+/**
+ * Properties specific to applied scope type. Not required if not applicable.
+ */
 @Fluent
-public final class AppliedScopeProperties {
+public final class AppliedScopeProperties implements JsonSerializable<AppliedScopeProperties> {
     /*
      * Tenant ID where the benefit is applied.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * Fully-qualified identifier of the management group where the benefit must be applied.
      */
-    @JsonProperty(value = "managementGroupId")
     private String managementGroupId;
 
     /*
      * Fully-qualified identifier of the subscription.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * Fully-qualified identifier of the resource group.
      */
-    @JsonProperty(value = "resourceGroupId")
     private String resourceGroupId;
 
     /*
      * Display name
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of AppliedScopeProperties class. */
+    /**
+     * Creates an instance of AppliedScopeProperties class.
+     */
     public AppliedScopeProperties() {
     }
 
     /**
      * Get the tenantId property: Tenant ID where the benefit is applied.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -55,7 +58,7 @@ public final class AppliedScopeProperties {
 
     /**
      * Set the tenantId property: Tenant ID where the benefit is applied.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AppliedScopeProperties object itself.
      */
@@ -67,7 +70,7 @@ public final class AppliedScopeProperties {
     /**
      * Get the managementGroupId property: Fully-qualified identifier of the management group where the benefit must be
      * applied.
-     *
+     * 
      * @return the managementGroupId value.
      */
     public String managementGroupId() {
@@ -77,7 +80,7 @@ public final class AppliedScopeProperties {
     /**
      * Set the managementGroupId property: Fully-qualified identifier of the management group where the benefit must be
      * applied.
-     *
+     * 
      * @param managementGroupId the managementGroupId value to set.
      * @return the AppliedScopeProperties object itself.
      */
@@ -88,7 +91,7 @@ public final class AppliedScopeProperties {
 
     /**
      * Get the subscriptionId property: Fully-qualified identifier of the subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -97,7 +100,7 @@ public final class AppliedScopeProperties {
 
     /**
      * Set the subscriptionId property: Fully-qualified identifier of the subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the AppliedScopeProperties object itself.
      */
@@ -108,7 +111,7 @@ public final class AppliedScopeProperties {
 
     /**
      * Get the resourceGroupId property: Fully-qualified identifier of the resource group.
-     *
+     * 
      * @return the resourceGroupId value.
      */
     public String resourceGroupId() {
@@ -117,7 +120,7 @@ public final class AppliedScopeProperties {
 
     /**
      * Set the resourceGroupId property: Fully-qualified identifier of the resource group.
-     *
+     * 
      * @param resourceGroupId the resourceGroupId value to set.
      * @return the AppliedScopeProperties object itself.
      */
@@ -128,7 +131,7 @@ public final class AppliedScopeProperties {
 
     /**
      * Get the displayName property: Display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -137,7 +140,7 @@ public final class AppliedScopeProperties {
 
     /**
      * Set the displayName property: Display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AppliedScopeProperties object itself.
      */
@@ -148,9 +151,57 @@ public final class AppliedScopeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("managementGroupId", this.managementGroupId);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("resourceGroupId", this.resourceGroupId);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppliedScopeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppliedScopeProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppliedScopeProperties.
+     */
+    public static AppliedScopeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppliedScopeProperties deserializedAppliedScopeProperties = new AppliedScopeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedAppliedScopeProperties.tenantId = reader.getString();
+                } else if ("managementGroupId".equals(fieldName)) {
+                    deserializedAppliedScopeProperties.managementGroupId = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedAppliedScopeProperties.subscriptionId = reader.getString();
+                } else if ("resourceGroupId".equals(fieldName)) {
+                    deserializedAppliedScopeProperties.resourceGroupId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAppliedScopeProperties.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppliedScopeProperties;
+        });
     }
 }

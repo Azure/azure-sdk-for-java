@@ -22,8 +22,8 @@ public final class ProductFamilyImpl implements ProductFamily {
 
     private final com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager;
 
-    ProductFamilyImpl(
-        ProductFamilyInner innerObject, com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager) {
+    ProductFamilyImpl(ProductFamilyInner innerObject,
+        com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

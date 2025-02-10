@@ -5,77 +5,80 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.Encryption;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties of the namespace. */
+/**
+ * Properties of the namespace.
+ */
 @Fluent
-public final class SBNamespaceUpdateProperties {
+public final class SBNamespaceUpdateProperties implements JsonSerializable<SBNamespaceUpdateProperties> {
     /*
      * Provisioning state of the namespace.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Status of the namespace.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * The time the namespace was created
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
     /*
      * The time the namespace was updated.
      */
-    @JsonProperty(value = "updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedAt;
 
     /*
      * Endpoint you can use to perform Service Bus operations.
      */
-    @JsonProperty(value = "serviceBusEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceBusEndpoint;
 
     /*
      * Identifier for Azure Insights metrics
      */
-    @JsonProperty(value = "metricId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricId;
 
     /*
      * Properties of BYOK Encryption description
      */
-    @JsonProperty(value = "encryption")
     private Encryption encryption;
 
     /*
      * List of private endpoint connections.
      */
-    @JsonProperty(value = "privateEndpointConnections")
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * This property disables SAS authentication for the Service Bus namespace.
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
      * Alternate name for namespace
      */
-    @JsonProperty(value = "alternateName")
     private String alternateName;
 
     /**
+     * Creates an instance of SBNamespaceUpdateProperties class.
+     */
+    public SBNamespaceUpdateProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the namespace.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -84,7 +87,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Get the status property: Status of the namespace.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -93,7 +96,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Get the createdAt property: The time the namespace was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -102,7 +105,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Get the updatedAt property: The time the namespace was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -111,7 +114,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
-     *
+     * 
      * @return the serviceBusEndpoint value.
      */
     public String serviceBusEndpoint() {
@@ -120,7 +123,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Get the metricId property: Identifier for Azure Insights metrics.
-     *
+     * 
      * @return the metricId value.
      */
     public String metricId() {
@@ -129,7 +132,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Get the encryption property: Properties of BYOK Encryption description.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -138,7 +141,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Set the encryption property: Properties of BYOK Encryption description.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the SBNamespaceUpdateProperties object itself.
      */
@@ -149,7 +152,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -158,19 +161,19 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Set the privateEndpointConnections property: List of private endpoint connections.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the SBNamespaceUpdateProperties object itself.
      */
-    public SBNamespaceUpdateProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public SBNamespaceUpdateProperties
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
 
     /**
      * Get the disableLocalAuth property: This property disables SAS authentication for the Service Bus namespace.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -179,7 +182,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Set the disableLocalAuth property: This property disables SAS authentication for the Service Bus namespace.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the SBNamespaceUpdateProperties object itself.
      */
@@ -190,7 +193,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Get the alternateName property: Alternate name for namespace.
-     *
+     * 
      * @return the alternateName value.
      */
     public String alternateName() {
@@ -199,7 +202,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Set the alternateName property: Alternate name for namespace.
-     *
+     * 
      * @param alternateName the alternateName value to set.
      * @return the SBNamespaceUpdateProperties object itself.
      */
@@ -210,7 +213,7 @@ public final class SBNamespaceUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -220,5 +223,68 @@ public final class SBNamespaceUpdateProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeArrayField("privateEndpointConnections", this.privateEndpointConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeStringField("alternateName", this.alternateName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBNamespaceUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBNamespaceUpdateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SBNamespaceUpdateProperties.
+     */
+    public static SBNamespaceUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBNamespaceUpdateProperties deserializedSBNamespaceUpdateProperties = new SBNamespaceUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedSBNamespaceUpdateProperties.provisioningState = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedSBNamespaceUpdateProperties.status = reader.getString();
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedSBNamespaceUpdateProperties.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedAt".equals(fieldName)) {
+                    deserializedSBNamespaceUpdateProperties.updatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("serviceBusEndpoint".equals(fieldName)) {
+                    deserializedSBNamespaceUpdateProperties.serviceBusEndpoint = reader.getString();
+                } else if ("metricId".equals(fieldName)) {
+                    deserializedSBNamespaceUpdateProperties.metricId = reader.getString();
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedSBNamespaceUpdateProperties.encryption = Encryption.fromJson(reader);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedSBNamespaceUpdateProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedSBNamespaceUpdateProperties.disableLocalAuth
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("alternateName".equals(fieldName)) {
+                    deserializedSBNamespaceUpdateProperties.alternateName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBNamespaceUpdateProperties;
+        });
     }
 }

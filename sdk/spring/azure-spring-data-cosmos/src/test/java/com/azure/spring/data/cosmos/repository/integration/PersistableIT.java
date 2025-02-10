@@ -7,6 +7,7 @@ import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.PersistableEntity;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosConflictException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PersistableEntityRepository;
 import com.azure.spring.data.cosmos.repository.repository.ReactivePersistableEntityRepository;
@@ -45,6 +46,7 @@ public class PersistableIT {
     @Autowired
     private CosmosTemplate template;
 
+    @SuppressWarnings("deprecation")
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -91,7 +93,7 @@ public class PersistableIT {
 
         final Mono<PersistableEntity> saveSecond = reactiveRepository.save(entity);
         StepVerifier.create(saveSecond)
-            .expectErrorMatches(ex -> ex instanceof CosmosAccessException && ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.CONFLICT_STATUS_CODE)
+            .expectErrorMatches(ex -> ex instanceof CosmosConflictException && ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.CONFLICT_STATUS_CODE)
             .verify();
     }
 

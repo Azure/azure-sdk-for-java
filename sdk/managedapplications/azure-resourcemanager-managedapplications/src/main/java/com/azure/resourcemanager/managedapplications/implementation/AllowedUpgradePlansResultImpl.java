@@ -15,8 +15,7 @@ public final class AllowedUpgradePlansResultImpl implements AllowedUpgradePlansR
 
     private final com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager;
 
-    AllowedUpgradePlansResultImpl(
-        AllowedUpgradePlansResultInner innerObject,
+    AllowedUpgradePlansResultImpl(AllowedUpgradePlansResultInner innerObject,
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

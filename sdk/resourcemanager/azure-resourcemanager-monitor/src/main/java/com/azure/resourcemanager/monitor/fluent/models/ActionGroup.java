@@ -6,6 +6,10 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.ArmRoleReceiver;
 import com.azure.resourcemanager.monitor.models.AutomationRunbookReceiver;
 import com.azure.resourcemanager.monitor.models.AzureAppPushReceiver;
@@ -17,99 +21,90 @@ import com.azure.resourcemanager.monitor.models.LogicAppReceiver;
 import com.azure.resourcemanager.monitor.models.SmsReceiver;
 import com.azure.resourcemanager.monitor.models.VoiceReceiver;
 import com.azure.resourcemanager.monitor.models.WebhookReceiver;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** An Azure action group. */
+/**
+ * An Azure action group.
+ */
 @Fluent
-public final class ActionGroup {
+public final class ActionGroup implements JsonSerializable<ActionGroup> {
     /*
      * The short name of the action group. This will be used in SMS messages.
      */
-    @JsonProperty(value = "groupShortName", required = true)
     private String groupShortName;
 
     /*
      * Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers
      * will receive communications.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * The list of email receivers that are part of this action group.
      */
-    @JsonProperty(value = "emailReceivers")
     private List<EmailReceiver> emailReceivers;
 
     /*
      * The list of SMS receivers that are part of this action group.
      */
-    @JsonProperty(value = "smsReceivers")
     private List<SmsReceiver> smsReceivers;
 
     /*
      * The list of webhook receivers that are part of this action group.
      */
-    @JsonProperty(value = "webhookReceivers")
     private List<WebhookReceiver> webhookReceivers;
 
     /*
      * The list of ITSM receivers that are part of this action group.
      */
-    @JsonProperty(value = "itsmReceivers")
     private List<ItsmReceiver> itsmReceivers;
 
     /*
      * The list of AzureAppPush receivers that are part of this action group.
      */
-    @JsonProperty(value = "azureAppPushReceivers")
     private List<AzureAppPushReceiver> azureAppPushReceivers;
 
     /*
      * The list of AutomationRunbook receivers that are part of this action group.
      */
-    @JsonProperty(value = "automationRunbookReceivers")
     private List<AutomationRunbookReceiver> automationRunbookReceivers;
 
     /*
      * The list of voice receivers that are part of this action group.
      */
-    @JsonProperty(value = "voiceReceivers")
     private List<VoiceReceiver> voiceReceivers;
 
     /*
      * The list of logic app receivers that are part of this action group.
      */
-    @JsonProperty(value = "logicAppReceivers")
     private List<LogicAppReceiver> logicAppReceivers;
 
     /*
      * The list of azure function receivers that are part of this action group.
      */
-    @JsonProperty(value = "azureFunctionReceivers")
     private List<AzureFunctionReceiver> azureFunctionReceivers;
 
     /*
      * The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in
      * roles are supported.
      */
-    @JsonProperty(value = "armRoleReceivers")
     private List<ArmRoleReceiver> armRoleReceivers;
 
     /*
      * The list of event hub receivers that are part of this action group.
      */
-    @JsonProperty(value = "eventHubReceivers")
     private List<EventHubReceiver> eventHubReceivers;
 
-    /** Creates an instance of ActionGroup class. */
+    /**
+     * Creates an instance of ActionGroup class.
+     */
     public ActionGroup() {
     }
 
     /**
      * Get the groupShortName property: The short name of the action group. This will be used in SMS messages.
-     *
+     * 
      * @return the groupShortName value.
      */
     public String groupShortName() {
@@ -118,7 +113,7 @@ public final class ActionGroup {
 
     /**
      * Set the groupShortName property: The short name of the action group. This will be used in SMS messages.
-     *
+     * 
      * @param groupShortName the groupShortName value to set.
      * @return the ActionGroup object itself.
      */
@@ -130,7 +125,7 @@ public final class ActionGroup {
     /**
      * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
      * none of its receivers will receive communications.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -140,7 +135,7 @@ public final class ActionGroup {
     /**
      * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
      * none of its receivers will receive communications.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ActionGroup object itself.
      */
@@ -151,7 +146,7 @@ public final class ActionGroup {
 
     /**
      * Get the emailReceivers property: The list of email receivers that are part of this action group.
-     *
+     * 
      * @return the emailReceivers value.
      */
     public List<EmailReceiver> emailReceivers() {
@@ -160,7 +155,7 @@ public final class ActionGroup {
 
     /**
      * Set the emailReceivers property: The list of email receivers that are part of this action group.
-     *
+     * 
      * @param emailReceivers the emailReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -171,7 +166,7 @@ public final class ActionGroup {
 
     /**
      * Get the smsReceivers property: The list of SMS receivers that are part of this action group.
-     *
+     * 
      * @return the smsReceivers value.
      */
     public List<SmsReceiver> smsReceivers() {
@@ -180,7 +175,7 @@ public final class ActionGroup {
 
     /**
      * Set the smsReceivers property: The list of SMS receivers that are part of this action group.
-     *
+     * 
      * @param smsReceivers the smsReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -191,7 +186,7 @@ public final class ActionGroup {
 
     /**
      * Get the webhookReceivers property: The list of webhook receivers that are part of this action group.
-     *
+     * 
      * @return the webhookReceivers value.
      */
     public List<WebhookReceiver> webhookReceivers() {
@@ -200,7 +195,7 @@ public final class ActionGroup {
 
     /**
      * Set the webhookReceivers property: The list of webhook receivers that are part of this action group.
-     *
+     * 
      * @param webhookReceivers the webhookReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -211,7 +206,7 @@ public final class ActionGroup {
 
     /**
      * Get the itsmReceivers property: The list of ITSM receivers that are part of this action group.
-     *
+     * 
      * @return the itsmReceivers value.
      */
     public List<ItsmReceiver> itsmReceivers() {
@@ -220,7 +215,7 @@ public final class ActionGroup {
 
     /**
      * Set the itsmReceivers property: The list of ITSM receivers that are part of this action group.
-     *
+     * 
      * @param itsmReceivers the itsmReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -231,7 +226,7 @@ public final class ActionGroup {
 
     /**
      * Get the azureAppPushReceivers property: The list of AzureAppPush receivers that are part of this action group.
-     *
+     * 
      * @return the azureAppPushReceivers value.
      */
     public List<AzureAppPushReceiver> azureAppPushReceivers() {
@@ -240,7 +235,7 @@ public final class ActionGroup {
 
     /**
      * Set the azureAppPushReceivers property: The list of AzureAppPush receivers that are part of this action group.
-     *
+     * 
      * @param azureAppPushReceivers the azureAppPushReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -252,7 +247,7 @@ public final class ActionGroup {
     /**
      * Get the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
      * group.
-     *
+     * 
      * @return the automationRunbookReceivers value.
      */
     public List<AutomationRunbookReceiver> automationRunbookReceivers() {
@@ -262,7 +257,7 @@ public final class ActionGroup {
     /**
      * Set the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
      * group.
-     *
+     * 
      * @param automationRunbookReceivers the automationRunbookReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -273,7 +268,7 @@ public final class ActionGroup {
 
     /**
      * Get the voiceReceivers property: The list of voice receivers that are part of this action group.
-     *
+     * 
      * @return the voiceReceivers value.
      */
     public List<VoiceReceiver> voiceReceivers() {
@@ -282,7 +277,7 @@ public final class ActionGroup {
 
     /**
      * Set the voiceReceivers property: The list of voice receivers that are part of this action group.
-     *
+     * 
      * @param voiceReceivers the voiceReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -293,7 +288,7 @@ public final class ActionGroup {
 
     /**
      * Get the logicAppReceivers property: The list of logic app receivers that are part of this action group.
-     *
+     * 
      * @return the logicAppReceivers value.
      */
     public List<LogicAppReceiver> logicAppReceivers() {
@@ -302,7 +297,7 @@ public final class ActionGroup {
 
     /**
      * Set the logicAppReceivers property: The list of logic app receivers that are part of this action group.
-     *
+     * 
      * @param logicAppReceivers the logicAppReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -313,7 +308,7 @@ public final class ActionGroup {
 
     /**
      * Get the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
-     *
+     * 
      * @return the azureFunctionReceivers value.
      */
     public List<AzureFunctionReceiver> azureFunctionReceivers() {
@@ -322,7 +317,7 @@ public final class ActionGroup {
 
     /**
      * Set the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
-     *
+     * 
      * @param azureFunctionReceivers the azureFunctionReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -334,7 +329,7 @@ public final class ActionGroup {
     /**
      * Get the armRoleReceivers property: The list of ARM role receivers that are part of this action group. Roles are
      * Azure RBAC roles and only built-in roles are supported.
-     *
+     * 
      * @return the armRoleReceivers value.
      */
     public List<ArmRoleReceiver> armRoleReceivers() {
@@ -344,7 +339,7 @@ public final class ActionGroup {
     /**
      * Set the armRoleReceivers property: The list of ARM role receivers that are part of this action group. Roles are
      * Azure RBAC roles and only built-in roles are supported.
-     *
+     * 
      * @param armRoleReceivers the armRoleReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -355,7 +350,7 @@ public final class ActionGroup {
 
     /**
      * Get the eventHubReceivers property: The list of event hub receivers that are part of this action group.
-     *
+     * 
      * @return the eventHubReceivers value.
      */
     public List<EventHubReceiver> eventHubReceivers() {
@@ -364,7 +359,7 @@ public final class ActionGroup {
 
     /**
      * Set the eventHubReceivers property: The list of event hub receivers that are part of this action group.
-     *
+     * 
      * @param eventHubReceivers the eventHubReceivers value to set.
      * @return the ActionGroup object itself.
      */
@@ -375,14 +370,13 @@ public final class ActionGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (groupShortName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property groupShortName in model ActionGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property groupShortName in model ActionGroup"));
         }
         if (emailReceivers() != null) {
             emailReceivers().forEach(e -> e.validate());
@@ -420,4 +414,104 @@ public final class ActionGroup {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ActionGroup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("groupShortName", this.groupShortName);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeArrayField("emailReceivers", this.emailReceivers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("smsReceivers", this.smsReceivers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("webhookReceivers", this.webhookReceivers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("itsmReceivers", this.itsmReceivers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("azureAppPushReceivers", this.azureAppPushReceivers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("automationRunbookReceivers", this.automationRunbookReceivers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("voiceReceivers", this.voiceReceivers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("logicAppReceivers", this.logicAppReceivers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("azureFunctionReceivers", this.azureFunctionReceivers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("armRoleReceivers", this.armRoleReceivers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("eventHubReceivers", this.eventHubReceivers,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionGroup if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActionGroup.
+     */
+    public static ActionGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionGroup deserializedActionGroup = new ActionGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupShortName".equals(fieldName)) {
+                    deserializedActionGroup.groupShortName = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedActionGroup.enabled = reader.getBoolean();
+                } else if ("emailReceivers".equals(fieldName)) {
+                    List<EmailReceiver> emailReceivers = reader.readArray(reader1 -> EmailReceiver.fromJson(reader1));
+                    deserializedActionGroup.emailReceivers = emailReceivers;
+                } else if ("smsReceivers".equals(fieldName)) {
+                    List<SmsReceiver> smsReceivers = reader.readArray(reader1 -> SmsReceiver.fromJson(reader1));
+                    deserializedActionGroup.smsReceivers = smsReceivers;
+                } else if ("webhookReceivers".equals(fieldName)) {
+                    List<WebhookReceiver> webhookReceivers
+                        = reader.readArray(reader1 -> WebhookReceiver.fromJson(reader1));
+                    deserializedActionGroup.webhookReceivers = webhookReceivers;
+                } else if ("itsmReceivers".equals(fieldName)) {
+                    List<ItsmReceiver> itsmReceivers = reader.readArray(reader1 -> ItsmReceiver.fromJson(reader1));
+                    deserializedActionGroup.itsmReceivers = itsmReceivers;
+                } else if ("azureAppPushReceivers".equals(fieldName)) {
+                    List<AzureAppPushReceiver> azureAppPushReceivers
+                        = reader.readArray(reader1 -> AzureAppPushReceiver.fromJson(reader1));
+                    deserializedActionGroup.azureAppPushReceivers = azureAppPushReceivers;
+                } else if ("automationRunbookReceivers".equals(fieldName)) {
+                    List<AutomationRunbookReceiver> automationRunbookReceivers
+                        = reader.readArray(reader1 -> AutomationRunbookReceiver.fromJson(reader1));
+                    deserializedActionGroup.automationRunbookReceivers = automationRunbookReceivers;
+                } else if ("voiceReceivers".equals(fieldName)) {
+                    List<VoiceReceiver> voiceReceivers = reader.readArray(reader1 -> VoiceReceiver.fromJson(reader1));
+                    deserializedActionGroup.voiceReceivers = voiceReceivers;
+                } else if ("logicAppReceivers".equals(fieldName)) {
+                    List<LogicAppReceiver> logicAppReceivers
+                        = reader.readArray(reader1 -> LogicAppReceiver.fromJson(reader1));
+                    deserializedActionGroup.logicAppReceivers = logicAppReceivers;
+                } else if ("azureFunctionReceivers".equals(fieldName)) {
+                    List<AzureFunctionReceiver> azureFunctionReceivers
+                        = reader.readArray(reader1 -> AzureFunctionReceiver.fromJson(reader1));
+                    deserializedActionGroup.azureFunctionReceivers = azureFunctionReceivers;
+                } else if ("armRoleReceivers".equals(fieldName)) {
+                    List<ArmRoleReceiver> armRoleReceivers
+                        = reader.readArray(reader1 -> ArmRoleReceiver.fromJson(reader1));
+                    deserializedActionGroup.armRoleReceivers = armRoleReceivers;
+                } else if ("eventHubReceivers".equals(fieldName)) {
+                    List<EventHubReceiver> eventHubReceivers
+                        = reader.readArray(reader1 -> EventHubReceiver.fromJson(reader1));
+                    deserializedActionGroup.eventHubReceivers = eventHubReceivers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionGroup;
+        });
+    }
 }

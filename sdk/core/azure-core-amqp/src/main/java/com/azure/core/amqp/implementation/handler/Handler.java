@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.EndpointState;
@@ -21,10 +22,11 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextW
  */
 public abstract class Handler extends BaseHandler implements Closeable {
     // The flux streaming state of the amqp endpoint (connection, session, link) from this handler receives events.
-    private final Sinks.Many<EndpointState> endpointStates = Sinks.many().replay()
-        .latestOrDefault(EndpointState.UNINITIALIZED);
+    private final Sinks.Many<EndpointState> endpointStates
+        = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
     // The flag indicating if the endpointStates Flux reached terminal state (error-ed or completed).
     private final AtomicBoolean isTerminal = new AtomicBoolean();
+    private final String id;
     private final String connectionId;
     private final String hostname;
 
@@ -41,9 +43,19 @@ public abstract class Handler extends BaseHandler implements Closeable {
      * @throws NullPointerException if {@code connectionId} or {@code hostname} is null.
      */
     Handler(final String connectionId, final String hostname) {
+        this.id = StringUtil.getRandomString("H");
         this.connectionId = Objects.requireNonNull(connectionId, "'connectionId' cannot be null.");
         this.hostname = Objects.requireNonNull(hostname, "'hostname' cannot be null.");
         this.logger = new ClientLogger(getClass(), createContextWithConnectionId(connectionId));
+    }
+
+    /**
+     * Gets the id of the handler.
+     *
+     * @return The handler id.
+     */
+    public String getId() {
+        return id;
     }
 
     /**
@@ -108,7 +120,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
      *
      * @param error The error to emit.
      */
-    void onError(Throwable error) {
+    public void onError(Throwable error) {
         if (isTerminal.getAndSet(true)) {
             return;
         }
@@ -120,8 +132,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
 
                 return true;
             } else {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                    .log("Could not emit error.", error);
+                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult).log("Could not emit error.", error);
 
                 return false;
             }
@@ -161,8 +172,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
 
                 return true;
             } else {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                    .log("Could not emit complete.");
+                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult).log("Could not emit complete.");
 
                 return false;
             }

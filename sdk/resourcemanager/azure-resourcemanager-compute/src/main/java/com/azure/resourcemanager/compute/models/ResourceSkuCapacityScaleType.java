@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The scale type applicable to the sku.
  */
@@ -41,7 +38,6 @@ public enum ResourceSkuCapacityScaleType {
      * @param value the serialized value to parse.
      * @return the parsed ResourceSkuCapacityScaleType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourceSkuCapacityScaleType fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum ResourceSkuCapacityScaleType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

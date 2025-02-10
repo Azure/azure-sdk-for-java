@@ -14,16 +14,16 @@ public final class SnapshotsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotsList model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"ph\",\"properties\":{\"snapshotId\":\"xodlqiyntorzih\",\"created\":\"2021-04-08T02:51:20Z\",\"provisioningState\":\"jswsrmslyz\"},\"id\":\"zbchckqqzqioxiy\",\"name\":\"uiizynke\",\"type\":\"yatrwy\"},{\"location\":\"q\",\"properties\":{\"snapshotId\":\"zyh\",\"created\":\"2021-05-20T17:58:30Z\",\"provisioningState\":\"mypyynpcdpu\"},\"id\":\"zgmwznmabikns\",\"name\":\"rgjhxb\",\"type\":\"dtlwwrlkd\"},{\"location\":\"tncvokot\",\"properties\":{\"snapshotId\":\"d\",\"created\":\"2021-07-23T09:43:53Z\",\"provisioningState\":\"y\"},\"id\":\"ogjltdtbnnhad\",\"name\":\"ocrkvcikh\",\"type\":\"vpa\"}]}")
+            "{\"value\":[{\"location\":\"eddgssofw\",\"properties\":{\"snapshotId\":\"qal\",\"created\":\"2021-10-24T21:45:29Z\",\"provisioningState\":\"jijpxac\"},\"id\":\"udfnbyxba\",\"name\":\"abjy\",\"type\":\"ayffim\"},{\"location\":\"zrtuzq\",\"properties\":{\"snapshotId\":\"exn\",\"created\":\"2021-10-08T20:33:25Z\",\"provisioningState\":\"nwnwme\"},\"id\":\"syyceuzsoibjud\",\"name\":\"frxtrthzvaytdwk\",\"type\":\"brqubp\"},{\"location\":\"xhexiilivpdti\",\"properties\":{\"snapshotId\":\"tdqoaxoruzfgsq\",\"created\":\"2021-04-24T02:41:36Z\",\"provisioningState\":\"rxxle\"},\"id\":\"ramxjezwlwnw\",\"name\":\"uqlcvydy\",\"type\":\"atdooaojkniod\"}]}")
             .toObject(SnapshotsList.class);
-        Assertions.assertEquals("ph", model.value().get(0).location());
+        Assertions.assertEquals("eddgssofw", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnapshotsList model = new SnapshotsList().withValue(Arrays.asList(new SnapshotInner().withLocation("ph"),
-            new SnapshotInner().withLocation("q"), new SnapshotInner().withLocation("tncvokot")));
+        SnapshotsList model = new SnapshotsList().withValue(Arrays.asList(new SnapshotInner().withLocation("eddgssofw"),
+            new SnapshotInner().withLocation("zrtuzq"), new SnapshotInner().withLocation("xhexiilivpdti")));
         model = BinaryData.fromObject(model).toObject(SnapshotsList.class);
-        Assertions.assertEquals("ph", model.value().get(0).location());
+        Assertions.assertEquals("eddgssofw", model.value().get(0).location());
     }
 }

@@ -14,38 +14,32 @@ import org.junit.jupiter.api.Assertions;
 public final class GenericContainerExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenericContainerExtendedInfo model =
-            BinaryData
-                .fromString(
-                    "{\"rawCertData\":\"iexhajl\",\"containerIdentityInfo\":{\"uniqueName\":\"hiqfyuttdiy\",\"aadTenantId\":\"pvn\",\"servicePrincipalClientId\":\"wmtxkyctwwgz\",\"audience\":\"jlmec\"},\"serviceEndpoints\":{\"oqqtl\":\"ygzyvneezaifght\",\"jjjavfqnvhnq\":\"fhzbkr\"}}")
-                .toObject(GenericContainerExtendedInfo.class);
-        Assertions.assertEquals("iexhajl", model.rawCertData());
-        Assertions.assertEquals("hiqfyuttdiy", model.containerIdentityInfo().uniqueName());
-        Assertions.assertEquals("pvn", model.containerIdentityInfo().aadTenantId());
-        Assertions.assertEquals("wmtxkyctwwgz", model.containerIdentityInfo().servicePrincipalClientId());
-        Assertions.assertEquals("jlmec", model.containerIdentityInfo().audience());
-        Assertions.assertEquals("ygzyvneezaifght", model.serviceEndpoints().get("oqqtl"));
+        GenericContainerExtendedInfo model = BinaryData.fromString(
+            "{\"rawCertData\":\"mbltoo\",\"containerIdentityInfo\":{\"uniqueName\":\"fqlwxldykalsy\",\"aadTenantId\":\"olnjpnnbmjksibj\",\"servicePrincipalClientId\":\"jjxxahmrnadzyqe\",\"audience\":\"yi\"},\"serviceEndpoints\":{\"wbjijkgq\":\"nbm\",\"jauj\":\"nhmbkez\"}}")
+            .toObject(GenericContainerExtendedInfo.class);
+        Assertions.assertEquals("mbltoo", model.rawCertData());
+        Assertions.assertEquals("fqlwxldykalsy", model.containerIdentityInfo().uniqueName());
+        Assertions.assertEquals("olnjpnnbmjksibj", model.containerIdentityInfo().aadTenantId());
+        Assertions.assertEquals("jjxxahmrnadzyqe", model.containerIdentityInfo().servicePrincipalClientId());
+        Assertions.assertEquals("yi", model.containerIdentityInfo().audience());
+        Assertions.assertEquals("nbm", model.serviceEndpoints().get("wbjijkgq"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenericContainerExtendedInfo model =
-            new GenericContainerExtendedInfo()
-                .withRawCertData("iexhajl")
-                .withContainerIdentityInfo(
-                    new ContainerIdentityInfo()
-                        .withUniqueName("hiqfyuttdiy")
-                        .withAadTenantId("pvn")
-                        .withServicePrincipalClientId("wmtxkyctwwgz")
-                        .withAudience("jlmec"))
-                .withServiceEndpoints(mapOf("oqqtl", "ygzyvneezaifght", "jjjavfqnvhnq", "fhzbkr"));
+        GenericContainerExtendedInfo model = new GenericContainerExtendedInfo().withRawCertData("mbltoo")
+            .withContainerIdentityInfo(new ContainerIdentityInfo().withUniqueName("fqlwxldykalsy")
+                .withAadTenantId("olnjpnnbmjksibj")
+                .withServicePrincipalClientId("jjxxahmrnadzyqe")
+                .withAudience("yi"))
+            .withServiceEndpoints(mapOf("wbjijkgq", "nbm", "jauj", "nhmbkez"));
         model = BinaryData.fromObject(model).toObject(GenericContainerExtendedInfo.class);
-        Assertions.assertEquals("iexhajl", model.rawCertData());
-        Assertions.assertEquals("hiqfyuttdiy", model.containerIdentityInfo().uniqueName());
-        Assertions.assertEquals("pvn", model.containerIdentityInfo().aadTenantId());
-        Assertions.assertEquals("wmtxkyctwwgz", model.containerIdentityInfo().servicePrincipalClientId());
-        Assertions.assertEquals("jlmec", model.containerIdentityInfo().audience());
-        Assertions.assertEquals("ygzyvneezaifght", model.serviceEndpoints().get("oqqtl"));
+        Assertions.assertEquals("mbltoo", model.rawCertData());
+        Assertions.assertEquals("fqlwxldykalsy", model.containerIdentityInfo().uniqueName());
+        Assertions.assertEquals("olnjpnnbmjksibj", model.containerIdentityInfo().aadTenantId());
+        Assertions.assertEquals("jjxxahmrnadzyqe", model.containerIdentityInfo().servicePrincipalClientId());
+        Assertions.assertEquals("yi", model.containerIdentityInfo().audience());
+        Assertions.assertEquals("nbm", model.serviceEndpoints().get("wbjijkgq"));
     }
 
     // Use "Map.of" if available

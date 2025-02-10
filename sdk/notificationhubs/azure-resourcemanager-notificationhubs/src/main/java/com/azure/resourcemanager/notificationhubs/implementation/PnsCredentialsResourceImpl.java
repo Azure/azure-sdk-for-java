@@ -21,8 +21,7 @@ public final class PnsCredentialsResourceImpl implements PnsCredentialsResource 
 
     private final com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager;
 
-    PnsCredentialsResourceImpl(
-        PnsCredentialsResourceInner innerObject,
+    PnsCredentialsResourceImpl(PnsCredentialsResourceInner innerObject,
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Object that represents a Service resource. */
+/**
+ * Object that represents a Service resource.
+ */
 @Fluent
-public final class ServiceInner {
+public final class ServiceInner implements JsonSerializable<ServiceInner> {
     /*
      * Id of the resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Name of the resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Type of the resource 'Microsoft.Support/services'.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Properties of the resource.
      */
-    @JsonProperty(value = "properties")
     private ServiceProperties innerProperties;
 
-    /** Creates an instance of ServiceInner class. */
+    /**
+     * Creates an instance of ServiceInner class.
+     */
     public ServiceInner() {
     }
 
     /**
      * Get the id property: Id of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class ServiceInner {
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +63,7 @@ public final class ServiceInner {
 
     /**
      * Get the type property: Type of the resource 'Microsoft.Support/services'.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -68,7 +72,7 @@ public final class ServiceInner {
 
     /**
      * Get the innerProperties property: Properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServiceProperties innerProperties() {
@@ -77,7 +81,7 @@ public final class ServiceInner {
 
     /**
      * Get the displayName property: Localized name of the Azure service.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -86,7 +90,7 @@ public final class ServiceInner {
 
     /**
      * Set the displayName property: Localized name of the Azure service.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ServiceInner object itself.
      */
@@ -100,7 +104,7 @@ public final class ServiceInner {
 
     /**
      * Get the resourceTypes property: ARM Resource types.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<String> resourceTypes() {
@@ -109,7 +113,7 @@ public final class ServiceInner {
 
     /**
      * Set the resourceTypes property: ARM Resource types.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the ServiceInner object itself.
      */
@@ -123,12 +127,54 @@ public final class ServiceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceInner.
+     */
+    public static ServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceInner deserializedServiceInner = new ServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceInner.innerProperties = ServiceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceInner;
+        });
     }
 }

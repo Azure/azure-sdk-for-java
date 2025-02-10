@@ -6,8 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetUpdateIpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,17 +19,16 @@ import java.util.List;
  * modified as long as the original subnet and the new subnet are in the same virtual network.
  */
 @Fluent
-public final class VirtualMachineScaleSetUpdateIpConfiguration {
+public final class VirtualMachineScaleSetUpdateIpConfiguration
+    implements JsonSerializable<VirtualMachineScaleSetUpdateIpConfiguration> {
     /*
      * The IP configuration name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Describes a virtual machine scale set network profile's IP configuration properties.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineScaleSetUpdateIpConfigurationProperties innerProperties;
 
     /**
@@ -266,5 +269,46 @@ public final class VirtualMachineScaleSetUpdateIpConfiguration {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetUpdateIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetUpdateIpConfiguration if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetUpdateIpConfiguration.
+     */
+    public static VirtualMachineScaleSetUpdateIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetUpdateIpConfiguration deserializedVirtualMachineScaleSetUpdateIpConfiguration
+                = new VirtualMachineScaleSetUpdateIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateIpConfiguration.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateIpConfiguration.innerProperties
+                        = VirtualMachineScaleSetUpdateIpConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetUpdateIpConfiguration;
+        });
     }
 }

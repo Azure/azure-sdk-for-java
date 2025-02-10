@@ -11,17 +11,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.sphere.fluent.models.CountDeviceResponseInner;
+import com.azure.resourcemanager.sphere.fluent.models.CountDevicesResponseInner;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupInner;
 import com.azure.resourcemanager.sphere.models.ClaimDevicesRequest;
 import com.azure.resourcemanager.sphere.models.DeviceGroupUpdate;
 
-/** An instance of this class provides access to all the operations defined in DeviceGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeviceGroupsClient.
+ */
 public interface DeviceGroupsClient {
     /**
      * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
      * for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -36,7 +38,7 @@ public interface DeviceGroupsClient {
     /**
      * List DeviceGroup resources by Product. '.default' and '.unassigned' are system defined values and cannot be used
      * for product name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -51,20 +53,13 @@ public interface DeviceGroupsClient {
      * @return the response of a DeviceGroup list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeviceGroupInner> listByProduct(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context);
+    PagedIterable<DeviceGroupInner> listByProduct(String resourceGroupName, String catalogName, String productName,
+        String filter, Integer top, Integer skip, Integer maxpagesize, Context context);
 
     /**
      * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -76,13 +71,13 @@ public interface DeviceGroupsClient {
      * @return a DeviceGroup along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeviceGroupInner> getWithResponse(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context);
+    Response<DeviceGroupInner> getWithResponse(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, Context context);
 
     /**
      * Get a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -98,7 +93,7 @@ public interface DeviceGroupsClient {
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -110,17 +105,13 @@ public interface DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource);
+    SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, DeviceGroupInner resource);
 
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -133,18 +124,13 @@ public interface DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource,
-        Context context);
+    SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String catalogName, String productName, String deviceGroupName, DeviceGroupInner resource, Context context);
 
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -156,17 +142,13 @@ public interface DeviceGroupsClient {
      * @return an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeviceGroupInner createOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource);
+    DeviceGroupInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, DeviceGroupInner resource);
 
     /**
      * Create a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -179,18 +161,13 @@ public interface DeviceGroupsClient {
      * @return an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeviceGroupInner createOrUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupInner resource,
-        Context context);
+    DeviceGroupInner createOrUpdate(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, DeviceGroupInner resource, Context context);
 
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -202,63 +179,50 @@ public interface DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdate(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, DeviceGroupUpdate properties);
+
+    /**
+     * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
+     * device group name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param catalogName Name of catalog.
+     * @param productName Name of product.
+     * @param deviceGroupName Name of device group.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an device group resource belonging to a product resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdate(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, DeviceGroupUpdate properties, Context context);
+
+    /**
+     * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
+     * device group name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param catalogName Name of catalog.
+     * @param productName Name of product.
+     * @param deviceGroupName Name of device group.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an device group resource belonging to a product resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeviceGroupInner update(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         DeviceGroupUpdate properties);
 
     /**
      * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an device group resource belonging to a product resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeviceGroupInner>, DeviceGroupInner> beginUpdate(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties,
-        Context context);
-
-    /**
-     * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param catalogName Name of catalog.
-     * @param productName Name of product.
-     * @param deviceGroupName Name of device group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an device group resource belonging to a product resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeviceGroupInner update(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties);
-
-    /**
-     * Update a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
-     * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -271,18 +235,13 @@ public interface DeviceGroupsClient {
      * @return an device group resource belonging to a product resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeviceGroupInner update(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        DeviceGroupUpdate properties,
-        Context context);
+    DeviceGroupInner update(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        DeviceGroupUpdate properties, Context context);
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -293,13 +252,13 @@ public interface DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName);
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -311,13 +270,13 @@ public interface DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, Context context);
 
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -332,7 +291,7 @@ public interface DeviceGroupsClient {
     /**
      * Delete a DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used for product or
      * device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -343,13 +302,13 @@ public interface DeviceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context);
+    void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        Context context);
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -361,17 +320,13 @@ public interface DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginClaimDevices(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest);
+    SyncPoller<PollResult<Void>, Void> beginClaimDevices(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest);
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -384,18 +339,13 @@ public interface DeviceGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginClaimDevices(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginClaimDevices(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, ClaimDevicesRequest claimDevicesRequest, Context context);
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -406,17 +356,13 @@ public interface DeviceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void claimDevices(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
+    void claimDevices(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         ClaimDevicesRequest claimDevicesRequest);
 
     /**
      * Bulk claims the devices. Use '.unassigned' or '.default' for the device group and product names when bulk
      * claiming devices to a catalog only.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -428,18 +374,13 @@ public interface DeviceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void claimDevices(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        ClaimDevicesRequest claimDevicesRequest,
-        Context context);
+    void claimDevices(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        ClaimDevicesRequest claimDevicesRequest, Context context);
 
     /**
      * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
      * product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -451,13 +392,13 @@ public interface DeviceGroupsClient {
      * @return response to the action call for count devices in a catalog along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CountDeviceResponseInner> countDevicesWithResponse(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context);
+    Response<CountDevicesResponseInner> countDevicesWithResponse(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, Context context);
 
     /**
      * Counts devices in device group. '.default' and '.unassigned' are system defined values and cannot be used for
      * product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -468,6 +409,6 @@ public interface DeviceGroupsClient {
      * @return response to the action call for count devices in a catalog.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CountDeviceResponseInner countDevices(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName);
+    CountDevicesResponseInner countDevices(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName);
 }

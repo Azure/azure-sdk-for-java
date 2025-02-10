@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.iotfirmwaredefense.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Url data for creating or accessing a blob file. */
+/**
+ * Url data for creating or accessing a blob file.
+ */
 @Immutable
-public final class UrlTokenInner {
+public final class UrlTokenInner implements JsonSerializable<UrlTokenInner> {
     /*
      * SAS URL for creating or accessing a blob file.
      */
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
-    /*
-     * SAS URL for file uploading. Kept for backwards compatibility
+    /**
+     * Creates an instance of UrlTokenInner class.
      */
-    @JsonProperty(value = "uploadUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String uploadUrl;
-
-    /** Creates an instance of UrlTokenInner class. */
     public UrlTokenInner() {
     }
 
     /**
      * Get the url property: SAS URL for creating or accessing a blob file.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -36,19 +37,45 @@ public final class UrlTokenInner {
     }
 
     /**
-     * Get the uploadUrl property: SAS URL for file uploading. Kept for backwards compatibility.
-     *
-     * @return the uploadUrl value.
-     */
-    public String uploadUrl() {
-        return this.uploadUrl;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UrlTokenInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UrlTokenInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UrlTokenInner.
+     */
+    public static UrlTokenInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UrlTokenInner deserializedUrlTokenInner = new UrlTokenInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedUrlTokenInner.url = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUrlTokenInner;
+        });
     }
 }

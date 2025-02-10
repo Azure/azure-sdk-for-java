@@ -16,8 +16,8 @@ public final class CommunicationDetailsImpl implements CommunicationDetails, Com
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    CommunicationDetailsImpl(
-        CommunicationDetailsInner innerObject, com.azure.resourcemanager.support.SupportManager serviceManager) {
+    CommunicationDetailsImpl(CommunicationDetailsInner innerObject,
+        com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -76,20 +76,16 @@ public final class CommunicationDetailsImpl implements CommunicationDetails, Com
     }
 
     public CommunicationDetails create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommunications()
-                .create(supportTicketName, communicationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommunications()
+            .create(supportTicketName, communicationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CommunicationDetails create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommunications()
-                .create(supportTicketName, communicationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommunications()
+            .create(supportTicketName, communicationName, this.innerModel(), context);
         return this;
     }
 
@@ -100,27 +96,18 @@ public final class CommunicationDetailsImpl implements CommunicationDetails, Com
     }
 
     public CommunicationDetails refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommunications()
-                .getWithResponse(supportTicketName, communicationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCommunications()
+            .getWithResponse(supportTicketName, communicationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CommunicationDetails refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCommunications()
-                .getWithResponse(supportTicketName, communicationName, context)
-                .getValue();
-        return this;
-    }
-
-    public CommunicationDetailsImpl withSender(String sender) {
-        this.innerModel().withSender(sender);
+        this.innerObject = serviceManager.serviceClient()
+            .getCommunications()
+            .getWithResponse(supportTicketName, communicationName, context)
+            .getValue();
         return this;
     }
 
@@ -131,6 +118,11 @@ public final class CommunicationDetailsImpl implements CommunicationDetails, Com
 
     public CommunicationDetailsImpl withBody(String body) {
         this.innerModel().withBody(body);
+        return this;
+    }
+
+    public CommunicationDetailsImpl withSender(String sender) {
+        this.innerModel().withSender(sender);
         return this;
     }
 }

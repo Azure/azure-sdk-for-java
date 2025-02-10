@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Validate messages of the configuration service git repositories. */
+/**
+ * Validate messages of the configuration service git repositories.
+ */
 @Fluent
-public final class ValidationMessages {
+public final class ValidationMessages implements JsonSerializable<ValidationMessages> {
     /*
      * The name of the configuration service git repository.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Detailed validation messages.
      */
-    @JsonProperty(value = "messages")
     private List<String> messages;
 
     /**
+     * Creates an instance of ValidationMessages class.
+     */
+    public ValidationMessages() {
+    }
+
+    /**
      * Get the name property: The name of the configuration service git repository.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -34,7 +44,7 @@ public final class ValidationMessages {
 
     /**
      * Set the name property: The name of the configuration service git repository.
-     *
+     * 
      * @param name the name value to set.
      * @return the ValidationMessages object itself.
      */
@@ -45,7 +55,7 @@ public final class ValidationMessages {
 
     /**
      * Get the messages property: Detailed validation messages.
-     *
+     * 
      * @return the messages value.
      */
     public List<String> messages() {
@@ -54,7 +64,7 @@ public final class ValidationMessages {
 
     /**
      * Set the messages property: Detailed validation messages.
-     *
+     * 
      * @param messages the messages value to set.
      * @return the ValidationMessages object itself.
      */
@@ -65,9 +75,49 @@ public final class ValidationMessages {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationMessages from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationMessages if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidationMessages.
+     */
+    public static ValidationMessages fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationMessages deserializedValidationMessages = new ValidationMessages();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedValidationMessages.name = reader.getString();
+                } else if ("messages".equals(fieldName)) {
+                    List<String> messages = reader.readArray(reader1 -> reader1.getString());
+                    deserializedValidationMessages.messages = messages;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidationMessages;
+        });
     }
 }

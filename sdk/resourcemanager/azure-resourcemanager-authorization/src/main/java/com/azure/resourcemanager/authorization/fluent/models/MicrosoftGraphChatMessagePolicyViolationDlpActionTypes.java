@@ -5,29 +5,38 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** chatMessagePolicyViolationDlpActionTypes. */
+/**
+ * chatMessagePolicyViolationDlpActionTypes.
+ */
 public final class MicrosoftGraphChatMessagePolicyViolationDlpActionTypes
     extends ExpandableStringEnum<MicrosoftGraphChatMessagePolicyViolationDlpActionTypes> {
-    /** Static value none for MicrosoftGraphChatMessagePolicyViolationDlpActionTypes. */
+    /**
+     * Static value none for MicrosoftGraphChatMessagePolicyViolationDlpActionTypes.
+     */
     public static final MicrosoftGraphChatMessagePolicyViolationDlpActionTypes NONE = fromString("none");
 
-    /** Static value notifySender for MicrosoftGraphChatMessagePolicyViolationDlpActionTypes. */
-    public static final MicrosoftGraphChatMessagePolicyViolationDlpActionTypes NOTIFY_SENDER =
-        fromString("notifySender");
+    /**
+     * Static value notifySender for MicrosoftGraphChatMessagePolicyViolationDlpActionTypes.
+     */
+    public static final MicrosoftGraphChatMessagePolicyViolationDlpActionTypes NOTIFY_SENDER
+        = fromString("notifySender");
 
-    /** Static value blockAccess for MicrosoftGraphChatMessagePolicyViolationDlpActionTypes. */
+    /**
+     * Static value blockAccess for MicrosoftGraphChatMessagePolicyViolationDlpActionTypes.
+     */
     public static final MicrosoftGraphChatMessagePolicyViolationDlpActionTypes BLOCK_ACCESS = fromString("blockAccess");
 
-    /** Static value blockAccessExternal for MicrosoftGraphChatMessagePolicyViolationDlpActionTypes. */
-    public static final MicrosoftGraphChatMessagePolicyViolationDlpActionTypes BLOCK_ACCESS_EXTERNAL =
-        fromString("blockAccessExternal");
+    /**
+     * Static value blockAccessExternal for MicrosoftGraphChatMessagePolicyViolationDlpActionTypes.
+     */
+    public static final MicrosoftGraphChatMessagePolicyViolationDlpActionTypes BLOCK_ACCESS_EXTERNAL
+        = fromString("blockAccessExternal");
 
     /**
      * Creates a new instance of MicrosoftGraphChatMessagePolicyViolationDlpActionTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +45,17 @@ public final class MicrosoftGraphChatMessagePolicyViolationDlpActionTypes
 
     /**
      * Creates or finds a MicrosoftGraphChatMessagePolicyViolationDlpActionTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphChatMessagePolicyViolationDlpActionTypes.
      */
-    @JsonCreator
     public static MicrosoftGraphChatMessagePolicyViolationDlpActionTypes fromString(String name) {
         return fromString(name, MicrosoftGraphChatMessagePolicyViolationDlpActionTypes.class);
     }
 
     /**
      * Gets known MicrosoftGraphChatMessagePolicyViolationDlpActionTypes values.
-     *
+     * 
      * @return known MicrosoftGraphChatMessagePolicyViolationDlpActionTypes values.
      */
     public static Collection<MicrosoftGraphChatMessagePolicyViolationDlpActionTypes> values() {

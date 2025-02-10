@@ -4,31 +4,40 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Gets the resource from which current value of auto-execute status is inherited. Auto-execute status can be set on
  * (and inherited from) different levels in the resource hierarchy. Possible values are 'Subscription', 'Server',
  * 'ElasticPool', 'Database' and 'Default' (when status is not explicitly set on any level).
  */
 public enum AutoExecuteStatusInheritedFrom {
-    /** Enum value Default. */
+    /**
+     * Enum value Default.
+     */
     DEFAULT("Default"),
 
-    /** Enum value Subscription. */
+    /**
+     * Enum value Subscription.
+     */
     SUBSCRIPTION("Subscription"),
 
-    /** Enum value Server. */
+    /**
+     * Enum value Server.
+     */
     SERVER("Server"),
 
-    /** Enum value ElasticPool. */
+    /**
+     * Enum value ElasticPool.
+     */
     ELASTIC_POOL("ElasticPool"),
 
-    /** Enum value Database. */
+    /**
+     * Enum value Database.
+     */
     DATABASE("Database");
 
-    /** The actual serialized value for a AutoExecuteStatusInheritedFrom instance. */
+    /**
+     * The actual serialized value for a AutoExecuteStatusInheritedFrom instance.
+     */
     private final String value;
 
     AutoExecuteStatusInheritedFrom(String value) {
@@ -37,11 +46,10 @@ public enum AutoExecuteStatusInheritedFrom {
 
     /**
      * Parses a serialized value to a AutoExecuteStatusInheritedFrom instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AutoExecuteStatusInheritedFrom object, or null if unable to parse.
      */
-    @JsonCreator
     public static AutoExecuteStatusInheritedFrom fromString(String value) {
         if (value == null) {
             return null;
@@ -55,8 +63,9 @@ public enum AutoExecuteStatusInheritedFrom {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

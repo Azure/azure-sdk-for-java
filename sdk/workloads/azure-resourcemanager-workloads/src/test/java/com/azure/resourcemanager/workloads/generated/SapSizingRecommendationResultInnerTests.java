@@ -10,9 +10,8 @@ import com.azure.resourcemanager.workloads.fluent.models.SapSizingRecommendation
 public final class SapSizingRecommendationResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapSizingRecommendationResultInner model =
-            BinaryData
-                .fromString("{\"deploymentType\":\"SapSizingRecommendationResult\"}")
+        SapSizingRecommendationResultInner model
+            = BinaryData.fromString("{\"deploymentType\":\"SapSizingRecommendationResult\"}")
                 .toObject(SapSizingRecommendationResultInner.class);
     }
 

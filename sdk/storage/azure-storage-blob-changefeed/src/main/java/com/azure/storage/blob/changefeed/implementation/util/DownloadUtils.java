@@ -5,18 +5,18 @@ package com.azure.storage.blob.changefeed.implementation.util;
 
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Map;
 
 public class DownloadUtils {
 
     private static final ClientLogger LOGGER = new ClientLogger(DownloadUtils.class);
-    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * Reduces a Flux of ByteBuffer into a Mono of String
@@ -25,10 +25,9 @@ public class DownloadUtils {
         return FluxUtil.collectBytesInByteBufferStream(client.getBlobAsyncClient(blobPath).download());
     }
 
-    public static Mono<JsonNode> parseJson(byte[] json) {
-        try {
-            JsonNode jsonNode = MAPPER.reader().readTree(json);
-            return Mono.just(jsonNode);
+    public static Mono<Map<String, Object>> parseJson(byte[] json) {
+        try (JsonReader jsonReader = JsonProviders.createReader(json)) {
+            return Mono.just(jsonReader.readMap(JsonReader::readUntyped));
         } catch (IOException e) {
             return FluxUtil.monoError(LOGGER, new UncheckedIOException(e));
         }

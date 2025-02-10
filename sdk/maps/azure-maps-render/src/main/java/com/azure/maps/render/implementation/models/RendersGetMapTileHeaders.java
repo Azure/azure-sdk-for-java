@@ -5,20 +5,32 @@
 package com.azure.maps.render.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The RendersGetMapTileHeaders model. */
+/**
+ * The RendersGetMapTileHeaders model.
+ */
 @Fluent
 public final class RendersGetMapTileHeaders {
     /*
      * The Content-Type property.
      */
-    @JsonProperty(value = "Content-Type")
     private String contentType;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of RendersGetMapTileHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public RendersGetMapTileHeaders(HttpHeaders rawHeaders) {
+        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+    }
 
     /**
      * Get the contentType property: The Content-Type property.
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -27,7 +39,7 @@ public final class RendersGetMapTileHeaders {
 
     /**
      * Set the contentType property: The Content-Type property.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the RendersGetMapTileHeaders object itself.
      */

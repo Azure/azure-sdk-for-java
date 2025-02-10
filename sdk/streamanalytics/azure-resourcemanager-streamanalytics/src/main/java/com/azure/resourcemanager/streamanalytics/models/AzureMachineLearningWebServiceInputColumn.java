@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes an input column for the Azure Machine Learning web service endpoint. */
+/**
+ * Describes an input column for the Azure Machine Learning web service endpoint.
+ */
 @Fluent
-public final class AzureMachineLearningWebServiceInputColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMachineLearningWebServiceInputColumn.class);
-
+public final class AzureMachineLearningWebServiceInputColumn
+    implements JsonSerializable<AzureMachineLearningWebServiceInputColumn> {
     /*
      * The name of the input column.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * The (Azure Machine Learning supported) data type of the input column. A
-     * list of valid  Azure Machine Learning data types are described at
-     * https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
+     * The (Azure Machine Learning supported) data type of the input column. A list of valid Azure Machine Learning data
+     * types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
      */
-    @JsonProperty(value = "dataType")
     private String dataType;
 
     /*
      * The zero based index of the function parameter this input maps to.
      */
-    @JsonProperty(value = "mapTo")
     private Integer mapTo;
 
     /**
+     * Creates an instance of AzureMachineLearningWebServiceInputColumn class.
+     */
+    public AzureMachineLearningWebServiceInputColumn() {
+    }
+
+    /**
      * Get the name property: The name of the input column.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -45,7 +50,7 @@ public final class AzureMachineLearningWebServiceInputColumn {
 
     /**
      * Set the name property: The name of the input column.
-     *
+     * 
      * @param name the name value to set.
      * @return the AzureMachineLearningWebServiceInputColumn object itself.
      */
@@ -57,7 +62,7 @@ public final class AzureMachineLearningWebServiceInputColumn {
     /**
      * Get the dataType property: The (Azure Machine Learning supported) data type of the input column. A list of valid
      * Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -67,7 +72,7 @@ public final class AzureMachineLearningWebServiceInputColumn {
     /**
      * Set the dataType property: The (Azure Machine Learning supported) data type of the input column. A list of valid
      * Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the AzureMachineLearningWebServiceInputColumn object itself.
      */
@@ -78,7 +83,7 @@ public final class AzureMachineLearningWebServiceInputColumn {
 
     /**
      * Get the mapTo property: The zero based index of the function parameter this input maps to.
-     *
+     * 
      * @return the mapTo value.
      */
     public Integer mapTo() {
@@ -87,7 +92,7 @@ public final class AzureMachineLearningWebServiceInputColumn {
 
     /**
      * Set the mapTo property: The zero based index of the function parameter this input maps to.
-     *
+     * 
      * @param mapTo the mapTo value to set.
      * @return the AzureMachineLearningWebServiceInputColumn object itself.
      */
@@ -98,9 +103,53 @@ public final class AzureMachineLearningWebServiceInputColumn {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("dataType", this.dataType);
+        jsonWriter.writeNumberField("mapTo", this.mapTo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMachineLearningWebServiceInputColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMachineLearningWebServiceInputColumn if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureMachineLearningWebServiceInputColumn.
+     */
+    public static AzureMachineLearningWebServiceInputColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMachineLearningWebServiceInputColumn deserializedAzureMachineLearningWebServiceInputColumn
+                = new AzureMachineLearningWebServiceInputColumn();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceInputColumn.name = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceInputColumn.dataType = reader.getString();
+                } else if ("mapTo".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceInputColumn.mapTo
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMachineLearningWebServiceInputColumn;
+        });
     }
 }

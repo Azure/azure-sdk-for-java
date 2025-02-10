@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
@@ -15,6 +14,8 @@ import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.http.NoOpHttpClient;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -32,7 +33,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -51,17 +51,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BuilderHelperTests {
-    private static final StorageSharedKeyCredential CREDENTIALS =
-        new StorageSharedKeyCredential("accountName", "accountKey");
+    private static final StorageSharedKeyCredential CREDENTIALS
+        = new StorageSharedKeyCredential("accountName", "accountKey");
     private static final String ENDPOINT = "https://account.blob.core.windows.net/";
-    private static final RequestRetryOptions REQUEST_RETRY_OPTIONS = new RequestRetryOptions(
-        RetryPolicyType.FIXED, 2, 2, 1000L, 4000L, null);
-    private static final RetryOptions CORE_RETRY_OPTIONS = new RetryOptions(
-        new FixedDelayOptions(1, Duration.ofSeconds(2)));
+    private static final RequestRetryOptions REQUEST_RETRY_OPTIONS
+        = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000L, 4000L, null);
+    private static final RetryOptions CORE_RETRY_OPTIONS
+        = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)));
 
     private static HttpRequest request(String url) {
-        return new HttpRequest(HttpMethod.HEAD, url)
-            .setBody(Flux.empty())
+        return new HttpRequest(HttpMethod.HEAD, url).setBody(Flux.empty())
             .setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
     }
 
@@ -70,13 +69,14 @@ public class BuilderHelperTests {
      */
     @Test
     public void freshDateAppliedOnRetry() {
-        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null,
-            ENDPOINT, REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(),
-            new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ClientLogger(BuilderHelperTests.class));
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
+                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new FreshDateTestClient(),
+                new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
-            .assertNext(it -> assertEquals(200, it.getStatusCode())).verifyComplete();
+            .assertNext(it -> assertEquals(200, it.getStatusCode()))
+            .verifyComplete();
     }
 
     /**
@@ -84,8 +84,7 @@ public class BuilderHelperTests {
      */
     @Test
     public void serviceClientFreshDateOnRetry() {
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .httpClient(new FreshDateTestClient())
             .retryOptions(REQUEST_RETRY_OPTIONS)
@@ -101,8 +100,7 @@ public class BuilderHelperTests {
      */
     @Test
     public void containerClientFreshDateOnRetry() {
-        BlobContainerClient containerClient = new BlobContainerClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobContainerClient containerClient = new BlobContainerClientBuilder().endpoint(ENDPOINT)
             .containerName("container")
             .credential(CREDENTIALS)
             .httpClient(new FreshDateTestClient())
@@ -119,8 +117,7 @@ public class BuilderHelperTests {
      */
     @Test
     public void blobClientFreshDateOnRetry() {
-        BlobClient blobClient = new BlobClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobClient blobClient = new BlobClientBuilder().endpoint(ENDPOINT)
             .containerName("container")
             .blobName("blob")
             .credential(CREDENTIALS)
@@ -139,30 +136,27 @@ public class BuilderHelperTests {
      */
     @Test
     public void specializedBlobClientFreshDateOnRetry() {
-        SpecializedBlobClientBuilder specializedBlobClientBuilder = new SpecializedBlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .containerName("container")
-            .blobName("blob")
-            .credential(CREDENTIALS)
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .httpClient(new FreshDateTestClient());
+        SpecializedBlobClientBuilder specializedBlobClientBuilder
+            = new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
+                .containerName("container")
+                .blobName("blob")
+                .credential(CREDENTIALS)
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .httpClient(new FreshDateTestClient());
 
-        AppendBlobClient appendBlobClient = specializedBlobClientBuilder
-            .buildAppendBlobClient();
+        AppendBlobClient appendBlobClient = specializedBlobClientBuilder.buildAppendBlobClient();
 
         StepVerifier.create(appendBlobClient.getHttpPipeline().send(request(appendBlobClient.getBlobUrl())))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
             .verifyComplete();
 
-        BlockBlobClient blockBlobClient = specializedBlobClientBuilder
-            .buildBlockBlobClient();
+        BlockBlobClient blockBlobClient = specializedBlobClientBuilder.buildBlockBlobClient();
 
         StepVerifier.create(blockBlobClient.getHttpPipeline().send(request(blockBlobClient.getBlobUrl())))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
             .verifyComplete();
 
-        PageBlobClient pageBlobClient = specializedBlobClientBuilder
-            .buildPageBlobClient();
+        PageBlobClient pageBlobClient = specializedBlobClientBuilder.buildPageBlobClient();
 
         StepVerifier.create(pageBlobClient.getHttpPipeline().send(request(pageBlobClient.getBlobUrl())))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -172,11 +166,12 @@ public class BuilderHelperTests {
     /**
      * Tests that a user application id will be honored in the UA string when using the default pipeline builder.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void customApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA) {
-        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null,
-            ENDPOINT, new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA),
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
+            new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA),
             new ClientOptions().setApplicationId(clientOptionsUA), new ApplicationIdUAStringTestClient(expectedUA),
             new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
@@ -186,24 +181,22 @@ public class BuilderHelperTests {
     }
 
     private static Stream<Arguments> customApplicationIdInUAStringSupplier() {
-        return Stream.of(
-           Arguments.of("log-options-id", null, "log-options-id"),
+        return Stream.of(Arguments.of("log-options-id", null, "log-options-id"),
             Arguments.of(null, "client-options-id", "client-options-id"),
             // Client options preferred over log options
-            Arguments.of("log-options-id", "client-options-id", "client-options-id")
-        );
+            Arguments.of("log-options-id", "client-options-id", "client-options-id"));
     }
 
     /**
      * Tests that a user application id will be honored in the UA string when using the serviceClientBuilder's
      * default pipeline.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void serviceClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
         String expectedUA) {
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
             .clientOptions(new ClientOptions().setApplicationId(clientOptionsUA))
@@ -219,12 +212,12 @@ public class BuilderHelperTests {
      * Tests that a user application id will be honored in the UA string when using the serviceClientBuilder
      * default pipeline.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void containerClientcustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
         String expectedUA) {
-        BlobContainerClient containerClient = new BlobContainerClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobContainerClient containerClient = new BlobContainerClientBuilder().endpoint(ENDPOINT)
             .containerName("container")
             .credential(CREDENTIALS)
             .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
@@ -240,12 +233,12 @@ public class BuilderHelperTests {
     /**
      * Tests that a user application id will be honored in the UA string when using the blobClientBuilder default pipeline.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void blobClientcustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
         String expectedUA) {
-        BlobClient blobClient = new BlobClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobClient blobClient = new BlobClientBuilder().endpoint(ENDPOINT)
             .containerName("container")
             .blobName("blob")
             .credential(CREDENTIALS)
@@ -263,35 +256,33 @@ public class BuilderHelperTests {
      * Tests that a user application id will be honored in the UA string when using the specializedBlobClientBuilder
      * default pipeline.
      */
+    @SuppressWarnings("deprecation")
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
     public void specializedBlobClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA,
         String expectedUA) {
-        SpecializedBlobClientBuilder specializedBlobClientBuilder = new SpecializedBlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .containerName("container")
-            .blobName("blob")
-            .credential(CREDENTIALS)
-            .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
-            .clientOptions(new ClientOptions().setApplicationId(clientOptionsUA))
-            .httpClient(new ApplicationIdUAStringTestClient(expectedUA));
+        SpecializedBlobClientBuilder specializedBlobClientBuilder
+            = new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
+                .containerName("container")
+                .blobName("blob")
+                .credential(CREDENTIALS)
+                .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
+                .clientOptions(new ClientOptions().setApplicationId(clientOptionsUA))
+                .httpClient(new ApplicationIdUAStringTestClient(expectedUA));
 
-        AppendBlobClient appendBlobClient = specializedBlobClientBuilder
-            .buildAppendBlobClient();
+        AppendBlobClient appendBlobClient = specializedBlobClientBuilder.buildAppendBlobClient();
 
         StepVerifier.create(appendBlobClient.getHttpPipeline().send(request(appendBlobClient.getBlobUrl())))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
             .verifyComplete();
 
-        BlockBlobClient blockBlobClient = specializedBlobClientBuilder
-            .buildBlockBlobClient();
+        BlockBlobClient blockBlobClient = specializedBlobClientBuilder.buildBlockBlobClient();
 
         StepVerifier.create(blockBlobClient.getHttpPipeline().send(request(blockBlobClient.getBlobUrl())))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
             .verifyComplete();
 
-        PageBlobClient pageBlobClient = specializedBlobClientBuilder
-            .buildPageBlobClient();
+        PageBlobClient pageBlobClient = specializedBlobClientBuilder.buildPageBlobClient();
 
         StepVerifier.create(pageBlobClient.getHttpPipeline().send(request(pageBlobClient.getBlobUrl())))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -308,11 +299,10 @@ public class BuilderHelperTests {
         headers.add(new Header("Authorization", "notthis"));
         headers.add(new Header("User-Agent", "overwritten"));
 
-        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null,
-            ENDPOINT, new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(),
-            new ClientOptions().setHeaders(headers),
-            new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ClientLogger(BuilderHelperTests.class));
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
+            new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(),
+            new ClientOptions().setHeaders(headers), new ClientOptionsHeadersTestClient(headers), new ArrayList<>(),
+            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -329,8 +319,7 @@ public class BuilderHelperTests {
         headers.add(new Header("Authorization", "notthis"));
         headers.add(new Header("User-Agent", "overwritten"));
 
-        BlobServiceClient serviceClient = new BlobServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobServiceClient serviceClient = new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(CREDENTIALS)
             .clientOptions(new ClientOptions().setHeaders(headers))
             .httpClient(new ClientOptionsHeadersTestClient(headers))
@@ -351,8 +340,7 @@ public class BuilderHelperTests {
         headers.add(new Header("Authorization", "notthis"));
         headers.add(new Header("User-Agent", "overwritten"));
 
-        BlobContainerClient containerClient = new BlobContainerClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobContainerClient containerClient = new BlobContainerClientBuilder().endpoint(ENDPOINT)
             .containerName("container")
             .credential(CREDENTIALS)
             .clientOptions(new ClientOptions().setHeaders(headers))
@@ -374,8 +362,7 @@ public class BuilderHelperTests {
         headers.add(new Header("Authorization", "notthis"));
         headers.add(new Header("User-Agent", "overwritten"));
 
-        BlobClient blobClient = new BlobClientBuilder()
-            .endpoint(ENDPOINT)
+        BlobClient blobClient = new BlobClientBuilder().endpoint(ENDPOINT)
             .containerName("container")
             .blobName("blob")
             .credential(CREDENTIALS)
@@ -399,30 +386,27 @@ public class BuilderHelperTests {
         headers.add(new Header("Authorization", "notthis"));
         headers.add(new Header("User-Agent", "overwritten"));
 
-        SpecializedBlobClientBuilder specializedBlobClientBuilder = new SpecializedBlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .containerName("container")
-            .blobName("blob")
-            .credential(CREDENTIALS)
-            .clientOptions(new ClientOptions().setHeaders(headers))
-            .httpClient(new ClientOptionsHeadersTestClient(headers));
+        SpecializedBlobClientBuilder specializedBlobClientBuilder
+            = new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
+                .containerName("container")
+                .blobName("blob")
+                .credential(CREDENTIALS)
+                .clientOptions(new ClientOptions().setHeaders(headers))
+                .httpClient(new ClientOptionsHeadersTestClient(headers));
 
-        AppendBlobClient appendBlobClient = specializedBlobClientBuilder
-            .buildAppendBlobClient();
+        AppendBlobClient appendBlobClient = specializedBlobClientBuilder.buildAppendBlobClient();
 
         StepVerifier.create(appendBlobClient.getHttpPipeline().send(request(appendBlobClient.getBlobUrl())))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
             .verifyComplete();
 
-        BlockBlobClient blockBlobClient = specializedBlobClientBuilder
-            .buildBlockBlobClient();
+        BlockBlobClient blockBlobClient = specializedBlobClientBuilder.buildBlockBlobClient();
 
         StepVerifier.create(blockBlobClient.getHttpPipeline().send(request(blockBlobClient.getBlobUrl())))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
             .verifyComplete();
 
-        PageBlobClient pageBlobClient = specializedBlobClientBuilder
-            .buildPageBlobClient();
+        PageBlobClient pageBlobClient = specializedBlobClientBuilder.buildPageBlobClient();
 
         StepVerifier.create(pageBlobClient.getHttpPipeline().send(request(pageBlobClient.getBlobUrl())))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -431,174 +415,174 @@ public class BuilderHelperTests {
 
     @Test
     public void doesNotThrowOnAmbiguousCredentialsWithoutAzureSasCredential() {
-        assertDoesNotThrow(() -> new BlobClientBuilder()
-            .endpoint(ENDPOINT)
+        assertDoesNotThrow(() -> new BlobClientBuilder().endpoint(ENDPOINT)
             .blobName("foo")
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
+            .httpClient(new NoOpHttpClient())
             .buildClient());
 
-        assertDoesNotThrow(() ->  new SpecializedBlobClientBuilder()
-            .endpoint(ENDPOINT)
+        assertDoesNotThrow(() -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
             .blobName("foo")
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
+            .httpClient(new NoOpHttpClient())
             .buildBlockBlobClient());
 
-        assertDoesNotThrow(() -> new BlobContainerClientBuilder()
-            .endpoint(ENDPOINT)
+        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
+            .httpClient(new NoOpHttpClient())
             .buildClient());
 
-        assertDoesNotThrow(() -> new BlobServiceClientBuilder()
-            .endpoint(ENDPOINT)
+        assertDoesNotThrow(() -> new BlobServiceClientBuilder().endpoint(ENDPOINT)
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
+            .httpClient(new NoOpHttpClient())
             .buildClient());
     }
 
     @Test
     public void throwsOnAmbiguousCredentialsWithAzureSasCredential() {
-        assertThrows(IllegalStateException.class, () -> new BlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .blobName("foo")
-            .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobClientBuilder().endpoint(ENDPOINT)
+                .blobName("foo")
+                .credential(new StorageSharedKeyCredential("foo", "bar"))
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .blobName("foo")
-            .credential(Mockito.mock(TokenCredential.class))
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobClientBuilder().endpoint(ENDPOINT)
+                .blobName("foo")
+                .credential(new MockTokenCredential())
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .blobName("foo")
-            .sasToken("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobClientBuilder().endpoint(ENDPOINT)
+                .blobName("foo")
+                .sasToken("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobClientBuilder()
-            .endpoint(ENDPOINT + "?sig=foo")
-            .blobName("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobClientBuilder().endpoint(ENDPOINT + "?sig=foo")
+                .blobName("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new SpecializedBlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .blobName("foo")
-            .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(new AzureSasCredential("foo"))
-            .buildBlockBlobClient());
+        assertThrows(IllegalStateException.class,
+            () -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
+                .blobName("foo")
+                .credential(new StorageSharedKeyCredential("foo", "bar"))
+                .credential(new AzureSasCredential("foo"))
+                .buildBlockBlobClient());
 
-        assertThrows(IllegalStateException.class, () -> new SpecializedBlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .blobName("foo")
-            .credential(Mockito.mock(TokenCredential.class))
-            .credential(new AzureSasCredential("foo"))
-            .buildBlockBlobClient());
+        assertThrows(IllegalStateException.class,
+            () -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
+                .blobName("foo")
+                .credential(new MockTokenCredential())
+                .credential(new AzureSasCredential("foo"))
+                .buildBlockBlobClient());
 
-        assertThrows(IllegalStateException.class, () -> new SpecializedBlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .blobName("foo")
-            .sasToken("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildBlockBlobClient());
+        assertThrows(IllegalStateException.class,
+            () -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
+                .blobName("foo")
+                .sasToken("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildBlockBlobClient());
 
-        assertThrows(IllegalStateException.class, () -> new SpecializedBlobClientBuilder()
-            .endpoint(ENDPOINT + "?sig=foo")
-            .blobName("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildBlockBlobClient());
+        assertThrows(IllegalStateException.class,
+            () -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT + "?sig=foo")
+                .blobName("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildBlockBlobClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobContainerClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+                .credential(new StorageSharedKeyCredential("foo", "bar"))
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobContainerClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(Mockito.mock(TokenCredential.class))
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+                .credential(new MockTokenCredential())
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobContainerClientBuilder()
-            .endpoint(ENDPOINT)
-            .sasToken("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+                .sasToken("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobContainerClientBuilder()
-            .endpoint(ENDPOINT + "?sig=foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobContainerClientBuilder().endpoint(ENDPOINT + "?sig=foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobServiceClientBuilder().endpoint(ENDPOINT)
+                .credential(new StorageSharedKeyCredential("foo", "bar"))
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(Mockito.mock(TokenCredential.class))
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobServiceClientBuilder().endpoint(ENDPOINT)
+                .credential(new MockTokenCredential())
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .sasToken("foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobServiceClientBuilder().endpoint(ENDPOINT)
+                .sasToken("foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobServiceClientBuilder()
-            .endpoint(ENDPOINT + "?sig=foo")
-            .credential(new AzureSasCredential("foo"))
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobServiceClientBuilder().endpoint(ENDPOINT + "?sig=foo")
+                .credential(new AzureSasCredential("foo"))
+                .buildClient());
     }
 
     @Test
     public void onlyOneRetryOptionsCanBeApplied() {
-        assertThrows(IllegalStateException.class, () -> new BlobServiceClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobServiceClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobContainerClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .containerName("foo")
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .containerName("foo")
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new BlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .containerName("foo")
-            .blobName("foo")
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new BlobClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .containerName("foo")
+                .blobName("foo")
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildClient());
 
-        assertThrows(IllegalStateException.class, () -> new SpecializedBlobClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(CREDENTIALS)
-            .containerName("foo")
-            .blobName("foo")
-            .retryOptions(REQUEST_RETRY_OPTIONS)
-            .retryOptions(CORE_RETRY_OPTIONS)
-            .buildBlockBlobClient());
+        assertThrows(IllegalStateException.class,
+            () -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
+                .credential(CREDENTIALS)
+                .containerName("foo")
+                .blobName("foo")
+                .retryOptions(REQUEST_RETRY_OPTIONS)
+                .retryOptions(CORE_RETRY_OPTIONS)
+                .buildBlockBlobClient());
     }
 
     private static final class FreshDateTestClient implements HttpClient {
@@ -650,6 +634,7 @@ public class BuilderHelperTests {
             this.headers = headers;
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             headers.forEach(header -> {

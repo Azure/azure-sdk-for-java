@@ -6,25 +6,46 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.SubscriptionFeatureRegistrationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Subscription feature registration details. */
+/**
+ * Subscription feature registration details.
+ */
 @Fluent
 public final class SubscriptionFeatureRegistrationInner extends ProxyResource {
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private SubscriptionFeatureRegistrationProperties properties;
 
-    /** Creates an instance of SubscriptionFeatureRegistrationInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of SubscriptionFeatureRegistrationInner class.
+     */
     public SubscriptionFeatureRegistrationInner() {
     }
 
     /**
      * Get the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     public SubscriptionFeatureRegistrationProperties properties() {
@@ -33,7 +54,7 @@ public final class SubscriptionFeatureRegistrationInner extends ProxyResource {
 
     /**
      * Set the properties property: The properties property.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SubscriptionFeatureRegistrationInner object itself.
      */
@@ -43,13 +64,88 @@ public final class SubscriptionFeatureRegistrationInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionFeatureRegistrationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionFeatureRegistrationInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubscriptionFeatureRegistrationInner.
+     */
+    public static SubscriptionFeatureRegistrationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionFeatureRegistrationInner deserializedSubscriptionFeatureRegistrationInner
+                = new SubscriptionFeatureRegistrationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationInner.properties
+                        = SubscriptionFeatureRegistrationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionFeatureRegistrationInner;
+        });
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesMigrateSqlContainerToManualThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBSqlContainerMigrateToManualThroughput.json
      */
     /**
@@ -19,7 +19,11 @@ public final class SqlResourcesMigrateSqlContainerToManualThroughputSamples {
      */
     public static void
         cosmosDBSqlContainerMigrateToManualThroughput(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getSqlResources().migrateSqlContainerToManualThroughput(
-            "rg1", "ddb1", "databaseName", "containerName", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .migrateSqlContainerToManualThroughput("rg1", "ddb1", "databaseName", "containerName",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Storage Profile properties of a server. */
+/**
+ * Storage Profile properties of a server.
+ */
 @Fluent
-public final class Backup {
+public final class Backup implements JsonSerializable<Backup> {
     /*
      * Backup retention days for the server.
      */
-    @JsonProperty(value = "backupRetentionDays")
     private Integer backupRetentionDays;
 
     /*
      * Whether or not geo redundant backup is enabled.
      */
-    @JsonProperty(value = "geoRedundantBackup")
     private EnableStatusEnum geoRedundantBackup;
 
     /*
      * Earliest restore point creation time (ISO8601 format)
      */
-    @JsonProperty(value = "earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreDate;
 
-    /** Creates an instance of Backup class. */
+    /**
+     * Creates an instance of Backup class.
+     */
     public Backup() {
     }
 
     /**
      * Get the backupRetentionDays property: Backup retention days for the server.
-     *
+     * 
      * @return the backupRetentionDays value.
      */
     public Integer backupRetentionDays() {
@@ -44,7 +50,7 @@ public final class Backup {
 
     /**
      * Set the backupRetentionDays property: Backup retention days for the server.
-     *
+     * 
      * @param backupRetentionDays the backupRetentionDays value to set.
      * @return the Backup object itself.
      */
@@ -55,7 +61,7 @@ public final class Backup {
 
     /**
      * Get the geoRedundantBackup property: Whether or not geo redundant backup is enabled.
-     *
+     * 
      * @return the geoRedundantBackup value.
      */
     public EnableStatusEnum geoRedundantBackup() {
@@ -64,7 +70,7 @@ public final class Backup {
 
     /**
      * Set the geoRedundantBackup property: Whether or not geo redundant backup is enabled.
-     *
+     * 
      * @param geoRedundantBackup the geoRedundantBackup value to set.
      * @return the Backup object itself.
      */
@@ -75,7 +81,7 @@ public final class Backup {
 
     /**
      * Get the earliestRestoreDate property: Earliest restore point creation time (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -84,9 +90,52 @@ public final class Backup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("backupRetentionDays", this.backupRetentionDays);
+        jsonWriter.writeStringField("geoRedundantBackup",
+            this.geoRedundantBackup == null ? null : this.geoRedundantBackup.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Backup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Backup if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Backup.
+     */
+    public static Backup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Backup deserializedBackup = new Backup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupRetentionDays".equals(fieldName)) {
+                    deserializedBackup.backupRetentionDays = reader.getNullable(JsonReader::getInt);
+                } else if ("geoRedundantBackup".equals(fieldName)) {
+                    deserializedBackup.geoRedundantBackup = EnableStatusEnum.fromString(reader.getString());
+                } else if ("earliestRestoreDate".equals(fieldName)) {
+                    deserializedBackup.earliestRestoreDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackup;
+        });
     }
 }

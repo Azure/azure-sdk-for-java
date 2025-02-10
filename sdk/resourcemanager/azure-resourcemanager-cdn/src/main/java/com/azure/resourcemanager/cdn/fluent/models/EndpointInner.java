@@ -7,6 +7,9 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.DeepCreatedCustomDomain;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOrigin;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOriginGroup;
@@ -19,7 +22,7 @@ import com.azure.resourcemanager.cdn.models.OptimizationType;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.UrlSigningKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -32,22 +35,37 @@ public final class EndpointInner extends Resource {
     /*
      * The JSON object that contains the properties required to create an endpoint.
      */
-    @JsonProperty(value = "properties")
     private EndpointProperties innerProperties;
 
     /*
      * Read only system data
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of EndpointInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EndpointInner class.
+     */
     public EndpointInner() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties required to create an endpoint.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EndpointProperties innerProperties() {
@@ -56,21 +74,55 @@ public final class EndpointInner extends Resource {
 
     /**
      * Get the systemData property: Read only system data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EndpointInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EndpointInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -80,7 +132,7 @@ public final class EndpointInner extends Resource {
     /**
      * Get the hostname property: The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g.
      * contoso.azureedge.net.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -89,7 +141,7 @@ public final class EndpointInner extends Resource {
 
     /**
      * Get the origins property: The source of the content being delivered via CDN.
-     *
+     * 
      * @return the origins value.
      */
     public List<DeepCreatedOrigin> origins() {
@@ -98,7 +150,7 @@ public final class EndpointInner extends Resource {
 
     /**
      * Set the origins property: The source of the content being delivered via CDN.
-     *
+     * 
      * @param origins the origins value to set.
      * @return the EndpointInner object itself.
      */
@@ -113,7 +165,7 @@ public final class EndpointInner extends Resource {
     /**
      * Get the originGroups property: The origin groups comprising of origins that are used for load balancing the
      * traffic based on availability.
-     *
+     * 
      * @return the originGroups value.
      */
     public List<DeepCreatedOriginGroup> originGroups() {
@@ -123,7 +175,7 @@ public final class EndpointInner extends Resource {
     /**
      * Set the originGroups property: The origin groups comprising of origins that are used for load balancing the
      * traffic based on availability.
-     *
+     * 
      * @param originGroups the originGroups value to set.
      * @return the EndpointInner object itself.
      */
@@ -137,7 +189,7 @@ public final class EndpointInner extends Resource {
 
     /**
      * Get the customDomains property: The custom domains under the endpoint.
-     *
+     * 
      * @return the customDomains value.
      */
     public List<DeepCreatedCustomDomain> customDomains() {
@@ -146,7 +198,7 @@ public final class EndpointInner extends Resource {
 
     /**
      * Get the resourceState property: Resource status of the endpoint.
-     *
+     * 
      * @return the resourceState value.
      */
     public EndpointResourceState resourceState() {
@@ -155,7 +207,7 @@ public final class EndpointInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning status of the endpoint.
-     *
+     * 
      * @return the provisioningState value.
      */
     public EndpointProvisioningState provisioningState() {
@@ -165,7 +217,7 @@ public final class EndpointInner extends Resource {
     /**
      * Get the originPath property: A directory path on the origin that CDN can use to retrieve content from, e.g.
      * contoso.cloudapp.net/originpath.
-     *
+     * 
      * @return the originPath value.
      */
     public String originPath() {
@@ -175,7 +227,7 @@ public final class EndpointInner extends Resource {
     /**
      * Set the originPath property: A directory path on the origin that CDN can use to retrieve content from, e.g.
      * contoso.cloudapp.net/originpath.
-     *
+     * 
      * @param originPath the originPath value to set.
      * @return the EndpointInner object itself.
      */
@@ -190,7 +242,7 @@ public final class EndpointInner extends Resource {
     /**
      * Get the contentTypesToCompress property: List of content types on which compression applies. The value should be
      * a valid MIME type.
-     *
+     * 
      * @return the contentTypesToCompress value.
      */
     public List<String> contentTypesToCompress() {
@@ -200,7 +252,7 @@ public final class EndpointInner extends Resource {
     /**
      * Set the contentTypesToCompress property: List of content types on which compression applies. The value should be
      * a valid MIME type.
-     *
+     * 
      * @param contentTypesToCompress the contentTypesToCompress value to set.
      * @return the EndpointInner object itself.
      */
@@ -217,7 +269,7 @@ public final class EndpointInner extends Resource {
      * Endpoint is only allowed when endpoint uses single origin and can be overridden by the same property specified at
      * origin.If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps,
      * Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
-     *
+     * 
      * @return the originHostHeader value.
      */
     public String originHostHeader() {
@@ -229,7 +281,7 @@ public final class EndpointInner extends Resource {
      * Endpoint is only allowed when endpoint uses single origin and can be overridden by the same property specified at
      * origin.If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps,
      * Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
-     *
+     * 
      * @param originHostHeader the originHostHeader value to set.
      * @return the EndpointInner object itself.
      */
@@ -245,7 +297,7 @@ public final class EndpointInner extends Resource {
      * Get the isCompressionEnabled property: Indicates whether content compression is enabled on CDN. Default value is
      * false. If compression is enabled, content will be served as compressed if user requests for a compressed version.
      * Content won't be compressed on CDN when requested content is smaller than 1 byte or larger than 1 MB.
-     *
+     * 
      * @return the isCompressionEnabled value.
      */
     public Boolean isCompressionEnabled() {
@@ -256,7 +308,7 @@ public final class EndpointInner extends Resource {
      * Set the isCompressionEnabled property: Indicates whether content compression is enabled on CDN. Default value is
      * false. If compression is enabled, content will be served as compressed if user requests for a compressed version.
      * Content won't be compressed on CDN when requested content is smaller than 1 byte or larger than 1 MB.
-     *
+     * 
      * @param isCompressionEnabled the isCompressionEnabled value to set.
      * @return the EndpointInner object itself.
      */
@@ -271,7 +323,7 @@ public final class EndpointInner extends Resource {
     /**
      * Get the isHttpAllowed property: Indicates whether HTTP traffic is allowed on the endpoint. Default value is true.
      * At least one protocol (HTTP or HTTPS) must be allowed.
-     *
+     * 
      * @return the isHttpAllowed value.
      */
     public Boolean isHttpAllowed() {
@@ -281,7 +333,7 @@ public final class EndpointInner extends Resource {
     /**
      * Set the isHttpAllowed property: Indicates whether HTTP traffic is allowed on the endpoint. Default value is true.
      * At least one protocol (HTTP or HTTPS) must be allowed.
-     *
+     * 
      * @param isHttpAllowed the isHttpAllowed value to set.
      * @return the EndpointInner object itself.
      */
@@ -296,7 +348,7 @@ public final class EndpointInner extends Resource {
     /**
      * Get the isHttpsAllowed property: Indicates whether HTTPS traffic is allowed on the endpoint. Default value is
      * true. At least one protocol (HTTP or HTTPS) must be allowed.
-     *
+     * 
      * @return the isHttpsAllowed value.
      */
     public Boolean isHttpsAllowed() {
@@ -306,7 +358,7 @@ public final class EndpointInner extends Resource {
     /**
      * Set the isHttpsAllowed property: Indicates whether HTTPS traffic is allowed on the endpoint. Default value is
      * true. At least one protocol (HTTP or HTTPS) must be allowed.
-     *
+     * 
      * @param isHttpsAllowed the isHttpsAllowed value to set.
      * @return the EndpointInner object itself.
      */
@@ -322,7 +374,7 @@ public final class EndpointInner extends Resource {
      * Get the queryStringCachingBehavior property: Defines how CDN caches requests that include query strings. You can
      * ignore any query strings when caching, bypass caching to prevent requests that contain query strings from being
      * cached, or cache every request with a unique URL.
-     *
+     * 
      * @return the queryStringCachingBehavior value.
      */
     public QueryStringCachingBehavior queryStringCachingBehavior() {
@@ -333,7 +385,7 @@ public final class EndpointInner extends Resource {
      * Set the queryStringCachingBehavior property: Defines how CDN caches requests that include query strings. You can
      * ignore any query strings when caching, bypass caching to prevent requests that contain query strings from being
      * cached, or cache every request with a unique URL.
-     *
+     * 
      * @param queryStringCachingBehavior the queryStringCachingBehavior value to set.
      * @return the EndpointInner object itself.
      */
@@ -348,7 +400,7 @@ public final class EndpointInner extends Resource {
     /**
      * Get the optimizationType property: Specifies what scenario the customer wants this CDN endpoint to optimize for,
      * e.g. Download, Media services. With this information, CDN can apply scenario driven optimization.
-     *
+     * 
      * @return the optimizationType value.
      */
     public OptimizationType optimizationType() {
@@ -358,7 +410,7 @@ public final class EndpointInner extends Resource {
     /**
      * Set the optimizationType property: Specifies what scenario the customer wants this CDN endpoint to optimize for,
      * e.g. Download, Media services. With this information, CDN can apply scenario driven optimization.
-     *
+     * 
      * @param optimizationType the optimizationType value to set.
      * @return the EndpointInner object itself.
      */
@@ -374,7 +426,7 @@ public final class EndpointInner extends Resource {
      * Get the probePath property: Path to a file hosted on the origin which helps accelerate delivery of the dynamic
      * content and calculate the most optimal routes for the CDN. This is relative to the origin path. This property is
      * only relevant when using a single origin.
-     *
+     * 
      * @return the probePath value.
      */
     public String probePath() {
@@ -385,7 +437,7 @@ public final class EndpointInner extends Resource {
      * Set the probePath property: Path to a file hosted on the origin which helps accelerate delivery of the dynamic
      * content and calculate the most optimal routes for the CDN. This is relative to the origin path. This property is
      * only relevant when using a single origin.
-     *
+     * 
      * @param probePath the probePath value to set.
      * @return the EndpointInner object itself.
      */
@@ -400,7 +452,7 @@ public final class EndpointInner extends Resource {
     /**
      * Get the geoFilters property: List of rules defining the user's geo access within a CDN endpoint. Each geo filter
      * defines an access rule to a specified path or content, e.g. block APAC for path /pictures/.
-     *
+     * 
      * @return the geoFilters value.
      */
     public List<GeoFilter> geoFilters() {
@@ -410,7 +462,7 @@ public final class EndpointInner extends Resource {
     /**
      * Set the geoFilters property: List of rules defining the user's geo access within a CDN endpoint. Each geo filter
      * defines an access rule to a specified path or content, e.g. block APAC for path /pictures/.
-     *
+     * 
      * @param geoFilters the geoFilters value to set.
      * @return the EndpointInner object itself.
      */
@@ -424,7 +476,7 @@ public final class EndpointInner extends Resource {
 
     /**
      * Get the defaultOriginGroup property: A reference to the origin group.
-     *
+     * 
      * @return the defaultOriginGroup value.
      */
     public ResourceReference defaultOriginGroup() {
@@ -433,7 +485,7 @@ public final class EndpointInner extends Resource {
 
     /**
      * Set the defaultOriginGroup property: A reference to the origin group.
-     *
+     * 
      * @param defaultOriginGroup the defaultOriginGroup value to set.
      * @return the EndpointInner object itself.
      */
@@ -447,7 +499,7 @@ public final class EndpointInner extends Resource {
 
     /**
      * Get the urlSigningKeys property: List of keys used to validate the signed URL hashes.
-     *
+     * 
      * @return the urlSigningKeys value.
      */
     public List<UrlSigningKey> urlSigningKeys() {
@@ -456,7 +508,7 @@ public final class EndpointInner extends Resource {
 
     /**
      * Set the urlSigningKeys property: List of keys used to validate the signed URL hashes.
-     *
+     * 
      * @param urlSigningKeys the urlSigningKeys value to set.
      * @return the EndpointInner object itself.
      */
@@ -470,7 +522,7 @@ public final class EndpointInner extends Resource {
 
     /**
      * Get the deliveryPolicy property: A policy that specifies the delivery rules to be used for an endpoint.
-     *
+     * 
      * @return the deliveryPolicy value.
      */
     public EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy() {
@@ -479,7 +531,7 @@ public final class EndpointInner extends Resource {
 
     /**
      * Set the deliveryPolicy property: A policy that specifies the delivery rules to be used for an endpoint.
-     *
+     * 
      * @param deliveryPolicy the deliveryPolicy value to set.
      * @return the EndpointInner object itself.
      */
@@ -494,7 +546,7 @@ public final class EndpointInner extends Resource {
     /**
      * Get the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for the endpoint
      * (if applicable).
-     *
+     * 
      * @return the webApplicationFirewallPolicyLink value.
      */
     public EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
@@ -504,7 +556,7 @@ public final class EndpointInner extends Resource {
     /**
      * Set the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for the endpoint
      * (if applicable).
-     *
+     * 
      * @param webApplicationFirewallPolicyLink the webApplicationFirewallPolicyLink value to set.
      * @return the EndpointInner object itself.
      */
@@ -519,12 +571,64 @@ public final class EndpointInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EndpointInner.
+     */
+    public static EndpointInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointInner deserializedEndpointInner = new EndpointInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEndpointInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEndpointInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEndpointInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedEndpointInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEndpointInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEndpointInner.innerProperties = EndpointProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedEndpointInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointInner;
+        });
     }
 }

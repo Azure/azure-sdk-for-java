@@ -72,7 +72,9 @@ public final class SipRoutingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SipTrunk getTrunk(String fqdn) {
         return convertFromApi(getSipConfiguration().getTrunks()).stream()
-            .filter(sipTrunk -> fqdn.equals(sipTrunk.getFqdn())).findAny().orElse(null);
+            .filter(sipTrunk -> fqdn.equals(sipTrunk.getFqdn()))
+            .findAny()
+            .orElse(null);
     }
 
     /**
@@ -94,10 +96,14 @@ public final class SipRoutingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SipTrunk> getTrunkWithResponse(String fqdn, Context context) {
-        return client.getSipRoutings().getWithResponseAsync(context)
+        return client.getSipRoutings()
+            .getWithResponseAsync(context)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
-            .map(result -> new SimpleResponse<>(result, convertFromApi(result.getValue().getTrunks()).stream()
-                .filter(sipTrunk -> fqdn.equals(sipTrunk.getFqdn())).findAny().orElse(null)))
+            .map(result -> new SimpleResponse<>(result,
+                convertFromApi(result.getValue().getTrunks()).stream()
+                    .filter(sipTrunk -> fqdn.equals(sipTrunk.getFqdn()))
+                    .findAny()
+                    .orElse(null)))
             .block();
     }
 
@@ -123,16 +129,12 @@ public final class SipRoutingClient {
     }
 
     private PagedResponse<SipTrunk> getOnePageTrunk() {
-        return client.getSipRoutings().getWithResponseAsync()
-        .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
-        .map(result -> new PagedResponseBase<>(
-            result.getRequest(),
-            result.getStatusCode(),
-            result.getHeaders(),
-            convertFromApi(result.getValue().getTrunks()),
-            null,
-            null))
-        .block();
+        return client.getSipRoutings()
+            .getWithResponseAsync()
+            .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
+            .map(result -> new PagedResponseBase<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
+                convertFromApi(result.getValue().getTrunks()), null, null))
+            .block();
     }
 
     /**
@@ -160,16 +162,12 @@ public final class SipRoutingClient {
     }
 
     private PagedResponse<SipTrunkRoute> getOnePageRoute() {
-        return client.getSipRoutings().getWithResponseAsync()
-        .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
-        .map(result -> new PagedResponseBase<>(
-            result.getRequest(),
-            result.getStatusCode(),
-            result.getHeaders(),
-            convertFromApi(result.getValue().getRoutes()),
-            null,
-            null))
-        .block();
+        return client.getSipRoutings()
+            .getWithResponseAsync()
+            .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
+            .map(result -> new PagedResponseBase<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
+                convertFromApi(result.getValue().getRoutes()), null, null))
+            .block();
     }
 
     /**
@@ -188,9 +186,11 @@ public final class SipRoutingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setTrunk(SipTrunk trunk) {
-        Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunks = new HashMap<>();
+        Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunks
+            = new HashMap<>();
         trunks.put(trunk.getFqdn(), convertToApi(trunk));
-        client.getSipRoutings().updateWithResponseAsync(new SipConfiguration().setTrunks(trunks))
+        client.getSipRoutings()
+            .updateWithResponseAsync(new SipConfiguration().setTrunks(trunks))
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .block();
     }
@@ -257,7 +257,8 @@ public final class SipRoutingClient {
         }
 
         if (!update.getTrunks().isEmpty()) {
-            return client.getSipRoutings().updateWithResponseAsync(update, context)
+            return client.getSipRoutings()
+                .updateWithResponseAsync(update, context)
                 .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
                 .map(result -> new SimpleResponse<Void>(result, null))
                 .block();
@@ -307,7 +308,8 @@ public final class SipRoutingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setRoutesWithResponse(List<SipTrunkRoute> routes, Context context) {
-        return client.getSipRoutings().updateWithResponseAsync(new SipConfiguration().setRoutes(convertToApi(routes)), context)
+        return client.getSipRoutings()
+            .updateWithResponseAsync(new SipConfiguration().setRoutes(convertToApi(routes)), context)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .map(result -> new SimpleResponse<Void>(result, null))
             .block();
@@ -329,14 +331,15 @@ public final class SipRoutingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTrunk(String fqdn) {
         PagedIterable<SipTrunk> trunks = listTrunks();
-        List<SipTrunk> deletedTrunks = trunks.stream()
-            .filter(trunk -> fqdn.equals(trunk.getFqdn()))
-            .collect(Collectors.toList());
+        List<SipTrunk> deletedTrunks
+            = trunks.stream().filter(trunk -> fqdn.equals(trunk.getFqdn())).collect(Collectors.toList());
 
         if (!deletedTrunks.isEmpty()) {
-            Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunksUpdate = new HashMap<>();
+            Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunksUpdate
+                = new HashMap<>();
             trunksUpdate.put(fqdn, null);
-            client.getSipRoutings().updateWithResponseAsync(new SipConfiguration().setTrunks(trunksUpdate))
+            client.getSipRoutings()
+                .updateWithResponseAsync(new SipConfiguration().setTrunks(trunksUpdate))
                 .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
                 .block();
         }
@@ -360,27 +363,32 @@ public final class SipRoutingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTrunkWithResponse(String fqdn, Context context) {
         PagedIterable<SipTrunk> trunks = listTrunks();
-        List<SipTrunk> deletedTrunks = trunks.stream().filter(trunk -> fqdn.equals(trunk.getFqdn()))
-            .collect(Collectors.toList());
+        List<SipTrunk> deletedTrunks
+            = trunks.stream().filter(trunk -> fqdn.equals(trunk.getFqdn())).collect(Collectors.toList());
 
         if (!deletedTrunks.isEmpty()) {
-            Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunksUpdate = new HashMap<>();
+            Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunksUpdate
+                = new HashMap<>();
             trunksUpdate.put(fqdn, null);
-            return client.getSipRoutings().updateWithResponseAsync(new SipConfiguration().setTrunks(trunksUpdate), context)
+            return client.getSipRoutings()
+                .updateWithResponseAsync(new SipConfiguration().setTrunks(trunksUpdate), context)
                 .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
-                .map(result -> new SimpleResponse<Void>(result, null)).block();
+                .map(result -> new SimpleResponse<Void>(result, null))
+                .block();
         }
         return new SimpleResponse<>(null, 200, null, null);
     }
 
     private SipConfiguration getSipConfiguration() {
-        return client.getSipRoutings().getAsync()
+        return client.getSipRoutings()
+            .getAsync()
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .block();
     }
 
     private SipConfiguration setSipConfiguration(SipConfiguration update) {
-        return client.getSipRoutings().updateAsync(update)
+        return client.getSipRoutings()
+            .updateAsync(update)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
             .block();
     }

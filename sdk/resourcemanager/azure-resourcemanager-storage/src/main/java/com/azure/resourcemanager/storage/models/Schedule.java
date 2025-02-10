@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** This is a required field. This field is used to schedule an inventory formation. */
+/**
+ * This is a required field. This field is used to schedule an inventory formation.
+ */
 public final class Schedule extends ExpandableStringEnum<Schedule> {
-    /** Static value Daily for Schedule. */
+    /**
+     * Static value Daily for Schedule.
+     */
     public static final Schedule DAILY = fromString("Daily");
 
-    /** Static value Weekly for Schedule. */
+    /**
+     * Static value Weekly for Schedule.
+     */
     public static final Schedule WEEKLY = fromString("Weekly");
 
     /**
      * Creates a new instance of Schedule value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class Schedule extends ExpandableStringEnum<Schedule> {
 
     /**
      * Creates or finds a Schedule from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Schedule.
      */
-    @JsonCreator
     public static Schedule fromString(String name) {
         return fromString(name, Schedule.class);
     }
 
     /**
      * Gets known Schedule values.
-     *
+     * 
      * @return known Schedule values.
      */
     public static Collection<Schedule> values() {

@@ -5,109 +5,102 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.NamespaceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Namespace properties. */
+/**
+ * Namespace properties.
+ */
 @Fluent
-public final class NamespaceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamespaceProperties.class);
-
+public final class NamespaceProperties implements JsonSerializable<NamespaceProperties> {
     /*
      * The name of the namespace.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Provisioning state of the Namespace.
      */
-    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /*
-     * Specifies the targeted region in which the namespace should be created.
-     * It can be any of the following values: Australia East, Australia
-     * Southeast, Central US, East US, East US 2, West US, North Central US,
-     * South Central US, East Asia, Southeast Asia, Brazil South, Japan East,
-     * Japan West, North Europe, West Europe
+     * Specifies the targeted region in which the namespace should be created. It can be any of the following values:
+     * Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central US, South Central US,
+     * East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * Identifier for Azure Insights metrics
      */
-    @JsonProperty(value = "metricId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricId;
 
     /*
-     * Status of the namespace. It can be any of these values:1 =
-     * Created/Active2 = Creating3 = Suspended4 = Deleting
+     * Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 = Suspended4 = Deleting
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The time the namespace was created.
      */
-    @JsonProperty(value = "createdAt")
     private OffsetDateTime createdAt;
 
     /*
      * The time the namespace was updated.
      */
-    @JsonProperty(value = "updatedAt")
     private OffsetDateTime updatedAt;
 
     /*
      * Endpoint you can use to perform NotificationHub operations.
      */
-    @JsonProperty(value = "serviceBusEndpoint")
     private String serviceBusEndpoint;
 
     /*
      * The Id of the Azure subscription associated with the namespace.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * ScaleUnit where the namespace gets created
      */
-    @JsonProperty(value = "scaleUnit")
     private String scaleUnit;
 
     /*
      * Whether or not the namespace is currently enabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Whether or not the namespace is set as Critical.
      */
-    @JsonProperty(value = "critical")
     private Boolean critical;
 
     /*
      * Data center for the namespace
      */
-    @JsonProperty(value = "dataCenter")
     private String dataCenter;
 
     /*
      * The namespace type.
      */
-    @JsonProperty(value = "namespaceType")
     private NamespaceType namespaceType;
 
     /**
+     * Creates an instance of NamespaceProperties class.
+     */
+    public NamespaceProperties() {
+    }
+
+    /**
      * Get the name property: The name of the namespace.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -116,7 +109,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the name property: The name of the namespace.
-     *
+     * 
      * @param name the name value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -127,7 +120,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the Namespace.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -136,7 +129,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the provisioningState property: Provisioning state of the Namespace.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -149,7 +142,7 @@ public final class NamespaceProperties {
      * Get the region property: Specifies the targeted region in which the namespace should be created. It can be any of
      * the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central
      * US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -160,7 +153,7 @@ public final class NamespaceProperties {
      * Set the region property: Specifies the targeted region in which the namespace should be created. It can be any of
      * the following values: Australia East, Australia Southeast, Central US, East US, East US 2, West US, North Central
      * US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe.
-     *
+     * 
      * @param region the region value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -171,7 +164,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the metricId property: Identifier for Azure Insights metrics.
-     *
+     * 
      * @return the metricId value.
      */
     public String metricId() {
@@ -181,7 +174,7 @@ public final class NamespaceProperties {
     /**
      * Get the status property: Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 =
      * Suspended4 = Deleting.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -191,7 +184,7 @@ public final class NamespaceProperties {
     /**
      * Set the status property: Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 =
      * Suspended4 = Deleting.
-     *
+     * 
      * @param status the status value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -202,7 +195,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the createdAt property: The time the namespace was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -211,7 +204,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the createdAt property: The time the namespace was created.
-     *
+     * 
      * @param createdAt the createdAt value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -222,7 +215,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the updatedAt property: The time the namespace was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -231,7 +224,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the updatedAt property: The time the namespace was updated.
-     *
+     * 
      * @param updatedAt the updatedAt value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -242,7 +235,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the serviceBusEndpoint property: Endpoint you can use to perform NotificationHub operations.
-     *
+     * 
      * @return the serviceBusEndpoint value.
      */
     public String serviceBusEndpoint() {
@@ -251,7 +244,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the serviceBusEndpoint property: Endpoint you can use to perform NotificationHub operations.
-     *
+     * 
      * @param serviceBusEndpoint the serviceBusEndpoint value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -262,7 +255,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the subscriptionId property: The Id of the Azure subscription associated with the namespace.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -271,7 +264,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the subscriptionId property: The Id of the Azure subscription associated with the namespace.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -282,7 +275,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the scaleUnit property: ScaleUnit where the namespace gets created.
-     *
+     * 
      * @return the scaleUnit value.
      */
     public String scaleUnit() {
@@ -291,7 +284,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the scaleUnit property: ScaleUnit where the namespace gets created.
-     *
+     * 
      * @param scaleUnit the scaleUnit value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -302,7 +295,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the enabled property: Whether or not the namespace is currently enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -311,7 +304,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the enabled property: Whether or not the namespace is currently enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -322,7 +315,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the critical property: Whether or not the namespace is set as Critical.
-     *
+     * 
      * @return the critical value.
      */
     public Boolean critical() {
@@ -331,7 +324,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the critical property: Whether or not the namespace is set as Critical.
-     *
+     * 
      * @param critical the critical value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -342,7 +335,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the dataCenter property: Data center for the namespace.
-     *
+     * 
      * @return the dataCenter value.
      */
     public String dataCenter() {
@@ -351,7 +344,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the dataCenter property: Data center for the namespace.
-     *
+     * 
      * @param dataCenter the dataCenter value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -362,7 +355,7 @@ public final class NamespaceProperties {
 
     /**
      * Get the namespaceType property: The namespace type.
-     *
+     * 
      * @return the namespaceType value.
      */
     public NamespaceType namespaceType() {
@@ -371,7 +364,7 @@ public final class NamespaceProperties {
 
     /**
      * Set the namespaceType property: The namespace type.
-     *
+     * 
      * @param namespaceType the namespaceType value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -382,9 +375,87 @@ public final class NamespaceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("createdAt",
+            this.createdAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt));
+        jsonWriter.writeStringField("updatedAt",
+            this.updatedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updatedAt));
+        jsonWriter.writeStringField("serviceBusEndpoint", this.serviceBusEndpoint);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("scaleUnit", this.scaleUnit);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeBooleanField("critical", this.critical);
+        jsonWriter.writeStringField("dataCenter", this.dataCenter);
+        jsonWriter.writeStringField("namespaceType", this.namespaceType == null ? null : this.namespaceType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamespaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamespaceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NamespaceProperties.
+     */
+    public static NamespaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamespaceProperties deserializedNamespaceProperties = new NamespaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNamespaceProperties.name = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNamespaceProperties.provisioningState = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedNamespaceProperties.region = reader.getString();
+                } else if ("metricId".equals(fieldName)) {
+                    deserializedNamespaceProperties.metricId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedNamespaceProperties.status = reader.getString();
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedNamespaceProperties.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedAt".equals(fieldName)) {
+                    deserializedNamespaceProperties.updatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("serviceBusEndpoint".equals(fieldName)) {
+                    deserializedNamespaceProperties.serviceBusEndpoint = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedNamespaceProperties.subscriptionId = reader.getString();
+                } else if ("scaleUnit".equals(fieldName)) {
+                    deserializedNamespaceProperties.scaleUnit = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedNamespaceProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("critical".equals(fieldName)) {
+                    deserializedNamespaceProperties.critical = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dataCenter".equals(fieldName)) {
+                    deserializedNamespaceProperties.dataCenter = reader.getString();
+                } else if ("namespaceType".equals(fieldName)) {
+                    deserializedNamespaceProperties.namespaceType = NamespaceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamespaceProperties;
+        });
     }
 }

@@ -5,30 +5,45 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.AdminPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Network admin rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Custom")
 @Fluent
 public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
     /*
+     * Whether the rule is custom or default.
+     */
+    private EffectiveAdminRuleKind kind = EffectiveAdminRuleKind.CUSTOM;
+
+    /*
      * Indicates the properties of the security admin rule
      */
-    @JsonProperty(value = "properties")
     private AdminPropertiesFormat innerProperties;
 
     /**
      * Creates an instance of ActiveSecurityAdminRule class.
      */
     public ActiveSecurityAdminRule() {
+    }
+
+    /**
+     * Get the kind property: Whether the rule is custom or default.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EffectiveAdminRuleKind kind() {
+        return this.kind;
     }
 
     /**
@@ -340,9 +355,82 @@ public final class ActiveSecurityAdminRule extends ActiveBaseSecurityAdminRule {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (ruleCollectionAppliesToGroups() != null) {
+            ruleCollectionAppliesToGroups().forEach(e -> e.validate());
+        }
+        if (ruleGroups() != null) {
+            ruleGroups().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("commitTime",
+            commitTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(commitTime()));
+        jsonWriter.writeStringField("region", region());
+        jsonWriter.writeStringField("configurationDescription", configurationDescription());
+        jsonWriter.writeStringField("ruleCollectionDescription", ruleCollectionDescription());
+        jsonWriter.writeArrayField("ruleCollectionAppliesToGroups", ruleCollectionAppliesToGroups(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ruleGroups", ruleGroups(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActiveSecurityAdminRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActiveSecurityAdminRule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActiveSecurityAdminRule.
+     */
+    public static ActiveSecurityAdminRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActiveSecurityAdminRule deserializedActiveSecurityAdminRule = new ActiveSecurityAdminRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.withId(reader.getString());
+                } else if ("commitTime".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.withCommitTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("region".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.withRegion(reader.getString());
+                } else if ("configurationDescription".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.withConfigurationDescription(reader.getString());
+                } else if ("ruleCollectionDescription".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.withRuleCollectionDescription(reader.getString());
+                } else if ("ruleCollectionAppliesToGroups".equals(fieldName)) {
+                    List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups
+                        = reader.readArray(reader1 -> NetworkManagerSecurityGroupItem.fromJson(reader1));
+                    deserializedActiveSecurityAdminRule
+                        .withRuleCollectionAppliesToGroups(ruleCollectionAppliesToGroups);
+                } else if ("ruleGroups".equals(fieldName)) {
+                    List<ConfigurationGroup> ruleGroups
+                        = reader.readArray(reader1 -> ConfigurationGroup.fromJson(reader1));
+                    deserializedActiveSecurityAdminRule.withRuleGroups(ruleGroups);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.kind = EffectiveAdminRuleKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedActiveSecurityAdminRule.innerProperties = AdminPropertiesFormat.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActiveSecurityAdminRule;
+        });
     }
 }

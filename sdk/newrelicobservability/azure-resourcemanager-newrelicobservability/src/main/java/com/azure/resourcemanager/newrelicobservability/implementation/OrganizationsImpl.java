@@ -19,8 +19,7 @@ public final class OrganizationsImpl implements Organizations {
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    public OrganizationsImpl(
-        OrganizationsClient innerClient,
+    public OrganizationsImpl(OrganizationsClient innerClient,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class OrganizationsImpl implements Organizations {
 
     public PagedIterable<OrganizationResource> list(String userEmail, String location) {
         PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list(userEmail, location);
-        return Utils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OrganizationResource> list(String userEmail, String location, Context context) {
         PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list(userEmail, location, context);
-        return Utils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
     }
 
     private OrganizationsClient serviceClient() {

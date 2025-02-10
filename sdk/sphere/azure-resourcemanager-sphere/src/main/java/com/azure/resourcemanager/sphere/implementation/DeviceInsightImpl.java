@@ -13,8 +13,8 @@ public final class DeviceInsightImpl implements DeviceInsight {
 
     private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
 
-    DeviceInsightImpl(
-        DeviceInsightInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    DeviceInsightImpl(DeviceInsightInner innerObject,
+        com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

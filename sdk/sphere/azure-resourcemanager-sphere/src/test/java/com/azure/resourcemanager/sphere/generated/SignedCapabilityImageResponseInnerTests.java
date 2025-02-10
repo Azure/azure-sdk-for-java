@@ -10,8 +10,8 @@ import com.azure.resourcemanager.sphere.fluent.models.SignedCapabilityImageRespo
 public final class SignedCapabilityImageResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SignedCapabilityImageResponseInner model =
-            BinaryData.fromString("{\"image\":\"nxytxh\"}").toObject(SignedCapabilityImageResponseInner.class);
+        SignedCapabilityImageResponseInner model
+            = BinaryData.fromString("{\"image\":\"sapskr\"}").toObject(SignedCapabilityImageResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test

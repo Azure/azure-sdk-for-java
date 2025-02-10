@@ -5,44 +5,45 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Geographic and time constraints for Azure reachability report.
  */
 @Fluent
-public final class AzureReachabilityReportParameters {
+public final class AzureReachabilityReportParameters implements JsonSerializable<AzureReachabilityReportParameters> {
     /*
      * Parameters that define a geographic location.
      */
-    @JsonProperty(value = "providerLocation", required = true)
     private AzureReachabilityReportLocation providerLocation;
 
     /*
      * List of Internet service providers.
      */
-    @JsonProperty(value = "providers")
     private List<String> providers;
 
     /*
      * Optional Azure regions to scope the query to.
      */
-    @JsonProperty(value = "azureLocations")
     private List<String> azureLocations;
 
     /*
      * The start time for the Azure reachability report.
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * The end time for the Azure reachability report.
      */
-    @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /**
@@ -158,20 +159,81 @@ public final class AzureReachabilityReportParameters {
      */
     public void validate() {
         if (providerLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property providerLocation in model AzureReachabilityReportParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property providerLocation in model AzureReachabilityReportParameters"));
         } else {
             providerLocation().validate();
         }
         if (startTime() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property startTime in model AzureReachabilityReportParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startTime in model AzureReachabilityReportParameters"));
         }
         if (endTime() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property endTime in model AzureReachabilityReportParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endTime in model AzureReachabilityReportParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureReachabilityReportParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("providerLocation", this.providerLocation);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeArrayField("providers", this.providers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("azureLocations", this.azureLocations,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureReachabilityReportParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureReachabilityReportParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureReachabilityReportParameters.
+     */
+    public static AzureReachabilityReportParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureReachabilityReportParameters deserializedAzureReachabilityReportParameters
+                = new AzureReachabilityReportParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerLocation".equals(fieldName)) {
+                    deserializedAzureReachabilityReportParameters.providerLocation
+                        = AzureReachabilityReportLocation.fromJson(reader);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedAzureReachabilityReportParameters.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedAzureReachabilityReportParameters.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("providers".equals(fieldName)) {
+                    List<String> providers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureReachabilityReportParameters.providers = providers;
+                } else if ("azureLocations".equals(fieldName)) {
+                    List<String> azureLocations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureReachabilityReportParameters.azureLocations = azureLocations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureReachabilityReportParameters;
+        });
+    }
 }

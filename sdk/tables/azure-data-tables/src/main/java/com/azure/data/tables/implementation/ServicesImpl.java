@@ -16,6 +16,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -24,21 +25,27 @@ import com.azure.data.tables.implementation.models.ServicesGetPropertiesHeaders;
 import com.azure.data.tables.implementation.models.ServicesGetStatisticsHeaders;
 import com.azure.data.tables.implementation.models.ServicesSetPropertiesHeaders;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
-import com.azure.data.tables.implementation.models.TableServiceProperties;
-import com.azure.data.tables.implementation.models.TableServiceStats;
+import com.azure.data.tables.models.TableServiceProperties;
+import com.azure.data.tables.models.TableServiceStatistics;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Services. */
+/**
+ * An instance of this class provides access to all the operations defined in Services.
+ */
 public final class ServicesImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureTableImpl client;
 
     /**
      * Initializes an instance of ServicesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServicesImpl(AzureTableImpl client) {
@@ -54,94 +61,126 @@ public final class ServicesImpl {
     @ServiceInterface(name = "AzureTableServices")
     public interface ServicesService {
         @Put("/")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setProperties(
-                @HostParam("url") String url,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @BodyParam("application/xml") TableServiceProperties tableServiceProperties,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setProperties(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @BodyParam("application/xml") TableServiceProperties tableServiceProperties,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        ResponseBase<ServicesSetPropertiesHeaders, Void> setPropertiesSync(
-                @HostParam("url") String url,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @BodyParam("application/xml") TableServiceProperties tableServiceProperties,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> setPropertiesNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @BodyParam("application/xml") TableServiceProperties tableServiceProperties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        ResponseBase<ServicesSetPropertiesHeaders, Void> setPropertiesSync(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @BodyParam("application/xml") TableServiceProperties tableServiceProperties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        Response<Void> setPropertiesNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @BodyParam("application/xml") TableServiceProperties tableServiceProperties,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
         Mono<ResponseBase<ServicesGetPropertiesHeaders, TableServiceProperties>> getProperties(
-                @HostParam("url") String url,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        Mono<Response<TableServiceProperties>> getPropertiesNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Get("/")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
         ResponseBase<ServicesGetPropertiesHeaders, TableServiceProperties> getPropertiesSync(
-                @HostParam("url") String url,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        Mono<ResponseBase<ServicesGetStatisticsHeaders, TableServiceStats>> getStatistics(
-                @HostParam("url") String url,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<TableServiceProperties> getPropertiesNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(TableServiceErrorException.class)
-        ResponseBase<ServicesGetStatisticsHeaders, TableServiceStats> getStatisticsSync(
-                @HostParam("url") String url,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<ServicesGetStatisticsHeaders, TableServiceStatistics>> getStatistics(
+            @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Get("/")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        Mono<Response<TableServiceStatistics>> getStatisticsNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Get("/")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        ResponseBase<ServicesGetStatisticsHeaders, TableServiceStatistics> getStatisticsSync(
+            @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Get("/")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        Response<TableServiceStatistics> getStatisticsNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Sets properties for an account's Table service endpoint, including properties for Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
-     *
+     * 
      * @param tableServiceProperties The Table Service properties.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -149,32 +188,19 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
-            TableServiceProperties tableServiceProperties, Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
+        TableServiceProperties tableServiceProperties, Integer timeout, String requestId) {
         return FluxUtil.withContext(
-                context ->
-                        service.setProperties(
-                                this.client.getUrl(),
-                                restype,
-                                comp,
-                                timeout,
-                                this.client.getVersion(),
-                                requestId,
-                                tableServiceProperties,
-                                accept,
-                                context));
+            context -> setPropertiesWithResponseAsync(tableServiceProperties, timeout, requestId, context));
     }
 
     /**
      * Sets properties for an account's Table service endpoint, including properties for Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
-     *
+     * 
      * @param tableServiceProperties The Table Service properties.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
@@ -183,50 +209,42 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
-            TableServiceProperties tableServiceProperties, Integer timeout, String requestId, Context context) {
+        TableServiceProperties tableServiceProperties, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.setProperties(
-                this.client.getUrl(),
-                restype,
-                comp,
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                tableServiceProperties,
-                accept,
-                context);
+        return service.setProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
+            tableServiceProperties, accept, context);
     }
 
     /**
      * Sets properties for an account's Table service endpoint, including properties for Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
-     *
+     * 
      * @param tableServiceProperties The Table Service properties.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setPropertiesAsync(
-            TableServiceProperties tableServiceProperties, Integer timeout, String requestId) {
+    public Mono<Void> setPropertiesAsync(TableServiceProperties tableServiceProperties, Integer timeout,
+        String requestId) {
         return setPropertiesWithResponseAsync(tableServiceProperties, timeout, requestId)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Sets properties for an account's Table service endpoint, including properties for Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
-     *
+     * 
      * @param tableServiceProperties The Table Service properties.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
@@ -234,20 +252,64 @@ public final class ServicesImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setPropertiesAsync(
-            TableServiceProperties tableServiceProperties, Integer timeout, String requestId, Context context) {
+    public Mono<Void> setPropertiesAsync(TableServiceProperties tableServiceProperties, Integer timeout,
+        String requestId, Context context) {
         return setPropertiesWithResponseAsync(tableServiceProperties, timeout, requestId, context)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Sets properties for an account's Table service endpoint, including properties for Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
-     *
+     * 
      * @param tableServiceProperties The Table Service properties.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(
+        TableServiceProperties tableServiceProperties, Integer timeout, String requestId) {
+        return FluxUtil.withContext(context -> setPropertiesNoCustomHeadersWithResponseAsync(tableServiceProperties,
+            timeout, requestId, context));
+    }
+
+    /**
+     * Sets properties for an account's Table service endpoint, including properties for Analytics and CORS
+     * (Cross-Origin Resource Sharing) rules.
+     * 
+     * @param tableServiceProperties The Table Service properties.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(
+        TableServiceProperties tableServiceProperties, Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return service.setPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
+            this.client.getVersion(), requestId, tableServiceProperties, accept, context);
+    }
+
+    /**
+     * Sets properties for an account's Table service endpoint, including properties for Analytics and CORS
+     * (Cross-Origin Resource Sharing) rules.
+     * 
+     * @param tableServiceProperties The Table Service properties.
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
@@ -256,30 +318,22 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesSetPropertiesHeaders, Void> setPropertiesWithResponse(
-            TableServiceProperties tableServiceProperties, Integer timeout, String requestId, Context context) {
+        TableServiceProperties tableServiceProperties, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.setPropertiesSync(
-                this.client.getUrl(),
-                restype,
-                comp,
-                timeout,
-                this.client.getVersion(),
-                requestId,
-                tableServiceProperties,
-                accept,
-                context);
+        return service.setPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
+            requestId, tableServiceProperties, accept, context);
     }
 
     /**
      * Sets properties for an account's Table service endpoint, including properties for Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
-     *
+     * 
      * @param tableServiceProperties The Table Service properties.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -290,73 +344,84 @@ public final class ServicesImpl {
     }
 
     /**
-     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
-     * Resource Sharing) rules.
-     *
+     * Sets properties for an account's Table service endpoint, including properties for Analytics and CORS
+     * (Cross-Origin Resource Sharing) rules.
+     * 
+     * @param tableServiceProperties The Table Service properties.
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
-     *     Resource Sharing) rules along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ServicesGetPropertiesHeaders, TableServiceProperties>> getPropertiesWithResponseAsync(
-            Integer timeout, String requestId) {
+    public Response<Void> setPropertiesNoCustomHeadersWithResponse(TableServiceProperties tableServiceProperties,
+        Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
         final String accept = "application/xml";
-        return FluxUtil.withContext(
-                context ->
-                        service.getProperties(
-                                this.client.getUrl(),
-                                restype,
-                                comp,
-                                timeout,
-                                this.client.getVersion(),
-                                requestId,
-                                accept,
-                                context));
+        return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
+            this.client.getVersion(), requestId, tableServiceProperties, accept, context);
     }
 
     /**
      * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ServicesGetPropertiesHeaders, TableServiceProperties>>
+        getPropertiesWithResponseAsync(Integer timeout, String requestId) {
+        return FluxUtil.withContext(context -> getPropertiesWithResponseAsync(timeout, requestId, context));
+    }
+
+    /**
+     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
-     *     Resource Sharing) rules along with {@link ResponseBase} on successful completion of {@link Mono}.
+     * Resource Sharing) rules along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ServicesGetPropertiesHeaders, TableServiceProperties>> getPropertiesWithResponseAsync(
-            Integer timeout, String requestId, Context context) {
+    public Mono<ResponseBase<ServicesGetPropertiesHeaders, TableServiceProperties>>
+        getPropertiesWithResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.getProperties(
-                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
+        return service.getProperties(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
+            accept, context);
     }
 
     /**
      * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
-     *     Resource Sharing) rules on successful completion of {@link Mono}.
+     * Resource Sharing) rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableServiceProperties> getPropertiesAsync(Integer timeout, String requestId) {
@@ -366,59 +431,103 @@ public final class ServicesImpl {
     /**
      * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
-     *     Resource Sharing) rules on successful completion of {@link Mono}.
+     * Resource Sharing) rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableServiceProperties> getPropertiesAsync(Integer timeout, String requestId, Context context) {
         return getPropertiesWithResponseAsync(timeout, requestId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableServiceProperties>> getPropertiesNoCustomHeadersWithResponseAsync(Integer timeout,
+        String requestId) {
+        return FluxUtil
+            .withContext(context -> getPropertiesNoCustomHeadersWithResponseAsync(timeout, requestId, context));
+    }
+
+    /**
+     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
-     *     Resource Sharing) rules along with {@link ResponseBase}.
+     * Resource Sharing) rules along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<ServicesGetPropertiesHeaders, TableServiceProperties> getPropertiesWithResponse(
-            Integer timeout, String requestId, Context context) {
+    public Mono<Response<TableServiceProperties>> getPropertiesNoCustomHeadersWithResponseAsync(Integer timeout,
+        String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.getPropertiesSync(
-                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
+        return service.getPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
+            this.client.getVersion(), requestId, accept, context);
     }
 
     /**
      * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
-     *     Resource Sharing) rules.
+     * Resource Sharing) rules along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ServicesGetPropertiesHeaders, TableServiceProperties> getPropertiesWithResponse(Integer timeout,
+        String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return service.getPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
+            requestId, accept, context);
+    }
+
+    /**
+     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableServiceProperties getProperties(Integer timeout, String requestId) {
@@ -426,43 +535,54 @@ public final class ServicesImpl {
     }
 
     /**
-     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
-     * endpoint when read-access geo-redundant replication is enabled for the account.
-     *
+     * Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules.
+     * 
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin
+     * Resource Sharing) rules along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableServiceProperties> getPropertiesNoCustomHeadersWithResponse(Integer timeout, String requestId,
+        Context context) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
+            this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the service along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ServicesGetStatisticsHeaders, TableServiceStats>> getStatisticsWithResponseAsync(
-            Integer timeout, String requestId) {
-        final String restype = "service";
-        final String comp = "stats";
-        final String accept = "application/xml";
-        return FluxUtil.withContext(
-                context ->
-                        service.getStatistics(
-                                this.client.getUrl(),
-                                restype,
-                                comp,
-                                timeout,
-                                this.client.getVersion(),
-                                requestId,
-                                accept,
-                                context));
+    public Mono<ResponseBase<ServicesGetStatisticsHeaders, TableServiceStatistics>>
+        getStatisticsWithResponseAsync(Integer timeout, String requestId) {
+        return FluxUtil.withContext(context -> getStatisticsWithResponseAsync(timeout, requestId, context));
     }
 
     /**
      * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the account.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
@@ -470,39 +590,39 @@ public final class ServicesImpl {
      * @return stats for the service along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<ServicesGetStatisticsHeaders, TableServiceStats>> getStatisticsWithResponseAsync(
-            Integer timeout, String requestId, Context context) {
+    public Mono<ResponseBase<ServicesGetStatisticsHeaders, TableServiceStatistics>>
+        getStatisticsWithResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "stats";
         final String accept = "application/xml";
-        return service.getStatistics(
-                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
+        return service.getStatistics(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
+            accept, context);
     }
 
     /**
      * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the account.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableServiceStats> getStatisticsAsync(Integer timeout, String requestId) {
+    public Mono<TableServiceStatistics> getStatisticsAsync(Integer timeout, String requestId) {
         return getStatisticsWithResponseAsync(timeout, requestId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the account.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
@@ -510,18 +630,60 @@ public final class ServicesImpl {
      * @return stats for the service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableServiceStats> getStatisticsAsync(Integer timeout, String requestId, Context context) {
+    public Mono<TableServiceStatistics> getStatisticsAsync(Integer timeout, String requestId, Context context) {
         return getStatisticsWithResponseAsync(timeout, requestId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the account.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stats for the service along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableServiceStatistics>> getStatisticsNoCustomHeadersWithResponseAsync(Integer timeout,
+        String requestId) {
+        return FluxUtil
+            .withContext(context -> getStatisticsNoCustomHeadersWithResponseAsync(timeout, requestId, context));
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stats for the service along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TableServiceStatistics>> getStatisticsNoCustomHeadersWithResponseAsync(Integer timeout,
+        String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "stats";
+        final String accept = "application/xml";
+        return service.getStatisticsNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
+            this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
@@ -529,29 +691,52 @@ public final class ServicesImpl {
      * @return stats for the service along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<ServicesGetStatisticsHeaders, TableServiceStats> getStatisticsWithResponse(
-            Integer timeout, String requestId, Context context) {
+    public ResponseBase<ServicesGetStatisticsHeaders, TableServiceStatistics> getStatisticsWithResponse(Integer timeout,
+        String requestId, Context context) {
         final String restype = "service";
         final String comp = "stats";
         final String accept = "application/xml";
-        return service.getStatisticsSync(
-                this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
+        return service.getStatisticsSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
+            requestId, accept, context);
     }
 
     /**
      * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
      * endpoint when read-access geo-redundant replication is enabled for the account.
-     *
+     * 
      * @param timeout The timeout parameter is expressed in seconds.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     *     analytics logs when analytics logging is enabled.
+     * analytics logs when analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws TableServiceErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stats for the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableServiceStats getStatistics(Integer timeout, String requestId) {
+    public TableServiceStatistics getStatistics(Integer timeout, String requestId) {
         return getStatisticsWithResponse(timeout, requestId, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Table service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the account.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws TableServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stats for the service along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableServiceStatistics> getStatisticsNoCustomHeadersWithResponse(Integer timeout, String requestId,
+        Context context) {
+        final String restype = "service";
+        final String comp = "stats";
+        final String accept = "application/xml";
+        return service.getStatisticsNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
+            this.client.getVersion(), requestId, accept, context);
     }
 }

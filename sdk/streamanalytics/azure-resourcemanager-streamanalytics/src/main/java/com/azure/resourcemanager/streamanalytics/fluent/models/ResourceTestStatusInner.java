@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.ErrorResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the status of the test operation along with error information, if applicable. */
+/**
+ * Describes the status of the test operation along with error information, if applicable.
+ */
 @Immutable
-public final class ResourceTestStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceTestStatusInner.class);
-
+public final class ResourceTestStatusInner implements JsonSerializable<ResourceTestStatusInner> {
     /*
      * The status of the test operation.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Describes the error that occurred.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ErrorResponse error;
 
     /**
+     * Creates an instance of ResourceTestStatusInner class.
+     */
+    public ResourceTestStatusInner() {
+    }
+
+    /**
      * Get the status property: The status of the test operation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -38,7 +44,7 @@ public final class ResourceTestStatusInner {
 
     /**
      * Get the error property: Describes the error that occurred.
-     *
+     * 
      * @return the error value.
      */
     public ErrorResponse error() {
@@ -47,12 +53,49 @@ public final class ResourceTestStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceTestStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceTestStatusInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceTestStatusInner.
+     */
+    public static ResourceTestStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceTestStatusInner deserializedResourceTestStatusInner = new ResourceTestStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedResourceTestStatusInner.status = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedResourceTestStatusInner.error = ErrorResponse.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceTestStatusInner;
+        });
     }
 }

@@ -62,8 +62,8 @@ abstract class VertxHttpResponseBase extends HttpResponse {
 
     @Override
     public final Mono<String> getBodyAsString() {
-        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes,
-            getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
+        return getBodyAsByteArray()
+            .map(bytes -> CoreUtils.bomAwareToString(bytes, getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override

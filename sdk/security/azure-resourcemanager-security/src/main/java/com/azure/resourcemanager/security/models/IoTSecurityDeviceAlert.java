@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Statistical information about the number of alerts per alert type during last set number of days. */
+/**
+ * Statistical information about the number of alerts per alert type during last set number of days.
+ */
 @Immutable
-public final class IoTSecurityDeviceAlert {
+public final class IoTSecurityDeviceAlert implements JsonSerializable<IoTSecurityDeviceAlert> {
     /*
      * Display name of the alert
      */
-    @JsonProperty(value = "alertDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String alertDisplayName;
 
     /*
      * Assessed Alert severity.
      */
-    @JsonProperty(value = "reportedSeverity", access = JsonProperty.Access.WRITE_ONLY)
     private ReportedSeverity reportedSeverity;
 
     /*
      * Number of alerts raised for this alert type.
      */
-    @JsonProperty(value = "alertsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long alertsCount;
 
-    /** Creates an instance of IoTSecurityDeviceAlert class. */
+    /**
+     * Creates an instance of IoTSecurityDeviceAlert class.
+     */
     public IoTSecurityDeviceAlert() {
     }
 
     /**
      * Get the alertDisplayName property: Display name of the alert.
-     *
+     * 
      * @return the alertDisplayName value.
      */
     public String alertDisplayName() {
@@ -43,7 +48,7 @@ public final class IoTSecurityDeviceAlert {
 
     /**
      * Get the reportedSeverity property: Assessed Alert severity.
-     *
+     * 
      * @return the reportedSeverity value.
      */
     public ReportedSeverity reportedSeverity() {
@@ -52,7 +57,7 @@ public final class IoTSecurityDeviceAlert {
 
     /**
      * Get the alertsCount property: Number of alerts raised for this alert type.
-     *
+     * 
      * @return the alertsCount value.
      */
     public Long alertsCount() {
@@ -61,9 +66,49 @@ public final class IoTSecurityDeviceAlert {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTSecurityDeviceAlert from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTSecurityDeviceAlert if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IoTSecurityDeviceAlert.
+     */
+    public static IoTSecurityDeviceAlert fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTSecurityDeviceAlert deserializedIoTSecurityDeviceAlert = new IoTSecurityDeviceAlert();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertDisplayName".equals(fieldName)) {
+                    deserializedIoTSecurityDeviceAlert.alertDisplayName = reader.getString();
+                } else if ("reportedSeverity".equals(fieldName)) {
+                    deserializedIoTSecurityDeviceAlert.reportedSeverity
+                        = ReportedSeverity.fromString(reader.getString());
+                } else if ("alertsCount".equals(fieldName)) {
+                    deserializedIoTSecurityDeviceAlert.alertsCount = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTSecurityDeviceAlert;
+        });
     }
 }

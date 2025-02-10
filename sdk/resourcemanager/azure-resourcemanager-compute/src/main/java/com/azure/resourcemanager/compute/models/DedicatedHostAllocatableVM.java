@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents the dedicated host unutilized capacity in terms of a specific VM size.
  */
 @Fluent
-public final class DedicatedHostAllocatableVM {
+public final class DedicatedHostAllocatableVM implements JsonSerializable<DedicatedHostAllocatableVM> {
     /*
      * VM size in terms of which the unutilized capacity is represented.
      */
-    @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
      * Maximum number of VMs of size vmSize that can fit in the dedicated host's remaining capacity.
      */
-    @JsonProperty(value = "count")
     private Double count;
 
     /**
@@ -78,5 +80,44 @@ public final class DedicatedHostAllocatableVM {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeNumberField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHostAllocatableVM from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHostAllocatableVM if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedHostAllocatableVM.
+     */
+    public static DedicatedHostAllocatableVM fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHostAllocatableVM deserializedDedicatedHostAllocatableVM = new DedicatedHostAllocatableVM();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmSize".equals(fieldName)) {
+                    deserializedDedicatedHostAllocatableVM.vmSize = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedDedicatedHostAllocatableVM.count = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHostAllocatableVM;
+        });
     }
 }

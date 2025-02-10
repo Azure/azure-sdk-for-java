@@ -15,6 +15,7 @@ import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -85,19 +86,19 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     /**
      * The block size to use if none is specified in parallel operations.
      */
-    public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
+    public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = BlobConstants.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
 
     /**
      * The number of buffers to use if none is specified on the buffered upload method.
      */
-    public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = 8;
+    public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = BlobConstants.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
 
     /**
      * If a blob is known to be greater than 100MB, using a larger block size will trigger some server-side
      * optimizations. If the block size is not set and the size of the blob is known to be greater than 100MB, this
      * value will be used.
      */
-    public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = 8 * Constants.MB;
+    public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = BlobConstants.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
 
     static final long BLOB_MAX_UPLOAD_BLOCK_SIZE = 4000L * Constants.MB;
 
@@ -107,7 +108,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * and {@link BinaryData#fromFile(Path, Long, Long, int)}
      * to represent the content.
      */
-    private static final int DEFAULT_FILE_READ_CHUNK_SIZE = 1024 * 64;
+    private static final int DEFAULT_FILE_READ_CHUNK_SIZE = BlobConstants.DEFAULT_FILE_READ_CHUNK_SIZE;
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClient.class);
 
@@ -172,8 +173,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
      */
     protected BlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
-                              String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-                              EncryptionScope encryptionScope, String versionId) {
+        String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        EncryptionScope encryptionScope, String versionId) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
     }
@@ -231,8 +232,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public BlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
-            finalCustomerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            finalCustomerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
@@ -278,8 +278,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     private SpecializedBlobClientBuilder prepareBuilder() {
-        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
-            .pipeline(getHttpPipeline())
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder().pipeline(getHttpPipeline())
             .endpoint(getBlobUrl())
             .snapshot(getSnapshotId())
             .serviceVersion(getServiceVersion());
@@ -405,7 +404,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .then(uploadWithResponse(data, parallelTransferOptions, null, null, null, requestConditions))
             .flatMap(FluxUtil::toMono);
     }
-
 
     /**
      * Creates a new block blob. By default, this method will not overwrite an existing blob.
@@ -555,9 +553,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
         try {
-            return this.uploadWithResponse(new BlobParallelUploadOptions(data)
-                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTier(tier).setRequestConditions(requestConditions));
+            return this.uploadWithResponse(
+                new BlobParallelUploadOptions(data).setParallelTransferOptions(parallelTransferOptions)
+                    .setHeaders(headers)
+                    .setMetadata(metadata)
+                    .setTier(tier)
+                    .setRequestConditions(requestConditions));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -681,27 +682,28 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         try {
             StorageImplUtils.assertNotNull("options", options);
 
-            final ParallelTransferOptions parallelTransferOptions =
-                ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+            final ParallelTransferOptions parallelTransferOptions
+                = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
             final BlobHttpHeaders headers = options.getHeaders();
             final Map<String, String> metadata = options.getMetadata();
             final Map<String, String> tags = options.getTags();
             final AccessTier tier = options.getTier();
-            final BlobRequestConditions requestConditions = options.getRequestConditions() == null
-                ? new BlobRequestConditions() : options.getRequestConditions();
+            final BlobRequestConditions requestConditions
+                = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
             final boolean computeMd5 = options.isComputeMd5();
             final BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
-                ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
+                ? new BlobImmutabilityPolicy()
+                : options.getImmutabilityPolicy();
             final Boolean legalHold = options.isLegalHold();
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
-            Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction = (stream) ->
-                uploadInChunks(blockBlobAsyncClient, stream, parallelTransferOptions, headers, metadata, tags,
-                    tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
+            Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction
+                = (stream) -> uploadInChunks(blockBlobAsyncClient, stream, parallelTransferOptions, headers, metadata,
+                    tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
 
-            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobFunction =
-                (stream, length) -> uploadFullBlob(blockBlobAsyncClient, stream, length, parallelTransferOptions,
+            BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobFunction
+                = (stream, length) -> uploadFullBlob(blockBlobAsyncClient, stream, length, parallelTransferOptions,
                     headers, metadata, tags, tier, requestConditions, computeMd5, immutabilityPolicy, legalHold);
 
             Flux<ByteBuffer> data = options.getDataFlux();
@@ -726,24 +728,22 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
          * from an iterable and is therefore replayable.
          */
         return UploadUtils.computeMd5(data, computeMd5, LOGGER)
-            .map(fluxMd5Wrapper -> new BlockBlobSimpleUploadOptions(fluxMd5Wrapper.getData(), length)
-                .setHeaders(headers)
-                .setMetadata(metadata)
-                .setTags(tags)
-                .setTier(tier)
-                .setRequestConditions(requestConditions)
-                .setContentMd5(fluxMd5Wrapper.getMd5())
-                .setImmutabilityPolicy(immutabilityPolicy)
-                .setLegalHold(legalHold))
+            .map(
+                fluxMd5Wrapper -> new BlockBlobSimpleUploadOptions(fluxMd5Wrapper.getData(), length).setHeaders(headers)
+                    .setMetadata(metadata)
+                    .setTags(tags)
+                    .setTier(tier)
+                    .setRequestConditions(requestConditions)
+                    .setContentMd5(fluxMd5Wrapper.getMd5())
+                    .setImmutabilityPolicy(immutabilityPolicy)
+                    .setLegalHold(legalHold))
             .flatMap(options -> {
                 Mono<Response<BlockBlobItem>> responseMono = blockBlobAsyncClient.uploadWithResponse(options);
                 if (parallelTransferOptions.getProgressListener() != null) {
-                    ProgressReporter progressReporter = ProgressReporter.withProgressListener(
-                        parallelTransferOptions.getProgressListener());
-                    responseMono = responseMono.contextWrite(
-                        FluxUtil.toReactorContext(
-                            Contexts.empty()
-                                .setHttpRequestProgressReporter(progressReporter).getContext()));
+                    ProgressReporter progressReporter
+                        = ProgressReporter.withProgressListener(parallelTransferOptions.getProgressListener());
+                    responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(
+                        Contexts.empty().setHttpRequestProgressReporter(progressReporter).getContext()));
                 }
                 return responseMono;
             });
@@ -757,15 +757,15 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         // TODO: Sample/api reference
 
         ProgressListener progressListener = parallelTransferOptions.getProgressListener();
-        ProgressReporter progressReporter = progressListener == null ? null : ProgressReporter.withProgressListener(
-            progressListener);
+        ProgressReporter progressReporter
+            = progressListener == null ? null : ProgressReporter.withProgressListener(progressListener);
 
         // Validation done in the constructor.
         BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(),
             BlockBlobClient.MAX_STAGE_BLOCK_BYTES_LONG);
 
-        Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data,
-            ModelHelper.wrapBlobOptions(parallelTransferOptions));
+        Flux<ByteBuffer> chunkedSource
+            = UploadUtils.chunkSource(data, ModelHelper.wrapBlobOptions(parallelTransferOptions));
 
         /*
          * Write to the pool and upload the output.
@@ -779,27 +779,28 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 Flux<ByteBuffer> chunkData = bufferAggregator.asFlux();
 
                 String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(UTF_8));
-                return UploadUtils.computeMd5(chunkData, computeMd5, LOGGER)
-                    .flatMap(fluxMd5Wrapper -> {
-                        Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(blockId,
-                            fluxMd5Wrapper.getData(), bufferAggregator.length(), fluxMd5Wrapper.getMd5(),
-                            requestConditions.getLeaseId());
-                        if (progressReporter != null) {
-                            responseMono = responseMono.contextWrite(
-                                FluxUtil.toReactorContext(Contexts.empty()
-                                    .setHttpRequestProgressReporter(progressReporter.createChild()).getContext())
-                            );
-                        }
-                        return responseMono;
-                    })
+                return UploadUtils.computeMd5(chunkData, computeMd5, LOGGER).flatMap(fluxMd5Wrapper -> {
+                    Mono<Response<Void>> responseMono
+                        = blockBlobAsyncClient.stageBlockWithResponse(blockId, fluxMd5Wrapper.getData(),
+                            bufferAggregator.length(), fluxMd5Wrapper.getMd5(), requestConditions.getLeaseId());
+                    if (progressReporter != null) {
+                        responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(Contexts.empty()
+                            .setHttpRequestProgressReporter(progressReporter.createChild())
+                            .getContext()));
+                    }
+                    return responseMono;
+                })
                     // We only care about the stageBlock insofar as it was successful, but we need to collect the ids.
                     .map(x -> blockId);
             }, parallelTransferOptions.getMaxConcurrency(), 1)
             .collect(Collectors.toList())
-            .flatMap(ids ->
-                blockBlobAsyncClient.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(ids)
-                    .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(tier)
-                    .setRequestConditions(requestConditions).setImmutabilityPolicy(immutabilityPolicy)
+            .flatMap(ids -> blockBlobAsyncClient
+                .commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(ids).setHeaders(headers)
+                    .setMetadata(metadata)
+                    .setTags(tags)
+                    .setTier(tier)
+                    .setRequestConditions(requestConditions)
+                    .setImmutabilityPolicy(immutabilityPolicy)
                     .setLegalHold(legalHold)));
     }
 
@@ -911,9 +912,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
         try {
-            return this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
-                    .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                    .setTier(tier).setRequestConditions(requestConditions))
+            return this.uploadFromFileWithResponse(
+                new BlobUploadFromFileOptions(filePath).setParallelTransferOptions(parallelTransferOptions)
+                    .setHeaders(headers)
+                    .setMetadata(metadata)
+                    .setTier(tier)
+                    .setRequestConditions(requestConditions))
                 .then();
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -962,8 +966,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Long originalBlockSize = (options.getParallelTransferOptions() == null)
             ? null
             : options.getParallelTransferOptions().getBlockSizeLong();
-        final ParallelTransferOptions finalParallelTransferOptions =
-            ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+        final ParallelTransferOptions finalParallelTransferOptions
+            = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
         try {
             Path filePath = Paths.get(options.getFilePath());
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
@@ -974,24 +978,22 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             // By default, if the file is larger than 256MB chunk it and stage it as blocks.
             // But, this is configurable by the user passing options with max single upload size configured.
             if (fileSize > finalParallelTransferOptions.getMaxSingleUploadSizeLong()) {
-                return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize,
-                    options.getHeaders(), options.getMetadata(), options.getTags(),
-                    options.getTier(), options.getRequestConditions(), filePath,
-                    blockBlobAsyncClient);
+                return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize, options.getHeaders(),
+                    options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(),
+                    filePath, blockBlobAsyncClient);
             } else {
                 // Otherwise, we know it can be sent in a single request reducing network overhead.
-                Mono<Response<BlockBlobItem>> responseMono = blockBlobAsyncClient.uploadWithResponse(
-                    new BlockBlobSimpleUploadOptions(fullFileData).setHeaders(options.getHeaders())
-                        .setMetadata(options.getMetadata()).setTags(options.getTags())
+                Mono<Response<BlockBlobItem>> responseMono = blockBlobAsyncClient
+                    .uploadWithResponse(new BlockBlobSimpleUploadOptions(fullFileData).setHeaders(options.getHeaders())
+                        .setMetadata(options.getMetadata())
+                        .setTags(options.getTags())
                         .setTier(options.getTier())
                         .setRequestConditions(options.getRequestConditions()));
                 if (finalParallelTransferOptions.getProgressListener() != null) {
-                    ProgressReporter progressReporter = ProgressReporter.withProgressListener(
-                        finalParallelTransferOptions.getProgressListener());
-                    responseMono = responseMono.contextWrite(
-                        FluxUtil.toReactorContext(
-                            Contexts.empty()
-                                .setHttpRequestProgressReporter(progressReporter).getContext()));
+                    ProgressReporter progressReporter
+                        = ProgressReporter.withProgressListener(finalParallelTransferOptions.getProgressListener());
+                    responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(
+                        Contexts.empty().setHttpRequestProgressReporter(progressReporter).getContext()));
                 }
                 return responseMono;
             }
@@ -1000,18 +1002,17 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-    private Mono<Response<BlockBlobItem>> uploadFileChunks(
-        long fileSize, ParallelTransferOptions parallelTransferOptions,
-        Long originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags,
-        AccessTier tier, BlobRequestConditions requestConditions, Path filePath,
-        BlockBlobAsyncClient client) {
-        final BlobRequestConditions finalRequestConditions = (requestConditions == null)
-            ? new BlobRequestConditions() : requestConditions;
+    private Mono<Response<BlockBlobItem>> uploadFileChunks(long fileSize,
+        ParallelTransferOptions parallelTransferOptions, Long originalBlockSize, BlobHttpHeaders headers,
+        Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
+        BlobRequestConditions requestConditions, Path filePath, BlockBlobAsyncClient client) {
+        final BlobRequestConditions finalRequestConditions
+            = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
         // parallelTransferOptions are finalized in the calling method.
 
         ProgressListener progressListener = parallelTransferOptions.getProgressListener();
-        ProgressReporter progressReporter = progressListener == null ? null : ProgressReporter.withProgressListener(
-            progressListener);
+        ProgressReporter progressReporter
+            = progressListener == null ? null : ProgressReporter.withProgressListener(progressListener);
 
         final SortedMap<Long, String> blockIds = new TreeMap<>();
         return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSizeLong()))
@@ -1019,23 +1020,22 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 String blockId = getBlockID();
                 blockIds.put(chunk.getOffset(), blockId);
 
-                BinaryData data = BinaryData.fromFile(
-                    filePath, chunk.getOffset(), chunk.getCount(), DEFAULT_FILE_READ_CHUNK_SIZE);
+                BinaryData data
+                    = BinaryData.fromFile(filePath, chunk.getOffset(), chunk.getCount(), DEFAULT_FILE_READ_CHUNK_SIZE);
 
                 Mono<Response<Void>> responseMono = client.stageBlockWithResponse(
-                    new BlockBlobStageBlockOptions(blockId, data)
-                        .setLeaseId(finalRequestConditions.getLeaseId()));
+                    new BlockBlobStageBlockOptions(blockId, data).setLeaseId(finalRequestConditions.getLeaseId()));
                 if (progressReporter != null) {
-                    responseMono = responseMono.contextWrite(
-                        FluxUtil.toReactorContext(Contexts.empty().setHttpRequestProgressReporter(
-                            progressReporter.createChild()).getContext())
-                    );
+                    responseMono = responseMono.contextWrite(FluxUtil.toReactorContext(
+                        Contexts.empty().setHttpRequestProgressReporter(progressReporter.createChild()).getContext()));
                 }
                 return responseMono;
             }, parallelTransferOptions.getMaxConcurrency())
             .then(Mono.defer(() -> client.commitBlockListWithResponse(
-                new BlockBlobCommitBlockListOptions(new ArrayList<>(blockIds.values()))
-                    .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(tier)
+                new BlockBlobCommitBlockListOptions(new ArrayList<>(blockIds.values())).setHeaders(headers)
+                    .setMetadata(metadata)
+                    .setTags(tags)
+                    .setTier(tier)
                     .setRequestConditions(finalRequestConditions))));
     }
 

@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DataExportSettingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataExportSettingProperties model =
-            BinaryData.fromString("{\"enabled\":true}").toObject(DataExportSettingProperties.class);
-        Assertions.assertEquals(true, model.enabled());
+        DataExportSettingProperties model
+            = BinaryData.fromString("{\"enabled\":false}").toObject(DataExportSettingProperties.class);
+        Assertions.assertEquals(false, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataExportSettingProperties model = new DataExportSettingProperties().withEnabled(true);
+        DataExportSettingProperties model = new DataExportSettingProperties().withEnabled(false);
         model = BinaryData.fromObject(model).toObject(DataExportSettingProperties.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(false, model.enabled());
     }
 }

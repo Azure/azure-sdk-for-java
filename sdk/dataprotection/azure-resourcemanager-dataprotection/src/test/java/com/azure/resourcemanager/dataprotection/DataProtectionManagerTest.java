@@ -9,11 +9,18 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.resourcemanager.dataprotection.models.AlertsState;
 import com.azure.resourcemanager.dataprotection.models.AzureMonitorAlertSettings;
 import com.azure.resourcemanager.dataprotection.models.BackupVault;
@@ -32,13 +39,14 @@ import com.azure.resourcemanager.dataprotection.models.StorageSetting;
 import com.azure.resourcemanager.dataprotection.models.StorageSettingStoreTypes;
 import com.azure.resourcemanager.dataprotection.models.StorageSettingTypes;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Random;
 
-public class DataProtectionManagerTest extends TestBase {
+public class DataProtectionManagerTest extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_WEST2;
     private String resourceGroupName = "rg" + randomPadding();
@@ -48,19 +56,18 @@ public class DataProtectionManagerTest extends TestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TokenCredential credential = getIdentityTestCredential(super.interceptorManager);
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        dataProtectionManager = DataProtectionManager
-                .configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                .authenticate(credential, profile);
+        resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
 
-        resourceManager = ResourceManager
-                .configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                .authenticate(credential, profile)
-                .withDefaultSubscription();
+        dataProtectionManager = DataProtectionManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -68,10 +75,7 @@ public class DataProtectionManagerTest extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                    .define(resourceGroupName)
-                    .withRegion(REGION)
-                    .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -83,49 +87,35 @@ public class DataProtectionManagerTest extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCreateBackupVault() {
         BackupVaultResource resource = null;
         try {
             String vaultName = "vault" + randomPadding();
             // @embedmeStart
-            resource = dataProtectionManager
-                    .backupVaults()
-                    .define(vaultName)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(resourceGroupName)
-                    .withProperties(
-                            new BackupVault()
-                                    .withMonitoringSettings(
-                                            new MonitoringSettings()
-                                                    .withAzureMonitorAlertSettings(
-                                                            new AzureMonitorAlertSettings()
-                                                                    .withAlertsForAllJobFailures(AlertsState.ENABLED)))
-                                    .withSecuritySettings(
-                                            new SecuritySettings()
-                                                    .withSoftDeleteSettings(
-                                                            new SoftDeleteSettings()
-                                                                    .withState(SoftDeleteState.ALWAYS_ON)
-                                                                    .withRetentionDurationInDays(14.0D))
-                                                    .withImmutabilitySettings(
-                                                            new ImmutabilitySettings()
-                                                                    .withState(ImmutabilityState.LOCKED)))
-                                    .withStorageSettings(
-                                            Collections.singletonList(
-                                                    new StorageSetting()
-                                                            .withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
-                                                            .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
-                                    .withFeatureSettings(
-                                            new FeatureSettings()
-                                                    .withCrossSubscriptionRestoreSettings(
-                                                            new CrossSubscriptionRestoreSettings()
-                                                                    .withState(CrossSubscriptionRestoreState.ENABLED))))
-                    .withIdentity(new DppIdentityDetails().withType("systemAssigned"))
-                    .create();
+            resource = dataProtectionManager.backupVaults()
+                .define(vaultName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroupName)
+                .withProperties(new BackupVault()
+                    .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                        new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
+                    .withSecuritySettings(new SecuritySettings()
+                        .withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.ALWAYS_ON)
+                            .withRetentionDurationInDays(14.0D))
+                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.LOCKED)))
+                    .withStorageSettings(Collections
+                        .singletonList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
+                            .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
+                    .withFeatureSettings(new FeatureSettings().withCrossSubscriptionRestoreSettings(
+                        new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.ENABLED))))
+                .withIdentity(new DppIdentityDetails().withType("systemAssigned"))
+                .create();
             // @embedmeEnd
             resource.refresh();
             Assertions.assertEquals(resource.name(), vaultName);
-            Assertions.assertEquals(resource.name(), dataProtectionManager.backupVaults().getById(resource.id()).name());
+            Assertions.assertEquals(resource.name(),
+                dataProtectionManager.backupVaults().getById(resource.id()).name());
             Assertions.assertTrue(dataProtectionManager.backupVaults().list().stream().count() > 0);
         } finally {
             if (resource != null) {
@@ -136,6 +126,44 @@ public class DataProtectionManagerTest extends TestBase {
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
+    }
+
+    /**
+     * Gets a token credential for use in tests.
+     * @param interceptorManager the interceptor manager
+     * @return the TokenCredential
+     */
+    private static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        }
+
+        Configuration config = Configuration.getGlobalConfiguration();
+
+        ChainedTokenCredentialBuilder builder
+            = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+            && !CoreUtils.isNullOrEmpty(clientId)
+            && !CoreUtils.isNullOrEmpty(tenantId)
+            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+            builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .serviceConnectionId(serviceConnectionId)
+                .build());
+        }
+
+        builder.addLast(new AzurePowerShellCredentialBuilder().build());
+        return builder.build();
     }
 
 }

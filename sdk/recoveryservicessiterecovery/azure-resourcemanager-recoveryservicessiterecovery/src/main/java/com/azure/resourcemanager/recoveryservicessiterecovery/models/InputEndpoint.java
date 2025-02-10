@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The InputEndpoint model. */
+/**
+ * The InputEndpoint model.
+ */
 @Fluent
-public final class InputEndpoint {
+public final class InputEndpoint implements JsonSerializable<InputEndpoint> {
     /*
      * The endpointName property.
      */
-    @JsonProperty(value = "endpointName")
     private String endpointName;
 
     /*
      * The privatePort property.
      */
-    @JsonProperty(value = "privatePort")
     private Integer privatePort;
 
     /*
      * The publicPort property.
      */
-    @JsonProperty(value = "publicPort")
     private Integer publicPort;
 
     /*
      * The protocol property.
      */
-    @JsonProperty(value = "protocol")
     private String protocol;
 
-    /** Creates an instance of InputEndpoint class. */
+    /**
+     * Creates an instance of InputEndpoint class.
+     */
     public InputEndpoint() {
     }
 
     /**
      * Get the endpointName property: The endpointName property.
-     *
+     * 
      * @return the endpointName value.
      */
     public String endpointName() {
@@ -49,7 +53,7 @@ public final class InputEndpoint {
 
     /**
      * Set the endpointName property: The endpointName property.
-     *
+     * 
      * @param endpointName the endpointName value to set.
      * @return the InputEndpoint object itself.
      */
@@ -60,7 +64,7 @@ public final class InputEndpoint {
 
     /**
      * Get the privatePort property: The privatePort property.
-     *
+     * 
      * @return the privatePort value.
      */
     public Integer privatePort() {
@@ -69,7 +73,7 @@ public final class InputEndpoint {
 
     /**
      * Set the privatePort property: The privatePort property.
-     *
+     * 
      * @param privatePort the privatePort value to set.
      * @return the InputEndpoint object itself.
      */
@@ -80,7 +84,7 @@ public final class InputEndpoint {
 
     /**
      * Get the publicPort property: The publicPort property.
-     *
+     * 
      * @return the publicPort value.
      */
     public Integer publicPort() {
@@ -89,7 +93,7 @@ public final class InputEndpoint {
 
     /**
      * Set the publicPort property: The publicPort property.
-     *
+     * 
      * @param publicPort the publicPort value to set.
      * @return the InputEndpoint object itself.
      */
@@ -100,7 +104,7 @@ public final class InputEndpoint {
 
     /**
      * Get the protocol property: The protocol property.
-     *
+     * 
      * @return the protocol value.
      */
     public String protocol() {
@@ -109,7 +113,7 @@ public final class InputEndpoint {
 
     /**
      * Set the protocol property: The protocol property.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the InputEndpoint object itself.
      */
@@ -120,9 +124,54 @@ public final class InputEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointName", this.endpointName);
+        jsonWriter.writeNumberField("privatePort", this.privatePort);
+        jsonWriter.writeNumberField("publicPort", this.publicPort);
+        jsonWriter.writeStringField("protocol", this.protocol);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InputEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InputEndpoint if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InputEndpoint.
+     */
+    public static InputEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InputEndpoint deserializedInputEndpoint = new InputEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointName".equals(fieldName)) {
+                    deserializedInputEndpoint.endpointName = reader.getString();
+                } else if ("privatePort".equals(fieldName)) {
+                    deserializedInputEndpoint.privatePort = reader.getNullable(JsonReader::getInt);
+                } else if ("publicPort".equals(fieldName)) {
+                    deserializedInputEndpoint.publicPort = reader.getNullable(JsonReader::getInt);
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedInputEndpoint.protocol = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInputEndpoint;
+        });
     }
 }

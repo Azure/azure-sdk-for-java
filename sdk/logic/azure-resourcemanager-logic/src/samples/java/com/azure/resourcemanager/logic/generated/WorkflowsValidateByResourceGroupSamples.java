@@ -12,39 +12,35 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workflows ValidateByResourceGroup. */
+/**
+ * Samples for Workflows ValidateByResourceGroup.
+ */
 public final class WorkflowsValidateByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/Workflows_ValidateByResourceGroup.json
+     * x-ms-original-file:
+     * specification/logic/resource-manager/Microsoft.Logic/stable/2019-05-01/examples/Workflows_ValidateByResourceGroup
+     * .json
      */
     /**
      * Sample code: Validate a workflow.
-     *
+     * 
      * @param manager Entry point to LogicManager.
      */
     public static void validateAWorkflow(com.azure.resourcemanager.logic.LogicManager manager) throws IOException {
-        manager
-            .workflows()
-            .validateByResourceGroupWithResponse(
-                "test-resource-group",
-                "test-workflow",
-                new WorkflowInner()
-                    .withLocation("brazilsouth")
-                    .withTags(mapOf())
-                    .withIntegrationAccount(
-                        new ResourceReference()
-                            .withId(
-                                "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-resource-group/providers/Microsoft.Logic/integrationAccounts/test-integration-account"))
-                    .withDefinition(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize(
-                                "{\"$schema\":\"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#\",\"actions\":{},\"contentVersion\":\"1.0.0.0\",\"outputs\":{},\"parameters\":{},\"triggers\":{}}",
-                                Object.class,
-                                SerializerEncoding.JSON)),
+        manager.workflows()
+            .validateByResourceGroupWithResponse("test-resource-group", "test-workflow", new WorkflowInner()
+                .withLocation("brazilsouth")
+                .withTags(mapOf())
+                .withIntegrationAccount(new ResourceReference().withId(
+                    "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-resource-group/providers/Microsoft.Logic/integrationAccounts/test-integration-account"))
+                .withDefinition(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize(
+                        "{\"$schema\":\"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#\",\"actions\":{},\"contentVersion\":\"1.0.0.0\",\"outputs\":{},\"parameters\":{},\"triggers\":{}}",
+                        Object.class, SerializerEncoding.JSON)),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

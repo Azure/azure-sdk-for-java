@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of a matching paired key or certificate. */
+/**
+ * Details of a matching paired key or certificate.
+ */
 @Fluent
-public final class PairedKey {
+public final class PairedKey implements JsonSerializable<PairedKey> {
     /*
      * ID of the paired key or certificate.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The type indicating whether the paired object is a key or certificate.
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /*
-     * Additional paired key properties
+    /**
+     * Creates an instance of PairedKey class.
      */
-    @JsonProperty(value = "additionalProperties")
-    private Object additionalProperties;
-
-    /** Creates an instance of PairedKey class. */
     public PairedKey() {
     }
 
     /**
      * Get the id property: ID of the paired key or certificate.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +43,7 @@ public final class PairedKey {
 
     /**
      * Set the id property: ID of the paired key or certificate.
-     *
+     * 
      * @param id the id value to set.
      * @return the PairedKey object itself.
      */
@@ -54,7 +54,7 @@ public final class PairedKey {
 
     /**
      * Get the type property: The type indicating whether the paired object is a key or certificate.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -63,7 +63,7 @@ public final class PairedKey {
 
     /**
      * Set the type property: The type indicating whether the paired object is a key or certificate.
-     *
+     * 
      * @param type the type value to set.
      * @return the PairedKey object itself.
      */
@@ -73,30 +73,49 @@ public final class PairedKey {
     }
 
     /**
-     * Get the additionalProperties property: Additional paired key properties.
-     *
-     * @return the additionalProperties value.
-     */
-    public Object additionalProperties() {
-        return this.additionalProperties;
-    }
-
-    /**
-     * Set the additionalProperties property: Additional paired key properties.
-     *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the PairedKey object itself.
-     */
-    public PairedKey withAdditionalProperties(Object additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PairedKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PairedKey if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the PairedKey.
+     */
+    public static PairedKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PairedKey deserializedPairedKey = new PairedKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPairedKey.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPairedKey.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPairedKey;
+        });
     }
 }

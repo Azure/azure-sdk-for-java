@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The JobPatchPropertiesProperties model. */
+/**
+ * The JobPatchPropertiesProperties model.
+ */
 @Fluent
-public final class JobPatchPropertiesProperties {
+public final class JobPatchPropertiesProperties implements JsonSerializable<JobPatchPropertiesProperties> {
     /*
      * Resource ID of environment.
      */
-    @JsonProperty(value = "environmentId")
     private String environmentId;
 
     /*
      * Container Apps Job configuration properties.
      */
-    @JsonProperty(value = "configuration")
     private JobConfiguration configuration;
 
     /*
      * Container Apps job definition.
      */
-    @JsonProperty(value = "template")
     private JobTemplate template;
 
     /*
      * Outbound IP Addresses of a container apps job.
      */
-    @JsonProperty(value = "outboundIpAddresses")
     private List<String> outboundIpAddresses;
 
     /*
      * The endpoint of the eventstream of the container apps job.
      */
-    @JsonProperty(value = "eventStreamEndpoint")
     private String eventStreamEndpoint;
 
-    /** Creates an instance of JobPatchPropertiesProperties class. */
+    /**
+     * Creates an instance of JobPatchPropertiesProperties class.
+     */
     public JobPatchPropertiesProperties() {
     }
 
     /**
      * Get the environmentId property: Resource ID of environment.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -56,7 +59,7 @@ public final class JobPatchPropertiesProperties {
 
     /**
      * Set the environmentId property: Resource ID of environment.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the JobPatchPropertiesProperties object itself.
      */
@@ -67,7 +70,7 @@ public final class JobPatchPropertiesProperties {
 
     /**
      * Get the configuration property: Container Apps Job configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     public JobConfiguration configuration() {
@@ -76,7 +79,7 @@ public final class JobPatchPropertiesProperties {
 
     /**
      * Set the configuration property: Container Apps Job configuration properties.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the JobPatchPropertiesProperties object itself.
      */
@@ -87,7 +90,7 @@ public final class JobPatchPropertiesProperties {
 
     /**
      * Get the template property: Container Apps job definition.
-     *
+     * 
      * @return the template value.
      */
     public JobTemplate template() {
@@ -96,7 +99,7 @@ public final class JobPatchPropertiesProperties {
 
     /**
      * Set the template property: Container Apps job definition.
-     *
+     * 
      * @param template the template value to set.
      * @return the JobPatchPropertiesProperties object itself.
      */
@@ -107,7 +110,7 @@ public final class JobPatchPropertiesProperties {
 
     /**
      * Get the outboundIpAddresses property: Outbound IP Addresses of a container apps job.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     public List<String> outboundIpAddresses() {
@@ -116,7 +119,7 @@ public final class JobPatchPropertiesProperties {
 
     /**
      * Set the outboundIpAddresses property: Outbound IP Addresses of a container apps job.
-     *
+     * 
      * @param outboundIpAddresses the outboundIpAddresses value to set.
      * @return the JobPatchPropertiesProperties object itself.
      */
@@ -127,7 +130,7 @@ public final class JobPatchPropertiesProperties {
 
     /**
      * Get the eventStreamEndpoint property: The endpoint of the eventstream of the container apps job.
-     *
+     * 
      * @return the eventStreamEndpoint value.
      */
     public String eventStreamEndpoint() {
@@ -136,7 +139,7 @@ public final class JobPatchPropertiesProperties {
 
     /**
      * Set the eventStreamEndpoint property: The endpoint of the eventstream of the container apps job.
-     *
+     * 
      * @param eventStreamEndpoint the eventStreamEndpoint value to set.
      * @return the JobPatchPropertiesProperties object itself.
      */
@@ -147,7 +150,7 @@ public final class JobPatchPropertiesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -157,5 +160,55 @@ public final class JobPatchPropertiesProperties {
         if (template() != null) {
             template().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environmentId", this.environmentId);
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        jsonWriter.writeJsonField("template", this.template);
+        jsonWriter.writeArrayField("outboundIpAddresses", this.outboundIpAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("eventStreamEndpoint", this.eventStreamEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobPatchPropertiesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobPatchPropertiesProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobPatchPropertiesProperties.
+     */
+    public static JobPatchPropertiesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobPatchPropertiesProperties deserializedJobPatchPropertiesProperties = new JobPatchPropertiesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environmentId".equals(fieldName)) {
+                    deserializedJobPatchPropertiesProperties.environmentId = reader.getString();
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedJobPatchPropertiesProperties.configuration = JobConfiguration.fromJson(reader);
+                } else if ("template".equals(fieldName)) {
+                    deserializedJobPatchPropertiesProperties.template = JobTemplate.fromJson(reader);
+                } else if ("outboundIpAddresses".equals(fieldName)) {
+                    List<String> outboundIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedJobPatchPropertiesProperties.outboundIpAddresses = outboundIpAddresses;
+                } else if ("eventStreamEndpoint".equals(fieldName)) {
+                    deserializedJobPatchPropertiesProperties.eventStreamEndpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobPatchPropertiesProperties;
+        });
     }
 }

@@ -20,39 +20,40 @@ public final class PartnerNamespaceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerNamespaceInner model = BinaryData.fromString(
-            "{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"wgdsl\"},\"groupIds\":[\"hhrmooizqsey\",\"xiutcx\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"rpetogebjoxsl\",\"actionsRequired\":\"nhl\"},\"provisioningState\":\"Updating\"},\"id\":\"q\",\"name\":\"kkzjcjbtrga\",\"type\":\"hvv\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"jj\"},\"groupIds\":[\"qbeitpkxztmoob\",\"lftidgfcwqmpim\",\"qxzhem\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"uj\",\"actionsRequired\":\"t\"},\"provisioningState\":\"Creating\"},\"id\":\"zzwc\",\"name\":\"lkb\",\"type\":\"wpfaj\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"tlwtjjguktalhsn\"},\"groupIds\":[\"dmxzr\",\"oaimlnw\",\"aaomylweazu\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"hwwn\",\"actionsRequired\":\"hlf\"},\"provisioningState\":\"Creating\"},\"id\":\"pchwa\",\"name\":\"fb\",\"type\":\"usnfepgfewet\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"gncxykxhdj\"},\"groupIds\":[\"mmbcxfhbcp\",\"rxvxcjzh\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"pxtgqscjav\",\"actionsRequired\":\"juhdqazkmtgguwpi\"},\"provisioningState\":\"Updating\"},\"id\":\"jcivmmg\",\"name\":\"f\",\"type\":\"fiwrxgkn\"}],\"provisioningState\":\"Deleting\",\"partnerRegistrationFullyQualifiedId\":\"inzqodfvpgs\",\"minimumTlsVersionAllowed\":\"1.1\",\"endpoint\":\"sgbpfgzdjtx\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"v\",\"action\":\"Allow\"},{\"ipMask\":\"lgafcqusrdve\",\"action\":\"Allow\"}],\"disableLocalAuth\":true,\"partnerTopicRoutingMode\":\"SourceEventAttribute\"},\"location\":\"nwlduycvuzhyrmew\",\"tags\":{\"dxgketwzhhzjhfj\":\"vekdxukuqgsjjxu\",\"qsxvmhf\":\"hvvmuvgpmun\",\"yue\":\"uzjyihsasbhudypo\",\"rlttymsjnygqdnfw\":\"slynsqyrpfoo\"},\"id\":\"zdzgtilaxhnfhqly\",\"name\":\"ijouwivkxoyzunb\",\"type\":\"xxrtikvc\"}")
+            "{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"aulx\"},\"groupIds\":[\"mjbnk\",\"pxynenlsvxeizzg\",\"klnsrmffey\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"piymerteea\",\"actionsRequired\":\"xqiekkkzddrtk\"},\"provisioningState\":\"Updating\"},\"id\":\"jbmxvavre\",\"name\":\"de\",\"type\":\"svecuijpxtxs\"}],\"provisioningState\":\"Canceled\",\"partnerRegistrationFullyQualifiedId\":\"tujwsawdd\",\"minimumTlsVersionAllowed\":\"1.0\",\"endpoint\":\"bxv\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"zeexavoxtfgle\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"partnerTopicRoutingMode\":\"ChannelNameHeader\"},\"location\":\"ypq\",\"tags\":{\"vodhtn\":\"fjacbslhhxudb\"},\"id\":\"irudh\",\"name\":\"m\",\"type\":\"es\"}")
             .toObject(PartnerNamespaceInner.class);
-        Assertions.assertEquals("nwlduycvuzhyrmew", model.location());
-        Assertions.assertEquals("vekdxukuqgsjjxu", model.tags().get("dxgketwzhhzjhfj"));
-        Assertions.assertEquals("inzqodfvpgs", model.partnerRegistrationFullyQualifiedId());
-        Assertions.assertEquals(TlsVersion.ONE_ONE, model.minimumTlsVersionAllowed());
+        Assertions.assertEquals("ypq", model.location());
+        Assertions.assertEquals("fjacbslhhxudb", model.tags().get("vodhtn"));
+        Assertions.assertEquals("tujwsawdd", model.partnerRegistrationFullyQualifiedId());
+        Assertions.assertEquals(TlsVersion.ONE_ZERO, model.minimumTlsVersionAllowed());
         Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
-        Assertions.assertEquals("v", model.inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("zeexavoxtfgle", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
-        Assertions.assertEquals(true, model.disableLocalAuth());
-        Assertions.assertEquals(PartnerTopicRoutingMode.SOURCE_EVENT_ATTRIBUTE, model.partnerTopicRoutingMode());
+        Assertions.assertEquals(false, model.disableLocalAuth());
+        Assertions.assertEquals(PartnerTopicRoutingMode.CHANNEL_NAME_HEADER, model.partnerTopicRoutingMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerNamespaceInner model = new PartnerNamespaceInner().withLocation("nwlduycvuzhyrmew")
-            .withTags(mapOf("dxgketwzhhzjhfj", "vekdxukuqgsjjxu", "qsxvmhf", "hvvmuvgpmun", "yue", "uzjyihsasbhudypo",
-                "rlttymsjnygqdnfw", "slynsqyrpfoo"))
-            .withPartnerRegistrationFullyQualifiedId("inzqodfvpgs").withMinimumTlsVersionAllowed(TlsVersion.ONE_ONE)
+        PartnerNamespaceInner model = new PartnerNamespaceInner().withLocation("ypq")
+            .withTags(mapOf("vodhtn", "fjacbslhhxudb"))
+            .withPartnerRegistrationFullyQualifiedId("tujwsawdd")
+            .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO)
             .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
-            .withInboundIpRules(Arrays.asList(new InboundIpRule().withIpMask("v").withAction(IpActionType.ALLOW),
-                new InboundIpRule().withIpMask("lgafcqusrdve").withAction(IpActionType.ALLOW)))
-            .withDisableLocalAuth(true).withPartnerTopicRoutingMode(PartnerTopicRoutingMode.SOURCE_EVENT_ATTRIBUTE);
+            .withInboundIpRules(
+                Arrays.asList(new InboundIpRule().withIpMask("zeexavoxtfgle").withAction(IpActionType.ALLOW)))
+            .withDisableLocalAuth(false)
+            .withPartnerTopicRoutingMode(PartnerTopicRoutingMode.CHANNEL_NAME_HEADER);
         model = BinaryData.fromObject(model).toObject(PartnerNamespaceInner.class);
-        Assertions.assertEquals("nwlduycvuzhyrmew", model.location());
-        Assertions.assertEquals("vekdxukuqgsjjxu", model.tags().get("dxgketwzhhzjhfj"));
-        Assertions.assertEquals("inzqodfvpgs", model.partnerRegistrationFullyQualifiedId());
-        Assertions.assertEquals(TlsVersion.ONE_ONE, model.minimumTlsVersionAllowed());
+        Assertions.assertEquals("ypq", model.location());
+        Assertions.assertEquals("fjacbslhhxudb", model.tags().get("vodhtn"));
+        Assertions.assertEquals("tujwsawdd", model.partnerRegistrationFullyQualifiedId());
+        Assertions.assertEquals(TlsVersion.ONE_ZERO, model.minimumTlsVersionAllowed());
         Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
-        Assertions.assertEquals("v", model.inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("zeexavoxtfgle", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
-        Assertions.assertEquals(true, model.disableLocalAuth());
-        Assertions.assertEquals(PartnerTopicRoutingMode.SOURCE_EVENT_ATTRIBUTE, model.partnerTopicRoutingMode());
+        Assertions.assertEquals(false, model.disableLocalAuth());
+        Assertions.assertEquals(PartnerTopicRoutingMode.CHANNEL_NAME_HEADER, model.partnerTopicRoutingMode());
     }
 
     // Use "Map.of" if available

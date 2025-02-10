@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.CapabilityPro
 public final class CapabilityPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilityPropertiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"zone\":\"u\",\"supportedHAMode\":[\"hfuiuaodsfc\",\"kvxod\",\"uozmyzydagfua\",\"bezy\"],\"supportedGeoBackupRegions\":[\"kktwhrdxw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\"],\"supportedFlexibleServerEditions\":[{\"name\":\"i\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]}]}")
-                .toObject(CapabilityPropertiesInner.class);
+        CapabilityPropertiesInner model = BinaryData.fromString(
+            "{\"zone\":\"ftutqxlngxlefgu\",\"supportedHAMode\":[\"krxd\",\"mi\"],\"supportedGeoBackupRegions\":[\"hzrvqd\"],\"supportedFlexibleServerEditions\":[{\"name\":\"jybige\",\"supportedStorageEditions\":[{\"name\":\"bowsk\",\"minStorageSize\":4187351799054769848,\"maxStorageSize\":8321881464692032483,\"minBackupRetentionDays\":450756782993701005,\"maxBackupRetentionDays\":5423629655028728584},{\"name\":\"ywgndrv\",\"minStorageSize\":9186245080720246611,\"maxStorageSize\":1284533525863803675,\"minBackupRetentionDays\":4712637840273391271,\"maxBackupRetentionDays\":7340674686507262093}],\"supportedServerVersions\":[{\"name\":\"pec\",\"supportedSkus\":[{}]},{\"name\":\"coofsxlzev\",\"supportedSkus\":[{}]},{\"name\":\"jqabcypmivkwlzuv\",\"supportedSkus\":[{},{}]}]}]}")
+            .toObject(CapabilityPropertiesInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -11,40 +11,56 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The KeyPhraseResultDocumentsItem model. */
+/**
+ * The KeyPhraseResultDocumentsItem model.
+ */
 @Fluent
 public final class KeyPhraseResultDocumentsItem extends KeyPhrasesDocumentResult {
-    /** Creates an instance of KeyPhraseResultDocumentsItem class. */
-    public KeyPhraseResultDocumentsItem() {}
+    /**
+     * Creates an instance of KeyPhraseResultDocumentsItem class.
+     */
+    public KeyPhraseResultDocumentsItem() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyPhraseResultDocumentsItem setKeyPhrases(List<String> keyPhrases) {
         super.setKeyPhrases(keyPhrases);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyPhraseResultDocumentsItem setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyPhraseResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyPhraseResultDocumentsItem setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -57,39 +73,36 @@ public final class KeyPhraseResultDocumentsItem extends KeyPhrasesDocumentResult
 
     /**
      * Reads an instance of KeyPhraseResultDocumentsItem from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyPhraseResultDocumentsItem if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KeyPhraseResultDocumentsItem.
      */
     public static KeyPhraseResultDocumentsItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyPhraseResultDocumentsItem deserializedKeyPhraseResultDocumentsItem =
-                            new KeyPhraseResultDocumentsItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyPhraseResultDocumentsItem deserializedKeyPhraseResultDocumentsItem = new KeyPhraseResultDocumentsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedKeyPhraseResultDocumentsItem.setId(reader.getString());
-                        } else if ("warnings".equals(fieldName)) {
-                            List<DocumentWarning> warnings =
-                                    reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
-                            deserializedKeyPhraseResultDocumentsItem.setWarnings(warnings);
-                        } else if ("keyPhrases".equals(fieldName)) {
-                            List<String> keyPhrases = reader.readArray(reader1 -> reader1.getString());
-                            deserializedKeyPhraseResultDocumentsItem.setKeyPhrases(keyPhrases);
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedKeyPhraseResultDocumentsItem.setStatistics(DocumentStatistics.fromJson(reader));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedKeyPhraseResultDocumentsItem.setId(reader.getString());
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedKeyPhraseResultDocumentsItem.setWarnings(warnings);
+                } else if ("keyPhrases".equals(fieldName)) {
+                    List<String> keyPhrases = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKeyPhraseResultDocumentsItem.setKeyPhrases(keyPhrases);
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedKeyPhraseResultDocumentsItem.setStatistics(DocumentStatistics.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyPhraseResultDocumentsItem;
-                });
+            return deserializedKeyPhraseResultDocumentsItem;
+        });
     }
 }

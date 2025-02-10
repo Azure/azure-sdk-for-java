@@ -20,8 +20,8 @@ public final class CloudManifestFilesImpl implements CloudManifestFiles {
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    public CloudManifestFilesImpl(
-        CloudManifestFilesClient innerClient, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    public CloudManifestFilesImpl(CloudManifestFilesClient innerClient,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -29,10 +29,7 @@ public final class CloudManifestFilesImpl implements CloudManifestFiles {
     public Response<CloudManifestFileResponse> listWithResponse(Context context) {
         Response<CloudManifestFileResponseInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CloudManifestFileResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -48,15 +45,12 @@ public final class CloudManifestFilesImpl implements CloudManifestFiles {
         }
     }
 
-    public Response<CloudManifestFileResponse> getWithResponse(
-        String verificationVersion, String versionCreationDate, Context context) {
-        Response<CloudManifestFileResponseInner> inner =
-            this.serviceClient().getWithResponse(verificationVersion, versionCreationDate, context);
+    public Response<CloudManifestFileResponse> getWithResponse(String verificationVersion, String versionCreationDate,
+        Context context) {
+        Response<CloudManifestFileResponseInner> inner
+            = this.serviceClient().getWithResponse(verificationVersion, versionCreationDate, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CloudManifestFileResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

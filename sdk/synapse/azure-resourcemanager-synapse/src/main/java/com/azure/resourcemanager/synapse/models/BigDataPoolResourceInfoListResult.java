@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.BigDataPoolResourceInfoInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Collection of Big Data pools
- *
- * <p>Collection of Big Data pool information.
+ * 
+ * Collection of Big Data pool information.
  */
 @Fluent
-public final class BigDataPoolResourceInfoListResult {
+public final class BigDataPoolResourceInfoListResult implements JsonSerializable<BigDataPoolResourceInfoListResult> {
     /*
      * Link to the next page of results
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * List of Big Data pools
      */
-    @JsonProperty(value = "value")
     private List<BigDataPoolResourceInfoInner> value;
 
-    /** Creates an instance of BigDataPoolResourceInfoListResult class. */
+    /**
+     * Creates an instance of BigDataPoolResourceInfoListResult class.
+     */
     public BigDataPoolResourceInfoListResult() {
     }
 
     /**
      * Get the nextLink property: Link to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -43,7 +47,7 @@ public final class BigDataPoolResourceInfoListResult {
 
     /**
      * Set the nextLink property: Link to the next page of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BigDataPoolResourceInfoListResult object itself.
      */
@@ -54,7 +58,7 @@ public final class BigDataPoolResourceInfoListResult {
 
     /**
      * Get the value property: List of Big Data pools.
-     *
+     * 
      * @return the value value.
      */
     public List<BigDataPoolResourceInfoInner> value() {
@@ -63,7 +67,7 @@ public final class BigDataPoolResourceInfoListResult {
 
     /**
      * Set the value property: List of Big Data pools.
-     *
+     * 
      * @param value the value value to set.
      * @return the BigDataPoolResourceInfoListResult object itself.
      */
@@ -74,12 +78,54 @@ public final class BigDataPoolResourceInfoListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BigDataPoolResourceInfoListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BigDataPoolResourceInfoListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BigDataPoolResourceInfoListResult.
+     */
+    public static BigDataPoolResourceInfoListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BigDataPoolResourceInfoListResult deserializedBigDataPoolResourceInfoListResult
+                = new BigDataPoolResourceInfoListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedBigDataPoolResourceInfoListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<BigDataPoolResourceInfoInner> value
+                        = reader.readArray(reader1 -> BigDataPoolResourceInfoInner.fromJson(reader1));
+                    deserializedBigDataPoolResourceInfoListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBigDataPoolResourceInfoListResult;
+        });
     }
 }

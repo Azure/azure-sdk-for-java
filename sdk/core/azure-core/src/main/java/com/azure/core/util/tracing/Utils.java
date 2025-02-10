@@ -15,7 +15,8 @@ final class Utils {
     static final String SPAN_KIND_KEY = "span-kind";
     static final String START_TIME_KEY = "span-start-time";
 
-    static final AutoCloseable NOOP_CLOSEABLE = () -> { };
+    static final AutoCloseable NOOP_CLOSEABLE = () -> {
+    };
     static final ClientLogger LOGGER = new ClientLogger(Utils.class);
 
     private Utils() {
@@ -49,7 +50,7 @@ final class Utils {
     static <T> T getOrNull(Context context, String key, Class<T> clazz) {
         final Object data = context.getData(key).orElse(null);
         if (data != null && clazz.isAssignableFrom(data.getClass())) {
-            return  (T) data;
+            return (T) data;
         }
 
         return null;

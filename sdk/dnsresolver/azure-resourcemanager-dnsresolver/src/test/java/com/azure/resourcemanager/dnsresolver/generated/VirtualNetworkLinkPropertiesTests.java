@@ -10,31 +10,28 @@ import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkLinkPro
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkLinkPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        VirtualNetworkLinkProperties model =
-            BinaryData
-                .fromString(
-                    "{\"virtualNetwork\":{\"id\":\"ur\"},\"metadata\":{\"ptkoenkoukn\":\"xjnspy\",\"ngkpocipazy\":\"udwtiukbl\",\"gukgjnpiucgygevq\":\"o\"},\"provisioningState\":\"Updating\"}")
-                .toObject(VirtualNetworkLinkProperties.class);
-        Assertions.assertEquals("ur", model.virtualNetwork().id());
-        Assertions.assertEquals("xjnspy", model.metadata().get("ptkoenkoukn"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VirtualNetworkLinkProperties model = BinaryData.fromString(
+            "{\"virtualNetwork\":{\"id\":\"lsicohoqqnwv\"},\"metadata\":{\"qhgyxzkonocukok\":\"avwhheunm\"},\"provisioningState\":\"Creating\"}")
+            .toObject(VirtualNetworkLinkProperties.class);
+        Assertions.assertEquals("lsicohoqqnwv", model.virtualNetwork().id());
+        Assertions.assertEquals("avwhheunm", model.metadata().get("qhgyxzkonocukok"));
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworkLinkProperties model =
-            new VirtualNetworkLinkProperties()
-                .withVirtualNetwork(new SubResource().withId("ur"))
-                .withMetadata(mapOf("ptkoenkoukn", "xjnspy", "ngkpocipazy", "udwtiukbl", "gukgjnpiucgygevq", "o"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkLinkProperties model
+            = new VirtualNetworkLinkProperties().withVirtualNetwork(new SubResource().withId("lsicohoqqnwv"))
+                .withMetadata(mapOf("qhgyxzkonocukok", "avwhheunm"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkLinkProperties.class);
-        Assertions.assertEquals("ur", model.virtualNetwork().id());
-        Assertions.assertEquals("xjnspy", model.metadata().get("ptkoenkoukn"));
+        Assertions.assertEquals("lsicohoqqnwv", model.virtualNetwork().id());
+        Assertions.assertEquals("avwhheunm", model.metadata().get("qhgyxzkonocukok"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -6,47 +6,51 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Sku description for a namespace. */
+/**
+ * The Sku description for a namespace.
+ */
 @Fluent
-public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
+public final class Sku implements JsonSerializable<Sku> {
     /*
      * Name of the notification hub sku
      */
-    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
      * The tier of particular sku
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * The Sku size
      */
-    @JsonProperty(value = "size")
     private String size;
 
     /*
      * The Sku Family
      */
-    @JsonProperty(value = "family")
     private String family;
 
     /*
      * The capacity of the resource
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /**
+     * Creates an instance of Sku class.
+     */
+    public Sku() {
+    }
+
+    /**
      * Get the name property: Name of the notification hub sku.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -55,7 +59,7 @@ public final class Sku {
 
     /**
      * Set the name property: Name of the notification hub sku.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -66,7 +70,7 @@ public final class Sku {
 
     /**
      * Get the tier property: The tier of particular sku.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -75,7 +79,7 @@ public final class Sku {
 
     /**
      * Set the tier property: The tier of particular sku.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -86,7 +90,7 @@ public final class Sku {
 
     /**
      * Get the size property: The Sku size.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -95,7 +99,7 @@ public final class Sku {
 
     /**
      * Set the size property: The Sku size.
-     *
+     * 
      * @param size the size value to set.
      * @return the Sku object itself.
      */
@@ -106,7 +110,7 @@ public final class Sku {
 
     /**
      * Get the family property: The Sku Family.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -115,7 +119,7 @@ public final class Sku {
 
     /**
      * Set the family property: The Sku Family.
-     *
+     * 
      * @param family the family value to set.
      * @return the Sku object itself.
      */
@@ -126,7 +130,7 @@ public final class Sku {
 
     /**
      * Get the capacity property: The capacity of the resource.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -135,7 +139,7 @@ public final class Sku {
 
     /**
      * Set the capacity property: The capacity of the resource.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -146,13 +150,63 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model Sku"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeStringField("size", this.size);
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Sku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Sku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Sku.
+     */
+    public static Sku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Sku deserializedSku = new Sku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSku.name = SkuName.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSku.tier = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedSku.size = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedSku.family = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSku;
+        });
     }
 }

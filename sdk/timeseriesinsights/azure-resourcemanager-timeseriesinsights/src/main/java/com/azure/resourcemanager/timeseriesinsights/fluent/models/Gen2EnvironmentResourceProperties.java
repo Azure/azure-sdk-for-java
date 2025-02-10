@@ -5,45 +5,82 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentResourceProperties;
+import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentStatus;
 import com.azure.resourcemanager.timeseriesinsights.models.Gen2StorageConfigurationOutput;
+import com.azure.resourcemanager.timeseriesinsights.models.ProvisioningState;
 import com.azure.resourcemanager.timeseriesinsights.models.TimeSeriesIdProperty;
 import com.azure.resourcemanager.timeseriesinsights.models.WarmStoreConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.UUID;
 
-/** Properties of the Gen2 environment. */
+/**
+ * Properties of the Gen2 environment.
+ */
 @Fluent
 public final class Gen2EnvironmentResourceProperties extends EnvironmentResourceProperties {
     /*
      * The list of event properties which will be used to define the environment's time series id.
      */
-    @JsonProperty(value = "timeSeriesIdProperties", required = true)
     private List<TimeSeriesIdProperty> timeSeriesIdProperties;
 
     /*
-     * The storage configuration provides the connection details that allows the Time Series Insights service to
-     * connect to the customer storage account that is used to store the environment's data.
+     * The storage configuration provides the connection details that allows the Time Series Insights service to connect
+     * to the customer storage account that is used to store the environment's data.
      */
-    @JsonProperty(value = "storageConfiguration", required = true)
     private Gen2StorageConfigurationOutput storageConfiguration;
 
     /*
      * The warm store configuration provides the details to create a warm store cache that will retain a copy of the
      * environment's data available for faster query.
      */
-    @JsonProperty(value = "warmStoreConfiguration")
     private WarmStoreConfigurationProperties warmStoreConfiguration;
 
-    /** Creates an instance of Gen2EnvironmentResourceProperties class. */
+    /*
+     * An object that represents the status of the environment, and its internal state in the Time Series Insights
+     * service.
+     */
+    private EnvironmentStatus status;
+
+    /*
+     * The fully qualified domain name used to access the environment data, e.g. to query the environment's events or
+     * upload reference data for the environment.
+     */
+    private String dataAccessFqdn;
+
+    /*
+     * An id used to access the environment data, e.g. to query the environment's events or upload reference data for
+     * the environment.
+     */
+    private UUID dataAccessId;
+
+    /*
+     * The time the resource was created.
+     */
+    private OffsetDateTime creationTime;
+
+    /*
+     * Provisioning state of the resource.
+     */
+    private ProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of Gen2EnvironmentResourceProperties class.
+     */
     public Gen2EnvironmentResourceProperties() {
     }
 
     /**
      * Get the timeSeriesIdProperties property: The list of event properties which will be used to define the
      * environment's time series id.
-     *
+     * 
      * @return the timeSeriesIdProperties value.
      */
     public List<TimeSeriesIdProperty> timeSeriesIdProperties() {
@@ -53,12 +90,12 @@ public final class Gen2EnvironmentResourceProperties extends EnvironmentResource
     /**
      * Set the timeSeriesIdProperties property: The list of event properties which will be used to define the
      * environment's time series id.
-     *
+     * 
      * @param timeSeriesIdProperties the timeSeriesIdProperties value to set.
      * @return the Gen2EnvironmentResourceProperties object itself.
      */
-    public Gen2EnvironmentResourceProperties withTimeSeriesIdProperties(
-        List<TimeSeriesIdProperty> timeSeriesIdProperties) {
+    public Gen2EnvironmentResourceProperties
+        withTimeSeriesIdProperties(List<TimeSeriesIdProperty> timeSeriesIdProperties) {
         this.timeSeriesIdProperties = timeSeriesIdProperties;
         return this;
     }
@@ -67,7 +104,7 @@ public final class Gen2EnvironmentResourceProperties extends EnvironmentResource
      * Get the storageConfiguration property: The storage configuration provides the connection details that allows the
      * Time Series Insights service to connect to the customer storage account that is used to store the environment's
      * data.
-     *
+     * 
      * @return the storageConfiguration value.
      */
     public Gen2StorageConfigurationOutput storageConfiguration() {
@@ -78,12 +115,12 @@ public final class Gen2EnvironmentResourceProperties extends EnvironmentResource
      * Set the storageConfiguration property: The storage configuration provides the connection details that allows the
      * Time Series Insights service to connect to the customer storage account that is used to store the environment's
      * data.
-     *
+     * 
      * @param storageConfiguration the storageConfiguration value to set.
      * @return the Gen2EnvironmentResourceProperties object itself.
      */
-    public Gen2EnvironmentResourceProperties withStorageConfiguration(
-        Gen2StorageConfigurationOutput storageConfiguration) {
+    public Gen2EnvironmentResourceProperties
+        withStorageConfiguration(Gen2StorageConfigurationOutput storageConfiguration) {
         this.storageConfiguration = storageConfiguration;
         return this;
     }
@@ -91,7 +128,7 @@ public final class Gen2EnvironmentResourceProperties extends EnvironmentResource
     /**
      * Get the warmStoreConfiguration property: The warm store configuration provides the details to create a warm store
      * cache that will retain a copy of the environment's data available for faster query.
-     *
+     * 
      * @return the warmStoreConfiguration value.
      */
     public WarmStoreConfigurationProperties warmStoreConfiguration() {
@@ -101,44 +138,159 @@ public final class Gen2EnvironmentResourceProperties extends EnvironmentResource
     /**
      * Set the warmStoreConfiguration property: The warm store configuration provides the details to create a warm store
      * cache that will retain a copy of the environment's data available for faster query.
-     *
+     * 
      * @param warmStoreConfiguration the warmStoreConfiguration value to set.
      * @return the Gen2EnvironmentResourceProperties object itself.
      */
-    public Gen2EnvironmentResourceProperties withWarmStoreConfiguration(
-        WarmStoreConfigurationProperties warmStoreConfiguration) {
+    public Gen2EnvironmentResourceProperties
+        withWarmStoreConfiguration(WarmStoreConfigurationProperties warmStoreConfiguration) {
         this.warmStoreConfiguration = warmStoreConfiguration;
         return this;
     }
 
     /**
+     * Get the status property: An object that represents the status of the environment, and its internal state in the
+     * Time Series Insights service.
+     * 
+     * @return the status value.
+     */
+    @Override
+    public EnvironmentStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get the dataAccessFqdn property: The fully qualified domain name used to access the environment data, e.g. to
+     * query the environment's events or upload reference data for the environment.
+     * 
+     * @return the dataAccessFqdn value.
+     */
+    @Override
+    public String dataAccessFqdn() {
+        return this.dataAccessFqdn;
+    }
+
+    /**
+     * Get the dataAccessId property: An id used to access the environment data, e.g. to query the environment's events
+     * or upload reference data for the environment.
+     * 
+     * @return the dataAccessId value.
+     */
+    @Override
+    public UUID dataAccessId() {
+        return this.dataAccessId;
+    }
+
+    /**
+     * Get the creationTime property: The time the resource was created.
+     * 
+     * @return the creationTime value.
+     */
+    @Override
+    public OffsetDateTime creationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (timeSeriesIdProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property timeSeriesIdProperties in model Gen2EnvironmentResourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property timeSeriesIdProperties in model Gen2EnvironmentResourceProperties"));
         } else {
             timeSeriesIdProperties().forEach(e -> e.validate());
         }
         if (storageConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageConfiguration in model Gen2EnvironmentResourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageConfiguration in model Gen2EnvironmentResourceProperties"));
         } else {
             storageConfiguration().validate();
         }
         if (warmStoreConfiguration() != null) {
             warmStoreConfiguration().validate();
         }
+        if (status() != null) {
+            status().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Gen2EnvironmentResourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("timeSeriesIdProperties", this.timeSeriesIdProperties,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("storageConfiguration", this.storageConfiguration);
+        jsonWriter.writeJsonField("warmStoreConfiguration", this.warmStoreConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Gen2EnvironmentResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Gen2EnvironmentResourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Gen2EnvironmentResourceProperties.
+     */
+    public static Gen2EnvironmentResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Gen2EnvironmentResourceProperties deserializedGen2EnvironmentResourceProperties
+                = new Gen2EnvironmentResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedGen2EnvironmentResourceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedGen2EnvironmentResourceProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dataAccessId".equals(fieldName)) {
+                    deserializedGen2EnvironmentResourceProperties.dataAccessId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("dataAccessFqdn".equals(fieldName)) {
+                    deserializedGen2EnvironmentResourceProperties.dataAccessFqdn = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedGen2EnvironmentResourceProperties.status = EnvironmentStatus.fromJson(reader);
+                } else if ("timeSeriesIdProperties".equals(fieldName)) {
+                    List<TimeSeriesIdProperty> timeSeriesIdProperties
+                        = reader.readArray(reader1 -> TimeSeriesIdProperty.fromJson(reader1));
+                    deserializedGen2EnvironmentResourceProperties.timeSeriesIdProperties = timeSeriesIdProperties;
+                } else if ("storageConfiguration".equals(fieldName)) {
+                    deserializedGen2EnvironmentResourceProperties.storageConfiguration
+                        = Gen2StorageConfigurationOutput.fromJson(reader);
+                } else if ("warmStoreConfiguration".equals(fieldName)) {
+                    deserializedGen2EnvironmentResourceProperties.warmStoreConfiguration
+                        = WarmStoreConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGen2EnvironmentResourceProperties;
+        });
+    }
 }

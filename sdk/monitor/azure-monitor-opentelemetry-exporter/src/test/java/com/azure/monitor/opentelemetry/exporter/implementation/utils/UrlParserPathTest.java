@@ -68,8 +68,7 @@ public class UrlParserPathTest {
         assertThat(UrlParser.getPath("https://localhost:8080/path?query")).isEqualTo("/path");
         assertThat(UrlParser.getPath("https://localhost:8080/path/?query")).isEqualTo("/path/");
         assertThat(UrlParser.getPath("https://localhost:8080/more/path?query")).isEqualTo("/more/path");
-        assertThat(UrlParser.getPath("https://localhost:8080/more/path/?query"))
-            .isEqualTo("/more/path/");
+        assertThat(UrlParser.getPath("https://localhost:8080/more/path/?query")).isEqualTo("/more/path/");
 
         assertThat(UrlParser.getPath("https://localhost:8080#")).isEqualTo("");
         assertThat(UrlParser.getPath("https://localhost:8080/#")).isEqualTo("/");
@@ -82,10 +81,8 @@ public class UrlParserPathTest {
         assertThat(UrlParser.getPath("https://localhost:8080/#fragment")).isEqualTo("/");
         assertThat(UrlParser.getPath("https://localhost:8080/path#fragment")).isEqualTo("/path");
         assertThat(UrlParser.getPath("https://localhost:8080/path/#fragment")).isEqualTo("/path/");
-        assertThat(UrlParser.getPath("https://localhost:8080/more/path#fragment"))
-            .isEqualTo("/more/path");
-        assertThat(UrlParser.getPath("https://localhost:8080/more/path/#fragment"))
-            .isEqualTo("/more/path/");
+        assertThat(UrlParser.getPath("https://localhost:8080/more/path#fragment")).isEqualTo("/more/path");
+        assertThat(UrlParser.getPath("https://localhost:8080/more/path/#fragment")).isEqualTo("/more/path/");
     }
 
     @Test

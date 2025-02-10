@@ -25,6 +25,7 @@ import org.springframework.messaging.MessageDeliveryException;
 import org.springframework.util.Assert;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -48,6 +49,8 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private final String destination;
     private final SendOperation sendOperation;
     private boolean sync = false;
+
+    @SuppressWarnings("removal")
     private ListenableFutureCallback<Void> sendCallback;
     private EvaluationContext evaluationContext;
     private Expression sendTimeoutExpression = new ValueExpression<>(DEFAULT_SEND_TIMEOUT);
@@ -85,7 +88,19 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
         final Mono<Void> mono = this.sendOperation.sendAsync(dest, messageToSend);
 
-        if (this.sync) {
+        // When using StreamBridge.send with the non-blocking reactive chain and producer's sync being enabled,
+        // it results a IllegalStateException (block()/blockFirst()/blockLast() are blocking, which is not supported).
+        // Below steps are a reproducer for the IllegalStateException scenario:
+        // 1. Update configuration file: spring.cloud.azure.stream.eventhubs.bindings.supply-out-0.producer.sync=true
+        // 2. Use the following code to send a message:
+        //    @PostMapping("/reproducer")
+        //    public Mono<ResponseEntity<String>> reproducer() {
+        //        return Mono.defer(() -> Mono.just("reproducer"))
+        //                   .publishOn(Schedulers.parallel())
+        //                   .doOnSuccess(message -> streamBridge.send("supply-out-0", message))
+        //                   .map(ResponseEntity::ok);
+        //    }
+        if (this.sync && !Schedulers.isInNonBlockingThread()) {
             waitingSendResponse(mono, message);
         } else {
             handleSendResponseAsync(mono, message);
@@ -93,6 +108,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     }
 
+    @SuppressWarnings("removal")
     private <T> void handleSendResponseAsync(Mono<T> mono, Message<?> message) {
         mono.doOnError(ex -> {
             if (LOGGER.isWarnEnabled()) {
@@ -248,6 +264,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
      *
      * @param callback the call back
      */
+    @SuppressWarnings("removal")
     public void setSendCallback(ListenableFutureCallback<Void> callback) {
         this.sendCallback = callback;
     }

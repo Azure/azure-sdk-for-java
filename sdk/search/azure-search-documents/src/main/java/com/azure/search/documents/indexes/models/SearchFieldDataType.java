@@ -60,6 +60,27 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
     public static final SearchFieldDataType SINGLE = fromString("Edm.Single");
 
     /**
+     * Indicates that a field contains a half-precision floating point number. This is only valid when used with
+     * Collection(Edm.Half).
+     */
+    public static final SearchFieldDataType HALF = fromString("Edm.Half");
+
+    /**
+     * Indicates that a field contains a 16-bit signed integer. This is only valid when used with Collection(Edm.Int16).
+     */
+    public static final SearchFieldDataType INT16 = fromString("Edm.Int16");
+
+    /**
+     * Indicates that a field contains a 8-bit signed integer. This is only valid when used with Collection(Edm.SByte).
+     */
+    public static final SearchFieldDataType SBYTE = fromString("Edm.SByte");
+
+    /**
+     * Indicates that a field contains a 8-bit unsigned integer. This is only valid when used with Collection(Edm.Byte).
+     */
+    public static final SearchFieldDataType BYTE = fromString("Edm.Byte");
+
+    /**
      * Creates a new instance of SearchFieldDataType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.fluent.models.IncidentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The List incidents operation response. */
+/**
+ * The List incidents operation response.
+ */
 @Fluent
-public final class IncidentListResult {
+public final class IncidentListResult implements JsonSerializable<IncidentListResult> {
     /*
      * the incident collection.
      */
-    @JsonProperty(value = "value")
     private List<IncidentInner> value;
 
-    /** Creates an instance of IncidentListResult class. */
+    /**
+     * Creates an instance of IncidentListResult class.
+     */
     public IncidentListResult() {
     }
 
     /**
      * Get the value property: the incident collection.
-     *
+     * 
      * @return the value value.
      */
     public List<IncidentInner> value() {
@@ -33,7 +40,7 @@ public final class IncidentListResult {
 
     /**
      * Set the value property: the incident collection.
-     *
+     * 
      * @param value the value value to set.
      * @return the IncidentListResult object itself.
      */
@@ -44,12 +51,49 @@ public final class IncidentListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IncidentListResult.
+     */
+    public static IncidentListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentListResult deserializedIncidentListResult = new IncidentListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<IncidentInner> value = reader.readArray(reader1 -> IncidentInner.fromJson(reader1));
+                    deserializedIncidentListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentListResult;
+        });
     }
 }

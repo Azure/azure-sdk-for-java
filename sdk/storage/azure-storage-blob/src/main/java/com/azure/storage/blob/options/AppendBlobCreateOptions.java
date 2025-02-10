@@ -23,6 +23,14 @@ public class AppendBlobCreateOptions {
     private Boolean legalHold;
 
     /**
+     * Creates a new instance of {@link AppendBlobCreateOptions}.
+     */
+    public AppendBlobCreateOptions() {
+    }
+
+    /**
+     * Gets the {@link BlobHttpHeaders}.
+     *
      * @return {@link BlobHttpHeaders}
      */
     public BlobHttpHeaders getHeaders() {
@@ -30,6 +38,8 @@ public class AppendBlobCreateOptions {
     }
 
     /**
+     * Sets the {@link BlobHttpHeaders}.
+     *
      * @param headers {@link BlobHttpHeaders}
      * @return The updated {@code AppendBlobCreateOptions}
      */
@@ -39,6 +49,8 @@ public class AppendBlobCreateOptions {
     }
 
     /**
+     * Gets the metadata to associate with the blob.
+     *
      * @return The metadata to associate with the blob.
      */
     public Map<String, String> getMetadata() {
@@ -46,6 +58,8 @@ public class AppendBlobCreateOptions {
     }
 
     /**
+     * Sets the metadata to associate with the blob.
+     *
      * @param metadata The metadata to associate with the blob.
      * @return The updated options
      */
@@ -55,6 +69,8 @@ public class AppendBlobCreateOptions {
     }
 
     /**
+     * Gets the tags to associate with the blob.
+     *
      * @return The tags to associate with the blob.
      */
     public Map<String, String> getTags() {
@@ -62,6 +78,8 @@ public class AppendBlobCreateOptions {
     }
 
     /**
+     * Sets the tags to associate with the blob.
+     *
      * @param tags The tags to associate with the blob.
      * @return The updated options.
      */
@@ -71,6 +89,8 @@ public class AppendBlobCreateOptions {
     }
 
     /**
+     * Gets the {@link BlobRequestConditions}.
+     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -78,6 +98,8 @@ public class AppendBlobCreateOptions {
     }
 
     /**
+     * Sets the {@link BlobRequestConditions}.
+     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */
@@ -87,6 +109,8 @@ public class AppendBlobCreateOptions {
     }
 
     /**
+     * Gets the immutability policy for the blob.
+     *
      * @return {@link BlobImmutabilityPolicy}
      */
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
@@ -94,8 +118,11 @@ public class AppendBlobCreateOptions {
     }
 
     /**
+     * Sets the immutability policy for the blob.
+     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
+     *
      * @param immutabilityPolicy {@link BlobImmutabilityPolicy}
      * @return The updated options.
      */
@@ -105,6 +132,8 @@ public class AppendBlobCreateOptions {
     }
 
     /**
+     * Gets if a legal hold should be placed on the blob.
+     *
      * @return If a legal hold should be placed on the blob.
      */
     public Boolean hasLegalHold() {
@@ -112,8 +141,11 @@ public class AppendBlobCreateOptions {
     }
 
     /**
+     * Sets if a legal hold should be placed on the blob.
+     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
+     *
      * @param legalHold Indicates if a legal hold should be placed on the blob.
      * @return The updated options.
      */

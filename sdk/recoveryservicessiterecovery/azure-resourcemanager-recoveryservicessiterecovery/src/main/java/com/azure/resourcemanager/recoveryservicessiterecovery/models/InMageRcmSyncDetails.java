@@ -5,66 +5,66 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** InMageRcm disk level sync details. */
+/**
+ * InMageRcm disk level sync details.
+ */
 @Immutable
-public final class InMageRcmSyncDetails {
+public final class InMageRcmSyncDetails implements JsonSerializable<InMageRcmSyncDetails> {
     /*
      * The progress health.
      */
-    @JsonProperty(value = "progressHealth", access = JsonProperty.Access.WRITE_ONLY)
     private DiskReplicationProgressHealth progressHealth;
 
     /*
      * The transferred bytes from source VM to azure for the disk.
      */
-    @JsonProperty(value = "transferredBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long transferredBytes;
 
     /*
      * The bytes transferred in last 15 minutes from source VM to azure.
      */
-    @JsonProperty(value = "last15MinutesTransferredBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long last15MinutesTransferredBytes;
 
     /*
      * The time of the last data transfer from source VM to azure.
      */
-    @JsonProperty(value = "lastDataTransferTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private String lastDataTransferTimeUtc;
 
     /*
      * The total processed bytes. This includes bytes that are transferred from source VM to azure and matched bytes.
      */
-    @JsonProperty(value = "processedBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long processedBytes;
 
     /*
      * The start time.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private String startTime;
 
     /*
      * The last refresh time.
      */
-    @JsonProperty(value = "lastRefreshTime", access = JsonProperty.Access.WRITE_ONLY)
     private String lastRefreshTime;
 
     /*
      * Progress in percentage. Progress percentage is calculated based on processed bytes.
      */
-    @JsonProperty(value = "progressPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer progressPercentage;
 
-    /** Creates an instance of InMageRcmSyncDetails class. */
+    /**
+     * Creates an instance of InMageRcmSyncDetails class.
+     */
     public InMageRcmSyncDetails() {
     }
 
     /**
      * Get the progressHealth property: The progress health.
-     *
+     * 
      * @return the progressHealth value.
      */
     public DiskReplicationProgressHealth progressHealth() {
@@ -73,7 +73,7 @@ public final class InMageRcmSyncDetails {
 
     /**
      * Get the transferredBytes property: The transferred bytes from source VM to azure for the disk.
-     *
+     * 
      * @return the transferredBytes value.
      */
     public Long transferredBytes() {
@@ -82,7 +82,7 @@ public final class InMageRcmSyncDetails {
 
     /**
      * Get the last15MinutesTransferredBytes property: The bytes transferred in last 15 minutes from source VM to azure.
-     *
+     * 
      * @return the last15MinutesTransferredBytes value.
      */
     public Long last15MinutesTransferredBytes() {
@@ -91,7 +91,7 @@ public final class InMageRcmSyncDetails {
 
     /**
      * Get the lastDataTransferTimeUtc property: The time of the last data transfer from source VM to azure.
-     *
+     * 
      * @return the lastDataTransferTimeUtc value.
      */
     public String lastDataTransferTimeUtc() {
@@ -101,7 +101,7 @@ public final class InMageRcmSyncDetails {
     /**
      * Get the processedBytes property: The total processed bytes. This includes bytes that are transferred from source
      * VM to azure and matched bytes.
-     *
+     * 
      * @return the processedBytes value.
      */
     public Long processedBytes() {
@@ -110,7 +110,7 @@ public final class InMageRcmSyncDetails {
 
     /**
      * Get the startTime property: The start time.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -119,7 +119,7 @@ public final class InMageRcmSyncDetails {
 
     /**
      * Get the lastRefreshTime property: The last refresh time.
-     *
+     * 
      * @return the lastRefreshTime value.
      */
     public String lastRefreshTime() {
@@ -129,7 +129,7 @@ public final class InMageRcmSyncDetails {
     /**
      * Get the progressPercentage property: Progress in percentage. Progress percentage is calculated based on processed
      * bytes.
-     *
+     * 
      * @return the progressPercentage value.
      */
     public Integer progressPercentage() {
@@ -138,9 +138,60 @@ public final class InMageRcmSyncDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmSyncDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmSyncDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmSyncDetails.
+     */
+    public static InMageRcmSyncDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmSyncDetails deserializedInMageRcmSyncDetails = new InMageRcmSyncDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("progressHealth".equals(fieldName)) {
+                    deserializedInMageRcmSyncDetails.progressHealth
+                        = DiskReplicationProgressHealth.fromString(reader.getString());
+                } else if ("transferredBytes".equals(fieldName)) {
+                    deserializedInMageRcmSyncDetails.transferredBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("last15MinutesTransferredBytes".equals(fieldName)) {
+                    deserializedInMageRcmSyncDetails.last15MinutesTransferredBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("lastDataTransferTimeUtc".equals(fieldName)) {
+                    deserializedInMageRcmSyncDetails.lastDataTransferTimeUtc = reader.getString();
+                } else if ("processedBytes".equals(fieldName)) {
+                    deserializedInMageRcmSyncDetails.processedBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedInMageRcmSyncDetails.startTime = reader.getString();
+                } else if ("lastRefreshTime".equals(fieldName)) {
+                    deserializedInMageRcmSyncDetails.lastRefreshTime = reader.getString();
+                } else if ("progressPercentage".equals(fieldName)) {
+                    deserializedInMageRcmSyncDetails.progressPercentage = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmSyncDetails;
+        });
     }
 }

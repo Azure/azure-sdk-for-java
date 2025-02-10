@@ -59,24 +59,24 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
 
     public PagedIterable<PartnerDestination> list() {
         PagedIterable<PartnerDestinationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PartnerDestinationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerDestinationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PartnerDestination> list(String filter, Integer top, Context context) {
         PagedIterable<PartnerDestinationInner> inner = this.serviceClient().list(filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new PartnerDestinationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerDestinationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PartnerDestination> listByResourceGroup(String resourceGroupName) {
         PagedIterable<PartnerDestinationInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new PartnerDestinationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerDestinationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PartnerDestination> listByResourceGroup(String resourceGroupName, String filter, Integer top,
         Context context) {
         PagedIterable<PartnerDestinationInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new PartnerDestinationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerDestinationImpl(inner1, this.manager()));
     }
 
     public Response<PartnerDestination> activateWithResponse(String resourceGroupName, String partnerDestinationName,
@@ -101,12 +101,12 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
     }
 
     public PartnerDestination getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String partnerDestinationName = Utils.getValueFromIdByName(id, "partnerDestinations");
+        String partnerDestinationName = ResourceManagerUtils.getValueFromIdByName(id, "partnerDestinations");
         if (partnerDestinationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));
@@ -115,12 +115,12 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
     }
 
     public Response<PartnerDestination> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String partnerDestinationName = Utils.getValueFromIdByName(id, "partnerDestinations");
+        String partnerDestinationName = ResourceManagerUtils.getValueFromIdByName(id, "partnerDestinations");
         if (partnerDestinationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));
@@ -129,12 +129,12 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String partnerDestinationName = Utils.getValueFromIdByName(id, "partnerDestinations");
+        String partnerDestinationName = ResourceManagerUtils.getValueFromIdByName(id, "partnerDestinations");
         if (partnerDestinationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));
@@ -143,12 +143,12 @@ public final class PartnerDestinationsImpl implements PartnerDestinations {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String partnerDestinationName = Utils.getValueFromIdByName(id, "partnerDestinations");
+        String partnerDestinationName = ResourceManagerUtils.getValueFromIdByName(id, "partnerDestinations");
         if (partnerDestinationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'partnerDestinations'.", id)));

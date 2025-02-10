@@ -189,25 +189,21 @@ public final class IOUtils {
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
      * @return A {@link Mono} which completion indicates successful transfer.
      */
-    public static Mono<Void> transferStreamResponseToAsynchronousByteChannel(
-        AsynchronousByteChannel targetChannel,
-        StreamResponse sourceResponse,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
+    public static Mono<Void> transferStreamResponseToAsynchronousByteChannel(AsynchronousByteChannel targetChannel,
+        StreamResponse sourceResponse, BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
         ProgressReporter progressReporter, int maxRetries) {
 
         return transferStreamResponseToAsynchronousByteChannelHelper(
-            new ByteCountingAsynchronousByteChannel(targetChannel, null, progressReporter),
-            sourceResponse, onErrorResume, maxRetries, 0);
+            new ByteCountingAsynchronousByteChannel(targetChannel, null, progressReporter), sourceResponse,
+            onErrorResume, maxRetries, 0);
     }
 
     private static Mono<Void> transferStreamResponseToAsynchronousByteChannelHelper(
-        ByteCountingAsynchronousByteChannel targetChannel,
-        StreamResponse response,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        int maxRetries, int retryCount) {
+        ByteCountingAsynchronousByteChannel targetChannel, StreamResponse response,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, int maxRetries, int retryCount) {
 
-        return Mono.using(() -> response, r -> r.writeValueToAsync(targetChannel)
-            .onErrorResume(Exception.class, exception -> {
+        return Mono.using(() -> response,
+            r -> r.writeValueToAsync(targetChannel).onErrorResume(Exception.class, exception -> {
                 response.close();
 
                 int updatedRetryCount = retryCount + 1;

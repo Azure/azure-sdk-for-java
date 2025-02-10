@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.fluent.models.ExperimentExecutionDetailsI
 public final class ExperimentExecutionDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentExecutionDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"xznelixhnrztf\",\"id\":\"hb\",\"name\":\"knalaulppg\",\"properties\":{\"failureReason\":\"pnapnyiropuh\",\"lastActionAt\":\"2020-12-20T18:46:56Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"lgqg\",\"stepId\":\"xmedjvcsly\",\"status\":\"wwncwzzhxgk\",\"branches\":[{},{}]},{\"stepName\":\"ucnapkteoellwp\",\"stepId\":\"d\",\"status\":\"pfqbuaceopzf\",\"branches\":[{},{}]},{\"stepName\":\"uaopppcqeq\",\"stepId\":\"lzdahzxctobgbkdm\",\"status\":\"zpostmgrcfbu\",\"branches\":[{},{},{}]},{\"stepName\":\"qjhhkxbpv\",\"stepId\":\"mjh\",\"status\":\"j\",\"branches\":[{},{},{},{}]}]},\"status\":\"divkrt\",\"startedAt\":\"2021-11-23T03:43:54Z\",\"stoppedAt\":\"2021-05-30T10:12:47Z\"}}")
-                .toObject(ExperimentExecutionDetailsInner.class);
+        ExperimentExecutionDetailsInner model = BinaryData.fromString(
+            "{\"type\":\"tfdygpfqb\",\"id\":\"ceopzfqrhhuaopp\",\"name\":\"qeqxo\",\"properties\":{\"failureReason\":\"ahzxctobgbk\",\"lastActionAt\":\"2021-03-02T22:54:24Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"stmgrcfbunrmfqjh\",\"stepId\":\"xbpvjymjhx\",\"status\":\"yngudivk\",\"branches\":[{},{}]},{\"stepName\":\"bxqz\",\"stepId\":\"zjf\",\"status\":\"vjfdx\",\"branches\":[{},{}]},{\"stepName\":\"tvtc\",\"stepId\":\"qtdo\",\"status\":\"cbxvwvxyslqbh\",\"branches\":[{},{},{}]},{\"stepName\":\"blytk\",\"stepId\":\"mpew\",\"status\":\"fbkrvrnsvs\",\"branches\":[{},{}]}]},\"status\":\"hxcr\",\"startedAt\":\"2020-12-28T12:25:09Z\",\"stoppedAt\":\"2021-11-28T02:47:56Z\"}}")
+            .toObject(ExperimentExecutionDetailsInner.class);
     }
 
     @org.junit.jupiter.api.Test

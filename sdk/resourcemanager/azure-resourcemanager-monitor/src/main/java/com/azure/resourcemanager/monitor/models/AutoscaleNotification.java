@@ -5,38 +5,42 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Autoscale notification. */
+/**
+ * Autoscale notification.
+ */
 @Fluent
-public final class AutoscaleNotification {
+public final class AutoscaleNotification implements JsonSerializable<AutoscaleNotification> {
     /*
      * the operation associated with the notification and its value must be "scale"
      */
-    @JsonProperty(value = "operation", required = true)
     private String operation = "Scale";
 
     /*
      * the email notification.
      */
-    @JsonProperty(value = "email")
     private EmailNotification email;
 
     /*
      * the collection of webhook notifications.
      */
-    @JsonProperty(value = "webhooks")
     private List<WebhookNotification> webhooks;
 
-    /** Creates an instance of AutoscaleNotification class. */
+    /**
+     * Creates an instance of AutoscaleNotification class.
+     */
     public AutoscaleNotification() {
-        operation = "Scale";
     }
 
     /**
      * Get the operation property: the operation associated with the notification and its value must be "scale".
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -45,7 +49,7 @@ public final class AutoscaleNotification {
 
     /**
      * Set the operation property: the operation associated with the notification and its value must be "scale".
-     *
+     * 
      * @param operation the operation value to set.
      * @return the AutoscaleNotification object itself.
      */
@@ -56,7 +60,7 @@ public final class AutoscaleNotification {
 
     /**
      * Get the email property: the email notification.
-     *
+     * 
      * @return the email value.
      */
     public EmailNotification email() {
@@ -65,7 +69,7 @@ public final class AutoscaleNotification {
 
     /**
      * Set the email property: the email notification.
-     *
+     * 
      * @param email the email value to set.
      * @return the AutoscaleNotification object itself.
      */
@@ -76,7 +80,7 @@ public final class AutoscaleNotification {
 
     /**
      * Get the webhooks property: the collection of webhook notifications.
-     *
+     * 
      * @return the webhooks value.
      */
     public List<WebhookNotification> webhooks() {
@@ -85,7 +89,7 @@ public final class AutoscaleNotification {
 
     /**
      * Set the webhooks property: the collection of webhook notifications.
-     *
+     * 
      * @param webhooks the webhooks value to set.
      * @return the AutoscaleNotification object itself.
      */
@@ -96,7 +100,7 @@ public final class AutoscaleNotification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -106,5 +110,48 @@ public final class AutoscaleNotification {
         if (webhooks() != null) {
             webhooks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeJsonField("email", this.email);
+        jsonWriter.writeArrayField("webhooks", this.webhooks, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoscaleNotification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoscaleNotification if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoscaleNotification.
+     */
+    public static AutoscaleNotification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoscaleNotification deserializedAutoscaleNotification = new AutoscaleNotification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("email".equals(fieldName)) {
+                    deserializedAutoscaleNotification.email = EmailNotification.fromJson(reader);
+                } else if ("webhooks".equals(fieldName)) {
+                    List<WebhookNotification> webhooks
+                        = reader.readArray(reader1 -> WebhookNotification.fromJson(reader1));
+                    deserializedAutoscaleNotification.webhooks = webhooks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoscaleNotification;
+        });
     }
 }

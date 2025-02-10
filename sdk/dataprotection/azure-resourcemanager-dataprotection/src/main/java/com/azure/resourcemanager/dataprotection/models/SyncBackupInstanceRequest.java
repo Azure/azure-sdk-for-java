@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Sync BackupInstance Request.
  */
 @Fluent
-public final class SyncBackupInstanceRequest {
+public final class SyncBackupInstanceRequest implements JsonSerializable<SyncBackupInstanceRequest> {
     /*
      * Field indicating sync type e.g. to sync only in case of failure or in all cases
      */
-    @JsonProperty(value = "syncType")
     private SyncType syncType;
 
     /**
@@ -50,5 +53,41 @@ public final class SyncBackupInstanceRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("syncType", this.syncType == null ? null : this.syncType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncBackupInstanceRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncBackupInstanceRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncBackupInstanceRequest.
+     */
+    public static SyncBackupInstanceRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncBackupInstanceRequest deserializedSyncBackupInstanceRequest = new SyncBackupInstanceRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("syncType".equals(fieldName)) {
+                    deserializedSyncBackupInstanceRequest.syncType = SyncType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncBackupInstanceRequest;
+        });
     }
 }

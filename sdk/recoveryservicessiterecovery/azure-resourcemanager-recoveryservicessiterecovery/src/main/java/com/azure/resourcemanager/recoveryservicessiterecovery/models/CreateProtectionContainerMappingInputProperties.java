@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Configure pairing input properties. */
+/**
+ * Configure pairing input properties.
+ */
 @Fluent
-public final class CreateProtectionContainerMappingInputProperties {
+public final class CreateProtectionContainerMappingInputProperties
+    implements JsonSerializable<CreateProtectionContainerMappingInputProperties> {
     /*
      * The target unique protection container name.
      */
-    @JsonProperty(value = "targetProtectionContainerId")
     private String targetProtectionContainerId;
 
     /*
      * Applicable policy.
      */
-    @JsonProperty(value = "policyId")
     private String policyId;
 
     /*
      * Provider specific input for pairing.
      */
-    @JsonProperty(value = "providerSpecificInput")
     private ReplicationProviderSpecificContainerMappingInput providerSpecificInput;
 
-    /** Creates an instance of CreateProtectionContainerMappingInputProperties class. */
+    /**
+     * Creates an instance of CreateProtectionContainerMappingInputProperties class.
+     */
     public CreateProtectionContainerMappingInputProperties() {
     }
 
     /**
      * Get the targetProtectionContainerId property: The target unique protection container name.
-     *
+     * 
      * @return the targetProtectionContainerId value.
      */
     public String targetProtectionContainerId() {
@@ -43,19 +49,19 @@ public final class CreateProtectionContainerMappingInputProperties {
 
     /**
      * Set the targetProtectionContainerId property: The target unique protection container name.
-     *
+     * 
      * @param targetProtectionContainerId the targetProtectionContainerId value to set.
      * @return the CreateProtectionContainerMappingInputProperties object itself.
      */
-    public CreateProtectionContainerMappingInputProperties withTargetProtectionContainerId(
-        String targetProtectionContainerId) {
+    public CreateProtectionContainerMappingInputProperties
+        withTargetProtectionContainerId(String targetProtectionContainerId) {
         this.targetProtectionContainerId = targetProtectionContainerId;
         return this;
     }
 
     /**
      * Get the policyId property: Applicable policy.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -64,7 +70,7 @@ public final class CreateProtectionContainerMappingInputProperties {
 
     /**
      * Set the policyId property: Applicable policy.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the CreateProtectionContainerMappingInputProperties object itself.
      */
@@ -75,7 +81,7 @@ public final class CreateProtectionContainerMappingInputProperties {
 
     /**
      * Get the providerSpecificInput property: Provider specific input for pairing.
-     *
+     * 
      * @return the providerSpecificInput value.
      */
     public ReplicationProviderSpecificContainerMappingInput providerSpecificInput() {
@@ -84,24 +90,69 @@ public final class CreateProtectionContainerMappingInputProperties {
 
     /**
      * Set the providerSpecificInput property: Provider specific input for pairing.
-     *
+     * 
      * @param providerSpecificInput the providerSpecificInput value to set.
      * @return the CreateProtectionContainerMappingInputProperties object itself.
      */
-    public CreateProtectionContainerMappingInputProperties withProviderSpecificInput(
-        ReplicationProviderSpecificContainerMappingInput providerSpecificInput) {
+    public CreateProtectionContainerMappingInputProperties
+        withProviderSpecificInput(ReplicationProviderSpecificContainerMappingInput providerSpecificInput) {
         this.providerSpecificInput = providerSpecificInput;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificInput() != null) {
             providerSpecificInput().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetProtectionContainerId", this.targetProtectionContainerId);
+        jsonWriter.writeStringField("policyId", this.policyId);
+        jsonWriter.writeJsonField("providerSpecificInput", this.providerSpecificInput);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateProtectionContainerMappingInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateProtectionContainerMappingInputProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateProtectionContainerMappingInputProperties.
+     */
+    public static CreateProtectionContainerMappingInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateProtectionContainerMappingInputProperties deserializedCreateProtectionContainerMappingInputProperties
+                = new CreateProtectionContainerMappingInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetProtectionContainerId".equals(fieldName)) {
+                    deserializedCreateProtectionContainerMappingInputProperties.targetProtectionContainerId
+                        = reader.getString();
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedCreateProtectionContainerMappingInputProperties.policyId = reader.getString();
+                } else if ("providerSpecificInput".equals(fieldName)) {
+                    deserializedCreateProtectionContainerMappingInputProperties.providerSpecificInput
+                        = ReplicationProviderSpecificContainerMappingInput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateProtectionContainerMappingInputProperties;
+        });
     }
 }

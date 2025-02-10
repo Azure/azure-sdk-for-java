@@ -8,80 +8,90 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagemover.fluent.models.ProjectInner;
 
-/** An immutable client-side representation of Project. */
+/**
+ * An immutable client-side representation of Project.
+ */
 public interface Project {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the description property: A description for the Project.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the provisioningState property: The provisioning state of this resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.storagemover.fluent.models.ProjectInner object.
-     *
+     * 
      * @return the inner object.
      */
     ProjectInner innerModel();
 
-    /** The entirety of the Project definition. */
+    /**
+     * The entirety of the Project definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The Project definition stages. */
+    /**
+     * The Project definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Project definition. */
+        /**
+         * The first stage of the Project definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the Project definition allowing to specify parent resource. */
+        /**
+         * The stage of the Project definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, storageMoverName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param storageMoverName The name of the Storage Mover resource.
              * @return the next definition stage.
@@ -96,25 +106,27 @@ public interface Project {
         interface WithCreate extends DefinitionStages.WithDescription {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Project create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Project create(Context context);
         }
 
-        /** The stage of the Project definition allowing to specify description. */
+        /**
+         * The stage of the Project definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: A description for the Project..
-             *
+             * 
              * @param description A description for the Project.
              * @return the next definition stage.
              */
@@ -124,36 +136,42 @@ public interface Project {
 
     /**
      * Begins update for the Project resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Project.Update update();
 
-    /** The template for Project update. */
+    /**
+     * The template for Project update.
+     */
     interface Update extends UpdateStages.WithDescription {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Project apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Project apply(Context context);
     }
 
-    /** The Project update stages. */
+    /**
+     * The Project update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Project update allowing to specify description. */
+        /**
+         * The stage of the Project update allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: A description for the Project..
-             *
+             * 
              * @param description A description for the Project.
              * @return the next definition stage.
              */
@@ -163,14 +181,14 @@ public interface Project {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Project refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

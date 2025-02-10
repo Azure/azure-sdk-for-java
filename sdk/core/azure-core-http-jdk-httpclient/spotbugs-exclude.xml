@@ -9,33 +9,31 @@
   </Match>
 
   <Match>
-    <Bug pattern="EI_EXPOSE_REP2"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
     <Or>
       <And>
-        <Class name="com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder"/>
-        <Method name="configuration"/>
+        <Class name="com.azure.core.http.jdk.httpclient.implementation.ByteArrayTimeoutResponseSubscriber"/>
+        <Or>
+          <Field name="currentTimeout"/>
+          <Field name="subscription"/>
+        </Or>
       </And>
       <And>
+        <Class name="com.azure.core.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber"/>
         <Or>
-          <Class name="com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseBase" />
-          <Class name="com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseSync" />
+          <Field name="currentTimeout"/>
+          <Field name="subscription"/>
         </Or>
-        <Method name="&lt;init&gt;"/>
       </And>
     </Or>
   </Match>
 
   <Match>
-    <Bug pattern="EI_EXPOSE_REP"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE"/>
+    <Class name="com.azure.core.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber"/>
     <Or>
-      <And>
-        <Class name="com.azure.core.http.jdk.httpclient.implementation.BodyIgnoringSubscriber"/>
-        <Method name="getBody"/>
-      </And>
-      <And>
-        <Class name="com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseBase" />
-        <Method name="getHeaders" />
-      </And>
+      <Method name="close"/>
+      <Method name="onError"/>
     </Or>
   </Match>
 </FindBugsFilter>

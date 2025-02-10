@@ -6,36 +6,36 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters that define the source and destination endpoint.
  */
 @Fluent
-public final class NextHopParameters {
+public final class NextHopParameters implements JsonSerializable<NextHopParameters> {
     /*
      * The resource identifier of the target resource against which the action is to be performed.
      */
-    @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
     /*
      * The source IP address.
      */
-    @JsonProperty(value = "sourceIPAddress", required = true)
     private String sourceIpAddress;
 
     /*
      * The destination IP address.
      */
-    @JsonProperty(value = "destinationIPAddress", required = true)
     private String destinationIpAddress;
 
     /*
-     * The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of the nics, then this parameter must
-     * be specified. Otherwise optional).
+     * The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of the nics, then this parameter must be
+     * specified. Otherwise optional).
      */
-    @JsonProperty(value = "targetNicResourceId")
     private String targetNicResourceId;
 
     /**
@@ -107,8 +107,8 @@ public final class NextHopParameters {
     }
 
     /**
-     * Get the targetNicResourceId property: The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
-     * of the nics, then this parameter must be specified. Otherwise optional).
+     * Get the targetNicResourceId property: The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of
+     * the nics, then this parameter must be specified. Otherwise optional).
      * 
      * @return the targetNicResourceId value.
      */
@@ -117,8 +117,8 @@ public final class NextHopParameters {
     }
 
     /**
-     * Set the targetNicResourceId property: The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
-     * of the nics, then this parameter must be specified. Otherwise optional).
+     * Set the targetNicResourceId property: The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of
+     * the nics, then this parameter must be specified. Otherwise optional).
      * 
      * @param targetNicResourceId the targetNicResourceId value to set.
      * @return the NextHopParameters object itself.
@@ -135,18 +135,67 @@ public final class NextHopParameters {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property targetResourceId in model NextHopParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceId in model NextHopParameters"));
         }
         if (sourceIpAddress() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sourceIpAddress in model NextHopParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceIpAddress in model NextHopParameters"));
         }
         if (destinationIpAddress() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property destinationIpAddress in model NextHopParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destinationIpAddress in model NextHopParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NextHopParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        jsonWriter.writeStringField("sourceIPAddress", this.sourceIpAddress);
+        jsonWriter.writeStringField("destinationIPAddress", this.destinationIpAddress);
+        jsonWriter.writeStringField("targetNicResourceId", this.targetNicResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NextHopParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NextHopParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NextHopParameters.
+     */
+    public static NextHopParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NextHopParameters deserializedNextHopParameters = new NextHopParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceId".equals(fieldName)) {
+                    deserializedNextHopParameters.targetResourceId = reader.getString();
+                } else if ("sourceIPAddress".equals(fieldName)) {
+                    deserializedNextHopParameters.sourceIpAddress = reader.getString();
+                } else if ("destinationIPAddress".equals(fieldName)) {
+                    deserializedNextHopParameters.destinationIpAddress = reader.getString();
+                } else if ("targetNicResourceId".equals(fieldName)) {
+                    deserializedNextHopParameters.targetNicResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNextHopParameters;
+        });
+    }
 }

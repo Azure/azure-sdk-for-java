@@ -5,41 +5,60 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** AzureWorkload workload-specific backup request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureWorkloadBackupRequest")
+/**
+ * AzureWorkload workload-specific backup request.
+ */
 @Fluent
 public final class AzureWorkloadBackupRequest extends BackupRequest {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "AzureWorkloadBackupRequest";
+
+    /*
      * Type of backup, viz. Full, Differential, Log or CopyOnlyFull
      */
-    @JsonProperty(value = "backupType")
     private BackupType backupType;
 
     /*
      * Bool for Compression setting
      */
-    @JsonProperty(value = "enableCompression")
     private Boolean enableCompression;
 
     /*
      * Backup copy will expire after the time specified (UTC).
      */
-    @JsonProperty(value = "recoveryPointExpiryTimeInUTC")
     private OffsetDateTime recoveryPointExpiryTimeInUtc;
 
-    /** Creates an instance of AzureWorkloadBackupRequest class. */
+    /**
+     * Creates an instance of AzureWorkloadBackupRequest class.
+     */
     public AzureWorkloadBackupRequest() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the backupType property: Type of backup, viz. Full, Differential, Log or CopyOnlyFull.
-     *
+     * 
      * @return the backupType value.
      */
     public BackupType backupType() {
@@ -48,7 +67,7 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Set the backupType property: Type of backup, viz. Full, Differential, Log or CopyOnlyFull.
-     *
+     * 
      * @param backupType the backupType value to set.
      * @return the AzureWorkloadBackupRequest object itself.
      */
@@ -59,7 +78,7 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Get the enableCompression property: Bool for Compression setting.
-     *
+     * 
      * @return the enableCompression value.
      */
     public Boolean enableCompression() {
@@ -68,7 +87,7 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Set the enableCompression property: Bool for Compression setting.
-     *
+     * 
      * @param enableCompression the enableCompression value to set.
      * @return the AzureWorkloadBackupRequest object itself.
      */
@@ -79,7 +98,7 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Get the recoveryPointExpiryTimeInUtc property: Backup copy will expire after the time specified (UTC).
-     *
+     * 
      * @return the recoveryPointExpiryTimeInUtc value.
      */
     public OffsetDateTime recoveryPointExpiryTimeInUtc() {
@@ -88,7 +107,7 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Set the recoveryPointExpiryTimeInUtc property: Backup copy will expire after the time specified (UTC).
-     *
+     * 
      * @param recoveryPointExpiryTimeInUtc the recoveryPointExpiryTimeInUtc value to set.
      * @return the AzureWorkloadBackupRequest object itself.
      */
@@ -99,11 +118,60 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("backupType", this.backupType == null ? null : this.backupType.toString());
+        jsonWriter.writeBooleanField("enableCompression", this.enableCompression);
+        jsonWriter.writeStringField("recoveryPointExpiryTimeInUTC",
+            this.recoveryPointExpiryTimeInUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recoveryPointExpiryTimeInUtc));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWorkloadBackupRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWorkloadBackupRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWorkloadBackupRequest.
+     */
+    public static AzureWorkloadBackupRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWorkloadBackupRequest deserializedAzureWorkloadBackupRequest = new AzureWorkloadBackupRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedAzureWorkloadBackupRequest.objectType = reader.getString();
+                } else if ("backupType".equals(fieldName)) {
+                    deserializedAzureWorkloadBackupRequest.backupType = BackupType.fromString(reader.getString());
+                } else if ("enableCompression".equals(fieldName)) {
+                    deserializedAzureWorkloadBackupRequest.enableCompression
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recoveryPointExpiryTimeInUTC".equals(fieldName)) {
+                    deserializedAzureWorkloadBackupRequest.recoveryPointExpiryTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWorkloadBackupRequest;
+        });
     }
 }

@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationResultInfoBaseResourceInner;
 
-/** An instance of this class provides access to all the operations defined in ExportJobsOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExportJobsOperationResultsClient.
+ */
 public interface ExportJobsOperationResultsClient {
     /**
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the export job.
@@ -27,14 +29,14 @@ public interface ExportJobsOperationResultsClient {
      * @return the operation result of operation triggered by Export Jobs API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationResultInfoBaseResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context);
+    Response<OperationResultInfoBaseResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context);
 
     /**
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the export job.

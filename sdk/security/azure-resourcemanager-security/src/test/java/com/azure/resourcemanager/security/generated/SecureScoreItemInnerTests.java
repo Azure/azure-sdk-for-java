@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.SecureScoreItemInner;
 public final class SecureScoreItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecureScoreItemInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"zhrgmqgjsxvpqc\",\"score\":{\"max\":1162167874,\"current\":21.586870005444514,\"percentage\":87.20432974466105},\"weight\":4486642012912512601},\"id\":\"vriibakclacjfr\",\"name\":\"xousxauzl\",\"type\":\"vsg\"}")
-                .toObject(SecureScoreItemInner.class);
+        SecureScoreItemInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"wrd\",\"score\":{\"max\":1073149595,\"current\":22.40422960638768,\"percentage\":49.04614478623426},\"weight\":5391692794732202921},\"id\":\"myst\",\"name\":\"luqypfcvlerch\",\"type\":\"qbmfpjbabwidf\"}")
+            .toObject(SecureScoreItemInner.class);
     }
 
     @org.junit.jupiter.api.Test

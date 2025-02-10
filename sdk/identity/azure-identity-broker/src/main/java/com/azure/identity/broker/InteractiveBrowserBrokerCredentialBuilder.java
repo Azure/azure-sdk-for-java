@@ -3,7 +3,6 @@
 
 package com.azure.identity.broker;
 
-
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
@@ -40,6 +39,12 @@ import java.util.function.Function;
  */
 public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowserCredentialBuilder {
     /**
+     * Creates a new instance of {@link InteractiveBrowserBrokerCredentialBuilder}.
+     */
+    public InteractiveBrowserBrokerCredentialBuilder() {
+    }
+
+    /**
      * Sets the parent window handle used by the broker. For use on Windows only.
      *
      * @param windowHandle The window handle of the current application, or 0 for a console application.
@@ -58,6 +63,17 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      */
     public InteractiveBrowserBrokerCredentialBuilder enableLegacyMsaPassthrough() {
         CredentialBuilderBaseHelper.getClientOptions(this).setEnableLegacyMsaPassthrough(true);
+        return this;
+    }
+
+    /**
+     * Enables automatically using the default broker account for authentication instead
+     * of prompting the user with an account picker.
+     *
+     * @return An updated instance of this builder with useDefaultBrokerAccount set.
+     */
+    public InteractiveBrowserCredentialBuilder useDefaultBrokerAccount() {
+        CredentialBuilderBaseHelper.getClientOptions(this).setUseDefaultBrokerAccount(true);
         return this;
     }
 
@@ -110,7 +126,8 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * {@inheritDoc}
      */
     @Override
-    public InteractiveBrowserBrokerCredentialBuilder browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+    public InteractiveBrowserBrokerCredentialBuilder
+        browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
         super.browserCustomizationOptions(browserCustomizationOptions);
         return this;
     }
@@ -245,7 +262,8 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * {@inheritDoc}
      */
     @Override
-    public InteractiveBrowserBrokerCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
+    public InteractiveBrowserBrokerCredentialBuilder
+        additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
         super.additionallyAllowedTenants(additionallyAllowedTenants);
         return this;
     }
@@ -290,7 +308,8 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * {@inheritDoc}
      */
     @Override
-    public InteractiveBrowserBrokerCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
+    public InteractiveBrowserBrokerCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         super.tokenCachePersistenceOptions(tokenCachePersistenceOptions);
         return this;
     }

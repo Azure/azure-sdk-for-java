@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** contentTypeInfo. */
+/**
+ * contentTypeInfo.
+ */
 @Fluent
-public final class MicrosoftGraphContentTypeInfo {
+public final class MicrosoftGraphContentTypeInfo implements JsonSerializable<MicrosoftGraphContentTypeInfo> {
     /*
      * The id of the content type.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the content type.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * contentTypeInfo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphContentTypeInfo class. */
+    /**
+     * Creates an instance of MicrosoftGraphContentTypeInfo class.
+     */
     public MicrosoftGraphContentTypeInfo() {
     }
 
     /**
      * Get the id property: The id of the content type.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphContentTypeInfo {
 
     /**
      * Set the id property: The id of the content type.
-     *
+     * 
      * @param id the id value to set.
      * @return the MicrosoftGraphContentTypeInfo object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphContentTypeInfo {
 
     /**
      * Get the name property: The name of the content type.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphContentTypeInfo {
 
     /**
      * Set the name property: The name of the content type.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphContentTypeInfo object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphContentTypeInfo {
 
     /**
      * Get the additionalProperties property: contentTypeInfo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: contentTypeInfo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphContentTypeInfo object itself.
      */
@@ -97,19 +99,62 @@ public final class MicrosoftGraphContentTypeInfo {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphContentTypeInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphContentTypeInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphContentTypeInfo.
+     */
+    public static MicrosoftGraphContentTypeInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphContentTypeInfo deserializedMicrosoftGraphContentTypeInfo
+                = new MicrosoftGraphContentTypeInfo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentTypeInfo.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphContentTypeInfo.name = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphContentTypeInfo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphContentTypeInfo;
+        });
     }
 }

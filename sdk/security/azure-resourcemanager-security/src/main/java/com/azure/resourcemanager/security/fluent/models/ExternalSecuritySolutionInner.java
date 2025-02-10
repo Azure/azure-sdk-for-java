@@ -6,44 +6,64 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AadExternalSecuritySolution;
 import com.azure.resourcemanager.security.models.AtaExternalSecuritySolution;
 import com.azure.resourcemanager.security.models.CefExternalSecuritySolution;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.resourcemanager.security.models.ExternalSecuritySolutionKind;
+import java.io.IOException;
 
 /**
  * Represents a security solution external to Microsoft Defender for Cloud which sends information to an OMS workspace
  * and whose data is displayed by Microsoft Defender for Cloud.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = ExternalSecuritySolutionInner.class)
-@JsonTypeName("ExternalSecuritySolution")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "CEF", value = CefExternalSecuritySolution.class),
-    @JsonSubTypes.Type(name = "ATA", value = AtaExternalSecuritySolution.class),
-    @JsonSubTypes.Type(name = "AAD", value = AadExternalSecuritySolution.class)
-})
 @Immutable
 public class ExternalSecuritySolutionInner extends ProxyResource {
     /*
+     * The kind of the external solution
+     */
+    private ExternalSecuritySolutionKind kind = ExternalSecuritySolutionKind.fromString("ExternalSecuritySolution");
+
+    /*
      * Location where the resource is stored
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of ExternalSecuritySolutionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ExternalSecuritySolutionInner class.
+     */
     public ExternalSecuritySolutionInner() {
     }
 
     /**
+     * Get the kind property: The kind of the external solution.
+     * 
+     * @return the kind value.
+     */
+    public ExternalSecuritySolutionKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -51,10 +71,127 @@ public class ExternalSecuritySolutionInner extends ProxyResource {
     }
 
     /**
+     * Set the location property: Location where the resource is stored.
+     * 
+     * @param location the location value to set.
+     * @return the ExternalSecuritySolutionInner object itself.
+     */
+    ExternalSecuritySolutionInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExternalSecuritySolutionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExternalSecuritySolutionInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExternalSecuritySolutionInner.
+     */
+    public static ExternalSecuritySolutionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("CEF".equals(discriminatorValue)) {
+                    return CefExternalSecuritySolution.fromJson(readerToUse.reset());
+                } else if ("ATA".equals(discriminatorValue)) {
+                    return AtaExternalSecuritySolution.fromJson(readerToUse.reset());
+                } else if ("AAD".equals(discriminatorValue)) {
+                    return AadExternalSecuritySolution.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ExternalSecuritySolutionInner fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExternalSecuritySolutionInner deserializedExternalSecuritySolutionInner
+                = new ExternalSecuritySolutionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExternalSecuritySolutionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedExternalSecuritySolutionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedExternalSecuritySolutionInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedExternalSecuritySolutionInner.kind
+                        = ExternalSecuritySolutionKind.fromString(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedExternalSecuritySolutionInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExternalSecuritySolutionInner;
+        });
     }
 }

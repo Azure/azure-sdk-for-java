@@ -5,37 +5,147 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
-/** Identity used for BYOS. */
+/**
+ * Identity used for BYOS.
+ */
 @Fluent
 public final class WorkbookResourceIdentity extends ManagedServiceIdentity {
-    /** Creates an instance of WorkbookResourceIdentity class. */
+    /*
+     * The tenant ID of the system assigned identity. This property will only be provided for a system assigned
+     * identity.
+     */
+    private UUID tenantId;
+
+    /*
+     * The service principal ID of the system assigned identity. This property will only be provided for a system
+     * assigned identity.
+     */
+    private UUID principalId;
+
+    /**
+     * Creates an instance of WorkbookResourceIdentity class.
+     */
     public WorkbookResourceIdentity() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the tenantId property: The tenant ID of the system assigned identity. This property will only be provided for
+     * a system assigned identity.
+     * 
+     * @return the tenantId value.
+     */
+    @Override
+    public UUID tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Get the principalId property: The service principal ID of the system assigned identity. This property will only
+     * be provided for a system assigned identity.
+     * 
+     * @return the principalId value.
+     */
+    @Override
+    public UUID principalId() {
+        return this.principalId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkbookResourceIdentity withType(ManagedServiceIdentityType type) {
         super.withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public WorkbookResourceIdentity withUserAssignedIdentities(
-        Map<String, UserAssignedIdentity> userAssignedIdentities) {
+    public WorkbookResourceIdentity
+        withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         super.withUserAssignedIdentities(userAssignedIdentities);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (type() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model WorkbookResourceIdentity"));
+        }
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkbookResourceIdentity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
+        jsonWriter.writeMapField("userAssignedIdentities", userAssignedIdentities(),
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkbookResourceIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkbookResourceIdentity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkbookResourceIdentity.
+     */
+    public static WorkbookResourceIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkbookResourceIdentity deserializedWorkbookResourceIdentity = new WorkbookResourceIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedWorkbookResourceIdentity
+                        .withType(ManagedServiceIdentityType.fromString(reader.getString()));
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedWorkbookResourceIdentity.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedWorkbookResourceIdentity.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));
+                    deserializedWorkbookResourceIdentity.withUserAssignedIdentities(userAssignedIdentities);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkbookResourceIdentity;
+        });
     }
 }

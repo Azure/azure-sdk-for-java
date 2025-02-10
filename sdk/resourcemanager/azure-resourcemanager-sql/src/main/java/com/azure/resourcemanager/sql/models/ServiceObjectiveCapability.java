@@ -5,104 +5,98 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-/** The service objectives capability. */
+/**
+ * The service objectives capability.
+ */
 @Fluent
-public final class ServiceObjectiveCapability {
+public final class ServiceObjectiveCapability implements JsonSerializable<ServiceObjectiveCapability> {
     /*
      * The unique ID of the service objective.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /*
      * The service objective name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The list of supported maximum database sizes.
      */
-    @JsonProperty(value = "supportedMaxSizes", access = JsonProperty.Access.WRITE_ONLY)
     private List<MaxSizeRangeCapability> supportedMaxSizes;
 
     /*
      * The performance level.
      */
-    @JsonProperty(value = "performanceLevel", access = JsonProperty.Access.WRITE_ONLY)
     private PerformanceLevelCapability performanceLevel;
 
     /*
      * The sku.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
     /*
      * List of supported license types.
      */
-    @JsonProperty(value = "supportedLicenseTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<LicenseTypeCapability> supportedLicenseTypes;
 
     /*
      * The included (free) max size.
      */
-    @JsonProperty(value = "includedMaxSize", access = JsonProperty.Access.WRITE_ONLY)
     private MaxSizeCapability includedMaxSize;
 
     /*
      * Whether or not zone redundancy is supported for the service objective.
      */
-    @JsonProperty(value = "zoneRedundant", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean zoneRedundant;
 
     /*
      * Supported time range for auto pause delay
      */
-    @JsonProperty(value = "supportedAutoPauseDelay", access = JsonProperty.Access.WRITE_ONLY)
     private AutoPauseDelayTimeRange supportedAutoPauseDelay;
 
     /*
      * List of supported min capacities
      */
-    @JsonProperty(value = "supportedMinCapacities", access = JsonProperty.Access.WRITE_ONLY)
     private List<MinCapacityCapability> supportedMinCapacities;
 
     /*
      * The compute model
      */
-    @JsonProperty(value = "computeModel", access = JsonProperty.Access.WRITE_ONLY)
     private String computeModel;
 
     /*
      * List of supported maintenance configurations
      */
-    @JsonProperty(value = "supportedMaintenanceConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<MaintenanceConfigurationCapability> supportedMaintenanceConfigurations;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ServiceObjectiveCapability class. */
+    /**
+     * Creates an instance of ServiceObjectiveCapability class.
+     */
     public ServiceObjectiveCapability() {
     }
 
     /**
      * Get the id property: The unique ID of the service objective.
-     *
+     * 
      * @return the id value.
      */
     public UUID id() {
@@ -111,7 +105,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the name property: The service objective name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -120,7 +114,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the supportedMaxSizes property: The list of supported maximum database sizes.
-     *
+     * 
      * @return the supportedMaxSizes value.
      */
     public List<MaxSizeRangeCapability> supportedMaxSizes() {
@@ -129,7 +123,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the performanceLevel property: The performance level.
-     *
+     * 
      * @return the performanceLevel value.
      */
     public PerformanceLevelCapability performanceLevel() {
@@ -138,7 +132,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the sku property: The sku.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -147,7 +141,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the supportedLicenseTypes property: List of supported license types.
-     *
+     * 
      * @return the supportedLicenseTypes value.
      */
     public List<LicenseTypeCapability> supportedLicenseTypes() {
@@ -156,7 +150,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the includedMaxSize property: The included (free) max size.
-     *
+     * 
      * @return the includedMaxSize value.
      */
     public MaxSizeCapability includedMaxSize() {
@@ -165,7 +159,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the zoneRedundant property: Whether or not zone redundancy is supported for the service objective.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -174,7 +168,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the supportedAutoPauseDelay property: Supported time range for auto pause delay.
-     *
+     * 
      * @return the supportedAutoPauseDelay value.
      */
     public AutoPauseDelayTimeRange supportedAutoPauseDelay() {
@@ -183,7 +177,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the supportedMinCapacities property: List of supported min capacities.
-     *
+     * 
      * @return the supportedMinCapacities value.
      */
     public List<MinCapacityCapability> supportedMinCapacities() {
@@ -192,7 +186,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the computeModel property: The compute model.
-     *
+     * 
      * @return the computeModel value.
      */
     public String computeModel() {
@@ -201,7 +195,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the supportedMaintenanceConfigurations property: List of supported maintenance configurations.
-     *
+     * 
      * @return the supportedMaintenanceConfigurations value.
      */
     public List<MaintenanceConfigurationCapability> supportedMaintenanceConfigurations() {
@@ -210,7 +204,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -219,7 +213,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -228,7 +222,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ServiceObjectiveCapability object itself.
      */
@@ -239,7 +233,7 @@ public final class ServiceObjectiveCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -267,5 +261,79 @@ public final class ServiceObjectiveCapability {
         if (supportedMaintenanceConfigurations() != null) {
             supportedMaintenanceConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceObjectiveCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceObjectiveCapability if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceObjectiveCapability.
+     */
+    public static ServiceObjectiveCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceObjectiveCapability deserializedServiceObjectiveCapability = new ServiceObjectiveCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServiceObjectiveCapability.id
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedServiceObjectiveCapability.name = reader.getString();
+                } else if ("supportedMaxSizes".equals(fieldName)) {
+                    List<MaxSizeRangeCapability> supportedMaxSizes
+                        = reader.readArray(reader1 -> MaxSizeRangeCapability.fromJson(reader1));
+                    deserializedServiceObjectiveCapability.supportedMaxSizes = supportedMaxSizes;
+                } else if ("performanceLevel".equals(fieldName)) {
+                    deserializedServiceObjectiveCapability.performanceLevel
+                        = PerformanceLevelCapability.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedServiceObjectiveCapability.sku = Sku.fromJson(reader);
+                } else if ("supportedLicenseTypes".equals(fieldName)) {
+                    List<LicenseTypeCapability> supportedLicenseTypes
+                        = reader.readArray(reader1 -> LicenseTypeCapability.fromJson(reader1));
+                    deserializedServiceObjectiveCapability.supportedLicenseTypes = supportedLicenseTypes;
+                } else if ("includedMaxSize".equals(fieldName)) {
+                    deserializedServiceObjectiveCapability.includedMaxSize = MaxSizeCapability.fromJson(reader);
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedServiceObjectiveCapability.zoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("supportedAutoPauseDelay".equals(fieldName)) {
+                    deserializedServiceObjectiveCapability.supportedAutoPauseDelay
+                        = AutoPauseDelayTimeRange.fromJson(reader);
+                } else if ("supportedMinCapacities".equals(fieldName)) {
+                    List<MinCapacityCapability> supportedMinCapacities
+                        = reader.readArray(reader1 -> MinCapacityCapability.fromJson(reader1));
+                    deserializedServiceObjectiveCapability.supportedMinCapacities = supportedMinCapacities;
+                } else if ("computeModel".equals(fieldName)) {
+                    deserializedServiceObjectiveCapability.computeModel = reader.getString();
+                } else if ("supportedMaintenanceConfigurations".equals(fieldName)) {
+                    List<MaintenanceConfigurationCapability> supportedMaintenanceConfigurations
+                        = reader.readArray(reader1 -> MaintenanceConfigurationCapability.fromJson(reader1));
+                    deserializedServiceObjectiveCapability.supportedMaintenanceConfigurations
+                        = supportedMaintenanceConfigurations;
+                } else if ("status".equals(fieldName)) {
+                    deserializedServiceObjectiveCapability.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedServiceObjectiveCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceObjectiveCapability;
+        });
     }
 }

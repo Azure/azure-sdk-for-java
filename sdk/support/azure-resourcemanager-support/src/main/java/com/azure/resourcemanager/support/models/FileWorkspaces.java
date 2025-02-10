@@ -7,11 +7,13 @@ package com.azure.resourcemanager.support.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FileWorkspaces. */
+/**
+ * Resource collection API of FileWorkspaces.
+ */
 public interface FileWorkspaces {
     /**
      * Gets details for a specific file workspace in an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface FileWorkspaces {
 
     /**
      * Gets details for a specific file workspace in an Azure subscription.
-     *
+     * 
      * @param fileWorkspaceName File Workspace Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -34,7 +36,7 @@ public interface FileWorkspaces {
 
     /**
      * Creates a new file workspace for the specified subscription.
-     *
+     * 
      * @param fileWorkspaceName File workspace name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +48,7 @@ public interface FileWorkspaces {
 
     /**
      * Creates a new file workspace for the specified subscription.
-     *
+     * 
      * @param fileWorkspaceName File workspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

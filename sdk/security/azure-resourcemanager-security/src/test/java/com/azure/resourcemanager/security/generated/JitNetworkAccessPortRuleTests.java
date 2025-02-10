@@ -13,32 +13,28 @@ import org.junit.jupiter.api.Assertions;
 public final class JitNetworkAccessPortRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JitNetworkAccessPortRule model =
-            BinaryData
-                .fromString(
-                    "{\"number\":1664438715,\"protocol\":\"UDP\",\"allowedSourceAddressPrefix\":\"tnzoibgsxgnxfy\",\"allowedSourceAddressPrefixes\":[\"mpqoxw\",\"o\",\"dbxiqx\"],\"maxRequestAccessDuration\":\"iiqbi\"}")
-                .toObject(JitNetworkAccessPortRule.class);
-        Assertions.assertEquals(1664438715, model.number());
-        Assertions.assertEquals(Protocol.UDP, model.protocol());
-        Assertions.assertEquals("tnzoibgsxgnxfy", model.allowedSourceAddressPrefix());
-        Assertions.assertEquals("mpqoxw", model.allowedSourceAddressPrefixes().get(0));
-        Assertions.assertEquals("iiqbi", model.maxRequestAccessDuration());
+        JitNetworkAccessPortRule model = BinaryData.fromString(
+            "{\"number\":703238637,\"protocol\":\"*\",\"allowedSourceAddressPrefix\":\"hbejdznxcvdsrhnj\",\"allowedSourceAddressPrefixes\":[\"lvtno\",\"qfzgemjdftul\",\"ltducea\"],\"maxRequestAccessDuration\":\"tmczuomejwcwwqi\"}")
+            .toObject(JitNetworkAccessPortRule.class);
+        Assertions.assertEquals(703238637, model.number());
+        Assertions.assertEquals(Protocol.ASTERISK, model.protocol());
+        Assertions.assertEquals("hbejdznxcvdsrhnj", model.allowedSourceAddressPrefix());
+        Assertions.assertEquals("lvtno", model.allowedSourceAddressPrefixes().get(0));
+        Assertions.assertEquals("tmczuomejwcwwqi", model.maxRequestAccessDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JitNetworkAccessPortRule model =
-            new JitNetworkAccessPortRule()
-                .withNumber(1664438715)
-                .withProtocol(Protocol.UDP)
-                .withAllowedSourceAddressPrefix("tnzoibgsxgnxfy")
-                .withAllowedSourceAddressPrefixes(Arrays.asList("mpqoxw", "o", "dbxiqx"))
-                .withMaxRequestAccessDuration("iiqbi");
+        JitNetworkAccessPortRule model = new JitNetworkAccessPortRule().withNumber(703238637)
+            .withProtocol(Protocol.ASTERISK)
+            .withAllowedSourceAddressPrefix("hbejdznxcvdsrhnj")
+            .withAllowedSourceAddressPrefixes(Arrays.asList("lvtno", "qfzgemjdftul", "ltducea"))
+            .withMaxRequestAccessDuration("tmczuomejwcwwqi");
         model = BinaryData.fromObject(model).toObject(JitNetworkAccessPortRule.class);
-        Assertions.assertEquals(1664438715, model.number());
-        Assertions.assertEquals(Protocol.UDP, model.protocol());
-        Assertions.assertEquals("tnzoibgsxgnxfy", model.allowedSourceAddressPrefix());
-        Assertions.assertEquals("mpqoxw", model.allowedSourceAddressPrefixes().get(0));
-        Assertions.assertEquals("iiqbi", model.maxRequestAccessDuration());
+        Assertions.assertEquals(703238637, model.number());
+        Assertions.assertEquals(Protocol.ASTERISK, model.protocol());
+        Assertions.assertEquals("hbejdznxcvdsrhnj", model.allowedSourceAddressPrefix());
+        Assertions.assertEquals("lvtno", model.allowedSourceAddressPrefixes().get(0));
+        Assertions.assertEquals("tmczuomejwcwwqi", model.maxRequestAccessDuration());
     }
 }

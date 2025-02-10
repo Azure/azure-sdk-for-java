@@ -5,33 +5,45 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.devcenter.models.DevCenterProjectCatalogSettings;
 import com.azure.resourcemanager.devcenter.models.Encryption;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of the devcenter. These properties can be updated after the resource has been created. */
+/**
+ * Properties of the devcenter. These properties can be updated after the resource has been created.
+ */
 @Fluent
-public class DevCenterUpdateProperties {
+public class DevCenterUpdateProperties implements JsonSerializable<DevCenterUpdateProperties> {
     /*
      * Encryption settings to be used for server-side encryption for proprietary content (such as catalogs, logs,
      * customizations).
      */
-    @JsonProperty(value = "encryption")
     private Encryption encryption;
 
     /*
      * The display name of the devcenter.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of DevCenterUpdateProperties class. */
+    /*
+     * Dev Center settings to be used when associating a project with a catalog.
+     */
+    private DevCenterProjectCatalogSettings projectCatalogSettings;
+
+    /**
+     * Creates an instance of DevCenterUpdateProperties class.
+     */
     public DevCenterUpdateProperties() {
     }
 
     /**
      * Get the encryption property: Encryption settings to be used for server-side encryption for proprietary content
      * (such as catalogs, logs, customizations).
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -41,7 +53,7 @@ public class DevCenterUpdateProperties {
     /**
      * Set the encryption property: Encryption settings to be used for server-side encryption for proprietary content
      * (such as catalogs, logs, customizations).
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the DevCenterUpdateProperties object itself.
      */
@@ -52,7 +64,7 @@ public class DevCenterUpdateProperties {
 
     /**
      * Get the displayName property: The display name of the devcenter.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -61,7 +73,7 @@ public class DevCenterUpdateProperties {
 
     /**
      * Set the displayName property: The display name of the devcenter.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the DevCenterUpdateProperties object itself.
      */
@@ -71,13 +83,82 @@ public class DevCenterUpdateProperties {
     }
 
     /**
+     * Get the projectCatalogSettings property: Dev Center settings to be used when associating a project with a
+     * catalog.
+     * 
+     * @return the projectCatalogSettings value.
+     */
+    public DevCenterProjectCatalogSettings projectCatalogSettings() {
+        return this.projectCatalogSettings;
+    }
+
+    /**
+     * Set the projectCatalogSettings property: Dev Center settings to be used when associating a project with a
+     * catalog.
+     * 
+     * @param projectCatalogSettings the projectCatalogSettings value to set.
+     * @return the DevCenterUpdateProperties object itself.
+     */
+    public DevCenterUpdateProperties
+        withProjectCatalogSettings(DevCenterProjectCatalogSettings projectCatalogSettings) {
+        this.projectCatalogSettings = projectCatalogSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (encryption() != null) {
             encryption().validate();
         }
+        if (projectCatalogSettings() != null) {
+            projectCatalogSettings().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("projectCatalogSettings", this.projectCatalogSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevCenterUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevCenterUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevCenterUpdateProperties.
+     */
+    public static DevCenterUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevCenterUpdateProperties deserializedDevCenterUpdateProperties = new DevCenterUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encryption".equals(fieldName)) {
+                    deserializedDevCenterUpdateProperties.encryption = Encryption.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDevCenterUpdateProperties.displayName = reader.getString();
+                } else if ("projectCatalogSettings".equals(fieldName)) {
+                    deserializedDevCenterUpdateProperties.projectCatalogSettings
+                        = DevCenterProjectCatalogSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevCenterUpdateProperties;
+        });
     }
 }

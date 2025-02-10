@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VMwareCbtSecurityProfilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareCbtSecurityProfileProperties model =
-            BinaryData
-                .fromString(
-                    "{\"targetVmSecurityType\":\"None\",\"isTargetVmSecureBootEnabled\":\"ennqfabqca\",\"isTargetVmTpmEnabled\":\"lectcxsfmb\",\"isTargetVmIntegrityMonitoringEnabled\":\"xmsynbkd\",\"isTargetVmConfidentialEncryptionEnabled\":\"yufxuzmsvzyq\"}")
-                .toObject(VMwareCbtSecurityProfileProperties.class);
+        VMwareCbtSecurityProfileProperties model = BinaryData.fromString(
+            "{\"targetVmSecurityType\":\"None\",\"isTargetVmSecureBootEnabled\":\"ennqfabqca\",\"isTargetVmTpmEnabled\":\"lectcxsfmb\",\"isTargetVmIntegrityMonitoringEnabled\":\"xmsynbkd\",\"isTargetVmConfidentialEncryptionEnabled\":\"yufxuzmsvzyq\"}")
+            .toObject(VMwareCbtSecurityProfileProperties.class);
         Assertions.assertEquals(SecurityType.NONE, model.targetVmSecurityType());
         Assertions.assertEquals("ennqfabqca", model.isTargetVmSecureBootEnabled());
         Assertions.assertEquals("lectcxsfmb", model.isTargetVmTpmEnabled());
@@ -26,9 +24,8 @@ public final class VMwareCbtSecurityProfilePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtSecurityProfileProperties model =
-            new VMwareCbtSecurityProfileProperties()
-                .withTargetVmSecurityType(SecurityType.NONE)
+        VMwareCbtSecurityProfileProperties model
+            = new VMwareCbtSecurityProfileProperties().withTargetVmSecurityType(SecurityType.NONE)
                 .withIsTargetVmSecureBootEnabled("ennqfabqca")
                 .withIsTargetVmTpmEnabled("lectcxsfmb")
                 .withIsTargetVmIntegrityMonitoringEnabled("xmsynbkd")

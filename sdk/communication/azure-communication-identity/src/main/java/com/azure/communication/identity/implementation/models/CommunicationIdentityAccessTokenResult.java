@@ -5,29 +5,37 @@
 package com.azure.communication.identity.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A communication identity with access token. */
+/**
+ * A communication identity with access token.
+ */
 @Fluent
-public final class CommunicationIdentityAccessTokenResult {
+public final class CommunicationIdentityAccessTokenResult
+    implements JsonSerializable<CommunicationIdentityAccessTokenResult> {
     /*
      * A communication identity.
      */
-    @JsonProperty(value = "identity", required = true)
     private CommunicationIdentity identity;
 
     /*
      * An access token.
      */
-    @JsonProperty(value = "accessToken")
     private CommunicationIdentityAccessToken accessToken;
 
-    /** Creates an instance of CommunicationIdentityAccessTokenResult class. */
-    public CommunicationIdentityAccessTokenResult() {}
+    /**
+     * Creates an instance of CommunicationIdentityAccessTokenResult class.
+     */
+    public CommunicationIdentityAccessTokenResult() {
+    }
 
     /**
      * Get the identity property: A communication identity.
-     *
+     * 
      * @return the identity value.
      */
     public CommunicationIdentity getIdentity() {
@@ -36,7 +44,7 @@ public final class CommunicationIdentityAccessTokenResult {
 
     /**
      * Set the identity property: A communication identity.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the CommunicationIdentityAccessTokenResult object itself.
      */
@@ -47,7 +55,7 @@ public final class CommunicationIdentityAccessTokenResult {
 
     /**
      * Get the accessToken property: An access token.
-     *
+     * 
      * @return the accessToken value.
      */
     public CommunicationIdentityAccessToken getAccessToken() {
@@ -56,12 +64,52 @@ public final class CommunicationIdentityAccessTokenResult {
 
     /**
      * Set the accessToken property: An access token.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the CommunicationIdentityAccessTokenResult object itself.
      */
     public CommunicationIdentityAccessTokenResult setAccessToken(CommunicationIdentityAccessToken accessToken) {
         this.accessToken = accessToken;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("accessToken", this.accessToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunicationIdentityAccessTokenResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunicationIdentityAccessTokenResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommunicationIdentityAccessTokenResult.
+     */
+    public static CommunicationIdentityAccessTokenResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunicationIdentityAccessTokenResult deserializedCommunicationIdentityAccessTokenResult
+                = new CommunicationIdentityAccessTokenResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedCommunicationIdentityAccessTokenResult.identity
+                        = CommunicationIdentity.fromJson(reader);
+                } else if ("accessToken".equals(fieldName)) {
+                    deserializedCommunicationIdentityAccessTokenResult.accessToken
+                        = CommunicationIdentityAccessToken.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunicationIdentityAccessTokenResult;
+        });
     }
 }

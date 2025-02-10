@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.fluent.models.AmlFilesystemUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** An AML file system update instance. */
+/**
+ * An AML file system update instance.
+ */
 @Fluent
-public final class AmlFilesystemUpdate {
+public final class AmlFilesystemUpdate implements JsonSerializable<AmlFilesystemUpdate> {
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Properties of the AML file system.
      */
-    @JsonProperty(value = "properties")
     private AmlFilesystemUpdateProperties innerProperties;
 
-    /** Creates an instance of AmlFilesystemUpdate class. */
+    /**
+     * Creates an instance of AmlFilesystemUpdate class.
+     */
     public AmlFilesystemUpdate() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AmlFilesystemUpdate object itself.
      */
@@ -52,7 +56,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Get the innerProperties property: Properties of the AML file system.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AmlFilesystemUpdateProperties innerProperties() {
@@ -61,7 +65,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Get the encryptionSettings property: Specifies encryption settings of the AML file system.
-     *
+     * 
      * @return the encryptionSettings value.
      */
     public AmlFilesystemEncryptionSettings encryptionSettings() {
@@ -70,7 +74,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Set the encryptionSettings property: Specifies encryption settings of the AML file system.
-     *
+     * 
      * @param encryptionSettings the encryptionSettings value to set.
      * @return the AmlFilesystemUpdate object itself.
      */
@@ -84,7 +88,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Get the maintenanceWindow property: Start time of a 30-minute weekly maintenance window.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public AmlFilesystemUpdatePropertiesMaintenanceWindow maintenanceWindow() {
@@ -93,7 +97,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Set the maintenanceWindow property: Start time of a 30-minute weekly maintenance window.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the AmlFilesystemUpdate object itself.
      */
@@ -106,13 +110,76 @@ public final class AmlFilesystemUpdate {
     }
 
     /**
+     * Get the rootSquashSettings property: Specifies root squash settings of the AML file system.
+     * 
+     * @return the rootSquashSettings value.
+     */
+    public AmlFilesystemRootSquashSettings rootSquashSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().rootSquashSettings();
+    }
+
+    /**
+     * Set the rootSquashSettings property: Specifies root squash settings of the AML file system.
+     * 
+     * @param rootSquashSettings the rootSquashSettings value to set.
+     * @return the AmlFilesystemUpdate object itself.
+     */
+    public AmlFilesystemUpdate withRootSquashSettings(AmlFilesystemRootSquashSettings rootSquashSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AmlFilesystemUpdateProperties();
+        }
+        this.innerProperties().withRootSquashSettings(rootSquashSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemUpdate.
+     */
+    public static AmlFilesystemUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemUpdate deserializedAmlFilesystemUpdate = new AmlFilesystemUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAmlFilesystemUpdate.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAmlFilesystemUpdate.innerProperties = AmlFilesystemUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemUpdate;
+        });
     }
 }

@@ -13,6 +13,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.io.File;
 import java.time.Duration;
+import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,18 +31,12 @@ public class ZipDeployTests extends AppServiceTest {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canZipDeployFunction() {
-        if (skipInPlayback()) {
-            return;
-        }
-
         // Create function app
-        FunctionApp functionApp =
-            appServiceManager
-                .functionApps()
-                .define(webappName4)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .create();
+        FunctionApp functionApp = appServiceManager.functionApps()
+            .define(webappName4)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .create();
         Assertions.assertNotNull(functionApp);
         ResourceManagerUtils.sleep(Duration.ofSeconds(5));
         functionApp.zipDeploy(new File(FunctionAppsTests.class.getResource("/square-function-app.zip").getPath()));
@@ -50,13 +45,18 @@ public class ZipDeployTests extends AppServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals("625", response);
 
-        PagedIterable<FunctionEnvelope> envelopes =
-            appServiceManager.functionApps().listFunctions(rgName, functionApp.name());
+        PagedIterable<FunctionEnvelope> envelopes
+            = appServiceManager.functionApps().listFunctions(rgName, functionApp.name());
         Assertions.assertNotNull(envelopes);
         Assertions.assertEquals(1, TestUtilities.getSize(envelopes));
-        Assertions
-            .assertEquals(
-                envelopes.iterator().next().href(),
-                "https://" + webappName4 + ".scm.azurewebsites.net/api/functions/square");
+        Assertions.assertEquals(envelopes.iterator().next().href(),
+            "https://" + webappName4 + ".scm.azurewebsites.net/api/functions/square");
+
+        Assertions.assertNull(functionApp.listFunctionKeys("square").get("my-key"));
+
+        functionApp.addFunctionKey("square", "my-key", "my-value");
+
+        Map<String, String> keys = functionApp.listFunctionKeys("square");
+        Assertions.assertEquals("my-value", keys.get("my-key"));
     }
 }

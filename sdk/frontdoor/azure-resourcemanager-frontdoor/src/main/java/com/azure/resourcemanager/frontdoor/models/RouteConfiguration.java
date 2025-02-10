@@ -5,36 +5,106 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for all types of Route. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata.type",
-    defaultImpl = RouteConfiguration.class)
-@JsonTypeName("RouteConfiguration")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
-        value = ForwardingConfiguration.class),
-    @JsonSubTypes.Type(
-        name = "#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration",
-        value = RedirectConfiguration.class)
-})
+/**
+ * Base class for all types of Route.
+ */
 @Immutable
-public class RouteConfiguration {
-    /** Creates an instance of RouteConfiguration class. */
+public class RouteConfiguration implements JsonSerializable<RouteConfiguration> {
+    /*
+     * The @odata.type property.
+     */
+    private String odataType = "RouteConfiguration";
+
+    /**
+     * Creates an instance of RouteConfiguration class.
+     */
     public RouteConfiguration() {
     }
 
     /**
+     * Get the odataType property: The &#064;odata.type property.
+     * 
+     * @return the odataType value.
+     */
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteConfiguration.
+     */
+    public static RouteConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration".equals(discriminatorValue)) {
+                    return ForwardingConfiguration.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration"
+                    .equals(discriminatorValue)) {
+                    return RedirectConfiguration.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RouteConfiguration fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteConfiguration deserializedRouteConfiguration = new RouteConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedRouteConfiguration.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteConfiguration;
+        });
     }
 }

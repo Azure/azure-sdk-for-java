@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateSharedImageVersionSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateSharedImageVersionSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SharedImageVersion\",\"imageVersionId\":\"enjbdlwtgrhp\",\"exactVersion\":\"pj\"}")
-                .toObject(ImageTemplateSharedImageVersionSource.class);
-        Assertions.assertEquals("enjbdlwtgrhp", model.imageVersionId());
+        ImageTemplateSharedImageVersionSource model = BinaryData.fromString(
+            "{\"type\":\"SharedImageVersion\",\"imageVersionId\":\"cattpngjcrcczsq\",\"exactVersion\":\"hvmdajvnysounq\"}")
+            .toObject(ImageTemplateSharedImageVersionSource.class);
+        Assertions.assertEquals("cattpngjcrcczsq", model.imageVersionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateSharedImageVersionSource model =
-            new ImageTemplateSharedImageVersionSource().withImageVersionId("enjbdlwtgrhp");
+        ImageTemplateSharedImageVersionSource model
+            = new ImageTemplateSharedImageVersionSource().withImageVersionId("cattpngjcrcczsq");
         model = BinaryData.fromObject(model).toObject(ImageTemplateSharedImageVersionSource.class);
-        Assertions.assertEquals("enjbdlwtgrhp", model.imageVersionId());
+        Assertions.assertEquals("cattpngjcrcczsq", model.imageVersionId());
     }
 }

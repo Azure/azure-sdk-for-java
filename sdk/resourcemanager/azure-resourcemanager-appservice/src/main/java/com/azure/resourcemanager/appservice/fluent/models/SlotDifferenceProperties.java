@@ -5,53 +5,50 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SlotDifference resource specific properties.
  */
 @Immutable
-public final class SlotDifferenceProperties {
+public final class SlotDifferenceProperties implements JsonSerializable<SlotDifferenceProperties> {
     /*
      * Level of the difference: Information, Warning or Error.
      */
-    @JsonProperty(value = "level", access = JsonProperty.Access.WRITE_ONLY)
     private String level;
 
     /*
      * The type of the setting: General, AppSetting or ConnectionString.
      */
-    @JsonProperty(value = "settingType", access = JsonProperty.Access.WRITE_ONLY)
     private String settingType;
 
     /*
      * Rule that describes how to process the setting difference during a slot swap.
      */
-    @JsonProperty(value = "diffRule", access = JsonProperty.Access.WRITE_ONLY)
     private String diffRule;
 
     /*
      * Name of the setting.
      */
-    @JsonProperty(value = "settingName", access = JsonProperty.Access.WRITE_ONLY)
     private String settingName;
 
     /*
      * Value of the setting in the current slot.
      */
-    @JsonProperty(value = "valueInCurrentSlot", access = JsonProperty.Access.WRITE_ONLY)
     private String valueInCurrentSlot;
 
     /*
      * Value of the setting in the target slot.
      */
-    @JsonProperty(value = "valueInTargetSlot", access = JsonProperty.Access.WRITE_ONLY)
     private String valueInTargetSlot;
 
     /*
      * Description of the setting difference.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /**
@@ -129,5 +126,52 @@ public final class SlotDifferenceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SlotDifferenceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SlotDifferenceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SlotDifferenceProperties.
+     */
+    public static SlotDifferenceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SlotDifferenceProperties deserializedSlotDifferenceProperties = new SlotDifferenceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("level".equals(fieldName)) {
+                    deserializedSlotDifferenceProperties.level = reader.getString();
+                } else if ("settingType".equals(fieldName)) {
+                    deserializedSlotDifferenceProperties.settingType = reader.getString();
+                } else if ("diffRule".equals(fieldName)) {
+                    deserializedSlotDifferenceProperties.diffRule = reader.getString();
+                } else if ("settingName".equals(fieldName)) {
+                    deserializedSlotDifferenceProperties.settingName = reader.getString();
+                } else if ("valueInCurrentSlot".equals(fieldName)) {
+                    deserializedSlotDifferenceProperties.valueInCurrentSlot = reader.getString();
+                } else if ("valueInTargetSlot".equals(fieldName)) {
+                    deserializedSlotDifferenceProperties.valueInTargetSlot = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSlotDifferenceProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSlotDifferenceProperties;
+        });
     }
 }

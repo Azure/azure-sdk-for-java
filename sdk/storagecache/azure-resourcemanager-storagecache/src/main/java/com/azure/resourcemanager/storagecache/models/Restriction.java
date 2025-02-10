@@ -5,23 +5,27 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The restrictions preventing this SKU from being used. */
+/**
+ * The restrictions preventing this SKU from being used.
+ */
 @Fluent
-public final class Restriction {
+public final class Restriction implements JsonSerializable<Restriction> {
     /*
      * The type of restrictions. In this version, the only possible value for this is location.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
-     * The value of restrictions. If the restriction type is set to location, then this would be the different
-     * locations where the SKU is restricted.
+     * The value of restrictions. If the restriction type is set to location, then this would be the different locations
+     * where the SKU is restricted.
      */
-    @JsonProperty(value = "values", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> values;
 
     /*
@@ -29,16 +33,17 @@ public final class Restriction {
      * set when the SKU has requiredQuotas parameter as the subscription does not belong to that quota.
      * "NotAvailableForSubscription" is related to capacity at the datacenter.
      */
-    @JsonProperty(value = "reasonCode")
     private ReasonCode reasonCode;
 
-    /** Creates an instance of Restriction class. */
+    /**
+     * Creates an instance of Restriction class.
+     */
     public Restriction() {
     }
 
     /**
      * Get the type property: The type of restrictions. In this version, the only possible value for this is location.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -48,7 +53,7 @@ public final class Restriction {
     /**
      * Get the values property: The value of restrictions. If the restriction type is set to location, then this would
      * be the different locations where the SKU is restricted.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -59,7 +64,7 @@ public final class Restriction {
      * Get the reasonCode property: The reason for the restriction. As of now this can be "QuotaId" or
      * "NotAvailableForSubscription". "QuotaId" is set when the SKU has requiredQuotas parameter as the subscription
      * does not belong to that quota. "NotAvailableForSubscription" is related to capacity at the datacenter.
-     *
+     * 
      * @return the reasonCode value.
      */
     public ReasonCode reasonCode() {
@@ -70,7 +75,7 @@ public final class Restriction {
      * Set the reasonCode property: The reason for the restriction. As of now this can be "QuotaId" or
      * "NotAvailableForSubscription". "QuotaId" is set when the SKU has requiredQuotas parameter as the subscription
      * does not belong to that quota. "NotAvailableForSubscription" is related to capacity at the datacenter.
-     *
+     * 
      * @param reasonCode the reasonCode value to set.
      * @return the Restriction object itself.
      */
@@ -81,9 +86,50 @@ public final class Restriction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reasonCode", this.reasonCode == null ? null : this.reasonCode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Restriction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Restriction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Restriction.
+     */
+    public static Restriction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Restriction deserializedRestriction = new Restriction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedRestriction.type = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<String> values = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRestriction.values = values;
+                } else if ("reasonCode".equals(fieldName)) {
+                    deserializedRestriction.reasonCode = ReasonCode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestriction;
+        });
     }
 }

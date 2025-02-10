@@ -1,0 +1,75 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/serialization/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/serialization/
+
+parameters:
+  - name: release_azurejson
+    displayName: 'azure-json'
+    type: boolean
+    default: false
+  - name: release_azurexml
+    displayName: 'azure-xml'
+    type: boolean
+    default: false
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: serialization
+    TimeoutInMinutes: 90
+    Artifacts:
+      - name: azure-json
+        groupId: com.azure
+        safeName: azurejson
+        releaseInBatch: ${{ parameters.release_azurejson }}
+      - name: azure-xml
+        groupId: com.azure
+        safeName: azurexml
+        releaseInBatch: ${{ parameters.release_azurexml }}
+
+    # This needs to be temporarily here for the PR pipeline.
+    MatrixConfigs:
+      - Name: Java_ci_test_base
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
+
+    # Run separate version override tests using a different artifacts list
+    # This matrix config overrides the ArtifactsJson variable
+    AdditionalMatrixConfigs:
+      - Name: version_overrides_tests
+        Path: sdk/serialization/version-overrides-matrix.json
+        Selection: all
+        GenerateVMJobs: true
+
+    LiveTestStages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          ServiceDirectory: serialization
+          Artifacts:
+            - name: azure-json
+              groupId: com.azure
+              safeName: azurejson
+            - name: azure-xml
+              groupId: com.azure
+              safeName: azurexml

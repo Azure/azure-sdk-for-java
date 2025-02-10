@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class VmDiskTypes extends ExpandableStringEnum<VmDiskTypes> {
      * @param name a name to look for.
      * @return the corresponding VmDiskTypes.
      */
-    @JsonCreator
     public static VmDiskTypes fromString(String name) {
         return fromString(name, VmDiskTypes.class);
     }

@@ -7,21 +7,21 @@ package com.azure.resourcemanager.newrelicobservability.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MonitorsSwitchBillingHeaders model. */
+/**
+ * The MonitorsSwitchBillingHeaders model.
+ */
 @Fluent
 public final class MonitorsSwitchBillingHeaders {
     /*
      * The Retry-After property.
      */
-    @JsonProperty(value = "Retry-After")
     private Integer retryAfter;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of MonitorsSwitchBillingHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public MonitorsSwitchBillingHeaders(HttpHeaders rawHeaders) {
@@ -33,7 +33,7 @@ public final class MonitorsSwitchBillingHeaders {
 
     /**
      * Get the retryAfter property: The Retry-After property.
-     *
+     * 
      * @return the retryAfter value.
      */
     public Integer retryAfter() {
@@ -42,7 +42,7 @@ public final class MonitorsSwitchBillingHeaders {
 
     /**
      * Set the retryAfter property: The Retry-After property.
-     *
+     * 
      * @param retryAfter the retryAfter value to set.
      * @return the MonitorsSwitchBillingHeaders object itself.
      */
@@ -53,7 +53,7 @@ public final class MonitorsSwitchBillingHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

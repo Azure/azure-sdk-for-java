@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SupportedOperatingSystemsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportedOperatingSystemsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"supportedOsList\":[{\"instanceType\":\"tdacarvvlfn\",\"supportedOs\":[{\"osName\":\"poi\",\"osType\":\"naz\",\"osVersions\":[{},{},{}]}]}]},\"location\":\"zrsq\",\"id\":\"lsxkd\",\"name\":\"wqapfgsdp\",\"type\":\"vessm\"}")
-                .toObject(SupportedOperatingSystemsInner.class);
+        SupportedOperatingSystemsInner model = BinaryData.fromString(
+            "{\"properties\":{\"supportedOsList\":[{\"instanceType\":\"tdacarvvlfn\",\"supportedOs\":[{\"osName\":\"poi\",\"osType\":\"naz\",\"osVersions\":[{},{},{}]}]}]},\"location\":\"zrsq\",\"id\":\"lsxkd\",\"name\":\"wqapfgsdp\",\"type\":\"vessm\"}")
+            .toObject(SupportedOperatingSystemsInner.class);
         Assertions.assertEquals("tdacarvvlfn", model.properties().supportedOsList().get(0).instanceType());
         Assertions.assertEquals("poi", model.properties().supportedOsList().get(0).supportedOs().get(0).osName());
         Assertions.assertEquals("naz", model.properties().supportedOsList().get(0).supportedOs().get(0).osType());
@@ -29,27 +27,18 @@ public final class SupportedOperatingSystemsInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedOperatingSystemsInner model =
-            new SupportedOperatingSystemsInner()
+        SupportedOperatingSystemsInner model
+            = new SupportedOperatingSystemsInner()
                 .withProperties(
                     new SupportedOSProperties()
                         .withSupportedOsList(
                             Arrays
                                 .asList(
-                                    new SupportedOSProperty()
-                                        .withInstanceType("tdacarvvlfn")
-                                        .withSupportedOs(
-                                            Arrays
-                                                .asList(
-                                                    new SupportedOSDetails()
-                                                        .withOsName("poi")
-                                                        .withOsType("naz")
-                                                        .withOsVersions(
-                                                            Arrays
-                                                                .asList(
-                                                                    new OSVersionWrapper(),
-                                                                    new OSVersionWrapper(),
-                                                                    new OSVersionWrapper())))))))
+                                    new SupportedOSProperty().withInstanceType("tdacarvvlfn")
+                                        .withSupportedOs(Arrays.asList(new SupportedOSDetails().withOsName("poi")
+                                            .withOsType("naz")
+                                            .withOsVersions(Arrays.asList(new OSVersionWrapper(),
+                                                new OSVersionWrapper(), new OSVersionWrapper())))))))
                 .withLocation("zrsq");
         model = BinaryData.fromObject(model).toObject(SupportedOperatingSystemsInner.class);
         Assertions.assertEquals("tdacarvvlfn", model.properties().supportedOsList().get(0).instanceType());

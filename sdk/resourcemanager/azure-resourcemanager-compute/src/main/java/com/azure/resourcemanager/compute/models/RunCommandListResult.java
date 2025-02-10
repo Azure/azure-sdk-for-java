@@ -6,26 +6,27 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.RunCommandDocumentBaseInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List Virtual Machine operation response.
  */
 @Fluent
-public final class RunCommandListResult {
+public final class RunCommandListResult implements JsonSerializable<RunCommandListResult> {
     /*
      * The list of virtual machine run commands.
      */
-    @JsonProperty(value = "value", required = true)
     private List<RunCommandDocumentBaseInner> value;
 
     /*
-     * The uri to fetch the next page of run commands. Call ListNext() with this to fetch the next page of run
-     * commands.
+     * The uri to fetch the next page of run commands. Call ListNext() with this to fetch the next page of run commands.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -55,8 +56,8 @@ public final class RunCommandListResult {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch
-     * the next page of run commands.
+     * Get the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch the
+     * next page of run commands.
      * 
      * @return the nextLink value.
      */
@@ -65,8 +66,8 @@ public final class RunCommandListResult {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch
-     * the next page of run commands.
+     * Set the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch the
+     * next page of run commands.
      * 
      * @param nextLink the nextLink value to set.
      * @return the RunCommandListResult object itself.
@@ -83,12 +84,54 @@ public final class RunCommandListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model RunCommandListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model RunCommandListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RunCommandListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunCommandListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunCommandListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunCommandListResult.
+     */
+    public static RunCommandListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunCommandListResult deserializedRunCommandListResult = new RunCommandListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RunCommandDocumentBaseInner> value
+                        = reader.readArray(reader1 -> RunCommandDocumentBaseInner.fromJson(reader1));
+                    deserializedRunCommandListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRunCommandListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunCommandListResult;
+        });
+    }
 }

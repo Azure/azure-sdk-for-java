@@ -5,56 +5,53 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ConnectionStatus;
 import com.azure.resourcemanager.network.models.ConnectivityHop;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Information on the connectivity status.
  */
 @Immutable
-public final class ConnectivityInformationInner {
+public final class ConnectivityInformationInner implements JsonSerializable<ConnectivityInformationInner> {
     /*
      * List of hops between the source and the destination.
      */
-    @JsonProperty(value = "hops", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectivityHop> hops;
 
     /*
      * The connection status.
      */
-    @JsonProperty(value = "connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectionStatus connectionStatus;
 
     /*
      * Average latency in milliseconds.
      */
-    @JsonProperty(value = "avgLatencyInMs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer avgLatencyInMs;
 
     /*
      * Minimum latency in milliseconds.
      */
-    @JsonProperty(value = "minLatencyInMs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer minLatencyInMs;
 
     /*
      * Maximum latency in milliseconds.
      */
-    @JsonProperty(value = "maxLatencyInMs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxLatencyInMs;
 
     /*
      * Total number of probes sent.
      */
-    @JsonProperty(value = "probesSent", access = JsonProperty.Access.WRITE_ONLY)
     private Integer probesSent;
 
     /*
      * Number of failed probes.
      */
-    @JsonProperty(value = "probesFailed", access = JsonProperty.Access.WRITE_ONLY)
     private Integer probesFailed;
 
     /**
@@ -135,5 +132,54 @@ public final class ConnectivityInformationInner {
         if (hops() != null) {
             hops().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityInformationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityInformationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectivityInformationInner.
+     */
+    public static ConnectivityInformationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityInformationInner deserializedConnectivityInformationInner = new ConnectivityInformationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hops".equals(fieldName)) {
+                    List<ConnectivityHop> hops = reader.readArray(reader1 -> ConnectivityHop.fromJson(reader1));
+                    deserializedConnectivityInformationInner.hops = hops;
+                } else if ("connectionStatus".equals(fieldName)) {
+                    deserializedConnectivityInformationInner.connectionStatus
+                        = ConnectionStatus.fromString(reader.getString());
+                } else if ("avgLatencyInMs".equals(fieldName)) {
+                    deserializedConnectivityInformationInner.avgLatencyInMs = reader.getNullable(JsonReader::getInt);
+                } else if ("minLatencyInMs".equals(fieldName)) {
+                    deserializedConnectivityInformationInner.minLatencyInMs = reader.getNullable(JsonReader::getInt);
+                } else if ("maxLatencyInMs".equals(fieldName)) {
+                    deserializedConnectivityInformationInner.maxLatencyInMs = reader.getNullable(JsonReader::getInt);
+                } else if ("probesSent".equals(fieldName)) {
+                    deserializedConnectivityInformationInner.probesSent = reader.getNullable(JsonReader::getInt);
+                } else if ("probesFailed".equals(fieldName)) {
+                    deserializedConnectivityInformationInner.probesFailed = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityInformationInner;
+        });
     }
 }

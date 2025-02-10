@@ -11,16 +11,19 @@ public final class SalesforceServiceCloudSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceServiceCloudSource model = BinaryData.fromString(
-            "{\"type\":\"SalesforceServiceCloudSource\",\"query\":\"dataktalobxl\",\"readBehavior\":\"datajthmibqgld\",\"additionalColumns\":\"datatkalp\",\"sourceRetryCount\":\"datanny\",\"sourceRetryWait\":\"datajea\",\"maxConcurrentConnections\":\"datalewlwbxufq\",\"disableMetricsCollection\":\"datakkvij\",\"\":{\"ld\":\"dataqvodzowdqvq\"}}")
+            "{\"type\":\"SalesforceServiceCloudSource\",\"query\":\"datajwiz\",\"readBehavior\":\"dataifz\",\"additionalColumns\":\"dataxtykjrdxlximvr\",\"sourceRetryCount\":\"datajja\",\"sourceRetryWait\":\"dataaskullvtsauj\",\"maxConcurrentConnections\":\"datahtz\",\"disableMetricsCollection\":\"datazqrpfhzxkjyg\",\"\":{\"jcozbnmthxcm\":\"datadgwdha\",\"exn\":\"dataq\",\"msmzykpnjgi\":\"datapvox\"}}")
             .toObject(SalesforceServiceCloudSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceServiceCloudSource model
-            = new SalesforceServiceCloudSource().withSourceRetryCount("datanny").withSourceRetryWait("datajea")
-                .withMaxConcurrentConnections("datalewlwbxufq").withDisableMetricsCollection("datakkvij")
-                .withQuery("dataktalobxl").withReadBehavior("datajthmibqgld").withAdditionalColumns("datatkalp");
+        SalesforceServiceCloudSource model = new SalesforceServiceCloudSource().withSourceRetryCount("datajja")
+            .withSourceRetryWait("dataaskullvtsauj")
+            .withMaxConcurrentConnections("datahtz")
+            .withDisableMetricsCollection("datazqrpfhzxkjyg")
+            .withQuery("datajwiz")
+            .withReadBehavior("dataifz")
+            .withAdditionalColumns("dataxtykjrdxlximvr");
         model = BinaryData.fromObject(model).toObject(SalesforceServiceCloudSource.class);
     }
 }

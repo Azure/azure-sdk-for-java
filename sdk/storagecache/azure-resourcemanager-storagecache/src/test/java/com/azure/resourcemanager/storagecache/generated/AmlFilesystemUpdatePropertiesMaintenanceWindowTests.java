@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class AmlFilesystemUpdatePropertiesMaintenanceWindowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmlFilesystemUpdatePropertiesMaintenanceWindow model =
-            BinaryData
-                .fromString("{\"dayOfWeek\":\"Monday\",\"timeOfDayUTC\":\"xdcu\"}")
+        AmlFilesystemUpdatePropertiesMaintenanceWindow model
+            = BinaryData.fromString("{\"dayOfWeek\":\"Friday\",\"timeOfDayUTC\":\"njbiksqrglssain\"}")
                 .toObject(AmlFilesystemUpdatePropertiesMaintenanceWindow.class);
-        Assertions.assertEquals(MaintenanceDayOfWeekType.MONDAY, model.dayOfWeek());
-        Assertions.assertEquals("xdcu", model.timeOfDayUtc());
+        Assertions.assertEquals(MaintenanceDayOfWeekType.FRIDAY, model.dayOfWeek());
+        Assertions.assertEquals("njbiksqrglssain", model.timeOfDayUtc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlFilesystemUpdatePropertiesMaintenanceWindow model =
-            new AmlFilesystemUpdatePropertiesMaintenanceWindow()
-                .withDayOfWeek(MaintenanceDayOfWeekType.MONDAY)
-                .withTimeOfDayUtc("xdcu");
+        AmlFilesystemUpdatePropertiesMaintenanceWindow model
+            = new AmlFilesystemUpdatePropertiesMaintenanceWindow().withDayOfWeek(MaintenanceDayOfWeekType.FRIDAY)
+                .withTimeOfDayUtc("njbiksqrglssain");
         model = BinaryData.fromObject(model).toObject(AmlFilesystemUpdatePropertiesMaintenanceWindow.class);
-        Assertions.assertEquals(MaintenanceDayOfWeekType.MONDAY, model.dayOfWeek());
-        Assertions.assertEquals("xdcu", model.timeOfDayUtc());
+        Assertions.assertEquals(MaintenanceDayOfWeekType.FRIDAY, model.dayOfWeek());
+        Assertions.assertEquals("njbiksqrglssain", model.timeOfDayUtc());
     }
 }

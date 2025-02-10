@@ -5,67 +5,76 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** storage size in MB capability. */
+/**
+ * storage size in MB capability.
+ */
 @Immutable
 public final class StorageMbCapability extends CapabilityBase {
     /*
      * Supported IOPS
      */
-    @JsonProperty(value = "supportedIops", access = JsonProperty.Access.WRITE_ONLY)
     private Integer supportedIops;
 
     /*
      * Maximum IOPS supported by this #Vcores or PremiumV2_LRS Storage Size
      */
-    @JsonProperty(value = "supportedMaximumIops", access = JsonProperty.Access.WRITE_ONLY)
     private Integer supportedMaximumIops;
 
     /*
      * Storage size in MB
      */
-    @JsonProperty(value = "storageSizeMb", access = JsonProperty.Access.WRITE_ONLY)
     private Long storageSizeMb;
 
     /*
      * Maximum value of Storage size in MB
      */
-    @JsonProperty(value = "maximumStorageSizeMb", access = JsonProperty.Access.WRITE_ONLY)
     private Long maximumStorageSizeMb;
 
     /*
      * Values of throughput in MB/s
      */
-    @JsonProperty(value = "supportedThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private Integer supportedThroughput;
 
     /*
      * Maximum values of throughput in MB/s
      */
-    @JsonProperty(value = "supportedMaximumThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private Integer supportedMaximumThroughput;
 
     /*
      * Default tier for IOPS
      */
-    @JsonProperty(value = "defaultIopsTier", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultIopsTier;
 
     /*
      * List of available options to upgrade the storage performance
      */
-    @JsonProperty(value = "supportedIopsTiers", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageTierCapability> supportedIopsTiers;
 
-    /** Creates an instance of StorageMbCapability class. */
+    /*
+     * The reason for the capability not being available.
+     */
+    private String reason;
+
+    /*
+     * The status of the capability.
+     */
+    private CapabilityStatus status;
+
+    /**
+     * Creates an instance of StorageMbCapability class.
+     */
     public StorageMbCapability() {
     }
 
     /**
      * Get the supportedIops property: Supported IOPS.
-     *
+     * 
      * @return the supportedIops value.
      */
     public Integer supportedIops() {
@@ -74,7 +83,7 @@ public final class StorageMbCapability extends CapabilityBase {
 
     /**
      * Get the supportedMaximumIops property: Maximum IOPS supported by this #Vcores or PremiumV2_LRS Storage Size.
-     *
+     * 
      * @return the supportedMaximumIops value.
      */
     public Integer supportedMaximumIops() {
@@ -83,7 +92,7 @@ public final class StorageMbCapability extends CapabilityBase {
 
     /**
      * Get the storageSizeMb property: Storage size in MB.
-     *
+     * 
      * @return the storageSizeMb value.
      */
     public Long storageSizeMb() {
@@ -92,7 +101,7 @@ public final class StorageMbCapability extends CapabilityBase {
 
     /**
      * Get the maximumStorageSizeMb property: Maximum value of Storage size in MB.
-     *
+     * 
      * @return the maximumStorageSizeMb value.
      */
     public Long maximumStorageSizeMb() {
@@ -101,7 +110,7 @@ public final class StorageMbCapability extends CapabilityBase {
 
     /**
      * Get the supportedThroughput property: Values of throughput in MB/s.
-     *
+     * 
      * @return the supportedThroughput value.
      */
     public Integer supportedThroughput() {
@@ -110,7 +119,7 @@ public final class StorageMbCapability extends CapabilityBase {
 
     /**
      * Get the supportedMaximumThroughput property: Maximum values of throughput in MB/s.
-     *
+     * 
      * @return the supportedMaximumThroughput value.
      */
     public Integer supportedMaximumThroughput() {
@@ -119,7 +128,7 @@ public final class StorageMbCapability extends CapabilityBase {
 
     /**
      * Get the defaultIopsTier property: Default tier for IOPS.
-     *
+     * 
      * @return the defaultIopsTier value.
      */
     public String defaultIopsTier() {
@@ -128,7 +137,7 @@ public final class StorageMbCapability extends CapabilityBase {
 
     /**
      * Get the supportedIopsTiers property: List of available options to upgrade the storage performance.
-     *
+     * 
      * @return the supportedIopsTiers value.
      */
     public List<StorageTierCapability> supportedIopsTiers() {
@@ -136,15 +145,89 @@ public final class StorageMbCapability extends CapabilityBase {
     }
 
     /**
+     * Get the reason property: The reason for the capability not being available.
+     * 
+     * @return the reason value.
+     */
+    @Override
+    public String reason() {
+        return this.reason;
+    }
+
+    /**
+     * Get the status property: The status of the capability.
+     * 
+     * @return the status value.
+     */
+    @Override
+    public CapabilityStatus status() {
+        return this.status;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (supportedIopsTiers() != null) {
             supportedIopsTiers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageMbCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageMbCapability if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageMbCapability.
+     */
+    public static StorageMbCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageMbCapability deserializedStorageMbCapability = new StorageMbCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedStorageMbCapability.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedStorageMbCapability.reason = reader.getString();
+                } else if ("supportedIops".equals(fieldName)) {
+                    deserializedStorageMbCapability.supportedIops = reader.getNullable(JsonReader::getInt);
+                } else if ("supportedMaximumIops".equals(fieldName)) {
+                    deserializedStorageMbCapability.supportedMaximumIops = reader.getNullable(JsonReader::getInt);
+                } else if ("storageSizeMb".equals(fieldName)) {
+                    deserializedStorageMbCapability.storageSizeMb = reader.getNullable(JsonReader::getLong);
+                } else if ("maximumStorageSizeMb".equals(fieldName)) {
+                    deserializedStorageMbCapability.maximumStorageSizeMb = reader.getNullable(JsonReader::getLong);
+                } else if ("supportedThroughput".equals(fieldName)) {
+                    deserializedStorageMbCapability.supportedThroughput = reader.getNullable(JsonReader::getInt);
+                } else if ("supportedMaximumThroughput".equals(fieldName)) {
+                    deserializedStorageMbCapability.supportedMaximumThroughput = reader.getNullable(JsonReader::getInt);
+                } else if ("defaultIopsTier".equals(fieldName)) {
+                    deserializedStorageMbCapability.defaultIopsTier = reader.getString();
+                } else if ("supportedIopsTiers".equals(fieldName)) {
+                    List<StorageTierCapability> supportedIopsTiers
+                        = reader.readArray(reader1 -> StorageTierCapability.fromJson(reader1));
+                    deserializedStorageMbCapability.supportedIopsTiers = supportedIopsTiers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageMbCapability;
+        });
     }
 }

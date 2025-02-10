@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** automaticRepliesStatus. */
+/**
+ * automaticRepliesStatus.
+ */
 public final class MicrosoftGraphAutomaticRepliesStatus
     extends ExpandableStringEnum<MicrosoftGraphAutomaticRepliesStatus> {
-    /** Static value disabled for MicrosoftGraphAutomaticRepliesStatus. */
+    /**
+     * Static value disabled for MicrosoftGraphAutomaticRepliesStatus.
+     */
     public static final MicrosoftGraphAutomaticRepliesStatus DISABLED = fromString("disabled");
 
-    /** Static value alwaysEnabled for MicrosoftGraphAutomaticRepliesStatus. */
+    /**
+     * Static value alwaysEnabled for MicrosoftGraphAutomaticRepliesStatus.
+     */
     public static final MicrosoftGraphAutomaticRepliesStatus ALWAYS_ENABLED = fromString("alwaysEnabled");
 
-    /** Static value scheduled for MicrosoftGraphAutomaticRepliesStatus. */
+    /**
+     * Static value scheduled for MicrosoftGraphAutomaticRepliesStatus.
+     */
     public static final MicrosoftGraphAutomaticRepliesStatus SCHEDULED = fromString("scheduled");
 
     /**
      * Creates a new instance of MicrosoftGraphAutomaticRepliesStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +38,17 @@ public final class MicrosoftGraphAutomaticRepliesStatus
 
     /**
      * Creates or finds a MicrosoftGraphAutomaticRepliesStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphAutomaticRepliesStatus.
      */
-    @JsonCreator
     public static MicrosoftGraphAutomaticRepliesStatus fromString(String name) {
         return fromString(name, MicrosoftGraphAutomaticRepliesStatus.class);
     }
 
     /**
      * Gets known MicrosoftGraphAutomaticRepliesStatus values.
-     *
+     * 
      * @return known MicrosoftGraphAutomaticRepliesStatus values.
      */
     public static Collection<MicrosoftGraphAutomaticRepliesStatus> values() {

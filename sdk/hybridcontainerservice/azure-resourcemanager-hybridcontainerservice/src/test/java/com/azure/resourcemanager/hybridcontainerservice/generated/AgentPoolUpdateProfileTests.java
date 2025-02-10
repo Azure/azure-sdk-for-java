@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentPoolUpdateProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentPoolUpdateProfile model = BinaryData.fromString("{\"count\":1021775650,\"vmSize\":\"knygjofjddeq\"}")
-            .toObject(AgentPoolUpdateProfile.class);
-        Assertions.assertEquals(1021775650, model.count());
-        Assertions.assertEquals("knygjofjddeq", model.vmSize());
+        AgentPoolUpdateProfile model
+            = BinaryData.fromString("{\"count\":598707165,\"vmSize\":\"xtij\",\"kubernetesVersion\":\"zvgnwzs\"}")
+                .toObject(AgentPoolUpdateProfile.class);
+        Assertions.assertEquals(598707165, model.count());
+        Assertions.assertEquals("xtij", model.vmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolUpdateProfile model = new AgentPoolUpdateProfile().withCount(1021775650).withVmSize("knygjofjddeq");
+        AgentPoolUpdateProfile model = new AgentPoolUpdateProfile().withCount(598707165).withVmSize("xtij");
         model = BinaryData.fromObject(model).toObject(AgentPoolUpdateProfile.class);
-        Assertions.assertEquals(1021775650, model.count());
-        Assertions.assertEquals("knygjofjddeq", model.vmSize());
+        Assertions.assertEquals(598707165, model.count());
+        Assertions.assertEquals("xtij", model.vmSize());
     }
 }

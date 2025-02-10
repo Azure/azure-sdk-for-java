@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.encryption.models;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.implementation.Constants;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
@@ -10,6 +11,7 @@ import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionType;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
+import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -27,8 +29,8 @@ import java.util.List;
  * Represents a SQL query with encryption parameters in the Azure Cosmos DB database service.
  */
 public final class SqlQuerySpecWithEncryption {
-    private SqlQuerySpec sqlQuerySpec;
-    private HashMap<String, SqlParameter> encryptionParamMap = new HashMap<>();
+    private final SqlQuerySpec sqlQuerySpec;
+    private final HashMap<String, SqlParameter> encryptionParamMap = new HashMap<>();
     private final EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.CosmosEncryptionAsyncContainerAccessor cosmosEncryptionAsyncContainerAccessor = EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.getCosmosEncryptionAsyncContainerAccessor();
 
     /**
@@ -83,9 +85,11 @@ public final class SqlQuerySpecWithEncryption {
                                     }
                                 }
                                 byte[] valueByte =
-                                    EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(),
+                                    EncryptionUtils.serializeJsonToByteArray(
+                                        DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
                                         sqlParameter.getValue(Object.class));
-                                JsonNode itemJObj = Utils.parse(valueByte, JsonNode.class);
+                                JsonNode itemJObj = Utils.parse(
+                                    valueByte, JsonNode.class, DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER);
                                 Pair<EncryptionProcessor.TypeMarker, byte[]> typeMarkerPair =
                                     EncryptionProcessor.toByteArray(itemJObj);
                                 byte[] cipherText =

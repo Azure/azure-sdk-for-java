@@ -11,15 +11,18 @@ public final class TypeConversionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TypeConversionSettings model = BinaryData.fromString(
-            "{\"allowDataTruncation\":\"datadzssssncghg\",\"treatBooleanAsNumber\":\"dataqkotxodbxzhadm\",\"dateTimeFormat\":\"datannootc\",\"dateTimeOffsetFormat\":\"dataupaq\",\"timeSpanFormat\":\"dataodhnzkmjoyby\",\"culture\":\"datawjrs\"}")
+            "{\"allowDataTruncation\":\"datat\",\"treatBooleanAsNumber\":\"datapdqwywjnxdyskyr\",\"dateTimeFormat\":\"dataijxml\",\"dateTimeOffsetFormat\":\"dataymfxjsuwmbdt\",\"timeSpanFormat\":\"datatr\",\"culture\":\"dataybpr\"}")
             .toObject(TypeConversionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TypeConversionSettings model = new TypeConversionSettings().withAllowDataTruncation("datadzssssncghg")
-            .withTreatBooleanAsNumber("dataqkotxodbxzhadm").withDateTimeFormat("datannootc")
-            .withDateTimeOffsetFormat("dataupaq").withTimeSpanFormat("dataodhnzkmjoyby").withCulture("datawjrs");
+        TypeConversionSettings model = new TypeConversionSettings().withAllowDataTruncation("datat")
+            .withTreatBooleanAsNumber("datapdqwywjnxdyskyr")
+            .withDateTimeFormat("dataijxml")
+            .withDateTimeOffsetFormat("dataymfxjsuwmbdt")
+            .withTimeSpanFormat("datatr")
+            .withCulture("dataybpr");
         model = BinaryData.fromObject(model).toObject(TypeConversionSettings.class);
     }
 }

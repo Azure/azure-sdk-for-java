@@ -13,16 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CloudProviderProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CloudProviderProfile model = BinaryData.fromString("{\"infraNetworkProfile\":{\"vnetSubnetIds\":[\"xtij\"]}}")
-            .toObject(CloudProviderProfile.class);
-        Assertions.assertEquals("xtij", model.infraNetworkProfile().vnetSubnetIds().get(0));
+        CloudProviderProfile model
+            = BinaryData.fromString("{\"infraNetworkProfile\":{\"vnetSubnetIds\":[\"hdbihan\",\"fhfcb\",\"y\"]}}")
+                .toObject(CloudProviderProfile.class);
+        Assertions.assertEquals("hdbihan", model.infraNetworkProfile().vnetSubnetIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CloudProviderProfile model = new CloudProviderProfile().withInfraNetworkProfile(
-            new CloudProviderProfileInfraNetworkProfile().withVnetSubnetIds(Arrays.asList("xtij")));
+            new CloudProviderProfileInfraNetworkProfile().withVnetSubnetIds(Arrays.asList("hdbihan", "fhfcb", "y")));
         model = BinaryData.fromObject(model).toObject(CloudProviderProfile.class);
-        Assertions.assertEquals("xtij", model.infraNetworkProfile().vnetSubnetIds().get(0));
+        Assertions.assertEquals("hdbihan", model.infraNetworkProfile().vnetSubnetIds().get(0));
     }
 }

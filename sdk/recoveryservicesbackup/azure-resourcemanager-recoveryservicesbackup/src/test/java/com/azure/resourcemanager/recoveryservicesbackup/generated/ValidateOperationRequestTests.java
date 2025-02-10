@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperation
 public final class ValidateOperationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateOperationRequest model =
-            BinaryData
-                .fromString("{\"objectType\":\"ValidateOperationRequest\"}")
-                .toObject(ValidateOperationRequest.class);
+        ValidateOperationRequest model = BinaryData.fromString("{\"objectType\":\"ValidateOperationRequest\"}")
+            .toObject(ValidateOperationRequest.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -15,84 +15,76 @@ import org.junit.jupiter.api.Assertions;
 public final class BackendPoolUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackendPoolUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"backends\":[{\"address\":\"crailvpn\",\"privateLinkAlias\":\"fuflrwdmhdlx\",\"privateLinkResourceId\":\"rxsagafcnihgwqa\",\"privateLinkLocation\":\"edgfbcvkcvq\",\"privateEndpointStatus\":\"Rejected\",\"privateLinkApprovalMessage\":\"qdcvdrhvoo\",\"httpPort\":800082776,\"httpsPort\":1475281926,\"enabledState\":\"Enabled\",\"priority\":138973043,\"weight\":1257406932,\"backendHostHeader\":\"j\"},{\"address\":\"nhdldwmgxcx\",\"privateLinkAlias\":\"lpmutwuoegrpkhj\",\"privateLinkResourceId\":\"iyq\",\"privateLinkLocation\":\"uicpd\",\"privateEndpointStatus\":\"Pending\",\"privateLinkApprovalMessage\":\"zl\",\"httpPort\":553521281,\"httpsPort\":1708563012,\"enabledState\":\"Enabled\",\"priority\":950726192,\"weight\":488174706,\"backendHostHeader\":\"uefywsbpfvmwy\"},{\"address\":\"fouyf\",\"privateLinkAlias\":\"akcp\",\"privateLinkResourceId\":\"yzvqt\",\"privateLinkLocation\":\"ubex\",\"privateEndpointStatus\":\"Disconnected\",\"privateLinkApprovalMessage\":\"smond\",\"httpPort\":1007666972,\"httpsPort\":628279381,\"enabledState\":\"Disabled\",\"priority\":336917419,\"weight\":2111065372,\"backendHostHeader\":\"opkwhojv\"}],\"loadBalancingSettings\":{\"id\":\"qgxy\"},\"healthProbeSettings\":{\"id\":\"cmbqfqvmk\"}}")
-                .toObject(BackendPoolUpdateParameters.class);
-        Assertions.assertEquals("crailvpn", model.backends().get(0).address());
-        Assertions.assertEquals("fuflrwdmhdlx", model.backends().get(0).privateLinkAlias());
-        Assertions.assertEquals("rxsagafcnihgwqa", model.backends().get(0).privateLinkResourceId());
-        Assertions.assertEquals("edgfbcvkcvq", model.backends().get(0).privateLinkLocation());
-        Assertions.assertEquals("qdcvdrhvoo", model.backends().get(0).privateLinkApprovalMessage());
-        Assertions.assertEquals(800082776, model.backends().get(0).httpPort());
-        Assertions.assertEquals(1475281926, model.backends().get(0).httpsPort());
+        BackendPoolUpdateParameters model = BinaryData.fromString(
+            "{\"backends\":[{\"address\":\"ukiscvwmzhw\",\"privateLinkAlias\":\"efaxvxilc\",\"privateLinkResourceId\":\"gnhnzeyq\",\"privateLinkLocation\":\"jjfzqlqhycavo\",\"privateEndpointStatus\":\"Rejected\",\"privateLinkApprovalMessage\":\"dbeesmie\",\"httpPort\":426944858,\"httpsPort\":1641970858,\"enabledState\":\"Enabled\",\"priority\":2070170024,\"weight\":1897469256,\"backendHostHeader\":\"agy\"},{\"address\":\"qfby\",\"privateLinkAlias\":\"rfgi\",\"privateLinkResourceId\":\"tcojocqwo\",\"privateLinkLocation\":\"nzjvusfzldm\",\"privateEndpointStatus\":\"Approved\",\"privateLinkApprovalMessage\":\"ylfsbtk\",\"httpPort\":2130953454,\"httpsPort\":201650328,\"enabledState\":\"Enabled\",\"priority\":1574366459,\"weight\":268742670,\"backendHostHeader\":\"bugrj\"},{\"address\":\"to\",\"privateLinkAlias\":\"mi\",\"privateLinkResourceId\":\"fieypefojyqdhcup\",\"privateLinkLocation\":\"plcwkhi\",\"privateEndpointStatus\":\"Timeout\",\"privateLinkApprovalMessage\":\"hzdsqtzbsrgnow\",\"httpPort\":994844547,\"httpsPort\":741446459,\"enabledState\":\"Enabled\",\"priority\":907830465,\"weight\":1670061981,\"backendHostHeader\":\"xmwoteyowcluqo\"}],\"loadBalancingSettings\":{\"id\":\"qvgqouw\"},\"healthProbeSettings\":{\"id\":\"mpjw\"}}")
+            .toObject(BackendPoolUpdateParameters.class);
+        Assertions.assertEquals("ukiscvwmzhw", model.backends().get(0).address());
+        Assertions.assertEquals("efaxvxilc", model.backends().get(0).privateLinkAlias());
+        Assertions.assertEquals("gnhnzeyq", model.backends().get(0).privateLinkResourceId());
+        Assertions.assertEquals("jjfzqlqhycavo", model.backends().get(0).privateLinkLocation());
+        Assertions.assertEquals("dbeesmie", model.backends().get(0).privateLinkApprovalMessage());
+        Assertions.assertEquals(426944858, model.backends().get(0).httpPort());
+        Assertions.assertEquals(1641970858, model.backends().get(0).httpsPort());
         Assertions.assertEquals(BackendEnabledState.ENABLED, model.backends().get(0).enabledState());
-        Assertions.assertEquals(138973043, model.backends().get(0).priority());
-        Assertions.assertEquals(1257406932, model.backends().get(0).weight());
-        Assertions.assertEquals("j", model.backends().get(0).backendHostHeader());
-        Assertions.assertEquals("qgxy", model.loadBalancingSettings().id());
-        Assertions.assertEquals("cmbqfqvmk", model.healthProbeSettings().id());
+        Assertions.assertEquals(2070170024, model.backends().get(0).priority());
+        Assertions.assertEquals(1897469256, model.backends().get(0).weight());
+        Assertions.assertEquals("agy", model.backends().get(0).backendHostHeader());
+        Assertions.assertEquals("qvgqouw", model.loadBalancingSettings().id());
+        Assertions.assertEquals("mpjw", model.healthProbeSettings().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackendPoolUpdateParameters model =
-            new BackendPoolUpdateParameters()
-                .withBackends(
-                    Arrays
-                        .asList(
-                            new Backend()
-                                .withAddress("crailvpn")
-                                .withPrivateLinkAlias("fuflrwdmhdlx")
-                                .withPrivateLinkResourceId("rxsagafcnihgwqa")
-                                .withPrivateLinkLocation("edgfbcvkcvq")
-                                .withPrivateLinkApprovalMessage("qdcvdrhvoo")
-                                .withHttpPort(800082776)
-                                .withHttpsPort(1475281926)
-                                .withEnabledState(BackendEnabledState.ENABLED)
-                                .withPriority(138973043)
-                                .withWeight(1257406932)
-                                .withBackendHostHeader("j"),
-                            new Backend()
-                                .withAddress("nhdldwmgxcx")
-                                .withPrivateLinkAlias("lpmutwuoegrpkhj")
-                                .withPrivateLinkResourceId("iyq")
-                                .withPrivateLinkLocation("uicpd")
-                                .withPrivateLinkApprovalMessage("zl")
-                                .withHttpPort(553521281)
-                                .withHttpsPort(1708563012)
-                                .withEnabledState(BackendEnabledState.ENABLED)
-                                .withPriority(950726192)
-                                .withWeight(488174706)
-                                .withBackendHostHeader("uefywsbpfvmwy"),
-                            new Backend()
-                                .withAddress("fouyf")
-                                .withPrivateLinkAlias("akcp")
-                                .withPrivateLinkResourceId("yzvqt")
-                                .withPrivateLinkLocation("ubex")
-                                .withPrivateLinkApprovalMessage("smond")
-                                .withHttpPort(1007666972)
-                                .withHttpsPort(628279381)
-                                .withEnabledState(BackendEnabledState.DISABLED)
-                                .withPriority(336917419)
-                                .withWeight(2111065372)
-                                .withBackendHostHeader("opkwhojv")))
-                .withLoadBalancingSettings(new SubResource().withId("qgxy"))
-                .withHealthProbeSettings(new SubResource().withId("cmbqfqvmk"));
+        BackendPoolUpdateParameters model = new BackendPoolUpdateParameters()
+            .withBackends(Arrays.asList(
+                new Backend().withAddress("ukiscvwmzhw")
+                    .withPrivateLinkAlias("efaxvxilc")
+                    .withPrivateLinkResourceId("gnhnzeyq")
+                    .withPrivateLinkLocation("jjfzqlqhycavo")
+                    .withPrivateLinkApprovalMessage("dbeesmie")
+                    .withHttpPort(426944858)
+                    .withHttpsPort(1641970858)
+                    .withEnabledState(BackendEnabledState.ENABLED)
+                    .withPriority(2070170024)
+                    .withWeight(1897469256)
+                    .withBackendHostHeader("agy"),
+                new Backend().withAddress("qfby")
+                    .withPrivateLinkAlias("rfgi")
+                    .withPrivateLinkResourceId("tcojocqwo")
+                    .withPrivateLinkLocation("nzjvusfzldm")
+                    .withPrivateLinkApprovalMessage("ylfsbtk")
+                    .withHttpPort(2130953454)
+                    .withHttpsPort(201650328)
+                    .withEnabledState(BackendEnabledState.ENABLED)
+                    .withPriority(1574366459)
+                    .withWeight(268742670)
+                    .withBackendHostHeader("bugrj"),
+                new Backend().withAddress("to")
+                    .withPrivateLinkAlias("mi")
+                    .withPrivateLinkResourceId("fieypefojyqdhcup")
+                    .withPrivateLinkLocation("plcwkhi")
+                    .withPrivateLinkApprovalMessage("hzdsqtzbsrgnow")
+                    .withHttpPort(994844547)
+                    .withHttpsPort(741446459)
+                    .withEnabledState(BackendEnabledState.ENABLED)
+                    .withPriority(907830465)
+                    .withWeight(1670061981)
+                    .withBackendHostHeader("xmwoteyowcluqo")))
+            .withLoadBalancingSettings(new SubResource().withId("qvgqouw"))
+            .withHealthProbeSettings(new SubResource().withId("mpjw"));
         model = BinaryData.fromObject(model).toObject(BackendPoolUpdateParameters.class);
-        Assertions.assertEquals("crailvpn", model.backends().get(0).address());
-        Assertions.assertEquals("fuflrwdmhdlx", model.backends().get(0).privateLinkAlias());
-        Assertions.assertEquals("rxsagafcnihgwqa", model.backends().get(0).privateLinkResourceId());
-        Assertions.assertEquals("edgfbcvkcvq", model.backends().get(0).privateLinkLocation());
-        Assertions.assertEquals("qdcvdrhvoo", model.backends().get(0).privateLinkApprovalMessage());
-        Assertions.assertEquals(800082776, model.backends().get(0).httpPort());
-        Assertions.assertEquals(1475281926, model.backends().get(0).httpsPort());
+        Assertions.assertEquals("ukiscvwmzhw", model.backends().get(0).address());
+        Assertions.assertEquals("efaxvxilc", model.backends().get(0).privateLinkAlias());
+        Assertions.assertEquals("gnhnzeyq", model.backends().get(0).privateLinkResourceId());
+        Assertions.assertEquals("jjfzqlqhycavo", model.backends().get(0).privateLinkLocation());
+        Assertions.assertEquals("dbeesmie", model.backends().get(0).privateLinkApprovalMessage());
+        Assertions.assertEquals(426944858, model.backends().get(0).httpPort());
+        Assertions.assertEquals(1641970858, model.backends().get(0).httpsPort());
         Assertions.assertEquals(BackendEnabledState.ENABLED, model.backends().get(0).enabledState());
-        Assertions.assertEquals(138973043, model.backends().get(0).priority());
-        Assertions.assertEquals(1257406932, model.backends().get(0).weight());
-        Assertions.assertEquals("j", model.backends().get(0).backendHostHeader());
-        Assertions.assertEquals("qgxy", model.loadBalancingSettings().id());
-        Assertions.assertEquals("cmbqfqvmk", model.healthProbeSettings().id());
+        Assertions.assertEquals(2070170024, model.backends().get(0).priority());
+        Assertions.assertEquals(1897469256, model.backends().get(0).weight());
+        Assertions.assertEquals("agy", model.backends().get(0).backendHostHeader());
+        Assertions.assertEquals("qvgqouw", model.loadBalancingSettings().id());
+        Assertions.assertEquals("mpjw", model.healthProbeSettings().id());
     }
 }

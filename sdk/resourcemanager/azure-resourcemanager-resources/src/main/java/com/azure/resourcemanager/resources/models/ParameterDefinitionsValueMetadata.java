@@ -5,33 +5,33 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** General metadata for the parameter. */
+/**
+ * General metadata for the parameter.
+ */
 @Fluent
-public final class ParameterDefinitionsValueMetadata {
+public final class ParameterDefinitionsValueMetadata implements JsonSerializable<ParameterDefinitionsValueMetadata> {
     /*
      * The display name for the parameter.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description of the parameter.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Used when assigning the policy definition through the portal. Provides a context aware list of values for the
      * user to choose from.
      */
-    @JsonProperty(value = "strongType")
     private String strongType;
 
     /*
@@ -39,21 +39,22 @@ public final class ParameterDefinitionsValueMetadata {
      * parameter during policy assignment. This property is useful in case you wish to assign permissions outside the
      * assignment scope.
      */
-    @JsonProperty(value = "assignPermissions")
     private Boolean assignPermissions;
 
     /*
      * General metadata for the parameter.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ParameterDefinitionsValueMetadata class. */
+    /**
+     * Creates an instance of ParameterDefinitionsValueMetadata class.
+     */
     public ParameterDefinitionsValueMetadata() {
     }
 
     /**
      * Get the displayName property: The display name for the parameter.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -62,7 +63,7 @@ public final class ParameterDefinitionsValueMetadata {
 
     /**
      * Set the displayName property: The display name for the parameter.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ParameterDefinitionsValueMetadata object itself.
      */
@@ -73,7 +74,7 @@ public final class ParameterDefinitionsValueMetadata {
 
     /**
      * Get the description property: The description of the parameter.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -82,7 +83,7 @@ public final class ParameterDefinitionsValueMetadata {
 
     /**
      * Set the description property: The description of the parameter.
-     *
+     * 
      * @param description the description value to set.
      * @return the ParameterDefinitionsValueMetadata object itself.
      */
@@ -94,7 +95,7 @@ public final class ParameterDefinitionsValueMetadata {
     /**
      * Get the strongType property: Used when assigning the policy definition through the portal. Provides a context
      * aware list of values for the user to choose from.
-     *
+     * 
      * @return the strongType value.
      */
     public String strongType() {
@@ -104,7 +105,7 @@ public final class ParameterDefinitionsValueMetadata {
     /**
      * Set the strongType property: Used when assigning the policy definition through the portal. Provides a context
      * aware list of values for the user to choose from.
-     *
+     * 
      * @param strongType the strongType value to set.
      * @return the ParameterDefinitionsValueMetadata object itself.
      */
@@ -117,7 +118,7 @@ public final class ParameterDefinitionsValueMetadata {
      * Get the assignPermissions property: Set to true to have Azure portal create role assignments on the resource ID
      * or resource scope value of this parameter during policy assignment. This property is useful in case you wish to
      * assign permissions outside the assignment scope.
-     *
+     * 
      * @return the assignPermissions value.
      */
     public Boolean assignPermissions() {
@@ -128,7 +129,7 @@ public final class ParameterDefinitionsValueMetadata {
      * Set the assignPermissions property: Set to true to have Azure portal create role assignments on the resource ID
      * or resource scope value of this parameter during policy assignment. This property is useful in case you wish to
      * assign permissions outside the assignment scope.
-     *
+     * 
      * @param assignPermissions the assignPermissions value to set.
      * @return the ParameterDefinitionsValueMetadata object itself.
      */
@@ -139,17 +140,16 @@ public final class ParameterDefinitionsValueMetadata {
 
     /**
      * Get the additionalProperties property: General metadata for the parameter.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: General metadata for the parameter.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ParameterDefinitionsValueMetadata object itself.
      */
@@ -158,19 +158,69 @@ public final class ParameterDefinitionsValueMetadata {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("strongType", this.strongType);
+        jsonWriter.writeBooleanField("assignPermissions", this.assignPermissions);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParameterDefinitionsValueMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParameterDefinitionsValueMetadata if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ParameterDefinitionsValueMetadata.
+     */
+    public static ParameterDefinitionsValueMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParameterDefinitionsValueMetadata deserializedParameterDefinitionsValueMetadata
+                = new ParameterDefinitionsValueMetadata();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedParameterDefinitionsValueMetadata.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedParameterDefinitionsValueMetadata.description = reader.getString();
+                } else if ("strongType".equals(fieldName)) {
+                    deserializedParameterDefinitionsValueMetadata.strongType = reader.getString();
+                } else if ("assignPermissions".equals(fieldName)) {
+                    deserializedParameterDefinitionsValueMetadata.assignPermissions
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedParameterDefinitionsValueMetadata.additionalProperties = additionalProperties;
+
+            return deserializedParameterDefinitionsValueMetadata;
+        });
     }
 }

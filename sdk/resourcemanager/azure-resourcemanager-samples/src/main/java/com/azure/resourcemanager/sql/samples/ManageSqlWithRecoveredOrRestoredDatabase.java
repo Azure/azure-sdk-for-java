@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.sql.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
@@ -48,30 +47,29 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
             // ============================================================
             // Create a SQL Server with two databases from a sample.
             System.out.println("Creating a SQL Server with two databases from a sample.");
-            SqlServer sqlServer = azureResourceManager.sqlServers().define(sqlServerName)
+            SqlServer sqlServer = azureResourceManager.sqlServers()
+                .define(sqlServerName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
                 .withAdministratorPassword(administratorPassword)
                 .defineDatabase(dbToDeleteName)
-                    .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                    .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                    .attach()
+                .fromSample(SampleName.ADVENTURE_WORKS_LT)
+                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+                .attach()
                 .defineDatabase(dbToRestoreName)
-                    .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                    .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                    .attach()
+                .fromSample(SampleName.ADVENTURE_WORKS_LT)
+                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+                .attach()
                 .create();
             Utils.print(sqlServer);
 
             // Sleep for 5 minutes to allow for the service to be aware of the new server and databases
             ResourceManagerUtils.sleep(Duration.ofMinutes(5));
 
-            SqlDatabase dbToBeDeleted = sqlServer.databases()
-                .get(dbToDeleteName);
+            SqlDatabase dbToBeDeleted = sqlServer.databases().get(dbToDeleteName);
             Utils.print(dbToBeDeleted);
-            SqlDatabase dbToRestore = sqlServer.databases()
-                .get(dbToRestoreName);
+            SqlDatabase dbToRestore = sqlServer.databases().get(dbToRestoreName);
             Utils.print(dbToRestore);
 
             // ============================================================
@@ -91,17 +89,15 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
             RestorePoint restorePointInTime = dbToRestore.listRestorePoints().get(0);
             // Restore point might not be ready right away and we will have to wait for it.
             OffsetDateTime currentTime = OffsetDateTime.now();
-            long waitForRestoreToBeReady = ChronoUnit.MILLIS.between(currentTime, restorePointInTime.earliestRestoreDate())
-                    + 5 * 60 * 1000;
+            long waitForRestoreToBeReady
+                = ChronoUnit.MILLIS.between(currentTime, restorePointInTime.earliestRestoreDate()) + 5 * 60 * 1000;
             System.out.printf("waitForRestoreToBeReady %d%n", waitForRestoreToBeReady);
             if (waitForRestoreToBeReady > 0) {
                 ResourceManagerUtils.sleep(Duration.ofMillis(waitForRestoreToBeReady));
             }
 
-            SqlDatabase dbRestorePointInTime = sqlServer.databases()
-                .define("db-restore-pit")
-                .fromRestorePoint(restorePointInTime)
-                .create();
+            SqlDatabase dbRestorePointInTime
+                = sqlServer.databases().define("db-restore-pit").fromRestorePoint(restorePointInTime).create();
             Utils.print(dbRestorePointInTime);
             dbRestorePointInTime.delete();
 
@@ -116,7 +112,8 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
 
             // ============================================================
             // Delete the database than loop until the restorable dropped database backup is available.
-            System.out.println("Deleting the database than loop until the restorable dropped database backup is available.");
+            System.out
+                .println("Deleting the database than loop until the restorable dropped database backup is available.");
 
             dbToBeDeleted.delete();
             retries = 24;
@@ -163,8 +160,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

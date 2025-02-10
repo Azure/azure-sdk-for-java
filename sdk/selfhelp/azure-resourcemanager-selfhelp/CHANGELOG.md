@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,329 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.5 (2024-06-21)
+
+- Azure Resource Manager Self Help client library for Java. This package contains Microsoft Azure SDK for Self Help Management SDK. Help RP provider. Package tag package-2024-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.DiscoverySolutionNlpTenantScopes` was removed
+
+* `models.DiscoverySolutionNlpSubscriptionScopes` was removed
+
+#### `models.CheckNameAvailabilities` was modified
+
+* `post(java.lang.String)` was removed
+* `postWithResponse(java.lang.String,models.CheckNameAvailabilityRequest,com.azure.core.util.Context)` was removed
+
+#### `SelfHelpManager` was modified
+
+* `discoverySolutionNlpSubscriptionScopes()` was removed
+* `discoverySolutionNlpTenantScopes()` was removed
+
+### Features Added
+
+* `models.DiscoverySolutionNlps` was added
+
+#### `models.DiscoveryNlpRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MetricsBasedChart` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TriggerCriterion` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SolutionMetadataProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ResponseValidationProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SolutionWarmUpRequestBody` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Video` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DiagnosticInvocation` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.StepInput` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Insight` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.VideoGroup` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ResponseOption` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Error` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClassificationService` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ContinueRequestBody` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SolutionPatchRequestBody` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Section` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SectionSelfHelp` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AutomatedCheckResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SolutionNlpMetadataResource` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `id()` was added
+* `name()` was added
+* `type()` was added
+
+#### `models.CheckNameAvailabilities` was modified
+
+* `checkAvailability(java.lang.String)` was added
+* `checkAvailabilityWithResponse(java.lang.String,models.CheckNameAvailabilityRequest,com.azure.core.util.Context)` was added
+
+#### `models.FilterGroup` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SolutionsDiagnostic` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Diagnostic` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DiscoveryResponse` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.WebResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ReplacementMapsSelfHelp` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SolutionsTroubleshooters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ReplacementMaps` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SearchResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TroubleshooterResponse` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Step` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.VideoGroupVideo` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Filter` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `SelfHelpManager` was modified
+
+* `discoverySolutionNlps()` was added
+
+## 1.1.0-beta.4 (2024-05-21)
+
+- Azure Resource Manager Self Help client library for Java. This package contains Microsoft Azure SDK for Self Help Management SDK. Help RP provider. Package tag package-2024-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DiscoverySolutionNlpSubscriptionScopes` was modified
+
+* `post()` was removed
+* `postWithResponse(models.DiscoveryNlpRequest,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+#### `models.DiscoverySolutionNlpSubscriptionScopes` was modified
+
+* `postWithResponse(java.lang.String,models.DiscoveryNlpRequest,com.azure.core.util.Context)` was added
+* `post(java.lang.String)` was added
+
+## 1.1.0-beta.3 (2024-04-23)
+
+- Azure Resource Manager Self Help client library for Java. This package contains Microsoft Azure SDK for Self Help Management SDK. Help RP provider. Package tag package-2024-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DiscoverySolutions` was modified
+
+* `list(java.lang.String)` was removed
+* `list(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.SolutionResourceSelfHelp` was added
+
+* `models.DiscoveryNlpRequest` was added
+
+* `models.ValidationScope` was added
+
+* `models.SimplifiedSolutionsResource$Definition` was added
+
+* `models.DiscoveryNlpResponse` was added
+
+* `models.SolutionWarmUpRequestBody` was added
+
+* `models.ClassificationService` was added
+
+* `models.SectionSelfHelp` was added
+
+* `models.SimplifiedSolutionsResource$DefinitionStages` was added
+
+* `models.SolutionSelfHelps` was added
+
+* `models.SolutionNlpMetadataResource` was added
+
+* `models.SimplifiedSolutions` was added
+
+* `models.DiscoverySolutionNlpTenantScopes` was added
+
+* `models.ReplacementMapsSelfHelp` was added
+
+* `models.DiscoverySolutionNlpSubscriptionScopes` was added
+
+* `models.SimplifiedSolutionsResource` was added
+
+#### `models.ResponseValidationProperties` was modified
+
+* `validationScope()` was added
+* `withValidationScope(models.ValidationScope)` was added
+
+#### `models.StepInput` was modified
+
+* `withQuestionTitle(java.lang.String)` was added
+* `questionTitle()` was added
+
+#### `models.SolutionOperations` was modified
+
+* `warmUpWithResponse(java.lang.String,java.lang.String,models.SolutionWarmUpRequestBody,com.azure.core.util.Context)` was added
+* `warmUp(java.lang.String,java.lang.String)` was added
+
+#### `models.SolutionResource` was modified
+
+* `warmUpWithResponse(models.SolutionWarmUpRequestBody,com.azure.core.util.Context)` was added
+* `warmUp()` was added
+
+#### `models.AutomatedCheckResult` was modified
+
+* `status()` was added
+* `version()` was added
+* `withStatus(java.lang.String)` was added
+* `withVersion(java.lang.String)` was added
+
+#### `models.DiscoverySolutions` was modified
+
+* `list()` was added
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.SolutionsDiagnostic` was modified
+
+* `estimatedCompletionTime()` was added
+* `withEstimatedCompletionTime(java.lang.String)` was added
+
+#### `SelfHelpManager` was modified
+
+* `solutionSelfHelps()` was added
+* `discoverySolutionNlpTenantScopes()` was added
+* `discoverySolutionNlpSubscriptionScopes()` was added
+* `simplifiedSolutions()` was added
 
 ## 1.1.0-beta.2 (2023-12-19)
 

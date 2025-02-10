@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The action detail. */
+/**
+ * The action detail.
+ */
 @Fluent
-public final class ActionDetail {
+public final class ActionDetail implements JsonSerializable<ActionDetail> {
     /*
      * The mechanism type
      */
-    @JsonProperty(value = "MechanismType")
     private String mechanismType;
 
     /*
      * The name of the action
      */
-    @JsonProperty(value = "Name")
     private String name;
 
     /*
      * The status of the action
      */
-    @JsonProperty(value = "Status")
     private String status;
 
     /*
      * The substatus of the action
      */
-    @JsonProperty(value = "SubState")
     private String subState;
 
     /*
      * The send time
      */
-    @JsonProperty(value = "SendTime")
     private String sendTime;
 
     /*
      * The detail of the friendly error message
      */
-    @JsonProperty(value = "Detail")
     private String detail;
 
-    /** Creates an instance of ActionDetail class. */
+    /**
+     * Creates an instance of ActionDetail class.
+     */
     public ActionDetail() {
     }
 
     /**
      * Get the mechanismType property: The mechanism type.
-     *
+     * 
      * @return the mechanismType value.
      */
     public String mechanismType() {
@@ -61,7 +63,7 @@ public final class ActionDetail {
 
     /**
      * Set the mechanismType property: The mechanism type.
-     *
+     * 
      * @param mechanismType the mechanismType value to set.
      * @return the ActionDetail object itself.
      */
@@ -72,7 +74,7 @@ public final class ActionDetail {
 
     /**
      * Get the name property: The name of the action.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -81,7 +83,7 @@ public final class ActionDetail {
 
     /**
      * Set the name property: The name of the action.
-     *
+     * 
      * @param name the name value to set.
      * @return the ActionDetail object itself.
      */
@@ -92,7 +94,7 @@ public final class ActionDetail {
 
     /**
      * Get the status property: The status of the action.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -101,7 +103,7 @@ public final class ActionDetail {
 
     /**
      * Set the status property: The status of the action.
-     *
+     * 
      * @param status the status value to set.
      * @return the ActionDetail object itself.
      */
@@ -112,7 +114,7 @@ public final class ActionDetail {
 
     /**
      * Get the subState property: The substatus of the action.
-     *
+     * 
      * @return the subState value.
      */
     public String subState() {
@@ -121,7 +123,7 @@ public final class ActionDetail {
 
     /**
      * Set the subState property: The substatus of the action.
-     *
+     * 
      * @param subState the subState value to set.
      * @return the ActionDetail object itself.
      */
@@ -132,7 +134,7 @@ public final class ActionDetail {
 
     /**
      * Get the sendTime property: The send time.
-     *
+     * 
      * @return the sendTime value.
      */
     public String sendTime() {
@@ -141,7 +143,7 @@ public final class ActionDetail {
 
     /**
      * Set the sendTime property: The send time.
-     *
+     * 
      * @param sendTime the sendTime value to set.
      * @return the ActionDetail object itself.
      */
@@ -152,7 +154,7 @@ public final class ActionDetail {
 
     /**
      * Get the detail property: The detail of the friendly error message.
-     *
+     * 
      * @return the detail value.
      */
     public String detail() {
@@ -161,7 +163,7 @@ public final class ActionDetail {
 
     /**
      * Set the detail property: The detail of the friendly error message.
-     *
+     * 
      * @param detail the detail value to set.
      * @return the ActionDetail object itself.
      */
@@ -172,9 +174,60 @@ public final class ActionDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("MechanismType", this.mechanismType);
+        jsonWriter.writeStringField("Name", this.name);
+        jsonWriter.writeStringField("Status", this.status);
+        jsonWriter.writeStringField("SubState", this.subState);
+        jsonWriter.writeStringField("SendTime", this.sendTime);
+        jsonWriter.writeStringField("Detail", this.detail);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActionDetail.
+     */
+    public static ActionDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionDetail deserializedActionDetail = new ActionDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("MechanismType".equals(fieldName)) {
+                    deserializedActionDetail.mechanismType = reader.getString();
+                } else if ("Name".equals(fieldName)) {
+                    deserializedActionDetail.name = reader.getString();
+                } else if ("Status".equals(fieldName)) {
+                    deserializedActionDetail.status = reader.getString();
+                } else if ("SubState".equals(fieldName)) {
+                    deserializedActionDetail.subState = reader.getString();
+                } else if ("SendTime".equals(fieldName)) {
+                    deserializedActionDetail.sendTime = reader.getString();
+                } else if ("Detail".equals(fieldName)) {
+                    deserializedActionDetail.detail = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionDetail;
+        });
     }
 }

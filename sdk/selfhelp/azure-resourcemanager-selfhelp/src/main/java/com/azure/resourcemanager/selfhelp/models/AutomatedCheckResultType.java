@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class AutomatedCheckResultType extends ExpandableStringEnum<Automat
      * @param name a name to look for.
      * @return the corresponding AutomatedCheckResultType.
      */
-    @JsonCreator
     public static AutomatedCheckResultType fromString(String name) {
         return fromString(name, AutomatedCheckResultType.class);
     }

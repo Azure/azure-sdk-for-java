@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ResourceGuardOperationDetail model. */
+/**
+ * The ResourceGuardOperationDetail model.
+ */
 @Fluent
-public final class ResourceGuardOperationDetail {
+public final class ResourceGuardOperationDetail implements JsonSerializable<ResourceGuardOperationDetail> {
     /*
      * The vaultCriticalOperation property.
      */
-    @JsonProperty(value = "vaultCriticalOperation")
     private String vaultCriticalOperation;
 
     /*
      * The defaultResourceRequest property.
      */
-    @JsonProperty(value = "defaultResourceRequest")
     private String defaultResourceRequest;
 
-    /** Creates an instance of ResourceGuardOperationDetail class. */
+    /**
+     * Creates an instance of ResourceGuardOperationDetail class.
+     */
     public ResourceGuardOperationDetail() {
     }
 
     /**
      * Get the vaultCriticalOperation property: The vaultCriticalOperation property.
-     *
+     * 
      * @return the vaultCriticalOperation value.
      */
     public String vaultCriticalOperation() {
@@ -37,7 +43,7 @@ public final class ResourceGuardOperationDetail {
 
     /**
      * Set the vaultCriticalOperation property: The vaultCriticalOperation property.
-     *
+     * 
      * @param vaultCriticalOperation the vaultCriticalOperation value to set.
      * @return the ResourceGuardOperationDetail object itself.
      */
@@ -48,7 +54,7 @@ public final class ResourceGuardOperationDetail {
 
     /**
      * Get the defaultResourceRequest property: The defaultResourceRequest property.
-     *
+     * 
      * @return the defaultResourceRequest value.
      */
     public String defaultResourceRequest() {
@@ -57,7 +63,7 @@ public final class ResourceGuardOperationDetail {
 
     /**
      * Set the defaultResourceRequest property: The defaultResourceRequest property.
-     *
+     * 
      * @param defaultResourceRequest the defaultResourceRequest value to set.
      * @return the ResourceGuardOperationDetail object itself.
      */
@@ -68,9 +74,48 @@ public final class ResourceGuardOperationDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vaultCriticalOperation", this.vaultCriticalOperation);
+        jsonWriter.writeStringField("defaultResourceRequest", this.defaultResourceRequest);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceGuardOperationDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceGuardOperationDetail if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceGuardOperationDetail.
+     */
+    public static ResourceGuardOperationDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceGuardOperationDetail deserializedResourceGuardOperationDetail = new ResourceGuardOperationDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vaultCriticalOperation".equals(fieldName)) {
+                    deserializedResourceGuardOperationDetail.vaultCriticalOperation = reader.getString();
+                } else if ("defaultResourceRequest".equals(fieldName)) {
+                    deserializedResourceGuardOperationDetail.defaultResourceRequest = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceGuardOperationDetail;
+        });
     }
 }

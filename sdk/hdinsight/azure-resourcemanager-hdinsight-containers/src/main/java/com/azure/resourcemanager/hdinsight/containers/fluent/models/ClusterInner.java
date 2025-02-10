@@ -7,57 +7,120 @@ package com.azure.resourcemanager.hdinsight.containers.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterProfile;
-import com.azure.resourcemanager.hdinsight.containers.models.ComputeProfile;
-import com.azure.resourcemanager.hdinsight.containers.models.ProvisioningStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterResourceProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** The cluster. */
+/**
+ * The cluster.
+ */
 @Fluent
 public final class ClusterInner extends Resource {
     /*
      * Gets or sets the properties. Define cluster specific properties.
      */
-    @JsonProperty(value = "properties")
-    private ClusterResourceProperties innerProperties;
+    private ClusterResourceProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ClusterInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ClusterInner class.
+     */
     public ClusterInner() {
     }
 
     /**
-     * Get the innerProperties property: Gets or sets the properties. Define cluster specific properties.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: Gets or sets the properties. Define cluster specific properties.
+     * 
+     * @return the properties value.
      */
-    private ClusterResourceProperties innerProperties() {
-        return this.innerProperties;
+    public ClusterResourceProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Gets or sets the properties. Define cluster specific properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withProperties(ClusterResourceProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -65,109 +128,65 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningStatus provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the clusterType property: The type of cluster.
-     *
-     * @return the clusterType value.
-     */
-    public String clusterType() {
-        return this.innerProperties() == null ? null : this.innerProperties().clusterType();
-    }
-
-    /**
-     * Set the clusterType property: The type of cluster.
-     *
-     * @param clusterType the clusterType value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withClusterType(String clusterType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterResourceProperties();
-        }
-        this.innerProperties().withClusterType(clusterType);
-        return this;
-    }
-
-    /**
-     * Get the deploymentId property: A unique id generated by the RP to identify the resource.
-     *
-     * @return the deploymentId value.
-     */
-    public String deploymentId() {
-        return this.innerProperties() == null ? null : this.innerProperties().deploymentId();
-    }
-
-    /**
-     * Get the computeProfile property: The compute profile.
-     *
-     * @return the computeProfile value.
-     */
-    public ComputeProfile computeProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().computeProfile();
-    }
-
-    /**
-     * Set the computeProfile property: The compute profile.
-     *
-     * @param computeProfile the computeProfile value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withComputeProfile(ComputeProfile computeProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterResourceProperties();
-        }
-        this.innerProperties().withComputeProfile(computeProfile);
-        return this;
-    }
-
-    /**
-     * Get the clusterProfile property: Cluster profile.
-     *
-     * @return the clusterProfile value.
-     */
-    public ClusterProfile clusterProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().clusterProfile();
-    }
-
-    /**
-     * Set the clusterProfile property: Cluster profile.
-     *
-     * @param clusterProfile the clusterProfile value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withClusterProfile(ClusterProfile clusterProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterResourceProperties();
-        }
-        this.innerProperties().withClusterProfile(clusterProfile);
-        return this;
-    }
-
-    /**
-     * Get the status property: Business status of the resource.
-     *
-     * @return the status value.
-     */
-    public String status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInner.
+     */
+    public static ClusterInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInner deserializedClusterInner = new ClusterInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedClusterInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedClusterInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedClusterInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterInner.properties = ClusterResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedClusterInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInner;
+        });
     }
 }

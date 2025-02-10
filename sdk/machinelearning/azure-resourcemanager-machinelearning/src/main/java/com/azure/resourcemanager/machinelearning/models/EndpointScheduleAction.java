@@ -6,30 +6,47 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The EndpointScheduleAction model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actionType")
-@JsonTypeName("InvokeBatchEndpoint")
+/**
+ * The EndpointScheduleAction model.
+ */
 @Fluent
 public final class EndpointScheduleAction extends ScheduleActionBase {
+    /*
+     * [Required] Specifies the action type of the schedule
+     */
+    private ScheduleActionType actionType = ScheduleActionType.INVOKE_BATCH_ENDPOINT;
+
     /*
      * [Required] Defines Schedule action definition details.
      * <see href="TBD" />
      */
-    @JsonProperty(value = "endpointInvocationDefinition", required = true)
     private Object endpointInvocationDefinition;
 
-    /** Creates an instance of EndpointScheduleAction class. */
+    /**
+     * Creates an instance of EndpointScheduleAction class.
+     */
     public EndpointScheduleAction() {
     }
 
     /**
-     * Get the endpointInvocationDefinition property: [Required] Defines Schedule action definition details. &lt;see
-     * href="TBD" /&gt;.
-     *
+     * Get the actionType property: [Required] Specifies the action type of the schedule.
+     * 
+     * @return the actionType value.
+     */
+    @Override
+    public ScheduleActionType actionType() {
+        return this.actionType;
+    }
+
+    /**
+     * Get the endpointInvocationDefinition property: [Required] Defines Schedule action definition details.
+     * &lt;see href="TBD" /&gt;.
+     * 
      * @return the endpointInvocationDefinition value.
      */
     public Object endpointInvocationDefinition() {
@@ -37,9 +54,9 @@ public final class EndpointScheduleAction extends ScheduleActionBase {
     }
 
     /**
-     * Set the endpointInvocationDefinition property: [Required] Defines Schedule action definition details. &lt;see
-     * href="TBD" /&gt;.
-     *
+     * Set the endpointInvocationDefinition property: [Required] Defines Schedule action definition details.
+     * &lt;see href="TBD" /&gt;.
+     * 
      * @param endpointInvocationDefinition the endpointInvocationDefinition value to set.
      * @return the EndpointScheduleAction object itself.
      */
@@ -50,19 +67,58 @@ public final class EndpointScheduleAction extends ScheduleActionBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (endpointInvocationDefinition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endpointInvocationDefinition in model EndpointScheduleAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endpointInvocationDefinition in model EndpointScheduleAction"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EndpointScheduleAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("endpointInvocationDefinition", this.endpointInvocationDefinition);
+        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointScheduleAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointScheduleAction if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EndpointScheduleAction.
+     */
+    public static EndpointScheduleAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointScheduleAction deserializedEndpointScheduleAction = new EndpointScheduleAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointInvocationDefinition".equals(fieldName)) {
+                    deserializedEndpointScheduleAction.endpointInvocationDefinition = reader.readUntyped();
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedEndpointScheduleAction.actionType = ScheduleActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointScheduleAction;
+        });
+    }
 }

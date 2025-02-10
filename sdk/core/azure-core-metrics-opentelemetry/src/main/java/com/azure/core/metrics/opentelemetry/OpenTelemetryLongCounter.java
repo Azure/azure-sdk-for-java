@@ -22,7 +22,8 @@ class OpenTelemetryLongCounter implements LongCounter {
      */
     @Override
     public void add(long value, TelemetryAttributes attributes, Context context) {
-        counter.add(value, OpenTelemetryUtils.getAttributes(attributes), OpenTelemetryUtils.getTraceContextOrCurrent(context));
+        counter.add(value, OpenTelemetryUtils.getAttributes(attributes),
+            OpenTelemetryUtils.getTraceContextOrCurrent(context));
     }
 
     /**

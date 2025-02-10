@@ -67,14 +67,16 @@ public final class DataTypeImpl implements DataType, DataType.Definition, DataTy
     }
 
     public DataType create() {
-        this.innerObject = serviceManager.serviceClient().getDataTypes().create(resourceGroupName, dataProductName,
-            dataTypeName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDataTypes()
+            .create(resourceGroupName, dataProductName, dataTypeName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DataType create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDataTypes().create(resourceGroupName, dataProductName,
-            dataTypeName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDataTypes()
+            .create(resourceGroupName, dataProductName, dataTypeName, this.innerModel(), context);
         return this;
     }
 
@@ -90,14 +92,16 @@ public final class DataTypeImpl implements DataType, DataType.Definition, DataTy
     }
 
     public DataType apply() {
-        this.innerObject = serviceManager.serviceClient().getDataTypes().update(resourceGroupName, dataProductName,
-            dataTypeName, updateProperties, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDataTypes()
+            .update(resourceGroupName, dataProductName, dataTypeName, updateProperties, Context.NONE);
         return this;
     }
 
     public DataType apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDataTypes().update(resourceGroupName, dataProductName,
-            dataTypeName, updateProperties, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDataTypes()
+            .update(resourceGroupName, dataProductName, dataTypeName, updateProperties, context);
         return this;
     }
 
@@ -105,20 +109,24 @@ public final class DataTypeImpl implements DataType, DataType.Definition, DataTy
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dataProductName = Utils.getValueFromIdByName(innerObject.id(), "dataProducts");
-        this.dataTypeName = Utils.getValueFromIdByName(innerObject.id(), "dataTypes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dataProductName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataProducts");
+        this.dataTypeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataTypes");
     }
 
     public DataType refresh() {
-        this.innerObject = serviceManager.serviceClient().getDataTypes()
-            .getWithResponse(resourceGroupName, dataProductName, dataTypeName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataTypes()
+            .getWithResponse(resourceGroupName, dataProductName, dataTypeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataType refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDataTypes()
-            .getWithResponse(resourceGroupName, dataProductName, dataTypeName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDataTypes()
+            .getWithResponse(resourceGroupName, dataProductName, dataTypeName, context)
+            .getValue();
         return this;
     }
 
@@ -132,13 +140,14 @@ public final class DataTypeImpl implements DataType, DataType.Definition, DataTy
 
     public Response<ContainerSasToken> generateStorageContainerSasTokenWithResponse(ContainerSaS body,
         Context context) {
-        return serviceManager.dataTypes().generateStorageContainerSasTokenWithResponse(resourceGroupName,
-            dataProductName, dataTypeName, body, context);
+        return serviceManager.dataTypes()
+            .generateStorageContainerSasTokenWithResponse(resourceGroupName, dataProductName, dataTypeName, body,
+                context);
     }
 
     public ContainerSasToken generateStorageContainerSasToken(ContainerSaS body) {
-        return serviceManager.dataTypes().generateStorageContainerSasToken(resourceGroupName, dataProductName,
-            dataTypeName, body);
+        return serviceManager.dataTypes()
+            .generateStorageContainerSasToken(resourceGroupName, dataProductName, dataTypeName, body);
     }
 
     public DataTypeImpl withProperties(DataTypeProperties properties) {

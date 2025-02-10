@@ -19,7 +19,7 @@ public final class GlobalParametersGetSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void globalParametersGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.globalParameters().getWithResponse("exampleResourceGroup", "exampleFactoryName", "default",
-            com.azure.core.util.Context.NONE);
+        manager.globalParameters()
+            .getWithResponse("exampleResourceGroup", "exampleFactoryName", "default", com.azure.core.util.Context.NONE);
     }
 }

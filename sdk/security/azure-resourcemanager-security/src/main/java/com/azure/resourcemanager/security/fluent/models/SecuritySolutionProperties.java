@@ -6,44 +6,48 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.ProvisioningState;
 import com.azure.resourcemanager.security.models.SecurityFamily;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The SecuritySolutionProperties model. */
+/**
+ * The SecuritySolutionProperties model.
+ */
 @Fluent
-public final class SecuritySolutionProperties {
+public final class SecuritySolutionProperties implements JsonSerializable<SecuritySolutionProperties> {
     /*
      * The security family of the security solution
      */
-    @JsonProperty(value = "securityFamily", required = true)
     private SecurityFamily securityFamily;
 
     /*
      * The security family provisioning State
      */
-    @JsonProperty(value = "provisioningState", required = true)
     private ProvisioningState provisioningState;
 
     /*
      * The security solutions' template
      */
-    @JsonProperty(value = "template", required = true)
     private String template;
 
     /*
      * The security solutions' status
      */
-    @JsonProperty(value = "protectionStatus", required = true)
     private String protectionStatus;
 
-    /** Creates an instance of SecuritySolutionProperties class. */
+    /**
+     * Creates an instance of SecuritySolutionProperties class.
+     */
     public SecuritySolutionProperties() {
     }
 
     /**
      * Get the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @return the securityFamily value.
      */
     public SecurityFamily securityFamily() {
@@ -52,7 +56,7 @@ public final class SecuritySolutionProperties {
 
     /**
      * Set the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @param securityFamily the securityFamily value to set.
      * @return the SecuritySolutionProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class SecuritySolutionProperties {
 
     /**
      * Get the provisioningState property: The security family provisioning State.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -72,7 +76,7 @@ public final class SecuritySolutionProperties {
 
     /**
      * Set the provisioningState property: The security family provisioning State.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the SecuritySolutionProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class SecuritySolutionProperties {
 
     /**
      * Get the template property: The security solutions' template.
-     *
+     * 
      * @return the template value.
      */
     public String template() {
@@ -92,7 +96,7 @@ public final class SecuritySolutionProperties {
 
     /**
      * Set the template property: The security solutions' template.
-     *
+     * 
      * @param template the template value to set.
      * @return the SecuritySolutionProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class SecuritySolutionProperties {
 
     /**
      * Get the protectionStatus property: The security solutions' status.
-     *
+     * 
      * @return the protectionStatus value.
      */
     public String protectionStatus() {
@@ -112,7 +116,7 @@ public final class SecuritySolutionProperties {
 
     /**
      * Set the protectionStatus property: The security solutions' status.
-     *
+     * 
      * @param protectionStatus the protectionStatus value to set.
      * @return the SecuritySolutionProperties object itself.
      */
@@ -123,35 +127,81 @@ public final class SecuritySolutionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (securityFamily() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property securityFamily in model SecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property securityFamily in model SecuritySolutionProperties"));
         }
         if (provisioningState() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property provisioningState in model SecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property provisioningState in model SecuritySolutionProperties"));
         }
         if (template() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property template in model SecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property template in model SecuritySolutionProperties"));
         }
         if (protectionStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protectionStatus in model SecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protectionStatus in model SecuritySolutionProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecuritySolutionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("securityFamily",
+            this.securityFamily == null ? null : this.securityFamily.toString());
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("template", this.template);
+        jsonWriter.writeStringField("protectionStatus", this.protectionStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecuritySolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecuritySolutionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecuritySolutionProperties.
+     */
+    public static SecuritySolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecuritySolutionProperties deserializedSecuritySolutionProperties = new SecuritySolutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("securityFamily".equals(fieldName)) {
+                    deserializedSecuritySolutionProperties.securityFamily
+                        = SecurityFamily.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSecuritySolutionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("template".equals(fieldName)) {
+                    deserializedSecuritySolutionProperties.template = reader.getString();
+                } else if ("protectionStatus".equals(fieldName)) {
+                    deserializedSecuritySolutionProperties.protectionStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecuritySolutionProperties;
+        });
+    }
 }

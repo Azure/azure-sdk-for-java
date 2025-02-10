@@ -5,36 +5,31 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Contains Provisioning errors.
+ * The detailed status of the long running operation.
  */
 @Fluent
-public final class VirtualNetworkPropertiesStatusOperationStatus {
+public final class VirtualNetworkPropertiesStatusOperationStatus
+    implements JsonSerializable<VirtualNetworkPropertiesStatusOperationStatus> {
     /*
-     * The error property.
+     * The error if any from the operation.
      */
-    @JsonProperty(value = "error")
     private VirtualNetworkPropertiesStatusOperationStatusError error;
 
     /*
-     * The operationId property.
+     * The identifier of the operation.
      */
-    @JsonProperty(value = "operationId")
     private String operationId;
 
     /*
-     * Phase represents the current phase of the virtual network provisioning. E.g. Pending, Running, Terminating,
-     * Failed etc.
+     * The status of the operation.
      */
-    @JsonProperty(value = "phase")
-    private String phase;
-
-    /*
-     * The status property.
-     */
-    @JsonProperty(value = "status")
     private String status;
 
     /**
@@ -44,7 +39,7 @@ public final class VirtualNetworkPropertiesStatusOperationStatus {
     }
 
     /**
-     * Get the error property: The error property.
+     * Get the error property: The error if any from the operation.
      * 
      * @return the error value.
      */
@@ -53,7 +48,7 @@ public final class VirtualNetworkPropertiesStatusOperationStatus {
     }
 
     /**
-     * Set the error property: The error property.
+     * Set the error property: The error if any from the operation.
      * 
      * @param error the error value to set.
      * @return the VirtualNetworkPropertiesStatusOperationStatus object itself.
@@ -65,7 +60,7 @@ public final class VirtualNetworkPropertiesStatusOperationStatus {
     }
 
     /**
-     * Get the operationId property: The operationId property.
+     * Get the operationId property: The identifier of the operation.
      * 
      * @return the operationId value.
      */
@@ -74,7 +69,7 @@ public final class VirtualNetworkPropertiesStatusOperationStatus {
     }
 
     /**
-     * Set the operationId property: The operationId property.
+     * Set the operationId property: The identifier of the operation.
      * 
      * @param operationId the operationId value to set.
      * @return the VirtualNetworkPropertiesStatusOperationStatus object itself.
@@ -85,29 +80,7 @@ public final class VirtualNetworkPropertiesStatusOperationStatus {
     }
 
     /**
-     * Get the phase property: Phase represents the current phase of the virtual network provisioning. E.g. Pending,
-     * Running, Terminating, Failed etc.
-     * 
-     * @return the phase value.
-     */
-    public String phase() {
-        return this.phase;
-    }
-
-    /**
-     * Set the phase property: Phase represents the current phase of the virtual network provisioning. E.g. Pending,
-     * Running, Terminating, Failed etc.
-     * 
-     * @param phase the phase value to set.
-     * @return the VirtualNetworkPropertiesStatusOperationStatus object itself.
-     */
-    public VirtualNetworkPropertiesStatusOperationStatus withPhase(String phase) {
-        this.phase = phase;
-        return this;
-    }
-
-    /**
-     * Get the status property: The status property.
+     * Get the status property: The status of the operation.
      * 
      * @return the status value.
      */
@@ -116,7 +89,7 @@ public final class VirtualNetworkPropertiesStatusOperationStatus {
     }
 
     /**
-     * Set the status property: The status property.
+     * Set the status property: The status of the operation.
      * 
      * @param status the status value to set.
      * @return the VirtualNetworkPropertiesStatusOperationStatus object itself.
@@ -135,5 +108,49 @@ public final class VirtualNetworkPropertiesStatusOperationStatus {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("operationId", this.operationId);
+        jsonWriter.writeStringField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkPropertiesStatusOperationStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkPropertiesStatusOperationStatus if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkPropertiesStatusOperationStatus.
+     */
+    public static VirtualNetworkPropertiesStatusOperationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkPropertiesStatusOperationStatus deserializedVirtualNetworkPropertiesStatusOperationStatus
+                = new VirtualNetworkPropertiesStatusOperationStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesStatusOperationStatus.error
+                        = VirtualNetworkPropertiesStatusOperationStatusError.fromJson(reader);
+                } else if ("operationId".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesStatusOperationStatus.operationId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesStatusOperationStatus.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkPropertiesStatusOperationStatus;
+        });
     }
 }

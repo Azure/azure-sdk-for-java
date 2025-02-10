@@ -5,43 +5,59 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Uploads files required for validation to VMs (Linux, Windows). Corresponds to Packer file provisioner. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("File")
+/**
+ * Uploads files required for validation to VMs (Linux, Windows). Corresponds to Packer file provisioner.
+ */
 @Fluent
 public final class ImageTemplateFileValidator extends ImageTemplateInVMValidator {
+    /*
+     * The type of validation you want to use on the Image. For example, "Shell" can be shell validation
+     */
+    private String type = "File";
+
     /*
      * The URI of the file to be uploaded to the VM for validation. It can be a github link, Azure Storage URI
      * (authorized or SAS), etc
      */
-    @JsonProperty(value = "sourceUri")
     private String sourceUri;
 
     /*
      * SHA256 checksum of the file provided in the sourceUri field above
      */
-    @JsonProperty(value = "sha256Checksum")
     private String sha256Checksum;
 
     /*
      * The absolute path to a file (with nested directory structures already created) where the file (from sourceUri)
      * will be uploaded to in the VM
      */
-    @JsonProperty(value = "destination")
     private String destination;
 
-    /** Creates an instance of ImageTemplateFileValidator class. */
+    /**
+     * Creates an instance of ImageTemplateFileValidator class.
+     */
     public ImageTemplateFileValidator() {
+    }
+
+    /**
+     * Get the type property: The type of validation you want to use on the Image. For example, "Shell" can be shell
+     * validation.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the sourceUri property: The URI of the file to be uploaded to the VM for validation. It can be a github link,
      * Azure Storage URI (authorized or SAS), etc.
-     *
+     * 
      * @return the sourceUri value.
      */
     public String sourceUri() {
@@ -51,7 +67,7 @@ public final class ImageTemplateFileValidator extends ImageTemplateInVMValidator
     /**
      * Set the sourceUri property: The URI of the file to be uploaded to the VM for validation. It can be a github link,
      * Azure Storage URI (authorized or SAS), etc.
-     *
+     * 
      * @param sourceUri the sourceUri value to set.
      * @return the ImageTemplateFileValidator object itself.
      */
@@ -62,7 +78,7 @@ public final class ImageTemplateFileValidator extends ImageTemplateInVMValidator
 
     /**
      * Get the sha256Checksum property: SHA256 checksum of the file provided in the sourceUri field above.
-     *
+     * 
      * @return the sha256Checksum value.
      */
     public String sha256Checksum() {
@@ -71,7 +87,7 @@ public final class ImageTemplateFileValidator extends ImageTemplateInVMValidator
 
     /**
      * Set the sha256Checksum property: SHA256 checksum of the file provided in the sourceUri field above.
-     *
+     * 
      * @param sha256Checksum the sha256Checksum value to set.
      * @return the ImageTemplateFileValidator object itself.
      */
@@ -83,7 +99,7 @@ public final class ImageTemplateFileValidator extends ImageTemplateInVMValidator
     /**
      * Get the destination property: The absolute path to a file (with nested directory structures already created)
      * where the file (from sourceUri) will be uploaded to in the VM.
-     *
+     * 
      * @return the destination value.
      */
     public String destination() {
@@ -93,7 +109,7 @@ public final class ImageTemplateFileValidator extends ImageTemplateInVMValidator
     /**
      * Set the destination property: The absolute path to a file (with nested directory structures already created)
      * where the file (from sourceUri) will be uploaded to in the VM.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the ImageTemplateFileValidator object itself.
      */
@@ -102,7 +118,9 @@ public final class ImageTemplateFileValidator extends ImageTemplateInVMValidator
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateFileValidator withName(String name) {
         super.withName(name);
@@ -111,11 +129,58 @@ public final class ImageTemplateFileValidator extends ImageTemplateInVMValidator
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("sourceUri", this.sourceUri);
+        jsonWriter.writeStringField("sha256Checksum", this.sha256Checksum);
+        jsonWriter.writeStringField("destination", this.destination);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateFileValidator from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateFileValidator if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateFileValidator.
+     */
+    public static ImageTemplateFileValidator fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateFileValidator deserializedImageTemplateFileValidator = new ImageTemplateFileValidator();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedImageTemplateFileValidator.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateFileValidator.type = reader.getString();
+                } else if ("sourceUri".equals(fieldName)) {
+                    deserializedImageTemplateFileValidator.sourceUri = reader.getString();
+                } else if ("sha256Checksum".equals(fieldName)) {
+                    deserializedImageTemplateFileValidator.sha256Checksum = reader.getString();
+                } else if ("destination".equals(fieldName)) {
+                    deserializedImageTemplateFileValidator.destination = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateFileValidator;
+        });
     }
 }

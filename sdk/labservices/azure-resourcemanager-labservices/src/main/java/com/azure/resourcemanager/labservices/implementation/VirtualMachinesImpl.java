@@ -22,43 +22,40 @@ public final class VirtualMachinesImpl implements VirtualMachines {
 
     private final com.azure.resourcemanager.labservices.LabServicesManager serviceManager;
 
-    public VirtualMachinesImpl(
-        VirtualMachinesClient innerClient, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
+    public VirtualMachinesImpl(VirtualMachinesClient innerClient,
+        com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<VirtualMachine> listByLab(String resourceGroupName, String labName) {
         PagedIterable<VirtualMachineInner> inner = this.serviceClient().listByLab(resourceGroupName, labName);
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VirtualMachine> listByLab(
-        String resourceGroupName, String labName, String filter, Context context) {
-        PagedIterable<VirtualMachineInner> inner =
-            this.serviceClient().listByLab(resourceGroupName, labName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+    public PagedIterable<VirtualMachine> listByLab(String resourceGroupName, String labName, String filter,
+        Context context) {
+        PagedIterable<VirtualMachineInner> inner
+            = this.serviceClient().listByLab(resourceGroupName, labName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+    }
+
+    public Response<VirtualMachine> getWithResponse(String resourceGroupName, String labName, String virtualMachineName,
+        Context context) {
+        Response<VirtualMachineInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, labName, virtualMachineName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VirtualMachineImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public VirtualMachine get(String resourceGroupName, String labName, String virtualMachineName) {
         VirtualMachineInner inner = this.serviceClient().get(resourceGroupName, labName, virtualMachineName);
         if (inner != null) {
             return new VirtualMachineImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<VirtualMachine> getWithResponse(
-        String resourceGroupName, String labName, String virtualMachineName, Context context) {
-        Response<VirtualMachineInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, labName, virtualMachineName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new VirtualMachineImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -96,13 +93,13 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         this.serviceClient().redeploy(resourceGroupName, labName, virtualMachineName, context);
     }
 
-    public void resetPassword(
-        String resourceGroupName, String labName, String virtualMachineName, ResetPasswordBody body) {
+    public void resetPassword(String resourceGroupName, String labName, String virtualMachineName,
+        ResetPasswordBody body) {
         this.serviceClient().resetPassword(resourceGroupName, labName, virtualMachineName, body);
     }
 
-    public void resetPassword(
-        String resourceGroupName, String labName, String virtualMachineName, ResetPasswordBody body, Context context) {
+    public void resetPassword(String resourceGroupName, String labName, String virtualMachineName,
+        ResetPasswordBody body, Context context) {
         this.serviceClient().resetPassword(resourceGroupName, labName, virtualMachineName, body, context);
     }
 

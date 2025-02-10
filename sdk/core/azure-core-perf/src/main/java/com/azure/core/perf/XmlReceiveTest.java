@@ -8,9 +8,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.perf.core.CorePerfStressOptions;
 import com.azure.core.perf.core.RestProxyTestBase;
 import com.azure.core.perf.core.TestDataFactory;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.azure.xml.XmlWriter;
 import reactor.core.publisher.Mono;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.function.Function;
 
 public class XmlReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
@@ -21,8 +24,7 @@ public class XmlReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     private static Function<HttpRequest, HttpResponse> createMockResponseSupplier(CorePerfStressOptions options) {
         byte[] bodyBytes = generateBodyBytes(options.getSize());
-        return httpRequest -> createMockResponse(httpRequest,
-            "application/xml",  bodyBytes);
+        return httpRequest -> createMockResponse(httpRequest, "application/xml", bodyBytes);
     }
 
     @Override
@@ -37,14 +39,19 @@ public class XmlReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getUserDatabaseXmlAsync(endpoint, id)
-            .map(userdatabase -> {
-                userdatabase.getValue();
-                return 1;
-            }).then();
+        return service.getUserDatabaseXmlAsync(endpoint, id).map(userdatabase -> {
+            userdatabase.getValue();
+            return 1;
+        }).then();
     }
 
     private static byte[] generateBodyBytes(long size) {
-        return serializeData(TestDataFactory.generateUserDatabase(size), new XmlMapper());
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            XmlWriter xmlWriter = XmlWriter.toStream(outputStream)) {
+            TestDataFactory.generateUserDatabase(size).toXml(xmlWriter).flush();
+            return outputStream.toByteArray();
+        } catch (IOException | XMLStreamException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

@@ -4,34 +4,88 @@
 
 package com.azure.resourcemanager.security.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.security.models.ProvisioningState;
+import java.io.IOException;
 
-/** Describes the properties of an API collection. */
-@Fluent
-public final class ApiCollectionProperties {
+/**
+ * Describes the properties of an API collection.
+ */
+@Immutable
+public final class ApiCollectionProperties implements JsonSerializable<ApiCollectionProperties> {
     /*
-     * The display name of the Azure API Management API.
+     * Gets the provisioning state of the API collection.
      */
-    @JsonProperty(value = "displayName")
+    private ProvisioningState provisioningState;
+
+    /*
+     * The display name of the API collection.
+     */
     private String displayName;
 
     /*
-     * Additional data regarding the API collection.
+     * The resource Id of the resource from where this API collection was discovered.
      */
-    @JsonProperty(value = "additionalData")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> additionalData;
+    private String discoveredVia;
 
-    /** Creates an instance of ApiCollectionProperties class. */
+    /*
+     * The base URI for this API collection. All endpoints of this API collection extend this base URI.
+     */
+    private String baseUrl;
+
+    /*
+     * The number of API endpoints discovered in this API collection.
+     */
+    private Long numberOfApiEndpoints;
+
+    /*
+     * The number of API endpoints in this API collection that have not received any API traffic in the last 30 days.
+     */
+    private Long numberOfInactiveApiEndpoints;
+
+    /*
+     * The number of API endpoints in this API collection that are unauthenticated.
+     */
+    private Long numberOfUnauthenticatedApiEndpoints;
+
+    /*
+     * The number of API endpoints in this API collection for which API traffic from the internet was observed.
+     */
+    private Long numberOfExternalApiEndpoints;
+
+    /*
+     * The number of API endpoints in this API collection which are exposing sensitive data in their requests and/or
+     * responses.
+     */
+    private Long numberOfApiEndpointsWithSensitiveDataExposed;
+
+    /*
+     * The highest priority sensitivity label from Microsoft Purview in this API collection.
+     */
+    private String sensitivityLabel;
+
+    /**
+     * Creates an instance of ApiCollectionProperties class.
+     */
     public ApiCollectionProperties() {
     }
 
     /**
-     * Get the displayName property: The display name of the Azure API Management API.
-     *
+     * Get the provisioningState property: Gets the provisioning state of the API collection.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the displayName property: The display name of the API collection.
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -39,41 +93,146 @@ public final class ApiCollectionProperties {
     }
 
     /**
-     * Set the displayName property: The display name of the Azure API Management API.
-     *
-     * @param displayName the displayName value to set.
-     * @return the ApiCollectionProperties object itself.
+     * Get the discoveredVia property: The resource Id of the resource from where this API collection was discovered.
+     * 
+     * @return the discoveredVia value.
      */
-    public ApiCollectionProperties withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
+    public String discoveredVia() {
+        return this.discoveredVia;
     }
 
     /**
-     * Get the additionalData property: Additional data regarding the API collection.
-     *
-     * @return the additionalData value.
+     * Get the baseUrl property: The base URI for this API collection. All endpoints of this API collection extend this
+     * base URI.
+     * 
+     * @return the baseUrl value.
      */
-    public Map<String, String> additionalData() {
-        return this.additionalData;
+    public String baseUrl() {
+        return this.baseUrl;
     }
 
     /**
-     * Set the additionalData property: Additional data regarding the API collection.
-     *
-     * @param additionalData the additionalData value to set.
-     * @return the ApiCollectionProperties object itself.
+     * Get the numberOfApiEndpoints property: The number of API endpoints discovered in this API collection.
+     * 
+     * @return the numberOfApiEndpoints value.
      */
-    public ApiCollectionProperties withAdditionalData(Map<String, String> additionalData) {
-        this.additionalData = additionalData;
-        return this;
+    public Long numberOfApiEndpoints() {
+        return this.numberOfApiEndpoints;
+    }
+
+    /**
+     * Get the numberOfInactiveApiEndpoints property: The number of API endpoints in this API collection that have not
+     * received any API traffic in the last 30 days.
+     * 
+     * @return the numberOfInactiveApiEndpoints value.
+     */
+    public Long numberOfInactiveApiEndpoints() {
+        return this.numberOfInactiveApiEndpoints;
+    }
+
+    /**
+     * Get the numberOfUnauthenticatedApiEndpoints property: The number of API endpoints in this API collection that are
+     * unauthenticated.
+     * 
+     * @return the numberOfUnauthenticatedApiEndpoints value.
+     */
+    public Long numberOfUnauthenticatedApiEndpoints() {
+        return this.numberOfUnauthenticatedApiEndpoints;
+    }
+
+    /**
+     * Get the numberOfExternalApiEndpoints property: The number of API endpoints in this API collection for which API
+     * traffic from the internet was observed.
+     * 
+     * @return the numberOfExternalApiEndpoints value.
+     */
+    public Long numberOfExternalApiEndpoints() {
+        return this.numberOfExternalApiEndpoints;
+    }
+
+    /**
+     * Get the numberOfApiEndpointsWithSensitiveDataExposed property: The number of API endpoints in this API collection
+     * which are exposing sensitive data in their requests and/or responses.
+     * 
+     * @return the numberOfApiEndpointsWithSensitiveDataExposed value.
+     */
+    public Long numberOfApiEndpointsWithSensitiveDataExposed() {
+        return this.numberOfApiEndpointsWithSensitiveDataExposed;
+    }
+
+    /**
+     * Get the sensitivityLabel property: The highest priority sensitivity label from Microsoft Purview in this API
+     * collection.
+     * 
+     * @return the sensitivityLabel value.
+     */
+    public String sensitivityLabel() {
+        return this.sensitivityLabel;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiCollectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiCollectionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiCollectionProperties.
+     */
+    public static ApiCollectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiCollectionProperties deserializedApiCollectionProperties = new ApiCollectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedApiCollectionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedApiCollectionProperties.displayName = reader.getString();
+                } else if ("discoveredVia".equals(fieldName)) {
+                    deserializedApiCollectionProperties.discoveredVia = reader.getString();
+                } else if ("baseUrl".equals(fieldName)) {
+                    deserializedApiCollectionProperties.baseUrl = reader.getString();
+                } else if ("numberOfApiEndpoints".equals(fieldName)) {
+                    deserializedApiCollectionProperties.numberOfApiEndpoints = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfInactiveApiEndpoints".equals(fieldName)) {
+                    deserializedApiCollectionProperties.numberOfInactiveApiEndpoints
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfUnauthenticatedApiEndpoints".equals(fieldName)) {
+                    deserializedApiCollectionProperties.numberOfUnauthenticatedApiEndpoints
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfExternalApiEndpoints".equals(fieldName)) {
+                    deserializedApiCollectionProperties.numberOfExternalApiEndpoints
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfApiEndpointsWithSensitiveDataExposed".equals(fieldName)) {
+                    deserializedApiCollectionProperties.numberOfApiEndpointsWithSensitiveDataExposed
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("sensitivityLabel".equals(fieldName)) {
+                    deserializedApiCollectionProperties.sensitivityLabel = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiCollectionProperties;
+        });
     }
 }

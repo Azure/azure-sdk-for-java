@@ -5,21 +5,25 @@
 package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.devcenter.models.CatalogItemType;
 import com.azure.resourcemanager.devcenter.models.SyncStats;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class SyncStatsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SyncStats model =
-            BinaryData
-                .fromString(
-                    "{\"added\":1290040732,\"updated\":1874212634,\"unchanged\":130298647,\"removed\":450468139,\"validationErrors\":509090660,\"synchronizationErrors\":545322213}")
-                .toObject(SyncStats.class);
+        SyncStats model = BinaryData.fromString(
+            "{\"added\":1878270858,\"updated\":54654595,\"unchanged\":825369958,\"removed\":1635783635,\"validationErrors\":1240813814,\"synchronizationErrors\":1410609059,\"syncedCatalogItemTypes\":[\"EnvironmentDefinition\",\"EnvironmentDefinition\"]}")
+            .toObject(SyncStats.class);
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION, model.syncedCatalogItemTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SyncStats model = new SyncStats();
+        SyncStats model = new SyncStats().withSyncedCatalogItemTypes(
+            Arrays.asList(CatalogItemType.ENVIRONMENT_DEFINITION, CatalogItemType.ENVIRONMENT_DEFINITION));
         model = BinaryData.fromObject(model).toObject(SyncStats.class);
+        Assertions.assertEquals(CatalogItemType.ENVIRONMENT_DEFINITION, model.syncedCatalogItemTypes().get(0));
     }
 }

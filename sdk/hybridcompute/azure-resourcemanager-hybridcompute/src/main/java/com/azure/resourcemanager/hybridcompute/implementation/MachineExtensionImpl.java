@@ -88,20 +88,16 @@ public final class MachineExtensionImpl
     }
 
     public MachineExtension create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineExtensions()
-                .createOrUpdate(resourceGroupName, machineName, extensionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineExtensions()
+            .createOrUpdate(resourceGroupName, machineName, extensionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MachineExtension create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineExtensions()
-                .createOrUpdate(resourceGroupName, machineName, extensionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineExtensions()
+            .createOrUpdate(resourceGroupName, machineName, extensionName, this.innerModel(), context);
         return this;
     }
 
@@ -117,50 +113,41 @@ public final class MachineExtensionImpl
     }
 
     public MachineExtension apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineExtensions()
-                .update(resourceGroupName, machineName, extensionName, updateExtensionParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineExtensions()
+            .update(resourceGroupName, machineName, extensionName, updateExtensionParameters, Context.NONE);
         return this;
     }
 
     public MachineExtension apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineExtensions()
-                .update(resourceGroupName, machineName, extensionName, updateExtensionParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineExtensions()
+            .update(resourceGroupName, machineName, extensionName, updateExtensionParameters, context);
         return this;
     }
 
-    MachineExtensionImpl(
-        MachineExtensionInner innerObject,
+    MachineExtensionImpl(MachineExtensionInner innerObject,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.machineName = Utils.getValueFromIdByName(innerObject.id(), "machines");
-        this.extensionName = Utils.getValueFromIdByName(innerObject.id(), "extensions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.machineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "machines");
+        this.extensionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "extensions");
     }
 
     public MachineExtension refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineExtensions()
-                .getWithResponse(resourceGroupName, machineName, extensionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineExtensions()
+            .getWithResponse(resourceGroupName, machineName, extensionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MachineExtension refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMachineExtensions()
-                .getWithResponse(resourceGroupName, machineName, extensionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMachineExtensions()
+            .getWithResponse(resourceGroupName, machineName, extensionName, context)
+            .getValue();
         return this;
     }
 

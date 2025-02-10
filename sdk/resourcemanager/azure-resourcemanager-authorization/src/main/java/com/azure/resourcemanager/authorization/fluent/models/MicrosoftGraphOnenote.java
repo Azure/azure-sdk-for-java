@@ -5,68 +5,66 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** onenote. */
+/**
+ * onenote.
+ */
 @Fluent
 public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
     /*
      * The collection of OneNote notebooks that are owned by the user or group. Read-only. Nullable.
      */
-    @JsonProperty(value = "notebooks")
     private List<MicrosoftGraphNotebook> notebooks;
 
     /*
      * The status of OneNote operations. Getting an operations collection is not supported, but you can get the status
      * of long-running operations if the Operation-Location header is returned in the response. Read-only. Nullable.
      */
-    @JsonProperty(value = "operations")
     private List<MicrosoftGraphOnenoteOperation> operations;
 
     /*
-     * The pages in all OneNote notebooks that are owned by the user or group.  Read-only. Nullable.
+     * The pages in all OneNote notebooks that are owned by the user or group. Read-only. Nullable.
      */
-    @JsonProperty(value = "pages")
     private List<MicrosoftGraphOnenotePage> pages;
 
     /*
-     * The image and other file resources in OneNote pages. Getting a resources collection is not supported, but you
-     * can get the binary content of a specific resource. Read-only. Nullable.
+     * The image and other file resources in OneNote pages. Getting a resources collection is not supported, but you can
+     * get the binary content of a specific resource. Read-only. Nullable.
      */
-    @JsonProperty(value = "resources")
     private List<MicrosoftGraphOnenoteResource> resources;
 
     /*
-     * The section groups in all OneNote notebooks that are owned by the user or group.  Read-only. Nullable.
+     * The section groups in all OneNote notebooks that are owned by the user or group. Read-only. Nullable.
      */
-    @JsonProperty(value = "sectionGroups")
     private List<MicrosoftGraphSectionGroup> sectionGroups;
 
     /*
-     * The sections in all OneNote notebooks that are owned by the user or group.  Read-only. Nullable.
+     * The sections in all OneNote notebooks that are owned by the user or group. Read-only. Nullable.
      */
-    @JsonProperty(value = "sections")
     private List<MicrosoftGraphOnenoteSection> sections;
 
     /*
      * onenote
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOnenote class. */
+    /**
+     * Creates an instance of MicrosoftGraphOnenote class.
+     */
     public MicrosoftGraphOnenote() {
     }
 
     /**
      * Get the notebooks property: The collection of OneNote notebooks that are owned by the user or group. Read-only.
      * Nullable.
-     *
+     * 
      * @return the notebooks value.
      */
     public List<MicrosoftGraphNotebook> notebooks() {
@@ -76,7 +74,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
     /**
      * Set the notebooks property: The collection of OneNote notebooks that are owned by the user or group. Read-only.
      * Nullable.
-     *
+     * 
      * @param notebooks the notebooks value to set.
      * @return the MicrosoftGraphOnenote object itself.
      */
@@ -89,7 +87,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
      * Get the operations property: The status of OneNote operations. Getting an operations collection is not supported,
      * but you can get the status of long-running operations if the Operation-Location header is returned in the
      * response. Read-only. Nullable.
-     *
+     * 
      * @return the operations value.
      */
     public List<MicrosoftGraphOnenoteOperation> operations() {
@@ -100,7 +98,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
      * Set the operations property: The status of OneNote operations. Getting an operations collection is not supported,
      * but you can get the status of long-running operations if the Operation-Location header is returned in the
      * response. Read-only. Nullable.
-     *
+     * 
      * @param operations the operations value to set.
      * @return the MicrosoftGraphOnenote object itself.
      */
@@ -112,7 +110,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
     /**
      * Get the pages property: The pages in all OneNote notebooks that are owned by the user or group. Read-only.
      * Nullable.
-     *
+     * 
      * @return the pages value.
      */
     public List<MicrosoftGraphOnenotePage> pages() {
@@ -122,7 +120,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
     /**
      * Set the pages property: The pages in all OneNote notebooks that are owned by the user or group. Read-only.
      * Nullable.
-     *
+     * 
      * @param pages the pages value to set.
      * @return the MicrosoftGraphOnenote object itself.
      */
@@ -134,7 +132,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
     /**
      * Get the resources property: The image and other file resources in OneNote pages. Getting a resources collection
      * is not supported, but you can get the binary content of a specific resource. Read-only. Nullable.
-     *
+     * 
      * @return the resources value.
      */
     public List<MicrosoftGraphOnenoteResource> resources() {
@@ -144,7 +142,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
     /**
      * Set the resources property: The image and other file resources in OneNote pages. Getting a resources collection
      * is not supported, but you can get the binary content of a specific resource. Read-only. Nullable.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the MicrosoftGraphOnenote object itself.
      */
@@ -156,7 +154,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
     /**
      * Get the sectionGroups property: The section groups in all OneNote notebooks that are owned by the user or group.
      * Read-only. Nullable.
-     *
+     * 
      * @return the sectionGroups value.
      */
     public List<MicrosoftGraphSectionGroup> sectionGroups() {
@@ -166,7 +164,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
     /**
      * Set the sectionGroups property: The section groups in all OneNote notebooks that are owned by the user or group.
      * Read-only. Nullable.
-     *
+     * 
      * @param sectionGroups the sectionGroups value to set.
      * @return the MicrosoftGraphOnenote object itself.
      */
@@ -178,7 +176,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
     /**
      * Get the sections property: The sections in all OneNote notebooks that are owned by the user or group. Read-only.
      * Nullable.
-     *
+     * 
      * @return the sections value.
      */
     public List<MicrosoftGraphOnenoteSection> sections() {
@@ -188,7 +186,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
     /**
      * Set the sections property: The sections in all OneNote notebooks that are owned by the user or group. Read-only.
      * Nullable.
-     *
+     * 
      * @param sections the sections value to set.
      * @return the MicrosoftGraphOnenote object itself.
      */
@@ -199,17 +197,16 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: onenote.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: onenote.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOnenote object itself.
      */
@@ -218,15 +215,9 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOnenote withId(String id) {
         super.withId(id);
@@ -235,7 +226,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -259,5 +250,82 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
         if (sections() != null) {
             sections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("notebooks", this.notebooks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("operations", this.operations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("pages", this.pages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sectionGroups", this.sectionGroups, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sections", this.sections, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOnenote from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOnenote if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOnenote.
+     */
+    public static MicrosoftGraphOnenote fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOnenote deserializedMicrosoftGraphOnenote = new MicrosoftGraphOnenote();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenote.withId(reader.getString());
+                } else if ("notebooks".equals(fieldName)) {
+                    List<MicrosoftGraphNotebook> notebooks
+                        = reader.readArray(reader1 -> MicrosoftGraphNotebook.fromJson(reader1));
+                    deserializedMicrosoftGraphOnenote.notebooks = notebooks;
+                } else if ("operations".equals(fieldName)) {
+                    List<MicrosoftGraphOnenoteOperation> operations
+                        = reader.readArray(reader1 -> MicrosoftGraphOnenoteOperation.fromJson(reader1));
+                    deserializedMicrosoftGraphOnenote.operations = operations;
+                } else if ("pages".equals(fieldName)) {
+                    List<MicrosoftGraphOnenotePage> pages
+                        = reader.readArray(reader1 -> MicrosoftGraphOnenotePage.fromJson(reader1));
+                    deserializedMicrosoftGraphOnenote.pages = pages;
+                } else if ("resources".equals(fieldName)) {
+                    List<MicrosoftGraphOnenoteResource> resources
+                        = reader.readArray(reader1 -> MicrosoftGraphOnenoteResource.fromJson(reader1));
+                    deserializedMicrosoftGraphOnenote.resources = resources;
+                } else if ("sectionGroups".equals(fieldName)) {
+                    List<MicrosoftGraphSectionGroup> sectionGroups
+                        = reader.readArray(reader1 -> MicrosoftGraphSectionGroup.fromJson(reader1));
+                    deserializedMicrosoftGraphOnenote.sectionGroups = sectionGroups;
+                } else if ("sections".equals(fieldName)) {
+                    List<MicrosoftGraphOnenoteSection> sections
+                        = reader.readArray(reader1 -> MicrosoftGraphOnenoteSection.fromJson(reader1));
+                    deserializedMicrosoftGraphOnenote.sections = sections;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOnenote.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOnenote;
+        });
     }
 }

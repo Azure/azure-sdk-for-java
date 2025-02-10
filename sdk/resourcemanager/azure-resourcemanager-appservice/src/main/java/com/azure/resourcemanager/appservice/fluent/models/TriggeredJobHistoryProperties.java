@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.TriggeredJobRun;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * TriggeredJobHistory resource specific properties.
  */
 @Fluent
-public final class TriggeredJobHistoryProperties {
+public final class TriggeredJobHistoryProperties implements JsonSerializable<TriggeredJobHistoryProperties> {
     /*
      * List of triggered web job runs.
      */
-    @JsonProperty(value = "runs")
     private List<TriggeredJobRun> runs;
 
     /**
@@ -55,5 +58,43 @@ public final class TriggeredJobHistoryProperties {
         if (runs() != null) {
             runs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("runs", this.runs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggeredJobHistoryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggeredJobHistoryProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggeredJobHistoryProperties.
+     */
+    public static TriggeredJobHistoryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggeredJobHistoryProperties deserializedTriggeredJobHistoryProperties
+                = new TriggeredJobHistoryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runs".equals(fieldName)) {
+                    List<TriggeredJobRun> runs = reader.readArray(reader1 -> TriggeredJobRun.fromJson(reader1));
+                    deserializedTriggeredJobHistoryProperties.runs = runs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggeredJobHistoryProperties;
+        });
     }
 }

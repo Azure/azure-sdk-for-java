@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.confluent.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -43,12 +44,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = ConfluentManagementClientBuilder.class)
 public final class ConfluentManagementClientImpl implements ConfluentManagementClient {
     /**
-     * The ID of the target subscription. The value must be an UUID.
+     * Microsoft Azure subscription id.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets Microsoft Azure subscription id.
      * 
      * @return the subscriptionId value.
      */
@@ -203,7 +204,7 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
+     * @param subscriptionId Microsoft Azure subscription id.
      * @param endpoint server parameter.
      */
     ConfluentManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -213,7 +214,7 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-08-22";
+        this.apiVersion = "2024-02-13";
         this.marketplaceAgreements = new MarketplaceAgreementsClientImpl(this);
         this.organizationOperations = new OrganizationOperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
@@ -281,8 +282,8 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -323,7 +324,7 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

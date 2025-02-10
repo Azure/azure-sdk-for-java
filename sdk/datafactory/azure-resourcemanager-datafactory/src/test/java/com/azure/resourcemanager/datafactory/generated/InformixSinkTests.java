@@ -11,16 +11,19 @@ public final class InformixSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InformixSink model = BinaryData.fromString(
-            "{\"type\":\"InformixSink\",\"preCopyScript\":\"datapypxg\",\"writeBatchSize\":\"datapokooyyfysnozj\",\"writeBatchTimeout\":\"datafucmhonoje\",\"sinkRetryCount\":\"datauqxelmmxwm\",\"sinkRetryWait\":\"dataiyc\",\"maxConcurrentConnections\":\"datajswedkfofyfwpu\",\"disableMetricsCollection\":\"datapcutzlvxkolvedz\",\"\":{\"zrdglk\":\"datarpormvddwg\",\"gvyuusexenywwkd\":\"datagcxmkrldfoidyhcw\",\"sxpaapmthdqv\":\"dataqqg\",\"tvxrtocadt\":\"dataifwknl\"}}")
+            "{\"type\":\"InformixSink\",\"preCopyScript\":\"dataxvjjwlwysrs\",\"writeBatchSize\":\"datahciazwebts\",\"writeBatchTimeout\":\"dataqkanuxjud\",\"sinkRetryCount\":\"datazodnxlcdgkc\",\"sinkRetryWait\":\"dataancjlkrskzw\",\"maxConcurrentConnections\":\"databafqzihmvw\",\"disableMetricsCollection\":\"datajwvqiahoqjz\",\"\":{\"hgwzbystwuuwe\":\"datawdlrtcfulmz\",\"qichzcajity\":\"datantjssjbpnatpym\"}}")
             .toObject(InformixSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InformixSink model = new InformixSink().withWriteBatchSize("datapokooyyfysnozj")
-            .withWriteBatchTimeout("datafucmhonoje").withSinkRetryCount("datauqxelmmxwm").withSinkRetryWait("dataiyc")
-            .withMaxConcurrentConnections("datajswedkfofyfwpu").withDisableMetricsCollection("datapcutzlvxkolvedz")
-            .withPreCopyScript("datapypxg");
+        InformixSink model = new InformixSink().withWriteBatchSize("datahciazwebts")
+            .withWriteBatchTimeout("dataqkanuxjud")
+            .withSinkRetryCount("datazodnxlcdgkc")
+            .withSinkRetryWait("dataancjlkrskzw")
+            .withMaxConcurrentConnections("databafqzihmvw")
+            .withDisableMetricsCollection("datajwvqiahoqjz")
+            .withPreCopyScript("dataxvjjwlwysrs");
         model = BinaryData.fromObject(model).toObject(InformixSink.class);
     }
 }

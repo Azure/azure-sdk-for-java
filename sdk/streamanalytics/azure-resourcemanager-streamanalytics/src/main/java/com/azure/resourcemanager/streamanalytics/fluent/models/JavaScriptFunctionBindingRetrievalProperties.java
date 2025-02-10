@@ -5,34 +5,39 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.UdfType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The binding retrieval properties associated with a JavaScript function. */
+/**
+ * The binding retrieval properties associated with a JavaScript function.
+ */
 @Fluent
-public final class JavaScriptFunctionBindingRetrievalProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(JavaScriptFunctionBindingRetrievalProperties.class);
-
+public final class JavaScriptFunctionBindingRetrievalProperties
+    implements JsonSerializable<JavaScriptFunctionBindingRetrievalProperties> {
     /*
-     * The JavaScript code containing a single function definition. For
-     * example: 'function (x, y) { return x + y; }'.
+     * The JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'.
      */
-    @JsonProperty(value = "script")
     private String script;
 
     /*
      * The function type.
      */
-    @JsonProperty(value = "udfType")
     private UdfType udfType;
+
+    /**
+     * Creates an instance of JavaScriptFunctionBindingRetrievalProperties class.
+     */
+    public JavaScriptFunctionBindingRetrievalProperties() {
+    }
 
     /**
      * Get the script property: The JavaScript code containing a single function definition. For example: 'function (x,
      * y) { return x + y; }'.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -42,7 +47,7 @@ public final class JavaScriptFunctionBindingRetrievalProperties {
     /**
      * Set the script property: The JavaScript code containing a single function definition. For example: 'function (x,
      * y) { return x + y; }'.
-     *
+     * 
      * @param script the script value to set.
      * @return the JavaScriptFunctionBindingRetrievalProperties object itself.
      */
@@ -53,7 +58,7 @@ public final class JavaScriptFunctionBindingRetrievalProperties {
 
     /**
      * Get the udfType property: The function type.
-     *
+     * 
      * @return the udfType value.
      */
     public UdfType udfType() {
@@ -62,7 +67,7 @@ public final class JavaScriptFunctionBindingRetrievalProperties {
 
     /**
      * Set the udfType property: The function type.
-     *
+     * 
      * @param udfType the udfType value to set.
      * @return the JavaScriptFunctionBindingRetrievalProperties object itself.
      */
@@ -73,9 +78,50 @@ public final class JavaScriptFunctionBindingRetrievalProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("script", this.script);
+        jsonWriter.writeStringField("udfType", this.udfType == null ? null : this.udfType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JavaScriptFunctionBindingRetrievalProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JavaScriptFunctionBindingRetrievalProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JavaScriptFunctionBindingRetrievalProperties.
+     */
+    public static JavaScriptFunctionBindingRetrievalProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JavaScriptFunctionBindingRetrievalProperties deserializedJavaScriptFunctionBindingRetrievalProperties
+                = new JavaScriptFunctionBindingRetrievalProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("script".equals(fieldName)) {
+                    deserializedJavaScriptFunctionBindingRetrievalProperties.script = reader.getString();
+                } else if ("udfType".equals(fieldName)) {
+                    deserializedJavaScriptFunctionBindingRetrievalProperties.udfType
+                        = UdfType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJavaScriptFunctionBindingRetrievalProperties;
+        });
     }
 }

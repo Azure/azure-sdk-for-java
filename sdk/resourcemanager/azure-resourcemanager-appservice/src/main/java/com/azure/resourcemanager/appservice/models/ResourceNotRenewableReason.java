@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -44,7 +43,6 @@ public final class ResourceNotRenewableReason extends ExpandableStringEnum<Resou
      * @param name a name to look for.
      * @return the corresponding ResourceNotRenewableReason.
      */
-    @JsonCreator
     public static ResourceNotRenewableReason fromString(String name) {
         return fromString(name, ResourceNotRenewableReason.class);
     }

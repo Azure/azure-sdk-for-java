@@ -32,8 +32,11 @@ public final class DocumentWordHelper {
      */
     public interface DocumentWordAccessor {
         void setBoundingPolygon(DocumentWord documentWord, List<Point> boundingPolygon);
+
         void setContent(DocumentWord documentWord, String content);
+
         void setSpan(DocumentWord documentWord, DocumentSpan span);
+
         void setConfidence(DocumentWord documentWord, float confidence);
 
     }

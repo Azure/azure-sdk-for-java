@@ -5,52 +5,64 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** IaaS VM workload-specific container. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "containerType",
-    defaultImpl = IaaSvmContainer.class)
-@JsonTypeName("IaasVMContainer")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "Microsoft.ClassicCompute/virtualMachines",
-        value = AzureIaaSClassicComputeVMContainer.class),
-    @JsonSubTypes.Type(name = "Microsoft.Compute/virtualMachines", value = AzureIaaSComputeVMContainer.class)
-})
+/**
+ * IaaS VM workload-specific container.
+ */
 @Fluent
 public class IaaSvmContainer extends ProtectionContainer {
     /*
+     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+     * 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer
+     */
+    private ProtectableContainerType containerType = ProtectableContainerType.IAAS_VMCONTAINER;
+
+    /*
      * Fully qualified ARM url of the virtual machine represented by this Azure IaaS VM container.
      */
-    @JsonProperty(value = "virtualMachineId")
     private String virtualMachineId;
 
     /*
      * Specifies whether the container represents a Classic or an Azure Resource Manager VM.
      */
-    @JsonProperty(value = "virtualMachineVersion")
     private String virtualMachineVersion;
 
     /*
      * Resource group name of Recovery Services Vault.
      */
-    @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
 
-    /** Creates an instance of IaaSvmContainer class. */
+    /**
+     * Creates an instance of IaaSvmContainer class.
+     */
     public IaaSvmContainer() {
+    }
+
+    /**
+     * Get the containerType property: Type of the container. The value of this property for: 1. Compute Azure VM is
+     * Microsoft.Compute/virtualMachines 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer.
+     * 
+     * @return the containerType value.
+     */
+    @Override
+    public ProtectableContainerType containerType() {
+        return this.containerType;
     }
 
     /**
      * Get the virtualMachineId property: Fully qualified ARM url of the virtual machine represented by this Azure IaaS
      * VM container.
-     *
+     * 
      * @return the virtualMachineId value.
      */
     public String virtualMachineId() {
@@ -60,7 +72,7 @@ public class IaaSvmContainer extends ProtectionContainer {
     /**
      * Set the virtualMachineId property: Fully qualified ARM url of the virtual machine represented by this Azure IaaS
      * VM container.
-     *
+     * 
      * @param virtualMachineId the virtualMachineId value to set.
      * @return the IaaSvmContainer object itself.
      */
@@ -72,7 +84,7 @@ public class IaaSvmContainer extends ProtectionContainer {
     /**
      * Get the virtualMachineVersion property: Specifies whether the container represents a Classic or an Azure Resource
      * Manager VM.
-     *
+     * 
      * @return the virtualMachineVersion value.
      */
     public String virtualMachineVersion() {
@@ -82,7 +94,7 @@ public class IaaSvmContainer extends ProtectionContainer {
     /**
      * Set the virtualMachineVersion property: Specifies whether the container represents a Classic or an Azure Resource
      * Manager VM.
-     *
+     * 
      * @param virtualMachineVersion the virtualMachineVersion value to set.
      * @return the IaaSvmContainer object itself.
      */
@@ -93,7 +105,7 @@ public class IaaSvmContainer extends ProtectionContainer {
 
     /**
      * Get the resourceGroup property: Resource group name of Recovery Services Vault.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -102,7 +114,7 @@ public class IaaSvmContainer extends ProtectionContainer {
 
     /**
      * Set the resourceGroup property: Resource group name of Recovery Services Vault.
-     *
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the IaaSvmContainer object itself.
      */
@@ -111,35 +123,45 @@ public class IaaSvmContainer extends ProtectionContainer {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaaSvmContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaaSvmContainer withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaaSvmContainer withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaaSvmContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaaSvmContainer withProtectableObjectType(String protectableObjectType) {
         super.withProtectableObjectType(protectableObjectType);
@@ -148,11 +170,99 @@ public class IaaSvmContainer extends ProtectionContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("registrationStatus", registrationStatus());
+        jsonWriter.writeStringField("healthStatus", healthStatus());
+        jsonWriter.writeStringField("protectableObjectType", protectableObjectType());
+        jsonWriter.writeStringField("containerType", this.containerType == null ? null : this.containerType.toString());
+        jsonWriter.writeStringField("virtualMachineId", this.virtualMachineId);
+        jsonWriter.writeStringField("virtualMachineVersion", this.virtualMachineVersion);
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IaaSvmContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IaaSvmContainer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IaaSvmContainer.
+     */
+    public static IaaSvmContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("containerType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Microsoft.ClassicCompute/virtualMachines".equals(discriminatorValue)) {
+                    return AzureIaaSClassicComputeVMContainer.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Compute/virtualMachines".equals(discriminatorValue)) {
+                    return AzureIaaSComputeVMContainer.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static IaaSvmContainer fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IaaSvmContainer deserializedIaaSvmContainer = new IaaSvmContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedIaaSvmContainer.withFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedIaaSvmContainer
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedIaaSvmContainer.withRegistrationStatus(reader.getString());
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedIaaSvmContainer.withHealthStatus(reader.getString());
+                } else if ("protectableObjectType".equals(fieldName)) {
+                    deserializedIaaSvmContainer.withProtectableObjectType(reader.getString());
+                } else if ("containerType".equals(fieldName)) {
+                    deserializedIaaSvmContainer.containerType = ProtectableContainerType.fromString(reader.getString());
+                } else if ("virtualMachineId".equals(fieldName)) {
+                    deserializedIaaSvmContainer.virtualMachineId = reader.getString();
+                } else if ("virtualMachineVersion".equals(fieldName)) {
+                    deserializedIaaSvmContainer.virtualMachineVersion = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedIaaSvmContainer.resourceGroup = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIaaSvmContainer;
+        });
     }
 }

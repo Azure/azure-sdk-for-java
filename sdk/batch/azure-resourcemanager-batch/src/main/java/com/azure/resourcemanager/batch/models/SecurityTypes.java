@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
  */
@@ -14,7 +11,12 @@ public enum SecurityTypes {
     /**
      * Enum value trustedLaunch.
      */
-    TRUSTED_LAUNCH("trustedLaunch");
+    TRUSTED_LAUNCH("trustedLaunch"),
+
+    /**
+     * Enum value confidentialVM.
+     */
+    CONFIDENTIAL_VM("confidentialVM");
 
     /**
      * The actual serialized value for a SecurityTypes instance.
@@ -31,7 +33,6 @@ public enum SecurityTypes {
      * @param value the serialized value to parse.
      * @return the parsed SecurityTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static SecurityTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -48,7 +49,6 @@ public enum SecurityTypes {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

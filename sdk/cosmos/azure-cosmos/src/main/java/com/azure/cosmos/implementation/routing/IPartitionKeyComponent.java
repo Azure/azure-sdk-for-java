@@ -21,4 +21,5 @@ interface IPartitionKeyComponent {
     void writeForBinaryEncoding(OutputStream binaryWriter);
 
     IPartitionKeyComponent truncate();
+    Object toObject();
 }

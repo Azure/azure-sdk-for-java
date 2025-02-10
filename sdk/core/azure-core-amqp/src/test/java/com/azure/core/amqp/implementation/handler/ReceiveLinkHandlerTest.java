@@ -42,7 +42,8 @@ public class ReceiveLinkHandlerTest {
     @Mock
     private Source source;
 
-    private final ReceiveLinkHandler handler = new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH, null);
+    private final ReceiveLinkHandler handler
+        = new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, LINK_NAME, ENTITY_PATH, null);
 
     private AutoCloseable mocksCloseable;
 

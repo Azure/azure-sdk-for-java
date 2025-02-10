@@ -12,7 +12,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Annotation for query parameters to be appended to a REST API Request URI.
  *
- * <p><strong>Example 1:</strong></p>
+ * <p>
+ * <strong>Example 1:</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.QueryParam.class1 -->
  * <pre>
@@ -30,7 +32,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </pre>
  * <!-- end com.azure.core.annotation.QueryParam.class1 -->
  *
- * <p><strong>Example 2:</strong> (A use case where PathParam.encoded=true will be used)</p>
+ * <p>
+ * <strong>Example 2:</strong> (A use case where PathParam.encoded=true will be used)
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.QueryParam.class2 -->
  * <pre>
@@ -44,7 +48,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </pre>
  * <!-- end com.azure.core.annotation.QueryParam.class2 -->
  *
- * <p>For such cases the encoded attribute can be used:</p>
+ * <p>
+ * For such cases the encoded attribute can be used:
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.QueryParam.class3 -->
  * <pre>
@@ -53,11 +59,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     &#64;QueryParam&#40;value = &quot;query&quot;, encoded = true&#41; String query&#41;;
  *
  * &#47;&#47; In this case, if consumer pass &quot;a=b&quot; as the value for 'query' then the resolved url looks like:
- * &#47;&#47; &quot;http:&#47;&#47;wq.com&#47;foo&#47;paramblah&#47;values?connectionString=a=b&quot;
+ * &#47;&#47; &quot;http:&#47;&#47;wq.com&#47;foo&#47;subpath&#47;values?connectionString=a=b&quot;
  * </pre>
  * <!-- end com.azure.core.annotation.QueryParam.class3 -->
  *
- * <p><strong>Example 3:</strong></p>
+ * <p>
+ * <strong>Example 3:</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.QueryParam.class4 -->
  * <pre>
@@ -79,12 +87,14 @@ public @interface QueryParam {
      *     value of the parameter annotated with this annotation.
      */
     String value();
+
     /**
      * A value true for this argument indicates that value of {@link QueryParam#value()} is already encoded
      * hence engine should not encode it, by default value will be encoded.
      * @return Whether this query parameter is already encoded.
      */
     boolean encoded() default false;
+
     /**
      * A value true for this argument indicates that value of {@link QueryParam#value()} should not be
      * converted to Json in case it is an array but instead sent as multiple values with same parameter

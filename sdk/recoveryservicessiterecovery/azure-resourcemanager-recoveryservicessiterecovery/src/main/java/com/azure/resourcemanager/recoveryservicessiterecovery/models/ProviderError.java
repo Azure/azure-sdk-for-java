@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This class contains the error details per object. */
+/**
+ * This class contains the error details per object.
+ */
 @Fluent
-public final class ProviderError {
+public final class ProviderError implements JsonSerializable<ProviderError> {
     /*
      * The Error code.
      */
-    @JsonProperty(value = "errorCode")
     private Integer errorCode;
 
     /*
      * The Error message.
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /*
      * The Provider error Id.
      */
-    @JsonProperty(value = "errorId")
     private String errorId;
 
     /*
      * The possible causes for the error.
      */
-    @JsonProperty(value = "possibleCauses")
     private String possibleCauses;
 
     /*
      * The recommended action to resolve the error.
      */
-    @JsonProperty(value = "recommendedAction")
     private String recommendedAction;
 
-    /** Creates an instance of ProviderError class. */
+    /**
+     * Creates an instance of ProviderError class.
+     */
     public ProviderError() {
     }
 
     /**
      * Get the errorCode property: The Error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -55,7 +58,7 @@ public final class ProviderError {
 
     /**
      * Set the errorCode property: The Error code.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the ProviderError object itself.
      */
@@ -66,7 +69,7 @@ public final class ProviderError {
 
     /**
      * Get the errorMessage property: The Error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -75,7 +78,7 @@ public final class ProviderError {
 
     /**
      * Set the errorMessage property: The Error message.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the ProviderError object itself.
      */
@@ -86,7 +89,7 @@ public final class ProviderError {
 
     /**
      * Get the errorId property: The Provider error Id.
-     *
+     * 
      * @return the errorId value.
      */
     public String errorId() {
@@ -95,7 +98,7 @@ public final class ProviderError {
 
     /**
      * Set the errorId property: The Provider error Id.
-     *
+     * 
      * @param errorId the errorId value to set.
      * @return the ProviderError object itself.
      */
@@ -106,7 +109,7 @@ public final class ProviderError {
 
     /**
      * Get the possibleCauses property: The possible causes for the error.
-     *
+     * 
      * @return the possibleCauses value.
      */
     public String possibleCauses() {
@@ -115,7 +118,7 @@ public final class ProviderError {
 
     /**
      * Set the possibleCauses property: The possible causes for the error.
-     *
+     * 
      * @param possibleCauses the possibleCauses value to set.
      * @return the ProviderError object itself.
      */
@@ -126,7 +129,7 @@ public final class ProviderError {
 
     /**
      * Get the recommendedAction property: The recommended action to resolve the error.
-     *
+     * 
      * @return the recommendedAction value.
      */
     public String recommendedAction() {
@@ -135,7 +138,7 @@ public final class ProviderError {
 
     /**
      * Set the recommendedAction property: The recommended action to resolve the error.
-     *
+     * 
      * @param recommendedAction the recommendedAction value to set.
      * @return the ProviderError object itself.
      */
@@ -146,9 +149,57 @@ public final class ProviderError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeStringField("errorId", this.errorId);
+        jsonWriter.writeStringField("possibleCauses", this.possibleCauses);
+        jsonWriter.writeStringField("recommendedAction", this.recommendedAction);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderError.
+     */
+    public static ProviderError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderError deserializedProviderError = new ProviderError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorCode".equals(fieldName)) {
+                    deserializedProviderError.errorCode = reader.getNullable(JsonReader::getInt);
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedProviderError.errorMessage = reader.getString();
+                } else if ("errorId".equals(fieldName)) {
+                    deserializedProviderError.errorId = reader.getString();
+                } else if ("possibleCauses".equals(fieldName)) {
+                    deserializedProviderError.possibleCauses = reader.getString();
+                } else if ("recommendedAction".equals(fieldName)) {
+                    deserializedProviderError.recommendedAction = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderError;
+        });
     }
 }

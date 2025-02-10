@@ -5,7 +5,6 @@ package com.azure.ai.vision.imageanalysis.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -61,7 +60,7 @@ public final class VisualFeatures extends ExpandableStringEnum<VisualFeatures> {
 
     /**
      * Creates a new instance of VisualFeatures value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -71,19 +70,18 @@ public final class VisualFeatures extends ExpandableStringEnum<VisualFeatures> {
 
     /**
      * Creates or finds a VisualFeatures from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding VisualFeatures.
      */
     @Generated
-    @JsonCreator
     public static VisualFeatures fromString(String name) {
         return fromString(name, VisualFeatures.class);
     }
 
     /**
      * Gets known VisualFeatures values.
-     * 
+     *
      * @return known VisualFeatures values.
      */
     @Generated

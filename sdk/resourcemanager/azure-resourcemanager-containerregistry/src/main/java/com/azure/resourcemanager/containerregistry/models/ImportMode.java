@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * operation before any copying begins.
  */
 public final class ImportMode extends ExpandableStringEnum<ImportMode> {
-    /** Static value NoForce for ImportMode. */
+    /**
+     * Static value NoForce for ImportMode.
+     */
     public static final ImportMode NO_FORCE = fromString("NoForce");
 
-    /** Static value Force for ImportMode. */
+    /**
+     * Static value Force for ImportMode.
+     */
     public static final ImportMode FORCE = fromString("Force");
 
     /**
      * Creates a new instance of ImportMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class ImportMode extends ExpandableStringEnum<ImportMode> {
 
     /**
      * Creates or finds a ImportMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImportMode.
      */
-    @JsonCreator
     public static ImportMode fromString(String name) {
         return fromString(name, ImportMode.class);
     }
 
     /**
      * Gets known ImportMode values.
-     *
+     * 
      * @return known ImportMode values.
      */
     public static Collection<ImportMode> values() {

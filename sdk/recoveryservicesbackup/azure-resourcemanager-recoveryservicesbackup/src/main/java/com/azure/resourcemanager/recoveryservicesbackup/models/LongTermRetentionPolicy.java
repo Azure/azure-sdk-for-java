@@ -5,46 +5,62 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Long term retention policy. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "retentionPolicyType")
-@JsonTypeName("LongTermRetentionPolicy")
+/**
+ * Long term retention policy.
+ */
 @Fluent
 public final class LongTermRetentionPolicy extends RetentionPolicy {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String retentionPolicyType = "LongTermRetentionPolicy";
+
+    /*
      * Daily retention schedule of the protection policy.
      */
-    @JsonProperty(value = "dailySchedule")
     private DailyRetentionSchedule dailySchedule;
 
     /*
      * Weekly retention schedule of the protection policy.
      */
-    @JsonProperty(value = "weeklySchedule")
     private WeeklyRetentionSchedule weeklySchedule;
 
     /*
      * Monthly retention schedule of the protection policy.
      */
-    @JsonProperty(value = "monthlySchedule")
     private MonthlyRetentionSchedule monthlySchedule;
 
     /*
      * Yearly retention schedule of the protection policy.
      */
-    @JsonProperty(value = "yearlySchedule")
     private YearlyRetentionSchedule yearlySchedule;
 
-    /** Creates an instance of LongTermRetentionPolicy class. */
+    /**
+     * Creates an instance of LongTermRetentionPolicy class.
+     */
     public LongTermRetentionPolicy() {
     }
 
     /**
+     * Get the retentionPolicyType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the retentionPolicyType value.
+     */
+    @Override
+    public String retentionPolicyType() {
+        return this.retentionPolicyType;
+    }
+
+    /**
      * Get the dailySchedule property: Daily retention schedule of the protection policy.
-     *
+     * 
      * @return the dailySchedule value.
      */
     public DailyRetentionSchedule dailySchedule() {
@@ -53,7 +69,7 @@ public final class LongTermRetentionPolicy extends RetentionPolicy {
 
     /**
      * Set the dailySchedule property: Daily retention schedule of the protection policy.
-     *
+     * 
      * @param dailySchedule the dailySchedule value to set.
      * @return the LongTermRetentionPolicy object itself.
      */
@@ -64,7 +80,7 @@ public final class LongTermRetentionPolicy extends RetentionPolicy {
 
     /**
      * Get the weeklySchedule property: Weekly retention schedule of the protection policy.
-     *
+     * 
      * @return the weeklySchedule value.
      */
     public WeeklyRetentionSchedule weeklySchedule() {
@@ -73,7 +89,7 @@ public final class LongTermRetentionPolicy extends RetentionPolicy {
 
     /**
      * Set the weeklySchedule property: Weekly retention schedule of the protection policy.
-     *
+     * 
      * @param weeklySchedule the weeklySchedule value to set.
      * @return the LongTermRetentionPolicy object itself.
      */
@@ -84,7 +100,7 @@ public final class LongTermRetentionPolicy extends RetentionPolicy {
 
     /**
      * Get the monthlySchedule property: Monthly retention schedule of the protection policy.
-     *
+     * 
      * @return the monthlySchedule value.
      */
     public MonthlyRetentionSchedule monthlySchedule() {
@@ -93,7 +109,7 @@ public final class LongTermRetentionPolicy extends RetentionPolicy {
 
     /**
      * Set the monthlySchedule property: Monthly retention schedule of the protection policy.
-     *
+     * 
      * @param monthlySchedule the monthlySchedule value to set.
      * @return the LongTermRetentionPolicy object itself.
      */
@@ -104,7 +120,7 @@ public final class LongTermRetentionPolicy extends RetentionPolicy {
 
     /**
      * Get the yearlySchedule property: Yearly retention schedule of the protection policy.
-     *
+     * 
      * @return the yearlySchedule value.
      */
     public YearlyRetentionSchedule yearlySchedule() {
@@ -113,7 +129,7 @@ public final class LongTermRetentionPolicy extends RetentionPolicy {
 
     /**
      * Set the yearlySchedule property: Yearly retention schedule of the protection policy.
-     *
+     * 
      * @param yearlySchedule the yearlySchedule value to set.
      * @return the LongTermRetentionPolicy object itself.
      */
@@ -124,12 +140,11 @@ public final class LongTermRetentionPolicy extends RetentionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (dailySchedule() != null) {
             dailySchedule().validate();
         }
@@ -142,5 +157,53 @@ public final class LongTermRetentionPolicy extends RetentionPolicy {
         if (yearlySchedule() != null) {
             yearlySchedule().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("retentionPolicyType", this.retentionPolicyType);
+        jsonWriter.writeJsonField("dailySchedule", this.dailySchedule);
+        jsonWriter.writeJsonField("weeklySchedule", this.weeklySchedule);
+        jsonWriter.writeJsonField("monthlySchedule", this.monthlySchedule);
+        jsonWriter.writeJsonField("yearlySchedule", this.yearlySchedule);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LongTermRetentionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LongTermRetentionPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LongTermRetentionPolicy.
+     */
+    public static LongTermRetentionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LongTermRetentionPolicy deserializedLongTermRetentionPolicy = new LongTermRetentionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("retentionPolicyType".equals(fieldName)) {
+                    deserializedLongTermRetentionPolicy.retentionPolicyType = reader.getString();
+                } else if ("dailySchedule".equals(fieldName)) {
+                    deserializedLongTermRetentionPolicy.dailySchedule = DailyRetentionSchedule.fromJson(reader);
+                } else if ("weeklySchedule".equals(fieldName)) {
+                    deserializedLongTermRetentionPolicy.weeklySchedule = WeeklyRetentionSchedule.fromJson(reader);
+                } else if ("monthlySchedule".equals(fieldName)) {
+                    deserializedLongTermRetentionPolicy.monthlySchedule = MonthlyRetentionSchedule.fromJson(reader);
+                } else if ("yearlySchedule".equals(fieldName)) {
+                    deserializedLongTermRetentionPolicy.yearlySchedule = YearlyRetentionSchedule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLongTermRetentionPolicy;
+        });
     }
 }

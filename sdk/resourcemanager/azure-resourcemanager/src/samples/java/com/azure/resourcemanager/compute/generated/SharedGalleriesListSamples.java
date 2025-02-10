@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class SharedGalleriesListSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/
      * sharedGalleryExamples/SharedGallery_List.json
      */
     /**
@@ -19,7 +19,10 @@ public final class SharedGalleriesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listSharedGalleries(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSharedGalleries().list("myLocation", null,
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSharedGalleries()
+            .list("myLocation", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.Capability;
 import com.azure.resourcemanager.devcenter.models.Sku;
 import com.azure.resourcemanager.devcenter.models.SkuTier;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The resource model definition representing SKU for DevCenter resources. */
+/**
+ * The resource model definition representing SKU for DevCenter resources.
+ */
 @Fluent
 public final class DevCenterSkuInner extends Sku {
     /*
      * The name of the resource type
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * SKU supported locations.
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
 
     /*
      * Collection of name/value pairs to describe the SKU capabilities.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<Capability> capabilities;
 
-    /** Creates an instance of DevCenterSkuInner class. */
+    /**
+     * Creates an instance of DevCenterSkuInner class.
+     */
     public DevCenterSkuInner() {
     }
 
     /**
      * Get the resourceType property: The name of the resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -47,7 +52,7 @@ public final class DevCenterSkuInner extends Sku {
 
     /**
      * Get the locations property: SKU supported locations.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -56,42 +61,52 @@ public final class DevCenterSkuInner extends Sku {
 
     /**
      * Get the capabilities property: Collection of name/value pairs to describe the SKU capabilities.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<Capability> capabilities() {
         return this.capabilities;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterSkuInner withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterSkuInner withTier(SkuTier tier) {
         super.withTier(tier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterSkuInner withSize(String size) {
         super.withSize(size);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterSkuInner withFamily(String family) {
         super.withFamily(family);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterSkuInner withCapacity(Integer capacity) {
         super.withCapacity(capacity);
@@ -100,14 +115,76 @@ public final class DevCenterSkuInner extends Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (capabilities() != null) {
             capabilities().forEach(e -> e.validate());
         }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model DevCenterSkuInner"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DevCenterSkuInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("tier", tier() == null ? null : tier().toString());
+        jsonWriter.writeStringField("size", size());
+        jsonWriter.writeStringField("family", family());
+        jsonWriter.writeNumberField("capacity", capacity());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevCenterSkuInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevCenterSkuInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DevCenterSkuInner.
+     */
+    public static DevCenterSkuInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevCenterSkuInner deserializedDevCenterSkuInner = new DevCenterSkuInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDevCenterSkuInner.withName(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedDevCenterSkuInner.withTier(SkuTier.fromString(reader.getString()));
+                } else if ("size".equals(fieldName)) {
+                    deserializedDevCenterSkuInner.withSize(reader.getString());
+                } else if ("family".equals(fieldName)) {
+                    deserializedDevCenterSkuInner.withFamily(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedDevCenterSkuInner.withCapacity(reader.getNullable(JsonReader::getInt));
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedDevCenterSkuInner.resourceType = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDevCenterSkuInner.locations = locations;
+                } else if ("capabilities".equals(fieldName)) {
+                    List<Capability> capabilities = reader.readArray(reader1 -> Capability.fromJson(reader1));
+                    deserializedDevCenterSkuInner.capabilities = capabilities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevCenterSkuInner;
+        });
     }
 }

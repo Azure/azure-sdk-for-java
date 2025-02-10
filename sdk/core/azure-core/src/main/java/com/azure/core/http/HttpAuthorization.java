@@ -10,6 +10,14 @@ import java.util.Objects;
 
 /**
  * Represents the value of an HTTP Authorization header.
+ *
+ * <p>This class encapsulates the scheme and parameter of an HTTP Authorization header. The scheme represents the
+ * type of authorization being used, and the parameter represents the credentials used for the authorization.</p>
+ *
+ * <p>It provides methods to access these properties. For example, you can use {@link #getScheme()} to get the
+ * scheme of the authorization header, and {@link #getParameter()} to get the credentials of the authorization header.</p>
+ *
+ * <p>This class is useful when you want to work with the Authorization header of an HTTP request or response.</p>
  */
 @Immutable
 public final class HttpAuthorization {

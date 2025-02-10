@@ -1,6 +1,6 @@
 # Release History
 
-## 1.23.0-beta.1 (Unreleased)
+## 1.27.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,140 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.27.0-beta.5 (2025-02-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
+
+## 1.27.0-beta.4 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+
+## 1.27.0-beta.3 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+
+## 1.27.0-beta.2 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
+## 1.27.0-beta.1 (2024-09-12)
+
+### Features Added
+
+- Added dependencies on HTTP client implementations. Packages using `azure-core-test` as a testing dependency no longer
+  need to add dependencies on HTTP client implementations to enable using different HTTP clients in testing.
+
+### Breaking Changes
+
+- Moved code related to testing HTTP client implementations to shared `azure-core` test code.
+- Replaced dependency `commons-compress` with `ant` to handle tar.gz files. `ant` has fewer transitive dependencies,
+  reducing the likelihood of dependency conflicts.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+
+## 1.26.2 (2024-07-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to `1.51.0`.
+
+## 1.26.1 (2024-07-12)
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
+
+## 1.26.0 (2024-06-06)
+
+### Features Added
+
+- Added `InterceptorManager.removeSanitizers` to remove sanitizers used by Test Proxy.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+
+## 1.25.0 (2024-05-01)
+
+### Features Added
+
+- `TestContextManager` added `setTestIteration(Integer)` and `getTrackTestName`.
+- Added annotations `LiveOnly` and `PlaybackOnly` to skip tests from running in other testing modes.
+- Added `TestContextManagerParameterResolver` to manage resolving `TestContextManager` parameters.
+
+### Breaking Changes
+
+- `TestBase` no longer extends `BeforeEachCallback`.
+- `TestBase.setupTest` now takes `TestContextManager` rather than `TestInfo`, which is provided by `TestContextManagerParameterResolver`.
+- `TestBase.teardownTest` no longer takes a parameter.
+- `TestProxyTestBase.setupTestProxy` no longer takes a parameter.
+- `TestContextManager` no longer validates that a non-PLAYBACK test was ran in PLAYBACK mode, `TestBase` validates that now.
+- `DoNotRecord` deprecated `skipInPlayback`, if a test should be skipped in PLAYBACK and shouldn't be recorded it should
+  be annotated with both `DoNotRecord` and `LiveOnly`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+
+## 1.24.2 (2024-04-23)
+
+### Other Changes
+
+- Added more missing sanitizers.
+
+## 1.24.1 (2024-04-05)
+
+### Other Changes
+
+- Added missing sanitizers.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+
+## 1.24.0 (2024-03-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to `1.47.0`.
+
+## 1.23.0 (2024-02-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
 
 ## 1.22.0 (2023-11-03)
 

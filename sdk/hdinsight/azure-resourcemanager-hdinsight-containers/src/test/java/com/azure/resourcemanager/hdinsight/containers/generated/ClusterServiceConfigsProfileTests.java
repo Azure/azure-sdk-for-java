@@ -17,117 +17,89 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterServiceConfigsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterServiceConfigsProfile model =
-            BinaryData
-                .fromString(
-                    "{\"serviceName\":\"onpc\",\"configs\":[{\"component\":\"ocohslkevleg\",\"files\":[{\"fileName\":\"fbuhfmvfaxkffe\",\"content\":\"th\",\"encoding\":\"Base64\",\"path\":\"zy\",\"values\":{\"grxwbu\":\"xmzsbbzogg\",\"dptkoenkouk\":\"vjxxjnsp\",\"pocipazyxoegu\":\"vudwtiukbldng\",\"npiucgygevqznty\":\"g\"}},{\"fileName\":\"mrbpizcdrqj\",\"content\":\"pyd\",\"encoding\":\"None\",\"path\":\"xdeoejzic\",\"values\":{\"bkh\":\"sjttgzfbish\"}}]},{\"component\":\"jdeyeamdpha\",\"files\":[{\"fileName\":\"lpbuxwgipwhonowk\",\"content\":\"hwankixzbinjepu\",\"encoding\":\"Base64\",\"path\":\"ywnuzoq\",\"values\":{\"zlsico\":\"yqzrnkcqvyxlw\",\"hheunmmqhgyx\":\"oqqnwvlryav\"}},{\"fileName\":\"konocu\",\"content\":\"klyaxuconu\",\"encoding\":\"Base64\",\"path\":\"kbeype\",\"values\":{\"kt\":\"jmwvvj\",\"ffrzpwvlqdqgbiqy\":\"xsenhwlr\",\"vf\":\"ihkaetcktvfc\"}},{\"fileName\":\"nkymuctqhjfbebrj\",\"content\":\"erfuwuttt\",\"encoding\":\"None\",\"path\":\"rbirphxe\",\"values\":{\"jky\":\"vahfn\"}},{\"fileName\":\"xjvuujqgidokg\",\"content\":\"jyoxgvclt\",\"encoding\":\"None\",\"path\":\"c\",\"values\":{\"xbf\":\"jeszzhbijhtxfv\",\"ec\":\"mxnehmp\"}}]},{\"component\":\"godebfqkkrbmpu\",\"files\":[{\"fileName\":\"riwflzlfb\",\"content\":\"puz\",\"encoding\":\"None\",\"path\":\"pnq\",\"values\":{\"qqkpikadrg\":\"mgkbrpyydhibn\",\"jggmebfsiarbu\":\"tqagnbuynh\",\"ttdbhrbnl\":\"rcvpnazzmhjrunmp\"}}]}]}")
-                .toObject(ClusterServiceConfigsProfile.class);
-        Assertions.assertEquals("onpc", model.serviceName());
-        Assertions.assertEquals("ocohslkevleg", model.configs().get(0).component());
-        Assertions.assertEquals("fbuhfmvfaxkffe", model.configs().get(0).files().get(0).fileName());
-        Assertions.assertEquals("th", model.configs().get(0).files().get(0).content());
+        ClusterServiceConfigsProfile model = BinaryData.fromString(
+            "{\"serviceName\":\"d\",\"configs\":[{\"component\":\"avxbniwdjswztsdb\",\"files\":[{\"fileName\":\"nxytxh\",\"content\":\"xbzpfzab\",\"encoding\":\"Base64\",\"path\":\"hxw\",\"values\":{\"vgyuguos\":\"yqiklbbovplwzb\"}},{\"fileName\":\"mkfssxqukkfplgm\",\"content\":\"xnkjzkdesl\",\"encoding\":\"Base64\",\"path\":\"pwiyig\",\"values\":{\"upedeojnabckhs\":\"kdwzbaiuebbaumny\",\"ie\":\"txp\"}},{\"fileName\":\"tfhvpesapskrdqmh\",\"content\":\"dhtldwkyz\",\"encoding\":\"Base64\",\"path\":\"kn\",\"values\":{\"wrupqsxvnmicykvc\":\"cwsvlxotog\",\"eil\":\"o\"}}]},{\"component\":\"vnotyfjfcnj\",\"files\":[{\"fileName\":\"cn\",\"content\":\"hbttkphyw\",\"encoding\":\"None\",\"path\":\"t\",\"values\":{\"abgy\":\"ermclfplphoxuscr\",\"qugxywpmueefjzwf\":\"psbjta\"}}]},{\"component\":\"kqujidsuyono\",\"files\":[{\"fileName\":\"laocqxtccmg\",\"content\":\"dxyt\",\"encoding\":\"None\",\"path\":\"rxv\",\"values\":{\"zntxhdz\":\"dw\"}},{\"fileName\":\"lrqjbhckfr\",\"content\":\"rxsbkyvp\",\"encoding\":\"None\",\"path\":\"uzbpzkafku\",\"values\":{\"ehhseyvjusrts\":\"rnwb\",\"mx\":\"hspkdeemao\"}}]},{\"component\":\"gkvtmelmqkrhah\",\"files\":[{\"fileName\":\"juahaquhcdhmdual\",\"content\":\"xqpvfadmw\",\"encoding\":\"None\",\"path\":\"gvxp\",\"values\":{\"b\":\"mzlfmisgwb\",\"dawkzbali\":\"e\"}},{\"fileName\":\"urqhaka\",\"content\":\"ashsfwxos\",\"encoding\":\"Base64\",\"path\":\"cugicjoox\",\"values\":{\"euecivyhzceuoj\":\"bwpucwwfvovbv\",\"dytdxwitx\":\"jrwjueiotwm\",\"qwgxhniskx\":\"rjaw\"}},{\"fileName\":\"bkpyc\",\"content\":\"lwn\",\"encoding\":\"None\",\"path\":\"dauwhvylwzbtd\",\"values\":{\"pow\":\"jznb\",\"qlveualupjmkh\":\"wpr\"}}]}]}")
+            .toObject(ClusterServiceConfigsProfile.class);
+        Assertions.assertEquals("d", model.serviceName());
+        Assertions.assertEquals("avxbniwdjswztsdb", model.configs().get(0).component());
+        Assertions.assertEquals("nxytxh", model.configs().get(0).files().get(0).fileName());
+        Assertions.assertEquals("xbzpfzab", model.configs().get(0).files().get(0).content());
         Assertions.assertEquals(ContentEncoding.BASE64, model.configs().get(0).files().get(0).encoding());
-        Assertions.assertEquals("zy", model.configs().get(0).files().get(0).path());
-        Assertions.assertEquals("xmzsbbzogg", model.configs().get(0).files().get(0).values().get("grxwbu"));
+        Assertions.assertEquals("hxw", model.configs().get(0).files().get(0).path());
+        Assertions.assertEquals("yqiklbbovplwzb", model.configs().get(0).files().get(0).values().get("vgyuguos"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterServiceConfigsProfile model =
-            new ClusterServiceConfigsProfile()
-                .withServiceName("onpc")
+        ClusterServiceConfigsProfile model
+            = new ClusterServiceConfigsProfile().withServiceName("d")
                 .withConfigs(
                     Arrays
                         .asList(
-                            new ClusterServiceConfig()
-                                .withComponent("ocohslkevleg")
+                            new ClusterServiceConfig().withComponent("avxbniwdjswztsdb")
+                                .withFiles(Arrays.asList(
+                                    new ClusterConfigFile().withFileName("nxytxh")
+                                        .withContent("xbzpfzab")
+                                        .withEncoding(ContentEncoding.BASE64)
+                                        .withPath("hxw")
+                                        .withValues(mapOf("vgyuguos", "yqiklbbovplwzb")),
+                                    new ClusterConfigFile().withFileName("mkfssxqukkfplgm")
+                                        .withContent("xnkjzkdesl")
+                                        .withEncoding(ContentEncoding.BASE64)
+                                        .withPath("pwiyig")
+                                        .withValues(mapOf("upedeojnabckhs", "kdwzbaiuebbaumny", "ie", "txp")),
+                                    new ClusterConfigFile().withFileName("tfhvpesapskrdqmh")
+                                        .withContent("dhtldwkyz")
+                                        .withEncoding(ContentEncoding.BASE64)
+                                        .withPath("kn")
+                                        .withValues(mapOf("wrupqsxvnmicykvc", "cwsvlxotog", "eil", "o")))),
+                            new ClusterServiceConfig().withComponent("vnotyfjfcnj")
                                 .withFiles(
                                     Arrays
-                                        .asList(
-                                            new ClusterConfigFile()
-                                                .withFileName("fbuhfmvfaxkffe")
-                                                .withContent("th")
-                                                .withEncoding(ContentEncoding.BASE64)
-                                                .withPath("zy")
-                                                .withValues(
-                                                    mapOf(
-                                                        "grxwbu",
-                                                        "xmzsbbzogg",
-                                                        "dptkoenkouk",
-                                                        "vjxxjnsp",
-                                                        "pocipazyxoegu",
-                                                        "vudwtiukbldng",
-                                                        "npiucgygevqznty",
-                                                        "g")),
-                                            new ClusterConfigFile()
-                                                .withFileName("mrbpizcdrqj")
-                                                .withContent("pyd")
-                                                .withEncoding(ContentEncoding.NONE)
-                                                .withPath("xdeoejzic")
-                                                .withValues(mapOf("bkh", "sjttgzfbish")))),
-                            new ClusterServiceConfig()
-                                .withComponent("jdeyeamdpha")
-                                .withFiles(
-                                    Arrays
-                                        .asList(
-                                            new ClusterConfigFile()
-                                                .withFileName("lpbuxwgipwhonowk")
-                                                .withContent("hwankixzbinjepu")
-                                                .withEncoding(ContentEncoding.BASE64)
-                                                .withPath("ywnuzoq")
-                                                .withValues(
-                                                    mapOf("zlsico", "yqzrnkcqvyxlw", "hheunmmqhgyx", "oqqnwvlryav")),
-                                            new ClusterConfigFile()
-                                                .withFileName("konocu")
-                                                .withContent("klyaxuconu")
-                                                .withEncoding(ContentEncoding.BASE64)
-                                                .withPath("kbeype")
-                                                .withValues(
-                                                    mapOf(
-                                                        "kt",
-                                                        "jmwvvj",
-                                                        "ffrzpwvlqdqgbiqy",
-                                                        "xsenhwlr",
-                                                        "vf",
-                                                        "ihkaetcktvfc")),
-                                            new ClusterConfigFile()
-                                                .withFileName("nkymuctqhjfbebrj")
-                                                .withContent("erfuwuttt")
-                                                .withEncoding(ContentEncoding.NONE)
-                                                .withPath("rbirphxe")
-                                                .withValues(mapOf("jky", "vahfn")),
-                                            new ClusterConfigFile()
-                                                .withFileName("xjvuujqgidokg")
-                                                .withContent("jyoxgvclt")
-                                                .withEncoding(ContentEncoding.NONE)
-                                                .withPath("c")
-                                                .withValues(mapOf("xbf", "jeszzhbijhtxfv", "ec", "mxnehmp")))),
-                            new ClusterServiceConfig()
-                                .withComponent("godebfqkkrbmpu")
-                                .withFiles(
-                                    Arrays
-                                        .asList(
-                                            new ClusterConfigFile()
-                                                .withFileName("riwflzlfb")
-                                                .withContent("puz")
-                                                .withEncoding(ContentEncoding.NONE)
-                                                .withPath("pnq")
-                                                .withValues(
-                                                    mapOf(
-                                                        "qqkpikadrg",
-                                                        "mgkbrpyydhibn",
-                                                        "jggmebfsiarbu",
-                                                        "tqagnbuynh",
-                                                        "ttdbhrbnl",
-                                                        "rcvpnazzmhjrunmp"))))));
+                                        .asList(new ClusterConfigFile().withFileName("cn")
+                                            .withContent("hbttkphyw")
+                                            .withEncoding(ContentEncoding.NONE)
+                                            .withPath("t")
+                                            .withValues(mapOf("abgy", "ermclfplphoxuscr", "qugxywpmueefjzwf",
+                                                "psbjta")))),
+                            new ClusterServiceConfig().withComponent("kqujidsuyono")
+                                .withFiles(Arrays.asList(
+                                    new ClusterConfigFile().withFileName("laocqxtccmg")
+                                        .withContent("dxyt")
+                                        .withEncoding(ContentEncoding.NONE)
+                                        .withPath("rxv")
+                                        .withValues(mapOf("zntxhdz", "dw")),
+                                    new ClusterConfigFile().withFileName("lrqjbhckfr")
+                                        .withContent("rxsbkyvp")
+                                        .withEncoding(ContentEncoding.NONE)
+                                        .withPath("uzbpzkafku")
+                                        .withValues(mapOf("ehhseyvjusrts", "rnwb", "mx", "hspkdeemao")))),
+                            new ClusterServiceConfig().withComponent("gkvtmelmqkrhah")
+                                .withFiles(Arrays.asList(
+                                    new ClusterConfigFile().withFileName("juahaquhcdhmdual")
+                                        .withContent("xqpvfadmw")
+                                        .withEncoding(ContentEncoding.NONE)
+                                        .withPath("gvxp")
+                                        .withValues(mapOf("b", "mzlfmisgwb", "dawkzbali", "e")),
+                                    new ClusterConfigFile().withFileName("urqhaka")
+                                        .withContent("ashsfwxos")
+                                        .withEncoding(ContentEncoding.BASE64)
+                                        .withPath("cugicjoox")
+                                        .withValues(mapOf("euecivyhzceuoj", "bwpucwwfvovbv", "dytdxwitx", "jrwjueiotwm",
+                                            "qwgxhniskx", "rjaw")),
+                                    new ClusterConfigFile().withFileName("bkpyc")
+                                        .withContent("lwn")
+                                        .withEncoding(ContentEncoding.NONE)
+                                        .withPath("dauwhvylwzbtd")
+                                        .withValues(mapOf("pow", "jznb", "qlveualupjmkh", "wpr"))))));
         model = BinaryData.fromObject(model).toObject(ClusterServiceConfigsProfile.class);
-        Assertions.assertEquals("onpc", model.serviceName());
-        Assertions.assertEquals("ocohslkevleg", model.configs().get(0).component());
-        Assertions.assertEquals("fbuhfmvfaxkffe", model.configs().get(0).files().get(0).fileName());
-        Assertions.assertEquals("th", model.configs().get(0).files().get(0).content());
+        Assertions.assertEquals("d", model.serviceName());
+        Assertions.assertEquals("avxbniwdjswztsdb", model.configs().get(0).component());
+        Assertions.assertEquals("nxytxh", model.configs().get(0).files().get(0).fileName());
+        Assertions.assertEquals("xbzpfzab", model.configs().get(0).files().get(0).content());
         Assertions.assertEquals(ContentEncoding.BASE64, model.configs().get(0).files().get(0).encoding());
-        Assertions.assertEquals("zy", model.configs().get(0).files().get(0).path());
-        Assertions.assertEquals("xmzsbbzogg", model.configs().get(0).files().get(0).values().get("grxwbu"));
+        Assertions.assertEquals("hxw", model.configs().get(0).files().get(0).path());
+        Assertions.assertEquals("yqiklbbovplwzb", model.configs().get(0).files().get(0).values().get("vgyuguos"));
     }
 
     // Use "Map.of" if available

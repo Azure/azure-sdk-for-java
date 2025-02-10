@@ -6,18 +6,20 @@ package com.azure.resourcemanager.subscription.models;
 
 import com.azure.resourcemanager.subscription.fluent.models.RenamedSubscriptionIdInner;
 
-/** An immutable client-side representation of RenamedSubscriptionId. */
+/**
+ * An immutable client-side representation of RenamedSubscriptionId.
+ */
 public interface RenamedSubscriptionId {
     /**
      * Gets the subscriptionId property: The ID of the subscriptions that is being renamed.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String subscriptionId();
 
     /**
      * Gets the inner com.azure.resourcemanager.subscription.fluent.models.RenamedSubscriptionIdInner object.
-     *
+     * 
      * @return the inner object.
      */
     RenamedSubscriptionIdInner innerModel();

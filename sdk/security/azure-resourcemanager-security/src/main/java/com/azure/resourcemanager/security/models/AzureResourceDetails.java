@@ -5,28 +5,45 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the Azure resource that was assessed. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "source")
-@JsonTypeName("Azure")
+/**
+ * Details of the Azure resource that was assessed.
+ */
 @Immutable
 public final class AzureResourceDetails extends ResourceDetails {
     /*
+     * The platform where the assessed resource resides
+     */
+    private Source source = Source.AZURE;
+
+    /*
      * Azure resource Id of the assessed resource
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of AzureResourceDetails class. */
+    /**
+     * Creates an instance of AzureResourceDetails class.
+     */
     public AzureResourceDetails() {
     }
 
     /**
+     * Get the source property: The platform where the assessed resource resides.
+     * 
+     * @return the source value.
+     */
+    @Override
+    public Source source() {
+        return this.source;
+    }
+
+    /**
      * Get the id property: Azure resource Id of the assessed resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -35,11 +52,48 @@ public final class AzureResourceDetails extends ResourceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureResourceDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureResourceDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureResourceDetails.
+     */
+    public static AzureResourceDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureResourceDetails deserializedAzureResourceDetails = new AzureResourceDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedAzureResourceDetails.source = Source.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedAzureResourceDetails.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureResourceDetails;
+        });
     }
 }

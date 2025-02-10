@@ -7,30 +7,32 @@ package com.azure.resourcemanager.streamanalytics.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Subscriptions. */
+/**
+ * Resource collection API of Subscriptions.
+ */
 public interface Subscriptions {
     /**
      * Retrieves the subscription's current quota information in a particular region.
-     *
+     * 
      * @param location The region in which to retrieve the subscription's quota information. You can find out which
-     *     regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/.
+     * regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the GetQuotas operation along with {@link Response}.
+     */
+    Response<SubscriptionQuotasListResult> listQuotasWithResponse(String location, Context context);
+
+    /**
+     * Retrieves the subscription's current quota information in a particular region.
+     * 
+     * @param location The region in which to retrieve the subscription's quota information. You can find out which
+     * regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the GetQuotas operation.
      */
     SubscriptionQuotasListResult listQuotas(String location);
-
-    /**
-     * Retrieves the subscription's current quota information in a particular region.
-     *
-     * @param location The region in which to retrieve the subscription's quota information. You can find out which
-     *     regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the GetQuotas operation.
-     */
-    Response<SubscriptionQuotasListResult> listQuotasWithResponse(String location, Context context);
 }

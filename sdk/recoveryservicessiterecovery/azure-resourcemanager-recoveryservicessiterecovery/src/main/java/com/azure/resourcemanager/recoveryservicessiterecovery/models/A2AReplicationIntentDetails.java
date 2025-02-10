@@ -6,155 +6,151 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A2A provider specific settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
+/**
+ * A2A provider specific settings.
+ */
 @Fluent
 public final class A2AReplicationIntentDetails extends ReplicationProtectionIntentProviderSpecificSettings {
     /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * The fabric specific object Id of the virtual machine.
      */
-    @JsonProperty(value = "fabricObjectId")
     private String fabricObjectId;
 
     /*
      * The primary location for the virtual machine.
      */
-    @JsonProperty(value = "primaryLocation")
     private String primaryLocation;
 
     /*
      * The recovery location for the virtual machine.
      */
-    @JsonProperty(value = "recoveryLocation")
     private String recoveryLocation;
 
     /*
      * The recovery subscription Id of the virtual machine.
      */
-    @JsonProperty(value = "recoverySubscriptionId")
     private String recoverySubscriptionId;
 
     /*
      * The list of vm disk details.
      */
-    @JsonProperty(value = "vmDisks")
     private List<A2AProtectionIntentDiskInputDetails> vmDisks;
 
     /*
      * The list of vm managed disk details.
      */
-    @JsonProperty(value = "vmManagedDisks")
     private List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks;
 
     /*
      * The recovery resource group id.
      */
-    @JsonProperty(value = "recoveryResourceGroupId")
     private String recoveryResourceGroupId;
 
     /*
      * The protection profile custom details.
      */
-    @JsonProperty(value = "protectionProfile")
     private ProtectionProfileCustomDetails protectionProfile;
 
     /*
      * The primary staging storage account details.
      */
-    @JsonProperty(value = "primaryStagingStorageAccount")
     private StorageAccountCustomDetails primaryStagingStorageAccount;
 
     /*
      * The recovery availability set details.
      */
-    @JsonProperty(value = "recoveryAvailabilitySet")
     private RecoveryAvailabilitySetCustomDetails recoveryAvailabilitySet;
 
     /*
      * The recovery virtual network details.
      */
-    @JsonProperty(value = "recoveryVirtualNetwork")
     private RecoveryVirtualNetworkCustomDetails recoveryVirtualNetwork;
 
     /*
      * The recovery proximity placement group custom details.
      */
-    @JsonProperty(value = "recoveryProximityPlacementGroup")
     private RecoveryProximityPlacementGroupCustomDetails recoveryProximityPlacementGroup;
 
     /*
      * A value indicating whether the auto protection is enabled.
      */
-    @JsonProperty(value = "autoProtectionOfDataDisk")
     private AutoProtectionOfDataDisk autoProtectionOfDataDisk;
 
     /*
      * The multi vm group name.
      */
-    @JsonProperty(value = "multiVmGroupName")
     private String multiVmGroupName;
 
     /*
      * The multi vm group id.
      */
-    @JsonProperty(value = "multiVmGroupId")
     private String multiVmGroupId;
 
     /*
      * The boot diagnostic storage account.
      */
-    @JsonProperty(value = "recoveryBootDiagStorageAccount")
     private StorageAccountCustomDetails recoveryBootDiagStorageAccount;
 
     /*
      * The recovery disk encryption information (for two pass flows).
      */
-    @JsonProperty(value = "diskEncryptionInfo")
     private DiskEncryptionInfo diskEncryptionInfo;
 
     /*
      * The recovery availability zone.
      */
-    @JsonProperty(value = "recoveryAvailabilityZone")
     private String recoveryAvailabilityZone;
 
     /*
      * The recovery availability type of the virtual machine.
      */
-    @JsonProperty(value = "recoveryAvailabilityType", required = true)
     private String recoveryAvailabilityType;
 
     /*
      * A value indicating whether the auto update is enabled.
      */
-    @JsonProperty(value = "agentAutoUpdateStatus")
     private AgentAutoUpdateStatus agentAutoUpdateStatus;
 
     /*
      * The automation account arm id.
      */
-    @JsonProperty(value = "automationAccountArmId")
     private String automationAccountArmId;
 
     /*
      * A value indicating the type authentication to use for automation Account.
      */
-    @JsonProperty(value = "automationAccountAuthenticationType")
     private AutomationAccountAuthenticationType automationAccountAuthenticationType;
 
-    /** Creates an instance of A2AReplicationIntentDetails class. */
+    /**
+     * Creates an instance of A2AReplicationIntentDetails class.
+     */
     public A2AReplicationIntentDetails() {
     }
 
     /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -163,7 +159,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @param fabricObjectId the fabricObjectId value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -174,7 +170,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the primaryLocation property: The primary location for the virtual machine.
-     *
+     * 
      * @return the primaryLocation value.
      */
     public String primaryLocation() {
@@ -183,7 +179,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the primaryLocation property: The primary location for the virtual machine.
-     *
+     * 
      * @param primaryLocation the primaryLocation value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -194,7 +190,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the recoveryLocation property: The recovery location for the virtual machine.
-     *
+     * 
      * @return the recoveryLocation value.
      */
     public String recoveryLocation() {
@@ -203,7 +199,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryLocation property: The recovery location for the virtual machine.
-     *
+     * 
      * @param recoveryLocation the recoveryLocation value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -214,7 +210,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the recoverySubscriptionId property: The recovery subscription Id of the virtual machine.
-     *
+     * 
      * @return the recoverySubscriptionId value.
      */
     public String recoverySubscriptionId() {
@@ -223,7 +219,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoverySubscriptionId property: The recovery subscription Id of the virtual machine.
-     *
+     * 
      * @param recoverySubscriptionId the recoverySubscriptionId value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -234,7 +230,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @return the vmDisks value.
      */
     public List<A2AProtectionIntentDiskInputDetails> vmDisks() {
@@ -243,7 +239,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @param vmDisks the vmDisks value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -254,7 +250,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the vmManagedDisks property: The list of vm managed disk details.
-     *
+     * 
      * @return the vmManagedDisks value.
      */
     public List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks() {
@@ -263,19 +259,19 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the vmManagedDisks property: The list of vm managed disk details.
-     *
+     * 
      * @param vmManagedDisks the vmManagedDisks value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
-    public A2AReplicationIntentDetails withVmManagedDisks(
-        List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks) {
+    public A2AReplicationIntentDetails
+        withVmManagedDisks(List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks) {
         this.vmManagedDisks = vmManagedDisks;
         return this;
     }
 
     /**
      * Get the recoveryResourceGroupId property: The recovery resource group id.
-     *
+     * 
      * @return the recoveryResourceGroupId value.
      */
     public String recoveryResourceGroupId() {
@@ -284,7 +280,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryResourceGroupId property: The recovery resource group id.
-     *
+     * 
      * @param recoveryResourceGroupId the recoveryResourceGroupId value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -295,7 +291,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the protectionProfile property: The protection profile custom details.
-     *
+     * 
      * @return the protectionProfile value.
      */
     public ProtectionProfileCustomDetails protectionProfile() {
@@ -304,7 +300,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the protectionProfile property: The protection profile custom details.
-     *
+     * 
      * @param protectionProfile the protectionProfile value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -315,7 +311,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the primaryStagingStorageAccount property: The primary staging storage account details.
-     *
+     * 
      * @return the primaryStagingStorageAccount value.
      */
     public StorageAccountCustomDetails primaryStagingStorageAccount() {
@@ -324,19 +320,19 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the primaryStagingStorageAccount property: The primary staging storage account details.
-     *
+     * 
      * @param primaryStagingStorageAccount the primaryStagingStorageAccount value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
-    public A2AReplicationIntentDetails withPrimaryStagingStorageAccount(
-        StorageAccountCustomDetails primaryStagingStorageAccount) {
+    public A2AReplicationIntentDetails
+        withPrimaryStagingStorageAccount(StorageAccountCustomDetails primaryStagingStorageAccount) {
         this.primaryStagingStorageAccount = primaryStagingStorageAccount;
         return this;
     }
 
     /**
      * Get the recoveryAvailabilitySet property: The recovery availability set details.
-     *
+     * 
      * @return the recoveryAvailabilitySet value.
      */
     public RecoveryAvailabilitySetCustomDetails recoveryAvailabilitySet() {
@@ -345,19 +341,19 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryAvailabilitySet property: The recovery availability set details.
-     *
+     * 
      * @param recoveryAvailabilitySet the recoveryAvailabilitySet value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
-    public A2AReplicationIntentDetails withRecoveryAvailabilitySet(
-        RecoveryAvailabilitySetCustomDetails recoveryAvailabilitySet) {
+    public A2AReplicationIntentDetails
+        withRecoveryAvailabilitySet(RecoveryAvailabilitySetCustomDetails recoveryAvailabilitySet) {
         this.recoveryAvailabilitySet = recoveryAvailabilitySet;
         return this;
     }
 
     /**
      * Get the recoveryVirtualNetwork property: The recovery virtual network details.
-     *
+     * 
      * @return the recoveryVirtualNetwork value.
      */
     public RecoveryVirtualNetworkCustomDetails recoveryVirtualNetwork() {
@@ -366,19 +362,19 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryVirtualNetwork property: The recovery virtual network details.
-     *
+     * 
      * @param recoveryVirtualNetwork the recoveryVirtualNetwork value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
-    public A2AReplicationIntentDetails withRecoveryVirtualNetwork(
-        RecoveryVirtualNetworkCustomDetails recoveryVirtualNetwork) {
+    public A2AReplicationIntentDetails
+        withRecoveryVirtualNetwork(RecoveryVirtualNetworkCustomDetails recoveryVirtualNetwork) {
         this.recoveryVirtualNetwork = recoveryVirtualNetwork;
         return this;
     }
 
     /**
      * Get the recoveryProximityPlacementGroup property: The recovery proximity placement group custom details.
-     *
+     * 
      * @return the recoveryProximityPlacementGroup value.
      */
     public RecoveryProximityPlacementGroupCustomDetails recoveryProximityPlacementGroup() {
@@ -387,7 +383,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryProximityPlacementGroup property: The recovery proximity placement group custom details.
-     *
+     * 
      * @param recoveryProximityPlacementGroup the recoveryProximityPlacementGroup value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -399,7 +395,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the autoProtectionOfDataDisk property: A value indicating whether the auto protection is enabled.
-     *
+     * 
      * @return the autoProtectionOfDataDisk value.
      */
     public AutoProtectionOfDataDisk autoProtectionOfDataDisk() {
@@ -408,7 +404,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the autoProtectionOfDataDisk property: A value indicating whether the auto protection is enabled.
-     *
+     * 
      * @param autoProtectionOfDataDisk the autoProtectionOfDataDisk value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -419,7 +415,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -428,7 +424,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @param multiVmGroupName the multiVmGroupName value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -439,7 +435,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the multiVmGroupId property: The multi vm group id.
-     *
+     * 
      * @return the multiVmGroupId value.
      */
     public String multiVmGroupId() {
@@ -448,7 +444,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the multiVmGroupId property: The multi vm group id.
-     *
+     * 
      * @param multiVmGroupId the multiVmGroupId value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -459,7 +455,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the recoveryBootDiagStorageAccount property: The boot diagnostic storage account.
-     *
+     * 
      * @return the recoveryBootDiagStorageAccount value.
      */
     public StorageAccountCustomDetails recoveryBootDiagStorageAccount() {
@@ -468,19 +464,19 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryBootDiagStorageAccount property: The boot diagnostic storage account.
-     *
+     * 
      * @param recoveryBootDiagStorageAccount the recoveryBootDiagStorageAccount value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
-    public A2AReplicationIntentDetails withRecoveryBootDiagStorageAccount(
-        StorageAccountCustomDetails recoveryBootDiagStorageAccount) {
+    public A2AReplicationIntentDetails
+        withRecoveryBootDiagStorageAccount(StorageAccountCustomDetails recoveryBootDiagStorageAccount) {
         this.recoveryBootDiagStorageAccount = recoveryBootDiagStorageAccount;
         return this;
     }
 
     /**
      * Get the diskEncryptionInfo property: The recovery disk encryption information (for two pass flows).
-     *
+     * 
      * @return the diskEncryptionInfo value.
      */
     public DiskEncryptionInfo diskEncryptionInfo() {
@@ -489,7 +485,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the diskEncryptionInfo property: The recovery disk encryption information (for two pass flows).
-     *
+     * 
      * @param diskEncryptionInfo the diskEncryptionInfo value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -500,7 +496,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @return the recoveryAvailabilityZone value.
      */
     public String recoveryAvailabilityZone() {
@@ -509,7 +505,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @param recoveryAvailabilityZone the recoveryAvailabilityZone value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -520,7 +516,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the recoveryAvailabilityType property: The recovery availability type of the virtual machine.
-     *
+     * 
      * @return the recoveryAvailabilityType value.
      */
     public String recoveryAvailabilityType() {
@@ -529,7 +525,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryAvailabilityType property: The recovery availability type of the virtual machine.
-     *
+     * 
      * @param recoveryAvailabilityType the recoveryAvailabilityType value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -540,7 +536,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the agentAutoUpdateStatus property: A value indicating whether the auto update is enabled.
-     *
+     * 
      * @return the agentAutoUpdateStatus value.
      */
     public AgentAutoUpdateStatus agentAutoUpdateStatus() {
@@ -549,7 +545,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the agentAutoUpdateStatus property: A value indicating whether the auto update is enabled.
-     *
+     * 
      * @param agentAutoUpdateStatus the agentAutoUpdateStatus value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -560,7 +556,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the automationAccountArmId property: The automation account arm id.
-     *
+     * 
      * @return the automationAccountArmId value.
      */
     public String automationAccountArmId() {
@@ -569,7 +565,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the automationAccountArmId property: The automation account arm id.
-     *
+     * 
      * @param automationAccountArmId the automationAccountArmId value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -581,7 +577,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
     /**
      * Get the automationAccountAuthenticationType property: A value indicating the type authentication to use for
      * automation Account.
-     *
+     * 
      * @return the automationAccountAuthenticationType value.
      */
     public AutomationAccountAuthenticationType automationAccountAuthenticationType() {
@@ -591,7 +587,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
     /**
      * Set the automationAccountAuthenticationType property: A value indicating the type authentication to use for
      * automation Account.
-     *
+     * 
      * @param automationAccountAuthenticationType the automationAccountAuthenticationType value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -603,12 +599,11 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmDisks() != null) {
             vmDisks().forEach(e -> e.validate());
         }
@@ -637,12 +632,133 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
             diskEncryptionInfo().validate();
         }
         if (recoveryAvailabilityType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryAvailabilityType in model A2AReplicationIntentDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryAvailabilityType in model A2AReplicationIntentDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(A2AReplicationIntentDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryAvailabilityType", this.recoveryAvailabilityType);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("fabricObjectId", this.fabricObjectId);
+        jsonWriter.writeStringField("primaryLocation", this.primaryLocation);
+        jsonWriter.writeStringField("recoveryLocation", this.recoveryLocation);
+        jsonWriter.writeStringField("recoverySubscriptionId", this.recoverySubscriptionId);
+        jsonWriter.writeArrayField("vmDisks", this.vmDisks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("vmManagedDisks", this.vmManagedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("recoveryResourceGroupId", this.recoveryResourceGroupId);
+        jsonWriter.writeJsonField("protectionProfile", this.protectionProfile);
+        jsonWriter.writeJsonField("primaryStagingStorageAccount", this.primaryStagingStorageAccount);
+        jsonWriter.writeJsonField("recoveryAvailabilitySet", this.recoveryAvailabilitySet);
+        jsonWriter.writeJsonField("recoveryVirtualNetwork", this.recoveryVirtualNetwork);
+        jsonWriter.writeJsonField("recoveryProximityPlacementGroup", this.recoveryProximityPlacementGroup);
+        jsonWriter.writeStringField("autoProtectionOfDataDisk",
+            this.autoProtectionOfDataDisk == null ? null : this.autoProtectionOfDataDisk.toString());
+        jsonWriter.writeStringField("multiVmGroupName", this.multiVmGroupName);
+        jsonWriter.writeStringField("multiVmGroupId", this.multiVmGroupId);
+        jsonWriter.writeJsonField("recoveryBootDiagStorageAccount", this.recoveryBootDiagStorageAccount);
+        jsonWriter.writeJsonField("diskEncryptionInfo", this.diskEncryptionInfo);
+        jsonWriter.writeStringField("recoveryAvailabilityZone", this.recoveryAvailabilityZone);
+        jsonWriter.writeStringField("agentAutoUpdateStatus",
+            this.agentAutoUpdateStatus == null ? null : this.agentAutoUpdateStatus.toString());
+        jsonWriter.writeStringField("automationAccountArmId", this.automationAccountArmId);
+        jsonWriter.writeStringField("automationAccountAuthenticationType",
+            this.automationAccountAuthenticationType == null
+                ? null
+                : this.automationAccountAuthenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AReplicationIntentDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AReplicationIntentDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the A2AReplicationIntentDetails.
+     */
+    public static A2AReplicationIntentDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AReplicationIntentDetails deserializedA2AReplicationIntentDetails = new A2AReplicationIntentDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryAvailabilityType".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryAvailabilityType = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.instanceType = reader.getString();
+                } else if ("fabricObjectId".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.fabricObjectId = reader.getString();
+                } else if ("primaryLocation".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.primaryLocation = reader.getString();
+                } else if ("recoveryLocation".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryLocation = reader.getString();
+                } else if ("recoverySubscriptionId".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoverySubscriptionId = reader.getString();
+                } else if ("vmDisks".equals(fieldName)) {
+                    List<A2AProtectionIntentDiskInputDetails> vmDisks
+                        = reader.readArray(reader1 -> A2AProtectionIntentDiskInputDetails.fromJson(reader1));
+                    deserializedA2AReplicationIntentDetails.vmDisks = vmDisks;
+                } else if ("vmManagedDisks".equals(fieldName)) {
+                    List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks
+                        = reader.readArray(reader1 -> A2AProtectionIntentManagedDiskInputDetails.fromJson(reader1));
+                    deserializedA2AReplicationIntentDetails.vmManagedDisks = vmManagedDisks;
+                } else if ("recoveryResourceGroupId".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryResourceGroupId = reader.getString();
+                } else if ("protectionProfile".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.protectionProfile
+                        = ProtectionProfileCustomDetails.fromJson(reader);
+                } else if ("primaryStagingStorageAccount".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.primaryStagingStorageAccount
+                        = StorageAccountCustomDetails.fromJson(reader);
+                } else if ("recoveryAvailabilitySet".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryAvailabilitySet
+                        = RecoveryAvailabilitySetCustomDetails.fromJson(reader);
+                } else if ("recoveryVirtualNetwork".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryVirtualNetwork
+                        = RecoveryVirtualNetworkCustomDetails.fromJson(reader);
+                } else if ("recoveryProximityPlacementGroup".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryProximityPlacementGroup
+                        = RecoveryProximityPlacementGroupCustomDetails.fromJson(reader);
+                } else if ("autoProtectionOfDataDisk".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.autoProtectionOfDataDisk
+                        = AutoProtectionOfDataDisk.fromString(reader.getString());
+                } else if ("multiVmGroupName".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.multiVmGroupName = reader.getString();
+                } else if ("multiVmGroupId".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.multiVmGroupId = reader.getString();
+                } else if ("recoveryBootDiagStorageAccount".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryBootDiagStorageAccount
+                        = StorageAccountCustomDetails.fromJson(reader);
+                } else if ("diskEncryptionInfo".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.diskEncryptionInfo = DiskEncryptionInfo.fromJson(reader);
+                } else if ("recoveryAvailabilityZone".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.recoveryAvailabilityZone = reader.getString();
+                } else if ("agentAutoUpdateStatus".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.agentAutoUpdateStatus
+                        = AgentAutoUpdateStatus.fromString(reader.getString());
+                } else if ("automationAccountArmId".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.automationAccountArmId = reader.getString();
+                } else if ("automationAccountAuthenticationType".equals(fieldName)) {
+                    deserializedA2AReplicationIntentDetails.automationAccountAuthenticationType
+                        = AutomationAccountAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AReplicationIntentDetails;
+        });
+    }
 }

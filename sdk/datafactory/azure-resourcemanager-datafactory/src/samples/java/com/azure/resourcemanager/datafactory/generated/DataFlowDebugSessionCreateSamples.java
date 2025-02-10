@@ -34,7 +34,9 @@ public final class DataFlowDebugSessionCreateSamples {
                         .withProperties(new ManagedIntegrationRuntime()
                             .withComputeProperties(new IntegrationRuntimeComputeProperties().withLocation("AutoResolve")
                                 .withDataFlowProperties(new IntegrationRuntimeDataFlowProperties()
-                                    .withComputeType(DataFlowComputeType.GENERAL).withCoreCount(48).withTimeToLive(10)
+                                    .withComputeType(DataFlowComputeType.GENERAL)
+                                    .withCoreCount(48)
+                                    .withTimeToLive(10)
                                     .withAdditionalProperties(mapOf()))
                                 .withAdditionalProperties(mapOf())))),
                 com.azure.core.util.Context.NONE);

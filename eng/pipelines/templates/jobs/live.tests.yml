@@ -1,11 +1,10 @@
 parameters:
   ServiceDirectory: ''
   TestResourceDirectories:
-  Artifacts: []
-  AdditionalModules: []
   EnvVars: {}
   MaxParallel: 0
   PreSteps: []
+  PreTestRunSteps: []
   PostSteps: []
   TimeoutInMinutes: 60
   TestMode: 'LIVE'
@@ -18,11 +17,16 @@ parameters:
   UsePlatformContainer: false
   DisableAzureResourceCreation: false
   BuildParallelization: '2C'
+  BuildOptions: ''
   TestGoals: $(TestGoals)
   TestOptions: $(TestOptions)
   TestParallelization: '1'
   TestVersionSupport: $(TestVersionSupport)
   UseHttpFaultInjector: false
+  OSName:
+  UseFederatedAuth: false
+  PersistOidcToken: false
+  VersionOverride: $(VersionOverride)
 
 jobs:
   - job:
@@ -33,27 +37,48 @@ jobs:
       matrix: $[ ${{ parameters.Matrix }} ]
 
     variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
       - name: ArmTemplateParameters
         value: '@{}'
 
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
     pool:
+      # 1es pipeline templates converts `image` to demands: ImageOverride under the hood
+      # which is incompatible with image selection in the default non-1es hosted pools
+      ${{ if eq(parameters.OSName, 'macOS') }}:
+        vmImage: $(OSVmImage)
+      ${{ else }}:
+        image: $(OSVmImage)
       name: $(Pool)
-      vmImage: $(OSVmImage)
+      os: ${{ parameters.OSName }}
 
     ${{ if eq(parameters.UsePlatformContainer, 'true') }}:
       # Add a default so the job doesn't fail when the matrix is empty
       container: $[ variables['Container'] ]
 
+    templateContext:
+      outputs:
+        # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
+        # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
+        # during testing if tests failed, and linting reports.
+        - output: pipelineArtifact
+          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
+          targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
+          displayName: 'Capture troubleshooting artifacts'
+          condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
+          sbomEnabled: false
+
+        - output: pipelineArtifact
+          artifactName: 'repository-$(System.JobName)'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+          displayName: 'Capture repo state for analysis'
+          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+          sbomEnabled: false
+
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          SDKType: ${{ parameters.SDKType }}
+          OS: ${{ parameters.OSName }}
 
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
@@ -76,34 +101,36 @@ jobs:
           parameters:
             SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
             SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
-            EnvVars: ${{ parameters.EnvVars }}
+            ${{ if eq('true', parameters.UseFederatedAuth) }}:
+              SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
+            EnvVars:
+              Pool: $(Pool)
+              ${{ insert }}: ${{ parameters.EnvVars }}
 
-        - ${{ if parameters.TestResourceDirectories }}:
-          - ${{ each directory in parameters.TestResourceDirectories }}:
-            - template: /eng/common/TestResources/deploy-test-resources.yml
-              parameters:
-                ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
-                  Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
-                ServiceDirectory: '${{ directory }}'
-                SubscriptionConfiguration: $(SubscriptionConfiguration)
-                ArmTemplateParameters: $(ArmTemplateParameters)
-        - ${{ if not(parameters.TestResourceDirectories) }}:
+        - ${{ each directory in coalesce(parameters.TestResourceDirectories, split(parameters.ServiceDirectory, '|')) }}:
           - template: /eng/common/TestResources/deploy-test-resources.yml
             parameters:
               ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
                 Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
-              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+              ServiceDirectory: '${{ directory }}'
               SubscriptionConfiguration: $(SubscriptionConfiguration)
               ArmTemplateParameters: $(ArmTemplateParameters)
+              UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+              PersistOidcToken: ${{ parameters.PersistOidcToken }}
+              ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+              SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
+              EnvVars:
+                Pool: $(Pool)
+                ${{ insert }}: ${{ parameters.EnvVars }}
 
       - ${{ parameters.PreSteps }}
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
-          SDKType: ${{ parameters.SDKType }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          PreTestRunSteps: ${{ parameters.PreTestRunSteps }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
+          BuildOptions: ${{ parameters.BuildOptions }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
@@ -111,11 +138,14 @@ jobs:
           TestVersionSupport: ${{ parameters.TestVersionSupport }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
-            AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+            VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
+          UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+          ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+          VersionOverride: ${{ parameters.VersionOverride }}
 
-      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+      - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
@@ -125,14 +155,12 @@ jobs:
       - ${{ parameters.PostSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - ${{ if parameters.TestResourceDirectories }}:
-          - ${{ each directory in parameters.TestResourceDirectories }}:
-            - template: /eng/common/TestResources/remove-test-resources.yml
-              parameters:
-                ServiceDirectory: '${{ directory }}'
-                SubscriptionConfiguration: $(SubscriptionConfiguration)
-        - ${{ if not(parameters.TestResourceDirectories) }}:
+        - ${{ each directory in coalesce(parameters.TestResourceDirectories, split(parameters.ServiceDirectory, '|')) }}:
           - template: /eng/common/TestResources/remove-test-resources.yml
             parameters:
-              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+              ServiceDirectory: '${{ directory }}'
               SubscriptionConfiguration: $(SubscriptionConfiguration)
+              UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+              ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+              SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
+

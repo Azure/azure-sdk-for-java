@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning status of the endpoint. */
+/**
+ * Provisioning status of the endpoint.
+ */
 public final class EndpointProvisioningState extends ExpandableStringEnum<EndpointProvisioningState> {
-    /** Static value Succeeded for EndpointProvisioningState. */
+    /**
+     * Static value Succeeded for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for EndpointProvisioningState. */
+    /**
+     * Static value Failed for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Updating for EndpointProvisioningState. */
+    /**
+     * Static value Updating for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for EndpointProvisioningState. */
+    /**
+     * Static value Deleting for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Creating for EndpointProvisioningState. */
+    /**
+     * Static value Creating for EndpointProvisioningState.
+     */
     public static final EndpointProvisioningState CREATING = fromString("Creating");
 
     /**
      * Creates a new instance of EndpointProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class EndpointProvisioningState extends ExpandableStringEnum<Endpoi
 
     /**
      * Creates or finds a EndpointProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndpointProvisioningState.
      */
-    @JsonCreator
     public static EndpointProvisioningState fromString(String name) {
         return fromString(name, EndpointProvisioningState.class);
     }
 
     /**
      * Gets known EndpointProvisioningState values.
-     *
+     * 
      * @return known EndpointProvisioningState values.
      */
     public static Collection<EndpointProvisioningState> values() {

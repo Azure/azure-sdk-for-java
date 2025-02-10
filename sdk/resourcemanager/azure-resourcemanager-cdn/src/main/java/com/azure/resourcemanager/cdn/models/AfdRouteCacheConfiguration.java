@@ -5,31 +5,36 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object. */
+/**
+ * Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object.
+ */
 @Fluent
-public final class AfdRouteCacheConfiguration {
+public final class AfdRouteCacheConfiguration implements JsonSerializable<AfdRouteCacheConfiguration> {
     /*
      * Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching,
      * ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
      */
-    @JsonProperty(value = "queryStringCachingBehavior")
     private AfdQueryStringCachingBehavior queryStringCachingBehavior;
 
     /*
      * query parameters to include or exclude (comma separated).
      */
-    @JsonProperty(value = "queryParameters")
     private String queryParameters;
 
     /*
      * compression settings.
      */
-    @JsonProperty(value = "compressionSettings")
     private CompressionSettings compressionSettings;
 
-    /** Creates an instance of AfdRouteCacheConfiguration class. */
+    /**
+     * Creates an instance of AfdRouteCacheConfiguration class.
+     */
     public AfdRouteCacheConfiguration() {
     }
 
@@ -37,7 +42,7 @@ public final class AfdRouteCacheConfiguration {
      * Get the queryStringCachingBehavior property: Defines how Frontdoor caches requests that include query strings.
      * You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique
      * URL, or cache specific query strings.
-     *
+     * 
      * @return the queryStringCachingBehavior value.
      */
     public AfdQueryStringCachingBehavior queryStringCachingBehavior() {
@@ -48,19 +53,19 @@ public final class AfdRouteCacheConfiguration {
      * Set the queryStringCachingBehavior property: Defines how Frontdoor caches requests that include query strings.
      * You can ignore any query strings when caching, ignore specific query strings, cache every request with a unique
      * URL, or cache specific query strings.
-     *
+     * 
      * @param queryStringCachingBehavior the queryStringCachingBehavior value to set.
      * @return the AfdRouteCacheConfiguration object itself.
      */
-    public AfdRouteCacheConfiguration withQueryStringCachingBehavior(
-        AfdQueryStringCachingBehavior queryStringCachingBehavior) {
+    public AfdRouteCacheConfiguration
+        withQueryStringCachingBehavior(AfdQueryStringCachingBehavior queryStringCachingBehavior) {
         this.queryStringCachingBehavior = queryStringCachingBehavior;
         return this;
     }
 
     /**
      * Get the queryParameters property: query parameters to include or exclude (comma separated).
-     *
+     * 
      * @return the queryParameters value.
      */
     public String queryParameters() {
@@ -69,7 +74,7 @@ public final class AfdRouteCacheConfiguration {
 
     /**
      * Set the queryParameters property: query parameters to include or exclude (comma separated).
-     *
+     * 
      * @param queryParameters the queryParameters value to set.
      * @return the AfdRouteCacheConfiguration object itself.
      */
@@ -80,7 +85,7 @@ public final class AfdRouteCacheConfiguration {
 
     /**
      * Get the compressionSettings property: compression settings.
-     *
+     * 
      * @return the compressionSettings value.
      */
     public CompressionSettings compressionSettings() {
@@ -89,7 +94,7 @@ public final class AfdRouteCacheConfiguration {
 
     /**
      * Set the compressionSettings property: compression settings.
-     *
+     * 
      * @param compressionSettings the compressionSettings value to set.
      * @return the AfdRouteCacheConfiguration object itself.
      */
@@ -100,12 +105,56 @@ public final class AfdRouteCacheConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (compressionSettings() != null) {
             compressionSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("queryStringCachingBehavior",
+            this.queryStringCachingBehavior == null ? null : this.queryStringCachingBehavior.toString());
+        jsonWriter.writeStringField("queryParameters", this.queryParameters);
+        jsonWriter.writeJsonField("compressionSettings", this.compressionSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdRouteCacheConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdRouteCacheConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AfdRouteCacheConfiguration.
+     */
+    public static AfdRouteCacheConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdRouteCacheConfiguration deserializedAfdRouteCacheConfiguration = new AfdRouteCacheConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("queryStringCachingBehavior".equals(fieldName)) {
+                    deserializedAfdRouteCacheConfiguration.queryStringCachingBehavior
+                        = AfdQueryStringCachingBehavior.fromString(reader.getString());
+                } else if ("queryParameters".equals(fieldName)) {
+                    deserializedAfdRouteCacheConfiguration.queryParameters = reader.getString();
+                } else if ("compressionSettings".equals(fieldName)) {
+                    deserializedAfdRouteCacheConfiguration.compressionSettings = CompressionSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdRouteCacheConfiguration;
+        });
     }
 }

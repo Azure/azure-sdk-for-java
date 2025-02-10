@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.storagemover.generated;
 
-/** Samples for StorageMovers ListByResourceGroup. */
+/**
+ * Samples for StorageMovers ListByResourceGroup.
+ */
 public final class StorageMoversListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/StorageMovers_List.json
+     * x-ms-original-file:
+     * specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2024-07-01/examples/StorageMovers_List.
+     * json
      */
     /**
      * Sample code: StorageMovers_List.
-     *
+     * 
      * @param manager Entry point to StorageMoverManager.
      */
     public static void storageMoversList(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {

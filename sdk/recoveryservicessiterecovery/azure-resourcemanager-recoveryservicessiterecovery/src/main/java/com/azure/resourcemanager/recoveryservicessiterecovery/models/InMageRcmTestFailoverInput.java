@@ -5,35 +5,51 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** InMageRcm provider specific input for test failover. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcm")
+/**
+ * InMageRcm provider specific input for test failover.
+ */
 @Fluent
 public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMageRcm";
+
+    /*
      * The test network Id.
      */
-    @JsonProperty(value = "networkId")
     private String networkId;
 
     /*
      * The recovery point id to be passed to test failover to a particular recovery point. In case of latest recovery
      * point, null should be passed.
      */
-    @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
-    /** Creates an instance of InMageRcmTestFailoverInput class. */
+    /**
+     * Creates an instance of InMageRcmTestFailoverInput class.
+     */
     public InMageRcmTestFailoverInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the networkId property: The test network Id.
-     *
+     * 
      * @return the networkId value.
      */
     public String networkId() {
@@ -42,7 +58,7 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
 
     /**
      * Set the networkId property: The test network Id.
-     *
+     * 
      * @param networkId the networkId value to set.
      * @return the InMageRcmTestFailoverInput object itself.
      */
@@ -54,7 +70,7 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
     /**
      * Get the recoveryPointId property: The recovery point id to be passed to test failover to a particular recovery
      * point. In case of latest recovery point, null should be passed.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -64,7 +80,7 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
     /**
      * Set the recoveryPointId property: The recovery point id to be passed to test failover to a particular recovery
      * point. In case of latest recovery point, null should be passed.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the InMageRcmTestFailoverInput object itself.
      */
@@ -75,11 +91,52 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("networkId", this.networkId);
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmTestFailoverInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmTestFailoverInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmTestFailoverInput.
+     */
+    public static InMageRcmTestFailoverInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmTestFailoverInput deserializedInMageRcmTestFailoverInput = new InMageRcmTestFailoverInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageRcmTestFailoverInput.instanceType = reader.getString();
+                } else if ("networkId".equals(fieldName)) {
+                    deserializedInMageRcmTestFailoverInput.networkId = reader.getString();
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedInMageRcmTestFailoverInput.recoveryPointId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmTestFailoverInput;
+        });
     }
 }

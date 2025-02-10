@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -24,7 +23,7 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
 
     /**
      * Creates a new instance of Protocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +32,17 @@ public final class Protocol extends ExpandableStringEnum<Protocol> {
 
     /**
      * Creates or finds a Protocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Protocol.
      */
-    @JsonCreator
     public static Protocol fromString(String name) {
         return fromString(name, Protocol.class);
     }
 
     /**
      * Gets known Protocol values.
-     *
+     * 
      * @return known Protocol values.
      */
     public static Collection<Protocol> values() {

@@ -65,8 +65,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     }
 
     /**
-     * The interface defining all the services for NetAppManagementClientVolumeGroups to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for NetAppManagementClientVolumeGroups to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
@@ -101,7 +101,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             @BodyParam("application/json") VolumeGroupDetailsInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -109,7 +109,7 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("volumeGroupName") String volumeGroupName, @QueryParam("api-version") String apiVersion,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -735,9 +735,10 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter volumeGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, volumeGroupName, this.client.getApiVersion(), context))
+                resourceGroupName, accountName, volumeGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -777,9 +778,10 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter volumeGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, volumeGroupName, this.client.getApiVersion(), context);
+            accountName, volumeGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**

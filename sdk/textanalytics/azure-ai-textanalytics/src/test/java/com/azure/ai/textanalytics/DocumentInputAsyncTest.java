@@ -18,7 +18,6 @@ import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.INVALID_DOC
 import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE;
 import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.INVALID_DOCUMENT_NPE_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for Text Analytics asynchronous client's documents input
@@ -29,8 +28,7 @@ public class DocumentInputAsyncTest {
 
     @BeforeAll
     protected static void beforeTest() {
-        client = new TextAnalyticsClientBuilder()
-            .endpoint(VALID_HTTPS_LOCALHOST)
+        client = new TextAnalyticsClientBuilder().endpoint(VALID_HTTPS_LOCALHOST)
             .credential(new AzureKeyCredential("fakeKey"))
             .buildAsyncClient();
     }
@@ -47,11 +45,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void detectLanguageNullInput() {
-        StepVerifier.create(client.detectLanguage(null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.detectLanguage(null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -60,11 +57,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void detectLanguageNullInputWithCountryHint() {
-        StepVerifier.create(client.detectLanguage(null, "US"))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.detectLanguage(null, "US")).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -73,11 +69,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void detectLanguagesBatchNullInput() {
-        StepVerifier.create(client.detectLanguageBatch(null, null, null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.detectLanguageBatch(null, null, null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -89,7 +84,7 @@ public class DocumentInputAsyncTest {
         StepVerifier.create(client.detectLanguageBatch(Collections.emptyList(), null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -99,11 +94,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void detectLanguagesBatchNullInputWithCountryHint() {
-        StepVerifier.create(client.detectLanguageBatch(null, "US", null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.detectLanguageBatch(null, "US", null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -115,7 +109,7 @@ public class DocumentInputAsyncTest {
         StepVerifier.create(client.detectLanguageBatch(Collections.emptyList(), "US", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -125,11 +119,12 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void detectLanguagesBatchNullInputWithCountryHintAndRequestOptions() {
-        StepVerifier.create(client.detectLanguageBatch(null, "US",
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
+        StepVerifier
+            .create(
+                client.detectLanguageBatch(null, "US", new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -140,10 +135,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void detectLanguagesBatchEmptyInputListWithCountryHintAndRequestOptions() {
         StepVerifier.create(client.detectLanguageBatch(Collections.emptyList(), "US",
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -153,11 +147,12 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void detectLanguagesBatchNullInputWithMaxOverload() {
-        StepVerifier.create(client.detectLanguageBatchWithResponse(null,
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
+        StepVerifier
+            .create(client.detectLanguageBatchWithResponse(null,
+                new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -168,10 +163,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void detectLanguagesBatchEmptyInputListWithMaxOverload() {
         StepVerifier.create(client.detectLanguageBatchWithResponse(Collections.emptyList(),
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -183,11 +177,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void recognizeEntitiesNullInput() {
-        StepVerifier.create(client.recognizeEntities(null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.recognizeEntities(null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -196,11 +189,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void recognizeEntitiesNullInputWithLanguageHint() {
-        StepVerifier.create(client.recognizeEntities(null, "en"))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.recognizeEntities(null, "en")).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -209,11 +201,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void recognizeEntitiesBatchNullInput() {
-        StepVerifier.create(client.recognizeEntitiesBatch(null, null, null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.recognizeEntitiesBatch(null, null, null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -225,7 +216,7 @@ public class DocumentInputAsyncTest {
         StepVerifier.create(client.recognizeEntitiesBatch(Collections.emptyList(), null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -235,11 +226,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void recognizeEntitiesBatchNullInputWithLanguageHint() {
-        StepVerifier.create(client.recognizeEntitiesBatch(null, "en", null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.recognizeEntitiesBatch(null, "en", null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -251,7 +241,7 @@ public class DocumentInputAsyncTest {
         StepVerifier.create(client.recognizeEntitiesBatch(Collections.emptyList(), "en", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -261,11 +251,12 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void recognizeEntitiesBatchNullInputWithLanguageHintAndRequestOptions() {
-        StepVerifier.create(client.recognizeEntitiesBatch(null, "en",
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
+        StepVerifier
+            .create(
+                client.recognizeEntitiesBatch(null, "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -276,10 +267,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void recognizeEntitiesBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.recognizeEntitiesBatch(Collections.emptyList(), "en",
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -290,10 +280,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void recognizeEntitiesBatchNullInputWithMaxOverload() {
         StepVerifier.create(client.recognizeEntitiesBatchWithResponse(null,
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -304,10 +293,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void recognizeEntitiesBatchEmptyInputListWithMaxOverload() {
         StepVerifier.create(client.recognizeEntitiesBatchWithResponse(Collections.emptyList(),
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -319,11 +307,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void recognizeLinkedEntitiesNullInput() {
-        StepVerifier.create(client.recognizeLinkedEntities(null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.recognizeLinkedEntities(null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -332,11 +319,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void recognizeLinkedEntitiesNullInputWithLanguageHint() {
-        StepVerifier.create(client.recognizeLinkedEntities(null, "en"))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.recognizeLinkedEntities(null, "en")).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -345,11 +331,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void recognizeLinkedEntitiesBatchNullInput() {
-        StepVerifier.create(client.recognizeLinkedEntitiesBatch(null, null, null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.recognizeLinkedEntitiesBatch(null, null, null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -361,7 +346,7 @@ public class DocumentInputAsyncTest {
         StepVerifier.create(client.recognizeLinkedEntitiesBatch(Collections.emptyList(), null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -371,11 +356,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void recognizeLinkedEntitiesBatchNullInputWithLanguageHint() {
-        StepVerifier.create(client.recognizeLinkedEntitiesBatch(null, "en", null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.recognizeLinkedEntitiesBatch(null, "en", null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -387,7 +371,7 @@ public class DocumentInputAsyncTest {
         StepVerifier.create(client.recognizeLinkedEntitiesBatch(Collections.emptyList(), "en", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -398,10 +382,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void recognizeLinkedEntitiesBatchNullInputWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.recognizeLinkedEntitiesBatch(null, "en",
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -412,10 +395,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void recognizeLinkedEntitiesBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.recognizeLinkedEntitiesBatch(Collections.emptyList(), "en",
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -426,10 +408,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void recognizeLinkedEntitiesBatchNullInputWithMaxOverload() {
         StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(null,
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -440,10 +421,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void recognizeLinkedEntitiesBatchEmptyInputListWithMaxOverload() {
         StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(Collections.emptyList(),
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -455,11 +435,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void extractKeyPhrasesNullInput() {
-        StepVerifier.create(client.extractKeyPhrases(null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.extractKeyPhrases(null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -468,11 +447,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void extractKeyPhrasesNullInputWithLanguageHint() {
-        StepVerifier.create(client.extractKeyPhrases(null, "en"))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.extractKeyPhrases(null, "en")).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -481,11 +459,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void extractKeyPhrasesBatchNullInput() {
-        StepVerifier.create(client.extractKeyPhrasesBatch(null, null, null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.extractKeyPhrasesBatch(null, null, null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -497,7 +474,7 @@ public class DocumentInputAsyncTest {
         StepVerifier.create(client.extractKeyPhrasesBatch(Collections.emptyList(), null, null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -507,11 +484,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void extractKeyPhrasesBatchNullInputWithLanguageHint() {
-        StepVerifier.create(client.extractKeyPhrasesBatch(null, "en", null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.extractKeyPhrasesBatch(null, "en", null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -523,7 +499,7 @@ public class DocumentInputAsyncTest {
         StepVerifier.create(client.extractKeyPhrasesBatch(Collections.emptyList(), "en", null))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -533,11 +509,12 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void extractKeyPhrasesBatchNullInputWithLanguageHintAndRequestOptions() {
-        StepVerifier.create(client.extractKeyPhrasesBatch(null, "en",
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
+        StepVerifier
+            .create(
+                client.extractKeyPhrasesBatch(null, "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -548,10 +525,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void extractKeyPhrasesBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.extractKeyPhrasesBatch(Collections.emptyList(), "en",
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -562,10 +538,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void extractKeyPhrasesBatchNullInputWithMaxOverload() {
         StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(null,
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -576,10 +551,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void extractKeyPhrasesBatchEmptyInputListWithMaxOverload() {
         StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(Collections.emptyList(),
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -591,11 +565,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void analyzeSentimentNullInput() {
-        StepVerifier.create(client.analyzeSentiment(null))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.analyzeSentiment(null)).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -604,11 +577,10 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void analyzeSentimentNullInputWithLanguageHint() {
-        StepVerifier.create(client.analyzeSentiment(null, "en"))
-            .verifyErrorSatisfies(exception -> {
-                assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
-            });
+        StepVerifier.create(client.analyzeSentiment(null, "en")).verifyErrorSatisfies(exception -> {
+            assertEquals(NullPointerException.class, exception.getClass());
+            assertEquals(INVALID_DOCUMENT_NPE_MESSAGE, exception.getMessage());
+        });
     }
 
     /**
@@ -620,7 +592,7 @@ public class DocumentInputAsyncTest {
         StepVerifier.create(client.analyzeSentimentBatch(null, null, new TextAnalyticsRequestOptions()))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -630,10 +602,11 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void analyzeSentimentBatchEmptyInputList() {
-        StepVerifier.create(client.analyzeSentimentBatch(Collections.emptyList(), null, new TextAnalyticsRequestOptions()))
+        StepVerifier
+            .create(client.analyzeSentimentBatch(Collections.emptyList(), null, new TextAnalyticsRequestOptions()))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -646,7 +619,7 @@ public class DocumentInputAsyncTest {
         StepVerifier.create(client.analyzeSentimentBatch(null, "en", new TextAnalyticsRequestOptions()))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -656,10 +629,11 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void analyzeSentimentBatchEmptyInputListWithLanguageHint() {
-        StepVerifier.create(client.analyzeSentimentBatch(Collections.emptyList(), "en", new TextAnalyticsRequestOptions()))
+        StepVerifier
+            .create(client.analyzeSentimentBatch(Collections.emptyList(), "en", new TextAnalyticsRequestOptions()))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -669,11 +643,12 @@ public class DocumentInputAsyncTest {
      */
     @Test
     public void analyzeSentimentBatchNullInputWithLanguageHintAndRequestOptions() {
-        StepVerifier.create(client.analyzeSentimentBatch(null, "en",
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
+        StepVerifier
+            .create(
+                client.analyzeSentimentBatch(null, "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -684,10 +659,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void analyzeSentimentBatchEmptyInputListWithLanguageHintAndRequestOptions() {
         StepVerifier.create(client.analyzeSentimentBatch(Collections.emptyList(), "en",
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 
@@ -698,10 +672,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void analyzeSentimentBatchNullInputWithMaxOverload() {
         StepVerifier.create(client.analyzeSentimentBatchWithResponse(null,
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE, exception.getMessage());
             });
     }
 
@@ -712,10 +685,9 @@ public class DocumentInputAsyncTest {
     @Test
     public void analyzeSentimentEmptyInputListWithMaxOverload() {
         StepVerifier.create(client.analyzeSentimentBatchWithResponse(Collections.emptyList(),
-            new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
-            .verifyErrorSatisfies(exception -> {
+            new TextAnalyticsRequestOptions().setIncludeStatistics(true))).verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
-                assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
+                assertEquals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE, exception.getMessage());
             });
     }
 }

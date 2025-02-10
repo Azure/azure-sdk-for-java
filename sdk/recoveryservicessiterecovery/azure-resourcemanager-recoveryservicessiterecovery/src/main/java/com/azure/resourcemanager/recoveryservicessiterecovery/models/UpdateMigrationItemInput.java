@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Update migration item input. */
+/**
+ * Update migration item input.
+ */
 @Fluent
-public final class UpdateMigrationItemInput {
+public final class UpdateMigrationItemInput implements JsonSerializable<UpdateMigrationItemInput> {
     /*
      * Update migration item input properties.
      */
-    @JsonProperty(value = "properties")
     private UpdateMigrationItemInputProperties properties;
 
-    /** Creates an instance of UpdateMigrationItemInput class. */
+    /**
+     * Creates an instance of UpdateMigrationItemInput class.
+     */
     public UpdateMigrationItemInput() {
     }
 
     /**
      * Get the properties property: Update migration item input properties.
-     *
+     * 
      * @return the properties value.
      */
     public UpdateMigrationItemInputProperties properties() {
@@ -31,7 +38,7 @@ public final class UpdateMigrationItemInput {
 
     /**
      * Set the properties property: Update migration item input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdateMigrationItemInput object itself.
      */
@@ -42,12 +49,49 @@ public final class UpdateMigrationItemInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateMigrationItemInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateMigrationItemInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateMigrationItemInput.
+     */
+    public static UpdateMigrationItemInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateMigrationItemInput deserializedUpdateMigrationItemInput = new UpdateMigrationItemInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUpdateMigrationItemInput.properties
+                        = UpdateMigrationItemInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateMigrationItemInput;
+        });
     }
 }

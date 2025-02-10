@@ -16,46 +16,33 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationAssignmentFilterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationAssignmentFilterProperties model =
-            BinaryData
-                .fromString(
-                    "{\"resourceTypes\":[\"zy\"],\"resourceGroups\":[\"xmzsbbzogg\",\"grxwbu\",\"vjxxjnsp\",\"dptkoenkouk\"],\"osTypes\":[\"dwtiukbldngkp\",\"cipazyxoegukgjnp\",\"ucgygevqz\"],\"locations\":[\"pmr\"],\"tagSettings\":{\"tags\":{\"nfyhx\":[\"drqjsdpy\"],\"fsj\":[\"oejzi\",\"w\"],\"wkgshwa\":[\"gzfbishcbk\",\"ajdeyeamdphaga\",\"pbuxwgipwhon\"],\"uzoqft\":[\"ixzbinjeputtmryw\"]},\"filterOperator\":\"Any\"}}")
-                .toObject(ConfigurationAssignmentFilterProperties.class);
-        Assertions.assertEquals("zy", model.resourceTypes().get(0));
-        Assertions.assertEquals("xmzsbbzogg", model.resourceGroups().get(0));
-        Assertions.assertEquals("dwtiukbldngkp", model.osTypes().get(0));
-        Assertions.assertEquals("pmr", model.locations().get(0));
-        Assertions.assertEquals("drqjsdpy", model.tagSettings().tags().get("nfyhx").get(0));
+        ConfigurationAssignmentFilterProperties model = BinaryData.fromString(
+            "{\"resourceTypes\":[\"uynhijg\",\"mebf\",\"iarbutrcvpna\"],\"resourceGroups\":[\"hj\",\"unmpxttd\",\"hrbnlankxmyskpbh\",\"nbtkcxywnytnr\"],\"osTypes\":[\"lqidyby\",\"czfc\",\"haaxdbabphl\"],\"locations\":[\"lfktsths\",\"cocmnyyaztt\",\"twwrqp\"],\"tagSettings\":{\"tags\":{\"eaxib\":[\"zywbiex\",\"fey\"],\"oxaepd\":[\"jwbhqwalmuz\"],\"jswztsdbpg\":[\"jancu\",\"rhdwbavxbniw\"],\"ovplw\":[\"ytxhp\",\"xbzpfzab\",\"lcuhxwtctyqiklb\"]},\"filterOperator\":\"Any\"}}")
+            .toObject(ConfigurationAssignmentFilterProperties.class);
+        Assertions.assertEquals("uynhijg", model.resourceTypes().get(0));
+        Assertions.assertEquals("hj", model.resourceGroups().get(0));
+        Assertions.assertEquals("lqidyby", model.osTypes().get(0));
+        Assertions.assertEquals("lfktsths", model.locations().get(0));
+        Assertions.assertEquals("zywbiex", model.tagSettings().tags().get("eaxib").get(0));
         Assertions.assertEquals(TagOperators.ANY, model.tagSettings().filterOperator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationAssignmentFilterProperties model =
-            new ConfigurationAssignmentFilterProperties()
-                .withResourceTypes(Arrays.asList("zy"))
-                .withResourceGroups(Arrays.asList("xmzsbbzogg", "grxwbu", "vjxxjnsp", "dptkoenkouk"))
-                .withOsTypes(Arrays.asList("dwtiukbldngkp", "cipazyxoegukgjnp", "ucgygevqz"))
-                .withLocations(Arrays.asList("pmr"))
-                .withTagSettings(
-                    new TagSettingsProperties()
-                        .withTags(
-                            mapOf(
-                                "nfyhx",
-                                Arrays.asList("drqjsdpy"),
-                                "fsj",
-                                Arrays.asList("oejzi", "w"),
-                                "wkgshwa",
-                                Arrays.asList("gzfbishcbk", "ajdeyeamdphaga", "pbuxwgipwhon"),
-                                "uzoqft",
-                                Arrays.asList("ixzbinjeputtmryw")))
-                        .withFilterOperator(TagOperators.ANY));
+        ConfigurationAssignmentFilterProperties model = new ConfigurationAssignmentFilterProperties()
+            .withResourceTypes(Arrays.asList("uynhijg", "mebf", "iarbutrcvpna"))
+            .withResourceGroups(Arrays.asList("hj", "unmpxttd", "hrbnlankxmyskpbh", "nbtkcxywnytnr"))
+            .withOsTypes(Arrays.asList("lqidyby", "czfc", "haaxdbabphl"))
+            .withLocations(Arrays.asList("lfktsths", "cocmnyyaztt", "twwrqp"))
+            .withTagSettings(new TagSettingsProperties().withTags(mapOf("eaxib", Arrays.asList("zywbiex", "fey"),
+                "oxaepd", Arrays.asList("jwbhqwalmuz"), "jswztsdbpg", Arrays.asList("jancu", "rhdwbavxbniw"), "ovplw",
+                Arrays.asList("ytxhp", "xbzpfzab", "lcuhxwtctyqiklb"))).withFilterOperator(TagOperators.ANY));
         model = BinaryData.fromObject(model).toObject(ConfigurationAssignmentFilterProperties.class);
-        Assertions.assertEquals("zy", model.resourceTypes().get(0));
-        Assertions.assertEquals("xmzsbbzogg", model.resourceGroups().get(0));
-        Assertions.assertEquals("dwtiukbldngkp", model.osTypes().get(0));
-        Assertions.assertEquals("pmr", model.locations().get(0));
-        Assertions.assertEquals("drqjsdpy", model.tagSettings().tags().get("nfyhx").get(0));
+        Assertions.assertEquals("uynhijg", model.resourceTypes().get(0));
+        Assertions.assertEquals("hj", model.resourceGroups().get(0));
+        Assertions.assertEquals("lqidyby", model.osTypes().get(0));
+        Assertions.assertEquals("lfktsths", model.locations().get(0));
+        Assertions.assertEquals("zywbiex", model.tagSettings().tags().get("eaxib").get(0));
         Assertions.assertEquals(TagOperators.ANY, model.tagSettings().filterOperator());
     }
 

@@ -6,102 +6,93 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayConnectionDraining;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCookieBasedAffinity;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of Backend address pool settings of an application gateway.
  */
 @Fluent
-public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
+public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayBackendHttpSettingsPropertiesFormat> {
     /*
      * The destination port on the backend.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * The protocol used to communicate with the backend.
      */
-    @JsonProperty(value = "protocol")
     private ApplicationGatewayProtocol protocol;
 
     /*
      * Cookie based affinity.
      */
-    @JsonProperty(value = "cookieBasedAffinity")
     private ApplicationGatewayCookieBasedAffinity cookieBasedAffinity;
 
     /*
      * Request timeout in seconds. Application Gateway will fail the request if response is not received within
      * RequestTimeout. Acceptable values are from 1 second to 86400 seconds.
      */
-    @JsonProperty(value = "requestTimeout")
     private Integer requestTimeout;
 
     /*
      * Probe resource of an application gateway.
      */
-    @JsonProperty(value = "probe")
     private SubResource probe;
 
     /*
      * Array of references to application gateway authentication certificates.
      */
-    @JsonProperty(value = "authenticationCertificates")
     private List<SubResource> authenticationCertificates;
 
     /*
      * Array of references to application gateway trusted root certificates.
      */
-    @JsonProperty(value = "trustedRootCertificates")
     private List<SubResource> trustedRootCertificates;
 
     /*
      * Connection draining of the backend http settings resource.
      */
-    @JsonProperty(value = "connectionDraining")
     private ApplicationGatewayConnectionDraining connectionDraining;
 
     /*
      * Host header to be sent to the backend servers.
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
      * Whether to pick host header should be picked from the host name of the backend server. Default value is false.
      */
-    @JsonProperty(value = "pickHostNameFromBackendAddress")
     private Boolean pickHostnameFromBackendAddress;
 
     /*
      * Cookie name to use for the affinity cookie.
      */
-    @JsonProperty(value = "affinityCookieName")
     private String affinityCookieName;
 
     /*
      * Whether the probe is enabled. Default value is false.
      */
-    @JsonProperty(value = "probeEnabled")
     private Boolean probeEnabled;
 
     /*
      * Path which should be used as a prefix for all HTTP requests. Null means no path will be prefixed. Default value
      * is null.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * The provisioning state of the backend HTTP settings resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -401,5 +392,100 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
         if (connectionDraining() != null) {
             connectionDraining().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("cookieBasedAffinity",
+            this.cookieBasedAffinity == null ? null : this.cookieBasedAffinity.toString());
+        jsonWriter.writeNumberField("requestTimeout", this.requestTimeout);
+        jsonWriter.writeJsonField("probe", this.probe);
+        jsonWriter.writeArrayField("authenticationCertificates", this.authenticationCertificates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("trustedRootCertificates", this.trustedRootCertificates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("connectionDraining", this.connectionDraining);
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeBooleanField("pickHostNameFromBackendAddress", this.pickHostnameFromBackendAddress);
+        jsonWriter.writeStringField("affinityCookieName", this.affinityCookieName);
+        jsonWriter.writeBooleanField("probeEnabled", this.probeEnabled);
+        jsonWriter.writeStringField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayBackendHttpSettingsPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayBackendHttpSettingsPropertiesFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayBackendHttpSettingsPropertiesFormat.
+     */
+    public static ApplicationGatewayBackendHttpSettingsPropertiesFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayBackendHttpSettingsPropertiesFormat deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat
+                = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("port".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.port
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.protocol
+                        = ApplicationGatewayProtocol.fromString(reader.getString());
+                } else if ("cookieBasedAffinity".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.cookieBasedAffinity
+                        = ApplicationGatewayCookieBasedAffinity.fromString(reader.getString());
+                } else if ("requestTimeout".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.requestTimeout
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("probe".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.probe
+                        = SubResource.fromJson(reader);
+                } else if ("authenticationCertificates".equals(fieldName)) {
+                    List<SubResource> authenticationCertificates
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.authenticationCertificates
+                        = authenticationCertificates;
+                } else if ("trustedRootCertificates".equals(fieldName)) {
+                    List<SubResource> trustedRootCertificates
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.trustedRootCertificates
+                        = trustedRootCertificates;
+                } else if ("connectionDraining".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.connectionDraining
+                        = ApplicationGatewayConnectionDraining.fromJson(reader);
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.hostname = reader.getString();
+                } else if ("pickHostNameFromBackendAddress".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.pickHostnameFromBackendAddress
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("affinityCookieName".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.affinityCookieName
+                        = reader.getString();
+                } else if ("probeEnabled".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.probeEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("path".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.path = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat;
+        });
     }
 }

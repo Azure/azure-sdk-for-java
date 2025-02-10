@@ -30,14 +30,16 @@ public final class DeletedBackupInstancesImpl implements DeletedBackupInstances 
     public PagedIterable<DeletedBackupInstanceResource> list(String resourceGroupName, String vaultName) {
         PagedIterable<DeletedBackupInstanceResourceInner> inner
             = this.serviceClient().list(resourceGroupName, vaultName);
-        return Utils.mapPage(inner, inner1 -> new DeletedBackupInstanceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DeletedBackupInstanceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DeletedBackupInstanceResource> list(String resourceGroupName, String vaultName,
         Context context) {
         PagedIterable<DeletedBackupInstanceResourceInner> inner
             = this.serviceClient().list(resourceGroupName, vaultName, context);
-        return Utils.mapPage(inner, inner1 -> new DeletedBackupInstanceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DeletedBackupInstanceResourceImpl(inner1, this.manager()));
     }
 
     public Response<DeletedBackupInstanceResource> getWithResponse(String resourceGroupName, String vaultName,

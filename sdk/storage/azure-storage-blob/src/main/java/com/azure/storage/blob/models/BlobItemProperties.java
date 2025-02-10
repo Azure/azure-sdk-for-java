@@ -6,24 +6,19 @@ package com.azure.storage.blob.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.implementation.accesshelpers.BlobItemPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.OffsetDateTime;
 
 /**
  * Properties of a blob.
  */
-@JacksonXmlRootElement(localName = "Properties")
 @Fluent
 public final class BlobItemProperties {
-    @JsonUnwrapped
     private final BlobItemPropertiesInternal internalProperties;
 
     static {
-        BlobItemPropertiesConstructorProxy.setAccessor(
-            new BlobItemPropertiesConstructorProxy.BlobItemPropertiesConstructorAccessor() {
+        BlobItemPropertiesConstructorProxy
+            .setAccessor(new BlobItemPropertiesConstructorProxy.BlobItemPropertiesConstructorAccessor() {
                 @Override
                 public BlobItemProperties create(BlobItemPropertiesInternal internalProperties) {
                     return new BlobItemProperties(internalProperties);
@@ -49,7 +44,6 @@ public final class BlobItemProperties {
         this.internalProperties = new BlobItemPropertiesInternal();
     }
 
-    @JsonIgnore
     private BlobImmutabilityPolicy convertedImmutabilityPolicy;
 
     /**
@@ -804,9 +798,9 @@ public final class BlobItemProperties {
      */
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
         if (convertedImmutabilityPolicy == null) {
-            convertedImmutabilityPolicy = new BlobImmutabilityPolicy()
-                .setExpiryTime(internalProperties.getImmutabilityPolicyExpiresOn())
-                .setPolicyMode(internalProperties.getImmutabilityPolicyMode());
+            convertedImmutabilityPolicy
+                = new BlobImmutabilityPolicy().setExpiryTime(internalProperties.getImmutabilityPolicyExpiresOn())
+                    .setPolicyMode(internalProperties.getImmutabilityPolicyMode());
         }
 
         return convertedImmutabilityPolicy;

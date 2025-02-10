@@ -32,8 +32,8 @@ public class SasModelsTest {
         TableSasIpRange ipRange = TableSasIpRange.parse("a-b");
         TableSasProtocol protocol = TableSasProtocol.HTTPS_ONLY;
 
-        TableAccountSasSignatureValues sasSignatureValues =
-            new TableAccountSasSignatureValues(expiryTime, permissions, services, resourceTypes)
+        TableAccountSasSignatureValues sasSignatureValues
+            = new TableAccountSasSignatureValues(expiryTime, permissions, services, resourceTypes)
                 .setStartTime(startTime)
                 .setSasIpRange(ipRange)
                 .setProtocol(protocol);
@@ -66,19 +66,19 @@ public class SasModelsTest {
 
     @Test
     public void tableAccountSasPermissionToString() {
-        assertEquals("rwdxlacuptf", new TableAccountSasPermission()
-            .setReadPermission(true)
-            .setWritePermission(true)
-            .setDeletePermission(true)
-            .setListPermission(true)
-            .setAddPermission(true)
-            .setCreatePermission(true)
-            .setUpdatePermission(true)
-            .setProcessMessages(true)
-            .setDeleteVersionPermission(true)
-            .setTagsPermission(true)
-            .setFilterTagsPermission(true)
-            .toString());
+        assertEquals("rwdxlacuptf",
+            new TableAccountSasPermission().setReadPermission(true)
+                .setWritePermission(true)
+                .setDeletePermission(true)
+                .setListPermission(true)
+                .setAddPermission(true)
+                .setCreatePermission(true)
+                .setUpdatePermission(true)
+                .setProcessMessages(true)
+                .setDeleteVersionPermission(true)
+                .setTagsPermission(true)
+                .setFilterTagsPermission(true)
+                .toString());
         assertEquals("r", new TableAccountSasPermission().setReadPermission(true).toString());
         assertEquals("w", new TableAccountSasPermission().setWritePermission(true).toString());
         assertEquals("d", new TableAccountSasPermission().setDeletePermission(true).toString());
@@ -142,11 +142,8 @@ public class SasModelsTest {
 
     @Test
     public void tableAccountSasResourceTypeToString() {
-        assertEquals("sco", new TableAccountSasResourceType()
-            .setService(true)
-            .setContainer(true)
-            .setObject(true)
-            .toString());
+        assertEquals("sco",
+            new TableAccountSasResourceType().setService(true).setContainer(true).setObject(true).toString());
 
         assertEquals("s", new TableAccountSasResourceType().setService(true).toString());
         assertEquals("c", new TableAccountSasResourceType().setContainer(true).toString());
@@ -173,12 +170,12 @@ public class SasModelsTest {
 
     @Test
     public void tableAccountSasServiceToString() {
-        assertEquals("bqtf", new TableAccountSasService()
-            .setBlobAccess(true)
-            .setQueueAccess(true)
-            .setTableAccess(true)
-            .setFileAccess(true)
-            .toString());
+        assertEquals("bqtf",
+            new TableAccountSasService().setBlobAccess(true)
+                .setQueueAccess(true)
+                .setTableAccess(true)
+                .setFileAccess(true)
+                .toString());
 
         assertEquals("b", new TableAccountSasService().setBlobAccess(true).toString());
         assertEquals("q", new TableAccountSasService().setQueueAccess(true).toString());
@@ -208,10 +205,7 @@ public class SasModelsTest {
 
     @Test
     public void tableSasIpRangeToString() {
-        assertEquals("a-b", new TableSasIpRange()
-            .setIpMin("a")
-            .setIpMax("b")
-            .toString());
+        assertEquals("a-b", new TableSasIpRange().setIpMin("a").setIpMax("b").toString());
 
         assertEquals("a", new TableSasIpRange().setIpMin("a").toString());
         assertEquals("", new TableSasIpRange().setIpMax("b").toString());
@@ -254,9 +248,8 @@ public class SasModelsTest {
         String endPartitionKey = "endPartitionKey";
         String endRowKey = "endRowKey";
 
-        TableSasSignatureValues sasSignatureValues =
-            new TableSasSignatureValues(expiryTime, permissions)
-                .setStartTime(startTime)
+        TableSasSignatureValues sasSignatureValues
+            = new TableSasSignatureValues(expiryTime, permissions).setStartTime(startTime)
                 .setSasIpRange(ipRange)
                 .setProtocol(protocol)
                 .setStartPartitionKey(startPartitionKey)
@@ -280,20 +273,18 @@ public class SasModelsTest {
         OffsetDateTime expiryTime = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         TableSasPermission permissions = TableSasPermission.parse("r");
 
-        assertThrows(NullPointerException.class,
-            () -> new TableSasSignatureValues(null, permissions));
-        assertThrows(NullPointerException.class,
-            () -> new TableSasSignatureValues(expiryTime, null));
+        assertThrows(NullPointerException.class, () -> new TableSasSignatureValues(null, permissions));
+        assertThrows(NullPointerException.class, () -> new TableSasSignatureValues(expiryTime, null));
     }
 
     @Test
     public void tableSasPermissionToString() {
-        assertEquals("raud", new TableSasPermission()
-            .setReadPermission(true)
-            .setAddPermission(true)
-            .setUpdatePermission(true)
-            .setDeletePermission(true)
-            .toString());
+        assertEquals("raud",
+            new TableSasPermission().setReadPermission(true)
+                .setAddPermission(true)
+                .setUpdatePermission(true)
+                .setDeletePermission(true)
+                .toString());
         assertEquals("r", new TableSasPermission().setReadPermission(true).toString());
         assertEquals("a", new TableSasPermission().setAddPermission(true).toString());
         assertEquals("u", new TableSasPermission().setUpdatePermission(true).toString());

@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -12,6 +14,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import io.reactivex.subscribers.TestSubscriber;
+import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -60,6 +63,9 @@ public class FetcherTest {
     @Test(groups = { "unit" }, dataProvider = "queryParams")
     public void query(CosmosQueryRequestOptions options, int top) {
 
+        GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreakerMock = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+
         FeedResponse<Document> fp1 = FeedResponseBuilder.queryFeedResponseBuilder(Document.class)
                 .withContinuationToken("cp1")
                 .withResults(new Document(), new Document(), new Document())
@@ -95,17 +101,22 @@ public class FetcherTest {
                 return Mono.just(rsp);
         };
 
+        Mockito.when(globalPartitionEndpointManagerForCircuitBreakerMock.isPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(false);
+
         ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
                 new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), false, top,
                         ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options),
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getOperationContext(options),
                     ImplementationBridgeHelpers
                         .CosmosQueryRequestOptionsHelper
                         .getCosmosQueryRequestOptionsAccessor()
-                        .getCancelledRequestDiagnosticsTracker(options));
+                        .getImpl(options)
+                        .getOperationContextAndListenerTuple(),
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .getCancelledRequestDiagnosticsTracker(options),
+                    globalEndpointManagerMock,
+                    globalPartitionEndpointManagerForCircuitBreakerMock);
 
         validateFetcher(fetcher, options, top, feedResponseList);
     }
@@ -132,6 +143,9 @@ public class FetcherTest {
 
     @Test(groups = { "unit" })
     public void changeFeed() {
+
+        GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreakerMock = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
         CosmosChangeFeedRequestOptions options =
             CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(
@@ -163,6 +177,8 @@ public class FetcherTest {
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc = request -> Mono.just(feedResponseList.get(executeIndex.getAndIncrement()));
 
+        Mockito.when(globalPartitionEndpointManagerForCircuitBreakerMock.isPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(false);
+
         ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
                 new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, null, isChangeFeed, top,
                         options.getMaxItemCount(),
@@ -170,7 +186,9 @@ public class FetcherTest {
                             .CosmosChangeFeedRequestOptionsHelper
                             .getCosmosChangeFeedRequestOptionsAccessor()
                             .getOperationContext(options),
-                    null);
+                    null,
+                    globalEndpointManagerMock,
+                    globalPartitionEndpointManagerForCircuitBreakerMock);
 
         validateFetcher(fetcher, options, feedResponseList);
     }

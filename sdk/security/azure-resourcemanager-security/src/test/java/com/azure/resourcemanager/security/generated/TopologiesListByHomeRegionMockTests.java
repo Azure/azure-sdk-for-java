@@ -6,60 +6,32 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.TopologyResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TopologiesListByHomeRegionMockTests {
     @Test
     public void testListByHomeRegion() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-07-09T19:25:10Z\",\"topologyResources\":[{\"resourceId\":\"qzufgsyfejyvdwt\",\"severity\":\"ptpqayamkn\",\"recommendationsExist\":false,\"networkZones\":\"bmxsnxoc\",\"topologyScore\":1392095916,\"location\":\"ojkpoyh\",\"parents\":[{},{},{},{}],\"children\":[{}]},{\"resourceId\":\"xdbdljzgdyrcvu\",\"severity\":\"sgzlrqhb\",\"recommendationsExist\":false,\"networkZones\":\"gdxwbsfpyxx\",\"topologyScore\":1282159962,\"location\":\"lecomi\",\"parents\":[{},{}],\"children\":[{},{}]}]},\"location\":\"uxxdhilzzdzzqjm\",\"id\":\"ezay\",\"name\":\"vribqlotokht\",\"type\":\"wtaznkcqw\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-07-06T20:42:46Z\",\"topologyResources\":[]},\"location\":\"henigbeqngubab\",\"id\":\"jdeayscse\",\"name\":\"d\",\"type\":\"jemexmnv\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<TopologyResource> response
+            = manager.topologies().listByHomeRegion("hkslgwlokhueoij", com.azure.core.util.Context.NONE);
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<TopologyResource> response =
-            manager.topologies().listByHomeRegion("ptgongruat", com.azure.core.util.Context.NONE);
     }
 }

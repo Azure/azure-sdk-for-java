@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class FrontendEndpointLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FrontendEndpointLink model =
-            BinaryData.fromString("{\"id\":\"wclxxwrl\"}").toObject(FrontendEndpointLink.class);
-        Assertions.assertEquals("wclxxwrl", model.id());
+        FrontendEndpointLink model
+            = BinaryData.fromString("{\"id\":\"wgndrvynhzgpp\"}").toObject(FrontendEndpointLink.class);
+        Assertions.assertEquals("wgndrvynhzgpp", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendEndpointLink model = new FrontendEndpointLink().withId("wclxxwrl");
+        FrontendEndpointLink model = new FrontendEndpointLink().withId("wgndrvynhzgpp");
         model = BinaryData.fromObject(model).toObject(FrontendEndpointLink.class);
-        Assertions.assertEquals("wclxxwrl", model.id());
+        Assertions.assertEquals("wgndrvynhzgpp", model.id());
     }
 }

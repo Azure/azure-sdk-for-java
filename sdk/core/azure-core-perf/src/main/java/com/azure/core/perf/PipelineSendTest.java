@@ -3,6 +3,7 @@
 
 package com.azure.core.perf;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -23,7 +24,7 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
     private final Supplier<BinaryData> binaryDataSupplier;
     private final URL targetURL;
     private final String contentLengthHeaderValue;
-    private final Context context = Context.NONE.addData("azure-eagerly-read-response" , true);
+    private final Context context = Context.NONE.addData("azure-eagerly-read-response", true);
 
     public PipelineSendTest(CorePerfStressOptions options) {
         super(options);
@@ -32,9 +33,7 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
             UrlBuilder urlBuilder = UrlBuilder.parse(endpoint);
             String path = urlBuilder.getPath();
             path = path == null ? "" : path;
-            targetURL = urlBuilder
-                .setPath(path + "/BinaryData/" + id)
-                .toUrl();
+            targetURL = urlBuilder.setPath(path + "/BinaryData/" + id).toUrl();
         } catch (MalformedURLException e) {
             throw new UncheckedIOException(e);
         }
@@ -48,23 +47,19 @@ public class PipelineSendTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.fromSupplier(binaryDataSupplier)
-            .flatMap(data -> {
-                HttpHeaders headers = new HttpHeaders();
-                headers.set("Content-Length", contentLengthHeaderValue);
-                HttpRequest httpRequest = new HttpRequest(
-                    HttpMethod.PUT, targetURL, headers, data);
-                // Context with azure-eagerly-read-response=true makes sure
-                // that response is disposed to prevent connection leak.
-                // There's no response body in this scenario anyway.
-                return httpPipeline.send(httpRequest, context)
-                    .map(httpResponse -> {
-                        if (httpResponse.getStatusCode() / 100 != 2) {
-                            throw new IllegalStateException("Endpoint didn't return 2xx http status code.");
-                        }
-                        return httpResponse;
-                    })
-                    .then();
-            });
+        return Mono.fromSupplier(binaryDataSupplier).flatMap(data -> {
+            HttpHeaders headers = new HttpHeaders();
+            headers.set(HttpHeaderName.CONTENT_LENGTH, contentLengthHeaderValue);
+            HttpRequest httpRequest = new HttpRequest(HttpMethod.PUT, targetURL, headers, data);
+            // Context with azure-eagerly-read-response=true makes sure
+            // that response is disposed to prevent connection leak.
+            // There's no response body in this scenario anyway.
+            return httpPipeline.send(httpRequest, context).map(httpResponse -> {
+                if (httpResponse.getStatusCode() / 100 != 2) {
+                    throw new IllegalStateException("Endpoint didn't return 2xx http status code.");
+                }
+                return httpResponse;
+            }).then();
+        });
     }
 }

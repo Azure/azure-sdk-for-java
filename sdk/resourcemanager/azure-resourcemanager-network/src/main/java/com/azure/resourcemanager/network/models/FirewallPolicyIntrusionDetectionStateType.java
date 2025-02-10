@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class FirewallPolicyIntrusionDetectionStateType
      * @param name a name to look for.
      * @return the corresponding FirewallPolicyIntrusionDetectionStateType.
      */
-    @JsonCreator
     public static FirewallPolicyIntrusionDetectionStateType fromString(String name) {
         return fromString(name, FirewallPolicyIntrusionDetectionStateType.class);
     }

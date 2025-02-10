@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The parameters specifying the connection resource whose inbound routes are being requested.
  */
 @Fluent
-public final class GetInboundRoutesParameters {
+public final class GetInboundRoutesParameters implements JsonSerializable<GetInboundRoutesParameters> {
     /*
      * The connection resource whose inbound routes are being requested.
      */
-    @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
     /*
      * The type of the specified connection resource like ExpressRouteConnection, HubVirtualNetworkConnection,
      * VpnConnection and P2SConnection.
      */
-    @JsonProperty(value = "connectionType")
     private String connectionType;
 
     /**
@@ -79,5 +81,44 @@ public final class GetInboundRoutesParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeStringField("connectionType", this.connectionType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetInboundRoutesParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetInboundRoutesParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetInboundRoutesParameters.
+     */
+    public static GetInboundRoutesParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetInboundRoutesParameters deserializedGetInboundRoutesParameters = new GetInboundRoutesParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceUri".equals(fieldName)) {
+                    deserializedGetInboundRoutesParameters.resourceUri = reader.getString();
+                } else if ("connectionType".equals(fieldName)) {
+                    deserializedGetInboundRoutesParameters.connectionType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetInboundRoutesParameters;
+        });
     }
 }

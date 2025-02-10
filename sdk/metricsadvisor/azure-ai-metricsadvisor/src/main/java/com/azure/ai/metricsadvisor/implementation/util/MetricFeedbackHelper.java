@@ -14,16 +14,21 @@ import java.time.OffsetDateTime;
 public final class MetricFeedbackHelper {
     private static MetricFeedbackAccessor accessor;
 
-    private MetricFeedbackHelper() { }
+    private MetricFeedbackHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link MetricFeedback} instance.
      */
     public interface MetricFeedbackAccessor {
         void setId(MetricFeedback feedback, String id);
+
         void setMetricId(MetricFeedback feedback, String metricId);
+
         void setCreatedTime(MetricFeedback feedback, OffsetDateTime createdTime);
+
         void setUserPrincipal(MetricFeedback feedback, String userPrincipal);
+
         void setFeedbackType(MetricFeedback feedback, FeedbackType feedbackType);
     }
 

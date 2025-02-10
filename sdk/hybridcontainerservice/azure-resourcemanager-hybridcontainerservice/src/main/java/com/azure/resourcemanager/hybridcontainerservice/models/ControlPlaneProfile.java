@@ -5,25 +5,31 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * ControlPlaneProfile - The control plane properties for the provisioned cluster.
+ * The properties of the control plane nodes of the provisioned cluster.
  */
 @Fluent
-public final class ControlPlaneProfile extends NamedAgentPoolProfile {
+public final class ControlPlaneProfile implements JsonSerializable<ControlPlaneProfile> {
     /*
-     * API server endpoint for the control plane
+     * Number of control plane nodes. The default value is 1, and the count should be an odd number
      */
-    @JsonProperty(value = "controlPlaneEndpoint")
-    private ControlPlaneEndpointProfileControlPlaneEndpoint controlPlaneEndpoint;
+    private Integer count;
 
     /*
-     * Profile for Linux VMs in the container service cluster.
+     * VM sku size of the control plane nodes
      */
-    @JsonProperty(value = "linuxProfile")
-    private LinuxProfileProperties linuxProfile;
+    private String vmSize;
+
+    /*
+     * IP Address of the Kubernetes API server
+     */
+    private ControlPlaneProfileControlPlaneEndpoint controlPlaneEndpoint;
 
     /**
      * Creates an instance of ControlPlaneProfile class.
@@ -32,106 +38,64 @@ public final class ControlPlaneProfile extends NamedAgentPoolProfile {
     }
 
     /**
-     * Get the controlPlaneEndpoint property: API server endpoint for the control plane.
+     * Get the count property: Number of control plane nodes. The default value is 1, and the count should be an odd
+     * number.
+     * 
+     * @return the count value.
+     */
+    public Integer count() {
+        return this.count;
+    }
+
+    /**
+     * Set the count property: Number of control plane nodes. The default value is 1, and the count should be an odd
+     * number.
+     * 
+     * @param count the count value to set.
+     * @return the ControlPlaneProfile object itself.
+     */
+    public ControlPlaneProfile withCount(Integer count) {
+        this.count = count;
+        return this;
+    }
+
+    /**
+     * Get the vmSize property: VM sku size of the control plane nodes.
+     * 
+     * @return the vmSize value.
+     */
+    public String vmSize() {
+        return this.vmSize;
+    }
+
+    /**
+     * Set the vmSize property: VM sku size of the control plane nodes.
+     * 
+     * @param vmSize the vmSize value to set.
+     * @return the ControlPlaneProfile object itself.
+     */
+    public ControlPlaneProfile withVmSize(String vmSize) {
+        this.vmSize = vmSize;
+        return this;
+    }
+
+    /**
+     * Get the controlPlaneEndpoint property: IP Address of the Kubernetes API server.
      * 
      * @return the controlPlaneEndpoint value.
      */
-    public ControlPlaneEndpointProfileControlPlaneEndpoint controlPlaneEndpoint() {
+    public ControlPlaneProfileControlPlaneEndpoint controlPlaneEndpoint() {
         return this.controlPlaneEndpoint;
     }
 
     /**
-     * Set the controlPlaneEndpoint property: API server endpoint for the control plane.
+     * Set the controlPlaneEndpoint property: IP Address of the Kubernetes API server.
      * 
      * @param controlPlaneEndpoint the controlPlaneEndpoint value to set.
      * @return the ControlPlaneProfile object itself.
      */
-    public ControlPlaneProfile
-        withControlPlaneEndpoint(ControlPlaneEndpointProfileControlPlaneEndpoint controlPlaneEndpoint) {
+    public ControlPlaneProfile withControlPlaneEndpoint(ControlPlaneProfileControlPlaneEndpoint controlPlaneEndpoint) {
         this.controlPlaneEndpoint = controlPlaneEndpoint;
-        return this;
-    }
-
-    /**
-     * Get the linuxProfile property: Profile for Linux VMs in the container service cluster.
-     * 
-     * @return the linuxProfile value.
-     */
-    public LinuxProfileProperties linuxProfile() {
-        return this.linuxProfile;
-    }
-
-    /**
-     * Set the linuxProfile property: Profile for Linux VMs in the container service cluster.
-     * 
-     * @param linuxProfile the linuxProfile value to set.
-     * @return the ControlPlaneProfile object itself.
-     */
-    public ControlPlaneProfile withLinuxProfile(LinuxProfileProperties linuxProfile) {
-        this.linuxProfile = linuxProfile;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ControlPlaneProfile withCount(Integer count) {
-        super.withCount(count);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ControlPlaneProfile withVmSize(String vmSize) {
-        super.withVmSize(vmSize);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ControlPlaneProfile withName(String name) {
-        super.withName(name);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ControlPlaneProfile withAvailabilityZones(List<String> availabilityZones) {
-        super.withAvailabilityZones(availabilityZones);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ControlPlaneProfile withOsType(OsType osType) {
-        super.withOsType(osType);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ControlPlaneProfile withOsSku(Ossku osSku) {
-        super.withOsSku(osSku);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ControlPlaneProfile withNodeImageVersion(String nodeImageVersion) {
-        super.withNodeImageVersion(nodeImageVersion);
         return this;
     }
 
@@ -140,14 +104,52 @@ public final class ControlPlaneProfile extends NamedAgentPoolProfile {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (controlPlaneEndpoint() != null) {
             controlPlaneEndpoint().validate();
         }
-        if (linuxProfile() != null) {
-            linuxProfile().validate();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeJsonField("controlPlaneEndpoint", this.controlPlaneEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControlPlaneProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControlPlaneProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ControlPlaneProfile.
+     */
+    public static ControlPlaneProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControlPlaneProfile deserializedControlPlaneProfile = new ControlPlaneProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedControlPlaneProfile.count = reader.getNullable(JsonReader::getInt);
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedControlPlaneProfile.vmSize = reader.getString();
+                } else if ("controlPlaneEndpoint".equals(fieldName)) {
+                    deserializedControlPlaneProfile.controlPlaneEndpoint
+                        = ControlPlaneProfileControlPlaneEndpoint.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControlPlaneProfile;
+        });
     }
 }

@@ -3,7 +3,12 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +23,8 @@ import static com.azure.cosmos.implementation.Utils.ValueHolder;
  * Used internally to provides helper functions to work with session tokens in the Azure Cosmos DB database service.
  */
 public class SessionTokenHelper {
+
+    private static final Logger logger = LoggerFactory.getLogger(SessionTokenHelper.class);
 
     public static void setOriginalSessionToken(RxDocumentServiceRequest request, String originalSessionToken) {
         if (request == null) {
@@ -41,7 +48,9 @@ public class SessionTokenHelper {
         if (Strings.isNullOrEmpty(partitionKeyRangeId)) {
             // AddressCache/address resolution didn't produce partition key range id.
             // In this case it is a bug.
-            throw new InternalServerErrorException(RMResources.PartitionKeyRangeIdAbsentInContext);
+            throw new InternalServerErrorException(
+                Exceptions.getInternalServerErrorMessage(RMResources.PartitionKeyRangeIdAbsentInContext),
+                HttpConstants.SubStatusCodes.MISSING_PARTITION_KEY_RANGE_ID_IN_CONTEXT);
         }
 
         if (StringUtils.isNotEmpty(originalSessionToken)) {
@@ -103,7 +112,23 @@ public class SessionTokenHelper {
                 } else {
                     highestSessionToken = highestSessionToken.merge(parsedSessionToken);
                 }
+            }
+        }
 
+        if (highestSessionToken == null) {
+            if (StringUtils.isNotEmpty(globalSessionToken)) {
+                Set<String> sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
+
+                String evaluationResult = "The session token : " + globalSessionToken + " for pkRangeId : " + partitionKeyRangeId +
+                    " and collectionRid : " + request.requestContext.resolvedCollectionRid + " could not be evaluated, " +
+                    "the request will fallback " +
+                    "to eventual consistency.";
+
+                sessionTokenEvaluationResults.add(evaluationResult);
+
+                if (Configs.shouldLogIncorrectlyMappedSessionToken()) {
+                    logger.warn(evaluationResult);
+                }
             }
         }
 
@@ -120,7 +145,7 @@ public class SessionTokenHelper {
                 ISessionToken parentSessionToken = null;
 
                 Collection<String> parents = request.requestContext.resolvedPartitionKeyRange.getParents();
-                if (parents != null) {
+                if (parents != null && !parents.isEmpty()) {
                     List<String> parentsList = new ArrayList<>(parents);
                     for (int i = parentsList.size() - 1; i >= 0; i--) {
                         String parentId = parentsList.get(i);
@@ -140,13 +165,101 @@ public class SessionTokenHelper {
         return null;
     }
 
+    static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,
+                                                           PartitionKeyBasedBloomFilter partitionKeyBasedBloomFilter,
+                                                           PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress,
+                                                           PartitionKeyInternal partitionKey,
+                                                           PartitionKeyDefinition partitionKeyDefinition,
+                                                           Long collectionRid,
+                                                           String partitionKeyRangeId,
+                                                           String firstEffectivePreferredReadableRegion,
+                                                           boolean canUseBloomFilter) {
+
+        if (partitionScopedRegionLevelProgress != null) {
+
+            Set<String> partitionKeyPossibleRegions = new HashSet<>();
+
+            if (partitionScopedRegionLevelProgress.isPartitionKeyRangeIdPresent(partitionKeyRangeId)) {
+
+                if (canUseBloomFilter) {
+                    partitionKeyPossibleRegions = partitionKeyBasedBloomFilter
+                        .tryGetPossibleRegionsLogicalPartitionResolvedTo(
+                            request,
+                            collectionRid,
+                            partitionKey,
+                            partitionKeyDefinition);
+
+                    return partitionScopedRegionLevelProgress
+                        .tryResolveSessionToken(
+                            request,
+                            partitionKeyPossibleRegions,
+                            partitionKeyRangeId,
+                            firstEffectivePreferredReadableRegion,
+                            true);
+
+                }
+
+                return partitionScopedRegionLevelProgress
+                    .tryResolveSessionToken(
+                        request,
+                        partitionKeyPossibleRegions,
+                        partitionKeyRangeId,
+                        firstEffectivePreferredReadableRegion,
+                        false);
+
+            } else {
+                if (canUseBloomFilter) {
+                    partitionKeyPossibleRegions = partitionKeyBasedBloomFilter
+                        .tryGetPossibleRegionsLogicalPartitionResolvedTo(
+                            request,
+                            collectionRid,
+                            partitionKey,
+                            partitionKeyDefinition);
+                }
+
+                ISessionToken parentSessionToken = null;
+
+                Collection<String> parents = request.requestContext.resolvedPartitionKeyRange.getParents();
+                if (parents != null && !parents.isEmpty()) {
+                    List<String> parentsList = new ArrayList<>(parents);
+                    for (int i = parentsList.size() - 1; i >= 0; i--) {
+                        String parentPkRangeId = parentsList.get(i);
+                        if (partitionScopedRegionLevelProgress.isPartitionKeyRangeIdPresent(parentPkRangeId)) {
+                            // A partition can have more than 1 parent (merge). In that case, we apply Merge to
+                            // generate a token with both parent's max LSNs
+                            ISessionToken resolvedSessionTokenForParentPkRangeId = null;
+
+                            resolvedSessionTokenForParentPkRangeId = partitionScopedRegionLevelProgress
+                                .tryResolveSessionToken(
+                                    request,
+                                    partitionKeyPossibleRegions,
+                                    parentPkRangeId,
+                                    firstEffectivePreferredReadableRegion,
+                                    canUseBloomFilter);
+
+                            if (resolvedSessionTokenForParentPkRangeId != null) {
+                                parentSessionToken = parentSessionToken != null ?
+                                    parentSessionToken.merge(resolvedSessionTokenForParentPkRangeId) :
+                                    resolvedSessionTokenForParentPkRangeId;
+                            }
+                        }
+                    }
+
+                    return parentSessionToken;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public static ISessionToken parse(String sessionToken) {
         ValueHolder<ISessionToken> partitionKeyRangeSessionToken = ValueHolder.initialize(null);
 
         if (SessionTokenHelper.tryParse(sessionToken, partitionKeyRangeSessionToken)) {
             return partitionKeyRangeSessionToken.v;
         } else {
-            throw new  RuntimeException(new BadRequestException(String.format(RMResources.InvalidSessionToken, sessionToken)));
+            throw new RuntimeException(new BadRequestException(String.format(RMResources.InvalidSessionToken, sessionToken)));
         }
     }
 
@@ -171,5 +284,28 @@ public class SessionTokenHelper {
     public static  String concatPartitionKeyRangeIdWithSessionToken(String partitionKeyRangeRid, String sessionToken) {
         // e.g., "1:xyz"
         return partitionKeyRangeRid + ":" + sessionToken;
+    }
+
+    public static boolean tryEvaluateLocalLsnByRegionMappingWithNullSafety(ISessionToken sessionToken, Utils.ValueHolder<UnmodifiableMap<Integer, Long>> localLsnByRegion) {
+
+        if (sessionToken instanceof VectorSessionToken) {
+            VectorSessionToken castVectorSessionToken = Utils.as(sessionToken, VectorSessionToken.class);
+            localLsnByRegion.v = castVectorSessionToken.getLocalLsnByRegion();
+
+            return localLsnByRegion.v != null;
+        }
+
+        return false;
+    }
+
+    public static boolean tryEvaluateVersion(ISessionToken sessionToken, Utils.ValueHolder<Long> version) {
+
+        if (sessionToken instanceof VectorSessionToken) {
+            VectorSessionToken castVectorSessionToken = Utils.as(sessionToken, VectorSessionToken.class);
+            version.v = castVectorSessionToken.getVersion();
+            return true;
+        }
+
+        return false;
     }
 }

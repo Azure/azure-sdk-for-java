@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.tracing.Tracer;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.context.Context;
@@ -47,12 +48,14 @@ public class OpenTelemetryTracingBenchmark {
 
     @Benchmark
     public void noHttpTracing() {
-        NO_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), com.azure.core.util.Context.NONE);
+        NO_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"),
+            com.azure.core.util.Context.NONE);
     }
 
     @Benchmark
     public void disabledHttpTracing() {
-        DISABLED_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), com.azure.core.util.Context.NONE);
+        DISABLED_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"),
+            com.azure.core.util.Context.NONE);
     }
 
     @Benchmark
@@ -66,8 +69,7 @@ public class OpenTelemetryTracingBenchmark {
             HttpPolicyProviders.addAfterRetryPolicies(policies);
         }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .tracer(tracer)
             .build();
@@ -75,7 +77,7 @@ public class OpenTelemetryTracingBenchmark {
 
     private static Tracer configureTracer(boolean enabled) {
         if (!enabled) {
-            return new OpenTelemetryTracer("benchmark", null, null,
+            return new OpenTelemetryTracer(new LibraryTelemetryOptions("benchmark"),
                 new OpenTelemetryTracingOptions().setEnabled(false));
         }
 
@@ -85,7 +87,7 @@ public class OpenTelemetryTracingBenchmark {
             .build();
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(provider).build();
-        return new OpenTelemetryTracer("benchmark", null, null,
+        return new OpenTelemetryTracer(new LibraryTelemetryOptions("benchmark"),
             new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
     }
 

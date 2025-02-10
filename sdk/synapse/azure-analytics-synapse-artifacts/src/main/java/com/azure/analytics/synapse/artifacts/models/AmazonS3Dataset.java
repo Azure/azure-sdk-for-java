@@ -5,73 +5,78 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * A single Amazon Simple Storage Service (S3) object or a set of S3 objects.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AmazonS3Object")
-@JsonFlatten
 @Fluent
 public class AmazonS3Dataset extends Dataset {
     /*
+     * Type of dataset.
+     */
+    private String type = "AmazonS3Object";
+
+    /*
      * The name of the Amazon S3 bucket. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.bucketName", required = true)
     private Object bucketName;
 
     /*
      * The key of the Amazon S3 object. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.key")
     private Object key;
 
     /*
      * The prefix filter for the S3 object name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.prefix")
     private Object prefix;
 
     /*
      * The version for the S3 object. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.version")
     private Object version;
 
     /*
      * The start of S3 object's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
      * The end of S3 object's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
     /*
      * The format of files.
      */
-    @JsonProperty(value = "typeProperties.format")
     private DatasetStorageFormat format;
 
     /*
      * The data compression method used for the Amazon S3 object.
      */
-    @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
     /**
      * Creates an instance of AmazonS3Dataset class.
      */
     public AmazonS3Dataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -303,5 +308,121 @@ public class AmazonS3Dataset extends Dataset {
     public AmazonS3Dataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeUntypedField("structure", getStructure());
+        jsonWriter.writeUntypedField("schema", getSchema());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", getFolder());
+        jsonWriter.writeStringField("type", this.type);
+        if (bucketName != null
+            || key != null
+            || prefix != null
+            || version != null
+            || modifiedDatetimeStart != null
+            || modifiedDatetimeEnd != null
+            || format != null
+            || compression != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("bucketName", this.bucketName);
+            jsonWriter.writeUntypedField("key", this.key);
+            jsonWriter.writeUntypedField("prefix", this.prefix);
+            jsonWriter.writeUntypedField("version", this.version);
+            jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+            jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+            jsonWriter.writeJsonField("format", this.format);
+            jsonWriter.writeJsonField("compression", this.compression);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonS3Dataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonS3Dataset if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AmazonS3Dataset.
+     */
+    public static AmazonS3Dataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonS3Dataset deserializedAmazonS3Dataset = new AmazonS3Dataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAmazonS3Dataset.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAmazonS3Dataset.setDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedAmazonS3Dataset.setStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedAmazonS3Dataset.setSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAmazonS3Dataset.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAmazonS3Dataset.setAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedAmazonS3Dataset.setFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAmazonS3Dataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("bucketName".equals(fieldName)) {
+                            deserializedAmazonS3Dataset.bucketName = reader.readUntyped();
+                        } else if ("key".equals(fieldName)) {
+                            deserializedAmazonS3Dataset.key = reader.readUntyped();
+                        } else if ("prefix".equals(fieldName)) {
+                            deserializedAmazonS3Dataset.prefix = reader.readUntyped();
+                        } else if ("version".equals(fieldName)) {
+                            deserializedAmazonS3Dataset.version = reader.readUntyped();
+                        } else if ("modifiedDatetimeStart".equals(fieldName)) {
+                            deserializedAmazonS3Dataset.modifiedDatetimeStart = reader.readUntyped();
+                        } else if ("modifiedDatetimeEnd".equals(fieldName)) {
+                            deserializedAmazonS3Dataset.modifiedDatetimeEnd = reader.readUntyped();
+                        } else if ("format".equals(fieldName)) {
+                            deserializedAmazonS3Dataset.format = DatasetStorageFormat.fromJson(reader);
+                        } else if ("compression".equals(fieldName)) {
+                            deserializedAmazonS3Dataset.compression = DatasetCompression.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAmazonS3Dataset.setAdditionalProperties(additionalProperties);
+
+            return deserializedAmazonS3Dataset;
+        });
     }
 }

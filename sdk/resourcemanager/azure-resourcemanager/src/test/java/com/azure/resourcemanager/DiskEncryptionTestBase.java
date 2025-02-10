@@ -34,24 +34,13 @@ public class DiskEncryptionTestBase extends ResourceManagerTestProxyTestBase {
     protected AzureResourceManager azureResourceManager;
 
     protected String rgName = "";
-    protected final Region region = Region.US_EAST;
+    protected final Region region = Region.US_WEST2;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -61,10 +50,10 @@ public class DiskEncryptionTestBase extends ResourceManagerTestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             if (!testContextManager.doNotRecordTest()) {
                 // don't match api-version when matching url
-                interceptorManager.addMatchers(new CustomMatcher()
-                    .setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
-                    .setExcludedHeaders(Collections.singletonList("Accept-Language"))
-                    .setIgnoredQueryParameters(Collections.singletonList("api-version")));
+                interceptorManager
+                    .addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
+                        .setExcludedHeaders(Collections.singletonList("Accept-Language"))
+                        .setIgnoredQueryParameters(Collections.singletonList("api-version")));
             }
         }
     }
@@ -98,9 +87,10 @@ public class DiskEncryptionTestBase extends ResourceManagerTestProxyTestBase {
         }
     }
 
-    protected VaultAndKey createVaultAndKey(String name, String clientId) {
+    protected VaultAndKey createVaultAndKey(String name, String userPrincipalName) {
         // create vault
-        Vault vault = azureResourceManager.vaults().define(name)
+        Vault vault = azureResourceManager.vaults()
+            .define(name)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withRoleBasedAccessControl()
@@ -109,8 +99,10 @@ public class DiskEncryptionTestBase extends ResourceManagerTestProxyTestBase {
 
         // RBAC for this app
         String rbacName = generateRandomUuid();
-        azureResourceManager.accessManagement().roleAssignments().define(rbacName)
-            .forServicePrincipal(clientId)
+        azureResourceManager.accessManagement()
+            .roleAssignments()
+            .define(rbacName)
+            .forUser(userPrincipalName)
             .withBuiltInRole(BuiltInRole.KEY_VAULT_ADMINISTRATOR)
             .withResourceScope(vault)
             .create();
@@ -118,15 +110,13 @@ public class DiskEncryptionTestBase extends ResourceManagerTestProxyTestBase {
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
         // create key
-        Key key = vault.keys().define("key1")
-            .withKeyTypeToCreate(KeyType.RSA)
-            .withKeySize(4096)
-            .create();
+        Key key = vault.keys().define("key1").withKeyTypeToCreate(KeyType.RSA).withKeySize(4096).create();
 
         return new VaultAndKey(vault, key);
     }
 
-    protected DiskEncryptionSet createDiskEncryptionSet(String name, DiskEncryptionSetType type, VaultAndKey vaultAndKey) {
+    protected DiskEncryptionSet createDiskEncryptionSet(String name, DiskEncryptionSetType type,
+        VaultAndKey vaultAndKey) {
         return azureResourceManager.diskEncryptionSets()
             .define(name)
             .withRegion(region)

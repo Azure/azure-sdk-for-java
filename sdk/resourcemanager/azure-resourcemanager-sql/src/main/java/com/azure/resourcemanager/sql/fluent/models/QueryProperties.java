@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a database query. */
+/**
+ * Properties of a database query.
+ */
 @Fluent
-public final class QueryProperties {
+public final class QueryProperties implements JsonSerializable<QueryProperties> {
     /*
      * Query text.
      */
-    @JsonProperty(value = "queryText")
     private String queryText;
 
-    /** Creates an instance of QueryProperties class. */
+    /**
+     * Creates an instance of QueryProperties class.
+     */
     public QueryProperties() {
     }
 
     /**
      * Get the queryText property: Query text.
-     *
+     * 
      * @return the queryText value.
      */
     public String queryText() {
@@ -31,7 +38,7 @@ public final class QueryProperties {
 
     /**
      * Set the queryText property: Query text.
-     *
+     * 
      * @param queryText the queryText value to set.
      * @return the QueryProperties object itself.
      */
@@ -42,9 +49,45 @@ public final class QueryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("queryText", this.queryText);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryProperties.
+     */
+    public static QueryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryProperties deserializedQueryProperties = new QueryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("queryText".equals(fieldName)) {
+                    deserializedQueryProperties.queryText = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryProperties;
+        });
     }
 }

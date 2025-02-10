@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class JwtClaimChecksTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JwtClaimChecks model =
-            BinaryData
-                .fromString(
-                    "{\"allowedGroups\":[\"htymw\"],\"allowedClientApplications\":[\"kfthwxmntei\",\"aop\",\"km\"]}")
-                .toObject(JwtClaimChecks.class);
-        Assertions.assertEquals("htymw", model.allowedGroups().get(0));
-        Assertions.assertEquals("kfthwxmntei", model.allowedClientApplications().get(0));
+        JwtClaimChecks model = BinaryData
+            .fromString("{\"allowedGroups\":[\"snb\"],\"allowedClientApplications\":[\"abnmocpcyshu\",\"zafb\"]}")
+            .toObject(JwtClaimChecks.class);
+        Assertions.assertEquals("snb", model.allowedGroups().get(0));
+        Assertions.assertEquals("abnmocpcyshu", model.allowedClientApplications().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JwtClaimChecks model =
-            new JwtClaimChecks()
-                .withAllowedGroups(Arrays.asList("htymw"))
-                .withAllowedClientApplications(Arrays.asList("kfthwxmntei", "aop", "km"));
+        JwtClaimChecks model = new JwtClaimChecks().withAllowedGroups(Arrays.asList("snb"))
+            .withAllowedClientApplications(Arrays.asList("abnmocpcyshu", "zafb"));
         model = BinaryData.fromObject(model).toObject(JwtClaimChecks.class);
-        Assertions.assertEquals("htymw", model.allowedGroups().get(0));
-        Assertions.assertEquals("kfthwxmntei", model.allowedClientApplications().get(0));
+        Assertions.assertEquals("snb", model.allowedGroups().get(0));
+        Assertions.assertEquals("abnmocpcyshu", model.allowedClientApplications().get(0));
     }
 }

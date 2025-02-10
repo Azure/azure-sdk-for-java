@@ -6,42 +6,46 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Rule to restrict incoming IP address. */
+/**
+ * Rule to restrict incoming IP address.
+ */
 @Fluent
-public final class IpSecurityRestrictionRule {
+public final class IpSecurityRestrictionRule implements JsonSerializable<IpSecurityRestrictionRule> {
     /*
      * Name for the IP restriction rule.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Describe the IP restriction rule that is being sent to the container-app. This is an optional field.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * CIDR notation to match incoming IP address
      */
-    @JsonProperty(value = "ipAddressRange", required = true)
     private String ipAddressRange;
 
     /*
      * Allow or Deny rules to determine for incoming IP. Note: Rules can only consist of ALL Allow or ALL Deny
      */
-    @JsonProperty(value = "action", required = true)
     private Action action;
 
-    /** Creates an instance of IpSecurityRestrictionRule class. */
+    /**
+     * Creates an instance of IpSecurityRestrictionRule class.
+     */
     public IpSecurityRestrictionRule() {
     }
 
     /**
      * Get the name property: Name for the IP restriction rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class IpSecurityRestrictionRule {
 
     /**
      * Set the name property: Name for the IP restriction rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the IpSecurityRestrictionRule object itself.
      */
@@ -62,7 +66,7 @@ public final class IpSecurityRestrictionRule {
     /**
      * Get the description property: Describe the IP restriction rule that is being sent to the container-app. This is
      * an optional field.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -72,7 +76,7 @@ public final class IpSecurityRestrictionRule {
     /**
      * Set the description property: Describe the IP restriction rule that is being sent to the container-app. This is
      * an optional field.
-     *
+     * 
      * @param description the description value to set.
      * @return the IpSecurityRestrictionRule object itself.
      */
@@ -83,7 +87,7 @@ public final class IpSecurityRestrictionRule {
 
     /**
      * Get the ipAddressRange property: CIDR notation to match incoming IP address.
-     *
+     * 
      * @return the ipAddressRange value.
      */
     public String ipAddressRange() {
@@ -92,7 +96,7 @@ public final class IpSecurityRestrictionRule {
 
     /**
      * Set the ipAddressRange property: CIDR notation to match incoming IP address.
-     *
+     * 
      * @param ipAddressRange the ipAddressRange value to set.
      * @return the IpSecurityRestrictionRule object itself.
      */
@@ -104,7 +108,7 @@ public final class IpSecurityRestrictionRule {
     /**
      * Get the action property: Allow or Deny rules to determine for incoming IP. Note: Rules can only consist of ALL
      * Allow or ALL Deny.
-     *
+     * 
      * @return the action value.
      */
     public Action action() {
@@ -114,7 +118,7 @@ public final class IpSecurityRestrictionRule {
     /**
      * Set the action property: Allow or Deny rules to determine for incoming IP. Note: Rules can only consist of ALL
      * Allow or ALL Deny.
-     *
+     * 
      * @param action the action value to set.
      * @return the IpSecurityRestrictionRule object itself.
      */
@@ -125,28 +129,71 @@ public final class IpSecurityRestrictionRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model IpSecurityRestrictionRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model IpSecurityRestrictionRule"));
         }
         if (ipAddressRange() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipAddressRange in model IpSecurityRestrictionRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ipAddressRange in model IpSecurityRestrictionRule"));
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property action in model IpSecurityRestrictionRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property action in model IpSecurityRestrictionRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IpSecurityRestrictionRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("ipAddressRange", this.ipAddressRange);
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpSecurityRestrictionRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpSecurityRestrictionRule if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IpSecurityRestrictionRule.
+     */
+    public static IpSecurityRestrictionRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpSecurityRestrictionRule deserializedIpSecurityRestrictionRule = new IpSecurityRestrictionRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIpSecurityRestrictionRule.name = reader.getString();
+                } else if ("ipAddressRange".equals(fieldName)) {
+                    deserializedIpSecurityRestrictionRule.ipAddressRange = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    deserializedIpSecurityRestrictionRule.action = Action.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedIpSecurityRestrictionRule.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpSecurityRestrictionRule;
+        });
+    }
 }

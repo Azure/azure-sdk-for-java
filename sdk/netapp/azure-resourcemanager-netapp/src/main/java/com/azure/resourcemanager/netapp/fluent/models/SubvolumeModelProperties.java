@@ -5,90 +5,68 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Properties which represents actual subvolume model which is stored as a file in the system.
  */
 @Fluent
-public final class SubvolumeModelProperties {
+public final class SubvolumeModelProperties implements JsonSerializable<SubvolumeModelProperties> {
     /*
-     * path
-     * 
      * Path to the subvolume
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
-     * parentpath
-     * 
      * Path to the parent subvolume
      */
-    @JsonProperty(value = "parentPath")
     private String parentPath;
 
     /*
-     * size
-     * 
      * Size of subvolume
      */
-    @JsonProperty(value = "size")
     private Long size;
 
     /*
-     * bytesUsed
-     * 
      * Bytes used
      */
-    @JsonProperty(value = "bytesUsed")
     private Long bytesUsed;
 
     /*
-     * permissions
-     * 
      * Permissions of the subvolume
      */
-    @JsonProperty(value = "permissions")
     private String permissions;
 
     /*
-     * creationTimeStamp
-     * 
      * Creation time and date
      */
-    @JsonProperty(value = "creationTimeStamp")
     private OffsetDateTime creationTimestamp;
 
     /*
-     * accessedTimeStamp
-     * 
      * Most recent access time and date
      */
-    @JsonProperty(value = "accessedTimeStamp")
     private OffsetDateTime accessedTimestamp;
 
     /*
-     * modifiedTimeStamp
-     * 
      * Most recent modification time and date
      */
-    @JsonProperty(value = "modifiedTimeStamp")
     private OffsetDateTime modifiedTimestamp;
 
     /*
-     * changedTimeStamp
-     * 
      * Most recent change time and date
      */
-    @JsonProperty(value = "changedTimeStamp")
     private OffsetDateTime changedTimestamp;
 
     /*
      * Azure lifecycle management
      */
-    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /**
@@ -98,9 +76,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the path property: path
-     * 
-     * Path to the subvolume.
+     * Get the path property: Path to the subvolume.
      * 
      * @return the path value.
      */
@@ -109,9 +85,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the path property: path
-     * 
-     * Path to the subvolume.
+     * Set the path property: Path to the subvolume.
      * 
      * @param path the path value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -122,9 +96,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the parentPath property: parentpath
-     * 
-     * Path to the parent subvolume.
+     * Get the parentPath property: Path to the parent subvolume.
      * 
      * @return the parentPath value.
      */
@@ -133,9 +105,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the parentPath property: parentpath
-     * 
-     * Path to the parent subvolume.
+     * Set the parentPath property: Path to the parent subvolume.
      * 
      * @param parentPath the parentPath value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -146,9 +116,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the size property: size
-     * 
-     * Size of subvolume.
+     * Get the size property: Size of subvolume.
      * 
      * @return the size value.
      */
@@ -157,9 +125,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the size property: size
-     * 
-     * Size of subvolume.
+     * Set the size property: Size of subvolume.
      * 
      * @param size the size value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -170,9 +136,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the bytesUsed property: bytesUsed
-     * 
-     * Bytes used.
+     * Get the bytesUsed property: Bytes used.
      * 
      * @return the bytesUsed value.
      */
@@ -181,9 +145,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the bytesUsed property: bytesUsed
-     * 
-     * Bytes used.
+     * Set the bytesUsed property: Bytes used.
      * 
      * @param bytesUsed the bytesUsed value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -194,9 +156,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the permissions property: permissions
-     * 
-     * Permissions of the subvolume.
+     * Get the permissions property: Permissions of the subvolume.
      * 
      * @return the permissions value.
      */
@@ -205,9 +165,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the permissions property: permissions
-     * 
-     * Permissions of the subvolume.
+     * Set the permissions property: Permissions of the subvolume.
      * 
      * @param permissions the permissions value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -218,9 +176,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the creationTimestamp property: creationTimeStamp
-     * 
-     * Creation time and date.
+     * Get the creationTimestamp property: Creation time and date.
      * 
      * @return the creationTimestamp value.
      */
@@ -229,9 +185,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the creationTimestamp property: creationTimeStamp
-     * 
-     * Creation time and date.
+     * Set the creationTimestamp property: Creation time and date.
      * 
      * @param creationTimestamp the creationTimestamp value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -242,9 +196,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the accessedTimestamp property: accessedTimeStamp
-     * 
-     * Most recent access time and date.
+     * Get the accessedTimestamp property: Most recent access time and date.
      * 
      * @return the accessedTimestamp value.
      */
@@ -253,9 +205,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the accessedTimestamp property: accessedTimeStamp
-     * 
-     * Most recent access time and date.
+     * Set the accessedTimestamp property: Most recent access time and date.
      * 
      * @param accessedTimestamp the accessedTimestamp value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -266,9 +216,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the modifiedTimestamp property: modifiedTimeStamp
-     * 
-     * Most recent modification time and date.
+     * Get the modifiedTimestamp property: Most recent modification time and date.
      * 
      * @return the modifiedTimestamp value.
      */
@@ -277,9 +225,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the modifiedTimestamp property: modifiedTimeStamp
-     * 
-     * Most recent modification time and date.
+     * Set the modifiedTimestamp property: Most recent modification time and date.
      * 
      * @param modifiedTimestamp the modifiedTimestamp value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -290,9 +236,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Get the changedTimestamp property: changedTimeStamp
-     * 
-     * Most recent change time and date.
+     * Get the changedTimestamp property: Most recent change time and date.
      * 
      * @return the changedTimestamp value.
      */
@@ -301,9 +245,7 @@ public final class SubvolumeModelProperties {
     }
 
     /**
-     * Set the changedTimestamp property: changedTimeStamp
-     * 
-     * Most recent change time and date.
+     * Set the changedTimestamp property: Most recent change time and date.
      * 
      * @param changedTimestamp the changedTimestamp value to set.
      * @return the SubvolumeModelProperties object itself.
@@ -339,5 +281,84 @@ public final class SubvolumeModelProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("parentPath", this.parentPath);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeNumberField("bytesUsed", this.bytesUsed);
+        jsonWriter.writeStringField("permissions", this.permissions);
+        jsonWriter.writeStringField("creationTimeStamp",
+            this.creationTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTimestamp));
+        jsonWriter.writeStringField("accessedTimeStamp",
+            this.accessedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.accessedTimestamp));
+        jsonWriter.writeStringField("modifiedTimeStamp",
+            this.modifiedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.modifiedTimestamp));
+        jsonWriter.writeStringField("changedTimeStamp",
+            this.changedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.changedTimestamp));
+        jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubvolumeModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubvolumeModelProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubvolumeModelProperties.
+     */
+    public static SubvolumeModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubvolumeModelProperties deserializedSubvolumeModelProperties = new SubvolumeModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedSubvolumeModelProperties.path = reader.getString();
+                } else if ("parentPath".equals(fieldName)) {
+                    deserializedSubvolumeModelProperties.parentPath = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedSubvolumeModelProperties.size = reader.getNullable(JsonReader::getLong);
+                } else if ("bytesUsed".equals(fieldName)) {
+                    deserializedSubvolumeModelProperties.bytesUsed = reader.getNullable(JsonReader::getLong);
+                } else if ("permissions".equals(fieldName)) {
+                    deserializedSubvolumeModelProperties.permissions = reader.getString();
+                } else if ("creationTimeStamp".equals(fieldName)) {
+                    deserializedSubvolumeModelProperties.creationTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("accessedTimeStamp".equals(fieldName)) {
+                    deserializedSubvolumeModelProperties.accessedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("modifiedTimeStamp".equals(fieldName)) {
+                    deserializedSubvolumeModelProperties.modifiedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("changedTimeStamp".equals(fieldName)) {
+                    deserializedSubvolumeModelProperties.changedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSubvolumeModelProperties.provisioningState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubvolumeModelProperties;
+        });
     }
 }

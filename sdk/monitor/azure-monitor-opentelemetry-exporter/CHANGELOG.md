@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.16 (Unreleased)
+## 1.0.0-beta.33 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,139 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.32 (2025-02-04)
+
+### Other Changes
+
+This package has been deprecated and will no longer be maintained. We encourage you to upgrade to the replacement package, `azure-monitor-opentelemetry-autoconfigure`, to continue receiving updates.
+Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details. 
+Checkout the [Migration Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-opentelemetry-exporter/MIGRATION.md) for detailed instructions on how to update your application code from version 1.0.0-beta.x to the `azure-monitor-opentelemetry-autoconfigure` library.
+
+## 1.0.0-beta.31 (2024-10-23)
+
+### Bugs Fixed
+- [Restore missing diagnostic logging of telemetry payload](https://github.com/Azure/azure-sdk-for-java/pull/42451)
+
+### Other Changes
+- [Update OpenTelemetry SDK to 1.43.0](https://github.com/Azure/azure-sdk-for-java/pull/42493)
+
+## 1.0.0-beta.30 (2024-10-09)
+
+### Bugs Fixed
+
+- [Fixed a regression in 1.0.0-beta.29 where exception type name was not exported](https://github.com/Azure/azure-sdk-for-java/pull/42241)
+
+## 1.0.0-beta.29 (2024-10-02)
+
+### Breaking Changes
+
+⚠️⚠️ The `AzureMonitorExporterBuilder` class has been replaced with the `AzureMonitorExporter` class ([41705](https://github.com/Azure/azure-sdk-for-java/pull/41705) and [42134](https://github.com/Azure/azure-sdk-for-java/pull/42134)):
+
+```java
+AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+AzureMonitorExporter.customize(sdkBuilder);
+OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
+```
+
+See the [Readme](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter) for more details
+
+### Bugs Fixed
+- [Fix a race condition RejectedExecutionException](https://github.com/Azure/azure-sdk-for-java/pull/41927)
+- [Fix a bug where post requests to Live Metrics returned http 400 due to malformed json](https://github.com/Azure/azure-sdk-for-java/pull/42147)
+
+### Other Changes
+- [Better populate exception type name and message from span events](https://github.com/Azure/azure-sdk-for-java/pull/41397)
+- [Update OpenTelemetry SDK to 1.42.1](https://github.com/Azure/azure-sdk-for-java/pull/41931))
+- [Improve the error message for null connection string](https://github.com/Azure/azure-sdk-for-java/pull/42034)
+- [Update message in case of connection failure](https://github.com/Azure/azure-sdk-for-java/pull/42103)
+
+## 1.0.0-beta.28 (2024-08-08)
+
+### Other Changes
+- [Migrate LiveMetric and VM metadata data models to azure-json](https://github.com/Azure/azure-sdk-for-java/pull/41458)
+- [Enable spotless code formatting](https://github.com/Azure/azure-sdk-for-java/pull/41462)
+
+## 1.0.0-beta.27 (2024-08-05)
+
+### Other Changes
+- [Migrate from Jackson to Azure Json](https://github.com/Azure/azure-sdk-for-java/pull/41106)
+
+## 1.0.0-beta.26 (2024-07-24)
+
+### Bugs Fixed
+- [Fix pre-aggregated standard HTTP server metric success calculation](https://github.com/Azure/azure-sdk-for-java/pull/40599)
+- [OOM error caused by AzureMonitorLogRecordExporter](https://github.com/Azure/azure-sdk-for-java/issues/40546)
+  
+### Other Changes
+- [Update OpenTelemetry to 1.40.0](https://github.com/Azure/azure-sdk-for-java/pull/39843)
+- [Improve connection string message](https://github.com/Azure/azure-sdk-for-java/pull/40922)
+
+## 1.0.0-beta.25 (2024-06-28)
+
+### Other changes
+- [ResourceAttributes has been deprecated upstream](https://github.com/Azure/azure-sdk-for-java/pull/40504)
+- [Handle 206](https://github.com/Azure/azure-sdk-for-java/pull/40416)
+
+## 1.0.0-beta.24 (2024-05-29)
+
+### Features Added
+- [Support explicit fixed sampling rate of 100% without ingestion sampling](https://github.com/Azure/azure-sdk-for-java/pull/40338)
+
+## 1.0.0-beta.23 (2024-05-23)
+
+### Other Changes
+- [Only emit `_APPRESOURCEPREVIEW_` custom metric in AKS preview integration](https://github.com/Azure/azure-sdk-for-java/pull/40312)
+- [Update OpenTelemetry to 2.4.0](https://github.com/Azure/azure-sdk-for-java/pull/40289)
+
+## 1.0.0-beta.22 (2024-05-09)
+
+### Bugs Fixed
+- [Fix _OTELRESOURCE_ custom metrics with default resources](https://github.com/Azure/azure-sdk-for-java/pull/39380)
+
+### Other Changes
+- [Update OpenTelemetry to 2.3.0](https://github.com/Azure/azure-sdk-for-java/pull/39843)
+- [Add attach type to sdkVersion](https://github.com/Azure/azure-sdk-for-java/pull/39883)
+- [Emit stable HTTP OTel metrics](https://github.com/Azure/azure-sdk-for-java/pull/39960)
+
+## 1.0.0-beta.21 (2024-03-11)
+
+### Bugs Fixed
+- [Support stable HTTP semconv url.query](https://github.com/Azure/azure-sdk-for-java/pull/39133)
+
+## 1.0.0-beta.20 (2024-03-07)
+
+### Features Added
+- [Support ingestion sampling](https://github.com/Azure/azure-sdk-for-java/pull/39103)
+
+### Bugs Fixed
+- [Avoid warning on sporadic connection failures](https://github.com/Azure/azure-sdk-for-java/pull/39021)
+
+## 1.0.0-beta.19 (2024-02-23)
+
+### Bugs Fixed
+- [Always send item count for logs](https://github.com/Azure/azure-sdk-for-java/pull/38930)
+
+## 1.0.0-beta.18 (2024-02-23)
+
+### Bugs Fixed
+- [Fix min and max values for pre-aggregated metrics](https://github.com/Azure/azure-sdk-for-java/pull/38516)
+- [Fix duplicate exceptions](https://github.com/Azure/azure-sdk-for-java/pull/38687)
+- [Always send item count](https://github.com/Azure/azure-sdk-for-java/pull/38737)
+
+### Other Changes
+- [Update OpenTelemetry to 2.1.0](https://github.com/Azure/azure-sdk-for-java/pull/38808)
+
+## 1.0.0-beta.17 (2024-01-25)
+- [Fix pre-aggregated metrics with stable http semantic convention](https://github.com/Azure/azure-sdk-for-java/pull/38497)
+
+## 1.0.0-beta.16 (2024-01-23)
+
+### Features Added
+
+- [Update OpenTelemetry to 2.0.0](https://github.com/Azure/azure-sdk-for-java/pull/38360)
+- [Support for stable HTTP semconv](https://github.com/Azure/azure-sdk-for-java/pull/37899)
+- [Update otel schema to 1.22.0](https://github.com/Azure/azure-sdk-for-java/pull/38246)
 
 ## 1.0.0-beta.15 (2023-12-18)
 

@@ -5,82 +5,83 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ExecutionStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Response for the backup request. */
+/**
+ * Response for the backup request.
+ */
 @Fluent
-public final class LtrBackupOperationResponseProperties {
+public final class LtrBackupOperationResponseProperties
+    implements JsonSerializable<LtrBackupOperationResponseProperties> {
     /*
      * Size of datasource in bytes
      */
-    @JsonProperty(value = "datasourceSizeInBytes")
     private Long datasourceSizeInBytes;
 
     /*
      * Data transferred in bytes
      */
-    @JsonProperty(value = "dataTransferredInBytes")
     private Long dataTransferredInBytes;
 
     /*
      * Name of Backup operation
      */
-    @JsonProperty(value = "backupName")
     private String backupName;
 
     /*
      * Metadata to be stored in RP. Store everything that will be required to perform a successful restore using this
      * Recovery point. e.g. Versions, DataFormat etc
      */
-    @JsonProperty(value = "backupMetadata")
     private String backupMetadata;
 
     /*
      * Service-set extensible enum indicating the status of operation
      */
-    @JsonProperty(value = "status", required = true)
     private ExecutionStatus status;
 
     /*
      * Start time of the operation.
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * End time of the operation.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * PercentageCompleted
      */
-    @JsonProperty(value = "percentComplete")
     private Double percentComplete;
 
     /*
      * The error code.
      */
-    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private String errorCode;
 
     /*
      * The error message.
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /** Creates an instance of LtrBackupOperationResponseProperties class. */
+    /**
+     * Creates an instance of LtrBackupOperationResponseProperties class.
+     */
     public LtrBackupOperationResponseProperties() {
     }
 
     /**
      * Get the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @return the datasourceSizeInBytes value.
      */
     public Long datasourceSizeInBytes() {
@@ -89,7 +90,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @param datasourceSizeInBytes the datasourceSizeInBytes value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -100,7 +101,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @return the dataTransferredInBytes value.
      */
     public Long dataTransferredInBytes() {
@@ -109,7 +110,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @param dataTransferredInBytes the dataTransferredInBytes value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -120,7 +121,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the backupName property: Name of Backup operation.
-     *
+     * 
      * @return the backupName value.
      */
     public String backupName() {
@@ -129,7 +130,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the backupName property: Name of Backup operation.
-     *
+     * 
      * @param backupName the backupName value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -141,7 +142,7 @@ public final class LtrBackupOperationResponseProperties {
     /**
      * Get the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
      * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
-     *
+     * 
      * @return the backupMetadata value.
      */
     public String backupMetadata() {
@@ -151,7 +152,7 @@ public final class LtrBackupOperationResponseProperties {
     /**
      * Set the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
      * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
-     *
+     * 
      * @param backupMetadata the backupMetadata value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -162,7 +163,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the status property: Service-set extensible enum indicating the status of operation.
-     *
+     * 
      * @return the status value.
      */
     public ExecutionStatus status() {
@@ -171,7 +172,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the status property: Service-set extensible enum indicating the status of operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -182,7 +183,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the startTime property: Start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -191,7 +192,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the startTime property: Start time of the operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -202,7 +203,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the endTime property: End time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -211,7 +212,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the endTime property: End time of the operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -222,7 +223,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the percentComplete property: PercentageCompleted.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Double percentComplete() {
@@ -231,7 +232,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the percentComplete property: PercentageCompleted.
-     *
+     * 
      * @param percentComplete the percentComplete value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -242,7 +243,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the errorCode property: The error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -251,7 +252,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the errorMessage property: The error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -260,23 +261,92 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model LtrBackupOperationResponseProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model LtrBackupOperationResponseProperties"));
         }
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startTime in model LtrBackupOperationResponseProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startTime in model LtrBackupOperationResponseProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LtrBackupOperationResponseProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeNumberField("datasourceSizeInBytes", this.datasourceSizeInBytes);
+        jsonWriter.writeNumberField("dataTransferredInBytes", this.dataTransferredInBytes);
+        jsonWriter.writeStringField("backupName", this.backupName);
+        jsonWriter.writeStringField("backupMetadata", this.backupMetadata);
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeNumberField("percentComplete", this.percentComplete);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LtrBackupOperationResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LtrBackupOperationResponseProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LtrBackupOperationResponseProperties.
+     */
+    public static LtrBackupOperationResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LtrBackupOperationResponseProperties deserializedLtrBackupOperationResponseProperties
+                = new LtrBackupOperationResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedLtrBackupOperationResponseProperties.status
+                        = ExecutionStatus.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedLtrBackupOperationResponseProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("datasourceSizeInBytes".equals(fieldName)) {
+                    deserializedLtrBackupOperationResponseProperties.datasourceSizeInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("dataTransferredInBytes".equals(fieldName)) {
+                    deserializedLtrBackupOperationResponseProperties.dataTransferredInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("backupName".equals(fieldName)) {
+                    deserializedLtrBackupOperationResponseProperties.backupName = reader.getString();
+                } else if ("backupMetadata".equals(fieldName)) {
+                    deserializedLtrBackupOperationResponseProperties.backupMetadata = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedLtrBackupOperationResponseProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedLtrBackupOperationResponseProperties.percentComplete
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedLtrBackupOperationResponseProperties.errorCode = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedLtrBackupOperationResponseProperties.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLtrBackupOperationResponseProperties;
+        });
+    }
 }

@@ -5,52 +5,52 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** teamsTab. */
+/**
+ * teamsTab.
+ */
 @Fluent
 public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
     /*
      * teamsTabConfiguration
      */
-    @JsonProperty(value = "configuration")
     private MicrosoftGraphTeamsTabConfiguration configuration;
 
     /*
      * Name of the tab.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Deep link URL of the tab instance. Read only.
      */
-    @JsonProperty(value = "webUrl")
     private String webUrl;
 
     /*
      * teamsApp
      */
-    @JsonProperty(value = "teamsApp")
     private MicrosoftGraphTeamsApp teamsApp;
 
     /*
      * teamsTab
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTeamsTab class. */
+    /**
+     * Creates an instance of MicrosoftGraphTeamsTab class.
+     */
     public MicrosoftGraphTeamsTab() {
     }
 
     /**
      * Get the configuration property: teamsTabConfiguration.
-     *
+     * 
      * @return the configuration value.
      */
     public MicrosoftGraphTeamsTabConfiguration configuration() {
@@ -59,7 +59,7 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
 
     /**
      * Set the configuration property: teamsTabConfiguration.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the MicrosoftGraphTeamsTab object itself.
      */
@@ -70,7 +70,7 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
 
     /**
      * Get the displayName property: Name of the tab.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -79,7 +79,7 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
 
     /**
      * Set the displayName property: Name of the tab.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphTeamsTab object itself.
      */
@@ -90,7 +90,7 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
 
     /**
      * Get the webUrl property: Deep link URL of the tab instance. Read only.
-     *
+     * 
      * @return the webUrl value.
      */
     public String webUrl() {
@@ -99,7 +99,7 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
 
     /**
      * Set the webUrl property: Deep link URL of the tab instance. Read only.
-     *
+     * 
      * @param webUrl the webUrl value to set.
      * @return the MicrosoftGraphTeamsTab object itself.
      */
@@ -110,7 +110,7 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
 
     /**
      * Get the teamsApp property: teamsApp.
-     *
+     * 
      * @return the teamsApp value.
      */
     public MicrosoftGraphTeamsApp teamsApp() {
@@ -119,7 +119,7 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
 
     /**
      * Set the teamsApp property: teamsApp.
-     *
+     * 
      * @param teamsApp the teamsApp value to set.
      * @return the MicrosoftGraphTeamsTab object itself.
      */
@@ -130,17 +130,16 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: teamsTab.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: teamsTab.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTeamsTab object itself.
      */
@@ -149,15 +148,9 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTeamsTab withId(String id) {
         super.withId(id);
@@ -166,7 +159,7 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -178,5 +171,65 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
         if (teamsApp() != null) {
             teamsApp().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("webUrl", this.webUrl);
+        jsonWriter.writeJsonField("teamsApp", this.teamsApp);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTeamsTab from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTeamsTab if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTeamsTab.
+     */
+    public static MicrosoftGraphTeamsTab fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTeamsTab deserializedMicrosoftGraphTeamsTab = new MicrosoftGraphTeamsTab();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsTab.withId(reader.getString());
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsTab.configuration
+                        = MicrosoftGraphTeamsTabConfiguration.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsTab.displayName = reader.getString();
+                } else if ("webUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsTab.webUrl = reader.getString();
+                } else if ("teamsApp".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsTab.teamsApp = MicrosoftGraphTeamsApp.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTeamsTab.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTeamsTab;
+        });
     }
 }

@@ -4,22 +4,24 @@
 
 package com.azure.resourcemanager.notificationhubs.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Namespaces GetAuthorizationRule. */
+/**
+ * Samples for Namespaces GetAuthorizationRule.
+ */
 public final class NamespacesGetAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/Namespaces/NHNameSpaceAuthorizationRuleGet.json
+     * x-ms-original-file:
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/Namespaces/
+     * NHNameSpaceAuthorizationRuleGet.json
      */
     /**
      * Sample code: NameSpaceAuthorizationRuleGet.
-     *
+     * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void nameSpaceAuthorizationRuleGet(
-        com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager
-            .namespaces()
-            .getAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey", Context.NONE);
+    public static void
+        nameSpaceAuthorizationRuleGet(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
+        manager.namespaces()
+            .getAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
+                com.azure.core.util.Context.NONE);
     }
 }

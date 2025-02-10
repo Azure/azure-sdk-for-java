@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
 import com.azure.resourcemanager.security.models.SettingName;
 
-/** An instance of this class provides access to all the operations defined in SettingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SettingsClient.
+ */
 public interface SettingsClient {
     /**
      * Settings about different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subscription settings list as paginated response with {@link PagedIterable}.
@@ -26,7 +28,7 @@ public interface SettingsClient {
 
     /**
      * Settings about different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,7 +40,7 @@ public interface SettingsClient {
 
     /**
      * Settings of different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @param settingName The name of the setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,7 +53,7 @@ public interface SettingsClient {
 
     /**
      * Settings of different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @param settingName The name of the setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -63,7 +65,7 @@ public interface SettingsClient {
 
     /**
      * updating settings about different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @param settingName The name of the setting.
      * @param setting Setting object.
      * @param context The context to associate with this operation.
@@ -77,7 +79,7 @@ public interface SettingsClient {
 
     /**
      * updating settings about different configurations in Microsoft Defender for Cloud.
-     *
+     * 
      * @param settingName The name of the setting.
      * @param setting Setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -21,39 +21,40 @@ public final class HttpDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpDataset model = BinaryData.fromString(
-            "{\"type\":\"HttpFile\",\"typeProperties\":{\"relativeUrl\":\"datatfctanetinqxd\",\"requestMethod\":\"datapjnezjighduml\",\"requestBody\":\"datamrzwvwetqffux\",\"additionalHeaders\":\"datahuqhngqq\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datasot\",\"deserializer\":\"datalmr\",\"\":{\"bboceksram\":\"datajydeatwxpxbxedh\"}},\"compression\":{\"type\":\"datahlugfnlvvk\",\"level\":\"dataurxdqhvhauimn\",\"\":{\"ivlqcwyzhndqkzst\":\"datakqpwqcnbn\",\"u\":\"datapzecdlceirtah\"}}},\"description\":\"imt\",\"structure\":\"dataumviudzpsjqrm\",\"schema\":\"datajmtunlo\",\"linkedServiceName\":{\"referenceName\":\"wuzebfqvm\",\"parameters\":{\"xeudwkhdl\":\"datahzyenfspe\"}},\"parameters\":{\"jcdevzpfreor\":{\"type\":\"Int\",\"defaultValue\":\"datao\"},\"x\":{\"type\":\"String\",\"defaultValue\":\"datayjmgvrlh\"},\"avuafanefic\":{\"type\":\"SecureString\",\"defaultValue\":\"datajnnhbcjywkdywks\"}},\"annotations\":[\"dataplkossjbzvxp\",\"datawdqzuhfgt\"],\"folder\":{\"name\":\"zhfjdccjny\"},\"\":{\"zthcdbszsbz\":\"datatcuhjcgjtjkntomn\"}}")
+            "{\"type\":\"HttpFile\",\"typeProperties\":{\"relativeUrl\":\"datayhbceevogir\",\"requestMethod\":\"dataw\",\"requestBody\":\"datatvuxeu\",\"additionalHeaders\":\"datadssijuaxxf\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datapkcpws\",\"deserializer\":\"datannmjun\",\"\":{\"bcyc\":\"dataxcltj\",\"sihxvtac\":\"dataqak\",\"pxpry\":\"datawf\"}},\"compression\":{\"type\":\"datasbubwhzqqgugwlux\",\"level\":\"datatqmmkdhwq\",\"\":{\"ucosvkkeer\":\"dataebagmfpkephuj\",\"lgnuee\":\"datavypaxpjpyi\",\"cgmbg\":\"datafpffbuqxknv\",\"zoksgqhb\":\"datayojfchicpare\"}}},\"description\":\"juxilozbl\",\"structure\":\"datarfldfljwtkbptsfl\",\"schema\":\"dataumbmwgftshfg\",\"linkedServiceName\":{\"referenceName\":\"uxuqiagskoi\",\"parameters\":{\"hskxpa\":\"datai\",\"rjugcfeb\":\"datawkgvnlfueyxfzibr\",\"bvr\":\"dataiuce\"}},\"parameters\":{\"qjzlwrduxntp\":{\"type\":\"String\",\"defaultValue\":\"dataknbdzwilsxry\"}},\"annotations\":[\"datagj\"],\"folder\":{\"name\":\"xfwf\"},\"\":{\"upjckiehdm\":\"dataveyfbkqynlzxeme\"}}")
             .toObject(HttpDataset.class);
-        Assertions.assertEquals("imt", model.description());
-        Assertions.assertEquals("wuzebfqvm", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("jcdevzpfreor").type());
-        Assertions.assertEquals("zhfjdccjny", model.folder().name());
+        Assertions.assertEquals("juxilozbl", model.description());
+        Assertions.assertEquals("uxuqiagskoi", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("qjzlwrduxntp").type());
+        Assertions.assertEquals("xfwf", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpDataset model
-            = new HttpDataset().withDescription("imt").withStructure("dataumviudzpsjqrm").withSchema("datajmtunlo")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("wuzebfqvm")
-                    .withParameters(mapOf("xeudwkhdl", "datahzyenfspe")))
-                .withParameters(mapOf("jcdevzpfreor",
-                    new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datao"), "x",
-                    new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datayjmgvrlh"),
-                    "avuafanefic",
-                    new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                        .withDefaultValue("datajnnhbcjywkdywks")))
-                .withAnnotations(Arrays.asList("dataplkossjbzvxp", "datawdqzuhfgt"))
-                .withFolder(new DatasetFolder().withName("zhfjdccjny")).withRelativeUrl("datatfctanetinqxd")
-                .withRequestMethod("datapjnezjighduml").withRequestBody("datamrzwvwetqffux")
-                .withAdditionalHeaders("datahuqhngqq")
-                .withFormat(new DatasetStorageFormat().withSerializer("datasot").withDeserializer("datalmr")
-                    .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
-                .withCompression(new DatasetCompression().withType("datahlugfnlvvk").withLevel("dataurxdqhvhauimn")
-                    .withAdditionalProperties(mapOf()));
+        HttpDataset model = new HttpDataset().withDescription("juxilozbl")
+            .withStructure("datarfldfljwtkbptsfl")
+            .withSchema("dataumbmwgftshfg")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("uxuqiagskoi")
+                .withParameters(mapOf("hskxpa", "datai", "rjugcfeb", "datawkgvnlfueyxfzibr", "bvr", "dataiuce")))
+            .withParameters(mapOf("qjzlwrduxntp",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataknbdzwilsxry")))
+            .withAnnotations(Arrays.asList("datagj"))
+            .withFolder(new DatasetFolder().withName("xfwf"))
+            .withRelativeUrl("datayhbceevogir")
+            .withRequestMethod("dataw")
+            .withRequestBody("datatvuxeu")
+            .withAdditionalHeaders("datadssijuaxxf")
+            .withFormat(new DatasetStorageFormat().withSerializer("datapkcpws")
+                .withDeserializer("datannmjun")
+                .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
+            .withCompression(new DatasetCompression().withType("datasbubwhzqqgugwlux")
+                .withLevel("datatqmmkdhwq")
+                .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(HttpDataset.class);
-        Assertions.assertEquals("imt", model.description());
-        Assertions.assertEquals("wuzebfqvm", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("jcdevzpfreor").type());
-        Assertions.assertEquals("zhfjdccjny", model.folder().name());
+        Assertions.assertEquals("juxilozbl", model.description());
+        Assertions.assertEquals("uxuqiagskoi", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("qjzlwrduxntp").type());
+        Assertions.assertEquals("xfwf", model.folder().name());
     }
 
     // Use "Map.of" if available

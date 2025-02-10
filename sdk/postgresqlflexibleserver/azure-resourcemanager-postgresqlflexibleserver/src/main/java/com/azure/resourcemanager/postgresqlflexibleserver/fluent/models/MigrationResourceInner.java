@@ -7,9 +7,13 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CancelEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DbServerMetadata;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceDbEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrateRolesEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationSecretParameters;
@@ -19,33 +23,50 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.SourceType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SslMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.StartDataMigrationEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.TriggerCutoverEnum;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Represents a migration resource. */
+/**
+ * Represents a migration resource.
+ */
 @Fluent
 public final class MigrationResourceInner extends Resource {
     /*
      * Migration resource properties.
      */
-    @JsonProperty(value = "properties")
     private MigrationResourceProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of MigrationResourceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MigrationResourceInner class.
+     */
     public MigrationResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Migration resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MigrationResourceProperties innerProperties() {
@@ -54,21 +75,55 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MigrationResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MigrationResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -77,7 +132,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the migrationId property: ID for migration, a GUID.
-     *
+     * 
      * @return the migrationId value.
      */
     public String migrationId() {
@@ -86,7 +141,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the currentStatus property: Current status of migration.
-     *
+     * 
      * @return the currentStatus value.
      */
     public MigrationStatus currentStatus() {
@@ -94,8 +149,31 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
+     * Get the migrationInstanceResourceId property: ResourceId of the private endpoint migration instance.
+     * 
+     * @return the migrationInstanceResourceId value.
+     */
+    public String migrationInstanceResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().migrationInstanceResourceId();
+    }
+
+    /**
+     * Set the migrationInstanceResourceId property: ResourceId of the private endpoint migration instance.
+     * 
+     * @param migrationInstanceResourceId the migrationInstanceResourceId value to set.
+     * @return the MigrationResourceInner object itself.
+     */
+    public MigrationResourceInner withMigrationInstanceResourceId(String migrationInstanceResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrationResourceProperties();
+        }
+        this.innerProperties().withMigrationInstanceResourceId(migrationInstanceResourceId);
+        return this;
+    }
+
+    /**
      * Get the migrationMode property: There are two types of migration modes Online and Offline.
-     *
+     * 
      * @return the migrationMode value.
      */
     public MigrationMode migrationMode() {
@@ -104,7 +182,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Set the migrationMode property: There are two types of migration modes Online and Offline.
-     *
+     * 
      * @param migrationMode the migrationMode value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -118,7 +196,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the migrationOption property: This indicates the supported Migration option for the migration.
-     *
+     * 
      * @return the migrationOption value.
      */
     public MigrationOption migrationOption() {
@@ -127,7 +205,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Set the migrationOption property: This indicates the supported Migration option for the migration.
-     *
+     * 
      * @param migrationOption the migrationOption value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -140,9 +218,9 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Get the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
-     * PostgreSQLSingleServer.
-     *
+     * Get the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM,
+     * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
+     * 
      * @return the sourceType value.
      */
     public SourceType sourceType() {
@@ -150,9 +228,9 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Set the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
-     * PostgreSQLSingleServer.
-     *
+     * Set the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM,
+     * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
+     * 
      * @param sourceType the sourceType value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -167,7 +245,7 @@ public final class MigrationResourceInner extends Resource {
     /**
      * Get the sslMode property: SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and
      * Prefer for other source types.
-     *
+     * 
      * @return the sslMode value.
      */
     public SslMode sslMode() {
@@ -177,7 +255,7 @@ public final class MigrationResourceInner extends Resource {
     /**
      * Set the sslMode property: SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and
      * Prefer for other source types.
-     *
+     * 
      * @param sslMode the sslMode value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -191,7 +269,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the sourceDbServerMetadata property: Metadata of the source database server.
-     *
+     * 
      * @return the sourceDbServerMetadata value.
      */
     public DbServerMetadata sourceDbServerMetadata() {
@@ -200,7 +278,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the targetDbServerMetadata property: Metadata of the target database server.
-     *
+     * 
      * @return the targetDbServerMetadata value.
      */
     public DbServerMetadata targetDbServerMetadata() {
@@ -209,8 +287,9 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the sourceDbServerResourceId property: ResourceId of the source database server in case the sourceType is
-     * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username.
-     *
+     * PostgreSQLSingleServer. For other source types this should be ipaddress:port&#064;username or
+     * hostname:port&#064;username.
+     * 
      * @return the sourceDbServerResourceId value.
      */
     public String sourceDbServerResourceId() {
@@ -219,8 +298,9 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Set the sourceDbServerResourceId property: ResourceId of the source database server in case the sourceType is
-     * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username.
-     *
+     * PostgreSQLSingleServer. For other source types this should be ipaddress:port&#064;username or
+     * hostname:port&#064;username.
+     * 
      * @param sourceDbServerResourceId the sourceDbServerResourceId value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -233,9 +313,9 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
+     * 
      * @return the sourceDbServerFullyQualifiedDomainName value.
      */
     public String sourceDbServerFullyQualifiedDomainName() {
@@ -243,14 +323,14 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
+     * 
      * @param sourceDbServerFullyQualifiedDomainName the sourceDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceInner object itself.
      */
-    public MigrationResourceInner withSourceDbServerFullyQualifiedDomainName(
-        String sourceDbServerFullyQualifiedDomainName) {
+    public MigrationResourceInner
+        withSourceDbServerFullyQualifiedDomainName(String sourceDbServerFullyQualifiedDomainName) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MigrationResourceProperties();
         }
@@ -260,7 +340,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the targetDbServerResourceId property: ResourceId of the source database server.
-     *
+     * 
      * @return the targetDbServerResourceId value.
      */
     public String targetDbServerResourceId() {
@@ -268,9 +348,9 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
+     * 
      * @return the targetDbServerFullyQualifiedDomainName value.
      */
     public String targetDbServerFullyQualifiedDomainName() {
@@ -278,14 +358,14 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
-     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
-     * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name (FQDN) or IP
+     * address. It is a optional value, if customer provide it, migration service will always use it for connection.
+     * 
      * @param targetDbServerFullyQualifiedDomainName the targetDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceInner object itself.
      */
-    public MigrationResourceInner withTargetDbServerFullyQualifiedDomainName(
-        String targetDbServerFullyQualifiedDomainName) {
+    public MigrationResourceInner
+        withTargetDbServerFullyQualifiedDomainName(String targetDbServerFullyQualifiedDomainName) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MigrationResourceProperties();
         }
@@ -295,7 +375,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the secretParameters property: Migration secret parameters.
-     *
+     * 
      * @return the secretParameters value.
      */
     public MigrationSecretParameters secretParameters() {
@@ -304,7 +384,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Set the secretParameters property: Migration secret parameters.
-     *
+     * 
      * @param secretParameters the secretParameters value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -318,7 +398,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the dbsToMigrate property: Number of databases to migrate.
-     *
+     * 
      * @return the dbsToMigrate value.
      */
     public List<String> dbsToMigrate() {
@@ -327,7 +407,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Set the dbsToMigrate property: Number of databases to migrate.
-     *
+     * 
      * @param dbsToMigrate the dbsToMigrate value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -342,7 +422,7 @@ public final class MigrationResourceInner extends Resource {
     /**
      * Get the setupLogicalReplicationOnSourceDbIfNeeded property: Indicates whether to setup
      * LogicalReplicationOnSourceDb, if needed.
-     *
+     * 
      * @return the setupLogicalReplicationOnSourceDbIfNeeded value.
      */
     public LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded() {
@@ -354,7 +434,7 @@ public final class MigrationResourceInner extends Resource {
     /**
      * Set the setupLogicalReplicationOnSourceDbIfNeeded property: Indicates whether to setup
      * LogicalReplicationOnSourceDb, if needed.
-     *
+     * 
      * @param setupLogicalReplicationOnSourceDbIfNeeded the setupLogicalReplicationOnSourceDbIfNeeded value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -371,7 +451,7 @@ public final class MigrationResourceInner extends Resource {
      * Get the overwriteDbsInTarget property: Indicates whether the databases on the target server can be overwritten,
      * if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the
      * database already exists.
-     *
+     * 
      * @return the overwriteDbsInTarget value.
      */
     public OverwriteDbsInTargetEnum overwriteDbsInTarget() {
@@ -382,7 +462,7 @@ public final class MigrationResourceInner extends Resource {
      * Set the overwriteDbsInTarget property: Indicates whether the databases on the target server can be overwritten,
      * if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the
      * database already exists.
-     *
+     * 
      * @param overwriteDbsInTarget the overwriteDbsInTarget value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -396,7 +476,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the migrationWindowStartTimeInUtc property: Start time in UTC for migration window.
-     *
+     * 
      * @return the migrationWindowStartTimeInUtc value.
      */
     public OffsetDateTime migrationWindowStartTimeInUtc() {
@@ -405,7 +485,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Set the migrationWindowStartTimeInUtc property: Start time in UTC for migration window.
-     *
+     * 
      * @param migrationWindowStartTimeInUtc the migrationWindowStartTimeInUtc value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -419,7 +499,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the migrationWindowEndTimeInUtc property: End time in UTC for migration window.
-     *
+     * 
      * @return the migrationWindowEndTimeInUtc value.
      */
     public OffsetDateTime migrationWindowEndTimeInUtc() {
@@ -428,7 +508,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Set the migrationWindowEndTimeInUtc property: End time in UTC for migration window.
-     *
+     * 
      * @param migrationWindowEndTimeInUtc the migrationWindowEndTimeInUtc value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -441,8 +521,31 @@ public final class MigrationResourceInner extends Resource {
     }
 
     /**
+     * Get the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @return the migrateRoles value.
+     */
+    public MigrateRolesEnum migrateRoles() {
+        return this.innerProperties() == null ? null : this.innerProperties().migrateRoles();
+    }
+
+    /**
+     * Set the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @param migrateRoles the migrateRoles value to set.
+     * @return the MigrationResourceInner object itself.
+     */
+    public MigrationResourceInner withMigrateRoles(MigrateRolesEnum migrateRoles) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrationResourceProperties();
+        }
+        this.innerProperties().withMigrateRoles(migrateRoles);
+        return this;
+    }
+
+    /**
      * Get the startDataMigration property: Indicates whether the data migration should start right away.
-     *
+     * 
      * @return the startDataMigration value.
      */
     public StartDataMigrationEnum startDataMigration() {
@@ -451,7 +554,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Set the startDataMigration property: Indicates whether the data migration should start right away.
-     *
+     * 
      * @param startDataMigration the startDataMigration value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -465,7 +568,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the triggerCutover property: To trigger cutover for entire migration we need to send this flag as True.
-     *
+     * 
      * @return the triggerCutover value.
      */
     public TriggerCutoverEnum triggerCutover() {
@@ -474,7 +577,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Set the triggerCutover property: To trigger cutover for entire migration we need to send this flag as True.
-     *
+     * 
      * @param triggerCutover the triggerCutover value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -489,7 +592,7 @@ public final class MigrationResourceInner extends Resource {
     /**
      * Get the dbsToTriggerCutoverOn property: When you want to trigger cutover for specific databases send
      * triggerCutover flag as True and database names in this array.
-     *
+     * 
      * @return the dbsToTriggerCutoverOn value.
      */
     public List<String> dbsToTriggerCutoverOn() {
@@ -499,7 +602,7 @@ public final class MigrationResourceInner extends Resource {
     /**
      * Set the dbsToTriggerCutoverOn property: When you want to trigger cutover for specific databases send
      * triggerCutover flag as True and database names in this array.
-     *
+     * 
      * @param dbsToTriggerCutoverOn the dbsToTriggerCutoverOn value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -513,7 +616,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Get the cancel property: To trigger cancel for entire migration we need to send this flag as True.
-     *
+     * 
      * @return the cancel value.
      */
     public CancelEnum cancel() {
@@ -522,7 +625,7 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Set the cancel property: To trigger cancel for entire migration we need to send this flag as True.
-     *
+     * 
      * @param cancel the cancel value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -537,7 +640,7 @@ public final class MigrationResourceInner extends Resource {
     /**
      * Get the dbsToCancelMigrationOn property: When you want to trigger cancel for specific databases send cancel flag
      * as True and database names in this array.
-     *
+     * 
      * @return the dbsToCancelMigrationOn value.
      */
     public List<String> dbsToCancelMigrationOn() {
@@ -547,7 +650,7 @@ public final class MigrationResourceInner extends Resource {
     /**
      * Set the dbsToCancelMigrationOn property: When you want to trigger cancel for specific databases send cancel flag
      * as True and database names in this array.
-     *
+     * 
      * @param dbsToCancelMigrationOn the dbsToCancelMigrationOn value to set.
      * @return the MigrationResourceInner object itself.
      */
@@ -561,12 +664,64 @@ public final class MigrationResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MigrationResourceInner.
+     */
+    public static MigrationResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationResourceInner deserializedMigrationResourceInner = new MigrationResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrationResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMigrationResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMigrationResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedMigrationResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigrationResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMigrationResourceInner.innerProperties = MigrationResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMigrationResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationResourceInner;
+        });
     }
 }

@@ -3,9 +3,9 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeDocumentOptions;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
-import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
+import com.azure.ai.documentintelligence.models.AnalyzeOperationDetails;
 import com.azure.ai.documentintelligence.models.BoundingRegion;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
 import com.azure.ai.documentintelligence.models.DocumentKeyValueElement;
@@ -40,16 +40,11 @@ public class AnalyzeAddOnKeyValuePair {
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
                 + "sample-forms/invoices/Invoice_1.pdf");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
-                client.beginAnalyzeDocument("prebuilt-layout", null,
-                        null,
-                        null,
-                        Arrays.asList(DocumentAnalysisFeature.KEY_VALUE_PAIRS),
-                        null,
-                        null,
-                        new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
+        SyncPoller<AnalyzeOperationDetails, AnalyzeResult> analyzeLayoutResultPoller =
+                client.beginAnalyzeDocument("prebuilt-layout",
+                        new AnalyzeDocumentOptions(Files.readAllBytes(invoiceDocument.toPath())).setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.KEY_VALUE_PAIRS)));
 
-        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
         analyzeLayoutResult.getKeyValuePairs().forEach(
                 keyValuePair -> {
@@ -61,7 +56,8 @@ public class AnalyzeAddOnKeyValuePair {
                         boundingRegions.forEach(boundingRegion -> {
                             System.out.printf("  Bounding regions page: %s, polygon: %s%n",
                                     boundingRegion.getPageNumber(), boundingRegion.getPolygon());
-                        });                    }
+                        });
+                    }
                     if (value != null) {
                         System.out.println("- Value: " + value.getContent());
                         List<BoundingRegion> boundingRegions = value.getBoundingRegions();

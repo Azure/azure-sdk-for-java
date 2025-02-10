@@ -19,8 +19,14 @@ public final class MetricNamespace {
         MetricsHelper.setMetricNamespaceAccessor(MetricNamespace::setMetricNamespaceProperties);
     }
 
+    /**
+     * Creates an instance of MetricNamespace.
+     */
+    public MetricNamespace() {
+    }
+
     private void setMetricNamespaceProperties(NamespaceClassification classification, String id, String name,
-                                              String fullyQualifiedName, String type) {
+        String fullyQualifiedName, String type) {
         this.classification = classification;
         this.id = id;
         this.name = name;

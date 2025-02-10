@@ -3,9 +3,6 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Defines values for AuthenticationType. */
 public enum AuthenticationType {
     /** Enum value SQL. */
@@ -27,7 +24,6 @@ public enum AuthenticationType {
      * @param value the serialized value to parse.
      * @return the parsed AuthenticationType object, or null if unable to parse.
      */
-    @JsonCreator
     public static AuthenticationType fromString(String value) {
         AuthenticationType[] items = AuthenticationType.values();
         for (AuthenticationType item : items) {
@@ -38,7 +34,6 @@ public enum AuthenticationType {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

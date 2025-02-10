@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Cosmos DB MongoDB collection resource object.
  */
 @Fluent
-public final class MongoIndexKeys {
+public final class MongoIndexKeys implements JsonSerializable<MongoIndexKeys> {
     /*
      * List of keys for each MongoDB collection in the Azure Cosmos DB service
      */
-    @JsonProperty(value = "keys")
     private List<String> keys;
 
     /**
@@ -51,5 +54,42 @@ public final class MongoIndexKeys {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("keys", this.keys, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoIndexKeys from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoIndexKeys if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MongoIndexKeys.
+     */
+    public static MongoIndexKeys fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoIndexKeys deserializedMongoIndexKeys = new MongoIndexKeys();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keys".equals(fieldName)) {
+                    List<String> keys = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMongoIndexKeys.keys = keys;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMongoIndexKeys;
+        });
     }
 }

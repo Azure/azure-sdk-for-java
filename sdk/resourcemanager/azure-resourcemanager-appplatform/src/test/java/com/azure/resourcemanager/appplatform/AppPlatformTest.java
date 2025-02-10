@@ -10,6 +10,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
@@ -33,6 +35,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class AppPlatformTest extends ResourceManagerTestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(AppPlatformTest.class);
+
     protected AppPlatformManager appPlatformManager;
     protected AppServiceManager appServiceManager;
     protected DnsZoneManager dnsZoneManager;
@@ -40,21 +44,10 @@ public class AppPlatformTest extends ResourceManagerTestProxyTestBase {
     protected String rgName = "";
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -71,7 +64,8 @@ public class AppPlatformTest extends ResourceManagerTestProxyTestBase {
     protected void cleanUpResources() {
         try {
             appPlatformManager.resourceManager().resourceGroups().beginDeleteByName(rgName);
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
     }
 
     protected boolean checkRedirect(String url) throws IOException {
@@ -85,10 +79,10 @@ public class AppPlatformTest extends ResourceManagerTestProxyTestBase {
                     if (connection.getResponseCode() / 100 == 3) {
                         return true;
                     }
-                    System.out.printf("Do request to %s with response code %d%n", url, connection.getResponseCode());
+                    LOGGER.verbose("Do request to {} with response code {}", url, connection.getResponseCode());
                 }
             } catch (Exception e) {
-                System.err.printf("Do request to %s with error %s%n", url, e.getMessage());
+                LOGGER.log(LogLevel.VERBOSE, () -> "Do request to " + url + " with error", e);
             } finally {
                 connection.disconnect();
             }
@@ -103,13 +97,13 @@ public class AppPlatformTest extends ResourceManagerTestProxyTestBase {
             try {
                 connection.connect();
                 if (connection.getResponseCode() == 200) {
-                    System.out.printf("Request to %s succeeded%n", url);
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Request to " + url + " succeeded");
                     connection.getInputStream().close();
                     return true;
                 }
-                System.out.printf("Do request to %s with response code %d%n", url, connection.getResponseCode());
+                LOGGER.verbose("Do request to {} with response code {}", url, connection.getResponseCode());
             } catch (Exception e) {
-                System.err.printf("Do request to %s with error %s%n", url, e.getMessage());
+                LOGGER.log(LogLevel.VERBOSE, () -> "Do request to " + url + " with error", e);
             } finally {
                 connection.disconnect();
             }
@@ -119,19 +113,17 @@ public class AppPlatformTest extends ResourceManagerTestProxyTestBase {
     }
 
     protected void allowAllSSL() throws NoSuchAlgorithmException, KeyManagementException {
-        TrustManager[] trustAllCerts = new TrustManager[]{
-            new X509TrustManager() {
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return null;
-                }
-                public void checkClientTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType) {
-                }
-                public void checkServerTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType) {
-                }
+        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return null;
             }
-        };
+
+            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+            }
+
+            public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {
+            }
+        } };
         SSLContext sslContext = SSLContext.getInstance("SSL");
         sslContext.init(null, trustAllCerts, new SecureRandom());
         HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());

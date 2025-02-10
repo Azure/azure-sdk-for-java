@@ -22,22 +22,18 @@ public final class ManagedEnvironmentDiagnosticsImpl implements ManagedEnvironme
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public ManagedEnvironmentDiagnosticsImpl(
-        ManagedEnvironmentDiagnosticsClient innerClient,
+    public ManagedEnvironmentDiagnosticsImpl(ManagedEnvironmentDiagnosticsClient innerClient,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<DiagnosticsCollection> listDetectorsWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
-        Response<DiagnosticsCollectionInner> inner =
-            this.serviceClient().listDetectorsWithResponse(resourceGroupName, environmentName, context);
+    public Response<DiagnosticsCollection> listDetectorsWithResponse(String resourceGroupName, String environmentName,
+        Context context) {
+        Response<DiagnosticsCollectionInner> inner
+            = this.serviceClient().listDetectorsWithResponse(resourceGroupName, environmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DiagnosticsCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,15 +49,12 @@ public final class ManagedEnvironmentDiagnosticsImpl implements ManagedEnvironme
         }
     }
 
-    public Response<Diagnostics> getDetectorWithResponse(
-        String resourceGroupName, String environmentName, String detectorName, Context context) {
-        Response<DiagnosticsInner> inner =
-            this.serviceClient().getDetectorWithResponse(resourceGroupName, environmentName, detectorName, context);
+    public Response<Diagnostics> getDetectorWithResponse(String resourceGroupName, String environmentName,
+        String detectorName, Context context) {
+        Response<DiagnosticsInner> inner
+            = this.serviceClient().getDetectorWithResponse(resourceGroupName, environmentName, detectorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DiagnosticsImpl(inner.getValue(), this.manager()));
         } else {
             return null;

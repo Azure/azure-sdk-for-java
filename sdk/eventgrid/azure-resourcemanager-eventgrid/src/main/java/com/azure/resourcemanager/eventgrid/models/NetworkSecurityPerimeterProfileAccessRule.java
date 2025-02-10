@@ -5,37 +5,38 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.NetworkSecurityPerimeterProfileAccessRuleProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network security perimeter profile access rule.
  */
 @Fluent
-public final class NetworkSecurityPerimeterProfileAccessRule {
+public final class NetworkSecurityPerimeterProfileAccessRule
+    implements JsonSerializable<NetworkSecurityPerimeterProfileAccessRule> {
     /*
      * Fully Qualified Arm id for network security perimeter profile access rule.
      */
-    @JsonProperty(value = "fullyQualifiedArmId")
     private String fullyQualifiedArmId;
 
     /*
      * Name for nsp access rule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * nsp access rule type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * NSP access rule properties.
      */
-    @JsonProperty(value = "properties")
     private NetworkSecurityPerimeterProfileAccessRuleProperties innerProperties;
 
     /**
@@ -165,7 +166,7 @@ public final class NetworkSecurityPerimeterProfileAccessRule {
      * 
      * @return the subscriptions value.
      */
-    public List<String> subscriptions() {
+    public List<NetworkSecurityPerimeterSubscription> subscriptions() {
         return this.innerProperties() == null ? null : this.innerProperties().subscriptions();
     }
 
@@ -175,7 +176,8 @@ public final class NetworkSecurityPerimeterProfileAccessRule {
      * @param subscriptions the subscriptions value to set.
      * @return the NetworkSecurityPerimeterProfileAccessRule object itself.
      */
-    public NetworkSecurityPerimeterProfileAccessRule withSubscriptions(List<String> subscriptions) {
+    public NetworkSecurityPerimeterProfileAccessRule
+        withSubscriptions(List<NetworkSecurityPerimeterSubscription> subscriptions) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkSecurityPerimeterProfileAccessRuleProperties();
         }
@@ -286,5 +288,52 @@ public final class NetworkSecurityPerimeterProfileAccessRule {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fullyQualifiedArmId", this.fullyQualifiedArmId);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkSecurityPerimeterProfileAccessRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkSecurityPerimeterProfileAccessRule if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkSecurityPerimeterProfileAccessRule.
+     */
+    public static NetworkSecurityPerimeterProfileAccessRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkSecurityPerimeterProfileAccessRule deserializedNetworkSecurityPerimeterProfileAccessRule
+                = new NetworkSecurityPerimeterProfileAccessRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fullyQualifiedArmId".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterProfileAccessRule.fullyQualifiedArmId = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterProfileAccessRule.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterProfileAccessRule.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterProfileAccessRule.innerProperties
+                        = NetworkSecurityPerimeterProfileAccessRuleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkSecurityPerimeterProfileAccessRule;
+        });
     }
 }

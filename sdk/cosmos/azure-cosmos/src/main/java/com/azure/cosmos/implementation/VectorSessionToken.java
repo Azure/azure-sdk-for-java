@@ -30,8 +30,8 @@ import static com.azure.cosmos.implementation.Utils.ValueHolder;
  */
 public class VectorSessionToken implements ISessionToken {
     private final static Logger logger = LoggerFactory.getLogger(VectorSessionToken.class);
-    private final static char SegmentSeparator = '#';
-    private final static char RegionProgressSeparator = '=';
+    public final static char SegmentSeparator = '#';
+    public final static char RegionProgressSeparator = '=';
 
     private final long version;
     private final long globalLsn;
@@ -132,7 +132,12 @@ public class VectorSessionToken implements ISessionToken {
 
         if (other.version == this.version && other.localLsnByRegion.size() != this.localLsnByRegion.size()) {
             throw new InternalServerErrorException(
-                    String.format(RMResources.InvalidRegionsInSessionToken, this.sessionToken, other.sessionToken));
+                    Exceptions.getInternalServerErrorMessage(
+                        String.format(
+                            RMResources.InvalidRegionsInSessionToken,
+                            this.sessionToken,
+                            other.sessionToken)),
+                    HttpConstants.SubStatusCodes.INVALID_REGIONS_IN_SESSION_TOKEN);
         }
 
         for (Map.Entry<Integer, Long> kvp : other.localLsnByRegion.entrySet()) {
@@ -146,7 +151,13 @@ public class VectorSessionToken implements ISessionToken {
                 // Region mismatch can be ignored only if this session token version is smaller than other session token version
                 if (this.version == other.version) {
                     throw new InternalServerErrorException(
-                            String.format(RMResources.InvalidRegionsInSessionToken, this.sessionToken, other.sessionToken));
+                            Exceptions.getInternalServerErrorMessage(
+                                String.format(
+                                    RMResources.InvalidRegionsInSessionToken,
+                                    this.sessionToken,
+                                    other.sessionToken)),
+                            HttpConstants.SubStatusCodes.INVALID_REGIONS_IN_SESSION_TOKEN
+                        );
                 } else {
                     // ignore missing region as other session token version > this session token version
                 }
@@ -171,7 +182,12 @@ public class VectorSessionToken implements ISessionToken {
 
         if (this.version == other.version && this.localLsnByRegion.size() != other.localLsnByRegion.size()) {
             throw new InternalServerErrorException(
-                    String.format(RMResources.InvalidRegionsInSessionToken, this.sessionToken, other.sessionToken));
+                Exceptions.getInternalServerErrorMessage(
+                    String.format(
+                        RMResources.InvalidRegionsInSessionToken,
+                        this.sessionToken,
+                        other.sessionToken)),
+                HttpConstants.SubStatusCodes.INVALID_REGIONS_IN_SESSION_TOKEN);
         }
 
         VectorSessionToken sessionTokenWithHigherVersion;
@@ -197,7 +213,12 @@ public class VectorSessionToken implements ISessionToken {
                 highestLocalLsnByRegion.put(regionId, Math.max(localLsn1, localLsn2.v));
             } else if (this.version == other.version) {
                 throw new InternalServerErrorException(
-                        String.format(RMResources.InvalidRegionsInSessionToken, this.sessionToken, other.sessionToken));
+                    Exceptions.getInternalServerErrorMessage(
+                        String.format(
+                            RMResources.InvalidRegionsInSessionToken,
+                            this.sessionToken,
+                            other.sessionToken)),
+                    HttpConstants.SubStatusCodes.INVALID_REGIONS_IN_SESSION_TOKEN);
             } else {
                 highestLocalLsnByRegion.put(regionId, localLsn1);
             }
@@ -211,6 +232,14 @@ public class VectorSessionToken implements ISessionToken {
 
     public String convertToString() {
         return this.sessionToken;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public UnmodifiableMap<Integer, Long> getLocalLsnByRegion() {
+        return localLsnByRegion;
     }
 
     private boolean areRegionProgressEqual(UnmodifiableMap<Integer, Long> other) {
@@ -243,7 +272,7 @@ public class VectorSessionToken implements ISessionToken {
         globalLsn.v = -1L;
 
         if (Strings.isNullOrEmpty(sessionToken)) {
-            logger.warn("SESSION token is empty");
+            logger.info("SESSION token is empty");
             return false;
         }
 
@@ -287,7 +316,7 @@ public class VectorSessionToken implements ISessionToken {
         return true;
     }
 
-    private static boolean tryParseLong(String str, ValueHolder<Long> value) {
+    public static boolean tryParseLong(String str, ValueHolder<Long> value) {
         try {
             value.v = Long.parseLong(str);
             return true;
@@ -296,7 +325,7 @@ public class VectorSessionToken implements ISessionToken {
         }
     }
 
-    private static boolean tryParseInt(String str, ValueHolder<Integer> value) {
+    public static boolean tryParseInt(String str, ValueHolder<Integer> value) {
         try {
             value.v = Integer.parseInt(str);
             return true;

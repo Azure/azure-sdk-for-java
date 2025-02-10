@@ -6,43 +6,48 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Describes the target region information.
  */
 @Fluent
-public final class TargetRegion {
+public final class TargetRegion implements JsonSerializable<TargetRegion> {
     /*
      * The name of the region.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The number of replicas of the Image Version to be created per region. This property is updatable.
      */
-    @JsonProperty(value = "regionalReplicaCount")
     private Integer regionalReplicaCount;
 
     /*
      * Specifies the storage account type to be used to store the image. This property is not updatable.
      */
-    @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
 
     /*
      * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery
      * artifact.
      */
-    @JsonProperty(value = "encryption")
     private EncryptionImages encryption;
 
     /*
      * Contains the flag setting to hide an image when users specify version='latest'
      */
-    @JsonProperty(value = "excludeFromLatest")
     private Boolean excludeFromLatest;
+
+    /*
+     * List of storage sku with replica count to create direct drive replicas.
+     */
+    private List<AdditionalReplicaSet> additionalReplicaSets;
 
     /**
      * Creates an instance of TargetRegion class.
@@ -71,8 +76,8 @@ public final class TargetRegion {
     }
 
     /**
-     * Get the regionalReplicaCount property: The number of replicas of the Image Version to be created per region.
-     * This property is updatable.
+     * Get the regionalReplicaCount property: The number of replicas of the Image Version to be created per region. This
+     * property is updatable.
      * 
      * @return the regionalReplicaCount value.
      */
@@ -81,8 +86,8 @@ public final class TargetRegion {
     }
 
     /**
-     * Set the regionalReplicaCount property: The number of replicas of the Image Version to be created per region.
-     * This property is updatable.
+     * Set the regionalReplicaCount property: The number of replicas of the Image Version to be created per region. This
+     * property is updatable.
      * 
      * @param regionalReplicaCount the regionalReplicaCount value to set.
      * @return the TargetRegion object itself.
@@ -159,19 +164,98 @@ public final class TargetRegion {
     }
 
     /**
+     * Get the additionalReplicaSets property: List of storage sku with replica count to create direct drive replicas.
+     * 
+     * @return the additionalReplicaSets value.
+     */
+    public List<AdditionalReplicaSet> additionalReplicaSets() {
+        return this.additionalReplicaSets;
+    }
+
+    /**
+     * Set the additionalReplicaSets property: List of storage sku with replica count to create direct drive replicas.
+     * 
+     * @param additionalReplicaSets the additionalReplicaSets value to set.
+     * @return the TargetRegion object itself.
+     */
+    public TargetRegion withAdditionalReplicaSets(List<AdditionalReplicaSet> additionalReplicaSets) {
+        this.additionalReplicaSets = additionalReplicaSets;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model TargetRegion"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model TargetRegion"));
         }
         if (encryption() != null) {
             encryption().validate();
         }
+        if (additionalReplicaSets() != null) {
+            additionalReplicaSets().forEach(e -> e.validate());
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TargetRegion.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("regionalReplicaCount", this.regionalReplicaCount);
+        jsonWriter.writeStringField("storageAccountType",
+            this.storageAccountType == null ? null : this.storageAccountType.toString());
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeBooleanField("excludeFromLatest", this.excludeFromLatest);
+        jsonWriter.writeArrayField("additionalReplicaSets", this.additionalReplicaSets,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetRegion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetRegion if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TargetRegion.
+     */
+    public static TargetRegion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetRegion deserializedTargetRegion = new TargetRegion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedTargetRegion.name = reader.getString();
+                } else if ("regionalReplicaCount".equals(fieldName)) {
+                    deserializedTargetRegion.regionalReplicaCount = reader.getNullable(JsonReader::getInt);
+                } else if ("storageAccountType".equals(fieldName)) {
+                    deserializedTargetRegion.storageAccountType = StorageAccountType.fromString(reader.getString());
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedTargetRegion.encryption = EncryptionImages.fromJson(reader);
+                } else if ("excludeFromLatest".equals(fieldName)) {
+                    deserializedTargetRegion.excludeFromLatest = reader.getNullable(JsonReader::getBoolean);
+                } else if ("additionalReplicaSets".equals(fieldName)) {
+                    List<AdditionalReplicaSet> additionalReplicaSets
+                        = reader.readArray(reader1 -> AdditionalReplicaSet.fromJson(reader1));
+                    deserializedTargetRegion.additionalReplicaSets = additionalReplicaSets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetRegion;
+        });
+    }
 }

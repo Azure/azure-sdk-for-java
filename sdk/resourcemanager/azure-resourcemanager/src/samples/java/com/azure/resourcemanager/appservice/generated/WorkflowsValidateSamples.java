@@ -16,7 +16,7 @@ import java.io.IOException;
 public final class WorkflowsValidateSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/Workflows_Validate.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Workflows_Validate.json
      */
     /**
      * Sample code: Validate a workflow.
@@ -24,11 +24,16 @@ public final class WorkflowsValidateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void validateAWorkflow(com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
-        azure.webApps().manager().serviceClient().getWorkflows().validateWithResponse("test-resource-group",
-            "test-name", "test-workflow",
-            new Workflow().withDefinition(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                "{\"$schema\":\"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#\",\"actions\":{},\"contentVersion\":\"1.0.0.0\",\"outputs\":{},\"parameters\":{},\"triggers\":{}}",
-                Object.class, SerializerEncoding.JSON)).withKind(Kind.STATEFUL),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWorkflows()
+            .validateWithResponse("test-resource-group", "test-name", "test-workflow",
+                new Workflow().withDefinition(SerializerFactory.createDefaultManagementSerializerAdapter()
+                    .deserialize(
+                        "{\"$schema\":\"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#\",\"actions\":{},\"contentVersion\":\"1.0.0.0\",\"outputs\":{},\"parameters\":{},\"triggers\":{}}",
+                        Object.class, SerializerEncoding.JSON))
+                    .withKind(Kind.STATEFUL),
+                com.azure.core.util.Context.NONE);
     }
 }

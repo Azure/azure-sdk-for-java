@@ -10,13 +10,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maintenance.fluent.models.UpdateInner;
 
-/** An instance of this class provides access to all the operations defined in UpdatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UpdatesClient.
+ */
 public interface UpdatesClient {
     /**
      * Get Updates to resource
-     *
-     * <p>Get updates to resources.
-     *
+     * 
+     * Get updates to resources.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -29,64 +31,53 @@ public interface UpdatesClient {
      * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UpdateInner> listParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
+    PagedIterable<UpdateInner> listParent(String resourceGroupName, String providerName, String resourceParentType,
+        String resourceParentName, String resourceType, String resourceName);
+
+    /**
+     * Get Updates to resource
+     * 
+     * Get updates to resources.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceParentType Resource parent type.
+     * @param resourceParentName Resource parent identifier.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<UpdateInner> listParent(String resourceGroupName, String providerName, String resourceParentType,
+        String resourceParentName, String resourceType, String resourceName, Context context);
+
+    /**
+     * Get Updates to resource
+     * 
+     * Get updates to resources.
+     * 
+     * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
+     * @param resourceType Resource type.
+     * @param resourceName Resource identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<UpdateInner> list(String resourceGroupName, String providerName, String resourceType,
         String resourceName);
 
     /**
      * Get Updates to resource
-     *
-     * <p>Get updates to resources.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param providerName Resource provider name.
-     * @param resourceParentType Resource parent type.
-     * @param resourceParentName Resource parent identifier.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UpdateInner> listParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
-        Context context);
-
-    /**
-     * Get Updates to resource
-     *
-     * <p>Get updates to resources.
-     *
-     * @param resourceGroupName Resource group name.
-     * @param providerName Resource provider name.
-     * @param resourceType Resource type.
-     * @param resourceName Resource identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UpdateInner> list(
-        String resourceGroupName, String providerName, String resourceType, String resourceName);
-
-    /**
-     * Get Updates to resource
-     *
-     * <p>Get updates to resources.
-     *
+     * 
+     * Get updates to resources.
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
@@ -98,6 +89,6 @@ public interface UpdatesClient {
      * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UpdateInner> list(
-        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context);
+    PagedIterable<UpdateInner> list(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, Context context);
 }

@@ -6,20 +6,22 @@ package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.models.DeviceUpdate;
+import com.azure.resourcemanager.sphere.models.DeviceUpdateProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class DeviceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceUpdate model =
-            BinaryData.fromString("{\"properties\":{\"deviceGroupId\":\"rhdwbavxbniw\"}}").toObject(DeviceUpdate.class);
-        Assertions.assertEquals("rhdwbavxbniw", model.deviceGroupId());
+        DeviceUpdate model
+            = BinaryData.fromString("{\"properties\":{\"deviceGroupId\":\"edeojnabc\"}}").toObject(DeviceUpdate.class);
+        Assertions.assertEquals("edeojnabc", model.properties().deviceGroupId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceUpdate model = new DeviceUpdate().withDeviceGroupId("rhdwbavxbniw");
+        DeviceUpdate model
+            = new DeviceUpdate().withProperties(new DeviceUpdateProperties().withDeviceGroupId("edeojnabc"));
         model = BinaryData.fromObject(model).toObject(DeviceUpdate.class);
-        Assertions.assertEquals("rhdwbavxbniw", model.deviceGroupId());
+        Assertions.assertEquals("edeojnabc", model.properties().deviceGroupId());
     }
 }

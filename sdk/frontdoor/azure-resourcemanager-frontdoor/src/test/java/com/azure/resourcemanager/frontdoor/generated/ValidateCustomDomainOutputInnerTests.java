@@ -10,9 +10,8 @@ import com.azure.resourcemanager.frontdoor.fluent.models.ValidateCustomDomainOut
 public final class ValidateCustomDomainOutputInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateCustomDomainOutputInner model =
-            BinaryData
-                .fromString("{\"customDomainValidated\":false,\"reason\":\"rtfudxepxg\",\"message\":\"agvrvmnpkuk\"}")
+        ValidateCustomDomainOutputInner model
+            = BinaryData.fromString("{\"customDomainValidated\":false,\"reason\":\"xgncxyk\",\"message\":\"djhlimm\"}")
                 .toObject(ValidateCustomDomainOutputInner.class);
     }
 

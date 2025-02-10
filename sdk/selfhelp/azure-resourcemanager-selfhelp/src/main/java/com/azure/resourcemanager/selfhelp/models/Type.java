@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -33,6 +32,11 @@ public final class Type extends ExpandableStringEnum<Type> {
     public static final Type AUTOMATED_CHECK = fromString("AutomatedCheck");
 
     /**
+     * Static value Input for Type.
+     */
+    public static final Type INPUT = fromString("Input");
+
+    /**
      * Creates a new instance of Type value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -47,7 +51,6 @@ public final class Type extends ExpandableStringEnum<Type> {
      * @param name a name to look for.
      * @return the corresponding Type.
      */
-    @JsonCreator
     public static Type fromString(String name) {
         return fromString(name, Type.class);
     }

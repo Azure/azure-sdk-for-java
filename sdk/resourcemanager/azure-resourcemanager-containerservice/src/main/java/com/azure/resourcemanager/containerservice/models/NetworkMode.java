@@ -5,12 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * The network mode Azure CNI is configured with.
- *
+ * 
  * This cannot be specified if networkPlugin is anything other than 'azure'.
  */
 public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
@@ -26,7 +25,7 @@ public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
 
     /**
      * Creates a new instance of NetworkMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,18 +34,17 @@ public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
 
     /**
      * Creates or finds a NetworkMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkMode.
      */
-    @JsonCreator
     public static NetworkMode fromString(String name) {
         return fromString(name, NetworkMode.class);
     }
 
     /**
      * Gets known NetworkMode values.
-     *
+     * 
      * @return known NetworkMode values.
      */
     public static Collection<NetworkMode> values() {

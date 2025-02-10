@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,24 +13,34 @@ import java.util.Collection;
  */
 public final class ManagedRuleExclusionSelectorMatchOperator
     extends ExpandableStringEnum<ManagedRuleExclusionSelectorMatchOperator> {
-    /** Static value Equals for ManagedRuleExclusionSelectorMatchOperator. */
+    /**
+     * Static value Equals for ManagedRuleExclusionSelectorMatchOperator.
+     */
     public static final ManagedRuleExclusionSelectorMatchOperator EQUALS = fromString("Equals");
 
-    /** Static value Contains for ManagedRuleExclusionSelectorMatchOperator. */
+    /**
+     * Static value Contains for ManagedRuleExclusionSelectorMatchOperator.
+     */
     public static final ManagedRuleExclusionSelectorMatchOperator CONTAINS = fromString("Contains");
 
-    /** Static value StartsWith for ManagedRuleExclusionSelectorMatchOperator. */
+    /**
+     * Static value StartsWith for ManagedRuleExclusionSelectorMatchOperator.
+     */
     public static final ManagedRuleExclusionSelectorMatchOperator STARTS_WITH = fromString("StartsWith");
 
-    /** Static value EndsWith for ManagedRuleExclusionSelectorMatchOperator. */
+    /**
+     * Static value EndsWith for ManagedRuleExclusionSelectorMatchOperator.
+     */
     public static final ManagedRuleExclusionSelectorMatchOperator ENDS_WITH = fromString("EndsWith");
 
-    /** Static value EqualsAny for ManagedRuleExclusionSelectorMatchOperator. */
+    /**
+     * Static value EqualsAny for ManagedRuleExclusionSelectorMatchOperator.
+     */
     public static final ManagedRuleExclusionSelectorMatchOperator EQUALS_ANY = fromString("EqualsAny");
 
     /**
      * Creates a new instance of ManagedRuleExclusionSelectorMatchOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +49,17 @@ public final class ManagedRuleExclusionSelectorMatchOperator
 
     /**
      * Creates or finds a ManagedRuleExclusionSelectorMatchOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedRuleExclusionSelectorMatchOperator.
      */
-    @JsonCreator
     public static ManagedRuleExclusionSelectorMatchOperator fromString(String name) {
         return fromString(name, ManagedRuleExclusionSelectorMatchOperator.class);
     }
 
     /**
      * Gets known ManagedRuleExclusionSelectorMatchOperator values.
-     *
+     * 
      * @return known ManagedRuleExclusionSelectorMatchOperator values.
      */
     public static Collection<ManagedRuleExclusionSelectorMatchOperator> values() {

@@ -18,6 +18,7 @@
 
 ```java
 import com.azure.resourcemanager.hardwaresecuritymodules.models.ApiEntityReference;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsmProperties;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.NetworkInterface;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.NetworkProfile;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.Sku;
@@ -26,99 +27,92 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DedicatedHsm CreateOrUpdate. */
+/**
+ * Samples for DedicatedHsm CreateOrUpdate.
+ */
 public final class DedicatedHsmCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
      */
     /**
      * Sample code: Create a new or update an existing payment HSM with management profile.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void createANewOrUpdateAnExistingPaymentHSMWithManagementProfile(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager
-            .dedicatedHsms()
+        manager.dedicatedHsms()
             .define("hsm1")
             .withRegion("westus")
             .withExistingResourceGroup("hsm-group")
+            .withProperties(new DedicatedHsmProperties()
+                .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
+                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.1"))))
+                .withManagementNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
+                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.2"))))
+                .withStampId("stamp01"))
             .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
             .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60))
-            .withNetworkProfile(
-                new NetworkProfile()
-                    .withSubnet(
-                        new ApiEntityReference()
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
-                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.1"))))
-            .withManagementNetworkProfile(
-                new NetworkProfile()
-                    .withSubnet(
-                        new ApiEntityReference()
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
-                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.2"))))
-            .withStampId("stamp01")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/DedicatedHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new or update an existing dedicated HSM.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void createANewOrUpdateAnExistingDedicatedHSM(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager
-            .dedicatedHsms()
+        manager.dedicatedHsms()
             .define("hsm1")
             .withRegion("westus")
             .withExistingResourceGroup("hsm-group")
+            .withProperties(new DedicatedHsmProperties()
+                .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
+                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.1"))))
+                .withStampId("stamp01"))
             .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
             .withSku(new Sku().withName(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790))
-            .withNetworkProfile(
-                new NetworkProfile()
-                    .withSubnet(
-                        new ApiEntityReference()
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
-                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.1"))))
-            .withStampId("stamp01")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/PaymentHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new or update an existing payment HSM.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void createANewOrUpdateAnExistingPaymentHSM(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager
-            .dedicatedHsms()
+        manager.dedicatedHsms()
             .define("hsm1")
             .withRegion("westus")
             .withExistingResourceGroup("hsm-group")
+            .withProperties(new DedicatedHsmProperties()
+                .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
+                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.1"))))
+                .withStampId("stamp01"))
             .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
             .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60))
-            .withNetworkProfile(
-                new NetworkProfile()
-                    .withSubnet(
-                        new ApiEntityReference()
-                            .withId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
-                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.1"))))
-            .withStampId("stamp01")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -135,21 +129,23 @@ public final class DedicatedHsmCreateOrUpdateSamples {
 ### DedicatedHsm_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DedicatedHsm Delete. */
+/**
+ * Samples for DedicatedHsm Delete.
+ */
 public final class DedicatedHsmDeleteSamples {
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_Delete.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/DedicatedHsm_Delete.json
      */
     /**
      * Sample code: Delete a dedicated HSM.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
-    public static void deleteADedicatedHSM(
-        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().delete("hsm-group", "hsm1", Context.NONE);
+    public static void
+        deleteADedicatedHSM(com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.dedicatedHsms().delete("hsm-group", "hsm1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -157,47 +153,53 @@ public final class DedicatedHsmDeleteSamples {
 ### DedicatedHsm_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DedicatedHsm GetByResourceGroup. */
+/**
+ * Samples for DedicatedHsm GetByResourceGroup.
+ */
 public final class DedicatedHsmGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_Get.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/PaymentHsm_Get.json
      */
     /**
      * Sample code: Get a payment HSM.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
-    public static void getAPaymentHSM(
-        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().getByResourceGroupWithResponse("hsm-group", "hsm1", Context.NONE);
+    public static void
+        getAPaymentHSM(com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.dedicatedHsms().getByResourceGroupWithResponse("hsm-group", "hsm1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_Get_With_2018-10-31Preview_Version.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/PaymentHsm_Get_With_2018-10-31Preview_Version.json
      */
     /**
      * Sample code: Get a payment HSM with 2018-10-31Preview api version.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void getAPaymentHSMWith20181031PreviewApiVersion(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().getByResourceGroupWithResponse("hsm-group", "hsm1", Context.NONE);
+        manager.dedicatedHsms().getByResourceGroupWithResponse("hsm-group", "hsm1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_Get.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/DedicatedHsm_Get.json
      */
     /**
      * Sample code: Get a dedicated HSM.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
-    public static void getADedicatedHSM(
-        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().getByResourceGroupWithResponse("hsm-group", "hsm1", Context.NONE);
+    public static void
+        getADedicatedHSM(com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.dedicatedHsms().getByResourceGroupWithResponse("hsm-group", "hsm1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -205,34 +207,38 @@ public final class DedicatedHsmGetByResourceGroupSamples {
 ### DedicatedHsm_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DedicatedHsm List. */
+/**
+ * Samples for DedicatedHsm List.
+ */
 public final class DedicatedHsmListSamples {
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/PaymentHsm_ListBySubscription.json
      */
     /**
      * Sample code: List dedicated HSM devices in a subscription including payment HSM.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void listDedicatedHSMDevicesInASubscriptionIncludingPaymentHSM(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().list(null, Context.NONE);
+        manager.dedicatedHsms().list(null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/DedicatedHsm_ListBySubscription.json
      */
     /**
      * Sample code: List dedicated HSM devices in a subscription.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void listDedicatedHSMDevicesInASubscription(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().list(null, Context.NONE);
+        manager.dedicatedHsms().list(null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -240,34 +246,38 @@ public final class DedicatedHsmListSamples {
 ### DedicatedHsm_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DedicatedHsm ListByResourceGroup. */
+/**
+ * Samples for DedicatedHsm ListByResourceGroup.
+ */
 public final class DedicatedHsmListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/DedicatedHsm_ListByResourceGroup.json
      */
     /**
      * Sample code: List dedicated HSM devices in a resource group.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void listDedicatedHSMDevicesInAResourceGroup(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().listByResourceGroup("hsm-group", null, Context.NONE);
+        manager.dedicatedHsms().listByResourceGroup("hsm-group", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/PaymentHsm_ListByResourceGroup.json
      */
     /**
      * Sample code: List dedicated HSM devices in a resource group including payment HSM.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void listDedicatedHSMDevicesInAResourceGroupIncludingPaymentHSM(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().listByResourceGroup("hsm-group", null, Context.NONE);
+        manager.dedicatedHsms().listByResourceGroup("hsm-group", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -275,21 +285,24 @@ public final class DedicatedHsmListByResourceGroupSamples {
 ### DedicatedHsm_ListOutboundNetworkDependenciesEndpoints
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DedicatedHsm ListOutboundNetworkDependenciesEndpoints. */
+/**
+ * Samples for DedicatedHsm ListOutboundNetworkDependenciesEndpoints.
+ */
 public final class DedicatedHsmListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/GetOutboundNetworkDependenciesEndpointsList.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/GetOutboundNetworkDependenciesEndpointsList.json
      */
     /**
      * Sample code: List OutboundNetworkDependenciesEndpoints by Managed Cluster.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void listOutboundNetworkDependenciesEndpointsByManagedCluster(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.dedicatedHsms().listOutboundNetworkDependenciesEndpoints("hsm-group", "hsm1", Context.NONE);
+        manager.dedicatedHsms()
+            .listOutboundNetworkDependenciesEndpoints("hsm-group", "hsm1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -297,43 +310,51 @@ public final class DedicatedHsmListOutboundNetworkDependenciesEndpointsSamples {
 ### DedicatedHsm_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsm;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DedicatedHsm Update. */
+/**
+ * Samples for DedicatedHsm Update.
+ */
 public final class DedicatedHsmUpdateSamples {
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_Update.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/DedicatedHsm_Update.json
      */
     /**
      * Sample code: Update an existing dedicated HSM.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void updateAnExistingDedicatedHSM(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        DedicatedHsm resource =
-            manager.dedicatedHsms().getByResourceGroupWithResponse("hsm-group", "hsm1", Context.NONE).getValue();
+        DedicatedHsm resource = manager.dedicatedHsms()
+            .getByResourceGroupWithResponse("hsm-group", "hsm1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("Dept", "hsm", "Environment", "dogfood", "Slice", "A")).apply();
     }
 
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_Update.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/PaymentHsm_Update.json
      */
     /**
      * Sample code: Update an existing payment HSM.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void updateAnExistingPaymentHSM(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        DedicatedHsm resource =
-            manager.dedicatedHsms().getByResourceGroupWithResponse("hsm-group", "hsm1", Context.NONE).getValue();
+        DedicatedHsm resource = manager.dedicatedHsms()
+            .getByResourceGroupWithResponse("hsm-group", "hsm1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("Dept", "hsm", "Environment", "dogfood", "Slice", "A")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -350,34 +371,38 @@ public final class DedicatedHsmUpdateSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/PaymentHsm_OperationsList.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/PaymentHsm_OperationsList.json
      */
     /**
      * Sample code: Get a list of Payment HSM operations.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void getAListOfPaymentHSMOperations(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/examples/DedicatedHsm_OperationsList.json
+     * x-ms-original-file:
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/stable/2021-11-30/
+     * examples/DedicatedHsm_OperationsList.json
      */
     /**
      * Sample code: Get a list of Dedicated HSM operations.
-     *
+     * 
      * @param manager Entry point to HardwareSecurityModulesManager.
      */
     public static void getAListOfDedicatedHSMOperations(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesDetachUserProvidedFunctionAppFromStaticSiteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
      * DetachUserProvidedFunctionAppFromStaticSite.json
      */
     /**
@@ -19,7 +19,10 @@ public final class StaticSitesDetachUserProvidedFunctionAppFromStaticSiteSamples
      */
     public static void
         detachTheUserProvidedFunctionAppFromTheStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
             .detachUserProvidedFunctionAppFromStaticSiteWithResponse("rg", "testStaticSite0", "testFunctionApp",
                 com.azure.core.util.Context.NONE);
     }

@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Activation Status. */
+/**
+ * Activation Status.
+ */
 public final class ActivationStatus extends ExpandableStringEnum<ActivationStatus> {
-    /** Static value Active for ActivationStatus. */
+    /**
+     * Static value Active for ActivationStatus.
+     */
     public static final ActivationStatus ACTIVE = fromString("Active");
 
-    /** Static value NotActivated for ActivationStatus. */
+    /**
+     * Static value NotActivated for ActivationStatus.
+     */
     public static final ActivationStatus NOT_ACTIVATED = fromString("NotActivated");
 
-    /** Static value Unknown for ActivationStatus. */
+    /**
+     * Static value Unknown for ActivationStatus.
+     */
     public static final ActivationStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value Failed for ActivationStatus. */
+    /**
+     * Static value Failed for ActivationStatus.
+     */
     public static final ActivationStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of ActivationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ActivationStatus extends ExpandableStringEnum<ActivationStatu
 
     /**
      * Creates or finds a ActivationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActivationStatus.
      */
-    @JsonCreator
     public static ActivationStatus fromString(String name) {
         return fromString(name, ActivationStatus.class);
     }
 
     /**
      * Gets known ActivationStatus values.
-     *
+     * 
      * @return known ActivationStatus values.
      */
     public static Collection<ActivationStatus> values() {

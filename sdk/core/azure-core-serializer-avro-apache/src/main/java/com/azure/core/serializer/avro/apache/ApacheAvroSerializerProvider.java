@@ -47,9 +47,7 @@ public class ApacheAvroSerializerProvider implements AvroSerializerProvider {
 
     @Override
     public AvroSerializer createInstance(String schema) {
-        return new ApacheAvroSerializerBuilder()
-            .schema(schema)
-            .build();
+        return new ApacheAvroSerializerBuilder().schema(schema).build();
     }
 
     @Override

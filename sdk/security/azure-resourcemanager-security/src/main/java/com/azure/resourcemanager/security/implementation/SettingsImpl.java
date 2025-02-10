@@ -29,21 +29,18 @@ public final class SettingsImpl implements Settings {
 
     public PagedIterable<Setting> list() {
         PagedIterable<SettingInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SettingImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SettingImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Setting> list(Context context) {
         PagedIterable<SettingInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SettingImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SettingImpl(inner1, this.manager()));
     }
 
     public Response<Setting> getWithResponse(SettingName settingName, Context context) {
         Response<SettingInner> inner = this.serviceClient().getWithResponse(settingName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SettingImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,10 +59,7 @@ public final class SettingsImpl implements Settings {
     public Response<Setting> updateWithResponse(SettingName settingName, SettingInner setting, Context context) {
         Response<SettingInner> inner = this.serviceClient().updateWithResponse(settingName, setting, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SettingImpl(inner.getValue(), this.manager()));
         } else {
             return null;

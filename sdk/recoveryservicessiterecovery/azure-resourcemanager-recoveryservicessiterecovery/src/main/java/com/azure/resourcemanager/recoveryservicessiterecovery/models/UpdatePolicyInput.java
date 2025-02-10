@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Update policy input. */
+/**
+ * Update policy input.
+ */
 @Fluent
-public final class UpdatePolicyInput {
+public final class UpdatePolicyInput implements JsonSerializable<UpdatePolicyInput> {
     /*
      * The ReplicationProviderSettings.
      */
-    @JsonProperty(value = "properties")
     private UpdatePolicyInputProperties properties;
 
-    /** Creates an instance of UpdatePolicyInput class. */
+    /**
+     * Creates an instance of UpdatePolicyInput class.
+     */
     public UpdatePolicyInput() {
     }
 
     /**
      * Get the properties property: The ReplicationProviderSettings.
-     *
+     * 
      * @return the properties value.
      */
     public UpdatePolicyInputProperties properties() {
@@ -31,7 +38,7 @@ public final class UpdatePolicyInput {
 
     /**
      * Set the properties property: The ReplicationProviderSettings.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdatePolicyInput object itself.
      */
@@ -42,12 +49,48 @@ public final class UpdatePolicyInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdatePolicyInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdatePolicyInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdatePolicyInput.
+     */
+    public static UpdatePolicyInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdatePolicyInput deserializedUpdatePolicyInput = new UpdatePolicyInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUpdatePolicyInput.properties = UpdatePolicyInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdatePolicyInput;
+        });
     }
 }

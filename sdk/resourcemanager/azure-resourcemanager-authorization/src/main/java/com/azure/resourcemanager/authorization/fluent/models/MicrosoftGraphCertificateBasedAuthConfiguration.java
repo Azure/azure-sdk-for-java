@@ -5,36 +5,39 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** certificateBasedAuthConfiguration. */
+/**
+ * certificateBasedAuthConfiguration.
+ */
 @Fluent
 public final class MicrosoftGraphCertificateBasedAuthConfiguration extends MicrosoftGraphEntity {
     /*
      * Collection of certificate authorities which creates a trusted certificate chain.
      */
-    @JsonProperty(value = "certificateAuthorities")
     private List<MicrosoftGraphCertificateAuthority> certificateAuthorities;
 
     /*
      * certificateBasedAuthConfiguration
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphCertificateBasedAuthConfiguration class. */
+    /**
+     * Creates an instance of MicrosoftGraphCertificateBasedAuthConfiguration class.
+     */
     public MicrosoftGraphCertificateBasedAuthConfiguration() {
     }
 
     /**
      * Get the certificateAuthorities property: Collection of certificate authorities which creates a trusted
      * certificate chain.
-     *
+     * 
      * @return the certificateAuthorities value.
      */
     public List<MicrosoftGraphCertificateAuthority> certificateAuthorities() {
@@ -44,47 +47,40 @@ public final class MicrosoftGraphCertificateBasedAuthConfiguration extends Micro
     /**
      * Set the certificateAuthorities property: Collection of certificate authorities which creates a trusted
      * certificate chain.
-     *
+     * 
      * @param certificateAuthorities the certificateAuthorities value to set.
      * @return the MicrosoftGraphCertificateBasedAuthConfiguration object itself.
      */
-    public MicrosoftGraphCertificateBasedAuthConfiguration withCertificateAuthorities(
-        List<MicrosoftGraphCertificateAuthority> certificateAuthorities) {
+    public MicrosoftGraphCertificateBasedAuthConfiguration
+        withCertificateAuthorities(List<MicrosoftGraphCertificateAuthority> certificateAuthorities) {
         this.certificateAuthorities = certificateAuthorities;
         return this;
     }
 
     /**
      * Get the additionalProperties property: certificateBasedAuthConfiguration.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: certificateBasedAuthConfiguration.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphCertificateBasedAuthConfiguration object itself.
      */
-    public MicrosoftGraphCertificateBasedAuthConfiguration withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphCertificateBasedAuthConfiguration
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphCertificateBasedAuthConfiguration withId(String id) {
         super.withId(id);
@@ -93,7 +89,7 @@ public final class MicrosoftGraphCertificateBasedAuthConfiguration extends Micro
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -102,5 +98,60 @@ public final class MicrosoftGraphCertificateBasedAuthConfiguration extends Micro
         if (certificateAuthorities() != null) {
             certificateAuthorities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("certificateAuthorities", this.certificateAuthorities,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphCertificateBasedAuthConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphCertificateBasedAuthConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphCertificateBasedAuthConfiguration.
+     */
+    public static MicrosoftGraphCertificateBasedAuthConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphCertificateBasedAuthConfiguration deserializedMicrosoftGraphCertificateBasedAuthConfiguration
+                = new MicrosoftGraphCertificateBasedAuthConfiguration();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphCertificateBasedAuthConfiguration.withId(reader.getString());
+                } else if ("certificateAuthorities".equals(fieldName)) {
+                    List<MicrosoftGraphCertificateAuthority> certificateAuthorities
+                        = reader.readArray(reader1 -> MicrosoftGraphCertificateAuthority.fromJson(reader1));
+                    deserializedMicrosoftGraphCertificateBasedAuthConfiguration.certificateAuthorities
+                        = certificateAuthorities;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphCertificateBasedAuthConfiguration.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphCertificateBasedAuthConfiguration;
+        });
     }
 }

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DiagnosticsPackages. */
+/**
+ * Resource collection API of DiagnosticsPackages.
+ */
 public interface DiagnosticsPackages {
     /**
      * Creates or updates a diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -21,12 +23,12 @@ public interface DiagnosticsPackages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return diagnostics package resource.
      */
-    DiagnosticsPackage createOrUpdate(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName);
+    DiagnosticsPackage createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        String diagnosticsPackageName);
 
     /**
      * Creates or updates a diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -36,12 +38,12 @@ public interface DiagnosticsPackages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return diagnostics package resource.
      */
-    DiagnosticsPackage createOrUpdate(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName, Context context);
+    DiagnosticsPackage createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        String diagnosticsPackageName, Context context);
 
     /**
      * Gets information about the specified diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -51,12 +53,12 @@ public interface DiagnosticsPackages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified diagnostics package along with {@link Response}.
      */
-    Response<DiagnosticsPackage> getWithResponse(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName, Context context);
+    Response<DiagnosticsPackage> getWithResponse(String resourceGroupName, String packetCoreControlPlaneName,
+        String diagnosticsPackageName, Context context);
 
     /**
      * Gets information about the specified diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -69,7 +71,7 @@ public interface DiagnosticsPackages {
 
     /**
      * Deletes the specified diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -81,7 +83,7 @@ public interface DiagnosticsPackages {
 
     /**
      * Deletes the specified diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -90,12 +92,12 @@ public interface DiagnosticsPackages {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName, Context context);
+    void delete(String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName,
+        Context context);
 
     /**
      * Lists all the diagnostics packages under a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,12 +105,12 @@ public interface DiagnosticsPackages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for diagnostics package API service call as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DiagnosticsPackage> listByPacketCoreControlPlane(
-        String resourceGroupName, String packetCoreControlPlaneName);
+    PagedIterable<DiagnosticsPackage> listByPacketCoreControlPlane(String resourceGroupName,
+        String packetCoreControlPlaneName);
 
     /**
      * Lists all the diagnostics packages under a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -117,6 +119,6 @@ public interface DiagnosticsPackages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for diagnostics package API service call as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DiagnosticsPackage> listByPacketCoreControlPlane(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context);
+    PagedIterable<DiagnosticsPackage> listByPacketCoreControlPlane(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context);
 }

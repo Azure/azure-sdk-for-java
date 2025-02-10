@@ -6,24 +6,27 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerVipSwapRequestFrontendIpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * VIP swap request's frontend IP configuration object.
  */
 @Fluent
-public final class LoadBalancerVipSwapRequestFrontendIpConfiguration {
+public final class LoadBalancerVipSwapRequestFrontendIpConfiguration
+    implements JsonSerializable<LoadBalancerVipSwapRequestFrontendIpConfiguration> {
     /*
      * The ID of frontend IP configuration resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The properties of VIP swap request's frontend IP configuration object.
      */
-    @JsonProperty(value = "properties")
     private LoadBalancerVipSwapRequestFrontendIpConfigurationProperties innerProperties;
 
     /**
@@ -93,5 +96,46 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfiguration {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBalancerVipSwapRequestFrontendIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBalancerVipSwapRequestFrontendIpConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LoadBalancerVipSwapRequestFrontendIpConfiguration.
+     */
+    public static LoadBalancerVipSwapRequestFrontendIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBalancerVipSwapRequestFrontendIpConfiguration deserializedLoadBalancerVipSwapRequestFrontendIpConfiguration
+                = new LoadBalancerVipSwapRequestFrontendIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLoadBalancerVipSwapRequestFrontendIpConfiguration.id = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLoadBalancerVipSwapRequestFrontendIpConfiguration.innerProperties
+                        = LoadBalancerVipSwapRequestFrontendIpConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBalancerVipSwapRequestFrontendIpConfiguration;
+        });
     }
 }

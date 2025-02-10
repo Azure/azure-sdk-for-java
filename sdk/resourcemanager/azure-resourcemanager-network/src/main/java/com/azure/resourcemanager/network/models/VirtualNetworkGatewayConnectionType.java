@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class VirtualNetworkGatewayConnectionType
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkGatewayConnectionType.
      */
-    @JsonCreator
     public static VirtualNetworkGatewayConnectionType fromString(String name) {
         return fromString(name, VirtualNetworkGatewayConnectionType.class);
     }

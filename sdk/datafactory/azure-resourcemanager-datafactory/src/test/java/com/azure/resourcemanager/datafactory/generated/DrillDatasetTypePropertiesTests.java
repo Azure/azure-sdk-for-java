@@ -11,14 +11,15 @@ public final class DrillDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"dataoqejexfd\",\"table\":\"datauhdk\",\"schema\":\"datagywadrklpdyehjr\"}")
+            .fromString("{\"tableName\":\"datanyfowyj\",\"table\":\"dataakkiub\",\"schema\":\"datakittlrgl\"}")
             .toObject(DrillDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DrillDatasetTypeProperties model = new DrillDatasetTypeProperties().withTableName("dataoqejexfd")
-            .withTable("datauhdk").withSchema("datagywadrklpdyehjr");
+        DrillDatasetTypeProperties model = new DrillDatasetTypeProperties().withTableName("datanyfowyj")
+            .withTable("dataakkiub")
+            .withSchema("datakittlrgl");
         model = BinaryData.fromObject(model).toObject(DrillDatasetTypeProperties.class);
     }
 }

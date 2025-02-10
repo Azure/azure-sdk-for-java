@@ -3,20 +3,19 @@
 
 package com.azure.maps.render.models;
 
-import java.util.List;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
+
+import java.util.List;
 
 /**
  * Organize inputs for get map static image
  */
 @Fluent
 public final class MapStaticImageOptions {
-    private RasterTileFormat format;
+    private TilesetId tilesetId;
     private StaticMapLayer layer;
-    private MapImageStyle style;
     private Integer zoom;
     private GeoPosition center;
     private GeoBoundingBox boundingBox;
@@ -28,25 +27,34 @@ public final class MapStaticImageOptions {
     private List<String> path;
 
     /**
-     * Gets raster tile format
-     * @return the {@code RasterTileFormat}
+     * Gets tilesetId
+     *
+     * @return tilesetId
      */
-    public RasterTileFormat getRasterTileFormat() {
-        return format;
+    public TilesetId getTilesetId() {
+        return tilesetId;
     }
 
     /**
-     * Sets reaster tile format
-     * @param rasterTileFormat the {@code RasterTileFormat}
+     * Set tileset id
+     *
+     * @param tilesetId tileset id
      * @return a reference to this {@code MapStaticImageOptions}
      */
-    public MapStaticImageOptions setRasterTileFormat(RasterTileFormat rasterTileFormat) {
-        this.format = rasterTileFormat;
+    public MapStaticImageOptions setTilesetId(TilesetId tilesetId) {
+        this.tilesetId = tilesetId;
         return this;
     }
 
     /**
+     * Creates an instance of {@link MapStaticImageOptions}.
+     */
+    public MapStaticImageOptions() {
+    }
+
+    /**
      * Gets static map layer
+     *
      * @return the {@code StaticMapLayer}
      */
     public StaticMapLayer getStaticMapLayer() {
@@ -55,6 +63,7 @@ public final class MapStaticImageOptions {
 
     /**
      * Sets static map layer
+     *
      * @param staticMapLayer the static map layer {@code StaticMapLayer}
      * @return a reference to this {@code MapStaticImageOptions}
      */
@@ -64,25 +73,8 @@ public final class MapStaticImageOptions {
     }
 
     /**
-     * gets map image style
-     * @return the desired map style
-     */
-    public MapImageStyle getMapImageStyle() {
-        return style;
-    }
-
-    /**
-     * Sets map image style
-     * @param mapImageStyle the desired map style
-     * @return a reference to this {@code MapStaticImageOptions}
-     */
-    public MapStaticImageOptions setMapImageStyle(MapImageStyle mapImageStyle) {
-        this.style = mapImageStyle;
-        return this;
-    }
-
-    /**
      * gets zoom
+     *
      * @return the zoom level
      */
     public Integer getZoom() {
@@ -91,6 +83,7 @@ public final class MapStaticImageOptions {
 
     /**
      * sets zoom
+     *
      * @param zoom the zoom level
      * @return a reference to this {@code MapStaticImageOptions}
      */
@@ -101,6 +94,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets center
+     *
      * @return the center of the image
      */
     public GeoPosition getCenter() {
@@ -109,6 +103,7 @@ public final class MapStaticImageOptions {
 
     /**
      * sets center
+     *
      * @param center center of the image
      * @return a reference to this {@code MapStaticImageOptions}
      */
@@ -119,6 +114,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets bounding box
+     *
      * @return the bounding box of the image
      */
     public GeoBoundingBox getBoundingBox() {
@@ -127,6 +123,7 @@ public final class MapStaticImageOptions {
 
     /**
      * sets bounding box
+     *
      * @param boundingBox the bounding box of the image
      * @return a reference to this {@code MapStaticImageOptions}
      */
@@ -137,6 +134,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets height
+     *
      * @return the height of the image
      */
     public Integer getHeight() {
@@ -145,6 +143,7 @@ public final class MapStaticImageOptions {
 
     /**
      * sets height
+     *
      * @param height the height of the image
      * @return a reference to this {@code MapStaticImageOptions}
      */
@@ -155,6 +154,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets width
+     *
      * @return the width of the image
      */
     public Integer getWidth() {
@@ -163,6 +163,7 @@ public final class MapStaticImageOptions {
 
     /**
      * sets width
+     *
      * @param width the width of the image
      * @return a reference to this {@code MapStaticImageOptions}
      */
@@ -173,6 +174,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets language
+     *
      * @return the language
      */
     public String getLanguage() {
@@ -181,6 +183,7 @@ public final class MapStaticImageOptions {
 
     /**
      * sets language
+     *
      * @param language the language
      * @return a reference to this {@code MapStaticImageOptions}
      */
@@ -191,6 +194,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets localized map view
+     *
      * @return the localized map view
      */
     public LocalizedMapView getLocalizedMapView() {
@@ -199,6 +203,7 @@ public final class MapStaticImageOptions {
 
     /**
      * sets localized map view
+     *
      * @param localizedMapView the localized map view
      * @return a reference to this {@code MapStaticImageOptions}
      */
@@ -209,6 +214,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets pins
+     *
      * @return a list of pins
      */
     public List<String> getPins() {
@@ -217,6 +223,7 @@ public final class MapStaticImageOptions {
 
     /**
      * sets pins
+     *
      * @param pins list of pins
      * @return a reference to this {@code MapStaticImageOptions}
      */
@@ -227,6 +234,7 @@ public final class MapStaticImageOptions {
 
     /**
      * gets path
+     *
      * @return a list representing the path
      */
     public List<String> getPath() {
@@ -235,6 +243,7 @@ public final class MapStaticImageOptions {
 
     /**
      * sets path
+     *
      * @param path the path
      * @return a reference to this {@code MapStaticImageOptions}
      */

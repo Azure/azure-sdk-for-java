@@ -55,4 +55,14 @@ class MaxNumberPartitionKeyComponent implements IPartitionKeyComponent {
     public IPartitionKeyComponent truncate() {
         return this;
     }
+
+    @Override
+    public Object toObject() {
+        return MaxNumber.VALUE;
+    }
+
+    private static class MaxNumber
+    {
+        public static final MaxNumber VALUE = new MaxNumber();
+    }
 }

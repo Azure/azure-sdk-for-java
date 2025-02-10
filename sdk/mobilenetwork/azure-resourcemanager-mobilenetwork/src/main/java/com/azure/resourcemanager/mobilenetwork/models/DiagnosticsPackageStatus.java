@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the diagnostics package collection. */
+/**
+ * The status of the diagnostics package collection.
+ */
 public final class DiagnosticsPackageStatus extends ExpandableStringEnum<DiagnosticsPackageStatus> {
-    /** Static value NotStarted for DiagnosticsPackageStatus. */
+    /**
+     * Static value NotStarted for DiagnosticsPackageStatus.
+     */
     public static final DiagnosticsPackageStatus NOT_STARTED = fromString("NotStarted");
 
-    /** Static value Collecting for DiagnosticsPackageStatus. */
+    /**
+     * Static value Collecting for DiagnosticsPackageStatus.
+     */
     public static final DiagnosticsPackageStatus COLLECTING = fromString("Collecting");
 
-    /** Static value Collected for DiagnosticsPackageStatus. */
+    /**
+     * Static value Collected for DiagnosticsPackageStatus.
+     */
     public static final DiagnosticsPackageStatus COLLECTED = fromString("Collected");
 
-    /** Static value Error for DiagnosticsPackageStatus. */
+    /**
+     * Static value Error for DiagnosticsPackageStatus.
+     */
     public static final DiagnosticsPackageStatus ERROR = fromString("Error");
 
     /**
      * Creates a new instance of DiagnosticsPackageStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class DiagnosticsPackageStatus extends ExpandableStringEnum<Diagnos
 
     /**
      * Creates or finds a DiagnosticsPackageStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiagnosticsPackageStatus.
      */
-    @JsonCreator
     public static DiagnosticsPackageStatus fromString(String name) {
         return fromString(name, DiagnosticsPackageStatus.class);
     }
 
     /**
      * Gets known DiagnosticsPackageStatus values.
-     *
+     * 
      * @return known DiagnosticsPackageStatus values.
      */
     public static Collection<DiagnosticsPackageStatus> values() {

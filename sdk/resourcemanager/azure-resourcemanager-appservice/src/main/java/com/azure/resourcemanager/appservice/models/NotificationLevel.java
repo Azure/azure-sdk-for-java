@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Level indicating how critical this recommendation can impact.
  */
@@ -46,7 +43,6 @@ public enum NotificationLevel {
      * @param value the serialized value to parse.
      * @return the parsed NotificationLevel object, or null if unable to parse.
      */
-    @JsonCreator
     public static NotificationLevel fromString(String value) {
         if (value == null) {
             return null;
@@ -63,7 +59,6 @@ public enum NotificationLevel {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

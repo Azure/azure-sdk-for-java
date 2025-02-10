@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of the IoT Security solution. */
+/**
+ * Status of the IoT Security solution.
+ */
 public final class SecuritySolutionStatus extends ExpandableStringEnum<SecuritySolutionStatus> {
-    /** Static value Enabled for SecuritySolutionStatus. */
+    /**
+     * Static value Enabled for SecuritySolutionStatus.
+     */
     public static final SecuritySolutionStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for SecuritySolutionStatus. */
+    /**
+     * Static value Disabled for SecuritySolutionStatus.
+     */
     public static final SecuritySolutionStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of SecuritySolutionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class SecuritySolutionStatus extends ExpandableStringEnum<SecurityS
 
     /**
      * Creates or finds a SecuritySolutionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecuritySolutionStatus.
      */
-    @JsonCreator
     public static SecuritySolutionStatus fromString(String name) {
         return fromString(name, SecuritySolutionStatus.class);
     }
 
     /**
      * Gets known SecuritySolutionStatus values.
-     *
+     * 
      * @return known SecuritySolutionStatus values.
      */
     public static Collection<SecuritySolutionStatus> values() {

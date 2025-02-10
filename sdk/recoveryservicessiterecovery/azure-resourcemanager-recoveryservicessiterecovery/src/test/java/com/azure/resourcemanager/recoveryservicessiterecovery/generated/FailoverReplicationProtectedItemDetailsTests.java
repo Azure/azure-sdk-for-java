@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class FailoverReplicationProtectedItemDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FailoverReplicationProtectedItemDetails model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"xpzruzythqkk\",\"friendlyName\":\"bg\",\"testVmName\":\"ellv\",\"testVmFriendlyName\":\"nxdmnitmujdtv\",\"networkConnectionStatus\":\"lyymffhmjpddny\",\"networkFriendlyName\":\"zuvrzmzqmz\",\"subnet\":\"rb\",\"recoveryPointId\":\"vnmdyfoeboj\",\"recoveryPointTime\":\"2021-06-09T22:38:27Z\"}")
-                .toObject(FailoverReplicationProtectedItemDetails.class);
+        FailoverReplicationProtectedItemDetails model = BinaryData.fromString(
+            "{\"name\":\"xpzruzythqkk\",\"friendlyName\":\"bg\",\"testVmName\":\"ellv\",\"testVmFriendlyName\":\"nxdmnitmujdtv\",\"networkConnectionStatus\":\"lyymffhmjpddny\",\"networkFriendlyName\":\"zuvrzmzqmz\",\"subnet\":\"rb\",\"recoveryPointId\":\"vnmdyfoeboj\",\"recoveryPointTime\":\"2021-06-09T22:38:27Z\"}")
+            .toObject(FailoverReplicationProtectedItemDetails.class);
         Assertions.assertEquals("xpzruzythqkk", model.name());
         Assertions.assertEquals("bg", model.friendlyName());
         Assertions.assertEquals("ellv", model.testVmName());
@@ -30,9 +28,8 @@ public final class FailoverReplicationProtectedItemDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FailoverReplicationProtectedItemDetails model =
-            new FailoverReplicationProtectedItemDetails()
-                .withName("xpzruzythqkk")
+        FailoverReplicationProtectedItemDetails model
+            = new FailoverReplicationProtectedItemDetails().withName("xpzruzythqkk")
                 .withFriendlyName("bg")
                 .withTestVmName("ellv")
                 .withTestVmFriendlyName("nxdmnitmujdtv")

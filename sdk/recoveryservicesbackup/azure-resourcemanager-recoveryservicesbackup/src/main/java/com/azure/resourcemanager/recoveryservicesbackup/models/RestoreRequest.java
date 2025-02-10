@@ -4,34 +4,164 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** Base class for restore request. Workload-specific restore requests are derived from this class. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = RestoreRequest.class)
-@JsonTypeName("RestoreRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureFileShareRestoreRequest", value = AzureFileShareRestoreRequest.class),
-    @JsonSubTypes.Type(name = "AzureWorkloadRestoreRequest", value = AzureWorkloadRestoreRequest.class),
-    @JsonSubTypes.Type(name = "IaasVMRestoreRequest", value = IaasVMRestoreRequest.class)
-})
-@Immutable
-public class RestoreRequest {
-    /** Creates an instance of RestoreRequest class. */
+/**
+ * Base class for restore request. Workload-specific restore requests are derived from this class.
+ */
+@Fluent
+public class RestoreRequest implements JsonSerializable<RestoreRequest> {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "RestoreRequest";
+
+    /*
+     * ResourceGuardOperationRequests on which LAC check will be performed
+     */
+    private List<String> resourceGuardOperationRequests;
+
+    /**
+     * Creates an instance of RestoreRequest class.
+     */
     public RestoreRequest() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Get the resourceGuardOperationRequests property: ResourceGuardOperationRequests on which LAC check will be
+     * performed.
+     * 
+     * @return the resourceGuardOperationRequests value.
+     */
+    public List<String> resourceGuardOperationRequests() {
+        return this.resourceGuardOperationRequests;
+    }
+
+    /**
+     * Set the resourceGuardOperationRequests property: ResourceGuardOperationRequests on which LAC check will be
+     * performed.
+     * 
+     * @param resourceGuardOperationRequests the resourceGuardOperationRequests value to set.
+     * @return the RestoreRequest object itself.
+     */
+    public RestoreRequest withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        this.resourceGuardOperationRequests = resourceGuardOperationRequests;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", this.resourceGuardOperationRequests,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestoreRequest.
+     */
+    public static RestoreRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureFileShareRestoreRequest".equals(discriminatorValue)) {
+                    return AzureFileShareRestoreRequest.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadRestoreRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadRestoreRequest.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadPointInTimeRestoreRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadPointInTimeRestoreRequest.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSAPHanaRestoreRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSapHanaRestoreRequest.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadSAPHanaPointInTimeRestoreRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSapHanaPointInTimeRestoreRequest
+                        .fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSAPHanaRestoreWithRehydrateRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSapHanaRestoreWithRehydrateRequest.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSQLRestoreRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlRestoreRequest.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadSQLPointInTimeRestoreRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlPointInTimeRestoreRequest.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSQLRestoreWithRehydrateRequest".equals(discriminatorValue)) {
+                    return AzureWorkloadSqlRestoreWithRehydrateRequest.fromJson(readerToUse.reset());
+                } else if ("IaasVMRestoreRequest".equals(discriminatorValue)) {
+                    return IaasVMRestoreRequest.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("IaasVMRestoreWithRehydrationRequest".equals(discriminatorValue)) {
+                    return IaasVMRestoreWithRehydrationRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RestoreRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoreRequest deserializedRestoreRequest = new RestoreRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedRestoreRequest.objectType = reader.getString();
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRestoreRequest.resourceGuardOperationRequests = resourceGuardOperationRequests;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoreRequest;
+        });
     }
 }

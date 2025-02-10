@@ -5,51 +5,52 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The event response message received from the service URI. */
+/**
+ * The event response message received from the service URI.
+ */
 @Fluent
-public final class EventResponseMessage {
+public final class EventResponseMessage implements JsonSerializable<EventResponseMessage> {
     /*
      * The content of the event response message.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * The headers of the event response message.
      */
-    @JsonProperty(value = "headers")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> headers;
 
     /*
      * The reason phrase of the event response message.
      */
-    @JsonProperty(value = "reasonPhrase")
     private String reasonPhrase;
 
     /*
      * The status code of the event response message.
      */
-    @JsonProperty(value = "statusCode")
     private String statusCode;
 
     /*
      * The HTTP message version.
      */
-    @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of EventResponseMessage class. */
+    /**
+     * Creates an instance of EventResponseMessage class.
+     */
     public EventResponseMessage() {
     }
 
     /**
      * Get the content property: The content of the event response message.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -58,7 +59,7 @@ public final class EventResponseMessage {
 
     /**
      * Set the content property: The content of the event response message.
-     *
+     * 
      * @param content the content value to set.
      * @return the EventResponseMessage object itself.
      */
@@ -69,7 +70,7 @@ public final class EventResponseMessage {
 
     /**
      * Get the headers property: The headers of the event response message.
-     *
+     * 
      * @return the headers value.
      */
     public Map<String, String> headers() {
@@ -78,7 +79,7 @@ public final class EventResponseMessage {
 
     /**
      * Set the headers property: The headers of the event response message.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the EventResponseMessage object itself.
      */
@@ -89,7 +90,7 @@ public final class EventResponseMessage {
 
     /**
      * Get the reasonPhrase property: The reason phrase of the event response message.
-     *
+     * 
      * @return the reasonPhrase value.
      */
     public String reasonPhrase() {
@@ -98,7 +99,7 @@ public final class EventResponseMessage {
 
     /**
      * Set the reasonPhrase property: The reason phrase of the event response message.
-     *
+     * 
      * @param reasonPhrase the reasonPhrase value to set.
      * @return the EventResponseMessage object itself.
      */
@@ -109,7 +110,7 @@ public final class EventResponseMessage {
 
     /**
      * Get the statusCode property: The status code of the event response message.
-     *
+     * 
      * @return the statusCode value.
      */
     public String statusCode() {
@@ -118,7 +119,7 @@ public final class EventResponseMessage {
 
     /**
      * Set the statusCode property: The status code of the event response message.
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the EventResponseMessage object itself.
      */
@@ -129,7 +130,7 @@ public final class EventResponseMessage {
 
     /**
      * Get the version property: The HTTP message version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -138,7 +139,7 @@ public final class EventResponseMessage {
 
     /**
      * Set the version property: The HTTP message version.
-     *
+     * 
      * @param version the version value to set.
      * @return the EventResponseMessage object itself.
      */
@@ -149,9 +150,58 @@ public final class EventResponseMessage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("reasonPhrase", this.reasonPhrase);
+        jsonWriter.writeStringField("statusCode", this.statusCode);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventResponseMessage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventResponseMessage if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventResponseMessage.
+     */
+    public static EventResponseMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventResponseMessage deserializedEventResponseMessage = new EventResponseMessage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("content".equals(fieldName)) {
+                    deserializedEventResponseMessage.content = reader.getString();
+                } else if ("headers".equals(fieldName)) {
+                    Map<String, String> headers = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEventResponseMessage.headers = headers;
+                } else if ("reasonPhrase".equals(fieldName)) {
+                    deserializedEventResponseMessage.reasonPhrase = reader.getString();
+                } else if ("statusCode".equals(fieldName)) {
+                    deserializedEventResponseMessage.statusCode = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedEventResponseMessage.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventResponseMessage;
+        });
     }
 }

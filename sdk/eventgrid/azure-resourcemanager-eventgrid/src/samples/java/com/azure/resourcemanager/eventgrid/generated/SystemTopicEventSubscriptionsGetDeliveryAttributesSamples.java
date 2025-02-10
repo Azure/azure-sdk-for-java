@@ -10,7 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class SystemTopicEventSubscriptionsGetDeliveryAttributesSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * SystemTopicEventSubscriptions_GetDeliveryAttributes.json
      */
     /**
@@ -20,7 +20,8 @@ public final class SystemTopicEventSubscriptionsGetDeliveryAttributesSamples {
      */
     public static void systemTopicEventSubscriptionsGetDeliveryAttributes(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.systemTopicEventSubscriptions().getDeliveryAttributesWithResponse("examplerg", "exampleSystemTopic1",
-            "examplesubscription1", com.azure.core.util.Context.NONE);
+        manager.systemTopicEventSubscriptions()
+            .getDeliveryAttributesWithResponse("examplerg", "exampleSystemTopic1", "examplesubscription1",
+                com.azure.core.util.Context.NONE);
     }
 }

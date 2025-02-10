@@ -8,25 +8,68 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VmmServers. */
+/**
+ * Resource collection API of VmmServers.
+ */
 public interface VmmServers {
     /**
-     * Implements VMMServer GET method.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
+     * Implements GET VmmServers in a subscription.
+     * 
+     * List of VmmServers in a subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a VmmServer list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VmmServer> list();
+
+    /**
+     * Implements GET VmmServers in a subscription.
+     * 
+     * List of VmmServers in a subscription.
+     * 
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the VmmServers resource definition.
+     * @return the response of a VmmServer list operation as paginated response with {@link PagedIterable}.
      */
-    VmmServer getByResourceGroup(String resourceGroupName, String vmmServerName);
+    PagedIterable<VmmServer> list(Context context);
 
     /**
-     * Implements VMMServer GET method.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
+     * Implements GET VmmServers in a resource group.
+     * 
+     * List of VmmServers in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a VmmServer list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VmmServer> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Implements GET VmmServers in a resource group.
+     * 
+     * List of VmmServers in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a VmmServer list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VmmServer> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets a VMMServer.
+     * 
+     * Implements VmmServer GET method.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,23 +79,26 @@ public interface VmmServers {
     Response<VmmServer> getByResourceGroupWithResponse(String resourceGroupName, String vmmServerName, Context context);
 
     /**
-     * Deboards the SCVMM fabric from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * Gets a VMMServer.
+     * 
+     * Implements VmmServer GET method.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the VmmServers resource definition.
      */
-    void delete(String resourceGroupName, String vmmServerName, Boolean force);
+    VmmServer getByResourceGroup(String resourceGroupName, String vmmServerName);
 
     /**
-     * Deboards the SCVMM fabric from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
+     * Implements VmmServers DELETE method.
+     * 
+     * Removes the SCVmm fabric from Azure.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -60,65 +106,25 @@ public interface VmmServers {
     void delete(String resourceGroupName, String vmmServerName);
 
     /**
-     * Deboards the SCVMM fabric from Azure.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmmServerName Name of the VMMServer.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * Implements VmmServers DELETE method.
+     * 
+     * Removes the SCVmm fabric from Azure.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmmServerName Name of the VmmServer.
+     * @param force Forces the resource to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String vmmServerName, Boolean force, Context context);
+    void delete(String resourceGroupName, String vmmServerName, ForceDelete force, Context context);
 
     /**
-     * List of VmmServers in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VmmServers as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<VmmServer> listByResourceGroup(String resourceGroupName);
-
-    /**
-     * List of VmmServers in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VmmServers as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<VmmServer> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * List of VmmServers in a subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VmmServers as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<VmmServer> list();
-
-    /**
-     * List of VmmServers in a subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of VmmServers as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<VmmServer> list(Context context);
-
-    /**
-     * Implements VMMServer GET method.
-     *
+     * Gets a VMMServer.
+     * 
+     * Implements VmmServer GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,8 +134,10 @@ public interface VmmServers {
     VmmServer getById(String id);
 
     /**
-     * Implements VMMServer GET method.
-     *
+     * Gets a VMMServer.
+     * 
+     * Implements VmmServer GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,8 +148,10 @@ public interface VmmServers {
     Response<VmmServer> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deboards the SCVMM fabric from Azure.
-     *
+     * Implements VmmServers DELETE method.
+     * 
+     * Removes the SCVmm fabric from Azure.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -150,21 +160,22 @@ public interface VmmServers {
     void deleteById(String id);
 
     /**
-     * Deboards the SCVMM fabric from Azure.
-     *
+     * Implements VmmServers DELETE method.
+     * 
+     * Removes the SCVmm fabric from Azure.
+     * 
      * @param id the resource ID.
-     * @param force Forces the resource to be deleted from azure. The corresponding CR would be attempted to be deleted
-     *     too.
+     * @param force Forces the resource to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Boolean force, Context context);
+    void deleteByIdWithResponse(String id, ForceDelete force, Context context);
 
     /**
      * Begins definition for a new VmmServer resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new VmmServer definition.
      */

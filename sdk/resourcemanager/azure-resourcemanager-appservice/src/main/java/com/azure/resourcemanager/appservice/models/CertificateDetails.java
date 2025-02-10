@@ -5,66 +5,62 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * SSL certificate details.
  */
 @Immutable
-public final class CertificateDetails {
+public final class CertificateDetails implements JsonSerializable<CertificateDetails> {
     /*
      * Certificate Version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private Integer version;
 
     /*
      * Certificate Serial Number.
      */
-    @JsonProperty(value = "serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /*
      * Certificate Thumbprint.
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /*
      * Certificate Subject.
      */
-    @JsonProperty(value = "subject", access = JsonProperty.Access.WRITE_ONLY)
     private String subject;
 
     /*
      * Date Certificate is valid from.
      */
-    @JsonProperty(value = "notBefore", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime notBefore;
 
     /*
      * Date Certificate is valid to.
      */
-    @JsonProperty(value = "notAfter", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime notAfter;
 
     /*
      * Certificate Signature algorithm.
      */
-    @JsonProperty(value = "signatureAlgorithm", access = JsonProperty.Access.WRITE_ONLY)
     private String signatureAlgorithm;
 
     /*
      * Certificate Issuer.
      */
-    @JsonProperty(value = "issuer", access = JsonProperty.Access.WRITE_ONLY)
     private String issuer;
 
     /*
      * Raw certificate data.
      */
-    @JsonProperty(value = "rawData", access = JsonProperty.Access.WRITE_ONLY)
     private String rawData;
 
     /**
@@ -160,5 +156,58 @@ public final class CertificateDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateDetails.
+     */
+    public static CertificateDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateDetails deserializedCertificateDetails = new CertificateDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedCertificateDetails.version = reader.getNullable(JsonReader::getInt);
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedCertificateDetails.serialNumber = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateDetails.thumbprint = reader.getString();
+                } else if ("subject".equals(fieldName)) {
+                    deserializedCertificateDetails.subject = reader.getString();
+                } else if ("notBefore".equals(fieldName)) {
+                    deserializedCertificateDetails.notBefore = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("notAfter".equals(fieldName)) {
+                    deserializedCertificateDetails.notAfter = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("signatureAlgorithm".equals(fieldName)) {
+                    deserializedCertificateDetails.signatureAlgorithm = reader.getString();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedCertificateDetails.issuer = reader.getString();
+                } else if ("rawData".equals(fieldName)) {
+                    deserializedCertificateDetails.rawData = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateDetails;
+        });
     }
 }

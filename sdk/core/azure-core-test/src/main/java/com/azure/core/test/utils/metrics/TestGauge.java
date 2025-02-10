@@ -53,6 +53,7 @@ public class TestGauge implements LongGauge {
         private final Supplier<Long> valueSupplier;
         private final TelemetryAttributes attributes;
         private boolean closed = false;
+
         Subscription(Supplier<Long> value, TelemetryAttributes attributes) {
             this.valueSupplier = value;
             this.attributes = attributes;
@@ -63,7 +64,8 @@ public class TestGauge implements LongGauge {
          */
         public void measure() {
             if (!closed) {
-                measurements.add(new TestMeasurement<>(valueSupplier.get(), (TestTelemetryAttributes) attributes, Context.NONE));
+                measurements.add(
+                    new TestMeasurement<>(valueSupplier.get(), (TestTelemetryAttributes) attributes, Context.NONE));
             }
         }
 

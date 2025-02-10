@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Validation Status. */
+/**
+ * Validation Status.
+ */
 public final class ValidationStatus extends ExpandableStringEnum<ValidationStatus> {
-    /** Static value Invalid for ValidationStatus. */
+    /**
+     * Static value Invalid for ValidationStatus.
+     */
     public static final ValidationStatus INVALID = fromString("Invalid");
 
-    /** Static value Succeeded for ValidationStatus. */
+    /**
+     * Static value Succeeded for ValidationStatus.
+     */
     public static final ValidationStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ValidationStatus. */
+    /**
+     * Static value Failed for ValidationStatus.
+     */
     public static final ValidationStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of ValidationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ValidationStatus extends ExpandableStringEnum<ValidationStatu
 
     /**
      * Creates or finds a ValidationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ValidationStatus.
      */
-    @JsonCreator
     public static ValidationStatus fromString(String name) {
         return fromString(name, ValidationStatus.class);
     }
 
     /**
      * Gets known ValidationStatus values.
-     *
+     * 
      * @return known ValidationStatus values.
      */
     public static Collection<ValidationStatus> values() {

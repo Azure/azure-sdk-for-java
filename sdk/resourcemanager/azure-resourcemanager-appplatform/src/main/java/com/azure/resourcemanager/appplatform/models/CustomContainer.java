@@ -5,54 +5,58 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Custom container payload. */
+/**
+ * Custom container payload.
+ */
 @Fluent
-public final class CustomContainer {
+public final class CustomContainer implements JsonSerializable<CustomContainer> {
     /*
      * The name of the registry that contains the container image
      */
-    @JsonProperty(value = "server")
     private String server;
 
     /*
-     * Container image of the custom container. This should be in the form of
-     * <repository>:<tag> without the server name of the registry
+     * Container image of the custom container. This should be in the form of <repository>:<tag> without the server name
+     * of the registry
      */
-    @JsonProperty(value = "containerImage")
     private String containerImage;
 
     /*
-     * Entrypoint array. Not executed within a shell. The docker image's
-     * ENTRYPOINT is used if this is not provided.
+     * Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided.
      */
-    @JsonProperty(value = "command")
     private List<String> command;
 
     /*
-     * Arguments to the entrypoint. The docker image's CMD is used if this is
-     * not provided.
+     * Arguments to the entrypoint. The docker image's CMD is used if this is not provided.
      */
-    @JsonProperty(value = "args")
     private List<String> args;
 
     /*
      * Credential of the image registry
      */
-    @JsonProperty(value = "imageRegistryCredential")
     private ImageRegistryCredential imageRegistryCredential;
 
     /*
-     * Language framework of the container image uploaded
+     * Language framework of the container image uploaded. Supported values: "springboot", "", null.
      */
-    @JsonProperty(value = "languageFramework")
     private String languageFramework;
 
     /**
+     * Creates an instance of CustomContainer class.
+     */
+    public CustomContainer() {
+    }
+
+    /**
      * Get the server property: The name of the registry that contains the container image.
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -61,7 +65,7 @@ public final class CustomContainer {
 
     /**
      * Set the server property: The name of the registry that contains the container image.
-     *
+     * 
      * @param server the server value to set.
      * @return the CustomContainer object itself.
      */
@@ -73,7 +77,7 @@ public final class CustomContainer {
     /**
      * Get the containerImage property: Container image of the custom container. This should be in the form of
      * &lt;repository&gt;:&lt;tag&gt; without the server name of the registry.
-     *
+     * 
      * @return the containerImage value.
      */
     public String containerImage() {
@@ -83,7 +87,7 @@ public final class CustomContainer {
     /**
      * Set the containerImage property: Container image of the custom container. This should be in the form of
      * &lt;repository&gt;:&lt;tag&gt; without the server name of the registry.
-     *
+     * 
      * @param containerImage the containerImage value to set.
      * @return the CustomContainer object itself.
      */
@@ -95,7 +99,7 @@ public final class CustomContainer {
     /**
      * Get the command property: Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if
      * this is not provided.
-     *
+     * 
      * @return the command value.
      */
     public List<String> command() {
@@ -105,7 +109,7 @@ public final class CustomContainer {
     /**
      * Set the command property: Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if
      * this is not provided.
-     *
+     * 
      * @param command the command value to set.
      * @return the CustomContainer object itself.
      */
@@ -116,7 +120,7 @@ public final class CustomContainer {
 
     /**
      * Get the args property: Arguments to the entrypoint. The docker image's CMD is used if this is not provided.
-     *
+     * 
      * @return the args value.
      */
     public List<String> args() {
@@ -125,7 +129,7 @@ public final class CustomContainer {
 
     /**
      * Set the args property: Arguments to the entrypoint. The docker image's CMD is used if this is not provided.
-     *
+     * 
      * @param args the args value to set.
      * @return the CustomContainer object itself.
      */
@@ -136,7 +140,7 @@ public final class CustomContainer {
 
     /**
      * Get the imageRegistryCredential property: Credential of the image registry.
-     *
+     * 
      * @return the imageRegistryCredential value.
      */
     public ImageRegistryCredential imageRegistryCredential() {
@@ -145,7 +149,7 @@ public final class CustomContainer {
 
     /**
      * Set the imageRegistryCredential property: Credential of the image registry.
-     *
+     * 
      * @param imageRegistryCredential the imageRegistryCredential value to set.
      * @return the CustomContainer object itself.
      */
@@ -155,8 +159,9 @@ public final class CustomContainer {
     }
 
     /**
-     * Get the languageFramework property: Language framework of the container image uploaded.
-     *
+     * Get the languageFramework property: Language framework of the container image uploaded. Supported values:
+     * "springboot", "", null.
+     * 
      * @return the languageFramework value.
      */
     public String languageFramework() {
@@ -164,8 +169,9 @@ public final class CustomContainer {
     }
 
     /**
-     * Set the languageFramework property: Language framework of the container image uploaded.
-     *
+     * Set the languageFramework property: Language framework of the container image uploaded. Supported values:
+     * "springboot", "", null.
+     * 
      * @param languageFramework the languageFramework value to set.
      * @return the CustomContainer object itself.
      */
@@ -176,12 +182,65 @@ public final class CustomContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (imageRegistryCredential() != null) {
             imageRegistryCredential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("containerImage", this.containerImage);
+        jsonWriter.writeArrayField("command", this.command, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("args", this.args, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("imageRegistryCredential", this.imageRegistryCredential);
+        jsonWriter.writeStringField("languageFramework", this.languageFramework);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomContainer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomContainer.
+     */
+    public static CustomContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomContainer deserializedCustomContainer = new CustomContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedCustomContainer.server = reader.getString();
+                } else if ("containerImage".equals(fieldName)) {
+                    deserializedCustomContainer.containerImage = reader.getString();
+                } else if ("command".equals(fieldName)) {
+                    List<String> command = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomContainer.command = command;
+                } else if ("args".equals(fieldName)) {
+                    List<String> args = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCustomContainer.args = args;
+                } else if ("imageRegistryCredential".equals(fieldName)) {
+                    deserializedCustomContainer.imageRegistryCredential = ImageRegistryCredential.fromJson(reader);
+                } else if ("languageFramework".equals(fieldName)) {
+                    deserializedCustomContainer.languageFramework = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomContainer;
+        });
     }
 }

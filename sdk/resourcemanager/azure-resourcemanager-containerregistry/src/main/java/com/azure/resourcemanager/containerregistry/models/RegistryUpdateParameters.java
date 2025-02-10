@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters for updating a container registry. */
+/**
+ * The parameters for updating a container registry.
+ */
 @Fluent
-public final class RegistryUpdateParameters {
+public final class RegistryUpdateParameters implements JsonSerializable<RegistryUpdateParameters> {
     /*
      * The identity of the container registry.
      */
-    @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
     /*
      * The tags for the container registry.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The SKU of the container registry.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * The properties that the container registry will be updated with.
      */
-    @JsonProperty(value = "properties")
     private RegistryPropertiesUpdateParameters innerProperties;
 
-    /** Creates an instance of RegistryUpdateParameters class. */
+    /**
+     * Creates an instance of RegistryUpdateParameters class.
+     */
     public RegistryUpdateParameters() {
     }
 
     /**
      * Get the identity property: The identity of the container registry.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -53,7 +55,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the identity property: The identity of the container registry.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -64,7 +66,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the tags property: The tags for the container registry.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -73,7 +75,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the tags property: The tags for the container registry.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -84,7 +86,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the sku property: The SKU of the container registry.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -93,7 +95,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the sku property: The SKU of the container registry.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -104,7 +106,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the innerProperties property: The properties that the container registry will be updated with.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RegistryPropertiesUpdateParameters innerProperties() {
@@ -113,7 +115,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
@@ -122,7 +124,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @param adminUserEnabled the adminUserEnabled value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -136,7 +138,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -145,7 +147,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -159,7 +161,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the policies property: The policies for a container registry.
-     *
+     * 
      * @return the policies value.
      */
     public Policies policies() {
@@ -168,7 +170,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the policies property: The policies for a container registry.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -182,7 +184,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperty encryption() {
@@ -191,7 +193,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -205,7 +207,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @return the dataEndpointEnabled value.
      */
     public Boolean dataEndpointEnabled() {
@@ -214,7 +216,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @param dataEndpointEnabled the dataEndpointEnabled value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -228,7 +230,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -237,7 +239,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -252,7 +254,7 @@ public final class RegistryUpdateParameters {
     /**
      * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
      * registry.
-     *
+     * 
      * @return the networkRuleBypassOptions value.
      */
     public NetworkRuleBypassOptions networkRuleBypassOptions() {
@@ -262,7 +264,7 @@ public final class RegistryUpdateParameters {
     /**
      * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
      * registry.
-     *
+     * 
      * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -276,7 +278,7 @@ public final class RegistryUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -289,5 +291,52 @@ public final class RegistryUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryUpdateParameters.
+     */
+    public static RegistryUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryUpdateParameters deserializedRegistryUpdateParameters = new RegistryUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedRegistryUpdateParameters.identity = IdentityProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRegistryUpdateParameters.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedRegistryUpdateParameters.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRegistryUpdateParameters.innerProperties
+                        = RegistryPropertiesUpdateParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryUpdateParameters;
+        });
     }
 }

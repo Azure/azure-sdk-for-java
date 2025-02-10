@@ -1,16 +1,16 @@
 trigger: none
 
-stages:
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: batch
-      Artifacts:
-        - name: azure-batch
-          groupId: com.microsoft.azure
-          safeName: azurebatch
-      EnvVars:
-        AZURE_BATCH_ACCOUNT: $(java-batch-test-account-name)
-        AZURE_BATCH_ACCESS_KEY: $(java-batch-test-account-access-key)
-        STORAGE_ACCOUNT_KEY: $(java-batch-test-storage-account-key)
-        STORAGE_ACCOUNT_NAME: $(java-batch-test-storage-account-name)
-        AZURE_BATCH_ENDPOINT: https://servbatch.centralus.batch.azure.com
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: batch
+    Artifacts:
+      - name: azure-batch
+        groupId: com.microsoft.azure
+        safeName: azurebatch
+    EnvVars:
+      AZURE_BATCH_ACCOUNT: $(java-batch-test-account-name)
+      AZURE_BATCH_ACCESS_KEY: $(java-batch-test-account-access-key)
+      STORAGE_ACCOUNT_KEY: $(java-batch-test-storage-account-key)
+      STORAGE_ACCOUNT_NAME: $(java-batch-test-storage-account-name)
+      AZURE_BATCH_ENDPOINT: https://servbatch.centralus.batch.azure.com

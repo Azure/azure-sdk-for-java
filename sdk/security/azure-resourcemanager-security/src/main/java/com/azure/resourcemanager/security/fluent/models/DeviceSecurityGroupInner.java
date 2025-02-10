@@ -6,29 +6,50 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AllowlistCustomAlertRule;
 import com.azure.resourcemanager.security.models.DenylistCustomAlertRule;
 import com.azure.resourcemanager.security.models.ThresholdCustomAlertRule;
 import com.azure.resourcemanager.security.models.TimeWindowCustomAlertRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The device security group resource. */
+/**
+ * The device security group resource.
+ */
 @Fluent
 public final class DeviceSecurityGroupInner extends ProxyResource {
     /*
      * Device Security group data
      */
-    @JsonProperty(value = "properties")
     private DeviceSecurityGroupProperties innerProperties;
 
-    /** Creates an instance of DeviceSecurityGroupInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DeviceSecurityGroupInner class.
+     */
     public DeviceSecurityGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Device Security group data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeviceSecurityGroupProperties innerProperties() {
@@ -36,8 +57,38 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the thresholdRules property: The list of custom alert threshold rules.
-     *
+     * 
      * @return the thresholdRules value.
      */
     public List<ThresholdCustomAlertRule> thresholdRules() {
@@ -46,7 +97,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Set the thresholdRules property: The list of custom alert threshold rules.
-     *
+     * 
      * @param thresholdRules the thresholdRules value to set.
      * @return the DeviceSecurityGroupInner object itself.
      */
@@ -60,7 +111,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Get the timeWindowRules property: The list of custom alert time-window rules.
-     *
+     * 
      * @return the timeWindowRules value.
      */
     public List<TimeWindowCustomAlertRule> timeWindowRules() {
@@ -69,7 +120,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Set the timeWindowRules property: The list of custom alert time-window rules.
-     *
+     * 
      * @param timeWindowRules the timeWindowRules value to set.
      * @return the DeviceSecurityGroupInner object itself.
      */
@@ -83,7 +134,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Get the allowlistRules property: The allow-list custom alert rules.
-     *
+     * 
      * @return the allowlistRules value.
      */
     public List<AllowlistCustomAlertRule> allowlistRules() {
@@ -92,7 +143,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Set the allowlistRules property: The allow-list custom alert rules.
-     *
+     * 
      * @param allowlistRules the allowlistRules value to set.
      * @return the DeviceSecurityGroupInner object itself.
      */
@@ -106,7 +157,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Get the denylistRules property: The deny-list custom alert rules.
-     *
+     * 
      * @return the denylistRules value.
      */
     public List<DenylistCustomAlertRule> denylistRules() {
@@ -115,7 +166,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Set the denylistRules property: The deny-list custom alert rules.
-     *
+     * 
      * @param denylistRules the denylistRules value to set.
      * @return the DeviceSecurityGroupInner object itself.
      */
@@ -129,12 +180,56 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceSecurityGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceSecurityGroupInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeviceSecurityGroupInner.
+     */
+    public static DeviceSecurityGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceSecurityGroupInner deserializedDeviceSecurityGroupInner = new DeviceSecurityGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDeviceSecurityGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeviceSecurityGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDeviceSecurityGroupInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDeviceSecurityGroupInner.innerProperties
+                        = DeviceSecurityGroupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceSecurityGroupInner;
+        });
     }
 }

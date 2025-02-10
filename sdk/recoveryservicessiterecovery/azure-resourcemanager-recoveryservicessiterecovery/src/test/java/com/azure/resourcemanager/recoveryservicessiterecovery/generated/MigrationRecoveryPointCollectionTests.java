@@ -14,32 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrationRecoveryPointCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationRecoveryPointCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"recoveryPointTime\":\"2021-08-18T20:27:18Z\",\"recoveryPointType\":\"ApplicationConsistent\"},\"location\":\"htxongmtsavjc\",\"id\":\"pwxqp\",\"name\":\"rknftguvriuhprwm\",\"type\":\"yvxqtayriwwroy\"},{\"properties\":{\"recoveryPointTime\":\"2021-11-30T11:12:46Z\",\"recoveryPointType\":\"NotSpecified\"},\"location\":\"qibycnojvknm\",\"id\":\"fqsgzvahapjy\",\"name\":\"hpvgqz\",\"type\":\"j\"},{\"properties\":{\"recoveryPointTime\":\"2021-04-03T19:52:37Z\",\"recoveryPointType\":\"NotSpecified\"},\"location\":\"mwlxk\",\"id\":\"ug\",\"name\":\"hzovawjvzunlut\",\"type\":\"nnprn\"}],\"nextLink\":\"peilpjzuaejxdu\"}")
-                .toObject(MigrationRecoveryPointCollection.class);
+        MigrationRecoveryPointCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"recoveryPointTime\":\"2021-08-18T20:27:18Z\",\"recoveryPointType\":\"ApplicationConsistent\"},\"location\":\"htxongmtsavjc\",\"id\":\"pwxqp\",\"name\":\"rknftguvriuhprwm\",\"type\":\"yvxqtayriwwroy\"},{\"properties\":{\"recoveryPointTime\":\"2021-11-30T11:12:46Z\",\"recoveryPointType\":\"NotSpecified\"},\"location\":\"qibycnojvknm\",\"id\":\"fqsgzvahapjy\",\"name\":\"hpvgqz\",\"type\":\"j\"},{\"properties\":{\"recoveryPointTime\":\"2021-04-03T19:52:37Z\",\"recoveryPointType\":\"NotSpecified\"},\"location\":\"mwlxk\",\"id\":\"ug\",\"name\":\"hzovawjvzunlut\",\"type\":\"nnprn\"}],\"nextLink\":\"peilpjzuaejxdu\"}")
+            .toObject(MigrationRecoveryPointCollection.class);
         Assertions.assertEquals("htxongmtsavjc", model.value().get(0).location());
         Assertions.assertEquals("peilpjzuaejxdu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrationRecoveryPointCollection model =
-            new MigrationRecoveryPointCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new MigrationRecoveryPointInner()
-                                .withProperties(new MigrationRecoveryPointProperties())
-                                .withLocation("htxongmtsavjc"),
-                            new MigrationRecoveryPointInner()
-                                .withProperties(new MigrationRecoveryPointProperties())
-                                .withLocation("qibycnojvknm"),
-                            new MigrationRecoveryPointInner()
-                                .withProperties(new MigrationRecoveryPointProperties())
-                                .withLocation("mwlxk")))
-                .withNextLink("peilpjzuaejxdu");
+        MigrationRecoveryPointCollection model = new MigrationRecoveryPointCollection().withValue(Arrays.asList(
+            new MigrationRecoveryPointInner().withProperties(new MigrationRecoveryPointProperties())
+                .withLocation("htxongmtsavjc"),
+            new MigrationRecoveryPointInner().withProperties(new MigrationRecoveryPointProperties())
+                .withLocation("qibycnojvknm"),
+            new MigrationRecoveryPointInner().withProperties(new MigrationRecoveryPointProperties())
+                .withLocation("mwlxk")))
+            .withNextLink("peilpjzuaejxdu");
         model = BinaryData.fromObject(model).toObject(MigrationRecoveryPointCollection.class);
         Assertions.assertEquals("htxongmtsavjc", model.value().get(0).location());
         Assertions.assertEquals("peilpjzuaejxdu", model.nextLink());

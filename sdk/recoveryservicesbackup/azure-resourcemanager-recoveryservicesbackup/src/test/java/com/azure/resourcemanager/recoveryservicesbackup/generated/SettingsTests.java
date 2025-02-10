@@ -11,21 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class SettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Settings model =
-            BinaryData
-                .fromString("{\"timeZone\":\"p\",\"issqlcompression\":true,\"isCompression\":false}")
+        Settings model
+            = BinaryData.fromString("{\"timeZone\":\"ljyxgtczhe\",\"issqlcompression\":true,\"isCompression\":true}")
                 .toObject(Settings.class);
-        Assertions.assertEquals("p", model.timeZone());
+        Assertions.assertEquals("ljyxgtczhe", model.timeZone());
         Assertions.assertEquals(true, model.issqlcompression());
-        Assertions.assertEquals(false, model.isCompression());
+        Assertions.assertEquals(true, model.isCompression());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Settings model = new Settings().withTimeZone("p").withIssqlcompression(true).withIsCompression(false);
+        Settings model = new Settings().withTimeZone("ljyxgtczhe").withIssqlcompression(true).withIsCompression(true);
         model = BinaryData.fromObject(model).toObject(Settings.class);
-        Assertions.assertEquals("p", model.timeZone());
+        Assertions.assertEquals("ljyxgtczhe", model.timeZone());
         Assertions.assertEquals(true, model.issqlcompression());
-        Assertions.assertEquals(false, model.isCompression());
+        Assertions.assertEquals(true, model.isCompression());
     }
 }

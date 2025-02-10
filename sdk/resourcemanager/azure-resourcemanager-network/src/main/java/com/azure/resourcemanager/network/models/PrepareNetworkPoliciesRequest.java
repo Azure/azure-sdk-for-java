@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Details of PrepareNetworkPolicies for Subnet.
  */
 @Fluent
-public final class PrepareNetworkPoliciesRequest {
+public final class PrepareNetworkPoliciesRequest implements JsonSerializable<PrepareNetworkPoliciesRequest> {
     /*
      * The name of the service for which subnet is being prepared for.
      */
-    @JsonProperty(value = "serviceName")
     private String serviceName;
 
     /*
      * A list of NetworkIntentPolicyConfiguration.
      */
-    @JsonProperty(value = "networkIntentPolicyConfigurations")
     private List<NetworkIntentPolicyConfiguration> networkIntentPolicyConfigurations;
 
     /**
@@ -81,5 +83,49 @@ public final class PrepareNetworkPoliciesRequest {
         if (networkIntentPolicyConfigurations() != null) {
             networkIntentPolicyConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceName", this.serviceName);
+        jsonWriter.writeArrayField("networkIntentPolicyConfigurations", this.networkIntentPolicyConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrepareNetworkPoliciesRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrepareNetworkPoliciesRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrepareNetworkPoliciesRequest.
+     */
+    public static PrepareNetworkPoliciesRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrepareNetworkPoliciesRequest deserializedPrepareNetworkPoliciesRequest
+                = new PrepareNetworkPoliciesRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceName".equals(fieldName)) {
+                    deserializedPrepareNetworkPoliciesRequest.serviceName = reader.getString();
+                } else if ("networkIntentPolicyConfigurations".equals(fieldName)) {
+                    List<NetworkIntentPolicyConfiguration> networkIntentPolicyConfigurations
+                        = reader.readArray(reader1 -> NetworkIntentPolicyConfiguration.fromJson(reader1));
+                    deserializedPrepareNetworkPoliciesRequest.networkIntentPolicyConfigurations
+                        = networkIntentPolicyConfigurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrepareNetworkPoliciesRequest;
+        });
     }
 }

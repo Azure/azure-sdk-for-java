@@ -21,55 +21,77 @@ public final class WranglingDataFlowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WranglingDataFlow model = BinaryData.fromString(
-            "{\"type\":\"WranglingDataFlow\",\"typeProperties\":{\"sources\":[{\"script\":\"dawsxmrsz\",\"schemaLinkedService\":{\"referenceName\":\"nimx\",\"parameters\":{\"mnb\":\"dataerxrzutylcurza\",\"bjmbnvynfaooeac\":\"dataqaeht\"}},\"name\":\"edcgl\",\"description\":\"akd\",\"dataset\":{\"referenceName\":\"dahzllrqm\",\"parameters\":{\"oiduyqypff\":\"databyx\",\"yhbrjjta\":\"datanoiicsu\",\"sxxhdodp\":\"dataxrdsjrholuqwg\"}},\"linkedService\":{\"referenceName\":\"yblvtbdmvsbyi\",\"parameters\":{\"jfb\":\"datalqpvekmk\",\"gdusxurs\":\"datatlo\",\"iqrizfwihvaan\":\"dataivuxcjkcoqwczs\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"nhjrfdmfd\",\"datasetParameters\":\"datab\",\"parameters\":{\"d\":\"dataxjfwt\",\"fedyuep\":\"datakkauigvmuafmc\",\"eocfkumcfjxok\":\"datavpltidajjvy\",\"svfnkwm\":\"dataelsy\"},\"\":{\"ugjqyckgtxkrdt\":\"datajekrknfd\",\"jdkl\":\"datalcr\",\"svobchkxfp\":\"datatcsubmzoo\",\"nkkw\":\"datahdyslbklglm\"}}}],\"script\":\"qshwyqxridt\",\"documentLocale\":\"saqjmkgx\"},\"description\":\"queu\",\"annotations\":[\"dataztpziizevjykof\",\"dataezefkhkqtwqlepjj\",\"datakca\",\"datafwzcntogffjwaj\"],\"folder\":{\"name\":\"wzvaqkifmxaw\"}}")
+            "{\"type\":\"WranglingDataFlow\",\"typeProperties\":{\"sources\":[{\"script\":\"dusxurs\",\"schemaLinkedService\":{\"referenceName\":\"v\",\"parameters\":{\"coqwczsyiqri\":\"dataj\",\"qtnhjrfd\":\"datafwihvaan\",\"fkkauigvmua\":\"datafdvbbaexxjfwtg\",\"dajjvywe\":\"datamczfedyuepsvplt\"}},\"name\":\"cfkumcfjxo\",\"description\":\"elsy\",\"dataset\":{\"referenceName\":\"vfnkwmygjjekrk\",\"parameters\":{\"rdtulcrcjdklotcs\":\"datarugjqyckgtx\",\"zoonsv\":\"datab\"}},\"linkedService\":{\"referenceName\":\"chkxfpwhdysl\",\"parameters\":{\"wayqshwyqxrid\":\"dataglmnnk\",\"aqjmkgxqwque\":\"datatb\",\"fvezefk\":\"datauylztpziizevjyk\",\"zcntogffjwajnrtw\":\"datakqtwqlepjjzkcasf\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"qkifmxawostfz\",\"datasetParameters\":\"datahrkmjqncfv\",\"parameters\":{\"pvndrwb\":\"datanhemvwfnqqw\",\"ggrssgwjfkain\":\"dataod\",\"ztscbgmusaictds\":\"datamuymvec\"},\"\":{\"ddclzeqozr\":\"datazzohn\",\"exozonynp\":\"datahlbzqixbnjrqvzy\",\"dpabcreuwzosg\":\"datame\"}}},{\"script\":\"xvcvasormrexz\",\"schemaLinkedService\":{\"referenceName\":\"ubewgzygba\",\"parameters\":{\"qhzrtdbak\":\"dataecovs\",\"qsifjmclng\":\"datalimzfvppk\",\"ggorwjoqt\":\"datagnhrkombcdtajdo\"}},\"name\":\"otpvclp\",\"description\":\"yrlmwkptsk\",\"dataset\":{\"referenceName\":\"jgvhxcc\",\"parameters\":{\"g\":\"dataakmkookbput\",\"yakmlwktf\":\"datam\",\"qjimejtgzjxxlfej\":\"datawzkroyrdurxfl\",\"itcdqlhchwhrk\":\"datazuqloiwyayyzivr\"}},\"linkedService\":{\"referenceName\":\"l\",\"parameters\":{\"cjowlyeyzmu\":\"dataibfiplhxfnsm\",\"hnxlzbuwodmachb\":\"datasqc\",\"qplehmumkzdllczd\":\"datavnrpbjrmvg\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"nhkgq\",\"datasetParameters\":\"dataoxsstc\",\"parameters\":{\"j\":\"dataakfrry\"},\"\":{\"mgnukxrke\":\"datahl\",\"bc\":\"datajpequlrlzaudgjt\"}}}],\"script\":\"kkucddwnh\",\"documentLocale\":\"butoucgj\"},\"description\":\"rjwayhicqq\",\"annotations\":[\"datagw\"],\"folder\":{\"name\":\"vlizedvb\"}}")
             .toObject(WranglingDataFlow.class);
-        Assertions.assertEquals("queu", model.description());
-        Assertions.assertEquals("wzvaqkifmxaw", model.folder().name());
-        Assertions.assertEquals("edcgl", model.sources().get(0).name());
-        Assertions.assertEquals("akd", model.sources().get(0).description());
-        Assertions.assertEquals("dahzllrqm", model.sources().get(0).dataset().referenceName());
-        Assertions.assertEquals("yblvtbdmvsbyi", model.sources().get(0).linkedService().referenceName());
+        Assertions.assertEquals("rjwayhicqq", model.description());
+        Assertions.assertEquals("vlizedvb", model.folder().name());
+        Assertions.assertEquals("cfkumcfjxo", model.sources().get(0).name());
+        Assertions.assertEquals("elsy", model.sources().get(0).description());
+        Assertions.assertEquals("vfnkwmygjjekrk", model.sources().get(0).dataset().referenceName());
+        Assertions.assertEquals("chkxfpwhdysl", model.sources().get(0).linkedService().referenceName());
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.sources().get(0).flowlet().type());
-        Assertions.assertEquals("nhjrfdmfd", model.sources().get(0).flowlet().referenceName());
-        Assertions.assertEquals("nimx", model.sources().get(0).schemaLinkedService().referenceName());
-        Assertions.assertEquals("dawsxmrsz", model.sources().get(0).script());
-        Assertions.assertEquals("qshwyqxridt", model.script());
-        Assertions.assertEquals("saqjmkgx", model.documentLocale());
+        Assertions.assertEquals("qkifmxawostfz", model.sources().get(0).flowlet().referenceName());
+        Assertions.assertEquals("v", model.sources().get(0).schemaLinkedService().referenceName());
+        Assertions.assertEquals("dusxurs", model.sources().get(0).script());
+        Assertions.assertEquals("kkucddwnh", model.script());
+        Assertions.assertEquals("butoucgj", model.documentLocale());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WranglingDataFlow model = new WranglingDataFlow().withDescription("queu")
-            .withAnnotations(
-                Arrays.asList("dataztpziizevjykof", "dataezefkhkqtwqlepjj", "datakca", "datafwzcntogffjwaj"))
-            .withFolder(new DataFlowFolder().withName("wzvaqkifmxaw"))
-            .withSources(Arrays.asList(new PowerQuerySource().withName("edcgl").withDescription("akd")
-                .withDataset(new DatasetReference().withReferenceName("dahzllrqm").withParameters(
-                    mapOf("oiduyqypff", "databyx", "yhbrjjta", "datanoiicsu", "sxxhdodp", "dataxrdsjrholuqwg")))
-                .withLinkedService(new LinkedServiceReference().withReferenceName("yblvtbdmvsbyi").withParameters(
-                    mapOf("jfb", "datalqpvekmk", "gdusxurs", "datatlo", "iqrizfwihvaan", "dataivuxcjkcoqwczs")))
-                .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-                    .withReferenceName("nhjrfdmfd").withDatasetParameters("datab")
-                    .withParameters(mapOf("d", "dataxjfwt", "fedyuep", "datakkauigvmuafmc", "eocfkumcfjxok",
-                        "datavpltidajjvy", "svfnkwm", "dataelsy"))
-                    .withAdditionalProperties(mapOf()))
-                .withSchemaLinkedService(new LinkedServiceReference().withReferenceName("nimx")
-                    .withParameters(mapOf("mnb", "dataerxrzutylcurza", "bjmbnvynfaooeac", "dataqaeht")))
-                .withScript("dawsxmrsz")))
-            .withScript("qshwyqxridt").withDocumentLocale("saqjmkgx");
+        WranglingDataFlow model = new WranglingDataFlow().withDescription("rjwayhicqq")
+            .withAnnotations(Arrays.asList("datagw"))
+            .withFolder(new DataFlowFolder().withName("vlizedvb"))
+            .withSources(Arrays.asList(
+                new PowerQuerySource().withName("cfkumcfjxo")
+                    .withDescription("elsy")
+                    .withDataset(new DatasetReference().withReferenceName("vfnkwmygjjekrk")
+                        .withParameters(mapOf("rdtulcrcjdklotcs", "datarugjqyckgtx", "zoonsv", "datab")))
+                    .withLinkedService(new LinkedServiceReference().withReferenceName("chkxfpwhdysl")
+                        .withParameters(mapOf("wayqshwyqxrid", "dataglmnnk", "aqjmkgxqwque", "datatb", "fvezefk",
+                            "datauylztpziizevjyk", "zcntogffjwajnrtw", "datakqtwqlepjjzkcasf")))
+                    .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
+                        .withReferenceName("qkifmxawostfz")
+                        .withDatasetParameters("datahrkmjqncfv")
+                        .withParameters(mapOf("pvndrwb", "datanhemvwfnqqw", "ggrssgwjfkain", "dataod",
+                            "ztscbgmusaictds", "datamuymvec"))
+                        .withAdditionalProperties(mapOf()))
+                    .withSchemaLinkedService(new LinkedServiceReference().withReferenceName("v")
+                        .withParameters(mapOf("coqwczsyiqri", "dataj", "qtnhjrfd", "datafwihvaan", "fkkauigvmua",
+                            "datafdvbbaexxjfwtg", "dajjvywe", "datamczfedyuepsvplt")))
+                    .withScript("dusxurs"),
+                new PowerQuerySource().withName("otpvclp")
+                    .withDescription("yrlmwkptsk")
+                    .withDataset(new DatasetReference().withReferenceName("jgvhxcc")
+                        .withParameters(mapOf("g", "dataakmkookbput", "yakmlwktf", "datam", "qjimejtgzjxxlfej",
+                            "datawzkroyrdurxfl", "itcdqlhchwhrk", "datazuqloiwyayyzivr")))
+                    .withLinkedService(new LinkedServiceReference().withReferenceName("l")
+                        .withParameters(mapOf("cjowlyeyzmu", "dataibfiplhxfnsm", "hnxlzbuwodmachb", "datasqc",
+                            "qplehmumkzdllczd", "datavnrpbjrmvg")))
+                    .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
+                        .withReferenceName("nhkgq")
+                        .withDatasetParameters("dataoxsstc")
+                        .withParameters(mapOf("j", "dataakfrry"))
+                        .withAdditionalProperties(mapOf()))
+                    .withSchemaLinkedService(new LinkedServiceReference().withReferenceName("ubewgzygba")
+                        .withParameters(mapOf("qhzrtdbak", "dataecovs", "qsifjmclng", "datalimzfvppk", "ggorwjoqt",
+                            "datagnhrkombcdtajdo")))
+                    .withScript("xvcvasormrexz")))
+            .withScript("kkucddwnh")
+            .withDocumentLocale("butoucgj");
         model = BinaryData.fromObject(model).toObject(WranglingDataFlow.class);
-        Assertions.assertEquals("queu", model.description());
-        Assertions.assertEquals("wzvaqkifmxaw", model.folder().name());
-        Assertions.assertEquals("edcgl", model.sources().get(0).name());
-        Assertions.assertEquals("akd", model.sources().get(0).description());
-        Assertions.assertEquals("dahzllrqm", model.sources().get(0).dataset().referenceName());
-        Assertions.assertEquals("yblvtbdmvsbyi", model.sources().get(0).linkedService().referenceName());
+        Assertions.assertEquals("rjwayhicqq", model.description());
+        Assertions.assertEquals("vlizedvb", model.folder().name());
+        Assertions.assertEquals("cfkumcfjxo", model.sources().get(0).name());
+        Assertions.assertEquals("elsy", model.sources().get(0).description());
+        Assertions.assertEquals("vfnkwmygjjekrk", model.sources().get(0).dataset().referenceName());
+        Assertions.assertEquals("chkxfpwhdysl", model.sources().get(0).linkedService().referenceName());
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.sources().get(0).flowlet().type());
-        Assertions.assertEquals("nhjrfdmfd", model.sources().get(0).flowlet().referenceName());
-        Assertions.assertEquals("nimx", model.sources().get(0).schemaLinkedService().referenceName());
-        Assertions.assertEquals("dawsxmrsz", model.sources().get(0).script());
-        Assertions.assertEquals("qshwyqxridt", model.script());
-        Assertions.assertEquals("saqjmkgx", model.documentLocale());
+        Assertions.assertEquals("qkifmxawostfz", model.sources().get(0).flowlet().referenceName());
+        Assertions.assertEquals("v", model.sources().get(0).schemaLinkedService().referenceName());
+        Assertions.assertEquals("dusxurs", model.sources().get(0).script());
+        Assertions.assertEquals("kkucddwnh", model.script());
+        Assertions.assertEquals("butoucgj", model.documentLocale());
     }
 
     // Use "Map.of" if available

@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Set assessment schedule for SQL Server. */
+/**
+ * Set assessment schedule for SQL Server.
+ */
 @Fluent
-public final class Schedule {
+public final class Schedule implements JsonSerializable<Schedule> {
     /*
      * Enable or disable assessment schedule on SQL virtual machine.
      */
-    @JsonProperty(value = "enable")
     private Boolean enable;
 
     /*
      * Number of weeks to schedule between 2 assessment runs. Takes value from 1-6
      */
-    @JsonProperty(value = "weeklyInterval")
     private Integer weeklyInterval;
 
     /*
      * Occurrence of the DayOfWeek day within a month to schedule assessment. Takes values: 1,2,3,4 and -1. Use -1 for
      * last DayOfWeek day of the month
      */
-    @JsonProperty(value = "monthlyOccurrence")
     private Integer monthlyOccurrence;
 
     /*
      * Day of the week to run assessment.
      */
-    @JsonProperty(value = "dayOfWeek")
     private AssessmentDayOfWeek dayOfWeek;
 
     /*
      * Time of the day in HH:mm format. Eg. 17:30
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
-    /** Creates an instance of Schedule class. */
+    /**
+     * Creates an instance of Schedule class.
+     */
     public Schedule() {
     }
 
     /**
      * Get the enable property: Enable or disable assessment schedule on SQL virtual machine.
-     *
+     * 
      * @return the enable value.
      */
     public Boolean enable() {
@@ -56,7 +59,7 @@ public final class Schedule {
 
     /**
      * Set the enable property: Enable or disable assessment schedule on SQL virtual machine.
-     *
+     * 
      * @param enable the enable value to set.
      * @return the Schedule object itself.
      */
@@ -67,7 +70,7 @@ public final class Schedule {
 
     /**
      * Get the weeklyInterval property: Number of weeks to schedule between 2 assessment runs. Takes value from 1-6.
-     *
+     * 
      * @return the weeklyInterval value.
      */
     public Integer weeklyInterval() {
@@ -76,7 +79,7 @@ public final class Schedule {
 
     /**
      * Set the weeklyInterval property: Number of weeks to schedule between 2 assessment runs. Takes value from 1-6.
-     *
+     * 
      * @param weeklyInterval the weeklyInterval value to set.
      * @return the Schedule object itself.
      */
@@ -88,7 +91,7 @@ public final class Schedule {
     /**
      * Get the monthlyOccurrence property: Occurrence of the DayOfWeek day within a month to schedule assessment. Takes
      * values: 1,2,3,4 and -1. Use -1 for last DayOfWeek day of the month.
-     *
+     * 
      * @return the monthlyOccurrence value.
      */
     public Integer monthlyOccurrence() {
@@ -98,7 +101,7 @@ public final class Schedule {
     /**
      * Set the monthlyOccurrence property: Occurrence of the DayOfWeek day within a month to schedule assessment. Takes
      * values: 1,2,3,4 and -1. Use -1 for last DayOfWeek day of the month.
-     *
+     * 
      * @param monthlyOccurrence the monthlyOccurrence value to set.
      * @return the Schedule object itself.
      */
@@ -109,7 +112,7 @@ public final class Schedule {
 
     /**
      * Get the dayOfWeek property: Day of the week to run assessment.
-     *
+     * 
      * @return the dayOfWeek value.
      */
     public AssessmentDayOfWeek dayOfWeek() {
@@ -118,7 +121,7 @@ public final class Schedule {
 
     /**
      * Set the dayOfWeek property: Day of the week to run assessment.
-     *
+     * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the Schedule object itself.
      */
@@ -129,7 +132,7 @@ public final class Schedule {
 
     /**
      * Get the startTime property: Time of the day in HH:mm format. Eg. 17:30.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -138,7 +141,7 @@ public final class Schedule {
 
     /**
      * Set the startTime property: Time of the day in HH:mm format. Eg. 17:30.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the Schedule object itself.
      */
@@ -149,9 +152,57 @@ public final class Schedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enable", this.enable);
+        jsonWriter.writeNumberField("weeklyInterval", this.weeklyInterval);
+        jsonWriter.writeNumberField("monthlyOccurrence", this.monthlyOccurrence);
+        jsonWriter.writeStringField("dayOfWeek", this.dayOfWeek == null ? null : this.dayOfWeek.toString());
+        jsonWriter.writeStringField("startTime", this.startTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Schedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Schedule if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Schedule.
+     */
+    public static Schedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Schedule deserializedSchedule = new Schedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enable".equals(fieldName)) {
+                    deserializedSchedule.enable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("weeklyInterval".equals(fieldName)) {
+                    deserializedSchedule.weeklyInterval = reader.getNullable(JsonReader::getInt);
+                } else if ("monthlyOccurrence".equals(fieldName)) {
+                    deserializedSchedule.monthlyOccurrence = reader.getNullable(JsonReader::getInt);
+                } else if ("dayOfWeek".equals(fieldName)) {
+                    deserializedSchedule.dayOfWeek = AssessmentDayOfWeek.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedSchedule.startTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSchedule;
+        });
     }
 }

@@ -5,27 +5,102 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An abstract representation of a tool that can be used by the model to improve a chat completions response.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ChatCompletionsToolDefinition.class)
-@JsonTypeName("ChatCompletionsToolDefinition")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "function", value = ChatCompletionsFunctionToolDefinition.class) })
 @Immutable
-public class ChatCompletionsToolDefinition {
+public class ChatCompletionsToolDefinition implements JsonSerializable<ChatCompletionsToolDefinition> {
 
     /**
      * Creates an instance of ChatCompletionsToolDefinition class.
      */
     @Generated
     public ChatCompletionsToolDefinition() {
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "ChatCompletionsToolDefinition";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatCompletionsToolDefinition from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatCompletionsToolDefinition if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChatCompletionsToolDefinition.
+     */
+    @Generated
+    public static ChatCompletionsToolDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("function".equals(discriminatorValue)) {
+                    return ChatCompletionsFunctionToolDefinition.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static ChatCompletionsToolDefinition fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatCompletionsToolDefinition deserializedChatCompletionsToolDefinition
+                = new ChatCompletionsToolDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    deserializedChatCompletionsToolDefinition.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedChatCompletionsToolDefinition;
+        });
     }
 }

@@ -6,36 +6,41 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the volume mount. */
+/**
+ * The properties of the volume mount.
+ */
 @Fluent
-public final class VolumeMount {
+public final class VolumeMount implements JsonSerializable<VolumeMount> {
     /*
      * The name of the volume mount.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The path within the container where the volume should be mounted. Must not contain colon (:).
      */
-    @JsonProperty(value = "mountPath", required = true)
     private String mountPath;
 
     /*
      * The flag indicating whether the volume mount is read-only.
      */
-    @JsonProperty(value = "readOnly")
     private Boolean readOnly;
 
-    /** Creates an instance of VolumeMount class. */
+    /**
+     * Creates an instance of VolumeMount class.
+     */
     public VolumeMount() {
     }
 
     /**
      * Get the name property: The name of the volume mount.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +49,7 @@ public final class VolumeMount {
 
     /**
      * Set the name property: The name of the volume mount.
-     *
+     * 
      * @param name the name value to set.
      * @return the VolumeMount object itself.
      */
@@ -56,7 +61,7 @@ public final class VolumeMount {
     /**
      * Get the mountPath property: The path within the container where the volume should be mounted. Must not contain
      * colon (:).
-     *
+     * 
      * @return the mountPath value.
      */
     public String mountPath() {
@@ -66,7 +71,7 @@ public final class VolumeMount {
     /**
      * Set the mountPath property: The path within the container where the volume should be mounted. Must not contain
      * colon (:).
-     *
+     * 
      * @param mountPath the mountPath value to set.
      * @return the VolumeMount object itself.
      */
@@ -77,7 +82,7 @@ public final class VolumeMount {
 
     /**
      * Get the readOnly property: The flag indicating whether the volume mount is read-only.
-     *
+     * 
      * @return the readOnly value.
      */
     public Boolean readOnly() {
@@ -86,7 +91,7 @@ public final class VolumeMount {
 
     /**
      * Set the readOnly property: The flag indicating whether the volume mount is read-only.
-     *
+     * 
      * @param readOnly the readOnly value to set.
      * @return the VolumeMount object itself.
      */
@@ -97,21 +102,62 @@ public final class VolumeMount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model VolumeMount"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model VolumeMount"));
         }
         if (mountPath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property mountPath in model VolumeMount"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property mountPath in model VolumeMount"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VolumeMount.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("mountPath", this.mountPath);
+        jsonWriter.writeBooleanField("readOnly", this.readOnly);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeMount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeMount if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VolumeMount.
+     */
+    public static VolumeMount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeMount deserializedVolumeMount = new VolumeMount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVolumeMount.name = reader.getString();
+                } else if ("mountPath".equals(fieldName)) {
+                    deserializedVolumeMount.mountPath = reader.getString();
+                } else if ("readOnly".equals(fieldName)) {
+                    deserializedVolumeMount.readOnly = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeMount;
+        });
+    }
 }

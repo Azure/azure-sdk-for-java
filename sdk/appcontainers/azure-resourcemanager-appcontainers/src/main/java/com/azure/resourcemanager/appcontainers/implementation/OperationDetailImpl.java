@@ -13,8 +13,7 @@ public final class OperationDetailImpl implements OperationDetail {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    OperationDetailImpl(
-        OperationDetailInner innerObject,
+    OperationDetailImpl(OperationDetailInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

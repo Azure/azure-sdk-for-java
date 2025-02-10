@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ConnectionState information. */
+/**
+ * ConnectionState information.
+ */
 @Fluent
-public final class ConnectionState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionState.class);
-
+public final class ConnectionState implements JsonSerializable<ConnectionState> {
     /*
      * Status of the connection.
      */
-    @JsonProperty(value = "status")
     private PrivateLinkConnectionStatus status;
 
     /*
      * Description of the connection state.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of ConnectionState class.
+     */
+    public ConnectionState() {
+    }
+
+    /**
      * Get the status property: Status of the connection.
-     *
+     * 
      * @return the status value.
      */
     public PrivateLinkConnectionStatus status() {
@@ -37,7 +43,7 @@ public final class ConnectionState {
 
     /**
      * Set the status property: Status of the connection.
-     *
+     * 
      * @param status the status value to set.
      * @return the ConnectionState object itself.
      */
@@ -48,7 +54,7 @@ public final class ConnectionState {
 
     /**
      * Get the description property: Description of the connection state.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -57,7 +63,7 @@ public final class ConnectionState {
 
     /**
      * Set the description property: Description of the connection state.
-     *
+     * 
      * @param description the description value to set.
      * @return the ConnectionState object itself.
      */
@@ -68,9 +74,48 @@ public final class ConnectionState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionState if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionState.
+     */
+    public static ConnectionState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionState deserializedConnectionState = new ConnectionState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedConnectionState.status = PrivateLinkConnectionStatus.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedConnectionState.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionState;
+        });
     }
 }

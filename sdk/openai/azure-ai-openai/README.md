@@ -21,10 +21,15 @@ For concrete examples you can have a look at the following links. Some of the mo
 * [Image Generation sample](#image-generation "Image Generation")
 * [Audio Transcription sample](#audio-transcription "Audio Transcription")
 * [Audio Translation sample](#audio-translation "Audio Translation")
+* [Text To Speech sample](#text-to-speech "Text To Speech")
+* [File operations sample](#file-operations "File Operations")
+* [Batch operations sample](#batch-operations "Batch Operations")
+* [Structured Outputs](#structured-outputs "Structured Outputs")
+* [Upload large files in multiple parts](#upload-large-files-in-multiple-parts "Upload large files in multiple parts")
 
 If you want to see the full code for these snippets check out our [samples folder][samples_folder].
 
-[Source code][source_code] | [API reference documentation][docs] | [Product Documentation][product_documentation] | [Samples][samples_readme]
+[Source code][source_code] | [API reference documentation][docs] | [Product Documentation][product_documentation] | [Samples][samples_readme] | [Troubleshooting][troubleshooting]
 
 ## Getting started
 
@@ -42,7 +47,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.6</version>
+    <version>1.0.0-beta.12</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -55,7 +60,7 @@ In order to interact with the Azure OpenAI Service you'll need to create an inst
 Azure OpenAI, provide a valid endpoint URI to an Azure OpenAI resource along with a corresponding key credential,
 token credential, or [Azure Identity][azure_identity] credential that's authorized to use the Azure OpenAI resource. 
 
-#### Create a Azure OpenAI client with key credential
+#### Create an Azure OpenAI client with key credential
 Get Azure OpenAI `key` credential from the Azure Portal.
 
 ```java readme-sample-createSyncClientKeyCredential
@@ -92,11 +97,10 @@ OpenAIAsyncClient client = new OpenAIClientBuilder()
     .buildAsyncClient();
 ```
 
-#### Create an Azure OpenAI client with Azure Active Directory credential
-Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
-platform.
+#### Create an Azure OpenAI client with Azure Entra ID credential
+Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity platform.
 
-Authentication with AAD requires some initial setup:
+Authentication with Entra ID requires some initial setup:
 * Add the Azure Identity package
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
@@ -104,21 +108,21 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.4</version>
+    <version>1.14.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
 As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
+Set the values of the client ID, tenant ID, and client secret of the Azure EntraID application as environment variables:
 `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`.
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
-running environment. For more information about using Azure Active Directory authorization with OpenAI service, please
-refer to [the associated documentation][aad_authorization].
+running environment. For more information about using Azure Entra ID authorization with OpenAI service, please
+refer to [the associated documentation][entra_id_authorization].
 
-```java readme-sample-createOpenAIClientWithAAD
+```java readme-sample-createOpenAIClientWithEntraID
 TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 OpenAIClient client = new OpenAIClientBuilder()
     .credential(defaultCredential)
@@ -156,6 +160,11 @@ The following sections provide several code snippets covering some of the most c
 * [Image Generation sample](#image-generation "Image Generation")
 * [Audio Transcription sample](#audio-transcription "Audio Transcription")
 * [Audio Translation sample](#audio-translation "Audio Translation")
+* [Text To Speech sample](#text-to-speech "Text To Speech")
+* [File operations sample](#file-operations "File Operations")
+* [Batch operations sample](#batch-operations "Batch Operations")
+* [Structured Outputs](#structured-outputs "Structured Outputs")
+* [Upload large files in multiple parts](#upload-large-files-in-multiple-parts "Upload large files in multiple parts")
 
 ### Legacy completions
 
@@ -186,10 +195,6 @@ IterableStream<Completions> completionsStream = client
 
 completionsStream
     .stream()
-    // Remove .skip(1) when using Non-Azure OpenAI API
-    // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-    // TODO: remove .skip(1) when service fix the issue.
-    .skip(1)
     .forEach(completions -> System.out.print(completions.getChoices().get(0).getText()));
 ```
 
@@ -233,26 +238,23 @@ chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
 chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
 chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelName}",
-    new ChatCompletionsOptions(chatMessages));
-
-chatCompletionsStream
-    .stream()
-    // Remove .skip(1) when using Non-Azure OpenAI API
-    // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-    // TODO: remove .skip(1) when service fix the issue.
-    .skip(1)
-    .forEach(chatCompletions -> {
-        ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
-        if (delta.getRole() != null) {
-            System.out.println("Role = " + delta.getRole());
-        }
-        if (delta.getContent() != null) {
-            System.out.print(delta.getContent());
-        }
-    });
+client.getChatCompletionsStream("{deploymentOrModelName}", new ChatCompletionsOptions(chatMessages))
+        .forEach(chatCompletions -> {
+            if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
+                return;
+            }
+            ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
+            if (delta.getRole() != null) {
+                System.out.println("Role = " + delta.getRole());
+            }
+            if (delta.getContent() != null) {
+                String content = delta.getContent();
+                System.out.print(content);
+            }
+        });
 ```
-For a complete sample example, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
+
+To compute tokens in streaming chat completions, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
 
 ### Text embeddings
 
@@ -264,7 +266,7 @@ Embeddings embeddings = client.getEmbeddings("{deploymentOrModelName}", embeddin
 
 for (EmbeddingItem item : embeddings.getData()) {
     System.out.printf("Index: %d.%n", item.getPromptIndex());
-    for (Double embedding : item.getEmbedding()) {
+    for (Float embedding : item.getEmbedding()) {
         System.out.printf("%f;", embedding);
     }
 }
@@ -359,7 +361,7 @@ List<ChatRequestMessage> chatMessages = Arrays.asList(
         new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?")
 );
 ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-        new FunctionDefinition("MyFunctionName"));
+        new ChatCompletionsFunctionToolDefinitionFunction("MyFunctionName"));
 
 ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
 chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
@@ -403,6 +405,105 @@ if (choice.getFinishReason() == CompletionsFinishReason.TOOL_CALLS) {
 }
 ```
 
+### Text To Speech
+
+The OpenAI service starts supporting `text to speech` with the introduction of `tts` models.
+The following code snippet shows how to use the service to convert text to speech.
+```java readme-sample-textToSpeech
+String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+SpeechGenerationOptions options = new SpeechGenerationOptions(
+        "Today is a wonderful day to build something people love!",
+        SpeechVoice.ALLOY);
+BinaryData speech = client.generateSpeechFromText(deploymentOrModelId, options);
+// Checkout your generated speech in the file system.
+Path path = Paths.get("{your-local-file-path}/speech.wav");
+Files.write(path, speech.toBytes());
+```
+See sample [Text to Speech][sample_text_to_speech] for a complete sample.
+Please refer to the service documentation for a conceptual discussion of [Text to Speech][microsoft_docs_text_to_speech].
+
+### File operations
+
+The OpenAI service supports `upload`, `get`, `list`, and `delete` operations for interacting File APIs with OpenAI service. 
+```java readme-sample-fileOperations
+// Upload a file
+FileDetails fileDetails = new FileDetails(
+    BinaryData.fromFile(Paths.get("{your-local-file-path}/batch_tasks.jsonl")),
+    "batch_tasks.jsonl");
+OpenAIFile file = client.uploadFile(fileDetails, FilePurpose.BATCH);
+String fileId = file.getId();
+// Get single file
+OpenAIFile fileFromBackend = client.getFile(fileId);
+// List files
+List<OpenAIFile> files = client.listFiles(FilePurpose.ASSISTANTS);
+// Delete file
+FileDeletionStatus deletionStatus = client.deleteFile(fileId);
+```
+For a complete sample example, see sample [File Operations][sample_file_operations].
+
+### Batch operations
+
+The OpenAI service supports `create`, `get`, `list`, and `delete` operations for interacting Batch APIs with OpenAI service.
+Use Batch API to send asynchronous groups of requests with 50% lower costs, a separate pool of significantly higher rate 
+limits, and a clear 24-hour turnaround time. The service is ideal for processing jobs that don't require immediate responses.
+```java readme-sample-batchOperations
+String fileId = "{fileId-from-service-side}";
+// Create a batch
+Batch batch = client.createBatch(new BatchCreateRequest("/chat/completions", fileId, "24h"));
+// Get single file
+byte[] fileContent = client.getFileContent(batch.getOutputFileId());
+// List batches
+PageableList<Batch> batchPageableList = client.listBatches();
+// Cancel a batch
+Batch cancelledBatch = client.cancelBatch(batch.getId());
+```
+For a complete sample example, see sample [Batch Operations][sample_batch_operations].
+
+### Structured Outputs
+
+Structured Outputs can be enabled by setting the parameter `strict: true` in an API call with either a defined 
+`response format` or `function definitions`. 
+```java readme-sample-structuredOutputsResponseFormat
+ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")))
+    // Previously, the response_format parameter was only available to specify that the model should return a valid JSON.
+    // In addition to this, we are introducing a new way of specifying which JSON schema to follow.
+    .setResponseFormat(new ChatCompletionsJsonSchemaResponseFormat(
+        new ChatCompletionsJsonSchemaResponseFormatJsonSchema("get_weather")
+            .setStrict(true)
+            .setDescription("Fetches the weather in the given location")
+            .setSchema(BinaryData.fromObject(new Parameters()))));
+```
+
+For a full sample, see [Structured Output: Response Format][sample_chat_completions_json_schema].
+For more details see the [OpenAI structured output documentation](https://platform.openai.com/docs/guides/structured-output).
+
+### Upload large files in multiple parts
+
+`uploads` allows you to upload large files in multiple parts.
+
+```java readme-sample-uploadsLargeFilesMultipleParts
+CreateUploadRequest createUploadRequest = new CreateUploadRequest("{fileNameToCreate}", CreateUploadRequestPurpose.ASSISTANTS,
+    totalFilesSize, "text/plain");
+Upload upload = client.createUpload(createUploadRequest);
+String uploadId = upload.getId();
+
+UploadPart uploadPartAdded = client.addUploadPart(uploadId,
+    new AddUploadPartRequest(new DataFileDetails(BinaryData.fromFile(path)).setFilename("{fileName}")));
+String uploadPartAddedId = uploadPartAdded.getId();
+System.out.println("Upload part added, upload part ID = " + uploadPartAddedId);
+
+UploadPart uploadPartAdded2 = client.addUploadPart(uploadId,
+    new AddUploadPartRequest(new DataFileDetails(BinaryData.fromFile(path2)).setFilename("{fileName2}")));
+String uploadPartAddedId2 = uploadPartAdded2.getId();
+System.out.println("Upload part 2 added, upload part ID = " + uploadPartAddedId2);
+
+CompleteUploadRequest completeUploadRequest = new CompleteUploadRequest(Arrays.asList(uploadPartAddedId, uploadPartAddedId2));
+Upload completeUpload = client.completeUpload(uploadId, completeUploadRequest);
+System.out.println("Upload completed, upload ID = " + completeUpload.getId());
+```
+For a full sample, see  [Upload large files in multiple parts][sample_uploads_in_multi_parts].
+For more details see the [OpenAI uploads documentation](https://platform.openai.com/docs/api-reference/uploads).
+
 ## Troubleshooting
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
@@ -412,13 +513,15 @@ be found here: [log levels][logLevels].
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
 operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
 better performance compared to the default SSL implementation within the JDK. For more information, including how to
 reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
+For more details, see [TROUBLESHOOTING][troubleshooting] guideline.
 
 ## Next steps
 - Samples are explained in detail [here][samples_readme].
@@ -434,17 +537,19 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
+[entra_id_authorization]: https://learn.microsoft.com/azure/ai-services/authentication#authenticate-with-microsoft-entra-id
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [azure_subscription]: https://azure.microsoft.com/free/
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
+[jtokkit]: https://github.com/knuddelsgmbh/jtokkit
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
 [microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings
 [microsoft_docs_whisper_model]: https://learn.microsoft.com/azure/ai-services/openai/whisper-quickstart?tabs=command-line
+[microsoft_docs_text_to_speech]: https://learn.microsoft.com/azure/ai-services/openai/text-to-speech-quickstart?tabs=command-line
 [non_azure_openai_authentication]: https://platform.openai.com/docs/api-reference/authentication
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://azure.microsoft.com/services/
@@ -452,8 +557,11 @@ For details on contributing to this repository, see the [contributing guide](htt
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src
 [samples_folder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples
+[sample_batch_operations]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/BatchOperationsSample.java
 [sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsFunctionCall.java
 [sample_chat_completion_BYOD]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsWithYourData.java
+[sample_chat_completions_json_schema]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/StructuredOutputsResponseFormat.java
+[sample_file_operations]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FileOperationsSample.java
 [sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java
 [sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsSample.java
@@ -464,8 +572,11 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_audio_translation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranslationSample.java
 [sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionSample.java
 [sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallSample.java
+[sample_text_to_speech]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/TextToSpeechSample.java
+[sample_uploads_in_multi_parts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/UploadLargeFileInPartsSample.java
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java
-[wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
+[troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/TROUBLESHOOTING.md
+[wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 

@@ -10,7 +10,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Parameters object for a text analysis task using pre-built models. */
+/**
+ * Parameters object for a text analysis task using pre-built models.
+ */
 @Fluent
 public class PreBuiltTaskParameters extends TaskParameters {
     /*
@@ -18,12 +20,15 @@ public class PreBuiltTaskParameters extends TaskParameters {
      */
     private String modelVersion;
 
-    /** Creates an instance of PreBuiltTaskParameters class. */
-    public PreBuiltTaskParameters() {}
+    /**
+     * Creates an instance of PreBuiltTaskParameters class.
+     */
+    public PreBuiltTaskParameters() {
+    }
 
     /**
      * Get the modelVersion property: The modelVersion property.
-     *
+     * 
      * @return the modelVersion value.
      */
     public String getModelVersion() {
@@ -32,7 +37,7 @@ public class PreBuiltTaskParameters extends TaskParameters {
 
     /**
      * Set the modelVersion property: The modelVersion property.
-     *
+     * 
      * @param modelVersion the modelVersion value to set.
      * @return the PreBuiltTaskParameters object itself.
      */
@@ -41,13 +46,18 @@ public class PreBuiltTaskParameters extends TaskParameters {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PreBuiltTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -58,31 +68,29 @@ public class PreBuiltTaskParameters extends TaskParameters {
 
     /**
      * Reads an instance of PreBuiltTaskParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PreBuiltTaskParameters if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PreBuiltTaskParameters.
      */
     public static PreBuiltTaskParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    PreBuiltTaskParameters deserializedPreBuiltTaskParameters = new PreBuiltTaskParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            PreBuiltTaskParameters deserializedPreBuiltTaskParameters = new PreBuiltTaskParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("loggingOptOut".equals(fieldName)) {
-                            deserializedPreBuiltTaskParameters.setLoggingOptOut(
-                                    reader.getNullable(JsonReader::getBoolean));
-                        } else if ("modelVersion".equals(fieldName)) {
-                            deserializedPreBuiltTaskParameters.modelVersion = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("loggingOptOut".equals(fieldName)) {
+                    deserializedPreBuiltTaskParameters.setLoggingOptOut(reader.getNullable(JsonReader::getBoolean));
+                } else if ("modelVersion".equals(fieldName)) {
+                    deserializedPreBuiltTaskParameters.modelVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedPreBuiltTaskParameters;
-                });
+            return deserializedPreBuiltTaskParameters;
+        });
     }
 }

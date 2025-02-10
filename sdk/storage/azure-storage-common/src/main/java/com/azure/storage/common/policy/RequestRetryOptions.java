@@ -102,8 +102,7 @@ public final class RequestRetryOptions {
         }
 
         if (tryTimeout != null) {
-            StorageImplUtils.assertInBounds("'tryTimeout' in seconds", tryTimeout.getSeconds(), 1,
-                Integer.MAX_VALUE);
+            StorageImplUtils.assertInBounds("'tryTimeout' in seconds", tryTimeout.getSeconds(), 1, Integer.MAX_VALUE);
             this.tryTimeout = tryTimeout;
         } else {
             /*
@@ -114,8 +113,7 @@ public final class RequestRetryOptions {
             this.tryTimeout = Duration.ofSeconds(Integer.MAX_VALUE);
         }
 
-        if ((retryDelay == null && maxRetryDelay != null)
-            || (retryDelay != null && maxRetryDelay == null)) {
+        if ((retryDelay == null && maxRetryDelay != null) || (retryDelay != null && maxRetryDelay == null)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Both retryDelay and maxRetryDelay must be null or neither can be null"));
         }
@@ -132,9 +130,11 @@ public final class RequestRetryOptions {
                 case EXPONENTIAL:
                     this.retryDelay = Duration.ofSeconds(4);
                     break;
+
                 case FIXED:
                     this.retryDelay = Duration.ofSeconds(30);
                     break;
+
                 default:
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid 'RetryPolicyType'."));
             }
@@ -144,6 +144,8 @@ public final class RequestRetryOptions {
     }
 
     /**
+     * Gets the maximum number of retries that will be attempted.
+     *
      * @return the maximum number of retries that will be attempted.
      */
     public int getMaxTries() {
@@ -151,6 +153,8 @@ public final class RequestRetryOptions {
     }
 
     /**
+     * Gets the maximum time, in seconds, allowed for a request until it is considered timed out.
+     *
      * @return the maximum time, in seconds, allowed for a request until it is considered timed out.
      * @deprecated Please use {@link RequestRetryOptions#getTryTimeoutDuration()}
      */
@@ -160,13 +164,18 @@ public final class RequestRetryOptions {
     }
 
     /**
-     * @return the maximum time, in seconds, allowed for a request until it is considered timed out.
+     * Gets the maximum time allowed for a request until it is considered timed out.
+     *
+     * @return the maximum time allowed for a request until it is considered timed out.
      */
     public Duration getTryTimeoutDuration() {
         return this.tryTimeout;
     }
 
     /**
+     * Gets the URI of the secondary host where retries are attempted. If this is null then there is no secondary host
+     * and all retries are attempted against the original host.
+     *
      * @return the URI of the secondary host where retries are attempted. If this is null then there is no secondary
      * host and all retries are attempted against the original host.
      */
@@ -175,6 +184,8 @@ public final class RequestRetryOptions {
     }
 
     /**
+     * Gets the delay in milliseconds between each retry attempt.
+     *
      * @return the delay in milliseconds between each retry attempt.
      * @deprecated Please use {@link RequestRetryOptions#getTryTimeoutDuration()}
      */
@@ -184,6 +195,8 @@ public final class RequestRetryOptions {
     }
 
     /**
+     * Gets the delay between each retry attempt.
+     *
      * @return the delay between each retry attempt.
      */
     public Duration getRetryDelay() {
@@ -191,6 +204,8 @@ public final class RequestRetryOptions {
     }
 
     /**
+     * Gets the maximum delay in milliseconds allowed between each retry.
+     *
      * @return the maximum delay in milliseconds allowed between each retry.
      * @deprecated Please use {@link RequestRetryOptions#getTryTimeoutDuration()}
      */
@@ -200,6 +215,8 @@ public final class RequestRetryOptions {
     }
 
     /**
+     * Gets the maximum delay allowed between each retry.
+     *
      * @return the maximum delay allowed between each retry.
      */
     public Duration getMaxRetryDelay() {
@@ -223,6 +240,7 @@ public final class RequestRetryOptions {
                 // The first try should have zero delay. Every other try has the fixed value
                 delay = tryCount > 1 ? this.retryDelay.toMillis() : 0;
                 break;
+
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid retry policy type."));
         }
@@ -249,11 +267,8 @@ public final class RequestRetryOptions {
      * @return The {@link RequestRetryOptions}
      * @throws IllegalArgumentException if {@code retryOptions} can't be mapped to {@code RequestRetryOptions}.
      */
-    public static RequestRetryOptions fromRetryOptions(
-        RetryOptions retryOptions,
-        Duration tryTimeout,
-        String secondaryHost
-    ) {
+    public static RequestRetryOptions fromRetryOptions(RetryOptions retryOptions, Duration tryTimeout,
+        String secondaryHost) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         RetryPolicyType policyType;
         Integer maxTries = null;

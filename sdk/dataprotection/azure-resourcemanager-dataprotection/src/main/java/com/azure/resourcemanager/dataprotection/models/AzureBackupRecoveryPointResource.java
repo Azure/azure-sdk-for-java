@@ -40,9 +40,7 @@ public interface AzureBackupRecoveryPointResource {
     SystemData systemData();
 
     /**
-     * Gets the properties property: AzureBackupRecoveryPoint
-     * 
-     * AzureBackupRecoveryPointResource properties.
+     * Gets the properties property: AzureBackupRecoveryPointResource properties.
      * 
      * @return the properties value.
      */

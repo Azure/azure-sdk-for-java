@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Day of the week. */
+/**
+ * Day of the week.
+ */
 @Fluent
-public final class Day {
+public final class Day implements JsonSerializable<Day> {
     /*
      * Date of the month
      */
-    @JsonProperty(value = "date")
     private Integer date;
 
     /*
      * Whether Date is last date of month
      */
-    @JsonProperty(value = "isLast")
     private Boolean isLast;
 
-    /** Creates an instance of Day class. */
+    /**
+     * Creates an instance of Day class.
+     */
     public Day() {
     }
 
     /**
      * Get the date property: Date of the month.
-     *
+     * 
      * @return the date value.
      */
     public Integer date() {
@@ -37,7 +43,7 @@ public final class Day {
 
     /**
      * Set the date property: Date of the month.
-     *
+     * 
      * @param date the date value to set.
      * @return the Day object itself.
      */
@@ -48,7 +54,7 @@ public final class Day {
 
     /**
      * Get the isLast property: Whether Date is last date of month.
-     *
+     * 
      * @return the isLast value.
      */
     public Boolean isLast() {
@@ -57,7 +63,7 @@ public final class Day {
 
     /**
      * Set the isLast property: Whether Date is last date of month.
-     *
+     * 
      * @param isLast the isLast value to set.
      * @return the Day object itself.
      */
@@ -68,9 +74,48 @@ public final class Day {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("date", this.date);
+        jsonWriter.writeBooleanField("isLast", this.isLast);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Day from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Day if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Day.
+     */
+    public static Day fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Day deserializedDay = new Day();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("date".equals(fieldName)) {
+                    deserializedDay.date = reader.getNullable(JsonReader::getInt);
+                } else if ("isLast".equals(fieldName)) {
+                    deserializedDay.isLast = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDay;
+        });
     }
 }

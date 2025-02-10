@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class JobDefinitionUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobDefinitionUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"ohctbqvudwx\",\"copyMode\":\"Additive\",\"agentName\":\"vo\"}}")
-                .toObject(JobDefinitionUpdateParameters.class);
-        Assertions.assertEquals("ohctbqvudwx", model.description());
+        JobDefinitionUpdateParameters model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"ddystkiiuxhqy\",\"copyMode\":\"Additive\",\"agentName\":\"rrqnbpoczvyifqrv\"}}")
+            .toObject(JobDefinitionUpdateParameters.class);
+        Assertions.assertEquals("ddystkiiuxhqy", model.description());
         Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
-        Assertions.assertEquals("vo", model.agentName());
+        Assertions.assertEquals("rrqnbpoczvyifqrv", model.agentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobDefinitionUpdateParameters model =
-            new JobDefinitionUpdateParameters()
-                .withDescription("ohctbqvudwx")
-                .withCopyMode(CopyMode.ADDITIVE)
-                .withAgentName("vo");
+        JobDefinitionUpdateParameters model = new JobDefinitionUpdateParameters().withDescription("ddystkiiuxhqy")
+            .withCopyMode(CopyMode.ADDITIVE)
+            .withAgentName("rrqnbpoczvyifqrv");
         model = BinaryData.fromObject(model).toObject(JobDefinitionUpdateParameters.class);
-        Assertions.assertEquals("ohctbqvudwx", model.description());
+        Assertions.assertEquals("ddystkiiuxhqy", model.description());
         Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
-        Assertions.assertEquals("vo", model.agentName());
+        Assertions.assertEquals("rrqnbpoczvyifqrv", model.agentName());
     }
 }

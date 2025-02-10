@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of a server. */
+/**
+ * The properties of a server.
+ */
 @Fluent
-public class ServerProperties {
+public class ServerProperties implements JsonSerializable<ServerProperties> {
     /*
      * The edition of a server.
      */
-    @JsonProperty(value = "serverEdition")
     private String serverEdition;
 
     /*
      * The storage of a server in MB.
      */
-    @JsonProperty(value = "storageQuotaInMb")
     private Integer storageQuotaInMb;
 
     /*
      * The vCores count of a server.
      */
-    @JsonProperty(value = "vCores")
     private Integer vCores;
 
     /*
      * If high availability (HA) is enabled or not for the server.
      */
-    @JsonProperty(value = "enableHa")
     private Boolean enableHa;
 
     /*
      * If public access is enabled on server.
      */
-    @JsonProperty(value = "enablePublicIpAccess", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean enablePublicIpAccess;
 
     /*
      * If server database is set to read-only by system maintenance depending on high disk space usage.
      */
-    @JsonProperty(value = "isReadOnly", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isReadOnly;
 
     /*
      * The administrator's login name of the servers in the cluster.
      */
-    @JsonProperty(value = "administratorLogin", access = JsonProperty.Access.WRITE_ONLY)
     private String administratorLogin;
 
-    /** Creates an instance of ServerProperties class. */
+    /**
+     * Creates an instance of ServerProperties class.
+     */
     public ServerProperties() {
     }
 
     /**
      * Get the serverEdition property: The edition of a server.
-     *
+     * 
      * @return the serverEdition value.
      */
     public String serverEdition() {
@@ -67,7 +68,7 @@ public class ServerProperties {
 
     /**
      * Set the serverEdition property: The edition of a server.
-     *
+     * 
      * @param serverEdition the serverEdition value to set.
      * @return the ServerProperties object itself.
      */
@@ -78,7 +79,7 @@ public class ServerProperties {
 
     /**
      * Get the storageQuotaInMb property: The storage of a server in MB.
-     *
+     * 
      * @return the storageQuotaInMb value.
      */
     public Integer storageQuotaInMb() {
@@ -87,7 +88,7 @@ public class ServerProperties {
 
     /**
      * Set the storageQuotaInMb property: The storage of a server in MB.
-     *
+     * 
      * @param storageQuotaInMb the storageQuotaInMb value to set.
      * @return the ServerProperties object itself.
      */
@@ -98,7 +99,7 @@ public class ServerProperties {
 
     /**
      * Get the vCores property: The vCores count of a server.
-     *
+     * 
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -107,7 +108,7 @@ public class ServerProperties {
 
     /**
      * Set the vCores property: The vCores count of a server.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the ServerProperties object itself.
      */
@@ -118,7 +119,7 @@ public class ServerProperties {
 
     /**
      * Get the enableHa property: If high availability (HA) is enabled or not for the server.
-     *
+     * 
      * @return the enableHa value.
      */
     public Boolean enableHa() {
@@ -127,7 +128,7 @@ public class ServerProperties {
 
     /**
      * Set the enableHa property: If high availability (HA) is enabled or not for the server.
-     *
+     * 
      * @param enableHa the enableHa value to set.
      * @return the ServerProperties object itself.
      */
@@ -138,7 +139,7 @@ public class ServerProperties {
 
     /**
      * Get the enablePublicIpAccess property: If public access is enabled on server.
-     *
+     * 
      * @return the enablePublicIpAccess value.
      */
     public Boolean enablePublicIpAccess() {
@@ -146,9 +147,20 @@ public class ServerProperties {
     }
 
     /**
+     * Set the enablePublicIpAccess property: If public access is enabled on server.
+     * 
+     * @param enablePublicIpAccess the enablePublicIpAccess value to set.
+     * @return the ServerProperties object itself.
+     */
+    ServerProperties withEnablePublicIpAccess(Boolean enablePublicIpAccess) {
+        this.enablePublicIpAccess = enablePublicIpAccess;
+        return this;
+    }
+
+    /**
      * Get the isReadOnly property: If server database is set to read-only by system maintenance depending on high disk
      * space usage.
-     *
+     * 
      * @return the isReadOnly value.
      */
     public Boolean isReadOnly() {
@@ -156,8 +168,20 @@ public class ServerProperties {
     }
 
     /**
+     * Set the isReadOnly property: If server database is set to read-only by system maintenance depending on high disk
+     * space usage.
+     * 
+     * @param isReadOnly the isReadOnly value to set.
+     * @return the ServerProperties object itself.
+     */
+    ServerProperties withIsReadOnly(Boolean isReadOnly) {
+        this.isReadOnly = isReadOnly;
+        return this;
+    }
+
+    /**
      * Get the administratorLogin property: The administrator's login name of the servers in the cluster.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -165,10 +189,72 @@ public class ServerProperties {
     }
 
     /**
+     * Set the administratorLogin property: The administrator's login name of the servers in the cluster.
+     * 
+     * @param administratorLogin the administratorLogin value to set.
+     * @return the ServerProperties object itself.
+     */
+    ServerProperties withAdministratorLogin(String administratorLogin) {
+        this.administratorLogin = administratorLogin;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serverEdition", this.serverEdition);
+        jsonWriter.writeNumberField("storageQuotaInMb", this.storageQuotaInMb);
+        jsonWriter.writeNumberField("vCores", this.vCores);
+        jsonWriter.writeBooleanField("enableHa", this.enableHa);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerProperties.
+     */
+    public static ServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerProperties deserializedServerProperties = new ServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverEdition".equals(fieldName)) {
+                    deserializedServerProperties.serverEdition = reader.getString();
+                } else if ("storageQuotaInMb".equals(fieldName)) {
+                    deserializedServerProperties.storageQuotaInMb = reader.getNullable(JsonReader::getInt);
+                } else if ("vCores".equals(fieldName)) {
+                    deserializedServerProperties.vCores = reader.getNullable(JsonReader::getInt);
+                } else if ("enableHa".equals(fieldName)) {
+                    deserializedServerProperties.enableHa = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enablePublicIpAccess".equals(fieldName)) {
+                    deserializedServerProperties.enablePublicIpAccess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isReadOnly".equals(fieldName)) {
+                    deserializedServerProperties.isReadOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("administratorLogin".equals(fieldName)) {
+                    deserializedServerProperties.administratorLogin = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerProperties;
+        });
     }
 }

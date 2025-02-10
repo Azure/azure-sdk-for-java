@@ -19,7 +19,8 @@ public final class TriggerRunsRerunSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersRerun(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggerRuns().rerunWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
+        manager.triggerRuns()
+            .rerunWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
     }
 }

@@ -21,21 +21,18 @@ public final class ContactProfilesImpl implements ContactProfiles {
 
     private final com.azure.resourcemanager.orbital.OrbitalManager serviceManager;
 
-    public ContactProfilesImpl(
-        ContactProfilesClient innerClient, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
+    public ContactProfilesImpl(ContactProfilesClient innerClient,
+        com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ContactProfile> getByResourceGroupWithResponse(
-        String resourceGroupName, String contactProfileName, Context context) {
-        Response<ContactProfileInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, contactProfileName, context);
+    public Response<ContactProfile> getByResourceGroupWithResponse(String resourceGroupName, String contactProfileName,
+        Context context) {
+        Response<ContactProfileInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, contactProfileName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ContactProfileImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -61,102 +58,78 @@ public final class ContactProfilesImpl implements ContactProfiles {
 
     public PagedIterable<ContactProfile> list() {
         PagedIterable<ContactProfileInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ContactProfile> list(String skiptoken, Context context) {
         PagedIterable<ContactProfileInner> inner = this.serviceClient().list(skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ContactProfile> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ContactProfileInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ContactProfile> listByResourceGroup(
-        String resourceGroupName, String skiptoken, Context context) {
-        PagedIterable<ContactProfileInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
+    public PagedIterable<ContactProfile> listByResourceGroup(String resourceGroupName, String skiptoken,
+        Context context) {
+        PagedIterable<ContactProfileInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, skiptoken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
     }
 
     public ContactProfile getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String contactProfileName = Utils.getValueFromIdByName(id, "contactProfiles");
+        String contactProfileName = ResourceManagerUtils.getValueFromIdByName(id, "contactProfiles");
         if (contactProfileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, contactProfileName, Context.NONE).getValue();
     }
 
     public Response<ContactProfile> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String contactProfileName = Utils.getValueFromIdByName(id, "contactProfiles");
+        String contactProfileName = ResourceManagerUtils.getValueFromIdByName(id, "contactProfiles");
         if (contactProfileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, contactProfileName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String contactProfileName = Utils.getValueFromIdByName(id, "contactProfiles");
+        String contactProfileName = ResourceManagerUtils.getValueFromIdByName(id, "contactProfiles");
         if (contactProfileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));
         }
         this.delete(resourceGroupName, contactProfileName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String contactProfileName = Utils.getValueFromIdByName(id, "contactProfiles");
+        String contactProfileName = ResourceManagerUtils.getValueFromIdByName(id, "contactProfiles");
         if (contactProfileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));
         }
         this.delete(resourceGroupName, contactProfileName, context);
     }

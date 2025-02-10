@@ -7,13 +7,16 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RecoveryServices. */
+/**
+ * Resource collection API of RecoveryServices.
+ */
 public interface RecoveryServices {
     /**
-     * API to check for resource name availability. A name is available if no other resource exists that has the same
-     * SubscriptionId, Resource Name and Type or if one or more such resources exist, each of these must be GC'd and
-     * their time of deletion be more than 24 Hours Ago.
-     *
+     * API to check for resource name availability.
+     * A name is available if no other resource exists that has the same SubscriptionId, Resource Name and Type
+     * or if one or more such resources exist, each of these must be GC'd and their time of deletion be more than 24
+     * Hours Ago.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location Location of the resource.
      * @param input Contains information about Resource type and Resource name.
@@ -23,14 +26,15 @@ public interface RecoveryServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for check name availability API along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String location, CheckNameAvailabilityParameters input, Context context);
+    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(String resourceGroupName, String location,
+        CheckNameAvailabilityParameters input, Context context);
 
     /**
-     * API to check for resource name availability. A name is available if no other resource exists that has the same
-     * SubscriptionId, Resource Name and Type or if one or more such resources exist, each of these must be GC'd and
-     * their time of deletion be more than 24 Hours Ago.
-     *
+     * API to check for resource name availability.
+     * A name is available if no other resource exists that has the same SubscriptionId, Resource Name and Type
+     * or if one or more such resources exist, each of these must be GC'd and their time of deletion be more than 24
+     * Hours Ago.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location Location of the resource.
      * @param input Contains information about Resource type and Resource name.
@@ -39,12 +43,12 @@ public interface RecoveryServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for check name availability API.
      */
-    CheckNameAvailabilityResult checkNameAvailability(
-        String resourceGroupName, String location, CheckNameAvailabilityParameters input);
+    CheckNameAvailabilityResult checkNameAvailability(String resourceGroupName, String location,
+        CheckNameAvailabilityParameters input);
 
     /**
      * API to get details about capabilities provided by Microsoft.RecoveryServices RP.
-     *
+     * 
      * @param location Location of the resource.
      * @param input Contains information about Resource type and properties to get capabilities.
      * @param context The context to associate with this operation.
@@ -53,12 +57,12 @@ public interface RecoveryServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return capabilities response for Microsoft.RecoveryServices along with {@link Response}.
      */
-    Response<CapabilitiesResponse> capabilitiesWithResponse(
-        String location, ResourceCapabilities input, Context context);
+    Response<CapabilitiesResponse> capabilitiesWithResponse(String location, ResourceCapabilities input,
+        Context context);
 
     /**
      * API to get details about capabilities provided by Microsoft.RecoveryServices RP.
-     *
+     * 
      * @param location Location of the resource.
      * @param input Contains information about Resource type and properties to get capabilities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

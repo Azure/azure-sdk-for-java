@@ -15,16 +15,18 @@ public final class BinaryDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BinaryDatasetTypeProperties model = BinaryData.fromString(
-            "{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datavcmlaexbzbquf\",\"fileName\":\"dataezs\",\"\":{\"ime\":\"dataymldrorhyogzm\",\"m\":\"datatcuuwdhtqqhyhn\",\"wnwngh\":\"datatnsugisno\",\"cjixxf\":\"datajovkeyym\"}},\"compression\":{\"type\":\"datapcrtn\",\"level\":\"datauefxxijtebdveywe\",\"\":{\"wepf\":\"datahlolmc\",\"bv\":\"datasv\",\"l\":\"dataqdljnpe\",\"detawevxehue\":\"datan\"}}}")
+            "{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datand\",\"fileName\":\"datawfhvpxjhxzu\",\"\":{\"uaixcdckix\":\"datazabbwzgv\",\"igavk\":\"dataps\"}},\"compression\":{\"type\":\"datayxzerejr\",\"level\":\"datazjbyetjxryopta\",\"\":{\"rrabovrwwxywp\":\"datawhlbecgihzbpem\",\"hifppskpeswyhhm\":\"datahspbo\",\"lyuqvcmlaexb\":\"datafjuajxwwvcmmpe\"}}}")
             .toObject(BinaryDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BinaryDatasetTypeProperties model = new BinaryDatasetTypeProperties()
-            .withLocation(new DatasetLocation().withFolderPath("datavcmlaexbzbquf").withFileName("dataezs")
+            .withLocation(new DatasetLocation().withFolderPath("datand")
+                .withFileName("datawfhvpxjhxzu")
                 .withAdditionalProperties(mapOf("type", "DatasetLocation")))
-            .withCompression(new DatasetCompression().withType("datapcrtn").withLevel("datauefxxijtebdveywe")
+            .withCompression(new DatasetCompression().withType("datayxzerejr")
+                .withLevel("datazjbyetjxryopta")
                 .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(BinaryDatasetTypeProperties.class);
     }

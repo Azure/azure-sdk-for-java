@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -40,7 +39,7 @@ public final class TrustedAccessRoleBindingProvisioningState
 
     /**
      * Creates a new instance of TrustedAccessRoleBindingProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -49,18 +48,17 @@ public final class TrustedAccessRoleBindingProvisioningState
 
     /**
      * Creates or finds a TrustedAccessRoleBindingProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TrustedAccessRoleBindingProvisioningState.
      */
-    @JsonCreator
     public static TrustedAccessRoleBindingProvisioningState fromString(String name) {
         return fromString(name, TrustedAccessRoleBindingProvisioningState.class);
     }
 
     /**
      * Gets known TrustedAccessRoleBindingProvisioningState values.
-     *
+     * 
      * @return known TrustedAccessRoleBindingProvisioningState values.
      */
     public static Collection<TrustedAccessRoleBindingProvisioningState> values() {

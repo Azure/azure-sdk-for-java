@@ -13,16 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SparkUserPluginsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkUserPlugins model =
-            BinaryData.fromString("{\"plugins\":[{\"path\":\"lnjixisxya\"}]}").toObject(SparkUserPlugins.class);
-        Assertions.assertEquals("lnjixisxya", model.plugins().get(0).path());
+        SparkUserPlugins model
+            = BinaryData.fromString("{\"plugins\":[{\"path\":\"xcxrsl\"}]}").toObject(SparkUserPlugins.class);
+        Assertions.assertEquals("xcxrsl", model.plugins().get(0).path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkUserPlugins model =
-            new SparkUserPlugins().withPlugins(Arrays.asList(new SparkUserPlugin().withPath("lnjixisxya")));
+        SparkUserPlugins model
+            = new SparkUserPlugins().withPlugins(Arrays.asList(new SparkUserPlugin().withPath("xcxrsl")));
         model = BinaryData.fromObject(model).toObject(SparkUserPlugins.class);
-        Assertions.assertEquals("lnjixisxya", model.plugins().get(0).path());
+        Assertions.assertEquals("xcxrsl", model.plugins().get(0).path());
     }
 }

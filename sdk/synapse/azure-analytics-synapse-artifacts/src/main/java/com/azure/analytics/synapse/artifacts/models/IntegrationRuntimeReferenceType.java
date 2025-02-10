@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -33,7 +32,6 @@ public final class IntegrationRuntimeReferenceType extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeReferenceType.
      */
-    @JsonCreator
     public static IntegrationRuntimeReferenceType fromString(String name) {
         return fromString(name, IntegrationRuntimeReferenceType.class);
     }

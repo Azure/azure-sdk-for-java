@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Plugin certificates information for Service Mesh.
  */
 @Fluent
-public final class IstioPluginCertificateAuthority {
+public final class IstioPluginCertificateAuthority implements JsonSerializable<IstioPluginCertificateAuthority> {
     /*
      * The resource ID of the Key Vault.
      */
-    @JsonProperty(value = "keyVaultId")
     private String keyVaultId;
 
     /*
      * Intermediate certificate object name in Azure Key Vault.
      */
-    @JsonProperty(value = "certObjectName")
     private String certObjectName;
 
     /*
      * Intermediate certificate private key object name in Azure Key Vault.
      */
-    @JsonProperty(value = "keyObjectName")
     private String keyObjectName;
 
     /*
      * Root certificate object name in Azure Key Vault.
      */
-    @JsonProperty(value = "rootCertObjectName")
     private String rootCertObjectName;
 
     /*
      * Certificate chain object name in Azure Key Vault.
      */
-    @JsonProperty(value = "certChainObjectName")
     private String certChainObjectName;
 
     /**
@@ -50,7 +49,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Get the keyVaultId property: The resource ID of the Key Vault.
-     *
+     * 
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
@@ -59,7 +58,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Set the keyVaultId property: The resource ID of the Key Vault.
-     *
+     * 
      * @param keyVaultId the keyVaultId value to set.
      * @return the IstioPluginCertificateAuthority object itself.
      */
@@ -70,7 +69,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Get the certObjectName property: Intermediate certificate object name in Azure Key Vault.
-     *
+     * 
      * @return the certObjectName value.
      */
     public String certObjectName() {
@@ -79,7 +78,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Set the certObjectName property: Intermediate certificate object name in Azure Key Vault.
-     *
+     * 
      * @param certObjectName the certObjectName value to set.
      * @return the IstioPluginCertificateAuthority object itself.
      */
@@ -90,7 +89,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Get the keyObjectName property: Intermediate certificate private key object name in Azure Key Vault.
-     *
+     * 
      * @return the keyObjectName value.
      */
     public String keyObjectName() {
@@ -99,7 +98,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Set the keyObjectName property: Intermediate certificate private key object name in Azure Key Vault.
-     *
+     * 
      * @param keyObjectName the keyObjectName value to set.
      * @return the IstioPluginCertificateAuthority object itself.
      */
@@ -110,7 +109,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Get the rootCertObjectName property: Root certificate object name in Azure Key Vault.
-     *
+     * 
      * @return the rootCertObjectName value.
      */
     public String rootCertObjectName() {
@@ -119,7 +118,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Set the rootCertObjectName property: Root certificate object name in Azure Key Vault.
-     *
+     * 
      * @param rootCertObjectName the rootCertObjectName value to set.
      * @return the IstioPluginCertificateAuthority object itself.
      */
@@ -130,7 +129,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Get the certChainObjectName property: Certificate chain object name in Azure Key Vault.
-     *
+     * 
      * @return the certChainObjectName value.
      */
     public String certChainObjectName() {
@@ -139,7 +138,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Set the certChainObjectName property: Certificate chain object name in Azure Key Vault.
-     *
+     * 
      * @param certChainObjectName the certChainObjectName value to set.
      * @return the IstioPluginCertificateAuthority object itself.
      */
@@ -150,9 +149,58 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyVaultId", this.keyVaultId);
+        jsonWriter.writeStringField("certObjectName", this.certObjectName);
+        jsonWriter.writeStringField("keyObjectName", this.keyObjectName);
+        jsonWriter.writeStringField("rootCertObjectName", this.rootCertObjectName);
+        jsonWriter.writeStringField("certChainObjectName", this.certChainObjectName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IstioPluginCertificateAuthority from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IstioPluginCertificateAuthority if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IstioPluginCertificateAuthority.
+     */
+    public static IstioPluginCertificateAuthority fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IstioPluginCertificateAuthority deserializedIstioPluginCertificateAuthority
+                = new IstioPluginCertificateAuthority();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVaultId".equals(fieldName)) {
+                    deserializedIstioPluginCertificateAuthority.keyVaultId = reader.getString();
+                } else if ("certObjectName".equals(fieldName)) {
+                    deserializedIstioPluginCertificateAuthority.certObjectName = reader.getString();
+                } else if ("keyObjectName".equals(fieldName)) {
+                    deserializedIstioPluginCertificateAuthority.keyObjectName = reader.getString();
+                } else if ("rootCertObjectName".equals(fieldName)) {
+                    deserializedIstioPluginCertificateAuthority.rootCertObjectName = reader.getString();
+                } else if ("certChainObjectName".equals(fieldName)) {
+                    deserializedIstioPluginCertificateAuthority.certChainObjectName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIstioPluginCertificateAuthority;
+        });
     }
 }

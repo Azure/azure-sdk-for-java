@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.ManagedRuleGroupDefinition;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties for a managed rule set definition. */
+/**
+ * Properties for a managed rule set definition.
+ */
 @Immutable
-public final class ManagedRuleSetDefinitionProperties {
+public final class ManagedRuleSetDefinitionProperties implements JsonSerializable<ManagedRuleSetDefinitionProperties> {
     /*
      * Provisioning state of the managed rule set.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Type of the managed rule set.
      */
-    @JsonProperty(value = "ruleSetType", access = JsonProperty.Access.WRITE_ONLY)
     private String ruleSetType;
 
     /*
      * Version of the managed rule set type.
      */
-    @JsonProperty(value = "ruleSetVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String ruleSetVersion;
 
     /*
      * Rule groups of the managed rule set.
      */
-    @JsonProperty(value = "ruleGroups", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedRuleGroupDefinition> ruleGroups;
 
-    /** Creates an instance of ManagedRuleSetDefinitionProperties class. */
+    /**
+     * Creates an instance of ManagedRuleSetDefinitionProperties class.
+     */
     public ManagedRuleSetDefinitionProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the managed rule set.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -51,7 +55,7 @@ public final class ManagedRuleSetDefinitionProperties {
 
     /**
      * Get the ruleSetType property: Type of the managed rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -60,7 +64,7 @@ public final class ManagedRuleSetDefinitionProperties {
 
     /**
      * Get the ruleSetVersion property: Version of the managed rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -69,7 +73,7 @@ public final class ManagedRuleSetDefinitionProperties {
 
     /**
      * Get the ruleGroups property: Rule groups of the managed rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ManagedRuleGroupDefinition> ruleGroups() {
@@ -78,12 +82,56 @@ public final class ManagedRuleSetDefinitionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleGroups() != null) {
             ruleGroups().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedRuleSetDefinitionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedRuleSetDefinitionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedRuleSetDefinitionProperties.
+     */
+    public static ManagedRuleSetDefinitionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedRuleSetDefinitionProperties deserializedManagedRuleSetDefinitionProperties
+                = new ManagedRuleSetDefinitionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedManagedRuleSetDefinitionProperties.provisioningState = reader.getString();
+                } else if ("ruleSetType".equals(fieldName)) {
+                    deserializedManagedRuleSetDefinitionProperties.ruleSetType = reader.getString();
+                } else if ("ruleSetVersion".equals(fieldName)) {
+                    deserializedManagedRuleSetDefinitionProperties.ruleSetVersion = reader.getString();
+                } else if ("ruleGroups".equals(fieldName)) {
+                    List<ManagedRuleGroupDefinition> ruleGroups
+                        = reader.readArray(reader1 -> ManagedRuleGroupDefinition.fromJson(reader1));
+                    deserializedManagedRuleSetDefinitionProperties.ruleGroups = ruleGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedRuleSetDefinitionProperties;
+        });
     }
 }

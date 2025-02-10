@@ -5,109 +5,102 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents the networkAdapter on a device. */
+/**
+ * Represents the networkAdapter on a device.
+ */
 @Fluent
-public final class NetworkAdapter {
+public final class NetworkAdapter implements JsonSerializable<NetworkAdapter> {
     /*
      * Instance ID of network adapter.
      */
-    @JsonProperty(value = "adapterId", access = JsonProperty.Access.WRITE_ONLY)
     private String adapterId;
 
     /*
      * Hardware position of network adapter.
      */
-    @JsonProperty(value = "adapterPosition", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkAdapterPosition adapterPosition;
 
     /*
      * Logical index of the adapter.
      */
-    @JsonProperty(value = "index", access = JsonProperty.Access.WRITE_ONLY)
     private Integer index;
 
     /*
      * Node ID of the network adapter.
      */
-    @JsonProperty(value = "nodeId", access = JsonProperty.Access.WRITE_ONLY)
     private String nodeId;
 
     /*
      * Network adapter name.
      */
-    @JsonProperty(value = "networkAdapterName", access = JsonProperty.Access.WRITE_ONLY)
     private String networkAdapterName;
 
     /*
      * Hardware label for the adapter.
      */
-    @JsonProperty(value = "label", access = JsonProperty.Access.WRITE_ONLY)
     private String label;
 
     /*
      * MAC address.
      */
-    @JsonProperty(value = "macAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String macAddress;
 
     /*
      * Link speed.
      */
-    @JsonProperty(value = "linkSpeed", access = JsonProperty.Access.WRITE_ONLY)
     private Long linkSpeed;
 
     /*
      * Value indicating whether this adapter is valid.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkAdapterStatus status;
 
     /*
      * Value indicating whether this adapter is RDMA capable.
      */
-    @JsonProperty(value = "rdmaStatus")
     private NetworkAdapterRdmaStatus rdmaStatus;
 
     /*
      * Value indicating whether this adapter has DHCP enabled.
      */
-    @JsonProperty(value = "dhcpStatus")
     private NetworkAdapterDhcpStatus dhcpStatus;
 
     /*
      * The IPv4 configuration of the network adapter.
      */
-    @JsonProperty(value = "ipv4Configuration", access = JsonProperty.Access.WRITE_ONLY)
     private Ipv4Config ipv4Configuration;
 
     /*
      * The IPv6 configuration of the network adapter.
      */
-    @JsonProperty(value = "ipv6Configuration", access = JsonProperty.Access.WRITE_ONLY)
     private Ipv6Config ipv6Configuration;
 
     /*
      * The IPv6 local address.
      */
-    @JsonProperty(value = "ipv6LinkLocalAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipv6LinkLocalAddress;
 
     /*
      * The list of DNS Servers of the device.
      */
-    @JsonProperty(value = "dnsServers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> dnsServers;
 
-    /** Creates an instance of NetworkAdapter class. */
+    /**
+     * Creates an instance of NetworkAdapter class.
+     */
     public NetworkAdapter() {
     }
 
     /**
      * Get the adapterId property: Instance ID of network adapter.
-     *
+     * 
      * @return the adapterId value.
      */
     public String adapterId() {
@@ -116,7 +109,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the adapterPosition property: Hardware position of network adapter.
-     *
+     * 
      * @return the adapterPosition value.
      */
     public NetworkAdapterPosition adapterPosition() {
@@ -125,7 +118,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the index property: Logical index of the adapter.
-     *
+     * 
      * @return the index value.
      */
     public Integer index() {
@@ -134,7 +127,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the nodeId property: Node ID of the network adapter.
-     *
+     * 
      * @return the nodeId value.
      */
     public String nodeId() {
@@ -143,7 +136,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the networkAdapterName property: Network adapter name.
-     *
+     * 
      * @return the networkAdapterName value.
      */
     public String networkAdapterName() {
@@ -152,7 +145,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the label property: Hardware label for the adapter.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -161,7 +154,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the macAddress property: MAC address.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -170,7 +163,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the linkSpeed property: Link speed.
-     *
+     * 
      * @return the linkSpeed value.
      */
     public Long linkSpeed() {
@@ -179,7 +172,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the status property: Value indicating whether this adapter is valid.
-     *
+     * 
      * @return the status value.
      */
     public NetworkAdapterStatus status() {
@@ -188,7 +181,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the rdmaStatus property: Value indicating whether this adapter is RDMA capable.
-     *
+     * 
      * @return the rdmaStatus value.
      */
     public NetworkAdapterRdmaStatus rdmaStatus() {
@@ -197,7 +190,7 @@ public final class NetworkAdapter {
 
     /**
      * Set the rdmaStatus property: Value indicating whether this adapter is RDMA capable.
-     *
+     * 
      * @param rdmaStatus the rdmaStatus value to set.
      * @return the NetworkAdapter object itself.
      */
@@ -208,7 +201,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the dhcpStatus property: Value indicating whether this adapter has DHCP enabled.
-     *
+     * 
      * @return the dhcpStatus value.
      */
     public NetworkAdapterDhcpStatus dhcpStatus() {
@@ -217,7 +210,7 @@ public final class NetworkAdapter {
 
     /**
      * Set the dhcpStatus property: Value indicating whether this adapter has DHCP enabled.
-     *
+     * 
      * @param dhcpStatus the dhcpStatus value to set.
      * @return the NetworkAdapter object itself.
      */
@@ -228,7 +221,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the ipv4Configuration property: The IPv4 configuration of the network adapter.
-     *
+     * 
      * @return the ipv4Configuration value.
      */
     public Ipv4Config ipv4Configuration() {
@@ -237,7 +230,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the ipv6Configuration property: The IPv6 configuration of the network adapter.
-     *
+     * 
      * @return the ipv6Configuration value.
      */
     public Ipv6Config ipv6Configuration() {
@@ -246,7 +239,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the ipv6LinkLocalAddress property: The IPv6 local address.
-     *
+     * 
      * @return the ipv6LinkLocalAddress value.
      */
     public String ipv6LinkLocalAddress() {
@@ -255,7 +248,7 @@ public final class NetworkAdapter {
 
     /**
      * Get the dnsServers property: The list of DNS Servers of the device.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -264,7 +257,7 @@ public final class NetworkAdapter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -277,5 +270,71 @@ public final class NetworkAdapter {
         if (ipv6Configuration() != null) {
             ipv6Configuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rdmaStatus", this.rdmaStatus == null ? null : this.rdmaStatus.toString());
+        jsonWriter.writeStringField("dhcpStatus", this.dhcpStatus == null ? null : this.dhcpStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkAdapter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkAdapter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkAdapter.
+     */
+    public static NetworkAdapter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkAdapter deserializedNetworkAdapter = new NetworkAdapter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("adapterId".equals(fieldName)) {
+                    deserializedNetworkAdapter.adapterId = reader.getString();
+                } else if ("adapterPosition".equals(fieldName)) {
+                    deserializedNetworkAdapter.adapterPosition = NetworkAdapterPosition.fromJson(reader);
+                } else if ("index".equals(fieldName)) {
+                    deserializedNetworkAdapter.index = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeId".equals(fieldName)) {
+                    deserializedNetworkAdapter.nodeId = reader.getString();
+                } else if ("networkAdapterName".equals(fieldName)) {
+                    deserializedNetworkAdapter.networkAdapterName = reader.getString();
+                } else if ("label".equals(fieldName)) {
+                    deserializedNetworkAdapter.label = reader.getString();
+                } else if ("macAddress".equals(fieldName)) {
+                    deserializedNetworkAdapter.macAddress = reader.getString();
+                } else if ("linkSpeed".equals(fieldName)) {
+                    deserializedNetworkAdapter.linkSpeed = reader.getNullable(JsonReader::getLong);
+                } else if ("status".equals(fieldName)) {
+                    deserializedNetworkAdapter.status = NetworkAdapterStatus.fromString(reader.getString());
+                } else if ("rdmaStatus".equals(fieldName)) {
+                    deserializedNetworkAdapter.rdmaStatus = NetworkAdapterRdmaStatus.fromString(reader.getString());
+                } else if ("dhcpStatus".equals(fieldName)) {
+                    deserializedNetworkAdapter.dhcpStatus = NetworkAdapterDhcpStatus.fromString(reader.getString());
+                } else if ("ipv4Configuration".equals(fieldName)) {
+                    deserializedNetworkAdapter.ipv4Configuration = Ipv4Config.fromJson(reader);
+                } else if ("ipv6Configuration".equals(fieldName)) {
+                    deserializedNetworkAdapter.ipv6Configuration = Ipv6Config.fromJson(reader);
+                } else if ("ipv6LinkLocalAddress".equals(fieldName)) {
+                    deserializedNetworkAdapter.ipv6LinkLocalAddress = reader.getString();
+                } else if ("dnsServers".equals(fieldName)) {
+                    List<String> dnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkAdapter.dnsServers = dnsServers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkAdapter;
+        });
     }
 }

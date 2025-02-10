@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.OS;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of agent pool. */
+/**
+ * The properties of agent pool.
+ */
 @Fluent
-public final class AgentPoolProperties {
+public final class AgentPoolProperties implements JsonSerializable<AgentPoolProperties> {
     /*
      * The count of agent machine
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * The Tier of agent machine
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * The OS of agent machine
      */
-    @JsonProperty(value = "os")
     private OS os;
 
     /*
      * The Virtual Network Subnet Resource Id of the agent machine
      */
-    @JsonProperty(value = "virtualNetworkSubnetResourceId")
     private String virtualNetworkSubnetResourceId;
 
     /*
      * The provisioning state of this agent pool
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of AgentPoolProperties class. */
+    /**
+     * Creates an instance of AgentPoolProperties class.
+     */
     public AgentPoolProperties() {
     }
 
     /**
      * Get the count property: The count of agent machine.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -57,7 +60,7 @@ public final class AgentPoolProperties {
 
     /**
      * Set the count property: The count of agent machine.
-     *
+     * 
      * @param count the count value to set.
      * @return the AgentPoolProperties object itself.
      */
@@ -68,7 +71,7 @@ public final class AgentPoolProperties {
 
     /**
      * Get the tier property: The Tier of agent machine.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -77,7 +80,7 @@ public final class AgentPoolProperties {
 
     /**
      * Set the tier property: The Tier of agent machine.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the AgentPoolProperties object itself.
      */
@@ -88,7 +91,7 @@ public final class AgentPoolProperties {
 
     /**
      * Get the os property: The OS of agent machine.
-     *
+     * 
      * @return the os value.
      */
     public OS os() {
@@ -97,7 +100,7 @@ public final class AgentPoolProperties {
 
     /**
      * Set the os property: The OS of agent machine.
-     *
+     * 
      * @param os the os value to set.
      * @return the AgentPoolProperties object itself.
      */
@@ -108,7 +111,7 @@ public final class AgentPoolProperties {
 
     /**
      * Get the virtualNetworkSubnetResourceId property: The Virtual Network Subnet Resource Id of the agent machine.
-     *
+     * 
      * @return the virtualNetworkSubnetResourceId value.
      */
     public String virtualNetworkSubnetResourceId() {
@@ -117,7 +120,7 @@ public final class AgentPoolProperties {
 
     /**
      * Set the virtualNetworkSubnetResourceId property: The Virtual Network Subnet Resource Id of the agent machine.
-     *
+     * 
      * @param virtualNetworkSubnetResourceId the virtualNetworkSubnetResourceId value to set.
      * @return the AgentPoolProperties object itself.
      */
@@ -128,7 +131,7 @@ public final class AgentPoolProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of this agent pool.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -137,9 +140,57 @@ public final class AgentPoolProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeStringField("os", this.os == null ? null : this.os.toString());
+        jsonWriter.writeStringField("virtualNetworkSubnetResourceId", this.virtualNetworkSubnetResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolProperties.
+     */
+    public static AgentPoolProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolProperties deserializedAgentPoolProperties = new AgentPoolProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedAgentPoolProperties.count = reader.getNullable(JsonReader::getInt);
+                } else if ("tier".equals(fieldName)) {
+                    deserializedAgentPoolProperties.tier = reader.getString();
+                } else if ("os".equals(fieldName)) {
+                    deserializedAgentPoolProperties.os = OS.fromString(reader.getString());
+                } else if ("virtualNetworkSubnetResourceId".equals(fieldName)) {
+                    deserializedAgentPoolProperties.virtualNetworkSubnetResourceId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAgentPoolProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolProperties;
+        });
     }
 }

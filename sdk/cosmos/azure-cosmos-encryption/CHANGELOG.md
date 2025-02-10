@@ -1,14 +1,61 @@
 ## Release History
 
-### 2.8.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 2.17.1 (2025-02-08)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.66.1`.
+
+### 2.17.0 (2025-01-14)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.66.0`.
+
+### 2.16.0 (2024-11-19)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.65.0`.
+
+### 2.15.0 (2024-10-10)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.64.0`.
+
+### 2.14.1 (2024-09-10)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.63.3`.
+
+### 2.14.0 (2024-07-26)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.63.0`.
+
+### 2.13.0 (2024-07-02)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.62.0`.
+
+### 2.12.0 (2024-05-19)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.60.0`.
+
+### 2.11.0 (2024-04-27)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.59.0`.
+
+#### Features Added
+* Added public APIs `getCustomItemSerializer` and `setCustomItemSerializer` to allow customers to specify custom payload transformations or serialization settings. - See [PR 38997](https://github.com/Azure/azure-sdk-for-java/pull/38997)
+
+### 2.10.0 (2024-04-16)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.58.0`.
+
+### 2.9.0 (2024-03-26)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.57.0`.
+
+### 2.8.0 (2024-02-08)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.55.0`.
 
 ### 2.7.0 (2023-12-01)
 #### Other Changes

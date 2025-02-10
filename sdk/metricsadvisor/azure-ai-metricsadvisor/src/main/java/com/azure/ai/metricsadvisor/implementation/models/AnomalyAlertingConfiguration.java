@@ -197,6 +197,9 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -206,7 +209,8 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
         jsonWriter.writeArrayField("metricAlertingConfigurations", this.metricAlertingConfigurations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("crossMetricsOperator", Objects.toString(this.crossMetricsOperator, null));
+        jsonWriter.writeStringField("crossMetricsOperator",
+            this.crossMetricsOperator == null ? null : this.crossMetricsOperator.toString());
         jsonWriter.writeArrayField("splitAlertByDimensions", this.splitAlertByDimensions,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();

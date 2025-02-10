@@ -14,26 +14,26 @@ import org.junit.jupiter.api.Assertions;
 public final class ProfileUpdateModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProfileUpdateModel model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"enabledState\":\"Disabled\"},\"tags\":{\"sgsahmkycgr\":\"znqntoru\",\"s\":\"uwjuetaeburuvdmo\",\"tpuqujmq\":\"zlxwabmqoefkifr\"}}")
-                .toObject(ProfileUpdateModel.class);
-        Assertions.assertEquals("znqntoru", model.tags().get("sgsahmkycgr"));
-        Assertions.assertEquals(State.DISABLED, model.enabledState());
+        ProfileUpdateModel model = BinaryData.fromString(
+            "{\"properties\":{\"enabledState\":\"Enabled\"},\"tags\":{\"pqfrtqlkz\":\"dnqqskawaoqvmmb\",\"kxlzyqdrfeg\":\"egnitg\",\"lwigdivbkbx\":\"ealzxwhcansymoyq\",\"wasqvdaeyyg\":\"omfaj\"}}")
+            .toObject(ProfileUpdateModel.class);
+        Assertions.assertEquals("dnqqskawaoqvmmb", model.tags().get("pqfrtqlkz"));
+        Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProfileUpdateModel model =
-            new ProfileUpdateModel()
-                .withTags(mapOf("sgsahmkycgr", "znqntoru", "s", "uwjuetaeburuvdmo", "tpuqujmq", "zlxwabmqoefkifr"))
-                .withEnabledState(State.DISABLED);
+        ProfileUpdateModel model
+            = new ProfileUpdateModel()
+                .withTags(mapOf("pqfrtqlkz", "dnqqskawaoqvmmb", "kxlzyqdrfeg", "egnitg", "lwigdivbkbx",
+                    "ealzxwhcansymoyq", "wasqvdaeyyg", "omfaj"))
+                .withEnabledState(State.ENABLED);
         model = BinaryData.fromObject(model).toObject(ProfileUpdateModel.class);
-        Assertions.assertEquals("znqntoru", model.tags().get("sgsahmkycgr"));
-        Assertions.assertEquals(State.DISABLED, model.enabledState());
+        Assertions.assertEquals("dnqqskawaoqvmmb", model.tags().get("pqfrtqlkz"));
+        Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -23,8 +23,7 @@ public class BinaryDataReceiveTest extends RestProxyTestBase<CorePerfStressOptio
     private static Function<HttpRequest, HttpResponse> createMockResponseSupplier(CorePerfStressOptions options) {
         byte[] bodyBytes = new byte[(int) options.getSize()];
         new Random(0).nextBytes(bodyBytes);
-        return httpRequest -> createMockResponse(httpRequest,
-            "application/octet-stream", bodyBytes);
+        return httpRequest -> createMockResponse(httpRequest, "application/octet-stream", bodyBytes);
     }
 
     @Override
@@ -41,8 +40,6 @@ public class BinaryDataReceiveTest extends RestProxyTestBase<CorePerfStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getBinaryDataAsync(endpoint, id)
-           .map(Response::getValue)
-           .map(BinaryData::toBytes).then();
+        return service.getBinaryDataAsync(endpoint, id).map(Response::getValue).map(BinaryData::toBytes).then();
     }
 }

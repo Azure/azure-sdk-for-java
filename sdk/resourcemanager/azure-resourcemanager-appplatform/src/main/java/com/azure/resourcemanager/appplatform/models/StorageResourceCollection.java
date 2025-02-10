@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.fluent.models.StorageResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection compose of storage resources list and a possible link for next page. */
+/**
+ * Collection compose of storage resources list and a possible link for next page.
+ */
 @Fluent
-public final class StorageResourceCollection {
+public final class StorageResourceCollection implements JsonSerializable<StorageResourceCollection> {
     /*
      * The storage resources list.
      */
-    @JsonProperty(value = "value")
     private List<StorageResourceInner> value;
 
     /*
      * The link to next page of storage list.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of StorageResourceCollection class.
+     */
+    public StorageResourceCollection() {
+    }
+
+    /**
      * Get the value property: The storage resources list.
-     *
+     * 
      * @return the value value.
      */
     public List<StorageResourceInner> value() {
@@ -35,7 +45,7 @@ public final class StorageResourceCollection {
 
     /**
      * Set the value property: The storage resources list.
-     *
+     * 
      * @param value the value value to set.
      * @return the StorageResourceCollection object itself.
      */
@@ -46,7 +56,7 @@ public final class StorageResourceCollection {
 
     /**
      * Get the nextLink property: The link to next page of storage list.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +65,7 @@ public final class StorageResourceCollection {
 
     /**
      * Set the nextLink property: The link to next page of storage list.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the StorageResourceCollection object itself.
      */
@@ -66,12 +76,53 @@ public final class StorageResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageResourceCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageResourceCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageResourceCollection.
+     */
+    public static StorageResourceCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageResourceCollection deserializedStorageResourceCollection = new StorageResourceCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<StorageResourceInner> value
+                        = reader.readArray(reader1 -> StorageResourceInner.fromJson(reader1));
+                    deserializedStorageResourceCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedStorageResourceCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageResourceCollection;
+        });
     }
 }

@@ -6,38 +6,43 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Specifies an auto scale rule metric dimension. */
+/**
+ * Specifies an auto scale rule metric dimension.
+ */
 @Fluent
-public final class ScaleRuleMetricDimension {
+public final class ScaleRuleMetricDimension implements JsonSerializable<ScaleRuleMetricDimension> {
     /*
      * Name of the dimension.
      */
-    @JsonProperty(value = "DimensionName", required = true)
     private String dimensionName;
 
     /*
      * the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being equal to any of the values.
      * 'NotEquals' being not equal to all of the values
      */
-    @JsonProperty(value = "Operator", required = true)
     private ScaleRuleMetricDimensionOperationType operator;
 
     /*
      * list of dimension values. For example: ["App1","App2"].
      */
-    @JsonProperty(value = "Values", required = true)
     private List<String> values;
 
-    /** Creates an instance of ScaleRuleMetricDimension class. */
+    /**
+     * Creates an instance of ScaleRuleMetricDimension class.
+     */
     public ScaleRuleMetricDimension() {
     }
 
     /**
      * Get the dimensionName property: Name of the dimension.
-     *
+     * 
      * @return the dimensionName value.
      */
     public String dimensionName() {
@@ -46,7 +51,7 @@ public final class ScaleRuleMetricDimension {
 
     /**
      * Set the dimensionName property: Name of the dimension.
-     *
+     * 
      * @param dimensionName the dimensionName value to set.
      * @return the ScaleRuleMetricDimension object itself.
      */
@@ -58,7 +63,7 @@ public final class ScaleRuleMetricDimension {
     /**
      * Get the operator property: the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being
      * equal to any of the values. 'NotEquals' being not equal to all of the values.
-     *
+     * 
      * @return the operator value.
      */
     public ScaleRuleMetricDimensionOperationType operator() {
@@ -68,7 +73,7 @@ public final class ScaleRuleMetricDimension {
     /**
      * Set the operator property: the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being
      * equal to any of the values. 'NotEquals' being not equal to all of the values.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the ScaleRuleMetricDimension object itself.
      */
@@ -79,7 +84,7 @@ public final class ScaleRuleMetricDimension {
 
     /**
      * Get the values property: list of dimension values. For example: ["App1","App2"].
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -88,7 +93,7 @@ public final class ScaleRuleMetricDimension {
 
     /**
      * Set the values property: list of dimension values. For example: ["App1","App2"].
-     *
+     * 
      * @param values the values value to set.
      * @return the ScaleRuleMetricDimension object itself.
      */
@@ -99,28 +104,71 @@ public final class ScaleRuleMetricDimension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dimensionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dimensionName in model ScaleRuleMetricDimension"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dimensionName in model ScaleRuleMetricDimension"));
         }
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operator in model ScaleRuleMetricDimension"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property operator in model ScaleRuleMetricDimension"));
         }
         if (values() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property values in model ScaleRuleMetricDimension"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScaleRuleMetricDimension.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("DimensionName", this.dimensionName);
+        jsonWriter.writeStringField("Operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeArrayField("Values", this.values, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScaleRuleMetricDimension from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScaleRuleMetricDimension if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScaleRuleMetricDimension.
+     */
+    public static ScaleRuleMetricDimension fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScaleRuleMetricDimension deserializedScaleRuleMetricDimension = new ScaleRuleMetricDimension();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("DimensionName".equals(fieldName)) {
+                    deserializedScaleRuleMetricDimension.dimensionName = reader.getString();
+                } else if ("Operator".equals(fieldName)) {
+                    deserializedScaleRuleMetricDimension.operator
+                        = ScaleRuleMetricDimensionOperationType.fromString(reader.getString());
+                } else if ("Values".equals(fieldName)) {
+                    List<String> values = reader.readArray(reader1 -> reader1.getString());
+                    deserializedScaleRuleMetricDimension.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScaleRuleMetricDimension;
+        });
+    }
 }

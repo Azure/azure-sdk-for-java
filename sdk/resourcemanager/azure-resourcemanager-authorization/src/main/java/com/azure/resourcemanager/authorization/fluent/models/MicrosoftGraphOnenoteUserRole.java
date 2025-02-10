@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** onenoteUserRole. */
+/**
+ * onenoteUserRole.
+ */
 public final class MicrosoftGraphOnenoteUserRole extends ExpandableStringEnum<MicrosoftGraphOnenoteUserRole> {
-    /** Static value None for MicrosoftGraphOnenoteUserRole. */
+    /**
+     * Static value None for MicrosoftGraphOnenoteUserRole.
+     */
     public static final MicrosoftGraphOnenoteUserRole NONE = fromString("None");
 
-    /** Static value Owner for MicrosoftGraphOnenoteUserRole. */
+    /**
+     * Static value Owner for MicrosoftGraphOnenoteUserRole.
+     */
     public static final MicrosoftGraphOnenoteUserRole OWNER = fromString("Owner");
 
-    /** Static value Contributor for MicrosoftGraphOnenoteUserRole. */
+    /**
+     * Static value Contributor for MicrosoftGraphOnenoteUserRole.
+     */
     public static final MicrosoftGraphOnenoteUserRole CONTRIBUTOR = fromString("Contributor");
 
-    /** Static value Reader for MicrosoftGraphOnenoteUserRole. */
+    /**
+     * Static value Reader for MicrosoftGraphOnenoteUserRole.
+     */
     public static final MicrosoftGraphOnenoteUserRole READER = fromString("Reader");
 
     /**
      * Creates a new instance of MicrosoftGraphOnenoteUserRole value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class MicrosoftGraphOnenoteUserRole extends ExpandableStringEnum<Mi
 
     /**
      * Creates or finds a MicrosoftGraphOnenoteUserRole from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphOnenoteUserRole.
      */
-    @JsonCreator
     public static MicrosoftGraphOnenoteUserRole fromString(String name) {
         return fromString(name, MicrosoftGraphOnenoteUserRole.class);
     }
 
     /**
      * Gets known MicrosoftGraphOnenoteUserRole values.
-     *
+     * 
      * @return known MicrosoftGraphOnenoteUserRole values.
      */
     public static Collection<MicrosoftGraphOnenoteUserRole> values() {

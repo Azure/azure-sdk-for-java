@@ -11,26 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class PlatformImagePurchasePlanTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlatformImagePurchasePlan model =
-            BinaryData
-                .fromString(
-                    "{\"planName\":\"gnzscxaqwo\",\"planProduct\":\"chcbonqvpkvlrxnj\",\"planPublisher\":\"ase\"}")
-                .toObject(PlatformImagePurchasePlan.class);
-        Assertions.assertEquals("gnzscxaqwo", model.planName());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.planProduct());
-        Assertions.assertEquals("ase", model.planPublisher());
+        PlatformImagePurchasePlan model = BinaryData
+            .fromString("{\"planName\":\"eypvhezrkg\",\"planProduct\":\"hcjrefovgmk\",\"planPublisher\":\"sle\"}")
+            .toObject(PlatformImagePurchasePlan.class);
+        Assertions.assertEquals("eypvhezrkg", model.planName());
+        Assertions.assertEquals("hcjrefovgmk", model.planProduct());
+        Assertions.assertEquals("sle", model.planPublisher());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlatformImagePurchasePlan model =
-            new PlatformImagePurchasePlan()
-                .withPlanName("gnzscxaqwo")
-                .withPlanProduct("chcbonqvpkvlrxnj")
-                .withPlanPublisher("ase");
+        PlatformImagePurchasePlan model = new PlatformImagePurchasePlan().withPlanName("eypvhezrkg")
+            .withPlanProduct("hcjrefovgmk")
+            .withPlanPublisher("sle");
         model = BinaryData.fromObject(model).toObject(PlatformImagePurchasePlan.class);
-        Assertions.assertEquals("gnzscxaqwo", model.planName());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.planProduct());
-        Assertions.assertEquals("ase", model.planPublisher());
+        Assertions.assertEquals("eypvhezrkg", model.planName());
+        Assertions.assertEquals("hcjrefovgmk", model.planProduct());
+        Assertions.assertEquals("sle", model.planPublisher());
     }
 }

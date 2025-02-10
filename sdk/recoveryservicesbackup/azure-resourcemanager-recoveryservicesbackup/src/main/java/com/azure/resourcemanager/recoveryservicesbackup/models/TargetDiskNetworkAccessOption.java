@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Network access settings to be used for restored disks. */
+/**
+ * Network access settings to be used for restored disks.
+ */
 public enum TargetDiskNetworkAccessOption {
-    /** Enum value SameAsOnSourceDisks. */
+    /**
+     * Enum value SameAsOnSourceDisks.
+     */
     SAME_AS_ON_SOURCE_DISKS("SameAsOnSourceDisks"),
 
-    /** Enum value EnablePrivateAccessForAllDisks. */
+    /**
+     * Enum value EnablePrivateAccessForAllDisks.
+     */
     ENABLE_PRIVATE_ACCESS_FOR_ALL_DISKS("EnablePrivateAccessForAllDisks"),
 
-    /** Enum value EnablePublicAccessForAllDisks. */
+    /**
+     * Enum value EnablePublicAccessForAllDisks.
+     */
     ENABLE_PUBLIC_ACCESS_FOR_ALL_DISKS("EnablePublicAccessForAllDisks");
 
-    /** The actual serialized value for a TargetDiskNetworkAccessOption instance. */
+    /**
+     * The actual serialized value for a TargetDiskNetworkAccessOption instance.
+     */
     private final String value;
 
     TargetDiskNetworkAccessOption(String value) {
@@ -27,11 +34,10 @@ public enum TargetDiskNetworkAccessOption {
 
     /**
      * Parses a serialized value to a TargetDiskNetworkAccessOption instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed TargetDiskNetworkAccessOption object, or null if unable to parse.
      */
-    @JsonCreator
     public static TargetDiskNetworkAccessOption fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum TargetDiskNetworkAccessOption {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

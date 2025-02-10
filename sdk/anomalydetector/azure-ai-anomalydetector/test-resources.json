@@ -41,12 +41,6 @@
       "metadata": {
         "description": "The application client id used to run tests."
       }
-    },
-    "testApplicationSecret": {
-      "type": "string",
-      "metadata": {
-        "description": "The application client secret used to run tests."
-      }
     }
   },
   "variables": {
@@ -86,10 +80,6 @@
     "AZURE_CLIENT_ID": {
       "type": "string",
       "value": "[parameters('testApplicationId')]"
-    },
-    "AZURE_CLIENT_SECRET": {
-      "type": "string",
-      "value": "[parameters('testApplicationSecret')]"
     },
     "ANOMALY_DETECTOR_API_KEY": {
       "type": "string",

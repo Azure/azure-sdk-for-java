@@ -16,8 +16,7 @@ public final class ManagedRuleSetDefinitionImpl implements ManagedRuleSetDefinit
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
 
-    ManagedRuleSetDefinitionImpl(
-        ManagedRuleSetDefinitionInner innerObject,
+    ManagedRuleSetDefinitionImpl(ManagedRuleSetDefinitionInner innerObject,
         com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

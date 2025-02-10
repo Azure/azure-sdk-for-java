@@ -5,227 +5,477 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** Azure VM workload-specific protected item representing SAP HANA DBInstance. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
-@JsonTypeName("AzureVmWorkloadSAPHanaDBInstance")
+/**
+ * Azure VM workload-specific protected item representing SAP HANA DBInstance.
+ */
 @Fluent
 public final class AzureVmWorkloadSapHanaDBInstanceProtectedItem extends AzureVmWorkloadProtectedItem {
-    /** Creates an instance of AzureVmWorkloadSapHanaDBInstanceProtectedItem class. */
+    /*
+     * backup item type.
+     */
+    private String protectedItemType = "AzureVmWorkloadSAPHanaDBInstance";
+
+    /**
+     * Creates an instance of AzureVmWorkloadSapHanaDBInstanceProtectedItem class.
+     */
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the protectedItemType property: backup item type.
+     * 
+     * @return the protectedItemType value.
+     */
+    @Override
+    public String protectedItemType() {
+        return this.protectedItemType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withServerName(String serverName) {
         super.withServerName(serverName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withParentName(String parentName) {
         super.withParentName(parentName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withParentType(String parentType) {
         super.withParentType(parentType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withProtectionState(ProtectionState protectionState) {
         super.withProtectionState(protectionState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withLastBackupStatus(LastBackupStatus lastBackupStatus) {
         super.withLastBackupStatus(lastBackupStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withLastBackupTime(OffsetDateTime lastBackupTime) {
         super.withLastBackupTime(lastBackupTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withLastBackupErrorDetail(ErrorDetail lastBackupErrorDetail) {
         super.withLastBackupErrorDetail(lastBackupErrorDetail);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withProtectedItemDataSourceId(
-        String protectedItemDataSourceId) {
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem
+        withProtectedItemDataSourceId(String protectedItemDataSourceId) {
         super.withProtectedItemDataSourceId(protectedItemDataSourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withProtectedItemHealthStatus(
-        ProtectedItemHealthStatus protectedItemHealthStatus) {
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem
+        withProtectedItemHealthStatus(ProtectedItemHealthStatus protectedItemHealthStatus) {
         super.withProtectedItemHealthStatus(protectedItemHealthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withExtendedInfo(
-        AzureVmWorkloadProtectedItemExtendedInfo extendedInfo) {
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem
+        withExtendedInfo(AzureVmWorkloadProtectedItemExtendedInfo extendedInfo) {
         super.withExtendedInfo(extendedInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withKpisHealths(
-        Map<String, KpiResourceHealthDetails> kpisHealths) {
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem
+        withKpisHealths(Map<String, KpiResourceHealthDetails> kpisHealths) {
         super.withKpisHealths(kpisHealths);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withNodesList(List<DistributedNodesInfo> nodesList) {
         super.withNodesList(nodesList);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withLastRecoveryPoint(OffsetDateTime lastRecoveryPoint) {
         super.withLastRecoveryPoint(lastRecoveryPoint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withBackupSetName(String backupSetName) {
         super.withBackupSetName(backupSetName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withCreateMode(CreateMode createMode) {
         super.withCreateMode(createMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withDeferredDeleteTimeInUtc(
-        OffsetDateTime deferredDeleteTimeInUtc) {
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem
+        withDeferredDeleteTimeInUtc(OffsetDateTime deferredDeleteTimeInUtc) {
         super.withDeferredDeleteTimeInUtc(deferredDeleteTimeInUtc);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withIsScheduledForDeferredDelete(
-        Boolean isScheduledForDeferredDelete) {
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem
+        withIsScheduledForDeferredDelete(Boolean isScheduledForDeferredDelete) {
         super.withIsScheduledForDeferredDelete(isScheduledForDeferredDelete);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withDeferredDeleteTimeRemaining(
-        String deferredDeleteTimeRemaining) {
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem
+        withDeferredDeleteTimeRemaining(String deferredDeleteTimeRemaining) {
         super.withDeferredDeleteTimeRemaining(deferredDeleteTimeRemaining);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withIsDeferredDeleteScheduleUpcoming(
-        Boolean isDeferredDeleteScheduleUpcoming) {
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem
+        withIsDeferredDeleteScheduleUpcoming(Boolean isDeferredDeleteScheduleUpcoming) {
         super.withIsDeferredDeleteScheduleUpcoming(isDeferredDeleteScheduleUpcoming);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withResourceGuardOperationRequests(
-        List<String> resourceGuardOperationRequests) {
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
         super.withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withSoftDeleteRetentionPeriod(
-        Integer softDeleteRetentionPeriod) {
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem
+        withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
         super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (lastBackupErrorDetail() != null) {
+            lastBackupErrorDetail().validate();
+        }
+        if (extendedInfo() != null) {
+            extendedInfo().validate();
+        }
+        if (kpisHealths() != null) {
+            kpisHealths().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (nodesList() != null) {
+            nodesList().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerName", containerName());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("policyId", policyId());
+        jsonWriter.writeStringField("lastRecoveryPoint",
+            lastRecoveryPoint() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastRecoveryPoint()));
+        jsonWriter.writeStringField("backupSetName", backupSetName());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeStringField("deferredDeleteTimeInUTC",
+            deferredDeleteTimeInUtc() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deferredDeleteTimeInUtc()));
+        jsonWriter.writeBooleanField("isScheduledForDeferredDelete", isScheduledForDeferredDelete());
+        jsonWriter.writeStringField("deferredDeleteTimeRemaining", deferredDeleteTimeRemaining());
+        jsonWriter.writeBooleanField("isDeferredDeleteScheduleUpcoming", isDeferredDeleteScheduleUpcoming());
+        jsonWriter.writeBooleanField("isRehydrate", isRehydrate());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchiveEnabled", isArchiveEnabled());
+        jsonWriter.writeStringField("policyName", policyName());
+        jsonWriter.writeNumberField("softDeleteRetentionPeriodInDays", softDeleteRetentionPeriod());
+        jsonWriter.writeStringField("serverName", serverName());
+        jsonWriter.writeStringField("parentName", parentName());
+        jsonWriter.writeStringField("parentType", parentType());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("lastBackupStatus",
+            lastBackupStatus() == null ? null : lastBackupStatus().toString());
+        jsonWriter.writeStringField("lastBackupTime",
+            lastBackupTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastBackupTime()));
+        jsonWriter.writeJsonField("lastBackupErrorDetail", lastBackupErrorDetail());
+        jsonWriter.writeStringField("protectedItemDataSourceId", protectedItemDataSourceId());
+        jsonWriter.writeStringField("protectedItemHealthStatus",
+            protectedItemHealthStatus() == null ? null : protectedItemHealthStatus().toString());
+        jsonWriter.writeJsonField("extendedInfo", extendedInfo());
+        jsonWriter.writeMapField("kpisHealths", kpisHealths(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("nodesList", nodesList(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVmWorkloadSapHanaDBInstanceProtectedItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVmWorkloadSapHanaDBInstanceProtectedItem if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVmWorkloadSapHanaDBInstanceProtectedItem.
+     */
+    public static AzureVmWorkloadSapHanaDBInstanceProtectedItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVmWorkloadSapHanaDBInstanceProtectedItem deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                = new AzureVmWorkloadSapHanaDBInstanceProtectedItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withWorkloadType(DataSourceType.fromString(reader.getString()));
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withContainerName(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withSourceResourceId(reader.getString());
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withPolicyId(reader.getString());
+                } else if ("lastRecoveryPoint".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withLastRecoveryPoint(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("backupSetName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withBackupSetName(reader.getString());
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("deferredDeleteTimeInUTC".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withDeferredDeleteTimeInUtc(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("isScheduledForDeferredDelete".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withIsScheduledForDeferredDelete(reader.getNullable(JsonReader::getBoolean));
+                } else if ("deferredDeleteTimeRemaining".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withDeferredDeleteTimeRemaining(reader.getString());
+                } else if ("isDeferredDeleteScheduleUpcoming".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withIsDeferredDeleteScheduleUpcoming(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isRehydrate".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withIsRehydrate(reader.getNullable(JsonReader::getBoolean));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withIsArchiveEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withPolicyName(reader.getString());
+                } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withSoftDeleteRetentionPeriod(reader.getNullable(JsonReader::getInt));
+                } else if ("vaultId".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withVaultId(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withFriendlyName(reader.getString());
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withServerName(reader.getString());
+                } else if ("parentName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withParentName(reader.getString());
+                } else if ("parentType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withParentType(reader.getString());
+                } else if ("protectionStatus".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withProtectionStatus(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withProtectionState(ProtectionState.fromString(reader.getString()));
+                } else if ("lastBackupStatus".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withLastBackupStatus(LastBackupStatus.fromString(reader.getString()));
+                } else if ("lastBackupTime".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withLastBackupTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastBackupErrorDetail".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withLastBackupErrorDetail(ErrorDetail.fromJson(reader));
+                } else if ("protectedItemDataSourceId".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withProtectedItemDataSourceId(reader.getString());
+                } else if ("protectedItemHealthStatus".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withProtectedItemHealthStatus(ProtectedItemHealthStatus.fromString(reader.getString()));
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem
+                        .withExtendedInfo(AzureVmWorkloadProtectedItemExtendedInfo.fromJson(reader));
+                } else if ("kpisHealths".equals(fieldName)) {
+                    Map<String, KpiResourceHealthDetails> kpisHealths
+                        = reader.readMap(reader1 -> KpiResourceHealthDetails.fromJson(reader1));
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withKpisHealths(kpisHealths);
+                } else if ("nodesList".equals(fieldName)) {
+                    List<DistributedNodesInfo> nodesList
+                        = reader.readArray(reader1 -> DistributedNodesInfo.fromJson(reader1));
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.withNodesList(nodesList);
+                } else if ("protectedItemType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem.protectedItemType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVmWorkloadSapHanaDBInstanceProtectedItem;
+        });
     }
 }

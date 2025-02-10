@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,24 +12,34 @@ import java.util.Collection;
  * exiting SKU gets removed.
  */
 public final class BillingSku extends ExpandableStringEnum<BillingSku> {
-    /** Static value G0 for BillingSku. */
+    /**
+     * Static value G0 for BillingSku.
+     */
     public static final BillingSku G0 = fromString("G0");
 
-    /** Static value G1 for BillingSku. */
+    /**
+     * Static value G1 for BillingSku.
+     */
     public static final BillingSku G1 = fromString("G1");
 
-    /** Static value G2 for BillingSku. */
+    /**
+     * Static value G2 for BillingSku.
+     */
     public static final BillingSku G2 = fromString("G2");
 
-    /** Static value G5 for BillingSku. */
+    /**
+     * Static value G5 for BillingSku.
+     */
     public static final BillingSku G5 = fromString("G5");
 
-    /** Static value G10 for BillingSku. */
+    /**
+     * Static value G10 for BillingSku.
+     */
     public static final BillingSku G10 = fromString("G10");
 
     /**
      * Creates a new instance of BillingSku value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +48,17 @@ public final class BillingSku extends ExpandableStringEnum<BillingSku> {
 
     /**
      * Creates or finds a BillingSku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BillingSku.
      */
-    @JsonCreator
     public static BillingSku fromString(String name) {
         return fromString(name, BillingSku.class);
     }
 
     /**
      * Gets known BillingSku values.
-     *
+     * 
      * @return known BillingSku values.
      */
     public static Collection<BillingSku> values() {

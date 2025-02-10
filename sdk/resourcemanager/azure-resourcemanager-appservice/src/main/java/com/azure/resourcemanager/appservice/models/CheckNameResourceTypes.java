@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -69,7 +68,6 @@ public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckName
      * @param name a name to look for.
      * @return the corresponding CheckNameResourceTypes.
      */
-    @JsonCreator
     public static CheckNameResourceTypes fromString(String name) {
         return fromString(name, CheckNameResourceTypes.class);
     }

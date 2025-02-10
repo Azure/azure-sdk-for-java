@@ -6,33 +6,39 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Site properties. */
+/**
+ * Site properties.
+ */
 @Immutable
-public final class SitePropertiesFormat {
+public final class SitePropertiesFormat implements JsonSerializable<SitePropertiesFormat> {
     /*
      * The provisioning state of the site resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * An array of IDs of the network functions deployed in the site. Deleting the site will delete any network
      * functions that are deployed in the site.
      */
-    @JsonProperty(value = "networkFunctions", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> networkFunctions;
 
-    /** Creates an instance of SitePropertiesFormat class. */
+    /**
+     * Creates an instance of SitePropertiesFormat class.
+     */
     public SitePropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the site resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -42,7 +48,7 @@ public final class SitePropertiesFormat {
     /**
      * Get the networkFunctions property: An array of IDs of the network functions deployed in the site. Deleting the
      * site will delete any network functions that are deployed in the site.
-     *
+     * 
      * @return the networkFunctions value.
      */
     public List<SubResource> networkFunctions() {
@@ -51,9 +57,48 @@ public final class SitePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SitePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SitePropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SitePropertiesFormat.
+     */
+    public static SitePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SitePropertiesFormat deserializedSitePropertiesFormat = new SitePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedSitePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("networkFunctions".equals(fieldName)) {
+                    List<SubResource> networkFunctions = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedSitePropertiesFormat.networkFunctions = networkFunctions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSitePropertiesFormat;
+        });
     }
 }

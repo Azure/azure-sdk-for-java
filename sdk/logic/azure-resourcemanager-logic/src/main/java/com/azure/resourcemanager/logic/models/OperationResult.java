@@ -5,68 +5,69 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The operation result definition. */
+/**
+ * The operation result definition.
+ */
 @Fluent
 public class OperationResult extends OperationResultProperties {
     /*
      * Gets the tracking id.
      */
-    @JsonProperty(value = "trackingId", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingId;
 
     /*
      * Gets the inputs.
      */
-    @JsonProperty(value = "inputs", access = JsonProperty.Access.WRITE_ONLY)
     private Object inputs;
 
     /*
      * Gets the link to inputs.
      */
-    @JsonProperty(value = "inputsLink", access = JsonProperty.Access.WRITE_ONLY)
     private ContentLink inputsLink;
 
     /*
      * Gets the outputs.
      */
-    @JsonProperty(value = "outputs", access = JsonProperty.Access.WRITE_ONLY)
     private Object outputs;
 
     /*
      * Gets the link to outputs.
      */
-    @JsonProperty(value = "outputsLink", access = JsonProperty.Access.WRITE_ONLY)
     private ContentLink outputsLink;
 
     /*
      * Gets the tracked properties.
      */
-    @JsonProperty(value = "trackedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Object trackedProperties;
 
     /*
      * Gets the retry histories.
      */
-    @JsonProperty(value = "retryHistory")
     private List<RetryHistory> retryHistory;
 
     /*
      * The iterationCount property.
      */
-    @JsonProperty(value = "iterationCount")
     private Integer iterationCount;
 
-    /** Creates an instance of OperationResult class. */
+    /**
+     * Creates an instance of OperationResult class.
+     */
     public OperationResult() {
     }
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -74,8 +75,19 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
+     * Set the trackingId property: Gets the tracking id.
+     * 
+     * @param trackingId the trackingId value to set.
+     * @return the OperationResult object itself.
+     */
+    OperationResult withTrackingId(String trackingId) {
+        this.trackingId = trackingId;
+        return this;
+    }
+
+    /**
      * Get the inputs property: Gets the inputs.
-     *
+     * 
      * @return the inputs value.
      */
     public Object inputs() {
@@ -83,8 +95,19 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
+     * Set the inputs property: Gets the inputs.
+     * 
+     * @param inputs the inputs value to set.
+     * @return the OperationResult object itself.
+     */
+    OperationResult withInputs(Object inputs) {
+        this.inputs = inputs;
+        return this;
+    }
+
+    /**
      * Get the inputsLink property: Gets the link to inputs.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -92,8 +115,19 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
+     * Set the inputsLink property: Gets the link to inputs.
+     * 
+     * @param inputsLink the inputsLink value to set.
+     * @return the OperationResult object itself.
+     */
+    OperationResult withInputsLink(ContentLink inputsLink) {
+        this.inputsLink = inputsLink;
+        return this;
+    }
+
+    /**
      * Get the outputs property: Gets the outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public Object outputs() {
@@ -101,8 +135,19 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
+     * Set the outputs property: Gets the outputs.
+     * 
+     * @param outputs the outputs value to set.
+     * @return the OperationResult object itself.
+     */
+    OperationResult withOutputs(Object outputs) {
+        this.outputs = outputs;
+        return this;
+    }
+
+    /**
      * Get the outputsLink property: Gets the link to outputs.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -110,8 +155,19 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
+     * Set the outputsLink property: Gets the link to outputs.
+     * 
+     * @param outputsLink the outputsLink value to set.
+     * @return the OperationResult object itself.
+     */
+    OperationResult withOutputsLink(ContentLink outputsLink) {
+        this.outputsLink = outputsLink;
+        return this;
+    }
+
+    /**
      * Get the trackedProperties property: Gets the tracked properties.
-     *
+     * 
      * @return the trackedProperties value.
      */
     public Object trackedProperties() {
@@ -119,8 +175,19 @@ public class OperationResult extends OperationResultProperties {
     }
 
     /**
+     * Set the trackedProperties property: Gets the tracked properties.
+     * 
+     * @param trackedProperties the trackedProperties value to set.
+     * @return the OperationResult object itself.
+     */
+    OperationResult withTrackedProperties(Object trackedProperties) {
+        this.trackedProperties = trackedProperties;
+        return this;
+    }
+
+    /**
      * Get the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @return the retryHistory value.
      */
     public List<RetryHistory> retryHistory() {
@@ -129,7 +196,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Set the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @param retryHistory the retryHistory value to set.
      * @return the OperationResult object itself.
      */
@@ -140,7 +207,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Get the iterationCount property: The iterationCount property.
-     *
+     * 
      * @return the iterationCount value.
      */
     public Integer iterationCount() {
@@ -149,7 +216,7 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Set the iterationCount property: The iterationCount property.
-     *
+     * 
      * @param iterationCount the iterationCount value to set.
      * @return the OperationResult object itself.
      */
@@ -158,42 +225,54 @@ public class OperationResult extends OperationResultProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withCorrelation(RunActionCorrelation correlation) {
         super.withCorrelation(correlation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withStatus(WorkflowStatus status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withCode(String code) {
         super.withCode(code);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResult withError(Object error) {
         super.withError(error);
@@ -202,12 +281,11 @@ public class OperationResult extends OperationResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (inputsLink() != null) {
             inputsLink().validate();
         }
@@ -217,5 +295,82 @@ public class OperationResult extends OperationResultProperties {
         if (retryHistory() != null) {
             retryHistory().forEach(e -> e.validate());
         }
+        if (correlation() != null) {
+            correlation().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            startTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startTime()));
+        jsonWriter.writeStringField("endTime",
+            endTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(endTime()));
+        jsonWriter.writeJsonField("correlation", correlation());
+        jsonWriter.writeStringField("status", status() == null ? null : status().toString());
+        jsonWriter.writeStringField("code", code());
+        jsonWriter.writeUntypedField("error", error());
+        jsonWriter.writeArrayField("retryHistory", this.retryHistory, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("iterationCount", this.iterationCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResult.
+     */
+    public static OperationResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResult deserializedOperationResult = new OperationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedOperationResult.withStartTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationResult.withEndTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("correlation".equals(fieldName)) {
+                    deserializedOperationResult.withCorrelation(RunActionCorrelation.fromJson(reader));
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationResult.withStatus(WorkflowStatus.fromString(reader.getString()));
+                } else if ("code".equals(fieldName)) {
+                    deserializedOperationResult.withCode(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationResult.withError(reader.readUntyped());
+                } else if ("trackingId".equals(fieldName)) {
+                    deserializedOperationResult.trackingId = reader.getString();
+                } else if ("inputs".equals(fieldName)) {
+                    deserializedOperationResult.inputs = reader.readUntyped();
+                } else if ("inputsLink".equals(fieldName)) {
+                    deserializedOperationResult.inputsLink = ContentLink.fromJson(reader);
+                } else if ("outputs".equals(fieldName)) {
+                    deserializedOperationResult.outputs = reader.readUntyped();
+                } else if ("outputsLink".equals(fieldName)) {
+                    deserializedOperationResult.outputsLink = ContentLink.fromJson(reader);
+                } else if ("trackedProperties".equals(fieldName)) {
+                    deserializedOperationResult.trackedProperties = reader.readUntyped();
+                } else if ("retryHistory".equals(fieldName)) {
+                    List<RetryHistory> retryHistory = reader.readArray(reader1 -> RetryHistory.fromJson(reader1));
+                    deserializedOperationResult.retryHistory = retryHistory;
+                } else if ("iterationCount".equals(fieldName)) {
+                    deserializedOperationResult.iterationCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResult;
+        });
     }
 }

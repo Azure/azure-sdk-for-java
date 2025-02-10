@@ -1,10 +1,4 @@
 parameters:
-  - name: SDKType
-    type: string
-    default: client
-  - name: ServiceDirectory
-    type: string
-    default: 'not-specified' # Set a default that breaks in obvious ways.
   - name: BuildParallelization
     type: string
     default: '2C'
@@ -37,7 +31,7 @@ parameters:
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
 
 steps:
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
@@ -50,7 +44,7 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Run tests'
     inputs:
       mavenPomFile: pom.xml
@@ -73,7 +67,7 @@ steps:
       arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }} --type coverage'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Generate aggregate code coverage report'
     condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
@@ -84,7 +78,7 @@ steps:
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       goals: jacoco:report-aggregate
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Build for From Source run'
     inputs:
       mavenPomFile: ClientFromSourcePom.xml
@@ -102,7 +96,7 @@ steps:
     env:  ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Run tests for From Source run'
     inputs:
       mavenPomFile: ClientFromSourcePom.xml
@@ -124,9 +118,9 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - template: ../steps/upload-repository-on-failure.yml
+  - template: /eng/pipelines/templates/steps/retain-test-logs.yml
 
-  - template: ../steps/retain-heap-dump-hprofs.yml
+  - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
     condition: always()
@@ -141,10 +135,9 @@ steps:
 
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.
-  - task: PublishCodeCoverageResults@1
+  - task: PublishCodeCoverageResults@2
     condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
-      codeCoverageTool: JaCoCo
       summaryFileLocation: target/site/test-coverage/jacoco.xml
       reportDirectory: target/site/test-coverage/
       failIfCoverageEmpty: false

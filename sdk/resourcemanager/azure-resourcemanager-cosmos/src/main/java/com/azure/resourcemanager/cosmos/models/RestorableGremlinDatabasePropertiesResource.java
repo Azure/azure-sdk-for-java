@@ -5,53 +5,51 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resource of an Azure Cosmos DB Gremlin database event.
  */
 @Immutable
-public final class RestorableGremlinDatabasePropertiesResource {
+public final class RestorableGremlinDatabasePropertiesResource
+    implements JsonSerializable<RestorableGremlinDatabasePropertiesResource> {
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * The operation type of this database event.
      */
-    @JsonProperty(value = "operationType", access = JsonProperty.Access.WRITE_ONLY)
     private OperationType operationType;
 
     /*
      * A state of this database to identify if this database is restorable in same account.
      */
-    @JsonProperty(value = "canUndelete", access = JsonProperty.Access.WRITE_ONLY)
     private String canUndelete;
 
     /*
      * The reason why this database can not be restored in same account.
      */
-    @JsonProperty(value = "canUndeleteReason", access = JsonProperty.Access.WRITE_ONLY)
     private String canUndeleteReason;
 
     /*
      * The time when this database event happened.
      */
-    @JsonProperty(value = "eventTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String eventTimestamp;
 
     /*
      * The name of this Gremlin database.
      */
-    @JsonProperty(value = "ownerId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerId;
 
     /*
      * The resource ID of this Gremlin database.
      */
-    @JsonProperty(value = "ownerResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerResourceId;
 
     /**
@@ -130,5 +128,54 @@ public final class RestorableGremlinDatabasePropertiesResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableGremlinDatabasePropertiesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableGremlinDatabasePropertiesResource if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableGremlinDatabasePropertiesResource.
+     */
+    public static RestorableGremlinDatabasePropertiesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableGremlinDatabasePropertiesResource deserializedRestorableGremlinDatabasePropertiesResource
+                = new RestorableGremlinDatabasePropertiesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("_rid".equals(fieldName)) {
+                    deserializedRestorableGremlinDatabasePropertiesResource.rid = reader.getString();
+                } else if ("operationType".equals(fieldName)) {
+                    deserializedRestorableGremlinDatabasePropertiesResource.operationType
+                        = OperationType.fromString(reader.getString());
+                } else if ("canUndelete".equals(fieldName)) {
+                    deserializedRestorableGremlinDatabasePropertiesResource.canUndelete = reader.getString();
+                } else if ("canUndeleteReason".equals(fieldName)) {
+                    deserializedRestorableGremlinDatabasePropertiesResource.canUndeleteReason = reader.getString();
+                } else if ("eventTimestamp".equals(fieldName)) {
+                    deserializedRestorableGremlinDatabasePropertiesResource.eventTimestamp = reader.getString();
+                } else if ("ownerId".equals(fieldName)) {
+                    deserializedRestorableGremlinDatabasePropertiesResource.ownerId = reader.getString();
+                } else if ("ownerResourceId".equals(fieldName)) {
+                    deserializedRestorableGremlinDatabasePropertiesResource.ownerResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableGremlinDatabasePropertiesResource;
+        });
     }
 }

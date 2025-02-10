@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationApplianceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Replication appliance definition. */
+/**
+ * Replication appliance definition.
+ */
 @Fluent
-public final class ReplicationApplianceInner {
+public final class ReplicationApplianceInner implements JsonSerializable<ReplicationApplianceInner> {
     /*
      * Appliance related data.
      */
-    @JsonProperty(value = "properties")
     private ReplicationApplianceProperties properties;
 
-    /** Creates an instance of ReplicationApplianceInner class. */
+    /**
+     * Creates an instance of ReplicationApplianceInner class.
+     */
     public ReplicationApplianceInner() {
     }
 
     /**
      * Get the properties property: Appliance related data.
-     *
+     * 
      * @return the properties value.
      */
     public ReplicationApplianceProperties properties() {
@@ -32,7 +39,7 @@ public final class ReplicationApplianceInner {
 
     /**
      * Set the properties property: Appliance related data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ReplicationApplianceInner object itself.
      */
@@ -43,12 +50,48 @@ public final class ReplicationApplianceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationApplianceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationApplianceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationApplianceInner.
+     */
+    public static ReplicationApplianceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationApplianceInner deserializedReplicationApplianceInner = new ReplicationApplianceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedReplicationApplianceInner.properties = ReplicationApplianceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationApplianceInner;
+        });
     }
 }

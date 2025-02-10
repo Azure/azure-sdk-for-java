@@ -4,92 +4,110 @@
 
 package com.azure.resourcemanager.avs.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.ExpressRouteAuthorizationInner;
 
-/** An immutable client-side representation of ExpressRouteAuthorization. */
+/**
+ * An immutable client-side representation of ExpressRouteAuthorization.
+ */
 public interface ExpressRouteAuthorization {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the provisioningState property: The state of the ExpressRoute Circuit Authorization provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     ExpressRouteAuthorizationProvisioningState provisioningState();
 
     /**
      * Gets the expressRouteAuthorizationId property: The ID of the ExpressRoute Circuit Authorization.
-     *
+     * 
      * @return the expressRouteAuthorizationId value.
      */
     String expressRouteAuthorizationId();
 
     /**
      * Gets the expressRouteAuthorizationKey property: The key of the ExpressRoute Circuit Authorization.
-     *
+     * 
      * @return the expressRouteAuthorizationKey value.
      */
     String expressRouteAuthorizationKey();
 
     /**
      * Gets the expressRouteId property: The ID of the ExpressRoute Circuit.
-     *
+     * 
      * @return the expressRouteId value.
      */
     String expressRouteId();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.ExpressRouteAuthorizationInner object.
-     *
+     * 
      * @return the inner object.
      */
     ExpressRouteAuthorizationInner innerModel();
 
-    /** The entirety of the ExpressRouteAuthorization definition. */
+    /**
+     * The entirety of the ExpressRouteAuthorization definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The ExpressRouteAuthorization definition stages. */
+    /**
+     * The ExpressRouteAuthorization definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the ExpressRouteAuthorization definition. */
+        /**
+         * The first stage of the ExpressRouteAuthorization definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the ExpressRouteAuthorization definition allowing to specify parent resource. */
+        /**
+         * The stage of the ExpressRouteAuthorization definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, privateCloudName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param privateCloudName The name of the private cloud.
+             * @param privateCloudName Name of the private cloud.
              * @return the next definition stage.
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
@@ -99,63 +117,92 @@ public interface ExpressRouteAuthorization {
          * The stage of the ExpressRouteAuthorization definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate {
+        interface WithCreate extends DefinitionStages.WithExpressRouteId {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             ExpressRouteAuthorization create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             ExpressRouteAuthorization create(Context context);
         }
+
+        /**
+         * The stage of the ExpressRouteAuthorization definition allowing to specify expressRouteId.
+         */
+        interface WithExpressRouteId {
+            /**
+             * Specifies the expressRouteId property: The ID of the ExpressRoute Circuit.
+             * 
+             * @param expressRouteId The ID of the ExpressRoute Circuit.
+             * @return the next definition stage.
+             */
+            WithCreate withExpressRouteId(String expressRouteId);
+        }
     }
 
     /**
      * Begins update for the ExpressRouteAuthorization resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     ExpressRouteAuthorization.Update update();
 
-    /** The template for ExpressRouteAuthorization update. */
-    interface Update {
+    /**
+     * The template for ExpressRouteAuthorization update.
+     */
+    interface Update extends UpdateStages.WithExpressRouteId {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         ExpressRouteAuthorization apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         ExpressRouteAuthorization apply(Context context);
     }
 
-    /** The ExpressRouteAuthorization update stages. */
+    /**
+     * The ExpressRouteAuthorization update stages.
+     */
     interface UpdateStages {
+        /**
+         * The stage of the ExpressRouteAuthorization update allowing to specify expressRouteId.
+         */
+        interface WithExpressRouteId {
+            /**
+             * Specifies the expressRouteId property: The ID of the ExpressRoute Circuit.
+             * 
+             * @param expressRouteId The ID of the ExpressRoute Circuit.
+             * @return the next definition stage.
+             */
+            Update withExpressRouteId(String expressRouteId);
+        }
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     ExpressRouteAuthorization refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

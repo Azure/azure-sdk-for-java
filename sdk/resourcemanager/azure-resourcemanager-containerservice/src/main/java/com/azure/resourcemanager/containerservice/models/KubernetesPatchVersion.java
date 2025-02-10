@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Kubernetes patch version profile.
  */
 @Fluent
-public final class KubernetesPatchVersion {
+public final class KubernetesPatchVersion implements JsonSerializable<KubernetesPatchVersion> {
     /*
      * Possible upgrade path for given patch version
      */
-    @JsonProperty(value = "upgrades")
     private List<String> upgrades;
 
     /**
@@ -27,7 +30,7 @@ public final class KubernetesPatchVersion {
 
     /**
      * Get the upgrades property: Possible upgrade path for given patch version.
-     *
+     * 
      * @return the upgrades value.
      */
     public List<String> upgrades() {
@@ -36,7 +39,7 @@ public final class KubernetesPatchVersion {
 
     /**
      * Set the upgrades property: Possible upgrade path for given patch version.
-     *
+     * 
      * @param upgrades the upgrades value to set.
      * @return the KubernetesPatchVersion object itself.
      */
@@ -47,9 +50,46 @@ public final class KubernetesPatchVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("upgrades", this.upgrades, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesPatchVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesPatchVersion if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesPatchVersion.
+     */
+    public static KubernetesPatchVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesPatchVersion deserializedKubernetesPatchVersion = new KubernetesPatchVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgrades".equals(fieldName)) {
+                    List<String> upgrades = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubernetesPatchVersion.upgrades = upgrades;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesPatchVersion;
+        });
     }
 }

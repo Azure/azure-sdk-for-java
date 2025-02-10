@@ -5,116 +5,104 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** event. */
+/**
+ * event.
+ */
 @Fluent
 public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /*
      * True if the meeting organizer allows invitees to propose a new time when responding, false otherwise. Optional.
      * Default is true.
      */
-    @JsonProperty(value = "allowNewTimeProposals")
     private Boolean allowNewTimeProposals;
 
     /*
      * The collection of attendees for the event.
      */
-    @JsonProperty(value = "attendees")
     private List<MicrosoftGraphAttendee> attendees;
 
     /*
      * itemBody
      */
-    @JsonProperty(value = "body")
     private MicrosoftGraphItemBody body;
 
     /*
      * The preview of the message associated with the event. It is in text format.
      */
-    @JsonProperty(value = "bodyPreview")
     private String bodyPreview;
 
     /*
      * dateTimeTimeZone
      */
-    @JsonProperty(value = "end")
     private MicrosoftGraphDateTimeZone end;
 
     /*
      * Set to true if the event has attachments.
      */
-    @JsonProperty(value = "hasAttachments")
     private Boolean hasAttachments;
 
     /*
      * The hideAttendees property.
      */
-    @JsonProperty(value = "hideAttendees")
     private Boolean hideAttendees;
 
     /*
      * A unique identifier for an event across calendars. This ID is different for each occurrence in a recurring
      * series. Read-only.
      */
-    @JsonProperty(value = "iCalUId")
     private String iCalUId;
 
     /*
      * importance
      */
-    @JsonProperty(value = "importance")
     private MicrosoftGraphImportance importance;
 
     /*
      * Set to true if the event lasts all day.
      */
-    @JsonProperty(value = "isAllDay")
     private Boolean isAllDay;
 
     /*
      * Set to true if the event has been canceled.
      */
-    @JsonProperty(value = "isCancelled")
     private Boolean isCancelled;
 
     /*
      * The isDraft property.
      */
-    @JsonProperty(value = "isDraft")
     private Boolean isDraft;
 
     /*
      * True if this event has online meeting information, false otherwise. Default is false. Optional.
      */
-    @JsonProperty(value = "isOnlineMeeting")
     private Boolean isOnlineMeeting;
 
     /*
-     * Set to true if the calendar owner (specified by the owner property of the calendar) is the organizer of the
-     * event (specified by the organizer property of the event). This also applies if a delegate organized the event on
-     * behalf of the owner.
+     * Set to true if the calendar owner (specified by the owner property of the calendar) is the organizer of the event
+     * (specified by the organizer property of the event). This also applies if a delegate organized the event on behalf
+     * of the owner.
      */
-    @JsonProperty(value = "isOrganizer")
     private Boolean isOrganizer;
 
     /*
      * Set to true if an alert is set to remind the user of the event.
      */
-    @JsonProperty(value = "isReminderOn")
     private Boolean isReminderOn;
 
     /*
      * location
      */
-    @JsonProperty(value = "location")
     private MicrosoftGraphLocation location;
 
     /*
@@ -122,123 +110,104 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * with each other. If you update the location property, any prior locations in the locations collection would be
      * removed and replaced by the new location value.
      */
-    @JsonProperty(value = "locations")
     private List<MicrosoftGraphLocation> locations;
 
     /*
      * onlineMeetingInfo
      */
-    @JsonProperty(value = "onlineMeeting")
     private MicrosoftGraphOnlineMeetingInfo onlineMeeting;
 
     /*
      * onlineMeetingProviderType
      */
-    @JsonProperty(value = "onlineMeetingProvider")
     private MicrosoftGraphOnlineMeetingProviderType onlineMeetingProvider;
 
     /*
      * A URL for an online meeting. The property is set only when an organizer specifies an event as an online meeting
      * such as a Skype meeting. Read-only.
      */
-    @JsonProperty(value = "onlineMeetingUrl")
     private String onlineMeetingUrl;
 
     /*
      * recipient
      */
-    @JsonProperty(value = "organizer")
     private MicrosoftGraphRecipient organizer;
 
     /*
      * The end time zone that was set when the event was created. A value of tzone://Microsoft/Custom indicates that a
      * legacy custom time zone was set in desktop Outlook.
      */
-    @JsonProperty(value = "originalEndTimeZone")
     private String originalEndTimeZone;
 
     /*
      * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
      * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "originalStart")
     private OffsetDateTime originalStart;
 
     /*
-     * The start time zone that was set when the event was created. A value of tzone://Microsoft/Custom indicates that
-     * a legacy custom time zone was set in desktop Outlook.
+     * The start time zone that was set when the event was created. A value of tzone://Microsoft/Custom indicates that a
+     * legacy custom time zone was set in desktop Outlook.
      */
-    @JsonProperty(value = "originalStartTimeZone")
     private String originalStartTimeZone;
 
     /*
      * patternedRecurrence
      */
-    @JsonProperty(value = "recurrence")
     private MicrosoftGraphPatternedRecurrence recurrence;
 
     /*
      * The number of minutes before the event start time that the reminder alert occurs.
      */
-    @JsonProperty(value = "reminderMinutesBeforeStart")
     private Integer reminderMinutesBeforeStart;
 
     /*
      * Default is true, which represents the organizer would like an invitee to send a response to the event.
      */
-    @JsonProperty(value = "responseRequested")
     private Boolean responseRequested;
 
     /*
      * responseStatus
      */
-    @JsonProperty(value = "responseStatus")
     private MicrosoftGraphResponseStatus responseStatus;
 
     /*
      * sensitivity
      */
-    @JsonProperty(value = "sensitivity")
     private MicrosoftGraphSensitivity sensitivity;
 
     /*
      * The ID for the recurring series master item, if this event is part of a recurring series.
      */
-    @JsonProperty(value = "seriesMasterId")
     private String seriesMasterId;
 
     /*
      * freeBusyStatus
      */
-    @JsonProperty(value = "showAs")
     private MicrosoftGraphFreeBusyStatus showAs;
 
     /*
      * dateTimeTimeZone
      */
-    @JsonProperty(value = "start")
     private MicrosoftGraphDateTimeZone start;
 
     /*
      * The text of the event's subject line.
      */
-    @JsonProperty(value = "subject")
     private String subject;
 
     /*
-     * A custom identifier specified by a client app for the server to avoid redundant POST operations in case of
-     * client retries to create the same event. This is useful when low network connectivity causes the client to time
-     * out before receiving a response from the server for the client's prior create-event request. After you set
+     * A custom identifier specified by a client app for the server to avoid redundant POST operations in case of client
+     * retries to create the same event. This is useful when low network connectivity causes the client to time out
+     * before receiving a response from the server for the client's prior create-event request. After you set
      * transactionId when creating an event, you cannot change transactionId in a subsequent update. This property is
      * only returned in a response payload if an app has set it. Optional.
      */
-    @JsonProperty(value = "transactionId")
     private String transactionId;
 
     /*
      * eventType
      */
-    @JsonProperty(value = "type")
     private MicrosoftGraphEventType type;
 
     /*
@@ -246,59 +215,54 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * signed in to your mailbox. Otherwise, Outlook on the web prompts you to sign in.This URL cannot be accessed from
      * within an iFrame.
      */
-    @JsonProperty(value = "webLink")
     private String webLink;
 
     /*
      * The collection of fileAttachment and itemAttachment attachments for the event. Navigation property. Read-only.
      * Nullable.
      */
-    @JsonProperty(value = "attachments")
     private List<MicrosoftGraphAttachment> attachments;
 
     /*
      * calendar
      */
-    @JsonProperty(value = "calendar")
     private MicrosoftGraphCalendar calendar;
 
     /*
      * The collection of open extensions defined for the event. Read-only. Nullable.
      */
-    @JsonProperty(value = "extensions")
     private List<MicrosoftGraphExtension> extensions;
 
     /*
      * The instances of the event. Navigation property. Read-only. Nullable.
      */
-    @JsonProperty(value = "instances")
     private List<MicrosoftGraphEvent> instances;
 
     /*
      * The collection of multi-value extended properties defined for the event. Read-only. Nullable.
      */
-    @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * The collection of single-value extended properties defined for the event. Read-only. Nullable.
      */
-    @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * event
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphEvent class. */
+    /**
+     * Creates an instance of MicrosoftGraphEvent class.
+     */
     public MicrosoftGraphEvent() {
     }
 
     /**
      * Get the allowNewTimeProposals property: True if the meeting organizer allows invitees to propose a new time when
      * responding, false otherwise. Optional. Default is true.
-     *
+     * 
      * @return the allowNewTimeProposals value.
      */
     public Boolean allowNewTimeProposals() {
@@ -308,7 +272,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the allowNewTimeProposals property: True if the meeting organizer allows invitees to propose a new time when
      * responding, false otherwise. Optional. Default is true.
-     *
+     * 
      * @param allowNewTimeProposals the allowNewTimeProposals value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -319,7 +283,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the attendees property: The collection of attendees for the event.
-     *
+     * 
      * @return the attendees value.
      */
     public List<MicrosoftGraphAttendee> attendees() {
@@ -328,7 +292,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the attendees property: The collection of attendees for the event.
-     *
+     * 
      * @param attendees the attendees value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -339,7 +303,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the body property: itemBody.
-     *
+     * 
      * @return the body value.
      */
     public MicrosoftGraphItemBody body() {
@@ -348,7 +312,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the body property: itemBody.
-     *
+     * 
      * @param body the body value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -359,7 +323,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the bodyPreview property: The preview of the message associated with the event. It is in text format.
-     *
+     * 
      * @return the bodyPreview value.
      */
     public String bodyPreview() {
@@ -368,7 +332,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the bodyPreview property: The preview of the message associated with the event. It is in text format.
-     *
+     * 
      * @param bodyPreview the bodyPreview value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -379,7 +343,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the end property: dateTimeTimeZone.
-     *
+     * 
      * @return the end value.
      */
     public MicrosoftGraphDateTimeZone end() {
@@ -388,7 +352,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the end property: dateTimeTimeZone.
-     *
+     * 
      * @param end the end value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -399,7 +363,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the hasAttachments property: Set to true if the event has attachments.
-     *
+     * 
      * @return the hasAttachments value.
      */
     public Boolean hasAttachments() {
@@ -408,7 +372,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the hasAttachments property: Set to true if the event has attachments.
-     *
+     * 
      * @param hasAttachments the hasAttachments value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -419,7 +383,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the hideAttendees property: The hideAttendees property.
-     *
+     * 
      * @return the hideAttendees value.
      */
     public Boolean hideAttendees() {
@@ -428,7 +392,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the hideAttendees property: The hideAttendees property.
-     *
+     * 
      * @param hideAttendees the hideAttendees value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -440,7 +404,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the iCalUId property: A unique identifier for an event across calendars. This ID is different for each
      * occurrence in a recurring series. Read-only.
-     *
+     * 
      * @return the iCalUId value.
      */
     public String iCalUId() {
@@ -450,7 +414,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the iCalUId property: A unique identifier for an event across calendars. This ID is different for each
      * occurrence in a recurring series. Read-only.
-     *
+     * 
      * @param iCalUId the iCalUId value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -461,7 +425,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the importance property: importance.
-     *
+     * 
      * @return the importance value.
      */
     public MicrosoftGraphImportance importance() {
@@ -470,7 +434,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the importance property: importance.
-     *
+     * 
      * @param importance the importance value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -481,7 +445,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the isAllDay property: Set to true if the event lasts all day.
-     *
+     * 
      * @return the isAllDay value.
      */
     public Boolean isAllDay() {
@@ -490,7 +454,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the isAllDay property: Set to true if the event lasts all day.
-     *
+     * 
      * @param isAllDay the isAllDay value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -501,7 +465,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the isCancelled property: Set to true if the event has been canceled.
-     *
+     * 
      * @return the isCancelled value.
      */
     public Boolean isCancelled() {
@@ -510,7 +474,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the isCancelled property: Set to true if the event has been canceled.
-     *
+     * 
      * @param isCancelled the isCancelled value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -521,7 +485,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the isDraft property: The isDraft property.
-     *
+     * 
      * @return the isDraft value.
      */
     public Boolean isDraft() {
@@ -530,7 +494,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the isDraft property: The isDraft property.
-     *
+     * 
      * @param isDraft the isDraft value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -542,7 +506,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the isOnlineMeeting property: True if this event has online meeting information, false otherwise. Default is
      * false. Optional.
-     *
+     * 
      * @return the isOnlineMeeting value.
      */
     public Boolean isOnlineMeeting() {
@@ -552,7 +516,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the isOnlineMeeting property: True if this event has online meeting information, false otherwise. Default is
      * false. Optional.
-     *
+     * 
      * @param isOnlineMeeting the isOnlineMeeting value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -565,7 +529,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * Get the isOrganizer property: Set to true if the calendar owner (specified by the owner property of the calendar)
      * is the organizer of the event (specified by the organizer property of the event). This also applies if a delegate
      * organized the event on behalf of the owner.
-     *
+     * 
      * @return the isOrganizer value.
      */
     public Boolean isOrganizer() {
@@ -576,7 +540,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * Set the isOrganizer property: Set to true if the calendar owner (specified by the owner property of the calendar)
      * is the organizer of the event (specified by the organizer property of the event). This also applies if a delegate
      * organized the event on behalf of the owner.
-     *
+     * 
      * @param isOrganizer the isOrganizer value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -587,7 +551,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the isReminderOn property: Set to true if an alert is set to remind the user of the event.
-     *
+     * 
      * @return the isReminderOn value.
      */
     public Boolean isReminderOn() {
@@ -596,7 +560,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the isReminderOn property: Set to true if an alert is set to remind the user of the event.
-     *
+     * 
      * @param isReminderOn the isReminderOn value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -607,7 +571,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the location property: location.
-     *
+     * 
      * @return the location value.
      */
     public MicrosoftGraphLocation location() {
@@ -616,7 +580,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the location property: location.
-     *
+     * 
      * @param location the location value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -629,7 +593,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * Get the locations property: The locations where the event is held or attended from. The location and locations
      * properties always correspond with each other. If you update the location property, any prior locations in the
      * locations collection would be removed and replaced by the new location value.
-     *
+     * 
      * @return the locations value.
      */
     public List<MicrosoftGraphLocation> locations() {
@@ -640,7 +604,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * Set the locations property: The locations where the event is held or attended from. The location and locations
      * properties always correspond with each other. If you update the location property, any prior locations in the
      * locations collection would be removed and replaced by the new location value.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -651,7 +615,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the onlineMeeting property: onlineMeetingInfo.
-     *
+     * 
      * @return the onlineMeeting value.
      */
     public MicrosoftGraphOnlineMeetingInfo onlineMeeting() {
@@ -660,7 +624,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the onlineMeeting property: onlineMeetingInfo.
-     *
+     * 
      * @param onlineMeeting the onlineMeeting value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -671,7 +635,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the onlineMeetingProvider property: onlineMeetingProviderType.
-     *
+     * 
      * @return the onlineMeetingProvider value.
      */
     public MicrosoftGraphOnlineMeetingProviderType onlineMeetingProvider() {
@@ -680,12 +644,12 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the onlineMeetingProvider property: onlineMeetingProviderType.
-     *
+     * 
      * @param onlineMeetingProvider the onlineMeetingProvider value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
-    public MicrosoftGraphEvent withOnlineMeetingProvider(
-        MicrosoftGraphOnlineMeetingProviderType onlineMeetingProvider) {
+    public MicrosoftGraphEvent
+        withOnlineMeetingProvider(MicrosoftGraphOnlineMeetingProviderType onlineMeetingProvider) {
         this.onlineMeetingProvider = onlineMeetingProvider;
         return this;
     }
@@ -693,7 +657,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the onlineMeetingUrl property: A URL for an online meeting. The property is set only when an organizer
      * specifies an event as an online meeting such as a Skype meeting. Read-only.
-     *
+     * 
      * @return the onlineMeetingUrl value.
      */
     public String onlineMeetingUrl() {
@@ -703,7 +667,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the onlineMeetingUrl property: A URL for an online meeting. The property is set only when an organizer
      * specifies an event as an online meeting such as a Skype meeting. Read-only.
-     *
+     * 
      * @param onlineMeetingUrl the onlineMeetingUrl value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -714,7 +678,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the organizer property: recipient.
-     *
+     * 
      * @return the organizer value.
      */
     public MicrosoftGraphRecipient organizer() {
@@ -723,7 +687,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the organizer property: recipient.
-     *
+     * 
      * @param organizer the organizer value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -735,7 +699,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the originalEndTimeZone property: The end time zone that was set when the event was created. A value of
      * tzone://Microsoft/Custom indicates that a legacy custom time zone was set in desktop Outlook.
-     *
+     * 
      * @return the originalEndTimeZone value.
      */
     public String originalEndTimeZone() {
@@ -745,7 +709,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the originalEndTimeZone property: The end time zone that was set when the event was created. A value of
      * tzone://Microsoft/Custom indicates that a legacy custom time zone was set in desktop Outlook.
-     *
+     * 
      * @param originalEndTimeZone the originalEndTimeZone value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -757,7 +721,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the originalStart property: The Timestamp type represents date and time information using ISO 8601 format and
      * is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the originalStart value.
      */
     public OffsetDateTime originalStart() {
@@ -767,7 +731,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the originalStart property: The Timestamp type represents date and time information using ISO 8601 format and
      * is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param originalStart the originalStart value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -779,7 +743,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the originalStartTimeZone property: The start time zone that was set when the event was created. A value of
      * tzone://Microsoft/Custom indicates that a legacy custom time zone was set in desktop Outlook.
-     *
+     * 
      * @return the originalStartTimeZone value.
      */
     public String originalStartTimeZone() {
@@ -789,7 +753,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the originalStartTimeZone property: The start time zone that was set when the event was created. A value of
      * tzone://Microsoft/Custom indicates that a legacy custom time zone was set in desktop Outlook.
-     *
+     * 
      * @param originalStartTimeZone the originalStartTimeZone value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -800,7 +764,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the recurrence property: patternedRecurrence.
-     *
+     * 
      * @return the recurrence value.
      */
     public MicrosoftGraphPatternedRecurrence recurrence() {
@@ -809,7 +773,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the recurrence property: patternedRecurrence.
-     *
+     * 
      * @param recurrence the recurrence value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -821,7 +785,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the reminderMinutesBeforeStart property: The number of minutes before the event start time that the reminder
      * alert occurs.
-     *
+     * 
      * @return the reminderMinutesBeforeStart value.
      */
     public Integer reminderMinutesBeforeStart() {
@@ -831,7 +795,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the reminderMinutesBeforeStart property: The number of minutes before the event start time that the reminder
      * alert occurs.
-     *
+     * 
      * @param reminderMinutesBeforeStart the reminderMinutesBeforeStart value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -843,7 +807,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the responseRequested property: Default is true, which represents the organizer would like an invitee to send
      * a response to the event.
-     *
+     * 
      * @return the responseRequested value.
      */
     public Boolean responseRequested() {
@@ -853,7 +817,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the responseRequested property: Default is true, which represents the organizer would like an invitee to send
      * a response to the event.
-     *
+     * 
      * @param responseRequested the responseRequested value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -864,7 +828,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the responseStatus property: responseStatus.
-     *
+     * 
      * @return the responseStatus value.
      */
     public MicrosoftGraphResponseStatus responseStatus() {
@@ -873,7 +837,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the responseStatus property: responseStatus.
-     *
+     * 
      * @param responseStatus the responseStatus value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -884,7 +848,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the sensitivity property: sensitivity.
-     *
+     * 
      * @return the sensitivity value.
      */
     public MicrosoftGraphSensitivity sensitivity() {
@@ -893,7 +857,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the sensitivity property: sensitivity.
-     *
+     * 
      * @param sensitivity the sensitivity value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -905,7 +869,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the seriesMasterId property: The ID for the recurring series master item, if this event is part of a
      * recurring series.
-     *
+     * 
      * @return the seriesMasterId value.
      */
     public String seriesMasterId() {
@@ -915,7 +879,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the seriesMasterId property: The ID for the recurring series master item, if this event is part of a
      * recurring series.
-     *
+     * 
      * @param seriesMasterId the seriesMasterId value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -926,7 +890,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the showAs property: freeBusyStatus.
-     *
+     * 
      * @return the showAs value.
      */
     public MicrosoftGraphFreeBusyStatus showAs() {
@@ -935,7 +899,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the showAs property: freeBusyStatus.
-     *
+     * 
      * @param showAs the showAs value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -946,7 +910,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the start property: dateTimeTimeZone.
-     *
+     * 
      * @return the start value.
      */
     public MicrosoftGraphDateTimeZone start() {
@@ -955,7 +919,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the start property: dateTimeTimeZone.
-     *
+     * 
      * @param start the start value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -966,7 +930,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the subject property: The text of the event's subject line.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -975,7 +939,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the subject property: The text of the event's subject line.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -990,7 +954,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * causes the client to time out before receiving a response from the server for the client's prior create-event
      * request. After you set transactionId when creating an event, you cannot change transactionId in a subsequent
      * update. This property is only returned in a response payload if an app has set it. Optional.
-     *
+     * 
      * @return the transactionId value.
      */
     public String transactionId() {
@@ -1003,7 +967,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * causes the client to time out before receiving a response from the server for the client's prior create-event
      * request. After you set transactionId when creating an event, you cannot change transactionId in a subsequent
      * update. This property is only returned in a response payload if an app has set it. Optional.
-     *
+     * 
      * @param transactionId the transactionId value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -1014,7 +978,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the type property: eventType.
-     *
+     * 
      * @return the type value.
      */
     public MicrosoftGraphEventType type() {
@@ -1023,7 +987,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the type property: eventType.
-     *
+     * 
      * @param type the type value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -1036,7 +1000,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * Get the webLink property: The URL to open the event in Outlook on the web.Outlook on the web opens the event in
      * the browser if you are signed in to your mailbox. Otherwise, Outlook on the web prompts you to sign in.This URL
      * cannot be accessed from within an iFrame.
-     *
+     * 
      * @return the webLink value.
      */
     public String webLink() {
@@ -1047,7 +1011,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * Set the webLink property: The URL to open the event in Outlook on the web.Outlook on the web opens the event in
      * the browser if you are signed in to your mailbox. Otherwise, Outlook on the web prompts you to sign in.This URL
      * cannot be accessed from within an iFrame.
-     *
+     * 
      * @param webLink the webLink value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -1059,7 +1023,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the attachments property: The collection of fileAttachment and itemAttachment attachments for the event.
      * Navigation property. Read-only. Nullable.
-     *
+     * 
      * @return the attachments value.
      */
     public List<MicrosoftGraphAttachment> attachments() {
@@ -1069,7 +1033,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the attachments property: The collection of fileAttachment and itemAttachment attachments for the event.
      * Navigation property. Read-only. Nullable.
-     *
+     * 
      * @param attachments the attachments value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -1080,7 +1044,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the calendar property: calendar.
-     *
+     * 
      * @return the calendar value.
      */
     public MicrosoftGraphCalendar calendar() {
@@ -1089,7 +1053,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the calendar property: calendar.
-     *
+     * 
      * @param calendar the calendar value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -1100,7 +1064,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the extensions property: The collection of open extensions defined for the event. Read-only. Nullable.
-     *
+     * 
      * @return the extensions value.
      */
     public List<MicrosoftGraphExtension> extensions() {
@@ -1109,7 +1073,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the extensions property: The collection of open extensions defined for the event. Read-only. Nullable.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -1120,7 +1084,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the instances property: The instances of the event. Navigation property. Read-only. Nullable.
-     *
+     * 
      * @return the instances value.
      */
     public List<MicrosoftGraphEvent> instances() {
@@ -1129,7 +1093,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Set the instances property: The instances of the event. Navigation property. Read-only. Nullable.
-     *
+     * 
      * @param instances the instances value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -1141,7 +1105,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * event. Read-only. Nullable.
-     *
+     * 
      * @return the multiValueExtendedProperties value.
      */
     public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
@@ -1151,7 +1115,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the multiValueExtendedProperties property: The collection of multi-value extended properties defined for the
      * event. Read-only. Nullable.
-     *
+     * 
      * @param multiValueExtendedProperties the multiValueExtendedProperties value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -1164,7 +1128,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Get the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the event. Read-only. Nullable.
-     *
+     * 
      * @return the singleValueExtendedProperties value.
      */
     public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
@@ -1174,7 +1138,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
     /**
      * Set the singleValueExtendedProperties property: The collection of single-value extended properties defined for
      * the event. Read-only. Nullable.
-     *
+     * 
      * @param singleValueExtendedProperties the singleValueExtendedProperties value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -1186,17 +1150,16 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Get the additionalProperties property: event.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: event.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
@@ -1205,43 +1168,45 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphEvent withCategories(List<String> categories) {
         super.withCategories(categories);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphEvent withChangeKey(String changeKey) {
         super.withChangeKey(changeKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphEvent withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphEvent withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphEvent withId(String id) {
         super.withId(id);
@@ -1250,7 +1215,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -1304,5 +1269,220 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
         if (singleValueExtendedProperties() != null) {
             singleValueExtendedProperties().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("categories", categories(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("changeKey", changeKey());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeBooleanField("allowNewTimeProposals", this.allowNewTimeProposals);
+        jsonWriter.writeArrayField("attendees", this.attendees, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("body", this.body);
+        jsonWriter.writeStringField("bodyPreview", this.bodyPreview);
+        jsonWriter.writeJsonField("end", this.end);
+        jsonWriter.writeBooleanField("hasAttachments", this.hasAttachments);
+        jsonWriter.writeBooleanField("hideAttendees", this.hideAttendees);
+        jsonWriter.writeStringField("iCalUId", this.iCalUId);
+        jsonWriter.writeStringField("importance", this.importance == null ? null : this.importance.toString());
+        jsonWriter.writeBooleanField("isAllDay", this.isAllDay);
+        jsonWriter.writeBooleanField("isCancelled", this.isCancelled);
+        jsonWriter.writeBooleanField("isDraft", this.isDraft);
+        jsonWriter.writeBooleanField("isOnlineMeeting", this.isOnlineMeeting);
+        jsonWriter.writeBooleanField("isOrganizer", this.isOrganizer);
+        jsonWriter.writeBooleanField("isReminderOn", this.isReminderOn);
+        jsonWriter.writeJsonField("location", this.location);
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("onlineMeeting", this.onlineMeeting);
+        jsonWriter.writeStringField("onlineMeetingProvider",
+            this.onlineMeetingProvider == null ? null : this.onlineMeetingProvider.toString());
+        jsonWriter.writeStringField("onlineMeetingUrl", this.onlineMeetingUrl);
+        jsonWriter.writeJsonField("organizer", this.organizer);
+        jsonWriter.writeStringField("originalEndTimeZone", this.originalEndTimeZone);
+        jsonWriter.writeStringField("originalStart",
+            this.originalStart == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.originalStart));
+        jsonWriter.writeStringField("originalStartTimeZone", this.originalStartTimeZone);
+        jsonWriter.writeJsonField("recurrence", this.recurrence);
+        jsonWriter.writeNumberField("reminderMinutesBeforeStart", this.reminderMinutesBeforeStart);
+        jsonWriter.writeBooleanField("responseRequested", this.responseRequested);
+        jsonWriter.writeJsonField("responseStatus", this.responseStatus);
+        jsonWriter.writeStringField("sensitivity", this.sensitivity == null ? null : this.sensitivity.toString());
+        jsonWriter.writeStringField("seriesMasterId", this.seriesMasterId);
+        jsonWriter.writeStringField("showAs", this.showAs == null ? null : this.showAs.toString());
+        jsonWriter.writeJsonField("start", this.start);
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("transactionId", this.transactionId);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("webLink", this.webLink);
+        jsonWriter.writeArrayField("attachments", this.attachments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("calendar", this.calendar);
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("instances", this.instances, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("multiValueExtendedProperties", this.multiValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("singleValueExtendedProperties", this.singleValueExtendedProperties,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphEvent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphEvent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphEvent.
+     */
+    public static MicrosoftGraphEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphEvent deserializedMicrosoftGraphEvent = new MicrosoftGraphEvent();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.withId(reader.getString());
+                } else if ("categories".equals(fieldName)) {
+                    List<String> categories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphEvent.withCategories(categories);
+                } else if ("changeKey".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.withChangeKey(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("allowNewTimeProposals".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.allowNewTimeProposals = reader.getNullable(JsonReader::getBoolean);
+                } else if ("attendees".equals(fieldName)) {
+                    List<MicrosoftGraphAttendee> attendees
+                        = reader.readArray(reader1 -> MicrosoftGraphAttendee.fromJson(reader1));
+                    deserializedMicrosoftGraphEvent.attendees = attendees;
+                } else if ("body".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.body = MicrosoftGraphItemBody.fromJson(reader);
+                } else if ("bodyPreview".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.bodyPreview = reader.getString();
+                } else if ("end".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.end = MicrosoftGraphDateTimeZone.fromJson(reader);
+                } else if ("hasAttachments".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.hasAttachments = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hideAttendees".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.hideAttendees = reader.getNullable(JsonReader::getBoolean);
+                } else if ("iCalUId".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.iCalUId = reader.getString();
+                } else if ("importance".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.importance
+                        = MicrosoftGraphImportance.fromString(reader.getString());
+                } else if ("isAllDay".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.isAllDay = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isCancelled".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.isCancelled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDraft".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.isDraft = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isOnlineMeeting".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.isOnlineMeeting = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isOrganizer".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.isOrganizer = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isReminderOn".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.isReminderOn = reader.getNullable(JsonReader::getBoolean);
+                } else if ("location".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.location = MicrosoftGraphLocation.fromJson(reader);
+                } else if ("locations".equals(fieldName)) {
+                    List<MicrosoftGraphLocation> locations
+                        = reader.readArray(reader1 -> MicrosoftGraphLocation.fromJson(reader1));
+                    deserializedMicrosoftGraphEvent.locations = locations;
+                } else if ("onlineMeeting".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.onlineMeeting = MicrosoftGraphOnlineMeetingInfo.fromJson(reader);
+                } else if ("onlineMeetingProvider".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.onlineMeetingProvider
+                        = MicrosoftGraphOnlineMeetingProviderType.fromString(reader.getString());
+                } else if ("onlineMeetingUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.onlineMeetingUrl = reader.getString();
+                } else if ("organizer".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.organizer = MicrosoftGraphRecipient.fromJson(reader);
+                } else if ("originalEndTimeZone".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.originalEndTimeZone = reader.getString();
+                } else if ("originalStart".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.originalStart = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("originalStartTimeZone".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.originalStartTimeZone = reader.getString();
+                } else if ("recurrence".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.recurrence = MicrosoftGraphPatternedRecurrence.fromJson(reader);
+                } else if ("reminderMinutesBeforeStart".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.reminderMinutesBeforeStart = reader.getNullable(JsonReader::getInt);
+                } else if ("responseRequested".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.responseRequested = reader.getNullable(JsonReader::getBoolean);
+                } else if ("responseStatus".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.responseStatus = MicrosoftGraphResponseStatus.fromJson(reader);
+                } else if ("sensitivity".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.sensitivity
+                        = MicrosoftGraphSensitivity.fromString(reader.getString());
+                } else if ("seriesMasterId".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.seriesMasterId = reader.getString();
+                } else if ("showAs".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.showAs
+                        = MicrosoftGraphFreeBusyStatus.fromString(reader.getString());
+                } else if ("start".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.start = MicrosoftGraphDateTimeZone.fromJson(reader);
+                } else if ("subject".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.subject = reader.getString();
+                } else if ("transactionId".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.transactionId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.type = MicrosoftGraphEventType.fromString(reader.getString());
+                } else if ("webLink".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.webLink = reader.getString();
+                } else if ("attachments".equals(fieldName)) {
+                    List<MicrosoftGraphAttachment> attachments
+                        = reader.readArray(reader1 -> MicrosoftGraphAttachment.fromJson(reader1));
+                    deserializedMicrosoftGraphEvent.attachments = attachments;
+                } else if ("calendar".equals(fieldName)) {
+                    deserializedMicrosoftGraphEvent.calendar = MicrosoftGraphCalendar.fromJson(reader);
+                } else if ("extensions".equals(fieldName)) {
+                    List<MicrosoftGraphExtension> extensions
+                        = reader.readArray(reader1 -> MicrosoftGraphExtension.fromJson(reader1));
+                    deserializedMicrosoftGraphEvent.extensions = extensions;
+                } else if ("instances".equals(fieldName)) {
+                    List<MicrosoftGraphEvent> instances
+                        = reader.readArray(reader1 -> MicrosoftGraphEvent.fromJson(reader1));
+                    deserializedMicrosoftGraphEvent.instances = instances;
+                } else if ("multiValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties
+                        = reader.readArray(reader1 -> MicrosoftGraphMultiValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphEvent.multiValueExtendedProperties = multiValueExtendedProperties;
+                } else if ("singleValueExtendedProperties".equals(fieldName)) {
+                    List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties = reader
+                        .readArray(reader1 -> MicrosoftGraphSingleValueLegacyExtendedProperty.fromJson(reader1));
+                    deserializedMicrosoftGraphEvent.singleValueExtendedProperties = singleValueExtendedProperties;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphEvent.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphEvent;
+        });
     }
 }

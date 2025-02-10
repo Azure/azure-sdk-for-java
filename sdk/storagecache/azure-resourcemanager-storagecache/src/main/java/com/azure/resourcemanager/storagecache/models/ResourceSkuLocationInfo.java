@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Resource SKU location information. */
+/**
+ * Resource SKU location information.
+ */
 @Fluent
-public final class ResourceSkuLocationInfo {
+public final class ResourceSkuLocationInfo implements JsonSerializable<ResourceSkuLocationInfo> {
     /*
      * Location where this SKU is available.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Zones if any.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
-    /** Creates an instance of ResourceSkuLocationInfo class. */
+    /**
+     * Creates an instance of ResourceSkuLocationInfo class.
+     */
     public ResourceSkuLocationInfo() {
     }
 
     /**
      * Get the location property: Location where this SKU is available.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -38,7 +44,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Set the location property: Location where this SKU is available.
-     *
+     * 
      * @param location the location value to set.
      * @return the ResourceSkuLocationInfo object itself.
      */
@@ -49,7 +55,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Get the zones property: Zones if any.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -58,7 +64,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Set the zones property: Zones if any.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ResourceSkuLocationInfo object itself.
      */
@@ -69,9 +75,49 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuLocationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuLocationInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSkuLocationInfo.
+     */
+    public static ResourceSkuLocationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuLocationInfo deserializedResourceSkuLocationInfo = new ResourceSkuLocationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedResourceSkuLocationInfo.location = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceSkuLocationInfo.zones = zones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuLocationInfo;
+        });
     }
 }

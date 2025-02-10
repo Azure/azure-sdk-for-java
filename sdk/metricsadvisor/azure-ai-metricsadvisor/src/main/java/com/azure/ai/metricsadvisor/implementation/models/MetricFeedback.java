@@ -4,7 +4,9 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.ai.metricsadvisor.models.FeedbackType;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,6 +21,11 @@ import java.util.UUID;
  */
 @Fluent
 public class MetricFeedback implements JsonSerializable<MetricFeedback> {
+    /*
+     * feedback type
+     */
+    private FeedbackType feedbackType = FeedbackType.fromString("MetricFeedback");
+
     /*
      * feedback unique id
      */
@@ -48,6 +55,15 @@ public class MetricFeedback implements JsonSerializable<MetricFeedback> {
      * Creates an instance of MetricFeedback class.
      */
     public MetricFeedback() {
+    }
+
+    /**
+     * Get the feedbackType property: feedback type.
+     * 
+     * @return the feedbackType value.
+     */
+    public FeedbackType getFeedbackType() {
+        return this.feedbackType;
     }
 
     /**
@@ -150,11 +166,15 @@ public class MetricFeedback implements JsonSerializable<MetricFeedback> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("metricId", Objects.toString(this.metricId, null));
         jsonWriter.writeJsonField("dimensionFilter", this.dimensionFilter);
+        jsonWriter.writeStringField("feedbackType", this.feedbackType == null ? null : this.feedbackType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -164,44 +184,68 @@ public class MetricFeedback implements JsonSerializable<MetricFeedback> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of MetricFeedback if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricFeedback.
      */
     public static MetricFeedback fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
-
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("feedbackType".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("feedbackType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Anomaly".equals(discriminatorValue)) {
+                    return AnomalyFeedback.fromJson(readerToUse.reset());
+                } else if ("ChangePoint".equals(discriminatorValue)) {
+                    return ChangePointFeedback.fromJson(readerToUse.reset());
+                } else if ("Comment".equals(discriminatorValue)) {
+                    return CommentFeedback.fromJson(readerToUse.reset());
+                } else if ("Period".equals(discriminatorValue)) {
+                    return PeriodFeedback.fromJson(readerToUse.reset());
                 } else {
-                    readerToUse.skipChildren();
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static MetricFeedback fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricFeedback deserializedMetricFeedback = new MetricFeedback();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricId".equals(fieldName)) {
+                    deserializedMetricFeedback.metricId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("dimensionFilter".equals(fieldName)) {
+                    deserializedMetricFeedback.dimensionFilter = FeedbackDimensionFilter.fromJson(reader);
+                } else if ("feedbackType".equals(fieldName)) {
+                    deserializedMetricFeedback.feedbackType = FeedbackType.fromString(reader.getString());
+                } else if ("feedbackId".equals(fieldName)) {
+                    deserializedMetricFeedback.feedbackId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedMetricFeedback.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("userPrincipal".equals(fieldName)) {
+                    deserializedMetricFeedback.userPrincipal = reader.getString();
+                } else {
+                    reader.skipChildren();
                 }
             }
 
-            if (discriminatorValue != null) {
-                readerToUse = readerToUse.reset();
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("Anomaly".equals(discriminatorValue)) {
-                return AnomalyFeedback.fromJson(readerToUse);
-            } else if ("ChangePoint".equals(discriminatorValue)) {
-                return ChangePointFeedback.fromJson(readerToUse);
-            } else if ("Comment".equals(discriminatorValue)) {
-                return CommentFeedback.fromJson(readerToUse);
-            } else if ("Period".equals(discriminatorValue)) {
-                return PeriodFeedback.fromJson(readerToUse);
-            } else {
-                throw new IllegalStateException(
-                    "Discriminator field 'feedbackType' didn't match one of the expected values 'Anomaly', 'ChangePoint', 'Comment', or 'Period'. It was: '"
-                        + discriminatorValue + "'.");
-            }
+            return deserializedMetricFeedback;
         });
     }
 }

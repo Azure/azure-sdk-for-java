@@ -5,33 +5,42 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters for updating an image template. */
+/**
+ * Parameters for updating an image template.
+ */
 @Fluent
-public final class ImageTemplateUpdateParameters {
+public final class ImageTemplateUpdateParameters implements JsonSerializable<ImageTemplateUpdateParameters> {
     /*
      * The identity of the image template, if configured.
      */
-    @JsonProperty(value = "identity")
     private ImageTemplateIdentity identity;
 
     /*
      * The user-specified tags associated with the image template.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ImageTemplateUpdateParameters class. */
+    /*
+     * Parameters for updating an image template.
+     */
+    private ImageTemplateUpdateParametersProperties properties;
+
+    /**
+     * Creates an instance of ImageTemplateUpdateParameters class.
+     */
     public ImageTemplateUpdateParameters() {
     }
 
     /**
      * Get the identity property: The identity of the image template, if configured.
-     *
+     * 
      * @return the identity value.
      */
     public ImageTemplateIdentity identity() {
@@ -40,7 +49,7 @@ public final class ImageTemplateUpdateParameters {
 
     /**
      * Set the identity property: The identity of the image template, if configured.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ImageTemplateUpdateParameters object itself.
      */
@@ -51,7 +60,7 @@ public final class ImageTemplateUpdateParameters {
 
     /**
      * Get the tags property: The user-specified tags associated with the image template.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -60,7 +69,7 @@ public final class ImageTemplateUpdateParameters {
 
     /**
      * Set the tags property: The user-specified tags associated with the image template.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ImageTemplateUpdateParameters object itself.
      */
@@ -70,13 +79,81 @@ public final class ImageTemplateUpdateParameters {
     }
 
     /**
+     * Get the properties property: Parameters for updating an image template.
+     * 
+     * @return the properties value.
+     */
+    public ImageTemplateUpdateParametersProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Parameters for updating an image template.
+     * 
+     * @param properties the properties value to set.
+     * @return the ImageTemplateUpdateParameters object itself.
+     */
+    public ImageTemplateUpdateParameters withProperties(ImageTemplateUpdateParametersProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (identity() != null) {
             identity().validate();
         }
+        if (properties() != null) {
+            properties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateUpdateParameters.
+     */
+    public static ImageTemplateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateUpdateParameters deserializedImageTemplateUpdateParameters
+                = new ImageTemplateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedImageTemplateUpdateParameters.identity = ImageTemplateIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedImageTemplateUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedImageTemplateUpdateParameters.properties
+                        = ImageTemplateUpdateParametersProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateUpdateParameters;
+        });
     }
 }

@@ -16,8 +16,8 @@ public final class DevCenterSkuImpl implements DevCenterSku {
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    DevCenterSkuImpl(
-        DevCenterSkuInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    DevCenterSkuImpl(DevCenterSkuInner innerObject,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

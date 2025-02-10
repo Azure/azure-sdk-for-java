@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumeQuotaRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
      * VolumeQuotaRules_Delete.json
      */
     /**
@@ -18,7 +18,7 @@ public final class VolumeQuotaRulesDeleteSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void volumeQuotaRulesDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeQuotaRules().delete("myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004",
-            com.azure.core.util.Context.NONE);
+        manager.volumeQuotaRules()
+            .delete("myRG", "account-9957", "pool-5210", "volume-6387", "rule-0004", com.azure.core.util.Context.NONE);
     }
 }

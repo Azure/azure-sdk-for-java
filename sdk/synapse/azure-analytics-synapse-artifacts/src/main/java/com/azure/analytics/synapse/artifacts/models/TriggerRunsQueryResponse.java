@@ -5,24 +5,26 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A list of trigger runs.
  */
 @Fluent
-public final class TriggerRunsQueryResponse {
+public final class TriggerRunsQueryResponse implements JsonSerializable<TriggerRunsQueryResponse> {
     /*
      * List of trigger runs.
      */
-    @JsonProperty(value = "value", required = true)
     private List<TriggerRun> value;
 
     /*
      * The continuation token for getting the next page of results, if any remaining results exist, null otherwise.
      */
-    @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
     /**
@@ -52,8 +54,8 @@ public final class TriggerRunsQueryResponse {
     }
 
     /**
-     * Get the continuationToken property: The continuation token for getting the next page of results, if any
-     * remaining results exist, null otherwise.
+     * Get the continuationToken property: The continuation token for getting the next page of results, if any remaining
+     * results exist, null otherwise.
      * 
      * @return the continuationToken value.
      */
@@ -62,8 +64,8 @@ public final class TriggerRunsQueryResponse {
     }
 
     /**
-     * Set the continuationToken property: The continuation token for getting the next page of results, if any
-     * remaining results exist, null otherwise.
+     * Set the continuationToken property: The continuation token for getting the next page of results, if any remaining
+     * results exist, null otherwise.
      * 
      * @param continuationToken the continuationToken value to set.
      * @return the TriggerRunsQueryResponse object itself.
@@ -71,5 +73,46 @@ public final class TriggerRunsQueryResponse {
     public TriggerRunsQueryResponse setContinuationToken(String continuationToken) {
         this.continuationToken = continuationToken;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("continuationToken", this.continuationToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerRunsQueryResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerRunsQueryResponse if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TriggerRunsQueryResponse.
+     */
+    public static TriggerRunsQueryResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerRunsQueryResponse deserializedTriggerRunsQueryResponse = new TriggerRunsQueryResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<TriggerRun> value = reader.readArray(reader1 -> TriggerRun.fromJson(reader1));
+                    deserializedTriggerRunsQueryResponse.value = value;
+                } else if ("continuationToken".equals(fieldName)) {
+                    deserializedTriggerRunsQueryResponse.continuationToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerRunsQueryResponse;
+        });
     }
 }

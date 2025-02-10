@@ -13,27 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ChaosExperimentBranchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChaosExperimentBranch model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ovbvmeueciv\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"zceuojgjrw\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"ueiotwmcdyt\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"x\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"it\"}]}")
-                .toObject(ChaosExperimentBranch.class);
+        ChaosExperimentBranch model = BinaryData.fromString(
+            "{\"name\":\"ovbvmeueciv\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"zceuojgjrw\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"ueiotwmcdyt\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"x\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"it\"}]}")
+            .toObject(ChaosExperimentBranch.class);
         Assertions.assertEquals("ovbvmeueciv", model.name());
         Assertions.assertEquals("zceuojgjrw", model.actions().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosExperimentBranch model =
-            new ChaosExperimentBranch()
-                .withName("ovbvmeueciv")
-                .withActions(
-                    Arrays
-                        .asList(
-                            new ChaosExperimentAction().withName("zceuojgjrw"),
-                            new ChaosExperimentAction().withName("ueiotwmcdyt"),
-                            new ChaosExperimentAction().withName("x"),
-                            new ChaosExperimentAction().withName("it")));
+        ChaosExperimentBranch model = new ChaosExperimentBranch().withName("ovbvmeueciv")
+            .withActions(Arrays.asList(new ChaosExperimentAction().withName("zceuojgjrw"),
+                new ChaosExperimentAction().withName("ueiotwmcdyt"), new ChaosExperimentAction().withName("x"),
+                new ChaosExperimentAction().withName("it")));
         model = BinaryData.fromObject(model).toObject(ChaosExperimentBranch.class);
         Assertions.assertEquals("ovbvmeueciv", model.name());
         Assertions.assertEquals("zceuojgjrw", model.actions().get(0).name());

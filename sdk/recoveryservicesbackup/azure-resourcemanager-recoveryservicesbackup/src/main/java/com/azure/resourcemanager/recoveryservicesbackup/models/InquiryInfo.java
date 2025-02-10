@@ -5,39 +5,45 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Details about inquired protectable items under a given container. */
+/**
+ * Details about inquired protectable items under a given container.
+ */
 @Fluent
-public final class InquiryInfo {
+public final class InquiryInfo implements JsonSerializable<InquiryInfo> {
     /*
      * Inquiry Status for this container such as
      * InProgress | Failed | Succeeded
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Error Details if the Status is non-success.
      */
-    @JsonProperty(value = "errorDetail")
     private ErrorDetail errorDetail;
 
     /*
      * Inquiry Details which will have workload specific details.
      * For e.g. - For SQL and oracle this will contain different details.
      */
-    @JsonProperty(value = "inquiryDetails")
     private List<WorkloadInquiryDetails> inquiryDetails;
 
-    /** Creates an instance of InquiryInfo class. */
+    /**
+     * Creates an instance of InquiryInfo class.
+     */
     public InquiryInfo() {
     }
 
     /**
-     * Get the status property: Inquiry Status for this container such as InProgress | Failed | Succeeded.
-     *
+     * Get the status property: Inquiry Status for this container such as
+     * InProgress | Failed | Succeeded.
+     * 
      * @return the status value.
      */
     public String status() {
@@ -45,8 +51,9 @@ public final class InquiryInfo {
     }
 
     /**
-     * Set the status property: Inquiry Status for this container such as InProgress | Failed | Succeeded.
-     *
+     * Set the status property: Inquiry Status for this container such as
+     * InProgress | Failed | Succeeded.
+     * 
      * @param status the status value to set.
      * @return the InquiryInfo object itself.
      */
@@ -57,7 +64,7 @@ public final class InquiryInfo {
 
     /**
      * Get the errorDetail property: Error Details if the Status is non-success.
-     *
+     * 
      * @return the errorDetail value.
      */
     public ErrorDetail errorDetail() {
@@ -66,7 +73,7 @@ public final class InquiryInfo {
 
     /**
      * Set the errorDetail property: Error Details if the Status is non-success.
-     *
+     * 
      * @param errorDetail the errorDetail value to set.
      * @return the InquiryInfo object itself.
      */
@@ -76,9 +83,9 @@ public final class InquiryInfo {
     }
 
     /**
-     * Get the inquiryDetails property: Inquiry Details which will have workload specific details. For e.g. - For SQL
-     * and oracle this will contain different details.
-     *
+     * Get the inquiryDetails property: Inquiry Details which will have workload specific details.
+     * For e.g. - For SQL and oracle this will contain different details.
+     * 
      * @return the inquiryDetails value.
      */
     public List<WorkloadInquiryDetails> inquiryDetails() {
@@ -86,9 +93,9 @@ public final class InquiryInfo {
     }
 
     /**
-     * Set the inquiryDetails property: Inquiry Details which will have workload specific details. For e.g. - For SQL
-     * and oracle this will contain different details.
-     *
+     * Set the inquiryDetails property: Inquiry Details which will have workload specific details.
+     * For e.g. - For SQL and oracle this will contain different details.
+     * 
      * @param inquiryDetails the inquiryDetails value to set.
      * @return the InquiryInfo object itself.
      */
@@ -99,7 +106,7 @@ public final class InquiryInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -109,5 +116,50 @@ public final class InquiryInfo {
         if (inquiryDetails() != null) {
             inquiryDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("errorDetail", this.errorDetail);
+        jsonWriter.writeArrayField("inquiryDetails", this.inquiryDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InquiryInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InquiryInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InquiryInfo.
+     */
+    public static InquiryInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InquiryInfo deserializedInquiryInfo = new InquiryInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedInquiryInfo.status = reader.getString();
+                } else if ("errorDetail".equals(fieldName)) {
+                    deserializedInquiryInfo.errorDetail = ErrorDetail.fromJson(reader);
+                } else if ("inquiryDetails".equals(fieldName)) {
+                    List<WorkloadInquiryDetails> inquiryDetails
+                        = reader.readArray(reader1 -> WorkloadInquiryDetails.fromJson(reader1));
+                    deserializedInquiryInfo.inquiryDetails = inquiryDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInquiryInfo;
+        });
     }
 }

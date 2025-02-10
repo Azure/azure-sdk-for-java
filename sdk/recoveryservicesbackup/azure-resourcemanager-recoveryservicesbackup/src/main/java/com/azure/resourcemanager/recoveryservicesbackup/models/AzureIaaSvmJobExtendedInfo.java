@@ -5,59 +5,58 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Azure IaaS VM workload-specific additional information for job. */
+/**
+ * Azure IaaS VM workload-specific additional information for job.
+ */
 @Fluent
-public final class AzureIaaSvmJobExtendedInfo {
+public final class AzureIaaSvmJobExtendedInfo implements JsonSerializable<AzureIaaSvmJobExtendedInfo> {
     /*
      * List of tasks associated with this job.
      */
-    @JsonProperty(value = "tasksList")
     private List<AzureIaaSvmJobTaskDetails> tasksList;
 
     /*
      * Job properties.
      */
-    @JsonProperty(value = "propertyBag")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> propertyBag;
 
     /*
      * Job internal properties.
      */
-    @JsonProperty(value = "internalPropertyBag")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> internalPropertyBag;
 
     /*
      * Indicates progress of the job. Null if it has not started or completed.
      */
-    @JsonProperty(value = "progressPercentage")
     private Double progressPercentage;
 
     /*
      * Time remaining for execution of this job.
      */
-    @JsonProperty(value = "estimatedRemainingDuration")
     private String estimatedRemainingDuration;
 
     /*
      * Non localized error message on job execution.
      */
-    @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
 
-    /** Creates an instance of AzureIaaSvmJobExtendedInfo class. */
+    /**
+     * Creates an instance of AzureIaaSvmJobExtendedInfo class.
+     */
     public AzureIaaSvmJobExtendedInfo() {
     }
 
     /**
      * Get the tasksList property: List of tasks associated with this job.
-     *
+     * 
      * @return the tasksList value.
      */
     public List<AzureIaaSvmJobTaskDetails> tasksList() {
@@ -66,7 +65,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the tasksList property: List of tasks associated with this job.
-     *
+     * 
      * @param tasksList the tasksList value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -77,7 +76,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Get the propertyBag property: Job properties.
-     *
+     * 
      * @return the propertyBag value.
      */
     public Map<String, String> propertyBag() {
@@ -86,7 +85,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the propertyBag property: Job properties.
-     *
+     * 
      * @param propertyBag the propertyBag value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -97,7 +96,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Get the internalPropertyBag property: Job internal properties.
-     *
+     * 
      * @return the internalPropertyBag value.
      */
     public Map<String, String> internalPropertyBag() {
@@ -106,7 +105,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the internalPropertyBag property: Job internal properties.
-     *
+     * 
      * @param internalPropertyBag the internalPropertyBag value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -117,7 +116,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Get the progressPercentage property: Indicates progress of the job. Null if it has not started or completed.
-     *
+     * 
      * @return the progressPercentage value.
      */
     public Double progressPercentage() {
@@ -126,7 +125,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the progressPercentage property: Indicates progress of the job. Null if it has not started or completed.
-     *
+     * 
      * @param progressPercentage the progressPercentage value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -137,7 +136,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Get the estimatedRemainingDuration property: Time remaining for execution of this job.
-     *
+     * 
      * @return the estimatedRemainingDuration value.
      */
     public String estimatedRemainingDuration() {
@@ -146,7 +145,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the estimatedRemainingDuration property: Time remaining for execution of this job.
-     *
+     * 
      * @param estimatedRemainingDuration the estimatedRemainingDuration value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -157,7 +156,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Get the dynamicErrorMessage property: Non localized error message on job execution.
-     *
+     * 
      * @return the dynamicErrorMessage value.
      */
     public String dynamicErrorMessage() {
@@ -166,7 +165,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the dynamicErrorMessage property: Non localized error message on job execution.
-     *
+     * 
      * @param dynamicErrorMessage the dynamicErrorMessage value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -177,12 +176,69 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tasksList() != null) {
             tasksList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tasksList", this.tasksList, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("propertyBag", this.propertyBag, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("internalPropertyBag", this.internalPropertyBag,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("progressPercentage", this.progressPercentage);
+        jsonWriter.writeStringField("estimatedRemainingDuration", this.estimatedRemainingDuration);
+        jsonWriter.writeStringField("dynamicErrorMessage", this.dynamicErrorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureIaaSvmJobExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureIaaSvmJobExtendedInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureIaaSvmJobExtendedInfo.
+     */
+    public static AzureIaaSvmJobExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureIaaSvmJobExtendedInfo deserializedAzureIaaSvmJobExtendedInfo = new AzureIaaSvmJobExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tasksList".equals(fieldName)) {
+                    List<AzureIaaSvmJobTaskDetails> tasksList
+                        = reader.readArray(reader1 -> AzureIaaSvmJobTaskDetails.fromJson(reader1));
+                    deserializedAzureIaaSvmJobExtendedInfo.tasksList = tasksList;
+                } else if ("propertyBag".equals(fieldName)) {
+                    Map<String, String> propertyBag = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureIaaSvmJobExtendedInfo.propertyBag = propertyBag;
+                } else if ("internalPropertyBag".equals(fieldName)) {
+                    Map<String, String> internalPropertyBag = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureIaaSvmJobExtendedInfo.internalPropertyBag = internalPropertyBag;
+                } else if ("progressPercentage".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobExtendedInfo.progressPercentage
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("estimatedRemainingDuration".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobExtendedInfo.estimatedRemainingDuration = reader.getString();
+                } else if ("dynamicErrorMessage".equals(fieldName)) {
+                    deserializedAzureIaaSvmJobExtendedInfo.dynamicErrorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureIaaSvmJobExtendedInfo;
+        });
     }
 }

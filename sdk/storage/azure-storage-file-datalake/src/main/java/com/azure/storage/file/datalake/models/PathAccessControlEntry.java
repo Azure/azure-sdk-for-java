@@ -65,7 +65,7 @@ public class PathAccessControlEntry {
 
     /**
      * Specifies the entity for which this entry applies. This is an AAD ObjectId.
-     *
+     * <p>
      * Must be omitted for types mask or other. It must also be omitted when the user or group is the owner.
      */
     private String entityId;
@@ -136,7 +136,7 @@ public class PathAccessControlEntry {
 
     /**
      * Parses the provided string into a {@code List&lt{@link PathAccessControlEntry}&gt}.
-     *
+     * <p>
      * Must be of the format "[scope:][type]:[id]:[permissions]".
      *
      * @param str The string representation of the ACL.
@@ -186,6 +186,9 @@ public class PathAccessControlEntry {
      * @return The ACL deserialized into a {@code java.util.List}
      */
     public static List<PathAccessControlEntry> parseList(String str) {
+        if (str == null) {
+            return null;
+        }
         String[] strs = str.split(",");
         List<PathAccessControlEntry> acl = new ArrayList<>(strs.length);
         for (String entry : strs) {
@@ -231,7 +234,7 @@ public class PathAccessControlEntry {
     }
 
     /**
-     * Sets whether or not this entry is the default for a directory.
+     * Sets whether this entry is the default for a directory.
      *
      * @param defaultScope {@code true} to set as the default scope and {@code false} otherwise.
      * @return The updated PathAccessControlEntry object.

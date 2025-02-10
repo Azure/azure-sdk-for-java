@@ -1,5 +1,6 @@
 # Default Assets restore directory
 .assets
+test-proxy.log
 
 *.class
 
@@ -14,6 +15,7 @@ temp/
 
 # Sensitive files
 *.json.env
+.env
 
 #javadoc overview files generated from README.md
 readme_overview.html

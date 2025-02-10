@@ -4,126 +4,133 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for MetricAlerts GetByResourceGroup. */
+/**
+ * Samples for MetricAlerts GetByResourceGroup.
+ */
 public final class MetricAlertsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertResourceGroup.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertResourceGroup.
+     * json
      */
     /**
      * Sample code: Get an alert rule on resource group(s).
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnAlertRuleOnResourceGroupS(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest1", "MetricAlertAtResourceGroupLevel", Context.NONE);
+            .getByResourceGroupWithResponse("gigtest1", "MetricAlertAtResourceGroupLevel",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getDynamicMetricAlertMultipleResource.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * getDynamicMetricAlertMultipleResource.json
      */
     /**
      * Sample code: Get a dynamic alert rule for multiple resources.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getADynamicAlertRuleForMultipleResources(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest", "MetricAlertOnMultipleResources", Context.NONE);
+            .getByResourceGroupWithResponse("gigtest", "MetricAlertOnMultipleResources",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getWebTestMetricAlert.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getWebTestMetricAlert.json
      */
     /**
      * Sample code: Get a web test alert rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAWebTestAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("rg-example", "webtest-name-example", Context.NONE);
+            .getByResourceGroupWithResponse("rg-example", "webtest-name-example", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertSingleResource.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertSingleResource
+     * .json
      */
     /**
      * Sample code: Get an alert rule for single resource.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnAlertRuleForSingleResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest", "chiricutin", Context.NONE);
+            .getByResourceGroupWithResponse("gigtest", "chiricutin", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertSubscription.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertSubscription.
+     * json
      */
     /**
      * Sample code: Get an alert rule on subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnAlertRuleOnSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest", "MetricAlertAtSubscriptionLevel", Context.NONE);
+            .getByResourceGroupWithResponse("gigtest", "MetricAlertAtSubscriptionLevel",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getDynamicMetricAlertSingleResource.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * getDynamicMetricAlertSingleResource.json
      */
     /**
      * Sample code: Get a dynamic alert rule for single resource.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getADynamicAlertRuleForSingleResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest", "chiricutin", Context.NONE);
+            .getByResourceGroupWithResponse("gigtest", "chiricutin", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertMultipleResource.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/
+     * getMetricAlertMultipleResource.json
      */
     /**
      * Sample code: Get an alert rule for multiple resources.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnAlertRuleForMultipleResources(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest", "MetricAlertOnMultipleResources", Context.NONE);
+            .getByResourceGroupWithResponse("gigtest", "MetricAlertOnMultipleResources",
+                com.azure.core.util.Context.NONE);
     }
 }

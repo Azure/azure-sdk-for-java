@@ -14,43 +14,35 @@ import com.azure.resourcemanager.networkfunction.models.IngestionType;
 import com.azure.resourcemanager.networkfunction.models.SourceType;
 import java.util.Arrays;
 
-/** Samples for CollectorPolicies CreateOrUpdate. */
+/**
+ * Samples for CollectorPolicies CreateOrUpdate.
+ */
 public final class CollectorPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyCreate.json
+     * x-ms-original-file:
+     * specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/
+     * CollectorPolicyCreate.json
      */
     /**
      * Sample code: Create a collection policy.
-     *
+     * 
      * @param manager Entry point to AzureTrafficCollectorManager.
      */
-    public static void createACollectionPolicy(
-        com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
-        manager
-            .collectorPolicies()
+    public static void
+        createACollectionPolicy(com.azure.resourcemanager.networkfunction.AzureTrafficCollectorManager manager) {
+        manager.collectorPolicies()
             .define("cp1")
             .withRegion("West US")
             .withExistingAzureTrafficCollector("rg1", "atc")
-            .withIngestionPolicy(
-                new IngestionPolicyPropertiesFormat()
-                    .withIngestionType(IngestionType.IPFIX)
-                    .withIngestionSources(
-                        Arrays
-                            .asList(
-                                new IngestionSourcesPropertiesFormat()
-                                    .withSourceType(SourceType.RESOURCE)
-                                    .withResourceId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"))))
+            .withIngestionPolicy(new IngestionPolicyPropertiesFormat().withIngestionType(IngestionType.IPFIX)
+                .withIngestionSources(Arrays.asList(new IngestionSourcesPropertiesFormat()
+                    .withSourceType(SourceType.RESOURCE)
+                    .withResourceId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/expressRouteCircuits/circuitName"))))
             .withEmissionPolicies(
-                Arrays
-                    .asList(
-                        new EmissionPoliciesPropertiesFormat()
-                            .withEmissionType(EmissionType.IPFIX)
-                            .withEmissionDestinations(
-                                Arrays
-                                    .asList(
-                                        new EmissionPolicyDestination()
-                                            .withDestinationType(DestinationType.AZURE_MONITOR)))))
+                Arrays.asList(new EmissionPoliciesPropertiesFormat().withEmissionType(EmissionType.IPFIX)
+                    .withEmissionDestinations(Arrays
+                        .asList(new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR)))))
             .create();
     }
 }

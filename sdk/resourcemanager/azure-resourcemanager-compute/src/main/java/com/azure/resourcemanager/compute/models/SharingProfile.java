@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Profile for gallery sharing to subscription or tenant.
  */
 @Fluent
-public final class SharingProfile {
+public final class SharingProfile implements JsonSerializable<SharingProfile> {
     /*
      * This property allows you to specify the permission of sharing gallery. Possible values are: **Private,**
      * **Groups,** **Community.**
      */
-    @JsonProperty(value = "permissions")
     private GallerySharingPermissionTypes permissions;
 
     /*
      * A list of sharing profile groups.
      */
-    @JsonProperty(value = "groups", access = JsonProperty.Access.WRITE_ONLY)
     private List<SharingProfileGroup> groups;
 
     /*
      * Information of community gallery if current gallery is shared to community.
      */
-    @JsonProperty(value = "communityGalleryInfo")
     private CommunityGalleryInfo communityGalleryInfo;
 
     /**
@@ -103,5 +104,49 @@ public final class SharingProfile {
         if (communityGalleryInfo() != null) {
             communityGalleryInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("permissions", this.permissions == null ? null : this.permissions.toString());
+        jsonWriter.writeJsonField("communityGalleryInfo", this.communityGalleryInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharingProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharingProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SharingProfile.
+     */
+    public static SharingProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharingProfile deserializedSharingProfile = new SharingProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("permissions".equals(fieldName)) {
+                    deserializedSharingProfile.permissions
+                        = GallerySharingPermissionTypes.fromString(reader.getString());
+                } else if ("groups".equals(fieldName)) {
+                    List<SharingProfileGroup> groups
+                        = reader.readArray(reader1 -> SharingProfileGroup.fromJson(reader1));
+                    deserializedSharingProfile.groups = groups;
+                } else if ("communityGalleryInfo".equals(fieldName)) {
+                    deserializedSharingProfile.communityGalleryInfo = CommunityGalleryInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharingProfile;
+        });
     }
 }

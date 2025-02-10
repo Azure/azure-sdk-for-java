@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -24,7 +23,7 @@ public final class OSType extends ExpandableStringEnum<OSType> {
 
     /**
      * Creates a new instance of OSType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +32,17 @@ public final class OSType extends ExpandableStringEnum<OSType> {
 
     /**
      * Creates or finds a OSType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OSType.
      */
-    @JsonCreator
     public static OSType fromString(String name) {
         return fromString(name, OSType.class);
     }
 
     /**
      * Gets known OSType values.
-     *
+     * 
      * @return known OSType values.
      */
     public static Collection<OSType> values() {

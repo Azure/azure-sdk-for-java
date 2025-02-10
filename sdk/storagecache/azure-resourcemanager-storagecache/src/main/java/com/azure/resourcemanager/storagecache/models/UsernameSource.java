@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** This setting determines how the cache gets username and group names for clients. */
+/**
+ * This setting determines how the cache gets username and group names for clients.
+ */
 public final class UsernameSource extends ExpandableStringEnum<UsernameSource> {
-    /** Static value AD for UsernameSource. */
+    /**
+     * Static value AD for UsernameSource.
+     */
     public static final UsernameSource AD = fromString("AD");
 
-    /** Static value LDAP for UsernameSource. */
+    /**
+     * Static value LDAP for UsernameSource.
+     */
     public static final UsernameSource LDAP = fromString("LDAP");
 
-    /** Static value File for UsernameSource. */
+    /**
+     * Static value File for UsernameSource.
+     */
     public static final UsernameSource FILE = fromString("File");
 
-    /** Static value None for UsernameSource. */
+    /**
+     * Static value None for UsernameSource.
+     */
     public static final UsernameSource NONE = fromString("None");
 
     /**
      * Creates a new instance of UsernameSource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class UsernameSource extends ExpandableStringEnum<UsernameSource> {
 
     /**
      * Creates or finds a UsernameSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UsernameSource.
      */
-    @JsonCreator
     public static UsernameSource fromString(String name) {
         return fromString(name, UsernameSource.class);
     }
 
     /**
      * Gets known UsernameSource values.
-     *
+     * 
      * @return known UsernameSource values.
      */
     public static Collection<UsernameSource> values() {

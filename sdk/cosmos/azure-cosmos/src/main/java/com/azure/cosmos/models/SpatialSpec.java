@@ -61,7 +61,10 @@ public final class SpatialSpec {
      * @return the SpatialSpec.
      */
     public SpatialSpec setPath(String path) {
-        this.jsonSerializable.set(Constants.Properties.PATH, path);
+        this.jsonSerializable.set(
+            Constants.Properties.PATH,
+            path
+        );
         return this;
     }
 
@@ -94,7 +97,10 @@ public final class SpatialSpec {
         for (SpatialType spatialType : this.spatialTypes) {
             spatialTypeNames.add(spatialType.toString());
         }
-        this.jsonSerializable.set(Constants.Properties.TYPES, spatialTypeNames);
+        this.jsonSerializable.set(
+            Constants.Properties.TYPES,
+            spatialTypeNames
+        );
         return this;
     }
 

@@ -21,31 +21,28 @@ public final class ChatTranscriptsImpl implements ChatTranscripts {
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    public ChatTranscriptsImpl(
-        ChatTranscriptsClient innerClient, com.azure.resourcemanager.support.SupportManager serviceManager) {
+    public ChatTranscriptsImpl(ChatTranscriptsClient innerClient,
+        com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ChatTranscriptDetails> list(String supportTicketName) {
         PagedIterable<ChatTranscriptDetailsInner> inner = this.serviceClient().list(supportTicketName);
-        return Utils.mapPage(inner, inner1 -> new ChatTranscriptDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ChatTranscriptDetailsImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ChatTranscriptDetails> list(String supportTicketName, Context context) {
         PagedIterable<ChatTranscriptDetailsInner> inner = this.serviceClient().list(supportTicketName, context);
-        return Utils.mapPage(inner, inner1 -> new ChatTranscriptDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ChatTranscriptDetailsImpl(inner1, this.manager()));
     }
 
-    public Response<ChatTranscriptDetails> getWithResponse(
-        String supportTicketName, String chatTranscriptName, Context context) {
-        Response<ChatTranscriptDetailsInner> inner =
-            this.serviceClient().getWithResponse(supportTicketName, chatTranscriptName, context);
+    public Response<ChatTranscriptDetails> getWithResponse(String supportTicketName, String chatTranscriptName,
+        Context context) {
+        Response<ChatTranscriptDetailsInner> inner
+            = this.serviceClient().getWithResponse(supportTicketName, chatTranscriptName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ChatTranscriptDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;

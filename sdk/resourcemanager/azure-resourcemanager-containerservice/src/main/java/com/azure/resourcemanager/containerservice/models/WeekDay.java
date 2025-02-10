@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -49,7 +48,7 @@ public final class WeekDay extends ExpandableStringEnum<WeekDay> {
 
     /**
      * Creates a new instance of WeekDay value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -58,18 +57,17 @@ public final class WeekDay extends ExpandableStringEnum<WeekDay> {
 
     /**
      * Creates or finds a WeekDay from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WeekDay.
      */
-    @JsonCreator
     public static WeekDay fromString(String name) {
         return fromString(name, WeekDay.class);
     }
 
     /**
      * Gets known WeekDay values.
-     *
+     * 
      * @return known WeekDay values.
      */
     public static Collection<WeekDay> values() {

@@ -12,8 +12,7 @@ public final class UnlockDeleteResponseImpl implements UnlockDeleteResponse {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    UnlockDeleteResponseImpl(
-        UnlockDeleteResponseInner innerObject,
+    UnlockDeleteResponseImpl(UnlockDeleteResponseInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

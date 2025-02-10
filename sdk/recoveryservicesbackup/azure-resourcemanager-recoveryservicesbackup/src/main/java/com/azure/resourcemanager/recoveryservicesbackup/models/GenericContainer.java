@@ -5,34 +5,58 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for generic container of backup items. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
-@JsonTypeName("GenericContainer")
+/**
+ * Base class for generic container of backup items.
+ */
 @Fluent
 public final class GenericContainer extends ProtectionContainer {
     /*
+     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+     * 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer
+     */
+    private ProtectableContainerType containerType = ProtectableContainerType.GENERIC_CONTAINER;
+
+    /*
      * Name of the container's fabric
      */
-    @JsonProperty(value = "fabricName")
     private String fabricName;
 
     /*
      * Extended information (not returned in List container API calls)
      */
-    @JsonProperty(value = "extendedInformation")
     private GenericContainerExtendedInfo extendedInformation;
 
-    /** Creates an instance of GenericContainer class. */
+    /**
+     * Creates an instance of GenericContainer class.
+     */
     public GenericContainer() {
     }
 
     /**
+     * Get the containerType property: Type of the container. The value of this property for: 1. Compute Azure VM is
+     * Microsoft.Compute/virtualMachines 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer.
+     * 
+     * @return the containerType value.
+     */
+    @Override
+    public ProtectableContainerType containerType() {
+        return this.containerType;
+    }
+
+    /**
      * Get the fabricName property: Name of the container's fabric.
-     *
+     * 
      * @return the fabricName value.
      */
     public String fabricName() {
@@ -41,7 +65,7 @@ public final class GenericContainer extends ProtectionContainer {
 
     /**
      * Set the fabricName property: Name of the container's fabric.
-     *
+     * 
      * @param fabricName the fabricName value to set.
      * @return the GenericContainer object itself.
      */
@@ -52,7 +76,7 @@ public final class GenericContainer extends ProtectionContainer {
 
     /**
      * Get the extendedInformation property: Extended information (not returned in List container API calls).
-     *
+     * 
      * @return the extendedInformation value.
      */
     public GenericContainerExtendedInfo extendedInformation() {
@@ -61,7 +85,7 @@ public final class GenericContainer extends ProtectionContainer {
 
     /**
      * Set the extendedInformation property: Extended information (not returned in List container API calls).
-     *
+     * 
      * @param extendedInformation the extendedInformation value to set.
      * @return the GenericContainer object itself.
      */
@@ -70,35 +94,45 @@ public final class GenericContainer extends ProtectionContainer {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericContainer withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericContainer withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericContainer withProtectableObjectType(String protectableObjectType) {
         super.withProtectableObjectType(protectableObjectType);
@@ -107,14 +141,73 @@ public final class GenericContainer extends ProtectionContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (extendedInformation() != null) {
             extendedInformation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("registrationStatus", registrationStatus());
+        jsonWriter.writeStringField("healthStatus", healthStatus());
+        jsonWriter.writeStringField("protectableObjectType", protectableObjectType());
+        jsonWriter.writeStringField("containerType", this.containerType == null ? null : this.containerType.toString());
+        jsonWriter.writeStringField("fabricName", this.fabricName);
+        jsonWriter.writeJsonField("extendedInformation", this.extendedInformation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenericContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenericContainer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenericContainer.
+     */
+    public static GenericContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenericContainer deserializedGenericContainer = new GenericContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedGenericContainer.withFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedGenericContainer
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("registrationStatus".equals(fieldName)) {
+                    deserializedGenericContainer.withRegistrationStatus(reader.getString());
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedGenericContainer.withHealthStatus(reader.getString());
+                } else if ("protectableObjectType".equals(fieldName)) {
+                    deserializedGenericContainer.withProtectableObjectType(reader.getString());
+                } else if ("containerType".equals(fieldName)) {
+                    deserializedGenericContainer.containerType
+                        = ProtectableContainerType.fromString(reader.getString());
+                } else if ("fabricName".equals(fieldName)) {
+                    deserializedGenericContainer.fabricName = reader.getString();
+                } else if ("extendedInformation".equals(fieldName)) {
+                    deserializedGenericContainer.extendedInformation = GenericContainerExtendedInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenericContainer;
+        });
     }
 }

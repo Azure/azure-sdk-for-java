@@ -8,31 +8,51 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrincipalType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents an Active Directory administrator. */
+/**
+ * Represents an Active Directory administrator.
+ */
 @Fluent
 public final class ActiveDirectoryAdministratorInner extends ProxyResource {
     /*
      * Properties of the active directory administrator.
      */
-    @JsonProperty(value = "properties", required = true)
     private AdministratorProperties innerProperties = new AdministratorProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ActiveDirectoryAdministratorInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ActiveDirectoryAdministratorInner class.
+     */
     public ActiveDirectoryAdministratorInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the active directory administrator.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AdministratorProperties innerProperties() {
@@ -41,7 +61,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,8 +69,38 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the principalType property: The principal type used to represent the type of Active Directory Administrator.
-     *
+     * 
      * @return the principalType value.
      */
     public PrincipalType principalType() {
@@ -59,7 +109,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Set the principalType property: The principal type used to represent the type of Active Directory Administrator.
-     *
+     * 
      * @param principalType the principalType value to set.
      * @return the ActiveDirectoryAdministratorInner object itself.
      */
@@ -73,7 +123,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Get the principalName property: Active Directory administrator principal name.
-     *
+     * 
      * @return the principalName value.
      */
     public String principalName() {
@@ -82,7 +132,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Set the principalName property: Active Directory administrator principal name.
-     *
+     * 
      * @param principalName the principalName value to set.
      * @return the ActiveDirectoryAdministratorInner object itself.
      */
@@ -96,7 +146,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Get the objectId property: The objectId of the Active Directory administrator.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -105,7 +155,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Set the objectId property: The objectId of the Active Directory administrator.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the ActiveDirectoryAdministratorInner object itself.
      */
@@ -119,7 +169,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The tenantId of the Active Directory administrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -128,7 +178,7 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Set the tenantId property: The tenantId of the Active Directory administrator.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ActiveDirectoryAdministratorInner object itself.
      */
@@ -142,19 +192,65 @@ public final class ActiveDirectoryAdministratorInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ActiveDirectoryAdministratorInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ActiveDirectoryAdministratorInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ActiveDirectoryAdministratorInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActiveDirectoryAdministratorInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActiveDirectoryAdministratorInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActiveDirectoryAdministratorInner.
+     */
+    public static ActiveDirectoryAdministratorInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActiveDirectoryAdministratorInner deserializedActiveDirectoryAdministratorInner
+                = new ActiveDirectoryAdministratorInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedActiveDirectoryAdministratorInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedActiveDirectoryAdministratorInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedActiveDirectoryAdministratorInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedActiveDirectoryAdministratorInner.innerProperties
+                        = AdministratorProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedActiveDirectoryAdministratorInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActiveDirectoryAdministratorInner;
+        });
+    }
 }

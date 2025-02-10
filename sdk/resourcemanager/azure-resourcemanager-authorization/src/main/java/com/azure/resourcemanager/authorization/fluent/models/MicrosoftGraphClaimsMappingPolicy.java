@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * claimsMappingPolicy
- *
- * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * 
+ * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -25,19 +28,20 @@ public final class MicrosoftGraphClaimsMappingPolicy extends MicrosoftGraphStsPo
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphClaimsMappingPolicy class. */
+    /**
+     * Creates an instance of MicrosoftGraphClaimsMappingPolicy class.
+     */
     public MicrosoftGraphClaimsMappingPolicy() {
     }
 
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -45,7 +49,7 @@ public final class MicrosoftGraphClaimsMappingPolicy extends MicrosoftGraphStsPo
     /**
      * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphClaimsMappingPolicy object itself.
      */
@@ -54,57 +58,63 @@ public final class MicrosoftGraphClaimsMappingPolicy extends MicrosoftGraphStsPo
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphClaimsMappingPolicy withDefinition(List<String> definition) {
         super.withDefinition(definition);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphClaimsMappingPolicy withIsOrganizationDefault(Boolean isOrganizationDefault) {
         super.withIsOrganizationDefault(isOrganizationDefault);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphClaimsMappingPolicy withAppliesTo(List<MicrosoftGraphDirectoryObjectInner> appliesTo) {
         super.withAppliesTo(appliesTo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphClaimsMappingPolicy withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphClaimsMappingPolicy withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphClaimsMappingPolicy withDeletedDateTime(OffsetDateTime deletedDateTime) {
         super.withDeletedDateTime(deletedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphClaimsMappingPolicy withId(String id) {
         super.withId(id);
@@ -113,11 +123,83 @@ public final class MicrosoftGraphClaimsMappingPolicy extends MicrosoftGraphStsPo
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("deletedDateTime",
+            deletedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deletedDateTime()));
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeArrayField("definition", definition(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isOrganizationDefault", isOrganizationDefault());
+        jsonWriter.writeArrayField("appliesTo", appliesTo(), (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphClaimsMappingPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphClaimsMappingPolicy if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphClaimsMappingPolicy.
+     */
+    public static MicrosoftGraphClaimsMappingPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphClaimsMappingPolicy deserializedMicrosoftGraphClaimsMappingPolicy
+                = new MicrosoftGraphClaimsMappingPolicy();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphClaimsMappingPolicy.withId(reader.getString());
+                } else if ("deletedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphClaimsMappingPolicy.withDeletedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphClaimsMappingPolicy.withDescription(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphClaimsMappingPolicy.withDisplayName(reader.getString());
+                } else if ("definition".equals(fieldName)) {
+                    List<String> definition = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphClaimsMappingPolicy.withDefinition(definition);
+                } else if ("isOrganizationDefault".equals(fieldName)) {
+                    deserializedMicrosoftGraphClaimsMappingPolicy
+                        .withIsOrganizationDefault(reader.getNullable(JsonReader::getBoolean));
+                } else if ("appliesTo".equals(fieldName)) {
+                    List<MicrosoftGraphDirectoryObjectInner> appliesTo
+                        = reader.readArray(reader1 -> MicrosoftGraphDirectoryObjectInner.fromJson(reader1));
+                    deserializedMicrosoftGraphClaimsMappingPolicy.withAppliesTo(appliesTo);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphClaimsMappingPolicy.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphClaimsMappingPolicy;
+        });
     }
 }

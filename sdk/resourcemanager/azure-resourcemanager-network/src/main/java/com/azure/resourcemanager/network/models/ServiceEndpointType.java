@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for ServiceEndpointType. */
@@ -22,17 +21,29 @@ public final class ServiceEndpointType extends ExpandableStringEnum<ServiceEndpo
     public static final ServiceEndpointType MICROSOFT_WEB = fromString("Microsoft.Web");
 
     /**
+     * Creates a new instance of ServiceEndpointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceEndpointType() {
+    }
+
+    /**
      * Creates or finds a ServiceEndpointType from its string representation.
      *
      * @param name a name to look for
      * @return the corresponding ServiceEndpointType
      */
-    @JsonCreator
     public static ServiceEndpointType fromString(String name) {
         return fromString(name, ServiceEndpointType.class);
     }
 
-    /** @return known ServiceEndpointType values */
+    /**
+     * Gets known ServiceEndpointType values.
+     *
+     * @return known ServiceEndpointType values
+     */
     public static Collection<ServiceEndpointType> values() {
         return values(ServiceEndpointType.class);
     }

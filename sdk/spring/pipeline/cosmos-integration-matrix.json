@@ -4,11 +4,12 @@
       "Session_Integration": {
         "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session' }",
         "ProfileFlag": "-P integration-test-azure",
-        "Pool": "azsdk-pool-mms-ubuntu-2004-general",
-        "OSVmImage": "MMSUbuntu2004"
+        "Pool": "env:LINUXPOOL",
+        "OSVmImage": "env:LINUXVMIMAGE",
+        "AdditionalArgs": "-Dargline=-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
       }
     },
-    "TestFromSource": true,
-    "JavaTestVersion": ["1.8", "1.11", "1.17"]
+    "TestFromSource": [true, false],
+    "JavaTestVersion": ["1.17", "1.21"]
   }
 }

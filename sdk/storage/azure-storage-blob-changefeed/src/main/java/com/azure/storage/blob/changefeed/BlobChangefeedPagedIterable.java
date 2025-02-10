@@ -11,8 +11,8 @@ import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
  * {@link String}, the element type is {@link BlobChangefeedEvent}, and the page type is
  * {@link BlobChangefeedPagedResponse}.
  */
-public final class BlobChangefeedPagedIterable extends ContinuablePagedIterable<String,
-    BlobChangefeedEvent, BlobChangefeedPagedResponse> {
+public final class BlobChangefeedPagedIterable
+    extends ContinuablePagedIterable<String, BlobChangefeedEvent, BlobChangefeedPagedResponse> {
 
     /**
      * Package-private constructor for use by {@link BlobChangefeedClient}.

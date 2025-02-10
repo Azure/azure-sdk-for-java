@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Assignment type of the role assignment schedule. */
+/**
+ * Assignment type of the role assignment schedule.
+ */
 public final class AssignmentType extends ExpandableStringEnum<AssignmentType> {
-    /** Static value Activated for AssignmentType. */
+    /**
+     * Static value Activated for AssignmentType.
+     */
     public static final AssignmentType ACTIVATED = fromString("Activated");
 
-    /** Static value Assigned for AssignmentType. */
+    /**
+     * Static value Assigned for AssignmentType.
+     */
     public static final AssignmentType ASSIGNED = fromString("Assigned");
 
     /**
      * Creates a new instance of AssignmentType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AssignmentType extends ExpandableStringEnum<AssignmentType> {
 
     /**
      * Creates or finds a AssignmentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AssignmentType.
      */
-    @JsonCreator
     public static AssignmentType fromString(String name) {
         return fromString(name, AssignmentType.class);
     }
 
     /**
      * Gets known AssignmentType values.
-     *
+     * 
      * @return known AssignmentType values.
      */
     public static Collection<AssignmentType> values() {

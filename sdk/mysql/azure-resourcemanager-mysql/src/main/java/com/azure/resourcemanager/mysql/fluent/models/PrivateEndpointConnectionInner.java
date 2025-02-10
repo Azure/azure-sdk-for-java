@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** A private endpoint connection. */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
 
     /*
      * Resource properties.

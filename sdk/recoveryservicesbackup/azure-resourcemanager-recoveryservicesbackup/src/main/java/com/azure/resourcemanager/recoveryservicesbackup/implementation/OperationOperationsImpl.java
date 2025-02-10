@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.OperationOperationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ValidateOperationsResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationOperations;
-import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationsResponse;
 
 public final class OperationOperationsImpl implements OperationOperations {
@@ -21,30 +21,26 @@ public final class OperationOperationsImpl implements OperationOperations {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public OperationOperationsImpl(
-        OperationOperationsClient innerClient,
+    public OperationOperationsImpl(OperationOperationsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ValidateOperationsResponse> validateWithResponse(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context) {
-        Response<ValidateOperationsResponseInner> inner =
-            this.serviceClient().validateWithResponse(vaultName, resourceGroupName, parameters, context);
+    public Response<ValidateOperationsResponse> validateWithResponse(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters, Context context) {
+        Response<ValidateOperationsResponseInner> inner
+            = this.serviceClient().validateWithResponse(vaultName, resourceGroupName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ValidateOperationsResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ValidateOperationsResponse validate(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
+    public ValidateOperationsResponse validate(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters) {
         ValidateOperationsResponseInner inner = this.serviceClient().validate(vaultName, resourceGroupName, parameters);
         if (inner != null) {
             return new ValidateOperationsResponseImpl(inner, this.manager());

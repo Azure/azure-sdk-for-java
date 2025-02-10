@@ -6,28 +6,45 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VMwareCbt specific resync input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMwareCbt")
+/**
+ * VMwareCbt specific resync input.
+ */
 @Fluent
 public final class VMwareCbtResyncInput extends ResyncProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "VMwareCbt";
+
+    /*
      * A value indicating whether CBT is to be reset.
      */
-    @JsonProperty(value = "skipCbtReset", required = true)
     private String skipCbtReset;
 
-    /** Creates an instance of VMwareCbtResyncInput class. */
+    /**
+     * Creates an instance of VMwareCbtResyncInput class.
+     */
     public VMwareCbtResyncInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the skipCbtReset property: A value indicating whether CBT is to be reset.
-     *
+     * 
      * @return the skipCbtReset value.
      */
     public String skipCbtReset() {
@@ -36,7 +53,7 @@ public final class VMwareCbtResyncInput extends ResyncProviderSpecificInput {
 
     /**
      * Set the skipCbtReset property: A value indicating whether CBT is to be reset.
-     *
+     * 
      * @param skipCbtReset the skipCbtReset value to set.
      * @return the VMwareCbtResyncInput object itself.
      */
@@ -47,19 +64,57 @@ public final class VMwareCbtResyncInput extends ResyncProviderSpecificInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (skipCbtReset() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property skipCbtReset in model VMwareCbtResyncInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property skipCbtReset in model VMwareCbtResyncInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMwareCbtResyncInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("skipCbtReset", this.skipCbtReset);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareCbtResyncInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareCbtResyncInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMwareCbtResyncInput.
+     */
+    public static VMwareCbtResyncInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareCbtResyncInput deserializedVMwareCbtResyncInput = new VMwareCbtResyncInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("skipCbtReset".equals(fieldName)) {
+                    deserializedVMwareCbtResyncInput.skipCbtReset = reader.getString();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareCbtResyncInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareCbtResyncInput;
+        });
+    }
 }

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.hybridcompute.generated;
 
-/** Samples for LicenseProfiles Delete. */
+/**
+ * Samples for LicenseProfiles Delete.
+ */
 public final class LicenseProfilesDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/licenseProfile/LicenseProfile_Delete.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/
+     * licenseProfile/LicenseProfile_Delete.json
      */
     /**
      * Sample code: Delete a License Profile.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
     public static void deleteALicenseProfile(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {

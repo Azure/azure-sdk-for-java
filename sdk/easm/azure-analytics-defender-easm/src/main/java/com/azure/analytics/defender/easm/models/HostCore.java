@@ -5,279 +5,247 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The HostCore model.
  */
 @Immutable
-public final class HostCore {
+public final class HostCore implements JsonSerializable<HostCore> {
 
     /*
      * The host property.
      */
     @Generated
-    @JsonProperty(value = "host")
     private String host;
 
     /*
      * The domain property.
      */
     @Generated
-    @JsonProperty(value = "domain")
     private String domain;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The blacklistCauseFirstSeen property.
      */
     @Generated
-    @JsonProperty(value = "blacklistCauseFirstSeen")
     private OffsetDateTime blacklistCauseFirstSeen;
 
     /*
      * The blacklistCauseLastSeen property.
      */
     @Generated
-    @JsonProperty(value = "blacklistCauseLastSeen")
     private OffsetDateTime blacklistCauseLastSeen;
 
     /*
      * The blacklistCauseCount property.
      */
     @Generated
-    @JsonProperty(value = "blacklistCauseCount")
     private Long blacklistCauseCount;
 
     /*
      * The blacklistResourceFirstSeen property.
      */
     @Generated
-    @JsonProperty(value = "blacklistResourceFirstSeen")
     private OffsetDateTime blacklistResourceFirstSeen;
 
     /*
      * The blacklistResourceLastSeen property.
      */
     @Generated
-    @JsonProperty(value = "blacklistResourceLastSeen")
     private OffsetDateTime blacklistResourceLastSeen;
 
     /*
      * The blacklistResourceCount property.
      */
     @Generated
-    @JsonProperty(value = "blacklistResourceCount")
     private Long blacklistResourceCount;
 
     /*
      * The blacklistSequenceFirstSeen property.
      */
     @Generated
-    @JsonProperty(value = "blacklistSequenceFirstSeen")
     private OffsetDateTime blacklistSequenceFirstSeen;
 
     /*
      * The blacklistSequenceLastSeen property.
      */
     @Generated
-    @JsonProperty(value = "blacklistSequenceLastSeen")
     private OffsetDateTime blacklistSequenceLastSeen;
 
     /*
      * The blacklistSequenceCount property.
      */
     @Generated
-    @JsonProperty(value = "blacklistSequenceCount")
     private Long blacklistSequenceCount;
 
     /*
      * The phishCauseCount property.
      */
     @Generated
-    @JsonProperty(value = "phishCauseCount")
     private Long phishCauseCount;
 
     /*
      * The malwareCauseCount property.
      */
     @Generated
-    @JsonProperty(value = "malwareCauseCount")
     private Long malwareCauseCount;
 
     /*
      * The spamCauseCount property.
      */
     @Generated
-    @JsonProperty(value = "spamCauseCount")
     private Long spamCauseCount;
 
     /*
      * The scamCauseCount property.
      */
     @Generated
-    @JsonProperty(value = "scamCauseCount")
     private Long scamCauseCount;
 
     /*
      * The phishResourceCount property.
      */
     @Generated
-    @JsonProperty(value = "phishResourceCount")
     private Long phishResourceCount;
 
     /*
      * The malwareResourceCount property.
      */
     @Generated
-    @JsonProperty(value = "malwareResourceCount")
     private Long malwareResourceCount;
 
     /*
      * The spamResourceCount property.
      */
     @Generated
-    @JsonProperty(value = "spamResourceCount")
     private Long spamResourceCount;
 
     /*
      * The scamResourceCount property.
      */
     @Generated
-    @JsonProperty(value = "scamResourceCount")
     private Long scamResourceCount;
 
     /*
      * The phishSequenceCount property.
      */
     @Generated
-    @JsonProperty(value = "phishSequenceCount")
     private Long phishSequenceCount;
 
     /*
      * The malwareSequenceCount property.
      */
     @Generated
-    @JsonProperty(value = "malwareSequenceCount")
     private Long malwareSequenceCount;
 
     /*
      * The spamSequenceCount property.
      */
     @Generated
-    @JsonProperty(value = "spamSequenceCount")
     private Long spamSequenceCount;
 
     /*
      * The scamSequenceCount property.
      */
     @Generated
-    @JsonProperty(value = "scamSequenceCount")
     private Long scamSequenceCount;
 
     /*
      * The alexaRank property.
      */
     @Generated
-    @JsonProperty(value = "alexaRank")
     private Integer alexaRank;
 
     /*
      * The hostReputationScore property.
      */
     @Generated
-    @JsonProperty(value = "hostReputationScore")
     private Integer hostReputationScore;
 
     /*
      * The hostPhishReputationScore property.
      */
     @Generated
-    @JsonProperty(value = "hostPhishReputationScore")
     private Integer hostPhishReputationScore;
 
     /*
      * The hostMalwareReputationScore property.
      */
     @Generated
-    @JsonProperty(value = "hostMalwareReputationScore")
     private Integer hostMalwareReputationScore;
 
     /*
      * The hostSpamReputationScore property.
      */
     @Generated
-    @JsonProperty(value = "hostSpamReputationScore")
     private Integer hostSpamReputationScore;
 
     /*
      * The hostScamReputationScore property.
      */
     @Generated
-    @JsonProperty(value = "hostScamReputationScore")
     private Integer hostScamReputationScore;
 
     /*
      * The domainReputationScore property.
      */
     @Generated
-    @JsonProperty(value = "domainReputationScore")
     private Integer domainReputationScore;
 
     /*
      * The domainPhishReputationScore property.
      */
     @Generated
-    @JsonProperty(value = "domainPhishReputationScore")
     private Integer domainPhishReputationScore;
 
     /*
      * The domainMalwareReputationScore property.
      */
     @Generated
-    @JsonProperty(value = "domainMalwareReputationScore")
     private Integer domainMalwareReputationScore;
 
     /*
      * The domainSpamReputationScore property.
      */
     @Generated
-    @JsonProperty(value = "domainSpamReputationScore")
     private Integer domainSpamReputationScore;
 
     /*
      * The domainScamReputationScore property.
      */
     @Generated
-    @JsonProperty(value = "domainScamReputationScore")
     private Integer domainScamReputationScore;
 
     /*
      * The uuid property.
      */
     @Generated
-    @JsonProperty(value = "uuid")
     private String uuid;
 
     /**
@@ -665,5 +633,180 @@ public final class HostCore {
     @Generated
     public String getUuid() {
         return this.uuid;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("host", this.host);
+        jsonWriter.writeStringField("domain", this.domain);
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("blacklistCauseFirstSeen",
+            this.blacklistCauseFirstSeen == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.blacklistCauseFirstSeen));
+        jsonWriter.writeStringField("blacklistCauseLastSeen",
+            this.blacklistCauseLastSeen == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.blacklistCauseLastSeen));
+        jsonWriter.writeNumberField("blacklistCauseCount", this.blacklistCauseCount);
+        jsonWriter.writeStringField("blacklistResourceFirstSeen",
+            this.blacklistResourceFirstSeen == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.blacklistResourceFirstSeen));
+        jsonWriter.writeStringField("blacklistResourceLastSeen",
+            this.blacklistResourceLastSeen == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.blacklistResourceLastSeen));
+        jsonWriter.writeNumberField("blacklistResourceCount", this.blacklistResourceCount);
+        jsonWriter.writeStringField("blacklistSequenceFirstSeen",
+            this.blacklistSequenceFirstSeen == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.blacklistSequenceFirstSeen));
+        jsonWriter.writeStringField("blacklistSequenceLastSeen",
+            this.blacklistSequenceLastSeen == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.blacklistSequenceLastSeen));
+        jsonWriter.writeNumberField("blacklistSequenceCount", this.blacklistSequenceCount);
+        jsonWriter.writeNumberField("phishCauseCount", this.phishCauseCount);
+        jsonWriter.writeNumberField("malwareCauseCount", this.malwareCauseCount);
+        jsonWriter.writeNumberField("spamCauseCount", this.spamCauseCount);
+        jsonWriter.writeNumberField("scamCauseCount", this.scamCauseCount);
+        jsonWriter.writeNumberField("phishResourceCount", this.phishResourceCount);
+        jsonWriter.writeNumberField("malwareResourceCount", this.malwareResourceCount);
+        jsonWriter.writeNumberField("spamResourceCount", this.spamResourceCount);
+        jsonWriter.writeNumberField("scamResourceCount", this.scamResourceCount);
+        jsonWriter.writeNumberField("phishSequenceCount", this.phishSequenceCount);
+        jsonWriter.writeNumberField("malwareSequenceCount", this.malwareSequenceCount);
+        jsonWriter.writeNumberField("spamSequenceCount", this.spamSequenceCount);
+        jsonWriter.writeNumberField("scamSequenceCount", this.scamSequenceCount);
+        jsonWriter.writeNumberField("alexaRank", this.alexaRank);
+        jsonWriter.writeNumberField("hostReputationScore", this.hostReputationScore);
+        jsonWriter.writeNumberField("hostPhishReputationScore", this.hostPhishReputationScore);
+        jsonWriter.writeNumberField("hostMalwareReputationScore", this.hostMalwareReputationScore);
+        jsonWriter.writeNumberField("hostSpamReputationScore", this.hostSpamReputationScore);
+        jsonWriter.writeNumberField("hostScamReputationScore", this.hostScamReputationScore);
+        jsonWriter.writeNumberField("domainReputationScore", this.domainReputationScore);
+        jsonWriter.writeNumberField("domainPhishReputationScore", this.domainPhishReputationScore);
+        jsonWriter.writeNumberField("domainMalwareReputationScore", this.domainMalwareReputationScore);
+        jsonWriter.writeNumberField("domainSpamReputationScore", this.domainSpamReputationScore);
+        jsonWriter.writeNumberField("domainScamReputationScore", this.domainScamReputationScore);
+        jsonWriter.writeStringField("uuid", this.uuid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostCore from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostCore if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the HostCore.
+     */
+    @Generated
+    public static HostCore fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostCore deserializedHostCore = new HostCore();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("host".equals(fieldName)) {
+                    deserializedHostCore.host = reader.getString();
+                } else if ("domain".equals(fieldName)) {
+                    deserializedHostCore.domain = reader.getString();
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedHostCore.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedHostCore.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedHostCore.count = reader.getNullable(JsonReader::getLong);
+                } else if ("blacklistCauseFirstSeen".equals(fieldName)) {
+                    deserializedHostCore.blacklistCauseFirstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("blacklistCauseLastSeen".equals(fieldName)) {
+                    deserializedHostCore.blacklistCauseLastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("blacklistCauseCount".equals(fieldName)) {
+                    deserializedHostCore.blacklistCauseCount = reader.getNullable(JsonReader::getLong);
+                } else if ("blacklistResourceFirstSeen".equals(fieldName)) {
+                    deserializedHostCore.blacklistResourceFirstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("blacklistResourceLastSeen".equals(fieldName)) {
+                    deserializedHostCore.blacklistResourceLastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("blacklistResourceCount".equals(fieldName)) {
+                    deserializedHostCore.blacklistResourceCount = reader.getNullable(JsonReader::getLong);
+                } else if ("blacklistSequenceFirstSeen".equals(fieldName)) {
+                    deserializedHostCore.blacklistSequenceFirstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("blacklistSequenceLastSeen".equals(fieldName)) {
+                    deserializedHostCore.blacklistSequenceLastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("blacklistSequenceCount".equals(fieldName)) {
+                    deserializedHostCore.blacklistSequenceCount = reader.getNullable(JsonReader::getLong);
+                } else if ("phishCauseCount".equals(fieldName)) {
+                    deserializedHostCore.phishCauseCount = reader.getNullable(JsonReader::getLong);
+                } else if ("malwareCauseCount".equals(fieldName)) {
+                    deserializedHostCore.malwareCauseCount = reader.getNullable(JsonReader::getLong);
+                } else if ("spamCauseCount".equals(fieldName)) {
+                    deserializedHostCore.spamCauseCount = reader.getNullable(JsonReader::getLong);
+                } else if ("scamCauseCount".equals(fieldName)) {
+                    deserializedHostCore.scamCauseCount = reader.getNullable(JsonReader::getLong);
+                } else if ("phishResourceCount".equals(fieldName)) {
+                    deserializedHostCore.phishResourceCount = reader.getNullable(JsonReader::getLong);
+                } else if ("malwareResourceCount".equals(fieldName)) {
+                    deserializedHostCore.malwareResourceCount = reader.getNullable(JsonReader::getLong);
+                } else if ("spamResourceCount".equals(fieldName)) {
+                    deserializedHostCore.spamResourceCount = reader.getNullable(JsonReader::getLong);
+                } else if ("scamResourceCount".equals(fieldName)) {
+                    deserializedHostCore.scamResourceCount = reader.getNullable(JsonReader::getLong);
+                } else if ("phishSequenceCount".equals(fieldName)) {
+                    deserializedHostCore.phishSequenceCount = reader.getNullable(JsonReader::getLong);
+                } else if ("malwareSequenceCount".equals(fieldName)) {
+                    deserializedHostCore.malwareSequenceCount = reader.getNullable(JsonReader::getLong);
+                } else if ("spamSequenceCount".equals(fieldName)) {
+                    deserializedHostCore.spamSequenceCount = reader.getNullable(JsonReader::getLong);
+                } else if ("scamSequenceCount".equals(fieldName)) {
+                    deserializedHostCore.scamSequenceCount = reader.getNullable(JsonReader::getLong);
+                } else if ("alexaRank".equals(fieldName)) {
+                    deserializedHostCore.alexaRank = reader.getNullable(JsonReader::getInt);
+                } else if ("hostReputationScore".equals(fieldName)) {
+                    deserializedHostCore.hostReputationScore = reader.getNullable(JsonReader::getInt);
+                } else if ("hostPhishReputationScore".equals(fieldName)) {
+                    deserializedHostCore.hostPhishReputationScore = reader.getNullable(JsonReader::getInt);
+                } else if ("hostMalwareReputationScore".equals(fieldName)) {
+                    deserializedHostCore.hostMalwareReputationScore = reader.getNullable(JsonReader::getInt);
+                } else if ("hostSpamReputationScore".equals(fieldName)) {
+                    deserializedHostCore.hostSpamReputationScore = reader.getNullable(JsonReader::getInt);
+                } else if ("hostScamReputationScore".equals(fieldName)) {
+                    deserializedHostCore.hostScamReputationScore = reader.getNullable(JsonReader::getInt);
+                } else if ("domainReputationScore".equals(fieldName)) {
+                    deserializedHostCore.domainReputationScore = reader.getNullable(JsonReader::getInt);
+                } else if ("domainPhishReputationScore".equals(fieldName)) {
+                    deserializedHostCore.domainPhishReputationScore = reader.getNullable(JsonReader::getInt);
+                } else if ("domainMalwareReputationScore".equals(fieldName)) {
+                    deserializedHostCore.domainMalwareReputationScore = reader.getNullable(JsonReader::getInt);
+                } else if ("domainSpamReputationScore".equals(fieldName)) {
+                    deserializedHostCore.domainSpamReputationScore = reader.getNullable(JsonReader::getInt);
+                } else if ("domainScamReputationScore".equals(fieldName)) {
+                    deserializedHostCore.domainScamReputationScore = reader.getNullable(JsonReader::getInt);
+                } else if ("uuid".equals(fieldName)) {
+                    deserializedHostCore.uuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedHostCore;
+        });
     }
 }

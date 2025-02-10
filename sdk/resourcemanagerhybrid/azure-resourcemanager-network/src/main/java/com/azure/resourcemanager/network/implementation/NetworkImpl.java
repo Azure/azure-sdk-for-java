@@ -96,7 +96,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
     @Override
     public boolean isPrivateIPAddressInNetwork(String ipAddress) {
         IpAddressAvailabilityResultInner result = checkIPAvailability(ipAddress);
-        return (result != null) ? true : false;
+        return result != null;
     }
 
     // Helpers

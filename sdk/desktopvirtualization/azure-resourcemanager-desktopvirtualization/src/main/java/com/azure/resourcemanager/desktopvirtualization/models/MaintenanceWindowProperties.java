@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Maintenance window starting hour and day of week. */
+/**
+ * Maintenance window starting hour and day of week.
+ */
 @Fluent
-public final class MaintenanceWindowProperties {
+public final class MaintenanceWindowProperties implements JsonSerializable<MaintenanceWindowProperties> {
     /*
      * The update start hour of the day. (0 - 23)
      */
-    @JsonProperty(value = "hour")
     private Integer hour;
 
     /*
      * Day of the week.
      */
-    @JsonProperty(value = "dayOfWeek")
     private DayOfWeek dayOfWeek;
 
-    /** Creates an instance of MaintenanceWindowProperties class. */
+    /**
+     * Creates an instance of MaintenanceWindowProperties class.
+     */
     public MaintenanceWindowProperties() {
     }
 
     /**
      * Get the hour property: The update start hour of the day. (0 - 23).
-     *
+     * 
      * @return the hour value.
      */
     public Integer hour() {
@@ -37,7 +43,7 @@ public final class MaintenanceWindowProperties {
 
     /**
      * Set the hour property: The update start hour of the day. (0 - 23).
-     *
+     * 
      * @param hour the hour value to set.
      * @return the MaintenanceWindowProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class MaintenanceWindowProperties {
 
     /**
      * Get the dayOfWeek property: Day of the week.
-     *
+     * 
      * @return the dayOfWeek value.
      */
     public DayOfWeek dayOfWeek() {
@@ -57,7 +63,7 @@ public final class MaintenanceWindowProperties {
 
     /**
      * Set the dayOfWeek property: Day of the week.
-     *
+     * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the MaintenanceWindowProperties object itself.
      */
@@ -68,9 +74,48 @@ public final class MaintenanceWindowProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("hour", this.hour);
+        jsonWriter.writeStringField("dayOfWeek", this.dayOfWeek == null ? null : this.dayOfWeek.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceWindowProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceWindowProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceWindowProperties.
+     */
+    public static MaintenanceWindowProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceWindowProperties deserializedMaintenanceWindowProperties = new MaintenanceWindowProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hour".equals(fieldName)) {
+                    deserializedMaintenanceWindowProperties.hour = reader.getNullable(JsonReader::getInt);
+                } else if ("dayOfWeek".equals(fieldName)) {
+                    deserializedMaintenanceWindowProperties.dayOfWeek = DayOfWeek.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceWindowProperties;
+        });
     }
 }

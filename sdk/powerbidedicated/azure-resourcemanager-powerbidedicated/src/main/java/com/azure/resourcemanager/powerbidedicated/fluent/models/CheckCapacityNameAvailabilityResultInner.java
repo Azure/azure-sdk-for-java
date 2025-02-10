@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.powerbidedicated.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The checking result of capacity name availability. */
+/**
+ * The checking result of capacity name availability.
+ */
 @Fluent
-public final class CheckCapacityNameAvailabilityResultInner {
+public final class CheckCapacityNameAvailabilityResultInner
+    implements JsonSerializable<CheckCapacityNameAvailabilityResultInner> {
     /*
      * Indicator of availability of the capacity name.
      */
-    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /*
      * The reason of unavailability.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * The detailed message of the request unavailability.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of CheckCapacityNameAvailabilityResultInner class. */
+    /**
+     * Creates an instance of CheckCapacityNameAvailabilityResultInner class.
+     */
     public CheckCapacityNameAvailabilityResultInner() {
     }
 
     /**
      * Get the nameAvailable property: Indicator of availability of the capacity name.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -43,7 +49,7 @@ public final class CheckCapacityNameAvailabilityResultInner {
 
     /**
      * Set the nameAvailable property: Indicator of availability of the capacity name.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the CheckCapacityNameAvailabilityResultInner object itself.
      */
@@ -54,7 +60,7 @@ public final class CheckCapacityNameAvailabilityResultInner {
 
     /**
      * Get the reason property: The reason of unavailability.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -63,7 +69,7 @@ public final class CheckCapacityNameAvailabilityResultInner {
 
     /**
      * Set the reason property: The reason of unavailability.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the CheckCapacityNameAvailabilityResultInner object itself.
      */
@@ -74,7 +80,7 @@ public final class CheckCapacityNameAvailabilityResultInner {
 
     /**
      * Get the message property: The detailed message of the request unavailability.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -83,7 +89,7 @@ public final class CheckCapacityNameAvailabilityResultInner {
 
     /**
      * Set the message property: The detailed message of the request unavailability.
-     *
+     * 
      * @param message the message value to set.
      * @return the CheckCapacityNameAvailabilityResultInner object itself.
      */
@@ -94,9 +100,53 @@ public final class CheckCapacityNameAvailabilityResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckCapacityNameAvailabilityResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckCapacityNameAvailabilityResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckCapacityNameAvailabilityResultInner.
+     */
+    public static CheckCapacityNameAvailabilityResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckCapacityNameAvailabilityResultInner deserializedCheckCapacityNameAvailabilityResultInner
+                = new CheckCapacityNameAvailabilityResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedCheckCapacityNameAvailabilityResultInner.nameAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedCheckCapacityNameAvailabilityResultInner.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedCheckCapacityNameAvailabilityResultInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckCapacityNameAvailabilityResultInner;
+        });
     }
 }

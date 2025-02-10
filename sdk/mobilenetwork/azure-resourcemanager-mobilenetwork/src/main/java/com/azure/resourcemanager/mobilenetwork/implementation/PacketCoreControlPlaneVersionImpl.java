@@ -17,8 +17,7 @@ public final class PacketCoreControlPlaneVersionImpl implements PacketCoreContro
 
     private final com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager;
 
-    PacketCoreControlPlaneVersionImpl(
-        PacketCoreControlPlaneVersionInner innerObject,
+    PacketCoreControlPlaneVersionImpl(PacketCoreControlPlaneVersionInner innerObject,
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

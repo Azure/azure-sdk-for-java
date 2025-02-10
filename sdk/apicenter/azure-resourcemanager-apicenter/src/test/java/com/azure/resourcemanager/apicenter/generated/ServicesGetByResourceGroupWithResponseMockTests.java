@@ -6,68 +6,37 @@ package com.azure.resourcemanager.apicenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apicenter.ApiCenterManager;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.apicenter.models.Service;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServicesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"682b9801-40b0-4a5c-8a95-99e90924506a\",\"tenantId\":\"8f62dbce-67b5-4351-8254-8af3aa46d033\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"uhavhql\":{\"principalId\":\"d2351eca-5662-4c3d-9e1d-87a650ec19c2\",\"clientId\":\"4f13496d-1cc9-4c4c-9c5a-287d2ba1cc28\"},\"umaq\":{\"principalId\":\"2490db57-d519-49cc-8bc6-a4308962fa2a\",\"clientId\":\"879e5f25-2eba-4767-b6fc-f1d485025498\"}}},\"location\":\"bgycduiertgccym\",\"tags\":{\"ssl\":\"l\",\"d\":\"lfmmdnbbglzpswi\",\"bzmnvdfznud\":\"cwyhzdxssa\"},\"id\":\"od\",\"name\":\"xzb\",\"type\":\"cblylpstdbhhxsr\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"6f731a29-0be4-47ba-9e85-1ba721e4cb58\",\"tenantId\":\"a2be8a43-20f4-4f59-a7ef-42b25de975e5\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"pspwgcuertu\":{\"principalId\":\"16471a44-edb6-4247-a41a-7e80af6f4d86\",\"clientId\":\"54ec2277-3814-43c8-aa38-6a10cc1dd69f\"},\"o\":{\"principalId\":\"b5b2e62e-9887-47f1-b472-bc52fa99c0a4\",\"clientId\":\"88d6aec6-ef30-4c8b-b022-9bd241658394\"},\"whbmd\":{\"principalId\":\"bd1ee07d-b3f0-430c-8224-c57821fca4ad\",\"clientId\":\"468e7d9a-d6ea-4296-93c3-20165b3da059\"},\"jfddgmbmbe\":{\"principalId\":\"6ddfe660-9092-41f9-b6bc-5afd4f636e7e\",\"clientId\":\"8a0eea8d-485f-414b-9640-cd5b168da89f\"}}},\"location\":\"pbhtqqrolfpfpsa\",\"tags\":{\"gjyjgzjaoyfhrtxi\":\"qux\",\"rkujy\":\"n\"},\"id\":\"vlejuvfqa\",\"name\":\"rlyxwjkcprbnw\",\"type\":\"xgjvtbv\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Service response = manager.services()
+            .getByResourceGroupWithResponse("doy", "mifthnzdnd", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ApiCenterManager manager =
-            ApiCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Service response =
-            manager
-                .services()
-                .getByResourceGroupWithResponse("iqfouflmmnkz", "modmglougpb", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("pbhtqqrolfpfpsa", response.location());
-        Assertions.assertEquals("qux", response.tags().get("gjyjgzjaoyfhrtxi"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("bgycduiertgccym", response.location());
+        Assertions.assertEquals("l", response.tags().get("ssl"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 }

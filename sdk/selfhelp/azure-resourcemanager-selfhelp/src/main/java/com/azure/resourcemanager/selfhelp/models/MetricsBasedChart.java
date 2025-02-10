@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Solutions metrics based chart.
  */
 @Fluent
-public final class MetricsBasedChart {
+public final class MetricsBasedChart implements JsonSerializable<MetricsBasedChart> {
     /*
      * Chart name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Allowed values are Sum, Avg, Count, Min, Max. Default is Sum
      */
-    @JsonProperty(value = "aggregationType")
     private AggregationType aggregationType;
 
     /*
      * Time span duration
      */
-    @JsonProperty(value = "timeSpanDuration")
     private String timeSpanDuration;
 
     /*
      * Chart title
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Filter group
      */
-    @JsonProperty(value = "filterGroup")
     private FilterGroup filterGroup;
 
     /*
      * Place holder used in HTML Content replace control with the content
      */
-    @JsonProperty(value = "replacementKey")
     private String replacementKey;
 
     /**
@@ -183,5 +181,57 @@ public final class MetricsBasedChart {
         if (filterGroup() != null) {
             filterGroup().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("aggregationType",
+            this.aggregationType == null ? null : this.aggregationType.toString());
+        jsonWriter.writeStringField("timeSpanDuration", this.timeSpanDuration);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeJsonField("filterGroup", this.filterGroup);
+        jsonWriter.writeStringField("replacementKey", this.replacementKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricsBasedChart from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricsBasedChart if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricsBasedChart.
+     */
+    public static MetricsBasedChart fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricsBasedChart deserializedMetricsBasedChart = new MetricsBasedChart();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMetricsBasedChart.name = reader.getString();
+                } else if ("aggregationType".equals(fieldName)) {
+                    deserializedMetricsBasedChart.aggregationType = AggregationType.fromString(reader.getString());
+                } else if ("timeSpanDuration".equals(fieldName)) {
+                    deserializedMetricsBasedChart.timeSpanDuration = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedMetricsBasedChart.title = reader.getString();
+                } else if ("filterGroup".equals(fieldName)) {
+                    deserializedMetricsBasedChart.filterGroup = FilterGroup.fromJson(reader);
+                } else if ("replacementKey".equals(fieldName)) {
+                    deserializedMetricsBasedChart.replacementKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricsBasedChart;
+        });
     }
 }

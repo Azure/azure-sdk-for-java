@@ -173,8 +173,10 @@ import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKey
  * @see com.azure.security.keyvault.keys
  * @see KeyClientBuilder
  */
-@ServiceClient(builder = KeyClientBuilder.class, isAsync = true,
-               serviceInterfaces = KeyClientImpl.KeyClientService.class)
+@ServiceClient(
+    builder = KeyClientBuilder.class,
+    isAsync = true,
+    serviceInterfaces = KeyClientImpl.KeyClientService.class)
 public final class KeyAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(KeyAsyncClient.class);
 
@@ -248,8 +250,9 @@ public final class KeyAsyncClient {
      * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
      */
     public CryptographyAsyncClient getCryptographyAsyncClient(String keyName, String keyVersion) {
-        return KeyVaultKeysUtils.getCryptographyClientBuilder(keyName, keyVersion, vaultUrl, getHttpPipeline(),
-            serviceVersion).buildAsyncClient();
+        return KeyVaultKeysUtils
+            .getCryptographyClientBuilder(keyName, keyVersion, vaultUrl, getHttpPipeline(), serviceVersion)
+            .buildAsyncClient();
     }
 
     /**
@@ -333,10 +336,10 @@ public final class KeyAsyncClient {
                 return monoError(LOGGER, new NullPointerException("'createKeyOptions' cannot be null."));
             }
 
-            return implClient.createKeyWithResponseAsync(vaultUrl, createKeyOptions.getName(),
-                createKeyOptions.getKeyType(), null, null, createKeyOptions.getKeyOperations(),
-                    createKeyAttributes(createKeyOptions), createKeyOptions.getTags(), null,
-                    mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()))
+            return implClient
+                .createKeyWithResponseAsync(vaultUrl, createKeyOptions.getName(), createKeyOptions.getKeyType(), null,
+                    null, createKeyOptions.getKeyOperations(), createKeyAttributes(createKeyOptions),
+                    createKeyOptions.getTags(), null, mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()))
                 .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapCreateKeyException)
                 .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
         } catch (RuntimeException e) {
@@ -497,11 +500,11 @@ public final class KeyAsyncClient {
                 return monoError(LOGGER, new NullPointerException("'createRsaKeyOptions' cannot be null."));
             }
 
-            return implClient.createKeyWithResponseAsync(vaultUrl, createRsaKeyOptions.getName(),
-                createRsaKeyOptions.getKeyType(), createRsaKeyOptions.getKeySize(),
-                createRsaKeyOptions.getPublicExponent(), createRsaKeyOptions.getKeyOperations(),
-                createKeyAttributes(createRsaKeyOptions), createRsaKeyOptions.getTags(), null,
-                mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()))
+            return implClient
+                .createKeyWithResponseAsync(vaultUrl, createRsaKeyOptions.getName(), createRsaKeyOptions.getKeyType(),
+                    createRsaKeyOptions.getKeySize(), createRsaKeyOptions.getPublicExponent(),
+                    createRsaKeyOptions.getKeyOperations(), createKeyAttributes(createRsaKeyOptions),
+                    createRsaKeyOptions.getTags(), null, mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()))
                 .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapCreateKeyException)
                 .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
         } catch (RuntimeException e) {
@@ -611,10 +614,11 @@ public final class KeyAsyncClient {
                 return monoError(LOGGER, new NullPointerException("'createEcKeyOptions' cannot be null."));
             }
 
-            return implClient.createKeyWithResponseAsync(vaultUrl, createEcKeyOptions.getName(),
-                createEcKeyOptions.getKeyType(), null, null, createEcKeyOptions.getKeyOperations(),
-                createKeyAttributes(createEcKeyOptions), createEcKeyOptions.getTags(),
-                createEcKeyOptions.getCurveName(), mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()))
+            return implClient
+                .createKeyWithResponseAsync(vaultUrl, createEcKeyOptions.getName(), createEcKeyOptions.getKeyType(),
+                    null, null, createEcKeyOptions.getKeyOperations(), createKeyAttributes(createEcKeyOptions),
+                    createEcKeyOptions.getTags(), createEcKeyOptions.getCurveName(),
+                    mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()))
                 .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapCreateKeyException)
                 .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
         } catch (RuntimeException e) {
@@ -715,10 +719,11 @@ public final class KeyAsyncClient {
                 return monoError(LOGGER, new NullPointerException("'createOctKeyOptions' cannot be null."));
             }
 
-            return implClient.createKeyWithResponseAsync(vaultUrl, createOctKeyOptions.getName(),
-                createOctKeyOptions.getKeyType(), createOctKeyOptions.getKeySize(), null,
-                createOctKeyOptions.getKeyOperations(), createKeyAttributes(createOctKeyOptions),
-                createOctKeyOptions.getTags(), null, mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()))
+            return implClient
+                .createKeyWithResponseAsync(vaultUrl, createOctKeyOptions.getName(), createOctKeyOptions.getKeyType(),
+                    createOctKeyOptions.getKeySize(), null, createOctKeyOptions.getKeyOperations(),
+                    createKeyAttributes(createOctKeyOptions), createOctKeyOptions.getTags(), null,
+                    mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()))
                 .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapCreateKeyException)
                 .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
         } catch (RuntimeException e) {
@@ -756,7 +761,6 @@ public final class KeyAsyncClient {
     public Mono<KeyVaultKey> importKey(String name, JsonWebKey keyMaterial) {
         return importKeyWithResponse(new ImportKeyOptions(name, keyMaterial)).flatMap(FluxUtil::toMono);
     }
-
 
     /**
      * Imports an externally created {@link JsonWebKey key} and stores it in the key vault. The import key operation
@@ -842,16 +846,16 @@ public final class KeyAsyncClient {
                 return monoError(LOGGER, new RuntimeException("'importKeyOptions' cannot be null."));
             }
 
-            return implClient.importKeyWithResponseAsync(vaultUrl, importKeyOptions.getName(),
-                mapJsonWebKey(importKeyOptions.getKey()), importKeyOptions.isHardwareProtected(),
-                createKeyAttributes(importKeyOptions), importKeyOptions.getTags(),
-                mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()))
+            return implClient
+                .importKeyWithResponseAsync(vaultUrl, importKeyOptions.getName(),
+                    mapJsonWebKey(importKeyOptions.getKey()), importKeyOptions.isHardwareProtected(),
+                    createKeyAttributes(importKeyOptions), importKeyOptions.getTags(),
+                    mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()))
                 .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
         }
     }
-
 
     /**
      * Gets the public part of the specified {@link KeyVaultKey key} and key version. The get key operation is
@@ -1004,13 +1008,14 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> updateKeyPropertiesWithResponse(KeyProperties keyProperties,
-                                                                       KeyOperation... keyOperations) {
+        KeyOperation... keyOperations) {
         try {
             if (keyProperties == null) {
                 return monoError(LOGGER, new NullPointerException("'keyProperties' cannot be null."));
             }
 
-            return implClient.updateKeyWithResponseAsync(vaultUrl, keyProperties.getName(), keyProperties.getVersion(),
+            return implClient
+                .updateKeyWithResponseAsync(vaultUrl, keyProperties.getName(), keyProperties.getVersion(),
                     keyOperations == null ? null : Arrays.asList(keyOperations), createKeyAttributes(keyProperties),
                     keyProperties.getTags(), mapKeyReleasePolicy(keyProperties.getReleasePolicy()))
                 .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
@@ -1318,8 +1323,8 @@ public final class KeyAsyncClient {
             : ex;
     }
 
-    private Function<PollingContext<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>> recoverPollOperation(
-        String keyName) {
+    private Function<PollingContext<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>>
+        recoverPollOperation(String keyName) {
         return pollingContext -> implClient.getKeyAsync(vaultUrl, keyName, null)
             .map(keyResponse -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 createKeyVaultKey(keyResponse)))
@@ -1544,8 +1549,9 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeys() {
-        return new PagedFlux<>(maxResults -> implClient.getKeysSinglePageAsync(vaultUrl, maxResults)
-            .map(KeyAsyncClient::mapKeyItemPagedResponse),
+        return new PagedFlux<>(
+            maxResults -> implClient.getKeysSinglePageAsync(vaultUrl, maxResults)
+                .map(KeyAsyncClient::mapKeyItemPagedResponse),
             (continuationToken, maxResults) -> implClient.getKeysNextSinglePageAsync(continuationToken, vaultUrl)
                 .map(KeyAsyncClient::mapKeyItemPagedResponse));
     }
@@ -1583,8 +1589,9 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedKey> listDeletedKeys() {
-        return new PagedFlux<>(maxResults -> implClient.getDeletedKeysSinglePageAsync(vaultUrl, maxResults)
-            .map(KeyAsyncClient::mapDeletedKeyItemPagedResponse),
+        return new PagedFlux<>(
+            maxResults -> implClient.getDeletedKeysSinglePageAsync(vaultUrl, maxResults)
+                .map(KeyAsyncClient::mapDeletedKeyItemPagedResponse),
             (continuationToken, maxResults) -> implClient.getDeletedKeysNextSinglePageAsync(continuationToken, vaultUrl)
                 .map(KeyAsyncClient::mapDeletedKeyItemPagedResponse));
     }
@@ -1632,8 +1639,9 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name) {
-        return new PagedFlux<>(maxResults -> implClient.getKeyVersionsSinglePageAsync(vaultUrl, name, maxResults)
-            .map(KeyAsyncClient::mapKeyItemPagedResponse),
+        return new PagedFlux<>(
+            maxResults -> implClient.getKeyVersionsSinglePageAsync(vaultUrl, name, maxResults)
+                .map(KeyAsyncClient::mapKeyItemPagedResponse),
             (continuationToken, maxResults) -> implClient.getKeyVersionsNextSinglePageAsync(continuationToken, vaultUrl)
                 .map(KeyAsyncClient::mapKeyItemPagedResponse));
     }
@@ -1799,20 +1807,19 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ReleaseKeyResult>> releaseKeyWithResponse(String name, String version,
-                                                                   String targetAttestationToken,
-                                                                   ReleaseKeyOptions releaseKeyOptions) {
+        String targetAttestationToken, ReleaseKeyOptions releaseKeyOptions) {
         try {
             if (CoreUtils.isNullOrEmpty(name) || CoreUtils.isNullOrEmpty(targetAttestationToken)) {
-                return monoError(LOGGER, new IllegalArgumentException(
-                    "'name' or 'targetAttestationToken' cannot be null or empty."));
+                return monoError(LOGGER,
+                    new IllegalArgumentException("'name' or 'targetAttestationToken' cannot be null or empty."));
             }
 
             String nonce = releaseKeyOptions == null ? null : releaseKeyOptions.getNonce();
-            KeyExportEncryptionAlgorithm algorithm = releaseKeyOptions == null
-                ? null : releaseKeyOptions.getAlgorithm();
+            KeyExportEncryptionAlgorithm algorithm
+                = releaseKeyOptions == null ? null : releaseKeyOptions.getAlgorithm();
 
-            return implClient.releaseWithResponseAsync(vaultUrl, name, version, targetAttestationToken, nonce,
-                algorithm)
+            return implClient
+                .releaseWithResponseAsync(vaultUrl, name, version, targetAttestationToken, nonce, algorithm)
                 .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapReleaseKeyException);
         } catch (RuntimeException e) {
             return monoError(LOGGER, e);
@@ -2051,10 +2058,10 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyRotationPolicy>> updateKeyRotationPolicyWithResponse(String keyName,
-                                                                                 KeyRotationPolicy keyRotationPolicy) {
+        KeyRotationPolicy keyRotationPolicy) {
         try {
-            return implClient.updateKeyRotationPolicyWithResponseAsync(vaultUrl, keyName,
-                mapKeyRotationPolicy(keyRotationPolicy))
+            return implClient
+                .updateKeyRotationPolicyWithResponseAsync(vaultUrl, keyName, mapKeyRotationPolicy(keyRotationPolicy))
                 .onErrorMap(KeyVaultErrorException.class, KeyAsyncClient::mapUpdateKeyRotationPolicyException)
                 .map(response -> new SimpleResponse<>(response, mapKeyRotationPolicyImpl(response.getValue())));
         } catch (RuntimeException e) {
@@ -2068,4 +2075,3 @@ public final class KeyAsyncClient {
             : ex;
     }
 }
-

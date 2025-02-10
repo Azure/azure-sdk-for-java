@@ -90,7 +90,7 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
     @Override
     public OpenAIClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
         return this;
@@ -277,6 +277,7 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
      */
     @Generated
     private OpenAIClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         OpenAIServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : OpenAIServiceVersion.getLatest();
@@ -302,25 +303,30 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (keyCredential != null) {
-            policies.add(useNonAzureOpenAIService() ? new KeyCredentialPolicy("Authorization", keyCredential, "Bearer")
+            policies.add(useNonAzureOpenAIService()
+                ? new KeyCredentialPolicy("Authorization", keyCredential, "Bearer")
                 : new KeyCredentialPolicy("api-key", keyCredential));
         }
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient).clientOptions(localClientOptions).build();
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 
@@ -337,7 +343,8 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
      * @return an instance of OpenAIAsyncClient.
      */
     public OpenAIAsyncClient buildAsyncClient() {
-        return useNonAzureOpenAIService() ? new OpenAIAsyncClient(buildInnerNonAzureOpenAIClient())
+        return useNonAzureOpenAIService()
+            ? new OpenAIAsyncClient(buildInnerNonAzureOpenAIClient())
             : new OpenAIAsyncClient(buildInnerClient());
     }
 
@@ -347,7 +354,8 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
      * @return an instance of OpenAIClient.
      */
     public OpenAIClient buildClient() {
-        return useNonAzureOpenAIService() ? new OpenAIClient(buildInnerNonAzureOpenAIClient())
+        return useNonAzureOpenAIService()
+            ? new OpenAIClient(buildInnerNonAzureOpenAIClient())
             : new OpenAIClient(buildInnerClient());
     }
 
@@ -359,5 +367,10 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
      */
     private boolean useNonAzureOpenAIService() {
         return endpoint == null || endpoint.startsWith(OPEN_AI_ENDPOINT);
+    }
+
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
     }
 }

@@ -5,68 +5,70 @@
 package com.azure.resourcemanager.sphere.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Device insight report. */
+/**
+ * Device insight report.
+ */
 @Fluent
-public final class DeviceInsightInner {
+public final class DeviceInsightInner implements JsonSerializable<DeviceInsightInner> {
     /*
      * Device ID
      */
-    @JsonProperty(value = "deviceId", required = true)
     private String deviceId;
 
     /*
      * Event description
      */
-    @JsonProperty(value = "description", required = true)
     private String description;
 
     /*
      * Event start timestamp
      */
-    @JsonProperty(value = "startTimestampUtc", required = true)
     private OffsetDateTime startTimestampUtc;
 
     /*
      * Event end timestamp
      */
-    @JsonProperty(value = "endTimestampUtc", required = true)
     private OffsetDateTime endTimestampUtc;
 
     /*
      * Event category
      */
-    @JsonProperty(value = "eventCategory", required = true)
     private String eventCategory;
 
     /*
      * Event class
      */
-    @JsonProperty(value = "eventClass", required = true)
     private String eventClass;
 
     /*
      * Event type
      */
-    @JsonProperty(value = "eventType", required = true)
     private String eventType;
 
     /*
      * Event count
      */
-    @JsonProperty(value = "eventCount", required = true)
     private int eventCount;
 
-    /** Creates an instance of DeviceInsightInner class. */
+    /**
+     * Creates an instance of DeviceInsightInner class.
+     */
     public DeviceInsightInner() {
     }
 
     /**
      * Get the deviceId property: Device ID.
-     *
+     * 
      * @return the deviceId value.
      */
     public String deviceId() {
@@ -75,7 +77,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the deviceId property: Device ID.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -86,7 +88,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the description property: Event description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -95,7 +97,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the description property: Event description.
-     *
+     * 
      * @param description the description value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -106,7 +108,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the startTimestampUtc property: Event start timestamp.
-     *
+     * 
      * @return the startTimestampUtc value.
      */
     public OffsetDateTime startTimestampUtc() {
@@ -115,7 +117,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the startTimestampUtc property: Event start timestamp.
-     *
+     * 
      * @param startTimestampUtc the startTimestampUtc value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -126,7 +128,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the endTimestampUtc property: Event end timestamp.
-     *
+     * 
      * @return the endTimestampUtc value.
      */
     public OffsetDateTime endTimestampUtc() {
@@ -135,7 +137,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the endTimestampUtc property: Event end timestamp.
-     *
+     * 
      * @param endTimestampUtc the endTimestampUtc value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -146,7 +148,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the eventCategory property: Event category.
-     *
+     * 
      * @return the eventCategory value.
      */
     public String eventCategory() {
@@ -155,7 +157,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the eventCategory property: Event category.
-     *
+     * 
      * @param eventCategory the eventCategory value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -166,7 +168,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the eventClass property: Event class.
-     *
+     * 
      * @return the eventClass value.
      */
     public String eventClass() {
@@ -175,7 +177,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the eventClass property: Event class.
-     *
+     * 
      * @param eventClass the eventClass value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -186,7 +188,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the eventType property: Event type.
-     *
+     * 
      * @return the eventType value.
      */
     public String eventType() {
@@ -195,7 +197,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the eventType property: Event type.
-     *
+     * 
      * @param eventType the eventType value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -206,7 +208,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the eventCount property: Event count.
-     *
+     * 
      * @return the eventCount value.
      */
     public int eventCount() {
@@ -215,7 +217,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the eventCount property: Event count.
-     *
+     * 
      * @param eventCount the eventCount value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -226,49 +228,106 @@ public final class DeviceInsightInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deviceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property deviceId in model DeviceInsightInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property deviceId in model DeviceInsightInner"));
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property description in model DeviceInsightInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property description in model DeviceInsightInner"));
         }
         if (startTimestampUtc() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startTimestampUtc in model DeviceInsightInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startTimestampUtc in model DeviceInsightInner"));
         }
         if (endTimestampUtc() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endTimestampUtc in model DeviceInsightInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endTimestampUtc in model DeviceInsightInner"));
         }
         if (eventCategory() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventCategory in model DeviceInsightInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property eventCategory in model DeviceInsightInner"));
         }
         if (eventClass() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property eventClass in model DeviceInsightInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property eventClass in model DeviceInsightInner"));
         }
         if (eventType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property eventType in model DeviceInsightInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property eventType in model DeviceInsightInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeviceInsightInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceId", this.deviceId);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("startTimestampUtc",
+            this.startTimestampUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTimestampUtc));
+        jsonWriter.writeStringField("endTimestampUtc",
+            this.endTimestampUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTimestampUtc));
+        jsonWriter.writeStringField("eventCategory", this.eventCategory);
+        jsonWriter.writeStringField("eventClass", this.eventClass);
+        jsonWriter.writeStringField("eventType", this.eventType);
+        jsonWriter.writeIntField("eventCount", this.eventCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceInsightInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceInsightInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeviceInsightInner.
+     */
+    public static DeviceInsightInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceInsightInner deserializedDeviceInsightInner = new DeviceInsightInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deserializedDeviceInsightInner.deviceId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDeviceInsightInner.description = reader.getString();
+                } else if ("startTimestampUtc".equals(fieldName)) {
+                    deserializedDeviceInsightInner.startTimestampUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTimestampUtc".equals(fieldName)) {
+                    deserializedDeviceInsightInner.endTimestampUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("eventCategory".equals(fieldName)) {
+                    deserializedDeviceInsightInner.eventCategory = reader.getString();
+                } else if ("eventClass".equals(fieldName)) {
+                    deserializedDeviceInsightInner.eventClass = reader.getString();
+                } else if ("eventType".equals(fieldName)) {
+                    deserializedDeviceInsightInner.eventType = reader.getString();
+                } else if ("eventCount".equals(fieldName)) {
+                    deserializedDeviceInsightInner.eventCount = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceInsightInner;
+        });
+    }
 }

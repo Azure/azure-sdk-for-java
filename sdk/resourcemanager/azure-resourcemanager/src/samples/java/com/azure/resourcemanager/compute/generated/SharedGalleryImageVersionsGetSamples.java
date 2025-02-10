@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class SharedGalleryImageVersionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/
      * sharedGalleryExamples/SharedGalleryImageVersion_Get.json
      */
     /**
@@ -19,7 +19,11 @@ public final class SharedGalleryImageVersionsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getASharedGalleryImageVersion(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSharedGalleryImageVersions().getWithResponse("myLocation",
-            "galleryUniqueName", "myGalleryImageName", "myGalleryImageVersionName", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSharedGalleryImageVersions()
+            .getWithResponse("myLocation", "galleryUniqueName", "myGalleryImageName", "myGalleryImageVersionName",
+                com.azure.core.util.Context.NONE);
     }
 }

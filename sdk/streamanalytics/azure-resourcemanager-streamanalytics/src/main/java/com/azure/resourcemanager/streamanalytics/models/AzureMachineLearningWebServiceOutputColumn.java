@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes an output column for the Azure Machine Learning web service endpoint. */
+/**
+ * Describes an output column for the Azure Machine Learning web service endpoint.
+ */
 @Fluent
-public final class AzureMachineLearningWebServiceOutputColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMachineLearningWebServiceOutputColumn.class);
-
+public final class AzureMachineLearningWebServiceOutputColumn
+    implements JsonSerializable<AzureMachineLearningWebServiceOutputColumn> {
     /*
      * The name of the output column.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * The (Azure Machine Learning supported) data type of the output column. A
-     * list of valid  Azure Machine Learning data types are described at
-     * https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
+     * The (Azure Machine Learning supported) data type of the output column. A list of valid Azure Machine Learning
+     * data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
      */
-    @JsonProperty(value = "dataType")
     private String dataType;
 
     /**
+     * Creates an instance of AzureMachineLearningWebServiceOutputColumn class.
+     */
+    public AzureMachineLearningWebServiceOutputColumn() {
+    }
+
+    /**
      * Get the name property: The name of the output column.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +45,7 @@ public final class AzureMachineLearningWebServiceOutputColumn {
 
     /**
      * Set the name property: The name of the output column.
-     *
+     * 
      * @param name the name value to set.
      * @return the AzureMachineLearningWebServiceOutputColumn object itself.
      */
@@ -51,7 +57,7 @@ public final class AzureMachineLearningWebServiceOutputColumn {
     /**
      * Get the dataType property: The (Azure Machine Learning supported) data type of the output column. A list of valid
      * Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -61,7 +67,7 @@ public final class AzureMachineLearningWebServiceOutputColumn {
     /**
      * Set the dataType property: The (Azure Machine Learning supported) data type of the output column. A list of valid
      * Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the AzureMachineLearningWebServiceOutputColumn object itself.
      */
@@ -72,9 +78,49 @@ public final class AzureMachineLearningWebServiceOutputColumn {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("dataType", this.dataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMachineLearningWebServiceOutputColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMachineLearningWebServiceOutputColumn if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureMachineLearningWebServiceOutputColumn.
+     */
+    public static AzureMachineLearningWebServiceOutputColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMachineLearningWebServiceOutputColumn deserializedAzureMachineLearningWebServiceOutputColumn
+                = new AzureMachineLearningWebServiceOutputColumn();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceOutputColumn.name = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedAzureMachineLearningWebServiceOutputColumn.dataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMachineLearningWebServiceOutputColumn;
+        });
     }
 }

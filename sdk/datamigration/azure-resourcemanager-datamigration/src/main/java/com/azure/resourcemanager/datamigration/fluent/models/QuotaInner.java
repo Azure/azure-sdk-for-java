@@ -5,52 +5,55 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datamigration.models.QuotaName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes a quota for or usage details about a resource. */
+/**
+ * Describes a quota for or usage details about a resource.
+ */
 @Fluent
-public final class QuotaInner {
+public final class QuotaInner implements JsonSerializable<QuotaInner> {
     /*
      * The current value of the quota. If null or missing, the current value cannot be determined in the context of the
      * request.
      */
-    @JsonProperty(value = "currentValue")
     private Double currentValue;
 
     /*
      * The resource ID of the quota object
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The maximum value of the quota. If null or missing, the quota has no maximum, in which case it merely tracks
      * usage.
      */
-    @JsonProperty(value = "limit")
     private Double limit;
 
     /*
      * The name of the quota
      */
-    @JsonProperty(value = "name")
     private QuotaName name;
 
     /*
      * The unit for the quota, such as Count, Bytes, BytesPerSecond, etc.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
-    /** Creates an instance of QuotaInner class. */
+    /**
+     * Creates an instance of QuotaInner class.
+     */
     public QuotaInner() {
     }
 
     /**
      * Get the currentValue property: The current value of the quota. If null or missing, the current value cannot be
      * determined in the context of the request.
-     *
+     * 
      * @return the currentValue value.
      */
     public Double currentValue() {
@@ -60,7 +63,7 @@ public final class QuotaInner {
     /**
      * Set the currentValue property: The current value of the quota. If null or missing, the current value cannot be
      * determined in the context of the request.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the QuotaInner object itself.
      */
@@ -71,7 +74,7 @@ public final class QuotaInner {
 
     /**
      * Get the id property: The resource ID of the quota object.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -80,7 +83,7 @@ public final class QuotaInner {
 
     /**
      * Set the id property: The resource ID of the quota object.
-     *
+     * 
      * @param id the id value to set.
      * @return the QuotaInner object itself.
      */
@@ -92,7 +95,7 @@ public final class QuotaInner {
     /**
      * Get the limit property: The maximum value of the quota. If null or missing, the quota has no maximum, in which
      * case it merely tracks usage.
-     *
+     * 
      * @return the limit value.
      */
     public Double limit() {
@@ -102,7 +105,7 @@ public final class QuotaInner {
     /**
      * Set the limit property: The maximum value of the quota. If null or missing, the quota has no maximum, in which
      * case it merely tracks usage.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the QuotaInner object itself.
      */
@@ -113,7 +116,7 @@ public final class QuotaInner {
 
     /**
      * Get the name property: The name of the quota.
-     *
+     * 
      * @return the name value.
      */
     public QuotaName name() {
@@ -122,7 +125,7 @@ public final class QuotaInner {
 
     /**
      * Set the name property: The name of the quota.
-     *
+     * 
      * @param name the name value to set.
      * @return the QuotaInner object itself.
      */
@@ -133,7 +136,7 @@ public final class QuotaInner {
 
     /**
      * Get the unit property: The unit for the quota, such as Count, Bytes, BytesPerSecond, etc.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -142,7 +145,7 @@ public final class QuotaInner {
 
     /**
      * Set the unit property: The unit for the quota, such as Count, Bytes, BytesPerSecond, etc.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the QuotaInner object itself.
      */
@@ -153,12 +156,60 @@ public final class QuotaInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("unit", this.unit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaInner.
+     */
+    public static QuotaInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaInner deserializedQuotaInner = new QuotaInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentValue".equals(fieldName)) {
+                    deserializedQuotaInner.currentValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("id".equals(fieldName)) {
+                    deserializedQuotaInner.id = reader.getString();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedQuotaInner.limit = reader.getNullable(JsonReader::getDouble);
+                } else if ("name".equals(fieldName)) {
+                    deserializedQuotaInner.name = QuotaName.fromJson(reader);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedQuotaInner.unit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaInner;
+        });
     }
 }

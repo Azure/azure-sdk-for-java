@@ -14,7 +14,7 @@ import java.util.Map;
 public final class PartnerRegistrationsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * PartnerRegistrations_Update.json
      */
     /**
@@ -23,8 +23,10 @@ public final class PartnerRegistrationsUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerRegistrationsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        PartnerRegistration resource = manager.partnerRegistrations().getByResourceGroupWithResponse("examplerg",
-            "examplePartnerRegistrationName1", com.azure.core.util.Context.NONE).getValue();
+        PartnerRegistration resource = manager.partnerRegistrations()
+            .getByResourceGroupWithResponse("examplerg", "examplePartnerRegistrationName1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("NewKey", "fakeTokenPlaceholder")).apply();
     }
 

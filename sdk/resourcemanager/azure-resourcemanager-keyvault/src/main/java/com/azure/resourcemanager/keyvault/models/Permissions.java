@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Permissions the identity has for keys, secrets, certificates and storage. */
+/**
+ * Permissions the identity has for keys, secrets, certificates and storage.
+ */
 @Fluent
-public final class Permissions {
+public final class Permissions implements JsonSerializable<Permissions> {
     /*
      * Permissions to keys
      */
-    @JsonProperty(value = "keys")
     private List<KeyPermissions> keys;
 
     /*
      * Permissions to secrets
      */
-    @JsonProperty(value = "secrets")
     private List<SecretPermissions> secrets;
 
     /*
      * Permissions to certificates
      */
-    @JsonProperty(value = "certificates")
     private List<CertificatePermissions> certificates;
 
     /*
      * Permissions to storage accounts
      */
-    @JsonProperty(value = "storage")
     private List<StoragePermissions> storage;
 
-    /** Creates an instance of Permissions class. */
+    /**
+     * Creates an instance of Permissions class.
+     */
     public Permissions() {
     }
 
     /**
      * Get the keys property: Permissions to keys.
-     *
+     * 
      * @return the keys value.
      */
     public List<KeyPermissions> keys() {
@@ -50,7 +54,7 @@ public final class Permissions {
 
     /**
      * Set the keys property: Permissions to keys.
-     *
+     * 
      * @param keys the keys value to set.
      * @return the Permissions object itself.
      */
@@ -61,7 +65,7 @@ public final class Permissions {
 
     /**
      * Get the secrets property: Permissions to secrets.
-     *
+     * 
      * @return the secrets value.
      */
     public List<SecretPermissions> secrets() {
@@ -70,7 +74,7 @@ public final class Permissions {
 
     /**
      * Set the secrets property: Permissions to secrets.
-     *
+     * 
      * @param secrets the secrets value to set.
      * @return the Permissions object itself.
      */
@@ -81,7 +85,7 @@ public final class Permissions {
 
     /**
      * Get the certificates property: Permissions to certificates.
-     *
+     * 
      * @return the certificates value.
      */
     public List<CertificatePermissions> certificates() {
@@ -90,7 +94,7 @@ public final class Permissions {
 
     /**
      * Set the certificates property: Permissions to certificates.
-     *
+     * 
      * @param certificates the certificates value to set.
      * @return the Permissions object itself.
      */
@@ -101,7 +105,7 @@ public final class Permissions {
 
     /**
      * Get the storage property: Permissions to storage accounts.
-     *
+     * 
      * @return the storage value.
      */
     public List<StoragePermissions> storage() {
@@ -110,7 +114,7 @@ public final class Permissions {
 
     /**
      * Set the storage property: Permissions to storage accounts.
-     *
+     * 
      * @param storage the storage value to set.
      * @return the Permissions object itself.
      */
@@ -121,9 +125,66 @@ public final class Permissions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("keys", this.keys,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("secrets", this.secrets,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("certificates", this.certificates,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("storage", this.storage,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Permissions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Permissions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Permissions.
+     */
+    public static Permissions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Permissions deserializedPermissions = new Permissions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keys".equals(fieldName)) {
+                    List<KeyPermissions> keys
+                        = reader.readArray(reader1 -> KeyPermissions.fromString(reader1.getString()));
+                    deserializedPermissions.keys = keys;
+                } else if ("secrets".equals(fieldName)) {
+                    List<SecretPermissions> secrets
+                        = reader.readArray(reader1 -> SecretPermissions.fromString(reader1.getString()));
+                    deserializedPermissions.secrets = secrets;
+                } else if ("certificates".equals(fieldName)) {
+                    List<CertificatePermissions> certificates
+                        = reader.readArray(reader1 -> CertificatePermissions.fromString(reader1.getString()));
+                    deserializedPermissions.certificates = certificates;
+                } else if ("storage".equals(fieldName)) {
+                    List<StoragePermissions> storage
+                        = reader.readArray(reader1 -> StoragePermissions.fromString(reader1.getString()));
+                    deserializedPermissions.storage = storage;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPermissions;
+        });
     }
 }

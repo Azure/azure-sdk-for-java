@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
  */
 public final class NotebookWorkspacesListConnectionInfoSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
      * CosmosDBNotebookWorkspaceListConnectionInfo.json
      */
     /**
@@ -21,7 +21,11 @@ public final class NotebookWorkspacesListConnectionInfoSamples {
      */
     public static void
         cosmosDBNotebookWorkspaceListConnectionInfo(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getNotebookWorkspaces().listConnectionInfoWithResponse("rg1",
-            "ddb1", NotebookWorkspaceName.DEFAULT, com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getNotebookWorkspaces()
+            .listConnectionInfoWithResponse("rg1", "ddb1", NotebookWorkspaceName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

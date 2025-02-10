@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.MabErrorInfo;
 public final class MabErrorInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MabErrorInfo model =
-            BinaryData
-                .fromString("{\"errorString\":\"zpofoiyjwpfilk\",\"recommendations\":[\"holvdn\",\"viauogphua\"]}")
+        MabErrorInfo model
+            = BinaryData.fromString("{\"errorString\":\"narfdlpukhpyrn\",\"recommendations\":[\"jcpeogkhnmg\",\"ro\"]}")
                 .toObject(MabErrorInfo.class);
     }
 

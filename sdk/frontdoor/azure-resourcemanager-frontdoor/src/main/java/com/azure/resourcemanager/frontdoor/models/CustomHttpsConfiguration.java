@@ -6,50 +6,53 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontDoorCertificateSourceParameters;
 import com.azure.resourcemanager.frontdoor.fluent.models.KeyVaultCertificateSourceParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Https settings for a domain. */
+/**
+ * Https settings for a domain.
+ */
 @Fluent
-public final class CustomHttpsConfiguration {
+public final class CustomHttpsConfiguration implements JsonSerializable<CustomHttpsConfiguration> {
     /*
      * Defines the source of the SSL certificate
      */
-    @JsonProperty(value = "certificateSource", required = true)
     private FrontDoorCertificateSource certificateSource;
 
     /*
      * Defines the TLS extension protocol that is used for secure delivery
      */
-    @JsonProperty(value = "protocolType", required = true)
     private FrontDoorTlsProtocolType protocolType;
 
     /*
      * The minimum TLS version required from the clients to establish an SSL handshake with Front Door.
      */
-    @JsonProperty(value = "minimumTlsVersion", required = true)
     private MinimumTlsVersion minimumTlsVersion;
 
     /*
      * KeyVault certificate source parameters (if certificateSource=AzureKeyVault)
      */
-    @JsonProperty(value = "keyVaultCertificateSourceParameters")
     private KeyVaultCertificateSourceParameters innerKeyVaultCertificateSourceParameters;
 
     /*
      * Parameters required for enabling SSL with Front Door-managed certificates (if certificateSource=FrontDoor)
      */
-    @JsonProperty(value = "frontDoorCertificateSourceParameters")
     private FrontDoorCertificateSourceParameters innerFrontDoorCertificateSourceParameters;
 
-    /** Creates an instance of CustomHttpsConfiguration class. */
+    /**
+     * Creates an instance of CustomHttpsConfiguration class.
+     */
     public CustomHttpsConfiguration() {
     }
 
     /**
      * Get the certificateSource property: Defines the source of the SSL certificate.
-     *
+     * 
      * @return the certificateSource value.
      */
     public FrontDoorCertificateSource certificateSource() {
@@ -58,7 +61,7 @@ public final class CustomHttpsConfiguration {
 
     /**
      * Set the certificateSource property: Defines the source of the SSL certificate.
-     *
+     * 
      * @param certificateSource the certificateSource value to set.
      * @return the CustomHttpsConfiguration object itself.
      */
@@ -69,7 +72,7 @@ public final class CustomHttpsConfiguration {
 
     /**
      * Get the protocolType property: Defines the TLS extension protocol that is used for secure delivery.
-     *
+     * 
      * @return the protocolType value.
      */
     public FrontDoorTlsProtocolType protocolType() {
@@ -78,7 +81,7 @@ public final class CustomHttpsConfiguration {
 
     /**
      * Set the protocolType property: Defines the TLS extension protocol that is used for secure delivery.
-     *
+     * 
      * @param protocolType the protocolType value to set.
      * @return the CustomHttpsConfiguration object itself.
      */
@@ -90,7 +93,7 @@ public final class CustomHttpsConfiguration {
     /**
      * Get the minimumTlsVersion property: The minimum TLS version required from the clients to establish an SSL
      * handshake with Front Door.
-     *
+     * 
      * @return the minimumTlsVersion value.
      */
     public MinimumTlsVersion minimumTlsVersion() {
@@ -100,7 +103,7 @@ public final class CustomHttpsConfiguration {
     /**
      * Set the minimumTlsVersion property: The minimum TLS version required from the clients to establish an SSL
      * handshake with Front Door.
-     *
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the CustomHttpsConfiguration object itself.
      */
@@ -112,7 +115,7 @@ public final class CustomHttpsConfiguration {
     /**
      * Get the innerKeyVaultCertificateSourceParameters property: KeyVault certificate source parameters (if
      * certificateSource=AzureKeyVault).
-     *
+     * 
      * @return the innerKeyVaultCertificateSourceParameters value.
      */
     private KeyVaultCertificateSourceParameters innerKeyVaultCertificateSourceParameters() {
@@ -122,7 +125,7 @@ public final class CustomHttpsConfiguration {
     /**
      * Get the innerFrontDoorCertificateSourceParameters property: Parameters required for enabling SSL with Front
      * Door-managed certificates (if certificateSource=FrontDoor).
-     *
+     * 
      * @return the innerFrontDoorCertificateSourceParameters value.
      */
     private FrontDoorCertificateSourceParameters innerFrontDoorCertificateSourceParameters() {
@@ -131,7 +134,7 @@ public final class CustomHttpsConfiguration {
 
     /**
      * Get the vault property: The Key Vault containing the SSL certificate.
-     *
+     * 
      * @return the vault value.
      */
     public KeyVaultCertificateSourceParametersVault vault() {
@@ -142,7 +145,7 @@ public final class CustomHttpsConfiguration {
 
     /**
      * Set the vault property: The Key Vault containing the SSL certificate.
-     *
+     * 
      * @param vault the vault value to set.
      * @return the CustomHttpsConfiguration object itself.
      */
@@ -156,7 +159,7 @@ public final class CustomHttpsConfiguration {
 
     /**
      * Get the secretName property: The name of the Key Vault secret representing the full certificate PFX.
-     *
+     * 
      * @return the secretName value.
      */
     public String secretName() {
@@ -167,7 +170,7 @@ public final class CustomHttpsConfiguration {
 
     /**
      * Set the secretName property: The name of the Key Vault secret representing the full certificate PFX.
-     *
+     * 
      * @param secretName the secretName value to set.
      * @return the CustomHttpsConfiguration object itself.
      */
@@ -181,7 +184,7 @@ public final class CustomHttpsConfiguration {
 
     /**
      * Get the secretVersion property: The version of the Key Vault secret representing the full certificate PFX.
-     *
+     * 
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -192,7 +195,7 @@ public final class CustomHttpsConfiguration {
 
     /**
      * Set the secretVersion property: The version of the Key Vault secret representing the full certificate PFX.
-     *
+     * 
      * @param secretVersion the secretVersion value to set.
      * @return the CustomHttpsConfiguration object itself.
      */
@@ -207,7 +210,7 @@ public final class CustomHttpsConfiguration {
     /**
      * Get the certificateType property: Defines the type of the certificate used for secure connections to a
      * frontendEndpoint.
-     *
+     * 
      * @return the certificateType value.
      */
     public FrontDoorCertificateType certificateType() {
@@ -219,7 +222,7 @@ public final class CustomHttpsConfiguration {
     /**
      * Set the certificateType property: Defines the type of the certificate used for secure connections to a
      * frontendEndpoint.
-     *
+     * 
      * @param certificateType the certificateType value to set.
      * @return the CustomHttpsConfiguration object itself.
      */
@@ -233,27 +236,24 @@ public final class CustomHttpsConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (certificateSource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property certificateSource in model CustomHttpsConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property certificateSource in model CustomHttpsConfiguration"));
         }
         if (protocolType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocolType in model CustomHttpsConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocolType in model CustomHttpsConfiguration"));
         }
         if (minimumTlsVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property minimumTlsVersion in model CustomHttpsConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property minimumTlsVersion in model CustomHttpsConfiguration"));
         }
         if (innerKeyVaultCertificateSourceParameters() != null) {
             innerKeyVaultCertificateSourceParameters().validate();
@@ -264,4 +264,61 @@ public final class CustomHttpsConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomHttpsConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("certificateSource",
+            this.certificateSource == null ? null : this.certificateSource.toString());
+        jsonWriter.writeStringField("protocolType", this.protocolType == null ? null : this.protocolType.toString());
+        jsonWriter.writeStringField("minimumTlsVersion",
+            this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
+        jsonWriter.writeJsonField("keyVaultCertificateSourceParameters", this.innerKeyVaultCertificateSourceParameters);
+        jsonWriter.writeJsonField("frontDoorCertificateSourceParameters",
+            this.innerFrontDoorCertificateSourceParameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomHttpsConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomHttpsConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomHttpsConfiguration.
+     */
+    public static CustomHttpsConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomHttpsConfiguration deserializedCustomHttpsConfiguration = new CustomHttpsConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificateSource".equals(fieldName)) {
+                    deserializedCustomHttpsConfiguration.certificateSource
+                        = FrontDoorCertificateSource.fromString(reader.getString());
+                } else if ("protocolType".equals(fieldName)) {
+                    deserializedCustomHttpsConfiguration.protocolType
+                        = FrontDoorTlsProtocolType.fromString(reader.getString());
+                } else if ("minimumTlsVersion".equals(fieldName)) {
+                    deserializedCustomHttpsConfiguration.minimumTlsVersion
+                        = MinimumTlsVersion.fromString(reader.getString());
+                } else if ("keyVaultCertificateSourceParameters".equals(fieldName)) {
+                    deserializedCustomHttpsConfiguration.innerKeyVaultCertificateSourceParameters
+                        = KeyVaultCertificateSourceParameters.fromJson(reader);
+                } else if ("frontDoorCertificateSourceParameters".equals(fieldName)) {
+                    deserializedCustomHttpsConfiguration.innerFrontDoorCertificateSourceParameters
+                        = FrontDoorCertificateSourceParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomHttpsConfiguration;
+        });
+    }
 }

@@ -8,10 +8,14 @@ import reactor.core.publisher.Mono;
 /**
  * Interface for close operations that are asynchronous.
  *
- * <p><strong>Asynchronously closing a class</strong></p>
- * <p>In the snippet below, we have a long-lived {@code NetworkResource} class. There are some operations such
+ * <p>
+ * <strong>Asynchronously closing a class</strong>
+ * </p>
+ * <p>
+ * In the snippet below, we have a long-lived {@code NetworkResource} class. There are some operations such
  * as closing {@literal I/O}. Instead of returning a sync {@code close()}, we use {@code closeAsync()} so users'
- * programs don't block waiting for this operation to complete.</p>
+ * programs don't block waiting for this operation to complete.
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.AsyncCloseable.closeAsync -->
  * <pre>

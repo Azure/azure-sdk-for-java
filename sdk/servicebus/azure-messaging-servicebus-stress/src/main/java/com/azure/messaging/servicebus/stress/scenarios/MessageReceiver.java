@@ -40,7 +40,7 @@ public class MessageReceiver extends ServiceBusScenario {
                 try {
                     client.complete(receivedMessage);
                 } catch (Throwable ex) {
-                    recordError("completion error", ex, "complete");
+                    telemetryHelper.recordError(ex, "complete");
                 }
 
                 count++;

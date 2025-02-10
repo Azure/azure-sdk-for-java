@@ -6,33 +6,39 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The List hybrid machine license profile operation response. */
+/**
+ * The List hybrid machine license profile operation response.
+ */
 @Fluent
-public final class LicenseProfilesListResult {
+public final class LicenseProfilesListResult implements JsonSerializable<LicenseProfilesListResult> {
     /*
      * The list of license profiles.
      */
-    @JsonProperty(value = "value", required = true)
     private List<LicenseProfileInner> value;
 
     /*
      * The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the next page of license
      * profile.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LicenseProfilesListResult class. */
+    /**
+     * Creates an instance of LicenseProfilesListResult class.
+     */
     public LicenseProfilesListResult() {
     }
 
     /**
      * Get the value property: The list of license profiles.
-     *
+     * 
      * @return the value value.
      */
     public List<LicenseProfileInner> value() {
@@ -41,7 +47,7 @@ public final class LicenseProfilesListResult {
 
     /**
      * Set the value property: The list of license profiles.
-     *
+     * 
      * @param value the value value to set.
      * @return the LicenseProfilesListResult object itself.
      */
@@ -53,7 +59,7 @@ public final class LicenseProfilesListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the
      * next page of license profile.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +69,7 @@ public final class LicenseProfilesListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the
      * next page of license profile.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LicenseProfilesListResult object itself.
      */
@@ -74,13 +80,13 @@ public final class LicenseProfilesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property value in model LicenseProfilesListResult"));
         } else {
             value().forEach(e -> e.validate());
@@ -88,4 +94,46 @@ public final class LicenseProfilesListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LicenseProfilesListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseProfilesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseProfilesListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LicenseProfilesListResult.
+     */
+    public static LicenseProfilesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseProfilesListResult deserializedLicenseProfilesListResult = new LicenseProfilesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LicenseProfileInner> value
+                        = reader.readArray(reader1 -> LicenseProfileInner.fromJson(reader1));
+                    deserializedLicenseProfilesListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLicenseProfilesListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseProfilesListResult;
+        });
+    }
 }

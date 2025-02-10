@@ -5,6 +5,8 @@ package com.azure.resourcemanager;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.search.models.AdminKeyKind;
 import com.azure.resourcemanager.search.models.AdminKeys;
 import com.azure.resourcemanager.search.models.QueryKey;
@@ -15,6 +17,7 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 
 public class TestSearchService {
+    private static final ClientLogger LOGGER = new ClientLogger(TestSearchService.class);
 
     /**
      * Search service test.
@@ -23,7 +26,8 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = searchServices.manager().resourceManager().internalContext().randomResourceName("ssrv", 15);
+            final String newName
+                = searchServices.manager().resourceManager().internalContext().randomResourceName("ssrv", 15);
 
             Assertions.assertTrue(searchServices.checkNameAvailability(newName).isNameAvailable());
 
@@ -61,7 +65,7 @@ public class TestSearchService {
                 .withPartitionCount(1)
                 .apply();
             Assertions.assertTrue(resource.tags().containsKey("tag2"));
-            Assertions.assertTrue(!resource.tags().containsKey("tag1"));
+            Assertions.assertFalse(resource.tags().containsKey("tag1"));
             Assertions.assertEquals(1, resource.replicaCount());
             Assertions.assertEquals(1, resource.partitionCount());
             Assertions.assertEquals(2, TestUtilities.getSize(resource.listQueryKeys()));
@@ -94,7 +98,8 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = searchServices.manager().resourceManager().internalContext().randomResourceName("ssrv", 15);
+            final String newName
+                = searchServices.manager().resourceManager().internalContext().randomResourceName("ssrv", 15);
 
             SearchService searchService = searchServices.define(newName)
                 .withRegion(Region.US_WEST)
@@ -111,13 +116,9 @@ public class TestSearchService {
 
         @Override
         public SearchService updateResource(SearchService resource) throws Exception {
-            resource = resource.update()
-                .withTag("tag2", "value2")
-                .withTag("tag3", "value3")
-                .withoutTag("tag1")
-                .apply();
+            resource = resource.update().withTag("tag2", "value2").withTag("tag3", "value3").withoutTag("tag1").apply();
             Assertions.assertTrue(resource.tags().containsKey("tag2"));
-            Assertions.assertTrue(!resource.tags().containsKey("tag1"));
+            Assertions.assertFalse(resource.tags().containsKey("tag1"));
             return resource;
         }
 
@@ -134,7 +135,8 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = searchServices.manager().resourceManager().internalContext().randomResourceName("ssrv", 15);
+            final String newName
+                = searchServices.manager().resourceManager().internalContext().randomResourceName("ssrv", 15);
 
             SearchService searchService = searchServices.define(newName)
                 .withRegion(Region.US_WEST)
@@ -152,13 +154,9 @@ public class TestSearchService {
 
         @Override
         public SearchService updateResource(SearchService resource) throws Exception {
-            resource = resource.update()
-                .withTag("tag2", "value2")
-                .withTag("tag3", "value3")
-                .withoutTag("tag1")
-                .apply();
+            resource = resource.update().withTag("tag2", "value2").withTag("tag3", "value3").withoutTag("tag1").apply();
             Assertions.assertTrue(resource.tags().containsKey("tag2"));
-            Assertions.assertTrue(!resource.tags().containsKey("tag1"));
+            Assertions.assertFalse(resource.tags().containsKey("tag1"));
             return resource;
         }
 
@@ -175,7 +173,8 @@ public class TestSearchService {
 
         @Override
         public SearchService createResource(SearchServices searchServices) throws Exception {
-            final String newName = searchServices.manager().resourceManager().internalContext().randomResourceName("ssrv", 15);
+            final String newName
+                = searchServices.manager().resourceManager().internalContext().randomResourceName("ssrv", 15);
 
             SearchService searchService = searchServices.define(newName)
                 .withRegion(Region.US_WEST)
@@ -202,7 +201,7 @@ public class TestSearchService {
                 .withoutTag("tag1")
                 .apply();
             Assertions.assertTrue(resource.tags().containsKey("tag2"));
-            Assertions.assertTrue(!resource.tags().containsKey("tag1"));
+            Assertions.assertFalse(resource.tags().containsKey("tag1"));
             Assertions.assertEquals(SkuName.STANDARD, resource.sku().name());
             Assertions.assertEquals(1, resource.replicaCount());
             Assertions.assertEquals(1, resource.partitionCount());
@@ -226,20 +225,34 @@ public class TestSearchService {
         AdminKeys adminKeys = resource.getAdminKeys();
         PagedIterable<QueryKey> queryKeys = resource.listQueryKeys();
 
-        StringBuilder stringBuilder = new StringBuilder().append(header).append(resource.id())
-            .append("Name: ").append(resource.name())
-            .append("\n\tResource group: ").append(resource.resourceGroupName())
-            .append("\n\tRegion: ").append(resource.region())
-            .append("\n\tTags: ").append(resource.tags())
-            .append("\n\tSku: ").append(resource.sku().name())
-            .append("\n\tStatus: ").append(resource.status())
-            .append("\n\tStatus Details: ").append(resource.statusDetails())
-            .append("\n\tProvisioning State: ").append(resource.provisioningState())
-            .append("\n\tHosting Mode: ").append(resource.hostingMode())
-            .append("\n\tReplicas: ").append(resource.replicaCount())
-            .append("\n\tPartitions: ").append(resource.partitionCount())
-            .append("\n\tPrimary Admin Key: ").append(adminKeys.primaryKey())
-            .append("\n\tSecondary Admin Key: ").append(adminKeys.secondaryKey())
+        StringBuilder stringBuilder = new StringBuilder().append(header)
+            .append(resource.id())
+            .append("Name: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .append("\n\tSku: ")
+            .append(resource.sku().name())
+            .append("\n\tStatus: ")
+            .append(resource.status())
+            .append("\n\tStatus Details: ")
+            .append(resource.statusDetails())
+            .append("\n\tProvisioning State: ")
+            .append(resource.provisioningState())
+            .append("\n\tHosting Mode: ")
+            .append(resource.hostingMode())
+            .append("\n\tReplicas: ")
+            .append(resource.replicaCount())
+            .append("\n\tPartitions: ")
+            .append(resource.partitionCount())
+            .append("\n\tPrimary Admin Key: ")
+            .append(adminKeys.primaryKey())
+            .append("\n\tSecondary Admin Key: ")
+            .append(adminKeys.secondaryKey())
             .append("\n\tQuery keys:");
 
         for (QueryKey queryKey : queryKeys) {
@@ -247,7 +260,7 @@ public class TestSearchService {
             stringBuilder.append("\n\t  Key value: ").append(queryKey.key());
         }
 
-        System.out.println(stringBuilder);
+        LOGGER.log(LogLevel.VERBOSE, stringBuilder::toString);
     }
 
 }

@@ -5,43 +5,49 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The restorable dropped managed database's properties. */
+/**
+ * The restorable dropped managed database's properties.
+ */
 @Immutable
-public final class RestorableDroppedManagedDatabaseProperties {
+public final class RestorableDroppedManagedDatabaseProperties
+    implements JsonSerializable<RestorableDroppedManagedDatabaseProperties> {
     /*
      * The name of the database.
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * The creation date of the database (ISO8601 format).
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * The deletion date of the database (ISO8601 format).
      */
-    @JsonProperty(value = "deletionDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletionDate;
 
     /*
      * The earliest restore date of the database (ISO8601 format).
      */
-    @JsonProperty(value = "earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreDate;
 
-    /** Creates an instance of RestorableDroppedManagedDatabaseProperties class. */
+    /**
+     * Creates an instance of RestorableDroppedManagedDatabaseProperties class.
+     */
     public RestorableDroppedManagedDatabaseProperties() {
     }
 
     /**
      * Get the databaseName property: The name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -50,7 +56,7 @@ public final class RestorableDroppedManagedDatabaseProperties {
 
     /**
      * Get the creationDate property: The creation date of the database (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -59,7 +65,7 @@ public final class RestorableDroppedManagedDatabaseProperties {
 
     /**
      * Get the deletionDate property: The deletion date of the database (ISO8601 format).
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -68,7 +74,7 @@ public final class RestorableDroppedManagedDatabaseProperties {
 
     /**
      * Get the earliestRestoreDate property: The earliest restore date of the database (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -77,9 +83,54 @@ public final class RestorableDroppedManagedDatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableDroppedManagedDatabaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableDroppedManagedDatabaseProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableDroppedManagedDatabaseProperties.
+     */
+    public static RestorableDroppedManagedDatabaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableDroppedManagedDatabaseProperties deserializedRestorableDroppedManagedDatabaseProperties
+                = new RestorableDroppedManagedDatabaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseName".equals(fieldName)) {
+                    deserializedRestorableDroppedManagedDatabaseProperties.databaseName = reader.getString();
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedRestorableDroppedManagedDatabaseProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deletionDate".equals(fieldName)) {
+                    deserializedRestorableDroppedManagedDatabaseProperties.deletionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("earliestRestoreDate".equals(fieldName)) {
+                    deserializedRestorableDroppedManagedDatabaseProperties.earliestRestoreDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableDroppedManagedDatabaseProperties;
+        });
     }
 }

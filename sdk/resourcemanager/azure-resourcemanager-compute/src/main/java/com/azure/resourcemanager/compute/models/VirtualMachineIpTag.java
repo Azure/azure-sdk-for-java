@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contains the IP tag associated with the public IP address.
  */
 @Fluent
-public final class VirtualMachineIpTag {
+public final class VirtualMachineIpTag implements JsonSerializable<VirtualMachineIpTag> {
     /*
      * IP tag type. Example: FirstPartyUsage.
      */
-    @JsonProperty(value = "ipTagType")
     private String ipTagType;
 
     /*
      * IP tag associated with the public IP. Example: SQL, Storage etc.
      */
-    @JsonProperty(value = "tag")
     private String tag;
 
     /**
@@ -76,5 +78,44 @@ public final class VirtualMachineIpTag {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipTagType", this.ipTagType);
+        jsonWriter.writeStringField("tag", this.tag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineIpTag from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineIpTag if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineIpTag.
+     */
+    public static VirtualMachineIpTag fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineIpTag deserializedVirtualMachineIpTag = new VirtualMachineIpTag();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipTagType".equals(fieldName)) {
+                    deserializedVirtualMachineIpTag.ipTagType = reader.getString();
+                } else if ("tag".equals(fieldName)) {
+                    deserializedVirtualMachineIpTag.tag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineIpTag;
+        });
     }
 }

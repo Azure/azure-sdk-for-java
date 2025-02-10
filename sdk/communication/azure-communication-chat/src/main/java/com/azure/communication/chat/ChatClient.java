@@ -126,10 +126,11 @@ public final class ChatClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateChatThreadResult> createChatThreadWithResponse(CreateChatThreadOptions options,
-                                                                         Context context) {
+        Context context) {
 
-        return this.client.createChatThread(options, context).map(
-            result -> new SimpleResponse<CreateChatThreadResult>(result, result.getValue())).block();
+        return this.client.createChatThread(options, context)
+            .map(result -> new SimpleResponse<CreateChatThreadResult>(result, result.getValue()))
+            .block();
     }
 
     /**

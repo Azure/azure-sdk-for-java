@@ -347,6 +347,52 @@ public final class CosmosContainerProperties {
         return this;
     }
 
+    /**
+     * Gets the Vector Embedding Policy containing paths for embeddings along with path-specific settings for the item
+     * used in performing vector search on the items in a collection in the Azure CosmosDB database service.
+     *
+     * @return the Vector Embedding Policy.
+     */
+    public CosmosVectorEmbeddingPolicy getVectorEmbeddingPolicy() {
+        return this.documentCollection.getVectorEmbeddingPolicy();
+    }
+
+    /**
+     * Sets the Vector Embedding Policy containing paths for embeddings along with path-specific settings for the item
+     * used in performing vector search on the items in a collection in the Azure CosmosDB database service.
+     *
+     * @param value the Vector Embedding Policy.
+     * @return the CosmosContainerProperties.
+     */
+    public CosmosContainerProperties setVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy value) {
+        this.documentCollection.setVectorEmbeddingPolicy(value);
+        return this;
+    }
+
+    /**
+     * Gets the Full Text Policy containing paths for full text search and the language specification for each path.
+     * It also contains the default language to be used.
+     *
+     * @return the FullTextPolicy
+     */
+    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosFullTextPolicy getFullTextPolicy() {
+        return this.documentCollection.getFullTextPolicy();
+    }
+
+    /**
+     * Gets the Full Text Policy containing paths for full text search and the language specification for each path.
+     * It also contains the default language to be used.
+     *
+     * @param value the FullTextPolicy.
+     * @return the CosmosContainerProperties.
+     */
+    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosContainerProperties setFullTextPolicy(CosmosFullTextPolicy value) {
+        this.documentCollection.setFullTextPolicy(value);
+        return this;
+    }
+
     Resource getResource() {
         return this.documentCollection;
     }
@@ -387,6 +433,11 @@ public final class CosmosContainerProperties {
     static void initialize() {
         ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.setCosmosContainerPropertiesAccessor(
             new ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor() {
+                @Override
+                public CosmosContainerProperties create(DocumentCollection documentCollection) {
+                    return new CosmosContainerProperties(documentCollection);
+                }
+
                 @Override
                 public String getSelfLink(CosmosContainerProperties cosmosContainerProperties) {
                     return cosmosContainerProperties.getSelfLink();

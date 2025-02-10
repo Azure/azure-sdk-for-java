@@ -14,21 +14,22 @@ public final class AzureBackupFindRestorableTimeRangesRequestTests {
     public void testDeserialize() throws Exception {
         AzureBackupFindRestorableTimeRangesRequest model = BinaryData
             .fromString(
-                "{\"sourceDataStoreType\":\"VaultStore\",\"startTime\":\"fzxmhhvhgureodkw\",\"endTime\":\"dagxtibqd\"}")
+                "{\"sourceDataStoreType\":\"VaultStore\",\"startTime\":\"ylgqgitxmedjvcsl\",\"endTime\":\"qwwncw\"}")
             .toObject(AzureBackupFindRestorableTimeRangesRequest.class);
         Assertions.assertEquals(RestoreSourceDataStoreType.VAULT_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("fzxmhhvhgureodkw", model.startTime());
-        Assertions.assertEquals("dagxtibqd", model.endTime());
+        Assertions.assertEquals("ylgqgitxmedjvcsl", model.startTime());
+        Assertions.assertEquals("qwwncw", model.endTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBackupFindRestorableTimeRangesRequest model = new AzureBackupFindRestorableTimeRangesRequest()
-            .withSourceDataStoreType(RestoreSourceDataStoreType.VAULT_STORE).withStartTime("fzxmhhvhgureodkw")
-            .withEndTime("dagxtibqd");
+            .withSourceDataStoreType(RestoreSourceDataStoreType.VAULT_STORE)
+            .withStartTime("ylgqgitxmedjvcsl")
+            .withEndTime("qwwncw");
         model = BinaryData.fromObject(model).toObject(AzureBackupFindRestorableTimeRangesRequest.class);
         Assertions.assertEquals(RestoreSourceDataStoreType.VAULT_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("fzxmhhvhgureodkw", model.startTime());
-        Assertions.assertEquals("dagxtibqd", model.endTime());
+        Assertions.assertEquals("ylgqgitxmedjvcsl", model.startTime());
+        Assertions.assertEquals("qwwncw", model.endTime());
     }
 }

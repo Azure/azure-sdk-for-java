@@ -29,12 +29,13 @@ public final class PrivateEndpointConnectionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionInner model
-            = new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("eiotwmcdytdx"))
-                .withGroupIds(Arrays.asList("xnrj", "wgqwgxhn"))
-                .withPrivateLinkServiceConnectionState(new ConnectionState()
-                    .withStatus(PersistedConnectionStatus.PENDING).withDescription("bkpyc").withActionsRequired("lwn"))
-                .withProvisioningState(ResourceProvisioningState.FAILED);
+        PrivateEndpointConnectionInner model = new PrivateEndpointConnectionInner()
+            .withPrivateEndpoint(new PrivateEndpoint().withId("eiotwmcdytdx"))
+            .withGroupIds(Arrays.asList("xnrj", "wgqwgxhn"))
+            .withPrivateLinkServiceConnectionState(new ConnectionState().withStatus(PersistedConnectionStatus.PENDING)
+                .withDescription("bkpyc")
+                .withActionsRequired("lwn"))
+            .withProvisioningState(ResourceProvisioningState.FAILED);
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);
         Assertions.assertEquals("eiotwmcdytdx", model.privateEndpoint().id());
         Assertions.assertEquals("xnrj", model.groupIds().get(0));

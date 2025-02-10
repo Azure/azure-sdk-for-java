@@ -78,7 +78,9 @@ public class DefaultPollingStrategyTests {
             new DefaultPollingStrategy<>(createPipeline(httpClient), null, Context.NONE), POLL_RESULT_TYPE_REFERENCE,
             POLL_RESULT_TYPE_REFERENCE);
 
-        StepVerifier.create(pollerFlux.contextWrite(reactor.util.context.Context.of("key2", "value2")).map(AsyncPollResponse::getStatus))
+        StepVerifier
+            .create(pollerFlux.contextWrite(reactor.util.context.Context.of("key2", "value2"))
+                .map(AsyncPollResponse::getStatus))
             .expectSubscription()
             .expectNext(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
             .verifyComplete();
@@ -87,7 +89,8 @@ public class DefaultPollingStrategyTests {
         assertEquals(3, activationCallCount[0]);
     }
 
-    private static HttpClient getHttpClient(String mockPollUrl, String finalResultUrl, HttpRequest pollRequest, AtomicReference<Context> lastContext) {
+    private static HttpClient getHttpClient(String mockPollUrl, String finalResultUrl, HttpRequest pollRequest,
+        AtomicReference<Context> lastContext) {
         return new HttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
@@ -102,8 +105,8 @@ public class DefaultPollingStrategyTests {
                         new HttpHeaders().set(HttpHeaderName.LOCATION, finalResultUrl),
                         new TestPollResult("Succeeded")));
                 } else if (finalResultUrl.equals(request.getUrl().toString())) {
-                    return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                        new TestPollResult("final-state")));
+                    return Mono.just(
+                        new MockHttpResponse(pollRequest, 200, new HttpHeaders(), new TestPollResult("final-state")));
                 } else {
                     return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
                 }

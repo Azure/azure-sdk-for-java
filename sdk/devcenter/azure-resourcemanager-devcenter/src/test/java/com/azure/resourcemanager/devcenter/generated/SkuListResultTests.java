@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.models.SkuListResult;
 public final class SkuListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"glikkxwslolb\",\"locations\":[\"uzlm\",\"felfktg\"],\"capabilities\":[{\"name\":\"pwjxezn\",\"value\":\"gbrn\"}],\"name\":\"w\",\"tier\":\"Free\",\"size\":\"nbsazejjoqkag\",\"family\":\"sxtta\",\"capacity\":1689987065},{\"resourceType\":\"nfaazpxdtnkdmkq\",\"locations\":[\"wuenvr\",\"pyouaibrebqaays\",\"kixqtnqtt\"],\"capabilities\":[{\"name\":\"fffiak\",\"value\":\"pqqmted\"},{\"name\":\"mmji\",\"value\":\"eozphv\"}],\"name\":\"auyqncygupkv\",\"tier\":\"Standard\",\"size\":\"scw\",\"family\":\"upev\",\"capacity\":230856251}],\"nextLink\":\"totxhojujb\"}")
-                .toObject(SkuListResult.class);
+        SkuListResult model = BinaryData.fromString(
+            "{\"value\":[{\"resourceType\":\"lwfffi\",\"locations\":[\"jpqqmted\",\"tmmjihyeozph\",\"wau\",\"qncygupkvi\"],\"capabilities\":[{\"name\":\"cwxqu\",\"value\":\"vzhfstotxhoj\"},{\"name\":\"bypel\",\"value\":\"uvhixbjxyfwn\"},{\"name\":\"r\",\"value\":\"o\"},{\"name\":\"ttpkiwkkbnujrywv\",\"value\":\"lbfpncurd\"}],\"name\":\"iwii\",\"tier\":\"Standard\",\"size\":\"wubxc\",\"family\":\"h\",\"capacity\":1060824316}],\"nextLink\":\"fdntwjchrdgoih\"}")
+            .toObject(SkuListResult.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.encryption.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor;
-import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.models.CosmosItemResponse;
 
 public class CosmosResponseFactory {
@@ -17,10 +17,11 @@ public class CosmosResponseFactory {
     }
 
     public <T> CosmosItemResponse<T> createItemResponse(CosmosItemResponse<byte[]> responseMessage,
-                                                        Class<T> classType) {
+                                                        Class<T> classType,
+                                                        CosmosItemSerializer effectiveItemSerializer) {
         return cosmosItemResponseBuilderAccessor.createCosmosItemResponse(
             responseMessage,
             classType,
-            new ItemDeserializer.JsonDeserializer());
+            effectiveItemSerializer);
     }
 }

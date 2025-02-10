@@ -11,11 +11,13 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
+import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -33,7 +35,6 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -44,6 +45,7 @@ import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrott
 import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import io.netty.handler.ssl.SslContext;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.ref.WeakReference;
@@ -183,6 +185,13 @@ public class ReflectionUtils {
 
     public static void setDiagnosticsProvider(CosmosAsyncClient cosmosAsyncClient, DiagnosticsProvider tracerProvider){
         set(cosmosAsyncClient, tracerProvider, "diagnosticsProvider");
+    }
+
+    public static DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient cosmosAsyncClient){
+        return get(
+            DiagnosticsProvider.class,
+            cosmosAsyncClient,
+            "diagnosticsProvider");
     }
 
     public static void setClientTelemetryConfig(CosmosAsyncClient cosmosAsyncClient, CosmosClientTelemetryConfig cfg){
@@ -434,8 +443,8 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static AtomicReference<Uri.HealthStatus> getHealthStatus(Uri uri) {
-        return get(AtomicReference.class, uri, "healthStatus");
+    public static AtomicReference<Uri.HealthStatusAndDiagnosticStringTuple> getHealthStatus(Uri uri) {
+        return get(AtomicReference.class, uri, "healthStatusTuple");
     }
 
     @SuppressWarnings("unchecked")
@@ -445,5 +454,17 @@ public class ReflectionUtils {
 
     public static void setEndpointProvider(RntbdTransportClient rntbdTransportClient, RntbdEndpoint.Provider provider) {
         set(rntbdTransportClient, provider, "endpointProvider");
+    }
+
+    public static ISessionContainer getSessionContainer(RxDocumentClientImpl rxDocumentClient) {
+        return get(ISessionContainer.class, rxDocumentClient, "sessionContainer");
+    }
+
+    public static SslContext getSslContext(Configs configs) {
+        return get(SslContext.class, configs, "sslContext");
+    }
+
+    public static SslContext getSslContextWithCertValidationDisabled(Configs configs) {
+        return get(SslContext.class, configs, "sslContextWithCertValidationDisabled");
     }
 }

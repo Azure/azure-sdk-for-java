@@ -5,20 +5,23 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15.
  */
 @Fluent
-public final class DiagnosticsProfile {
+public final class DiagnosticsProfile implements JsonSerializable<DiagnosticsProfile> {
     /*
      * Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM
-     * status. **NOTE**: If storageUri is being specified then ensure that the storage account is in the same region
-     * and subscription as the VM. You can easily view the output of your console log. Azure also enables you to see a
+     * status. **NOTE**: If storageUri is being specified then ensure that the storage account is in the same region and
+     * subscription as the VM. You can easily view the output of your console log. Azure also enables you to see a
      * screenshot of the VM from the hypervisor.
      */
-    @JsonProperty(value = "bootDiagnostics")
     private BootDiagnostics bootDiagnostics;
 
     /**
@@ -28,10 +31,10 @@ public final class DiagnosticsProfile {
     }
 
     /**
-     * Get the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console
-     * Output and Screenshot to diagnose VM status. **NOTE**: If storageUri is being specified then ensure that the
-     * storage account is in the same region and subscription as the VM. You can easily view the output of your console
-     * log. Azure also enables you to see a screenshot of the VM from the hypervisor.
+     * Get the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output
+     * and Screenshot to diagnose VM status. **NOTE**: If storageUri is being specified then ensure that the storage
+     * account is in the same region and subscription as the VM. You can easily view the output of your console log.
+     * Azure also enables you to see a screenshot of the VM from the hypervisor.
      * 
      * @return the bootDiagnostics value.
      */
@@ -40,10 +43,10 @@ public final class DiagnosticsProfile {
     }
 
     /**
-     * Set the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console
-     * Output and Screenshot to diagnose VM status. **NOTE**: If storageUri is being specified then ensure that the
-     * storage account is in the same region and subscription as the VM. You can easily view the output of your console
-     * log. Azure also enables you to see a screenshot of the VM from the hypervisor.
+     * Set the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output
+     * and Screenshot to diagnose VM status. **NOTE**: If storageUri is being specified then ensure that the storage
+     * account is in the same region and subscription as the VM. You can easily view the output of your console log.
+     * Azure also enables you to see a screenshot of the VM from the hypervisor.
      * 
      * @param bootDiagnostics the bootDiagnostics value to set.
      * @return the DiagnosticsProfile object itself.
@@ -62,5 +65,41 @@ public final class DiagnosticsProfile {
         if (bootDiagnostics() != null) {
             bootDiagnostics().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("bootDiagnostics", this.bootDiagnostics);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticsProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticsProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticsProfile.
+     */
+    public static DiagnosticsProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticsProfile deserializedDiagnosticsProfile = new DiagnosticsProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bootDiagnostics".equals(fieldName)) {
+                    deserializedDiagnosticsProfile.bootDiagnostics = BootDiagnostics.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticsProfile;
+        });
     }
 }

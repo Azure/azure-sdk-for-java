@@ -5,56 +5,60 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Yearly retention schedule. */
+/**
+ * Yearly retention schedule.
+ */
 @Fluent
-public final class YearlyRetentionSchedule {
+public final class YearlyRetentionSchedule implements JsonSerializable<YearlyRetentionSchedule> {
     /*
      * Retention schedule format for yearly retention policy.
      */
-    @JsonProperty(value = "retentionScheduleFormatType")
     private RetentionScheduleFormat retentionScheduleFormatType;
 
     /*
      * List of months of year of yearly retention policy.
      */
-    @JsonProperty(value = "monthsOfYear")
     private List<MonthOfYear> monthsOfYear;
 
     /*
      * Daily retention format for yearly retention policy.
      */
-    @JsonProperty(value = "retentionScheduleDaily")
     private DailyRetentionFormat retentionScheduleDaily;
 
     /*
      * Weekly retention format for yearly retention policy.
      */
-    @JsonProperty(value = "retentionScheduleWeekly")
     private WeeklyRetentionFormat retentionScheduleWeekly;
 
     /*
      * Retention times of retention policy.
      */
-    @JsonProperty(value = "retentionTimes")
     private List<OffsetDateTime> retentionTimes;
 
     /*
      * Retention duration of retention Policy.
      */
-    @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
-    /** Creates an instance of YearlyRetentionSchedule class. */
+    /**
+     * Creates an instance of YearlyRetentionSchedule class.
+     */
     public YearlyRetentionSchedule() {
     }
 
     /**
      * Get the retentionScheduleFormatType property: Retention schedule format for yearly retention policy.
-     *
+     * 
      * @return the retentionScheduleFormatType value.
      */
     public RetentionScheduleFormat retentionScheduleFormatType() {
@@ -63,19 +67,19 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the retentionScheduleFormatType property: Retention schedule format for yearly retention policy.
-     *
+     * 
      * @param retentionScheduleFormatType the retentionScheduleFormatType value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
-    public YearlyRetentionSchedule withRetentionScheduleFormatType(
-        RetentionScheduleFormat retentionScheduleFormatType) {
+    public YearlyRetentionSchedule
+        withRetentionScheduleFormatType(RetentionScheduleFormat retentionScheduleFormatType) {
         this.retentionScheduleFormatType = retentionScheduleFormatType;
         return this;
     }
 
     /**
      * Get the monthsOfYear property: List of months of year of yearly retention policy.
-     *
+     * 
      * @return the monthsOfYear value.
      */
     public List<MonthOfYear> monthsOfYear() {
@@ -84,7 +88,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the monthsOfYear property: List of months of year of yearly retention policy.
-     *
+     * 
      * @param monthsOfYear the monthsOfYear value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
@@ -95,7 +99,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Get the retentionScheduleDaily property: Daily retention format for yearly retention policy.
-     *
+     * 
      * @return the retentionScheduleDaily value.
      */
     public DailyRetentionFormat retentionScheduleDaily() {
@@ -104,7 +108,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the retentionScheduleDaily property: Daily retention format for yearly retention policy.
-     *
+     * 
      * @param retentionScheduleDaily the retentionScheduleDaily value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
@@ -115,7 +119,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Get the retentionScheduleWeekly property: Weekly retention format for yearly retention policy.
-     *
+     * 
      * @return the retentionScheduleWeekly value.
      */
     public WeeklyRetentionFormat retentionScheduleWeekly() {
@@ -124,7 +128,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the retentionScheduleWeekly property: Weekly retention format for yearly retention policy.
-     *
+     * 
      * @param retentionScheduleWeekly the retentionScheduleWeekly value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
@@ -135,7 +139,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Get the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @return the retentionTimes value.
      */
     public List<OffsetDateTime> retentionTimes() {
@@ -144,7 +148,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @param retentionTimes the retentionTimes value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
@@ -155,7 +159,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Get the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @return the retentionDuration value.
      */
     public RetentionDuration retentionDuration() {
@@ -164,7 +168,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @param retentionDuration the retentionDuration value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
@@ -175,7 +179,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -188,5 +192,65 @@ public final class YearlyRetentionSchedule {
         if (retentionDuration() != null) {
             retentionDuration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("retentionScheduleFormatType",
+            this.retentionScheduleFormatType == null ? null : this.retentionScheduleFormatType.toString());
+        jsonWriter.writeArrayField("monthsOfYear", this.monthsOfYear,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("retentionScheduleDaily", this.retentionScheduleDaily);
+        jsonWriter.writeJsonField("retentionScheduleWeekly", this.retentionScheduleWeekly);
+        jsonWriter.writeArrayField("retentionTimes", this.retentionTimes, (writer, element) -> writer
+            .writeString(element == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(element)));
+        jsonWriter.writeJsonField("retentionDuration", this.retentionDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of YearlyRetentionSchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of YearlyRetentionSchedule if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the YearlyRetentionSchedule.
+     */
+    public static YearlyRetentionSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            YearlyRetentionSchedule deserializedYearlyRetentionSchedule = new YearlyRetentionSchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("retentionScheduleFormatType".equals(fieldName)) {
+                    deserializedYearlyRetentionSchedule.retentionScheduleFormatType
+                        = RetentionScheduleFormat.fromString(reader.getString());
+                } else if ("monthsOfYear".equals(fieldName)) {
+                    List<MonthOfYear> monthsOfYear
+                        = reader.readArray(reader1 -> MonthOfYear.fromString(reader1.getString()));
+                    deserializedYearlyRetentionSchedule.monthsOfYear = monthsOfYear;
+                } else if ("retentionScheduleDaily".equals(fieldName)) {
+                    deserializedYearlyRetentionSchedule.retentionScheduleDaily = DailyRetentionFormat.fromJson(reader);
+                } else if ("retentionScheduleWeekly".equals(fieldName)) {
+                    deserializedYearlyRetentionSchedule.retentionScheduleWeekly
+                        = WeeklyRetentionFormat.fromJson(reader);
+                } else if ("retentionTimes".equals(fieldName)) {
+                    List<OffsetDateTime> retentionTimes = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedYearlyRetentionSchedule.retentionTimes = retentionTimes;
+                } else if ("retentionDuration".equals(fieldName)) {
+                    deserializedYearlyRetentionSchedule.retentionDuration = RetentionDuration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedYearlyRetentionSchedule;
+        });
     }
 }

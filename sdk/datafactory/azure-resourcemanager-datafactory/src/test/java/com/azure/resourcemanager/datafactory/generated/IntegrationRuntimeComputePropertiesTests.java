@@ -21,69 +21,80 @@ public final class IntegrationRuntimeComputePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeComputeProperties model = BinaryData.fromString(
-            "{\"location\":\"ii\",\"nodeSize\":\"sapqhipajsniv\",\"numberOfNodes\":870925821,\"maxParallelExecutionsPerNode\":1964377886,\"dataFlowProperties\":{\"computeType\":\"ComputeOptimized\",\"coreCount\":650247197,\"timeToLive\":907107043,\"cleanup\":false,\"customProperties\":[{\"name\":\"qwkseodvlmdzg\",\"value\":\"ykzzugctygbb\"}],\"\":{\"jmxwcvumnrutqnke\":\"dataljvvcrsmw\",\"pec\":\"datajftvltj\"}},\"vNetProperties\":{\"vNetId\":\"bzltn\",\"subnet\":\"pajfhxsmu\",\"publicIPs\":[\"adzglm\",\"uzpsuhs\",\"pxm\"],\"subnetId\":\"dhf\",\"\":{\"b\":\"datakqpyfjx\",\"uqfmxbdjkmnxsg\":\"dataws\",\"hbtyc\":\"datanowxhyvdbrdvsv\"}},\"copyComputeScaleProperties\":{\"dataIntegrationUnit\":1366549492,\"timeToLive\":2114794692,\"\":{\"mrdiscsdvkymkt\":\"datakhrcthypepxs\"}},\"pipelineExternalComputeScaleProperties\":{\"timeToLive\":1848448837,\"numberOfPipelineNodes\":682279146,\"numberOfExternalNodes\":1639638335,\"\":{\"fnfgazaghddcozwx\":\"datagngl\"}},\"\":{\"utuhvemg\":\"datar\"}}")
+            "{\"location\":\"c\",\"nodeSize\":\"xevlt\",\"numberOfNodes\":1736990485,\"maxParallelExecutionsPerNode\":1753770104,\"dataFlowProperties\":{\"computeType\":\"General\",\"coreCount\":2045958196,\"timeToLive\":492843137,\"cleanup\":true,\"customProperties\":[{\"name\":\"fmftwr\",\"value\":\"mriipzgfofuad\"},{\"name\":\"qneaqkgttbarg\",\"value\":\"ynqlsnr\"}],\"\":{\"yxhsppv\":\"dataoyvgjjp\",\"geqeapaseq\":\"datasduouoqtenqsomu\"}},\"vNetProperties\":{\"vNetId\":\"ypfreuwvzhn\",\"subnet\":\"vtoiqofzttqg\",\"publicIPs\":[\"w\",\"oxzuhellit\",\"qv\",\"ivrsgqbmolxeom\"],\"subnetId\":\"zvtvxxfs\",\"\":{\"edybkbgdwbmi\":\"dataacgihnalpc\",\"i\":\"datazikatywedb\"}},\"copyComputeScaleProperties\":{\"dataIntegrationUnit\":785813210,\"timeToLive\":95344421,\"\":{\"pave\":\"databhxncszd\"}},\"pipelineExternalComputeScaleProperties\":{\"timeToLive\":862321993,\"numberOfPipelineNodes\":922478953,\"numberOfExternalNodes\":1537232280,\"\":{\"erffhgvcym\":\"datadltniuii\",\"eudbobmol\":\"datadoeilhggaj\",\"ua\":\"datairchhwlzihvcc\"}},\"\":{\"toiwfsz\":\"dataipdjxyotgvraxh\",\"etsluqfgk\":\"datarlkosjwr\",\"imioixviobuwbnge\":\"datad\",\"gqamhbmggnqxnex\":\"datawhdq\"}}")
             .toObject(IntegrationRuntimeComputeProperties.class);
-        Assertions.assertEquals("ii", model.location());
-        Assertions.assertEquals("sapqhipajsniv", model.nodeSize());
-        Assertions.assertEquals(870925821, model.numberOfNodes());
-        Assertions.assertEquals(1964377886, model.maxParallelExecutionsPerNode());
-        Assertions.assertEquals(DataFlowComputeType.COMPUTE_OPTIMIZED, model.dataFlowProperties().computeType());
-        Assertions.assertEquals(650247197, model.dataFlowProperties().coreCount());
-        Assertions.assertEquals(907107043, model.dataFlowProperties().timeToLive());
-        Assertions.assertEquals(false, model.dataFlowProperties().cleanup());
-        Assertions.assertEquals("qwkseodvlmdzg", model.dataFlowProperties().customProperties().get(0).name());
-        Assertions.assertEquals("ykzzugctygbb", model.dataFlowProperties().customProperties().get(0).value());
-        Assertions.assertEquals("bzltn", model.vNetProperties().vNetId());
-        Assertions.assertEquals("pajfhxsmu", model.vNetProperties().subnet());
-        Assertions.assertEquals("adzglm", model.vNetProperties().publicIPs().get(0));
-        Assertions.assertEquals("dhf", model.vNetProperties().subnetId());
-        Assertions.assertEquals(1366549492, model.copyComputeScaleProperties().dataIntegrationUnit());
-        Assertions.assertEquals(2114794692, model.copyComputeScaleProperties().timeToLive());
-        Assertions.assertEquals(1848448837, model.pipelineExternalComputeScaleProperties().timeToLive());
-        Assertions.assertEquals(682279146, model.pipelineExternalComputeScaleProperties().numberOfPipelineNodes());
-        Assertions.assertEquals(1639638335, model.pipelineExternalComputeScaleProperties().numberOfExternalNodes());
+        Assertions.assertEquals("c", model.location());
+        Assertions.assertEquals("xevlt", model.nodeSize());
+        Assertions.assertEquals(1736990485, model.numberOfNodes());
+        Assertions.assertEquals(1753770104, model.maxParallelExecutionsPerNode());
+        Assertions.assertEquals(DataFlowComputeType.GENERAL, model.dataFlowProperties().computeType());
+        Assertions.assertEquals(2045958196, model.dataFlowProperties().coreCount());
+        Assertions.assertEquals(492843137, model.dataFlowProperties().timeToLive());
+        Assertions.assertEquals(true, model.dataFlowProperties().cleanup());
+        Assertions.assertEquals("fmftwr", model.dataFlowProperties().customProperties().get(0).name());
+        Assertions.assertEquals("mriipzgfofuad", model.dataFlowProperties().customProperties().get(0).value());
+        Assertions.assertEquals("ypfreuwvzhn", model.vNetProperties().vNetId());
+        Assertions.assertEquals("vtoiqofzttqg", model.vNetProperties().subnet());
+        Assertions.assertEquals("w", model.vNetProperties().publicIPs().get(0));
+        Assertions.assertEquals("zvtvxxfs", model.vNetProperties().subnetId());
+        Assertions.assertEquals(785813210, model.copyComputeScaleProperties().dataIntegrationUnit());
+        Assertions.assertEquals(95344421, model.copyComputeScaleProperties().timeToLive());
+        Assertions.assertEquals(862321993, model.pipelineExternalComputeScaleProperties().timeToLive());
+        Assertions.assertEquals(922478953, model.pipelineExternalComputeScaleProperties().numberOfPipelineNodes());
+        Assertions.assertEquals(1537232280, model.pipelineExternalComputeScaleProperties().numberOfExternalNodes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeComputeProperties model
-            = new IntegrationRuntimeComputeProperties().withLocation("ii").withNodeSize("sapqhipajsniv")
-                .withNumberOfNodes(870925821).withMaxParallelExecutionsPerNode(1964377886)
-                .withDataFlowProperties(new IntegrationRuntimeDataFlowProperties()
-                    .withComputeType(DataFlowComputeType.COMPUTE_OPTIMIZED).withCoreCount(650247197)
-                    .withTimeToLive(907107043).withCleanup(false)
-                    .withCustomProperties(Arrays.asList(new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem()
-                        .withName("qwkseodvlmdzg").withValue("ykzzugctygbb")))
+        IntegrationRuntimeComputeProperties model = new IntegrationRuntimeComputeProperties().withLocation("c")
+            .withNodeSize("xevlt")
+            .withNumberOfNodes(1736990485)
+            .withMaxParallelExecutionsPerNode(1753770104)
+            .withDataFlowProperties(
+                new IntegrationRuntimeDataFlowProperties().withComputeType(DataFlowComputeType.GENERAL)
+                    .withCoreCount(2045958196)
+                    .withTimeToLive(492843137)
+                    .withCleanup(true)
+                    .withCustomProperties(Arrays.asList(
+                        new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("fmftwr")
+                            .withValue("mriipzgfofuad"),
+                        new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("qneaqkgttbarg")
+                            .withValue("ynqlsnr")))
                     .withAdditionalProperties(mapOf()))
-                .withVNetProperties(new IntegrationRuntimeVNetProperties().withVNetId("bzltn").withSubnet("pajfhxsmu")
-                    .withPublicIPs(Arrays.asList("adzglm", "uzpsuhs", "pxm")).withSubnetId("dhf")
+            .withVNetProperties(new IntegrationRuntimeVNetProperties().withVNetId("ypfreuwvzhn")
+                .withSubnet("vtoiqofzttqg")
+                .withPublicIPs(Arrays.asList("w", "oxzuhellit", "qv", "ivrsgqbmolxeom"))
+                .withSubnetId("zvtvxxfs")
+                .withAdditionalProperties(mapOf()))
+            .withCopyComputeScaleProperties(new CopyComputeScaleProperties().withDataIntegrationUnit(785813210)
+                .withTimeToLive(95344421)
+                .withAdditionalProperties(mapOf()))
+            .withPipelineExternalComputeScaleProperties(
+                new PipelineExternalComputeScaleProperties().withTimeToLive(862321993)
+                    .withNumberOfPipelineNodes(922478953)
+                    .withNumberOfExternalNodes(1537232280)
                     .withAdditionalProperties(mapOf()))
-                .withCopyComputeScaleProperties(new CopyComputeScaleProperties().withDataIntegrationUnit(1366549492)
-                    .withTimeToLive(2114794692).withAdditionalProperties(mapOf()))
-                .withPipelineExternalComputeScaleProperties(new PipelineExternalComputeScaleProperties()
-                    .withTimeToLive(1848448837).withNumberOfPipelineNodes(682279146)
-                    .withNumberOfExternalNodes(1639638335).withAdditionalProperties(mapOf()))
-                .withAdditionalProperties(mapOf());
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeComputeProperties.class);
-        Assertions.assertEquals("ii", model.location());
-        Assertions.assertEquals("sapqhipajsniv", model.nodeSize());
-        Assertions.assertEquals(870925821, model.numberOfNodes());
-        Assertions.assertEquals(1964377886, model.maxParallelExecutionsPerNode());
-        Assertions.assertEquals(DataFlowComputeType.COMPUTE_OPTIMIZED, model.dataFlowProperties().computeType());
-        Assertions.assertEquals(650247197, model.dataFlowProperties().coreCount());
-        Assertions.assertEquals(907107043, model.dataFlowProperties().timeToLive());
-        Assertions.assertEquals(false, model.dataFlowProperties().cleanup());
-        Assertions.assertEquals("qwkseodvlmdzg", model.dataFlowProperties().customProperties().get(0).name());
-        Assertions.assertEquals("ykzzugctygbb", model.dataFlowProperties().customProperties().get(0).value());
-        Assertions.assertEquals("bzltn", model.vNetProperties().vNetId());
-        Assertions.assertEquals("pajfhxsmu", model.vNetProperties().subnet());
-        Assertions.assertEquals("adzglm", model.vNetProperties().publicIPs().get(0));
-        Assertions.assertEquals("dhf", model.vNetProperties().subnetId());
-        Assertions.assertEquals(1366549492, model.copyComputeScaleProperties().dataIntegrationUnit());
-        Assertions.assertEquals(2114794692, model.copyComputeScaleProperties().timeToLive());
-        Assertions.assertEquals(1848448837, model.pipelineExternalComputeScaleProperties().timeToLive());
-        Assertions.assertEquals(682279146, model.pipelineExternalComputeScaleProperties().numberOfPipelineNodes());
-        Assertions.assertEquals(1639638335, model.pipelineExternalComputeScaleProperties().numberOfExternalNodes());
+        Assertions.assertEquals("c", model.location());
+        Assertions.assertEquals("xevlt", model.nodeSize());
+        Assertions.assertEquals(1736990485, model.numberOfNodes());
+        Assertions.assertEquals(1753770104, model.maxParallelExecutionsPerNode());
+        Assertions.assertEquals(DataFlowComputeType.GENERAL, model.dataFlowProperties().computeType());
+        Assertions.assertEquals(2045958196, model.dataFlowProperties().coreCount());
+        Assertions.assertEquals(492843137, model.dataFlowProperties().timeToLive());
+        Assertions.assertEquals(true, model.dataFlowProperties().cleanup());
+        Assertions.assertEquals("fmftwr", model.dataFlowProperties().customProperties().get(0).name());
+        Assertions.assertEquals("mriipzgfofuad", model.dataFlowProperties().customProperties().get(0).value());
+        Assertions.assertEquals("ypfreuwvzhn", model.vNetProperties().vNetId());
+        Assertions.assertEquals("vtoiqofzttqg", model.vNetProperties().subnet());
+        Assertions.assertEquals("w", model.vNetProperties().publicIPs().get(0));
+        Assertions.assertEquals("zvtvxxfs", model.vNetProperties().subnetId());
+        Assertions.assertEquals(785813210, model.copyComputeScaleProperties().dataIntegrationUnit());
+        Assertions.assertEquals(95344421, model.copyComputeScaleProperties().timeToLive());
+        Assertions.assertEquals(862321993, model.pipelineExternalComputeScaleProperties().timeToLive());
+        Assertions.assertEquals(922478953, model.pipelineExternalComputeScaleProperties().numberOfPipelineNodes());
+        Assertions.assertEquals(1537232280, model.pipelineExternalComputeScaleProperties().numberOfExternalNodes());
     }
 
     // Use "Map.of" if available

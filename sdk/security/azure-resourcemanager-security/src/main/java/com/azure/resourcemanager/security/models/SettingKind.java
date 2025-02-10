@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** the kind of the settings string. */
+/**
+ * the kind of the settings string.
+ */
 public final class SettingKind extends ExpandableStringEnum<SettingKind> {
-    /** Static value DataExportSettings for SettingKind. */
+    /**
+     * Static value DataExportSettings for SettingKind.
+     */
     public static final SettingKind DATA_EXPORT_SETTINGS = fromString("DataExportSettings");
 
-    /** Static value AlertSuppressionSetting for SettingKind. */
+    /**
+     * Static value AlertSuppressionSetting for SettingKind.
+     */
     public static final SettingKind ALERT_SUPPRESSION_SETTING = fromString("AlertSuppressionSetting");
 
-    /** Static value AlertSyncSettings for SettingKind. */
+    /**
+     * Static value AlertSyncSettings for SettingKind.
+     */
     public static final SettingKind ALERT_SYNC_SETTINGS = fromString("AlertSyncSettings");
 
     /**
      * Creates a new instance of SettingKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class SettingKind extends ExpandableStringEnum<SettingKind> {
 
     /**
      * Creates or finds a SettingKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SettingKind.
      */
-    @JsonCreator
     public static SettingKind fromString(String name) {
         return fromString(name, SettingKind.class);
     }
 
     /**
      * Gets known SettingKind values.
-     *
+     * 
      * @return known SettingKind values.
      */
     public static Collection<SettingKind> values() {

@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Direction of port mirroring profile. */
+/**
+ * Port Mirroring Direction.
+ */
 public final class PortMirroringDirectionEnum extends ExpandableStringEnum<PortMirroringDirectionEnum> {
-    /** Static value INGRESS for PortMirroringDirectionEnum. */
+    /**
+     * Static value INGRESS for PortMirroringDirectionEnum.
+     */
     public static final PortMirroringDirectionEnum INGRESS = fromString("INGRESS");
 
-    /** Static value EGRESS for PortMirroringDirectionEnum. */
+    /**
+     * Static value EGRESS for PortMirroringDirectionEnum.
+     */
     public static final PortMirroringDirectionEnum EGRESS = fromString("EGRESS");
 
-    /** Static value BIDIRECTIONAL for PortMirroringDirectionEnum. */
+    /**
+     * Static value BIDIRECTIONAL for PortMirroringDirectionEnum.
+     */
     public static final PortMirroringDirectionEnum BIDIRECTIONAL = fromString("BIDIRECTIONAL");
 
     /**
      * Creates a new instance of PortMirroringDirectionEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class PortMirroringDirectionEnum extends ExpandableStringEnum<PortM
 
     /**
      * Creates or finds a PortMirroringDirectionEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PortMirroringDirectionEnum.
      */
-    @JsonCreator
     public static PortMirroringDirectionEnum fromString(String name) {
         return fromString(name, PortMirroringDirectionEnum.class);
     }
 
     /**
      * Gets known PortMirroringDirectionEnum values.
-     *
+     * 
      * @return known PortMirroringDirectionEnum values.
      */
     public static Collection<PortMirroringDirectionEnum> values() {

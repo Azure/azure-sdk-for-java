@@ -26,7 +26,7 @@ public interface AccessListRoleBindingsSuccessResponse {
     ConfluentListMetadata metadata();
 
     /**
-     * Gets the data property: Data of the environments list.
+     * Gets the data property: List of role binding.
      * 
      * @return the data value.
      */

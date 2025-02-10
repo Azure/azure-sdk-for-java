@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GroupCreateParametersPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupCreateParametersProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"zqfsgnwdxzed\",\"description\":\"l\",\"type\":\"custom\",\"externalId\":\"rxipmlnfyzav\"}")
-                .toObject(GroupCreateParametersProperties.class);
+        GroupCreateParametersProperties model = BinaryData.fromString(
+            "{\"displayName\":\"zqfsgnwdxzed\",\"description\":\"l\",\"type\":\"custom\",\"externalId\":\"rxipmlnfyzav\"}")
+            .toObject(GroupCreateParametersProperties.class);
         Assertions.assertEquals("zqfsgnwdxzed", model.displayName());
         Assertions.assertEquals("l", model.description());
         Assertions.assertEquals(GroupType.CUSTOM, model.type());
@@ -25,12 +23,10 @@ public final class GroupCreateParametersPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupCreateParametersProperties model =
-            new GroupCreateParametersProperties()
-                .withDisplayName("zqfsgnwdxzed")
-                .withDescription("l")
-                .withType(GroupType.CUSTOM)
-                .withExternalId("rxipmlnfyzav");
+        GroupCreateParametersProperties model = new GroupCreateParametersProperties().withDisplayName("zqfsgnwdxzed")
+            .withDescription("l")
+            .withType(GroupType.CUSTOM)
+            .withExternalId("rxipmlnfyzav");
         model = BinaryData.fromObject(model).toObject(GroupCreateParametersProperties.class);
         Assertions.assertEquals("zqfsgnwdxzed", model.displayName());
         Assertions.assertEquals("l", model.description());

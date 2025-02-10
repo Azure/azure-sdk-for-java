@@ -6,61 +6,62 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A2A managed disk input details. */
+/**
+ * A2A managed disk input details.
+ */
 @Fluent
-public final class A2AVmManagedDiskInputDetails {
+public final class A2AVmManagedDiskInputDetails implements JsonSerializable<A2AVmManagedDiskInputDetails> {
     /*
      * The disk Id.
      */
-    @JsonProperty(value = "diskId", required = true)
     private String diskId;
 
     /*
      * The primary staging storage account Arm Id.
      */
-    @JsonProperty(value = "primaryStagingAzureStorageAccountId", required = true)
     private String primaryStagingAzureStorageAccountId;
 
     /*
      * The target resource group Arm Id.
      */
-    @JsonProperty(value = "recoveryResourceGroupId", required = true)
     private String recoveryResourceGroupId;
 
     /*
      * The replica disk type. Its an optional value and will be same as source disk type if not user provided.
      */
-    @JsonProperty(value = "recoveryReplicaDiskAccountType")
     private String recoveryReplicaDiskAccountType;
 
     /*
      * The target disk type after failover. Its an optional value and will be same as source disk type if not user
      * provided.
      */
-    @JsonProperty(value = "recoveryTargetDiskAccountType")
     private String recoveryTargetDiskAccountType;
 
     /*
      * The recovery disk encryption set Id.
      */
-    @JsonProperty(value = "recoveryDiskEncryptionSetId")
     private String recoveryDiskEncryptionSetId;
 
     /*
      * The recovery disk encryption information (for one / single pass flows).
      */
-    @JsonProperty(value = "diskEncryptionInfo")
     private DiskEncryptionInfo diskEncryptionInfo;
 
-    /** Creates an instance of A2AVmManagedDiskInputDetails class. */
+    /**
+     * Creates an instance of A2AVmManagedDiskInputDetails class.
+     */
     public A2AVmManagedDiskInputDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -69,7 +70,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -80,7 +81,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Get the primaryStagingAzureStorageAccountId property: The primary staging storage account Arm Id.
-     *
+     * 
      * @return the primaryStagingAzureStorageAccountId value.
      */
     public String primaryStagingAzureStorageAccountId() {
@@ -89,19 +90,19 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Set the primaryStagingAzureStorageAccountId property: The primary staging storage account Arm Id.
-     *
+     * 
      * @param primaryStagingAzureStorageAccountId the primaryStagingAzureStorageAccountId value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
-    public A2AVmManagedDiskInputDetails withPrimaryStagingAzureStorageAccountId(
-        String primaryStagingAzureStorageAccountId) {
+    public A2AVmManagedDiskInputDetails
+        withPrimaryStagingAzureStorageAccountId(String primaryStagingAzureStorageAccountId) {
         this.primaryStagingAzureStorageAccountId = primaryStagingAzureStorageAccountId;
         return this;
     }
 
     /**
      * Get the recoveryResourceGroupId property: The target resource group Arm Id.
-     *
+     * 
      * @return the recoveryResourceGroupId value.
      */
     public String recoveryResourceGroupId() {
@@ -110,7 +111,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Set the recoveryResourceGroupId property: The target resource group Arm Id.
-     *
+     * 
      * @param recoveryResourceGroupId the recoveryResourceGroupId value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -122,7 +123,7 @@ public final class A2AVmManagedDiskInputDetails {
     /**
      * Get the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same as
      * source disk type if not user provided.
-     *
+     * 
      * @return the recoveryReplicaDiskAccountType value.
      */
     public String recoveryReplicaDiskAccountType() {
@@ -132,7 +133,7 @@ public final class A2AVmManagedDiskInputDetails {
     /**
      * Set the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same as
      * source disk type if not user provided.
-     *
+     * 
      * @param recoveryReplicaDiskAccountType the recoveryReplicaDiskAccountType value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -144,7 +145,7 @@ public final class A2AVmManagedDiskInputDetails {
     /**
      * Get the recoveryTargetDiskAccountType property: The target disk type after failover. Its an optional value and
      * will be same as source disk type if not user provided.
-     *
+     * 
      * @return the recoveryTargetDiskAccountType value.
      */
     public String recoveryTargetDiskAccountType() {
@@ -154,7 +155,7 @@ public final class A2AVmManagedDiskInputDetails {
     /**
      * Set the recoveryTargetDiskAccountType property: The target disk type after failover. Its an optional value and
      * will be same as source disk type if not user provided.
-     *
+     * 
      * @param recoveryTargetDiskAccountType the recoveryTargetDiskAccountType value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -165,7 +166,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Get the recoveryDiskEncryptionSetId property: The recovery disk encryption set Id.
-     *
+     * 
      * @return the recoveryDiskEncryptionSetId value.
      */
     public String recoveryDiskEncryptionSetId() {
@@ -174,7 +175,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Set the recoveryDiskEncryptionSetId property: The recovery disk encryption set Id.
-     *
+     * 
      * @param recoveryDiskEncryptionSetId the recoveryDiskEncryptionSetId value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -185,7 +186,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Get the diskEncryptionInfo property: The recovery disk encryption information (for one / single pass flows).
-     *
+     * 
      * @return the diskEncryptionInfo value.
      */
     public DiskEncryptionInfo diskEncryptionInfo() {
@@ -194,7 +195,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Set the diskEncryptionInfo property: The recovery disk encryption information (for one / single pass flows).
-     *
+     * 
      * @param diskEncryptionInfo the diskEncryptionInfo value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -205,28 +206,24 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskId in model A2AVmManagedDiskInputDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property diskId in model A2AVmManagedDiskInputDetails"));
         }
         if (primaryStagingAzureStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property primaryStagingAzureStorageAccountId in model"
-                            + " A2AVmManagedDiskInputDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property primaryStagingAzureStorageAccountId in model A2AVmManagedDiskInputDetails"));
         }
         if (recoveryResourceGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryResourceGroupId in model A2AVmManagedDiskInputDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryResourceGroupId in model A2AVmManagedDiskInputDetails"));
         }
         if (diskEncryptionInfo() != null) {
             diskEncryptionInfo().validate();
@@ -234,4 +231,59 @@ public final class A2AVmManagedDiskInputDetails {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(A2AVmManagedDiskInputDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("diskId", this.diskId);
+        jsonWriter.writeStringField("primaryStagingAzureStorageAccountId", this.primaryStagingAzureStorageAccountId);
+        jsonWriter.writeStringField("recoveryResourceGroupId", this.recoveryResourceGroupId);
+        jsonWriter.writeStringField("recoveryReplicaDiskAccountType", this.recoveryReplicaDiskAccountType);
+        jsonWriter.writeStringField("recoveryTargetDiskAccountType", this.recoveryTargetDiskAccountType);
+        jsonWriter.writeStringField("recoveryDiskEncryptionSetId", this.recoveryDiskEncryptionSetId);
+        jsonWriter.writeJsonField("diskEncryptionInfo", this.diskEncryptionInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AVmManagedDiskInputDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AVmManagedDiskInputDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the A2AVmManagedDiskInputDetails.
+     */
+    public static A2AVmManagedDiskInputDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AVmManagedDiskInputDetails deserializedA2AVmManagedDiskInputDetails = new A2AVmManagedDiskInputDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskInputDetails.diskId = reader.getString();
+                } else if ("primaryStagingAzureStorageAccountId".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskInputDetails.primaryStagingAzureStorageAccountId = reader.getString();
+                } else if ("recoveryResourceGroupId".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskInputDetails.recoveryResourceGroupId = reader.getString();
+                } else if ("recoveryReplicaDiskAccountType".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskInputDetails.recoveryReplicaDiskAccountType = reader.getString();
+                } else if ("recoveryTargetDiskAccountType".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskInputDetails.recoveryTargetDiskAccountType = reader.getString();
+                } else if ("recoveryDiskEncryptionSetId".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskInputDetails.recoveryDiskEncryptionSetId = reader.getString();
+                } else if ("diskEncryptionInfo".equals(fieldName)) {
+                    deserializedA2AVmManagedDiskInputDetails.diskEncryptionInfo = DiskEncryptionInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AVmManagedDiskInputDetails;
+        });
+    }
 }

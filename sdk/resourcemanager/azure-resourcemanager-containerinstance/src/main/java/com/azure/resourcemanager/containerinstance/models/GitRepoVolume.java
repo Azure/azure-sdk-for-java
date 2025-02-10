@@ -6,32 +6,37 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a volume that is populated with the contents of a git repository. */
+/**
+ * Represents a volume that is populated with the contents of a git repository.
+ */
 @Fluent
-public final class GitRepoVolume {
+public final class GitRepoVolume implements JsonSerializable<GitRepoVolume> {
     /*
-     * Target directory name. Must not contain or start with '..'.  If '.' is supplied, the volume directory will be
-     * the git repository.  Otherwise, if specified, the volume will contain the git repository in the subdirectory
-     * with the given name.
+     * Target directory name. Must not contain or start with '..'. If '.' is supplied, the volume directory will be the
+     * git repository. Otherwise, if specified, the volume will contain the git repository in the subdirectory with the
+     * given name.
      */
-    @JsonProperty(value = "directory")
     private String directory;
 
     /*
      * Repository URL
      */
-    @JsonProperty(value = "repository", required = true)
     private String repository;
 
     /*
      * Commit hash for the specified revision.
      */
-    @JsonProperty(value = "revision")
     private String revision;
 
-    /** Creates an instance of GitRepoVolume class. */
+    /**
+     * Creates an instance of GitRepoVolume class.
+     */
     public GitRepoVolume() {
     }
 
@@ -39,7 +44,7 @@ public final class GitRepoVolume {
      * Get the directory property: Target directory name. Must not contain or start with '..'. If '.' is supplied, the
      * volume directory will be the git repository. Otherwise, if specified, the volume will contain the git repository
      * in the subdirectory with the given name.
-     *
+     * 
      * @return the directory value.
      */
     public String directory() {
@@ -50,7 +55,7 @@ public final class GitRepoVolume {
      * Set the directory property: Target directory name. Must not contain or start with '..'. If '.' is supplied, the
      * volume directory will be the git repository. Otherwise, if specified, the volume will contain the git repository
      * in the subdirectory with the given name.
-     *
+     * 
      * @param directory the directory value to set.
      * @return the GitRepoVolume object itself.
      */
@@ -61,7 +66,7 @@ public final class GitRepoVolume {
 
     /**
      * Get the repository property: Repository URL.
-     *
+     * 
      * @return the repository value.
      */
     public String repository() {
@@ -70,7 +75,7 @@ public final class GitRepoVolume {
 
     /**
      * Set the repository property: Repository URL.
-     *
+     * 
      * @param repository the repository value to set.
      * @return the GitRepoVolume object itself.
      */
@@ -81,7 +86,7 @@ public final class GitRepoVolume {
 
     /**
      * Get the revision property: Commit hash for the specified revision.
-     *
+     * 
      * @return the revision value.
      */
     public String revision() {
@@ -90,7 +95,7 @@ public final class GitRepoVolume {
 
     /**
      * Set the revision property: Commit hash for the specified revision.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the GitRepoVolume object itself.
      */
@@ -101,16 +106,58 @@ public final class GitRepoVolume {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (repository() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property repository in model GitRepoVolume"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property repository in model GitRepoVolume"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GitRepoVolume.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("repository", this.repository);
+        jsonWriter.writeStringField("directory", this.directory);
+        jsonWriter.writeStringField("revision", this.revision);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitRepoVolume from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitRepoVolume if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GitRepoVolume.
+     */
+    public static GitRepoVolume fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitRepoVolume deserializedGitRepoVolume = new GitRepoVolume();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("repository".equals(fieldName)) {
+                    deserializedGitRepoVolume.repository = reader.getString();
+                } else if ("directory".equals(fieldName)) {
+                    deserializedGitRepoVolume.directory = reader.getString();
+                } else if ("revision".equals(fieldName)) {
+                    deserializedGitRepoVolume.revision = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitRepoVolume;
+        });
+    }
 }

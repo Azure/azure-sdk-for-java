@@ -16,8 +16,7 @@ public final class MonitoringTagRulesPropertiesImpl implements MonitoringTagRule
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    MonitoringTagRulesPropertiesImpl(
-        MonitoringTagRulesPropertiesInner innerObject,
+    MonitoringTagRulesPropertiesImpl(MonitoringTagRulesPropertiesInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

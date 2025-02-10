@@ -21,6 +21,12 @@ public final class LogsQueryOptions {
     private List<String> additionalWorkspaces;
 
     /**
+     * Creates an instance of LogsQueryOptions.
+     */
+    public LogsQueryOptions() {
+    }
+
+    /**
      * Returns the server timeout for this query.
      * @return The server timeout duration.
      */

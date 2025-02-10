@@ -10,32 +10,39 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class MaintenanceConfigurationsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * MaintenanceConfigurationsDelete.json
      */
     /**
      * Sample code: Delete Maintenance Configuration.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteMaintenanceConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getMaintenanceConfigurations().deleteWithResponse("rg1",
-            "clustername1", "default", com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getMaintenanceConfigurations()
+            .deleteWithResponse("rg1", "clustername1", "default", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * MaintenanceConfigurationsDelete_MaintenanceWindow.json
      */
     /**
      * Sample code: Delete Maintenance Configuration For Node OS Upgrade.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
         deleteMaintenanceConfigurationForNodeOSUpgrade(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getMaintenanceConfigurations().deleteWithResponse("rg1",
-            "clustername1", "aksManagedNodeOSUpgradeSchedule", com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getMaintenanceConfigurations()
+            .deleteWithResponse("rg1", "clustername1", "aksManagedNodeOSUpgradeSchedule",
+                com.azure.core.util.Context.NONE);
     }
 }

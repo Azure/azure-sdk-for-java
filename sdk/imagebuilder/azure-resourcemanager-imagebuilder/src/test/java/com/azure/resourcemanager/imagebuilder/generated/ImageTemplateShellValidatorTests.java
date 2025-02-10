@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateShellValidatorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateShellValidator model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Shell\",\"scriptUri\":\"asxazjpqyegualhb\",\"sha256Checksum\":\"hejjz\",\"inline\":[\"udgwdslfho\",\"wmc\",\"npwlbjnpg\"],\"name\":\"ftadehxnltyfs\"}")
-                .toObject(ImageTemplateShellValidator.class);
-        Assertions.assertEquals("ftadehxnltyfs", model.name());
-        Assertions.assertEquals("asxazjpqyegualhb", model.scriptUri());
-        Assertions.assertEquals("hejjz", model.sha256Checksum());
-        Assertions.assertEquals("udgwdslfho", model.inline().get(0));
+        ImageTemplateShellValidator model = BinaryData.fromString(
+            "{\"type\":\"Shell\",\"scriptUri\":\"a\",\"sha256Checksum\":\"ae\",\"inline\":[\"hy\",\"ltrpmopj\",\"cma\",\"u\"],\"name\":\"thfuiuaodsfcpkvx\"}")
+            .toObject(ImageTemplateShellValidator.class);
+        Assertions.assertEquals("thfuiuaodsfcpkvx", model.name());
+        Assertions.assertEquals("a", model.scriptUri());
+        Assertions.assertEquals("ae", model.sha256Checksum());
+        Assertions.assertEquals("hy", model.inline().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateShellValidator model =
-            new ImageTemplateShellValidator()
-                .withName("ftadehxnltyfs")
-                .withScriptUri("asxazjpqyegualhb")
-                .withSha256Checksum("hejjz")
-                .withInline(Arrays.asList("udgwdslfho", "wmc", "npwlbjnpg"));
+        ImageTemplateShellValidator model = new ImageTemplateShellValidator().withName("thfuiuaodsfcpkvx")
+            .withScriptUri("a")
+            .withSha256Checksum("ae")
+            .withInline(Arrays.asList("hy", "ltrpmopj", "cma", "u"));
         model = BinaryData.fromObject(model).toObject(ImageTemplateShellValidator.class);
-        Assertions.assertEquals("ftadehxnltyfs", model.name());
-        Assertions.assertEquals("asxazjpqyegualhb", model.scriptUri());
-        Assertions.assertEquals("hejjz", model.sha256Checksum());
-        Assertions.assertEquals("udgwdslfho", model.inline().get(0));
+        Assertions.assertEquals("thfuiuaodsfcpkvx", model.name());
+        Assertions.assertEquals("a", model.scriptUri());
+        Assertions.assertEquals("ae", model.sha256Checksum());
+        Assertions.assertEquals("hy", model.inline().get(0));
     }
 }

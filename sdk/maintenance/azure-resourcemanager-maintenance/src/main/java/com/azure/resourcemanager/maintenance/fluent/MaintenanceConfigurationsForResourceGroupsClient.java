@@ -17,27 +17,27 @@ import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurat
 public interface MaintenanceConfigurationsForResourceGroupsClient {
     /**
      * Get Configuration records within a subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return configuration records within a subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MaintenanceConfigurationInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Get Configuration records within a subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return configuration records within a subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MaintenanceConfigurationInner> listByResourceGroup(String resourceGroupName, Context context);

@@ -7,38 +7,57 @@ package com.azure.resourcemanager.chaos.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.chaos.models.CapabilityTypePropertiesRuntimeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Model that represents a Capability Type resource. */
+/**
+ * Model that represents a Capability Type resource.
+ */
 @Fluent
 public final class CapabilityTypeInner extends ProxyResource {
     /*
      * The system metadata properties of the capability type resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Location of the Capability Type resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The properties of the capability type resource.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityTypeProperties innerProperties;
 
-    /** Creates an instance of CapabilityTypeInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CapabilityTypeInner class.
+     */
     public CapabilityTypeInner() {
     }
 
     /**
      * Get the systemData property: The system metadata properties of the capability type resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -47,7 +66,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Get the location property: Location of the Capability Type resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -56,7 +75,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Set the location property: Location of the Capability Type resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the CapabilityTypeInner object itself.
      */
@@ -67,7 +86,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: The properties of the capability type resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CapabilityTypeProperties innerProperties() {
@@ -75,8 +94,38 @@ public final class CapabilityTypeInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the publisher property: String of the Publisher that this Capability Type extends.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -85,7 +134,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Get the targetType property: String of the Target Type that this Capability Type extends.
-     *
+     * 
      * @return the targetType value.
      */
     public String targetType() {
@@ -94,7 +143,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Get the displayName property: Localized string of the display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -103,7 +152,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Get the description property: Localized string of the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -112,7 +161,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Get the parametersSchema property: URL to retrieve JSON schema of the Capability Type parameters.
-     *
+     * 
      * @return the parametersSchema value.
      */
     public String parametersSchema() {
@@ -121,7 +170,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Get the urn property: String of the URN for this Capability Type.
-     *
+     * 
      * @return the urn value.
      */
     public String urn() {
@@ -130,7 +179,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Get the kind property: String of the kind of this Capability Type.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -139,7 +188,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Get the azureRbacActions property: Control plane actions necessary to execute capability type.
-     *
+     * 
      * @return the azureRbacActions value.
      */
     public List<String> azureRbacActions() {
@@ -148,7 +197,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Set the azureRbacActions property: Control plane actions necessary to execute capability type.
-     *
+     * 
      * @param azureRbacActions the azureRbacActions value to set.
      * @return the CapabilityTypeInner object itself.
      */
@@ -162,7 +211,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Get the azureRbacDataActions property: Data plane actions necessary to execute capability type.
-     *
+     * 
      * @return the azureRbacDataActions value.
      */
     public List<String> azureRbacDataActions() {
@@ -171,7 +220,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Set the azureRbacDataActions property: Data plane actions necessary to execute capability type.
-     *
+     * 
      * @param azureRbacDataActions the azureRbacDataActions value to set.
      * @return the CapabilityTypeInner object itself.
      */
@@ -185,7 +234,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Get the runtimeProperties property: Runtime properties of this Capability Type.
-     *
+     * 
      * @return the runtimeProperties value.
      */
     public CapabilityTypePropertiesRuntimeProperties runtimeProperties() {
@@ -194,7 +243,7 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Set the runtimeProperties property: Runtime properties of this Capability Type.
-     *
+     * 
      * @param runtimeProperties the runtimeProperties value to set.
      * @return the CapabilityTypeInner object itself.
      */
@@ -208,12 +257,59 @@ public final class CapabilityTypeInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilityTypeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilityTypeInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CapabilityTypeInner.
+     */
+    public static CapabilityTypeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilityTypeInner deserializedCapabilityTypeInner = new CapabilityTypeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCapabilityTypeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCapabilityTypeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCapabilityTypeInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCapabilityTypeInner.systemData = SystemData.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedCapabilityTypeInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCapabilityTypeInner.innerProperties = CapabilityTypeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilityTypeInner;
+        });
     }
 }

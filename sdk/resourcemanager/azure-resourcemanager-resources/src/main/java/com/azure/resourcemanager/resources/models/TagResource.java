@@ -13,15 +13,18 @@ import java.util.Map;
 /**
  * An immutable client-side representation of an Azure resource with tags.
  */
-public interface TagResource extends
-    HasId, HasName, HasInnerModel<TagsResourceInner> {
+public interface TagResource extends HasId, HasName, HasInnerModel<TagsResourceInner> {
 
     /**
+     * Gets the type of the resource.
+     *
      * @return the type of the resource
      */
     String type();
 
     /**
+     * Gets the tags for the resource.
+     *
      * @return the tags for the resource
      */
     Map<String, String> tags();

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WebAppsListWorkflowsConnectionsSlotSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListWorkflowsConfigurationConnections
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ListWorkflowsConfigurationConnections
      * .json
      */
     /**
@@ -20,7 +20,11 @@ public final class WebAppsListWorkflowsConnectionsSlotSamples {
      */
     public static void
         listTheInstanceWorkflowsConfigurationConnectionsSlot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().listWorkflowsConnectionsSlotWithResponse("testrg123",
-            "testsite2", "staging", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .listWorkflowsConnectionsSlotWithResponse("testrg123", "testsite2", "staging",
+                com.azure.core.util.Context.NONE);
     }
 }

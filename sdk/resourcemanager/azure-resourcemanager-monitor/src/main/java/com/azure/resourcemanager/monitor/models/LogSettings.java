@@ -5,45 +5,49 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log. */
+/**
+ * Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log.
+ */
 @Fluent
-public final class LogSettings {
+public final class LogSettings implements JsonSerializable<LogSettings> {
     /*
      * Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of
      * Diagnostic Log categories for a resource, first perform a GET diagnostic settings operation.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * Name of a Diagnostic Log category group for a resource type this setting is applied to. To obtain the list of
      * Diagnostic Log categories for a resource, first perform a GET diagnostic settings operation.
      */
-    @JsonProperty(value = "categoryGroup")
     private String categoryGroup;
 
     /*
      * a value indicating whether this log is enabled.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * the retention policy for this log.
      */
-    @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
-    /** Creates an instance of LogSettings class. */
+    /**
+     * Creates an instance of LogSettings class.
+     */
     public LogSettings() {
     }
 
     /**
      * Get the category property: Name of a Diagnostic Log category for a resource type this setting is applied to. To
      * obtain the list of Diagnostic Log categories for a resource, first perform a GET diagnostic settings operation.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -53,7 +57,7 @@ public final class LogSettings {
     /**
      * Set the category property: Name of a Diagnostic Log category for a resource type this setting is applied to. To
      * obtain the list of Diagnostic Log categories for a resource, first perform a GET diagnostic settings operation.
-     *
+     * 
      * @param category the category value to set.
      * @return the LogSettings object itself.
      */
@@ -66,7 +70,7 @@ public final class LogSettings {
      * Get the categoryGroup property: Name of a Diagnostic Log category group for a resource type this setting is
      * applied to. To obtain the list of Diagnostic Log categories for a resource, first perform a GET diagnostic
      * settings operation.
-     *
+     * 
      * @return the categoryGroup value.
      */
     public String categoryGroup() {
@@ -77,7 +81,7 @@ public final class LogSettings {
      * Set the categoryGroup property: Name of a Diagnostic Log category group for a resource type this setting is
      * applied to. To obtain the list of Diagnostic Log categories for a resource, first perform a GET diagnostic
      * settings operation.
-     *
+     * 
      * @param categoryGroup the categoryGroup value to set.
      * @return the LogSettings object itself.
      */
@@ -88,7 +92,7 @@ public final class LogSettings {
 
     /**
      * Get the enabled property: a value indicating whether this log is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -97,7 +101,7 @@ public final class LogSettings {
 
     /**
      * Set the enabled property: a value indicating whether this log is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the LogSettings object itself.
      */
@@ -108,7 +112,7 @@ public final class LogSettings {
 
     /**
      * Get the retentionPolicy property: the retention policy for this log.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -117,7 +121,7 @@ public final class LogSettings {
 
     /**
      * Set the retentionPolicy property: the retention policy for this log.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the LogSettings object itself.
      */
@@ -128,12 +132,58 @@ public final class LogSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (retentionPolicy() != null) {
             retentionPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("categoryGroup", this.categoryGroup);
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogSettings.
+     */
+    public static LogSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogSettings deserializedLogSettings = new LogSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedLogSettings.enabled = reader.getBoolean();
+                } else if ("category".equals(fieldName)) {
+                    deserializedLogSettings.category = reader.getString();
+                } else if ("categoryGroup".equals(fieldName)) {
+                    deserializedLogSettings.categoryGroup = reader.getString();
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedLogSettings.retentionPolicy = RetentionPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogSettings;
+        });
     }
 }

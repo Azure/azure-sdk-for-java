@@ -4,34 +4,40 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
-/** Defines values for RecordingStorageType. */
+/** Defines the kind of external storage. */
 public final class RecordingStorageType extends ExpandableStringEnum<RecordingStorageType> {
 
-    /** Static value acs for RecordingStorageTypeInternal. */
-    public static final RecordingStorageType ACS = fromString("acs");
+    /** Static value AzureCommunicationServices for RecordingStorageType. */
+    public static final RecordingStorageType ACS = fromString("AzureCommunicationServices");
 
-    /** Static value blobStorage for RecordingStorageTypeInternal. */
-    public static final RecordingStorageType BLOB_STORAGE = fromString("blobStorage");
+    /** Static value AzureBlobStorage for RecordingStorageType. */
+    public static final RecordingStorageType AZURE_BLOB_STORAGE = fromString("AzureBlobStorage");
 
     /**
-     * Creates or finds a RecordingStorageTypeInternal from its string representation.
+     * Creates an instance of {@link RecordingStorageType} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of RecordingStorageType.
+     */
+    @Deprecated
+    public RecordingStorageType() {
+    }
+
+    /**
+     * Creates or finds a RecordingStorageType from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding RecordingStorageTypeInternal.
+     * @return the corresponding RecordingStorageType.
      */
-    @JsonCreator
     public static RecordingStorageType fromString(String name) {
         return fromString(name, RecordingStorageType.class);
     }
 
     /**
-     * Gets known RecordingStorageTypeInternal values.
+     * Gets known RecordingStorageType values.
      *
-     * @return known RecordingStorageTypeInternal values.
+     * @return known RecordingStorageType values.
      */
     public static Collection<RecordingStorageType> values() {
         return values(RecordingStorageType.class);

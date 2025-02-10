@@ -8,31 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.DownloadType;
 import com.azure.resourcemanager.appcomplianceautomation.models.SnapshotDownloadRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SnapshotDownloadRequestTests {
-    @Test
-    public void testDeserialize() {
-        SnapshotDownloadRequest model =
-            BinaryData
-                .fromString(
-                    "{\"reportCreatorTenantId\":\"qzbqjvsov\",\"downloadType\":\"ComplianceDetailedPdfReport\",\"offerGuid\":\"kacspkw\"}")
-                .toObject(SnapshotDownloadRequest.class);
-        Assertions.assertEquals("qzbqjvsov", model.reportCreatorTenantId());
-        Assertions.assertEquals(DownloadType.COMPLIANCE_DETAILED_PDF_REPORT, model.downloadType());
-        Assertions.assertEquals("kacspkw", model.offerGuid());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SnapshotDownloadRequest model = BinaryData.fromString(
+            "{\"reportCreatorTenantId\":\"gwfqatmt\",\"downloadType\":\"CompliancePdfReport\",\"offerGuid\":\"mdvy\"}")
+            .toObject(SnapshotDownloadRequest.class);
+        Assertions.assertEquals("gwfqatmt", model.reportCreatorTenantId());
+        Assertions.assertEquals(DownloadType.COMPLIANCE_PDF_REPORT, model.downloadType());
+        Assertions.assertEquals("mdvy", model.offerGuid());
     }
 
-    @Test
-    public void testSerialize() {
-        SnapshotDownloadRequest model =
-            new SnapshotDownloadRequest()
-                .withReportCreatorTenantId("qzbqjvsov")
-                .withDownloadType(DownloadType.COMPLIANCE_DETAILED_PDF_REPORT)
-                .withOfferGuid("kacspkw");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SnapshotDownloadRequest model = new SnapshotDownloadRequest().withReportCreatorTenantId("gwfqatmt")
+            .withDownloadType(DownloadType.COMPLIANCE_PDF_REPORT)
+            .withOfferGuid("mdvy");
         model = BinaryData.fromObject(model).toObject(SnapshotDownloadRequest.class);
-        Assertions.assertEquals("qzbqjvsov", model.reportCreatorTenantId());
-        Assertions.assertEquals(DownloadType.COMPLIANCE_DETAILED_PDF_REPORT, model.downloadType());
-        Assertions.assertEquals("kacspkw", model.offerGuid());
+        Assertions.assertEquals("gwfqatmt", model.reportCreatorTenantId());
+        Assertions.assertEquals(DownloadType.COMPLIANCE_PDF_REPORT, model.downloadType());
+        Assertions.assertEquals("mdvy", model.offerGuid());
     }
 }

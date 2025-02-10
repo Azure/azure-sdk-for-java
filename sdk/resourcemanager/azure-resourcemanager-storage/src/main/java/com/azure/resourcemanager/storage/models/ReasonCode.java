@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,15 +13,19 @@ import java.util.Collection;
  * "NotAvailableForSubscription" is related to capacity at DC.
  */
 public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
-    /** Static value QuotaId for ReasonCode. */
+    /**
+     * Static value QuotaId for ReasonCode.
+     */
     public static final ReasonCode QUOTA_ID = fromString("QuotaId");
 
-    /** Static value NotAvailableForSubscription for ReasonCode. */
+    /**
+     * Static value NotAvailableForSubscription for ReasonCode.
+     */
     public static final ReasonCode NOT_AVAILABLE_FOR_SUBSCRIPTION = fromString("NotAvailableForSubscription");
 
     /**
      * Creates a new instance of ReasonCode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +34,17 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
 
     /**
      * Creates or finds a ReasonCode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReasonCode.
      */
-    @JsonCreator
     public static ReasonCode fromString(String name) {
         return fromString(name, ReasonCode.class);
     }
 
     /**
      * Gets known ReasonCode values.
-     *
+     * 
      * @return known ReasonCode values.
      */
     public static Collection<ReasonCode> values() {

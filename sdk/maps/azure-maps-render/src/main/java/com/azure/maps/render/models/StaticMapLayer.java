@@ -5,34 +5,50 @@
 package com.azure.maps.render.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StaticMapLayer. */
+/**
+ * Defines values for StaticMapLayer.
+ */
 public final class StaticMapLayer extends ExpandableStringEnum<StaticMapLayer> {
-    /** Static value basic for StaticMapLayer. */
+    /**
+     * Returns an image containing all map features including polygons, borders, roads and labels.
+     */
     public static final StaticMapLayer BASIC = fromString("basic");
 
-    /** Static value hybrid for StaticMapLayer. */
+    /**
+     * Returns an image containing borders, roads, and labels, and can be overlaid on other tiles (such as satellite
+     * imagery) to produce hybrid tiles.
+     */
     public static final StaticMapLayer HYBRID = fromString("hybrid");
 
-    /** Static value labels for StaticMapLayer. */
+    /**
+     * Returns an image of just the map's label information.
+     */
     public static final StaticMapLayer LABELS = fromString("labels");
 
     /**
+     * Creates a new instance of StaticMapLayer value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StaticMapLayer() {
+    }
+
+    /**
      * Creates or finds a StaticMapLayer from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StaticMapLayer.
      */
-    @JsonCreator
     public static StaticMapLayer fromString(String name) {
         return fromString(name, StaticMapLayer.class);
     }
 
     /**
      * Gets known StaticMapLayer values.
-     *
+     * 
      * @return known StaticMapLayer values.
      */
     public static Collection<StaticMapLayer> values() {

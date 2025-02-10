@@ -5,64 +5,63 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.Diagnostics;
 import com.azure.resourcemanager.streamanalytics.models.OutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.Serialization;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties that are associated with an output. */
+/**
+ * The properties that are associated with an output.
+ */
 @Fluent
-public final class OutputProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutputProperties.class);
-
+public final class OutputProperties implements JsonSerializable<OutputProperties> {
     /*
-     * Describes the data source that output will be written to. Required on
-     * PUT (CreateOrReplace) requests.
+     * Describes the data source that output will be written to. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "datasource")
     private OutputDataSource datasource;
 
     /*
      * The time frame for filtering Stream Analytics job outputs.
      */
-    @JsonProperty(value = "timeWindow")
     private String timeWindow;
 
     /*
      * The size window to constrain a Stream Analytics output to.
      */
-    @JsonProperty(value = "sizeWindow")
-    private Float sizeWindow;
+    private Integer sizeWindow;
 
     /*
-     * Describes how data from an input is serialized or how data is serialized
-     * when written to an output. Required on PUT (CreateOrReplace) requests.
+     * Describes how data from an input is serialized or how data is serialized when written to an output. Required on
+     * PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "serialization")
     private Serialization serialization;
 
     /*
-     * Describes conditions applicable to the Input, Output, or the job
-     * overall, that warrant customer attention.
+     * Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
      */
-    @JsonProperty(value = "diagnostics", access = JsonProperty.Access.WRITE_ONLY)
     private Diagnostics diagnostics;
 
     /*
-     * The current entity tag for the output. This is an opaque string. You can
-     * use it to detect whether the resource has changed between requests. You
-     * can also use it in the If-Match or If-None-Match headers for write
-     * operations for optimistic concurrency.
+     * The current entity tag for the output. This is an opaque string. You can use it to detect whether the resource
+     * has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations
+     * for optimistic concurrency.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /**
+     * Creates an instance of OutputProperties class.
+     */
+    public OutputProperties() {
+    }
 
     /**
      * Get the datasource property: Describes the data source that output will be written to. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the datasource value.
      */
     public OutputDataSource datasource() {
@@ -72,7 +71,7 @@ public final class OutputProperties {
     /**
      * Set the datasource property: Describes the data source that output will be written to. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @param datasource the datasource value to set.
      * @return the OutputProperties object itself.
      */
@@ -83,7 +82,7 @@ public final class OutputProperties {
 
     /**
      * Get the timeWindow property: The time frame for filtering Stream Analytics job outputs.
-     *
+     * 
      * @return the timeWindow value.
      */
     public String timeWindow() {
@@ -92,7 +91,7 @@ public final class OutputProperties {
 
     /**
      * Set the timeWindow property: The time frame for filtering Stream Analytics job outputs.
-     *
+     * 
      * @param timeWindow the timeWindow value to set.
      * @return the OutputProperties object itself.
      */
@@ -103,20 +102,20 @@ public final class OutputProperties {
 
     /**
      * Get the sizeWindow property: The size window to constrain a Stream Analytics output to.
-     *
+     * 
      * @return the sizeWindow value.
      */
-    public Float sizeWindow() {
+    public Integer sizeWindow() {
         return this.sizeWindow;
     }
 
     /**
      * Set the sizeWindow property: The size window to constrain a Stream Analytics output to.
-     *
+     * 
      * @param sizeWindow the sizeWindow value to set.
      * @return the OutputProperties object itself.
      */
-    public OutputProperties withSizeWindow(Float sizeWindow) {
+    public OutputProperties withSizeWindow(Integer sizeWindow) {
         this.sizeWindow = sizeWindow;
         return this;
     }
@@ -124,7 +123,7 @@ public final class OutputProperties {
     /**
      * Get the serialization property: Describes how data from an input is serialized or how data is serialized when
      * written to an output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the serialization value.
      */
     public Serialization serialization() {
@@ -134,7 +133,7 @@ public final class OutputProperties {
     /**
      * Set the serialization property: Describes how data from an input is serialized or how data is serialized when
      * written to an output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param serialization the serialization value to set.
      * @return the OutputProperties object itself.
      */
@@ -146,7 +145,7 @@ public final class OutputProperties {
     /**
      * Get the diagnostics property: Describes conditions applicable to the Input, Output, or the job overall, that
      * warrant customer attention.
-     *
+     * 
      * @return the diagnostics value.
      */
     public Diagnostics diagnostics() {
@@ -157,7 +156,7 @@ public final class OutputProperties {
      * Get the etag property: The current entity tag for the output. This is an opaque string. You can use it to detect
      * whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers
      * for write operations for optimistic concurrency.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -166,7 +165,7 @@ public final class OutputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -179,5 +178,54 @@ public final class OutputProperties {
         if (diagnostics() != null) {
             diagnostics().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("datasource", this.datasource);
+        jsonWriter.writeStringField("timeWindow", this.timeWindow);
+        jsonWriter.writeNumberField("sizeWindow", this.sizeWindow);
+        jsonWriter.writeJsonField("serialization", this.serialization);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OutputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OutputProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OutputProperties.
+     */
+    public static OutputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OutputProperties deserializedOutputProperties = new OutputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("datasource".equals(fieldName)) {
+                    deserializedOutputProperties.datasource = OutputDataSource.fromJson(reader);
+                } else if ("timeWindow".equals(fieldName)) {
+                    deserializedOutputProperties.timeWindow = reader.getString();
+                } else if ("sizeWindow".equals(fieldName)) {
+                    deserializedOutputProperties.sizeWindow = reader.getNullable(JsonReader::getInt);
+                } else if ("serialization".equals(fieldName)) {
+                    deserializedOutputProperties.serialization = Serialization.fromJson(reader);
+                } else if ("diagnostics".equals(fieldName)) {
+                    deserializedOutputProperties.diagnostics = Diagnostics.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedOutputProperties.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOutputProperties;
+        });
     }
 }

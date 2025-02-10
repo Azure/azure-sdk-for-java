@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.EventHubDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties that are associated with an Event Hub output. */
+/**
+ * The properties that are associated with an Event Hub output.
+ */
 @Fluent
 public final class EventHubOutputDataSourceProperties extends EventHubDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubOutputDataSourceProperties.class);
-
     /*
-     * The key/column that is used to determine to which partition to send
-     * event data.
+     * The key/column that is used to determine to which partition to send event data.
      */
-    @JsonProperty(value = "partitionKey")
     private String partitionKey;
 
     /*
      * The properties associated with this Event Hub output.
      */
-    @JsonProperty(value = "propertyColumns")
     private List<String> propertyColumns;
 
     /**
+     * Creates an instance of EventHubOutputDataSourceProperties class.
+     */
+    public EventHubOutputDataSourceProperties() {
+    }
+
+    /**
      * Get the partitionKey property: The key/column that is used to determine to which partition to send event data.
-     *
+     * 
      * @return the partitionKey value.
      */
     public String partitionKey() {
@@ -41,7 +45,7 @@ public final class EventHubOutputDataSourceProperties extends EventHubDataSource
 
     /**
      * Set the partitionKey property: The key/column that is used to determine to which partition to send event data.
-     *
+     * 
      * @param partitionKey the partitionKey value to set.
      * @return the EventHubOutputDataSourceProperties object itself.
      */
@@ -52,7 +56,7 @@ public final class EventHubOutputDataSourceProperties extends EventHubDataSource
 
     /**
      * Get the propertyColumns property: The properties associated with this Event Hub output.
-     *
+     * 
      * @return the propertyColumns value.
      */
     public List<String> propertyColumns() {
@@ -61,7 +65,7 @@ public final class EventHubOutputDataSourceProperties extends EventHubDataSource
 
     /**
      * Set the propertyColumns property: The properties associated with this Event Hub output.
-     *
+     * 
      * @param propertyColumns the propertyColumns value to set.
      * @return the EventHubOutputDataSourceProperties object itself.
      */
@@ -70,35 +74,45 @@ public final class EventHubOutputDataSourceProperties extends EventHubDataSource
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubOutputDataSourceProperties withEventHubName(String eventHubName) {
         super.withEventHubName(eventHubName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubOutputDataSourceProperties withServiceBusNamespace(String serviceBusNamespace) {
         super.withServiceBusNamespace(serviceBusNamespace);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubOutputDataSourceProperties withSharedAccessPolicyName(String sharedAccessPolicyName) {
         super.withSharedAccessPolicyName(sharedAccessPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubOutputDataSourceProperties withSharedAccessPolicyKey(String sharedAccessPolicyKey) {
         super.withSharedAccessPolicyKey(sharedAccessPolicyKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubOutputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
         super.withAuthenticationMode(authenticationMode);
@@ -107,11 +121,69 @@ public final class EventHubOutputDataSourceProperties extends EventHubDataSource
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceBusNamespace", serviceBusNamespace());
+        jsonWriter.writeStringField("sharedAccessPolicyName", sharedAccessPolicyName());
+        jsonWriter.writeStringField("sharedAccessPolicyKey", sharedAccessPolicyKey());
+        jsonWriter.writeStringField("authenticationMode",
+            authenticationMode() == null ? null : authenticationMode().toString());
+        jsonWriter.writeStringField("eventHubName", eventHubName());
+        jsonWriter.writeStringField("partitionKey", this.partitionKey);
+        jsonWriter.writeArrayField("propertyColumns", this.propertyColumns,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubOutputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubOutputDataSourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventHubOutputDataSourceProperties.
+     */
+    public static EventHubOutputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubOutputDataSourceProperties deserializedEventHubOutputDataSourceProperties
+                = new EventHubOutputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceBusNamespace".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties.withServiceBusNamespace(reader.getString());
+                } else if ("sharedAccessPolicyName".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties.withSharedAccessPolicyName(reader.getString());
+                } else if ("sharedAccessPolicyKey".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties.withSharedAccessPolicyKey(reader.getString());
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties
+                        .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
+                } else if ("eventHubName".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties.withEventHubName(reader.getString());
+                } else if ("partitionKey".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties.partitionKey = reader.getString();
+                } else if ("propertyColumns".equals(fieldName)) {
+                    List<String> propertyColumns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEventHubOutputDataSourceProperties.propertyColumns = propertyColumns;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubOutputDataSourceProperties;
+        });
     }
 }

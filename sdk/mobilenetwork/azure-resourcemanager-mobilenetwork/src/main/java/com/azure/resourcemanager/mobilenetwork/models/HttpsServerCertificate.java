@@ -6,31 +6,37 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** HTTPS server certificate configuration. */
+/**
+ * HTTPS server certificate configuration.
+ */
 @Fluent
-public final class HttpsServerCertificate {
+public final class HttpsServerCertificate implements JsonSerializable<HttpsServerCertificate> {
     /*
      * The certificate URL, unversioned. For example: https://contosovault.vault.azure.net/certificates/ingress.
      */
-    @JsonProperty(value = "certificateUrl", required = true)
     private String certificateUrl;
 
     /*
      * The provisioning state of the certificate.
      */
-    @JsonProperty(value = "provisioning", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateProvisioning provisioning;
 
-    /** Creates an instance of HttpsServerCertificate class. */
+    /**
+     * Creates an instance of HttpsServerCertificate class.
+     */
     public HttpsServerCertificate() {
     }
 
     /**
      * Get the certificateUrl property: The certificate URL, unversioned. For example:
      * https://contosovault.vault.azure.net/certificates/ingress.
-     *
+     * 
      * @return the certificateUrl value.
      */
     public String certificateUrl() {
@@ -40,7 +46,7 @@ public final class HttpsServerCertificate {
     /**
      * Set the certificateUrl property: The certificate URL, unversioned. For example:
      * https://contosovault.vault.azure.net/certificates/ingress.
-     *
+     * 
      * @param certificateUrl the certificateUrl value to set.
      * @return the HttpsServerCertificate object itself.
      */
@@ -51,7 +57,7 @@ public final class HttpsServerCertificate {
 
     /**
      * Get the provisioning property: The provisioning state of the certificate.
-     *
+     * 
      * @return the provisioning value.
      */
     public CertificateProvisioning provisioning() {
@@ -60,15 +66,14 @@ public final class HttpsServerCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (certificateUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property certificateUrl in model HttpsServerCertificate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property certificateUrl in model HttpsServerCertificate"));
         }
         if (provisioning() != null) {
             provisioning().validate();
@@ -76,4 +81,43 @@ public final class HttpsServerCertificate {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpsServerCertificate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("certificateUrl", this.certificateUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpsServerCertificate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpsServerCertificate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HttpsServerCertificate.
+     */
+    public static HttpsServerCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpsServerCertificate deserializedHttpsServerCertificate = new HttpsServerCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificateUrl".equals(fieldName)) {
+                    deserializedHttpsServerCertificate.certificateUrl = reader.getString();
+                } else if ("provisioning".equals(fieldName)) {
+                    deserializedHttpsServerCertificate.provisioning = CertificateProvisioning.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpsServerCertificate;
+        });
+    }
 }

@@ -6,12 +6,14 @@ import com.azure.analytics.defender.easm.models.AssetUpdateData;
 import com.azure.analytics.defender.easm.models.Task;
 import com.azure.core.util.Configuration;
 import com.azure.identity.InteractiveBrowserCredentialBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * External IDs can be a useful method of keeping track of assets in multiple systems, but it can be time consuming to
@@ -19,65 +21,53 @@ import java.util.List;
  * each asset in your inventory with an external id automatically using the SDK
  *
  * Set the following environment variables before running the sample:
- *     1) SUBSCRIPTION_ID - the subscription id for your resource
- *     2) WORKSPACE_NAME - the workspace name for your resource
- *     3) RESOURCE_GROUP - the resource group for your resource
- *     4) REGION - the azure region your resource is in
- *     5) MAPPING - a json file with an external id mapping, like so:
+ * 1) SUBSCRIPTION_ID - the subscription id for your resource
+ * 2) WORKSPACE_NAME - the workspace name for your resource
+ * 3) RESOURCE_GROUP - the resource group for your resource
+ * 4) REGION - the azure region your resource is in
+ * 5) MAPPING - a json file with an external id mapping, like so:
  *
- *     [
- *  *         {
- *  *             'name': 'example.com',
- *  *             'kind': 'host',
- *  *             'external_id': 'EXT040'
- *  *         },
- *  *         {
- *  *             'name': 'example.com',
- *  *             'kind': 'domain',
- *  *             'external_id': 'EXT041'
- *  *         }
- *  *     ]
- *
+ * [
+ * *         {
+ * *             'name': 'example.com',
+ * *             'kind': 'host',
+ * *             'external_id': 'EXT040'
+ * *         },
+ * *         {
+ * *             'name': 'example.com',
+ * *             'kind': 'domain',
+ * *             'external_id': 'EXT041'
+ * *         }
+ * *     ]
  */
 public class ManagingExternalIdsSample {
-    public static void main(String[] args) throws JsonProcessingException {
-        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTION_ID");
-        String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
-        String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
-        String region = Configuration.getGlobalConfiguration().get("REGION");
-        String endpoint = "https://" + region + ".easm.defender.microsoft.com";
+    public static void main(String[] args) throws IOException {
+        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
         String externalIdMapping = Configuration.getGlobalConfiguration().get("MAPPING");
 
-        EasmClient easmClient = new EasmClientBuilder()
-            .endpoint(endpoint)
-            .subscriptionId(subscriptionId)
-            .workspaceName(workspaceName)
-            .resourceGroupName(resourceGroupName)
+        EasmClient easmClient = new EasmClientBuilder().endpoint(endpoint)
             // For the purposes of this demo, I've chosen the InteractiveBrowserCredential but any credential will work.
-            .credential(new InteractiveBrowserCredentialBuilder().build())
-            .buildClient();
+            .credential(new InteractiveBrowserCredentialBuilder().build()).buildClient();
 
         // We can update each asset and append the tracking id of the update to our update ID list, so that
         // we can keep track of the progress on each update later
         List<String> updateIds = new ArrayList<>();
         List<String> externalIds = new ArrayList<>();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode mapping = objectMapper.readTree(externalIdMapping);
+        try (JsonReader jsonReader = JsonProviders.createReader(externalIdMapping)) {
+            List<Map<String, Object>> mapping = jsonReader.readArray(
+                arrayReader -> arrayReader.readMap(JsonReader::readUntyped));
 
-        mapping.elements().forEachRemaining((mappingInstance) -> {
+            for (Map<String, Object> map : mapping) {
+                String externalId = Objects.toString(map.get("externalId"), null);
+                externalIds.add(externalId);
 
-            externalIds.add(mappingInstance.get("externalId").toString());
-
-            AssetUpdateData assetUpdateRequest = new AssetUpdateData()
-                .setExternalId(mappingInstance.get("externalId").toString());
-            String filter = "kind = "
-                + mappingInstance.get("kind")
-                + " AND name = "
-                + mappingInstance.get("name");
-            Task taskResponse = easmClient.updateAssets(filter, assetUpdateRequest);
-            updateIds.add(taskResponse.getId());
-        });
+                AssetUpdateData assetUpdateRequest = new AssetUpdateData().setExternalId(externalId);
+                String filter = "kind = " + map.get("kind") + " AND name = " + map.get("name");
+                Task taskResponse = easmClient.updateAssets(filter, assetUpdateRequest);
+                updateIds.add(taskResponse.getId());
+            }
+        }
 
         // We can view the progress of each update using the tasksGet method
         updateIds.forEach(id -> {
@@ -90,8 +80,6 @@ public class ManagingExternalIdsSample {
         String assetFilter = "External ID in ".concat(String.join(", ", externalIds));
 
         easmClient.listAssetResource(assetFilter, "lastSeen", 0, null)
-            .forEach(assetResponse -> {
-                System.out.println(assetResponse.getExternalId() + ", " + assetResponse.getName());
-            });
+            .forEach(response -> System.out.println(response.getExternalId() + ", " + response.getName()));
     }
 }

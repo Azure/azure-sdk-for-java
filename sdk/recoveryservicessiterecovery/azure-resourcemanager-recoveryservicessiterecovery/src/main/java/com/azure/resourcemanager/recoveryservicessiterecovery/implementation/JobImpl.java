@@ -13,8 +13,7 @@ public final class JobImpl implements Job {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    JobImpl(
-        JobInner innerObject,
+    JobImpl(JobInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

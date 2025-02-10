@@ -23,8 +23,11 @@ public final class ConfluentListMetadataTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfluentListMetadata model = new ConfluentListMetadata().withFirst("uhrzayvvt").withLast("vdfgiotk")
-            .withPrev("utqxlngx").withNext("fgugnxkrxdqmid").withTotalSize(1583346323);
+        ConfluentListMetadata model = new ConfluentListMetadata().withFirst("uhrzayvvt")
+            .withLast("vdfgiotk")
+            .withPrev("utqxlngx")
+            .withNext("fgugnxkrxdqmid")
+            .withTotalSize(1583346323);
         model = BinaryData.fromObject(model).toObject(ConfluentListMetadata.class);
         Assertions.assertEquals("uhrzayvvt", model.first());
         Assertions.assertEquals("vdfgiotk", model.last());

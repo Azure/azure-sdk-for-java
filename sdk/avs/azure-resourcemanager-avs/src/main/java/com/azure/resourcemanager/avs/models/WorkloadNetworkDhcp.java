@@ -4,69 +4,87 @@
 
 package com.azure.resourcemanager.avs.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDhcpInner;
 
-/** An immutable client-side representation of WorkloadNetworkDhcp. */
+/**
+ * An immutable client-side representation of WorkloadNetworkDhcp.
+ */
 public interface WorkloadNetworkDhcp {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the properties property: DHCP properties.
-     *
+     * Gets the properties property: The resource-specific properties for this resource.
+     * 
      * @return the properties value.
      */
     WorkloadNetworkDhcpEntity properties();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDhcpInner object.
-     *
+     * 
      * @return the inner object.
      */
     WorkloadNetworkDhcpInner innerModel();
 
-    /** The entirety of the WorkloadNetworkDhcp definition. */
+    /**
+     * The entirety of the WorkloadNetworkDhcp definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The WorkloadNetworkDhcp definition stages. */
+    /**
+     * The WorkloadNetworkDhcp definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the WorkloadNetworkDhcp definition. */
+        /**
+         * The first stage of the WorkloadNetworkDhcp definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the WorkloadNetworkDhcp definition allowing to specify parent resource. */
+        /**
+         * The stage of the WorkloadNetworkDhcp definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, privateCloudName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param privateCloudName Name of the private cloud.
              * @return the next definition stage.
@@ -81,26 +99,28 @@ public interface WorkloadNetworkDhcp {
         interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             WorkloadNetworkDhcp create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             WorkloadNetworkDhcp create(Context context);
         }
 
-        /** The stage of the WorkloadNetworkDhcp definition allowing to specify properties. */
+        /**
+         * The stage of the WorkloadNetworkDhcp definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
-             * Specifies the properties property: DHCP properties..
-             *
-             * @param properties DHCP properties.
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
             WithCreate withProperties(WorkloadNetworkDhcpEntity properties);
@@ -109,37 +129,43 @@ public interface WorkloadNetworkDhcp {
 
     /**
      * Begins update for the WorkloadNetworkDhcp resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     WorkloadNetworkDhcp.Update update();
 
-    /** The template for WorkloadNetworkDhcp update. */
+    /**
+     * The template for WorkloadNetworkDhcp update.
+     */
     interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         WorkloadNetworkDhcp apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         WorkloadNetworkDhcp apply(Context context);
     }
 
-    /** The WorkloadNetworkDhcp update stages. */
+    /**
+     * The WorkloadNetworkDhcp update stages.
+     */
     interface UpdateStages {
-        /** The stage of the WorkloadNetworkDhcp update allowing to specify properties. */
+        /**
+         * The stage of the WorkloadNetworkDhcp update allowing to specify properties.
+         */
         interface WithProperties {
             /**
-             * Specifies the properties property: DHCP properties..
-             *
-             * @param properties DHCP properties.
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
             Update withProperties(WorkloadNetworkDhcpEntity properties);
@@ -148,14 +174,14 @@ public interface WorkloadNetworkDhcp {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     WorkloadNetworkDhcp refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

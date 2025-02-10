@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.AlertInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of security alerts. */
+/**
+ * List of security alerts.
+ */
 @Fluent
-public final class AlertList {
+public final class AlertList implements JsonSerializable<AlertList> {
     /*
      * describes security alert properties.
      */
-    @JsonProperty(value = "value")
     private List<AlertInner> value;
 
     /*
      * The URI to fetch the next page.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AlertList class. */
+    /**
+     * Creates an instance of AlertList class.
+     */
     public AlertList() {
     }
 
     /**
      * Get the value property: describes security alert properties.
-     *
+     * 
      * @return the value value.
      */
     public List<AlertInner> value() {
@@ -39,7 +45,7 @@ public final class AlertList {
 
     /**
      * Set the value property: describes security alert properties.
-     *
+     * 
      * @param value the value value to set.
      * @return the AlertList object itself.
      */
@@ -50,7 +56,7 @@ public final class AlertList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,51 @@ public final class AlertList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the AlertList.
+     */
+    public static AlertList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertList deserializedAlertList = new AlertList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AlertInner> value = reader.readArray(reader1 -> AlertInner.fromJson(reader1));
+                    deserializedAlertList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAlertList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertList;
+        });
     }
 }

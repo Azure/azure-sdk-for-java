@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** changeTrackedEntity. */
+/**
+ * changeTrackedEntity.
+ */
 @Fluent
 public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
     /*
      * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
      * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * identitySet
      */
-    @JsonProperty(value = "lastModifiedBy")
     private MicrosoftGraphIdentitySet lastModifiedBy;
 
     /*
      * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
      * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * changeTrackedEntity
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphChangeTrackedEntity class. */
+    /**
+     * Creates an instance of MicrosoftGraphChangeTrackedEntity class.
+     */
     public MicrosoftGraphChangeTrackedEntity() {
     }
 
     /**
      * Get the createdDateTime property: The Timestamp type represents date and time information using ISO 8601 format
      * and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -58,7 +61,7 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
     /**
      * Set the createdDateTime property: The Timestamp type represents date and time information using ISO 8601 format
      * and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphChangeTrackedEntity object itself.
      */
@@ -69,7 +72,7 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
 
     /**
      * Get the lastModifiedBy property: identitySet.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public MicrosoftGraphIdentitySet lastModifiedBy() {
@@ -78,7 +81,7 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
 
     /**
      * Set the lastModifiedBy property: identitySet.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the MicrosoftGraphChangeTrackedEntity object itself.
      */
@@ -91,7 +94,7 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
      * Get the lastModifiedDateTime property: The Timestamp type represents date and time information using ISO 8601
      * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -102,7 +105,7 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
      * Set the lastModifiedDateTime property: The Timestamp type represents date and time information using ISO 8601
      * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphChangeTrackedEntity object itself.
      */
@@ -113,17 +116,16 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: changeTrackedEntity.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: changeTrackedEntity.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphChangeTrackedEntity object itself.
      */
@@ -132,15 +134,9 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphChangeTrackedEntity withId(String id) {
         super.withId(id);
@@ -149,7 +145,7 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -158,5 +154,69 @@ public class MicrosoftGraphChangeTrackedEntity extends MicrosoftGraphEntity {
         if (lastModifiedBy() != null) {
             lastModifiedBy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeJsonField("lastModifiedBy", this.lastModifiedBy);
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphChangeTrackedEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphChangeTrackedEntity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphChangeTrackedEntity.
+     */
+    public static MicrosoftGraphChangeTrackedEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphChangeTrackedEntity deserializedMicrosoftGraphChangeTrackedEntity
+                = new MicrosoftGraphChangeTrackedEntity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphChangeTrackedEntity.withId(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphChangeTrackedEntity.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphChangeTrackedEntity.lastModifiedBy
+                        = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphChangeTrackedEntity.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphChangeTrackedEntity.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphChangeTrackedEntity;
+        });
     }
 }

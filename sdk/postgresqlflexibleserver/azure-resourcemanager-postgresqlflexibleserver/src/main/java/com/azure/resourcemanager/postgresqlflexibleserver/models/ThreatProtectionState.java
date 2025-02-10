@@ -4,21 +4,24 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the state of the Threat Protection, whether it is enabled or disabled or a state has not been applied yet
  * on the specific server.
  */
 public enum ThreatProtectionState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a ThreatProtectionState instance. */
+    /**
+     * The actual serialized value for a ThreatProtectionState instance.
+     */
     private final String value;
 
     ThreatProtectionState(String value) {
@@ -27,11 +30,10 @@ public enum ThreatProtectionState {
 
     /**
      * Parses a serialized value to a ThreatProtectionState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ThreatProtectionState object, or null if unable to parse.
      */
-    @JsonCreator
     public static ThreatProtectionState fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +47,9 @@ public enum ThreatProtectionState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -8,37 +8,57 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.Ambr;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SliceConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** SIM policy resource. */
+/**
+ * SIM policy resource.
+ */
 @Fluent
 public final class SimPolicyInner extends Resource {
     /*
      * SIM policy Properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private SimPolicyPropertiesFormat innerProperties = new SimPolicyPropertiesFormat();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SimPolicyInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SimPolicyInner class.
+     */
     public SimPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: SIM policy Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SimPolicyPropertiesFormat innerProperties() {
@@ -47,21 +67,55 @@ public final class SimPolicyInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SimPolicyInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SimPolicyInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -70,7 +124,7 @@ public final class SimPolicyInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the SIM policy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -80,7 +134,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM policy on
      * that site.
-     *
+     * 
      * @return the siteProvisioningState value.
      */
     public Map<String, SiteProvisioningState> siteProvisioningState() {
@@ -90,7 +144,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the ueAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given
      * UE. See 3GPP TS23.501 section 5.7.2.6 for a full description of the UE-AMBR.
-     *
+     * 
      * @return the ueAmbr value.
      */
     public Ambr ueAmbr() {
@@ -100,7 +154,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Set the ueAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given
      * UE. See 3GPP TS23.501 section 5.7.2.6 for a full description of the UE-AMBR.
-     *
+     * 
      * @param ueAmbr the ueAmbr value to set.
      * @return the SimPolicyInner object itself.
      */
@@ -115,7 +169,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
      * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
-     *
+     * 
      * @return the defaultSlice value.
      */
     public SliceResourceId defaultSlice() {
@@ -125,7 +179,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Set the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
      * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
-     *
+     * 
      * @param defaultSlice the defaultSlice value to set.
      * @return the SimPolicyInner object itself.
      */
@@ -140,7 +194,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the rfspIndex property: RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an
      * optional setting and by default is unspecified.
-     *
+     * 
      * @return the rfspIndex value.
      */
     public Integer rfspIndex() {
@@ -150,7 +204,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Set the rfspIndex property: RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an
      * optional setting and by default is unspecified.
-     *
+     * 
      * @param rfspIndex the rfspIndex value to set.
      * @return the SimPolicyInner object itself.
      */
@@ -165,7 +219,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the registrationTimer property: UE periodic registration update timer (5G) or UE periodic tracking area
      * update timer (4G), in seconds.
-     *
+     * 
      * @return the registrationTimer value.
      */
     public Integer registrationTimer() {
@@ -175,7 +229,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Set the registrationTimer property: UE periodic registration update timer (5G) or UE periodic tracking area
      * update timer (4G), in seconds.
-     *
+     * 
      * @param registrationTimer the registrationTimer value to set.
      * @return the SimPolicyInner object itself.
      */
@@ -190,7 +244,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Get the sliceConfigurations property: The allowed slices and the settings to use for them. The list must not
      * contain duplicate items and must contain at least one item.
-     *
+     * 
      * @return the sliceConfigurations value.
      */
     public List<SliceConfiguration> sliceConfigurations() {
@@ -200,7 +254,7 @@ public final class SimPolicyInner extends Resource {
     /**
      * Set the sliceConfigurations property: The allowed slices and the settings to use for them. The list must not
      * contain duplicate items and must contain at least one item.
-     *
+     * 
      * @param sliceConfigurations the sliceConfigurations value to set.
      * @return the SimPolicyInner object itself.
      */
@@ -214,18 +268,69 @@ public final class SimPolicyInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model SimPolicyInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model SimPolicyInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SimPolicyInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimPolicyInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SimPolicyInner.
+     */
+    public static SimPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimPolicyInner deserializedSimPolicyInner = new SimPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSimPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSimPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSimPolicyInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSimPolicyInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSimPolicyInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSimPolicyInner.innerProperties = SimPolicyPropertiesFormat.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSimPolicyInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimPolicyInner;
+        });
+    }
 }

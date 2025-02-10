@@ -7,35 +7,55 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** An object that represents a webhook for a container registry. */
+/**
+ * An object that represents a webhook for a container registry.
+ */
 @Fluent
 public final class WebhookInner extends Resource {
     /*
      * The properties of the webhook.
      */
-    @JsonProperty(value = "properties")
     private WebhookProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of WebhookInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of WebhookInner class.
+     */
     public WebhookInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the webhook.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebhookProperties innerProperties() {
@@ -44,21 +64,55 @@ public final class WebhookInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebhookInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebhookInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,7 +121,7 @@ public final class WebhookInner extends Resource {
 
     /**
      * Get the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public WebhookStatus status() {
@@ -76,7 +130,7 @@ public final class WebhookInner extends Resource {
 
     /**
      * Set the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @param status the status value to set.
      * @return the WebhookInner object itself.
      */
@@ -92,7 +146,7 @@ public final class WebhookInner extends Resource {
      * Get the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -103,7 +157,7 @@ public final class WebhookInner extends Resource {
      * Set the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the WebhookInner object itself.
      */
@@ -117,7 +171,7 @@ public final class WebhookInner extends Resource {
 
     /**
      * Get the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @return the actions value.
      */
     public List<WebhookAction> actions() {
@@ -126,7 +180,7 @@ public final class WebhookInner extends Resource {
 
     /**
      * Set the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the WebhookInner object itself.
      */
@@ -140,7 +194,7 @@ public final class WebhookInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the webhook at the time the operation was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -149,12 +203,64 @@ public final class WebhookInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebhookInner.
+     */
+    public static WebhookInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookInner deserializedWebhookInner = new WebhookInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWebhookInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebhookInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebhookInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWebhookInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebhookInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebhookInner.innerProperties = WebhookProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWebhookInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookInner;
+        });
     }
 }

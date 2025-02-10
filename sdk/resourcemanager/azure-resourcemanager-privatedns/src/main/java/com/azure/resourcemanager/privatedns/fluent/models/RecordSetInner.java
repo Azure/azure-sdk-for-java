@@ -6,40 +6,60 @@ package com.azure.resourcemanager.privatedns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.privatedns.models.ARecord;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.privatedns.models.AaaaRecord;
+import com.azure.resourcemanager.privatedns.models.ARecord;
 import com.azure.resourcemanager.privatedns.models.CnameRecord;
 import com.azure.resourcemanager.privatedns.models.MxRecord;
 import com.azure.resourcemanager.privatedns.models.PtrRecord;
 import com.azure.resourcemanager.privatedns.models.SoaRecord;
 import com.azure.resourcemanager.privatedns.models.SrvRecord;
 import com.azure.resourcemanager.privatedns.models.TxtRecord;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS zone. */
+/**
+ * Describes a DNS record set (a collection of DNS records with the same name and type) in a Private DNS zone.
+ */
 @Fluent
 public final class RecordSetInner extends ProxyResource {
     /*
      * The ETag of the record set.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * The properties of the record set.
      */
-    @JsonProperty(value = "properties")
     private RecordSetProperties innerProperties;
 
-    /** Creates an instance of RecordSetInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RecordSetInner class.
+     */
     public RecordSetInner() {
     }
 
     /**
      * Get the etag property: The ETag of the record set.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -48,7 +68,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Set the etag property: The ETag of the record set.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the RecordSetInner object itself.
      */
@@ -59,7 +79,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: The properties of the record set.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RecordSetProperties innerProperties() {
@@ -67,8 +87,38 @@ public final class RecordSetInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the metadata property: The metadata attached to the record set.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -77,7 +127,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Set the metadata property: The metadata attached to the record set.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the RecordSetInner object itself.
      */
@@ -91,7 +141,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Get the ttl property: The TTL (time-to-live) of the records in the record set.
-     *
+     * 
      * @return the ttl value.
      */
     public Long ttl() {
@@ -100,7 +150,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Set the ttl property: The TTL (time-to-live) of the records in the record set.
-     *
+     * 
      * @param ttl the ttl value to set.
      * @return the RecordSetInner object itself.
      */
@@ -114,7 +164,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Get the fqdn property: Fully qualified domain name of the record set.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -124,7 +174,7 @@ public final class RecordSetInner extends ProxyResource {
     /**
      * Get the isAutoRegistered property: Is the record set auto-registered in the Private DNS zone through a virtual
      * network link?.
-     *
+     * 
      * @return the isAutoRegistered value.
      */
     public Boolean isAutoRegistered() {
@@ -133,7 +183,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Get the aRecords property: The list of A records in the record set.
-     *
+     * 
      * @return the aRecords value.
      */
     public List<ARecord> aRecords() {
@@ -142,7 +192,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Set the aRecords property: The list of A records in the record set.
-     *
+     * 
      * @param aRecords the aRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -156,7 +206,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Get the aaaaRecords property: The list of AAAA records in the record set.
-     *
+     * 
      * @return the aaaaRecords value.
      */
     public List<AaaaRecord> aaaaRecords() {
@@ -165,7 +215,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Set the aaaaRecords property: The list of AAAA records in the record set.
-     *
+     * 
      * @param aaaaRecords the aaaaRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -179,7 +229,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Get the cnameRecord property: The CNAME record in the record set.
-     *
+     * 
      * @return the cnameRecord value.
      */
     public CnameRecord cnameRecord() {
@@ -188,7 +238,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Set the cnameRecord property: The CNAME record in the record set.
-     *
+     * 
      * @param cnameRecord the cnameRecord value to set.
      * @return the RecordSetInner object itself.
      */
@@ -202,7 +252,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Get the mxRecords property: The list of MX records in the record set.
-     *
+     * 
      * @return the mxRecords value.
      */
     public List<MxRecord> mxRecords() {
@@ -211,7 +261,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Set the mxRecords property: The list of MX records in the record set.
-     *
+     * 
      * @param mxRecords the mxRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -225,7 +275,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Get the ptrRecords property: The list of PTR records in the record set.
-     *
+     * 
      * @return the ptrRecords value.
      */
     public List<PtrRecord> ptrRecords() {
@@ -234,7 +284,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Set the ptrRecords property: The list of PTR records in the record set.
-     *
+     * 
      * @param ptrRecords the ptrRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -248,7 +298,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Get the soaRecord property: The SOA record in the record set.
-     *
+     * 
      * @return the soaRecord value.
      */
     public SoaRecord soaRecord() {
@@ -257,7 +307,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Set the soaRecord property: The SOA record in the record set.
-     *
+     * 
      * @param soaRecord the soaRecord value to set.
      * @return the RecordSetInner object itself.
      */
@@ -271,7 +321,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Get the srvRecords property: The list of SRV records in the record set.
-     *
+     * 
      * @return the srvRecords value.
      */
     public List<SrvRecord> srvRecords() {
@@ -280,7 +330,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Set the srvRecords property: The list of SRV records in the record set.
-     *
+     * 
      * @param srvRecords the srvRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -294,7 +344,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Get the txtRecords property: The list of TXT records in the record set.
-     *
+     * 
      * @return the txtRecords value.
      */
     public List<TxtRecord> txtRecords() {
@@ -303,7 +353,7 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Set the txtRecords property: The list of TXT records in the record set.
-     *
+     * 
      * @param txtRecords the txtRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -317,12 +367,58 @@ public final class RecordSetInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecordSetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecordSetInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecordSetInner.
+     */
+    public static RecordSetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecordSetInner deserializedRecordSetInner = new RecordSetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRecordSetInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRecordSetInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRecordSetInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedRecordSetInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRecordSetInner.innerProperties = RecordSetProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecordSetInner;
+        });
     }
 }

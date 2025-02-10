@@ -13,14 +13,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLedgerInner;
 
-/** An instance of this class provides access to all the operations defined in LedgersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LedgersClient.
+ */
 public interface LedgersClient {
     /**
      * Retrieves information about a Confidential Ledger resource.
-     *
-     * <p>Retrieves the properties of a Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of a Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,15 +31,15 @@ public interface LedgersClient {
      * @return confidential Ledger along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfidentialLedgerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String ledgerName, Context context);
+    Response<ConfidentialLedgerInner> getByResourceGroupWithResponse(String resourceGroupName, String ledgerName,
+        Context context);
 
     /**
      * Retrieves information about a Confidential Ledger resource.
-     *
-     * <p>Retrieves the properties of a Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of a Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -49,10 +51,10 @@ public interface LedgersClient {
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,10 +66,10 @@ public interface LedgersClient {
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -80,10 +82,10 @@ public interface LedgersClient {
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,10 +96,10 @@ public interface LedgersClient {
 
     /**
      * Deletes a Confidential Ledger resource.
-     *
-     * <p>Deletes an existing Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Deletes an existing Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,10 +111,10 @@ public interface LedgersClient {
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,15 +123,15 @@ public interface LedgersClient {
      * @return the {@link SyncPoller} for polling of confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginCreate(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger);
+    SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginCreate(String resourceGroupName,
+        String ledgerName, ConfidentialLedgerInner confidentialLedger);
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @param context The context to associate with this operation.
@@ -139,15 +141,15 @@ public interface LedgersClient {
      * @return the {@link SyncPoller} for polling of confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginCreate(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context);
+    SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginCreate(String resourceGroupName,
+        String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context);
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,15 +158,15 @@ public interface LedgersClient {
      * @return confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfidentialLedgerInner create(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger);
+    ConfidentialLedgerInner create(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger);
 
     /**
      * Creates a Confidential Ledger.
-     *
-     * <p>Creates a Confidential Ledger with the specified ledger parameters.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Creates a Confidential Ledger with the specified ledger parameters.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger Create Request Body.
      * @param context The context to associate with this operation.
@@ -174,15 +176,15 @@ public interface LedgersClient {
      * @return confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfidentialLedgerInner create(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context);
+    ConfidentialLedgerInner create(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger, Context context);
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,15 +193,15 @@ public interface LedgersClient {
      * @return the {@link SyncPoller} for polling of confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginUpdate(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger);
+    SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginUpdate(String resourceGroupName,
+        String ledgerName, ConfidentialLedgerInner confidentialLedger);
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @param context The context to associate with this operation.
@@ -209,15 +211,15 @@ public interface LedgersClient {
      * @return the {@link SyncPoller} for polling of confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginUpdate(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context);
+    SyncPoller<PollResult<ConfidentialLedgerInner>, ConfidentialLedgerInner> beginUpdate(String resourceGroupName,
+        String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context);
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,15 +228,15 @@ public interface LedgersClient {
      * @return confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfidentialLedgerInner update(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger);
+    ConfidentialLedgerInner update(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger);
 
     /**
      * Update Confidential Ledger properties
-     *
-     * <p>Updates properties of Confidential Ledger.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Updates properties of Confidential Ledger.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param ledgerName Name of the Confidential Ledger.
      * @param confidentialLedger Confidential Ledger request body for Updating Ledger.
      * @param context The context to associate with this operation.
@@ -244,67 +246,67 @@ public interface LedgersClient {
      * @return confidential Ledger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfidentialLedgerInner update(
-        String resourceGroupName, String ledgerName, ConfidentialLedgerInner confidentialLedger, Context context);
+    ConfidentialLedgerInner update(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerInner confidentialLedger, Context context);
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription and resource group
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfidentialLedgerInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription and resource group
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
+     * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConfidentialLedgerInner> listByResourceGroup(
-        String resourceGroupName, String filter, Context context);
+    PagedIterable<ConfidentialLedgerInner> listByResourceGroup(String resourceGroupName, String filter,
+        Context context);
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfidentialLedgerInner> list();
 
     /**
      * Retrieves information about all Confidential Ledger resources under the given subscription
-     *
-     * <p>Retrieves the properties of all Confidential Ledgers.
-     *
+     * 
+     * Retrieves the properties of all Confidential Ledgers.
+     * 
      * @param filter The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Confidential Ledgers and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfidentialLedgerInner> list(String filter, Context context);

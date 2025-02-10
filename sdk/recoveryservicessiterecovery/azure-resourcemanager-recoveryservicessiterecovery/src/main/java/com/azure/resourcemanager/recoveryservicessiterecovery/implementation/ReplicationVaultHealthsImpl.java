@@ -20,22 +20,18 @@ public final class ReplicationVaultHealthsImpl implements ReplicationVaultHealth
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    public ReplicationVaultHealthsImpl(
-        ReplicationVaultHealthsClient innerClient,
+    public ReplicationVaultHealthsImpl(ReplicationVaultHealthsClient innerClient,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<VaultHealthDetails> getWithResponse(
-        String resourceName, String resourceGroupName, Context context) {
-        Response<VaultHealthDetailsInner> inner =
-            this.serviceClient().getWithResponse(resourceName, resourceGroupName, context);
+    public Response<VaultHealthDetails> getWithResponse(String resourceName, String resourceGroupName,
+        Context context) {
+        Response<VaultHealthDetailsInner> inner
+            = this.serviceClient().getWithResponse(resourceName, resourceGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VaultHealthDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;

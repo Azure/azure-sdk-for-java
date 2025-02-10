@@ -14,26 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class SimStaticIpPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SimStaticIpProperties model =
-            BinaryData
-                .fromString(
-                    "{\"attachedDataNetwork\":{\"id\":\"w\"},\"slice\":{\"id\":\"nfqn\"},\"staticIp\":{\"ipv4Address\":\"psxjvf\"}}")
-                .toObject(SimStaticIpProperties.class);
-        Assertions.assertEquals("w", model.attachedDataNetwork().id());
-        Assertions.assertEquals("nfqn", model.slice().id());
-        Assertions.assertEquals("psxjvf", model.staticIp().ipv4Address());
+        SimStaticIpProperties model = BinaryData.fromString(
+            "{\"attachedDataNetwork\":{\"id\":\"vwrdnhfukuvsj\"},\"slice\":{\"id\":\"wsmystuluqypf\"},\"staticIp\":{\"ipv4Address\":\"er\"}}")
+            .toObject(SimStaticIpProperties.class);
+        Assertions.assertEquals("vwrdnhfukuvsj", model.attachedDataNetwork().id());
+        Assertions.assertEquals("wsmystuluqypf", model.slice().id());
+        Assertions.assertEquals("er", model.staticIp().ipv4Address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SimStaticIpProperties model =
-            new SimStaticIpProperties()
-                .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId("w"))
-                .withSlice(new SliceResourceId().withId("nfqn"))
-                .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("psxjvf"));
+        SimStaticIpProperties model = new SimStaticIpProperties()
+            .withAttachedDataNetwork(new AttachedDataNetworkResourceId().withId("vwrdnhfukuvsj"))
+            .withSlice(new SliceResourceId().withId("wsmystuluqypf"))
+            .withStaticIp(new SimStaticIpPropertiesStaticIp().withIpv4Address("er"));
         model = BinaryData.fromObject(model).toObject(SimStaticIpProperties.class);
-        Assertions.assertEquals("w", model.attachedDataNetwork().id());
-        Assertions.assertEquals("nfqn", model.slice().id());
-        Assertions.assertEquals("psxjvf", model.staticIp().ipv4Address());
+        Assertions.assertEquals("vwrdnhfukuvsj", model.attachedDataNetwork().id());
+        Assertions.assertEquals("wsmystuluqypf", model.slice().id());
+        Assertions.assertEquals("er", model.staticIp().ipv4Address());
     }
 }

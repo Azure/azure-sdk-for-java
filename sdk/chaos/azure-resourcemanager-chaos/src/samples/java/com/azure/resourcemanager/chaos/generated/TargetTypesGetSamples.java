@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.chaos.generated;
 
-/** Samples for TargetTypes Get. */
+/**
+ * Samples for TargetTypes Get.
+ */
 public final class TargetTypesGetSamples {
     /*
-     * x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/GetTargetType.json
+     * x-ms-original-file:
+     * specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/GetTargetType.json
      */
     /**
      * Sample code: Get a Target Type for westus2 location.
-     *
+     * 
      * @param manager Entry point to ChaosManager.
      */
     public static void getATargetTypeForWestus2Location(com.azure.resourcemanager.chaos.ChaosManager manager) {

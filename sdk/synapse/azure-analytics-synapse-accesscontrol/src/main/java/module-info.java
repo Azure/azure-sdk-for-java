@@ -7,6 +7,6 @@ module com.azure.analytics.synapse.accesscontrol {
     exports com.azure.analytics.synapse.accesscontrol;
     exports com.azure.analytics.synapse.accesscontrol.models;
 
-    opens com.azure.analytics.synapse.accesscontrol.models to com.fasterxml.jackson.databind;
-
+    opens com.azure.analytics.synapse.accesscontrol.implementation to com.azure.core;
+    opens com.azure.analytics.synapse.accesscontrol.models to com.azure.core;
 }

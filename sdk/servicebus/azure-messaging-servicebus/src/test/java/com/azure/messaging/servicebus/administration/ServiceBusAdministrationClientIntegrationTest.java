@@ -3,22 +3,16 @@
 
 package com.azure.messaging.servicebus.administration;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -45,8 +39,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.mockito.Mockito;
-import reactor.core.publisher.Mono;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -54,26 +46,21 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
-import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
-import static com.azure.messaging.servicebus.TestUtils.getFullyQualifiedDomainName;
 import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getRuleBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getTopicBaseName;
+import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClientIntegrationTest.configure;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 
 /**
  * Tests {@link ServiceBusAdministrationClient}.
@@ -82,80 +69,7 @@ import static org.mockito.Mockito.mock;
 @Execution(ExecutionMode.SAME_THREAD)
 public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
-
-    /**
-     * Test to connect to the service bus with an azure identity TokenCredential.
-     * com.azure.identity.ClientSecretCredential is used in this test.
-     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
-     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
-     */
-    @Test
-    void azureIdentityCredentials() {
-        // Arrange
-        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-        final TokenCredential tokenCredential;
-        if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = mock(TokenCredential.class);
-            Mockito.when(tokenCredential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.fromCallable(() -> {
-                return new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5)));
-            }));
-        } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
-        }
-
-        final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder();
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        final ServiceBusAdministrationClient client = builder
-            .credential(fullyQualifiedDomainName, tokenCredential)
-            .buildClient();
-
-        // Act
-        NamespaceProperties properties = client.getNamespaceProperties();
-
-        // Assert
-        assertNotNull(properties);
-
-        final String expectedName;
-        if (interceptorManager.isPlaybackMode()) {
-            expectedName = TestUtils.TEST_NAMESPACE;
-        } else {
-            final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
-            expectedName = split[0];
-        }
-
-        assertEquals(expectedName, properties.getName());
-    }
-
-    /**
-     * Test to connect to the service bus with an azure sas credential.
-     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
-     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
-     */
-    @Test
-    void azureSasCredentialsTest() {
-        assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
-        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
-
-        assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
-            "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-
-        String connectionString = getConnectionString(true);
-        Pattern sasPattern = Pattern.compile("SharedAccessSignature=(.*);?", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = sasPattern.matcher(connectionString);
-        assertTrue(matcher.find(), "Couldn't find SAS from connection string");
-        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
-            .endpoint("https://" + fullyQualifiedDomainName)
-            .credential(new AzureSasCredential(matcher.group(1)))
-            .buildClient();
-        NamespaceProperties np = client.getNamespaceProperties();
-        assertNotNull(np.getName());
-    }
+    private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
 
     //region Create tests
 
@@ -168,12 +82,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String keyName = "test-rule";
         final List<AccessRights> accessRights = Collections.singletonList(AccessRights.SEND);
         final SharedAccessAuthorizationRule rule = interceptorManager.isPlaybackMode()
-            ? new SharedAccessAuthorizationRule(keyName, "REDACTED",
-            "REDACTED", accessRights)
+            ? new SharedAccessAuthorizationRule(keyName, "REDACTED", "REDACTED", accessRights)
             : new SharedAccessAuthorizationRule(keyName, accessRights);
 
-        final CreateQueueOptions expected = new CreateQueueOptions()
-            .setMaxSizeInMegabytes(1024)
+        final CreateQueueOptions expected = new CreateQueueOptions().setMaxSizeInMegabytes(1024)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
             .setDuplicateDetectionRequired(true)
@@ -216,8 +128,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = testResourceNamer.randomName("test", 10);
         final String forwardToEntityName = getEntityName(TestUtils.getQueueBaseName(), 5);
-        final CreateQueueOptions expected = new CreateQueueOptions()
-            .setForwardTo(forwardToEntityName)
+        final CreateQueueOptions expected = new CreateQueueOptions().setForwardTo(forwardToEntityName)
             .setForwardDeadLetteredMessagesTo(forwardToEntityName);
 
         // Act
@@ -245,12 +156,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final ServiceBusAdministrationClient client = getClient();
         final String queueName = testResourceNamer.randomName("test", 10);
         final SharedAccessAuthorizationRule rule = interceptorManager.isPlaybackMode()
-            ? new SharedAccessAuthorizationRule(keyName, "REDACTED",
-            "REDACTED", accessRights)
+            ? new SharedAccessAuthorizationRule(keyName, "REDACTED", "REDACTED", accessRights)
             : new SharedAccessAuthorizationRule(keyName, accessRights);
 
-        final CreateQueueOptions expected = new CreateQueueOptions()
-            .setMaxSizeInMegabytes(1024)
+        final CreateQueueOptions expected = new CreateQueueOptions().setMaxSizeInMegabytes(1024)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
             .setSessionRequired(true)
@@ -289,8 +198,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     void createTopicWithResponse() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = testResourceNamer.randomName("test", 10);
-        final CreateTopicOptions expected = new CreateTopicOptions()
-            .setMaxSizeInMegabytes(2048L)
+        final CreateTopicOptions expected = new CreateTopicOptions().setMaxSizeInMegabytes(2048L)
             .setDuplicateDetectionRequired(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
             .setUserMetadata("some-metadata-for-testing-topic");
@@ -317,8 +225,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         // Arrange
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 3);
-        final CreateTopicOptions expected = new CreateTopicOptions()
-            .setMaxSizeInMegabytes(2048L)
+        final CreateTopicOptions expected = new CreateTopicOptions().setMaxSizeInMegabytes(2048L)
             .setDuplicateDetectionRequired(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
             .setUserMetadata("some-metadata-for-testing-topic");
@@ -334,8 +241,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String topicName = getEntityName(getTopicBaseName(), 2);
         final String forwardToTopic = getEntityName(getTopicBaseName(), 1);
         final String subscriptionName = testResourceNamer.randomName(getSubscriptionBaseName(), 10);
-        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
-            .setMaxDeliveryCount(7)
+        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions().setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
             .setUserMetadata("some-metadata-for-testing-subscriptions")
             .setForwardTo(forwardToTopic)
@@ -367,9 +273,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String topicName = getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = getSubscriptionBaseName();
         final SqlRuleAction action = new SqlRuleAction("SET Label = 'test'");
-        final CreateRuleOptions options = new CreateRuleOptions()
-            .setAction(action)
-            .setFilter(new FalseRuleFilter());
+        final CreateRuleOptions options = new CreateRuleOptions().setAction(action).setFilter(new FalseRuleFilter());
 
         final RuleProperties actual = client.createRule(topicName, ruleName, subscriptionName, options);
         assertNotNull(actual);
@@ -408,12 +312,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final SqlRuleFilter filter = new SqlRuleFilter("sys.To=@MyParameter OR sys.MessageId IS NULL");
         filter.getParameters().put("@MyParameter", "My-Parameter-Value");
 
-        final CreateRuleOptions options = new CreateRuleOptions()
-            .setAction(new EmptyRuleAction())
-            .setFilter(filter);
+        final CreateRuleOptions options = new CreateRuleOptions().setAction(new EmptyRuleAction()).setFilter(filter);
 
-        final Response<RuleProperties> response = client.createRuleWithResponse(topicName, subscriptionName,
-                                                                                ruleName, options, null);
+        final Response<RuleProperties> response
+            = client.createRuleWithResponse(topicName, subscriptionName, ruleName, options, null);
         assertEquals(201, response.getStatusCode());
 
         final RuleProperties contents = response.getValue();
@@ -436,9 +338,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final CreateQueueOptions options = new CreateQueueOptions();
         final ServiceBusAdministrationClient client = getClient();
 
-        ResourceExistsException exception = assertThrows(ResourceExistsException.class,
-            () -> client.createQueue(queueName, options),
-            "Queue exists exception not thrown when creating a queue with existing name");
+        ResourceExistsException exception
+            = assertThrows(ResourceExistsException.class, () -> client.createQueue(queueName, options),
+                "Queue exists exception not thrown when creating a queue with existing name");
     }
 
     @Test
@@ -447,9 +349,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String subscriptionName = getSubscriptionBaseName();
         final ServiceBusAdministrationClient client = getClient();
 
-        ResourceExistsException exception = assertThrows(ResourceExistsException.class,
-            () -> client.createSubscription(topicName, subscriptionName),
-            "Queue exists exception not thrown when creating a queue with existing name");
+        ResourceExistsException exception
+            = assertThrows(ResourceExistsException.class, () -> client.createSubscription(topicName, subscriptionName),
+                "Queue exists exception not thrown when creating a queue with existing name");
     }
 
     @Test
@@ -459,8 +361,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String topicName = getEntityName(getTopicBaseName(), 3);
         final String subscriptionName = testResourceNamer.randomName("sub", 50);
         final String forwardToTopic = getEntityName(getTopicBaseName(), 4);
-        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
-            .setForwardTo(forwardToTopic)
+        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions().setForwardTo(forwardToTopic)
             .setForwardDeadLetteredMessagesTo(forwardToTopic);
 
         // Act
@@ -499,12 +400,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         assertEquals(ruleName, rule.getName());
 
         assertTrue(rule.getFilter() instanceof SqlRuleFilter);
-        assertEquals(expectedFilter.getSqlExpression(),
-            ((SqlRuleFilter) rule.getFilter()).getSqlExpression());
+        assertEquals(expectedFilter.getSqlExpression(), ((SqlRuleFilter) rule.getFilter()).getSqlExpression());
 
         assertTrue(rule.getAction() instanceof SqlRuleAction);
-        assertEquals(expectedAction.getSqlExpression(),
-            ((SqlRuleAction) rule.getAction()).getSqlExpression());
+        assertEquals(expectedAction.getSqlExpression(), ((SqlRuleAction) rule.getAction()).getSqlExpression());
     }
 
     //region Get and exists tests
@@ -512,17 +411,13 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     @Test
     void getNamespace() {
         final ServiceBusAdministrationClient client = getClient();
-        final String expectedName;
-        if (interceptorManager.isPlaybackMode()) {
-            expectedName = TestUtils.TEST_NAMESPACE;
-        } else {
-            final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
-            expectedName = split[0];
-        }
 
         final NamespaceProperties namespaceProperties = client.getNamespaceProperties();
         assertEquals(NamespaceType.MESSAGING, namespaceProperties.getNamespaceType());
-        assertEquals(expectedName, namespaceProperties.getName());
+        if (!interceptorManager.isPlaybackMode()) {
+            final String[] split = TestUtils.getFullyQualifiedDomainName(true).split("\\.", 2);
+            assertEquals(split[0], namespaceProperties.getName());
+        }
     }
 
     @Test
@@ -673,7 +568,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String topicName = getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = testResourceNamer.randomName(getSubscriptionBaseName(), 10);
 
-        assertThrows(ResourceNotFoundException.class, () ->  client.getSubscription(topicName, subscriptionName),
+        assertThrows(ResourceNotFoundException.class, () -> client.getSubscription(topicName, subscriptionName),
             "Subscription exists! But should not. Incorrect getSubscription behavior");
     }
 
@@ -707,7 +602,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String subscriptionName = getSubscriptionBaseName();
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
-        final SubscriptionRuntimeProperties properties = client.getSubscriptionRuntimeProperties(topicName, subscriptionName);
+        final SubscriptionRuntimeProperties properties
+            = client.getSubscriptionRuntimeProperties(topicName, subscriptionName);
         assertEquals(topicName, properties.getTopicName());
         assertEquals(subscriptionName, properties.getSubscriptionName());
 
@@ -728,8 +624,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
             : TestUtils.getConnectionString(false);
 
-        final String connectionStringUpdated = connectionString.replace("SharedAccessKey=",
-            "SharedAccessKey=fake-key-");
+        final String connectionStringUpdated
+            = connectionString.replace("SharedAccessKey=", "SharedAccessKey=fake-key-");
 
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -759,7 +655,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String topicName = getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = getSubscriptionBaseName();
 
-        final Response<RuleProperties> response = client.getRuleWithResponse(topicName, subscriptionName, ruleName, null);
+        final Response<RuleProperties> response
+            = client.getRuleWithResponse(topicName, subscriptionName, ruleName, null);
         assertEquals(200, response.getStatusCode());
 
         final RuleProperties contents = response.getValue();
@@ -794,11 +691,11 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     @Test
     void deleteQueue() {
         final ServiceBusAdministrationClient client = getClient();
-        final String queueName = getEntityName(getQueueBaseName(), 9);
+        final String queueName = testResourceNamer.randomName("queue", 10);
 
+        client.createQueue(queueName);
         client.deleteQueue(queueName);
     }
-
 
     @Test
     void deleteQueueDoesNotExist() {
@@ -861,8 +758,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     @Test
     void deleteTopic() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = getEntityName(getTopicBaseName(), 9);
+        final String topicName = testResourceNamer.randomName("topic", 10);
 
+        client.createTopic(topicName);
         client.deleteTopic(topicName);
     }
 
@@ -930,8 +828,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         PagedIterable<RuleProperties> ruleProperties = client.listRules(topicName, subscriptionName);
 
         assertTrue(ruleProperties.stream().findAny().isPresent());
-        Optional<RuleProperties> ruleOptional = ruleProperties.stream()
-            .filter(rule1 -> rule1.getName().equals(ruleName)).findFirst();
+        Optional<RuleProperties> ruleOptional
+            = ruleProperties.stream().filter(rule1 -> rule1.getName().equals(ruleName)).findFirst();
         assertTrue(ruleOptional.isPresent());
         RuleProperties rule = ruleOptional.get();
 
@@ -945,26 +843,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     //endregion
 
     private ServiceBusAdministrationClient getClient() {
-        final String connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=sb://" + getFullyQualifiedDomainName() + ";SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
-            : TestUtils.getConnectionString(false);
-
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .connectionString(connectionString)
-            .retryOptions(new RetryOptions(new FixedDelayOptions(1, TIMEOUT)));
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_SANITIZERS);
-            interceptorManager.addMatchers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_REQUEST_MATCHERS);
-        }
-
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        configure(builder, null, interceptorManager, credentialCached);
         return builder.buildClient();
     }
 }

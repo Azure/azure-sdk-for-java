@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -24,7 +23,7 @@ public final class NetworkDataplane extends ExpandableStringEnum<NetworkDataplan
 
     /**
      * Creates a new instance of NetworkDataplane value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +32,17 @@ public final class NetworkDataplane extends ExpandableStringEnum<NetworkDataplan
 
     /**
      * Creates or finds a NetworkDataplane from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkDataplane.
      */
-    @JsonCreator
     public static NetworkDataplane fromString(String name) {
         return fromString(name, NetworkDataplane.class);
     }
 
     /**
      * Gets known NetworkDataplane values.
-     *
+     * 
      * @return known NetworkDataplane values.
      */
     public static Collection<NetworkDataplane> values() {

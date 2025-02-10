@@ -11,16 +11,19 @@ public final class ShopifySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ShopifySource model = BinaryData.fromString(
-            "{\"type\":\"ShopifySource\",\"query\":\"datafplgxc\",\"queryTimeout\":\"datactbxpuisfjamgn\",\"additionalColumns\":\"dataosusiyycoflj\",\"sourceRetryCount\":\"datadmwa\",\"sourceRetryWait\":\"datapbuqkdieuopwsa\",\"maxConcurrentConnections\":\"datahmizcfk\",\"disableMetricsCollection\":\"datafmoonnria\",\"\":{\"dvbbuuipelo\":\"datagzkdbmjzob\",\"x\":\"dataptteojxhwgja\",\"sl\":\"datarpwjgkxvkjd\"}}")
+            "{\"type\":\"ShopifySource\",\"query\":\"databuwauytq\",\"queryTimeout\":\"datagaxloafws\",\"additionalColumns\":\"dataxqrokw\",\"sourceRetryCount\":\"dataipn\",\"sourceRetryWait\":\"dataql\",\"maxConcurrentConnections\":\"datarhctbrvegdamoy\",\"disableMetricsCollection\":\"datafjpkezqjizbyczme\",\"\":{\"destarulnhbqt\":\"datacgvlnpjjbyryrktu\",\"xhcrffj\":\"datayh\",\"svzhlkeot\":\"dataexupcuizvx\"}}")
             .toObject(ShopifySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShopifySource model = new ShopifySource().withSourceRetryCount("datadmwa")
-            .withSourceRetryWait("datapbuqkdieuopwsa").withMaxConcurrentConnections("datahmizcfk")
-            .withDisableMetricsCollection("datafmoonnria").withQueryTimeout("datactbxpuisfjamgn")
-            .withAdditionalColumns("dataosusiyycoflj").withQuery("datafplgxc");
+        ShopifySource model = new ShopifySource().withSourceRetryCount("dataipn")
+            .withSourceRetryWait("dataql")
+            .withMaxConcurrentConnections("datarhctbrvegdamoy")
+            .withDisableMetricsCollection("datafjpkezqjizbyczme")
+            .withQueryTimeout("datagaxloafws")
+            .withAdditionalColumns("dataxqrokw")
+            .withQuery("databuwauytq");
         model = BinaryData.fromObject(model).toObject(ShopifySource.class);
     }
 }

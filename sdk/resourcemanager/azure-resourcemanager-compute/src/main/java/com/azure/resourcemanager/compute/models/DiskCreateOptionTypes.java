@@ -5,14 +5,16 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Specifies how the virtual machine should be created. Possible values are: **Attach.** This value is used when you are
- * using a specialized disk to create the virtual machine. **FromImage.** This value is used when you are using an image
- * to create the virtual machine. If you are using a platform image, you also use the imageReference element described
- * above. If you are using a marketplace image, you also use the plan element previously described.
+ * Specifies how the virtual machine disk should be created. Possible values are **Attach:** This value is used when you
+ * are using a specialized disk to create the virtual machine. **FromImage:** This value is used when you are using an
+ * image to create the virtual machine. If you are using a platform image, you should also use the imageReference
+ * element described above. If you are using a marketplace image, you should also use the plan element previously
+ * described. **Empty:** This value is used when creating an empty data disk. **Copy:** This value is used to create a
+ * data disk from a snapshot or another disk. **Restore:** This value is used to create a data disk from a disk restore
+ * point.
  */
 public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreateOptionTypes> {
     /**
@@ -31,6 +33,16 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
     public static final DiskCreateOptionTypes ATTACH = fromString("Attach");
 
     /**
+     * Static value Copy for DiskCreateOptionTypes.
+     */
+    public static final DiskCreateOptionTypes COPY = fromString("Copy");
+
+    /**
+     * Static value Restore for DiskCreateOptionTypes.
+     */
+    public static final DiskCreateOptionTypes RESTORE = fromString("Restore");
+
+    /**
      * Creates a new instance of DiskCreateOptionTypes value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -45,7 +57,6 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
      * @param name a name to look for.
      * @return the corresponding DiskCreateOptionTypes.
      */
-    @JsonCreator
     public static DiskCreateOptionTypes fromString(String name) {
         return fromString(name, DiskCreateOptionTypes.class);
     }

@@ -13,8 +13,7 @@ public final class AvailableServiceTierImpl implements AvailableServiceTier {
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    AvailableServiceTierImpl(
-        AvailableServiceTierInner innerObject,
+    AvailableServiceTierImpl(AvailableServiceTierInner innerObject,
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

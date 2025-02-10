@@ -5,40 +5,42 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookPivotTable. */
+/**
+ * workbookPivotTable.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity {
     /*
      * Name of the PivotTable.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * workbookWorksheet
      */
-    @JsonProperty(value = "worksheet")
     private MicrosoftGraphWorkbookWorksheet worksheet;
 
     /*
      * workbookPivotTable
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookPivotTable class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookPivotTable class.
+     */
     public MicrosoftGraphWorkbookPivotTable() {
     }
 
     /**
      * Get the name property: Name of the PivotTable.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -47,7 +49,7 @@ public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity
 
     /**
      * Set the name property: Name of the PivotTable.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphWorkbookPivotTable object itself.
      */
@@ -58,7 +60,7 @@ public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity
 
     /**
      * Get the worksheet property: workbookWorksheet.
-     *
+     * 
      * @return the worksheet value.
      */
     public MicrosoftGraphWorkbookWorksheet worksheet() {
@@ -67,7 +69,7 @@ public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity
 
     /**
      * Set the worksheet property: workbookWorksheet.
-     *
+     * 
      * @param worksheet the worksheet value to set.
      * @return the MicrosoftGraphWorkbookPivotTable object itself.
      */
@@ -78,17 +80,16 @@ public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity
 
     /**
      * Get the additionalProperties property: workbookPivotTable.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookPivotTable.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookPivotTable object itself.
      */
@@ -97,15 +98,9 @@ public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookPivotTable withId(String id) {
         super.withId(id);
@@ -114,7 +109,7 @@ public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -123,5 +118,60 @@ public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity
         if (worksheet() != null) {
             worksheet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("worksheet", this.worksheet);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookPivotTable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookPivotTable if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookPivotTable.
+     */
+    public static MicrosoftGraphWorkbookPivotTable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookPivotTable deserializedMicrosoftGraphWorkbookPivotTable
+                = new MicrosoftGraphWorkbookPivotTable();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookPivotTable.withId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookPivotTable.name = reader.getString();
+                } else if ("worksheet".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookPivotTable.worksheet
+                        = MicrosoftGraphWorkbookWorksheet.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookPivotTable.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookPivotTable;
+        });
     }
 }

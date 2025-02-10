@@ -15,29 +15,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedServiceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"22409b84-6a5c-4f52-b9aa-d752c4d118b1\",\"tenantId\":\"b73d54c9-3dd2-484a-8fef-a4b8ffcc98ea\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fxxypininmayhuy\":{\"principalId\":\"99b31f7e-d992-44ac-996c-5b3b1926617d\",\"clientId\":\"0e708b09-3575-4f14-8f35-7c20627f2a4c\"},\"podepoo\":{\"principalId\":\"2e39a8bf-ab6c-431d-93e6-cbf4a73647e5\",\"clientId\":\"5455d464-a629-4023-92e0-662a72193ef9\"},\"uvamiheognarxzxt\":{\"principalId\":\"edc2bbac-f0d5-43ef-85ad-fedd7a2ab00e\",\"clientId\":\"e375e805-2b5e-4fef-83c2-9156f388bc88\"},\"tusivyevcciqihn\":{\"principalId\":\"b066303c-fdf9-4fc7-b819-1aea1772398a\",\"clientId\":\"abdb22bd-de4e-4712-8b85-3d07e1c08b28\"}}}")
-                .toObject(ManagedServiceIdentity.class);
+        ManagedServiceIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"7e107806-0899-4200-98e6-18a6355ea91a\",\"tenantId\":\"6258fc30-d9af-4c4a-b4e7-1927cd89c4a2\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fxxypininmayhuy\":{\"principalId\":\"ef37db9a-7305-4f99-abda-1e70a95dfb91\",\"clientId\":\"373ca455-594e-4f3f-b5d3-8439dbb808a4\"},\"podepoo\":{\"principalId\":\"34fdeabf-ccae-4b77-8c08-aa806827e17e\",\"clientId\":\"080e1b57-1fbc-4305-a71f-dbccc5613708\"},\"uvamiheognarxzxt\":{\"principalId\":\"25f9fdbd-c0f3-4ce5-9c0c-bc2a9530d761\",\"clientId\":\"6d5c39ff-0046-4755-966a-4d320861400a\"},\"tusivyevcciqihn\":{\"principalId\":\"9a3cea45-0a45-4192-8da0-9a4a4849c2d8\",\"clientId\":\"9bcffa88-c7d0-4bff-ba01-45e85d4a8c40\"}}}")
+            .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model =
-            new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "fxxypininmayhuy",
-                        new UserAssignedIdentity(),
-                        "podepoo",
-                        new UserAssignedIdentity(),
-                        "uvamiheognarxzxt",
-                        new UserAssignedIdentity(),
-                        "tusivyevcciqihn",
-                        new UserAssignedIdentity()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(
+                mapOf("fxxypininmayhuy", new UserAssignedIdentity(), "podepoo", new UserAssignedIdentity(),
+                    "uvamiheognarxzxt", new UserAssignedIdentity(), "tusivyevcciqihn", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }

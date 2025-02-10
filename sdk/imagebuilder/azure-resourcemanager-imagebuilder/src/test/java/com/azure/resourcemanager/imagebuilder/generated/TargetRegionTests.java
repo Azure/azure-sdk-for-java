@@ -12,25 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class TargetRegionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetRegion model =
-            BinaryData
-                .fromString("{\"name\":\"dpydn\",\"replicaCount\":1880549577,\"storageAccountType\":\"Premium_LRS\"}")
-                .toObject(TargetRegion.class);
-        Assertions.assertEquals("dpydn", model.name());
-        Assertions.assertEquals(1880549577, model.replicaCount());
+        TargetRegion model = BinaryData
+            .fromString(
+                "{\"name\":\"jrbirphxepcyv\",\"replicaCount\":1504948811,\"storageAccountType\":\"Premium_LRS\"}")
+            .toObject(TargetRegion.class);
+        Assertions.assertEquals("jrbirphxepcyv", model.name());
+        Assertions.assertEquals(1504948811, model.replicaCount());
         Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS, model.storageAccountType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetRegion model =
-            new TargetRegion()
-                .withName("dpydn")
-                .withReplicaCount(1880549577)
-                .withStorageAccountType(SharedImageStorageAccountType.PREMIUM_LRS);
+        TargetRegion model = new TargetRegion().withName("jrbirphxepcyv")
+            .withReplicaCount(1504948811)
+            .withStorageAccountType(SharedImageStorageAccountType.PREMIUM_LRS);
         model = BinaryData.fromObject(model).toObject(TargetRegion.class);
-        Assertions.assertEquals("dpydn", model.name());
-        Assertions.assertEquals(1880549577, model.replicaCount());
+        Assertions.assertEquals("jrbirphxepcyv", model.name());
+        Assertions.assertEquals(1504948811, model.replicaCount());
         Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS, model.storageAccountType());
     }
 }

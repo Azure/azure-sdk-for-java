@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservices.models.PrivateEndpointConnecti
 public final class PrivateEndpointConnectionVaultPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionVaultProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"vdcsitynn\",\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{\"id\":\"tehfiqscjeypvh\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"q\",\"actionsRequired\":\"jrefovgmkqsle\"},\"groupIds\":[\"AzureSiteRecovery\",\"AzureBackup_secondary\",\"AzureSiteRecovery\",\"AzureSiteRecovery\"]},\"name\":\"k\",\"type\":\"t\",\"location\":\"ngj\"}")
-                .toObject(PrivateEndpointConnectionVaultProperties.class);
+        PrivateEndpointConnectionVaultProperties model = BinaryData.fromString(
+            "{\"id\":\"vdcsitynn\",\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{\"id\":\"tehfiqscjeypvh\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"q\",\"actionsRequired\":\"jrefovgmkqsle\"},\"groupIds\":[\"AzureSiteRecovery\",\"AzureBackup_secondary\",\"AzureSiteRecovery\",\"AzureSiteRecovery\"]},\"name\":\"k\",\"type\":\"t\",\"location\":\"ngj\"}")
+            .toObject(PrivateEndpointConnectionVaultProperties.class);
     }
 
     @org.junit.jupiter.api.Test

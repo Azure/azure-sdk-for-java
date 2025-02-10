@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.StorageEditionCapabi
 public final class StorageEditionCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageEditionCapability model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"cspkwlhzdobpxjmf\",\"minStorageSize\":885653517533476770,\"maxStorageSize\":6115186458339394637,\"minBackupRetentionDays\":5158769929678256713,\"maxBackupRetentionDays\":8269509488732598965}")
-                .toObject(StorageEditionCapability.class);
+        StorageEditionCapability model = BinaryData.fromString(
+            "{\"name\":\"b\",\"minStorageSize\":4998269354671391171,\"maxStorageSize\":7180856606235016018,\"minBackupRetentionDays\":246259275856309822,\"maxBackupRetentionDays\":1303050182193014003}")
+            .toObject(StorageEditionCapability.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SKU for the cache. */
+/**
+ * SKU for the cache.
+ */
 @Fluent
-public final class CacheSku {
+public final class CacheSku implements JsonSerializable<CacheSku> {
     /*
      * SKU name for this cache.
      */
-    @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of CacheSku class. */
+    /**
+     * Creates an instance of CacheSku class.
+     */
     public CacheSku() {
     }
 
     /**
      * Get the name property: SKU name for this cache.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -31,7 +38,7 @@ public final class CacheSku {
 
     /**
      * Set the name property: SKU name for this cache.
-     *
+     * 
      * @param name the name value to set.
      * @return the CacheSku object itself.
      */
@@ -42,9 +49,45 @@ public final class CacheSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheSku if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the CacheSku.
+     */
+    public static CacheSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheSku deserializedCacheSku = new CacheSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCacheSku.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheSku;
+        });
     }
 }

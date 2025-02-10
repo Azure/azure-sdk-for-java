@@ -9,11 +9,13 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** An instance of this class provides access to all the operations defined in JobOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobOperationResultsClient.
+ */
 public interface JobOperationResultsClient {
     /**
      * Fetches the result of any operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job name whose operation result has to be fetched.
@@ -25,12 +27,12 @@ public interface JobOperationResultsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getWithResponse(
-        String vaultName, String resourceGroupName, String jobName, String operationId, Context context);
+    Response<Void> getWithResponse(String vaultName, String resourceGroupName, String jobName, String operationId,
+        Context context);
 
     /**
      * Fetches the result of any operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job name whose operation result has to be fetched.

@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Azure to Azure VM synced configuration details. */
+/**
+ * Azure to Azure VM synced configuration details.
+ */
 @Fluent
-public final class AzureToAzureVmSyncedConfigDetails {
+public final class AzureToAzureVmSyncedConfigDetails implements JsonSerializable<AzureToAzureVmSyncedConfigDetails> {
     /*
      * The Azure VM tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The Azure VM input endpoints.
      */
-    @JsonProperty(value = "inputEndpoints")
     private List<InputEndpoint> inputEndpoints;
 
-    /** Creates an instance of AzureToAzureVmSyncedConfigDetails class. */
+    /**
+     * Creates an instance of AzureToAzureVmSyncedConfigDetails class.
+     */
     public AzureToAzureVmSyncedConfigDetails() {
     }
 
     /**
      * Get the tags property: The Azure VM tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class AzureToAzureVmSyncedConfigDetails {
 
     /**
      * Set the tags property: The Azure VM tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AzureToAzureVmSyncedConfigDetails object itself.
      */
@@ -52,7 +56,7 @@ public final class AzureToAzureVmSyncedConfigDetails {
 
     /**
      * Get the inputEndpoints property: The Azure VM input endpoints.
-     *
+     * 
      * @return the inputEndpoints value.
      */
     public List<InputEndpoint> inputEndpoints() {
@@ -61,7 +65,7 @@ public final class AzureToAzureVmSyncedConfigDetails {
 
     /**
      * Set the inputEndpoints property: The Azure VM input endpoints.
-     *
+     * 
      * @param inputEndpoints the inputEndpoints value to set.
      * @return the AzureToAzureVmSyncedConfigDetails object itself.
      */
@@ -72,12 +76,55 @@ public final class AzureToAzureVmSyncedConfigDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (inputEndpoints() != null) {
             inputEndpoints().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("inputEndpoints", this.inputEndpoints,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureToAzureVmSyncedConfigDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureToAzureVmSyncedConfigDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureToAzureVmSyncedConfigDetails.
+     */
+    public static AzureToAzureVmSyncedConfigDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureToAzureVmSyncedConfigDetails deserializedAzureToAzureVmSyncedConfigDetails
+                = new AzureToAzureVmSyncedConfigDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureToAzureVmSyncedConfigDetails.tags = tags;
+                } else if ("inputEndpoints".equals(fieldName)) {
+                    List<InputEndpoint> inputEndpoints = reader.readArray(reader1 -> InputEndpoint.fromJson(reader1));
+                    deserializedAzureToAzureVmSyncedConfigDetails.inputEndpoints = inputEndpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureToAzureVmSyncedConfigDetails;
+        });
     }
 }

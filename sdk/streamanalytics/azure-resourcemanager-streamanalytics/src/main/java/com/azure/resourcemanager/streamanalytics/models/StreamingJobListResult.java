@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.StreamingJobInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Object containing a list of streaming jobs. */
+/**
+ * Object containing a list of streaming jobs.
+ */
 @Immutable
-public final class StreamingJobListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingJobListResult.class);
-
+public final class StreamingJobListResult implements JsonSerializable<StreamingJobListResult> {
     /*
      * A list of streaming jobs. Populated by a 'List' operation.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<StreamingJobInner> value;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of StreamingJobListResult class.
+     */
+    public StreamingJobListResult() {
+    }
+
+    /**
      * Get the value property: A list of streaming jobs. Populated by a 'List' operation.
-     *
+     * 
      * @return the value value.
      */
     public List<StreamingJobInner> value() {
@@ -39,7 +45,7 @@ public final class StreamingJobListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,50 @@ public final class StreamingJobListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StreamingJobListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StreamingJobListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StreamingJobListResult.
+     */
+    public static StreamingJobListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StreamingJobListResult deserializedStreamingJobListResult = new StreamingJobListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<StreamingJobInner> value = reader.readArray(reader1 -> StreamingJobInner.fromJson(reader1));
+                    deserializedStreamingJobListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedStreamingJobListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStreamingJobListResult;
+        });
     }
 }

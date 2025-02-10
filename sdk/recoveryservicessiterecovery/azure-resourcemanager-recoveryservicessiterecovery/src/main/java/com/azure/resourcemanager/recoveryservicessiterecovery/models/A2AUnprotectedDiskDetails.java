@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A2A unprotected disk details. */
+/**
+ * A2A unprotected disk details.
+ */
 @Fluent
-public final class A2AUnprotectedDiskDetails {
+public final class A2AUnprotectedDiskDetails implements JsonSerializable<A2AUnprotectedDiskDetails> {
     /*
      * The source lun Id for the data disk.
      */
-    @JsonProperty(value = "diskLunId")
     private Integer diskLunId;
 
     /*
      * A value indicating whether the disk auto protection is enabled.
      */
-    @JsonProperty(value = "diskAutoProtectionStatus")
     private AutoProtectionOfDataDisk diskAutoProtectionStatus;
 
-    /** Creates an instance of A2AUnprotectedDiskDetails class. */
+    /**
+     * Creates an instance of A2AUnprotectedDiskDetails class.
+     */
     public A2AUnprotectedDiskDetails() {
     }
 
     /**
      * Get the diskLunId property: The source lun Id for the data disk.
-     *
+     * 
      * @return the diskLunId value.
      */
     public Integer diskLunId() {
@@ -37,7 +43,7 @@ public final class A2AUnprotectedDiskDetails {
 
     /**
      * Set the diskLunId property: The source lun Id for the data disk.
-     *
+     * 
      * @param diskLunId the diskLunId value to set.
      * @return the A2AUnprotectedDiskDetails object itself.
      */
@@ -48,7 +54,7 @@ public final class A2AUnprotectedDiskDetails {
 
     /**
      * Get the diskAutoProtectionStatus property: A value indicating whether the disk auto protection is enabled.
-     *
+     * 
      * @return the diskAutoProtectionStatus value.
      */
     public AutoProtectionOfDataDisk diskAutoProtectionStatus() {
@@ -57,7 +63,7 @@ public final class A2AUnprotectedDiskDetails {
 
     /**
      * Set the diskAutoProtectionStatus property: A value indicating whether the disk auto protection is enabled.
-     *
+     * 
      * @param diskAutoProtectionStatus the diskAutoProtectionStatus value to set.
      * @return the A2AUnprotectedDiskDetails object itself.
      */
@@ -68,9 +74,50 @@ public final class A2AUnprotectedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("diskLunId", this.diskLunId);
+        jsonWriter.writeStringField("diskAutoProtectionStatus",
+            this.diskAutoProtectionStatus == null ? null : this.diskAutoProtectionStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2AUnprotectedDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2AUnprotectedDiskDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2AUnprotectedDiskDetails.
+     */
+    public static A2AUnprotectedDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2AUnprotectedDiskDetails deserializedA2AUnprotectedDiskDetails = new A2AUnprotectedDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskLunId".equals(fieldName)) {
+                    deserializedA2AUnprotectedDiskDetails.diskLunId = reader.getNullable(JsonReader::getInt);
+                } else if ("diskAutoProtectionStatus".equals(fieldName)) {
+                    deserializedA2AUnprotectedDiskDetails.diskAutoProtectionStatus
+                        = AutoProtectionOfDataDisk.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2AUnprotectedDiskDetails;
+        });
     }
 }

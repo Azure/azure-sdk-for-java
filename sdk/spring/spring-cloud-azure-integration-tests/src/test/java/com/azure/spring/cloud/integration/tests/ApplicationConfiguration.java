@@ -2,8 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.spring.cloud.integration.tests.util.TestCredentialUtils;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 
 /**
@@ -16,4 +20,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 @SpringBootConfiguration
 public class ApplicationConfiguration {
 
+    @Primary
+    @Bean
+    TokenCredential integrationTestTokenCredential() {
+        return TestCredentialUtils.getIntegrationTestTokenCredential();
+    }
 }

@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Specifies the default action of allow or deny when no other rules match. */
+/**
+ * Specifies the default action of allow or deny when no other rules match.
+ */
 public enum DefaultAction {
-    /** Enum value Allow. */
+    /**
+     * Enum value Allow.
+     */
     ALLOW("Allow"),
 
-    /** Enum value Deny. */
+    /**
+     * Enum value Deny.
+     */
     DENY("Deny");
 
-    /** The actual serialized value for a DefaultAction instance. */
+    /**
+     * The actual serialized value for a DefaultAction instance.
+     */
     private final String value;
 
     DefaultAction(String value) {
@@ -24,11 +29,10 @@ public enum DefaultAction {
 
     /**
      * Parses a serialized value to a DefaultAction instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DefaultAction object, or null if unable to parse.
      */
-    @JsonCreator
     public static DefaultAction fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum DefaultAction {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

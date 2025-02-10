@@ -16,7 +16,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.Protection
 public interface ProtectionContainerOperationResultsClient {
     /**
      * Fetches the result of any operation on the container.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -29,17 +29,12 @@ public interface ProtectionContainerOperationResultsClient {
      * @return base class for container with backup items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectionContainerResourceInner> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String operationId,
-        Context context);
+    Response<ProtectionContainerResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String operationId, Context context);
 
     /**
      * Fetches the result of any operation on the container.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -51,6 +46,6 @@ public interface ProtectionContainerOperationResultsClient {
      * @return base class for container with backup items.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectionContainerResourceInner get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String operationId);
+    ProtectionContainerResourceInner get(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String operationId);
 }

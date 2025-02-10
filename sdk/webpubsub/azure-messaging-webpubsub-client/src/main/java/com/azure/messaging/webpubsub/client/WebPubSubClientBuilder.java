@@ -29,7 +29,7 @@ import java.util.function.Supplier;
  * Either the credential through {@link #credential(WebPubSubClientCredential)},
  * or the client access URL through {@link #clientAccessUrl(String)}.
  */
-@ServiceClientBuilder(serviceClients = {WebPubSubClient.class})
+@ServiceClientBuilder(serviceClients = { WebPubSubClient.class })
 public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(WebPubSubClientBuilder.class);
@@ -121,6 +121,8 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
 
     /**
      * Sets the protocol.
+     * <p>
+     * Default value is {@link WebPubSubProtocolType#JSON_RELIABLE_PROTOCOL}.
      *
      * @param webPubSubProtocol the protocol.
      * @return itself.
@@ -132,6 +134,8 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
 
     /**
      * Sets the retry options when sending messages.
+     * <p>
+     * By default, the retry uses exponential backoff.
      *
      * @param retryOptions the retry options.
      * @return itself.
@@ -164,6 +168,8 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
 
     /**
      * Sets whether automatically reconnect after disconnect.
+     * <p>
+     * Default value is {@code true}.
      *
      * @param autoReconnect whether automatically reconnect after disconnect.
      * @return itself.
@@ -175,6 +181,9 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
 
     /**
      * Sets whether automatically restore joined groups after reconnect.
+     * <p>
+     * Default value is {@code true}.
+     * This feature depends on the enabling of {@link #autoReconnect} feature.
      *
      * @param autoRestoreGroup whether automatically restore joined groups after reconnect.
      * @return itself.
@@ -218,17 +227,16 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
         // credential
         Supplier<String> clientAccessUrlSuplier;
         if (credential != null && clientAccessUrl != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Both credential and clientAccessUrl have been set. "
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Both credential and clientAccessUrl have been set. "
                     + "Set null to one of them to clear that option."));
         } else if (credential != null) {
             clientAccessUrlSuplier = credential.getClientAccessUrlSupplier();
         } else if (clientAccessUrl != null) {
             clientAccessUrlSuplier = () -> clientAccessUrl;
         } else {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Credentials have not been set. "
-                    + "They can be set using: clientAccessUrl(String), credential(WebPubSubClientCredential)"));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Credentials have not been set. "
+                + "They can be set using: clientAccessUrl(String), credential(WebPubSubClientCredential)"));
         }
 
         // user-agent
@@ -238,9 +246,7 @@ public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSu
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, clientName, clientVersion,
             configuration == null ? Configuration.getGlobalConfiguration() : configuration);
 
-        return new WebPubSubAsyncClient(
-            webSocketClient, clientAccessUrlSuplier, webPubSubProtocol,
-            applicationId, userAgent,
-            retryStrategy, autoReconnect, autoRestoreGroup);
+        return new WebPubSubAsyncClient(webSocketClient, clientAccessUrlSuplier, webPubSubProtocol, applicationId,
+            userAgent, retryStrategy, autoReconnect, autoRestoreGroup);
     }
 }

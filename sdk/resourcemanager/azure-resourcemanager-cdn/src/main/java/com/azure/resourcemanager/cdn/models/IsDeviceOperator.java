@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes operator to be matched. */
+/**
+ * Describes operator to be matched.
+ */
 public final class IsDeviceOperator extends ExpandableStringEnum<IsDeviceOperator> {
-    /** Static value Equal for IsDeviceOperator. */
+    /**
+     * Static value Equal for IsDeviceOperator.
+     */
     public static final IsDeviceOperator EQUAL = fromString("Equal");
 
     /**
      * Creates a new instance of IsDeviceOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class IsDeviceOperator extends ExpandableStringEnum<IsDeviceOperato
 
     /**
      * Creates or finds a IsDeviceOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IsDeviceOperator.
      */
-    @JsonCreator
     public static IsDeviceOperator fromString(String name) {
         return fromString(name, IsDeviceOperator.class);
     }
 
     /**
      * Gets known IsDeviceOperator values.
-     *
+     * 
      * @return known IsDeviceOperator values.
      */
     public static Collection<IsDeviceOperator> values() {

@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitoringTagRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitoringTagRulesProperties model =
-            BinaryData
-                .fromString(
-                    "{\"logRules\":{\"sendAadLogs\":\"Disabled\",\"sendSubscriptionLogs\":\"Enabled\",\"sendActivityLogs\":\"Disabled\",\"filteringTags\":[{\"name\":\"htqqrolfp\",\"value\":\"s\",\"action\":\"Include\"},{\"name\":\"qux\",\"value\":\"jyj\",\"action\":\"Exclude\"},{\"name\":\"o\",\"value\":\"hr\",\"action\":\"Exclude\"},{\"name\":\"n\",\"value\":\"kujysvlejuvfq\",\"action\":\"Exclude\"}]},\"metricRules\":{\"sendingMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"cpr\",\"value\":\"wbxgjvt\",\"action\":\"Include\"},{\"name\":\"sszdnru\",\"value\":\"guhmuouqfpr\",\"action\":\"Exclude\"}]},\"provisioningState\":\"Accepted\"}")
-                .toObject(MonitoringTagRulesProperties.class);
+        MonitoringTagRulesProperties model = BinaryData.fromString(
+            "{\"logRules\":{\"sendAadLogs\":\"Disabled\",\"sendSubscriptionLogs\":\"Enabled\",\"sendActivityLogs\":\"Disabled\",\"filteringTags\":[{\"name\":\"htqqrolfp\",\"value\":\"s\",\"action\":\"Include\"},{\"name\":\"qux\",\"value\":\"jyj\",\"action\":\"Exclude\"},{\"name\":\"o\",\"value\":\"hr\",\"action\":\"Exclude\"},{\"name\":\"n\",\"value\":\"kujysvlejuvfq\",\"action\":\"Exclude\"}]},\"metricRules\":{\"sendingMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"cpr\",\"value\":\"wbxgjvt\",\"action\":\"Include\"},{\"name\":\"sszdnru\",\"value\":\"guhmuouqfpr\",\"action\":\"Exclude\"}]},\"provisioningState\":\"Accepted\"}")
+            .toObject(MonitoringTagRulesProperties.class);
         Assertions.assertEquals(SendAadLogsStatus.DISABLED, model.logRules().sendAadLogs());
         Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED, model.logRules().sendSubscriptionLogs());
         Assertions.assertEquals(SendActivityLogsStatus.DISABLED, model.logRules().sendActivityLogs());
@@ -39,40 +37,22 @@ public final class MonitoringTagRulesPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoringTagRulesProperties model =
-            new MonitoringTagRulesProperties()
-                .withLogRules(
-                    new LogRules()
-                        .withSendAadLogs(SendAadLogsStatus.DISABLED)
-                        .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
-                        .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
-                        .withFilteringTags(
-                            Arrays
-                                .asList(
-                                    new FilteringTag()
-                                        .withName("htqqrolfp")
-                                        .withValue("s")
-                                        .withAction(TagAction.INCLUDE),
-                                    new FilteringTag().withName("qux").withValue("jyj").withAction(TagAction.EXCLUDE),
-                                    new FilteringTag().withName("o").withValue("hr").withAction(TagAction.EXCLUDE),
-                                    new FilteringTag()
-                                        .withName("n")
-                                        .withValue("kujysvlejuvfq")
-                                        .withAction(TagAction.EXCLUDE))))
-                .withMetricRules(
-                    new MetricRules()
-                        .withSendingMetrics(SendingMetricsStatus.DISABLED)
-                        .withFilteringTags(
-                            Arrays
-                                .asList(
-                                    new FilteringTag()
-                                        .withName("cpr")
-                                        .withValue("wbxgjvt")
-                                        .withAction(TagAction.INCLUDE),
-                                    new FilteringTag()
-                                        .withName("sszdnru")
-                                        .withValue("guhmuouqfpr")
-                                        .withAction(TagAction.EXCLUDE))));
+        MonitoringTagRulesProperties model
+            = new MonitoringTagRulesProperties()
+                .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
+                    .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
+                    .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
+                    .withFilteringTags(Arrays.asList(
+                        new FilteringTag().withName("htqqrolfp").withValue("s").withAction(TagAction.INCLUDE),
+                        new FilteringTag().withName("qux").withValue("jyj").withAction(TagAction.EXCLUDE),
+                        new FilteringTag().withName("o").withValue("hr").withAction(TagAction.EXCLUDE),
+                        new FilteringTag().withName("n").withValue("kujysvlejuvfq").withAction(TagAction.EXCLUDE))))
+                .withMetricRules(new MetricRules().withSendingMetrics(SendingMetricsStatus.DISABLED)
+                    .withFilteringTags(Arrays.asList(
+                        new FilteringTag().withName("cpr").withValue("wbxgjvt").withAction(TagAction.INCLUDE),
+                        new FilteringTag().withName("sszdnru")
+                            .withValue("guhmuouqfpr")
+                            .withAction(TagAction.EXCLUDE))));
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesProperties.class);
         Assertions.assertEquals(SendAadLogsStatus.DISABLED, model.logRules().sendAadLogs());
         Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED, model.logRules().sendSubscriptionLogs());

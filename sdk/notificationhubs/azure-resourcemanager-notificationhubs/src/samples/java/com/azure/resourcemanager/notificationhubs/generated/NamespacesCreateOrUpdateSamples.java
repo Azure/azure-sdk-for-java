@@ -9,19 +9,22 @@ import com.azure.resourcemanager.notificationhubs.models.SkuName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Namespaces CreateOrUpdate. */
+/**
+ * Samples for Namespaces CreateOrUpdate.
+ */
 public final class NamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/Namespaces/NHNameSpaceCreate.json
+     * x-ms-original-file:
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/Namespaces/
+     * NHNameSpaceCreate.json
      */
     /**
      * Sample code: NameSpaceCreate.
-     *
+     * 
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void nameSpaceCreate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager
-            .namespaces()
+        manager.namespaces()
             .define("nh-sdk-ns")
             .withLocation("South Central US")
             .withExistingResourceGroup("5ktrial")
@@ -30,6 +33,7 @@ public final class NamespacesCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

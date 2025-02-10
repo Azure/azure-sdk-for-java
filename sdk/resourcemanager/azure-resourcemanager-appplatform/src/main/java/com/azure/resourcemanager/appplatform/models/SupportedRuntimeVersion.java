@@ -5,33 +5,41 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Supported deployment runtime version descriptor. */
+/**
+ * Supported deployment runtime version descriptor.
+ */
 @Fluent
-public final class SupportedRuntimeVersion {
+public final class SupportedRuntimeVersion implements JsonSerializable<SupportedRuntimeVersion> {
     /*
      * The raw value which could be passed to deployment CRUD operations.
      */
-    @JsonProperty(value = "value")
     private SupportedRuntimeValue value;
 
     /*
-     * The platform of this runtime version (possible values: "Java" or
-     * ".NET").
+     * The platform of this runtime version (possible values: "Java" or ".NET").
      */
-    @JsonProperty(value = "platform")
     private SupportedRuntimePlatform platform;
 
     /*
      * The detailed version (major.minor) of the platform.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /**
+     * Creates an instance of SupportedRuntimeVersion class.
+     */
+    public SupportedRuntimeVersion() {
+    }
+
+    /**
      * Get the value property: The raw value which could be passed to deployment CRUD operations.
-     *
+     * 
      * @return the value value.
      */
     public SupportedRuntimeValue value() {
@@ -40,7 +48,7 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Set the value property: The raw value which could be passed to deployment CRUD operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the SupportedRuntimeVersion object itself.
      */
@@ -51,7 +59,7 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Get the platform property: The platform of this runtime version (possible values: "Java" or ".NET").
-     *
+     * 
      * @return the platform value.
      */
     public SupportedRuntimePlatform platform() {
@@ -60,7 +68,7 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Set the platform property: The platform of this runtime version (possible values: "Java" or ".NET").
-     *
+     * 
      * @param platform the platform value to set.
      * @return the SupportedRuntimeVersion object itself.
      */
@@ -71,7 +79,7 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Get the version property: The detailed version (major.minor) of the platform.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -80,7 +88,7 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Set the version property: The detailed version (major.minor) of the platform.
-     *
+     * 
      * @param version the version value to set.
      * @return the SupportedRuntimeVersion object itself.
      */
@@ -91,9 +99,52 @@ public final class SupportedRuntimeVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value == null ? null : this.value.toString());
+        jsonWriter.writeStringField("platform", this.platform == null ? null : this.platform.toString());
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedRuntimeVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedRuntimeVersion if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedRuntimeVersion.
+     */
+    public static SupportedRuntimeVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedRuntimeVersion deserializedSupportedRuntimeVersion = new SupportedRuntimeVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedSupportedRuntimeVersion.value = SupportedRuntimeValue.fromString(reader.getString());
+                } else if ("platform".equals(fieldName)) {
+                    deserializedSupportedRuntimeVersion.platform
+                        = SupportedRuntimePlatform.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedSupportedRuntimeVersion.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedRuntimeVersion;
+        });
     }
 }

@@ -20,12 +20,12 @@ import java.util.UUID;
 /** The implementation for {@link DataDisk} and its create and update interfaces. */
 class UnmanagedDataDiskImpl extends ChildResourceImpl<DataDisk, VirtualMachineImpl, VirtualMachine>
     implements VirtualMachineUnmanagedDataDisk,
-        VirtualMachineUnmanagedDataDisk.DefinitionWithExistingVhd<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
-        VirtualMachineUnmanagedDataDisk.DefinitionWithNewVhd<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
-        VirtualMachineUnmanagedDataDisk.DefinitionWithImage<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
-        VirtualMachineUnmanagedDataDisk.UpdateDefinitionWithExistingVhd<VirtualMachine.Update>,
-        VirtualMachineUnmanagedDataDisk.UpdateDefinitionWithNewVhd<VirtualMachine.Update>,
-        VirtualMachineUnmanagedDataDisk.Update {
+    VirtualMachineUnmanagedDataDisk.DefinitionWithExistingVhd<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
+    VirtualMachineUnmanagedDataDisk.DefinitionWithNewVhd<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
+    VirtualMachineUnmanagedDataDisk.DefinitionWithImage<VirtualMachine.DefinitionStages.WithUnmanagedCreate>,
+    VirtualMachineUnmanagedDataDisk.UpdateDefinitionWithExistingVhd<VirtualMachine.Update>,
+    VirtualMachineUnmanagedDataDisk.UpdateDefinitionWithNewVhd<VirtualMachine.Update>,
+    VirtualMachineUnmanagedDataDisk.Update {
 
     protected UnmanagedDataDiskImpl(DataDisk inner, VirtualMachineImpl parent) {
         super(inner, parent);
@@ -83,8 +83,7 @@ class UnmanagedDataDiskImpl extends ChildResourceImpl<DataDisk, VirtualMachineIm
 
     @Override
     public UnmanagedDataDiskImpl withExistingVhd(String storageAccountName, String containerName, String vhdName) {
-        this
-            .innerModel()
+        this.innerModel()
             .withCreateOption(DiskCreateOptionTypes.ATTACH)
             .withVhd(new VirtualHardDisk().withUri(blobUrl(storageAccountName, containerName, vhdName)));
         return this;
@@ -155,26 +154,18 @@ class UnmanagedDataDiskImpl extends ChildResourceImpl<DataDisk, VirtualMachineIm
         }
     }
 
-    protected static void ensureDisksVhdUri(
-        List<VirtualMachineUnmanagedDataDisk> dataDisks, StorageAccount storageAccount, String namePrefix) {
+    protected static void ensureDisksVhdUri(List<VirtualMachineUnmanagedDataDisk> dataDisks,
+        StorageAccount storageAccount, String namePrefix) {
         for (VirtualMachineUnmanagedDataDisk dataDisk : dataDisks) {
             if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY
                 || dataDisk.creationMethod() == DiskCreateOptionTypes.FROM_IMAGE) {
                 // New empty and from image data disk requires Vhd Uri to be set
                 if (dataDisk.innerModel().vhd() == null) {
                     dataDisk.innerModel().withVhd(new VirtualHardDisk());
-                    dataDisk
-                        .innerModel()
+                    dataDisk.innerModel()
                         .vhd()
-                        .withUri(
-                            storageAccount.endPoints().primary().blob()
-                                + "vhds/"
-                                + namePrefix
-                                + "-data-disk-"
-                                + dataDisk.lun()
-                                + "-"
-                                + UUID.randomUUID().toString()
-                                + ".vhd");
+                        .withUri(storageAccount.endPoints().primary().blob() + "vhds/" + namePrefix + "-data-disk-"
+                            + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd");
                 }
             }
         }
@@ -195,17 +186,10 @@ class UnmanagedDataDiskImpl extends ChildResourceImpl<DataDisk, VirtualMachineIm
                     // New data disk requires Vhd Uri to be set
                     if (dataDisk.innerModel().vhd() == null) {
                         dataDisk.innerModel().withVhd(new VirtualHardDisk());
-                        dataDisk
-                            .innerModel()
+                        dataDisk.innerModel()
                             .vhd()
-                            .withUri(
-                                containerUrl
-                                    + namePrefix
-                                    + "-data-disk-"
-                                    + dataDisk.lun()
-                                    + "-"
-                                    + UUID.randomUUID().toString()
-                                    + ".vhd");
+                            .withUri(containerUrl + namePrefix + "-data-disk-" + dataDisk.lun() + "-"
+                                + UUID.randomUUID().toString() + ".vhd");
                     }
                 }
             }
@@ -214,13 +198,7 @@ class UnmanagedDataDiskImpl extends ChildResourceImpl<DataDisk, VirtualMachineIm
 
     private String blobUrl(String storageAccountName, String containerName, String blobName) {
         AzureEnvironment azureEnvironment = this.parent().environment();
-        return "https://"
-            + storageAccountName
-            + ".blob"
-            + azureEnvironment.getStorageEndpointSuffix()
-            + "/"
-            + containerName
-            + "/"
-            + blobName;
+        return "https://" + storageAccountName + ".blob" + azureEnvironment.getStorageEndpointSuffix() + "/"
+            + containerName + "/" + blobName;
     }
 }

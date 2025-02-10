@@ -5,63 +5,66 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The content of the event request message. */
+/**
+ * The content of the event request message.
+ */
 @Fluent
-public final class EventContent {
+public final class EventContent implements JsonSerializable<EventContent> {
     /*
      * The event ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The time at which the event occurred.
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
      * The action that encompasses the provided event.
      */
-    @JsonProperty(value = "action")
     private String action;
 
     /*
      * The target of the event.
      */
-    @JsonProperty(value = "target")
     private Target target;
 
     /*
      * The request that generated the event.
      */
-    @JsonProperty(value = "request")
     private Request request;
 
     /*
      * The agent that initiated the event. For most situations, this could be from the authorization context of the
      * request.
      */
-    @JsonProperty(value = "actor")
     private Actor actor;
 
     /*
      * The registry node that generated the event. Put differently, while the actor initiates the event, the source
      * generates it.
      */
-    @JsonProperty(value = "source")
     private Source source;
 
-    /** Creates an instance of EventContent class. */
+    /**
+     * Creates an instance of EventContent class.
+     */
     public EventContent() {
     }
 
     /**
      * Get the id property: The event ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -70,7 +73,7 @@ public final class EventContent {
 
     /**
      * Set the id property: The event ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the EventContent object itself.
      */
@@ -81,7 +84,7 @@ public final class EventContent {
 
     /**
      * Get the timestamp property: The time at which the event occurred.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -90,7 +93,7 @@ public final class EventContent {
 
     /**
      * Set the timestamp property: The time at which the event occurred.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the EventContent object itself.
      */
@@ -101,7 +104,7 @@ public final class EventContent {
 
     /**
      * Get the action property: The action that encompasses the provided event.
-     *
+     * 
      * @return the action value.
      */
     public String action() {
@@ -110,7 +113,7 @@ public final class EventContent {
 
     /**
      * Set the action property: The action that encompasses the provided event.
-     *
+     * 
      * @param action the action value to set.
      * @return the EventContent object itself.
      */
@@ -121,7 +124,7 @@ public final class EventContent {
 
     /**
      * Get the target property: The target of the event.
-     *
+     * 
      * @return the target value.
      */
     public Target target() {
@@ -130,7 +133,7 @@ public final class EventContent {
 
     /**
      * Set the target property: The target of the event.
-     *
+     * 
      * @param target the target value to set.
      * @return the EventContent object itself.
      */
@@ -141,7 +144,7 @@ public final class EventContent {
 
     /**
      * Get the request property: The request that generated the event.
-     *
+     * 
      * @return the request value.
      */
     public Request request() {
@@ -150,7 +153,7 @@ public final class EventContent {
 
     /**
      * Set the request property: The request that generated the event.
-     *
+     * 
      * @param request the request value to set.
      * @return the EventContent object itself.
      */
@@ -162,7 +165,7 @@ public final class EventContent {
     /**
      * Get the actor property: The agent that initiated the event. For most situations, this could be from the
      * authorization context of the request.
-     *
+     * 
      * @return the actor value.
      */
     public Actor actor() {
@@ -172,7 +175,7 @@ public final class EventContent {
     /**
      * Set the actor property: The agent that initiated the event. For most situations, this could be from the
      * authorization context of the request.
-     *
+     * 
      * @param actor the actor value to set.
      * @return the EventContent object itself.
      */
@@ -184,7 +187,7 @@ public final class EventContent {
     /**
      * Get the source property: The registry node that generated the event. Put differently, while the actor initiates
      * the event, the source generates it.
-     *
+     * 
      * @return the source value.
      */
     public Source source() {
@@ -194,7 +197,7 @@ public final class EventContent {
     /**
      * Set the source property: The registry node that generated the event. Put differently, while the actor initiates
      * the event, the source generates it.
-     *
+     * 
      * @param source the source value to set.
      * @return the EventContent object itself.
      */
@@ -205,7 +208,7 @@ public final class EventContent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -221,5 +224,61 @@ public final class EventContent {
         if (source() != null) {
             source().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("action", this.action);
+        jsonWriter.writeJsonField("target", this.target);
+        jsonWriter.writeJsonField("request", this.request);
+        jsonWriter.writeJsonField("actor", this.actor);
+        jsonWriter.writeJsonField("source", this.source);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventContent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventContent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventContent.
+     */
+    public static EventContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventContent deserializedEventContent = new EventContent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEventContent.id = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedEventContent.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("action".equals(fieldName)) {
+                    deserializedEventContent.action = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedEventContent.target = Target.fromJson(reader);
+                } else if ("request".equals(fieldName)) {
+                    deserializedEventContent.request = Request.fromJson(reader);
+                } else if ("actor".equals(fieldName)) {
+                    deserializedEventContent.actor = Actor.fromJson(reader);
+                } else if ("source".equals(fieldName)) {
+                    deserializedEventContent.source = Source.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventContent;
+        });
     }
 }

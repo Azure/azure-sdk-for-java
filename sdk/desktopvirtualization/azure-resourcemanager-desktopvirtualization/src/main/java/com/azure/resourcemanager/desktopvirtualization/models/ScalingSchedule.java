@@ -5,127 +5,117 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A ScalingPlanPooledSchedule. */
+/**
+ * A ScalingPlanPooledSchedule.
+ */
 @Fluent
-public final class ScalingSchedule {
+public final class ScalingSchedule implements JsonSerializable<ScalingSchedule> {
     /*
      * Name of the ScalingPlanPooledSchedule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Set of days of the week on which this schedule is active.
      */
-    @JsonProperty(value = "daysOfWeek")
     private List<ScalingScheduleDaysOfWeekItem> daysOfWeek;
 
     /*
      * Starting time for ramp up period.
      */
-    @JsonProperty(value = "rampUpStartTime")
     private Time rampUpStartTime;
 
     /*
      * Load balancing algorithm for ramp up period.
      */
-    @JsonProperty(value = "rampUpLoadBalancingAlgorithm")
     private SessionHostLoadBalancingAlgorithm rampUpLoadBalancingAlgorithm;
 
     /*
      * Minimum host percentage for ramp up period.
      */
-    @JsonProperty(value = "rampUpMinimumHostsPct")
     private Integer rampUpMinimumHostsPct;
 
     /*
      * Capacity threshold for ramp up period.
      */
-    @JsonProperty(value = "rampUpCapacityThresholdPct")
     private Integer rampUpCapacityThresholdPct;
 
     /*
      * Starting time for peak period.
      */
-    @JsonProperty(value = "peakStartTime")
     private Time peakStartTime;
 
     /*
      * Load balancing algorithm for peak period.
      */
-    @JsonProperty(value = "peakLoadBalancingAlgorithm")
     private SessionHostLoadBalancingAlgorithm peakLoadBalancingAlgorithm;
 
     /*
      * Starting time for ramp down period.
      */
-    @JsonProperty(value = "rampDownStartTime")
     private Time rampDownStartTime;
 
     /*
      * Load balancing algorithm for ramp down period.
      */
-    @JsonProperty(value = "rampDownLoadBalancingAlgorithm")
     private SessionHostLoadBalancingAlgorithm rampDownLoadBalancingAlgorithm;
 
     /*
      * Minimum host percentage for ramp down period.
      */
-    @JsonProperty(value = "rampDownMinimumHostsPct")
     private Integer rampDownMinimumHostsPct;
 
     /*
      * Capacity threshold for ramp down period.
      */
-    @JsonProperty(value = "rampDownCapacityThresholdPct")
     private Integer rampDownCapacityThresholdPct;
 
     /*
      * Should users be logged off forcefully from hosts.
      */
-    @JsonProperty(value = "rampDownForceLogoffUsers")
     private Boolean rampDownForceLogoffUsers;
 
     /*
      * Specifies when to stop hosts during ramp down period.
      */
-    @JsonProperty(value = "rampDownStopHostsWhen")
     private StopHostsWhen rampDownStopHostsWhen;
 
     /*
      * Number of minutes to wait to stop hosts during ramp down period.
      */
-    @JsonProperty(value = "rampDownWaitTimeMinutes")
     private Integer rampDownWaitTimeMinutes;
 
     /*
      * Notification message for users during ramp down period.
      */
-    @JsonProperty(value = "rampDownNotificationMessage")
     private String rampDownNotificationMessage;
 
     /*
      * Starting time for off-peak period.
      */
-    @JsonProperty(value = "offPeakStartTime")
     private Time offPeakStartTime;
 
     /*
      * Load balancing algorithm for off-peak period.
      */
-    @JsonProperty(value = "offPeakLoadBalancingAlgorithm")
     private SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm;
 
-    /** Creates an instance of ScalingSchedule class. */
+    /**
+     * Creates an instance of ScalingSchedule class.
+     */
     public ScalingSchedule() {
     }
 
     /**
      * Get the name property: Name of the ScalingPlanPooledSchedule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -134,7 +124,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the name property: Name of the ScalingPlanPooledSchedule.
-     *
+     * 
      * @param name the name value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -145,7 +135,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the daysOfWeek property: Set of days of the week on which this schedule is active.
-     *
+     * 
      * @return the daysOfWeek value.
      */
     public List<ScalingScheduleDaysOfWeekItem> daysOfWeek() {
@@ -154,7 +144,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the daysOfWeek property: Set of days of the week on which this schedule is active.
-     *
+     * 
      * @param daysOfWeek the daysOfWeek value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -165,7 +155,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the rampUpStartTime property: Starting time for ramp up period.
-     *
+     * 
      * @return the rampUpStartTime value.
      */
     public Time rampUpStartTime() {
@@ -174,7 +164,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampUpStartTime property: Starting time for ramp up period.
-     *
+     * 
      * @param rampUpStartTime the rampUpStartTime value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -185,7 +175,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the rampUpLoadBalancingAlgorithm property: Load balancing algorithm for ramp up period.
-     *
+     * 
      * @return the rampUpLoadBalancingAlgorithm value.
      */
     public SessionHostLoadBalancingAlgorithm rampUpLoadBalancingAlgorithm() {
@@ -194,19 +184,19 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampUpLoadBalancingAlgorithm property: Load balancing algorithm for ramp up period.
-     *
+     * 
      * @param rampUpLoadBalancingAlgorithm the rampUpLoadBalancingAlgorithm value to set.
      * @return the ScalingSchedule object itself.
      */
-    public ScalingSchedule withRampUpLoadBalancingAlgorithm(
-        SessionHostLoadBalancingAlgorithm rampUpLoadBalancingAlgorithm) {
+    public ScalingSchedule
+        withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm rampUpLoadBalancingAlgorithm) {
         this.rampUpLoadBalancingAlgorithm = rampUpLoadBalancingAlgorithm;
         return this;
     }
 
     /**
      * Get the rampUpMinimumHostsPct property: Minimum host percentage for ramp up period.
-     *
+     * 
      * @return the rampUpMinimumHostsPct value.
      */
     public Integer rampUpMinimumHostsPct() {
@@ -215,7 +205,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampUpMinimumHostsPct property: Minimum host percentage for ramp up period.
-     *
+     * 
      * @param rampUpMinimumHostsPct the rampUpMinimumHostsPct value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -226,7 +216,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the rampUpCapacityThresholdPct property: Capacity threshold for ramp up period.
-     *
+     * 
      * @return the rampUpCapacityThresholdPct value.
      */
     public Integer rampUpCapacityThresholdPct() {
@@ -235,7 +225,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampUpCapacityThresholdPct property: Capacity threshold for ramp up period.
-     *
+     * 
      * @param rampUpCapacityThresholdPct the rampUpCapacityThresholdPct value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -246,7 +236,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the peakStartTime property: Starting time for peak period.
-     *
+     * 
      * @return the peakStartTime value.
      */
     public Time peakStartTime() {
@@ -255,7 +245,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the peakStartTime property: Starting time for peak period.
-     *
+     * 
      * @param peakStartTime the peakStartTime value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -266,7 +256,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the peakLoadBalancingAlgorithm property: Load balancing algorithm for peak period.
-     *
+     * 
      * @return the peakLoadBalancingAlgorithm value.
      */
     public SessionHostLoadBalancingAlgorithm peakLoadBalancingAlgorithm() {
@@ -275,19 +265,19 @@ public final class ScalingSchedule {
 
     /**
      * Set the peakLoadBalancingAlgorithm property: Load balancing algorithm for peak period.
-     *
+     * 
      * @param peakLoadBalancingAlgorithm the peakLoadBalancingAlgorithm value to set.
      * @return the ScalingSchedule object itself.
      */
-    public ScalingSchedule withPeakLoadBalancingAlgorithm(
-        SessionHostLoadBalancingAlgorithm peakLoadBalancingAlgorithm) {
+    public ScalingSchedule
+        withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm peakLoadBalancingAlgorithm) {
         this.peakLoadBalancingAlgorithm = peakLoadBalancingAlgorithm;
         return this;
     }
 
     /**
      * Get the rampDownStartTime property: Starting time for ramp down period.
-     *
+     * 
      * @return the rampDownStartTime value.
      */
     public Time rampDownStartTime() {
@@ -296,7 +286,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampDownStartTime property: Starting time for ramp down period.
-     *
+     * 
      * @param rampDownStartTime the rampDownStartTime value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -307,7 +297,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the rampDownLoadBalancingAlgorithm property: Load balancing algorithm for ramp down period.
-     *
+     * 
      * @return the rampDownLoadBalancingAlgorithm value.
      */
     public SessionHostLoadBalancingAlgorithm rampDownLoadBalancingAlgorithm() {
@@ -316,19 +306,19 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampDownLoadBalancingAlgorithm property: Load balancing algorithm for ramp down period.
-     *
+     * 
      * @param rampDownLoadBalancingAlgorithm the rampDownLoadBalancingAlgorithm value to set.
      * @return the ScalingSchedule object itself.
      */
-    public ScalingSchedule withRampDownLoadBalancingAlgorithm(
-        SessionHostLoadBalancingAlgorithm rampDownLoadBalancingAlgorithm) {
+    public ScalingSchedule
+        withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm rampDownLoadBalancingAlgorithm) {
         this.rampDownLoadBalancingAlgorithm = rampDownLoadBalancingAlgorithm;
         return this;
     }
 
     /**
      * Get the rampDownMinimumHostsPct property: Minimum host percentage for ramp down period.
-     *
+     * 
      * @return the rampDownMinimumHostsPct value.
      */
     public Integer rampDownMinimumHostsPct() {
@@ -337,7 +327,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampDownMinimumHostsPct property: Minimum host percentage for ramp down period.
-     *
+     * 
      * @param rampDownMinimumHostsPct the rampDownMinimumHostsPct value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -348,7 +338,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the rampDownCapacityThresholdPct property: Capacity threshold for ramp down period.
-     *
+     * 
      * @return the rampDownCapacityThresholdPct value.
      */
     public Integer rampDownCapacityThresholdPct() {
@@ -357,7 +347,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampDownCapacityThresholdPct property: Capacity threshold for ramp down period.
-     *
+     * 
      * @param rampDownCapacityThresholdPct the rampDownCapacityThresholdPct value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -368,7 +358,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the rampDownForceLogoffUsers property: Should users be logged off forcefully from hosts.
-     *
+     * 
      * @return the rampDownForceLogoffUsers value.
      */
     public Boolean rampDownForceLogoffUsers() {
@@ -377,7 +367,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampDownForceLogoffUsers property: Should users be logged off forcefully from hosts.
-     *
+     * 
      * @param rampDownForceLogoffUsers the rampDownForceLogoffUsers value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -388,7 +378,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the rampDownStopHostsWhen property: Specifies when to stop hosts during ramp down period.
-     *
+     * 
      * @return the rampDownStopHostsWhen value.
      */
     public StopHostsWhen rampDownStopHostsWhen() {
@@ -397,7 +387,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampDownStopHostsWhen property: Specifies when to stop hosts during ramp down period.
-     *
+     * 
      * @param rampDownStopHostsWhen the rampDownStopHostsWhen value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -408,7 +398,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the rampDownWaitTimeMinutes property: Number of minutes to wait to stop hosts during ramp down period.
-     *
+     * 
      * @return the rampDownWaitTimeMinutes value.
      */
     public Integer rampDownWaitTimeMinutes() {
@@ -417,7 +407,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampDownWaitTimeMinutes property: Number of minutes to wait to stop hosts during ramp down period.
-     *
+     * 
      * @param rampDownWaitTimeMinutes the rampDownWaitTimeMinutes value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -428,7 +418,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the rampDownNotificationMessage property: Notification message for users during ramp down period.
-     *
+     * 
      * @return the rampDownNotificationMessage value.
      */
     public String rampDownNotificationMessage() {
@@ -437,7 +427,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the rampDownNotificationMessage property: Notification message for users during ramp down period.
-     *
+     * 
      * @param rampDownNotificationMessage the rampDownNotificationMessage value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -448,7 +438,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the offPeakStartTime property: Starting time for off-peak period.
-     *
+     * 
      * @return the offPeakStartTime value.
      */
     public Time offPeakStartTime() {
@@ -457,7 +447,7 @@ public final class ScalingSchedule {
 
     /**
      * Set the offPeakStartTime property: Starting time for off-peak period.
-     *
+     * 
      * @param offPeakStartTime the offPeakStartTime value to set.
      * @return the ScalingSchedule object itself.
      */
@@ -468,7 +458,7 @@ public final class ScalingSchedule {
 
     /**
      * Get the offPeakLoadBalancingAlgorithm property: Load balancing algorithm for off-peak period.
-     *
+     * 
      * @return the offPeakLoadBalancingAlgorithm value.
      */
     public SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm() {
@@ -477,19 +467,19 @@ public final class ScalingSchedule {
 
     /**
      * Set the offPeakLoadBalancingAlgorithm property: Load balancing algorithm for off-peak period.
-     *
+     * 
      * @param offPeakLoadBalancingAlgorithm the offPeakLoadBalancingAlgorithm value to set.
      * @return the ScalingSchedule object itself.
      */
-    public ScalingSchedule withOffPeakLoadBalancingAlgorithm(
-        SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm) {
+    public ScalingSchedule
+        withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm offPeakLoadBalancingAlgorithm) {
         this.offPeakLoadBalancingAlgorithm = offPeakLoadBalancingAlgorithm;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -505,5 +495,104 @@ public final class ScalingSchedule {
         if (offPeakStartTime() != null) {
             offPeakStartTime().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("daysOfWeek", this.daysOfWeek,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("rampUpStartTime", this.rampUpStartTime);
+        jsonWriter.writeStringField("rampUpLoadBalancingAlgorithm",
+            this.rampUpLoadBalancingAlgorithm == null ? null : this.rampUpLoadBalancingAlgorithm.toString());
+        jsonWriter.writeNumberField("rampUpMinimumHostsPct", this.rampUpMinimumHostsPct);
+        jsonWriter.writeNumberField("rampUpCapacityThresholdPct", this.rampUpCapacityThresholdPct);
+        jsonWriter.writeJsonField("peakStartTime", this.peakStartTime);
+        jsonWriter.writeStringField("peakLoadBalancingAlgorithm",
+            this.peakLoadBalancingAlgorithm == null ? null : this.peakLoadBalancingAlgorithm.toString());
+        jsonWriter.writeJsonField("rampDownStartTime", this.rampDownStartTime);
+        jsonWriter.writeStringField("rampDownLoadBalancingAlgorithm",
+            this.rampDownLoadBalancingAlgorithm == null ? null : this.rampDownLoadBalancingAlgorithm.toString());
+        jsonWriter.writeNumberField("rampDownMinimumHostsPct", this.rampDownMinimumHostsPct);
+        jsonWriter.writeNumberField("rampDownCapacityThresholdPct", this.rampDownCapacityThresholdPct);
+        jsonWriter.writeBooleanField("rampDownForceLogoffUsers", this.rampDownForceLogoffUsers);
+        jsonWriter.writeStringField("rampDownStopHostsWhen",
+            this.rampDownStopHostsWhen == null ? null : this.rampDownStopHostsWhen.toString());
+        jsonWriter.writeNumberField("rampDownWaitTimeMinutes", this.rampDownWaitTimeMinutes);
+        jsonWriter.writeStringField("rampDownNotificationMessage", this.rampDownNotificationMessage);
+        jsonWriter.writeJsonField("offPeakStartTime", this.offPeakStartTime);
+        jsonWriter.writeStringField("offPeakLoadBalancingAlgorithm",
+            this.offPeakLoadBalancingAlgorithm == null ? null : this.offPeakLoadBalancingAlgorithm.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScalingSchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScalingSchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScalingSchedule.
+     */
+    public static ScalingSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScalingSchedule deserializedScalingSchedule = new ScalingSchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedScalingSchedule.name = reader.getString();
+                } else if ("daysOfWeek".equals(fieldName)) {
+                    List<ScalingScheduleDaysOfWeekItem> daysOfWeek
+                        = reader.readArray(reader1 -> ScalingScheduleDaysOfWeekItem.fromString(reader1.getString()));
+                    deserializedScalingSchedule.daysOfWeek = daysOfWeek;
+                } else if ("rampUpStartTime".equals(fieldName)) {
+                    deserializedScalingSchedule.rampUpStartTime = Time.fromJson(reader);
+                } else if ("rampUpLoadBalancingAlgorithm".equals(fieldName)) {
+                    deserializedScalingSchedule.rampUpLoadBalancingAlgorithm
+                        = SessionHostLoadBalancingAlgorithm.fromString(reader.getString());
+                } else if ("rampUpMinimumHostsPct".equals(fieldName)) {
+                    deserializedScalingSchedule.rampUpMinimumHostsPct = reader.getNullable(JsonReader::getInt);
+                } else if ("rampUpCapacityThresholdPct".equals(fieldName)) {
+                    deserializedScalingSchedule.rampUpCapacityThresholdPct = reader.getNullable(JsonReader::getInt);
+                } else if ("peakStartTime".equals(fieldName)) {
+                    deserializedScalingSchedule.peakStartTime = Time.fromJson(reader);
+                } else if ("peakLoadBalancingAlgorithm".equals(fieldName)) {
+                    deserializedScalingSchedule.peakLoadBalancingAlgorithm
+                        = SessionHostLoadBalancingAlgorithm.fromString(reader.getString());
+                } else if ("rampDownStartTime".equals(fieldName)) {
+                    deserializedScalingSchedule.rampDownStartTime = Time.fromJson(reader);
+                } else if ("rampDownLoadBalancingAlgorithm".equals(fieldName)) {
+                    deserializedScalingSchedule.rampDownLoadBalancingAlgorithm
+                        = SessionHostLoadBalancingAlgorithm.fromString(reader.getString());
+                } else if ("rampDownMinimumHostsPct".equals(fieldName)) {
+                    deserializedScalingSchedule.rampDownMinimumHostsPct = reader.getNullable(JsonReader::getInt);
+                } else if ("rampDownCapacityThresholdPct".equals(fieldName)) {
+                    deserializedScalingSchedule.rampDownCapacityThresholdPct = reader.getNullable(JsonReader::getInt);
+                } else if ("rampDownForceLogoffUsers".equals(fieldName)) {
+                    deserializedScalingSchedule.rampDownForceLogoffUsers = reader.getNullable(JsonReader::getBoolean);
+                } else if ("rampDownStopHostsWhen".equals(fieldName)) {
+                    deserializedScalingSchedule.rampDownStopHostsWhen = StopHostsWhen.fromString(reader.getString());
+                } else if ("rampDownWaitTimeMinutes".equals(fieldName)) {
+                    deserializedScalingSchedule.rampDownWaitTimeMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("rampDownNotificationMessage".equals(fieldName)) {
+                    deserializedScalingSchedule.rampDownNotificationMessage = reader.getString();
+                } else if ("offPeakStartTime".equals(fieldName)) {
+                    deserializedScalingSchedule.offPeakStartTime = Time.fromJson(reader);
+                } else if ("offPeakLoadBalancingAlgorithm".equals(fieldName)) {
+                    deserializedScalingSchedule.offPeakLoadBalancingAlgorithm
+                        = SessionHostLoadBalancingAlgorithm.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScalingSchedule;
+        });
     }
 }

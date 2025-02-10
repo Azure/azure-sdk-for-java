@@ -6,6 +6,10 @@ package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
 import com.azure.resourcemanager.storagecache.models.ClfsTarget;
 import com.azure.resourcemanager.storagecache.models.NamespaceJunction;
@@ -14,74 +18,69 @@ import com.azure.resourcemanager.storagecache.models.OperationalStateType;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTargetType;
 import com.azure.resourcemanager.storagecache.models.UnknownTarget;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of the Storage Target. */
+/**
+ * Properties of the Storage Target.
+ */
 @Fluent
-public final class StorageTargetProperties {
+public final class StorageTargetProperties implements JsonSerializable<StorageTargetProperties> {
     /*
      * List of cache namespace junctions to target for namespace associations.
      */
-    @JsonProperty(value = "junctions")
     private List<NamespaceJunction> junctions;
 
     /*
      * Type of the Storage Target.
      */
-    @JsonProperty(value = "targetType", required = true)
     private StorageTargetType targetType;
 
     /*
      * ARM provisioning state, see
      * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStateType provisioningState;
 
     /*
      * Storage target operational state.
      */
-    @JsonProperty(value = "state")
     private OperationalStateType state;
 
     /*
      * Properties when targetType is nfs3.
      */
-    @JsonProperty(value = "nfs3")
     private Nfs3Target nfs3;
 
     /*
      * Properties when targetType is clfs.
      */
-    @JsonProperty(value = "clfs")
     private ClfsTarget clfs;
 
     /*
      * Properties when targetType is unknown.
      */
-    @JsonProperty(value = "unknown")
     private UnknownTarget unknown;
 
     /*
      * Properties when targetType is blobNfs.
      */
-    @JsonProperty(value = "blobNfs")
     private BlobNfsTarget blobNfs;
 
     /*
      * The percentage of cache space allocated for this storage target
      */
-    @JsonProperty(value = "allocationPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer allocationPercentage;
 
-    /** Creates an instance of StorageTargetProperties class. */
+    /**
+     * Creates an instance of StorageTargetProperties class.
+     */
     public StorageTargetProperties() {
     }
 
     /**
      * Get the junctions property: List of cache namespace junctions to target for namespace associations.
-     *
+     * 
      * @return the junctions value.
      */
     public List<NamespaceJunction> junctions() {
@@ -90,7 +89,7 @@ public final class StorageTargetProperties {
 
     /**
      * Set the junctions property: List of cache namespace junctions to target for namespace associations.
-     *
+     * 
      * @param junctions the junctions value to set.
      * @return the StorageTargetProperties object itself.
      */
@@ -101,7 +100,7 @@ public final class StorageTargetProperties {
 
     /**
      * Get the targetType property: Type of the Storage Target.
-     *
+     * 
      * @return the targetType value.
      */
     public StorageTargetType targetType() {
@@ -110,7 +109,7 @@ public final class StorageTargetProperties {
 
     /**
      * Set the targetType property: Type of the Storage Target.
-     *
+     * 
      * @param targetType the targetType value to set.
      * @return the StorageTargetProperties object itself.
      */
@@ -122,7 +121,7 @@ public final class StorageTargetProperties {
     /**
      * Get the provisioningState property: ARM provisioning state, see
      * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStateType provisioningState() {
@@ -131,7 +130,7 @@ public final class StorageTargetProperties {
 
     /**
      * Get the state property: Storage target operational state.
-     *
+     * 
      * @return the state value.
      */
     public OperationalStateType state() {
@@ -140,7 +139,7 @@ public final class StorageTargetProperties {
 
     /**
      * Set the state property: Storage target operational state.
-     *
+     * 
      * @param state the state value to set.
      * @return the StorageTargetProperties object itself.
      */
@@ -151,7 +150,7 @@ public final class StorageTargetProperties {
 
     /**
      * Get the nfs3 property: Properties when targetType is nfs3.
-     *
+     * 
      * @return the nfs3 value.
      */
     public Nfs3Target nfs3() {
@@ -160,7 +159,7 @@ public final class StorageTargetProperties {
 
     /**
      * Set the nfs3 property: Properties when targetType is nfs3.
-     *
+     * 
      * @param nfs3 the nfs3 value to set.
      * @return the StorageTargetProperties object itself.
      */
@@ -171,7 +170,7 @@ public final class StorageTargetProperties {
 
     /**
      * Get the clfs property: Properties when targetType is clfs.
-     *
+     * 
      * @return the clfs value.
      */
     public ClfsTarget clfs() {
@@ -180,7 +179,7 @@ public final class StorageTargetProperties {
 
     /**
      * Set the clfs property: Properties when targetType is clfs.
-     *
+     * 
      * @param clfs the clfs value to set.
      * @return the StorageTargetProperties object itself.
      */
@@ -191,7 +190,7 @@ public final class StorageTargetProperties {
 
     /**
      * Get the unknown property: Properties when targetType is unknown.
-     *
+     * 
      * @return the unknown value.
      */
     public UnknownTarget unknown() {
@@ -200,7 +199,7 @@ public final class StorageTargetProperties {
 
     /**
      * Set the unknown property: Properties when targetType is unknown.
-     *
+     * 
      * @param unknown the unknown value to set.
      * @return the StorageTargetProperties object itself.
      */
@@ -211,7 +210,7 @@ public final class StorageTargetProperties {
 
     /**
      * Get the blobNfs property: Properties when targetType is blobNfs.
-     *
+     * 
      * @return the blobNfs value.
      */
     public BlobNfsTarget blobNfs() {
@@ -220,7 +219,7 @@ public final class StorageTargetProperties {
 
     /**
      * Set the blobNfs property: Properties when targetType is blobNfs.
-     *
+     * 
      * @param blobNfs the blobNfs value to set.
      * @return the StorageTargetProperties object itself.
      */
@@ -231,7 +230,7 @@ public final class StorageTargetProperties {
 
     /**
      * Get the allocationPercentage property: The percentage of cache space allocated for this storage target.
-     *
+     * 
      * @return the allocationPercentage value.
      */
     public Integer allocationPercentage() {
@@ -240,7 +239,7 @@ public final class StorageTargetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -248,10 +247,9 @@ public final class StorageTargetProperties {
             junctions().forEach(e -> e.validate());
         }
         if (targetType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetType in model StorageTargetProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetType in model StorageTargetProperties"));
         }
         if (nfs3() != null) {
             nfs3().validate();
@@ -268,4 +266,66 @@ public final class StorageTargetProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageTargetProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetType", this.targetType == null ? null : this.targetType.toString());
+        jsonWriter.writeArrayField("junctions", this.junctions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeJsonField("nfs3", this.nfs3);
+        jsonWriter.writeJsonField("clfs", this.clfs);
+        jsonWriter.writeJsonField("unknown", this.unknown);
+        jsonWriter.writeJsonField("blobNfs", this.blobNfs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTargetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTargetProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageTargetProperties.
+     */
+    public static StorageTargetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTargetProperties deserializedStorageTargetProperties = new StorageTargetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetType".equals(fieldName)) {
+                    deserializedStorageTargetProperties.targetType = StorageTargetType.fromString(reader.getString());
+                } else if ("junctions".equals(fieldName)) {
+                    List<NamespaceJunction> junctions
+                        = reader.readArray(reader1 -> NamespaceJunction.fromJson(reader1));
+                    deserializedStorageTargetProperties.junctions = junctions;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedStorageTargetProperties.provisioningState
+                        = ProvisioningStateType.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedStorageTargetProperties.state = OperationalStateType.fromString(reader.getString());
+                } else if ("nfs3".equals(fieldName)) {
+                    deserializedStorageTargetProperties.nfs3 = Nfs3Target.fromJson(reader);
+                } else if ("clfs".equals(fieldName)) {
+                    deserializedStorageTargetProperties.clfs = ClfsTarget.fromJson(reader);
+                } else if ("unknown".equals(fieldName)) {
+                    deserializedStorageTargetProperties.unknown = UnknownTarget.fromJson(reader);
+                } else if ("blobNfs".equals(fieldName)) {
+                    deserializedStorageTargetProperties.blobNfs = BlobNfsTarget.fromJson(reader);
+                } else if ("allocationPercentage".equals(fieldName)) {
+                    deserializedStorageTargetProperties.allocationPercentage = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTargetProperties;
+        });
+    }
 }

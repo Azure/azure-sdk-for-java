@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified. */
+/**
+ * Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified.
+ */
 public final class PolicyEnabledState extends ExpandableStringEnum<PolicyEnabledState> {
-    /** Static value Disabled for PolicyEnabledState. */
+    /**
+     * Static value Disabled for PolicyEnabledState.
+     */
     public static final PolicyEnabledState DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for PolicyEnabledState. */
+    /**
+     * Static value Enabled for PolicyEnabledState.
+     */
     public static final PolicyEnabledState ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of PolicyEnabledState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class PolicyEnabledState extends ExpandableStringEnum<PolicyEnabled
 
     /**
      * Creates or finds a PolicyEnabledState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyEnabledState.
      */
-    @JsonCreator
     public static PolicyEnabledState fromString(String name) {
         return fromString(name, PolicyEnabledState.class);
     }
 
     /**
      * Gets known PolicyEnabledState values.
-     *
+     * 
      * @return known PolicyEnabledState values.
      */
     public static Collection<PolicyEnabledState> values() {

@@ -5,34 +5,50 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A2A Cross-Cluster Migration enable protection input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2ACrossClusterMigration")
+/**
+ * A2A Cross-Cluster Migration enable protection input.
+ */
 @Fluent
 public final class A2ACrossClusterMigrationEnableProtectionInput extends EnableProtectionProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "A2ACrossClusterMigration";
+
+    /*
      * The fabric specific object Id of the virtual machine.
      */
-    @JsonProperty(value = "fabricObjectId")
     private String fabricObjectId;
 
     /*
      * The recovery container Id.
      */
-    @JsonProperty(value = "recoveryContainerId")
     private String recoveryContainerId;
 
-    /** Creates an instance of A2ACrossClusterMigrationEnableProtectionInput class. */
+    /**
+     * Creates an instance of A2ACrossClusterMigrationEnableProtectionInput class.
+     */
     public A2ACrossClusterMigrationEnableProtectionInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -41,7 +57,7 @@ public final class A2ACrossClusterMigrationEnableProtectionInput extends EnableP
 
     /**
      * Set the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @param fabricObjectId the fabricObjectId value to set.
      * @return the A2ACrossClusterMigrationEnableProtectionInput object itself.
      */
@@ -52,7 +68,7 @@ public final class A2ACrossClusterMigrationEnableProtectionInput extends EnableP
 
     /**
      * Get the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @return the recoveryContainerId value.
      */
     public String recoveryContainerId() {
@@ -61,7 +77,7 @@ public final class A2ACrossClusterMigrationEnableProtectionInput extends EnableP
 
     /**
      * Set the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @param recoveryContainerId the recoveryContainerId value to set.
      * @return the A2ACrossClusterMigrationEnableProtectionInput object itself.
      */
@@ -72,11 +88,53 @@ public final class A2ACrossClusterMigrationEnableProtectionInput extends EnableP
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("fabricObjectId", this.fabricObjectId);
+        jsonWriter.writeStringField("recoveryContainerId", this.recoveryContainerId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2ACrossClusterMigrationEnableProtectionInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2ACrossClusterMigrationEnableProtectionInput if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2ACrossClusterMigrationEnableProtectionInput.
+     */
+    public static A2ACrossClusterMigrationEnableProtectionInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2ACrossClusterMigrationEnableProtectionInput deserializedA2ACrossClusterMigrationEnableProtectionInput
+                = new A2ACrossClusterMigrationEnableProtectionInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedA2ACrossClusterMigrationEnableProtectionInput.instanceType = reader.getString();
+                } else if ("fabricObjectId".equals(fieldName)) {
+                    deserializedA2ACrossClusterMigrationEnableProtectionInput.fabricObjectId = reader.getString();
+                } else if ("recoveryContainerId".equals(fieldName)) {
+                    deserializedA2ACrossClusterMigrationEnableProtectionInput.recoveryContainerId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2ACrossClusterMigrationEnableProtectionInput;
+        });
     }
 }

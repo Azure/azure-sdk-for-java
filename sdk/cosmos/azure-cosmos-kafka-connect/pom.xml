@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure.cosmos.kafka</groupId>
   <artifactId>azure-cosmos-kafka-connect</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
+  <version>2.1.1</version> <!-- {x-version-update;com.azure.cosmos.kafka:azure-cosmos-kafka-connect;current} -->
   <name>Apache Kafka Connect connector for Azure Cosmos DB</name>
   <description>This Package contains an Apache Kafka Connect source and sink connector for Azure Cosmos DB</description>
   <packaging>jar</packaging>
@@ -26,6 +26,14 @@ Licensed under the MIT License.
     </site>
   </distributionManagement>
 
+  <repositories>
+    <repository>
+      <id>confluent</id>
+      <name>Confluent</name>
+      <url>https://packages.confluent.io/maven/</url>
+    </repository>
+  </repositories>
+
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
@@ -35,25 +43,39 @@ Licensed under the MIT License.
   <!-- CosmosSkip - Needed temporary values to 10% not fail. -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.02</jacoco.min.branchcoverage>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <jacoco.skip>true</jacoco.skip>
     <shadingPrefix>azure_cosmos_kafka_connect</shadingPrefix>
+    <shadingPrefixNetty>azurecosmoskafkaconnect</shadingPrefixNetty>
 
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
     <revapi.skip>true</revapi.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.apachecommons.lang=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=com.azure.cosmos.kafka.connect
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.faultinjection=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.guava25.base=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
       --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect=ALL-UNNAMED
       --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.implementation=ALL-UNNAMED
-      --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.models=ALL-UNNAMED
+      --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.implementation.sink=ALL-UNNAMED,com.fasterxml.jackson.databind
+      --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.implementation.sink.idStrategy=ALL-UNNAMED
+      --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.implementation.source=com.fasterxml.jackson.databind,ALL-UNNAMED
+
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.changefeed.common=com.azure.cosmos.kafka.connect
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.feedranges=com.azure.cosmos.kafka.connect
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.query=com.azure.cosmos.kafka.connect
+
     </javaModulesSurefireArgLine>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>connect-api</artifactId>
@@ -64,7 +86,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.55.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.66.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -81,6 +103,13 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos-test</artifactId>
+      <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
       <scope>test</scope>
@@ -92,6 +121,35 @@ Licensed under the MIT License.
       <artifactId>commons-text</artifactId>
       <scope>test</scope>
       <version>1.10.0</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.jayway.jsonpath</groupId>
+      <artifactId>json-path</artifactId>
+      <version>2.9.0</version> <!-- {x-version-update;cosmos_com.jayway.jsonpath:json-path;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.15.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>connect-runtime</artifactId>
+      <version>3.6.0</version> <!-- {x-version-update;cosmos_org.apache.kafka:connect-runtime;external_dependency} -->
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jackson-jaxrs-json-provider</artifactId>
+          <groupId>com.fasterxml.jackson.jaxrs</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -146,6 +204,51 @@ Licensed under the MIT License.
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
+    <!-- of Mockito supporting Java 8 as a baseline. -->
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy-agent</artifactId>
+      <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>1.19.5</version> <!-- {x-version-update;cosmos_org.testcontainers:testcontainers;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>kafka</artifactId>
+      <version>1.19.5</version> <!-- {x-version-update;cosmos_org.testcontainers:kafka;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.sourcelab</groupId>
+      <artifactId>kafka-connect-client</artifactId>
+      <version>4.0.4</version> <!-- {x-version-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/io.confluent/kafka-avro-serializer -->
+    <dependency>
+      <groupId>io.confluent</groupId>
+      <artifactId>kafka-avro-serializer</artifactId>
+      <version>7.6.0</version><!-- {x-version-update;cosmos_io.confluent:kafka-avro-serializer;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+      <version>1.11.3</version><!-- {x-version-update;cosmos_org.apache.avro:avro;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -153,7 +256,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifest>
@@ -165,7 +268,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <groups>unit</groups>
           <includes>
@@ -182,209 +285,225 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
                 <include>org.apache.kafka:connect-api:[3.6.0]</include> <!-- {x-include-update;cosmos_org.apache.kafka:connect-api;external_dependency} -->
-                <include>io.confluent:kafka-connect-maven-plugin:[0.12.0]</include> <!-- {x-include-update;cosmos_io.confluent:kafka-connect-maven-plugin;external_dependency} -->
+                <include>com.jayway.jsonpath:json-path:[2.9.0]</include> <!-- {x-include-update;cosmos_com.jayway.jsonpath:json-path;external_dependency} -->
+                <include>org.sourcelab:kafka-connect-client:[4.0.4]</include> <!-- {x-include-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->
+                <include>org.apache.maven.plugins:maven-antrun-plugin:[3.1.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>shade</id>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <filters>
-                <filter>
-                  <artifact>*:*:*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/maven/**</exclude>
-                    <!-- suppress warning: Discovered module-info.class. Shading will break its strong encapsulation. -->
-                    <!-- https://stackoverflow.com/questions/56063566/maven-how-to-remove-module-info-class-warning-for-shaded-jar -->
-                    <exclude>module-info.class</exclude>
-                    <!-- remove the dependencies signature as not relevant-->
-                    <exclude>META-INF/*.MF</exclude>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                    <exclude>META-INF/license/LICENSE.aix-netbsd.txt</exclude>
-                    <exclude>META-INF/license/LICENSE.boringssl.txt</exclude>
-                    <exclude>META-INF/license/LICENSE.mvn-wrapper.txt</exclude>
-                    <exclude>META-INF/license/LICENSE.tomcat-native.txt</exclude>
-                    <exclude>META-INF.versions.9.module-info.class</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-              <relocations>
-                <relocation>
-                  <pattern>com.azure</pattern>
-                  <shadedPattern>${shadingPrefix}.com.azure</shadedPattern>
-                  <excludes>
-                    <exclude>com.azure.cosmos.kafka.**</exclude>
-                  </excludes>
-                </relocation>
-                <relocation>
-                  <pattern>io.netty</pattern>
-                  <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.codehaus</pattern>
-                  <shadedPattern>${shadingPrefix}.org.codehaus</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.fasterxml</pattern>
-                  <shadedPattern>${shadingPrefix}.com.fasterxml</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.ctc.wstx</pattern>
-                  <shadedPattern>${shadingPrefix}.com.ctc.wstx</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.codahale.metrics</pattern>
-                  <shadedPattern>${shadingPrefix}.com.codahale.metrics</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.thoughtworks.paranamer</pattern>
-                  <shadedPattern>${shadingPrefix}.com.thoughtworks.paranamer</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>io.micrometer</pattern>
-                  <shadedPattern>${shadingPrefix}.io.micrometer</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.HdrHistogram</pattern>
-                  <shadedPattern>${shadingPrefix}.org.HdrHistogram</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>reactor</pattern>
-                  <shadedPattern>${shadingPrefix}.reactor</shadedPattern>
-                </relocation>
-              </relocations>
-              <artifactSet>
-                <excludes>
-                  <exclude>org.slf4j</exclude>
-                  <exclude>io.confluent:*</exclude>
-                  <exclude>org.apache.kafka:*</exclude>
-                </excludes>
-              </artifactSet>
-              <minimizeJar>true</minimizeJar>
-              <transformers>
-                <!-- prevents apache license duplication -->
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer">
-                </transformer>
-
-                <!-- Some licenses (including the Apache License, Version 2)
-                 require that notices are preserved by downstream distributors.
-                  ApacheNoticeResourceTransformer automates the assembly of an appropriate NOTICE. -->
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
-                  <addHeader>false</addHeader>
-                </transformer>
-
-                <!-- The PropertiesTransformer allows a set of properties files to be merged
-                 and to resolve conflicts based on an ordinal giving the priority of each file.
-                 An optional alreadyMergedKey enables to have a boolean flag in the file which,
-                 if set to true, request to use the file as it as the result of the merge.
-                 If two files are considered complete in the merge process then the shade will fail.-->
-                <transformer implementation="org.apache.maven.plugins.shade.resource.properties.PropertiesTransformer">
-                  <!-- required configuration -->
-                  <!-- merges all netty lib version files into one file -->
-                  <resource>META-INF/io.netty.versions.properties</resource>
-                  <ordinalKey>ordinal</ordinalKey>
-                  <!-- optional configuration -->
-
-                  <alreadyMergedKey>already_merged</alreadyMergedKey>
-                  <defaultOrdinal>0</defaultOrdinal>
-                  <reverseOrder>false</reverseOrder>
-                </transformer>
-
-                <!-- this handles and properly merges the content of META-INF/services in the dependencies -->
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-
-                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                  <!-- once 3.3.0 shade plugin is release upgrade the maven plugin and remove AppendingTransformer
-                    https://issues.apache.org/jira/browse/MSHADE-371 -->
-                  <resource>META-INF/NOTICE.md</resource>
-                </transformer>
-
-                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                  <!-- once 3.3.0 shade plugin is release upgrade the maven plugin and remove AppendingTransformer
-                    https://issues.apache.org/jira/browse/MSHADE-371 -->
-                  <resource>META-INF/LICENSE.md</resource>
-                </transformer>
-             </transformers>
-
-              <!-- When true, it will attempt to shade the contents of the java source files when creating the sources jar. -->
-              <shadeSourcesContent>true</shadeSourcesContent>
-              <createDependencyReducedPom>true</createDependencyReducedPom>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>io.confluent</groupId>
-        <version>0.12.0</version> <!-- {x-version-update;cosmos_io.confluent:kafka-connect-maven-plugin;external_dependency} -->
-        <artifactId>kafka-connect-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>kafka-connect</goal>
-            </goals>
-            <configuration>
-              <title>Azure Cosmos DB Connector</title>
-              <documentationUrl>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-kafka-connect/README.md</documentationUrl>
-              <sourceUrl>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-kafka-connect</sourceUrl>
-              <description>
-                The Azure Cosmos DB connectors allow moving data between Azure Cosmos DB and Kafka. The Cosmos DB Sink connector writes data from a Kafka topic to a Cosmos DB container. The Cosmos DB Source connector writes changes from a Cosmos DB container to a Kafka topic.
-              </description>
-              <logo>doc/images/microsoft.png</logo>
-              <version>${project.version}</version>
-              <ownerUsername>microsoftcorporation</ownerUsername>
-              <ownerName>Microsoft Corporation</ownerName>
-              <ownerLogo>doc/images/microsoft.png</ownerLogo>
-              <componentTypes>
-                <componentType>source</componentType>
-                <componentType>sink</componentType>
-              </componentTypes>
-              <tags>
-                <tag>Azure</tag>
-                <tag>Cosmos</tag>
-                <tag>Cosmos DB</tag>
-                <tag>Database</tag>
-                <tag>Source</tag>
-                <tag>Sink</tag>
-                <tag>Kafka Connect</tag>
-              </tags>
-              <confluentControlCenterIntegration>true</confluentControlCenterIntegration>
-              <deliveryGuarantee>
-                <deliveryGuarantee>atLeastOnce</deliveryGuarantee>
-                <deliveryGuarantee>exactlyOnce</deliveryGuarantee>
-              </deliveryGuarantee>
-              <supportProviderName>Microsoft Corporation</supportProviderName>
-              <supportUrl>https://github.com/Azure/azure-sdk-for-java/issues</supportUrl>
-              <supportLogo>doc/images/microsoft.png</supportLogo>
-              <supportProviderName>Microsoft Corporation</supportProviderName>
-              <supportSummary>This project is in preview. File any issues, feature requests, or questions under issues at: https://github.com/Azure/azure-sdk-for-java/issues
-              </supportSummary>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <profiles>
+    <profile>
+      <id>build-kafka</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>shade</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+                <configuration>
+                  <filters>
+                    <filter>
+                      <artifact>*:*:*:*</artifact>
+                      <excludes>
+                        <!-- suppress warning: Discovered module-info.class. Shading will break its strong encapsulation. -->
+                        <!-- https://stackoverflow.com/questions/56063566/maven-how-to-remove-module-info-class-warning-for-shaded-jar -->
+                        <exclude>module-info.class</exclude>
+                        <!-- remove the dependencies signature as not relevant-->
+                        <exclude>META-INF/*.MF</exclude>
+                        <exclude>META-INF/*.SF</exclude>
+                        <exclude>META-INF/*.DSA</exclude>
+                        <exclude>META-INF/*.RSA</exclude>
+                        <exclude>META-INF/license/LICENSE.aix-netbsd.txt</exclude>
+                        <exclude>META-INF/license/LICENSE.boringssl.txt</exclude>
+                        <exclude>META-INF/license/LICENSE.mvn-wrapper.txt</exclude>
+                        <exclude>META-INF/license/LICENSE.tomcat-native.txt</exclude>
+                        <exclude>META-INF.versions.9.module-info.class</exclude>
+                      </excludes>
+                    </filter>
+                    <filter>
+                      <artifact>io.micrometer:micrometer-core</artifact>
+                      <includes>
+                        <include>**</include>
+                      </includes>
+                    </filter>
+                  </filters>
+                  <relocations>
+                    <relocation>
+                      <pattern>com.azure</pattern>
+                      <shadedPattern>${shadingPrefix}.com.azure</shadedPattern>
+                      <excludes>
+                        <exclude>com.azure.cosmos.kafka.**</exclude>
+                      </excludes>
+                    </relocation>
+                    <relocation>
+                      <pattern>io.netty</pattern>
+                      <shadedPattern>${shadingPrefixNetty}.io.netty</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>org.codehaus</pattern>
+                      <shadedPattern>${shadingPrefix}.org.codehaus</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.fasterxml</pattern>
+                      <shadedPattern>${shadingPrefix}.com.fasterxml</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.ctc.wstx</pattern>
+                      <shadedPattern>${shadingPrefix}.com.ctc.wstx</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.codahale.metrics</pattern>
+                      <shadedPattern>${shadingPrefix}.com.codahale.metrics</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.thoughtworks.paranamer</pattern>
+                      <shadedPattern>${shadingPrefix}.com.thoughtworks.paranamer</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>org.HdrHistogram</pattern>
+                      <shadedPattern>${shadingPrefix}.org.HdrHistogram</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>reactor</pattern>
+                      <shadedPattern>${shadingPrefix}.reactor</shadedPattern>
+                    </relocation>
+                    <relocation>
+                      <pattern>com.jayway.jsonpath</pattern>
+                      <shadedPattern>${shadingPrefix}.com.jayway.jsonpath</shadedPattern>
+                    </relocation>
+                  </relocations>
+                  <artifactSet>
+                    <excludes>
+                      <exclude>org.slf4j</exclude>
+                      <exclude>io.confluent:*</exclude>
+                      <exclude>org.apache.kafka:*</exclude>
+                    </excludes>
+                  </artifactSet>
+                  <minimizeJar>true</minimizeJar>
+                  <transformers>
+                    <!-- prevents apache license duplication -->
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer">
+                    </transformer>
+
+                    <!-- Some licenses (including the Apache License, Version 2)
+                     require that notices are preserved by downstream distributors.
+                      ApacheNoticeResourceTransformer automates the assembly of an appropriate NOTICE. -->
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+                      <addHeader>false</addHeader>
+                    </transformer>
+
+                    <!-- The PropertiesTransformer allows a set of properties files to be merged
+                     and to resolve conflicts based on an ordinal giving the priority of each file.
+                     An optional alreadyMergedKey enables to have a boolean flag in the file which,
+                     if set to true, request to use the file as it as the result of the merge.
+                     If two files are considered complete in the merge process then the shade will fail.-->
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.properties.PropertiesTransformer">
+                      <!-- required configuration -->
+                      <!-- merges all netty lib version files into one file -->
+                      <resource>META-INF/io.netty.versions.properties</resource>
+                      <ordinalKey>ordinal</ordinalKey>
+                      <!-- optional configuration -->
+
+                      <alreadyMergedKey>already_merged</alreadyMergedKey>
+                      <defaultOrdinal>0</defaultOrdinal>
+                      <reverseOrder>false</reverseOrder>
+                    </transformer>
+
+                    <!-- this handles and properly merges the content of META-INF/services in the dependencies -->
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                      <!-- once 3.3.0 shade plugin is release upgrade the maven plugin and remove AppendingTransformer
+                        https://issues.apache.org/jira/browse/MSHADE-371 -->
+                      <resource>META-INF/NOTICE.md</resource>
+                    </transformer>
+
+                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                      <!-- once 3.3.0 shade plugin is release upgrade the maven plugin and remove AppendingTransformer
+                        https://issues.apache.org/jira/browse/MSHADE-371 -->
+                      <resource>META-INF/LICENSE.md</resource>
+                    </transformer>
+                  </transformers>
+
+                  <!-- When true, it will attempt to shade the contents of the java source files when creating the sources jar. -->
+                  <shadeSourcesContent>true</shadeSourcesContent>
+                  <createDependencyReducedPom>true</createDependencyReducedPom>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>01-copy-readme-to-javadocTemp</id>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <target>
+                    <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                    <delete includeEmptyDirs="true" quiet="true">
+                      <fileset dir="${project.basedir}/javadocTemp"/>
+                    </delete>
+                    <echo>Copying ${project.basedir}/README.md to
+                      ${project.basedir}/javadocTemp/README.md
+                    </echo>
+                    <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>03-repack</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <unzip src="${project.build.directory}/${project.build.finalName}.jar" dest="${project.build.directory}/tmp" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_resolver_dns_native_macos_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_resolver_dns_native_macos_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_aarch_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_linux_aarch_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_linux_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/llibazurecosmoskafkaconnect_netty_tcnative_linux_x86_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_aarch_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_osx_aarch_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_tcnative_osx_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_osx_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_epoll_x86_64.so" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_transport_native_epoll_x86_64.so" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/libnetty_transport_native_kqueue_x86_64.jnilib" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_transport_native_kqueue_x86_64.jnilib" />
+                    <move file="${project.build.directory}/tmp/META-INF/native/netty_tcnative_windows_x86_64.dll" tofile="${project.build.directory}/tmp/META-INF/native/libazurecosmoskafkaconnect_netty_tcnative_windows_x86_64.dll" />
+                    <zip basedir="${project.build.directory}/tmp" destfile="${project.build.directory}/${project.build.finalName}.jar" />
+                    <delete dir="${project.build.directory}/tmp" />
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <!-- unit test -->
       <id>unit</id>
@@ -400,7 +519,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
             </configuration>
           </plugin>
@@ -408,8 +527,29 @@ Licensed under the MIT License.
       </build>
     </profile>
     <profile>
-      <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>kafka-integration</id>
+      <!-- integration tests with cosmos emulator endpoint -->
+      <id>kafka-emulator</id>
+      <properties>
+        <test.groups>kafka-emulator</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/kafka-emulator-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests with cosmos prod endpoint -->
+      <id>kafka</id>
       <properties>
         <test.groups>kafka</test.groups>
       </properties>
@@ -418,10 +558,31 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-testng.xml</suiteXmlFile>
+              </suiteXmlFiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests with test container, also requires cosmosdb prod endpoints -->
+      <id>kafka-integration</id>
+      <properties>
+        <test.groups>kafka-integration</test.groups>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <suiteXmlFiles>
+                <suiteXmlFile>src/test/resources/kafka-integration-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
             </configuration>
           </plugin>

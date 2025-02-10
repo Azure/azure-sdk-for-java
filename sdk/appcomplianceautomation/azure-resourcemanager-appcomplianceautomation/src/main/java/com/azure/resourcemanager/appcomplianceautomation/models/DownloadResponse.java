@@ -7,39 +7,41 @@ package com.azure.resourcemanager.appcomplianceautomation.models;
 import com.azure.resourcemanager.appcomplianceautomation.fluent.models.DownloadResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of DownloadResponse. */
+/**
+ * An immutable client-side representation of DownloadResponse.
+ */
 public interface DownloadResponse {
     /**
-     * Gets the resourceList property: List of the reports.
-     *
+     * Gets the resourceList property: Resource list of the report.
+     * 
      * @return the resourceList value.
      */
     List<ResourceItem> resourceList();
 
     /**
      * Gets the complianceReport property: List of the compliance result.
-     *
+     * 
      * @return the complianceReport value.
      */
     List<ComplianceReportItem> complianceReport();
 
     /**
-     * Gets the compliancePdfReport property: compliance pdf report.
-     *
+     * Gets the compliancePdfReport property: Compliance pdf report.
+     * 
      * @return the compliancePdfReport value.
      */
     DownloadResponseCompliancePdfReport compliancePdfReport();
 
     /**
-     * Gets the complianceDetailedPdfReport property: compliance detailed pdf report.
-     *
+     * Gets the complianceDetailedPdfReport property: The detailed compliance pdf report.
+     * 
      * @return the complianceDetailedPdfReport value.
      */
     DownloadResponseComplianceDetailedPdfReport complianceDetailedPdfReport();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcomplianceautomation.fluent.models.DownloadResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     DownloadResponseInner innerModel();

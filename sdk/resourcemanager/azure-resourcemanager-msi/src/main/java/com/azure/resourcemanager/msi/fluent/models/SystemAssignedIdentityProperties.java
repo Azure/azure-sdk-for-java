@@ -5,47 +5,49 @@
 package com.azure.resourcemanager.msi.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.UUID;
 
 /**
  * System Assigned Identity properties.
- *
- * <p>The properties associated with the system assigned identity.
+ * 
+ * The properties associated with the system assigned identity.
  */
 @Immutable
-public final class SystemAssignedIdentityProperties {
+public final class SystemAssignedIdentityProperties implements JsonSerializable<SystemAssignedIdentityProperties> {
     /*
      * The id of the tenant which the identity belongs to.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tenantId;
 
     /*
      * The id of the service principal object associated with the created identity.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID principalId;
 
     /*
      * The id of the app associated with the identity. This is a random generated UUID by MSI.
      */
-    @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID clientId;
 
     /*
      * The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials.
      */
-    @JsonProperty(value = "clientSecretUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String clientSecretUrl;
 
-    /** Creates an instance of SystemAssignedIdentityProperties class. */
+    /**
+     * Creates an instance of SystemAssignedIdentityProperties class.
+     */
     public SystemAssignedIdentityProperties() {
     }
 
     /**
      * Get the tenantId property: The id of the tenant which the identity belongs to.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -54,7 +56,7 @@ public final class SystemAssignedIdentityProperties {
 
     /**
      * Get the principalId property: The id of the service principal object associated with the created identity.
-     *
+     * 
      * @return the principalId value.
      */
     public UUID principalId() {
@@ -64,7 +66,7 @@ public final class SystemAssignedIdentityProperties {
     /**
      * Get the clientId property: The id of the app associated with the identity. This is a random generated UUID by
      * MSI.
-     *
+     * 
      * @return the clientId value.
      */
     public UUID clientId() {
@@ -74,7 +76,7 @@ public final class SystemAssignedIdentityProperties {
     /**
      * Get the clientSecretUrl property: The ManagedServiceIdentity DataPlane URL that can be queried to obtain the
      * identity credentials.
-     *
+     * 
      * @return the clientSecretUrl value.
      */
     public String clientSecretUrl() {
@@ -83,9 +85,54 @@ public final class SystemAssignedIdentityProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SystemAssignedIdentityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SystemAssignedIdentityProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SystemAssignedIdentityProperties.
+     */
+    public static SystemAssignedIdentityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SystemAssignedIdentityProperties deserializedSystemAssignedIdentityProperties
+                = new SystemAssignedIdentityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedSystemAssignedIdentityProperties.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedSystemAssignedIdentityProperties.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedSystemAssignedIdentityProperties.clientId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("clientSecretUrl".equals(fieldName)) {
+                    deserializedSystemAssignedIdentityProperties.clientSecretUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSystemAssignedIdentityProperties;
+        });
     }
 }

@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import reactor.core.publisher.Flux;
@@ -49,7 +48,8 @@ class OrderByUtils {
                                                        targetRangeToOrderByContinuationTokenMap,
                                                        consumeComparer.getSortOrders(), clientSideRequestStatistics))
                 .toArray(Flux[]::new);
-        return Flux.mergeOrdered(consumeComparer, fluxes);
+        // prefetch is set to 1 to minimize the no. prefetched pages per partition
+        return Flux.mergeComparingDelayError(1, consumeComparer, fluxes);
     }
 
     private static Flux<OrderByRowResult<Document>> toOrderByQueryResultObservable(DocumentProducer<Document> producer,
@@ -116,7 +116,7 @@ class OrderByUtils {
                                 // Once we do that we need to seek to the correct _rid within the term,
                                 // since there might be many documents with the same order by value we left off on.
                                 List<QueryItem> queryItems = new ArrayList<QueryItem>();
-                                ArrayNode arrayNode = (ArrayNode)ModelBridgeInternal.getObjectFromJsonSerializable(tOrderByRowResult, "orderByItems");
+                                ArrayNode arrayNode = (ArrayNode)tOrderByRowResult.get("orderByItems");
                                 for (JsonNode jsonNode : arrayNode) {
                                     QueryItem queryItem = new QueryItem(jsonNode.toString());
                                     queryItems.add(queryItem);
@@ -170,7 +170,7 @@ class OrderByUtils {
                 Flux<Document> x = Flux.fromIterable(results);
 
                 return x.map(r -> new OrderByRowResult<Document>(
-                        ModelBridgeInternal.toJsonFromJsonSerializable(r),
+                        r.toJson(),
                         documentProducerFeedResponse.sourceFeedRange,
                         documentProducerFeedResponse.pageResult.getContinuationToken()));
             }, 1);

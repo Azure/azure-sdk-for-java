@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Recovery point tier status. */
+/**
+ * Recovery point tier status.
+ */
 public enum RecoveryPointTierStatus {
-    /** Enum value Invalid. */
+    /**
+     * Enum value Invalid.
+     */
     INVALID("Invalid"),
 
-    /** Enum value Valid. */
+    /**
+     * Enum value Valid.
+     */
     VALID("Valid"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled"),
 
-    /** Enum value Deleted. */
+    /**
+     * Enum value Deleted.
+     */
     DELETED("Deleted"),
 
-    /** Enum value Rehydrated. */
+    /**
+     * Enum value Rehydrated.
+     */
     REHYDRATED("Rehydrated");
 
-    /** The actual serialized value for a RecoveryPointTierStatus instance. */
+    /**
+     * The actual serialized value for a RecoveryPointTierStatus instance.
+     */
     private final String value;
 
     RecoveryPointTierStatus(String value) {
@@ -33,11 +44,10 @@ public enum RecoveryPointTierStatus {
 
     /**
      * Parses a serialized value to a RecoveryPointTierStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RecoveryPointTierStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static RecoveryPointTierStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +61,9 @@ public enum RecoveryPointTierStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

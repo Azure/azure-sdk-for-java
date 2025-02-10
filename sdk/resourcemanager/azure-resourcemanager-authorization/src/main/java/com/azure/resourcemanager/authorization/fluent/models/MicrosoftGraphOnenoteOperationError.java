@@ -5,40 +5,44 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** onenoteOperationError. */
+/**
+ * onenoteOperationError.
+ */
 @Fluent
-public final class MicrosoftGraphOnenoteOperationError {
+public final class MicrosoftGraphOnenoteOperationError
+    implements JsonSerializable<MicrosoftGraphOnenoteOperationError> {
     /*
      * The error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The error message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * onenoteOperationError
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOnenoteOperationError class. */
+    /**
+     * Creates an instance of MicrosoftGraphOnenoteOperationError class.
+     */
     public MicrosoftGraphOnenoteOperationError() {
     }
 
     /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -47,7 +51,7 @@ public final class MicrosoftGraphOnenoteOperationError {
 
     /**
      * Set the code property: The error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the MicrosoftGraphOnenoteOperationError object itself.
      */
@@ -58,7 +62,7 @@ public final class MicrosoftGraphOnenoteOperationError {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -67,7 +71,7 @@ public final class MicrosoftGraphOnenoteOperationError {
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the MicrosoftGraphOnenoteOperationError object itself.
      */
@@ -78,17 +82,16 @@ public final class MicrosoftGraphOnenoteOperationError {
 
     /**
      * Get the additionalProperties property: onenoteOperationError.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: onenoteOperationError.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOnenoteOperationError object itself.
      */
@@ -97,19 +100,62 @@ public final class MicrosoftGraphOnenoteOperationError {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOnenoteOperationError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOnenoteOperationError if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOnenoteOperationError.
+     */
+    public static MicrosoftGraphOnenoteOperationError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOnenoteOperationError deserializedMicrosoftGraphOnenoteOperationError
+                = new MicrosoftGraphOnenoteOperationError();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteOperationError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenoteOperationError.message = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOnenoteOperationError.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOnenoteOperationError;
+        });
     }
 }

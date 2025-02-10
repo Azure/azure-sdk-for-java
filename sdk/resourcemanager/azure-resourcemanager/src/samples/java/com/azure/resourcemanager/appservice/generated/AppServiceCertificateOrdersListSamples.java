@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class AppServiceCertificateOrdersListSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/
+     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-04-01/examples/
      * ListAppServiceCertificateOrdersBySubscription.json
      */
     /**
@@ -20,7 +20,10 @@ public final class AppServiceCertificateOrdersListSamples {
      */
     public static void
         listAppServiceCertificateOrdersBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceCertificateOrders()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceCertificateOrders()
             .list(com.azure.core.util.Context.NONE);
     }
 }

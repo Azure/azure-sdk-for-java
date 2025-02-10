@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of CollectorPolicies. */
+/**
+ * Resource collection API of CollectorPolicies.
+ */
 public interface CollectorPolicies {
     /**
      * Return list of Collector policies in a Azure Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface CollectorPolicies {
 
     /**
      * Return list of Collector policies in a Azure Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface CollectorPolicies {
 
     /**
      * Gets the collector policy in a specified Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -47,12 +49,12 @@ public interface CollectorPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the collector policy in a specified Traffic Collector along with {@link Response}.
      */
-    Response<CollectorPolicy> getWithResponse(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context);
+    Response<CollectorPolicy> getWithResponse(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, Context context);
 
     /**
      * Gets the collector policy in a specified Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -65,7 +67,7 @@ public interface CollectorPolicies {
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -77,7 +79,7 @@ public interface CollectorPolicies {
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -86,12 +88,12 @@ public interface CollectorPolicies {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context);
+    void delete(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
+        Context context);
 
     /**
      * Gets the collector policy in a specified Traffic Collector.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +104,7 @@ public interface CollectorPolicies {
 
     /**
      * Gets the collector policy in a specified Traffic Collector.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface CollectorPolicies {
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +126,7 @@ public interface CollectorPolicies {
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +137,7 @@ public interface CollectorPolicies {
 
     /**
      * Begins definition for a new CollectorPolicy resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new CollectorPolicy definition.
      */

@@ -14,6 +14,8 @@ import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.ArcKindEnum;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
+import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
+import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
@@ -24,10 +26,12 @@ import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
+import com.azure.resourcemanager.hybridcompute.models.StorageProfile;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public final class MachineImpl implements Machine {
@@ -68,12 +72,9 @@ public final class MachineImpl implements Machine {
     public List<MachineExtension> resources() {
         List<MachineExtensionInner> inner = this.innerModel().resources();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new MachineExtensionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new MachineExtensionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -101,6 +102,18 @@ public final class MachineImpl implements Machine {
 
     public ServiceStatuses serviceStatuses() {
         return this.innerModel().serviceStatuses();
+    }
+
+    public HardwareProfile hardwareProfile() {
+        return this.innerModel().hardwareProfile();
+    }
+
+    public StorageProfile storageProfile() {
+        return this.innerModel().storageProfile();
+    }
+
+    public FirmwareProfile firmwareProfile() {
+        return this.innerModel().firmwareProfile();
     }
 
     public CloudMetadata cloudMetadata() {
@@ -149,7 +162,7 @@ public final class MachineImpl implements Machine {
         return this.innerModel().agentVersion();
     }
 
-    public String vmId() {
+    public UUID vmId() {
         return this.innerModel().vmId();
     }
 
@@ -177,7 +190,7 @@ public final class MachineImpl implements Machine {
         return this.innerModel().osType();
     }
 
-    public String vmUuid() {
+    public UUID vmUuid() {
         return this.innerModel().vmUuid();
     }
 
@@ -192,6 +205,10 @@ public final class MachineImpl implements Machine {
 
     public String osSku() {
         return this.innerModel().osSku();
+    }
+
+    public String osEdition() {
+        return this.innerModel().osEdition();
     }
 
     public String domainName() {

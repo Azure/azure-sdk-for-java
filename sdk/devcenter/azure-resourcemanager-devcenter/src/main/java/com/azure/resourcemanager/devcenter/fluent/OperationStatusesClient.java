@@ -6,33 +6,35 @@ package com.azure.resourcemanager.devcenter.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.OperationStatusInner;
+import com.azure.resourcemanager.devcenter.models.OperationStatusesGetResponse;
 
-/** An instance of this class provides access to all the operations defined in OperationStatusesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationStatusesClient.
+ */
 public interface OperationStatusesClient {
     /**
      * Get Operation Status
-     *
-     * <p>Gets the current status of an async operation.
-     *
+     * 
+     * Gets the current status of an async operation.
+     * 
      * @param location The Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response}.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusInner> getWithResponse(String location, String operationId, Context context);
+    OperationStatusesGetResponse getWithResponse(String location, String operationId, Context context);
 
     /**
      * Get Operation Status
-     *
-     * <p>Gets the current status of an async operation.
-     *
+     * 
+     * Gets the current status of an async operation.
+     * 
      * @param location The Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

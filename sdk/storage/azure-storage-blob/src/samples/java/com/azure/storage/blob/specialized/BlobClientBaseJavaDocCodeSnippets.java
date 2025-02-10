@@ -13,22 +13,17 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
-import com.azure.storage.blob.options.BlobBeginCopyOptions;
-import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobCopyInfo;
-import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
-import com.azure.storage.blob.options.BlobDownloadToFileOptions;
-import com.azure.storage.blob.options.BlobGetTagsOptions;
-import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
@@ -39,6 +34,11 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
@@ -418,8 +418,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#downloadContentWithResponse(DownloadRetryOptions,
-     * BlobRequestConditions, Duration, Context)}
+     * Code snippets for {@link BlobClientBase#downloadContentWithResponse(DownloadRetryOptions, BlobRequestConditions, Duration, Context)}
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void downloadContentWithResponseCodeSnippets() {
@@ -432,6 +431,23 @@ public class BlobClientBaseJavaDocCodeSnippets {
         System.out.printf("Download completed with status %d and content%s%n",
             contentResponse.getStatusCode(), content.toString());
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#downloadContentWithResponse(DownloadRetryOptions, BlobRequestConditions, BlobRange, boolean, Duration, Context)}
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadContentWithResponse2CodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions-BlobRange-boolean-Duration-Context
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+        BlobRange range = new BlobRange(1024, 2048L);
+
+        BlobDownloadContentResponse contentResponse = client.downloadContentWithResponse(options, null,
+            range, false, timeout, new Context(key2, value2));
+        BinaryData content = contentResponse.getValue();
+        System.out.printf("Download completed with status %d and content%s%n",
+            contentResponse.getStatusCode(), content.toString());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions-BlobRange-boolean-Duration-Context
     }
 
     /**

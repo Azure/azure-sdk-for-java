@@ -32,11 +32,13 @@ public final class PrivateEndpointConnectionListResultDescriptionTests {
             = new PrivateEndpointConnectionListResultDescription().withValue(Arrays.asList(
                 new PrivateEndpointConnectionDescriptionInner().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED).withDescription("hxbnjbiksqrg")
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("hxbnjbiksqrg")
                         .withActionsRequired("sainqpjwnzl")),
                 new PrivateEndpointConnectionDescriptionInner().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.PENDING).withDescription("dkvwrwjfe")
+                        .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                        .withDescription("dkvwrwjfe")
                         .withActionsRequired("nhutjeltmrldhugj"))));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionListResultDescription.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,

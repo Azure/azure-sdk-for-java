@@ -5,38 +5,55 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** complianceStatus. */
+/**
+ * complianceStatus.
+ */
 public final class MicrosoftGraphComplianceStatus extends ExpandableStringEnum<MicrosoftGraphComplianceStatus> {
-    /** Static value unknown for MicrosoftGraphComplianceStatus. */
+    /**
+     * Static value unknown for MicrosoftGraphComplianceStatus.
+     */
     public static final MicrosoftGraphComplianceStatus UNKNOWN = fromString("unknown");
 
-    /** Static value notApplicable for MicrosoftGraphComplianceStatus. */
+    /**
+     * Static value notApplicable for MicrosoftGraphComplianceStatus.
+     */
     public static final MicrosoftGraphComplianceStatus NOT_APPLICABLE = fromString("notApplicable");
 
-    /** Static value compliant for MicrosoftGraphComplianceStatus. */
+    /**
+     * Static value compliant for MicrosoftGraphComplianceStatus.
+     */
     public static final MicrosoftGraphComplianceStatus COMPLIANT = fromString("compliant");
 
-    /** Static value remediated for MicrosoftGraphComplianceStatus. */
+    /**
+     * Static value remediated for MicrosoftGraphComplianceStatus.
+     */
     public static final MicrosoftGraphComplianceStatus REMEDIATED = fromString("remediated");
 
-    /** Static value nonCompliant for MicrosoftGraphComplianceStatus. */
+    /**
+     * Static value nonCompliant for MicrosoftGraphComplianceStatus.
+     */
     public static final MicrosoftGraphComplianceStatus NON_COMPLIANT = fromString("nonCompliant");
 
-    /** Static value error for MicrosoftGraphComplianceStatus. */
+    /**
+     * Static value error for MicrosoftGraphComplianceStatus.
+     */
     public static final MicrosoftGraphComplianceStatus ERROR = fromString("error");
 
-    /** Static value conflict for MicrosoftGraphComplianceStatus. */
+    /**
+     * Static value conflict for MicrosoftGraphComplianceStatus.
+     */
     public static final MicrosoftGraphComplianceStatus CONFLICT = fromString("conflict");
 
-    /** Static value notAssigned for MicrosoftGraphComplianceStatus. */
+    /**
+     * Static value notAssigned for MicrosoftGraphComplianceStatus.
+     */
     public static final MicrosoftGraphComplianceStatus NOT_ASSIGNED = fromString("notAssigned");
 
     /**
      * Creates a new instance of MicrosoftGraphComplianceStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,18 +62,17 @@ public final class MicrosoftGraphComplianceStatus extends ExpandableStringEnum<M
 
     /**
      * Creates or finds a MicrosoftGraphComplianceStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphComplianceStatus.
      */
-    @JsonCreator
     public static MicrosoftGraphComplianceStatus fromString(String name) {
         return fromString(name, MicrosoftGraphComplianceStatus.class);
     }
 
     /**
      * Gets known MicrosoftGraphComplianceStatus values.
-     *
+     * 
      * @return known MicrosoftGraphComplianceStatus values.
      */
     public static Collection<MicrosoftGraphComplianceStatus> values() {

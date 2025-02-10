@@ -9,6 +9,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -29,7 +30,6 @@ import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -84,6 +84,7 @@ public class RxDocumentClientImplTest {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
     private SessionRetryOptions sessionRetryOptionsMock;
     private CosmosContainerProactiveInitConfig containerProactiveInitConfigMock;
+    private CosmosItemSerializer defaultItemSerializer;
 
     @BeforeClass(groups = "unit")
     public void setUp() {
@@ -95,7 +96,7 @@ public class RxDocumentClientImplTest {
         this.consistencyLevelMock = Mockito.mock(ConsistencyLevel.class);
         this.configsMock = Mockito.mock(Configs.class);
         this.cosmosAuthorizationTokenResolverMock = Mockito.mock(CosmosAuthorizationTokenResolver.class);
-        this.azureKeyCredentialMock = Mockito.mock(AzureKeyCredential.class);
+        this.azureKeyCredentialMock = new AzureKeyCredential("fakeKey");
         this.metadataCachesSnapshotMock = Mockito.mock(CosmosClientMetadataCachesSnapshot.class);
         this.apiTypeMock = Mockito.mock(ApiType.class);
         this.cosmosClientTelemetryConfigMock = Mockito.mock(CosmosClientTelemetryConfig.class);
@@ -106,16 +107,23 @@ public class RxDocumentClientImplTest {
         this.endToEndOperationLatencyPolicyConfig = Mockito.mock(CosmosEndToEndOperationLatencyPolicyConfig.class);
         this.sessionRetryOptionsMock = Mockito.mock(SessionRetryOptions.class);
         this.containerProactiveInitConfigMock = Mockito.mock(CosmosContainerProactiveInitConfig.class);
+        this.defaultItemSerializer = Mockito.mock(CosmosItemSerializer.class);
     }
 
-    @Test(groups = {"unit"})
+    // todo: fix and revert enabled = false when circuit breaker is enabled
+    @Test(groups = {"unit"}, enabled = true)
     public void readMany() {
 
         // setup static method mocks
         MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class);
         MockedStatic<PartitionKeyInternalHelper> partitionKeyInternalHelperMock = Mockito.mockStatic(PartitionKeyInternalHelper.class);
         MockedStatic<DocumentQueryExecutionContextFactory> documentQueryExecutionFactoryMock = Mockito.mockStatic(DocumentQueryExecutionContextFactory.class);
-        MockedStatic<ObservableHelper> observableHelperMock = Mockito.mockStatic(ObservableHelper.class);
+//        MockedStatic<ObservableHelper> observableHelperMock = Mockito.mockStatic(ObservableHelper.class);
+
+        // setup mocks
+        DocumentClientRetryPolicy documentClientRetryPolicyMock = Mockito.mock(DocumentClientRetryPolicy.class);
+        RxGatewayStoreModel gatewayStoreModelMock = Mockito.mock(RxGatewayStoreModel.class);
+        RxStoreModel serverStoreModelMock = Mockito.mock(RxStoreModel.class);
 
         // dummy values
         PartitionKeyRange dummyPartitionKeyRange1 = new PartitionKeyRange()
@@ -193,20 +201,29 @@ public class RxDocumentClientImplTest {
                 Mockito.any(),
                 Mockito.any()
             ))
-            .thenReturn(Flux.just(dummyExecutionContextForQuery(queryResults, headersForQueries)));
-        observableHelperMock
-            .when(() -> ObservableHelper.inlineIfPossibleAsObs(Mockito.any(), Mockito.any()))
-            .thenReturn(Mono.just(dummyResourceResponse(pointReadResult, headersForPointReads)));
+            .thenReturn(Flux.just(dummyExecutionContextForQuery(queryResults, headersForQueries, InternalObjectNode.class)));
 
         Mockito
             .when(this.collectionCacheMock.resolveCollectionAsync(Mockito.isNull(), Mockito.any(RxDocumentServiceRequest.class)))
             .thenReturn(Mono.just(dummyCollectionObs()));
+
+        Mockito
+            .when(this.collectionCacheMock.resolveByNameAsync(Mockito.any(), Mockito.anyString(), Mockito.isNull()))
+            .thenReturn(Mono.just(dummyCollectionObs().v));
+
         Mockito
             .when(this.partitionKeyRangeCacheMock.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(Mono.just(dummyCollectionRoutingMap(epksPartitionKeyRangeMap)));
 
-        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy(null)).thenReturn(dummyDocumentClientRetryPolicy());
+        RetryContext retryContext = new RetryContext();
 
+        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy(null)).thenReturn(dummyDocumentClientRetryPolicy());
+        Mockito.when(this.cosmosAuthorizationTokenResolverMock.getAuthorizationToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.any())).thenReturn("abcdefgh");
+        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy(Mockito.any())).thenReturn(documentClientRetryPolicyMock);
+        Mockito.when(documentClientRetryPolicyMock.getRetryContext()).thenReturn(retryContext);
+        Mockito
+            .when(serverStoreModelMock.processMessage(Mockito.any(RxDocumentServiceRequest.class)))
+            .thenReturn(Mono.just(mockRxDocumentServiceResponse(pointReadResult, headersForPointReads)));
 
         // initialize object to be tested
         RxDocumentClientImpl rxDocumentClient = new RxDocumentClientImpl(
@@ -227,12 +244,16 @@ public class RxDocumentClientImplTest {
             this.clientCorrelationIdMock,
             this.endToEndOperationLatencyPolicyConfig,
             this.sessionRetryOptionsMock,
-            this.containerProactiveInitConfigMock);
+            this.containerProactiveInitConfigMock,
+            this.defaultItemSerializer,
+            false);
 
         try {
             ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);
             ReflectionUtils.setPartitionKeyRangeCache(rxDocumentClient, this.partitionKeyRangeCacheMock);
             ReflectionUtils.setResetSessionTokenRetryPolicy(rxDocumentClient, this.resetSessionTokenRetryPolicyMock);
+            ReflectionUtils.setGatewayProxy(rxDocumentClient, gatewayStoreModelMock);
+            ReflectionUtils.setServerStoreModel(rxDocumentClient, serverStoreModelMock);
 
             ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
 
@@ -285,7 +306,6 @@ public class RxDocumentClientImplTest {
             // release static mocks
             httpClientMock.close();
             partitionKeyInternalHelperMock.close();
-            observableHelperMock.close();
             documentQueryExecutionFactoryMock.close();
 
             // de-register client
@@ -378,9 +398,18 @@ public class RxDocumentClientImplTest {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> IDocumentQueryExecutionContext<T> dummyExecutionContextForQuery(List<String> results, Map<String, String> headers) {
-        List<Document> documentResults = results.stream().map(str -> new Document(str)).collect(Collectors.toList());
-        return () -> Flux.just((FeedResponse<T>) ModelBridgeInternal.createFeedResponse(documentResults, headers));
+    private static <T> IDocumentQueryExecutionContext<T> dummyExecutionContextForQuery(
+            List<String> results,
+            Map<String, String> headers,
+            Class<T> klass) {
+        List<T> documentResults =
+                results
+                        .stream()
+                        .map(str -> new Document(str))
+                        .map(document -> document.toObject(klass))
+                        .collect(Collectors.toList());
+
+        return () -> Flux.just(ModelBridgeInternal.createFeedResponse(documentResults, headers));
     }
 
     private static DocumentClientRetryPolicy dummyDocumentClientRetryPolicy() {
@@ -400,8 +429,7 @@ public class RxDocumentClientImplTest {
         };
     }
 
-    private static ResourceResponse<Document> dummyResourceResponse(String content, Map<String, String> headers) {
-
+    private static RxDocumentServiceResponse mockRxDocumentServiceResponse(String content, Map<String, String> headers) {
         byte[] blob = content.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
@@ -439,7 +467,7 @@ public class RxDocumentClientImplTest {
 
         documentServiceResponse.setCosmosDiagnostics(dummyCosmosDiagnostics());
 
-        return new ResourceResponse<>(documentServiceResponse, Document.class);
+        return documentServiceResponse;
     }
 
     private static CosmosDiagnostics dummyCosmosDiagnostics() {

@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Identity for the container group. */
+/**
+ * Identity for the container group.
+ */
 @Fluent
-public final class ContainerGroupIdentity {
+public final class ContainerGroupIdentity implements JsonSerializable<ContainerGroupIdentity> {
     /*
      * The principal id of the container group identity. This property will only be provided for a system assigned
      * identity.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The tenant id associated with the container group. This property will only be provided for a system assigned
      * identity.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
@@ -31,24 +34,23 @@ public final class ContainerGroupIdentity {
      * implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities
      * from the container group.
      */
-    @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /*
      * The list of user identities associated with the container group.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities;
 
-    /** Creates an instance of ContainerGroupIdentity class. */
+    /**
+     * Creates an instance of ContainerGroupIdentity class.
+     */
     public ContainerGroupIdentity() {
     }
 
     /**
      * Get the principalId property: The principal id of the container group identity. This property will only be
      * provided for a system assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -58,7 +60,7 @@ public final class ContainerGroupIdentity {
     /**
      * Get the tenantId property: The tenant id associated with the container group. This property will only be provided
      * for a system assigned identity.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -69,7 +71,7 @@ public final class ContainerGroupIdentity {
      * Get the type property: The type of identity used for the container group. The type 'SystemAssigned, UserAssigned'
      * includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove
      * any identities from the container group.
-     *
+     * 
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -80,7 +82,7 @@ public final class ContainerGroupIdentity {
      * Set the type property: The type of identity used for the container group. The type 'SystemAssigned, UserAssigned'
      * includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove
      * any identities from the container group.
-     *
+     * 
      * @param type the type value to set.
      * @return the ContainerGroupIdentity object itself.
      */
@@ -91,7 +93,7 @@ public final class ContainerGroupIdentity {
 
     /**
      * Get the userAssignedIdentities property: The list of user identities associated with the container group.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities() {
@@ -100,31 +102,74 @@ public final class ContainerGroupIdentity {
 
     /**
      * Set the userAssignedIdentities property: The list of user identities associated with the container group.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ContainerGroupIdentity object itself.
      */
-    public ContainerGroupIdentity withUserAssignedIdentities(
-        Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities) {
+    public ContainerGroupIdentity
+        withUserAssignedIdentities(Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerGroupIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerGroupIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerGroupIdentity.
+     */
+    public static ContainerGroupIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerGroupIdentity deserializedContainerGroupIdentity = new ContainerGroupIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedContainerGroupIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedContainerGroupIdentity.tenantId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedContainerGroupIdentity.type = ResourceIdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities
+                        = reader.readMap(reader1 -> ContainerGroupIdentityUserAssignedIdentities.fromJson(reader1));
+                    deserializedContainerGroupIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerGroupIdentity;
+        });
     }
 }

@@ -5,47 +5,61 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** HyperVReplicaAzure specific planned failover input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVReplicaAzure")
+/**
+ * HyperVReplicaAzure specific planned failover input.
+ */
 @Fluent
 public final class HyperVReplicaAzurePlannedFailoverProviderInput extends PlannedFailoverProviderSpecificFailoverInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "HyperVReplicaAzure";
+
+    /*
      * Primary kek certificate pfx.
      */
-    @JsonProperty(value = "primaryKekCertificatePfx")
     private String primaryKekCertificatePfx;
 
     /*
      * Secondary kek certificate pfx.
      */
-    @JsonProperty(value = "secondaryKekCertificatePfx")
     private String secondaryKekCertificatePfx;
 
     /*
      * The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point,
      * null should be passed.
      */
-    @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
     /*
      * A value indicating the inplace OS Upgrade version.
      */
-    @JsonProperty(value = "osUpgradeVersion")
     private String osUpgradeVersion;
 
-    /** Creates an instance of HyperVReplicaAzurePlannedFailoverProviderInput class. */
+    /**
+     * Creates an instance of HyperVReplicaAzurePlannedFailoverProviderInput class.
+     */
     public HyperVReplicaAzurePlannedFailoverProviderInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the primaryKekCertificatePfx property: Primary kek certificate pfx.
-     *
+     * 
      * @return the primaryKekCertificatePfx value.
      */
     public String primaryKekCertificatePfx() {
@@ -54,19 +68,19 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
 
     /**
      * Set the primaryKekCertificatePfx property: Primary kek certificate pfx.
-     *
+     * 
      * @param primaryKekCertificatePfx the primaryKekCertificatePfx value to set.
      * @return the HyperVReplicaAzurePlannedFailoverProviderInput object itself.
      */
-    public HyperVReplicaAzurePlannedFailoverProviderInput withPrimaryKekCertificatePfx(
-        String primaryKekCertificatePfx) {
+    public HyperVReplicaAzurePlannedFailoverProviderInput
+        withPrimaryKekCertificatePfx(String primaryKekCertificatePfx) {
         this.primaryKekCertificatePfx = primaryKekCertificatePfx;
         return this;
     }
 
     /**
      * Get the secondaryKekCertificatePfx property: Secondary kek certificate pfx.
-     *
+     * 
      * @return the secondaryKekCertificatePfx value.
      */
     public String secondaryKekCertificatePfx() {
@@ -75,12 +89,12 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
 
     /**
      * Set the secondaryKekCertificatePfx property: Secondary kek certificate pfx.
-     *
+     * 
      * @param secondaryKekCertificatePfx the secondaryKekCertificatePfx value to set.
      * @return the HyperVReplicaAzurePlannedFailoverProviderInput object itself.
      */
-    public HyperVReplicaAzurePlannedFailoverProviderInput withSecondaryKekCertificatePfx(
-        String secondaryKekCertificatePfx) {
+    public HyperVReplicaAzurePlannedFailoverProviderInput
+        withSecondaryKekCertificatePfx(String secondaryKekCertificatePfx) {
         this.secondaryKekCertificatePfx = secondaryKekCertificatePfx;
         return this;
     }
@@ -88,7 +102,7 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
     /**
      * Get the recoveryPointId property: The recovery point id to be passed to failover to a particular recovery point.
      * In case of latest recovery point, null should be passed.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -98,7 +112,7 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
     /**
      * Set the recoveryPointId property: The recovery point id to be passed to failover to a particular recovery point.
      * In case of latest recovery point, null should be passed.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the HyperVReplicaAzurePlannedFailoverProviderInput object itself.
      */
@@ -109,7 +123,7 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
 
     /**
      * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
-     *
+     * 
      * @return the osUpgradeVersion value.
      */
     public String osUpgradeVersion() {
@@ -118,7 +132,7 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
 
     /**
      * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
-     *
+     * 
      * @param osUpgradeVersion the osUpgradeVersion value to set.
      * @return the HyperVReplicaAzurePlannedFailoverProviderInput object itself.
      */
@@ -129,11 +143,61 @@ public final class HyperVReplicaAzurePlannedFailoverProviderInput extends Planne
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("primaryKekCertificatePfx", this.primaryKekCertificatePfx);
+        jsonWriter.writeStringField("secondaryKekCertificatePfx", this.secondaryKekCertificatePfx);
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("osUpgradeVersion", this.osUpgradeVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVReplicaAzurePlannedFailoverProviderInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVReplicaAzurePlannedFailoverProviderInput if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVReplicaAzurePlannedFailoverProviderInput.
+     */
+    public static HyperVReplicaAzurePlannedFailoverProviderInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVReplicaAzurePlannedFailoverProviderInput deserializedHyperVReplicaAzurePlannedFailoverProviderInput
+                = new HyperVReplicaAzurePlannedFailoverProviderInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePlannedFailoverProviderInput.instanceType = reader.getString();
+                } else if ("primaryKekCertificatePfx".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePlannedFailoverProviderInput.primaryKekCertificatePfx
+                        = reader.getString();
+                } else if ("secondaryKekCertificatePfx".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePlannedFailoverProviderInput.secondaryKekCertificatePfx
+                        = reader.getString();
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePlannedFailoverProviderInput.recoveryPointId = reader.getString();
+                } else if ("osUpgradeVersion".equals(fieldName)) {
+                    deserializedHyperVReplicaAzurePlannedFailoverProviderInput.osUpgradeVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVReplicaAzurePlannedFailoverProviderInput;
+        });
     }
 }

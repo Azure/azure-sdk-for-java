@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** operationError. */
+/**
+ * operationError.
+ */
 @Fluent
-public final class MicrosoftGraphOperationError {
+public final class MicrosoftGraphOperationError implements JsonSerializable<MicrosoftGraphOperationError> {
     /*
      * Operation error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Operation error message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * operationError
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOperationError class. */
+    /**
+     * Creates an instance of MicrosoftGraphOperationError class.
+     */
     public MicrosoftGraphOperationError() {
     }
 
     /**
      * Get the code property: Operation error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphOperationError {
 
     /**
      * Set the code property: Operation error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the MicrosoftGraphOperationError object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphOperationError {
 
     /**
      * Get the message property: Operation error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphOperationError {
 
     /**
      * Set the message property: Operation error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the MicrosoftGraphOperationError object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphOperationError {
 
     /**
      * Get the additionalProperties property: operationError.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: operationError.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOperationError object itself.
      */
@@ -97,19 +99,61 @@ public final class MicrosoftGraphOperationError {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOperationError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOperationError if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOperationError.
+     */
+    public static MicrosoftGraphOperationError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOperationError deserializedMicrosoftGraphOperationError = new MicrosoftGraphOperationError();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedMicrosoftGraphOperationError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedMicrosoftGraphOperationError.message = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOperationError.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOperationError;
+        });
     }
 }

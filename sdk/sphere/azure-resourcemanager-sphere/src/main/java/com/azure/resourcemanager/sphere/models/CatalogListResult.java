@@ -6,32 +6,38 @@ package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sphere.fluent.models.CatalogInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of a Catalog list operation. */
+/**
+ * The response of a Catalog list operation.
+ */
 @Fluent
-public final class CatalogListResult {
+public final class CatalogListResult implements JsonSerializable<CatalogListResult> {
     /*
      * The Catalog items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<CatalogInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CatalogListResult class. */
+    /**
+     * Creates an instance of CatalogListResult class.
+     */
     public CatalogListResult() {
     }
 
     /**
      * Get the value property: The Catalog items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<CatalogInner> value() {
@@ -40,7 +46,7 @@ public final class CatalogListResult {
 
     /**
      * Set the value property: The Catalog items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the CatalogListResult object itself.
      */
@@ -51,7 +57,7 @@ public final class CatalogListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +66,7 @@ public final class CatalogListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CatalogListResult object itself.
      */
@@ -71,18 +77,58 @@ public final class CatalogListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model CatalogListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model CatalogListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CatalogListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CatalogListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CatalogListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CatalogListResult.
+     */
+    public static CatalogListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CatalogListResult deserializedCatalogListResult = new CatalogListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CatalogInner> value = reader.readArray(reader1 -> CatalogInner.fromJson(reader1));
+                    deserializedCatalogListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCatalogListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCatalogListResult;
+        });
+    }
 }

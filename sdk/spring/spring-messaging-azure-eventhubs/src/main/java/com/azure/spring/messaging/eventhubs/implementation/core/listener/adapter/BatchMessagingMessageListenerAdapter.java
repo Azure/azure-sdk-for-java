@@ -8,9 +8,9 @@ import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsBatchMessageListener;
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
-import com.azure.spring.messaging.eventhubs.support.converter.EventHubsBatchMessageConverter;
+import com.azure.spring.messaging.eventhubs.implementation.support.converter.EventHubsBatchMessageConverter;
 import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
@@ -46,9 +46,9 @@ public class BatchMessagingMessageListenerAdapter extends MessagingMessageListen
         invokeHandler(message);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
-    public AbstractAzureMessageConverter<EventBatchContext, EventData> getMessageConverter() {
-        return (AbstractAzureMessageConverter<EventBatchContext, EventData>) super.getMessageConverter();
+    @Override
+    public AzureMessageConverter<EventBatchContext, EventData> getMessageConverter() {
+        return (AzureMessageConverter<EventBatchContext, EventData>) super.getMessageConverter();
     }
 }

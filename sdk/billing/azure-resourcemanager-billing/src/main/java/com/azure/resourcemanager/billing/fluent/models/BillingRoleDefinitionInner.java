@@ -5,81 +5,179 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.billing.models.BillingRoleDefinitionProperties;
+import com.azure.resourcemanager.billing.models.ProxyResourceWithTags;
+import java.io.IOException;
+import java.util.Map;
 
-/** The properties of a role definition. */
+/**
+ * The properties of a role definition.
+ */
 @Fluent
-public final class BillingRoleDefinitionInner extends ProxyResource {
+public final class BillingRoleDefinitionInner extends ProxyResourceWithTags {
     /*
-     * The properties of the a role definition.
+     * The properties of a role definition.
      */
-    @JsonProperty(value = "properties")
-    private BillingRoleDefinitionProperties innerProperties;
+    private BillingRoleDefinitionProperties properties;
 
-    /** Creates an instance of BillingRoleDefinitionInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BillingRoleDefinitionInner class.
+     */
     public BillingRoleDefinitionInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of the a role definition.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The properties of a role definition.
+     * 
+     * @return the properties value.
      */
-    private BillingRoleDefinitionProperties innerProperties() {
-        return this.innerProperties;
+    public BillingRoleDefinitionProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the description property: The role description.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Get the permissions property: The billingPermissions the role has.
-     *
-     * @return the permissions value.
-     */
-    public List<BillingPermissionsPropertiesInner> permissions() {
-        return this.innerProperties() == null ? null : this.innerProperties().permissions();
-    }
-
-    /**
-     * Set the permissions property: The billingPermissions the role has.
-     *
-     * @param permissions the permissions value to set.
+     * Set the properties property: The properties of a role definition.
+     * 
+     * @param properties the properties value to set.
      * @return the BillingRoleDefinitionInner object itself.
      */
-    public BillingRoleDefinitionInner withPermissions(List<BillingPermissionsPropertiesInner> permissions) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingRoleDefinitionProperties();
-        }
-        this.innerProperties().withPermissions(permissions);
+    public BillingRoleDefinitionInner withProperties(BillingRoleDefinitionProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the roleName property: The name of the role.
-     *
-     * @return the roleName value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String roleName() {
-        return this.innerProperties() == null ? null : this.innerProperties().roleName();
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BillingRoleDefinitionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingRoleDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingRoleDefinitionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BillingRoleDefinitionInner.
+     */
+    public static BillingRoleDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingRoleDefinitionInner deserializedBillingRoleDefinitionInner = new BillingRoleDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBillingRoleDefinitionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBillingRoleDefinitionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBillingRoleDefinitionInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBillingRoleDefinitionInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBillingRoleDefinitionInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBillingRoleDefinitionInner.properties
+                        = BillingRoleDefinitionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingRoleDefinitionInner;
+        });
     }
 }

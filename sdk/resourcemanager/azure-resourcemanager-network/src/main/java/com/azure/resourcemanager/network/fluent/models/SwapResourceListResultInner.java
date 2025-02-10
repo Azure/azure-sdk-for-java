@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * SwapResource List with single entry to represent slot type on the specified cloud service.
  */
 @Fluent
-public final class SwapResourceListResultInner {
+public final class SwapResourceListResultInner implements JsonSerializable<SwapResourceListResultInner> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<SwapResourceInner> value;
 
     /**
@@ -54,5 +57,42 @@ public final class SwapResourceListResultInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwapResourceListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwapResourceListResultInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwapResourceListResultInner.
+     */
+    public static SwapResourceListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwapResourceListResultInner deserializedSwapResourceListResultInner = new SwapResourceListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SwapResourceInner> value = reader.readArray(reader1 -> SwapResourceInner.fromJson(reader1));
+                    deserializedSwapResourceListResultInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwapResourceListResultInner;
+        });
     }
 }

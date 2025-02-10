@@ -24,9 +24,10 @@ public final class SelfHostedIntegrationRuntimeNodeInnerTests {
         SelfHostedIntegrationRuntimeNodeInner model = new SelfHostedIntegrationRuntimeNodeInner()
             .withAdditionalProperties(mapOf("nodeName", "e", "lastStartUpdateTime", "2021-01-31T17:20:46Z",
                 "lastConnectTime", "2020-12-28T23:28:21Z", "capabilities",
-                JacksonAdapter.createDefaultSerializerAdapter().deserialize(
-                    "{\"nnprn\":\"hzovawjvzunlut\",\"eilpjzuaejxdu\":\"i\",\"pwo\":\"tskzbbtdzumveek\",\"fpbsjyofdxl\":\"uh\"}",
-                    Object.class, SerializerEncoding.JSON),
+                JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserialize(
+                        "{\"nnprn\":\"hzovawjvzunlut\",\"eilpjzuaejxdu\":\"i\",\"pwo\":\"tskzbbtdzumveek\",\"fpbsjyofdxl\":\"uh\"}",
+                        Object.class, SerializerEncoding.JSON),
                 "hostServiceUri", "zcjrvxdjzlmwlx", "registerTime", "2021-02-02T03:25:54Z", "maxConcurrentJobs",
                 923639125, "lastStopTime", "2021-08-23T09:42:03Z", "version", "ouwaboekqvkeln", "machineName",
                 "sgzvahapjyzhpv", "versionStatus", "sd", "concurrentJobsLimit", 1744629944, "lastEndUpdateTime",

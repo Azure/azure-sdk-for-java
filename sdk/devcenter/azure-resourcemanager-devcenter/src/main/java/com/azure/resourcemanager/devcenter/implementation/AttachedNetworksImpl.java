@@ -21,46 +21,41 @@ public final class AttachedNetworksImpl implements AttachedNetworks {
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    public AttachedNetworksImpl(
-        AttachedNetworksClient innerClient, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    public AttachedNetworksImpl(AttachedNetworksClient innerClient,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<AttachedNetworkConnection> listByProject(String resourceGroupName, String projectName) {
-        PagedIterable<AttachedNetworkConnectionInner> inner =
-            this.serviceClient().listByProject(resourceGroupName, projectName);
-        return Utils.mapPage(inner, inner1 -> new AttachedNetworkConnectionImpl(inner1, this.manager()));
+        PagedIterable<AttachedNetworkConnectionInner> inner
+            = this.serviceClient().listByProject(resourceGroupName, projectName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AttachedNetworkConnectionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AttachedNetworkConnection> listByProject(
-        String resourceGroupName, String projectName, Integer top, Context context) {
-        PagedIterable<AttachedNetworkConnectionInner> inner =
-            this.serviceClient().listByProject(resourceGroupName, projectName, top, context);
-        return Utils.mapPage(inner, inner1 -> new AttachedNetworkConnectionImpl(inner1, this.manager()));
+    public PagedIterable<AttachedNetworkConnection> listByProject(String resourceGroupName, String projectName,
+        Integer top, Context context) {
+        PagedIterable<AttachedNetworkConnectionInner> inner
+            = this.serviceClient().listByProject(resourceGroupName, projectName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AttachedNetworkConnectionImpl(inner1, this.manager()));
     }
 
-    public Response<AttachedNetworkConnection> getByProjectWithResponse(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName, Context context) {
-        Response<AttachedNetworkConnectionInner> inner =
-            this
-                .serviceClient()
-                .getByProjectWithResponse(resourceGroupName, projectName, attachedNetworkConnectionName, context);
+    public Response<AttachedNetworkConnection> getByProjectWithResponse(String resourceGroupName, String projectName,
+        String attachedNetworkConnectionName, Context context) {
+        Response<AttachedNetworkConnectionInner> inner = this.serviceClient()
+            .getByProjectWithResponse(resourceGroupName, projectName, attachedNetworkConnectionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AttachedNetworkConnectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AttachedNetworkConnection getByProject(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName) {
-        AttachedNetworkConnectionInner inner =
-            this.serviceClient().getByProject(resourceGroupName, projectName, attachedNetworkConnectionName);
+    public AttachedNetworkConnection getByProject(String resourceGroupName, String projectName,
+        String attachedNetworkConnectionName) {
+        AttachedNetworkConnectionInner inner
+            = this.serviceClient().getByProject(resourceGroupName, projectName, attachedNetworkConnectionName);
         if (inner != null) {
             return new AttachedNetworkConnectionImpl(inner, this.manager());
         } else {
@@ -69,39 +64,34 @@ public final class AttachedNetworksImpl implements AttachedNetworks {
     }
 
     public PagedIterable<AttachedNetworkConnection> listByDevCenter(String resourceGroupName, String devCenterName) {
-        PagedIterable<AttachedNetworkConnectionInner> inner =
-            this.serviceClient().listByDevCenter(resourceGroupName, devCenterName);
-        return Utils.mapPage(inner, inner1 -> new AttachedNetworkConnectionImpl(inner1, this.manager()));
+        PagedIterable<AttachedNetworkConnectionInner> inner
+            = this.serviceClient().listByDevCenter(resourceGroupName, devCenterName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AttachedNetworkConnectionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AttachedNetworkConnection> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
-        PagedIterable<AttachedNetworkConnectionInner> inner =
-            this.serviceClient().listByDevCenter(resourceGroupName, devCenterName, top, context);
-        return Utils.mapPage(inner, inner1 -> new AttachedNetworkConnectionImpl(inner1, this.manager()));
+    public PagedIterable<AttachedNetworkConnection> listByDevCenter(String resourceGroupName, String devCenterName,
+        Integer top, Context context) {
+        PagedIterable<AttachedNetworkConnectionInner> inner
+            = this.serviceClient().listByDevCenter(resourceGroupName, devCenterName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AttachedNetworkConnectionImpl(inner1, this.manager()));
     }
 
-    public Response<AttachedNetworkConnection> getByDevCenterWithResponse(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
-        Response<AttachedNetworkConnectionInner> inner =
-            this
-                .serviceClient()
-                .getByDevCenterWithResponse(resourceGroupName, devCenterName, attachedNetworkConnectionName, context);
+    public Response<AttachedNetworkConnection> getByDevCenterWithResponse(String resourceGroupName,
+        String devCenterName, String attachedNetworkConnectionName, Context context) {
+        Response<AttachedNetworkConnectionInner> inner = this.serviceClient()
+            .getByDevCenterWithResponse(resourceGroupName, devCenterName, attachedNetworkConnectionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AttachedNetworkConnectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AttachedNetworkConnection getByDevCenter(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
-        AttachedNetworkConnectionInner inner =
-            this.serviceClient().getByDevCenter(resourceGroupName, devCenterName, attachedNetworkConnectionName);
+    public AttachedNetworkConnection getByDevCenter(String resourceGroupName, String devCenterName,
+        String attachedNetworkConnectionName) {
+        AttachedNetworkConnectionInner inner
+            = this.serviceClient().getByDevCenter(resourceGroupName, devCenterName, attachedNetworkConnectionName);
         if (inner != null) {
             return new AttachedNetworkConnectionImpl(inner, this.manager());
         } else {
@@ -113,35 +103,26 @@ public final class AttachedNetworksImpl implements AttachedNetworks {
         this.serviceClient().delete(resourceGroupName, devCenterName, attachedNetworkConnectionName);
     }
 
-    public void delete(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
+    public void delete(String resourceGroupName, String devCenterName, String attachedNetworkConnectionName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, devCenterName, attachedNetworkConnectionName, context);
     }
 
     public AttachedNetworkConnection getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String devCenterName = Utils.getValueFromIdByName(id, "devcenters");
+        String devCenterName = ResourceManagerUtils.getValueFromIdByName(id, "devcenters");
         if (devCenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
         }
-        String attachedNetworkConnectionName = Utils.getValueFromIdByName(id, "attachednetworks");
+        String attachedNetworkConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "attachednetworks");
         if (attachedNetworkConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'attachednetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'attachednetworks'.", id)));
         }
         return this
             .getByDevCenterWithResponse(resourceGroupName, devCenterName, attachedNetworkConnectionName, Context.NONE)
@@ -149,86 +130,59 @@ public final class AttachedNetworksImpl implements AttachedNetworks {
     }
 
     public Response<AttachedNetworkConnection> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String devCenterName = Utils.getValueFromIdByName(id, "devcenters");
+        String devCenterName = ResourceManagerUtils.getValueFromIdByName(id, "devcenters");
         if (devCenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
         }
-        String attachedNetworkConnectionName = Utils.getValueFromIdByName(id, "attachednetworks");
+        String attachedNetworkConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "attachednetworks");
         if (attachedNetworkConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'attachednetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'attachednetworks'.", id)));
         }
-        return this
-            .getByDevCenterWithResponse(resourceGroupName, devCenterName, attachedNetworkConnectionName, context);
+        return this.getByDevCenterWithResponse(resourceGroupName, devCenterName, attachedNetworkConnectionName,
+            context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String devCenterName = Utils.getValueFromIdByName(id, "devcenters");
+        String devCenterName = ResourceManagerUtils.getValueFromIdByName(id, "devcenters");
         if (devCenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
         }
-        String attachedNetworkConnectionName = Utils.getValueFromIdByName(id, "attachednetworks");
+        String attachedNetworkConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "attachednetworks");
         if (attachedNetworkConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'attachednetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'attachednetworks'.", id)));
         }
         this.delete(resourceGroupName, devCenterName, attachedNetworkConnectionName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String devCenterName = Utils.getValueFromIdByName(id, "devcenters");
+        String devCenterName = ResourceManagerUtils.getValueFromIdByName(id, "devcenters");
         if (devCenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'devcenters'.", id)));
         }
-        String attachedNetworkConnectionName = Utils.getValueFromIdByName(id, "attachednetworks");
+        String attachedNetworkConnectionName = ResourceManagerUtils.getValueFromIdByName(id, "attachednetworks");
         if (attachedNetworkConnectionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'attachednetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'attachednetworks'.", id)));
         }
         this.delete(resourceGroupName, devCenterName, attachedNetworkConnectionName, context);
     }

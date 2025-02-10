@@ -5,60 +5,56 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Body of the error response returned from the API.
  */
 @Fluent
-public final class ErrorEntity {
+public final class ErrorEntity implements JsonSerializable<ErrorEntity> {
     /*
      * Type of error.
      */
-    @JsonProperty(value = "extendedCode")
     private String extendedCode;
 
     /*
      * Message template.
      */
-    @JsonProperty(value = "messageTemplate")
     private String messageTemplate;
 
     /*
      * Parameters for the template.
      */
-    @JsonProperty(value = "parameters")
     private List<String> parameters;
 
     /*
      * Inner errors.
      */
-    @JsonProperty(value = "innerErrors")
     private List<ErrorEntity> innerErrors;
 
     /*
      * Error Details.
      */
-    @JsonProperty(value = "details")
     private List<ErrorEntity> details;
 
     /*
      * The error target.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * Basic error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Any details of the error.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -239,5 +235,65 @@ public final class ErrorEntity {
         if (details() != null) {
             details().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("extendedCode", this.extendedCode);
+        jsonWriter.writeStringField("messageTemplate", this.messageTemplate);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("innerErrors", this.innerErrors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorEntity.
+     */
+    public static ErrorEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorEntity deserializedErrorEntity = new ErrorEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extendedCode".equals(fieldName)) {
+                    deserializedErrorEntity.extendedCode = reader.getString();
+                } else if ("messageTemplate".equals(fieldName)) {
+                    deserializedErrorEntity.messageTemplate = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<String> parameters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedErrorEntity.parameters = parameters;
+                } else if ("innerErrors".equals(fieldName)) {
+                    List<ErrorEntity> innerErrors = reader.readArray(reader1 -> ErrorEntity.fromJson(reader1));
+                    deserializedErrorEntity.innerErrors = innerErrors;
+                } else if ("details".equals(fieldName)) {
+                    List<ErrorEntity> details = reader.readArray(reader1 -> ErrorEntity.fromJson(reader1));
+                    deserializedErrorEntity.details = details;
+                } else if ("target".equals(fieldName)) {
+                    deserializedErrorEntity.target = reader.getString();
+                } else if ("code".equals(fieldName)) {
+                    deserializedErrorEntity.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedErrorEntity.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorEntity;
+        });
     }
 }

@@ -15,11 +15,14 @@ public final class OpenShiftManagedClustersListByResourceGroupSamples {
      */
     /**
      * Sample code: Get Managed Clusters by Resource Group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getManagedClustersByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getOpenShiftManagedClusters().listByResourceGroup("rg1",
-            com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getOpenShiftManagedClusters()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

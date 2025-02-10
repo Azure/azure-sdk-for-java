@@ -4,56 +4,220 @@
 
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.CveSummaryInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An immutable client-side representation of CveSummary. */
-public interface CveSummary {
+/**
+ * Properties for a CVE analysis summary.
+ */
+@Fluent
+public final class CveSummary extends SummaryResourceProperties {
+    /*
+     * Describes the type of summary.
+     */
+    private SummaryType summaryType = SummaryType.CVE;
+
+    /*
+     * The total number of critical severity CVEs detected
+     */
+    private Long critical;
+
+    /*
+     * The total number of high severity CVEs detected
+     */
+    private Long high;
+
+    /*
+     * The total number of medium severity CVEs detected
+     */
+    private Long medium;
+
+    /*
+     * The total number of low severity CVEs detected
+     */
+    private Long low;
+
+    /*
+     * The total number of unknown severity CVEs detected
+     */
+    private Long unknown;
+
     /**
-     * Gets the critical property: The total number of critical severity CVEs detected.
-     *
+     * Creates an instance of CveSummary class.
+     */
+    public CveSummary() {
+    }
+
+    /**
+     * Get the summaryType property: Describes the type of summary.
+     * 
+     * @return the summaryType value.
+     */
+    @Override
+    public SummaryType summaryType() {
+        return this.summaryType;
+    }
+
+    /**
+     * Get the critical property: The total number of critical severity CVEs detected.
+     * 
      * @return the critical value.
      */
-    Long critical();
+    public Long critical() {
+        return this.critical;
+    }
 
     /**
-     * Gets the high property: The total number of high severity CVEs detected.
-     *
+     * Set the critical property: The total number of critical severity CVEs detected.
+     * 
+     * @param critical the critical value to set.
+     * @return the CveSummary object itself.
+     */
+    public CveSummary withCritical(Long critical) {
+        this.critical = critical;
+        return this;
+    }
+
+    /**
+     * Get the high property: The total number of high severity CVEs detected.
+     * 
      * @return the high value.
      */
-    Long high();
+    public Long high() {
+        return this.high;
+    }
 
     /**
-     * Gets the medium property: The total number of medium severity CVEs detected.
-     *
+     * Set the high property: The total number of high severity CVEs detected.
+     * 
+     * @param high the high value to set.
+     * @return the CveSummary object itself.
+     */
+    public CveSummary withHigh(Long high) {
+        this.high = high;
+        return this;
+    }
+
+    /**
+     * Get the medium property: The total number of medium severity CVEs detected.
+     * 
      * @return the medium value.
      */
-    Long medium();
+    public Long medium() {
+        return this.medium;
+    }
 
     /**
-     * Gets the low property: The total number of low severity CVEs detected.
-     *
+     * Set the medium property: The total number of medium severity CVEs detected.
+     * 
+     * @param medium the medium value to set.
+     * @return the CveSummary object itself.
+     */
+    public CveSummary withMedium(Long medium) {
+        this.medium = medium;
+        return this;
+    }
+
+    /**
+     * Get the low property: The total number of low severity CVEs detected.
+     * 
      * @return the low value.
      */
-    Long low();
+    public Long low() {
+        return this.low;
+    }
 
     /**
-     * Gets the unknown property: The total number of unknown severity CVEs detected.
-     *
+     * Set the low property: The total number of low severity CVEs detected.
+     * 
+     * @param low the low value to set.
+     * @return the CveSummary object itself.
+     */
+    public CveSummary withLow(Long low) {
+        this.low = low;
+        return this;
+    }
+
+    /**
+     * Get the unknown property: The total number of unknown severity CVEs detected.
+     * 
      * @return the unknown value.
      */
-    Long unknown();
+    public Long unknown() {
+        return this.unknown;
+    }
 
     /**
-     * Gets the undefined property: The total number of undefined severity CVEs detected.
-     *
-     * @return the undefined value.
+     * Set the unknown property: The total number of unknown severity CVEs detected.
+     * 
+     * @param unknown the unknown value to set.
+     * @return the CveSummary object itself.
      */
-    Long undefined();
+    public CveSummary withUnknown(Long unknown) {
+        this.unknown = unknown;
+        return this;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.iotfirmwaredefense.fluent.models.CveSummaryInner object.
-     *
-     * @return the inner object.
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    CveSummaryInner innerModel();
+    @Override
+    public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("summaryType", this.summaryType == null ? null : this.summaryType.toString());
+        jsonWriter.writeNumberField("critical", this.critical);
+        jsonWriter.writeNumberField("high", this.high);
+        jsonWriter.writeNumberField("medium", this.medium);
+        jsonWriter.writeNumberField("low", this.low);
+        jsonWriter.writeNumberField("unknown", this.unknown);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CveSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CveSummary if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the CveSummary.
+     */
+    public static CveSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CveSummary deserializedCveSummary = new CveSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("summaryType".equals(fieldName)) {
+                    deserializedCveSummary.summaryType = SummaryType.fromString(reader.getString());
+                } else if ("critical".equals(fieldName)) {
+                    deserializedCveSummary.critical = reader.getNullable(JsonReader::getLong);
+                } else if ("high".equals(fieldName)) {
+                    deserializedCveSummary.high = reader.getNullable(JsonReader::getLong);
+                } else if ("medium".equals(fieldName)) {
+                    deserializedCveSummary.medium = reader.getNullable(JsonReader::getLong);
+                } else if ("low".equals(fieldName)) {
+                    deserializedCveSummary.low = reader.getNullable(JsonReader::getLong);
+                } else if ("unknown".equals(fieldName)) {
+                    deserializedCveSummary.unknown = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCveSummary;
+        });
+    }
 }

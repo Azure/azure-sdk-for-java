@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Renew Certificate input properties. */
+/**
+ * Renew Certificate input properties.
+ */
 @Fluent
-public final class RenewCertificateInputProperties {
+public final class RenewCertificateInputProperties implements JsonSerializable<RenewCertificateInputProperties> {
     /*
      * Renew certificate type.
      */
-    @JsonProperty(value = "renewCertificateType")
     private String renewCertificateType;
 
-    /** Creates an instance of RenewCertificateInputProperties class. */
+    /**
+     * Creates an instance of RenewCertificateInputProperties class.
+     */
     public RenewCertificateInputProperties() {
     }
 
     /**
      * Get the renewCertificateType property: Renew certificate type.
-     *
+     * 
      * @return the renewCertificateType value.
      */
     public String renewCertificateType() {
@@ -31,7 +38,7 @@ public final class RenewCertificateInputProperties {
 
     /**
      * Set the renewCertificateType property: Renew certificate type.
-     *
+     * 
      * @param renewCertificateType the renewCertificateType value to set.
      * @return the RenewCertificateInputProperties object itself.
      */
@@ -42,9 +49,46 @@ public final class RenewCertificateInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("renewCertificateType", this.renewCertificateType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RenewCertificateInputProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RenewCertificateInputProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RenewCertificateInputProperties.
+     */
+    public static RenewCertificateInputProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RenewCertificateInputProperties deserializedRenewCertificateInputProperties
+                = new RenewCertificateInputProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("renewCertificateType".equals(fieldName)) {
+                    deserializedRenewCertificateInputProperties.renewCertificateType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRenewCertificateInputProperties;
+        });
     }
 }

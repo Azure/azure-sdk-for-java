@@ -5,22 +5,26 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the credentials that will be used to access a custom registry during a run. */
+/**
+ * Describes the credentials that will be used to access a custom registry during a run.
+ */
 @Fluent
-public final class CustomRegistryCredentials {
+public final class CustomRegistryCredentials implements JsonSerializable<CustomRegistryCredentials> {
     /*
      * The username for logging into the custom registry.
      */
-    @JsonProperty(value = "userName")
     private SecretObject username;
 
     /*
      * The password for logging into the custom registry. The password is a secret
      * object that allows multiple ways of providing the value for it.
      */
-    @JsonProperty(value = "password")
     private SecretObject password;
 
     /*
@@ -30,16 +34,17 @@ public final class CustomRegistryCredentials {
      * identity may be used to authenticate to key vault to retrieve credentials or it may be the only
      * source of authentication used for accessing the registry.
      */
-    @JsonProperty(value = "identity")
     private String identity;
 
-    /** Creates an instance of CustomRegistryCredentials class. */
+    /**
+     * Creates an instance of CustomRegistryCredentials class.
+     */
     public CustomRegistryCredentials() {
     }
 
     /**
      * Get the username property: The username for logging into the custom registry.
-     *
+     * 
      * @return the username value.
      */
     public SecretObject username() {
@@ -48,7 +53,7 @@ public final class CustomRegistryCredentials {
 
     /**
      * Set the username property: The username for logging into the custom registry.
-     *
+     * 
      * @param username the username value to set.
      * @return the CustomRegistryCredentials object itself.
      */
@@ -58,9 +63,9 @@ public final class CustomRegistryCredentials {
     }
 
     /**
-     * Get the password property: The password for logging into the custom registry. The password is a secret object
-     * that allows multiple ways of providing the value for it.
-     *
+     * Get the password property: The password for logging into the custom registry. The password is a secret
+     * object that allows multiple ways of providing the value for it.
+     * 
      * @return the password value.
      */
     public SecretObject password() {
@@ -68,9 +73,9 @@ public final class CustomRegistryCredentials {
     }
 
     /**
-     * Set the password property: The password for logging into the custom registry. The password is a secret object
-     * that allows multiple ways of providing the value for it.
-     *
+     * Set the password property: The password for logging into the custom registry. The password is a secret
+     * object that allows multiple ways of providing the value for it.
+     * 
      * @param password the password value to set.
      * @return the CustomRegistryCredentials object itself.
      */
@@ -81,11 +86,12 @@ public final class CustomRegistryCredentials {
 
     /**
      * Get the identity property: Indicates the managed identity assigned to the custom credential. If a user-assigned
-     * identity this value is the Client ID. If a system-assigned identity, the value will be `system`. In the case of a
-     * system-assigned identity, the Client ID will be determined by the runner. This identity may be used to
-     * authenticate to key vault to retrieve credentials or it may be the only source of authentication used for
-     * accessing the registry.
-     *
+     * identity
+     * this value is the Client ID. If a system-assigned identity, the value will be `system`. In
+     * the case of a system-assigned identity, the Client ID will be determined by the runner. This
+     * identity may be used to authenticate to key vault to retrieve credentials or it may be the only
+     * source of authentication used for accessing the registry.
+     * 
      * @return the identity value.
      */
     public String identity() {
@@ -94,11 +100,12 @@ public final class CustomRegistryCredentials {
 
     /**
      * Set the identity property: Indicates the managed identity assigned to the custom credential. If a user-assigned
-     * identity this value is the Client ID. If a system-assigned identity, the value will be `system`. In the case of a
-     * system-assigned identity, the Client ID will be determined by the runner. This identity may be used to
-     * authenticate to key vault to retrieve credentials or it may be the only source of authentication used for
-     * accessing the registry.
-     *
+     * identity
+     * this value is the Client ID. If a system-assigned identity, the value will be `system`. In
+     * the case of a system-assigned identity, the Client ID will be determined by the runner. This
+     * identity may be used to authenticate to key vault to retrieve credentials or it may be the only
+     * source of authentication used for accessing the registry.
+     * 
      * @param identity the identity value to set.
      * @return the CustomRegistryCredentials object itself.
      */
@@ -109,7 +116,7 @@ public final class CustomRegistryCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -119,5 +126,47 @@ public final class CustomRegistryCredentials {
         if (password() != null) {
             password().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomRegistryCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomRegistryCredentials if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomRegistryCredentials.
+     */
+    public static CustomRegistryCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomRegistryCredentials deserializedCustomRegistryCredentials = new CustomRegistryCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userName".equals(fieldName)) {
+                    deserializedCustomRegistryCredentials.username = SecretObject.fromJson(reader);
+                } else if ("password".equals(fieldName)) {
+                    deserializedCustomRegistryCredentials.password = SecretObject.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCustomRegistryCredentials.identity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomRegistryCredentials;
+        });
     }
 }

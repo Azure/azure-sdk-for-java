@@ -14,53 +14,43 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageProfile model =
-            BinaryData
-                .fromString(
-                    "{\"nfsIpAddress\":\"dsbdkvwrwjf\",\"osDisks\":[{\"name\":\"hutje\",\"diskSizeGB\":1438650135,\"lun\":1403309762}],\"hanaSids\":[{\"gid\":\"gjzzdatqxhocdg\",\"memoryAllocation\":\"blgphuticn\",\"sid\":\"kao\",\"username\":\"yiftyhxhuro\",\"uid\":\"tyxolniwpwc\"},{\"gid\":\"jfkgiawxk\",\"memoryAllocation\":\"ypl\",\"sid\":\"kbasyypn\",\"username\":\"hsgcbacphejkot\",\"uid\":\"qgoulznd\"},{\"gid\":\"kwy\",\"memoryAllocation\":\"gfgibm\",\"sid\":\"gakeqsr\",\"username\":\"bzqqedqytbciq\",\"uid\":\"uflmm\"},{\"gid\":\"zsm\",\"memoryAllocation\":\"mglougpbkw\",\"sid\":\"utduqktapspwgcu\",\"username\":\"tumkdosvqwhbm\",\"uid\":\"bbjfddgmbmbexp\"}]}")
-                .toObject(StorageProfile.class);
-        Assertions.assertEquals("hutje", model.osDisks().get(0).name());
-        Assertions.assertEquals(1438650135, model.osDisks().get(0).diskSizeGB());
-        Assertions.assertEquals("gjzzdatqxhocdg", model.hanaSids().get(0).gid());
-        Assertions.assertEquals("kao", model.hanaSids().get(0).sid());
-        Assertions.assertEquals("yiftyhxhuro", model.hanaSids().get(0).username());
-        Assertions.assertEquals("tyxolniwpwc", model.hanaSids().get(0).uid());
+        StorageProfile model = BinaryData.fromString(
+            "{\"nfsIpAddress\":\"qqedqytbciqfou\",\"osDisks\":[{\"name\":\"nkzsmodmglou\",\"diskSizeGB\":173170794,\"lun\":1951665736},{\"name\":\"mutduqktaps\",\"diskSizeGB\":807711520,\"lun\":1678823592},{\"name\":\"rtumkdosvq\",\"diskSizeGB\":958772842,\"lun\":813702940}],\"hanaSids\":[{\"gid\":\"jfddgmbmbe\",\"memoryAllocation\":\"pbhtqqrolfpfpsa\",\"sid\":\"bquxigjy\",\"username\":\"zjaoyfhrtxil\",\"uid\":\"rkujy\"},{\"gid\":\"l\",\"memoryAllocation\":\"uvfqawrlyxwj\",\"sid\":\"prbnwbxgjvtbv\",\"username\":\"sszdnru\",\"uid\":\"guhmuouqfpr\"},{\"gid\":\"wbnguitnwui\",\"memoryAllocation\":\"a\",\"sid\":\"ufizuckyf\",\"username\":\"rfidfvzwdz\",\"uid\":\"tymw\"},{\"gid\":\"dkfthwxmnt\",\"memoryAllocation\":\"waopvkmijcmmxd\",\"sid\":\"fufsrpymzi\",\"username\":\"sezcxtb\",\"uid\":\"gfycc\"}]}")
+            .toObject(StorageProfile.class);
+        Assertions.assertEquals("nkzsmodmglou", model.osDisks().get(0).name());
+        Assertions.assertEquals(173170794, model.osDisks().get(0).diskSizeGB());
+        Assertions.assertEquals("jfddgmbmbe", model.hanaSids().get(0).gid());
+        Assertions.assertEquals("bquxigjy", model.hanaSids().get(0).sid());
+        Assertions.assertEquals("zjaoyfhrtxil", model.hanaSids().get(0).username());
+        Assertions.assertEquals("rkujy", model.hanaSids().get(0).uid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageProfile model =
-            new StorageProfile()
-                .withOsDisks(Arrays.asList(new Disk().withName("hutje").withDiskSizeGB(1438650135)))
-                .withHanaSids(
-                    Arrays
-                        .asList(
-                            new SapSystemId()
-                                .withGid("gjzzdatqxhocdg")
-                                .withSid("kao")
-                                .withUsername("yiftyhxhuro")
-                                .withUid("tyxolniwpwc"),
-                            new SapSystemId()
-                                .withGid("jfkgiawxk")
-                                .withSid("kbasyypn")
-                                .withUsername("hsgcbacphejkot")
-                                .withUid("qgoulznd"),
-                            new SapSystemId()
-                                .withGid("kwy")
-                                .withSid("gakeqsr")
-                                .withUsername("bzqqedqytbciq")
-                                .withUid("uflmm"),
-                            new SapSystemId()
-                                .withGid("zsm")
-                                .withSid("utduqktapspwgcu")
-                                .withUsername("tumkdosvqwhbm")
-                                .withUid("bbjfddgmbmbexp")));
+        StorageProfile model = new StorageProfile()
+            .withOsDisks(Arrays.asList(new Disk().withName("nkzsmodmglou").withDiskSizeGB(173170794),
+                new Disk().withName("mutduqktaps").withDiskSizeGB(807711520),
+                new Disk().withName("rtumkdosvq").withDiskSizeGB(958772842)))
+            .withHanaSids(Arrays.asList(
+                new SapSystemId().withGid("jfddgmbmbe")
+                    .withSid("bquxigjy")
+                    .withUsername("zjaoyfhrtxil")
+                    .withUid("rkujy"),
+                new SapSystemId().withGid("l").withSid("prbnwbxgjvtbv").withUsername("sszdnru").withUid("guhmuouqfpr"),
+                new SapSystemId().withGid("wbnguitnwui")
+                    .withSid("ufizuckyf")
+                    .withUsername("rfidfvzwdz")
+                    .withUid("tymw"),
+                new SapSystemId().withGid("dkfthwxmnt")
+                    .withSid("fufsrpymzi")
+                    .withUsername("sezcxtb")
+                    .withUid("gfycc")));
         model = BinaryData.fromObject(model).toObject(StorageProfile.class);
-        Assertions.assertEquals("hutje", model.osDisks().get(0).name());
-        Assertions.assertEquals(1438650135, model.osDisks().get(0).diskSizeGB());
-        Assertions.assertEquals("gjzzdatqxhocdg", model.hanaSids().get(0).gid());
-        Assertions.assertEquals("kao", model.hanaSids().get(0).sid());
-        Assertions.assertEquals("yiftyhxhuro", model.hanaSids().get(0).username());
-        Assertions.assertEquals("tyxolniwpwc", model.hanaSids().get(0).uid());
+        Assertions.assertEquals("nkzsmodmglou", model.osDisks().get(0).name());
+        Assertions.assertEquals(173170794, model.osDisks().get(0).diskSizeGB());
+        Assertions.assertEquals("jfddgmbmbe", model.hanaSids().get(0).gid());
+        Assertions.assertEquals("bquxigjy", model.hanaSids().get(0).sid());
+        Assertions.assertEquals("zjaoyfhrtxil", model.hanaSids().get(0).username());
+        Assertions.assertEquals("rkujy", model.hanaSids().get(0).uid());
     }
 }

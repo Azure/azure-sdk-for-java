@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricDimensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricDimension model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"hhbcsglummajtjao\",\"displayName\":\"obnbdxkqpxokaj\",\"internalName\":\"npime\",\"toBeExportedForShoebox\":false}")
-                .toObject(MetricDimension.class);
-        Assertions.assertEquals("hhbcsglummajtjao", model.name());
-        Assertions.assertEquals("obnbdxkqpxokaj", model.displayName());
-        Assertions.assertEquals("npime", model.internalName());
-        Assertions.assertEquals(false, model.toBeExportedForShoebox());
+        MetricDimension model = BinaryData.fromString(
+            "{\"name\":\"hvpmoue\",\"displayName\":\"dzxibqeojnxqbzvd\",\"internalName\":\"t\",\"toBeExportedForShoebox\":true}")
+            .toObject(MetricDimension.class);
+        Assertions.assertEquals("hvpmoue", model.name());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.displayName());
+        Assertions.assertEquals("t", model.internalName());
+        Assertions.assertEquals(true, model.toBeExportedForShoebox());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricDimension model =
-            new MetricDimension()
-                .withName("hhbcsglummajtjao")
-                .withDisplayName("obnbdxkqpxokaj")
-                .withInternalName("npime")
-                .withToBeExportedForShoebox(false);
+        MetricDimension model = new MetricDimension().withName("hvpmoue")
+            .withDisplayName("dzxibqeojnxqbzvd")
+            .withInternalName("t")
+            .withToBeExportedForShoebox(true);
         model = BinaryData.fromObject(model).toObject(MetricDimension.class);
-        Assertions.assertEquals("hhbcsglummajtjao", model.name());
-        Assertions.assertEquals("obnbdxkqpxokaj", model.displayName());
-        Assertions.assertEquals("npime", model.internalName());
-        Assertions.assertEquals(false, model.toBeExportedForShoebox());
+        Assertions.assertEquals("hvpmoue", model.name());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.displayName());
+        Assertions.assertEquals("t", model.internalName());
+        Assertions.assertEquals(true, model.toBeExportedForShoebox());
     }
 }

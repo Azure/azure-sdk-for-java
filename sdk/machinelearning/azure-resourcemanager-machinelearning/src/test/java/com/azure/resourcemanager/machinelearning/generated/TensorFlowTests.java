@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class TensorFlowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TensorFlow model =
-            BinaryData
-                .fromString(
-                    "{\"distributionType\":\"TensorFlow\",\"parameterServerCount\":1873881024,\"workerCount\":131974478}")
-                .toObject(TensorFlow.class);
-        Assertions.assertEquals(1873881024, model.parameterServerCount());
-        Assertions.assertEquals(131974478, model.workerCount());
+        TensorFlow model = BinaryData
+            .fromString(
+                "{\"distributionType\":\"TensorFlow\",\"workerCount\":116693991,\"parameterServerCount\":1398971753}")
+            .toObject(TensorFlow.class);
+        Assertions.assertEquals(116693991, model.workerCount());
+        Assertions.assertEquals(1398971753, model.parameterServerCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TensorFlow model = new TensorFlow().withParameterServerCount(1873881024).withWorkerCount(131974478);
+        TensorFlow model = new TensorFlow().withWorkerCount(116693991).withParameterServerCount(1398971753);
         model = BinaryData.fromObject(model).toObject(TensorFlow.class);
-        Assertions.assertEquals(1873881024, model.parameterServerCount());
-        Assertions.assertEquals(131974478, model.workerCount());
+        Assertions.assertEquals(116693991, model.workerCount());
+        Assertions.assertEquals(1398971753, model.parameterServerCount());
     }
 }

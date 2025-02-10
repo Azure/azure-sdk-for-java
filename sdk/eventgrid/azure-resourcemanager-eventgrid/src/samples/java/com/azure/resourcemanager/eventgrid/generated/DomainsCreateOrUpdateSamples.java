@@ -17,7 +17,7 @@ import java.util.Map;
 public final class DomainsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * Domains_CreateOrUpdate.json
      */
     /**
@@ -26,8 +26,12 @@ public final class DomainsCreateOrUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void domainsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.domains().define("exampledomain1").withRegion("westus2").withExistingResourceGroup("examplerg")
-            .withTags(mapOf("tag1", "value1", "tag2", "value2")).withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+        manager.domains()
+            .define("exampledomain1")
+            .withRegion("westus2")
+            .withExistingResourceGroup("examplerg")
+            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withInboundIpRules(
                 Arrays.asList(new InboundIpRule().withIpMask("12.18.30.15").withAction(IpActionType.ALLOW),
                     new InboundIpRule().withIpMask("12.18.176.1").withAction(IpActionType.ALLOW)))

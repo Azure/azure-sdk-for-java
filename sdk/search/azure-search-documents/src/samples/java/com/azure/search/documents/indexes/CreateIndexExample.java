@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 public class CreateIndexExample {
     /**
-     * From the Azure portal, get your Azure Cognitive Search service name and API key and populate ADMIN_KEY and
+     * From the Azure portal, get your Azure AI Search service name and API key and populate ADMIN_KEY and
      * SEARCH_SERVICE_NAME.
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");

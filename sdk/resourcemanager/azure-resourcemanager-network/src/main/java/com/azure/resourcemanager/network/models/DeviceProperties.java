@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * List of properties of the device.
  */
 @Fluent
-public final class DeviceProperties {
+public final class DeviceProperties implements JsonSerializable<DeviceProperties> {
     /*
      * Name of the device Vendor.
      */
-    @JsonProperty(value = "deviceVendor")
     private String deviceVendor;
 
     /*
      * Model of the device.
      */
-    @JsonProperty(value = "deviceModel")
     private String deviceModel;
 
     /*
      * Link speed.
      */
-    @JsonProperty(value = "linkSpeedInMbps")
     private Integer linkSpeedInMbps;
 
     /**
@@ -102,5 +103,47 @@ public final class DeviceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceVendor", this.deviceVendor);
+        jsonWriter.writeStringField("deviceModel", this.deviceModel);
+        jsonWriter.writeNumberField("linkSpeedInMbps", this.linkSpeedInMbps);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceProperties.
+     */
+    public static DeviceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceProperties deserializedDeviceProperties = new DeviceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceVendor".equals(fieldName)) {
+                    deserializedDeviceProperties.deviceVendor = reader.getString();
+                } else if ("deviceModel".equals(fieldName)) {
+                    deserializedDeviceProperties.deviceModel = reader.getString();
+                } else if ("linkSpeedInMbps".equals(fieldName)) {
+                    deserializedDeviceProperties.linkSpeedInMbps = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceProperties;
+        });
     }
 }

@@ -4,7 +4,9 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.Context;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
@@ -17,25 +19,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentMatcher;
-import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileShareTestBase {
     private ShareFileClient primaryFileClient;
@@ -65,53 +63,39 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
     }
 
     private static Stream<Arguments> readCallsToClientCorrectlySupplier() {
-        return Stream.of(
-            Arguments.of(0, null),
-            Arguments.of(50, null),
-            Arguments.of(0, new ShareRequestConditions()));
+        return Stream.of(Arguments.of(0, null), Arguments.of(50, null), Arguments.of(0, new ShareRequestConditions()));
     }
 
     @ParameterizedTest
     @MethodSource("readCallsToClientCorrectlySupplier")
     public void readCallsToClientCorrectly(int offset, ShareRequestConditions conditions) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(Constants.KB);
-        ShareFileClient client = Mockito.mock(ShareFileClient.class);
-        StorageSeekableByteChannelShareFileReadBehavior behavior =
-            new StorageSeekableByteChannelShareFileReadBehavior(client, conditions);
-        when(client.downloadWithResponse(
-            any(),
-            argThat(new ShareFileDownloadOptionsMatcher(offset, buffer.remaining(), conditions)),
-            isNull(),
-            isNull()))
-            .thenReturn(createMockDownloadResponse("bytes " + offset + "-" + (offset + buffer.limit() - 1) + "/4096"));
+        AtomicInteger downloadCallCount = new AtomicInteger(0);
+        ShareFileClient client
+            = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false, false), "testshare",
+                "testpath", null, null, null, null) {
+                @Override
+                public ShareFileDownloadResponse downloadWithResponse(OutputStream stream,
+                    ShareFileDownloadOptions options, Duration timeout, Context context) {
+                    assertNull(timeout);
+                    assertNull(context);
+                    downloadCallCount.incrementAndGet();
+                    assertEquals(offset, options.getRange().getStart());
+                    assertEquals(offset + buffer.remaining() - 1, options.getRange().getEnd());
+                    if (conditions != null) {
+                        assertEquals(conditions, options.getRequestConditions());
+                    }
+                    return createMockDownloadResponse(
+                        "bytes " + offset + "-" + (offset + buffer.limit() - 1) + "/4096");
+                }
+            };
+
+        StorageSeekableByteChannelShareFileReadBehavior behavior
+            = new StorageSeekableByteChannelShareFileReadBehavior(client, conditions);
 
         behavior.read(buffer, offset);
 
-        verify(client, times(1)).downloadWithResponse(
-            any(),
-            any(),
-            isNull(),
-            isNull());
-    }
-
-    private static class ShareFileDownloadOptionsMatcher implements ArgumentMatcher<ShareFileDownloadOptions> {
-        private final int offset;
-        private final int remaining;
-        private final ShareRequestConditions conditions;
-
-        ShareFileDownloadOptionsMatcher(int offset, int remaining, ShareRequestConditions conditions) {
-            this.offset = offset;
-            this.remaining = remaining;
-            this.conditions = conditions;
-        }
-
-        @Override
-        public boolean matches(ShareFileDownloadOptions options) {
-            return options.getRange().getStart() == offset
-                && options.getRange().getEnd() == offset + remaining - 1
-                && (conditions == null ? options.getRequestConditions() == null : conditions.equals(
-                    options.getRequestConditions()));
-        }
+        assertEquals(1, downloadCallCount.get());
     }
 
     @ParameterizedTest
@@ -122,8 +106,8 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
         primaryFileClient.create(fileSize);
         primaryFileClient.upload(new ByteArrayInputStream(data), fileSize, null);
 
-        StorageSeekableByteChannelShareFileReadBehavior behavior =
-            new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null);
+        StorageSeekableByteChannelShareFileReadBehavior behavior
+            = new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null);
         ByteBuffer buffer = ByteBuffer.allocate(readSize);
 
         //when: "ReadBehavior.read() called"
@@ -148,8 +132,7 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
     }
 
     private static Stream<Arguments> readGracefulPastEndOfFileSupplier() {
-        return Stream.of(
-            Arguments.of(Constants.KB, 0, 2 * Constants.KB, Constants.KB), // read larger than file
+        return Stream.of(Arguments.of(Constants.KB, 0, 2 * Constants.KB, Constants.KB), // read larger than file
             Arguments.of(Constants.KB, 500, Constants.KB, Constants.KB - 500), // overlap on end of file
             Arguments.of(Constants.KB, Constants.KB, Constants.KB, -1), // starts at end of file
             Arguments.of(Constants.KB, Constants.KB + 20, Constants.KB, -1) // completely past file
@@ -168,16 +151,16 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
         primaryFileClient.upload(new ByteArrayInputStream(Arrays.copyOfRange(data, 0, length)), length, null);
 
         //and: "behavior to read file"
-        StorageSeekableByteChannelShareFileReadBehavior behavior =
-            new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null);
+        StorageSeekableByteChannelShareFileReadBehavior behavior
+            = new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null);
         ByteBuffer buffer = ByteBuffer.allocate(length);
 
         //when: "entire file initially read"
         int read = behavior.read(buffer, 0);
 
         //then: "channel state as expected"
-        assertEquals(read, length);
-        assertEquals(behavior.getResourceLength(), length);
+        assertEquals(length, read);
+        assertEquals(length, behavior.getResourceLength());
 
         //and: "buffer correctly filled"
         assertEquals(buffer.position(), buffer.capacity());
@@ -188,25 +171,26 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
         read = behavior.read(buffer, length);
 
         //then: "gracefully signal end of file"
-        assertEquals(read, -1);
-        assertEquals(behavior.getResourceLength(), length);
+        assertEquals(-1, read);
+        assertEquals(length, behavior.getResourceLength());
 
         //and: "buffer unfilled"
-        assertEquals(buffer.position(), 0);
+        assertEquals(0, buffer.position());
 
         //when: "file augmented to full size"
         primaryFileClient.setProperties(2 * length, null, null, null);
-        primaryFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(
-            new ByteArrayInputStream(Arrays.copyOfRange(data, 0, length)), length).setOffset((long) length), null,
-            null);
+        primaryFileClient.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(new ByteArrayInputStream(Arrays.copyOfRange(data, 0, length)), length)
+                .setOffset((long) length),
+            null, null);
 
         //and: "behavior reads at previous EOF"
         buffer.clear();
         read = behavior.read(buffer, behavior.getResourceLength());
 
         //then: "channel state has updated length"
-        assertEquals(read, length);
-        assertEquals(behavior.getResourceLength(), 2 * length);
+        assertEquals(length, read);
+        assertEquals(2 * length, behavior.getResourceLength());
 
         //and: "buffer correctly filled"
         assertEquals(buffer.position(), buffer.capacity());

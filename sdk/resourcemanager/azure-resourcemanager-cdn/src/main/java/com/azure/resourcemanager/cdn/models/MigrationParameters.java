@@ -6,43 +6,47 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Request body for Migrate operation. */
+/**
+ * Request body for Migrate operation.
+ */
 @Fluent
-public final class MigrationParameters {
+public final class MigrationParameters implements JsonSerializable<MigrationParameters> {
     /*
      * Sku for the migration
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * Resource reference of the classic cdn profile or classic frontdoor that need to be migrated.
      */
-    @JsonProperty(value = "classicResourceReference", required = true)
     private ResourceReference classicResourceReference;
 
     /*
      * Name of the new profile that need to be created.
      */
-    @JsonProperty(value = "profileName", required = true)
     private String profileName;
 
     /*
      * Waf mapping for the migrated profile
      */
-    @JsonProperty(value = "migrationWebApplicationFirewallMappings")
     private List<MigrationWebApplicationFirewallMapping> migrationWebApplicationFirewallMappings;
 
-    /** Creates an instance of MigrationParameters class. */
+    /**
+     * Creates an instance of MigrationParameters class.
+     */
     public MigrationParameters() {
     }
 
     /**
      * Get the sku property: Sku for the migration.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -51,7 +55,7 @@ public final class MigrationParameters {
 
     /**
      * Set the sku property: Sku for the migration.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the MigrationParameters object itself.
      */
@@ -63,7 +67,7 @@ public final class MigrationParameters {
     /**
      * Get the classicResourceReference property: Resource reference of the classic cdn profile or classic frontdoor
      * that need to be migrated.
-     *
+     * 
      * @return the classicResourceReference value.
      */
     public ResourceReference classicResourceReference() {
@@ -73,7 +77,7 @@ public final class MigrationParameters {
     /**
      * Set the classicResourceReference property: Resource reference of the classic cdn profile or classic frontdoor
      * that need to be migrated.
-     *
+     * 
      * @param classicResourceReference the classicResourceReference value to set.
      * @return the MigrationParameters object itself.
      */
@@ -84,7 +88,7 @@ public final class MigrationParameters {
 
     /**
      * Get the profileName property: Name of the new profile that need to be created.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -93,7 +97,7 @@ public final class MigrationParameters {
 
     /**
      * Set the profileName property: Name of the new profile that need to be created.
-     *
+     * 
      * @param profileName the profileName value to set.
      * @return the MigrationParameters object itself.
      */
@@ -104,7 +108,7 @@ public final class MigrationParameters {
 
     /**
      * Get the migrationWebApplicationFirewallMappings property: Waf mapping for the migrated profile.
-     *
+     * 
      * @return the migrationWebApplicationFirewallMappings value.
      */
     public List<MigrationWebApplicationFirewallMapping> migrationWebApplicationFirewallMappings() {
@@ -113,7 +117,7 @@ public final class MigrationParameters {
 
     /**
      * Set the migrationWebApplicationFirewallMappings property: Waf mapping for the migrated profile.
-     *
+     * 
      * @param migrationWebApplicationFirewallMappings the migrationWebApplicationFirewallMappings value to set.
      * @return the MigrationParameters object itself.
      */
@@ -125,28 +129,26 @@ public final class MigrationParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model MigrationParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model MigrationParameters"));
         } else {
             sku().validate();
         }
         if (classicResourceReference() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property classicResourceReference in model MigrationParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property classicResourceReference in model MigrationParameters"));
         } else {
             classicResourceReference().validate();
         }
         if (profileName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property profileName in model MigrationParameters"));
         }
         if (migrationWebApplicationFirewallMappings() != null) {
@@ -155,4 +157,54 @@ public final class MigrationParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MigrationParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("classicResourceReference", this.classicResourceReference);
+        jsonWriter.writeStringField("profileName", this.profileName);
+        jsonWriter.writeArrayField("migrationWebApplicationFirewallMappings",
+            this.migrationWebApplicationFirewallMappings, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MigrationParameters.
+     */
+    public static MigrationParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationParameters deserializedMigrationParameters = new MigrationParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedMigrationParameters.sku = Sku.fromJson(reader);
+                } else if ("classicResourceReference".equals(fieldName)) {
+                    deserializedMigrationParameters.classicResourceReference = ResourceReference.fromJson(reader);
+                } else if ("profileName".equals(fieldName)) {
+                    deserializedMigrationParameters.profileName = reader.getString();
+                } else if ("migrationWebApplicationFirewallMappings".equals(fieldName)) {
+                    List<MigrationWebApplicationFirewallMapping> migrationWebApplicationFirewallMappings
+                        = reader.readArray(reader1 -> MigrationWebApplicationFirewallMapping.fromJson(reader1));
+                    deserializedMigrationParameters.migrationWebApplicationFirewallMappings
+                        = migrationWebApplicationFirewallMappings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationParameters;
+        });
+    }
 }

@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List VMSS VM Extension operation response.
  */
 @Fluent
-public final class VirtualMachineScaleSetVMExtensionsListResultInner {
+public final class VirtualMachineScaleSetVMExtensionsListResultInner
+    implements JsonSerializable<VirtualMachineScaleSetVMExtensionsListResultInner> {
     /*
      * The list of VMSS VM extensions
      */
-    @JsonProperty(value = "value")
     private List<VirtualMachineScaleSetVMExtensionInner> value;
 
     /**
@@ -55,5 +59,44 @@ public final class VirtualMachineScaleSetVMExtensionsListResultInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetVMExtensionsListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetVMExtensionsListResultInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetVMExtensionsListResultInner.
+     */
+    public static VirtualMachineScaleSetVMExtensionsListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetVMExtensionsListResultInner deserializedVirtualMachineScaleSetVMExtensionsListResultInner
+                = new VirtualMachineScaleSetVMExtensionsListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualMachineScaleSetVMExtensionInner> value
+                        = reader.readArray(reader1 -> VirtualMachineScaleSetVMExtensionInner.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetVMExtensionsListResultInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetVMExtensionsListResultInner;
+        });
     }
 }

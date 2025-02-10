@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties for updating the source code repository. */
+/**
+ * The properties for updating the source code repository.
+ */
 @Fluent
-public final class SourceUpdateParameters {
+public final class SourceUpdateParameters implements JsonSerializable<SourceUpdateParameters> {
     /*
      * The type of source control service.
      */
-    @JsonProperty(value = "sourceControlType")
     private SourceControlType sourceControlType;
 
     /*
      * The full URL to the source code repository
      */
-    @JsonProperty(value = "repositoryUrl")
     private String repositoryUrl;
 
     /*
      * The branch name of the source code.
      */
-    @JsonProperty(value = "branch")
     private String branch;
 
     /*
      * The authorization properties for accessing the source code repository and to set up
      * webhooks for notifications.
      */
-    @JsonProperty(value = "sourceControlAuthProperties")
     private AuthInfoUpdateParameters sourceControlAuthProperties;
 
-    /** Creates an instance of SourceUpdateParameters class. */
+    /**
+     * Creates an instance of SourceUpdateParameters class.
+     */
     public SourceUpdateParameters() {
     }
 
     /**
      * Get the sourceControlType property: The type of source control service.
-     *
+     * 
      * @return the sourceControlType value.
      */
     public SourceControlType sourceControlType() {
@@ -50,7 +54,7 @@ public final class SourceUpdateParameters {
 
     /**
      * Set the sourceControlType property: The type of source control service.
-     *
+     * 
      * @param sourceControlType the sourceControlType value to set.
      * @return the SourceUpdateParameters object itself.
      */
@@ -61,7 +65,7 @@ public final class SourceUpdateParameters {
 
     /**
      * Get the repositoryUrl property: The full URL to the source code repository.
-     *
+     * 
      * @return the repositoryUrl value.
      */
     public String repositoryUrl() {
@@ -70,7 +74,7 @@ public final class SourceUpdateParameters {
 
     /**
      * Set the repositoryUrl property: The full URL to the source code repository.
-     *
+     * 
      * @param repositoryUrl the repositoryUrl value to set.
      * @return the SourceUpdateParameters object itself.
      */
@@ -81,7 +85,7 @@ public final class SourceUpdateParameters {
 
     /**
      * Get the branch property: The branch name of the source code.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -90,7 +94,7 @@ public final class SourceUpdateParameters {
 
     /**
      * Set the branch property: The branch name of the source code.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SourceUpdateParameters object itself.
      */
@@ -101,8 +105,9 @@ public final class SourceUpdateParameters {
 
     /**
      * Get the sourceControlAuthProperties property: The authorization properties for accessing the source code
-     * repository and to set up webhooks for notifications.
-     *
+     * repository and to set up
+     * webhooks for notifications.
+     * 
      * @return the sourceControlAuthProperties value.
      */
     public AuthInfoUpdateParameters sourceControlAuthProperties() {
@@ -111,25 +116,74 @@ public final class SourceUpdateParameters {
 
     /**
      * Set the sourceControlAuthProperties property: The authorization properties for accessing the source code
-     * repository and to set up webhooks for notifications.
-     *
+     * repository and to set up
+     * webhooks for notifications.
+     * 
      * @param sourceControlAuthProperties the sourceControlAuthProperties value to set.
      * @return the SourceUpdateParameters object itself.
      */
-    public SourceUpdateParameters withSourceControlAuthProperties(
-        AuthInfoUpdateParameters sourceControlAuthProperties) {
+    public SourceUpdateParameters
+        withSourceControlAuthProperties(AuthInfoUpdateParameters sourceControlAuthProperties) {
         this.sourceControlAuthProperties = sourceControlAuthProperties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceControlAuthProperties() != null) {
             sourceControlAuthProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceControlType",
+            this.sourceControlType == null ? null : this.sourceControlType.toString());
+        jsonWriter.writeStringField("repositoryUrl", this.repositoryUrl);
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeJsonField("sourceControlAuthProperties", this.sourceControlAuthProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceUpdateParameters.
+     */
+    public static SourceUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceUpdateParameters deserializedSourceUpdateParameters = new SourceUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceControlType".equals(fieldName)) {
+                    deserializedSourceUpdateParameters.sourceControlType
+                        = SourceControlType.fromString(reader.getString());
+                } else if ("repositoryUrl".equals(fieldName)) {
+                    deserializedSourceUpdateParameters.repositoryUrl = reader.getString();
+                } else if ("branch".equals(fieldName)) {
+                    deserializedSourceUpdateParameters.branch = reader.getString();
+                } else if ("sourceControlAuthProperties".equals(fieldName)) {
+                    deserializedSourceUpdateParameters.sourceControlAuthProperties
+                        = AuthInfoUpdateParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceUpdateParameters;
+        });
     }
 }

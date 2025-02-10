@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The status of a UpdateRun. */
+/**
+ * The status of a UpdateRun.
+ */
 @Immutable
-public final class UpdateRunStatus {
+public final class UpdateRunStatus implements JsonSerializable<UpdateRunStatus> {
     /*
      * The status of the UpdateRun.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private UpdateStatus status;
 
     /*
      * The stages composing an update run. Stages are run sequentially withing an UpdateRun.
      */
-    @JsonProperty(value = "stages", access = JsonProperty.Access.WRITE_ONLY)
     private List<UpdateStageStatus> stages;
 
     /*
      * The node image upgrade specs for the update run. It is only set in update run when `NodeImageSelection.type` is
      * `Consistent`.
      */
-    @JsonProperty(value = "nodeImageSelection", access = JsonProperty.Access.WRITE_ONLY)
     private NodeImageSelectionStatus nodeImageSelection;
 
-    /** Creates an instance of UpdateRunStatus class. */
+    /**
+     * Creates an instance of UpdateRunStatus class.
+     */
     public UpdateRunStatus() {
     }
 
     /**
      * Get the status property: The status of the UpdateRun.
-     *
+     * 
      * @return the status value.
      */
     public UpdateStatus status() {
@@ -45,7 +50,7 @@ public final class UpdateRunStatus {
 
     /**
      * Get the stages property: The stages composing an update run. Stages are run sequentially withing an UpdateRun.
-     *
+     * 
      * @return the stages value.
      */
     public List<UpdateStageStatus> stages() {
@@ -55,7 +60,7 @@ public final class UpdateRunStatus {
     /**
      * Get the nodeImageSelection property: The node image upgrade specs for the update run. It is only set in update
      * run when `NodeImageSelection.type` is `Consistent`.
-     *
+     * 
      * @return the nodeImageSelection value.
      */
     public NodeImageSelectionStatus nodeImageSelection() {
@@ -64,7 +69,7 @@ public final class UpdateRunStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -77,5 +82,45 @@ public final class UpdateRunStatus {
         if (nodeImageSelection() != null) {
             nodeImageSelection().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateRunStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateRunStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateRunStatus.
+     */
+    public static UpdateRunStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateRunStatus deserializedUpdateRunStatus = new UpdateRunStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedUpdateRunStatus.status = UpdateStatus.fromJson(reader);
+                } else if ("stages".equals(fieldName)) {
+                    List<UpdateStageStatus> stages = reader.readArray(reader1 -> UpdateStageStatus.fromJson(reader1));
+                    deserializedUpdateRunStatus.stages = stages;
+                } else if ("nodeImageSelection".equals(fieldName)) {
+                    deserializedUpdateRunStatus.nodeImageSelection = NodeImageSelectionStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateRunStatus;
+        });
     }
 }

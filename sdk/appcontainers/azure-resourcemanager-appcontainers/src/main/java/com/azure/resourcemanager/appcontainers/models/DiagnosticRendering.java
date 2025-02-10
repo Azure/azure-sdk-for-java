@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Rendering details of a diagnostics table. */
+/**
+ * Rendering details of a diagnostics table.
+ */
 @Fluent
-public final class DiagnosticRendering {
+public final class DiagnosticRendering implements JsonSerializable<DiagnosticRendering> {
     /*
      * Rendering type
      */
-    @JsonProperty(value = "type")
     private Integer type;
 
     /*
      * Title of the table
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Description of the table
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Flag if the table should be rendered
      */
-    @JsonProperty(value = "isVisible")
     private Boolean isVisible;
 
-    /** Creates an instance of DiagnosticRendering class. */
+    /**
+     * Creates an instance of DiagnosticRendering class.
+     */
     public DiagnosticRendering() {
     }
 
     /**
      * Get the type property: Rendering type.
-     *
+     * 
      * @return the type value.
      */
     public Integer type() {
@@ -49,7 +53,7 @@ public final class DiagnosticRendering {
 
     /**
      * Set the type property: Rendering type.
-     *
+     * 
      * @param type the type value to set.
      * @return the DiagnosticRendering object itself.
      */
@@ -60,7 +64,7 @@ public final class DiagnosticRendering {
 
     /**
      * Get the title property: Title of the table.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -69,7 +73,7 @@ public final class DiagnosticRendering {
 
     /**
      * Set the title property: Title of the table.
-     *
+     * 
      * @param title the title value to set.
      * @return the DiagnosticRendering object itself.
      */
@@ -80,7 +84,7 @@ public final class DiagnosticRendering {
 
     /**
      * Get the description property: Description of the table.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -89,7 +93,7 @@ public final class DiagnosticRendering {
 
     /**
      * Set the description property: Description of the table.
-     *
+     * 
      * @param description the description value to set.
      * @return the DiagnosticRendering object itself.
      */
@@ -100,7 +104,7 @@ public final class DiagnosticRendering {
 
     /**
      * Get the isVisible property: Flag if the table should be rendered.
-     *
+     * 
      * @return the isVisible value.
      */
     public Boolean isVisible() {
@@ -109,7 +113,7 @@ public final class DiagnosticRendering {
 
     /**
      * Set the isVisible property: Flag if the table should be rendered.
-     *
+     * 
      * @param isVisible the isVisible value to set.
      * @return the DiagnosticRendering object itself.
      */
@@ -120,9 +124,54 @@ public final class DiagnosticRendering {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("type", this.type);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("isVisible", this.isVisible);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticRendering from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticRendering if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticRendering.
+     */
+    public static DiagnosticRendering fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticRendering deserializedDiagnosticRendering = new DiagnosticRendering();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDiagnosticRendering.type = reader.getNullable(JsonReader::getInt);
+                } else if ("title".equals(fieldName)) {
+                    deserializedDiagnosticRendering.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDiagnosticRendering.description = reader.getString();
+                } else if ("isVisible".equals(fieldName)) {
+                    deserializedDiagnosticRendering.isVisible = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticRendering;
+        });
     }
 }

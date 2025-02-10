@@ -5,62 +5,63 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.MaintenanceWindowTimeRange;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Maintenance window options properties. */
+/**
+ * Maintenance window options properties.
+ */
 @Fluent
-public final class MaintenanceWindowOptionsProperties {
+public final class MaintenanceWindowOptionsProperties implements JsonSerializable<MaintenanceWindowOptionsProperties> {
     /*
      * Whether maintenance windows are enabled for the database.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * Available maintenance cycles e.g. {Saturday, 0, 48*60}, {Wednesday, 0, 24*60}.
      */
-    @JsonProperty(value = "maintenanceWindowCycles")
     private List<MaintenanceWindowTimeRange> maintenanceWindowCycles;
 
     /*
      * Minimum duration of maintenance window.
      */
-    @JsonProperty(value = "minDurationInMinutes")
     private Integer minDurationInMinutes;
 
     /*
      * Default duration for maintenance window.
      */
-    @JsonProperty(value = "defaultDurationInMinutes")
     private Integer defaultDurationInMinutes;
 
     /*
      * Minimum number of maintenance windows cycles to be set on the database.
      */
-    @JsonProperty(value = "minCycles")
     private Integer minCycles;
 
     /*
      * Time granularity in minutes for maintenance windows.
      */
-    @JsonProperty(value = "timeGranularityInMinutes")
     private Integer timeGranularityInMinutes;
 
     /*
      * Whether we allow multiple maintenance windows per cycle.
      */
-    @JsonProperty(value = "allowMultipleMaintenanceWindowsPerCycle")
     private Boolean allowMultipleMaintenanceWindowsPerCycle;
 
-    /** Creates an instance of MaintenanceWindowOptionsProperties class. */
+    /**
+     * Creates an instance of MaintenanceWindowOptionsProperties class.
+     */
     public MaintenanceWindowOptionsProperties() {
     }
 
     /**
      * Get the isEnabled property: Whether maintenance windows are enabled for the database.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -69,7 +70,7 @@ public final class MaintenanceWindowOptionsProperties {
 
     /**
      * Set the isEnabled property: Whether maintenance windows are enabled for the database.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the MaintenanceWindowOptionsProperties object itself.
      */
@@ -81,7 +82,7 @@ public final class MaintenanceWindowOptionsProperties {
     /**
      * Get the maintenanceWindowCycles property: Available maintenance cycles e.g. {Saturday, 0, 48*60}, {Wednesday, 0,
      * 24*60}.
-     *
+     * 
      * @return the maintenanceWindowCycles value.
      */
     public List<MaintenanceWindowTimeRange> maintenanceWindowCycles() {
@@ -91,19 +92,19 @@ public final class MaintenanceWindowOptionsProperties {
     /**
      * Set the maintenanceWindowCycles property: Available maintenance cycles e.g. {Saturday, 0, 48*60}, {Wednesday, 0,
      * 24*60}.
-     *
+     * 
      * @param maintenanceWindowCycles the maintenanceWindowCycles value to set.
      * @return the MaintenanceWindowOptionsProperties object itself.
      */
-    public MaintenanceWindowOptionsProperties withMaintenanceWindowCycles(
-        List<MaintenanceWindowTimeRange> maintenanceWindowCycles) {
+    public MaintenanceWindowOptionsProperties
+        withMaintenanceWindowCycles(List<MaintenanceWindowTimeRange> maintenanceWindowCycles) {
         this.maintenanceWindowCycles = maintenanceWindowCycles;
         return this;
     }
 
     /**
      * Get the minDurationInMinutes property: Minimum duration of maintenance window.
-     *
+     * 
      * @return the minDurationInMinutes value.
      */
     public Integer minDurationInMinutes() {
@@ -112,7 +113,7 @@ public final class MaintenanceWindowOptionsProperties {
 
     /**
      * Set the minDurationInMinutes property: Minimum duration of maintenance window.
-     *
+     * 
      * @param minDurationInMinutes the minDurationInMinutes value to set.
      * @return the MaintenanceWindowOptionsProperties object itself.
      */
@@ -123,7 +124,7 @@ public final class MaintenanceWindowOptionsProperties {
 
     /**
      * Get the defaultDurationInMinutes property: Default duration for maintenance window.
-     *
+     * 
      * @return the defaultDurationInMinutes value.
      */
     public Integer defaultDurationInMinutes() {
@@ -132,7 +133,7 @@ public final class MaintenanceWindowOptionsProperties {
 
     /**
      * Set the defaultDurationInMinutes property: Default duration for maintenance window.
-     *
+     * 
      * @param defaultDurationInMinutes the defaultDurationInMinutes value to set.
      * @return the MaintenanceWindowOptionsProperties object itself.
      */
@@ -143,7 +144,7 @@ public final class MaintenanceWindowOptionsProperties {
 
     /**
      * Get the minCycles property: Minimum number of maintenance windows cycles to be set on the database.
-     *
+     * 
      * @return the minCycles value.
      */
     public Integer minCycles() {
@@ -152,7 +153,7 @@ public final class MaintenanceWindowOptionsProperties {
 
     /**
      * Set the minCycles property: Minimum number of maintenance windows cycles to be set on the database.
-     *
+     * 
      * @param minCycles the minCycles value to set.
      * @return the MaintenanceWindowOptionsProperties object itself.
      */
@@ -163,7 +164,7 @@ public final class MaintenanceWindowOptionsProperties {
 
     /**
      * Get the timeGranularityInMinutes property: Time granularity in minutes for maintenance windows.
-     *
+     * 
      * @return the timeGranularityInMinutes value.
      */
     public Integer timeGranularityInMinutes() {
@@ -172,7 +173,7 @@ public final class MaintenanceWindowOptionsProperties {
 
     /**
      * Set the timeGranularityInMinutes property: Time granularity in minutes for maintenance windows.
-     *
+     * 
      * @param timeGranularityInMinutes the timeGranularityInMinutes value to set.
      * @return the MaintenanceWindowOptionsProperties object itself.
      */
@@ -184,7 +185,7 @@ public final class MaintenanceWindowOptionsProperties {
     /**
      * Get the allowMultipleMaintenanceWindowsPerCycle property: Whether we allow multiple maintenance windows per
      * cycle.
-     *
+     * 
      * @return the allowMultipleMaintenanceWindowsPerCycle value.
      */
     public Boolean allowMultipleMaintenanceWindowsPerCycle() {
@@ -194,24 +195,88 @@ public final class MaintenanceWindowOptionsProperties {
     /**
      * Set the allowMultipleMaintenanceWindowsPerCycle property: Whether we allow multiple maintenance windows per
      * cycle.
-     *
+     * 
      * @param allowMultipleMaintenanceWindowsPerCycle the allowMultipleMaintenanceWindowsPerCycle value to set.
      * @return the MaintenanceWindowOptionsProperties object itself.
      */
-    public MaintenanceWindowOptionsProperties withAllowMultipleMaintenanceWindowsPerCycle(
-        Boolean allowMultipleMaintenanceWindowsPerCycle) {
+    public MaintenanceWindowOptionsProperties
+        withAllowMultipleMaintenanceWindowsPerCycle(Boolean allowMultipleMaintenanceWindowsPerCycle) {
         this.allowMultipleMaintenanceWindowsPerCycle = allowMultipleMaintenanceWindowsPerCycle;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (maintenanceWindowCycles() != null) {
             maintenanceWindowCycles().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeArrayField("maintenanceWindowCycles", this.maintenanceWindowCycles,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("minDurationInMinutes", this.minDurationInMinutes);
+        jsonWriter.writeNumberField("defaultDurationInMinutes", this.defaultDurationInMinutes);
+        jsonWriter.writeNumberField("minCycles", this.minCycles);
+        jsonWriter.writeNumberField("timeGranularityInMinutes", this.timeGranularityInMinutes);
+        jsonWriter.writeBooleanField("allowMultipleMaintenanceWindowsPerCycle",
+            this.allowMultipleMaintenanceWindowsPerCycle);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceWindowOptionsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceWindowOptionsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceWindowOptionsProperties.
+     */
+    public static MaintenanceWindowOptionsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceWindowOptionsProperties deserializedMaintenanceWindowOptionsProperties
+                = new MaintenanceWindowOptionsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedMaintenanceWindowOptionsProperties.isEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maintenanceWindowCycles".equals(fieldName)) {
+                    List<MaintenanceWindowTimeRange> maintenanceWindowCycles
+                        = reader.readArray(reader1 -> MaintenanceWindowTimeRange.fromJson(reader1));
+                    deserializedMaintenanceWindowOptionsProperties.maintenanceWindowCycles = maintenanceWindowCycles;
+                } else if ("minDurationInMinutes".equals(fieldName)) {
+                    deserializedMaintenanceWindowOptionsProperties.minDurationInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("defaultDurationInMinutes".equals(fieldName)) {
+                    deserializedMaintenanceWindowOptionsProperties.defaultDurationInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("minCycles".equals(fieldName)) {
+                    deserializedMaintenanceWindowOptionsProperties.minCycles = reader.getNullable(JsonReader::getInt);
+                } else if ("timeGranularityInMinutes".equals(fieldName)) {
+                    deserializedMaintenanceWindowOptionsProperties.timeGranularityInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("allowMultipleMaintenanceWindowsPerCycle".equals(fieldName)) {
+                    deserializedMaintenanceWindowOptionsProperties.allowMultipleMaintenanceWindowsPerCycle
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceWindowOptionsProperties;
+        });
     }
 }

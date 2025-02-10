@@ -8,53 +8,55 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneVersionInner;
 import java.util.List;
 
-/** An immutable client-side representation of PacketCoreControlPlaneVersion. */
+/**
+ * An immutable client-side representation of PacketCoreControlPlaneVersion.
+ */
 public interface PacketCoreControlPlaneVersion {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: The provisioning state of the packet core control plane version resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the platforms property: Platform specific packet core control plane version properties.
-     *
+     * 
      * @return the platforms value.
      */
     List<Platform> platforms();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneVersionInner object.
-     *
+     * 
      * @return the inner object.
      */
     PacketCoreControlPlaneVersionInner innerModel();

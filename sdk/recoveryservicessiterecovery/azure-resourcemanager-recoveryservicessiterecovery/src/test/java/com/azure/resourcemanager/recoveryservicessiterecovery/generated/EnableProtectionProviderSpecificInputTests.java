@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.EnableProte
 public final class EnableProtectionProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnableProtectionProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"EnableProtectionProviderSpecificInput\"}")
+        EnableProtectionProviderSpecificInput model
+            = BinaryData.fromString("{\"instanceType\":\"EnableProtectionProviderSpecificInput\"}")
                 .toObject(EnableProtectionProviderSpecificInput.class);
     }
 

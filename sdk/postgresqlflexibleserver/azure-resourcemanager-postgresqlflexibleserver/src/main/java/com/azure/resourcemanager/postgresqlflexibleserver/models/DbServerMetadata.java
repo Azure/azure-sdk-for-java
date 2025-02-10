@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Database server metadata. */
+/**
+ * Database server metadata.
+ */
 @Fluent
-public final class DbServerMetadata {
+public final class DbServerMetadata implements JsonSerializable<DbServerMetadata> {
     /*
      * Location of database server
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * Version for database engine
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Storage size in MB for database server
      */
-    @JsonProperty(value = "storageMb")
     private Integer storageMb;
 
     /*
      * SKU for the database server. This object is empty for PG single server
      */
-    @JsonProperty(value = "sku")
     private ServerSku sku;
 
-    /** Creates an instance of DbServerMetadata class. */
+    /**
+     * Creates an instance of DbServerMetadata class.
+     */
     public DbServerMetadata() {
     }
 
     /**
      * Get the location property: Location of database server.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -49,7 +53,7 @@ public final class DbServerMetadata {
 
     /**
      * Get the version property: Version for database engine.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -58,7 +62,7 @@ public final class DbServerMetadata {
 
     /**
      * Set the version property: Version for database engine.
-     *
+     * 
      * @param version the version value to set.
      * @return the DbServerMetadata object itself.
      */
@@ -69,7 +73,7 @@ public final class DbServerMetadata {
 
     /**
      * Get the storageMb property: Storage size in MB for database server.
-     *
+     * 
      * @return the storageMb value.
      */
     public Integer storageMb() {
@@ -78,7 +82,7 @@ public final class DbServerMetadata {
 
     /**
      * Set the storageMb property: Storage size in MB for database server.
-     *
+     * 
      * @param storageMb the storageMb value to set.
      * @return the DbServerMetadata object itself.
      */
@@ -89,7 +93,7 @@ public final class DbServerMetadata {
 
     /**
      * Get the sku property: SKU for the database server. This object is empty for PG single server.
-     *
+     * 
      * @return the sku value.
      */
     public ServerSku sku() {
@@ -98,7 +102,7 @@ public final class DbServerMetadata {
 
     /**
      * Set the sku property: SKU for the database server. This object is empty for PG single server.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DbServerMetadata object itself.
      */
@@ -109,12 +113,56 @@ public final class DbServerMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeNumberField("storageMb", this.storageMb);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DbServerMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DbServerMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DbServerMetadata.
+     */
+    public static DbServerMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DbServerMetadata deserializedDbServerMetadata = new DbServerMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedDbServerMetadata.location = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedDbServerMetadata.version = reader.getString();
+                } else if ("storageMb".equals(fieldName)) {
+                    deserializedDbServerMetadata.storageMb = reader.getNullable(JsonReader::getInt);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDbServerMetadata.sku = ServerSku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDbServerMetadata;
+        });
     }
 }

@@ -5,152 +5,133 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** columnDefinition. */
+/**
+ * columnDefinition.
+ */
 @Fluent
 public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
     /*
      * booleanColumn
      */
-    @JsonProperty(value = "boolean")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> booleanProperty;
 
     /*
      * calculatedColumn
      */
-    @JsonProperty(value = "calculated")
     private MicrosoftGraphCalculatedColumn calculated;
 
     /*
      * choiceColumn
      */
-    @JsonProperty(value = "choice")
     private MicrosoftGraphChoiceColumn choice;
 
     /*
      * For site columns, the name of the group this column belongs to. Helps organize related columns.
      */
-    @JsonProperty(value = "columnGroup")
     private String columnGroup;
 
     /*
      * currencyColumn
      */
-    @JsonProperty(value = "currency")
     private MicrosoftGraphCurrencyColumn currency;
 
     /*
      * dateTimeColumn
      */
-    @JsonProperty(value = "dateTime")
     private MicrosoftGraphDateTimeColumn dateTime;
 
     /*
      * defaultColumnValue
      */
-    @JsonProperty(value = "defaultValue")
     private MicrosoftGraphDefaultColumnValue defaultValue;
 
     /*
      * The user-facing description of the column.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The user-facing name of the column.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * If true, no two list items may have the same value for this column.
      */
-    @JsonProperty(value = "enforceUniqueValues")
     private Boolean enforceUniqueValues;
 
     /*
      * geolocationColumn
      */
-    @JsonProperty(value = "geolocation")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> geolocation;
 
     /*
      * Specifies whether the column is displayed in the user interface.
      */
-    @JsonProperty(value = "hidden")
     private Boolean hidden;
 
     /*
      * Specifies whether the column values can used for sorting and searching.
      */
-    @JsonProperty(value = "indexed")
     private Boolean indexed;
 
     /*
      * lookupColumn
      */
-    @JsonProperty(value = "lookup")
     private MicrosoftGraphLookupColumn lookup;
 
     /*
      * The API-facing name of the column as it appears in the [fields][] on a [listItem][]. For the user-facing name,
      * see displayName.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * numberColumn
      */
-    @JsonProperty(value = "number")
     private MicrosoftGraphNumberColumn number;
 
     /*
      * personOrGroupColumn
      */
-    @JsonProperty(value = "personOrGroup")
     private MicrosoftGraphPersonOrGroupColumn personOrGroup;
 
     /*
      * Specifies whether the column values can be modified.
      */
-    @JsonProperty(value = "readOnly")
     private Boolean readOnly;
 
     /*
      * Specifies whether the column value is not optional.
      */
-    @JsonProperty(value = "required")
     private Boolean required;
 
     /*
      * textColumn
      */
-    @JsonProperty(value = "text")
     private MicrosoftGraphTextColumn text;
 
     /*
      * columnDefinition
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphColumnDefinition class. */
+    /**
+     * Creates an instance of MicrosoftGraphColumnDefinition class.
+     */
     public MicrosoftGraphColumnDefinition() {
     }
 
     /**
      * Get the booleanProperty property: booleanColumn.
-     *
+     * 
      * @return the booleanProperty value.
      */
     public Map<String, Object> booleanProperty() {
@@ -159,7 +140,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the booleanProperty property: booleanColumn.
-     *
+     * 
      * @param booleanProperty the booleanProperty value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -170,7 +151,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the calculated property: calculatedColumn.
-     *
+     * 
      * @return the calculated value.
      */
     public MicrosoftGraphCalculatedColumn calculated() {
@@ -179,7 +160,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the calculated property: calculatedColumn.
-     *
+     * 
      * @param calculated the calculated value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -190,7 +171,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the choice property: choiceColumn.
-     *
+     * 
      * @return the choice value.
      */
     public MicrosoftGraphChoiceColumn choice() {
@@ -199,7 +180,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the choice property: choiceColumn.
-     *
+     * 
      * @param choice the choice value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -211,7 +192,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
     /**
      * Get the columnGroup property: For site columns, the name of the group this column belongs to. Helps organize
      * related columns.
-     *
+     * 
      * @return the columnGroup value.
      */
     public String columnGroup() {
@@ -221,7 +202,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
     /**
      * Set the columnGroup property: For site columns, the name of the group this column belongs to. Helps organize
      * related columns.
-     *
+     * 
      * @param columnGroup the columnGroup value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -232,7 +213,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the currency property: currencyColumn.
-     *
+     * 
      * @return the currency value.
      */
     public MicrosoftGraphCurrencyColumn currency() {
@@ -241,7 +222,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the currency property: currencyColumn.
-     *
+     * 
      * @param currency the currency value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -252,7 +233,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the dateTime property: dateTimeColumn.
-     *
+     * 
      * @return the dateTime value.
      */
     public MicrosoftGraphDateTimeColumn dateTime() {
@@ -261,7 +242,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the dateTime property: dateTimeColumn.
-     *
+     * 
      * @param dateTime the dateTime value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -272,7 +253,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the defaultValue property: defaultColumnValue.
-     *
+     * 
      * @return the defaultValue value.
      */
     public MicrosoftGraphDefaultColumnValue defaultValue() {
@@ -281,7 +262,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the defaultValue property: defaultColumnValue.
-     *
+     * 
      * @param defaultValue the defaultValue value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -292,7 +273,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the description property: The user-facing description of the column.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -301,7 +282,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the description property: The user-facing description of the column.
-     *
+     * 
      * @param description the description value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -312,7 +293,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the displayName property: The user-facing name of the column.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -321,7 +302,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the displayName property: The user-facing name of the column.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -332,7 +313,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the enforceUniqueValues property: If true, no two list items may have the same value for this column.
-     *
+     * 
      * @return the enforceUniqueValues value.
      */
     public Boolean enforceUniqueValues() {
@@ -341,7 +322,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the enforceUniqueValues property: If true, no two list items may have the same value for this column.
-     *
+     * 
      * @param enforceUniqueValues the enforceUniqueValues value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -352,7 +333,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the geolocation property: geolocationColumn.
-     *
+     * 
      * @return the geolocation value.
      */
     public Map<String, Object> geolocation() {
@@ -361,7 +342,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the geolocation property: geolocationColumn.
-     *
+     * 
      * @param geolocation the geolocation value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -372,7 +353,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the hidden property: Specifies whether the column is displayed in the user interface.
-     *
+     * 
      * @return the hidden value.
      */
     public Boolean hidden() {
@@ -381,7 +362,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the hidden property: Specifies whether the column is displayed in the user interface.
-     *
+     * 
      * @param hidden the hidden value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -392,7 +373,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the indexed property: Specifies whether the column values can used for sorting and searching.
-     *
+     * 
      * @return the indexed value.
      */
     public Boolean indexed() {
@@ -401,7 +382,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the indexed property: Specifies whether the column values can used for sorting and searching.
-     *
+     * 
      * @param indexed the indexed value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -412,7 +393,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the lookup property: lookupColumn.
-     *
+     * 
      * @return the lookup value.
      */
     public MicrosoftGraphLookupColumn lookup() {
@@ -421,7 +402,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the lookup property: lookupColumn.
-     *
+     * 
      * @param lookup the lookup value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -433,7 +414,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
     /**
      * Get the name property: The API-facing name of the column as it appears in the [fields][] on a [listItem][]. For
      * the user-facing name, see displayName.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -443,7 +424,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
     /**
      * Set the name property: The API-facing name of the column as it appears in the [fields][] on a [listItem][]. For
      * the user-facing name, see displayName.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -454,7 +435,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the number property: numberColumn.
-     *
+     * 
      * @return the number value.
      */
     public MicrosoftGraphNumberColumn number() {
@@ -463,7 +444,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the number property: numberColumn.
-     *
+     * 
      * @param number the number value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -474,7 +455,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the personOrGroup property: personOrGroupColumn.
-     *
+     * 
      * @return the personOrGroup value.
      */
     public MicrosoftGraphPersonOrGroupColumn personOrGroup() {
@@ -483,7 +464,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the personOrGroup property: personOrGroupColumn.
-     *
+     * 
      * @param personOrGroup the personOrGroup value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -494,7 +475,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the readOnly property: Specifies whether the column values can be modified.
-     *
+     * 
      * @return the readOnly value.
      */
     public Boolean readOnly() {
@@ -503,7 +484,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the readOnly property: Specifies whether the column values can be modified.
-     *
+     * 
      * @param readOnly the readOnly value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -514,7 +495,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the required property: Specifies whether the column value is not optional.
-     *
+     * 
      * @return the required value.
      */
     public Boolean required() {
@@ -523,7 +504,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the required property: Specifies whether the column value is not optional.
-     *
+     * 
      * @param required the required value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -534,7 +515,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the text property: textColumn.
-     *
+     * 
      * @return the text value.
      */
     public MicrosoftGraphTextColumn text() {
@@ -543,7 +524,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Set the text property: textColumn.
-     *
+     * 
      * @param text the text value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -554,17 +535,16 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: columnDefinition.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: columnDefinition.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphColumnDefinition object itself.
      */
@@ -573,15 +553,9 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphColumnDefinition withId(String id) {
         super.withId(id);
@@ -590,7 +564,7 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -623,5 +597,119 @@ public final class MicrosoftGraphColumnDefinition extends MicrosoftGraphEntity {
         if (text() != null) {
             text().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeMapField("boolean", this.booleanProperty, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("calculated", this.calculated);
+        jsonWriter.writeJsonField("choice", this.choice);
+        jsonWriter.writeStringField("columnGroup", this.columnGroup);
+        jsonWriter.writeJsonField("currency", this.currency);
+        jsonWriter.writeJsonField("dateTime", this.dateTime);
+        jsonWriter.writeJsonField("defaultValue", this.defaultValue);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("enforceUniqueValues", this.enforceUniqueValues);
+        jsonWriter.writeMapField("geolocation", this.geolocation, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeBooleanField("hidden", this.hidden);
+        jsonWriter.writeBooleanField("indexed", this.indexed);
+        jsonWriter.writeJsonField("lookup", this.lookup);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("number", this.number);
+        jsonWriter.writeJsonField("personOrGroup", this.personOrGroup);
+        jsonWriter.writeBooleanField("readOnly", this.readOnly);
+        jsonWriter.writeBooleanField("required", this.required);
+        jsonWriter.writeJsonField("text", this.text);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphColumnDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphColumnDefinition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphColumnDefinition.
+     */
+    public static MicrosoftGraphColumnDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphColumnDefinition deserializedMicrosoftGraphColumnDefinition
+                = new MicrosoftGraphColumnDefinition();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.withId(reader.getString());
+                } else if ("boolean".equals(fieldName)) {
+                    Map<String, Object> booleanProperty = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphColumnDefinition.booleanProperty = booleanProperty;
+                } else if ("calculated".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.calculated
+                        = MicrosoftGraphCalculatedColumn.fromJson(reader);
+                } else if ("choice".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.choice = MicrosoftGraphChoiceColumn.fromJson(reader);
+                } else if ("columnGroup".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.columnGroup = reader.getString();
+                } else if ("currency".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.currency = MicrosoftGraphCurrencyColumn.fromJson(reader);
+                } else if ("dateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.dateTime = MicrosoftGraphDateTimeColumn.fromJson(reader);
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.defaultValue
+                        = MicrosoftGraphDefaultColumnValue.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.description = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.displayName = reader.getString();
+                } else if ("enforceUniqueValues".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.enforceUniqueValues
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("geolocation".equals(fieldName)) {
+                    Map<String, Object> geolocation = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphColumnDefinition.geolocation = geolocation;
+                } else if ("hidden".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.hidden = reader.getNullable(JsonReader::getBoolean);
+                } else if ("indexed".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.indexed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lookup".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.lookup = MicrosoftGraphLookupColumn.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.name = reader.getString();
+                } else if ("number".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.number = MicrosoftGraphNumberColumn.fromJson(reader);
+                } else if ("personOrGroup".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.personOrGroup
+                        = MicrosoftGraphPersonOrGroupColumn.fromJson(reader);
+                } else if ("readOnly".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.readOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("required".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.required = reader.getNullable(JsonReader::getBoolean);
+                } else if ("text".equals(fieldName)) {
+                    deserializedMicrosoftGraphColumnDefinition.text = MicrosoftGraphTextColumn.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphColumnDefinition.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphColumnDefinition;
+        });
     }
 }

@@ -5,29 +5,35 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesbackup.models.HttpStatusCode;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationResultInfoBase;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationWorkerResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Base class for operation result info. */
+/**
+ * Base class for operation result info.
+ */
 @Fluent
 public final class OperationResultInfoBaseResourceInner extends OperationWorkerResponse {
     /*
      * OperationResultInfoBaseResource operation
      */
-    @JsonProperty(value = "operation")
     private OperationResultInfoBase operation;
 
-    /** Creates an instance of OperationResultInfoBaseResourceInner class. */
+    /**
+     * Creates an instance of OperationResultInfoBaseResourceInner class.
+     */
     public OperationResultInfoBaseResourceInner() {
     }
 
     /**
      * Get the operation property: OperationResultInfoBaseResource operation.
-     *
+     * 
      * @return the operation value.
      */
     public OperationResultInfoBase operation() {
@@ -36,7 +42,7 @@ public final class OperationResultInfoBaseResourceInner extends OperationWorkerR
 
     /**
      * Set the operation property: OperationResultInfoBaseResource operation.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the OperationResultInfoBaseResourceInner object itself.
      */
@@ -45,14 +51,18 @@ public final class OperationResultInfoBaseResourceInner extends OperationWorkerR
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResultInfoBaseResourceInner withStatusCode(HttpStatusCode statusCode) {
         super.withStatusCode(statusCode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResultInfoBaseResourceInner withHeaders(Map<String, List<String>> headers) {
         super.withHeaders(headers);
@@ -61,14 +71,61 @@ public final class OperationResultInfoBaseResourceInner extends OperationWorkerR
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (operation() != null) {
             operation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("statusCode", statusCode() == null ? null : statusCode().toString());
+        jsonWriter.writeMapField("headers", headers(),
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeJsonField("operation", this.operation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultInfoBaseResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultInfoBaseResourceInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultInfoBaseResourceInner.
+     */
+    public static OperationResultInfoBaseResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultInfoBaseResourceInner deserializedOperationResultInfoBaseResourceInner
+                = new OperationResultInfoBaseResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("statusCode".equals(fieldName)) {
+                    deserializedOperationResultInfoBaseResourceInner
+                        .withStatusCode(HttpStatusCode.fromString(reader.getString()));
+                } else if ("headers".equals(fieldName)) {
+                    Map<String, List<String>> headers
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedOperationResultInfoBaseResourceInner.withHeaders(headers);
+                } else if ("operation".equals(fieldName)) {
+                    deserializedOperationResultInfoBaseResourceInner.operation
+                        = OperationResultInfoBase.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultInfoBaseResourceInner;
+        });
     }
 }

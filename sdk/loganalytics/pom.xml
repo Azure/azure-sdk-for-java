@@ -11,6 +11,5 @@
 
   <modules>
       <module>azure-resourcemanager-loganalytics</module>
-      <module>microsoft-azure-loganalytics</module>
   </modules>
 </project>

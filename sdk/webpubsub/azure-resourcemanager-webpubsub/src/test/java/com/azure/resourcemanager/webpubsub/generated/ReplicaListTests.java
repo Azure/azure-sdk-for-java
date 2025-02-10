@@ -17,84 +17,44 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicaListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicaList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"fnhtbaxkgxyw\",\"tier\":\"Basic\",\"size\":\"yklyhpluodpvruud\",\"family\":\"zibt\",\"capacity\":1721626377},\"properties\":{\"provisioningState\":\"Creating\",\"regionEndpointEnabled\":\"stvdxeclz\",\"resourceStopped\":\"qbcvhzlhplod\"},\"location\":\"dlwwqfbumlkxt\",\"tags\":{\"rtawcoezb\":\"fsmlmbtxhwgfw\",\"kqfqjbvl\":\"hubskhudygooo\",\"zf\":\"orfmluiqt\",\"ryeu\":\"vyvnqqyb\"},\"id\":\"yjkqabqgzslesjcb\",\"name\":\"ernntiewdjcvbquw\",\"type\":\"behwagohb\"},{\"sku\":{\"name\":\"fkmr\",\"tier\":\"Premium\",\"size\":\"vhmxtdrjfu\",\"family\":\"coebjvewzcj\",\"capacity\":96469803},\"properties\":{\"provisioningState\":\"Succeeded\",\"regionEndpointEnabled\":\"guaadraufactkahz\",\"resourceStopped\":\"ajjziuxxpshne\"},\"location\":\"ulfgslqu\",\"tags\":{\"o\":\"dlenrdsutujbazpj\",\"uvwpklvxwmyg\":\"minyflnorwm\",\"hiszepnnbjcrxgib\":\"xpgpq\"},\"id\":\"daxconfozauorsuk\",\"name\":\"kwbqplhlvnuu\",\"type\":\"pzlrphw\"},{\"sku\":{\"name\":\"oldweyuqdu\",\"tier\":\"Basic\",\"size\":\"nrwrbiork\",\"family\":\"lywjhh\",\"capacity\":1472152819},\"properties\":{\"provisioningState\":\"Failed\",\"regionEndpointEnabled\":\"ivfomiloxgg\",\"resourceStopped\":\"fi\"},\"location\":\"dieuzaofj\",\"tags\":{\"ubiipuipwoqonma\":\"cyyysfgdot\"},\"id\":\"jeknizshq\",\"name\":\"cimpevfg\",\"type\":\"b\"}],\"nextLink\":\"rilbywdx\"}")
-                .toObject(ReplicaList.class);
-        Assertions.assertEquals("dlwwqfbumlkxt", model.value().get(0).location());
-        Assertions.assertEquals("fsmlmbtxhwgfw", model.value().get(0).tags().get("rtawcoezb"));
-        Assertions.assertEquals("fnhtbaxkgxyw", model.value().get(0).sku().name());
+        ReplicaList model = BinaryData.fromString(
+            "{\"value\":[{\"sku\":{\"name\":\"qplhlvnu\",\"tier\":\"Basic\",\"size\":\"lrphwzsoldw\",\"family\":\"uqdunvmnnrwrbi\",\"capacity\":2098382686},\"properties\":{\"provisioningState\":\"Unknown\",\"regionEndpointEnabled\":\"wjhhgdnhxmsivf\",\"resourceStopped\":\"iloxggdufiq\"},\"location\":\"ieuzaofjchvcyyy\",\"tags\":{\"oqonma\":\"dotcubiipuip\",\"cimpevfg\":\"jeknizshq\",\"rrilbywdxsmic\":\"b\",\"qujizdvo\":\"wrwfscjfnyns\"},\"id\":\"ytibyow\",\"name\":\"blgyavutpthj\",\"type\":\"xoi\"},{\"sku\":{\"name\":\"sks\",\"tier\":\"Free\",\"size\":\"lqol\",\"family\":\"kcgxxlxsffgcvi\",\"capacity\":1820797792},\"properties\":{\"provisioningState\":\"Failed\",\"regionEndpointEnabled\":\"w\",\"resourceStopped\":\"oupfgfb\"},\"location\":\"ubdyhgk\",\"tags\":{\"ktlahbqa\":\"nsgowzfttst\"},\"id\":\"tx\",\"name\":\"gzukxitmm\",\"type\":\"tg\"}],\"nextLink\":\"q\"}")
+            .toObject(ReplicaList.class);
+        Assertions.assertEquals("ieuzaofjchvcyyy", model.value().get(0).location());
+        Assertions.assertEquals("dotcubiipuip", model.value().get(0).tags().get("oqonma"));
+        Assertions.assertEquals("qplhlvnu", model.value().get(0).sku().name());
         Assertions.assertEquals(WebPubSubSkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals(1721626377, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("stvdxeclz", model.value().get(0).regionEndpointEnabled());
-        Assertions.assertEquals("qbcvhzlhplod", model.value().get(0).resourceStopped());
-        Assertions.assertEquals("rilbywdx", model.nextLink());
+        Assertions.assertEquals(2098382686, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("wjhhgdnhxmsivf", model.value().get(0).regionEndpointEnabled());
+        Assertions.assertEquals("iloxggdufiq", model.value().get(0).resourceStopped());
+        Assertions.assertEquals("q", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicaList model =
-            new ReplicaList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ReplicaInner()
-                                .withLocation("dlwwqfbumlkxt")
-                                .withTags(
-                                    mapOf(
-                                        "rtawcoezb",
-                                        "fsmlmbtxhwgfw",
-                                        "kqfqjbvl",
-                                        "hubskhudygooo",
-                                        "zf",
-                                        "orfmluiqt",
-                                        "ryeu",
-                                        "vyvnqqyb"))
-                                .withSku(
-                                    new ResourceSku()
-                                        .withName("fnhtbaxkgxyw")
-                                        .withTier(WebPubSubSkuTier.BASIC)
-                                        .withCapacity(1721626377))
-                                .withRegionEndpointEnabled("stvdxeclz")
-                                .withResourceStopped("qbcvhzlhplod"),
-                            new ReplicaInner()
-                                .withLocation("ulfgslqu")
-                                .withTags(
-                                    mapOf(
-                                        "o",
-                                        "dlenrdsutujbazpj",
-                                        "uvwpklvxwmyg",
-                                        "minyflnorwm",
-                                        "hiszepnnbjcrxgib",
-                                        "xpgpq"))
-                                .withSku(
-                                    new ResourceSku()
-                                        .withName("fkmr")
-                                        .withTier(WebPubSubSkuTier.PREMIUM)
-                                        .withCapacity(96469803))
-                                .withRegionEndpointEnabled("guaadraufactkahz")
-                                .withResourceStopped("ajjziuxxpshne"),
-                            new ReplicaInner()
-                                .withLocation("dieuzaofj")
-                                .withTags(mapOf("ubiipuipwoqonma", "cyyysfgdot"))
-                                .withSku(
-                                    new ResourceSku()
-                                        .withName("oldweyuqdu")
-                                        .withTier(WebPubSubSkuTier.BASIC)
-                                        .withCapacity(1472152819))
-                                .withRegionEndpointEnabled("ivfomiloxgg")
-                                .withResourceStopped("fi")))
-                .withNextLink("rilbywdx");
+        ReplicaList model = new ReplicaList().withValue(Arrays.asList(
+            new ReplicaInner().withLocation("ieuzaofjchvcyyy")
+                .withTags(mapOf("oqonma", "dotcubiipuip", "cimpevfg", "jeknizshq", "rrilbywdxsmic", "b", "qujizdvo",
+                    "wrwfscjfnyns"))
+                .withSku(
+                    new ResourceSku().withName("qplhlvnu").withTier(WebPubSubSkuTier.BASIC).withCapacity(2098382686))
+                .withRegionEndpointEnabled("wjhhgdnhxmsivf")
+                .withResourceStopped("iloxggdufiq"),
+            new ReplicaInner().withLocation("ubdyhgk")
+                .withTags(mapOf("ktlahbqa", "nsgowzfttst"))
+                .withSku(new ResourceSku().withName("sks").withTier(WebPubSubSkuTier.FREE).withCapacity(1820797792))
+                .withRegionEndpointEnabled("w")
+                .withResourceStopped("oupfgfb")))
+            .withNextLink("q");
         model = BinaryData.fromObject(model).toObject(ReplicaList.class);
-        Assertions.assertEquals("dlwwqfbumlkxt", model.value().get(0).location());
-        Assertions.assertEquals("fsmlmbtxhwgfw", model.value().get(0).tags().get("rtawcoezb"));
-        Assertions.assertEquals("fnhtbaxkgxyw", model.value().get(0).sku().name());
+        Assertions.assertEquals("ieuzaofjchvcyyy", model.value().get(0).location());
+        Assertions.assertEquals("dotcubiipuip", model.value().get(0).tags().get("oqonma"));
+        Assertions.assertEquals("qplhlvnu", model.value().get(0).sku().name());
         Assertions.assertEquals(WebPubSubSkuTier.BASIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals(1721626377, model.value().get(0).sku().capacity());
-        Assertions.assertEquals("stvdxeclz", model.value().get(0).regionEndpointEnabled());
-        Assertions.assertEquals("qbcvhzlhplod", model.value().get(0).resourceStopped());
-        Assertions.assertEquals("rilbywdx", model.nextLink());
+        Assertions.assertEquals(2098382686, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("wjhhgdnhxmsivf", model.value().get(0).regionEndpointEnabled());
+        Assertions.assertEquals("iloxggdufiq", model.value().get(0).resourceStopped());
+        Assertions.assertEquals("q", model.nextLink());
     }
 
     // Use "Map.of" if available

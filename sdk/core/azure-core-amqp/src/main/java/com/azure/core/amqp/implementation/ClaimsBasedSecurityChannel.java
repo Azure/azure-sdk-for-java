@@ -62,37 +62,36 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
 
     @Override
     public Mono<OffsetDateTime> authorize(String tokenAudience, String scopes) {
-        return cbsChannelMono.flatMap(channel ->
-            credential.getToken(new TokenRequestContext().addScopes(scopes))
-                .flatMap(accessToken -> {
-                    final Message request = Proton.message();
-                    final Map<String, Object> properties = new HashMap<>();
-                    properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
-                    properties.put(PUT_TOKEN_EXPIRY, Date.from(accessToken.getExpiresAt().toInstant()));
-                    properties.put(PUT_TOKEN_TYPE, authorizationType.toString());
-                    properties.put(PUT_TOKEN_AUDIENCE, tokenAudience);
+        return cbsChannelMono.flatMap(
+            channel -> credential.getToken(new TokenRequestContext().addScopes(scopes)).flatMap(accessToken -> {
+                final Message request = Proton.message();
+                final Map<String, Object> properties = new HashMap<>();
+                properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
+                properties.put(PUT_TOKEN_EXPIRY, Date.from(accessToken.getExpiresAt().toInstant()));
+                properties.put(PUT_TOKEN_TYPE, authorizationType.toString());
+                properties.put(PUT_TOKEN_AUDIENCE, tokenAudience);
 
-                    final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
-                    request.setApplicationProperties(applicationProperties);
-                    request.setBody(new AmqpValue(accessToken.getToken()));
+                final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
+                request.setApplicationProperties(applicationProperties);
+                request.setBody(new AmqpValue(accessToken.getToken()));
 
-                    return channel.sendWithAck(request)
-                        .handle((Message message, SynchronousSink<OffsetDateTime> sink) -> {
-                            if (RequestResponseUtils.isSuccessful(message)) {
-                                sink.next(accessToken.getExpiresAt());
-                            } else {
-                                final String description = getStatusDescription(message);
-                                final AmqpResponseCode statusCode = getStatusCode(message);
-                                final Exception error = amqpResponseCodeToException(
-                                    statusCode.getValue(), description, channel.getErrorContext());
+                return channel.sendWithAck(request).handle((Message message, SynchronousSink<OffsetDateTime> sink) -> {
+                    if (RequestResponseUtils.isSuccessful(message)) {
+                        sink.next(accessToken.getExpiresAt());
+                    } else {
+                        final String description = getStatusDescription(message);
+                        final AmqpResponseCode statusCode = getStatusCode(message);
+                        final Exception error = amqpResponseCodeToException(statusCode.getValue(), description,
+                            channel.getErrorContext());
 
-                                sink.error(error);
-                            }
-                        })
-                        .switchIfEmpty(Mono.error(() -> new AmqpException(true, String.format(
-                            "No response received from CBS node. tokenAudience: '%s'. scopes: '%s'",
-                            tokenAudience, scopes), channel.getErrorContext())));
-                }));
+                        sink.error(error);
+                    }
+                })
+                    .switchIfEmpty(Mono.error(() -> new AmqpException(true,
+                        String.format("No response received from CBS node. tokenAudience: '%s'. scopes: '%s'",
+                            tokenAudience, scopes),
+                        channel.getErrorContext())));
+            }));
     }
 
     @Override

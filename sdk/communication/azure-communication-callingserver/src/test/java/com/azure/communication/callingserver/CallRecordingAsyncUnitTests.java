@@ -9,6 +9,7 @@ import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
 import reactor.test.StepVerifier;
@@ -22,29 +23,26 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
 
     @BeforeEach
     public void setup() {
-        CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>());
+        CallAutomationAsyncClient callingServerClient
+            = CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>());
         callRecording = callingServerClient.getCallRecordingAsync();
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recordingOperationsTest() {
-        CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(
-            recordingOperationsResponses
-        );
+        CallAutomationAsyncClient callingServerClient
+            = CallAutomationUnitTestBase.getCallAutomationAsyncClient(recordingOperationsResponses);
         callRecording = callingServerClient.getCallRecordingAsync();
 
         validateRecordingState(
             callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
-                    .setRecordingStateCallbackUrl("https://localhost/")),
-            RecordingState.ACTIVE
-        );
-
-        validateOperationWithRecordingState(callRecording.pauseRecording(RECORDING_ID),
-            RecordingState.INACTIVE
-        );
-
-        validateOperationWithRecordingState(callRecording.resumeRecording(RECORDING_ID),
+                .setRecordingStateCallbackUrl("https://localhost/")),
             RecordingState.ACTIVE);
+
+        validateOperationWithRecordingState(callRecording.pauseRecording(RECORDING_ID), RecordingState.INACTIVE);
+
+        validateOperationWithRecordingState(callRecording.resumeRecording(RECORDING_ID), RecordingState.ACTIVE);
 
         validateOperation(callRecording.stopRecording(RECORDING_ID));
         validateError(CallingServerErrorException.class, callRecording.getRecordingState(RECORDING_ID));
@@ -58,10 +56,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
 
     private void validateOperationWithRecordingState(Publisher<Void> operation, RecordingState expectedRecordingState) {
         validateOperation(operation);
-        validateRecordingState(
-            callRecording.getRecordingState(RECORDING_ID),
-            expectedRecordingState
-        );
+        validateRecordingState(callRecording.getRecordingState(RECORDING_ID), expectedRecordingState);
     }
 
     private void validateOperation(Publisher<Void> operation) {
@@ -70,8 +65,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
 
     private <T, U> void validateError(Class<T> exception, Publisher<U> publisher) {
         StepVerifier.create(publisher)
-            .consumeErrorWith(error -> assertEquals(error.getClass().toString(),
-                exception.toString()))
+            .consumeErrorWith(error -> assertEquals(error.getClass().toString(), exception.toString()))
             .verify();
     }
 

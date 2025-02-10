@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseBlobAuditingPolicyInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatabaseBlobAuditingPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabaseBlobAuditingPoliciesClient.
+ */
 public interface DatabaseBlobAuditingPoliciesClient {
     /**
      * Lists auditing settings of a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,14 +30,14 @@ public interface DatabaseBlobAuditingPoliciesClient {
      * @return a list of database auditing settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseBlobAuditingPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    PagedFlux<DatabaseBlobAuditingPolicyInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Lists auditing settings of a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,14 +46,14 @@ public interface DatabaseBlobAuditingPoliciesClient {
      * @return a list of database auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseBlobAuditingPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName);
+    PagedIterable<DatabaseBlobAuditingPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Lists auditing settings of a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -61,14 +63,14 @@ public interface DatabaseBlobAuditingPoliciesClient {
      * @return a list of database auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseBlobAuditingPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    PagedIterable<DatabaseBlobAuditingPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName, Context context);
 
     /**
      * Gets a database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,14 +79,14 @@ public interface DatabaseBlobAuditingPoliciesClient {
      * @return a database's blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseBlobAuditingPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    Mono<Response<DatabaseBlobAuditingPolicyInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Gets a database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,9 +99,9 @@ public interface DatabaseBlobAuditingPoliciesClient {
 
     /**
      * Gets a database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -109,14 +111,14 @@ public interface DatabaseBlobAuditingPoliciesClient {
      * @return a database's blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseBlobAuditingPolicyInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    Response<DatabaseBlobAuditingPolicyInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, Context context);
 
     /**
      * Gets a database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,9 +131,9 @@ public interface DatabaseBlobAuditingPoliciesClient {
 
     /**
      * Creates or updates a database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database blob auditing policy.
@@ -141,14 +143,14 @@ public interface DatabaseBlobAuditingPoliciesClient {
      * @return a database blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseBlobAuditingPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseBlobAuditingPolicyInner parameters);
+    Mono<Response<DatabaseBlobAuditingPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, DatabaseBlobAuditingPolicyInner parameters);
 
     /**
      * Creates or updates a database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database blob auditing policy.
@@ -158,14 +160,14 @@ public interface DatabaseBlobAuditingPoliciesClient {
      * @return a database blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseBlobAuditingPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseBlobAuditingPolicyInner parameters);
+    Mono<DatabaseBlobAuditingPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, DatabaseBlobAuditingPolicyInner parameters);
 
     /**
      * Creates or updates a database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database blob auditing policy.
@@ -176,18 +178,14 @@ public interface DatabaseBlobAuditingPoliciesClient {
      * @return a database blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseBlobAuditingPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        DatabaseBlobAuditingPolicyInner parameters,
-        Context context);
+    Response<DatabaseBlobAuditingPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
+        String databaseName, DatabaseBlobAuditingPolicyInner parameters, Context context);
 
     /**
      * Creates or updates a database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The database blob auditing policy.
@@ -197,6 +195,6 @@ public interface DatabaseBlobAuditingPoliciesClient {
      * @return a database blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseBlobAuditingPolicyInner parameters);
+    DatabaseBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        DatabaseBlobAuditingPolicyInner parameters);
 }

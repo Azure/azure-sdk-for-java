@@ -5,23 +5,36 @@
 package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfile;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileProductType;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatusUpdate;
+import com.azure.resourcemanager.hybridcompute.models.ProductFeatureUpdate;
+import java.util.Arrays;
 
-/** Samples for LicenseProfiles Update. */
+/**
+ * Samples for LicenseProfiles Update.
+ */
 public final class LicenseProfilesUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/licenseProfile/LicenseProfile_Update.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/
+     * licenseProfile/LicenseProfile_Update.json
      */
     /**
      * Sample code: Update a License Profile.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
     public static void updateALicenseProfile(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
-        LicenseProfile resource =
-            manager
-                .licenseProfiles()
-                .getWithResponse("myResourceGroup", "myMachine", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withAssignedLicense("{LicenseResourceId}").apply();
+        LicenseProfile resource = manager.licenseProfiles()
+            .getWithResponse("myResourceGroup", "myMachine", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withSoftwareAssuranceCustomer(true)
+            .withAssignedLicense("{LicenseResourceId}")
+            .withSubscriptionStatus(LicenseProfileSubscriptionStatusUpdate.ENABLE)
+            .withProductType(LicenseProfileProductType.WINDOWS_SERVER)
+            .withProductFeaturesForUpdate(Arrays.asList(new ProductFeatureUpdate().withName("Hotpatch")
+                .withSubscriptionStatus(LicenseProfileSubscriptionStatusUpdate.ENABLE)))
+            .apply();
     }
 }

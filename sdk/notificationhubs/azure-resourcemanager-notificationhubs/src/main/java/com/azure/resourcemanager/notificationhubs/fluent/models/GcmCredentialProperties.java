@@ -5,31 +5,36 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Description of a NotificationHub GcmCredential. */
+/**
+ * Description of a NotificationHub GcmCredential.
+ */
 @Fluent
-public final class GcmCredentialProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GcmCredentialProperties.class);
-
+public final class GcmCredentialProperties implements JsonSerializable<GcmCredentialProperties> {
     /*
-     * The FCM legacy endpoint. Default value is
-     * 'https://fcm.googleapis.com/fcm/send'
+     * The FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'
      */
-    @JsonProperty(value = "gcmEndpoint")
     private String gcmEndpoint;
 
     /*
      * The Google API key.
      */
-    @JsonProperty(value = "googleApiKey")
     private String googleApiKey;
 
     /**
+     * Creates an instance of GcmCredentialProperties class.
+     */
+    public GcmCredentialProperties() {
+    }
+
+    /**
      * Get the gcmEndpoint property: The FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'.
-     *
+     * 
      * @return the gcmEndpoint value.
      */
     public String gcmEndpoint() {
@@ -38,7 +43,7 @@ public final class GcmCredentialProperties {
 
     /**
      * Set the gcmEndpoint property: The FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'.
-     *
+     * 
      * @param gcmEndpoint the gcmEndpoint value to set.
      * @return the GcmCredentialProperties object itself.
      */
@@ -49,7 +54,7 @@ public final class GcmCredentialProperties {
 
     /**
      * Get the googleApiKey property: The Google API key.
-     *
+     * 
      * @return the googleApiKey value.
      */
     public String googleApiKey() {
@@ -58,7 +63,7 @@ public final class GcmCredentialProperties {
 
     /**
      * Set the googleApiKey property: The Google API key.
-     *
+     * 
      * @param googleApiKey the googleApiKey value to set.
      * @return the GcmCredentialProperties object itself.
      */
@@ -69,9 +74,48 @@ public final class GcmCredentialProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("gcmEndpoint", this.gcmEndpoint);
+        jsonWriter.writeStringField("googleApiKey", this.googleApiKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GcmCredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GcmCredentialProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GcmCredentialProperties.
+     */
+    public static GcmCredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GcmCredentialProperties deserializedGcmCredentialProperties = new GcmCredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gcmEndpoint".equals(fieldName)) {
+                    deserializedGcmCredentialProperties.gcmEndpoint = reader.getString();
+                } else if ("googleApiKey".equals(fieldName)) {
+                    deserializedGcmCredentialProperties.googleApiKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGcmCredentialProperties;
+        });
     }
 }

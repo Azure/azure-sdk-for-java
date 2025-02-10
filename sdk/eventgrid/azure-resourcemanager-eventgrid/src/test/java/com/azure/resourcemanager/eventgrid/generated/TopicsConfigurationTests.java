@@ -5,18 +5,46 @@
 package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.eventgrid.models.CustomDomainConfiguration;
+import com.azure.resourcemanager.eventgrid.models.CustomDomainIdentity;
+import com.azure.resourcemanager.eventgrid.models.CustomDomainIdentityType;
+import com.azure.resourcemanager.eventgrid.models.CustomDomainValidationState;
 import com.azure.resourcemanager.eventgrid.models.TopicsConfiguration;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class TopicsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TopicsConfiguration model
-            = BinaryData.fromString("{\"hostname\":\"vtylbfpncu\"}").toObject(TopicsConfiguration.class);
+        TopicsConfiguration model = BinaryData.fromString(
+            "{\"hostname\":\"nxkrlgnyhmossxkk\",\"customDomains\":[{\"fullyQualifiedDomainName\":\"rrghxjbdhqxvcxgf\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"shrnsvbuswdvz\"},\"certificateUrl\":\"bycnunvjsrtkf\",\"expectedTxtRecordName\":\"nopqgikyzirtx\",\"expectedTxtRecordValue\":\"uxzejntpsew\"}]}")
+            .toObject(TopicsConfiguration.class);
+        Assertions.assertEquals("rrghxjbdhqxvcxgf", model.customDomains().get(0).fullyQualifiedDomainName());
+        Assertions.assertEquals(CustomDomainValidationState.PENDING, model.customDomains().get(0).validationState());
+        Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED, model.customDomains().get(0).identity().type());
+        Assertions.assertEquals("shrnsvbuswdvz", model.customDomains().get(0).identity().userAssignedIdentity());
+        Assertions.assertEquals("bycnunvjsrtkf", model.customDomains().get(0).certificateUrl());
+        Assertions.assertEquals("nopqgikyzirtx", model.customDomains().get(0).expectedTxtRecordName());
+        Assertions.assertEquals("uxzejntpsew", model.customDomains().get(0).expectedTxtRecordValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TopicsConfiguration model = new TopicsConfiguration();
+        TopicsConfiguration model = new TopicsConfiguration().withCustomDomains(
+            Arrays.asList(new CustomDomainConfiguration().withFullyQualifiedDomainName("rrghxjbdhqxvcxgf")
+                .withValidationState(CustomDomainValidationState.PENDING)
+                .withIdentity(new CustomDomainIdentity().withType(CustomDomainIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentity("shrnsvbuswdvz"))
+                .withCertificateUrl("bycnunvjsrtkf")
+                .withExpectedTxtRecordName("nopqgikyzirtx")
+                .withExpectedTxtRecordValue("uxzejntpsew")));
         model = BinaryData.fromObject(model).toObject(TopicsConfiguration.class);
+        Assertions.assertEquals("rrghxjbdhqxvcxgf", model.customDomains().get(0).fullyQualifiedDomainName());
+        Assertions.assertEquals(CustomDomainValidationState.PENDING, model.customDomains().get(0).validationState());
+        Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED, model.customDomains().get(0).identity().type());
+        Assertions.assertEquals("shrnsvbuswdvz", model.customDomains().get(0).identity().userAssignedIdentity());
+        Assertions.assertEquals("bycnunvjsrtkf", model.customDomains().get(0).certificateUrl());
+        Assertions.assertEquals("nopqgikyzirtx", model.customDomains().get(0).expectedTxtRecordName());
+        Assertions.assertEquals("uxzejntpsew", model.customDomains().get(0).expectedTxtRecordValue());
     }
 }

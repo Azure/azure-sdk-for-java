@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AppliancePropertiesInfrastructureConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppliancePropertiesInfrastructureConfig model =
-            BinaryData.fromString("{\"provider\":\"VMWare\"}").toObject(AppliancePropertiesInfrastructureConfig.class);
+        AppliancePropertiesInfrastructureConfig model = BinaryData.fromString("{\"provider\":\"VMWare\"}")
+            .toObject(AppliancePropertiesInfrastructureConfig.class);
         Assertions.assertEquals(Provider.VMWARE, model.provider());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppliancePropertiesInfrastructureConfig model =
-            new AppliancePropertiesInfrastructureConfig().withProvider(Provider.VMWARE);
+        AppliancePropertiesInfrastructureConfig model
+            = new AppliancePropertiesInfrastructureConfig().withProvider(Provider.VMWARE);
         model = BinaryData.fromObject(model).toObject(AppliancePropertiesInfrastructureConfig.class);
         Assertions.assertEquals(Provider.VMWARE, model.provider());
     }

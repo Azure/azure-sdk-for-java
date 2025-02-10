@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class BackupPolicyType extends ExpandableStringEnum<BackupPolicyTyp
      * @param name a name to look for.
      * @return the corresponding BackupPolicyType.
      */
-    @JsonCreator
     public static BackupPolicyType fromString(String name) {
         return fromString(name, BackupPolicyType.class);
     }

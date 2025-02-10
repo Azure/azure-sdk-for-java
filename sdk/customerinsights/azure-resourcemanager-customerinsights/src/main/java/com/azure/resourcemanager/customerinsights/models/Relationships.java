@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Relationships. */
+/**
+ * Resource collection API of Relationships.
+ */
 public interface Relationships {
     /**
      * Gets information about the specified relationship.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
@@ -22,12 +24,12 @@ public interface Relationships {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified relationship along with {@link Response}.
      */
-    Response<RelationshipResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String relationshipName, Context context);
+    Response<RelationshipResourceFormat> getWithResponse(String resourceGroupName, String hubName,
+        String relationshipName, Context context);
 
     /**
      * Gets information about the specified relationship.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
@@ -40,7 +42,7 @@ public interface Relationships {
 
     /**
      * Deletes a relationship within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
@@ -52,7 +54,7 @@ public interface Relationships {
 
     /**
      * Deletes a relationship within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
@@ -65,7 +67,7 @@ public interface Relationships {
 
     /**
      * Gets all relationships in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,7 +79,7 @@ public interface Relationships {
 
     /**
      * Gets all relationships in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -90,7 +92,7 @@ public interface Relationships {
 
     /**
      * Gets information about the specified relationship.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -101,7 +103,7 @@ public interface Relationships {
 
     /**
      * Gets information about the specified relationship.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,7 +115,7 @@ public interface Relationships {
 
     /**
      * Deletes a relationship within a hub.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,7 +125,7 @@ public interface Relationships {
 
     /**
      * Deletes a relationship within a hub.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +136,7 @@ public interface Relationships {
 
     /**
      * Begins definition for a new RelationshipResourceFormat resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new RelationshipResourceFormat definition.
      */

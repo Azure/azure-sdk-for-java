@@ -46,6 +46,8 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     }
 
     /**
+     * Gets the ID of the subscription the manager is working with.
+     *
      * @return the ID of the subscription the manager is working with
      */
     public String subscriptionId() {
@@ -53,6 +55,8 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     }
 
     /**
+     * Gets the Azure environment the manager is working with.
+     *
      * @return the Azure environment the manager is working with
      */
     public AzureEnvironment environment() {
@@ -73,6 +77,8 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     }
 
     /**
+     * Gets the ResourceManager associated with this manager.
+     *
      * @return the {@link ResourceManager} associated with this manager
      */
     public ResourceManager resourceManager() {
@@ -80,6 +86,8 @@ public abstract class Manager<InnerT> implements HasServiceClient<InnerT> {
     }
 
     /**
+     * Gets the HttpPipeline associated with this manager.
+     *
      * @return the {@link HttpPipeline} associated with this manager
      */
     public HttpPipeline httpPipeline() {

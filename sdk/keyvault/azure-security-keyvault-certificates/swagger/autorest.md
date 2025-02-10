@@ -31,10 +31,10 @@ autorest
 ## Configuration
 
 ```yaml
-use: '@autorest/java@4.1.22'
+use: '@autorest/java@4.1.42'
 output-folder: ../
 java: true
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a2f6f742d088dcc712e67cb2745d8271eaa370ff/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.5-preview.1/certificates.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8af9817c15d688c941cda106758045b5deb9a069/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.6-preview.1/certificates.json
 title: CertificateClient
 namespace: com.azure.security.keyvault.certificates
 models-subpackage: implementation.models
@@ -42,15 +42,9 @@ custom-types-subpackage: models
 custom-types: AdministratorContact,CertificateContact,CertificateKeyCurveName,CertificateKeyType,CertificateKeyUsage,CertificateOperationError,CertificatePolicyAction,SubjectAlternativeNames
 customization-class: src/main/java/CertificatesCustomizations.java
 enable-sync-stack: true
-generate-client-interfaces: false
 generate-client-as-impl: true
-service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
 disable-client-builder: true
-add-context-parameter: true
-context-client-method-parameter: true
-generic-response-type: true
-stream-style-serialization: true
 directive:
     - rename-model:
         from: AdministratorDetails

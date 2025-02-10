@@ -5,15 +5,25 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The NlpVerticalFeaturizationSettings model. */
+/**
+ * The NlpVerticalFeaturizationSettings model.
+ */
 @Fluent
 public final class NlpVerticalFeaturizationSettings extends FeaturizationSettings {
-    /** Creates an instance of NlpVerticalFeaturizationSettings class. */
+    /**
+     * Creates an instance of NlpVerticalFeaturizationSettings class.
+     */
     public NlpVerticalFeaturizationSettings() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NlpVerticalFeaturizationSettings withDatasetLanguage(String datasetLanguage) {
         super.withDatasetLanguage(datasetLanguage);
@@ -22,11 +32,48 @@ public final class NlpVerticalFeaturizationSettings extends FeaturizationSetting
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("datasetLanguage", datasetLanguage());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NlpVerticalFeaturizationSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NlpVerticalFeaturizationSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NlpVerticalFeaturizationSettings.
+     */
+    public static NlpVerticalFeaturizationSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NlpVerticalFeaturizationSettings deserializedNlpVerticalFeaturizationSettings
+                = new NlpVerticalFeaturizationSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("datasetLanguage".equals(fieldName)) {
+                    deserializedNlpVerticalFeaturizationSettings.withDatasetLanguage(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNlpVerticalFeaturizationSettings;
+        });
     }
 }

@@ -5,24 +5,30 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties that are associated with an Azure Storage account with MSI. */
+/**
+ * The properties that are associated with an Azure Storage account with MSI.
+ */
 @Fluent
 public final class JobStorageAccount extends StorageAccount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStorageAccount.class);
-
     /*
      * Authentication Mode.
      */
-    @JsonProperty(value = "authenticationMode")
     private AuthenticationMode authenticationMode;
 
     /**
+     * Creates an instance of JobStorageAccount class.
+     */
+    public JobStorageAccount() {
+    }
+
+    /**
      * Get the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @return the authenticationMode value.
      */
     public AuthenticationMode authenticationMode() {
@@ -31,7 +37,7 @@ public final class JobStorageAccount extends StorageAccount {
 
     /**
      * Set the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @param authenticationMode the authenticationMode value to set.
      * @return the JobStorageAccount object itself.
      */
@@ -40,14 +46,18 @@ public final class JobStorageAccount extends StorageAccount {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobStorageAccount withAccountName(String accountName) {
         super.withAccountName(accountName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobStorageAccount withAccountKey(String accountKey) {
         super.withAccountKey(accountKey);
@@ -56,11 +66,54 @@ public final class JobStorageAccount extends StorageAccount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", accountName());
+        jsonWriter.writeStringField("accountKey", accountKey());
+        jsonWriter.writeStringField("authenticationMode",
+            this.authenticationMode == null ? null : this.authenticationMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobStorageAccount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobStorageAccount if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobStorageAccount.
+     */
+    public static JobStorageAccount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobStorageAccount deserializedJobStorageAccount = new JobStorageAccount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedJobStorageAccount.withAccountName(reader.getString());
+                } else if ("accountKey".equals(fieldName)) {
+                    deserializedJobStorageAccount.withAccountKey(reader.getString());
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedJobStorageAccount.authenticationMode
+                        = AuthenticationMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobStorageAccount;
+        });
     }
 }

@@ -5,34 +5,50 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The role management policy expiration rule. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
-@JsonTypeName("RoleManagementPolicyExpirationRule")
+/**
+ * The role management policy expiration rule.
+ */
 @Fluent
 public final class RoleManagementPolicyExpirationRule extends RoleManagementPolicyRule {
     /*
+     * The type of rule
+     */
+    private RoleManagementPolicyRuleType ruleType = RoleManagementPolicyRuleType.ROLE_MANAGEMENT_POLICY_EXPIRATION_RULE;
+
+    /*
      * The value indicating whether expiration is required.
      */
-    @JsonProperty(value = "isExpirationRequired")
     private Boolean isExpirationRequired;
 
     /*
      * The maximum duration of expiration in timespan.
      */
-    @JsonProperty(value = "maximumDuration")
     private String maximumDuration;
 
-    /** Creates an instance of RoleManagementPolicyExpirationRule class. */
+    /**
+     * Creates an instance of RoleManagementPolicyExpirationRule class.
+     */
     public RoleManagementPolicyExpirationRule() {
     }
 
     /**
+     * Get the ruleType property: The type of rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public RoleManagementPolicyRuleType ruleType() {
+        return this.ruleType;
+    }
+
+    /**
      * Get the isExpirationRequired property: The value indicating whether expiration is required.
-     *
+     * 
      * @return the isExpirationRequired value.
      */
     public Boolean isExpirationRequired() {
@@ -41,7 +57,7 @@ public final class RoleManagementPolicyExpirationRule extends RoleManagementPoli
 
     /**
      * Set the isExpirationRequired property: The value indicating whether expiration is required.
-     *
+     * 
      * @param isExpirationRequired the isExpirationRequired value to set.
      * @return the RoleManagementPolicyExpirationRule object itself.
      */
@@ -52,7 +68,7 @@ public final class RoleManagementPolicyExpirationRule extends RoleManagementPoli
 
     /**
      * Get the maximumDuration property: The maximum duration of expiration in timespan.
-     *
+     * 
      * @return the maximumDuration value.
      */
     public String maximumDuration() {
@@ -61,7 +77,7 @@ public final class RoleManagementPolicyExpirationRule extends RoleManagementPoli
 
     /**
      * Set the maximumDuration property: The maximum duration of expiration in timespan.
-     *
+     * 
      * @param maximumDuration the maximumDuration value to set.
      * @return the RoleManagementPolicyExpirationRule object itself.
      */
@@ -70,14 +86,18 @@ public final class RoleManagementPolicyExpirationRule extends RoleManagementPoli
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoleManagementPolicyExpirationRule withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoleManagementPolicyExpirationRule withTarget(RoleManagementPolicyRuleTarget target) {
         super.withTarget(target);
@@ -86,11 +106,63 @@ public final class RoleManagementPolicyExpirationRule extends RoleManagementPoli
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("target", target());
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeBooleanField("isExpirationRequired", this.isExpirationRequired);
+        jsonWriter.writeStringField("maximumDuration", this.maximumDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleManagementPolicyExpirationRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleManagementPolicyExpirationRule if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleManagementPolicyExpirationRule.
+     */
+    public static RoleManagementPolicyExpirationRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleManagementPolicyExpirationRule deserializedRoleManagementPolicyExpirationRule
+                = new RoleManagementPolicyExpirationRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleManagementPolicyExpirationRule.withId(reader.getString());
+                } else if ("target".equals(fieldName)) {
+                    deserializedRoleManagementPolicyExpirationRule
+                        .withTarget(RoleManagementPolicyRuleTarget.fromJson(reader));
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedRoleManagementPolicyExpirationRule.ruleType
+                        = RoleManagementPolicyRuleType.fromString(reader.getString());
+                } else if ("isExpirationRequired".equals(fieldName)) {
+                    deserializedRoleManagementPolicyExpirationRule.isExpirationRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maximumDuration".equals(fieldName)) {
+                    deserializedRoleManagementPolicyExpirationRule.maximumDuration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleManagementPolicyExpirationRule;
+        });
     }
 }

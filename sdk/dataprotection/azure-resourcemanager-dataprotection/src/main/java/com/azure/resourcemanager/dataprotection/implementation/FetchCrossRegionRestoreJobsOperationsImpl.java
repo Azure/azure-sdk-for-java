@@ -30,14 +30,14 @@ public final class FetchCrossRegionRestoreJobsOperationsImpl implements FetchCro
         CrossRegionRestoreJobsRequest parameters) {
         PagedIterable<AzureBackupJobResourceInner> inner
             = this.serviceClient().list(resourceGroupName, location, parameters);
-        return Utils.mapPage(inner, inner1 -> new AzureBackupJobResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureBackupJobResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureBackupJobResource> list(String resourceGroupName, String location,
         CrossRegionRestoreJobsRequest parameters, String filter, Context context) {
         PagedIterable<AzureBackupJobResourceInner> inner
             = this.serviceClient().list(resourceGroupName, location, parameters, filter, context);
-        return Utils.mapPage(inner, inner1 -> new AzureBackupJobResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureBackupJobResourceImpl(inner1, this.manager()));
     }
 
     private FetchCrossRegionRestoreJobsOperationsClient serviceClient() {

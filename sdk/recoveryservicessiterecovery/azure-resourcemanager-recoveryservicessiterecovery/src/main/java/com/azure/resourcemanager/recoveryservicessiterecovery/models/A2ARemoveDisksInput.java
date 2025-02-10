@@ -5,35 +5,51 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A2A remove disk(s) input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("A2A")
+/**
+ * A2A remove disk(s) input.
+ */
 @Fluent
 public final class A2ARemoveDisksInput extends RemoveDisksProviderSpecificInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "A2A";
+
+    /*
      * The list of vm disk vhd URIs.
      */
-    @JsonProperty(value = "vmDisksUris")
     private List<String> vmDisksUris;
 
     /*
      * The list of vm managed disk Ids.
      */
-    @JsonProperty(value = "vmManagedDisksIds")
     private List<String> vmManagedDisksIds;
 
-    /** Creates an instance of A2ARemoveDisksInput class. */
+    /**
+     * Creates an instance of A2ARemoveDisksInput class.
+     */
     public A2ARemoveDisksInput() {
     }
 
     /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the vmDisksUris property: The list of vm disk vhd URIs.
-     *
+     * 
      * @return the vmDisksUris value.
      */
     public List<String> vmDisksUris() {
@@ -42,7 +58,7 @@ public final class A2ARemoveDisksInput extends RemoveDisksProviderSpecificInput 
 
     /**
      * Set the vmDisksUris property: The list of vm disk vhd URIs.
-     *
+     * 
      * @param vmDisksUris the vmDisksUris value to set.
      * @return the A2ARemoveDisksInput object itself.
      */
@@ -53,7 +69,7 @@ public final class A2ARemoveDisksInput extends RemoveDisksProviderSpecificInput 
 
     /**
      * Get the vmManagedDisksIds property: The list of vm managed disk Ids.
-     *
+     * 
      * @return the vmManagedDisksIds value.
      */
     public List<String> vmManagedDisksIds() {
@@ -62,7 +78,7 @@ public final class A2ARemoveDisksInput extends RemoveDisksProviderSpecificInput 
 
     /**
      * Set the vmManagedDisksIds property: The list of vm managed disk Ids.
-     *
+     * 
      * @param vmManagedDisksIds the vmManagedDisksIds value to set.
      * @return the A2ARemoveDisksInput object itself.
      */
@@ -73,11 +89,55 @@ public final class A2ARemoveDisksInput extends RemoveDisksProviderSpecificInput 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeArrayField("vmDisksUris", this.vmDisksUris, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("vmManagedDisksIds", this.vmManagedDisksIds,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of A2ARemoveDisksInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of A2ARemoveDisksInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the A2ARemoveDisksInput.
+     */
+    public static A2ARemoveDisksInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            A2ARemoveDisksInput deserializedA2ARemoveDisksInput = new A2ARemoveDisksInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedA2ARemoveDisksInput.instanceType = reader.getString();
+                } else if ("vmDisksUris".equals(fieldName)) {
+                    List<String> vmDisksUris = reader.readArray(reader1 -> reader1.getString());
+                    deserializedA2ARemoveDisksInput.vmDisksUris = vmDisksUris;
+                } else if ("vmManagedDisksIds".equals(fieldName)) {
+                    List<String> vmManagedDisksIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedA2ARemoveDisksInput.vmManagedDisksIds = vmManagedDisksIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedA2ARemoveDisksInput;
+        });
     }
 }

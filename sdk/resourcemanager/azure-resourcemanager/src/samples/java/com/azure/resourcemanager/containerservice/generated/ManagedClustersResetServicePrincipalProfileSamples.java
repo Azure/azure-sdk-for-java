@@ -12,18 +12,21 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePr
 public final class ManagedClustersResetServicePrincipalProfileSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
      * ManagedClustersResetServicePrincipalProfile.json
      */
     /**
      * Sample code: Reset Service Principal Profile.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void resetServicePrincipalProfile(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getManagedClusters().resetServicePrincipalProfile("rg1",
-            "clustername1",
-            new ManagedClusterServicePrincipalProfile().withClientId("clientid").withSecret("fakeTokenPlaceholder"),
-            com.azure.core.util.Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .resetServicePrincipalProfile("rg1", "clustername1",
+                new ManagedClusterServicePrincipalProfile().withClientId("clientid").withSecret("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

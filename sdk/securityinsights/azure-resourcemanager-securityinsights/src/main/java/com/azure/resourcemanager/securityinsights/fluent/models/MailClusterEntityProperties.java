@@ -5,107 +5,116 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
-/** Mail cluster entity property bag. */
+/**
+ * Mail cluster entity property bag.
+ */
 @Immutable
 public final class MailClusterEntityProperties extends EntityCommonProperties {
     /*
      * The mail message IDs that are part of the mail cluster
      */
-    @JsonProperty(value = "networkMessageIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> networkMessageIds;
 
     /*
      * Count of mail messages by DeliveryStatus string representation
      */
-    @JsonProperty(value = "countByDeliveryStatus", access = JsonProperty.Access.WRITE_ONLY)
     private Object countByDeliveryStatus;
 
     /*
      * Count of mail messages by ThreatType string representation
      */
-    @JsonProperty(value = "countByThreatType", access = JsonProperty.Access.WRITE_ONLY)
     private Object countByThreatType;
 
     /*
      * Count of mail messages by ProtectionStatus string representation
      */
-    @JsonProperty(value = "countByProtectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private Object countByProtectionStatus;
 
     /*
      * The threats of mail messages that are part of the mail cluster
      */
-    @JsonProperty(value = "threats", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> threats;
 
     /*
      * The query that was used to identify the messages of the mail cluster
      */
-    @JsonProperty(value = "query", access = JsonProperty.Access.WRITE_ONLY)
     private String query;
 
     /*
      * The query time
      */
-    @JsonProperty(value = "queryTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime queryTime;
 
     /*
      * The number of mail messages that are part of the mail cluster
      */
-    @JsonProperty(value = "mailCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer mailCount;
 
     /*
      * Is this a volume anomaly mail cluster
      */
-    @JsonProperty(value = "isVolumeAnomaly", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isVolumeAnomaly;
 
     /*
      * The source of the mail cluster (default is 'O365 ATP')
      */
-    @JsonProperty(value = "source", access = JsonProperty.Access.WRITE_ONLY)
     private String source;
 
     /*
      * The id of the cluster source
      */
-    @JsonProperty(value = "clusterSourceIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterSourceIdentifier;
 
     /*
      * The type of the cluster source
      */
-    @JsonProperty(value = "clusterSourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterSourceType;
 
     /*
      * The cluster query start time
      */
-    @JsonProperty(value = "clusterQueryStartTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime clusterQueryStartTime;
 
     /*
      * The cluster query end time
      */
-    @JsonProperty(value = "clusterQueryEndTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime clusterQueryEndTime;
 
     /*
      * The cluster group
      */
-    @JsonProperty(value = "clusterGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterGroup;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of MailClusterEntityProperties class.
+     */
+    public MailClusterEntityProperties() {
+    }
 
     /**
      * Get the networkMessageIds property: The mail message IDs that are part of the mail cluster.
-     *
+     * 
      * @return the networkMessageIds value.
      */
     public List<String> networkMessageIds() {
@@ -114,7 +123,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the countByDeliveryStatus property: Count of mail messages by DeliveryStatus string representation.
-     *
+     * 
      * @return the countByDeliveryStatus value.
      */
     public Object countByDeliveryStatus() {
@@ -123,7 +132,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the countByThreatType property: Count of mail messages by ThreatType string representation.
-     *
+     * 
      * @return the countByThreatType value.
      */
     public Object countByThreatType() {
@@ -132,7 +141,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the countByProtectionStatus property: Count of mail messages by ProtectionStatus string representation.
-     *
+     * 
      * @return the countByProtectionStatus value.
      */
     public Object countByProtectionStatus() {
@@ -141,7 +150,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the threats property: The threats of mail messages that are part of the mail cluster.
-     *
+     * 
      * @return the threats value.
      */
     public List<String> threats() {
@@ -150,7 +159,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the query property: The query that was used to identify the messages of the mail cluster.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -159,7 +168,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the queryTime property: The query time.
-     *
+     * 
      * @return the queryTime value.
      */
     public OffsetDateTime queryTime() {
@@ -168,7 +177,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the mailCount property: The number of mail messages that are part of the mail cluster.
-     *
+     * 
      * @return the mailCount value.
      */
     public Integer mailCount() {
@@ -177,7 +186,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the isVolumeAnomaly property: Is this a volume anomaly mail cluster.
-     *
+     * 
      * @return the isVolumeAnomaly value.
      */
     public Boolean isVolumeAnomaly() {
@@ -186,7 +195,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the source property: The source of the mail cluster (default is 'O365 ATP').
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -195,7 +204,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the clusterSourceIdentifier property: The id of the cluster source.
-     *
+     * 
      * @return the clusterSourceIdentifier value.
      */
     public String clusterSourceIdentifier() {
@@ -204,7 +213,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the clusterSourceType property: The type of the cluster source.
-     *
+     * 
      * @return the clusterSourceType value.
      */
     public String clusterSourceType() {
@@ -213,7 +222,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the clusterQueryStartTime property: The cluster query start time.
-     *
+     * 
      * @return the clusterQueryStartTime value.
      */
     public OffsetDateTime clusterQueryStartTime() {
@@ -222,7 +231,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the clusterQueryEndTime property: The cluster query end time.
-     *
+     * 
      * @return the clusterQueryEndTime value.
      */
     public OffsetDateTime clusterQueryEndTime() {
@@ -231,7 +240,7 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the clusterGroup property: The cluster group.
-     *
+     * 
      * @return the clusterGroup value.
      */
     public String clusterGroup() {
@@ -239,12 +248,107 @@ public final class MailClusterEntityProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MailClusterEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MailClusterEntityProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MailClusterEntityProperties.
+     */
+    public static MailClusterEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MailClusterEntityProperties deserializedMailClusterEntityProperties = new MailClusterEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMailClusterEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.friendlyName = reader.getString();
+                } else if ("networkMessageIds".equals(fieldName)) {
+                    List<String> networkMessageIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMailClusterEntityProperties.networkMessageIds = networkMessageIds;
+                } else if ("countByDeliveryStatus".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.countByDeliveryStatus = reader.readUntyped();
+                } else if ("countByThreatType".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.countByThreatType = reader.readUntyped();
+                } else if ("countByProtectionStatus".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.countByProtectionStatus = reader.readUntyped();
+                } else if ("threats".equals(fieldName)) {
+                    List<String> threats = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMailClusterEntityProperties.threats = threats;
+                } else if ("query".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.query = reader.getString();
+                } else if ("queryTime".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.queryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("mailCount".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.mailCount = reader.getNullable(JsonReader::getInt);
+                } else if ("isVolumeAnomaly".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.isVolumeAnomaly
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("source".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.source = reader.getString();
+                } else if ("clusterSourceIdentifier".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.clusterSourceIdentifier = reader.getString();
+                } else if ("clusterSourceType".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.clusterSourceType = reader.getString();
+                } else if ("clusterQueryStartTime".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.clusterQueryStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("clusterQueryEndTime".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.clusterQueryEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("clusterGroup".equals(fieldName)) {
+                    deserializedMailClusterEntityProperties.clusterGroup = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMailClusterEntityProperties;
+        });
     }
 }

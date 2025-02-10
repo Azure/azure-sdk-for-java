@@ -7,32 +7,52 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ExecutionStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Response for the LTR backup Operation API call. */
+/**
+ * Response for the LTR backup Operation API call.
+ */
 @Fluent
 public final class LtrServerBackupOperationInner extends ProxyResource {
     /*
      * Long Term Retention Backup Operation Resource Properties
      */
-    @JsonProperty(value = "properties")
     private LtrBackupOperationResponseProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of LtrServerBackupOperationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LtrServerBackupOperationInner class.
+     */
     public LtrServerBackupOperationInner() {
     }
 
     /**
      * Get the innerProperties property: Long Term Retention Backup Operation Resource Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LtrBackupOperationResponseProperties innerProperties() {
@@ -41,7 +61,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,8 +69,38 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @return the datasourceSizeInBytes value.
      */
     public Long datasourceSizeInBytes() {
@@ -59,7 +109,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Set the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @param datasourceSizeInBytes the datasourceSizeInBytes value to set.
      * @return the LtrServerBackupOperationInner object itself.
      */
@@ -73,7 +123,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Get the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @return the dataTransferredInBytes value.
      */
     public Long dataTransferredInBytes() {
@@ -82,7 +132,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Set the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @param dataTransferredInBytes the dataTransferredInBytes value to set.
      * @return the LtrServerBackupOperationInner object itself.
      */
@@ -96,7 +146,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Get the backupName property: Name of Backup operation.
-     *
+     * 
      * @return the backupName value.
      */
     public String backupName() {
@@ -105,7 +155,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Set the backupName property: Name of Backup operation.
-     *
+     * 
      * @param backupName the backupName value to set.
      * @return the LtrServerBackupOperationInner object itself.
      */
@@ -120,7 +170,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
     /**
      * Get the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
      * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
-     *
+     * 
      * @return the backupMetadata value.
      */
     public String backupMetadata() {
@@ -130,7 +180,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
     /**
      * Set the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
      * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
-     *
+     * 
      * @param backupMetadata the backupMetadata value to set.
      * @return the LtrServerBackupOperationInner object itself.
      */
@@ -144,7 +194,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Get the status property: Service-set extensible enum indicating the status of operation.
-     *
+     * 
      * @return the status value.
      */
     public ExecutionStatus status() {
@@ -153,7 +203,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Set the status property: Service-set extensible enum indicating the status of operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the LtrServerBackupOperationInner object itself.
      */
@@ -167,7 +217,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Get the startTime property: Start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -176,7 +226,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Set the startTime property: Start time of the operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the LtrServerBackupOperationInner object itself.
      */
@@ -190,7 +240,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Get the endTime property: End time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -199,7 +249,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Set the endTime property: End time of the operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the LtrServerBackupOperationInner object itself.
      */
@@ -213,7 +263,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Get the percentComplete property: PercentageCompleted.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Double percentComplete() {
@@ -222,7 +272,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Set the percentComplete property: PercentageCompleted.
-     *
+     * 
      * @param percentComplete the percentComplete value to set.
      * @return the LtrServerBackupOperationInner object itself.
      */
@@ -236,7 +286,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Get the errorCode property: The error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -245,7 +295,7 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Get the errorMessage property: The error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -254,12 +304,59 @@ public final class LtrServerBackupOperationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LtrServerBackupOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LtrServerBackupOperationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LtrServerBackupOperationInner.
+     */
+    public static LtrServerBackupOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LtrServerBackupOperationInner deserializedLtrServerBackupOperationInner
+                = new LtrServerBackupOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLtrServerBackupOperationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLtrServerBackupOperationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLtrServerBackupOperationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLtrServerBackupOperationInner.innerProperties
+                        = LtrBackupOperationResponseProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedLtrServerBackupOperationInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLtrServerBackupOperationInner;
+        });
     }
 }

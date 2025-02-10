@@ -5,212 +5,287 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** Azure VM workload-specific protected item representing SAP ASE Database. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
-@JsonTypeName("AzureVmWorkloadSAPAseDatabase")
+/**
+ * Azure VM workload-specific protected item representing SAP ASE Database.
+ */
 @Fluent
 public final class AzureVmWorkloadSapAseDatabaseProtectedItem extends AzureVmWorkloadProtectedItem {
-    /** Creates an instance of AzureVmWorkloadSapAseDatabaseProtectedItem class. */
+    /*
+     * backup item type.
+     */
+    private String protectedItemType = "AzureVmWorkloadSAPAseDatabase";
+
+    /**
+     * Creates an instance of AzureVmWorkloadSapAseDatabaseProtectedItem class.
+     */
     public AzureVmWorkloadSapAseDatabaseProtectedItem() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the protectedItemType property: backup item type.
+     * 
+     * @return the protectedItemType value.
+     */
+    @Override
+    public String protectedItemType() {
+        return this.protectedItemType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withServerName(String serverName) {
         super.withServerName(serverName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withParentName(String parentName) {
         super.withParentName(parentName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withParentType(String parentType) {
         super.withParentType(parentType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withProtectionState(ProtectionState protectionState) {
         super.withProtectionState(protectionState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withLastBackupStatus(LastBackupStatus lastBackupStatus) {
         super.withLastBackupStatus(lastBackupStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withLastBackupTime(OffsetDateTime lastBackupTime) {
         super.withLastBackupTime(lastBackupTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withLastBackupErrorDetail(ErrorDetail lastBackupErrorDetail) {
         super.withLastBackupErrorDetail(lastBackupErrorDetail);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withProtectedItemDataSourceId(String protectedItemDataSourceId) {
         super.withProtectedItemDataSourceId(protectedItemDataSourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapAseDatabaseProtectedItem withProtectedItemHealthStatus(
-        ProtectedItemHealthStatus protectedItemHealthStatus) {
+    public AzureVmWorkloadSapAseDatabaseProtectedItem
+        withProtectedItemHealthStatus(ProtectedItemHealthStatus protectedItemHealthStatus) {
         super.withProtectedItemHealthStatus(protectedItemHealthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapAseDatabaseProtectedItem withExtendedInfo(
-        AzureVmWorkloadProtectedItemExtendedInfo extendedInfo) {
+    public AzureVmWorkloadSapAseDatabaseProtectedItem
+        withExtendedInfo(AzureVmWorkloadProtectedItemExtendedInfo extendedInfo) {
         super.withExtendedInfo(extendedInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapAseDatabaseProtectedItem withKpisHealths(
-        Map<String, KpiResourceHealthDetails> kpisHealths) {
+    public AzureVmWorkloadSapAseDatabaseProtectedItem
+        withKpisHealths(Map<String, KpiResourceHealthDetails> kpisHealths) {
         super.withKpisHealths(kpisHealths);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withNodesList(List<DistributedNodesInfo> nodesList) {
         super.withNodesList(nodesList);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withLastRecoveryPoint(OffsetDateTime lastRecoveryPoint) {
         super.withLastRecoveryPoint(lastRecoveryPoint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withBackupSetName(String backupSetName) {
         super.withBackupSetName(backupSetName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withCreateMode(CreateMode createMode) {
         super.withCreateMode(createMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapAseDatabaseProtectedItem withDeferredDeleteTimeInUtc(
-        OffsetDateTime deferredDeleteTimeInUtc) {
+    public AzureVmWorkloadSapAseDatabaseProtectedItem
+        withDeferredDeleteTimeInUtc(OffsetDateTime deferredDeleteTimeInUtc) {
         super.withDeferredDeleteTimeInUtc(deferredDeleteTimeInUtc);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapAseDatabaseProtectedItem withIsScheduledForDeferredDelete(
-        Boolean isScheduledForDeferredDelete) {
+    public AzureVmWorkloadSapAseDatabaseProtectedItem
+        withIsScheduledForDeferredDelete(Boolean isScheduledForDeferredDelete) {
         super.withIsScheduledForDeferredDelete(isScheduledForDeferredDelete);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapAseDatabaseProtectedItem withDeferredDeleteTimeRemaining(
-        String deferredDeleteTimeRemaining) {
+    public AzureVmWorkloadSapAseDatabaseProtectedItem
+        withDeferredDeleteTimeRemaining(String deferredDeleteTimeRemaining) {
         super.withDeferredDeleteTimeRemaining(deferredDeleteTimeRemaining);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapAseDatabaseProtectedItem withIsDeferredDeleteScheduleUpcoming(
-        Boolean isDeferredDeleteScheduleUpcoming) {
+    public AzureVmWorkloadSapAseDatabaseProtectedItem
+        withIsDeferredDeleteScheduleUpcoming(Boolean isDeferredDeleteScheduleUpcoming) {
         super.withIsDeferredDeleteScheduleUpcoming(isDeferredDeleteScheduleUpcoming);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureVmWorkloadSapAseDatabaseProtectedItem withResourceGuardOperationRequests(
-        List<String> resourceGuardOperationRequests) {
+    public AzureVmWorkloadSapAseDatabaseProtectedItem
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
         super.withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSapAseDatabaseProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
         super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
@@ -219,11 +294,186 @@ public final class AzureVmWorkloadSapAseDatabaseProtectedItem extends AzureVmWor
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (lastBackupErrorDetail() != null) {
+            lastBackupErrorDetail().validate();
+        }
+        if (extendedInfo() != null) {
+            extendedInfo().validate();
+        }
+        if (kpisHealths() != null) {
+            kpisHealths().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (nodesList() != null) {
+            nodesList().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("containerName", containerName());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeStringField("policyId", policyId());
+        jsonWriter.writeStringField("lastRecoveryPoint",
+            lastRecoveryPoint() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastRecoveryPoint()));
+        jsonWriter.writeStringField("backupSetName", backupSetName());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeStringField("deferredDeleteTimeInUTC",
+            deferredDeleteTimeInUtc() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deferredDeleteTimeInUtc()));
+        jsonWriter.writeBooleanField("isScheduledForDeferredDelete", isScheduledForDeferredDelete());
+        jsonWriter.writeStringField("deferredDeleteTimeRemaining", deferredDeleteTimeRemaining());
+        jsonWriter.writeBooleanField("isDeferredDeleteScheduleUpcoming", isDeferredDeleteScheduleUpcoming());
+        jsonWriter.writeBooleanField("isRehydrate", isRehydrate());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchiveEnabled", isArchiveEnabled());
+        jsonWriter.writeStringField("policyName", policyName());
+        jsonWriter.writeNumberField("softDeleteRetentionPeriodInDays", softDeleteRetentionPeriod());
+        jsonWriter.writeStringField("serverName", serverName());
+        jsonWriter.writeStringField("parentName", parentName());
+        jsonWriter.writeStringField("parentType", parentType());
+        jsonWriter.writeStringField("protectionState", protectionState() == null ? null : protectionState().toString());
+        jsonWriter.writeStringField("lastBackupStatus",
+            lastBackupStatus() == null ? null : lastBackupStatus().toString());
+        jsonWriter.writeStringField("lastBackupTime",
+            lastBackupTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastBackupTime()));
+        jsonWriter.writeJsonField("lastBackupErrorDetail", lastBackupErrorDetail());
+        jsonWriter.writeStringField("protectedItemDataSourceId", protectedItemDataSourceId());
+        jsonWriter.writeStringField("protectedItemHealthStatus",
+            protectedItemHealthStatus() == null ? null : protectedItemHealthStatus().toString());
+        jsonWriter.writeJsonField("extendedInfo", extendedInfo());
+        jsonWriter.writeMapField("kpisHealths", kpisHealths(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("nodesList", nodesList(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVmWorkloadSapAseDatabaseProtectedItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVmWorkloadSapAseDatabaseProtectedItem if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVmWorkloadSapAseDatabaseProtectedItem.
+     */
+    public static AzureVmWorkloadSapAseDatabaseProtectedItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVmWorkloadSapAseDatabaseProtectedItem deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                = new AzureVmWorkloadSapAseDatabaseProtectedItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withWorkloadType(DataSourceType.fromString(reader.getString()));
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withContainerName(reader.getString());
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withSourceResourceId(reader.getString());
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withPolicyId(reader.getString());
+                } else if ("lastRecoveryPoint".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withLastRecoveryPoint(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("backupSetName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withBackupSetName(reader.getString());
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("deferredDeleteTimeInUTC".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withDeferredDeleteTimeInUtc(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("isScheduledForDeferredDelete".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withIsScheduledForDeferredDelete(reader.getNullable(JsonReader::getBoolean));
+                } else if ("deferredDeleteTimeRemaining".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withDeferredDeleteTimeRemaining(reader.getString());
+                } else if ("isDeferredDeleteScheduleUpcoming".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withIsDeferredDeleteScheduleUpcoming(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isRehydrate".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withIsRehydrate(reader.getNullable(JsonReader::getBoolean));
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withIsArchiveEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withPolicyName(reader.getString());
+                } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withSoftDeleteRetentionPeriod(reader.getNullable(JsonReader::getInt));
+                } else if ("vaultId".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withVaultId(reader.getString());
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withFriendlyName(reader.getString());
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withServerName(reader.getString());
+                } else if ("parentName".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withParentName(reader.getString());
+                } else if ("parentType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withParentType(reader.getString());
+                } else if ("protectionStatus".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withProtectionStatus(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withProtectionState(ProtectionState.fromString(reader.getString()));
+                } else if ("lastBackupStatus".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withLastBackupStatus(LastBackupStatus.fromString(reader.getString()));
+                } else if ("lastBackupTime".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withLastBackupTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastBackupErrorDetail".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withLastBackupErrorDetail(ErrorDetail.fromJson(reader));
+                } else if ("protectedItemDataSourceId".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withProtectedItemDataSourceId(reader.getString());
+                } else if ("protectedItemHealthStatus".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withProtectedItemHealthStatus(ProtectedItemHealthStatus.fromString(reader.getString()));
+                } else if ("extendedInfo".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem
+                        .withExtendedInfo(AzureVmWorkloadProtectedItemExtendedInfo.fromJson(reader));
+                } else if ("kpisHealths".equals(fieldName)) {
+                    Map<String, KpiResourceHealthDetails> kpisHealths
+                        = reader.readMap(reader1 -> KpiResourceHealthDetails.fromJson(reader1));
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withKpisHealths(kpisHealths);
+                } else if ("nodesList".equals(fieldName)) {
+                    List<DistributedNodesInfo> nodesList
+                        = reader.readArray(reader1 -> DistributedNodesInfo.fromJson(reader1));
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.withNodesList(nodesList);
+                } else if ("protectedItemType".equals(fieldName)) {
+                    deserializedAzureVmWorkloadSapAseDatabaseProtectedItem.protectedItemType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVmWorkloadSapAseDatabaseProtectedItem;
+        });
     }
 }

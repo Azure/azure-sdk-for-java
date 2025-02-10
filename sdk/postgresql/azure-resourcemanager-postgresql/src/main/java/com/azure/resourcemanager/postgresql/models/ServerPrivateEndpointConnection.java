@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A private endpoint connection under a server. */
+/**
+ * A private endpoint connection under a server.
+ */
 @Immutable
-public final class ServerPrivateEndpointConnection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPrivateEndpointConnection.class);
-
+public final class ServerPrivateEndpointConnection implements JsonSerializable<ServerPrivateEndpointConnection> {
     /*
      * Resource ID of the Private Endpoint Connection.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Private endpoint connection properties
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ServerPrivateEndpointConnectionProperties properties;
 
     /**
+     * Creates an instance of ServerPrivateEndpointConnection class.
+     */
+    public ServerPrivateEndpointConnection() {
+    }
+
+    /**
      * Get the id property: Resource ID of the Private Endpoint Connection.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +43,7 @@ public final class ServerPrivateEndpointConnection {
 
     /**
      * Get the properties property: Private endpoint connection properties.
-     *
+     * 
      * @return the properties value.
      */
     public ServerPrivateEndpointConnectionProperties properties() {
@@ -46,12 +52,51 @@ public final class ServerPrivateEndpointConnection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerPrivateEndpointConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerPrivateEndpointConnection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerPrivateEndpointConnection.
+     */
+    public static ServerPrivateEndpointConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerPrivateEndpointConnection deserializedServerPrivateEndpointConnection
+                = new ServerPrivateEndpointConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServerPrivateEndpointConnection.id = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServerPrivateEndpointConnection.properties
+                        = ServerPrivateEndpointConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerPrivateEndpointConnection;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class MirrorState extends ExpandableStringEnum<MirrorState> {
      * @param name a name to look for.
      * @return the corresponding MirrorState.
      */
-    @JsonCreator
     public static MirrorState fromString(String name) {
         return fromString(name, MirrorState.class);
     }

@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreateUpdateTask;
@@ -16,9 +18,9 @@ import java.util.List;
 /**
  * Implementation of {@link IPasta}
  */
-class PastaImpl
-        extends CreatableUpdatableImpl<IPasta, PastaInner, PastaImpl>
-        implements IPasta {
+class PastaImpl extends CreatableUpdatableImpl<IPasta, PastaInner, PastaImpl> implements IPasta {
+    private static final ClientLogger LOGGER = new ClientLogger(PastaImpl.class);
+
     final List<Creatable<IPasta>> delayedPastas;
     final long eventDelayInMilliseconds;
     final Throwable errorToThrow;
@@ -64,32 +66,30 @@ class PastaImpl
         return this;
     }
 
-
     @Override
     public void beforeGroupCreateOrUpdate() {
-        Assertions.assertFalse(this.prepareCalled, "PastaImpl::beforeGroupCreateOrUpdate() should not be called multiple times");
+        Assertions.assertFalse(this.prepareCalled,
+            "PastaImpl::beforeGroupCreateOrUpdate() should not be called multiple times");
         prepareCalled = true;
         int oldCount = this.taskGroup().getNode(this.key()).dependencyKeys().size();
         for (Creatable<IPasta> pancake : this.delayedPastas) {
             this.addDependency(pancake);
         }
         int newCount = this.taskGroup().getNode(this.key()).dependencyKeys().size();
-        System.out.println("Pasta(" + this.name() + ")::beforeGroupCreateOrUpdate() 'delayedSize':" + this.delayedPastas.size()
-                + " 'dependency count [old, new]': [" + oldCount + "," + newCount + "]");
+        LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::beforeGroupCreateOrUpdate() 'delayedSize':"
+            + this.delayedPastas.size() + " 'dependency count [old, new]': [" + oldCount + "," + newCount + "]");
     }
 
     @Override
     public Mono<IPasta> createResourceAsync() {
         if (this.errorToThrow == null) {
-            System.out.println("Pasta(" + this.name() + ")::createResourceAsync() 'onNext()'");
-            return Mono.just(this)
-                    .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
-                    .map(pasta -> pasta);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::createResourceAsync() 'onNext()'");
+            return Mono.just(this).delayElement(Duration.ofMillis(this.eventDelayInMilliseconds)).map(pasta -> pasta);
         } else {
-            System.out.println("Pasta(" + this.name() + ")::createResourceAsync() 'onError()'");
+            LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::createResourceAsync() 'onError()'");
             return Mono.just(this)
-                    .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
-                    .flatMap(pasta -> toErrorObservable(errorToThrow));
+                .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
+                .flatMap(pasta -> toErrorObservable(errorToThrow));
         }
     }
 

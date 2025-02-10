@@ -5,73 +5,73 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Details for upgrading vault. */
+/**
+ * Details for upgrading vault.
+ */
 @Immutable
-public final class UpgradeDetails {
+public final class UpgradeDetails implements JsonSerializable<UpgradeDetails> {
     /*
      * ID of the vault upgrade operation.
      */
-    @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /*
      * UTC time at which the upgrade operation has started.
      */
-    @JsonProperty(value = "startTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTimeUtc;
 
     /*
      * UTC time at which the upgrade operation status was last updated.
      */
-    @JsonProperty(value = "lastUpdatedTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedTimeUtc;
 
     /*
      * UTC time at which the upgrade operation has ended.
      */
-    @JsonProperty(value = "endTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTimeUtc;
 
     /*
      * Status of the vault upgrade operation.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private VaultUpgradeState status;
 
     /*
      * Message to the user containing information about the upgrade operation.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * The way the vault upgrade was triggered.
      */
-    @JsonProperty(value = "triggerType", access = JsonProperty.Access.WRITE_ONLY)
     private TriggerType triggerType;
 
     /*
      * Resource ID of the upgraded vault.
      */
-    @JsonProperty(value = "upgradedResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String upgradedResourceId;
 
     /*
      * Resource ID of the vault before the upgrade.
      */
-    @JsonProperty(value = "previousResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String previousResourceId;
 
-    /** Creates an instance of UpgradeDetails class. */
+    /**
+     * Creates an instance of UpgradeDetails class.
+     */
     public UpgradeDetails() {
     }
 
     /**
      * Get the operationId property: ID of the vault upgrade operation.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -80,7 +80,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the startTimeUtc property: UTC time at which the upgrade operation has started.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -89,7 +89,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the lastUpdatedTimeUtc property: UTC time at which the upgrade operation status was last updated.
-     *
+     * 
      * @return the lastUpdatedTimeUtc value.
      */
     public OffsetDateTime lastUpdatedTimeUtc() {
@@ -98,7 +98,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the endTimeUtc property: UTC time at which the upgrade operation has ended.
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -107,7 +107,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the status property: Status of the vault upgrade operation.
-     *
+     * 
      * @return the status value.
      */
     public VaultUpgradeState status() {
@@ -116,7 +116,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the message property: Message to the user containing information about the upgrade operation.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -125,7 +125,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the triggerType property: The way the vault upgrade was triggered.
-     *
+     * 
      * @return the triggerType value.
      */
     public TriggerType triggerType() {
@@ -134,7 +134,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the upgradedResourceId property: Resource ID of the upgraded vault.
-     *
+     * 
      * @return the upgradedResourceId value.
      */
     public String upgradedResourceId() {
@@ -143,7 +143,7 @@ public final class UpgradeDetails {
 
     /**
      * Get the previousResourceId property: Resource ID of the vault before the upgrade.
-     *
+     * 
      * @return the previousResourceId value.
      */
     public String previousResourceId() {
@@ -152,9 +152,63 @@ public final class UpgradeDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpgradeDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpgradeDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpgradeDetails.
+     */
+    public static UpgradeDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpgradeDetails deserializedUpgradeDetails = new UpgradeDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationId".equals(fieldName)) {
+                    deserializedUpgradeDetails.operationId = reader.getString();
+                } else if ("startTimeUtc".equals(fieldName)) {
+                    deserializedUpgradeDetails.startTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdatedTimeUtc".equals(fieldName)) {
+                    deserializedUpgradeDetails.lastUpdatedTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTimeUtc".equals(fieldName)) {
+                    deserializedUpgradeDetails.endTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedUpgradeDetails.status = VaultUpgradeState.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedUpgradeDetails.message = reader.getString();
+                } else if ("triggerType".equals(fieldName)) {
+                    deserializedUpgradeDetails.triggerType = TriggerType.fromString(reader.getString());
+                } else if ("upgradedResourceId".equals(fieldName)) {
+                    deserializedUpgradeDetails.upgradedResourceId = reader.getString();
+                } else if ("previousResourceId".equals(fieldName)) {
+                    deserializedUpgradeDetails.previousResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpgradeDetails;
+        });
     }
 }

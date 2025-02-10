@@ -5,47 +5,52 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.models.ExpandedProperties;
 import com.azure.resourcemanager.authorization.models.MemberType;
 import com.azure.resourcemanager.authorization.models.PrincipalType;
 import com.azure.resourcemanager.authorization.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Information about current or upcoming role eligibility schedule instance. */
+/**
+ * Information about current or upcoming role eligibility schedule instance.
+ */
 @Fluent
-public final class RoleEligibilityScheduleInstanceInner {
+public final class RoleEligibilityScheduleInstanceInner
+    implements JsonSerializable<RoleEligibilityScheduleInstanceInner> {
     /*
      * The role eligibility schedule instance ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The role eligibility schedule instance name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The role eligibility schedule instance type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Role eligibility schedule instance properties.
      */
-    @JsonProperty(value = "properties")
     private RoleEligibilityScheduleInstanceProperties innerProperties;
 
-    /** Creates an instance of RoleEligibilityScheduleInstanceInner class. */
+    /**
+     * Creates an instance of RoleEligibilityScheduleInstanceInner class.
+     */
     public RoleEligibilityScheduleInstanceInner() {
     }
 
     /**
      * Get the id property: The role eligibility schedule instance ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -54,7 +59,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the name property: The role eligibility schedule instance name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +68,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the type property: The role eligibility schedule instance type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -72,7 +77,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the innerProperties property: Role eligibility schedule instance properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoleEligibilityScheduleInstanceProperties innerProperties() {
@@ -81,7 +86,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the scope property: The role eligibility schedule scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -90,7 +95,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the scope property: The role eligibility schedule scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -104,7 +109,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the roleDefinitionId property: The role definition ID.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -113,7 +118,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the roleDefinitionId property: The role definition ID.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -127,7 +132,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the principalId property: The principal ID.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -136,7 +141,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the principalId property: The principal ID.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -150,7 +155,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the principalType property: The principal type of the assigned principal ID.
-     *
+     * 
      * @return the principalType value.
      */
     public PrincipalType principalType() {
@@ -159,7 +164,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the principalType property: The principal type of the assigned principal ID.
-     *
+     * 
      * @param principalType the principalType value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -173,7 +178,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the roleEligibilityScheduleId property: Id of the master role eligibility schedule.
-     *
+     * 
      * @return the roleEligibilityScheduleId value.
      */
     public String roleEligibilityScheduleId() {
@@ -182,7 +187,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the roleEligibilityScheduleId property: Id of the master role eligibility schedule.
-     *
+     * 
      * @param roleEligibilityScheduleId the roleEligibilityScheduleId value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -196,7 +201,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the status property: The status of the role eligibility schedule instance.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -205,7 +210,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the status property: The status of the role eligibility schedule instance.
-     *
+     * 
      * @param status the status value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -219,7 +224,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the startDateTime property: The startDateTime of the role eligibility schedule instance.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -228,7 +233,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the startDateTime property: The startDateTime of the role eligibility schedule instance.
-     *
+     * 
      * @param startDateTime the startDateTime value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -242,7 +247,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the endDateTime property: The endDateTime of the role eligibility schedule instance.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -251,7 +256,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the endDateTime property: The endDateTime of the role eligibility schedule instance.
-     *
+     * 
      * @param endDateTime the endDateTime value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -265,7 +270,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the memberType property: Membership type of the role eligibility schedule.
-     *
+     * 
      * @return the memberType value.
      */
     public MemberType memberType() {
@@ -274,7 +279,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the memberType property: Membership type of the role eligibility schedule.
-     *
+     * 
      * @param memberType the memberType value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -288,9 +293,9 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @return the condition value.
      */
     public String condition() {
@@ -299,9 +304,9 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -315,7 +320,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
+     * 
      * @return the conditionVersion value.
      */
     public String conditionVersion() {
@@ -324,7 +329,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
+     * 
      * @param conditionVersion the conditionVersion value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -338,7 +343,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the createdOn property: DateTime when role eligibility schedule was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -347,7 +352,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the createdOn property: DateTime when role eligibility schedule was created.
-     *
+     * 
      * @param createdOn the createdOn value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -361,7 +366,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Get the expandedProperties property: Additional properties of principal, scope and role definition.
-     *
+     * 
      * @return the expandedProperties value.
      */
     public ExpandedProperties expandedProperties() {
@@ -370,7 +375,7 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Set the expandedProperties property: Additional properties of principal, scope and role definition.
-     *
+     * 
      * @param expandedProperties the expandedProperties value to set.
      * @return the RoleEligibilityScheduleInstanceInner object itself.
      */
@@ -384,12 +389,56 @@ public final class RoleEligibilityScheduleInstanceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleEligibilityScheduleInstanceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleEligibilityScheduleInstanceInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleEligibilityScheduleInstanceInner.
+     */
+    public static RoleEligibilityScheduleInstanceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleEligibilityScheduleInstanceInner deserializedRoleEligibilityScheduleInstanceInner
+                = new RoleEligibilityScheduleInstanceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleInstanceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleInstanceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleInstanceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleInstanceInner.innerProperties
+                        = RoleEligibilityScheduleInstanceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleEligibilityScheduleInstanceInner;
+        });
     }
 }

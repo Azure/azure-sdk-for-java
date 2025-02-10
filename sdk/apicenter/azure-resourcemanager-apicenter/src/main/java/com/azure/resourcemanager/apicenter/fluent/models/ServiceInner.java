@@ -7,48 +7,78 @@ package com.azure.resourcemanager.apicenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.apicenter.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.apicenter.models.ServiceProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** The service entity. */
+/**
+ * The service entity.
+ */
 @Fluent
 public final class ServiceInner extends Resource {
     /*
-     * The properties of the service.
+     * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties")
-    private ServiceProperties innerProperties;
+    private ServiceProperties properties;
 
     /*
-     * The identity of the service.
+     * The managed service identities assigned to this resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ServiceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ServiceInner class.
+     */
     public ServiceInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of the service.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    private ServiceProperties innerProperties() {
-        return this.innerProperties;
+    public ServiceProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the identity property: The identity of the service.
-     *
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the ServiceInner object itself.
+     */
+    public ServiceInner withProperties(ServiceProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The managed service identities assigned to this resource.
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -56,8 +86,8 @@ public final class ServiceInner extends Resource {
     }
 
     /**
-     * Set the identity property: The identity of the service.
-     *
+     * Set the identity property: The managed service identities assigned to this resource.
+     * 
      * @param identity the identity value to set.
      * @return the ServiceInner object itself.
      */
@@ -68,21 +98,55 @@ public final class ServiceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -90,25 +154,71 @@ public final class ServiceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceInner.
+     */
+    public static ServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceInner deserializedServiceInner = new ServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedServiceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceInner.properties = ServiceProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedServiceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedServiceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceInner;
+        });
     }
 }

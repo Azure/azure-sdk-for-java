@@ -13,16 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DailyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DailySchedule model =
-            BinaryData.fromString("{\"scheduleRunTimes\":[\"2021-10-10T19:20:29Z\"]}").toObject(DailySchedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T19:20:29Z"), model.scheduleRunTimes().get(0));
+        DailySchedule model = BinaryData
+            .fromString(
+                "{\"scheduleRunTimes\":[\"2021-05-24T05:56:39Z\",\"2021-06-12T21:55:21Z\",\"2021-01-21T17:56:30Z\"]}")
+            .toObject(DailySchedule.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T05:56:39Z"), model.scheduleRunTimes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DailySchedule model =
-            new DailySchedule().withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-10-10T19:20:29Z")));
+        DailySchedule model
+            = new DailySchedule().withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-05-24T05:56:39Z"),
+                OffsetDateTime.parse("2021-06-12T21:55:21Z"), OffsetDateTime.parse("2021-01-21T17:56:30Z")));
         model = BinaryData.fromObject(model).toObject(DailySchedule.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T19:20:29Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-24T05:56:39Z"), model.scheduleRunTimes().get(0));
     }
 }

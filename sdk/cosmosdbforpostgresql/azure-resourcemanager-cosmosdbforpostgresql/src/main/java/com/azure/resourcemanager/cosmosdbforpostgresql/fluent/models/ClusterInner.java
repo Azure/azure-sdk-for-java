@@ -7,36 +7,66 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.AadEnabledEnum;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.AuthConfig;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.DataEncryption;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.IdentityProperties;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.MaintenanceWindow;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PasswordEnabledEnum;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerNameItem;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.SimplePrivateEndpointConnection;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Represents a cluster. */
+/**
+ * Represents a cluster.
+ */
 @Fluent
 public final class ClusterInner extends Resource {
     /*
      * Properties of the cluster.
      */
-    @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
+
+    /*
+     * Describes the identity of the cluster.
+     */
+    private IdentityProperties identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ClusterInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ClusterInner class.
+     */
     public ClusterInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the cluster.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClusterProperties innerProperties() {
@@ -44,22 +74,76 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the identity property: Describes the identity of the cluster.
+     * 
+     * @return the identity value.
+     */
+    public IdentityProperties identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Describes the identity of the cluster.
+     * 
+     * @param identity the identity value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withIdentity(IdentityProperties identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,8 +151,17 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the aadAuthEnabled property: Indicates whether the cluster was created using AAD authentication.
+     * 
+     * @return the aadAuthEnabled value.
+     */
+    public AadEnabledEnum aadAuthEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadAuthEnabled();
+    }
+
+    /**
      * Get the administratorLogin property: The administrator's login name of the servers in the cluster.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -77,7 +170,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the administratorLoginPassword property: The password of the administrator login. Required for creation.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -86,7 +179,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the administratorLoginPassword property: The password of the administrator login. Required for creation.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ClusterInner object itself.
      */
@@ -99,8 +192,31 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the dataEncryption property: The data encryption properties of a cluster.
+     * 
+     * @return the dataEncryption value.
+     */
+    public DataEncryption dataEncryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataEncryption();
+    }
+
+    /**
+     * Set the dataEncryption property: The data encryption properties of a cluster.
+     * 
+     * @param dataEncryption the dataEncryption value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withDataEncryption(DataEncryption dataEncryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withDataEncryption(dataEncryption);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the cluster.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -109,7 +225,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the state property: A state of a cluster/server that is visible to user.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -118,7 +234,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the postgresqlVersion property: The major PostgreSQL version on all cluster servers.
-     *
+     * 
      * @return the postgresqlVersion value.
      */
     public String postgresqlVersion() {
@@ -127,7 +243,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the postgresqlVersion property: The major PostgreSQL version on all cluster servers.
-     *
+     * 
      * @param postgresqlVersion the postgresqlVersion value to set.
      * @return the ClusterInner object itself.
      */
@@ -141,7 +257,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the citusVersion property: The Citus extension version on all cluster servers.
-     *
+     * 
      * @return the citusVersion value.
      */
     public String citusVersion() {
@@ -150,7 +266,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the citusVersion property: The Citus extension version on all cluster servers.
-     *
+     * 
      * @param citusVersion the citusVersion value to set.
      * @return the ClusterInner object itself.
      */
@@ -164,7 +280,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the maintenanceWindow property: Maintenance window of a cluster.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public MaintenanceWindow maintenanceWindow() {
@@ -173,7 +289,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the maintenanceWindow property: Maintenance window of a cluster.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the ClusterInner object itself.
      */
@@ -187,7 +303,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the preferredPrimaryZone property: Preferred primary availability zone (AZ) for all cluster servers.
-     *
+     * 
      * @return the preferredPrimaryZone value.
      */
     public String preferredPrimaryZone() {
@@ -196,7 +312,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the preferredPrimaryZone property: Preferred primary availability zone (AZ) for all cluster servers.
-     *
+     * 
      * @param preferredPrimaryZone the preferredPrimaryZone value to set.
      * @return the ClusterInner object itself.
      */
@@ -211,7 +327,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
      * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
-     *
+     * 
      * @return the enableShardsOnCoordinator value.
      */
     public Boolean enableShardsOnCoordinator() {
@@ -221,7 +337,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
      * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
-     *
+     * 
      * @param enableShardsOnCoordinator the enableShardsOnCoordinator value to set.
      * @return the ClusterInner object itself.
      */
@@ -235,7 +351,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the enableHa property: If high availability (HA) is enabled or not for the cluster.
-     *
+     * 
      * @return the enableHa value.
      */
     public Boolean enableHa() {
@@ -244,7 +360,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the enableHa property: If high availability (HA) is enabled or not for the cluster.
-     *
+     * 
      * @param enableHa the enableHa value to set.
      * @return the ClusterInner object itself.
      */
@@ -259,7 +375,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the coordinatorServerEdition property: The edition of a coordinator server (default: GeneralPurpose).
      * Required for creation.
-     *
+     * 
      * @return the coordinatorServerEdition value.
      */
     public String coordinatorServerEdition() {
@@ -269,7 +385,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the coordinatorServerEdition property: The edition of a coordinator server (default: GeneralPurpose).
      * Required for creation.
-     *
+     * 
      * @param coordinatorServerEdition the coordinatorServerEdition value to set.
      * @return the ClusterInner object itself.
      */
@@ -284,7 +400,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the coordinatorStorageQuotaInMb property: The storage of a server in MB. Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the coordinatorStorageQuotaInMb value.
      */
     public Integer coordinatorStorageQuotaInMb() {
@@ -294,7 +410,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the coordinatorStorageQuotaInMb property: The storage of a server in MB. Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param coordinatorStorageQuotaInMb the coordinatorStorageQuotaInMb value to set.
      * @return the ClusterInner object itself.
      */
@@ -309,7 +425,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the coordinatorVCores property: The vCores count of a server (max: 96). Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the coordinatorVCores value.
      */
     public Integer coordinatorVCores() {
@@ -319,7 +435,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the coordinatorVCores property: The vCores count of a server (max: 96). Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param coordinatorVCores the coordinatorVCores value to set.
      * @return the ClusterInner object itself.
      */
@@ -333,7 +449,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the coordinatorEnablePublicIpAccess property: If public access is enabled on coordinator.
-     *
+     * 
      * @return the coordinatorEnablePublicIpAccess value.
      */
     public Boolean coordinatorEnablePublicIpAccess() {
@@ -342,7 +458,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the coordinatorEnablePublicIpAccess property: If public access is enabled on coordinator.
-     *
+     * 
      * @param coordinatorEnablePublicIpAccess the coordinatorEnablePublicIpAccess value to set.
      * @return the ClusterInner object itself.
      */
@@ -356,7 +472,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the nodeServerEdition property: The edition of a node server (default: MemoryOptimized).
-     *
+     * 
      * @return the nodeServerEdition value.
      */
     public String nodeServerEdition() {
@@ -365,7 +481,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the nodeServerEdition property: The edition of a node server (default: MemoryOptimized).
-     *
+     * 
      * @param nodeServerEdition the nodeServerEdition value to set.
      * @return the ClusterInner object itself.
      */
@@ -381,7 +497,7 @@ public final class ClusterInner extends Resource {
      * Get the nodeCount property: Worker node count of the cluster. When node count is 0, it represents a single node
      * configuration with the ability to create distributed tables on that node. 2 or more worker nodes represent
      * multi-node configuration. Node count value cannot be 1. Required for creation.
-     *
+     * 
      * @return the nodeCount value.
      */
     public Integer nodeCount() {
@@ -392,7 +508,7 @@ public final class ClusterInner extends Resource {
      * Set the nodeCount property: Worker node count of the cluster. When node count is 0, it represents a single node
      * configuration with the ability to create distributed tables on that node. 2 or more worker nodes represent
      * multi-node configuration. Node count value cannot be 1. Required for creation.
-     *
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the ClusterInner object itself.
      */
@@ -407,7 +523,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the nodeStorageQuotaInMb property: The storage in MB on each worker node. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the nodeStorageQuotaInMb value.
      */
     public Integer nodeStorageQuotaInMb() {
@@ -417,7 +533,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the nodeStorageQuotaInMb property: The storage in MB on each worker node. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param nodeStorageQuotaInMb the nodeStorageQuotaInMb value to set.
      * @return the ClusterInner object itself.
      */
@@ -432,7 +548,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the nodeVCores property: The compute in vCores on each worker node (max: 104). See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the nodeVCores value.
      */
     public Integer nodeVCores() {
@@ -442,7 +558,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the nodeVCores property: The compute in vCores on each worker node (max: 104). See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param nodeVCores the nodeVCores value to set.
      * @return the ClusterInner object itself.
      */
@@ -456,7 +572,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the nodeEnablePublicIpAccess property: If public access is enabled on worker nodes.
-     *
+     * 
      * @return the nodeEnablePublicIpAccess value.
      */
     public Boolean nodeEnablePublicIpAccess() {
@@ -465,7 +581,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the nodeEnablePublicIpAccess property: If public access is enabled on worker nodes.
-     *
+     * 
      * @param nodeEnablePublicIpAccess the nodeEnablePublicIpAccess value to set.
      * @return the ClusterInner object itself.
      */
@@ -479,7 +595,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the serverNames property: The list of server names in the cluster.
-     *
+     * 
      * @return the serverNames value.
      */
     public List<ServerNameItem> serverNames() {
@@ -488,7 +604,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the sourceResourceId property: The resource id of source cluster for read replica clusters.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -497,7 +613,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the sourceResourceId property: The resource id of source cluster for read replica clusters.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the ClusterInner object itself.
      */
@@ -511,7 +627,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the sourceLocation property: The Azure region of source cluster for read replica clusters.
-     *
+     * 
      * @return the sourceLocation value.
      */
     public String sourceLocation() {
@@ -520,7 +636,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the sourceLocation property: The Azure region of source cluster for read replica clusters.
-     *
+     * 
      * @param sourceLocation the sourceLocation value to set.
      * @return the ClusterInner object itself.
      */
@@ -533,8 +649,18 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the passwordEnabled property: Indicates whether the cluster was created with a password or using AAD
+     * authentication.
+     * 
+     * @return the passwordEnabled value.
+     */
+    public PasswordEnabledEnum passwordEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().passwordEnabled();
+    }
+
+    /**
      * Get the pointInTimeUtc property: Date and time in UTC (ISO8601 format) for cluster restore.
-     *
+     * 
      * @return the pointInTimeUtc value.
      */
     public OffsetDateTime pointInTimeUtc() {
@@ -543,7 +669,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the pointInTimeUtc property: Date and time in UTC (ISO8601 format) for cluster restore.
-     *
+     * 
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ClusterInner object itself.
      */
@@ -557,7 +683,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the readReplicas property: The array of read replica clusters.
-     *
+     * 
      * @return the readReplicas value.
      */
     public List<String> readReplicas() {
@@ -566,7 +692,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the earliestRestoreTime property: The earliest restore point time (ISO8601 format) for the cluster.
-     *
+     * 
      * @return the earliestRestoreTime value.
      */
     public OffsetDateTime earliestRestoreTime() {
@@ -575,7 +701,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: The private endpoint connections for a cluster.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<SimplePrivateEndpointConnection> privateEndpointConnections() {
@@ -583,13 +709,142 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the databaseName property: The database name of the cluster. Only one database per cluster is supported.
+     * 
+     * @return the databaseName value.
+     */
+    public String databaseName() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
+    }
+
+    /**
+     * Set the databaseName property: The database name of the cluster. Only one database per cluster is supported.
+     * 
+     * @param databaseName the databaseName value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withDatabaseName(String databaseName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withDatabaseName(databaseName);
+        return this;
+    }
+
+    /**
+     * Get the enableGeoBackup property: If cluster backup is stored in another Azure region in addition to the copy of
+     * the backup stored in the cluster's region. Enabled only at the time of cluster creation.
+     * 
+     * @return the enableGeoBackup value.
+     */
+    public Boolean enableGeoBackup() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableGeoBackup();
+    }
+
+    /**
+     * Set the enableGeoBackup property: If cluster backup is stored in another Azure region in addition to the copy of
+     * the backup stored in the cluster's region. Enabled only at the time of cluster creation.
+     * 
+     * @param enableGeoBackup the enableGeoBackup value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withEnableGeoBackup(Boolean enableGeoBackup) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withEnableGeoBackup(enableGeoBackup);
+        return this;
+    }
+
+    /**
+     * Get the authConfig property: Authentication configuration of a cluster.
+     * 
+     * @return the authConfig value.
+     */
+    public AuthConfig authConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().authConfig();
+    }
+
+    /**
+     * Set the authConfig property: Authentication configuration of a cluster.
+     * 
+     * @param authConfig the authConfig value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withAuthConfig(AuthConfig authConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAuthConfig(authConfig);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInner.
+     */
+    public static ClusterInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInner deserializedClusterInner = new ClusterInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedClusterInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedClusterInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedClusterInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedClusterInner.identity = IdentityProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedClusterInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInner;
+        });
     }
 }

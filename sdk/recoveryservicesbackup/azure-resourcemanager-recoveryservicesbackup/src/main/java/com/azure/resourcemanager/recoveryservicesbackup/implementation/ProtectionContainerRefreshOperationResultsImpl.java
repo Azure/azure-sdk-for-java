@@ -18,15 +18,14 @@ public final class ProtectionContainerRefreshOperationResultsImpl
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ProtectionContainerRefreshOperationResultsImpl(
-        ProtectionContainerRefreshOperationResultsClient innerClient,
+    public ProtectionContainerRefreshOperationResultsImpl(ProtectionContainerRefreshOperationResultsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> getWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String operationId, Context context) {
+    public Response<Void> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String operationId, Context context) {
         return this.serviceClient().getWithResponse(vaultName, resourceGroupName, fabricName, operationId, context);
     }
 

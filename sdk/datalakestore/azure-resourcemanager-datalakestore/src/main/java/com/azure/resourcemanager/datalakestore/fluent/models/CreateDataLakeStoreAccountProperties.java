@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakestore.models.CreateFirewallRuleWithAccountParameters;
 import com.azure.resourcemanager.datalakestore.models.CreateTrustedIdProviderWithAccountParameters;
 import com.azure.resourcemanager.datalakestore.models.CreateVirtualNetworkRuleWithAccountParameters;
@@ -14,81 +18,76 @@ import com.azure.resourcemanager.datalakestore.models.FirewallAllowAzureIpsState
 import com.azure.resourcemanager.datalakestore.models.FirewallState;
 import com.azure.resourcemanager.datalakestore.models.TierType;
 import com.azure.resourcemanager.datalakestore.models.TrustedIdProviderState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The CreateDataLakeStoreAccountProperties model. */
+/**
+ * The CreateDataLakeStoreAccountProperties model.
+ */
 @Fluent
-public final class CreateDataLakeStoreAccountProperties {
+public final class CreateDataLakeStoreAccountProperties
+    implements JsonSerializable<CreateDataLakeStoreAccountProperties> {
     /*
      * The default owner group for all new folders and files created in the Data Lake Store account.
      */
-    @JsonProperty(value = "defaultGroup")
     private String defaultGroup;
 
     /*
      * The Key Vault encryption configuration.
      */
-    @JsonProperty(value = "encryptionConfig")
     private EncryptionConfig encryptionConfig;
 
     /*
      * The current state of encryption for this Data Lake Store account.
      */
-    @JsonProperty(value = "encryptionState")
     private EncryptionState encryptionState;
 
     /*
      * The list of firewall rules associated with this Data Lake Store account.
      */
-    @JsonProperty(value = "firewallRules")
     private List<CreateFirewallRuleWithAccountParameters> firewallRules;
 
     /*
      * The list of virtual network rules associated with this Data Lake Store account.
      */
-    @JsonProperty(value = "virtualNetworkRules")
     private List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules;
 
     /*
      * The current state of the IP address firewall for this Data Lake Store account.
      */
-    @JsonProperty(value = "firewallState")
     private FirewallState firewallState;
 
     /*
      * The current state of allowing or disallowing IPs originating within Azure through the firewall. If the firewall
      * is disabled, this is not enforced.
      */
-    @JsonProperty(value = "firewallAllowAzureIps")
     private FirewallAllowAzureIpsState firewallAllowAzureIps;
 
     /*
      * The list of trusted identity providers associated with this Data Lake Store account.
      */
-    @JsonProperty(value = "trustedIdProviders")
     private List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders;
 
     /*
      * The current state of the trusted identity provider feature for this Data Lake Store account.
      */
-    @JsonProperty(value = "trustedIdProviderState")
     private TrustedIdProviderState trustedIdProviderState;
 
     /*
      * The commitment tier to use for next month.
      */
-    @JsonProperty(value = "newTier")
     private TierType newTier;
 
-    /** Creates an instance of CreateDataLakeStoreAccountProperties class. */
+    /**
+     * Creates an instance of CreateDataLakeStoreAccountProperties class.
+     */
     public CreateDataLakeStoreAccountProperties() {
     }
 
     /**
      * Get the defaultGroup property: The default owner group for all new folders and files created in the Data Lake
      * Store account.
-     *
+     * 
      * @return the defaultGroup value.
      */
     public String defaultGroup() {
@@ -98,7 +97,7 @@ public final class CreateDataLakeStoreAccountProperties {
     /**
      * Set the defaultGroup property: The default owner group for all new folders and files created in the Data Lake
      * Store account.
-     *
+     * 
      * @param defaultGroup the defaultGroup value to set.
      * @return the CreateDataLakeStoreAccountProperties object itself.
      */
@@ -109,7 +108,7 @@ public final class CreateDataLakeStoreAccountProperties {
 
     /**
      * Get the encryptionConfig property: The Key Vault encryption configuration.
-     *
+     * 
      * @return the encryptionConfig value.
      */
     public EncryptionConfig encryptionConfig() {
@@ -118,7 +117,7 @@ public final class CreateDataLakeStoreAccountProperties {
 
     /**
      * Set the encryptionConfig property: The Key Vault encryption configuration.
-     *
+     * 
      * @param encryptionConfig the encryptionConfig value to set.
      * @return the CreateDataLakeStoreAccountProperties object itself.
      */
@@ -129,7 +128,7 @@ public final class CreateDataLakeStoreAccountProperties {
 
     /**
      * Get the encryptionState property: The current state of encryption for this Data Lake Store account.
-     *
+     * 
      * @return the encryptionState value.
      */
     public EncryptionState encryptionState() {
@@ -138,7 +137,7 @@ public final class CreateDataLakeStoreAccountProperties {
 
     /**
      * Set the encryptionState property: The current state of encryption for this Data Lake Store account.
-     *
+     * 
      * @param encryptionState the encryptionState value to set.
      * @return the CreateDataLakeStoreAccountProperties object itself.
      */
@@ -149,7 +148,7 @@ public final class CreateDataLakeStoreAccountProperties {
 
     /**
      * Get the firewallRules property: The list of firewall rules associated with this Data Lake Store account.
-     *
+     * 
      * @return the firewallRules value.
      */
     public List<CreateFirewallRuleWithAccountParameters> firewallRules() {
@@ -158,12 +157,12 @@ public final class CreateDataLakeStoreAccountProperties {
 
     /**
      * Set the firewallRules property: The list of firewall rules associated with this Data Lake Store account.
-     *
+     * 
      * @param firewallRules the firewallRules value to set.
      * @return the CreateDataLakeStoreAccountProperties object itself.
      */
-    public CreateDataLakeStoreAccountProperties withFirewallRules(
-        List<CreateFirewallRuleWithAccountParameters> firewallRules) {
+    public CreateDataLakeStoreAccountProperties
+        withFirewallRules(List<CreateFirewallRuleWithAccountParameters> firewallRules) {
         this.firewallRules = firewallRules;
         return this;
     }
@@ -171,7 +170,7 @@ public final class CreateDataLakeStoreAccountProperties {
     /**
      * Get the virtualNetworkRules property: The list of virtual network rules associated with this Data Lake Store
      * account.
-     *
+     * 
      * @return the virtualNetworkRules value.
      */
     public List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules() {
@@ -181,19 +180,19 @@ public final class CreateDataLakeStoreAccountProperties {
     /**
      * Set the virtualNetworkRules property: The list of virtual network rules associated with this Data Lake Store
      * account.
-     *
+     * 
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the CreateDataLakeStoreAccountProperties object itself.
      */
-    public CreateDataLakeStoreAccountProperties withVirtualNetworkRules(
-        List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
+    public CreateDataLakeStoreAccountProperties
+        withVirtualNetworkRules(List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
         this.virtualNetworkRules = virtualNetworkRules;
         return this;
     }
 
     /**
      * Get the firewallState property: The current state of the IP address firewall for this Data Lake Store account.
-     *
+     * 
      * @return the firewallState value.
      */
     public FirewallState firewallState() {
@@ -202,7 +201,7 @@ public final class CreateDataLakeStoreAccountProperties {
 
     /**
      * Set the firewallState property: The current state of the IP address firewall for this Data Lake Store account.
-     *
+     * 
      * @param firewallState the firewallState value to set.
      * @return the CreateDataLakeStoreAccountProperties object itself.
      */
@@ -214,7 +213,7 @@ public final class CreateDataLakeStoreAccountProperties {
     /**
      * Get the firewallAllowAzureIps property: The current state of allowing or disallowing IPs originating within Azure
      * through the firewall. If the firewall is disabled, this is not enforced.
-     *
+     * 
      * @return the firewallAllowAzureIps value.
      */
     public FirewallAllowAzureIpsState firewallAllowAzureIps() {
@@ -224,12 +223,12 @@ public final class CreateDataLakeStoreAccountProperties {
     /**
      * Set the firewallAllowAzureIps property: The current state of allowing or disallowing IPs originating within Azure
      * through the firewall. If the firewall is disabled, this is not enforced.
-     *
+     * 
      * @param firewallAllowAzureIps the firewallAllowAzureIps value to set.
      * @return the CreateDataLakeStoreAccountProperties object itself.
      */
-    public CreateDataLakeStoreAccountProperties withFirewallAllowAzureIps(
-        FirewallAllowAzureIpsState firewallAllowAzureIps) {
+    public CreateDataLakeStoreAccountProperties
+        withFirewallAllowAzureIps(FirewallAllowAzureIpsState firewallAllowAzureIps) {
         this.firewallAllowAzureIps = firewallAllowAzureIps;
         return this;
     }
@@ -237,7 +236,7 @@ public final class CreateDataLakeStoreAccountProperties {
     /**
      * Get the trustedIdProviders property: The list of trusted identity providers associated with this Data Lake Store
      * account.
-     *
+     * 
      * @return the trustedIdProviders value.
      */
     public List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders() {
@@ -247,12 +246,12 @@ public final class CreateDataLakeStoreAccountProperties {
     /**
      * Set the trustedIdProviders property: The list of trusted identity providers associated with this Data Lake Store
      * account.
-     *
+     * 
      * @param trustedIdProviders the trustedIdProviders value to set.
      * @return the CreateDataLakeStoreAccountProperties object itself.
      */
-    public CreateDataLakeStoreAccountProperties withTrustedIdProviders(
-        List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
+    public CreateDataLakeStoreAccountProperties
+        withTrustedIdProviders(List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
         this.trustedIdProviders = trustedIdProviders;
         return this;
     }
@@ -260,7 +259,7 @@ public final class CreateDataLakeStoreAccountProperties {
     /**
      * Get the trustedIdProviderState property: The current state of the trusted identity provider feature for this Data
      * Lake Store account.
-     *
+     * 
      * @return the trustedIdProviderState value.
      */
     public TrustedIdProviderState trustedIdProviderState() {
@@ -270,19 +269,19 @@ public final class CreateDataLakeStoreAccountProperties {
     /**
      * Set the trustedIdProviderState property: The current state of the trusted identity provider feature for this Data
      * Lake Store account.
-     *
+     * 
      * @param trustedIdProviderState the trustedIdProviderState value to set.
      * @return the CreateDataLakeStoreAccountProperties object itself.
      */
-    public CreateDataLakeStoreAccountProperties withTrustedIdProviderState(
-        TrustedIdProviderState trustedIdProviderState) {
+    public CreateDataLakeStoreAccountProperties
+        withTrustedIdProviderState(TrustedIdProviderState trustedIdProviderState) {
         this.trustedIdProviderState = trustedIdProviderState;
         return this;
     }
 
     /**
      * Get the newTier property: The commitment tier to use for next month.
-     *
+     * 
      * @return the newTier value.
      */
     public TierType newTier() {
@@ -291,7 +290,7 @@ public final class CreateDataLakeStoreAccountProperties {
 
     /**
      * Set the newTier property: The commitment tier to use for next month.
-     *
+     * 
      * @param newTier the newTier value to set.
      * @return the CreateDataLakeStoreAccountProperties object itself.
      */
@@ -302,7 +301,7 @@ public final class CreateDataLakeStoreAccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -318,5 +317,85 @@ public final class CreateDataLakeStoreAccountProperties {
         if (trustedIdProviders() != null) {
             trustedIdProviders().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("defaultGroup", this.defaultGroup);
+        jsonWriter.writeJsonField("encryptionConfig", this.encryptionConfig);
+        jsonWriter.writeStringField("encryptionState",
+            this.encryptionState == null ? null : this.encryptionState.toString());
+        jsonWriter.writeArrayField("firewallRules", this.firewallRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("virtualNetworkRules", this.virtualNetworkRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("firewallState", this.firewallState == null ? null : this.firewallState.toString());
+        jsonWriter.writeStringField("firewallAllowAzureIps",
+            this.firewallAllowAzureIps == null ? null : this.firewallAllowAzureIps.toString());
+        jsonWriter.writeArrayField("trustedIdProviders", this.trustedIdProviders,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("trustedIdProviderState",
+            this.trustedIdProviderState == null ? null : this.trustedIdProviderState.toString());
+        jsonWriter.writeStringField("newTier", this.newTier == null ? null : this.newTier.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateDataLakeStoreAccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateDataLakeStoreAccountProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateDataLakeStoreAccountProperties.
+     */
+    public static CreateDataLakeStoreAccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateDataLakeStoreAccountProperties deserializedCreateDataLakeStoreAccountProperties
+                = new CreateDataLakeStoreAccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultGroup".equals(fieldName)) {
+                    deserializedCreateDataLakeStoreAccountProperties.defaultGroup = reader.getString();
+                } else if ("encryptionConfig".equals(fieldName)) {
+                    deserializedCreateDataLakeStoreAccountProperties.encryptionConfig
+                        = EncryptionConfig.fromJson(reader);
+                } else if ("encryptionState".equals(fieldName)) {
+                    deserializedCreateDataLakeStoreAccountProperties.encryptionState
+                        = EncryptionState.fromString(reader.getString());
+                } else if ("firewallRules".equals(fieldName)) {
+                    List<CreateFirewallRuleWithAccountParameters> firewallRules
+                        = reader.readArray(reader1 -> CreateFirewallRuleWithAccountParameters.fromJson(reader1));
+                    deserializedCreateDataLakeStoreAccountProperties.firewallRules = firewallRules;
+                } else if ("virtualNetworkRules".equals(fieldName)) {
+                    List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules
+                        = reader.readArray(reader1 -> CreateVirtualNetworkRuleWithAccountParameters.fromJson(reader1));
+                    deserializedCreateDataLakeStoreAccountProperties.virtualNetworkRules = virtualNetworkRules;
+                } else if ("firewallState".equals(fieldName)) {
+                    deserializedCreateDataLakeStoreAccountProperties.firewallState
+                        = FirewallState.fromString(reader.getString());
+                } else if ("firewallAllowAzureIps".equals(fieldName)) {
+                    deserializedCreateDataLakeStoreAccountProperties.firewallAllowAzureIps
+                        = FirewallAllowAzureIpsState.fromString(reader.getString());
+                } else if ("trustedIdProviders".equals(fieldName)) {
+                    List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders
+                        = reader.readArray(reader1 -> CreateTrustedIdProviderWithAccountParameters.fromJson(reader1));
+                    deserializedCreateDataLakeStoreAccountProperties.trustedIdProviders = trustedIdProviders;
+                } else if ("trustedIdProviderState".equals(fieldName)) {
+                    deserializedCreateDataLakeStoreAccountProperties.trustedIdProviderState
+                        = TrustedIdProviderState.fromString(reader.getString());
+                } else if ("newTier".equals(fieldName)) {
+                    deserializedCreateDataLakeStoreAccountProperties.newTier = TierType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateDataLakeStoreAccountProperties;
+        });
     }
 }

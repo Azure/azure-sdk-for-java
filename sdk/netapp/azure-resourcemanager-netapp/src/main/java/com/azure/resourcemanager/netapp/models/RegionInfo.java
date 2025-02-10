@@ -12,18 +12,15 @@ import java.util.List;
  */
 public interface RegionInfo {
     /**
-     * Gets the storageToNetworkProximity property: Storage to Network Proximity
-     * 
-     * Provides storage to network proximity information in the region.
+     * Gets the storageToNetworkProximity property: Provides storage to network proximity information in the region.
      * 
      * @return the storageToNetworkProximity value.
      */
     RegionStorageToNetworkProximity storageToNetworkProximity();
 
     /**
-     * Gets the availabilityZoneMappings property: Logical availability zone mappings.
-     * 
-     * Provides logical availability zone mappings for the subscription for a region.
+     * Gets the availabilityZoneMappings property: Provides logical availability zone mappings for the subscription for
+     * a region.
      * 
      * @return the availabilityZoneMappings value.
      */

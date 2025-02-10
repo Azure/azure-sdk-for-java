@@ -6,62 +6,45 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.DeviceSecurityGroup;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DeviceSecurityGroupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"thresholdRules\":[{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1222277856,\"maxThreshold\":505700265,\"displayName\":\"nc\",\"description\":\"jzmizv\",\"isEnabled\":false},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":755129650,\"maxThreshold\":1505052289,\"displayName\":\"zuuvbxngrebw\",\"description\":\"ahttzlswvajqfut\",\"isEnabled\":false}],\"timeWindowRules\":[{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT215H17M48S\",\"minThreshold\":1442149444,\"maxThreshold\":1111486350,\"displayName\":\"unwqr\",\"description\":\"frgqhaohcm\",\"isEnabled\":true}],\"allowlistRules\":[{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"jrohmbpyryxameb\",\"ydyvkfkmro\",\"xne\"],\"valueType\":\"IpCidr\",\"displayName\":\"tod\",\"description\":\"pyapucygvoav\",\"isEnabled\":true},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"ssxlghieegjlg\",\"vpaseksgbu\"],\"valueType\":\"String\",\"displayName\":\"uygdhgaqipirp\",\"description\":\"rqofulopmjnlexwh\",\"isEnabled\":false},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"pibkephuu\"],\"valueType\":\"IpCidr\",\"displayName\":\"t\",\"description\":\"oyin\",\"isEnabled\":false},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"brlc\",\"rduczkgofxyfs\",\"uc\",\"crrpcjttbstvje\"],\"valueType\":\"String\",\"displayName\":\"mvvfko\",\"description\":\"lghktuidvrm\",\"isEnabled\":false}],\"denylistRules\":[{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"wwexymzvlazipbh\",\"wvqsgny\"],\"valueType\":\"String\",\"displayName\":\"ivensrpmeyyvpk\",\"description\":\"tlbijpzg\",\"isEnabled\":false},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"rfhfvo\",\"mknbnxwcdommpv\"],\"valueType\":\"IpCidr\",\"displayName\":\"zfgbrttuiaclkie\",\"description\":\"ajlfnthiqfyu\",\"isEnabled\":false},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"iygbpvn\",\"swmtxk\",\"ctwwgzw\",\"jlmec\"],\"valueType\":\"IpCidr\",\"displayName\":\"gzyvnee\",\"description\":\"ifgh\",\"isEnabled\":true},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"qqtlffhzbkrkj\",\"javfqn\"],\"valueType\":\"IpCidr\",\"displayName\":\"oe\",\"description\":\"ogiyetes\",\"isEnabled\":false}]},\"id\":\"vidbztjhqtfb\",\"name\":\"vnynkb\",\"type\":\"etnjuhpsprkz\"}";
 
-        String responseStr =
-            "{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"hsoymhpvtyqf\",\"name\":\"tehdpboujs\",\"type\":\"kfvvdshxcde\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        DeviceSecurityGroup response = manager.deviceSecurityGroups()
+            .getWithResponse("tzqdd", "jwfljhznamtua", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        DeviceSecurityGroup response =
-            manager
-                .deviceSecurityGroups()
-                .getWithResponse("aiossscyvaifp", "uacvfy", com.azure.core.util.Context.NONE)
-                .getValue();
+        Assertions.assertEquals(false, response.thresholdRules().get(0).isEnabled());
+        Assertions.assertEquals(1222277856, response.thresholdRules().get(0).minThreshold());
+        Assertions.assertEquals(505700265, response.thresholdRules().get(0).maxThreshold());
+        Assertions.assertEquals(true, response.timeWindowRules().get(0).isEnabled());
+        Assertions.assertEquals(1442149444, response.timeWindowRules().get(0).minThreshold());
+        Assertions.assertEquals(1111486350, response.timeWindowRules().get(0).maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT215H17M48S"), response.timeWindowRules().get(0).timeWindowSize());
+        Assertions.assertEquals(true, response.allowlistRules().get(0).isEnabled());
+        Assertions.assertEquals("jrohmbpyryxameb", response.allowlistRules().get(0).allowlistValues().get(0));
+        Assertions.assertEquals(false, response.denylistRules().get(0).isEnabled());
+        Assertions.assertEquals("wwexymzvlazipbh", response.denylistRules().get(0).denylistValues().get(0));
     }
 }

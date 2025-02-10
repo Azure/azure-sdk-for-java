@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class UserDefinedResourcesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserDefinedResourcesProperties model =
-            BinaryData
-                .fromString(
-                    "{\"query\":\"lqdqgbiqylihka\",\"querySubscriptions\":[\"cktvfcivfsnkymuc\",\"qhjfbebr\",\"cxerf\",\"wutttxfvjrbi\"]}")
+        UserDefinedResourcesProperties model
+            = BinaryData.fromString("{\"query\":\"bnnhadoocrkvcik\",\"querySubscriptions\":[\"vpa\",\"qgxqquezikyw\"]}")
                 .toObject(UserDefinedResourcesProperties.class);
-        Assertions.assertEquals("lqdqgbiqylihka", model.query());
-        Assertions.assertEquals("cktvfcivfsnkymuc", model.querySubscriptions().get(0));
+        Assertions.assertEquals("bnnhadoocrkvcik", model.query());
+        Assertions.assertEquals("vpa", model.querySubscriptions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserDefinedResourcesProperties model =
-            new UserDefinedResourcesProperties()
-                .withQuery("lqdqgbiqylihka")
-                .withQuerySubscriptions(Arrays.asList("cktvfcivfsnkymuc", "qhjfbebr", "cxerf", "wutttxfvjrbi"));
+        UserDefinedResourcesProperties model = new UserDefinedResourcesProperties().withQuery("bnnhadoocrkvcik")
+            .withQuerySubscriptions(Arrays.asList("vpa", "qgxqquezikyw"));
         model = BinaryData.fromObject(model).toObject(UserDefinedResourcesProperties.class);
-        Assertions.assertEquals("lqdqgbiqylihka", model.query());
-        Assertions.assertEquals("cktvfcivfsnkymuc", model.querySubscriptions().get(0));
+        Assertions.assertEquals("bnnhadoocrkvcik", model.query());
+        Assertions.assertEquals("vpa", model.querySubscriptions().get(0));
     }
 }

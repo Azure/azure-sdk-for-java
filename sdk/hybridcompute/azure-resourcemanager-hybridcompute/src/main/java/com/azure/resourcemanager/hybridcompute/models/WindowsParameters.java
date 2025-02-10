@@ -5,51 +5,56 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Input for InstallPatches on a Windows VM, as directly received by the API. */
+/**
+ * Input for InstallPatches on a Windows VM, as directly received by the API.
+ */
 @Fluent
-public final class WindowsParameters {
+public final class WindowsParameters implements JsonSerializable<WindowsParameters> {
     /*
      * The update classifications to select when installing patches for Windows.
      */
-    @JsonProperty(value = "classificationsToInclude")
     private List<VMGuestPatchClassificationWindows> classificationsToInclude;
 
     /*
      * Kbs to include in the patch operation
      */
-    @JsonProperty(value = "kbNumbersToInclude")
     private List<String> kbNumbersToInclude;
 
     /*
      * Kbs to exclude in the patch operation
      */
-    @JsonProperty(value = "kbNumbersToExclude")
     private List<String> kbNumbersToExclude;
 
     /*
      * Filters out Kbs that don't have an InstallationRebootBehavior of 'NeverReboots' when this is set to true.
      */
-    @JsonProperty(value = "excludeKbsRequiringReboot")
     private Boolean excludeKbsRequiringReboot;
 
     /*
      * This is used to install patches that were published on or before this given max published date.
      */
-    @JsonProperty(value = "maxPatchPublishDate")
     private OffsetDateTime maxPatchPublishDate;
 
-    /** Creates an instance of WindowsParameters class. */
+    /**
+     * Creates an instance of WindowsParameters class.
+     */
     public WindowsParameters() {
     }
 
     /**
      * Get the classificationsToInclude property: The update classifications to select when installing patches for
      * Windows.
-     *
+     * 
      * @return the classificationsToInclude value.
      */
     public List<VMGuestPatchClassificationWindows> classificationsToInclude() {
@@ -59,19 +64,19 @@ public final class WindowsParameters {
     /**
      * Set the classificationsToInclude property: The update classifications to select when installing patches for
      * Windows.
-     *
+     * 
      * @param classificationsToInclude the classificationsToInclude value to set.
      * @return the WindowsParameters object itself.
      */
-    public WindowsParameters withClassificationsToInclude(
-        List<VMGuestPatchClassificationWindows> classificationsToInclude) {
+    public WindowsParameters
+        withClassificationsToInclude(List<VMGuestPatchClassificationWindows> classificationsToInclude) {
         this.classificationsToInclude = classificationsToInclude;
         return this;
     }
 
     /**
      * Get the kbNumbersToInclude property: Kbs to include in the patch operation.
-     *
+     * 
      * @return the kbNumbersToInclude value.
      */
     public List<String> kbNumbersToInclude() {
@@ -80,7 +85,7 @@ public final class WindowsParameters {
 
     /**
      * Set the kbNumbersToInclude property: Kbs to include in the patch operation.
-     *
+     * 
      * @param kbNumbersToInclude the kbNumbersToInclude value to set.
      * @return the WindowsParameters object itself.
      */
@@ -91,7 +96,7 @@ public final class WindowsParameters {
 
     /**
      * Get the kbNumbersToExclude property: Kbs to exclude in the patch operation.
-     *
+     * 
      * @return the kbNumbersToExclude value.
      */
     public List<String> kbNumbersToExclude() {
@@ -100,7 +105,7 @@ public final class WindowsParameters {
 
     /**
      * Set the kbNumbersToExclude property: Kbs to exclude in the patch operation.
-     *
+     * 
      * @param kbNumbersToExclude the kbNumbersToExclude value to set.
      * @return the WindowsParameters object itself.
      */
@@ -112,7 +117,7 @@ public final class WindowsParameters {
     /**
      * Get the excludeKbsRequiringReboot property: Filters out Kbs that don't have an InstallationRebootBehavior of
      * 'NeverReboots' when this is set to true.
-     *
+     * 
      * @return the excludeKbsRequiringReboot value.
      */
     public Boolean excludeKbsRequiringReboot() {
@@ -122,7 +127,7 @@ public final class WindowsParameters {
     /**
      * Set the excludeKbsRequiringReboot property: Filters out Kbs that don't have an InstallationRebootBehavior of
      * 'NeverReboots' when this is set to true.
-     *
+     * 
      * @param excludeKbsRequiringReboot the excludeKbsRequiringReboot value to set.
      * @return the WindowsParameters object itself.
      */
@@ -134,7 +139,7 @@ public final class WindowsParameters {
     /**
      * Get the maxPatchPublishDate property: This is used to install patches that were published on or before this given
      * max published date.
-     *
+     * 
      * @return the maxPatchPublishDate value.
      */
     public OffsetDateTime maxPatchPublishDate() {
@@ -144,7 +149,7 @@ public final class WindowsParameters {
     /**
      * Set the maxPatchPublishDate property: This is used to install patches that were published on or before this given
      * max published date.
-     *
+     * 
      * @param maxPatchPublishDate the maxPatchPublishDate value to set.
      * @return the WindowsParameters object itself.
      */
@@ -155,9 +160,69 @@ public final class WindowsParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("classificationsToInclude", this.classificationsToInclude,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("kbNumbersToInclude", this.kbNumbersToInclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("kbNumbersToExclude", this.kbNumbersToExclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("excludeKbsRequiringReboot", this.excludeKbsRequiringReboot);
+        jsonWriter.writeStringField("maxPatchPublishDate",
+            this.maxPatchPublishDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.maxPatchPublishDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WindowsParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WindowsParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WindowsParameters.
+     */
+    public static WindowsParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WindowsParameters deserializedWindowsParameters = new WindowsParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("classificationsToInclude".equals(fieldName)) {
+                    List<VMGuestPatchClassificationWindows> classificationsToInclude = reader
+                        .readArray(reader1 -> VMGuestPatchClassificationWindows.fromString(reader1.getString()));
+                    deserializedWindowsParameters.classificationsToInclude = classificationsToInclude;
+                } else if ("kbNumbersToInclude".equals(fieldName)) {
+                    List<String> kbNumbersToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWindowsParameters.kbNumbersToInclude = kbNumbersToInclude;
+                } else if ("kbNumbersToExclude".equals(fieldName)) {
+                    List<String> kbNumbersToExclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWindowsParameters.kbNumbersToExclude = kbNumbersToExclude;
+                } else if ("excludeKbsRequiringReboot".equals(fieldName)) {
+                    deserializedWindowsParameters.excludeKbsRequiringReboot
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maxPatchPublishDate".equals(fieldName)) {
+                    deserializedWindowsParameters.maxPatchPublishDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWindowsParameters;
+        });
     }
 }

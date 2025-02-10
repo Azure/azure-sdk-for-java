@@ -15,20 +15,20 @@ public final class DeliveryWithResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeliveryWithResourceIdentity model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"ngqqmoakuf\"},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}}")
+            "{\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"dgrtwaenuuzkopbm\"},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}}")
             .toObject(DeliveryWithResourceIdentity.class);
-        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ngqqmoakuf", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("dgrtwaenuuzkopbm", model.identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeliveryWithResourceIdentity model = new DeliveryWithResourceIdentity()
-            .withIdentity(new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentity("ngqqmoakuf"))
+            .withIdentity(new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentity("dgrtwaenuuzkopbm"))
             .withDestination(new EventSubscriptionDestination());
         model = BinaryData.fromObject(model).toObject(DeliveryWithResourceIdentity.class);
-        Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ngqqmoakuf", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(EventSubscriptionIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("dgrtwaenuuzkopbm", model.identity().userAssignedIdentity());
     }
 }

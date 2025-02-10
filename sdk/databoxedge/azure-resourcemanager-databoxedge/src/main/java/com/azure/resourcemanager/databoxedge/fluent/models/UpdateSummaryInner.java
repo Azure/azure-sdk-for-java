@@ -5,29 +5,50 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.InstallRebootBehavior;
 import com.azure.resourcemanager.databoxedge.models.UpdateOperation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Details about ongoing updates and availability of updates on the device. */
+/**
+ * Details about ongoing updates and availability of updates on the device.
+ */
 @Fluent
 public final class UpdateSummaryInner extends ArmBaseModel {
     /*
      * The device update information summary.
      */
-    @JsonProperty(value = "properties")
     private UpdateSummaryProperties innerProperties;
 
-    /** Creates an instance of UpdateSummaryInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of UpdateSummaryInner class.
+     */
     public UpdateSummaryInner() {
     }
 
     /**
      * Get the innerProperties property: The device update information summary.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateSummaryProperties innerProperties() {
@@ -35,8 +56,38 @@ public final class UpdateSummaryInner extends ArmBaseModel {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the deviceVersionNumber property: The current version of the device in format: 1.2.17312.13.",.
-     *
+     * 
      * @return the deviceVersionNumber value.
      */
     public String deviceVersionNumber() {
@@ -45,7 +96,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Set the deviceVersionNumber property: The current version of the device in format: 1.2.17312.13.",.
-     *
+     * 
      * @param deviceVersionNumber the deviceVersionNumber value to set.
      * @return the UpdateSummaryInner object itself.
      */
@@ -59,7 +110,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Get the friendlyDeviceVersionName property: The current version of the device in text format.
-     *
+     * 
      * @return the friendlyDeviceVersionName value.
      */
     public String friendlyDeviceVersionName() {
@@ -68,7 +119,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Set the friendlyDeviceVersionName property: The current version of the device in text format.
-     *
+     * 
      * @param friendlyDeviceVersionName the friendlyDeviceVersionName value to set.
      * @return the UpdateSummaryInner object itself.
      */
@@ -82,7 +133,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Get the deviceLastScannedDateTime property: The last time when a scan was done on the device.
-     *
+     * 
      * @return the deviceLastScannedDateTime value.
      */
     public OffsetDateTime deviceLastScannedDateTime() {
@@ -91,7 +142,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Set the deviceLastScannedDateTime property: The last time when a scan was done on the device.
-     *
+     * 
      * @param deviceLastScannedDateTime the deviceLastScannedDateTime value to set.
      * @return the UpdateSummaryInner object itself.
      */
@@ -106,7 +157,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
     /**
      * Get the lastCompletedScanJobDateTime property: The time when the last scan job was completed
      * (success/cancelled/failed) on the appliance.
-     *
+     * 
      * @return the lastCompletedScanJobDateTime value.
      */
     public OffsetDateTime lastCompletedScanJobDateTime() {
@@ -116,7 +167,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
     /**
      * Set the lastCompletedScanJobDateTime property: The time when the last scan job was completed
      * (success/cancelled/failed) on the appliance.
-     *
+     * 
      * @param lastCompletedScanJobDateTime the lastCompletedScanJobDateTime value to set.
      * @return the UpdateSummaryInner object itself.
      */
@@ -131,7 +182,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
     /**
      * Get the lastCompletedDownloadJobDateTime property: The time when the last Download job was completed
      * (success/cancelled/failed) on the appliance.
-     *
+     * 
      * @return the lastCompletedDownloadJobDateTime value.
      */
     public OffsetDateTime lastCompletedDownloadJobDateTime() {
@@ -141,7 +192,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
     /**
      * Get the lastCompletedInstallJobDateTime property: The time when the last Install job was completed
      * (success/cancelled/failed) on the appliance.
-     *
+     * 
      * @return the lastCompletedInstallJobDateTime value.
      */
     public OffsetDateTime lastCompletedInstallJobDateTime() {
@@ -151,7 +202,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
     /**
      * Get the totalNumberOfUpdatesAvailable property: The number of updates available for the current device version as
      * per the last device scan.
-     *
+     * 
      * @return the totalNumberOfUpdatesAvailable value.
      */
     public Integer totalNumberOfUpdatesAvailable() {
@@ -160,7 +211,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Get the totalNumberOfUpdatesPendingDownload property: The total number of items pending download.
-     *
+     * 
      * @return the totalNumberOfUpdatesPendingDownload value.
      */
     public Integer totalNumberOfUpdatesPendingDownload() {
@@ -169,7 +220,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Get the totalNumberOfUpdatesPendingInstall property: The total number of items pending install.
-     *
+     * 
      * @return the totalNumberOfUpdatesPendingInstall value.
      */
     public Integer totalNumberOfUpdatesPendingInstall() {
@@ -179,7 +230,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
     /**
      * Get the rebootBehavior property: Indicates if updates are available and at least one of the updates needs a
      * reboot.
-     *
+     * 
      * @return the rebootBehavior value.
      */
     public InstallRebootBehavior rebootBehavior() {
@@ -188,7 +239,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Get the ongoingUpdateOperation property: The current update operation.
-     *
+     * 
      * @return the ongoingUpdateOperation value.
      */
     public UpdateOperation ongoingUpdateOperation() {
@@ -197,7 +248,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Get the inProgressDownloadJobId property: The job ID of the download job in progress.
-     *
+     * 
      * @return the inProgressDownloadJobId value.
      */
     public String inProgressDownloadJobId() {
@@ -206,7 +257,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Get the inProgressInstallJobId property: The job ID of the install job in progress.
-     *
+     * 
      * @return the inProgressInstallJobId value.
      */
     public String inProgressInstallJobId() {
@@ -216,7 +267,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
     /**
      * Get the inProgressDownloadJobStartedDateTime property: The time when the currently running download (if any)
      * started.
-     *
+     * 
      * @return the inProgressDownloadJobStartedDateTime value.
      */
     public OffsetDateTime inProgressDownloadJobStartedDateTime() {
@@ -226,7 +277,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
     /**
      * Get the inProgressInstallJobStartedDateTime property: The time when the currently running install (if any)
      * started.
-     *
+     * 
      * @return the inProgressInstallJobStartedDateTime value.
      */
     public OffsetDateTime inProgressInstallJobStartedDateTime() {
@@ -235,7 +286,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Get the updateTitles property: The list of updates available for install.
-     *
+     * 
      * @return the updateTitles value.
      */
     public List<String> updateTitles() {
@@ -244,7 +295,7 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Get the totalUpdateSizeInBytes property: The total size of updates available for download in bytes.
-     *
+     * 
      * @return the totalUpdateSizeInBytes value.
      */
     public Double totalUpdateSizeInBytes() {
@@ -253,14 +304,56 @@ public final class UpdateSummaryInner extends ArmBaseModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateSummaryInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateSummaryInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateSummaryInner.
+     */
+    public static UpdateSummaryInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateSummaryInner deserializedUpdateSummaryInner = new UpdateSummaryInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedUpdateSummaryInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUpdateSummaryInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedUpdateSummaryInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpdateSummaryInner.innerProperties = UpdateSummaryProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateSummaryInner;
+        });
     }
 }

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.logz.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Response of payload to be passed while installing VM agent. */
+/**
+ * Response of payload to be passed while installing VM agent.
+ */
 @Fluent
-public final class VMExtensionPayloadInner {
+public final class VMExtensionPayloadInner implements JsonSerializable<VMExtensionPayloadInner> {
     /*
      * API Key corresponding to the resource.
      */
-    @JsonProperty(value = "apiKey")
     private String apiKey;
 
     /*
      * Logz.io region where the resource has been created.
      */
-    @JsonProperty(value = "region")
     private String region;
 
-    /** Creates an instance of VMExtensionPayloadInner class. */
+    /**
+     * Creates an instance of VMExtensionPayloadInner class.
+     */
     public VMExtensionPayloadInner() {
     }
 
     /**
      * Get the apiKey property: API Key corresponding to the resource.
-     *
+     * 
      * @return the apiKey value.
      */
     public String apiKey() {
@@ -37,7 +43,7 @@ public final class VMExtensionPayloadInner {
 
     /**
      * Set the apiKey property: API Key corresponding to the resource.
-     *
+     * 
      * @param apiKey the apiKey value to set.
      * @return the VMExtensionPayloadInner object itself.
      */
@@ -48,7 +54,7 @@ public final class VMExtensionPayloadInner {
 
     /**
      * Get the region property: Logz.io region where the resource has been created.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -57,7 +63,7 @@ public final class VMExtensionPayloadInner {
 
     /**
      * Set the region property: Logz.io region where the resource has been created.
-     *
+     * 
      * @param region the region value to set.
      * @return the VMExtensionPayloadInner object itself.
      */
@@ -68,9 +74,48 @@ public final class VMExtensionPayloadInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apiKey", this.apiKey);
+        jsonWriter.writeStringField("region", this.region);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMExtensionPayloadInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMExtensionPayloadInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMExtensionPayloadInner.
+     */
+    public static VMExtensionPayloadInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMExtensionPayloadInner deserializedVMExtensionPayloadInner = new VMExtensionPayloadInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiKey".equals(fieldName)) {
+                    deserializedVMExtensionPayloadInner.apiKey = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedVMExtensionPayloadInner.region = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMExtensionPayloadInner;
+        });
     }
 }

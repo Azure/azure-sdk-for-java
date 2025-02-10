@@ -26,7 +26,7 @@ public class KeyVaultSecretPropertySourceIT {
     private Environment environment;
 
     @Test
-    public void testKeyVaultSecretOperation() {
+    void testKeyVaultSecretOperation() {
         LOGGER.info("KeyVaultSecretPropertySourceIT begin.");
         Assertions.assertEquals(expectedVal, environment.getProperty(secretKey.replace('-', '.')));
         LOGGER.info("KeyVaultSecretPropertySourceIT end.");

@@ -4,29 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for LongTermRetentionBackups Get. */
+/**
+ * Samples for LongTermRetentionBackups Get.
+ */
 public final class LongTermRetentionBackupsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LongTermRetentionBackupGet.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/LongTermRetentionBackupGet.json
      */
     /**
      * Sample code: Get the long term retention backup.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getTheLongTermRetentionBackup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getLongTermRetentionBackups()
-            .getWithResponse(
-                "japaneast",
-                "testserver",
-                "testDatabase",
-                "55555555-6666-7777-8888-999999999999;131637960820000000",
-                Context.NONE);
+            .getWithResponse("japaneast", "testserver", "testDatabase",
+                "55555555-6666-7777-8888-999999999999;131637960820000000", com.azure.core.util.Context.NONE);
     }
 }

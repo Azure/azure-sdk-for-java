@@ -6,20 +6,17 @@ package com.azure.resourcemanager.education.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.education.fluent.models.StudentLabDetailsInner;
-import org.junit.jupiter.api.Test;
 
 public final class StudentLabDetailsInnerTests {
-    @Test
-    public void testDeserialize() {
-        StudentLabDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"npzaoq\",\"description\":\"hrhcffcyddglmjth\",\"expirationDate\":\"2021-09-21T02:31:34Z\",\"role\":\"Student\",\"budget\":{\"currency\":\"icxm\",\"value\":39.259743},\"subscriptionId\":\"q\",\"status\":\"Active\",\"effectiveDate\":\"2021-03-25T23:46:11Z\",\"labScope\":\"uigdtopbobjog\"},\"id\":\"e\",\"name\":\"u\",\"type\":\"m\"}")
-                .toObject(StudentLabDetailsInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        StudentLabDetailsInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"u\",\"description\":\"a\",\"expirationDate\":\"2021-09-14T08:48:03Z\",\"role\":\"Admin\",\"budget\":{\"currency\":\"vtpgvdfgiotkf\",\"value\":28.060705},\"subscriptionId\":\"xlngx\",\"status\":\"Disabled\",\"effectiveDate\":\"2021-07-23T20:25:28Z\",\"labScope\":\"nxkrx\"},\"id\":\"mi\",\"name\":\"tthzrvqd\",\"type\":\"abhjybi\"}")
+            .toObject(StudentLabDetailsInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         StudentLabDetailsInner model = new StudentLabDetailsInner();
         model = BinaryData.fromObject(model).toObject(StudentLabDetailsInner.class);
     }

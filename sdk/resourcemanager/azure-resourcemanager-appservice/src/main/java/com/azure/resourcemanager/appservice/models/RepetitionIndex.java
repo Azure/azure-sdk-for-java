@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The workflow run action repetition index.
  */
 @Fluent
-public final class RepetitionIndex {
+public final class RepetitionIndex implements JsonSerializable<RepetitionIndex> {
     /*
      * The scope.
      */
-    @JsonProperty(value = "scopeName")
     private String scopeName;
 
     /*
      * The index.
      */
-    @JsonProperty(value = "itemIndex", required = true)
     private int itemIndex;
 
     /**
@@ -76,5 +78,45 @@ public final class RepetitionIndex {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("itemIndex", this.itemIndex);
+        jsonWriter.writeStringField("scopeName", this.scopeName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RepetitionIndex from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RepetitionIndex if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RepetitionIndex.
+     */
+    public static RepetitionIndex fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RepetitionIndex deserializedRepetitionIndex = new RepetitionIndex();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("itemIndex".equals(fieldName)) {
+                    deserializedRepetitionIndex.itemIndex = reader.getInt();
+                } else if ("scopeName".equals(fieldName)) {
+                    deserializedRepetitionIndex.scopeName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRepetitionIndex;
+        });
     }
 }

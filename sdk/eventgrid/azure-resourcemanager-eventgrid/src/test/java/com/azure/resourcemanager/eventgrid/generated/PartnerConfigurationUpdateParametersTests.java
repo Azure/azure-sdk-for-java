@@ -14,21 +14,22 @@ public final class PartnerConfigurationUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerConfigurationUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"hlfkqojpy\":\"hihfrbbcevqagtlt\",\"ymbrnysuxmpraf\":\"vgtrdcnifmzzs\",\"khocxvdfffwaf\":\"g\",\"spave\":\"roud\"},\"properties\":{\"defaultMaximumExpirationTimeInDays\":597801422}}")
+            "{\"tags\":{\"tzbsrgnowcjhf\":\"khihihlhzds\",\"ctxmwoteyowcluq\":\"mvec\",\"wifzmp\":\"vekqvgqo\",\"cvhrfsp\":\"wyivqikf\"},\"properties\":{\"defaultMaximumExpirationTimeInDays\":1375476520}}")
             .toObject(PartnerConfigurationUpdateParameters.class);
-        Assertions.assertEquals("hihfrbbcevqagtlt", model.tags().get("hlfkqojpy"));
-        Assertions.assertEquals(597801422, model.defaultMaximumExpirationTimeInDays());
+        Assertions.assertEquals("khihihlhzds", model.tags().get("tzbsrgnowcjhf"));
+        Assertions.assertEquals(1375476520, model.defaultMaximumExpirationTimeInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerConfigurationUpdateParameters model = new PartnerConfigurationUpdateParameters()
-            .withTags(mapOf("hlfkqojpy", "hihfrbbcevqagtlt", "ymbrnysuxmpraf", "vgtrdcnifmzzs", "khocxvdfffwaf", "g",
-                "spave", "roud"))
-            .withDefaultMaximumExpirationTimeInDays(597801422);
+        PartnerConfigurationUpdateParameters model
+            = new PartnerConfigurationUpdateParameters()
+                .withTags(mapOf("tzbsrgnowcjhf", "khihihlhzds", "ctxmwoteyowcluq", "mvec", "wifzmp", "vekqvgqo",
+                    "cvhrfsp", "wyivqikf"))
+                .withDefaultMaximumExpirationTimeInDays(1375476520);
         model = BinaryData.fromObject(model).toObject(PartnerConfigurationUpdateParameters.class);
-        Assertions.assertEquals("hihfrbbcevqagtlt", model.tags().get("hlfkqojpy"));
-        Assertions.assertEquals(597801422, model.defaultMaximumExpirationTimeInDays());
+        Assertions.assertEquals("khihihlhzds", model.tags().get("tzbsrgnowcjhf"));
+        Assertions.assertEquals(1375476520, model.defaultMaximumExpirationTimeInDays());
     }
 
     // Use "Map.of" if available

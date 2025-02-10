@@ -5,58 +5,58 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** informationalUrl. */
+/**
+ * informationalUrl.
+ */
 @Fluent
-public final class MicrosoftGraphInformationalUrl {
+public final class MicrosoftGraphInformationalUrl implements JsonSerializable<MicrosoftGraphInformationalUrl> {
     /*
      * CDN URL to the application's logo, Read-only.
      */
-    @JsonProperty(value = "logoUrl")
     private String logoUrl;
 
     /*
      * Link to the application's marketing page. For example, https://www.contoso.com/app/marketing
      */
-    @JsonProperty(value = "marketingUrl")
     private String marketingUrl;
 
     /*
      * Link to the application's privacy statement. For example, https://www.contoso.com/app/privacy
      */
-    @JsonProperty(value = "privacyStatementUrl")
     private String privacyStatementUrl;
 
     /*
      * Link to the application's support page. For example, https://www.contoso.com/app/support
      */
-    @JsonProperty(value = "supportUrl")
     private String supportUrl;
 
     /*
      * Link to the application's terms of service statement. For example, https://www.contoso.com/app/termsofservice
      */
-    @JsonProperty(value = "termsOfServiceUrl")
     private String termsOfServiceUrl;
 
     /*
      * informationalUrl
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphInformationalUrl class. */
+    /**
+     * Creates an instance of MicrosoftGraphInformationalUrl class.
+     */
     public MicrosoftGraphInformationalUrl() {
     }
 
     /**
      * Get the logoUrl property: CDN URL to the application's logo, Read-only.
-     *
+     * 
      * @return the logoUrl value.
      */
     public String logoUrl() {
@@ -65,7 +65,7 @@ public final class MicrosoftGraphInformationalUrl {
 
     /**
      * Set the logoUrl property: CDN URL to the application's logo, Read-only.
-     *
+     * 
      * @param logoUrl the logoUrl value to set.
      * @return the MicrosoftGraphInformationalUrl object itself.
      */
@@ -77,7 +77,7 @@ public final class MicrosoftGraphInformationalUrl {
     /**
      * Get the marketingUrl property: Link to the application's marketing page. For example,
      * https://www.contoso.com/app/marketing.
-     *
+     * 
      * @return the marketingUrl value.
      */
     public String marketingUrl() {
@@ -87,7 +87,7 @@ public final class MicrosoftGraphInformationalUrl {
     /**
      * Set the marketingUrl property: Link to the application's marketing page. For example,
      * https://www.contoso.com/app/marketing.
-     *
+     * 
      * @param marketingUrl the marketingUrl value to set.
      * @return the MicrosoftGraphInformationalUrl object itself.
      */
@@ -99,7 +99,7 @@ public final class MicrosoftGraphInformationalUrl {
     /**
      * Get the privacyStatementUrl property: Link to the application's privacy statement. For example,
      * https://www.contoso.com/app/privacy.
-     *
+     * 
      * @return the privacyStatementUrl value.
      */
     public String privacyStatementUrl() {
@@ -109,7 +109,7 @@ public final class MicrosoftGraphInformationalUrl {
     /**
      * Set the privacyStatementUrl property: Link to the application's privacy statement. For example,
      * https://www.contoso.com/app/privacy.
-     *
+     * 
      * @param privacyStatementUrl the privacyStatementUrl value to set.
      * @return the MicrosoftGraphInformationalUrl object itself.
      */
@@ -121,7 +121,7 @@ public final class MicrosoftGraphInformationalUrl {
     /**
      * Get the supportUrl property: Link to the application's support page. For example,
      * https://www.contoso.com/app/support.
-     *
+     * 
      * @return the supportUrl value.
      */
     public String supportUrl() {
@@ -131,7 +131,7 @@ public final class MicrosoftGraphInformationalUrl {
     /**
      * Set the supportUrl property: Link to the application's support page. For example,
      * https://www.contoso.com/app/support.
-     *
+     * 
      * @param supportUrl the supportUrl value to set.
      * @return the MicrosoftGraphInformationalUrl object itself.
      */
@@ -143,7 +143,7 @@ public final class MicrosoftGraphInformationalUrl {
     /**
      * Get the termsOfServiceUrl property: Link to the application's terms of service statement. For example,
      * https://www.contoso.com/app/termsofservice.
-     *
+     * 
      * @return the termsOfServiceUrl value.
      */
     public String termsOfServiceUrl() {
@@ -153,7 +153,7 @@ public final class MicrosoftGraphInformationalUrl {
     /**
      * Set the termsOfServiceUrl property: Link to the application's terms of service statement. For example,
      * https://www.contoso.com/app/termsofservice.
-     *
+     * 
      * @param termsOfServiceUrl the termsOfServiceUrl value to set.
      * @return the MicrosoftGraphInformationalUrl object itself.
      */
@@ -164,17 +164,16 @@ public final class MicrosoftGraphInformationalUrl {
 
     /**
      * Get the additionalProperties property: informationalUrl.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: informationalUrl.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphInformationalUrl object itself.
      */
@@ -183,19 +182,71 @@ public final class MicrosoftGraphInformationalUrl {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("logoUrl", this.logoUrl);
+        jsonWriter.writeStringField("marketingUrl", this.marketingUrl);
+        jsonWriter.writeStringField("privacyStatementUrl", this.privacyStatementUrl);
+        jsonWriter.writeStringField("supportUrl", this.supportUrl);
+        jsonWriter.writeStringField("termsOfServiceUrl", this.termsOfServiceUrl);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphInformationalUrl from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphInformationalUrl if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphInformationalUrl.
+     */
+    public static MicrosoftGraphInformationalUrl fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphInformationalUrl deserializedMicrosoftGraphInformationalUrl
+                = new MicrosoftGraphInformationalUrl();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logoUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphInformationalUrl.logoUrl = reader.getString();
+                } else if ("marketingUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphInformationalUrl.marketingUrl = reader.getString();
+                } else if ("privacyStatementUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphInformationalUrl.privacyStatementUrl = reader.getString();
+                } else if ("supportUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphInformationalUrl.supportUrl = reader.getString();
+                } else if ("termsOfServiceUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphInformationalUrl.termsOfServiceUrl = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphInformationalUrl.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphInformationalUrl;
+        });
     }
 }

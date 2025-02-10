@@ -5,100 +5,96 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.IoTSecurityAggregatedAlertPropertiesTopDevicesListItem;
 import com.azure.resourcemanager.security.models.ReportedSeverity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-/** IoT Security solution aggregated alert details. */
+/**
+ * IoT Security solution aggregated alert details.
+ */
 @Immutable
-public final class IoTSecurityAggregatedAlertProperties {
+public final class IoTSecurityAggregatedAlertProperties
+    implements JsonSerializable<IoTSecurityAggregatedAlertProperties> {
     /*
      * Name of the alert type.
      */
-    @JsonProperty(value = "alertType", access = JsonProperty.Access.WRITE_ONLY)
     private String alertType;
 
     /*
      * Display name of the alert type.
      */
-    @JsonProperty(value = "alertDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String alertDisplayName;
 
     /*
      * Date of detection.
      */
-    @JsonProperty(value = "aggregatedDateUtc", access = JsonProperty.Access.WRITE_ONLY)
     private LocalDate aggregatedDateUtc;
 
     /*
      * Name of the organization that raised the alert.
      */
-    @JsonProperty(value = "vendorName", access = JsonProperty.Access.WRITE_ONLY)
     private String vendorName;
 
     /*
      * Assessed alert severity.
      */
-    @JsonProperty(value = "reportedSeverity", access = JsonProperty.Access.WRITE_ONLY)
     private ReportedSeverity reportedSeverity;
 
     /*
      * Recommended steps for remediation.
      */
-    @JsonProperty(value = "remediationSteps", access = JsonProperty.Access.WRITE_ONLY)
     private String remediationSteps;
 
     /*
      * Description of the suspected vulnerability and meaning.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Number of alerts occurrences within the aggregated time window.
      */
-    @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Long count;
 
     /*
      * Azure resource ID of the resource that received the alerts.
      */
-    @JsonProperty(value = "effectedResourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String effectedResourceType;
 
     /*
      * The type of the alerted resource (Azure, Non-Azure).
      */
-    @JsonProperty(value = "systemSource", access = JsonProperty.Access.WRITE_ONLY)
     private String systemSource;
 
     /*
      * IoT Security solution alert response.
      */
-    @JsonProperty(value = "actionTaken", access = JsonProperty.Access.WRITE_ONLY)
     private String actionTaken;
 
     /*
      * Log analytics query for getting the list of affected devices/alerts.
      */
-    @JsonProperty(value = "logAnalyticsQuery", access = JsonProperty.Access.WRITE_ONLY)
     private String logAnalyticsQuery;
 
     /*
      * 10 devices with the highest number of occurrences of this alert type, on this day.
      */
-    @JsonProperty(value = "topDevicesList", access = JsonProperty.Access.WRITE_ONLY)
     private List<IoTSecurityAggregatedAlertPropertiesTopDevicesListItem> topDevicesList;
 
-    /** Creates an instance of IoTSecurityAggregatedAlertProperties class. */
+    /**
+     * Creates an instance of IoTSecurityAggregatedAlertProperties class.
+     */
     public IoTSecurityAggregatedAlertProperties() {
     }
 
     /**
      * Get the alertType property: Name of the alert type.
-     *
+     * 
      * @return the alertType value.
      */
     public String alertType() {
@@ -107,7 +103,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the alertDisplayName property: Display name of the alert type.
-     *
+     * 
      * @return the alertDisplayName value.
      */
     public String alertDisplayName() {
@@ -116,7 +112,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the aggregatedDateUtc property: Date of detection.
-     *
+     * 
      * @return the aggregatedDateUtc value.
      */
     public LocalDate aggregatedDateUtc() {
@@ -125,7 +121,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the vendorName property: Name of the organization that raised the alert.
-     *
+     * 
      * @return the vendorName value.
      */
     public String vendorName() {
@@ -134,7 +130,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the reportedSeverity property: Assessed alert severity.
-     *
+     * 
      * @return the reportedSeverity value.
      */
     public ReportedSeverity reportedSeverity() {
@@ -143,7 +139,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the remediationSteps property: Recommended steps for remediation.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public String remediationSteps() {
@@ -152,7 +148,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the description property: Description of the suspected vulnerability and meaning.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -161,7 +157,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the count property: Number of alerts occurrences within the aggregated time window.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -170,7 +166,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the effectedResourceType property: Azure resource ID of the resource that received the alerts.
-     *
+     * 
      * @return the effectedResourceType value.
      */
     public String effectedResourceType() {
@@ -179,7 +175,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the systemSource property: The type of the alerted resource (Azure, Non-Azure).
-     *
+     * 
      * @return the systemSource value.
      */
     public String systemSource() {
@@ -188,7 +184,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the actionTaken property: IoT Security solution alert response.
-     *
+     * 
      * @return the actionTaken value.
      */
     public String actionTaken() {
@@ -197,7 +193,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the logAnalyticsQuery property: Log analytics query for getting the list of affected devices/alerts.
-     *
+     * 
      * @return the logAnalyticsQuery value.
      */
     public String logAnalyticsQuery() {
@@ -207,7 +203,7 @@ public final class IoTSecurityAggregatedAlertProperties {
     /**
      * Get the topDevicesList property: 10 devices with the highest number of occurrences of this alert type, on this
      * day.
-     *
+     * 
      * @return the topDevicesList value.
      */
     public List<IoTSecurityAggregatedAlertPropertiesTopDevicesListItem> topDevicesList() {
@@ -216,12 +212,76 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (topDevicesList() != null) {
             topDevicesList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTSecurityAggregatedAlertProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTSecurityAggregatedAlertProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IoTSecurityAggregatedAlertProperties.
+     */
+    public static IoTSecurityAggregatedAlertProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTSecurityAggregatedAlertProperties deserializedIoTSecurityAggregatedAlertProperties
+                = new IoTSecurityAggregatedAlertProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertType".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.alertType = reader.getString();
+                } else if ("alertDisplayName".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.alertDisplayName = reader.getString();
+                } else if ("aggregatedDateUtc".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.aggregatedDateUtc
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("vendorName".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.vendorName = reader.getString();
+                } else if ("reportedSeverity".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.reportedSeverity
+                        = ReportedSeverity.fromString(reader.getString());
+                } else if ("remediationSteps".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.remediationSteps = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.description = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.count = reader.getNullable(JsonReader::getLong);
+                } else if ("effectedResourceType".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.effectedResourceType = reader.getString();
+                } else if ("systemSource".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.systemSource = reader.getString();
+                } else if ("actionTaken".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.actionTaken = reader.getString();
+                } else if ("logAnalyticsQuery".equals(fieldName)) {
+                    deserializedIoTSecurityAggregatedAlertProperties.logAnalyticsQuery = reader.getString();
+                } else if ("topDevicesList".equals(fieldName)) {
+                    List<IoTSecurityAggregatedAlertPropertiesTopDevicesListItem> topDevicesList = reader
+                        .readArray(reader1 -> IoTSecurityAggregatedAlertPropertiesTopDevicesListItem.fromJson(reader1));
+                    deserializedIoTSecurityAggregatedAlertProperties.topDevicesList = topDevicesList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTSecurityAggregatedAlertProperties;
+        });
     }
 }

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** IaaS VM workload specific restore details for restores using managed identity. */
+/**
+ * IaaS VM workload specific restore details for restores using managed identity.
+ */
 @Fluent
-public final class IdentityBasedRestoreDetails {
+public final class IdentityBasedRestoreDetails implements JsonSerializable<IdentityBasedRestoreDetails> {
     /*
      * Gets the class type.
      */
-    @JsonProperty(value = "objectType")
     private String objectType;
 
     /*
      * Fully qualified ARM ID of the target storage account.
      */
-    @JsonProperty(value = "targetStorageAccountId")
     private String targetStorageAccountId;
 
-    /** Creates an instance of IdentityBasedRestoreDetails class. */
+    /**
+     * Creates an instance of IdentityBasedRestoreDetails class.
+     */
     public IdentityBasedRestoreDetails() {
     }
 
     /**
      * Get the objectType property: Gets the class type.
-     *
+     * 
      * @return the objectType value.
      */
     public String objectType() {
@@ -37,7 +43,7 @@ public final class IdentityBasedRestoreDetails {
 
     /**
      * Set the objectType property: Gets the class type.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the IdentityBasedRestoreDetails object itself.
      */
@@ -48,7 +54,7 @@ public final class IdentityBasedRestoreDetails {
 
     /**
      * Get the targetStorageAccountId property: Fully qualified ARM ID of the target storage account.
-     *
+     * 
      * @return the targetStorageAccountId value.
      */
     public String targetStorageAccountId() {
@@ -57,7 +63,7 @@ public final class IdentityBasedRestoreDetails {
 
     /**
      * Set the targetStorageAccountId property: Fully qualified ARM ID of the target storage account.
-     *
+     * 
      * @param targetStorageAccountId the targetStorageAccountId value to set.
      * @return the IdentityBasedRestoreDetails object itself.
      */
@@ -68,9 +74,48 @@ public final class IdentityBasedRestoreDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("targetStorageAccountId", this.targetStorageAccountId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityBasedRestoreDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityBasedRestoreDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentityBasedRestoreDetails.
+     */
+    public static IdentityBasedRestoreDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityBasedRestoreDetails deserializedIdentityBasedRestoreDetails = new IdentityBasedRestoreDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedIdentityBasedRestoreDetails.objectType = reader.getString();
+                } else if ("targetStorageAccountId".equals(fieldName)) {
+                    deserializedIdentityBasedRestoreDetails.targetStorageAccountId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityBasedRestoreDetails;
+        });
     }
 }

@@ -64,13 +64,10 @@ public class WebDeploymentImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public Mono<WebDeployment> executeWorkAsync() {
-        return parent
-            .createMSDeploy(request)
-            .map(
-                msDeployStatusInner -> {
-                    result = msDeployStatusInner;
-                    return WebDeploymentImpl.this;
-                });
+        return parent.createMSDeploy(request).map(msDeployStatusInner -> {
+            result = msDeployStatusInner;
+            return WebDeploymentImpl.this;
+        });
     }
 
     @Override

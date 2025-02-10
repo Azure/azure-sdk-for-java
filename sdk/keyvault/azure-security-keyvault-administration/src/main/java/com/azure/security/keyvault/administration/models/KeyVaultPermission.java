@@ -28,7 +28,7 @@ public final class KeyVaultPermission {
      * definitions assigned to a principal.
      */
     public KeyVaultPermission(List<String> actions, List<String> notActions, List<KeyVaultDataAction> dataActions,
-                              List<KeyVaultDataAction> notDataActions) {
+        List<KeyVaultDataAction> notDataActions) {
         this.actions = actions;
         this.notActions = notActions;
         this.dataActions = dataActions;

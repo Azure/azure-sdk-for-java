@@ -18,8 +18,7 @@ public class FeatureStatsbeat extends BaseStatsbeat {
     private static final String FEATURE_METRIC_NAME = "Feature";
 
     private final Set<Feature> featureList = Collections.newSetFromMap(new ConcurrentHashMap<>());
-    private final Set<String> instrumentationList =
-        Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<String> instrumentationList = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final FeatureType type;
 
     FeatureStatsbeat(CustomDimensions customDimensions, FeatureType type) {
@@ -50,14 +49,13 @@ public class FeatureStatsbeat extends BaseStatsbeat {
         instrumentationList.add(instrumentation);
     }
 
-   // To use from the Application Insights Java agent
+    // To use from the Application Insights Java agent
     public void addInstrumentation(SpanData span) {
         if (span.getInstrumentationScopeInfo() == null || span.getInstrumentationScopeInfo().getName() == null) {
             return;
         }
         String instrumentationScopeName = span.getInstrumentationScopeInfo().getName();
-        boolean isAnAzureLibraryInstrumentation = instrumentationScopeName.startsWith(
-            "azure-");
+        boolean isAnAzureLibraryInstrumentation = instrumentationScopeName.startsWith("azure-");
         if (isAnAzureLibraryInstrumentation) {
             instrumentationScopeName = AZURE_OPENTELEMETRY;
         }

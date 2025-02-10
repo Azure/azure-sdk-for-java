@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * If the encrypted VNet allows VM that does not support encryption.
+ * If the encrypted VNet allows VM that does not support encryption. This field is for future support, AllowUnencrypted
+ * is the only supported value at general availability.
  */
 public final class VirtualNetworkEncryptionEnforcement
     extends ExpandableStringEnum<VirtualNetworkEncryptionEnforcement> {
@@ -38,7 +38,6 @@ public final class VirtualNetworkEncryptionEnforcement
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkEncryptionEnforcement.
      */
-    @JsonCreator
     public static VirtualNetworkEncryptionEnforcement fromString(String name) {
         return fromString(name, VirtualNetworkEncryptionEnforcement.class);
     }

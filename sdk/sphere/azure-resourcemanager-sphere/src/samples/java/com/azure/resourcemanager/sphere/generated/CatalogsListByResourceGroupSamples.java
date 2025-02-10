@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.sphere.generated;
 
-/** Samples for Catalogs ListByResourceGroup. */
+/**
+ * Samples for Catalogs ListByResourceGroup.
+ */
 public final class CatalogsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/preview/2022-09-01-preview/examples/GetCatalogsRG.json
+     * x-ms-original-file:
+     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetCatalogsRG.json
      */
     /**
      * Sample code: Catalogs_ListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsListByResourceGroup(com.azure.resourcemanager.sphere.AzureSphereManager manager) {

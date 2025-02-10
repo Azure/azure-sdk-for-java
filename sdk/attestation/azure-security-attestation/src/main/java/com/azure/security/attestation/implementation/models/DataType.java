@@ -5,29 +5,47 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataType. */
+/**
+ * Specifies the type of the data encoded contained within the "data" field of a "RuntimeData" or "InitTimeData" object.
+ */
 public final class DataType extends ExpandableStringEnum<DataType> {
-    /** Static value Binary for DataType. */
+    /**
+     * The field's content should be treated as binary and not interpreted by MAA.
+     */
     public static final DataType BINARY = fromString("Binary");
 
-    /** Static value JSON for DataType. */
+    /**
+     * The field's content should be treated as UTF-8 JSON text that may be further interpreted by MAA. Refer to RFC
+     * 8259 for a description of JSON serialization standards for interoperability.
+     */
     public static final DataType JSON = fromString("JSON");
 
     /**
+     * Creates a new instance of DataType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataType() {
+    }
+
+    /**
      * Creates or finds a DataType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataType.
      */
-    @JsonCreator
     public static DataType fromString(String name) {
         return fromString(name, DataType.class);
     }
 
-    /** @return known DataType values. */
+    /**
+     * Gets known DataType values.
+     * 
+     * @return known DataType values.
+     */
     public static Collection<DataType> values() {
         return values(DataType.class);
     }

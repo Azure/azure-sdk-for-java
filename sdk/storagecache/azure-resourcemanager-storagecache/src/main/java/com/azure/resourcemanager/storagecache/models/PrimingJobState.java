@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the priming operation. */
+/**
+ * The state of the priming operation.
+ */
 public final class PrimingJobState extends ExpandableStringEnum<PrimingJobState> {
-    /** Static value Queued for PrimingJobState. */
+    /**
+     * Static value Queued for PrimingJobState.
+     */
     public static final PrimingJobState QUEUED = fromString("Queued");
 
-    /** Static value Running for PrimingJobState. */
+    /**
+     * Static value Running for PrimingJobState.
+     */
     public static final PrimingJobState RUNNING = fromString("Running");
 
-    /** Static value Paused for PrimingJobState. */
+    /**
+     * Static value Paused for PrimingJobState.
+     */
     public static final PrimingJobState PAUSED = fromString("Paused");
 
-    /** Static value Complete for PrimingJobState. */
+    /**
+     * Static value Complete for PrimingJobState.
+     */
     public static final PrimingJobState COMPLETE = fromString("Complete");
 
     /**
      * Creates a new instance of PrimingJobState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class PrimingJobState extends ExpandableStringEnum<PrimingJobState>
 
     /**
      * Creates or finds a PrimingJobState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrimingJobState.
      */
-    @JsonCreator
     public static PrimingJobState fromString(String name) {
         return fromString(name, PrimingJobState.class);
     }
 
     /**
      * Gets known PrimingJobState values.
-     *
+     * 
      * @return known PrimingJobState values.
      */
     public static Collection<PrimingJobState> values() {

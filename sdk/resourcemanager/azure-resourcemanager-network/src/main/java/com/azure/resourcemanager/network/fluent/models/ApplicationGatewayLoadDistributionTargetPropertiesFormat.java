@@ -6,23 +6,26 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ApplicationGatewayLoadDistributionTargetPropertiesFormat model.
  */
 @Fluent
-public final class ApplicationGatewayLoadDistributionTargetPropertiesFormat {
+public final class ApplicationGatewayLoadDistributionTargetPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayLoadDistributionTargetPropertiesFormat> {
     /*
      * Weight per server. Range between 1 and 100.
      */
-    @JsonProperty(value = "weightPerServer")
     private Integer weightPerServer;
 
     /*
      * Backend address pool resource of the application gateway.
      */
-    @JsonProperty(value = "backendAddressPool")
     private SubResource backendAddressPool;
 
     /**
@@ -78,5 +81,49 @@ public final class ApplicationGatewayLoadDistributionTargetPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("weightPerServer", this.weightPerServer);
+        jsonWriter.writeJsonField("backendAddressPool", this.backendAddressPool);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayLoadDistributionTargetPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayLoadDistributionTargetPropertiesFormat if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ApplicationGatewayLoadDistributionTargetPropertiesFormat.
+     */
+    public static ApplicationGatewayLoadDistributionTargetPropertiesFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayLoadDistributionTargetPropertiesFormat deserializedApplicationGatewayLoadDistributionTargetPropertiesFormat
+                = new ApplicationGatewayLoadDistributionTargetPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("weightPerServer".equals(fieldName)) {
+                    deserializedApplicationGatewayLoadDistributionTargetPropertiesFormat.weightPerServer
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("backendAddressPool".equals(fieldName)) {
+                    deserializedApplicationGatewayLoadDistributionTargetPropertiesFormat.backendAddressPool
+                        = SubResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayLoadDistributionTargetPropertiesFormat;
+        });
     }
 }

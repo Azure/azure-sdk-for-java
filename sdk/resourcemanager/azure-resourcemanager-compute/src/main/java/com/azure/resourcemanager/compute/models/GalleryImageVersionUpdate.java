@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.GalleryImageVersionProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -17,8 +20,22 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     /*
      * Describes the properties of a gallery image version.
      */
-    @JsonProperty(value = "properties")
     private GalleryImageVersionProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of GalleryImageVersionUpdate class.
@@ -33,6 +50,36 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
      */
     private GalleryImageVersionProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -68,9 +115,7 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     * 
-     * The provisioning state, which only appears in the response.
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
      * 
      * @return the provisioningState value.
      */
@@ -157,15 +202,94 @@ public final class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     }
 
     /**
+     * Get the restore property: Indicates if this is a soft-delete resource restoration request.
+     * 
+     * @return the restore value.
+     */
+    public Boolean restore() {
+        return this.innerProperties() == null ? null : this.innerProperties().restore();
+    }
+
+    /**
+     * Set the restore property: Indicates if this is a soft-delete resource restoration request.
+     * 
+     * @param restore the restore value to set.
+     * @return the GalleryImageVersionUpdate object itself.
+     */
+    public GalleryImageVersionUpdate withRestore(Boolean restore) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageVersionProperties();
+        }
+        this.innerProperties().withRestore(restore);
+        return this;
+    }
+
+    /**
+     * Get the validationsProfile property: This is the validations profile of a Gallery Image Version.
+     * 
+     * @return the validationsProfile value.
+     */
+    public ValidationsProfile validationsProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().validationsProfile();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageVersionUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageVersionUpdate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GalleryImageVersionUpdate.
+     */
+    public static GalleryImageVersionUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageVersionUpdate deserializedGalleryImageVersionUpdate = new GalleryImageVersionUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGalleryImageVersionUpdate.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGalleryImageVersionUpdate.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGalleryImageVersionUpdate.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedGalleryImageVersionUpdate.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGalleryImageVersionUpdate.innerProperties
+                        = GalleryImageVersionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageVersionUpdate;
+        });
     }
 }

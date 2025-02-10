@@ -5,115 +5,109 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Migration status of an individual database. */
+/**
+ * Migration status of an individual database.
+ */
 @Fluent
-public final class DbMigrationStatus {
+public final class DbMigrationStatus implements JsonSerializable<DbMigrationStatus> {
     /*
      * Name of the database
      */
-    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /*
      * Migration db state of an individual database
      */
-    @JsonProperty(value = "migrationState")
     private MigrationDbState migrationState;
 
     /*
      * Migration operation of an individual database
      */
-    @JsonProperty(value = "migrationOperation")
     private String migrationOperation;
 
     /*
      * Start date-time of a migration state
      */
-    @JsonProperty(value = "startedOn")
     private OffsetDateTime startedOn;
 
     /*
      * End date-time of a migration state
      */
-    @JsonProperty(value = "endedOn")
     private OffsetDateTime endedOn;
 
     /*
      * Number of tables queued for the migration of a DB
      */
-    @JsonProperty(value = "fullLoadQueuedTables")
     private Integer fullLoadQueuedTables;
 
     /*
      * Number of tables errored out during the migration of a DB
      */
-    @JsonProperty(value = "fullLoadErroredTables")
     private Integer fullLoadErroredTables;
 
     /*
      * Number of tables loading during the migration of a DB
      */
-    @JsonProperty(value = "fullLoadLoadingTables")
     private Integer fullLoadLoadingTables;
 
     /*
      * Number of tables loaded during the migration of a DB
      */
-    @JsonProperty(value = "fullLoadCompletedTables")
     private Integer fullLoadCompletedTables;
 
     /*
      * CDC update counter
      */
-    @JsonProperty(value = "cdcUpdateCounter")
     private Integer cdcUpdateCounter;
 
     /*
      * CDC delete counter
      */
-    @JsonProperty(value = "cdcDeleteCounter")
     private Integer cdcDeleteCounter;
 
     /*
      * CDC insert counter
      */
-    @JsonProperty(value = "cdcInsertCounter")
     private Integer cdcInsertCounter;
 
     /*
      * CDC applied changes counter
      */
-    @JsonProperty(value = "appliedChanges")
     private Integer appliedChanges;
 
     /*
      * CDC incoming changes counter
      */
-    @JsonProperty(value = "incomingChanges")
     private Integer incomingChanges;
 
     /*
      * Lag in seconds between source and target during online phase
      */
-    @JsonProperty(value = "latency")
     private Integer latency;
 
     /*
      * Error message, if any, for the migration state
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of DbMigrationStatus class. */
+    /**
+     * Creates an instance of DbMigrationStatus class.
+     */
     public DbMigrationStatus() {
     }
 
     /**
      * Get the databaseName property: Name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -122,7 +116,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the databaseName property: Name of the database.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -133,7 +127,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the migrationState property: Migration db state of an individual database.
-     *
+     * 
      * @return the migrationState value.
      */
     public MigrationDbState migrationState() {
@@ -142,7 +136,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the migrationState property: Migration db state of an individual database.
-     *
+     * 
      * @param migrationState the migrationState value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -153,7 +147,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the migrationOperation property: Migration operation of an individual database.
-     *
+     * 
      * @return the migrationOperation value.
      */
     public String migrationOperation() {
@@ -162,7 +156,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the migrationOperation property: Migration operation of an individual database.
-     *
+     * 
      * @param migrationOperation the migrationOperation value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -173,7 +167,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the startedOn property: Start date-time of a migration state.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -182,7 +176,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the startedOn property: Start date-time of a migration state.
-     *
+     * 
      * @param startedOn the startedOn value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -193,7 +187,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the endedOn property: End date-time of a migration state.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -202,7 +196,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the endedOn property: End date-time of a migration state.
-     *
+     * 
      * @param endedOn the endedOn value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -213,7 +207,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the fullLoadQueuedTables property: Number of tables queued for the migration of a DB.
-     *
+     * 
      * @return the fullLoadQueuedTables value.
      */
     public Integer fullLoadQueuedTables() {
@@ -222,7 +216,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the fullLoadQueuedTables property: Number of tables queued for the migration of a DB.
-     *
+     * 
      * @param fullLoadQueuedTables the fullLoadQueuedTables value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -233,7 +227,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the fullLoadErroredTables property: Number of tables errored out during the migration of a DB.
-     *
+     * 
      * @return the fullLoadErroredTables value.
      */
     public Integer fullLoadErroredTables() {
@@ -242,7 +236,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the fullLoadErroredTables property: Number of tables errored out during the migration of a DB.
-     *
+     * 
      * @param fullLoadErroredTables the fullLoadErroredTables value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -253,7 +247,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the fullLoadLoadingTables property: Number of tables loading during the migration of a DB.
-     *
+     * 
      * @return the fullLoadLoadingTables value.
      */
     public Integer fullLoadLoadingTables() {
@@ -262,7 +256,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the fullLoadLoadingTables property: Number of tables loading during the migration of a DB.
-     *
+     * 
      * @param fullLoadLoadingTables the fullLoadLoadingTables value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -273,7 +267,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the fullLoadCompletedTables property: Number of tables loaded during the migration of a DB.
-     *
+     * 
      * @return the fullLoadCompletedTables value.
      */
     public Integer fullLoadCompletedTables() {
@@ -282,7 +276,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the fullLoadCompletedTables property: Number of tables loaded during the migration of a DB.
-     *
+     * 
      * @param fullLoadCompletedTables the fullLoadCompletedTables value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -293,7 +287,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the cdcUpdateCounter property: CDC update counter.
-     *
+     * 
      * @return the cdcUpdateCounter value.
      */
     public Integer cdcUpdateCounter() {
@@ -302,7 +296,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the cdcUpdateCounter property: CDC update counter.
-     *
+     * 
      * @param cdcUpdateCounter the cdcUpdateCounter value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -313,7 +307,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the cdcDeleteCounter property: CDC delete counter.
-     *
+     * 
      * @return the cdcDeleteCounter value.
      */
     public Integer cdcDeleteCounter() {
@@ -322,7 +316,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the cdcDeleteCounter property: CDC delete counter.
-     *
+     * 
      * @param cdcDeleteCounter the cdcDeleteCounter value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -333,7 +327,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the cdcInsertCounter property: CDC insert counter.
-     *
+     * 
      * @return the cdcInsertCounter value.
      */
     public Integer cdcInsertCounter() {
@@ -342,7 +336,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the cdcInsertCounter property: CDC insert counter.
-     *
+     * 
      * @param cdcInsertCounter the cdcInsertCounter value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -353,7 +347,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the appliedChanges property: CDC applied changes counter.
-     *
+     * 
      * @return the appliedChanges value.
      */
     public Integer appliedChanges() {
@@ -362,7 +356,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the appliedChanges property: CDC applied changes counter.
-     *
+     * 
      * @param appliedChanges the appliedChanges value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -373,7 +367,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the incomingChanges property: CDC incoming changes counter.
-     *
+     * 
      * @return the incomingChanges value.
      */
     public Integer incomingChanges() {
@@ -382,7 +376,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the incomingChanges property: CDC incoming changes counter.
-     *
+     * 
      * @param incomingChanges the incomingChanges value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -393,7 +387,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the latency property: Lag in seconds between source and target during online phase.
-     *
+     * 
      * @return the latency value.
      */
     public Integer latency() {
@@ -402,7 +396,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the latency property: Lag in seconds between source and target during online phase.
-     *
+     * 
      * @param latency the latency value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -413,7 +407,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the message property: Error message, if any, for the migration state.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -422,7 +416,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the message property: Error message, if any, for the migration state.
-     *
+     * 
      * @param message the message value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -433,9 +427,95 @@ public final class DbMigrationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeStringField("migrationState",
+            this.migrationState == null ? null : this.migrationState.toString());
+        jsonWriter.writeStringField("migrationOperation", this.migrationOperation);
+        jsonWriter.writeStringField("startedOn",
+            this.startedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startedOn));
+        jsonWriter.writeStringField("endedOn",
+            this.endedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endedOn));
+        jsonWriter.writeNumberField("fullLoadQueuedTables", this.fullLoadQueuedTables);
+        jsonWriter.writeNumberField("fullLoadErroredTables", this.fullLoadErroredTables);
+        jsonWriter.writeNumberField("fullLoadLoadingTables", this.fullLoadLoadingTables);
+        jsonWriter.writeNumberField("fullLoadCompletedTables", this.fullLoadCompletedTables);
+        jsonWriter.writeNumberField("cdcUpdateCounter", this.cdcUpdateCounter);
+        jsonWriter.writeNumberField("cdcDeleteCounter", this.cdcDeleteCounter);
+        jsonWriter.writeNumberField("cdcInsertCounter", this.cdcInsertCounter);
+        jsonWriter.writeNumberField("appliedChanges", this.appliedChanges);
+        jsonWriter.writeNumberField("incomingChanges", this.incomingChanges);
+        jsonWriter.writeNumberField("latency", this.latency);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DbMigrationStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DbMigrationStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DbMigrationStatus.
+     */
+    public static DbMigrationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DbMigrationStatus deserializedDbMigrationStatus = new DbMigrationStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseName".equals(fieldName)) {
+                    deserializedDbMigrationStatus.databaseName = reader.getString();
+                } else if ("migrationState".equals(fieldName)) {
+                    deserializedDbMigrationStatus.migrationState = MigrationDbState.fromString(reader.getString());
+                } else if ("migrationOperation".equals(fieldName)) {
+                    deserializedDbMigrationStatus.migrationOperation = reader.getString();
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedDbMigrationStatus.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedDbMigrationStatus.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fullLoadQueuedTables".equals(fieldName)) {
+                    deserializedDbMigrationStatus.fullLoadQueuedTables = reader.getNullable(JsonReader::getInt);
+                } else if ("fullLoadErroredTables".equals(fieldName)) {
+                    deserializedDbMigrationStatus.fullLoadErroredTables = reader.getNullable(JsonReader::getInt);
+                } else if ("fullLoadLoadingTables".equals(fieldName)) {
+                    deserializedDbMigrationStatus.fullLoadLoadingTables = reader.getNullable(JsonReader::getInt);
+                } else if ("fullLoadCompletedTables".equals(fieldName)) {
+                    deserializedDbMigrationStatus.fullLoadCompletedTables = reader.getNullable(JsonReader::getInt);
+                } else if ("cdcUpdateCounter".equals(fieldName)) {
+                    deserializedDbMigrationStatus.cdcUpdateCounter = reader.getNullable(JsonReader::getInt);
+                } else if ("cdcDeleteCounter".equals(fieldName)) {
+                    deserializedDbMigrationStatus.cdcDeleteCounter = reader.getNullable(JsonReader::getInt);
+                } else if ("cdcInsertCounter".equals(fieldName)) {
+                    deserializedDbMigrationStatus.cdcInsertCounter = reader.getNullable(JsonReader::getInt);
+                } else if ("appliedChanges".equals(fieldName)) {
+                    deserializedDbMigrationStatus.appliedChanges = reader.getNullable(JsonReader::getInt);
+                } else if ("incomingChanges".equals(fieldName)) {
+                    deserializedDbMigrationStatus.incomingChanges = reader.getNullable(JsonReader::getInt);
+                } else if ("latency".equals(fieldName)) {
+                    deserializedDbMigrationStatus.latency = reader.getNullable(JsonReader::getInt);
+                } else if ("message".equals(fieldName)) {
+                    deserializedDbMigrationStatus.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDbMigrationStatus;
+        });
     }
 }

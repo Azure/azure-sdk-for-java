@@ -14,26 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AdditionalWorkspacesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdditionalWorkspacesProperties model =
-            BinaryData
-                .fromString("{\"workspace\":\"yq\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\",\"RawEvents\"]}")
-                .toObject(AdditionalWorkspacesProperties.class);
-        Assertions.assertEquals("yq", model.workspace());
+        AdditionalWorkspacesProperties model = BinaryData
+            .fromString("{\"workspace\":\"piccjzkzivgv\",\"type\":\"Sentinel\",\"dataTypes\":[\"RawEvents\"]}")
+            .toObject(AdditionalWorkspacesProperties.class);
+        Assertions.assertEquals("piccjzkzivgv", model.workspace());
         Assertions.assertEquals(AdditionalWorkspaceType.SENTINEL, model.type());
-        Assertions.assertEquals(AdditionalWorkspaceDataType.ALERTS, model.dataTypes().get(0));
+        Assertions.assertEquals(AdditionalWorkspaceDataType.RAW_EVENTS, model.dataTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdditionalWorkspacesProperties model =
-            new AdditionalWorkspacesProperties()
-                .withWorkspace("yq")
-                .withType(AdditionalWorkspaceType.SENTINEL)
-                .withDataTypes(
-                    Arrays.asList(AdditionalWorkspaceDataType.ALERTS, AdditionalWorkspaceDataType.RAW_EVENTS));
+        AdditionalWorkspacesProperties model = new AdditionalWorkspacesProperties().withWorkspace("piccjzkzivgv")
+            .withType(AdditionalWorkspaceType.SENTINEL)
+            .withDataTypes(Arrays.asList(AdditionalWorkspaceDataType.RAW_EVENTS));
         model = BinaryData.fromObject(model).toObject(AdditionalWorkspacesProperties.class);
-        Assertions.assertEquals("yq", model.workspace());
+        Assertions.assertEquals("piccjzkzivgv", model.workspace());
         Assertions.assertEquals(AdditionalWorkspaceType.SENTINEL, model.type());
-        Assertions.assertEquals(AdditionalWorkspaceDataType.ALERTS, model.dataTypes().get(0));
+        Assertions.assertEquals(AdditionalWorkspaceDataType.RAW_EVENTS, model.dataTypes().get(0));
     }
 }

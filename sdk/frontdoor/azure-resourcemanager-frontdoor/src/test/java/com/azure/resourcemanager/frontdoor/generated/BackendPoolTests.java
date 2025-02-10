@@ -15,78 +15,58 @@ import org.junit.jupiter.api.Assertions;
 public final class BackendPoolTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackendPool model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"resourceState\":\"Migrating\",\"backends\":[{\"address\":\"hzdxssadbzm\",\"privateLinkAlias\":\"dfznudaodv\",\"privateLinkResourceId\":\"bncblylpstdbhhx\",\"privateLinkLocation\":\"zdzucerscdntnevf\",\"privateEndpointStatus\":\"Pending\",\"privateLinkApprovalMessage\":\"ygtdsslswt\",\"httpPort\":478767297,\"httpsPort\":815719095,\"enabledState\":\"Enabled\",\"priority\":893686819,\"weight\":158092972,\"backendHostHeader\":\"emwabnet\"},{\"address\":\"hszhedplvwiwu\",\"privateLinkAlias\":\"wmbesldnkw\",\"privateLinkResourceId\":\"pp\",\"privateLinkLocation\":\"lcxog\",\"privateEndpointStatus\":\"Pending\",\"privateLinkApprovalMessage\":\"nzmnsikvm\",\"httpPort\":517153396,\"httpsPort\":1984679669,\"enabledState\":\"Disabled\",\"priority\":52302074,\"weight\":1896660287,\"backendHostHeader\":\"xmhhvhgureo\"}],\"loadBalancingSettings\":{\"id\":\"obdagxtibqdxb\"},\"healthProbeSettings\":{\"id\":\"kbogqxndlkzgx\"}},\"name\":\"ripl\",\"type\":\"odxun\",\"id\":\"ebxmubyynt\"}")
-                .toObject(BackendPool.class);
-        Assertions.assertEquals("ebxmubyynt", model.id());
-        Assertions.assertEquals("ripl", model.name());
-        Assertions.assertEquals("hzdxssadbzm", model.backends().get(0).address());
-        Assertions.assertEquals("dfznudaodv", model.backends().get(0).privateLinkAlias());
-        Assertions.assertEquals("bncblylpstdbhhx", model.backends().get(0).privateLinkResourceId());
-        Assertions.assertEquals("zdzucerscdntnevf", model.backends().get(0).privateLinkLocation());
-        Assertions.assertEquals("ygtdsslswt", model.backends().get(0).privateLinkApprovalMessage());
-        Assertions.assertEquals(478767297, model.backends().get(0).httpPort());
-        Assertions.assertEquals(815719095, model.backends().get(0).httpsPort());
-        Assertions.assertEquals(BackendEnabledState.ENABLED, model.backends().get(0).enabledState());
-        Assertions.assertEquals(893686819, model.backends().get(0).priority());
-        Assertions.assertEquals(158092972, model.backends().get(0).weight());
-        Assertions.assertEquals("emwabnet", model.backends().get(0).backendHostHeader());
-        Assertions.assertEquals("obdagxtibqdxb", model.loadBalancingSettings().id());
-        Assertions.assertEquals("kbogqxndlkzgx", model.healthProbeSettings().id());
+        BackendPool model = BinaryData.fromString(
+            "{\"properties\":{\"resourceState\":\"Creating\",\"backends\":[{\"address\":\"awzqadfl\",\"privateLinkAlias\":\"ur\",\"privateLinkResourceId\":\"laecxndticok\",\"privateLinkLocation\":\"zmlqtmldgxo\",\"privateEndpointStatus\":\"Timeout\",\"privateLinkApprovalMessage\":\"clnpkci\",\"httpPort\":1763691901,\"httpsPort\":1109916167,\"enabledState\":\"Disabled\",\"priority\":609521578,\"weight\":529722805,\"backendHostHeader\":\"vjlboxqvk\"}],\"loadBalancingSettings\":{\"id\":\"xhom\"},\"healthProbeSettings\":{\"id\":\"hdwdi\"}},\"name\":\"mbnraauzzp\",\"type\":\"a\",\"id\":\"sdzhezww\"}")
+            .toObject(BackendPool.class);
+        Assertions.assertEquals("sdzhezww", model.id());
+        Assertions.assertEquals("mbnraauzzp", model.name());
+        Assertions.assertEquals("awzqadfl", model.backends().get(0).address());
+        Assertions.assertEquals("ur", model.backends().get(0).privateLinkAlias());
+        Assertions.assertEquals("laecxndticok", model.backends().get(0).privateLinkResourceId());
+        Assertions.assertEquals("zmlqtmldgxo", model.backends().get(0).privateLinkLocation());
+        Assertions.assertEquals("clnpkci", model.backends().get(0).privateLinkApprovalMessage());
+        Assertions.assertEquals(1763691901, model.backends().get(0).httpPort());
+        Assertions.assertEquals(1109916167, model.backends().get(0).httpsPort());
+        Assertions.assertEquals(BackendEnabledState.DISABLED, model.backends().get(0).enabledState());
+        Assertions.assertEquals(609521578, model.backends().get(0).priority());
+        Assertions.assertEquals(529722805, model.backends().get(0).weight());
+        Assertions.assertEquals("vjlboxqvk", model.backends().get(0).backendHostHeader());
+        Assertions.assertEquals("xhom", model.loadBalancingSettings().id());
+        Assertions.assertEquals("hdwdi", model.healthProbeSettings().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackendPool model =
-            new BackendPool()
-                .withId("ebxmubyynt")
-                .withName("ripl")
-                .withBackends(
-                    Arrays
-                        .asList(
-                            new Backend()
-                                .withAddress("hzdxssadbzm")
-                                .withPrivateLinkAlias("dfznudaodv")
-                                .withPrivateLinkResourceId("bncblylpstdbhhx")
-                                .withPrivateLinkLocation("zdzucerscdntnevf")
-                                .withPrivateLinkApprovalMessage("ygtdsslswt")
-                                .withHttpPort(478767297)
-                                .withHttpsPort(815719095)
-                                .withEnabledState(BackendEnabledState.ENABLED)
-                                .withPriority(893686819)
-                                .withWeight(158092972)
-                                .withBackendHostHeader("emwabnet"),
-                            new Backend()
-                                .withAddress("hszhedplvwiwu")
-                                .withPrivateLinkAlias("wmbesldnkw")
-                                .withPrivateLinkResourceId("pp")
-                                .withPrivateLinkLocation("lcxog")
-                                .withPrivateLinkApprovalMessage("nzmnsikvm")
-                                .withHttpPort(517153396)
-                                .withHttpsPort(1984679669)
-                                .withEnabledState(BackendEnabledState.DISABLED)
-                                .withPriority(52302074)
-                                .withWeight(1896660287)
-                                .withBackendHostHeader("xmhhvhgureo")))
-                .withLoadBalancingSettings(new SubResource().withId("obdagxtibqdxb"))
-                .withHealthProbeSettings(new SubResource().withId("kbogqxndlkzgx"));
+        BackendPool model = new BackendPool().withId("sdzhezww")
+            .withName("mbnraauzzp")
+            .withBackends(Arrays.asList(new Backend().withAddress("awzqadfl")
+                .withPrivateLinkAlias("ur")
+                .withPrivateLinkResourceId("laecxndticok")
+                .withPrivateLinkLocation("zmlqtmldgxo")
+                .withPrivateLinkApprovalMessage("clnpkci")
+                .withHttpPort(1763691901)
+                .withHttpsPort(1109916167)
+                .withEnabledState(BackendEnabledState.DISABLED)
+                .withPriority(609521578)
+                .withWeight(529722805)
+                .withBackendHostHeader("vjlboxqvk")))
+            .withLoadBalancingSettings(new SubResource().withId("xhom"))
+            .withHealthProbeSettings(new SubResource().withId("hdwdi"));
         model = BinaryData.fromObject(model).toObject(BackendPool.class);
-        Assertions.assertEquals("ebxmubyynt", model.id());
-        Assertions.assertEquals("ripl", model.name());
-        Assertions.assertEquals("hzdxssadbzm", model.backends().get(0).address());
-        Assertions.assertEquals("dfznudaodv", model.backends().get(0).privateLinkAlias());
-        Assertions.assertEquals("bncblylpstdbhhx", model.backends().get(0).privateLinkResourceId());
-        Assertions.assertEquals("zdzucerscdntnevf", model.backends().get(0).privateLinkLocation());
-        Assertions.assertEquals("ygtdsslswt", model.backends().get(0).privateLinkApprovalMessage());
-        Assertions.assertEquals(478767297, model.backends().get(0).httpPort());
-        Assertions.assertEquals(815719095, model.backends().get(0).httpsPort());
-        Assertions.assertEquals(BackendEnabledState.ENABLED, model.backends().get(0).enabledState());
-        Assertions.assertEquals(893686819, model.backends().get(0).priority());
-        Assertions.assertEquals(158092972, model.backends().get(0).weight());
-        Assertions.assertEquals("emwabnet", model.backends().get(0).backendHostHeader());
-        Assertions.assertEquals("obdagxtibqdxb", model.loadBalancingSettings().id());
-        Assertions.assertEquals("kbogqxndlkzgx", model.healthProbeSettings().id());
+        Assertions.assertEquals("sdzhezww", model.id());
+        Assertions.assertEquals("mbnraauzzp", model.name());
+        Assertions.assertEquals("awzqadfl", model.backends().get(0).address());
+        Assertions.assertEquals("ur", model.backends().get(0).privateLinkAlias());
+        Assertions.assertEquals("laecxndticok", model.backends().get(0).privateLinkResourceId());
+        Assertions.assertEquals("zmlqtmldgxo", model.backends().get(0).privateLinkLocation());
+        Assertions.assertEquals("clnpkci", model.backends().get(0).privateLinkApprovalMessage());
+        Assertions.assertEquals(1763691901, model.backends().get(0).httpPort());
+        Assertions.assertEquals(1109916167, model.backends().get(0).httpsPort());
+        Assertions.assertEquals(BackendEnabledState.DISABLED, model.backends().get(0).enabledState());
+        Assertions.assertEquals(609521578, model.backends().get(0).priority());
+        Assertions.assertEquals(529722805, model.backends().get(0).weight());
+        Assertions.assertEquals("vjlboxqvk", model.backends().get(0).backendHostHeader());
+        Assertions.assertEquals("xhom", model.loadBalancingSettings().id());
+        Assertions.assertEquals("hdwdi", model.healthProbeSettings().id());
     }
 }

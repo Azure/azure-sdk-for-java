@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Application Gateway Ssl policy.
  */
 @Fluent
-public final class ApplicationGatewaySslPolicy {
+public final class ApplicationGatewaySslPolicy implements JsonSerializable<ApplicationGatewaySslPolicy> {
     /*
      * Ssl protocols to be disabled on application gateway.
      */
-    @JsonProperty(value = "disabledSslProtocols")
     private List<ApplicationGatewaySslProtocol> disabledSslProtocols;
 
     /*
      * Type of Ssl Policy.
      */
-    @JsonProperty(value = "policyType")
     private ApplicationGatewaySslPolicyType policyType;
 
     /*
      * Name of Ssl predefined policy.
      */
-    @JsonProperty(value = "policyName")
     private ApplicationGatewaySslPolicyName policyName;
 
     /*
      * Ssl cipher suites to be enabled in the specified order to application gateway.
      */
-    @JsonProperty(value = "cipherSuites")
     private List<ApplicationGatewaySslCipherSuite> cipherSuites;
 
     /*
      * Minimum version of Ssl protocol to be supported on application gateway.
      */
-    @JsonProperty(value = "minProtocolVersion")
     private ApplicationGatewaySslProtocol minProtocolVersion;
 
     /**
@@ -156,5 +155,63 @@ public final class ApplicationGatewaySslPolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("disabledSslProtocols", this.disabledSslProtocols,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("policyType", this.policyType == null ? null : this.policyType.toString());
+        jsonWriter.writeStringField("policyName", this.policyName == null ? null : this.policyName.toString());
+        jsonWriter.writeArrayField("cipherSuites", this.cipherSuites,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("minProtocolVersion",
+            this.minProtocolVersion == null ? null : this.minProtocolVersion.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewaySslPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewaySslPolicy if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewaySslPolicy.
+     */
+    public static ApplicationGatewaySslPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewaySslPolicy deserializedApplicationGatewaySslPolicy = new ApplicationGatewaySslPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disabledSslProtocols".equals(fieldName)) {
+                    List<ApplicationGatewaySslProtocol> disabledSslProtocols
+                        = reader.readArray(reader1 -> ApplicationGatewaySslProtocol.fromString(reader1.getString()));
+                    deserializedApplicationGatewaySslPolicy.disabledSslProtocols = disabledSslProtocols;
+                } else if ("policyType".equals(fieldName)) {
+                    deserializedApplicationGatewaySslPolicy.policyType
+                        = ApplicationGatewaySslPolicyType.fromString(reader.getString());
+                } else if ("policyName".equals(fieldName)) {
+                    deserializedApplicationGatewaySslPolicy.policyName
+                        = ApplicationGatewaySslPolicyName.fromString(reader.getString());
+                } else if ("cipherSuites".equals(fieldName)) {
+                    List<ApplicationGatewaySslCipherSuite> cipherSuites
+                        = reader.readArray(reader1 -> ApplicationGatewaySslCipherSuite.fromString(reader1.getString()));
+                    deserializedApplicationGatewaySslPolicy.cipherSuites = cipherSuites;
+                } else if ("minProtocolVersion".equals(fieldName)) {
+                    deserializedApplicationGatewaySslPolicy.minProtocolVersion
+                        = ApplicationGatewaySslProtocol.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewaySslPolicy;
+        });
     }
 }

@@ -5,33 +5,46 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** teamsAsyncOperationType. */
+/**
+ * teamsAsyncOperationType.
+ */
 public final class MicrosoftGraphTeamsAsyncOperationType
     extends ExpandableStringEnum<MicrosoftGraphTeamsAsyncOperationType> {
-    /** Static value invalid for MicrosoftGraphTeamsAsyncOperationType. */
+    /**
+     * Static value invalid for MicrosoftGraphTeamsAsyncOperationType.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationType INVALID = fromString("invalid");
 
-    /** Static value cloneTeam for MicrosoftGraphTeamsAsyncOperationType. */
+    /**
+     * Static value cloneTeam for MicrosoftGraphTeamsAsyncOperationType.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationType CLONE_TEAM = fromString("cloneTeam");
 
-    /** Static value archiveTeam for MicrosoftGraphTeamsAsyncOperationType. */
+    /**
+     * Static value archiveTeam for MicrosoftGraphTeamsAsyncOperationType.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationType ARCHIVE_TEAM = fromString("archiveTeam");
 
-    /** Static value unarchiveTeam for MicrosoftGraphTeamsAsyncOperationType. */
+    /**
+     * Static value unarchiveTeam for MicrosoftGraphTeamsAsyncOperationType.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationType UNARCHIVE_TEAM = fromString("unarchiveTeam");
 
-    /** Static value createTeam for MicrosoftGraphTeamsAsyncOperationType. */
+    /**
+     * Static value createTeam for MicrosoftGraphTeamsAsyncOperationType.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationType CREATE_TEAM = fromString("createTeam");
 
-    /** Static value unknownFutureValue for MicrosoftGraphTeamsAsyncOperationType. */
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphTeamsAsyncOperationType.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationType UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphTeamsAsyncOperationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +53,17 @@ public final class MicrosoftGraphTeamsAsyncOperationType
 
     /**
      * Creates or finds a MicrosoftGraphTeamsAsyncOperationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphTeamsAsyncOperationType.
      */
-    @JsonCreator
     public static MicrosoftGraphTeamsAsyncOperationType fromString(String name) {
         return fromString(name, MicrosoftGraphTeamsAsyncOperationType.class);
     }
 
     /**
      * Gets known MicrosoftGraphTeamsAsyncOperationType values.
-     *
+     * 
      * @return known MicrosoftGraphTeamsAsyncOperationType values.
      */
     public static Collection<MicrosoftGraphTeamsAsyncOperationType> values() {

@@ -6,11 +6,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.AzureVMResourceFeatureSupportResponseInner;
 
-/** An immutable client-side representation of AzureVMResourceFeatureSupportResponse. */
+/**
+ * An immutable client-side representation of AzureVMResourceFeatureSupportResponse.
+ */
 public interface AzureVMResourceFeatureSupportResponse {
     /**
      * Gets the supportStatus property: Support status of feature.
-     *
+     * 
      * @return the supportStatus value.
      */
     SupportStatus supportStatus();
@@ -18,7 +20,7 @@ public interface AzureVMResourceFeatureSupportResponse {
     /**
      * Gets the inner
      * com.azure.resourcemanager.recoveryservicesbackup.fluent.models.AzureVMResourceFeatureSupportResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     AzureVMResourceFeatureSupportResponseInner innerModel();

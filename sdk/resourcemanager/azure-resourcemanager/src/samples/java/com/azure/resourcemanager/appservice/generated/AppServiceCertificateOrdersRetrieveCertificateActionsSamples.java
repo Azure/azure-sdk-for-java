@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class AppServiceCertificateOrdersRetrieveCertificateActionsSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/
+     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-04-01/examples/
      * RetrieveCertificateOrderActions.json
      */
     /**
@@ -19,7 +19,10 @@ public final class AppServiceCertificateOrdersRetrieveCertificateActionsSamples 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void retrieveCertificateOrderActions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceCertificateOrders()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceCertificateOrders()
             .retrieveCertificateActionsWithResponse("testrg123", "SampleCertOrder", com.azure.core.util.Context.NONE);
     }
 }

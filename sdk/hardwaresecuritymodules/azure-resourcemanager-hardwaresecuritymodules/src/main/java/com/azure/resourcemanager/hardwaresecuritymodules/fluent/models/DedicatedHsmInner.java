@@ -5,46 +5,57 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.JsonWebKeyType;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.NetworkProfile;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsmProperties;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsmResource;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Resource information with extended details. */
+/**
+ * Resource information with extended details.
+ */
 @Fluent
-public final class DedicatedHsmInner extends Resource {
+public final class DedicatedHsmInner extends DedicatedHsmResource {
     /*
      * Metadata pertaining to creation and last modification of the resource
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Properties of the dedicated HSM
      */
-    @JsonProperty(value = "properties", required = true)
-    private DedicatedHsmProperties innerProperties = new DedicatedHsmProperties();
+    private DedicatedHsmProperties properties;
 
     /*
-     * SKU details
+     * The type of the resource.
      */
-    @JsonProperty(value = "sku")
-    private Sku sku;
+    private String type;
 
     /*
-     * The Dedicated Hsm zones.
+     * The name of the resource.
      */
-    @JsonProperty(value = "zones")
-    private List<String> zones;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DedicatedHsmInner class.
+     */
+    public DedicatedHsmInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,62 +63,85 @@ public final class DedicatedHsmInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Properties of the dedicated HSM.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: Properties of the dedicated HSM.
+     * 
+     * @return the properties value.
      */
-    private DedicatedHsmProperties innerProperties() {
-        return this.innerProperties;
+    public DedicatedHsmProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the sku property: SKU details.
-     *
-     * @return the sku value.
-     */
-    public Sku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: SKU details.
-     *
-     * @param sku the sku value to set.
+     * Set the properties property: Properties of the dedicated HSM.
+     * 
+     * @param properties the properties value to set.
      * @return the DedicatedHsmInner object itself.
      */
+    public DedicatedHsmInner withProperties(DedicatedHsmProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DedicatedHsmInner withSku(Sku sku) {
-        this.sku = sku;
+        super.withSku(sku);
         return this;
     }
 
     /**
-     * Get the zones property: The Dedicated Hsm zones.
-     *
-     * @return the zones value.
+     * {@inheritDoc}
      */
-    public List<String> zones() {
-        return this.zones;
-    }
-
-    /**
-     * Set the zones property: The Dedicated Hsm zones.
-     *
-     * @param zones the zones value to set.
-     * @return the DedicatedHsmInner object itself.
-     */
+    @Override
     public DedicatedHsmInner withZones(List<String> zones) {
-        this.zones = zones;
+        super.withZones(zones);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedHsmInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedHsmInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -115,105 +149,17 @@ public final class DedicatedHsmInner extends Resource {
     }
 
     /**
-     * Get the networkProfile property: Specifies the network interfaces of the dedicated hsm.
-     *
-     * @return the networkProfile value.
-     */
-    public NetworkProfile networkProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
-    }
-
-    /**
-     * Set the networkProfile property: Specifies the network interfaces of the dedicated hsm.
-     *
-     * @param networkProfile the networkProfile value to set.
-     * @return the DedicatedHsmInner object itself.
-     */
-    public DedicatedHsmInner withNetworkProfile(NetworkProfile networkProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DedicatedHsmProperties();
-        }
-        this.innerProperties().withNetworkProfile(networkProfile);
-        return this;
-    }
-
-    /**
-     * Get the managementNetworkProfile property: Specifies the management network interfaces of the dedicated hsm.
-     *
-     * @return the managementNetworkProfile value.
-     */
-    public NetworkProfile managementNetworkProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().managementNetworkProfile();
-    }
-
-    /**
-     * Set the managementNetworkProfile property: Specifies the management network interfaces of the dedicated hsm.
-     *
-     * @param managementNetworkProfile the managementNetworkProfile value to set.
-     * @return the DedicatedHsmInner object itself.
-     */
-    public DedicatedHsmInner withManagementNetworkProfile(NetworkProfile managementNetworkProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DedicatedHsmProperties();
-        }
-        this.innerProperties().withManagementNetworkProfile(managementNetworkProfile);
-        return this;
-    }
-
-    /**
-     * Get the stampId property: This field will be used when RP does not support Availability zones.
-     *
-     * @return the stampId value.
-     */
-    public String stampId() {
-        return this.innerProperties() == null ? null : this.innerProperties().stampId();
-    }
-
-    /**
-     * Set the stampId property: This field will be used when RP does not support Availability zones.
-     *
-     * @param stampId the stampId value to set.
-     * @return the DedicatedHsmInner object itself.
-     */
-    public DedicatedHsmInner withStampId(String stampId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DedicatedHsmProperties();
-        }
-        this.innerProperties().withStampId(stampId);
-        return this;
-    }
-
-    /**
-     * Get the statusMessage property: Resource Status Message.
-     *
-     * @return the statusMessage value.
-     */
-    public String statusMessage() {
-        return this.innerProperties() == null ? null : this.innerProperties().statusMessage();
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public JsonWebKeyType provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model DedicatedHsmInner"));
+        if (properties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model DedicatedHsmInner"));
         } else {
-            innerProperties().validate();
+            properties().validate();
         }
         if (sku() != null) {
             sku().validate();
@@ -221,4 +167,63 @@ public final class DedicatedHsmInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DedicatedHsmInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeArrayField("zones", zones(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHsmInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHsmInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DedicatedHsmInner.
+     */
+    public static DedicatedHsmInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHsmInner deserializedDedicatedHsmInner = new DedicatedHsmInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDedicatedHsmInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDedicatedHsmInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDedicatedHsmInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDedicatedHsmInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDedicatedHsmInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDedicatedHsmInner.withSku(Sku.fromJson(reader));
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDedicatedHsmInner.withZones(zones);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDedicatedHsmInner.properties = DedicatedHsmProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDedicatedHsmInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHsmInner;
+        });
+    }
 }

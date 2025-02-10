@@ -12,7 +12,7 @@ import java.util.Arrays;
 public final class TopicSpacesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
      * TopicSpaces_CreateOrUpdate.json
      */
     /**
@@ -21,8 +21,10 @@ public final class TopicSpacesCreateOrUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void topicSpacesCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.topicSpaces().define("exampleTopicSpaceName1")
+        manager.topicSpaces()
+            .define("exampleTopicSpaceName1")
             .withExistingNamespace("examplerg", "exampleNamespaceName1")
-            .withTopicTemplates(Arrays.asList("filter1", "filter2")).create();
+            .withTopicTemplates(Arrays.asList("filter1", "filter2"))
+            .create();
     }
 }

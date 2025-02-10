@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Rendering details of a diagnostics table. */
+/**
+ * Rendering details of a diagnostics table.
+ */
 @Fluent
-public final class DiagnosticsStatus {
+public final class DiagnosticsStatus implements JsonSerializable<DiagnosticsStatus> {
     /*
      * Diagnostic message
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Status
      */
-    @JsonProperty(value = "statusId")
     private Integer statusId;
 
-    /** Creates an instance of DiagnosticsStatus class. */
+    /**
+     * Creates an instance of DiagnosticsStatus class.
+     */
     public DiagnosticsStatus() {
     }
 
     /**
      * Get the message property: Diagnostic message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -37,7 +43,7 @@ public final class DiagnosticsStatus {
 
     /**
      * Set the message property: Diagnostic message.
-     *
+     * 
      * @param message the message value to set.
      * @return the DiagnosticsStatus object itself.
      */
@@ -48,7 +54,7 @@ public final class DiagnosticsStatus {
 
     /**
      * Get the statusId property: Status.
-     *
+     * 
      * @return the statusId value.
      */
     public Integer statusId() {
@@ -57,7 +63,7 @@ public final class DiagnosticsStatus {
 
     /**
      * Set the statusId property: Status.
-     *
+     * 
      * @param statusId the statusId value to set.
      * @return the DiagnosticsStatus object itself.
      */
@@ -68,9 +74,48 @@ public final class DiagnosticsStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeNumberField("statusId", this.statusId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticsStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticsStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticsStatus.
+     */
+    public static DiagnosticsStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticsStatus deserializedDiagnosticsStatus = new DiagnosticsStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedDiagnosticsStatus.message = reader.getString();
+                } else if ("statusId".equals(fieldName)) {
+                    deserializedDiagnosticsStatus.statusId = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticsStatus;
+        });
     }
 }

@@ -23,12 +23,12 @@ import java.util.Objects;
 
 /**
  * A class that represents a Changefeed.
- *
+ * <p>
  * The changefeed is a log of changes that are organized into hourly segments.
  * The listing of the $blobchangefeed/idx/segments/ virtual directory shows these segments ordered by time.
  * The path of the segment describes the start of the hourly time-range that the segment represents.
  * This list can be used to filter out the segments of logs that are interest.
- *
+ * <p>
  * Note: The time represented by the segment is approximate with bounds of 15 minutes. So to ensure consumption of
  * all records within a specified time, consume the consecutive previous and next hour segment.
  */
@@ -56,7 +56,7 @@ class Changefeed {
         this.endTime = TimeUtils.roundUpToNearestHour(endTime);
         this.userCursor = userCursor;
         this.segmentFactory = segmentFactory;
-        String urlHost = null;
+        String urlHost;
         try {
             urlHost = new URL(client.getBlobContainerUrl()).getHost();
         } catch (MalformedURLException e) {
@@ -70,8 +70,8 @@ class Changefeed {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unsupported cursor version."));
             }
             if (!Objects.equals(urlHost, userCursor.getUrlHost())) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Cursor URL host does not match "
-                    + "container URL host."));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Cursor URL host does not match " + "container URL host."));
             }
         }
     }
@@ -81,11 +81,8 @@ class Changefeed {
      * @return A reactive stream of {@link BlobChangefeedEventWrapper}
      */
     Flux<BlobChangefeedEventWrapper> getEvents() {
-        return validateChangefeed()
-            .then(populateLastConsumable())
-            .flatMapMany(safeEndTime ->
-                listYears(safeEndTime).map(str -> Tuples.of(safeEndTime, str))
-            )
+        return validateChangefeed().then(populateLastConsumable())
+            .flatMapMany(safeEndTime -> listYears(safeEndTime).map(str -> Tuples.of(safeEndTime, str)))
             .concatMap(tuple2 -> {
                 OffsetDateTime safeEndTime = tuple2.getT1();
                 String year = tuple2.getT2();
@@ -98,14 +95,13 @@ class Changefeed {
      * Validates that changefeed has been enabled for the account.
      */
     private Mono<Boolean> validateChangefeed() {
-        return this.client.exists()
-            .flatMap(exists -> {
-                if (exists == null || !exists) {
-                    return FluxUtil.monoError(LOGGER, new RuntimeException("Changefeed has not been enabled for "
-                        + "this account."));
-                }
-                return Mono.just(true);
-            });
+        return this.client.exists().flatMap(exists -> {
+            if (exists == null || !exists) {
+                return FluxUtil.monoError(LOGGER,
+                    new RuntimeException("Changefeed has not been enabled for " + "this account."));
+            }
+            return Mono.just(true);
+        });
     }
 
     /**
@@ -120,11 +116,12 @@ class Changefeed {
             /* Parse JSON for last consumable. */
             .flatMap(jsonNode -> {
                 /* Last consumable time. The latest time the changefeed can safely be read from.*/
-                OffsetDateTime lastConsumableTime = OffsetDateTime.parse(jsonNode.get("lastConsumable").asText());
+                OffsetDateTime lastConsumableTime
+                    = OffsetDateTime.parse(String.valueOf(jsonNode.get("lastConsumable")));
                 /* Soonest time between lastConsumable and endTime. */
                 OffsetDateTime safeEndTime = this.endTime;
                 if (lastConsumableTime.isBefore(endTime)) {
-                    safeEndTime = lastConsumableTime.plusHours(1); /* Add an hour since end time is non inclusive. */
+                    safeEndTime = lastConsumableTime.plusHours(1); /* Add an hour since end time is non-inclusive. */
                 }
                 return Mono.just(safeEndTime);
             });
@@ -155,13 +152,13 @@ class Changefeed {
         OffsetDateTime segmentTime = TimeUtils.convertPathToTime(segment);
         /* Only pass the user cursor in to the segment of interest. */
         if (userCursor != null && segmentTime.isEqual(startTime)) {
-            return segmentFactory.getSegment(segment,
-                changefeedCursor.toSegmentCursor(segment, userCursor.getCurrentSegmentCursor()),
-                userCursor.getCurrentSegmentCursor()).getEvents();
+            return segmentFactory
+                .getSegment(segment, changefeedCursor.toSegmentCursor(segment, userCursor.getCurrentSegmentCursor()),
+                    userCursor.getCurrentSegmentCursor())
+                .getEvents();
         } else {
-            return segmentFactory.getSegment(segment,
-                changefeedCursor.toSegmentCursor(segment, null),
-                null).getEvents();
+            return segmentFactory.getSegment(segment, changefeedCursor.toSegmentCursor(segment, null), null)
+                .getEvents();
         }
     }
 

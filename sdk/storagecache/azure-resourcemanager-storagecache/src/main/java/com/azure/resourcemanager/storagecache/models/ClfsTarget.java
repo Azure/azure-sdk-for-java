@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties pertaining to the ClfsTarget. */
+/**
+ * Properties pertaining to the ClfsTarget.
+ */
 @Fluent
-public final class ClfsTarget {
+public final class ClfsTarget implements JsonSerializable<ClfsTarget> {
     /*
      * Resource ID of storage container.
      */
-    @JsonProperty(value = "target")
     private String target;
 
-    /** Creates an instance of ClfsTarget class. */
+    /**
+     * Creates an instance of ClfsTarget class.
+     */
     public ClfsTarget() {
     }
 
     /**
      * Get the target property: Resource ID of storage container.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -31,7 +38,7 @@ public final class ClfsTarget {
 
     /**
      * Set the target property: Resource ID of storage container.
-     *
+     * 
      * @param target the target value to set.
      * @return the ClfsTarget object itself.
      */
@@ -42,9 +49,45 @@ public final class ClfsTarget {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("target", this.target);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClfsTarget from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClfsTarget if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ClfsTarget.
+     */
+    public static ClfsTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClfsTarget deserializedClfsTarget = new ClfsTarget();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("target".equals(fieldName)) {
+                    deserializedClfsTarget.target = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClfsTarget;
+        });
     }
 }

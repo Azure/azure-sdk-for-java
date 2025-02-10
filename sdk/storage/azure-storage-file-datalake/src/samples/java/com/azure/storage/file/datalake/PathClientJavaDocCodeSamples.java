@@ -21,6 +21,7 @@ import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -165,13 +166,21 @@ public class PathClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakePathClient#getProperties()}
+     * Code snippets for {@link DataLakePathClient#getProperties()} and {@link DataLakePathClient#getProperties(PathGetPropertiesOptions)}
      */
     public void getPropertiesCodeSnippet() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getProperties
         System.out.printf("Creation Time: %s, Size: %d%n", client.getProperties().getCreationTime(),
             client.getProperties().getFileSize());
         // END: com.azure.storage.file.datalake.DataLakePathClient.getProperties
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getProperties#PathGetPropertiesOptions
+        PathGetPropertiesOptions options = new PathGetPropertiesOptions().setUserPrincipalName(true);
+
+        System.out.printf("Creation Time: %s, Size: %d%n", client.getProperties(options).getCreationTime(),
+            client.getProperties(options).getFileSize());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.getProperties#PathGetPropertiesOptions
+
     }
 
     /**

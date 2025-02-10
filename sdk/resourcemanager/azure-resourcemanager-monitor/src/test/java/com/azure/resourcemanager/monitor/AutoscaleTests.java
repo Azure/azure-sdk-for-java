@@ -46,71 +46,64 @@ public class AutoscaleTests extends MonitorManagementTest {
     public void canCRUDAutoscale() throws Exception {
 
         try {
-            resourceManager
-                .resourceGroups()
+            resourceManager.resourceGroups()
                 .define(rgName)
                 .withRegion(Region.US_EAST2)
                 .withTag("type", "autoscale")
                 .withTag("tagname", "tagvalue")
                 .create();
 
-            AppServicePlan servicePlan =
-                appServiceManager
-                    .appServicePlans()
-                    .define("HighlyAvailableWebApps")
-                    .withRegion(Region.US_EAST2)
-                    .withExistingResourceGroup(rgName)
-                    .withPricingTier(PricingTier.PREMIUM_P1)
-                    .withOperatingSystem(OperatingSystem.WINDOWS)
-                    .create();
+            AppServicePlan servicePlan = appServiceManager.appServicePlans()
+                .define("HighlyAvailableWebApps")
+                .withRegion(Region.US_EAST2)
+                .withExistingResourceGroup(rgName)
+                .withPricingTier(PricingTier.PREMIUM_P1)
+                .withOperatingSystem(OperatingSystem.WINDOWS)
+                .create();
 
-            AutoscaleSetting setting =
-                monitorManager
-                    .autoscaleSettings()
-                    .define("somesettingZ")
-                    .withRegion(Region.US_EAST2)
-                    .withExistingResourceGroup(rgName)
-                    .withTargetResource(servicePlan.id())
-                    .defineAutoscaleProfile("Default")
-                    .withScheduleBasedScale(3)
-                    .withRecurrentSchedule("UTC", "18:00", DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.SATURDAY)
-                    .attach()
-                    .defineAutoscaleProfile("AutoScaleProfile1")
-                    .withMetricBasedScale(1, 10, 1)
-                    .defineScaleRule()
-                    .withMetricSource(servicePlan.id())
-                    // current swagger does not support namespace selection
-                    // .withMetricName("CPUPercentage", "Microsoft.Web/serverfarms")
-                    .withMetricName("CPUPercentage")
-                    .withStatistic(Duration.ofMinutes(10), Duration.ofMinutes(1), MetricStatisticType.AVERAGE)
-                    .withCondition(TimeAggregationType.AVERAGE, ComparisonOperationType.GREATER_THAN, 70)
-                    .withScaleAction(ScaleDirection.INCREASE, ScaleType.EXACT_COUNT, 10, Duration.ofHours(12))
-                    .attach()
-                    .withFixedDateSchedule(
-                        "UTC",
-                        OffsetDateTime.parse("2050-10-12T20:15:10Z"),
-                        OffsetDateTime.parse("2051-09-11T16:08:04Z"))
-                    .attach()
-                    .defineAutoscaleProfile("AutoScaleProfile2")
-                    .withMetricBasedScale(1, 5, 3)
-                    .defineScaleRule()
-                    .withMetricSource(servicePlan.id())
-                    .withMetricName("CPUPercentage")
-                    .withStatistic(Duration.ofMinutes(10), Duration.ofMinutes(1), MetricStatisticType.AVERAGE)
-                    .withCondition(TimeAggregationType.AVERAGE, ComparisonOperationType.LESS_THAN, 20)
-                    .withScaleAction(ScaleDirection.DECREASE, ScaleType.EXACT_COUNT, 1, Duration.ofHours(3))
-                    .attach()
-                    .withRecurrentSchedule("UTC", "12:13", DayOfWeek.FRIDAY)
-                    .attach()
-                    .withAdminEmailNotification()
-                    .withCoAdminEmailNotification()
-                    .withCustomEmailsNotification("me@mycorp.com", "you@mycorp.com", "him@mycorp.com")
-                    .withAutoscaleDisabled()
-                    .create();
+            AutoscaleSetting setting = monitorManager.autoscaleSettings()
+                .define("somesettingZ")
+                .withRegion(Region.US_EAST2)
+                .withExistingResourceGroup(rgName)
+                .withTargetResource(servicePlan.id())
+                .defineAutoscaleProfile("Default")
+                .withScheduleBasedScale(3)
+                .withRecurrentSchedule("UTC", "18:00", DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.SATURDAY)
+                .attach()
+                .defineAutoscaleProfile("AutoScaleProfile1")
+                .withMetricBasedScale(1, 10, 1)
+                .defineScaleRule()
+                .withMetricSource(servicePlan.id())
+                // current swagger does not support namespace selection
+                // .withMetricName("CPUPercentage", "Microsoft.Web/serverfarms")
+                .withMetricName("CPUPercentage")
+                .withStatistic(Duration.ofMinutes(10), Duration.ofMinutes(1), MetricStatisticType.AVERAGE)
+                .withCondition(TimeAggregationType.AVERAGE, ComparisonOperationType.GREATER_THAN, 70)
+                .withScaleAction(ScaleDirection.INCREASE, ScaleType.EXACT_COUNT, 10, Duration.ofHours(12))
+                .attach()
+                .withFixedDateSchedule("UTC", OffsetDateTime.parse("2050-10-12T20:15:10Z"),
+                    OffsetDateTime.parse("2051-09-11T16:08:04Z"))
+                .attach()
+                .defineAutoscaleProfile("AutoScaleProfile2")
+                .withMetricBasedScale(1, 5, 3)
+                .defineScaleRule()
+                .withMetricSource(servicePlan.id())
+                .withMetricName("CPUPercentage")
+                .withStatistic(Duration.ofMinutes(10), Duration.ofMinutes(1), MetricStatisticType.AVERAGE)
+                .withCondition(TimeAggregationType.AVERAGE, ComparisonOperationType.LESS_THAN, 20)
+                .withScaleAction(ScaleDirection.DECREASE, ScaleType.EXACT_COUNT, 1, Duration.ofHours(3))
+                .attach()
+                .withRecurrentSchedule("UTC", "12:13", DayOfWeek.FRIDAY)
+                .attach()
+                .withAdminEmailNotification()
+                .withCoAdminEmailNotification()
+                .withCustomEmailsNotification("me@mycorp.com", "you@mycorp.com", "him@mycorp.com")
+                .withAutoscaleDisabled()
+                .create();
 
             Assertions.assertNotNull(setting);
             Assertions.assertEquals("somesettingZ", setting.name());
-            Assertions.assertEquals(servicePlan.id(), setting.targetResourceId());
+            assertResourceIdEquals(servicePlan.id(), setting.targetResourceId());
             Assertions.assertTrue(setting.adminEmailNotificationEnabled());
             Assertions.assertTrue(setting.coAdminEmailNotificationEnabled());
             Assertions.assertFalse(setting.autoscaleEnabled());
@@ -154,15 +147,15 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(1, tempProfile.minInstanceCount());
             Assertions.assertNotNull(tempProfile.fixedDateSchedule());
             Assertions.assertTrue(tempProfile.fixedDateSchedule().timeZone().equalsIgnoreCase("UTC"));
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2050-10-12T20:15:10Z"), tempProfile.fixedDateSchedule().start());
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2051-09-11T16:08:04Z"), tempProfile.fixedDateSchedule().end());
+            Assertions.assertEquals(OffsetDateTime.parse("2050-10-12T20:15:10Z"),
+                tempProfile.fixedDateSchedule().start());
+            Assertions.assertEquals(OffsetDateTime.parse("2051-09-11T16:08:04Z"),
+                tempProfile.fixedDateSchedule().end());
             Assertions.assertNull(tempProfile.recurrentSchedule());
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             ScaleRule rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(10), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());
@@ -195,7 +188,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(10), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());
@@ -212,7 +205,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             AutoscaleSetting settingFromGet = monitorManager.autoscaleSettings().getById(setting.id());
             Assertions.assertNotNull(settingFromGet);
             Assertions.assertEquals("somesettingZ", settingFromGet.name());
-            Assertions.assertEquals(servicePlan.id(), settingFromGet.targetResourceId());
+            assertResourceIdEquals(servicePlan.id(), settingFromGet.targetResourceId());
             Assertions.assertTrue(settingFromGet.adminEmailNotificationEnabled());
             Assertions.assertTrue(settingFromGet.coAdminEmailNotificationEnabled());
             Assertions.assertFalse(settingFromGet.autoscaleEnabled());
@@ -256,15 +249,15 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(1, tempProfile.minInstanceCount());
             Assertions.assertNotNull(tempProfile.fixedDateSchedule());
             Assertions.assertTrue(tempProfile.fixedDateSchedule().timeZone().equalsIgnoreCase("UTC"));
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2050-10-12T20:15:10Z"), tempProfile.fixedDateSchedule().start());
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2051-09-11T16:08:04Z"), tempProfile.fixedDateSchedule().end());
+            Assertions.assertEquals(OffsetDateTime.parse("2050-10-12T20:15:10Z"),
+                tempProfile.fixedDateSchedule().start());
+            Assertions.assertEquals(OffsetDateTime.parse("2051-09-11T16:08:04Z"),
+                tempProfile.fixedDateSchedule().end());
             Assertions.assertNull(tempProfile.recurrentSchedule());
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(10), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());
@@ -297,7 +290,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(10), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());
@@ -311,12 +304,11 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(Duration.ofHours(3), rule.cooldown());
 
             // Update
-            setting
-                .update()
+            setting.update()
                 .defineAutoscaleProfile("very new profile")
                 .withScheduleBasedScale(10)
-                .withFixedDateSchedule(
-                    "UTC", OffsetDateTime.parse("2030-02-12T20:15:10Z"), OffsetDateTime.parse("2030-02-12T20:45:10Z"))
+                .withFixedDateSchedule("UTC", OffsetDateTime.parse("2030-02-12T20:15:10Z"),
+                    OffsetDateTime.parse("2030-02-12T20:45:10Z"))
                 .attach()
                 .defineAutoscaleProfile("a new profile")
                 .withMetricBasedScale(5, 7, 6)
@@ -332,8 +324,8 @@ public class AutoscaleTests extends MonitorManagementTest {
                 .updateScaleRule(0)
                 .withStatistic(Duration.ofMinutes(15), Duration.ofMinutes(1), MetricStatisticType.AVERAGE)
                 .parent()
-                .withFixedDateSchedule(
-                    "UTC", OffsetDateTime.parse("2025-02-02T02:02:02Z"), OffsetDateTime.parse("2025-02-02T03:03:03Z"))
+                .withFixedDateSchedule("UTC", OffsetDateTime.parse("2025-02-02T02:02:02Z"),
+                    OffsetDateTime.parse("2025-02-02T03:03:03Z"))
                 .defineScaleRule()
                 .withMetricSource(servicePlan.id())
                 .withMetricName("CPUPercentage")
@@ -350,7 +342,7 @@ public class AutoscaleTests extends MonitorManagementTest {
 
             Assertions.assertNotNull(setting);
             Assertions.assertEquals("somesettingZ", setting.name());
-            Assertions.assertEquals(servicePlan.id(), setting.targetResourceId());
+            assertResourceIdEquals(servicePlan.id(), setting.targetResourceId());
             Assertions.assertTrue(setting.adminEmailNotificationEnabled());
             Assertions.assertFalse(setting.coAdminEmailNotificationEnabled());
             Assertions.assertTrue(setting.autoscaleEnabled());
@@ -397,10 +389,10 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNull(tempProfile.recurrentSchedule());
             Assertions.assertNotNull(tempProfile.fixedDateSchedule());
             Assertions.assertTrue(tempProfile.fixedDateSchedule().timeZone().equalsIgnoreCase("UTC"));
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2030-02-12T20:15:10Z"), tempProfile.fixedDateSchedule().start());
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2030-02-12T20:45:10Z"), tempProfile.fixedDateSchedule().end());
+            Assertions.assertEquals(OffsetDateTime.parse("2030-02-12T20:15:10Z"),
+                tempProfile.fixedDateSchedule().start());
+            Assertions.assertEquals(OffsetDateTime.parse("2030-02-12T20:45:10Z"),
+                tempProfile.fixedDateSchedule().end());
 
             tempProfile = setting.profiles().get("a new profile");
             Assertions.assertNotNull(tempProfile);
@@ -413,7 +405,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofHours(10), rule.duration());
             Assertions.assertEquals(Duration.ofHours(1), rule.frequency());
@@ -435,15 +427,15 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNull(tempProfile.recurrentSchedule());
             Assertions.assertNotNull(tempProfile.fixedDateSchedule());
             Assertions.assertTrue(tempProfile.fixedDateSchedule().timeZone().equalsIgnoreCase("UTC"));
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2025-02-02T02:02:02Z"), tempProfile.fixedDateSchedule().start());
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2025-02-02T03:03:03Z"), tempProfile.fixedDateSchedule().end());
+            Assertions.assertEquals(OffsetDateTime.parse("2025-02-02T02:02:02Z"),
+                tempProfile.fixedDateSchedule().start());
+            Assertions.assertEquals(OffsetDateTime.parse("2025-02-02T03:03:03Z"),
+                tempProfile.fixedDateSchedule().end());
 
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(15), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());
@@ -461,7 +453,7 @@ public class AutoscaleTests extends MonitorManagementTest {
 
             Assertions.assertNotNull(settingFromGet);
             Assertions.assertEquals("somesettingZ", settingFromGet.name());
-            Assertions.assertEquals(servicePlan.id(), settingFromGet.targetResourceId());
+            assertResourceIdEquals(servicePlan.id(), settingFromGet.targetResourceId());
             Assertions.assertTrue(settingFromGet.adminEmailNotificationEnabled());
             Assertions.assertFalse(settingFromGet.coAdminEmailNotificationEnabled());
             Assertions.assertTrue(settingFromGet.autoscaleEnabled());
@@ -508,10 +500,10 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNull(tempProfile.recurrentSchedule());
             Assertions.assertNotNull(tempProfile.fixedDateSchedule());
             Assertions.assertTrue(tempProfile.fixedDateSchedule().timeZone().equalsIgnoreCase("UTC"));
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2030-02-12T20:15:10Z"), tempProfile.fixedDateSchedule().start());
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2030-02-12T20:45:10Z"), tempProfile.fixedDateSchedule().end());
+            Assertions.assertEquals(OffsetDateTime.parse("2030-02-12T20:15:10Z"),
+                tempProfile.fixedDateSchedule().start());
+            Assertions.assertEquals(OffsetDateTime.parse("2030-02-12T20:45:10Z"),
+                tempProfile.fixedDateSchedule().end());
 
             tempProfile = settingFromGet.profiles().get("a new profile");
             Assertions.assertNotNull(tempProfile);
@@ -524,7 +516,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofHours(10), rule.duration());
             Assertions.assertEquals(Duration.ofHours(1), rule.frequency());
@@ -546,15 +538,15 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertNull(tempProfile.recurrentSchedule());
             Assertions.assertNotNull(tempProfile.fixedDateSchedule());
             Assertions.assertTrue(tempProfile.fixedDateSchedule().timeZone().equalsIgnoreCase("UTC"));
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2025-02-02T02:02:02Z"), tempProfile.fixedDateSchedule().start());
-            Assertions
-                .assertEquals(OffsetDateTime.parse("2025-02-02T03:03:03Z"), tempProfile.fixedDateSchedule().end());
+            Assertions.assertEquals(OffsetDateTime.parse("2025-02-02T02:02:02Z"),
+                tempProfile.fixedDateSchedule().start());
+            Assertions.assertEquals(OffsetDateTime.parse("2025-02-02T03:03:03Z"),
+                tempProfile.fixedDateSchedule().end());
 
             Assertions.assertNotNull(tempProfile.rules());
             Assertions.assertEquals(1, tempProfile.rules().size());
             rule = tempProfile.rules().get(0);
-            Assertions.assertEquals(servicePlan.id(), rule.metricSource());
+            assertResourceIdEquals(servicePlan.id(), rule.metricSource());
             Assertions.assertEquals("CPUPercentage", rule.metricName());
             Assertions.assertEquals(Duration.ofMinutes(15), rule.duration());
             Assertions.assertEquals(Duration.ofMinutes(1), rule.frequency());

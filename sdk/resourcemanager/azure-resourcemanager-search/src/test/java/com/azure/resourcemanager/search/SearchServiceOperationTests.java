@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.search.models.CheckNameAvailabilityOutput;
+import com.azure.resourcemanager.search.models.PublicNetworkAccess;
 import com.azure.resourcemanager.search.models.SearchService;
 import com.azure.resourcemanager.search.models.SkuName;
 import org.junit.jupiter.api.Assertions;
@@ -32,14 +33,13 @@ public class SearchServiceOperationTests extends SearchManagementTest {
     public void canCreateUpdateSearchService() {
         String searchServiceName = generateRandomResourceName("search", 15);
 
-        resourceManager.resourceGroups().define(rgName)
-            .withRegion(region)
-            .create();
+        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         CheckNameAvailabilityOutput result = searchManager.searchServices().checkNameAvailability(searchServiceName);
         Assertions.assertTrue(result.isNameAvailable());
 
-        SearchService searchService = searchManager.searchServices().define(searchServiceName)
+        SearchService searchService = searchManager.searchServices()
+            .define(searchServiceName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withFreeSku()
@@ -57,17 +57,42 @@ public class SearchServiceOperationTests extends SearchManagementTest {
             }
         }
         Assertions.assertTrue(foundSearchService);
-        
-        if (!isPlaybackMode()) {
-            searchService.update()
-                .withTag("key1", "value1")
-                .apply();
 
-            SearchService updatedSearchService = searchManager.searchServices().getByResourceGroup(rgName, searchServiceName);
+        if (!isPlaybackMode()) {
+            searchService.update().withTag("key1", "value1").apply();
+
+            SearchService updatedSearchService
+                = searchManager.searchServices().getByResourceGroup(rgName, searchServiceName);
             Assertions.assertNotNull(updatedSearchService);
             Assertions.assertEquals(SkuName.FREE, updatedSearchService.sku().name());
             Assertions.assertEquals(1, updatedSearchService.tags().size());
             Assertions.assertEquals("value1", updatedSearchService.tags().get("key1"));
         }
+    }
+
+    @Test
+    public void canCreateAndUpdatePublicNetworkAccess() {
+        String searchServiceName = generateRandomResourceName("search", 15);
+
+        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+
+        SearchService searchService = searchManager.searchServices()
+            .define(searchServiceName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withBasicSku()
+            .disablePublicNetworkAccess()
+            .create();
+
+        searchService.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, searchService.publicNetworkAccess());
+
+        searchService.update().enablePublicNetworkAccess().apply();
+        searchService.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, searchService.publicNetworkAccess());
+
+        searchService.update().disablePublicNetworkAccess().apply();
+        searchService.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, searchService.publicNetworkAccess());
     }
 }

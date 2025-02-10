@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Storage target operational state. */
+/**
+ * Storage target operational state.
+ */
 public final class OperationalStateType extends ExpandableStringEnum<OperationalStateType> {
-    /** Static value Ready for OperationalStateType. */
+    /**
+     * Static value Ready for OperationalStateType.
+     */
     public static final OperationalStateType READY = fromString("Ready");
 
-    /** Static value Busy for OperationalStateType. */
+    /**
+     * Static value Busy for OperationalStateType.
+     */
     public static final OperationalStateType BUSY = fromString("Busy");
 
-    /** Static value Suspended for OperationalStateType. */
+    /**
+     * Static value Suspended for OperationalStateType.
+     */
     public static final OperationalStateType SUSPENDED = fromString("Suspended");
 
-    /** Static value Flushing for OperationalStateType. */
+    /**
+     * Static value Flushing for OperationalStateType.
+     */
     public static final OperationalStateType FLUSHING = fromString("Flushing");
 
     /**
      * Creates a new instance of OperationalStateType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class OperationalStateType extends ExpandableStringEnum<Operational
 
     /**
      * Creates or finds a OperationalStateType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperationalStateType.
      */
-    @JsonCreator
     public static OperationalStateType fromString(String name) {
         return fromString(name, OperationalStateType.class);
     }
 
     /**
      * Gets known OperationalStateType values.
-     *
+     * 
      * @return known OperationalStateType values.
      */
     public static Collection<OperationalStateType> values() {

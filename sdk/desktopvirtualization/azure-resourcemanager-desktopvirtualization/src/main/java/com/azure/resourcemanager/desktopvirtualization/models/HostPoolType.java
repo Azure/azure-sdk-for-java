@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** HostPool type for desktop. */
+/**
+ * HostPool type for desktop.
+ */
 public final class HostPoolType extends ExpandableStringEnum<HostPoolType> {
-    /** Static value Personal for HostPoolType. */
+    /**
+     * Static value Personal for HostPoolType.
+     */
     public static final HostPoolType PERSONAL = fromString("Personal");
 
-    /** Static value Pooled for HostPoolType. */
+    /**
+     * Static value Pooled for HostPoolType.
+     */
     public static final HostPoolType POOLED = fromString("Pooled");
 
-    /** Static value BYODesktop for HostPoolType. */
+    /**
+     * Static value BYODesktop for HostPoolType.
+     */
     public static final HostPoolType BYODESKTOP = fromString("BYODesktop");
 
     /**
      * Creates a new instance of HostPoolType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class HostPoolType extends ExpandableStringEnum<HostPoolType> {
 
     /**
      * Creates or finds a HostPoolType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HostPoolType.
      */
-    @JsonCreator
     public static HostPoolType fromString(String name) {
         return fromString(name, HostPoolType.class);
     }
 
     /**
      * Gets known HostPoolType values.
-     *
+     * 
      * @return known HostPoolType values.
      */
     public static Collection<HostPoolType> values() {

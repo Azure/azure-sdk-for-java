@@ -5,40 +5,50 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.fluent.models.DevBoxDefinitionUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Partial update of a Dev Box definition resource. */
+/**
+ * Partial update of a Dev Box definition resource.
+ */
 @Fluent
 public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
     /*
      * Properties of a Dev Box definition to be updated.
      */
-    @JsonProperty(value = "properties")
     private DevBoxDefinitionUpdateProperties innerProperties;
 
-    /** Creates an instance of DevBoxDefinitionUpdate class. */
+    /**
+     * Creates an instance of DevBoxDefinitionUpdate class.
+     */
     public DevBoxDefinitionUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties of a Dev Box definition to be updated.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DevBoxDefinitionUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevBoxDefinitionUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevBoxDefinitionUpdate withLocation(String location) {
         super.withLocation(location);
@@ -47,7 +57,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the imageReference property: Image reference information.
-     *
+     * 
      * @return the imageReference value.
      */
     public ImageReference imageReference() {
@@ -56,7 +66,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the imageReference property: Image reference information.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the DevBoxDefinitionUpdate object itself.
      */
@@ -70,7 +80,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
 
     /**
      * Get the sku property: The SKU for Dev Boxes created using this definition.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -79,7 +89,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
 
     /**
      * Set the sku property: The SKU for Dev Boxes created using this definition.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DevBoxDefinitionUpdate object itself.
      */
@@ -94,7 +104,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
     /**
      * Get the osStorageType property: The storage type used for the Operating System disk of Dev Boxes created using
      * this definition.
-     *
+     * 
      * @return the osStorageType value.
      */
     public String osStorageType() {
@@ -104,7 +114,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
     /**
      * Set the osStorageType property: The storage type used for the Operating System disk of Dev Boxes created using
      * this definition.
-     *
+     * 
      * @param osStorageType the osStorageType value to set.
      * @return the DevBoxDefinitionUpdate object itself.
      */
@@ -120,7 +130,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
      * Get the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
      * hibernation. Not all images are capable of supporting hibernation. To find out more see
      * https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @return the hibernateSupport value.
      */
     public HibernateSupport hibernateSupport() {
@@ -131,7 +141,7 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
      * Set the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
      * hibernation. Not all images are capable of supporting hibernation. To find out more see
      * https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @param hibernateSupport the hibernateSupport value to set.
      * @return the DevBoxDefinitionUpdate object itself.
      */
@@ -145,14 +155,57 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevBoxDefinitionUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevBoxDefinitionUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevBoxDefinitionUpdate.
+     */
+    public static DevBoxDefinitionUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevBoxDefinitionUpdate deserializedDevBoxDefinitionUpdate = new DevBoxDefinitionUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDevBoxDefinitionUpdate.withTags(tags);
+                } else if ("location".equals(fieldName)) {
+                    deserializedDevBoxDefinitionUpdate.withLocation(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDevBoxDefinitionUpdate.innerProperties
+                        = DevBoxDefinitionUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevBoxDefinitionUpdate;
+        });
     }
 }

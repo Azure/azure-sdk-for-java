@@ -6,90 +6,49 @@ package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.sphere.fluent.models.CertificateInner;
-import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of Certificate. */
+/**
+ * An immutable client-side representation of Certificate.
+ */
 public interface Certificate {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
+     */
+    CertificateProperties properties();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the certificate property: The certificate as a UTF-8 encoded base 64 string.
-     *
-     * @return the certificate value.
-     */
-    String certificate();
-
-    /**
-     * Gets the status property: The certificate status.
-     *
-     * @return the status value.
-     */
-    CertificateStatus status();
-
-    /**
-     * Gets the subject property: The certificate subject.
-     *
-     * @return the subject value.
-     */
-    String subject();
-
-    /**
-     * Gets the thumbprint property: The certificate thumbprint.
-     *
-     * @return the thumbprint value.
-     */
-    String thumbprint();
-
-    /**
-     * Gets the expiryUtc property: The certificate expiry date.
-     *
-     * @return the expiryUtc value.
-     */
-    OffsetDateTime expiryUtc();
-
-    /**
-     * Gets the notBeforeUtc property: The certificate not before date.
-     *
-     * @return the notBeforeUtc value.
-     */
-    OffsetDateTime notBeforeUtc();
-
-    /**
-     * Gets the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
-
-    /**
      * Gets the inner com.azure.resourcemanager.sphere.fluent.models.CertificateInner object.
-     *
+     * 
      * @return the inner object.
      */
     CertificateInner innerModel();

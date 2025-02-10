@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.15 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,131 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2025-02-06)
+
+Initial GA of `azure-core-http-vertx`.
+
+### Bugs Fixed
+
+- Fixed a bug where a request would fail with `IllegalStateException("Result is already complete")` when multiple
+  exceptions happened during the request. When multiple exceptions happen, the first exception is now thrown and 
+  subsequent exceptions are added to the suppressed exceptions of the first exception. ([#43402](https://github.com/Azure/azure-sdk-for-java/pull/43402))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
+
+## 1.0.0-beta.24 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+
+## 1.0.0-beta.23 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+
+## 1.0.0-beta.22 (2024-10-01)
+
+### Breaking Changes
+
+- Renamed `VertxAsyncHttpClient` to `VertxHttpClient`, `VertxAsyncHttpClientBuilder` to `VertxHttpClientBuilder`, and
+  `VertxAsyncHttpClientProvider` to `VertxHttpClientProvider`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+- Upgraded Vert.x from `4.5.8` to `4.5.10`.
+
+## 1.0.0-beta.21 (2024-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+
+## 1.0.0-beta.20 (2024-07-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.51.0`.
+
+## 1.0.0-beta.19 (2024-06-06)
+
+### Features Added
+
+- Added support for response timeout and per-request response timeout. ([#40017](https://github.com/Azure/azure-sdk-for-java/pull/40017))
+
+### Breaking Changes
+
+- Removed `VertxAsyncHttpClientBuilder.idleTimeout`, renamed `readIdleTimeout` to `readTimeout` and `writeIdleTimeout`
+  to `writeTimeout` in `VertxAsyncHttpClientBuilder`. ([#40017](https://github.com/Azure/azure-sdk-for-java/pull/40017))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+- Upgraded Vertx from `4.5.7` to `4.5.8`.
+
+## 1.0.0-beta.18 (2024-05-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+
+## 1.0.0-beta.17 (2024-04-05)
+
+### Bugs Fixed
+
+- Fixed a bug where memory from a shared pool wasn't copied on use, leading to potential memory corruption issues if
+  it wasn't consumed before the pool reclaimed it.
+- Standardized errors returned by `VertxAsyncHttpClient` to use `IOException` when issues happened in the underlying
+  `Vertx` client, instead of the `RuntimeException` used by `Vertx` itself.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+- Upgraded Vertx from `4.5.4` to `4.5.7`.
+
+## 1.0.0-beta.16 (2024-03-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to `1.47.0`.
+- Upgraded Vertx from `4.5.0` to `4.5.4`.
+
+## 1.0.0-beta.15 (2024-02-02)
+
+### Bugs Fixed
+
+- Removed usage of `Scheduler`, resolving issues with GraalVM. ([#3704](https://github.com/Azure/azure-sdk-for-java/pull/37041)) 
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
 
 ## 1.0.0-beta.14 (2023-11-03)
 

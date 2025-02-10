@@ -41,14 +41,13 @@ public final class AsyncPollResponse<T, U> {
      *                             by the service
      */
     AsyncPollResponse(PollingContext<T> pollingContext,
-                      BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancellationOperation,
-                      Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
-        this.pollingContext = Objects.requireNonNull(pollingContext,
-                "'pollingContext' cannot be null.");
-        this.cancellationOperation = Objects.requireNonNull(cancellationOperation,
-                "'cancellationOperation' cannot be null.");
-        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
-                "'fetchResultOperation' cannot be null.");
+        BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancellationOperation,
+        Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
+        this.pollingContext = Objects.requireNonNull(pollingContext, "'pollingContext' cannot be null.");
+        this.cancellationOperation
+            = Objects.requireNonNull(cancellationOperation, "'cancellationOperation' cannot be null.");
+        this.fetchResultOperation
+            = Objects.requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
         this.pollResponse = this.pollingContext.getLatestResponse();
     }
 
@@ -81,8 +80,8 @@ public final class AsyncPollResponse<T, U> {
     public Mono<T> cancelOperation() {
         return Mono.defer(() -> {
             try {
-                return this.cancellationOperation
-                        .apply(this.pollingContext, this.pollingContext.getActivationResponse());
+                return this.cancellationOperation.apply(this.pollingContext,
+                    this.pollingContext.getActivationResponse());
             } catch (RuntimeException re) {
                 return FluxUtil.monoError(LOGGER, re);
             }
@@ -105,8 +104,7 @@ public final class AsyncPollResponse<T, U> {
                 return Mono.empty();
             } else {
                 try {
-                    return this.fetchResultOperation
-                            .apply(this.pollingContext);
+                    return this.fetchResultOperation.apply(this.pollingContext);
                 } catch (RuntimeException re) {
                     return FluxUtil.monoError(LOGGER, re);
                 }
@@ -125,4 +123,3 @@ public final class AsyncPollResponse<T, U> {
         return pollResponse.getRetryAfter();
     }
 }
-

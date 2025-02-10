@@ -21,12 +21,12 @@ import java.util.Objects;
 /**
  * <p>The ClientCertificateCredential acquires a token via service principal authentication. It is a type of
  * authentication in Azure that enables a non-interactive login to
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>, allowing
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>, allowing
  * an application or service to authenticate itself with Azure resources.
  * A Service Principal is essentially an identity created for an application in Microsoft Entra ID that can be used to
  * authenticate with Azure resources. It's like a "user identity" for the application or service, and it provides
  * a way for the application to authenticate itself with Azure resources without needing to use a user's credentials.
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> allows users
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> allows users
  * to register service principals which can be used as an identity for authentication.
  * A client certificate associated with the registered service principal is used as the password when authenticating
  * the service principal.
@@ -52,8 +52,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.construct -->
  * <pre>
- * TokenCredential clientCertificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential clientCertificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .pemCertificate&#40;&quot;&lt;PATH-TO-PEM-CERTIFICATE&gt;&quot;&#41;
  *     .build&#40;&#41;;
@@ -71,8 +70,7 @@ import java.util.Objects;
  * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.constructWithStream -->
  * <pre>
  * ByteArrayInputStream certificateStream = new ByteArrayInputStream&#40;certificateBytes&#41;;
- * TokenCredential certificateCredentialWithStream = new ClientCertificateCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential certificateCredentialWithStream = new ClientCertificateCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .pemCertificate&#40;certificateStream&#41;
  *     .build&#40;&#41;;
@@ -90,8 +88,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.constructwithproxy -->
  * <pre>
- * TokenCredential certificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential certificateCredential = new ClientCertificateCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .pfxCertificate&#40;&quot;&lt;PATH-TO-PFX-CERTIFICATE&gt;&quot;, &quot;P&#64;s$w0rd&quot;&#41;
  *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
@@ -119,11 +116,10 @@ public class ClientCertificateCredential implements TokenCredential {
      * @param identityClientOptions the options to configure the identity client
      */
     ClientCertificateCredential(String tenantId, String clientId, String certificatePath, byte[] certificate,
-                                String certificatePassword, IdentityClientOptions identityClientOptions) {
+        String certificatePassword, IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(certificatePath == null ? certificate : certificatePath,
-                "'certificate' and 'certificatePath' cannot both be null.");
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
+            "'certificate' and 'certificatePath' cannot both be null.");
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .certificatePath(certificatePath)
             .certificate(certificate)
@@ -140,17 +136,20 @@ public class ClientCertificateCredential implements TokenCredential {
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error));
     }
 
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClientCache(request);
-            LoggingUtil.logTokenSuccess(LOGGER, request);
-            return token;
-        } catch (Exception e) { }
+            if (token != null) {
+                LoggingUtil.logTokenSuccess(LOGGER, request);
+                return token;
+            }
+        } catch (Exception e) {
+        }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);

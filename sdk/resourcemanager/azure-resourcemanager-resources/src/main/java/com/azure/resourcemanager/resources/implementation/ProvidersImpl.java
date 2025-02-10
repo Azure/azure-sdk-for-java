@@ -16,9 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 /**
  * The implementation for {@link Providers}.
  */
-public final class ProvidersImpl
-        extends ReadableWrappersImpl<Provider, ProviderImpl, ProviderInner>
-        implements Providers {
+public final class ProvidersImpl extends ReadableWrappersImpl<Provider, ProviderImpl, ProviderInner>
+    implements Providers {
     private final ProvidersClient client;
 
     public ProvidersImpl(final ProvidersClient client) {

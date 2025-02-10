@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.ActivityLogAlertResourceInner;
 import com.azure.resourcemanager.monitor.models.ActionList;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionGroup;
@@ -15,156 +14,108 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ActivityLogAlerts CreateOrUpdate. */
+/**
+ * Samples for ActivityLogAlerts CreateOrUpdate.
+ */
 public final class ActivityLogAlertsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_CreateOrUpdateRuleWithContainsAny.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/
+     * ActivityLogAlertRule_CreateOrUpdateRuleWithContainsAny.json
      */
     /**
      * Sample code: Create or update an Activity Log Alert rule with 'containsAny'.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateAnActivityLogAlertRuleWithContainsAny(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+    public static void
+        createOrUpdateAnActivityLogAlertRuleWithContainsAny(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getActivityLogAlerts()
-            .createOrUpdateWithResponse(
-                "MyResourceGroup",
-                "SampleActivityLogAlertRuleWithContainsAny",
-                new ActivityLogAlertResourceInner()
-                    .withLocation("Global")
+            .createOrUpdateWithResponse("MyResourceGroup", "SampleActivityLogAlertRuleWithContainsAny",
+                new ActivityLogAlertResourceInner().withLocation("Global")
                     .withTags(mapOf())
                     .withScopes(Arrays.asList("subscriptions/187f412d-1758-44d9-b052-169e2564721d"))
-                    .withCondition(
-                        new ActivityLogAlertAllOfCondition()
-                            .withAllOf(
-                                Arrays
-                                    .asList(
-                                        new ActivityLogAlertLeafCondition()
-                                            .withField("category")
-                                            .withEquals("ServiceHealth"),
-                                        new ActivityLogAlertLeafCondition()
-                                            .withField("properties.impactedServices[*].ImpactedRegions[*].RegionName")
-                                            .withContainsAny(Arrays.asList("North Europe", "West Europe")))))
-                    .withActions(
-                        new ActionList()
-                            .withActionGroups(
-                                Arrays
-                                    .asList(
-                                        new ActivityLogAlertActionGroup()
-                                            .withActionGroupId(
-                                                "/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup")
-                                            .withWebhookProperties(
-                                                mapOf("sampleWebhookProperty", "SamplePropertyValue")))))
+                    .withCondition(new ActivityLogAlertAllOfCondition().withAllOf(Arrays.asList(
+                        new ActivityLogAlertLeafCondition().withField("category").withEquals("ServiceHealth"),
+                        new ActivityLogAlertLeafCondition()
+                            .withField("properties.impactedServices[*].ImpactedRegions[*].RegionName")
+                            .withContainsAny(Arrays.asList("North Europe", "West Europe")))))
+                    .withActions(new ActionList().withActionGroups(Arrays.asList(new ActivityLogAlertActionGroup()
+                        .withActionGroupId(
+                            "/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup")
+                        .withWebhookProperties(mapOf("sampleWebhookProperty", "SamplePropertyValue")))))
                     .withEnabled(true)
                     .withDescription("Description of sample Activity Log Alert rule with 'containsAny'."),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_CreateOrUpdateRuleWithAnyOfCondition.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/
+     * ActivityLogAlertRule_CreateOrUpdateRuleWithAnyOfCondition.json
      */
     /**
      * Sample code: Create or update an Activity Log Alert rule with 'anyOf' condition.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateAnActivityLogAlertRuleWithAnyOfCondition(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+    public static void
+        createOrUpdateAnActivityLogAlertRuleWithAnyOfCondition(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getActivityLogAlerts()
-            .createOrUpdateWithResponse(
-                "MyResourceGroup",
-                "SampleActivityLogAlertRuleWithAnyOfCondition",
-                new ActivityLogAlertResourceInner()
-                    .withLocation("Global")
+            .createOrUpdateWithResponse("MyResourceGroup", "SampleActivityLogAlertRuleWithAnyOfCondition",
+                new ActivityLogAlertResourceInner().withLocation("Global")
                     .withTags(mapOf())
                     .withScopes(Arrays.asList("subscriptions/187f412d-1758-44d9-b052-169e2564721d"))
-                    .withCondition(
-                        new ActivityLogAlertAllOfCondition()
-                            .withAllOf(
-                                Arrays
-                                    .asList(
-                                        new ActivityLogAlertLeafCondition()
-                                            .withField("category")
-                                            .withEquals("ServiceHealth"),
-                                        new ActivityLogAlertLeafCondition()
-                                            .withAnyOf(
-                                                Arrays
-                                                    .asList(
-                                                        new AlertRuleLeafCondition()
-                                                            .withField("properties.incidentType")
-                                                            .withEquals("Incident"),
-                                                        new AlertRuleLeafCondition()
-                                                            .withField("properties.incidentType")
-                                                            .withEquals("Maintenance"))))))
-                    .withActions(
-                        new ActionList()
-                            .withActionGroups(
-                                Arrays
-                                    .asList(
-                                        new ActivityLogAlertActionGroup()
-                                            .withActionGroupId(
-                                                "/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup")
-                                            .withWebhookProperties(
-                                                mapOf("sampleWebhookProperty", "SamplePropertyValue")))))
+                    .withCondition(new ActivityLogAlertAllOfCondition().withAllOf(Arrays.asList(
+                        new ActivityLogAlertLeafCondition().withField("category").withEquals("ServiceHealth"),
+                        new ActivityLogAlertLeafCondition().withAnyOf(Arrays.asList(
+                            new AlertRuleLeafCondition().withField("properties.incidentType").withEquals("Incident"),
+                            new AlertRuleLeafCondition().withField("properties.incidentType")
+                                .withEquals("Maintenance"))))))
+                    .withActions(new ActionList().withActionGroups(Arrays.asList(new ActivityLogAlertActionGroup()
+                        .withActionGroupId(
+                            "/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup")
+                        .withWebhookProperties(mapOf("sampleWebhookProperty", "SamplePropertyValue")))))
                     .withEnabled(true)
                     .withDescription("Description of sample Activity Log Alert rule with 'anyOf' condition."),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/ActivityLogAlertRule_CreateOrUpdate.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2020-10-01/examples/
+     * ActivityLogAlertRule_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update an Activity Log Alert rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateAnActivityLogAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
+        azure.diagnosticSettings()
             .manager()
             .serviceClient()
             .getActivityLogAlerts()
-            .createOrUpdateWithResponse(
-                "MyResourceGroup",
-                "SampleActivityLogAlertRule",
-                new ActivityLogAlertResourceInner()
-                    .withLocation("Global")
+            .createOrUpdateWithResponse("MyResourceGroup", "SampleActivityLogAlertRule",
+                new ActivityLogAlertResourceInner().withLocation("Global")
                     .withTags(mapOf())
                     .withScopes(Arrays.asList("/subscriptions/187f412d-1758-44d9-b052-169e2564721d"))
-                    .withCondition(
-                        new ActivityLogAlertAllOfCondition()
-                            .withAllOf(
-                                Arrays
-                                    .asList(
-                                        new ActivityLogAlertLeafCondition()
-                                            .withField("category")
-                                            .withEquals("Administrative"),
-                                        new ActivityLogAlertLeafCondition().withField("level").withEquals("Error"))))
-                    .withActions(
-                        new ActionList()
-                            .withActionGroups(
-                                Arrays
-                                    .asList(
-                                        new ActivityLogAlertActionGroup()
-                                            .withActionGroupId(
-                                                "/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup")
-                                            .withWebhookProperties(
-                                                mapOf("sampleWebhookProperty", "SamplePropertyValue")))))
+                    .withCondition(new ActivityLogAlertAllOfCondition().withAllOf(Arrays.asList(
+                        new ActivityLogAlertLeafCondition().withField("category").withEquals("Administrative"),
+                        new ActivityLogAlertLeafCondition().withField("level").withEquals("Error"))))
+                    .withActions(new ActionList().withActionGroups(Arrays.asList(new ActivityLogAlertActionGroup()
+                        .withActionGroupId(
+                            "/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/actionGroups/SampleActionGroup")
+                        .withWebhookProperties(mapOf("sampleWebhookProperty", "SamplePropertyValue")))))
                     .withEnabled(true)
                     .withDescription("Description of sample Activity Log Alert rule."),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

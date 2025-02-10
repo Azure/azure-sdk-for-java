@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
-public abstract class AbstractDownloadTest <TOptions extends BlobPerfStressOptions> extends BlobTestBase<TOptions> {
+public abstract class AbstractDownloadTest<TOptions extends BlobPerfStressOptions> extends BlobTestBase<TOptions> {
     private static final long GB = 1024 * 1024 * 1024;
 
     public AbstractDownloadTest(TOptions options) {
@@ -32,9 +32,7 @@ public abstract class AbstractDownloadTest <TOptions extends BlobPerfStressOptio
          * In the future there will be work to separate the HttpClients used to perform resource preparation and running
          * the performance test. As part of that work this can be reverted to using the default ParallelTransferOptions.
          */
-        return super.globalSetupAsync()
-            .then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), new ParallelTransferOptions()
-                .setMaxSingleUploadSizeLong(GB).setBlockSizeLong(GB)))
-            .then();
+        return super.globalSetupAsync().then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()),
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong(GB).setBlockSizeLong(GB))).then();
     }
 }

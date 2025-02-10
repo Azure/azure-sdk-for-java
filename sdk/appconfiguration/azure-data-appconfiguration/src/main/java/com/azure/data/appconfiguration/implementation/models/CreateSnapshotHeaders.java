@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The CreateSnapshotHeaders model. */
+/**
+ * The CreateSnapshotHeaders model.
+ */
 @Fluent
 public final class CreateSnapshotHeaders {
     /*
@@ -33,24 +35,22 @@ public final class CreateSnapshotHeaders {
 
     private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
 
-    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of CreateSnapshotHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public CreateSnapshotHeaders(HttpHeaders rawHeaders) {
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.syncToken = rawHeaders.getValue(SYNC_TOKEN);
-        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
+        this.operationLocation = rawHeaders.getValue(HttpHeaderName.OPERATION_LOCATION);
         this.link = rawHeaders.getValue(HttpHeaderName.LINK);
     }
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -59,7 +59,7 @@ public final class CreateSnapshotHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the CreateSnapshotHeaders object itself.
      */
@@ -70,7 +70,7 @@ public final class CreateSnapshotHeaders {
 
     /**
      * Get the syncToken property: The Sync-Token property.
-     *
+     * 
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -79,7 +79,7 @@ public final class CreateSnapshotHeaders {
 
     /**
      * Set the syncToken property: The Sync-Token property.
-     *
+     * 
      * @param syncToken the syncToken value to set.
      * @return the CreateSnapshotHeaders object itself.
      */
@@ -90,7 +90,7 @@ public final class CreateSnapshotHeaders {
 
     /**
      * Get the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @return the operationLocation value.
      */
     public String getOperationLocation() {
@@ -99,7 +99,7 @@ public final class CreateSnapshotHeaders {
 
     /**
      * Set the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @param operationLocation the operationLocation value to set.
      * @return the CreateSnapshotHeaders object itself.
      */
@@ -110,7 +110,7 @@ public final class CreateSnapshotHeaders {
 
     /**
      * Get the link property: The Link property.
-     *
+     * 
      * @return the link value.
      */
     public String getLink() {
@@ -119,7 +119,7 @@ public final class CreateSnapshotHeaders {
 
     /**
      * Set the link property: The Link property.
-     *
+     * 
      * @param link the link value to set.
      * @return the CreateSnapshotHeaders object itself.
      */

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** KPI Resource Health Details. */
+/**
+ * KPI Resource Health Details.
+ */
 @Fluent
-public final class KpiResourceHealthDetails {
+public final class KpiResourceHealthDetails implements JsonSerializable<KpiResourceHealthDetails> {
     /*
      * Resource Health Status
      */
-    @JsonProperty(value = "resourceHealthStatus")
     private ResourceHealthStatus resourceHealthStatus;
 
     /*
      * Resource Health Status
      */
-    @JsonProperty(value = "resourceHealthDetails")
     private List<ResourceHealthDetails> resourceHealthDetails;
 
-    /** Creates an instance of KpiResourceHealthDetails class. */
+    /**
+     * Creates an instance of KpiResourceHealthDetails class.
+     */
     public KpiResourceHealthDetails() {
     }
 
     /**
      * Get the resourceHealthStatus property: Resource Health Status.
-     *
+     * 
      * @return the resourceHealthStatus value.
      */
     public ResourceHealthStatus resourceHealthStatus() {
@@ -38,7 +44,7 @@ public final class KpiResourceHealthDetails {
 
     /**
      * Set the resourceHealthStatus property: Resource Health Status.
-     *
+     * 
      * @param resourceHealthStatus the resourceHealthStatus value to set.
      * @return the KpiResourceHealthDetails object itself.
      */
@@ -49,7 +55,7 @@ public final class KpiResourceHealthDetails {
 
     /**
      * Get the resourceHealthDetails property: Resource Health Status.
-     *
+     * 
      * @return the resourceHealthDetails value.
      */
     public List<ResourceHealthDetails> resourceHealthDetails() {
@@ -58,7 +64,7 @@ public final class KpiResourceHealthDetails {
 
     /**
      * Set the resourceHealthDetails property: Resource Health Status.
-     *
+     * 
      * @param resourceHealthDetails the resourceHealthDetails value to set.
      * @return the KpiResourceHealthDetails object itself.
      */
@@ -69,12 +75,56 @@ public final class KpiResourceHealthDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceHealthDetails() != null) {
             resourceHealthDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceHealthStatus",
+            this.resourceHealthStatus == null ? null : this.resourceHealthStatus.toString());
+        jsonWriter.writeArrayField("resourceHealthDetails", this.resourceHealthDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KpiResourceHealthDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KpiResourceHealthDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KpiResourceHealthDetails.
+     */
+    public static KpiResourceHealthDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KpiResourceHealthDetails deserializedKpiResourceHealthDetails = new KpiResourceHealthDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceHealthStatus".equals(fieldName)) {
+                    deserializedKpiResourceHealthDetails.resourceHealthStatus
+                        = ResourceHealthStatus.fromString(reader.getString());
+                } else if ("resourceHealthDetails".equals(fieldName)) {
+                    List<ResourceHealthDetails> resourceHealthDetails
+                        = reader.readArray(reader1 -> ResourceHealthDetails.fromJson(reader1));
+                    deserializedKpiResourceHealthDetails.resourceHealthDetails = resourceHealthDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKpiResourceHealthDetails;
+        });
     }
 }

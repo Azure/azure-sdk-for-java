@@ -13,8 +13,7 @@ public final class RecoveryPointImpl implements RecoveryPoint {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    RecoveryPointImpl(
-        RecoveryPointInner innerObject,
+    RecoveryPointImpl(RecoveryPointInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

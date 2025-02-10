@@ -5,81 +5,84 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The SparkSessionState model. */
+/**
+ * The SparkSessionState model.
+ */
 @Fluent
-public final class SparkSessionState {
+public final class SparkSessionState implements JsonSerializable<SparkSessionState> {
     /*
      * The notStartedAt property.
      */
-    @JsonProperty(value = "notStartedAt")
     private OffsetDateTime notStartedAt;
 
     /*
      * The startingAt property.
      */
-    @JsonProperty(value = "startingAt")
     private OffsetDateTime startingAt;
 
     /*
      * The idleAt property.
      */
-    @JsonProperty(value = "idleAt")
     private OffsetDateTime idleAt;
 
     /*
      * The deadAt property.
      */
-    @JsonProperty(value = "deadAt")
     private OffsetDateTime deadAt;
 
     /*
      * The shuttingDownAt property.
      */
-    @JsonProperty(value = "shuttingDownAt")
     private OffsetDateTime shuttingDownAt;
 
     /*
      * The killedAt property.
      */
-    @JsonProperty(value = "killedAt")
     private OffsetDateTime terminatedAt;
 
     /*
      * The recoveringAt property.
      */
-    @JsonProperty(value = "recoveringAt")
     private OffsetDateTime recoveringAt;
 
     /*
      * The busyAt property.
      */
-    @JsonProperty(value = "busyAt")
     private OffsetDateTime busyAt;
 
     /*
      * The errorAt property.
      */
-    @JsonProperty(value = "errorAt")
     private OffsetDateTime errorAt;
 
     /*
      * The currentState property.
      */
-    @JsonProperty(value = "currentState")
     private String currentState;
 
     /*
      * The jobCreationRequest property.
      */
-    @JsonProperty(value = "jobCreationRequest")
     private SparkRequest jobCreationRequest;
 
     /**
+     * Creates an instance of SparkSessionState class.
+     */
+    public SparkSessionState() {
+    }
+
+    /**
      * Get the notStartedAt property: The notStartedAt property.
-     *
+     * 
      * @return the notStartedAt value.
      */
     public OffsetDateTime getNotStartedAt() {
@@ -88,7 +91,7 @@ public final class SparkSessionState {
 
     /**
      * Set the notStartedAt property: The notStartedAt property.
-     *
+     * 
      * @param notStartedAt the notStartedAt value to set.
      * @return the SparkSessionState object itself.
      */
@@ -99,7 +102,7 @@ public final class SparkSessionState {
 
     /**
      * Get the startingAt property: The startingAt property.
-     *
+     * 
      * @return the startingAt value.
      */
     public OffsetDateTime getStartingAt() {
@@ -108,7 +111,7 @@ public final class SparkSessionState {
 
     /**
      * Set the startingAt property: The startingAt property.
-     *
+     * 
      * @param startingAt the startingAt value to set.
      * @return the SparkSessionState object itself.
      */
@@ -119,7 +122,7 @@ public final class SparkSessionState {
 
     /**
      * Get the idleAt property: The idleAt property.
-     *
+     * 
      * @return the idleAt value.
      */
     public OffsetDateTime getIdleAt() {
@@ -128,7 +131,7 @@ public final class SparkSessionState {
 
     /**
      * Set the idleAt property: The idleAt property.
-     *
+     * 
      * @param idleAt the idleAt value to set.
      * @return the SparkSessionState object itself.
      */
@@ -139,7 +142,7 @@ public final class SparkSessionState {
 
     /**
      * Get the deadAt property: The deadAt property.
-     *
+     * 
      * @return the deadAt value.
      */
     public OffsetDateTime getDeadAt() {
@@ -148,7 +151,7 @@ public final class SparkSessionState {
 
     /**
      * Set the deadAt property: The deadAt property.
-     *
+     * 
      * @param deadAt the deadAt value to set.
      * @return the SparkSessionState object itself.
      */
@@ -159,7 +162,7 @@ public final class SparkSessionState {
 
     /**
      * Get the shuttingDownAt property: The shuttingDownAt property.
-     *
+     * 
      * @return the shuttingDownAt value.
      */
     public OffsetDateTime getShuttingDownAt() {
@@ -168,7 +171,7 @@ public final class SparkSessionState {
 
     /**
      * Set the shuttingDownAt property: The shuttingDownAt property.
-     *
+     * 
      * @param shuttingDownAt the shuttingDownAt value to set.
      * @return the SparkSessionState object itself.
      */
@@ -179,7 +182,7 @@ public final class SparkSessionState {
 
     /**
      * Get the terminatedAt property: The killedAt property.
-     *
+     * 
      * @return the terminatedAt value.
      */
     public OffsetDateTime getTerminatedAt() {
@@ -188,7 +191,7 @@ public final class SparkSessionState {
 
     /**
      * Set the terminatedAt property: The killedAt property.
-     *
+     * 
      * @param terminatedAt the terminatedAt value to set.
      * @return the SparkSessionState object itself.
      */
@@ -199,7 +202,7 @@ public final class SparkSessionState {
 
     /**
      * Get the recoveringAt property: The recoveringAt property.
-     *
+     * 
      * @return the recoveringAt value.
      */
     public OffsetDateTime getRecoveringAt() {
@@ -208,7 +211,7 @@ public final class SparkSessionState {
 
     /**
      * Set the recoveringAt property: The recoveringAt property.
-     *
+     * 
      * @param recoveringAt the recoveringAt value to set.
      * @return the SparkSessionState object itself.
      */
@@ -219,7 +222,7 @@ public final class SparkSessionState {
 
     /**
      * Get the busyAt property: The busyAt property.
-     *
+     * 
      * @return the busyAt value.
      */
     public OffsetDateTime getBusyAt() {
@@ -228,7 +231,7 @@ public final class SparkSessionState {
 
     /**
      * Set the busyAt property: The busyAt property.
-     *
+     * 
      * @param busyAt the busyAt value to set.
      * @return the SparkSessionState object itself.
      */
@@ -239,7 +242,7 @@ public final class SparkSessionState {
 
     /**
      * Get the errorAt property: The errorAt property.
-     *
+     * 
      * @return the errorAt value.
      */
     public OffsetDateTime getErrorAt() {
@@ -248,7 +251,7 @@ public final class SparkSessionState {
 
     /**
      * Set the errorAt property: The errorAt property.
-     *
+     * 
      * @param errorAt the errorAt value to set.
      * @return the SparkSessionState object itself.
      */
@@ -259,7 +262,7 @@ public final class SparkSessionState {
 
     /**
      * Get the currentState property: The currentState property.
-     *
+     * 
      * @return the currentState value.
      */
     public String getCurrentState() {
@@ -268,7 +271,7 @@ public final class SparkSessionState {
 
     /**
      * Set the currentState property: The currentState property.
-     *
+     * 
      * @param currentState the currentState value to set.
      * @return the SparkSessionState object itself.
      */
@@ -279,7 +282,7 @@ public final class SparkSessionState {
 
     /**
      * Get the jobCreationRequest property: The jobCreationRequest property.
-     *
+     * 
      * @return the jobCreationRequest value.
      */
     public SparkRequest getJobCreationRequest() {
@@ -288,12 +291,96 @@ public final class SparkSessionState {
 
     /**
      * Set the jobCreationRequest property: The jobCreationRequest property.
-     *
+     * 
      * @param jobCreationRequest the jobCreationRequest value to set.
      * @return the SparkSessionState object itself.
      */
     public SparkSessionState setJobCreationRequest(SparkRequest jobCreationRequest) {
         this.jobCreationRequest = jobCreationRequest;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("notStartedAt",
+            this.notStartedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.notStartedAt));
+        jsonWriter.writeStringField("startingAt",
+            this.startingAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startingAt));
+        jsonWriter.writeStringField("idleAt",
+            this.idleAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.idleAt));
+        jsonWriter.writeStringField("deadAt",
+            this.deadAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deadAt));
+        jsonWriter.writeStringField("shuttingDownAt",
+            this.shuttingDownAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.shuttingDownAt));
+        jsonWriter.writeStringField("killedAt",
+            this.terminatedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.terminatedAt));
+        jsonWriter.writeStringField("recoveringAt",
+            this.recoveringAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recoveringAt));
+        jsonWriter.writeStringField("busyAt",
+            this.busyAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.busyAt));
+        jsonWriter.writeStringField("errorAt",
+            this.errorAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.errorAt));
+        jsonWriter.writeStringField("currentState", this.currentState);
+        jsonWriter.writeJsonField("jobCreationRequest", this.jobCreationRequest);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkSessionState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkSessionState if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SparkSessionState.
+     */
+    public static SparkSessionState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkSessionState deserializedSparkSessionState = new SparkSessionState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notStartedAt".equals(fieldName)) {
+                    deserializedSparkSessionState.notStartedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startingAt".equals(fieldName)) {
+                    deserializedSparkSessionState.startingAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("idleAt".equals(fieldName)) {
+                    deserializedSparkSessionState.idleAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deadAt".equals(fieldName)) {
+                    deserializedSparkSessionState.deadAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("shuttingDownAt".equals(fieldName)) {
+                    deserializedSparkSessionState.shuttingDownAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("killedAt".equals(fieldName)) {
+                    deserializedSparkSessionState.terminatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveringAt".equals(fieldName)) {
+                    deserializedSparkSessionState.recoveringAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("busyAt".equals(fieldName)) {
+                    deserializedSparkSessionState.busyAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("errorAt".equals(fieldName)) {
+                    deserializedSparkSessionState.errorAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentState".equals(fieldName)) {
+                    deserializedSparkSessionState.currentState = reader.getString();
+                } else if ("jobCreationRequest".equals(fieldName)) {
+                    deserializedSparkSessionState.jobCreationRequest = SparkRequest.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkSessionState;
+        });
     }
 }

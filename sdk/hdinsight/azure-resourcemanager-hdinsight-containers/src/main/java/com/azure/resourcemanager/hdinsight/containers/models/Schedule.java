@@ -6,45 +6,49 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Schedule definition. */
+/**
+ * Schedule definition.
+ */
 @Fluent
-public final class Schedule {
+public final class Schedule implements JsonSerializable<Schedule> {
     /*
      * User has to set the start time of current schedule configuration, format like 10:30 (HH:MM).
      */
-    @JsonProperty(value = "startTime", required = true)
     private String startTime;
 
     /*
      * User has to set the end time of current schedule configuration, format like 10:30 (HH:MM).
      */
-    @JsonProperty(value = "endTime", required = true)
     private String endTime;
 
     /*
      * User has to set the node count anticipated at end of the scaling operation of the set current schedule
      * configuration, format is integer.
      */
-    @JsonProperty(value = "count", required = true)
     private int count;
 
     /*
      * User has to set the days where schedule has to be set for autoscale operation.
      */
-    @JsonProperty(value = "days", required = true)
     private List<ScheduleDay> days;
 
-    /** Creates an instance of Schedule class. */
+    /**
+     * Creates an instance of Schedule class.
+     */
     public Schedule() {
     }
 
     /**
      * Get the startTime property: User has to set the start time of current schedule configuration, format like 10:30
      * (HH:MM).
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -54,7 +58,7 @@ public final class Schedule {
     /**
      * Set the startTime property: User has to set the start time of current schedule configuration, format like 10:30
      * (HH:MM).
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the Schedule object itself.
      */
@@ -66,7 +70,7 @@ public final class Schedule {
     /**
      * Get the endTime property: User has to set the end time of current schedule configuration, format like 10:30
      * (HH:MM).
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -76,7 +80,7 @@ public final class Schedule {
     /**
      * Set the endTime property: User has to set the end time of current schedule configuration, format like 10:30
      * (HH:MM).
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the Schedule object itself.
      */
@@ -88,7 +92,7 @@ public final class Schedule {
     /**
      * Get the count property: User has to set the node count anticipated at end of the scaling operation of the set
      * current schedule configuration, format is integer.
-     *
+     * 
      * @return the count value.
      */
     public int count() {
@@ -98,7 +102,7 @@ public final class Schedule {
     /**
      * Set the count property: User has to set the node count anticipated at end of the scaling operation of the set
      * current schedule configuration, format is integer.
-     *
+     * 
      * @param count the count value to set.
      * @return the Schedule object itself.
      */
@@ -109,7 +113,7 @@ public final class Schedule {
 
     /**
      * Get the days property: User has to set the days where schedule has to be set for autoscale operation.
-     *
+     * 
      * @return the days value.
      */
     public List<ScheduleDay> days() {
@@ -118,7 +122,7 @@ public final class Schedule {
 
     /**
      * Set the days property: User has to set the days where schedule has to be set for autoscale operation.
-     *
+     * 
      * @param days the days value to set.
      * @return the Schedule object itself.
      */
@@ -129,25 +133,71 @@ public final class Schedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startTime in model Schedule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property startTime in model Schedule"));
         }
         if (endTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endTime in model Schedule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property endTime in model Schedule"));
         }
         if (days() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property days in model Schedule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property days in model Schedule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Schedule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeIntField("count", this.count);
+        jsonWriter.writeArrayField("days", this.days,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Schedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Schedule if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Schedule.
+     */
+    public static Schedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Schedule deserializedSchedule = new Schedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedSchedule.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedSchedule.endTime = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedSchedule.count = reader.getInt();
+                } else if ("days".equals(fieldName)) {
+                    List<ScheduleDay> days = reader.readArray(reader1 -> ScheduleDay.fromString(reader1.getString()));
+                    deserializedSchedule.days = days;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSchedule;
+        });
+    }
 }

@@ -5,31 +5,46 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Virtual Network configuration. */
+/**
+ * Virtual Network configuration.
+ */
 @Fluent
-public final class VirtualNetworkConfig {
+public final class VirtualNetworkConfig implements JsonSerializable<VirtualNetworkConfig> {
     /*
-     * Resource id of a pre-existing subnet.
+     * Resource id of a pre-existing subnet on which the build VM and validation VM will be deployed
      */
-    @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
-     * Size of the proxy virtual machine used to pass traffic to the build VM and validation VM. Omit or specify empty
-     * string to use the default (Standard_A1_v2).
+     * Resource id of a pre-existing subnet on which Azure Container Instance will be deployed for Isolated Builds. This
+     * field may be specified only if `subnetId` is also specified and must be on the same Virtual Network as the subnet
+     * specified in `subnetId`.
      */
-    @JsonProperty(value = "proxyVmSize")
+    private String containerInstanceSubnetId;
+
+    /*
+     * Size of the proxy virtual machine used to pass traffic to the build VM and validation VM. This must not be
+     * specified if `containerInstanceSubnetId` is specified because no proxy virtual machine is deployed in that case.
+     * Omit or specify empty string to use the default (Standard_A1_v2).
+     */
     private String proxyVmSize;
 
-    /** Creates an instance of VirtualNetworkConfig class. */
+    /**
+     * Creates an instance of VirtualNetworkConfig class.
+     */
     public VirtualNetworkConfig() {
     }
 
     /**
-     * Get the subnetId property: Resource id of a pre-existing subnet.
-     *
+     * Get the subnetId property: Resource id of a pre-existing subnet on which the build VM and validation VM will be
+     * deployed.
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -37,8 +52,9 @@ public final class VirtualNetworkConfig {
     }
 
     /**
-     * Set the subnetId property: Resource id of a pre-existing subnet.
-     *
+     * Set the subnetId property: Resource id of a pre-existing subnet on which the build VM and validation VM will be
+     * deployed.
+     * 
      * @param subnetId the subnetId value to set.
      * @return the VirtualNetworkConfig object itself.
      */
@@ -48,9 +64,34 @@ public final class VirtualNetworkConfig {
     }
 
     /**
+     * Get the containerInstanceSubnetId property: Resource id of a pre-existing subnet on which Azure Container
+     * Instance will be deployed for Isolated Builds. This field may be specified only if `subnetId` is also specified
+     * and must be on the same Virtual Network as the subnet specified in `subnetId`.
+     * 
+     * @return the containerInstanceSubnetId value.
+     */
+    public String containerInstanceSubnetId() {
+        return this.containerInstanceSubnetId;
+    }
+
+    /**
+     * Set the containerInstanceSubnetId property: Resource id of a pre-existing subnet on which Azure Container
+     * Instance will be deployed for Isolated Builds. This field may be specified only if `subnetId` is also specified
+     * and must be on the same Virtual Network as the subnet specified in `subnetId`.
+     * 
+     * @param containerInstanceSubnetId the containerInstanceSubnetId value to set.
+     * @return the VirtualNetworkConfig object itself.
+     */
+    public VirtualNetworkConfig withContainerInstanceSubnetId(String containerInstanceSubnetId) {
+        this.containerInstanceSubnetId = containerInstanceSubnetId;
+        return this;
+    }
+
+    /**
      * Get the proxyVmSize property: Size of the proxy virtual machine used to pass traffic to the build VM and
-     * validation VM. Omit or specify empty string to use the default (Standard_A1_v2).
-     *
+     * validation VM. This must not be specified if `containerInstanceSubnetId` is specified because no proxy virtual
+     * machine is deployed in that case. Omit or specify empty string to use the default (Standard_A1_v2).
+     * 
      * @return the proxyVmSize value.
      */
     public String proxyVmSize() {
@@ -59,8 +100,9 @@ public final class VirtualNetworkConfig {
 
     /**
      * Set the proxyVmSize property: Size of the proxy virtual machine used to pass traffic to the build VM and
-     * validation VM. Omit or specify empty string to use the default (Standard_A1_v2).
-     *
+     * validation VM. This must not be specified if `containerInstanceSubnetId` is specified because no proxy virtual
+     * machine is deployed in that case. Omit or specify empty string to use the default (Standard_A1_v2).
+     * 
      * @param proxyVmSize the proxyVmSize value to set.
      * @return the VirtualNetworkConfig object itself.
      */
@@ -71,9 +113,51 @@ public final class VirtualNetworkConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("containerInstanceSubnetId", this.containerInstanceSubnetId);
+        jsonWriter.writeStringField("proxyVmSize", this.proxyVmSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkConfig if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkConfig.
+     */
+    public static VirtualNetworkConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkConfig deserializedVirtualNetworkConfig = new VirtualNetworkConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedVirtualNetworkConfig.subnetId = reader.getString();
+                } else if ("containerInstanceSubnetId".equals(fieldName)) {
+                    deserializedVirtualNetworkConfig.containerInstanceSubnetId = reader.getString();
+                } else if ("proxyVmSize".equals(fieldName)) {
+                    deserializedVirtualNetworkConfig.proxyVmSize = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkConfig;
+        });
     }
 }

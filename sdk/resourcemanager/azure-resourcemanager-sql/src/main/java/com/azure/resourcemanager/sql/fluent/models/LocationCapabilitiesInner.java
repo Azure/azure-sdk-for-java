@@ -5,52 +5,55 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.CapabilityStatus;
 import com.azure.resourcemanager.sql.models.ManagedInstanceVersionCapability;
 import com.azure.resourcemanager.sql.models.ServerVersionCapability;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The location capability. */
+/**
+ * The location capability.
+ */
 @Fluent
-public final class LocationCapabilitiesInner {
+public final class LocationCapabilitiesInner implements JsonSerializable<LocationCapabilitiesInner> {
     /*
      * The location name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The list of supported server versions.
      */
-    @JsonProperty(value = "supportedServerVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerVersionCapability> supportedServerVersions;
 
     /*
      * The list of supported managed instance versions.
      */
-    @JsonProperty(value = "supportedManagedInstanceVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedInstanceVersionCapability> supportedManagedInstanceVersions;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of LocationCapabilitiesInner class. */
+    /**
+     * Creates an instance of LocationCapabilitiesInner class.
+     */
     public LocationCapabilitiesInner() {
     }
 
     /**
      * Get the name property: The location name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +62,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Get the supportedServerVersions property: The list of supported server versions.
-     *
+     * 
      * @return the supportedServerVersions value.
      */
     public List<ServerVersionCapability> supportedServerVersions() {
@@ -68,7 +71,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Get the supportedManagedInstanceVersions property: The list of supported managed instance versions.
-     *
+     * 
      * @return the supportedManagedInstanceVersions value.
      */
     public List<ManagedInstanceVersionCapability> supportedManagedInstanceVersions() {
@@ -77,7 +80,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -86,7 +89,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -95,7 +98,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the LocationCapabilitiesInner object itself.
      */
@@ -106,7 +109,7 @@ public final class LocationCapabilitiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -116,5 +119,54 @@ public final class LocationCapabilitiesInner {
         if (supportedManagedInstanceVersions() != null) {
             supportedManagedInstanceVersions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocationCapabilitiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocationCapabilitiesInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LocationCapabilitiesInner.
+     */
+    public static LocationCapabilitiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocationCapabilitiesInner deserializedLocationCapabilitiesInner = new LocationCapabilitiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLocationCapabilitiesInner.name = reader.getString();
+                } else if ("supportedServerVersions".equals(fieldName)) {
+                    List<ServerVersionCapability> supportedServerVersions
+                        = reader.readArray(reader1 -> ServerVersionCapability.fromJson(reader1));
+                    deserializedLocationCapabilitiesInner.supportedServerVersions = supportedServerVersions;
+                } else if ("supportedManagedInstanceVersions".equals(fieldName)) {
+                    List<ManagedInstanceVersionCapability> supportedManagedInstanceVersions
+                        = reader.readArray(reader1 -> ManagedInstanceVersionCapability.fromJson(reader1));
+                    deserializedLocationCapabilitiesInner.supportedManagedInstanceVersions
+                        = supportedManagedInstanceVersions;
+                } else if ("status".equals(fieldName)) {
+                    deserializedLocationCapabilitiesInner.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedLocationCapabilitiesInner.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocationCapabilitiesInner;
+        });
     }
 }

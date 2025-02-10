@@ -12,29 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class HttpC2DRejectedMessagesNotInAllowedRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HttpC2DRejectedMessagesNotInAllowedRange model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"HttpC2DRejectedMessagesNotInAllowedRange\",\"timeWindowSize\":\"PT63H43M46S\",\"minThreshold\":290921266,\"maxThreshold\":1500801234,\"displayName\":\"qxmbjroumzzn\",\"description\":\"l\",\"isEnabled\":false}")
-                .toObject(HttpC2DRejectedMessagesNotInAllowedRange.class);
+        HttpC2DRejectedMessagesNotInAllowedRange model = BinaryData.fromString(
+            "{\"ruleType\":\"HttpC2DRejectedMessagesNotInAllowedRange\",\"timeWindowSize\":\"PT14H38M58S\",\"minThreshold\":2004521886,\"maxThreshold\":670432209,\"displayName\":\"e\",\"description\":\"pxuzzjg\",\"isEnabled\":false}")
+            .toObject(HttpC2DRejectedMessagesNotInAllowedRange.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(290921266, model.minThreshold());
-        Assertions.assertEquals(1500801234, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT63H43M46S"), model.timeWindowSize());
+        Assertions.assertEquals(2004521886, model.minThreshold());
+        Assertions.assertEquals(670432209, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT14H38M58S"), model.timeWindowSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpC2DRejectedMessagesNotInAllowedRange model =
-            new HttpC2DRejectedMessagesNotInAllowedRange()
-                .withIsEnabled(false)
-                .withMinThreshold(290921266)
-                .withMaxThreshold(1500801234)
-                .withTimeWindowSize(Duration.parse("PT63H43M46S"));
+        HttpC2DRejectedMessagesNotInAllowedRange model
+            = new HttpC2DRejectedMessagesNotInAllowedRange().withIsEnabled(false)
+                .withMinThreshold(2004521886)
+                .withMaxThreshold(670432209)
+                .withTimeWindowSize(Duration.parse("PT14H38M58S"));
         model = BinaryData.fromObject(model).toObject(HttpC2DRejectedMessagesNotInAllowedRange.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(290921266, model.minThreshold());
-        Assertions.assertEquals(1500801234, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT63H43M46S"), model.timeWindowSize());
+        Assertions.assertEquals(2004521886, model.minThreshold());
+        Assertions.assertEquals(670432209, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT14H38M58S"), model.timeWindowSize());
     }
 }

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The details of the identity used for CMK. */
+/**
+ * The details of the identity used for CMK.
+ */
 @Fluent
-public final class CmkKekIdentity {
+public final class CmkKekIdentity implements JsonSerializable<CmkKekIdentity> {
     /*
      * Indicate that system assigned identity should be used. Mutually exclusive with 'userAssignedIdentity' field
      */
-    @JsonProperty(value = "useSystemAssignedIdentity")
     private Boolean useSystemAssignedIdentity;
 
     /*
      * The user assigned identity to be used to grant permissions in case the type of identity used is UserAssigned
      */
-    @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
-    /** Creates an instance of CmkKekIdentity class. */
+    /**
+     * Creates an instance of CmkKekIdentity class.
+     */
     public CmkKekIdentity() {
     }
 
     /**
      * Get the useSystemAssignedIdentity property: Indicate that system assigned identity should be used. Mutually
      * exclusive with 'userAssignedIdentity' field.
-     *
+     * 
      * @return the useSystemAssignedIdentity value.
      */
     public Boolean useSystemAssignedIdentity() {
@@ -39,7 +45,7 @@ public final class CmkKekIdentity {
     /**
      * Set the useSystemAssignedIdentity property: Indicate that system assigned identity should be used. Mutually
      * exclusive with 'userAssignedIdentity' field.
-     *
+     * 
      * @param useSystemAssignedIdentity the useSystemAssignedIdentity value to set.
      * @return the CmkKekIdentity object itself.
      */
@@ -51,7 +57,7 @@ public final class CmkKekIdentity {
     /**
      * Get the userAssignedIdentity property: The user assigned identity to be used to grant permissions in case the
      * type of identity used is UserAssigned.
-     *
+     * 
      * @return the userAssignedIdentity value.
      */
     public String userAssignedIdentity() {
@@ -61,7 +67,7 @@ public final class CmkKekIdentity {
     /**
      * Set the userAssignedIdentity property: The user assigned identity to be used to grant permissions in case the
      * type of identity used is UserAssigned.
-     *
+     * 
      * @param userAssignedIdentity the userAssignedIdentity value to set.
      * @return the CmkKekIdentity object itself.
      */
@@ -72,9 +78,48 @@ public final class CmkKekIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("useSystemAssignedIdentity", this.useSystemAssignedIdentity);
+        jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CmkKekIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CmkKekIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CmkKekIdentity.
+     */
+    public static CmkKekIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CmkKekIdentity deserializedCmkKekIdentity = new CmkKekIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("useSystemAssignedIdentity".equals(fieldName)) {
+                    deserializedCmkKekIdentity.useSystemAssignedIdentity = reader.getNullable(JsonReader::getBoolean);
+                } else if ("userAssignedIdentity".equals(fieldName)) {
+                    deserializedCmkKekIdentity.userAssignedIdentity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCmkKekIdentity;
+        });
     }
 }

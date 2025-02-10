@@ -26,27 +26,33 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequestResource;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ValidateOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ValidateOperationsClient.
+ */
 public final class ValidateOperationsClientImpl implements ValidateOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ValidateOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of ValidateOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ValidateOperationsClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy.create(ValidateOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ValidateOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,26 +63,22 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface ValidateOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupTriggerValidateOperation")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupTriggerValidateOperation")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> trigger(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> trigger(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ValidateOperationRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @BodyParam("application/json") ValidateOperationRequestResource parameters,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -86,13 +88,11 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -102,10 +102,8 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -114,25 +112,15 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .trigger(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.trigger(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -143,13 +131,11 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -159,10 +145,8 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -171,22 +155,14 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .trigger(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.trigger(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -196,19 +172,17 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
+    private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = triggerWithResponseAsync(vaultName, resourceGroupName, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -219,20 +193,19 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            triggerWithResponseAsync(vaultName, resourceGroupName, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = triggerWithResponseAsync(vaultName, resourceGroupName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -242,15 +215,15 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginTrigger(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters) {
         return this.beginTriggerAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -261,15 +234,15 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginTrigger(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters, Context context) {
         return this.beginTriggerAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -279,16 +252,16 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> triggerAsync(String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
-        return beginTriggerAsync(vaultName, resourceGroupName, parameters)
-            .last()
+    private Mono<Void> triggerAsync(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters) {
+        return beginTriggerAsync(vaultName, resourceGroupName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -299,17 +272,16 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> triggerAsync(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context) {
-        return beginTriggerAsync(vaultName, resourceGroupName, parameters, context)
-            .last()
+    private Mono<Void> triggerAsync(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters, Context context) {
+        return beginTriggerAsync(vaultName, resourceGroupName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -318,14 +290,14 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trigger(String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
+    public void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters) {
         triggerAsync(vaultName, resourceGroupName, parameters).block();
     }
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -335,8 +307,8 @@ public final class ValidateOperationsClientImpl implements ValidateOperationsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trigger(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context) {
+    public void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters,
+        Context context) {
         triggerAsync(vaultName, resourceGroupName, parameters, context).block();
     }
 }

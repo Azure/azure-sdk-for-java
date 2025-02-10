@@ -9,13 +9,16 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.redisenterprise.models.AccessKeys;
+import com.azure.resourcemanager.redisenterprise.models.AccessKeysAuthentication;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.Database;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
 import com.azure.resourcemanager.redisenterprise.models.DatabaseUpdate;
+import com.azure.resourcemanager.redisenterprise.models.DeferUpgradeSetting;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
 import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.FlushParameters;
+import com.azure.resourcemanager.redisenterprise.models.ForceLinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ForceUnlinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ImportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.Module;
@@ -89,6 +92,18 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this.innerModel().geoReplication();
     }
 
+    public String redisVersion() {
+        return this.innerModel().redisVersion();
+    }
+
+    public DeferUpgradeSetting deferUpgrade() {
+        return this.innerModel().deferUpgrade();
+    }
+
+    public AccessKeysAuthentication accessKeysAuthentication() {
+        return this.innerModel().accessKeysAuthentication();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -116,20 +131,16 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public Database create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .create(resourceGroupName, clusterName, databaseName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .create(resourceGroupName, clusterName, databaseName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Database create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .create(resourceGroupName, clusterName, databaseName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .create(resourceGroupName, clusterName, databaseName, this.innerModel(), context);
         return this;
     }
 
@@ -145,49 +156,41 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public Database apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .update(resourceGroupName, clusterName, databaseName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .update(resourceGroupName, clusterName, databaseName, updateParameters, Context.NONE);
         return this;
     }
 
     public Database apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .update(resourceGroupName, clusterName, databaseName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .update(resourceGroupName, clusterName, databaseName, updateParameters, context);
         return this;
     }
 
-    DatabaseImpl(
-        DatabaseInner innerObject, com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
+    DatabaseImpl(DatabaseInner innerObject,
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "redisEnterprise");
-        this.databaseName = Utils.getValueFromIdByName(innerObject.id(), "databases");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "redisEnterprise");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databases");
     }
 
     public Database refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .getWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .getWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Database refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDatabases()
-                .getWithResponse(resourceGroupName, clusterName, databaseName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .getWithResponse(resourceGroupName, clusterName, databaseName, context)
+            .getValue();
         return this;
     }
 
@@ -204,8 +207,7 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public AccessKeys regenerateKey(RegenerateKeyParameters parameters, Context context) {
-        return serviceManager
-            .databases()
+        return serviceManager.databases()
             .regenerateKey(resourceGroupName, clusterName, databaseName, parameters, context);
     }
 
@@ -233,12 +235,30 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         serviceManager.databases().forceUnlink(resourceGroupName, clusterName, databaseName, parameters, context);
     }
 
+    public void forceLinkToReplicationGroup(ForceLinkParameters parameters) {
+        serviceManager.databases()
+            .forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters);
+    }
+
+    public void forceLinkToReplicationGroup(ForceLinkParameters parameters, Context context) {
+        serviceManager.databases()
+            .forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters, context);
+    }
+
     public void flush(FlushParameters parameters) {
         serviceManager.databases().flush(resourceGroupName, clusterName, databaseName, parameters);
     }
 
     public void flush(FlushParameters parameters, Context context) {
         serviceManager.databases().flush(resourceGroupName, clusterName, databaseName, parameters, context);
+    }
+
+    public void upgradeDBRedisVersion() {
+        serviceManager.databases().upgradeDBRedisVersion(resourceGroupName, clusterName, databaseName);
+    }
+
+    public void upgradeDBRedisVersion(Context context) {
+        serviceManager.databases().upgradeDBRedisVersion(resourceGroupName, clusterName, databaseName, context);
     }
 
     public DatabaseImpl withClientProtocol(Protocol clientProtocol) {
@@ -289,6 +309,26 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     public DatabaseImpl withGeoReplication(DatabasePropertiesGeoReplication geoReplication) {
         this.innerModel().withGeoReplication(geoReplication);
         return this;
+    }
+
+    public DatabaseImpl withDeferUpgrade(DeferUpgradeSetting deferUpgrade) {
+        if (isInCreateMode()) {
+            this.innerModel().withDeferUpgrade(deferUpgrade);
+            return this;
+        } else {
+            this.updateParameters.withDeferUpgrade(deferUpgrade);
+            return this;
+        }
+    }
+
+    public DatabaseImpl withAccessKeysAuthentication(AccessKeysAuthentication accessKeysAuthentication) {
+        if (isInCreateMode()) {
+            this.innerModel().withAccessKeysAuthentication(accessKeysAuthentication);
+            return this;
+        } else {
+            this.updateParameters.withAccessKeysAuthentication(accessKeysAuthentication);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

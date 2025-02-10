@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The ESU key state. */
+/**
+ * The ESU key state.
+ */
 public final class EsuKeyState extends ExpandableStringEnum<EsuKeyState> {
-    /** Static value Inactive for EsuKeyState. */
+    /**
+     * Static value Inactive for EsuKeyState.
+     */
     public static final EsuKeyState INACTIVE = fromString("Inactive");
 
-    /** Static value Active for EsuKeyState. */
+    /**
+     * Static value Active for EsuKeyState.
+     */
     public static final EsuKeyState ACTIVE = fromString("Active");
 
     /**
      * Creates a new instance of EsuKeyState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class EsuKeyState extends ExpandableStringEnum<EsuKeyState> {
 
     /**
      * Creates or finds a EsuKeyState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EsuKeyState.
      */
-    @JsonCreator
     public static EsuKeyState fromString(String name) {
         return fromString(name, EsuKeyState.class);
     }
 
     /**
      * Gets known EsuKeyState values.
-     *
+     * 
      * @return known EsuKeyState values.
      */
     public static Collection<EsuKeyState> values() {

@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure Web Category Resource.
  */
 @Fluent
-public final class AzureWebCategoryInner {
+public final class AzureWebCategoryInner implements JsonSerializable<AzureWebCategoryInner> {
     /*
      * Properties of the Azure Web Category.
      */
-    @JsonProperty(value = "properties")
     private AzureWebCategoryPropertiesFormat innerProperties;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -122,5 +121,51 @@ public final class AzureWebCategoryInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureWebCategoryInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureWebCategoryInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureWebCategoryInner.
+     */
+    public static AzureWebCategoryInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureWebCategoryInner deserializedAzureWebCategoryInner = new AzureWebCategoryInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAzureWebCategoryInner.innerProperties
+                        = AzureWebCategoryPropertiesFormat.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedAzureWebCategoryInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAzureWebCategoryInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureWebCategoryInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAzureWebCategoryInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureWebCategoryInner;
+        });
     }
 }

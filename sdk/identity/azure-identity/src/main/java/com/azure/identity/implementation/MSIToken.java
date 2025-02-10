@@ -6,9 +6,11 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 
+import java.io.IOException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -23,27 +25,16 @@ public final class MSIToken extends AccessToken {
     private static final ClientLogger LOGGER = new ClientLogger(MSIToken.class);
     private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
-    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX")
-        .withLocale(Locale.US);
+    private static final DateTimeFormatter DTF
+        = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX").withLocale(Locale.US);
 
     // This is the format for app service on Windows as of API version 2017-09-01.
     // The format is changed to Unix timestamp in 2019-08-01 but this API version
     // has not been deployed to Linux app services.
-    private static final DateTimeFormatter DTF_WINDOWS = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a XXX")
-        .withLocale(Locale.US);
+    private static final DateTimeFormatter DTF_WINDOWS
+        = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a XXX").withLocale(Locale.US);
 
-    @JsonProperty(value = "token_type")
-    private String tokenType;
-
-    @JsonProperty(value = "access_token")
-    private String accessToken;
-
-    @JsonProperty(value = "expires_on")
-    private String expiresOn;
-
-    @JsonProperty(value = "expires_in")
-    private String expiresIn;
-
+    private final String accessToken;
 
     /**
      * Creates an access token instance.
@@ -52,20 +43,40 @@ public final class MSIToken extends AccessToken {
      * @param expiresOn the expiration time.
      * @param expiresIn the number of seconds until expiration.
      */
-    @JsonCreator
-    public MSIToken(
-        @JsonProperty(value = "access_token") String token,
-        @JsonProperty(value = "expires_on") String expiresOn,
-        @JsonProperty(value = "expires_in") String expiresIn) {
-        super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)));
+    public MSIToken(String token, String expiresOn, String expiresIn) {
+        super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)),
+            inferManagedIdentityRefreshInValue(EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn))));
         this.accessToken = token;
-        this.expiresOn = expiresOn;
-        this.expiresIn = expiresIn;
     }
 
     @Override
     public String getToken() {
         return accessToken;
+    }
+
+    public static MSIToken fromJson(JsonReader jsonReader) throws IOException {
+
+        // a serialized MSIToken will have more fields in it, but we don't need them
+        // as they represent computed values anyway. These three are all we need to construct one.
+        return jsonReader.readObject(reader -> {
+            String accessToken = null;
+            String expiresOn = null;
+            String expiresIn = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("access_token".equals(fieldName)) {
+                    accessToken = reader.getString();
+                } else if ("expires_on".equals(fieldName)) {
+                    expiresOn = reader.getString();
+                } else if ("expires_in".equals(fieldName)) {
+                    expiresIn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new MSIToken(accessToken, expiresOn, expiresIn);
+        });
     }
 
     private static Long parseToEpochSeconds(String expiresOn, String expiresIn) {
@@ -74,12 +85,13 @@ public final class MSIToken extends AccessToken {
         // expiresOn = timestamp of refresh expressed as seconds since epoch.
 
         // if we have an expiresOn, we'll use it. Otherwise, we use expiresIn.
-        String dateToParse = CoreUtils.isNullOrEmpty(expiresOn) ? expiresIn : expiresOn;
+        boolean isExpiresOn = !CoreUtils.isNullOrEmpty(expiresOn);
+        String dateToParse = isExpiresOn ? expiresOn : expiresIn;
 
         try {
             long seconds = Long.parseLong(dateToParse);
             // we have an expiresOn, so no parsing required.
-            if (!CoreUtils.isNullOrEmpty(expiresOn)) {
+            if (isExpiresOn) {
                 return seconds;
             } else {
                 // otherwise we need the OffsetDateTime representing now plus the expiresIn duration.
@@ -101,5 +113,18 @@ public final class MSIToken extends AccessToken {
             LOGGER.verbose(e.getMessage());
         }
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateToParse));
+    }
+
+    private static OffsetDateTime inferManagedIdentityRefreshInValue(OffsetDateTime expiresOn) {
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+
+        if (expiresOn.isAfter(now.plus(Duration.ofHours(2)))) {
+            // Calculate the duration between now and expiresOn
+            Duration duration = Duration.between(now, expiresOn);
+            // Return the midpoint between now and expiresOn by dividing the duration by 2
+            // The division operation snaps to the floor in case of an odd number duration (i.e., it truncates any decimal part)
+            return expiresOn.minus(duration.dividedBy(2));
+        }
+        return null;
     }
 }

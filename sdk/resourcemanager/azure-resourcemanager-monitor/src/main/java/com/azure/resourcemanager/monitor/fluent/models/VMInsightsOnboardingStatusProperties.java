@@ -6,49 +6,54 @@ package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.DataContainer;
 import com.azure.resourcemanager.monitor.models.DataStatus;
 import com.azure.resourcemanager.monitor.models.OnboardingStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Resource properties. */
+/**
+ * Resource properties.
+ */
 @Fluent
-public final class VMInsightsOnboardingStatusProperties {
+public final class VMInsightsOnboardingStatusProperties
+    implements JsonSerializable<VMInsightsOnboardingStatusProperties> {
     /*
      * Azure Resource Manager identifier of the resource whose onboarding status is being represented.
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /*
-     * The onboarding status for the resource. Note that, a higher level scope, e.g., resource group or subscription,
-     * is considered onboarded if at least one resource under it is onboarded.
+     * The onboarding status for the resource. Note that, a higher level scope, e.g., resource group or subscription, is
+     * considered onboarded if at least one resource under it is onboarded.
      */
-    @JsonProperty(value = "onboardingStatus", required = true)
     private OnboardingStatus onboardingStatus;
 
     /*
      * The status of VM Insights data from the resource. When reported as `present` the data array will contain
      * information about the data containers to which data for the specified resource is being routed.
      */
-    @JsonProperty(value = "dataStatus", required = true)
     private DataStatus dataStatus;
 
     /*
      * Containers that currently store VM Insights data for the specified resource.
      */
-    @JsonProperty(value = "data")
     private List<DataContainer> data;
 
-    /** Creates an instance of VMInsightsOnboardingStatusProperties class. */
+    /**
+     * Creates an instance of VMInsightsOnboardingStatusProperties class.
+     */
     public VMInsightsOnboardingStatusProperties() {
     }
 
     /**
      * Get the resourceId property: Azure Resource Manager identifier of the resource whose onboarding status is being
      * represented.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -58,7 +63,7 @@ public final class VMInsightsOnboardingStatusProperties {
     /**
      * Set the resourceId property: Azure Resource Manager identifier of the resource whose onboarding status is being
      * represented.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the VMInsightsOnboardingStatusProperties object itself.
      */
@@ -70,7 +75,7 @@ public final class VMInsightsOnboardingStatusProperties {
     /**
      * Get the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope, e.g.,
      * resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
-     *
+     * 
      * @return the onboardingStatus value.
      */
     public OnboardingStatus onboardingStatus() {
@@ -80,7 +85,7 @@ public final class VMInsightsOnboardingStatusProperties {
     /**
      * Set the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope, e.g.,
      * resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
-     *
+     * 
      * @param onboardingStatus the onboardingStatus value to set.
      * @return the VMInsightsOnboardingStatusProperties object itself.
      */
@@ -93,7 +98,7 @@ public final class VMInsightsOnboardingStatusProperties {
      * Get the dataStatus property: The status of VM Insights data from the resource. When reported as `present` the
      * data array will contain information about the data containers to which data for the specified resource is being
      * routed.
-     *
+     * 
      * @return the dataStatus value.
      */
     public DataStatus dataStatus() {
@@ -104,7 +109,7 @@ public final class VMInsightsOnboardingStatusProperties {
      * Set the dataStatus property: The status of VM Insights data from the resource. When reported as `present` the
      * data array will contain information about the data containers to which data for the specified resource is being
      * routed.
-     *
+     * 
      * @param dataStatus the dataStatus value to set.
      * @return the VMInsightsOnboardingStatusProperties object itself.
      */
@@ -115,7 +120,7 @@ public final class VMInsightsOnboardingStatusProperties {
 
     /**
      * Get the data property: Containers that currently store VM Insights data for the specified resource.
-     *
+     * 
      * @return the data value.
      */
     public List<DataContainer> data() {
@@ -124,7 +129,7 @@ public final class VMInsightsOnboardingStatusProperties {
 
     /**
      * Set the data property: Containers that currently store VM Insights data for the specified resource.
-     *
+     * 
      * @param data the data value to set.
      * @return the VMInsightsOnboardingStatusProperties object itself.
      */
@@ -135,27 +140,24 @@ public final class VMInsightsOnboardingStatusProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceId in model VMInsightsOnboardingStatusProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceId in model VMInsightsOnboardingStatusProperties"));
         }
         if (onboardingStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property onboardingStatus in model VMInsightsOnboardingStatusProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property onboardingStatus in model VMInsightsOnboardingStatusProperties"));
         }
         if (dataStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataStatus in model VMInsightsOnboardingStatusProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataStatus in model VMInsightsOnboardingStatusProperties"));
         }
         if (data() != null) {
             data().forEach(e -> e.validate());
@@ -163,4 +165,55 @@ public final class VMInsightsOnboardingStatusProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMInsightsOnboardingStatusProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("onboardingStatus",
+            this.onboardingStatus == null ? null : this.onboardingStatus.toString());
+        jsonWriter.writeStringField("dataStatus", this.dataStatus == null ? null : this.dataStatus.toString());
+        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMInsightsOnboardingStatusProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMInsightsOnboardingStatusProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMInsightsOnboardingStatusProperties.
+     */
+    public static VMInsightsOnboardingStatusProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMInsightsOnboardingStatusProperties deserializedVMInsightsOnboardingStatusProperties
+                = new VMInsightsOnboardingStatusProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedVMInsightsOnboardingStatusProperties.resourceId = reader.getString();
+                } else if ("onboardingStatus".equals(fieldName)) {
+                    deserializedVMInsightsOnboardingStatusProperties.onboardingStatus
+                        = OnboardingStatus.fromString(reader.getString());
+                } else if ("dataStatus".equals(fieldName)) {
+                    deserializedVMInsightsOnboardingStatusProperties.dataStatus
+                        = DataStatus.fromString(reader.getString());
+                } else if ("data".equals(fieldName)) {
+                    List<DataContainer> data = reader.readArray(reader1 -> DataContainer.fromJson(reader1));
+                    deserializedVMInsightsOnboardingStatusProperties.data = data;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMInsightsOnboardingStatusProperties;
+        });
+    }
 }

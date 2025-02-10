@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 public final class VolumesListGetGroupIdListForLdapUserSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/GroupIdListForLDAPUser
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/GroupIdListForLDAPUser
      * .json
      */
     /**
@@ -21,7 +21,8 @@ public final class VolumesListGetGroupIdListForLdapUserSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void getGroupIdListForUser(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumes().listGetGroupIdListForLdapUser("myRG", "account1", "pool1", "volume1",
-            new GetGroupIdListForLdapUserRequest().withUsername("user1"), com.azure.core.util.Context.NONE);
+        manager.volumes()
+            .listGetGroupIdListForLdapUser("myRG", "account1", "pool1", "volume1",
+                new GetGroupIdListForLdapUserRequest().withUsername("user1"), com.azure.core.util.Context.NONE);
     }
 }

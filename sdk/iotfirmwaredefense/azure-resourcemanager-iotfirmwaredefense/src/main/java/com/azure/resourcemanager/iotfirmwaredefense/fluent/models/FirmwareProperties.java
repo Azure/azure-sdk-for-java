@@ -5,75 +5,75 @@
 package com.azure.resourcemanager.iotfirmwaredefense.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.models.ProvisioningState;
 import com.azure.resourcemanager.iotfirmwaredefense.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.iotfirmwaredefense.models.StatusMessage;
+import java.io.IOException;
 import java.util.List;
 
-/** Firmware properties. */
+/**
+ * Firmware properties.
+ */
 @Fluent
-public final class FirmwareProperties {
+public final class FirmwareProperties implements JsonSerializable<FirmwareProperties> {
     /*
      * File name for a firmware that user uploaded.
      */
-    @JsonProperty(value = "fileName")
     private String fileName;
 
     /*
      * Firmware vendor.
      */
-    @JsonProperty(value = "vendor")
     private String vendor;
 
     /*
      * Firmware model.
      */
-    @JsonProperty(value = "model")
     private String model;
 
     /*
      * Firmware version.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * User-specified description of the firmware.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * File size of the uploaded firmware image.
      */
-    @JsonProperty(value = "fileSize")
     private Long fileSize;
 
     /*
      * The status of firmware scan.
      */
-    @JsonProperty(value = "status")
     private Status status;
 
     /*
      * A list of errors or other messages generated during firmware analysis
      */
-    @JsonProperty(value = "statusMessages")
-    private List<Object> statusMessages;
+    private List<StatusMessage> statusMessages;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of FirmwareProperties class. */
+    /**
+     * Creates an instance of FirmwareProperties class.
+     */
     public FirmwareProperties() {
     }
 
     /**
      * Get the fileName property: File name for a firmware that user uploaded.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -82,7 +82,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the fileName property: File name for a firmware that user uploaded.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -93,7 +93,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the vendor property: Firmware vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -102,7 +102,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the vendor property: Firmware vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -113,7 +113,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the model property: Firmware model.
-     *
+     * 
      * @return the model value.
      */
     public String model() {
@@ -122,7 +122,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the model property: Firmware model.
-     *
+     * 
      * @param model the model value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -133,7 +133,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the version property: Firmware version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -142,7 +142,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the version property: Firmware version.
-     *
+     * 
      * @param version the version value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -153,7 +153,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the description property: User-specified description of the firmware.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -162,7 +162,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the description property: User-specified description of the firmware.
-     *
+     * 
      * @param description the description value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -173,7 +173,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the fileSize property: File size of the uploaded firmware image.
-     *
+     * 
      * @return the fileSize value.
      */
     public Long fileSize() {
@@ -182,7 +182,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the fileSize property: File size of the uploaded firmware image.
-     *
+     * 
      * @param fileSize the fileSize value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -193,7 +193,7 @@ public final class FirmwareProperties {
 
     /**
      * Get the status property: The status of firmware scan.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -202,7 +202,7 @@ public final class FirmwareProperties {
 
     /**
      * Set the status property: The status of firmware scan.
-     *
+     * 
      * @param status the status value to set.
      * @return the FirmwareProperties object itself.
      */
@@ -213,27 +213,27 @@ public final class FirmwareProperties {
 
     /**
      * Get the statusMessages property: A list of errors or other messages generated during firmware analysis.
-     *
+     * 
      * @return the statusMessages value.
      */
-    public List<Object> statusMessages() {
+    public List<StatusMessage> statusMessages() {
         return this.statusMessages;
     }
 
     /**
      * Set the statusMessages property: A list of errors or other messages generated during firmware analysis.
-     *
+     * 
      * @param statusMessages the statusMessages value to set.
      * @return the FirmwareProperties object itself.
      */
-    public FirmwareProperties withStatusMessages(List<Object> statusMessages) {
+    public FirmwareProperties withStatusMessages(List<StatusMessage> statusMessages) {
         this.statusMessages = statusMessages;
         return this;
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -242,9 +242,73 @@ public final class FirmwareProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (statusMessages() != null) {
+            statusMessages().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fileName", this.fileName);
+        jsonWriter.writeStringField("vendor", this.vendor);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeNumberField("fileSize", this.fileSize);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeArrayField("statusMessages", this.statusMessages,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirmwareProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirmwareProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirmwareProperties.
+     */
+    public static FirmwareProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirmwareProperties deserializedFirmwareProperties = new FirmwareProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fileName".equals(fieldName)) {
+                    deserializedFirmwareProperties.fileName = reader.getString();
+                } else if ("vendor".equals(fieldName)) {
+                    deserializedFirmwareProperties.vendor = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    deserializedFirmwareProperties.model = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedFirmwareProperties.version = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedFirmwareProperties.description = reader.getString();
+                } else if ("fileSize".equals(fieldName)) {
+                    deserializedFirmwareProperties.fileSize = reader.getNullable(JsonReader::getLong);
+                } else if ("status".equals(fieldName)) {
+                    deserializedFirmwareProperties.status = Status.fromString(reader.getString());
+                } else if ("statusMessages".equals(fieldName)) {
+                    List<StatusMessage> statusMessages = reader.readArray(reader1 -> StatusMessage.fromJson(reader1));
+                    deserializedFirmwareProperties.statusMessages = statusMessages;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFirmwareProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirmwareProperties;
+        });
     }
 }

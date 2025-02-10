@@ -14,8 +14,7 @@ public final class PrivateEndpointConnectionForPrivateLinkHubImpl
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    PrivateEndpointConnectionForPrivateLinkHubImpl(
-        PrivateEndpointConnectionForPrivateLinkHubInner innerObject,
+    PrivateEndpointConnectionForPrivateLinkHubImpl(PrivateEndpointConnectionForPrivateLinkHubInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

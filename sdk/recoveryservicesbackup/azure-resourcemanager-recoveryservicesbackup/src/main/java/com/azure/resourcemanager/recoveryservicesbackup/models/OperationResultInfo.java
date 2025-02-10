@@ -5,29 +5,48 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Operation result info. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("OperationResultInfo")
+/**
+ * Operation result info.
+ */
 @Fluent
 public final class OperationResultInfo extends OperationResultInfoBase {
     /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
+     */
+    private String objectType = "OperationResultInfo";
+
+    /*
      * List of jobs created by this operation.
      */
-    @JsonProperty(value = "jobList")
     private List<String> jobList;
 
-    /** Creates an instance of OperationResultInfo class. */
+    /**
+     * Creates an instance of OperationResultInfo class.
+     */
     public OperationResultInfo() {
     }
 
     /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the jobList property: List of jobs created by this operation.
-     *
+     * 
      * @return the jobList value.
      */
     public List<String> jobList() {
@@ -36,7 +55,7 @@ public final class OperationResultInfo extends OperationResultInfoBase {
 
     /**
      * Set the jobList property: List of jobs created by this operation.
-     *
+     * 
      * @param jobList the jobList value to set.
      * @return the OperationResultInfo object itself.
      */
@@ -47,11 +66,50 @@ public final class OperationResultInfo extends OperationResultInfoBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeArrayField("jobList", this.jobList, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultInfo.
+     */
+    public static OperationResultInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultInfo deserializedOperationResultInfo = new OperationResultInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedOperationResultInfo.objectType = reader.getString();
+                } else if ("jobList".equals(fieldName)) {
+                    List<String> jobList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOperationResultInfo.jobList = jobList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultInfo;
+        });
     }
 }

@@ -18,7 +18,6 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerForUpdate;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ServerGtidSetParameter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerRestartParameter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
@@ -170,20 +169,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .create(resourceGroupName, serverName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .create(resourceGroupName, serverName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Server create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .create(resourceGroupName, serverName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .create(resourceGroupName, serverName, this.innerModel(), context);
         return this;
     }
 
@@ -199,47 +194,39 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .update(resourceGroupName, serverName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .update(resourceGroupName, serverName, updateParameters, Context.NONE);
         return this;
     }
 
     public Server apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .update(resourceGroupName, serverName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .update(resourceGroupName, serverName, updateParameters, context);
         return this;
     }
 
     ServerImpl(ServerInner innerObject, com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "flexibleServers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
     }
 
     public Server refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Server refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .getByResourceGroupWithResponse(resourceGroupName, serverName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .getByResourceGroupWithResponse(resourceGroupName, serverName, context)
+            .getValue();
         return this;
     }
 
@@ -273,14 +260,6 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
 
     public void stop(Context context) {
         serviceManager.servers().stop(resourceGroupName, serverName, context);
-    }
-
-    public void resetGtid(ServerGtidSetParameter parameters) {
-        serviceManager.servers().resetGtid(resourceGroupName, serverName, parameters);
-    }
-
-    public void resetGtid(ServerGtidSetParameter parameters, Context context) {
-        serviceManager.servers().resetGtid(resourceGroupName, serverName, parameters, context);
     }
 
     public ServerImpl withRegion(Region location) {
@@ -339,13 +318,8 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withVersion(ServerVersion version) {
-        if (isInCreateMode()) {
-            this.innerModel().withVersion(version);
-            return this;
-        } else {
-            this.updateParameters.withVersion(version);
-            return this;
-        }
+        this.innerModel().withVersion(version);
+        return this;
     }
 
     public ServerImpl withAvailabilityZone(String availabilityZone) {
@@ -419,13 +393,8 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public ServerImpl withNetwork(Network network) {
-        if (isInCreateMode()) {
-            this.innerModel().withNetwork(network);
-            return this;
-        } else {
-            this.updateParameters.withNetwork(network);
-            return this;
-        }
+        this.innerModel().withNetwork(network);
+        return this;
     }
 
     public ServerImpl withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {

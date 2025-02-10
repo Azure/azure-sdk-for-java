@@ -6,18 +6,21 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Class encapsulating target details, used where the destination is not a datasource.
  */
 @Fluent
-public final class TargetDetails {
+public final class TargetDetails implements JsonSerializable<TargetDetails> {
     /*
      * Restore operation may create multiple files inside location pointed by Url
      * Below will be the common prefix for all of them
      */
-    @JsonProperty(value = "filePrefix", required = true)
     private String filePrefix;
 
     /*
@@ -25,13 +28,11 @@ public final class TargetDetails {
      * string value for the enum
      * {Microsoft.Internal.AzureBackup.DataProtection.Common.Interface.RestoreTargetLocationType}
      */
-    @JsonProperty(value = "restoreTargetLocationType", required = true)
     private RestoreTargetLocationType restoreTargetLocationType;
 
     /*
      * Url denoting the restore destination. It can point to container / file share etc
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
@@ -39,7 +40,6 @@ public final class TargetDetails {
      * This is optional if the target subscription can be identified with the URL field. If not
      * then this is needed if CrossSubscriptionRestore field of BackupVault is in any of the disabled states
      */
-    @JsonProperty(value = "targetResourceArmId")
     private String targetResourceArmId;
 
     /**
@@ -147,18 +147,67 @@ public final class TargetDetails {
      */
     public void validate() {
         if (filePrefix() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property filePrefix in model TargetDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property filePrefix in model TargetDetails"));
         }
         if (restoreTargetLocationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property restoreTargetLocationType in model TargetDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property restoreTargetLocationType in model TargetDetails"));
         }
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model TargetDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model TargetDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TargetDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filePrefix", this.filePrefix);
+        jsonWriter.writeStringField("restoreTargetLocationType",
+            this.restoreTargetLocationType == null ? null : this.restoreTargetLocationType.toString());
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("targetResourceArmId", this.targetResourceArmId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TargetDetails.
+     */
+    public static TargetDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetDetails deserializedTargetDetails = new TargetDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filePrefix".equals(fieldName)) {
+                    deserializedTargetDetails.filePrefix = reader.getString();
+                } else if ("restoreTargetLocationType".equals(fieldName)) {
+                    deserializedTargetDetails.restoreTargetLocationType
+                        = RestoreTargetLocationType.fromString(reader.getString());
+                } else if ("url".equals(fieldName)) {
+                    deserializedTargetDetails.url = reader.getString();
+                } else if ("targetResourceArmId".equals(fieldName)) {
+                    deserializedTargetDetails.targetResourceArmId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetDetails;
+        });
+    }
 }
